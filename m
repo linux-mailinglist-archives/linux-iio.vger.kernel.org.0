@@ -1,493 +1,160 @@
-Return-Path: <linux-iio+bounces-2871-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2872-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E89A985DA57
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 14:31:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06C0D85E0E4
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 16:22:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5941F1F2414C
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 13:31:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B003E284D57
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 15:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D343180C0A;
-	Wed, 21 Feb 2024 13:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AF38005D;
+	Wed, 21 Feb 2024 15:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Btp+ZksG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MMGyCEkB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8938B80BFF
-	for <linux-iio@vger.kernel.org>; Wed, 21 Feb 2024 13:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00F87F7DA;
+	Wed, 21 Feb 2024 15:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522017; cv=none; b=Af9b+1dCHsA9oqLT3ChreJQ/RN71/zYJA7dmk7Lh7lfLAHzdegYwSeP7bQWD7kO/d801pf2CORNf9ySXgdBUyHbcypEEp8dzXNWV9vKnsBt+PpzCvvLIYAwINgAKNchna8pgXHI+ZPv/7DrCXmRP8CvhPo8jIzwQr1j+F8jgO+I=
+	t=1708528949; cv=none; b=Mxs3TDUUphblV4lI/gfwPKv+SutYfGyw0aVrvNUntRST7cnMdH/TyDOicKSKN47326nlavF3YPfOxPcZ70QerOtFnyaq/9G9ATCKOvXXSYDKxAT3+hETd39/9pOKP2zxL72f9q/9NEuYerVKd2zueAixYEBWGbY6LvBtPSIENW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708522017; c=relaxed/simple;
-	bh=qFYINX18COEZancOBVE+J0PkNTRewscHNnANq1NtE6E=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=u6R5I1VREPPCRuONLPEuqmgDoUkk/iezi78fhKB7+q67Z4cus2ca+Jw2IgoyrI6fxG7XsrGC+IGt8FK5BNHb+mNsaqMbexar9K3KT/c5/aoarlMAuGmF8w/Czr2U5iDs6O0Nknqutg0M+p7UHCYsMuKtGDKrk8h3VJ6kX26UBJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Btp+ZksG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1889CC41679;
-	Wed, 21 Feb 2024 13:26:57 +0000 (UTC)
+	s=arc-20240116; t=1708528949; c=relaxed/simple;
+	bh=TCtBpdIY7450Ty+SdGZtoT1IyppeoEDJ8gGAm0LnTiM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eDKFGEebFGc0lzWZFVRniqnVLM2XtTCwSHd777HZn9YpouD1zo2E9uikYk1ZhC25fOGYbUSKhNIehA56zO+XDYmQHUsZ6+wjDLYYgPW+y7JhiqSLA5dtoRd76S7TookBeEuq4p6t2ocoJLaeUjgpFq1N2DCllEft3vZRvVtZqgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MMGyCEkB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5EBC433F1;
+	Wed, 21 Feb 2024 15:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708522017;
-	bh=qFYINX18COEZancOBVE+J0PkNTRewscHNnANq1NtE6E=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Btp+ZksGOEW3ZgNHM8Y3IaOQEOxNcGeU8De+wxngMRVruGIgSrMBg8sh9r2e6xZrs
-	 Mnh1/UkaXhR0HR7JWYa+CcigQy6pdYtdmJKnOB8iyZ9xmPmUVT0Ha6UN4MAu83C0v4
-	 VPcNgBqoo/KAvetTNPlYl8i5oY0CmUoig/ix60c877RNxxkINFsaeLuMW+dvEGi/pk
-	 h39bEfa5Otlr+e477gajPTK5N1eqsH2riornq4JzctAkX7t5X9SiNK3Fr2a/mawKlw
-	 W2c7rkOwt00hp7F7WGd2OnPX8V7E6erg7wGAZQr/U0Pq/bdA+SLPHVFa8zeRU6SazX
-	 0ADxgpxCJaSow==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 06169C48BC3;
-	Wed, 21 Feb 2024 13:26:57 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Wed, 21 Feb 2024 14:26:56 +0100
-Subject: [PATCH 5/5] iio: inkern: move to the cleanup.h magic
+	s=k20201202; t=1708528949;
+	bh=TCtBpdIY7450Ty+SdGZtoT1IyppeoEDJ8gGAm0LnTiM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MMGyCEkBJYH1XwA80dc+qUCu/cOXpEl3HiZXgftka+aMyQbtI3GIlyhflIWpSZLe3
+	 iGDsz3jH4054EU0NKQv0fEJ7P/kTV2kusLyGo+Ws9keDj1mnLeGazBq3cmiYPvEtZF
+	 roD9hoj4iqu6Qh+iCsuosQVpsei+XZHMw4NnsFFE6atsvo07Gy+ouAZG1Hs6a3BRH9
+	 9B67sx7ijI39SgJX2fX9fk49wlYljyxe6qnCxcVChR8dkeGuMWpdcy3hhyI1b8e1zM
+	 C5aO8WeTqtqEbiPNl9w/p2yG0X0p5R3XVcFGZYEsMemAGlenhaPrXinHPw+KNmgRJP
+	 4zdBYxpn+/yJw==
+Date: Wed, 21 Feb 2024 08:22:26 -0700
+From: Rob Herring <robh@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add ad7944 ADCs
+Message-ID: <20240221152226.GA2868707-robh@kernel.org>
+References: <20240216-ad7944-mainline-v2-0-7eb69651e592@baylibre.com>
+ <20240216-ad7944-mainline-v2-1-7eb69651e592@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240221-iio-use-cleanup-magic-v1-5-f9c292666f26@analog.com>
-References: <20240221-iio-use-cleanup-magic-v1-0-f9c292666f26@analog.com>
-In-Reply-To: <20240221-iio-use-cleanup-magic-v1-0-f9c292666f26@analog.com>
-To: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1708522015; l=12111;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=3+/f3kNp+MlxZLmwHTg9hfEYQ4QyDxWxMZCbaPjXvkM=;
- b=IGHcNbQno50QNX5rgt82AJXwjCqLN/WZlZwC67vFz0mQkEkE24odjy2KhjccpHcK8lMb+5RSY
- X5WVS+wq9c4B4vZoLtEYZNabuyD7Yu7QT5Wzml0qPb0RFK42bBRL9Lf
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received:
- by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: <nuno.sa@analog.com>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240216-ad7944-mainline-v2-1-7eb69651e592@baylibre.com>
 
-From: Nuno Sa <nuno.sa@analog.com>
+On Fri, Feb 16, 2024 at 01:46:18PM -0600, David Lechner wrote:
+> This adds a new binding for the Analog Devices, Inc. AD7944, AD7985, and
+> AD7986 ADCs.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>  .../devicetree/bindings/iio/adc/adi,ad7944.yaml    | 204 +++++++++++++++++++++
+>  MAINTAINERS                                        |   8 +
+>  2 files changed, 212 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
+> new file mode 100644
+> index 000000000000..61ee81326660
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
+> @@ -0,0 +1,204 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7944.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices PulSAR LFCSP Analog to Digital Converters
+> +
+> +maintainers:
+> +  - Michael Hennerich <Michael.Hennerich@analog.com>
+> +  - Nuno Sá <nuno.sa@analog.com>
+> +
+> +description: |
+> +  A family of pin-compatible single channel differential analog to digital
+> +  converters with SPI support in a LFCSP package.
+> +
+> +  * https://www.analog.com/en/products/ad7944.html
+> +  * https://www.analog.com/en/products/ad7985.html
+> +  * https://www.analog.com/en/products/ad7986.html
+> +
+> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad7944
+> +      - adi,ad7985
+> +      - adi,ad7986
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 111111111
+> +
+> +  spi-cpol: true
+> +  spi-cpha: true
+> +
+> +  adi,spi-mode:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum: [ single, multi, chain ]
+> +    default: multi
+> +    description: |
+> +      * single: The datasheet calls this "3-wire mode". It is often used when
+> +        the ADC is the only device on the bus. In this mode, SDI is tied to VIO,
+> +        and the CNV line can be connected to the CS line of the SPI controller
+> +        or to a GPIO, in which case the CS line of the controller is unused.
 
-Use the new cleanup magic for handling mutexes in IIO. This allows us to
-greatly simplify some code paths.
+We have a standard property for this.
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/inkern.c | 224 ++++++++++++++++-----------------------------------
- 1 file changed, 71 insertions(+), 153 deletions(-)
+> +      * multi: The datasheet calls this "4-wire mode". This is the convential
+> +        SPI mode used when there are multiple devices on the same bus. In this
+> +        mode, the CNV line is used to initiate the conversion and the SDI line
+> +        is connected to CS on the SPI controller.
 
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 7a1f6713318a..6a1d6ff8eb97 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -3,6 +3,7 @@
-  *
-  * Copyright (c) 2011 Jonathan Cameron
-  */
-+#include <linux/cleanup.h>
- #include <linux/err.h>
- #include <linux/export.h>
- #include <linux/minmax.h>
-@@ -43,30 +44,26 @@ static int iio_map_array_unregister_locked(struct iio_dev *indio_dev)
- 
- int iio_map_array_register(struct iio_dev *indio_dev, struct iio_map *maps)
- {
--	int i = 0, ret = 0;
-+	int i = 0;
- 	struct iio_map_internal *mapi;
- 
- 	if (!maps)
- 		return 0;
- 
--	mutex_lock(&iio_map_list_lock);
-+	guard(mutex)(&iio_map_list_lock);
- 	while (maps[i].consumer_dev_name) {
- 		mapi = kzalloc(sizeof(*mapi), GFP_KERNEL);
- 		if (!mapi) {
--			ret = -ENOMEM;
--			goto error_ret;
-+			iio_map_array_unregister_locked(indio_dev);
-+			return -ENOMEM;
- 		}
- 		mapi->map = &maps[i];
- 		mapi->indio_dev = indio_dev;
- 		list_add_tail(&mapi->l, &iio_map_list);
- 		i++;
- 	}
--error_ret:
--	if (ret)
--		iio_map_array_unregister_locked(indio_dev);
--	mutex_unlock(&iio_map_list_lock);
- 
--	return ret;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(iio_map_array_register);
- 
-@@ -75,13 +72,8 @@ EXPORT_SYMBOL_GPL(iio_map_array_register);
-  */
- int iio_map_array_unregister(struct iio_dev *indio_dev)
- {
--	int ret;
--
--	mutex_lock(&iio_map_list_lock);
--	ret = iio_map_array_unregister_locked(indio_dev);
--	mutex_unlock(&iio_map_list_lock);
--
--	return ret;
-+	guard(mutex)(&iio_map_list_lock);
-+	return iio_map_array_unregister_locked(indio_dev);
- }
- EXPORT_SYMBOL_GPL(iio_map_array_unregister);
- 
-@@ -337,17 +329,17 @@ static struct iio_channel *iio_channel_get_sys(const char *name,
- 		return ERR_PTR(-ENODEV);
- 
- 	/* first find matching entry the channel map */
--	mutex_lock(&iio_map_list_lock);
--	list_for_each_entry(c_i, &iio_map_list, l) {
--		if ((name && strcmp(name, c_i->map->consumer_dev_name) != 0) ||
--		    (channel_name &&
--		     strcmp(channel_name, c_i->map->consumer_channel) != 0))
--			continue;
--		c = c_i;
--		iio_device_get(c->indio_dev);
--		break;
-+	scoped_guard(mutex, &iio_map_list_lock) {
-+		list_for_each_entry(c_i, &iio_map_list, l) {
-+			if ((name && strcmp(name, c_i->map->consumer_dev_name) != 0) ||
-+			    (channel_name &&
-+			     strcmp(channel_name, c_i->map->consumer_channel) != 0))
-+				continue;
-+			c = c_i;
-+			iio_device_get(c->indio_dev);
-+			break;
-+		}
- 	}
--	mutex_unlock(&iio_map_list_lock);
- 	if (!c)
- 		return ERR_PTR(-ENODEV);
- 
-@@ -469,7 +461,7 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
- 
- 	name = dev_name(dev);
- 
--	mutex_lock(&iio_map_list_lock);
-+	guard(mutex)(&iio_map_list_lock);
- 	/* first count the matching maps */
- 	list_for_each_entry(c, &iio_map_list, l)
- 		if (name && strcmp(name, c->map->consumer_dev_name) != 0)
-@@ -477,17 +469,13 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
- 		else
- 			nummaps++;
- 
--	if (nummaps == 0) {
--		ret = -ENODEV;
--		goto error_ret;
--	}
-+	if (nummaps == 0)
-+		return ERR_PTR(-ENODEV);
- 
- 	/* NULL terminated array to save passing size */
- 	chans = kcalloc(nummaps + 1, sizeof(*chans), GFP_KERNEL);
--	if (!chans) {
--		ret = -ENOMEM;
--		goto error_ret;
--	}
-+	if (!chans)
-+		return ERR_PTR(-ENOMEM);
- 
- 	/* for each map fill in the chans element */
- 	list_for_each_entry(c, &iio_map_list, l) {
-@@ -509,7 +497,6 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
- 		ret = -ENODEV;
- 		goto error_free_chans;
- 	}
--	mutex_unlock(&iio_map_list_lock);
- 
- 	return chans;
- 
-@@ -517,9 +504,6 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
- 	for (i = 0; i < nummaps; i++)
- 		iio_device_put(chans[i].indio_dev);
- 	kfree(chans);
--error_ret:
--	mutex_unlock(&iio_map_list_lock);
--
- 	return ERR_PTR(ret);
- }
- EXPORT_SYMBOL_GPL(iio_channel_get_all);
-@@ -590,38 +574,24 @@ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
- int iio_read_channel_raw(struct iio_channel *chan, int *val)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
--	int ret;
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (!chan->indio_dev->info) {
--		ret = -ENODEV;
--		goto err_unlock;
--	}
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-+	if (!chan->indio_dev->info)
-+		return -ENODEV;
- 
--	ret = iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_RAW);
--err_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
--
--	return ret;
-+	return iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_RAW);
- }
- EXPORT_SYMBOL_GPL(iio_read_channel_raw);
- 
- int iio_read_channel_average_raw(struct iio_channel *chan, int *val)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
--	int ret;
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (!chan->indio_dev->info) {
--		ret = -ENODEV;
--		goto err_unlock;
--	}
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-+	if (!chan->indio_dev->info)
-+		return -ENODEV;
- 
--	ret = iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_AVERAGE_RAW);
--err_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
--
--	return ret;
-+	return iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_AVERAGE_RAW);
- }
- EXPORT_SYMBOL_GPL(iio_read_channel_average_raw);
- 
-@@ -708,20 +678,13 @@ int iio_convert_raw_to_processed(struct iio_channel *chan, int raw,
- 				 int *processed, unsigned int scale)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
--	int ret;
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (!chan->indio_dev->info) {
--		ret = -ENODEV;
--		goto err_unlock;
--	}
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-+	if (!chan->indio_dev->info)
-+		return -ENODEV;
- 
--	ret = iio_convert_raw_to_processed_unlocked(chan, raw, processed,
--						    scale);
--err_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
--
--	return ret;
-+	return iio_convert_raw_to_processed_unlocked(chan, raw, processed,
-+						     scale);
- }
- EXPORT_SYMBOL_GPL(iio_convert_raw_to_processed);
- 
-@@ -729,19 +692,12 @@ int iio_read_channel_attribute(struct iio_channel *chan, int *val, int *val2,
- 			       enum iio_chan_info_enum attribute)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
--	int ret;
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (!chan->indio_dev->info) {
--		ret = -ENODEV;
--		goto err_unlock;
--	}
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-+	if (!chan->indio_dev->info)
-+		return -ENODEV;
- 
--	ret = iio_channel_read(chan, val, val2, attribute);
--err_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
--
--	return ret;
-+	return iio_channel_read(chan, val, val2, attribute);
- }
- EXPORT_SYMBOL_GPL(iio_read_channel_attribute);
- 
-@@ -757,30 +713,25 @@ int iio_read_channel_processed_scale(struct iio_channel *chan, int *val,
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
- 	int ret;
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (!chan->indio_dev->info) {
--		ret = -ENODEV;
--		goto err_unlock;
--	}
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-+	if (!chan->indio_dev->info)
-+		return -ENODEV;
- 
- 	if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_PROCESSED)) {
- 		ret = iio_channel_read(chan, val, NULL,
- 				       IIO_CHAN_INFO_PROCESSED);
- 		if (ret < 0)
--			goto err_unlock;
-+			return ret;
-+
- 		*val *= scale;
--	} else {
--		ret = iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_RAW);
--		if (ret < 0)
--			goto err_unlock;
--		ret = iio_convert_raw_to_processed_unlocked(chan, *val, val,
--							    scale);
-+		return ret;
- 	}
- 
--err_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
-+	ret = iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_RAW);
-+	if (ret < 0)
-+		return ret;
- 
--	return ret;
-+	return iio_convert_raw_to_processed_unlocked(chan, *val, val, scale);
- }
- EXPORT_SYMBOL_GPL(iio_read_channel_processed_scale);
- 
-@@ -813,19 +764,12 @@ int iio_read_avail_channel_attribute(struct iio_channel *chan,
- 				     enum iio_chan_info_enum attribute)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
--	int ret;
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (!chan->indio_dev->info) {
--		ret = -ENODEV;
--		goto err_unlock;
--	}
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-+	if (!chan->indio_dev->info)
-+		return -ENODEV;
- 
--	ret = iio_channel_read_avail(chan, vals, type, length, attribute);
--err_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
--
--	return ret;
-+	return iio_channel_read_avail(chan, vals, type, length, attribute);
- }
- EXPORT_SYMBOL_GPL(iio_read_avail_channel_attribute);
- 
-@@ -892,20 +836,13 @@ static int iio_channel_read_max(struct iio_channel *chan,
- int iio_read_max_channel_raw(struct iio_channel *chan, int *val)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
--	int ret;
- 	int type;
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (!chan->indio_dev->info) {
--		ret = -ENODEV;
--		goto err_unlock;
--	}
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-+	if (!chan->indio_dev->info)
-+		return -ENODEV;
- 
--	ret = iio_channel_read_max(chan, val, NULL, &type, IIO_CHAN_INFO_RAW);
--err_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
--
--	return ret;
-+	return iio_channel_read_max(chan, val, NULL, &type, IIO_CHAN_INFO_RAW);
- }
- EXPORT_SYMBOL_GPL(iio_read_max_channel_raw);
- 
-@@ -955,40 +892,28 @@ static int iio_channel_read_min(struct iio_channel *chan,
- int iio_read_min_channel_raw(struct iio_channel *chan, int *val)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
--	int ret;
- 	int type;
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (!chan->indio_dev->info) {
--		ret = -ENODEV;
--		goto err_unlock;
--	}
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-+	if (!chan->indio_dev->info)
-+		return -ENODEV;
- 
--	ret = iio_channel_read_min(chan, val, NULL, &type, IIO_CHAN_INFO_RAW);
--err_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
--
--	return ret;
-+	return iio_channel_read_min(chan, val, NULL, &type, IIO_CHAN_INFO_RAW);
- }
- EXPORT_SYMBOL_GPL(iio_read_min_channel_raw);
- 
- int iio_get_channel_type(struct iio_channel *chan, enum iio_chan_type *type)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
--	int ret = 0;
--	/* Need to verify underlying driver has not gone away */
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (!chan->indio_dev->info) {
--		ret = -ENODEV;
--		goto err_unlock;
--	}
-+	/* Need to verify underlying driver has not gone away */
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-+	if (!chan->indio_dev->info)
-+		return -ENODEV;
- 
- 	*type = chan->channel->type;
--err_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
- 
--	return ret;
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(iio_get_channel_type);
- 
-@@ -1003,19 +928,12 @@ int iio_write_channel_attribute(struct iio_channel *chan, int val, int val2,
- 				enum iio_chan_info_enum attribute)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
--	int ret;
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
--	if (!chan->indio_dev->info) {
--		ret = -ENODEV;
--		goto err_unlock;
--	}
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-+	if (!chan->indio_dev->info)
-+		return -ENODEV;
- 
--	ret = iio_channel_write(chan, val, val2, attribute);
--err_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
--
--	return ret;
-+	return iio_channel_write(chan, val, val2, attribute);
- }
- EXPORT_SYMBOL_GPL(iio_write_channel_attribute);
- 
+That's "normal" mode.
 
--- 
-2.43.0
+> +      * chain: The datasheet calls this "chain mode". This mode is used to save
+> +        on wiring when multiple ADCs are used. In this mode, the SDI line of
+> +        one chip is tied to the SDO of the next chip in the chain and the SDI of
+> +        the last chip in the chain is tied to GND. Only the first chip in the
+> +        chain is connected to the SPI bus. The CNV line of all chips are tied
+> +        together. The CS line of the SPI controller is unused.
 
+Don't you need to know how many chips are chained? In any case, you just 
+need a property for chain mode. There's some existing properties for 
+chained devices I think. Standard logic shift register based GPIO IIRC.
+
+CNV are tied together, but must be driven by something? I suppose 
+cnv-gpios? But wouldn't that be the same as the SPI controller GPIO CS? 
+Does a SPI controller CS line connected to CNV not work in this case?
+
+Rob
 

@@ -1,161 +1,126 @@
-Return-Path: <linux-iio+bounces-2856-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2857-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6B585D295
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 09:29:50 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5813985D2E9
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 09:59:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 821161F24726
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 08:29:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC2E9B22B75
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 08:59:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BED43C48F;
-	Wed, 21 Feb 2024 08:29:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544BE3D0B9;
+	Wed, 21 Feb 2024 08:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BQ9zVwE6"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="mC66qtBP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D963C06A;
-	Wed, 21 Feb 2024 08:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A787E3D0A8;
+	Wed, 21 Feb 2024 08:59:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708504176; cv=none; b=E7H/aolvyu/ICSQq+nzo6TQbjO6/DLrp0riGZATgfjlXkov1EfK6DA5sVKiQZFIYiJdmeYskCs5fJmUf5EUGIau9+xDMD1984lvqu7u3pkQK8B1e7h41sO9pKQyXP2zaJwzt0SLPw/F4c2F1vzwp8OO0hjoyXVtdU2q2bbUJ1C4=
+	t=1708505955; cv=none; b=qKU5LU4xcs787nqg6r4LQszA54Jl5rrhNFCX3T3ldZIvtt03F9l0RV9BQEPFDVgSpO6rp2B/aBwwICm39GLeLiXimY2NcQX6PLWKmzRUHEdeY/wXhzKapjyXdGJRUi5Bu1t8wdDF9eAdqKUXPttLRaVm3/WvV9CbRgPqS5lqIP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708504176; c=relaxed/simple;
-	bh=l+USiKsOoo5GxfeqF2OVgrwbmx7XziXEEcxHQXx9izU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GLEpRM6L8m2EIs+mi7AzlmcGIsIPDRDB8u51OGXI96H8ljvGYZtTOorIu78eypLHXGGl3mMxaNdUqeUeKCPXgySsFZOp7NoOTml3BZGfLQoeeIxkJ0gCjVxsBGLVjYoWl8HObGFdnQ6QSrWiJug+gFjJe2nJd9rdCAZ0LZBmJlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BQ9zVwE6; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a3f48422fb6so35170966b.3;
-        Wed, 21 Feb 2024 00:29:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708504173; x=1709108973; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7ijo+X2EXC9W1Fu/WCqYIZ+xP706TUOFUSratEaFrdE=;
-        b=BQ9zVwE6ihXl6BHGh9G5g7Dd0DGRlIOJw4YRjJQbiktGjbwI6muX7SA7nSDgJamLdR
-         hFlLLRGyIFmTOS/wp8B2FgVRrs6ZVLsJr/HbdpqL/qcY6SoZLYEfUpvuEeFjWdVe7x/j
-         sjWD32rEAjMPA2rvllUt8y0ykfmij1hqyAos4cLt0vYr8VRAKer1srFAWXYnvH1tvXAw
-         xjFaGSabsENWyKU0wJej2LKbnKdXe/m5NYmP/OH77uHKYpUdzXPN5lArVdW53139FK1q
-         nAYd3K0dfrmg/RQy5Fa42eNl9gItUONhiLs2kcdXTpjz8/o6959k/7ZesFkf2Bb0ss4S
-         k+kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708504173; x=1709108973;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7ijo+X2EXC9W1Fu/WCqYIZ+xP706TUOFUSratEaFrdE=;
-        b=hLjw1Pv53MaZWbA4ZuI5GCvBBi9qJLkjKaP+ATPBOmwdX55Uo+0iUWQGAqtwHNZptw
-         gPCBwn1jk6EyTVOA9VkjY1pljh/LAr5lElH7KHgwoHNUKaICA7jsJyMuwnHm4AGWceEJ
-         g6TM1Y0vFW7ZH+dTVmkk5gCcBbqC2Dj/gHKpd2npVo74oTsGyqxXWPHHXQSt/e+Ip/87
-         q6yBiLOj9l3jgmR6r3JrISTHboIw92ZcOFqyd5hIGrsJefjVQ6Rf6p4TvnIB2YLXQuU5
-         PsHD06ZRYv35BSMV5zE8erFYhnASH++Qz+N4KrBWBKECO0N4EmGDYgcczoVW08ACV2r/
-         6rGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU2W5M02O+HB97/0jj76IvBzTMJjrFvConMQdA6PwjiwhQ/Voo+VynZQmxEUOaeyZ73Gn7pitkw8+mUvdGxbemjtsdLZ/niHcAk9IoeaIZ2IZJx/SOsqVSl5i10g7OWOFukL5MjPVqRzJM2ZnLPSecdhQb2XyU0esxZ8xU0t56QhYE9pGFp/JdF1+SM4bYxZqv8BQU+8SwMbiouh72idJM=
-X-Gm-Message-State: AOJu0YwzbIK+p76oal+XXsbRhGSOAuyFu+nBhLQNARWXGTRGMjzfCo4x
-	9rcWTmgI5qBsgwS/uLVLFcyHeSbQV4gAqx/bNNWJQyfI3KKo9qcg
-X-Google-Smtp-Source: AGHT+IEByevySHGOYsiHoumsPUFFKnbfOL/epOfhCWUPHg6vKAN8y5PnWG9rjYr66ZXMDSQ2WnecRQ==
-X-Received: by 2002:a17:906:1358:b0:a3f:4b10:134 with SMTP id x24-20020a170906135800b00a3f4b100134mr377542ejb.72.1708504172834;
-        Wed, 21 Feb 2024 00:29:32 -0800 (PST)
-Received: from [172.25.98.130] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id un8-20020a170907cb8800b00a3df7003552sm4711384ejc.32.2024.02.21.00.29.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 21 Feb 2024 00:29:32 -0800 (PST)
-Message-ID: <0fa819d1-2a0f-4243-8e5f-a098528278c3@gmail.com>
-Date: Wed, 21 Feb 2024 10:29:30 +0200
+	s=arc-20240116; t=1708505955; c=relaxed/simple;
+	bh=d3jM1See6GNvV3zMltfzhT+UZvh6ylF9ft68eX0CikY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i13hnp7K8/cmLw6KsWTrpYGSKhKtelNgEti9V5jKlDIvLaQ3dDlqHsg7GykKraDjiPduUNznhs67e0BEOWodPtMtPbRo7/aYI5lIWAB9d83kXsrl9d3Pg9ERAM9D7zg7jsYEIp5KF1dseOTKtL0lDq0v18l5KU/SU309NCEG1NU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=mC66qtBP; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41L6hBVq030354;
+	Wed, 21 Feb 2024 03:59:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=DKIM; bh=jmvv8BdlP4Ef
+	MWvH6myTB5u41s/m86pGC7nOg4+WO/k=; b=mC66qtBP0LrK/hXkuovfHKvTw/uR
+	KawN0DcUuciUqohLUGyoddpI2je/sfntY4y2UcmXjB5KpX3zk4iPB0ogjQkd6lCk
+	V23hNd4p8jf85zn1DipYKu1yp2sPMPbWiBVM8w4jAQqolrPuZegLQnhb8Fxk8i9/
+	Iv19YZod6k3kOBWqTUZsLUtq4O6k+jE/vREwbW90UB3Z5CZN4cQw8IOLspt7t2Xj
+	cuhN7Gqhbhy6aOqRr8qT2JlihJoEQi8iHcxp2GsGeTC76S8lRFnmYAPgmpF+zTMB
+	MCtEQYNhFpdzt9TNUlS7ldfEKpX4Lv523M/JvZO71FQiX9CVm91e64ePrg==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3wd21gartj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 21 Feb 2024 03:59:05 -0500 (EST)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 41L8x3XX041505
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 21 Feb 2024 03:59:03 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 21 Feb 2024 03:59:03 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 21 Feb 2024 03:59:02 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 21 Feb 2024 03:59:02 -0500
+Received: from rbolboac.ad.analog.com ([10.48.65.135])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 41L8wqJ9004732;
+	Wed, 21 Feb 2024 03:58:54 -0500
+From: Ramona Gradinariu <ramona.gradinariu@analog.com>
+To: <corbet@lwn.net>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <jic23@kernel.org>,
+        <nuno.sa@analog.com>, <linux-iio@vger.kernel.org>
+CC: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Subject: [PATCH v5 0/3] adis16475 driver documentation
+Date: Wed, 21 Feb 2024 10:58:45 +0200
+Message-ID: <20240221085848.991413-1-ramona.gradinariu@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 1/3] dt-bindings: adc: add AD7173
-To: David Lechner <dlechner@baylibre.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
- Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
- ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
- =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
- Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
- Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240220094344.17556-1-mitrutzceclan@gmail.com>
- <CAMknhBEZ7Y1Yx=wJGnfvYWGKPLas3pbCyY+sN8vrBzdkYO-A4w@mail.gmail.com>
-Content-Language: en-US
-From: Ceclan Dumitru <mitrutzceclan@gmail.com>
-In-Reply-To: <CAMknhBEZ7Y1Yx=wJGnfvYWGKPLas3pbCyY+sN8vrBzdkYO-A4w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 9i7f1al4LocBAGLJVBwlxC3BsxnEXIg2
+X-Proofpoint-ORIG-GUID: 9i7f1al4LocBAGLJVBwlxC3BsxnEXIg2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-20_06,2024-02-20_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ adultscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0 phishscore=0
+ impostorscore=0 mlxlogscore=734 mlxscore=0 priorityscore=1501
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2402210069
 
+Add documentation for:
+- iio device buffers describing buffer attributes and how data is structured in
+buffers using scan elements.
+- adis16475 driver which describes the driver device files and shows how the
+user may use the ABI for various scenarios (configuration, measurement, etc.).
 
+This kind of documentation describes how the user can interract with the drivers
+device files, showing the driver's particularities and we think all IIO drivers
+need such a documentation and will benefit from it.
+Having this documentation in the Linux Kernel will make it more accessible to
+the user, seeing how it is in the same location as the code.
+Analog Devices is prepared to add similar documentation for all new drivers (for
+ADI components), and in time to also add documentation for existing drivers,
+following the adis16475 documentation template.
 
-On 2/20/24 22:54, David Lechner wrote:
-> On Tue, Feb 20, 2024 at 3:43 AM Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
+Ramona Gradinariu (3):
+  docs: iio: Refactor index.rst
+  docs: iio: add documentation for device buffers
+  docs: iio: add documentation for adis16475 driver
 
-...
+ Documentation/iio/adis16475.rst  | 406 +++++++++++++++++++++++++++++++
+ Documentation/iio/iio_devbuf.rst | 152 ++++++++++++
+ Documentation/iio/index.rst      |   9 +-
+ 3 files changed, 566 insertions(+), 1 deletion(-)
+ create mode 100644 Documentation/iio/adis16475.rst
+ create mode 100644 Documentation/iio/iio_devbuf.rst
 
->> +  clocks:
->> +    maxItems: 1
->> +    description: |
-> 
-> Don't need `|` here.
-> 
-The description contains ": ". Without '|' yaml syntax considers the
-whole string before ':' as another attribute
+--
+2.34.1
 
->> +      Optional external clock source. Can include one clock source: external
->> +      clock or external crystal.
->> +
-
-...
-
->> +
->> +      diff-channels:
->> +        items:
->> +          minimum: 0
->> +          maximum: 31
->> +
-> 
-> Are we missing `bipolar: true` here? (since we have
-> unevaluatedProperties: false)
-> 
-
-No, since we are referencing the adc schema "$ref: adc.yaml"
-Which contains:
-"""
-  bipolar:
-
-    $ref: /schemas/types.yaml#/definitions/flag
-
-    description: If provided, the channel is to be used in bipolar mode.
-"""
-
-
-...
-
->> +
->> +required:
->> +  - compatible
->> +  - reg
-> 
-> Aren't the various power supplies supposed to be required?
-> 
-> - avdd-supply
-> - avdd2-supply
-> - iovdd-supply
-
-From my point of view, if someone uses a single supply (avdd == avdd2 ==
-iovdd), and uses only the internal reference then the supplies should
-not necessarily be required.
 

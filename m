@@ -1,101 +1,141 @@
-Return-Path: <linux-iio+bounces-2864-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2865-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CD8D85D9BF
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 14:22:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66BA985D9E9
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 14:24:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 038182882E1
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 13:22:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07746B21F70
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 13:24:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A2079953;
-	Wed, 21 Feb 2024 13:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8548C779F8;
+	Wed, 21 Feb 2024 13:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L0NAnJST"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KKfEiYj/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCDA763F6;
-	Wed, 21 Feb 2024 13:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A723F53816;
+	Wed, 21 Feb 2024 13:23:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708521711; cv=none; b=UjoqtDqyCiYMXWH3XRdS/MeFvh35hCqVerDfneq9YB6TnpuDAw4MnTUgFROPY+6HyKDeU3vjH/RilOwCt4NVfANy90FqLH3u+/qGy7yx0Y0XeHwc3LdWoKaykSVUYkghFnXnp/eJXNmkJo4SH/LAwzGiv+cXaMYh5eZQ5SWlsIk=
+	t=1708521835; cv=none; b=CPTEOxBYySQa98PBii3MIYEGmWGO3h8QyRudNxcmQU1GHlLc03m0eEZm0Daz2Uq+FkwjnoUmm0nvCIbpdKzlTX4/u+rDWDJmqptld5KTjUcvxjkUTIQmakkZWEcwTcPBKo0gLxtWZTcJkX7FJcobiobhplDkWLhiV5znaF80H9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708521711; c=relaxed/simple;
-	bh=m8OXLkRSII1k4JsXdV2zR3nWembuP6BcMZNr+6VGExk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W8VB8U2mvwr5OJD2h97JAYwIXLqH287ArzJNV9PyYNeSaIWIpK5oLQnFCnohDMFg+UrJmZrMXyoBHqCWOAaKMMf7+WAnw+rFbzGn7TlFqn9akoc8mC8ZZCMKTA/vR0ga+RvHiFmUZGtr7+zgboWDKDj+rtT4CR29dusOOtg/yAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L0NAnJST; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708521710; x=1740057710;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=m8OXLkRSII1k4JsXdV2zR3nWembuP6BcMZNr+6VGExk=;
-  b=L0NAnJSTFnmUayRgyy2b9JEa5xybac3lw9SGLl88ZWgLvMtYRD0HV59E
-   +1ds/I9R/bxGr7dXN0n1FDn05gzWqOmmb+6G2E6slZfHfpr/yX+DmFGlZ
-   2Km4FliVbBK+Cjk1LBQwOx6KjxDkboJHy31NSHDMGxw9VjyPt4bnpuvW3
-   Rod1vFD9OKMWjjSjJ1ELW+Nki2pWHN24mC5wHte3y+oJYy/fNLyvM0O+Z
-   dzfHukelcoTWCzI+LBBx9DtQuCdu5Utjgr8BEMq4fi0n+fTInOdPsi9uu
-   ML+rZrDiwPommxaQWJQHLOL5CWtIjGcQI7WZhR/zS6xhQumqXMedNMB4u
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="6455128"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="6455128"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 05:21:48 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10990"; a="913302811"
-X-IronPort-AV: E=Sophos;i="6.06,175,1705392000"; 
-   d="scan'208";a="913302811"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Feb 2024 05:21:46 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rcmXf-00000006MB4-46d9;
-	Wed, 21 Feb 2024 15:21:43 +0200
-Date: Wed, 21 Feb 2024 15:21:43 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, ang.iglesiasg@gmail.com,
-	linus.walleij@linaro.org, semen.protsenko@linaro.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] drivers: iio: pressure: Fixes BMP38x and BMP390 SPI
- support
-Message-ID: <ZdX45xqSlz1oQQ-R@smile.fi.intel.com>
-References: <20240220224329.53729-1-vassilisamir@gmail.com>
- <20240220224329.53729-2-vassilisamir@gmail.com>
+	s=arc-20240116; t=1708521835; c=relaxed/simple;
+	bh=7cyNJ515me6l3XFmqj5aB+dIDuK/5jXCgnSutXO+HsE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MCUMTHPW3Sq4P/2DHiJNp3L79Fc2WYbn0WQF/WDq7SlFNGOn0+8IX3H4+bA06A9iBhrpXbnqx6rfG0YxmXs04XWD8FIR3s4R56snyRKYrA9UtLBCe5sqkHAIDPTt6jd1uv2bFJqnKP/KaylCLdSxs1NjKVY6R+4d9he1WENpGdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KKfEiYj/; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a3e8c1e4aa7so75104866b.2;
+        Wed, 21 Feb 2024 05:23:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708521832; x=1709126632; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TYHh7SiHeNTNK2tXpyXWlj0JF7DBAfbrFEvAlcv1JZ8=;
+        b=KKfEiYj/QJRTVhmKA8HztfLGKEHSkgiCMrd/qhQeP5AzKXTdrUUgo1l61WmDvRXxI0
+         EjabUoeYJEDELifGMaP2xVhsDYXRBfxKkgcCLGeMWzrqnrwm3STqQrkfUhk64/NMkN4j
+         joZBdiadolhsrHQhquMbpRsa+YeaMMntCCNcJrolN4skNgcmoxOVJRJya//3rrOVe5zU
+         3L+1rA982cma1GQ7/KHZlq1Z8TJfi7N0LgonOv3/Sua4K4xy0dSe+3vATqk7Eoj9DC0m
+         7r273HLMME9SfH7g/dmMTs/TlXDHSfb/UHdjSoCxUoU7R82In+VD5qtWT8XdquYkSqJx
+         AGMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708521832; x=1709126632;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TYHh7SiHeNTNK2tXpyXWlj0JF7DBAfbrFEvAlcv1JZ8=;
+        b=MpDBuZNNNFtBQQrtUGIsuxSxRmRA2Z1A6jv19UvfIgNgPcjoCB/9FD7XBXrTmKRD74
+         36XPJ7+/He1r1sk+juxgo/oDvUO8V3akNgZyZKc+ccp8F22P9T4MsFSUFmpJWpQeu00c
+         Bcipvi1evsvETnmga4lCOyQcEwbrQNaWPz4r2/DscXa72ginNj4HXs0WWKP2iSYfDP/G
+         8vAbvAj+p+GGGW4NEVxM8ODqN+rCBkr9r+isnyROe0fZzC1QLVhMtSDHOrnCHhq/iGiv
+         6lKCbn4QP/0J2S/LtRcmE4ipkaR78E6Db0HCXKM2FSaCBQkNk0nH7DE1Pb3l4ribiatd
+         1c3A==
+X-Forwarded-Encrypted: i=1; AJvYcCWYlvHMhiw9hEER2WZXzT4ndGJFNZyG8PZPh+F5xoUn1jP1uxDlbRqn16jXf9lFjHocNJMi3cnWzkLqydNtbRU+zZOXZdThyyvdUI1zgXWfajrNPyRZpYwZq0Dfei5SR/E+JakCykssPKbupAwLIoFEti1BIE5QUvmtKE1X0KoC4Q9zRQ==
+X-Gm-Message-State: AOJu0YzD4azQurbRn/tnpxo3cgWE1PuZzToiivbqira0Nu3xj1WOxiU6
+	UiXSGLrAcjHOc483Fxs9OODkLE/SL6GJHmb2gPWOiTTJ6nllSzcn
+X-Google-Smtp-Source: AGHT+IGV6fsUIv4DXC3rekvSLt61Ux/puLB88XNo2FdXL4dpAuVGpy8ZBFyDqHuYlLeYX4XBP6bEDg==
+X-Received: by 2002:a17:906:abcf:b0:a3f:2ffd:c683 with SMTP id kq15-20020a170906abcf00b00a3f2ffdc683mr1533014ejb.62.1708521831730;
+        Wed, 21 Feb 2024 05:23:51 -0800 (PST)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id lx16-20020a170906af1000b00a3e67585addsm3688229ejb.130.2024.02.21.05.23.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Feb 2024 05:23:51 -0800 (PST)
+Message-ID: <c92c4c71f433c7375588e832d3c084a50190a1b5.camel@gmail.com>
+Subject: Re: [PATCH v5 5/5] iio: amplifiers: hmc425a: add support for
+ LTC6373 Instrumentation Amplifier
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron
+ <jic23@kernel.org>,  Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Ceclan Dumitru <dumitru.ceclan@analog.com>
+Date: Wed, 21 Feb 2024 14:23:51 +0100
+In-Reply-To: <20240220153553.2432-6-mitrutzceclan@gmail.com>
+References: <20240220153553.2432-1-mitrutzceclan@gmail.com>
+	 <20240220153553.2432-6-mitrutzceclan@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 (3.50.3-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240220224329.53729-2-vassilisamir@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Feb 20, 2024 at 11:43:29PM +0100, Vasileios Amoiridis wrote:
-> According to the datasheet of BMP38x and BMP390 devices, for an SPI
-> read operation the first byte that is returned needs to be dropped,
-> and the rest of the bytes are the actual data returned from the
-> sensor.
+On Tue, 2024-02-20 at 17:34 +0200, Dumitru Ceclan wrote:
+> This adds support for LTC6373 36 V Fully-Differential Programmable-Gain
+> Instrumentation Amplifier with 25 pA Input Bias Current.
+> The user can program the gain to one of seven available settings through
+> a 3-bit parallel interface (A2 to A0).
+>=20
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> ---
 
-LGTM,
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Just one minor comment. With that:
 
-(If you got tags in the previous rounds of review, it's your responsibility
- to carry them, in case code is not _drastically_ changed.)
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
--- 
-With Best Regards,
-Andy Shevchenko
+> =C2=A0drivers/iio/amplifiers/hmc425a.c | 124 ++++++++++++++++++++++++++++=
+++-
+> =C2=A01 file changed, 120 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/iio/amplifiers/hmc425a.c b/drivers/iio/amplifiers/hm=
+c425a.c
+> index 77872e2dfdfe..50c86c2d28d7 100644
+> --- a/drivers/iio/amplifiers/hmc425a.c
+> +++ b/drivers/iio/amplifiers/hmc425a.c
+> @@ -2,9 +2,10 @@
+> =C2=A0/*
+> =C2=A0 * HMC425A and similar Gain Amplifiers
+> =C2=A0 *
+> - * Copyright 2020 Analog Devices Inc.
+> + * Copyright 2020, 2024 Analog Devices Inc.
+> =C2=A0 */
 
+...
+
+>=20
+> =C2=A0
+> +static ssize_t ltc6373_read_powerdown(struct iio_dev *indio_dev,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uintptr_t private,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct iio_chan_spec *chan,
+> +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 char *buf)
+> +{
+> +	struct hmc425a_state *st =3D iio_priv(indio_dev);
+> +
+> +	return sysfs_emit(buf, "%d\n", st->powerdown);
+
+Well, in theory the read should also be protected with the lock...
+
+- Nuno S=C3=A1
 
 

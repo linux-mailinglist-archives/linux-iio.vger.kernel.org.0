@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-2868-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2867-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A49E585DA53
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 14:31:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E03F85DA54
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 14:31:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5A571C20ECD
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 13:31:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4567B1C20BE8
+	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 13:31:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7099580BFD;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 709D780BFE;
 	Wed, 21 Feb 2024 13:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5inKxLp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q4rM3sJk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DEC80BED
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2077B80BE0
 	for <linux-iio@vger.kernel.org>; Wed, 21 Feb 2024 13:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708522017; cv=none; b=CeV7shKPeSvo/cbxIWUOmaF4Y0IQfiDH6OcVOMLiZLDh8ijRStpLjSpKebMXvzFis2243hNH20rz6e2bQsXIEHTIRYeHAR70ZkKQbDg8nAe83niL7xt3wY+wSQ6gzlkO08DnUxKcusZIFsp0bjHNNfQM4RycWgCKCY9Zav7ugjI=
+	t=1708522017; cv=none; b=oxRQBUaM/rWpd5ljrEqy1FwDTzZ8DnBM4NeVvspEmrVobgc7Qt1jb9dNadRwr8utMPKWBv/UzAHfsnHIiw+vSM9Ji6bMCN3dxj1EA2ijZXGuN+N/f9EiTzarB9d5ttv6qfESxULcNtvvihwG+NhpOfiWJBV1yiG9/sKdvPtqMww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1708522017; c=relaxed/simple;
-	bh=ECng3VSIMsYDL8aS60+QSvrXSymf9admElA86qKGDS8=;
+	bh=UkqKTeGUUut2j8HvehZKu/bEd0NKNp+XBY6NKpU9vIM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=q5+YkVRL9B7Hh19jOvU6jf7VIzGDznA6fBINO0rDsOQBCgC8+o/QB3JnLLn/H756QuyilA9ZxfpQ5Lx81l50hVWXpxfX6Lfi6aA1yoQbtOxwvF3GWRsQ3i4qrbPl4lHVP0DKN0LETGtnc/phgd167w/5YCTFvquZ035E/VELnNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5inKxLp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DDB7CC43142;
+	 In-Reply-To:To:Cc; b=YX1Qf59ztVfxrVOInYxX8D79T/OAzHFbZ+DOHv8DkB7A06Vx3G1ITHdB/odQf+qZY5K5Pn+rJ6Uo5kT4D6argy6evZHdR8xdMFgvN0DFjVozUAcC9l7M0rpoulYcMiV3Gp4qCBiB8uM3rHTYCOpxLxEw03qUgKBQzoptuALfJ1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q4rM3sJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E8237C43143;
 	Wed, 21 Feb 2024 13:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1708522016;
-	bh=ECng3VSIMsYDL8aS60+QSvrXSymf9admElA86qKGDS8=;
+	bh=UkqKTeGUUut2j8HvehZKu/bEd0NKNp+XBY6NKpU9vIM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=W5inKxLpxZhomwDPYW52a9jWdRSeb9dfubNaJ1BrCImyX3gFsjW9OBx3ye3HUCWmZ
-	 izLJrQQlqWiTtt2XbGMlMTmPUV1HJOg3xOR5FbXMN3VPaXK6oy4AzVefhQ20+FPXdg
-	 r5dM3X+rvfxBH4RAvh7SgCFS7MEZVTKEmn/uYqPANo6B2amfoP8Wx615uCBIE8AIby
-	 azCYbiHMw8ce5atg4rJ3fKAI569DJsRjyDxLqRUaS3HlmvtBmOTRw5C8KhEaceaK6k
-	 6oa9wzyqT9pg7dHY5HEQw++uqXBy1WT93bQ8C0RjQHQd3DI4PHpTsAdn1iS0DwtLVc
-	 ZN8N5yYCT6uLQ==
+	b=Q4rM3sJk6frmIyqp89M4NARqrGtb2LbSy36fyvgEOB77mw2Wogd+3xsdOPZSU8r9D
+	 CGoQfwyjrOM5oO0vxwnUR6zBbLcOs58vv/I9zTsUls4Ldr4BV2mYQq5dnF2LS/0B3Z
+	 rqcmBhIBCPE+aLqfAHvhHZrZYvA0k4qOYAWSSPEl0Xt0npuPI+/3XndEEGqoCWFDOa
+	 /2LNXzQ3RLIk6TpJmnH+nw5jvKDzV7Q/vIPTuW4ZA8g/hGRDUT1MXXxay8+6t6Loki
+	 g0y9peEhqz5nAGA9V2PYgV7OHk9BdJL82uks2+VUJn06T5lo4OPrJmvTelvx7R9/pK
+	 srl2bsa1jFxAw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C4BD6C54788;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CF78BC5478A;
 	Wed, 21 Feb 2024 13:26:56 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Wed, 21 Feb 2024 14:26:52 +0100
-Subject: [PATCH 1/5] iio: core: move to cleanup.h magic
+Date: Wed, 21 Feb 2024 14:26:53 +0100
+Subject: [PATCH 2/5] iio: events: move to the cleanup.h magic
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,18 +55,18 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240221-iio-use-cleanup-magic-v1-1-f9c292666f26@analog.com>
+Message-Id: <20240221-iio-use-cleanup-magic-v1-2-f9c292666f26@analog.com>
 References: <20240221-iio-use-cleanup-magic-v1-0-f9c292666f26@analog.com>
 In-Reply-To: <20240221-iio-use-cleanup-magic-v1-0-f9c292666f26@analog.com>
 To: linux-iio@vger.kernel.org
 Cc: Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, Nuno Sa <nuno.sa@analog.com>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1708522015; l=3677;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1708522015; l=2320;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=WddubecxlqcyyhVh2mUw5FZVx2FoerYmAw/tQVz73zs=;
- b=WLgx2GUMCc5Wk5e8wIFDH5xyqW+5a4fp7NRA19EIZyL6qxrF9LHQop1+gAeTbgUEqL5M+RlQu
- 6/vPEJA7rmZCyPFXsJomveMyiemCa8z03FijT5YUrKj17KuCdlYQCzS
+ bh=ar4mjNbR1mkb3YDznQ99CF7o8RhZbjmjysmAiRM0D9s=;
+ b=lhOpOc2oWqZWuKulvYHKNGnXpwEt0gEmEcdIqM7tzLpXSPwihJcyh8Fkbs8gkrd2f8FB5cWNW
+ vSJyYUhoKPgDk//D4N6uTeRk3VlrS+yBDuIbue7IH/9l0xX4cVUvIfF
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received:
@@ -79,118 +79,81 @@ From: Nuno Sa <nuno.sa@analog.com>
 Use the new cleanup magic for handling mutexes in IIO. This allows us to
 greatly simplify some code paths.
 
-Note that we keep the plain mutex calls in the
-iio_device_release|acquire() APIs since in there the macros would likely
-not help much (as we want to keep the lock acquired when he leave the
-APIs).
-
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/industrialio-core.c | 52 +++++++++++++++--------------------------
- 1 file changed, 19 insertions(+), 33 deletions(-)
+ drivers/iio/industrialio-event.c | 42 +++++++++++++++++-----------------------
+ 1 file changed, 18 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 9b2877fe8689..7e6497828364 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -11,6 +11,7 @@
+diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+index 910c1f14abd5..ef3cecbce915 100644
+--- a/drivers/iio/industrialio-event.c
++++ b/drivers/iio/industrialio-event.c
+@@ -7,6 +7,7 @@
+  */
  
  #include <linux/anon_inodes.h>
- #include <linux/cdev.h>
 +#include <linux/cleanup.h>
- #include <linux/debugfs.h>
  #include <linux/device.h>
- #include <linux/err.h>
-@@ -268,20 +269,16 @@ EXPORT_SYMBOL(iio_read_const_attr);
-  */
- int iio_device_set_clock(struct iio_dev *indio_dev, clockid_t clock_id)
- {
--	int ret;
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 	const struct iio_event_interface *ev_int = iio_dev_opaque->event_interface;
+ #include <linux/fs.h>
+ #include <linux/kernel.h>
+@@ -146,11 +147,10 @@ static ssize_t iio_event_chrdev_read(struct file *filep,
+ 				return -ENODEV;
+ 		}
  
--	ret = mutex_lock_interruptible(&iio_dev_opaque->mlock);
--	if (ret)
--		return ret;
--	if ((ev_int && iio_event_enabled(ev_int)) ||
--	    iio_buffer_enabled(indio_dev)) {
--		mutex_unlock(&iio_dev_opaque->mlock);
--		return -EBUSY;
+-		if (mutex_lock_interruptible(&ev_int->read_lock))
+-			return -ERESTARTSYS;
+-		ret = kfifo_to_user(&ev_int->det_events, buf, count, &copied);
+-		mutex_unlock(&ev_int->read_lock);
+-
++		scoped_cond_guard(mutex_intr, return -ERESTARTSYS,
++				  &ev_int->read_lock)
++			ret = kfifo_to_user(&ev_int->det_events, buf, count,
++					    &copied);
+ 		if (ret)
+ 			return ret;
+ 
+@@ -198,28 +198,22 @@ static int iio_event_getfd(struct iio_dev *indio_dev)
+ 	if (ev_int == NULL)
+ 		return -ENODEV;
+ 
+-	fd = mutex_lock_interruptible(&iio_dev_opaque->mlock);
+-	if (fd)
+-		return fd;
 +	scoped_cond_guard(mutex_intr, return -EINTR, &iio_dev_opaque->mlock) {
-+		if ((ev_int && iio_event_enabled(ev_int)) ||
-+		    iio_buffer_enabled(indio_dev))
++		if (test_and_set_bit(IIO_BUSY_BIT_POS, &ev_int->flags))
 +			return -EBUSY;
+ 
+-	if (test_and_set_bit(IIO_BUSY_BIT_POS, &ev_int->flags)) {
+-		fd = -EBUSY;
+-		goto unlock;
++		iio_device_get(indio_dev);
 +
-+		iio_dev_opaque->clock_id = clock_id;
++		fd = anon_inode_getfd("iio:event", &iio_event_chrdev_fileops,
++				      indio_dev, O_RDONLY | O_CLOEXEC);
++		if (fd < 0) {
++			clear_bit(IIO_BUSY_BIT_POS, &ev_int->flags);
++			iio_device_put(indio_dev);
++		} else {
++			kfifo_reset_out(&ev_int->det_events);
++		}
  	}
--	iio_dev_opaque->clock_id = clock_id;
+ 
+-	iio_device_get(indio_dev);
+-
+-	fd = anon_inode_getfd("iio:event", &iio_event_chrdev_fileops,
+-				indio_dev, O_RDONLY | O_CLOEXEC);
+-	if (fd < 0) {
+-		clear_bit(IIO_BUSY_BIT_POS, &ev_int->flags);
+-		iio_device_put(indio_dev);
+-	} else {
+-		kfifo_reset_out(&ev_int->det_events);
+-	}
+-
+-unlock:
 -	mutex_unlock(&iio_dev_opaque->mlock);
- 
- 	return 0;
- }
-@@ -1806,31 +1803,22 @@ static long iio_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 	struct iio_dev *indio_dev = ib->indio_dev;
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 	struct iio_ioctl_handler *h;
--	int ret = -ENODEV;
--
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
- 
-+	guard(mutex)(&iio_dev_opaque->info_exist_lock);
- 	/*
- 	 * The NULL check here is required to prevent crashing when a device
- 	 * is being removed while userspace would still have open file handles
- 	 * to try to access this device.
- 	 */
- 	if (!indio_dev->info)
--		goto out_unlock;
-+		return -ENODEV;
- 
- 	list_for_each_entry(h, &iio_dev_opaque->ioctl_handlers, entry) {
--		ret = h->ioctl(indio_dev, filp, cmd, arg);
--		if (ret != IIO_IOCTL_UNHANDLED)
--			break;
-+		if (h->ioctl(indio_dev, filp, cmd, arg) != IIO_IOCTL_UNHANDLED)
-+			return 0;
- 	}
- 
--	if (ret == IIO_IOCTL_UNHANDLED)
--		ret = -ENODEV;
--
--out_unlock:
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
--
--	return ret;
-+	return -ENODEV;
+ 	return fd;
  }
  
- static const struct file_operations iio_buffer_fileops = {
-@@ -2058,18 +2046,16 @@ void iio_device_unregister(struct iio_dev *indio_dev)
- 
- 	cdev_device_del(&iio_dev_opaque->chrdev, &indio_dev->dev);
- 
--	mutex_lock(&iio_dev_opaque->info_exist_lock);
-+	scoped_guard(mutex, &iio_dev_opaque->info_exist_lock) {
-+		iio_device_unregister_debugfs(indio_dev);
- 
--	iio_device_unregister_debugfs(indio_dev);
-+		iio_disable_all_buffers(indio_dev);
- 
--	iio_disable_all_buffers(indio_dev);
-+		indio_dev->info = NULL;
- 
--	indio_dev->info = NULL;
--
--	iio_device_wakeup_eventset(indio_dev);
--	iio_buffer_wakeup_poll(indio_dev);
--
--	mutex_unlock(&iio_dev_opaque->info_exist_lock);
-+		iio_device_wakeup_eventset(indio_dev);
-+		iio_buffer_wakeup_poll(indio_dev);
-+	}
- 
- 	iio_buffers_free_sysfs_and_mask(indio_dev);
- }
 
 -- 
 2.43.0

@@ -1,98 +1,193 @@
-Return-Path: <linux-iio+bounces-2882-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2887-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D787885EE7D
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 02:14:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E1CB85F084
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 05:47:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 789A61F225F6
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 01:14:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 625401C214B4
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 04:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FD3E11CA0;
-	Thu, 22 Feb 2024 01:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30071877;
+	Thu, 22 Feb 2024 04:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="uXQ3VUqm"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gUZxXtRv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC79111A1;
-	Thu, 22 Feb 2024 01:13:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C4110E6;
+	Thu, 22 Feb 2024 04:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708564435; cv=none; b=t0Orq6H6WbihIUN1j66VPCOg4uNAgUdY/NWnubwrl098fMMe0Du7V1ou3sbegPlL56Hjzq407a5rhNaKDvF4UwPWaOMkEcfT2WYoPtX47HS+F6WR2gJkf8hHy8GZGcnNRUnOgbRYXGmN/wt6luEJU2KANjpmn1pSRQoym9JUaeU=
+	t=1708577267; cv=none; b=rRQxPVuyxySzOI6I0M0UPR6R5gGKn/F55E8+VkuCTup/wygYR//c40OGOv5opj1tHy4a33PD0zOFEUR/2txjGkGQSz6x/gP0Oakwm2+7NL6SFuAJd9vveW5eP6zgbKubYJdJEQmoa3yT7JhKRN1son/Zr6ZD4kC3xS1m0OyZ8Do=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708564435; c=relaxed/simple;
-	bh=fv14EL8qluYJNiBOfMCSkBfAz61U2MfMPqNzk1TJ8ss=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T1eo5W93zpA42oy5Rim/P7PUwDhApSuK6bUnv6rnDbMehFoGaHtWivBp8/jV2kdNbjvFyy6kNI9iZaGtcO9wsmRPr7jdc3rpExMufEJY+iWqbJLQTazwZadTLlXcPq53DjikdgH0Vhc0d314FfsavXFRq/6AQnYPTGD3f6JV+n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=uXQ3VUqm; arc=none smtp.client-ip=195.181.215.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
-	t=1708564425; bh=fv14EL8qluYJNiBOfMCSkBfAz61U2MfMPqNzk1TJ8ss=;
-	h=From:To:Cc:Subject:Date:References:From;
-	b=uXQ3VUqmF0IrgPFp4YqH2rt7vLp7zHYe3S/XqSkq1AFNybgFOTLueINq01PNAvfdA
-	 rUURN3N9nolnIvHC2RQ1y1dXOoQZSle5xCGV5rq5rUQhe9J+SVoo1qIqMqEhvcwcUT
-	 vtNdx7pxKo5XBA3eSc2IpwuDwfABkkbMlgWk4Na8=
-From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
-To: linux-kernel@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Cc: Ondrej Jirman <megi@xff.cz>,
-	Icenowy Zheng <icenowy@aosc.io>,
-	Dalton Durst <dalton@ubports.com>,
-	Shoji Keita <awaittrot@shjk.jp>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH v4 4/4] MAINTAINERS: Add an entry for AF8133J driver
-Date: Thu, 22 Feb 2024 02:13:38 +0100
-Message-ID: <20240222011341.3232645-5-megi@xff.cz>
-In-Reply-To: <20240222011341.3232645-1-megi@xff.cz>
-References: <20240222011341.3232645-1-megi@xff.cz>
+	s=arc-20240116; t=1708577267; c=relaxed/simple;
+	bh=UeNo7Treptz3RUyiQTbwwLEw6a+8/F6tea3I16MzUxc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Eq7i1Vs0oSj939y8P+cOK2G7ULyDICHwzkJFYduktA0X4UiIBjBmtVY7VKdFNSFp6HbsbOGhZcoERgSkgP0m+tUmJHaAuYBUzl9csCpPsizqw+3HyzKX919NjYrwkGdjHYkTfc0kogVaOlPN1Hv/R2P80xjuFBEsXWxUdAnsz8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gUZxXtRv; arc=none smtp.client-ip=209.85.161.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-595aa5b1fe0so4864510eaf.2;
+        Wed, 21 Feb 2024 20:47:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708577264; x=1709182064; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+0AD0YCnQqqjpDGFWW9RzaHFEvNTNgA3R308dgKQBK0=;
+        b=gUZxXtRvgbVGvAOidc1qfrexj0Ae8g9f98Iu64/LILGAGg1sMxYIi+atw6rFFLuMcm
+         FeGJ/d7hMeiIT9KJMX3gyvEuBoPv/Tmasx+2GaaPQUiIFufReOATGRBslaudGTt8g02W
+         IWm6UVT1dPsdHsRi7BEU/faBKIlQBgbgfVUX1cOqqhFfZiuIaD5lyJUIbAabSFJGBk9z
+         ZfzCeLfWq1eRNYtmfO9ws1zHkUJwgtiNsUWCqu3ja3TqRiqe2cOjl1ceVfB4bxRTkZit
+         A3Y9NVqZuIN04tefs/DY70EvGt2QyBsa9OaAH614Y14au08XuyPn4to54zdW9OZRnnkV
+         chig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708577264; x=1709182064;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+0AD0YCnQqqjpDGFWW9RzaHFEvNTNgA3R308dgKQBK0=;
+        b=a99jMzKZ/ACwKNak0idrkenFZbu9gzxuhBk1SAXwLqFcNNBgaFSerrTEGtYQH7wULl
+         qYAbFYoIFOKLBQX/gH1X43TjS0xlL1IScAp+032/6KKWPUMie+gEc11eNyDna1cczIi+
+         kfmHr0Y+cm37wLZKlYHAxdUwLg/J9xHKmDdfDihpjqZp/dymkZBFvU8Z+v+4yWfOgw+p
+         hoPNJWo2OYFDoWBhE6mqhgj4fAgnT9/COILObn+SkRw86Xf/PMfev+xXSTX1JbB9RaJN
+         Jg25gdGkTfRYp6t2bQxOA6fubOhJ7mDmGI73xDRmYu2OWnKQTlKrFS/nOwAAT0GXDTvI
+         EErw==
+X-Forwarded-Encrypted: i=1; AJvYcCU4UcVGiNTd6D7zZZyQL+rQqtsyeokuKsBUn0h7LFeYsid85bX4fkSG+dIueIKZEyZTQy0380/CEstudOY4h/PL3OgwCH1NOYm1R2hveThL3UX+Gq8zSGSjjx2T/d0KA31j9NCj1/+88qhDC6YRVnpzxOK/Y4nvBJY3rRyQjA==
+X-Gm-Message-State: AOJu0YxlF9MbMYaDIzhK8aPUEbCPL2aAbNtxOpVjdgwW/BcN5YMQslC3
+	JE4WQowVvJpVZoYRGBnAZpyE5QS9MksxnOMalpCwc40XdJmiq4CqZ2BanH7LeFid2KahQ2zoDAO
+	0+YZulUhO3gGVH0TbsrV+DmVcUNLGfcuk
+X-Google-Smtp-Source: AGHT+IFT4RsENCibuAcCOiaUsVyVQ3wUtPOaylT8Cu8LEgQ8tuVRqR0bf6JV5jnLIMhZ0nuBWenDTxAl3yi1UozFGBE=
+X-Received: by 2002:a05:6358:5919:b0:176:cf18:d0bb with SMTP id
+ g25-20020a056358591900b00176cf18d0bbmr21288902rwf.13.1708577264582; Wed, 21
+ Feb 2024 20:47:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240131042509.4034723-1-jcmvbkbc@gmail.com>
+In-Reply-To: <20240131042509.4034723-1-jcmvbkbc@gmail.com>
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Wed, 21 Feb 2024 20:47:33 -0800
+Message-ID: <CAMo8BfLXW1tYG9bNQZciBC+NSS+1debXLSYkjNOQe200+aWFEg@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: tools: drop overridden CFLAGS from MAKEOVERRIDES
+To: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+	linux-gpio@vger.kernel.org
+Cc: Jiri Olsa <jolsa@kernel.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Kent Gibson <warthog618@gmail.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ondrej Jirman <megi@xff.cz>
+Ping?
 
-As I am submitting the driver and have the device to test. I'll maintain
-the driver.
+On Tue, Jan 30, 2024 at 8:25=E2=80=AFPM Max Filippov <jcmvbkbc@gmail.com> w=
+rote:
+>
+> Some Makefiles under tools/ use the 'override CFLAGS +=3D ...' construct
+> to add a few required options to CFLAGS passed by the user.
+> Unfortunately that only works when user passes CFLAGS as an environment
+> variable, i.e.
+>   CFLAGS=3D... make ...
+> and not in case when CFLAGS are passed as make command line arguments:
+>   make ... CFLAGS=3D...
+> It happens because in the latter case CFLAGS=3D... is recorded in the mak=
+e
+> variable MAKEOVERRIDES and this variable is passed in its original form
+> to all $(MAKE) subcommands, taking precedence over modified CFLAGS value
+> passed in the environment variable. E.g. this causes build failure for
+> gpio and iio tools when the build is run with user CFLAGS because of
+> missing _GNU_SOURCE definition needed for the asprintf().
+>
+> One way to fix it is by removing overridden variables from the
+> MAKEOVERRIDES. Add macro 'drop-var-from-overrides' that removes a
+> definition of a variable passed to it from the MAKEOVERRIDES and use it
+> to fix CFLAGS passing for tools/gpio and tools/iio.
+>
+> This implementation tries to be precise in string processing and handle
+> variables with embedded spaces and backslashes correctly. To achieve
+> that it replaces every '\\' sequence with '\-' to make sure that every
+> '\' in the resulting string is an escape character. It then replaces
+> every '\ ' sequence with '\_' to turn string values with embedded spaces
+> into single words. After filtering the overridden variable definition
+> out of the resulting string these two transformations are reversed.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 4ccc98a48958 ("tools gpio: Allow overriding CFLAGS")
+> Fixes: 572974610273 ("tools iio: Override CFLAGS assignments")
+> Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+> ---
+> Changes v1->v2:
+> - make drop-var-from-overrides-code work correctly with arbitrary
+>   variables, including thoses ending with '\'.
+>
+>  tools/gpio/Makefile            | 1 +
+>  tools/iio/Makefile             | 1 +
+>  tools/scripts/Makefile.include | 9 +++++++++
+>  3 files changed, 11 insertions(+)
+>
+> diff --git a/tools/gpio/Makefile b/tools/gpio/Makefile
+> index d29c9c49e251..46fc38d51639 100644
+> --- a/tools/gpio/Makefile
+> +++ b/tools/gpio/Makefile
+> @@ -24,6 +24,7 @@ ALL_PROGRAMS :=3D $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS=
+))
+>  all: $(ALL_PROGRAMS)
+>
+>  export srctree OUTPUT CC LD CFLAGS
+> +$(call drop-var-from-overrides,CFLAGS)
+>  include $(srctree)/tools/build/Makefile.include
+>
+>  #
+> diff --git a/tools/iio/Makefile b/tools/iio/Makefile
+> index fa720f062229..04307588dd3f 100644
+> --- a/tools/iio/Makefile
+> +++ b/tools/iio/Makefile
+> @@ -20,6 +20,7 @@ ALL_PROGRAMS :=3D $(patsubst %,$(OUTPUT)%,$(ALL_TARGETS=
+))
+>  all: $(ALL_PROGRAMS)
+>
+>  export srctree OUTPUT CC LD CFLAGS
+> +$(call drop-var-from-overrides,CFLAGS)
+>  include $(srctree)/tools/build/Makefile.include
+>
+>  #
+> diff --git a/tools/scripts/Makefile.include b/tools/scripts/Makefile.incl=
+ude
+> index 6fba29f3222d..0f68b95cf55c 100644
+> --- a/tools/scripts/Makefile.include
+> +++ b/tools/scripts/Makefile.include
+> @@ -51,6 +51,15 @@ define allow-override
+>      $(eval $(1) =3D $(2)))
+>  endef
+>
+> +# When a Makefile overrides a variable and exports it for the nested $(M=
+AKE)
+> +# invocations to use its modified value, it must remove that variable de=
+finition
+> +# from the MAKEOVERRIDES variable, otherwise the original definition fro=
+m the
+> +# MAKEOVERRIDES takes precedence over the exported value.
+> +drop-var-from-overrides =3D $(eval $(drop-var-from-overrides-code))
+> +define drop-var-from-overrides-code
+> +MAKEOVERRIDES :=3D $(subst \-,\\,$(subst \_,\ ,$(filter-out $(1)=3D%,$(s=
+ubst \ ,\_,$(subst \\,\-,$(MAKEOVERRIDES))))))
+> +endef
+> +
+>  ifneq ($(LLVM),)
+>  ifneq ($(filter %/,$(LLVM)),)
+>  LLVM_PREFIX :=3D $(LLVM)
+> --
+> 2.39.2
+>
 
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9ed4d3868539..e027d3ec3f8c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -579,6 +579,12 @@ F:	drivers/iio/accel/adxl372.c
- F:	drivers/iio/accel/adxl372_i2c.c
- F:	drivers/iio/accel/adxl372_spi.c
- 
-+AF8133J THREE-AXIS MAGNETOMETER DRIVER
-+M:	Ondřej Jirman <megi@xff.cz>
-+S:	Maintained
-+F:	Documentation/devicetree/bindings/iio/magnetometer/voltafield,af8133j.yaml
-+F:	drivers/iio/magnetometer/af8133j.c
-+
- AF9013 MEDIA DRIVER
- L:	linux-media@vger.kernel.org
- S:	Orphan
--- 
-2.43.0
-
+--=20
+Thanks.
+-- Max
 

@@ -1,61 +1,70 @@
-Return-Path: <linux-iio+bounces-2908-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2909-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3826985FCB8
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 16:41:45 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 777E185FD03
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 16:50:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4604B26DF7
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 15:41:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C82C1F278C3
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 15:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A79A15099C;
-	Thu, 22 Feb 2024 15:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E4114E2DB;
+	Thu, 22 Feb 2024 15:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAvZKL/z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WoFDFmH8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550481B7E6;
-	Thu, 22 Feb 2024 15:40:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7520F39FC7;
+	Thu, 22 Feb 2024 15:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708616439; cv=none; b=XJHtShOozDPnC7KFdloqMzmchtn4p+3iXHajkHhCnbNsKlO0P4Jrn9TgS2EWFEyJ/l4jDc4tUeQyYZiItGw3g4oWuBB4of4GL9w2HHADdNDpz7xzIqinR12wUtqI4tFSfe4htfkFLR45ig/n2lHS0GzoW1Cqf89nn8rGQQJLmHU=
+	t=1708617049; cv=none; b=gNsB4KP2Z8jpHc8B56x+5qRqd0mo/2/Pn9LJnzCc/H5nMWnGCOhsvluw50QTfl5QkYs8Kvg7awnpXKoF2I0vqK/JdY1IVzgV8zdQHaVjcbUBxhU03Os+0lJAeVFKijiebWMSyjUBY65cw9oQZjBvq8tUVWbS4O9OhR2zVFdrVH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708616439; c=relaxed/simple;
-	bh=xc07QGkepUAGGcDE2z3e5aOhvw7tXF1qa6A82GqprFs=;
+	s=arc-20240116; t=1708617049; c=relaxed/simple;
+	bh=qrXeUMXMXQQJJinBxkYIkgCdWWGqU0eYOxt+Ka3y1ns=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FZjoTLUy8D/B53kEdEbbi0ts64vetvKmD/oO/RYW31gLd9hohvSqLmkscktWE5UQWEBi3DaU/b8E7rssEo36WASgJeUbLm84lqiCJaLm0c7JPm1JM6sRUgN65SVmtrBpuR5qustOl0AVt1Zdj1c0H77H9CopR1n6AFyMVG3WXo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAvZKL/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2EBC433C7;
-	Thu, 22 Feb 2024 15:40:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=FCRA1JoYvxu2sDBMnXcXgsaGtL+n9PAJH1hgNfBGhP9Rag5rXOX7QOC7pJUqR9huVrLG5LJ2AscneMofxD4UdsPpmfCLcud1kTKf66jjCpju6bx1gGrzCin6/eqDvmSof2huSzQFQPQqgEUiGJhLNhTRpv68GTH5I1k6URBgw9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WoFDFmH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FF8C433C7;
+	Thu, 22 Feb 2024 15:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708616438;
-	bh=xc07QGkepUAGGcDE2z3e5aOhvw7tXF1qa6A82GqprFs=;
+	s=k20201202; t=1708617049;
+	bh=qrXeUMXMXQQJJinBxkYIkgCdWWGqU0eYOxt+Ka3y1ns=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sAvZKL/zErRTChJH+5+VlA8B4Sj4bBpztoBx/4wBbhusDuPrYf14Uv1l5TpBrwwSI
-	 PaWcDlm64yVHcCL1VoMokXRWwJdZEJ5io+Q7MBPsE+cluKRYo5eanIswjcpU6zjrjZ
-	 xD/5MPJZNPJWoOg8qP7eX7+K6qmWfZd5OhM+19M0zJvt1QdIwFvdZ17dGSRm7r++PK
-	 oj0lHr/raFp08ItKhQodXYaRYct9w8paZ8lFkY46OaRzO/Z1wLrmAniXU5ioZbcTcv
-	 0fgONqVqyynW+IoL01ubF5Ea6zbFqlNa5xdtGeZDNBQH6odMNAJY7sEgRUy7Xe6+J8
-	 027i7X98Q2J4Q==
-Date: Thu, 22 Feb 2024 15:40:34 +0000
+	b=WoFDFmH8MtmBaZbxh9Y+QXZPIt/GC6HK+hBtylJmUMaqLtO4EmJ/I2wtce0rU7hw/
+	 rRPodZCBceiYLQm833le+XLO/jj43g0dUfEeLrH9yohMA0s2GvjyKMx7Hm+Esns7TV
+	 U1nXMDSjDJR95Ah78N13O6kXWP+ASblmMZLQlzzgma9hE9oll3HzDUeKZ73rEuHZ4r
+	 q5CzQ9+A7mMBRfz/Jj5j5pJlzJVQctOXfC3nn0p0fAry0/BbgUYq0LMawNAeAIbW8a
+	 6TfsQ0EO8Flq6ESot/6jC4c2oWDiQhIOquGJQJqm5O1Ij9KtmQnwWVk/s+3HkmNiMK
+	 wE3O/5ZfWxz8g==
+Date: Thu, 22 Feb 2024 15:50:42 +0000
 From: Conor Dooley <conor@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+	linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH 5/6] dt-bindings: iio: temperature: ltc2983: document
- power supply
-Message-ID: <20240222-component-stiffen-d046386433b3@spud>
-References: <20240222-ltc2983-misc-improv-v1-0-cf7d4457e98c@analog.com>
- <20240222-ltc2983-misc-improv-v1-5-cf7d4457e98c@analog.com>
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Leonard =?iso-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v14 1/3] dt-bindings: adc: add AD7173
+Message-ID: <20240222-defeat-nearly-f83f8b920f51@spud>
+References: <20240222110817.29670-1-mitrutzceclan@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -63,58 +72,51 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="FdbL3WJlakIndfR1"
+	protocol="application/pgp-signature"; boundary="/1zEzl6q9dQoOtWc"
 Content-Disposition: inline
-In-Reply-To: <20240222-ltc2983-misc-improv-v1-5-cf7d4457e98c@analog.com>
+In-Reply-To: <20240222110817.29670-1-mitrutzceclan@gmail.com>
 
 
---FdbL3WJlakIndfR1
+--/1zEzl6q9dQoOtWc
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Feb 22, 2024 at 01:55:56PM +0100, Nuno Sa wrote:
-> Add a property for the VDD power supply regulator.
+On Thu, Feb 22, 2024 at 01:07:41PM +0200, Dumitru Ceclan wrote:
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel applications
+> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+> primarily for measurement of signals close to DC but also delivers
+> outstanding performance with input bandwidths out to ~10kHz.
 >=20
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
 > ---
->  Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml | 2 ++
->  1 file changed, 2 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc298=
-3.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> index dbb85135fd66..8aae867a770a 100644
-> --- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> +++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
-> @@ -57,6 +57,8 @@ properties:
->    interrupts:
->      maxItems: 1
-> =20
-> +  vdd-supply: true
+> V13->V14
 
-Although technically an ABI break, should we make this supply required?
-It is, at the end of the day, required by the hardware for operation.
+I gave you an R-b tag on v13, conditional on the descriptions.
+Why didn't you take it? The only other relevant change is the added
+restriction on channel reg. Is that the reason you didn't take or was
+there smething else.
 
-> +
->    adi,mux-delay-config-us:
->      description: |
->        Extra delay prior to each conversion, in addition to the internal =
-1ms
->=20
-> --=20
-> 2.43.2
->=20
+Cheers,
+Conor.
 
---FdbL3WJlakIndfR1
+>  - Refer in descriptions of the avdd-supply as AVDD1 in concordance to da=
+tasheet
+>  - Fix typo
+>  - Place interrupts descriptions separately for each item
+>  - Restrict max channel reg to 3 for models AD717x-2
+
+--/1zEzl6q9dQoOtWc
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZddq8gAKCRB4tDGHoIJi
-0nnFAQC2H7lqeY7aI5oJlOwOs78r2LlF1Qhqa1z9Umxt2l37BAEAsbgxlVhtSoqg
-KhXR0NV/1sCXBFgT29Sm8SaduDmOnAE=
-=9wDI
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZddtUgAKCRB4tDGHoIJi
+0nVIAP9CGmzcWRghRruPsZKM2A2VV/WKUkjaNA/s2KPcfRq5RwEAnMkRBLYeguK4
+YwxbFkkSlG2NKIpNzstT+JArt8H6cQ8=
+=eZG3
 -----END PGP SIGNATURE-----
 
---FdbL3WJlakIndfR1--
+--/1zEzl6q9dQoOtWc--
 

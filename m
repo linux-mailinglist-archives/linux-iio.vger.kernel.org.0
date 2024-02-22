@@ -1,122 +1,206 @@
-Return-Path: <linux-iio+bounces-2889-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2890-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B8985F164
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 07:15:49 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 194B485F1CF
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 08:10:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B977F283822
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 06:15:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C1B71C2137D
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 07:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0FE1642B;
-	Thu, 22 Feb 2024 06:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37BB1775A;
+	Thu, 22 Feb 2024 07:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="qg2ioOhL"
+	dkim=pass (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b="PhxnvUIn";
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b="prgZW/Qc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2131.outbound.protection.outlook.com [40.107.20.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 688F1156DD
-	for <linux-iio@vger.kernel.org>; Thu, 22 Feb 2024 06:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708582544; cv=none; b=De8qyny9CCa4+Db5wewR+MJWSn0OUlQwdcKgEVvRZry5hJKzHyP9minOtYALemxNdhaaMZAwJn+vj89BTJn9OXX3FTprFsQekiwsycAAUSk1E2SjN1xzsT1NXP6neOMh7ZdhvGMV/8MLHZEg/1p77TX5mI9GagP3P0i48S3JAC0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708582544; c=relaxed/simple;
-	bh=147XQMUnoCd0ClmleOOh7y1eD/64PzMzGWzhpazFC88=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=Sv2tOcIB77swHfUCanLObeLbAbWZM7Jh3UOrOytBTjG/jjQaY2oJXNJZehYj/qJ9XiSnfJpvmRMH1oSDjVUFhHIYrHe7YoW2+l4qrFLC7atYISv5xkudjrZOGzHrc2C+bkJ/wj4lt2bsoFiCp4zJM6URyxFRI7TciCE31aL4IlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=qg2ioOhL; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-33d146737e6so4893552f8f.0
-        for <linux-iio@vger.kernel.org>; Wed, 21 Feb 2024 22:15:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708582541; x=1709187341; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Keqkv8FCF48d/7NwrtNWQmmyXMR6yDkcE3iXVzsS2CA=;
-        b=qg2ioOhLej8VBFYG6bIWCEblbou+E52U52LwnKmtW2qTcpapzvgG1uQB4Y+RkgzyJ3
-         PLadEONcWamJgVK1IV6ZdCAkK3Vv9qvlF0QHnDXKTB6fDxNCDo1eg1x2vtaxrqupt3TJ
-         mjzGqLfezcu3iOrBFJXOGi2zLS9DMS4JSiYkMPi8v7EKvlw+YmwOOlcKoWs8A3NqSVTo
-         FQIISwwGed2DdWijc6GBem4jExxTn3uYxRof8f0+hmhDoH2JhgJ5LeaUaWiKe+vvNLUe
-         ECCqsou/VeUV9Yv68V3SE/7spSt8yEmOUXK9jMMKXUM879QY4AFU0e3216OkSFl4vEe2
-         cT+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708582541; x=1709187341;
-        h=in-reply-to:content-disposition:mime-version:message-id:subject:cc
-         :to:from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Keqkv8FCF48d/7NwrtNWQmmyXMR6yDkcE3iXVzsS2CA=;
-        b=k/pDSXA/rxY/rH09/WHyxqUj94ZMZ6nkmsnFoUPvnY368QNtD0xFgtHVfNyWe4W/80
-         OGR4IlKddf60tZ7r07M7TzwbHc4BkXCPRxSXgBzrd3ofXPSrEAz4NTBVXGOnApWEHK2U
-         ywzid1oLFPza5BZNGH9nw4KZdUj2Rf9R6cFAOv7Gldim5sDmx1QOAmXEOASa4Dp9Hv23
-         K73vm7zogQDQZVil8vFAikdU1f9V6PcE5CN3eruNmV8XSGc0LTMx6E1Csy+84wyVtFzX
-         weZRgEJG3ABHbqG2eFLPeCAI9ui8ZPbCvb6e+N7pdMGZXLF66HDDRPv6vwtUbM8h+KN0
-         6L3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUWVPPD232V7I4stwh55oY1yI6LcHZCwFe5RU2oIM1KOF+IK6jdkhf4tec4acALZtp4N9ejgkayfRm0Hl1Z6foNvxxGdpTSZZR7
-X-Gm-Message-State: AOJu0YwwHM+OfD8XqeSVk/jswoAbSojciWmZXG8tiJuFNJRUwdturPaj
-	mtlZmVPGAUBtz14ddCiTPeX8XrYKthuoBjuYsJGfe9C3ZVqVhyL0GZrtEJScQDE=
-X-Google-Smtp-Source: AGHT+IEN1UoorI8CvmFW/dCEroCtCwikt6G8NDq8DdZrsxY6xE2pIDqISjVhUBQtJyyfXAYziU/APg==
-X-Received: by 2002:a5d:51d1:0:b0:33d:6554:e1f9 with SMTP id n17-20020a5d51d1000000b0033d6554e1f9mr4738440wrv.50.1708582540814;
-        Wed, 21 Feb 2024 22:15:40 -0800 (PST)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id o18-20020adfcf12000000b0033b87c2725csm19183702wrj.104.2024.02.21.22.15.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Feb 2024 22:15:40 -0800 (PST)
-Date: Thu, 22 Feb 2024 09:15:37 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Mike Looijmans <mike.looijmans@topic.nl>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: [PATCH 2/2] iio: adc: ti-ads1298: prevent divide by zero in
- ads1298_set_samp_freq()
-Message-ID: <c32c9087-86de-423b-8101-67b4a7f9d728@moroto.mountain>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CE58F9D8;
+	Thu, 22 Feb 2024 07:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.131
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708585838; cv=fail; b=lL8yDvtRbv3iExJs0Req9J0PoueMS+6fltNTqfPQ87h6xZW9yIhWwrnIkMZL1cDiovRqYocD/gkMQlxlhNbcTL5zaDvvDZP2cncewSYrOQDfPMzpT2d3kirEHvCznFV+K+C0vzRbJlYpIUjrngc6diUGp4+lhIuoNhI1Yu4MYXk=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708585838; c=relaxed/simple;
+	bh=iOraMhF52f18WnZK2bX+hIKqdWN8Sz4C8vw6ckoz964=;
+	h=Message-ID:Date:From:Subject:To:CC:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=L+vnCAJARedlAIlUuEy4W8FVAMOIkoOEy4noLUyNMX63nMXik3/BwpqvtIiCGtIpPpsofnb6gTOQdw+JOBa5/sBY1I4mP1rdoGc08yEdgbQgHvX+oTrHFFlR+0wOswvjG5n6oNCjdx23zl+pP7H21KyNGb4DfomlQ7SiSz9rXjg=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=topic.nl; spf=pass smtp.mailfrom=topic.nl; dkim=pass (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b=PhxnvUIn; dkim=fail (2048-bit key) header.d=topic.nl header.i=@topic.nl header.b=prgZW/Qc reason="signature verification failed"; arc=fail smtp.client-ip=40.107.20.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=topic.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=topic.nl
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=fail;
+ b=iuTCAI9F0o8zrHWv6zW7REK18xtJDMjlZPt08WEHUyWKJprS2LDzcxBL0Bin1cg/JxNHF32FK3muBT9hx+5GGmx1YwzbVsArrI1zH0+z+cVPAjLV9omom+rYIrLMmbkYRxEu5REJsRJiq8AV/59IUnM9DeDy/7O2ZqX4Bj8XLwPxKpfMAeQebvQZUuAvh7LkKHdkJOlMMd4gBa+0gGYavEkBbQA7+9rV53g7n9uvPw2k9spc5ozKKm8Si7QbSHOdMc0QWvbIDnWeDJ7nt4IAxAgXhqjRPdTLtxILd40dJR6mE4QKAS6CJtS8xwE5imBGhr6nPR3Cj/kAXuKZbWPqMw==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6t65O5H4sI/xl2sldwo+Hpp9T00o2YBn8KAi6Og+nkI=;
+ b=jJiUVUncI8qVEr3MOWV4YvZfn9fX393Gd2wU8Yv3UFLbYaIHx8grww7NOGFpnGGmRS8KFzojne8Cyfb2HinN3lKWvQ6HASI/CW+oNRnq8ehS3G6S53f/gLhb1V2l1y+azC/F34ekDzytD7H05i3+P2XpVjkxRCdyynfrb+XYJ3sMxLBSaKu36Ic5h4H2SD6ldkKP3fDQPouUZQKOr6eJ7hv9tAMfklwhzlerl8k9e7rEtMLMmimRh9y6aWaivZF6NvnhJtCwwKkvRY/126gsQ3FMhl05Lffd1ljpn2Cg8IZv9I7feQ9aDKxW04RO06WRb8ZiE3B5GEcx9OdZRp6F0A==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 20.93.157.195) smtp.rcpttodomain=linaro.org smtp.mailfrom=topic.nl;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=topic.nl;
+ dkim=fail (signature did not verify) header.d=topic.nl; arc=fail (47)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=topic.nl; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6t65O5H4sI/xl2sldwo+Hpp9T00o2YBn8KAi6Og+nkI=;
+ b=PhxnvUIn9hMKPq8XqgF2uu43I196cjxwKLx6LjVRMNTOouT1no4eyA3HvGllntSnvnkSoUq8vPgDAwguEodY+wXKgF2WB6r/iBiAu8GquNXL6osi7rH6VufOQPjRNBTQhjPflEsNVpl4MwYMlJNGKzw4nVVc/5Gnzls5IttwQg7mV+4qr7WguL0ziQs+Hm/xw6qLNGppujCDBV1lRwweFG8zUrS1zaZVaWivK2/+1NYNpdiFGhKRZNOt0tPazOwQnAK/Cn7MZRCFrCETWjWYlu8YT5MMsVIPoUBJYHVZDKjrjgQJ7rD45u4iejJh4r0Wbf5ddJV4qFykPYpWYwVR8A==
+Received: from AM0PR04CA0136.eurprd04.prod.outlook.com (2603:10a6:208:55::41)
+ by DBAPR04MB7207.eurprd04.prod.outlook.com (2603:10a6:10:1b2::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Thu, 22 Feb
+ 2024 07:10:32 +0000
+Received: from AMS0EPF00000191.eurprd05.prod.outlook.com
+ (2603:10a6:208:55:cafe::a6) by AM0PR04CA0136.outlook.office365.com
+ (2603:10a6:208:55::41) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.43 via Frontend
+ Transport; Thu, 22 Feb 2024 07:10:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 20.93.157.195)
+ smtp.mailfrom=topic.nl; dkim=fail (signature did not verify)
+ header.d=topic.nl;dmarc=pass action=none header.from=topic.nl;
+Received-SPF: Pass (protection.outlook.com: domain of topic.nl designates
+ 20.93.157.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=20.93.157.195; helo=westeu11-emailsignatures-cloud.codetwo.com;
+ pr=C
+Received: from westeu11-emailsignatures-cloud.codetwo.com (20.93.157.195) by
+ AMS0EPF00000191.mail.protection.outlook.com (10.167.16.216) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7292.25 via Frontend Transport; Thu, 22 Feb 2024 07:10:32 +0000
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (104.47.51.168) by westeu11-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Thu, 22 Feb 2024 07:10:31 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=l6bzNTlu8R979bQnbIIWIcC+33m10WUKb8mAjRwGuHYjekyGA8mqu19cMfGZlHvI6zs+PI9pLUMN+TxdOkmhFdlO8Sea/Z37dgNCeDaJ0UMWe1xvTI3Nec/ec94KjwfgEiuyKPvD8sCWvPaWgLYFN9BjOYMIF1aFB/jkYfGO1rMJ4Tp7yVIte1dnGOy4jvNfU6ADuKIHREjI2+j1tt3dc8SgMBmfoqsQRpCGKw5NJwjlahE9Ncsdt0i85qNGMSnCelKWS4fax8H0UFu7YoQObJNDKGqWpx66MKF0O67MGMJh5qBe+zJWIjhttn7d8Xk/NFJTzoRR3ABvvruacEPDuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=s8ej8XF2e4+mBoG/UKQGflfU6U4LBjZAvVaU2L+xU9I=;
+ b=k8pNHpgy8ra0J9f3+1+def380KdORPahlblqLodxC2B0314oduV3Jl1YOa39srkFUAIvBdcAxJXLzRW5yWaIXtOvo5ZPjQPbjhUzlJboJ0OmOLWNYhjOTyfB0pZ7LJIltn4TWbCwXJQVjfsXkpnMvpmi5fiUIy6OiiALcA2e1ilwnXY3f7hT9Sr39jHgZwzKjqc60vVYS2p1oifgPjo3d1gEMvK1VWQo267DkEeDHhGGxOaArjOAbJVmozJXBRtsr1T1+KYK21qgGLR0BewelYA1lDpIz35MgUHIMJjdQvnmBPLZs58QVm7orEiU+1nr2MgGsikd61zj8v0qe8kEww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=topic.nl; dmarc=pass action=none header.from=topic.nl;
+ dkim=pass header.d=topic.nl; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=topic.nl; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=s8ej8XF2e4+mBoG/UKQGflfU6U4LBjZAvVaU2L+xU9I=;
+ b=prgZW/QckanGgHi05mLAD9ylZzUTI75S7DoZPbTqytTnclpFARmE8RrONcGHKC15fUd5JottzM8eebLl3AFVd5Bghzw83rkU17JEaDV59TkcvVLz5uludw0+qIMclfDz1xkqdodbqrCdoU2ZCl1E/lZB/W00GYJsB1OzoZr7wFNtmDIdvh4kq+TgjafaP9kVVyKgcz2MxxnwXNC+NaM87T3uU+mr+vtCzsG2w34OI8rErVT+VgXOZXzD0b9tStV/cRQKqSpg4L0Xhy1l6VO2ULkZblD0ytQMY32i3u48CiAIeQpHHk0leHTL9R+4oFD75eVIepwbp0c8szJBrAKdjg==
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=topic.nl;
+Received: from AS8PR04MB8644.eurprd04.prod.outlook.com (2603:10a6:20b:42b::12)
+ by AS5PR04MB9730.eurprd04.prod.outlook.com (2603:10a6:20b:677::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7292.39; Thu, 22 Feb
+ 2024 07:10:27 +0000
+Received: from AS8PR04MB8644.eurprd04.prod.outlook.com
+ ([fe80::651a:dedd:945a:d1dd]) by AS8PR04MB8644.eurprd04.prod.outlook.com
+ ([fe80::651a:dedd:945a:d1dd%6]) with mapi id 15.20.7292.027; Thu, 22 Feb 2024
+ 07:10:27 +0000
+Message-ID: <e315c126-619c-48a1-a5d8-001e5ed01930@topic.nl>
+Date: Thu, 22 Feb 2024 08:10:25 +0100
+User-Agent: Mozilla Thunderbird
+From: Mike Looijmans <mike.looijmans@topic.nl>
+Subject: Re: [PATCH 1/2] iio: adc: ti-ads1298: Fix error code in probe()
+To: Dan Carpenter <dan.carpenter@linaro.org>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+References: <5f393a87-ca8b-4e68-a6f4-a79f75a91ccb@moroto.mountain>
+Content-Language: en-US, nl
+Organization: Topic
+In-Reply-To: <5f393a87-ca8b-4e68-a6f4-a79f75a91ccb@moroto.mountain>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: AM4PR07CA0032.eurprd07.prod.outlook.com
+ (2603:10a6:205:1::45) To AS8PR04MB8644.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42b::12)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5f393a87-ca8b-4e68-a6f4-a79f75a91ccb@moroto.mountain>
-X-Mailer: git-send-email haha only kidding
+X-MS-TrafficTypeDiagnostic:
+	AS8PR04MB8644:EE_|AS5PR04MB9730:EE_|AMS0EPF00000191:EE_|DBAPR04MB7207:EE_
+X-MS-Office365-Filtering-Correlation-Id: bfaa3389-ab48-43e3-2dcb-08dc33755bbe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted: BCL:0;
+X-Microsoft-Antispam-Message-Info-Original:
+ orI2Dh0n4q2VGdtEeX8ARYiPS+OjRd+hUqWbodbRjONVYsgs20K1FppZUtC9F6g3Sma4X7Cf1Mvs/28Os/NzHHAQWWngHM0R5BuzFU1gpzr3T91AE/8LbaTgG/NY8jqusmafVXDipZXi8BuXlKmiKwSCturY9iR+wBTwIV4jjrk9EqGqg6HobJ1X2sFKMRci1RuIR2SFyHFAdSra37RQhc8qtPQUW6ZMbsNJAecGnDG4ieOY5OatIyILn1nI0BuQd72gd6SqguxuMfjCf2qdyiD+j8MUFg4FKfijETvhCFhdsh3INr2WbBSVNWDGtocKjgacD17GoCnMIV1a7oCiDqyxmHi9xQvPDUU/ANHDnOedZZLnMUKYqg6/ciZgeVkY8UYbLtakjVYeUYAo88of3Mku7zo1kQ0caFCPAC2C5QkCPjst4ee4iIMttQHoBHqQX7kfIZ5ewEDcGTLm9w00TUysWvLpt1rY9ZwD0x6HNSfa223dtbipMHbqu4PXpeoI3BPaBeC7GfhrCcSE26vyPeVpaFncmzIU3/W7qJC6fgmFTm92ci0HMUOe3Ktx+haSrQHv385JYcok968Xq6ZCtTkJaTAwxWGzAKV7BsbzHQI=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8644.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(38350700005);DIR:OUT;SFP:1102;
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB9730
+X-CodeTwo-MessageID: a37575f4-1e39-407a-9179-1a443c50a3df.20240222071031@westeu11-emailsignatures-cloud.codetwo.com
+X-CodeTwoProcessed: true
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AMS0EPF00000191.eurprd05.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	ed3ac3e0-f193-44ce-fa81-08dc33755887
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	GEjA+rAuyTWxI2buB5BeFXAtqPswoOkSyfqXQvSbBBOvstcQ/WiY7j8dMFgOqPWZM2Epooh8JaBYZCVQl7WuTMknfd3Tnr6EMtSuNNarRj/kOKyprIi4qru2bM5M3NJ3z+cMfMWn5ylt9Ps5XBJTuHVjGP5A9p6m1NYHXLaG537G8Xs7HMXHXCZ1nXEdBq+pV6+hzt/hQDX8T9qaCFtYgez3qAJMPQDP7Lf9IkF3fe6YpcTsrHqK6UDYU7coxArcWhTe+sC9+EA1yaCU0WdKS7g43rd+lsRU+AfYq9pPUXQic6uyU6+R06IOzbtGczOPqk0sW1qrGbOmh1XT28zgDXFlu7pAzshbvePwj5eTGQd2L89NCEKo6KxDyYqW/Ff3u36PNoSTM4aMsHE8caUZGnGd1ws6QJ2m8rEvqMFGp88lN+zUFYEhGNFhdUOzY12+Y9cUXcPe+df4UWOAdixPlu2p6r523YjcyTSBQx2/a3KUeKZzOkTh5/Lgm4RZRwgfRAZp540SW/t6lJbMovdbVI3rDgEWGFt2DTVRRv9C8WONXcas3TyTgsIop4tV+yR+3ZsCQYX93AcNnnrWFOSl0I9bBgHTKLkjJ22zdaOnusN7Lqjh+sdOxg6pT/sQ5mnQLt30lyHr23lf7j0LLIT5/Q==
+X-Forefront-Antispam-Report:
+	CIP:20.93.157.195;CTRY:NL;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:westeu11-emailsignatures-cloud.codetwo.com;PTR:westeu11-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(13230031)(36860700004)(46966006);DIR:OUT;SFP:1102;
+X-OriginatorOrg: topic.nl
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Feb 2024 07:10:32.2679
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: bfaa3389-ab48-43e3-2dcb-08dc33755bbe
+X-MS-Exchange-CrossTenant-Id: 449607a5-3517-482d-8d16-41dd868cbda3
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=449607a5-3517-482d-8d16-41dd868cbda3;Ip=[20.93.157.195];Helo=[westeu11-emailsignatures-cloud.codetwo.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS0EPF00000191.eurprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7207
 
-The "val" variable comes from the user so we need to ensure that it's not
-zero.  In fact, all negative values are invalid as well.  Add a check for
-that.
+Good catch on both patches.
 
-Fixes: 00ef7708fa60 ("iio: adc: ti-ads1298: Add driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
-I wrote this commit message in a very confident tone of voice and I have
-spent a long time looking at this code so I'm reasonably sure this
-patch is correct.  However, I'm not super familiar with this subsystem
-so probably you should double check.
+If so desired, you have my
 
- drivers/iio/adc/ti-ads1298.c | 2 ++
- 1 file changed, 2 insertions(+)
+Acked-by: Mike Looijmans <mike.looijmans@topic.nl>
 
-diff --git a/drivers/iio/adc/ti-ads1298.c b/drivers/iio/adc/ti-ads1298.c
-index 67637f1abdc7..1d1eaba3d6d1 100644
---- a/drivers/iio/adc/ti-ads1298.c
-+++ b/drivers/iio/adc/ti-ads1298.c
-@@ -258,6 +258,8 @@ static int ads1298_set_samp_freq(struct ads1298_private *priv, int val)
- 		rate = ADS1298_CLK_RATE_HZ;
- 	if (!rate)
- 		return -EINVAL;
-+	if (val <= 0)
-+		return -EINVAL;
- 
- 	factor = (rate >> ADS1298_SHIFT_DR_HR) / val;
- 	if (factor >= BIT(ADS1298_SHIFT_DR_LP))
--- 
-2.43.0
+
+
+On 22-02-2024 07:14, Dan Carpenter wrote:
+> There is a copy and paste bug here, it should be "reg_vref" instead of
+> "reg_avdd".  The "priv->reg_avdd" variable is zero so it ends up
+> returning success.
+>
+> Fixes: 00ef7708fa60 ("iio: adc: ti-ads1298: Add driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
+>   drivers/iio/adc/ti-ads1298.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/adc/ti-ads1298.c b/drivers/iio/adc/ti-ads1298.c
+> index ed895a30beed..67637f1abdc7 100644
+> --- a/drivers/iio/adc/ti-ads1298.c
+> +++ b/drivers/iio/adc/ti-ads1298.c
+> @@ -657,7 +657,7 @@ static int ads1298_probe(struct spi_device *spi)
+>   	priv->reg_vref =3D devm_regulator_get_optional(dev, "vref");
+>   	if (IS_ERR(priv->reg_vref)) {
+>   		if (PTR_ERR(priv->reg_vref) !=3D -ENODEV)
+> -			return dev_err_probe(dev, PTR_ERR(priv->reg_avdd),
+> +			return dev_err_probe(dev, PTR_ERR(priv->reg_vref),
+>   					     "Failed to get vref regulator\n");
+>  =20
+>   		priv->reg_vref =3D NULL;
+
+
+--=20
+Mike Looijmans
+System Expert
+
+TOPIC Embedded Products B.V.
+Materiaalweg 4, 5681 RJ Best
+The Netherlands
+
+T: +31 (0) 499 33 69 69
+E: mike.looijmans@topic.nl
+W: www.topic.nl
+
+
 
 

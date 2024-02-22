@@ -1,83 +1,84 @@
-Return-Path: <linux-iio+bounces-2891-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2892-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2BB85F231
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 08:54:57 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 460CD85F23D
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 08:58:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA9D81F224E2
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 07:54:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BF71C23223
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 07:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BC99179B0;
-	Thu, 22 Feb 2024 07:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410BF179AA;
+	Thu, 22 Feb 2024 07:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qtz8QT+8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FvSkri+9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF69B1799F;
-	Thu, 22 Feb 2024 07:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E3117C60;
+	Thu, 22 Feb 2024 07:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708588492; cv=none; b=s9ilemcRf4cQHUmcH89xerDN5IKRl76y14t7BbTjSZc11LIj7Tz0Zo0OkAbY8aPhDSCYLbptoFm2i0xMyOsZkp5I1oHbNdqU9Wfa1reIXIM7QpA4ORI7VOm9cVhCCey38hA8hvvxSChVGGsyGDFLPzc5+5bVW7isGhdHxZeT7YM=
+	t=1708588691; cv=none; b=HddWUWMAq02H7YQhgE9+28hP6KBs3I1xesK3xDcREeY9whppR68Lk9f93eCPp0DLRUiXObSbkBwIPPUJOsLgrnpRwb9Z6oxa9Zi6vpXxBWUzAexpJb9+ERh2xc3wGBm7GqwQlgoMDoC5Li0Gk2FCqrILyiQB6b2RXOXY8tTx9Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708588492; c=relaxed/simple;
-	bh=g2mW3Nwl6sYkaS6umsNOSjQa/5XpfCZEuHk3fpe0TAM=;
+	s=arc-20240116; t=1708588691; c=relaxed/simple;
+	bh=1JzcUDfvmHquetvvSPz+vy+dlup0b04FsUEp0hY5uu0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Inu65krL03SqfcmDq1gpGgrIWkUksUNGSNseC2sGnvwc3IIiMbfaNa7FlEQgw9P3LzkpNNsFF2nMIB2dntjSFsDbSnOc3BkTZ8/1GryJVcru3m/Zmc+D41mOrYwEX0PuncQo0zyabaISbaZBCM7BabqqC6AYbHyjad1Xbxc6Res=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qtz8QT+8; arc=none smtp.client-ip=209.85.128.45
+	 Content-Type:MIME-Version; b=eWfkWRWUJF/cfnZhb7mdM8wtc0Wm9a0mfNTV1U8/n3yavfs0w5kVg7Bg3W0FQGX/8chVs82ZHvWoyEckelevR8170PX9SXJuFBU30igU2/FEhPwSeCB/ylTqW4Lsd/cf/Xk7tHh4WLVzDRjm/P4l45Oz+g69sTNii3/oYE1mdV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FvSkri+9; arc=none smtp.client-ip=209.85.221.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-41278acf971so8798015e9.2;
-        Wed, 21 Feb 2024 23:54:50 -0800 (PST)
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-33d568fbf62so2328267f8f.3;
+        Wed, 21 Feb 2024 23:58:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708588489; x=1709193289; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708588687; x=1709193487; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=g2mW3Nwl6sYkaS6umsNOSjQa/5XpfCZEuHk3fpe0TAM=;
-        b=Qtz8QT+862T0u5q9Jtryaov8jOwkMdnUUwqpNbqQr9Ar75PAkfzWv7Ue3Se5yQml0b
-         NV3pRiYBpulCqiim1hZyUVrP716+xITqQ6e/wMPUBaaZfnno1MOX5qTU76e/g41DAQ+K
-         WVpK6B8W8WO7JOwfKx79ffVIqATj994DYmkfMcWZk+wFFlc8FLm2P/WyxVq2552kjpzM
-         E3NhShv9vQqwCk4MXJlm5m+Rqnk4RgS+Tp+LzixLPGdhG5uzc/EUvzAmbX9cMjTKAue5
-         3XXwpgJcyOsyfxiIk7RGHT9Gk0ohVbiZhCt7bkOQg2NKbHg3MzX6dIcQb6q+8AvW+Qsn
-         YdIg==
+        bh=1JzcUDfvmHquetvvSPz+vy+dlup0b04FsUEp0hY5uu0=;
+        b=FvSkri+9JPGjS85Q6TIVl2IxfSXGDE9C0NmJoYDxLejoKL8AmnbAYsf2023I73LrAF
+         ko9/kge2S3T/KN1m3Ot1EJKYXXDtZii5lS1pmm3ws7PZ9PlYwxMZ4a6f0oKtK5Op+QIc
+         jLEBSjU8ouCUle8flDW/dF72Z4bDMW9b/vIW6l0DkAJrYxC+DYaU9q9U4K8zNRla9+id
+         KMO8wkM6cofZjvoiePwls1JTFlvpkY792KYgjh8j/IifyIuE3PkPUt1Tf1bepbuooAgC
+         cOeQJHZ6cpy5vO/TFMCIxgkgk81y3isx9NP9IT32c+AsFOSw34lASJe1J1H2uq3bIFD8
+         vSNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708588489; x=1709193289;
+        d=1e100.net; s=20230601; t=1708588687; x=1709193487;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=g2mW3Nwl6sYkaS6umsNOSjQa/5XpfCZEuHk3fpe0TAM=;
-        b=dFHWiBs0ad6i+6ZJXapfw88rRbZ9T0Kk0OYrlrt10CDG7MOjwy3kU9gk5m8w0YbZQS
-         1emXOrIsR52p5t78D8ANNASuJGH0US+OTaa3w5duZz6IKk/ZuV8jA7zSH2J/LZgpjvQY
-         C3B7i1sZHb0BUw+7SvihYG+nIVMcK3vnOkYmVFpz1m0joHb8uP5pKk2LllQ1bS1quckp
-         jJDOXWBwCD+QXjIUerUDxlfN4hI9/7lGSyre3AhTcPdzUELlea+GiWtYgoW41+8ghsux
-         CKwLdJt7tslFa6DWoiYz8M6c8aCYoixJyD+3liZ58cRD543780l1l3Tvikm4lu4/H3vP
-         /N4A==
-X-Forwarded-Encrypted: i=1; AJvYcCUBa3jPpq+Gww2l/hsH5Ap/QuypqMeHIpGGhWBfsWDUO51C0uNuJZZ5Z+vMtoftndZh0jPPDPjjgVbX2bZF2VMyJdnqNuPNPbMypSwr1ethzW+1yFf0iwpdZv8L3t3AnecrvzPtV1a3
-X-Gm-Message-State: AOJu0Yxslpem96IU2ygLuLucUXIRTvsZyuhVo2R4UqS3Ky+3NJ0n9lhQ
-	dubfPfcizAY/QlFxfyKmaoAU1a5kF79rI2euTJZ/uSWWIqKXFhL6
-X-Google-Smtp-Source: AGHT+IEqCEXVcoHV15hHlLd/NAUAkFenMMYe6MQN2ffOwJQBgzkrZ+ydr7sPeoyDk9pvGEl97YcZPg==
-X-Received: by 2002:a05:600c:4f14:b0:411:eb4f:7fb6 with SMTP id l20-20020a05600c4f1400b00411eb4f7fb6mr16973212wmq.8.1708588488824;
-        Wed, 21 Feb 2024 23:54:48 -0800 (PST)
+        bh=1JzcUDfvmHquetvvSPz+vy+dlup0b04FsUEp0hY5uu0=;
+        b=FEh+4+FuhnVQBR0l+eRyC47RKpj0VtW1+7psxMNUJTyrcpnkKk8pBycsumxhBMIBch
+         tHTllkelS0/vkP7+YhLlrs4EzfxgzwxXur49Ouhcu9NUBiHGq2k7+JhJnh3SnKgb3+Z1
+         K01sne4FDwHyz5CgC37LNECYFb3Le6vLhDWjXA/Ct35ECDFi8rqnlWXolnXshdxmPySO
+         IM35ixpBrAU00ZR9Zxqh+FrcrwTKvLQqSRl6OyPFkwklod9pPoe++kAXvZ8Gug6Dpm+6
+         Zm0qtj75DHWUi3yxBVhHfCNz3MUgGWi5dBErNI6LQliiT+QqHIZxd4indkJg0MEL2iAk
+         GX5g==
+X-Forwarded-Encrypted: i=1; AJvYcCWw29/NN1D6mbgCLE5obGaov7Nv1AKfxRdxGLvYqkSJGpq1u8OagsJvN6SRQag+rtjJ764YvHFopz+YwyM0cHbhFOVIyVKGcFyAriZp2m5ctkdwBTI1ZLWVg6krg99H5vp6BQPCNjQa
+X-Gm-Message-State: AOJu0YwL+oTHvUoIgdlKBElgPQcTcUCaOJNVd3SuZYiCLYT3BWjEUsvV
+	S7EzeczdECthZ9hzd14HgNtGMIC3NMaZPvyVguOojAe3jrpGtfOx
+X-Google-Smtp-Source: AGHT+IFsAFkCvtM6mWVq89G33ylVubt6ebXMp8cmmvElTsIzP3v1zzmNNlgBcFpzIlA0P4Npz95org==
+X-Received: by 2002:adf:f18a:0:b0:33d:27b8:954a with SMTP id h10-20020adff18a000000b0033d27b8954amr10906179wro.22.1708588687299;
+        Wed, 21 Feb 2024 23:58:07 -0800 (PST)
 Received: from [192.168.90.166] (146.red-83-35-56.dynamicip.rima-tde.net. [83.35.56.146])
-        by smtp.gmail.com with ESMTPSA id o33-20020a05600c512100b00410add3af79sm5371262wms.23.2024.02.21.23.54.47
+        by smtp.gmail.com with ESMTPSA id bs17-20020a056000071100b0033d47c6073esm13656319wrb.12.2024.02.21.23.58.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Feb 2024 23:54:48 -0800 (PST)
-Message-ID: <2ed76eb5acce0e2b66b651a34319459358d77e9a.camel@gmail.com>
-Subject: Re: [PATCH 1/2] drivers: iio: pressure: Sort headers of BMPxxx SPI
- driver
+        Wed, 21 Feb 2024 23:58:06 -0800 (PST)
+Message-ID: <e6598bf07b9c64534b772f7fa5dfb92e40f37fb6.camel@gmail.com>
+Subject: Re: [PATCH 2/2] drivers: iio: pressure: Fixes BMP38x and BMP390 SPI
+ support
 From: Angel Iglesias <ang.iglesiasg@gmail.com>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org
 Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com, 
  linus.walleij@linaro.org, semen.protsenko@linaro.org,
  linux-iio@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Thu, 22 Feb 2024 08:54:47 +0100
-In-Reply-To: <20240220224329.53729-1-vassilisamir@gmail.com>
+Date: Thu, 22 Feb 2024 08:58:05 +0100
+In-Reply-To: <20240220224329.53729-2-vassilisamir@gmail.com>
 References: <20240220224329.53729-1-vassilisamir@gmail.com>
+	 <20240220224329.53729-2-vassilisamir@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 (by Flathub.org) 
@@ -89,10 +90,13 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Tue, 2024-02-20 at 23:43 +0100, Vasileios Amoiridis wrote:
-> Alphabetical sorting and separation of headers for the BMPxxx
-> SPI driver.
+> According to the datasheet of BMP38x and BMP390 devices, for an SPI
+> read operation the first byte that is returned needs to be dropped,
+> and the rest of the bytes are the actual data returned from the
+> sensor.
 >=20
-LGTM, so:
+
+My tag from the previous round:
 
 Acked-by: Angel Iglesias <ang.iglesiasg@gmail.com>
 

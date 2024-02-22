@@ -1,173 +1,120 @@
-Return-Path: <linux-iio+bounces-2907-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2908-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D4285FC7B
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 16:34:37 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3826985FCB8
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 16:41:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D777285834
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 15:34:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4604B26DF7
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 15:41:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CF7114C5B1;
-	Thu, 22 Feb 2024 15:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A79A15099C;
+	Thu, 22 Feb 2024 15:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSBc2oNL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAvZKL/z"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20E49482D4;
-	Thu, 22 Feb 2024 15:34:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 550481B7E6;
+	Thu, 22 Feb 2024 15:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708616072; cv=none; b=tgHU+k/I7uLtmz3ABKW4E7dQiHp8ITyzkIgq/6zgqpBem6Ej1IHtuz73fsKhRR/dcU/mT93sSKoSFlMykcka9lQFVmccQQHclKM3GtT8NU4hKEGwXKXClbmlroC3zASx2KNfb0N6ZbESLauKZT2x/qwblqhY9m1BzlcJteNs+jc=
+	t=1708616439; cv=none; b=XJHtShOozDPnC7KFdloqMzmchtn4p+3iXHajkHhCnbNsKlO0P4Jrn9TgS2EWFEyJ/l4jDc4tUeQyYZiItGw3g4oWuBB4of4GL9w2HHADdNDpz7xzIqinR12wUtqI4tFSfe4htfkFLR45ig/n2lHS0GzoW1Cqf89nn8rGQQJLmHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708616072; c=relaxed/simple;
-	bh=hgxfsP2uprA1vuFpi6P+dbDSTCbhlaU5XxD8Li/ITTk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Me9PvnIatWo0OZua1OLpBenWX4qTX52jzhsS6bjsvLTCiLw5j0EebaklRU0g0f8qgHnh1N3L81tXV3Off8/6dOQq8zuSTBbCty4x7jAiI/u25gZRGJvR8SD7kUwiVpP8tvXdZmsQTUsL/8Lbl2zhEbf3NhtoiQGp9d82n+u7kyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSBc2oNL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABABDC433C7;
-	Thu, 22 Feb 2024 15:34:31 +0000 (UTC)
+	s=arc-20240116; t=1708616439; c=relaxed/simple;
+	bh=xc07QGkepUAGGcDE2z3e5aOhvw7tXF1qa6A82GqprFs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FZjoTLUy8D/B53kEdEbbi0ts64vetvKmD/oO/RYW31gLd9hohvSqLmkscktWE5UQWEBi3DaU/b8E7rssEo36WASgJeUbLm84lqiCJaLm0c7JPm1JM6sRUgN65SVmtrBpuR5qustOl0AVt1Zdj1c0H77H9CopR1n6AFyMVG3WXo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAvZKL/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2EBC433C7;
+	Thu, 22 Feb 2024 15:40:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708616071;
-	bh=hgxfsP2uprA1vuFpi6P+dbDSTCbhlaU5XxD8Li/ITTk=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=bSBc2oNLRFmbQIRlCpTLIsOFniG6X/9lQjpBl+sgZs1ftQRbrwubjgyBGC5BRmtk4
-	 BTGMofh5DM7mLd4m+Xrf43sSqezKos2E7XJw/cGXTQd9g8/fAFSkfhDaBOnnnlPGSQ
-	 QfC6dBNm2kfMNBVp8Bq9PcBEi4tgme20p8JhBwTD/tYAFFKvEG95FWd8Dr6iF13jcG
-	 vV2kw3+eIrx08urnq8Qr9OMtxbnTvTnlZlpQvubrq88hAuBfNXTiznp5LJ4LYLzqHE
-	 rqaEMSf3ScvZWmtLIFgwirVzQrtPCllp6Stt0e/+KpI7qsj2XP3aGhvSCargZJrwuK
-	 DDM1q6La43olw==
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d09cf00214so92055051fa.0;
-        Thu, 22 Feb 2024 07:34:31 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVSQ+TXgBFrbe2p2Ki4aEm3I/is4DqLy6gEYsfI1jhfpMzrH00hnPzojX+k2bJobrWoTfY4KvMszNUTq36vQ2vbsZ8H1tyTqfTg2VotX6BB/lFGpJ6q5OxY6kLW+bjjD4MaM7lYNvwcaA==
-X-Gm-Message-State: AOJu0YzLJ0zGK+8yT/UVwA3uSPzv/tz0cSjyBX/566e5N6ci1uLmi6re
-	CY05wRC6qlMyws/Nmha+M4dezjQkb/4ZYGQOrt83Ddssub7DzFztZmzLgRY1mop7RMon5WHsT9d
-	lW4xLVuUsrm6nUrUOLst30z0g0A==
-X-Google-Smtp-Source: AGHT+IFgyNerjD3B8faWG/isyW+76U5eGaG3mxQGoiIVhZWC3fI6SK73bLHpCgSZuwiktVrJEUSjJo6fWh5RcbhYnFc=
-X-Received: by 2002:a05:651c:9:b0:2d2:555f:b4ae with SMTP id
- n9-20020a05651c000900b002d2555fb4aemr3219787lja.51.1708616069766; Thu, 22 Feb
- 2024 07:34:29 -0800 (PST)
+	s=k20201202; t=1708616438;
+	bh=xc07QGkepUAGGcDE2z3e5aOhvw7tXF1qa6A82GqprFs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sAvZKL/zErRTChJH+5+VlA8B4Sj4bBpztoBx/4wBbhusDuPrYf14Uv1l5TpBrwwSI
+	 PaWcDlm64yVHcCL1VoMokXRWwJdZEJ5io+Q7MBPsE+cluKRYo5eanIswjcpU6zjrjZ
+	 xD/5MPJZNPJWoOg8qP7eX7+K6qmWfZd5OhM+19M0zJvt1QdIwFvdZ17dGSRm7r++PK
+	 oj0lHr/raFp08ItKhQodXYaRYct9w8paZ8lFkY46OaRzO/Z1wLrmAniXU5ioZbcTcv
+	 0fgONqVqyynW+IoL01ubF5Ea6zbFqlNa5xdtGeZDNBQH6odMNAJY7sEgRUy7Xe6+J8
+	 027i7X98Q2J4Q==
+Date: Thu, 22 Feb 2024 15:40:34 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>
+Subject: Re: [PATCH 5/6] dt-bindings: iio: temperature: ltc2983: document
+ power supply
+Message-ID: <20240222-component-stiffen-d046386433b3@spud>
+References: <20240222-ltc2983-misc-improv-v1-0-cf7d4457e98c@analog.com>
+ <20240222-ltc2983-misc-improv-v1-5-cf7d4457e98c@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240216-ad7944-mainline-v2-0-7eb69651e592@baylibre.com>
- <20240216-ad7944-mainline-v2-1-7eb69651e592@baylibre.com> <20240221152226.GA2868707-robh@kernel.org>
- <CAMknhBFytGYNo8FviHepoxLApoGyo0mVhL2BzVmm1vt8-Evn9Q@mail.gmail.com>
-In-Reply-To: <CAMknhBFytGYNo8FviHepoxLApoGyo0mVhL2BzVmm1vt8-Evn9Q@mail.gmail.com>
-From: Rob Herring <robh@kernel.org>
-Date: Thu, 22 Feb 2024 08:34:16 -0700
-X-Gmail-Original-Message-ID: <CAL_Jsq+diFUEn=Tf99_FkXqLHuyLrZW_jaYoPjGhGjGbecgivg@mail.gmail.com>
-Message-ID: <CAL_Jsq+diFUEn=Tf99_FkXqLHuyLrZW_jaYoPjGhGjGbecgivg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add ad7944 ADCs
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="FdbL3WJlakIndfR1"
+Content-Disposition: inline
+In-Reply-To: <20240222-ltc2983-misc-improv-v1-5-cf7d4457e98c@analog.com>
+
+
+--FdbL3WJlakIndfR1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 21, 2024 at 8:44=E2=80=AFAM David Lechner <dlechner@baylibre.co=
-m> wrote:
->
-> On Wed, Feb 21, 2024 at 9:22=E2=80=AFAM Rob Herring <robh@kernel.org> wro=
-te:
-> >
-> > On Fri, Feb 16, 2024 at 01:46:18PM -0600, David Lechner wrote:
->
-> ...
->
-> > > +  adi,spi-mode:
-> > > +    $ref: /schemas/types.yaml#/definitions/string
-> > > +    enum: [ single, multi, chain ]
-> > > +    default: multi
-> > > +    description: |
-> > > +      * single: The datasheet calls this "3-wire mode". It is often =
-used when
-> > > +        the ADC is the only device on the bus. In this mode, SDI is =
-tied to VIO,
-> > > +        and the CNV line can be connected to the CS line of the SPI =
-controller
-> > > +        or to a GPIO, in which case the CS line of the controller is=
- unused.
-> >
-> > We have a standard property for this.
->
-> As discussed in v1 [1], the datasheet's definition of "3-wire mode" is
-> _not_ the same as the standard spi-3wire property. I can add that to
-> the description here to clarify (I hoped changing the enum name was
-> enough, but perhaps not). Or is there a different property you are
-> referring to?
->
-> [1]: https://lore.kernel.org/all/20240216140826.58b3318d@jic23-huawei/
->
-> >
-> > > +      * multi: The datasheet calls this "4-wire mode". This is the c=
-onvential
+On Thu, Feb 22, 2024 at 01:55:56PM +0100, Nuno Sa wrote:
+> Add a property for the VDD power supply regulator.
+>=20
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+>  Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml | 2 ++
+>  1 file changed, 2 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/temperature/adi,ltc298=
+3.yaml b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> index dbb85135fd66..8aae867a770a 100644
+> --- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> +++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml
+> @@ -57,6 +57,8 @@ properties:
+>    interrupts:
+>      maxItems: 1
+> =20
+> +  vdd-supply: true
 
-Also, typo.
+Although technically an ABI break, should we make this supply required?
+It is, at the end of the day, required by the hardware for operation.
 
-> > > +        SPI mode used when there are multiple devices on the same bu=
-s. In this
-> > > +        mode, the CNV line is used to initiate the conversion and th=
-e SDI line
-> > > +        is connected to CS on the SPI controller.
-> >
-> > That's "normal" mode.
->
-> That was my first choice, but the datasheet uses the term "normal
-> mode" to mean not TURBO mode which is something else unrelated to the
-> SPI mode.
+> +
+>    adi,mux-delay-config-us:
+>      description: |
+>        Extra delay prior to each conversion, in addition to the internal =
+1ms
+>=20
+> --=20
+> 2.43.2
+>=20
 
-What I mean is this should be conveyed by the absence of any property.
-You don't need a property for "normal SPI mode".
+--FdbL3WJlakIndfR1
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> >
-> > > +      * chain: The datasheet calls this "chain mode". This mode is u=
-sed to save
-> > > +        on wiring when multiple ADCs are used. In this mode, the SDI=
- line of
-> > > +        one chip is tied to the SDO of the next chip in the chain an=
-d the SDI of
-> > > +        the last chip in the chain is tied to GND. Only the first ch=
-ip in the
-> > > +        chain is connected to the SPI bus. The CNV line of all chips=
- are tied
-> > > +        together. The CS line of the SPI controller is unused.
-> >
-> > Don't you need to know how many chips are chained? In any case, you jus=
-t
-> > need a property for chain mode. There's some existing properties for
-> > chained devices I think. Standard logic shift register based GPIO IIRC.
->
-> Thanks, I see #daisy-chained-devices now. I missed that before.
->
-> >
-> > CNV are tied together, but must be driven by something? I suppose
-> > cnv-gpios?
->
-> Yes.
->
-> > But wouldn't that be the same as the SPI controller GPIO CS?
-> > Does a SPI controller CS line connected to CNV not work in this case?
->
-> Maybe technically possible if CS is inverted on the bus since the line
-> has to be high to trigger the conversion and during the xfer.
+-----BEGIN PGP SIGNATURE-----
 
-That's supported by the binding. Seems like it would simplify the
-driver if you went that route and better support other devices on the
-SPI bus. Also, we require 'reg', so I don't know what you'd put in it
-in the no CS case. Though, we probably already have that case with CS
-tied active. Shrug.
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZddq8gAKCRB4tDGHoIJi
+0nnFAQC2H7lqeY7aI5oJlOwOs78r2LlF1Qhqa1z9Umxt2l37BAEAsbgxlVhtSoqg
+KhXR0NV/1sCXBFgT29Sm8SaduDmOnAE=
+=9wDI
+-----END PGP SIGNATURE-----
 
-Rob
+--FdbL3WJlakIndfR1--
 

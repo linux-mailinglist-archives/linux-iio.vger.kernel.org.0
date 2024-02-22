@@ -1,149 +1,134 @@
-Return-Path: <linux-iio+bounces-2881-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2886-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE56685EB1D
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 22:39:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A2A585EE88
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 02:14:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87B6D28B435
-	for <lists+linux-iio@lfdr.de>; Wed, 21 Feb 2024 21:39:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1074B1F21B71
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 01:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB561272A1;
-	Wed, 21 Feb 2024 21:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4651642F;
+	Thu, 22 Feb 2024 01:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUwpgeHS"
+	dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b="IR51U6C8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C5F25619;
-	Wed, 21 Feb 2024 21:38:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30CF80C;
+	Thu, 22 Feb 2024 01:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.181.215.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708551480; cv=none; b=hx8qS3rhGsg4T3XD6BoMLp1elz2s7ZlC1urW+uLUTLjgAtZAaML2Fj/X/92jr2ZUsDBd2djEh/2xAiAhUn+sDXDeZELF0CgaivcDB45cfZAicubrJqu8iSNOEN2ExcaHDT7cpKcvthF5b9hxuLbOGLpmG3WumwRNaoad7Wr0B+4=
+	t=1708564436; cv=none; b=NKiDIxijUNDgFZoSnCJi3/jA89IcGlg8IaR2cAcjF4CYe5BI1v1nB+pq0zLXwiUJVslV98rghyJEQX2q+mwdBQByt0L/42qjB8joneDMOlym5k0QkfnzQ03sotyLcisntPF7DqTShlfzk1r6PRb2jlUI6EOyr1Yx1dAYl6Th63c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708551480; c=relaxed/simple;
-	bh=9oOl86N850lxplmi/fO/ptHo5glf8VI/jrIlpQnN4nQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=altsWRO64cvSk5owsplFmr1vQKWBwYEKtXad2qswvYXdetsfVgvnpfPAjrOrsWHPwhxkfM14dvkfcEk5CdE4erLNDRVxAg4NGIf45QVMjevSgcMW1VWGKVDArz4qpSNnDNrALHNWdD9SfU0u+t4/eqJeuDED1kK8N7e2Ux8yy4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUwpgeHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38A2C433C7;
-	Wed, 21 Feb 2024 21:37:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708551480;
-	bh=9oOl86N850lxplmi/fO/ptHo5glf8VI/jrIlpQnN4nQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gUwpgeHSO142RKuGwIXhScBu/2cWKaelACWeOtQaATMpwLNtmAhe7poC6xPinYXbi
-	 Pw0h3MgztfEi/qIXYF4mTyADgknquKPVgPLWiDPGfUKSPJSkGugrBQpwooGSCI5ykE
-	 PTJ1B7I9pd3+cNrqFs6TUychg9izY9QUcKU0XKL5Fcgp5faOxC9TwvqMJARlVuctr1
-	 zXwUV3b4PUd9uAW4vxP1qrfXqMeSARav+HY9fub4BB6q1p+eiMb7mPyNguEK7ULMTt
-	 CLAXyxk0TWXK+F62AuVAzwbnUpt8avb8GaWIV0Id0n7h+mCLi7n0+tMy37jeISGSIT
-	 gbmzKWRLlukmg==
-Date: Wed, 21 Feb 2024 21:37:54 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	denis.ciocca@st.com, linus.walleij@linaro.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel@pengutronix.de
-Subject: Re: [PATCH] dt-bindings: iio: st-sensors: Add IIS2MDC magnetometer
-Message-ID: <20240221-lubricant-machine-79054f117eb0@spud>
-References: <20240221175810.3581399-1-m.felsch@pengutronix.de>
- <20240221-undecided-union-4078db711693@spud>
- <20240221191644.5r3ylr5w3cnfnrzj@pengutronix.de>
- <20240221-imitate-molar-81d93285ac77@spud>
- <20240221194518.3sm4o5i274ldpvzf@pengutronix.de>
+	s=arc-20240116; t=1708564436; c=relaxed/simple;
+	bh=YvwPGE6Je1yh6m1wlcMDe3waw6z0rk4FE6NC0S7WrtI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gU+UbZV0V9xP04JMArqH+ACVfn+ge3X3yrj9fJkoWNHcEuPxaMrFDqutq6Eb6OVuPluowyZhF55b//CA6XZvCLPws67iLwabigtL+FMwAYYrF/QPyKXJ1Mtx3XUMq/OcLlYMtFW7s1xZhRpYX8/HfHB/h9XsXFuXtBjFtkzYDX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz; spf=pass smtp.mailfrom=xff.cz; dkim=pass (1024-bit key) header.d=xff.cz header.i=@xff.cz header.b=IR51U6C8; arc=none smtp.client-ip=195.181.215.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xff.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xff.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+	t=1708564424; bh=YvwPGE6Je1yh6m1wlcMDe3waw6z0rk4FE6NC0S7WrtI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IR51U6C8FowjMKn6pODgTAZeYUwQ5y3+6aiQwNmO+2+6cQSvaB91QuV+fZtUtMeFC
+	 XmpHIu7kbs4b9PzJbcahzmZ08UR5S5FIq8iW9fViRG7acsKD8u0/u/j+/I5kP1UXOr
+	 Tu5flioRygnxaBzaGu8SFcUqTYWYYBnseahxJOWI=
+From: =?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>
+To: linux-kernel@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Cc: Ondrej Jirman <megi@xff.cz>,
+	Icenowy Zheng <icenowy@aosc.io>,
+	Dalton Durst <dalton@ubports.com>,
+	Shoji Keita <awaittrot@shjk.jp>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v4 0/4] Add support for AF8133J magnetometer
+Date: Thu, 22 Feb 2024 02:13:34 +0100
+Message-ID: <20240222011341.3232645-1-megi@xff.cz>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="aCdhMTuN5ae1nNlN"
-Content-Disposition: inline
-In-Reply-To: <20240221194518.3sm4o5i274ldpvzf@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
+From: Ondrej Jirman <megi@xff.cz>
 
---aCdhMTuN5ae1nNlN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+This series adds support for AF8133J magnetometer sensor. It's a simple
+3-axis sensor with two sensitivity options and not much else to it.
 
-On Wed, Feb 21, 2024 at 08:45:18PM +0100, Marco Felsch wrote:
-> Hi Conor,
->=20
-> On 24-02-21, Conor Dooley wrote:
-> > On Wed, Feb 21, 2024 at 08:16:44PM +0100, Marco Felsch wrote:
-> > > On 24-02-21, Conor Dooley wrote:
-> > > > On Wed, Feb 21, 2024 at 06:58:10PM +0100, Marco Felsch wrote:
-> > > > > Add the iis2mdc magnetometer support which is equivalent to the l=
-is2mdl.
-> > > > >=20
-> > > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > > > ---
-> > > > >  Documentation/devicetree/bindings/iio/st,st-sensors.yaml | 1 +
-> > > > >  1 file changed, 1 insertion(+)
-> > > > >=20
-> > > > > diff --git a/Documentation/devicetree/bindings/iio/st,st-sensors.=
-yaml b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
-> > > > > index fff7e3d83a02..ee593c8bbb65 100644
-> > > > > --- a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
-> > > > > +++ b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
-> > > > > @@ -64,6 +64,7 @@ properties:
-> > > > >            - st,lsm9ds0-gyro
-> > > > >        - description: STMicroelectronics Magnetometers
-> > > > >          enum:
-> > > > > +          - st,iis2mdc
-> > > >=20
-> > > > Without a fallback compatible to the equivilent device, how does a
-> > > > driver bind to this device?
-> > >=20
-> > > I skimed the datasheets and the driver already handles this binding
-> > > exactly the same as the st,lis2mdl, so my assumption is they do match.
-> > >=20
-> > > Why do I you think we need a fallback compatible here?
-> >=20
-> > I didn't look at the driver, there was no mention of the driver already
-> > having (undocumented) support for it. Since there was no driver change
-> > alongside this patch, I thought you'd need a fallback compatible to
-> > allow the driver to match against a compatible it recognises.
->=20
-> I explicitly did not mention the driver in the commit message else I
-> would have got a response like "dt-bindings have no dependency to
-> drivers" ;)
+This sensor is used on both Pinephone and Pinephone Pro. DT patches
+adding it will come later, once this driver is merged.
 
-Putting it under the --- line is always an option. Where there are
-existing users but the compatible is just undocumented, this it's
-helpful to do.
+Please take a look. :)
 
-> > Besides, having fallback compatibles is the norm when one device has the
-> > same programming model as another.
->=20
-> Not for this binding according the driver.
+Thank you very much,
+	Ondřej Jirman
 
-If they don't have the same programming model, then describing them as
-"equivalent" wouldn't be correct. That said, they seem to use the same
-sensor settings when alls said and done (see st_magn_sensors_settings),
-so I think they are actually compatible even if the driver has separate
-match data for each.
+v4:
+- move RPM enable in probe function before iio device registration
 
-Cheers,
-Conor.
+v3:
+- collect more tags
+- if (ret < 0) -> (ret) where appropriate
+- scoped guard move to af8133j_set_scale()
+- remove pm_runtime_disable/enable guard from af8133j_power_down_action()
+- pretty much just this:
+  https://megous.com/dl/tmp/0001-if-ret-0-ret-where-appropriate.patch
+  https://megous.com/dl/tmp/0002-scoped-guard-move-to-af8133j_set_scale.patch
+  https://megous.com/dl/tmp/0003-remove-pm_runtime_disable-enable-guard-from-af8133j_.patch
 
---aCdhMTuN5ae1nNlN
-Content-Type: application/pgp-signature; name="signature.asc"
+v2:
+- move maintainers patch to the end of series
+- bindings:
+  - fix compatible definition in bindings file
+  - require power supplies
+  - fix descriptions
+- driver:
+  - sort includes
+  - rework RPM, the driver should now work with RPM disabled
+    among other improvements
+    - I've tested RPM left and right doing device bind/unbind under
+      various conditions, system suspend under various conditions,
+      etc.
+  - use scoped_guard for mutexes
+  - use devm for power down and handle power down correctly with both
+    RPM enabled/disabled without tracking power state in data->powered
+  - fix issue with changing scale while RPM suspended
+  - various code formatting issues resolved
+- as for sign-offs, I've added co-developed-by for people I know for
+  sure worked on the driver, and left other tags as they were when
+  I picked up the patch 2 years ago to my Linux branch
 
------BEGIN PGP SIGNATURE-----
+Icenowy Zheng (3):
+  dt-bindings: vendor-prefix: Add prefix for Voltafield
+  dt-bindings: iio: magnetometer: Add Voltafield AF8133J
+  iio: magnetometer: add a driver for Voltafield AF8133J magnetometer
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdZtMgAKCRB4tDGHoIJi
-0mhFAP4uPT1KilNvuJy11JVEqyK46NkPn3I0vD5H1rPev9iSUQD/c2IAJZDAfJpg
-j6ckgYP2rWSx/t9GqIONxFD8RfJMegM=
-=nU5D
------END PGP SIGNATURE-----
+Ondrej Jirman (1):
+  MAINTAINERS: Add an entry for AF8133J driver
 
---aCdhMTuN5ae1nNlN--
+ .../iio/magnetometer/voltafield,af8133j.yaml  |  60 ++
+ .../devicetree/bindings/vendor-prefixes.yaml  |   2 +
+ MAINTAINERS                                   |   6 +
+ drivers/iio/magnetometer/Kconfig              |  12 +
+ drivers/iio/magnetometer/Makefile             |   1 +
+ drivers/iio/magnetometer/af8133j.c            | 524 ++++++++++++++++++
+ 6 files changed, 605 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/voltafield,af8133j.yaml
+ create mode 100644 drivers/iio/magnetometer/af8133j.c
+
+-- 
+2.43.0
+
 

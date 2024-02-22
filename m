@@ -1,105 +1,145 @@
-Return-Path: <linux-iio+bounces-2892-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2893-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460CD85F23D
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 08:58:16 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C55785F365
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 09:47:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 74BF71C23223
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 07:58:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE0131C21B97
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 08:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410BF179AA;
-	Thu, 22 Feb 2024 07:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FvSkri+9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC34F2BB1B;
+	Thu, 22 Feb 2024 08:47:33 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E3117C60;
-	Thu, 22 Feb 2024 07:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B5C2BB0E
+	for <linux-iio@vger.kernel.org>; Thu, 22 Feb 2024 08:47:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708588691; cv=none; b=HddWUWMAq02H7YQhgE9+28hP6KBs3I1xesK3xDcREeY9whppR68Lk9f93eCPp0DLRUiXObSbkBwIPPUJOsLgrnpRwb9Z6oxa9Zi6vpXxBWUzAexpJb9+ERh2xc3wGBm7GqwQlgoMDoC5Li0Gk2FCqrILyiQB6b2RXOXY8tTx9Jw=
+	t=1708591653; cv=none; b=KOm2BZCCniRKrfEZpV4x+R7UJKtnAdeiB7RbkakApNn4ZqUxygeSVXxe6/5YkIA5bWLHLlwXoUwe0J501BAH/CV9b+/qrlnEKZW2dRvrJbbWcawwa3VoEDOMpI4RMUGS88gyqBO6HE2jwMp9MfC3W1TJJmACPxvmgCoozGsJBJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708588691; c=relaxed/simple;
-	bh=1JzcUDfvmHquetvvSPz+vy+dlup0b04FsUEp0hY5uu0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eWfkWRWUJF/cfnZhb7mdM8wtc0Wm9a0mfNTV1U8/n3yavfs0w5kVg7Bg3W0FQGX/8chVs82ZHvWoyEckelevR8170PX9SXJuFBU30igU2/FEhPwSeCB/ylTqW4Lsd/cf/Xk7tHh4WLVzDRjm/P4l45Oz+g69sTNii3/oYE1mdV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FvSkri+9; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-33d568fbf62so2328267f8f.3;
-        Wed, 21 Feb 2024 23:58:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708588687; x=1709193487; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=1JzcUDfvmHquetvvSPz+vy+dlup0b04FsUEp0hY5uu0=;
-        b=FvSkri+9JPGjS85Q6TIVl2IxfSXGDE9C0NmJoYDxLejoKL8AmnbAYsf2023I73LrAF
-         ko9/kge2S3T/KN1m3Ot1EJKYXXDtZii5lS1pmm3ws7PZ9PlYwxMZ4a6f0oKtK5Op+QIc
-         jLEBSjU8ouCUle8flDW/dF72Z4bDMW9b/vIW6l0DkAJrYxC+DYaU9q9U4K8zNRla9+id
-         KMO8wkM6cofZjvoiePwls1JTFlvpkY792KYgjh8j/IifyIuE3PkPUt1Tf1bepbuooAgC
-         cOeQJHZ6cpy5vO/TFMCIxgkgk81y3isx9NP9IT32c+AsFOSw34lASJe1J1H2uq3bIFD8
-         vSNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708588687; x=1709193487;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1JzcUDfvmHquetvvSPz+vy+dlup0b04FsUEp0hY5uu0=;
-        b=FEh+4+FuhnVQBR0l+eRyC47RKpj0VtW1+7psxMNUJTyrcpnkKk8pBycsumxhBMIBch
-         tHTllkelS0/vkP7+YhLlrs4EzfxgzwxXur49Ouhcu9NUBiHGq2k7+JhJnh3SnKgb3+Z1
-         K01sne4FDwHyz5CgC37LNECYFb3Le6vLhDWjXA/Ct35ECDFi8rqnlWXolnXshdxmPySO
-         IM35ixpBrAU00ZR9Zxqh+FrcrwTKvLQqSRl6OyPFkwklod9pPoe++kAXvZ8Gug6Dpm+6
-         Zm0qtj75DHWUi3yxBVhHfCNz3MUgGWi5dBErNI6LQliiT+QqHIZxd4indkJg0MEL2iAk
-         GX5g==
-X-Forwarded-Encrypted: i=1; AJvYcCWw29/NN1D6mbgCLE5obGaov7Nv1AKfxRdxGLvYqkSJGpq1u8OagsJvN6SRQag+rtjJ764YvHFopz+YwyM0cHbhFOVIyVKGcFyAriZp2m5ctkdwBTI1ZLWVg6krg99H5vp6BQPCNjQa
-X-Gm-Message-State: AOJu0YwL+oTHvUoIgdlKBElgPQcTcUCaOJNVd3SuZYiCLYT3BWjEUsvV
-	S7EzeczdECthZ9hzd14HgNtGMIC3NMaZPvyVguOojAe3jrpGtfOx
-X-Google-Smtp-Source: AGHT+IFsAFkCvtM6mWVq89G33ylVubt6ebXMp8cmmvElTsIzP3v1zzmNNlgBcFpzIlA0P4Npz95org==
-X-Received: by 2002:adf:f18a:0:b0:33d:27b8:954a with SMTP id h10-20020adff18a000000b0033d27b8954amr10906179wro.22.1708588687299;
-        Wed, 21 Feb 2024 23:58:07 -0800 (PST)
-Received: from [192.168.90.166] (146.red-83-35-56.dynamicip.rima-tde.net. [83.35.56.146])
-        by smtp.gmail.com with ESMTPSA id bs17-20020a056000071100b0033d47c6073esm13656319wrb.12.2024.02.21.23.58.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Feb 2024 23:58:06 -0800 (PST)
-Message-ID: <e6598bf07b9c64534b772f7fa5dfb92e40f37fb6.camel@gmail.com>
-Subject: Re: [PATCH 2/2] drivers: iio: pressure: Fixes BMP38x and BMP390 SPI
- support
-From: Angel Iglesias <ang.iglesiasg@gmail.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org
-Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com, 
- linus.walleij@linaro.org, semen.protsenko@linaro.org,
- linux-iio@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Thu, 22 Feb 2024 08:58:05 +0100
-In-Reply-To: <20240220224329.53729-2-vassilisamir@gmail.com>
-References: <20240220224329.53729-1-vassilisamir@gmail.com>
-	 <20240220224329.53729-2-vassilisamir@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (by Flathub.org) 
+	s=arc-20240116; t=1708591653; c=relaxed/simple;
+	bh=1O+AV1qRXleQZJEL0gbhPEb6oQ9MCd5osE9XC4AXlro=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R4WGEDjWJL90Q3w8e3D5rm0voFVtgY1PYlRr5f1bUOZUpj4oXKFbYpoLA3Acon+3/TG/XuaZmjQzILCAQOT7szJRvkUTigd2fPQNv56PEDosytUpXxcURiTMPppy2iSSc/eDHw9FWSqaTQOJlo+Z28f2jcjiYuNHtmA/Vaud6vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rd4je-0005ah-MD; Thu, 22 Feb 2024 09:47:18 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rd4jd-002CJ3-9R; Thu, 22 Feb 2024 09:47:17 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rd4jd-002j7F-0e;
+	Thu, 22 Feb 2024 09:47:17 +0100
+Date: Thu, 22 Feb 2024 09:47:17 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Conor Dooley <conor@kernel.org>
+Cc: jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+	denis.ciocca@st.com, linus.walleij@linaro.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH] dt-bindings: iio: st-sensors: Add IIS2MDC magnetometer
+Message-ID: <20240222084717.rcckoyjeh4shmcxr@pengutronix.de>
+References: <20240221175810.3581399-1-m.felsch@pengutronix.de>
+ <20240221-undecided-union-4078db711693@spud>
+ <20240221191644.5r3ylr5w3cnfnrzj@pengutronix.de>
+ <20240221-imitate-molar-81d93285ac77@spud>
+ <20240221194518.3sm4o5i274ldpvzf@pengutronix.de>
+ <20240221-lubricant-machine-79054f117eb0@spud>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240221-lubricant-machine-79054f117eb0@spud>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mfe@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 
-On Tue, 2024-02-20 at 23:43 +0100, Vasileios Amoiridis wrote:
-> According to the datasheet of BMP38x and BMP390 devices, for an SPI
-> read operation the first byte that is returned needs to be dropped,
-> and the rest of the bytes are the actual data returned from the
-> sensor.
->=20
+On 24-02-21, Conor Dooley wrote:
+> On Wed, Feb 21, 2024 at 08:45:18PM +0100, Marco Felsch wrote:
+> > Hi Conor,
+> > 
+> > On 24-02-21, Conor Dooley wrote:
+> > > On Wed, Feb 21, 2024 at 08:16:44PM +0100, Marco Felsch wrote:
+> > > > On 24-02-21, Conor Dooley wrote:
+> > > > > On Wed, Feb 21, 2024 at 06:58:10PM +0100, Marco Felsch wrote:
+> > > > > > Add the iis2mdc magnetometer support which is equivalent to the lis2mdl.
+> > > > > > 
+> > > > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > > > > > ---
+> > > > > >  Documentation/devicetree/bindings/iio/st,st-sensors.yaml | 1 +
+> > > > > >  1 file changed, 1 insertion(+)
+> > > > > > 
+> > > > > > diff --git a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+> > > > > > index fff7e3d83a02..ee593c8bbb65 100644
+> > > > > > --- a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+> > > > > > +++ b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+> > > > > > @@ -64,6 +64,7 @@ properties:
+> > > > > >            - st,lsm9ds0-gyro
+> > > > > >        - description: STMicroelectronics Magnetometers
+> > > > > >          enum:
+> > > > > > +          - st,iis2mdc
+> > > > > 
+> > > > > Without a fallback compatible to the equivilent device, how does a
+> > > > > driver bind to this device?
+> > > > 
+> > > > I skimed the datasheets and the driver already handles this binding
+> > > > exactly the same as the st,lis2mdl, so my assumption is they do match.
+> > > > 
+> > > > Why do I you think we need a fallback compatible here?
+> > > 
+> > > I didn't look at the driver, there was no mention of the driver already
+> > > having (undocumented) support for it. Since there was no driver change
+> > > alongside this patch, I thought you'd need a fallback compatible to
+> > > allow the driver to match against a compatible it recognises.
+> > 
+> > I explicitly did not mention the driver in the commit message else I
+> > would have got a response like "dt-bindings have no dependency to
+> > drivers" ;)
+> 
+> Putting it under the --- line is always an option. Where there are
+> existing users but the compatible is just undocumented, this it's
+> helpful to do.
+> 
+> > > Besides, having fallback compatibles is the norm when one device has the
+> > > same programming model as another.
+> > 
+> > Not for this binding according the driver.
+> 
+> If they don't have the same programming model, then describing them as
+> "equivalent" wouldn't be correct. That said, they seem to use the same
+> sensor settings when alls said and done (see st_magn_sensors_settings),
+> so I think they are actually compatible even if the driver has separate
+> match data for each.
 
-My tag from the previous round:
+I told you that I have checked the driver and skimed the datasheets and
+came to the exact same conclusion.
 
-Acked-by: Angel Iglesias <ang.iglesiasg@gmail.com>
+Regards,
+  Marco
 
-Kind regards,
-Angel
+
+> 
+> Cheers,
+> Conor.
+
+
 

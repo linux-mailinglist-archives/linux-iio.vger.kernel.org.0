@@ -1,50 +1,50 @@
-Return-Path: <linux-iio+bounces-2905-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2906-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C0085FA6C
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 14:55:11 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D6E485FAAC
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 15:02:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D26561C25519
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 13:55:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 390411F28337
+	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 14:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70FA5135410;
-	Thu, 22 Feb 2024 13:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A63D713959C;
+	Thu, 22 Feb 2024 14:02:23 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA7258ADF;
-	Thu, 22 Feb 2024 13:55:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE6D137C29;
+	Thu, 22 Feb 2024 14:02:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708610105; cv=none; b=TC/VbiFZcZYOCzPUK8sbHvCRmZzKTMSAl8FyG8OOc2tHmnYaRjmFk+WvdWQ6Ojp9heBaYCZovR6BEOjz2l1fiYfNcLvIbk9IoD+hH+ZFCWu3cLEQ2QcL6hn8Y03mkIfzxJDqfKFNjPXcqAp7EZ92lHe/h4WmBinl52WuH9kZryU=
+	t=1708610543; cv=none; b=OlgeQhHtOArxf6MgasqfaSalVKuoQJmeVw9+xFHyXuCoPhhQyszWJcEhPVHtz0wKkD3M8HEg1yJmxlIixeWP/jB8kJuxTP1cziQd/2IeUO6TsU6qXmL/ReX6kRYjWIRGP+ZSBxJb6hf51L7h2zTVIGblFco4dpCKLjR+KN5m6kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708610105; c=relaxed/simple;
-	bh=rpZDVv/1mLgRWOiaQCy4si/knuEmPEovGhuqTdYMBk4=;
+	s=arc-20240116; t=1708610543; c=relaxed/simple;
+	bh=0Ca7pcaxdTC94QZGuqXAmtVUf+PPMCRljrZfstySUqs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U98FLMoQ2MQEO19m/5uRNmtRM1q/id1fJr23PPnFxjFEuIKc3qKiUt/x7KN9BOG1GedVcBEuvdE6FFhs8m9jwimb5yJMHKpXb/NkEf4cUAWcSzKSdrcTve4tduwDFbdO5eDx45dTGH1K2Zxi9k8kC8DTX5WCipCQreHJkgrOnSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=a7E9F3c3keu+bWbIo3dN47QxnFZ5/kdRi8sm/ONy2PP9hXgyIZFN8lCv/BupZjoF0M2jJ/J4UVvMPhyBVijvRtUCdlfFiIke35JWcA038SrzQYLyQswTxZf1DUyohRcGgY2e/fLDJzVniIS3p2bn+1KPiH3KdlptV5G8uNZy+5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="13963683"
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="6613447"
 X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="13963683"
+   d="scan'208";a="6613447"
 Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 05:55:03 -0800
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 06:02:21 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="936852991"
+X-IronPort-AV: E=McAfee;i="6600,9927,10991"; a="936853609"
 X-IronPort-AV: E=Sophos;i="6.06,177,1705392000"; 
-   d="scan'208";a="936852991"
+   d="scan'208";a="936853609"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 05:54:57 -0800
+  by fmsmga001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2024 06:02:15 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andy@kernel.org>)
-	id 1rd9XJ-00000006dwU-2ROI;
-	Thu, 22 Feb 2024 15:54:53 +0200
-Date: Thu, 22 Feb 2024 15:54:53 +0200
+	id 1rd9eN-00000006e1a-1QX8;
+	Thu, 22 Feb 2024 16:02:11 +0200
+Date: Thu, 22 Feb 2024 16:02:10 +0200
 From: Andy Shevchenko <andy@kernel.org>
 To: Dumitru Ceclan <mitrutzceclan@gmail.com>
 Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
@@ -63,12 +63,11 @@ Cc: linus.walleij@linaro.org, brgl@bgdev.pl, linux-gpio@vger.kernel.org,
 	David Lechner <dlechner@baylibre.com>,
 	Ceclan Dumitru <dumitru.ceclan@analog.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v14 2/3] iio: adc: ad_sigma_delta: Add optional irq
- selection
-Message-ID: <ZddSLfDcFPpkFQ4a@smile.fi.intel.com>
+	linux-kernel@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>
+Subject: Re: [PATCH v14 3/3] iio: adc: ad7173: add AD7173 driver
+Message-ID: <ZddT4mmxf3W55ea8@smile.fi.intel.com>
 References: <20240222110817.29670-1-mitrutzceclan@gmail.com>
- <20240222110817.29670-2-mitrutzceclan@gmail.com>
+ <20240222110817.29670-3-mitrutzceclan@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,33 +76,72 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240222110817.29670-2-mitrutzceclan@gmail.com>
+In-Reply-To: <20240222110817.29670-3-mitrutzceclan@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, Feb 22, 2024 at 01:07:42PM +0200, Dumitru Ceclan wrote:
-> Add optional irq_num attribute to ad_sigma_delta_info structure for
-> selecting the used interrupt line for adc's conversion completion.
+On Thu, Feb 22, 2024 at 01:07:43PM +0200, Dumitru Ceclan wrote:
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel
+> applications or higher speed multiplexed applications. The Sigma-Delta
+> ADC is intended primarily for measurement of signals close to DC but also
+> delivers outstanding performance with input bandwidths out to ~10kHz.
 
-ADC's
-
-...
-
-> + * @irq_num: IRQ for reading conversions. If 0, spi->irq will be used
-
-Naming is a bit confusing. Does _num mean the amount of IRQ vectors?
-Perhaps irq_line, irq_conv?
+A couple more comments which Jonathan might address when applying,
+up to him.
 
 ...
 
-> +	unsigned long irq_num;
+With
 
-Why is it not simple (signed) int?
+	struct device *dev = &st->sd.spi->dev;
+
+the below will be neater.
+
+
+> +	struct ad7173_state *st = iio_priv(indio_dev);
+> +	u8 buf[AD7173_RESET_LENGTH];
+> +	unsigned int id;
+> +	int ret;
 
 ...
 
-> +	unsigned int		irq_num;
+> +	if (id != st->info->id)
+> +		dev_warn(&st->sd.spi->dev,
+> +			 "Unexpected device id: 0x%04X, expected: 0x%04X\n",
+> +			 id, st->info->id);
 
-Ditto.
+(like here)
+
+...
+
+> +	st->config_usage_counter = 0;
+> +	st->config_cnts = devm_kcalloc(&st->sd.spi->dev, st->info->num_configs,
+> +				       sizeof(u64), GFP_KERNEL);
+
+sizeof(*st->config_cnts) ?
+
+(or here)
+
+> +	if (!st->config_cnts)
+> +		return -ENOMEM;
+
+...
+
+> +	ret = fwnode_property_match_property_string(dev_fwnode(dev),
+
+
+device_property_match_property_string()
+
+> +						    "clock-names",
+> +						    ad7173_clk_sel,
+> +						    ARRAY_SIZE(ad7173_clk_sel));
+
+...
+
+> +	if (num_channels == 0)
+> +		return dev_err_probe(dev, -EINVAL, "No channels specified\n");
+
+-ENODATA?
 
 -- 
 With Best Regards,

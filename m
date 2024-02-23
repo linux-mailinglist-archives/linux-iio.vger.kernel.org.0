@@ -1,90 +1,84 @@
-Return-Path: <linux-iio+bounces-2921-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2922-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 263BC860BED
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 09:14:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B1A5860BFC
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 09:17:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BACBB1F24BD0
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 08:14:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40639284B9A
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 08:17:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E9A171AC;
-	Fri, 23 Feb 2024 08:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A411F168C4;
+	Fri, 23 Feb 2024 08:17:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="au1tOZ+V"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sx0CGWFx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EC4171B8;
-	Fri, 23 Feb 2024 08:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89CF171CC
+	for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 08:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708676039; cv=none; b=gDX1ryU4hi7cGoO/q+EByV2urTInHtFK3v40etUm3fQpVSU9yZHxDFlI7UZpBtXX9ngwaoTNqdUQjo1N/Cag1MEJ7M8GcqdmOjRFJPnsf5plB6x7WdubOFiDNejuFsr1um9AXEaMROgLi/wBl8l/66E3Z4nOlP4KlXtQqHeBOMA=
+	t=1708676238; cv=none; b=ZmSZjuLfQWKjlgKtUB9GNENuYcb3q+tyUKKcnXT9btaQSK9Wj7acVp7t6fJuTp8VqcPuyMu7DinyXvt+KMB2ogWDfGkb43fq4DEpo3lEdPTgAFgSv0fzANOxfB82NTOI8167jS8A3/0gB920KiFT+044k0+R6Y9M/y3rw8P3Arc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708676039; c=relaxed/simple;
-	bh=JVSNT7wTGn9ub9sFBrLZXOKoSP1lL5F6e0EnQSp1JNM=;
+	s=arc-20240116; t=1708676238; c=relaxed/simple;
+	bh=WhkuRRTATeRQsW2ArBD8d1el8JnD2Lmq86KmSs95sqo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rQ/en834jFi9nC/doUyrhlmQiL9D1ADkB2uynUxT3vs36PnMY4PVOvxDsS6A4PdD0xthNgHgMnBB+sGpmtsdijEazQR3YP/zYtwgCXQUy1GUllrZlj8+o7sY1pWq8sXNi9MUVyc+RZ3ETwAGEZ+fslN68sUuiItjnBtfnIHoV1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=au1tOZ+V; arc=none smtp.client-ip=209.85.208.44
+	 Content-Type:MIME-Version; b=sd/J6s46vufpcrbh5xvx4SuB8926OR7fMZcAOlDllSGAg+D3FTa0jEE1T5/BWkvECo0+LGG4wL6F3uKEC9/WVhT8TCjlGSbXBfZdHIyVRl9Md5Bd6Jk9JQJos8ZixZ4qOvo4ZWGKfY7U1yn8TXMyS1P3g+hRtjXjpRM43b/O6vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sx0CGWFx; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-564372fb762so631969a12.0;
-        Fri, 23 Feb 2024 00:13:57 -0800 (PST)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a3f3d0d2787so10690066b.3
+        for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 00:17:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708676036; x=1709280836; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1708676235; x=1709281035; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=JVSNT7wTGn9ub9sFBrLZXOKoSP1lL5F6e0EnQSp1JNM=;
-        b=au1tOZ+V85kxTQ6sPTzPCDiBg7VoUIcCv+H43u+N7wzw03q9je3bmx6FOZQMaN6uiM
-         paeQ2P4OQXf3rpuRJriO8UMdZJYE2wSgD2eyA9RYs5YXXwyo63WFRadhf/SsP9Xk0PHe
-         G+zs32cAd3iRs/sFfDehTVazRgVlTNiwqQeVyCrP23O3HZ1dj++cv7ysqDJG0L2vn0FV
-         L9SISS0COt/n6tnPxml6mTUM/ZzS0bSzOjMdTl3fABdoj27k/39ufUYTgzo5GELcD+29
-         8zG6RHVUQnukJZMoONlRwYd9FJHvsyEOz/H+MCqnEOyZwXCHDPAbNhbiydP8k5/YGBL9
-         ieOA==
+        bh=lovCi5KexcC0vrrtRKXVoNJPekRxeKsrXFSXa7Nnbwo=;
+        b=Sx0CGWFxzQO+b/xDHa6FEU+U11yx950gKZXoX0vjvhQ+Lx85yiJb4kKHw9rzAeDXk7
+         YG4bTCwnQZhIyH+mpCbEI7jcBgsULc/1wi1QrrGWmA9hD/HQ+5pSwrBParie3TlbLO5H
+         sXSDYqfohXQWnjzuaQlVFfRz/R6iXfZmjUAaX+kuQPp311bGZwouGlMHwQXnpsB7Px/r
+         zGxxBc8MOT7I0WxT+DivI5VOv/EMJ+0C7H8t9aYRURhQcmm7TCs5Ef1x082T9I7kVkKT
+         AJJs5ycd707hUfpUbrEBSC7XnAMN/9oZwzLL5DCvUX5aowEGw6Fir8QSBd/LB6Vlh5Ow
+         mwjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708676036; x=1709280836;
+        d=1e100.net; s=20230601; t=1708676235; x=1709281035;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=JVSNT7wTGn9ub9sFBrLZXOKoSP1lL5F6e0EnQSp1JNM=;
-        b=LC9LKvUXitXx5HAvlmWKSj2qUTYMoNZly8yoZ729w8kNaTjf5MKhsEg+ByTqN5hCQj
-         nqKh2+OnZFyZxchKR6L7R7GDjhZ9vouNPESoSF4Z6F7IAPY9qDT+nvYySJIS1Nz7m8ei
-         v3UzQWLLFbnllCl8m69KQvBucmuW3a8U31EWVeFaeMIe0LBWDwFwVHGHanZXdYCLY+fN
-         pjMaRQo5jzqx7EHwR0sRgb3WdQw8zz53lL/Wct//uisowMTBkrKIoZaoXlKIXUWZDjeB
-         1XWWihfSk0u3zU4p9S9DDrnDTjBinDeGsSrL0G2IWv/IDLAGpTJnUhl2wShKLhXTmlDc
-         y2tA==
-X-Forwarded-Encrypted: i=1; AJvYcCUYiFIsun/k7URPXin1Gbs9zFZuafRIGpPhVWenQH/3rUPsXpN/oxwNAZ429l0MDaHUzLMpnQ2LYhbEjqa07A1O3y0OeYcLx4sjcSKc4m0wdMac9l5iRXpV9kTnRIdUgjFotBUJbg==
-X-Gm-Message-State: AOJu0YzvLEVOCKptQmmAfv7XCEUmvMNzoNROnLxiJJ5PV0OdIeXmxG0V
-	4KrLJZ/aQjcFRPYSOS+qxsx7nWVC0ImAFW2WxkaDe9HUVa5b/ICs
-X-Google-Smtp-Source: AGHT+IFjrnYOlFxMq2/FqTGqrIDQ00Kgutm32PhLYFUA33uWMTA/KEkrsvnIG5mEAXL9vADzt8nTHA==
-X-Received: by 2002:aa7:da57:0:b0:564:7962:4545 with SMTP id w23-20020aa7da57000000b0056479624545mr702447eds.15.1708676035442;
-        Fri, 23 Feb 2024 00:13:55 -0800 (PST)
+        bh=lovCi5KexcC0vrrtRKXVoNJPekRxeKsrXFSXa7Nnbwo=;
+        b=mEH47+yKp6R4pXwU7HUVmfV4ymEBu+Zj6IYA2yH/uwgEq+E9fjsMDsyhZkMaa1eLwR
+         0+U8yS6eYU5lR7C6M0Pnu8Y4tGq+QXmXJB99kHLr78uwcmwwABn1N3VCz2gTOV2lXa1i
+         cAKkNj5BBYNeDG49mrk2YdT/zAvw+SsXKr5qfj1bhTuFL+sI2GU+7unwPgM4RPMKvCpp
+         T00huJ11ST1QezwJpRZq3XxSkT20TJJD4/Jla6oHJy0sTHiRE4vHid96RaxEo8Zcvhoc
+         tlO3I2sRBY0eYJObKKI4iDwPFhdekR/DQ+zFnsmYPjZdoZSL/MOgcN2nlg6sGjS8eRoO
+         hh2A==
+X-Forwarded-Encrypted: i=1; AJvYcCV4wdF89SQ+YH/4ZZXQmD4JfDgTNc8VQu495xDulJSQXw2Vp4V5hJ6IzuSD6nmXs6JYTT4Lm3DUmn6qJLkNH1dCRjxbk6EU5acS
+X-Gm-Message-State: AOJu0YyARgki/O7EanQ5f3BEtwH4GdJZRSx5qzscayH7361Io1KwAdnL
+	DcflP6UN5DxkA9km3VN1jk9Q0bI7iTgEk9MkohvB6N6aqU5D2FIx
+X-Google-Smtp-Source: AGHT+IFftpKF6iAFjLGt7lhSBbPn/P8WepHBF/dJADOS/YCpywTL8Ymptal/bptfGGd6EOJw5H4KVA==
+X-Received: by 2002:a17:906:ae92:b0:a3d:d1da:1247 with SMTP id md18-20020a170906ae9200b00a3dd1da1247mr708249ejb.56.1708676234630;
+        Fri, 23 Feb 2024 00:17:14 -0800 (PST)
 Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id fe12-20020a056402390c00b00564fa936b2bsm2176762edb.94.2024.02.23.00.13.54
+        by smtp.gmail.com with ESMTPSA id qc20-20020a170906d8b400b00a3f980309a0sm1062571ejb.207.2024.02.23.00.17.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Feb 2024 00:13:55 -0800 (PST)
-Message-ID: <8409a5bc71b995e3b738b817a074cfb131c3b2b5.camel@gmail.com>
-Subject: Re: [PATCH 5/6] dt-bindings: iio: temperature: ltc2983: document
- power supply
+        Fri, 23 Feb 2024 00:17:14 -0800 (PST)
+Message-ID: <a596b6c24fae2a5d163d2f37cf3c914d53bc68d5.camel@gmail.com>
+Subject: Re: [PATCH 1/5] iio: core: move to cleanup.h magic
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, Lars-Peter
- Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley
- <conor+dt@kernel.org>
-Date: Fri, 23 Feb 2024 09:17:16 +0100
-In-Reply-To: <20240222-lance-sprinkled-04a7650ca316@spud>
-References: <20240222-ltc2983-misc-improv-v1-0-cf7d4457e98c@analog.com>
-	 <20240222-ltc2983-misc-improv-v1-5-cf7d4457e98c@analog.com>
-	 <20240222-component-stiffen-d046386433b3@spud>
-	 <f31abc7140dfa8477623d4fca8abece03d37926e.camel@gmail.com>
-	 <20240222-lance-sprinkled-04a7650ca316@spud>
+To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
+	 <devnull+nuno.sa.analog.com@kernel.org>
+Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
+	 <lars@metafoo.de>
+Date: Fri, 23 Feb 2024 09:20:35 +0100
+In-Reply-To: <20240222192245.6470638c@jic23-huawei>
+References: <20240221-iio-use-cleanup-magic-v1-0-f9c292666f26@analog.com>
+	 <20240221-iio-use-cleanup-magic-v1-1-f9c292666f26@analog.com>
+	 <20240222192245.6470638c@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 
@@ -95,61 +89,82 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2024-02-22 at 17:54 +0000, Conor Dooley wrote:
-> On Thu, Feb 22, 2024 at 05:41:03PM +0100, Nuno S=C3=A1 wrote:
-> > On Thu, 2024-02-22 at 15:40 +0000, Conor Dooley wrote:
-> > > On Thu, Feb 22, 2024 at 01:55:56PM +0100, Nuno Sa wrote:
-> > > > Add a property for the VDD power supply regulator.
-> > > >=20
-> > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > > > ---
-> > > > =C2=A0Documentation/devicetree/bindings/iio/temperature/adi,ltc2983=
-.yaml | 2
-> > > > ++
-> > > > =C2=A01 file changed, 2 insertions(+)
-> > > >=20
-> > > > diff --git
-> > > > a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam=
-l
-> > > > b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam=
-l
-> > > > index dbb85135fd66..8aae867a770a 100644
-> > > > --- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983=
-.yaml
-> > > > +++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983=
-.yaml
-> > > > @@ -57,6 +57,8 @@ properties:
-> > > > =C2=A0=C2=A0 interrupts:
-> > > > =C2=A0=C2=A0=C2=A0=C2=A0 maxItems: 1
-> > > > =C2=A0
-> > > > +=C2=A0 vdd-supply: true
-> > >=20
-> > > Although technically an ABI break, should we make this supply require=
-d?
-> > > It is, at the end of the day, required by the hardware for operation.
-> > >=20
-> >=20
-> > I thought about it but then realized it could break some existing users
-> > which is
-> > never a nice thing.
+On Thu, 2024-02-22 at 19:22 +0000, Jonathan Cameron wrote:
+> On Wed, 21 Feb 2024 14:26:52 +0100
+> Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 >=20
-> Could you explain what scenario it actually breaks a system (not
-> produces warnings with dtbs_check)?
-
-Oh, I guess I could not explain myself :). I did not meant breaking the sys=
-tem
-(I'm aware of the dummy regulator) but I meant exactly what you mention abo=
-ve
-about dtbs_check. Like, if someone already validated a devicetree against t=
-he
-current bindings, that same devicetree will fail to validate now right? And=
- I
-had the idea that we should not allow that... If not the case, I'm perfectl=
+> > From: Nuno Sa <nuno.sa@analog.com>
+> >=20
+> > Use the new cleanup magic for handling mutexes in IIO. This allows us t=
+o
+> > greatly simplify some code paths.
+> >=20
+> > Note that we keep the plain mutex calls in the
+> > iio_device_release|acquire() APIs since in there the macros would likel=
 y
-fine in making the supply required.
+> > not help much (as we want to keep the lock acquired when he leave the
+> > APIs).
+> >=20
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> > =C2=A0drivers/iio/industrialio-core.c | 52 +++++++++++++++-------------=
+----------
+> > ---
+> > =C2=A01 file changed, 19 insertions(+), 33 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio=
+-
+> > core.c
+> > index 9b2877fe8689..7e6497828364 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -11,6 +11,7 @@
+>=20
+>=20
+>=20
+> > @@ -1806,31 +1803,22 @@ static long iio_ioctl(struct file *filp, unsign=
+ed
+> > int cmd, unsigned long arg)
+> > =C2=A0	struct iio_dev *indio_dev =3D ib->indio_dev;
+> > =C2=A0	struct iio_dev_opaque *iio_dev_opaque =3D
+> > to_iio_dev_opaque(indio_dev);
+> > =C2=A0	struct iio_ioctl_handler *h;
+> > -	int ret =3D -ENODEV;
+> > -
+> > -	mutex_lock(&iio_dev_opaque->info_exist_lock);
+> > =C2=A0
+> > +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+> > =C2=A0	/*
+> > =C2=A0	 * The NULL check here is required to prevent crashing when a
+> > device
+> > =C2=A0	 * is being removed while userspace would still have open file
+> > handles
+> > =C2=A0	 * to try to access this device.
+> > =C2=A0	 */
+> > =C2=A0	if (!indio_dev->info)
+> > -		goto out_unlock;
+> > +		return -ENODEV;
+> > =C2=A0
+> > =C2=A0	list_for_each_entry(h, &iio_dev_opaque->ioctl_handlers, entry) {
+> > -		ret =3D h->ioctl(indio_dev, filp, cmd, arg);
+> > -		if (ret !=3D IIO_IOCTL_UNHANDLED)
+> > -			break;
+> > +		if (h->ioctl(indio_dev, filp, cmd, arg) !=3D
+> > IIO_IOCTL_UNHANDLED)
+> > +			return 0;
+>=20
+> Changes the return value if ret returns something other than
+> IIO_IOCTL_UNHANDLED
+> which it can I think...
+
+Yeah, I think for the multi buffer support we can actually return the anon =
+fd...
+Pffff, one of those changes I made right before sending out the series thin=
+king
+I could remove one LOC without properly looking at the code :/
+
+Will send a v2.
 
 - Nuno S=C3=A1
-
->=20
 
 

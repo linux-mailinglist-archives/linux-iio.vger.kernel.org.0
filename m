@@ -1,170 +1,117 @@
-Return-Path: <linux-iio+bounces-2922-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2923-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B1A5860BFC
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 09:17:23 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 459C0860DAF
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 10:12:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40639284B9A
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 08:17:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 005A1283CD3
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 09:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A411F168C4;
-	Fri, 23 Feb 2024 08:17:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E12F52F95;
+	Fri, 23 Feb 2024 09:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Sx0CGWFx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FT3wVYc1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B89CF171CC
-	for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 08:17:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8296018E1F;
+	Fri, 23 Feb 2024 09:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708676238; cv=none; b=ZmSZjuLfQWKjlgKtUB9GNENuYcb3q+tyUKKcnXT9btaQSK9Wj7acVp7t6fJuTp8VqcPuyMu7DinyXvt+KMB2ogWDfGkb43fq4DEpo3lEdPTgAFgSv0fzANOxfB82NTOI8167jS8A3/0gB920KiFT+044k0+R6Y9M/y3rw8P3Arc=
+	t=1708679548; cv=none; b=pPm+8tsVbd7WSAJG+03MZik9cgVz7CbwLZpPlXy+uwZp4j1zfhOfPwAXlGHhJ4fHE6zNbBC+0tB5npSIaZJkkn/9H7y5eNJxtGSzynnViO1jF/EyGyO2Z8rAqwz01B1ER2QtFFj+HV80uRofI3s9/SNhapfp7jYcA3gz58LknEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708676238; c=relaxed/simple;
-	bh=WhkuRRTATeRQsW2ArBD8d1el8JnD2Lmq86KmSs95sqo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sd/J6s46vufpcrbh5xvx4SuB8926OR7fMZcAOlDllSGAg+D3FTa0jEE1T5/BWkvECo0+LGG4wL6F3uKEC9/WVhT8TCjlGSbXBfZdHIyVRl9Md5Bd6Jk9JQJos8ZixZ4qOvo4ZWGKfY7U1yn8TXMyS1P3g+hRtjXjpRM43b/O6vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Sx0CGWFx; arc=none smtp.client-ip=209.85.218.49
+	s=arc-20240116; t=1708679548; c=relaxed/simple;
+	bh=G4e0DwZgzfEkvQtXCdqpbPfV2e/HB+U7McCZKqkKS5M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ypt7NozE4Q0pLs6pM9vd2yG0OqgklCNouLfQOc4fj1PoNdnwPqjT+sCfRVmA/3Hox38woXLaiOMDIMpPOCWKFEY290NeZK018HSh4Nd5gLPHA6u0hdX3CSbKD2/C4ZBdy3nQAeorkzcipZcCRDoCZrRJwMwUGCZBLill6LzPP4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FT3wVYc1; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a3f3d0d2787so10690066b.3
-        for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 00:17:16 -0800 (PST)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a3ee69976c9so23834266b.0;
+        Fri, 23 Feb 2024 01:12:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708676235; x=1709281035; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=lovCi5KexcC0vrrtRKXVoNJPekRxeKsrXFSXa7Nnbwo=;
-        b=Sx0CGWFxzQO+b/xDHa6FEU+U11yx950gKZXoX0vjvhQ+Lx85yiJb4kKHw9rzAeDXk7
-         YG4bTCwnQZhIyH+mpCbEI7jcBgsULc/1wi1QrrGWmA9hD/HQ+5pSwrBParie3TlbLO5H
-         sXSDYqfohXQWnjzuaQlVFfRz/R6iXfZmjUAaX+kuQPp311bGZwouGlMHwQXnpsB7Px/r
-         zGxxBc8MOT7I0WxT+DivI5VOv/EMJ+0C7H8t9aYRURhQcmm7TCs5Ef1x082T9I7kVkKT
-         AJJs5ycd707hUfpUbrEBSC7XnAMN/9oZwzLL5DCvUX5aowEGw6Fir8QSBd/LB6Vlh5Ow
-         mwjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708676235; x=1709281035;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=gmail.com; s=20230601; t=1708679545; x=1709284345; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=lovCi5KexcC0vrrtRKXVoNJPekRxeKsrXFSXa7Nnbwo=;
-        b=mEH47+yKp6R4pXwU7HUVmfV4ymEBu+Zj6IYA2yH/uwgEq+E9fjsMDsyhZkMaa1eLwR
-         0+U8yS6eYU5lR7C6M0Pnu8Y4tGq+QXmXJB99kHLr78uwcmwwABn1N3VCz2gTOV2lXa1i
-         cAKkNj5BBYNeDG49mrk2YdT/zAvw+SsXKr5qfj1bhTuFL+sI2GU+7unwPgM4RPMKvCpp
-         T00huJ11ST1QezwJpRZq3XxSkT20TJJD4/Jla6oHJy0sTHiRE4vHid96RaxEo8Zcvhoc
-         tlO3I2sRBY0eYJObKKI4iDwPFhdekR/DQ+zFnsmYPjZdoZSL/MOgcN2nlg6sGjS8eRoO
-         hh2A==
-X-Forwarded-Encrypted: i=1; AJvYcCV4wdF89SQ+YH/4ZZXQmD4JfDgTNc8VQu495xDulJSQXw2Vp4V5hJ6IzuSD6nmXs6JYTT4Lm3DUmn6qJLkNH1dCRjxbk6EU5acS
-X-Gm-Message-State: AOJu0YyARgki/O7EanQ5f3BEtwH4GdJZRSx5qzscayH7361Io1KwAdnL
-	DcflP6UN5DxkA9km3VN1jk9Q0bI7iTgEk9MkohvB6N6aqU5D2FIx
-X-Google-Smtp-Source: AGHT+IFftpKF6iAFjLGt7lhSBbPn/P8WepHBF/dJADOS/YCpywTL8Ymptal/bptfGGd6EOJw5H4KVA==
-X-Received: by 2002:a17:906:ae92:b0:a3d:d1da:1247 with SMTP id md18-20020a170906ae9200b00a3dd1da1247mr708249ejb.56.1708676234630;
-        Fri, 23 Feb 2024 00:17:14 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id qc20-20020a170906d8b400b00a3f980309a0sm1062571ejb.207.2024.02.23.00.17.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Feb 2024 00:17:14 -0800 (PST)
-Message-ID: <a596b6c24fae2a5d163d2f37cf3c914d53bc68d5.camel@gmail.com>
-Subject: Re: [PATCH 1/5] iio: core: move to cleanup.h magic
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
-	 <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
-	 <lars@metafoo.de>
-Date: Fri, 23 Feb 2024 09:20:35 +0100
-In-Reply-To: <20240222192245.6470638c@jic23-huawei>
-References: <20240221-iio-use-cleanup-magic-v1-0-f9c292666f26@analog.com>
-	 <20240221-iio-use-cleanup-magic-v1-1-f9c292666f26@analog.com>
-	 <20240222192245.6470638c@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 
+        bh=B7TTRKcaKxSX56nYxUFwNeziE4nWg4mzChK8nIy4zQA=;
+        b=FT3wVYc1rfYO/pv/LIS8SohVPQ0qYpub9/x6f2R5Ffw1QGs4ql0BACjqEjaNVkYDm5
+         mQh04xXpJHjqBpqKJhNmsAYc9NZA4T7WcJ408RiP6sksvsSOV7JKdTaDkhsXSXUsjq1g
+         gbHxAjKYhsxqOSsFJCXVFcTU5LInikUZIrfW7P2Tjnab/fOkW3OoMn5Lsl4K0nSDuckY
+         xm310U7JGTKzSWC3Avg7iRiTeliw+3+4owAmASVrhMaRD/5Q280p+zzgf7Vw1YjoF7y/
+         CxWcPCaruIzgUcm0Y9cgdbXAVivH3/opNio2E2wr7zfT4ygYO8B0jTGlpNgsbw3rRSQA
+         XJSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708679545; x=1709284345;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=B7TTRKcaKxSX56nYxUFwNeziE4nWg4mzChK8nIy4zQA=;
+        b=unLQnmrq+rNGHVShnHq8JfF2/mE2uQyv9j+CbJjqrUekVXEEFfwInM45GTWyoq1H43
+         vAFOdx353r4laHnRR75LklAjl9YTrMypfqwvwInD5k1djYantctesXEp1a7LPGvz/3sS
+         0aMGtYeQ+E2MVw1Px8JbB0sX1VIOxbLOKGen2U32R7ZUiGK7T0A+xjehLF7bZy2LGWKG
+         vhIhkgNUnuJIyHK6+poHjI5BHIF42XENlBpplOJYJ8yzi997oWnX/v4zOPhGNMBbkDX8
+         5T/L/2LU+IdZwFMSwQ4Z4i+bLEig92IGQOO2bOlL4fjBPHrIaQXXSt+AW6K45OCe396T
+         OY7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXfDomhN4uCAbVsuDF+aLEAl5FRpU8SNzLHZWPVbvtEBmox8CuC1ZRtCc9uOMRUBHutZrT4uS06SY/MFFBV+N9Ms5B0mR1gaSKDcE0jJdPU77ZZJwbXimVNOVqkX6UOIkoSyKUGKHdwbAAGCNMXlRni1xYDLgpoPvgPqlNPdNJ4NBVw9JKx308CEsYt1LHM4VmZImj2aF0dk7Yjd9wa9mE=
+X-Gm-Message-State: AOJu0Yz/stYdTFITH5SuL8VpEkbRTf+1BkfbPJvOZAHnPNOWn1iQlrqj
+	QGzPym4OZk+tYyKNXz4Cl1XyVx0xFaAPpI56QSmgROmtu9yM/9wIADabn9a6H+LEGQ==
+X-Google-Smtp-Source: AGHT+IGLGCCbkeGXPu88yxO4amYonNfCEP1GxwLzLHGQ9mmrYrc9Jeqmgw1NVCE80CotOUAUFYjZkA==
+X-Received: by 2002:a17:906:b2d5:b0:a3f:c6f1:24c with SMTP id cf21-20020a170906b2d500b00a3fc6f1024cmr749600ejb.63.1708679544379;
+        Fri, 23 Feb 2024 01:12:24 -0800 (PST)
+Received: from [192.168.0.221] ([83.103.132.21])
+        by smtp.gmail.com with ESMTPSA id jw15-20020a170906e94f00b00a3e86a9c55asm5116054ejb.146.2024.02.23.01.12.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 23 Feb 2024 01:12:23 -0800 (PST)
+Message-ID: <f2fe30fb-3dd6-4190-8ca1-fc579a06f452@gmail.com>
+Date: Fri, 23 Feb 2024 11:12:21 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 1/3] dt-bindings: adc: add AD7173
+To: Conor Dooley <conor@kernel.org>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+ linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>,
+ Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+ ChiaEn Wu <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>,
+ =?UTF-8?Q?Leonard_G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+ Mike Looijmans <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>,
+ Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ David Lechner <dlechner@baylibre.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240222110817.29670-1-mitrutzceclan@gmail.com>
+ <20240222-defeat-nearly-f83f8b920f51@spud>
+Content-Language: en-US
+From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
+In-Reply-To: <20240222-defeat-nearly-f83f8b920f51@spud>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2024-02-22 at 19:22 +0000, Jonathan Cameron wrote:
-> On Wed, 21 Feb 2024 14:26:52 +0100
-> Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
->=20
-> > From: Nuno Sa <nuno.sa@analog.com>
-> >=20
-> > Use the new cleanup magic for handling mutexes in IIO. This allows us t=
-o
-> > greatly simplify some code paths.
-> >=20
-> > Note that we keep the plain mutex calls in the
-> > iio_device_release|acquire() APIs since in there the macros would likel=
-y
-> > not help much (as we want to keep the lock acquired when he leave the
-> > APIs).
-> >=20
-> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> > ---
-> > =C2=A0drivers/iio/industrialio-core.c | 52 +++++++++++++++-------------=
-----------
-> > ---
-> > =C2=A01 file changed, 19 insertions(+), 33 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio=
--
-> > core.c
-> > index 9b2877fe8689..7e6497828364 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -11,6 +11,7 @@
->=20
->=20
->=20
-> > @@ -1806,31 +1803,22 @@ static long iio_ioctl(struct file *filp, unsign=
-ed
-> > int cmd, unsigned long arg)
-> > =C2=A0	struct iio_dev *indio_dev =3D ib->indio_dev;
-> > =C2=A0	struct iio_dev_opaque *iio_dev_opaque =3D
-> > to_iio_dev_opaque(indio_dev);
-> > =C2=A0	struct iio_ioctl_handler *h;
-> > -	int ret =3D -ENODEV;
-> > -
-> > -	mutex_lock(&iio_dev_opaque->info_exist_lock);
-> > =C2=A0
-> > +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-> > =C2=A0	/*
-> > =C2=A0	 * The NULL check here is required to prevent crashing when a
-> > device
-> > =C2=A0	 * is being removed while userspace would still have open file
-> > handles
-> > =C2=A0	 * to try to access this device.
-> > =C2=A0	 */
-> > =C2=A0	if (!indio_dev->info)
-> > -		goto out_unlock;
-> > +		return -ENODEV;
-> > =C2=A0
-> > =C2=A0	list_for_each_entry(h, &iio_dev_opaque->ioctl_handlers, entry) {
-> > -		ret =3D h->ioctl(indio_dev, filp, cmd, arg);
-> > -		if (ret !=3D IIO_IOCTL_UNHANDLED)
-> > -			break;
-> > +		if (h->ioctl(indio_dev, filp, cmd, arg) !=3D
-> > IIO_IOCTL_UNHANDLED)
-> > +			return 0;
->=20
-> Changes the return value if ret returns something other than
-> IIO_IOCTL_UNHANDLED
-> which it can I think...
+On 22/02/2024 17:50, Conor Dooley wrote:
+> On Thu, Feb 22, 2024 at 01:07:41PM +0200, Dumitru Ceclan wrote:
 
-Yeah, I think for the multi buffer support we can actually return the anon =
-fd...
-Pffff, one of those changes I made right before sending out the series thin=
-king
-I could remove one LOC without properly looking at the code :/
 
-Will send a v2.
+>> V13->V14
+> 
+> I gave you an R-b tag on v13, conditional on the descriptions.
+> Why didn't you take it? The only other relevant change is the added
+> restriction on channel reg. Is that the reason you didn't take or was
+> there smething else.
+> 
 
-- Nuno S=C3=A1
+Just that change. Should I consider that change minor enough to include
+a previous R-b tag?
 
 

@@ -1,141 +1,115 @@
-Return-Path: <linux-iio+bounces-2948-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2949-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF5D48611F0
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 13:51:06 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21E98861224
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 14:00:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D76431C20D9D
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 12:51:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C221F224E6
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 13:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4607C7CF1D;
-	Fri, 23 Feb 2024 12:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CE37D41D;
+	Fri, 23 Feb 2024 13:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Dbw1DeUE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NBCoDNa3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D2C7BAE3;
-	Fri, 23 Feb 2024 12:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7F6651A2;
+	Fri, 23 Feb 2024 13:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708692661; cv=none; b=DUMTSpLTq/binFin+Jv3STbRILxT/oUyaYPWPnx6jcvGE8iwoVvTlpRTx1hKAqK0ZSa12odrlcqyp676rh6FtoD1JDzDIl8fF5EW8yP5A9rZJPPse1JsX3rVAcB62QuuabrUyr5fXkXLZSJ4DLcdGKR0WKaRSR3Z7WK25BDevAw=
+	t=1708693246; cv=none; b=daHRQvB50v3x8tnYmmaQWZgKEClU/lUyK2WaO6TIXOqwcZ7tUJ1FMN1vsCYduKaSW+9rLLZQU0CsJhX87h3Yy/wkB9DgVZlbpPjlo3cu4T11si1iPNjYQF6fB0pX2rqHD4OjXFCstuygrTC6DYzB+1xS00wxRiXmYzp0F9mWhc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708692661; c=relaxed/simple;
-	bh=AVRT8j5RaCn/BZf0gVyzpkugvUL51cHt0DCa7hvPaXg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HEgwhczmue+oSVLZmCaNaQjrTM5jiB1qrZURWyxH31++LXakEIFfqDaKwq47unw/TyibxTHHH6q25w5PLeJZHZ4TM9A1cE9wIIKmwblQUea6rZNQGEvba+ovsgWHLfIrbANf+muEeHK5L4wcRALP67SIpjeP6mz68WWProAEhr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Dbw1DeUE; arc=none smtp.client-ip=209.85.167.43
+	s=arc-20240116; t=1708693246; c=relaxed/simple;
+	bh=v6EOiHBno6M8nUZDXDTbep6dCsGMg7HTrmnr42jez00=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jd5Hp0yIUaenm2Njm2RbRKRtc64SuoQhtbZQHcEHU/I2O93nWYEaFYUoowFASlZxDSTGHRk2qhx8OblX4wBcV0Glrhz6XrOt/27ONjhS1geYMQ0MmHmDFzMszwreIFzabAFsjxD2qJci7u3AoQbkg84mtW1I1JJBiPCVOSsFvV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NBCoDNa3; arc=none smtp.client-ip=209.85.208.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-512b29f82d1so426805e87.1;
-        Fri, 23 Feb 2024 04:50:59 -0800 (PST)
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5640fef9fa6so990889a12.0;
+        Fri, 23 Feb 2024 05:00:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708692657; x=1709297457; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aUQgrMlkxXtdk899rnSTIJQcALfRj3OIxVsQ4kgw0cA=;
-        b=Dbw1DeUEfT9408bUJ84YxJ6WRaLnkfjPWh8aeEmy2S8Frz3oO0f83JkJydOUG9Z1GQ
-         pXk8EcrhZxkBF1cQoy8ok4W4s9LLm423cAEu2vZPh2mfi8Pdmor8tkMEswUR9+eV5Tun
-         L84XAjmuislsX+qUbNorFqCc54TJO5PKpIZvpuRpzvJsvL0go73hqb943TG2Ji63rk9t
-         62tSZUsr4IuPlMt5dZhmmuBkUu+VcoGddE2jNJPacod0eTb73b7IcUZq+wrah2A3qJvf
-         harfhMXRgUjO7xopTLnU/Q5IY413X08VoMMMTjlB0B4tKGB7mCTjl60LRqgyWLvbfGFl
-         mHYA==
+        d=gmail.com; s=20230601; t=1708693243; x=1709298043; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v6EOiHBno6M8nUZDXDTbep6dCsGMg7HTrmnr42jez00=;
+        b=NBCoDNa3to/QC+87HQzrbeWO/UZspMiugGrKtuZXlOB7eqlUp0NdcnJGjIAacRO1mz
+         CwAQ/lvlLAkpuKLwfpjuD/T0SGfKVqISz2hcc7ZYRuA3VRs2gBSm95RbuVsjvAaw9BqW
+         vyMWOTch/5RQvfGlU5Hx4HfYTOOkBqdbEuNJ/C0/PBF0bsnhtVsjTPz61Ds8A196Qn3h
+         OCatMCiHT+HyCSRu4HEBbmrcu0JDpkNRwjHZR7Ki9rp/G8xZWPZ5MNG+2WbWuOi/XiK4
+         dYIINqpaS7umHwYCW5Drtxcc07TVe7w/P0jNBPXY9Bu8j2VhCkW2nWbTX+Db+9dWCLN2
+         ljEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708692657; x=1709297457;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aUQgrMlkxXtdk899rnSTIJQcALfRj3OIxVsQ4kgw0cA=;
-        b=wlBLQyk/efIA8iOuDeSpIbWkC48FDYhe/nf025zrbJDfA/y81wZj8FrbVBOMWcsbHf
-         Dw4r4ZEUT5E2Fn6wfc4pXNfulIDssha8TpFS2Bi639J8JqdgDQRaZwwFnMzsCXHX6Tl3
-         dsRHXfi1mzk175wij5V5lbiZScDHLxiG9Rd3WUBxOIOisLJJeWNOLCyhjWYieZtiowXp
-         m7SNteLWKo1ft8TrpTUkQ7JOCIdRnYo+cJt4GWhjqVA3fi2VtJ/2VMn0qOK6DJ0OxWRM
-         dv3+JaoYXu2GQfNLWEwtOiOZpKMMH2vZQAamIXZeWWTMfGdXrkDlHs/HZcdsGumgumCs
-         d3Rg==
-X-Forwarded-Encrypted: i=1; AJvYcCVQrgqUGCGAnq5WDlShTUaaF7LU53ctnSnww15hQwX3xtDaN1jXSDK2hFb3gElxNaEDfFD56lXJ8VMdY8+t2vrYY1q1hmteQFJm7qFDMWNm4gH5vZjByqerJfxQzWP/FptZqAoa4w==
-X-Gm-Message-State: AOJu0Yy9YQuLEPwXKSfhJJaIaIU5CjVzOwVxwFs2XHxXqBOAJB8RCClZ
-	kauBMr59AVksAvwUoHylymelgtLZaa3br3rrCiF5XBlCWKuXh7fD
-X-Google-Smtp-Source: AGHT+IGyxqZbZALpef/feNcgy99jXbBBv5LDTEdWJz/Xr+7J9fI7cV8HCU4wHYzxgYTrRBp0/rf7/w==
-X-Received: by 2002:ac2:4e06:0:b0:511:7259:370d with SMTP id e6-20020ac24e06000000b005117259370dmr1625621lfr.33.1708692657238;
-        Fri, 23 Feb 2024 04:50:57 -0800 (PST)
-Received: from localhost ([94.19.228.143])
-        by smtp.gmail.com with ESMTPSA id h17-20020a19ca51000000b00512d863919asm633177lfj.275.2024.02.23.04.50.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Feb 2024 04:50:55 -0800 (PST)
-Date: Fri, 23 Feb 2024 15:48:41 +0300
-From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-To: =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
-Cc: linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Icenowy Zheng <icenowy@aosc.io>,
-	Dalton Durst <dalton@ubports.com>, Shoji Keita <awaittrot@shjk.jp>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] iio: magnetometer: add a driver for Voltafield
- AF8133J magnetometer
-Message-ID: <ZdiUKV7JJQ5TglYM@skv.local>
-Mail-Followup-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	=?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>,
-	linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Icenowy Zheng <icenowy@aosc.io>,
-	Dalton Durst <dalton@ubports.com>, Shoji Keita <awaittrot@shjk.jp>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-References: <20240222011341.3232645-1-megi@xff.cz>
- <20240222011341.3232645-4-megi@xff.cz>
+        d=1e100.net; s=20230601; t=1708693243; x=1709298043;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v6EOiHBno6M8nUZDXDTbep6dCsGMg7HTrmnr42jez00=;
+        b=LcWaLfWm+2qYBGZ0WhiVgbYe3pOKyxJ0CZ8Fi0HkQE1sUU2+5zEbC3sj7jE8Uu8+Ul
+         gibwcOLzcgwJzPSKkjPq89opkEptZVM1EHUfg3g96wb6PEbfbXeM9Rf8SeQ195BNrmpa
+         ffcXmdK9JDZ2vK92SI7O2u8IoPgIknZgcvL/gNkSKO1lXoCi7QG4TcXvmdD2LbzLc+LQ
+         MseOBKia5ktp6rdCx0ag7yS+oTQdKRw3t1fRxwoFunSQIrcSUofWVToaemxGSGUyQBUs
+         P0mkck7//KvjoFpTjXhQCLm23+UL6qMkcjrvmtJPLFaaZgHujc12P9kU8c4c6bR0EX4c
+         ExRg==
+X-Forwarded-Encrypted: i=1; AJvYcCXSVsIgZNt1UxyjOV+4PwXNGvIAbSEtbdd860AAQ+LgrOad88TYNZXxjQX4AjPl9qjh2bzKPuEHF4DtWZH/+MO3XxNdwGrIRouSLjE6k0eIkQJuGaH2eVihc6EEll3QPby7q+YfOOga
+X-Gm-Message-State: AOJu0Yx/Kvv4d9PHCLtmck31/o1NUFWkWkMra1c0A1qmFV8Nu2EVg11j
+	wNv3opX8IHgCmpJCyE8JwAeJp/hX0LyFmwMPEfqk6xCIVjf42gkUVBiXvYs7gzr70BttQUFik10
+	fLbkDEQLBEbfDzC5izwesBkBRY2U=
+X-Google-Smtp-Source: AGHT+IEZTPrTP19ohID9DJOrlNAM4cEMjE1ZVzkL+6RbUHcbz/uUGqRu+3bVXh1Mp2P2R6zv/U2YETV35GWSkGwy/2A=
+X-Received: by 2002:a17:906:68d5:b0:a3f:5c5c:33ac with SMTP id
+ y21-20020a17090668d500b00a3f5c5c33acmr1258057ejr.62.1708693243510; Fri, 23
+ Feb 2024 05:00:43 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240222011341.3232645-4-megi@xff.cz>
+References: <20240223-saradcv2-chan-mask-v1-0-84b06a0f623a@theobroma-systems.com>
+ <20240223-saradcv2-chan-mask-v1-3-84b06a0f623a@theobroma-systems.com>
+In-Reply-To: <20240223-saradcv2-chan-mask-v1-3-84b06a0f623a@theobroma-systems.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 23 Feb 2024 15:00:06 +0200
+Message-ID: <CAHp75VfVTJsQDwaPoPgGiT6jnymXAR3WpETqaKai8rXAC70iLw@mail.gmail.com>
+Subject: Re: [PATCH 3/3] iio: adc: rockchip_saradc: replace custom logic with devm_reset_control_get_optional_exclusive
+To: Quentin Schulz <foss+kernel@0leil.net>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Heiko Stuebner <heiko@sntech.de>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Shreeya Patel <shreeya.patel@collabora.com>, Simon Xue <xxm@rock-chips.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Fri, Feb 23, 2024 at 2:46=E2=80=AFPM Quentin Schulz <foss+kernel@0leil.n=
+et> wrote:
+>
+> From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+>
+> devm_reset_control_get_optional_exclusive does what this driver is
 
-On 24-02-22 02:13, Ondřej Jirman wrote:
-> From: Icenowy Zheng <icenowy@aosc.io>
-> 
-> AF8133J is a simple I2C-connected magnetometer, without interrupts.
-> 
-> Add a simple IIO driver for it.
-> 
-> Co-developed-by: Icenowy Zheng <icenowy@aosc.io>
-> Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
-> Signed-off-by: Dalton Durst <dalton@ubports.com>
-> Signed-off-by: Shoji Keita <awaittrot@shjk.jp>
-> Co-developed-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> Reviewed-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-> Tested-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-> ---
->  drivers/iio/magnetometer/Kconfig   |  12 +
->  drivers/iio/magnetometer/Makefile  |   1 +
->  drivers/iio/magnetometer/af8133j.c | 524 +++++++++++++++++++++++++++++
->  3 files changed, 537 insertions(+)
->  create mode 100644 drivers/iio/magnetometer/af8133j.c
-> 
-> diff --git a/drivers/iio/magnetometer/Kconfig b/drivers/iio/magnetometer/Kconfig
-> index 38532d840f2a..cd2917d71904 100644
-> --- a/drivers/iio/magnetometer/Kconfig
-> +++ b/drivers/iio/magnetometer/Kconfig
-> @@ -6,6 +6,18 @@
+devm_reset_control_get_optional_exclusive()
 
-I've tested v4 driver again on 6.8-rc5. Works like before.
+> trying to do in its probe function, therefore let's switch over to that
 
--- 
-Best regards,
-Andrey Skvortsov
+do it in
+
+> subsystem function.
+
+> Cc: Quentin Schulz <foss+kernel@0leil.net>
+
+You may use the --cc option to `git send-email` instead of polluting
+commit messages, or move this after the '---' cutter line.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

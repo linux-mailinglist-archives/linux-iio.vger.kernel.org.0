@@ -1,116 +1,96 @@
-Return-Path: <linux-iio+bounces-2963-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2964-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A38861664
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 16:54:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C89B28617AA
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 17:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2753D1F261B7
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 15:54:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ED601F221DE
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 16:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6151D85C41;
-	Fri, 23 Feb 2024 15:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="d88bnypk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79AF84A57;
+	Fri, 23 Feb 2024 16:20:57 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95D682C7E;
-	Fri, 23 Feb 2024 15:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629B985265
+	for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 16:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708703574; cv=none; b=HOk3afdDiquZcIYsxOXpHp+TXxqpkSUdlsTglDEWDT6WSnlpM+hNnVV2XC/HL8t8wvrj5dZP9iZqdLP4EUj/vrqY9L/17eIBZHX56n3f7jqPjRKRjy0hWHkGtGawC2sVrXZ76x6dWexCoGCzG8ohM5ycORIvFF/KQZ1FqZhwX14=
+	t=1708705257; cv=none; b=BbRBDpYHd0aoguU1d01SAc0maBY/p48wLa42n8H+EhCHeAbEa2qeVtqVV/sEoSXEa+kmHzxpDENHbIAGJJj6ObiWyR7gfXrWwsNUDqXLmKC1oFZt3jnqDMsv3D6IAcDZFAwzbLmpDMkOL2MfD9MT8l4dLRtWxBeic/o8tF52bVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708703574; c=relaxed/simple;
-	bh=6vqPUhZkl0WfTqOLmqR/FWKhYBKPjdvFKKD29rNeGoA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GgErpaYXIXeb5ZMW2yrFy0no/oRCsNd6GMmu99EPSzsFj0FgSlwHchbOW9vWwQm5nXzrnQpcPRxAlgo9wmyYW8t6Ux8NkSfilLTHLYwok6ilRFFBQCqn+is3KYwQ2ufoiU2DSw3Bsd6/LdQxXwLU7i3YlGwbBxF+S6wchQdht8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=d88bnypk; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1708703573; x=1740239573;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6vqPUhZkl0WfTqOLmqR/FWKhYBKPjdvFKKD29rNeGoA=;
-  b=d88bnypkjV7rdDuF9EEllR5CLp9Ohf/eUBBpdHSPTtJxT3UCFVIn32GS
-   Eic/2hDTMsew8LSoEnh1itfnW4hx2WAfEttS1Z1L8lp/oSlL8+dHFKtta
-   XTA6u+FbmfDTxxtg18y75oGS58UyQbApy26oavxlKUUh95bSdfV7st651
-   gIkjGoDc3nZsR2W2V0xJOz8uIUASRylX0Lgd2T/bS1ggKa/EwNTt6S5bZ
-   E95tSDDWWAivAuDMv7EBRnEDEvIElqGm1KGa9pSH/zlXVo5VfGX/dXNKE
-   08/lVyHxc32aO1s0fxNWztUub8L6qtLbkWP55oZ5CFOWTKuJxLFwYx7Pd
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="20564410"
-X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
-   d="scan'208";a="20564410"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 07:52:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="913749612"
-X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
-   d="scan'208";a="913749612"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 07:52:49 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rdXqw-00000006wMT-4AQU;
-	Fri, 23 Feb 2024 17:52:46 +0200
-Date: Fri, 23 Feb 2024 17:52:46 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>,
-	Frank Rowand <frowand.list@gmail.com>, linux-kernel@vger.kernel.org,
-	Julia Lawall <Julia.Lawall@inria.fr>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	marek.vasut@gmail.com
-Subject: Re: [PATCH v2 0/4] of: automate of_node_put() - new approach to
- loops.
-Message-ID: <Zdi_ToUofu62s5zT@smile.fi.intel.com>
-References: <20240223124432.26443-1-Jonathan.Cameron@huawei.com>
+	s=arc-20240116; t=1708705257; c=relaxed/simple;
+	bh=+7BZA6LTHUprC7I7wLeww4jU28nvNwV5QLi3TTys4vc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S+In2bX2dy5lYD+HOOABqO3plh4pOfFJj2uTGgmnHTYlWNF83RnRiY79AzECJcSFMSfoz22VJJxzsLaL9Vs5GZIrm0NTgsJxst/7l+H11XXQbXmMjk06BYSlTB3GW79XOEBvjfte3DCxCIykK8XIzRx2sO9t09PAna5+CdS6m9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1rdYI1-0007El-0r; Fri, 23 Feb 2024 17:20:45 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: puranjay12@gmail.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH] dt-bindings: iio: ti,tmp117: add optional label binding
+Date: Fri, 23 Feb 2024 17:20:42 +0100
+Message-Id: <20240223162042.2658620-1-m.felsch@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240223124432.26443-1-Jonathan.Cameron@huawei.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
+X-SA-Exim-Mail-From: m.felsch@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linux-iio@vger.kernel.org
 
-On Fri, Feb 23, 2024 at 12:44:28PM +0000, Jonathan Cameron wrote:
-> The equivalent device_for_each_child_node_scoped() series for
-> fwnode will be queued up in IIO for the merge window shortly as
-> it has gathered sufficient tags. Hopefully the precdent set there
-> for the approach will reassure people that instantiating the
-> child variable inside the macro definition is the best approach.
-> https://lore.kernel.org/linux-iio/20240217164249.921878-1-jic23@kernel.org/
-> 
-> v2: Andy suggested most of the original converted set should move to
->     generic fwnode / property.h handling.  Within IIO that was
->     a reasonable observation given we've been trying to move away from
->     firmware specific handling for some time. Patches making that change
->     to appropriate drivers posted.
->     As we discussed there are cases which are not suitable for such
->     conversion and this infrastructure still provides clear benefits
->     for them.
+Add the support to provide an optional label like we do for ADC
+channels to identify the device more easily.
 
->   iio: adc: rcar-gyroadc: use for_each_available_child_node_scoped()
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+Hi,
 
-Is this the only one so far? Or do we have more outside of IIO?
+patchset [1] should be applied first to avoid merge conflicts.
 
-I'm fine with the code if OF maintainers think it's useful.
-My concern is to make as many as possible drivers to be converted to
-use fwnode instead of OF one.
+[1] https://lore.kernel.org/all/20240219131114.134607-1-m.felsch@pengutronix.de/#t
 
+Regards,
+  Marco
+
+ .../devicetree/bindings/iio/temperature/ti,tmp117.yaml        | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+index 33f2e9c5bd81..f00c1cb89acd 100644
+--- a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
++++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
+@@ -27,6 +27,10 @@ properties:
+   vcc-supply:
+     description: provide VCC power to the sensor.
+ 
++  label:
++    $ref: /schemas/types.yaml#/definitions/string
++    description: Unique name to identify which device this is.
++
+ required:
+   - compatible
+   - reg
 -- 
-With Best Regards,
-Andy Shevchenko
-
+2.39.2
 
 

@@ -1,145 +1,190 @@
-Return-Path: <linux-iio+bounces-2950-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2952-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0470686122A
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 14:01:53 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29FFA86124B
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 14:10:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97EB61F23271
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 13:01:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 426451C22B8E
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 13:10:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FFC57E579;
-	Fri, 23 Feb 2024 13:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFDC7E595;
+	Fri, 23 Feb 2024 13:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIZGbKX6"
+	dkim=pass (2048-bit key) header.d=theobroma-systems.com header.i=@theobroma-systems.com header.b="f5RjaxiE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2111.outbound.protection.outlook.com [40.107.8.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C641097D;
-	Fri, 23 Feb 2024 13:01:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708693306; cv=none; b=igYiSHV4vTgonX8F4Hm8OHNqGl8nkPMfOaWMQzEuOJ7jnHuyjianN+dPIu0exiV5q7hR4yCF58xCTXVjyu9mHtjBawxV0DZKjfmBMAWVJ+cyVuhL35Se4apKA3ueAZXCpSvyJJhE2BJ441m9FZJPCe3cnZoDHrebMSKIi6evkPo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708693306; c=relaxed/simple;
-	bh=KQF9YPtUSkRZ+JpmVKYQ9PTQCWFyX1w6lHWuY9DzDgA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=k+kjKn5pQR5aBWDatbC1v4UuZkyf4PvYjtb3jS8gru+EYXmj1p0OjWtOOpE2Eb8PJsrIw8SASq+F+6iXrAo32uhw7U9KuaeZ1JAEFZHZlMxr54A/Z5lzWBg1L8D4LxVO9lwi2qAeN6kTWNotq9GhixFpYXvSrA+VAhDbdTkKSnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIZGbKX6; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-55a035669d5so1232689a12.2;
-        Fri, 23 Feb 2024 05:01:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708693303; x=1709298103; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xwVLrP5e0GKj/Gr/YOGNMocGh8+7OdL1LctFVaC5kRE=;
-        b=XIZGbKX6V6uEg5Y+Lbbk7BBTes+VSiBo1ZgMcXfC2kjArSB/VYl3qJ98dvmQKgnjws
-         DHFRNvl5r8sYKak4F2M5/akcsDWxqeKqBcHAIqGDrMuyk7KUR5NSNjzZcIYcs4nJOarp
-         ZDV/qPr8Z3t7vJbc1YTziCSRSxy4BMRqOIbUOXkGeqE0L0QJQqyqi/csxTGTDDmfPkl8
-         QLibFPOMbxxNVq/3QJDPxF7xMKe3VeIMlCI9Nl33C+ZdB4w/7gy/5a2YPDJiDK9e3pbi
-         KlUSEOnhD5HSJkvq2GePaXRWKFAyHtLd0ZyMKdrTATTdo0iODd2M2NitzlRq3dABG9QJ
-         QAiA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708693303; x=1709298103;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xwVLrP5e0GKj/Gr/YOGNMocGh8+7OdL1LctFVaC5kRE=;
-        b=QYoDu2JUg7a5YWCd0aisITqSTvHbOEofPbUtTMSH0AXfnGjrNKm9G+z89lgU7ZvtE1
-         eIlcZatNzeYDniKOXDFn5crEU/EHP/rK5F6E6uUBuuJqEH/hiKPfpbhO+5sMF42ZKEl1
-         XoJ70LCo8CKPS1CGLF1Z3jBifqs+6Pr12GE1SABrIEgKPB40XqAOF0m5XEjr77OrNuKu
-         uhslgHHQb+jLgido+DWr1IUxQM4HlAnjMBBK1eZ9mx7penzUivixq805WlwjQpIWGiQp
-         wOHTi+Mu74WHC/u+W/CaJRbgSLvYjMGyD+AZYaVGIqZFrZP112rJC2xxw/rCv8QlU+R6
-         3WOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXZemhcId/265iVuvv/fl2c5q8T9VEEes3yQMdSI2adQ97NBgnCz3jLW628erjEt9t753b02QzFjn7cTPBdnBwpDPfrcNj9+EBj4GqiVsQPOhgHBIVEgp00yOWhrlHCoAKLK7DSZrTcEg==
-X-Gm-Message-State: AOJu0YyaYruESvEjUIPpugE71H6v351eJo6F+jTXnNM5q6RHVGDaS/pz
-	V89JciQx3xXfinEgO8IOWv7oyT2y8JZCYweq3eJxGGNf+ne7R+Kn
-X-Google-Smtp-Source: AGHT+IFCQ/Ih92c2I54+6GuGrhk/vwz0fRL3tiy0H59PHeDEy+El5xAW3oSpdtZT10Gsmpk6GvNc6w==
-X-Received: by 2002:aa7:d69a:0:b0:564:26d9:b4ac with SMTP id d26-20020aa7d69a000000b0056426d9b4acmr910512edr.41.1708693302729;
-        Fri, 23 Feb 2024 05:01:42 -0800 (PST)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-a1fd-07e8-2475-107f.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:a1fd:7e8:2475:107f])
-        by smtp.gmail.com with ESMTPSA id g14-20020a056402428e00b005642bcfed99sm5954561edc.23.2024.02.23.05.01.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Feb 2024 05:01:42 -0800 (PST)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Fri, 23 Feb 2024 14:01:33 +0100
-Subject: [PATCH] dt-bindings: iio: light: vishay,veml6075: make vdd-supply
- required
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47DA651A2;
+	Fri, 23 Feb 2024 13:10:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.111
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708693824; cv=fail; b=SAuvzyt1ghzeKmQKvJEu/3gLKPPvRERrVPkEC9sWzWHxeGh8V1rBDuSEIDV+LPcE7ht16mfTqTDS7i4lKnrGm43ZRkjXzIx44HKl6/Cflrb9Wgs/iL8oJpaHAxoQTLoPJVkRCRnZO88MLF0dOTdCdq+33OUwtdMzOx4X/JLVCXw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708693824; c=relaxed/simple;
+	bh=0kcWSeb5OU0M+gQ883HPl1++WCoYXsYfxBWY6d8pn/s=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=FxlOlphVdJfR06oVYdw9IrhkJMiAF33MkiWK2LtbIMfuq9c3Ksr7DbRYcVOiF+MREhEBQ8UFChuaOgCJkGrJ8SndHq2onN7uZRzpX4vmbdJ7an4LLvAah852PawKDNuyMtDQvZCa1ZkKcfb/yUa9af/EAmYyD/kLnj/Hmefe0rE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=theobroma-systems.com; spf=pass smtp.mailfrom=theobroma-systems.com; dkim=pass (2048-bit key) header.d=theobroma-systems.com header.i=@theobroma-systems.com header.b=f5RjaxiE; arc=fail smtp.client-ip=40.107.8.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=theobroma-systems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theobroma-systems.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hQUzh88AvFtrD6njhuDnl8RDaBDZmDDVcGwdK5kCbE9R7X124rGJyC6TV/pIy6zKq/cq/o6/KwcxyF9VfJvYCgtr2TvxJYDuZbKJt26+54v3oypxtO93n0TqVu2H326vMNMZ8wRaLio7t5DLL4/TOMBaPvMUPkKNaD+T3I1xr7SaXjPGFx3iC4jeYMW+iSXbsXAdtE8JiGmsAbLvLqUUNk/mB2skQdEh6UV5pG1e0A3HHJraCU2TC4I99HpQ+nFQJ/rgCxoE0bdxGa+xS3UgpHea+LdazyhMqgdY1zVps8zHIWdCJjsQf7MOezqzHPQN6FIJeqkqzqIUNROEisiWtA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=h3kOLtuoNtwSoEE/BpxFI3fM08A5Vd+Wc2BwQF0qxc8=;
+ b=G+oWsMRr7C6AL24y7Wf4zb+N+VmtQwhuZc2Zjo2ogq/i5stZNPl2h4K8h6B3DMb8mQ6LIQuAUl1z2rP0CGVWGL+yNpekzYl9JxNk5X96t2ylO6puzyE1PQTy2IuN6MrgZLBpW+vMOtPKAtZ06GVzbJ7hkEw6ZSuvTtjoYm5i8KRUVfNJ1G4EuuLYVD5LCNXyYKfWZAQHgBDtOu2zv/WvNaH3SZ3DiNNwGwGlcMfJwm/ge/dcs+AoH2GARVKzaJS3IVfpeRetqxzqu41CUtVu1g6VxJG2ENcp/ZG5A1r8IrYe9ukvRDxjBWumm+Dg2gCeAUbE9eG4unLfYCcRMfYsLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
+ header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=theobroma-systems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=h3kOLtuoNtwSoEE/BpxFI3fM08A5Vd+Wc2BwQF0qxc8=;
+ b=f5RjaxiEHUgKt9xQLQ/l37pyHQ2gljzftT7b8wlMIKhkxQO0tvTZ0jh3+m/IaH42BEaEaX07KU0Eli2MBwE7oThbZ/UBJxRqAD/nUpURZAY82bKaGKcu/F22NVWFfWICdHvlYIS1yutcKhOmWfYJH67QMlb+rrNdPX6Ov/Qun/B28dHSPaNbs0sgIflnvNmytGov6F/U3srBoMl6TXlHwnhqrWPvFd+j9jy4t/C+ED8pZhHsqcV000vzxTP+WFfz2ZYZkk2r4G5cOLuBCokNKsYPI/w0wcgkyNxdUtmnf9lDE1t5oI2uarzSsCvE0GsziRVigZlOp84wVrRiPK8ElQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
+Received: from DU2PR04MB8536.eurprd04.prod.outlook.com (2603:10a6:10:2d7::10)
+ by AS8PR04MB8102.eurprd04.prod.outlook.com (2603:10a6:20b:3f3::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.24; Fri, 23 Feb
+ 2024 13:10:18 +0000
+Received: from DU2PR04MB8536.eurprd04.prod.outlook.com
+ ([fe80::550d:ad96:e3cb:9a6e]) by DU2PR04MB8536.eurprd04.prod.outlook.com
+ ([fe80::550d:ad96:e3cb:9a6e%5]) with mapi id 15.20.7316.023; Fri, 23 Feb 2024
+ 13:10:18 +0000
+Message-ID: <6f76ffab-69fe-4afb-9d7e-d3cdfe37c28c@theobroma-systems.com>
+Date: Fri, 23 Feb 2024 14:10:16 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] iio: adc: rockchip_saradc: replace custom logic with
+ devm_reset_control_get_optional_exclusive
+To: Andy Shevchenko <andy.shevchenko@gmail.com>,
+ Quentin Schulz <foss+kernel@0leil.net>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Heiko Stuebner <heiko@sntech.de>,
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ Shreeya Patel <shreeya.patel@collabora.com>, Simon Xue <xxm@rock-chips.com>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240223-saradcv2-chan-mask-v1-0-84b06a0f623a@theobroma-systems.com>
+ <20240223-saradcv2-chan-mask-v1-3-84b06a0f623a@theobroma-systems.com>
+ <CAHp75VfVTJsQDwaPoPgGiT6jnymXAR3WpETqaKai8rXAC70iLw@mail.gmail.com>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+In-Reply-To: <CAHp75VfVTJsQDwaPoPgGiT6jnymXAR3WpETqaKai8rXAC70iLw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR2P281CA0147.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:98::12) To DU2PR04MB8536.eurprd04.prod.outlook.com
+ (2603:10a6:10:2d7::10)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240223-veml6075_vdd-v1-1-ac76509b1998@gmail.com>
-X-B4-Tracking: v=1; b=H4sIACyX2GUC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDIyNj3bLU3BwzA3PT+LKUFN1UIyMjA0NTi7S0lEQloJaCotS0zAqwcdG
- xtbUABUzEbV4AAAA=
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1708693301; l=1623;
- i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
- bh=KQF9YPtUSkRZ+JpmVKYQ9PTQCWFyX1w6lHWuY9DzDgA=;
- b=15qwh5h1OZ9vnbKVGCStogGtXAfMFwg53a3w02a65gKd0dwPQP8NwAgtuX2ljrmHo8HEuOXig
- 4Y/l9iXdGC4Cxb0a6oywIw6RWlZmhafKlKHZxS6at+esk8Mj9c/poZE
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PR04MB8536:EE_|AS8PR04MB8102:EE_
+X-MS-Office365-Filtering-Correlation-Id: c8ea6fa1-6e14-4bc1-a350-08dc3470c845
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	36ZRWF0wG6ixhqHKzc/oJYMbXHIXCbB9Q3p/SoRNus9uJtlNotxLvVMxSKyijobJkoYCyDMOAqi+VR4zE7QZI5yJV9I4SjS8QebzHGN4+INIGnPcD5uWIK2J8S71pLgziMQn0VYGBQQMh5j3+iAeMcCQIgf5qA/vpy12CJo9U9CCARd3zq2LQxu6mKCjMbxjRWAkxnXZr17ivyG8RZ4DkjvEKAs+7OhzFa+jV9WgKHPWxhqAi6KS5rIJsgdKykceILcX/fYqO5cr9t+IP+hViS4DIAj3pTM+uLuN8svWZhtPPpUMMCsDFpuLpgjrASL3uvDBvwexNx69BqdlLJTWnzZc4zRxoglO+mJVKPatP6nNPLSe0Be1u23jAjZ0ZEGZxw+nc5HJo+BbxZFFIcJSxwOnl87Ms0wgMfiiJlxMM6rf7W27W5EhTq1vHs5YATTYYZyJKzbPqjRshkRWZu+6YJkml6xOxvZE6j0n1xn1ei/lpmFTin93ndDwvvZn9KmS88mxHpLJRVFPJ1BLbnVPM3fhfasembdCzfvZ5BZ4mpM=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8536.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZVlaaERwZXRwQ3Y3bnk1cTdiWGp1MjNUcW14QjcxSUJLTTVkcW5EQ0pnV0dG?=
+ =?utf-8?B?QU5jaGlucnZraHpadzBlK1krT1BGbjRNRFZCeElrMUpaSWNralJXeTNiOHd3?=
+ =?utf-8?B?eFk3a0tuL3NWQXFUVnRjTWhKaVQ4UnVTTExCamVWT2ZGWFR1Y0Z1UTN3SDVM?=
+ =?utf-8?B?RFZ2d1pZcHJWMjNDYkhidTM4R3ZSZmZRM1FwcmJ6V3hDMU9zaDZSb2NMZVNC?=
+ =?utf-8?B?UXRMZlkveHNlZnZ6WXV1NXladTFVMHlHUzhsWjI5TlpVMGE0RjU1WHVRQllk?=
+ =?utf-8?B?WjRud2MvcTc1bjJpVWk3aVFPM1JrekFtdnB4eHphRlE2RTFXMXdBTGlCWURi?=
+ =?utf-8?B?anBaMzYwY2RjcXRSNGtlT3ZTQjNRNEd1QzJuS0MxRVpjaDNtTUovREE0OXov?=
+ =?utf-8?B?Z1BQRlNBaktLNnZQS2lTZENOMmUwd3hDc2xiK1ZuTVRGZy9QV09uZ3ZwWDda?=
+ =?utf-8?B?d2h3dk0rMVZwNDU0N0FreHk2M0poemU2QVFua3dFcExwNEZobGpZajUveWN2?=
+ =?utf-8?B?cGxwSzlxdlNJa3lFWHhiVnVuUk8zQ2Q5b2dLL3RURmF4ai9NT1RxUnFxTHVS?=
+ =?utf-8?B?Wkc1bGtTRnlUZDViUWQySUhwUVBUUmNONm5Ma0taMmpSTjlGVlhOK2NkZkZj?=
+ =?utf-8?B?MHUrV01wS0ZFdUxCMnpZdFBtc0d1RW1MT0E5ZXVNYnVVR0xOMXdIU3ZOUjRW?=
+ =?utf-8?B?Z1pZdVJubGM4cUtQWU95ZEVRZUxEeUg5cEFMOWw3UnV1Q0IzYkMxSzF3UEpr?=
+ =?utf-8?B?K1QyQmRzeTZBRDNlMkFVaTZ5SnN3dmd2QTBodVIvOVgwa2N2bTMzSnFFT0V0?=
+ =?utf-8?B?TnpQK1IzVUlTV1hyNVFmL001aVNqQ2h4S3RnUTV6d2Z6dFpKMFZYR1hkTUR3?=
+ =?utf-8?B?eVEvTmd3dHorS0JWYUQrY25JV2YvamVRQ1o3ejBJNXJDMTBnNkVUeWo4S0ZU?=
+ =?utf-8?B?VXIwM2ZLOUZXUmFnMmxrOFd6QUVhODExTE5MMVJBWGcwb2dIMlltbDFLams0?=
+ =?utf-8?B?aHF4ZStXNGE1Y3pxUmtCUTJrQlZpSDdzbmt4NUhQTTRrM05SM2FxSmJrM1BE?=
+ =?utf-8?B?VURLeTd4ekRrcGNFMDJkdkpNUXBDMkhMcnZYTGd3T0JBUE1CWnIrRU15azBU?=
+ =?utf-8?B?WmJqS2ZjbWc3WUpSSDZydnNlaWxTMWN5NHN1cUZKVkttUHF6NzJjYlZCN3Bw?=
+ =?utf-8?B?YnJXV3pkTWFmV2NzTUl1V2JNZTAzT3V4a1FWUms0ZTBROEdEaU1DUXQrbDc1?=
+ =?utf-8?B?STZzYWhSMzJiVDcyT0JiUmVWc0ZqR01KYWluUnVKOGdmcXdPTm1XRG5Xa1Ix?=
+ =?utf-8?B?ZFFoSUVZK25LaEV2aG5seDdKWXZ5WER6M3NMcE9XVjA0V1BDRDdYdlZlNkFQ?=
+ =?utf-8?B?Um1BcGp6NnVyUVl3UFNVc1JVd0RnaFVKZFY3NWVmNHdpLzdOZzZmU2wyR21u?=
+ =?utf-8?B?UmhUcHNYWHUzNjd4Yis0ZlhQWTYyYVR5ZFFneFVDUUZVck5Na1ZXSGhtMTEw?=
+ =?utf-8?B?S1E3Rm5FRDNad0swMEZqUENWeENMYmRYVFdlTHE0d0Y3Yk1Qdk90aXJhckhP?=
+ =?utf-8?B?a0hGNGJKL010dElEVmpINE05c1U0eHBwVFZ5dFVZVGVVeUhDTmFlMzBxWDk2?=
+ =?utf-8?B?dCtxYkJTUkNsN052bEhrYzRibm44Z0xTTUNIOVZ5bjlIdk9XdlM0Z2g0WEc3?=
+ =?utf-8?B?eGNBb0s4NjhLaG82UnN1Tmp5eTJVUm5lSnJNaVp0YjM1TmhoRzh0SGVNc2ps?=
+ =?utf-8?B?RTRLblcxa2xkYWYvK1FPZmFNeFRrK0thZlFoRHNxREEvbWJMUTV3U2tNZmJ3?=
+ =?utf-8?B?UHlrMWk2Q085Z1JXWFI0MXJqWXVHbGo1SzNFVUkrWENZWXRxbDZGSDFGVmxP?=
+ =?utf-8?B?WTJJeGZaRU93RXYvaS9aTy9EKzBEN2cvRDdWM0lvbEg0WnJXYng4VEhMZURp?=
+ =?utf-8?B?UGs0YUtqUDBxNlNmV2xBQUFlM1o2ZlhlWVdraTdsVXFvem8xcGxpMW1VdDE5?=
+ =?utf-8?B?QmxxbERMVDhRa1NnK0lnTFZBMXFnRkxzUXZMdVo2aTRJRXRuT0c0eU5VZE1E?=
+ =?utf-8?B?QzJUUDdiV2IrMkdPWWcydDVNU2hvcWFhRkxENW1jWHQyZUZEYjVBZXFMa3Na?=
+ =?utf-8?B?dW9ScGpHL2R3REJPMWpFZWVUTzdFem9YYVZHSFBMbjJLQU1VT2V5RU9NaU9J?=
+ =?utf-8?Q?ri3g6KjuuVmF3g1IYdSes/Y=3D?=
+X-OriginatorOrg: theobroma-systems.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c8ea6fa1-6e14-4bc1-a350-08dc3470c845
+X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8536.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2024 13:10:18.2303
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZjsRtn2kFDvwwEHPcVkMBqgtsJs/mA8YmRuecK6os2tdOGuGObnx0iSsx5posME7jE2fQ/i+g4XuaKQmXPoCpNoz148h3KugqEh3SHp5SpMPoB9S8suiA5/JxodiIXLY
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8102
 
-The VEML6075 requires a single supply to operate. The property already
-exists in the bindings and it is used in the example, but it is still
-not on the list of required properties.
+Hi Andy,
 
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
-The driver and bindings for the VEML6075 UV sensor were merged in the
-merge window for v6.8 i.e. they have not been released yet beyond rc.
+Thanks for the prompt feedback on the whole series.
 
-Applying this patch as a fix now would avoid an ABI break like the
-recently discussed here:
+On 2/23/24 14:00, Andy Shevchenko wrote:
+> On Fri, Feb 23, 2024 at 2:46 PM Quentin Schulz <foss+kernel@0leil.net> wrote:
+>>
+>> From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+>>
+>> devm_reset_control_get_optional_exclusive does what this driver is
+> 
+> devm_reset_control_get_optional_exclusive()
+> 
+>> trying to do in its probe function, therefore let's switch over to that
+> 
+> do it in
+> 
+>> subsystem function.
+> 
+>> Cc: Quentin Schulz <foss+kernel@0leil.net>
+> 
+> You may use the --cc option to `git send-email` instead of polluting
+> commit messages, or move this after the '---' cutter line.
+> 
 
-https://lore.kernel.org/linux-iio/8409a5bc71b995e3b738b817a074cfb131c3b2b5.camel@gmail.com/
+The whole point is that my SoB and authorship is from my professional 
+mail address which is likely to change over time, the Cc is my personal 
+one for development. Basically, in the event that I change my employer, 
+I would still be reachable at that Cc address without having to modify 
+the .mailmap after the fact (which won't make it to an earlier version 
+of the kernel for example). Some maintainers don't really like this, 
+some don't mind, we'll see in which category the IIO maintainer(s) fall 
+in :) (I don't mind either way just to be clear).
 
-On the other hand, from the same discussion it can be concluded that the
-major risk would be a potential warning with dtbs_check, in case this
-patch is applied during the next merge window.
-
-The VEML6075 driver already handles the power supply with
-devm_regulator_get_enable().
----
- Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml b/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
-index abee04cd126e..91c318746bf3 100644
---- a/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
-+++ b/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
-@@ -21,6 +21,7 @@ properties:
- required:
-   - compatible
-   - reg
-+  - vdd-supply
- 
- additionalProperties: false
- 
-
----
-base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
-change-id: 20240223-veml6075_vdd-e2220158ffda
-
-Best regards,
--- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
-
+Cheers,
+Quentin
 

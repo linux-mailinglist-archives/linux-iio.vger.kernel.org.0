@@ -1,165 +1,155 @@
-Return-Path: <linux-iio+bounces-2920-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2921-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3D1B860595
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 23:23:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 263BC860BED
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 09:14:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD9C8B23DA4
-	for <lists+linux-iio@lfdr.de>; Thu, 22 Feb 2024 22:23:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BACBB1F24BD0
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 08:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2DDB137908;
-	Thu, 22 Feb 2024 22:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E9A171AC;
+	Fri, 23 Feb 2024 08:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Wk8sM5Jr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="au1tOZ+V"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 287A573F37
-	for <linux-iio@vger.kernel.org>; Thu, 22 Feb 2024 22:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72EC4171B8;
+	Fri, 23 Feb 2024 08:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708640624; cv=none; b=ElFOuPXl42pwrmoRiKOME2YezjlJhAWyDef8o8OrkbzZjb9edIvH2PfQsLQ6YY8Iv23/0CQ75H5fHV7JqVg49DA7/MDp4VgqhpvrKh6duX3+ZKDYlE0/iKMf6a5AP4WiqrxcX0kPERkleW7LHHHVW36bidsm/xvkG/bHXVriyJ4=
+	t=1708676039; cv=none; b=gDX1ryU4hi7cGoO/q+EByV2urTInHtFK3v40etUm3fQpVSU9yZHxDFlI7UZpBtXX9ngwaoTNqdUQjo1N/Cag1MEJ7M8GcqdmOjRFJPnsf5plB6x7WdubOFiDNejuFsr1um9AXEaMROgLi/wBl8l/66E3Z4nOlP4KlXtQqHeBOMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708640624; c=relaxed/simple;
-	bh=0xRi+wRovLEtle3IAhjBAqJ3i0Q5IwxvEzplbN5MjGY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=juEkYIIj1miDq+ioDgo3Rd2olAlMiY60BIIfnAVRA7ctkZmHkW66ALQapY8TYHw80DDsaDQZet3sooFpPdUMAdT01L/IfDlwYOH9wDA9ZvKK5OTt9JF7X9Jd2ttuvKacgDRGHUXBcmG25cMH1sAcXztErwbNAK2pwNvIe0Yo9sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Wk8sM5Jr; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1dc49b00bdbso1282975ad.3
-        for <linux-iio@vger.kernel.org>; Thu, 22 Feb 2024 14:23:43 -0800 (PST)
+	s=arc-20240116; t=1708676039; c=relaxed/simple;
+	bh=JVSNT7wTGn9ub9sFBrLZXOKoSP1lL5F6e0EnQSp1JNM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rQ/en834jFi9nC/doUyrhlmQiL9D1ADkB2uynUxT3vs36PnMY4PVOvxDsS6A4PdD0xthNgHgMnBB+sGpmtsdijEazQR3YP/zYtwgCXQUy1GUllrZlj8+o7sY1pWq8sXNi9MUVyc+RZ3ETwAGEZ+fslN68sUuiItjnBtfnIHoV1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=au1tOZ+V; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-564372fb762so631969a12.0;
+        Fri, 23 Feb 2024 00:13:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1708640622; x=1709245422; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q+5ilM19CFuUy0zgxwZQpQ+MBc9LAqwOhihVDIFuqNw=;
-        b=Wk8sM5Jr5RVyv1CJ8e2xQ7BJ05jg8DtIk2sQRodjsmsowBM38MTt9Ik6ECevL8beVg
-         CxDVqSaPBAl0NpcyJI092dcwpNPngExtl8mRPRMIv+wCZ6leaMpld2aW1BD2rUi2KQpu
-         LuBWqlxFSzqTpjHIUZ+R6pNOHGE8H6M/i6id8=
+        d=gmail.com; s=20230601; t=1708676036; x=1709280836; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=JVSNT7wTGn9ub9sFBrLZXOKoSP1lL5F6e0EnQSp1JNM=;
+        b=au1tOZ+V85kxTQ6sPTzPCDiBg7VoUIcCv+H43u+N7wzw03q9je3bmx6FOZQMaN6uiM
+         paeQ2P4OQXf3rpuRJriO8UMdZJYE2wSgD2eyA9RYs5YXXwyo63WFRadhf/SsP9Xk0PHe
+         G+zs32cAd3iRs/sFfDehTVazRgVlTNiwqQeVyCrP23O3HZ1dj++cv7ysqDJG0L2vn0FV
+         L9SISS0COt/n6tnPxml6mTUM/ZzS0bSzOjMdTl3fABdoj27k/39ufUYTgzo5GELcD+29
+         8zG6RHVUQnukJZMoONlRwYd9FJHvsyEOz/H+MCqnEOyZwXCHDPAbNhbiydP8k5/YGBL9
+         ieOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708640622; x=1709245422;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q+5ilM19CFuUy0zgxwZQpQ+MBc9LAqwOhihVDIFuqNw=;
-        b=hqQafKi9zsLO0P1Ooiny+QaagggcrcfMXe6MLG9JPZ2/Q0ihXCmnqV71QhbC5D7fUB
-         /7avNK+UDzLyG3E/1/Skh1d1y+P75SFIKgf7u/7UDLvzzqleakPnOUDh6cvL0/HmwCwr
-         BhnL10FNltFaW+ljwBrEUd+NuFNrOOMf9I0HYDFHBTzCDlAyCybH8EzShuup+/Uc+LHY
-         zI1GaDCpTYasTfxPlQOLNPIJUmoAPIE9WvRyISkbBYrjIFaRD4ppiHZGo/lr2PkJusb4
-         AHQwaRfOarOVl0dgU13wcIw8fQn4SqnUlpqArNqykrMg/aDrZO7pDktwEcqMop3Q7XKq
-         ksQA==
-X-Forwarded-Encrypted: i=1; AJvYcCXPoyRL84D0YdHKYtRbtEz+4AOQENSAV03eNdlYGh/2469ZUkQh5gEBMs7ghl8jcsCLvLBXiY0eIaGULKukWUVw3rU40gQsaOJW
-X-Gm-Message-State: AOJu0YwlpP1lbYYyJAk1JhhC3YJBMDU8kPsF5EPislX6rXRWZTy0pj+T
-	To6YzSJIfCvwWdIsSVHH2WTLCpgfLa7Odcz7FYRditelOJnVBADB38g5uYSrHQ==
-X-Google-Smtp-Source: AGHT+IHTlMT87C9FVzzBUlliIz9cjmezsgccL1stCQ33LCcAcJX6p5zAFxvPwu7ziBvSPYuZmtGtZw==
-X-Received: by 2002:a17:902:e5cb:b0:1db:d13e:26fb with SMTP id u11-20020a170902e5cb00b001dbd13e26fbmr266381plf.5.1708640622569;
-        Thu, 22 Feb 2024 14:23:42 -0800 (PST)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id g12-20020a170902c98c00b001d8aadaa7easm10458002plc.96.2024.02.22.14.23.41
+        d=1e100.net; s=20230601; t=1708676036; x=1709280836;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JVSNT7wTGn9ub9sFBrLZXOKoSP1lL5F6e0EnQSp1JNM=;
+        b=LC9LKvUXitXx5HAvlmWKSj2qUTYMoNZly8yoZ729w8kNaTjf5MKhsEg+ByTqN5hCQj
+         nqKh2+OnZFyZxchKR6L7R7GDjhZ9vouNPESoSF4Z6F7IAPY9qDT+nvYySJIS1Nz7m8ei
+         v3UzQWLLFbnllCl8m69KQvBucmuW3a8U31EWVeFaeMIe0LBWDwFwVHGHanZXdYCLY+fN
+         pjMaRQo5jzqx7EHwR0sRgb3WdQw8zz53lL/Wct//uisowMTBkrKIoZaoXlKIXUWZDjeB
+         1XWWihfSk0u3zU4p9S9DDrnDTjBinDeGsSrL0G2IWv/IDLAGpTJnUhl2wShKLhXTmlDc
+         y2tA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYiFIsun/k7URPXin1Gbs9zFZuafRIGpPhVWenQH/3rUPsXpN/oxwNAZ429l0MDaHUzLMpnQ2LYhbEjqa07A1O3y0OeYcLx4sjcSKc4m0wdMac9l5iRXpV9kTnRIdUgjFotBUJbg==
+X-Gm-Message-State: AOJu0YzvLEVOCKptQmmAfv7XCEUmvMNzoNROnLxiJJ5PV0OdIeXmxG0V
+	4KrLJZ/aQjcFRPYSOS+qxsx7nWVC0ImAFW2WxkaDe9HUVa5b/ICs
+X-Google-Smtp-Source: AGHT+IFjrnYOlFxMq2/FqTGqrIDQ00Kgutm32PhLYFUA33uWMTA/KEkrsvnIG5mEAXL9vADzt8nTHA==
+X-Received: by 2002:aa7:da57:0:b0:564:7962:4545 with SMTP id w23-20020aa7da57000000b0056479624545mr702447eds.15.1708676035442;
+        Fri, 23 Feb 2024 00:13:55 -0800 (PST)
+Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
+        by smtp.gmail.com with ESMTPSA id fe12-20020a056402390c00b00564fa936b2bsm2176762edb.94.2024.02.23.00.13.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Feb 2024 14:23:41 -0800 (PST)
-From: Kees Cook <keescook@chromium.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	linux-iio@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH] [RFC] iio: pressure: dlhl60d: Check mask_width for IRQs
-Date: Thu, 22 Feb 2024 14:23:39 -0800
-Message-Id: <20240222222335.work.759-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+        Fri, 23 Feb 2024 00:13:55 -0800 (PST)
+Message-ID: <8409a5bc71b995e3b738b817a074cfb131c3b2b5.camel@gmail.com>
+Subject: Re: [PATCH 5/6] dt-bindings: iio: temperature: ltc2983: document
+ power supply
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Conor Dooley <conor@kernel.org>
+Cc: Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, Lars-Peter
+ Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>,  Conor Dooley
+ <conor+dt@kernel.org>
+Date: Fri, 23 Feb 2024 09:17:16 +0100
+In-Reply-To: <20240222-lance-sprinkled-04a7650ca316@spud>
+References: <20240222-ltc2983-misc-improv-v1-0-cf7d4457e98c@analog.com>
+	 <20240222-ltc2983-misc-improv-v1-5-cf7d4457e98c@analog.com>
+	 <20240222-component-stiffen-d046386433b3@spud>
+	 <f31abc7140dfa8477623d4fca8abece03d37926e.camel@gmail.com>
+	 <20240222-lance-sprinkled-04a7650ca316@spud>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1986; i=keescook@chromium.org;
- h=from:subject:message-id; bh=0xRi+wRovLEtle3IAhjBAqJ3i0Q5IwxvEzplbN5MjGY=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBl18lq4o+31/1R0DWW8xWF6Y+7BP30IH/M1esol
- O1U6dy83cuJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZdfJagAKCRCJcvTf3G3A
- JtaRD/9phV+1oaxweCDWM7RyA5yYZNO0eEqTdKf4RB6phXBkx9kEI7rGUVfbyrXtZ0NC+Nx1rNv
- YPwLgODU6hZ6heWm1tX+r26uJ4XR7UM/wqORisZmp8e9X4iicnJtPPF9BpC8YsWfbDf5EFw09ip
- N+4mhNwKHfW6hvAG4l0ujSvKtJnIGTaKy8JowAz0VRswGgw/xGbQatKmvPuABoOxt3HMXXBP3Qm
- gSzJQ09JSv2A74EpZAcRKvX1qg8a3bAdPrHyQFHmZNt1sqW54K2KWU+w2umluFntRwtv9AfItiv
- 81zNznm5WHoKMz83Y8VyHE5bBcUpRp06+1+KfnAZ6JdexzUsQ3Sw7t1rqTfUsRLjreMaplHPbf1
- Xbv4YatUXU3FeQ0kuvAH3z66vmuGvG9j4GvjxjvJ1tgJ/aFAD6gsayqP1j07Op5om1MCgspydfv
- ATbWJR60pbqyr37CFhZ7LDB3ko/cKUq+FBUFl8Ot4iN0ffVMOtLLHNTY0Os0A/L2ZyM9MLilnLF
- 4M5PfHPjKrAeU869+gMxnFWfA/vTdZ3ti4rVtvLwYPzpCbTxcRmOTNY7zo9bA8HEUqHelVjo0Bv
- f0RfC+TisOs7I5itK9ke182+3YIAUbVYWtkOFQluiu5dsJCzihtVr6/0MVdORj1rVJ+Jq4pW1CP
- x2bqQQk KFcoGfpA==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
 
-Clang tripped over a FORTIFY warning in this code, and while it seems it
-may be a false positive in Clang due to loop unwinding, the code in
-question seems to make a lot of assumptions. Comments added, and the
-Clang warning[1] has been worked around by growing the array size.
-Also there was an uninitialized 4th byte in the __be32 array that was
-being sent through to iio_push_to_buffers().
+On Thu, 2024-02-22 at 17:54 +0000, Conor Dooley wrote:
+> On Thu, Feb 22, 2024 at 05:41:03PM +0100, Nuno S=C3=A1 wrote:
+> > On Thu, 2024-02-22 at 15:40 +0000, Conor Dooley wrote:
+> > > On Thu, Feb 22, 2024 at 01:55:56PM +0100, Nuno Sa wrote:
+> > > > Add a property for the VDD power supply regulator.
+> > > >=20
+> > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > > > ---
+> > > > =C2=A0Documentation/devicetree/bindings/iio/temperature/adi,ltc2983=
+.yaml | 2
+> > > > ++
+> > > > =C2=A01 file changed, 2 insertions(+)
+> > > >=20
+> > > > diff --git
+> > > > a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam=
+l
+> > > > b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam=
+l
+> > > > index dbb85135fd66..8aae867a770a 100644
+> > > > --- a/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983=
+.yaml
+> > > > +++ b/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983=
+.yaml
+> > > > @@ -57,6 +57,8 @@ properties:
+> > > > =C2=A0=C2=A0 interrupts:
+> > > > =C2=A0=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > =C2=A0
+> > > > +=C2=A0 vdd-supply: true
+> > >=20
+> > > Although technically an ABI break, should we make this supply require=
+d?
+> > > It is, at the end of the day, required by the hardware for operation.
+> > >=20
+> >=20
+> > I thought about it but then realized it could break some existing users
+> > which is
+> > never a nice thing.
+>=20
+> Could you explain what scenario it actually breaks a system (not
+> produces warnings with dtbs_check)?
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/2000 [1]
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: "Uwe Kleine-König" <u.kleine-koenig@pengutronix.de>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: "Nuno Sá" <nuno.sa@analog.com>
-Cc: linux-iio@vger.kernel.org
----
- drivers/iio/pressure/dlhl60d.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+Oh, I guess I could not explain myself :). I did not meant breaking the sys=
+tem
+(I'm aware of the dummy regulator) but I meant exactly what you mention abo=
+ve
+about dtbs_check. Like, if someone already validated a devicetree against t=
+he
+current bindings, that same devicetree will fail to validate now right? And=
+ I
+had the idea that we should not allow that... If not the case, I'm perfectl=
+y
+fine in making the supply required.
 
-diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dlhl60d.c
-index 28c8269ba65d..9bbecd0bfe88 100644
---- a/drivers/iio/pressure/dlhl60d.c
-+++ b/drivers/iio/pressure/dlhl60d.c
-@@ -250,20 +250,27 @@ static irqreturn_t dlh_trigger_handler(int irq, void *private)
- 	struct dlh_state *st = iio_priv(indio_dev);
- 	int ret;
- 	unsigned int chn, i = 0;
--	__be32 tmp_buf[2];
-+	/* This was only an array pair of 4 bytes. */
-+	__be32 tmp_buf[4] = { };
- 
- 	ret = dlh_start_capture_and_read(st);
- 	if (ret)
- 		goto out;
- 
-+	/* Nothing was checking masklength vs ARRAY_SIZE(tmp_buf)? */
-+	if (WARN_ON_ONCE(indio_dev->masklength > ARRAY_SIZE(tmp_buf)))
-+		goto out;
-+
- 	for_each_set_bit(chn, indio_dev->active_scan_mask,
- 		indio_dev->masklength) {
--		memcpy(tmp_buf + i,
-+		/* This is copying 3 bytes. What about the 4th? */
-+		memcpy(&tmp_buf[i],
- 			&st->rx_buf[1] + chn * DLH_NUM_DATA_BYTES,
- 			DLH_NUM_DATA_BYTES);
- 		i++;
- 	}
- 
-+	/* How do we know the iio buffer_list has only 2 items? */
- 	iio_push_to_buffers(indio_dev, tmp_buf);
- 
- out:
--- 
-2.34.1
+- Nuno S=C3=A1
+
+>=20
 
 

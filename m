@@ -1,163 +1,229 @@
-Return-Path: <linux-iio+bounces-2971-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2972-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 277258619DB
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 18:35:38 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63E05861A87
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 18:50:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A962E1F26E25
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 17:35:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2F59B23585
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 17:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B45F7142624;
-	Fri, 23 Feb 2024 17:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HxlLyd3w"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0118141980;
+	Fri, 23 Feb 2024 17:46:11 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B3011353EA
-	for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 17:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85B3140385;
+	Fri, 23 Feb 2024 17:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708709384; cv=none; b=YVM0zSOi50NI+/pjj/ePwGbwfQR33J260LiENu4Vbmu4weI6A9G1UgTrDjdIAb8Gtw2MB++LMlVwv2AUPH+qvRPNiiz/PTDBWKODU8DWeJ6caWezCwPC5kWzI35gnDRnpOPHKFTXfsjT7dEfWF43Yfs57wzSpueLJMnhluEpT3w=
+	t=1708710371; cv=none; b=hyp9kbULb+rjWBnxJCqQbb23GzEkDRC4vd9NAElnazWTYm7LrvmfO3PomzueSs9eQpuojy57DTuQfIDFWKaCaAmfY1KDT8JWaUZQoDqsldede4ZzQxs3cs8fpYm+TqBi7WUlLxDUtERqwMJm2i9tTNlOiFPd/wOx4vNn0YmiHSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708709384; c=relaxed/simple;
-	bh=ZSQMrFcXK67EoYJFvWEtAVXpJz5HlNabiFfB2+DnMz4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=DriPGSi2Otzj/VDsMFlmgs4i88AhNM6J+yez7sUBP4h94GYSH1W+7iD+5aEtuNypuqhg4ohlPVc3CTO2mrxhdIMh9yKPcN7JaZzi+sSphJLydB+Hd4tkoBRKWbzzj1jmFBv99SPxVmpYLqY5dCRquFzpBXqTcj3kxAVUk8JyWrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HxlLyd3w; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1dc49b00bdbso9210855ad.3
-        for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 09:29:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1708709382; x=1709314182; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bM3MPkF58+jFMGrw4OrogBOTmRr+QWSJaSYzjCyKYu4=;
-        b=HxlLyd3wWp/ZtJmDGIhSVJrTQECsFgCM/77iCE2CRWD2fY2+jeyERBZOXlM8GtInHD
-         deAVVscCHDZSs18oOHyqJVBYOflGvccJf+Zu2PfhXdm9MTT+JSBUU/jAchGUqDqy32rT
-         /MMF1V59vC9RgcIEGFS4LUTz+RPKL+l+nsY+0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708709382; x=1709314182;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bM3MPkF58+jFMGrw4OrogBOTmRr+QWSJaSYzjCyKYu4=;
-        b=cw3Uw3o8C2Yosp6c225S8H3vcxkNBlSTNkgM6xdhsihnTwnZ8VBX3Vxf5u2Y73+L0e
-         VoQJ7h7H/D1OqpSP8M+aGPuQGnvGP/Z7DYpjixY047W/e3E/nI21uWJ7hAYUhn7TOCvq
-         3sBgtO6YAf5HCOYKL8Lt5JCuW+PaYWtxCK2XtRJlI9MJOU/IIwiPBNCVvuiyf7BGwxxh
-         vyxVIFo7bBf5Z2f6xkJwSJmF4esRnpWzQFjqcm3fde3v6U2fhYFrtHprYTdxSC02XGJA
-         X+8O9aSNJNH60/4eS8qD/eR/UyP09dl7hQ1lanXGMgelHmnbH+C66atuZ/ESDwIZcMB6
-         Q2mw==
-X-Forwarded-Encrypted: i=1; AJvYcCXvL7G0D/iyVvUvR05qlEsTySBB20OuskAxgpmOM3bdpFTEB87xWbPsVpToOjecJJKfvjD/8ndtByEjHYIlCR5CeeCIUsfz5w/Y
-X-Gm-Message-State: AOJu0Yzxyhi0r22/PoVHzJCWmP7bYQMAYJIQAq5XgJ1vFR+gNd2yqi3B
-	jA8oFjrVyhRqS61tt9lQ//toRNHOZLBLzbuomSoacli5QhGlkmONrI5jIctEyQ==
-X-Google-Smtp-Source: AGHT+IFzDY8go56+ptU8+F6xFCu+b2Z7ssHDmUg/9Vyz+3JhhD1xjzJWr9XeBbMxTH99G/AutAFy0g==
-X-Received: by 2002:a17:902:c102:b0:1db:c536:803c with SMTP id 2-20020a170902c10200b001dbc536803cmr435891pli.33.1708709382389;
-        Fri, 23 Feb 2024 09:29:42 -0800 (PST)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id b2-20020a170902b60200b001db604f41dcsm1778891pls.103.2024.02.23.09.29.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Feb 2024 09:29:42 -0800 (PST)
-From: Kees Cook <keescook@chromium.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>,
-	"Lars-Peter Clausen" <lars@metafoo.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	"Andy Shevchenko" <andriy.shevchenko@linux.intel.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	linux-iio@vger.kernel.org,
-	"Nathan Chancellor" <nathan@kernel.org>,
-	"Nick Desaulniers" <ndesaulniers@google.com>,
-	"Bill Wendling" <morbo@google.com>,
-	"Justin Stitt" <justinstitt@google.com>,
-	llvm@lists.linux.dev,
-	Tomislav Denis <tomislav.denis@avl.com>,
-	linux-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH v2] iio: pressure: dlhl60d: Initialize empty DLH bytes
-Date: Fri, 23 Feb 2024 09:29:39 -0800
-Message-Id: <20240223172936.it.875-kees@kernel.org>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1708710371; c=relaxed/simple;
+	bh=yIsTcxtkN/WzBu1vfOj5fn+iwsswL34PWc3ew06vqz0=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KoBFe8Q1l2CqjiBdcCKO/EtiUcN4xR7z2wrw0oFWP95nnEfpigqxsQzzLibOpoz1N9N+/+7AzTNi/kSHCl3duyQf4vKJJkE2Cx6qtsSmM5wnaMyRpOWSRdvPFX8RJnvBGTqyIq1qZtbsTWYmppwSUUe6EugkBV+1ZeQhYloQez0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ThHQF5r0zz6K8mr;
+	Sat, 24 Feb 2024 01:42:13 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1B52E140684;
+	Sat, 24 Feb 2024 01:45:53 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 Feb
+ 2024 17:45:52 +0000
+Date: Fri, 23 Feb 2024 17:45:51 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Kees Cook <keescook@chromium.org>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+	Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, <linux-iio@vger.kernel.org>, Nathan Chancellor
+	<nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, "Bill
+ Wendling" <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+	<linux-kernel@vger.kernel.org>, <llvm@lists.linux.dev>,
+	<linux-hardening@vger.kernel.org>
+Subject: Re: [PATCH] [RFC] iio: pressure: dlhl60d: Check mask_width for IRQs
+Message-ID: <20240223174551.00007411@Huawei.com>
+In-Reply-To: <202402230912.50332AF1@keescook>
+References: <20240222222335.work.759-kees@kernel.org>
+	<20240223170918.00006b16@Huawei.com>
+	<202402230912.50332AF1@keescook>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1937; i=keescook@chromium.org;
- h=from:subject:message-id; bh=ZSQMrFcXK67EoYJFvWEtAVXpJz5HlNabiFfB2+DnMz4=;
- b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBl2NYDdis920sydQS6ipBI49BtcHYYpvp5bOl50
- hx40NdinzyJAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCZdjWAwAKCRCJcvTf3G3A
- JnTxD/wM4aMItMA1GlvtME+XbzHXS9RwkeN0sJ2am73tn22dB2vdV/htY/rmnPgBgjy46iuc62k
- Q3m4V2vmIRR7oin7Dp6MHFYVWNysZUrOrwO8uoINALTCyF30N3JPEUAlk4XA7j+U6DxerZ2IdL2
- jERDFaW6E+LGdZ3aQ6NsWuJxVvv1CRf2vcdwt8LL852yhg04L+MVtjejOhyu5dpy2wwFWU1qRGD
- cclqSl/4dB639iKcUgL3C9V9HKkPNtCYNINpITFMjIQFQzsNWTGonSvc/j3a5qgjb0gOMjlZ3+w
- cgF0DtlubTNlGX3Cpcq1K1B7qACqsit98xxDp561xm8fxD5LzuBoUfAlUZ3FhMj03iGsyMibDs8
- sk2GVwIANvPLWEriBJoqA83QqASX0TUC2BoszwezFgAriD0yMUS1O+j9zvO1SL8sNENlY7hzfIF
- Uo8fIy0Ey61dvD4BLNIY/5gQINuPOcGnpiw6PUIuUw1YywkubRbxs/Kajkeh2JjzESkcGpHXVO2
- zWqeB9B8/TO83C5O/BVx13LUq4OabuCRcOQA3anJYepO7RV5Nm2pUlZkx7gznkJtH68AMU9pmiu
- F3zxSeRPQ96CxmN+/baatYUN4AR1631D1oJIWyIM9SKfmCwzVUENT+QYOHbx0I0DhV0/52n0wAY
- wgn4Woo Gjwzea2g==
-X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-3 bytes were being read but 4 were being written. Explicitly initialize
-the unused bytes to 0 and refactor the loop to use direct array
-indexing, which appears to silence a Clang false positive warning[1].
+On Fri, 23 Feb 2024 09:14:53 -0800
+Kees Cook <keescook@chromium.org> wrote:
 
-Link: https://github.com/ClangBuiltLinux/linux/issues/2000 [1]
-Fixes: ac78c6aa4a5d ("iio: pressure: Add driver for DLH pressure sensors")
-Signed-off-by: Kees Cook <keescook@chromium.org>
----
-Cc: Jonathan Cameron <jic23@kernel.org>
-Cc: "Lars-Peter Clausen" <lars@metafoo.de>
-Cc: "Uwe Kleine-König" <u.kleine-koenig@pengutronix.de>
-Cc: "Andy Shevchenko" <andriy.shevchenko@linux.intel.com>
-Cc: "Nuno Sá" <nuno.sa@analog.com>
-Cc: linux-iio@vger.kernel.org
-Cc: "Nathan Chancellor" <nathan@kernel.org>
-Cc: "Nick Desaulniers" <ndesaulniers@google.com>
-Cc: "Bill Wendling" <morbo@google.com>
-Cc: "Justin Stitt" <justinstitt@google.com>
-Cc: llvm@lists.linux.dev
- v2: drop comments, array expansion, and WARN. refactor loop.
- v1: https://lore.kernel.org/linux-hardening/20240222222335.work.759-kees@kernel.org/
----
- drivers/iio/pressure/dlhl60d.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+> On Fri, Feb 23, 2024 at 05:09:18PM +0000, Jonathan Cameron wrote:
+> > On Thu, 22 Feb 2024 14:23:39 -0800
+> > Kees Cook <keescook@chromium.org> wrote:
+> >  =20
+> > > Clang tripped over a FORTIFY warning in this code, and while it seems=
+ it
+> > > may be a false positive in Clang due to loop unwinding, the code in
+> > > question seems to make a lot of assumptions.  =20
+> >=20
+> > Hi Kees,
+> >=20
+> > The assumptions are mostly characteristics of how the IIO buffers work
+> > with the scan masks defined based on indexes in the driver provided
+> > struct iio_chan_spec arrays.
+> >=20
+> > This driver is doing more work than it should need to as we long ago
+> > moved some of the more fiddly handling into the IIO core.
+> >  =20
+> > > Comments added, and the
+> > > Clang warning[1] has been worked around by growing the array size.
+> > > Also there was an uninitialized 4th byte in the __be32 array that was
+> > > being sent through to iio_push_to_buffers(). =20
+> >=20
+> > That is indeed not good - the buffer should have been zero initialized.=
+ =20
+>=20
+> Okay, I'll get this respun and include the fix.
+>=20
+> >  =20
+> > >=20
+> > > Link: https://github.com/ClangBuiltLinux/linux/issues/2000 [1]
+> > > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > > ---
+> > > Cc: Jonathan Cameron <jic23@kernel.org>
+> > > Cc: Lars-Peter Clausen <lars@metafoo.de>
+> > > Cc: "Uwe Kleine-K=F6nig" <u.kleine-koenig@pengutronix.de>
+> > > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > Cc: "Nuno S=E1" <nuno.sa@analog.com>
+> > > Cc: linux-iio@vger.kernel.org
+> > > ---
+> > >  drivers/iio/pressure/dlhl60d.c | 11 +++++++++--
+> > >  1 file changed, 9 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dl=
+hl60d.c
+> > > index 28c8269ba65d..9bbecd0bfe88 100644
+> > > --- a/drivers/iio/pressure/dlhl60d.c
+> > > +++ b/drivers/iio/pressure/dlhl60d.c
+> > > @@ -250,20 +250,27 @@ static irqreturn_t dlh_trigger_handler(int irq,=
+ void *private)
+> > >  	struct dlh_state *st =3D iio_priv(indio_dev);
+> > >  	int ret;
+> > >  	unsigned int chn, i =3D 0;
+> > > -	__be32 tmp_buf[2];
+> > > +	/* This was only an array pair of 4 bytes. */ =20
+> >=20
+> > True, which is the right size as far as I can tell.
+> > If we need this to suppress a warning then comment should say that. =20
+>=20
+> Okay. I think I'll leave it as 2 and manually "unroll" the loop.
 
-diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dlhl60d.c
-index 28c8269ba65d..0bba4c5a8d40 100644
---- a/drivers/iio/pressure/dlhl60d.c
-+++ b/drivers/iio/pressure/dlhl60d.c
-@@ -250,18 +250,17 @@ static irqreturn_t dlh_trigger_handler(int irq, void *private)
- 	struct dlh_state *st = iio_priv(indio_dev);
- 	int ret;
- 	unsigned int chn, i = 0;
--	__be32 tmp_buf[2];
-+	__be32 tmp_buf[2] = { };
- 
- 	ret = dlh_start_capture_and_read(st);
- 	if (ret)
- 		goto out;
- 
- 	for_each_set_bit(chn, indio_dev->active_scan_mask,
--		indio_dev->masklength) {
--		memcpy(tmp_buf + i,
-+			 indio_dev->masklength) {
-+		memcpy(&tmp_buf[i++],
- 			&st->rx_buf[1] + chn * DLH_NUM_DATA_BYTES,
- 			DLH_NUM_DATA_BYTES);
--		i++;
- 	}
- 
- 	iio_push_to_buffers(indio_dev, tmp_buf);
--- 
-2.34.1
+Without the available mask that is a little fiddly you'll have
+deal with  channel 0 only enabled, channel 1 only enabled and
+both channels 0 and channel 1 enabled.
+Not too bad though as only 2 channels.
+=20
+>=20
+> >  =20
+> > > +	__be32 tmp_buf[4] =3D { };
+> > > =20
+> > >  	ret =3D dlh_start_capture_and_read(st);
+> > >  	if (ret)
+> > >  		goto out;
+> > > =20
+> > > +	/* Nothing was checking masklength vs ARRAY_SIZE(tmp_buf)? */ =20
+> >=20
+> > Not needed but no way a compiler could know that.
+> >  =20
+> > > +	if (WARN_ON_ONCE(indio_dev->masklength > ARRAY_SIZE(tmp_buf)))
+> > > +		goto out;
+> > > +
+> > >  	for_each_set_bit(chn, indio_dev->active_scan_mask, =20
+> >=20
+> > This is all a bit pointless if not 'wrong' other than the
+> > 4th byte uninitialized part.  The limit can be hard coded as 2 as
+> > that's a characteristic of this driver.
+> >=20
+> > For device that always read a particular set of channels they
+> > should provide indio_dev->available_scan_masks =3D { BIT(1) | BIT(0), 0=
+ };
+> > and then always push all the data making this always
+> >=20
+> > 	memcpy(&tmp_buf[0], &st->rx_buf[1], 3);
+> > 	mempcy(&tmp_buf[1], &st->rx_buf[1] + 3, 3); =20
+>=20
+> Okay, so this could be unrolled manually to check just for bits 0 and 1?
+
+Ideally it wouldn't check them - the hardwork has been done to read both
+channels anyway and the IIO core handles userspace or in kernel consumers
+that want a subset of what is enabled, but that needs the available_scan_ma=
+sks
+to be set so that the IIO core knows all channels always enabled.
+
+>=20
+> >=20
+> > The buffer demux code in the IIO core will deal with repacking the data
+> > if only one channel is enabled.
+> >  =20
+> > >  		indio_dev->masklength) {
+> > > -		memcpy(tmp_buf + i,
+> > > +		/* This is copying 3 bytes. What about the 4th? */
+> > > +		memcpy(&tmp_buf[i],
+> > >  			&st->rx_buf[1] + chn * DLH_NUM_DATA_BYTES,
+> > >  			DLH_NUM_DATA_BYTES);
+> > >  		i++;
+> > >  	}
+> > > =20
+> > > +	/* How do we know the iio buffer_list has only 2 items? */ =20
+> >=20
+> > Can only include items from the channels array at indexes up to the max
+> > scan_index in there, so 0 and 1 in this case (1 might not be present if=
+ only
+> > one channel is enabled). Sizes (and alignment) are given by storagebits=
+ so
+> > 4 bytes for each. =20
+>=20
+> This code pattern seems repeated through all of iio, so I guess we'll
+> leave it as-is. It seems like it'd be nice to have a "length" argument
+> to iio_push_to_buffers(), just to sanity check, but that would need to
+> be a pretty large patch. :P
+
+yeah. Hindsight!
+
+We could add it in an incremental fashion though
+iio_push_to_bufs(struct iio_dev *indio_dev, void *buf, size_t buf_len)
+with a length parameter.  The oddity that is
+iio_push_to_buffers_with_timestamp() would benefit here as that needs
+a bigger buffer than immediately apparent in the driver and we've
+had a few bugs around that over the years.
+
+It would probably be a one way check.
+I might have a play and see how useful this would be.
+
+>=20
+> >  =20
+> > >  	iio_push_to_buffers(indio_dev, tmp_buf);
+> > > =20
+> > >  out: =20
+>=20
+> Thanks for looking at this!
+>=20
+> -Kees
+>=20
 
 

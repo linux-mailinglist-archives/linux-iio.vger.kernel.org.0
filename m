@@ -1,229 +1,115 @@
-Return-Path: <linux-iio+bounces-2972-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2973-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E05861A87
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 18:50:15 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E45861A8C
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 18:50:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2F59B23585
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 17:50:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED2291C25859
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 17:50:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0118141980;
-	Fri, 23 Feb 2024 17:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4827E141993;
+	Fri, 23 Feb 2024 17:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EVIYKRQW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85B3140385;
-	Fri, 23 Feb 2024 17:45:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2021420BA;
+	Fri, 23 Feb 2024 17:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708710371; cv=none; b=hyp9kbULb+rjWBnxJCqQbb23GzEkDRC4vd9NAElnazWTYm7LrvmfO3PomzueSs9eQpuojy57DTuQfIDFWKaCaAmfY1KDT8JWaUZQoDqsldede4ZzQxs3cs8fpYm+TqBi7WUlLxDUtERqwMJm2i9tTNlOiFPd/wOx4vNn0YmiHSs=
+	t=1708710466; cv=none; b=oBL/nuRF7Q08IK3/zweVoErZBH3YDvkYhen2ThBV0hvI/qICN/bC8f1hvDvpZyKWJRvRkPvn0hrm5d17Z0zYdmlfJ9pS56D6f72bbyeRVVal/DhWkGh951MryiocoBE3+I5BUH9nOgfaTKqetCDYlsB+3KPPOaEGGuLwyoteLBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708710371; c=relaxed/simple;
-	bh=yIsTcxtkN/WzBu1vfOj5fn+iwsswL34PWc3ew06vqz0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KoBFe8Q1l2CqjiBdcCKO/EtiUcN4xR7z2wrw0oFWP95nnEfpigqxsQzzLibOpoz1N9N+/+7AzTNi/kSHCl3duyQf4vKJJkE2Cx6qtsSmM5wnaMyRpOWSRdvPFX8RJnvBGTqyIq1qZtbsTWYmppwSUUe6EugkBV+1ZeQhYloQez0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ThHQF5r0zz6K8mr;
-	Sat, 24 Feb 2024 01:42:13 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1B52E140684;
-	Sat, 24 Feb 2024 01:45:53 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 Feb
- 2024 17:45:52 +0000
-Date: Fri, 23 Feb 2024 17:45:51 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+	s=arc-20240116; t=1708710466; c=relaxed/simple;
+	bh=wDJdx3Q8quT65jOfA+Fpt/AIUlp60KA7hpn2802QDLo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s4NnXTaldTf1pJz8vyRBG9BK9LSQjU9spjPtawahfbKjeNHbkF9cL3lIx1OzBdQD/wWcgJmLbuUtimF1yO7WLs2nZK5Wmn7xH3/Lv+3JVHBlh9aBxoHMDZrN8l3WFnUqqspC7j2kPcgcei3bXfPGm7VPG9licDP0vaLXq+uxnNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EVIYKRQW; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708710464; x=1740246464;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=wDJdx3Q8quT65jOfA+Fpt/AIUlp60KA7hpn2802QDLo=;
+  b=EVIYKRQWD2c42ttK/zg3tswMxOvwlyeM/X1klZlPCXM/T06bX1v0O6Bk
+   fqcs+gTMeaV15BEzZeo/lqd8FXz7rXk06M7gXkkb1LMx0iLiSIu/iG0c0
+   4hKs5hAlS+JRo5Sea6Ie6pmbjhS/MvdqgscJUoge9X+yOJ1/xphiKXfJn
+   A2r1Ql+GuvSkD601NTftNp/aj++Q5+osN0zsLcknz0089uHULO11a27Ed
+   ihaiGeqw//7tpao1zOaX8fsHy9vXGLBGB7WNsHVoLYLD5qF6hufJGDC5R
+   JW2vE8YMfyXiMuT3DcGnOCQ6UmXSRihLiC2KEpMtEzX7nfams/q2rC02u
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="6854291"
+X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
+   d="scan'208";a="6854291"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 09:47:44 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="913752338"
+X-IronPort-AV: E=Sophos;i="6.06,180,1705392000"; 
+   d="scan'208";a="913752338"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 09:47:40 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rdZe4-00000006xkT-3grO;
+	Fri, 23 Feb 2024 19:47:36 +0200
+Date: Fri, 23 Feb 2024 19:47:36 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Kees Cook <keescook@chromium.org>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>, Nuno =?ISO-8859-1?Q?S=E1?=
-	<nuno.sa@analog.com>, <linux-iio@vger.kernel.org>, Nathan Chancellor
-	<nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, "Bill
- Wendling" <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
-	<linux-kernel@vger.kernel.org>, <llvm@lists.linux.dev>,
-	<linux-hardening@vger.kernel.org>
-Subject: Re: [PATCH] [RFC] iio: pressure: dlhl60d: Check mask_width for IRQs
-Message-ID: <20240223174551.00007411@Huawei.com>
-In-Reply-To: <202402230912.50332AF1@keescook>
-References: <20240222222335.work.759-kees@kernel.org>
-	<20240223170918.00006b16@Huawei.com>
-	<202402230912.50332AF1@keescook>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	linux-iio@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev,
+	Tomislav Denis <tomislav.denis@avl.com>,
+	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2] iio: pressure: dlhl60d: Initialize empty DLH bytes
+Message-ID: <ZdjaOLVd1yxNXhsp@smile.fi.intel.com>
+References: <20240223172936.it.875-kees@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240223172936.it.875-kees@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Fri, 23 Feb 2024 09:14:53 -0800
-Kees Cook <keescook@chromium.org> wrote:
+On Fri, Feb 23, 2024 at 09:29:39AM -0800, Kees Cook wrote:
+> 3 bytes were being read but 4 were being written. Explicitly initialize
+> the unused bytes to 0 and refactor the loop to use direct array
+> indexing, which appears to silence a Clang false positive warning[1].
 
-> On Fri, Feb 23, 2024 at 05:09:18PM +0000, Jonathan Cameron wrote:
-> > On Thu, 22 Feb 2024 14:23:39 -0800
-> > Kees Cook <keescook@chromium.org> wrote:
-> >  =20
-> > > Clang tripped over a FORTIFY warning in this code, and while it seems=
- it
-> > > may be a false positive in Clang due to loop unwinding, the code in
-> > > question seems to make a lot of assumptions.  =20
-> >=20
-> > Hi Kees,
-> >=20
-> > The assumptions are mostly characteristics of how the IIO buffers work
-> > with the scan masks defined based on indexes in the driver provided
-> > struct iio_chan_spec arrays.
-> >=20
-> > This driver is doing more work than it should need to as we long ago
-> > moved some of the more fiddly handling into the IIO core.
-> >  =20
-> > > Comments added, and the
-> > > Clang warning[1] has been worked around by growing the array size.
-> > > Also there was an uninitialized 4th byte in the __be32 array that was
-> > > being sent through to iio_push_to_buffers(). =20
-> >=20
-> > That is indeed not good - the buffer should have been zero initialized.=
- =20
->=20
-> Okay, I'll get this respun and include the fix.
->=20
-> >  =20
-> > >=20
-> > > Link: https://github.com/ClangBuiltLinux/linux/issues/2000 [1]
-> > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > > ---
-> > > Cc: Jonathan Cameron <jic23@kernel.org>
-> > > Cc: Lars-Peter Clausen <lars@metafoo.de>
-> > > Cc: "Uwe Kleine-K=F6nig" <u.kleine-koenig@pengutronix.de>
-> > > Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > > Cc: "Nuno S=E1" <nuno.sa@analog.com>
-> > > Cc: linux-iio@vger.kernel.org
-> > > ---
-> > >  drivers/iio/pressure/dlhl60d.c | 11 +++++++++--
-> > >  1 file changed, 9 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dl=
-hl60d.c
-> > > index 28c8269ba65d..9bbecd0bfe88 100644
-> > > --- a/drivers/iio/pressure/dlhl60d.c
-> > > +++ b/drivers/iio/pressure/dlhl60d.c
-> > > @@ -250,20 +250,27 @@ static irqreturn_t dlh_trigger_handler(int irq,=
- void *private)
-> > >  	struct dlh_state *st =3D iio_priv(indio_dev);
-> > >  	int ret;
-> > >  	unsigned int chn, i =3D 0;
-> > > -	__be32 tmp_buf[2];
-> > > +	/* This was only an array pair of 4 bytes. */ =20
-> >=20
-> > True, which is the right size as far as I can tell.
-> > If we need this to suppress a warning then comment should say that. =20
->=20
-> Okay. I think I'll leave it as 2 and manually "unroll" the loop.
+...
 
-Without the available mask that is a little fiddly you'll have
-deal with  channel 0 only enabled, channel 1 only enabled and
-both channels 0 and channel 1 enabled.
-Not too bad though as only 2 channels.
-=20
->=20
-> >  =20
-> > > +	__be32 tmp_buf[4] =3D { };
-> > > =20
-> > >  	ret =3D dlh_start_capture_and_read(st);
-> > >  	if (ret)
-> > >  		goto out;
-> > > =20
-> > > +	/* Nothing was checking masklength vs ARRAY_SIZE(tmp_buf)? */ =20
-> >=20
-> > Not needed but no way a compiler could know that.
-> >  =20
-> > > +	if (WARN_ON_ONCE(indio_dev->masklength > ARRAY_SIZE(tmp_buf)))
-> > > +		goto out;
-> > > +
-> > >  	for_each_set_bit(chn, indio_dev->active_scan_mask, =20
-> >=20
-> > This is all a bit pointless if not 'wrong' other than the
-> > 4th byte uninitialized part.  The limit can be hard coded as 2 as
-> > that's a characteristic of this driver.
-> >=20
-> > For device that always read a particular set of channels they
-> > should provide indio_dev->available_scan_masks =3D { BIT(1) | BIT(0), 0=
- };
-> > and then always push all the data making this always
-> >=20
-> > 	memcpy(&tmp_buf[0], &st->rx_buf[1], 3);
-> > 	mempcy(&tmp_buf[1], &st->rx_buf[1] + 3, 3); =20
->=20
-> Okay, so this could be unrolled manually to check just for bits 0 and 1?
+>  	for_each_set_bit(chn, indio_dev->active_scan_mask,
+> -		indio_dev->masklength) {
+> -		memcpy(tmp_buf + i,
+> +			 indio_dev->masklength) {
+> +		memcpy(&tmp_buf[i++],
+>  			&st->rx_buf[1] + chn * DLH_NUM_DATA_BYTES,
+>  			DLH_NUM_DATA_BYTES);
+> -		i++;
+>  	}
 
-Ideally it wouldn't check them - the hardwork has been done to read both
-channels anyway and the IIO core handles userspace or in kernel consumers
-that want a subset of what is enabled, but that needs the available_scan_ma=
-sks
-to be set so that the IIO core knows all channels always enabled.
+Not that I'm against the changes, but they (in accordance with the commit
+message) are irrelevant to this fix. I prefer fixes to be more focused on
+the real issues.
 
->=20
-> >=20
-> > The buffer demux code in the IIO core will deal with repacking the data
-> > if only one channel is enabled.
-> >  =20
-> > >  		indio_dev->masklength) {
-> > > -		memcpy(tmp_buf + i,
-> > > +		/* This is copying 3 bytes. What about the 4th? */
-> > > +		memcpy(&tmp_buf[i],
-> > >  			&st->rx_buf[1] + chn * DLH_NUM_DATA_BYTES,
-> > >  			DLH_NUM_DATA_BYTES);
-> > >  		i++;
-> > >  	}
-> > > =20
-> > > +	/* How do we know the iio buffer_list has only 2 items? */ =20
-> >=20
-> > Can only include items from the channels array at indexes up to the max
-> > scan_index in there, so 0 and 1 in this case (1 might not be present if=
- only
-> > one channel is enabled). Sizes (and alignment) are given by storagebits=
- so
-> > 4 bytes for each. =20
->=20
-> This code pattern seems repeated through all of iio, so I guess we'll
-> leave it as-is. It seems like it'd be nice to have a "length" argument
-> to iio_push_to_buffers(), just to sanity check, but that would need to
-> be a pretty large patch. :P
+-- 
+With Best Regards,
+Andy Shevchenko
 
-yeah. Hindsight!
-
-We could add it in an incremental fashion though
-iio_push_to_bufs(struct iio_dev *indio_dev, void *buf, size_t buf_len)
-with a length parameter.  The oddity that is
-iio_push_to_buffers_with_timestamp() would benefit here as that needs
-a bigger buffer than immediately apparent in the driver and we've
-had a few bugs around that over the years.
-
-It would probably be a one way check.
-I might have a play and see how useful this would be.
-
->=20
-> >  =20
-> > >  	iio_push_to_buffers(indio_dev, tmp_buf);
-> > > =20
-> > >  out: =20
->=20
-> Thanks for looking at this!
->=20
-> -Kees
->=20
 
 

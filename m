@@ -1,96 +1,99 @@
-Return-Path: <linux-iio+bounces-2964-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2965-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C89B28617AA
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 17:22:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3812586180B
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 17:36:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6ED601F221DE
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 16:22:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E09011F2287A
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 16:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B79AF84A57;
-	Fri, 23 Feb 2024 16:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56CD584A43;
+	Fri, 23 Feb 2024 16:36:11 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629B985265
-	for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 16:20:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3A4225B2;
+	Fri, 23 Feb 2024 16:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708705257; cv=none; b=BbRBDpYHd0aoguU1d01SAc0maBY/p48wLa42n8H+EhCHeAbEa2qeVtqVV/sEoSXEa+kmHzxpDENHbIAGJJj6ObiWyR7gfXrWwsNUDqXLmKC1oFZt3jnqDMsv3D6IAcDZFAwzbLmpDMkOL2MfD9MT8l4dLRtWxBeic/o8tF52bVc=
+	t=1708706171; cv=none; b=lK0DHeJtfoHVxf6+foV86MS1KZ0aEafJGHmi65VmNzds7+VK+2YO5kh2mEIG23Rgx9JBd7qQnvnu8ZzBJfN5mu7YnHvyXQeYU2scR3ynKxwUBjb/HNxNZbYMY5RzVsatL5BSKC0XkUUeIgO8dT4x0KOz7cmk3gtIBiHaoJNPWpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708705257; c=relaxed/simple;
-	bh=+7BZA6LTHUprC7I7wLeww4jU28nvNwV5QLi3TTys4vc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=S+In2bX2dy5lYD+HOOABqO3plh4pOfFJj2uTGgmnHTYlWNF83RnRiY79AzECJcSFMSfoz22VJJxzsLaL9Vs5GZIrm0NTgsJxst/7l+H11XXQbXmMjk06BYSlTB3GW79XOEBvjfte3DCxCIykK8XIzRx2sO9t09PAna5+CdS6m9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1rdYI1-0007El-0r; Fri, 23 Feb 2024 17:20:45 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: puranjay12@gmail.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: [PATCH] dt-bindings: iio: ti,tmp117: add optional label binding
-Date: Fri, 23 Feb 2024 17:20:42 +0100
-Message-Id: <20240223162042.2658620-1-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1708706171; c=relaxed/simple;
+	bh=dQSTCloNuCD1M/qTYmRW9k91SmlqmulGEqBgtxwoOcA=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YeqdlvtYFEAl8ozP3VQOXxXw6E0M6Ii0RD6GPxKAwTkSpEeEZ1+9jKmVGeQAb64P2Qh3GHSkg0JcnBaK+m7zptdtHWK+Oy57zRfp8WHOx0ypUArQAXOL6ytl/ZRu+dk1k17pJG0dNxUDv22eqEghHfcV9Wwrs+cZhCv7HYUVZkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4ThFsj0zS9z6K8xp;
+	Sat, 24 Feb 2024 00:32:25 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5A49A140594;
+	Sat, 24 Feb 2024 00:36:04 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 23 Feb
+ 2024 16:36:03 +0000
+Date: Fri, 23 Feb 2024 16:36:02 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+CC: <linux-iio@vger.kernel.org>, Rob Herring <robh@kernel.org>, Frank Rowand
+	<frowand.list@gmail.com>, <linux-kernel@vger.kernel.org>, Julia Lawall
+	<Julia.Lawall@inria.fr>, Peter Zijlstra <peterz@infradead.org>, "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>, <marek.vasut@gmail.com>
+Subject: Re: [PATCH v2 0/4] of: automate of_node_put() - new approach to
+ loops.
+Message-ID: <20240223163602.0000697a@Huawei.com>
+In-Reply-To: <Zdi_ToUofu62s5zT@smile.fi.intel.com>
+References: <20240223124432.26443-1-Jonathan.Cameron@huawei.com>
+	<Zdi_ToUofu62s5zT@smile.fi.intel.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:1101:1d::28
-X-SA-Exim-Mail-From: m.felsch@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-Add the support to provide an optional label like we do for ADC
-channels to identify the device more easily.
+On Fri, 23 Feb 2024 17:52:46 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
-Hi,
-
-patchset [1] should be applied first to avoid merge conflicts.
-
-[1] https://lore.kernel.org/all/20240219131114.134607-1-m.felsch@pengutronix.de/#t
-
-Regards,
-  Marco
-
- .../devicetree/bindings/iio/temperature/ti,tmp117.yaml        | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-index 33f2e9c5bd81..f00c1cb89acd 100644
---- a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-+++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-@@ -27,6 +27,10 @@ properties:
-   vcc-supply:
-     description: provide VCC power to the sensor.
- 
-+  label:
-+    $ref: /schemas/types.yaml#/definitions/string
-+    description: Unique name to identify which device this is.
-+
- required:
-   - compatible
-   - reg
--- 
-2.39.2
-
+> On Fri, Feb 23, 2024 at 12:44:28PM +0000, Jonathan Cameron wrote:
+> > The equivalent device_for_each_child_node_scoped() series for
+> > fwnode will be queued up in IIO for the merge window shortly as
+> > it has gathered sufficient tags. Hopefully the precdent set there
+> > for the approach will reassure people that instantiating the
+> > child variable inside the macro definition is the best approach.
+> > https://lore.kernel.org/linux-iio/20240217164249.921878-1-jic23@kernel.org/
+> > 
+> > v2: Andy suggested most of the original converted set should move to
+> >     generic fwnode / property.h handling.  Within IIO that was
+> >     a reasonable observation given we've been trying to move away from
+> >     firmware specific handling for some time. Patches making that change
+> >     to appropriate drivers posted.
+> >     As we discussed there are cases which are not suitable for such
+> >     conversion and this infrastructure still provides clear benefits
+> >     for them.  
+> 
+> >   iio: adc: rcar-gyroadc: use for_each_available_child_node_scoped()  
+> 
+> Is this the only one so far? Or do we have more outside of IIO?
+> 
+> I'm fine with the code if OF maintainers think it's useful.
+> My concern is to make as many as possible drivers to be converted to
+> use fwnode instead of OF one.
+> 
+Julia wrote a coccinelle script 
+__free() cases
+https://lore.kernel.org/all/alpine.DEB.2.22.394.2401291455430.8649@hadrien/
 

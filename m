@@ -1,119 +1,145 @@
-Return-Path: <linux-iio+bounces-2975-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2976-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31723861A99
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 18:51:30 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5070F861BCD
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 19:35:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C4751C2260F
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 17:51:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23BD3B23CA0
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 18:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3DA13DBA9;
-	Fri, 23 Feb 2024 17:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5056812B8C;
+	Fri, 23 Feb 2024 18:34:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="XNfHMMyW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rGZ0A8It"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8937E13A25E
-	for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 17:50:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074331118D;
+	Fri, 23 Feb 2024 18:34:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708710613; cv=none; b=LDlRh41UHrd27w6Zb/KbUFqikYC3kCVseFvPUZPyda766JYaXQKaDU94+HXmX0yT+DVo+hLwHB9duj5uH6SbeA11tJ8Dw9Vw3aKob1sQQ84ZIrVnsaJgo8RX6b+o0QYqaFCgyjLzAImzq85uDMuH61RLpE2CcSkIb84EgbVeEdw=
+	t=1708713284; cv=none; b=MORTJUYrk3UTpE7Tqu45rf2CdsMrph2XntmWAL2uB/sD95VxkruqC8kmLzh4KsaTB2vMDJRXpmsI3+PadP/3HrecaRjrVKnjS1uClNEKua2JlSvFo6c5EJQD7k3+WuIONC+jcwQzi7ePGbYfySFa2eT7UZT6JjArRqA/j/BacZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708710613; c=relaxed/simple;
-	bh=CjG7WgCgFDAFL/tReNZpG/kD85Tt86MKrrUPD2AYLQk=;
+	s=arc-20240116; t=1708713284; c=relaxed/simple;
+	bh=zlETi33+CFuv5hwQm5WZx5u7wTiSlx0umoUQhthd1h0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GcLpkzPBPVkpS/sfgSx5ayZgKKcMKqjc9KfWPOwE3F1CkrN7PpuZPRA8iBdgWcww01UcKlYVB2sobv7wpuz5yn9TMI0d+r75K2sKdJ5NJHVuW35QIn/xx5hGdybSEPN1ygA+TtToyiLhSczWIuLgV0jPV/BX/JVJKZ3fBOqRsSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=XNfHMMyW; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-5e152c757a5so801868a12.2
-        for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 09:50:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1708710611; x=1709315411; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fh8E4x68Izt4HceoSL2C5zjPW+nFmkMjm9Tr07dbTE4=;
-        b=XNfHMMyWWywPWp6ekMQN2xw5jYA2vu0lHbsC/j8YCsn+aQlDzdprJ3E6jhtEMi2o21
-         i42tsViP1d2CHrY5kkF9+W5IyGrSFhJYLbbkLDm5yHnSHLg75qJ+jsvGYMDIZ1qyqTIE
-         uYVyL+TZTDVCWwUzkKosPaR/upLby1n5XNrKs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708710611; x=1709315411;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Fh8E4x68Izt4HceoSL2C5zjPW+nFmkMjm9Tr07dbTE4=;
-        b=YyUNyfyEvYuyLPe2z8Gob1iohhmXyr9Sv46GfudYVblbEPTl2Iyctpme9g+FNSKsr5
-         BrR9JH2Y2sFoq+qFGIGGgGsH3sAn33gKLzlJgIgZNmk2bwOYD4GeS+ucR7EhJi1SbuGs
-         1pOA5INZ0jymaWxfYOnN4cNp2cIDGl3dViFc8N/NkbxaZH5MiS+Dxuhya+FniOv81f+h
-         1U2u2fYR+2Pwf+cZbtBLUSAvBDz43ryv98e327vfyyp7tkHPFI3X9uT1jHezMxemyp7R
-         JcP2cBnATXz2IK8EhbFRKONdlVBt+unFzPo8KTUU9h1E5CoryHVpUZwACAzC7ip/nc6Q
-         7f9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUfZjT5sU3R+F3ER/z2MRMACKqxtgoDbKJAO9/eIr/Ff2wp+Pa33zeRkVG9Fzz/owmKOdccyEuzaS8hLflX2IoX3o+Q0mv0ykJY
-X-Gm-Message-State: AOJu0YzK75BDjKia2MfarB05fhA1Z1bAmv+c7+GLBKiXckRkZhQXpZGx
-	RZV2x+PIRUhZaf3DvcHxJ1AKL9JAh15V+pcJgIhuyo75glOXPl1H2kqQxHXt4A==
-X-Google-Smtp-Source: AGHT+IH1UP6oOCdgigSlZN7GfzqMGdE+JitpTrFkneg82nmtKJhtaUdsf1z4v1ua63Pt3t+NHytt5w==
-X-Received: by 2002:a05:6a20:a901:b0:1a0:61e4:a940 with SMTP id cd1-20020a056a20a90100b001a061e4a940mr573533pzb.45.1708710610948;
-        Fri, 23 Feb 2024 09:50:10 -0800 (PST)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id u2-20020a656702000000b005dc26144d96sm10977296pgf.75.2024.02.23.09.50.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Feb 2024 09:50:10 -0800 (PST)
-Date: Fri, 23 Feb 2024 09:50:10 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=PTBSu0vAiO41YQF25Vpu4AWKAYwxs9Fv2Lyf6SpfBatypZPO7hXv5Ya8YYp/UtqBv3BX0pkXICt8VCnJbZsiQgS610xmm6G1A2m7x+Kj5p1NlIN1uWNhJWZogeemzaAPc+IO+cFpjMl5Xy7E9UMN+4T3GCuTOzgmXeWqfEyabTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rGZ0A8It; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C657C433C7;
+	Fri, 23 Feb 2024 18:34:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708713283;
+	bh=zlETi33+CFuv5hwQm5WZx5u7wTiSlx0umoUQhthd1h0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rGZ0A8ItVnGR6BJDHdNbPYcsFSCvlZxjxY1naGW64VV2gZJCv+ym2Ftd9J035b/77
+	 qHrWNpD3fJeO37pLMUDtp/yf1yu2aeMFXNApNM+1qcHHHU5HbUBen1A/WA5p6qrLiH
+	 qc2a8GOmToCUIFgejcGnJ8HKhPLeEzfVoIep7Rn93nleAVl36gUjXr2NaNxdX1F73o
+	 Tcu165EQGhcd9L4cBidbegOZc1BGsZEF0YY3cyjr6Lwaz4wcdjNLCM0X47VpJXLQon
+	 7uLYMJj8UZnCmpAy1mzV0BN2YJnextedsuIf3oWUtTIvwE9egOFLb4HSWEWLmL/Uif
+	 K1hE1pzk8jKig==
+Date: Fri, 23 Feb 2024 18:34:39 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 Cc: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	linux-iio@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev,
-	Tomislav Denis <tomislav.denis@avl.com>,
-	linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v2] iio: pressure: dlhl60d: Initialize empty DLH bytes
-Message-ID: <202402230949.E06F3297@keescook>
-References: <20240223172936.it.875-kees@kernel.org>
- <ZdjaOLVd1yxNXhsp@smile.fi.intel.com>
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: light: vishay,veml6075: make
+ vdd-supply required
+Message-ID: <20240223-niece-shakily-7e18b90f30e7@spud>
+References: <20240223-veml6075_vdd-v1-1-ac76509b1998@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Hgz/JpkIdG8P36dD"
+Content-Disposition: inline
+In-Reply-To: <20240223-veml6075_vdd-v1-1-ac76509b1998@gmail.com>
+
+
+--Hgz/JpkIdG8P36dD
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZdjaOLVd1yxNXhsp@smile.fi.intel.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 23, 2024 at 07:47:36PM +0200, Andy Shevchenko wrote:
-> On Fri, Feb 23, 2024 at 09:29:39AM -0800, Kees Cook wrote:
-> > 3 bytes were being read but 4 were being written. Explicitly initialize
-> > the unused bytes to 0 and refactor the loop to use direct array
-> > indexing, which appears to silence a Clang false positive warning[1].
-> 
-> ...
-> 
-> >  	for_each_set_bit(chn, indio_dev->active_scan_mask,
-> > -		indio_dev->masklength) {
-> > -		memcpy(tmp_buf + i,
-> > +			 indio_dev->masklength) {
-> > +		memcpy(&tmp_buf[i++],
-> >  			&st->rx_buf[1] + chn * DLH_NUM_DATA_BYTES,
-> >  			DLH_NUM_DATA_BYTES);
-> > -		i++;
-> >  	}
-> 
-> Not that I'm against the changes, but they (in accordance with the commit
-> message) are irrelevant to this fix. I prefer fixes to be more focused on
-> the real issues.
+On Fri, Feb 23, 2024 at 02:01:33PM +0100, Javier Carrasco wrote:
+> The VEML6075 requires a single supply to operate. The property already
+> exists in the bindings and it is used in the example, but it is still
+> not on the list of required properties.
+>=20
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+> The driver and bindings for the VEML6075 UV sensor were merged in the
+> merge window for v6.8 i.e. they have not been released yet beyond rc.
+>=20
+> Applying this patch as a fix now would avoid an ABI break like the
+> recently discussed here:
+>=20
+> https://lore.kernel.org/linux-iio/8409a5bc71b995e3b738b817a074cfb131c3b2b=
+5.camel@gmail.com/
+>=20
+> On the other hand, from the same discussion it can be concluded that the
+> major risk would be a potential warning with dtbs_check, in case this
+> patch is applied during the next merge window.
 
-Jonathan, let me know if you'd prefer I split this patch...
+I don't care if it introduces a dtbs_check problem, we can fix those.
+The device clearly needs power and at least for linux it being missing
+gets handled perfectly fine. I think it's pretty reasonable to do this.
 
--- 
-Kees Cook
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+Cheers,
+Conor.
+
+>=20
+> The VEML6075 driver already handles the power supply with
+> devm_regulator_get_enable().
+> ---
+>  Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml | 1 +
+>  1 file changed, 1 insertion(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/light/vishay,veml6075.=
+yaml b/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
+> index abee04cd126e..91c318746bf3 100644
+> --- a/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
+> +++ b/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
+> @@ -21,6 +21,7 @@ properties:
+>  required:
+>    - compatible
+>    - reg
+> +  - vdd-supply
+> =20
+>  additionalProperties: false
+> =20
+>=20
+> ---
+> base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
+> change-id: 20240223-veml6075_vdd-e2220158ffda
+>=20
+> Best regards,
+> --=20
+> Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>=20
+
+--Hgz/JpkIdG8P36dD
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdjlPwAKCRB4tDGHoIJi
+0tYTAQC1+0IEYywpMoCMXpgH+lW/sykjfmPF82FwRnlmLuEcYgEAwShTG/cWRfqw
+evhM0yVbHRI14c70ha4vcyKGg8SStQM=
+=S2Pw
+-----END PGP SIGNATURE-----
+
+--Hgz/JpkIdG8P36dD--
 

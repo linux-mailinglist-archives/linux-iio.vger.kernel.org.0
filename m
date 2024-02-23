@@ -1,259 +1,130 @@
-Return-Path: <linux-iio+bounces-2960-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2961-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0F48613B3
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 15:12:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2683D86144B
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 15:42:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D67BF282C94
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 14:12:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D508C285B64
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 14:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696B58003B;
-	Fri, 23 Feb 2024 14:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12E7611A;
+	Fri, 23 Feb 2024 14:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cGJ2F8h0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WKtxOxHs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DABD7F46E;
-	Fri, 23 Feb 2024 14:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBA66FAD;
+	Fri, 23 Feb 2024 14:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708697568; cv=none; b=apFq1g1M6WGcx5rXRmapiLVhKmxMs7+KyEKXZjANUes0x8giwTN0uQ5nYKKC1tP7vnc8Ys59yeSIRaawmAHT/IQU+tWosbJqGae9Yq1R5xeK26KBk4sfbw7bQU70Tb7hUU9SkeNktlYFGaN4FS9P3T+sVb8sh8ZUdBockoz/yWs=
+	t=1708699200; cv=none; b=qy+AOG0k21968EgJnD1qjOHY6oiQP25+LVpkZcDtB0AAjxGOYzxLF9OErXBgfm4tlHUmGFWKzUwx7tbbneGOdLqVR5eenEvgpR30ojg8Lrsa+TUyPMAFQoQa6G2vhQTa8gOdIQP+bT4RrZoMezICfGWenYsCLXvLVOuEOSpNRN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708697568; c=relaxed/simple;
-	bh=bUlp46Zm9bHTWoStRR28lGnePyraKkEGReXUW7v5XGA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mw0zZYQG4+VW0sNpD+WN6NSqHScktRSYqKHK8PCoX+Xy6BP3bl7Schgp21iUY8ohTM6Cm1zUl4GvmMzPBMeqMrz9djDp8ntoinqUchjUKFU8Uzqq3j5jKk2S1ekyV0BJd5kP+Irvc1Ke4n9oiL9pJISSv7BtWpTUxGPrHxXR6+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cGJ2F8h0; arc=none smtp.client-ip=209.85.128.43
+	s=arc-20240116; t=1708699200; c=relaxed/simple;
+	bh=vpZPuiLLkI988ptyENq7jUvXxAIw1cEVbm2O6JbZLGM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B+ieR5o7kqqqgAdOir21xf4ryWaTbLZSLBJ1YJBUOEFzEeEGKMw4m4pke4JaRjjzOaESx2NOvHLUj3dnqbRntSLTWnOQIO+0hI9UX+1tSGuyaIFfh994IbDQUxWZi2Phb0psaH8q9KsTk6vVtjAc89VER9QHsX9kvg7HMQcZdmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WKtxOxHs; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-41294136c27so3593935e9.3;
-        Fri, 23 Feb 2024 06:12:45 -0800 (PST)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a3f3d0d2787so55526366b.3;
+        Fri, 23 Feb 2024 06:39:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1708697564; x=1709302364; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=P4gYPQDKRW28f/+Hb98TaIICcu3K1spSmQnj/lPb0BY=;
-        b=cGJ2F8h0FLbwYerfoOvThEPAieJFAPxsC50iB5V8ikb1/fXNXLo2FJhv4gU2ba6XwN
-         6eSkFddNlxNwBlv71zPLL/+4b5w9zVtODxx99FTxCfH2iZ2t1TVHAXeXGbyDmICF5Zn7
-         9b8Y2oiijgTSzgyJRMppSs2TtVgMGj/8BezYwGcIVxpfzbVEmompGXdcKNuyVTegtDeM
-         /ORgxFYi/bHm/CwHIEaixWSOIydH31pKwdJWZFdlAnR/dPq2hyPoLfHYZyBevg0bzPOI
-         s/jygUwwM31tsnDb1Ckc7DkakTuQh+UQWZmdD1uew3Z7AnWltKclJW8MyaoacTpi2j5r
-         DAUw==
+        d=gmail.com; s=20230601; t=1708699197; x=1709303997; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vpZPuiLLkI988ptyENq7jUvXxAIw1cEVbm2O6JbZLGM=;
+        b=WKtxOxHsDgGmBZl8Pm6N7+5snPFEPTFMlrWSlQ2Ash7BvsbDXcwhW4dNmW6XTczaeb
+         L0Cy612m5f1N3DpiwJjHzMDozhdF4gEQFfgPIBLaIGy7YEOWU398hZZnv9r2ynnw6+kQ
+         Ooo+6w6pbgqcxhXwfaK/eYYMMtWqNDb0yk4tRdWi+voELBWURrt+LfTFoSRHMAKulep8
+         AdMC4DT4JyXXSXROG0A6/a9viX26Fl6XMNOnpabTl4qtDEDPPDxv9N/YAdKal+kPoBdP
+         MADdl9O3dyNK55WJLhLsoyfgLv/j0vkBtTFC/J6c2kw011jsHYG9Bxj2FVS/7ygKMDIl
+         ZMLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708697564; x=1709302364;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P4gYPQDKRW28f/+Hb98TaIICcu3K1spSmQnj/lPb0BY=;
-        b=MF643JJQTNHcRLUz2xagM6/RBVHHzQxglF0O1Ijnavt28QsRSkHTQZN3OY9UDB2ar1
-         JLS63VJbiwN/FJlqEXd11JgySgJNXR0qnaWOwf3oyA302wzRGtbsuj4uMkrEBW45yX4t
-         HMsH7iDbuz0/I+fblf5Eh2IUDsbleSZ05GP4xym0TTa6S9P7PZQ/kxKmpN6QQ1j+SciS
-         0Cu46SHaF6wrsohwYtRHb0SagqZJQC2vLuc/DgCC0MdtTkA1lifNU/0ZK0O/NRuFzkmP
-         X1qV8fjSnYxk2TJhqbJ52CXVftadnMFryVRRQXqGaMyyUzJhbH8pQzndO5+Eu86yH0xh
-         wzaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV/xxRvilrz7PRhsjaeoSXOfjJuFImn8TsHUqsWKO2KkvOn8z10TGDRmIKsrtEKOXT/98heZ2bPGahIFXr69AbWmAyWPbvAcCgeqolwsvOh3U7JnLyyH/D3SHu1Mv0X66bTQ4FFAofaYN9N76NKlepaxIPyDTtHdM4na7FkYQrUBnpxTjmg4zWqZR6DFlqPh5br4D0YX6e+MHHZVsIyFag=
-X-Gm-Message-State: AOJu0YztRbS6PnU7+WjkeI85/1i/Ksex9eMqHSUSsaHx1C2APlZjx0yb
-	s85UTWgrvWZ80ty5og0t1wusmpvmbISQOrDAt8xc/IVMpVNcEdci
-X-Google-Smtp-Source: AGHT+IGLF41VZJ8Eg25oa4IAtL3SpllI6mhpkk3XR+mCfxtVp291bgmLEnl5sysU9tZOQZw7+WctnQ==
-X-Received: by 2002:adf:fd81:0:b0:33d:2710:b424 with SMTP id d1-20020adffd81000000b0033d2710b424mr1590190wrr.22.1708697564206;
-        Fri, 23 Feb 2024 06:12:44 -0800 (PST)
-Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
-        by smtp.gmail.com with ESMTPSA id u2-20020a056000038200b0033db0bbc2ccsm1313636wrf.3.2024.02.23.06.12.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Feb 2024 06:12:43 -0800 (PST)
-Message-ID: <b08539f4afdceeb5a0d675113734f6f2f402a311.camel@gmail.com>
-Subject: Re: [PATCH v15 2/3] iio: adc: ad_sigma_delta: Add optional irq
- selection
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org, 
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Jonathan
- Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>,  Michael Walle <michael@walle.cc>, Andy Shevchenko
- <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>,  ChiaEn Wu
- <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard
- =?ISO-8859-1?Q?G=F6hrs?= <l.goehrs@pengutronix.de>, Mike Looijmans
- <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, Hugo Villeneuve
- <hvilleneuve@dimonoff.com>, David Lechner <dlechner@baylibre.com>, Ceclan
- Dumitru <dumitru.ceclan@analog.com>,  linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Fri, 23 Feb 2024 15:16:04 +0100
-In-Reply-To: <20240223133758.9787-2-mitrutzceclan@gmail.com>
-References: <20240223133758.9787-1-mitrutzceclan@gmail.com>
-	 <20240223133758.9787-2-mitrutzceclan@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 
+        d=1e100.net; s=20230601; t=1708699197; x=1709303997;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vpZPuiLLkI988ptyENq7jUvXxAIw1cEVbm2O6JbZLGM=;
+        b=VbjJQpI1PjohgsMdejI64PyTX0iNrLUKX5oWHB/siEw/iFSdyw+MHjqP+fRv7fvky7
+         vZv8nyUjI9szUI6yMZ+A/11YxAVGu4cy1VLVvzMww7vQNFLrry6DzRZbjgPhv6ulAFKB
+         +Ljkjcw7i/ODMyalCeCXdmSP+BGmwXN3u/Mtayi5UHUp3OhPJBIxIJH1MogwIUu1DNnF
+         Ivuvqfu/KdOzADL4BGIJ22+gDdpHL9g9ymi/KFa88CreyCeDhw1zTjOHYIuNGGLE7X9b
+         DVJN5nJlx+eXMhEsEiDLFd5QZ/KB9/k5cRu4LfgNVQwxXVv4EcWtmF54lFsCXk0wufwz
+         i8WA==
+X-Forwarded-Encrypted: i=1; AJvYcCU7a1DTJNYl78pTm25EDwnVpcZV5jUmgV/gOWoFljGmGnGkOeTBiOjges9YwEvCB3wxrZsKMfsgrH3K9/5Yx91v5WrqXuZg62GRvD8ecPMhHqyqToNCD6vD8lFKJNX0W7Kl5nRWlVU5
+X-Gm-Message-State: AOJu0YwMqvhrMxvhGcgWQ53eaV8L4Ee4bJi/hW9LlkHH0x4hE+paJwlk
+	jq8pY8IgInZ+weUyEIsz05SOBDynuBMChP+tWLnEO+RvkTeg1rHiTiB+MqYhLUW/UTyNy7rGchd
+	yNikQQKmKYGW7Hmlj2l78k8f+n18=
+X-Google-Smtp-Source: AGHT+IGBCLA7oTCR1x5TwCidwTaIiT3zUeUmp18ugjUau1mCK673R/6uBtfxi8E6jqxFDz/uMvgYluJ/O9I+odulo7Q=
+X-Received: by 2002:a17:906:cb08:b0:a3f:684b:d0f0 with SMTP id
+ lk8-20020a170906cb0800b00a3f684bd0f0mr1543311ejb.58.1708699196932; Fri, 23
+ Feb 2024 06:39:56 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240223-saradcv2-chan-mask-v1-0-84b06a0f623a@theobroma-systems.com>
+ <20240223-saradcv2-chan-mask-v1-3-84b06a0f623a@theobroma-systems.com>
+ <CAHp75VfVTJsQDwaPoPgGiT6jnymXAR3WpETqaKai8rXAC70iLw@mail.gmail.com> <6f76ffab-69fe-4afb-9d7e-d3cdfe37c28c@theobroma-systems.com>
+In-Reply-To: <6f76ffab-69fe-4afb-9d7e-d3cdfe37c28c@theobroma-systems.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 23 Feb 2024 16:39:20 +0200
+Message-ID: <CAHp75Vft3kJEF9JiuEqVsS3biQ6YsuDXON_P3FOZRjtb8NaB2w@mail.gmail.com>
+Subject: Re: [PATCH 3/3] iio: adc: rockchip_saradc: replace custom logic with devm_reset_control_get_optional_exclusive
+To: Quentin Schulz <quentin.schulz@theobroma-systems.com>
+Cc: Quentin Schulz <foss+kernel@0leil.net>, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Heiko Stuebner <heiko@sntech.de>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Shreeya Patel <shreeya.patel@collabora.com>, Simon Xue <xxm@rock-chips.com>, 
+	Philipp Zabel <p.zabel@pengutronix.de>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+	linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2024-02-23 at 15:37 +0200, Dumitru Ceclan wrote:
-> Add optional irq_num attribute to ad_sigma_delta_info structure for
-> selecting the used interrupt line for ADC's conversion completion.
->=20
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
-> ---
+On Fri, Feb 23, 2024 at 3:10=E2=80=AFPM Quentin Schulz
+<quentin.schulz@theobroma-systems.com> wrote:
+> On 2/23/24 14:00, Andy Shevchenko wrote:
+> > On Fri, Feb 23, 2024 at 2:46=E2=80=AFPM Quentin Schulz <foss+kernel@0le=
+il.net> wrote:
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+...
 
-> V15->V14
-> =C2=A0- Uppercase ADC acronym in commit message
-> =C2=A0- Rename irq_num to irq_line, change type to int
-> V13->V14
-> =C2=A0- Invert logic checking the presence of the optional irq_num attrib=
-ute
-> V1->V12
-> <Not present>
-> =C2=A0drivers/iio/adc/ad_sigma_delta.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 | 23 ++++++++++++++---------
-> =C2=A0include/linux/iio/adc/ad_sigma_delta.h |=C2=A0 3 +++
-> =C2=A02 files changed, 17 insertions(+), 9 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad_sigma_delta.c
-> b/drivers/iio/adc/ad_sigma_delta.c
-> index 7e2192870743..03c170b638a8 100644
-> --- a/drivers/iio/adc/ad_sigma_delta.c
-> +++ b/drivers/iio/adc/ad_sigma_delta.c
-> @@ -222,11 +222,11 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_de=
-lta,
-> =C2=A0		goto out;
-> =C2=A0
-> =C2=A0	sigma_delta->irq_dis =3D false;
-> -	enable_irq(sigma_delta->spi->irq);
-> +	enable_irq(sigma_delta->irq_line);
-> =C2=A0	timeout =3D wait_for_completion_timeout(&sigma_delta->completion, =
-2 *
-> HZ);
-> =C2=A0	if (timeout =3D=3D 0) {
-> =C2=A0		sigma_delta->irq_dis =3D true;
-> -		disable_irq_nosync(sigma_delta->spi->irq);
-> +		disable_irq_nosync(sigma_delta->irq_line);
-> =C2=A0		ret =3D -EIO;
-> =C2=A0	} else {
-> =C2=A0		ret =3D 0;
-> @@ -295,7 +295,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev
-> *indio_dev,
-> =C2=A0	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_SINGLE);
-> =C2=A0
-> =C2=A0	sigma_delta->irq_dis =3D false;
-> -	enable_irq(sigma_delta->spi->irq);
-> +	enable_irq(sigma_delta->irq_line);
-> =C2=A0	ret =3D wait_for_completion_interruptible_timeout(
-> =C2=A0			&sigma_delta->completion, HZ);
-> =C2=A0
-> @@ -315,7 +315,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev
-> *indio_dev,
-> =C2=A0
-> =C2=A0out:
-> =C2=A0	if (!sigma_delta->irq_dis) {
-> -		disable_irq_nosync(sigma_delta->spi->irq);
-> +		disable_irq_nosync(sigma_delta->irq_line);
-> =C2=A0		sigma_delta->irq_dis =3D true;
-> =C2=A0	}
-> =C2=A0
-> @@ -396,7 +396,7 @@ static int ad_sd_buffer_postenable(struct iio_dev
-> *indio_dev)
-> =C2=A0		goto err_unlock;
-> =C2=A0
-> =C2=A0	sigma_delta->irq_dis =3D false;
-> -	enable_irq(sigma_delta->spi->irq);
-> +	enable_irq(sigma_delta->irq_line);
-> =C2=A0
-> =C2=A0	return 0;
-> =C2=A0
-> @@ -414,7 +414,7 @@ static int ad_sd_buffer_postdisable(struct iio_dev
-> *indio_dev)
-> =C2=A0	wait_for_completion_timeout(&sigma_delta->completion, HZ);
-> =C2=A0
-> =C2=A0	if (!sigma_delta->irq_dis) {
-> -		disable_irq_nosync(sigma_delta->spi->irq);
-> +		disable_irq_nosync(sigma_delta->irq_line);
-> =C2=A0		sigma_delta->irq_dis =3D true;
-> =C2=A0	}
-> =C2=A0
-> @@ -516,7 +516,7 @@ static irqreturn_t ad_sd_trigger_handler(int irq, voi=
-d *p)
-> =C2=A0irq_handled:
-> =C2=A0	iio_trigger_notify_done(indio_dev->trig);
-> =C2=A0	sigma_delta->irq_dis =3D false;
-> -	enable_irq(sigma_delta->spi->irq);
-> +	enable_irq(sigma_delta->irq_line);
-> =C2=A0
-> =C2=A0	return IRQ_HANDLED;
-> =C2=A0}
-> @@ -586,9 +586,9 @@ static int devm_ad_sd_probe_trigger(struct device *de=
-v,
-> struct iio_dev *indio_de
-> =C2=A0	sigma_delta->irq_dis =3D true;
-> =C2=A0
-> =C2=A0	/* the IRQ core clears IRQ_DISABLE_UNLAZY flag when freeing an IRQ=
- */
-> -	irq_set_status_flags(sigma_delta->spi->irq, IRQ_DISABLE_UNLAZY);
-> +	irq_set_status_flags(sigma_delta->irq_line, IRQ_DISABLE_UNLAZY);
-> =C2=A0
-> -	ret =3D devm_request_irq(dev, sigma_delta->spi->irq,
-> +	ret =3D devm_request_irq(dev, sigma_delta->irq_line,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ad_sd_data_rdy_trig_poll,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 sigma_delta->info->irq_flag=
-s | IRQF_NO_AUTOEN,
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 indio_dev->name,
-> @@ -668,6 +668,11 @@ int ad_sd_init(struct ad_sigma_delta *sigma_delta, s=
-truct
-> iio_dev *indio_dev,
-> =C2=A0		}
-> =C2=A0	}
-> =C2=A0
-> +	if (info->irq_line)
-> +		sigma_delta->irq_line =3D info->irq_line;
-> +	else
-> +		sigma_delta->irq_line =3D spi->irq;
-> +
-> =C2=A0	iio_device_set_drvdata(indio_dev, sigma_delta);
-> =C2=A0
-> =C2=A0	return 0;
-> diff --git a/include/linux/iio/adc/ad_sigma_delta.h
-> b/include/linux/iio/adc/ad_sigma_delta.h
-> index 7852f6c9a714..576eb617939d 100644
-> --- a/include/linux/iio/adc/ad_sigma_delta.h
-> +++ b/include/linux/iio/adc/ad_sigma_delta.h
-> @@ -45,6 +45,7 @@ struct iio_dev;
-> =C2=A0 * @data_reg: Address of the data register, if 0 the default addres=
-s of 0x3
-> will
-> =C2=A0 *=C2=A0=C2=A0 be used.
-> =C2=A0 * @irq_flags: flags for the interrupt used by the triggered buffer
-> + * @irq_line: IRQ for reading conversions. If 0, spi->irq will be used
-> =C2=A0 * @num_slots: Number of sequencer slots
-> =C2=A0 */
-> =C2=A0struct ad_sigma_delta_info {
-> @@ -60,6 +61,7 @@ struct ad_sigma_delta_info {
-> =C2=A0	unsigned int data_reg;
-> =C2=A0	unsigned long irq_flags;
-> =C2=A0	unsigned int num_slots;
-> +	int irq_line;
-> =C2=A0};
-> =C2=A0
-> =C2=A0/**
-> @@ -87,6 +89,7 @@ struct ad_sigma_delta {
-> =C2=A0	unsigned int		active_slots;
-> =C2=A0	unsigned int		current_slot;
-> =C2=A0	unsigned int		num_slots;
-> +	int		irq_line;
-> =C2=A0	bool			status_appended;
-> =C2=A0	/* map slots to channels in order to know what to expect from devi=
-ces
-> */
-> =C2=A0	unsigned int		*slots;
+> >> Cc: Quentin Schulz <foss+kernel@0leil.net>
+> >
+> > You may use the --cc option to `git send-email` instead of polluting
+> > commit messages, or move this after the '---' cutter line.
+>
+> The whole point is that my SoB and authorship is from my professional
+> mail address which is likely to change over time, the Cc is my personal
+> one for development. Basically, in the event that I change my employer,
+> I would still be reachable at that Cc address without having to modify
+> the .mailmap after the fact (which won't make it to an earlier version
+> of the kernel for example). Some maintainers don't really like this,
+> some don't mind, we'll see in which category the IIO maintainer(s) fall
+> in :) (I don't mind either way just to be clear).
 
+My point is that Cc and other similar (non-real-tags) stuff is
+polluting commit messages. It means that this will be copied to the
+Git index to all kernel git repositories in the world from now and
+then, This is at bare minimum makes additional burden on git log (and
+parsing and so on) and moreover, wastes resources becoming less
+environment friendly (no jokes). Using --cc or moving to the behind
+the commit message will keep email copied with cleaner commit
+messages. Yet, all email tags are available in lore archive
+(lore.kernel.org). Please, really reconsider the commit messages
+content in the Linux kernel project and elsewhere, it will help to
+make the world more friendly.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

@@ -1,190 +1,422 @@
-Return-Path: <linux-iio+bounces-2952-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2953-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29FFA86124B
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 14:10:30 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 787498612CF
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 14:38:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 426451C22B8E
-	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 13:10:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3B711F23595
+	for <lists+linux-iio@lfdr.de>; Fri, 23 Feb 2024 13:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFDC7E595;
-	Fri, 23 Feb 2024 13:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31D487EF1E;
+	Fri, 23 Feb 2024 13:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=theobroma-systems.com header.i=@theobroma-systems.com header.b="f5RjaxiE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QsA924Ru"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04on2111.outbound.protection.outlook.com [40.107.8.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47DA651A2;
-	Fri, 23 Feb 2024 13:10:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.8.111
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708693824; cv=fail; b=SAuvzyt1ghzeKmQKvJEu/3gLKPPvRERrVPkEC9sWzWHxeGh8V1rBDuSEIDV+LPcE7ht16mfTqTDS7i4lKnrGm43ZRkjXzIx44HKl6/Cflrb9Wgs/iL8oJpaHAxoQTLoPJVkRCRnZO88MLF0dOTdCdq+33OUwtdMzOx4X/JLVCXw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708693824; c=relaxed/simple;
-	bh=0kcWSeb5OU0M+gQ883HPl1++WCoYXsYfxBWY6d8pn/s=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=FxlOlphVdJfR06oVYdw9IrhkJMiAF33MkiWK2LtbIMfuq9c3Ksr7DbRYcVOiF+MREhEBQ8UFChuaOgCJkGrJ8SndHq2onN7uZRzpX4vmbdJ7an4LLvAah852PawKDNuyMtDQvZCa1ZkKcfb/yUa9af/EAmYyD/kLnj/Hmefe0rE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=theobroma-systems.com; spf=pass smtp.mailfrom=theobroma-systems.com; dkim=pass (2048-bit key) header.d=theobroma-systems.com header.i=@theobroma-systems.com header.b=f5RjaxiE; arc=fail smtp.client-ip=40.107.8.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=theobroma-systems.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theobroma-systems.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=hQUzh88AvFtrD6njhuDnl8RDaBDZmDDVcGwdK5kCbE9R7X124rGJyC6TV/pIy6zKq/cq/o6/KwcxyF9VfJvYCgtr2TvxJYDuZbKJt26+54v3oypxtO93n0TqVu2H326vMNMZ8wRaLio7t5DLL4/TOMBaPvMUPkKNaD+T3I1xr7SaXjPGFx3iC4jeYMW+iSXbsXAdtE8JiGmsAbLvLqUUNk/mB2skQdEh6UV5pG1e0A3HHJraCU2TC4I99HpQ+nFQJ/rgCxoE0bdxGa+xS3UgpHea+LdazyhMqgdY1zVps8zHIWdCJjsQf7MOezqzHPQN6FIJeqkqzqIUNROEisiWtA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=h3kOLtuoNtwSoEE/BpxFI3fM08A5Vd+Wc2BwQF0qxc8=;
- b=G+oWsMRr7C6AL24y7Wf4zb+N+VmtQwhuZc2Zjo2ogq/i5stZNPl2h4K8h6B3DMb8mQ6LIQuAUl1z2rP0CGVWGL+yNpekzYl9JxNk5X96t2ylO6puzyE1PQTy2IuN6MrgZLBpW+vMOtPKAtZ06GVzbJ7hkEw6ZSuvTtjoYm5i8KRUVfNJ1G4EuuLYVD5LCNXyYKfWZAQHgBDtOu2zv/WvNaH3SZ3DiNNwGwGlcMfJwm/ge/dcs+AoH2GARVKzaJS3IVfpeRetqxzqu41CUtVu1g6VxJG2ENcp/ZG5A1r8IrYe9ukvRDxjBWumm+Dg2gCeAUbE9eG4unLfYCcRMfYsLA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=theobroma-systems.com; dmarc=pass action=none
- header.from=theobroma-systems.com; dkim=pass header.d=theobroma-systems.com;
- arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=theobroma-systems.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=h3kOLtuoNtwSoEE/BpxFI3fM08A5Vd+Wc2BwQF0qxc8=;
- b=f5RjaxiEHUgKt9xQLQ/l37pyHQ2gljzftT7b8wlMIKhkxQO0tvTZ0jh3+m/IaH42BEaEaX07KU0Eli2MBwE7oThbZ/UBJxRqAD/nUpURZAY82bKaGKcu/F22NVWFfWICdHvlYIS1yutcKhOmWfYJH67QMlb+rrNdPX6Ov/Qun/B28dHSPaNbs0sgIflnvNmytGov6F/U3srBoMl6TXlHwnhqrWPvFd+j9jy4t/C+ED8pZhHsqcV000vzxTP+WFfz2ZYZkk2r4G5cOLuBCokNKsYPI/w0wcgkyNxdUtmnf9lDE1t5oI2uarzSsCvE0GsziRVigZlOp84wVrRiPK8ElQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=theobroma-systems.com;
-Received: from DU2PR04MB8536.eurprd04.prod.outlook.com (2603:10a6:10:2d7::10)
- by AS8PR04MB8102.eurprd04.prod.outlook.com (2603:10a6:20b:3f3::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.24; Fri, 23 Feb
- 2024 13:10:18 +0000
-Received: from DU2PR04MB8536.eurprd04.prod.outlook.com
- ([fe80::550d:ad96:e3cb:9a6e]) by DU2PR04MB8536.eurprd04.prod.outlook.com
- ([fe80::550d:ad96:e3cb:9a6e%5]) with mapi id 15.20.7316.023; Fri, 23 Feb 2024
- 13:10:18 +0000
-Message-ID: <6f76ffab-69fe-4afb-9d7e-d3cdfe37c28c@theobroma-systems.com>
-Date: Fri, 23 Feb 2024 14:10:16 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/3] iio: adc: rockchip_saradc: replace custom logic with
- devm_reset_control_get_optional_exclusive
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
- Quentin Schulz <foss+kernel@0leil.net>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Heiko Stuebner <heiko@sntech.de>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Shreeya Patel <shreeya.patel@collabora.com>, Simon Xue <xxm@rock-chips.com>,
- Philipp Zabel <p.zabel@pengutronix.de>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240223-saradcv2-chan-mask-v1-0-84b06a0f623a@theobroma-systems.com>
- <20240223-saradcv2-chan-mask-v1-3-84b06a0f623a@theobroma-systems.com>
- <CAHp75VfVTJsQDwaPoPgGiT6jnymXAR3WpETqaKai8rXAC70iLw@mail.gmail.com>
-Content-Language: en-US
-From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
-In-Reply-To: <CAHp75VfVTJsQDwaPoPgGiT6jnymXAR3WpETqaKai8rXAC70iLw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0147.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:98::12) To DU2PR04MB8536.eurprd04.prod.outlook.com
- (2603:10a6:10:2d7::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020357AE6E;
+	Fri, 23 Feb 2024 13:38:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1708695487; cv=none; b=fLFQWj9y3Je9gx8SysFrsr8BCy9f/1zkJ9JRrbzvt12zcNUqOoYdwA3jXBG51L0k3u9Km0FcyNb4aCRoKluwPEei29biddmLAh652Zfm8CtVho7BcaQR9AqG4ISRZbmtaRTHL+ZpReIb17Xz8jH4OEVXqRgsdrMAVbwoxeqAQ34=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1708695487; c=relaxed/simple;
+	bh=5ieuGD931HGPK6rLXZGzOee73cDPA9R58arcB59nvCg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=TbyymG8Wqutwt46jKgO54baUty8iTAVWJSchCXACL55urLggB5b29p3rccN6j6ORh51OaSqteU+Yaz/1DD3+KHyO8TqS5IT1yba+xASL0oNtOGNXzIkL9P2YYzkeUx/rXDMOtUxzMsLRUCkUGcOpLr6wqNGT6j802WJbD7Qc+kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QsA924Ru; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a3f48422fb6so123011966b.3;
+        Fri, 23 Feb 2024 05:38:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708695483; x=1709300283; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7xWo64HPyceyCrU5fgBBH7VbC2lBdca093uyLG+HM+8=;
+        b=QsA924RuxRvKfoPiNMpSyusFqfnrAUzWlrRRS52ueegWJONGUiMqWgwhEUlEUo9oRa
+         Krn8IMrEaIoi5mWUKehfVMVIf+cdjCs0rOCR1YbhZwoxcnwJE/MxyXWTLZJOWkEjBt4Q
+         LM0hxqmasrIEjOHgLQR1R/eEL6e3EQmuS7jD7wtp/Ust/rgD616fN3va+r0YQaQtIILU
+         1gUSBaGiFaua90u3Pr38xOABCpzB9Ow0NRcxMSQHcoPEuc1GLvS57clj7+K18iKTz2/6
+         ygCvnGXWBhnDXXYAvf1UniTz51v22UrFDJIVsArkFBzJOtrc3jYpaxp0BbpXtasIqgrX
+         IV1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708695483; x=1709300283;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7xWo64HPyceyCrU5fgBBH7VbC2lBdca093uyLG+HM+8=;
+        b=eVj7sUfMBI4mfBlr2jqocEPXZitJwcp5O9RUNkdiEeIHUDq8iGXNDdVowOKjGhAPqP
+         9kew72zLjDhvC6zKtOTuK3acQQPAmH0vheBQB6JuxGqjNrDo48Aj02rGWg9CAXhNaPSJ
+         hhR5k/U+Pa+mlnWI50cq/TehbxUibpYJhdx+FTXkCkkcNzZezgwPRr2YbhY/5ymFto/h
+         iqHbNgGx9nCCWp9yLKF5R+vjy3phK/am1JWbbWZPLSKHKjhm5UltY4Irb9Z1DGqS8VHQ
+         zKxXEYE5s4zSlIjvMPRAt7pLlGNhCyFjqC+dEor4cAYHzcIFOWnHNngvkV1IZhJaODMw
+         wBQg==
+X-Forwarded-Encrypted: i=1; AJvYcCUHnYFo3ikLl7K0FouLUlzhznV209nV9eP/FiIfKc4eMmqRvMvrCxlL2O6XiqmdbtVoE6vg0XLnT/qTYIpBl1+N4mAbUc2MllpKAxkLBYyrXBRU9moNRWQdg2awIN/O6Wg0bH/oeznkZjbTbJ9dJd21bcv0z0/tOUM9PUFQ1G5tQdPMVepp5HbH71Qj8n6kpSl0foNqxuO6f1rfhOK6FrQ=
+X-Gm-Message-State: AOJu0YykzVjha6PHgP1t++0qy7zn5ZbhmLKwG0eXJFHCyDH8krDU5UNL
+	ujaJlb+7gcGUCofuLoYk0LW0lU/bt1mX/nk9pA6JPf2VBoEJjqLJ
+X-Google-Smtp-Source: AGHT+IHSuJ0k6vRbHvVLRXkmiDeKhDXRdviKQl0ehB5fsFZRrRWY4C9VF4pdHPAiWswO8XQvXd7kRg==
+X-Received: by 2002:a17:906:2608:b0:a3e:c680:ee3a with SMTP id h8-20020a170906260800b00a3ec680ee3amr1365827ejc.30.1708695482674;
+        Fri, 23 Feb 2024 05:38:02 -0800 (PST)
+Received: from HYB-hhAwRlzzMZb.ad.analog.com ([83.103.132.21])
+        by smtp.gmail.com with ESMTPSA id h11-20020a17090634cb00b00a3d7bcfb9a1sm6911429ejb.128.2024.02.23.05.38.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Feb 2024 05:38:02 -0800 (PST)
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+To: 
+Cc: linus.walleij@linaro.org,
+	brgl@bgdev.pl,
+	andy@kernel.org,
+	linux-gpio@vger.kernel.org,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Walle <michael@walle.cc>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	ChiaEn Wu <chiaen_wu@richtek.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	=?UTF-8?q?Leonard=20G=C3=B6hrs?= <l.goehrs@pengutronix.de>,
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Ceclan Dumitru <dumitru.ceclan@analog.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v15 1/3] dt-bindings: adc: add AD7173
+Date: Fri, 23 Feb 2024 15:37:28 +0200
+Message-ID: <20240223133758.9787-1-mitrutzceclan@gmail.com>
+X-Mailer: git-send-email 2.42.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU2PR04MB8536:EE_|AS8PR04MB8102:EE_
-X-MS-Office365-Filtering-Correlation-Id: c8ea6fa1-6e14-4bc1-a350-08dc3470c845
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	36ZRWF0wG6ixhqHKzc/oJYMbXHIXCbB9Q3p/SoRNus9uJtlNotxLvVMxSKyijobJkoYCyDMOAqi+VR4zE7QZI5yJV9I4SjS8QebzHGN4+INIGnPcD5uWIK2J8S71pLgziMQn0VYGBQQMh5j3+iAeMcCQIgf5qA/vpy12CJo9U9CCARd3zq2LQxu6mKCjMbxjRWAkxnXZr17ivyG8RZ4DkjvEKAs+7OhzFa+jV9WgKHPWxhqAi6KS5rIJsgdKykceILcX/fYqO5cr9t+IP+hViS4DIAj3pTM+uLuN8svWZhtPPpUMMCsDFpuLpgjrASL3uvDBvwexNx69BqdlLJTWnzZc4zRxoglO+mJVKPatP6nNPLSe0Be1u23jAjZ0ZEGZxw+nc5HJo+BbxZFFIcJSxwOnl87Ms0wgMfiiJlxMM6rf7W27W5EhTq1vHs5YATTYYZyJKzbPqjRshkRWZu+6YJkml6xOxvZE6j0n1xn1ei/lpmFTin93ndDwvvZn9KmS88mxHpLJRVFPJ1BLbnVPM3fhfasembdCzfvZ5BZ4mpM=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU2PR04MB8536.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ZVlaaERwZXRwQ3Y3bnk1cTdiWGp1MjNUcW14QjcxSUJLTTVkcW5EQ0pnV0dG?=
- =?utf-8?B?QU5jaGlucnZraHpadzBlK1krT1BGbjRNRFZCeElrMUpaSWNralJXeTNiOHd3?=
- =?utf-8?B?eFk3a0tuL3NWQXFUVnRjTWhKaVQ4UnVTTExCamVWT2ZGWFR1Y0Z1UTN3SDVM?=
- =?utf-8?B?RFZ2d1pZcHJWMjNDYkhidTM4R3ZSZmZRM1FwcmJ6V3hDMU9zaDZSb2NMZVNC?=
- =?utf-8?B?UXRMZlkveHNlZnZ6WXV1NXladTFVMHlHUzhsWjI5TlpVMGE0RjU1WHVRQllk?=
- =?utf-8?B?WjRud2MvcTc1bjJpVWk3aVFPM1JrekFtdnB4eHphRlE2RTFXMXdBTGlCWURi?=
- =?utf-8?B?anBaMzYwY2RjcXRSNGtlT3ZTQjNRNEd1QzJuS0MxRVpjaDNtTUovREE0OXov?=
- =?utf-8?B?Z1BQRlNBaktLNnZQS2lTZENOMmUwd3hDc2xiK1ZuTVRGZy9QV09uZ3ZwWDda?=
- =?utf-8?B?d2h3dk0rMVZwNDU0N0FreHk2M0poemU2QVFua3dFcExwNEZobGpZajUveWN2?=
- =?utf-8?B?cGxwSzlxdlNJa3lFWHhiVnVuUk8zQ2Q5b2dLL3RURmF4ai9NT1RxUnFxTHVS?=
- =?utf-8?B?Wkc1bGtTRnlUZDViUWQySUhwUVBUUmNONm5Ma0taMmpSTjlGVlhOK2NkZkZj?=
- =?utf-8?B?MHUrV01wS0ZFdUxCMnpZdFBtc0d1RW1MT0E5ZXVNYnVVR0xOMXdIU3ZOUjRW?=
- =?utf-8?B?Z1pZdVJubGM4cUtQWU95ZEVRZUxEeUg5cEFMOWw3UnV1Q0IzYkMxSzF3UEpr?=
- =?utf-8?B?K1QyQmRzeTZBRDNlMkFVaTZ5SnN3dmd2QTBodVIvOVgwa2N2bTMzSnFFT0V0?=
- =?utf-8?B?TnpQK1IzVUlTV1hyNVFmL001aVNqQ2h4S3RnUTV6d2Z6dFpKMFZYR1hkTUR3?=
- =?utf-8?B?eVEvTmd3dHorS0JWYUQrY25JV2YvamVRQ1o3ejBJNXJDMTBnNkVUeWo4S0ZU?=
- =?utf-8?B?VXIwM2ZLOUZXUmFnMmxrOFd6QUVhODExTE5MMVJBWGcwb2dIMlltbDFLams0?=
- =?utf-8?B?aHF4ZStXNGE1Y3pxUmtCUTJrQlZpSDdzbmt4NUhQTTRrM05SM2FxSmJrM1BE?=
- =?utf-8?B?VURLeTd4ekRrcGNFMDJkdkpNUXBDMkhMcnZYTGd3T0JBUE1CWnIrRU15azBU?=
- =?utf-8?B?WmJqS2ZjbWc3WUpSSDZydnNlaWxTMWN5NHN1cUZKVkttUHF6NzJjYlZCN3Bw?=
- =?utf-8?B?YnJXV3pkTWFmV2NzTUl1V2JNZTAzT3V4a1FWUms0ZTBROEdEaU1DUXQrbDc1?=
- =?utf-8?B?STZzYWhSMzJiVDcyT0JiUmVWc0ZqR01KYWluUnVKOGdmcXdPTm1XRG5Xa1Ix?=
- =?utf-8?B?ZFFoSUVZK25LaEV2aG5seDdKWXZ5WER6M3NMcE9XVjA0V1BDRDdYdlZlNkFQ?=
- =?utf-8?B?Um1BcGp6NnVyUVl3UFNVc1JVd0RnaFVKZFY3NWVmNHdpLzdOZzZmU2wyR21u?=
- =?utf-8?B?UmhUcHNYWHUzNjd4Yis0ZlhQWTYyYVR5ZFFneFVDUUZVck5Na1ZXSGhtMTEw?=
- =?utf-8?B?S1E3Rm5FRDNad0swMEZqUENWeENMYmRYVFdlTHE0d0Y3Yk1Qdk90aXJhckhP?=
- =?utf-8?B?a0hGNGJKL010dElEVmpINE05c1U0eHBwVFZ5dFVZVGVVeUhDTmFlMzBxWDk2?=
- =?utf-8?B?dCtxYkJTUkNsN052bEhrYzRibm44Z0xTTUNIOVZ5bjlIdk9XdlM0Z2g0WEc3?=
- =?utf-8?B?eGNBb0s4NjhLaG82UnN1Tmp5eTJVUm5lSnJNaVp0YjM1TmhoRzh0SGVNc2ps?=
- =?utf-8?B?RTRLblcxa2xkYWYvK1FPZmFNeFRrK0thZlFoRHNxREEvbWJMUTV3U2tNZmJ3?=
- =?utf-8?B?UHlrMWk2Q085Z1JXWFI0MXJqWXVHbGo1SzNFVUkrWENZWXRxbDZGSDFGVmxP?=
- =?utf-8?B?WTJJeGZaRU93RXYvaS9aTy9EKzBEN2cvRDdWM0lvbEg0WnJXYng4VEhMZURp?=
- =?utf-8?B?UGs0YUtqUDBxNlNmV2xBQUFlM1o2ZlhlWVdraTdsVXFvem8xcGxpMW1VdDE5?=
- =?utf-8?B?QmxxbERMVDhRa1NnK0lnTFZBMXFnRkxzUXZMdVo2aTRJRXRuT0c0eU5VZE1E?=
- =?utf-8?B?QzJUUDdiV2IrMkdPWWcydDVNU2hvcWFhRkxENW1jWHQyZUZEYjVBZXFMa3Na?=
- =?utf-8?B?dW9ScGpHL2R3REJPMWpFZWVUTzdFem9YYVZHSFBMbjJLQU1VT2V5RU9NaU9J?=
- =?utf-8?Q?ri3g6KjuuVmF3g1IYdSes/Y=3D?=
-X-OriginatorOrg: theobroma-systems.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8ea6fa1-6e14-4bc1-a350-08dc3470c845
-X-MS-Exchange-CrossTenant-AuthSource: DU2PR04MB8536.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2024 13:10:18.2303
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZjsRtn2kFDvwwEHPcVkMBqgtsJs/mA8YmRuecK6os2tdOGuGObnx0iSsx5posME7jE2fQ/i+g4XuaKQmXPoCpNoz148h3KugqEh3SHp5SpMPoB9S8suiA5/JxodiIXLY
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB8102
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Andy,
+The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+which can be used in high precision, low noise single channel applications
+or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+primarily for measurement of signals close to DC but also delivers
+outstanding performance with input bandwidths out to ~10kHz.
 
-Thanks for the prompt feedback on the whole series.
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+---
+V14->V15 <no changes>
+V13->V14
+ - Refer in descriptions of the avdd-supply as AVDD1 in concordance to datasheet
+ - Fix typo
+ - Place interrupts descriptions separately for each item
+ - Restrict max channel reg to 3 for models AD717x-2
+V12->V13
+ - Remove adi,clock-select
+ - Update avdd and avdd2 supply descriptions
+ - Update adi,reference-select description to suggest that it is referenced to avss
+ - Make clocks/clock-names and clock-controller mutually exclusive
+V11->V12
+ - Drop "binding", describe hardware in binding description
+ - Rename refin and refin2 to vref and vref2
+ - Add better description to external references to better show that the voltage
+    value that needs to be specified is the difference between the positive and
+    negative reference pins
+ - Add optional clocks properties
+ - Add optional adi,clock-select property
+ - Add option for second interrupt, error
+ - Add description to interrupts
+V10->V11
+ - Fix example warning: '#gpio-cells' is a dependency of 'gpio-controller'
+ - Add description to #gpio-cells property
+V9->V10
+ - Fix dt_binding_check type warning from adi,reference-select
+V8->v9
+ - Add gpio-controller and "#gpio-cells" properties
+ - Add missing avdd2 and iovdd supplies
+ - Add string type to reference-select
+V7->V8
+ - include missing fix from V6
+V6->V7 <no changes>
+V5->V6
+ - Moved global required property to proper placement
+V4 -> V5
+ - Use string enum instead of integers for "adi,reference-select"
+ - Fix conditional checking in regards to compatible
+V3 -> V4
+ - include supply attributes
+ - add channel attribute for selecting conversion reference
+V2 -> V3
+ - remove redundant descriptions
+ - use referenced 'bipolar' property
+ - remove newlines from example
+V1 -> V2 <no changes>
+ .../bindings/iio/adc/adi,ad7173.yaml          | 246 ++++++++++++++++++
+ 1 file changed, 246 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
 
-On 2/23/24 14:00, Andy Shevchenko wrote:
-> On Fri, Feb 23, 2024 at 2:46 PM Quentin Schulz <foss+kernel@0leil.net> wrote:
->>
->> From: Quentin Schulz <quentin.schulz@theobroma-systems.com>
->>
->> devm_reset_control_get_optional_exclusive does what this driver is
-> 
-> devm_reset_control_get_optional_exclusive()
-> 
->> trying to do in its probe function, therefore let's switch over to that
-> 
-> do it in
-> 
->> subsystem function.
-> 
->> Cc: Quentin Schulz <foss+kernel@0leil.net>
-> 
-> You may use the --cc option to `git send-email` instead of polluting
-> commit messages, or move this after the '---' cutter line.
-> 
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+new file mode 100644
+index 000000000000..36f16a325bc5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+@@ -0,0 +1,246 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++# Copyright 2023 Analog Devices Inc.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7173.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AD7173 ADC
++
++maintainers:
++  - Ceclan Dumitru <dumitru.ceclan@analog.com>
++
++description: |
++  Analog Devices AD717x ADC's:
++  The AD717x family offer a complete integrated Sigma-Delta ADC solution which
++  can be used in high precision, low noise single channel applications
++  (Life Science measurements) or higher speed multiplexed applications
++  (Factory Automation PLC Input modules). The Sigma-Delta ADC is intended
++  primarily for measurement of signals close to DC but also delivers
++  outstanding performance with input bandwidths out to ~10kHz.
++
++  Datasheets for supported chips:
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-2.pdf
++    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7176-2.pdf
++
++properties:
++  compatible:
++    enum:
++      - adi,ad7172-2
++      - adi,ad7173-8
++      - adi,ad7175-2
++      - adi,ad7176-2
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    minItems: 1
++    items:
++      - description: |
++          Ready: multiplexed with SPI data out. While SPI CS is low,
++          can be used to indicate the completion of a conversion.
++
++      - description: |
++          Error: The three error bits in the status register (ADC_ERROR, CRC_ERROR,
++          and REG_ERROR) are OR'ed, inverted, and mapped to the ERROR pin.
++          Therefore, the ERROR pin indicates that an error has occurred.
++
++  interrupt-names:
++    minItems: 1
++    items:
++      - const: rdy
++      - const: err
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  spi-max-frequency:
++    maximum: 20000000
++
++  gpio-controller:
++    description: Marks the device node as a GPIO controller.
++
++  '#gpio-cells':
++    const: 2
++    description:
++      The first cell is the GPIO number and the second cell specifies
++      GPIO flags, as defined in <dt-bindings/gpio/gpio.h>.
++
++  vref-supply:
++    description: |
++      Differential external reference supply used for conversion. The reference
++      voltage (Vref) specified here must be the voltage difference between the
++      REF+ and REF- pins: Vref = (REF+) - (REF-).
++
++  vref2-supply:
++    description: |
++      Differential external reference supply used for conversion. The reference
++      voltage (Vref2) specified here must be the voltage difference between the
++      REF2+ and REF2- pins: Vref2 = (REF2+) - (REF2-).
++
++  avdd-supply:
++    description: Avdd supply, can be used as reference for conversion.
++                 This supply is referenced to AVSS, voltage specified here
++                 represents (AVDD1 - AVSS).
++
++  avdd2-supply:
++    description: Avdd2 supply, used as the input to the internal voltage regulator.
++                 This supply is referenced to AVSS, voltage specified here
++                 represents (AVDD2 - AVSS).
++
++  iovdd-supply:
++    description: iovdd supply, used for the chip digital interface.
++
++  clocks:
++    maxItems: 1
++    description: |
++      Optional external clock source. Can include one clock source: external
++      clock or external crystal.
++
++  clock-names:
++    enum:
++      - ext-clk
++      - xtal
++
++  '#clock-cells':
++    const: 0
++
++patternProperties:
++  "^channel@[0-9a-f]$":
++    type: object
++    $ref: adc.yaml
++    unevaluatedProperties: false
++
++    properties:
++      reg:
++        minimum: 0
++        maximum: 15
++
++      diff-channels:
++        items:
++          minimum: 0
++          maximum: 31
++
++      adi,reference-select:
++        description: |
++          Select the reference source to use when converting on
++          the specific channel. Valid values are:
++          vref       : REF+  /REF−
++          vref2      : REF2+ /REF2−
++          refout-avss: REFOUT/AVSS (Internal reference)
++          avdd       : AVDD  /AVSS
++
++          External reference ref2 only available on ad7173-8.
++          If not specified, internal reference used.
++        $ref: /schemas/types.yaml#/definitions/string
++        enum:
++          - vref
++          - vref2
++          - refout-avss
++          - avdd
++        default: refout-avss
++
++    required:
++      - reg
++      - diff-channels
++
++required:
++  - compatible
++  - reg
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++  - if:
++      properties:
++        compatible:
++          not:
++            contains:
++              const: adi,ad7173-8
++    then:
++      properties:
++        vref2-supply: false
++      patternProperties:
++        "^channel@[0-9a-f]$":
++          properties:
++            adi,reference-select:
++              enum:
++                - vref
++                - refout-avss
++                - avdd
++            reg:
++              maximum: 3
++
++  - if:
++      anyOf:
++        - required: [clock-names]
++        - required: [clocks]
++    then:
++      properties:
++        '#clock-cells': false
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      adc@0 {
++        compatible = "adi,ad7173-8";
++        reg = <0>;
++
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
++        interrupt-names = "rdy";
++        interrupt-parent = <&gpio>;
++        spi-max-frequency = <5000000>;
++        gpio-controller;
++        #gpio-cells = <2>;
++        #clock-cells = <0>;
++
++        vref-supply = <&dummy_regulator>;
++
++        channel@0 {
++          reg = <0>;
++          bipolar;
++          diff-channels = <0 1>;
++          adi,reference-select = "vref";
++        };
++
++        channel@1 {
++          reg = <1>;
++          diff-channels = <2 3>;
++        };
++
++        channel@2 {
++          reg = <2>;
++          bipolar;
++          diff-channels = <4 5>;
++        };
++
++        channel@3 {
++          reg = <3>;
++          bipolar;
++          diff-channels = <6 7>;
++        };
++
++        channel@4 {
++          reg = <4>;
++          diff-channels = <8 9>;
++          adi,reference-select = "avdd";
++        };
++      };
++    };
+-- 
+2.42.0
 
-The whole point is that my SoB and authorship is from my professional 
-mail address which is likely to change over time, the Cc is my personal 
-one for development. Basically, in the event that I change my employer, 
-I would still be reachable at that Cc address without having to modify 
-the .mailmap after the fact (which won't make it to an earlier version 
-of the kernel for example). Some maintainers don't really like this, 
-some don't mind, we'll see in which category the IIO maintainer(s) fall 
-in :) (I don't mind either way just to be clear).
-
-Cheers,
-Quentin
 

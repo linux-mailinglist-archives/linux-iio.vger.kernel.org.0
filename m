@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-2991-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2992-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F808624F7
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 13:32:48 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B186D8624F8
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 13:32:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25E52B21907
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 12:32:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E319B1C20F19
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 12:32:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8AE3527F;
-	Sat, 24 Feb 2024 12:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0F332C8B;
+	Sat, 24 Feb 2024 12:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lHbtwH0g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BaY6ydiz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FA325750
-	for <linux-iio@vger.kernel.org>; Sat, 24 Feb 2024 12:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2BD18021
+	for <linux-iio@vger.kernel.org>; Sat, 24 Feb 2024 12:32:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708777963; cv=none; b=qSPBbDgSXjEUZB2Gq0/i/i2jwfY++kK2AYZBvhhppNCvpKvoBxruib9UR8Qh2ZA/TCSPLrMkBs5RBjVl2Z943RMUhv493Tn2ZNGQxc6SJ0MtKXKq+sHctPQkGGwVaqxvDhCe3aBzpwyS1PsubKxuuHZF811Fswvg1OCA9tHp9YY=
+	t=1708777968; cv=none; b=Y9BF4Qj891dCuJ4xmCwGzkS7eNvFIa6ldDu4aaERM29YX3KJLHvLYN2XZZYv9nz2QyEn4x9JcdFDLXAI0p+Zwqe5G/kVSVj853d6+JQTybYM0ZNCdCXukQu/cPWEPP36gcE8PFqAUvrda7N5G4X1pth5w3+gkmlXnJ+8ZIX8ixs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708777963; c=relaxed/simple;
-	bh=t+c4BrYzejAt75RJ2Qxn/cvI2ZbHxIHAKbFEFaGQriQ=;
+	s=arc-20240116; t=1708777968; c=relaxed/simple;
+	bh=6GckLYsNuC3zH2eXzNl8m+O6ErjjCU39FK09wLysA60=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WL0sliia8Pk4IycsVQHXtQMl9IYOkprZ4FDBk0PwlNKYRzk7IwLDzLwUqxT7SXNgr/zN85Qmxnfys76usFD9dsbYCT3fAEwYhrDG+cda4lSJ/98p4d9Wy5pDOiF0rJqX1O+WB8NBuuHBlvSRBVDH2OzPiNsp9i+id7R+k9lCXDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lHbtwH0g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B37FC433F1;
-	Sat, 24 Feb 2024 12:32:40 +0000 (UTC)
+	 MIME-Version; b=gjg20o5YgDMoQROZRteNKjECkaHmK3/fhaReW3CvSzh3iLa+r+maizd/8RIsFxbKCcVr8JuG6SKJUB//G5dy/xh/M5FGv2KBokuTJDrHy0ywLuUb4o7QKvPAKqhvvJ66w+Z6S7b+wOv8JpZk4jEqCynrkJ1xq9kZMlu312/ZVNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BaY6ydiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A4EC433C7;
+	Sat, 24 Feb 2024 12:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708777963;
-	bh=t+c4BrYzejAt75RJ2Qxn/cvI2ZbHxIHAKbFEFaGQriQ=;
+	s=k20201202; t=1708777968;
+	bh=6GckLYsNuC3zH2eXzNl8m+O6ErjjCU39FK09wLysA60=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lHbtwH0gBbUspXnXUD87aqkbifjZVV1oGVDPhiTPxX6xQXKxBWQGYiWyuxKVwizQt
-	 GLUR0gxdXKbhWn2JJRmOa760WI8P3JInvc/u0iuSSbFJsuwjxKAoPa+WIDJuZaylx7
-	 1FBph2IjVbsr0tIyPAhfb16lKdpH6+pfboP+uX2QlPd09BHKicFlK6IF7M8yKzpvuP
-	 HWL2Uv2RtlJNY56S1ldnLlahqio1uOSPG9POp/Agwo4UC0XHC5X/8z2QDk6+2BYs9T
-	 ZiBOsg/BEiCE23jwFHYz79FZbzHAMdvtEWgMvvbJAZhoxc7TsL/6H5Qtu3QmRL1kFu
-	 crTFmU56yRaGA==
+	b=BaY6ydizNTADS0yVPv9BK8paMTjO1yjvPZ6mdg+FAsS2ul7toHILUnuZphBH4SXyP
+	 3MO3uqhbCU43ajciYMinwq7nAiGo7vDR8aaFlrR5QeXjXw1wIdcx6NOoFdPFx02ick
+	 GFT5rNZE+KEfrohGg12n9p5DOc2cTkQJPaanmpoXQsA2jxOHoQv79GItCxPmbh414A
+	 Ds26lYYALhybK6f+/MGGneAgn9eJmQtxoeNT3iJN3c1oH04bmhsUrYxcso3w4dXxG+
+	 ZQY0KzRWuoPqCRYvAhcA+pUVDVN9shemmfR1jUIKbDfg7fOu9F/RLzBEvPIFAOZGMk
+	 zDJR3LcJjOmhQ==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
@@ -58,9 +58,9 @@ Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>,
 	Marius Cristea <marius.cristea@microchip.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v5 2/9] iio: adc: mcp3564: Use device_for_each_child_node_scoped()
-Date: Sat, 24 Feb 2024 12:32:08 +0000
-Message-ID: <20240224123215.161469-3-jic23@kernel.org>
+Subject: [PATCH v5 3/9] iio: adc: qcom-spmi-adc5: Use device_for_each_child_node_scoped()
+Date: Sat, 24 Feb 2024 12:32:09 +0000
+Message-ID: <20240224123215.161469-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240224123215.161469-1-jic23@kernel.org>
 References: <20240224123215.161469-1-jic23@kernel.org>
@@ -78,66 +78,46 @@ Switching to the _scoped() version removes the need for manual
 calling of fwnode_handle_put() in the paths where the code
 exits the loop early. In this case that's all in error paths.
 
-Cc: Marius Cristea <marius.cristea@microchip.com>
+A slightly less convincing usecase than many as all the failure paths
+are wrapped up in a call to a per fwnode_handle utility function.
+The complexity in that function is sufficient that it makes sense to
+factor it out even if it this new auto cleanup would enable simpler
+returns if the code was inline at the call site. Hence I've left it alone.
+
+Cc: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/mcp3564.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ drivers/iio/adc/qcom-spmi-adc5.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
-index 311b613b6057..e2ae13f1e842 100644
---- a/drivers/iio/adc/mcp3564.c
-+++ b/drivers/iio/adc/mcp3564.c
-@@ -998,7 +998,6 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
- 	struct mcp3564_state *adc = iio_priv(indio_dev);
- 	struct device *dev = &adc->spi->dev;
- 	struct iio_chan_spec *channels;
+diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+index b6b612d733ff..9b69f40beed8 100644
+--- a/drivers/iio/adc/qcom-spmi-adc5.c
++++ b/drivers/iio/adc/qcom-spmi-adc5.c
+@@ -825,7 +825,6 @@ static int adc5_get_fw_data(struct adc5_chip *adc)
+ 	const struct adc5_channels *adc_chan;
+ 	struct iio_chan_spec *iio_chan;
+ 	struct adc5_channel_prop prop, *chan_props;
 -	struct fwnode_handle *child;
- 	struct iio_chan_spec chanspec = mcp3564_channel_template;
- 	struct iio_chan_spec temp_chanspec = mcp3564_temp_channel_template;
- 	struct iio_chan_spec burnout_chanspec = mcp3564_burnout_channel_template;
-@@ -1025,7 +1024,7 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
- 	if (!channels)
- 		return dev_err_probe(dev, -ENOMEM, "Can't allocate memory\n");
+ 	unsigned int index = 0;
+ 	int ret;
  
--	device_for_each_child_node(dev, child) {
-+	device_for_each_child_node_scoped(dev, child) {
- 		node_name = fwnode_get_name(child);
+@@ -849,12 +848,10 @@ static int adc5_get_fw_data(struct adc5_chip *adc)
+ 	if (!adc->data)
+ 		adc->data = &adc5_data_pmic;
  
- 		if (fwnode_property_present(child, "diff-channels")) {
-@@ -1033,26 +1032,25 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
- 							     "diff-channels",
- 							     inputs,
- 							     ARRAY_SIZE(inputs));
-+			if (ret)
-+				return ret;
-+
- 			chanspec.differential = 1;
- 		} else {
- 			ret = fwnode_property_read_u32(child, "reg", &inputs[0]);
-+			if (ret)
-+				return ret;
- 
- 			chanspec.differential = 0;
- 			inputs[1] = MCP3564_AGND;
- 		}
+-	device_for_each_child_node(adc->dev, child) {
++	device_for_each_child_node_scoped(adc->dev, child) {
+ 		ret = adc5_get_fw_channel_data(adc, &prop, child, adc->data);
 -		if (ret) {
 -			fwnode_handle_put(child);
--			return ret;
++		if (ret)
+ 			return ret;
 -		}
  
- 		if (inputs[0] > MCP3564_INTERNAL_VCM ||
--		    inputs[1] > MCP3564_INTERNAL_VCM) {
--			fwnode_handle_put(child);
-+		    inputs[1] > MCP3564_INTERNAL_VCM)
- 			return dev_err_probe(&indio_dev->dev, -EINVAL,
- 					     "Channel index > %d, for %s\n",
- 					     MCP3564_INTERNAL_VCM + 1,
- 					     node_name);
--		}
- 
- 		chanspec.address = (inputs[0] << 4) | inputs[1];
- 		chanspec.channel = inputs[0];
+ 		prop.scale_fn_type =
+ 			adc->data->adc_chans[prop.channel].scale_fn_type;
 -- 
 2.44.0
 

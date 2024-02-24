@@ -1,154 +1,179 @@
-Return-Path: <linux-iio+bounces-2980-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-2981-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E89D862122
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 01:21:35 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B669C862352
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 08:35:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B470E28633A
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 00:21:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6DFA1C21C79
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 07:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35F2D3D9E;
-	Sat, 24 Feb 2024 00:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C3514017;
+	Sat, 24 Feb 2024 07:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="T3nJgwwL"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HHxUgCVd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C3B1C02
-	for <linux-iio@vger.kernel.org>; Sat, 24 Feb 2024 00:21:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4941D10A2B;
+	Sat, 24 Feb 2024 07:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708734069; cv=none; b=urxmEaGu1qmOSW7JTdnxqwj5j9IqsMS6BKfd86Borx+qdiBVX3k/mD7D2e4+X7tcy1+Jvn/czFezT8C9ixSFjdfX8NM38gkjEHWjOM7w2+76casNS843HmKJ+r8u4KK7NVrgWDjMQt0axOKsyqHVeRsNe7pawmZyRz8ems3RW8k=
+	t=1708760131; cv=none; b=eG8doVW4Ri1nql9nSlN6CDhPfIBipEQbNdHwH3fTakh+aWWZpWb/KovieouWum3orWNKq7LpStOO6TF4yfvOM/F40etfJ5orfBAnQUiS0I/Zt763tgUpYltHXFvt5k1xrVy/2negTH9Ntx2CotjJS7nFQr2vhu0t/8IsicQkXiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708734069; c=relaxed/simple;
-	bh=1L3/kBnWbedasAfije4Fqx7n1ELmB4pYOi26Q3qbJ/c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y5eKY8yDlKkxmw4m6GxCrLUODOF2P6Xcsk5pH9aCTg22pJHG8s+WJtco+kscQ1ieN+0ILdu2qNQOEt13+c7jCpjkcCzvdNw8mtPH9tnYK40tehRUEVwV/W98hKSA6vgj2qbztuMhTwOVIstgY5Uj4315ERuywdUme/cXlo+NzPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=T3nJgwwL; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-6e2e44aad03so393358a34.2
-        for <linux-iio@vger.kernel.org>; Fri, 23 Feb 2024 16:21:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1708734065; x=1709338865; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=rDQLnws0v2S59G/sqDIOuFnQTbfpKB47FDyiyYI8hNc=;
-        b=T3nJgwwLy+Yoq2f9TWNgPAViuvS60NtKnmhZpZuzznyHOlh5JyafMrqAuHelDLjltB
-         9CyAqds2FprrtLrytC4KUKdXsmXfAPHnPgewSkRvcgRVOQc8FEJ4h8CKYnNXzhsFLTbI
-         5u/jPLmuqsp7Iwhk0XeAqvfA4DHUCL1kG5PZ/iRBk1bWOjmKcA3Ejdb5HDxjbPOWQq2Z
-         Gj7tuA4Hdd5sAukYp0rUJ97YkvOt0MB2RP4Rm1NDPdO++GqA4u+Vth6tBE+F5g5njfsA
-         ItBmpvFpJ7MXiZhEsSGc+pGu4Za78BPLnXuIzkky2aSW8KJqqqrlTzBKHvDbuAOCBeha
-         3Plw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708734065; x=1709338865;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rDQLnws0v2S59G/sqDIOuFnQTbfpKB47FDyiyYI8hNc=;
-        b=Xj8Ec1RTBODJkO1ssagjIvOX32BhI1vGJbBrp5lHLz0FOD90m07KQDseJpBMit/JD/
-         Cg4+IjI1JqkIJgMyO6A4ZxlyQN375h4yxJRTKAqQVk4Mftgp8qq26VIYTSJ7vLR5UbMc
-         wd+dRAbUa4kikf7DAgy34WyvdadtrSyzgsMVse6GaWQzvrwxgMEteUuKlMj0nUmc4Pza
-         vgOFiZmLh3SEJ9QfAg1d19d88b4n+Q60soCGIAIqXzPGsnRiChTeIL72EWiJfVl7FncI
-         8pyjuXFHzuF8lML/+Mj+lI8cf0A4cJr2035CcaBXynzzmzzjQpMIyl8SLQtyePRRed5M
-         pNkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX/v1er5XU2ukW3W1+3LU7/vBg0fq5CC/lNzUxx5Yjo7Lddya7b7PTlEQUsVLKI486tgcdIR4bEsUigaNP73SZkY4EFRwA0eFuT
-X-Gm-Message-State: AOJu0YzEiX0g4uxe43ZdE+PzfUeZauCgORaGlZAw+dgMRzLLBEm0VoB4
-	IpctaaeAvoBC8H+jc7AdPpfLm/pY53HhHUImgFL/eddEmSm9U1htvE59XFwodsY=
-X-Google-Smtp-Source: AGHT+IHtYGNnLW4fMlBUFbgiQqoyqfMiTfYYs6wv2IUYocKyqZoKhNuExbj7FT3INM1TM9Pe4uPbhA==
-X-Received: by 2002:a9d:7a43:0:b0:6e4:7762:bff with SMTP id z3-20020a9d7a43000000b006e477620bffmr1412297otm.34.1708734065521;
-        Fri, 23 Feb 2024 16:21:05 -0800 (PST)
-Received: from [192.168.20.11] ([180.150.112.31])
-        by smtp.gmail.com with ESMTPSA id y5-20020a62b505000000b006e0447d48b0sm60806pfe.23.2024.02.23.16.21.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Feb 2024 16:21:05 -0800 (PST)
-Message-ID: <8773c0ad-3762-4fe8-a7bf-66d3f1546bf6@tweaklogic.com>
-Date: Sat, 24 Feb 2024 10:50:58 +1030
+	s=arc-20240116; t=1708760131; c=relaxed/simple;
+	bh=q2/5MqZPz2HDD14dYiI1H5yCstXYofd3cv/H8+6ocWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p2KojHwquEGOcSOUvog++2D5eYYOdibOTWvWeXe9WqE5Cbxnyqm+26WBWcj2N96BSJSoqCu3YPFkCtMNfkkG5b8aRRWhbVSE4w6g/GyfY0+OMkcMX/la1yA+IBItqDNjHR8PnYvWNGWMfMkOWssO4SR4ux2NWrfIyFUTZfF8oAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HHxUgCVd; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708760129; x=1740296129;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=q2/5MqZPz2HDD14dYiI1H5yCstXYofd3cv/H8+6ocWU=;
+  b=HHxUgCVdIuIVKmdZap7AHR0BAoekH5voFIdpgd8p/1bQlM0KDS6q0RCu
+   6xDaAg4Q/E5G7S1uimLHJzs7zEYlxbNltbDZur7e9C6vM1AHErK9R+HvW
+   5AS796TtPEdcMFUANQyrWalpu7eH6rgj8GD86WUxV3noBn6vxnnqtliR9
+   nBKQW0dJNlK3QTBZpM5KElwShQ1WZG5V+avsr3jnH2Ur8ZvdrevNsrMyk
+   Yho1WQlAEysSx2YdIl+/xF8XJ6YpXL+dDiVaI9X/oNqo0SKr1tgWX8eBP
+   8cTa2AF5l400U1cxRTtjPvpwzqkO2JbCTSCy4rPPRdJwfUbILv/0aRsvs
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10993"; a="6045032"
+X-IronPort-AV: E=Sophos;i="6.06,181,1705392000"; 
+   d="scan'208";a="6045032"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2024 23:35:28 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,181,1705392000"; 
+   d="scan'208";a="6143052"
+Received: from lkp-server02.sh.intel.com (HELO 3c78fa4d504c) ([10.239.97.151])
+  by fmviesa010.fm.intel.com with ESMTP; 23 Feb 2024 23:35:25 -0800
+Received: from kbuild by 3c78fa4d504c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rdmZ4-0008L2-2j;
+	Sat, 24 Feb 2024 07:35:20 +0000
+Date: Sat, 24 Feb 2024 15:34:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: marius.cristea@microchip.com, jic23@kernel.org, lars@metafoo.de,
+	robh+dt@kernel.org, jdelvare@suse.com, linux@roeck-us.net,
+	linux-hwmon@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	marius.cristea@microchip.com
+Subject: Re: [PATCH v5 1/2] dt-bindings: iio: adc: adding support for PAC193X
+Message-ID: <202402241545.xf7CnlPz-lkp@intel.com>
+References: <20240222164206.65700-2-marius.cristea@microchip.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 4/5] dt-bindings: iio: light: Avago APDS9306
-Content-Language: en-US
-To: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Matti Vaittinen <mazziesaccount@gmail.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Marek Vasut <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>,
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Matt Ranostay <matt@ranostay.sg>,
- Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Conor Dooley <conor.dooley@microchip.com>
-References: <20240218054826.2881-1-subhajit.ghosh@tweaklogic.com>
- <20240218054826.2881-5-subhajit.ghosh@tweaklogic.com>
-From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-In-Reply-To: <20240218054826.2881-5-subhajit.ghosh@tweaklogic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240222164206.65700-2-marius.cristea@microchip.com>
 
-On 18/2/24 16:18, Subhajit Ghosh wrote:
-> Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor.
-> Extend avago,apds9300.yaml schema file to support apds9306 device.
-> 
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-> ---
-> v6 -> v7:
->   - Removed wrong patch dependency statement
->   - Added tag
->     https://lore.kernel.org/all/5089c549-505f-4342-b3fe-bed8a29b6ce1@linaro.org/
->     https://lore.kernel.org/all/20240206-gambling-tricycle-510794e20ca8@spud/
-> 
-> v5 -> v6:
->   - Write proper commit messages
->   - Add vdd-supply in a separate commit
->   - Add Interrupt macro in a separate commit
->     Link: https://lore.kernel.org/all/1d0a80a6-dba5-4db8-a7a8-73d4ffe7a37e@linaro.org/
->     
-> v2 -> v5:
->   - Removed 'required' for Interrupts and 'oneOf' for compatibility strings
->     as per below reviews:
->     Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
->     Link: https://lore.kernel.org/lkml/22e9e5e9-d26a-46e9-8986-5062bbfd72ec@linaro.org/
-> ---
->   Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
-> index e07a074f6acf..b750096530bc 100644
-> --- a/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
-> +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
-> @@ -12,11 +12,13 @@ maintainers:
->   description: |
->     Datasheet: https://www.avagotech.com/docs/AV02-1077EN
->     Datasheet: https://www.avagotech.com/docs/AV02-4191EN
-> +  Datasheet: https://www.avagotech.com/docs/AV02-4755EN
->   
->   properties:
->     compatible:
->       enum:
->         - avago,apds9300
-> +      - avago,apds9306
->         - avago,apds9960
->   
->     reg:
 Hi,
 
-This is actually [PATCH v7 4/5]. I made a copy pasting error in the subject line of this patch
-while adding the recipients!
-Very sorry about that.
+kernel test robot noticed the following build warnings:
 
-Regards,
-Subhajit Ghosh
+[auto build test WARNING on b1a1eaf6183697b77f7243780a25f35c7c0c8bdf]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/marius-cristea-microchip-com/dt-bindings-iio-adc-adding-support-for-PAC193X/20240223-004332
+base:   b1a1eaf6183697b77f7243780a25f35c7c0c8bdf
+patch link:    https://lore.kernel.org/r/20240222164206.65700-2-marius.cristea%40microchip.com
+patch subject: [PATCH v5 1/2] dt-bindings: iio: adc: adding support for PAC193X
+compiler: loongarch64-linux-gcc (GCC) 13.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20240224/202402241545.xf7CnlPz-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202402241545.xf7CnlPz-lkp@intel.com/
+
+dtcheck warnings: (new ones prefixed by >>)
+>> Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml:51:9: [warning] wrong indentation: expected 6 but found 8 (indentation)
+
+vim +51 Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+
+     8	
+     9	maintainers:
+    10	  - Marius Cristea <marius.cristea@microchip.com>
+    11	
+    12	description: |
+    13	  This device is part of the Microchip family of Power Monitors with
+    14	  Accumulator.
+    15	  The datasheet for PAC1931, PAC1932, PAC1933 and PAC1934 can be found here:
+    16	    https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/PAC1931-Family-Data-Sheet-DS20005850E.pdf
+    17	
+    18	properties:
+    19	  compatible:
+    20	    enum:
+    21	      - microchip,pac1931
+    22	      - microchip,pac1932
+    23	      - microchip,pac1933
+    24	      - microchip,pac1934
+    25	
+    26	  reg:
+    27	    maxItems: 1
+    28	
+    29	  "#address-cells":
+    30	    const: 1
+    31	
+    32	  "#size-cells":
+    33	    const: 0
+    34	
+    35	  interrupts:
+    36	    maxItems: 1
+    37	
+    38	  slow-io-gpios:
+    39	    description:
+    40	      A GPIO used to trigger a change is sampling rate (lowering the chip power
+    41	      consumption). If configured in SLOW mode, if this pin is forced high,
+    42	      sampling rate is forced to eight samples/second. When it is forced low,
+    43	      the sampling rate is 1024 samples/second unless a different sample rate
+    44	      has been programmed.
+    45	
+    46	patternProperties:
+    47	  "^channel@[1-4]+$":
+    48	    type: object
+    49	    $ref: adc.yaml
+    50	    description:
+  > 51	        Represents the external channels which are connected to the ADC.
+    52	
+    53	    properties:
+    54	      reg:
+    55	        items:
+    56	          minimum: 1
+    57	          maximum: 4
+    58	
+    59	      shunt-resistor-micro-ohms:
+    60	        description:
+    61	          Value in micro Ohms of the shunt resistor connected between
+    62	          the SENSE+ and SENSE- inputs, across which the current is measured.
+    63	          Value is needed to compute the scaling of the measured current.
+    64	
+    65	    required:
+    66	      - reg
+    67	      - shunt-resistor-micro-ohms
+    68	
+    69	    unevaluatedProperties: false
+    70	
+    71	required:
+    72	  - compatible
+    73	  - reg
+    74	  - "#address-cells"
+    75	  - "#size-cells"
+    76	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

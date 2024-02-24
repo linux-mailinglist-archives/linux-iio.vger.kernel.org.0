@@ -1,61 +1,59 @@
-Return-Path: <linux-iio+bounces-3021-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3022-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C7286267F
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 18:55:13 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71865862686
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 18:59:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF3AC1C214F7
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:55:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33EE0282C41
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2252481D7;
-	Sat, 24 Feb 2024 17:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6B1481C6;
+	Sat, 24 Feb 2024 17:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hfYKydJB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JGF+qR6P"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A907D45030;
-	Sat, 24 Feb 2024 17:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADAA0ECE;
+	Sat, 24 Feb 2024 17:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708797306; cv=none; b=mSJ96atme+B7kcYTh6PK7E+n9m7Kv4hTYeLWXI4UJkMgthYmEgoIqFEpHJWj2bVO8yDu1voy8xFGF5rAbitlTOOJG+3ZaOXTjg9EqtUa8/KNM4Gh8+wSr7c1ZYipT+ccrlidvPOzbhlUS8b+lxbG0gOUlOMC93aW6nf9d3R/IDM=
+	t=1708797545; cv=none; b=oUnA9nWexbLmjEx7Lo9voy9H4kL/x05RacFBD62S3J1GQ+rGtLKijDJArLRFQ5lBXCYTW0wwxVUCJErPS/rl5UkyT+mp9SLYhjNaIBcRv7/Flq9OGxW88L/zgmcwIcDORea64K4/X7xdKmLpRyRQ6s9iTPHO6HUmS1ICDX2EIjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708797306; c=relaxed/simple;
-	bh=+U3p6XWhKPzjcH7Ryeh4baGD5MBCZbaDNuBKMlXSTiY=;
+	s=arc-20240116; t=1708797545; c=relaxed/simple;
+	bh=dYi/dilkwURl8LO3PZnPi1vvfmdVHEam1XBWXkIjSkM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GexZAxFEipFhs8n6i4vnfOjg+YgxPsGzRiOqmiLmhrytfgvxlldKr+KQoaMqQs9eQB42/F9LQ+qooHwZ0IlCmEZCGdQemnm3Rq44FuWA9i1KVZI2jUzZs+SyTReBd5JmEkEl7W/5OkEDdEqkZbyK2cSWwrPxVpP1sJTgKWclSxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hfYKydJB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84DB7C433C7;
-	Sat, 24 Feb 2024 17:55:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OJ/4/VLqeDBysuLSO+yP0HB0bxmmcxoBUt9UT7FJL5jC0UNLimVLrZbZR3pOkWYVsMgkX5nxwyxDdkYz2k0dxFcQo+oBESmsw7pqmmOO1gf3wBz2TFkAYJKDAOwfis0vbpK+PLBXg2UO8OpOt9KAl+qF4j7YNF9Mpx542FcE7bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JGF+qR6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8BD8C433C7;
+	Sat, 24 Feb 2024 17:59:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708797306;
-	bh=+U3p6XWhKPzjcH7Ryeh4baGD5MBCZbaDNuBKMlXSTiY=;
+	s=k20201202; t=1708797545;
+	bh=dYi/dilkwURl8LO3PZnPi1vvfmdVHEam1XBWXkIjSkM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hfYKydJBIyHctRmSVuD74MPe0Z6ZiutZnZUXuyuAY327y1buIlBjT8cAKXdzXrmYl
-	 KCpLlG2ySbaIcRPkgks+h0AjlvmwDWIAzqF1Va879cXgW9Tl4qSXYZwJYpyp2Sv5ls
-	 V6fLg4I5UAhjSGvxdhGsl1JfyxDrDBziiF9HwXrJmzXd0JOqG8TQWgpSc2nShKzaiJ
-	 PwWrby8wu2SKHAZZ47+OuRR77nMNAK6SQ3/ZinLrkpKC8JuTiVaUIYFxKmkKhWhvVp
-	 1zPRshqqJszVHHNUFzmrm3A9mdOToAYP/USWka0v/1OPEHbtrQKQ5ZSX2t+FtGpM9e
-	 EiHoZ0g20o/CA==
-Date: Sat, 24 Feb 2024 17:54:48 +0000
+	b=JGF+qR6Pje6gZApaVmR0Jc9qKIuUcU3mlvJqjz4ZKod6QKREXm0BPUoG8Qx7X6Qx6
+	 ArzSCvL1QjyGbxlz/7GT3MNGSOwt6xjYBLepIHNae+VbCN5g5rmZ0v127fQ3otIt4h
+	 3FvvZnZJtPxgoJH+u3W/BH/c7PKSxEFckmGt2iHKTAUkHIaPe0MP0d1/cLHX5bUpPk
+	 ZVLeqp4eYcccn1eYMmpupsje+MgcWRqwk0fS5QbnvNWcEJk//j7NdJHjxhozc//gfw
+	 0TVejky85PoDTlp2/SsNvuQtm1H25nuS52Mywm11HbTA5x9oRCyHGi5b8+zyYX3ylf
+	 R0pC2zp35AsWg==
+Date: Sat, 24 Feb 2024 17:58:51 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Ceclan Dumitru <dumitru.ceclan@analog.com>
-Subject: Re: [PATCH v5 5/5] iio: amplifiers: hmc425a: add support for
- LTC6373 Instrumentation Amplifier
-Message-ID: <20240224175448.484ccd10@jic23-huawei>
-In-Reply-To: <c92c4c71f433c7375588e832d3c084a50190a1b5.camel@gmail.com>
-References: <20240220153553.2432-1-mitrutzceclan@gmail.com>
-	<20240220153553.2432-6-mitrutzceclan@gmail.com>
-	<c92c4c71f433c7375588e832d3c084a50190a1b5.camel@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
+ ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
+ semen.protsenko@linaro.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] drivers: iio: pressure: Fixes BMP38x and BMP390 SPI
+ support
+Message-ID: <20240224175851.2a60d6b4@jic23-huawei>
+In-Reply-To: <ZdUEL4zTfCZpWSyt@smile.fi.intel.com>
+References: <20240220184125.32602-1-vassilisamir@gmail.com>
+	<ZdUEL4zTfCZpWSyt@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,84 +61,57 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 21 Feb 2024 14:23:51 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Tue, 20 Feb 2024 21:57:35 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> On Tue, 2024-02-20 at 17:34 +0200, Dumitru Ceclan wrote:
-> > This adds support for LTC6373 36 V Fully-Differential Programmable-Gain
-> > Instrumentation Amplifier with 25 pA Input Bias Current.
-> > The user can program the gain to one of seven available settings through
-> > a 3-bit parallel interface (A2 to A0).
-> >=20
-> > Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
-> > --- =20
->=20
-> Just one minor comment. With that:
->=20
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
->=20
-> > =C2=A0drivers/iio/amplifiers/hmc425a.c | 124 ++++++++++++++++++++++++++=
-++++-
-> > =C2=A01 file changed, 120 insertions(+), 4 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/amplifiers/hmc425a.c b/drivers/iio/amplifiers/=
-hmc425a.c
-> > index 77872e2dfdfe..50c86c2d28d7 100644
-> > --- a/drivers/iio/amplifiers/hmc425a.c
-> > +++ b/drivers/iio/amplifiers/hmc425a.c
-> > @@ -2,9 +2,10 @@
-> > =C2=A0/*
-> > =C2=A0 * HMC425A and similar Gain Amplifiers
-> > =C2=A0 *
-> > - * Copyright 2020 Analog Devices Inc.
-> > + * Copyright 2020, 2024 Analog Devices Inc.
-> > =C2=A0 */ =20
->=20
+> On Tue, Feb 20, 2024 at 07:41:24PM +0100, Vasileios Amoiridis wrote:
+> > According to the datasheet of BMP38x and BMP390 devices, for an SPI
+> > read operation the first byte that is returned needs to be dropped,
+> > and the rest of the bytes are the actual data returned from the
+> > sensor.  
+> 
 > ...
->=20
-> >=20
-> > =C2=A0
-> > +static ssize_t ltc6373_read_powerdown(struct iio_dev *indio_dev,
-> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uintptr_t private,
-> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct iio_chan_spec *chan,
-> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 char *buf)
+> 
+> > +static int bmp380_regmap_spi_read(void *context, const void *reg,
+> > +				  size_t reg_size, void *val, size_t val_size)
 > > +{
-> > +	struct hmc425a_state *st =3D iio_priv(indio_dev);
+> > +	struct spi_device *spi = to_spi_device(context);
+> > +	u8 rx_buf[4];
+> > +	ssize_t status;
 > > +
-> > +	return sysfs_emit(buf, "%d\n", st->powerdown); =20
->=20
-> Well, in theory the read should also be protected with the lock...
+> > +	/*
+> > +	 * Maximum number of consecutive bytes read for a temperature or
+> > +	 * pressure measurement is 3.
+> > +	 */
+> > +	if (val_size > 3)
+> > +		return -EINVAL;  
+> 
+> I would add a blank line here.
+> 
+> > +	/*
+> > +	 * According to the BMP3xx datasheets, for a basic SPI read opertion,
+> > +	 * the first byte needs to be dropped and the rest are the requested
+> > +	 * data.
+> > +	 */
+> > +	status = spi_write_then_read(spi, reg, 1, rx_buf, val_size + 1);
+> > +	if (status)
+> > +		return status;
+> > +
+> > +	memcpy(val, rx_buf + 1, val_size);
+> > +
+> > +	return 0;
+> > +}  
+> 
+> With above and bits.h location being addressed
+> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> 
+I'd picked up previous version and tweaked it for the header being first.
+Now updated the spacing above and added your tag.
 
-Only reason I can think of for that is potential read tearing.
-If that happens on a bool we are going to be in a mess so I think this
-is in practice fine without, though paranoia might suggest locking.
+Only did this rebase because it was the top of my fixes tree.
 
-It can race against it being powered down but that effectively happens
-even if we do have a lock as we either see the value before or after
-a racing power down event and we have no way of knowing which.
-
-Applied rest series to iio.git togreg branch and pushed out as testing.
-
-Duitru, if you can figure out what happened to your message thread before
-sending more patches that would be great. The IDs for patches 0-5 go
-
-20240220153553.2432-1-mitrutzceclan@gmail.com
-20240220153553.2432-3-mitrutzceclan@gmail.com
-20240220153553.2432-5-mitrutzceclan@gmail.com
-20240220153553.2432-2-mitrutzceclan@gmail.com
-20240220153553.2432-4-mitrutzceclan@gmail.com
-20240220153553.2432-6-mitrutzceclan@gmail.com
-
-Which really confuses my email client and patchwork.
-https://patchwork.kernel.org/project/linux-iio/list/?series=3D827901
-
-
-
->=20
-> - Nuno S=C3=A1
->=20
 
 

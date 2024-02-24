@@ -1,60 +1,64 @@
-Return-Path: <linux-iio+bounces-3038-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3039-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D9AB8626F3
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 20:19:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8458626FE
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 20:25:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A80A8282915
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 19:19:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EC001C20C8D
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 19:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7753F487B3;
-	Sat, 24 Feb 2024 19:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A8E4B5A6;
+	Sat, 24 Feb 2024 19:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pd+w5m7M"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oa4CL+23"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3002DEDE;
-	Sat, 24 Feb 2024 19:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823B4EDE;
+	Sat, 24 Feb 2024 19:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708802337; cv=none; b=SChAHgSfdHnUKggQ6qcS4/nCcYm7gP/GGtulMEffvIFKOXRghP30TT2zpddy8u5+ouwbmqp87FCUpROklkYXBJJtsVHPLBAjZNMbpx5BDmphFUgJYw9rpV+XRba5s1Cu6wcWEXH8WwPhM2TiI3DB93M+L7K/5IacrcLwaE2YFOE=
+	t=1708802750; cv=none; b=Y6gIsC2k1mbkwsLYydQGq8ZRfkLEoMo2FiHtDOk4icx8eRSJHpY6gS0THdDKia7JxAsjj5j+vAlsS2ZYvlgKxtlQskkDGxlrkYtdBaVc7U5Kf1m2/UWh1VFli1KXvLF9EDy6uF4eMY2n4bYKYMpWjdKVQDpsiPE3xTbw1bzHJos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708802337; c=relaxed/simple;
-	bh=15Z+svmWXnvuKAbgxBOoIfyNn9nC0bhPmQJ8VekgTSY=;
+	s=arc-20240116; t=1708802750; c=relaxed/simple;
+	bh=/VIjT2iavaAdUja5QLc5Xf6ymkBMCy+/xJXiyGfwSlk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gXMR6HiKz4hJvYWqopCPmP8b4cnXcZC16LArB1BJe6JowxxL6brU7v9Y8gk11aTESgux7gmbBohPpuxxcdpVbdnI6GU++YY4bu4DGpcyd4UE47T3WKUvOr+Yj8CU5PFH1yHSwvPUbAYv0eFVRqLxD9DwgKDEcZpPfsb4kTYJTsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pd+w5m7M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79357C433F1;
-	Sat, 24 Feb 2024 19:18:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=V4dU/hpDiXdJRQNN7lYWyLmjVhVdCwNhliYVt1ewClZgBB30tTo1WWJzwlMVUtAMP8poHHy00yiy6TzaEtrj1u5V3GQC2jwmQ6sS/+bJsfCikbahgjUIqySvqWY+sgjRyzfXwcZsavCiUEKzmXEsnBLRhM5w+1rqhkXCL9KvoGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oa4CL+23; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8756C433F1;
+	Sat, 24 Feb 2024 19:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708802336;
-	bh=15Z+svmWXnvuKAbgxBOoIfyNn9nC0bhPmQJ8VekgTSY=;
+	s=k20201202; t=1708802750;
+	bh=/VIjT2iavaAdUja5QLc5Xf6ymkBMCy+/xJXiyGfwSlk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Pd+w5m7MGpgkfvereSA8w363L0+0XYyy4mxCGYK1kLPRXuIphk7iNf9fYjjs9zmFF
-	 4Rh6RW/SyhidEjSAVYl0YYg9VsKRKQJJek5X7pp+2u5uoJmm+d3nL3ZwEn44GXRD+A
-	 dgugZtqmOaP7YLbz55Zlil+KknYgufMCsfWBbdOAbFeEVAS0MfW3j9DwjoSdmtsPWG
-	 bWt+66/72K3W5BLYndjd+QiVd6P186MSkHaMKsSiVyBn1dq8V11KLhWABaiGGNQ0/A
-	 G7j2LIiUYPiq+ZCfC42cA7rQeoj09hHW/1h2c4GJE5rCnkfXTtzoND9vYgCirla/ZG
-	 +9xQqjeoG2NaA==
-Date: Sat, 24 Feb 2024 19:18:43 +0000
+	b=Oa4CL+23TdJX/2YlespJJTd3Aqmz4AFZZAMGkxXRSRs48CgJ62B5spjqfIGqrM4r4
+	 TqDjn/8+dLOCKd85hfNy6aSN812QylVsTMosNOnP1p9ZqdH8bJ+qwpk8B3MaA6QpKx
+	 9QImKMewbf3o9TRn7vBhgRubanM6neNH8gnbJPzBPAFzh3CjJ4dMzQFZpQjHDRX4LM
+	 2Imi7A/khEa0Fo7IAWMjB96mpyb6EoRNdivT3cjhrhD8cJGqCVPPVqbQEoEb4Ge0gG
+	 4sMdYJpS70Gm4UMHcAtKbOmTk2RKdnG1P7yXrNIIgWTnvNScL1B0GA+WqhdHntWfeI
+	 dvMHeH63XCCvw==
+Date: Sat, 24 Feb 2024 19:25:35 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: light: vishay,veml6075: make
- vdd-supply required
-Message-ID: <20240224191843.61796617@jic23-huawei>
-In-Reply-To: <20240223-niece-shakily-7e18b90f30e7@spud>
-References: <20240223-veml6075_vdd-v1-1-ac76509b1998@gmail.com>
-	<20240223-niece-shakily-7e18b90f30e7@spud>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Quentin Schulz <foss+kernel@0leil.net>, Lars-Peter Clausen
+ <lars@metafoo.de>, Heiko Stuebner <heiko@sntech.de>, AngeloGioacchino Del
+ Regno <angelogioacchino.delregno@collabora.com>, Shreeya Patel
+ <shreeya.patel@collabora.com>, Simon Xue <xxm@rock-chips.com>, Philipp
+ Zabel <p.zabel@pengutronix.de>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Quentin Schulz
+ <quentin.schulz@theobroma-systems.com>
+Subject: Re: [PATCH 0/3] iio: adc: rockchip_saradc: fix bitmasking and
+ remove custom logic for getting reset
+Message-ID: <20240224192535.237933de@jic23-huawei>
+In-Reply-To: <CAHp75VfmsDeTP97srRJU09gA988xw68+ZHsXvXT3W_wv1HEauA@mail.gmail.com>
+References: <20240223-saradcv2-chan-mask-v1-0-84b06a0f623a@theobroma-systems.com>
+	<CAHp75VfmsDeTP97srRJU09gA988xw68+ZHsXvXT3W_wv1HEauA@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,71 +66,55 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 23 Feb 2024 18:34:39 +0000
-Conor Dooley <conor@kernel.org> wrote:
+On Fri, 23 Feb 2024 15:01:30 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Fri, Feb 23, 2024 at 02:01:33PM +0100, Javier Carrasco wrote:
-> > The VEML6075 requires a single supply to operate. The property already
-> > exists in the bindings and it is used in the example, but it is still
-> > not on the list of required properties.
-> > 
-> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> > ---
-> > The driver and bindings for the VEML6075 UV sensor were merged in the
-> > merge window for v6.8 i.e. they have not been released yet beyond rc.
-> > 
-> > Applying this patch as a fix now would avoid an ABI break like the
-> > recently discussed here:
-> > 
-> > https://lore.kernel.org/linux-iio/8409a5bc71b995e3b738b817a074cfb131c3b2b5.camel@gmail.com/
-> > 
-> > On the other hand, from the same discussion it can be concluded that the
-> > major risk would be a potential warning with dtbs_check, in case this
-> > patch is applied during the next merge window.  
-> 
-> I don't care if it introduces a dtbs_check problem, we can fix those.
-> The device clearly needs power and at least for linux it being missing
-> gets handled perfectly fine. I think it's pretty reasonable to do this.
-> 
-> Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> 
-Applied to the togreg branch of iio.git and pushed out as testing.
+> On Fri, Feb 23, 2024 at 2:46=E2=80=AFPM Quentin Schulz <foss+kernel@0leil=
+.net> wrote:
+> >
+> > The mask for the channel selection is incorrect as it's specified to be
+> > 16b wide by is actually only 4.
+> >
+> > Also, the 16 lower bits in the SARADC_CONV_CON register are write
+> > protected. Whatever their value is can only be written to the hardware
+> > block if their associated bit in the higher 16 bits is set. Considering
+> > that the channel bitmask is 4b wide but that we can write e.g. 0 in
+> > there, we shouldn't use the value shifted by 16 as a mask but rather the
+> > bitmask for that value shifted by 16. This is currently NOT an issue
+> > because the only SoC with SARADCv2 IP is the RK3588 which has a reset
+> > defined in the SoC DTSI. When that is the case, the reset is asserted
+> > before every channel conversion is started. This means the registers are
+> > reset so effectively, we do not need to write zeros so the wrong mask
+> > still works because where we should be writing zeroes, there are already
+> > zeroes. However, let's fix this in case there comes a day there's an SoC
+> > which doesn't require to reset the controller before every channel
+> > conversion is started.
+> >
+> > Lastly, let's use the appropriate function from the reset subsystem
+> > for getting an optional exclusive reset instead of rolling out our own
+> > logic.
+> >
+> > Those three patches should not be changing any behavior. =20
+>=20
+> Nice series, I have the comments in patch 3, but no need to resend
+> until Jonathan asks for. He might address that whilst applying.
+>=20
+> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>=20
+
+I've take the series through the togreg branch as we are so near the
+merge windows.  Note (despite Linus not liking it :)) I use links
+in my git tags so anyone really searching for Quentin can find
+the discussion.
+
+I'm usually a bit lazy on cleaning out what I would consider unnecessary
+CC tags but given Andy comment on these I've dropped the extra
+one.
+
+Patches 1 and 2 marked for stable.
 
 Jonathan
-
-> Cheers,
-> Conor.
-> 
-> > 
-> > The VEML6075 driver already handles the power supply with
-> > devm_regulator_get_enable().
-> > ---
-> >  Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml b/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
-> > index abee04cd126e..91c318746bf3 100644
-> > --- a/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/light/vishay,veml6075.yaml
-> > @@ -21,6 +21,7 @@ properties:
-> >  required:
-> >    - compatible
-> >    - reg
-> > +  - vdd-supply
-> >  
-> >  additionalProperties: false
-> >  
-> > 
-> > ---
-> > base-commit: 6613476e225e090cc9aad49be7fa504e290dd33d
-> > change-id: 20240223-veml6075_vdd-e2220158ffda
-> > 
-> > Best regards,
-> > -- 
-> > Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> >   
-
 

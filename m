@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-3035-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3036-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7CF8626D8
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 19:47:38 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7077A8626E7
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 20:15:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DC04282E68
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 18:47:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0904928290D
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 19:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4F043ABE;
-	Sat, 24 Feb 2024 18:47:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54EEF487A7;
+	Sat, 24 Feb 2024 19:14:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xa9VE2eK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cPMmzZA9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B980117744;
-	Sat, 24 Feb 2024 18:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C1113FF6;
+	Sat, 24 Feb 2024 19:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708800443; cv=none; b=HU/l0qPCHne7LNuJdzkkbsTIn5bYb9bJcXCCwHrBnFaoOHaIoUJPSgqLs2fs9lGl/PSqW93FY+A6ATGefNFQ9B6JCppddI+RvWYKz3wsc/QINJ40RZ1ExHZLWk2JUZ4kst6idCNaFm5MlgMh/UO7b2GSYoNRI3fTDeW/yjbGQ5w=
+	t=1708802095; cv=none; b=PoMNUxn3y4d5nSMlHo66LMC6QuvaLZfPNG/DQdF6n0PgL/AsFxdwODuSN1fqhG0epb5CH75mO2YEmVEoVR5p0yKBaFBf+W66mukz10oIr9nfDokU222QAidFw70kNFUg8cK6zXqKx4SYjHOrwxIPg4rcUnNfTMnOexBvVgqCyUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708800443; c=relaxed/simple;
-	bh=/u7KV5J/6HeFWgvGtOFWpmOuDWMQEL8VUHQfRI1Il6o=;
+	s=arc-20240116; t=1708802095; c=relaxed/simple;
+	bh=DE8KrClwq6wxRdpm6x7a+e27Q4gxgHfZ6zudnPnE/z0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d3uws5gwBkITIUDIwjG6EBwvqKBnhxiLyQ0s4+rstsqMemnlAkjqnYN42yMJBNWzaS3zQ/UBbTTyUyNU826J2ewPnkDBlPBdf8kxDuDC7QOkKnck9ZDqoKPoS287ZBK/KYwhvuHgaNuRQVr2iHJAKLpkkV/5G9uGgYnek86JNc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xa9VE2eK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAFA7C433C7;
-	Sat, 24 Feb 2024 18:47:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AaXDCJFa63tarodCIo0WevMu0ANMA7jP9/alQy4K8rouU/AP1gddt62n04mWO897EyGhGvdvYA01e6h1SXmkwnZfK9rn7HZhjbvc7cJj9sL4HO6jl2UvK9bAXarUf+97LRi1Wt4AwuxWm1xwowTn9pUWasUuyi458JjKdUgwdEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cPMmzZA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DB13C433F1;
+	Sat, 24 Feb 2024 19:14:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708800443;
-	bh=/u7KV5J/6HeFWgvGtOFWpmOuDWMQEL8VUHQfRI1Il6o=;
+	s=k20201202; t=1708802094;
+	bh=DE8KrClwq6wxRdpm6x7a+e27Q4gxgHfZ6zudnPnE/z0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Xa9VE2eKjYwi1TWCMIpq899IK2Bd1FYwhMejKY2QyNC3LEP2ghrAyaYpoaRn5xsQ7
-	 WBvGlL151T+vG+Fjy7khwvYnGiqGgIbeifQpOvEOYY3cuUEWa/nmlOSf72ppLbg4oW
-	 nr2NwcsLse9OGX2S7KwBOqOGlP7oRs1yNvhpi2Vb+BPlmK+uFljsjL9Npu0h6ecC3c
-	 9tqeYZQdRy+IScUaj+Aydram4QQE7zkOi/3wGhcbspNn3fXNVUaIJNwAwM0rZsTGjX
-	 /VVwja70ypAAQ8//sRKdpLnnKQw+xdUBm/gamMGbPh5e6HhIBoVVHNgYVTdAlPF0vI
-	 2ylq2eEO/3/1w==
-Date: Sat, 24 Feb 2024 18:47:09 +0000
+	b=cPMmzZA9aMdrio3t9Y8uKJrwNTRepXyrtolW+v0KmTiiWsT32GcvH9ZouCdZ7JJp7
+	 pjN5OcXwo/xRKtC75napxxFg1VNLHEStC//PR+1YQsnVC8yyrahttCKr2qRWsCNzsp
+	 gJ3ru0xcxLiPPTSmJBG1fI4FKoSuqDLyUsE688cPE2HleErbibHX7rh8nnl0PbuQnp
+	 8FU41GN249DNRTlbbNCAtrc5eggXPgu2Xy3ZALxMow3n3/Lv0fwR0TLRgr7a/4ZEke
+	 nYzWJfIIe8wrE6T9+bJ8NRGd5ZJYV6yARySVG6fIXFvxVc8EKzJ/RBWhCKuWyrPTGZ
+	 BJiyJqTH2DxAA==
+Date: Sat, 24 Feb 2024 19:14:39 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Lars-Peter
- Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>
-Subject: Re: [PATCH 4/6] iio: temperature: ltc2983: explicitly set the name
- in chip_info
-Message-ID: <20240224184709.0e84121d@jic23-huawei>
-In-Reply-To: <20240222-ltc2983-misc-improv-v1-4-cf7d4457e98c@analog.com>
-References: <20240222-ltc2983-misc-improv-v1-0-cf7d4457e98c@analog.com>
-	<20240222-ltc2983-misc-improv-v1-4-cf7d4457e98c@analog.com>
+To: kernel test robot <lkp@intel.com>
+Cc: marius.cristea@microchip.com, lars@metafoo.de, robh+dt@kernel.org,
+ jdelvare@suse.com, linux@roeck-us.net, linux-hwmon@vger.kernel.org,
+ oe-kbuild-all@lists.linux.dev, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 1/2] dt-bindings: iio: adc: adding support for
+ PAC193X
+Message-ID: <20240224191439.18e32ec2@jic23-huawei>
+In-Reply-To: <202402241545.xf7CnlPz-lkp@intel.com>
+References: <20240222164206.65700-2-marius.cristea@microchip.com>
+	<202402241545.xf7CnlPz-lkp@intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,19 +65,65 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 22 Feb 2024 13:55:55 +0100
-Nuno Sa <nuno.sa@analog.com> wrote:
+On Sat, 24 Feb 2024 15:34:51 +0800
+kernel test robot <lkp@intel.com> wrote:
 
-> Getting the part name with 'spi_get_device_id(spi)->name' is not a very
-> good pattern. Hence, explicitly add the name in the struct chip_info and
-> use that instead.
+> Hi,
 > 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on b1a1eaf6183697b77f7243780a25f35c7c0c8bdf]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/marius-cristea-microchip-com/dt-bindings-iio-adc-adding-support-for-PAC193X/20240223-004332
+> base:   b1a1eaf6183697b77f7243780a25f35c7c0c8bdf
+> patch link:    https://lore.kernel.org/r/20240222164206.65700-2-marius.cristea%40microchip.com
+> patch subject: [PATCH v5 1/2] dt-bindings: iio: adc: adding support for PAC193X
+> compiler: loongarch64-linux-gcc (GCC) 13.2.0
+> reproduce: (https://download.01.org/0day-ci/archive/20240224/202402241545.xf7CnlPz-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202402241545.xf7CnlPz-lkp@intel.com/
+> 
+> dtcheck warnings: (new ones prefixed by >>)
+> >> Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml:51:9: [warning] wrong indentation: expected 6 but found 8 (indentation)  
 
-Good change and it nearly went in clean without the previous so I
-dealt with the one context issue and applied it.
 
-Too many patches floating around at the moment so I'm keen to
-reduce the number where I can by applying them :)
+>     45	
+>     46	patternProperties:
+>     47	  "^channel@[1-4]+$":
+>     48	    type: object
+>     49	    $ref: adc.yaml
+>     50	    description:
+>   > 51	        Represents the external channels which are connected to the ADC.  
+I've fixed this up whilst applying.
+
+>     52	
+>     53	    properties:
+>     54	      reg:
+>     55	        items:
+>     56	          minimum: 1
+>     57	          maximum: 4
+>     58	
+>     59	      shunt-resistor-micro-ohms:
+>     60	        description:
+>     61	          Value in micro Ohms of the shunt resistor connected between
+>     62	          the SENSE+ and SENSE- inputs, across which the current is measured.
+>     63	          Value is needed to compute the scaling of the measured current.
+>     64	
+>     65	    required:
+>     66	      - reg
+>     67	      - shunt-resistor-micro-ohms
+>     68	
+>     69	    unevaluatedProperties: false
+>     70	
+>     71	required:
+>     72	  - compatible
+>     73	  - reg
+>     74	  - "#address-cells"
+>     75	  - "#size-cells"
+>     76	
+> 
 
 

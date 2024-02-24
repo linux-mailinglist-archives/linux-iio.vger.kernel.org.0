@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-3013-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3014-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F96E862621
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:51:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA60862630
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:57:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 958BC2832EE
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 16:51:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 939E128332D
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 16:57:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1B02E653;
-	Sat, 24 Feb 2024 16:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 520931078B;
+	Sat, 24 Feb 2024 16:57:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNTtK/Li"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o0SNdABS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3A8C4C6B;
-	Sat, 24 Feb 2024 16:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071E312B69;
+	Sat, 24 Feb 2024 16:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708793508; cv=none; b=ZVc2rcvG4fEVqzJc0h0dVj1zRf8RKuiY+sKNVewKoNM4TDNX2cQPAAFuZYOzjho5R+LBcSFv7Vub7Msp5qZTUAi9C4LG0duuuZPtLjvzqYBx8KhcJD0haYzaOojLQTOgSyhrj75geo2cRDGvC0+rz4KLrrodGL+QxbmUeZ1xcEg=
+	t=1708793844; cv=none; b=VGFrogss3SA9J3B2hBjDJ+d0wO3mb33ppJ+ykP6YuQVqHav4+D+bGZBCnFAfaxO76kf3IsY52l+7n4Q7i3i7kCW3GZaCZOeFXoFRZt4ny7lRdj7ur5ckXW85yoBj24YAqvPDMtddm9Mb6leYth/ZCD/H0D3UQuwHHDmvnhg4I1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708793508; c=relaxed/simple;
-	bh=nihirJ4RZALZuGoBNINSTW4VKZsU1WnAfv17CGmeF8o=;
+	s=arc-20240116; t=1708793844; c=relaxed/simple;
+	bh=b1/O19NtIgvo/C+lW8h+C0KQWgkOYejs2p1WPoFlrhQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hxN2k5uazl3lpdYRhbs54a0oogvWC/i0DWuyYJ47InnS2ov7m8PlYcdM1kah+mItctBrjM35FW7IfbjN1jPGt9EZCHJqs7x5Ut16SZCbMRRFsZMLtKqpHhnlkZK+nkAISSt24yrt4blle3BZ2+dqEZ2tB28SMSeaYqLwEXQySiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNTtK/Li; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A65C433F1;
-	Sat, 24 Feb 2024 16:51:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IEMgUgOO/pGUS9BkRJDVEJ47OrU6I7/VtIczCCIkps6EAHu8FOxSpNGdEyO4rlKKpa+tgLjyrYtiawUUxsKHyqSPogSxitPORzWK2HPFdC3s7Jn2Hd074f+6VAZy2kze7REtoTPbIZ5JXz/sawsQIItCUBMyuqYoaPUayykRTRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o0SNdABS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E09E2C433C7;
+	Sat, 24 Feb 2024 16:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708793506;
-	bh=nihirJ4RZALZuGoBNINSTW4VKZsU1WnAfv17CGmeF8o=;
+	s=k20201202; t=1708793843;
+	bh=b1/O19NtIgvo/C+lW8h+C0KQWgkOYejs2p1WPoFlrhQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dNTtK/Li5PCR0Sg1Ccnvl305yJ56h4eFbwZCT7S7n1lLZ44JKhTtzX9SjlZDIoF+M
-	 VzoYFmO0d729WgRzmEG8T7dR6pWU6QvAB3gExw33F9y3z4k8Nmmeue1M5uQn7+7DkV
-	 dplA7SXAHj84+JiuBT0Cu1xnBbjODy4qb+78Nv8AgRZJa2vMr/mBENpHY2l/mKzc0P
-	 7CKFBpvcUs2atEmOYo9zrRl0/By0CzNPPdmsMuGnBpwFG87CrlqoW+ilCi3NPLeucx
-	 5EAC4DBB7Q4N/VWNH24Jy1M+bFi7n3T4PzkWQ5ztdWgmoRagc8zgxe9RHx8F8jATlh
-	 zUwlfl6/C8hIQ==
-Date: Sat, 24 Feb 2024 16:51:33 +0000
+	b=o0SNdABSZnstzIU5Tkf/2awpLbq6irmAkpVOB826tfoe+pTjmSkJv7cWfXBql67Cy
+	 2ykl6W0SfHuZQKaM7IDFV4s0rolTsZlDVJD6weRIv1T2x5EEmbpa+ACLQScmDPEYcu
+	 YKhO5EHBaxgAeMKVyF788hgYzJIuqnLPfH9frtZS/zJm1jJ59LlFsXXNja5y+60Rlw
+	 Dbzo/da4Zum8Sdp/+fuiXvZAkU3ultlDRy0pZMZaWWcCpdfnMGdoJ7ys4tBN1LYXnC
+	 NG5yZTgqyODzmpC773fHbt+nCY6qm4yGyx44JMj6nxrI3QXhybydAkPiZhFnnVVrUg
+	 GgCeUxwIy2yMg==
+Date: Sat, 24 Feb 2024 16:57:06 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Mark Brown <broonie@kernel.org>, Martin Sperl <kernel@martin.sperl.org>,
@@ -53,12 +53,11 @@ Cc: Mark Brown <broonie@kernel.org>, Martin Sperl <kernel@martin.sperl.org>,
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
  linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org, Julien
  Stephan <jstephan@baylibre.com>
-Subject: Re: [PATCH v2 4/5] spi: axi-spi-engine: move message compile to
- optimize_message
-Message-ID: <20240224165133.33a6ad94@jic23-huawei>
-In-Reply-To: <20240219-mainline-spi-precook-message-v2-4-4a762c6701b9@baylibre.com>
+Subject: Re: [PATCH v2 5/5] iio: adc: ad7380: use spi_optimize_message()
+Message-ID: <20240224165706.18cc0d7e@jic23-huawei>
+In-Reply-To: <20240219-mainline-spi-precook-message-v2-5-4a762c6701b9@baylibre.com>
 References: <20240219-mainline-spi-precook-message-v2-0-4a762c6701b9@baylibre.com>
-	<20240219-mainline-spi-precook-message-v2-4-4a762c6701b9@baylibre.com>
+	<20240219-mainline-spi-precook-message-v2-5-4a762c6701b9@baylibre.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,30 +68,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 19 Feb 2024 16:33:21 -0600
+On Mon, 19 Feb 2024 16:33:22 -0600
 David Lechner <dlechner@baylibre.com> wrote:
 
-> In the AXI SPI Engine driver, compiling the message is an expensive
-> operation. Previously, it was done per message transfer in the
-> prepare_message hook. This patch moves the message compile to the
-> optimize_message hook so that it is only done once per message in
-> cases where the peripheral driver calls spi_optimize_message().
-> 
-> This can be a significant performance improvement for some peripherals.
-> For example, the ad7380 driver saw a 13% improvement in throughput
-> when using the AXI SPI Engine driver with this patch.
-> 
-> Since we now need two message states, one for the optimization stage
-> that doesn't change for the lifetime of the message and one that is
-> reset on each transfer for managing the current transfer state, the old
-> msg->state is split into msg->opt_state and spi_engine->msg_state. The
-> latter is included in the driver struct now since there is only one
-> current message at a time that can ever use it and it is in a hot path
-> so avoiding allocating a new one on each message transfer saves a few
-> cpu cycles and lets us get rid of the prepare_message callback.
+> This modifies the ad7380 ADC driver to use spi_optimize_message() to
+> optimize the SPI message for the buffered read operation. Since buffered
+> reads reuse the same SPI message for each read, this can improve
+> performance by reducing the overhead of setting up some parts the SPI
+> message in each spi_sync() call.
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-Whilst I'm not familiar with this driver, from a quick look at this
-patch and the driver code, looks fine to me. So FWIW
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Looks good to me.
+
+As this is the driver you asked me to drop earlier this cycle,
+how do we plan to merge this series?
+
+If Mark is fine taking 1-4 with the user following along that's
+fine by me, if not I guess we are in immutable tree territory for
+next cycle?
+
+Jonathan
 

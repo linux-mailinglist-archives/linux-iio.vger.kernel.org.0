@@ -1,55 +1,58 @@
-Return-Path: <linux-iio+bounces-3009-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3010-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3865862602
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:27:40 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C22C862605
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:31:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 783A51F2190E
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 16:27:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0EC231F21D74
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 16:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1D147A7C;
-	Sat, 24 Feb 2024 16:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FAE3C129;
+	Sat, 24 Feb 2024 16:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rJt6ln4+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJq87c58"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0072E653;
-	Sat, 24 Feb 2024 16:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E122CEC7;
+	Sat, 24 Feb 2024 16:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708792055; cv=none; b=nHxXM8RYC8VlV+Iu0mjzYUQe1RI3Zu56qBm9aeAgZ3aP+71qGF20zgFDbdzzXKOPPz8+Qa6opCAvTHsq7b4PLDlwoxYzc1P7fpbj4wug+LEKc9DJcXh2sYye+O2eLDxQC74SD4TISTDs93apDgRgq8Z6k7XI/pj0TwpktT30R5E=
+	t=1708792264; cv=none; b=H6iWDbqoYW4x8xdWRtZzJBnF5Znl3/aGZ0Dbv3eMKx1+FJ96odyw9cXItR/kp3S9l6zj3NksriNL60F5I6RLDYBT04NElmFM3VmeCzd+KfeEkwLXAvWf48E73LK2dqKUUJPFdhcyw5KskxVv72atith9ZAf6R4OhmcAESzh/GI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708792055; c=relaxed/simple;
-	bh=yvwQmfXFaHT1e1P/CfKXVblwVNcWpXfeCqfPApZkPdY=;
+	s=arc-20240116; t=1708792264; c=relaxed/simple;
+	bh=8nObHrysG8EXeSQ7JcK3mcZ3ndfVs2t62O/vtkPkBSI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MGMukBYCeUZ3aEEXkLgOYdfFqhJy0sJtRYBp3aIbenZxH0KCxN/ujakExr1Foq3hL/ifWYvoL++/leJeDBAynm/qpHll5fdYkWtzc+bYBarXZRbwXpmWWt0W319redICli95yuRpieXAXkdvPS5vwDPbI5eYANH6QChI7DKtCSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rJt6ln4+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D608C433F1;
-	Sat, 24 Feb 2024 16:27:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eDw4oBIXBgklAZmEBXmR21z2ifuYL6OrspNtlIAzM3TY1e+USSh7uScvBWImqeB4ZLv0lONoDm5i7sE7VROV0e1ecV7MfVt7qJftlfAOvpOeKU5ZkgAXiFNEVCeaT4szUv+CLyWwJsXLkcgWENHwORV5xjmnsLSS91hb1QF2WW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJq87c58; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB705C433F1;
+	Sat, 24 Feb 2024 16:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708792054;
-	bh=yvwQmfXFaHT1e1P/CfKXVblwVNcWpXfeCqfPApZkPdY=;
+	s=k20201202; t=1708792263;
+	bh=8nObHrysG8EXeSQ7JcK3mcZ3ndfVs2t62O/vtkPkBSI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rJt6ln4+KIKxwL/ZB7G9Gy9xwTREhUdBg4Z08Qz08PjsXuN10Q6LNri9XnqhGz1tS
-	 2ArDxiLJQhrefsErqTt0KVOvjWcDyqFNKcqstPDJKnY+pu08tcaSjak0BgxL1iOerP
-	 H4SKhY70fDWqshEcvpBZMLtYyodkdFaxCMxIIOu2LQuOmLQu4x7vZ/wiDs9qCQ81lU
-	 YvZRSzHqjy0WcDY9JWqFHhcdZwnSX594ozp2a6Hnuj3Pyd4soFdounn5XC5XhWp01k
-	 LlbBx10qlpaVCr/VKktBar+BYCxbTPn8ImgHD1ZuFafhUc2zvupVHbEueqdtyddmEW
-	 6KtTe5KL5/59w==
-Date: Sat, 24 Feb 2024 16:27:23 +0000
+	b=VJq87c58xgQ/XrRNUqLPWtkBdCAm2Dqy+IbhDu6TdUtQ4ZIs7idX3goka6Lyo017v
+	 wpoEuxWAOsNZu1VDNzbFEKRNELIgpYT8j8WwgOoU+eHaWve93Umyo6oTjmJZPxe7Rq
+	 XyyAg1RuLEbil9exGoFBRWl6HNN7buhWKEWzanjoDSkJNh+fZ9aWdjcrQXJXIo7F9D
+	 /ckyb/iYOmGwf3t/qNa0j82O1PCtPV51lvsijjRODOEq8QpbVrTg8FKCFcOOBrn0FA
+	 8FAkQ8ekqRvvRnnFX5XZskviGlLsz/T7MzTzZw6BS/glMRJzJppsBZ5zpqC0T3oyde
+	 w5rEUgEXA8UDA==
+Date: Sat, 24 Feb 2024 16:30:51 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: inv.git-commit@tdk.com
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: fix FIFO parsing when empty
-Message-ID: <20240224162723.1e41d4ed@jic23-huawei>
-In-Reply-To: <20240219154825.90656-1-inv.git-commit@tdk.com>
-References: <20240219154825.90656-1-inv.git-commit@tdk.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: lars@metafoo.de, ang.iglesiasg@gmail.com,
+ andriy.shevchenko@linux.intel.com, linus.walleij@linaro.org,
+ semen.protsenko@linaro.org, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] drivers: iio: pressure: Fixes BMP38x and BMP390 SPI
+ support
+Message-ID: <20240224163051.3edcf102@jic23-huawei>
+In-Reply-To: <20240219191359.18367-1-vassilisamir@gmail.com>
+References: <20240219191359.18367-1-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,51 +63,109 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 19 Feb 2024 15:48:25 +0000
-inv.git-commit@tdk.com wrote:
+On Mon, 19 Feb 2024 20:13:59 +0100
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> According to the datasheet of BMP38x and BMP390 devices, for an SPI
+> read operation the first byte that is returned needs to be dropped,
+> and the rest of the bytes are the actual data returned from the
+> sensor.
 > 
-> Now that we are reading the full FIFO in the interrupt handler,
-> it is possible to have an emply FIFO since we are still receiving
-> 1 interrupt per data. Handle correctly this case instead of having
-> an error causing a reset of the FIFO.
+> Fixes: 8d329309184d ("iio: pressure: bmp280: Add support for BMP380 sensor family")
 > 
-> Fixes: 0829edc43e0a ("iio: imu: inv_mpu6050: read the full fifo when processing data")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-Would have been nice to call out that the error comes from a zero length
-read (I think!).
-
-Anyhow, applied to the fixes-togreg branch of iio.git.
-
-I might pull this into my queue for the next merge window as we are getting close
-to the end of the cycle.
-
-Jonathan
-
+Applied and marked for stable - with tweaks to header order and the space above
+as per discussion.
 > ---
-> V2: add missing stable tag
+>  drivers/iio/pressure/bmp280-spi.c | 49 ++++++++++++++++++++++++++++++-
+>  1 file changed, 48 insertions(+), 1 deletion(-)
 > 
->  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> index 66d4ba088e70..d4f9b5d8d28d 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> @@ -109,6 +109,8 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
->  	/* compute and process only all complete datum */
->  	nb = fifo_count / bytes_per_datum;
->  	fifo_count = nb * bytes_per_datum;
-> +	if (nb == 0)
-> +		goto end_session;
->  	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
->  	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
->  	inv_sensors_timestamp_interrupt(&st->timestamp, fifo_period, nb, nb, pf->timestamp);
-> --
-> 2.34.1
-> 
+> diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+> index e8a5fed07e88..1972014dca93 100644
+> --- a/drivers/iio/pressure/bmp280-spi.c
+> +++ b/drivers/iio/pressure/bmp280-spi.c
+> @@ -8,6 +8,7 @@
+>  #include <linux/spi/spi.h>
+>  #include <linux/err.h>
+>  #include <linux/regmap.h>
+> +#include <linux/bits.h>
+>  
+>  #include "bmp280.h"
+>  
+> @@ -35,6 +36,33 @@ static int bmp280_regmap_spi_read(void *context, const void *reg,
+>  	return spi_write_then_read(spi, reg, reg_size, val, val_size);
+>  }
+>  
+> +static int bmp380_regmap_spi_read(void *context, const void *reg,
+> +				  size_t reg_size, void *val, size_t val_size)
+> +{
+> +	struct spi_device *spi = to_spi_device(context);
+> +	u8 rx_buf[4];
+> +	ssize_t status;
+> +
+> +	/*
+> +	 * Maximum number of consecutive bytes read for a temperature or
+> +	 * pressure measurement is 3.
+> +	 */
+> +	if (val_size > 3)
+> +		return -EINVAL;
+> +	/*
+> +	 * According to the BMP3xx datasheets, for a basic SPI read opertion,
+> +	 * the first byte needs to be dropped and the rest are the requested
+> +	 * data.
+> +	 */
+> +	status = spi_write_then_read(spi, reg, 1, rx_buf, val_size + 1);
+> +	if (status)
+> +		return status;
+> +
+> +	memcpy(val, rx_buf + 1, val_size);
+> +
+> +	return 0;
+> +}
+> +
+>  static struct regmap_bus bmp280_regmap_bus = {
+>  	.write = bmp280_regmap_spi_write,
+>  	.read = bmp280_regmap_spi_read,
+> @@ -42,10 +70,19 @@ static struct regmap_bus bmp280_regmap_bus = {
+>  	.val_format_endian_default = REGMAP_ENDIAN_BIG,
+>  };
+>  
+> +static struct regmap_bus bmp380_regmap_bus = {
+> +	.write = bmp280_regmap_spi_write,
+> +	.read = bmp380_regmap_spi_read,
+> +	.read_flag_mask = BIT(7),
+> +	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
+> +	.val_format_endian_default = REGMAP_ENDIAN_BIG,
+> +};
+> +
+>  static int bmp280_spi_probe(struct spi_device *spi)
+>  {
+>  	const struct spi_device_id *id = spi_get_device_id(spi);
+>  	const struct bmp280_chip_info *chip_info;
+> +	struct regmap_bus *bmp_regmap_bus;
+>  	struct regmap *regmap;
+>  	int ret;
+>  
+> @@ -58,8 +95,18 @@ static int bmp280_spi_probe(struct spi_device *spi)
+>  
+>  	chip_info = spi_get_device_match_data(spi);
+>  
+> +	switch (chip_info->chip_id[0]) {
+> +	case BMP380_CHIP_ID:
+> +	case BMP390_CHIP_ID:
+> +		bmp_regmap_bus = &bmp380_regmap_bus;
+> +		break;
+> +	default:
+> +		bmp_regmap_bus = &bmp280_regmap_bus;
+> +		break;
+> +	}
+> +
+>  	regmap = devm_regmap_init(&spi->dev,
+> -				  &bmp280_regmap_bus,
+> +				  bmp_regmap_bus,
+>  				  &spi->dev,
+>  				  chip_info->regmap_config);
+>  	if (IS_ERR(regmap)) {
 
 

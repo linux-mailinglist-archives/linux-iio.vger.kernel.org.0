@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-3011-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3012-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5466E86260A
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:36:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F46086261A
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D926DB21550
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 16:36:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B58852831B6
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 16:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFA8134B4;
-	Sat, 24 Feb 2024 16:36:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1CF2E3E0;
+	Sat, 24 Feb 2024 16:46:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eS2pHSNT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sCpS1cF2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D6FC129;
-	Sat, 24 Feb 2024 16:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA1A14B820;
+	Sat, 24 Feb 2024 16:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708792595; cv=none; b=P9xTRp230hvnudXI7A0Z2hTbKejWZptBVhny++vKir2gzOR37skgLfKf/yAlKokxBIhIDq37fJgRf124FFK2oL05cNH6XujnWegEozNcyYOEqgtbawMVcigbSQK640O2DpDZ1sNhiyryJuX5AUi/8p/IgsMXFdDpA7LnN6uu0BA=
+	t=1708793174; cv=none; b=Z3RBXwPp6T930hdCrCicnCat3GrhFU1anxNwJ9chmJcoJmJGo4/IMmECwOIXCtizfMbN7YcW/788lkThbGNuYB7ztOShZT53gxS67jMQdxMiEyrvvoV0muIdm60pE8qkyNLQ/Pagj5gi5MMgRwRSxomB1huFJZO+4Fa/iTj241I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708792595; c=relaxed/simple;
-	bh=gM276SnHL2yQRhjWluMy72+pHXOACMKdHCyQEkwDvW0=;
+	s=arc-20240116; t=1708793174; c=relaxed/simple;
+	bh=WaKeKGy3+AF4oMDKya6UkKp1ld9MGGhzhz+ajHDtjFc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qbnqZ0HfLxlH2MlbbDqDMHitzQGuMMV+E/NtZmER6xV7J0K2ohL1rNLdBryon37vyXbLrJ+H67l2Adm6nfpu+l8n8GWTZ6Wc4YT/JJlg6qG1bpiOxSIl7HiABWPjUpPXT5Klwk2vWCO3RGQJTri3SF7+Wl95MkOqdxDivhOW/KM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eS2pHSNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625D2C433C7;
-	Sat, 24 Feb 2024 16:36:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=npl+UfB6Yc2AIUkwYtr5CXdJL3kd41ir4pBotqk2uTUzQrjIWy9FC/HpnFhCI+1WqKh50W84Hnn4m0cOohqTO+uLypNxMh8pE9vj6BGvNzys3d11cNIo830RlbYkUeA6BO+4TRqq6K+XZWlfX9n4XrNpyFBUTi1yG0l+Eb3ZUWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sCpS1cF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26BAC433C7;
+	Sat, 24 Feb 2024 16:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708792595;
-	bh=gM276SnHL2yQRhjWluMy72+pHXOACMKdHCyQEkwDvW0=;
+	s=k20201202; t=1708793173;
+	bh=WaKeKGy3+AF4oMDKya6UkKp1ld9MGGhzhz+ajHDtjFc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eS2pHSNTctVqZzjxj55wZ7G7ek+cOc48r61zURdfat6qlFaGzGcVpU3AyLll0ReE8
-	 m687ScBjqS9ptwEn7+/GQS0vXXvQERJbTmzekOQMPsAE+Rm5l7xqdUBQsIFTpNvVan
-	 tGNBuon5fdADFZjSTB3syn4s8w553xVYOtAQ8lhfvCJTPMwr0QY6llrhkVCuzlKIi7
-	 HYNWKvi1US/l8T+p5PsbZn2jOKMLJhEF4ybzMMJboMSz5z41h1MSBhTqFKvjzRIZbj
-	 Suv2ANY/0FEO5GbXSBdxnIveTn4HZI1JuPPeveMFAcZvNZ39uRuR7yXC5C4kJM3+qa
-	 uWjP+05puz6Sg==
-Date: Sat, 24 Feb 2024 16:36:22 +0000
+	b=sCpS1cF2awDasZbSEsLJF6vVo4oVuvqCFRX13QH+EjHLvT/ZZdg3IIsXWlcUEeq97
+	 EKsyA12cR4Rv/ozAsb9nnfotGtHc6Ud575Lz2ExhqHXxjbn9DK0M6xMue5cjdQVOvl
+	 xm2L+4SchwINHBhZdpCfOjG6i+al2GhLrp5iASavPkefQqaGFzxIs4Bb2w2hNyZYE9
+	 yiUazsnN3yt9mkVadOdOtj8xNhPu97mCE+OpKlR5VyQUmKNoVLGgZ8yP3P6HiTGYxc
+	 V8BwkAGT8dhp03Z6ss49FiKfZRq4YsjOWtHHj1+e7SMUUkugmebvxq6rX+KnVyltuy
+	 QGJAQ6eD8k0Bg==
+Date: Sat, 24 Feb 2024 16:45:58 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Mark Brown <broonie@kernel.org>, Martin Sperl <kernel@martin.sperl.org>,
@@ -51,12 +51,14 @@ Cc: Mark Brown <broonie@kernel.org>, Martin Sperl <kernel@martin.sperl.org>,
  <mcoquelin.stm32@gmail.com>, Alexandre Torgue
  <alexandre.torgue@foss.st.com>, linux-spi@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] spi: add spi_optimize_message() APIs
-Message-ID: <20240224163622.7499cdd0@jic23-huawei>
-In-Reply-To: <20240219-mainline-spi-precook-message-v2-1-4a762c6701b9@baylibre.com>
+ linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org, Julien
+ Stephan <jstephan@baylibre.com>
+Subject: Re: [PATCH v2 3/5] spi: stm32: move splitting transfers to
+ optimize_message
+Message-ID: <20240224164558.02c08dd6@jic23-huawei>
+In-Reply-To: <20240219-mainline-spi-precook-message-v2-3-4a762c6701b9@baylibre.com>
 References: <20240219-mainline-spi-precook-message-v2-0-4a762c6701b9@baylibre.com>
-	<20240219-mainline-spi-precook-message-v2-1-4a762c6701b9@baylibre.com>
+	<20240219-mainline-spi-precook-message-v2-3-4a762c6701b9@baylibre.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,29 +69,86 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 19 Feb 2024 16:33:18 -0600
+On Mon, 19 Feb 2024 16:33:20 -0600
 David Lechner <dlechner@baylibre.com> wrote:
 
-> This adds a new spi_optimize_message() function that can be used to
-> optimize SPI messages that are used more than once. Peripheral drivers
-> that use the same message multiple times can use this API to perform SPI
-> message validation and controller-specific optimizations once and then
-> reuse the message while avoiding the overhead of revalidating the
-> message on each spi_(a)sync() call.
+> Since splitting transfers was moved to spi_optimize_message() in the
+> core SPI code, we now need to use the optimize_message callback in the
+> STM32 SPI driver to ensure that the operation is only performed once
+> when spi_optimize_message() is used by peripheral drivers explicitly.
 > 
-> Internally, the SPI core will also call this function for each message
-> if the peripheral driver did not explicitly call it. This is done to so
-> that controller drivers don't have to have multiple code paths for
-> optimized and non-optimized messages.
-> 
-> A hook is provided for controller drivers to perform controller-specific
-> optimizations.
-> 
-> Suggested-by: Martin Sperl <kernel@martin.sperl.org>
-> Link: https://lore.kernel.org/linux-spi/39DEC004-10A1-47EF-9D77-276188D2580C@martin.sperl.org/
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-
-Very nice.
-
+Trivial comment inline. Otherwise LGTM
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+There are changes to when this happens wrt to locking but I think those
+are all positive as the bus lock is held for less time and there
+is nothing in here that needs that lock held.
+> ---
+> 
+> v2 changes: none
+> 
+>  drivers/spi/spi-stm32.c | 28 ++++++++++++++++------------
+>  1 file changed, 16 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/spi/spi-stm32.c b/drivers/spi/spi-stm32.c
+> index c32e57bb38bd..e4e7ddb7524a 100644
+> --- a/drivers/spi/spi-stm32.c
+> +++ b/drivers/spi/spi-stm32.c
+> @@ -1118,6 +1118,21 @@ static irqreturn_t stm32h7_spi_irq_thread(int irq, void *dev_id)
+>  	return IRQ_HANDLED;
+>  }
+>  
+> +static int stm32_spi_optimize_message(struct spi_message *msg)
+> +{
+> +	struct spi_controller *ctrl = msg->spi->controller;
+> +	struct stm32_spi *spi = spi_controller_get_devdata(ctrl);
+> +
+> +	/* On STM32H7, messages should not exceed a maximum size set
+If you spin a v3, this isn't in keeping with local comment style.
+
+	/*
+ 	 * On...
+
+> +	 * later via the set_number_of_data function. In order to
+> +	 * ensure that, split large messages into several messages
+> +	 */
+> +	if (spi->cfg->set_number_of_data)
+> +		return spi_split_transfers_maxwords(ctrl, msg, spi->t_size_max);
+> +
+> +	return 0;
+> +}
+> +
+>  /**
+>   * stm32_spi_prepare_msg - set up the controller to transfer a single message
+>   * @ctrl: controller interface
+> @@ -1163,18 +1178,6 @@ static int stm32_spi_prepare_msg(struct spi_controller *ctrl,
+>  		!!(spi_dev->mode & SPI_LSB_FIRST),
+>  		!!(spi_dev->mode & SPI_CS_HIGH));
+>  
+> -	/* On STM32H7, messages should not exceed a maximum size setted
+> -	 * afterward via the set_number_of_data function. In order to
+> -	 * ensure that, split large messages into several messages
+> -	 */
+> -	if (spi->cfg->set_number_of_data) {
+> -		int ret;
+> -
+> -		ret = spi_split_transfers_maxwords(ctrl, msg, spi->t_size_max);
+> -		if (ret)
+> -			return ret;
+> -	}
+> -
+>  	spin_lock_irqsave(&spi->lock, flags);
+>  
+>  	/* CPOL, CPHA and LSB FIRST bits have common register */
+> @@ -2180,6 +2183,7 @@ static int stm32_spi_probe(struct platform_device *pdev)
+>  	ctrl->max_speed_hz = spi->clk_rate / spi->cfg->baud_rate_div_min;
+>  	ctrl->min_speed_hz = spi->clk_rate / spi->cfg->baud_rate_div_max;
+>  	ctrl->use_gpio_descriptors = true;
+> +	ctrl->optimize_message = stm32_spi_optimize_message;
+>  	ctrl->prepare_message = stm32_spi_prepare_msg;
+>  	ctrl->transfer_one = stm32_spi_transfer_one;
+>  	ctrl->unprepare_message = stm32_spi_unprepare_msg;
+> 
+
 

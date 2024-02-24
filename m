@@ -1,106 +1,227 @@
-Return-Path: <linux-iio+bounces-3028-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3029-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B71B8626A7
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 19:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B168626BE
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 19:22:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B9E61C20E09
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 18:16:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FCB61C21000
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 18:22:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8961B495E0;
-	Sat, 24 Feb 2024 18:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCA9D495E0;
+	Sat, 24 Feb 2024 18:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="obqcXRK3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="puNCuUNB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5F2046450;
-	Sat, 24 Feb 2024 18:16:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D08481D0;
+	Sat, 24 Feb 2024 18:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708798589; cv=none; b=We4/ebhlVEc+SIgve87pcP8p+f1QDKb3yTfxvFd9CXsWGnC0SIZBKZkz7KN0p3jIcYG+0L/5ipu+fxIP+jXQs4VWm6wmky1bfbq5uRkjSYIssBx1IweDh/jRUbZqEg9/jGZV2BuZaCy84Iq0cxSA+pBJbdpjfPVSnCRkNCYU0ng=
+	t=1708798951; cv=none; b=pR8wbUAU+wE6R4VwtaGGJKwwW2H7V9CnuLyAVxRBbypDeqM0pP1HrnnWnsDi/tzsMN2b0JMMbtHh2/YDtXP5FyEA+0fnL9TN9x2Q7fSZB5D3gSYaMr6Izjt/S4abE8poslx+U4JDI2zqo3Jc77VvPUKljUWRqK50LseELojWTzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708798589; c=relaxed/simple;
-	bh=VUx1i8XWpfeim7DHTmTo7nDlWrnG/F3najnDhzFbEu0=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=EGSSf3z97GNnZ2bg4lsavOCwslVdGEzSvX9l9CMLROzQJ3A0iwweqN9p9/9v+R87bdPKHDuOg/y9JNVNDffVTLGOI+c6C9gMZ5lamVN1mdJvH8C95DvyvbkR9qXhfHBWa5LbHeM729OLbgK1sQjoBItWXWle1iOm4vCILkO3h68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=obqcXRK3; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1708798541; x=1709403341; i=markus.elfring@web.de;
-	bh=VUx1i8XWpfeim7DHTmTo7nDlWrnG/F3najnDhzFbEu0=;
-	h=X-UI-Sender-Class:Date:To:Cc:References:Subject:From:
-	 In-Reply-To;
-	b=obqcXRK3l8/f6gVhd0guF3S8rwmabTEE1NwgSuP3x5HBGyMvteRhIfn79357pqC6
-	 beBKWNt9zzMUNAipF1WNf/uYEPDiFI0b3HVNH4Y3VdhvEf23VnX8JfVz4z95TqINf
-	 mqV7VZgp0wacpZE3x4dJTp0IzFO197JRk6mIMrRUiF7RMGSpD5aq2sJwHQ+8My92X
-	 IF8sTfEjrjbgub1/48bqoxm8TUIRznKJT5WtUQZvCXWctGEEL0NxoRhutUl2r+IwD
-	 0b/73Y4wlYDuQSbc3mtNFBaKl2l8Z31n/Tb+4jVVAi96ksXGWOpRWpdzl63Tvc3w5
-	 fhGzhYMwM5xZ5YI3Hg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.80.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1M7epr-1rYiQq2PiX-008CCk; Sat, 24
- Feb 2024 19:15:41 +0100
-Message-ID: <80b1afef-3502-4719-ba9d-682b5566688b@web.de>
-Date: Sat, 24 Feb 2024 19:15:31 +0100
+	s=arc-20240116; t=1708798951; c=relaxed/simple;
+	bh=vITQDNHGejyqlMVNnPYBxyzzJU5RBoH076vJprzwKp0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PvbN7fBXWYUu3FqDH0evUmDTG9QoGVa54ohxhBzdTRGTxLjLJLjUk7/1jHWIAith+apRccSGVHwJiu+03N0bbXgoQe33QQbsnJXX1rsi8Wac0MXfRlJPHneIu+XCpbT5V83Igkde8VwxU5zKtresSwDKnjvfNDMSBBZ6TTlSEJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=puNCuUNB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DECAC433C7;
+	Sat, 24 Feb 2024 18:22:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1708798951;
+	bh=vITQDNHGejyqlMVNnPYBxyzzJU5RBoH076vJprzwKp0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=puNCuUNBtjbmwNa9S5Zz8I5sBpVY8EFbGj0mYnM1BxHYs4giFO8FK62F1eZFQ66OF
+	 fulO2ZdQr09QEzLrFY+p/Fves3PROh2Xz2zMxVmxvkTuC9O3KJ/BIlELPhXgicJtid
+	 0RFLCBYkt2zr/lDcDwLwLRSEeOoQuzB3UxBKrFwFngxKxUWSu92ZKNkaxmZENkRI0Z
+	 fK86TDfWjLztOK59S4N1AYib1OyitZvZYSkry6LcfOkjFK2ZVN6fbt/Thw2HPgC9e0
+	 TEpkvTQ8RlIaYue5s/LNyHTfNNs7Xn2JyCE8Wj8bkg6RegiQF+W6J6CS0bnTcyBl2N
+	 YsgrW2b8+heIw==
+Date: Sat, 24 Feb 2024 18:22:15 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Li peiyu <579lpy@gmail.com>, Rob
+ Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: Re: [PATCH 2/4] iio: humidity: hdc3020: add power management
+Message-ID: <20240224182215.058aaecb@jic23-huawei>
+In-Reply-To: <20240220-hdc3020-pm-v1-2-d8e60dbe79e9@gmail.com>
+References: <20240220-hdc3020-pm-v1-0-d8e60dbe79e9@gmail.com>
+	<20240220-hdc3020-pm-v1-2-d8e60dbe79e9@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: David Lechner <dlechner@baylibre.com>, linux-spi@vger.kernel.org,
- linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, Mark Brown <broonie@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Alain Volmat <alain.volmat@foss.st.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- David Jander <david@protonic.nl>, Jonathan Cameron <jic23@kernel.org>,
- Martin Sperl <kernel@martin.sperl.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-References: <20240219-mainline-spi-precook-message-v2-1-4a762c6701b9@baylibre.com>
-Subject: Re: [PATCH v2 1/5] spi: add spi_optimize_message() APIs
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240219-mainline-spi-precook-message-v2-1-4a762c6701b9@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:PDatmO5YnLqX8lT6ygw7MPKZXfWiMCjg+ZexIiXGIK3wvR8lKMV
- /D3tyZEGXNWGy+CM+nkgcUpjdTYfgURdM/7+bewmaixJqJJgLgWI5zi8O8NXfQ9AdFgo9ta
- JdqGnsqs4kbLdMlyl8QifRHdNHSO1yLeFJV+TpuyrVUjGrYyTcIQHXXPgJ6TaS5p1tsdTVR
- 927Io9MXhIa5fOxDVxJlg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:3cS0VhBImIU=;bnuscn4tw449kz9nyq0ezwz1zYn
- znvFq8A809Mc1Ko/3CjdxpWOQYyGmzXkIu1yx+oyng4uHcin/fqlbDZsJmxY17tQQ+tV4uplU
- DGI4py1z3E1S/kJeloswIzeDmoj3o7rfhStWl8DhZzCh9hdAkcujgskHxJRbNBYkgfrefCtaM
- qKX6jKU6hRB4v5b6dG8pNzN+UuptzpKLvFg8GhNnKkfwB+Hr5RxX29Aqulfp59tRvHiv6/CQx
- HNshIcIpVwLvuIhIU5ssSkNnp64QS4+iO0p812r/689a12jgh87qQ1ww5n4PJxvmSKKdAwFbo
- Kh7dUpjrWpaOUC/mQBzgTkLw9hO9eJwQW2mBzqucVitxho5fc96zZkosMElSBLIUnz5bEAeEN
- 9qRh2AEaYlz/lXEum+vZMBFa6MQtfYp1DFmRhHxjo3o0JDNZHAw1HvljZyTKATGh+MpnmWpiP
- I/xg5jwrggf0oXtRnZBKusYWCtS7AdyjIqetIAl5s1p/kUOR/7AfyYvtabhQOWyKG/zPvJC7S
- PsUdKuxh9fCvnsq0lZziEo3Nz8uQOGdiK2kyD9r09dwxQ7X10mqofUnqD9nAvYuM7/qiHVt9s
- IuHe8xojX7X+os3dauybB5/fzj6sjYSA4zkMPDHlzWgbFvC1cbTTn9SVNek7ke/IHc0cSuEfh
- luwKT1yO8U6+3stJ6ftbp756hIcP0wx3lcqwJ+2qsEy9lHRz/l6wGBIJ4gsPsfUX9DWBofvPT
- afY6uvZdrqUCVeXnzTTf7/k1YUW1SXDWkh+ZpSIChGdXfjDAIkVuiEmrHNAM+OwPZjPh61KtZ
- nVd0zyKylIJotK6myJI818B2cn880ihp/1IP37EwCMjY0=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
->                                           =E2=80=A6 call it. This is don=
-e to so
-> that controller drivers =E2=80=A6
+On Tue, 20 Feb 2024 22:14:56 +0100
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-I hope that such a wording will be improved for the final change descripti=
-on.
+> The HDC3020 sensor carries out periodic measurements during normal
+> operation, but as long as the power supply is enabled, it will carry on
+> in low-power modes. In order to avoid that and reduce power consumption,
+> the device can be switched to Trigger-on Demand mode, and if possible,
+> turn off its regulator.
+> 
+> According to the datasheet, the maximum "Power Up Ready" is 5 ms.
+> 
+> Add resume/suspend pm operations to manage measurement mode and
+> regulator state.
+> 
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Hi Javier,
 
-Regards,
-Markus
+Comments inline. Mainly that you should not have side effects if the power
+up fails and you should fail probe.
+
+Thanks,
+
+Jonathan
+
+> ---
+>  drivers/iio/humidity/hdc3020.c | 81 +++++++++++++++++++++++++++++++++---------
+>  1 file changed, 65 insertions(+), 16 deletions(-)
+> 
+> diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
+> index 11ede97a31d7..0da5c5c41cd2 100644
+> --- a/drivers/iio/humidity/hdc3020.c
+> +++ b/drivers/iio/humidity/hdc3020.c
+> @@ -20,6 +20,8 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+> +#include <linux/pm.h>
+> +#include <linux/regulator/consumer.h>
+>  #include <linux/units.h>
+>  
+>  #include <asm/unaligned.h>
+> @@ -68,6 +70,7 @@
+>  
+>  struct hdc3020_data {
+>  	struct i2c_client *client;
+> +	struct regulator *vdd_supply;
+>  	/*
+>  	 * Ensure that the sensor configuration (currently only heater is
+>  	 * supported) will not be changed during the process of reading
+> @@ -551,9 +554,39 @@ static const struct iio_info hdc3020_info = {
+>  	.write_event_value = hdc3020_write_thresh,
+>  };
+>  
+> -static void hdc3020_stop(void *data)
+> +static int hdc3020_power_on(struct hdc3020_data *data)
+>  {
+> -	hdc3020_exec_cmd((struct hdc3020_data *)data, HDC3020_EXIT_AUTO);
+> +	int ret;
+> +
+> +	ret = regulator_enable(data->vdd_supply);
+> +	if (ret)
+> +		return ret;
+> +
+> +	fsleep(5000);
+> +
+> +	if (data->client->irq) {
+> +		/*
+> +		 * The alert output is activated by default upon power up,
+> +		 * hardware reset, and soft reset. Clear the status register.
+> +		 */
+> +		ret = hdc3020_exec_cmd(data, HDC3020_S_STATUS);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return hdc3020_exec_cmd(data, HDC3020_S_AUTO_10HZ_MOD0);
+Expectation of a power on fail, in probe at least is it should cleanup after
+itself.  It's messier in resume because there isn't anything sensible to do
+about it, but we should keep to the convention of no side effects on
+failure.
+
+As such if either of the later parts of this fail, you should power
+down the regulator before returning.
+
+
+> +}
+> +
+> +static int hdc3020_power_off(struct hdc3020_data *data)
+> +{
+> +	hdc3020_exec_cmd(data, HDC3020_EXIT_AUTO);
+> +
+> +	return regulator_disable(data->vdd_supply);
+> +}
+> +
+> +static void hdc3020_exit(void *data)
+> +{
+> +	hdc3020_power_off((struct hdc3020_data *)data);
+
+Trivial but no need to cast a void * to anything as the C standard says this
+is fine as implicit.
+
+>  }
+>  
+>  static int hdc3020_probe(struct i2c_client *client)
+> @@ -569,6 +602,8 @@ static int hdc3020_probe(struct i2c_client *client)
+>  	if (!indio_dev)
+>  		return -ENOMEM;
+>  
+> +	dev_set_drvdata(&client->dev, (void *)indio_dev);
+> +
+>  	data = iio_priv(indio_dev);
+>  	data->client = client;
+>  	mutex_init(&data->lock);
+> @@ -580,6 +615,14 @@ static int hdc3020_probe(struct i2c_client *client)
+>  	indio_dev->info = &hdc3020_info;
+>  	indio_dev->channels = hdc3020_channels;
+>  	indio_dev->num_channels = ARRAY_SIZE(hdc3020_channels);
+> +
+> +	data->vdd_supply = devm_regulator_get(&client->dev, "vdd");
+> +	if (IS_ERR(data->vdd_supply))
+> +		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
+> +				     "Unable to get VDD regulator\n");
+> +
+> +	hdc3020_power_on(data)
+
+Check return value. We want to fail probe if the power up didn't work!
+
+> +
+>  	if (client->irq) {
+>  		ret = devm_request_threaded_irq(&client->dev, client->irq,
+>  						NULL, hdc3020_interrupt_handler,
+> @@ -588,22 +631,9 @@ static int hdc3020_probe(struct i2c_client *client)
+>  		if (ret)
+>  			return dev_err_probe(&client->dev, ret,
+>  					     "Failed to request IRQ\n");
+> -
+> -		/*
+> -		 * The alert output is activated by default upon power up,
+> -		 * hardware reset, and soft reset. Clear the status register.
+> -		 */
+> -		ret = hdc3020_exec_cmd(data, HDC3020_S_STATUS);
+> -		if (ret)
+> -			return ret;
+>  	}
+>  
+> -	ret = hdc3020_exec_cmd(data, HDC3020_S_AUTO_10HZ_MOD0);
+> -	if (ret)
+> -		return dev_err_probe(&client->dev, ret,
+> -				     "Unable to set up measurement\n");
+> -
+> -	ret = devm_add_action_or_reset(&data->client->dev, hdc3020_stop, data);
+> +	ret = devm_add_action_or_reset(&data->client->dev, hdc3020_exit, data);
+>  	if (ret)
+>  		return ret;
+>  
+> @@ -614,6 +644,24 @@ static int hdc3020_probe(struct i2c_client *client)
+>  	return 0;
+>  }
+>
 

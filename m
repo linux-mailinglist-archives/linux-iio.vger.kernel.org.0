@@ -1,66 +1,59 @@
-Return-Path: <linux-iio+bounces-3017-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3018-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D309862659
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 18:31:21 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40174862675
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 18:44:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5EB1F21BD1
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:31:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7126F1C20BB4
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A5847F45;
-	Sat, 24 Feb 2024 17:31:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC7F47F59;
+	Sat, 24 Feb 2024 17:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBWZLwnd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cz6jY75F"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A3814B820;
-	Sat, 24 Feb 2024 17:31:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A85E4F5EC;
+	Sat, 24 Feb 2024 17:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708795874; cv=none; b=roY976YpHNO/orpoQHsaj63orej9IMq1JANe7j1rsuLl+CsmJl06hIX6V6ak8P01h8Y9hPvNM9NADTNH45VKtEeWKkbeOZoqsb6iZL37wDsZ0FBRvX7ybH/QUOXPsKcLrv2CFSWejrD0GQVu2jMTN9jlG7WkaZ4at9PU5xWVnHg=
+	t=1708796580; cv=none; b=kkqAdD3PXdBeQ62ZufDsGRPxZ/zNB1XT/i0Lp4b5pOkHGzycpvsdwA/zl5UmcsNFhJTar4s/aNX7OiKmvCF1vSqu/o/5SPAGoNof5KtdSJXRwJuk8EwFbTalkhXLwXlg25qh8shSYVZc1Got4fbFg3T+e6TwjHYvZZoimG4CxTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708795874; c=relaxed/simple;
-	bh=WfWJQwTKNHoF6gInRBujgT3QRX8Cge62nrn0wrcBk7A=;
+	s=arc-20240116; t=1708796580; c=relaxed/simple;
+	bh=OZAL44ygaFGSxZTGS7WKbyRSLev5JfDvm3Pr5EIKOqs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ai+JUnwMiPWtebWV2HL4Bce/kBpejR2UkhrluJsKPHwBa3YOYW7G30+jfiI69LI/x0ucbIZ2OnmXBs6nOK9BEKmidv0rxkuaNdQE0lrjpERST97phlnokUU+nHCu7bRCeFBrmbRG7G6+uXUw/ggIpP0kRWX761MOJlt94vy3vIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBWZLwnd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A9EC433F1;
-	Sat, 24 Feb 2024 17:31:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n3eCsNZtL5b4wOUL8me73s8moQD0b7h304L2Kslucde2hc/a4JqO8JzHjjuSvpNKOMCNxbtkffXTCrZHtN58YZyiOtTZy9nUKP+X62zClp/Owl1sg3HSWltQeJzt9Zz3Wrn8EReKS36ZX8dX56sLpBur7qC+qQh/vKGCSz+rrQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cz6jY75F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09396C433C7;
+	Sat, 24 Feb 2024 17:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708795873;
-	bh=WfWJQwTKNHoF6gInRBujgT3QRX8Cge62nrn0wrcBk7A=;
+	s=k20201202; t=1708796580;
+	bh=OZAL44ygaFGSxZTGS7WKbyRSLev5JfDvm3Pr5EIKOqs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CBWZLwndv9Xl9V2tCMhVRZ9F/sBbs1f0OKypavZCY3kKUGvjqM8KDq2YNcWQJNvNk
-	 WCzbXRlX2vQvoFOLgDWsjXgXQ5Rc7ldcpfRC2wOvS2dXJ8eEdKptYgRGTIwZVlH6eq
-	 gBxXprjkZ8ChP6xiJmS3hbi6brvG6WgIt5Jq8TiCPHWcwIAf8Gv4j3lqxkoYU8tZ8L
-	 Yqq345IF/Uyba5jgF/2cSIEdsN8BS6OXYOXROpsp75z6ZxxNW7TtXGRsUUbuARnmKC
-	 AYCus8Y63bnbK34hAnwR3esoQiaIV9767dyoi7wQHJ6GA2AEozZWK7sgbbDXUnD4HP
-	 98cOTnr1j3lNw==
-Date: Sat, 24 Feb 2024 17:30:55 +0000
+	b=Cz6jY75Fly44nw1hFDyfw4gCVerWm1jgiOGz8JkvWYsktVMrDeHSZS3/IS30DqEMb
+	 4Du3oJPA/QLL1ISaZVvZWcXrJ8v2nISuoLJW8xLTV+hpn2ar3m//beo1nVyHtU7tIP
+	 Vv6fYMLjI8V6fZ1n1bwj8KxLk6+EeAH+BbVULZsTvRwSPOsnXz9QEQhru7dPiZWDmR
+	 1JLNOzAoOK11Nsjy07lnePG4tgtVxIB4j+4rn11eOjRtKBcokuXloClDbu+sRyMPpq
+	 g/2KXGnJtwCi3wFvGKAi7mKJJ4dEcLSuWCcJ0aqWpey7Pn0jH3fFaRVMv3aTn0GrKJ
+	 EY/W1x8wOxSNw==
+Date: Sat, 24 Feb 2024 17:42:46 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>
-Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
- linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Michael
- Walle <michael@walle.cc>, Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd
- Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>, Niklas
- Schnelle <schnelle@linux.ibm.com>, Leonard =?UTF-8?B?R8O2aHJz?=
- <l.goehrs@pengutronix.de>, Mike Looijmans <mike.looijmans@topic.nl>, Haibo
- Chen <haibo.chen@nxp.com>, Hugo Villeneuve <hvilleneuve@dimonoff.com>,
- David Lechner <dlechner@baylibre.com>, Ceclan Dumitru
- <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Conor Dooley
- <conor.dooley@microchip.com>
-Subject: Re: [PATCH v15 1/3] dt-bindings: adc: add AD7173
-Message-ID: <20240224173055.2b2e067c@jic23-huawei>
-In-Reply-To: <20240223133758.9787-1-mitrutzceclan@gmail.com>
-References: <20240223133758.9787-1-mitrutzceclan@gmail.com>
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Ceclan Dumitru
+ <dumitru.ceclan@analog.com>
+Subject: Re: [PATCH v5 3/5] iio: amplifiers: hmc425a: move conversion logic
+Message-ID: <20240224174246.63598681@jic23-huawei>
+In-Reply-To: <20240220153553.2432-2-mitrutzceclan@gmail.com>
+References: <20240220153553.2432-1-mitrutzceclan@gmail.com>
+	<20240220153553.2432-2-mitrutzceclan@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,48 +64,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 23 Feb 2024 15:37:28 +0200
+On Tue, 20 Feb 2024 17:34:49 +0200
 Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
 
-> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
-> which can be used in high precision, low noise single channel applications
-> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
-> primarily for measurement of signals close to DC but also delivers
-> outstanding performance with input bandwidths out to ~10kHz.
+> Move gain-dB<->code conversion logic from read_raw and write_raw to
+> chip_info callbacks.
 > 
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 > Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-Ok, in the interests of perfect not being the enemy of good enough.
-I'll leave the supplies for now.  There are lots of existing drivers
-where we don't list them as required (because my understanding of this
-changed in more recent times).
+I've made a small tweak whilst applying this one.
 
-It's been on my list of jobs for a really boring Friday afternoon
-to bring them all inline with the convention of if it needs power
-on the pin, it's required, so what's one more? :)
+> @@ -100,36 +155,15 @@ static int hmc425a_write_raw(struct iio_dev *indio_dev,
+>  			     int val2, long mask)
+>  {
 
-As Nuno pointed out, patch 2 clashed with work already upstream to
-allow firmware to have the final say on interrupt types. I think
-I've resolved that correctly.
+>  	mutex_lock(&st->lock);
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_HARDWAREGAIN:
+> +		ret = gain_dB_to_code(st, val, val2, &code);
+> +		if (ret)
+> +			break;
+>  		st->gain = code;
+> -
+Check your patches for unrelated white space changes.
+They make things a little less reviewable and they create
+noise in the history etc.
 
-I tidied up the docs ordering issue Andy noted.
+If you want to tidy up whitespace, a single patch just doing that
+is the way to go.
 
-Also, ad_sigma_delta is namespaced. So added
-MODULE_IMPORT_NS(IIO_AD_SIGMA_DELTA).
-
-Make sure you test your patches with a modular build
-on a more recent tree - that change was early last in 2022!
-
-A few lines in the driver were too long.
-I don't mind them going over 80 for readability reasons, but
-not over 100.
-
-Anyhow, with those changes (and please check I didn't mess things up!)
-applied to the togreg branch of iio.git and pushed for now as testing
-for 0-day to get a look in.
-
-Thanks,
-
-Jonathan
+>  		ret = hmc425a_write(indio_dev, st->gain);
+>  		break;
+>  	default:
+> @@ -189,6 +223,8 @@ static struct hmc425a_chip_info hmc425a_chip_info_tbl[] = {
+>  		.gain_min = -31500,
+>  		.gain_max = 0,
+>  		.default_gain = -0x40, /* set default gain -31.5db*/
 

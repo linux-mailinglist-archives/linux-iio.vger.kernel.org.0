@@ -1,113 +1,153 @@
-Return-Path: <linux-iio+bounces-3040-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3041-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28403862745
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 21:16:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9CB98627E9
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 23:09:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3087281237
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 20:16:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAAA81C20BA9
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 22:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73A04CDF9;
-	Sat, 24 Feb 2024 20:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CEA24D135;
+	Sat, 24 Feb 2024 22:09:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="QNt6B8Yk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SAqdlj9H"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mout.web.de (mout.web.de [217.72.192.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB53469E;
-	Sat, 24 Feb 2024 20:16:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F3781400B;
+	Sat, 24 Feb 2024 22:09:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708805786; cv=none; b=OI6Wnqt/klBmu2HjOK7T6RWMSR7MgqqMqmfbzRvkhhHs/jb75WMTdT233v/vkuymlfG9ZhJoz2Wa1WjCOjJ9rElL6lLhw4pTU16DxMi0lW7o2iwjRHgcwObFC22CWl0pASqT+WO7budwTtdT1kswlVYXfEHVYstcTuLuFBBNrKg=
+	t=1708812591; cv=none; b=iolw9J2W2X8Hhd1gTcYSkgGki4EjT8DwikruMlY6kJpEKDVkKZPVmK2AtTztYZP8cwkL5nlELiWD3qDQ0Vp95PjDjigSK6waFL0w15atj5MgvLyfofksJLAoHV8Xewzgn0mZss997Zh6c+XgCmXOtmvX+jb653T9LcBNTghJBMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708805786; c=relaxed/simple;
-	bh=yLz7Vg77PB7IlV1AITmSO9pNNY8zgh7ejy/6z5+C0lo=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=mjNVsQrHZPjy3coMRtUtORF4NzMqfzHKLCyR0HEfNE2KlfMLz+0JKRbDW5U2vzUmxtSvgchLQqzAsiWiFYzpQPxKHH+oKvk3gZBWLSsMNqn21+jV570ls1kow7QxnU2m0bebuae/D6vftqNySZGyT0jNaK/aP6i0LH5hJSH9+U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=QNt6B8Yk; arc=none smtp.client-ip=217.72.192.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-	t=1708805777; x=1709410577; i=markus.elfring@web.de;
-	bh=yLz7Vg77PB7IlV1AITmSO9pNNY8zgh7ejy/6z5+C0lo=;
-	h=X-UI-Sender-Class:Date:To:Cc:References:Subject:From:
-	 In-Reply-To;
-	b=QNt6B8YkGNqRWjK92Je/bLysp4ai5k/0EujaGr1eWzp86Q4DPbv5901HqtkJ/ImL
-	 mPM/BeAep5L4IapLHjYB8Zsmgoxidk2oOyRoG5YK4VhnvSYtpNd5AeRHb76+xX5N9
-	 2MSW71oB/LjBnkMP+NRqJOoBrhNFyShAtbUUMTBx17ogYfPEd9rdi5O0POlfUc1f0
-	 zvnneTmviXfWCkS087OI2RdBC/WvkBBqHA/7tHF9VWUDDyPq/i2RkVBa+Sj+xGvSd
-	 8NnxynGyrHF9CrTqhQEu/AnmOA7Iuft59hFT/1uRD70t/ldVHRQ/QDJJMuMfmmbse
-	 6tt1eK+1XwicLSWALg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.21] ([94.31.80.95]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MkElP-1rBoP0152X-00ka9U; Sat, 24
- Feb 2024 21:09:43 +0100
-Message-ID: <0f25b520-563c-4b3b-96cd-d1dcc7ea6f40@web.de>
-Date: Sat, 24 Feb 2024 21:09:40 +0100
+	s=arc-20240116; t=1708812591; c=relaxed/simple;
+	bh=vSlP7QP2oAfnAIQ/TOxuBgG28tjwrPrrynPqsk2UXNM=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rydAJVE7p6+s4qWzdMDFq7LRyo693vS3Gp/nffNARIa7abo5TAfcjJuDunpckoKDw8nASXhcZnPgGzRU/RysidvVQ+lN/XRO/nmYjLOZLl2LdUv6yWfDT5ciz0wCIuEJT49F2aRDt9jpjsoHw/9RNpVn1Kx0cQrP5HCpUK6Ilgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SAqdlj9H; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4128f5ec9b7so14343825e9.3;
+        Sat, 24 Feb 2024 14:09:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708812588; x=1709417388; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=QQTm/E2OgFHl030SeornH96V8pO1cw7ie2ssNFqqPEk=;
+        b=SAqdlj9HrjUinOny1I83/7uwL6hzdT/zaYAcY4FMxJzcTad5isVnJB/t+NWNIRifc7
+         VOoK09K9ZeBCBNSMCly2Qhob4zzLzpuhqRfauB1tQcfvjyddSHLDPBQo3DP0xTnevpE8
+         rJc+PuOHfG7NYJ6K0ZAiF335LkC5RVMlykRXo3otvv970KfOjodMfKLqdrLHbXLc2TaW
+         WJQyf0hNMwJc3oPAwd62+t7unSHhHBrvmyJQVhfPPfX4Q1Mi+wJPTQyYJ17ftD5Ilu7p
+         Gh15atf8qpCxTThm+vNA3dHZKG81iJxjHYojbQtROlBudR/fI+xQdebtOaBKpe0zTdak
+         H6yw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708812588; x=1709417388;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QQTm/E2OgFHl030SeornH96V8pO1cw7ie2ssNFqqPEk=;
+        b=eJUZFqXennsTtFoED9xFauYcVWmO4nZXclg1kLhk9s6zCAz1nUM/QH+GeRAhvLSXEv
+         dtGMlW8a2/G8NyfYC4DE832UHoLOrshBOC69txhlUm64bXjUb2LvsefVRQWMJ1HxNfBD
+         vVXXj8ZgHkLVtXvspFQA+sFei5vgt4I9Q4IkOBYBgNXGeGlpsBKIpYgtd9AlSwtumEmm
+         3PXZAb6Lnkr4LDQmoPdf7/dGRfla+QRMfhuowS7MeGAi3hBDsndXsiJAZOLKOxbPH1r+
+         7A2EPxCPlmSKyqsD1AWMVLBF+RHNIL5RD/mXN0UueqYxr91CTYRpj0FAx2KF/n8nENX9
+         okcg==
+X-Forwarded-Encrypted: i=1; AJvYcCVAfaRwBpqGm4RC6E3Qf8mUxcYKqxBuRTpaeSFECAmjv6UaghnRdPKGbL9qHRtJXxADMxnHNIVdNI3hCABX+uB8wOBYC7V7ydhJ6/KoGfDqzSTB8iTgnpV3mKfkdiEiY5U6nyOraUwS
+X-Gm-Message-State: AOJu0Yy6rFL4yctdyzZt4CeeDkbrMY0JHLoqhJrIUMyhe1SrB6oiexAP
+	Wia1hUAeC8eb+j/1+VW7fY13Of3MRJ1VNl0MaLVZ0lBiAXUjplqJ
+X-Google-Smtp-Source: AGHT+IHSlHx4cnsottoNj86qeFXIrxzs9ukI5oVj+R60y8NYElGDn5mkikYamhUHIZnuR5N3YwbLAQ==
+X-Received: by 2002:a5d:6707:0:b0:33d:ca56:a61f with SMTP id o7-20020a5d6707000000b0033dca56a61fmr181051wru.49.1708812587463;
+        Sat, 24 Feb 2024 14:09:47 -0800 (PST)
+Received: from vamoiridPC ([2a04:ee41:82:7577:663d:3291:5fa5:21e8])
+        by smtp.gmail.com with ESMTPSA id co2-20020a0560000a0200b0033d70dd0e04sm3406928wrb.8.2024.02.24.14.09.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Feb 2024 14:09:46 -0800 (PST)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Sat, 24 Feb 2024 23:09:44 +0100
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
+	ang.iglesiasg@gmail.com, andriy.shevchenko@linux.intel.com,
+	linus.walleij@linaro.org, semen.protsenko@linaro.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/2] drivers: iio: pressure: Sort headers of BMPxxx SPI
+ driver
+Message-ID: <20240224220944.GA105280@vamoiridPC>
+References: <20240220224329.53729-1-vassilisamir@gmail.com>
+ <20240224180412.0b23a105@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: David Lechner <dlechner@baylibre.com>, linux-spi@vger.kernel.org,
- linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, Mark Brown <broonie@kernel.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Alain Volmat <alain.volmat@foss.st.com>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- David Jander <david@protonic.nl>, Jonathan Cameron <jic23@kernel.org>,
- Martin Sperl <kernel@martin.sperl.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
-References: <20240219-mainline-spi-precook-message-v2-1-4a762c6701b9@baylibre.com>
-Subject: Re: [PATCH v2 1/5] spi: add spi_optimize_message() APIs
-Content-Language: en-GB
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20240219-mainline-spi-precook-message-v2-1-4a762c6701b9@baylibre.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:KmuGeYS0ux4JU6O/o1Nu+42F6g71tHr+fv4Cdf5CuQtvKg1uvSg
- vjYqz61D7ymrpo994E5hjD1PvjDRPtvAwNo4ABW+RoF6DWx1XWXdjexrxQauqSgPlIiKbo3
- nRHW4A+GgRRwZp6WbEM7VuOXok/HOHsz2z1MMcumnqxMuE6AJtwolCKp6PbYWs5E8s6iVYP
- 9jaJaK9mvtvBHtKRt3VBw==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:5CHPEWZZ7GQ=;zQWgfxumXQtHf8dKzPPr9zY4xH4
- Dk0CNOIPMl2d4EbhSQZfjYsO6jKS46xWTXOrFyf90nXeXsKqLRCMBeekbPglwWSBN7QdKxBdD
- 0L1mq+g7KKqemQG7JMzCdDg3H74RKDQtS6ZFomNdyJW0yCU3ZbIaIpn7wsbX82lmNrNs9wrqn
- od0XLdwPP2vMiFEj9DRBhcOldX/dDSfeKDFsgKi10kNOVnbvy3+Wzxk2f1ac1JcdgPIT+iS+Y
- iaSh0m/qz6fYCkO25PYu3caWHornpzEmSntiZ9KL3ZZQ7PL42FcorzLb9eV0hfDgkJ2cijU0p
- 6h9FidploBmVeX/EFIkLEYFxyJ7PM17K+k/6pZz3blXRrJDK7rw2l2m+veK5isv9gXNyHdqgT
- pzYpkZzHTsisTCwqTHNda6TQKlKL3HfZO4ZnUqC5OVmvlkOGVzIqCFE06qQaUvzGX89SQpCCU
- u1F8mmWra9nBwTgV/pGno8X0gwjijH6Shwm3kX1BmEPJHOc7XRtr8aCv5MW/VEvKRDq68ImPe
- OlwXuyJ6LkBaiF1L5GwCPqsFagqLpXB0E7M1wWokHr+kY1xqc0ux7DNjQezoNBNkf8OstiJ6j
- 09PNrZ/QH4o3zOKOAo0REqVpyquyGl8GrkRxr1QlfI+EO2TRqrMy3yMlQEUbYVcN/Szha2doj
- r0cjpc0684SB5ZuW+AmwaLaTOly6OyEzX1e689iJ0VSkV2qkxChF0W99x8LPAXjWgRr70knM2
- RKTmCtdYQcgtl2jk6A4rLpo3+oXMfXBzLyr6g6pQESzk+AWbZqzClsTxNDMfJQroAwol4RFN+
- G8iztBInP4/xAEuvmrCK1VA6w3XiSkJM5jxsxh/BCrC+8=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240224180412.0b23a105@jic23-huawei>
 
-=E2=80=A6
-> +++ b/drivers/spi/spi.c
-=E2=80=A6
-> +static int __spi_optimize_message(struct spi_device *spi,
-> +				  struct spi_message *msg)
-=E2=80=A6
+On Sat, Feb 24, 2024 at 06:04:12PM +0000, Jonathan Cameron wrote:
+> On Tue, 20 Feb 2024 23:43:28 +0100
+> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> 
+> > Alphabetical sorting and separation of headers for the BMPxxx
+> > SPI driver.
+> > 
+> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> 
+> Hi Vasileios,
+> 
+> No. This ends up as a dependency of the fix which will want backporting.
+> This would make it a non minimal change. As such the reordering comes
+> after the other patch (and not until it is upstream).
+> 
+> All that needed to happen was bits.h being first of the includes in the
+> fixes patch so that a sort later was minimal.  Doing that had no impact
+> on the complexity of the fix to backport so was just good code hygiene
+> in that would simplify the resort to follow.
+> 
+> Anyhow, dropping this for now.  Please send an update version
+> next cycle once the fix is upstream
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+Hi Jonathan,
 
-I propose to reconsider the usage of leading underscores in such identifie=
-rs.
+Thank you very much again for the comments and I am sorry for not versioning
+them properly, it won't happen again. I also understand what you mean in the
+previous message and I will definitely submit it again, first thing after the
+changes are upstreamed.
 
-See also:
-https://wiki.sei.cmu.edu/confluence/display/c/DCL37-C.+Do+not+declare+or+d=
-efine+a+reserved+identifier
+Thanks,
+Vasileios
 
-Regards,
-Markus
+> > ---
+> >  drivers/iio/pressure/bmp280-spi.c | 5 +++--
+> >  1 file changed, 3 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+> > index e8a5fed07e88..fd7ec6a5bca3 100644
+> > --- a/drivers/iio/pressure/bmp280-spi.c
+> > +++ b/drivers/iio/pressure/bmp280-spi.c
+> > @@ -4,11 +4,12 @@
+> >   *
+> >   * Inspired by the older BMP085 driver drivers/misc/bmp085-spi.c
+> >   */
+> > -#include <linux/module.h>
+> > -#include <linux/spi/spi.h>
+> >  #include <linux/err.h>
+> > +#include <linux/module.h>
+> >  #include <linux/regmap.h>
+> >  
+> > +#include <linux/spi/spi.h>
+> > +
+> >  #include "bmp280.h"
+> >  
+> >  static int bmp280_regmap_spi_write(void *context, const void *data,
+> 
 

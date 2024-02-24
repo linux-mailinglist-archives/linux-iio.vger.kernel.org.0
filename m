@@ -1,67 +1,66 @@
-Return-Path: <linux-iio+bounces-3016-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3017-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB5A86263E
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 18:07:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D309862659
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 18:31:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BD851F22310
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:07:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C5EB1F21BD1
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 17:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACDBF42045;
-	Sat, 24 Feb 2024 17:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A5847F45;
+	Sat, 24 Feb 2024 17:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JkpaewT3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CBWZLwnd"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED341EB34;
-	Sat, 24 Feb 2024 17:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A3814B820;
+	Sat, 24 Feb 2024 17:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708794445; cv=none; b=QxuJMrsavDoYK44ZePvnaJ2/vsvVwb9Wxd3ySVnECQwCaxQe+mJeSpPawE3koipvp7UACpP8ZTh5af97HNCWFehDKB07B7JF4Q/Wicji7+lcBLhQKNogS8N5puhN12tUsgnVJMLrJVWd7g5P7f9Xscjt8/l/jtHdYw7LxdGLLUM=
+	t=1708795874; cv=none; b=roY976YpHNO/orpoQHsaj63orej9IMq1JANe7j1rsuLl+CsmJl06hIX6V6ak8P01h8Y9hPvNM9NADTNH45VKtEeWKkbeOZoqsb6iZL37wDsZ0FBRvX7ybH/QUOXPsKcLrv2CFSWejrD0GQVu2jMTN9jlG7WkaZ4at9PU5xWVnHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708794445; c=relaxed/simple;
-	bh=eeYrfwWrvmfry0lGfIaaBnx0Xj+7Z5pHDan2aTVa8+I=;
+	s=arc-20240116; t=1708795874; c=relaxed/simple;
+	bh=WfWJQwTKNHoF6gInRBujgT3QRX8Cge62nrn0wrcBk7A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qPKPFySMYMXYrdcB69Bxd3jALU0K+p7HVcGaziAUsAGyxLDm0vgXzCdRs/o0uF9Nf3Ia8YKEqPBwhfKjfs8Ufl2Un/BBxa418m3C08ht8TuatrLLgaj5aH5+zHu5ukdXgPIwyJ/NMKtDW4i7qT9AwjIyGkRyy2qg0sRGr8R7Cns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JkpaewT3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB6AC433C7;
-	Sat, 24 Feb 2024 17:07:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ai+JUnwMiPWtebWV2HL4Bce/kBpejR2UkhrluJsKPHwBa3YOYW7G30+jfiI69LI/x0ucbIZ2OnmXBs6nOK9BEKmidv0rxkuaNdQE0lrjpERST97phlnokUU+nHCu7bRCeFBrmbRG7G6+uXUw/ggIpP0kRWX761MOJlt94vy3vIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CBWZLwnd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A9EC433F1;
+	Sat, 24 Feb 2024 17:31:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708794445;
-	bh=eeYrfwWrvmfry0lGfIaaBnx0Xj+7Z5pHDan2aTVa8+I=;
+	s=k20201202; t=1708795873;
+	bh=WfWJQwTKNHoF6gInRBujgT3QRX8Cge62nrn0wrcBk7A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JkpaewT3OUJ2LYRrRKYiGZ62iq7pxMqURkDolTc8o17I5DbxGHgwjDdelaWrH8vl/
-	 kuV9Wo0qgEbkhCqha8x9VLGMIVSIc4Khw4EbtBIA22UpAC/yFONVr2VZsASAfnpu0I
-	 dcXPBkoB1dMMYQyM0MX5MSrkauZ6O15TEN8VWm+7ZLzvZfzF528+bsMD8wP/gw//m2
-	 ywxBIDwnexfQjxp9Lj++wdsHvHC1itGK99Nf2Lc49E9/qFhS/RtirkaV1kJX8Lm5qr
-	 a9LDQNN8mYIPytlJ8erMO26DLQpgzXAF5hTSzXiC1HPz4JP9v7P+24wKg2pcEbe5wz
-	 XAQYY05pGaXng==
-Date: Sat, 24 Feb 2024 17:07:07 +0000
+	b=CBWZLwndv9Xl9V2tCMhVRZ9F/sBbs1f0OKypavZCY3kKUGvjqM8KDq2YNcWQJNvNk
+	 WCzbXRlX2vQvoFOLgDWsjXgXQ5Rc7ldcpfRC2wOvS2dXJ8eEdKptYgRGTIwZVlH6eq
+	 gBxXprjkZ8ChP6xiJmS3hbi6brvG6WgIt5Jq8TiCPHWcwIAf8Gv4j3lqxkoYU8tZ8L
+	 Yqq345IF/Uyba5jgF/2cSIEdsN8BS6OXYOXROpsp75z6ZxxNW7TtXGRsUUbuARnmKC
+	 AYCus8Y63bnbK34hAnwR3esoQiaIV9767dyoi7wQHJ6GA2AEozZWK7sgbbDXUnD4HP
+	 98cOTnr1j3lNw==
+Date: Sat, 24 Feb 2024 17:30:55 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Ceclan Dumitru <mitrutzceclan@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, linus.walleij@linaro.org,
- brgl@bgdev.pl, andy@kernel.org, linux-gpio@vger.kernel.org, Lars-Peter
- Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Michael Walle <michael@walle.cc>, Andy Shevchenko
- <andy.shevchenko@gmail.com>, Arnd Bergmann <arnd@arndb.de>, ChiaEn Wu
- <chiaen_wu@richtek.com>, Niklas Schnelle <schnelle@linux.ibm.com>, Leonard
- =?UTF-8?B?R8O2aHJz?= <l.goehrs@pengutronix.de>, Mike Looijmans
- <mike.looijmans@topic.nl>, Haibo Chen <haibo.chen@nxp.com>, Hugo Villeneuve
- <hvilleneuve@dimonoff.com>, Ceclan Dumitru <dumitru.ceclan@analog.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v13 1/3] dt-bindings: adc: add AD7173
-Message-ID: <20240224170707.4ffcec19@jic23-huawei>
-In-Reply-To: <0fa819d1-2a0f-4243-8e5f-a098528278c3@gmail.com>
-References: <20240220094344.17556-1-mitrutzceclan@gmail.com>
-	<CAMknhBEZ7Y1Yx=wJGnfvYWGKPLas3pbCyY+sN8vrBzdkYO-A4w@mail.gmail.com>
-	<0fa819d1-2a0f-4243-8e5f-a098528278c3@gmail.com>
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>
+Cc: linus.walleij@linaro.org, brgl@bgdev.pl, andy@kernel.org,
+ linux-gpio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Rob
+ Herring <robh+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Michael
+ Walle <michael@walle.cc>, Andy Shevchenko <andy.shevchenko@gmail.com>, Arnd
+ Bergmann <arnd@arndb.de>, ChiaEn Wu <chiaen_wu@richtek.com>, Niklas
+ Schnelle <schnelle@linux.ibm.com>, Leonard =?UTF-8?B?R8O2aHJz?=
+ <l.goehrs@pengutronix.de>, Mike Looijmans <mike.looijmans@topic.nl>, Haibo
+ Chen <haibo.chen@nxp.com>, Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+ David Lechner <dlechner@baylibre.com>, Ceclan Dumitru
+ <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Conor Dooley
+ <conor.dooley@microchip.com>
+Subject: Re: [PATCH v15 1/3] dt-bindings: adc: add AD7173
+Message-ID: <20240224173055.2b2e067c@jic23-huawei>
+In-Reply-To: <20240223133758.9787-1-mitrutzceclan@gmail.com>
+References: <20240223133758.9787-1-mitrutzceclan@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,83 +68,51 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 21 Feb 2024 10:29:30 +0200
-Ceclan Dumitru <mitrutzceclan@gmail.com> wrote:
+On Fri, 23 Feb 2024 15:37:28 +0200
+Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
 
-> On 2/20/24 22:54, David Lechner wrote:
-> > On Tue, Feb 20, 2024 at 3:43=E2=80=AFAM Dumitru Ceclan <mitrutzceclan@g=
-mail.com> wrote: =20
->=20
-> ...
->=20
-> >> +  clocks:
-> >> +    maxItems: 1
-> >> +    description: | =20
-> >=20
-> > Don't need `|` here.
-> >  =20
-> The description contains ": ". Without '|' yaml syntax considers the
-> whole string before ':' as another attribute
->=20
-> >> +      Optional external clock source. Can include one clock source: e=
-xternal
-> >> +      clock or external crystal.
-> >> + =20
->=20
-> ...
->=20
-> >> +
-> >> +      diff-channels:
-> >> +        items:
-> >> +          minimum: 0
-> >> +          maximum: 31
-> >> + =20
-> >=20
-> > Are we missing `bipolar: true` here? (since we have
-> > unevaluatedProperties: false)
-> >  =20
->=20
-> No, since we are referencing the adc schema "$ref: adc.yaml"
-> Which contains:
-> """
->   bipolar:
->=20
->     $ref: /schemas/types.yaml#/definitions/flag
->=20
->     description: If provided, the channel is to be used in bipolar mode.
-> """
->=20
->=20
-> ...
->=20
-> >> +
-> >> +required:
-> >> +  - compatible
-> >> +  - reg =20
-> >=20
-> > Aren't the various power supplies supposed to be required?
-> >=20
-> > - avdd-supply
-> > - avdd2-supply
-> > - iovdd-supply =20
->=20
-> From my point of view, if someone uses a single supply (avdd =3D=3D avdd2=
- =3D=3D
-> iovdd), and uses only the internal reference then the supplies should
-> not necessarily be required.
+> The AD7173 family offer a complete integrated Sigma-Delta ADC solution
+> which can be used in high precision, low noise single channel applications
+> or higher speed multiplexed applications. The Sigma-Delta ADC is intended
+> primarily for measurement of signals close to DC but also delivers
+> outstanding performance with input bandwidths out to ~10kHz.
+> 
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-Convention is that anything that represent a voltage on a pin that
-is needed for operation should be required.  Key here is the difference
-from optional supplies where the driver does something different.
-vref is a good example of this. The ones above are always needed I
-think.
+Ok, in the interests of perfect not being the enemy of good enough.
+I'll leave the supplies for now.  There are lots of existing drivers
+where we don't list them as required (because my understanding of this
+changed in more recent times).
 
-Obviously they may all say the same thing if they are connected
-externally.
+It's been on my list of jobs for a really boring Friday afternoon
+to bring them all inline with the convention of if it needs power
+on the pin, it's required, so what's one more? :)
 
+As Nuno pointed out, patch 2 clashed with work already upstream to
+allow firmware to have the final say on interrupt types. I think
+I've resolved that correctly.
 
+I tidied up the docs ordering issue Andy noted.
 
+Also, ad_sigma_delta is namespaced. So added
+MODULE_IMPORT_NS(IIO_AD_SIGMA_DELTA).
+
+Make sure you test your patches with a modular build
+on a more recent tree - that change was early last in 2022!
+
+A few lines in the driver were too long.
+I don't mind them going over 80 for readability reasons, but
+not over 100.
+
+Anyhow, with those changes (and please check I didn't mess things up!)
+applied to the togreg branch of iio.git and pushed for now as testing
+for 0-day to get a look in.
+
+Thanks,
+
+Jonathan
 

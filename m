@@ -1,120 +1,113 @@
-Return-Path: <linux-iio+bounces-3039-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3040-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8458626FE
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 20:25:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28403862745
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 21:16:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EC001C20C8D
-	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 19:25:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3087281237
+	for <lists+linux-iio@lfdr.de>; Sat, 24 Feb 2024 20:16:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A8E4B5A6;
-	Sat, 24 Feb 2024 19:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73A04CDF9;
+	Sat, 24 Feb 2024 20:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oa4CL+23"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="QNt6B8Yk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823B4EDE;
-	Sat, 24 Feb 2024 19:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB53469E;
+	Sat, 24 Feb 2024 20:16:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708802750; cv=none; b=Y6gIsC2k1mbkwsLYydQGq8ZRfkLEoMo2FiHtDOk4icx8eRSJHpY6gS0THdDKia7JxAsjj5j+vAlsS2ZYvlgKxtlQskkDGxlrkYtdBaVc7U5Kf1m2/UWh1VFli1KXvLF9EDy6uF4eMY2n4bYKYMpWjdKVQDpsiPE3xTbw1bzHJos=
+	t=1708805786; cv=none; b=OI6Wnqt/klBmu2HjOK7T6RWMSR7MgqqMqmfbzRvkhhHs/jb75WMTdT233v/vkuymlfG9ZhJoz2Wa1WjCOjJ9rElL6lLhw4pTU16DxMi0lW7o2iwjRHgcwObFC22CWl0pASqT+WO7budwTtdT1kswlVYXfEHVYstcTuLuFBBNrKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708802750; c=relaxed/simple;
-	bh=/VIjT2iavaAdUja5QLc5Xf6ymkBMCy+/xJXiyGfwSlk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V4dU/hpDiXdJRQNN7lYWyLmjVhVdCwNhliYVt1ewClZgBB30tTo1WWJzwlMVUtAMP8poHHy00yiy6TzaEtrj1u5V3GQC2jwmQ6sS/+bJsfCikbahgjUIqySvqWY+sgjRyzfXwcZsavCiUEKzmXEsnBLRhM5w+1rqhkXCL9KvoGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oa4CL+23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8756C433F1;
-	Sat, 24 Feb 2024 19:25:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708802750;
-	bh=/VIjT2iavaAdUja5QLc5Xf6ymkBMCy+/xJXiyGfwSlk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Oa4CL+23TdJX/2YlespJJTd3Aqmz4AFZZAMGkxXRSRs48CgJ62B5spjqfIGqrM4r4
-	 TqDjn/8+dLOCKd85hfNy6aSN812QylVsTMosNOnP1p9ZqdH8bJ+qwpk8B3MaA6QpKx
-	 9QImKMewbf3o9TRn7vBhgRubanM6neNH8gnbJPzBPAFzh3CjJ4dMzQFZpQjHDRX4LM
-	 2Imi7A/khEa0Fo7IAWMjB96mpyb6EoRNdivT3cjhrhD8cJGqCVPPVqbQEoEb4Ge0gG
-	 4sMdYJpS70Gm4UMHcAtKbOmTk2RKdnG1P7yXrNIIgWTnvNScL1B0GA+WqhdHntWfeI
-	 dvMHeH63XCCvw==
-Date: Sat, 24 Feb 2024 19:25:35 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Quentin Schulz <foss+kernel@0leil.net>, Lars-Peter Clausen
- <lars@metafoo.de>, Heiko Stuebner <heiko@sntech.de>, AngeloGioacchino Del
- Regno <angelogioacchino.delregno@collabora.com>, Shreeya Patel
- <shreeya.patel@collabora.com>, Simon Xue <xxm@rock-chips.com>, Philipp
- Zabel <p.zabel@pengutronix.de>, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, Quentin Schulz
- <quentin.schulz@theobroma-systems.com>
-Subject: Re: [PATCH 0/3] iio: adc: rockchip_saradc: fix bitmasking and
- remove custom logic for getting reset
-Message-ID: <20240224192535.237933de@jic23-huawei>
-In-Reply-To: <CAHp75VfmsDeTP97srRJU09gA988xw68+ZHsXvXT3W_wv1HEauA@mail.gmail.com>
-References: <20240223-saradcv2-chan-mask-v1-0-84b06a0f623a@theobroma-systems.com>
-	<CAHp75VfmsDeTP97srRJU09gA988xw68+ZHsXvXT3W_wv1HEauA@mail.gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1708805786; c=relaxed/simple;
+	bh=yLz7Vg77PB7IlV1AITmSO9pNNY8zgh7ejy/6z5+C0lo=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=mjNVsQrHZPjy3coMRtUtORF4NzMqfzHKLCyR0HEfNE2KlfMLz+0JKRbDW5U2vzUmxtSvgchLQqzAsiWiFYzpQPxKHH+oKvk3gZBWLSsMNqn21+jV570ls1kow7QxnU2m0bebuae/D6vftqNySZGyT0jNaK/aP6i0LH5hJSH9+U4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=QNt6B8Yk; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+	t=1708805777; x=1709410577; i=markus.elfring@web.de;
+	bh=yLz7Vg77PB7IlV1AITmSO9pNNY8zgh7ejy/6z5+C0lo=;
+	h=X-UI-Sender-Class:Date:To:Cc:References:Subject:From:
+	 In-Reply-To;
+	b=QNt6B8YkGNqRWjK92Je/bLysp4ai5k/0EujaGr1eWzp86Q4DPbv5901HqtkJ/ImL
+	 mPM/BeAep5L4IapLHjYB8Zsmgoxidk2oOyRoG5YK4VhnvSYtpNd5AeRHb76+xX5N9
+	 2MSW71oB/LjBnkMP+NRqJOoBrhNFyShAtbUUMTBx17ogYfPEd9rdi5O0POlfUc1f0
+	 zvnneTmviXfWCkS087OI2RdBC/WvkBBqHA/7tHF9VWUDDyPq/i2RkVBa+Sj+xGvSd
+	 8NnxynGyrHF9CrTqhQEu/AnmOA7Iuft59hFT/1uRD70t/ldVHRQ/QDJJMuMfmmbse
+	 6tt1eK+1XwicLSWALg==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.80.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MkElP-1rBoP0152X-00ka9U; Sat, 24
+ Feb 2024 21:09:43 +0100
+Message-ID: <0f25b520-563c-4b3b-96cd-d1dcc7ea6f40@web.de>
+Date: Sat, 24 Feb 2024 21:09:40 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: David Lechner <dlechner@baylibre.com>, linux-spi@vger.kernel.org,
+ linux-iio@vger.kernel.org, kernel-janitors@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, Mark Brown <broonie@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+ Alain Volmat <alain.volmat@foss.st.com>,
+ Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ David Jander <david@protonic.nl>, Jonathan Cameron <jic23@kernel.org>,
+ Martin Sperl <kernel@martin.sperl.org>,
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+ Michael Hennerich <michael.hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>
+References: <20240219-mainline-spi-precook-message-v2-1-4a762c6701b9@baylibre.com>
+Subject: Re: [PATCH v2 1/5] spi: add spi_optimize_message() APIs
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240219-mainline-spi-precook-message-v2-1-4a762c6701b9@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:KmuGeYS0ux4JU6O/o1Nu+42F6g71tHr+fv4Cdf5CuQtvKg1uvSg
+ vjYqz61D7ymrpo994E5hjD1PvjDRPtvAwNo4ABW+RoF6DWx1XWXdjexrxQauqSgPlIiKbo3
+ nRHW4A+GgRRwZp6WbEM7VuOXok/HOHsz2z1MMcumnqxMuE6AJtwolCKp6PbYWs5E8s6iVYP
+ 9jaJaK9mvtvBHtKRt3VBw==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:5CHPEWZZ7GQ=;zQWgfxumXQtHf8dKzPPr9zY4xH4
+ Dk0CNOIPMl2d4EbhSQZfjYsO6jKS46xWTXOrFyf90nXeXsKqLRCMBeekbPglwWSBN7QdKxBdD
+ 0L1mq+g7KKqemQG7JMzCdDg3H74RKDQtS6ZFomNdyJW0yCU3ZbIaIpn7wsbX82lmNrNs9wrqn
+ od0XLdwPP2vMiFEj9DRBhcOldX/dDSfeKDFsgKi10kNOVnbvy3+Wzxk2f1ac1JcdgPIT+iS+Y
+ iaSh0m/qz6fYCkO25PYu3caWHornpzEmSntiZ9KL3ZZQ7PL42FcorzLb9eV0hfDgkJ2cijU0p
+ 6h9FidploBmVeX/EFIkLEYFxyJ7PM17K+k/6pZz3blXRrJDK7rw2l2m+veK5isv9gXNyHdqgT
+ pzYpkZzHTsisTCwqTHNda6TQKlKL3HfZO4ZnUqC5OVmvlkOGVzIqCFE06qQaUvzGX89SQpCCU
+ u1F8mmWra9nBwTgV/pGno8X0gwjijH6Shwm3kX1BmEPJHOc7XRtr8aCv5MW/VEvKRDq68ImPe
+ OlwXuyJ6LkBaiF1L5GwCPqsFagqLpXB0E7M1wWokHr+kY1xqc0ux7DNjQezoNBNkf8OstiJ6j
+ 09PNrZ/QH4o3zOKOAo0REqVpyquyGl8GrkRxr1QlfI+EO2TRqrMy3yMlQEUbYVcN/Szha2doj
+ r0cjpc0684SB5ZuW+AmwaLaTOly6OyEzX1e689iJ0VSkV2qkxChF0W99x8LPAXjWgRr70knM2
+ RKTmCtdYQcgtl2jk6A4rLpo3+oXMfXBzLyr6g6pQESzk+AWbZqzClsTxNDMfJQroAwol4RFN+
+ G8iztBInP4/xAEuvmrCK1VA6w3XiSkJM5jxsxh/BCrC+8=
 
-On Fri, 23 Feb 2024 15:01:30 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+=E2=80=A6
+> +++ b/drivers/spi/spi.c
+=E2=80=A6
+> +static int __spi_optimize_message(struct spi_device *spi,
+> +				  struct spi_message *msg)
+=E2=80=A6
 
-> On Fri, Feb 23, 2024 at 2:46=E2=80=AFPM Quentin Schulz <foss+kernel@0leil=
-.net> wrote:
-> >
-> > The mask for the channel selection is incorrect as it's specified to be
-> > 16b wide by is actually only 4.
-> >
-> > Also, the 16 lower bits in the SARADC_CONV_CON register are write
-> > protected. Whatever their value is can only be written to the hardware
-> > block if their associated bit in the higher 16 bits is set. Considering
-> > that the channel bitmask is 4b wide but that we can write e.g. 0 in
-> > there, we shouldn't use the value shifted by 16 as a mask but rather the
-> > bitmask for that value shifted by 16. This is currently NOT an issue
-> > because the only SoC with SARADCv2 IP is the RK3588 which has a reset
-> > defined in the SoC DTSI. When that is the case, the reset is asserted
-> > before every channel conversion is started. This means the registers are
-> > reset so effectively, we do not need to write zeros so the wrong mask
-> > still works because where we should be writing zeroes, there are already
-> > zeroes. However, let's fix this in case there comes a day there's an SoC
-> > which doesn't require to reset the controller before every channel
-> > conversion is started.
-> >
-> > Lastly, let's use the appropriate function from the reset subsystem
-> > for getting an optional exclusive reset instead of rolling out our own
-> > logic.
-> >
-> > Those three patches should not be changing any behavior. =20
->=20
-> Nice series, I have the comments in patch 3, but no need to resend
-> until Jonathan asks for. He might address that whilst applying.
->=20
-> Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
->=20
+I propose to reconsider the usage of leading underscores in such identifie=
+rs.
 
-I've take the series through the togreg branch as we are so near the
-merge windows.  Note (despite Linus not liking it :)) I use links
-in my git tags so anyone really searching for Quentin can find
-the discussion.
+See also:
+https://wiki.sei.cmu.edu/confluence/display/c/DCL37-C.+Do+not+declare+or+d=
+efine+a+reserved+identifier
 
-I'm usually a bit lazy on cleaning out what I would consider unnecessary
-CC tags but given Andy comment on these I've dropped the extra
-one.
-
-Patches 1 and 2 marked for stable.
-
-Jonathan
+Regards,
+Markus
 

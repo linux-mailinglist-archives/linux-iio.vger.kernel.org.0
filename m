@@ -1,66 +1,59 @@
-Return-Path: <linux-iio+bounces-3043-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3044-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2E2C862A1A
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 12:40:37 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F286862A1F
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 12:46:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F36B71C20850
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 11:40:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCBA41F21468
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 11:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083A21078F;
-	Sun, 25 Feb 2024 11:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E2E101EE;
+	Sun, 25 Feb 2024 11:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="osUyFlyJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vop8WFZO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1CCFFC0B;
-	Sun, 25 Feb 2024 11:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0501C10940;
+	Sun, 25 Feb 2024 11:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708861229; cv=none; b=Oa9+4hJl6c4DUY93/oAt97vFqpeHI/FFiqv7Xy89Dwl1QTh0P0uzudEQAEmFiIWyBarHxDRRPUijfDZxCe/SM6l9a18MMV1GTUV/INEjbgt5eQ4BsftCu2jhY47f08wxq8+KrOiWrBtgJp/w3chpzuFhWKCRLh+9c9xO2plxuDo=
+	t=1708861607; cv=none; b=cQahLtgkV2f5bxJ6B0vR08B/XIodNFih6wp6zOnrz240h6zefuZUXsX2GKxLi5m2V3KWsmHFeiZhX/Z6bcl1Kgx0//ootipkgSZVCmTPYyitsZgFg4DN2TDzPLbN/6tjRweiB2/455xOr79fHFpT/nbO0qKye4RVFBaOia0NwJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708861229; c=relaxed/simple;
-	bh=P8+9rvC4e3Cz1f2sRgvgazowIHQMzZ4yFaqZrMvpO9A=;
+	s=arc-20240116; t=1708861607; c=relaxed/simple;
+	bh=KDkYWIe7wiZmqCmivXbkUqK02LzeTUDMYcV6Xrp8TSM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=myzZrlHwNqmukJC4Njb6cwjWom+pVCeX2wH1KXffXYYdm+N2EKqAJEdg2gRYUv7lh5+YIkqCbJvZfP4I1hisqpiJNDINI4v/w4RltJxQff+h1YXIgkOy4M65OIuowvReOJcAhZCs3qdliVRmXaV5OVWubGKASPR7QovbPnS0So8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=osUyFlyJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0816BC433C7;
-	Sun, 25 Feb 2024 11:40:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F4JyDG4n4TozpiYsypae9WU/ZVYKKCW/s4XwXJ2zygQarBy2m2AW3GoXIgW30nvio3EFuvkM9f5snPC5cegiUzjd3BQkjXQsD1plA5H7pp/rVzT2WhPPVNB5X1qbdRf0bG1YxMZbDWzBNpd3aDCXXFHjfkQ/K/8X/cy2Cn/doDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vop8WFZO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DDAC433C7;
+	Sun, 25 Feb 2024 11:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708861229;
-	bh=P8+9rvC4e3Cz1f2sRgvgazowIHQMzZ4yFaqZrMvpO9A=;
+	s=k20201202; t=1708861606;
+	bh=KDkYWIe7wiZmqCmivXbkUqK02LzeTUDMYcV6Xrp8TSM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=osUyFlyJkuiX6k2IVh48nh3CUYrZ280S8OpF4tTlq+Xno+NSlAmJZsKqABOiGFNaV
-	 4OsTYFcYmS8917tEmmbSFL3gqxQsj78OwP7gYUh/c/IubvkdRgnC9sJ9yAHVBIQFFL
-	 +K1OI5fHE26C5aqoyCcdhNyJCw9wD1rckBH7evhFrm8LbOHKGlmCKz+aYEVGCnTfMP
-	 6UYZjv0JGQx9bQcnxMj6Guixe1W0pFVsa/Vlz2l4pVbYqN49kkZ1wrF9ovJOqUZ+XO
-	 yeF6Ur40yYvx77HXUe4bLr73ZMztlf/Z07odw4cOWf83AHlWze+0AwAE2C9Cp5ZP24
-	 viApYQHYR3k8w==
-Date: Sun, 25 Feb 2024 11:40:13 +0000
+	b=Vop8WFZOi9QXeQWkODy+8PSuzqp6Rdeh0YBVhQhVS0ocpxk4zJyVNQV2EuXXc1nwJ
+	 1fI+P8BtTHCcKnR9spaw1N1fzgfiGpBYeYGGdfYOlUhXAckZapgVv4aRdRvROP4clf
+	 d+hxf3fpmUwtYY0yBDe+p7SYEKiYvHjZkfoxlB//NfDaXRwrark3Av+rfs0JSYDNxc
+	 wMIzgBnURi24Ij8v1juT/EAO/yLSUq4uNKX+D+rsSdPE1Wy00un5ifjDBvsbuJYz26
+	 7mp+LoyXT46u3gyRGeFdbNImtrJy20ZhD2rFEBHjhkuJw0lkdYMsK8EIe33tPIB3hP
+	 +jQjxO+AtyFKg==
+Date: Sun, 25 Feb 2024 11:46:34 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>, Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>, Marek Vasut
- <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>, Javier Carrasco
- <javier.carrasco.cruz@gmail.com>, Matt Ranostay <matt@ranostay.sg>, Stefan
- Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 5/5] iio: light: Add support for APDS9306 Light
- Sensor
-Message-ID: <20240225114013.7a5e11be@jic23-huawei>
-In-Reply-To: <15a46491-d126-4998-88f0-1720316f0a6c@tweaklogic.com>
-References: <20240218054826.2881-1-subhajit.ghosh@tweaklogic.com>
-	<20240218054826.2881-6-subhajit.ghosh@tweaklogic.com>
-	<20240224151340.3f2f51e8@jic23-huawei>
-	<15a46491-d126-4998-88f0-1720316f0a6c@tweaklogic.com>
+To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+Cc: INV Git Commit <INV.git-commit@tdk.com>, "lars@metafoo.de"
+ <lars@metafoo.de>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: fix frequency setting when
+ chip is off
+Message-ID: <20240225114634.36c735ef@jic23-huawei>
+In-Reply-To: <FR3P281MB1757A98D6B0EC6B48526C849CE542@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References: <20240219154741.90601-1-inv.git-commit@tdk.com>
+	<20240224162208.02d28bcd@jic23-huawei>
+	<FR3P281MB1757A98D6B0EC6B48526C849CE542@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,91 +61,130 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
+On Sat, 24 Feb 2024 17:50:26 +0000
+Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
 
-> >   
-> >> +
-> >> +	/*
-> >> +	 * If a one-shot read through sysfs is underway at the same time
-> >> +	 * as this interrupt handler is executing and a read data available
-> >> +	 * flag was set, this flag is set to inform read_poll_timeout()
-> >> +	 * to exit.
-> >> +	 */
-> >> +	if ((status & APDS9306_ALS_DATA_STAT_MASK))
-> >> +		data->read_data_available = 1;
-> >> +
-> >> +	return IRQ_HANDLED;
-> >> +}  
-> > 
-> > ...
-> >   
-> >> +static int apds9306_read_event_config(struct iio_dev *indio_dev,
-> >> +				      const struct iio_chan_spec *chan,
-> >> +				      enum iio_event_type type,
-> >> +				      enum iio_event_direction dir)
-> >> +{
-> >> +	struct apds9306_data *data = iio_priv(indio_dev);
-> >> +	struct apds9306_regfields *rf = &data->rf;
-> >> +	int int_en, event_ch_is_light, ret;
-> >> +
-> >> +	switch (type) {
-> >> +	case IIO_EV_TYPE_THRESH:
-> >> +		guard(mutex)(&data->mutex);
-> >> +
-> >> +		ret = regmap_field_read(rf->int_src, &event_ch_is_light);  
-> > 
-> > Call the local value int_src - it's not obvious to a reviewer what
-> > relationship between that and int_src is. I had to go read the datasheet
-> > to find out.  
-> This unique name was suggested in a previous review:
-> https://lore.kernel.org/all/20240121152332.6b15666a@jic23-huawei/
-> I will change it next version. int_src is logical.
+> Hello Jonathan,
+>=20
+> the problem comes from the fifo rate setting code that is now using these=
+ states to compute if FIFO is on:
+> fifo_on =3D st->chip_config.accl_fifo_enable ||
+>           st->chip_config.gyro_fifo_enable ||
+>           st->chip_config.magn_fifo_enable;
+> result =3D inv_sensors_timestamp_update_odr(&st->timestamp, fifo_period, =
+fifo_on);
+> if (result)
+>         goto fifo_rate_fail_unlock;
+>=20
+> It was not the case before using the inv_sensors_timestamp module.
+>=20
+> If we don't set these states back to false, it is not possible to change =
+frequency more than 1 time. This restriction comes from inv_sensors_timesta=
+mp module that is not able to handle accurately more than 1 frequency chang=
+e when sensor FIFO is on. This restriction obviously doesn't exist when FIF=
+O is off.
 
-Ah, I failed to register that it was a multi bit field (which it isn't
-really but we should track what the datasheet says).  If it had
-been a single bit then it would have made sense to name it as a boolean
-flag.  Not so when in theory it could take 4 values (even if only 2 are
-defined).
+Thanks, now I understand.  I've added a note to say the restriction
+to a single pending update of ODR should only apply when the fifo
+is on.  Along with a link to this thread that should be enough to
+help people understand the issue when consider whether to backport this
+fix.
 
-> >   
-> >> +		if (ret)
-> >> +			return ret;
-> >> +
-> >> +		ret = regmap_field_read(rf->int_en, &int_en);
-> >> +		if (ret)
-> >> +			return ret;
-> >> +
-> >> +		if (chan->type == IIO_LIGHT)
-> >> +			return int_en & event_ch_is_light;
-> >> +
-> >> +		if (chan->type == IIO_INTENSITY)
-> >> +			return int_en & !event_ch_is_light;  
-> > This is the specific line the compiler doesn't like
-> > drivers/iio/light/apds9306.c:1036:39: warning: dubious: x & !y  
-> I am using gcc 12.2.0 for cross compiling. I definitely do not want to send
-> patches with warnings in them. Can you please let me know the gcc version
-> or flags using which you got the above warning? Should I always use the
-> latest released version?
-Version shouldn't matter that much but this was x86 build with gcc 13.2.1
-W=1 is maybe what is showing this up as it enables a bunch more warnings.
+Applied to the fixes-togreg branch of iio.git.
 
-IIO is almost clean with W=1 though a few minor things have gotten in recently
-that I need to tidy up.
+Thanks,
 
-> > 
-> > I would match int_src against specific values rather than using tricks
-> > based on what those values happen to be.
-> > 
-> > 			return int_en && (int_src == APDS9306_INT_SRC_CLEAR);  
-> I will implement this.
-> 
-> 
-> Thank you for taking time to review the code in detail and also appreciate
-> your suggestions.
-> 
-> Regards,
-> Subhajit Ghosh
+Jonathan
+
+>=20
+> Thanks,
+> JB
+>=20
+>=20
+> From: Jonathan Cameron <jic23@kernel.org>
+> Sent: Saturday, February 24, 2024 17:22
+> To: INV Git Commit <INV.git-commit@tdk.com>
+> Cc: lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.kernel.org <linux-i=
+io@vger.kernel.org>; stable@vger.kernel.org <stable@vger.kernel.org>; Jean-=
+Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+> Subject: Re: [PATCH v2] iio: imu: inv_mpu6050: fix frequency setting when=
+ chip is off=20
+> =C2=A0
+> On Mon, 19 Feb 2024 15:=E2=80=8A47:=E2=80=8A41 +0000 inv.=E2=80=8Agit-com=
+mit@=E2=80=8Atdk.=E2=80=8Acom wrote: > From: Jean-Baptiste Maneyrol <jean-b=
+aptiste.=E2=80=8Amaneyrol@=E2=80=8Atdk.=E2=80=8Acom> > > Track correctly FI=
+FO state and apply ODR change before starting > the chip. Without the fix,=
+=20
+> ZjQcmQRYFpfptBannerStart
+> This Message Is From an External Sender=20
+> This message came from outside your organization.=20
+> =C2=A0
+> ZjQcmQRYFpfptBannerEnd
+> On Mon, 19 Feb 2024 15:47:41 +0000
+> inv.git-commit@tdk.com wrote:
+>=20
+> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> >=20
+> > Track correctly FIFO state and apply ODR change before starting
+> > the chip. Without the fix, you cannot change ODR more than 1 time
+> > when data buffering is off. =20
+>=20
+> Hi Jean-Baptiste.
+>=20
+> I think this patch needs a little more explanation.
+> 1) Why has state changed such that we need to update these cached values?
+> 2) What does that have to do with ODR - or is this two unrelated fixes?
+>=20
+> I'm sure the fix is right - I just don't fully understand the issues!
+> >=20
+> > Fixes: 111e1abd0045 ("iio: imu: inv_mpu6050: use the common inv_sensors=
+ timestamp module")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> > ---
+> > V2: add missing stable tag
+> >=20
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 5 +++++
+> >  1 file changed, 5 insertions(+)
+> >=20
+> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/ii=
+o/imu/inv_mpu6050/inv_mpu_trigger.c
+> > index 676704f9151f..e6e6e94452a3 100644
+> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> > @@ -111,6 +111,7 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_sta=
+te *st, bool enable)
+> >  	if (enable) {
+> >  		/* reset timestamping */
+> >  		inv_sensors_timestamp_reset(&st->timestamp);
+> > +		inv_sensors_timestamp_apply_odr(&st->timestamp, 0, 0, 0);
+> >  		/* reset FIFO */
+> >  		d =3D st->chip_config.user_ctrl | INV_MPU6050_BIT_FIFO_RST;
+> >  		ret =3D regmap_write(st->map, st->reg->user_ctrl, d);
+> > @@ -184,6 +185,10 @@ static int inv_mpu6050_set_enable(struct iio_dev *=
+indio_dev, bool enable)
+> >  		if (result)
+> >  			goto error_power_off;
+> >  	} else {
+> > +		st->chip_config.gyro_fifo_enable =3D 0;
+> > +		st->chip_config.accl_fifo_enable =3D 0;
+> > +		st->chip_config.temp_fifo_enable =3D 0;
+> > +		st->chip_config.magn_fifo_enable =3D 0; =20
+> I think the write to actually do this is in prepare_fifo and it's not
+> conditional on these, so why do we care?
+>=20
+> Are these effectively paired with inv_scan_query in the enable path?
+>=20
+>=20
+> >  		result =3D inv_mpu6050_prepare_fifo(st, false);
+> >  		if (result)
+> >  			goto error_power_off;
+> > --
+> > 2.34.1
+> >  =20
+>=20
 
 

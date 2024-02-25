@@ -1,59 +1,56 @@
-Return-Path: <linux-iio+bounces-3048-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3049-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D396862A46
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 13:19:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D4A5862A55
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 13:35:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E9201C20A7E
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 12:19:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2428A281493
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 12:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4DE812B6C;
-	Sun, 25 Feb 2024 12:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5CCE469E;
+	Sun, 25 Feb 2024 12:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lCkVK61S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bumMYu80"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8597DEED5;
-	Sun, 25 Feb 2024 12:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776D611C85
+	for <linux-iio@vger.kernel.org>; Sun, 25 Feb 2024 12:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708863583; cv=none; b=eqq3iwCqDkm/aZhihu4UOlBYSDY3IyFGwKnCLpyrhXGsL3RuHlo3xS6+CP28Ki2iMGsyztlesQOnNW4gEN2Q0g5vIn2YMrXP9YZHqs4uc15eXTlA7EL+D/z8HyL+RzphMay+NYzZN/PE5zOgewIrrtqLzcKlwXOaYR79XCxudcY=
+	t=1708864546; cv=none; b=klySrV9yI0mQEx1y5JP7m2Kv4VzJyQ/aj7aDFkLb9eUelPRyUQUascnqMxGcA7MMesiyQiI8lfoWJ+gTdaT8T8NKsHmEV7jbllnO2FzPVKW5nz+cqluU9crAFC7QDbwbGGOfdUP7/0cwvzGA1LTZurnTVpw1eGzbVVNBjPPdoBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708863583; c=relaxed/simple;
-	bh=OoaVoO3IQY4tlcRi4RazlYeV6/cKOTwPaU6Y2PtEvRs=;
+	s=arc-20240116; t=1708864546; c=relaxed/simple;
+	bh=AxFa2bcZES/QFrIA2nRgOuJWNHTrexOxjA5StinI2Bk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ddoNM/wrpqM3N9DQ4/qlfgUm0RARy5bBksJxfLdQywlQoPUBVy6mSZ4aMs3alF6cWtU2DKTaPX1GAcfF+p3wZQczTS4Qj0fplBpg7J4xtcfYCzvbZqHFw2XpEzj8IZEUD26J1fAoi0vBfeP7hzaaCeB4abyWJ7+QuVsgUDrP5lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lCkVK61S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF02C433F1;
-	Sun, 25 Feb 2024 12:19:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u5kR7uavulaWxYDzLeNcHOSd+PoS86vZiYwW5ScKok/O4hVCfA2Ojhk8AmzHgvBI8YK79u9FBbMtWds25I2261f4MR4yS0Hzgwmo2OwHr+pG2NdCW+BV/BrOiYS44ZySRsqQEEDcSrwOVvYpDVzTWiMGYz2a+NhLqHsImFX0jyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bumMYu80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F82DC433C7;
+	Sun, 25 Feb 2024 12:35:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708863583;
-	bh=OoaVoO3IQY4tlcRi4RazlYeV6/cKOTwPaU6Y2PtEvRs=;
+	s=k20201202; t=1708864546;
+	bh=AxFa2bcZES/QFrIA2nRgOuJWNHTrexOxjA5StinI2Bk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lCkVK61SbpjdfrhC56v0uo5ksvCnOmNdQJfLvG/5wKbOWawe9ugV/Qzpw7j87IZsL
-	 zzX28U6I7GOs4LcM4ThFkzT0QfORyfH+YqQ7tRsJowWAhTJveN/aruNocA3quksBgx
-	 Xxh+K20joL3iStdJ5sjZi5KK47x/eQi02/zw56As9pCTlJWAVwJyKAJfcheJOWuy7U
-	 T90lqRHu4Jtv6/oG9pjBIQ5/3+iGVbUJ7lgAhmFTErk+EumzBshTG7qWJApXrkt566
-	 YquGIVUTnL1eFi3b8adO1PoFxf6xfiySxWg+7gEMgWRLhhURXTQm0q/O3S6YMps6+m
-	 nJ1jDqYfLvsgQ==
-Date: Sun, 25 Feb 2024 12:19:29 +0000
+	b=bumMYu80yf4v4hUtDfjwTbhEP0ZT01Kjqh74UIt9BVP8nl4u2LBjDtMDv/bOzK4G/
+	 Izv0H+mcYZIy52cmsBwOViCGNsqXI8EA78cla7w/Jh2P3r792HEs8CKa4zqNZknWfd
+	 osbTfd6A7PRjQi0UeDCNHYAAa3mRBucahZY+T4bGT31jqHIKwAtNDXgv9+tIZ+z5Mq
+	 8QCfCs4WIjPeHfXKyjxlA2igGdZRIzniSQBXBIgVDWFzZ0Y3ShfNk0/EyRhmxW5TLU
+	 pOXIfpOs0Bmfnhci0KrcomZVmq0uJp9POCysME6n84X7c/h63/tX5Xstela48KRw3V
+	 KcZvrYwGWvP/Q==
+Date: Sun, 25 Feb 2024 12:35:31 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Lars-Peter Clausen <lars@metafoo.de>,
- Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers
- <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt
- <justinstitt@google.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
- <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH] iio: avoid fortify-string overflow error
-Message-ID: <20240225121929.2e3fdc1b@jic23-huawei>
-In-Reply-To: <20240224121140.1883201-1-arnd@kernel.org>
-References: <20240224121140.1883201-1-arnd@kernel.org>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ "Fabio M. De Francesco" <fabio.maria.de.francesco@linux.intel.com>
+Subject: Re: [PATCH v2 2/5] iio: events: move to the cleanup.h magic
+Message-ID: <20240225123531.020e875f@jic23-huawei>
+In-Reply-To: <20240223-iio-use-cleanup-magic-v2-2-f6b4848c1f34@analog.com>
+References: <20240223-iio-use-cleanup-magic-v2-0-f6b4848c1f34@analog.com>
+	<20240223-iio-use-cleanup-magic-v2-2-f6b4848c1f34@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,61 +61,115 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 24 Feb 2024 13:11:34 +0100
-Arnd Bergmann <arnd@kernel.org> wrote:
+On Fri, 23 Feb 2024 13:43:45 +0100
+Nuno Sa <nuno.sa@analog.com> wrote:
 
-> From: Arnd Bergmann <arnd@arndb.de>
+> Use the new cleanup magic for handling mutexes in IIO. This allows us to
+> greatly simplify some code paths.
 > 
-> The memcpy() call in dlhl60d.c triggers a check with clang-19:
-> 
-> In file included from drivers/iio/pressure/dlhl60d.c:11:
-> In file included from include/linux/module.h:17:
-> include/linux/fortify-string.h:553:4: error: call to '__write_overflow_field' declared with 'warning' attribute: detected write beyond size of field (1st parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
->   553 |                         __write_overflow_field(p_size_field, size);
->       |                         ^
-> 
-> It writes into a two member array from a loop over a linked list
-> that likely has some indication of having more than two entries.
-> 
-> Add a conditional check there to avoid the overflow.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-
-Hi Arnd,
-
-It's a false positive, but the compiler has no way to tell that only bits
-0 and 1 can be set.
-https://lore.kernel.org/linux-iio/20240222222335.work.759-kees@kernel.org/
-for discussion on why + the missing zero initialization bug Kees noticed whilst
-looking at this code.
-
-Kees proposed an alternative way to suppress the warning that I've just applied.
-https://lore.kernel.org/linux-iio/20240223172936.it.875-kees@kernel.org/
-
-Your solution also works but leaves the implication of a real path to
-overflow the buffer when there isn't one, hence I prefer what Kees had unless
-some future version of clang trips over that in which case we can revisit.
-
-Thanks
-
-Jonathan
-
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
->  drivers/iio/pressure/dlhl60d.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  drivers/iio/industrialio-event.c | 42 +++++++++++++++++-----------------------
+>  1 file changed, 18 insertions(+), 24 deletions(-)
 > 
-> diff --git a/drivers/iio/pressure/dlhl60d.c b/drivers/iio/pressure/dlhl60d.c
-> index 28c8269ba65d..a43ecda849db 100644
-> --- a/drivers/iio/pressure/dlhl60d.c
-> +++ b/drivers/iio/pressure/dlhl60d.c
-> @@ -262,6 +262,8 @@ static irqreturn_t dlh_trigger_handler(int irq, void *private)
->  			&st->rx_buf[1] + chn * DLH_NUM_DATA_BYTES,
->  			DLH_NUM_DATA_BYTES);
->  		i++;
-> +		if (i >= ARRAY_SIZE(tmp_buf))
-> +			break;
+> diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+> index 910c1f14abd5..ef3cecbce915 100644
+> --- a/drivers/iio/industrialio-event.c
+> +++ b/drivers/iio/industrialio-event.c
+> @@ -7,6 +7,7 @@
+>   */
+>  
+>  #include <linux/anon_inodes.h>
+> +#include <linux/cleanup.h>
+>  #include <linux/device.h>
+>  #include <linux/fs.h>
+>  #include <linux/kernel.h>
+> @@ -146,11 +147,10 @@ static ssize_t iio_event_chrdev_read(struct file *filep,
+>  				return -ENODEV;
+>  		}
+>  
+> -		if (mutex_lock_interruptible(&ev_int->read_lock))
+> -			return -ERESTARTSYS;
+> -		ret = kfifo_to_user(&ev_int->det_events, buf, count, &copied);
+> -		mutex_unlock(&ev_int->read_lock);
+> -
+> +		scoped_cond_guard(mutex_intr, return -ERESTARTSYS,
+> +				  &ev_int->read_lock)
+> +			ret = kfifo_to_user(&ev_int->det_events, buf, count,
+> +					    &copied);
+
+>  		if (ret)
+>  			return ret;
+>  
+> @@ -198,28 +198,22 @@ static int iio_event_getfd(struct iio_dev *indio_dev)
+>  	if (ev_int == NULL)
+>  		return -ENODEV;
+>  
+> -	fd = mutex_lock_interruptible(&iio_dev_opaque->mlock);
+> -	if (fd)
+> -		return fd;
+> +	scoped_cond_guard(mutex_intr, return -EINTR, &iio_dev_opaque->mlock) {
+
+Maybe we want to wait for
+	cond_guard() that Fabio has been working on to land
+https://lore.kernel.org/all/20240217105904.1912368-2-fabio.maria.de.francesco@linux.intel.com/
+Not sure if it will make the merge window and I don't want to hold this a whole
+cycle if it doesn't.
+
+In many cases I find the scoped version easier to read, but sometimes it makes things
+a little messy and for cases like this where it's taken for nearly the whole function
+(other than some input parameter checks) the guard() form is nice and
+cond_guard() as similar advantages.
+
+If I didn't have a few other requests for changes I'd just have picked this
+and we could have coped with the slightly less elegant change set.
+
+
+> +		if (test_and_set_bit(IIO_BUSY_BIT_POS, &ev_int->flags))
+> +			return -EBUSY;
+>  
+> -	if (test_and_set_bit(IIO_BUSY_BIT_POS, &ev_int->flags)) {
+> -		fd = -EBUSY;
+> -		goto unlock;
+> +		iio_device_get(indio_dev);
+> +
+> +		fd = anon_inode_getfd("iio:event", &iio_event_chrdev_fileops,
+> +				      indio_dev, O_RDONLY | O_CLOEXEC);
+> +		if (fd < 0) {
+> +			clear_bit(IIO_BUSY_BIT_POS, &ev_int->flags);
+> +			iio_device_put(indio_dev);
+Given this is an error path, I think it would now be nicer to do
+			return fd;
+		}
+
+		kfifo_reset_out(&ev_int->dev_events);
+		
+		return fd;
+
+That was avoided in original code as it was nicer without the gotos
+but now those are gone I think the refactor makes sense.
+
+> +		} else {
+> +			kfifo_reset_out(&ev_int->det_events);
+> +		}
 >  	}
 >  
->  	iio_push_to_buffers(indio_dev, tmp_buf);
+> -	iio_device_get(indio_dev);
+> -
+> -	fd = anon_inode_getfd("iio:event", &iio_event_chrdev_fileops,
+> -				indio_dev, O_RDONLY | O_CLOEXEC);
+> -	if (fd < 0) {
+> -		clear_bit(IIO_BUSY_BIT_POS, &ev_int->flags);
+> -		iio_device_put(indio_dev);
+> -	} else {
+> -		kfifo_reset_out(&ev_int->det_events);
+> -	}
+> -
+> -unlock:
+> -	mutex_unlock(&iio_dev_opaque->mlock);
+>  	return fd;
+>  }
+>  
+> 
 
 

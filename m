@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-3064-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3063-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DED54862B62
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A03862B61
 	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 17:01:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 580F3B20BC9
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 16:01:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C43D0B20E64
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 16:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A7A5175A7;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BF6175A1;
 	Sun, 25 Feb 2024 16:01:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="kfbJaBwi"
+	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="qeP8DZe8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0b-00549402.pphosted.com (mx0b-00549402.pphosted.com [205.220.178.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09214168DD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091D616427
 	for <linux-iio@vger.kernel.org>; Sun, 25 Feb 2024 16:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.134
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708876876; cv=fail; b=ZjZrGmyx1QjhG84ypVgzonfTSIi9oyJmEwRs7Hw8CAY3tIgsRDaDKrq2gkeFsVDIXkccTNxUrWth0fUKXd1XmH63zb0FO8TVbpDIuwnX+LLSWMT+0aYeo48KAzLXnejQaCaCsKFhoAgP6SYE2tel+c4qdbwWwrPfd7EMiXOMMUw=
+	t=1708876876; cv=fail; b=EVGQFLHG+9LA5nk+9Y3XHwTgjMdTtpTe9AnM+XwQ7AmcvvfKpnypBdSbzHVBhqRYmLUpxiFdULoESvc1xRE0y1dU1ySab0QKslSiNx8L3rw3jtIGD/OTDq05o7MpqbSH5qeomDz/sW0JB0bptIv/0maYOsv+3vNRF/xI4VS6f1Y=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1708876876; c=relaxed/simple;
-	bh=dk9+YV+9XAe5leDx5AFCAOQysZagOG2MCwHpBmNYxMY=;
+	bh=C+75DR0zcd0gip0+Ukf0w/K4XVI+FN2HC7bzTMnZKWE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=pYkxpeZ+JWJZno3zvx6mSmydddLTkqEarODJ6f/wwIpbYkn6DdtR/5CZP0AjB3HyawviUbak+Iz7l9TfOG0P9DHve87Fz3yu3sL8/hhuMLP/31Ct0UW2IwfzuCUgYz94ABtdqBzqNO8GOH99DP/ylhSL3rJHFa2u8FxipZlPor8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=kfbJaBwi; arc=fail smtp.client-ip=205.220.178.134
+	 Content-Type:MIME-Version; b=B5x8h3F4c+JG1KpHs/p/Q2+CQcYCIhySDK1P02nUnVtEW7O3fTZAyn2rCMiKPKAJQBA8ExBtROi7ETZFmZtubFj+MMWkwjBZGA9dBxfN09tOnOUEO4988rBvbNNIpr2SbAJKakoqTKg/O6AFCmIeFm5DoijgmwRmjdyTB89Ksv4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=qeP8DZe8; arc=fail smtp.client-ip=205.220.178.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
 Received: from pps.filterd (m0233779.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41PFo2ch018247;
-	Sun, 25 Feb 2024 16:00:58 GMT
+	by mx0b-00549402.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41PFo2cj018247;
+	Sun, 25 Feb 2024 16:00:59 GMT
 Received: from jpn01-tyc-obe.outbound.protection.outlook.com (mail-tycjpn01lp2169.outbound.protection.outlook.com [104.47.23.169])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3wf9tjrf3v-2
+	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3wf9tjrf3v-4
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 25 Feb 2024 16:00:57 +0000 (GMT)
+	Sun, 25 Feb 2024 16:00:59 +0000 (GMT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Lf9cfEBVJpeCglWpEsr+ehctH8dHFG9OjXvOpvYCT2UrWE/kovNZGp1PisXoaatStGpiBz9RwpJYDtwYIJzbkaU/V9Ws/nhViqmNhTzC+uOEHyGCt3YNSbJ1yDSYlXH2woLOKYygnTkGCMyKryiUWX7xMC9QrGumAA5hZMNMnxONRo9nCMtJiF4H7L2pPFnvFRzAX0/MnJyYHW9ogmTc1hUIEcI1DLUAMuDSdv5L7EdcISEYKHhiHs06TfoZfPP00CPdD3Wnn//lzQhDF9lGyz8OyxaOId/pxcVEvzaSqYCd1hhoprrxiN27m/BzzMKuGRD0VAks7ukOppI7Pkl+jQ==
+ b=AB9Jyp188umXrt9KLvgYCong2dIy2c4QyKTVgpx1ApMCMW4fjsto/oqd8yIvSGUwQCqhu4eDjT1B/uOzZoywlt56527fQCfX1244u9IqWvfKhNWfCYfIZk0Ue09kGihDjwBCBnwZyfyo781L6L9I1ZGzcVbkbR3+X6l3haIM3FSeo4dTvRjIJG0+SbE8Zyuw56d3rU/F6kJG+IEi7NsJS1FuntFYSVlSMATJLX4sfnz4yQrOdLUDmYxfsq8i1ZNurmZpziMCdh0sgvzZBw3lpEToztiEMHXtIY4bsUISXa0/Vc+o4GZcflXxPDwpGaS0qDlPWHDFfy1m6ZHz/Lz1/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KCNVN1XRGRiTNWcrvswYp0UGUrKEINVjMMaHnlVg9G8=;
- b=ZR7yRSdXbQNd51bzwLKHW87pHfi7oSraFyp85oKuPCwTQUZrdCH40bUjdmQEb0tSB9nbnJ/ZBzKz/WEdBnchcCfsnbZ85NIIjrdymGx02e4XnRq9WnIlditRo3hVnZCgvBOOv4na6FYdarkhxdescgIy7Ud8Cfv7v0B7I1375tOWEim1kBFpUClFgcfFjY50WAdp9ToR6LqhVhziUqRUIeUFtRMhN9gWHKwda77TvTlgkhGtMU2QPKTHSoPKG22q56CPLNjfNhdkny/NmupaGBbP0pdsPLCe5/S0spExzRA4poDYUn3gc7JFlhMN8+vL0fihiQxFeNgELWdp6/8+6w==
+ bh=Di+Z22lae+WiswI8QMc3LB6JuhyXGlF5VEy7sw2Mpt4=;
+ b=OwlocDEH9fGfVYsvBAqbp3/+NHX7gqzXRbCmE9URoW9sOOUVYnZrk6c6aSq815DGNMv7T4TrtP27bvqx5u8C2q/jOfMWB0GApN89aWCcAOzcQwu2xmPDaYDoTfggxML25we7LfrpDPYU3ml6Tgq7lhElk/A71/DZOWrOQNLHQ5pp0xMI+LW2T/VNqIALRSLr5y8egOwEiwwKbuBSIeTHpUMTaN9M0kd1ierxA3cfpy6vTeCFqG3icGvmBJnCu3dmpPO01LiL6F1nb71AYbK8YkZQUFu8Kp/U/ei604yqwZtTPqzXYNvYIELHwJLDaoLL/i/MtOxJOYpjAaLCoTNLyQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
  header.d=tdk.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KCNVN1XRGRiTNWcrvswYp0UGUrKEINVjMMaHnlVg9G8=;
- b=kfbJaBwizogTIcFpPXIDPwXXZ4XbKX0lz8eOT8azxyl/47rDy7PrVq1mpAXWf609QbZvSH1OcfdozVvujUL228BN2Ps8zYNFXYkwhl4n5LR9ngsc6pYurGplhAf/7KqIxfvXlsf7Vy2SOgmvaiUmyruDnFxg4gRqupohr7cTCexm7DWnOpUTAvQ5pkGNVqvhR0dpcpU+66Jl3BO/kVBpPFzMzz8LvcIPhxgAzJSgiPlLrwHp2hRd1+x6i+CIEGr0d3+fZi4rgkWE1GZ5WtuaPzP+yZG4fWG471bNO547rZTUdNClt3/6eHyM45DCKufG5vC2qj96YMj7SZXVzfGemw==
+ bh=Di+Z22lae+WiswI8QMc3LB6JuhyXGlF5VEy7sw2Mpt4=;
+ b=qeP8DZe8ALFv8AB2wjJh/hNQdVxH5Fj0qYLBjBbYrcoIKrLoh5MR/t7hg3OFU4oj+islEXxjNuc24AC/QnZDWlZfeSvXCQuaEFxqDcDdpiNN4NzHdFsS+X5LSs+4S6Vv23sXVRM/Bjw+/HnD9EMlBBdPSPdVjLXm8ue2Il4G4+T2YT6d3hbMHewRzyAGCE6CVHJVCgMSQUqRvhH6kArwRDhxFKnZsS0I5gR32+VpTr4VRkOy3k9DVxk32C5ThscG0fbLw+/z5KoCXCkxST/0xvqvUZaFocRAkIfb7zqJ1tHBt34lczaTV46Rwx2MYrztTdjVZwPKWv8aiZPMRI37VQ==
 Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1a7::13)
  by TYTP286MB3462.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:39b::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7316.34; Sun, 25 Feb
- 2024 16:00:52 +0000
+ 2024 16:00:53 +0000
 Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
  ([fe80::cb8d:ccc6:f2:ff8f]) by OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
  ([fe80::cb8d:ccc6:f2:ff8f%4]) with mapi id 15.20.7316.018; Sun, 25 Feb 2024
- 16:00:52 +0000
+ 16:00:53 +0000
 From: inv.git-commit@tdk.com
 To: jic23@kernel.org
 Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
         Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: [PATCH 2/4] iio: imu: inv_mpu6050: add WoM event inside accel channels
-Date: Sun, 25 Feb 2024 16:00:25 +0000
-Message-Id: <20240225160027.200092-3-inv.git-commit@tdk.com>
+Subject: [PATCH 3/4] iio: imu: inv_mpu6050: add new interrupt handler for WoM events
+Date: Sun, 25 Feb 2024 16:00:26 +0000
+Message-Id: <20240225160027.200092-4-inv.git-commit@tdk.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240225160027.200092-1-inv.git-commit@tdk.com>
 References: <20240225160027.200092-1-inv.git-commit@tdk.com>
@@ -84,56 +84,56 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: OSZP286MB1942:EE_|TYTP286MB3462:EE_
-X-MS-Office365-Filtering-Correlation-Id: bf540368-3ae1-4a76-8840-08dc361af0e3
+X-MS-Office365-Filtering-Correlation-Id: f056c358-bd1c-4f9a-6e6d-08dc361af1f6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
 X-Microsoft-Antispam-Message-Info: 
-	CTRNF9IT5lf5Mt/4YSF8yTX08Oi4TmtNb+4mE/aJiJKjb7zfyTi+I64TOEr/6oal50GsEKCld6w4FjhacGPvH/uNnouUIYa66hvaphB/DEWx69QTEz64212KPgLx3vDXknaKJ0we+RkkbtrMRGoAvj1ZWrcogACzD3cBqbUSzx7JE/cNQdeIcky+eiV4ZSPyykXzWqYfq+/bc2s6B+Fp12z86Wtgf6GQ32KhMfHJBW1zeMPOe2bDQSRNPuTju55VJmvwrwUgqtjQOWBcB3bgvwlPZG/KnvGkt+zGFSmEc91jenWKCRD4dh6xyXlhYnc3cnfUdVOxM+08TkryXv/CUItNARHCsUOVPRjOMKkUB5A3AZ1DwU0zaF9Ll1WVaPOvs7OJspVroaQG8BiILDTZ2eQ4enFZwi9aAtSttWj5dG1xuOaLufeHlFEGCL2hgUDCFW9/ocl6jW7ALCctwHuB36QTOBBaswEp76NzEOnOjrNt4WGVCPvNZ2ucHT8w/gkPGN3Ov+f7CUOB9Dd6yTWx71++xHusdp1HzO8H/Vk1KCWAE0Hekbau8ExUOg+jgN6aotZ34X7OtyoBImY38Osy7p2IpWzsX1a9uYnGlLrtETIMqrVI2tzK0nSOEy29b7HEjtuAcZiV2LuJrLPll4Sd3Q==
+	FtFUL23U+JTmqRoJo4jYZSJIolF/PwbYWC/U94LdFusxPw1Y3mD7AfmVKF8jgQj0GvwxYlTDoHD9Ze9bewK+g+vrD63Z13se5jKnlFE8sgI5s/KP3kaOZaIFUqtlASFJrNWccswo629BlUxnL+UzxPTRRcR6XJzJ6kG+7Eu549i2yC8RN//OO7X0SpftPt6LPNuCxLMUCDjdWZLK+wuSaqzUDYn3rzXhjEfHIEY3ebeMqTF9teBUsbOcqv/eu7pdUxAL569Diu8HKMTvfT7lFxd5bn1lUOadZutsFVIeGvco+ud65Kb+UDmtkly+w3SE0MXeAutYYR32RwZllvQi+N2sIwQeCRwWo3YR7IKmWSmsA1JM+smf4x7XPjmb3ZrSWopTKpmVhc3HS2zgRTtPHXIC4cuoOJUD64Uhh9uEo2Vz54MU2ZBN4XBayf968fjpMXdERnE7gd1gGsDSZ1w0OCOls2CZiCax7csWbbqdcNd2OrlKtzBDVZEtcpbo9/opm4jvulcl3mrMwj5EK6YOBl68/BM8IHpccG1qJBOYmXhlPogk6l6weD+pFoZXf4i4YZw84NuBxIcU3RNn8rLSe4wyJ7LPNRa6cA4BKiSBV3xM13MliWsBUrbUP4NCjmdWYTA+3U6oOwhtlMzTZGoLPA==
 X-Forefront-Antispam-Report: 
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(38350700005)(3613699003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?043ZxxXDb6nD57CBlMflb1zDMAAV2XCPF6lUcHNOFlBYeqqI+biVVbLghcic?=
- =?us-ascii?Q?bREOUsSU0I/O8Kn9KbWJcjvIzZxF9m8fn1mG8w7OCoepKxMd5w3h1umni0yp?=
- =?us-ascii?Q?+8CEI490Nea1OK3c/pprZn67vd+1DaHG4gP195wueQ/L7M0ArEjvwOif5VOU?=
- =?us-ascii?Q?oEAJo+H1US9OII+MTdJ69Aq96GfXIMqrSNuhNJSJbfpR9G7uQNAdxZ5dsH4m?=
- =?us-ascii?Q?OdZFj+3R0nsFVbXja9gFWtmvOtOuiZjfwNi4PZwNyt6630HubglE746p/sRc?=
- =?us-ascii?Q?rT0Gp8/KLOJPNiOP/660wc9cDnaiQwcetI9q7KiwxEAQAEP1QLnwN5tv5gzd?=
- =?us-ascii?Q?+3tK5g3vodMxlRGFPzwsvDsVPh8d9Vw/AnLPGQ4xgIUGjb2b/fxFPdlbEqvU?=
- =?us-ascii?Q?VXiinSpqs3Wn1FwuoXwqIw1ZQJlr47+nldXwzwGYkPbWwlKFq3wK8D9ujHwW?=
- =?us-ascii?Q?7Ef31b2Jub0pE159BSj4laQG7sAI9ezC+Nan4vf/ZNo/rxTLLH5RUx5wN2vE?=
- =?us-ascii?Q?illwrUD3K4wAEa6NRIecpZu2cBhecmPcHfBXVlLP0Gbb/rIPEhlVqmO57mle?=
- =?us-ascii?Q?aHm/UpJimlkB2lhHN924vY6WhV8F2vv3He1ePk3lxSWnaxsO+G2IJdxdM4l0?=
- =?us-ascii?Q?F0aVDTrPpuR+6IEvo+9MT38/huhJSRPzaMN/wRBZQeyde5RvQ3BuwKQmO7hM?=
- =?us-ascii?Q?SvcyDcRLEx6VE6op+nWSRu7Uh+QwrnQHs2s6fBs+5yU/tQtxgW6CDTU12ruL?=
- =?us-ascii?Q?iU1OZUFmWEdFS5qaprfMqIjxHN7lvv4tzR0MeiYXN1SBq3LRjEmlQjFdjYO1?=
- =?us-ascii?Q?RCC1v9cti9E24ciQIV+tEmhOnX/iy7K7IK08CQKLL3aqY4yVgpC4ipcI0fBb?=
- =?us-ascii?Q?frYNVaThNyCIBi+v2mYXJ8bQJf18J20eG0G5ifmChFX4XJgTFVflpkj0hPCd?=
- =?us-ascii?Q?g7LzSoyrsDbULUwBeJeWuz547SWn0O5ATvSRfnfAh+PB9kojMIOd3X3UEwoW?=
- =?us-ascii?Q?aoZ+UzpVS4T9tv2nxs1mjurFr8CjP0F/XEOkw3whLwahjtaQxcihkQ62+UXk?=
- =?us-ascii?Q?rAOovl+ErDdvhy73rQTiv2rKjstaR5/z1jNh2BbF5ZGZdiMtjK3H8MRxwrEn?=
- =?us-ascii?Q?JRcN8pPHYtgXZ+jflr8RDZbmf0kD1iO736kAjpQGvaNq83stwE0F8iR2kBBF?=
- =?us-ascii?Q?3CMqK0b5Xa1Drbpy6XV1ZGMNwIA6AlZOanLPyUAYerUGT9CEILXynYVpW1yt?=
- =?us-ascii?Q?434XAQ4EVXmj/4eIY2TLqA41rG3nAVLHjqo2RBBJYizYBrW+YW1+1LmDoNSN?=
- =?us-ascii?Q?T9fPqackyXM/pOUVGatvcMjjgheQU0EDROw90yV56Gx6ZOz2K+Q+hq1oQItf?=
- =?us-ascii?Q?tqi1gLeY8XSbSzPJzL7w0Q3XWGvBfvZrCv0fzTKpjV0cSJhW7brD8v/o7+vK?=
- =?us-ascii?Q?cjMf1bA5h20r/qrtmaRNkhKOOnw1U5TcWw9X8kZ30+5zJueTy5I33bdbfZeN?=
- =?us-ascii?Q?3S6VDta5bo/j16ZVFk3oL6Ekw5i1eeEBZQgA9c0BxJa7v3azjaJ7fPC0acwJ?=
- =?us-ascii?Q?cY1r8mSe7MthXq5YlCjO96AbWe9Spy+GwhIjwNQP?=
+	=?us-ascii?Q?6FSYY584DOPFNc77tEXPRtfIpPzVSQRORfsuLfyLINZlliq/eTzIUOgAGvvk?=
+ =?us-ascii?Q?Ic5AKOlLSgTTH78nse13nPUBsPoKFqF5S57ubIyTfHZke1mxZ9U2E/QjPcp4?=
+ =?us-ascii?Q?9xDRUk3qYGvaM2uKturb89MHxJDM4sbu1j59jphuhajhfDdwfJ/zVt3GQ7Pb?=
+ =?us-ascii?Q?OCMkA+L0dEcMA4YLqaTzXTzHqkopuJCdfeFr7R9pOCoCucjP/Agxtcxj3cSA?=
+ =?us-ascii?Q?clXay5Q4ylzMAQbgAFbSwg+bbEF3nfquASZAXf4QhQFkgfmgcokE/tYU6k8/?=
+ =?us-ascii?Q?FFQYlWwilmdrFZY+SYw2x6GQ697IilBsR94kPEbsdKCcYNwiJvyJ8GSuGESO?=
+ =?us-ascii?Q?G/WS80D4eobB+AzULyUTyMTMZHEoFIkFVRkvNp5Vu9DyVafb+aCsSP/TFX6d?=
+ =?us-ascii?Q?rBK97zyv2mbjkxPvMtwUoJnNxIolcMKPXNwmvn1h9E+nWlRc+z1IK2fx9M/i?=
+ =?us-ascii?Q?Vt/ucp4qg+AqbFFIY/LlaaQZ167wM5iYo9sgpNhE3qMGEdGc/dJ1e+x3EbBi?=
+ =?us-ascii?Q?HQCUWezBvCb88A3JH3Bg4Y8jGleGVVWgqmLdS8ST8hCyYsOVbTWzP+Bx96zx?=
+ =?us-ascii?Q?NnbGdLJ4Kkes4WzA15Ryz+6Xph7qHpDleZD802RAbQ1/VuIf3JfOSU/E0Fu+?=
+ =?us-ascii?Q?yhX0xLHzosm3ftz4LMfanYKNGfIYc1pk0xVSVoNZTO/OVMujfmr+RJkqJ9JG?=
+ =?us-ascii?Q?yQHPPBBudTMWMwWTeenYTzsU++9S1LIwmOytTT1xgY5P4btojHQyzzNRcd8q?=
+ =?us-ascii?Q?BMUrIdWge5sJiEEOZJ5x9cxPQ2axWn5GFLNgfRA8zxuoLD/vfPsZa+rDSfXJ?=
+ =?us-ascii?Q?jmE9RdnkVglkSQ3bLgxvi8Ie6FYfmOZYLeuiHUs5cEf/i4EfxMs9GQEbVD6d?=
+ =?us-ascii?Q?Bh3MZ1j/U7prFxDNd+AL2vr9UckY2Y2C7qoU1nEn6zKPxG8trTrCTnuaObrl?=
+ =?us-ascii?Q?A+Haxrn1s8P8iKXVw9raErh1LYMHBA//MJmIsDOTYwwC0wtu7D8kXUXGP2+w?=
+ =?us-ascii?Q?nEuttOdLnb7z/O4V6eFweFS8z9nJONA+2FS+V3AraxGxX42Q/JTQm5wdD2Ko?=
+ =?us-ascii?Q?fYWjK0swQzX9FVGVm8nYbWsw+LDXFzXef//ziNNLsI0uC7yGZmIevzkPQa/c?=
+ =?us-ascii?Q?4T5/oHho8fyAlGix4Bp1iOdledqNcFt74WJbiqEmhfFPizRPhJcg6sRFIkDD?=
+ =?us-ascii?Q?SpuauRZQbZJ2rV8XaVM9VLKnEsasfUE0ppEx1lglGiatgvuw3OPaUfKY46O5?=
+ =?us-ascii?Q?3FyYuwCWNUmtOTertnN62gEnP0iICF6qVPxW7KCNf5MQdcnYy11yb32Vs2rM?=
+ =?us-ascii?Q?uCldtVrsHKcp/m0XDqxPnMc4F5ouBJCBGh+IG0QHuGZSrhMItoYB7oaYMz2X?=
+ =?us-ascii?Q?i3a+2sh5UkSWWnZuJG6YAGaccMwQf7Q/hG0LjsIkW9Xiyq9yTlIgdyawoKcD?=
+ =?us-ascii?Q?dJhm1gyP6z+ijlnszeKPf5E9nZ42wPj5Cy+dCUT/+rMRvDqXMooiQ0Nt/bBS?=
+ =?us-ascii?Q?nqI3KsmdXD/4cHDEa3Yaavk5iRZqQqb6c7pv8fEQT+viaxstwgGaoa3VeUay?=
+ =?us-ascii?Q?fSCbo88xXmAi7PIMLIRcLuMITzrnrRMS2EW3qAnU?=
 X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf540368-3ae1-4a76-8840-08dc361af0e3
+X-MS-Exchange-CrossTenant-Network-Message-Id: f056c358-bd1c-4f9a-6e6d-08dc361af1f6
 X-MS-Exchange-CrossTenant-AuthSource: OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2024 16:00:51.9057
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2024 16:00:53.7072
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 7e452255-946f-4f17-800a-a0fb6835dc6c
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NaQ3P2aG1gGZEFHliawCvK50bU3nGVrKBC5d3S2DIOeEJxcb+JQiUf3neWFwg/B1C8UyENtqhTjziMtHKHD1NQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: m+aRQghEgDFyfhCaNzEs+PELyRCKE8S8aDig9ym4Gj9wShGmhoKsAwOwxEh/dpseclkByUhQThg4hU66tlHKoA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYTP286MB3462
-X-Proofpoint-GUID: -6bCFtZen11USaL7E2UqxQ4WjrIXepFp
-X-Proofpoint-ORIG-GUID: -6bCFtZen11USaL7E2UqxQ4WjrIXepFp
+X-Proofpoint-GUID: uk93VNAGHrQt8q21wgjS3J4uO25UbRJv
+X-Proofpoint-ORIG-GUID: uk93VNAGHrQt8q21wgjS3J4uO25UbRJv
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-25_18,2024-02-23_01,2023-05-22_02
@@ -145,210 +145,144 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 prior
 
 From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-Add WoM (mag_adaptive rising) event in accel channels for all
-chips >= MPU-6500. This requires to create new MPU-6500 channels
-as default and MPU-6050 channels for older chips.
+Add new interrupt handler for generating WoM event from int status
+register bits. Launch from interrupt the trigger poll function for
+data buffer.
 
 Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_core.c | 132 ++++++++++++++-------
- 1 file changed, 89 insertions(+), 43 deletions(-)
+ drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  2 +
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 11 ----
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 56 +++++++++++++++++--
+ 3 files changed, 53 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-index fca7fc1ba4e2..d2544c758815 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_core.c
-@@ -1303,23 +1303,34 @@ static const struct iio_chan_spec_ext_info inv_ext_info[] = {
- 	{ }
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+index 519c1eee96ad..9be67cebbd49 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+@@ -184,6 +184,7 @@ struct inv_mpu6050_hw {
+  *  @magn_orient:       magnetometer sensor chip orientation if available.
+  *  @suspended_sensors:	sensors mask of sensors turned off for suspend
+  *  @data:		read buffer used for bulk reads.
++ *  @it_timestamp:	interrupt timestamp.
+  */
+ struct inv_mpu6050_state {
+ 	struct mutex lock;
+@@ -209,6 +210,7 @@ struct inv_mpu6050_state {
+ 	unsigned int suspended_sensors;
+ 	bool level_shifter;
+ 	u8 *data;
++	s64 it_timestamp;
  };
  
--#define INV_MPU6050_CHAN(_type, _channel2, _index)                    \
--	{                                                             \
--		.type = _type,                                        \
--		.modified = 1,                                        \
--		.channel2 = _channel2,                                \
--		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE), \
--		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	      \
--				      BIT(IIO_CHAN_INFO_CALIBBIAS),   \
--		.scan_index = _index,                                 \
--		.scan_type = {                                        \
--				.sign = 's',                          \
--				.realbits = 16,                       \
--				.storagebits = 16,                    \
--				.shift = 0,                           \
--				.endianness = IIO_BE,                 \
--			     },                                       \
--		.ext_info = inv_ext_info,                             \
-+static const struct iio_event_spec inv_accel_events[] = {
-+	{
-+		.type = IIO_EV_TYPE_MAG_ADAPTIVE,
-+		.dir = IIO_EV_DIR_RISING,
-+		.mask_shared_by_type = BIT(IIO_EV_INFO_ENABLE) |
-+				       BIT(IIO_EV_INFO_VALUE),
-+	},
-+};
-+
-+#define INV_MPU6050_CHAN(_type, _channel2, _index, _events, _events_nb) \
-+	{                                                               \
-+		.type = _type,                                          \
-+		.modified = 1,                                          \
-+		.channel2 = _channel2,                                  \
-+		.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),   \
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |	        \
-+				      BIT(IIO_CHAN_INFO_CALIBBIAS),     \
-+		.event_spec = _events,                                  \
-+		.num_event_specs = _events_nb,                          \
-+		.scan_index = _index,                                   \
-+		.scan_type = {                                          \
-+				.sign = 's',                            \
-+				.realbits = 16,                         \
-+				.storagebits = 16,                      \
-+				.shift = 0,                             \
-+				.endianness = IIO_BE,                   \
-+			     },                                         \
-+		.ext_info = inv_ext_info,                               \
- 	}
+ /*register and associated bit definition*/
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+index 13da6f523ca2..e282378ee2ca 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+@@ -51,21 +51,10 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 	u32 fifo_period;
+ 	s64 timestamp;
+ 	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE];
+-	int int_status;
+ 	size_t i, nb;
  
- #define INV_MPU6050_TEMP_CHAN(_index)				\
-@@ -1338,18 +1349,35 @@ static const struct iio_chan_spec_ext_info inv_ext_info[] = {
- 		},						\
- 	}
+ 	mutex_lock(&st->lock);
  
--static const struct iio_chan_spec inv_mpu_channels[] = {
-+static const struct iio_chan_spec inv_mpu6050_channels[] = {
-+	IIO_CHAN_SOFT_TIMESTAMP(INV_MPU6050_SCAN_TIMESTAMP),
-+
-+	INV_MPU6050_TEMP_CHAN(INV_MPU6050_SCAN_TEMP),
-+
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_X, INV_MPU6050_SCAN_GYRO_X, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Y, INV_MPU6050_SCAN_GYRO_Y, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Z, INV_MPU6050_SCAN_GYRO_Z, NULL, 0),
-+
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_X, INV_MPU6050_SCAN_ACCL_X, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Y, INV_MPU6050_SCAN_ACCL_Y, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_MPU6050_SCAN_ACCL_Z, NULL, 0),
-+};
-+
-+static const struct iio_chan_spec inv_mpu6500_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(INV_MPU6050_SCAN_TIMESTAMP),
+-	/* ack interrupt and check status */
+-	result = regmap_read(st->map, st->reg->int_status, &int_status);
+-	if (result) {
+-		dev_err(regmap_get_device(st->map),
+-			"failed to ack interrupt\n");
+-		goto flush_fifo;
+-	}
+-	if (!(int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT))
+-		goto end_session;
+-
+ 	if (!(st->chip_config.accl_fifo_enable |
+ 		st->chip_config.gyro_fifo_enable |
+ 		st->chip_config.magn_fifo_enable))
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+index ec2398a87f45..7ffbb9e7c100 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+@@ -6,6 +6,7 @@
+ #include <linux/pm_runtime.h>
  
- 	INV_MPU6050_TEMP_CHAN(INV_MPU6050_SCAN_TEMP),
+ #include <linux/iio/common/inv_sensors_timestamp.h>
++#include <linux/iio/events.h>
  
--	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_X, INV_MPU6050_SCAN_GYRO_X),
--	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Y, INV_MPU6050_SCAN_GYRO_Y),
--	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Z, INV_MPU6050_SCAN_GYRO_Z),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_X, INV_MPU6050_SCAN_GYRO_X, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Y, INV_MPU6050_SCAN_GYRO_Y, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Z, INV_MPU6050_SCAN_GYRO_Z, NULL, 0),
+ #include "inv_mpu_iio.h"
  
--	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_X, INV_MPU6050_SCAN_ACCL_X),
--	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Y, INV_MPU6050_SCAN_ACCL_Y),
--	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_MPU6050_SCAN_ACCL_Z),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_X, INV_MPU6050_SCAN_ACCL_X,
-+			 inv_accel_events, ARRAY_SIZE(inv_accel_events)),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Y, INV_MPU6050_SCAN_ACCL_Y,
-+			 inv_accel_events, ARRAY_SIZE(inv_accel_events)),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_MPU6050_SCAN_ACCL_Z,
-+			 inv_accel_events, ARRAY_SIZE(inv_accel_events)),
+@@ -223,6 +224,52 @@ static const struct iio_trigger_ops inv_mpu_trigger_ops = {
+ 	.set_trigger_state = &inv_mpu_data_rdy_trigger_set_state,
  };
  
- #define INV_MPU6050_SCAN_MASK_3AXIS_ACCEL	\
-@@ -1401,13 +1429,13 @@ static const struct iio_chan_spec inv_mpu9150_channels[] = {
++static irqreturn_t inv_mpu6050_interrupt_timestamp(int irq, void *p)
++{
++	struct iio_dev *indio_dev = p;
++	struct inv_mpu6050_state *st = iio_priv(indio_dev);
++
++	st->it_timestamp = iio_get_time_ns(indio_dev);
++
++	return IRQ_WAKE_THREAD;
++}
++
++static irqreturn_t inv_mpu6050_interrupt_handle(int irq, void *p)
++{
++	struct iio_dev *indio_dev = p;
++	struct inv_mpu6050_state *st = iio_priv(indio_dev);
++	unsigned int int_status = 0;
++	int result;
++
++	mutex_lock(&st->lock);
++
++	/* ack interrupt and check status */
++	result = regmap_read(st->map, st->reg->int_status, &int_status);
++	if (result) {
++		dev_err(regmap_get_device(st->map),
++			"failed to ack interrupt\n");
++		goto exit_unlock;
++	}
++
++	/* handle WoM event */
++	if (st->chip_config.wom_en && (int_status & INV_MPU6500_BIT_WOM_INT))
++		iio_push_event(indio_dev,
++			       IIO_UNMOD_EVENT_CODE(IIO_ACCEL, 0, IIO_EV_TYPE_MAG_ADAPTIVE,
++						    IIO_EV_DIR_RISING),
++				st->it_timestamp);
++
++exit_unlock:
++	mutex_unlock(&st->lock);
++
++	/* handle raw data interrupt */
++	if (int_status & INV_MPU6050_BIT_RAW_DATA_RDY_INT) {
++		indio_dev->pollfunc->timestamp = st->it_timestamp;
++		iio_trigger_poll_nested(st->trig);
++	}
++
++	return IRQ_HANDLED;
++}
++
+ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type)
+ {
+ 	int ret;
+@@ -235,11 +282,10 @@ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type)
+ 	if (!st->trig)
+ 		return -ENOMEM;
  
- 	INV_MPU6050_TEMP_CHAN(INV_MPU6050_SCAN_TEMP),
+-	ret = devm_request_irq(&indio_dev->dev, st->irq,
+-			       &iio_trigger_generic_data_rdy_poll,
+-			       irq_type,
+-			       "inv_mpu",
+-			       st->trig);
++	ret = devm_request_threaded_irq(&indio_dev->dev, st->irq,
++					&inv_mpu6050_interrupt_timestamp,
++					&inv_mpu6050_interrupt_handle,
++					irq_type, "inv_mpu", indio_dev);
+ 	if (ret)
+ 		return ret;
  
--	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_X, INV_MPU6050_SCAN_GYRO_X),
--	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Y, INV_MPU6050_SCAN_GYRO_Y),
--	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Z, INV_MPU6050_SCAN_GYRO_Z),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_X, INV_MPU6050_SCAN_GYRO_X, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Y, INV_MPU6050_SCAN_GYRO_Y, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Z, INV_MPU6050_SCAN_GYRO_Z, NULL, 0),
- 
--	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_X, INV_MPU6050_SCAN_ACCL_X),
--	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Y, INV_MPU6050_SCAN_ACCL_Y),
--	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_MPU6050_SCAN_ACCL_Z),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_X, INV_MPU6050_SCAN_ACCL_X, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Y, INV_MPU6050_SCAN_ACCL_Y, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_MPU6050_SCAN_ACCL_Z, NULL, 0),
- 
- 	/* Magnetometer resolution is 13 bits */
- 	INV_MPU9X50_MAGN_CHAN(IIO_MOD_X, 13, INV_MPU9X50_SCAN_MAGN_X),
-@@ -1420,13 +1448,16 @@ static const struct iio_chan_spec inv_mpu9250_channels[] = {
- 
- 	INV_MPU6050_TEMP_CHAN(INV_MPU6050_SCAN_TEMP),
- 
--	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_X, INV_MPU6050_SCAN_GYRO_X),
--	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Y, INV_MPU6050_SCAN_GYRO_Y),
--	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Z, INV_MPU6050_SCAN_GYRO_Z),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_X, INV_MPU6050_SCAN_GYRO_X, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Y, INV_MPU6050_SCAN_GYRO_Y, NULL, 0),
-+	INV_MPU6050_CHAN(IIO_ANGL_VEL, IIO_MOD_Z, INV_MPU6050_SCAN_GYRO_Z, NULL, 0),
- 
--	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_X, INV_MPU6050_SCAN_ACCL_X),
--	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Y, INV_MPU6050_SCAN_ACCL_Y),
--	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_MPU6050_SCAN_ACCL_Z),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_X, INV_MPU6050_SCAN_ACCL_X,
-+			 inv_accel_events, ARRAY_SIZE(inv_accel_events)),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Y, INV_MPU6050_SCAN_ACCL_Y,
-+			 inv_accel_events, ARRAY_SIZE(inv_accel_events)),
-+	INV_MPU6050_CHAN(IIO_ACCEL, IIO_MOD_Z, INV_MPU6050_SCAN_ACCL_Z,
-+			 inv_accel_events, ARRAY_SIZE(inv_accel_events)),
- 
- 	/* Magnetometer resolution is 16 bits */
- 	INV_MPU9X50_MAGN_CHAN(IIO_MOD_X, 16, INV_MPU9X50_SCAN_MAGN_X),
-@@ -1831,6 +1862,12 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 		return result;
- 
- 	switch (chip_type) {
-+	case INV_MPU6000:
-+	case INV_MPU6050:
-+		indio_dev->channels = inv_mpu6050_channels;
-+		indio_dev->num_channels = ARRAY_SIZE(inv_mpu6050_channels);
-+		indio_dev->available_scan_masks = inv_mpu_scan_masks;
-+		break;
- 	case INV_MPU9150:
- 		indio_dev->channels = inv_mpu9150_channels;
- 		indio_dev->num_channels = ARRAY_SIZE(inv_mpu9150_channels);
-@@ -1844,13 +1881,13 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 		break;
- 	case INV_ICM20600:
- 	case INV_ICM20602:
--		indio_dev->channels = inv_mpu_channels;
--		indio_dev->num_channels = ARRAY_SIZE(inv_mpu_channels);
-+		indio_dev->channels = inv_mpu6500_channels;
-+		indio_dev->num_channels = ARRAY_SIZE(inv_mpu6500_channels);
- 		indio_dev->available_scan_masks = inv_icm20602_scan_masks;
- 		break;
- 	default:
--		indio_dev->channels = inv_mpu_channels;
--		indio_dev->num_channels = ARRAY_SIZE(inv_mpu_channels);
-+		indio_dev->channels = inv_mpu6500_channels;
-+		indio_dev->num_channels = ARRAY_SIZE(inv_mpu6500_channels);
- 		indio_dev->available_scan_masks = inv_mpu_scan_masks;
- 		break;
- 	}
-@@ -1859,9 +1896,18 @@ int inv_mpu_core_probe(struct regmap *regmap, int irq, const char *name,
- 	 * auxiliary device in use. Otherwise Going back to 6-axis only.
- 	 */
- 	if (st->magn_disabled) {
--		indio_dev->channels = inv_mpu_channels;
--		indio_dev->num_channels = ARRAY_SIZE(inv_mpu_channels);
--		indio_dev->available_scan_masks = inv_mpu_scan_masks;
-+		switch (chip_type) {
-+		case INV_MPU9150:
-+			indio_dev->channels = inv_mpu6050_channels;
-+			indio_dev->num_channels = ARRAY_SIZE(inv_mpu6050_channels);
-+			indio_dev->available_scan_masks = inv_mpu_scan_masks;
-+			break;
-+		default:
-+			indio_dev->channels = inv_mpu6500_channels;
-+			indio_dev->num_channels = ARRAY_SIZE(inv_mpu6500_channels);
-+			indio_dev->available_scan_masks = inv_mpu_scan_masks;
-+			break;
-+		}
- 	}
- 
- 	indio_dev->info = &mpu_info;
 -- 
 2.34.1
 

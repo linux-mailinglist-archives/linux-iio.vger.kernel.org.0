@@ -1,56 +1,55 @@
-Return-Path: <linux-iio+bounces-3052-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3053-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8388862A60
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 13:53:53 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39AB9862A6A
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 14:12:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 677731F2155A
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 12:53:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6921F21516
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 13:12:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB16710940;
-	Sun, 25 Feb 2024 12:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C8111C85;
+	Sun, 25 Feb 2024 13:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nu5NFPCn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ag0DgJpw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC26410A3C
-	for <linux-iio@vger.kernel.org>; Sun, 25 Feb 2024 12:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA42B79D3
+	for <linux-iio@vger.kernel.org>; Sun, 25 Feb 2024 13:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708865628; cv=none; b=FM5wy+a1TUcsj89vH+zpvyaYvXebwUQjGpjf/oj+xpnJpZGbnMKtXdjTpPdGLZG9LDxQFV+gI4JPSRKepfBJ/0t4UYFjYCXlNmghULAtDf32MWFvLLzuZ0izMUnEtiQd9TKiUYB7Y75z8quSOn4k7SwGyPUHifYM20YfdEH1WFg=
+	t=1708866734; cv=none; b=rbqfW14mKONakszTE9ip5V/qqSbyKBroXcMfuNQ62hD/ad22JKNcpI+px5t5iqY5AYM53YdZi5ugzayxoCZuPoj9cIWQSmL5g5e+4c+z0jK00yUueE2yg4999Ubl3mlTE26/WLf8U0uOgYMD5z2azjnKkqZJAX4rwj9ERXZVRlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708865628; c=relaxed/simple;
-	bh=07C4czM1w4CMdiZHAhynBfRIz43nmHnffjeevpS9QQ8=;
+	s=arc-20240116; t=1708866734; c=relaxed/simple;
+	bh=eW1fFiGEKXRu5gc5naBk9Mmgx5/vQUOJc4ehxYy9QIw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gv7Xg7kqhixok+Mu3ioSQk2iQhPpOns1ZMTfpxzVdZs4v0XPGNDvd/EuTowuEfEpTazVbCAKTEIAxTu5gDdfT2zTOkqar/nFi3+hpjcV5L2A+wee/72Ub3excmDRLI68Amwvjfus9zPfKvLyIkhhDGnMMuaF1++wpE+O7WsKpDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nu5NFPCn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03CDC433C7;
-	Sun, 25 Feb 2024 12:53:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iYUaYq+Sfd3ubdMNJ2E4r7rfaiSfDlR6TQt2F6g4lkaHVACZ4M++49UuZQYoPjEzXTJ4VmBg4xOU5dAyBk+07tQxCBQvzN117esO2ryMfmXeBNWwchtZYP9BypTXVtduYuuO3yup8CJFafDP9iwAPFqcOq5/064fNSB9jdTwd74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ag0DgJpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C3DC433F1;
+	Sun, 25 Feb 2024 13:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708865628;
-	bh=07C4czM1w4CMdiZHAhynBfRIz43nmHnffjeevpS9QQ8=;
+	s=k20201202; t=1708866734;
+	bh=eW1fFiGEKXRu5gc5naBk9Mmgx5/vQUOJc4ehxYy9QIw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nu5NFPCnD6RZnP3OZG9Xu3VWDQn0gbdzej/Esv3I8CcXz49i2Z05E2cupPgKRQmip
-	 LzvawBiCAVu3rEFIu0g50tEXy6lQTV8Nf2SonF+xZU6+U675uk0/kpvUM3lw/pNKhA
-	 GLxxmguPTD2OjdNfLUafcx2YMnbxDkqbxbgLqbb89m2ElpwdkDDPxykrw7mphnf8vl
-	 01zGn46TpXyAQvz6To+w5NUzrUEMHQFkAVeCK3PGaQmenY4BQO3Ci5ryTjj8qKEEGK
-	 Y/9zLDM4yrWlmUOEIXkAl9+HvlcgDf1n0Eud1lvx3bCoBLqXL7uGvlSM1e/7b4hF0D
-	 cuJayQOswulLg==
-Date: Sun, 25 Feb 2024 12:53:36 +0000
+	b=ag0DgJpwmUWFFXmYIXaz2nOSdqmS6pOdW/f9dDz1FEj70MF4hu7kuCf8Iopnbbnci
+	 ZQuou+xcJyMjUr5LqRXaaLKoyDJ0gpKOWJRdegPExQQL8ZBPF97lw6Ayt95XWR3k7F
+	 xNxDKrZbYYKH0I3CfzGhHc/A4zvAQPvekpew6pBM7VBn965nu6gEdj+3Rcbfc2n52T
+	 V9rkDWR6SNbYe5EEckGnDXCvwjotmIMTZocf7C37H7fm2Q/avVU7Ig8qDhKdcJRrOj
+	 6Uc+8+Dja8kuGVl5QgLB4G8TqvgzLMWcddT6PH+iWVn543TkSYoKRDC7JZFSv96kjE
+	 DWQdl+EtFoRsg==
+Date: Sun, 25 Feb 2024 13:12:02 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno Sa <nuno.sa@analog.com>
 Cc: <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 4/5] iio: buffer: iio: core: move to the cleanup.h
- magic
-Message-ID: <20240225125336.682aa093@jic23-huawei>
-In-Reply-To: <20240223-iio-use-cleanup-magic-v2-4-f6b4848c1f34@analog.com>
+Subject: Re: [PATCH v2 5/5] iio: inkern: move to the cleanup.h magic
+Message-ID: <20240225131202.165d9c34@jic23-huawei>
+In-Reply-To: <20240223-iio-use-cleanup-magic-v2-5-f6b4848c1f34@analog.com>
 References: <20240223-iio-use-cleanup-magic-v2-0-f6b4848c1f34@analog.com>
-	<20240223-iio-use-cleanup-magic-v2-4-f6b4848c1f34@analog.com>
+	<20240223-iio-use-cleanup-magic-v2-5-f6b4848c1f34@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,124 +60,250 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 23 Feb 2024 13:43:47 +0100
+On Fri, 23 Feb 2024 13:43:48 +0100
 Nuno Sa <nuno.sa@analog.com> wrote:
 
 > Use the new cleanup magic for handling mutexes in IIO. This allows us to
 > greatly simplify some code paths.
 > 
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-
-I think we can do more in here as a result of early returns being available.
-
 > ---
->  drivers/iio/industrialio-buffer.c | 105 ++++++++++++++------------------------
->  1 file changed, 38 insertions(+), 67 deletions(-)
+>  drivers/iio/inkern.c | 224 ++++++++++++++++-----------------------------------
+>  1 file changed, 71 insertions(+), 153 deletions(-)
 > 
-> diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-> index b581a7e80566..ec6bc881cf13 100644
-> --- a/drivers/iio/industrialio-buffer.c
-> +++ b/drivers/iio/industrialio-buffer.c
-> @@ -10,6 +10,7 @@
->   * - Alternative access techniques?
+> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> index 7a1f6713318a..6a1d6ff8eb97 100644
+> --- a/drivers/iio/inkern.c
+> +++ b/drivers/iio/inkern.c
+> @@ -3,6 +3,7 @@
+>   *
+>   * Copyright (c) 2011 Jonathan Cameron
 >   */
->  #include <linux/anon_inodes.h>
 > +#include <linux/cleanup.h>
->  #include <linux/kernel.h>
+>  #include <linux/err.h>
 >  #include <linux/export.h>
->  #include <linux/device.h>
-> @@ -533,28 +534,25 @@ static ssize_t iio_scan_el_store(struct device *dev,
->  	ret = kstrtobool(buf, &state);
->  	if (ret < 0)
->  		return ret;
-> -	mutex_lock(&iio_dev_opaque->mlock);
-> -	if (iio_buffer_is_active(buffer)) {
-> -		ret = -EBUSY;
-> -		goto error_ret;
-> -	}
-> +
-> +	guard(mutex)(&iio_dev_opaque->mlock);
-> +	if (iio_buffer_is_active(buffer))
-> +		return -EBUSY;
-> +
->  	ret = iio_scan_mask_query(indio_dev, buffer, this_attr->address);
->  	if (ret < 0)
-> -		goto error_ret;
-> +		return ret;
-
-We could short cut this I think and end up with a simpler flow.
-The early returns allow something like
-
-	if (state && ret)  /* Nothing to do */
-		return len;
-
-	if (state)
-  		ret = iio_scan_mask_set(indio_dev, buffer, this_attr->address);
-	else
-		ret = iio_scan_mask_clear(buffer, this_attr->address);
-	if (ret)
-		return ret;
-
-	return len;
-
->  	if (!state && ret) {
->  		ret = iio_scan_mask_clear(buffer, this_attr->address);
->  		if (ret)
+>  #include <linux/minmax.h>
+> @@ -43,30 +44,26 @@ static int iio_map_array_unregister_locked(struct iio_dev *indio_dev)
+>  
+>  int iio_map_array_register(struct iio_dev *indio_dev, struct iio_map *maps)
+>  {
+> -	int i = 0, ret = 0;
+> +	int i = 0;
+>  	struct iio_map_internal *mapi;
+>  
+>  	if (!maps)
+>  		return 0;
+>  
+> -	mutex_lock(&iio_map_list_lock);
+> +	guard(mutex)(&iio_map_list_lock);
+>  	while (maps[i].consumer_dev_name) {
+>  		mapi = kzalloc(sizeof(*mapi), GFP_KERNEL);
+>  		if (!mapi) {
+> -			ret = -ENOMEM;
 > -			goto error_ret;
-> +			return ret;
->  	} else if (state && !ret) {
->  		ret = iio_scan_mask_set(indio_dev, buffer, this_attr->address);
->  		if (ret)
-> -			goto error_ret;
-> +			return ret;
+> +			iio_map_array_unregister_locked(indio_dev);
+> +			return -ENOMEM;
+
+break this out to a separate error path via a goto.
+The cleanup is not totally obvious so I'd like it to stand out more
+than being burried here.  This wasn't good in original code either
+as that should just have duplicated the mutex_unlock.
+
+
+>  		}
+>  		mapi->map = &maps[i];
+>  		mapi->indio_dev = indio_dev;
+>  		list_add_tail(&mapi->l, &iio_map_list);
+>  		i++;
 >  	}
->  
 > -error_ret:
-> -	mutex_unlock(&iio_dev_opaque->mlock);
-> -
-> -	return ret < 0 ? ret : len;
-> +	return len;
->  }
+> -	if (ret)
+> -		iio_map_array_unregister_locked(indio_dev);
+> -	mutex_unlock(&iio_map_list_lock);
 >  
-
-
+> -	return ret;
+> +	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(iio_map_array_register);
 
 ...
 
+>  EXPORT_SYMBOL_GPL(iio_map_array_unregister);
 >  
-> @@ -1326,21 +1305,19 @@ static ssize_t enable_store(struct device *dev, struct device_attribute *attr,
->  	if (ret < 0)
->  		return ret;
+> @@ -337,17 +329,17 @@ static struct iio_channel *iio_channel_get_sys(const char *name,
+>  		return ERR_PTR(-ENODEV);
 >  
-> -	mutex_lock(&iio_dev_opaque->mlock);
-> +	guard(mutex)(&iio_dev_opaque->mlock);
->  
->  	/* Find out if it is in the list */
->  	inlist = iio_buffer_is_active(buffer);
->  	/* Already in desired state */
->  	if (inlist == requested_state)
-> -		goto done;
-> +		return len;
->  
->  	if (requested_state)
->  		ret = __iio_update_buffers(indio_dev, buffer, NULL);
->  	else
->  		ret = __iio_update_buffers(indio_dev, NULL, buffer);
->  
-> -done:
-> -	mutex_unlock(&iio_dev_opaque->mlock);
->  	return (ret < 0) ? ret : len;
-Maybe just switch this for
+>  	/* first find matching entry the channel map */
+> -	mutex_lock(&iio_map_list_lock);
+> -	list_for_each_entry(c_i, &iio_map_list, l) {
+> -		if ((name && strcmp(name, c_i->map->consumer_dev_name) != 0) ||
+> -		    (channel_name &&
+> -		     strcmp(channel_name, c_i->map->consumer_channel) != 0))
+> -			continue;
+> -		c = c_i;
+> -		iio_device_get(c->indio_dev);
+> -		break;
+> +	scoped_guard(mutex, &iio_map_list_lock) {
+> +		list_for_each_entry(c_i, &iio_map_list, l) {
+> +			if ((name && strcmp(name, c_i->map->consumer_dev_name) != 0) ||
+> +			    (channel_name &&
+> +			     strcmp(channel_name, c_i->map->consumer_channel) != 0))
+> +				continue;
+> +			c = c_i;
+> +			iio_device_get(c->indio_dev);
+> +			break;
+This mix of continue and break is odd. But not something to cleanup in this patch.
+It's based on assumption we either have name or channel_name which is checked above.
+			if ((name && strcmp(name, c_i->map->consumer_dev_name) == 0) ||
+			    (!name && stcmp(channel_name, c_i->map->consumer_channel == 0)) {
+				c = c_i;
+				iio_device_get(c->indio_dev);
+				break;
+			}
+is I think equivalent. Still too complex for this patch I think.
 
-	if (ret < 0)
-		return ret;
+> +		}
+>  	}
+> -	mutex_unlock(&iio_map_list_lock);
+>  	if (!c)
+>  		return ERR_PTR(-ENODEV);
+>  
+> @@ -469,7 +461,7 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
+>  
+>  	name = dev_name(dev);
+>  
+> -	mutex_lock(&iio_map_list_lock);
+> +	guard(mutex)(&iio_map_list_lock);
+>  	/* first count the matching maps */
+>  	list_for_each_entry(c, &iio_map_list, l)
+>  		if (name && strcmp(name, c->map->consumer_dev_name) != 0)
+> @@ -477,17 +469,13 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
+>  		else
+>  			nummaps++;
+>  
+> -	if (nummaps == 0) {
+> -		ret = -ENODEV;
+> -		goto error_ret;
+> -	}
+> +	if (nummaps == 0)
+> +		return ERR_PTR(-ENODEV);
+>  
+>  	/* NULL terminated array to save passing size */
+>  	chans = kcalloc(nummaps + 1, sizeof(*chans), GFP_KERNEL);
 
-	return len;
+as below, consider dragging the instantiation down here and use __free(kfree) for this
+plus make sure to return_ptr() at the good exit path.
 
-So it looks more like the new return len above?
+> -	if (!chans) {
+> -		ret = -ENOMEM;
+> -		goto error_ret;
+> -	}
+> +	if (!chans)
+> +		return ERR_PTR(-ENOMEM);
+>  
+>  	/* for each map fill in the chans element */
+>  	list_for_each_entry(c, &iio_map_list, l) {
+> @@ -509,7 +497,6 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
+>  		ret = -ENODEV;
+>  		goto error_free_chans;
+>  	}
+> -	mutex_unlock(&iio_map_list_lock);
+>  
+>  	return chans;
+>  
+> @@ -517,9 +504,6 @@ struct iio_channel *iio_channel_get_all(struct device *dev)
+>  	for (i = 0; i < nummaps; i++)
+>  		iio_device_put(chans[i].indio_dev);
+>  	kfree(chans);
 
+Could use __free(kfree) and return_ptr(chans);  Not a huge gain though
+so maybe not worth it.
+
+> -error_ret:
+> -	mutex_unlock(&iio_map_list_lock);
+> -
+>  	return ERR_PTR(ret);
 >  }
 
-> 
+
+>  EXPORT_SYMBOL_GPL(iio_read_channel_attribute);
+>  
+> @@ -757,30 +713,25 @@ int iio_read_channel_processed_scale(struct iio_channel *chan, int *val,
+>  	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
+>  	int ret;
+>  
+> -	mutex_lock(&iio_dev_opaque->info_exist_lock);
+> -	if (!chan->indio_dev->info) {
+> -		ret = -ENODEV;
+> -		goto err_unlock;
+> -	}
+> +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+> +	if (!chan->indio_dev->info)
+> +		return -ENODEV;
+>  
+>  	if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_PROCESSED)) {
+>  		ret = iio_channel_read(chan, val, NULL,
+>  				       IIO_CHAN_INFO_PROCESSED);
+>  		if (ret < 0)
+> -			goto err_unlock;
+> +			return ret;
+> +
+>  		*val *= scale;
+> -	} else {
+
+Whilst unnecessary I'd keep the else as it documents the clear choice between
+option a and option b in a way that an if (x) return;  carry on
+doesn't.
+
+> -		ret = iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_RAW);
+> -		if (ret < 0)
+> -			goto err_unlock;
+> -		ret = iio_convert_raw_to_processed_unlocked(chan, *val, val,
+> -							    scale);
+> +		return ret;
+>  	}
+>  
+> -err_unlock:
+> -	mutex_unlock(&iio_dev_opaque->info_exist_lock);
+> +	ret = iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_RAW);
+> +	if (ret < 0)
+> +		return ret;
+>  
+> -	return ret;
+> +	return iio_convert_raw_to_processed_unlocked(chan, *val, val, scale);
+>  }
+
+
+>  
+>  int iio_get_channel_type(struct iio_channel *chan, enum iio_chan_type *type)
+>  {
+>  	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(chan->indio_dev);
+> -	int ret = 0;
+> -	/* Need to verify underlying driver has not gone away */
+>  
+> -	mutex_lock(&iio_dev_opaque->info_exist_lock);
+> -	if (!chan->indio_dev->info) {
+> -		ret = -ENODEV;
+> -		goto err_unlock;
+> -	}
+> +	/* Need to verify underlying driver has not gone away */
+
+We only have this comment in some cases. I'd just drop it as kind of obvious
+given the naming.  If you do this though add a note to the patch description.
+
+> +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+> +	if (!chan->indio_dev->info)
+> +		return -ENODEV;
+>  
+>  	*type = chan->channel->type;
+> -err_unlock:
+> -	mutex_unlock(&iio_dev_opaque->info_exist_lock);
+>  
+> -	return ret;
+> +	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(iio_get_channel_type);
+>  
+
 
 

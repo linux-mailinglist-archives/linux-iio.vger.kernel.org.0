@@ -1,61 +1,63 @@
-Return-Path: <linux-iio+bounces-3046-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3047-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3037862A39
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 13:08:50 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 770AF862A41
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 13:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2DE0EB20D3F
-	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 12:08:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19664281A4A
+	for <lists+linux-iio@lfdr.de>; Sun, 25 Feb 2024 12:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A4810A14;
-	Sun, 25 Feb 2024 12:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B065210A2C;
+	Sun, 25 Feb 2024 12:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+L3wqwW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lAqHxAmn"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FDF510949;
-	Sun, 25 Feb 2024 12:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6473CD528;
+	Sun, 25 Feb 2024 12:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708862922; cv=none; b=iOboOxqtcenGVgFF4L89diiuOhuVecmu+nurnQY/kPgV6/ImwcV//orqrzMOJem35GPcNVS3i+Rj35hAbREkB7RCsiusiP0JK+WCZejhtKqQ/4sGWpug23eYjel+FC/sFIX0WEWIktppT7d7bdjwur69Z9bF7hPJkA+OXxu2sqY=
+	t=1708863272; cv=none; b=FhCxRZ5CX/H58VVnF3y3LmcExjuXxdtOr4XNuh63VrSVSZoWjIF+OXR6Ugm7Kco9g4QRj/RrVStAJ+FtQIlTFsq2iS0QpJDZDqX1ysqB/AttzEJ3skjHeTosvu5A4VV+Gm0hSkslSpa2b+tmiS8fyqDeeqHv7MiV0UXLnirNNmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708862922; c=relaxed/simple;
-	bh=eydAkpN3ARvz8HNfZbd4wFlBoDliT+NX7NKAijjvth0=;
+	s=arc-20240116; t=1708863272; c=relaxed/simple;
+	bh=lYRiH0WxZt/e65XgOHzmCpT7ziP+FDLeHqqPGpHDKWw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gwJrJqxAIRKMGbhiQWO/TRPQBSc44pMcEj9w5yRgYh14oPh2OU+Kru0S3U3CPVYsBBL2RLcrK7GBehU/07lM/tjgJcXZ4jVrDijSiQBjuS1zSuQ1xRRQQci6DJLvVKK3UtS39DgKpqti4B7SwO9zH3bpaVkXf/W/axYXK1Pj0Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+L3wqwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4EFC433C7;
-	Sun, 25 Feb 2024 12:08:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t8Eku5dP4/3sSw4m1uh0jnVJG6PeRPLgay0zq2+1OVRi2hOhI/xW8jakuWzqivNMdf9hvPfxxB+zqWNt7Vy99kC0VnOVNUTHH4aAzewX35HlEd+m/XhTmB8+fgANbdOx07H8r09XigWLQ2I4pvEhtTj8UBFZKd7hh4Z/PfL6Fxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lAqHxAmn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FF5C433C7;
+	Sun, 25 Feb 2024 12:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708862922;
-	bh=eydAkpN3ARvz8HNfZbd4wFlBoDliT+NX7NKAijjvth0=;
+	s=k20201202; t=1708863271;
+	bh=lYRiH0WxZt/e65XgOHzmCpT7ziP+FDLeHqqPGpHDKWw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=A+L3wqwW5kU6J1ew7Xy45XRrRdzax5touHVHzCU2p4MqE8B4OSMXHRbH0YN4cfBEn
-	 o6EjskXbrNjdiUhT8kJ8qpWqn4kEohKIKk/j2+KRRctfBpYAbnqTbsd/dKsdqciNx0
-	 VB0D+nCPnFxHkeEtl61I7uXjfH0pZNmxCxMeBcGButUY877TcNPbCbi1uwbWdaszqS
-	 IwdH/elwQiDmPUeQ3PMf+A9Fyw+u+zgdQyYFLRLxlptyQgPnT9VcJk2JGSExDugtnY
-	 7PDsDAq34WL4Y31fHB/byeQQim9YQj8pUVu95hwx/XyFsoKe7fediSyB5JHv8kqdPw
-	 arYhAvRVJCWvA==
-Date: Sun, 25 Feb 2024 12:08:28 +0000
+	b=lAqHxAmnwX+wQgFgMmo/WoutOetPW7LfjA51qEu/bIinx7PuGe4QFMBtzZ2pli1qe
+	 tCy69NXBD6bc06eLQCHF6upiWLbgyzUIq7Bc/rmxt8y/OrsDt2d/1Gbfas5NeMWXjq
+	 HtGzbG2er9uxpYTo8P8gzNrkj8dSRihiS35BEfYNMpCI3vK3un9emf/E9hTs2u/3Xu
+	 Jv+zllXJaSr0mtf72QAbYRbfK33P2eHSfNS2on2Kog45f0U6GsxTLtQYtCvkLVGUji
+	 Q2efWsaJGetOV5qclliApd73zJV/eNKvSZosBdavPMO39huBNmr5twTc3UpoVQNcrx
+	 UTJhqxwGiDHFw==
+Date: Sun, 25 Feb 2024 12:14:15 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: =?UTF-8?B?T25kxZllag==?= Jirman <megi@xff.cz>
-Cc: linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Andrey Skvortsov <andrej.skvortzov@gmail.com>, Icenowy Zheng
- <icenowy@aosc.io>, Dalton Durst <dalton@ubports.com>, Shoji Keita
- <awaittrot@shjk.jp>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v4 3/4] iio: magnetometer: add a driver for Voltafield
- AF8133J magnetometer
-Message-ID: <20240225120828.3ae2d16d@jic23-huawei>
-In-Reply-To: <20240222011341.3232645-4-megi@xff.cz>
-References: <20240222011341.3232645-1-megi@xff.cz>
-	<20240222011341.3232645-4-megi@xff.cz>
+To: Kees Cook <keescook@chromium.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
+ <u.kleine-koenig@pengutronix.de>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, linux-iio@vger.kernel.org, Nathan Chancellor
+ <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Bill
+ Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
+ llvm@lists.linux.dev, Tomislav Denis <tomislav.denis@avl.com>,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v2] iio: pressure: dlhl60d: Initialize empty DLH bytes
+Message-ID: <20240225121415.273ec110@jic23-huawei>
+In-Reply-To: <202402230949.E06F3297@keescook>
+References: <20240223172936.it.875-kees@kernel.org>
+	<ZdjaOLVd1yxNXhsp@smile.fi.intel.com>
+	<202402230949.E06F3297@keescook>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,33 +65,48 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 22 Feb 2024 02:13:37 +0100
-Ond=C5=99ej Jirman <megi@xff.cz> wrote:
+On Fri, 23 Feb 2024 09:50:10 -0800
+Kees Cook <keescook@chromium.org> wrote:
 
-> From: Icenowy Zheng <icenowy@aosc.io>
->=20
-> AF8133J is a simple I2C-connected magnetometer, without interrupts.
->=20
-> Add a simple IIO driver for it.
->=20
-> Co-developed-by: Icenowy Zheng <icenowy@aosc.io>
-> Signed-off-by: Icenowy Zheng <icenowy@aosc.io>
-> Signed-off-by: Dalton Durst <dalton@ubports.com>
-> Signed-off-by: Shoji Keita <awaittrot@shjk.jp>
-> Co-developed-by: Ondrej Jirman <megi@xff.cz>
-> Signed-off-by: Ondrej Jirman <megi@xff.cz>
-> Reviewed-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-> Tested-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+> On Fri, Feb 23, 2024 at 07:47:36PM +0200, Andy Shevchenko wrote:
+> > On Fri, Feb 23, 2024 at 09:29:39AM -0800, Kees Cook wrote:  
+> > > 3 bytes were being read but 4 were being written. Explicitly initialize
+> > > the unused bytes to 0 and refactor the loop to use direct array
+> > > indexing, which appears to silence a Clang false positive warning[1].  
+> > 
+> > ...
+> >   
+> > >  	for_each_set_bit(chn, indio_dev->active_scan_mask,
+> > > -		indio_dev->masklength) {
+> > > -		memcpy(tmp_buf + i,
+> > > +			 indio_dev->masklength) {
+> > > +		memcpy(&tmp_buf[i++],
+> > >  			&st->rx_buf[1] + chn * DLH_NUM_DATA_BYTES,
+> > >  			DLH_NUM_DATA_BYTES);
+> > > -		i++;
+> > >  	}  
+> > 
+> > Not that I'm against the changes, but they (in accordance with the commit
+> > message) are irrelevant to this fix. I prefer fixes to be more focused on
+> > the real issues.  
+> 
+> Jonathan, let me know if you'd prefer I split this patch...
+> 
+Andy is strictly speaking correct that the indent should be separate patch
+but meh - not worth the time to split that out + the change makes the
+fixed code itself easier to read. 
 
-One additional tweak from my local build tests.
+I added a tiny comment to say it the indent tidying up was incorporated
+so the fixed code was more readable.
 
-static
+Applied to the fixes-togreg branch of iio.git and marked for stable.
 
-> +const struct dev_pm_ops af8133j_pm_ops =3D {
-> +	SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend, pm_runtime_force_resume)
-> +	RUNTIME_PM_OPS(af8133j_runtime_suspend, af8133j_runtime_resume, NULL)
-> +};
+Given timing this may well go in during the merge window rather than
+before.
+
+Jonathan
+
 

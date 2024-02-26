@@ -1,60 +1,68 @@
-Return-Path: <linux-iio+bounces-3107-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3108-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D42868109
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 20:32:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17AFC868117
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 20:35:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 89978B23AA7
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 19:27:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9A96B22007
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 19:30:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1212412FB39;
-	Mon, 26 Feb 2024 19:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94515130ADE;
+	Mon, 26 Feb 2024 19:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lrxavY2O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mwqQlZLn"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAED12F5A4;
-	Mon, 26 Feb 2024 19:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A093A12FF68
+	for <linux-iio@vger.kernel.org>; Mon, 26 Feb 2024 19:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708975647; cv=none; b=YWw04rN75topSTo7swK7T24LdHzv83ZXigMSQPIR2TH9pL50gyvSczqjYTI0gfBkDl+mbt/OC8KGsi83Skwg7O1TLhxfDatY4wGNzLbOtKnsbN/7imu4JVglbKmDVp6tG9bpsvgIDJ+4/VlvyquAYYra8zd05w0Dt3mLt39ZYHE=
+	t=1708975827; cv=none; b=ZigKHZBoxLLhNCLToU5JHDaYU/ArhFb8b2uo+kUto7a6gK1jBPqUiRBNwRMqpdN8oz6fgqayq5ZCy7zwHgI05gf5BoltoWnsWI6SDp6JUQi+pvDl1MLUes6mzdgyiGDDmoGY2m/zumjw/N2YyCjKmAjIBJip0rujYUOarO+6ms8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708975647; c=relaxed/simple;
-	bh=aJbYoUvl3lfn7Y5sMCUZh5e5qg+OrgmfaaR50t0lkJQ=;
+	s=arc-20240116; t=1708975827; c=relaxed/simple;
+	bh=1Jw7z7D7vXEx996HpOCgaa7Nd7BCkmuDXTdGmROi+08=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W/eK1cCqflsfzGl4LOlsBnM3Q57oc96LKPQ+e0gN/jyr/vpLExE4JzHu3p7Nx+URLjFfT9qlNqCDTamH8KmNwhRr/0CRpJJX2fS6umC89YWPDc8hk5iymAF6Jm4y0b46oKhYrPAF72jwsICj45dJzm7/PFBdhMZMKEJNcM8ke4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lrxavY2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D891C433F1;
-	Mon, 26 Feb 2024 19:27:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iU9IQWv9Gd8DUajZYfLFPLxRpNzRmyXvhP7xnJ5/5fC1E/kJb4CDURtYYlmXY1GLsaIugwgIKlKRiUdh76798JDHAV8jk9GugKIODkOH1c8mEDcyZrAe0p39IZfxMqLca5shYsWI22gAQkR+zWIXamcjGDz9o7WRw/ppQ8NdASQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mwqQlZLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67801C433C7;
+	Mon, 26 Feb 2024 19:30:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708975647;
-	bh=aJbYoUvl3lfn7Y5sMCUZh5e5qg+OrgmfaaR50t0lkJQ=;
+	s=k20201202; t=1708975825;
+	bh=1Jw7z7D7vXEx996HpOCgaa7Nd7BCkmuDXTdGmROi+08=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lrxavY2Owp9oUSCoyyk7c/jH+HbEE7iLdJMWXEjCj8Iz8OrkGd21LKCfDiWtbksUn
-	 eSvBJf0UL3HTBonJ+o2BzGVV1ktYQr4FxRcBtJfuPsc/UYTYheo/M3eafrSsTdzJEK
-	 6oRw7QJhT+D44GIXlXs7As7ovpSx6kHGaPgQPzB/qu5ymbKREirSosOsT9cMOcIKdJ
-	 H0VKJiefYNPBcuzHs2OWI35jRe+b2aCOweOAHMLVFDcc0caPndshNvFGFXiWzmRjoA
-	 FXB6lFzXyxxyxoWI1KQhBBT6iCHW1Ba/Je1/euDHbsd9+NwFwZY/qZJGMssborKpBx
-	 2qiDHHNtLcFgA==
-Date: Mon, 26 Feb 2024 19:27:11 +0000
+	b=mwqQlZLnoY8U10GxuK4PqHmYR6eXajRcDI/AcUHOn1yJo3WFacta+SmQ4LoIQ5jL/
+	 bTt9TindQ2flHBSHeZmRErpdb0n9lFNcNJ/yDS2nLtPnWx3/x/1vAdt8qzJ7JRuwQ4
+	 KKPLZfXWz6VabtMi9HOj/6ElnswEIpjaZNPV/zFQyXqRY8yhnWgMgmQCeKSeAPf3hk
+	 X1QBgwBzWiqqQNuC7rfOK5+bsEBvlAD1kpDB66hm+7E48ptIqXG5qhNSuyxVH64Tyt
+	 SV4083FNNR9+Tvo3vfdzxj/yETBHVR+QRTw5YBchyVBBcQVJOV08OABi9LxLiHGbDy
+	 DfT2BVhHUdd5A==
+Date: Mon, 26 Feb 2024 19:30:07 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nathan Chancellor <nathan@kernel.org>, Nick
- Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
- Justin Stitt <justinstitt@google.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v2 2/2] iio: proximity: isl29501: make use of
- of_device_id table
-Message-ID: <20240226192711.1da77a05@jic23-huawei>
-In-Reply-To: <20240225201654.49450-2-krzysztof.kozlowski@linaro.org>
-References: <20240225201654.49450-1-krzysztof.kozlowski@linaro.org>
-	<20240225201654.49450-2-krzysztof.kozlowski@linaro.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?=  <nuno.sa@analog.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Cosmin Tanislav
+ <cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
+ <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier Moysan
+ <olivier.moysan@foss.st.com>, Fabrice Gasnier
+ <fabrice.gasnier@foss.st.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>, Marijn Suijten
+ <marijn.suijten@somainline.org>, Marius Cristea
+ <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v5 1/9] iio: temp: ltc2983: Use __free(fwnode_handle)
+ and device_for_each_node_scoped()
+Message-ID: <20240226193007.670a6406@jic23-huawei>
+In-Reply-To: <95e48bb871d172b51786b814388d8d6e001ac76a.camel@gmail.com>
+References: <20240224123215.161469-1-jic23@kernel.org>
+	<20240224123215.161469-2-jic23@kernel.org>
+	<95e48bb871d172b51786b814388d8d6e001ac76a.camel@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,57 +70,41 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 25 Feb 2024 21:16:54 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Mon, 26 Feb 2024 09:35:49 +0100
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> Reference the of_device_id table in the driver structure, so it will be
-> used for module autoloading and device matching.  This fixes clang W=1
-> warning:
-> 
->   isl29501.c:999:34: error: unused variable 'isl29501_i2c_matches' [-Werror,-Wunused-const-variable]
-> 
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Applied just patch 2.
+> On Sat, 2024-02-24 at 12:32 +0000, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >=20
+> > This use of the new cleanup.h scope based freeing infrastructure allows
+> > us to exit directly from error conditions and in the good path with
+> > the reference obtained from fwnode_find_reference() (which may be an er=
+ror
+> > pointer) automatically released.
+> >=20
+> > Similarly the _scoped() version of device_for_each_child_node()
+> > removes the need for the manual calling of fwnode_handl_put() in
+> > paths where the code exits the loop early.
+> >=20
+> > Tidy up some unusual indentation in a dev_dbg() whilst here.
+> >=20
+> > Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>
+> > Cc: Nuno S=C3=A1 <nuno.sa@analog.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> >=20
+> > ---
+> > v5: Add the device_for_each_child_node_scoped() change (Nuno)
+> > --- =20
+>=20
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+I'll pick up this now as whilst I hope someone will check the others, I know
+you are building on this and it will make life easier if this is already
+queued up.
 
 Thanks,
 
 Jonathan
-> 
-> ---
-> 
-> Rework according to comments.
-> 
-> An old v1:
-> https://lore.kernel.org/all/20230810111933.205619-1-krzysztof.kozlowski@linaro.org/
-> ---
->  drivers/iio/proximity/isl29501.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/proximity/isl29501.c b/drivers/iio/proximity/isl29501.c
-> index bcebacaf3dab..4982686fb4c3 100644
-> --- a/drivers/iio/proximity/isl29501.c
-> +++ b/drivers/iio/proximity/isl29501.c
-> @@ -995,17 +995,16 @@ static const struct i2c_device_id isl29501_id[] = {
->  
->  MODULE_DEVICE_TABLE(i2c, isl29501_id);
->  
-> -#if defined(CONFIG_OF)
->  static const struct of_device_id isl29501_i2c_matches[] = {
->  	{ .compatible = "renesas,isl29501" },
->  	{ }
->  };
->  MODULE_DEVICE_TABLE(of, isl29501_i2c_matches);
-> -#endif
->  
->  static struct i2c_driver isl29501_driver = {
->  	.driver = {
->  		.name	= "isl29501",
-> +		.of_match_table = isl29501_i2c_matches,
->  	},
->  	.id_table	= isl29501_id,
->  	.probe		= isl29501_probe,
-
 

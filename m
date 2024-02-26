@@ -1,134 +1,148 @@
-Return-Path: <linux-iio+bounces-3111-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3112-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A09D48682D0
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 22:17:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FAC88682F4
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 22:26:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5798828A275
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 21:17:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFD0528A51B
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 21:26:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A281131747;
-	Mon, 26 Feb 2024 21:17:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF5A131751;
+	Mon, 26 Feb 2024 21:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CVZuCtf3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GMlCQEeD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0F1130E58;
-	Mon, 26 Feb 2024 21:17:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16871CA91;
+	Mon, 26 Feb 2024 21:25:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708982232; cv=none; b=bLX0O46QvsM+vq978w4VdL6H0DTlLoPHsdYFBKeboZFa659ECTVe6gwNXSN5cdKvonBDh/1r7V58dgz3emuXGxi1TCb5TNSutwxGjQyhM+D6gKMJ87SnT9TEuXPKgfSWr6j+IasUURnNWBdVRggr3JZzeNZUsdnvrbGv2k6cNVI=
+	t=1708982761; cv=none; b=AsIeqtcPDjPgWvHgGqnqntgfxmfui2knn/jISpKUVpnm6IOnnzX1Hll80CF7cwTN28fSVaN7AUB7SSc9PFJ5nRLzW74u6i9SNEjNVK8axZ4qbl+9wQFGCL77vfE5GPuik7Bfi5izquCC1sn4wbn70YRIPUOqUDhyBsJ0sIsSAZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708982232; c=relaxed/simple;
-	bh=fwYYpXzdEOYjL8eAtATGi8UM6eh2OJjoljUqW1PwVUc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sdXrGpfy3lNiNhnwEZb5Ia/RA9PLdeL34WFZ3RWyEfHfgTUVEVUKo6Ujm6S0o6J3mGQuwlIef7G4nQ36eBTz4yhgyYIchX42NiGdL55jsP8Vzq5pM+pip5RqRU8JP42ONP4hAwnmUlVc0FiyUmMerS5xELOh9eozReuDWxh0wKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CVZuCtf3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B65CC433C7;
-	Mon, 26 Feb 2024 21:17:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708982231;
-	bh=fwYYpXzdEOYjL8eAtATGi8UM6eh2OJjoljUqW1PwVUc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CVZuCtf3s3iT2n5OxYC/w3Q38A4FGsmGQ7/1K2UvmYp9ox0/XHcxkwD4MDWP9aqzw
-	 7mRS8JYnxGQK+/8E4gofKumBYgFuyu1TtbHALkTRnvmT9gAuKztgFbQPxCQsX3EvOB
-	 kIMPjJUfpcVA8xW6/Qmo3PZ8FRID3tHTWuFDpRsG3KRHD/GkZHQbzDMKXgZ+5HSEfE
-	 4Pn4RMqzsQFM6Gdi0/FRPI3fM5LqDcw/QtKlIFqD/li46DxYlmCypH3d0euzN4DhGM
-	 YuyQw+MI5RMKA/rrkpX/29eUim8Uh5LUNZNnyPvixJ5I1v8y9Gm1tMsRZjAuYG7EDd
-	 OO1//B9mq/prw==
-Date: Mon, 26 Feb 2024 21:17:06 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, haibo.chen@nxp.com,
-	lars@metafoo.de, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org, shawnguo@kernel.org, s.hauer@pengutronix.de,
-	kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	Peng Fan <peng.fan@nxp.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: imx93: drop the 4th interrupt
-Message-ID: <20240226-rectangle-pacifist-633ae3b801c7@spud>
-References: <20240226130826.3824251-1-peng.fan@oss.nxp.com>
- <20240226-germinate-anymore-fb85ca9bb226@spud>
- <20240226192055.54b4a6b1@jic23-huawei>
+	s=arc-20240116; t=1708982761; c=relaxed/simple;
+	bh=Zs2gDuZA5ZODfpEp9+C4m2HVDRB1eKQpO4m4StbVvVo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=pREosLqyZZLgYtZX2YoAFiZp73GFJ2jyxd2bohgIL5NzqwZJ7baYKYBhF3Bqel5tDs6b5717MMLpP43DlPAUsOnYQu4reydeNTJmLilZFgXersbAtybVGP7jOMN1N1bSoNSLZRcLBluGucTFGCY7F1DkELUFh5ye2kHtQwMun6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GMlCQEeD; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a28a6cef709so549400666b.1;
+        Mon, 26 Feb 2024 13:25:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1708982758; x=1709587558; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=taG28Ml2TAcZMSyfmZnFNJIh7ibCQOUX3TCA8bLk/iw=;
+        b=GMlCQEeD/dm7vb99fpvJcy96/IsKFCGUWKOOaMrOZjv+MsRgZLbVWBSTYHcl5szNNm
+         wMrVqhM2nU26wPLD5e2NQYWOK3hBoknbi3RqFV/iQDOzwS58iP8B+2IlgLMv+rtIa1ri
+         cbBmMY2V4NQbypUkh9N3giM8ytCG06TVjz8V9mganhrwajJTH2WdUZo2Ss+jYXZ/M6QI
+         V290v7Q1alYFoOeox18VjnzV1y6nbnX08+yBOxNRAodfIcaiVMZMLfAyp25DS4S9VwR5
+         tijkR7BLxdHF74qhC3jXFV+XrEjoggamQzOA6FPcG5/bHpVbVBLy8qw15Fg5bifq5Dbe
+         HWBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1708982758; x=1709587558;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=taG28Ml2TAcZMSyfmZnFNJIh7ibCQOUX3TCA8bLk/iw=;
+        b=LStJHE45zDYG1t+PK0NNZI0nmWE7bEEIw0w4WbAggtYs/bupv2aK422koqlUNKU7k/
+         5y3Hdzg0YqLNVPPToCwwOI8dnSWzWoG/gZ+YWxLjkQa0b8dYXmxMOaKYKqVqonrcIcxy
+         7KXZ+J9KG+4CoW1Atsz7O8qep7ONEiw5ryWvZuIS4P4Odh+bcm6jGsrfzbOSBBcSoL3V
+         I9KRX6AvQ1tCv+Jytw6qh8M0fG2YSDkIMJmNsLthr1ZNAqLO3HHFttfITr6U37xToXaR
+         yoK0pprn0njyZ6IGp81VslXFEuwj5eAjW2CKZs9GXENAqbiP42NYTYCGqT/kZwvXvQ/u
+         qtzw==
+X-Forwarded-Encrypted: i=1; AJvYcCUbRi8ytDTr9fjqYgfbjV/l29SSu3d2A2qV8SsjBBf1B//EK64Y0nY1PbxeERV342ygLG+FRsoKzRWeHRLWZJjcc5FuPzmgeOslhUAulR5bht5QBBiF9Nli4BkovKRu98tBzex+W8JYBGyeaSLufU+za/SJ0bx+2SJxyXSqzVfvXAHJIw==
+X-Gm-Message-State: AOJu0Yz8sBN18h5O0UqOMbcMoNrw1toN4fo8CLENBVkvyHXQ7nptHVW6
+	1HMb2e5u42cnhaaDI6e6F295XBVZVhB0jZDelysmB/klehKMhbhyXxQ/NyHlFETpzw==
+X-Google-Smtp-Source: AGHT+IHCmJodJVJGy5ohDz/9VB3pKpiJeOM4I9HC+dMMors/n1EoY9aOiUkoSF0Dh8rW1fD8+CO+0g==
+X-Received: by 2002:a17:906:3789:b0:a3f:1b3a:1289 with SMTP id n9-20020a170906378900b00a3f1b3a1289mr5636079ejc.59.1708982757776;
+        Mon, 26 Feb 2024 13:25:57 -0800 (PST)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-06e1-5ae1-dc32-d149.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:6e1:5ae1:dc32:d149])
+        by smtp.gmail.com with ESMTPSA id uz28-20020a170907119c00b00a3df13a4fe0sm122386ejb.15.2024.02.26.13.25.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 26 Feb 2024 13:25:57 -0800 (PST)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v2 0/3] iio: humidity: hdc3020: add power and reset
+ management
+Date: Mon, 26 Feb 2024 22:25:54 +0100
+Message-Id: <20240226-hdc3020-pm-v2-0-cec6766086e8@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="tIzW5O2k7AACHYUt"
-Content-Disposition: inline
-In-Reply-To: <20240226192055.54b4a6b1@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAOIB3WUC/03MSwrCMBSF4a2UOzaSh5jGkfuQDtLk2lwwbUkkK
+ CV7NxYHDv8D59sgYyLMcOk2SFgo0zK3kIcOXLDzhIx8a5BcnrgUmgXvFJecrZEJrU2vPCpnR2i
+ HNeGdXjt2G1oHys8lvXe7iO/6Y9r9jymCceZ7PHM/ojZorlO09Di6JcJQa/0AeOm3WqQAAAA=
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Li peiyu <579lpy@gmail.com>, 
+ Rob Herring <robh+dt@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1708982756; l=1913;
+ i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
+ bh=Zs2gDuZA5ZODfpEp9+C4m2HVDRB1eKQpO4m4StbVvVo=;
+ b=b9JYg0PtSqOYll/eubQcIYUX8ad1VIa8WWC+FVhSeWubJPsCXkd3seZvBlQJrINVi59YDU+TH
+ GNSRugvd9ZkCrpYMUdntxCVs0A+wphyaI74t43d84WTG8JrCw5pTNFl
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
 
+This series adds power management for the hdc3020 humidity and
+temperature sensor as well as control over the reset signal the device
+provides.
 
---tIzW5O2k7AACHYUt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The hdc3020 carries out measurements automatically, which is not
+necessary in low-power modes. Furthermore, if the low-power
+configuration turns off the device, proper initialization is required to
+account for the setup times and initial status register value.
 
-On Mon, Feb 26, 2024 at 07:20:55PM +0000, Jonathan Cameron wrote:
-> On Mon, 26 Feb 2024 16:24:47 +0000
-> Conor Dooley <conor@kernel.org> wrote:
->=20
-> > On Mon, Feb 26, 2024 at 09:08:25PM +0800, Peng Fan (OSS) wrote:
-> > > From: Peng Fan <peng.fan@nxp.com>
-> > >=20
-> > > Per i.MX93 Reference Mannual Rev.4, 12/2013, there is no interrupt 26=
-8,
-> > > so drop it. =20
-> >=20
-> > Don't just remove it from the example, drop it from the binding too?
-> > It does permit a 4th "self testing" interrupt.
->=20
-> I'm missing something. See below...
-> >=20
-> > Thanks,
-> > Conor.
-> >=20
-> > >=20
-> > > Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > > ---
-> > >  Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml | 4 +---
-> > >  1 file changed, 1 insertion(+), 3 deletions(-)
-> > >=20
-> > > diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.=
-yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> > > index dacc526dc695..dfc3f512918f 100644
-> > > --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> > > +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> > > @@ -31,7 +31,6 @@ properties:
-> > >        - description: normal conversion, include EOC (End of Conversi=
-on),
-> > >            ECH (End of Chain), JEOC (End of Injected Conversion) and
-> > >            JECH (End of injected Chain).
-> > > -      - description: Self-testing Interrupts.
->=20
-> Eyes skipped over this maybe?  The 4th interrupt is removed from binding =
-here...
+This device provides an active low reset signal that must be handled if
+connected. This signal can be used by the driver to keep the device
+under minimal power consumption during low-power modes if the power
+supply stays active.
 
-Huh, wonder how I missed that. I thought I double checked...
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+This series uses char-misc-next as basis to include the last additions
+to the driver to handle events [1] as well as the fix to include the
+entries in the Makefile and Kconfig files [2].
 
-Cheers,
-Conor.
+[1] https://lore.kernel.org/linux-iio/20240214085350.19382-1-dima.fedrau@gmail.com/
+[2] https://lore.kernel.org/linux-iio/20240121135123.71506-1-jic23@kernel.org/
 
---tIzW5O2k7AACHYUt
-Content-Type: application/pgp-signature; name="signature.asc"
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Changes in v2:
+- Trigger power off sequence if the power on sequence fails.
+- Check return value of hdc3020_power_on() in the probe.
+- Remove type casting for void pointer.
+- Link to v1: https://lore.kernel.org/r/20240220-hdc3020-pm-v1-0-d8e60dbe79e9@gmail.com
 
------BEGIN PGP SIGNATURE-----
+---
+Javier Carrasco (3):
+      iio: humidity: hdc3020: add power management
+      dt-bindings: iio: humidity: hdc3020: add reset-gpios
+      iio: humidity: hdc3020: add reset management
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZdz/0gAKCRB4tDGHoIJi
-0lBjAP9JFqwqtIY93+4RkbvZhkGC9z9gyCJ3zcEeEwVkVbdwtQD/b5+mCGr5wIUP
-J5Jf61KY+mwoafOL2mPfd4RwQNzsvAM=
-=h2IV
------END PGP SIGNATURE-----
+ .../bindings/iio/humidity/ti,hdc3020.yaml          |   5 +
+ drivers/iio/humidity/hdc3020.c                     | 105 +++++++++++++++++----
+ 2 files changed, 94 insertions(+), 16 deletions(-)
+---
+base-commit: d4551c189d6e6a3fcf7f625bd4b273e770fad35a
+change-id: 20240217-hdc3020-pm-177983de3cab
 
---tIzW5O2k7AACHYUt--
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
+
 

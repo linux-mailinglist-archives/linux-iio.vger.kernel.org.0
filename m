@@ -1,105 +1,181 @@
-Return-Path: <linux-iio+bounces-3094-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3095-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38CA586772E
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 14:49:03 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 912A38677E9
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 15:12:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E85F8292D4D
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 13:49:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C313F1C20CB1
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 14:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7333412AAF8;
-	Mon, 26 Feb 2024 13:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2977F129A81;
+	Mon, 26 Feb 2024 14:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rutwcfwO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wf7ZRLx8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 258C912AAEA;
-	Mon, 26 Feb 2024 13:48:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2779E128389;
+	Mon, 26 Feb 2024 14:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708955287; cv=none; b=XsyvzOgo56twMHmqqP7UYwT/LGuAKuRUsdG75jH/NXJyjVE3nVIC8GfGLTIjwwXc28K93MgqMyjSagCmIGe3A02AUPz72wt1qYC+DI7ZnWCS7xFduO7o9xgNswUbnVGu67jvNyWi6WOZDSfcW3ZrOOXgBIMQ54I7aoJ5U4M/plg=
+	t=1708956753; cv=none; b=GizA9HWRHPhIorjDDiuyGwncMk1uaix8PFK4koYpTLqRcmCH0nZVe3QueWNmQLEK1/sxCAg6lm0q0U9xXZ84mfknHSEGVZXS5qt3nOLwAZuce3n0QoyQ1WfrBr4NcFbM3O9ZXCiEFHp/WQ+6/8rRhBba/ld3ELfyL6pSVDTIWVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708955287; c=relaxed/simple;
-	bh=L67kHgGCs3Cvh/Ei0DU5lrJ2B7SBYL1CCN3r0aBSxi8=;
+	s=arc-20240116; t=1708956753; c=relaxed/simple;
+	bh=UtF0hU+9ize1OU+qLoslQEHlSpGHD5zpSnj1SCFGdww=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r0ZANzpe/QpX96eXSAgzCOxvhuLLk87qAaMCDAo/qpnRO8F4FEGaqTCNxfWXIRdcSzjgq/rIDQUcyV6Vfovhof2J+OtaIU5JR2Lp+6p5xXKtsj/SaWjDV6Ck0aSl2+ujkqFq0X0oHVR/o9tbZT04oDWdHHElXwCVkQrOlRnqIec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rutwcfwO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5260FC433C7;
-	Mon, 26 Feb 2024 13:48:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1708955286;
-	bh=L67kHgGCs3Cvh/Ei0DU5lrJ2B7SBYL1CCN3r0aBSxi8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rutwcfwO+1mZuPVh6Ci4AcY7Ya4wOx1sky29F46LrI2lonSlcnrvFy9RjBONyMTwA
-	 k9va0k3b3hBTuoGx/ddvBD3XrePARb3WpZ56M+/YCXPxxQarwpfu/UBwfFU/pUj+RN
-	 Uc6barYERG9ipNDYsIp1+Fe/9erC3pLShGA+SyQNP88OYU5XtnMBJXcgRRfZY12fzE
-	 2P3Nur+CTXqYaRgZkNegjaYduiK59Y/Zqgpup2hnN452xKB2281z8LC2Ko0BmhzNZp
-	 vrPjbNjMSuXsKrs1H9/yft788udGXbcCLd3MBBmdMZvONR4Zg9RzBC/CGbCGsH6K59
-	 UgHUa1KFYjrDQ==
-Date: Mon, 26 Feb 2024 13:48:00 +0000
-From: Mark Brown <broonie@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Martin Sperl <kernel@martin.sperl.org>,
-	David Jander <david@protonic.nl>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] spi: add spi_optimize_message() APIs
-Message-ID: <4a593988-52bb-4013-84fb-d1a51c8005c3@sirena.org.uk>
-References: <20240219-mainline-spi-precook-message-v2-0-4a762c6701b9@baylibre.com>
- <20240219-mainline-spi-precook-message-v2-1-4a762c6701b9@baylibre.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=TMXrZbwgQ843Y2czSEwTuwQWqF7DUhD7U7cipWZqf8tREcZIvQFBKJCQBnH7LFbikNO3hsyMPweonKeYC/O2T0wv1xFo0WMvWoHmKVWc/UKKDtT+b1jRFwth5DwfWAiwTQouiBOOUY6oLmYpj/zD9QRZvFQxw7L9RsAo83n1Mpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wf7ZRLx8; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1708956753; x=1740492753;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=UtF0hU+9ize1OU+qLoslQEHlSpGHD5zpSnj1SCFGdww=;
+  b=Wf7ZRLx8fzxO0iwIciHCEZHDRFVtFM3+eEbRMHJHHMnpkwfru1XCnkGU
+   XZsZ7FXGCnqfxBrWZs1sbPGT724mF79406ij4M6Ag2W0ZxyHckUw8G/Jn
+   ySIjptUp5tFbQ5PDm9RfBP+k6WGre2HezqhwxWdaYDQfXX8TXNY8Iei79
+   UioeVWBJbbGikjh8Yah3o7z/g/bAKZapMXsKRuC3FGc06+dB0eHZwbQGN
+   O/51ZcGGxktB930Oo7AbuA1R9I3NhPgK4on58e8DPTwkbWd2hTzGLn9ub
+   OBYU05lzaFw5Wzd4Ars2rMfDowvGO9IbnCr2XNA+7Szn8Ebz9PAXxw9oG
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="7046723"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
+   d="scan'208";a="7046723"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 06:12:32 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10995"; a="913871995"
+X-IronPort-AV: E=Sophos;i="6.06,185,1705392000"; 
+   d="scan'208";a="913871995"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2024 06:12:27 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rebiS-00000007hMH-04x7;
+	Mon, 26 Feb 2024 16:12:24 +0200
+Date: Mon, 26 Feb 2024 16:12:23 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matti Vaittinen <mazziesaccount@gmail.com>,
+	Marek Vasut <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matt Ranostay <matt@ranostay.sg>,
+	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 5/5] iio: light: Add support for APDS9306 Light Sensor
+Message-ID: <ZdycR6nr3rtrnuth@smile.fi.intel.com>
+References: <20240218054826.2881-1-subhajit.ghosh@tweaklogic.com>
+ <20240218054826.2881-6-subhajit.ghosh@tweaklogic.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="FPOaDaMVfIrc5CmE"
-Content-Disposition: inline
-In-Reply-To: <20240219-mainline-spi-precook-message-v2-1-4a762c6701b9@baylibre.com>
-X-Cookie: Nobody knows the trouble I've been.
-
-
---FPOaDaMVfIrc5CmE
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20240218054826.2881-6-subhajit.ghosh@tweaklogic.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Feb 19, 2024 at 04:33:18PM -0600, David Lechner wrote:
-> This adds a new spi_optimize_message() function that can be used to
-> optimize SPI messages that are used more than once. Peripheral drivers
-> that use the same message multiple times can use this API to perform SPI
-> message validation and controller-specific optimizations once and then
-> reuse the message while avoiding the overhead of revalidating the
-> message on each spi_(a)sync() call.
+On Sun, Feb 18, 2024 at 04:18:26PM +1030, Subhajit Ghosh wrote:
+> Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor.
+> It has two channels - ALS and CLEAR. The ALS (Ambient Light Sensor)
+> channel approximates the response of the human-eye providing direct
+> read out where the output count is proportional to ambient light levels.
+> It is internally temperature compensated and rejects 50Hz and 60Hz flicker
+> caused by artificial light sources. Hardware interrupt configuration is
+> optional. It is a low power device with 20 bit resolution and has
+> configurable adaptive interrupt mode and interrupt persistence mode.
+> The device also features inbuilt hardware gain, multiple integration time
+> selection options and sampling frequency selection options.
+> 
+> This driver also uses the IIO GTS (Gain Time Scale) Helpers Namespace for
+> Scales, Gains and Integration time implementation.
 
-This doesn't apply against current code, please check and resend.
+...
 
---FPOaDaMVfIrc5CmE
-Content-Type: application/pgp-signature; name="signature.asc"
+> +/*
+> + * Available scales with gain 1x - 18x, timings 3.125, 25, 50, 100, 200, 400 mS
 
------BEGIN PGP SIGNATURE-----
+"mS" --> "ms."
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXclo8ACgkQJNaLcl1U
-h9DzSgf+L8IJqP9QTipdvVCKI4xrZNaK+TzwF6i23M+QYOOAK+4hq0fRRSva44uc
-kkh1+iGYBYbxuQpN35y3lMkueSvMVPQgUyBSe2q9SOVzykwxfrvIZKwv5I9eULi7
-itkQUHeceYVLOoH2nD5dKIA7Jd/p9W5z3tC6yh/xqXwFuldwT9+Y7eqM8SUISwXW
-d36mL+h1mj+ZerR70EsYYipUH0J8r/dJ035AeZRkWXV5YGicaHna9WJBT8hN5H5v
-73vjAsnxohg1/wS6B7KvfXg6NekWfTWcde7eWkgkaJqgz4eKzNgUgBDUdhfGRXNa
-4G15gBS0jIs/UHLyXcbalpTOdzH4Uw==
-=5Wju
------END PGP SIGNATURE-----
+> + * Time impacts to gain: 1x, 8x, 16x, 32x, 64x, 128x
+> + */
 
---FPOaDaMVfIrc5CmE--
+...
+
+> +	/*
+> +	 * If this function runs parallel with the interrupt handler, either
+> +	 * this reads and clears the status registers or the interrupt handler
+> +	 * does. The interrupt handler sets a flag for read data available
+> +	 * in our private structure which we read here.
+> +	 */
+> +	ret = regmap_read_poll_timeout(data->regmap, APDS9306_MAIN_STATUS_REG,
+> +				       status, data->read_data_available ||
+> +				       (status & (APDS9306_ALS_DATA_STAT_MASK |
+> +						  APDS9306_ALS_INT_STAT_MASK)),
+> +				       APDS9306_ALS_READ_DATA_DELAY_US, delay * 2);
+
+> +
+
+Redundant blank line
+
+> +	if (ret)
+> +		return ret;
+
+...
+
+> +static int apds9306_init_iio_gts(struct apds9306_data *data)
+> +{
+> +	int i, ret, part_id;
+> +
+> +	ret = regmap_read(data->regmap, APDS9306_PART_ID_REG, &part_id);
+> +	if (ret)
+> +		return ret;
+> +
+> +	for (i = 0; i < ARRAY_SIZE(apds9306_gts_mul); i++)
+> +		if (part_id == apds9306_gts_mul[i].part_id)
+> +			break;
+> +
+> +	if (i == ARRAY_SIZE(apds9306_gts_mul))
+> +		return -ENXIO;
+
+Strange choice of the error code, why not (one of) -ENOENT / -ENODATA ?
+
+> +	return devm_iio_init_iio_gts(data->dev,
+> +				     apds9306_gts_mul[i].max_scale_int,
+> +				     apds9306_gts_mul[i].max_scale_nano,
+> +				     apds9306_gains, ARRAY_SIZE(apds9306_gains),
+> +				     apds9306_itimes, ARRAY_SIZE(apds9306_itimes),
+> +				     &data->gts);
+
+> +
+> +	return -ENXIO;
+
+Dead code.
+
+> +}
+
+...
+
+Jonathan, are you going to apply this and addressing comments at the same time?
+Or should it be another version?
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

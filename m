@@ -1,116 +1,172 @@
-Return-Path: <linux-iio+bounces-3073-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3074-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5DCC866B46
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 08:46:09 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B97866C17
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 09:26:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B087285898
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 07:46:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C20A01F23B6C
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 08:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E476D1BF31;
-	Mon, 26 Feb 2024 07:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C399B1CABA;
+	Mon, 26 Feb 2024 08:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iatEbTWA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iDGRSOE8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0073F1BDED
-	for <linux-iio@vger.kernel.org>; Mon, 26 Feb 2024 07:46:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9AB1CA81;
+	Mon, 26 Feb 2024 08:26:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708933564; cv=none; b=jraWgcQFMnlzJ9lyCamRCpbvsnBvz6Z+7A5+yU2esn8uASx4J6AdP9M9xOjCdiYUbNYEXhkmX1Wkt39oYPC7rN0RYxQtG58rMioZMBNn/w89j96jqy8jhHUpPY1fAc1q4okJpM3dKl+CoR2s29cvZ/Sv6t22KCYm+YVhi0XAIgg=
+	t=1708935965; cv=none; b=sTmqdHIG3rMIb1NTFpbPIjmhirW9QTYRQxh7YnSeLGRS4JJKWnWFbw29MU89zNcH8ushlyZ8TqhS22prFyKE05kTCMH2TrgUTmenVP4nm1TPPPbTPSIPGnT3lXnCNJBjz5mMb693rFg1JtW9CzaHOqgxMQNt28qofPiNihBW94U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708933564; c=relaxed/simple;
-	bh=h+5Dv6785Zmd0pt42yZLFng7XfEtwH/z3aATiBwNDA4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SlUMSOzQxBX9jpmhMwodyLn9LXzISAQc1bhIsq9kbplVSl/M2N65ighic5jB9ps63n5krJv54075z7I8nzl1qsQkARITjFJMQ6N6WZPI3j0Mz/Lw7QigDa7GWA9H638JsdAhErICKP3irjUPAcwtm++4jTPKR/a3jI1N2oTq5ZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iatEbTWA; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-512d19e2cb8so4092802e87.0
-        for <linux-iio@vger.kernel.org>; Sun, 25 Feb 2024 23:46:02 -0800 (PST)
+	s=arc-20240116; t=1708935965; c=relaxed/simple;
+	bh=8aEYoORsIwQSwWsOthBtc3VFHs8XMlL/TLNLBS9ZIII=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FGql63F4vE+Vo4mtFJILvQIKFuMFVS7CM7kaNkcAWi78IGydgxnV+61VNE6/KaX/qXODQE/QG/r0OzyPTaRuCTeKSG+gx1S6FmLzB08bULRt09mBIjRSAauSZLxq1w9koHYlMV7GW0WVUpjihR1ezasLQhQqK6GrLi4mbmMKnOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iDGRSOE8; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a3ee69976c9so336991866b.0;
+        Mon, 26 Feb 2024 00:26:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708933561; x=1709538361; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FAYfpWmaOhg1tF+MJRg5o2tzCsvNMOZEF4/3huFTseo=;
-        b=iatEbTWAu4SNJ1XRkxGN2jC4lqXVM7xAU3X4YIduPfoDU+VOWtANcVSUJGDoVELN2I
-         7BiBxZAKlxBpur4BjQ6p7/WoPBPkt57dkND+uOjtnPRzNFLLGJSBXx4Hd2OIPadOtucU
-         DwrmQz8Wc4O+OQkiifmkxzeyylpRiCY2fIUM3jEGh0+7/zouEoEMTWdX8xerE3e2uhX1
-         W3CnrvuqdOxCaeOgkZd6/WXJIWYyQRsR6vGq1GxE8qYIKjziJJ/CEtBBcbWdMmETU2rX
-         H2fUsrnHTlLF+Buua/FRcJGZObDi7zvzF2pSlRH0ZJ6x6rB5XHj20EpljJ43dBPxktz/
-         IIkg==
+        d=gmail.com; s=20230601; t=1708935961; x=1709540761; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2ttUCqTABwqmssEUu9Ok4fCv5vcEs8kW80tdvfui/rs=;
+        b=iDGRSOE8zP8zpWOmAFdLZuGAdoJr2SXOzNNUJy8Z+3Qv+IY77Sh/lEVN+A3AeCL3FA
+         27HU9dCqJBHxtwZJT1XGCbza9WAZuI9MmeuwzAOQ5kRwz1LKcVtUENC+H3V0CuDo2t0m
+         XlzqvAiLDpmqZ/k+qiUi1uGcMajRp3QvNXB6ZKTphsP1sUq4q25LZhST4Kj7WrsmBJgY
+         AOWnf9/+LJwRbLTUnaoqSWz2HVtAMuzT8Jovuc24jR+9ygdSSk6Y6oEwQMCZYvFW2iFI
+         774LBpZ3J4uhX8ES0FzGXkUQZHOR9FP70okQEebW7RA8sxkcXXm4O8XQRzYikxed1ijo
+         RTOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708933561; x=1709538361;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FAYfpWmaOhg1tF+MJRg5o2tzCsvNMOZEF4/3huFTseo=;
-        b=Lx76kGLhYSX8u26wuWibkdgsuKNiOUGxz708Oq+ZbBhEZeux+iFQTF9e4XiWGTqJSy
-         90hI7V3A6TmNC+yFBMPAClFwNHVSFx/dGMtkWev8qITzp8CN7J7dn+wFotEl0orhAXbG
-         x6ti2FpRqmxQ7R8Rrfkpi0lRiDcaLelRiANoo/RT+Iwv4TysFvOJTOMQOIR8nE1hqdfT
-         ngkS8jEd1nuz+O1yabTpem12tz8yAx9V4aLqG5UNKIIVjZJnVC4uRL8IVTOPUVS1Zq5b
-         o9T03hT043ttDQuw1ysYH0nXe41qMgNdxNnZUSpQmgyHt4PkvQXJ43gQFXgtki9OBvmb
-         RFJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWVuTUwqfpXB3wQjB8GBiwPYvjLoo2mHr7BoYZIu4VO+oq+vW4W+vuQociQqLchRUFEyQ13mxEpK16+FdMR8mJRTgOpkwiuKZW3
-X-Gm-Message-State: AOJu0YxEwOuta2ATnWi2h120SgSuqpnO4/KudacEaRX4FoDRiFrwXJCA
-	buzYb/izB64reAcm4e/H1NtBLiMxY+vYqAgt+5cJVriw21iix4Ak19qkvbGrg3w=
-X-Google-Smtp-Source: AGHT+IEv7KihlMlM8hb5fvNYPQQ0V9fBIE68IZ/Xf2GUjvygpJGivWRHioW96Uh4JhjECKpEjpb3mQ==
-X-Received: by 2002:ac2:5059:0:b0:512:b04e:fb52 with SMTP id a25-20020ac25059000000b00512b04efb52mr3429365lfm.4.1708933561179;
-        Sun, 25 Feb 2024 23:46:01 -0800 (PST)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id k8-20020a0565123d8800b00512f63729casm577160lfv.25.2024.02.25.23.46.00
+        d=1e100.net; s=20230601; t=1708935961; x=1709540761;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2ttUCqTABwqmssEUu9Ok4fCv5vcEs8kW80tdvfui/rs=;
+        b=Rjn3fE3NgNg4inYLvg8eeGHesHLodH0GE0OKLU6E1hbGr4HTKvir6DusleWeRCo4UF
+         EKivyEnc8I1pUZS+bspni7PrpiRzUqOdEd/0UJars+UhX2pg+uIvFnXBWMwTIfTuVnzV
+         TkCdm+uIxUnyTC4AiMP2O6h800muILdQuqdoDw/NygrLTA/BGRedSNhTnSl0wdqmdkrA
+         PaVcY/0yYFKWOzOK+IOLEAZTqdCuZWdmnMKSHNsUplti0GOI7WuiLGouk9UM3P5WaSR8
+         UeX0tQNXiRlJdMFo8/7q4D+aW4aWslyiB+NUOfDvcAfEcYQe55NugaiOiRMIIM9UKG2r
+         Y4OA==
+X-Forwarded-Encrypted: i=1; AJvYcCWTLqljXtUcwwGRIfBmf5ePlZdY75t43wMg7WUlG91cFUcZpOF9Vf/UnQSErom7DWN6ul1NFzQPw3p97ErKTHBor01L+P45XGeih33HFjhfbFay8ZyR74hYyN10+IHYFjlVg+iDykul12PzH4BU7ylVbQoNV8Ui95zRNGTp+XJc0/WP/Q==
+X-Gm-Message-State: AOJu0YwoSUSMir7pKuhH3vlOfr5f6Lw8Sa8toIy1h/vNlujs4MxNjkSZ
+	xIhMZhEFkQUQDrSo9qMFYPgjjWyn8TUvWAHvEPx/oiO/np75I3Go
+X-Google-Smtp-Source: AGHT+IHfZDix/7vs3eLadAmGpaat3fXEVGE5oqibwXpzt5hRoNLjvHxb0Sk87Iw4q5y1UDLbp4H3Rg==
+X-Received: by 2002:a17:906:140f:b0:a3f:c932:9c67 with SMTP id p15-20020a170906140f00b00a3fc9329c67mr4078407ejc.68.1708935960718;
+        Mon, 26 Feb 2024 00:26:00 -0800 (PST)
+Received: from ?IPv6:2001:a61:3456:4e01:6ae:b55a:bd1d:57fc? ([2001:a61:3456:4e01:6ae:b55a:bd1d:57fc])
+        by smtp.gmail.com with ESMTPSA id hu21-20020a170907a09500b00a43389c8a1asm1057465ejc.113.2024.02.26.00.25.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 25 Feb 2024 23:46:00 -0800 (PST)
-Date: Mon, 26 Feb 2024 10:45:56 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
+        Mon, 26 Feb 2024 00:26:00 -0800 (PST)
+Message-ID: <2dbc4a0faaef7f4b7d1cd7d46c75e30fb563b227.camel@gmail.com>
+Subject: Re: [PATCH v5 5/5] iio: amplifiers: hmc425a: add support for
+ LTC6373 Instrumentation Amplifier
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Mike Looijmans <mike.looijmans@topic.nl>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: adc: ti-ads1298: Fix error code in probe()
-Message-ID: <9688be98-e88f-4626-bbd2-1c1789417afb@moroto.mountain>
-References: <5f393a87-ca8b-4e68-a6f4-a79f75a91ccb@moroto.mountain>
- <e315c126-619c-48a1-a5d8-001e5ed01930@topic.nl>
- <20240224181354.76842da7@jic23-huawei>
+Cc: Dumitru Ceclan <mitrutzceclan@gmail.com>, Lars-Peter Clausen
+	 <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+	 <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Ceclan Dumitru <dumitru.ceclan@analog.com>
+Date: Mon, 26 Feb 2024 09:25:59 +0100
+In-Reply-To: <20240224175448.484ccd10@jic23-huawei>
+References: <20240220153553.2432-1-mitrutzceclan@gmail.com>
+	 <20240220153553.2432-6-mitrutzceclan@gmail.com>
+	 <c92c4c71f433c7375588e832d3c084a50190a1b5.camel@gmail.com>
+	 <20240224175448.484ccd10@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240224181354.76842da7@jic23-huawei>
 
-On Sat, Feb 24, 2024 at 06:13:54PM +0000, Jonathan Cameron wrote:
-> On Thu, 22 Feb 2024 08:10:25 +0100
-> Mike Looijmans <mike.looijmans@topic.nl> wrote:
-> 
-> > Good catch on both patches.
-> > 
-> > If so desired, you have my
-> > 
-> > Acked-by: Mike Looijmans <mike.looijmans@topic.nl>
-> 
-> Dan, here is a classic example of why I think any series with more than
-> 1 patch could benefit from a cover letter. It gives somewhere for
-> reviewers to give tags for the lot in a fashion b4 can understand.
-> 
-> Otherwise great find and applied to the togreg branch of iio.git
-> with Mike's tag added to both of them!  Hopefully the fixes tags will
-> remain stable - whilst in theory that tree doesn't get rebased, in practice
-> it might if I messed anything up enough :( 
+On Sat, 2024-02-24 at 17:54 +0000, Jonathan Cameron wrote:
+> On Wed, 21 Feb 2024 14:23:51 +0100
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>=20
+> > On Tue, 2024-02-20 at 17:34 +0200, Dumitru Ceclan wrote:
+> > > This adds support for LTC6373 36 V Fully-Differential Programmable-Ga=
+in
+> > > Instrumentation Amplifier with 25 pA Input Bias Current.
+> > > The user can program the gain to one of seven available settings thro=
+ugh
+> > > a 3-bit parallel interface (A2 to A0).
+> > >=20
+> > > Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> > > ---=C2=A0=20
+> >=20
+> > Just one minor comment. With that:
+> >=20
+> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> >=20
+> > > =C2=A0drivers/iio/amplifiers/hmc425a.c | 124 ++++++++++++++++++++++++=
+++++++-
+> > > =C2=A01 file changed, 120 insertions(+), 4 deletions(-)
+> > >=20
+> > > diff --git a/drivers/iio/amplifiers/hmc425a.c
+> > > b/drivers/iio/amplifiers/hmc425a.c
+> > > index 77872e2dfdfe..50c86c2d28d7 100644
+> > > --- a/drivers/iio/amplifiers/hmc425a.c
+> > > +++ b/drivers/iio/amplifiers/hmc425a.c
+> > > @@ -2,9 +2,10 @@
+> > > =C2=A0/*
+> > > =C2=A0 * HMC425A and similar Gain Amplifiers
+> > > =C2=A0 *
+> > > - * Copyright 2020 Analog Devices Inc.
+> > > + * Copyright 2020, 2024 Analog Devices Inc.
+> > > =C2=A0 */=C2=A0=20
+> >=20
+> > ...
+> >=20
+> > >=20
+> > > =C2=A0
+> > > +static ssize_t ltc6373_read_powerdown(struct iio_dev *indio_dev,
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 uintptr_t private,
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 const struct iio_chan_spec *chan,
+> > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 char *buf)
+> > > +{
+> > > +	struct hmc425a_state *st =3D iio_priv(indio_dev);
+> > > +
+> > > +	return sysfs_emit(buf, "%d\n", st->powerdown);=C2=A0=20
+> >=20
+> > Well, in theory the read should also be protected with the lock...
+>=20
+> Only reason I can think of for that is potential read tearing.
+> If that happens on a bool we are going to be in a mess so I think this
+> is in practice fine without, though paranoia might suggest locking.
 
-Sure.  I can start writing cover letters.
+Yeah, also mentioned it for correctness. I mean, in theory, read_once() sho=
+uld be
+more that enough in here but I often find that too much for using in "simpl=
+e" drivers
+where a lock is surely easier to understand for someone reading the code.
 
-regards,
-dan carpenter
+Now, about your bool comment, I used to think like that until I saw the LF =
+rcu
+mentorship video from Paul. I'm fairly sure he comes up with some "crazy" p=
+ossibility
+about the CPU/compiler screwing you even on a char (IIRC, he was also argui=
+ng about
+not using read_once() on a bool).
+
+Now, practically speaking, I tend to agree that for the archs we care this =
+will
+likely never be an issue but yeah, not 100% correct kernel code IMO.
+
+- Nuno S=C3=A1
+
 
 

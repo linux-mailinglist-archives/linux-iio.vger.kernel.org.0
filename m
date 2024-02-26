@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-3082-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3083-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D23FF866EC3
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 10:39:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE42C866ECB
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 10:39:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E260284693
-	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 09:39:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92E9D281F66
+	for <lists+linux-iio@lfdr.de>; Mon, 26 Feb 2024 09:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F7C74E3C;
-	Mon, 26 Feb 2024 09:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C787764A;
+	Mon, 26 Feb 2024 09:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tT0Ipqag"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cYs9vVaP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 291C073F0F
-	for <linux-iio@vger.kernel.org>; Mon, 26 Feb 2024 09:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6659F76903
+	for <linux-iio@vger.kernel.org>; Mon, 26 Feb 2024 09:01:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1708938003; cv=none; b=tot8MQsRsTsQK9kNRe3+VTZJhb3FzOEzwJz0MXvft8oLQv0ulVkhcGS2A85Ek5O/3xse8y0MkifEPcdCd5j/maEm4wZmjdjwpwuIS9qdNppFllLlESQvZDMcKWqezKUSZr/iI/aeoJuzqUlogvQKdMhb0+sC8c8zQpzDSfA9yxM=
+	t=1708938097; cv=none; b=fsZOleeGGJZ7l32PSqj9H7GtRmfCrxE0uMulRX0N+Gzmm4l6/AF0oo4d8O2aLOmV0m01+fDA6/1OQmFKn9GKwjEqggXOnsmPcsACyT6gGAdP1zVzOyA1tGuHFc4TQ1vACZik13g7wZcbS5PM0vNkpQck1ADBdvPpmoh1AcWvm9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1708938003; c=relaxed/simple;
-	bh=K3bn8IcrK6ztc/f15x3hNTggh05U+CHvzmsPhZ7e2rY=;
+	s=arc-20240116; t=1708938097; c=relaxed/simple;
+	bh=jqtuVKB6jVpeIk6g8OR6wf2uee7/sWQBcCvsmRCqn5A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J7Cp+ftswZ8vRyBbrG/MWjbvqRalxwIw61EC1e/jJXm0U9Cf/wsFpQPCZHh7iarHI2ivD2UE4uJrq/9VIRXWspyW5+pQRxzDmQfv04nW873e7ZxH/+/zBciF7gNEF7swrfuyTpwZeh6qxPQ0EwhdBUf3+Vv8k99RLmLQo2JgytA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tT0Ipqag; arc=none smtp.client-ip=209.85.218.50
+	 In-Reply-To:Content-Type; b=uahca4kubAiwDTqhuQXsH1bFltHhkTpjIGoxRpSkbvdusXhICx4fakl4dgEu4FBydLvx5BwtA37PnR0ZRFUa1psgngyYJMBNy93rL5cZ+0BvV2XYK/tWrB5pEral8QBRB225qmLAjggZGTLlPy1/lcFL4Z7EELzqB3h7zlcGl98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cYs9vVaP; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a3d01a9a9a2so292525066b.1
-        for <linux-iio@vger.kernel.org>; Mon, 26 Feb 2024 01:00:01 -0800 (PST)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a3fb8b0b7acso349658666b.2
+        for <linux-iio@vger.kernel.org>; Mon, 26 Feb 2024 01:01:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1708938000; x=1709542800; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1708938094; x=1709542894; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Dka6OuxlzIRJgdM6av7jNjR6fS6TojdpuLcM5fKS6U4=;
-        b=tT0IpqagSkpZlgnYr47vh01SJAOg8D49kwqDmbmdkO/Z0EYjPVV9qzDiwYWZXv6G79
-         mnn4WKem/iztq3Q0E7hagFDSqO5xHPwCd/Xph82hnz95eh8OHdr+S6G6lnF6P56YuY4y
-         wcqidkVVeLsc1S5RTJOA+sYd+5ESu9QzxYICvj1WN0WgtI9rr5fHmAWAjMsJFHGTAXhg
-         tNvr5t1xJSfdxeqdOisajuyQSIzmRsmCmIoUVpO0IzIewx8cHWZscP5moEbqO5uEX5HX
-         tS+wLjn91U+EnOot5mcEe3idnh48y8VLwGtK9luiI+H0jgcUq1KUjGh+hnt4fTDwoywr
-         EOVw==
+        bh=jqtuVKB6jVpeIk6g8OR6wf2uee7/sWQBcCvsmRCqn5A=;
+        b=cYs9vVaPU2qw2D+tMGc8DpRP3CllhHs/WNdTgqmDJcrHqqk5wl/Nt08DiFN8mkVHHs
+         I1XoYliC6hgxLo6wxuE23bmQ7cb8fiODIdH2Nvki6DvFSC8Cn/Io/nXTPGZvAR8ZKdPc
+         nYzJMXmSM0us61Ljm+fA3TglOrZb12AjDnV8z6WZCL6t+mQTqd7prnl5eH3ix2+leZYp
+         0gUDXQj3ztQRGe5GBzUSpTkBGWnmfzhk9e/gHtjZ/oAkagtix/UwubFCn/z80HWfRlx8
+         nha85jwp7HaVMRLBJZlXjUZfAruYOuA8tDUQNXkoiQ79cmPRxiF2aVCqsnmfoFKhwxdX
+         uLeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1708938000; x=1709542800;
+        d=1e100.net; s=20230601; t=1708938094; x=1709542894;
         h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
          :to:content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dka6OuxlzIRJgdM6av7jNjR6fS6TojdpuLcM5fKS6U4=;
-        b=ZRYY6QmjRYq97imljVtZOwDgWEmjr5n1JYz5TknK+EVlwsMpkizaKOfoRPbyyKGy4l
-         TahpbCg9tAIf/nXZAGGjmBpkulYLlXutbFQjjKhfkHk2U/38TXQqjRzpZ/SqdNVPSFy+
-         ReGyTqYWtgMQdqZV/7aaG/fedhrpKacOpcrey5cuklzNrBYfU3Nwq4PGEu50d0enM13E
-         dNAQ9g00K6PBRiSHJdECMQDJkRIYVmsDRgAiSGkzzzBVTwS+smp3fX2h+pM2NhWB30XH
-         JEErevLEmhrIRWvLE+8W4b1crg9ZJ+ZCoMnDVFed4xQG3MoNmJjlK+M+l3fFZFyPoMuM
-         SQ8g==
-X-Gm-Message-State: AOJu0YxjffNNrvKdtwyQnMpuI7MBft2+VovE7nCzuxYcCmt7MxjIFur4
-	l9YiaixURmZY2M4EirmyXKimEAUPHbGwXfdPu2T1o8/B473AVBpvy2KjSwZHhes=
-X-Google-Smtp-Source: AGHT+IH46txMpd8uXkzK0RpYebhK4UAku2Qpf+iwfL4KXKoPRWb0XxgX7+lKVcG9/xjZ43X4b3Hklw==
-X-Received: by 2002:a17:906:46d8:b0:a43:5196:393b with SMTP id k24-20020a17090646d800b00a435196393bmr1082169ejs.8.1708938000447;
-        Mon, 26 Feb 2024 01:00:00 -0800 (PST)
+        bh=jqtuVKB6jVpeIk6g8OR6wf2uee7/sWQBcCvsmRCqn5A=;
+        b=vs/yq18Xidhkr40ODnWWbigzAA94abWxQuE5YM5JONYGVI4la1nZxbMzeGYDpeBU8l
+         1i0MQn262mRLN5YVu8U2kMBrqUycnwTmvWAwYWEiFxtGCRW3BvU4SKzeWIYYUm/bXvNz
+         fnTR9ONXn9YNuHJaYl05u0R5iR11/+fg+xebLMj+oGYXPOrXuZ28ZEy4lL/LNvYW9M3M
+         fq211SR3k14Aoz+/QuMuHWwcDSJ23R45noa0kH9fw2oKRPZWDnXhdteTGLEGPFCCOi/c
+         9oaty5IxvDeVzoIryzu641ZIE8uHJDFdtEe8Itom/WVNcF/Lxig6Bv1TTQ/SRGzI33xx
+         +I7w==
+X-Gm-Message-State: AOJu0YxjBJfWYw+Lie/GuTI9KJO0eZnAiFlBOJH+Cqu+oeaWI1haA50U
+	V+WxWx62+SwktLHjdn4NA9rSYFgSfoM1bb+2m79Lu+9QolCcWvilmQVmKssMou8=
+X-Google-Smtp-Source: AGHT+IHYQO855QKpEJ9PKTw5O2ZHBP94gVAVsTlS0xAVc4G1TUoaOToo5rPnbogPFB2MPO+0r97JBw==
+X-Received: by 2002:a17:906:a405:b0:a42:e079:f94d with SMTP id l5-20020a170906a40500b00a42e079f94dmr4095380ejz.57.1708938093715;
+        Mon, 26 Feb 2024 01:01:33 -0800 (PST)
 Received: from [192.168.1.20] ([178.197.222.116])
-        by smtp.gmail.com with ESMTPSA id 7-20020a170906308700b00a3e799969aesm2178043ejv.119.2024.02.26.00.59.59
+        by smtp.gmail.com with ESMTPSA id 7-20020a170906308700b00a3e799969aesm2178043ejv.119.2024.02.26.01.01.32
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Feb 2024 01:00:00 -0800 (PST)
-Message-ID: <e6bb70fc-81ed-4775-8d3e-4bf177c6f22f@linaro.org>
-Date: Mon, 26 Feb 2024 09:59:58 +0100
+        Mon, 26 Feb 2024 01:01:33 -0800 (PST)
+Message-ID: <91f29265-36fd-4d0e-99b1-61eaada59601@linaro.org>
+Date: Mon, 26 Feb 2024 10:01:31 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,14 +75,15 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: iio: ti,tmp117: add optional label binding
+Subject: Re: [PATCH] dt-bindings: iio: gyroscope: bosch,bmg160: add
+ spi-max-frequency binding
 Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>, puranjay12@gmail.com,
- jic23@kernel.org, lars@metafoo.de, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org
+To: Marco Felsch <m.felsch@pengutronix.de>, jic23@kernel.org,
+ lars@metafoo.de, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ conor+dt@kernel.org, hns@goldelico.com
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- kernel@pengutronix.de
-References: <20240223162042.2658620-1-m.felsch@pengutronix.de>
+ linux-kernel@vger.kernel.org, kernel@pengutronix.de
+References: <20240221174305.3423039-1-m.felsch@pengutronix.de>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -128,40 +129,25 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240223162042.2658620-1-m.felsch@pengutronix.de>
+In-Reply-To: <20240221174305.3423039-1-m.felsch@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 23/02/2024 17:20, Marco Felsch wrote:
-> Add the support to provide an optional label like we do for ADC
-> channels to identify the device more easily.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
-> Hi,
-> 
-> patchset [1] should be applied first to avoid merge conflicts.
-> 
-> [1] https://lore.kernel.org/all/20240219131114.134607-1-m.felsch@pengutronix.de/#t
-> 
-> Regards,
->   Marco
-> 
->  .../devicetree/bindings/iio/temperature/ti,tmp117.yaml        | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-> index 33f2e9c5bd81..f00c1cb89acd 100644
-> --- a/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-> +++ b/Documentation/devicetree/bindings/iio/temperature/ti,tmp117.yaml
-> @@ -27,6 +27,10 @@ properties:
->    vcc-supply:
->      description: provide VCC power to the sensor.
->  
-> +  label:
-> +    $ref: /schemas/types.yaml#/definitions/string
+On 21/02/2024 18:43, Marco Felsch wrote:
+> Make use of the common spi-peripheral-props.yaml to pull in the common
+> spi device properties and limit the spi-max-frequency to 10 MHz as this
+> is the max. frequency if VDDIO >= 1.62V.
 
-Drop ref. Did you take it from any existing binding?
+The example uses i2c, so I would expect to see in commit msg explanation
+which devices are SPI devices.
+
+Also:
+A nit, subject: drop second/last, redundant "binding". The "dt-bindings"
+prefix is already stating that these are bindings.
+See also:
+https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+
+
 
 Best regards,
 Krzysztof

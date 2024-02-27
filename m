@@ -1,68 +1,66 @@
-Return-Path: <linux-iio+bounces-3140-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3141-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6003869FFD
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 20:17:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABCBB86A00C
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 20:21:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C8291F244E9
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 19:17:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10CDD288BA9
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 19:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7A25102E;
-	Tue, 27 Feb 2024 19:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37DB1448C7;
+	Tue, 27 Feb 2024 19:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ekZwLbZi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fEuUcZVn"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA191E894
-	for <linux-iio@vger.kernel.org>; Tue, 27 Feb 2024 19:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A41D51C33;
+	Tue, 27 Feb 2024 19:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709061423; cv=none; b=lsWx7pZIspPmXhiFWgUdmNUS5lnSFaHvyEIQviBsThBcOeLn5INepiufgPbNqECZ3m7yFazp5VlkfrGFKzE+Z6YD6sXRfuPW9KXn+yCPIT5PHIaNkFAgyiTukBefl6mF90/i49v7fTaDAJ3476GDrVKy1lM5gIt9UgOwLNKRAGE=
+	t=1709061650; cv=none; b=HXhXugU1bS2RNW3lczRGRbUkrtsRU56NuH3A6H/YW1sp+I8TWlzOMej+HwICu1uhk1aqfKoGlKXpIQEEEvFhGyJ5pEpXqHY4Y1pFOfpsnd+YCQsWYPphf2RgsHW1/SZZSzzjTEAZfLHE0HXVv5gYCiDB8U6LwDBCr1kBOlzTTmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709061423; c=relaxed/simple;
-	bh=xCVxHIQYv/i11ntDVv+OJy/+DmsSqSkrARGQVgh0FW4=;
+	s=arc-20240116; t=1709061650; c=relaxed/simple;
+	bh=AcsguI5VlTxYraStv84Cz5LPfQ1mLD4JEQO3egcz8aQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r6qiFgCP61iP5xPJcGNC6zDR3lykQ/C9gsGDv06IHm3LMpS+7GujxQZPoJlALPUvruRaoFavihdvtFUfgFMgYFwXLxfekAw1LtWoqjiOa6d48Ksq3KZRDiMCR697m05Zpyuaryo/7wyOH33YcMqPXxbdsfjFgoVJx8T+YLdvA8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ekZwLbZi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2044FC433C7;
-	Tue, 27 Feb 2024 19:16:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t1XUOJaJelDUXGZ7OD9hqXUCUJ3Q9eapMcJaYjRhC5OcI/fdvBYK54PCzhwteIQwYxeW2OBPsQsIFRHrrVaJGCWk+VB0m816TtCmreROnj5BJk9HZelR/kOxYSMh6MQWvwgN7AcUfIbNCeLvNFXFq8E5FewrOqQKT4r6wXgkj+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fEuUcZVn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5BCC433C7;
+	Tue, 27 Feb 2024 19:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709061423;
-	bh=xCVxHIQYv/i11ntDVv+OJy/+DmsSqSkrARGQVgh0FW4=;
+	s=k20201202; t=1709061650;
+	bh=AcsguI5VlTxYraStv84Cz5LPfQ1mLD4JEQO3egcz8aQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ekZwLbZi+FBtOoN8hUBF1TObGKzK/nNId7AK7d7oIemPdzmntuOdGCh7l2d9EQ34v
-	 4vumPV96ZxZS+EXvO9v0N0czhPNMRzzrrYwCtZQ42mAZsRU/RlYe4iZCL6GbRzLeF9
-	 zYCl2m1lZAII0PGrL2mfkW7ctO9W0t/Tf0UmF1qfwa7hvZ07kUiRPHa7+jwoy4dsR8
-	 KVMNM2KKgTFvJfTet6NsnAl+paLW5n2G57fEQjOKUZe3A1GAw2b+bN+JcXOmRC/kjw
-	 aJ03GslBaaPgCeBnM6MxRwBlvcOJ7WPaZEGWk+RddLWQnhIqFehBTeByCrKPQoF9e+
-	 QjOmij/2/51cg==
-Date: Tue, 27 Feb 2024 19:16:49 +0000
+	b=fEuUcZVnvT7jPeRafbXwl9X2+Ue1xo/+Fc1S1CoA6CTSWszlq2B2iX+dEQnBi/bjq
+	 FuJ2sHKeIy7v6s+iH/eUqiz7dtHyaxeQMxAgAm0oONOV2mMUGRUfyPXrJNwH0GtPKO
+	 e2eeqqvroNjt8+bTBvFs4mDxZubuqWdt4MpipKpH5lKSxtux6KzrATZuIC2FT7qeoq
+	 BJMhnVF/EbSPeT8NTwZo6qVQ9n3DFqhERHkFnxvyspyg0GGbnPOQm+iCStVLku0AvN
+	 O30yLFvvQDeYAdZC1OGfeeBs0m/FZdXc0NaZPcflZKU9UMnfYN7LP2ij4U0L4zrGHW
+	 giKX/UJvS9RJQ==
+Date: Tue, 27 Feb 2024 19:20:32 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Cc: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, Nuno
- =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Cosmin Tanislav
- <cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
- <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier Moysan
- <olivier.moysan@foss.st.com>, Fabrice Gasnier
- <fabrice.gasnier@foss.st.com>, Dmitry Baryshkov
- <dmitry.baryshkov@linaro.org>, Marijn Suijten
- <marijn.suijten@somainline.org>, Marius Cristea
- <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v5 4/9] iio: adc: rzg2l_adc: Use
- device_for_each_child_node_scoped()
-Message-ID: <20240227191649.1354500f@jic23-huawei>
-In-Reply-To: <OSZPR01MB701960E650277C6390C0A722AA592@OSZPR01MB7019.jpnprd01.prod.outlook.com>
-References: <20240224123215.161469-1-jic23@kernel.org>
-	<20240224123215.161469-5-jic23@kernel.org>
-	<OSZPR01MB701960E650277C6390C0A722AA592@OSZPR01MB7019.jpnprd01.prod.outlook.com>
+To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Matti Vaittinen <mazziesaccount@gmail.com>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Marek Vasut
+ <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>, Javier Carrasco
+ <javier.carrasco.cruz@gmail.com>, Matt Ranostay <matt@ranostay.sg>, Stefan
+ Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 5/5] iio: light: Add support for APDS9306 Light
+ Sensor
+Message-ID: <20240227192032.12def64a@jic23-huawei>
+In-Reply-To: <a94b86fe-0896-47ba-a597-0cd59a0665a2@tweaklogic.com>
+References: <20240218054826.2881-1-subhajit.ghosh@tweaklogic.com>
+	<20240218054826.2881-6-subhajit.ghosh@tweaklogic.com>
+	<20240224151340.3f2f51e8@jic23-huawei>
+	<a94b86fe-0896-47ba-a597-0cd59a0665a2@tweaklogic.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -73,67 +71,151 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 27 Feb 2024 09:52:28 +0000
-Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com> wrote:
+On Tue, 27 Feb 2024 23:42:48 +1030
+Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Switching to the _scoped() version removes the need for manual calling of fwnode_handle_put() in the
-> > paths where the code exits the loop early. In this case that's all in error paths.
-> > 
-> > Cc: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  drivers/iio/adc/rzg2l_adc.c | 11 +++--------
-> >  1 file changed, 3 insertions(+), 8 deletions(-)
+> On 25/2/24 01:43, Jonathan Cameron wrote:
+> > On Sun, 18 Feb 2024 16:18:26 +1030
+> > Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 > >   
-> Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+> >> Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor.
+> >> It has two channels - ALS and CLEAR. The ALS (Ambient Light Sensor)
+> >> channel approximates the response of the human-eye providing direct
+> >> read out where the output count is proportional to ambient light levels.
+> >> It is internally temperature compensated and rejects 50Hz and 60Hz flicker
+> >> caused by artificial light sources. Hardware interrupt configuration is
+> >> optional. It is a low power device with 20 bit resolution and has
+> >> configurable adaptive interrupt mode and interrupt persistence mode.
+> >> The device also features inbuilt hardware gain, multiple integration time
+> >> selection options and sampling frequency selection options.
+> >>
+> >> This driver also uses the IIO GTS (Gain Time Scale) Helpers Namespace for
+> >> Scales, Gains and Integration time implementation.
+> >>
+> >> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>  
+> > I applied this but then got some build warnings that made me look
+> > more closely at the int_src handling.
+> > 
+> > This is confusing because of the less than helpful datasheet defintion
+> > of a 2 bit register that takes values 0 and 1 only.
+> > 
+> > I thought about trying to fix this up whilst applying but the event code
+> > issue is too significant to do without a means to test it.
+> > 
+> > Jonathan
+> >   
 > 
-I already picked up some of this series piecemeal so I'll keep going!
-
-Applied to the togreg branch of iio.git and pushed out as testing for 0-day to take a look.
-
-Thanks!
-
-Jonathan
-
-> Cheers,
-> Prabhakar
+> >> +static int apds9306_read_data(struct apds9306_data *data, int *val, int reg)
+> >> +{
+> >> +	struct device *dev = data->dev;
+> >> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+> >> +	struct apds9306_regfields *rf = &data->rf;
+> >> +	int ret, delay, intg_time, intg_time_idx, repeat_rate_idx, int_src;
+> >> +	int status = 0;
+> >> +	u8 buff[3];
+> >> +
+> >> +	ret = pm_runtime_resume_and_get(data->dev);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	ret = regmap_field_read(rf->intg_time, &intg_time_idx);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	ret = regmap_field_read(rf->repeat_rate, &repeat_rate_idx);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	ret = regmap_field_read(rf->int_src, &int_src);
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	intg_time = iio_gts_find_int_time_by_sel(&data->gts, intg_time_idx);
+> >> +	if (intg_time < 0)
+> >> +		return intg_time;
+> >> +
+> >> +	/* Whichever is greater - integration time period or sampling period. */
+> >> +	delay = max(intg_time, apds9306_repeat_rate_period[repeat_rate_idx]);
+> >> +
+> >> +	/*
+> >> +	 * Clear stale data flag that might have been set by the interrupt
+> >> +	 * handler if it got data available flag set in the status reg.
+> >> +	 */
+> >> +	data->read_data_available = 0;
+> >> +
+> >> +	/*
+> >> +	 * If this function runs parallel with the interrupt handler, either
+> >> +	 * this reads and clears the status registers or the interrupt handler
+> >> +	 * does. The interrupt handler sets a flag for read data available
+> >> +	 * in our private structure which we read here.
+> >> +	 */
+> >> +	ret = regmap_read_poll_timeout(data->regmap, APDS9306_MAIN_STATUS_REG,
+> >> +				       status, data->read_data_available ||
+> >> +				       (status & (APDS9306_ALS_DATA_STAT_MASK |
+> >> +						  APDS9306_ALS_INT_STAT_MASK)),
+> >> +				       APDS9306_ALS_READ_DATA_DELAY_US, delay * 2);
+> >> +
+> >> +	if (ret)
+> >> +		return ret;
+> >> +
+> >> +	/* If we reach here before the interrupt handler we push an event */
+> >> +	if ((status & APDS9306_ALS_INT_STAT_MASK))
+> >> +		iio_push_event(indio_dev, IIO_UNMOD_EVENT_CODE(IIO_LIGHT,
+> >> +			       int_src, IIO_EV_TYPE_THRESH, IIO_EV_DIR_EITHER),  
+> > 
+> > You are pushing an event on channel 0 or 1 (which is non obvious as that
+> > int_src is a 2 bit value again).  However you don't use indexed channels
+> > so this is wrong.
+> > It's also pushing IIO_LIGHT for both channels which makes no sense as you
+> > only have one IIO_LIGHT channel.  
+> Hi Jonathan,
 > 
-> > diff --git a/drivers/iio/adc/rzg2l_adc.c b/drivers/iio/adc/rzg2l_adc.c index
-> > 0921ff2d9b3a..cd3a7e46ea53 100644
-> > --- a/drivers/iio/adc/rzg2l_adc.c
-> > +++ b/drivers/iio/adc/rzg2l_adc.c
-> > @@ -302,7 +302,6 @@ static irqreturn_t rzg2l_adc_isr(int irq, void *dev_id)  static int
-> > rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l_adc *adc)  {
-> >  	struct iio_chan_spec *chan_array;
-> > -	struct fwnode_handle *fwnode;
-> >  	struct rzg2l_adc_data *data;
-> >  	unsigned int channel;
-> >  	int num_channels;
-> > @@ -330,17 +329,13 @@ static int rzg2l_adc_parse_properties(struct platform_device *pdev, struct rzg2l
-> >  		return -ENOMEM;
+> For the above fix I am supplying the second parameter to IIO_UNMOD_EVENT_CODE()
+> as "0" which gives me the below output from userspace:
+> ./iio_event_monitor /dev/iio:device0
+> Event: time: xx, type: illuminance, channel: 0, evtype: thresh, direction: either
+> Event: time: yy, type: intensity, channel: 0, evtype: thresh, direction: either
+> 
+> As I do not have indexed channels, I have used zero for both Light and Intensity
+> channel numbers. Should I make the intensity type as channel one for the output
+> to look like this?
+> Event: time: xx, type: illuminance, channel: 0, evtype: thresh, direction: either
+> Event: time: yy, type: intensity, channel: 1, evtype: thresh, direction: either
+> 
+No need. It's not an ABI bug if you did have that mix of channels, but you'd
+need to make them indexed in the chan_spec to match.  Don't bother.
+
+You should however us a modified event for the intensity channel seeing as
+it is .modified = 1, IIO_MOD_LIGHT_CLEAR
+
+So IIO_MOD_EVENT_CODE would be appropriate.
+
+
+> What do you think?
+> 
+> Regards,
+> Subhajit Ghosh
 > > 
-> >  	i = 0;
-> > -	device_for_each_child_node(&pdev->dev, fwnode) {
-> > +	device_for_each_child_node_scoped(&pdev->dev, fwnode) {
-> >  		ret = fwnode_property_read_u32(fwnode, "reg", &channel);
-> > -		if (ret) {
-> > -			fwnode_handle_put(fwnode);
-> > +		if (ret)
-> >  			return ret;
-> > -		}
+> >   
+> >> +			       iio_get_time_ns(indio_dev));
+> >> +
+> >> +	ret = regmap_bulk_read(data->regmap, reg, buff, sizeof(buff));
+> >> +	if (ret) {
+> >> +		dev_err_ratelimited(dev, "read data failed\n");
+> >> +		return ret;
+> >> +	}
+> >> +
+> >> +	*val = get_unaligned_le24(&buff);
+> >> +
+> >> +	pm_runtime_mark_last_busy(data->dev);
+> >> +	pm_runtime_put_autosuspend(data->dev);
+> >> +
+> >> +	return 0;
+> >> +}
+> >> +  
 > > 
-> > -		if (channel >= RZG2L_ADC_MAX_CHANNELS) {
-> > -			fwnode_handle_put(fwnode);
-> > +		if (channel >= RZG2L_ADC_MAX_CHANNELS)
-> >  			return -EINVAL;
-> > -		}
-> > 
-> >  		chan_array[i].type = IIO_VOLTAGE;
-> >  		chan_array[i].indexed = 1;
-> > --
-> > 2.44.0  
+> > ...  
+> 
 > 
 
 

@@ -1,387 +1,155 @@
-Return-Path: <linux-iio+bounces-3135-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3136-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD8C869E12
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 18:43:00 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EA11869E1C
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 18:44:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9F7B1F236C9
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 17:42:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DF9C1F2479C
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 17:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBC44EB44;
-	Tue, 27 Feb 2024 17:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA0D4D9F4;
+	Tue, 27 Feb 2024 17:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="7lIV/hYi"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="1yoGKMje"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0904CB4B;
-	Tue, 27 Feb 2024 17:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A07A2557F;
+	Tue, 27 Feb 2024 17:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709055689; cv=none; b=FL9X3b/vUGROUKK5gybhwmAMScmF7Nj8aO6ihase+oK+udd7sgWjQTWXuIa6jTQqGKYbykwkJtNo96+ya/6O3FkDqDtmZIhybqn+JZx1rUgNqRVTEuLwX8nE6mbzyHKOycZZRCpqsMdZdf/INb2GxpGsXgk71JCSZJeaZVyoJt0=
+	t=1709055858; cv=none; b=CI3iq0t1Czjf2Q3GKhw3FBq5/on6JYJM8C6yqfF6ZdHS0HIGi2DrbDeWgwnJpy6rOHONJs9lWw7lmSYXUo269sxAgF2de6ONDd99aXWr+3dTyXi9JbsSRHPvDtaYtYZUF7GdxcuQixlaGDeCpwDpu7218AMqmhYtUumb1Qt1hH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709055689; c=relaxed/simple;
-	bh=0GguDa9XVPMOQ/pdEETxL7CEGVOjB/CLSWbitRuC6tQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rUAibwOy7/t6rsXIrqFTxe9nawngapcm0EVe+mmkpUYpVs9LA3/Tu+s7Nf2TXLOeMCi2R34zD2NKZGN8qRQ7icz8RZpLZzMS+I/o25eyXiOcwnwg+amq2+LvWGKPZJQnP67zGCi5THR30V50G35sdkim0lxg9tFlMkUHMlePqIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=7lIV/hYi; arc=none smtp.client-ip=185.132.182.106
+	s=arc-20240116; t=1709055858; c=relaxed/simple;
+	bh=3BzQKjJGF7tof5rGJyDKufTYQlj8ezjC6ENk83SsZ4k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=m5ST3hlKHJXI/A/xBRtIrI8U3Y8k3wHLEZTqFBNbYpVXw3xG1IrtOlFdpI4ziyu8yLB6nks7dbKa7IAc4pR70WDaZjS6yvdta0yAp+argBBrCCZ5981vlaozGjWdahJzuh9SijiRcDe+51AnOEHwLWoDJ6wy+rtyasDEhKRNg18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=1yoGKMje; arc=none smtp.client-ip=185.132.182.106
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
 Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41RBi2R9029649;
-	Tue, 27 Feb 2024 18:41:13 +0100
+	by mx07-00178001.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41RBi2s0029650;
+	Tue, 27 Feb 2024 18:44:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding:content-type; s=
-	selector1; bh=45JJWKc7Z05d/UNRZjlQGN1CH09iiNsdefrvNgsenrM=; b=7l
-	IV/hYixEuJlpaaGAnzdxJLol3Phjk+7vYXnALEW04M5giGrB6KS9BIOwDqgNgI4R
-	FHNXRrRHN48p2o9FRDs6iMXGkggsQN94W61VrS3fVORZSicpsfi42QlFliG4Ew88
-	P/vpL7dX75tKk7b7XPZ0yNDDLhvuQmuF9ULBVbKPjIpWLLQ9/oeWRzL1iH0YaDDd
-	kDdgdE+IpaUeEoc0PhMwfD2sOpbtFIunxUeoIBPWd0vKGqkoEOKpQFkdag3FwQzI
-	nGSlZcAfAUowQV6rG73rtWXrHs4UC5XLef9Xg77+q+KGTAGBtY1O/y9G4M/iUqEe
-	ftzyrovpBomY9eCFZzrw==
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	selector1; bh=jTtuR9h+G7uKqcRPnsVn7E2jeHnidr9oglBzqkI2a+U=; b=1y
+	oGKMjeYvQjnK1+hUSuaiK0UBujfXx++pour4YAnDdLL46F0nOa+bV3MvljzLkF75
+	aKl5JdLHn/hkoxcay9PA/SHFQQVoFG3WEAuNZMk1Qiig2SYkTH2j/8pdI4wT+B+C
+	dzn2eKcpujpqjvteWr9aM2fSJAiaWNkW4jS8v2dnI0gsGIwx5HUDvCV/03VwJlj5
+	tRAGw4nt8Xj2p/OUFtVc/mbTpsA0kRWxYp7vnZiLIjAL5YFKWf9Q2IxnrrIu87sq
+	8rsUuq3pzZusu6OwHOHCOOjEKp31ggt4oVM7ACQ0e8cz5bkMpoyZJYujfQ5jjO+W
+	fTyMUduEb5bZnKdsYyWg==
 Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3whf4b9ddv-1
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3whf4b9dp9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Feb 2024 18:41:13 +0100 (CET)
+	Tue, 27 Feb 2024 18:44:06 +0100 (CET)
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id C2A8940044;
-	Tue, 27 Feb 2024 18:41:09 +0100 (CET)
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id EED2440045;
+	Tue, 27 Feb 2024 18:44:02 +0100 (CET)
 Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 30DA02AD157;
-	Tue, 27 Feb 2024 18:40:44 +0100 (CET)
-Received: from localhost (10.252.26.109) by SHFDAG1NODE2.st.com (10.75.129.70)
- with Microsoft SMTP Server (version=TLS1_2,
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id A2F4D2ADF49;
+	Tue, 27 Feb 2024 18:43:38 +0100 (CET)
+Received: from [10.252.26.109] (10.252.26.109) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 27 Feb
- 2024 18:40:41 +0100
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-To: <william.gray@linaro.org>
-CC: <lee@kernel.org>, <alexandre.torgue@foss.st.com>,
-        <fabrice.gasnier@foss.st.com>, <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 11/11] counter: stm32-timer-cnt: add support for capture events
-Date: Tue, 27 Feb 2024 18:38:03 +0100
-Message-ID: <20240227173803.53906-12-fabrice.gasnier@foss.st.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240227173803.53906-1-fabrice.gasnier@foss.st.com>
-References: <20240227173803.53906-1-fabrice.gasnier@foss.st.com>
+ 2024 18:43:35 +0100
+Message-ID: <599a7357-b4d6-4581-9d5c-c1d0ade3e410@foss.st.com>
+Date: Tue, 27 Feb 2024 18:43:20 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 04/10] counter: stm32-timer-cnt: introduce clock signal
+Content-Language: en-US
+To: William Breathitt Gray <william.gray@linaro.org>
+CC: <lee@kernel.org>, <alexandre.torgue@foss.st.com>,
+        <linux-iio@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
+References: <20231220145726.640627-1-fabrice.gasnier@foss.st.com>
+ <20231220145726.640627-5-fabrice.gasnier@foss.st.com>
+ <ZZwm7ZyrL7vFn0Xd@ubuntu-server-vm-macos>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <ZZwm7ZyrL7vFn0Xd@ubuntu-server-vm-macos>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE2.st.com
  (10.75.129.70)
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
  definitions=2024-02-27_05,2024-02-27_01,2023-05-22_02
 
-Add support for capture events. Captured counter value for each channel
-can be retrieved through CCRx register.
-STM32 timers can have up to 4 capture channels (on input channel 1 to
-channel 4), hence need to check the number of channels before reading
-the capture data.
-The capture configuration is hard-coded to capture signals on both edges
-(non-inverted). Interrupts are used to report events independently for
-each channel.
+On 1/8/24 17:46, William Breathitt Gray wrote:
+> On Wed, Dec 20, 2023 at 03:57:20PM +0100, Fabrice Gasnier wrote:
+>> Introduce the internal clock signal, used to count when in simple rising
+>> function. Also add the "frequency" extension to the clock signal.
+>>
+>> With this patch, signal action reports a consistent state when "increase"
+>> function is used, and the counting frequency:
+>>     $ echo increase > function
+>>     $ grep -H "" signal*_action
+>>     signal0_action:none
+>>     signal1_action:none
+>>     signal2_action:rising edge
+>>     $ echo 1 > enable
+>>     $ cat count
+>>     25425
+>>     $ cat count
+>>     44439
+>>     $ cat ../signal2/frequency
+>>     208877930
+>>
+>> Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> 
+> Reviewed-by: William Breathitt Gray <william.gray@linaro.org>
+> 
+> The code is all right, but some minor suggestions below.
+> 
+>> +static struct counter_comp stm32_count_clock_ext[] = {
+>> +	COUNTER_COMP_SIGNAL_U64("frequency", stm32_count_clk_get_freq, NULL),
+> 
+> It might be worth introducing a new COUNTER_COMP_FREQUENCY() macro now
+> that we have a second driver with the 'frequency' extension
+> (ti-ecap-capture also has 'frequency'). But it's up to you if you want
+> to add a precursor patch to this series, or I'll introduce it separately
+> myself in a independent patch.
 
-Acked-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
----
-Changes in v4:
-- move registers definition from previous patch to here. That's where
-  the defines are actually used. So move the collected Acked-by: Lee
-  for the mfd header here.
-- drop *irq from stm32_timer_cnt, as only used at probe time.
-- adopt some of the suggestions from William: introduce cc local variable,
-  use regmap_test_bits().
+Thanks for suggesting.
 
-Changes in v3:
-- patch split from: "counter: stm32-timer-cnt: add support for events", to
-  focus on the capture events only here.
-- only get relevant interrupt line
----
- drivers/counter/stm32-timer-cnt.c | 134 +++++++++++++++++++++++++++++-
- include/linux/mfd/stm32-timers.h  |  13 +++
- 2 files changed, 144 insertions(+), 3 deletions(-)
+I added a precursor patch to this series.
+I guess you wishes to see it used in both ti-ecap-capture and
+stm32-timer-cnt. I only cared about stm32-timer-cnt in this series.
 
-diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
-index 9ec6e18f4d43..787ebfb893b0 100644
---- a/drivers/counter/stm32-timer-cnt.c
-+++ b/drivers/counter/stm32-timer-cnt.c
-@@ -262,6 +262,40 @@ static int stm32_count_prescaler_write(struct counter_device *counter,
- 	return regmap_write(priv->regmap, TIM_PSC, psc);
- }
- 
-+static int stm32_count_cap_read(struct counter_device *counter,
-+				struct counter_count *count,
-+				size_t ch, u64 *cap)
-+{
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+	u32 ccrx;
-+
-+	if (ch >= priv->nchannels)
-+		return -EOPNOTSUPP;
-+
-+	switch (ch) {
-+	case 0:
-+		regmap_read(priv->regmap, TIM_CCR1, &ccrx);
-+		break;
-+	case 1:
-+		regmap_read(priv->regmap, TIM_CCR2, &ccrx);
-+		break;
-+	case 2:
-+		regmap_read(priv->regmap, TIM_CCR3, &ccrx);
-+		break;
-+	case 3:
-+		regmap_read(priv->regmap, TIM_CCR4, &ccrx);
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	dev_dbg(counter->parent, "CCR%zu: 0x%08x\n", ch + 1, ccrx);
-+
-+	*cap = ccrx;
-+
-+	return 0;
-+}
-+
- static int stm32_count_nb_ovf_read(struct counter_device *counter,
- 				   struct counter_count *count, u64 *val)
- {
-@@ -288,6 +322,8 @@ static int stm32_count_nb_ovf_write(struct counter_device *counter,
- 	return 0;
- }
- 
-+static DEFINE_COUNTER_ARRAY_CAPTURE(stm32_count_cap_array, 4);
-+
- static struct counter_comp stm32_count_ext[] = {
- 	COUNTER_COMP_DIRECTION(stm32_count_direction_read),
- 	COUNTER_COMP_ENABLE(stm32_count_enable_read, stm32_count_enable_write),
-@@ -295,6 +331,7 @@ static struct counter_comp stm32_count_ext[] = {
- 			     stm32_count_ceiling_write),
- 	COUNTER_COMP_COUNT_U64("prescaler", stm32_count_prescaler_read,
- 			       stm32_count_prescaler_write),
-+	COUNTER_COMP_ARRAY_CAPTURE(stm32_count_cap_read, NULL, stm32_count_cap_array),
- 	COUNTER_COMP_COUNT_U64("num_overflows", stm32_count_nb_ovf_read, stm32_count_nb_ovf_write),
- };
- 
-@@ -353,11 +390,68 @@ static int stm32_action_read(struct counter_device *counter,
- 	}
- }
- 
-+struct stm32_count_cc_regs {
-+	u32 ccmr_reg;
-+	u32 ccmr_mask;
-+	u32 ccmr_bits;
-+	u32 ccer_bits;
-+};
-+
-+static const struct stm32_count_cc_regs stm32_cc[] = {
-+	{ TIM_CCMR1, TIM_CCMR_CC1S, TIM_CCMR_CC1S_TI1,
-+		TIM_CCER_CC1E | TIM_CCER_CC1P | TIM_CCER_CC1NP },
-+	{ TIM_CCMR1, TIM_CCMR_CC2S, TIM_CCMR_CC2S_TI2,
-+		TIM_CCER_CC2E | TIM_CCER_CC2P | TIM_CCER_CC2NP },
-+	{ TIM_CCMR2, TIM_CCMR_CC3S, TIM_CCMR_CC3S_TI3,
-+		TIM_CCER_CC3E | TIM_CCER_CC3P | TIM_CCER_CC3NP },
-+	{ TIM_CCMR2, TIM_CCMR_CC4S, TIM_CCMR_CC4S_TI4,
-+		TIM_CCER_CC4E | TIM_CCER_CC4P | TIM_CCER_CC4NP },
-+};
-+
-+static int stm32_count_capture_configure(struct counter_device *counter, unsigned int ch,
-+					 bool enable)
-+{
-+	struct stm32_timer_cnt *const priv = counter_priv(counter);
-+	const struct stm32_count_cc_regs *cc;
-+	u32 ccmr, ccer;
-+
-+	if (ch >= ARRAY_SIZE(stm32_cc) || ch >= priv->nchannels) {
-+		dev_err(counter->parent, "invalid ch: %d\n", ch);
-+		return -EINVAL;
-+	}
-+
-+	cc = &stm32_cc[ch];
-+
-+	/*
-+	 * configure channel in input capture mode, map channel 1 on TI1, channel2 on TI2...
-+	 * Select both edges / non-inverted to trigger a capture.
-+	 */
-+	if (enable) {
-+		/* first clear possibly latched capture flag upon enabling */
-+		if (!regmap_test_bits(priv->regmap, TIM_CCER, cc->ccer_bits))
-+			regmap_write(priv->regmap, TIM_SR, ~TIM_SR_CC_IF(ch));
-+		regmap_update_bits(priv->regmap, cc->ccmr_reg, cc->ccmr_mask,
-+				   cc->ccmr_bits);
-+		regmap_set_bits(priv->regmap, TIM_CCER, cc->ccer_bits);
-+	} else {
-+		regmap_clear_bits(priv->regmap, TIM_CCER, cc->ccer_bits);
-+		regmap_clear_bits(priv->regmap, cc->ccmr_reg, cc->ccmr_mask);
-+	}
-+
-+	regmap_read(priv->regmap, cc->ccmr_reg, &ccmr);
-+	regmap_read(priv->regmap, TIM_CCER, &ccer);
-+	dev_dbg(counter->parent, "%s(%s) ch%d 0x%08x 0x%08x\n", __func__, enable ? "ena" : "dis",
-+		ch, ccmr, ccer);
-+
-+	return 0;
-+}
-+
- static int stm32_count_events_configure(struct counter_device *counter)
- {
- 	struct stm32_timer_cnt *const priv = counter_priv(counter);
- 	struct counter_event_node *event_node;
- 	u32 dier = 0;
-+	int i, ret;
- 
- 	list_for_each_entry(event_node, &counter->events_list, l) {
- 		switch (event_node->event) {
-@@ -367,6 +461,12 @@ static int stm32_count_events_configure(struct counter_device *counter)
- 				regmap_write(priv->regmap, TIM_SR, (u32)~TIM_SR_UIF);
- 			dier |= TIM_DIER_UIE;
- 			break;
-+		case COUNTER_EVENT_CAPTURE:
-+			ret = stm32_count_capture_configure(counter, event_node->channel, true);
-+			if (ret)
-+				return ret;
-+			dier |= TIM_DIER_CC_IE(event_node->channel);
-+			break;
- 		default:
- 			/* should never reach this path */
- 			return -EINVAL;
-@@ -376,6 +476,15 @@ static int stm32_count_events_configure(struct counter_device *counter)
- 	/* Enable / disable all events at once, from events_list, so write all DIER bits */
- 	regmap_write(priv->regmap, TIM_DIER, dier);
- 
-+	/* check for disabled capture events */
-+	for (i = 0 ; i < priv->nchannels; i++) {
-+		if (!(dier & TIM_DIER_CC_IE(i))) {
-+			ret = stm32_count_capture_configure(counter, i, false);
-+			if (ret)
-+				return ret;
-+		}
-+	}
-+
- 	return 0;
- }
- 
-@@ -389,6 +498,12 @@ static int stm32_count_watch_validate(struct counter_device *counter,
- 		return -EOPNOTSUPP;
- 
- 	switch (watch->event) {
-+	case COUNTER_EVENT_CAPTURE:
-+		if (watch->channel >= priv->nchannels) {
-+			dev_err(counter->parent, "Invalid channel %d\n", watch->channel);
-+			return -EINVAL;
-+		}
-+		return 0;
- 	case COUNTER_EVENT_OVERFLOW_UNDERFLOW:
- 		return 0;
- 	default:
-@@ -499,6 +614,7 @@ static irqreturn_t stm32_timer_cnt_isr(int irq, void *ptr)
- 	struct stm32_timer_cnt *const priv = counter_priv(counter);
- 	u32 clr = GENMASK(31, 0); /* SR flags can be cleared by writing 0 (wr 1 has no effect) */
- 	u32 sr, dier;
-+	int i;
- 
- 	regmap_read(priv->regmap, TIM_SR, &sr);
- 	regmap_read(priv->regmap, TIM_DIER, &dier);
-@@ -506,7 +622,7 @@ static irqreturn_t stm32_timer_cnt_isr(int irq, void *ptr)
- 	 * Some status bits in SR don't match with the enable bits in DIER. Only take care of
- 	 * the possibly enabled bits in DIER (that matches in between SR and DIER).
- 	 */
--	dier &= TIM_DIER_UIE;
-+	dier &= (TIM_DIER_UIE | TIM_DIER_CC1IE | TIM_DIER_CC2IE | TIM_DIER_CC3IE | TIM_DIER_CC4IE);
- 	sr &= dier;
- 
- 	if (sr & TIM_SR_UIF) {
-@@ -519,6 +635,15 @@ static irqreturn_t stm32_timer_cnt_isr(int irq, void *ptr)
- 		clr &= ~TIM_SR_UIF;
- 	}
- 
-+	/* Check capture events */
-+	for (i = 0 ; i < priv->nchannels; i++) {
-+		if (sr & TIM_SR_CC_IF(i)) {
-+			counter_push_event(counter, COUNTER_EVENT_CAPTURE, i);
-+			clr &= ~TIM_SR_CC_IF(i);
-+			dev_dbg(counter->parent, "COUNTER_EVENT_CAPTURE, %d\n", i);
-+		}
-+	}
-+
- 	regmap_write(priv->regmap, TIM_SR, clr);
- 
- 	return IRQ_HANDLED;
-@@ -633,8 +758,11 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
- 		}
- 	} else {
- 		for (i = 0; i < priv->nr_irqs; i++) {
--			/* Only take care of update IRQ for overflow events */
--			if (i != STM32_TIMERS_IRQ_UP)
-+			/*
-+			 * Only take care of update IRQ for overflow events, and cc for
-+			 * capture events.
-+			 */
-+			if (i != STM32_TIMERS_IRQ_UP && i != STM32_TIMERS_IRQ_CC)
- 				continue;
- 
- 			ret = devm_request_irq(&pdev->dev, ddata->irq[i], stm32_timer_cnt_isr,
-diff --git a/include/linux/mfd/stm32-timers.h b/include/linux/mfd/stm32-timers.h
-index ca35af30745f..9eb17481b07f 100644
---- a/include/linux/mfd/stm32-timers.h
-+++ b/include/linux/mfd/stm32-timers.h
-@@ -41,6 +41,11 @@
- #define TIM_SMCR_SMS	(BIT(0) | BIT(1) | BIT(2)) /* Slave mode selection */
- #define TIM_SMCR_TS	(BIT(4) | BIT(5) | BIT(6)) /* Trigger selection */
- #define TIM_DIER_UIE	BIT(0)	/* Update interrupt	   */
-+#define TIM_DIER_CC1IE	BIT(1)  /* CC1 Interrupt Enable    */
-+#define TIM_DIER_CC2IE	BIT(2)  /* CC2 Interrupt Enable    */
-+#define TIM_DIER_CC3IE	BIT(3)  /* CC3 Interrupt Enable    */
-+#define TIM_DIER_CC4IE	BIT(4)  /* CC4 Interrupt Enable    */
-+#define TIM_DIER_CC_IE(x)	BIT((x) + 1) /* CC1, CC2, CC3, CC4 interrupt enable */
- #define TIM_DIER_UDE	BIT(8)  /* Update DMA request Enable */
- #define TIM_DIER_CC1DE	BIT(9)  /* CC1 DMA request Enable  */
- #define TIM_DIER_CC2DE	BIT(10) /* CC2 DMA request Enable  */
-@@ -49,6 +54,7 @@
- #define TIM_DIER_COMDE	BIT(13) /* COM DMA request Enable  */
- #define TIM_DIER_TDE	BIT(14) /* Trigger DMA request Enable */
- #define TIM_SR_UIF	BIT(0)	/* Update interrupt flag   */
-+#define TIM_SR_CC_IF(x)	BIT((x) + 1) /* CC1, CC2, CC3, CC4 interrupt flag */
- #define TIM_EGR_UG	BIT(0)	/* Update Generation       */
- #define TIM_CCMR_PE	BIT(3)	/* Channel Preload Enable  */
- #define TIM_CCMR_M1	(BIT(6) | BIT(5))  /* Channel PWM Mode 1 */
-@@ -60,16 +66,23 @@
- #define TIM_CCMR_CC1S_TI2	BIT(1)	/* IC1/IC3 selects TI2/TI4 */
- #define TIM_CCMR_CC2S_TI2	BIT(8)	/* IC2/IC4 selects TI2/TI4 */
- #define TIM_CCMR_CC2S_TI1	BIT(9)	/* IC2/IC4 selects TI1/TI3 */
-+#define TIM_CCMR_CC3S		(BIT(0) | BIT(1)) /* Capture/compare 3 sel */
-+#define TIM_CCMR_CC4S		(BIT(8) | BIT(9)) /* Capture/compare 4 sel */
-+#define TIM_CCMR_CC3S_TI3	BIT(0)	/* IC3 selects TI3 */
-+#define TIM_CCMR_CC4S_TI4	BIT(8)	/* IC4 selects TI4 */
- #define TIM_CCER_CC1E	BIT(0)	/* Capt/Comp 1  out Ena    */
- #define TIM_CCER_CC1P	BIT(1)	/* Capt/Comp 1  Polarity   */
- #define TIM_CCER_CC1NE	BIT(2)	/* Capt/Comp 1N out Ena    */
- #define TIM_CCER_CC1NP	BIT(3)	/* Capt/Comp 1N Polarity   */
- #define TIM_CCER_CC2E	BIT(4)	/* Capt/Comp 2  out Ena    */
- #define TIM_CCER_CC2P	BIT(5)	/* Capt/Comp 2  Polarity   */
-+#define TIM_CCER_CC2NP	BIT(7)	/* Capt/Comp 2N Polarity   */
- #define TIM_CCER_CC3E	BIT(8)	/* Capt/Comp 3  out Ena    */
- #define TIM_CCER_CC3P	BIT(9)	/* Capt/Comp 3  Polarity   */
-+#define TIM_CCER_CC3NP	BIT(11)	/* Capt/Comp 3N Polarity   */
- #define TIM_CCER_CC4E	BIT(12)	/* Capt/Comp 4  out Ena    */
- #define TIM_CCER_CC4P	BIT(13)	/* Capt/Comp 4  Polarity   */
-+#define TIM_CCER_CC4NP	BIT(15)	/* Capt/Comp 4N Polarity   */
- #define TIM_CCER_CCXE	(BIT(0) | BIT(4) | BIT(8) | BIT(12))
- #define TIM_BDTR_BKE(x)	BIT(12 + (x) * 12) /* Break input enable */
- #define TIM_BDTR_BKP(x)	BIT(13 + (x) * 12) /* Break input polarity */
--- 
-2.25.1
+Can I let you do ti-ecap-capture change if/when you're going to apply it?
 
+> 
+>> @@ -287,7 +321,13 @@ static struct counter_signal stm32_signals[] = {
+>>  	{
+>>  		.id = STM32_CH2_SIG,
+>>  		.name = "Channel 2"
+>> -	}
+>> +	},
+>> +	{
+>> +		.id = STM32_CLOCK_SIG,
+>> +		.name = "Clock Signal",
+> 
+> The word "Signal" feels unnecessary to me when both the sysfs path and
+> data structure will have 'signal' already. Do you think "Clock" by
+> itself is clear enough?
+
+Agreed, I updated in v4.
+
+Best Regards,
+Fabrice
+
+> 
+> William Breathitt Gray
 

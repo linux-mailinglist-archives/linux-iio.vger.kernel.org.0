@@ -1,210 +1,151 @@
-Return-Path: <linux-iio+bounces-3137-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3139-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A54C869E22
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 18:44:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2209A869FF6
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 20:15:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABC6C1F24EEE
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 17:44:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D23BB29377B
+	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 19:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D174D9EF;
-	Tue, 27 Feb 2024 17:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1E351C33;
+	Tue, 27 Feb 2024 19:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="GTW7VrNV"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="atBgt5rs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE262557F;
-	Tue, 27 Feb 2024 17:44:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE07D4F8B1
+	for <linux-iio@vger.kernel.org>; Tue, 27 Feb 2024 19:15:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709055879; cv=none; b=o0jc+KvG9yIX1WEKHh5lsfgBD0YBsBtpG8YH4VPp0TMj8GPw+4vXkDmImxYXHPbxe+c9eti8+e45MbqKyJN/8CO483fDdCa+05ZeLRzZgpeZU+Q5cO18uXE93cpxnoxY06Gbk76z2sv85u86lG4sFJvd3vZDssfvMzEOcJsWKM4=
+	t=1709061348; cv=none; b=uIvfkcugP+4x6Effgw1YuBdBydt1xRls2h82MLM8UNoAK8jfYq+R6mG4ALoE3vYwT8LzvjZ7Z/UXZC8SOpVZwj+kFzkefeWmUotz6cRP5Qi7HNKm4hE0CyesKTlcWK04TnQjbuU3bMBHSlHVii6efjim6yXO6cJC8ich4V2AmOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709055879; c=relaxed/simple;
-	bh=kdp5O1cIEITIktgt384DfDxhL1geSIF8EMcBpT5bIc4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ukwW0ZqLFRFBSqo8BUUHkAeKiY4Bro3ykohJ17tBl/0n97iiyKryloQIuTdTKtg+VRsRB/1j1jcXBsFWon/MpdJqbF9wSriekY4S9bekyGQuWdasHkBaq7eQFPihC3KZhWGG4lF1BM2N8VnNIokZBqTDf6dYFzyjwgEomWFLJdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=GTW7VrNV; arc=none smtp.client-ip=185.132.182.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41RBi3K0029671;
-	Tue, 27 Feb 2024 18:44:24 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	selector1; bh=ZKduf9VukNB9GBil78oMEdLFb1eDrPFu/obW2gUDxi8=; b=GT
-	W7VrNVOHVlekUom1ghEc7syzR22wSOzNMR4KhEH6FnUfWVy3FAUsauLzn/u5LW8B
-	qrYNf5siWD0a6Ya7l5iByf2o+DW2VqV+oHHyPCYZZd0V+DLjTDxBbVfmpkO0elSm
-	OWrC0vVO4oLDpYbyX1foWxyZAlEEVVZh7ydyUFpsIZa0fE0X9woJbQEwBEuEF80x
-	YowXwha/s2fdw30aFR8Z6mY8ccUNxKvayeK2YSzh1whgNgjj3aDukUsYk0EIoLkp
-	SN7gOXNR1hCJj+hnOxE/yAKzFRc63cZ7I8DiNH30qRU3xqXlI4S1RIzPkUFbnHRt
-	APtvf4GpWfarRqEzTc4Q==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3whf4b9dpq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 27 Feb 2024 18:44:23 +0100 (CET)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id D992F4002D;
-	Tue, 27 Feb 2024 18:44:17 +0100 (CET)
-Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 4474F2ADF56;
-	Tue, 27 Feb 2024 18:43:52 +0100 (CET)
-Received: from [10.252.26.109] (10.252.26.109) by SHFDAG1NODE2.st.com
- (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Tue, 27 Feb
- 2024 18:43:49 +0100
-Message-ID: <09262390-388f-402f-99e6-ea6229107119@foss.st.com>
-Date: Tue, 27 Feb 2024 18:43:49 +0100
+	s=arc-20240116; t=1709061348; c=relaxed/simple;
+	bh=hSOP0N0YnxaxmNk6dWKQDrgD1IqOFCwJ/jiRO1WVjPQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PFFDPAWNUSDxOvTaZoh5Arr8GNmcKYUO5nYD+XpZKuA2d5g1Cp5eVJ1q4dlxb6OqwYql73FvKXUTlGJHmAwghMccGJM+N7RLZJlVKfFTXH/NKUFVg2VBhpVT6jV6XqcRk35xSf7fpehm1aUJC1T+9Itjmapd/khueclXJiw3zBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=atBgt5rs; arc=none smtp.client-ip=209.85.208.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2d220e39907so73412071fa.1
+        for <linux-iio@vger.kernel.org>; Tue, 27 Feb 2024 11:15:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1709061345; x=1709666145; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nVKUFrfD0l+ZJGZDjLAoImGvdko1W6B9y4j/PD4Lp0o=;
+        b=atBgt5rsptJiNIbTWTfFDb1a6h7P96eC80d3zsUMheFNN6VHGWk/pSxLVDsXnTWCSa
+         3MaVwg7iJDOZL6AUQVUDkoMF+uFVVmjXOnK/skvSFv46I7Hs3LD+VP8bfHVHCq8OD080
+         mQueZQJAKaF49U431E3/0UEljtVk1o4qTns9x9LpbnF6Wnvl6dDnLUIhTqADZ39bm4/D
+         m88Ml6sxGlObG4CrlDdy3Z86YCTTw3uYDNoWMtowIRDxEvcMJCO/gso41MOK5fp0F+SP
+         2MQpZppZlL4oAnt6t+u73KaZwHasaZMUMbmA9NfRbQ1cyaZL27VeQ0w5jOqNb/pkTSUK
+         Ob5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709061345; x=1709666145;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nVKUFrfD0l+ZJGZDjLAoImGvdko1W6B9y4j/PD4Lp0o=;
+        b=RrONN7t4Slae1EL3dhkODkDKfx9X1v6CqU5beNmN0pC82e5Kn7sZGEg73PVGf5AduU
+         GZAPnT5Lf6OXwC0aaaXwO9FwvtMO11bgLp24NRbRsnjrf1jmhqS9UlavBHWzvQXFxuSG
+         J3lI3HZT7cRY8LfBkeAnHZZlHEUf2K6e6RIk3kFJxbgDawntwOt7uzDky6Z3VnbltlJl
+         LHCJ5NDUQd64ZYoTMOmaIVu4mvSweVqA7jCCvr6LMFauX2P6gfiWr4JkQ7o7/nc+MMCb
+         ocuY1QJOLS5nqx3CvM2cjEgufpDcsvbJROG2Vpyxm+IWcPp69k8K3ynmT9lbNUKRRmF3
+         KWog==
+X-Gm-Message-State: AOJu0Yy0xMUvBB1meMwlaDIC0rSpb6maBIh0J+jIA+KphO9D/+n7L6Me
+	dmnf5Ewna+MzRU/m0I5P+lgxNLYULP2AF8pCAfu9hBOeZIwRYV+RKQzQjfaBzCdomECo88Gfr7z
+	lPTAprFHTEap6S3sT2pDHtfDZ0ABdTjNNijUOjQ==
+X-Google-Smtp-Source: AGHT+IFOOCfT5qLgXVlNq4RDSVuUSSjIvbst3+ktr42fu2XeJjJseZ2PRhKODqIVQssDN1WPGkGvKMEtniDLuom5+1M=
+X-Received: by 2002:a2e:7215:0:b0:2d2:37d6:350c with SMTP id
+ n21-20020a2e7215000000b002d237d6350cmr7283638ljc.12.1709061344774; Tue, 27
+ Feb 2024 11:15:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 10/10] counter: stm32-timer-cnt: add support for
- capture events
-Content-Language: en-US
-To: William Breathitt Gray <william.gray@linaro.org>
-CC: <lee@kernel.org>, <alexandre.torgue@foss.st.com>,
-        <linux-iio@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-References: <20231220145726.640627-1-fabrice.gasnier@foss.st.com>
- <20231220145726.640627-11-fabrice.gasnier@foss.st.com>
- <ZZxyDbYC9oHNKcGF@ubuntu-server-vm-macos>
-From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
-In-Reply-To: <ZZxyDbYC9oHNKcGF@ubuntu-server-vm-macos>
+References: <20240216-ad7944-mainline-v2-0-7eb69651e592@baylibre.com>
+ <20240216-ad7944-mainline-v2-1-7eb69651e592@baylibre.com> <20240221152226.GA2868707-robh@kernel.org>
+ <CAMknhBFytGYNo8FviHepoxLApoGyo0mVhL2BzVmm1vt8-Evn9Q@mail.gmail.com> <CAL_Jsq+diFUEn=Tf99_FkXqLHuyLrZW_jaYoPjGhGjGbecgivg@mail.gmail.com>
+In-Reply-To: <CAL_Jsq+diFUEn=Tf99_FkXqLHuyLrZW_jaYoPjGhGjGbecgivg@mail.gmail.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Tue, 27 Feb 2024 13:15:33 -0600
+Message-ID: <CAMknhBE7r7aRYA5Sm6UhC3pNBMhAvcB4+ZbRZcsRp=PxTG_2Kg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add ad7944 ADCs
+To: Rob Herring <robh@kernel.org>
+Cc: linux-iio@vger.kernel.org, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE2.st.com
- (10.75.129.70)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-02-27_05,2024-02-27_01,2023-05-22_02
+Content-Transfer-Encoding: quoted-printable
 
-On 1/8/24 23:07, William Breathitt Gray wrote:
-> On Wed, Dec 20, 2023 at 03:57:26PM +0100, Fabrice Gasnier wrote:
->> +	/*
->> +	 * configure channel in input capture mode, map channel 1 on TI1, channel2 on TI2...
->> +	 * Select both edges / non-inverted to trigger a capture.
->> +	 */
-> 
-> I suggest defining a new local variable 'cc' to point to stm32_cc[ch]. I
-> think that's make the code look nicer here to avoid all the array index
-> syntax every time you access stm32_cc[ch].
+On Thu, Feb 22, 2024 at 9:34=E2=80=AFAM Rob Herring <robh@kernel.org> wrote=
+:
+>
+> On Wed, Feb 21, 2024 at 8:44=E2=80=AFAM David Lechner <dlechner@baylibre.=
+com> wrote:
+> >
+> > On Wed, Feb 21, 2024 at 9:22=E2=80=AFAM Rob Herring <robh@kernel.org> w=
+rote:
+> > >
+> > > On Fri, Feb 16, 2024 at 01:46:18PM -0600, David Lechner wrote:
+> >
+> > ...
+> >
+> > > > +  adi,spi-mode:
+> > > > +    $ref: /schemas/types.yaml#/definitions/string
+> > > > +    enum: [ single, multi, chain ]
+> > > > +    default: multi
+> > > > +    description: |
+> > > > +      * single: The datasheet calls this "3-wire mode". It is ofte=
+n used when
+> > > > +        the ADC is the only device on the bus. In this mode, SDI i=
+s tied to VIO,
+> > > > +        and the CNV line can be connected to the CS line of the SP=
+I controller
+> > > > +        or to a GPIO, in which case the CS line of the controller =
+is unused.
+> > >
+> > > We have a standard property for this.
+> >
+> > As discussed in v1 [1], the datasheet's definition of "3-wire mode" is
+> > _not_ the same as the standard spi-3wire property. I can add that to
+> > the description here to clarify (I hoped changing the enum name was
+> > enough, but perhaps not). Or is there a different property you are
+> > referring to?
+> >
+> > [1]: https://lore.kernel.org/all/20240216140826.58b3318d@jic23-huawei/
+> >
+> > >
+> > > > +      * multi: The datasheet calls this "4-wire mode". This is the=
+ convential
+>
+> Also, typo.
+>
+> > > > +        SPI mode used when there are multiple devices on the same =
+bus. In this
+> > > > +        mode, the CNV line is used to initiate the conversion and =
+the SDI line
+> > > > +        is connected to CS on the SPI controller.
+> > >
+> > > That's "normal" mode.
+> >
+> > That was my first choice, but the datasheet uses the term "normal
+> > mode" to mean not TURBO mode which is something else unrelated to the
+> > SPI mode.
+>
+> What I mean is this should be conveyed by the absence of any property.
+> You don't need a property for "normal SPI mode".
 
-Hi William,
-
-Thanks for suggesting.
-Done.
-
-> 
->> +	if (enable) {
->> +		/* first clear possibly latched capture flag upon enabling */
->> +		regmap_read(priv->regmap, TIM_CCER, &ccer);
->> +		if (!(ccer & stm32_cc[ch].ccer_bits)) {
-> 
-> Try regmap_test_bits() here instead of using regmap_read().
-
-Done,
-
-> 
->> +			sr = ~TIM_SR_CC_IF(ch);
->> +			regmap_write(priv->regmap, TIM_SR, sr);
-> 
-> Eliminate 'sr' by regmap_write(priv->regmap, TIM_SR, ~TIM_SR_CC_IF(ch)).
-> 
->> @@ -366,6 +460,12 @@ static int stm32_count_events_configure(struct counter_device *counter)
->>  				regmap_write(priv->regmap, TIM_SR, (u32)~TIM_SR_UIF);
->>  			dier |= TIM_DIER_UIE;
->>  			break;
->> +		case COUNTER_EVENT_CAPTURE:
->> +			ret = stm32_count_capture_configure(counter, event_node->channel, true);
->> +			if (ret)
->> +				return ret;
->> +			dier |= TIM_DIER_CC_IE(event_node->channel);
-> 
-> Ah, now I understand why the previous patch OR'd TIM_DIER_UIE to dier.
-> Apologies for the noise.
-> 
->> @@ -374,6 +474,15 @@ static int stm32_count_events_configure(struct counter_device *counter)
->>  
->>  	regmap_write(priv->regmap, TIM_DIER, dier);
->>  
->> +	/* check for disabled capture events */
->> +	for (i = 0 ; i < priv->nchannels; i++) {
->> +		if (!(dier & TIM_DIER_CC_IE(i))) {
->> +			ret = stm32_count_capture_configure(counter, i, false);
->> +			if (ret)
->> +				return ret;
->> +		}
-> 
-> Would for_each_clear_bitrange() in linux/find.h work for this loop?
-
-I had a look, but it requires to add some variables, for start and stop
-bit in the bitmap. For now, I've kept the simple BIT macro and bit ops.
-
-> 
->> @@ -504,7 +620,7 @@ static irqreturn_t stm32_timer_cnt_isr(int irq, void *ptr)
->>  	 * Some status bits in SR don't match with the enable bits in DIER. Only take care of
->>  	 * the possibly enabled bits in DIER (that matches in between SR and DIER).
->>  	 */
->> -	dier &= TIM_DIER_UIE;
->> +	dier &= (TIM_DIER_UIE | TIM_DIER_CC1IE | TIM_DIER_CC2IE | TIM_DIER_CC3IE | TIM_DIER_CC4IE);
-> 
-> Again, sorry for the noise on the previous patch; this makes sense now.
-> 
->> @@ -515,6 +631,15 @@ static irqreturn_t stm32_timer_cnt_isr(int irq, void *ptr)
->>  		clr &= ~TIM_SR_UIF;
->>  	}
->>  
->> +	/* Check capture events */
->> +	for (i = 0 ; i < priv->nchannels; i++) {
->> +		if (sr & TIM_SR_CC_IF(i)) {
-> 
-> Would for_each_set_bitrange() in linux/find.h work for this loop?
-
-same.
-
-> 
->> +			counter_push_event(counter, COUNTER_EVENT_CAPTURE, i);
->> +			clr &= ~TIM_SR_CC_IF(i);
-> 
-> Perhaps u32p_replace_bits(&clr, 0, TIM_SR_CC_IF(i)) is clearer here.
-
-I've hit some build issue with TIM_SR_CC_IF(i) macro, e.g.:
-./include/linux/bitfield.h:165:17: error: call to ‘__bad_mask’ declared
-with attribute error: bad bitfield mask
-  165 |                 __bad_mask();
-
-So I've kept the simple bit operation here.
-
-Thanks & Best Regards,
-Fabrice
-
-> 
->> @@ -627,8 +752,11 @@ static int stm32_timer_cnt_probe(struct platform_device *pdev)
->>  		}
->>  	} else {
->>  		for (i = 0; i < priv->nr_irqs; i++) {
->> -			/* Only take care of update IRQ for overflow events */
->> -			if (i != STM32_TIMERS_IRQ_UP)
->> +			/*
->> +			 * Only take care of update IRQ for overflow events, and cc for
->> +			 * capture events.
->> +			 */
->> +			if (i != STM32_TIMERS_IRQ_UP && i != STM32_TIMERS_IRQ_CC)
->>  				continue;
-> 
-> Okay, I see now why you have this check. This should be fine as it'll
-> makes adding support in the future for the other IRQs a less invasive
-> change.
-> 
-> William Breathitt Gray
+The binding already has `default: multi` to cover this case. But I
+suppose we can just leave out the option altogether if you prefer.
 

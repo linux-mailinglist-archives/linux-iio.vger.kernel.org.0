@@ -1,232 +1,194 @@
-Return-Path: <linux-iio+bounces-3167-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3168-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 540CC86B142
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 15:06:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8275A86B173
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 15:15:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09EF2283586
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 14:06:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED0881F29993
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 14:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC46153513;
-	Wed, 28 Feb 2024 14:06:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aKxron1X"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49588157E7B;
+	Wed, 28 Feb 2024 14:15:47 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A85E14F995
-	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 14:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B51221379;
+	Wed, 28 Feb 2024 14:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709129182; cv=none; b=L29vbxe+UkbgaCKiUNbawtzMlMjTn2PFKvN7Ay8XpfwDSYCE94kKTQ7a0TPkkUuej3wDjUC00efk8uQ5fV66Pp/Kg/Pt+n0Ci6o+xT4DsAqBh2mRk9edR6qrD2cb3BjZoeLfT9NstAtxx3niEQb94M2DZ5LDVkGmrCuJWi/XMqs=
+	t=1709129747; cv=none; b=WMrVcBNvhy3theyZGwnj8kFQOH41bDJNQkrECXw4siWPWAEdXOcF3LNN205/iMmgPYB9baCaWDwpIS5JGU06YYwW9tftLJla5YQQokMoWcWibl+OPiaB69c1dgh9Kjy13/mE/PGQyP077rRCtOyl2bjelX4zr7zgVsrq9yuQGcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709129182; c=relaxed/simple;
-	bh=fUSaXoqtXRB0qGdabGFsyk62OVa7gFl3kWDiGvq9L48=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XK8RW/ow7vzAI2phdRdRDoh8zDI5jWqELUjhKTHb0X+c35Qkcbto0D9IQPDD9U71wXmQKc1forFlqjpmO/rF7c0j7NvBfhLkIwuPBvA2cs6xw927NnLo+eFzH4yEFZbeGmO5DdSREMafSYoR2djs3ksNJfwv9q8DiY3+cNNOlb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aKxron1X; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a43fc42e697so78712366b.1
-        for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 06:06:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709129178; x=1709733978; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0/rpJyq/RgcopvSHJgS4VKLl6wgR1t9y0dcYjB0pkkA=;
-        b=aKxron1Xi3Dmu2YFzEWO1RysdsHNLdF+gQu6CNRfJpFv37BdmxlqdpNevoi5Mzabxf
-         EjKIv6SztXXqOuewrqlNhr/NTWngJnx4/+8YhQe25n++umgn0ZPKEC9m9dnl81Y5AHvR
-         2M69odf/YHGbmCzp+6372QkLtyvVqWtJ3aSi7Xu96wkFiAWD8DFSM4zPpLSz1Z7GkHYX
-         cAiD6bwBonkrcC0RyO/VDZpvpBXRYkQHUiesXEJJD84CIZemNwgIRNQjE981FIP/+Svz
-         FfIp5K8QtRUxpITkMXPSnZR2Ac45gxlhmRBVrtvfAmS0vWswvGWiWIZfNHw7QeCW3oP1
-         1k9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709129178; x=1709733978;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0/rpJyq/RgcopvSHJgS4VKLl6wgR1t9y0dcYjB0pkkA=;
-        b=BEhRHQ3oi9QDLWngHat9m3uienkkiDXH8OhSuZqDVxP7D9nee9A6QoFSrOfJccnwL9
-         t3+oheIPlAazMOjpzGjsqzC1KiaH3nLcTl6LXM7OMkQCpCb1PRNbt39ejh0AiBpF2dUD
-         s+HmhXmN+SOmj1/oe6ZKsL1m+ZAPKycPgwV3DdAML6kFsr+mGRLgggG3Wdkm3HYOUjgU
-         3XoEqTebAUr61081MJ9mwxvxZz03Hq4zU5QAG21gvUCDCKG3YmZpTQjpKdXy0jNFALGu
-         aSUE6TVf2+MWqwlFDR2742EIaNM29Y4JpywGgmgK2HCBA1Ui7La7yWVlNi4xA/Mqjjti
-         pZ+g==
-X-Forwarded-Encrypted: i=1; AJvYcCU96Iy1Ofwi+BGNwMkLwcpVVnnyNZ1Jt+AbzuNOBByQebtFlOVM3/oFx5d9PWyu3E4HlbZXA5rusdQEa2vbdb3GZEdprYCGOt/b
-X-Gm-Message-State: AOJu0YxNJdu3XFFKhHes5ngCHVw9mTyYoYbdlz2SQX7uOxLvrLZ3I17g
-	y+Vv+4+aDq7D6+6YsyriRPkdpbbrBXgOSRFgR1/Ewltlfl/WjEd6HW6djiVlk6E=
-X-Google-Smtp-Source: AGHT+IFE4wiM4wtkf5DpMvBbMBdAJSPpOXes7UwK5f3dYxNRKxgNFtELeQKw7Zr46zFZZ2hHeYEafA==
-X-Received: by 2002:a17:906:bce7:b0:a44:2178:d280 with SMTP id op7-20020a170906bce700b00a442178d280mr240776ejb.66.1709129178506;
-        Wed, 28 Feb 2024 06:06:18 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.222.116])
-        by smtp.gmail.com with ESMTPSA id cd14-20020a170906b34e00b00a4412406741sm398217ejb.131.2024.02.28.06.06.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Feb 2024 06:06:18 -0800 (PST)
-Message-ID: <01f6fd8b-2d2e-4324-b354-1ea1b0868976@linaro.org>
-Date: Wed, 28 Feb 2024 15:06:16 +0100
+	s=arc-20240116; t=1709129747; c=relaxed/simple;
+	bh=3voUT4C0aiAEWU44I/mNBH/4Ghg3ogoV6z6+5em1SqU=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cX0QdnWIVSiNTorMN6L5XhCXQbNXZ1UjIC+KrOjQzXjfon+5UwI1jfz5LVymoU92anw/apDGLajBqmeymMBsqNMrMuEuiK2eMfwBBmZnfFdgSAoGu/QPM/VY15lFAgxF4R1qV1Fi8wz6f5hV9mOqHBk7LA4GXN8LZtuXwEbXKNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TlGWF4zbMz6K7JS;
+	Wed, 28 Feb 2024 22:11:53 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id E40E3140D26;
+	Wed, 28 Feb 2024 22:15:39 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 28 Feb
+ 2024 14:15:39 +0000
+Date: Wed, 28 Feb 2024 14:15:38 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	<linux-iio@vger.kernel.org>, "Rafael J . Wysocki" <rafael@kernel.org>, "Len
+ Brown" <lenb@kernel.org>, <linux-acpi@vger.kernel.org>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Daniel Scally <djrscally@gmail.com>, "Heikki
+ Krogerus" <heikki.krogerus@linux.intel.com>, Sakari Ailus
+	<sakari.ailus@linux.intel.com>, Julia Lawall <Julia.Lawall@inria.fr>, Nuno
+ =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Cosmin Tanislav
+	<cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
+	<tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier Moysan
+	<olivier.moysan@foss.st.com>, Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
+	<dmitry.baryshkov@linaro.org>, Marijn Suijten
+	<marijn.suijten@somainline.org>, Marius Cristea
+	<marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: Re: [PATCH v4 00/15] device property / IIO: Use cleanup.h magic for
+ fwnode_handle_put() handling.
+Message-ID: <20240228141538.00005b31@Huawei.com>
+In-Reply-To: <20240224114912.6da6aa9d@jic23-huawei>
+References: <20240217164249.921878-1-jic23@kernel.org>
+	<ZdNAQi6IlMN-quO_@smile.fi.intel.com>
+	<20240219154947.0000681b@Huawei.com>
+	<20240224114912.6da6aa9d@jic23-huawei>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/4] dt-bindings: iio: adc: ad7192: Add AD7194 support
-Content-Language: en-US
-To: Alisa-Dariana Roman <alisadariana@gmail.com>,
- michael.hennerich@analog.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: lars@metafoo.de, jic23@kernel.org, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- andriy.shevchenko@linux.intel.com, nuno.sa@analog.com,
- alisa.roman@analog.com, dlechner@baylibre.com
-References: <20240228122617.185814-1-alisa.roman@analog.com>
- <20240228122617.185814-4-alisa.roman@analog.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240228122617.185814-4-alisa.roman@analog.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On 28/02/2024 13:26, Alisa-Dariana Roman wrote:
-> Unlike the other AD719Xs, AD7194 has configurable differential
-> channels. The default configuration for these channels can be changed
-> from the devicetree.
+On Sat, 24 Feb 2024 11:49:12 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
+
+> On Mon, 19 Feb 2024 15:49:47 +0000
+> Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 > 
-> Also add an example for AD7194 devicetree.
+> > On Mon, 19 Feb 2024 13:49:22 +0200
+> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+> >   
+> > > On Sat, Feb 17, 2024 at 04:42:34PM +0000, Jonathan Cameron wrote:    
+> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > > 
+> > > > Sorry for the rapid resend, Andy noticed I'd messed up creating the v3 patch
+> > > > set with some updates committed in the wrong patch.
+> > > > 
+> > > > Since v3: The updates to alignment of device_for_each_child_node_scopd() were
+> > > >     in the wrong patch. Move them to patch 4 where they should always
+> > > >     have been. (thanks Andy!)
+> > > > 
+> > > > Since v2: Thanks to Sakari and Andy for reviews.
+> > > > - New first patch moving fwnode_handle_put() into property.h
+> > > > - Tweak alignment in the loop macro
+> > > > - Pick up tags.
+> > > > - scopd -> scoped typo fix in some patch descriptions.
+> > > > 
+> > > > As can be seen by the examples from IIO that follow this can save
+> > > > a reasonable amount of complexity and boiler plate code, often enabling
+> > > > additional cleanups in related code such as use of
+> > > > return dev_err_probe().
+> > > > 
+> > > > Given we are now fairly late in the cycle, I'd expect to take this
+> > > > through the IIO tree and we can make use of it elsewhere next cycle.
+> > > > 
+> > > > Note I don't have the hardware so this is compile tested only.
+> > > > Hence I'd appreciate some Tested-by tags if anyone can poke one of the
+> > > > effected drivers.
+> > > > 
+> > > > Julia Lawal has posted some nice coccinelle magic for the DT equivalents.
+> > > > Referenced from that cover letter.  Similar may help us convert more
+> > > > drivers to use this new approach, but often hand tweaking can take
+> > > > additional advantage of other cleanup.h based magic, or things like
+> > > > return dev_err_probe().
+> > > > https://lore.kernel.org/all/20240211174237.182947-1-jic23@kernel.org/      
+> > > 
+> > > It seems you are got all necessary tags to go.    
+> > 
+> > Light on the driver changes to use it, but seems that we have
+> > reached convergence on the infrastructure.  
 > 
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> Signed-off-by: romandariana <alisa.roman@analog.com>
-
-Something is not right here...
-
-> ---
->  .../bindings/iio/adc/adi,ad7192.yaml          | 75 +++++++++++++++++++
->  1 file changed, 75 insertions(+)
+> What I'll do in the short term is pick up the changes that have been
+> reviewed and gained tags (so the infrastructure plus a few of the driver
+> changes) and then send a v5 with the remainder. I suspect the driver
+> changes have gotten lost in the deluge as IIO has been very busy this week.
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> index 16def2985ab4..c62862760311 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> @@ -21,8 +21,15 @@ properties:
->        - adi,ad7190
->        - adi,ad7192
->        - adi,ad7193
-> +      - adi,ad7194
->        - adi,ad7195
->  
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
->    reg:
->      maxItems: 1
->  
-> @@ -96,8 +103,44 @@ required:
->    - spi-cpol
->    - spi-cpha
->  
-> +patternProperties:
-> +  "^channel@([0-9]+)$":
+> Whilst I will occasionally pick up my own IIO changes with out review
+> tags I normally only do that for trivial stuff like build fixes.
+> These are simple but not simple enough!
+> 
+> So applied patches
+> 1,2,4,5,12 and 15 to the togreg branch of iio.git which will be initially
+> pushed out as testing for 0-day to look at it.
 
-No need for ()
+Linus is pushing back on some of the uses for cleanup.h for not being
+sufficiently standard c like.
 
-> +    type: object
-> +    $ref: adc.yaml
-> +    unevaluatedProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        description: The channel index.
-> +        minimum: 1
-> +        maximum: 16
-> +
-> +      diff-channels:
-> +        description: |
-> +          Both inputs can be connected to pins AIN1 to AIN16 by choosing the
-> +          appropriate value from 1 to 16. The negative input can also be
-> +          connected to AINCOM by choosing 0.
-> +        items:
-> +          minimum: 0
-> +          maximum: 16
-> +
-> +    required:
-> +      - reg
-> +      - diff-channels
-> +
->  allOf:
->    - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          enum:
-> +            - adi,ad7190
-> +            - adi,ad7192
-> +            - adi,ad7193
-> +            - adi,ad7195
-> +    then:
-> +      patternProperties:
-> +        "^channel@([0-9]+)$": false
+https://lore.kernel.org/linux-cxl/170905252721.2268463.6714121678946763402.stgit@dwillia2-xfh.jf.intel.com/T/#m336ba4087e4f963abbc654ba56eba6d61b77a14b
 
-No need for ()
+That's fair enough, but I think makes pull requests with them in higher
+risk than normal.
 
->  
->  unevaluatedProperties: false
->  
-> @@ -127,3 +170,35 @@ examples:
+As such, for the things I have queued in the IIO tree (beyond the pull
+request GregKH already took which we can cross fingers on),
+I'm going to shuffle the tree so that the remainder can be handled
+in two separate pull requests:
+
+1) Everything else
+2) cleanup.h related including this series.
+
+That should give Greg maximum flexibility to do what makes sense for
+char-misc-next.
+
+The scoped_cond_guard() stuff can be easily modified to be near what Linus is
+proposing so hopefully we can do that next cycle.
+
+Hopefully I can get this done later today.
+
+Jonathan
 
 
-Best regards,
-Krzysztof
+
+
+> 
+> Thanks,
+> 
+> Jonathan
+> 
+> > 
+> > I'll let it sit until the end of the week though as I want to
+> > get a pull request out anyway before taking this into my tree.
+> > 
+> >   
+> > > I commented with some side notes that may be addressed later on.
+> > > Up to you.    
+> > Thanks. I'll catch up with those shortly. 
+> > 
+> > Jonathan
+> >   
+> > >     
+> >   
+> 
+> 
 
 

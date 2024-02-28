@@ -1,121 +1,143 @@
-Return-Path: <linux-iio+bounces-3170-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3172-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FF7386B5F5
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 18:27:46 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 151EE86B6E8
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 19:14:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1CB41C23B88
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 17:27:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD84E1F273D5
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 18:14:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C543FBBF;
-	Wed, 28 Feb 2024 17:27:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FB7940877;
+	Wed, 28 Feb 2024 18:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ix/XMzvG"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="db60gfZj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f52.google.com (mail-oo1-f52.google.com [209.85.161.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EFB34CDE;
-	Wed, 28 Feb 2024 17:27:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF67F4084B
+	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 18:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709141259; cv=none; b=jAJz4lhMuZHIlQnOyP1g4eZVVDObxqE3pRrlLk8N3OouApyS6xqGcdmAFoNnMp2nvzfF0TCDZ94RFGHiY5qzcoEdLWInOUz5Igef/Erdl3aVWNMUmza186MlQYA1hS4it+D0FSZtgPN/OwTaIF+VfZIBiLpThEVdhFMBLx/Zo9E=
+	t=1709144042; cv=none; b=nLAIsU4C1nEOi/gA9dVQrvEvUm2AYK0AT/DemU0mG+jxlMVtHO5c7rTH858RbN9rYn2aJ8XAGXMm7FVxri2B10a1vByZK/h9GohM4tpWiyR837oQLY2Z2bE4/Mqh45wcHru90Amxfl3AcAV94M22NDwvm44ks28kl//9vAZBOAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709141259; c=relaxed/simple;
-	bh=a6yPinrfFCyv1D0aYBQjzitLgkEQTPi0B91kfaZLW0U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iqr40XIWgaXW8Vtsqm91OmZRiplyvMetFrM20mGmxb3Lv9RiTg8hClNrL2IkAE2LxyDbtKASXjVHHCxpGl8OLbClnzpzsTIB2InKPS4Q3aG1BeHhw07jYbI7etwCyI9TR+ZFEkGaRD9BB8oR+//wl/aCrIKtebPYr+1jznEthh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ix/XMzvG; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709141259; x=1740677259;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=a6yPinrfFCyv1D0aYBQjzitLgkEQTPi0B91kfaZLW0U=;
-  b=Ix/XMzvGBqid+ta5dulE/RJq/IBijC7mt94AEL1asjECxCFSzfXstxqM
-   e0JSRmyXof+T9utEClK5Jm5fFpZs/BxiNr5UlJW+TT+bm4T83HbXQ8JJE
-   DHL8NssyWTJRwYBjavOjHn7TZQXP0cskQlMUExEzCc480BHieFPl/FsIl
-   kbiCP/+XuIK510nO3kZ39itOM09kP755hZsnkGEaCFthKGkkOJa6FeU11
-   7Agw8+VZfp/T/Xz1Mau/O9OmQfjuDX90fMWekM1/6fnbWCD1ofuJkwMh9
-   gtDEWRm9CKhfIWnEiGoWvG4R1KLKD7mt73JUvhgUzUJfQ50frLDOlug/i
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3720069"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
-   d="scan'208";a="3720069"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 09:27:38 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="913956212"
-X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
-   d="scan'208";a="913956212"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 09:27:33 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rfNiM-00000008Has-1Z2p;
-	Wed, 28 Feb 2024 19:27:30 +0200
-Date: Wed, 28 Feb 2024 19:27:30 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	s=arc-20240116; t=1709144042; c=relaxed/simple;
+	bh=IUp2O1DyurNt3DHOePkrTCbRZHnoqxYLM0e7Jur/hNo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=idBfILRWcB/mbPQ3L3IZo1FISvMKPRrCqN97DaI5wMkReYCT6Fta4yjKEQsyvFcFkBCtli4sEhfiUJ8vL//MtzerXA2hY0Q39a8xbWltb9NWlPM6BXTknITiLUkageR/Ryg2fKemvBOmK1MMceUPsZqI7detJYyvoM7BC47rhd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=db60gfZj; arc=none smtp.client-ip=209.85.161.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f52.google.com with SMTP id 006d021491bc7-5a05923b689so18570eaf.0
+        for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 10:13:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1709144037; x=1709748837; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JHGQf153ISVcw0os1WKKJ+NMnoBEbvgIaH2/2iMTb0w=;
+        b=db60gfZjnMbn4CHlwQlB8YP9QpafdbEAuVYp1vulcPJ5SpPGglQOW84gKMpi4EQfh8
+         0dqC9yOlhKy2QKZlIAyjFzsXZjDQxHThxc/608s519MMC+tpe7103colh1TRr7NnZFM3
+         EnUtPW/iEz5gyg8nPJWGErnYStWbL7p27FK6SnzJteVmzLVTgYMdbunw0s2lbciTg5Xl
+         p79Pi9aVT6eYurRpleOiQo5v3W0idyBO1qvP2H0k40QLonaks9+tQqLtxT1Y2cOaTdll
+         ll3Ba4flA6LTa+YpzT/2nGNwTSQP6xyrVBRe1whjcimmZr21BfDypfWyVcIlOPFFypd7
+         FU7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709144037; x=1709748837;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JHGQf153ISVcw0os1WKKJ+NMnoBEbvgIaH2/2iMTb0w=;
+        b=iIGi3jIE/rxls65K7ZlHjzKBL96lbdZFWOcZV0os8mDiu2CVf5l9qqhe8eQyKOcyXf
+         c4I1inBXBXdXICRr1RdHRrmKWKa4MF4zOvydv61kNdCK7MaOh+Sfqs14+Cw3xMwZl5Jh
+         xAcONviW/t5YbpekosJ9+9GY32duCpX1aXngyMfkpVIVdgoLt7OoC3Dhj/J0T59sm96i
+         inVY1ARYNcYvKHT6C/2B43HjmH+T9oJ4MjCDk4ZaL/WWrDRk3+o8Mfo2HoMLZ3Ge69k9
+         lOUmZGtbUKyn8LtjqWHGErv1Klf7TbX8txRqqYcLoheBjwHVEC5sjnjsNDnJ1oh4gJEc
+         xmog==
+X-Gm-Message-State: AOJu0YzoQC3REyJEt45QEhpISAel0ZWz95HqMPTT62t2DekbAtJgaRnM
+	7iDECXzkTezv1dY6UGLG7BhwXfZt/Kj1KLm2HD5/+lQzyj9vsue3Wu+ZbIotNslHajxq+pGbjUq
+	H
+X-Google-Smtp-Source: AGHT+IFR/nSV2424gDV/2o+aGcU+yEiir6WLvMYS7zCkUxW6QTer+XFLz59fw4fIyJc3hJM2jNxFhg==
+X-Received: by 2002:a4a:241a:0:b0:5a0:357a:546c with SMTP id m26-20020a4a241a000000b005a0357a546cmr413610oof.6.1709144037018;
+        Wed, 28 Feb 2024 10:13:57 -0800 (PST)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id f20-20020a4a9d54000000b005a0ac863a99sm12291ook.13.2024.02.28.10.13.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Feb 2024 10:13:56 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+To: linux-iio@vger.kernel.org
+Cc: David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
 	Rob Herring <robh+dt@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
-	Anshul Dalal <anshulusr@gmail.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Matt Ranostay <matt@ranostay.sg>,
-	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 5/5] iio: light: Add support for APDS9306 Light Sensor
-Message-ID: <Zd9tApJClX7Frq20@smile.fi.intel.com>
-References: <20240228122408.18619-1-subhajit.ghosh@tweaklogic.com>
- <20240228122408.18619-6-subhajit.ghosh@tweaklogic.com>
- <a828e77c-b3d4-49bb-b0bb-b9fd6cb7d114@gmail.com>
+Subject: [PATCH v3 0/2] iio: adc: ad7944: new driver
+Date: Wed, 28 Feb 2024 12:10:02 -0600
+Message-ID: <20240228-ad7944-mainline-v3-0-781b922334af@baylibre.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a828e77c-b3d4-49bb-b0bb-b9fd6cb7d114@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 28, 2024 at 03:08:56PM +0200, Matti Vaittinen wrote:
-> On 2/28/24 14:24, Subhajit Ghosh wrote:
+This is a new driver for the Analog Devices AD7944/AD7985/AD7986 family
+of ADCs. These are fairly simple chips (e.g. no configuration registers).
+The initial driver is only supporting the 'multi' (4-wire) SPI mode. We
+plan to follow up with support for the 'single' (3-wire) SPI mode.
 
-...
+This work is done on behalf of Analog Devices, Inc., hence the
+MAINTAINERS are @analog.com folks.
 
-> > +	ret = iio_gts_find_new_gain_by_old_gain_time(&data->gts, gain_old,
-> > +						     intg_old, val2, &gain_new);
-> 
-> You don't use the 'ret' here, so maybe for the clarity, not assign it.
-> Or, maybe you wan't to try to squeeze out few cycles for succesful case and
-> check the ret for '0' - in which case you should be able to omit the check
-> right below as well as the call to iio_find_closest_gain_low(). OTOH, this
-> is likely not a "hot path" so I don't care too much about the extra call if
-> you think code is clearer this way.
-> 
-> > +	if (gain_new < 0) {
-> > +		dev_err_ratelimited(dev, "Unsupported gain with time\n");
-> > +		return gain_new;
-> > +	}
+---
+Changes in v3:
+- Removed 'multi' value from adi,spi-mode property in DT bindings
+- Modified driver for above change
+- Fixed spelling of 'conventional'
+- Added '#daisy-chained-devices' to DT bindings
+- Added comments explaining that '3-wire' mode is not related to
+  spi-3wire/SPI_3WIRE
+- Replaced _sign with _diff in chip info struct to properly handle
+  pseudo-differential vs. true differential chips
+- Link to v2: https://lore.kernel.org/r/20240216-ad7944-mainline-v2-0-7eb69651e592@baylibre.com
 
-What is the difference between negative response from the function itself and
-similar in gain_new?
+Changes in v2:
+- Added limit to spi-max-frequency for chain mode in DT bindings
+- Added spi-cpol property to DT bindings
+- Renamed '3-wire' mode to 'single' mode (to avoid confusion with spi-3wire)
+- Renamed '4-wire' mode to 'multi' mode
+- Dropped adi,reference property - now using only ref-supply and 
+  refin-supply to determine the reference voltage source
+- Fixed spelling of TURBO
+- Renamed t_cnv to t_conv to match datasheet name and fixed comment
+- Fixed wrong timestamp pushed to buffer
+- Fixed scaling for chips with signed data
+- Make use of sysfs_match_string() function
+- Link to v1: https://lore.kernel.org/r/20240206-ad7944-mainline-v1-0-bf115fa9474f@baylibre.com
 
--- 
-With Best Regards,
-Andy Shevchenko
+---
+David Lechner (2):
+      dt-bindings: iio: adc: add ad7944 ADCs
+      iio: adc: ad7944: add driver for AD7944/AD7985/AD7986
 
-
+ .../devicetree/bindings/iio/adc/adi,ad7944.yaml    | 213 +++++++++++
+ MAINTAINERS                                        |   9 +
+ drivers/iio/adc/Kconfig                            |  10 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/iio/adc/ad7944.c                           | 413 +++++++++++++++++++++
+ 5 files changed, 646 insertions(+)
+---
+base-commit: 205bbf0d2dd2e0fcd6bf2a15b7df6fc570967e3b
+change-id: 20240206-ad7944-mainline-17c968aa0967
 

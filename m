@@ -1,116 +1,256 @@
-Return-Path: <linux-iio+bounces-3143-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3144-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3500186A1F2
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 22:52:17 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED00286A7F4
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 06:22:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4202281994
-	for <lists+linux-iio@lfdr.de>; Tue, 27 Feb 2024 21:52:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BCA61F22F12
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 05:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7602614EFFB;
-	Tue, 27 Feb 2024 21:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4C820DFF;
+	Wed, 28 Feb 2024 05:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="mU3fbw12";
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="HbBP3Ld8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9E12D60B
-	for <linux-iio@vger.kernel.org>; Tue, 27 Feb 2024 21:52:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B4520DF1
+	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 05:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709070732; cv=none; b=KnGZqh0yfYyGcIJ9sR7yzFivf+qUUSjzDXat4rkW9G2gk4WS7kbKVhhf0Uu0Q23rOXJYIxRFJssfcy8dyrkjD+HqcrEyHL0lF9oDmRXeln9pEMzq+LURgevg2ICPbXDRQkoVixZs8ddjGixoi+aFnGPBWKKTmFjHhujZlnyVjdo=
+	t=1709097718; cv=none; b=MmYLIpkoeLuvLQuHbgTvlK9pKanOtLRE7eervvwZuqa4J2S9+k/8MKmQuNCh/LI6htheu+QRhbL3SgrR5gCuCn9HLvhH4aykzg8IE2WBgOspEMhOGAIYxBBxepejiNdtmT1JcCEM6wiXgZqGZ6XGc0aBZEwamf64nZrDoIvzVm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709070732; c=relaxed/simple;
-	bh=j3jujo60ThgsF30NVPNRGmItvZF+fe0I/ExrkBXukrY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RqIl6ar0JWDUf5CKXmsB+2+Z13sMU0KzOpOjLryps8qLJTxmKnB4pp0fiIfiFQaDJfC/b8AhWCMOlYwVOvMkPyNI2EXict4no+rBAWAqRaeHWN9N2a+ZgzFbz4n4mRunTMowRIVvQCvvKTkjnumf6t/76migKhTye8EOTKRQwvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rf5Ml-00070G-0s; Tue, 27 Feb 2024 22:51:59 +0100
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rf5Mk-003Gyk-0j; Tue, 27 Feb 2024 22:51:58 +0100
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rf5Mj-00AiBy-2z;
-	Tue, 27 Feb 2024 22:51:57 +0100
-Date: Tue, 27 Feb 2024 22:51:57 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
+	s=arc-20240116; t=1709097718; c=relaxed/simple;
+	bh=hag+kUREN7099AQsZeDg4yMNi/Oqegb9LMqtaO2yh/A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=kMSkcoAk6VJJpYt03qnSdrsoMBibEpcU6LyjVxmtK7uPM7PPgZm5gXl/K4L/6yH4NGAx2yi2DoE/q5tu8n1f/stY12vAMIKsjW68nl684Bt5lHwkYkxQ632zYIk8NaHxI5MY+uuLwvH2WJ1J8V7PNRGtr5j0R+AATt8PZogQfKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=mU3fbw12; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=HbBP3Ld8; arc=none smtp.client-ip=35.74.137.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
+	s=gw2_bookworm; t=1709097198;
+	bh=hag+kUREN7099AQsZeDg4yMNi/Oqegb9LMqtaO2yh/A=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mU3fbw12GXb/xsYE687cZCGU/q9KOfEZXCrK+IRRUYS64LSeLMoiHOIIXBgSaIAXl
+	 aIBSgBQGEAAGx3jwY674Ri7J2T2qlmn5MkgdlzVnLfmiMct2gdyy5eI9Z2N+Tpyb1H
+	 jlbzVH69qDG2Ncg8QF+GTnI/iCo6Js6dk5u0LyeOaoa/rxQlwzwCqMEL220h50djkB
+	 nTYAOJVGRTQtEH8VrsTiFoN7N++P/8pwPTfCdn0duM/nImGpoGRqLvjlJmXxepn7M7
+	 ZsH5/xIbv6LxMGGRkFZXd4eilssap0u8eQDDDdX3h0x1LPwbhdVh6DjHOhrKJFoNj3
+	 asPKfGFicT5iA==
+Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
+	by gw2.atmark-techno.com (Postfix) with ESMTP id 35BA5A45
+	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 14:13:18 +0900 (JST)
+Authentication-Results: gw2.atmark-techno.com;
+	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=HbBP3Ld8;
+	dkim-atps=neutral
+Received: from mail-oi1-f200.google.com (mail-oi1-f200.google.com [209.85.167.200])
+	by gw2.atmark-techno.com (Postfix) with ESMTPS id 04274B82
+	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 14:13:17 +0900 (JST)
+Received: by mail-oi1-f200.google.com with SMTP id 5614622812f47-3c13db33d54so5545949b6e.0
+        for <linux-iio@vger.kernel.org>; Tue, 27 Feb 2024 21:13:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=atmark-techno.com; s=google; t=1709097195; x=1709701995; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=T5JD7ecTzwpeJkCMc8dbndbZzwY4gmo8GDlf+AKuHv8=;
+        b=HbBP3Ld82AEEQkV3hgL3OqZvmusQL2OmS+YxdCXtr2DO/cs5Y9sCLj3GKcLj+jK2Bc
+         oVVmgOe66yupvDqtImsMk+PUMRcP9k5NZYCTZFmqw+5GvMHKzC0s/cA00D20XtIIBtml
+         +wS1QIrZj8Kg88mO3hUNYYZQOl3YxtqdK+j4UtfyFAGCHNuM3Y3+7f38pkEXcoHxXj59
+         UYvsRvSaZnAz8Cw8EGCOtmPaIean/UoiH5NHkT93FHDu1WqZgA7h9zvb+IbMPVx9FaCf
+         KToaA4gED1RgbN3UoNihTAD+VINrVi1TUJM+mN8VVyOJFKvyTF/9wZuMf8ocpplOrcZt
+         3FTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709097195; x=1709701995;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=T5JD7ecTzwpeJkCMc8dbndbZzwY4gmo8GDlf+AKuHv8=;
+        b=dYRJX+pY03934BIJJMHoBXKcBaA4v/LrkZB0JasLX/lMpyUvvDOg/1K61QvDO9VSq/
+         /T0GYaWeZJIfyDUuvkqPij1WKOVPPyGL/hqzrhe9kD2W5NyyoQSAhiVvSnj76Xz5pYM5
+         TzILcI0goYLTbI95VTBqFnOWSSrwfyeD+OuXwqAm/8HTn0Ueq9ToVq55DL93/rqptJKy
+         ZmZWDaP070V28f25GyvZdwj40k4qglSIqPRMigINxXKrGcHvLG/Jt2OsJgudDvwDZ1s1
+         +isBmhqTyR07pTGodCBQLAIqAGoeoA/DZN1DGDHg7GY61IqcJS8iFdxpftYN9TAWhmIk
+         IZoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUETeW8HGoscmM3Shnq5B3E6oDqBkK6lLBGoIcPasLAe3YFpZnMdbZPO1xAqCbShrqD/a4u08hpUDWPPgsnIO1jSsA0z9nvcejg
+X-Gm-Message-State: AOJu0YxFLS1B7p7iq1+z3HBSmjltJRM2xDEEEs5tVKVdq20gH9B6hflZ
+	4GTw8/8DEAKg39Ji8rKdFgDhxoe35rLGxwH0eADNVvO7/58Q+dBfa1BQXgDEofZeACZkCxxfqek
+	UJAoJVWohMlxTKzNW4Y6bVVDF/uB9Qnw1IcHRqGQcm2WpPu+s9jCBP3M1yrY=
+X-Received: by 2002:a05:6808:23ce:b0:3c1:ae1d:6f2 with SMTP id bq14-20020a05680823ce00b003c1ae1d06f2mr4509894oib.7.1709097195704;
+        Tue, 27 Feb 2024 21:13:15 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFT9V8+kOD8C+u3gkW+7qF1bb24v14baBPE9HkQL13QPLLJze87Xvo/ppu75bTP7cbuo+fsBw==
+X-Received: by 2002:a05:6808:23ce:b0:3c1:ae1d:6f2 with SMTP id bq14-20020a05680823ce00b003c1ae1d06f2mr4509879oib.7.1709097195373;
+        Tue, 27 Feb 2024 21:13:15 -0800 (PST)
+Received: from pc-0182.atmarktech (162.198.187.35.bc.googleusercontent.com. [35.187.198.162])
+        by smtp.gmail.com with ESMTPSA id h22-20020aa786d6000000b006e089bb3619sm6849540pfo.112.2024.02.27.21.13.14
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 27 Feb 2024 21:13:14 -0800 (PST)
+Received: from [::1] (helo=pc-0182.atmark.tech)
+	by pc-0182.atmarktech with esmtp (Exim 4.96)
+	(envelope-from <dominique.martinet@atmark-techno.com>)
+	id 1rfCFl-00GjY5-1o;
+	Wed, 28 Feb 2024 14:13:13 +0900
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, lars@metafoo.de,
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org, hns@goldelico.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: Re: [PATCH] dt-bindings: iio: gyroscope: bosch,bmg160: add
- spi-max-frequency binding
-Message-ID: <20240227215157.3uuohzijesy6zcu5@pengutronix.de>
-References: <20240221174305.3423039-1-m.felsch@pengutronix.de>
- <91f29265-36fd-4d0e-99b1-61eaada59601@linaro.org>
- <20240226124036.zzj5p7tlubc332r3@pengutronix.de>
- <29cc9d21-6fb5-40fc-abba-c0913cd175af@linaro.org>
- <20240227192308.52fd3a57@jic23-huawei>
+Cc: Syunya Ohshio <syunya.ohshio@atmark-techno.com>,
+	=?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Dominique Martinet <dominique.martinet@atmark-techno.com>
+Subject: [PATCH] iio: industrialio-core: look for aliases to request device index
+Date: Wed, 28 Feb 2024 14:12:54 +0900
+Message-Id: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240227192308.52fd3a57@jic23-huawei>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mfe@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 24-02-27, Jonathan Cameron wrote:
-> On Mon, 26 Feb 2024 14:18:00 +0100
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
-> > On 26/02/2024 13:40, Marco Felsch wrote:
-> > > On 24-02-26, Krzysztof Kozlowski wrote:  
-> > >> On 21/02/2024 18:43, Marco Felsch wrote:  
-> > >>> Make use of the common spi-peripheral-props.yaml to pull in the common
-> > >>> spi device properties and limit the spi-max-frequency to 10 MHz as this
-> > >>> is the max. frequency if VDDIO >= 1.62V.  
-> > >>
-> > >> The example uses i2c, so I would expect to see in commit msg explanation
-> > >> which devices are SPI devices.  
-> > > 
-> > > All listed devices can either operate in I2C or in SPI mode.  
-> > 
-> > Such information in commit msg would be enough.
-> > 
-> > with the changes:
-> > 
-> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> > 
-> > Best regards,
-> > Krzysztof
-> > 
-> 
-> Added the note whilst applying.
+From: Syunya Ohshio <syunya.ohshio@atmark-techno.com>
 
-Thanks a lot :)
+When using dtb overlays it can be difficult to predict which iio device
+will get assigned what index, and there is no easy way to create
+symlinks for /sys nodes through udev so to simplify userspace code make
+it possible to request fixed indices for iio devices in device tree.
 
-Regards,
-  Marco
+For platforms without device trees of_alias_get_id will just fail and
+ida_alloc_range will behave as ida_alloc currently does.
 
-> Applied to the togreg branch of iio.git and pushed out (briefly given
-> timing) as testing for 0-day to take a first look.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
+For platforms with device trees, they can not set an alias, for example
+this would try to get 10 from the ida for the device corresponding to
+adc2:
+aliases {
+  iio10 = &adc2
+};
+
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Guido Günther <agx@sigxcpu.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Rob Herring <robh+dt@kernel.org>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Syunya Ohshio <syunya.ohshio@atmark-techno.com>
+Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+---
+
+Hello! We are facing an issue on one of our device where iio devices
+aren't numbered as we'd like in some situations, and I feel like we
+could do better than the only alternative I found of making symlinks
+directly to /sys in /dev as e.g.
+https://git.toradex.com/cgit/meta-toradex-bsp-common.git/tree/recipes-core/udev/files/verdin-imx8mm/toradex-adc.sh?h=kirkstone-6.x.y
+
+Ultimately we'd just like to able to designate a stable path for our
+users to use in their application and tell them it won't change even if
+we fiddle with the overlays a bit, which is a problem we had as current
+init is done in whatever order device tree nodes are processed, and that
+in turn depends on how the overlays are applied.
+If you can think of a better way of doing it then we'll be happy to
+consider something else.
+Otherwise aliases seem like it could do a good job, and isn't too
+surprising for users - the main downside I can see would be that it
+doesn't help platforms without device trees but I honestly don't see
+what would work well in a more generic way -- looking at
+/sys/bus/iio/devices/iio:deviceX/name to decide what we're looking at
+is a bit of a hassle.
+
+Thanks!
+
+
+ .../devicetree/bindings/iio/common.yaml         |  9 +++++++--
+ drivers/iio/industrialio-core.c                 | 17 ++++++++++++++++-
+ 2 files changed, 23 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/devicetree/bindings/iio/common.yaml b/Documentation/devicetree/bindings/iio/common.yaml
+index b3a10af86d76..23d4c3012aeb 100644
+--- a/Documentation/devicetree/bindings/iio/common.yaml
++++ b/Documentation/devicetree/bindings/iio/common.yaml
+@@ -12,13 +12,18 @@ maintainers:
+ 
+ description: |
+   This document defines device tree properties common to several iio
+-  sensors. It doesn't constitute a device tree binding specification by itself but
+-  is meant to be referenced by device tree bindings.
++  sensors. It doesn't constitute a device tree binding specification by itself
++  but is meant to be referenced by device tree bindings.
+ 
+   When referenced from sensor tree bindings the properties defined in this
+   document are defined as follows. The sensor tree bindings are responsible for
+   defining whether each property is required or optional.
+ 
++  Note: it is also possible to request an index for the iio device through the
++  "aliases" device tree node. It is however only used as a hint so care should
++  be taken to either set all devices, or set indices in a range that will not
++  be used by devices without aliases.
++
+ properties:
+   proximity-near-level:
+     $ref: /schemas/types.yaml#/definitions/uint32
+diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+index 173dc00762a1..0f088be3a48c 100644
+--- a/drivers/iio/industrialio-core.c
++++ b/drivers/iio/industrialio-core.c
+@@ -20,6 +20,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/of.h>
+ #include <linux/poll.h>
+ #include <linux/property.h>
+ #include <linux/sched.h>
+@@ -1644,6 +1645,7 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	struct iio_dev_opaque *iio_dev_opaque;
+ 	struct iio_dev *indio_dev;
+ 	size_t alloc_size;
++	int iio_dev_id;
+ 
+ 	alloc_size = sizeof(struct iio_dev_opaque);
+ 	if (sizeof_priv) {
+@@ -1667,7 +1669,10 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 	mutex_init(&iio_dev_opaque->info_exist_lock);
+ 	INIT_LIST_HEAD(&iio_dev_opaque->channel_attr_list);
+ 
+-	iio_dev_opaque->id = ida_alloc(&iio_ida, GFP_KERNEL);
++	iio_dev_id = of_alias_get_id(parent->of_node, "iio");
++	iio_dev_opaque->id = ida_alloc_range(&iio_ida,
++					     iio_dev_id < 0 ? 0 : iio_dev_id,
++					     ~0, GFP_KERNEL);
+ 	if (iio_dev_opaque->id < 0) {
+ 		/* cannot use a dev_err as the name isn't available */
+ 		pr_err("failed to get device id\n");
+@@ -1681,6 +1686,16 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+ 		return NULL;
+ 	}
+ 
++	/* log about iio_dev_id after dev_set_name() for dev_* helpers */
++	if (iio_dev_id < 0) {
++		dev_dbg(&indio_dev->dev,
++			"No aliases in fw node for device: %d\n", iio_dev_id);
++	} else if (iio_dev_opaque->id != iio_dev_id) {
++		dev_warn(&indio_dev->dev,
++			 "Device requested %d in fw node but could not get it\n",
++			 iio_dev_id);
++	}
++
+ 	INIT_LIST_HEAD(&iio_dev_opaque->buffer_list);
+ 	INIT_LIST_HEAD(&iio_dev_opaque->ioctl_handlers);
+ 
+-- 
+2.39.2
+
+
 

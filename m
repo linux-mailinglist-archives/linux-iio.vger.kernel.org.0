@@ -1,69 +1,69 @@
-Return-Path: <linux-iio+bounces-3196-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3197-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EACF86BA17
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 22:37:58 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103F586BA29
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 22:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 723441C24E13
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 21:37:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C56D0B242C5
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 21:46:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CB772910;
-	Wed, 28 Feb 2024 21:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 884DF3FB97;
+	Wed, 28 Feb 2024 21:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="mdLfMxMq"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="ZtLJz/W4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6071270044
-	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 21:37:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6CC70046
+	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 21:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709156260; cv=none; b=AGF3qe/HDgbXYh3Nw3Uy7k/rXd9Ls3yTThH+UKu/hVYCXB1InAcwKHiCpcs/In6iGIbPxMmgNNNk9n7439e379NaV4tjv30VwRBT+jTg3CoUHq6vEX2nzS0uxi7jAwPdwLBZUMowPJHTDRTrlz7ktg/LB8T2MNYvkY5kdVCXRC0=
+	t=1709156773; cv=none; b=hvVgFvotPnzY1zZTt5/qGHTlDmNB+rC+GAO7E5viFF80ezGxj/XfgHTCY5cyrurcndCT7OLdgpYwMSRY4omOeTEmNKCyr+qAwR2pjOsEeYBQqEFnOW7FEpNrn9uTOAtUE7aK4HtekteIpuTd6pV8RBw0QkN5orTqkgwFlS4wtw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709156260; c=relaxed/simple;
-	bh=d8Cs4AIhxa9LtAUDzhoaGCHGHqQ8MrLQncAkWORK/Kg=;
+	s=arc-20240116; t=1709156773; c=relaxed/simple;
+	bh=fcDVrwhc94lvkdvuNxLBpqQuiN5giB/sSTSBYGUgGIc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VynbW/XKmzkEfpljRVVoL92Q/Q2qi9+7I5nZPz8HG738c/FGz7Krx3HdsdffcWEgkTJAa+RQdc4rr8q6fDA3YUHUCzA5tYK82Fq7h+tyLlmaq4fK4atKu9nZXzD+Kemg6d+CEcgpRnfct/tFr2lfmp9JJZ4z8y5kS3p5fjTpLzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=mdLfMxMq; arc=none smtp.client-ip=209.85.214.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=T7BH1VeYxgPfg3SPZE3alGTsluqYq6kA4+/brabsyTHob2sH3BTjknBLWrislnSucmSsx0AvjbsGdDS4JSN1PHnFWzC03Nv80UZTbh1hNR9xN+AlWBg+nHQ99GUS26uLgZ9M6SVfDQOj/+UNC9NWaWiRLzMW0qlD4MyptTqvjhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=ZtLJz/W4; arc=none smtp.client-ip=209.85.210.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1d94b222a3aso2947425ad.2
-        for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 13:37:38 -0800 (PST)
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6e56da425b5so157211b3a.0
+        for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 13:46:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1709156258; x=1709761058; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1709156771; x=1709761571; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxMa3ysfVhpuWlSkP2rUbxFtq6lVsWzk+l7tYIpoG5M=;
-        b=mdLfMxMq5au2Z/pH9efFJnu2asPAYhHDd168nDdjOTLe05N48Pa+4kDmonuDnvDRbM
-         1f8DRxDE8y7zLHsF9mS5qGpRVDqjaLRdoponNMrEZ9+bSTuLqPZb3juAp20eDsgMkqSZ
-         F5gFDQ0UhPL88E3ew/K33a2HNBHTxvAxVI1Pk=
+        bh=YdpR7cAKDSC45Ra+lrCp3FSf1aPEjcGJZRBQhc0h7f4=;
+        b=ZtLJz/W4FVvtDRebNbxjo9KAbyrivuwW7+Y8BDkVKdrGwX6LFTJ541BhPJLPafiylL
+         L1pr8exLx7rY4kcmGR46OVXlksD5v1A+XiM1EMekDxwic601QGOOpe9j/cXgjsOoXyoy
+         eX4Xe+VYEYoDAYDRSvSJtR2m0DxJiFFjHoCIw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709156258; x=1709761058;
+        d=1e100.net; s=20230601; t=1709156771; x=1709761571;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mxMa3ysfVhpuWlSkP2rUbxFtq6lVsWzk+l7tYIpoG5M=;
-        b=uE022OIkyaJFqoCNPr9EdZD1LgI8G69M16ebVGw4lozIZ8ln/sLQnSxvEQsfTZJYCx
-         A+GbUXW0KVo8Hu2VN/bw3aC2Rn7gT7X/OKLtDDIbDlHpI6ipAHlqUR5RSJf0kRSYp5x3
-         q7Jqz4WRTqQf8VEd0x+QNMiPTmZ5gpwNJ/GLCH9A3OtopYvDEPFyECQHK/JNo5QCU66h
-         YEPix7PUdHIW9YnqXukNF2seS2LGYOySiSMlY+IiqC95l+57cQzc3N94HWKWkvO6sJMj
-         3m/OvGsBxujRFtnRV4+K60KLxmgZpYbIKtS7oc2QlGwrcB8WIT3YbGEQSM7j4tl4qRUN
-         DumA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCNSAmmk8Ph4W9ikhr5ibCBN530bCHumsaU6QE1WKvSQ17XxXrX3MVfoIuzcMc3wu3NklpWkN8Pf2JTn1TxOYnt6ySyF32+h2e
-X-Gm-Message-State: AOJu0YzPjYweAHQ/gYlXK3ecNwKLZWr7jpqhAidcHnP+qoRObniL30+8
-	Q70AWcndUaaZ/hVE0Yu31QETBxRx8sNOqv6E4smWdJDNjN3xbN239fPwtksBNw==
-X-Google-Smtp-Source: AGHT+IEutCCddWBfZZf+Zq/1ILDM/Qx+dYsp5vYX2jxxagWboMTFdshkkBQuR0Dtvr+YU4cuJ4wNtA==
-X-Received: by 2002:a17:902:8d8a:b0:1db:e7a7:63f4 with SMTP id v10-20020a1709028d8a00b001dbe7a763f4mr163725plo.19.1709156257805;
-        Wed, 28 Feb 2024 13:37:37 -0800 (PST)
+        bh=YdpR7cAKDSC45Ra+lrCp3FSf1aPEjcGJZRBQhc0h7f4=;
+        b=F58Q//WLyErAfna3uf2vvpOtpnKfQrM8DDg/Bp2CEpWVdCYPuGfTX+r2wx2gB+a0HO
+         OC7JMbdXZGXOojf6aCoWmTLww0f4KaKizXWuBQAqKsksIl0AbkN/9+On80RmPdPFUQn8
+         eM861cPxcZcitlzwqwdGe4y3EnhpPh9hcrRMj00k1R81nmljx+/xJME7YKoBGOCOvyfj
+         vT7P2CF2WM+ytpYmvXEQBuAYeRfNMZLkQeD7zZjVCrwvRTufVWVXoo6WavcmtQHuygPr
+         qvncAIjmCN99xhbA/izcAU9SihUX5wRPvnM5ARvQvocRYrgnrt48yrKeXnf8iCBFEPY4
+         9XgA==
+X-Forwarded-Encrypted: i=1; AJvYcCXy64N553tktvqq7TT8Bzw6BqpJDgZeFPcIOtCPZJyf5Am/FKYBhd9vpBXEasggHXm7wih1Bq/DY+DgzPVJm0HzaW7Bs8zwFLxM
+X-Gm-Message-State: AOJu0Yy4k2TnozuII7dwJI8zZCC0L4EPH91FTQ54jnOvyHgXw+5h1gw7
+	yGZffNhFVoWjzkJ1nmfInDtcnepMFFdxOqN28kYZd6P0i177UhtYuowRmV+HeA==
+X-Google-Smtp-Source: AGHT+IFK5KehNOc+U2G0Wb+EMlndfkoXfMOcgULHS3OIVI0AWPxjaSZUD8y4ptkj3iwHc9bqJccSpg==
+X-Received: by 2002:a17:902:ec81:b0:1dc:696d:6bb0 with SMTP id x1-20020a170902ec8100b001dc696d6bb0mr246471plg.6.1709156771102;
+        Wed, 28 Feb 2024 13:46:11 -0800 (PST)
 Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id r20-20020a170903411400b001d8f111804asm3781604pld.113.2024.02.28.13.37.36
+        by smtp.gmail.com with ESMTPSA id je6-20020a170903264600b001dc23e877bfsm3733240plb.268.2024.02.28.13.46.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 13:37:36 -0800 (PST)
-Date: Wed, 28 Feb 2024 13:37:36 -0800
+        Wed, 28 Feb 2024 13:46:10 -0800 (PST)
+Date: Wed, 28 Feb 2024 13:46:10 -0800
 From: Kees Cook <keescook@chromium.org>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Vinod Koul <vkoul@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
@@ -79,11 +79,11 @@ Cc: Vinod Koul <vkoul@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: [PATCH v4 2/8] overflow: Add struct_size_with_data() and
- struct_data_pointer() helpers
-Message-ID: <202402281334.876DC89@keescook>
+Subject: Re: [PATCH v4 7/8] net-device: Use new helpers from overflow.h in
+ netdevice APIs
+Message-ID: <202402281341.AC67EB6E35@keescook>
 References: <20240228204919.3680786-1-andriy.shevchenko@linux.intel.com>
- <20240228204919.3680786-3-andriy.shevchenko@linux.intel.com>
+ <20240228204919.3680786-8-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -92,72 +92,90 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240228204919.3680786-3-andriy.shevchenko@linux.intel.com>
+In-Reply-To: <20240228204919.3680786-8-andriy.shevchenko@linux.intel.com>
 
-On Wed, Feb 28, 2024 at 10:41:32PM +0200, Andy Shevchenko wrote:
-> Introduce two helper macros to calculate the size of the structure
-> with trailing aligned data and to retrieve the pointer to that data.
+On Wed, Feb 28, 2024 at 10:41:37PM +0200, Andy Shevchenko wrote:
+> We have two new helpers struct_size_with_data() and struct_data_pointer()
+> that we can utilize in alloc_netdev_mqs() and netdev_priv(). Do it so.
 > 
 > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 > ---
->  include/linux/overflow.h | 27 ++++++++++++++++++++++++++-
->  1 file changed, 26 insertions(+), 1 deletion(-)
+>  include/linux/netdevice.h |  3 ++-
+>  net/core/dev.c            | 10 +++++-----
+>  2 files changed, 7 insertions(+), 6 deletions(-)
 > 
-> diff --git a/include/linux/overflow.h b/include/linux/overflow.h
-> index bc390f026128..b93bbf1b6aaa 100644
-> --- a/include/linux/overflow.h
-> +++ b/include/linux/overflow.h
-> @@ -2,9 +2,10 @@
->  #ifndef __LINUX_OVERFLOW_H
->  #define __LINUX_OVERFLOW_H
->  
-> +#include <linux/align.h>
->  #include <linux/compiler.h>
-> -#include <linux/limits.h>
->  #include <linux/const.h>
-> +#include <linux/limits.h>
->  
->  /*
->   * We need to compute the minimum and maximum values representable in a given
-> @@ -337,6 +338,30 @@ static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
+> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+> index c41019f34179..d046dca18854 100644
+> --- a/include/linux/netdevice.h
+> +++ b/include/linux/netdevice.h
+> @@ -25,6 +25,7 @@
+>  #include <linux/bug.h>
+>  #include <linux/delay.h>
+>  #include <linux/atomic.h>
+> +#include <linux/overflow.h>
+>  #include <linux/prefetch.h>
+>  #include <asm/cache.h>
+>  #include <asm/byteorder.h>
+> @@ -2668,7 +2669,7 @@ void dev_net_set(struct net_device *dev, struct net *net)
 >   */
->  #define array3_size(a, b, c)	size_mul(size_mul(a, b), c)
->  
-> +/**
-> + * struct_size_with_data() - Calculate size of structure with trailing aligned data.
-> + * @p: Pointer to the structure.
-> + * @a: Alignment in bytes before trailing data.
-> + * @s: Data size in bytes (must not be 0).
-> + *
-> + * Calculates size of memory needed for structure of @p followed by an
-> + * aligned data of size @s.
-> + *
-> + * Return: number of bytes needed or SIZE_MAX on overflow.
-> + */
-> +#define struct_size_with_data(p, a, s)	size_add(ALIGN(sizeof(*(p)), (a)), (s))
+>  static inline void *netdev_priv(const struct net_device *dev)
+>  {
+> -	return (char *)dev + ALIGN(sizeof(struct net_device), NETDEV_ALIGN);
+> +	return struct_data_pointer(dev, NETDEV_ALIGN);
+>  }
 
-I don't like this -- "p" should have a trailing flexible array. (See
-below.)
+I really don't like hiding these trailing allocations from the compiler.
+Why can't something like this be done (totally untested):
 
-> +
-> +/**
-> + * struct_data_pointer - Calculate offset of the trailing data reserved with
-> + * struct_size_with_data().
-> + * @p: Pointer to the structure.
-> + * @a: Alignment in bytes before trailing data.
-> + *
-> + * Return: offset in bytes to the trailing data reserved with
-> + * struct_size_with_data().
-> + */
-> +#define struct_data_pointer(p, a)	PTR_ALIGN((void *)((p) + 1), (a))
 
-I'm not super excited about propagating the "p + 1" code pattern to find
-things after an allocation. This leads to the compiler either being
-blind to accesses beyond an allocation, or being too conservative about
-accesses beyond an object. Instead of these helpers I would much prefer
-that data structures that use this code pattern be converted to using
-trailing flexible arrays, at which point the compiler is in a much
-better position to reason about sizes.
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 118c40258d07..dae6df4fb177 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2475,6 +2475,8 @@ struct net_device {
+ 	/** @page_pools: page pools created for this netdevice */
+ 	struct hlist_head	page_pools;
+ #endif
++	u32			priv_size;
++	u8			priv_data[] __counted_by(priv_size) __aligned(NETDEV_ALIGN);
+ };
+ #define to_net_dev(d) container_of(d, struct net_device, dev)
+ 
+@@ -2665,7 +2667,7 @@ void dev_net_set(struct net_device *dev, struct net *net)
+  */
+ static inline void *netdev_priv(const struct net_device *dev)
+ {
+-	return (char *)dev + ALIGN(sizeof(struct net_device), NETDEV_ALIGN);
++	return dev->priv_data;
+ }
+ 
+ /* Set the sysfs physical device reference for the network logical device
+diff --git a/net/core/dev.c b/net/core/dev.c
+index cb2dab0feee0..afaaa3224656 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -10814,18 +10814,14 @@ struct net_device *alloc_netdev_mqs(int sizeof_priv, const char *name,
+ 		return NULL;
+ 	}
+ 
+-	alloc_size = sizeof(struct net_device);
+-	if (sizeof_priv) {
+-		/* ensure 32-byte alignment of private area */
+-		alloc_size = ALIGN(alloc_size, NETDEV_ALIGN);
+-		alloc_size += sizeof_priv;
+-	}
++	alloc_size = struct_size(p, priv_data, sizeof_priv);
+ 	/* ensure 32-byte alignment of whole construct */
+ 	alloc_size += NETDEV_ALIGN - 1;
+ 
+ 	p = kvzalloc(alloc_size, GFP_KERNEL_ACCOUNT | __GFP_RETRY_MAYFAIL);
+ 	if (!p)
+ 		return NULL;
++	p->priv_size = sizeof_priv;
+ 
+ 	dev = PTR_ALIGN(p, NETDEV_ALIGN);
+ 	dev->padded = (char *)dev - (char *)p;
+
 
 -- 
 Kees Cook

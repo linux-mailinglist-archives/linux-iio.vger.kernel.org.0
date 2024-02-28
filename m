@@ -1,182 +1,211 @@
-Return-Path: <linux-iio+bounces-3146-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3147-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36F086A8FE
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 08:31:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CCF686A926
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 08:42:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA6001C24ED0
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 07:31:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E618C287C79
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 07:42:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29FC52421E;
-	Wed, 28 Feb 2024 07:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD07250EC;
+	Wed, 28 Feb 2024 07:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="Leqv9Ii2";
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="OtpPEVFw"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dPHhXf3L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7506D28DA7
-	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 07:31:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32708250F2
+	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 07:42:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709105497; cv=none; b=aZlAc2OWSb+RcrewbWyNoXzov/ypim0fxXJCK/RwXoMNsJuLKPTwIRfSsLUYikCCHLSjsQv6hejYkuVZd+Ib2keXRNMck7JK4unzBRtpT7oa/9Qew1dfSvccLYpA8ZYMMXlSuueVIxgiqDUFHeKyaLjLzRKQyr50hPrNNtMWzsA=
+	t=1709106173; cv=none; b=lYIdvdVqCNflbs6UoRBpNiTAN4PmO/x++OL//HtUPS/CvQWXxl+ewjQ3b/g2h8VeBGvLAhHQqoFdOUDKaMvkrmKDhuhJUNEb+Ze9p12yB8uWimpC3KwiEwcCRKTsblOM2bcuTI4uA9NcCW+a+IZmNFQRYVdGKLa1QUAe4EYkkvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709105497; c=relaxed/simple;
-	bh=xCuy4MVwp0NypZyLpDhoJjj6fCLV/bg+BECCVso3xOk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ra9lDMclIyKtNnX+SQxYF8CExuPGQCw/OthJdLxprCS9RIiigCDvyrPm9KzpyxNqMQUKeTdHzJPMvmXXh9ln4fCPYqEmN3MHemd/7Cz68jXuYtMCQMaFMY5QLDEj0E/1MPYxSxgVtuGg/xucVRHB8aBWKOZ1nhTKByftMUpoF4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=Leqv9Ii2; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=OtpPEVFw; arc=none smtp.client-ip=35.74.137.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
-	s=gw2_bookworm; t=1709105495;
-	bh=xCuy4MVwp0NypZyLpDhoJjj6fCLV/bg+BECCVso3xOk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Leqv9Ii2cuI/9j4Pj6CCYhRoP4Z3fyHRmmLWTbxRgj5KLJD9bAYqFKBtQmqlDXYry
-	 KYdYI/gbvH/yB5aTqb+GXe2Intqi3bdDxIgwnUPoCeIYLt4nzGtEOK596k/FsPaSpn
-	 Sdx+hADNLjAGAt6vlUIU0VK+UVS/e+EalK51P8nmBcNyxoM8t96DYH8Q/3KzjpWCTO
-	 bl/bFtw8o+9ZoYMLV/dP5MT+57O5Iem8JMYsYTHd7S0hnUWzI7Pof0ZQ8GpcTebS+t
-	 FUnJGbw2sWzw1+I+KHh+AzmHlraT1YPOemOvDKx6HvseCnvEz/coHL7gsxbghvnZ+O
-	 r5xIpfcMEfTdg==
-Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
-	by gw2.atmark-techno.com (Postfix) with ESMTP id 3E2B9B88
-	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 16:31:35 +0900 (JST)
-Authentication-Results: gw2.atmark-techno.com;
-	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=OtpPEVFw;
-	dkim-atps=neutral
-Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com [209.85.167.197])
-	by gw2.atmark-techno.com (Postfix) with ESMTPS id DB404B88
-	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 16:31:33 +0900 (JST)
-Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-3bbc40771a9so6185914b6e.0
-        for <linux-iio@vger.kernel.org>; Tue, 27 Feb 2024 23:31:33 -0800 (PST)
+	s=arc-20240116; t=1709106173; c=relaxed/simple;
+	bh=2z/mrd9QvlkiZfZzv2pdK+B8HyWJmS5sRKml1NG7xcQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R5TAkmcQy+Owfy+5oaXSwJRNS9WHWp2Z7DyXSoArDj3MES5n35TmXEUu9mlHhK/qzmj6gLdIopArQ9pW3DMk5jV4itiCDetI94HrSGkuYNEZ5qvq4+2JN8TpDEw6NHTZ2hyotl+ygs22WnPFfOs0Ve5o6nRo84KDYE22y6se3FI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dPHhXf3L; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a4348aaa705so397456666b.0
+        for <linux-iio@vger.kernel.org>; Tue, 27 Feb 2024 23:42:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atmark-techno.com; s=google; t=1709105492; x=1709710292; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=y1r5BtcdAAMK6pyjdadbxQXK81G6GJtZJh++YFz4aZc=;
-        b=OtpPEVFwYh5rvvIZRYX0Vfal18hEOYIWRv1ndrwWCL5plSpW0wh7PSZm095w5NNKWu
-         E+A71RLPD9b7AsUEvxeFNSvCapqTa5vj0emjX5pMNUmMPBpF7paQ8WLIdCdFN9Gohh5k
-         Dyef2lWgczhrR6JXMUrNjuus2htfVq62HQ6iuZPv+Otu9tdpvxDOiX6TFEQAwQXPPHQ/
-         WdRs1xcDqFISxwLTFPtPD/SraLdlFmPlnDALVNe5loVNX8yTGHZoaTUzjefcHI4fc9HM
-         9V6ChmL4p6hzhrWlsG/bI6P8aoCxswg5S8sW+i7nQklsdRZf/SoSh3d8R0tO5/m/WURt
-         1X1A==
+        d=linaro.org; s=google; t=1709106169; x=1709710969; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mQYBMAfRlY158XeZRXnO/C3REbH4KTGNj1xejarJZro=;
+        b=dPHhXf3Luy03K2s9DTLiZX5xDz+/y/Rb6jFhLFjbnYmtL8jcsPvJTgpqYjRGqGM7GQ
+         dZNDRHR3zVgWJJ5v4YaUQWHSMIExyCwd2ZdKFY1MA2mQR2z+qFaC7YAvlJviFa37Sus1
+         V7lL9yAK+LC6xmlimNGjyaHrq76JLB6kMPL4T+U5f9SHV//TNF18ppKneaTFXiddSBVJ
+         Kt7F1yLlw5JCNSM5RcWvxGdVY56mjzK43M6nit1mYNkrLCQMjb//rCX6hIULwWo0ImU/
+         qsBkN4KP/rXzn+pVFPLsO/43uxMpwJlBportHf/EaXfw/ciQoBQwg8R6uFVa1GBsGXP1
+         7v3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709105492; x=1709710292;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y1r5BtcdAAMK6pyjdadbxQXK81G6GJtZJh++YFz4aZc=;
-        b=EXc6nxuEzXbBZrw6eUSx9c5Yi5a0tpfsQxAAasMLrGcJ7bkY7DYpTqhDsCw3cVDFLP
-         9HAOTrp474TTXQ5HRDB+Sc4Z8NauohCKbFWeklpEV7V8IMyYilDuMvDYz+P/Imb7sxEw
-         s2JfMuppgCyoRvoiPvNHyo+w34gYby5f41elpr2YuEQG3Hx9xlszgSTqReuC2QgM/uUR
-         zRnC4uq49EnPPatFrrtHwFQXThPR1ERNYtxSaoDf6MVu7vuxkcKxhVG/9zZoTumbkxuC
-         ZA1yCUiyEPtgBRQOgr3/c1nwo4pC2b0N3MhtZOXQQlVoMuyOuBWz7ik5n+wQR/+sXIQM
-         N/uA==
-X-Forwarded-Encrypted: i=1; AJvYcCX6t/a7A2Atk14nHWX/FxNnS2vSx73Zwb9uN0Us2va7OkT7+RWMqvh2kq8oj85VdL6GB1yw3iQgvjVbITehfNNvIGQn84rV1+Pe
-X-Gm-Message-State: AOJu0YzNS+YeYF9ZX+PNtjQ114iNejQZEd+P18RBgiPx8aBbjnjylajX
-	5Azaqrw70us19akwBIbVGI3F/NrWFWRTCOm9NcSTAIBrMLJxE9XhP9cq4tPWNEf2vgH4nG1bj2R
-	SjpIqrYQGw4+UNavk/EQt9Sgnu4J0Hp95eK8XMZmiNqPgaTz1swH8HnKeCCU=
-X-Received: by 2002:a05:6808:20a7:b0:3c1:9a76:99ea with SMTP id s39-20020a05680820a700b003c19a7699eamr5102158oiw.44.1709105492533;
-        Tue, 27 Feb 2024 23:31:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEG5oF6FrhRl5wkv5l81utRatIGtk//bIRrP8Se7SeC21eJl2NX5IYXpppfYh8KxZ4fhGrDLQ==
-X-Received: by 2002:a05:6808:20a7:b0:3c1:9a76:99ea with SMTP id s39-20020a05680820a700b003c19a7699eamr5102140oiw.44.1709105492240;
-        Tue, 27 Feb 2024 23:31:32 -0800 (PST)
-Received: from pc-0182.atmarktech (76.125.194.35.bc.googleusercontent.com. [35.194.125.76])
-        by smtp.gmail.com with ESMTPSA id y37-20020a056a00182500b006e558a67374sm1125452pfa.0.2024.02.27.23.31.31
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 27 Feb 2024 23:31:31 -0800 (PST)
-Received: from martinet by pc-0182.atmarktech with local (Exim 4.96)
-	(envelope-from <martinet@pc-zest>)
-	id 1rfEPa-00Gr73-22;
-	Wed, 28 Feb 2024 16:31:30 +0900
-Date: Wed, 28 Feb 2024 16:31:20 +0900
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Syunya Ohshio <syunya.ohshio@atmark-techno.com>,
-	Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
- device index
-Message-ID: <Zd7hSOw3_zosyrn3@atmark-techno.com>
-References: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
- <7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
+        d=1e100.net; s=20230601; t=1709106169; x=1709710969;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mQYBMAfRlY158XeZRXnO/C3REbH4KTGNj1xejarJZro=;
+        b=Yjk1RSki0t8H7DvOZdGYo0plrCBdp+pUy0vnJCNXGqee3Rc5sdMFtqjqzUubuLHf9r
+         zu24guh0nhO0+8V1pSillE+iN1uiJErS/lJIFEdSrV09BUJsWi/vxWa+wWIcIRrCwMzQ
+         TpBxwd6S+6Za2BX+aAzNqMlV+8v5Ij+mpx87Ocz4r6HiY6/EAr0yoO7b0/Xz+sCEC5Xg
+         ZIA3sfD5+aX5jauSeyEURs+hdi5afPqeqN56R9qMASJdMTa2muCXf4yjvGj5M42D7nnm
+         i7M0oezctUSeA/ZvsyvA0ivIibv+46U70IAQ5QMVvpCU+4D2S49Tu09JDDkvl+RNHUqz
+         vixg==
+X-Forwarded-Encrypted: i=1; AJvYcCUN7BPw2P+ZGv3FeuBQVydRXbwc9AtJX+3oU7maZMZRmuA+RrPuZfnbmCevLgHJ0pElRVxY97ttX2jTX+McKvMqV2F0rL/R+AoL
+X-Gm-Message-State: AOJu0YzPsWYrVmiV4HqBHvZxrBjTtxs8glOtCi/zMOGsg4QurRDAJ3ir
+	m3nbyEYlgG7tgRjqmZqjt2qopFCASDr4N/LoEuAj4jpAQ0A2X0PBmRYt1x0wUKg=
+X-Google-Smtp-Source: AGHT+IGdbNmKnHWCw2QxMl92RhUTV1mzewd327y1Q5FQL0SGRsS9f4y71IC4Zph03lvtjOgkiaouYg==
+X-Received: by 2002:a17:906:6d7:b0:a44:f85:a10a with SMTP id v23-20020a17090606d700b00a440f85a10amr271835ejb.14.1709106169409;
+        Tue, 27 Feb 2024 23:42:49 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.222.116])
+        by smtp.gmail.com with ESMTPSA id cd14-20020a170906b34e00b00a4412406741sm67118ejb.131.2024.02.27.23.42.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Feb 2024 23:42:48 -0800 (PST)
+Message-ID: <daed8ada-9e01-41ad-82af-5da5cbbc865c@linaro.org>
+Date: Wed, 28 Feb 2024 08:42:46 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
+ device index
+Content-Language: en-US
+To: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+ Syunya Ohshio <syunya.ohshio@atmark-techno.com>,
+ =?UTF-8?Q?Guido_G=C3=BCnther?= <agx@sigxcpu.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
+ <7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
+ <Zd7hSOw3_zosyrn3@atmark-techno.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <Zd7hSOw3_zosyrn3@atmark-techno.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Krzysztof Kozlowski wrote on Wed, Feb 28, 2024 at 08:16:03AM +0100:
-> On 28/02/2024 06:12, Dominique Martinet wrote:
-> > From: Syunya Ohshio <syunya.ohshio@atmark-techno.com>
-> > 
-> > When using dtb overlays it can be difficult to predict which iio device
-> > will get assigned what index, and there is no easy way to create
-> > symlinks for /sys nodes through udev so to simplify userspace code make
-> > it possible to request fixed indices for iio devices in device tree.
+On 28/02/2024 08:31, Dominique Martinet wrote:
+> Krzysztof Kozlowski wrote on Wed, Feb 28, 2024 at 08:16:03AM +0100:
+>> On 28/02/2024 06:12, Dominique Martinet wrote:
+>>> From: Syunya Ohshio <syunya.ohshio@atmark-techno.com>
+>>>
+>>> When using dtb overlays it can be difficult to predict which iio device
+>>> will get assigned what index, and there is no easy way to create
+>>> symlinks for /sys nodes through udev so to simplify userspace code make
+>>> it possible to request fixed indices for iio devices in device tree.
+>>
+>> Please use subject prefixes matching the subsystem. You can get them for
+>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+>> your patch is touching.
 > 
-> Please use subject prefixes matching the subsystem. You can get them for
-> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-> your patch is touching.
-
-Sorry, I assumed that was already the case and didn't think of checking
-that from what I was given, I'll fix the prefix to "iio: core: .." in v2
-
-> Please run scripts/checkpatch.pl and fix reported warnings. Some
-> warnings can be ignored, but the code here looks like it needs a fix.
-> Feel free to get in touch if the warning is not clear.
-
-Hm, I did check that and do not get any warning about the code itself:
-
-$ git show --format=email | ./scripts/checkpatch.pl -q
-WARNING: DT binding docs and includes should be a separate patch. See: Documentation/devicetree/bindings/submitting-patches.rst
-
-total: 0 errors, 1 warnings, 61 lines checked
-
-What are you thinking of?
-
-Regarding the dt binding, I'm not actually changing a binding so I
-didn't think of rechecking after adding the note, but I guess it still
-ought to be separate; I'll split it in v2.
-
-> > For platforms without device trees of_alias_get_id will just fail and
-> > ida_alloc_range will behave as ida_alloc currently does.
-> > 
-> > For platforms with device trees, they can not set an alias, for example
-> > this would try to get 10 from the ida for the device corresponding to
-> > adc2:
-> > aliases {
-> >   iio10 = &adc2
-> > };
+> Sorry, I assumed that was already the case and didn't think of checking
+> that from what I was given, I'll fix the prefix to "iio: core: .." in v2
 > 
-> Sorry, that's why you have labels and compatibles.
-
-I'm not sure I understand this comment -- would you rather this doesn't
-use aliases but instead add a new label (e.g. `iio,index = <10>` or
-whatever) to the iio node itself?
-
-Setting up a fixed alias seems to be precisely what aliases are about
-(e.g. setting rtc0 will make a specific node become /dev/rtc0, same with
-ethernet0, gpio, i2c, mmc, serial...), I'm not sure I agree a new label
-would be more appropriate here, but perhaps I'm missing some context?
+>> Please run scripts/checkpatch.pl and fix reported warnings. Some
+>> warnings can be ignored, but the code here looks like it needs a fix.
+>> Feel free to get in touch if the warning is not clear.
+> 
+> Hm, I did check that and do not get any warning about the code itself:
+> 
+> $ git show --format=email | ./scripts/checkpatch.pl -q
+> WARNING: DT binding docs and includes should be a separate patch. See: Documentation/devicetree/bindings/submitting-patches.rst
 
 
-Thanks,
--- 
-Dominique
+> 
+> total: 0 errors, 1 warnings, 61 lines checked
+> 
+> What are you thinking of?
 
+You have warning right there.
+
+> 
+> Regarding the dt binding, I'm not actually changing a binding so I
+> didn't think of rechecking after adding the note, but I guess it still
+> ought to be separate; I'll split it in v2.
+> 
+>>> For platforms without device trees of_alias_get_id will just fail and
+>>> ida_alloc_range will behave as ida_alloc currently does.
+>>>
+>>> For platforms with device trees, they can not set an alias, for example
+>>> this would try to get 10 from the ida for the device corresponding to
+>>> adc2:
+>>> aliases {
+>>>   iio10 = &adc2
+>>> };
+>>
+>> Sorry, that's why you have labels and compatibles.
+> 
+> I'm not sure I understand this comment -- would you rather this doesn't
+> use aliases but instead add a new label (e.g. `iio,index = <10>` or
+> whatever) to the iio node itself?
+
+No, the devices already have label property.
+
+> 
+> Setting up a fixed alias seems to be precisely what aliases are about
+> (e.g. setting rtc0 will make a specific node become /dev/rtc0, same with
+> ethernet0, gpio, i2c, mmc, serial...), I'm not sure I agree a new label
+> would be more appropriate here, but perhaps I'm missing some context?
+
+Maybe I don't get your point, but your email said "sysfs", so why do you
+refer to /dev?
+
+Best regards,
+Krzysztof
 
 

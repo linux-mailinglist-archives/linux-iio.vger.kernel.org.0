@@ -1,294 +1,232 @@
-Return-Path: <linux-iio+bounces-3166-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3167-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A67EE86B103
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 14:57:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 540CC86B142
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 15:06:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAC5B1C22D99
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 13:57:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09EF2283586
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 14:06:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6401586D5;
-	Wed, 28 Feb 2024 13:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC46153513;
+	Wed, 28 Feb 2024 14:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bBgOTP+8"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aKxron1X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1811534ED;
-	Wed, 28 Feb 2024 13:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A85E14F995
+	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 14:06:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709128549; cv=none; b=am9ppY9Olv+LC5yiF213zjJfBjJ2JXOZjmsVsGfFZ0e63eEv9C9hpcviakB5huRjDT48qiPN0BEKJ3J6llJxISIPjfyutxIQLdIxHtVCG4jaCihdDNhl9yttCKWIUQYYH1ORaibLBFHSzvx3t2k6M6spAMgIWLOo0K887SY6aDI=
+	t=1709129182; cv=none; b=L29vbxe+UkbgaCKiUNbawtzMlMjTn2PFKvN7Ay8XpfwDSYCE94kKTQ7a0TPkkUuej3wDjUC00efk8uQ5fV66Pp/Kg/Pt+n0Ci6o+xT4DsAqBh2mRk9edR6qrD2cb3BjZoeLfT9NstAtxx3niEQb94M2DZ5LDVkGmrCuJWi/XMqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709128549; c=relaxed/simple;
-	bh=4ookyNkXsRC1w+SX2YFfQ/sHilHozwzGjehD4iaCqbg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kWE82wbgEu7i2hTHAwxo+j5jvkPDTAAdRsVf1ZhQkz3cfFGamE3nzXM7NJcrdvocJ1CxdwTTB5E66/yWJPlbNt56m6MGUR5dsl9BiQPCOOUBACll7sK84y/NZDb7ZRi/aVtyNc25YrMs9ZLCvQ/WUq2cJ8YtL2opQOBC7eKjTA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bBgOTP+8; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a43488745bcso500820366b.3;
-        Wed, 28 Feb 2024 05:55:47 -0800 (PST)
+	s=arc-20240116; t=1709129182; c=relaxed/simple;
+	bh=fUSaXoqtXRB0qGdabGFsyk62OVa7gFl3kWDiGvq9L48=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XK8RW/ow7vzAI2phdRdRDoh8zDI5jWqELUjhKTHb0X+c35Qkcbto0D9IQPDD9U71wXmQKc1forFlqjpmO/rF7c0j7NvBfhLkIwuPBvA2cs6xw927NnLo+eFzH4yEFZbeGmO5DdSREMafSYoR2djs3ksNJfwv9q8DiY3+cNNOlb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aKxron1X; arc=none smtp.client-ip=209.85.218.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a43fc42e697so78712366b.1
+        for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 06:06:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709128546; x=1709733346; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PYCemFNc1uUqcXulrZM7TUJ6mft8DchA0cSSH48XvI8=;
-        b=bBgOTP+8WBwGsy8lEffEiIkJphw7CcvqMKis+oHJzmiSFeBlEhDfgPU5tkse3APjsx
-         4XrjEGl8t7ox9rca5ZtY+pyWkdq2qXJnlMCgSZQ3bxrr48fsLL3iEiQRxEETNyS76+jg
-         fe0QUn5+yxxoSy8dPAgtTx5xYDhkJbkGHwF4Td6rVvMrKhI2PputaK2EJh5DdBl8jOB5
-         J1imRlTgL0X4UgYmMT6+YI5/5iS/oDx8wa3jQTZZdFtVjeEWP+D7DhqfBwKDi0H1N7iA
-         OKudl6SXDO11mDUi1Y0s9juhKBa4mD3z86t20U2hLaAgXPoZW+Is3zdVAuevVBcs7O3w
-         Vyjg==
+        d=linaro.org; s=google; t=1709129178; x=1709733978; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0/rpJyq/RgcopvSHJgS4VKLl6wgR1t9y0dcYjB0pkkA=;
+        b=aKxron1Xi3Dmu2YFzEWO1RysdsHNLdF+gQu6CNRfJpFv37BdmxlqdpNevoi5Mzabxf
+         EjKIv6SztXXqOuewrqlNhr/NTWngJnx4/+8YhQe25n++umgn0ZPKEC9m9dnl81Y5AHvR
+         2M69odf/YHGbmCzp+6372QkLtyvVqWtJ3aSi7Xu96wkFiAWD8DFSM4zPpLSz1Z7GkHYX
+         cAiD6bwBonkrcC0RyO/VDZpvpBXRYkQHUiesXEJJD84CIZemNwgIRNQjE981FIP/+Svz
+         FfIp5K8QtRUxpITkMXPSnZR2Ac45gxlhmRBVrtvfAmS0vWswvGWiWIZfNHw7QeCW3oP1
+         1k9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709128546; x=1709733346;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PYCemFNc1uUqcXulrZM7TUJ6mft8DchA0cSSH48XvI8=;
-        b=s10j2gSIDxp3xrN3GYst0EJ5sJFHaoJA4rvV9D0xzv5gR/CxYxeig6aARlaB7Cvh8J
-         ME8G6H8dYB9rOn9sh5S5HcSJSgGzdKh1TA154ETB/eZVXkvvHox4UseNjBt2dq0AlKle
-         BSvN/DDDSbNRwoZ2NGyReJCGcV012Pj+AFv4pQ87mZYlNvq+lw6ZChmT2HF0ckXtFQpT
-         kn1FsS4eqkjakVQ4yXtmNgtStRrAJCGVvqrvxDgBXP26ODYdf/ek4Swvujs9IhZ9zDFS
-         KekuIXuyGZwN07cdK4BlhD7ZQhbDtdwfRN7xZKUiOjQaY0IfkyASVad61b/87CH44nxj
-         1iiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWfzh1oMHyqwxXqHgBXIwEM32mOMBwLSMqck1PJGdN6WoM7++IxDiOS6LfP6qx7MxVz8NhUp4e5/WgaQ2srgLoNPXWZ4lrwTfPoesuVqu6fSqt9h/60li+8tZdHG9HT3627iXtiHE+fl0/cem2Xuj9k3eSE2FIBkSeJ1yaWo+5cbhOB2A==
-X-Gm-Message-State: AOJu0YybFTxVXlJmcyndQ4ORIpSNrJirnawLxmhi+adKtPEyO1wJ5htX
-	u8pdzTApHuUqJqjN1hfyrn2VkCrN0s6sZ3YsSLrOUJh3k3kVsQ2h
-X-Google-Smtp-Source: AGHT+IHS5En0/YeBTEFnIculf04J0CPaqO9tbUphkDG0su+gcdQ7D4LyQRl/voZgJbPxiNG3LimBkg==
-X-Received: by 2002:a17:906:3793:b0:a40:3aa3:9b8a with SMTP id n19-20020a170906379300b00a403aa39b8amr8365405ejc.15.1709128545867;
-        Wed, 28 Feb 2024 05:55:45 -0800 (PST)
-Received: from HYB-hhAwRlzzMZb.ad.analog.com ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id dc6-20020a170906c7c600b00a441674cae4sm312487ejb.222.2024.02.28.05.55.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 05:55:45 -0800 (PST)
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
-To: 
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Ceclan Dumitru <dumitru.ceclan@analog.com>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>
-Subject: [PATCH v2 2/2] iio: adc: ad7173: add support for additional models
-Date: Wed, 28 Feb 2024 15:54:57 +0200
-Message-ID: <20240228135532.30761-3-mitrutzceclan@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240228135532.30761-1-mitrutzceclan@gmail.com>
-References: <20240228135532.30761-1-mitrutzceclan@gmail.com>
+        d=1e100.net; s=20230601; t=1709129178; x=1709733978;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0/rpJyq/RgcopvSHJgS4VKLl6wgR1t9y0dcYjB0pkkA=;
+        b=BEhRHQ3oi9QDLWngHat9m3uienkkiDXH8OhSuZqDVxP7D9nee9A6QoFSrOfJccnwL9
+         t3+oheIPlAazMOjpzGjsqzC1KiaH3nLcTl6LXM7OMkQCpCb1PRNbt39ejh0AiBpF2dUD
+         s+HmhXmN+SOmj1/oe6ZKsL1m+ZAPKycPgwV3DdAML6kFsr+mGRLgggG3Wdkm3HYOUjgU
+         3XoEqTebAUr61081MJ9mwxvxZz03Hq4zU5QAG21gvUCDCKG3YmZpTQjpKdXy0jNFALGu
+         aSUE6TVf2+MWqwlFDR2742EIaNM29Y4JpywGgmgK2HCBA1Ui7La7yWVlNi4xA/Mqjjti
+         pZ+g==
+X-Forwarded-Encrypted: i=1; AJvYcCU96Iy1Ofwi+BGNwMkLwcpVVnnyNZ1Jt+AbzuNOBByQebtFlOVM3/oFx5d9PWyu3E4HlbZXA5rusdQEa2vbdb3GZEdprYCGOt/b
+X-Gm-Message-State: AOJu0YxNJdu3XFFKhHes5ngCHVw9mTyYoYbdlz2SQX7uOxLvrLZ3I17g
+	y+Vv+4+aDq7D6+6YsyriRPkdpbbrBXgOSRFgR1/Ewltlfl/WjEd6HW6djiVlk6E=
+X-Google-Smtp-Source: AGHT+IFE4wiM4wtkf5DpMvBbMBdAJSPpOXes7UwK5f3dYxNRKxgNFtELeQKw7Zr46zFZZ2hHeYEafA==
+X-Received: by 2002:a17:906:bce7:b0:a44:2178:d280 with SMTP id op7-20020a170906bce700b00a442178d280mr240776ejb.66.1709129178506;
+        Wed, 28 Feb 2024 06:06:18 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.222.116])
+        by smtp.gmail.com with ESMTPSA id cd14-20020a170906b34e00b00a4412406741sm398217ejb.131.2024.02.28.06.06.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 28 Feb 2024 06:06:18 -0800 (PST)
+Message-ID: <01f6fd8b-2d2e-4324-b354-1ea1b0868976@linaro.org>
+Date: Wed, 28 Feb 2024 15:06:16 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/4] dt-bindings: iio: adc: ad7192: Add AD7194 support
+Content-Language: en-US
+To: Alisa-Dariana Roman <alisadariana@gmail.com>,
+ michael.hennerich@analog.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: lars@metafoo.de, jic23@kernel.org, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ andriy.shevchenko@linux.intel.com, nuno.sa@analog.com,
+ alisa.roman@analog.com, dlechner@baylibre.com
+References: <20240228122617.185814-1-alisa.roman@analog.com>
+ <20240228122617.185814-4-alisa.roman@analog.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240228122617.185814-4-alisa.roman@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add support for Analog Devices AD7172-2, AD7175-8, AD7177-2.
+On 28/02/2024 13:26, Alisa-Dariana Roman wrote:
+> Unlike the other AD719Xs, AD7194 has configurable differential
+> channels. The default configuration for these channels can be changed
+> from the devicetree.
+> 
+> Also add an example for AD7194 devicetree.
+> 
+> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+> Signed-off-by: romandariana <alisa.roman@analog.com>
 
-Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
----
- drivers/iio/adc/ad7173.c | 82 ++++++++++++++++++++++++++++++++++++----
- 1 file changed, 74 insertions(+), 8 deletions(-)
+Something is not right here...
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index b42fbe28a325..e60ecce20e08 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -1,6 +1,11 @@
- // SPDX-License-Identifier: GPL-2.0+
- /*
-- * AD7172-2/AD7173-8/AD7175-2/AD7176-2 SPI ADC driver
-+ * AD717x family SPI ADC driver
-+ *
-+ * Supported devices:
-+ *  AD7172-2/AD7172-4/AD7173-8/AD7175-2
-+ *  AD7175-8/AD7176-2/AD7177-2
-+ *
-  * Copyright (C) 2015, 2024 Analog Devices, Inc.
-  */
- 
-@@ -61,10 +66,13 @@
- #define AD7173_AIN_TEMP_POS	17
- #define AD7173_AIN_TEMP_NEG	18
- 
--#define AD7172_ID			0x00d0
--#define AD7173_ID			0x30d0
--#define AD7175_ID			0x0cd0
-+#define AD7172_2_ID			0x00d0
- #define AD7176_ID			0x0c90
-+#define AD7175_2_ID			0x0cd0
-+#define AD7172_4_ID			0x2050
-+#define AD7173_ID			0x30d0
-+#define AD7175_8_ID			0x3cd0
-+#define AD7177_ID			0x4fd0
- #define AD7173_ID_MASK			GENMASK(15, 4)
- 
- #define AD7173_ADC_MODE_REF_EN		BIT(15)
-@@ -110,15 +118,19 @@
- #define AD7173_SETUP_REF_SEL_EXT_REF	0x0
- #define AD7173_VOLTAGE_INT_REF_uV	2500000
- #define AD7173_TEMP_SENSIIVITY_uV_per_C	477
-+#define AD7177_ODR_START_VALUE		0x07
- 
- #define AD7173_FILTER_ODR0_MASK		GENMASK(5, 0)
- #define AD7173_MAX_CONFIGS		8
- 
- enum ad7173_ids {
- 	ID_AD7172_2,
-+	ID_AD7172_4,
- 	ID_AD7173_8,
- 	ID_AD7175_2,
-+	ID_AD7175_8,
- 	ID_AD7176_2,
-+	ID_AD7177_2,
- };
- 
- struct ad7173_device_info {
-@@ -190,7 +202,7 @@ static const unsigned int ad7175_sinc5_data_rates[] = {
- static const struct ad7173_device_info ad7173_device_info[] = {
- 	[ID_AD7172_2] = {
- 		.name = "ad7172-2",
--		.id = AD7172_ID,
-+		.id = AD7172_2_ID,
- 		.num_inputs = 5,
- 		.num_channels = 4,
- 		.num_configs = 4,
-@@ -200,6 +212,17 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.sinc5_data_rates = ad7173_sinc5_data_rates,
- 		.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
- 	},
-+	[ID_AD7172_4] = {
-+		.id = AD7172_4_ID,
-+		.num_inputs = 9,
-+		.num_channels = 8,
-+		.num_configs = 8,
-+		.num_gpios = 4,
-+		.has_temp = false,
-+		.clock = 2 * HZ_PER_MHZ,
-+		.sinc5_data_rates = ad7173_sinc5_data_rates,
-+		.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
-+	},
- 	[ID_AD7173_8] = {
- 		.name = "ad7173-8",
- 		.id = AD7173_ID,
-@@ -214,7 +237,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 	},
- 	[ID_AD7175_2] = {
- 		.name = "ad7175-2",
--		.id = AD7175_ID,
-+		.id = AD7175_2_ID,
- 		.num_inputs = 5,
- 		.num_channels = 4,
- 		.num_configs = 4,
-@@ -224,6 +247,17 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.sinc5_data_rates = ad7175_sinc5_data_rates,
- 		.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
- 	},
-+	[ID_AD7175_8] = {
-+		.id = AD7175_8_ID,
-+		.num_inputs = 17,
-+		.num_channels = 16,
-+		.num_configs = 8,
-+		.num_gpios = 4,
-+		.has_temp = true,
-+		.clock = 16 * HZ_PER_MHZ,
-+		.sinc5_data_rates = ad7175_sinc5_data_rates,
-+		.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
-+	},
- 	[ID_AD7176_2] = {
- 		.name = "ad7176-2",
- 		.id = AD7176_ID,
-@@ -236,6 +270,17 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.sinc5_data_rates = ad7175_sinc5_data_rates,
- 		.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
- 	},
-+	[ID_AD7177_2] = {
-+		.id = AD7177_ID,
-+		.num_inputs = 5,
-+		.num_channels = 4,
-+		.num_configs = 4,
-+		.num_gpios = 2,
-+		.has_temp = true,
-+		.clock = 16 * HZ_PER_MHZ,
-+		.sinc5_data_rates = ad7175_sinc5_data_rates,
-+		.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
-+	},
- };
- 
- static const char *const ad7173_ref_sel_str[] = {
-@@ -656,7 +701,12 @@ static int ad7173_write_raw(struct iio_dev *indio_dev,
- 	switch (info) {
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		freq = val * MILLI + val2 / MILLI;
--		for (i = 0; i < st->info->num_sinc5_data_rates - 1; i++)
-+		/*
-+		 * AD7177-2 has the filter values [0-6] marked as reserved
-+		 * datasheet page 58
-+		 */
-+		i = (st->info->id == AD7177_ID) ? AD7177_ODR_START_VALUE : 0;
-+		for (; i < st->info->num_sinc5_data_rates - 1; i++)
- 			if (freq >= st->info->sinc5_data_rates[i])
- 				break;
- 
-@@ -908,8 +958,15 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 		else
- 			ref_sel = ret;
- 
-+		if (ref_sel == AD7173_SETUP_REF_SEL_INT_REF &&
-+		    st->info->id == AD7172_2_ID) {
-+			fwnode_handle_put(child);
-+			return dev_err_probe(dev, -EINVAL,
-+				"Internal reference is not available on ad7172-2\n");
-+		}
-+
- 		if (ref_sel == AD7173_SETUP_REF_SEL_EXT_REF2 &&
--		    st->info->id != AD7173_ID) {
-+		    st->info->id != AD7173_ID && st->info->id != AD7172_2_ID) {
- 			fwnode_handle_put(child);
- 			return dev_err_probe(dev, -EINVAL,
- 				"External reference 2 is only available on ad7173-8\n");
-@@ -1080,21 +1137,30 @@ static int ad7173_probe(struct spi_device *spi)
- static const struct of_device_id ad7173_of_match[] = {
- 	{ .compatible = "adi,ad7172-2",
- 	  .data = &ad7173_device_info[ID_AD7172_2]},
-+	{ .compatible = "adi,ad7172-4",
-+	  .data = &ad7173_device_info[ID_AD7172_4]},
- 	{ .compatible = "adi,ad7173-8",
- 	  .data = &ad7173_device_info[ID_AD7173_8]},
- 	{ .compatible = "adi,ad7175-2",
- 	  .data = &ad7173_device_info[ID_AD7175_2]},
-+	{ .compatible = "adi,ad7175-8",
-+	  .data = &ad7173_device_info[ID_AD7175_8]},
- 	{ .compatible = "adi,ad7176-2",
- 	  .data = &ad7173_device_info[ID_AD7176_2]},
-+	{ .compatible = "adi,ad7177-2",
-+	  .data = &ad7173_device_info[ID_AD7177_2]},
- 	{ }
- };
- MODULE_DEVICE_TABLE(of, ad7173_of_match);
- 
- static const struct spi_device_id ad7173_id_table[] = {
- 	{ "ad7172-2", (kernel_ulong_t)&ad7173_device_info[ID_AD7172_2]},
-+	{ "ad7172-4", (kernel_ulong_t)&ad7173_device_info[ID_AD7172_4] },
- 	{ "ad7173-8", (kernel_ulong_t)&ad7173_device_info[ID_AD7173_8]},
- 	{ "ad7175-2", (kernel_ulong_t)&ad7173_device_info[ID_AD7175_2]},
-+	{ "ad7175-8", (kernel_ulong_t)&ad7173_device_info[ID_AD7175_8]},
- 	{ "ad7176-2", (kernel_ulong_t)&ad7173_device_info[ID_AD7176_2]},
-+	{ "ad7177-2", (kernel_ulong_t)&ad7173_device_info[ID_AD7177_2]},
- 	{ }
- };
- MODULE_DEVICE_TABLE(spi, ad7173_id_table);
--- 
-2.43.0
+> ---
+>  .../bindings/iio/adc/adi,ad7192.yaml          | 75 +++++++++++++++++++
+>  1 file changed, 75 insertions(+)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> index 16def2985ab4..c62862760311 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+> @@ -21,8 +21,15 @@ properties:
+>        - adi,ad7190
+>        - adi,ad7192
+>        - adi,ad7193
+> +      - adi,ad7194
+>        - adi,ad7195
+>  
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+>    reg:
+>      maxItems: 1
+>  
+> @@ -96,8 +103,44 @@ required:
+>    - spi-cpol
+>    - spi-cpha
+>  
+> +patternProperties:
+> +  "^channel@([0-9]+)$":
+
+No need for ()
+
+> +    type: object
+> +    $ref: adc.yaml
+> +    unevaluatedProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        description: The channel index.
+> +        minimum: 1
+> +        maximum: 16
+> +
+> +      diff-channels:
+> +        description: |
+> +          Both inputs can be connected to pins AIN1 to AIN16 by choosing the
+> +          appropriate value from 1 to 16. The negative input can also be
+> +          connected to AINCOM by choosing 0.
+> +        items:
+> +          minimum: 0
+> +          maximum: 16
+> +
+> +    required:
+> +      - reg
+> +      - diff-channels
+> +
+>  allOf:
+>    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          enum:
+> +            - adi,ad7190
+> +            - adi,ad7192
+> +            - adi,ad7193
+> +            - adi,ad7195
+> +    then:
+> +      patternProperties:
+> +        "^channel@([0-9]+)$": false
+
+No need for ()
+
+>  
+>  unevaluatedProperties: false
+>  
+> @@ -127,3 +170,35 @@ examples:
+
+
+Best regards,
+Krzysztof
 
 

@@ -1,148 +1,121 @@
-Return-Path: <linux-iio+bounces-3169-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3170-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9404186B1AF
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 15:25:05 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FF7386B5F5
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 18:27:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4750C28A35D
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 14:25:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1CB41C23B88
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 17:27:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A7315A483;
-	Wed, 28 Feb 2024 14:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C543FBBF;
+	Wed, 28 Feb 2024 17:27:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ix/XMzvG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62038159589;
-	Wed, 28 Feb 2024 14:24:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37EFB34CDE;
+	Wed, 28 Feb 2024 17:27:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709130288; cv=none; b=KClLve5lkKO5aogoXkXgg646Eur4/e3ocj2/arbNpXxhuYhmFVzPPjAFMEsCmfK4Zine4KyYDLALSCao1jyv96ptEQIUELQIY7frU/5kgSIQM6zilXw3fFjaqcgdNZ61CubPVcscIjrdvSkX06wI3Lu7Q6wVF5zAn8Z+JCI7I04=
+	t=1709141259; cv=none; b=jAJz4lhMuZHIlQnOyP1g4eZVVDObxqE3pRrlLk8N3OouApyS6xqGcdmAFoNnMp2nvzfF0TCDZ94RFGHiY5qzcoEdLWInOUz5Igef/Erdl3aVWNMUmza186MlQYA1hS4it+D0FSZtgPN/OwTaIF+VfZIBiLpThEVdhFMBLx/Zo9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709130288; c=relaxed/simple;
-	bh=pRzq8HG/Yov3i+0nNUEbFITL218UFSc1UWUM1H32W08=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J3+yu9edJvzGNjmu+1lHF0brGMU9X9osyIJ4h6Vb6Ck0onXZUPfUbRvFANaGRjpirzVIA+iiMN4Z9dSvbA0k3fnmBrcyNLvYQlzc4NRRrQSQKPrlTpE38SfqSYwSb1QmU5FTpxaWsFiR5bdRgmziYQxnxJQ4jAuFa8MUYI257YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TlGhg5GT7z6J9yk;
-	Wed, 28 Feb 2024 22:20:03 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 50B9F1412F1;
-	Wed, 28 Feb 2024 22:24:43 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Wed, 28 Feb
- 2024 14:24:42 +0000
-Date: Wed, 28 Feb 2024 14:24:41 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dominique Martinet <dominique.martinet@atmark-techno.com>
-CC: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, Jonathan Cameron
-	<jic23@kernel.org>, Syunya Ohshio <syunya.ohshio@atmark-techno.com>, Guido
- =?ISO-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>, Lars-Peter Clausen
-	<lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
-	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
- device index
-Message-ID: <20240228142441.00002a79@Huawei.com>
-In-Reply-To: <Zd7qz1Qte8HWieF_@atmark-techno.com>
-References: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
-	<7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
-	<Zd7hSOw3_zosyrn3@atmark-techno.com>
-	<daed8ada-9e01-41ad-82af-5da5cbbc865c@linaro.org>
-	<Zd7qz1Qte8HWieF_@atmark-techno.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1709141259; c=relaxed/simple;
+	bh=a6yPinrfFCyv1D0aYBQjzitLgkEQTPi0B91kfaZLW0U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iqr40XIWgaXW8Vtsqm91OmZRiplyvMetFrM20mGmxb3Lv9RiTg8hClNrL2IkAE2LxyDbtKASXjVHHCxpGl8OLbClnzpzsTIB2InKPS4Q3aG1BeHhw07jYbI7etwCyI9TR+ZFEkGaRD9BB8oR+//wl/aCrIKtebPYr+1jznEthh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ix/XMzvG; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709141259; x=1740677259;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a6yPinrfFCyv1D0aYBQjzitLgkEQTPi0B91kfaZLW0U=;
+  b=Ix/XMzvGBqid+ta5dulE/RJq/IBijC7mt94AEL1asjECxCFSzfXstxqM
+   e0JSRmyXof+T9utEClK5Jm5fFpZs/BxiNr5UlJW+TT+bm4T83HbXQ8JJE
+   DHL8NssyWTJRwYBjavOjHn7TZQXP0cskQlMUExEzCc480BHieFPl/FsIl
+   kbiCP/+XuIK510nO3kZ39itOM09kP755hZsnkGEaCFthKGkkOJa6FeU11
+   7Agw8+VZfp/T/Xz1Mau/O9OmQfjuDX90fMWekM1/6fnbWCD1ofuJkwMh9
+   gtDEWRm9CKhfIWnEiGoWvG4R1KLKD7mt73JUvhgUzUJfQ50frLDOlug/i
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3720069"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="3720069"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 09:27:38 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="913956212"
+X-IronPort-AV: E=Sophos;i="6.06,190,1705392000"; 
+   d="scan'208";a="913956212"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 09:27:33 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rfNiM-00000008Has-1Z2p;
+	Wed, 28 Feb 2024 19:27:30 +0200
+Date: Wed, 28 Feb 2024 19:27:30 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, Marek Vasut <marex@denx.de>,
+	Anshul Dalal <anshulusr@gmail.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Matt Ranostay <matt@ranostay.sg>,
+	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 5/5] iio: light: Add support for APDS9306 Light Sensor
+Message-ID: <Zd9tApJClX7Frq20@smile.fi.intel.com>
+References: <20240228122408.18619-1-subhajit.ghosh@tweaklogic.com>
+ <20240228122408.18619-6-subhajit.ghosh@tweaklogic.com>
+ <a828e77c-b3d4-49bb-b0bb-b9fd6cb7d114@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a828e77c-b3d4-49bb-b0bb-b9fd6cb7d114@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, 28 Feb 2024 17:11:59 +0900
-Dominique Martinet <dominique.martinet@atmark-techno.com> wrote:
+On Wed, Feb 28, 2024 at 03:08:56PM +0200, Matti Vaittinen wrote:
+> On 2/28/24 14:24, Subhajit Ghosh wrote:
 
-> Krzysztof Kozlowski wrote on Wed, Feb 28, 2024 at 08:42:46AM +0100:
-> > >> Sorry, that's why you have labels and compatibles.  
-> >  
-> > > Setting up a fixed alias seems to be precisely what aliases are about
-> > > (e.g. setting rtc0 will make a specific node become /dev/rtc0, same with
-> > > ethernet0, gpio, i2c, mmc, serial...), I'm not sure I agree a new label
-> > > would be more appropriate here, but perhaps I'm missing some context?  
-> > 
-> > Maybe I don't get your point, but your email said "sysfs", so why do you
-> > refer to /dev?  
+...
+
+> > +	ret = iio_gts_find_new_gain_by_old_gain_time(&data->gts, gain_old,
+> > +						     intg_old, val2, &gain_new);
 > 
-> I wrote /dev/rtc0, but it also sets the name in /sys, right?
-> For example /sys/class/rtc/rtc0
+> You don't use the 'ret' here, so maybe for the clarity, not assign it.
+> Or, maybe you wan't to try to squeeze out few cycles for succesful case and
+> check the ret for '0' - in which case you should be able to omit the check
+> right below as well as the call to iio_find_closest_gain_low(). OTOH, this
+> is likely not a "hot path" so I don't care too much about the extra call if
+> you think code is clearer this way.
 > 
-> As far as I'm aware iio also creates character devices in /dev with the
-> same name (/dev/iio/iio:deviceX), but our application doesn't use these
-> at all and has to? look in /sys directly, so normal udev SYMLINK+=
-> unfortunately isn't applicable or I wouldn't be bothering with all
-> this..
+> > +	if (gain_new < 0) {
+> > +		dev_err_ratelimited(dev, "Unsupported gain with time\n");
+> > +		return gain_new;
+> > +	}
 
-A given IIO device driver may create multiple sysfs directories (registers
-device + one or more triggers), so I'm not sure how this would work.
+What is the difference between negative response from the function itself and
+similar in gain_new?
 
-> 
-> > > I'm not sure I understand this comment -- would you rather this doesn't
-> > > use aliases but instead add a new label (e.g. `iio,index = <10>` or
-> > > whatever) to the iio node itself?  
-> > 
-> > No, the devices already have label property.  
-> 
-> Thank you for pointing me at the 'label' property, looking at other
-> subsystems e.g. leds I see paths in sysfs that use labels as I'd like it
-> to work for iio (/sys/class/leds/<label> and
-> /sys/devices/platform/<parent>/leds/<label>)
-> 
-> Unfortunately for iio it looks like labels isn't ignored, but instead
-> create a file in the sysfs directory of the device, e.g. I now have
-> /sys/bus/iio/devices/iio:device1/label which contains the label string,
-> so I'm not sure that can be changed easily as that'd be a change of API
-> for existing users for labels in iio devices?
+-- 
+With Best Regards,
+Andy Shevchenko
 
-Yes, don't touch that ABI.  IIO software assumes naming of
-iio\:deviceX etc.
-
-> 
-> (I checked briefly and didn't find any, but there seems to be an awful
-> lot of code in the iio drivers tree about labels so I'm not really
-> comfortable changing that without some more background on iio first...
-> Jonathan perhaps has an opinion on this?)
-
-There are labels for channels as well as devices, but the short description
-you have above is it.
-
-I don't see why that isn't sufficient for your use case though?
-What does a directory name matter when you can write a few lines of
-code to retrieve the IIO device that you want.
-
-If this was day 0 maybe we could support renaming devices like this
-but we have a long history of those names not being stable and label
-+ parentage of the IIO devices being used to establish stable identification.
-
-Anything beyond a trivial single use script is going to need to deal with
-not having stable names (old kernel, dt without alias etc) so this doesn't
-help in general.
-
-Jonathan
-
-> 
-> 
-> Thanks,
 
 

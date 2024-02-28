@@ -1,70 +1,74 @@
-Return-Path: <linux-iio+bounces-3195-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3196-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07E8986BA10
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 22:37:02 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EACF86BA17
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 22:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36D3A1C20B48
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 21:37:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 723441C24E13
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 21:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B664170046;
-	Wed, 28 Feb 2024 21:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CB772910;
+	Wed, 28 Feb 2024 21:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eL65Ly63"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="mdLfMxMq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C1270030;
-	Wed, 28 Feb 2024 21:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6071270044
+	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 21:37:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709156214; cv=none; b=eicFbG1g870D99iA6ULZoLEPzfdnKdGhkGM6Ku6bG6GdYOdRYm6y8r60uvrmCMX2FsY1rVc5jLCxOF+dJg7xZDabo+nniBcMsfDcwDs9Xda/OcPxfngYwJ3pyN4vJF4RBS6RbBUdnwLObiKY0UyWh95sOt6hcCZrLB4GtDZo/ZQ=
+	t=1709156260; cv=none; b=AGF3qe/HDgbXYh3Nw3Uy7k/rXd9Ls3yTThH+UKu/hVYCXB1InAcwKHiCpcs/In6iGIbPxMmgNNNk9n7439e379NaV4tjv30VwRBT+jTg3CoUHq6vEX2nzS0uxi7jAwPdwLBZUMowPJHTDRTrlz7ktg/LB8T2MNYvkY5kdVCXRC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709156214; c=relaxed/simple;
-	bh=8PJmKytlSsprccUo0R3nWiiL/iIqexJcXLdDR7loiNY=;
+	s=arc-20240116; t=1709156260; c=relaxed/simple;
+	bh=d8Cs4AIhxa9LtAUDzhoaGCHGHqQ8MrLQncAkWORK/Kg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ee1Bviaoz55ZgkSzfH1SWipSZPh4ypAr4UFn6T8ITL0UGB5or04ElE6X0dlLhHQruqH1MK3fo8SrSptL2Ye3sQsOW8HNUPjBI/mCDN+F+RZPN0zjDdnBTRNaWqs2v7eQXx3AHcM0kSaajYg1QkGFdld6bqQTNVamFNYOmWmbXNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eL65Ly63; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709156213; x=1740692213;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=8PJmKytlSsprccUo0R3nWiiL/iIqexJcXLdDR7loiNY=;
-  b=eL65Ly63fx4Yl7pAF6PDLA0r3v1SN7MARruIYDQxEuGA2tsDyCYr42pJ
-   ndzqbPuKWn3U0YlbauAg5MZoYGa900F2biTgNljy8yRETFnkjEfaQf8M5
-   olX2HEpAer7d7B0XBrNueOTYfJ0WnVZRzPdD3uyID+GovZswZJhL/BRyF
-   A03OTuXnWwyVTX4LT59KMrWEHToQaUOgtS/RuhIatRoop5pvmPzpU7nhP
-   DGvfn1PeC9e/H8A9+8odx3vWM4lmtE0W53X5oPJ6DdMDSKdZck+r4VKkc
-   k7FCdcat+UAe3ty2YmtOWJZo3K1mL/kvhvwseiimZ8twYgBnu9MJaLjTw
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="7371106"
-X-IronPort-AV: E=Sophos;i="6.06,191,1705392000"; 
-   d="scan'208";a="7371106"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 13:36:52 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="913961929"
-X-IronPort-AV: E=Sophos;i="6.06,191,1705392000"; 
-   d="scan'208";a="913961929"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 13:36:47 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rfRbX-00000008VcR-2Fpg;
-	Wed, 28 Feb 2024 23:36:43 +0200
-Date: Wed, 28 Feb 2024 23:36:43 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: David Lechner <dlechner@baylibre.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=VynbW/XKmzkEfpljRVVoL92Q/Q2qi9+7I5nZPz8HG738c/FGz7Krx3HdsdffcWEgkTJAa+RQdc4rr8q6fDA3YUHUCzA5tYK82Fq7h+tyLlmaq4fK4atKu9nZXzD+Kemg6d+CEcgpRnfct/tFr2lfmp9JJZ4z8y5kS3p5fjTpLzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=mdLfMxMq; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1d94b222a3aso2947425ad.2
+        for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 13:37:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1709156258; x=1709761058; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mxMa3ysfVhpuWlSkP2rUbxFtq6lVsWzk+l7tYIpoG5M=;
+        b=mdLfMxMq5au2Z/pH9efFJnu2asPAYhHDd168nDdjOTLe05N48Pa+4kDmonuDnvDRbM
+         1f8DRxDE8y7zLHsF9mS5qGpRVDqjaLRdoponNMrEZ9+bSTuLqPZb3juAp20eDsgMkqSZ
+         F5gFDQ0UhPL88E3ew/K33a2HNBHTxvAxVI1Pk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709156258; x=1709761058;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mxMa3ysfVhpuWlSkP2rUbxFtq6lVsWzk+l7tYIpoG5M=;
+        b=uE022OIkyaJFqoCNPr9EdZD1LgI8G69M16ebVGw4lozIZ8ln/sLQnSxvEQsfTZJYCx
+         A+GbUXW0KVo8Hu2VN/bw3aC2Rn7gT7X/OKLtDDIbDlHpI6ipAHlqUR5RSJf0kRSYp5x3
+         q7Jqz4WRTqQf8VEd0x+QNMiPTmZ5gpwNJ/GLCH9A3OtopYvDEPFyECQHK/JNo5QCU66h
+         YEPix7PUdHIW9YnqXukNF2seS2LGYOySiSMlY+IiqC95l+57cQzc3N94HWKWkvO6sJMj
+         3m/OvGsBxujRFtnRV4+K60KLxmgZpYbIKtS7oc2QlGwrcB8WIT3YbGEQSM7j4tl4qRUN
+         DumA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCNSAmmk8Ph4W9ikhr5ibCBN530bCHumsaU6QE1WKvSQ17XxXrX3MVfoIuzcMc3wu3NklpWkN8Pf2JTn1TxOYnt6ySyF32+h2e
+X-Gm-Message-State: AOJu0YzPjYweAHQ/gYlXK3ecNwKLZWr7jpqhAidcHnP+qoRObniL30+8
+	Q70AWcndUaaZ/hVE0Yu31QETBxRx8sNOqv6E4smWdJDNjN3xbN239fPwtksBNw==
+X-Google-Smtp-Source: AGHT+IEutCCddWBfZZf+Zq/1ILDM/Qx+dYsp5vYX2jxxagWboMTFdshkkBQuR0Dtvr+YU4cuJ4wNtA==
+X-Received: by 2002:a17:902:8d8a:b0:1db:e7a7:63f4 with SMTP id v10-20020a1709028d8a00b001dbe7a763f4mr163725plo.19.1709156257805;
+        Wed, 28 Feb 2024 13:37:37 -0800 (PST)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id r20-20020a170903411400b001d8f111804asm3781604pld.113.2024.02.28.13.37.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Feb 2024 13:37:36 -0800 (PST)
+Date: Wed, 28 Feb 2024 13:37:36 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Vinod Koul <vkoul@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mark Brown <broonie@kernel.org>, Kees Cook <keescook@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
 	linux-spi@vger.kernel.org, netdev@vger.kernel.org,
@@ -75,47 +79,86 @@ Cc: Vinod Koul <vkoul@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: [PATCH v4 3/8] iio: core: NULLify private pointer when there is
- no private data
-Message-ID: <Zd-na3oVV4Chl4Ft@smile.fi.intel.com>
+Subject: Re: [PATCH v4 2/8] overflow: Add struct_size_with_data() and
+ struct_data_pointer() helpers
+Message-ID: <202402281334.876DC89@keescook>
 References: <20240228204919.3680786-1-andriy.shevchenko@linux.intel.com>
- <20240228204919.3680786-4-andriy.shevchenko@linux.intel.com>
- <CAMknhBFbQ2BmGd18wC0odO-b_bWvJEO3FCYEtpvhB1fF+MEFgg@mail.gmail.com>
+ <20240228204919.3680786-3-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMknhBFbQ2BmGd18wC0odO-b_bWvJEO3FCYEtpvhB1fF+MEFgg@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <20240228204919.3680786-3-andriy.shevchenko@linux.intel.com>
 
-On Wed, Feb 28, 2024 at 03:06:42PM -0600, David Lechner wrote:
-> On Wed, Feb 28, 2024 at 2:50 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
-
-...
-
-> > -       indio_dev->priv = (char *)iio_dev_opaque +
-> > -               ALIGN(sizeof(struct iio_dev_opaque), IIO_DMA_MINALIGN);
-> > +
-> > +       if (sizeof_priv)
-> > +               indio_dev->priv = (char *)iio_dev_opaque +
-> > +                       ALIGN(sizeof(struct iio_dev_opaque), IIO_DMA_MINALIGN);
-> > +       else
-> > +               indio_dev->priv = NULL;
+On Wed, Feb 28, 2024 at 10:41:32PM +0200, Andy Shevchenko wrote:
+> Introduce two helper macros to calculate the size of the structure
+> with trailing aligned data and to retrieve the pointer to that data.
 > 
-> Do we actually need the else branch here since we use kzalloc() and
-> therefore indio_dev->priv should already be NULL?
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+>  include/linux/overflow.h | 27 ++++++++++++++++++++++++++-
+>  1 file changed, 26 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/overflow.h b/include/linux/overflow.h
+> index bc390f026128..b93bbf1b6aaa 100644
+> --- a/include/linux/overflow.h
+> +++ b/include/linux/overflow.h
+> @@ -2,9 +2,10 @@
+>  #ifndef __LINUX_OVERFLOW_H
+>  #define __LINUX_OVERFLOW_H
+>  
+> +#include <linux/align.h>
+>  #include <linux/compiler.h>
+> -#include <linux/limits.h>
+>  #include <linux/const.h>
+> +#include <linux/limits.h>
+>  
+>  /*
+>   * We need to compute the minimum and maximum values representable in a given
+> @@ -337,6 +338,30 @@ static inline size_t __must_check size_sub(size_t minuend, size_t subtrahend)
+>   */
+>  #define array3_size(a, b, c)	size_mul(size_mul(a, b), c)
+>  
+> +/**
+> + * struct_size_with_data() - Calculate size of structure with trailing aligned data.
+> + * @p: Pointer to the structure.
+> + * @a: Alignment in bytes before trailing data.
+> + * @s: Data size in bytes (must not be 0).
+> + *
+> + * Calculates size of memory needed for structure of @p followed by an
+> + * aligned data of size @s.
+> + *
+> + * Return: number of bytes needed or SIZE_MAX on overflow.
+> + */
+> +#define struct_size_with_data(p, a, s)	size_add(ALIGN(sizeof(*(p)), (a)), (s))
 
-This is more robust, but I'm okay to drop this. Up to Jonathan.
+I don't like this -- "p" should have a trailing flexible array. (See
+below.)
+
+> +
+> +/**
+> + * struct_data_pointer - Calculate offset of the trailing data reserved with
+> + * struct_size_with_data().
+> + * @p: Pointer to the structure.
+> + * @a: Alignment in bytes before trailing data.
+> + *
+> + * Return: offset in bytes to the trailing data reserved with
+> + * struct_size_with_data().
+> + */
+> +#define struct_data_pointer(p, a)	PTR_ALIGN((void *)((p) + 1), (a))
+
+I'm not super excited about propagating the "p + 1" code pattern to find
+things after an allocation. This leads to the compiler either being
+blind to accesses beyond an allocation, or being too conservative about
+accesses beyond an object. Instead of these helpers I would much prefer
+that data structures that use this code pattern be converted to using
+trailing flexible arrays, at which point the compiler is in a much
+better position to reason about sizes.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+Kees Cook
 

@@ -1,214 +1,107 @@
-Return-Path: <linux-iio+bounces-3193-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3194-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10C9E86B9D8
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 22:28:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D3DE86B9EE
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 22:33:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 692241F223B7
-	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 21:28:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF32E1C22DB0
+	for <lists+linux-iio@lfdr.de>; Wed, 28 Feb 2024 21:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D213270024;
-	Wed, 28 Feb 2024 21:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5A170038;
+	Wed, 28 Feb 2024 21:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Ix2qCsmT"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="aBN6sDQb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11278627F;
-	Wed, 28 Feb 2024 21:27:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BCC70020
+	for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 21:33:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709155680; cv=none; b=WbU3L+/Em8BEjJdzr/hbKruEJAWmmFf0tApcSKL22MX4bt3ci+Fz/j6BHJRKCprQHcLnIAI2WqIzpOzjVpRYM1xCsg9Z0bxUG5uFpYfn6vIH6ZxvtONlhz5Y9FBboOIA1ZSZ5TlQIcYnbF7m1bhs8Tq4TJF+P/rJjL6ezADwTX4=
+	t=1709155999; cv=none; b=cp/tv5GYwU+QzUJLR06M1kToKodKI6aUtrxjIaQLEFFhCMW+fTRTXEn+GQRkfyHMEqhBZC59zeh8hLxHbXLbssRArlouxudRjWbGcBR/dW1sZtrHEqH4LHZS+aitbzFDrd+bVBggn3BqZSWRxjryC+RoEglM5r2oPKFATxNQXnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709155680; c=relaxed/simple;
-	bh=KRZqXDKyf7LxgmLLihGCD0ad2l3K3+mPreZGWpFnqew=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CJ+MrZdT9wKwvqS2zCbLj4RvEurpDrCmgjoB5al/j2xZtFY+IjFRXqsbyMnpOQwzzxjAyJk4pabqEXKSBaJoeWeYshICo2WuFfVK7xc1yjeFpLhxioWrKLGYUxu9pLYOoQkVWUk+gbne2Z6RrlcmIqMcVslJsEGFrcApJ8GsjCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Ix2qCsmT; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709155679; x=1740691679;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=KRZqXDKyf7LxgmLLihGCD0ad2l3K3+mPreZGWpFnqew=;
-  b=Ix2qCsmTButdSq+S0q0741RB5i7fCrAh98mfjVKdft+fEhb0y6+qHw98
-   7ozm90LZNNQUs4pYbZVrsL34wO+AbUI51v7sOz7ahqOTTiVKg5ALE27Ms
-   wIEB8v3Ef5hYiZDH6U17/pJNi1NWC6J16dvOMuMFro+71nRkoZKRD8+qv
-   VJr2AUnIhnD2iqrMb5w1Vnoc2UI6bSxFFT2l+ixLPVj0e3KYFMotxUiTh
-   miRb6eXfCOko2CS51JVByc7Myi1/sjLNIjB5MepSIkVLTLMK0WIIv5ONo
-   trjYw7O3W4zQM/uIE3xw5EjF9Fmaqr73QwZTKUORGMri6gdgW2O9M6jtD
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="3710276"
-X-IronPort-AV: E=Sophos;i="6.06,191,1705392000"; 
-   d="scan'208";a="3710276"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2024 13:27:58 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="937034692"
-X-IronPort-AV: E=Sophos;i="6.06,191,1705392000"; 
-   d="scan'208";a="937034692"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmsmga001.fm.intel.com with ESMTP; 28 Feb 2024 13:27:56 -0800
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id D285B1C5; Wed, 28 Feb 2024 23:27:54 +0200 (EET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: [PATCH v1 1/1] iio: light: isl29018: Drop ACPI specifics from the code
-Date: Wed, 28 Feb 2024 23:27:46 +0200
-Message-ID: <20240228212746.3709512-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
+	s=arc-20240116; t=1709155999; c=relaxed/simple;
+	bh=2QplW/PSL+l5wBlz2Fhb2MD7icGVtnf5yghrdyR7zlI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rmljJp7iYI3Jy6bVq/CUZ02tC1HbM3XydOEWXz4ey6+whAOLn0WTW5+vjv6l5mVE8VxinVsrei3sAAHGkdeXuTU2mkUXdCZ1GYMP5mELolEvH/M+jv0O0FjBCb7zSdYJ5eHSwF4rFYUEFnceipEPLiIY6RZm33xLIqUJU91bxcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=aBN6sDQb; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1dc1ff3ba1aso2466495ad.3
+        for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 13:33:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1709155997; x=1709760797; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XLd8h0kEPBZWXG99LoXPX1j7y1LhX/a2aDKq9S3uX68=;
+        b=aBN6sDQbxrowODDrLK+SjX+fBVboj16jTtc0JmnAsYlX+IxsJR//Q78Ef229q7BVeH
+         k1loVZK1lowplOUnadJZy6JVfXerQXD8WmyZTW9TvRQjvfhk9aXLvNV/TdU3BT+CZ6AJ
+         AA8I7rfTB85C3iJawTE0geey0WYKINkco6uXQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709155997; x=1709760797;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XLd8h0kEPBZWXG99LoXPX1j7y1LhX/a2aDKq9S3uX68=;
+        b=oTwhBt2NPn65zHdojXU47nbxJthfxjzMnwqAQXPiLq7r1Nap3DOgaZxjuCEjAh1IIe
+         5bgdauy3k+GEI+US12/0As9jxo/BFzDjEOmOS3uMVhWN0fNRzVC0HlfVzhNpfQfKZj28
+         ZdrypC1XJZw9as3Il+AIhExV0yBQXIdec5ijyc5CdbkrLZY5yDt+vDNVTrrrKUSW2kji
+         4Tbg8cArpEv0+kXXGujW+Y+ntv8FOaOmHlHIMSuhu+EBzlNhRLS7ZOdNkEZKsR788az0
+         gsn/L4Pbf54ap93UxwsliiVMuWY9y3gtcpJzwpjrWhbq953rViV0quUjxYkwqJ7eCqx1
+         6M0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWLEVKwYv5eNZFKsPcxGYUIwX4vOiWcEum/ytPH/+zom5izX/XinWAhFrdvUDj4Frea+l7dIu37YVTaFaoiDWGhx5MDGrT3LJnk
+X-Gm-Message-State: AOJu0YyNfaZFmXsEVSdD7/J4pIjOTVk+oA52x4cLsHScNU7TIvYdXPbT
+	l4UTpVgQ9O0zRXstlOvwWZHm1H5ZjGmxabKBJxYhRviHCyycWFsgQh7znepurw==
+X-Google-Smtp-Source: AGHT+IGO5QT2ql8Rf0ElQjy3mY7mI7ajEF2Z3zSl9mRYp9jbKdiPIbR1SfabYEntk3bTWsEUAJJ/WQ==
+X-Received: by 2002:a17:902:ce02:b0:1d9:f83e:3a54 with SMTP id k2-20020a170902ce0200b001d9f83e3a54mr192671plg.64.1709155996838;
+        Wed, 28 Feb 2024 13:33:16 -0800 (PST)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id c2-20020a170902848200b001dca997b3e3sm3729404plo.65.2024.02.28.13.33.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Feb 2024 13:33:15 -0800 (PST)
+Date: Wed, 28 Feb 2024 13:33:15 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Vinod Koul <vkoul@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>
+Subject: Re: [PATCH v4 1/8] overflow: Use POD in check_shl_overflow()
+Message-ID: <202402281332.9B2F13570@keescook>
+References: <20240228204919.3680786-1-andriy.shevchenko@linux.intel.com>
+ <20240228204919.3680786-2-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240228204919.3680786-2-andriy.shevchenko@linux.intel.com>
 
-Convert the module to be property provider agnostic. The ACPI
-APIs are not required and can be replaced by respective agnostic
-ones.
+On Wed, Feb 28, 2024 at 10:41:31PM +0200, Andy Shevchenko wrote:
+> The check_shl_overflow() uses u64 type that is defined in types.h.
+> Instead of including that header, just switch to use POD type
+> directly.
+> 
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Include mod_devicetable.h explicitly to replace the dropped of.h
-which included mod_devicetable.h indirectly.
+Acked-by: Kees Cook <keescook@chromium.org>
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/light/isl29018.c | 44 +++++++++++++-----------------------
- 1 file changed, 16 insertions(+), 28 deletions(-)
-
-diff --git a/drivers/iio/light/isl29018.c b/drivers/iio/light/isl29018.c
-index 43484c18b101..fe7b9ad7ff35 100644
---- a/drivers/iio/light/isl29018.c
-+++ b/drivers/iio/light/isl29018.c
-@@ -8,17 +8,19 @@
-  * Copyright (c) 2010, NVIDIA Corporation.
-  */
- 
--#include <linux/module.h>
- #include <linux/i2c.h>
- #include <linux/err.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/delay.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
-+
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
--#include <linux/acpi.h>
- 
- #define ISL29018_CONV_TIME_MS		100
- 
-@@ -523,9 +525,9 @@ static const struct attribute_group isl29023_group = {
- };
- 
- enum {
--	isl29018,
--	isl29023,
--	isl29035,
-+	isl29018 = 1,
-+	isl29023 = 2,
-+	isl29035 = 3,
- };
- 
- static int isl29018_chip_init(struct isl29018_chip *chip)
-@@ -687,20 +689,6 @@ static const struct isl29018_chip_info isl29018_chip_info_tbl[] = {
- 	},
- };
- 
--static const char *isl29018_match_acpi_device(struct device *dev, int *data)
--{
--	const struct acpi_device_id *id;
--
--	id = acpi_match_device(dev->driver->acpi_match_table, dev);
--
--	if (!id)
--		return NULL;
--
--	*data = (int)id->driver_data;
--
--	return dev_name(dev);
--}
--
- static void isl29018_disable_regulator_action(void *_data)
- {
- 	struct isl29018_chip *chip = _data;
-@@ -718,6 +706,7 @@ static int isl29018_probe(struct i2c_client *client)
- 	struct iio_dev *indio_dev;
- 	int err;
- 	const char *name = NULL;
-+	const void *match;
- 	int dev_id = 0;
- 
- 	indio_dev = devm_iio_device_alloc(&client->dev, sizeof(*chip));
-@@ -728,14 +717,15 @@ static int isl29018_probe(struct i2c_client *client)
- 
- 	i2c_set_clientdata(client, indio_dev);
- 
--	if (id) {
-+	match = device_get_match_data(dev);
-+	if (match) {
-+		name = dev_name(dev);
-+		dev_id = (int)(uintptr_t)match;
-+	} else if (id) {
- 		name = id->name;
- 		dev_id = id->driver_data;
- 	}
- 
--	if (ACPI_HANDLE(&client->dev))
--		name = isl29018_match_acpi_device(&client->dev, &dev_id);
--
- 	mutex_init(&chip->lock);
- 
- 	chip->type = dev_id;
-@@ -832,15 +822,13 @@ static int isl29018_resume(struct device *dev)
- static DEFINE_SIMPLE_DEV_PM_OPS(isl29018_pm_ops, isl29018_suspend,
- 				isl29018_resume);
- 
--#ifdef CONFIG_ACPI
- static const struct acpi_device_id isl29018_acpi_match[] = {
- 	{"ISL29018", isl29018},
- 	{"ISL29023", isl29023},
- 	{"ISL29035", isl29035},
--	{},
-+	{}
- };
- MODULE_DEVICE_TABLE(acpi, isl29018_acpi_match);
--#endif
- 
- static const struct i2c_device_id isl29018_id[] = {
- 	{"isl29018", isl29018},
-@@ -854,14 +842,14 @@ static const struct of_device_id isl29018_of_match[] = {
- 	{ .compatible = "isil,isl29018", },
- 	{ .compatible = "isil,isl29023", },
- 	{ .compatible = "isil,isl29035", },
--	{ },
-+	{}
- };
- MODULE_DEVICE_TABLE(of, isl29018_of_match);
- 
- static struct i2c_driver isl29018_driver = {
- 	.driver	 = {
- 			.name = "isl29018",
--			.acpi_match_table = ACPI_PTR(isl29018_acpi_match),
-+			.acpi_match_table = isl29018_acpi_match,
- 			.pm = pm_sleep_ptr(&isl29018_pm_ops),
- 			.of_match_table = isl29018_of_match,
- 		    },
 -- 
-2.43.0.rc1.1.gbec44491f096
-
+Kees Cook
 

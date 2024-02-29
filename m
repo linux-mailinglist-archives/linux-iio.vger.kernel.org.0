@@ -1,127 +1,120 @@
-Return-Path: <linux-iio+bounces-3249-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3250-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE1986D420
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 21:23:44 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3835B86D635
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 22:31:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 163ACB243B2
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 20:23:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE83E1F23449
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 21:31:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B21D13F43E;
-	Thu, 29 Feb 2024 20:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0286D501;
+	Thu, 29 Feb 2024 21:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V3N//8Ji"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Otdgupdr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AED4142916
-	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 20:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBC116FF41
+	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 21:31:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709238194; cv=none; b=FQjyX0IJtyGOvDkieK2eu6xst9oUyxZZdd6vaBflZys3+g5ZbqsgnqwZ+4I6n+qdcrhSiYwdGCEAJzgdcoKWpsyuU6nkAidNo1egcveF/6dQvCtZE2/X8DHcVM1vlXsZMjVPlboZncLS5YlnXBryMGv/XDa52z5nK0pJyk2frSE=
+	t=1709242306; cv=none; b=OilIz5iBauP9ag6raL4XPo50ojAPgxKBeOakLbNacrCFY8iOj/lp9CUn+zruZ0BdxlUU3mnPmGB0+iT2qroJfkO+kk0EMQZxg3/rSqGsuP+6NhGm7s8S61FSyVpnjCV8FrSUkFb+Ol8JwDMcno+4mHMvJLMF0wa0RJNpOyEQadA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709238194; c=relaxed/simple;
-	bh=YKgDQiq062VPgmvvzsmoZJ7ZxP7qRZjy6kVx2BPuMno=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=jyygCiz2BccyJWovPhIHR8L5x5x/FQtxvk6UxZ4npC9ve9L+rau0aUtSxcvLK1fQTvMzsbdLuAIs0bLh+7K2FQgj2FXZ6LwIOd/MxsnIBejWqT8HmchIyBSIqC01UteTIGGXBC+4vDSLi2yHKi9Tt7Ugbsz0wopbMQyXAv4ohdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V3N//8Ji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74F2C43399;
-	Thu, 29 Feb 2024 20:23:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709238193;
-	bh=YKgDQiq062VPgmvvzsmoZJ7ZxP7qRZjy6kVx2BPuMno=;
-	h=Date:From:To:Subject:From;
-	b=V3N//8JiRAgPXot1XWu1yWtSSPTZbGRz1b6WihiC3h8Q620ByJaFv98CVbXI24Cmm
-	 jRzu4U5r1Z4O0KTloIo1e6CNPvZRWhCVGZ8DMcdpDvR4Va4Ptefi55T439WyzGhON6
-	 nsmdeEZULjg2sbDpnoSCYPpLrmpgPbJqYjM32hTGgYGQyqEYrYChV0Lx0KV/hQhdB8
-	 LKHvede0RmThTx2XSgg4yn7d58MkEYk1VYQow8H/KRTp0lhVIHibqvu8emH5HASTxm
-	 VUmM6uKURQnxvjCwQY7AAi8GvvbNjttBOWHvpEhvWnHivEzTofLS1gwTNjGAkaZgRk
-	 lOXeC6GMramDg==
-Date: Thu, 29 Feb 2024 20:23:00 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] IIO: 3rd set for 6.9 - cleanup.h handling of
- fwnode_handle_put() related (not ordered wrt to PULL 2)
-Message-ID: <20240229202300.3321cc11@jic23-huawei>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1709242306; c=relaxed/simple;
+	bh=QzZTm6RzwKOCXz1s1DDgA6t36vWxFMgXU9qMOsdvjRM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hLVAldLQEn6ZYYkcKIGxhvrJyQlVSwDqYCtI0OLRSpW00UlNvUqb42YEK3gO9vmAmjYJ2Cx44qApyvslKt9Tt8QLyc2dDfb1ZHebSYKd9ocFnjrJY1TGQiMQ2o8UwMuxV0byDdOQBMh37WUavSlDfFTre+rKyL6efw4mzGywJ2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Otdgupdr; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1d7232dcb3eso11534455ad.2
+        for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 13:31:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1709242305; x=1709847105; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fi9gJh0JIT3rydMe7Re3YRcK5pxmffs/i/bQwJvpoAc=;
+        b=OtdgupdrMqUU6v6YG5ItdSUVYWtggtW7CLi08MPwU/tGTaozH8afksz/j9WnraUdkZ
+         gQO7+saJw0TruPFKJJShHIMwzH14EPnGlOS+T/kEWAOEPVR4l6UaIrHpoabCCEf3XPtP
+         BuKQeG2cQ0ZPa/TIhRpwB3WIcITiVw6Bv0O6A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709242305; x=1709847105;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fi9gJh0JIT3rydMe7Re3YRcK5pxmffs/i/bQwJvpoAc=;
+        b=At5ugtcg4tBDm2zSY9tvd93mW4vfF8BuckUKRuof4uEh9YeZyS4cpdyX+mYmLDqatv
+         na3zn4QCRcPe3EkjWo5OLRERGdJss6WWHLM38aoRSQSw6F8ao9C3PPP2K+DomGMfcvey
+         1CfIV17n3Qjjf4XzkivnTAKMqrlm7dFS57hun+K4/YP5+PtnDKi79+/7XNYhvtBCKVhM
+         Wi2U7KEmFdwfUlS/zHnLQbM/7qP4ZgjbTbEOugFM6UyTTkVtuEN8aTrtdSFW/uM+3bsq
+         HwXPwqEEbzuQUiTaSHyx/5NvaKtCSCYNZ89HBjtFkDZruNn1UCWIogHAJkGURCGI9YVX
+         SQUg==
+X-Forwarded-Encrypted: i=1; AJvYcCXbE3wRrCJZd283b2P46Eo+ewsxfxoi5VV5EvYat5vxC7MNr+haPmYyfSzI/TgyYHiAuuGaS9qlTUmpLWXe7T8ujMqE3jh1JmsR
+X-Gm-Message-State: AOJu0YwBsPV95/v+AxtHnM3zQKq3f/BajGhgDmzobRa/K62+TJKuKA9C
+	PeL6YS5CaDMifIc4Px3iiw4L/+JwYXOCswqhiKhnLUNZZqrkGvHQxf0rMDVmcqFIsmO8WU8PPgs
+	=
+X-Google-Smtp-Source: AGHT+IE+DUv8Qdh0LZ32jo8m9iF3a01wivEsDDN/MHriPt719iWzbKIbR1Qbd56MoYjYqe7Ub9Claw==
+X-Received: by 2002:a17:902:654a:b0:1dc:ca72:8318 with SMTP id d10-20020a170902654a00b001dcca728318mr2807886pln.37.1709242304905;
+        Thu, 29 Feb 2024 13:31:44 -0800 (PST)
+Received: from www.outflux.net ([198.0.35.241])
+        by smtp.gmail.com with ESMTPSA id y9-20020a1709027c8900b001db717d2dbbsm1954387pll.210.2024.02.29.13.31.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Feb 2024 13:31:44 -0800 (PST)
+Date: Thu, 29 Feb 2024 13:31:43 -0800
+From: Kees Cook <keescook@chromium.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-spi@vger.kernel.org, netdev@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>
+Subject: Re: [PATCH v4 7/8] net-device: Use new helpers from overflow.h in
+ netdevice APIs
+Message-ID: <202402291330.0510946B67@keescook>
+References: <20240228204919.3680786-1-andriy.shevchenko@linux.intel.com>
+ <20240228204919.3680786-8-andriy.shevchenko@linux.intel.com>
+ <202402281341.AC67EB6E35@keescook>
+ <20240228144148.5c227487@kernel.org>
+ <202402281554.C1CEEF744@keescook>
+ <20240228165609.06f5254a@kernel.org>
+ <202402291059.491B5E03@keescook>
+ <20240229113706.42c877a1@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240229113706.42c877a1@kernel.org>
 
-The following changes since commit d4551c189d6e6a3fcf7f625bd4b273e770fad35a:
+On Thu, Feb 29, 2024 at 11:37:06AM -0800, Jakub Kicinski wrote:
+> On Thu, 29 Feb 2024 11:08:58 -0800 Kees Cook wrote:
+> > > And some seem to be cargo-culted from out-of-tree code and are unused :S  
+> > 
+> > Ah, which can I remove?
+> 
+> The one in igc.h does not seem to be referenced by anything in the igc
+> directory. Pretty sure it's unused.
 
-  Merge tag 'iio-for-6.9a' of http://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into char-misc-next (2024-02-25 14:11:41 +0100)
+I'll double check. After trying to do a few conversions I really hit
+stuff I didn't like, so I took a slightly different approach in the
+patch I sent.
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-6.9c
-
-for you to fetch changes up to 64e19caa5564ecc43edaa7fb818d53de650d9b34:
-
-  iio: adc: rzg2l_adc: Use device_for_each_child_node_scoped() (2024-02-28 19:15:43 +0000)
-
-----------------------------------------------------------------
-IIO: 3rd set for 6.9 - cleanup.h related.
-
-I have separated this set out from the more normal patches as they can
-go separately and that may simplify the merge window.  Greg, up to you
-how you wish to handle this in the char-misc tree.
-
-Introduces __free() based handling for fwnode_handle_put() to
-allow scope based release of these handles on early exit from functions.
-
-Also introduced device_for_each_child_node_scoped() to provide a
-a convenient way to process child nodes without the need to explicitly
-handle the fwnode_handle_put() needed on early exits from the loop.
-Typically these early exits are a result of error handling or completion
-of a search and have proven very prone to being missed.
-
-One instance of such a leaked resource was found during these conversions
-though review of that patch was too late for this pull request.
-
-A number of drivers are also converted over to generic fwnode handling from
-the device tree specific version.
-
-----------------------------------------------------------------
-Jonathan Cameron (16):
-      device property: Move fwnode_handle_put() into property.h
-      device property: Add cleanup.h based fwnode_handle_put() scope based cleanup.
-      device property: Introduce device_for_each_child_node_scoped()
-      iio: adc: max11410: Use device_for_each_child_node_scoped()
-      iio: addac: ad74413r: Use device_for_each_child_node_scoped()
-      iio: dac: ltc2688: Use device_for_each_child_node_scoped()
-      iio: adc: fsl-imx25-gcq: Switch from of specific handing to fwnode based.
-      iio: adc: fsl-imx25-gcq: Use devm_* and dev_err_probe() to simplify probe
-      iio: adc: ad7124: Switch from of specific to fwnode based property handling
-      iio: adc: ad7292: Switch from of specific to fwnode property handling
-      iio: adc: ad7192: Convert from of specific to fwnode property handling
-      iio: accel: mma8452: Switch from of specific to fwnode property handling.
-      iio: accel: fxls8962af: Switch from of specific to fwnode based properties.
-      iio: adc: hx711: Switch from of specific to fwnode property handling.
-      iio: temp: ltc2983: Use __free(fwnode_handle) and device_for_each_node_scoped()
-      iio: adc: rzg2l_adc: Use device_for_each_child_node_scoped()
-
- drivers/base/property.c             |  14 ----
- drivers/iio/accel/fxls8962af-core.c |  10 +--
- drivers/iio/accel/mma8452.c         |   6 +-
- drivers/iio/adc/ad7124.c            |  55 ++++++--------
- drivers/iio/adc/ad7192.c            |  38 +++++-----
- drivers/iio/adc/ad7292.c            |  13 ++--
- drivers/iio/adc/fsl-imx25-gcq.c     | 140 +++++++++++++++---------------------
- drivers/iio/adc/hx711.c             |   5 +-
- drivers/iio/adc/max11410.c          |  27 ++-----
- drivers/iio/adc/rzg2l_adc.c         |  11 +--
- drivers/iio/addac/ad74413r.c        |  10 +--
- drivers/iio/dac/ltc2688.c           |  28 +++-----
- drivers/iio/temperature/ltc2983.c   | 137 +++++++++++++----------------------
- include/linux/property.h            |  22 +++++-
- 14 files changed, 206 insertions(+), 310 deletions(-)
+-- 
+Kees Cook
 

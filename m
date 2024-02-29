@@ -1,150 +1,214 @@
-Return-Path: <linux-iio+bounces-3201-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3202-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7420486BC72
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 01:02:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296FB86BCFC
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 01:49:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 115D9B24859
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 00:02:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D5171C22A6C
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 00:49:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85AC1095B;
-	Thu, 29 Feb 2024 00:01:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8A70224DC;
+	Thu, 29 Feb 2024 00:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Y3RfdnXT"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="Rl5bViV4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f175.google.com (mail-oi1-f175.google.com [209.85.167.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8BEED0
-	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 00:01:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D9617554
+	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 00:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709164913; cv=none; b=SjZst72MKwGCGUScNjNk8f8q8BUXBSLJjpFP2P2HhxF5COULb8yZozEI26AP4dmj60DnkHY7sQdklRRM+as9TRYTgmcmHq9cW35sURzZJ8lqIbYxy3r1ZhTpcTWWAn+ORiRVW/GPjVLLvivqjHvZsCZ9rryCqFiGSiOcnDab0NM=
+	t=1709167779; cv=none; b=JWpcjz0WkBm9rkN9BYpTe216ConraYdaAWLetJMA7pBtSaHrUQOFgiiJxhatK/7blDzgeWNPQFwkZP4bFItje5n40ATangqL7MH7UtDkjYoc9fdqGyHVUHyGyR1e1u4wLiSA/5Q2fp+1sf2Llx9rVMLGD8M105PPL8RqU4Uwgec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709164913; c=relaxed/simple;
-	bh=qxsoqrA85W0ZABODeQ55zexBoMTqe+0G6tTR4C4edFg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z87aOskke2QqYd9BiXav3Hw9Js5eS93GOW/0LBl5e/XyWaTuSnRe5kc8J3pz+Wz0CorFT3LIkOeA9YB2XetT9TstBGmI8B4BURSmRmKocwGKY7mEKLs5FqSLcnz3yW6p+DrU0RQhDhfqO/yYcNHLzsZrtGU1YQees3PHWuEoNLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Y3RfdnXT; arc=none smtp.client-ip=209.85.167.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-oi1-f175.google.com with SMTP id 5614622812f47-3c19e18470aso208456b6e.1
-        for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 16:01:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1709164911; x=1709769711; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iEBIJm8L8y8D/KMJdxSN242jmeihBdO84S0mND9uaps=;
-        b=Y3RfdnXTWmbJLlQXNnkjy+ZF0gXZKzA0KjRs2qwdBt21m8GvVCMIXgNMBURHBwjeKJ
-         IyVQt+Po3ndN5q7/hWcZF56J5FgF+RMhrM8DzLqJmi0EnLfSTqemYneQq1kvGQU9wY3x
-         Apg7VWhU2fM47BtJyjtDA9BGDyI3ypa2yFpm8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709164911; x=1709769711;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iEBIJm8L8y8D/KMJdxSN242jmeihBdO84S0mND9uaps=;
-        b=trXh5DgJbMwZWs2R/rpC/C/t5sHstH1y40D4LRY/1gej+rIs36hQutzFkB04HCAwb+
-         EIICbCiEN+h3WPuvjzt2MOiFelk9v2iWgWC9OYnd6ou5ZpvDho7Mb/WF+E/XnDcTKHWD
-         kLgNWwkvzsPMZXwRG147veAVP/6C7I/r7a/FC/uYqpAm2E5M1ZuD1dIajrapFM6I5W0c
-         sWdh0isdrWH88WUJKaiysu8hNSRfj5obfYw6T6imSiOTmLraiilP6OiIG9ekX4sGGkQA
-         8xHI2aSebBkE1TXWjSxdvPZUiwukT5eHmY5cNezZm0t4bzUD7cZXTUV5k9JPJgn+hKe9
-         RMgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7hVzCTv3D3IfZQ2ffJ9jxOmkhrbxHslvv6zYcrxwHQ7jLiIlaGlyJH4dkTywwSNN+YQwHPWFWDSOIpwp/crPmQvYnmmBSrwCt
-X-Gm-Message-State: AOJu0Yz+JFnJc7i50c257T+jClYqRFs5x3FzHnjrRHtgrABlkHQVwYGI
-	NwTbu6ZCxxhMmaamtdfQdPSxsiI+nXT2lsgxNpiB8ypfqB8j2kuTXlIMROBP5Q==
-X-Google-Smtp-Source: AGHT+IGs0rI0VXo4/NJKO1cSeuk/mHsATz8xyv2BYMzSCXsOlf2JpK8n8vhC+odnJINdbkFZX6M9Dw==
-X-Received: by 2002:a05:6808:19a4:b0:3c1:af9f:a866 with SMTP id bj36-20020a05680819a400b003c1af9fa866mr607658oib.45.1709164910890;
-        Wed, 28 Feb 2024 16:01:50 -0800 (PST)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id a24-20020a631a18000000b005dc491ccdcesm60329pga.14.2024.02.28.16.01.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Feb 2024 16:01:50 -0800 (PST)
-Date: Wed, 28 Feb 2024 16:01:49 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: [PATCH v4 7/8] net-device: Use new helpers from overflow.h in
- netdevice APIs
-Message-ID: <202402281554.C1CEEF744@keescook>
-References: <20240228204919.3680786-1-andriy.shevchenko@linux.intel.com>
- <20240228204919.3680786-8-andriy.shevchenko@linux.intel.com>
- <202402281341.AC67EB6E35@keescook>
- <20240228144148.5c227487@kernel.org>
+	s=arc-20240116; t=1709167779; c=relaxed/simple;
+	bh=eJy7526b/+zGVIKSV9uSj1O67nrOJUqsliwJDm6XgBE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q65u3wqoXPKKABAMQD7F3sCLFH8+1GBSX77Hd3ZYIptd1D/w7+1jt8CeJ7Kzvzd1e4h6OGxJZaL1S52T6VbBVKybl625HbSD5Pkz6N8WinacYI/XdqHPe3b+NscWrYROIQN+pCfyXCeL5mR38lIR7/7mwgzxEfNo7a/W+cOEU+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=Rl5bViV4; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
+Received: from eig-obgw-6010a.ext.cloudfilter.net ([10.0.30.248])
+	by cmsmtp with ESMTPS
+	id fUaTrl2bSuh6sfUc6rT9xr; Thu, 29 Feb 2024 00:49:30 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id fUc5rGTMv9PRRfUc6rNPSH; Thu, 29 Feb 2024 00:49:30 +0000
+X-Authority-Analysis: v=2.4 cv=QpVY30yd c=1 sm=1 tr=0 ts=65dfd49a
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=VhncohosazJxI00KdYJ/5A==:17
+ a=IkcTkHD0fZMA:10 a=k7vzHIieQBIA:10 a=wYkD_t78qR0A:10
+ a=fHn5IWyn-i4c8q1BtbYA:9 a=QEXdDO2ut3YA:10
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Zjlg/tH38rkBMLvt/9bxLn+QRmwhVCWKNt+AkXN6Nec=; b=Rl5bViV4SrEtyy1Y3IFyKLvsG9
+	NoXIGdPO99YzGOuke1rEDMsjndNpL3tNMskf8gDdDzZDq99nndWo7lajWsZPuNaH0Mf12xnJvFpiP
+	CPIrNtDA0iIPqLxqfBqs2bBl6s8JWqDhqMsfTwu193K08NAwcfyqBPf45tmEmrrrzSYtoLfxvVXip
+	kUpIXchdNxJxiFOmFzeeF1wmZTmXI8MNa66yskG1TQVtFIz9Gu6cdUOJy1WEzbIC7P30QQsrTD+Ws
+	/jO3qhhf+nJrs6IxdAkWj/ZCBfRv5sp9A9ZGNWe3A3JMZkqlA2S7KnXjf4w+bKLtPcaKUGrh5YaKB
+	8Iq1SE7A==;
+Received: from [201.172.172.225] (port=57006 helo=[192.168.15.10])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1rfUc3-00272c-2T;
+	Wed, 28 Feb 2024 18:49:27 -0600
+Message-ID: <653bbfe8-1b35-4f5e-b89d-9e374c64e46b@embeddedor.com>
+Date: Wed, 28 Feb 2024 18:49:25 -0600
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240228144148.5c227487@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 7/8] net-device: Use new helpers from overflow.h in
+ netdevice APIs
+Content-Language: en-US
+To: Kees Cook <keescook@chromium.org>, Jakub Kicinski <kuba@kernel.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Vinod Koul <vkoul@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Mark Brown <broonie@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-spi@vger.kernel.org,
+ netdev@vger.kernel.org, linux-hardening@vger.kernel.org,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, "Gustavo A. R. Silva"
+ <gustavoars@kernel.org>
+References: <20240228204919.3680786-1-andriy.shevchenko@linux.intel.com>
+ <20240228204919.3680786-8-andriy.shevchenko@linux.intel.com>
+ <202402281341.AC67EB6E35@keescook> <20240228144148.5c227487@kernel.org>
+ <202402281554.C1CEEF744@keescook>
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <202402281554.C1CEEF744@keescook>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 201.172.172.225
+X-Source-L: No
+X-Exim-ID: 1rfUc3-00272c-2T
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.15.10]) [201.172.172.225]:57006
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 10
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfBI25JqHmVraA6Fn3tB1QI/kCLDw2XyFMii3Ne0QGzmogBzVmddLlQhzHu/bvKuMWlJEkEqbLirubfn58/aA+W3i2bIeny9DkLEvuWjkZSOBJJLIqpR8
+ wWlIuS+WfLvCN1TF1p02KfBCLjXBWn0zlwkl21F68XY++B7DehofsFtMQXMz+8XWxjUaLIaU3DsfmNLom+//3K6AcVXyYJAQA6s=
 
-On Wed, Feb 28, 2024 at 02:41:48PM -0800, Jakub Kicinski wrote:
-> On Wed, 28 Feb 2024 13:46:10 -0800 Kees Cook wrote:
-> > I really don't like hiding these trailing allocations from the compiler.
-> > Why can't something like this be done (totally untested):
-> > 
-> > 
-> > diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> > index 118c40258d07..dae6df4fb177 100644
-> > --- a/include/linux/netdevice.h
-> > +++ b/include/linux/netdevice.h
-> > @@ -2475,6 +2475,8 @@ struct net_device {
-> >  	/** @page_pools: page pools created for this netdevice */
-> >  	struct hlist_head	page_pools;
-> >  #endif
-> > +	u32			priv_size;
-> > +	u8			priv_data[] __counted_by(priv_size) __aligned(NETDEV_ALIGN);
+
+
+On 2/28/24 18:01, Kees Cook wrote:
+> On Wed, Feb 28, 2024 at 02:41:48PM -0800, Jakub Kicinski wrote:
+>> On Wed, 28 Feb 2024 13:46:10 -0800 Kees Cook wrote:
+>>> I really don't like hiding these trailing allocations from the compiler.
+>>> Why can't something like this be done (totally untested):
+>>>
+>>>
+>>> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+>>> index 118c40258d07..dae6df4fb177 100644
+>>> --- a/include/linux/netdevice.h
+>>> +++ b/include/linux/netdevice.h
+>>> @@ -2475,6 +2475,8 @@ struct net_device {
+>>>   	/** @page_pools: page pools created for this netdevice */
+>>>   	struct hlist_head	page_pools;
+>>>   #endif
+>>> +	u32			priv_size;
+>>> +	u8			priv_data[] __counted_by(priv_size) __aligned(NETDEV_ALIGN);
+>>
+>> I like, FWIW, please submit! :)
 > 
-> I like, FWIW, please submit! :)
+> So, I found several cases where struct net_device is included in the
+> middle of another structure, which makes my proposal more awkward. But I
+> also don't understand why it's in the _middle_. Shouldn't it always be
+> at the beginning (with priv stuff following it?)
+> Quick search and examined manually: git grep 'struct net_device [a-z0-9_]*;'
+> 
+> struct rtw89_dev
+> struct ath10k
+> etc.
+> 
+> Some even have two included (?)
+> 
+> But I still like the idea -- Gustavo has been solving these cases with
+> having two structs, e.g.:
+> 
+> struct net_device {
+> 	...unchanged...
+> };
+> 
+> struct net_device_alloc {
+> 	struct net_device	dev;
+> 	u32			priv_size;
+> 	u8			priv_data[] __counted_by(priv_size) __aligned(NETDEV_ALIGN);
+> };
+> 
+> And internals can use struct net_device_alloc...
 
-So, I found several cases where struct net_device is included in the
-middle of another structure, which makes my proposal more awkward. But I
-also don't understand why it's in the _middle_. Shouldn't it always be
-at the beginning (with priv stuff following it?)
-Quick search and examined manually: git grep 'struct net_device [a-z0-9_]*;'
-
-struct rtw89_dev
-struct ath10k
-etc.
-
-Some even have two included (?)
-
-But I still like the idea -- Gustavo has been solving these cases with
-having two structs, e.g.:
+Yep, we should really consider going with the above, otherwise we would
+have to do something like the following, to avoid having the flexible-array
+member nested in the middle of other structs:
 
 struct net_device {
-	...unchanged...
-};
-
-struct net_device_alloc {
-	struct net_device	dev;
-	u32			priv_size;
+	struct_group_tagged(net_device_hdr, hdr,
+		...
+		u32			priv_size;
+	);
 	u8			priv_data[] __counted_by(priv_size) __aligned(NETDEV_ALIGN);
+}
+
+We are grouping together the members in `struct net_device`, except the
+flexible-array member, into a tagged `struct net_device_hdr`. This allows
+us to exclude the flex array from its inclusion in any other struct
+that contains `struct net_device` as a member without having to create
+a completely separate struct definition.
+
+And let's take as example `struct hfi1_netdev_rx`, where `struct net_device` is
+included in the beginning:
+
+drivers/infiniband/hw/hfi1/netdev.h:
+struct hfi1_netdev_rx {
+
+-	struct net_device rx_napi;
++       struct net_device_hdr rx_napi;
+
+
+         struct hfi1_devdata *dd;
+         struct hfi1_netdev_rxq *rxq;
+         int num_rx_q;
+         int rmt_start;
+         struct xarray dev_tbl;
+         /* count of enabled napi polls */
+         atomic_t enabled;
+         /* count of netdevs on top */
+         atomic_t netdevs;
 };
 
-And internals can use struct net_device_alloc...
+Of course we would also have to update the code that access `struct net_device`
+members through `rx_napi` in `struct hfi1_netdev_rx`.
 
--Kees
+I'm currently working on the above solution for all the cases where having two
+separate structs is not currently feasible. And with that we are looking to enable
+`-Wflex-array-member-not-at-end`
 
--- 
-Kees Cook
+So, if we can prevent this from the beginning it'd be really great. :)
+
+--
+Gustavo
 

@@ -1,115 +1,147 @@
-Return-Path: <linux-iio+bounces-3220-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3226-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC7986CC27
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 15:54:15 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FAB886CC64
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 16:08:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04283288B2C
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 14:54:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 251D228402B
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 15:08:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA46913A24A;
-	Thu, 29 Feb 2024 14:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1AA1384A8;
+	Thu, 29 Feb 2024 15:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DlslagbC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gGyMcpmD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8381B137777;
-	Thu, 29 Feb 2024 14:53:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4167D07B;
+	Thu, 29 Feb 2024 15:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709218439; cv=none; b=jiOGqZLoTWNYEpH99LFwaxF4hQOws74Cfk/BwO1a3333+9e9sAR40ZY5Cc80msZKrIf56AC8zG8YtwKDNsvF7aCrmRY6MGCPwm+Da3wHQari6meSr0OqpSBhpwSDUe148Uj0Ummn110W0eAgBkf9ZG5smvyY02XG3oGark0sd/M=
+	t=1709219327; cv=none; b=UYBAp3DpxwJYKWnNQJ0pKAk+Hdt8BpLh6vq+6gCfKhaS+FRzmegdGJztJcssXZ9E1r1+gfG/zRbMAqlOpIhk0T5kXMwesTY7AS/pqH5TaLlIvRlCUdLxKLJ2jRjlRgmqJGWXk+2/JzMP0f14Ad6B0HfJF0rBIuBi/ytmNtXn+8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709218439; c=relaxed/simple;
-	bh=H/xypjHg3RAGtOrdFLSQMFFbI9FZppPqPGCTlvgpMy8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L8PIyhS+Uqtv7g/yC69Pr3ZO6oTwiZG/ClI0Tnk/KksqtRkRGlgsJrAIW9BttMEfz0RaQFBJMygHZuaDkpZGf9+h34Qgk+7ILBx6ULsmpXwJtgt6ShpZ+jb+v4+xQCiGy5Z2S5KBnhxvCekVJa+OJu14zbBOgGkd0SvfdyFtLyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DlslagbC; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709218438; x=1740754438;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=H/xypjHg3RAGtOrdFLSQMFFbI9FZppPqPGCTlvgpMy8=;
-  b=DlslagbCfXQK676474bV3pAjKHVKN+B6FAm5kPYwRIOIcOOKDcw81Q3O
-   qfBYM7LSuTBWPSrrsusAMDihGCLPFK7IGKdkMX6nIX5D4rvMjdZ85Wrf2
-   09vM1XfxWWJIBauatfLHd8e58v75Dh6TfjP6emtV4bZse3+Eik+rPysMC
-   x1YhBrSwzHrumEj/XnK8wywfbxR6vdRkQKHbCHXKlk2P5LjM/sGwZIm9Q
-   DGTOdxf3flKmTZaIGTdZxKmhi8x8oeRfmzfB1GAnCG58vzUYnlrup0qg7
-   teMB8+cy8LOxH+sANI3RoC+H1hqylxURboVjDvXOIRpkQKlw+3n+1ddzx
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="7470968"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="7470968"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 06:53:56 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10998"; a="913983848"
-X-IronPort-AV: E=Sophos;i="6.06,194,1705392000"; 
-   d="scan'208";a="913983848"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Feb 2024 06:53:52 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rfhnA-00000008hMb-38bp;
-	Thu, 29 Feb 2024 16:53:48 +0200
-Date: Thu, 29 Feb 2024 16:53:48 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Linus Walleij <linus.walleij@linaro.org>
-Cc: Vinod Koul <vkoul@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mark Brown <broonie@kernel.org>, Kees Cook <keescook@chromium.org>,
-	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: [PATCH v4 8/8] dmaengine: ste_dma40: Use new helpers from
- overflow.h
-Message-ID: <ZeCafPgtU1FeyzJG@smile.fi.intel.com>
-References: <20240228204919.3680786-1-andriy.shevchenko@linux.intel.com>
- <20240228204919.3680786-9-andriy.shevchenko@linux.intel.com>
- <CACRpkdaEzexhCYFf-NKnbcagXc6Tqcn4J+sFWk94mbJG9LkpVw@mail.gmail.com>
+	s=arc-20240116; t=1709219327; c=relaxed/simple;
+	bh=V1/mVULec3D2TuKr6FwSt3WXTRYRxDLupbI2ynb8Dkk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NKfTCbIIcuSv6c6Yxj/W952S0xcfPSiJgTce4xYEOglerWyJ3CNvZq9MJJN67cZ01/nPCJPUDmgxF8m9oqJy04SI6m5phOE4Vrl6Cx/idF8f1R4yKSxZ6bl4z1YcJHUEufkRmCLIr/udk2lo4XdqOTnkzwKXE7ump7/Tvywhn1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gGyMcpmD; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6900f479e3cso9066216d6.0;
+        Thu, 29 Feb 2024 07:08:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709219324; x=1709824124; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=v3Ojycqfi/juYUEyhNIkICtIQx3xZlmKoWCEZ50D4iM=;
+        b=gGyMcpmDUcy0OMvlTAyoihKrew7iPCM7U2K/f1phePFOVPyfCbcyIVKw3fr9AyCN5I
+         AX12XXpl6RKAcU0eih7XPX6pHTwcwxpHMO+Z2j2u8bD8GXV4dm2ICn7iYie4EkTclbEj
+         30cNpd0ozVd76rT+c3sCBGQuTJawRVWDDhK8I3DgqKUc7FHjHxThGd8ZWx3NcLEaYouK
+         HPYxfSNzByPpxU6QXo1Vl8f/dnkdeJ8JcYpR9gF7aRh0gucqrCCaqTLroSmgRu5wrZpM
+         DJj5kQorgBz+gAwLotCmqCe2b7NRZPGk5k2hSZUJ9pOJ7JZzVuHnkATTY2/5ZRJRjPIN
+         MXpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709219324; x=1709824124;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=v3Ojycqfi/juYUEyhNIkICtIQx3xZlmKoWCEZ50D4iM=;
+        b=rJQFNzProa18oxkPOOcnu4ngche7kop5cMcyjoSGnh0qxkQmDUZPrpPwOKgFDHJFJf
+         Cc+E9SzfIWGgohTLwM/yqSNYKn9CNkuHkyNrmz9re1kEyk/+rbqOD1GwIQBtXGCfBnjo
+         OMeBXhaEIw0IZSKAJLI8Oe22MhAxNvUzHaMMZ7V700iGTc7shwPJKAffTP+N05yME/8k
+         n0iZ/YqAcUhirCWqnHX16+LTtB9fLrMUfMcL9Ozmm4kO+PoS31Jdi8vfjPX6TRqxS8s2
+         rnWafbnZq86zYfAKlOncAYd1E8XpoXj3qpu7YQJ6Nakbwv05xakTIgFjqz5eYYJdEP2f
+         u30Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXYEG0nQAE14iym8qjWb/9FY/kypVSBAsgLHO4iCwlu4uQJXIF02Fx2C6I9JpfHF/yWSccykbA87YnZX273SO09QJGamYS+VpDsZjiSY46cpw9cRygjul3jisjy/joFKVh127msCGQTgtPBcBC0/hIP0RnjYaMaVnAo2aAPVLMlGJt33w==
+X-Gm-Message-State: AOJu0YxNbSf943IQIiwYJqYO64M2y9AJrHfWYVusu1dnyndWWXyjp8CR
+	4TDTGbQVcmnJTxGFpvcoZxV9AAcnC5pIbxnOi4U9TcNi5ZBNCe3H
+X-Google-Smtp-Source: AGHT+IGn0CwDlu22gvGSQQr+QUiovh1K7yL0y1Vz6ZELZ5jswvLl41ZKQZSSqUBVlCKL6G7OFppzow==
+X-Received: by 2002:a0c:e34c:0:b0:68f:b9c0:9bcf with SMTP id a12-20020a0ce34c000000b0068fb9c09bcfmr2784872qvm.50.1709219324412;
+        Thu, 29 Feb 2024 07:08:44 -0800 (PST)
+Received: from [10.76.84.172] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id bt4-20020ad455c4000000b0069051255b1bsm111981qvb.77.2024.02.29.07.08.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Feb 2024 07:08:44 -0800 (PST)
+Message-ID: <43840914-cb4a-4758-9691-0ebd8fb97681@gmail.com>
+Date: Thu, 29 Feb 2024 17:08:40 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACRpkdaEzexhCYFf-NKnbcagXc6Tqcn4J+sFWk94mbJG9LkpVw@mail.gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: adc: ad7173: add support for
+ additional models
+Content-Language: en-US
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240228135532.30761-1-mitrutzceclan@gmail.com>
+ <20240228135532.30761-2-mitrutzceclan@gmail.com>
+ <9f3e461a-0b79-470f-b599-bba45cda006a@linaro.org>
+From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
+In-Reply-To: <9f3e461a-0b79-470f-b599-bba45cda006a@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 29, 2024 at 03:14:03PM +0100, Linus Walleij wrote:
-> On Wed, Feb 28, 2024 at 9:49 PM Andy Shevchenko
-> <andriy.shevchenko@linux.intel.com> wrote:
+On 29/02/2024 16:49, Krzysztof Kozlowski wrote:
+> On 28/02/2024 14:54, Dumitru Ceclan wrote:
+>> Add support for: AD7172-2, AD7175-8, AD7177-2.
+>> AD7172-4 does not feature an internal reference, check for external
+>>  reference presence.
+
+...
+
+>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
 > 
-> > We have two new helpers struct_size_with_data() and struct_data_pointer()
-> > that we can utilize in d40_hw_detect_init(). Do it so.
-> >
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> There is no such file in next-20240229.
 > 
-> Wow really neat! Much easier to read and understand the code like this.
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 
-Thanks, but Kees has seems even better suggestion.
+It's not yet accepted
+https://lore.kernel.org/all/20240228110622.25114-1-mitrutzceclan@gmail.com/
 
--- 
-With Best Regards,
-Andy Shevchenko
+...
 
+>> +  # Model ad7172-4 does not support internal reference
+>> +  #  mandatory to have an external reference
+>> +  - if:
+>> +      properties:
+>> +        compatible:
+>> +          contains:
+>> +            const: adi,ad7172-4
+>> +    then:
+>> +      patternProperties:
+>> +        "^channel@[0-9a-f]$":
+>> +          properties:
+>> +            adi,reference-select:
+>> +              enum:
+>> +                - vref
+>> +                - vref2
+>> +                - avdd
+>> +          required:
+>> +            - adi,reference-select
+> 
+> Are you defining properties here? I cannot verify because this file does
+> not exist in next.
+> 
+
+No, just constraining reference-select to be required and exclude
+"refout-avss".
+
+> 
+> 
+> Best regards,
+> Krzysztof
+> 
 
 

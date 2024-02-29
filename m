@@ -1,130 +1,152 @@
-Return-Path: <linux-iio+bounces-3235-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3236-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD40B86CF00
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 17:27:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA8C86CF56
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 17:33:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F25A5B2BB30
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 16:25:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D9E3B275F3
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 16:29:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 320777580E;
-	Thu, 29 Feb 2024 16:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54AAA78268;
+	Thu, 29 Feb 2024 16:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g1RbyrHc"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="d4UIcvL+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
+Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671097580C;
-	Thu, 29 Feb 2024 16:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27C5D75819
+	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 16:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709223599; cv=none; b=RsZTVygOzW9HCDf5acah1JnFFIvVEyFpDXdbHeWomWhyTExuAIQ9X9Ru5Jy9CksXGo9qNPCJ2EZQxf6sKDbKtqF+mcoUcS8npeFEZBZvTm1ADO2aUeu7LjLQg0LBzgcNqKKHriCrJ6dUo+6c0aCi7p4vLE4n41G3XOez+26aDVY=
+	t=1709223984; cv=none; b=qKHlPr6Fnpb7xSFzE8CZ7FAHPWpK8qBan8ficOhOj3CaSPNIbtdCmqwCKeSVVdF0jmpKAvTkLZYXz81mpxgGSCICzC/C/kh2ICQU6nVdJA3WDXepgQr5Za2q315KPzl29pRwOyAp2ARDUnpCG8ZYiso5Pjd4pfYqXzjR/IbVfM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709223599; c=relaxed/simple;
-	bh=OYnaEB7igBlvrmSlezUCoGljUmbeasl6fjQmS0Cxzto=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dooZKyYkcb7LqnndtvZoC+2tZTruVUUmmUrhuHd1KRj6v4lQASTUIsYi0pCPsIctRNdowRcOS97HvdHkw0mOfdygEvTaLNEnRD4IOFGqa8AS+uUbHZYcjqpPT2Gh2B5E7djwBCVMPCZiXbpZSgmmvCAF/S4rmvZhiKR2ZHgymbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g1RbyrHc; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-564fd9eea75so1769385a12.3;
-        Thu, 29 Feb 2024 08:19:57 -0800 (PST)
+	s=arc-20240116; t=1709223984; c=relaxed/simple;
+	bh=v+uT1av2sl88VR1dO/eLr+o2H3H+rOGNPQ5vM4PEMvc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=FjqGOUiRlukwf3JminKXRqiQnLqiRRPzkXZox+wdiZA6cUzfP11r3WLSa2muWyMj5mXE2fqDePE3Fm1tpRuFdbR62ueSAFvBxoIJwzMBzcyBJzWuhG+FS5OgXd5oes/IgpN4SIKjXHbFOLwRo+HNzh54ezkiRhK3T2tt3oGB04s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=d4UIcvL+; arc=none smtp.client-ip=209.85.210.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-6e48153c13aso555782a34.3
+        for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 08:26:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709223596; x=1709828396; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zZDaiCfMZbNphQohAhx94MVQqcgltEp5N10EltKHmZ8=;
-        b=g1RbyrHci+U6YrDfY72b9W9iCn4CKAb9WkyoiHEWlwVjfDlKaS1TxK0NEMAennh4Ax
-         nfEfq/m7Yhx3EcD1pjPd0kuZhc5leQTtZAOwifSbZikNoTgd8SkiyOld7JlBvchDQPFd
-         9vJVcujrnU+IgzEi5CFWmcdy1AZ6tWns+Siy4IDrEXVZaXwyUdn/e5i3vEl/DgIQkyM4
-         VW8wFc5ZWoLZClJFvqIeeIOpRi2wBxcU8oOGt03F8e85YTTcBrTNRtk1vihp8bDw7nK/
-         CNg7lsIZvLyOzpsXExMDjJeeG4cz5syDe6v2957xBcPOopml0WISYxIaKSFn/7ycbxv5
-         SCZg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1709223981; x=1709828781; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=isdRJ2LkpZPWbdYtwV073amQlPEG6TrmA4+SClB0Ykk=;
+        b=d4UIcvL+8oq/Tw3dG0BEwbObiuJbBaCnXQQ4lu9ZSJkAu1plu/dv2m5AeTTt7OTIb9
+         niv3abFuOW2Fxa9qqTaRhUNpsLtfka9rYHkfGkBm6a+6z3u7FHyIRpG9wIdCrogDIkV5
+         QtSiLzFmiQ9KQHSdiJpGxBrFbFy5owzMB2F2TBAhb/+JprMr1lJ3nkPoUXEriABqakYm
+         S6YHuAMU7Y7bircD1yOlglctlhnS7kzsCAW2u9QFONEz5lpTvTsSBpiskyLpN2bKGmDy
+         lNXV9YdHTYcFrDsdUQFXZt33/DBrbqqXe5zVaE+rEfJZoq+bmVhuNXAO4JbSjsqXdOmK
+         JtyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709223596; x=1709828396;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zZDaiCfMZbNphQohAhx94MVQqcgltEp5N10EltKHmZ8=;
-        b=dH7ukR2lFxVjf7N699Hkm6+zT4Jhiq96JVCe71TfdqhPaSb67S6YTSmsgdNKGWVuEm
-         urujgXAEq/b5tS1pqTT72TY6bdOf3ESdYtO4L3iIgjx7aeFhCwFVY9uW+oInvCeD/+zb
-         8vJmDbhYnpAVcTm3kjyQDJzu7IpNtCMUB4fWwu+QrVSgnXZx2kEWzO/8LSTjLKbeTdjp
-         +1tGXOzxZsO+p8o/tL5YfGhXBXf0LhcjLkOwl4jI0M2ZBybOpEuNpUOfTD3DS9e3A6q8
-         9OhwswxgUyrViMdgjMQxVJIxaSGiI9GGXVuF04h6uv/6Q/0dNoZtt+N9S9gfLfSz+PVN
-         PARA==
-X-Forwarded-Encrypted: i=1; AJvYcCVpji8Gg7TYlpKDi/+dWBC0KWWgFtgPeZvysMvGq1k9zC7WIqkIy7ExdrzYCyhVcnMMUO+jHl6/aCXuK6uUMcWE+8BPjGrXGyF5dDaEvsNMJtCFT263sLbB4TrcAS8qXzcaamhIENX3J2yNCDxgT5uKkzJ60LvhcsBeESyGiYE5acQeJA==
-X-Gm-Message-State: AOJu0YyEl/bgBhD4qumzoLl8oSiFwPwzfxGZpDguy5gGfNlRcjN25Z6M
-	QfXBC+KPUN9GTiJlVzMBPYPQKUbJS+5pQXG+qsa5e2HsSGmT66DL
-X-Google-Smtp-Source: AGHT+IEomlkfZUbYwkcNE2XMqbAJ09R6DSu9zehMV6C8LqRFxsQPnda13UABVByHBev/l1yJ5Pt3GA==
-X-Received: by 2002:aa7:d6da:0:b0:564:7921:37c3 with SMTP id x26-20020aa7d6da000000b00564792137c3mr1711565edr.19.1709223595484;
-        Thu, 29 Feb 2024 08:19:55 -0800 (PST)
-Received: from [10.76.84.172] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id w20-20020a50fa94000000b005668c6837ecsm730561edr.32.2024.02.29.08.19.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 08:19:55 -0800 (PST)
-Message-ID: <0f1486de-785a-4c27-a0f9-98dfc94362d5@gmail.com>
-Date: Thu, 29 Feb 2024 18:19:53 +0200
+        d=1e100.net; s=20230601; t=1709223981; x=1709828781;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=isdRJ2LkpZPWbdYtwV073amQlPEG6TrmA4+SClB0Ykk=;
+        b=CwWVekKrrbnwwL1U1zZDuFbW9ILPmhERkrBypTpyhdZt85eDtc6F6y9eSk8UsXNj8U
+         Czyug9jZI+9TviwDCuqSUInBws+QPpsxU5v52PDK4feXlnaKde9tTknzQqFqhxwdMNyK
+         mUz/cLcxUFhGxKCnB8+s0+qhUENLGK6ZonzxxXp5X1OAiphuun95nDM8ycLOc0M7gHNs
+         GUjQ0HBXH1F/vjXu+Dtt5OWo00RHYm4BbKOEEuZEUZ/lmj5Wm3wR9gm8BaS/dD79D7rD
+         j7o5o79l6NLIIF3cWXG9ISu47BKNF0KCUHTFodHi5h6db4X46N26YpwTiN5AKVaXC7e0
+         7XaA==
+X-Gm-Message-State: AOJu0YznKpmZtByRKtDiBRw7euo1HIJRg8hHsqgIZhNFjIttBzxcGO50
+	PfOzktLhY6W+Ejm3vqTVYTionqji7CCLZV7v8mSOdJ0kh/tSCGtfKQkZD9KsdjBHQtu9qll5xBY
+	c
+X-Google-Smtp-Source: AGHT+IEcMQZwAjFh0kFWEBihkV0hd95rT42OUpOFtVanJEFzOw2Zeq05gkLXsiC2d+xonwkOBzAEdg==
+X-Received: by 2002:a9d:62d4:0:b0:6e4:a1a1:8d78 with SMTP id z20-20020a9d62d4000000b006e4a1a18d78mr2543228otk.2.1709223981289;
+        Thu, 29 Feb 2024 08:26:21 -0800 (PST)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id b7-20020a9d4787000000b006e4ab46ede1sm325141otf.2.2024.02.29.08.26.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 29 Feb 2024 08:26:20 -0800 (PST)
+From: David Lechner <dlechner@baylibre.com>
+To: linux-iio@vger.kernel.org
+Cc: David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/2] iio: adc: ad7944: new driver
+Date: Thu, 29 Feb 2024 10:25:49 -0600
+Message-ID: <20240229-ad7944-mainline-v4-0-f88b5ec4baed@baylibre.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: adc: ad7173: add support for
- additional models
-Content-Language: en-US
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240228135532.30761-1-mitrutzceclan@gmail.com>
- <20240228135532.30761-2-mitrutzceclan@gmail.com>
- <9f3e461a-0b79-470f-b599-bba45cda006a@linaro.org>
- <43840914-cb4a-4758-9691-0ebd8fb97681@gmail.com>
- <8ad18b06-7ff1-4463-8ba0-d7a7d54e5b65@linaro.org>
-From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
-In-Reply-To: <8ad18b06-7ff1-4463-8ba0-d7a7d54e5b65@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 
-On 29/02/2024 18:00, Krzysztof Kozlowski wrote:
-> On 29/02/2024 16:08, Ceclan, Dumitru wrote:
->> On 29/02/2024 16:49, Krzysztof Kozlowski wrote:
->>> On 28/02/2024 14:54, Dumitru Ceclan wrote:
->>>> Add support for: AD7172-2, AD7175-8, AD7177-2.
->>>> AD7172-4 does not feature an internal reference, check for external
->>>>  reference presence.
->>
->> ...
->>
->>>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
->>>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
->>>
->>> There is no such file in next-20240229.
->>>
->>
->> It's not yet accepted
->> https://lore.kernel.org/all/20240228110622.25114-1-mitrutzceclan@gmail.com/
-> 
-> And how can we know this? You must clearly document dependencies.
-> 
-> This also means the patch cannot be directly applied and cannot be
-> tested by toolset.
+This is a new driver for the Analog Devices AD7944/AD7985/AD7986 family
+of ADCs. These are fairly simple chips (e.g. no configuration registers)
+but do have some unusual SPI configurations. The initial driver is only
+supporting the normal (4-wire) SPI mode.
 
-Understood, sorry.
+This work is done on behalf of Analog Devices, Inc., hence the
+MAINTAINERS are @analog.com folks.
 
-> 
-> Did you test this particular patch?
-> 
+---
+Changes in v4:
+- Fixed broken DT patch due to misplaced changelog
+- Link to v3: https://lore.kernel.org/r/20240228-ad7944-mainline-v3-0-781b922334af@baylibre.com
 
-Yes
+Changes in v3:
+- Removed 'multi' value from adi,spi-mode property in DT bindings
+- Modified driver for above change
+- Fixed spelling of 'conventional'
+- Added '#daisy-chained-devices' to DT bindings
+- Added comments explaining that '3-wire' mode is not related to
+  spi-3wire/SPI_3WIRE
+- Replaced _sign with _diff in chip info struct to properly handle
+  pseudo-differential vs. true differential chips
+- Link to v2: https://lore.kernel.org/r/20240216-ad7944-mainline-v2-0-7eb69651e592@baylibre.com
+
+Changes in v2:
+- Added limit to spi-max-frequency for chain mode in DT bindings
+- Added spi-cpol property to DT bindings
+- Renamed '3-wire' mode to 'single' mode (to avoid confusion with spi-3wire)
+- Renamed '4-wire' mode to 'multi' mode
+- Dropped adi,reference property - now using only ref-supply and 
+  refin-supply to determine the reference voltage source
+- Fixed spelling of TURBO
+- Renamed t_cnv to t_conv to match datasheet name and fixed comment
+- Fixed wrong timestamp pushed to buffer
+- Fixed scaling for chips with signed data
+- Make use of sysfs_match_string() function
+- Link to v1: https://lore.kernel.org/r/20240206-ad7944-mainline-v1-0-bf115fa9474f@baylibre.com
+
+---
+David Lechner (2):
+      dt-bindings: iio: adc: add ad7944 ADCs
+      iio: adc: ad7944: add driver for AD7944/AD7985/AD7986
+
+ .../devicetree/bindings/iio/adc/adi,ad7944.yaml    | 213 +++++++++++
+ MAINTAINERS                                        |   9 +
+ drivers/iio/adc/Kconfig                            |  10 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/iio/adc/ad7944.c                           | 413 +++++++++++++++++++++
+ 5 files changed, 646 insertions(+)
+---
+base-commit: 205bbf0d2dd2e0fcd6bf2a15b7df6fc570967e3b
+change-id: 20240206-ad7944-mainline-17c968aa0967
+
+Best regards,
+-- 
+David Lechner <dlechner@baylibre.com>
 
 

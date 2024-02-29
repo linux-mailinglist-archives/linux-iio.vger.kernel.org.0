@@ -1,232 +1,179 @@
-Return-Path: <linux-iio+bounces-3208-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3209-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A46886BF3B
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 04:01:36 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4694886C5A8
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 10:41:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4087B28756F
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 03:01:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A182DB21B9A
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 09:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F7C36B16;
-	Thu, 29 Feb 2024 02:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A71C60BAF;
+	Thu, 29 Feb 2024 09:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="RACUohZn";
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="EznoFZhg"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="uAmU8Kyg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D85B364A4
-	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 02:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F32B5D730
+	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 09:40:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709175577; cv=none; b=unTgbkELKOoYCm3VS66DbCLTcS/x9sKsw/YYYqxA+XqAtArfhVcGDkJqS8qdGNObuiDvHc6fUqCn0tTUn8DhkpPUtLyHx4wP4bOoVUm03rQF4v+lpQgIsQxm73SUbue7zDbmpK2na3c/gG7zaoJHZsXChm2Z26ecKnWDRQ/gW3g=
+	t=1709199661; cv=none; b=rxUB4Xbfvyt/dAaTj5kNvnVkdI2lDB4H6W1xPg96l9jO9xLT0nCZPIzpRS2uSLFSfhsyWD20+TkpxqMafLSurGsgOpQkkq8E8PUf9uReqyY6rTVWzBqg/jIlkCPTqzk9BI3xTNAO2lltsO9L/4SRpcfCPgexRlSWmajsEUs3Ljg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709175577; c=relaxed/simple;
-	bh=UdnCobZm1yKg9JljgICC3JjwoWw2Qn9amUUWORtkX8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lgl4GCaez4C9HbfBpleIJ8AKtA110rwJMzinFNEvKoNjxKHHDW4nTtWYep6G0+9pIkxGY4CCwignhH9lF2j2MarCPb2ebPXNMMqQFku2cp9eu2IYZ8FICisDOeC5fxyvOt4mB1dUWq81711o52Yx+aniGEISBrwGMw++vXc3gF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=RACUohZn; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=EznoFZhg; arc=none smtp.client-ip=35.74.137.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
-	s=gw2_bookworm; t=1709175574;
-	bh=UdnCobZm1yKg9JljgICC3JjwoWw2Qn9amUUWORtkX8A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RACUohZnCzmz06kgc/43by+REJFveUz04FvB9evjA3c4trhuZTg5m400O9IAy9klE
-	 Q+g/CmBye17nkAmmfZp23Hha4QY+nRjtOoAmU6KeWTo2q3nhzdF2uDlEs/fsOCC5JS
-	 iIQRm7XlIdW+U23Z7r9PCCko2nKs98ASkfF3HdqX1SKmjdhaMMfHxJj7uRp+q1APoz
-	 WISI4N/59yHGAXblmOZhrMw74qBHSArYb4SZtXC3R+kH2NfUsTDrJL4QcX+H3UH1lT
-	 arvvUM1DT9Xt0zF+XW1hDbxUY2AULdOS9Tr9rbAn+iCZpTzUuMUqwdnVkWOwb3bYxt
-	 RmBFeiTgZA4SQ==
-Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
-	by gw2.atmark-techno.com (Postfix) with ESMTP id 21211B88
-	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 11:59:34 +0900 (JST)
-Authentication-Results: gw2.atmark-techno.com;
-	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=EznoFZhg;
-	dkim-atps=neutral
-Received: from mail-pg1-f199.google.com (mail-pg1-f199.google.com [209.85.215.199])
-	by gw2.atmark-techno.com (Postfix) with ESMTPS id 8ABEEB87
-	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 11:59:32 +0900 (JST)
-Received: by mail-pg1-f199.google.com with SMTP id 41be03b00d2f7-5c17cff57f9so306406a12.0
-        for <linux-iio@vger.kernel.org>; Wed, 28 Feb 2024 18:59:32 -0800 (PST)
+	s=arc-20240116; t=1709199661; c=relaxed/simple;
+	bh=2oaBePVnp8xyk3FHRDU2Ycv1pUab3j3C2X3zAN+YBuU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CfipIAiklk5ncwCM089cYZdBv+U5mPxLwlbkj3wePbOtC3JlcdyJc27pHRjmV29nFZYYwM/9NN5ygbf7KpISjvLjiWBysdLoLE+QcEQugs1I/flImoqLXST7UcwFkcrlxJFBeembc/pPTYwq6nSB1sIcAOQCkVl47BjnIIsuT5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=uAmU8Kyg; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a26ed1e05c7so127395566b.2
+        for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 01:40:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atmark-techno.com; s=google; t=1709175571; x=1709780371; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4AYtAJCp8OrXlw5Zlqun1l6jjsdFx/4rtunorM/Qpsc=;
-        b=EznoFZhgGmc/mcv6h+52PgSEbUmn3st5X5i1UaBhltEwj+TcAj35hvpv3Hrit6ttja
-         s/nTGwyA3FSaGiUbgkH3B1E/dqZHa7fw4i+vf2a+xAasviDh9PYyxyEevhyecPg8KlLi
-         IrgZuIXC3DEaU/eE9mQlUiWUj6UFQ1foY1n4GCacw8/nqTw75U4dfu5074/Qc0J6GU0u
-         zivNMzfBIp5KTO9Ly8yesMgf0OIVttDvrlIbbxuBLd+dqvqatYFSpH55ng4UIhikf9er
-         PPJ29h6vSo+AN4e8t6whqG7SItsDXO3edYiybzo5QMvlsC8w6pxq08B64n3Tlxb0Wpun
-         GaMA==
+        d=linaro.org; s=google; t=1709199658; x=1709804458; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=CKdo/N380Uyco7cqejTSkmSIJM6MM6yhvV+7bHun7Y0=;
+        b=uAmU8KygzJoj7WPF3WG6ww0it8lHuVpi6pZ3AZ0+cRoClL1r2oq/l+1MYCeAVQ72f1
+         EIDtghsHKaSAjWvvB+tjSmnjGfdqS54P9+tQ/LMLEB+7/jzfFtQIRmllbUP+nrDRu2p2
+         NLsnhuoA13fi0WC68KgEHUeTak48HgpUZ7PA0u4ZYGPLviuLMQvTtN0VW/6mB0pxqubx
+         M/vP9yiD+T1Aa3zB+30XtFumnF37Dvfedt8o/K+VBO/Pwj/iXnADDDR1OWGh85iydMDj
+         ywxgZTx64AbOKGfAG53qHNOFycXwKUpIBPuy2plf+ZQqhKEo8dTuHrVDfF+V7ZaOf84S
+         /58Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709175571; x=1709780371;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1709199658; x=1709804458;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4AYtAJCp8OrXlw5Zlqun1l6jjsdFx/4rtunorM/Qpsc=;
-        b=cXRZleL+/tl1X/3OYtG2uXl461OV5LiCY9Jmuz3PvTa6k+aqqcgnsWSB9immv93oSC
-         RwxqAxYvmTEm8pa5pMvLuES+Oxtp0ESUsdu0zPcmdTI0QKnmQewr1STKlQSCWjanDctM
-         4e3mqgClMxul1xunSt51B4m/wet23+EXhxn2tgi0N6sujsmeDhRBbMT8NCyYmJvqVigA
-         3x83djQrs8zQg/grUhkvhS38OnDhtHyYl4hXnMXJKofJ+qMygEm5DB2i63ypZxTEJy4d
-         F3eoXdWRqRcn3IfQ7w0CR2PP98lWAv2HJieyT68LekvDG/eAOTjAkBXA+zcZhMSZYaJ8
-         ztLw==
-X-Forwarded-Encrypted: i=1; AJvYcCUe2GYjkystjJTW3A+hmUjp2qpTPiB+8WG+0/slQh1oWawvVzF/d00FwfYdpxxtfFO5p/0ZzutDMGqwvVb94RycdG2+qn/JCKHu
-X-Gm-Message-State: AOJu0YySMeXFmyK7WJjMJ6UkdUa6GavtndfBPIE9H7C488xKq1BvTICQ
-	7ziKs0dlswEPP3HD+Cv8CXxtP6JP1oFHDTI7zHr1clcFGuUrckmMM5g5NMTp2axu0GbBjtpDPBB
-	ocYp+YVAeMPHl6izD6uSDmM0PKnFQ51lL/8tM3U3LhgY3rl8up+E2GRUcjgs=
-X-Received: by 2002:a05:6a20:d70f:b0:1a1:2a63:9986 with SMTP id iz15-20020a056a20d70f00b001a12a639986mr329195pzb.58.1709175571411;
-        Wed, 28 Feb 2024 18:59:31 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGu8S9lacHTnIjCyHHwjqO8BAAyVJXkp7A0/WG22QwB+vN9dLXEqGBSlHQjC1ztQQtUgudh2A==
-X-Received: by 2002:a05:6a20:d70f:b0:1a1:2a63:9986 with SMTP id iz15-20020a056a20d70f00b001a12a639986mr329178pzb.58.1709175571061;
-        Wed, 28 Feb 2024 18:59:31 -0800 (PST)
-Received: from pc-0182.atmarktech (117.209.187.35.bc.googleusercontent.com. [35.187.209.117])
-        by smtp.gmail.com with ESMTPSA id z17-20020a170903019100b001db4433ef95sm177985plg.152.2024.02.28.18.59.30
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Feb 2024 18:59:30 -0800 (PST)
-Received: from martinet by pc-0182.atmarktech with local (Exim 4.96)
-	(envelope-from <martinet@pc-zest>)
-	id 1rfWdt-00015U-1V;
-	Thu, 29 Feb 2024 11:59:29 +0900
-Date: Thu, 29 Feb 2024 11:59:19 +0900
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Syunya Ohshio <syunya.ohshio@atmark-techno.com>,
-	Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
- device index
-Message-ID: <Zd_zB_ymxkx0HB3q@atmark-techno.com>
-References: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
- <7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
- <Zd7hSOw3_zosyrn3@atmark-techno.com>
- <daed8ada-9e01-41ad-82af-5da5cbbc865c@linaro.org>
- <Zd7qz1Qte8HWieF_@atmark-techno.com>
- <20240228142441.00002a79@Huawei.com>
+        bh=CKdo/N380Uyco7cqejTSkmSIJM6MM6yhvV+7bHun7Y0=;
+        b=wGnam3m8u+unRU0BJu6VKnHDy2mgiXBJDt+IPnQqBvyuZkRT0P8oVDMlGQ+YxXA0l8
+         h+xzB4WcFV1DcOYIcCg4M3XuzFfezM5TEW57tdE8vLu5+vxo0PhoBlcO1UrJKIhdG8bG
+         VYNWxUAH6cZJEzH+JRRNRE5P15FmAwcv5TX3AY7KRE7YqWSBx0qjaANjjpg8l4zwVsE+
+         W2unZncDWw+1aRuvBbpDpU5mu/Hey5mYVlabf7zSPdfGgU34xVx3We6VRCEzC3Gtm3pG
+         x6uxgxEzoQbZDU1EUaalGZAHV9PDyH6r5egKGq3V8+Cc1+N4sQKgnIQw8coOmrU8rCh2
+         mP3g==
+X-Forwarded-Encrypted: i=1; AJvYcCW0mWo6I58ZYNpQsp6j4zzWzgZTvsxtvye6lS7vnPH/fTEe39DwA4aIKiNTYzZL956gy2I+Y3pV2vWYu11l2Or2dDCrPS+jw2ev
+X-Gm-Message-State: AOJu0Yy4LX6d0Wmr0UHb/fEhgmB51nDJBmR/R+wGkTdyfnn/zZSYfbjP
+	WfIgeq7AndA2TinNZOZYULfwNb7uUhQFbrA906Ucl793DuWiuE3Ox12lgvqcE+8=
+X-Google-Smtp-Source: AGHT+IE1VZKS59bT84Im+7bEa7GH1AxMzxuNUuG4mJNaOxwXYvy1oWscf48DgdTk/PSX/n9eWqetxg==
+X-Received: by 2002:a17:906:815:b0:a43:fb76:433a with SMTP id e21-20020a170906081500b00a43fb76433amr1085865ejd.47.1709199658113;
+        Thu, 29 Feb 2024 01:40:58 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.222.97])
+        by smtp.gmail.com with ESMTPSA id wn5-20020a170907068500b00a4316384159sm492091ejb.224.2024.02.29.01.40.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Feb 2024 01:40:57 -0800 (PST)
+Message-ID: <06235b66-6948-49b3-b881-198443a421df@linaro.org>
+Date: Thu, 29 Feb 2024 10:40:51 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240228142441.00002a79@Huawei.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: add ad7944 ADCs
+To: David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240228-ad7944-mainline-v3-0-781b922334af@baylibre.com>
+ <20240228-ad7944-mainline-v3-1-781b922334af@baylibre.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240228-ad7944-mainline-v3-1-781b922334af@baylibre.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Thank you for the quick reply,
-
-Jonathan Cameron wrote on Wed, Feb 28, 2024 at 02:24:41PM +0000:
-> > > Maybe I don't get your point, but your email said "sysfs", so why do you
-> > > refer to /dev?  
-> > 
-> > I wrote /dev/rtc0, but it also sets the name in /sys, right?
-> > For example /sys/class/rtc/rtc0
-> > 
-> > As far as I'm aware iio also creates character devices in /dev with the
-> > same name (/dev/iio/iio:deviceX), but our application doesn't use these
-> > at all and has to? look in /sys directly, so normal udev SYMLINK+=
-> > unfortunately isn't applicable or I wouldn't be bothering with all
-> > this..
+On 28/02/2024 19:10, David Lechner wrote:
+> This adds a new binding for the Analog Devices, Inc. AD7944, AD7985, and
+> AD7986 ADCs.
 > 
-> A given IIO device driver may create multiple sysfs directories (registers
-> device + one or more triggers), so I'm not sure how this would work.
-
-Thanks for pointing this out, the driver I'm using doesn't seem to
-create extra triggers (iio_trigger_alloc doesn't seem to be called), but
-the current patch would only affect iio_device_register, so presumably
-would have no impact for these extra directories.
-(There's also no impact without dt changes, it's only adding an extra
-way of fixing the X of iio:deviceX everywhere)
-
-> > Unfortunately for iio it looks like labels isn't ignored, but instead
-> > create a file in the sysfs directory of the device, e.g. I now have
-> > /sys/bus/iio/devices/iio:device1/label which contains the label string,
-> > so I'm not sure that can be changed easily as that'd be a change of API
-> > for existing users for labels in iio devices?
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>  .../devicetree/bindings/iio/adc/adi,ad7944.yaml    | 213 +++++++++++++++++++++
+>  MAINTAINERS                                        |   8 +
+>  2 files changed, 221 insertions(+)
 > 
-> Yes, don't touch that ABI.  IIO software assumes naming of
-> iio\:deviceX etc.
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
+> new file mode 100644
+> index 000000000000..2564ef4f58cc
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
+> @@ -0,0 +1,213 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
 > 
-> > (I checked briefly and didn't find any, but there seems to be an awful
-> > lot of code in the iio drivers tree about labels so I'm not really
-> > comfortable changing that without some more background on iio first...
-> > Jonathan perhaps has an opinion on this?)
-> 
-> There are labels for channels as well as devices, but the short description
-> you have above is it.
-> 
-> I don't see why that isn't sufficient for your use case though?
+> v2 changes:
+> - Removed default 'multi' value from adi,spi-mode property. This simplifies
+>   things a bit by not having to check for two possible conditions (absence of
+>   property or explicit default value). Now, only absence of property is valid to
+>   indicate the default mode. Constraints that depend on this property are
+>   updated accordingly.
+> - Fixed spelling of 'conventional'.
+> - Expanded description to call out potential confusion of '3-wire' mode being
+>   unrelated to the standard spi-3wire property.
+> - Added standard '#daisy-chained-devices' property for chain mode.
+> - Relaxed requirement of cnv-gpios since it was determined that an active high
+>   CS could actually be used in chain mode.
 
-I'll have a lot of trouble arguing that one out as I agree it's "not
-that hard" to check the names to get the correct IIO device, but it's
-still definitely more work than being able to use fixed names.
+? Please don't edit patches manually... Use git or git+b4. Or quilt?
 
-For more background, we're selling a device+platform where our users can
-write code themselves to read the sensors, with a variable number of
-sensors (extension cards can be plugged in offline, reboot and you get
-one more).
-Adding an extra device currently comes in first and renames all
-pre-existing ones because that's apparently the order linux gets them
-from the dtb after adding overlays, and it'd "look better" if devices
-get added in fixed order so our users don't need to deal with the
-checking names/labels logic.
-
-toradex apparently has the same need because they provide a script that
-crates ugly links from /dev/xxx-adcY to /sys/.../in_voltageY_raw, so
-it's not like we're the first ones to want something like this;
-I think however that udev isn't appropriate to create links to /sys, so
-having some way of fixing names in dts sounds better to me.
-
-> What does a directory name matter when you can write a few lines of
-> code to retrieve the IIO device that you want.
-> 
-> If this was day 0 maybe we could support renaming devices like this
-> but we have a long history of those names not being stable and label
-> + parentage of the IIO devices being used to establish stable identification.
-
-I'm sure we can make something work out while preserving compatibility,
-the patch I sent might not be great but it wouldn't bother anyone not
-using said aliases.
-
-aliases are apparently not appropriate for this (still not sure why?),
-but if for example labels are better we could keep the current
-iio:deviceX path (/sys/bus/iio/devices/iio:device0) with a label file in
-it as current software expect, but add a brand new directory with a link
-named as per the label itself (for example /sys/class/iio/<label>;
-my understanding is that /sys/class is meant for "easier" links and we
-don't have anything iio-related there yet)
-
-That wouldn't break users checking through the existing paths, and
-provide a new fixed path for anyone looking for it.
-
-> Anything beyond a trivial single use script is going to need to deal with
-> not having stable names (old kernel, dt without alias etc) so this doesn't
-> help in general.
-
-I'm sure any major software will have to deal with old kernels, but I
-disagree that it doesn't help: in our case described above our users are
-basically writing trivial scripts and won't ever be downgrading, we want
-to guarantee they can rely on fixed names for our hardware because I
-know for sure most won't be bothering to check.
-
-Even for major softwares, any feature written now will hopefully be
-considered generally available 20 years from now, we need to start
-somewhere.
-
-Thanks,
--- 
-Dominique
-
+Best regards,
+Krzysztof
 
 

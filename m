@@ -1,50 +1,50 @@
-Return-Path: <linux-iio+bounces-3247-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3248-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F29B86D3EA
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 21:07:21 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E2886D3F5
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 21:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B5E0285D59
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 20:07:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15721B2334C
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 20:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C023E13F420;
-	Thu, 29 Feb 2024 20:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EC213F438;
+	Thu, 29 Feb 2024 20:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBHJE7Mh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ghd/n5f3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8243313C9F7
-	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 20:07:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E934213F42F
+	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 20:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709237236; cv=none; b=Y8H2x+kic3EwY04Gv+D77QsfIs6+RGKZd6O81RZaezTXtI6WREG6LAu9SjwMXRSms3cgb4zujn3uXyPxJgOboyoz0LtDAL7kgOe0X9zIb2eIA0+53dPK+rs5PMIM9Fw823RqgaLlIqUzA3T0yFNiXEB60Tc3zG5qNTWoKG2xkhM=
+	t=1709237468; cv=none; b=Ts6Fqxz7p4Eb2YZDgxzy/je0a1aWWjyzfcWSWNTEZ/FN2cKXpVh4B6SIozfcyAAOh07lKcb42vFpSezRquxGmfEAHECariq8ZeJOymdv8iEfaOBy+OLQD3U0YzbHDcRDh9zU8nVsDTiT5HIIqlvQihLEXg4hXT4LADe8OLv2VZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709237236; c=relaxed/simple;
-	bh=KQfsGF1rw/mDQpvgD4eN8Tqj8FzA2KvKLHp0g53b8TM=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=uBR3nDgslNQMl/uu8P0yET6OGKmPjduoA/o2603emwrbzpivtsXZMQMEeB4TuWS5yZqkHHXuoBQF19ksRtk/CxlV1gxNw11ax/5GDjXwQ+48D0jdDZ3S4Z2+VnjeMKzzagO0rovzaa18GzAU/4irTAvPv0iIH8G9XGsMYGXJb0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBHJE7Mh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BDFC433F1;
-	Thu, 29 Feb 2024 20:07:14 +0000 (UTC)
+	s=arc-20240116; t=1709237468; c=relaxed/simple;
+	bh=iAVkpPRQcA2sjTW1B2oOKS6XhfoZ4dQZQeReju/rnuw=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=o3LBpT1iOtRR6t2549GiAxUTp0vejXR+G3B/arhJSswMGHu+cra+2pvUli9NNsowkHgcEXNWSudly7WV+LpkjLZPZHaYj8Mov25TxMFoliRJAtwSsV58gTt5roZHMEnC7QCFm8xcWvNGIS55HxF+7tDFToAAcSimifrI5cUMsIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ghd/n5f3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF639C433C7;
+	Thu, 29 Feb 2024 20:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709237236;
-	bh=KQfsGF1rw/mDQpvgD4eN8Tqj8FzA2KvKLHp0g53b8TM=;
+	s=k20201202; t=1709237467;
+	bh=iAVkpPRQcA2sjTW1B2oOKS6XhfoZ4dQZQeReju/rnuw=;
 	h=Date:From:To:Subject:From;
-	b=kBHJE7MhEY9dd2LXvL4vRPtbeqaReTwQ6w8zk+nhBKnPzukCrUABGNozNxQPK1j0H
-	 FOaxwpdgl3nBHYCqBTqsH32PmYMzEZ6gm5hFPaEnIPQ+h0uS5ghaNqplxGFLBbg5xm
-	 Cu9EJJ2myAhpkHm64SOrjNXvrK4/p540XnAHJx909tou5pak/h2aLO8lTuht8lx9kP
-	 8yN5Aedx75NlSIjh4H5fo0gx/1hFI5Q1dfWHBAxMi5UD9Loz500lvro5YOW3R1SHrv
-	 VnCgC99DEMVu7G85MrRv3KLIXDqXBArbV/smQe9O8PMCljuW56u5rf1LUWijuEuyc5
-	 /f4IwufFRr1dw==
-Date: Thu, 29 Feb 2024 20:07:03 +0000
+	b=Ghd/n5f3FGAIR1W8pdNai2/TakOl7Y2z2Ur1aW5eH4x/jB0IK1YIrqFEbymDgxTtI
+	 TPoKEPFH8OWZ5UhX/KoQptejcvHUtKUoeZhY7H31uk018iCNFhWK83F85zMQG0E59T
+	 1K/+j1tkKXGf+M1OEBwTYyjeYQ1w1w+qygheAv1TSZOb2r/Fk6AAgGVFcVdB57FhhD
+	 M7qzsK1IpCIgh6lnwFZAALeXMw7UN+lnwno2ea0Tp40FVVgDfeqOB4myYq8j3IaVuz
+	 +6/4z9saxNxZdHEcaEF/vvVaxZf4gzimdV2qxiIAZgWpJw8SCxf/KlJiM3l2oyqWmG
+	 6AYW0/x9BcQ5w==
+Date: Thu, 29 Feb 2024 20:10:56 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] IIO fixes for 6.8 - second set.
-Message-ID: <20240229200703.52697131@jic23-huawei>
+Subject: [PULL] IIO: 2nd set of new device support features etc for 6.9.
+Message-ID: <20240229201056.45abd048@jic23-huawei>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -55,57 +55,207 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-The following changes since commit e20f378d993b1034eebe3ae78e67f3ed10e75356:
+The following changes since commit d4551c189d6e6a3fcf7f625bd4b273e770fad35a:
 
-  nvmem: include bit index in cell sysfs file name (2024-02-14 16:28:16 +0100)
+  Merge tag 'iio-for-6.9a' of http://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into char-misc-next (2024-02-25 14:11:41 +0100)
 
 are available in the Git repository at:
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.8b
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-6.9b
 
-for you to fetch changes up to 11dadb631007324c7a8bcb2650eda88ed2b9eed0:
+for you to fetch changes up to 6b61aae323e30ba363616e1da23f591b164aca3f:
 
-  iio: accel: adxl367: fix I2C FIFO data register (2024-02-25 14:31:14 +0000)
-
-----------------------------------------------------------------
-IIO: 2nd set of fixes for the 6.8 cycle.
-
-Given this is very late these can wait for the 6.9 cycle if you would
-prefer.
-
-adi,adxl367
-- Sleep for 15ms after reset to avoid reading before the device is awake.
-- Fix FIFO register address.
-asc,dlhl60d
-- Avoid uninitialized data leak to user-space. Also suppress a false
-  positive clang warning by refactoring a loop.
-bosch,bmp280
-- Fix missing extra byte in SPI reads from BMP38x and BMP390 parts
-invensense,mpu6050
-- Fix handing of empty FIFO which can happen due to a race condition.
-- Make sure frequency can be updated more than once when the FIFO is not
-  enabled.
+  dt-bindings: iio: gyroscope: bosch,bmg160: add spi-max-frequency (2024-02-28 19:26:38 +0000)
 
 ----------------------------------------------------------------
-Cosmin Tanislav (2):
-      iio: accel: adxl367: fix DEVID read after reset
-      iio: accel: adxl367: fix I2C FIFO data register
+IIO: 2nd set of new device support, cleanups and features for 6.9
 
-Jean-Baptiste Maneyrol (2):
-      iio: imu: inv_mpu6050: fix FIFO parsing when empty
-      iio: imu: inv_mpu6050: fix frequency setting when chip is off
+New device support
+=================
+adi,hmc425a
+- Add support for LTC6373 Instrumentation Amplifier.
+microchip,pac1934
+- New driver supporting PAC1931, PAC1932, PAC1933 and PAC1934 power monitoring
+chips with accumulators.
+voltafield,af8133j
+- New driver for the AF8133J 3 axis magnetometer.
 
-Kees Cook (1):
-      iio: pressure: dlhl60d: Initialize empty DLH bytes
+Docs
+====
 
-Vasileios Amoiridis (1):
-      iio: pressure: Fixes BMP38x and BMP390 SPI support
+New general documentation of device buffers, and a specific section on
+the adi,adis16475 IMU
 
- drivers/iio/accel/adxl367.c                   |  8 +++--
- drivers/iio/accel/adxl367_i2c.c               |  2 +-
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  2 ++
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  5 +++
- drivers/iio/pressure/bmp280-spi.c             | 50 ++++++++++++++++++++++++++-
- drivers/iio/pressure/dlhl60d.c                |  7 ++--
- 6 files changed, 66 insertions(+), 8 deletions(-)
+Features
+========
+
+kionix,kxcjk-1013
+ - Add support for ACPI ROTM (Microsoft defined ACPI method) to get rotation
+   matrix.
+ti,tmp117
+- Add missing vcc-supply control and binding.
+
+Cleanups and minor fixes
+========================
+
+Tree-wide
+- Corrected headers to remove linux/of.h from a bunch of drivers
+  that only had it to get to linux/mod_devicetable.h
+- dt binding cleanup to drop redundant type from label properties.
+
+adi,hmc425a
+- Fix constraints on GPIO array sizes for different devices.
+adi,ltc2983
+- Use spi_get_device_match_data instead of open coding similar.
+- Update naming of fw parsing function to reflect that it is not longer
+  dt only.
+- Set the chip name explicitly to reduce fragility resulting from different
+  entries in the various ID tables.
+bosch,bmg160
+- Add spi-max-frequency property and limit to dt-binding.
+microchip,mcp320x
+- Use devm_* to simplify device removal and error handling.
+nxp,imx93
+- Drop a non existent 4th interrupt from bindings.
+qcom,mp8xxx-xoadc
+- Drop unused kerneldoc
+renesas,isl29501
+- Actually use the of_match table.
+rockchip,saradc
+- Fix channel bitmask
+- Fix write masks
+- Replace custom handling of optional reset control with how it should be
+  done.
+ti,ads1298
+- Fix error code to not return a successfully obtained regulator.
+- Avoid a divide by zero when setting frequency.
+ti,hdc2010
+- Add missing interrupts dt binding property
+vishay,veml6075
+- Make vdd-supply required in the dt-binding.
+
+----------------------------------------------------------------
+Arturas Moskvinas (1):
+      iio: adc: mcp320x: Simplify device removal logic
+
+Dan Carpenter (2):
+      iio: adc: ti-ads1298: Fix error code in probe()
+      iio: adc: ti-ads1298: prevent divide by zero in ads1298_set_samp_freq()
+
+Dumitru Ceclan (5):
+      dt-bindings: iio: hmc425a: add conditional GPIO array size constraints
+      dt-bindings: iio: hmc425a: add entry for LTC6373
+      iio: amplifiers: hmc425a: move conversion logic
+      iio: amplifiers: hmc425a: use pointers in match table
+      iio: amplifiers: hmc425a: add support for LTC6373 Instrumentation Amplifier
+
+Icenowy Zheng (3):
+      dt-bindings: vendor-prefix: Add prefix for Voltafield
+      dt-bindings: iio: magnetometer: Add Voltafield AF8133J
+      iio: magnetometer: add a driver for Voltafield AF8133J magnetometer
+
+Javier Carrasco (1):
+      dt-bindings: iio: light: vishay,veml6075: make vdd-supply required
+
+Jonathan Cameron (8):
+      iio: light: vl6180: Drop unused linux/of.h include
+      iio: light: al3320a: Drop unused linux/of.h include
+      iio: light: al3010: Switch from linux/of.h to linux/mod_devicetable.h
+      iio: adc: ads8688: Switch to mod_devicetable.h for struct of_device_id definition
+      iio: accel: adxl372: Switch from linux/of.h to linux/mod_devicetable.h
+      iio: accel: bma180: Switch from linux/of.h to linux/mod_devicetable.h
+      iio: accel: kxsd9: Switch from linux/of.h to linux/mod_devicetable.h
+      iio: dac: mcp4821: Switch to including mod_devicetable.h for struct of_device_id definition.
+
+Josua Mayer (1):
+      dt-bindings: iio: humidity: hdc20x0: add optional interrupts property
+
+Krzysztof Kozlowski (3):
+      dt-bindings: iio: adc: drop redundant type from label
+      iio: adc: qcom-pm8xxx-xoadc: drop unused kerneldoc struct pm8xxx_chan_info member
+      iio: proximity: isl29501: make use of of_device_id table
+
+Marco Felsch (2):
+      dt-bindings: iio: ti,tmp117: add optional label property
+      dt-bindings: iio: gyroscope: bosch,bmg160: add spi-max-frequency
+
+Marius Cristea (2):
+      dt-bindings: iio: adc: adding support for PAC193X
+      iio: adc: adding support for PAC193x
+
+Nuno Sa (3):
+      iio: temperature: ltc2983: make use of spi_get_device_match_data()
+      iio: temperature: ltc2983: rename ltc2983_parse_dt()
+      iio: temperature: ltc2983: explicitly set the name in chip_info
+
+Ondrej Jirman (1):
+      MAINTAINERS: Add an entry for AF8133J driver
+
+Peng Fan (1):
+      dt-bindings: iio: adc: imx93: drop the 4th interrupt
+
+Quentin Schulz (3):
+      iio: adc: rockchip_saradc: fix bitmask for channels on SARADCv2
+      iio: adc: rockchip_saradc: use mask for write_enable bitfield
+      iio: adc: rockchip_saradc: replace custom logic with devm_reset_control_get_optional_exclusive
+
+Ramona Gradinariu (3):
+      docs: iio: Refactor index.rst
+      docs: iio: add documentation for device buffers
+      docs: iio: add documentation for adis16475 driver
+
+Sean Rhodes (1):
+      iio: accel: kxcjk-1013: Implement ACPI method ROTM to retrieve mount matrix.
+
+Thomas Haemmerle (2):
+      dt-bindings: iio: ti,tmp117: add vcc supply binding
+      iio: temperature: tmp117: add support for vcc-supply
+
+ .../ABI/testing/sysfs-bus-iio-adc-pac1934          |    9 +
+ Documentation/devicetree/bindings/iio/adc/adc.yaml |    1 -
+ .../bindings/iio/adc/microchip,pac1934.yaml        |  120 ++
+ .../devicetree/bindings/iio/adc/nxp,imx93-adc.yaml |    4 +-
+ .../bindings/iio/adc/qcom,spmi-vadc.yaml           |    1 -
+ .../bindings/iio/amplifiers/adi,hmc425a.yaml       |   47 +-
+ .../bindings/iio/gyroscope/bosch,bmg160.yaml       |    8 +-
+ .../bindings/iio/humidity/ti,hdc2010.yaml          |    3 +
+ .../bindings/iio/light/vishay,veml6075.yaml        |    1 +
+ .../iio/magnetometer/voltafield,af8133j.yaml       |   60 +
+ .../bindings/iio/temperature/ti,tmp117.yaml        |    8 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |    2 +
+ Documentation/iio/adis16475.rst                    |  407 +++++
+ Documentation/iio/iio_devbuf.rst                   |  152 ++
+ Documentation/iio/index.rst                        |    9 +-
+ MAINTAINERS                                        |   13 +
+ drivers/iio/accel/adxl372_spi.c                    |    2 +-
+ drivers/iio/accel/bma180.c                         |    2 +-
+ drivers/iio/accel/kxcjk-1013.c                     |   87 +-
+ drivers/iio/accel/kxsd9-spi.c                      |    2 +-
+ drivers/iio/adc/Kconfig                            |   11 +
+ drivers/iio/adc/Makefile                           |    1 +
+ drivers/iio/adc/mcp320x.c                          |   29 +-
+ drivers/iio/adc/pac1934.c                          | 1636 ++++++++++++++++++++
+ drivers/iio/adc/qcom-pm8xxx-xoadc.c                |    1 -
+ drivers/iio/adc/rockchip_saradc.c                  |   17 +-
+ drivers/iio/adc/ti-ads1298.c                       |    4 +-
+ drivers/iio/adc/ti-ads8688.c                       |    2 +-
+ drivers/iio/amplifiers/hmc425a.c                   |  274 +++-
+ drivers/iio/dac/mcp4821.c                          |    2 +-
+ drivers/iio/light/al3010.c                         |    2 +-
+ drivers/iio/light/al3320a.c                        |    1 -
+ drivers/iio/light/vl6180.c                         |    1 -
+ drivers/iio/magnetometer/Kconfig                   |   12 +
+ drivers/iio/magnetometer/Makefile                  |    1 +
+ drivers/iio/magnetometer/af8133j.c                 |  528 +++++++
+ drivers/iio/proximity/isl29501.c                   |    3 +-
+ drivers/iio/temperature/ltc2983.c                  |   28 +-
+ drivers/iio/temperature/tmp117.c                   |    9 +
+ 39 files changed, 3376 insertions(+), 124 deletions(-)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-pac1934
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/microchip,pac1934.yaml
+ create mode 100644 Documentation/devicetree/bindings/iio/magnetometer/voltafield,af8133j.yaml
+ create mode 100644 Documentation/iio/adis16475.rst
+ create mode 100644 Documentation/iio/iio_devbuf.rst
+ create mode 100644 drivers/iio/adc/pac1934.c
+ create mode 100644 drivers/iio/magnetometer/af8133j.c
 

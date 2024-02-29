@@ -1,201 +1,146 @@
-Return-Path: <linux-iio+bounces-3230-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3231-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B41A786CEAB
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 17:20:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 360FF86CEBC
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 17:22:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 165C5B2A7A0
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 16:19:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1B591F21727
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 16:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB156CBEF;
-	Thu, 29 Feb 2024 16:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D9B14BD48;
+	Thu, 29 Feb 2024 16:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wWWExN1E"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="AHvaALBu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7544013442E
-	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 16:00:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDA7516064F;
+	Thu, 29 Feb 2024 16:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709222415; cv=none; b=KbdhC4O0YemvPwj+CKpDnsPmrPphj70S6J7UlDN7ORQ1hyfOIOf0I01Um9CJ1zhUAGDnhajS/X1Ndf8X1OY/aLx63OmbBfeUcotK+7hLH0FknRHofK6eNnwAmU/f5aQSnupRc4vosiFKKiZCk/PFvmk0MIcA7eNzFZhRSu2T5Us=
+	t=1709222929; cv=none; b=n9e9NDTkxC8yQy7MMM5GpbQcslKLDwQ3/CJs+e7k0vo0sCaCNvY1D1Vi7ADw7nrRTOExi3bhDUP+dQ+mRUZhCmecEdbJkqaHm8Hwf37/o02oCPrLkt1Cw8Do7auL9QLjmVcdq3bL4gtfmpJ+U5ikCruIcQcNbL1P9vUEl4Jk4No=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709222415; c=relaxed/simple;
-	bh=w5iq71vwmmte3zGqYTwhcH6cdU2SzgfqS6g3WsC9OSQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VeAruy89cBzptNr8ekbntXJ0XTLvpSoaX2fSKH5gwKkDXyRzgRUj9ZV0Da+pPFHrTSNEpoYbLdR+r7jAE//MrVxU/QJt77lfogeKzOplIZPz2FcfR73SRIiyVIGXh6EmHZpQTvGkQH9Wmh/bHYqSJ58oTu0W3ntKLusX24kMIOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wWWExN1E; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a3f3d0d2787so170298066b.3
-        for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 08:00:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1709222412; x=1709827212; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TRbG9hsJP0WYlORDRCfofHJYUP4yWUvt2xzj/adPvC8=;
-        b=wWWExN1EWO37c4h8INOvgVYd8wc8ZVBcKaPWprJacHeu7kzbSsFldPyOoXj3uSCQaJ
-         8lWeQcM0smNmFUIF0rDVhlcMqglw98GRA7AvDEqFSDQrzqqFnVsrWCp8jPx++gGVlPEI
-         1XCMFYveQuFXTGNYqRndh8xYkdq+EYT1tOaEGBHGJopBPFkTRK/p8sm2mKxx2/qMp8ln
-         S76b/SvRIQqNoRiZ+KYMwQu4NVHz7EEQMRlCAYyG42V+XO3n85/iZClYFsffL00ZCnrN
-         +6gsnHt9/Ym6oB9Ejun/RuibFHXEDpAJ40Dbj1XjLYirs1qxfVXIJ7oXy+CzqkZxbnn9
-         R+vQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709222412; x=1709827212;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TRbG9hsJP0WYlORDRCfofHJYUP4yWUvt2xzj/adPvC8=;
-        b=m0fGmLhhvx+zRrCzD1wIlyF5wv+scpEPE3NSZo8mS7Tdcuj1HR/qUocHtRsVqZGEgj
-         HIVi//ID8euxB4rIj+gg+S4SFIjeyDdQHtuPNWY0AEygEh426hQLIidgjk6ClU0f9WwC
-         p66jGJ0YY+NrTFIlsZ7l0CT01DurYeK6JOxzH24MCKfdtKn0Mf4Sa8xfqJvEuR/L7gtd
-         VCJuQ4OjYPJ92WdPU2uPZWter+HK10M6BUN1wKiGXgZhRXkAlBmABli/6k/lNfuAXKdv
-         FWKO069DZQF9AFWUcIOaUnQlSrC+z7jGfozCFftAzVTRvmvMLH/IJfgO2yaaL/hmTAiu
-         n64w==
-X-Forwarded-Encrypted: i=1; AJvYcCWYpNIZzipSmXcXnnwQN1nUozeenY7J5k5GosOqT3+Dx8n+hgZX+kMW1cH9cWQLbCkRB2HZ11u63IWDWTljupDXJbYQ3dX+K9TG
-X-Gm-Message-State: AOJu0Yyz0zPOcf30//H+tTgfkr6GYWDGighGNTn5U4DbKok09cvv0HNb
-	cl7WbcjA1PlGlCC9VOe06FY67NrYHW5UrjWlDI+jRXx23VcjlsUWQNRl7M8UPYM=
-X-Google-Smtp-Source: AGHT+IFRZVGTl1pd/dm10q3vG7TFk5XUl+XxXPCC7r1ReUdSZxmCcQ6kK5z1+dzrKwSe+pl2I5TzSA==
-X-Received: by 2002:a17:906:aad5:b0:a3f:33c5:ffb5 with SMTP id kt21-20020a170906aad500b00a3f33c5ffb5mr1771991ejb.76.1709222411854;
-        Thu, 29 Feb 2024 08:00:11 -0800 (PST)
-Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id d25-20020a1709067f1900b00a440e2ada28sm802457ejr.201.2024.02.29.08.00.10
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Feb 2024 08:00:11 -0800 (PST)
-Message-ID: <8ad18b06-7ff1-4463-8ba0-d7a7d54e5b65@linaro.org>
-Date: Thu, 29 Feb 2024 17:00:10 +0100
+	s=arc-20240116; t=1709222929; c=relaxed/simple;
+	bh=oaktaKMbj10udadErg2CCSUoOJnIEdKQagngqtobDLE=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=i7xBKyLTBt3tVMGHu8V1AyX0gMWiMtZCFns5rLcJrEQiDIBNiSDY2JF9WyfEJTrUCQNRfp8YXht3tuZ2VRVfuo0UtarU70hnM9FKH651r8MSxvdjGcwkqlVttBggWomGbzrD1lEiM/qn0DdNpLJU9923fofiEbsGqOHbcoRAnuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=AHvaALBu; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 41TDrYhH007944;
+	Thu, 29 Feb 2024 11:08:31 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding:to:cc; s=DKIM; bh=f3r9mNAR6m5ZaeOeSLF
+	4aV/9wUVWMr/fe5XhV9/nvps=; b=AHvaALBuSXJFlmDpHwmIokEkRf9xG8McGqL
+	HDb+acf9kWIkG+pHcs8+pybGPEfxHHfG2jLVC8sNk1BirkAwEi18pmb5NM1S8A31
+	VqBtfNOhVWXnaDUv88grrtwP8+l8SYYmNburYvCgCMuSMSVlaTThorxwA+ZI2PaK
+	qM9hhwAFUvZUu5wYwWIOmFH/IWIBTg9JzK8jVxbrqqgW3fTNYJKI+3CPLu5gek/6
+	RSEHdKe14XnBkxWxKt4D6MeSM5TP9b/GDlXogMDKSJNUftmMQ0suGiUIkCX9Vu/+
+	FonqpfV0R0pW/VpKCeKnaTAbhBCPPHMlRG7HkYULxHPNXJEdHHA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3wjcr2utnh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Feb 2024 11:08:30 -0500 (EST)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 41TG8TWa034081
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 29 Feb 2024 11:08:29 -0500
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 29 Feb 2024 11:08:29 -0500
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 29 Feb 2024 11:08:28 -0500
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 29 Feb 2024 11:08:28 -0500
+Received: from [127.0.0.1] ([10.44.3.58])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 41TG8J9E018856;
+	Thu, 29 Feb 2024 11:08:21 -0500
+From: Nuno Sa <nuno.sa@analog.com>
+Subject: [PATCH v2 0/3] iio: temperature: ltc2983: small improvements
+Date: Thu, 29 Feb 2024 17:11:40 +0100
+Message-ID: <20240229-ltc2983-misc-improv-v2-0-cc6f03da2529@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: adc: ad7173: add support for
- additional models
-Content-Language: en-US
-To: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240228135532.30761-1-mitrutzceclan@gmail.com>
- <20240228135532.30761-2-mitrutzceclan@gmail.com>
- <9f3e461a-0b79-470f-b599-bba45cda006a@linaro.org>
- <43840914-cb4a-4758-9691-0ebd8fb97681@gmail.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <43840914-cb4a-4758-9691-0ebd8fb97681@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIALys4GUC/32NQQqDMBBFryKz7hQdLdGuvEdxEcZRB9RIIqFFv
+ HtTD9Dle/DfPyCIVwnwzA7wEjWoWxPQLQOe7DoKap8YKKcqJyKcd6amLnHRwKjL5l3Ego01tbA
+ 05QBpuXkZ9H1VX13iScPu/Oc6icXP/u/FAnPkwfRV9TDS1Nza1c5uvLNboDvP8wuqPDHhtwAAA
+ A==
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich <Michael.Hennerich@analog.com>,
+        Rob Herring
+	<robh+dt@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1709223103; l=1175;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=oaktaKMbj10udadErg2CCSUoOJnIEdKQagngqtobDLE=;
+ b=f0dvGL5T5tvHRKsxofekbrSdVK+HjnPmvQqN/Q6W6jOgbWNkua4zzLlSrZkUN/kKUjJeRbiDL
+ DFbOdieB5yCC8/7/dNUDHl3E5eJF87i3XAT7wA+oO0RfaTA2ET55VQE
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: VjfxjmJGzl18CsHV4Rqrg8uJs8oui4BL
+X-Proofpoint-ORIG-GUID: VjfxjmJGzl18CsHV4Rqrg8uJs8oui4BL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-02-29_02,2024-02-29_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ mlxlogscore=720 clxscore=1015 mlxscore=0 malwarescore=0 bulkscore=0
+ phishscore=0 suspectscore=0 lowpriorityscore=0 priorityscore=1501
+ adultscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2402120000 definitions=main-2402290124
 
-On 29/02/2024 16:08, Ceclan, Dumitru wrote:
-> On 29/02/2024 16:49, Krzysztof Kozlowski wrote:
->> On 28/02/2024 14:54, Dumitru Ceclan wrote:
->>> Add support for: AD7172-2, AD7175-8, AD7177-2.
->>> AD7172-4 does not feature an internal reference, check for external
->>>  reference presence.
-> 
-> ...
-> 
->>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
->>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
->>
->> There is no such file in next-20240229.
->>
-> 
-> It's not yet accepted
-> https://lore.kernel.org/all/20240228110622.25114-1-mitrutzceclan@gmail.com/
+This series adds small improvements to the driver. There's no functional
+change intended for it.
 
-And how can we know this? You must clearly document dependencies.
+For now, I'm using a macro (only for this driver) for handling error
+pointers. I can propose something generic if that's preferred.
 
-This also means the patch cannot be directly applied and cannot be
-tested by toolset.
+---
+Changes in v2:
+- Patch 1
+  * Rebased on top of [1];
+  * Added helper macro for returning error pointers with dev_err_probe();
+  * Fixed some unnecessary line breaks.
+- Patch 2
+  * Make vdd-supply required.
+- Link to v1: https://lore.kernel.org/r/20240222-ltc2983-misc-improv-v1-0-cf7d4457e98c@analog.com
 
-Did you test this particular patch?
+[1]: https://lore.kernel.org/all/20240226193007.670a6406@jic23-huawei/
 
-> 
-> ...
-> 
->>> +  # Model ad7172-4 does not support internal reference
->>> +  #  mandatory to have an external reference
->>> +  - if:
->>> +      properties:
->>> +        compatible:
->>> +          contains:
->>> +            const: adi,ad7172-4
->>> +    then:
->>> +      patternProperties:
->>> +        "^channel@[0-9a-f]$":
->>> +          properties:
->>> +            adi,reference-select:
->>> +              enum:
->>> +                - vref
->>> +                - vref2
->>> +                - avdd
->>> +          required:
->>> +            - adi,reference-select
->>
->> Are you defining properties here? I cannot verify because this file does
->> not exist in next.
->>
-> 
-> No, just constraining reference-select to be required and exclude
-> "refout-avss".
-> 
+---
+Nuno Sa (3):
+      iio: temperature: ltc2983: convert to dev_err_probe()
+      dt-bindings: iio: temperature: ltc2983: document power supply
+      iio: temperature: ltc2983: support vdd regulator
 
-ok
+ .../bindings/iio/temperature/adi,ltc2983.yaml      |   3 +
+ drivers/iio/temperature/ltc2983.c                  | 267 ++++++++++-----------
+ 2 files changed, 130 insertions(+), 140 deletions(-)
+---
+base-commit: 74744b27ba8cb8c265263aa0ff0693350a8cbc19
+change-id: 20240222-ltc2983-misc-improv-1c7a78ece93f
+--
 
-Best regards,
-Krzysztof
+Thanks!
+- Nuno Sá
 
 

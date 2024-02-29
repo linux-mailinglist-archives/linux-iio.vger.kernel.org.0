@@ -1,70 +1,51 @@
-Return-Path: <linux-iio+bounces-3246-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3247-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B2F86D34A
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 20:37:17 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F29B86D3EA
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 21:07:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 317041C20D40
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 19:37:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B5E0285D59
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 20:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D25613C9E2;
-	Thu, 29 Feb 2024 19:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C023E13F420;
+	Thu, 29 Feb 2024 20:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+S85SBu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kBHJE7Mh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8E21E499;
-	Thu, 29 Feb 2024 19:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8243313C9F7
+	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 20:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709235428; cv=none; b=X8aW52C4cT/JB60J2/BJWExVMNcSkfWLgtAlsXzrkXnDNvZtbjbmHBdETz5lekIAjZ0jPqXA/c8NWF+A9JgdwfCe5ryadXbmdSz58tR4ojZmrUuyp73KCtpcY0SQ+Vp8mFteLnxk5QYtIt5+BR7tuoTD4zy4mYMvKflxGcKJy4k=
+	t=1709237236; cv=none; b=Y8H2x+kic3EwY04Gv+D77QsfIs6+RGKZd6O81RZaezTXtI6WREG6LAu9SjwMXRSms3cgb4zujn3uXyPxJgOboyoz0LtDAL7kgOe0X9zIb2eIA0+53dPK+rs5PMIM9Fw823RqgaLlIqUzA3T0yFNiXEB60Tc3zG5qNTWoKG2xkhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709235428; c=relaxed/simple;
-	bh=HxFiMEFSmzCFY+WY5P1+X68vvWW5G5DzknMWKq1jjbw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mNVu6xBYlVv9ZSElvwGVX/eRVaoZhpy3zjIa4YGSp5ueZujzHoWNimYi8DpO541AOdEoDNnwRWmnBHr9ub0MBWY508K6l1Xs0pnYTGpMuEdyNKbogWq11O0vRtxE7lh2JnCJowyndI5ECSZZFo/th+lFQihSxT4v2jLwnZbFCNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+S85SBu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DEB1C433C7;
-	Thu, 29 Feb 2024 19:37:07 +0000 (UTC)
+	s=arc-20240116; t=1709237236; c=relaxed/simple;
+	bh=KQfsGF1rw/mDQpvgD4eN8Tqj8FzA2KvKLHp0g53b8TM=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=uBR3nDgslNQMl/uu8P0yET6OGKmPjduoA/o2603emwrbzpivtsXZMQMEeB4TuWS5yZqkHHXuoBQF19ksRtk/CxlV1gxNw11ax/5GDjXwQ+48D0jdDZ3S4Z2+VnjeMKzzagO0rovzaa18GzAU/4irTAvPv0iIH8G9XGsMYGXJb0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kBHJE7Mh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BDFC433F1;
+	Thu, 29 Feb 2024 20:07:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709235428;
-	bh=HxFiMEFSmzCFY+WY5P1+X68vvWW5G5DzknMWKq1jjbw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=m+S85SBuV9SIHhfC9dMLCdurLg+KbyJOT0ZuQcfRPg6/ekbFXqmOI8lKWeVI4g2nw
-	 97JdaKY11cvCmY2VP/uzaRPkip8FiGVFuNfb2B7WSaGBbFwGqTbIHqmJKP0b21mGZN
-	 4rxBo1r7Ey34dexq9zLREL2HMcHe4Y9LQxt2DJ2U3/ZssUisaZIQxCcmngap2fFfQj
-	 mdcqq9sN4FjNmHPcmD7BccNs/STrWR/FblQgrW1OklBOKeUZHLOz8/Tvp1JhHgQzKW
-	 P86eMmDf0P+7+ExJ6cgkscA1xFkJWipaT9lXxCYew7am+U7hL2APqC9jwgXrIdAAgp
-	 TQLDWOn4o/u5A==
-Date: Thu, 29 Feb 2024 11:37:06 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kees Cook <keescook@chromium.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Vinod Koul
- <vkoul@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Jonathan
- Cameron <Jonathan.Cameron@huawei.com>, Mark Brown <broonie@kernel.org>,
- linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-spi@vger.kernel.org, netdev@vger.kernel.org,
- linux-hardening@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: [PATCH v4 7/8] net-device: Use new helpers from overflow.h in
- netdevice APIs
-Message-ID: <20240229113706.42c877a1@kernel.org>
-In-Reply-To: <202402291059.491B5E03@keescook>
-References: <20240228204919.3680786-1-andriy.shevchenko@linux.intel.com>
-	<20240228204919.3680786-8-andriy.shevchenko@linux.intel.com>
-	<202402281341.AC67EB6E35@keescook>
-	<20240228144148.5c227487@kernel.org>
-	<202402281554.C1CEEF744@keescook>
-	<20240228165609.06f5254a@kernel.org>
-	<202402291059.491B5E03@keescook>
+	s=k20201202; t=1709237236;
+	bh=KQfsGF1rw/mDQpvgD4eN8Tqj8FzA2KvKLHp0g53b8TM=;
+	h=Date:From:To:Subject:From;
+	b=kBHJE7MhEY9dd2LXvL4vRPtbeqaReTwQ6w8zk+nhBKnPzukCrUABGNozNxQPK1j0H
+	 FOaxwpdgl3nBHYCqBTqsH32PmYMzEZ6gm5hFPaEnIPQ+h0uS5ghaNqplxGFLBbg5xm
+	 Cu9EJJ2myAhpkHm64SOrjNXvrK4/p540XnAHJx909tou5pak/h2aLO8lTuht8lx9kP
+	 8yN5Aedx75NlSIjh4H5fo0gx/1hFI5Q1dfWHBAxMi5UD9Loz500lvro5YOW3R1SHrv
+	 VnCgC99DEMVu7G85MrRv3KLIXDqXBArbV/smQe9O8PMCljuW56u5rf1LUWijuEuyc5
+	 /f4IwufFRr1dw==
+Date: Thu, 29 Feb 2024 20:07:03 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] IIO fixes for 6.8 - second set.
+Message-ID: <20240229200703.52697131@jic23-huawei>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -74,31 +55,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 29 Feb 2024 11:08:58 -0800 Kees Cook wrote:
-> > And some seem to be cargo-culted from out-of-tree code and are unused :S  
-> 
-> Ah, which can I remove?
+The following changes since commit e20f378d993b1034eebe3ae78e67f3ed10e75356:
 
-The one in igc.h does not seem to be referenced by anything in the igc
-directory. Pretty sure it's unused.
+  nvmem: include bit index in cell sysfs file name (2024-02-14 16:28:16 +0100)
 
-> As a further aside, this code:
-> 
->         struct net_device *dev;
-> 	...
->         struct net_device *p;
-> 	...
->         /* ensure 32-byte alignment of whole construct */
->         alloc_size += NETDEV_ALIGN - 1;
->         p = kvzalloc(alloc_size, GFP_KERNEL_ACCOUNT | __GFP_RETRY_MAYFAIL);
-> 	...
->         dev = PTR_ALIGN(p, NETDEV_ALIGN);
-> 
-> Really screams for a dynamic-sized (bucketed) kmem_cache_alloc
-> API. Alignment constraints can be described in a regular kmem_cache
-> allocator (rather than this open-coded version). I've been intending to
-> build that for struct msg_msg for a while now, and here's another user. :)
+are available in the Git repository at:
 
-TBH I'm not sure why we align it :S
-NETDEV_ALIGN is 32B so maybe some old cache aligning thing?
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.8b
+
+for you to fetch changes up to 11dadb631007324c7a8bcb2650eda88ed2b9eed0:
+
+  iio: accel: adxl367: fix I2C FIFO data register (2024-02-25 14:31:14 +0000)
+
+----------------------------------------------------------------
+IIO: 2nd set of fixes for the 6.8 cycle.
+
+Given this is very late these can wait for the 6.9 cycle if you would
+prefer.
+
+adi,adxl367
+- Sleep for 15ms after reset to avoid reading before the device is awake.
+- Fix FIFO register address.
+asc,dlhl60d
+- Avoid uninitialized data leak to user-space. Also suppress a false
+  positive clang warning by refactoring a loop.
+bosch,bmp280
+- Fix missing extra byte in SPI reads from BMP38x and BMP390 parts
+invensense,mpu6050
+- Fix handing of empty FIFO which can happen due to a race condition.
+- Make sure frequency can be updated more than once when the FIFO is not
+  enabled.
+
+----------------------------------------------------------------
+Cosmin Tanislav (2):
+      iio: accel: adxl367: fix DEVID read after reset
+      iio: accel: adxl367: fix I2C FIFO data register
+
+Jean-Baptiste Maneyrol (2):
+      iio: imu: inv_mpu6050: fix FIFO parsing when empty
+      iio: imu: inv_mpu6050: fix frequency setting when chip is off
+
+Kees Cook (1):
+      iio: pressure: dlhl60d: Initialize empty DLH bytes
+
+Vasileios Amoiridis (1):
+      iio: pressure: Fixes BMP38x and BMP390 SPI support
+
+ drivers/iio/accel/adxl367.c                   |  8 +++--
+ drivers/iio/accel/adxl367_i2c.c               |  2 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  2 ++
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  5 +++
+ drivers/iio/pressure/bmp280-spi.c             | 50 ++++++++++++++++++++++++++-
+ drivers/iio/pressure/dlhl60d.c                |  7 ++--
+ 6 files changed, 66 insertions(+), 8 deletions(-)
 

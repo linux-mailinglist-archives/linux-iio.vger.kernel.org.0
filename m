@@ -1,144 +1,248 @@
-Return-Path: <linux-iio+bounces-3218-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3219-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D56D786CBB0
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 15:36:12 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E93986CC00
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 15:50:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13A601C20E2B
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 14:36:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 53E442864A8
+	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 14:50:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8729313774C;
-	Thu, 29 Feb 2024 14:36:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6362C137768;
+	Thu, 29 Feb 2024 14:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="n1bSE8Ex"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KL4iNqGu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3614EB5F
-	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 14:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718FD12F580
+	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 14:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709217364; cv=none; b=sHX0twnHAZg4NXS/vwYi9r29PW/rgSI4hdInygLeGe257DmnvRudZI5S+YYxHNH15kSlyEyZwkIqU73Jlfg5t98elELARfoLUYkwL+0fjxuqOU0vYWAP7pssAtGts2wo33YCeDTS4XrRXEJtObY9yeS1ivXKX79QWmk/Y4Z1mqM=
+	t=1709218165; cv=none; b=NnOXRCx7l+3Aqv+ST3MntboXCJCGDtZh/bj/7yWEiQuoqG9bRBYDeOULQGkpWsKZ8d3f2j0TkoR7lG73CBx1TzzW3R7oGmXD9N5fEXxHZgzCxc34i78oCsrxMN30vzPCKYMQL7EJzOzh9x+evIGW7r4ozJAYgBIbMvCRcSrvwyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709217364; c=relaxed/simple;
-	bh=u0JUBhjQ4sGb7MtY00JcSowml0hWIM4BZxLrLYwauig=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pHglIbvpli6IxmvYnilS0wtNp7uBkdqIfMuegg1YhICtc/zezSGOPyUwRhOEoVMwmqHkLbOGEYhlnQFYQEoee0Pol3VW5nvwIkMisu/hkyYUcI10u1bt+gtrYN41VCDY12j6902XccMuapDCwYwojaQAHMZ2NF8ehVmSWn8N+EM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=n1bSE8Ex; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d28464c554so11202811fa.3
-        for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 06:36:00 -0800 (PST)
+	s=arc-20240116; t=1709218165; c=relaxed/simple;
+	bh=GViMnL50GchptpANlTzi5YnZjVuIK8J7/2kEV7Nci5s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bSuHt60rW80PwW6v/C7QjFVMD+GFVCdsvMyF80kLnLBCrdKhu/8ywqJKNzNlTUKit1atnX5a1X+5zMSek7L95AyuElv8D+hTeaKNZl04iFNvDoFq230kOu3plLgyB02752Q01TdTpFf5We1pXetkdeUmRkE6SLBTdrsYor7jJ90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KL4iNqGu; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a28a6cef709so159495166b.1
+        for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 06:49:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1709217359; x=1709822159; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sz88iOY6NApYHzpIrcMwxyE6MowEg0Dpz6Nm6MlbMsA=;
-        b=n1bSE8Ex0gTzYUbmetmN+kltXoAJj4bUW/nHi41qGUWt/uBRW9SMF8sMkIBcGq9ZbD
-         Iamf0j06+t+jicwb1Gle+T6M/PrhVoYDTq5yCuCAmY3iQ+mDh6iLuu53V9fSzSZ8MogE
-         mqFZa5kQPJ1KsZGVjpEoMdcw08uws5ToT3Lt46WFn+/eBqH7CIY0Re6oSrvBSW2fUB/Q
-         Py+56nOteLTlYc/7L8nfAEoF2iXzb4Zxb9Y9FodVBgIGBfBsIjNdmTHktMCVb8E4dANa
-         oTE4pyIlzVDujmB8WhDqT0bbUC490uIg7nxLVpw592RLZJzeapW68tK6R+LbWtLQynoz
-         5DWQ==
+        d=linaro.org; s=google; t=1709218162; x=1709822962; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AJ4Qksumo/xvPjCbp2pF2caHliNc3PEV2t+qzAnNalM=;
+        b=KL4iNqGuhPLd5on3l0OxC6XCzZCmjTDGtKb3MkegT4OxwUtP7jae51Zdm5RQzaJKMX
+         TV8GJFfYGZmvd8kKcx432pEdXUFhuKusorbKZ2yIIMnO3X4Kj1jZOEOj/sc7QXjsRUsV
+         QY+edMAyUt8AkPFe+Yg5ECNFOPyRnXem732AbDQ8waOt9zpuJhLvNc2DOQkKZF7VQ1w2
+         P7ca3Cp83eepa17puHSsMgnZxIAKIiMEhXHwuIqeQFaRBQmusPHpF3UZCEsKyvCOXCMa
+         AuKU8GB3Wjxuy4x/KIoyAYL75Qe7ibzDqLLb0IsvH+4hJI51WNIQYxDA8iDAwzq39mCK
+         HZ6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709217359; x=1709822159;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Sz88iOY6NApYHzpIrcMwxyE6MowEg0Dpz6Nm6MlbMsA=;
-        b=Wxde7qxvonpKI+TgLRt2QHJ5HpPDo75q+UoaHdNZes29ekG6+V7laoCnTdWfXbGej0
-         QGEfd8DcfnXTdVB4PYg3UxLXwRJ5hm2I15zT11HWV3PGKijwZZeXVqOxn4K6REqXmoQ3
-         i9UjhRfUEItt7TAf8mKKBvbM2rU532oPc3BvW5A43zqwyyZRyZC4U8Rn4niecg/Xrzn7
-         1floN7AqGo6OQdWIUSSm1vf29ABK5RJl2FUMS8Ek/kUrBI/A/YlJqsAGRcylbLNVNCjj
-         htny3MQkQjMEnKvyfjDCXtCTx81WLPzg0k68ivoQ4yrQNG+jy8tA5SvVBaxJ1S+z4HAM
-         DGIw==
-X-Gm-Message-State: AOJu0YygnV28P9W6eAJ8wNIfuTJSKw1ASQ/XDl8Iku4cXFIrOlTZ+Fp1
-	dfWQq5yPFLCz3BKGi+fZM9HdIYBJ+glsEmelciNvPdk01yqt8R1j5Z50zBC2idz4BLhR6g1CZbg
-	+b/6eZ4a49BDvzqB6Xc7YBRu7PoiAQXhA8ky6lg==
-X-Google-Smtp-Source: AGHT+IGHaNP/H4vHZKJ4y6B0kLqYob2bOrCNEIsNueH3s9653/jhA47m7OSjPlN4MpQUmkuqNouzzi7ynvk1S67YLaI=
-X-Received: by 2002:a2e:7218:0:b0:2d2:d0ba:2586 with SMTP id
- n24-20020a2e7218000000b002d2d0ba2586mr1517275ljc.24.1709217359043; Thu, 29
- Feb 2024 06:35:59 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709218162; x=1709822962;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AJ4Qksumo/xvPjCbp2pF2caHliNc3PEV2t+qzAnNalM=;
+        b=krL+qZzJ5LZr6TTcpTcV5mRR9ub+hRBkqVK/wl4a9LcQlgW5JXIUaw0BHrbfRsRXKp
+         YX6OTXdOUcugjwwDn1fncknqVloghji0GyxHRfPeSTWaraG1XkhfjAMNICIkmnQwN7CC
+         AhFsILlzD2DtAEmjcPJ+SWRH2yua9kGKfLeUDdeAji2/VOZeV9da1oq8BQLAJbxO+Q8j
+         LCQnXTlsuaeLljWDQfwijVZqryp3keFGUy6FWMYF1jWSX8FtFRGlH99Hzl3qiLWbsI01
+         ZNRIar0fuRQ4Ng0VBoy+87+vWrVmqLizKTEyx/EiQYT3Lf/BNQOsLZ7EieP4BheXAbRF
+         6i7w==
+X-Forwarded-Encrypted: i=1; AJvYcCUVxoOGloNRvALZVGQOeFScxGw+ftiUO4Hl46Em2lLMCVWhtd3/3chR+8XYuJTThWL2GMyRz0ufz6OR3rDcRW3VBGJf41EyoMYZ
+X-Gm-Message-State: AOJu0Yznsnked2IJyK3Q+j44QiWjwjj4S3Y858gGleSWx4UgJKFzTk/D
+	IVovedgM16zCekgQ/S7wTHxeiZtrThkGmDSq8//PLd0FygHWiaFYI9yypJakfRU=
+X-Google-Smtp-Source: AGHT+IEnmd1krk6WuS3AgVul4BPmC1P7LoXon6Hp4B7iI8nBnXDQ+3DMGWoTAJC0cGvexnfWVHjQHA==
+X-Received: by 2002:a17:906:4914:b0:a43:af0b:ec31 with SMTP id b20-20020a170906491400b00a43af0bec31mr1771533ejq.53.1709218161966;
+        Thu, 29 Feb 2024 06:49:21 -0800 (PST)
+Received: from [192.168.1.20] ([178.197.222.97])
+        by smtp.gmail.com with ESMTPSA id jg29-20020a170907971d00b00a4412406741sm749113ejc.131.2024.02.29.06.49.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Feb 2024 06:49:21 -0800 (PST)
+Message-ID: <9f3e461a-0b79-470f-b599-bba45cda006a@linaro.org>
+Date: Thu, 29 Feb 2024 15:49:20 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240228-ad7944-mainline-v3-0-781b922334af@baylibre.com>
- <20240228-ad7944-mainline-v3-1-781b922334af@baylibre.com> <06235b66-6948-49b3-b881-198443a421df@linaro.org>
-In-Reply-To: <06235b66-6948-49b3-b881-198443a421df@linaro.org>
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 29 Feb 2024 08:35:47 -0600
-Message-ID: <CAMknhBHhrNc-6qggSD1pt8djc9cv93dyNON8c_np6RwqT3yzig@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: add ad7944 ADCs
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: linux-iio@vger.kernel.org, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] dt-bindings: adc: ad7173: add support for
+ additional models
+Content-Language: en-US
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240228135532.30761-1-mitrutzceclan@gmail.com>
+ <20240228135532.30761-2-mitrutzceclan@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240228135532.30761-2-mitrutzceclan@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Feb 29, 2024 at 3:40=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 28/02/2024 19:10, David Lechner wrote:
-> > This adds a new binding for the Analog Devices, Inc. AD7944, AD7985, an=
-d
-> > AD7986 ADCs.
-> >
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > ---
-> >  .../devicetree/bindings/iio/adc/adi,ad7944.yaml    | 213 +++++++++++++=
-++++++++
-> >  MAINTAINERS                                        |   8 +
-> >  2 files changed, 221 insertions(+)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml =
-b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
-> > new file mode 100644
-> > index 000000000000..2564ef4f58cc
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
-> > @@ -0,0 +1,213 @@
-> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> >
-> > v2 changes:
-> > - Removed default 'multi' value from adi,spi-mode property. This simpli=
-fies
-> >   things a bit by not having to check for two possible conditions (abse=
-nce of
-> >   property or explicit default value). Now, only absence of property is=
- valid to
-> >   indicate the default mode. Constraints that depend on this property a=
-re
-> >   updated accordingly.
-> > - Fixed spelling of 'conventional'.
-> > - Expanded description to call out potential confusion of '3-wire' mode=
- being
-> >   unrelated to the standard spi-3wire property.
-> > - Added standard '#daisy-chained-devices' property for chain mode.
-> > - Relaxed requirement of cnv-gpios since it was determined that an acti=
-ve high
-> >   CS could actually be used in chain mode.
->
-> ? Please don't edit patches manually... Use git or git+b4. Or quilt?
->
-> Best regards,
-> Krzysztof
->
+On 28/02/2024 14:54, Dumitru Ceclan wrote:
+> Add support for: AD7172-2, AD7175-8, AD7177-2.
+> AD7172-4 does not feature an internal reference, check for external
+>  reference presence.
+> 
+> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> ---
+>  .../bindings/iio/adc/adi,ad7173.yaml          | 39 +++++++++++++++++--
+>  1 file changed, 36 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> index 36f16a325bc5..7b5bb839fc3e 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
 
-Oh geez, yeah really dumb mistake. Will resend. I do use b4 but it
-doesn't handle per-patch changelogs that I know of.
+There is no such file in next-20240229.
+
+> @@ -21,17 +21,23 @@ description: |
+>  
+>    Datasheets for supported chips:
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-4.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-8.pdf
+>      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7176-2.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD7177-2.pdf
+>  
+>  properties:
+>    compatible:
+>      enum:
+>        - adi,ad7172-2
+> +      - adi,ad7172-4
+>        - adi,ad7173-8
+>        - adi,ad7175-2
+> +      - adi,ad7175-8
+>        - adi,ad7176-2
+> +      - adi,ad7177-2
+>  
+>    reg:
+>      maxItems: 1
+> @@ -136,8 +142,10 @@ patternProperties:
+>            refout-avss: REFOUT/AVSS (Internal reference)
+>            avdd       : AVDD  /AVSS
+>  
+> -          External reference ref2 only available on ad7173-8.
+> -          If not specified, internal reference used.
+> +          External reference ref2 only available on ad7173-8 and ad7172-4.
+> +          Internal reference refout-avss not available on ad7172-4.
+> +
+> +          If not specified, internal reference used (if available).
+>          $ref: /schemas/types.yaml#/definitions/string
+>          enum:
+>            - vref
+> @@ -157,12 +165,15 @@ required:
+>  allOf:
+>    - $ref: /schemas/spi/spi-peripheral-props.yaml#
+>  
+> +  # Only ad7172-4 and ad7173-8 support vref2
+>    - if:
+>        properties:
+>          compatible:
+>            not:
+>              contains:
+> -              const: adi,ad7173-8
+> +              anyOf:
+
+That's enum... or you want to make something more complicated because I
+see there not:...
+
+> +                - const: adi,ad7172-4
+> +                - const: adi,ad7173-8
+>      then:
+>        properties:
+>          vref2-supply: false
+> @@ -177,6 +188,28 @@ allOf:
+>              reg:
+>                maximum: 3
+>  
+> +  # Model ad7172-4 does not support internal reference
+> +  #  mandatory to have an external reference
+> +  - if:
+> +      properties:
+> +        compatible:
+> +          contains:
+> +            const: adi,ad7172-4
+> +    then:
+> +      patternProperties:
+> +        "^channel@[0-9a-f]$":
+> +          properties:
+> +            adi,reference-select:
+> +              enum:
+> +                - vref
+> +                - vref2
+> +                - avdd
+> +          required:
+> +            - adi,reference-select
+
+Are you defining properties here? I cannot verify because this file does
+not exist in next.
+
+> +      oneOf:
+> +        - required: [vref2-supply]
+> +        - required: [vref-supply]
+
+
+Best regards,
+Krzysztof
+
 

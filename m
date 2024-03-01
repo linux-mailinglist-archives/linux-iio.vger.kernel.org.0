@@ -1,120 +1,145 @@
-Return-Path: <linux-iio+bounces-3250-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3251-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3835B86D635
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 22:31:54 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF03C86DBF5
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Mar 2024 08:16:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE83E1F23449
-	for <lists+linux-iio@lfdr.de>; Thu, 29 Feb 2024 21:31:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A20428A9F8
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Mar 2024 07:16:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0286D501;
-	Thu, 29 Feb 2024 21:31:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9BF69941;
+	Fri,  1 Mar 2024 07:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Otdgupdr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="leng/8N5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EBC116FF41
-	for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 21:31:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AEF6930F;
+	Fri,  1 Mar 2024 07:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709242306; cv=none; b=OilIz5iBauP9ag6raL4XPo50ojAPgxKBeOakLbNacrCFY8iOj/lp9CUn+zruZ0BdxlUU3mnPmGB0+iT2qroJfkO+kk0EMQZxg3/rSqGsuP+6NhGm7s8S61FSyVpnjCV8FrSUkFb+Ol8JwDMcno+4mHMvJLMF0wa0RJNpOyEQadA=
+	t=1709277416; cv=none; b=DQBVil/mphwM3RsZfe5V2aLCUI+40H0nNI08MuaCWV+exBT8LJSjfBogj41Nrtfb77vgtK82RfrizG0DajlOn5+DHcP78jCCJ71QjykPvOZq5r8IGmoa+LvCrc3gLbOoD+/n3koR1mV2wS3JeKORWOB10FMmjrFU2tIYRL3n3Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709242306; c=relaxed/simple;
-	bh=QzZTm6RzwKOCXz1s1DDgA6t36vWxFMgXU9qMOsdvjRM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hLVAldLQEn6ZYYkcKIGxhvrJyQlVSwDqYCtI0OLRSpW00UlNvUqb42YEK3gO9vmAmjYJ2Cx44qApyvslKt9Tt8QLyc2dDfb1ZHebSYKd9ocFnjrJY1TGQiMQ2o8UwMuxV0byDdOQBMh37WUavSlDfFTre+rKyL6efw4mzGywJ2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Otdgupdr; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1d7232dcb3eso11534455ad.2
-        for <linux-iio@vger.kernel.org>; Thu, 29 Feb 2024 13:31:45 -0800 (PST)
+	s=arc-20240116; t=1709277416; c=relaxed/simple;
+	bh=WHKVZdrxfAxAeyIcsa7IjNySNrmUfuP0ojsYfxM1XHI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=RFBxh+OdKQy+iNZL/OsooxJvRCNOElK+po4E49MAdCx1tsqJjS1q98GtU9fPbnp9ry6OALngOmJJ/u2qyb3ooyzYpQgZANV9cFIa7SQlUe/9HMF7wqYlMD/Tktq3pF+La2laudM2ABHQA2u9/XuOHQlG66xjymUjTnu06ckQbmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=leng/8N5; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-412c227c80bso7878945e9.1;
+        Thu, 29 Feb 2024 23:16:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1709242305; x=1709847105; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fi9gJh0JIT3rydMe7Re3YRcK5pxmffs/i/bQwJvpoAc=;
-        b=OtdgupdrMqUU6v6YG5ItdSUVYWtggtW7CLi08MPwU/tGTaozH8afksz/j9WnraUdkZ
-         gQO7+saJw0TruPFKJJShHIMwzH14EPnGlOS+T/kEWAOEPVR4l6UaIrHpoabCCEf3XPtP
-         BuKQeG2cQ0ZPa/TIhRpwB3WIcITiVw6Bv0O6A=
+        d=gmail.com; s=20230601; t=1709277413; x=1709882213; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0F7J/E4zNfIGX63i/LqfI7L83PfKXt6U/fCuTc8OprU=;
+        b=leng/8N5qrrVhKhYYfnlwwjtDXjtcTFQzut6i0i+d1SkPfYBebzd3wRX9DFqaWxin8
+         rWQC9o0FY2zjyFFyZbdnUow6Zt60VguEuWjbNiCSIwLEHtpAfwI6bJy1By0Ng7E0QI96
+         dWWCHDPB6ObnkYkkTENH/JPgNvG8OG11wEdRuOVcF4iQ/2fSrH5DK+KEL7zM8SVmTrDm
+         us6FL9LwMmuK4FV+jAD6dsBIkmsqTTUh4maKP2zXeEzTXZ6kx91n1FqCVqUawIZqfN3x
+         me2qRhfK3VTxD9sxXHTre46cjwyOx6A5tlmMZH4vdMe8+nTi9FHnUJfX+MKs8CkOqtWo
+         12DQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709242305; x=1709847105;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fi9gJh0JIT3rydMe7Re3YRcK5pxmffs/i/bQwJvpoAc=;
-        b=At5ugtcg4tBDm2zSY9tvd93mW4vfF8BuckUKRuof4uEh9YeZyS4cpdyX+mYmLDqatv
-         na3zn4QCRcPe3EkjWo5OLRERGdJss6WWHLM38aoRSQSw6F8ao9C3PPP2K+DomGMfcvey
-         1CfIV17n3Qjjf4XzkivnTAKMqrlm7dFS57hun+K4/YP5+PtnDKi79+/7XNYhvtBCKVhM
-         Wi2U7KEmFdwfUlS/zHnLQbM/7qP4ZgjbTbEOugFM6UyTTkVtuEN8aTrtdSFW/uM+3bsq
-         HwXPwqEEbzuQUiTaSHyx/5NvaKtCSCYNZ89HBjtFkDZruNn1UCWIogHAJkGURCGI9YVX
-         SQUg==
-X-Forwarded-Encrypted: i=1; AJvYcCXbE3wRrCJZd283b2P46Eo+ewsxfxoi5VV5EvYat5vxC7MNr+haPmYyfSzI/TgyYHiAuuGaS9qlTUmpLWXe7T8ujMqE3jh1JmsR
-X-Gm-Message-State: AOJu0YwBsPV95/v+AxtHnM3zQKq3f/BajGhgDmzobRa/K62+TJKuKA9C
-	PeL6YS5CaDMifIc4Px3iiw4L/+JwYXOCswqhiKhnLUNZZqrkGvHQxf0rMDVmcqFIsmO8WU8PPgs
-	=
-X-Google-Smtp-Source: AGHT+IE+DUv8Qdh0LZ32jo8m9iF3a01wivEsDDN/MHriPt719iWzbKIbR1Qbd56MoYjYqe7Ub9Claw==
-X-Received: by 2002:a17:902:654a:b0:1dc:ca72:8318 with SMTP id d10-20020a170902654a00b001dcca728318mr2807886pln.37.1709242304905;
-        Thu, 29 Feb 2024 13:31:44 -0800 (PST)
-Received: from www.outflux.net ([198.0.35.241])
-        by smtp.gmail.com with ESMTPSA id y9-20020a1709027c8900b001db717d2dbbsm1954387pll.210.2024.02.29.13.31.44
+        d=1e100.net; s=20230601; t=1709277413; x=1709882213;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0F7J/E4zNfIGX63i/LqfI7L83PfKXt6U/fCuTc8OprU=;
+        b=ZLIcmZodQVjdGcyLqa0KErRC/EPB3Gko4wZoSchABItmvjePVTFcLClDphT6spgqcZ
+         Q8q4H9Vre87jvPKxQj4tjrq8Fc++C/r3O4SB0H3i6Llwbr5Y+SpgX2R8FwFZ5C0GKknh
+         IY43Ht2M1C3/Bqb8/lU+2u0DEKSxa2p0RhSGuMry/j/r7prLWg+OE2HUY2wyaBcl2jn2
+         a50is9OspTbP9I0e5j+UqN+xT1I1uayE61ujBK1nxLuzkmBENQdwO8LqCaCXuxmsgoNc
+         SrvllKttysBpBQKjdlfrFk+WNScDPyULlhtXtpsQRITZjk9MgUZylgsAbX4HjDG7yRJe
+         NDBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWmAwZSx0EtvllH62gaBCZW7tVvQyeD4tdxfu+tIIt3r5RC4sOWuidEDGqIltk0I4ERSlsQv3rRhVOyFd4M/9h/0fdZuRectLfSDA==
+X-Gm-Message-State: AOJu0YxZwJdhPoB7T6KWjYdZedMFfDSjDtVycntxWi749fpTcAUYdTKo
+	pKY+IJL10fbO+3J2WsnVL2loPf5T+AF5D3lHqiJ6z2b6oMS06tVA
+X-Google-Smtp-Source: AGHT+IGVXdRL1BMgIqQojocmat4yNXQDqAi1l/tVjGo/Ip7UUfXPxszmXYIcMd5luwPJXYayGLe1Rg==
+X-Received: by 2002:a05:600c:458f:b0:412:bfa1:2139 with SMTP id r15-20020a05600c458f00b00412bfa12139mr622553wmo.37.1709277413046;
+        Thu, 29 Feb 2024 23:16:53 -0800 (PST)
+Received: from ?IPv6:2001:a61:343e:8301:d737:22b0:7431:8d01? ([2001:a61:343e:8301:d737:22b0:7431:8d01])
+        by smtp.gmail.com with ESMTPSA id iv11-20020a05600c548b00b00412a9a60f83sm4444327wmb.3.2024.02.29.23.16.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Feb 2024 13:31:44 -0800 (PST)
-Date: Thu, 29 Feb 2024 13:31:43 -0800
-From: Kees Cook <keescook@chromium.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-spi@vger.kernel.org, netdev@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>
-Subject: Re: [PATCH v4 7/8] net-device: Use new helpers from overflow.h in
- netdevice APIs
-Message-ID: <202402291330.0510946B67@keescook>
-References: <20240228204919.3680786-1-andriy.shevchenko@linux.intel.com>
- <20240228204919.3680786-8-andriy.shevchenko@linux.intel.com>
- <202402281341.AC67EB6E35@keescook>
- <20240228144148.5c227487@kernel.org>
- <202402281554.C1CEEF744@keescook>
- <20240228165609.06f5254a@kernel.org>
- <202402291059.491B5E03@keescook>
- <20240229113706.42c877a1@kernel.org>
+        Thu, 29 Feb 2024 23:16:52 -0800 (PST)
+Message-ID: <af4539ebb5786d1f93c3d9b2b427412838e75160.camel@gmail.com>
+Subject: Re: [PATCH v2 2/3] dt-bindings: iio: temperature: ltc2983: document
+ power supply
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Rob Herring <robh@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Jonathan Cameron
+ <jic23@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+  Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring
+ <robh+dt@kernel.org>
+Date: Fri, 01 Mar 2024 08:16:52 +0100
+In-Reply-To: <170922758600.4099132.651212743562426191.robh@kernel.org>
+References: <20240229-ltc2983-misc-improv-v2-0-cc6f03da2529@analog.com>
+	 <20240229-ltc2983-misc-improv-v2-2-cc6f03da2529@analog.com>
+	 <170922758600.4099132.651212743562426191.robh@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240229113706.42c877a1@kernel.org>
 
-On Thu, Feb 29, 2024 at 11:37:06AM -0800, Jakub Kicinski wrote:
-> On Thu, 29 Feb 2024 11:08:58 -0800 Kees Cook wrote:
-> > > And some seem to be cargo-culted from out-of-tree code and are unused :S  
-> > 
-> > Ah, which can I remove?
-> 
-> The one in igc.h does not seem to be referenced by anything in the igc
-> directory. Pretty sure it's unused.
+On Thu, 2024-02-29 at 11:26 -0600, Rob Herring wrote:
+>=20
+> On Thu, 29 Feb 2024 17:11:42 +0100, Nuno Sa wrote:
+> > Add a property for the VDD power supply regulator.
+> >=20
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > ---
+> > =C2=A0Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yam=
+l | 3 +++
+> > =C2=A01 file changed, 3 insertions(+)
+> >=20
+>=20
+> My bot found errors running 'make DT_CHECKER_FLAGS=3D-m dt_binding_check'
+> on your patch (DT_CHECKER_FLAGS is new in v5.13):
+>=20
+> yamllint warnings/errors:
+>=20
+> dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-
+> ci/linux/Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.ex=
+ample.dtb:
+> temperature-sensor@0: 'vdd-supply' is a required property
+> 	from schema $id:
+> http://devicetree.org/schemas/iio/temperature/adi,ltc2983.yaml#
+>=20
+> doc reference errors (make refcheckdocs):
+>=20
+> See
+> https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240229-l=
+tc2983-misc-improv-v2-2-cc6f03da2529@analog.com
+>=20
+> The base for the series is generally the latest rc1. A different dependen=
+cy
+> should be noted in *this* patch.
+>=20
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+>=20
+> pip3 install dtschema --upgrade
+>=20
+> Please check and re-submit after running the above command yourself. Note
+> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+> your schema. However, it must be unset to test all examples with your sch=
+ema.
+>=20
 
-I'll double check. After trying to do a few conversions I really hit
-stuff I didn't like, so I took a slightly different approach in the
-patch I sent.
+Damn!!!! I'll send a v3 fixing this...
 
--- 
-Kees Cook
+- Nuno S=C3=A1
 

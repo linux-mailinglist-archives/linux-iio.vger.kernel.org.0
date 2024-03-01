@@ -1,117 +1,115 @@
-Return-Path: <linux-iio+bounces-3255-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3258-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CE8D86E701
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Mar 2024 18:15:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE94B86EBF5
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Mar 2024 23:39:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44AA01F29787
-	for <lists+linux-iio@lfdr.de>; Fri,  1 Mar 2024 17:15:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A171028577B
+	for <lists+linux-iio@lfdr.de>; Fri,  1 Mar 2024 22:39:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D7710A2D;
-	Fri,  1 Mar 2024 17:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF00F5E3D8;
+	Fri,  1 Mar 2024 22:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N5hgqv9k"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gUcXrBeu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D116FC8;
-	Fri,  1 Mar 2024 17:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BAC59153;
+	Fri,  1 Mar 2024 22:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709313294; cv=none; b=gwmxgE2vaZ+4dCUmJcFTdX3ZoKVtK6GypkBEpxsdwW8TKDFWjmFV0b2n99d/wjuNghEMoHMTDLj8xn0Bf3ns4TY6CRS9I1RCvVmOwA9tpXQTQ8B26H3jdgAwWQaLgvtf2jJhNMhzFK2qUZgqj8VKq7nPIdOZfcPoTIt/MtO/tjc=
+	t=1709332784; cv=none; b=s1h1peWt3JvPoHzmfs07NqLtLo19i1m/49L7mdP1B3Sw//7QMVnoQYx2clcQRWITJznDcomvJgKLXANSVWQcqQCb3Zv5ma3F4Ggja8HblqvhoR427ANrd+bfvBr79K8lDpKfLgBJEUCPz5mfHOUDhsAwQR3w6Wsdnu2/Vcqtdzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709313294; c=relaxed/simple;
-	bh=9MPZx7U6NECvNT+hg5zI2JtI2unkxN0TswH2hArF/+4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hI9C62zNtrFkXHGcJ/bwrIwT5G1PgrQrT/ChL6si0Cj3lfpHPVaJsVE+6DxTRPDQNzyQY2CGUsCIZPFmKJlnSQ4ZdXuR3WOk+DxpvyF9KqwlaMfwkhfy/Nh5U5itEcZdxa71aBbWGXouwQ3LIRQfwBLuGSIoG6Weg1MsIzW+a88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N5hgqv9k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8926BC43399;
-	Fri,  1 Mar 2024 17:14:53 +0000 (UTC)
+	s=arc-20240116; t=1709332784; c=relaxed/simple;
+	bh=gd1f0JmgW2lhfJwMqf/zdowmXxcjdaYyBE2I6GBLjTc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jGvxCYKXFzXrOiU6XfvvSG9xhoXLHoLSLg6YAB+nfvOj0YvtRxGet4cZOG19Ie1hmMp7QFB/3F2zO3eeAmzW8IL0KiGiEF5nC+2CPK0zkiBDhT65axxUh/bexTavdHwNKXqTTT3FR84ObrizGVQgsd01GMu7OPp62H7cjX6Z834=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gUcXrBeu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9D3C433F1;
+	Fri,  1 Mar 2024 22:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709313293;
-	bh=9MPZx7U6NECvNT+hg5zI2JtI2unkxN0TswH2hArF/+4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=N5hgqv9kax9ygIVvD5/K+7amrshqpGrdv/Zc7nxxCcJYfNOhs9lyTGtkyaAJKA4QA
-	 SjYeOdO2IWRam4f37dOBRn8oIyB8j4vhzzP+2tQO+SQZ96yjD4j8HE6o3LZNpqWzp6
-	 U1pbpBxphbv5HFAiG51VOtbxOWemGopdLGR/UiGOpVplCeJCEBtpxI/jglQLiEq2E8
-	 va6a4U5QFwDGNqc4nRIvvzIYizL9E3P7kbEslcEJ8EE5fGkA+fKvGyPZOfU3rIo2C4
-	 tx5HEfymWJPK7CT1ZMegyDic74D0SOKvWpNJd9zSXc7chSJt+LSrcRFWF179rbag++
-	 G05sEtpWxW3rw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 74F53C54E49;
-	Fri,  1 Mar 2024 17:14:53 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 01 Mar 2024 18:14:52 +0100
-Subject: [PATCH v3 3/3] iio: temperature: ltc2983: support vdd regulator
+	s=k20201202; t=1709332784;
+	bh=gd1f0JmgW2lhfJwMqf/zdowmXxcjdaYyBE2I6GBLjTc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gUcXrBeuXb+gSba1MISbY8ZI9Asv/8gfB7IcJzmjThNAC3bu9EX8B8M4DHXxm5CmL
+	 EhSPkuG5X2QPns555r6RcdyhCXjmI6L7oIsQwDuDb2FcYsaN5KuIimzBCrtfHA8wHH
+	 GGju4TZ9bd2Dqwl0Wluz2TVtuVLhL11VEVSyO80M2YJJGifaP0WeGsolwZyY8iO70X
+	 YDpUpbnyY3NJopbypb68FKpb0M3NFxD7nGNl7qoOjibLeTPbkhrJtmBhpIAIG8nlv/
+	 4bpRDHVfSH3DZoI3e7SOqGeHpVCZsg0/dRKxW4DJ+b473x06C/rKXshhzYzVyamPIx
+	 g8XUsaomD19SA==
+Date: Fri, 1 Mar 2024 16:39:42 -0600
+From: Rob Herring <robh@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org,
+	Frank Rowand <frowand.list@gmail.com>, linux-kernel@vger.kernel.org,
+	Julia Lawall <Julia.Lawall@inria.fr>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	marek.vasut@gmail.com,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [RESEND PATCH v2 0/4] of: automate of_node_put() - new approach
+ to loops.
+Message-ID: <20240301223942.GA3179769-robh@kernel.org>
+References: <20240225142714.286440-1-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240301-ltc2983-misc-improv-v3-3-c09516ac0efc@analog.com>
-References: <20240301-ltc2983-misc-improv-v3-0-c09516ac0efc@analog.com>
-In-Reply-To: <20240301-ltc2983-misc-improv-v3-0-c09516ac0efc@analog.com>
-To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Nuno Sa <nuno.sa@analog.com>
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1709313291; l=908;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=2oUoUw4KkUIEscan+R7Gf4fDzMGadWsp8HmTiYX2GY8=;
- b=21Pd1s7jXIJSXO9pTvA5u5zM5BJEidLumUPfRe/q/BNROYoy6DMxN3avsGLLoW1izPTcdL3Qw
- +chTKG6yU7oBPc1HpwoteCkAzUr1tGP6nCeLApHIk0DMDZIT2ZM2mlm
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received:
- by B4 Relay for nuno.sa@analog.com/20231116 with auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: <nuno.sa@analog.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240225142714.286440-1-jic23@kernel.org>
 
-From: Nuno Sa <nuno.sa@analog.com>
+On Sun, Feb 25, 2024 at 02:27:10PM +0000, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Some discussion occured on previous posting.
+> https://lore.kernel.org/linux-iio/20240223124432.26443-1-Jonathan.Cameron@huawei.com/
+> 
+> Summary:
+> * fwnode conversions should be considered when applying this
+>   infrastructure to a driver. Perhaps better to move directly to
+>   the generic FW property handling rather than improve existing
+>   of specific code.
+> * There are lots of potential places to use this based on detections
+>   from Julia's coccinelle scripts linked below.
+> 
+> The equivalent device_for_each_child_node_scoped() series for
+> fwnode will be queued up in IIO for the merge window shortly as
+> it has gathered sufficient tags. Hopefully the precdent set there
+> for the approach will reassure people that instantiating the
+> child variable inside the macro definition is the best approach.
+> https://lore.kernel.org/linux-iio/20240217164249.921878-1-jic23@kernel.org/
+> 
+> v2: Andy suggested most of the original converted set should move to
+>     generic fwnode / property.h handling.  Within IIO that was
+>     a reasonable observation given we've been trying to move away from
+>     firmware specific handling for some time. Patches making that change
+>     to appropriate drivers posted.
+>     As we discussed there are cases which are not suitable for such
+>     conversion and this infrastructure still provides clear benefits
+>     for them.
+> 
+> Ideally it would be good if this introductory series adding the
+> infrastructure makes the 6.9 merge window. There are no dependencies
+> on work queued in the IIO tree, so this can go via devicetree
+> if the maintainers would prefer. I've had some off list messages
+> asking when this would be merged, as there is interest in building
+> on it next cycle for other parts of the kernel (where conversion to
+> fwnode handling may be less appropriate).
 
-Add support for the power supply regulator.
+I'll let you take it. For the series:
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/temperature/ltc2983.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Reviewed-by: Rob Herring <robh@kernel.org>
 
-diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
-index 592887097117..9fb547417536 100644
---- a/drivers/iio/temperature/ltc2983.c
-+++ b/drivers/iio/temperature/ltc2983.c
-@@ -18,6 +18,7 @@
- #include <linux/module.h>
- #include <linux/property.h>
- #include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
- #include <linux/spi/spi.h>
- 
- #include <asm/byteorder.h>
-@@ -1581,6 +1582,10 @@ static int ltc2983_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
-+	ret = devm_regulator_get_enable(&spi->dev, "vdd");
-+	if (ret)
-+		return ret;
-+
- 	gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(gpio))
- 		return PTR_ERR(gpio);
+I've got some drivers/of/ conversions too, but they are probably next 
+cycle at this point.
 
--- 
-2.43.2
-
+Rob
 

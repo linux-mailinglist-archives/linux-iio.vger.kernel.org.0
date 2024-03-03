@@ -1,411 +1,231 @@
-Return-Path: <linux-iio+bounces-3287-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3288-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7D886F63C
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 17:54:07 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB1086F647
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 17:56:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2846C1C20BAE
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 16:54:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC7BE1C21991
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 16:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C9F070044;
-	Sun,  3 Mar 2024 16:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7436E5F8;
+	Sun,  3 Mar 2024 16:56:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="emP4IYTw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K+tfJAKz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1EE6CDD1;
-	Sun,  3 Mar 2024 16:53:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5576E5F5
+	for <linux-iio@vger.kernel.org>; Sun,  3 Mar 2024 16:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709484798; cv=none; b=lSa7jnMQV6+WmN5dLpTqIctkipUfzkIPufmW639R6wx3WRks3YxzhZN9NtC7pNH9bunBMu7DKSHC2BvAd0R+288K+Id+KHu96lsHZs7QXrC+Lxl/EPtMi4A5shpNmz+/ORyLwlYGN6srUgTl5vnyC5u10V/nV9MA5jhrq1DDZu8=
+	t=1709484976; cv=none; b=mJUdQmNK5DkPBTb8N1tUu3PtOFvWNauaAwCLx5JiHZ9AVXo3Sb905UDqlGuvajQdXYaEZMD/QrL0A8FZdQ87wIMpt25Z/g9tYl15K4ZndNaS3H3B8PkZCXdrx0wR1YqH/AgFXsDfSz3nLr7cQzkdmkuFqDTuL9zcOsu/t/NzW0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709484798; c=relaxed/simple;
-	bh=uhESgY2UxXBKI+7rBvTEsnnDNHfYJqOz6gw05iIfEZ8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=E44XnD+OPkfTixPjjy12kZXBQBFjLdSWbb5Jw0ZwNdOhIUnS9LiqIOAD3MC5bus9lkxLlmvkRi9sGTX37MDPxZLCKRfXs6oRzseQAMJQDhg80r1yhLrvLqaYjijEjxz0l+LyWHMv5rAMRoJonlHZW1Xckb0totAAA19/meT9tyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=emP4IYTw; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d23d301452so40406761fa.1;
-        Sun, 03 Mar 2024 08:53:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709484794; x=1710089594; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nvQGs5JXVU+jRv/aFfQyeDN1+W6T2RkgkEWiTbN0Q2Q=;
-        b=emP4IYTwgb8okUTOxbUC8qlEDpzlN2KKPJJoSMLPFt38yiDF1/kWEX7OU/PJPRJFsx
-         ffebZhJtHdDLJ6tAHySKtxo4RxWKNaeECvM5M5Q+TptcxyrxELiPfFVcRNlAhbnYvE8Y
-         q9th+XoOl0NaDhWegrWRjgUvRjLAp8zkCFBzEHnKAJLShKqPbrWnVmiuzK/Uez83m64+
-         LVsUvMR1R4DrW0xFXlR1biHBpEp69V63CwyX5Kraxseiwycu2OtsQmTqDqDRK3zPFLJ8
-         A8cRLcLMHvZC3WopDHlEuKf0wwWSCntGVsEBHyBLb2X2Qd0398wNNn4w6QAXVsksrLoM
-         3aFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709484794; x=1710089594;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nvQGs5JXVU+jRv/aFfQyeDN1+W6T2RkgkEWiTbN0Q2Q=;
-        b=Jxi330V8JMhphWk5rbAvBQ5fQ2JFsayNsWIFTA3bUfJ3lb1/KaZGCItDzknVszE6F9
-         xqxWslNnOUlCVGUVxSDdlTI9NcYwV0bh8yCz6ifyTXAITTGo8PfCsuKoSU0TR2fCzC9R
-         v/WKIQMlZCaDrR6TScBv9FCJDafD/VincioaneWz9YPH6Jgu6B+KvXwt7C3by0WWGYYt
-         IirT/5taJb+ORNXpv599hFpr70yom+iMUwvG7qTLlh4J65Ol/Lmvy3mrOS3Sl2fJUoOw
-         zrG3M1WVpyv5zWuZ+y/CPfC7y8x9oRVSmIq+Md/RWhJ51vqyIoty/VNYYJobRYrgEfd9
-         CEkA==
-X-Forwarded-Encrypted: i=1; AJvYcCV2Xf+IruRIGG8kyxeSuWSKTLOWEFpX7lkrnLAXIbPXr8riLHLMrRVl3yuN/Y5LisdOgKmPoBVU1Hgrpni7+WBChU5IqgCfd5m/2apkXOqKA/wyi3TYbx1SVVILy0Tmp7LjRATR85f2
-X-Gm-Message-State: AOJu0Yzq8gvCBi4FLb4tUbi7BhrgTSq7ZQDau4mXc+9HA+O+dN0u/7AS
-	r0P08nxORrZ2ygoe2zrpnTDj8hWL2si8xSm6J/lGxla+SVKehPHX
-X-Google-Smtp-Source: AGHT+IHBVQnX6U+5ZuBsF7tNjPtOunE/B/o91NDafDH9W4gR/xabrIQ7eit/M+UkVW/nPPqxZzioLA==
-X-Received: by 2002:a05:6512:2388:b0:512:be8e:79da with SMTP id c8-20020a056512238800b00512be8e79damr6134926lfv.8.1709484794074;
-        Sun, 03 Mar 2024 08:53:14 -0800 (PST)
-Received: from localhost.localdomain ([2a04:ee41:82:7577:d4e3:724b:4d69:34b2])
-        by smtp.gmail.com with ESMTPSA id lh15-20020a170906f8cf00b00a44f14c8d64sm1413992ejb.135.2024.03.03.08.53.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Mar 2024 08:53:13 -0800 (PST)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: jic23@kernel.org
-Cc: lars@metafoo.de,
-	andriy.shevchenko@linux.intel.com,
-	ang.iglesiasg@gmail.com,
-	mazziesaccount@gmail.com,
-	ak@it-klinger.de,
-	petre.rodan@subdimension.ro,
-	phil@raspberrypi.com,
-	579lpy@gmail.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vasileios Amoiridis <vassilisamir@gmail.com>
-Subject: [PATCH 4/4] iio: pressure: Add triggered buffer support for BMP280 driver
-Date: Sun,  3 Mar 2024 17:53:00 +0100
-Message-Id: <20240303165300.468011-5-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240303165300.468011-1-vassilisamir@gmail.com>
-References: <20240303165300.468011-1-vassilisamir@gmail.com>
+	s=arc-20240116; t=1709484976; c=relaxed/simple;
+	bh=/QuK0LMBv65e+XPv7L3zO/BW48BqXA8OYU85bxz8bWE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=vEfTXslFn8eAncW5Pd085F3YuD+Zwd0spKvLfd6CWj8iL+21WMInA+XFKnHFo1NJ5HiPdKNqzaXNKlPHgPtEafIdcLZj4pprnBbQbrsqBUiZtv+xla9PFKhEG6m5zYtSpAkPBu6rF99FRpkWiot5LulIcRJ1pq/ZjfnAOD/eIGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K+tfJAKz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B745DC433C7;
+	Sun,  3 Mar 2024 16:56:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709484975;
+	bh=/QuK0LMBv65e+XPv7L3zO/BW48BqXA8OYU85bxz8bWE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=K+tfJAKzmMLyciAyx08t9kv1/4jFY6m2PlswtAx2+dsXFLJ9fk0I9mxEr3wSiPi7M
+	 JaCDhRFmqMVA1K6Z7EnlkyOFN9erPx2+bgIymB2TFOslozGZIxVDvAw2rgEj9Bx4Sz
+	 RNpPH04yJyh+q83aaWPsYXDyjntwvY7T2Toxj/lfBtOA65ttEBK9Do10EGJQ5Z8vXy
+	 v5IdEC1uqHM2Vq4DxtHwyXAM+uBuYvzZbmAZdTh+s4vOfp7R7pCPdwHU6n468zJHL0
+	 L9x0FaabPGherMwImjpvbJJKEPnpSvjRjhWPWGkDiVnA1/Wj0U2XSTTTHxiqblT0bj
+	 HH7WixRYZ7K2A==
+Date: Sun, 3 Mar 2024 16:56:02 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: inv.git-commit@tdk.com
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, Jean-Baptiste Maneyrol
+ <jean-baptiste.maneyrol@tdk.com>
+Subject: Re: [PATCH 1/4] iio: imu: inv_mpu6050: add WoM (Wake-on-Motion)
+ sensor
+Message-ID: <20240303165602.59c29808@jic23-huawei>
+In-Reply-To: <20240225160027.200092-2-inv.git-commit@tdk.com>
+References: <20240225160027.200092-1-inv.git-commit@tdk.com>
+	<20240225160027.200092-2-inv.git-commit@tdk.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Add a buffer struct that will hold the values of the measurements
-and will be pushed to userspace. Modify all read_* functions in order
-to just read and compensate the data without though converting to the
-required IIO measurement units which are used for the oneshot captures.
+On Sun, 25 Feb 2024 16:00:24 +0000
+inv.git-commit@tdk.com wrote:
 
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
----
- drivers/iio/pressure/Kconfig       |   2 +
- drivers/iio/pressure/bmp280-core.c | 155 +++++++++++++++++++++++------
- drivers/iio/pressure/bmp280.h      |   7 ++
- 3 files changed, 134 insertions(+), 30 deletions(-)
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> 
+> WoM is a threshold test on accel value comparing actual sample
+> with previous one. It maps best to magnitude adaptive rising
+> event.
+> Add support of a new WOM sensor and functions for handling the
+> corresponding mag_adaptive_rising event. The event value is in
+> SI units. Ensure WOM is stopped and restarted at suspend-resume
+> and handle usage with buffer data ready interrupt.
+> 
+> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 
-diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
-index 79adfd059c3a..5145b94b4679 100644
---- a/drivers/iio/pressure/Kconfig
-+++ b/drivers/iio/pressure/Kconfig
-@@ -31,6 +31,8 @@ config BMP280
- 	select REGMAP
- 	select BMP280_I2C if (I2C)
- 	select BMP280_SPI if (SPI_MASTER)
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say yes here to build support for Bosch Sensortec BMP180, BMP280, BMP380
- 	  and BMP580 pressure and temperature sensors. Also supports the BME280 with
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 3bdf6002983f..3b1a159e57ea 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -31,8 +31,12 @@
- #include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-+#include <linux/iio/trigger.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h> /* For irq_get_irq_data() */
- #include <linux/module.h>
-@@ -457,13 +461,16 @@ static int bmp280_read_temp(struct bmp280_data *data,
- 
- 	/*
- 	 * val might be NULL if we're called by the read_press routine,
--	 * who only cares about the carry over t_fine value.
-+	 * who only cares about the carry over t_fine value or if we're called
-+	 * by the buffer handler function.
- 	 */
- 	if (val) {
- 		*val = comp_temp * 10;
- 		return IIO_VAL_INT;
- 	}
- 
-+	data->iio_buffer.temperature = comp_temp;
-+
- 	return 0;
- }
- 
-@@ -494,10 +501,16 @@ static int bmp280_read_press(struct bmp280_data *data,
- 	}
- 	comp_press = bmp280_compensate_press(data, adc_press);
- 
--	*val = comp_press;
--	*val2 = 256000;
-+	/* val might be NULL if we're called by the buffer handler */
-+	if (val) {
-+		*val = comp_press;
-+		*val2 = 256000;
-+		return IIO_VAL_FRACTIONAL;
-+	}
-+
-+	data->iio_buffer.pressure = comp_press;
- 
--	return IIO_VAL_FRACTIONAL;
-+	return 0;
- }
- 
- static int bmp280_read_humid(struct bmp280_data *data, int *val, int *val2)
-@@ -526,9 +539,15 @@ static int bmp280_read_humid(struct bmp280_data *data, int *val, int *val2)
- 	}
- 	comp_humidity = bmp280_compensate_humidity(data, adc_humidity);
- 
--	*val = comp_humidity * 1000 / 1024;
-+	/* val might be NULL if we're called by the buffer handler */
-+	if (val) {
-+		*val = comp_humidity * 1000 / 1024;
-+		return IIO_VAL_INT;
-+	}
- 
--	return IIO_VAL_INT;
-+	data->iio_buffer.humidity = comp_humidity;
-+
-+	return 0;
- }
- 
- static int bmp280_read_raw(struct iio_dev *indio_dev,
-@@ -1170,7 +1189,8 @@ static int bmp380_read_temp(struct bmp280_data *data, int *val, int *val2)
- 
- 	/*
- 	 * Val might be NULL if we're called by the read_press routine,
--	 * who only cares about the carry over t_fine value.
-+	 * who only cares about the carry over t_fine value or if we're called
-+	 * by the buffer handler.
- 	 */
- 	if (val) {
- 		/* IIO reports temperatures in milli Celsius */
-@@ -1178,6 +1198,8 @@ static int bmp380_read_temp(struct bmp280_data *data, int *val, int *val2)
- 		return IIO_VAL_INT;
- 	}
- 
-+	data->iio_buffer.temperature = comp_temp;
-+
- 	return 0;
- }
- 
-@@ -1206,11 +1228,17 @@ static int bmp380_read_press(struct bmp280_data *data, int *val, int *val2)
- 	}
- 	comp_press = bmp380_compensate_press(data, adc_press);
- 
--	*val = comp_press;
--	/* Compensated pressure is in cPa (centipascals) */
--	*val2 = 100000;
-+	/* val might be NULL if we're called by the buffer handler */
-+	if (val) {
-+		*val = comp_press;
-+		/* Compensated pressure is in cPa (centipascals) */
-+		*val2 = 100000;
-+		return IIO_VAL_FRACTIONAL;
-+	}
-+
-+	data->iio_buffer.pressure = comp_press;
- 
--	return IIO_VAL_FRACTIONAL;
-+	return 0;
- }
- 
- static int bmp380_read_calib(struct bmp280_data *data)
-@@ -1543,14 +1571,21 @@ static int bmp580_read_temp(struct bmp280_data *data, int *val, int *val2)
- 		return -EIO;
- 	}
- 
--	/*
--	 * Temperature is returned in Celsius degrees in fractional
--	 * form down 2^16. We rescale by x1000 to return milli Celsius
--	 * to respect IIO ABI.
--	 */
--	*val = raw_temp * 1000;
--	*val2 = 16;
--	return IIO_VAL_FRACTIONAL_LOG2;
-+	/* val might be NULL if we're called by the buffer handler */
-+	if (val) {
-+		/*
-+		* Temperature is returned in Celsius degrees in fractional
-+		* form down 2^16. We rescale by x1000 to return milli Celsius
-+		* to respect IIO ABI.
-+		*/
-+		*val = raw_temp * 1000;
-+		*val2 = 16;
-+		return IIO_VAL_FRACTIONAL_LOG2;
-+	}
-+
-+	data->iio_buffer.temperature = raw_temp;
-+
-+	return 0;
- }
- 
- static int bmp580_read_press(struct bmp280_data *data, int *val, int *val2)
-@@ -1570,13 +1605,21 @@ static int bmp580_read_press(struct bmp280_data *data, int *val, int *val2)
- 		dev_err(data->dev, "reading pressure skipped\n");
- 		return -EIO;
- 	}
--	/*
--	 * Pressure is returned in Pascals in fractional form down 2^16.
--	 * We rescale /1000 to convert to kilopascal to respect IIO ABI.
--	 */
--	*val = raw_press;
--	*val2 = 64000; /* 2^6 * 1000 */
--	return IIO_VAL_FRACTIONAL;
-+
-+	/* val might be NULL if we're called by the buffer handler */
-+	if (val) {
-+		/*
-+		 * Pressure is returned in Pascals in fractional form down 2^16.
-+		 * We rescale /1000 to convert to kilopascal to respect IIO ABI.
-+		*/
-+		*val = raw_press;
-+		*val2 = 64000; /* 2^6 * 1000 */
-+		return IIO_VAL_FRACTIONAL;
-+	}
-+
-+	data->iio_buffer.pressure = raw_press;
-+
-+	return 0;
- }
- 
- static const int bmp580_odr_table[][2] = {
-@@ -2048,13 +2091,16 @@ static int bmp180_read_temp(struct bmp280_data *data, int *val, int *val2)
- 
- 	/*
- 	 * val might be NULL if we're called by the read_press routine,
--	 * who only cares about the carry over t_fine value.
-+	 * who only cares about the carry over t_fine value or if we're called
-+	 * by the buffer handler.
- 	 */
- 	if (val) {
- 		*val = comp_temp * 100;
- 		return IIO_VAL_INT;
- 	}
- 
-+	data->iio_buffer.temperature = comp_temp;
-+
- 	return 0;
- }
- 
-@@ -2133,10 +2179,16 @@ static int bmp180_read_press(struct bmp280_data *data,
- 
- 	comp_press = bmp180_compensate_press(data, adc_press);
- 
--	*val = comp_press;
--	*val2 = 1000;
-+	/* val might be NULL if we're called by the buffer handler */
-+	if (val) {
-+		*val = comp_press;
-+		*val2 = 1000;
-+		return IIO_VAL_FRACTIONAL;
-+	}
-+
-+	data->iio_buffer.pressure = comp_press;
- 
--	return IIO_VAL_FRACTIONAL;
-+	return 0;
- }
- 
- static int bmp180_chip_config(struct bmp280_data *data)
-@@ -2217,6 +2269,43 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
- 	return 0;
- }
- 
-+static irqreturn_t bmp280_buffer_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct bmp280_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	mutex_lock(&data->lock);
-+
-+	if (test_bit(BMP280_TEMP, indio_dev->active_scan_mask)) {
-+		ret = data->chip_info->read_temp(data, NULL, NULL);
-+		if (ret < 0)
-+			goto done;
-+	}
-+
-+	if (test_bit(BMP280_PRESS, indio_dev->active_scan_mask)) {
-+		ret = data->chip_info->read_press(data, NULL, NULL);
-+		if (ret < 0)
-+			goto done;
-+	}
-+
-+	if (test_bit(BME280_HUMID, indio_dev->active_scan_mask)) {
-+		ret = data->chip_info->read_humid(data, NULL, NULL);
-+		if (ret < 0)
-+			goto done;
-+	}
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->iio_buffer,
-+					   pf->timestamp);
-+
-+done:
-+	mutex_unlock(&data->lock);
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+
-+}
- static void bmp280_pm_disable(void *data)
- {
- 	struct device *dev = data;
-@@ -2358,6 +2447,12 @@ int bmp280_common_probe(struct device *dev,
- 			return ret;
- 	}
- 
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      &bmp280_buffer_handler, NULL);
-+	if (ret)
-+		return dev_err_probe(data->dev, ret,
-+				     "iio triggered buffer setup failed\n");
- 	/* Enable runtime PM */
- 	pm_runtime_get_noresume(dev);
- 	pm_runtime_set_active(dev);
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index d77402cb3121..d5c0451ebf68 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -400,6 +400,13 @@ struct bmp280_data {
- 	 */
- 	s32 t_fine;
- 
-+	/* IIO sysfs buffer */
-+	struct {
-+		s32 temperature;
-+		u32 pressure;
-+		u32 humidity;
-+		s64 timestamp;
-+	} iio_buffer;
- 	/*
- 	 * DMA (thus cache coherency maintenance) may require the
- 	 * transfer buffers to live in their own cache lines.
--- 
-2.25.1
+A few questions inline. Things don't seem to align perfectly with the
+few datasheets I opened.
+
+Jonathan
+
+
+
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> index 5950e2419ebb..519c1eee96ad 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h
+> @@ -88,11 +88,12 @@ enum inv_devices {
+>  	INV_NUM_PARTS
+>  };
+>  
+> -/* chip sensors mask: accelerometer, gyroscope, temperature, magnetometer */
+> +/* chip sensors mask: accelerometer, gyroscope, temperature, magnetometer, WoM */
+>  #define INV_MPU6050_SENSOR_ACCL		BIT(0)
+>  #define INV_MPU6050_SENSOR_GYRO		BIT(1)
+>  #define INV_MPU6050_SENSOR_TEMP		BIT(2)
+>  #define INV_MPU6050_SENSOR_MAGN		BIT(3)
+> +#define INV_MPU6050_SENSOR_WOM		BIT(4)
+>  
+>  /**
+>   *  struct inv_mpu6050_chip_config - Cached chip configuration data.
+> @@ -104,6 +105,7 @@ enum inv_devices {
+>   *  @gyro_en:		gyro engine enabled
+>   *  @temp_en:		temperature sensor enabled
+>   *  @magn_en:		magn engine (i2c master) enabled
+> + *  @wom_en:		Wake-on-Motion enabled
+>   *  @accl_fifo_enable:	enable accel data output
+>   *  @gyro_fifo_enable:	enable gyro data output
+>   *  @temp_fifo_enable:	enable temp data output
+> @@ -119,12 +121,14 @@ struct inv_mpu6050_chip_config {
+>  	unsigned int gyro_en:1;
+>  	unsigned int temp_en:1;
+>  	unsigned int magn_en:1;
+> +	unsigned int wom_en:1;
+>  	unsigned int accl_fifo_enable:1;
+>  	unsigned int gyro_fifo_enable:1;
+>  	unsigned int temp_fifo_enable:1;
+>  	unsigned int magn_fifo_enable:1;
+>  	u8 divider;
+>  	u8 user_ctrl;
+> +	u8 wom_threshold;
+>  };
+>  
+>  /*
+> @@ -256,12 +260,14 @@ struct inv_mpu6050_state {
+>  #define INV_MPU6050_REG_INT_ENABLE          0x38
+>  #define INV_MPU6050_BIT_DATA_RDY_EN         0x01
+>  #define INV_MPU6050_BIT_DMP_INT_EN          0x02
+> +#define INV_MPU6500_BIT_WOM_INT_EN          (BIT(7) | BIT(6) | BIT(5))
+
+GENMASK?  or build it up as I'm guessing those are the 3 axis?
+However I opened the datasheet from the tdk website and only bit(6) is mentioned.
+
+>  
+>  #define INV_MPU6050_REG_RAW_ACCEL           0x3B
+>  #define INV_MPU6050_REG_TEMPERATURE         0x41
+>  #define INV_MPU6050_REG_RAW_GYRO            0x43
+>  
+>  #define INV_MPU6050_REG_INT_STATUS          0x3A
+> +#define INV_MPU6500_BIT_WOM_INT             (BIT(7) | BIT(6) | BIT(5))
+
+Likewise on this, the mpu6500 datasheet only mentions bit(6)
+
+>  #define INV_MPU6050_BIT_FIFO_OVERFLOW_INT   0x10
+>  #define INV_MPU6050_BIT_RAW_DATA_RDY_INT    0x01
+>  
+> @@ -301,6 +307,11 @@ struct inv_mpu6050_state {
+>  #define INV_MPU6050_BIT_PWR_ACCL_STBY       0x38
+>  #define INV_MPU6050_BIT_PWR_GYRO_STBY       0x07
+>  
+> +/* ICM20609 registers */
+> +#define INV_ICM20609_REG_ACCEL_WOM_X_THR    0x20
+> +#define INV_ICM20609_REG_ACCEL_WOM_Y_THR    0x21
+> +#define INV_ICM20609_REG_ACCEL_WOM_Z_THR    0x22
+This one does mention all 3 bits for the enable and status registers.
+Perhaps there is more inter chip variation than currently covered?
+I don't like writing reserved bits unless we have a clear statement
+(and a comment here) that it is correct thing to do.
+
+
+> +
+>  /* ICM20602 register */
+>  #define INV_ICM20602_REG_I2C_IF             0x70
+>  #define INV_ICM20602_BIT_I2C_IF_DIS         0x40
+> @@ -320,6 +331,10 @@ struct inv_mpu6050_state {
+>  /* mpu6500 registers */
+>  #define INV_MPU6500_REG_ACCEL_CONFIG_2      0x1D
+>  #define INV_ICM20689_BITS_FIFO_SIZE_MAX     0xC0
+> +#define INV_MPU6500_REG_WOM_THRESHOLD       0x1F
+> +#define INV_MPU6500_REG_ACCEL_INTEL_CTRL    0x69
+> +#define INV_MPU6500_BIT_ACCEL_INTEL_EN      BIT(7)
+> +#define INV_MPU6500_BIT_ACCEL_INTEL_MODE    BIT(6)
+>  #define INV_MPU6500_REG_ACCEL_OFFSET        0x77
+>  
+>  /* delay time in milliseconds */
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> index 66d4ba088e70..13da6f523ca2 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+> @@ -33,10 +33,8 @@ static int inv_reset_fifo(struct iio_dev *indio_dev)
+>  
+>  reset_fifo_fail:
+>  	dev_err(regmap_get_device(st->map), "reset fifo failed %d\n", result);
+> -	result = regmap_write(st->map, st->reg->int_enable,
+> -			      INV_MPU6050_BIT_DATA_RDY_EN);
+> -
+> -	return result;
+> +	return regmap_update_bits(st->map, st->reg->int_enable,
+> +			INV_MPU6050_BIT_DATA_RDY_EN, INV_MPU6050_BIT_DATA_RDY_EN);
+>  }
+>  
+>  /*
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> index 676704f9151f..ec2398a87f45 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+> @@ -134,11 +134,13 @@ int inv_mpu6050_prepare_fifo(struct inv_mpu6050_state *st, bool enable)
+>  		ret = regmap_write(st->map, st->reg->user_ctrl, d);
+>  		if (ret)
+>  			return ret;
+> -		/* enable interrupt */
+> -		ret = regmap_write(st->map, st->reg->int_enable,
+> -				   INV_MPU6050_BIT_DATA_RDY_EN);
+> +		/* enable data interrupt */
+> +		ret = regmap_update_bits(st->map, st->reg->int_enable,
+> +				INV_MPU6050_BIT_DATA_RDY_EN, INV_MPU6050_BIT_DATA_RDY_EN);
+>  	} else {
+> -		ret = regmap_write(st->map, st->reg->int_enable, 0);
+> +		/* disable data interrupt */
+> +		ret = regmap_update_bits(st->map, st->reg->int_enable,
+> +				INV_MPU6050_BIT_DATA_RDY_EN, 0);
+>  		if (ret)
+>  			return ret;
+>  		ret = regmap_write(st->map, st->reg->fifo_en, 0);
+> @@ -171,9 +173,9 @@ static int inv_mpu6050_set_enable(struct iio_dev *indio_dev, bool enable)
+>  			return result;
+>  		/*
+>  		 * In case autosuspend didn't trigger, turn off first not
+> -		 * required sensors.
+> +		 * required sensors excepted WoM
+>  		 */
+> -		result = inv_mpu6050_switch_engine(st, false, ~scan);
+> +		result = inv_mpu6050_switch_engine(st, false, ~scan & ~INV_MPU6050_SENSOR_WOM);
+>  		if (result)
+>  			goto error_power_off;
+>  		result = inv_mpu6050_switch_engine(st, true, scan);
 
 

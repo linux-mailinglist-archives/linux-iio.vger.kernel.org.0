@@ -1,115 +1,163 @@
-Return-Path: <linux-iio+bounces-3282-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3283-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B1E686F630
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 17:44:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B8A086F634
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 17:53:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CBAA1C220D2
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 16:44:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F46D1F231D7
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 16:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35B26BFB5;
-	Sun,  3 Mar 2024 16:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7EE56D1A0;
+	Sun,  3 Mar 2024 16:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oAdkCdBR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T2r7GcX2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748251E499
-	for <linux-iio@vger.kernel.org>; Sun,  3 Mar 2024 16:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C76D51E499;
+	Sun,  3 Mar 2024 16:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709484263; cv=none; b=Y2LCKANr9FPawlwD8LUZgyn8AnrCGvPIYyt0u8sDa6FeP30+UU/WaTXD1Zke9bsYKejTV/QmPyV1AKFQoLTs8KLviUat0LTMj8tCndncp3LWS2Y0Ji1KgtT5kO75g6O4aDpKwTmS8GSel6wqTBowqgQnUj/xI/GHhunRCWQfQQg=
+	t=1709484787; cv=none; b=F9jjU+d/7dBD05ow/cXcjKo89prNFZa1xCw1peJ5O0RmT8vk12NloO1VVKb48LAKTpUVDJbu6VXh7Mz5aH9FzB98YXsRd2PnzgdBOCDGhsLy4nrqCmypaBHH+tKQKfq4aR/cXB/QgTP2YGzvO2coOdsb/HrEEIFEku+yDj1eTLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709484263; c=relaxed/simple;
-	bh=7l/8Rwlm4hea5NYacImvS2b5zcMcrqvxbs2FEOj2wtM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YVu+kbHgLMMlnkjgDYgxjgLDe5kV2Yv/OJwJ2vhgieA/I5VVyrvIZZYlMwW8moUQT9oR3E6i3OoRmhTur3aHf0bbi2JSwEAfWAtPqD72va0XvI2CmnFQP/aa2Ace45tXn4vtHaKoXgbDw+EDh9MCVrUEC10v7Jw9/MfJmex6VVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oAdkCdBR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262B0C433F1;
-	Sun,  3 Mar 2024 16:44:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709484262;
-	bh=7l/8Rwlm4hea5NYacImvS2b5zcMcrqvxbs2FEOj2wtM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=oAdkCdBRQXJIfhQZaMf77Ag5/+s8VitkvTR4PARVJvz9ZNA/W9GL9i8Xtg6gXHZTN
-	 dhjIkiLIfjQxncFGXEEAyKfJOvXsE27LjFAZ+2uyCZ3ABGjoWl3i3e2bqMXjRhY6Dm
-	 t8gecY2/z2YIb/uw50gbCYahxOBYGLUoXCzM+HjvShZpKAc02G1mRk7EbtUMTAQMLM
-	 ROTSGlzwt+WN7aRrEX4TMDCyxPPKr4N88Ip1oRiCX2r4Wo4vwLo5erPAv2Id+eP3pQ
-	 dlBWsQfOWXb/YJ/+7LT7eST3PIdgSltKy9uFVuNN0w/i74RoJ4zFiC0iQ3WRy3r6x5
-	 3LjYJwmlNv4nQ==
-Date: Sun, 3 Mar 2024 16:44:10 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: inv.git-commit@tdk.com
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, Jean-Baptiste Maneyrol
- <jean-baptiste.maneyrol@tdk.com>
-Subject: Re: [PATCH 0/4] Add WoM feature as an IIO event
-Message-ID: <20240303164410.6b7cb206@jic23-huawei>
-In-Reply-To: <20240225160027.200092-1-inv.git-commit@tdk.com>
-References: <20240225160027.200092-1-inv.git-commit@tdk.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1709484787; c=relaxed/simple;
+	bh=oXsKdi3rqPebjSREb8BNR0oS9KqD6kN+anEhn/voM0s=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=O380zI7a1D93KB62AGXUFEZLA5fhtQInfM4lCqqEPpveXGZAhBYIk6fXBe3yXJ/cRq2xcaWMxnnjtDurfstfLXyEyv6ImGaaGwHHM6WTTl3M4YlVMUYnCLXRMcXhA9/WghvzOieupPCvVqzonWzgmYyP3rhgV0oN41ASYILtnAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T2r7GcX2; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5132181d54bso3905509e87.3;
+        Sun, 03 Mar 2024 08:53:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709484784; x=1710089584; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PxPIonyHPpYZBnXEXTpWueHpmlbKwK0yDVa9D3QDR5c=;
+        b=T2r7GcX239JlQ3yZa1kQO3oB3xUtVjDc8wJ9MkHm4kgVx+Og19QO7zBJ0n42wKycdE
+         kMkGNhyLhtmNspfwb8+Z5mi5DAY0Tq0K3ZplhUrgeHARpHAJ4b7HPXDBSC9u5crCCWlE
+         gpTnhmfhwVIoRGZNk/vRwtuJByJacAkczBbMHHySEx3+bxMVAchbZ9HCWtVJ0NwWlczx
+         xR5rHgp6g2h81EbBcTghgkmwp5eUqYc+J3xlzBeKOtpANfof8TG708MvueIYtQh57AIL
+         kQtb89lMv3WHUanQHEo1zuHokiP+AtX2lUm4eGrwmwLOveBfdpvYggDqrdeasG5465qo
+         F9Qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709484784; x=1710089584;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PxPIonyHPpYZBnXEXTpWueHpmlbKwK0yDVa9D3QDR5c=;
+        b=wcruqfIHsm+LY/KHCLnbr9p3lDPxabIllceglVlgdtxbsmZCbfMZx+D8Ww+ZAFK/YK
+         H17zHlcKTTX6tvmgzAcwoUgh6WXDqhGqHAVQOQ5sk1jvEYDr+uBF1qR6X5Ab9OdLmn/X
+         uY6CZXLusEO+SuiGzuZDhjYEG0D8Dn6oHI+B5l0dAca8yOT6xp1Id/N6aN1/K5bXZdbq
+         TH0oP0WYw9F8x1fH+W5w/5Jk4OMxPSgqMo+qUJ1vZawZ/zYDySDWTeL+haEvs2I+pvXT
+         /IhTVEnLxIDSy/M9koK2zvdd6VeHagXF/Fry/EO21/RIB2MUVZ/GzlyH/6Vswm5fGl0a
+         ROdA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8oyIAg9BDS6hSBs66uogg8VkJ/vF4eDit7fIDK8C+GmdUaALMMu9fDIhOwSrhzHhLUl0k10jtjDGgmZwU7FaZmMJOfRl/iX2naRiE0eK7UHg2iKv6rNca9iv3zB8ImsMh2150shwm
+X-Gm-Message-State: AOJu0YzRye3/tVRtrlprBsqHXT6MULa7PyjNPE7NO44/ZG51k9xtehfA
+	8WdMxsKCrKk9nHJnh2NMXy508+E5DGAg7Vqt41KXeoaPXS6a2WTI
+X-Google-Smtp-Source: AGHT+IF7iUIANlKYFkE/7Vmc0ayt40lgye0L702fs0aVdThJehECOg+gS6Td7FaMTDFsvnKPJK+pAw==
+X-Received: by 2002:a05:6512:2114:b0:512:fe1f:da5b with SMTP id q20-20020a056512211400b00512fe1fda5bmr3863730lfr.57.1709484783663;
+        Sun, 03 Mar 2024 08:53:03 -0800 (PST)
+Received: from localhost.localdomain ([2a04:ee41:82:7577:d4e3:724b:4d69:34b2])
+        by smtp.gmail.com with ESMTPSA id lh15-20020a170906f8cf00b00a44f14c8d64sm1413992ejb.135.2024.03.03.08.53.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 Mar 2024 08:53:03 -0800 (PST)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: jic23@kernel.org
+Cc: lars@metafoo.de,
+	andriy.shevchenko@linux.intel.com,
+	ang.iglesiasg@gmail.com,
+	mazziesaccount@gmail.com,
+	ak@it-klinger.de,
+	petre.rodan@subdimension.ro,
+	phil@raspberrypi.com,
+	579lpy@gmail.com,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vasileios Amoiridis <vassilisamir@gmail.com>
+Subject: [PATCH 0/4] Series to add triggered buffer support to BMP280 driver
+Date: Sun,  3 Mar 2024 17:52:56 +0100
+Message-Id: <20240303165300.468011-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sun, 25 Feb 2024 16:00:23 +0000
-inv.git-commit@tdk.com wrote:
+This patch series aims to add triggered buffer support in the BMP280 driver.
+The patches have been separated in a way that a single functionality is added
+with each commit. The 1st commit is independent but the others not. Commit
+no.3 needs commit no.2 and commit no.4 needs both commit no.3 and commit no.2.
+More details below:
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> 
-> Add WoM (Wake-on-Motion) feature for all chips supporting it
-> (all except MPU-6000/6050/9150). WoM compares the magnitude of
-> the current accel sample with the previous one against a threshold
-> and returns an interrupt event if the value is higher.
-> 
-> Report WoM as an accel mag_adaptive_rising IIO event, add system
-> wakeup functionality if WoM is on and put the chip in low-power
-> mode when the system is suspended. WoM threshold value is in SI
-> units since the chip is using an absolute value in mg.
+PATCH 1/4: Sort the headers of the bmp280-core.c file before adding new ones.
 
+PATCH 2/4: The scale value for every channel is needed in order to be able to
+calculate the final value in userspace. Every measurement from every device
+requires a different scaling in order to apply to the IIO measurement unit
+standards.
 
-Adaptive thresholds are normally used when a threshold is based on
-some offset form a heavily filtered version of the same channel (often
-with filter resets and other nastiness)  It's an obscure hack we added
-because we couldn't really get these to fit with another scheme.
-This seems simpler than that from your description.
+PATCH 3/4: This commit adds a channel for a soft timestamp. The indexing of
+temperature and pressure channels is changed and temperature comes first. This
+is because the temperature measurement is always needed for a measurement so
+it is better to have it as first for the available_scan_masks. The values have
+already the CPU endiannes and are already compensated. As mentioned before,
+only the scale value to convert them to IIO measurement unit standards is
+missing.
 
-As it's just against the previous reading and I assume the chip
-is in a self clocking mode during this, it might be more appropriate
-to use a Rate of Change Event (ROC).  There are references to
-this being a threshold on highpassed sample, so I guess there might
-be some filtering to make this messier? 
+PATCH 4/4: This commit is adding the actual triggered buffer. An extra buffer
+is added to hold the values of the measurements. This buffer is not inside the
+union but rather an external buffer. The reasons for that are presented below:
 
-The control of a roc threshold will be a little more complex as
-you'll need to take into account the sampling frequency.
-Advantage is you end up with something easily human understandable.
+i) The sensor is built in a way that first you read the raw values out of the
+sensor, then you have to compensate those values in software and then you have
+to convert them in IIO measurement units. This means that the values of the
+data->buf (which is in the DMA safe union) cannot be used directly to push data
+to userspace because even though we can have the SCALE value to convert to IIO
+measurement units, we still need to compensate first. Only the latest version
+of the BMP58x sensor returns directly compensated values.
 
-A human doesn't want to have to figure out what the right value
-is for the particular frequency they are sampling at.
+ii) In order to have a pressure or a humidity measurement, a temperature
+measurement needs to happen first so the t_fine variable is filled/updated.
+The read_press() and read_humid() functions contain the read_temp() measurement
+inside their bodies. This means that if we use an extra buffer inside the DMA
+safe union in order to push data to userspace, the first 3 bytes of that buffer
+will always be overwritten by a read_press() or read_humid() operation.
 
-Jonathan
+In order to overcome the above 2 problems the following things need to be done:
 
-> 
-> 
-> Jean-Baptiste Maneyrol (4):
->   iio: imu: inv_mpu6050: add WoM (Wake-on-Motion) sensor
->   iio: imu: inv_mpu6050: add WoM event inside accel channels
->   iio: imu: inv_mpu6050: add new interrupt handler for WoM events
->   iio: imu: inv_mpu6050: add WoM suspend wakeup with low-power mode
-> 
->  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 523 +++++++++++++++---
->  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  33 +-
->  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  17 +-
->  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  70 ++-
->  4 files changed, 541 insertions(+), 102 deletions(-)
-> 
+a) Remove the read_temp() function from the inside bodies of read_press/humid()
+and call it before you call them.
+
+b) Modify all the read_temp/press/humid() functions and instead of returning
+the IIO measurement unit (with *val, *val2, and return IIO value) just return
+the compensated value so it can be used with the SCALE value in userspace for
+buffer reads and for oneshot captures just do the extra calculations for *val,
+*val2 and return IIO value in the bmp280_read_raw() body.
+
+If the solution that I have already sent in the commits is acceptable it's OK.
+If it is necessary to have this iio_buffer structure that I used, inside the
+union which is also DMA safe then I can immediately implement the a) and b) 
+solutions and resend the patches for discussion.
+
+Vasileios Amoiridis (4):
+  iio: pressure: BMP280 core driver headers sorting
+  iio: pressure: Add scale value for channels
+  iio: pressure: Add timestamp and scan_masks for BMP280 driver
+  iio: pressure: Add triggered buffer support for BMP280 driver
+
+ drivers/iio/pressure/Kconfig       |   2 +
+ drivers/iio/pressure/bmp280-core.c | 352 ++++++++++++++++++++++++-----
+ drivers/iio/pressure/bmp280.h      |   8 +
+ 3 files changed, 311 insertions(+), 51 deletions(-)
+
+-- 
+2.25.1
 
 

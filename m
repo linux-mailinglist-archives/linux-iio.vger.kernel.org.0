@@ -1,67 +1,60 @@
-Return-Path: <linux-iio+bounces-3268-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3269-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C74886F4FB
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 14:09:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE11D86F511
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 14:24:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD3EC1C20C03
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 13:09:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A46761C20BF7
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 13:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E35D310;
-	Sun,  3 Mar 2024 13:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF19D2FF;
+	Sun,  3 Mar 2024 13:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TFS4Wcld"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9naefPk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A105EC121;
-	Sun,  3 Mar 2024 13:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CA1B641;
+	Sun,  3 Mar 2024 13:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709471386; cv=none; b=u8B0MbfN3Vkk0L/lSHn7zNlV5JfE/wZOfj+fwvbjeUaG3RhXsSGpLQkp0GTOP2h82UIRCgCnjKcACOIf2pQ1G2XYDp/LEUjY92ycj3a7k+97SnoJU/Dd5J5w/TvoOyO3gXCKoFne+JY3sEju8WeBz5PkJLNOpxDo1h0kJQQMqqM=
+	t=1709472241; cv=none; b=UawQYFvpclbS6YdvSEAkYI6ByKyMeqClrq0sBTBBmzmsTk9OssqAVAeXmyFYjREzUlqZyvf/BFLqFcqRijMG8Hxn0v8xC5dklXU9StwCiSyF/4MFCCifGU21Leu/KIbI8mCz3MSfkzeMM5rUbicRRd2pw0u88boUHg6nGeTWjXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709471386; c=relaxed/simple;
-	bh=vrYalRsEVZ5fLjX42yXSYdIo9++d6kZ4+2yqiD07orw=;
+	s=arc-20240116; t=1709472241; c=relaxed/simple;
+	bh=5HABLV55vqFa2+LegG4ZksipXRJADsbLdJAjy9nIQ+U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o0oH6VrDhaJSXMKlqcEMWIxmVVK9gqOipHOgH+705Yt1lfvgtd49IpeeWJkXncn7U8qYJNF10wWtir1C8KeXpjh2WnGknwBhja3rhqgwziYbdchdvAlQlGyv0iBR33f4x60+Z9U6MrexS29fJxMWB96fRy8VcF8q7O6xAPTL5vU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TFS4Wcld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CDD6C433C7;
-	Sun,  3 Mar 2024 13:09:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h40/7y7fn5sqpq1B6mYDsOmEWnNSQSIs0av2aveZPCD0hh6gSm/ahTHZ3dZJUyzv/c2nm/Xwl4qOylZ4O86GgOyAqFzpv7incZcYHBcpIOVenOVN4XrFqMG19QN1IT4F7Xv8BtglphetRSZgkp1GM2vV6fx9oo7AIimV0qAJt2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9naefPk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB8BC433F1;
+	Sun,  3 Mar 2024 13:23:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709471386;
-	bh=vrYalRsEVZ5fLjX42yXSYdIo9++d6kZ4+2yqiD07orw=;
+	s=k20201202; t=1709472240;
+	bh=5HABLV55vqFa2+LegG4ZksipXRJADsbLdJAjy9nIQ+U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TFS4WclduKBieWz1UkcNTKSuCZDyLEdTgFUGthkob7mjSQrWCfm9HvCnDfnyY6qtW
-	 MkNYLN/+XpB8K5gsWQPw9jLMIA09LfI+cLBVXF39xCggrkuXWM8et+8sLHBUbBJRqI
-	 xDrdrgOWWfgXvxEDr6Gh1WcJHxAOynrX5AmOLrn8EPti9G+E7lNvw6MrWX7xS3wt1a
-	 iR5kSIXQa3DC4H0bDcBa/OR87oQv//6vdDCNA27zEcdCrWAQ4BNq4xlKYmmDjJ2gJs
-	 prN85/sJhYV3U+JYiPlVPjJGOFuu9uyRmpGARyS0QvQrrLnM99LERQnKwoZHA2+avH
-	 8Vgq+BsIhZqhA==
-Date: Sun, 3 Mar 2024 13:09:28 +0000
+	b=K9naefPkvKMLjWvIuGRit0366N+wl1LWzPPQWhwVcS41ZSW6cb8MI9J64A3LU2wK5
+	 UAaux1cgpqerz0jeQ8MjItQmvyEP+vwY4F7Slrw/RByq8AuYhKUMQEyhSJy1VbU5gr
+	 LJoQx1CmjZgAn3+PMAtNXGyJQjTZEmrWrHnysw3OUL1IrRzSv3ki23vg//o2TiHsbf
+	 +OOPq71O0kKVhrJABjZ4teTddDc+ToC8RUo7pQcXAENCwPWkdtipDvtxLCjeiw48h5
+	 2metudhex+DFbTMxedtLbbC6pbap5ZOcP5aLDNN/dgwRb3+54kNH4El/JB/p3K/bfw
+	 z1/00aB2jVf4Q==
+Date: Sun, 3 Mar 2024 13:23:46 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Vinod Koul
- <vkoul@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, Jonathan
- Cameron <Jonathan.Cameron@huawei.com>, Mark Brown <broonie@kernel.org>,
- Kees Cook <keescook@chromium.org>, linux-arm-kernel@lists.infradead.org,
- dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-spi@vger.kernel.org,
- netdev@vger.kernel.org, linux-hardening@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, "Gustavo A. R. Silva" <gustavoars@kernel.org>, Nuno Sa
- <nuno.sa@analog.com>
-Subject: Re: [PATCH v4 5/8] iio: core: Use new helpers from overflow.h in
- iio_device_alloc()
-Message-ID: <20240303130928.0c2fea09@jic23-huawei>
-In-Reply-To: <9519dda9acd9db009dcb43102cc9b36943b35217.camel@gmail.com>
-References: <20240228204919.3680786-1-andriy.shevchenko@linux.intel.com>
-	<20240228204919.3680786-6-andriy.shevchenko@linux.intel.com>
-	<9519dda9acd9db009dcb43102cc9b36943b35217.camel@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: linux-iio@vger.kernel.org, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: add ad7944 ADCs
+Message-ID: <20240303132346.3db77d20@jic23-huawei>
+In-Reply-To: <20240229-ad7944-mainline-v4-1-f88b5ec4baed@baylibre.com>
+References: <20240229-ad7944-mainline-v4-0-f88b5ec4baed@baylibre.com>
+	<20240229-ad7944-mainline-v4-1-f88b5ec4baed@baylibre.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,139 +62,37 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 29 Feb 2024 16:29:43 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Thu, 29 Feb 2024 10:25:50 -0600
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On Wed, 2024-02-28 at 22:41 +0200, Andy Shevchenko wrote:
-> > We have two new helpers struct_size_with_data() and struct_data_pointer=
-()
-> > that we can utilize in iio_device_alloc(). Do it so.
-> >=20
-> > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> > ---
-> > =C2=A0drivers/iio/industrialio-core.c | 5 ++---
-> > =C2=A01 file changed, 2 insertions(+), 3 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio=
--core.c
-> > index 1986b3386307..223013725e32 100644
-> > --- a/drivers/iio/industrialio-core.c
-> > +++ b/drivers/iio/industrialio-core.c
-> > @@ -1644,7 +1644,7 @@ struct iio_dev *iio_device_alloc(struct device *p=
-arent,
-> > int sizeof_priv)
-> > =C2=A0	size_t alloc_size;
-> > =C2=A0
-> > =C2=A0	if (sizeof_priv)
-> > -		alloc_size =3D ALIGN(alloc_size, IIO_DMA_MINALIGN) +
-> > sizeof_priv;
-> > +		alloc_size =3D struct_size_with_data(iio_dev_opaque,
-> > IIO_DMA_MINALIGN, sizeof_priv);
-> > =C2=A0	else
-> > =C2=A0		alloc_size =3D sizeof(struct iio_dev_opaque);
-> > =C2=A0
-> > @@ -1655,8 +1655,7 @@ struct iio_dev *iio_device_alloc(struct device *p=
-arent,
-> > int sizeof_priv)
-> > =C2=A0	indio_dev =3D &iio_dev_opaque->indio_dev;
-> > =C2=A0
-> > =C2=A0	if (sizeof_priv)
-> > -		indio_dev->priv =3D (char *)iio_dev_opaque +
-> > -			ALIGN(sizeof(struct iio_dev_opaque),
-> > IIO_DMA_MINALIGN);
-> > +		indio_dev->priv =3D struct_data_pointer(iio_dev_opaque,
-> > IIO_DMA_MINALIGN); =20
->=20
-> I'd +1 for implementing what Kees suggested in IIO. Only thing is (I thin=
-k), we
-> need to move struct iio_dev indioo_dev to the end of struct iio_dev_opaqu=
-e.
+> This adds a new binding for the Analog Devices, Inc. AD7944, AD7985, and
+> AD7986 ADCs.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Hi David,
 
-That is going to be messy and without horrible hacks (I think) add more pad=
-ding we
-don't need.  At the moment the struct iio_dev and the struct iio_dev_opaque
-are aligned as at the start of the structure.
-
-The priv data is aligned by padding the larger struct iio_dev_opaque,
-so if you want the priv handle to be to data defined in struct iio_dev you =
-would
-need to add additional padding so that
-
-struct iio_dev_opaque {
-	stuff...
-	// this next __aligned() is implicit anyway because of the rules for
-	// a structure always being aligned to the alignment of it's max aligned
-	// element.
-	struct iio_dev __aligned (IIO_DMA_ALIGN) { =20
-		stuff
-		u8 priv[] __aligned(IIO_DMA_ALIGN);
-	}
-}
-
-How about using what Kees suggests on the iio_dev_opaque (which think is cl=
-eaner
-anyway as that's what we are allocating) and keeping the magic pointer to p=
-riv
-in the struct iio_dev; The compiler looses some visibility for iio_priv() a=
-ccesses
-but can it do much with those anyway? They always get cast to a struct driv=
-er_specific *
-and getting the original allocation wrong is not easy to do as we pass
-that struct size in.  Note, for others not aware of what is going on here, =
-the
-priv pointer in iio_dev is to allow efficient static inline iio_priv() call=
-s without
-needing to either make a function call, or expose the internals of the opaq=
-ue
-structure in which the iio_dev and the priv data are embedded.
-
-Standard pattern is:
-
-struct driver_specific *bob;
-struct iio_dev *indio_dev =3D dev_iio_device_alloc(dev, sizeof(*bob));
-// which allocates the iio_dev_opaque, but returns the contained iio_dev
-bob =3D iio_priv(indio_dev);
-
-So
-
-struct iio_dev_opaque {
-	struct iio_dev indio_dev {
-		stuff..
-		void *priv;=09
-	};
-	stuff..
-	int priv_count;
-	u8 priv[] __aligned(IIO_DMA_ALIGN) __counted_by(priv_count);
-}
-with indio_dev->priv =3D iio_dev_opaque->dev?
-
-This cleanups up a few IIO core bits but no impact outside them.
-Nice to have those cleanups.
-
-Is there any way to have that internal iio_dev->priv pointer associated with
-a __counted_by even though it's pointing elsewhere than a local variable si=
-zed
-trailing element? =20
-
-struct iio_dev {
-	stuff
-
-	u32 count;
-	void *priv __counted_by(count);
-}
-compiles with gcc but without digging further I have no idea if it does any=
-thing useful!
+One trivial comment. If this is all that comes up I can tweak that whilst applying.
 
 Jonathan
 
->=20
-> - Nuno S=C3=A1
->=20
->=20
->=20
+...
 
+> +  adi,spi-mode:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum: [ single, chain ]
+> +    description: |
+> +      This property indicates the SPI wiring configuration.
+> +
+> +      When this property is omitted, it is assumed that the device is using what
+> +      the he datasheet calls "4-wire mode". This is the conventional SPI mode
+
+Stray "he"?
+
+> +      used when there are multiple devices on the same bus. In this mode, the
+> +      CNV line is used to initiate the conversion and the SDI line is connected
+> +      to CS on the SPI controller.
+>
 

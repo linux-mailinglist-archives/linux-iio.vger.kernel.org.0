@@ -1,106 +1,242 @@
-Return-Path: <linux-iio+bounces-3293-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3294-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 115D886F693
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 19:38:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A86286F6F3
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 21:05:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AEF328196C
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 18:38:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E0DC1C20AD4
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 20:05:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514B75A117;
-	Sun,  3 Mar 2024 18:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFF979DB6;
+	Sun,  3 Mar 2024 20:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hgglCeFy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YNN7a6Gr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C82C1E4AF;
-	Sun,  3 Mar 2024 18:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB2279DAB;
+	Sun,  3 Mar 2024 20:05:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709491084; cv=none; b=i5xzz6AB3ZkYZsHXnr+MW+Y0xLkOZ8wiuckvDc21CKxbqYYDlFG/dFYTAxpLS50BeGlJpkAOscF5aQRYw+fwnZMeTx/4fBPcjLlQWx2CDjLFkPbpst+p3Loae/CXMqYVRKyN9dRlxTy+FEMkVKSh93UEAyiTkEIpsHFnnULx2ww=
+	t=1709496336; cv=none; b=SkJ2EUk/BILo6CmASihYSHuzLEAixR4iNnHwAYWQNStv/5fzREkxBVBBb4+LDs9LcY8w3YFuW0mOaLigsL4AlH6oYf3r26p+YyPIvuA+qS2nY3T9WLtoGTKNmsH9XU+n4SW+YQNMKRRYlqIBgnzX3RMypNbSiCjg0Bk8/h55c0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709491084; c=relaxed/simple;
-	bh=wb9M/TXW9yAW1F13VKA/l3kNiaI+HHxbDbSzbdVcWB4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BeuYBSA8jv0cGGIRBUSddljGVKHzZnQeXCQ9XoTi5LLPOunUwlATsZfXlzCmsf5JcomJe/fZfU/br/yKwT+Rj1ty84Mqnst8KhrBnP1X7giBW1+irMUJGU7FakfyqnOIWS0R5yx0iwLfel/P6r4duJiKXcTKhtWithNxupDQr2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hgglCeFy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0282C433F1;
-	Sun,  3 Mar 2024 18:38:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709491083;
-	bh=wb9M/TXW9yAW1F13VKA/l3kNiaI+HHxbDbSzbdVcWB4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hgglCeFybrtyRo2yqC8ud3AOkW6K20YKwKxvWhvf0507cLMhfYGCBqK280MJcUImQ
-	 LJxvaVvpRycjMXOV4nV9xeDT6viZpvmpkDFPZyKJtwhcVwN1AqjUiIwj/MWywpD+qN
-	 nHfmtHNTf5WUD7tDqacBIxLvsCrGk/qQgAqK9TtryflO8mQwmxZNYbjZQkAkfsfcTO
-	 MYjSJffuGeEsQhUyLm5Ky1ycgpBGwuxkr8K8l9AQAj+IFm1M7E0FUOc3GYiEZKLeU7
-	 kTUC+uQQhwzSHhIU6+dTH39CMH+1VQZqzy8ysiI2bUFBEIA1yZHw3stwgRQqxJlktn
-	 ukSBUcv0kmISw==
-Date: Sun, 3 Mar 2024 18:37:50 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Saalim Quadri <danascape@gmail.com>
-Cc: ciprian.hegbeli@analog.com, marcelo.schmitt@analog.com,
- dragos.bogdan@analog.com, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: GSoC Proposal 2024
-Message-ID: <20240303183750.4737bb90@jic23-huawei>
-In-Reply-To: <20240229184636.13368-1-danascape@gmail.com>
-References: <20240229184636.13368-1-danascape@gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1709496336; c=relaxed/simple;
+	bh=mSc6/9DZ5vAhGlhAM+TSNJtNJSKbaDlFsVdJobh767k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fKJ6DFLzBxPsTTPhSYzC9kE/6A6pmJpizW9th8Nhq3evHMpdnlWo09iZnR+XGJctuo10ax4uTMsN9e/VKP28+PjuwsOq9Qm+VCQh+eRcwQx0G9wUWyvk26G3sEdp/D53NWlRC2rBEoC3iPI6voJ78DxyfW/ED7am9mwE91QhImc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YNN7a6Gr; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a4554d4cb62so12083166b.2;
+        Sun, 03 Mar 2024 12:05:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709496332; x=1710101132; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=htSk0pROujaKN4qxYLFUMLnC6DIqzsYsrcCbXo4CNs0=;
+        b=YNN7a6GrzUdC9t1zbESnvWpP5KXLhdhuPcinWPawt72rQQmnlGyozOwx5mo9m0jkF1
+         nlt+Fz+Ac2GErcmtCBuslsE0iIlOU+es67D0gi/cUXyK2gc4GrzEZh5AYET6gCm7S8C2
+         48rUBzyYnSAlP5JLQhsTgHbtM8c2k9LZgCqEerkTVGadsKPF/KzuzLuyvTqYY1pvxcn5
+         Uec15PKe0BA3DIdWtkSjcoChc5sz3w8rZaZkr/Unk8Hk1Mg7OOhTdyb4E8aqrpn+nbHs
+         vZOA0Yqxkn3IsBGCjxmHhAC01GKnGzfaGrWbEO8qhu8KhIlQ/VpcDhadpDVr3lpqg75L
+         45jQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709496332; x=1710101132;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=htSk0pROujaKN4qxYLFUMLnC6DIqzsYsrcCbXo4CNs0=;
+        b=LydBnBZR4fPNlUUf4EAOj7ICRGmMEN15JARr8pBX0NJeEGeAolhsWci/VI6ZHtSVku
+         hDcl6pP7If9r31+ueZ+76wPzwNkFraE2Ad3+wuiHWzxQPBrN9NCgOPsr4LbNlj6OGMAG
+         AtPBGbUbYmptCkn9Vc59XeTTB5rz3Foxes4/nsHdsEbp9V0U1WeqyaQb7WU+HZisXrq7
+         Z8ZdbEEnAI2jCPRriPrPi+vzuJuUJsnqzoFqj6tq/jJ15h/BKNvq4tu7wi4ZvK5FMtuE
+         y5z/dvDnBgyii0AHyJjljdrwSaAIPlgYP3QqtKhJsBQ8ijyfJSyKR1DwB3K8ZRBpq5fw
+         yngw==
+X-Forwarded-Encrypted: i=1; AJvYcCXOBLo8VaMajuZp/0pKSJ6+371p2aPKZVP+jZOye4/ABHVbM7XTaPF/I3Xa53MRsRspPNzpBuuCXsoscu/rQvyiaMoDlH7RvpUi7SK+RXFauzTX9uePl7v2A1y0QMoBgoYTu9Bphh97Syh6iAUeh6wb4jXKwmfTQpnuWqxY7J/2nkty0A==
+X-Gm-Message-State: AOJu0YwLnNk7g+zsr9r6xf9iBwZRWNrSLHUZTwMU/XCkpI5Nb5G/VBzy
+	vNRyR17SMUo04nju1/b/53oXvbUnSnOYg4DaGTxH5SgRsaN297TW
+X-Google-Smtp-Source: AGHT+IFfzg5+j8Pd1ccg/DNJiXDPOAn9VJsCUGN78HHF1NINXncqxHsQQ8eVbSFDTxHD9kHorfuTIQ==
+X-Received: by 2002:a17:906:c411:b0:a44:e3c:c4dd with SMTP id u17-20020a170906c41100b00a440e3cc4ddmr4923065ejz.48.1709496332197;
+        Sun, 03 Mar 2024 12:05:32 -0800 (PST)
+Received: from ?IPV6:2a02:8389:41cf:e200:b3d8:5b4b:5188:4373? (2a02-8389-41cf-e200-b3d8-5b4b-5188-4373.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:b3d8:5b4b:5188:4373])
+        by smtp.gmail.com with ESMTPSA id pv18-20020a170907209200b00a44b90abb1dsm2347509ejb.110.2024.03.03.12.05.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 03 Mar 2024 12:05:31 -0800 (PST)
+Message-ID: <fc81f249-7996-48f4-8573-5e20509c796c@gmail.com>
+Date: Sun, 3 Mar 2024 21:05:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] iio: humidity: hdc3020: add power management
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Li peiyu <579lpy@gmail.com>,
+ Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20240226-hdc3020-pm-v2-0-cec6766086e8@gmail.com>
+ <20240226-hdc3020-pm-v2-1-cec6766086e8@gmail.com>
+ <20240303163106.25dbf4e5@jic23-huawei>
+Content-Language: en-US, en-GB
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20240303163106.25dbf4e5@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Fri,  1 Mar 2024 00:16:36 +0530
-Saalim Quadri <danascape@gmail.com> wrote:
+Hi Jonathan,
 
-> Hi everyone, I am Saalim Quadri an undergrad student at Dayananda Sagar College of Engineering, pursuing Electronics and Communications.
-> I wish to participate in the GSoC 2024 as a part of the Linux Foundation, IIO Project.
+On 03.03.24 17:31, Jonathan Cameron wrote:
+> On Mon, 26 Feb 2024 22:25:55 +0100
+> Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 > 
-> I have been contributing to the Linux Kernel and have more than 10 accepted patches.
+>> The HDC3020 sensor carries out periodic measurements during normal
+>> operation, but as long as the power supply is enabled, it will carry on
+>> in low-power modes. In order to avoid that and reduce power consumption,
+>> the device can be switched to Trigger-on Demand mode, and if possible,
+>> turn off its regulator.
+>>
+>> According to the datasheet, the maximum "Power Up Ready" is 5 ms.
+>>
+>> Add resume/suspend pm operations to manage measurement mode and
+>> regulator state.
+>>
+>> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> Hi Javier,
 > 
-> I started looking into https://wiki.linuxfoundation.org/gsoc/2024-gsoc-iio-driver and Analog Devices Inc. and I am interested in writing
-> the driver for AD7294-2 12-bit control system with ADC, DACs, temperature sensor, and current sense.
+> I think you leave the power on in a bunch of error paths in the probe()
 > 
-> In that sense, I would like to know if anyone in the IIO community could provide with some suggestions, I can get started with.
-> Any suggestion or hint is appreciated!
+> Thanks,
 > 
-> Sincerely,
-> Saalim Quadri
+> Jonathan
 > 
-Hi Saalim,
+> 
+>> ---
+>>  drivers/iio/humidity/hdc3020.c | 89 ++++++++++++++++++++++++++++++++++--------
+>>  1 file changed, 73 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
+>> index 1e5d0d4797b1..6848be41e1c8 100644
+>> --- a/drivers/iio/humidity/hdc3020.c
+>> +++ b/drivers/iio/humidity/hdc3020.c
+>> @@ -20,6 +20,8 @@
+>>  #include <linux/interrupt.h>
+>>  #include <linux/module.h>
+>>  #include <linux/mutex.h>
+>> +#include <linux/pm.h>
+>> +#include <linux/regulator/consumer.h>
+>>  #include <linux/units.h>
+>>  
+>>  #include <asm/unaligned.h>
+>> @@ -68,6 +70,7 @@
+>>  
+>>  struct hdc3020_data {
+>>  	struct i2c_client *client;
+>> +	struct regulator *vdd_supply;
+>>  	/*
+>>  	 * Ensure that the sensor configuration (currently only heater is
+>>  	 * supported) will not be changed during the process of reading
+>> @@ -551,9 +554,45 @@ static const struct iio_info hdc3020_info = {
+>>  	.write_event_value = hdc3020_write_thresh,
+>>  };
+>>  
+>> -static void hdc3020_stop(void *data)
+>> +static int hdc3020_power_off(struct hdc3020_data *data)
+>>  {
+>> -	hdc3020_exec_cmd((struct hdc3020_data *)data, HDC3020_EXIT_AUTO);
+>> +	hdc3020_exec_cmd(data, HDC3020_EXIT_AUTO);
+>> +
+>> +	return regulator_disable(data->vdd_supply);
+>> +}
+>> +
+>> +static int hdc3020_power_on(struct hdc3020_data *data)
+>> +{
+>> +	int ret;
+>> +
+>> +	ret = regulator_enable(data->vdd_supply);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	fsleep(5000);
+>> +
+>> +	if (data->client->irq) {
+>> +		/*
+>> +		 * The alert output is activated by default upon power up,
+>> +		 * hardware reset, and soft reset. Clear the status register.
+>> +		 */
+>> +		ret = hdc3020_exec_cmd(data, HDC3020_S_STATUS);
+>> +		if (ret) {
+>> +			hdc3020_power_off(data);
+>> +			return ret;
+>> +		}
+>> +	}
+>> +
+>> +	ret = hdc3020_exec_cmd(data, HDC3020_S_AUTO_10HZ_MOD0);
+>> +	if (ret)
+>> +		hdc3020_power_off(data);
+>> +
+>> +	return ret;
+>> +}
+>> +
+>> +static void hdc3020_exit(void *data)
+>> +{
+>> +	hdc3020_power_off(data);
+>>  }
+>>  
+>>  static int hdc3020_probe(struct i2c_client *client)
+>> @@ -569,6 +608,8 @@ static int hdc3020_probe(struct i2c_client *client)
+>>  	if (!indio_dev)
+>>  		return -ENOMEM;
+>>  
+>> +	dev_set_drvdata(&client->dev, (void *)indio_dev);
+> No need for casting to void *
 
-Interestingly (you may be aware) you aren't the first to propose that part.
-https://lore.kernel.org/all/YlXR0d7waKW9xncd@fedora/
+Then I plagiarised the wrong driver :D I will remove it for v3.
 
-There was some discussion back then but it was brief!
+> 
+>> +
+>>  	data = iio_priv(indio_dev);
+>>  	data->client = client;
+>>  	mutex_init(&data->lock);
+>> @@ -580,6 +621,16 @@ static int hdc3020_probe(struct i2c_client *client)
+>>  	indio_dev->info = &hdc3020_info;
+>>  	indio_dev->channels = hdc3020_channels;
+>>  	indio_dev->num_channels = ARRAY_SIZE(hdc3020_channels);
+>> +
+>> +	data->vdd_supply = devm_regulator_get(&client->dev, "vdd");
+>> +	if (IS_ERR(data->vdd_supply))
+>> +		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
+>> +				     "Unable to get VDD regulator\n");
+>> +
+>> +	ret = hdc3020_power_on(data);
+>> +	if (ret)
+>> +		return dev_err_probe(&client->dev, ret, "Power on failed\n");
+> 
+> Any error after this point needs to power down the regulator and stop the device.
+> So the devm_add_action_or_reset needs to be here, not down below.
+> 
+> When adding this sort of automated handling walk through the various paths
+> to check where they diverge.  If you can put the cleanup code right after
+> what it cleans up, then you get much less divergence where (in this case)
+> the power gets left on.
+> 
 
-It seems like a sensible part to look at.  It has a broad range of different
-features but from a quick glance at the datasheet nothing too unusual - which is
-good because we won't get stuck discussing the userspace interface for too long.
+If I am not mistaken, the only case where the regulator will not be
+powered down is if an irq is defined and the threaded irq request fails,
+because the next action is a call to devm_add_action_or_reset. A single
+case is still greater than zero, so I will move the
+devm_add_function_or_reset up to be the next action after powering up.
 
-Make a plan to build up functionality of your driver over the course of the project
-with each step adding something significant and new.  Allow for reviewer time (up
-to 2 weeks at worst - it is the summer so people go on holiday etc), but try 
-to build a plan where you other elements to work on in parallel with waiting
-for feedback.
-
-Obviously sticking points like device availability and interest from the mentors
-are important inputs on the decision though.
-
-Good luck!
-
-Jonathan
-
-
+Thanks and best regards,
+Javier Carrasco
 

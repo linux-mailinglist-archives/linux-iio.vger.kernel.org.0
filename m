@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-3269-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3270-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE11D86F511
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 14:24:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73AB486F52F
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 14:44:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A46761C20BF7
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 13:24:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D921F1F21492
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 13:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF19D2FF;
-	Sun,  3 Mar 2024 13:24:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D6559B47;
+	Sun,  3 Mar 2024 13:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K9naefPk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DFq57xDL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04CA1B641;
-	Sun,  3 Mar 2024 13:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A58F9E0;
+	Sun,  3 Mar 2024 13:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709472241; cv=none; b=UawQYFvpclbS6YdvSEAkYI6ByKyMeqClrq0sBTBBmzmsTk9OssqAVAeXmyFYjREzUlqZyvf/BFLqFcqRijMG8Hxn0v8xC5dklXU9StwCiSyF/4MFCCifGU21Leu/KIbI8mCz3MSfkzeMM5rUbicRRd2pw0u88boUHg6nGeTWjXU=
+	t=1709473453; cv=none; b=Bwkm0n3DrAwpH7L56dvd6o1TLVHRh4+Rg6WnmYfvr8fZ+NObmufZV7RT+h5hHBTP0/yYLfDu5ZGAeqhxLCngi/g7W26KD+nAm9Jxa9rVY3gz9ZG/+1kQiJsjOciMDbMe+1J0ijyVlzPAUvOCXUoEOc5lYifoxMriGYFAXbM9woY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709472241; c=relaxed/simple;
-	bh=5HABLV55vqFa2+LegG4ZksipXRJADsbLdJAjy9nIQ+U=;
+	s=arc-20240116; t=1709473453; c=relaxed/simple;
+	bh=ugMvCw6zGRAzhtBt0eT9PK0o3WRLP6J3rcIwKvAF0Gc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h40/7y7fn5sqpq1B6mYDsOmEWnNSQSIs0av2aveZPCD0hh6gSm/ahTHZ3dZJUyzv/c2nm/Xwl4qOylZ4O86GgOyAqFzpv7incZcYHBcpIOVenOVN4XrFqMG19QN1IT4F7Xv8BtglphetRSZgkp1GM2vV6fx9oo7AIimV0qAJt2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K9naefPk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB8BC433F1;
-	Sun,  3 Mar 2024 13:23:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PGlFKjxHQfXfEvE+WR/b2coVwNCcCx1xVTiXxEnTy+Z+GCRUjXcBvNMHv7K47SKgohsOEP/wNV+3Fo+hEzlZmdqegHb0IWo86u6JGYUdBddnh0UjaFhp4y0PAwlbVRHjEQlJDNEc5BmT36rt7Fn/of8U2NB0rbKmiEVgJgUAkJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DFq57xDL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF006C433C7;
+	Sun,  3 Mar 2024 13:44:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709472240;
-	bh=5HABLV55vqFa2+LegG4ZksipXRJADsbLdJAjy9nIQ+U=;
+	s=k20201202; t=1709473453;
+	bh=ugMvCw6zGRAzhtBt0eT9PK0o3WRLP6J3rcIwKvAF0Gc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=K9naefPkvKMLjWvIuGRit0366N+wl1LWzPPQWhwVcS41ZSW6cb8MI9J64A3LU2wK5
-	 UAaux1cgpqerz0jeQ8MjItQmvyEP+vwY4F7Slrw/RByq8AuYhKUMQEyhSJy1VbU5gr
-	 LJoQx1CmjZgAn3+PMAtNXGyJQjTZEmrWrHnysw3OUL1IrRzSv3ki23vg//o2TiHsbf
-	 +OOPq71O0kKVhrJABjZ4teTddDc+ToC8RUo7pQcXAENCwPWkdtipDvtxLCjeiw48h5
-	 2metudhex+DFbTMxedtLbbC6pbap5ZOcP5aLDNN/dgwRb3+54kNH4El/JB/p3K/bfw
-	 z1/00aB2jVf4Q==
-Date: Sun, 3 Mar 2024 13:23:46 +0000
+	b=DFq57xDLrYxOe9w7PzvF4LRKqHFPVjGbOopKrunvEi/wkXqToI6eChzOoVkMIgo9N
+	 yTw2rdDy4sEZ5ApuLXgPwTuM6Db2ThzTt95x78Qj/5rsoEwpOiE/q3a6APeUhlHujU
+	 tJdWQysTryZze1Ri1+ZPtYUT+hQOtRP+PSkpOM+zEVR9vDWoW9HGKY68tlDwcym4Rz
+	 uxal08cSsvCkzvm6iUIbZx+Z8su5fqUosrHI5OO9g9zdmjQ7Vq0GovmxaTa8hH99kK
+	 N5c71EatrVgfsDmChZjzR3fkJGwvVm1yam8qCYzQN5/e04KHSXj93eUYpO6yObTUM8
+	 LWdlk0OJHlfOQ==
+Date: Sun, 3 Mar 2024 13:43:59 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: linux-iio@vger.kernel.org, Michael Hennerich
@@ -50,11 +50,12 @@ Cc: linux-iio@vger.kernel.org, Michael Hennerich
  <conor+dt@kernel.org>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Liam
  Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: add ad7944 ADCs
-Message-ID: <20240303132346.3db77d20@jic23-huawei>
-In-Reply-To: <20240229-ad7944-mainline-v4-1-f88b5ec4baed@baylibre.com>
+Subject: Re: [PATCH v4 2/2] iio: adc: ad7944: add driver for
+ AD7944/AD7985/AD7986
+Message-ID: <20240303134359.16d5e5f1@jic23-huawei>
+In-Reply-To: <20240229-ad7944-mainline-v4-2-f88b5ec4baed@baylibre.com>
 References: <20240229-ad7944-mainline-v4-0-f88b5ec4baed@baylibre.com>
-	<20240229-ad7944-mainline-v4-1-f88b5ec4baed@baylibre.com>
+	<20240229-ad7944-mainline-v4-2-f88b5ec4baed@baylibre.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,34 +66,181 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 29 Feb 2024 10:25:50 -0600
+On Thu, 29 Feb 2024 10:25:51 -0600
 David Lechner <dlechner@baylibre.com> wrote:
 
-> This adds a new binding for the Analog Devices, Inc. AD7944, AD7985, and
-> AD7986 ADCs.
+> This adds a driver for the Analog Devices Inc. AD7944, AD7985, and
+> AD7986 ADCs. These are a family of pin-compatible ADCs that can sample
+> at rates up to 2.5 MSPS.
+> 
+> The initial driver adds support for sampling at lower rates using the
+> usual IIO triggered buffer and can handle all 3 possible reference
+> voltage configurations.
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> 
 Hi David,
 
-One trivial comment. If this is all that comes up I can tweak that whilst applying.
+Fresh read through showed up a few more things.  They are all trivial except
+for what I think is an inverted error condition which would break
+cases where ref was not supplied in DT.
 
 Jonathan
 
-...
 
-> +  adi,spi-mode:
-> +    $ref: /schemas/types.yaml#/definitions/string
-> +    enum: [ single, chain ]
-> +    description: |
-> +      This property indicates the SPI wiring configuration.
+> ---
+> v4 changes: none
+> 
+> v3 changes:
+> - Replaced _sign with _diff in chip info struct to properly handle
+>   pseudo-differential vs. true differential chips. Pseudo-differential chips
+>   now just have a voltage0 channel instead of voltage0-voltage1.
+> - Fixed not resetting the CNV gpio on error return.
+> - Simplified check of adi,spi-mode property now that "multi" is no longer a
+>   valid option.
+
+> diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
+> new file mode 100644
+> index 000000000000..d0ba4ae409c4
+> --- /dev/null
+> +++ b/drivers/iio/adc/ad7944.c
+> @@ -0,0 +1,413 @@
+
+> +#define AD7944_INTERNAL_REF_MV		4096
 > +
-> +      When this property is omitted, it is assumed that the device is using what
-> +      the he datasheet calls "4-wire mode". This is the conventional SPI mode
+> +struct ad7944_timing_spec {
+> +	/* Normal mode max conversion time (t_{CONV}) in nanoseconds. */
+Trivial.
+Name makes unit obvious (which is exactly how it should be!),
+so can drop it from the comment.
 
-Stray "he"?
+> +	unsigned int conv_ns;
+> +	/* TURBO mode max conversion time (t_{CONV}) in nanoseconds. */
+> +	unsigned int turbo_conv_ns;
+> +};
+> +
+> +struct ad7944_adc {
+> +	struct spi_device *spi;
+> +	/* Chip-specific timing specifications. */
+> +	const struct ad7944_timing_spec *t;
 
-> +      used when there are multiple devices on the same bus. In this mode, the
-> +      CNV line is used to initiate the conversion and the SDI line is connected
-> +      to CS on the SPI controller.
+As mentioned below, t is too succinct. Just pay the price in characters for
+timing_spec or something along those lines.
+
+> +	/* GPIO connected to CNV pin. */
+> +	struct gpio_desc *cnv;
+> +	/* Optional GPIO to enable turbo mode. */
+> +	struct gpio_desc *turbo;
+> +	/* Indicates TURBO is hard-wired to be always enabled. */
+> +	bool always_turbo;
+> +	/* Reference voltage (millivolts). */
+> +	unsigned int ref_mv;
+> +
+> +	/*
+> +	 * DMA (thus cache coherency maintenance) requires the
+> +	 * transfer buffers to live in their own cache lines.
+> +	 */
+> +	struct {
+> +		union {
+> +			u16 u16;
+> +			u32 u32;
+> +		} raw;
+> +		u64 timestamp __aligned(8);
+> +	 } sample __aligned(IIO_DMA_MINALIGN);
+> +};
+
+
+> +
+> +static int ad7944_probe(struct spi_device *spi)
+> +{
+> +	const struct ad7944_chip_info *chip_info;
+> +	struct iio_dev *indio_dev;
+> +	struct ad7944_adc *adc;
+> +	bool have_refin = false;
+> +	struct regulator *ref;
+> +	int ret;
+> +
+> +	/*
+> +	 * driver currently only supports the conventional "4-wire" mode and
+> +	 * not other special wiring configurations.
+> +	 */
+> +	if (device_property_present(&spi->dev, "adi,spi-mode"))
+Trivial, so ignore if you like..
+
+There are a lot of spi->dev in here, maybe it's wroth
+a local variable
+struct device *dev = &spi->dev;
+
+> +		return dev_err_probe(&spi->dev, -EINVAL,
+> +				     "adi,spi-mode is not currently supported\n");
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*adc));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	adc = iio_priv(indio_dev);
+> +	adc->spi = spi;
+> +
+> +	chip_info = spi_get_device_match_data(spi);
+> +	if (!chip_info)
+> +		return dev_err_probe(&spi->dev, -EINVAL, "no chip info\n");
+> +
+> +	adc->t = chip_info->t;
+
+That might want a bit more informative a name. Even ts is better than t!
+
 >
+> +
+> +	/*
+> +	 * Sort out what is being used for the reference voltage. Options are:
+> +	 * - internal reference: neither REF or REFIN is connected
+> +	 * - internal reference with external buffer: REF not connected, REFIN
+> +	 *   is connected
+> +	 * - external reference: REF is connected, REFIN is not connected
+> +	 */
+> +
+> +	ref = devm_regulator_get_optional(&spi->dev, "ref");
+> +	if (IS_ERR(ref)) {
+> +		if (PTR_ERR(ref) != -ENODEV)
+
+Confused. Isn't this inverse of what we want?
+return an error if we got anything other than -ENODEV.
+		if (PTR_ERR(ref) |= -ENODEV)
+			return dev_err_probe(&spi->dev, PTR_ERR(ref),
+					     "failed to get REF supply\n");
+		ref = NULL;
+	}
+
+> +			ref = NULL;
+> +		else
+> +			return dev_err_probe(&spi->dev, PTR_ERR(ref),
+> +					     "failed to get REF supply\n");
+> +	}
+> +
+
+> +
+> +	adc->cnv = devm_gpiod_get(&spi->dev, "cnv", GPIOD_OUT_LOW);
+> +	if (IS_ERR(adc->cnv))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(adc->cnv),
+> +				     "failed to get CNV GPIO\n");
+
+Is this optional?  If we don't yet support the case the dt binding talks
+about worth a comment here to say we don't yet support XYZ so this
+is not optional.  
+
+> +
+> +	adc->turbo = devm_gpiod_get_optional(&spi->dev, "turbo", GPIOD_OUT_LOW);
+> +	if (IS_ERR(adc->turbo))
+> +		return dev_err_probe(&spi->dev, PTR_ERR(adc->turbo),
+> +				     "failed to get TURBO GPIO\n");
+> +
+> +	if (device_property_present(&spi->dev, "adi,always-turbo"))
+> +		adc->always_turbo = true;
+> +
+
+Trivial, but maybe..
+	adc->always_turbo = device_property_present(&spi->dev, "adi,always_turbo");
+
+Jonathan
+
 

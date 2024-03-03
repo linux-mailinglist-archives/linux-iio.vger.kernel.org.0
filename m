@@ -1,75 +1,74 @@
-Return-Path: <linux-iio+bounces-3298-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3299-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE16E86F753
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 22:55:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8331386F76E
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 23:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D860280FDC
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 21:55:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C7261C20B7A
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 22:35:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7BC7B3FB;
-	Sun,  3 Mar 2024 21:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4947D79DC2;
+	Sun,  3 Mar 2024 22:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LAPuQsRR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A9r2KHlD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113037AE69;
-	Sun,  3 Mar 2024 21:54:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A91A6CDAF;
+	Sun,  3 Mar 2024 22:35:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709502871; cv=none; b=WAhhkAncC7vtxOB6YTUUO36HFLkNdx7Bcyipj3J5gz++SVL6GxfDbeg5GcTP33YfiunxjmgOc0eh7Jk5a6KeiillvUWERNPcx4A3FDqMZlcbJMQw7tCDdbyz8g0j2N1ig4DvLLtbp2+6lCTtZQBLDRYebPp6ixUTrrwDsaq7aNg=
+	t=1709505304; cv=none; b=rC+4ujUPad4xDsti2DYhsbKPU8dX/Ais/DajWoEvuRedNA9XMA/t2LQcIzCU/fOpUDUvD7dj3DyED4OCW3ZPc7eYnT5psz9nqMCd0dd4mysTk1bA7PoGIlNrkFstNuTJigSlJUvV3DCoWvE2HFA2QmzWpGIDIxDu3vWrTawoSzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709502871; c=relaxed/simple;
-	bh=aVC+szChqUVwP9dorH1s8x/ORY9BRZBBC5IcgeZmXjg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=P84b+j5UeABYtxB33pWiwrJYrolTdjzTf1pYKExgzB/BV67R1KK12t+/3Xno//IUReyOTCYs2ugQWPRPHChLRCywK2IG3IO1vSHVSmSRx8CNiGlRtPL97P3Xd7y49WCNElGD8t5L6tQTSANrEtjMN6+H/b4e6dHIL6R319Nre2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LAPuQsRR; arc=none smtp.client-ip=209.85.208.44
+	s=arc-20240116; t=1709505304; c=relaxed/simple;
+	bh=DGQR7yTAjvJgIlGiMzFgGM447krkPjSSGe0AV90aCFI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=sit2fFn2HxDoEAhWMCbSbsQTWA+LECq3rJQm1g+0nECZwRinrSmEWh/l3zk9BDQF/NKu+vwF6z7Ee2SsRkJK91gi0Ml2G41Z22tZwyks4bR5B3ywdoEuVcExUN/fxkGxCRQ2mx8d2Mm2L19Y2/Rh4ByELlbZlDz8RpsL+EkVHRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A9r2KHlD; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-565a3910f86so5780691a12.3;
-        Sun, 03 Mar 2024 13:54:29 -0800 (PST)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a3ddc13bbb3so819480866b.0;
+        Sun, 03 Mar 2024 14:35:02 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709502868; x=1710107668; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9wfVpFY3RFJ1WZsM48MjjCquUKLQaa0zbDWX/ailz6E=;
-        b=LAPuQsRRH3MtUkpY4uyzvQAxycxbMMxYnRebDqj2r3fgGbzn+Zdse+rMlsApbCOgnj
-         KjfW4ho58K0ywn1Ge75S/GrtIAl9od3B10LKqTRt2b7W8uEENq+2gzQFKn5gh4Hf86Jt
-         LltZmjFCm3HPShymDFrZvXFCeRHpWTA/narVc/YTy9gIKGd5+XRU1SUt8tDai+oMmYw3
-         OFmiUK1dEal48If07a9zZLeizupanwAB/5PIoKG2VfNBxrNul2jtdQzd2x2oCKjzmNy2
-         suxh0kBAkSp+jj7DPFB95yP8GKCWOZl95D+X5YHDTelv06eLWQkSxnojpb4qEz/9PML6
-         gkSg==
+        d=gmail.com; s=20230601; t=1709505300; x=1710110100; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/tNlHdcdou4LPuSKHe0Zuh/h9dgjEfE6QEyEmebUH3A=;
+        b=A9r2KHlDxTQ16/xABfYuNNvh6Zq/dg4OHfJHFxIfqW7e3QaoIqKqSOaQ5CYrxZIxLo
+         geOmfbTG9qxko4Tth3B/ZDQVzzBYSjwwJW/Yg2S4sdtxLN2ARicQz172XQ0b7lkOEPHA
+         /R7Uu8stao1ZTAEQmDBOa82420VD0qIlwqeFUKaDSclr6AKAPyVlgKk9B+/uePkxf4ve
+         BAcpDWEbmIDLLcD/6i3KJFD2sKpFnoYmmdN2VTxvNaPvHw7cNhVqbECyp5xDnXP58pcM
+         q0UMU0OgnxtbcvpzFbVlSeekp9xUVY0L6CKTZMS6ZUgzuZWQs1gEGIsDQmQkiR4O8UM7
+         KcyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709502868; x=1710107668;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9wfVpFY3RFJ1WZsM48MjjCquUKLQaa0zbDWX/ailz6E=;
-        b=Sop0gEfcW9nDp5yuvWdjKdrJUevz/ddrNZjpQPj1qc7hIzrfZ7Vz0W66KfrNavqFSg
-         +UrFNf1BgkP7o2iCPFieP1ZTTgXE1M4h2Kq/H41Cd7mGfM1Socff9vmQvafZauEVLiVm
-         BDKjbyCS4Od1L7OHMFBUbYidE34qjpyeRvFABN+PNa8BD7uW8WZM0MIAVxiPylt35hwg
-         dtm92NZWoOgQg6KPRjlzG/KTYNIbmTHxdKp8BZqKSfYuMP1saX5DklA+nc+FfGbT6mEC
-         tN6E7bTlK+g78A5i1AROQbJilMTfoz3jLtEyeT1Jsb+mkSazv7nSYShFSNi7/oV5chfJ
-         7JLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWj3LSGRPsh/NNMmauEy8LkSj7Dw+4Vqg8L1sWsEqIhEiENglAvHKYNdO3ulUOroLqm+TNd4mRBlCm8f3bjtVATa0TdzTtk82RIr8uqRzN9lGB8mXw26M0sZvijf2gbodAsNZvZIW1QA1mXf4jIcvGTTT+drR3BfyaeSasrFVYFYM7VFA==
-X-Gm-Message-State: AOJu0YwjT+QhyHkHj9WxNvAGXy1AxhOmB1SbfOdG/UGP9GqiNB9rX2ge
-	7uEjfGLLgs1b9o785wJgRo+BMPSljk97gWBJyggbR4JkHvZmhsFmpjHFX1GOrswcwg==
-X-Google-Smtp-Source: AGHT+IHlckUN5ksJiFKHAfgeDqB9otVgcaNUqPtywMP22W0xmNKg7pinjAu1q0x4S4lT+ZC662dFAQ==
-X-Received: by 2002:a05:6402:26c5:b0:564:3392:e9db with SMTP id x5-20020a05640226c500b005643392e9dbmr6313049edd.33.1709502867851;
-        Sun, 03 Mar 2024 13:54:27 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709505300; x=1710110100;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/tNlHdcdou4LPuSKHe0Zuh/h9dgjEfE6QEyEmebUH3A=;
+        b=rpeXVXnCHW1o+vciH0J1EFshw+nGpegB1kGSvYolPxlI4ei79OkwM1+qSsdH1gwAe5
+         y98EIFzm9KukJp4+64Abp3KVIOym3pXBOw9ucbKFoajkL2iCuWxDUP0x+Jen3dCBb79N
+         fuZSGzF04OLIFao8lwF5vSpC60ZcGvbJwIXubvqV+i97wHVtyNDwhRQ+8lXhduw6MDJ9
+         PvWg76trBfIGN20uxz9J8SeZznqEjrEr/L0sNIxRUxV1+qN+uoRlppOm8dbNZKUERKn0
+         nunUTnVrI8m2zf/k0w/DEXXgE08wzTcqhJBfKKHQ3Ts+6SGe4mevp3vhcxZb1ZI1PNcM
+         qM4w==
+X-Forwarded-Encrypted: i=1; AJvYcCVzuQpQiimdxC1ztrfS4AmkiIZMCJLmoEy1JA41Hlu4VHPn/FdXTmc17NEayyD6pyFJTzPw0aG+pdBvG1Lo+b9/VT7okYkJYiji30y/NMnja9tDza8SQtyCl6dIqYcDsGLDcd5nJeiU
+X-Gm-Message-State: AOJu0Yz9DDsAO8NsGs9K8XnIU0OgZT6fvswGzjIhhS/AQHilTPQhpyG+
+	JKR6t8KoVdXMlXN4wHgjji/L3a+/Shr3qG8VjQzTBxSxsu4F4iUasHBIX6gOR3H8Yw==
+X-Google-Smtp-Source: AGHT+IHDSOPMhDudX8vHLLPYNLmHt9x+K+Vhf3qBfeu2wyfH+r48StL8lIgCZJM13j9WbaVRAc0ycg==
+X-Received: by 2002:a17:906:c2d1:b0:a43:74fa:4f08 with SMTP id ch17-20020a170906c2d100b00a4374fa4f08mr6545593ejb.9.1709505300053;
+        Sun, 03 Mar 2024 14:35:00 -0800 (PST)
 Received: from [127.0.1.1] (2a02-8389-41cf-e200-b3d8-5b4b-5188-4373.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:b3d8:5b4b:5188:4373])
-        by smtp.gmail.com with ESMTPSA id n22-20020a05640205d600b00566d6950d14sm2783250edx.92.2024.03.03.13.54.26
+        by smtp.gmail.com with ESMTPSA id v23-20020a170906565700b00a455ff77e7bsm82204ejr.88.2024.03.03.14.34.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Mar 2024 13:54:27 -0800 (PST)
+        Sun, 03 Mar 2024 14:34:59 -0800 (PST)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Sun, 03 Mar 2024 22:54:22 +0100
-Subject: [PATCH v3 3/3] iio: humidity: hdc3020: add reset management
+Subject: [PATCH 0/4] Drop casting to void in dev_set_drvdata
+Date: Sun, 03 Mar 2024 23:34:38 +0100
+Message-Id: <20240303-void_in_dev_set_drvdata-v1-0-ae39027d740b@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,97 +77,56 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240303-hdc3020-pm-v3-3-48bc02b5241b@gmail.com>
-References: <20240303-hdc3020-pm-v3-0-48bc02b5241b@gmail.com>
-In-Reply-To: <20240303-hdc3020-pm-v3-0-48bc02b5241b@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Li peiyu <579lpy@gmail.com>, 
- Rob Herring <robh+dt@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAP765GUC/x3MQQqAIBBG4avErBPMWmhXiRBp/mo2FhoSRHdPW
+ n6L9x7KSIJMY/NQQpEsR6zo2oaWPcQNSriajDaD7nWvyiHsJXpG8RmX51Q4XEEZtkuA0xaDo1q
+ fCavc/3ma3/cD4xEpa2kAAAA=
+To: Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Michal Simek <michal.simek@amd.com>, Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1709502861; l=2300;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1709505298; l=1396;
  i=javier.carrasco.cruz@gmail.com; s=20230509; h=from:subject:message-id;
- bh=aVC+szChqUVwP9dorH1s8x/ORY9BRZBBC5IcgeZmXjg=;
- b=xhvMcJZaOIgBiJ8bzYqJ/tYs7KdeFM+Wd6KN70+V7hWYPyQ2kzRvnmsoX3Zm9WEFQFe2IKYAg
- tg+4Ko2kB1QAgRb8ys164IE+lFVQKv8CSAOa57mZnOoVr73mFaO8t2L
+ bh=DGQR7yTAjvJgIlGiMzFgGM447krkPjSSGe0AV90aCFI=;
+ b=AJ1cpYmZ0AZHVstvJ+M+lXezwyXXWXlb0rdJxX9HWXNJSCLixeSgYE/xz9vhpBcm7ZQTdBLhu
+ dJbuK5EeZI7DKAU4sbZlLbVnW8UtHY0dLgmZKjIy0TpxQGZmCfPrHko
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=tIGJV7M+tCizagNijF0eGMBGcOsPD+0cWGfKjl4h6K8=
 
-The HDC3020 provides an active low reset signal that must be handled if
-connected. Asserting this signal turns the device into Trigger-on Demand
-measurement mode, reducing its power consumption when no measurements
-are required like in low-power modes.
+The C standard specifies that there is no need to cast from a pointer to
+void [1].
 
-According to the datasheet, the longest "Reset Ready" is 3 ms, which is
-only taken into account if the reset signal is defined.
+The vast majority of the users of dev_set_drvdata do not cast their
+pointers to void, and the few that do so should be fixed before it
+spreads by following bad examples (which I was about to do here [2]).
+
+The very specific cases where the cast avoids warnings (e.g. droping
+const) have been kept as they are.
+
+[1] C Standard Committee: https://c0x.shape-of-code.com/6.3.2.3.html
+[2] https://lore.kernel.org/linux-iio/20240226-hdc3020-pm-v2-0-cec6766086e8@gmail.com/T/#t
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/humidity/hdc3020.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+Javier Carrasco (4):
+      char: xilinx_hwicap: drop casting to void in dev_set_drvdata
+      io: light: st_uvis25: drop casting to void in dev_set_drvdata
+      iio: humidity: hts211: drop casting to void in dev_set_drvdata
+      iio: imu: st_lsm6dsx: drop casting to void in dev_set_drvdata
 
-diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
-index 7f93024b850c..cdc4789213ba 100644
---- a/drivers/iio/humidity/hdc3020.c
-+++ b/drivers/iio/humidity/hdc3020.c
-@@ -15,6 +15,7 @@
- #include <linux/cleanup.h>
- #include <linux/crc8.h>
- #include <linux/delay.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/i2c.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
-@@ -70,6 +71,7 @@
- 
- struct hdc3020_data {
- 	struct i2c_client *client;
-+	struct gpio_desc *reset_gpio;
- 	struct regulator *vdd_supply;
- 	/*
- 	 * Ensure that the sensor configuration (currently only heater is
-@@ -558,6 +560,9 @@ static int hdc3020_power_off(struct hdc3020_data *data)
- {
- 	hdc3020_exec_cmd(data, HDC3020_EXIT_AUTO);
- 
-+	if (data->reset_gpio)
-+		gpiod_set_value_cansleep(data->reset_gpio, 1);
-+
- 	return regulator_disable(data->vdd_supply);
- }
- 
-@@ -571,6 +576,11 @@ static int hdc3020_power_on(struct hdc3020_data *data)
- 
- 	fsleep(5000);
- 
-+	if (data->reset_gpio) {
-+		gpiod_set_value_cansleep(data->reset_gpio, 0);
-+		fsleep(3000);
-+	}
-+
- 	if (data->client->irq) {
- 		/*
- 		 * The alert output is activated by default upon power up,
-@@ -627,6 +637,12 @@ static int hdc3020_probe(struct i2c_client *client)
- 		return dev_err_probe(&client->dev, PTR_ERR(data->vdd_supply),
- 				     "Unable to get VDD regulator\n");
- 
-+	data->reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
-+						   GPIOD_OUT_HIGH);
-+	if (IS_ERR(data->reset_gpio))
-+		return dev_err_probe(&client->dev, PTR_ERR(data->reset_gpio),
-+				     "Cannot get reset GPIO\n");
-+
- 	ret = hdc3020_power_on(data);
- 	if (ret)
- 		return dev_err_probe(&client->dev, ret, "Power on failed\n");
+ drivers/char/xilinx_hwicap/xilinx_hwicap.c   | 2 +-
+ drivers/iio/humidity/hts221_core.c           | 2 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
+ drivers/iio/light/st_uvis25_core.c           | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+---
+base-commit: 90d35da658da8cff0d4ecbb5113f5fac9d00eb72
+change-id: 20240303-void_in_dev_set_drvdata-2d8cae908e49
 
+Best regards,
 -- 
-2.40.1
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 

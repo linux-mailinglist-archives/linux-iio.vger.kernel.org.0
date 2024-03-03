@@ -1,61 +1,60 @@
-Return-Path: <linux-iio+bounces-3265-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3266-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11B4A86F4A5
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 12:56:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3560286F4C6
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 13:17:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F012B21D60
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 11:56:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD7BE2820F5
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 12:17:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59572BE4E;
-	Sun,  3 Mar 2024 11:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E901BE4E;
+	Sun,  3 Mar 2024 12:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L94S4Hdg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SjqDQONh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14915BE49;
-	Sun,  3 Mar 2024 11:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA35BE5A;
+	Sun,  3 Mar 2024 12:17:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709467007; cv=none; b=jAXa1O5RW/4kyoRDxhGGwG9XjpynuN/ivTPW7yfcja0YYEkC8JcjvjlUfHnMG1vQUIjjNG4JbzYb5qaAfdr+oJyzWUzCW2+iX326NZaxnfCzVoaesgxzmpBRg+AYYDhErPeWIDolr+ng+ujRTn/IHlWYi3KG3SkyTs+ZET6l4L0=
+	t=1709468226; cv=none; b=odELfqn+or2TWUWQhLY420RWBZCjjWszPiI0Oms68BPQo+k4BX5rv3hUEnbFx45KOefOGaOfrANS9mSI8sm6M3oZW+JWKq4AgGxoYtU3+gFDfm4NgTszPvevciFnxtoP7pt8blv2ilbEsNmcjnln6BkEbymQMqff/6XuGOqpdAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709467007; c=relaxed/simple;
-	bh=rsWl8E4VnDoBE0w9p8LDB9GFa21nhzS6req7J0ChWt8=;
+	s=arc-20240116; t=1709468226; c=relaxed/simple;
+	bh=1Lr8hlwxn2OTZxHIhdRHf62rtWGtEQQ/FmpdEJQsh/w=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gunc1D3mporN6VnXhHcOMqHGZGG+kgxIUWNPCtT/M0eAROGwv4twGWAW2jdJmV9bUQBupIQXpL+doMsJUzVdfbO0yGgrUyshzvEbyKPfCgzqzS98ADVUx+Y5blClITvX1pn3Yf+fJrj64eNnxYJTk6QPr4orl0JRNvsEnZnse7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L94S4Hdg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862E4C433F1;
-	Sun,  3 Mar 2024 11:56:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VtnrGXn2/GYrQpn6ngRFyQfhSik00+JyH41Xx/cUO2nDgNVFOiIrE9xBpkFUBbW/F4fxy0jl/z0s1omfJsKJOCBYdTB6IQlRJwGPB1xBqYmwF7+8846ePbkP+G4zNkdbxLfDjsD2bOdwFWcLLBXed1vegh7ym5gJGptKPWDkdVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SjqDQONh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69E0C433C7;
+	Sun,  3 Mar 2024 12:17:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709467006;
-	bh=rsWl8E4VnDoBE0w9p8LDB9GFa21nhzS6req7J0ChWt8=;
+	s=k20201202; t=1709468225;
+	bh=1Lr8hlwxn2OTZxHIhdRHf62rtWGtEQQ/FmpdEJQsh/w=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=L94S4Hdg4NOB/gnWF3F3EtBD6SGQZtG8ZR+nZBM8YKXgqzxKsMaKmpYTCDmeH+CFg
-	 lSwg35SgBsBeo2QI1hZrm+yPvuZyz6dUO9gm8cb8GoH1EOZju3TU4eMgvVarEq6nfQ
-	 pyH+d0bIUJbKalgO4MClmvFkoh799XVpq0JGvUp2H9u/puZefqefWlZBXpw7AMRk7r
-	 ZczF3yigRFMJzVusJRBFINZLcu1VIbM3e7liPgLGJMp2mglQ0SVzKjvI52mHvruy9L
-	 NYScZMnnN3Gy6jNKMsvlzyhDa8gnymCmMLWxSPGNROBjXyLay2eaYTwdAzXmXENyQY
-	 Z6vWuCQOfFbDg==
-Date: Sun, 3 Mar 2024 11:56:33 +0000
+	b=SjqDQONhj4GhMtjZbBA2xyrAeCw+Ai6JEgbWeeaImVKqxqb+CYltNxT8Pv8GjWeAA
+	 SyaJ8BSo0CStnOqbjN4/flUA95KrTVDqqNwmvxktT3b9NuN9dkNb/HFjWWx+mSj8YR
+	 JFTJK7z6qSpK8k/RQsW33dPphaSBZUpGYVtO90LkUa3sWk0yW4Rw7p7lEv5PortRjH
+	 dMKln/yBV8xPuxF/+SN1WtIivEnDJCSs0XLBxawpk4EnpHYcOKMl+SNPeyjpg0ZniR
+	 DFEeS+1Fs5OV4dBZ6UdTJFJv9gmxjccCA3Mvd4j67pLODC7AhSRpi9vxryCLjDMFK3
+	 thlX4F1VwPoog==
+Date: Sun, 3 Mar 2024 12:16:53 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Frank Rowand
- <frowand.list@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall
- <Julia.Lawall@inria.fr>, Peter Zijlstra <peterz@infradead.org>, Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, marek.vasut@gmail.com, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [RESEND PATCH v2 0/4] of: automate of_node_put() - new approach
- to loops.
-Message-ID: <20240303115633.41128a62@jic23-huawei>
-In-Reply-To: <20240301223942.GA3179769-robh@kernel.org>
-References: <20240225142714.286440-1-jic23@kernel.org>
-	<20240301223942.GA3179769-robh@kernel.org>
+To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Cc: <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>
+Subject: Re: [PATCH v3 1/3] iio: temperature: ltc2983: convert to
+ dev_err_probe()
+Message-ID: <20240303121653.22f115c1@jic23-huawei>
+In-Reply-To: <20240301-ltc2983-misc-improv-v3-1-c09516ac0efc@analog.com>
+References: <20240301-ltc2983-misc-improv-v3-0-c09516ac0efc@analog.com>
+	<20240301-ltc2983-misc-improv-v3-1-c09516ac0efc@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,73 +65,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 1 Mar 2024 16:39:42 -0600
-Rob Herring <robh@kernel.org> wrote:
+On Fri, 01 Mar 2024 18:14:50 +0100
+Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-> On Sun, Feb 25, 2024 at 02:27:10PM +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > 
-> > Some discussion occured on previous posting.
-> > https://lore.kernel.org/linux-iio/20240223124432.26443-1-Jonathan.Cameron@huawei.com/
-> > 
-> > Summary:
-> > * fwnode conversions should be considered when applying this
-> >   infrastructure to a driver. Perhaps better to move directly to
-> >   the generic FW property handling rather than improve existing
-> >   of specific code.
-> > * There are lots of potential places to use this based on detections
-> >   from Julia's coccinelle scripts linked below.
-> > 
-> > The equivalent device_for_each_child_node_scoped() series for
-> > fwnode will be queued up in IIO for the merge window shortly as
-> > it has gathered sufficient tags. Hopefully the precdent set there
-> > for the approach will reassure people that instantiating the
-> > child variable inside the macro definition is the best approach.
-> > https://lore.kernel.org/linux-iio/20240217164249.921878-1-jic23@kernel.org/
-> > 
-> > v2: Andy suggested most of the original converted set should move to
-> >     generic fwnode / property.h handling.  Within IIO that was
-> >     a reasonable observation given we've been trying to move away from
-> >     firmware specific handling for some time. Patches making that change
-> >     to appropriate drivers posted.
-> >     As we discussed there are cases which are not suitable for such
-> >     conversion and this infrastructure still provides clear benefits
-> >     for them.
-> > 
-> > Ideally it would be good if this introductory series adding the
-> > infrastructure makes the 6.9 merge window. There are no dependencies
-> > on work queued in the IIO tree, so this can go via devicetree
-> > if the maintainers would prefer. I've had some off list messages
-> > asking when this would be merged, as there is interest in building
-> > on it next cycle for other parts of the kernel (where conversion to
-> > fwnode handling may be less appropriate).  
+> From: Nuno Sa <nuno.sa@analog.com>
 > 
-> I'll let you take it. For the series:
+> Use dev_err_probe() in the probe() path. While at it, made some simple
+> improvements:
+>  * Declare a struct device *dev helper. This also makes the style more
+>    consistent (some places the helper was used and not in other places);
+>  * Explicitly included the err.h and errno.h headers;
+>  * Removed an useless else if();
+>  * Removed some unnecessary line breaks.
 > 
-> Reviewed-by: Rob Herring <robh@kernel.org>
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+
+I'd rather see a proposal for dev_errp_probe() than a local solution.
+We can fallback to local solution if it doesn't meet with approval!
+
+Not that many uses in IIO so far, but seems some potential elsewhere.
+There are already a few return ERR_PTR(dev_err_probe()) cases in tree
+for low hanging fruit + looks like scmi_iio could benefit as another case
+in IIO.
+
+> ---
+>  drivers/iio/temperature/ltc2983.c | 262 ++++++++++++++++++--------------------
+>  1 file changed, 122 insertions(+), 140 deletions(-)
 > 
-> I've got some drivers/of/ conversions too, but they are probably next 
-> cycle at this point.
-> 
-> Rob
+> diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
+> index 3c4524d57b8e..592887097117 100644
+> --- a/drivers/iio/temperature/ltc2983.c
+> +++ b/drivers/iio/temperature/ltc2983.c
+> @@ -8,6 +8,8 @@
+>  #include <linux/bitfield.h>
+>  #include <linux/completion.h>
+>  #include <linux/device.h>
+> +#include <linux/err.h>
+> +#include <linux/errno.h>
+>  #include <linux/kernel.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/interrupt.h>
+> @@ -206,6 +208,13 @@ enum {
+>  #define to_temp(_sensor) \
+>  		container_of(_sensor, struct ltc2983_temp, sensor)
+>  
+> +/* Helper macro for returning error pointers in probe() paths. */
+> +#define ltc2983_errp_probe(dev, ret, fmt, ...)	({			\
+> +	int ___ret = dev_err_probe(dev, ret, fmt, ##__VA_ARGS__);	\
+> +									\
+> +	ERR_PTR(___ret);						\
 
-Thanks Rob,
+Given it's all wrapped up in a macro, I'd avoid the need for the ___ to try
+and prevent shadowing an existing variable by just going with
+	ERR_PTR(dev_err_probe(dev, ret, fmt, ##__VA_ARGS__))
+and no ({ complexities.
 
-Whether this makes it for this cycle is probably dependent on whether
-Linus does decide to do got to rc8 as hinted at as a possibility
-+ whether Greg feels comfortable taking these through his tree
-(char-misc is the normal path for IIO).  I know various people
-are hoping this series makes it, but if doesn't we can do an immutable
-tree early next cycle (though obviously that may reduce speed of adoption).
+If you really need to use a local variable, just through the hoops to make it unique
+like the cleanup.h macros do.
 
-We are discussing the equivalent pull request for the fwnode version here:
+> +})
+> +
 
-https://lore.kernel.org/linux-iio/2024030239-gift-cabdriver-266b@gregkh/T/#m87e7208820ebf6416a77a2973773b65a087b4796
 
-I've optimistically applied this series to my togreg-cleanup branch
-and merged that into the togreg branch of iio.git for linux-next to pick up.
-
-Thanks,
-
-Jonathan
 

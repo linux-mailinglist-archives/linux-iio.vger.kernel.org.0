@@ -1,56 +1,61 @@
-Return-Path: <linux-iio+bounces-3264-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3265-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A833F86F49D
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 12:41:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11B4A86F4A5
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 12:56:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEB441C20C22
-	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 11:41:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F012B21D60
+	for <lists+linux-iio@lfdr.de>; Sun,  3 Mar 2024 11:56:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB4DB65C;
-	Sun,  3 Mar 2024 11:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59572BE4E;
+	Sun,  3 Mar 2024 11:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QXs9bY3A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L94S4Hdg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234C6BA26
-	for <linux-iio@vger.kernel.org>; Sun,  3 Mar 2024 11:41:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14915BE49;
+	Sun,  3 Mar 2024 11:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709466109; cv=none; b=hYL39kU1Y7Yr9HiNJH1rUilmt9pCfmT9rodtmu0vp+8y9FmYI3bFeirqQdZ5MJ0sf0g2T2HgY8aFdNEJfXBUIQcB8j/EB/OibIID3QahrHvMZMu/917IbnHKYnJBroCSIwNS2ohLAw/61sNDNJvHmH6TU2KkEApMQiwwGVGmpa8=
+	t=1709467007; cv=none; b=jAXa1O5RW/4kyoRDxhGGwG9XjpynuN/ivTPW7yfcja0YYEkC8JcjvjlUfHnMG1vQUIjjNG4JbzYb5qaAfdr+oJyzWUzCW2+iX326NZaxnfCzVoaesgxzmpBRg+AYYDhErPeWIDolr+ng+ujRTn/IHlWYi3KG3SkyTs+ZET6l4L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709466109; c=relaxed/simple;
-	bh=qF70aBMpuqBbrax19pvTJZIEpC2gG/FOnJFen2g1yZ8=;
+	s=arc-20240116; t=1709467007; c=relaxed/simple;
+	bh=rsWl8E4VnDoBE0w9p8LDB9GFa21nhzS6req7J0ChWt8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CtICREI6Sb+hMkLxFbctPFflafTT7Ftbk3CsK1BRSkI3ExLq5AzKGHfdyLuF1cZsck3lcnCCk+OOeYYe/AIveoLlF3OK0H6213iS+uvwRN4bqM5+z0FPocO6nmdSr0I0LuJXOfsuFS8DcH7khToldAM7fEeRT8ASVFYjhYjCjOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QXs9bY3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B4CC433F1;
-	Sun,  3 Mar 2024 11:41:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gunc1D3mporN6VnXhHcOMqHGZGG+kgxIUWNPCtT/M0eAROGwv4twGWAW2jdJmV9bUQBupIQXpL+doMsJUzVdfbO0yGgrUyshzvEbyKPfCgzqzS98ADVUx+Y5blClITvX1pn3Yf+fJrj64eNnxYJTk6QPr4orl0JRNvsEnZnse7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L94S4Hdg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862E4C433F1;
+	Sun,  3 Mar 2024 11:56:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709466108;
-	bh=qF70aBMpuqBbrax19pvTJZIEpC2gG/FOnJFen2g1yZ8=;
+	s=k20201202; t=1709467006;
+	bh=rsWl8E4VnDoBE0w9p8LDB9GFa21nhzS6req7J0ChWt8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QXs9bY3Ah+PPA5UAbaa/sy3cgn0XzqjvDi3iMLx5t0LiOc2z4PQqXQC571AY3qRKT
-	 +ItmYr6QYEtelP88dh/PDD3Aup7dVOxZwvrxJ1nnByRkmjTD2alh+ZqumiIbQst66R
-	 7aSSaHbBO3C5w97BPMYyuIC1GcMEcDe01dlenbOXY07rh4xfzr/ALOMgtLFqa0r5Ak
-	 ZTk944gwgq2n64K1rSMPZ3PdrT5CRzTNpKeEgp7Mr7gAO670Nk04CFLWKuXJVxfMCc
-	 x3qzVdXC5kBB1GY9V4ntRtDvl/Ub5T4V+2PzjlAMAqmZhSI86b080+R58nnoBEkL5G
-	 dnpEwHjSFT5WA==
-Date: Sun, 3 Mar 2024 11:41:37 +0000
+	b=L94S4Hdg4NOB/gnWF3F3EtBD6SGQZtG8ZR+nZBM8YKXgqzxKsMaKmpYTCDmeH+CFg
+	 lSwg35SgBsBeo2QI1hZrm+yPvuZyz6dUO9gm8cb8GoH1EOZju3TU4eMgvVarEq6nfQ
+	 pyH+d0bIUJbKalgO4MClmvFkoh799XVpq0JGvUp2H9u/puZefqefWlZBXpw7AMRk7r
+	 ZczF3yigRFMJzVusJRBFINZLcu1VIbM3e7liPgLGJMp2mglQ0SVzKjvI52mHvruy9L
+	 NYScZMnnN3Gy6jNKMsvlzyhDa8gnymCmMLWxSPGNROBjXyLay2eaYTwdAzXmXENyQY
+	 Z6vWuCQOfFbDg==
+Date: Sun, 3 Mar 2024 11:56:33 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-iio@vger.kernel.org
-Subject: Re: [PULL] IIO: 3rd set for 6.9 - cleanup.h handling of
- fwnode_handle_put() related (not ordered wrt to PULL 2)
-Message-ID: <20240303114137.194421b1@jic23-huawei>
-In-Reply-To: <2024030239-gift-cabdriver-266b@gregkh>
-References: <20240229202300.3321cc11@jic23-huawei>
-	<2024030239-gift-cabdriver-266b@gregkh>
+To: Rob Herring <robh@kernel.org>
+Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Frank Rowand
+ <frowand.list@gmail.com>, linux-kernel@vger.kernel.org, Julia Lawall
+ <Julia.Lawall@inria.fr>, Peter Zijlstra <peterz@infradead.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, marek.vasut@gmail.com, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [RESEND PATCH v2 0/4] of: automate of_node_put() - new approach
+ to loops.
+Message-ID: <20240303115633.41128a62@jic23-huawei>
+In-Reply-To: <20240301223942.GA3179769-robh@kernel.org>
+References: <20240225142714.286440-1-jic23@kernel.org>
+	<20240301223942.GA3179769-robh@kernel.org>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,125 +66,73 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 2 Mar 2024 20:06:03 +0100
-Greg KH <gregkh@linuxfoundation.org> wrote:
+On Fri, 1 Mar 2024 16:39:42 -0600
+Rob Herring <robh@kernel.org> wrote:
 
-> On Thu, Feb 29, 2024 at 08:23:00PM +0000, Jonathan Cameron wrote:
-> > The following changes since commit d4551c189d6e6a3fcf7f625bd4b273e770fad35a:
+> On Sun, Feb 25, 2024 at 02:27:10PM +0000, Jonathan Cameron wrote:
+> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > > 
-> >   Merge tag 'iio-for-6.9a' of http://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into char-misc-next (2024-02-25 14:11:41 +0100)
+> > Some discussion occured on previous posting.
+> > https://lore.kernel.org/linux-iio/20240223124432.26443-1-Jonathan.Cameron@huawei.com/
 > > 
-> > are available in the Git repository at:
+> > Summary:
+> > * fwnode conversions should be considered when applying this
+> >   infrastructure to a driver. Perhaps better to move directly to
+> >   the generic FW property handling rather than improve existing
+> >   of specific code.
+> > * There are lots of potential places to use this based on detections
+> >   from Julia's coccinelle scripts linked below.
 > > 
-> >   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-6.9c
+> > The equivalent device_for_each_child_node_scoped() series for
+> > fwnode will be queued up in IIO for the merge window shortly as
+> > it has gathered sufficient tags. Hopefully the precdent set there
+> > for the approach will reassure people that instantiating the
+> > child variable inside the macro definition is the best approach.
+> > https://lore.kernel.org/linux-iio/20240217164249.921878-1-jic23@kernel.org/
 > > 
-> > for you to fetch changes up to 64e19caa5564ecc43edaa7fb818d53de650d9b34:
+> > v2: Andy suggested most of the original converted set should move to
+> >     generic fwnode / property.h handling.  Within IIO that was
+> >     a reasonable observation given we've been trying to move away from
+> >     firmware specific handling for some time. Patches making that change
+> >     to appropriate drivers posted.
+> >     As we discussed there are cases which are not suitable for such
+> >     conversion and this infrastructure still provides clear benefits
+> >     for them.
 > > 
-> >   iio: adc: rzg2l_adc: Use device_for_each_child_node_scoped() (2024-02-28 19:15:43 +0000)
-> > 
-> > ----------------------------------------------------------------
-> > IIO: 3rd set for 6.9 - cleanup.h related.
-> > 
-> > I have separated this set out from the more normal patches as they can
-> > go separately and that may simplify the merge window.  Greg, up to you
-> > how you wish to handle this in the char-misc tree.
-> > 
-> > Introduces __free() based handling for fwnode_handle_put() to
-> > allow scope based release of these handles on early exit from functions.  
+> > Ideally it would be good if this introductory series adding the
+> > infrastructure makes the 6.9 merge window. There are no dependencies
+> > on work queued in the IIO tree, so this can go via devicetree
+> > if the maintainers would prefer. I've had some off list messages
+> > asking when this would be merged, as there is interest in building
+> > on it next cycle for other parts of the kernel (where conversion to
+> > fwnode handling may be less appropriate).  
 > 
-> This should be fine, right?  No one complains about these.
-
-Agreed this type isn't novel. However, there is only use use so far outside of
-device_for_each_child_node_scoped() and that's in a patch that includes
-both a direct use of __free(fwnode_handle) and a couple of
-device_for_each_child_node_scoped()
-
-[PATCH v5 1/9] iio: temp: ltc2983: Use __free(fwnode_handle) and device_for_each_node_scoped()
-https://lore.kernel.org/all/20240224123215.161469-2-jic23@kernel.org/
-
+> I'll let you take it. For the series:
 > 
-> > Also introduced device_for_each_child_node_scoped() to provide a
-> > a convenient way to process child nodes without the need to explicitly
-> > handle the fwnode_handle_put() needed on early exits from the loop.
-> > Typically these early exits are a result of error handling or completion
-> > of a search and have proven very prone to being missed.  
+> Reviewed-by: Rob Herring <robh@kernel.org>
 > 
-> This is trickier, there was a load of different versions floating
-> around, do you have a link to the "last" version of this patch series
-> that got applied here?
+> I've got some drivers/of/ conversions too, but they are probably next 
+> cycle at this point.
+> 
+> Rob
 
-https://lore.kernel.org/all/20240217164249.921878-1-jic23@kernel.org/
-For the infrastructure - some of the users were in follow up series
-(the DT to fwnode conversions Andy asked for and a v5 series to update
- a few things and pester people for reviews).
+Thanks Rob,
 
-> 
-> > One instance of such a leaked resource was found during these conversions
-> > though review of that patch was too late for this pull request.  
-> 
-> I don't understand, does this series fix that found problem?  Or is it
-> coming?
-That one is still to come - review came in too late for this pull request.
+Whether this makes it for this cycle is probably dependent on whether
+Linus does decide to do got to rc8 as hinted at as a possibility
++ whether Greg feels comfortable taking these through his tree
+(char-misc is the normal path for IIO).  I know various people
+are hoping this series makes it, but if doesn't we can do an immutable
+tree early next cycle (though obviously that may reduce speed of adoption).
 
-https://lore.kernel.org/all/20240224123215.161469-6-jic23@kernel.org/
-Though I remembered the issue a little wrong as it's a failure to set
-the return value to an error, so arguably worse than an error leak as
-we'll falsely carry on when parsing the fw failed.  The resource leak
-cases were review of DT versions that came from Julia's coccinelle
-script.
+We are discussing the equivalent pull request for the fwnode version here:
 
-> 
-> > A number of drivers are also converted over to generic fwnode handling from
-> > the device tree specific version.  
-> 
-> Deleting code is always good, but:
-> 
-> 
-> > 
-> > ----------------------------------------------------------------
-> > Jonathan Cameron (16):
-> >       device property: Move fwnode_handle_put() into property.h
-> >       device property: Add cleanup.h based fwnode_handle_put() scope based cleanup.
-> >       device property: Introduce device_for_each_child_node_scoped()
-> >       iio: adc: max11410: Use device_for_each_child_node_scoped()
-> >       iio: addac: ad74413r: Use device_for_each_child_node_scoped()
-> >       iio: dac: ltc2688: Use device_for_each_child_node_scoped()
-> >       iio: adc: fsl-imx25-gcq: Switch from of specific handing to fwnode based.
-> >       iio: adc: fsl-imx25-gcq: Use devm_* and dev_err_probe() to simplify probe
-> >       iio: adc: ad7124: Switch from of specific to fwnode based property handling
-> >       iio: adc: ad7292: Switch from of specific to fwnode property handling
-> >       iio: adc: ad7192: Convert from of specific to fwnode property handling
-> >       iio: accel: mma8452: Switch from of specific to fwnode property handling.
-> >       iio: accel: fxls8962af: Switch from of specific to fwnode based properties.
-> >       iio: adc: hx711: Switch from of specific to fwnode property handling.
-> >       iio: temp: ltc2983: Use __free(fwnode_handle) and device_for_each_node_scoped()
-> >       iio: adc: rzg2l_adc: Use device_for_each_child_node_scoped()  
-> 
-> You are mixing the two different handlers in this series, right?  How
-> about 2 different ones, one for each?  Or do they start to conflict?
+https://lore.kernel.org/linux-iio/2024030239-gift-cabdriver-266b@gregkh/T/#m87e7208820ebf6416a77a2973773b65a087b4796
 
-It's one handler in here but two usecases so they are dependent.
-First the basic __free(fwnode_handle) then the device_for_each_child_node_scoped()
-which uses it internally..  The patches that mention DT are conversions over
-to fwnode_handle that incorporate using device_for_each_child_node()
+I've optimistically applied this series to my togreg-cleanup branch
+and merged that into the togreg branch of iio.git for linux-next to pick up.
 
-As for the ltc2983, there are users of just the __free(fwnode_handle) but in
-IIO at least, far more users of it via device_for_each_child_node_scoped().
-So not that useful to split the series :( 
-
-The device tree equivalent is a separate series not included here.
-That just got the necessary DT maintainer tags RB from Rob Herring today.
-If we get a little more time (i.e. an rc8) this cycle, it would be
-good to get that in place as well - I'll queue it up for linux-next today.
-This is the DT series.
-https://lore.kernel.org/linux-iio/20240301223942.GA3179769-robh@kernel.org/T/#t
+Thanks,
 
 Jonathan
-
-
-> 
-> thanks,
-> 
-> greg k-h
-
 

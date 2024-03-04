@@ -1,101 +1,168 @@
-Return-Path: <linux-iio+bounces-3332-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3333-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFDE0870463
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 15:40:56 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB55870468
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 15:41:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DFF21C222C7
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 14:40:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C2A51F213C4
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 14:41:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A89746B8B;
-	Mon,  4 Mar 2024 14:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853D54652F;
+	Mon,  4 Mar 2024 14:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="emGzoon8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mLQ7elNH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB56C487B0
-	for <linux-iio@vger.kernel.org>; Mon,  4 Mar 2024 14:39:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C251E484;
+	Mon,  4 Mar 2024 14:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709563165; cv=none; b=QI3ZYaaIA//MNj6yIxugFwmlTggxkAshnkveQhlSfX+xEzRv9XvxArvMvllRbfcy+/T8d/zl+JXkQh/wyZQQq23CnBhOcsz6o2DZ/N1rgS22Zuo+8Gf75/rDtYfBYFej0B2GeilorKiBpX9PvSW9EnkxH++qhhp3H24x5IWP+0I=
+	t=1709563245; cv=none; b=V52WmP08tdP8XEHXHZvoYjef6UjPUdeY7Pw2HYN633kju1u5a3bYagT5Tbgkru8sDKD6/VJ1Qj1pcHqqzSdJ/omcA/qH5y312eNREoIDXT1ht/w1ndw6TNREPIpHdtdCs0Zt6YpMrdbBfIPbbnmhx4i4vTxWZHN4jBeqmyAlTqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709563165; c=relaxed/simple;
-	bh=vDGpRCxAORqJMueKt34edr+rCaYe1PnBVeh9tbmSp1w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FXpSVwsI5w72jO3FRaqwAgoO0R5Y8ktfTLtAF1cIaUeFYKyFt3hFO6MTfbA+U2InkG4CF5EcnV4CXesPI5BtQn0+Z7XttUvXSqd0sgx/LRBsBfsGAu/u2y1KBYmA5Sg/fdSc2KWrepTAiSgh/mP4SBh9GP7HzrAfYN/w5ewhkig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=emGzoon8; arc=none smtp.client-ip=209.85.208.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2d220e39907so68097021fa.1
-        for <linux-iio@vger.kernel.org>; Mon, 04 Mar 2024 06:39:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1709563161; x=1710167961; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vDGpRCxAORqJMueKt34edr+rCaYe1PnBVeh9tbmSp1w=;
-        b=emGzoon81ObDc4HA71OMLgO4ZeiTeZ9nxIEmUiplvEnTErKGmNFq/UAAtQpMukhgeh
-         UsUihWdRHlhFop3CKe1sbTPt+89G61a4VpVQYYAMhtzmasYXMRxrtvohfns29DIXSOlx
-         C8E9N2dhuwZN31xn3F3yX1EXrCOGVbe/G8C6kCpBUQwiI7a9KwgzI5Ba92jPYwftLORI
-         y/zmcdwE/EANdx1CfzNC+BakxmFGOeHkdfE3iirJGXtXUBMkL6FOOKd08r9A8aZedhd4
-         CtA9k5nSfmskCkazvO/nYQWnlu16a1Rds1zf6mvBshyo8sHm/Chp7YcWbtlZjeQuNFAS
-         +6+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709563161; x=1710167961;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vDGpRCxAORqJMueKt34edr+rCaYe1PnBVeh9tbmSp1w=;
-        b=iSWgVd2u5p7F/pZc/Q72cf+5BbI6IsyicCzceq0cl4QLu46yfcWLK4ccIXyrgJqGjM
-         Sh+Wep9fBBxCz+KM6I6SJnaeWKuNFIE1pLM56NyPHl9a7+a9X/Kb0oOZp3Zm7GJYX42u
-         uQJXQ6YHRWZCbw26RYboGHcvzDvimkBctaxRngQhHfQnSiRwr6vDcEvkPtFQFJkDX745
-         knjqCohFwMkwKFqgW8RJG96AwTNtwiZLp3wO0isqQhyypEzjOv/fIEKW3jaJ7KvV3zOQ
-         qtVo54lTByeD4bBzCxkKX/Bs0r3RcjX1PD+jfJdDOSnNVBn7iTXY7NanCDoosWCQu5zS
-         hiqA==
-X-Forwarded-Encrypted: i=1; AJvYcCWN1ql69LWnzghRdn0w8eFjYMGgUYjzWcw8SC7++yZbwJ6mCwJWRxj6Rx7YtiAapPx+HFQRIM/HFSxekbcPMbTLoogxK6lnYATQ
-X-Gm-Message-State: AOJu0YxLAVf5cD4V5T0GSvd0i6lMMpgUDMHKCSa/4iitVgT2tgcjbgJ4
-	7KyHcqs722n3GP7lBMmbtFAK6WiiKPb9OPSM7HPmllE3bf5r7N8NxIHVvHZdN1C4FAGqx3WEUL1
-	6yL2AsqsYdtyWMGWzP3dJXO2YpXVYZCBe9JsxVw==
-X-Google-Smtp-Source: AGHT+IHDk6ElikIs8iamzUoSTyAOXOafoUhC1GRAhOK3vIrfpyJwvtQAHDA/PPtsiDzT5clDw/wzuhOyU+TXxJplUy4=
-X-Received: by 2002:a2e:b057:0:b0:2d3:3305:c37d with SMTP id
- d23-20020a2eb057000000b002d33305c37dmr6796096ljl.2.1709563161280; Mon, 04 Mar
- 2024 06:39:21 -0800 (PST)
+	s=arc-20240116; t=1709563245; c=relaxed/simple;
+	bh=zIjlGZfedJV9OUraq9VXgB71J74hXHMlhetn5zUkDYY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NN8ZWYAAcu0JQcvVv/A1EROtLk6jBPJM7AuAblqgT5FPQCM+KaZkykrn4R4iZF19tjyJ0+6/qkyKW0jp0kyAfS0U4HlNNtV3X+fiOpDBDgryOw24XxiUWWalFcN2Y9XFbtId7tNco9E6gaYmm9PGJ5eWoBjY0I0TSBjAFTVOPIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mLQ7elNH; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709563243; x=1741099243;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zIjlGZfedJV9OUraq9VXgB71J74hXHMlhetn5zUkDYY=;
+  b=mLQ7elNHI8fwuBeu4AYTe6OpbLIKWl8hK8wbHP33G/7uU8n5JEY5frpb
+   qAYnHCBJM98RPbR3NemmPky+UEhhgabmAaFE4OOr6AbqFFvzv7lDnpFNh
+   /UtQ6l1x7UaMTuncvQkhWqYW0VQfN76tKRlzP438BPj48/qOQbg5WxMeH
+   H/BMOa+fTMYiwmOJL7w53oC+WUNzMHTed4gbUHVXZUiy5CX7LDhaoyFzD
+   Vp+RglKXEgkR0pMl7ob4XsME1TcXPhjXWzr5FBMFLO1S1FodQT6QTO0hs
+   NIcF+yshUdMakT/npTuW8bd3zRUXG2JL2iqZ5uV0HfUq+OZW0gOYKZKLo
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="4218619"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
+   d="scan'208";a="4218619"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 06:40:43 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="937040615"
+X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
+   d="scan'208";a="937040615"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmsmga001.fm.intel.com with ESMTP; 04 Mar 2024 06:40:40 -0800
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id E9A1715C; Mon,  4 Mar 2024 16:40:38 +0200 (EET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: [PATCH v2 1/1] iio: adc: twl4030-madc: Make use of device properties
+Date: Mon,  4 Mar 2024 16:40:06 +0200
+Message-ID: <20240304144037.1036390-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1.gbec44491f096
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240304140650.977784-1-andriy.shevchenko@linux.intel.com> <20240304140650.977784-2-andriy.shevchenko@linux.intel.com>
-In-Reply-To: <20240304140650.977784-2-andriy.shevchenko@linux.intel.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 4 Mar 2024 08:39:10 -0600
-Message-ID: <CAMknhBFLVaEBE_aPYADpDdYVNhfz5aSb4vhP6v7L3de27K7V1Q@mail.gmail.com>
-Subject: Re: [PATCH v1 1/2] iio: core: Leave private pointer NULL when no
- private data supplied
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Mar 4, 2024 at 8:07=E2=80=AFAM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
->
-> In iio_device_alloc() when size of the private data is 0,
-> the private pointer is calculated to point behind the valid data.
-> Leave it NULL when no private data supplied.
->
-> Fixes: 6d4ebd565d15 ("iio: core: wrap IIO device into an iio_dev_opaque o=
-bject")
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
+Convert the module to be property provider agnostic and allow
+it to be used on non-OF platforms.
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+Include mod_devicetable.h explicitly to replace the dropped of.h
+which included mod_devicetable.h indirectly.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+v2: converted leftover (Jonathan)
+ drivers/iio/adc/twl4030-madc.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/iio/adc/twl4030-madc.c b/drivers/iio/adc/twl4030-madc.c
+index 4a247ca25a44..0253064fadec 100644
+--- a/drivers/iio/adc/twl4030-madc.c
++++ b/drivers/iio/adc/twl4030-madc.c
+@@ -19,10 +19,12 @@
+ #include <linux/interrupt.h>
+ #include <linux/kernel.h>
+ #include <linux/delay.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
+ #include <linux/platform_device.h>
++#include <linux/property.h>
+ #include <linux/slab.h>
+ #include <linux/mfd/twl.h>
+-#include <linux/module.h>
+ #include <linux/stddef.h>
+ #include <linux/mutex.h>
+ #include <linux/bitops.h>
+@@ -30,7 +32,6 @@
+ #include <linux/types.h>
+ #include <linux/gfp.h>
+ #include <linux/err.h>
+-#include <linux/of.h>
+ #include <linux/regulator/consumer.h>
+ 
+ #include <linux/iio/iio.h>
+@@ -744,14 +745,14 @@ static int twl4030_madc_set_power(struct twl4030_madc_data *madc, int on)
+  */
+ static int twl4030_madc_probe(struct platform_device *pdev)
+ {
++	struct device *dev = &pdev->dev;
++	struct twl4030_madc_platform_data *pdata = dev_get_platdata(dev);
+ 	struct twl4030_madc_data *madc;
+-	struct twl4030_madc_platform_data *pdata = dev_get_platdata(&pdev->dev);
+-	struct device_node *np = pdev->dev.of_node;
+ 	int irq, ret;
+ 	u8 regval;
+ 	struct iio_dev *iio_dev = NULL;
+ 
+-	if (!pdata && !np) {
++	if (!pdata && !dev_fwnode(dev)) {
+ 		dev_err(&pdev->dev, "neither platform data nor Device Tree node available\n");
+ 		return -EINVAL;
+ 	}
+@@ -779,7 +780,7 @@ static int twl4030_madc_probe(struct platform_device *pdev)
+ 	if (pdata)
+ 		madc->use_second_irq = (pdata->irq_line != 1);
+ 	else
+-		madc->use_second_irq = of_property_read_bool(np,
++		madc->use_second_irq = device_property_read_bool(dev,
+ 				       "ti,system-uses-second-madc-irq");
+ 
+ 	madc->imr = madc->use_second_irq ? TWL4030_MADC_IMR2 :
+@@ -905,20 +906,18 @@ static void twl4030_madc_remove(struct platform_device *pdev)
+ 	regulator_disable(madc->usb3v1);
+ }
+ 
+-#ifdef CONFIG_OF
+ static const struct of_device_id twl_madc_of_match[] = {
+ 	{ .compatible = "ti,twl4030-madc", },
+-	{ },
++	{ }
+ };
+ MODULE_DEVICE_TABLE(of, twl_madc_of_match);
+-#endif
+ 
+ static struct platform_driver twl4030_madc_driver = {
+ 	.probe = twl4030_madc_probe,
+ 	.remove_new = twl4030_madc_remove,
+ 	.driver = {
+ 		   .name = "twl4030_madc",
+-		   .of_match_table = of_match_ptr(twl_madc_of_match),
++		   .of_match_table = twl_madc_of_match,
+ 	},
+ };
+ 
+-- 
+2.43.0.rc1.1.gbec44491f096
+
 

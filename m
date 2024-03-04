@@ -1,70 +1,72 @@
-Return-Path: <linux-iio+bounces-3342-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3341-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5778C870B43
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7999E870B44
 	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 21:13:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BC941C223BC
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 20:13:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEFB7B23C3D
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 20:13:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF627AE6B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023247AE4F;
 	Mon,  4 Mar 2024 20:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="F0HQNsxR"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="OJ3XhT6W"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB7A47A711
-	for <linux-iio@vger.kernel.org>; Mon,  4 Mar 2024 20:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0D097A156
+	for <linux-iio@vger.kernel.org>; Mon,  4 Mar 2024 20:13:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709583223; cv=none; b=Tm0oEY7HC18uqH7kIX/DmUUmSgU///OW23Nv1IiUMDSr/Oh2zdXxUpj8jCfeMh/1C58VgdU/XrBHp4w/8JJCNRNaOBsnrNJzDfI8KogZ7hplFoZjDtYEEOzVXRawq1cozuOt7zHusVvLhrPhwUyZ/p2ZCE2vTiJuWTeehBsjYZI=
+	t=1709583222; cv=none; b=Hu8/St8mLONmyVFN1nb6opUEGdJRM5XCqpLTULs8U/Z6nwT9E0gjvCQvP6R48hD0ud6RwD3vwREs48uddlPimKXleLCypOHlqi+qDDU7hvJgKO5BjKd1tlI/77yu2EOpMAIcbwyaPW8cqrxb/FWvG8QYHZX2Ay3FgaoJsUAiOww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709583223; c=relaxed/simple;
-	bh=bisGaUr7bGrhi6tF8dwD4I5KujdFuV9Ywekr6/YEiJU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EvXQJDRMh4Hba4d60IdTw1EUBBgiA0++wp+F1o9r8EPx4mywJBarVQL3UpOYIm9JCvX756dAzzjJoM8Ubp3Kh/W4Xv8PHBXR5SFHvZ1mlu6wM3JSODy1l5w/xmw8onPmEu5NdHA/0Q2c9mgdByhF/2kz53+37G4elIlHjQDngcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=F0HQNsxR; arc=none smtp.client-ip=209.85.167.182
+	s=arc-20240116; t=1709583222; c=relaxed/simple;
+	bh=LWejQcoT6m+vybwuRgPEQXfB48ANaOyvkwKEje0JkCc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bbEU+4nJo8uGbHgBg0TYOWA6TH+jZTA7+HxjqdpTRpQDhrf3ff7V0CLFQRlMQqt0J0BPJnJ/aEM0qFt+MHR+gKcUz1RkkJVyLjB5JiyuBtzm+pQUH5coSxD5F3gA0zPAnlyvdkCHShVpDNU29xuhVvJ0nwJE1YoYlUbHzUcruSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=OJ3XhT6W; arc=none smtp.client-ip=209.85.167.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3c1adc90830so3053923b6e.0
-        for <linux-iio@vger.kernel.org>; Mon, 04 Mar 2024 12:13:39 -0800 (PST)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3c1ea5f29a6so965561b6e.0
+        for <linux-iio@vger.kernel.org>; Mon, 04 Mar 2024 12:13:40 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1709583219; x=1710188019; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tItt6el3MLTEP+Yh6ullzWEZp3tkdhHHbIbmhmeqN24=;
-        b=F0HQNsxR1RBOHhE63q5t1o33dAdoCc1rd7kPGC3ZULd3+dlIaKAadUyUIcvHQCTKLe
-         UULoE4JwDoUVXn8qgFpbfiCJ/tyY6U7NV1rJ4OlvABlsvxG6+aZTIEQ6fkw4XMZu09wu
-         gWc1UJZsB0P92UMnxvulI0+NRCCHcxcSlCuUNhQ2Bg0pMcMzmbI9ZgVgLQKzfhbxdW3I
-         Pmyg7pTD6JiFiv3vbl4XXh4WcSb72JUmjvMrqhQ91wdo3PmYh25xs45w1XMBcmL11Ma2
-         eDMSEIurPVSEiDyy2yaoQneUifPk1v235/E/9oe245EYWi9TzlbSv4U0h5h8EtSlPsVF
-         0/RQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1709583220; x=1710188020; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CJdxV1kAL7xkhZisZuQ5hA4D9OsKX5BPg2qE7YeGVNI=;
+        b=OJ3XhT6WhyoejitXAsVU2RmqDyRmV09VxG+HoZl1ADRd5WuQnyseanQWbE/jQjrQfv
+         qp4nyDKrPtKFu7pdCgOfXvxf93MsXxnfkZkHJz6NoDsUA/bHIWCf6mQ08CE4dW1t1ZUN
+         MIvHf01s/KM9PrmJ1nkeRC2rrV9kr+A0OgemecubHftaIPx+WrEOslJS2QZbLgKVQBPM
+         d7Mj1675PMmecQavjiGfXgnkwoD8apLgOnZ4Fk7RQD1OQVrbQXUsZ2X5aX6wQpLTIvbQ
+         mzPsBizj2FzpJomJawugu7eq8b3bR0gfiHD2+YKlzvHTTSXfvxusrjUEIzlVokNzxtFC
+         o4Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709583219; x=1710188019;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=tItt6el3MLTEP+Yh6ullzWEZp3tkdhHHbIbmhmeqN24=;
-        b=AuX7OL9lLkkvf3XdJWYoGGxHOsWkmYeJk+mykRVMeb53fYe9Cp91cbkaAJfwS63fdv
-         5fzQYikc6OxKcGubXi7Lq76POsrZrRPPeUJujxJDvRTzqTavGYmYV+63wo87+2SSfVpl
-         7pOTdnn6rEylPAdsjrimErqnfI3d+Rx0FqMrg1L1ikrUkvWgBEYw6IFxZ5MB2PyuVH6P
-         144kyjCOyrLwpqEuGnd/on5WhLUB9unW23erWDpt1NRQ5bh1IEBwgyvhavN4FzAg/+vx
-         4KmvXFJ/TfgSu/lTeNF829rczrQkJvs2gU7xxuawcdM6ELfodRm26Zus6FvTNO9+kR/g
-         z6yw==
-X-Gm-Message-State: AOJu0YxEFGdixs4uTBzfejRIbxBvJ595D3wRczewfKSF1T4rCxhWDrag
-	q1Y+GhPi4ArU2G2PvqUiXoOkDJHmQKHpttyltSSJcgo5YhSg8DurzQ5Lbp5gRx72PgnbJhVRwlc
-	J
-X-Google-Smtp-Source: AGHT+IG3qbUdBsUtr4e+UTqI1v3TwQ+s38kYpECdFS4DB34Uudzmakb+l9J2kT1RvThFW/wtMXohmQ==
-X-Received: by 2002:a05:6808:15a1:b0:3c1:e3fb:6c35 with SMTP id t33-20020a05680815a100b003c1e3fb6c35mr9947624oiw.31.1709583218760;
-        Mon, 04 Mar 2024 12:13:38 -0800 (PST)
+        d=1e100.net; s=20230601; t=1709583220; x=1710188020;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CJdxV1kAL7xkhZisZuQ5hA4D9OsKX5BPg2qE7YeGVNI=;
+        b=j/sP847mq+ln7Z1hZl1o2sAS8RlRdxR1FPkcloK/K8bToHeU8xfMJW7nKmsaPpCir/
+         uq8urG2Fqp3s4OQiV8Acx9Pw2kYL5oB4dh6vFjMyOeic7EtWeJWhk9gS8T3zimXnqB+u
+         aIEEoELZRBKB4Y24mR8REjSCiPA/HqpC7BSyKzwYNlg1PQZkN2Y7mAMzUlhGRzPvtgnm
+         Ezz8awZYeqeZah29sjQ8sTef3g7ujfRCQrkERq/D1jeKydjFaCy3jGNfZC5KKC3uJY70
+         sfA3o1yqZcl5crbUROrb8qhxQPPlEYTH5BmO5RRXJYY4JXL/xYYA18fgxlkxTyDj4/d3
+         EAlg==
+X-Gm-Message-State: AOJu0Yxb4mggYd+7MR0NVeQHcGoix1tzQyshtRxp73TQtFGJA+rTDmvK
+	ZOyCyWAvpyt5Ri8yCOlavkCLyyhFpLLXkI62Cyt9ppzwrgXDutd4v8vP19u5lokNSiXxwyS7vcP
+	C
+X-Google-Smtp-Source: AGHT+IHPiWmmSsDx5ZhQH6+dTitlqL0MDNOKhwi6WnuLLr9X7UfWzm2q1puQby7TgPDjStYuDClziQ==
+X-Received: by 2002:aca:280e:0:b0:3c1:e7b2:53a7 with SMTP id 14-20020aca280e000000b003c1e7b253a7mr5904472oix.19.1709583219750;
+        Mon, 04 Mar 2024 12:13:39 -0800 (PST)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id n30-20020a0568080a1e00b003c1973dbca6sm865748oij.2.2024.03.04.12.13.37
+        by smtp.gmail.com with ESMTPSA id n30-20020a0568080a1e00b003c1973dbca6sm865748oij.2.2024.03.04.12.13.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 12:13:38 -0800 (PST)
+        Mon, 04 Mar 2024 12:13:39 -0800 (PST)
 From: David Lechner <dlechner@baylibre.com>
 To: linux-iio@vger.kernel.org
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -79,10 +81,12 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Rob Herring <robh@kernel.org>
-Subject: [PATCH v5 0/2] iio: adc: ad7944: new driver
-Date: Mon,  4 Mar 2024 13:48:45 -0600
-Message-ID: <20240304-ad7944-mainline-v5-0-f0a38cea8901@baylibre.com>
+Subject: [PATCH v5 1/2] dt-bindings: iio: adc: add ad7944 ADCs
+Date: Mon,  4 Mar 2024 13:48:46 -0600
+Message-ID: <20240304-ad7944-mainline-v5-1-f0a38cea8901@baylibre.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240304-ad7944-mainline-v5-0-f0a38cea8901@baylibre.com>
+References: <20240304-ad7944-mainline-v5-0-f0a38cea8901@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -93,69 +97,276 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-This is a new driver for the Analog Devices AD7944/AD7985/AD7986 family
-of ADCs. These are fairly simple chips (e.g. no configuration registers)
-but do have some unusual SPI configurations. The initial driver is only
-supporting the normal (4-wire) SPI mode.
+This adds a new binding for the Analog Devices, Inc. AD7944, AD7985, and
+AD7986 ADCs.
 
-This work is done on behalf of Analog Devices, Inc., hence the
-MAINTAINERS are @analog.com folks.
-
+Reviewed-by: Rob Herring <robh@kernel.org>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-Changes in v5:
-- DT bindings:
-    - fixed typo
-    - picked up Rob's reviewed-by
-- Driver:
-    - Dropped "nanoseconds" from comments.
-    - Renamed "t" to "timing_spec"
-    - Replaced "&spi->dev" with "dev"
-    - Fixed logic on optional "ref" regulator
-    - Added comment explaining why "cnv" gpio is required
-    - Simplified always_turbo assignment
-- Link to v4: https://lore.kernel.org/r/20240229-ad7944-mainline-v4-0-f88b5ec4baed@baylibre.com
+v5 changes:
+- fixed typo
+- picked up Rob's reviewed-by
 
-Changes in v4:
-- Fixed broken DT patch due to misplaced changelog
-- Link to v3: https://lore.kernel.org/r/20240228-ad7944-mainline-v3-0-781b922334af@baylibre.com
+v4 changes:
+- Fixed broken patch due to misplaced changelog
 
-Changes in v3:
-- Removed 'multi' value from adi,spi-mode property in DT bindings
-- Modified driver for above change
-- Fixed spelling of 'conventional'
-- Added '#daisy-chained-devices' to DT bindings
-- Added comments explaining that '3-wire' mode is not related to
-  spi-3wire/SPI_3WIRE
-- Replaced _sign with _diff in chip info struct to properly handle
-  pseudo-differential vs. true differential chips
-- Link to v2: https://lore.kernel.org/r/20240216-ad7944-mainline-v2-0-7eb69651e592@baylibre.com
-
-Changes in v2:
-- Added limit to spi-max-frequency for chain mode in DT bindings
-- Added spi-cpol property to DT bindings
-- Renamed '3-wire' mode to 'single' mode (to avoid confusion with spi-3wire)
-- Renamed '4-wire' mode to 'multi' mode
-- Dropped adi,reference property - now using only ref-supply and 
-  refin-supply to determine the reference voltage source
-- Fixed spelling of TURBO
-- Renamed t_cnv to t_conv to match datasheet name and fixed comment
-- Fixed wrong timestamp pushed to buffer
-- Fixed scaling for chips with signed data
-- Make use of sysfs_match_string() function
-- Link to v1: https://lore.kernel.org/r/20240206-ad7944-mainline-v1-0-bf115fa9474f@baylibre.com
-
+v3 changes:
+- Removed default 'multi' value from adi,spi-mode property. This simplifies
+  things a bit by not having to check for two possible conditions (absence of
+  property or explicit default value). Now, only absence of property is valid to
+  indicate the default mode. Constraints that depend on this property are
+  updated accordingly.
+- Fixed spelling of 'conventional'.
+- Expanded description to call out potential confusion of '3-wire' mode being
+  unrelated to the standard spi-3wire property.
+- Added standard '#daisy-chained-devices' property for chain mode.
+- Relaxed requirement of cnv-gpios since it was determined that an active high
+  CS could actually be used in chain mode.
 ---
-David Lechner (2):
-      dt-bindings: iio: adc: add ad7944 ADCs
-      iio: adc: ad7944: add driver for AD7944/AD7985/AD7986
+ .../devicetree/bindings/iio/adc/adi,ad7944.yaml    | 213 +++++++++++++++++++++
+ MAINTAINERS                                        |   8 +
+ 2 files changed, 221 insertions(+)
 
- .../devicetree/bindings/iio/adc/adi,ad7944.yaml    | 213 +++++++++++
- MAINTAINERS                                        |   9 +
- drivers/iio/adc/Kconfig                            |  10 +
- drivers/iio/adc/Makefile                           |   1 +
- drivers/iio/adc/ad7944.c                           | 416 +++++++++++++++++++++
- 5 files changed, 649 insertions(+)
----
-base-commit: 74744b27ba8cb8c265263aa0ff0693350a8cbc19
-change-id: 20240206-ad7944-mainline-17c968aa0967
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
+new file mode 100644
+index 000000000000..d17d184842d3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
+@@ -0,0 +1,213 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7944.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices PulSAR LFCSP Analog to Digital Converters
++
++maintainers:
++  - Michael Hennerich <Michael.Hennerich@analog.com>
++  - Nuno Sá <nuno.sa@analog.com>
++
++description: |
++  A family of pin-compatible single channel differential analog to digital
++  converters with SPI support in a LFCSP package.
++
++  * https://www.analog.com/en/products/ad7944.html
++  * https://www.analog.com/en/products/ad7985.html
++  * https://www.analog.com/en/products/ad7986.html
++
++$ref: /schemas/spi/spi-peripheral-props.yaml#
++
++properties:
++  compatible:
++    enum:
++      - adi,ad7944
++      - adi,ad7985
++      - adi,ad7986
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 111111111
++
++  spi-cpol: true
++  spi-cpha: true
++
++  adi,spi-mode:
++    $ref: /schemas/types.yaml#/definitions/string
++    enum: [ single, chain ]
++    description: |
++      This property indicates the SPI wiring configuration.
++
++      When this property is omitted, it is assumed that the device is using what
++      the datasheet calls "4-wire mode". This is the conventional SPI mode used
++      when there are multiple devices on the same bus. In this mode, the CNV
++      line is used to initiate the conversion and the SDI line is connected to
++      CS on the SPI controller.
++
++      When this property is present, it indicates that the device is using one
++      of the following alternative wiring configurations:
++
++      * single: The datasheet calls this "3-wire mode". (NOTE: The datasheet's
++        definition of 3-wire mode is NOT at all related to the standard
++        spi-3wire property!) This mode is often used when the ADC is the only
++        device on the bus. In this mode, SDI is tied to VIO, and the CNV line
++        can be connected to the CS line of the SPI controller or to a GPIO, in
++        which case the CS line of the controller is unused.
++      * chain: The datasheet calls this "chain mode". This mode is used to save
++        on wiring when multiple ADCs are used. In this mode, the SDI line of
++        one chip is tied to the SDO of the next chip in the chain and the SDI of
++        the last chip in the chain is tied to GND. Only the first chip in the
++        chain is connected to the SPI bus. The CNV line of all chips are tied
++        together. The CS line of the SPI controller can be used as the CNV line
++        only if it is active high.
++
++  '#daisy-chained-devices': true
++
++  avdd-supply:
++    description: A 2.5V supply that powers the analog circuitry.
++
++  dvdd-supply:
++    description: A 2.5V supply that powers the digital circuitry.
++
++  vio-supply:
++    description:
++      A 1.8V to 2.7V supply for the digital inputs and outputs.
++
++  bvdd-supply:
++    description:
++      A voltage supply for the buffered power. When using an external reference
++      without an internal buffer (PDREF high, REFIN low), this should be
++      connected to the same supply as ref-supply. Otherwise, when using an
++      internal reference or an external reference with an internal buffer, this
++      is connected to a 5V supply.
++
++  ref-supply:
++    description:
++      Voltage regulator for the external reference voltage (REF). This property
++      is omitted when using an internal reference.
++
++  refin-supply:
++    description:
++      Voltage regulator for the reference buffer input (REFIN). When using an
++      external buffer with internal reference, this should be connected to a
++      1.2V external reference voltage supply. Otherwise, this property is
++      omitted.
++
++  cnv-gpios:
++    description:
++      The Convert Input (CNV). This input has multiple functions. It initiates
++      the conversions and selects the SPI mode of the device (chain or CS). In
++      'single' mode, this property is omitted if the CNV pin is connected to the
++      CS line of the SPI controller.
++    maxItems: 1
++
++  turbo-gpios:
++    description:
++      GPIO connected to the TURBO line. If omitted, it is assumed that the TURBO
++      line is hard-wired and the state is determined by the adi,always-turbo
++      property.
++    maxItems: 1
++
++  adi,always-turbo:
++    type: boolean
++    description:
++      When present, this property indicates that the TURBO line is hard-wired
++      and the state is always high. If neither this property nor turbo-gpios is
++      present, the TURBO line is assumed to be hard-wired and the state is
++      always low.
++
++  interrupts:
++    description:
++      The SDO pin can also function as a busy indicator. This node should be
++      connected to an interrupt that is triggered when the SDO line goes low
++      while the SDI line is high and the CNV line is low ('single' mode) or the
++      SDI line is low and the CNV line is high ('multi' mode); or when the SDO
++      line goes high while the SDI and CNV lines are high (chain mode),
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - avdd-supply
++  - dvdd-supply
++  - vio-supply
++  - bvdd-supply
++
++allOf:
++  # ref-supply and refin-supply are mutually exclusive (neither is also valid)
++  - if:
++      required:
++        - ref-supply
++    then:
++      properties:
++        refin-supply: false
++  - if:
++      required:
++        - refin-supply
++    then:
++      properties:
++        ref-supply: false
++  # in '4-wire' mode, cnv-gpios is required, for other modes it is optional
++  - if:
++      not:
++        required:
++          - adi,spi-mode
++    then:
++      required:
++        - cnv-gpios
++  # chain mode has lower SCLK max rate and doesn't work when TURBO is enabled
++  - if:
++      required:
++        - adi,spi-mode
++      properties:
++        adi,spi-mode:
++          const: chain
++    then:
++      properties:
++        spi-max-frequency:
++          maximum: 90909090
++        adi,always-turbo: false
++      required:
++        - '#daisy-chained-devices'
++    else:
++      properties:
++        '#daisy-chained-devices': false
++  # turbo-gpios and adi,always-turbo are mutually exclusive
++  - if:
++      required:
++        - turbo-gpios
++    then:
++      properties:
++        adi,always-turbo: false
++  - if:
++      required:
++        - adi,always-turbo
++    then:
++      properties:
++        turbo-gpios: false
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        adc@0 {
++            compatible = "adi,ad7944";
++            reg = <0>;
++            spi-cpha;
++            spi-max-frequency = <111111111>;
++            avdd-supply = <&supply_2_5V>;
++            dvdd-supply = <&supply_2_5V>;
++            vio-supply = <&supply_1_8V>;
++            bvdd-supply = <&supply_5V>;
++            cnv-gpios = <&gpio 0 GPIO_ACTIVE_HIGH>;
++            turbo-gpios = <&gpio 1 GPIO_ACTIVE_HIGH>;
++        };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 2662ec49b297..35f27504632d 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -441,6 +441,14 @@ W:	http://wiki.analog.com/AD7879
+ W:	https://ez.analog.com/linux-software-drivers
+ F:	drivers/input/touchscreen/ad7879.c
+ 
++AD7944 ADC DRIVER (AD7944/AD7985/AD7986)
++M:	Michael Hennerich <michael.hennerich@analog.com>
++M:	Nuno Sá <nuno.sa@analog.com>
++R:	David Lechner <dlechner@baylibre.com>
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/adc/adi,ad7944.yaml
++
+ ADAFRUIT MINI I2C GAMEPAD
+ M:	Anshul Dalal <anshulusr@gmail.com>
+ L:	linux-input@vger.kernel.org
+
+-- 
+2.43.2
+
 

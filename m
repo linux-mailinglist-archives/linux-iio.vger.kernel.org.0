@@ -1,62 +1,86 @@
-Return-Path: <linux-iio+bounces-3335-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3336-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FEB8706FE
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 17:28:19 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A9D18709E6
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 19:51:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D6B1281F19
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 16:28:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D73A91F239F3
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 18:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181F44C635;
-	Mon,  4 Mar 2024 16:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD6E78696;
+	Mon,  4 Mar 2024 18:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KB4RHpau"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OYZ4uoSn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5544482EF;
-	Mon,  4 Mar 2024 16:28:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079D578B44;
+	Mon,  4 Mar 2024 18:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709569693; cv=none; b=EWFuCpv+QDsa5XdFHBH41b3CIrIpSMhw/YXMTcQcaPd1H76pjehYTwcMwxCEfhjLLt9swPD0uiKLtOlxAT62EKhq9wj2zAvR7Q/Al+FOX8B+FcjKA3dBJzyMzkfWAaATDkDLgW7UqDzfAI+EB9jgeDvUC6NBKUwzo+cZV/eforQ=
+	t=1709578223; cv=none; b=um8kTWZGvQhitCp5MzEPDl2EoNEyGK8XgrWPfsJ7LMd0rlezIRj85lA31YN0plbLP9KXSosPh706254LkSCNO6Dxei5sE19ZE5B/5srAWAcph3/EWPHmP8XoBaVhwLp0IjhQN/6+CPuxu+SjmSm6o9PMfPcYcRD52FhAufEWkmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709569693; c=relaxed/simple;
-	bh=L0jLtyPZbItn8KbijN41lcA/FmtrSMyJCLKJ1HIJGi0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pM2erjv9UfBQcaDgas/mc+4foBtoWZfm/NFOXHIq+AYgNeqOf3GQhVCzAidYgS7C9cOabpbkCvgHIJmVbz4kf/f/Riv8n/rxXUzTGfcCoLZ7rMImttSwR68/GcjfN8rgnxN81Clsh3znpg3WL29+Zppivqzcb9d9/0d5gdRu3wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KB4RHpau; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E761C433C7;
-	Mon,  4 Mar 2024 16:28:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709569693;
-	bh=L0jLtyPZbItn8KbijN41lcA/FmtrSMyJCLKJ1HIJGi0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KB4RHpauAvX0OazxS1wZX4PwHWd0afUdhxmvohYXv0W1NAqqcMtSErNc1mpc6MWX8
-	 K4VuUYLkgACJUEwKXNtPU//BlRmW9eak8pFhH73XC933gNfei7QpwEOs1BLgw4xaDQ
-	 oGF4gWn7Jq1+8b3SAlZ5sMcwLkfmTNqGwKuXYIhxjYxiT1Y4j8qJ0chSltG0f3wL9F
-	 nYOSySqcXYDIyAvwWMNyNt5YjMZJjLsicViSEPA8P0O6aop1lnAuX8xGEyODJyASZr
-	 xWw3y+7PXFzC2JakT8CVThdu2a3Zz+Y7nCA+chm9BQ54ezB5Fyzfk1Q2ahkj7fBuJ0
-	 TMIDkvk2FXAgQ==
-Date: Mon, 4 Mar 2024 10:28:11 -0600
-From: Rob Herring <robh@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: linux-iio@vger.kernel.org,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Liam Girdwood <lgirdwood@gmail.com>, linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Rob Herring <robh+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4 1/2] dt-bindings: iio: adc: add ad7944 ADCs
-Message-ID: <170956969031.622753.9168069143401175386.robh@kernel.org>
-References: <20240229-ad7944-mainline-v4-0-f88b5ec4baed@baylibre.com>
- <20240229-ad7944-mainline-v4-1-f88b5ec4baed@baylibre.com>
+	s=arc-20240116; t=1709578223; c=relaxed/simple;
+	bh=7eDOCTzxgjXTz40cs4/kG1usCYFXG1biUAupDWGxh4g=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hnYjcfx6bX6awtnA7RuiNUzArSAge7o4GhQjtjPiXh8q5vU561/u1G5lIZkrK4P3RA1ZvkRa0yWajmzg5A1hxtqTQA6CsdUVgVYGU5eMMFt10GiqxMSwX0ZyOaE5yFdljpR/cJYAFPkVUZFx5vSa+6MNd+wI6+VO+tejzTzagmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OYZ4uoSn; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a36126ee41eso734387866b.2;
+        Mon, 04 Mar 2024 10:50:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1709578220; x=1710183020; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=eWFpKyxy2sK/uWQlofpzOWO2CjJJHb7rOXZzYRW1nfs=;
+        b=OYZ4uoSnTZAv3stWqenFrq7Vs5gh9PNqk58IAmbc+51Y+BaExrnrV4IuaPijoZOsfu
+         /CAIKsONkeb9/KlLmMQpHTQD0780Ef23ehZE+KALKCEKRfG+tgAk2dxN9/42XojvDyPD
+         caKKtwHTwQ65kxo+ERkSRe5kWMGxp3jEB0gBK0NfdhGsMhhZCC67oLZq4DZ/MogViBoZ
+         xvPM13M8aZnIyEhFK3hxzCYjfeCxBmYwoCXNocxyDir2/2Tx3X4OjEAnL+HxwMPAcaAd
+         3v1unZf1cDti+uof1gFWQB7SBD1VAtP0axWS0AfDKiXd1pq949iwhH8SfqIYcZPbN61Y
+         Wntg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709578220; x=1710183020;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eWFpKyxy2sK/uWQlofpzOWO2CjJJHb7rOXZzYRW1nfs=;
+        b=AGfX25Np8A1uW34UKgOaup+qJwdY2hcbx4tmfP8j8iV8u6EZOMSfxxAVg2II6DABgv
+         PHq0EyugKmrmfFDZj5HZTyPxBHumqBoBxROwXgPr683sIyQ3EglrzPLXR4E5AkzNYcka
+         LRsfuiGgpV6VNO+cnffjo/tfcVQyw55L+4FAn+7Cih2xPOd4j4gmiNaPL0CV8edmZzrL
+         WSPmBB4kxltqdXKOXFHPCIwzLgcRO5VoTwCFxBCoXiJ/kA4pd2+JjoTKXccjyO+Grry9
+         NtIyBhaTx3dKfXkzv7L8AT78dSgYsvFXIqjhYsFBEiCHCqEZ3fGtbqHJxxTe1s5iCKOC
+         qSAA==
+X-Forwarded-Encrypted: i=1; AJvYcCVaeOLe8iJHoAcVdvJDeb8M31l48pUj/MvT6ipRyk4LVJC/97tgxKMOJkWtuE6vhhFnneDydmtVJlyUAAKCt5o3Ziu+OhIN3SYnACSlECuWTz0vLIKwDD3BKqAXwBwt+A221gg7u9YE
+X-Gm-Message-State: AOJu0YzoqILskILxMZEKdAbFIb2CkAnUfQrkJxRSsh0VmImytMIjHvHu
+	E0ws5Je1InNEitCT+wlYRsLEbfSAeDFFfNVBWzjqkjKQxsg38loC
+X-Google-Smtp-Source: AGHT+IHm8GJoX6TNzaQwnr9sHfpUcgpcdudEaQyQa9XAN5AOYVBbefyqIcFs86MI0jUuUqg3DhSGqQ==
+X-Received: by 2002:a17:906:c352:b0:a45:5c4a:2db5 with SMTP id ci18-20020a170906c35200b00a455c4a2db5mr1862119ejb.48.1709578220106;
+        Mon, 04 Mar 2024 10:50:20 -0800 (PST)
+Received: from vamoiridPC ([2a04:ee41:82:7577:d458:fb5d:c4e5:fb19])
+        by smtp.gmail.com with ESMTPSA id ag3-20020a1709069a8300b00a44790d06d3sm4243212ejc.71.2024.03.04.10.50.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Mar 2024 10:50:19 -0800 (PST)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Mon, 4 Mar 2024 19:50:17 +0100
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
+	lars@metafoo.de, ang.iglesiasg@gmail.com, mazziesaccount@gmail.com,
+	ak@it-klinger.de, petre.rodan@subdimension.ro, phil@raspberrypi.com,
+	579lpy@gmail.com, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] iio: pressure: Add timestamp and scan_masks for
+ BMP280 driver
+Message-ID: <20240304185017.GA3955@vamoiridPC>
+References: <20240303165300.468011-1-vassilisamir@gmail.com>
+ <20240303165300.468011-4-vassilisamir@gmail.com>
+ <ZeW048EyOAze7oZR@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,37 +89,65 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240229-ad7944-mainline-v4-1-f88b5ec4baed@baylibre.com>
+In-Reply-To: <ZeW048EyOAze7oZR@smile.fi.intel.com>
 
-
-On Thu, 29 Feb 2024 10:25:50 -0600, David Lechner wrote:
-> This adds a new binding for the Analog Devices, Inc. AD7944, AD7985, and
-> AD7986 ADCs.
+On Mon, Mar 04, 2024 at 01:47:47PM +0200, Andy Shevchenko wrote:
+> On Sun, Mar 03, 2024 at 05:52:59PM +0100, Vasileios Amoiridis wrote:
+> > The scan mask for the BME280 device which contains humidity
+> > measurement needs to become different in order for the timestamp
+> > to be able to work. Scan masks are added for different combinations
+> > of measurements. The temperature measurement is needed for either
+> > pressure or humidity measurements.
 > 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ...
 > 
-> ---
-> v4 changes:
-> - Fixed broken patch due to misplaced changelog
+> > +enum bmp280_scan {
+> > +	BMP280_TEMP,
+> > +	BMP280_PRESS,
+> > +	BME280_HUMID,
+> > +};
 > 
-> v3 changes:
-> - Removed default 'multi' value from adi,spi-mode property. This simplifies
->   things a bit by not having to check for two possible conditions (absence of
->   property or explicit default value). Now, only absence of property is valid to
->   indicate the default mode. Constraints that depend on this property are
->   updated accordingly.
-> - Fixed spelling of 'conventional'.
-> - Expanded description to call out potential confusion of '3-wire' mode being
->   unrelated to the standard spi-3wire property.
-> - Added standard '#daisy-chained-devices' property for chain mode.
-> - Relaxed requirement of cnv-gpios since it was determined that an active high
->   CS could actually be used in chain mode.
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad7944.yaml    | 213 +++++++++++++++++++++
->  MAINTAINERS                                        |   8 +
->  2 files changed, 221 insertions(+)
+> Hmm... Why do we need to actually copy the IIO ones? Can't we use IIO ones
+> directly (or in some way)?
 > 
 
-Reviewed-by: Rob Herring <robh@kernel.org>
-
+What do you mean exactly by copying the IIO ones? These values are used as
+indexes to enable channels in the avail_scan_masks below. 
+> ...
+> 
+> > +static const unsigned long bmp280_avail_scan_masks[] = {
+> > +	BIT(BMP280_TEMP),
+> > +	BIT(BMP280_PRESS) | BIT(BMP280_TEMP),
+> > +	0,
+> 
+> No comma for the terminator line.
+> 
+> > +};
+> 
+> > +static const unsigned long bme280_avail_scan_masks[] = {
+> > +	BIT(BMP280_TEMP),
+> > +	BIT(BMP280_PRESS) | BIT(BMP280_TEMP),
+> > +	BIT(BME280_HUMID) | BIT(BMP280_TEMP),
+> > +	BIT(BME280_HUMID) | BIT(BMP280_PRESS) | BIT(BMP280_TEMP),
+> > +	0,
+> 
+> Ditto.
+> 
+> > +};
+> 
+> ...
+> 
+> >  	const struct iio_chan_spec *channels;
+> >  	int num_channels;
+> > +	const unsigned long *avail_scan_masks;
+> >  	unsigned int start_up_time;
+> 
+> Please, run `pahole` every time you are changing data structure layout.
+> Here you efficiently wasted 8 bytes of memory AFAICS.
+> 
+> -- 
+> With Best Regards,
+> Andy Shevchenko
+> 
+> 
 

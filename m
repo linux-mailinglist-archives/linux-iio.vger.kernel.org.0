@@ -1,86 +1,78 @@
-Return-Path: <linux-iio+bounces-3336-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3337-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A9D18709E6
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 19:51:14 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A58E0870A13
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 20:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D73A91F239F3
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 18:51:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60B8F281567
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 19:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD6E78696;
-	Mon,  4 Mar 2024 18:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5023878B68;
+	Mon,  4 Mar 2024 19:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OYZ4uoSn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gx+rcACV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079D578B44;
-	Mon,  4 Mar 2024 18:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724DF6216C;
+	Mon,  4 Mar 2024 19:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709578223; cv=none; b=um8kTWZGvQhitCp5MzEPDl2EoNEyGK8XgrWPfsJ7LMd0rlezIRj85lA31YN0plbLP9KXSosPh706254LkSCNO6Dxei5sE19ZE5B/5srAWAcph3/EWPHmP8XoBaVhwLp0IjhQN/6+CPuxu+SjmSm6o9PMfPcYcRD52FhAufEWkmY=
+	t=1709579238; cv=none; b=ikefvIUlTNYBVWal0HZ1SUdOjxepBeCfadE+AcBVSM9vkSqKgwFuPsaTqerolybzwmV6JdeD/jzadiZDclBDDLRAYkAvxzWfBJr0zFK1OngdCIH2DUmIkJtQ95p5Pqwgj+tUJ5HsKfsq4yKUAm4NVHkrMLxzF42NBQLnqDuEm74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709578223; c=relaxed/simple;
-	bh=7eDOCTzxgjXTz40cs4/kG1usCYFXG1biUAupDWGxh4g=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hnYjcfx6bX6awtnA7RuiNUzArSAge7o4GhQjtjPiXh8q5vU561/u1G5lIZkrK4P3RA1ZvkRa0yWajmzg5A1hxtqTQA6CsdUVgVYGU5eMMFt10GiqxMSwX0ZyOaE5yFdljpR/cJYAFPkVUZFx5vSa+6MNd+wI6+VO+tejzTzagmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OYZ4uoSn; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a36126ee41eso734387866b.2;
-        Mon, 04 Mar 2024 10:50:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709578220; x=1710183020; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=eWFpKyxy2sK/uWQlofpzOWO2CjJJHb7rOXZzYRW1nfs=;
-        b=OYZ4uoSnTZAv3stWqenFrq7Vs5gh9PNqk58IAmbc+51Y+BaExrnrV4IuaPijoZOsfu
-         /CAIKsONkeb9/KlLmMQpHTQD0780Ef23ehZE+KALKCEKRfG+tgAk2dxN9/42XojvDyPD
-         caKKtwHTwQ65kxo+ERkSRe5kWMGxp3jEB0gBK0NfdhGsMhhZCC67oLZq4DZ/MogViBoZ
-         xvPM13M8aZnIyEhFK3hxzCYjfeCxBmYwoCXNocxyDir2/2Tx3X4OjEAnL+HxwMPAcaAd
-         3v1unZf1cDti+uof1gFWQB7SBD1VAtP0axWS0AfDKiXd1pq949iwhH8SfqIYcZPbN61Y
-         Wntg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709578220; x=1710183020;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eWFpKyxy2sK/uWQlofpzOWO2CjJJHb7rOXZzYRW1nfs=;
-        b=AGfX25Np8A1uW34UKgOaup+qJwdY2hcbx4tmfP8j8iV8u6EZOMSfxxAVg2II6DABgv
-         PHq0EyugKmrmfFDZj5HZTyPxBHumqBoBxROwXgPr683sIyQ3EglrzPLXR4E5AkzNYcka
-         LRsfuiGgpV6VNO+cnffjo/tfcVQyw55L+4FAn+7Cih2xPOd4j4gmiNaPL0CV8edmZzrL
-         WSPmBB4kxltqdXKOXFHPCIwzLgcRO5VoTwCFxBCoXiJ/kA4pd2+JjoTKXccjyO+Grry9
-         NtIyBhaTx3dKfXkzv7L8AT78dSgYsvFXIqjhYsFBEiCHCqEZ3fGtbqHJxxTe1s5iCKOC
-         qSAA==
-X-Forwarded-Encrypted: i=1; AJvYcCVaeOLe8iJHoAcVdvJDeb8M31l48pUj/MvT6ipRyk4LVJC/97tgxKMOJkWtuE6vhhFnneDydmtVJlyUAAKCt5o3Ziu+OhIN3SYnACSlECuWTz0vLIKwDD3BKqAXwBwt+A221gg7u9YE
-X-Gm-Message-State: AOJu0YzoqILskILxMZEKdAbFIb2CkAnUfQrkJxRSsh0VmImytMIjHvHu
-	E0ws5Je1InNEitCT+wlYRsLEbfSAeDFFfNVBWzjqkjKQxsg38loC
-X-Google-Smtp-Source: AGHT+IHm8GJoX6TNzaQwnr9sHfpUcgpcdudEaQyQa9XAN5AOYVBbefyqIcFs86MI0jUuUqg3DhSGqQ==
-X-Received: by 2002:a17:906:c352:b0:a45:5c4a:2db5 with SMTP id ci18-20020a170906c35200b00a455c4a2db5mr1862119ejb.48.1709578220106;
-        Mon, 04 Mar 2024 10:50:20 -0800 (PST)
-Received: from vamoiridPC ([2a04:ee41:82:7577:d458:fb5d:c4e5:fb19])
-        by smtp.gmail.com with ESMTPSA id ag3-20020a1709069a8300b00a44790d06d3sm4243212ejc.71.2024.03.04.10.50.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Mar 2024 10:50:19 -0800 (PST)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Mon, 4 Mar 2024 19:50:17 +0100
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
-	lars@metafoo.de, ang.iglesiasg@gmail.com, mazziesaccount@gmail.com,
-	ak@it-klinger.de, petre.rodan@subdimension.ro, phil@raspberrypi.com,
-	579lpy@gmail.com, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1709579238; c=relaxed/simple;
+	bh=mVZkpIDYKuvFmvLbrVSnVhIgcusPY/WYVe9DsXaOYqY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WjAkKic/FEKujT/Y19w/9+HFC73RcPLBhUxOgk0rWVo/8AMh0Ju/1rsIrJ3PCk5w1RzX0pesgGV9rcub9j9127lYYijFhQ6WfsF+RnR1MueyBA+4zl5tjt9kgBA6uo+1TFfGGEv4j/1pd61nvz7n8/QMetvxEFtNEkpynXFIVW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gx+rcACV; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709579237; x=1741115237;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=mVZkpIDYKuvFmvLbrVSnVhIgcusPY/WYVe9DsXaOYqY=;
+  b=gx+rcACVjbdZSpTXhc7nGyl1FM2rhuULy6YQnm4/6ZtCKhSwsIAFx3wY
+   /wsBA0Yy0KPOTTobGFJVdiw6B69rYmkXRkEXI/3uMEzOF/0NJBPk6wuFI
+   2xN378kOMIntla8muwKV8E6Wpr/yTBptFHIr8jkhN3vPp/f3kQkF95+vx
+   ncJWfq3it2XhtaWDcObNXWh+TNc6IpAK4rvSttX6i7rwU7vVoON5b9mlc
+   tqcvX1vcZ+V+JJ9qu330SIZoaoKkgMrnsVJINevMDsori6k4udec26Q9e
+   hiX6tZJwl47vsPDSNhubZ402SkZIH8I7dvdcUcwHA2H1G7PYsXY1F1BOb
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="15497810"
+X-IronPort-AV: E=Sophos;i="6.06,204,1705392000"; 
+   d="scan'208";a="15497810"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 11:07:16 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11003"; a="914113233"
+X-IronPort-AV: E=Sophos;i="6.06,204,1705392000"; 
+   d="scan'208";a="914113233"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 11:07:12 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rhDeX-00000009nPN-3idO;
+	Mon, 04 Mar 2024 21:07:09 +0200
+Date: Mon, 4 Mar 2024 21:07:09 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, ang.iglesiasg@gmail.com,
+	mazziesaccount@gmail.com, ak@it-klinger.de,
+	petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 3/4] iio: pressure: Add timestamp and scan_masks for
  BMP280 driver
-Message-ID: <20240304185017.GA3955@vamoiridPC>
+Message-ID: <ZeYb3S1VNoziKHbb@smile.fi.intel.com>
 References: <20240303165300.468011-1-vassilisamir@gmail.com>
  <20240303165300.468011-4-vassilisamir@gmail.com>
  <ZeW048EyOAze7oZR@smile.fi.intel.com>
+ <20240304185017.GA3955@vamoiridPC>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -89,65 +81,35 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZeW048EyOAze7oZR@smile.fi.intel.com>
+In-Reply-To: <20240304185017.GA3955@vamoiridPC>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Mon, Mar 04, 2024 at 01:47:47PM +0200, Andy Shevchenko wrote:
-> On Sun, Mar 03, 2024 at 05:52:59PM +0100, Vasileios Amoiridis wrote:
-> > The scan mask for the BME280 device which contains humidity
-> > measurement needs to become different in order for the timestamp
-> > to be able to work. Scan masks are added for different combinations
-> > of measurements. The temperature measurement is needed for either
-> > pressure or humidity measurements.
-> 
-> ...
-> 
-> > +enum bmp280_scan {
-> > +	BMP280_TEMP,
-> > +	BMP280_PRESS,
-> > +	BME280_HUMID,
-> > +};
-> 
-> Hmm... Why do we need to actually copy the IIO ones? Can't we use IIO ones
-> directly (or in some way)?
-> 
+On Mon, Mar 04, 2024 at 07:50:17PM +0100, Vasileios Amoiridis wrote:
+> On Mon, Mar 04, 2024 at 01:47:47PM +0200, Andy Shevchenko wrote:
+> > On Sun, Mar 03, 2024 at 05:52:59PM +0100, Vasileios Amoiridis wrote:
 
-What do you mean exactly by copying the IIO ones? These values are used as
-indexes to enable channels in the avail_scan_masks below. 
-> ...
+...
+
+> > > +enum bmp280_scan {
+> > > +	BMP280_TEMP,
+> > > +	BMP280_PRESS,
+> > > +	BME280_HUMID,
+> > > +};
+> > 
+> > Hmm... Why do we need to actually copy the IIO ones? Can't we use IIO ones
+> > directly (or in some way)?
 > 
-> > +static const unsigned long bmp280_avail_scan_masks[] = {
-> > +	BIT(BMP280_TEMP),
-> > +	BIT(BMP280_PRESS) | BIT(BMP280_TEMP),
-> > +	0,
-> 
-> No comma for the terminator line.
-> 
-> > +};
-> 
-> > +static const unsigned long bme280_avail_scan_masks[] = {
-> > +	BIT(BMP280_TEMP),
-> > +	BIT(BMP280_PRESS) | BIT(BMP280_TEMP),
-> > +	BIT(BME280_HUMID) | BIT(BMP280_TEMP),
-> > +	BIT(BME280_HUMID) | BIT(BMP280_PRESS) | BIT(BMP280_TEMP),
-> > +	0,
-> 
-> Ditto.
-> 
-> > +};
-> 
-> ...
-> 
-> >  	const struct iio_chan_spec *channels;
-> >  	int num_channels;
-> > +	const unsigned long *avail_scan_masks;
-> >  	unsigned int start_up_time;
-> 
-> Please, run `pahole` every time you are changing data structure layout.
-> Here you efficiently wasted 8 bytes of memory AFAICS.
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+> What do you mean exactly by copying the IIO ones? These values are used as
+> indexes to enable channels in the avail_scan_masks below.
+
+Yeah, I have now an answer to my question. The IIO drivers provide these lists
+as mapping between available channels (as starting from 0) and real channels
+as per IIO specifications (which can be anything, although limited currently
+by 40 or so).
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

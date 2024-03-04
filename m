@@ -1,75 +1,76 @@
-Return-Path: <linux-iio+bounces-3314-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3315-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ED89870092
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 12:43:09 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 478168700BD
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 12:48:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 636631C21095
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 11:43:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E84C0B24860
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 11:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC843A1CE;
-	Mon,  4 Mar 2024 11:43:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016783B290;
+	Mon,  4 Mar 2024 11:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EZUDxhEb"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YEMibPcV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E652539FEE;
-	Mon,  4 Mar 2024 11:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CCA83D3B3;
+	Mon,  4 Mar 2024 11:47:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709552581; cv=none; b=rDV+UIiYnzJw4hIaBm/RXcezBrsa9vyc04ZvQK7djsIA7vhGYNJwoxJpSbAHBAqj6YsLfH3p7R4yoSZ/5QYLTowPy+/jQIBTpV4DVGqlntVhrn4f6SokT6fof81cvXhDzLlliDZPMXpNItoWd7jpslkAvks+3iZ5vP3076FuKn8=
+	t=1709552875; cv=none; b=HYlRuLWZGSir1cGJZ0jQ4rNx86b7nTon0gSaqc2QcD14rwnPY8tS+ibzsl+MEvCtkK8JnJD5fESI2T3Bse/gbO03cHr1+qJ744XB0zO1zKqm89Q0jtgtWNzGIBEo2hR78NVbnc7/8ahvU6qo9CYERNwj5HeKpZgA5XKpi3LB6GU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709552581; c=relaxed/simple;
-	bh=0wECyTFNn/czi0BC/9vnk0G4cpXjt7XdbPGnqVO5lDo=;
+	s=arc-20240116; t=1709552875; c=relaxed/simple;
+	bh=4zR1jOUqdc6ss1ZYeRqMYmCpC1QGJFlUqRDoDLSTFec=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MQN1z886iX9t7lqE4WCBs71FOVlEFPTQW/EVxzfNAoo/jYD7z15q+zMHODMaSyNa3w9ce7TZGaOO36sgpT9v4aoUEucDm/M932ttGs8AkykCjeTcoMGyG0Mlb4DCS0rXCcpTSssxjdQKCFeAZXNPRNyZ9qVVECdEff7uL0/z+Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EZUDxhEb; arc=none smtp.client-ip=192.198.163.12
+	 Content-Type:Content-Disposition:In-Reply-To; b=E/kvIVhgqsE36nXutozFqBBOh13jBLAT0tOy4XjILk6wGTpLvHVajGOSofw+JnEgd3yUbCUfD53haXtKGhzTSMpbwSIljSO2d2p5TTyJUuU4i+jBxLSNJoCw5p5uhVMfKVUzeJDnSf4D/SB5X5kFicbkSubRoOJDAxZX4+8mEmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YEMibPcV; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1709552580; x=1741088580;
+  t=1709552874; x=1741088874;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=0wECyTFNn/czi0BC/9vnk0G4cpXjt7XdbPGnqVO5lDo=;
-  b=EZUDxhEbVhucUImwTXGpniIeOXpDbtZwIHA5dXWFZa3iZ4aucrl/MWzl
-   14cbYEOKPgsUlK6MaCu++/iaV8YXMotNJVFop+zZESJ10+HQYG0DP3uiq
-   /ympFcHDuSPTIJ1s9A2lTP2iOGry8n20Tr01BUUsj0SqcoK8w1WNc22IC
-   IMv/uZiJHuO824gjrOZODRN/qZLdSSWQ7AIgu1bZUz6hbD/7QLaFnKX7s
-   MYBqivF94hl5frwRk5J7FTjWayisx5hSsbX0zb4L9ptnMC4hPHXNbXAPz
-   HrkZqUmBEEtce8Ru9gYtlMrOXdH6iruFoz4Ub7WhsD/r1453ddes99ZNw
+  bh=4zR1jOUqdc6ss1ZYeRqMYmCpC1QGJFlUqRDoDLSTFec=;
+  b=YEMibPcVpNYxYnDVOlQhELmlNArDRi9AHBlRJvZr9HujYSzBGyt5xzMH
+   lhkNcS4lVRNGdnmr9t0GXn5G0VMzhmK8aCNMurTKNJlsN6NGEzVZvL0a/
+   AhDD70BwJRCXACfMGJxAqiG3fTlU0LbzYwOpGewrQp5Uft3ZLN8TbviBy
+   P9u2xq2yOlqc4NPC0STK7HPjFItp+jJ/gB7GPcTsn39d4n/RWSN2QfsdQ
+   MRAz4rfuwbycWaUs2qvhGz4QuSfxEziZkJ7QMEUp+CQ+7maZ+SeIo8nhW
+   UmJ9FnsdMixqEHa0qUqb8oPtexgK3n0VmcVmfgw/oNEx1M9iqMh8iOCNE
    Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="7811175"
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="7811525"
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="7811175"
+   d="scan'208";a="7811525"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 03:42:59 -0800
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 03:47:53 -0800
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="914103611"
+X-IronPort-AV: E=McAfee;i="6600,9927,11002"; a="914103758"
 X-IronPort-AV: E=Sophos;i="6.06,203,1705392000"; 
-   d="scan'208";a="914103611"
+   d="scan'208";a="914103758"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 03:42:56 -0800
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2024 03:47:50 -0800
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rh6ib-00000009hhP-1kXc;
-	Mon, 04 Mar 2024 13:42:53 +0200
-Date: Mon, 4 Mar 2024 13:42:53 +0200
+	id 1rh6nL-00000009hlX-2KCW;
+	Mon, 04 Mar 2024 13:47:47 +0200
+Date: Mon, 4 Mar 2024 13:47:47 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: jic23@kernel.org, lars@metafoo.de, ang.iglesiasg@gmail.com,
 	mazziesaccount@gmail.com, ak@it-klinger.de,
 	petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/4] iio: pressure: Add scale value for channels
-Message-ID: <ZeWzvewAtqKKfnwI@smile.fi.intel.com>
+Subject: Re: [PATCH 3/4] iio: pressure: Add timestamp and scan_masks for
+ BMP280 driver
+Message-ID: <ZeW048EyOAze7oZR@smile.fi.intel.com>
 References: <20240303165300.468011-1-vassilisamir@gmail.com>
- <20240303165300.468011-3-vassilisamir@gmail.com>
+ <20240303165300.468011-4-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,98 +79,58 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240303165300.468011-3-vassilisamir@gmail.com>
+In-Reply-To: <20240303165300.468011-4-vassilisamir@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Sun, Mar 03, 2024 at 05:52:58PM +0100, Vasileios Amoiridis wrote:
-> Add extra IIO_CHAN_INFO_SCALE in order to be able to have the scales
-> for the values in userspace. Can be used for triggered buffers.
+On Sun, Mar 03, 2024 at 05:52:59PM +0100, Vasileios Amoiridis wrote:
+> The scan mask for the BME280 device which contains humidity
+> measurement needs to become different in order for the timestamp
+> to be able to work. Scan masks are added for different combinations
+> of measurements. The temperature measurement is needed for either
+> pressure or humidity measurements.
 
 ...
 
+> +enum bmp280_scan {
+> +	BMP280_TEMP,
+> +	BMP280_PRESS,
+> +	BME280_HUMID,
+> +};
 
-> +	case IIO_CHAN_INFO_SCALE:
-> +		switch (chan->type) {
-> +		case IIO_HUMIDITYRELATIVE:
-> +			if (!strcmp(indio_dev->name, "bme280")) {
-> +				*val = 1000;
-> +				*val2 = 1024;
-> +				ret = IIO_VAL_FRACTIONAL;
-> +			} else {
-> +				ret = -EINVAL;
-> +			}
+Hmm... Why do we need to actually copy the IIO ones? Can't we use IIO ones
+directly (or in some way)?
 
-No, just make these int arrays part of chip_info, then
+...
 
-		case IIO_HUMIDITYRELATIVE:
-			if (chip_info->hrel) {
-				*val = chip_info->hrel[0];
-				*val2 = chip_info->hrel[1];
-				ret = IIO_VAL_FRACTIONAL;
-			} else {
-				ret = -EINVAL;
-			}
+> +static const unsigned long bmp280_avail_scan_masks[] = {
+> +	BIT(BMP280_TEMP),
+> +	BIT(BMP280_PRESS) | BIT(BMP280_TEMP),
+> +	0,
 
-> +			break;
-> +		case IIO_PRESSURE:
-> +			if ((!strcmp(indio_dev->name, "bmp085")) ||
-> +			    (!strcmp(indio_dev->name, "bmp180")) ||
-> +			    (!strcmp(indio_dev->name, "bmp181"))) {
-> +				*val = 1;
-> +				*val2 = 1000;
-> +				ret = IIO_VAL_FRACTIONAL;
-> +			} else if ((!strcmp(indio_dev->name, "bmp280")) ||
-> +				   (!strcmp(indio_dev->name, "bme280"))) {
-> +				*val = 1;
-> +				*val2 = 256000;
-> +				ret = IIO_VAL_FRACTIONAL;
-> +			} else if (!strcmp(indio_dev->name, "bmp380")) {
-> +				*val = 1;
-> +				*val2 = 100000;
-> +				ret = IIO_VAL_FRACTIONAL;
-> +			} else if (!strcmp(indio_dev->name, "bmp580")) {
-> +				*val = 1;
-> +				*val2 = 64000;
-> +				ret = IIO_VAL_FRACTIONAL;
-> +			} else {
-> +				ret = -EINVAL;
-> +			}
-> +			break;
+No comma for the terminator line.
+
+> +};
+
+> +static const unsigned long bme280_avail_scan_masks[] = {
+> +	BIT(BMP280_TEMP),
+> +	BIT(BMP280_PRESS) | BIT(BMP280_TEMP),
+> +	BIT(BME280_HUMID) | BIT(BMP280_TEMP),
+> +	BIT(BME280_HUMID) | BIT(BMP280_PRESS) | BIT(BMP280_TEMP),
+> +	0,
 
 Ditto.
 
-> +		case IIO_TEMP:
-> +			if ((!strcmp(indio_dev->name, "bmp085")) ||
-> +			    (!strcmp(indio_dev->name, "bmp180")) ||
-> +			    (!strcmp(indio_dev->name, "bmp181"))) {
-> +				*val = 100;
-> +				*val2 = 1;
-> +				ret = IIO_VAL_FRACTIONAL;
-> +			} else if ((!strcmp(indio_dev->name, "bmp280")) ||
-> +				   (!strcmp(indio_dev->name, "bme280"))) {
-> +				*val = 10;
-> +				*val2 = 1;
-> +				ret = IIO_VAL_FRACTIONAL;
-> +			} else if (!strcmp(indio_dev->name, "bmp380")) {
-> +				*val = 10;
-> +				*val2 = 1;
-> +				ret = IIO_VAL_FRACTIONAL;
-> +			} else if (!strcmp(indio_dev->name, "bmp580")) {
-> +				*val = 1000;
-> +				*val2 = 16;
-> +				ret = IIO_VAL_FRACTIONAL_LOG2;
-> +			} else {
-> +				ret = -EINVAL;
-> +			}
-> +			break;
+> +};
 
-Ditto.
+...
 
-> +		default:
-> +			ret = -EINVAL;
-> +			break;
-> +		}
-> +		break;
+>  	const struct iio_chan_spec *channels;
+>  	int num_channels;
+> +	const unsigned long *avail_scan_masks;
+>  	unsigned int start_up_time;
+
+Please, run `pahole` every time you are changing data structure layout.
+Here you efficiently wasted 8 bytes of memory AFAICS.
 
 -- 
 With Best Regards,

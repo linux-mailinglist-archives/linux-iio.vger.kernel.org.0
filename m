@@ -1,156 +1,162 @@
-Return-Path: <linux-iio+bounces-3328-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3329-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7BEE8703E7
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 15:20:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE3E870420
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 15:29:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86DEE1F275BB
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 14:20:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DBD6B28038
+	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 14:29:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74FD3FB32;
-	Mon,  4 Mar 2024 14:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 786AA41C6D;
+	Mon,  4 Mar 2024 14:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="S/5sJpLz"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kFoPDBUl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from aposti.net (aposti.net [89.234.176.197])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2948A3FB0F;
-	Mon,  4 Mar 2024 14:20:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.234.176.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC46D3FE47
+	for <linux-iio@vger.kernel.org>; Mon,  4 Mar 2024 14:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709562048; cv=none; b=R+Dds2s8BpI7RsLpe37AhgmU9wyKJWVXecrHYf4wvmekRm30Kgc/FtfJF+e4yhnzgQ3iPfYvijPREQZvRXrd+DPZ6EeA07OH14cwJyHpR0mtzwAnzpqaT/youEQrNR2GJy0braC99SETNGAHzfrkX+TylBB+gQBmXRtmIMYN200=
+	t=1709562549; cv=none; b=m9efTKelqSw9vEAVqvl0St5XFxaWvAda/XaD+g9u7YgtiY/04/4qaYigb8GB7pZiuxTYzyYfSWKXDjKmcZY9SiQgJCkEW+TpR3oBQsj5ku4SvisTPSGq/juKv12Z8jlArEfZiY5DNzO62yULlprmko7Hh3Ueu58ZN4aUBHOVE5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709562048; c=relaxed/simple;
-	bh=pKy5pU+Eo7irYeotj9cWui+l2HeyGOhLSFnZS3avHmo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Z1hItIYfObQVcWgme6RpOGt7Pm4Xy7l5NldUwnsIjpev4wQmOswF5vVslNykp0Hv7f1yHwGbVEH4icYAniAVkyqlhcZPvxmdr6nhuMpBsNFGRv1+60pi6asOTaLfIdBr7+QflK3Y9XDnwm7VofiM+FFXi+8IYyEKyNV8CEARgMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net; spf=pass smtp.mailfrom=crapouillou.net; dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b=S/5sJpLz; arc=none smtp.client-ip=89.234.176.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-	s=mail; t=1709562044;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=NF/1gTwR111FGU1RQbqHeXbtTmbO0DDWWwYzwfIsjFs=;
-	b=S/5sJpLzsAOufi2PtMIeKIsXCwdv1EfSd1fACtXxpwlKGJgUbTUa6L7F7btXW30BGWIkrt
-	uZehPHva50vpgexAn0g1IdUJfQtaC4VX4QkDOGhSsII2DfiZFAW78I+AU4aECPqi29PiHG
-	jvq0f6UxYF3VGEepStCbMXQxlNN6HHA=
-Message-ID: <b46deb887cd9d181931fd5a9c0914debd0b666fb.camel@crapouillou.net>
-Subject: Re: [PATCH v7 3/6] iio: core: Add new DMABUF interface
- infrastructure
-From: Paul Cercueil <paul@crapouillou.net>
-To: Christian =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Nuno Sa
-	 <nuno.sa@analog.com>, Vinod Koul <vkoul@kernel.org>, Lars-Peter Clausen
-	 <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, Sumit Semwal
-	 <sumit.semwal@linaro.org>, Jonathan Corbet <corbet@lwn.net>
-Cc: Daniel Vetter <daniel@ffwll.ch>, Michael Hennerich
-	 <Michael.Hennerich@analog.com>, linux-doc@vger.kernel.org, 
-	dmaengine@vger.kernel.org, linux-iio@vger.kernel.org, 
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	linaro-mm-sig@lists.linaro.org
-Date: Mon, 04 Mar 2024 15:20:42 +0100
-In-Reply-To: <63f8a0f5-55a4-47c9-99d7-bb0b8ad22b3a@amd.com>
-References: <20240223-iio-dmabuf-v7-0-78cfaad117b9@analog.com>
-	 <20240223-iio-dmabuf-v7-3-78cfaad117b9@analog.com>
-	 <85782edb-4876-4cbd-ac14-abcbcfb58770@amd.com>
-	 <d17bd8aa17ac82773d0bdd6ce4edfe4a6249f179.camel@crapouillou.net>
-	 <63f8a0f5-55a4-47c9-99d7-bb0b8ad22b3a@amd.com>
-Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
- keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZMLQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5UzFZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtNz8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe+rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIPdlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7Urf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KFlBwgAhlGy6nqP7O3u7q23hRW5AQ0EXQqFwQEIAMo+MgvYHsyjX3Ja4Oolg1Txzm8woj30ch2nACFCqaO0R/1kLj2VVeLrDyQUOlXx9PD6IQI4M8wy8m0sR4wV2p/g/paw7k65cjzYYLh+FdLNyO7IW
-	YXndJO+wDPi3aK/YKUYepqlP+QsmaHNYNdXEQDRKqNfJg8t0f5rfzp9ryxd1tCnbV+tG8VHQWiZXNqN7062DygSNXFUfQ0vZ3J2D4oAcIAEXTymRQ2+hr3Hf7I61KMHWeSkCvCG2decTYsHlw5Erix/jYWqVOtX0roOOLqWkqpQQJWtU+biWrAksmFmCp5fXIg1Nlg39v21xCXBGxJkxyTYuhdWyu1yDQ+LSIUAEQEAAYkBNgQYAQoAIBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsMAAoJEHPua9InSr1B4wsH/Az767YCT0FSsMNt1jkkdLCBi7nY0GTW+PLP1a4zvVqFMo/vD6uz1ZflVTUAEvcTi3VHYZrlgjcxmcGu239oruqUS8Qy/xgZBp9KF0NTWQSl1iBfVbIU5VV1vHS6r77W5x0qXgfvAUWOH4gmN3MnF01SH2zMcLiaUGF+mcwl15rHbjnT3Nu2399aSE6cep86igfCAyFUOXjYEGlJy+c6UyT+DUylpjQg0nl8MlZ/7Whg2fAU9+FALIbQYQzGlT4c71SibR9T741jnegHhlmV4WXXUD6roFt54t0MSAFSVxzG8mLcSjR2cLUJ3NIPXixYUSEn3tQhfZj07xIIjWxAYZo=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1709562549; c=relaxed/simple;
+	bh=gV/b+qA5KVEGKiKWm/zfGRZwkWT8RLOeLLQr/iVoN4c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=P7bmWOKxYEEcRSo60btdqRGpUw9yyDlDRjNVrH+zCUS6XBarkuKQ8hojRlKIidJuelqedpHFcTLriKCMNQCCFdSHNSUSkCgHa081iUWvt57P9oo112qO7fmZHYxKgIixhRGUxEI9j+8qSTB+c7XLidOInWvT3Jd+JXCNzEGD5RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kFoPDBUl; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d288bac3caso53668171fa.2
+        for <linux-iio@vger.kernel.org>; Mon, 04 Mar 2024 06:29:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1709562544; x=1710167344; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Iaw5xhUG4Aj8G7CnWQRBmfpPKQL5MFpdOIILwmIvtEw=;
+        b=kFoPDBUlStaUeMB2xlid/1AGUvPTBnljuysDn70fcfOcor9UQ10+NwwzsCBqkiEPgC
+         xRSaAMiQEdK3F7hqn+hC5QqGL790g57UEvO2RUn8zdze74ZHh7tpBk6iDVdTqbVTLpb1
+         /+cklCGMrqCCOQB/rDDAASlP0AUTGn6SEal9eJct6e1ml8wAuVhlXatio8vAqAVsIH/s
+         fxURxBbjM+Q61OWZk1OqFG4tpbYtRZeR17dGcIXaL4kd8sGMi4Ett1cfcmzlT/OyeL7k
+         /VnUhUOztptONtr/HbysQ2U6PNqyA4+yp5Inl9//svwofu8iAeYw3agIJhLj7V9ZkkZt
+         QzlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1709562544; x=1710167344;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Iaw5xhUG4Aj8G7CnWQRBmfpPKQL5MFpdOIILwmIvtEw=;
+        b=nkcEdfP1/FtUJF6zz3Rp+c+OGWL/XQTRBWitDfByCTiV2QX5s1+jzSfmOelM2afAOx
+         wsLaTSYDcQklZ+g0tKI1t4q3PHYPBocLh7L2opfCOat/ZnPnoCQJNh9sU2MQit/6rn45
+         tRJtqpQKQO1Jvl3uB7AQPlzCQb4xG+HyJc4COAo5ps1usNHkZU2w6aXWGP93dXkKYFRX
+         PGJDd8Btm7guShagHvaMgxfF8xGJ8Gug3l1b752IOzrFQbKr9ItJuBSWHs6RoClT0/ec
+         D3FA99Wjy/42pcpPsNGdGnM6YsiLsQam5PbcU5yrzUFjKsLivDOk8cfKIoWz68z83FQ3
+         zqfA==
+X-Gm-Message-State: AOJu0Ywcqh+ze5YcZYreAqSYbR2dp5kd04qJgY2PJ1/BN4KvmkFeRhQ4
+	reJcHiiXb0PJwuZ1QOtv98qM57kgz1oC7vNc8EMJ1n4QOhXwGaEEcwtmg7Tvv2od6Vc+USwh1AF
+	ROGn2q2RkOF186B4iNBTBAZhQ0n/LfWVhWgvyxw==
+X-Google-Smtp-Source: AGHT+IET7LODBdoZNl+GGg65TD4CtUdpf8gj/b7Xj+UvmWcUszyvhkn6G1kvOct99i5iNOQW5nXdw88nUSu6bY5Z35g=
+X-Received: by 2002:a05:651c:1501:b0:2d3:74ce:38cd with SMTP id
+ e1-20020a05651c150100b002d374ce38cdmr4513415ljf.51.1709562543894; Mon, 04 Mar
+ 2024 06:29:03 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240229-ad7944-mainline-v4-0-f88b5ec4baed@baylibre.com>
+ <20240229-ad7944-mainline-v4-2-f88b5ec4baed@baylibre.com> <20240303134359.16d5e5f1@jic23-huawei>
+In-Reply-To: <20240303134359.16d5e5f1@jic23-huawei>
+From: David Lechner <dlechner@baylibre.com>
+Date: Mon, 4 Mar 2024 08:28:52 -0600
+Message-ID: <CAMknhBGYd8v=t-LB7PEz3OzFRKfVXhw=4Tm7RBKbxSoi_QWh-w@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] iio: adc: ad7944: add driver for AD7944/AD7985/AD7986
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Le lundi 04 mars 2024 =C3=A0 15:07 +0100, Christian K=C3=B6nig a =C3=A9crit=
-=C2=A0:
-> =C2=A0Am 04.03.24 um 14:59 schrieb Paul Cercueil:
-> =C2=A0
-> > [SNIP]
-> > =C2=A0
-> > > =C2=A0
-> > > > =C2=A0
-> > > > +	dma_to_ram =3D buffer->direction =3D=3D
-> > > > IIO_BUFFER_DIRECTION_IN;
-> > > > +
-> > > > +	if (dma_to_ram) {
-> > > > +		/*
-> > > > +		 * If we're writing to the DMABUF, make sure
-> > > > we
-> > > > don't have
-> > > > +		 * readers
-> > > > +		 */
-> > > > +		retl =3D dma_resv_wait_timeout(dmabuf->resv,
-> > > > +					=C2=A0=C2=A0=C2=A0=C2=A0
-> > > > DMA_RESV_USAGE_READ,
-> > > > true,
-> > > > +					=C2=A0=C2=A0=C2=A0=C2=A0 timeout);
-> > > > +		if (retl =3D=3D 0)
-> > > > +			retl =3D -EBUSY;
-> > > > +		if (retl < 0) {
-> > > > +			ret =3D (int)retl;
-> > > > +			goto err_resv_unlock;
-> > > > +		}
-> > > > +	}
-> > > > +
-> > > > +	if (buffer->access->lock_queue)
-> > > > +		buffer->access->lock_queue(buffer);
-> > > > +
-> > > > +	ret =3D dma_resv_reserve_fences(dmabuf->resv, 1);
-> > > > +	if (ret)
-> > > > +		goto err_queue_unlock;
-> > > > +
-> > > > +	dma_resv_add_fence(dmabuf->resv, &fence->base,
-> > > > +			=C2=A0=C2=A0 dma_resv_usage_rw(dma_to_ram));
-> > > > =C2=A0
-> > > =C2=A0
-> > > That is incorrect use of the function dma_resv_usage_rw(). That
-> > > function=20
-> > > is for retrieving fences and not adding them.
-> > >=20
-> > > See the function implementation and comments, when you use it
-> > > like
-> > > this=20
-> > > you get exactly what you don't want.
-> > >=20
-> >=20
-> > No, I get exactly what I want. If "dma_to_ram", I get
-> > DMA_RESV_USAGE_READ, otherwise I get DMA_RESV_USAGE_WRITE.
-> >=20
->=20
-> =C2=A0Ah, so basically !dma_to_ram means that you have a write access to
-> the buffer?
-> =C2=A0
+On Sun, Mar 3, 2024 at 7:44=E2=80=AFAM Jonathan Cameron <jic23@kernel.org> =
+wrote:
+>
+> On Thu, 29 Feb 2024 10:25:51 -0600
+> David Lechner <dlechner@baylibre.com> wrote:
+>
+> > This adds a driver for the Analog Devices Inc. AD7944, AD7985, and
+> > AD7986 ADCs. These are a family of pin-compatible ADCs that can sample
+> > at rates up to 2.5 MSPS.
+> >
+> > The initial driver adds support for sampling at lower rates using the
+> > usual IIO triggered buffer and can handle all 3 possible reference
+> > voltage configurations.
+> >
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> >
+> Hi David,
+>
+> Fresh read through showed up a few more things.  They are all trivial exc=
+ept
+> for what I think is an inverted error condition which would break
+> cases where ref was not supplied in DT.
 
-"dma_to_ram" means the data flows from the DMA to the RAM.
+Thanks. All suggestions seems reasonable to me.
 
-... Which means that it writes the buffer, so you are right, this is
-wrong.
+> >
+> > +
+> > +     /*
+> > +      * Sort out what is being used for the reference voltage. Options=
+ are:
+> > +      * - internal reference: neither REF or REFIN is connected
+> > +      * - internal reference with external buffer: REF not connected, =
+REFIN
+> > +      *   is connected
+> > +      * - external reference: REF is connected, REFIN is not connected
+> > +      */
+> > +
+> > +     ref =3D devm_regulator_get_optional(&spi->dev, "ref");
+> > +     if (IS_ERR(ref)) {
+> > +             if (PTR_ERR(ref) !=3D -ENODEV)
+>
+> Confused. Isn't this inverse of what we want?
 
-> >=20
-> > If you really don't like the macro, I can inline things here.
->=20
-> =C2=A0Yeah, that would still be incorrect use.
-> =C2=A0
-> =C2=A0The dma__resv_usage_rw() is for retrieving the fences to sync to fo=
-r
-> read and write operations and should never be used together with
-> dma_fence_resv_add().
->=20
+Yes, thanks for catching.
 
-Ok, I'll inline it (and fix it) then.
+> return an error if we got anything other than -ENODEV.
+>                 if (PTR_ERR(ref) |=3D -ENODEV)
+>                         return dev_err_probe(&spi->dev, PTR_ERR(ref),
+>                                              "failed to get REF supply\n"=
+);
+>                 ref =3D NULL;
+>         }
+>
+> > +                     ref =3D NULL;
+> > +             else
+> > +                     return dev_err_probe(&spi->dev, PTR_ERR(ref),
+> > +                                          "failed to get REF supply\n"=
+);
+> > +     }
+> > +
+>
+> > +
+> > +     adc->cnv =3D devm_gpiod_get(&spi->dev, "cnv", GPIOD_OUT_LOW);
+> > +     if (IS_ERR(adc->cnv))
+> > +             return dev_err_probe(&spi->dev, PTR_ERR(adc->cnv),
+> > +                                  "failed to get CNV GPIO\n");
+>
+> Is this optional?  If we don't yet support the case the dt binding talks
+> about worth a comment here to say we don't yet support XYZ so this
+> is not optional.
 
-Cheers,
--Paul
+For now, it is required since we have only implemented 4-wire mode.
 

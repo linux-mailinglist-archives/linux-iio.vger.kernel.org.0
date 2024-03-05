@@ -1,136 +1,192 @@
-Return-Path: <linux-iio+bounces-3350-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3351-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63CD8725B1
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 18:31:16 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63EB98726ED
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 19:50:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 217AFB2879E
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 17:31:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5CC11F26420
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 18:50:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BE5168DC;
-	Tue,  5 Mar 2024 17:31:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D1FF20DE0;
+	Tue,  5 Mar 2024 18:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qf1C+UWQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CzEPdCR/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-175.mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF54168DE
-	for <linux-iio@vger.kernel.org>; Tue,  5 Mar 2024 17:30:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76941B941;
+	Tue,  5 Mar 2024 18:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709659860; cv=none; b=Fsr+gDzMcMUnaCcgZUCOYLAlowxi/xDzT6yLDPNChsEmWSQscR8vO25818lUNyRzOT6RLk7D+8hN7RXFmR0hDkzGK8pt/acDNvYm2yxbNQh6hBICf1YZo5kRh8Gic5VoEXgwQvc+Wc/48Bgp8y7e1N5+AQg3rOffgPwVWraSrXQ=
+	t=1709664612; cv=none; b=EaDg43LeESgqRWcUfGyfV4yey0+ikN+pggcFOpWEy11LvoSOUUJArWMqnMXB1pBLTiQzAt3L3GEww33uUFNDfeH1K5aALeaRjcOWvNpsV8eLCf9nVspmzhUQpR0z5pILx6ZWdtUMz43khsJkB0IzLx8b5Rk4qru9e4tYX6MhsP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709659860; c=relaxed/simple;
-	bh=UaOmO8SpYU9i/76t/HvdY3WLm++tEdRouo866ZjPa6s=;
-	h=Message-ID:Date:MIME-Version:To:From:Cc:Subject:Content-Type; b=rHQD2i9ecYBFNLaNtA8DUruuLI+UnMTyWP943lcRZM3VFEYAF8NgZz8FPKVxFAv6qVLLc/fBRu5m2K9miV/oYfT/rgRfIxOzWoRuXlNKOy3r6y8+QSAw9DVD3URzuoIiC9kJwOmu3sLLoJKzKZRMFVvVKzqEUZxIzg4uTVnhEbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qf1C+UWQ; arc=none smtp.client-ip=95.215.58.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <a6dd3a2f-c3e9-4781-801b-8e8e72ac9beb@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1709659856;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=l5PyDBmcaGExQ3fLdD1dlRH6dRmDjoSn9owqotsyAB4=;
-	b=qf1C+UWQTf57gBwVuBcVNfQOwnZGvPG0iyUfphNAbOZd89aF+8OTu04PDX37mpw02ZREbC
-	k3lo9oqt/WCMqIXty5Cicl1Z7oQ6RaLseSbhpE9zFL79vPEklEnMvtNnQc4yDRV0Nat8ix
-	70hjx0djDclyHznfd9t38s6Gygl2Adw=
-Date: Tue, 5 Mar 2024 12:30:53 -0500
+	s=arc-20240116; t=1709664612; c=relaxed/simple;
+	bh=XL5H6KmpvDKvfts2T0NXkQAv47JL4s7T4aIStdM12X4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gx6pE0dvFzikdSVZnMgJfbI83j6tEfyTaAZa2lAljjWmNR9mBGUovbp7hwEnLGkJ/sZc/yUFHQwlCF3AIbpQhOKYYKEf4bBrYxQIOTO3lfS8yAV1pkUCU72ob7Rvn8qlb6Rqq4VakpK0DnRyd3kXKLo+5wVfoJiss3Aib1xvSnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CzEPdCR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA236C433F1;
+	Tue,  5 Mar 2024 18:50:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1709664611;
+	bh=XL5H6KmpvDKvfts2T0NXkQAv47JL4s7T4aIStdM12X4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CzEPdCR/2ZColCwlH9ot/gHtgJJYgLPLTXvoBxwcLk3s39JE/SBZ4WeSoeL1+T2Dm
+	 mSTxIXeB81vAOUvOcyI5eOzf1vji9OtaE8yHmI4qH4rX+9klsjtJVtc4GOPrtxgTma
+	 tT1QCnf1ArnEnjzgXr/M6PLTQK9AFOZo4eN6O18SHpZfndCgR2hRZ7VMTdJj2QFTli
+	 qusJjJBM5/q6A401QwhMo/3jcmBt5lNQ1u6hWyt2YEJ+LJeNWrwtJ3ozF0eKP1ggph
+	 aNLE9OThrlwCFa19P6W7hKr416ZGDDkVL+rbhwCDct1HNS9Yn6xeoMLJkTCE3dnzH2
+	 ZoCPzPEvbGX2A==
+Date: Tue, 5 Mar 2024 18:50:04 +0000
+From: Mark Brown <broonie@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	Jonathan Corbet <corbet@lwn.net>, linux-spi@vger.kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-pwm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, David Jander <david@protonic.nl>
+Subject: Re: [PATCH 01/13] spi: add core support for controllers with offload
+ capabilities
+Message-ID: <4e59b95c-42c9-4eaa-bbf0-7e8f4b389838@sirena.org.uk>
+References: <20240109-axi-spi-engine-series-3-v1-0-e42c6a986580@baylibre.com>
+ <20240109-axi-spi-engine-series-3-v1-1-e42c6a986580@baylibre.com>
+ <2c74aad9-3cb9-4222-8072-e72120c2658e@sirena.org.uk>
+ <CAMknhBHP+x4e0kTmNTn6JNKv=VCosZhBWce1MjjFW4MZ+K2Hcg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Language: en-US
-To: Manish Narani <manish.narani@xilinx.com>,
- Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>, linux-iio@vger.kernel.org
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: iio: xilinx-ams: shift-out-of-bounds in ams_enable_channel_sequence
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="GnTxEOMUVi8UqiSw"
+Content-Disposition: inline
+In-Reply-To: <CAMknhBHP+x4e0kTmNTn6JNKv=VCosZhBWce1MjjFW4MZ+K2Hcg@mail.gmail.com>
+X-Cookie: Ahead warp factor one, Mr. Sulu.
 
-Hi,
 
-When enabling UBSAN on a ZynqMP Ultrascale+, I see the following error during boot:
+--GnTxEOMUVi8UqiSw
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-[    1.447628] ================================================================================
-[    1.447832] UBSAN: shift-out-of-bounds in ../drivers/iio/adc/xilinx-ams.c:426:16
-[    1.448019] shift exponent 66 is too large for 64-bit type 'long long unsigned int'
-[    1.448211] CPU: 2 PID: 1 Comm: swapper/0 Not tainted 6.6.20+ #90
-[    1.448368] Hardware name: xlnx,zynqmp (DT)
-[    1.448475] Call trace:
-[    1.448547]  dump_backtrace+0x9c/0x11c
-[    1.448655]  show_stack+0x18/0x24
-[    1.448749]  dump_stack_lvl+0xac/0xd4
-[    1.448853]  dump_stack+0x18/0x24
-[    1.448947]  ubsan_epilogue+0x10/0x44
-[    1.449051]  __ubsan_handle_shift_out_of_bounds+0x98/0x134
-[    1.449191]  ams_enable_channel_sequence+0x22c/0x23c
-[    1.449324]  ams_probe+0x570/0x6d4
-[    1.449423]  platform_probe+0x68/0x108
-[    1.449530]  really_probe+0x158/0x3b0
-[    1.449632]  __driver_probe_device+0x88/0x1a0
-[    1.449747]  driver_probe_device+0x3c/0x138
-[    1.449859]  __driver_attach+0xe4/0x1bc
-[    1.449964]  bus_for_each_dev+0x78/0xe0
-[    1.450068]  driver_attach+0x24/0x30
-[    1.450167]  bus_add_driver+0x110/0x240
-[    1.450271]  driver_register+0x60/0x128
-[    1.450376]  __platform_driver_register+0x28/0x34
-[    1.450500]  ams_driver_init+0x1c/0x28
-[    1.450609]  do_one_initcall+0x78/0x2c8
-[    1.450714]  kernel_init_freeable+0x2f8/0x59c
-[    1.450831]  kernel_init+0x30/0x150
-[    1.450932]  ret_from_fork+0x10/0x20
-[    1.451073] ================================================================================
+On Mon, Mar 04, 2024 at 05:21:21PM -0600, David Lechner wrote:
+> On Wed, Jan 10, 2024 at 3:36=E2=80=AFPM Mark Brown <broonie@kernel.org> w=
+rote:
 
-When applying the following patch:
+> > The bit where messages are initiated by hardware is a step beyond that,
+> > I think we need a bit more API for connecting up the triggers and we
+> > also need to have something handling what happens with normal operation
+> > of the device while these triggers are enabled.  I think it could be
+> > useful to split this bit out since there's a lot more to work out there
+> > in terms of interfaces.
 
-diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
-index f0b71a1220e0..1ced8cff461a 100644
---- a/drivers/iio/adc/xilinx-ams.c
-+++ b/drivers/iio/adc/xilinx-ams.c
-@@ -414,8 +414,17 @@ static void ams_enable_channel_sequence(struct iio_dev *indio_dev)
- 
-        /* Run calibration of PS & PL as part of the sequence */
-        scan_mask = BIT(0) | BIT(AMS_PS_SEQ_MAX);
--       for (i = 0; i < indio_dev->num_channels; i++)
-+       for (i = 0; i < indio_dev->num_channels; i++) {
-+               if (indio_dev->channels[i].scan_index >= 64) {
-+                       const struct iio_chan_spec *chan = &indio_dev->channels[i];
-+
-+                       dev_warn(&indio_dev->dev,
-+                                "channel %d (%d %d.%d @ %lx) has scan_index %d\n",
-+                                i, chan->type, chan->channel, chan->channel2,
-+                                chan->address, chan->scan_index);
-+               }
-                scan_mask |= BIT_ULL(indio_dev->channels[i].scan_index);
-+       }
- 
-        if (ams->ps_base) {
-                /* put sysmon in a soft reset to change the sequence */
+> > > +/**
+> > > + * SPI_OFFLOAD_RX - placeholder for indicating read transfers for of=
+floads
+> > > + *
+> > > + * Assign xfer->rx_buf to this value for any read transfer passed to
+> > > + * spi_offload_prepare(). This will act as a flag to indicate to the=
+ offload
+> > > + * that it should do something with the data read during this transf=
+er. What
+> > > + * that something can be is determined by the specific hardware, e.g=
+=2E it could
+> > > + * be piped to DMA or a DSP, etc.
+> > > + */
+> > > +#define SPI_OFFLOAD_RX_SENTINEL ((void *)1)
 
-I see these additional outputs:
+> > This feels like something where there are likely to be multiple options
+> > and we need configurability.  I'd also expect to see a similar transmit
+> > option.
 
-[    1.447457] iio iio:device0: channel 0 (0 0.0 @ 60) has scan_index 66
-[    1.451280] iio iio:device0: channel 1 (0 1.0 @ 6c) has scan_index 67
-[    1.451446] iio iio:device0: channel 2 (0 2.0 @ 78) has scan_index 68
-[    1.451612] iio iio:device0: channel 3 (0 3.0 @ 7c) has scan_index 69
-[    1.451777] iio iio:device0: channel 4 (0 4.0 @ 80) has scan_index 70
-[    1.451942] iio iio:device0: channel 5 (0 5.0 @ 84) has scan_index 71
-[    1.452107] iio iio:device0: channel 6 (0 6.0 @ 9c) has scan_index 72
+> Having something similar for TX makes sense. What other sorts of
+> options are you envisioning here?
 
-Indicating that the issue is with the ams_ctrl_channels using the
-AMS_CTRL_CHAN_VOLTAGE macro.
+You list two options for something that could be done with the data
+above - sending it to DMA or a DSP.  My concern here is that a given
+piece of hardware might support more than one option and need to choose
+between them.
 
---Sean
+> > > +int spi_offload_prepare(struct spi_offload *offload, struct spi_devi=
+ce *spi,
+> > > +                       struct spi_transfer *xfers, unsigned int num_=
+xfers)
+
+> > I would expect us to just generically prepare a message, then pass a
+> > prepared message into the API that enables a trigger.  We would need
+> > something that handles the difference between potentially offloading for
+> > better performance and having a hardware trigger, I think that might be
+> > a case of just not exposing the engine's prepare to client drivers and
+> > then having the core track if it needs to do that when enabling a
+> > hardware trigger.
+
+> Not exposing the offload prepare to client drivers sounds reasonable.
+> I'm not sure I understand the potential need for an offload without a
+> hardware trigger though.
+
+Something like pre-cooking the commands to read the interrupt status
+registers from a device, send a network transfer, or to download
+firmware and settings if you power the device off frequently.  Basically
+anything with more than one operation that you might want to run
+repeatedly and care about the performance of.
+
+> > I'm not seeing anything in this API that provides a mechanism for
+> > configuring what triggers things to start, even in the case where things
+> > are triggered by hardware rather than initiated by software I'd expect
+> > to see hardware with runtime configurability.  The binding is a bit
+> > unclear but it seems to be expecting this to be statically configured in
+> > hardware and that there will be a 1:1 mapping between triggers and
+> > scripts that can be configured, if nothing else I would expect that
+> > there will be hardware with more possible triggers than scripts.
+
+> For the use case of ADCs/DACs we would want a periodic trigger where
+> the period of the trigger is runtime configurable (via sysfs). Is this
+> the sort of thing you had in mind here? What other sorts of triggers
+> do you have in mind?
+
+Well, it could be pretty much any signal - I'd imagine there will be
+things that can trigger off GPIOs for example.  Some sort of timer like
+you mention does sound plausible too.  I think the API needs to be
+general enough to just cope with a very broad range of things in a
+possibly system/device specified manner and not have a short,
+prescriptive list.
+
+> > I'd also expect some treatement of what happens with the standard SPI
+> > API while something is enabled.
+
+> I suppose it makes sense to return -EBUSY from
+> spi_sync()/spi_async()/spi_bus_lock() when a hardware trigger is
+> enabled.
+
+That sounds reasonable.  If something is software triggered then I'd
+expect to integrate with the current queuing mechanism.
+
+--GnTxEOMUVi8UqiSw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmXnaVwACgkQJNaLcl1U
+h9CgRAf/XZpBOT1fPXVIMGKoXEqg7MIZ98UQNFClW/aptrHDCFDaASJFmbxDXVko
+oyIVtoaDAGccge+mohtrwd3BEvSuHjMwixWV3knqKsLI9l7rvpttH9FIUa8oI4KV
+mI1dL9CmcpXGMffBu11rx4URnJsabfX/yVV3gPIjJJi8Hd8C25mChVIKEFgCRcFR
+cZf1kAlY6n34kL3WG52o2NHllvyEPczLJ/f6B6C8YcBiGjI//JDWdtk8VV4d/gJ8
+0TG0JlJ6YqVrvILKHbCL4KDG24/ai10eT09wuSNMAbyOmrhkrstNLEq7qVuXaUgb
+lV7D2ruJv9CsRxZJox9v0CC8pyTkIQ==
+=ls36
+-----END PGP SIGNATURE-----
+
+--GnTxEOMUVi8UqiSw--
 

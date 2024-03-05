@@ -1,160 +1,136 @@
-Return-Path: <linux-iio+bounces-3349-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3350-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83BD1871B44
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 11:32:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B63CD8725B1
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 18:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 104381F2351B
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 10:32:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 217AFB2879E
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 17:31:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3D4671757;
-	Tue,  5 Mar 2024 10:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BE5168DC;
+	Tue,  5 Mar 2024 17:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="gyHfXlzf"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qf1C+UWQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from aposti.net (aposti.net [89.234.176.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-175.mta1.migadu.com (out-175.mta1.migadu.com [95.215.58.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C22971756;
-	Tue,  5 Mar 2024 10:17:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.234.176.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF54168DE
+	for <linux-iio@vger.kernel.org>; Tue,  5 Mar 2024 17:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709633824; cv=none; b=Ovvm9ungjNDE2i2MSKTdXUhN/Xn6Ph65apPpqeLqekFHj2Kzv5sdhIq3Yd546Orx/EhVQKPKCDJ2oeeOw3mQbtdmDXQbYQa3IKB5C8tpvsSEFqgs2ZUmk7XuAYag9ZbczzSYHffQaLkBipi8PwbEXzbZiwTcT/NxS7dOwFUXCfI=
+	t=1709659860; cv=none; b=Fsr+gDzMcMUnaCcgZUCOYLAlowxi/xDzT6yLDPNChsEmWSQscR8vO25818lUNyRzOT6RLk7D+8hN7RXFmR0hDkzGK8pt/acDNvYm2yxbNQh6hBICf1YZo5kRh8Gic5VoEXgwQvc+Wc/48Bgp8y7e1N5+AQg3rOffgPwVWraSrXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709633824; c=relaxed/simple;
-	bh=ScnhOlxqOqXKHeNtlmJscUOvM1RwyxtzC8+4oNY2t0M=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YHoewUgu4LFjRQKpnxcMk0gVW8/z/0cFwh9ojv/+hflUDL7xoxGgzoUCGyOlNfcjc/wE5PWNU3cf4XJcZL7DHRbQXmkL1AbT8IAYNTt23prvYaISLbrjVBs/5sLH7ltvVuLYYyc6fX6WC4775Xkp8af8I9kpl9UcJxPEqQm+Rso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net; spf=pass smtp.mailfrom=crapouillou.net; dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b=gyHfXlzf; arc=none smtp.client-ip=89.234.176.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-	s=mail; t=1709633814;
+	s=arc-20240116; t=1709659860; c=relaxed/simple;
+	bh=UaOmO8SpYU9i/76t/HvdY3WLm++tEdRouo866ZjPa6s=;
+	h=Message-ID:Date:MIME-Version:To:From:Cc:Subject:Content-Type; b=rHQD2i9ecYBFNLaNtA8DUruuLI+UnMTyWP943lcRZM3VFEYAF8NgZz8FPKVxFAv6qVLLc/fBRu5m2K9miV/oYfT/rgRfIxOzWoRuXlNKOy3r6y8+QSAw9DVD3URzuoIiC9kJwOmu3sLLoJKzKZRMFVvVKzqEUZxIzg4uTVnhEbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qf1C+UWQ; arc=none smtp.client-ip=95.215.58.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <a6dd3a2f-c3e9-4781-801b-8e8e72ac9beb@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1709659856;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ScnhOlxqOqXKHeNtlmJscUOvM1RwyxtzC8+4oNY2t0M=;
-	b=gyHfXlzfeV7oeX4Z0Gh6LxaNFE6QK96VFIzjigpmrrVZ7WqArbmszHgF9puU2wdmZD1ILM
-	rYQBH3lbQw2dkIp7FMjvP1eioLsm5BRg6Zb/Zy0/Euz0MPS+CyWMCBgXiP71CGnzQA5tcg
-	TxWouUfeF0fkyGktmza3jbeFN/872Kg=
-Message-ID: <8d996c3d8238abf00882090caaa349bb5d3c26d3.camel@crapouillou.net>
-Subject: Re: [PATCH v7 0/6] iio: new DMABUF based API
-From: Paul Cercueil <paul@crapouillou.net>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Nuno
-	=?ISO-8859-1?Q?S=E1?=
-	 <noname.nuno@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>, Vinod
- Koul <vkoul@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Sumit Semwal
- <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, Jonathan Corbet <corbet@lwn.net>, Daniel Vetter
- <daniel@ffwll.ch>, Michael Hennerich <Michael.Hennerich@analog.com>, 
- linux-doc@vger.kernel.org, dmaengine@vger.kernel.org,
- linux-iio@vger.kernel.org,  linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org,  linaro-mm-sig@lists.linaro.org
-Date: Tue, 05 Mar 2024 11:16:52 +0100
-In-Reply-To: <20240305100742.00006a4c@Huawei.com>
-References: <20240223-iio-dmabuf-v7-0-78cfaad117b9@analog.com>
-	 <20240303174245.37efc0b0@jic23-huawei>
-	 <43787ce68f731b9267ee558c4c38d634acffe8b9.camel@gmail.com>
-	 <20240305100742.00006a4c@Huawei.com>
-Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
- keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZMLQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5UzFZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtNz8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe+rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIPdlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7Urf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KFlBwgAhlGy6nqP7O3u7q23hRW5AQ0EXQqFwQEIAMo+MgvYHsyjX3Ja4Oolg1Txzm8woj30ch2nACFCqaO0R/1kLj2VVeLrDyQUOlXx9PD6IQI4M8wy8m0sR4wV2p/g/paw7k65cjzYYLh+FdLNyO7IW
-	YXndJO+wDPi3aK/YKUYepqlP+QsmaHNYNdXEQDRKqNfJg8t0f5rfzp9ryxd1tCnbV+tG8VHQWiZXNqN7062DygSNXFUfQ0vZ3J2D4oAcIAEXTymRQ2+hr3Hf7I61KMHWeSkCvCG2decTYsHlw5Erix/jYWqVOtX0roOOLqWkqpQQJWtU+biWrAksmFmCp5fXIg1Nlg39v21xCXBGxJkxyTYuhdWyu1yDQ+LSIUAEQEAAYkBNgQYAQoAIBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsMAAoJEHPua9InSr1B4wsH/Az767YCT0FSsMNt1jkkdLCBi7nY0GTW+PLP1a4zvVqFMo/vD6uz1ZflVTUAEvcTi3VHYZrlgjcxmcGu239oruqUS8Qy/xgZBp9KF0NTWQSl1iBfVbIU5VV1vHS6r77W5x0qXgfvAUWOH4gmN3MnF01SH2zMcLiaUGF+mcwl15rHbjnT3Nu2399aSE6cep86igfCAyFUOXjYEGlJy+c6UyT+DUylpjQg0nl8MlZ/7Whg2fAU9+FALIbQYQzGlT4c71SibR9T741jnegHhlmV4WXXUD6roFt54t0MSAFSVxzG8mLcSjR2cLUJ3NIPXixYUSEn3tQhfZj07xIIjWxAYZo=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=l5PyDBmcaGExQ3fLdD1dlRH6dRmDjoSn9owqotsyAB4=;
+	b=qf1C+UWQTf57gBwVuBcVNfQOwnZGvPG0iyUfphNAbOZd89aF+8OTu04PDX37mpw02ZREbC
+	k3lo9oqt/WCMqIXty5Cicl1Z7oQ6RaLseSbhpE9zFL79vPEklEnMvtNnQc4yDRV0Nat8ix
+	70hjx0djDclyHznfd9t38s6Gygl2Adw=
+Date: Tue, 5 Mar 2024 12:30:53 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Language: en-US
+To: Manish Narani <manish.narani@xilinx.com>,
+ Anand Ashok Dumbre <anand.ashok.dumbre@xilinx.com>, linux-iio@vger.kernel.org
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: iio: xilinx-ams: shift-out-of-bounds in ams_enable_channel_sequence
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Jonathan,
+Hi,
 
-Le mardi 05 mars 2024 =C3=A0 10:07 +0000, Jonathan Cameron a =C3=A9crit=C2=
-=A0:
-> On Mon, 04 Mar 2024 08:59:47 +0100
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> > On Sun, 2024-03-03 at 17:42 +0000, Jonathan Cameron wrote:
-> > > On Fri, 23 Feb 2024 13:13:58 +0100
-> > > Nuno Sa <nuno.sa@analog.com> wrote:
-> > > =C2=A0=20
-> > > > Hi Jonathan, likely you're wondering why I'm sending v7. Well,
-> > > > to be
-> > > > honest, we're hoping to get this merged this for the 6.9 merge
-> > > > window.
-> > > > Main reason is because the USB part is already in (so it would
-> > > > be nice
-> > > > to get the whole thing in). Moreover, the changes asked in v6
-> > > > were simple
-> > > > (even though I'm not quite sure in one of them) and Paul has no
-> > > > access to
-> > > > it's laptop so he can't send v7 himself. So he kind of
-> > > > said/asked for me to
-> > > > do it.=C2=A0=20
-> > >=20
-> > > So, we are cutting this very fine. If Linus hints strongly at an
-> > > rc8 maybe we
-> > > can sneak this in. However, I need an Ack from Vinod for the dma
-> > > engine
-> > > changes first.
-> > >=20
-> > > Also I'd love a final 'looks ok' comment from DMABUF folk (Ack
-> > > even better!)
-> > >=20
-> > > Seems that the other side got resolved in the USB gadget, but
-> > > last we heard
-> > > form
-> > > Daniel and Christian looks to have been back on v5. I'd like them
-> > > to confirm
-> > > they are fine with the changes made as a result.=20
-> > > =C2=A0=20
-> >=20
-> > I can ask Christian or Daniel for some acks but my feeling (I still
-> > need, at
-> > some point, to get really familiar with all of this) is that this
-> > should be
-> > pretty similar to the USB series (from a DMABUF point of view) as
-> > they are both
-> > importers.
-> >=20
-> > > I've been happy with the IIO parts for a few versions now but my
-> > > ability to
-> > > review
-> > > the DMABUF and DMA engine bits is limited.
-> > >=20
-> > > A realistic path to get this in is rc8 is happening, is all Acks
-> > > in place by
-> > > Wednesday,
-> > > I get apply it and hits Linux-next Thursday, Pull request to Greg
-> > > on Saturday
-> > > and Greg
-> > > is feeling particularly generous to take one on the day he
-> > > normally closes his
-> > > trees.
-> > > =C2=A0=20
-> >=20
-> > Well, it looks like we still have a shot. I'll try to see if Vinod
-> > is fine with
-> > the DMAENGINE stuff.
-> >=20
->=20
-> Sadly, looks like rc7 was at the end of a quiet week, so almost
-> certain to not
-> be an rc8 in the end. Let's aim to get this in at the start of the
-> next cycle
-> so we can build on it from there.
+When enabling UBSAN on a ZynqMP Ultrascale+, I see the following error during boot:
 
-And it looks like I'll need a V8 for the few things noted by Christian.
+[    1.447628] ================================================================================
+[    1.447832] UBSAN: shift-out-of-bounds in ../drivers/iio/adc/xilinx-ams.c:426:16
+[    1.448019] shift exponent 66 is too large for 64-bit type 'long long unsigned int'
+[    1.448211] CPU: 2 PID: 1 Comm: swapper/0 Not tainted 6.6.20+ #90
+[    1.448368] Hardware name: xlnx,zynqmp (DT)
+[    1.448475] Call trace:
+[    1.448547]  dump_backtrace+0x9c/0x11c
+[    1.448655]  show_stack+0x18/0x24
+[    1.448749]  dump_stack_lvl+0xac/0xd4
+[    1.448853]  dump_stack+0x18/0x24
+[    1.448947]  ubsan_epilogue+0x10/0x44
+[    1.449051]  __ubsan_handle_shift_out_of_bounds+0x98/0x134
+[    1.449191]  ams_enable_channel_sequence+0x22c/0x23c
+[    1.449324]  ams_probe+0x570/0x6d4
+[    1.449423]  platform_probe+0x68/0x108
+[    1.449530]  really_probe+0x158/0x3b0
+[    1.449632]  __driver_probe_device+0x88/0x1a0
+[    1.449747]  driver_probe_device+0x3c/0x138
+[    1.449859]  __driver_attach+0xe4/0x1bc
+[    1.449964]  bus_for_each_dev+0x78/0xe0
+[    1.450068]  driver_attach+0x24/0x30
+[    1.450167]  bus_add_driver+0x110/0x240
+[    1.450271]  driver_register+0x60/0x128
+[    1.450376]  __platform_driver_register+0x28/0x34
+[    1.450500]  ams_driver_init+0x1c/0x28
+[    1.450609]  do_one_initcall+0x78/0x2c8
+[    1.450714]  kernel_init_freeable+0x2f8/0x59c
+[    1.450831]  kernel_init+0x30/0x150
+[    1.450932]  ret_from_fork+0x10/0x20
+[    1.451073] ================================================================================
 
-Having it in 6.9 would have been great but having it eventually merged
-is all that matters - so I'm fine to have it queued for 6.10 instead.
+When applying the following patch:
 
-Cheers,
--Paul
+diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+index f0b71a1220e0..1ced8cff461a 100644
+--- a/drivers/iio/adc/xilinx-ams.c
++++ b/drivers/iio/adc/xilinx-ams.c
+@@ -414,8 +414,17 @@ static void ams_enable_channel_sequence(struct iio_dev *indio_dev)
+ 
+        /* Run calibration of PS & PL as part of the sequence */
+        scan_mask = BIT(0) | BIT(AMS_PS_SEQ_MAX);
+-       for (i = 0; i < indio_dev->num_channels; i++)
++       for (i = 0; i < indio_dev->num_channels; i++) {
++               if (indio_dev->channels[i].scan_index >= 64) {
++                       const struct iio_chan_spec *chan = &indio_dev->channels[i];
++
++                       dev_warn(&indio_dev->dev,
++                                "channel %d (%d %d.%d @ %lx) has scan_index %d\n",
++                                i, chan->type, chan->channel, chan->channel2,
++                                chan->address, chan->scan_index);
++               }
+                scan_mask |= BIT_ULL(indio_dev->channels[i].scan_index);
++       }
+ 
+        if (ams->ps_base) {
+                /* put sysmon in a soft reset to change the sequence */
+
+I see these additional outputs:
+
+[    1.447457] iio iio:device0: channel 0 (0 0.0 @ 60) has scan_index 66
+[    1.451280] iio iio:device0: channel 1 (0 1.0 @ 6c) has scan_index 67
+[    1.451446] iio iio:device0: channel 2 (0 2.0 @ 78) has scan_index 68
+[    1.451612] iio iio:device0: channel 3 (0 3.0 @ 7c) has scan_index 69
+[    1.451777] iio iio:device0: channel 4 (0 4.0 @ 80) has scan_index 70
+[    1.451942] iio iio:device0: channel 5 (0 5.0 @ 84) has scan_index 71
+[    1.452107] iio iio:device0: channel 6 (0 6.0 @ 9c) has scan_index 72
+
+Indicating that the issue is with the ams_ctrl_channels using the
+AMS_CTRL_CHAN_VOLTAGE macro.
+
+--Sean
 

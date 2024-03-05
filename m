@@ -1,83 +1,82 @@
-Return-Path: <linux-iio+bounces-3345-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3346-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8437871140
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 00:42:04 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49335871169
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 01:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C1501F21891
-	for <lists+linux-iio@lfdr.de>; Mon,  4 Mar 2024 23:42:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00AC628691F
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 00:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D21E7D07F;
-	Mon,  4 Mar 2024 23:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D53FC139D;
+	Tue,  5 Mar 2024 00:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zPBKWWgE"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="HqNU/HwM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D16B17555
-	for <linux-iio@vger.kernel.org>; Mon,  4 Mar 2024 23:41:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111DB38F
+	for <linux-iio@vger.kernel.org>; Tue,  5 Mar 2024 00:08:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709595717; cv=none; b=A5A46dTfrdc3FtntU1qQGsYJ5QUa0SJBZiuCOIYaFd+5aYtGBY9n8NjHk/jyRXzxu3pUphxZ9DydE9atP45FLvWouKJR3rSWRHBi2UKqmUUFSsTvhLBcsG4vBpn+xr9VFcKA8mrWRl2p5gJVRBHfz91QDFrP3ijnsXpEyZRQHns=
+	t=1709597295; cv=none; b=AGUE32kRr8jj0/aaQHQYq2KHl/k8oqC3MHBaeP52K9ZmZnUb6/zOK/X4NgDOqckThzXo3/Lmn/iIeeORAmFNC9ptwjPCmoLN08CsqjaOXDmnITIUI1Kexs/jeuF7KJAvDCcL32mEStZixT78SkiiYzcWzSJK5jzBEhrpmWPQAZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709595717; c=relaxed/simple;
-	bh=FGZ+g+yXX9FmR+4kqmKBbdGYp2zMsZDXvh3fmdGkWoo=;
+	s=arc-20240116; t=1709597295; c=relaxed/simple;
+	bh=iBD/lWgE32zXC2QBHxGi//O0lo0WtY3b6Y89v266YRs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ra2H5CK9csw7+z0DLms8N5uE1OzZVeQ+3JttPrQmBW0PgSlRKTT6kveKiTaEAbG+ATeIhWnFNLAZmmL8ZDi91UUUA9Ro8C9US7oBCT9e0UT+VdqqYm7hfoGXReSWR6AX4UBLK4OREoRsC0+URSpiMylV5d2ZIIuKDfrE5WMO+F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zPBKWWgE; arc=none smtp.client-ip=209.85.208.180
+	 To:Cc:Content-Type; b=M8E0GS9hZORBAZRbVvAcs3OnVMwhtATypzB0v3Bzm+D94bQvfVamI2esY8peklCM6jlAv+RJnt277orS1YuVC+46TNDOzkTzo6lSMjiZRgvUXd22JGSshu/lw8Kk4kj+WtQD/ZVQ3aAcMq7224wM3HwlXIAjGSBQ7522eEsdqmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=HqNU/HwM; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d3b93e992aso19458621fa.1
-        for <linux-iio@vger.kernel.org>; Mon, 04 Mar 2024 15:41:53 -0800 (PST)
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2d2628e81b8so58622521fa.0
+        for <linux-iio@vger.kernel.org>; Mon, 04 Mar 2024 16:08:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1709595712; x=1710200512; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1709597290; x=1710202090; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZRtU7QBjY6IrxkqEXmlmGht4UQnYlyXEwuo3a/wm+0Q=;
-        b=zPBKWWgEtL3JmyI54pwj6icCFqRSR7sAKKqDwyvvsPHfwKpUEaNithGmD6QpeNR5JC
-         Wd5hc1UNJJUwMSWBj1zcM+jklWroVyDZaXuJbV3y8ro9nrKc4B4oQLpjXK7fD2d8MYNu
-         6OOm80C9oOB3LKcCf+O0DvMpsMhO0qDjMRDzPlVU+EHgwE/LliEfzLUa+4QIieDYI8IU
-         LewIkfxdD7t+sOoLegEmiTbXZCazicDIXy53+iCBvxzTEMetu6BXI0j2oZo5wAZYjZSL
-         2wxjJO1ba0Tv1f2idMlTQ6oeLegGfNVKJpHIQcDritSEoCzV+7fHOtt1wUcZjvkZK7/a
-         TPsA==
+        bh=09gjUa1aNcaW8opSfWpZn+d038/7XmkYe107VGCZCIo=;
+        b=HqNU/HwMJojUyz7FtaNRbupydTeXR2g7v53SFHgK0tz1oDHIb8pD9EZVXlej7N0Akd
+         la5MGK8zmB0y+Fla9yJY6YzCjt1y6rNW5ATmbonl3k80n5d0ohFIXsDt5nNRHsYsrvoA
+         ZpXEAHbvR+NIAiaM6Tr2AebUD9kggTCr9VJekSWzWGWZhvrEU8749h3yXYHd+JTLEFOp
+         fCWIIopAx3jhAHlC6lcgE8EYJwJd58JZjpIuP0L8Qhdx9X5x2Ci/xv76gJDzKZHMCgp/
+         C1oGIM04zQg5MpH/Ha8xa4CQiiDbYaAlFqvhE7d65C7Sv+KxorSXBokzmcOubsO1nGyO
+         1nzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709595712; x=1710200512;
+        d=1e100.net; s=20230601; t=1709597290; x=1710202090;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZRtU7QBjY6IrxkqEXmlmGht4UQnYlyXEwuo3a/wm+0Q=;
-        b=TDjeYbo/gTIg5UW5dM9UGBVmNnFtm6k6mPezOfFcnC3ZXewJMfoGmr4nOQEd/f/lp/
-         fgPvG3zW07e+t3wtFXXgVdq0g0eOE0/k2P7EggkvSN154jpQUrNIU973CKXMar0AYPwK
-         0DZn06cN38Xn1+iH4umt+1QJF15IUcMQ4v4u6mR/rwZGz3vL1MUduulJ+YuZSKYHupdz
-         y/ecZDvKiJzjAs/MZcMH+pZ9E6aIJh8TYYhXkJ2To3oOeBuPqn75GCBtx20Yxz8CnYzA
-         PhzXmCLQ2wKdn4/ncgGR22wlS+wzO/INc6X0dzBS4jb3RI/XZT6NTj59zPB9fC5Dmn/3
-         WHUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVprZTORoDn+xx00EFaP4LQz2rg2/h7g/YIlfcK10lnifgHrBjsbcPkvrX31JvH+1EUn1p7GGbK78OIJqE/LWUOdvL2/33wOreg
-X-Gm-Message-State: AOJu0YwV8iazIuEpJKH46GEBOH7UtC0ukldX91SmLA8iZ/Kl64xrwTSR
-	9WZrGaC9Qr/FTNdSrWuJ5Da38vRlbj1bkNAAhfZlLtx2mfeETVtvQjvScWshuIt5Wc4N8ccVW0c
-	XQL4SYBWxcUrFE2167HPugXfyWI2ajX4nE7zPAA==
-X-Google-Smtp-Source: AGHT+IHbgTcVRkhv95GNhZscBR+wc6v5CNSfkAWE/obIKtZtUa64MtgWKnO9J1IQL79XEwZISRGlEn3MxtpGiP4Ke90=
-X-Received: by 2002:a2e:99d5:0:b0:2d3:f095:ff2a with SMTP id
- l21-20020a2e99d5000000b002d3f095ff2amr86839ljj.47.1709595712294; Mon, 04 Mar
- 2024 15:41:52 -0800 (PST)
+        bh=09gjUa1aNcaW8opSfWpZn+d038/7XmkYe107VGCZCIo=;
+        b=ilLg2SJhAzo8KTmPy9GHFwU4ikhNYZBcrOhzYCoCBwVH9Imwzp6c8AzbVMOrmS0Qz9
+         FjucE6SnkakeU5TNioYMtmuTTsJKkUeJPPzIrr/4eMWbmRNjGxogI1wjMrkwLCuZSWT5
+         cu1KuqfLwn/rnL4yRSjd60jBT7MYUkzjVh1eh3jzEznuFGJw5dSh59RdkRGB737Jq7ES
+         jcFQgyGzKljvN77F4r2Q21Q8Zq2QIWvvnlDBrUSySFUsFHNoBHwR9BVBFmEm5/z/qycn
+         LTpfNUbbXGd2/CGACRW3/Fwv7wO2HxgXGxC9gkuze6kaMY7kABoPTqKbIePMqclLrD0y
+         Dkgw==
+X-Forwarded-Encrypted: i=1; AJvYcCVOVWOEA1e1ixX3M7NhnWeyTLUvq485HF4gbUEMJQQn2kvJtjE7cIcaPn1WHfY6h6wkLkIeA9ttxI5hDEArqKGncWQoYNYWsCeo
+X-Gm-Message-State: AOJu0YzHSJMF/J3Z4wCoy5ueCSHHIhNKLz0aHph8VAhhNDDja6KxKF2+
+	UjO6riojR/L2aN42EvngGm6PpzZDD14VNt2M+ysZP+f8hrbpLnhQ+CfYPJu8PoUqJB4P0OpGo5h
+	u9yq+lkqwO47R0gqU2IamKM2KXIDPG5eqeP67zQ==
+X-Google-Smtp-Source: AGHT+IF6jOcbxgpV5XnETtLmcngNiEFaSfy9AoFXhR2CKsQ+k92FKANJqu2HvZwGqa3iyBWwRU+kqKS0bmNwUI/avkY=
+X-Received: by 2002:a05:651c:b06:b0:2d2:b5cb:cc3f with SMTP id
+ b6-20020a05651c0b0600b002d2b5cbcc3fmr124275ljr.2.1709597290067; Mon, 04 Mar
+ 2024 16:08:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240228135532.30761-1-mitrutzceclan@gmail.com> <20240228135532.30761-2-mitrutzceclan@gmail.com>
-In-Reply-To: <20240228135532.30761-2-mitrutzceclan@gmail.com>
+References: <20240228135532.30761-1-mitrutzceclan@gmail.com> <20240228135532.30761-3-mitrutzceclan@gmail.com>
+In-Reply-To: <20240228135532.30761-3-mitrutzceclan@gmail.com>
 From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 4 Mar 2024 17:41:40 -0600
-Message-ID: <CAMknhBE1dO921gCudJMiH=HhMpgNsORwaejw7z-O2gCbLbrdCg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: adc: ad7173: add support for
- additional models
+Date: Mon, 4 Mar 2024 18:07:58 -0600
+Message-ID: <CAMknhBGv5vfFPRJ_4nKrYWgxiovgHqTEtJoRs+EzvbvpF8a+Bw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: ad7173: add support for additional models
 To: Dumitru Ceclan <mitrutzceclan@gmail.com>
 Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>, 
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
@@ -89,119 +88,78 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Feb 28, 2024 at 7:55=E2=80=AFAM Dumitru Ceclan <mitrutzceclan@gmail=
 .com> wrote:
 >
-> Add support for: AD7172-2, AD7175-8, AD7177-2.
-> AD7172-4 does not feature an internal reference, check for external
->  reference presence.
+> Add support for Analog Devices AD7172-2, AD7175-8, AD7177-2.
 >
 > Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
 > ---
->  .../bindings/iio/adc/adi,ad7173.yaml          | 39 +++++++++++++++++--
->  1 file changed, 36 insertions(+), 3 deletions(-)
+>  drivers/iio/adc/ad7173.c | 82 ++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 74 insertions(+), 8 deletions(-)
 >
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> index 36f16a325bc5..7b5bb839fc3e 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> @@ -21,17 +21,23 @@ description: |
+> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+> index b42fbe28a325..e60ecce20e08 100644
+> --- a/drivers/iio/adc/ad7173.c
+> +++ b/drivers/iio/adc/ad7173.c
+> @@ -1,6 +1,11 @@
+>  // SPDX-License-Identifier: GPL-2.0+
+>  /*
+> - * AD7172-2/AD7173-8/AD7175-2/AD7176-2 SPI ADC driver
+> + * AD717x family SPI ADC driver
+> + *
+> + * Supported devices:
+> + *  AD7172-2/AD7172-4/AD7173-8/AD7175-2
+> + *  AD7175-8/AD7176-2/AD7177-2
+> + *
+>   * Copyright (C) 2015, 2024 Analog Devices, Inc.
+>   */
 >
->    Datasheets for supported chips:
->      https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7172-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7172-4.pdf
->      https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7173-8.pdf
->      https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7175-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7175-8.pdf
->      https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7176-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7177-2.pdf
+> @@ -61,10 +66,13 @@
+>  #define AD7173_AIN_TEMP_POS    17
+>  #define AD7173_AIN_TEMP_NEG    18
 >
->  properties:
->    compatible:
->      enum:
->        - adi,ad7172-2
-> +      - adi,ad7172-4
->        - adi,ad7173-8
->        - adi,ad7175-2
-> +      - adi,ad7175-8
->        - adi,ad7176-2
-> +      - adi,ad7177-2
->
->    reg:
->      maxItems: 1
-> @@ -136,8 +142,10 @@ patternProperties:
->            refout-avss: REFOUT/AVSS (Internal reference)
->            avdd       : AVDD  /AVSS
->
-> -          External reference ref2 only available on ad7173-8.
-> -          If not specified, internal reference used.
-> +          External reference ref2 only available on ad7173-8 and ad7172-=
-4.
-> +          Internal reference refout-avss not available on ad7172-4.
-> +
-> +          If not specified, internal reference used (if available).
->          $ref: /schemas/types.yaml#/definitions/string
->          enum:
->            - vref
-> @@ -157,12 +165,15 @@ required:
->  allOf:
->    - $ref: /schemas/spi/spi-peripheral-props.yaml#
->
-> +  # Only ad7172-4 and ad7173-8 support vref2
->    - if:
->        properties:
->          compatible:
->            not:
->              contains:
-> -              const: adi,ad7173-8
-> +              anyOf:
-> +                - const: adi,ad7172-4
-> +                - const: adi,ad7173-8
+> -#define AD7172_ID                      0x00d0
+> -#define AD7173_ID                      0x30d0
+> -#define AD7175_ID                      0x0cd0
+> +#define AD7172_2_ID                    0x00d0
+>  #define AD7176_ID                      0x0c90
+> +#define AD7175_2_ID                    0x0cd0
+> +#define AD7172_4_ID                    0x2050
+> +#define AD7173_ID                      0x30d0
+> +#define AD7175_8_ID                    0x3cd0
+> +#define AD7177_ID                      0x4fd0
 
-According to the datasheets, it looks like adi,ad7175-8 should be
-included here too.
+It would be nice to keep these sorted by name/number like they were.
 
->      then:
->        properties:
->          vref2-supply: false
-> @@ -177,6 +188,28 @@ allOf:
->              reg:
->                maximum: 3
+>  #define AD7173_ID_MASK                 GENMASK(15, 4)
 >
-> +  # Model ad7172-4 does not support internal reference
-> +  #  mandatory to have an external reference
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: adi,ad7172-4
-> +    then:
-> +      patternProperties:
-> +        "^channel@[0-9a-f]$":
-> +          properties:
-> +            adi,reference-select:
-> +              enum:
-> +                - vref
-> +                - vref2
-> +                - avdd
-> +          required:
-> +            - adi,reference-select
-> +      oneOf:
-> +        - required: [vref2-supply]
-> +        - required: [vref-supply]
-
-Do these actually need to be required since avdd is also a possibility?
-
-> +
->    - if:
->        anyOf:
->          - required: [clock-names]
-> --
-> 2.43.0
+>  #define AD7173_ADC_MODE_REF_EN         BIT(15)
+> @@ -110,15 +118,19 @@
+>  #define AD7173_SETUP_REF_SEL_EXT_REF   0x0
+>  #define AD7173_VOLTAGE_INT_REF_uV      2500000
+>  #define AD7173_TEMP_SENSIIVITY_uV_per_C        477
+> +#define AD7177_ODR_START_VALUE         0x07
 >
+>  #define AD7173_FILTER_ODR0_MASK                GENMASK(5, 0)
+>  #define AD7173_MAX_CONFIGS             8
+>
+>  enum ad7173_ids {
+>         ID_AD7172_2,
+> +       ID_AD7172_4,
+>         ID_AD7173_8,
+>         ID_AD7175_2,
+> +       ID_AD7175_8,
+>         ID_AD7176_2,
+> +       ID_AD7177_2,
+>  };
+>
+>  struct ad7173_device_info {
+> @@ -190,7 +202,7 @@ static const unsigned int ad7175_sinc5_data_rates[] =
+=3D {
+>  static const struct ad7173_device_info ad7173_device_info[] =3D {
+>         [ID_AD7172_2] =3D {
+>                 .name =3D "ad7172-2",
+> -               .id =3D AD7172_ID,
+> +               .id =3D AD7172_2_ID,
+
+It would be nice to put these renames in a separate patch since it is
+unrelated to the parts being added.
 

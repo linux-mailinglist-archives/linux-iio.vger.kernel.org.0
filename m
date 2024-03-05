@@ -1,113 +1,149 @@
-Return-Path: <linux-iio+bounces-3347-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3348-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAB5871891
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 09:50:25 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4AAB871A38
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 11:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 009881F2287C
-	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 08:50:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BECBDB212A7
+	for <lists+linux-iio@lfdr.de>; Tue,  5 Mar 2024 10:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D0604E1D9;
-	Tue,  5 Mar 2024 08:50:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LhCmYfAn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47AC65476B;
+	Tue,  5 Mar 2024 10:07:56 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAB8D1EF1A;
-	Tue,  5 Mar 2024 08:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C406535CF;
+	Tue,  5 Mar 2024 10:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709628617; cv=none; b=TG+O0/J9x35DSVGEFap5dof12qOnUwz7IyHwylHqkfTH6TqGGOn3gLSb0RO+EHJUhRPyTWn1Gi1oFh8UXwX0URogfGNkkMz+qXDPB9MoKryfY6zh2TOsAPsdLyrCisCc2dHiZnzxeJ3O7lcowXXvI/D1tv5hZ2+juzVDRdFphUQ=
+	t=1709633276; cv=none; b=ur+c6La4pxIxuT/qWVCKmetxamRNTsrtlNBYihb7xDMlBFiE31ou+29q+7s1QbPjWVa5eqa2DqybeyIMiPfNvrO+IltgivAKZ3UwItps2xcfHxzjBe9yqi4dAgL3RMCYZ/IjJzXRXeAyxBCChGbf2fa53f/S0+qquxsIC/DqSps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709628617; c=relaxed/simple;
-	bh=hh5Yt2+C5G/DRXfFFiUAUKFq87qFNmGWL0CwCF2X4n0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tf5Ybt29En713isdeAt1B54FmI9WD9OEgORXmiHFnD4q1HMv3t8PMLQ511KnBFpHgU7qLzXvTP1TJ+gHEx+wryLt6Mt43qAOT+OTheHG+qRwA8VmG8W1xCgUmt+JpzPNcTc7odK2NExN0cpxWQcZq7m3tX5E75jRk57JHrd70Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LhCmYfAn; arc=none smtp.client-ip=209.85.221.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-33d7b8f563eso3567717f8f.0;
-        Tue, 05 Mar 2024 00:50:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1709628614; x=1710233414; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JtaGl0DA/gjjX0rqwfZsWY9xK2jLOdIQuJ24dXQLPCs=;
-        b=LhCmYfAnqPWc8SbOMwEjHDnhkq/1y8osvGLmIIzYIHvBphRHTud9Q3X9FrZDUXVHpw
-         4erAtDaOKcu9Dnwmhyb3NyoLNyzb/8hIGN5Y6k+HcLroArL0Ss+EucRDhkPEcfrwLDKX
-         vRsV9FMUlLIDjHx0u4zOmcDy7UDNSocnavCbgG2Uexora6t8dtYKJ/jEZPMUhBoMMMPz
-         dB2sg7ZW4af61oKGOWft2N53cKE8BEcnUJT9QLr8k1tjPA+JcQd9FODC7eZ2o54aU7XO
-         47OPDsiPwQeuvRbH5zPa048Slqxj0B+YIg+oYVyGsijpFDFKrGT5VT8AmH17uNYJYUHO
-         +hig==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709628614; x=1710233414;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JtaGl0DA/gjjX0rqwfZsWY9xK2jLOdIQuJ24dXQLPCs=;
-        b=k0iKDnOTkDPHW75o6doMGPUT4ozsLtTyskqLVrCYz81RJamF646rUizwCQg0qa1t2B
-         JmVPVOJqtHrz4q5Nq/LGbJFkGmU6Js6YXaz/iuEoHeqVvh+HaT99dprnE0MG3qMYqEdb
-         Qf/d7LyA1On1xwDou3TwSFZrvGgbynZp62GbHK0UmLjZpFwq5r1XP6+cC1TWCvmlVGdC
-         NDzvK2cglNu5NGapuW0UjvZs8dJwD9uzFu3QiJUImOT5cixLMjYU5h2VgpQKDCc+cSoy
-         8VzH0SHeKyMOq78DoasdCnQ5EZCWk/0oh112UJBwcBg5jfKRv/LL0gvJd9q/jfOhnnBF
-         reIg==
-X-Forwarded-Encrypted: i=1; AJvYcCV8uQYKExHtdz3WYH2/wqd0I6yuY3SjuNaK0xNiqcAhU5lXp56f87QXazAeW2iV+TfxXBjNo1NPpoofMzs5h0aq1E258aSRrji10YKjMdmWjonvOuLA5t6trt7ASeHLBi0NWWXa1eDukUz9EIOWGfTaFIQ6IsLPYYO60CuG5sDX+bpSIw==
-X-Gm-Message-State: AOJu0YxtLP+hH52zmNznm3dQps1oQzCxSpSWXV7BcwD9qADJlBvltTC3
-	xvJvQ0vo18at+7m/Q/C6n0PGtZjr40ao+nOaDyXXGaKZlmRcuZuS
-X-Google-Smtp-Source: AGHT+IGNyCKmgOiHGC47gbGGns2eUULjJjXroaTJGyPKifHxVRP+GOFFgQlA7cUqCqGkoEh+w5jRDA==
-X-Received: by 2002:a05:6000:1110:b0:33d:754c:86cf with SMTP id z16-20020a056000111000b0033d754c86cfmr7327049wrw.35.1709628613858;
-        Tue, 05 Mar 2024 00:50:13 -0800 (PST)
-Received: from [192.168.206.22] ([46.97.168.41])
-        by smtp.gmail.com with ESMTPSA id d15-20020a5d644f000000b0033e052be14fsm14311214wrw.98.2024.03.05.00.50.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 Mar 2024 00:50:13 -0800 (PST)
-Message-ID: <ff8c92fc-10a9-4cd4-b94e-861b65028e0f@gmail.com>
-Date: Tue, 5 Mar 2024 10:50:10 +0200
+	s=arc-20240116; t=1709633276; c=relaxed/simple;
+	bh=NzEFmVQU/l4eibZVoBzFfR7429Ut+ICtLkRRq6L7/L4=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fU13feJdEr91jscxfwbYysMs8UadegzxKe/hpPYdbM9GLl9FpSDBNjNbwON6C0iJIJXfWQX/mAVll5deoZ8XSKLQQ6dXQih4jSnAMA4tBNI//O57QoLmVDyXvQjL5xQsSkWPX3ic984oLKh+99sdDepcrQGPZ108X59nkZrhU9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4Tprj416Hlz6D8rK;
+	Tue,  5 Mar 2024 18:02:48 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 593961404F5;
+	Tue,  5 Mar 2024 18:07:44 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 5 Mar
+ 2024 10:07:43 +0000
+Date: Tue, 5 Mar 2024 10:07:42 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>, "Vinod
+ Koul" <vkoul@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Sumit Semwal
+	<sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
+	<christian.koenig@amd.com>, Jonathan Corbet <corbet@lwn.net>, Paul Cercueil
+	<paul@crapouillou.net>, Daniel Vetter <daniel@ffwll.ch>, Michael Hennerich
+	<Michael.Hennerich@analog.com>, <linux-doc@vger.kernel.org>,
+	<dmaengine@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+	<linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<linaro-mm-sig@lists.linaro.org>
+Subject: Re: [PATCH v7 0/6] iio: new DMABUF based API
+Message-ID: <20240305100742.00006a4c@Huawei.com>
+In-Reply-To: <43787ce68f731b9267ee558c4c38d634acffe8b9.camel@gmail.com>
+References: <20240223-iio-dmabuf-v7-0-78cfaad117b9@analog.com>
+	<20240303174245.37efc0b0@jic23-huawei>
+	<43787ce68f731b9267ee558c4c38d634acffe8b9.camel@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: adc: ad7173: add support for
- additional models
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh+dt@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Ceclan Dumitru <dumitru.ceclan@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240228135532.30761-1-mitrutzceclan@gmail.com>
- <20240228135532.30761-2-mitrutzceclan@gmail.com>
- <CAMknhBE1dO921gCudJMiH=HhMpgNsORwaejw7z-O2gCbLbrdCg@mail.gmail.com>
-Content-Language: en-US
-From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
-In-Reply-To: <CAMknhBE1dO921gCudJMiH=HhMpgNsORwaejw7z-O2gCbLbrdCg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On 05/03/2024 01:41, David Lechner wrote:
-> On Wed, Feb 28, 2024 at 7:55 AM Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
+On Mon, 04 Mar 2024 08:59:47 +0100
+Nuno S=E1 <noname.nuno@gmail.com> wrote:
 
-...
+> On Sun, 2024-03-03 at 17:42 +0000, Jonathan Cameron wrote:
+> > On Fri, 23 Feb 2024 13:13:58 +0100
+> > Nuno Sa <nuno.sa@analog.com> wrote:
+> >  =20
+> > > Hi Jonathan, likely you're wondering why I'm sending v7. Well, to be
+> > > honest, we're hoping to get this merged this for the 6.9 merge window.
+> > > Main reason is because the USB part is already in (so it would be nice
+> > > to get the whole thing in). Moreover, the changes asked in v6 were si=
+mple
+> > > (even though I'm not quite sure in one of them) and Paul has no acces=
+s to
+> > > it's laptop so he can't send v7 himself. So he kind of said/asked for=
+ me to
+> > > do it. =20
+> >=20
+> > So, we are cutting this very fine. If Linus hints strongly at an rc8 ma=
+ybe we
+> > can sneak this in. However, I need an Ack from Vinod for the dma engine
+> > changes first.
+> >=20
+> > Also I'd love a final 'looks ok' comment from DMABUF folk (Ack even bet=
+ter!)
+> >=20
+> > Seems that the other side got resolved in the USB gadget, but last we h=
+eard
+> > form
+> > Daniel and Christian looks to have been back on v5. I'd like them to co=
+nfirm
+> > they are fine with the changes made as a result.=20
+> >  =20
+>=20
+> I can ask Christian or Daniel for some acks but my feeling (I still need,=
+ at
+> some point, to get really familiar with all of this) is that this should =
+be
+> pretty similar to the USB series (from a DMABUF point of view) as they ar=
+e both
+> importers.
+>=20
+> > I've been happy with the IIO parts for a few versions now but my abilit=
+y to
+> > review
+> > the DMABUF and DMA engine bits is limited.
+> >=20
+> > A realistic path to get this in is rc8 is happening, is all Acks in pla=
+ce by
+> > Wednesday,
+> > I get apply it and hits Linux-next Thursday, Pull request to Greg on Sa=
+turday
+> > and Greg
+> > is feeling particularly generous to take one on the day he normally clo=
+ses his
+> > trees.
+> >  =20
+>=20
+> Well, it looks like we still have a shot. I'll try to see if Vinod is fin=
+e with
+> the DMAENGINE stuff.
+>=20
 
->> +      oneOf:
->> +        - required: [vref2-supply]
->> +        - required: [vref-supply]
-> 
-> Do these actually need to be required since avdd is also a possibility?
-> 
+Sadly, looks like rc7 was at the end of a quiet week, so almost certain to =
+not
+be an rc8 in the end. Let's aim to get this in at the start of the next cyc=
+le
+so we can build on it from there.
 
-I added this constraint based on this mention from the datasheet:
-"AVDD1 − AVSS. This can be used to as a diagnostic to validate other
-reference values."
 
-If you consider that to be unnecessary, mention it.
+Jonathan
+
+> - Nuno S=E1
+>=20
+>=20
+
 

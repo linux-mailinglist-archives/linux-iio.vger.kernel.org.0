@@ -1,202 +1,171 @@
-Return-Path: <linux-iio+bounces-3362-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3363-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEAC5873E4A
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Mar 2024 19:13:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E87B3873FCC
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Mar 2024 19:41:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A9FA1C21008
-	for <lists+linux-iio@lfdr.de>; Wed,  6 Mar 2024 18:13:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E5A4286DA7
+	for <lists+linux-iio@lfdr.de>; Wed,  6 Mar 2024 18:41:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777DA13DBA8;
-	Wed,  6 Mar 2024 18:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF66113BAF5;
+	Wed,  6 Mar 2024 18:41:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k0N4GB3G"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y6EReW+q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADE913D316;
-	Wed,  6 Mar 2024 18:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3A19266D4;
+	Wed,  6 Mar 2024 18:40:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709748753; cv=none; b=JHVPSLl/2x2jM2xb5CXedO23AIPmIBhu2ONy/WnDGqZgOKqEGbtRR3zoIR8fUnFitRMPHvamn9rrQpHCuYELfubp6sQKbiMm79fElGa4KAoV1marcW6enIpKV2EI7xVmQP1L963pJWHtokjDViL9CU9O/ck0LYc2uI3Pjf9GxWY=
+	t=1709750460; cv=none; b=GvrREcVz+OdlyTaGbR5Dqa/Ybq1uKn1ugi3uKVpJ6eqYkfkQBz/nIzExD9a6rh00JL2qXqdx8wCcSZyuh5/9KWHQSrGIvtsZSry2s9eMuhHZbd3uF9+qvjTSFlJW5GzScubTQNhwvI4M9Wym87olsAJQRmZGdQcBk8d/90SpIZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709748753; c=relaxed/simple;
-	bh=afwCLu3j1RMg8ttoPrRNYdyjhqT4Dte2nEoHL0A3CNE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q2zh9eYOq3/Px/gWRtWeJ+qehKv3MyhQi+LkkyR7HAwTPBc2qLSsik+OhEECO9zWmqB6yoMDB2MI1He/wZ+s6EXxeXXFTiyWkBADjWhKkHoAFwSxH6l2vp4Y+GmwEYlPaySzKAMNxZ73GY/jf2D6ALrH16eKp8HaBA5x9yp/fJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k0N4GB3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81F71C433C7;
-	Wed,  6 Mar 2024 18:12:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1709748752;
-	bh=afwCLu3j1RMg8ttoPrRNYdyjhqT4Dte2nEoHL0A3CNE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k0N4GB3GV22GBKek7bbG86feaEL3jmUh6EnaDPWP60z+WzYa3bI5D6jW+Wbl6io3U
-	 sYlPTYKUIEFvnB3WB6NqEE67FLtnU9ACNvnNvfl3UPeyOVYcVZyTD8jsplkk1za3fs
-	 aLtnVUcFO+BAFmkLVgm5ckdOltUHa+CCtMcuQKYZgbzHPs3/TX3l/lWFdfhBWqBAVD
-	 cojMK9y1JRSrQLotaJBYNGlxdgS+10BANvHmkpIkAkWOZ/IkgFRCeIuNbsTgd5pyTX
-	 i73v+aO7o2Gj21FWAfvc2qWpMPZ55xKN74fRd7HFd6q4Tmn+gZsCX8HuNXf7RXeP7H
-	 0DzaAOfIXv7LA==
-Date: Wed, 6 Mar 2024 18:12:28 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: dumitru.ceclan@analog.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lars@metafoo.de, jic23@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	dlechner@baylibre.com
-Subject: Re: [PATCH v3 1/3] dt-bindings: adc: ad7173: add support for
- additional models
-Message-ID: <20240306-pulsate-suspend-f88e6978ca7e@spud>
-References: <20240306110956.13167-1-mitrutzceclan@gmail.com>
- <20240306110956.13167-2-mitrutzceclan@gmail.com>
+	s=arc-20240116; t=1709750460; c=relaxed/simple;
+	bh=gV0qdvOfcFrVuFUnoKGMfiykayAlHiTwTLIzL0VcW/Y=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tF/bFU5p+t76odSS+AyhkPtugZpgWcdlHLSLpn8an79A8/P0woqeAPQNBErHcDZoGI09w333JeJUc20mHmdpex6/1NA+PIUPnI+AfZo+6vrAYDwvkJtT+PQo7rCV3x+9dfRKylr6VPQDOD1HwFTUw1Ln9CUL0zdvP1RmT5gr/mA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y6EReW+q; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1709750459; x=1741286459;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=gV0qdvOfcFrVuFUnoKGMfiykayAlHiTwTLIzL0VcW/Y=;
+  b=Y6EReW+qXsdeX1BJzwY5oeoVc5sSGR1eS2+HBDDspmlqYqEq3jea5PS7
+   B6NbYuCSvIL3SwrMh8GLyWS3GOCq3+a6NlSKAeXegZ8rdPVr4mSDpksFA
+   IY1gpoOClNr8mp7X8DCgeeiGJ5B9k60MfXrt5oy3XHbokW9eKr0Cxw0UR
+   WNde8AcN/o2x2ew6fEKu00sUGd0GkHmTvyIcbcVy5osRDoAlfVttmMNAs
+   s9oqaRUG4Dwauwl5QUOUDbGJOV0u5qpI3Dq70enlVAQtQ0g98duqzlaw5
+   VFpbMdMF/c0yCmkXL2KaRKYdnOGz2aJxoWluNqaqEOle0PUg4eauTUhvb
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11005"; a="4532911"
+X-IronPort-AV: E=Sophos;i="6.06,209,1705392000"; 
+   d="scan'208";a="4532911"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 10:40:59 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.06,209,1705392000"; 
+   d="scan'208";a="47365083"
+Received: from spandruv-desk1.amr.corp.intel.com ([10.209.89.31])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2024 10:40:58 -0800
+Message-ID: <bf4206ee5c69c73d487502837b30d0accce85a51.camel@linux.intel.com>
+Subject: Re: [PATCH 2/3] HID: hid-sensor-custom: Convert to platform remove
+ callback returning void
+From: srinivas pandruvada <srinivas.pandruvada@linux.intel.com>
+To: Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>, 
+ Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires
+ <benjamin.tissoires@redhat.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, linux-input@vger.kernel.org, 
+	linux-iio@vger.kernel.org, kernel@pengutronix.de
+Date: Wed, 06 Mar 2024 10:40:52 -0800
+In-Reply-To: <f4c8334ea1548d911862ede881ab0d90a408c156.1709747164.git.u.kleine-koenig@pengutronix.de>
+References: <cover.1709747164.git.u.kleine-koenig@pengutronix.de>
+	 <f4c8334ea1548d911862ede881ab0d90a408c156.1709747164.git.u.kleine-koenig@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="BtJ5XcjlTBKGRw+b"
-Content-Disposition: inline
-In-Reply-To: <20240306110956.13167-2-mitrutzceclan@gmail.com>
 
-
---BtJ5XcjlTBKGRw+b
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Wed, Mar 06, 2024 at 01:09:54PM +0200, Dumitru Ceclan wrote:
-> Add support for: AD7172-2, AD7175-8, AD7177-2.
-> AD7172-4 does not feature an internal reference, check for external
->  reference presence.
+On Wed, 2024-03-06 at 18:50 +0100, Uwe Kleine-K=C3=B6nig wrote:
+> The .remove() callback for a platform driver returns an int which
+> makes
+> many driver authors wrongly assume it's possible to do error handling
+> by
+> returning an error code. However the value returned is ignored (apart
+> from emitting a warning) and this typically results in resource
+> leaks.
 >=20
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> To improve here there is a quest to make the remove callback return
+> void. In the first step of this quest all drivers are converted to
+> .remove_new(), which already returns void. Eventually after all
+> drivers
+> are converted, .remove_new() will be renamed to .remove().
+>=20
+> Trivially convert this driver from always returning zero in the
+> remove
+> callback to the void returning variant.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-Cheers,
-Conor.
 
 > ---
->  .../bindings/iio/adc/adi,ad7173.yaml          | 39 +++++++++++++++++--
->  1 file changed, 36 insertions(+), 3 deletions(-)
+> =C2=A0drivers/hid/hid-sensor-custom.c | 8 +++-----
+> =C2=A01 file changed, 3 insertions(+), 5 deletions(-)
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> index 36f16a325bc5..ea6cfcd0aff4 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-> @@ -21,17 +21,23 @@ description: |
-> =20
->    Datasheets for supported chips:
->      https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7172-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7172-4.pdf
->      https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7173-8.pdf
->      https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7175-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7175-8.pdf
->      https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7176-2.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-AD7177-2.pdf
-> =20
->  properties:
->    compatible:
->      enum:
->        - adi,ad7172-2
-> +      - adi,ad7172-4
->        - adi,ad7173-8
->        - adi,ad7175-2
-> +      - adi,ad7175-8
->        - adi,ad7176-2
-> +      - adi,ad7177-2
-> =20
->    reg:
->      maxItems: 1
-> @@ -136,8 +142,10 @@ patternProperties:
->            refout-avss: REFOUT/AVSS (Internal reference)
->            avdd       : AVDD  /AVSS
-> =20
-> -          External reference ref2 only available on ad7173-8.
-> -          If not specified, internal reference used.
-> +          External reference ref2 only available on ad7173-8 and ad7172-=
-4.
-> +          Internal reference refout-avss not available on ad7172-4.
-> +
-> +          If not specified, internal reference used (if available).
->          $ref: /schemas/types.yaml#/definitions/string
->          enum:
->            - vref
-> @@ -157,12 +165,17 @@ required:
->  allOf:
->    - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> =20
-> +  # Only ad7172-4, ad7173-8 and ad7175-8 support vref2
-> +  # Other models have [0-3] channel registers
->    - if:
->        properties:
->          compatible:
->            not:
->              contains:
-> -              const: adi,ad7173-8
-> +              enum:
-> +                - adi,ad7172-4
-> +                - adi,ad7173-8
-> +                - adi,ad7175-8
->      then:
->        properties:
->          vref2-supply: false
-> @@ -177,6 +190,26 @@ allOf:
->              reg:
->                maximum: 3
-> =20
-> +  # Model ad7172-4 does not support internal reference
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: adi,ad7172-4
-> +    then:
-> +      patternProperties:
-> +        "^channel@[0-9a-f]$":
-> +          properties:
-> +            reg:
-> +              maximum: 7
-> +            adi,reference-select:
-> +              enum:
-> +                - vref
-> +                - vref2
-> +                - avdd
-> +          required:
-> +            - adi,reference-select
-> +
->    - if:
->        anyOf:
->          - required: [clock-names]
-> --=20
-> 2.43.0
->=20
+> diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-
+> sensor-custom.c
+> index d85398721659..de7287f3af61 100644
+> --- a/drivers/hid/hid-sensor-custom.c
+> +++ b/drivers/hid/hid-sensor-custom.c
+> @@ -1032,14 +1032,14 @@ static int hid_sensor_custom_probe(struct
+> platform_device *pdev)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return ret;
+> =C2=A0}
+> =C2=A0
+> -static int hid_sensor_custom_remove(struct platform_device *pdev)
+> +static void hid_sensor_custom_remove(struct platform_device *pdev)
+> =C2=A0{
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct hid_sensor_custom =
+*sensor_inst =3D
+> platform_get_drvdata(pdev);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct hid_sensor_hub_dev=
+ice *hsdev =3D pdev-
+> >dev.platform_data;
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (sensor_inst->custom_p=
+dev) {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0platform_device_unregister(sensor_inst->custom_pdev=
+);
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return 0;
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0return;
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> =C2=A0
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0hid_sensor_custom_dev_if_=
+remove(sensor_inst);
+> @@ -1047,8 +1047,6 @@ static int hid_sensor_custom_remove(struct
+> platform_device *pdev)
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sysfs_remove_group(&senso=
+r_inst->pdev->dev.kobj,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0 &enable_sensor_attr_group);
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sensor_hub_remove_callbac=
+k(hsdev, hsdev->usage);
+> -
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> =C2=A0}
+> =C2=A0
+> =C2=A0static const struct platform_device_id hid_sensor_custom_ids[] =3D =
+{
+> @@ -1068,7 +1066,7 @@ static struct platform_driver
+> hid_sensor_custom_platform_driver =3D {
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0.name=C2=A0=C2=A0=C2=A0=3D KBUILD_MODNAME,
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0},
+> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.probe=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D hid_sensor_custom_probe,
+> -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.remove=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=3D hid_sensor_custom_remove,
+> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.remove_new=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=3D hid_sensor_custom_remove,
+> =C2=A0};
+> =C2=A0module_platform_driver(hid_sensor_custom_platform_driver);
+> =C2=A0
 
---BtJ5XcjlTBKGRw+b
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZeiyDAAKCRB4tDGHoIJi
-0v0oAP9RjenSUIQ8qluKAZcJSEAowTF8Iwpd1QDeSRrttcsTDgD+P2JqWihqoQRX
-zBTlCgh6bvQx3vrE9ot0b4bXc/eZhAQ=
-=mxHT
------END PGP SIGNATURE-----
-
---BtJ5XcjlTBKGRw+b--
 

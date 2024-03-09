@@ -1,92 +1,130 @@
-Return-Path: <linux-iio+bounces-3415-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3416-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F151E877338
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:25:05 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F5687733A
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:25:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37E171C2159E
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:25:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FE99B20F52
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9240E47F72;
-	Sat,  9 Mar 2024 18:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D53C481AB;
+	Sat,  9 Mar 2024 18:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pnds2ibO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XyVATKzI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522B024A12
-	for <linux-iio@vger.kernel.org>; Sat,  9 Mar 2024 18:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA06481A7;
+	Sat,  9 Mar 2024 18:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710008274; cv=none; b=miDaOF19gzsUYRFUcCR8PNhyaZxUYUsIITJ0DNsESenxQgU2aSdqkc023t8JfiJe/mMB5poSTFFbNSBthaOWCwauEFhDMYo05KxCUCI4Ywh61hb7WlF8T8+H5R1nxabeRbo8Lx+EMr4bj52QX802jrzcOEnjWHxxDe4cs4h4vtg=
+	t=1710008396; cv=none; b=H+x/o4pW6CYhJwkvpt+NoXEGMr+du2hVS0bkz9us/rf11SsBCVDTQKaE0b2B+3+jVreSulYHRTwPTwwgdsv70Fr6mv7k2RMeIRElqs3YLkn6b8lrOgOinSqob6KxkEtb/moH8qVhhNdx1oQ2//08MwnimxGaxgkyCAqcSouuNjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710008274; c=relaxed/simple;
-	bh=FWjbwxeRzk7Ugw1FkTp2S50dvJJcbaSbEcpbc12T2zw=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lWzQRJnOrPfngbNQlcIBSFN/MTNMMNOI2jEpIEdINVKsFAJl8iN26E1kWff1+xoG+rpRLyOPdKFnieLfCct5CaGPrq08RbwNRnV1gS2sezp7FcpkIwy0PWMN93ykJ9rd2Y7pYZ4WX1YJYjWQ9iOnoQB5LEjw/w8WP0jqGNqJkM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pnds2ibO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D6ABAC433F1
-	for <linux-iio@vger.kernel.org>; Sat,  9 Mar 2024 18:17:53 +0000 (UTC)
+	s=arc-20240116; t=1710008396; c=relaxed/simple;
+	bh=xwPSJ7u/u8eKM3hiZZ05+P5z2GbwUDxdaFWTSwWYdrI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=laI3ya1s3wuEOCmh3TIGxOXxLpBjWRk0MdksB1Cco1lo7lkiPvNuRz0WvQ0UkHYZjJj5F/vY4vmi1mqm76Epip0b6M3H33ywb1OTto1wbfpRBnUPmzhXFVs1H0f4VgxWuynNmiDjUCwvjYACrurLqj/2J2dBhPnH0sc1LRGBZ3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XyVATKzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85646C433C7;
+	Sat,  9 Mar 2024 18:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710008273;
-	bh=FWjbwxeRzk7Ugw1FkTp2S50dvJJcbaSbEcpbc12T2zw=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=pnds2ibOyFMj57Be+VWa+aRbRTCdATrlDnM777rGbjbrO1rPlf9dsADXQtD/FBFyZ
-	 AW0yPjZj1g9qeZRPv9IN9hsPueAtMPVIEct2K+FowKbX+lyGLqJoL0FumsDqXnNhqZ
-	 NmZT+s8uF11UMHSYSKoAFZisUZRRpfEASp1l0Iuws/jCuT/LX9VGJNjS6bWfdkT6ZZ
-	 o31Hyekbh0Rmkoh7VstB0BsBPtyCTm2YiSb/ciRn0wLM/beZcatgPeLFcSHFpFPmcb
-	 aYkRkLQ9p5t8fA9sboV9XgwlFRcgK+o0NePvo0smnaRSQ5glrBLcWw6dFDCb5oqNgc
-	 QP0FdmkcEXCsw==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id BA243C4332E; Sat,  9 Mar 2024 18:17:53 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Sat, 09 Mar 2024 18:17:53 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: kernelbugzilla@kirkschnable.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cf_kernel_version
-Message-ID: <bug-218578-217253-Z9ZSAeC5WM@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
-References: <bug-218578-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=k20201202; t=1710008395;
+	bh=xwPSJ7u/u8eKM3hiZZ05+P5z2GbwUDxdaFWTSwWYdrI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XyVATKzIg3DUzc+hCVGAY/fxLL4iFPPQTos1kSNqCoq9qOs5Vc2sE+KJQHHtUwVHm
+	 jJ5OJNg5o+Dym8O5n1C9zaPcn5QJt9Rg3Gb5nb4IGcfuAwD2P7oeavKFC1klx9KQyB
+	 3wBE1B8+D1e3UNyKzeb8s2ACUl13wHDGElg/eflQTfIXhmdQh7LWgFbeUpoKj7Tz6z
+	 kXsJP/TTrFW6lf56bBCPnsvP38TPh2uMswhhg0JE/YHYIo+SWbappJGkj5aP8lQmGP
+	 wK89Xl4m13/G2+bTBeLIXMHgoRJOgpTIzsL/k9l/Z9tJcwB/bj1eLsO8wvCJZSq10W
+	 eg5WhgLTy/vcw==
+Date: Sat, 9 Mar 2024 18:19:42 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, lars@metafoo.de,
+ ang.iglesiasg@gmail.com, mazziesaccount@gmail.com, ak@it-klinger.de,
+ petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/4] iio: pressure: Add triggered buffer support for
+ BMP280 driver
+Message-ID: <20240309181942.5a60c3a7@jic23-huawei>
+In-Reply-To: <20240304200547.GA10314@vamoiridPC>
+References: <20240303165300.468011-1-vassilisamir@gmail.com>
+	<20240303165300.468011-5-vassilisamir@gmail.com>
+	<ZeW15Q2juyQuTw5q@smile.fi.intel.com>
+	<20240304190838.GA4431@vamoiridPC>
+	<ZeYegxEF521ixMTs@smile.fi.intel.com>
+	<20240304200547.GA10314@vamoiridPC>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
+On Mon, 4 Mar 2024 21:05:47 +0100
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-Kirk Schnable (kernelbugzilla@kirkschnable.com) changed:
+> On Mon, Mar 04, 2024 at 09:18:27PM +0200, Andy Shevchenko wrote:
+> > On Mon, Mar 04, 2024 at 08:08:38PM +0100, Vasileios Amoiridis wrote:  
+> > > On Mon, Mar 04, 2024 at 01:52:05PM +0200, Andy Shevchenko wrote:  
+> > > > On Sun, Mar 03, 2024 at 05:53:00PM +0100, Vasileios Amoiridis wrote:  
+> > 
+> > ...
+> >   
+> > > > > +	struct {
+> > > > > +		s32 temperature;
+> > > > > +		u32 pressure;
+> > > > > +		u32 humidity;  
+> > > >   
+> > > > > +		s64 timestamp;  
+> > > > 
+> > > > Shouldn't this be aligned properly?  
+> > > 
+> > > I saw that in some drivers it was added and in some it was not. What is the
+> > > difference of aligning just the timestamp of the kernel?  
+> > 
+> > You can count yourself. With provided structure as above there is a high
+> > probability of misaligned timeout field. The latter has to be aligned on
+> > 8 bytes.
+> >   
+> 
+> I was unaware, but now I am not. Thank you very much for the feedback.
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-     Kernel Version|6.5.6                       |5.15.0
+Fun bit of C is that you aren't actually aligning just the timestamp.
+A C structure is aligned to the alignment of the maximum element within it.
+So by specifying that timestamp is aligned to 8 bytes, you also force the
+alignment of the whole structure to 8 bytes.
 
---=20
-You may reply to this email to add a comment.
+When you see the outer buffer aligned as well (typically the potentially larger
+__aligned (IIO_DMA_MINALIGN)) that's for a different reason.  Used on a trailing
+element of a structure via iio_priv() that ensures there is nothing else in the
+cacheline (maximum one in the system) on systems where this matters due to non
+coherent DMA.  Still need the __aligned(8) on the timestamp though as otherwise
+the internal padding may be wrong (like here).
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+On some architectures small buffers are always bounced - if that were true on
+all of them we could get rid of the complexity of IIO_DMA_MINALIGN.
+
+Alignment is so much fun - particularly with x86_32 which does 8 byte values aligned
+to 4 bytes. We had a massive set of patches fixing subtle issues around that a
+few years ago.
+
+Jonathan
+
+  
+> > > > > +	} iio_buffer;  
+> > 
+> > -- 
+> > With Best Regards,
+> > Andy Shevchenko
+> > 
+> >   
+
 

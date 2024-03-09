@@ -1,63 +1,58 @@
-Return-Path: <linux-iio+bounces-3416-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3417-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F5687733A
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:25:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B29187733D
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:29:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FE99B20F52
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:25:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE167B20C89
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D53C481AB;
-	Sat,  9 Mar 2024 18:19:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A8B2C868;
+	Sat,  9 Mar 2024 18:28:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XyVATKzI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n3fYRFtY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA06481A7;
-	Sat,  9 Mar 2024 18:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F403E22F1E;
+	Sat,  9 Mar 2024 18:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710008396; cv=none; b=H+x/o4pW6CYhJwkvpt+NoXEGMr+du2hVS0bkz9us/rf11SsBCVDTQKaE0b2B+3+jVreSulYHRTwPTwwgdsv70Fr6mv7k2RMeIRElqs3YLkn6b8lrOgOinSqob6KxkEtb/moH8qVhhNdx1oQ2//08MwnimxGaxgkyCAqcSouuNjc=
+	t=1710008935; cv=none; b=FwmaMfWi+oifl0gieK+uyRpoQx2r15Ls7Qfy++6FX4zV8yIWLiayBfDn/59CCsIFuLV1N14Mmj8TARdfjrRF918avoPh9BybnJGgOLA9gaD3D8aMng5I6maQi4CBjYXkErboTbEfROXG0yGCyVZo3sYy1oIw79E22s6XEeypvp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710008396; c=relaxed/simple;
-	bh=xwPSJ7u/u8eKM3hiZZ05+P5z2GbwUDxdaFWTSwWYdrI=;
+	s=arc-20240116; t=1710008935; c=relaxed/simple;
+	bh=L2wcmhVQaFqLWuk8FiLWZYZW1meGlQie24CMyuszByI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=laI3ya1s3wuEOCmh3TIGxOXxLpBjWRk0MdksB1Cco1lo7lkiPvNuRz0WvQ0UkHYZjJj5F/vY4vmi1mqm76Epip0b6M3H33ywb1OTto1wbfpRBnUPmzhXFVs1H0f4VgxWuynNmiDjUCwvjYACrurLqj/2J2dBhPnH0sc1LRGBZ3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XyVATKzI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85646C433C7;
-	Sat,  9 Mar 2024 18:19:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=phDDZpgVRSET+Qdjmqx3q1BzqJS1x8PfjJq6iZdWhdHNjNfWUh1ukRyo89JdLT1hSzvIBcB0h0dCa3ELI6kOYW+RaSGSaNRA9qRUMqJC8eHb69P/0lZl+hLtElfKF+/9HEsu5KMV3x7rp5VJ5b49UjODk+zGbE4qMqfEeSuH0mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n3fYRFtY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4050DC433C7;
+	Sat,  9 Mar 2024 18:28:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710008395;
-	bh=xwPSJ7u/u8eKM3hiZZ05+P5z2GbwUDxdaFWTSwWYdrI=;
+	s=k20201202; t=1710008934;
+	bh=L2wcmhVQaFqLWuk8FiLWZYZW1meGlQie24CMyuszByI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XyVATKzIg3DUzc+hCVGAY/fxLL4iFPPQTos1kSNqCoq9qOs5Vc2sE+KJQHHtUwVHm
-	 jJ5OJNg5o+Dym8O5n1C9zaPcn5QJt9Rg3Gb5nb4IGcfuAwD2P7oeavKFC1klx9KQyB
-	 3wBE1B8+D1e3UNyKzeb8s2ACUl13wHDGElg/eflQTfIXhmdQh7LWgFbeUpoKj7Tz6z
-	 kXsJP/TTrFW6lf56bBCPnsvP38TPh2uMswhhg0JE/YHYIo+SWbappJGkj5aP8lQmGP
-	 wK89Xl4m13/G2+bTBeLIXMHgoRJOgpTIzsL/k9l/Z9tJcwB/bj1eLsO8wvCJZSq10W
-	 eg5WhgLTy/vcw==
-Date: Sat, 9 Mar 2024 18:19:42 +0000
+	b=n3fYRFtY6B2ykMQMKc9V0O7oABQikIpa+P9sEEvHOGogTe3xbIXXpT/uKMWrQmZgQ
+	 1/CpoQ51vCvShNX8nNhR1xdJmogVPWALnL+eJK75/jPXNlitKE+mPzR9RpHk+9CQPF
+	 AbnT7bYe3G8tJquv3MCZ/+wSoLzJkXJ1SUOXKKOW/EndG8vFEpNamIK7pkj6nEkwIp
+	 QZPBid9T0Pg2TFXhUW6aQR/iePxZqWAKR+WSXcPAN677PI/tmo/3BVpPXDlRo2OwmU
+	 dPiP59qQFUr5rAkOKbQV65fkZLBApwMO0IOV+/3xSjJYTmXzwl6ge122pP4Xsuy/8F
+	 GhJQR+jbFx1gQ==
+Date: Sat, 9 Mar 2024 18:28:42 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, lars@metafoo.de,
+Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
  ang.iglesiasg@gmail.com, mazziesaccount@gmail.com, ak@it-klinger.de,
  petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/4] iio: pressure: Add triggered buffer support for
- BMP280 driver
-Message-ID: <20240309181942.5a60c3a7@jic23-huawei>
-In-Reply-To: <20240304200547.GA10314@vamoiridPC>
+Subject: Re: [PATCH 2/4] iio: pressure: Add scale value for channels
+Message-ID: <20240309182842.1fc7b676@jic23-huawei>
+In-Reply-To: <20240303165300.468011-3-vassilisamir@gmail.com>
 References: <20240303165300.468011-1-vassilisamir@gmail.com>
-	<20240303165300.468011-5-vassilisamir@gmail.com>
-	<ZeW15Q2juyQuTw5q@smile.fi.intel.com>
-	<20240304190838.GA4431@vamoiridPC>
-	<ZeYegxEF521ixMTs@smile.fi.intel.com>
-	<20240304200547.GA10314@vamoiridPC>
+	<20240303165300.468011-3-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,63 +63,149 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 4 Mar 2024 21:05:47 +0100
+On Sun,  3 Mar 2024 17:52:58 +0100
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> On Mon, Mar 04, 2024 at 09:18:27PM +0200, Andy Shevchenko wrote:
-> > On Mon, Mar 04, 2024 at 08:08:38PM +0100, Vasileios Amoiridis wrote:  
-> > > On Mon, Mar 04, 2024 at 01:52:05PM +0200, Andy Shevchenko wrote:  
-> > > > On Sun, Mar 03, 2024 at 05:53:00PM +0100, Vasileios Amoiridis wrote:  
-> > 
-> > ...
-> >   
-> > > > > +	struct {
-> > > > > +		s32 temperature;
-> > > > > +		u32 pressure;
-> > > > > +		u32 humidity;  
-> > > >   
-> > > > > +		s64 timestamp;  
-> > > > 
-> > > > Shouldn't this be aligned properly?  
-> > > 
-> > > I saw that in some drivers it was added and in some it was not. What is the
-> > > difference of aligning just the timestamp of the kernel?  
-> > 
-> > You can count yourself. With provided structure as above there is a high
-> > probability of misaligned timeout field. The latter has to be aligned on
-> > 8 bytes.
-> >   
+> Add extra IIO_CHAN_INFO_SCALE in order to be able to have the scales
+> for the values in userspace. Can be used for triggered buffers.
 > 
-> I was unaware, but now I am not. Thank you very much for the feedback.
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 
-Fun bit of C is that you aren't actually aligning just the timestamp.
-A C structure is aligned to the alignment of the maximum element within it.
-So by specifying that timestamp is aligned to 8 bytes, you also force the
-alignment of the whole structure to 8 bytes.
+So providing scale and processed is a mess. With hindsight this should have
+always provided raw + scale, but too late :(
 
-When you see the outer buffer aligned as well (typically the potentially larger
-__aligned (IIO_DMA_MINALIGN)) that's for a different reason.  Used on a trailing
-element of a structure via iio_priv() that ensures there is nothing else in the
-cacheline (maximum one in the system) on systems where this matters due to non
-coherent DMA.  Still need the __aligned(8) on the timestamp though as otherwise
-the internal padding may be wrong (like here).
+This retrofitting buffered code onto a drive that does processed channels
+is one of the few reasons I'll let through channels that do both processed and raw.
+So add raw as well. Hopefully raw * scale always equals processed.
 
-On some architectures small buffers are always bounced - if that were true on
-all of them we could get rid of the complexity of IIO_DMA_MINALIGN.
-
-Alignment is so much fun - particularly with x86_32 which does 8 byte values aligned
-to 4 bytes. We had a massive set of patches fixing subtle issues around that a
-few years ago.
+The reason is that for a channel doing processed only - assumption is
+normally that the buffer is processed as well. We can't remove processed
+as that would be ABI breakage, but we can add raw.
 
 Jonathan
 
-  
-> > > > > +	} iio_buffer;  
-> > 
-> > -- 
-> > With Best Regards,
-> > Andy Shevchenko
-> > 
-> >   
+> ---
+>  drivers/iio/pressure/bmp280-core.c | 70 ++++++++++++++++++++++++++++++
+>  1 file changed, 70 insertions(+)
+> 
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index 29a8b7195076..acdf6138d317 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -138,16 +138,19 @@ static const struct iio_chan_spec bmp280_channels[] = {
+>  	{
+>  		.type = IIO_PRESSURE,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
+> +				      BIT(IIO_CHAN_INFO_SCALE) |
+>  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+>  	},
+>  	{
+>  		.type = IIO_TEMP,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
+> +				      BIT(IIO_CHAN_INFO_SCALE) |
+>  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+>  	},
+>  	{
+>  		.type = IIO_HUMIDITYRELATIVE,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
+> +				      BIT(IIO_CHAN_INFO_SCALE) |
+>  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+>  	},
+>  };
+> @@ -156,6 +159,7 @@ static const struct iio_chan_spec bmp380_channels[] = {
+>  	{
+>  		.type = IIO_PRESSURE,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
+> +				      BIT(IIO_CHAN_INFO_SCALE) |
+>  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+>  		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>  					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+> @@ -163,6 +167,7 @@ static const struct iio_chan_spec bmp380_channels[] = {
+>  	{
+>  		.type = IIO_TEMP,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
+> +				      BIT(IIO_CHAN_INFO_SCALE) |
+>  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+>  		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>  					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+> @@ -170,6 +175,7 @@ static const struct iio_chan_spec bmp380_channels[] = {
+>  	{
+>  		.type = IIO_HUMIDITYRELATIVE,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
+> +				      BIT(IIO_CHAN_INFO_SCALE) |
+>  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+>  		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+>  					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+> @@ -487,6 +493,70 @@ static int bmp280_read_raw(struct iio_dev *indio_dev,
+>  			break;
+>  		}
+>  		break;
+> +	case IIO_CHAN_INFO_SCALE:
+> +		switch (chan->type) {
+> +		case IIO_HUMIDITYRELATIVE:
+> +			if (!strcmp(indio_dev->name, "bme280")) {
+> +				*val = 1000;
+> +				*val2 = 1024;
+> +				ret = IIO_VAL_FRACTIONAL;
+> +			} else {
+> +				ret = -EINVAL;
+> +			}
+> +			break;
+> +		case IIO_PRESSURE:
+> +			if ((!strcmp(indio_dev->name, "bmp085")) ||
+> +			    (!strcmp(indio_dev->name, "bmp180")) ||
+> +			    (!strcmp(indio_dev->name, "bmp181"))) {
+> +				*val = 1;
+> +				*val2 = 1000;
+> +				ret = IIO_VAL_FRACTIONAL;
+> +			} else if ((!strcmp(indio_dev->name, "bmp280")) ||
+> +				   (!strcmp(indio_dev->name, "bme280"))) {
+> +				*val = 1;
+> +				*val2 = 256000;
+> +				ret = IIO_VAL_FRACTIONAL;
+> +			} else if (!strcmp(indio_dev->name, "bmp380")) {
+> +				*val = 1;
+> +				*val2 = 100000;
+> +				ret = IIO_VAL_FRACTIONAL;
+> +			} else if (!strcmp(indio_dev->name, "bmp580")) {
+> +				*val = 1;
+> +				*val2 = 64000;
+> +				ret = IIO_VAL_FRACTIONAL;
+> +			} else {
+> +				ret = -EINVAL;
+> +			}
+> +			break;
+> +		case IIO_TEMP:
+> +			if ((!strcmp(indio_dev->name, "bmp085")) ||
+> +			    (!strcmp(indio_dev->name, "bmp180")) ||
+> +			    (!strcmp(indio_dev->name, "bmp181"))) {
+> +				*val = 100;
+> +				*val2 = 1;
+> +				ret = IIO_VAL_FRACTIONAL;
+> +			} else if ((!strcmp(indio_dev->name, "bmp280")) ||
+> +				   (!strcmp(indio_dev->name, "bme280"))) {
+> +				*val = 10;
+> +				*val2 = 1;
+> +				ret = IIO_VAL_FRACTIONAL;
+> +			} else if (!strcmp(indio_dev->name, "bmp380")) {
+> +				*val = 10;
+> +				*val2 = 1;
+> +				ret = IIO_VAL_FRACTIONAL;
+> +			} else if (!strcmp(indio_dev->name, "bmp580")) {
+> +				*val = 1000;
+> +				*val2 = 16;
+> +				ret = IIO_VAL_FRACTIONAL_LOG2;
+> +			} else {
+> +				ret = -EINVAL;
+> +			}
+> +			break;
+> +		default:
+> +			ret = -EINVAL;
+> +			break;
+> +		}
+> +		break;
+>  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+>  		switch (chan->type) {
+>  		case IIO_HUMIDITYRELATIVE:
 
 

@@ -1,92 +1,112 @@
-Return-Path: <linux-iio+bounces-3412-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3413-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F2D4877299
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:05:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B068772A1
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:09:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDC8128206B
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:05:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB65E281D73
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1FD28366;
-	Sat,  9 Mar 2024 18:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E86B328DD5;
+	Sat,  9 Mar 2024 18:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RTQEG5Ji"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YO53GVUv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C235423741
-	for <linux-iio@vger.kernel.org>; Sat,  9 Mar 2024 18:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A345F23741;
+	Sat,  9 Mar 2024 18:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710007529; cv=none; b=OsaKMSEWautlt5XZw5IMlaNduh2Ddq4PKR1C9KXSccDIIBgEU+v7AIr9i2zDxIO/swgqPLPxCCDDjO2MwhCijGA4K7QZ0FWYFvWQ9y+ANh8pa5UgLAsdeH8n2XrAhxbXOmsyHq2Y9ouD9NE9An1+dvsj9hgimKb/ZQgFubySsVE=
+	t=1710007753; cv=none; b=YNVcL3cpTUntKaqrvKA1OTcq0PrhymAgp0dSQUc31BSKWxI604G39UM6UFCc0A0Zdk/ZQjHyxAknHyuTVSRtIB5jfiN/WpkARlff53ITy3L8Os/k9FffNXxxYzsazr7oPmKx5SGiMUX40LP4kSTbTn0ofiwaMCdoAodB/PH7i1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710007529; c=relaxed/simple;
-	bh=CcNnKCqH9TV9Eic+JWlEGT6WdlaSHR2h61uJwaVWwHs=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iBsvQ61C8AePc1x3Si+ohJit0TaPLoBBCDKfBXYgVDfppGKVe3IpTTQu1ch4Xl6R2lgaUgBWSMt7hUd+yAas7rRCEJMNSBBR11KvQEdLgRGcIY4MPX2X0DsE9CVHd1lMNWuHErTx0Yv9hj36/OYQ+SslSoNvxSAeraXiQxmBt6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RTQEG5Ji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5377FC433F1
-	for <linux-iio@vger.kernel.org>; Sat,  9 Mar 2024 18:05:29 +0000 (UTC)
+	s=arc-20240116; t=1710007753; c=relaxed/simple;
+	bh=KsNJRK30YRexf6tTEpqvy2ij5HCVsecJKh44sAsCnXo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JO4MvvprNOE4NGZ9nd1bbfRd8LxorsjYr4EfNnJwyZyHYg5uUaf8XGJyQfwA0CW6W4BDJ/eX5TQXYw1hRBSuMLW/wvRGUifSSa7fBcT8ELh4uS4gMo4V+WwioB8v8dKWiKkWX90BYb7G/FGBBLN7MK3t9yryD7NweMYfuSYOIOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YO53GVUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA29BC433C7;
+	Sat,  9 Mar 2024 18:09:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710007529;
-	bh=CcNnKCqH9TV9Eic+JWlEGT6WdlaSHR2h61uJwaVWwHs=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=RTQEG5JiUKSO35yKM7nkt3i6l2tqgHi+WbclyRaJa4q1Y1RzKvP18fUX73bvYqWPd
-	 UVkceqakNpfUcrAtehZrco+UAGSYidGVU9XsCLxubs4K7yh2qCMAyZqz1CorokrHTN
-	 RTiYtt6sHnQzzxG3otc5EZYW/4iBLO+v0z/qAdvi+nfpAoxDV4vr9Vjn+70ouaaZnL
-	 umOoHpVRocQ19Dz37dmcQ+i3gguDf0c8EiI6Ks8v5UYRDS+a2V+8aMZrZs++3J9/Rm
-	 dKhoVVhm5bebtlMO0ewoywXEFRL8d+6wYZYL8Hq5ClLJYfLIf2jXY/uLmTbUgoj0Om
-	 W2VKaUHy8HA/Q==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 37BA3C4332E; Sat,  9 Mar 2024 18:05:29 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Sat, 09 Mar 2024 18:05:29 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: kernelbugzilla@kirkschnable.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cf_kernel_version
-Message-ID: <bug-218578-217253-puquXTwpif@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
-References: <bug-218578-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=k20201202; t=1710007753;
+	bh=KsNJRK30YRexf6tTEpqvy2ij5HCVsecJKh44sAsCnXo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=YO53GVUvMbM6uwssX5dDPaLatj7JHM5AiX2wGLyHQzCXeGtt7TalXVJeU53EOJgPY
+	 h0B3g70yD+NcPUMKRNKtMJED4nEDaLqk8BEHkWweoGR7A6yGVEX1Qoji8GwxCLKC3g
+	 uPpPfL+hjWltJnZDMVT2sk7XulbtQB0R8GhHpRRuo+lmRrEC+EvCNGhKbODvP/VL2W
+	 IBRoTzRWMbZM4iihKjkBK5n8+eW2/r9CtX5AZEQo1O2IBQpPe+eIKN68jqu1WOlypR
+	 y7SVRO8NV0r2skvLGVlmKQZCNvjoECmARdS58Ey0oPMMeOAoC/6BpY5JutRv7pfmRx
+	 7VXOo0uYXv5/A==
+Date: Sat, 9 Mar 2024 18:09:00 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
+ ang.iglesiasg@gmail.com, mazziesaccount@gmail.com, ak@it-klinger.de,
+ petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/4] iio: pressure: BMP280 core driver headers sorting
+Message-ID: <20240309180900.3d61fd31@jic23-huawei>
+In-Reply-To: <20240303165300.468011-2-vassilisamir@gmail.com>
+References: <20240303165300.468011-1-vassilisamir@gmail.com>
+	<20240303165300.468011-2-vassilisamir@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
+On Sun,  3 Mar 2024 17:52:57 +0100
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-Kirk Schnable (kernelbugzilla@kirkschnable.com) changed:
+> Sort headers in alphabetical order.
+> 
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> ---
+>  drivers/iio/pressure/bmp280-core.c | 14 +++++++-------
+>  1 file changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index fe8734468ed3..29a8b7195076 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -27,20 +27,20 @@
+>  
+>  #include <linux/bitops.h>
+>  #include <linux/bitfield.h>
+> -#include <linux/device.h>
+> -#include <linux/module.h>
+> -#include <linux/nvmem-provider.h>
+> -#include <linux/regmap.h>
+> +#include <linux/completion.h>
+>  #include <linux/delay.h>
+> +#include <linux/device.h>
+> +#include <linux/gpio/consumer.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-     Kernel Version|                            |6.5.6
+I'm fairly sure nothing from sysfs.h is used in this file so good to drop it.
 
---=20
-You may reply to this email to add a comment.
+> -#include <linux/gpio/consumer.h>
+> -#include <linux/regulator/consumer.h>
+>  #include <linux/interrupt.h>
+>  #include <linux/irq.h> /* For irq_get_irq_data() */
+> -#include <linux/completion.h>
+> +#include <linux/module.h>
+> +#include <linux/nvmem-provider.h>
+>  #include <linux/pm_runtime.h>
+>  #include <linux/random.h>
+> +#include <linux/regmap.h>
+> +#include <linux/regulator/consumer.h>
+>  
+>  #include <asm/unaligned.h>
+>  
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
 

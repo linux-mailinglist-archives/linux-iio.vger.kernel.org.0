@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-3419-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3420-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B209F877345
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:34:02 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8450987734F
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:37:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50EA21F21530
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:34:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2F17B21146
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B4D38DED;
-	Sat,  9 Mar 2024 18:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDDF44595A;
+	Sat,  9 Mar 2024 18:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GMmGgB5Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ucyHH28V"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8197F16FF22;
-	Sat,  9 Mar 2024 18:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A20945037;
+	Sat,  9 Mar 2024 18:37:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710009236; cv=none; b=PZvx3mxnDnK4UIORREf/klwYireqihfwI6G6xevqF7CXXG6WLhPQ4K3zY9ke+2RGyQNbJGaoNIPicHI9BNhpdS83eVZQvwZw6b+0my66ravRrvvY1unKcS7LBSIhhx/ex5gLZSKKzGBSQOXf0Xs2I2+KG3fuZecMNbzTxiHgnCI=
+	t=1710009432; cv=none; b=BB6FWkFpVvLrmUnCILFvLQ0MVpPPBHW91BJ0tbCk5BxK8MR3S7NA/1yn6vqEGrhtFtAtgQAc9/r81zaLeMhmQ0p4ausdQpmkOsg5r4+n3stGa973zdr+m1Wm0/a11FHyGwBN1Yg/2nhJQZN1sob5jsiQAmXfu8jXQMospRuxlTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710009236; c=relaxed/simple;
-	bh=V4BVn+p29jgKIEBrnrJ3faIeVM+yxyyl+7AFMGtnH0Y=;
+	s=arc-20240116; t=1710009432; c=relaxed/simple;
+	bh=QW7Gm46e+mmwfVPg98I+PIYT9eH/t++qHQlKXDiQ9pw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XBoh8RotpC1CyxmxQN1NIvedGL58KgzJZ/yTtRR5OlCBMBHTPyX+U60Whr2HO1COmafx5QKGlUFBae7WDb4/Zg71fqk3msVonhCj9PpeMJmJwF5udf9HuLIKQQ+/fzByBgWfO/iX83xfG6V01ZUGK520pS1obghKZXd6TEfDmYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GMmGgB5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC3DC433C7;
-	Sat,  9 Mar 2024 18:33:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O5bl0djV1O6z/+6QIMjLIcNwFygQh7KNYLd/glojd2YGetFPlnjwH/6ijxPmNM59LpaBh/0eLP8YSQy/db5apsrhvekeItym4WP4vN3jv1h51hpj1hiinasD5HY8PyO7MftGciOCIXnxnCTR6ZOrCyBhRBh8QkRNugzuRpqO330=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ucyHH28V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4F6C433C7;
+	Sat,  9 Mar 2024 18:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710009236;
-	bh=V4BVn+p29jgKIEBrnrJ3faIeVM+yxyyl+7AFMGtnH0Y=;
+	s=k20201202; t=1710009432;
+	bh=QW7Gm46e+mmwfVPg98I+PIYT9eH/t++qHQlKXDiQ9pw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GMmGgB5ZGTU0byoloLB3ufSybDONQ/KEUnQHiWLD5fCXkYiMa6L+mSgxdKo5EtfBK
-	 cI9K9DFxV+tv9JFybeSCZwCyPFPqbcbY8UOS5JPHveV3N7gRJzG6WMMdY62vD25L+2
-	 R1j0iCmrCsnte5JNnawVZkqwhzMHJTgh/g8abZT7vUg074sosXG50YmWXbS16/5nTH
-	 mjLBYnFpBj5UNsEDzctHruT9XCzNR4CRLkelIwuRoTCXxvt/hK5exeys9TJ+iN4CyG
-	 h0FC344So3IiUKdBwQw2Hlnw3mTb77GKMhYWtAIIDTPAaV2Y+At/aI4PmVF3D50qoj
-	 M4xMOdWiaUFaQ==
-Date: Sat, 9 Mar 2024 18:33:42 +0000
+	b=ucyHH28VOYLm1i/YEe/fQPBAb5m8/NoSYPrgjtI8r7GfX4M0NFgpBnX6eKe1l6INn
+	 EhrRwpqDDkXm1E+siDN44uHAJrimeUlGzl8et6l97fkeUbnu2EqDuzqZj6jgdESyTY
+	 55jZ0jJQkgx7bnhWJCdoaDwjjR1s7yiB2Vd1yUpckHrLykHz0crwDdD2cf6mhnj/AU
+	 LZesoxIQos5PGygbsEb6Qoo5pPkd7rMNQ27Mq3ZA3obO4oa4GcPcUqmUUGrtKQUzIS
+	 28dVhnoHOEAl1FHfmi0qHZsjGum3eD9S1hLvBm8DJLyMo4oBaI2ndut6Q8jkg50BKy
+	 aCETBmz7QXwzg==
+Date: Sat, 9 Mar 2024 18:37:00 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Michal Simek <michal.simek@amd.com>,
- Lars-Peter Clausen <lars@metafoo.de>, Lorenzo Bianconi
- <lorenzo@kernel.org>, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 0/4] Drop casting to void in dev_set_drvdata
-Message-ID: <20240309183342.578161e7@jic23-huawei>
-In-Reply-To: <20240303-void_in_dev_set_drvdata-v1-0-ae39027d740b@gmail.com>
-References: <20240303-void_in_dev_set_drvdata-v1-0-ae39027d740b@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter Clausen
+ <lars@metafoo.de>
+Subject: Re: [PATCH v1 1/2] iio: core: Leave private pointer NULL when no
+ private data supplied
+Message-ID: <20240309183700.60133d78@jic23-huawei>
+In-Reply-To: <20240304140650.977784-2-andriy.shevchenko@linux.intel.com>
+References: <20240304140650.977784-1-andriy.shevchenko@linux.intel.com>
+	<20240304140650.977784-2-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,45 +63,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 03 Mar 2024 23:34:38 +0100
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+On Mon,  4 Mar 2024 16:04:32 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> The C standard specifies that there is no need to cast from a pointer to
-> void [1].
+> In iio_device_alloc() when size of the private data is 0,
+> the private pointer is calculated to point behind the valid data.
+> Leave it NULL when no private data supplied.
 > 
-> The vast majority of the users of dev_set_drvdata do not cast their
-> pointers to void, and the few that do so should be fixed before it
-> spreads by following bad examples (which I was about to do here [2]).
-> 
-> The very specific cases where the cast avoids warnings (e.g. droping
-> const) have been kept as they are.
-> 
-> [1] C Standard Committee: https://c0x.shape-of-code.com/6.3.2.3.html
-> [2] https://lore.kernel.org/linux-iio/20240226-hdc3020-pm-v2-0-cec6766086e8@gmail.com/T/#t
-> 
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> ---
-> Javier Carrasco (4):
->       char: xilinx_hwicap: drop casting to void in dev_set_drvdata
->       io: light: st_uvis25: drop casting to void in dev_set_drvdata
->       iio: humidity: hts211: drop casting to void in dev_set_drvdata
->       iio: imu: st_lsm6dsx: drop casting to void in dev_set_drvdata
-> 
->  drivers/char/xilinx_hwicap/xilinx_hwicap.c   | 2 +-
->  drivers/iio/humidity/hts221_core.c           | 2 +-
->  drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c | 2 +-
->  drivers/iio/light/st_uvis25_core.c           | 2 +-
->  4 files changed, 4 insertions(+), 4 deletions(-)
-> ---
-> base-commit: 90d35da658da8cff0d4ecbb5113f5fac9d00eb72
-> change-id: 20240303-void_in_dev_set_drvdata-2d8cae908e49
-> 
-> Best regards,
+> Fixes: 6d4ebd565d15 ("iio: core: wrap IIO device into an iio_dev_opaque object")
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Thanks for tidying these up.
+Fix is a strong word given any driver trying to access the pointer in this case
+will be broken anyway.  I don't mind it being backported as it'll make bugs
+easier to identify but I'm not rushing it in.
 
-Applied to the togreg-normal branch of iio.git.
-This will get rebase on rc1 once available and become togreg.
+Otherwise seems like a sensible bit of tidying up.
 
 Jonathan
+
+> ---
+>  drivers/iio/industrialio-core.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
+> index 4302093b92c7..8684ba246969 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1654,8 +1654,10 @@ struct iio_dev *iio_device_alloc(struct device *parent, int sizeof_priv)
+>  		return NULL;
+>  
+>  	indio_dev = &iio_dev_opaque->indio_dev;
+> -	indio_dev->priv = (char *)iio_dev_opaque +
+> -		ALIGN(sizeof(struct iio_dev_opaque), IIO_DMA_MINALIGN);
+> +
+> +	if (sizeof_priv)
+> +		indio_dev->priv = (char *)iio_dev_opaque +
+> +			ALIGN(sizeof(*iio_dev_opaque), IIO_DMA_MINALIGN);
+>  
+>  	indio_dev->dev.parent = parent;
+>  	indio_dev->dev.type = &iio_device_type;
+
 

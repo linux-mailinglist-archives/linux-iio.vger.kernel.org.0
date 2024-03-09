@@ -1,56 +1,59 @@
-Return-Path: <linux-iio+bounces-3421-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3422-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25850877351
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:38:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AC2BF877357
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:41:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA7C81F21E89
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:38:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C7761F21FA9
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:41:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDD145957;
-	Sat,  9 Mar 2024 18:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F317147F4A;
+	Sat,  9 Mar 2024 18:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="InsMuuly"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sc6sGbjq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE2ABA4D;
-	Sat,  9 Mar 2024 18:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4A645BE2;
+	Sat,  9 Mar 2024 18:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710009531; cv=none; b=u6kcn3kjai58GuSIezfyXh57jOtphn7ry0v7nEvBGpFG7rBo+ncRm/is6jPw31QSXTVVm7pyST3jjDl2oOH/+s5L5tFaTg3SstBnZO/SGW7OE164EXc+gyo5oAHMVTPO76AUP80SQ+tXNnE2GtLDx2JFfSm53cUxcWeNYaJkhC0=
+	t=1710009643; cv=none; b=gBtgZEo7tKcCMnDFh1g3ezLHz7v8TzZvgAOCtcg5OhPW5fDaudyUkspYAQkezaUQkSdHhDvV8I+NHFS6UjN7U8YVozfUlS8nb2igBBZefm4ASbfM9XGkLlo+ErVYEuin2GO5gL8ihxv7aAkqqWxB1tpODAxJBCfowMNAa85EyVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710009531; c=relaxed/simple;
-	bh=4ntHYRxfbVXWtvp7sm4y9pGUhPND6R1s74zi0Qyr1gM=;
+	s=arc-20240116; t=1710009643; c=relaxed/simple;
+	bh=CKj/UKmETF+xIHWdB4Jyz6DrukhG0odsfMn9YApPjAM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=opc8InRX+XgolWIMiu8BLYfTJ88h9Lqy2g5NiYzsqqswjMwBkVxPpyf9JJJlJjQ+/3Iota4jVgCSSIVwooFvxiXq/gdfZEZ9OzXCDqYjDZ1UeFwaav0GEYUWP5zX7uHmWWTQa9+Jhy+cIVQwaA4QJy5ddPgVybK17ivYwJkOwRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=InsMuuly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F8FC433F1;
-	Sat,  9 Mar 2024 18:38:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hvZW0zwFS7fenRRsc/48KWHtI+NLury47mI06/l7hA2o5qoo/yfWIRt+h7jI/a2PfyWQdLxeEHCJOPxOGaBy0uHLtXI4EaZ9LdbKnK2YU8RDTx0m7yZqBDysEXtSFC8lUs14d0ENzWC+qfQx0GCUOu6pqbq236F2Eog0Q4XhzwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sc6sGbjq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6E3AC433C7;
+	Sat,  9 Mar 2024 18:40:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710009530;
-	bh=4ntHYRxfbVXWtvp7sm4y9pGUhPND6R1s74zi0Qyr1gM=;
+	s=k20201202; t=1710009643;
+	bh=CKj/UKmETF+xIHWdB4Jyz6DrukhG0odsfMn9YApPjAM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=InsMuulyiAekko8mFliFdpIZVPM6feY9vzIP/VFHAnnv5m/kiLIYAYAPYw+57NdpA
-	 72ujc8irB2iYdNn05Wd++MAg/j8OCjZp0qYWa/6vdkks5FgypkC0KmfjWAOIIpKmtY
-	 3x4MotK5uQtkJQeMFABJi42ucZ3gYJNaMezt7cQjG2xJHB6gHzdibAd2u2QpRpM/pf
-	 1gpljMskF9KHAKLr1jSgdKDLIz2fNDB/jjuQxbGxLi08cVDCMEm/XDVqgR1r7cnyYx
-	 LKpCKhJpfy8+gKWdODHfzfSBwGelbP3152NJFpB/H2D2hBsFvDGryVzIngMBzJFsEj
-	 3KVOdPNa5CuVw==
-Date: Sat, 9 Mar 2024 18:38:39 +0000
+	b=sc6sGbjqoEZjIR9h4rOCjSdjOG4whBdVNue/qKG4jIxib4oZvSdkFJ8xexr1Ed0nw
+	 c6uy/MTUGqotUH4cVxbPCojidokMaw6z6UPVFwWIdbc/RLfrbCupvZskvThqQcsnvk
+	 c9jcuqDiReqI5UaaYJG02QoV2ANCBjAhDDYk51oq76BewxMa4XR8tNfPPtDTSN4BHn
+	 zMGQa/fmHVp5unfqYmaTOXQzXjpp+PcATfRbeDEtgzNliP2HWAnYrYP9BIFXI2Aisy
+	 EOLdIUZ0RWo8MnPk2aPmN8iww4Uwa+lC+iJbhg5CA+BL/Aq0LG5IfGmQoqvBsdJGMd
+	 VJL86qNETRNyA==
+Date: Sat, 9 Mar 2024 18:40:31 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>
-Subject: Re: [PATCH v1 0/2] iio: core: Fix and cleanup to iio_device_alloc()
-Message-ID: <20240309183839.4953914a@jic23-huawei>
-In-Reply-To: <20240304140650.977784-1-andriy.shevchenko@linux.intel.com>
-References: <20240304140650.977784-1-andriy.shevchenko@linux.intel.com>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>
+Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires
+ <benjamin.tissoires@redhat.com>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, linux-input@vger.kernel.org,
+ linux-iio@vger.kernel.org, kernel@pengutronix.de
+Subject: Re: [PATCH 2/3] HID: hid-sensor-custom: Convert to platform remove
+ callback returning void
+Message-ID: <20240309184031.0b43143c@jic23-huawei>
+In-Reply-To: <f4c8334ea1548d911862ede881ab0d90a408c156.1709747164.git.u.kleine-koenig@pengutronix.de>
+References: <cover.1709747164.git.u.kleine-koenig@pengutronix.de>
+	<f4c8334ea1548d911862ede881ab0d90a408c156.1709747164.git.u.kleine-koenig@pengutronix.de>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,31 +61,25 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon,  4 Mar 2024 16:04:31 +0200
-Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
+On Wed,  6 Mar 2024 18:50:49 +0100
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
 
-> This is an exctract of the two patches from 
-> https://lore.kernel.org/r/20240228204919.3680786-1-andriy.shevchenko@linux.intel.com
-> 
-> In v1 (extract):
-> - removed unneeded 'else' branch (David)
-> - fixed typo in allocation cleanup (David)
-> 
-> Andy Shevchenko (2):
->   iio: core: Leave private pointer NULL when no private data supplied
->   iio: core: Calculate alloc_size only once in iio_device_alloc()
-> 
->  drivers/iio/industrialio-core.c | 15 ++++++++-------
->  1 file changed, 8 insertions(+), 7 deletions(-)
-> 
-
-Applied to the togreg-normal branch of iio.git which I'll rebase on rc1
-once available and push out as togreg.
-
-Thanks,
-
-Jonathan
+> The .remove() callback for a platform driver returns an int which makes
+> many driver authors wrongly assume it's possible to do error handling by
+> returning an error code. However the value returned is ignored (apart
+> from emitting a warning) and this typically results in resource leaks.
+>=20
+> To improve here there is a quest to make the remove callback return
+> void. In the first step of this quest all drivers are converted to
+> .remove_new(), which already returns void. Eventually after all drivers
+> are converted, .remove_new() will be renamed to .remove().
+>=20
+> Trivially convert this driver from always returning zero in the remove
+> callback to the void returning variant.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 

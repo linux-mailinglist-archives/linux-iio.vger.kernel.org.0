@@ -1,58 +1,61 @@
-Return-Path: <linux-iio+bounces-3407-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3408-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D76CE87727E
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:42:11 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F58877284
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 18:51:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D80A1F21F88
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 17:42:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E08E282136
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 17:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1089C225DA;
-	Sat,  9 Mar 2024 17:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0438E1F951;
+	Sat,  9 Mar 2024 17:51:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BLxsBRHG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qrMGJaHi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C501B2C85D
-	for <linux-iio@vger.kernel.org>; Sat,  9 Mar 2024 17:41:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C6F2375B;
+	Sat,  9 Mar 2024 17:51:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710006117; cv=none; b=oB2Qwh2uEvZpSNFzSG5epYLO5am59zLxHQahBj5muykdlvCCMJZg1zCzPR3yjkSFZdjeEq+lhNjBuqzCqW3UmaBJs5RsDjCg1FQ3qufjykVNcoKPkxsqACStwgojm6ifrjHfKsFJW0m2cGZrLbUXl+3EbLfSHTwycfD7QcnY+ko=
+	t=1710006669; cv=none; b=XRYT2rfavA1ddONIbwerntCF1ycKpocW2PpomdDcigXwLt2qS4UK59JMlwXmxZ0op1Lui6sJ3nTWc7dx3mK+nAIO2tc3E0LrVCINlZNhW0wnwWMoBYsMUqA9WS4CgNwGfmmsPBxyHVltY475HDX8oGBkJhGkuXzydUY5SfKcaSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710006117; c=relaxed/simple;
-	bh=enoU/oU45b+qMJWKCTH0lkoXhAIsPrUcvKPHLiShlPc=;
+	s=arc-20240116; t=1710006669; c=relaxed/simple;
+	bh=48FuxJYRobyq9zL7gLnlB6u3+I5puPcnQ7hwrjEettQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O35vkFETsIBW/wUHHEUK2E2xylvRb7Do6Gbd+NdbHjf6yBYAHgB/I1e4DLJm1SOry9vJz6gBUgrMH7SjIQyiepafDoxeQ1oAg9kNPr8CpQg3rJYNeyVhUn2eBf1qtf++6L5aerCqk1S2Nu03Ce18Y/gyLzK3I0SnoyNdTsl/P48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BLxsBRHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4336FC433C7;
-	Sat,  9 Mar 2024 17:41:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N9qD0ese7uCQQDjTkOqHNSz4fYftjogJkTDvgXl8MnZ88AIWZsIWms19h5gZVlCXI4lhD9imFO7eqv8ECJFpa8USeySkkqaOm8zJLkxqz7HWxYj0lAIfMfbDR8BJIYHW5cYsixKqiFWSWFcHpgb+1R2AJK1ha4DgPOMhqTGPR2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qrMGJaHi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B252C433C7;
+	Sat,  9 Mar 2024 17:51:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710006117;
-	bh=enoU/oU45b+qMJWKCTH0lkoXhAIsPrUcvKPHLiShlPc=;
+	s=k20201202; t=1710006669;
+	bh=48FuxJYRobyq9zL7gLnlB6u3+I5puPcnQ7hwrjEettQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BLxsBRHGddPQvImZ3+vGqa6EN5b3Zn9zCqxd5PXyz31FPXNs+S2WYx2HET9xQOgEK
-	 FVhHWIWI6itXaeGDiqrwjnmQfdc4qc4rQSj6T1QcInKg/opo7m0K4adE1jrxCID5hW
-	 7n44PWhr0wxXuy3auFWkAoLcC/GH8ooFmiOrA8XEinKF+fOFnS572vhT5LRIz5NCVw
-	 P9c2t+uDK43XmEfZcAf0w2L8p1X7GiAFGWz66YhdC5q9WgJPfeGXXnh/FsycRDceq4
-	 6vR8n+QUGQHsqV4brAwinRwDV1A5aMvZMKOkS8V6wtdip73UGQ/mwaofRfyKTQNZEb
-	 zCSEUPedZeiRQ==
-Date: Sat, 9 Mar 2024 17:41:45 +0000
+	b=qrMGJaHir/TdQZnTw3lW6X9p4veg8SIrGCUoWFR6l2GzgARyzY7EOgLuvcZQs5D4r
+	 rD2rljRiFkrmWi9qA51iS+CabXLW/aUr3DkjzDGZy4NTY6we5WA6A7XtmDnSGZVrsn
+	 8c7CMkthDDPlHitSTh6wXcd8/Sf8G58Fy/Fa36BPtrq/3wtOBN5Ax3dDoEYpY24va5
+	 g0TLf3G9ZVox5rXHvbCr3Shak8YKScDbUBRMqTZflZKzfrDr8Fn8WGM05yv1JoBHAg
+	 bUdYCpYT+T80fCXkIKgs4JKVQMvHry8fQv2ANdWyqBO0ey5RiYvG+52jI/f1mZDCIL
+	 7lHV5UhRbDh1A==
+Date: Sat, 9 Mar 2024 17:50:56 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org, Lars-Peter
- Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v3 4/4] iio: inkern: move to the cleanup.h magic
-Message-ID: <20240309174145.0834de04@jic23-huawei>
-In-Reply-To: <740c98678f943c761623800544a8ba998aa4aa93.camel@gmail.com>
-References: <20240229-iio-use-cleanup-magic-v3-0-c3d34889ae3c@analog.com>
-	<20240229-iio-use-cleanup-magic-v3-4-c3d34889ae3c@analog.com>
-	<20240303142431.506c05a2@jic23-huawei>
-	<740c98678f943c761623800544a8ba998aa4aa93.camel@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ linux-iio@vger.kernel.org, Shreeya Patel <shreeya.patel@collabora.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Paul
+ Gazzillo <paul@pgazz.com>, Rob Herring <robh+dt@kernel.org>, Dmitry
+ Osipenko <dmitry.osipenko@collabora.com>, linux-kernel@vger.kernel.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH v7 0/5] Support ROHM BU27034 ALS sensor
+Message-ID: <20240309175056.3862630f@jic23-huawei>
+In-Reply-To: <ff8d6d14-6b48-4347-8525-e05eeb9721ff@gmail.com>
+References: <cover.1680263956.git.mazziesaccount@gmail.com>
+	<ff8d6d14-6b48-4347-8525-e05eeb9721ff@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,112 +63,110 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 04 Mar 2024 09:04:49 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Mon, 4 Mar 2024 14:38:38 +0200
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On Sun, 2024-03-03 at 14:24 +0000, Jonathan Cameron wrote:
-> > On Thu, 29 Feb 2024 16:10:28 +0100
-> > Nuno Sa <nuno.sa@analog.com> wrote:
-> >  =20
-> > > Use the new cleanup magic for handling mutexes in IIO. This allows us=
- to
-> > > greatly simplify some code paths.
-> > >=20
-> > > While at it, also use __free(kfree) where allocations are done and dr=
-op
-> > > obvious comment in iio_channel_read_min().
-> > >=20
-> > > Signed-off-by: Nuno Sa <nuno.sa@analog.com> =20
-> >=20
-> > Hi Nuno
-> >=20
-> > Series looks very nice. One trivial thing inline - I can tidy that up w=
-hilst
-> > applying if nothing else comes up.
-> >=20
-> > Given this obviously touches a lot of core code, so even though simple =
-it's
-> > high risk for queuing up late. I also have a complex mess already queue=
-d up
-> > for the coming merge window. Hence I'm going to hold off on applying th=
-is
-> > series until the start of the next cycle.
-> >=20
-> > Nothing outside IIO is going to depend on it, so it's rather simpler de=
-cision
-> > to hold it than for the ones that add new general purpose infrastructur=
-e.
-> >=20
-> >  =20
->=20
-> Seems reasonable... It may even give us some time to see how the cond_gua=
-rd()
-> and scoped_cond_guard() will end up.
+> Hi deee Ho peeps!
+> 
+> On 3/31/23 15:40, Matti Vaittinen wrote:
+> > Support ROHM BU27034 ALS sensor
+> > 
+> > This series adds support for ROHM BU27034 Ambient Light Sensor.  
+> 
+> I have one word for all of you who worked to get the ROHM BU27034NUC 
+> driver working in upstream.
+> 
+> Meh.
+> 
+> I just found out that the BU27034 sensor which was developed when I 
+> wrote this driver had some "manufacturing issues"... The full model 
+> number was BU27034NUC. The has been cancelled, and, as far as I know, no 
+> significant number of those were manufactured.
 
-Absolutely - thankfully converting to the suggestions Linus made will be st=
-raight
-forwards, so hopefully the worst that happens is a complex merge, or some
-fixing up to do afterwards.
+ouch. We all have some cancelled products in our history!
+When that happens I usually go eat cake and moan at anyone standing
+near by. At least this seems like there will be some direct use of
+the work done (sometimes you just have to list the things learnt along
+the way).
 
->=20
-> >=20
-> >  =20
-> > > =C2=A0EXPORT_SYMBOL_GPL(iio_read_channel_attribute);
-> > > =C2=A0
-> > > @@ -757,29 +711,24 @@ int iio_read_channel_processed_scale(struct
-> > > iio_channel *chan, int *val,
-> > > =C2=A0	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(ch=
-an- =20
-> > > >indio_dev); =20
-> > > =C2=A0	int ret;
-> > > =C2=A0
-> > > -	mutex_lock(&iio_dev_opaque->info_exist_lock);
-> > > -	if (!chan->indio_dev->info) {
-> > > -		ret =3D -ENODEV;
-> > > -		goto err_unlock;
-> > > -	}
-> > > +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
-> > > +	if (!chan->indio_dev->info)
-> > > +		return -ENODEV;
-> > > =C2=A0
-> > > =C2=A0	if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_PROCESSE=
-D)) {
-> > > =C2=A0		ret =3D iio_channel_read(chan, val, NULL,
-> > > =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IIO_CHAN_INFO_PROCESSE=
-D);
-> > > =C2=A0		if (ret < 0)
-> > > -			goto err_unlock;
-> > > +			return ret;
-> > > =C2=A0		*val *=3D scale; =20
-> >=20
-> > 		return 0;
-> >  =20
-> > > =C2=A0	} else { =20
-> > could drop the else.
-> >  =20
-> > > =C2=A0		ret =3D iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_RAW);
-> > > =C2=A0		if (ret < 0)
-> > > -			goto err_unlock;
-> > > +			return ret;
-> > > =C2=A0		ret =3D iio_convert_raw_to_processed_unlocked(chan, *val,
-> > > val,
-> > > =C2=A0							=C2=A0=C2=A0=C2=A0 scale); =20
-> > 		return iio_convert_raw_to_proc...
-> >  =20
->=20
-> Hmm, unless I completely misunderstood your comments on v2, this was exac=
-tly
-> what I had but you recommended to leave the else branch :).
->=20
-That was a younger me :)  Either way is fine.
+> 
+> The issues of BU27034NUC were solved, and new model BU27034ANUC was 
+> developed and is available in the ROHM catalog.
+> 
+> I did also learn that this new model BU27034ANUC is _not_ functionally 
+> equivalent to the BU27034NUC. I am currently clarifying all the 
+> differences, and I have requested the HQ to send me a sample for driver 
+> development and verification work.
+> 
+> This far I've come to know at least following differences:
+> 
+> - The DATA2 (IR) channel is removed. So is the gain setting for it. This
+>    should very much simplify the gain logic.
+> - Some of the gains were removed.
+> - The 5ms integration time was removed. (The support of 5ms was severely
+>    limited on original BU27034NUC too so driver did not support that
+>    anyways).
+> - The light sensitivity curves had changed so the lux calculation will
+>    be changed.
+> 
+> One thing that has _not_ changed though is the part-id :rolleyes:
+
+*sigh* Not even a version number?  Even unreleased / prototype parts should have
+different IDs if anything in the interface changed.
+
+> 
+> My preferred approach would be to convert the in-tree bu27034 driver to 
+> support this new variant. I think it makes sense because:
+> - (I expect) the amount of code to review will be much smaller this way
+>    than it would be if current driver was completely removed, and new one
+>    submitted.
+> - This change will not break existing users as there should not be such
+>    (judging the statement that the original BU27034NUC was cancelled
+>    before it was sold "en masse").
+> 
+> It sure is possible to drop the existing driver and submit a new one 
+> too, but I think it will be quite a bit more work with no strong benefits.
+
+Agreed, modify the existing driver. Just needs a clear statement in
+patch descriptions that the original part is not expected to be in the wild.
+
+> 
+> I expect the rest of the information to be shared to me during the next 
+> couple of days, and I hope I can start testing the driver immediately 
+> when I get the HW.
+> 
+> My question is, do you prefer the changes to be sent as one "support 
+> BU27034ANUC patch, of would you rather see changes splitted to pieces 
+> like: "adapt lux calculation to support BU27034ANUC", "remove obsolete 
+> DATA2 channel", "remove unsupported gains"...? Furthermore, the DT 
+> compatible was just rohm,bu27034 and did not include the ending "nuc". 
+
+Separate patches preferred for each feature / type of change. Mostly
+they'll hopefully be trivial to review.
+
+> Should that compatible be removed and a new one with "anuc"-suffix be 
+> added to denote the new sensor?
+
+Yes. The binding patch in particular will need a really clear statement
+that we believe there are none in products in the wild.
+
+> 
+> I am truly sorry for all the unnecessary reviewing and maintenance work 
+> you guys did. I can assure you I didn't go through it for fun either - 
+> even if the coding was fun :) I guess even the "upstream early" process 
+> has it's weaknesses...
+
+True enough. It's always 'interesting' to not know if / when a product
+you've upstreamed code for will launch.
 
 Jonathan
 
-
-> - Nuno S=C3=A1
->=20
+> 
+> Yours,
+> 	-- Matti
+> 
 
 

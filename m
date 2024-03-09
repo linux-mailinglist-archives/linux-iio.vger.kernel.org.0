@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-3397-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3398-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4649887708F
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 11:52:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E95877090
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 11:52:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6B6BB21071
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 10:52:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C61561C20D0B
+	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 10:52:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABBA383B0;
-	Sat,  9 Mar 2024 10:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D1E374F9;
+	Sat,  9 Mar 2024 10:51:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="Cg8DcmjA"
+	dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b="TSwGxwqy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B0F38382
-	for <linux-iio@vger.kernel.org>; Sat,  9 Mar 2024 10:51:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD2DF2D044
+	for <linux-iio@vger.kernel.org>; Sat,  9 Mar 2024 10:51:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1709981509; cv=none; b=QhcqhrIjHhGlnZvslJtYhFe3QYAdXoeNfA5lxfvby4jC3kIu8Cn5TYzlDYsYFj80bz2ARPxKCftkFW2Tcm/tf5UIbpLs5eTB95vx4ksj96+YT0v1vMoGytJkkqYU+CmNNOo3rGH8kOzQMbCJBjKhReBOzAu8/nbdGf2w8NmQLUs=
+	t=1709981517; cv=none; b=BWFnb/XoLyNbRnWniSnIJLSjNh5M1H4XdnbuYu/5OBVsK16uiOejSDaz4W/tSl7ltR2ywC+PNxSGcbXhuyj51hi4sVLI4i5iOVeLWucWdOmUNbpcf8nD+GoUh57Z/GmfTjX8AQfXXPjik8iH+k/pBrh3I7Vu6p3j+kgjijopn3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1709981509; c=relaxed/simple;
-	bh=k7EL7I8iMzIIPRV/KSU7eMMp45PZgVy1NNbbVouy5oA=;
+	s=arc-20240116; t=1709981517; c=relaxed/simple;
+	bh=MJurD3lQkgJh/SJjO1IdmDA0nZhea/ItLzC5yip7HFg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bWFbAD+ObFt39Qd/TMs83P+0hy4sRb3jOYxJC3z+HJiTsCSvwrIlYfjT9x/07xmqaZzsV+iwSxQ/L1CuajRPEjs4TrWnisjzXdpSTb9v/DQ9a1HSmzK4NzDMWiJOJcR1mGQWIXxVr5JS7MJeuxnhwZtEzQmPXP7oGaSpzORDJ94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=Cg8DcmjA; arc=none smtp.client-ip=209.85.214.182
+	 MIME-Version; b=VWheytRzM7fIuE3Ixs2nt2gj2vG0/nnbFLFPquAOlB3OAOYdJJ/9ySRTefjEGQYGJef5VxC+LJkT5dPA5uuAZ3ayCLqLtqZEqLW9VFG6uqjCQ22wuB3S7cq0yPXQ2Cj+WcMp1G4MlsHkP7LPbAAovfydGm+e6xICh4k3xHwu7Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com; spf=pass smtp.mailfrom=tweaklogic.com; dkim=pass (2048-bit key) header.d=tweaklogic.com header.i=@tweaklogic.com header.b=TSwGxwqy; arc=none smtp.client-ip=209.85.214.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tweaklogic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tweaklogic.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1dd6412da28so13791815ad.3
-        for <linux-iio@vger.kernel.org>; Sat, 09 Mar 2024 02:51:48 -0800 (PST)
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1dd6198c4e2so17802805ad.2
+        for <linux-iio@vger.kernel.org>; Sat, 09 Mar 2024 02:51:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tweaklogic.com; s=google; t=1709981507; x=1710586307; darn=vger.kernel.org;
+        d=tweaklogic.com; s=google; t=1709981515; x=1710586315; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ChW2BCmij4u5H9wErfx88Juqp6RMsFgTqdJYy2yRPmw=;
-        b=Cg8DcmjAuUvhCx9hmCOm3KmIU2awGSgv3MFQzJoOjzD7O/duIWYrZh+uB5bbig5nro
-         8pb2ZHcvnVy4A3f9X51q/Wy94fr8p3jPFkBd0prjSrkDmmgaJBMuQlDu3th1IFsVqc9c
-         qK9u8t3AaQwJkal8lddNBKJPF9VhsLG44/rShxTtPy2D0kaU2cpArHL7QUl30fHauhEo
-         b72i9Gc2fDvx56ymMbDddjKlc05NGMRTqqf2gWGXP4DqdZx3NWhm+BbsGN+0tPSawyvt
-         V3RzFyM4XSWPa9jyYyia8Ah5H4Q6HCc2UHtgx72Aku9nmrP0puqXhe7JTMJYzWr6k4+i
-         n62A==
+        bh=SR1+ke7p4Q047/hy23eOGK+2iosx9giTHTVTkeIgf/o=;
+        b=TSwGxwqyvI69fRdrhuj1eISIwoog5kn5ejCNLjq1qod5BXW4UBfrZNdXv6oSy6XE9n
+         IAa/ySkFnOQf3oPKL8bcJFBtOxw1zCWBJdpMFcZNbKMh1rHPJPRM3sVpkFH2YU/FBxVn
+         4QKx+M+izqZ+DlFxlEEhPuz+NVgopcU0Xmk+Bl/fULzXXYnKw2hiHzUgeKQuDtPWiWMy
+         Aqp/1MR5pev1bn9A8aiXGGUEfDp2IgTgPVZG6xQhtFUyBCc5edZUzQV74eR3u2hKDY+I
+         gfJFjR+gdGd/SwscYNOc0v3fMZj6h4ZohvLO+yZicBVB4hJQv2RVBRdJrqTKVZzUjdTI
+         eAjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1709981507; x=1710586307;
+        d=1e100.net; s=20230601; t=1709981515; x=1710586315;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ChW2BCmij4u5H9wErfx88Juqp6RMsFgTqdJYy2yRPmw=;
-        b=rXXUXQG4oVtAh8b8LNLMuscMjbLUrLNt05dIqZwrf5XQQ18v0kTtHzenUISoeHN2jA
-         PPZZu1xhRN5sfiPYzdBAPbK3exoarIKRjUncloxnKpGRb7XFBLc6Mkolv1OEtKRdat8O
-         9PtjdtAneujA4ysqpFCb0VoHBfVV52rugRaMXbyK5Qm6aIx4h1jvsl4CJhojXrgENp2k
-         PNAHTP5TDkPqI8jrRfEVTz+eTSVc1S/2ZRs/ZfaKq2gbD4VfAFnu8HaPOL258+5EEuIF
-         gQjGWIfLqNtU0SJx7zyG8PweKzFnXvq4TDFbQ0LVjNr/oK61PKk0jIAV4m4CWSM3fzL/
-         aoFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWbt79AHOwy3E5K53DdMkKaLju7izJJzPEXKaFhYDqmy1IfW+tmQJfdWZ7wF2bZqMfJIbR0UuABtWHU25DL+AUIJzW9I0iUqEW+
-X-Gm-Message-State: AOJu0YxOjHW8VZBrVnBe3Xs7FClI+otgLHycyYwQctTreFnBAgzswICd
-	atg9aj3N67ZDvywPX1vPPrzhTkkxLoo87YvSk2PHgVqRFHT3en6dq/Y5uam06PE=
-X-Google-Smtp-Source: AGHT+IEOvoe8ptXFdYNVsPoVvqHJq26q+wKLhyaa5Q0+ODO0iWi4qNvmYIQaB651Ed26ktBgzz2xtA==
-X-Received: by 2002:a17:903:11d1:b0:1dd:7920:428b with SMTP id q17-20020a17090311d100b001dd7920428bmr1640598plh.2.1709981507670;
-        Sat, 09 Mar 2024 02:51:47 -0800 (PST)
+        bh=SR1+ke7p4Q047/hy23eOGK+2iosx9giTHTVTkeIgf/o=;
+        b=eu3bbsnzBPKxK+qZh2x77VKW3lUrGsJdaC0wUd6AaPOWw1hAal+oadUKL3IkruwKhr
+         hy1YmnuH4z7hcHS0ybG26/oPlDJaWtimLSEV/IMv6fgA2o8xOWIFs/rhs4LBasAbD4BX
+         JoNyDOQ+vcYdnAgh5gNAQBS5whs0nxMqs3e1h/deb+jYK5hfH5dt2ZiR6Qte8aHkFlGE
+         EpaMXw8Egt+DvB1tcNArwA7oJoOv2nNQBHBjbj1ROUd6JZ9EGh1lRbHfngB4Ps37cTOR
+         tcEUjyx21uOO+oMrYmsPodEuNZEjIj+HCXZQf96lo6h9LsfExkr4CEtxhpL2BMxImLWZ
+         FWjw==
+X-Forwarded-Encrypted: i=1; AJvYcCVVbFW9QfCKl1yFUVSWg3U3aR0LDo/yCcF0nYQhPPJrtkXQHY+LACI56xBXZOd2nBqBgvpnXWI+TDrSdDaKk7bpx4yFdPjwVrBI
+X-Gm-Message-State: AOJu0YyGxmclpNJl0AUnF3Oqp4u4Evga6bA4taAfgVp/PtNFsFJ+qWQL
+	TRICPTbyDocsdgTanKSCW7MVEFF9JANlb5sM362QfuSW0COGA1u7s7hPQyQODsw=
+X-Google-Smtp-Source: AGHT+IGgUOcJTk+1DFpfJo4xiOdVcORTwRLx+V25p/IGRHIEuRlbFRy6K5fuiu/UTsxyDzfLtS7n/w==
+X-Received: by 2002:a17:902:e542:b0:1dd:6420:847d with SMTP id n2-20020a170902e54200b001dd6420847dmr2085384plf.2.1709981515355;
+        Sat, 09 Mar 2024 02:51:55 -0800 (PST)
 Received: from localhost.localdomain ([180.150.112.31])
-        by smtp.gmail.com with ESMTPSA id l8-20020a170903120800b001dcf7d03824sm1070608plh.55.2024.03.09.02.51.41
+        by smtp.gmail.com with ESMTPSA id l8-20020a170903120800b001dcf7d03824sm1070608plh.55.2024.03.09.02.51.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 09 Mar 2024 02:51:47 -0800 (PST)
+        Sat, 09 Mar 2024 02:51:55 -0800 (PST)
 From: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
@@ -84,10 +84,10 @@ Cc: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>,
 	linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH v9 1/5] dt-bindings: iio: light: Merge APDS9300 and APDS9960 schemas
-Date: Sat,  9 Mar 2024 21:20:27 +1030
-Message-Id: <20240309105031.10313-2-subhajit.ghosh@tweaklogic.com>
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH v9 2/5] dt-bindings: iio: light: adps9300: Add missing vdd-supply
+Date: Sat,  9 Mar 2024 21:20:28 +1030
+Message-Id: <20240309105031.10313-3-subhajit.ghosh@tweaklogic.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240309105031.10313-1-subhajit.ghosh@tweaklogic.com>
 References: <20240309105031.10313-1-subhajit.ghosh@tweaklogic.com>
@@ -99,11 +99,9 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Merge very similar schemas for APDS9300 and APDS9960.
+All devices covered by the binding have a vdd supply.
 
-Suggested-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/all/4e785d2e-d310-4592-a75a-13549938dcef@linaro.org/
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 ---
 v8 -> v9:
@@ -113,102 +111,41 @@ v7 -> v8:
  - No change
 
 v6 -> v7:
- - No change
+ - Changed the subject line of the commit
+ - Updated commit message
+ - Removed wrong patch dependency statement
+ - Added tag
+   https://lore.kernel.org/all/20240210170112.6528a3d4@jic23-huawei/
+   https://lore.kernel.org/all/20240206-gambling-tricycle-510794e20ca8@spud/
 
 v5 -> v6:
- - Write proper commit messages
-   Link: https://lore.kernel.org/all/1d0a80a6-dba5-4db8-a7a8-73d4ffe7a37e@linaro.org/
-
-v2 -> v5:
- - Removed 'required' for Interrupts and 'oneOf' for compatibility strings
-   as per below reviews:
-   Link: https://lore.kernel.org/lkml/20231028142944.7e210eb6@jic23-huawei/
-   Link: https://lore.kernel.org/lkml/22e9e5e9-d26a-46e9-8986-5062bbfd72ec@linaro.org/
+ - Separate commit for individual change as per below review:
+   Link: https://lore.kernel.org/all/20240121153655.5f734180@jic23-huawei/
 ---
- .../bindings/iio/light/avago,apds9300.yaml    | 11 +++--
- .../bindings/iio/light/avago,apds9960.yaml    | 44 -------------------
- 2 files changed, 7 insertions(+), 48 deletions(-)
- delete mode 100644 Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
+ .../devicetree/bindings/iio/light/avago,apds9300.yaml          | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
-index 206af44f2c43..c610780346e8 100644
+index c610780346e8..a328c8a1daef 100644
 --- a/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
 +++ b/Documentation/devicetree/bindings/iio/light/avago,apds9300.yaml
-@@ -4,17 +4,20 @@
- $id: http://devicetree.org/schemas/iio/light/avago,apds9300.yaml#
- $schema: http://devicetree.org/meta-schemas/core.yaml#
- 
--title: Avago APDS9300 ambient light sensor
-+title: Avago Gesture/RGB/ALS/Proximity sensors
- 
- maintainers:
--  - Jonathan Cameron <jic23@kernel.org>
-+  - Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
- 
- description: |
--  Datasheet at https://www.avagotech.com/docs/AV02-1077EN
-+  Datasheet: https://www.avagotech.com/docs/AV02-1077EN
-+  Datasheet: https://www.avagotech.com/docs/AV02-4191EN
- 
- properties:
-   compatible:
--    const: avago,apds9300
-+    enum:
-+      - avago,apds9300
-+      - avago,apds9960
- 
-   reg:
+@@ -25,6 +25,8 @@ properties:
+   interrupts:
      maxItems: 1
-diff --git a/Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml b/Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
-deleted file mode 100644
-index f06e0fda5629..000000000000
---- a/Documentation/devicetree/bindings/iio/light/avago,apds9960.yaml
-+++ /dev/null
-@@ -1,44 +0,0 @@
--# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
--%YAML 1.2
-----
--$id: http://devicetree.org/schemas/iio/light/avago,apds9960.yaml#
--$schema: http://devicetree.org/meta-schemas/core.yaml#
--
--title: Avago APDS9960 gesture/RGB/ALS/proximity sensor
--
--maintainers:
--  - Matt Ranostay <matt.ranostay@konsulko.com>
--
--description: |
--  Datasheet at https://www.avagotech.com/docs/AV02-4191EN
--
--properties:
--  compatible:
--    const: avago,apds9960
--
--  reg:
--    maxItems: 1
--
--  interrupts:
--    maxItems: 1
--
--additionalProperties: false
--
--required:
--  - compatible
--  - reg
--
--examples:
--  - |
--    i2c {
--        #address-cells = <1>;
--        #size-cells = <0>;
--
--        light-sensor@39 {
--            compatible = "avago,apds9960";
--            reg = <0x39>;
--            interrupt-parent = <&gpio1>;
--            interrupts = <16 1>;
--        };
--    };
--...
+ 
++  vdd-supply: true
++
+ additionalProperties: false
+ 
+ required:
+@@ -42,6 +44,7 @@ examples:
+             reg = <0x39>;
+             interrupt-parent = <&gpio2>;
+             interrupts = <29 8>;
++            vdd-supply = <&regulator_3v3>;
+         };
+     };
+ ...
 -- 
 2.34.1
 

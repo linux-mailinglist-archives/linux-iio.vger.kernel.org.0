@@ -1,146 +1,151 @@
-Return-Path: <linux-iio+bounces-3430-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3431-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89CA8877646
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 12:31:23 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEB8C877691
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 13:33:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D50702817BB
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 11:31:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2C371C209B4
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 12:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9A69200AE;
-	Sun, 10 Mar 2024 11:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC9E1BF53;
+	Sun, 10 Mar 2024 12:33:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kwrETTd7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uo3qD2Bv"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 374781EB3B;
-	Sun, 10 Mar 2024 11:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58E82C18E
+	for <linux-iio@vger.kernel.org>; Sun, 10 Mar 2024 12:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710070275; cv=none; b=JObx6hdqY+AH85Nnbp5e04jRoNyIBP5wMBITXZHWp+cO/UQdUY8YO/0T9YjQCt1uSY4vc1L3u1BLuAyC3QE9QvWBLVlOIYLDoqmFR+0OtcqGCRlj/g/5ujIvsINAdKE7cc3spwd5yiOfDsnKPlqAkkSLt99x7JnN38M5uCkrK5o=
+	t=1710074018; cv=none; b=DmzK/LJPiCvXXDZ67jos/QtrubML4aJb/NX7N9a8W/anmApG0VERaO0kzgxuzuq/G9YVv/clCKZF9oF+SYiYLssRHeUlVnc/hTzXfl3tR22sKKak6+uH8vb8MRhhbb5T12JeSUogFHn0y0YSpRfcBJE1URp83Aimpz8ODEp1w4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710070275; c=relaxed/simple;
-	bh=xmHn29ycT3efiyadYaKMHk1CM4Om2IaoHBzYN+wd50k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=udPAOc/RkEVMMqigNgKrG7j6t80aiV91MaFQ3mUiVRR5EvPPy0jUtqOOxBQ0JMPwCX+bH2sTNOTlixy2g/py9ffCv/OTGJp34NGbB7M5eT+hpqvde8w4XfQSCurLNC5oneotSbdHQHyWRAmvNEQI+y9rhZEQRe53n0Y97bn3Ca0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kwrETTd7; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710070273; x=1741606273;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xmHn29ycT3efiyadYaKMHk1CM4Om2IaoHBzYN+wd50k=;
-  b=kwrETTd7nR+B8s69VO9RyfW1Lc8IjCS2ItFJEAH5BfPQd310ULDNQjBC
-   PD0b/n1ICvta9APVqR7rk5QksFq7QdBFSXfH48SrphR6QZlBkHC+OvnWm
-   5AVvel/i+Fi7zLTCAl81KUvb/GZN4f3Nqg80UpDcdLzPBva9nuQop/zuO
-   sdipB+dvlEy52iy5s9pwJSBbdjlT83aPjwmzdIDXSkjZGCbWwok2TstKZ
-   UpO4AzwXGa7wZmrhyvXCLUpo2iZQTLX/iifgg0EFGBZz4ygcwQ2qPcz2Y
-   STFMuAEzVWz9Q2Mhx3b3416H2XksbTLUGWJJMnoDe/8La4ikzZ28RZayX
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11008"; a="15881881"
-X-IronPort-AV: E=Sophos;i="6.07,114,1708416000"; 
-   d="scan'208";a="15881881"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2024 04:31:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,114,1708416000"; 
-   d="scan'208";a="10906600"
-Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 10 Mar 2024 04:31:06 -0700
-Received: from kbuild by b21307750695 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rjHOS-0008Ct-0N;
-	Sun, 10 Mar 2024 11:31:04 +0000
-Date: Sun, 10 Mar 2024 19:30:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Paul Cercueil <paul@crapouillou.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lars-Peter Clausen <lars@metafoo.de>, Vinod Koul <vkoul@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Cc: oe-kbuild-all@lists.linux.dev, Nuno Sa <nuno.sa@analog.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	Paul Cercueil <paul@crapouillou.net>
-Subject: Re: [PATCH v8 3/6] iio: core: Add new DMABUF interface infrastructure
-Message-ID: <202403101928.WWSQwfdG-lkp@intel.com>
-References: <20240308170046.92899-4-paul@crapouillou.net>
+	s=arc-20240116; t=1710074018; c=relaxed/simple;
+	bh=UpMxARanqghzs5nAQSqETKHse1Nsw4Vw1w9ui96yTr0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uK6Jzp2ycoAHRx+sFXqwAcpAKjYuo2IOTbzZLn90Cf6ucJWabt2RO3DpQLl/o/Y9CFOKfDGagtFEAd3vCoBA/Uv83SiNTwtzUxVEbK0Xdh3aQhvF/xCI60kRLGdrqJzeiljaJ1DgwjH+EHkUiKXXmnDpHDcb/u5fKsWijYT9uYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uo3qD2Bv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA95DC433F1;
+	Sun, 10 Mar 2024 12:33:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710074017;
+	bh=UpMxARanqghzs5nAQSqETKHse1Nsw4Vw1w9ui96yTr0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uo3qD2BvG4QKEOulh7IAZJNJILtbCM0SQDBvI+cGGkD4qQhgxq/nmgFwOOmDt3voH
+	 2VGYnimo/7+zsJFZ+6QmEQzQ7/0go2q2CGpN4Voffie9H8m8BWktB5TJV0XWcvc4cC
+	 z/tr9DmhECetp10Z+geeMzZvW39D7D3D0KaOglPOI83JPhiWBkA9gSdOgKNHhf5UK6
+	 LKtUIPcq2CgeR/saR3yO6ABBDDmYT7AYgWgbq0oPWhUBjkTqLo3KzAmfUmwouuVd19
+	 NeFgtAqvtFdqMUB8cW6eWMqrflxXZ6yrL0xsa1cC+NGFQiy21SkyX08RhPm5yaMDMC
+	 vzUeMPpN15RPA==
+Date: Sun, 10 Mar 2024 12:33:23 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: bugzilla-daemon@kernel.org
+Cc: linux-iio@vger.kernel.org, Hans de Goede <hdegoede@redhat.com>
+Subject: Re: [Bug 218578] New: MXC6655 accelerometer not working with
+ MXC4005 driver
+Message-ID: <20240310123323.532c48e6@jic23-huawei>
+In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
+References: <bug-218578-217253@https.bugzilla.kernel.org/>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240308170046.92899-4-paul@crapouillou.net>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Paul,
+On Sat, 09 Mar 2024 17:55:32 +0000
+bugzilla-daemon@kernel.org wrote:
 
-kernel test robot noticed the following build errors:
+> https://bugzilla.kernel.org/show_bug.cgi?id=218578
+> 
+>             Bug ID: 218578
+>            Summary: MXC6655 accelerometer not working with MXC4005 driver
+>            Product: Drivers
+>            Version: 2.5
+>           Hardware: Intel
+>                 OS: Linux
+>             Status: NEW
+>           Severity: normal
+>           Priority: P3
+>          Component: IIO
+>           Assignee: drivers_iio@kernel-bugs.kernel.org
+>           Reporter: kernelbugzilla@kirkschnable.com
+>         Regression: No
+> 
+> Created attachment 305970
+>   --> https://bugzilla.kernel.org/attachment.cgi?id=305970&action=edit  
+> Output from udevadm info -n /dev/iio\:device0 && also some samples of
+> accelerometer raw values I see in /sys/bus/iio/devices/iio:device:0/.
+> 
+> Hello,
+> 
+> I recently bought two Chuwi tablets which contain MXC6655 accelerometers.  The
+> accelerometers work in Windows 11 and the tablet rotates as expected in
+> Windows, but upon installing Linux the tablet auto rotation was not working.
+> 
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on vkoul-dmaengine/next lwn/docs-next linus/master v6.8-rc7 next-20240308]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Hi, thanks for the report,
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Paul-Cercueil/dmaengine-Add-API-function-dmaengine_prep_peripheral_dma_vec/20240309-010421
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240308170046.92899-4-paul%40crapouillou.net
-patch subject: [PATCH v8 3/6] iio: core: Add new DMABUF interface infrastructure
-config: um-randconfig-002-20240310 (https://download.01.org/0day-ci/archive/20240310/202403101928.WWSQwfdG-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240310/202403101928.WWSQwfdG-lkp@intel.com/reproduce)
+First thought is that there may be some power control hidden in the ACPI tables.
+Could you dump
+/sys/firmware/acpi/tables/DSDT
+and run it through iasl -d (from acpica-tools)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403101928.WWSQwfdG-lkp@intel.com/
+Find the section related to his accelerometer and post all of that.
+Sometimes there is a _DSM (device specific method) used to power things up
+- this stuff is completely non standard unfortunately so we have to base
+any support on table dumps from the particular devices.
 
-All errors (new ones prefixed by >>):
+Thanks,
 
-   /usr/bin/ld: drivers/iio/industrialio-buffer.o: in function `iio_buffer_dmabuf_release':
->> industrialio-buffer.c:(.text+0xec6): undefined reference to `dma_buf_unmap_attachment'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0xf96): undefined reference to `dma_buf_detach'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0xfa5): undefined reference to `dma_buf_put'
-   /usr/bin/ld: drivers/iio/industrialio-buffer.o: in function `iio_buffer_signal_dmabuf_done':
->> industrialio-buffer.c:(.text+0x4a56): undefined reference to `dma_fence_signal'
-   /usr/bin/ld: drivers/iio/industrialio-buffer.o: in function `iio_buffer_cleanup':
->> industrialio-buffer.c:(.text+0x64f2): undefined reference to `dma_fence_release'
-   /usr/bin/ld: drivers/iio/industrialio-buffer.o: in function `iio_buffer_attach_dmabuf.isra.0':
->> industrialio-buffer.c:(.text+0x9dbf): undefined reference to `dma_fence_context_alloc'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0x9df7): undefined reference to `dma_buf_get'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0x9e38): undefined reference to `dma_buf_attach'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0x9efe): undefined reference to `dma_buf_map_attachment'
-   /usr/bin/ld: industrialio-buffer.c:(.text+0xa2c1): undefined reference to `dma_buf_detach'
-   /usr/bin/ld: industrialio-buffer.c:(.text+0xa2cd): undefined reference to `dma_buf_put'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0xa34d): undefined reference to `dma_buf_unmap_attachment'
-   /usr/bin/ld: drivers/iio/industrialio-buffer.o: in function `iio_buffer_enqueue_dmabuf':
->> industrialio-buffer.c:(.text+0xa949): undefined reference to `dma_buf_get'
-   /usr/bin/ld: industrialio-buffer.c:(.text+0xa997): undefined reference to `dma_buf_put'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0xac84): undefined reference to `dma_fence_init'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0xad4b): undefined reference to `dma_resv_wait_timeout'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0xadec): undefined reference to `dma_resv_reserve_fences'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0xae2c): undefined reference to `dma_resv_add_fence'
->> /usr/bin/ld: industrialio-buffer.c:(.text+0xb0da): undefined reference to `dma_fence_release'
-   /usr/bin/ld: drivers/iio/industrialio-buffer.o: in function `iio_buffer_chrdev_ioctl':
-   industrialio-buffer.c:(.text+0xb833): undefined reference to `dma_buf_get'
-   /usr/bin/ld: industrialio-buffer.c:(.text+0xbad0): undefined reference to `dma_buf_put'
-   collect2: error: ld returned 1 exit status
+Jonathan
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+> The Chuwi tablets are:
+> - UBook X Pro 2023
+> - UBook X 2023
+> 
+> This does not appear to be distro specific, as I am seeing the same behavior on
+> both:
+> - Linux Mint 21.3, with kernel 5.15.0-91-generic
+> - Fedora 39 Workstation, with kernel 6.5.6-300.fc39.x86_64
+> 
+> I came across this thread indicating that support was added for this in 2020
+> via the MXC4005 driver: https://www.spinics.net/lists/linux-iio/msg53171.html
+> 
+> This seems to be double confirmed by another issue I found here on this bug
+> tracker: https://bugzilla.kernel.org/show_bug.cgi?id=206703
+> 
+> Unfortunately in my case, I see the MXC4005 driver is in fact loaded and
+> running, however it appears the raw data is not changing.  When looking at the
+> output from iio-sensor-proxy with "monitor-sensor", the orientation always
+> reports "left-up".
+> 
+> I tried a test where I watched a cat of all of the files in
+> /sys/bus/iio/devices/iio:device0/, and I never see the raw data changing when
+> the tablet is rotated.  I'm attaching the values I see from the raw data in the
+> text file.  Interestingly, Fedora reports different raw values, but
+> iio-sensor-proxy still says orientation is left-up with these values.  In both
+> cases, the values don't change when the tablet is rotated.
+> 
+> The output of "udevadm info -n /dev/iio\:device0" is attached too.
+> 
+> lsmod reports that the mxc4005 driver is loaded, along with industrialio and
+> industrialio_triggered_buffer.  Unloading the mxc4005 module with rmmod causes
+> it to disappear from iio-sensor-proxy as expected, but otherwise unloading and
+> reloading the driver seems to have no effect on the symptoms.
+> 
+> If there is any further information I can gather which will be helpful, or any
+> testing I can help with, please let me know. 
+> 
+> Thanks!
+> 
+
 

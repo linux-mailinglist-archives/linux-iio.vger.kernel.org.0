@@ -1,194 +1,133 @@
-Return-Path: <linux-iio+bounces-3432-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3433-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCFEF877692
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 13:33:43 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90AB87769E
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 13:41:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E97631C20B0B
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 12:33:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CD8A1F219B5
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 12:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8322B22324;
-	Sun, 10 Mar 2024 12:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CE7725605;
+	Sun, 10 Mar 2024 12:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sF+dswI6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hn884P6N"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CDF3224
-	for <linux-iio@vger.kernel.org>; Sun, 10 Mar 2024 12:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117A916FF29;
+	Sun, 10 Mar 2024 12:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710074019; cv=none; b=jjYeIPI50eNV3YDiufuVLUpqw65sgWfMnm67uNRaUpWz25R1HzOiBWVwCGRVUDDgL6gJldmONwIRS9h7A1TesqpcSzqW7eVm79PaOS1Wm+mshUHlQjsWJ1253dMaRDF/fp4UCtKc9cxUtByEPyvP417J93uNwRdd7ZPocl6RIdQ=
+	t=1710074511; cv=none; b=uY4JQMkEoNA4HJ9euNwZqTVC/rxYSqcM4XVZYybbp9CGjrTZ84/eWQgmmqJBkSnApyCht3OVtTVgMazQ81wfWtFy6eHXBcygKQ4gz6AguU4cpnjETVPOHJYG5uN3GCUhHRpX9en2/y5sVa6CocARCD4XGeWcCLdUuZz13r8BhfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710074019; c=relaxed/simple;
-	bh=cTv5z8YfVq/Xp/enBqb0WBSvV84k93XBLhuTBmpBfDE=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=of6FWvw+iaHWEYfq/Rd/rqZRRob+pSWzFs8LC5gJiY1aMn64rvIBX6f2p6WBWJqu49wvp58tJjed3OuVm+hWpj6IvlylL4GwGYOAu44pSAqAxZB9BvEbO3f7nngoP9UnfvVAiKL7bzyiufxUciEJPs1VY93fxlO04H45u5r4sxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sF+dswI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6A62FC43390
-	for <linux-iio@vger.kernel.org>; Sun, 10 Mar 2024 12:33:38 +0000 (UTC)
+	s=arc-20240116; t=1710074511; c=relaxed/simple;
+	bh=T2hnsj3TXxdQauhbrydhvVMlAp4FlGMF27ltKRC1xko=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DsbXEZ/R/HR1oXl2fEJxTmwr1FlinW7og1MUWy47uGdAj6Z5T6o95WDatU8UZcRboBf/URWDaBmHbVbsjM/Vn3LL/CG26kv7zypCirzWC/E5ZEwSJ02iHzm4W0XdPtf/Can9TUOpvbcs+SOkeW9/E2hMqi12nUCv9e4x6DxGjW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hn884P6N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD6CC433F1;
+	Sun, 10 Mar 2024 12:41:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710074018;
-	bh=cTv5z8YfVq/Xp/enBqb0WBSvV84k93XBLhuTBmpBfDE=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=sF+dswI6ofckTNlejjwtubzB/dMvRa4RP/6bZ793IZaZpUMl4W9biMdNLgcwHlhZP
-	 VbqOC0vXqFD9rkhUXGvR2K2kltcnsjFiFMZVCK7VnupmxXcvVGfHMQ8iLgonQ2NbCr
-	 QiGu53EM0ev5ogCMcnx6x8QrbLfjpsRyjhj0vfOcQ+VaepkOAqGc45qTHT3BMBE/d5
-	 33DqOkDX8Ir/qDlBtAfxA/P+lRs9PIc3eshshwZU7nTXDU43fTmIORgtHnJ+IkHPei
-	 mgN1/T83SEGw4PaaLOm74NMMZlb/+JmUDS60GzjsUA0Vx4J4YiYBQWSo+mljAH338o
-	 0gcIzo9Zw42Ew==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 50AB0C53BD1; Sun, 10 Mar 2024 12:33:38 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Sun, 10 Mar 2024 12:33:38 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: jic23@kernel.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218578-217253-7fLu1ci59H@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
-References: <bug-218578-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=k20201202; t=1710074510;
+	bh=T2hnsj3TXxdQauhbrydhvVMlAp4FlGMF27ltKRC1xko=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Hn884P6NYCntbYCwhViso8xYitvz/SDSeAYZDfK/+/NNFWBfgkkuxX3gzjYVAT4X2
+	 75YA8TLBgLTHDzXhVe9CfMjGsat0po8S88pq9OfxKLhWElwY7q8w398qcNRr7wwN5g
+	 L5w8HVcrSrqFvtdBU1pSnG4cz71f0xxJMCuP9M5TjxD/GmmO3G4A3kP2ex7IuhABAK
+	 uY76WFjb0LdEG8cy+J2DWRuRgFQhs8QF02ONHzFh4Uhfm5xBQ569mHBp6as4id/fWy
+	 eCUPv+d/UamjMG0dqiKxynXZjHK2WenzLrZnNFt0PLWrVd3K/mhz/nx/8KLipkUqLE
+	 tljcQNovP1rgw==
+Date: Sun, 10 Mar 2024 12:41:33 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Paul Cercueil <paul@crapouillou.net>
+Cc: Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>, Jonathan
+ Corbet <corbet@lwn.net>, Lars-Peter Clausen <lars@metafoo.de>, Vinod Koul
+ <vkoul@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Nuno Sa
+ <nuno.sa@analog.com>, Michael Hennerich <michael.hennerich@analog.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dmaengine@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org
+Subject: Re: [PATCH v8 0/6] iio: new DMABUF based API
+Message-ID: <20240310124133.683e8853@jic23-huawei>
+In-Reply-To: <20240308170046.92899-1-paul@crapouillou.net>
+References: <20240308170046.92899-1-paul@crapouillou.net>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
+On Fri,  8 Mar 2024 18:00:40 +0100
+Paul Cercueil <paul@crapouillou.net> wrote:
 
---- Comment #1 from Jonathan Cameron (jic23@kernel.org) ---
-On Sat, 09 Mar 2024 17:55:32 +0000
-bugzilla-daemon@kernel.org wrote:
+> Hi Jonathan,
+> 
+> Here's the final(tm) version of the IIO DMABUF patchset.
+> 
+> This v8 fixes the remaining few issues that Christian reported.
+> 
+> I also updated the documentation patch as there has been changes to
+> index.rst.
+> 
+> This was based on next-20240308.
+> 
+> Changelog:
+> 
+> - [3/6]:
+>     - Fix swapped fence direction
+>     - Simplify fence wait mechanism
+>     - Remove "Buffer closed with active transfers" print, as it was dead
+>       code
+>     - Un-export iio_buffer_dmabuf_{get,put}. They are not used anywhere
+>       else so they can even be static.
+>     - Prevent attaching already-attached DMABUFs
+> - [6/6]:
+>     Renamed dmabuf_api.rst -> iio_dmabuf_api.rst, and updated index.rst
+>     whose format changed in iio/togreg.
+> 
+> Cheers,
+> -Paul
+Given nature of the build bug issues reported, I'm guessing you never
+built this as a module :(  Not sure how one instance of a missing 
+user marking got through but also easy to fix.
 
-> https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
->=20
->             Bug ID: 218578
->            Summary: MXC6655 accelerometer not working with MXC4005 driver
->            Product: Drivers
->            Version: 2.5
->           Hardware: Intel
->                 OS: Linux
->             Status: NEW
->           Severity: normal
->           Priority: P3
->          Component: IIO
->           Assignee: drivers_iio@kernel-bugs.kernel.org
->           Reporter: kernelbugzilla@kirkschnable.com
->         Regression: No
->=20
-> Created attachment 305970
->   --> https://bugzilla.kernel.org/attachment.cgi?id=3D305970&action=3Dedi=
-t=20=20
-> Output from udevadm info -n /dev/iio\:device0 && also some samples of
-> accelerometer raw values I see in /sys/bus/iio/devices/iio:device:0/.
->=20
-> Hello,
->=20
-> I recently bought two Chuwi tablets which contain MXC6655 accelerometers.=
-=20
-> The
-> accelerometers work in Windows 11 and the tablet rotates as expected in
-> Windows, but upon installing Linux the tablet auto rotation was not worki=
-ng.
->=20
+Anyhow, no need to wait before sending a v9 with those sorted.
 
-Hi, thanks for the report,
-
-First thought is that there may be some power control hidden in the ACPI
-tables.
-Could you dump
-/sys/firmware/acpi/tables/DSDT
-and run it through iasl -d (from acpica-tools)
-
-Find the section related to his accelerometer and post all of that.
-Sometimes there is a _DSM (device specific method) used to power things up
-- this stuff is completely non standard unfortunately so we have to base
-any support on table dumps from the particular devices.
-
-Thanks,
+0-day does it's job again - even better is that it's whilst it's
+still your problem and not mine :)
 
 Jonathan
 
+> 
+> Paul Cercueil (6):
+>   dmaengine: Add API function dmaengine_prep_peripheral_dma_vec()
+>   dmaengine: dma-axi-dmac: Implement device_prep_peripheral_dma_vec
+>   iio: core: Add new DMABUF interface infrastructure
+>   iio: buffer-dma: Enable support for DMABUFs
+>   iio: buffer-dmaengine: Support new DMABUF based userspace API
+>   Documentation: iio: Document high-speed DMABUF based API
+> 
+>  Documentation/iio/iio_dmabuf_api.rst          |  54 ++
+>  Documentation/iio/index.rst                   |   1 +
+>  drivers/dma/dma-axi-dmac.c                    |  40 ++
+>  drivers/iio/buffer/industrialio-buffer-dma.c  | 181 ++++++-
+>  .../buffer/industrialio-buffer-dmaengine.c    |  59 ++-
+>  drivers/iio/industrialio-buffer.c             | 462 ++++++++++++++++++
+>  include/linux/dmaengine.h                     |  27 +
+>  include/linux/iio/buffer-dma.h                |  31 ++
+>  include/linux/iio/buffer_impl.h               |  30 ++
+>  include/uapi/linux/iio/buffer.h               |  22 +
+>  10 files changed, 890 insertions(+), 17 deletions(-)
+>  create mode 100644 Documentation/iio/iio_dmabuf_api.rst
+> 
 
-> The Chuwi tablets are:
-> - UBook X Pro 2023
-> - UBook X 2023
->=20
-> This does not appear to be distro specific, as I am seeing the same behav=
-ior
-> on
-> both:
-> - Linux Mint 21.3, with kernel 5.15.0-91-generic
-> - Fedora 39 Workstation, with kernel 6.5.6-300.fc39.x86_64
->=20
-> I came across this thread indicating that support was added for this in 2=
-020
-> via the MXC4005 driver: https://www.spinics.net/lists/linux-iio/msg53171.=
-html
->=20
-> This seems to be double confirmed by another issue I found here on this b=
-ug
-> tracker: https://bugzilla.kernel.org/show_bug.cgi?id=3D206703
->=20
-> Unfortunately in my case, I see the MXC4005 driver is in fact loaded and
-> running, however it appears the raw data is not changing.  When looking at
-> the
-> output from iio-sensor-proxy with "monitor-sensor", the orientation always
-> reports "left-up".
->=20
-> I tried a test where I watched a cat of all of the files in
-> /sys/bus/iio/devices/iio:device0/, and I never see the raw data changing =
-when
-> the tablet is rotated.  I'm attaching the values I see from the raw data =
-in
-> the
-> text file.  Interestingly, Fedora reports different raw values, but
-> iio-sensor-proxy still says orientation is left-up with these values.  In
-> both
-> cases, the values don't change when the tablet is rotated.
->=20
-> The output of "udevadm info -n /dev/iio\:device0" is attached too.
->=20
-> lsmod reports that the mxc4005 driver is loaded, along with industrialio =
-and
-> industrialio_triggered_buffer.  Unloading the mxc4005 module with rmmod
-> causes
-> it to disappear from iio-sensor-proxy as expected, but otherwise unloading
-> and
-> reloading the driver seems to have no effect on the symptoms.
->=20
-> If there is any further information I can gather which will be helpful, or
-> any
-> testing I can help with, please let me know.=20
->=20
-> Thanks!
->
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
 

@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-3444-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3445-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1CD87776A
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 16:07:14 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91082877770
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 16:17:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDA1B282185
-	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 15:07:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7AC31F211E4
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 15:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BE7374FA;
-	Sun, 10 Mar 2024 15:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE5B5376F1;
+	Sun, 10 Mar 2024 15:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CR9bO0Ho"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAv52yyI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B87210FB;
-	Sun, 10 Mar 2024 15:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABA0374C3;
+	Sun, 10 Mar 2024 15:17:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710083228; cv=none; b=S8LAyEKbRqXonjo/PdlvUCsmJMLwPqt82QC+0QDZn5zAQq+YRVtatqa/HXGICLiCHphrtkoSAv6jeB82gx5zSZto2gvAf4H4kNkF8CCeOVV/GHFqaRB9ZT8N6JqyqyaBV0bKAE7z8dEoB/E1y1ojiQ6PdYafO5jeiFbv3LlPv14=
+	t=1710083828; cv=none; b=s97bcaD1iSkVH2TuWa2jNjMTmDPQTB4fQFd5v0CQ52rrkLDmChBJp/h0n8T+yFn71zmJDCKV6iwuomkiWJwgweQ/ShSac3g50u6WVn4PzWHwYs3MqEkoGXdTJS5PPHQf9uxl8Ct6kZCR9JDCe6LfKiX7umjAkM9GX/Lae1+sNSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710083228; c=relaxed/simple;
-	bh=Uo9l+ZSD6+D8MDMbJX0ym9Al9u5UzvzXxvOld3GHnrQ=;
+	s=arc-20240116; t=1710083828; c=relaxed/simple;
+	bh=rIUrM1eqzy59I4K5wq1eEGWnue1gxNqb95RwtlVisTY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZLmEk7SjFevOhO66hMNa24bLML+sOE77N1yRE0G2uhKza0/NFixcLgbHW2fVTsXKN7zC1N48ny7Kel0MVwwlwrE7a1Ar939KVklMiri/WDAqj6nj6YqNrZkjNLry6G6mpEuB64jjJNqB3sVL6xp3LzbGF7TRzMou20ZLACbL0TU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CR9bO0Ho; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7200C433F1;
-	Sun, 10 Mar 2024 15:07:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=g0pbG9OaeVnVmPy1ZcuRZsL5p34A3LOekkPI6jNIAjeOQdPXqORCg2vhgsk2PORp0xEnKwpjduMQYJmgj6cLgaLsWmbH4Pib6/zpAQEJIfwMo8+YvGkcH0eh2k5FOk0heSw0Q94vyNC4QXOsbSDNQkt2rjP+sILf1v1ASbUK9X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAv52yyI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5738C433C7;
+	Sun, 10 Mar 2024 15:17:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710083227;
-	bh=Uo9l+ZSD6+D8MDMbJX0ym9Al9u5UzvzXxvOld3GHnrQ=;
+	s=k20201202; t=1710083828;
+	bh=rIUrM1eqzy59I4K5wq1eEGWnue1gxNqb95RwtlVisTY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CR9bO0HooPBNWBeLh23LJxM7B7RYoqhCVj3oH+cXlzN0voW2yjBnGap1fbn97HnzN
-	 +1cGFucEwZVSb2cf5kScgc+WYYYjjcC2f/y8/bfd3gVIXQXaNHyljJtsXazUxaShVN
-	 kUa1O32wOTcdP7LAB1YtT51CuzAORGp8b/EmH+U7IL9jMSO8vXrOKndrymZ+Q/ta80
-	 cbxnSOBvj4gJWayCivdfF2d3LrCfom7yXx1lp7FPzzPenp7dX6vNbF7wBK7fxpB02U
-	 UIEVoInPNax81fJKs99Ea0BQ+uWejMzNoXjQTOPAFROumkJzQLKWCAoVEMQVWTjyg1
-	 AKUZQY0epZt0w==
-Date: Sun, 10 Mar 2024 15:06:51 +0000
+	b=hAv52yyIPsDx6Tpr1n0tlteWz1lKsJ3y9Fbz1aT+TgV2RKOwoejhpgb9IcnaGd092
+	 csRYF3YN+ui+HPyByVgaAdwcvKJWMr+xD+yRGTY5Xj/qgSHYtau8Kn2zGKifT7B0j8
+	 jiGdM3o4m2YQ7HwnSHkkXD/cJSIx75mqsF5AzaORMknVgrPHRfsCt7WlKqI5q/h0sB
+	 IarZKiRUJYO7P5XW6Bvu7M00j8MI40/tUiX+soJXeiW0qeVubzMiLTBcf5qAxLALu7
+	 ZQvM7wpcB6hlOtKopbaKWaHrTx6g9FfleRrUC+yrLuHtuUcmn1HyuScsMJeya+fl6o
+	 riDfc8Uf1zN5A==
+Date: Sun, 10 Mar 2024 15:16:54 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dumitru Ceclan <mitrutzceclan@gmail.com>
-Cc: dumitru.ceclan@analog.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- dlechner@baylibre.com
-Subject: Re: [PATCH v3 0/3] Add support for additional AD717x models
-Message-ID: <20240310150651.7ea9bb63@jic23-huawei>
-In-Reply-To: <20240306110956.13167-1-mitrutzceclan@gmail.com>
-References: <20240306110956.13167-1-mitrutzceclan@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?=
+ <u.kleine-koenig@pengutronix.de>
+Subject: Re: [PATCH v2 1/1] iio: adc: twl4030-madc: Make use of device
+ properties
+Message-ID: <20240310151654.754c5da0@jic23-huawei>
+In-Reply-To: <20240304144037.1036390-1-andriy.shevchenko@linux.intel.com>
+References: <20240304144037.1036390-1-andriy.shevchenko@linux.intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,23 +62,108 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed,  6 Mar 2024 13:09:53 +0200
-Dumitru Ceclan <mitrutzceclan@gmail.com> wrote:
+On Mon,  4 Mar 2024 16:40:06 +0200
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> This patch series adds support for the Analog Devices AD7172-2, AD7175-8,
->  AD7177-2 ADCs within the AD7173 driver.
+> Convert the module to be property provider agnostic and allow
+> it to be used on non-OF platforms.
 > 
->  Datasheets:
->  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-4.pdf
->  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7175-8.pdf
->  https://www.analog.com/media/en/technical-documentation/data-sheets/AD7177-2.pdf
+> Include mod_devicetable.h explicitly to replace the dropped of.h
+> which included mod_devicetable.h indirectly.
 > 
-> This series depends on patch series AD7173
->   https://lore.kernel.org/all/20240228110622.25114-1-mitrutzceclan@gmail.com/
-Applied to the togreg-normal branch of iio.git and pushed out for 0-day to
-take a look.  This is 3.10 material now given timing.
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Thanks Andy,
 
-Thanks,
+Applied this to the togreg-cleanup branch of iio.git.
+
+I wondered whether there were any users of the platform_data /
+board file path left. Seems that the support for the parent mfd
+platform data was ripped out by Uwe in 2022 but not the sub drivers.
+
+Anyone want to do the work to drop it from here and the other sub drivers?
 
 Jonathan
+
+> ---
+> v2: converted leftover (Jonathan)
+>  drivers/iio/adc/twl4030-madc.c | 19 +++++++++----------
+>  1 file changed, 9 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/twl4030-madc.c b/drivers/iio/adc/twl4030-madc.c
+> index 4a247ca25a44..0253064fadec 100644
+> --- a/drivers/iio/adc/twl4030-madc.c
+> +++ b/drivers/iio/adc/twl4030-madc.c
+> @@ -19,10 +19,12 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/kernel.h>
+>  #include <linux/delay.h>
+> +#include <linux/mod_devicetable.h>
+> +#include <linux/module.h>
+>  #include <linux/platform_device.h>
+> +#include <linux/property.h>
+>  #include <linux/slab.h>
+>  #include <linux/mfd/twl.h>
+> -#include <linux/module.h>
+>  #include <linux/stddef.h>
+>  #include <linux/mutex.h>
+>  #include <linux/bitops.h>
+> @@ -30,7 +32,6 @@
+>  #include <linux/types.h>
+>  #include <linux/gfp.h>
+>  #include <linux/err.h>
+> -#include <linux/of.h>
+>  #include <linux/regulator/consumer.h>
+>  
+>  #include <linux/iio/iio.h>
+> @@ -744,14 +745,14 @@ static int twl4030_madc_set_power(struct twl4030_madc_data *madc, int on)
+>   */
+>  static int twl4030_madc_probe(struct platform_device *pdev)
+>  {
+> +	struct device *dev = &pdev->dev;
+> +	struct twl4030_madc_platform_data *pdata = dev_get_platdata(dev);
+>  	struct twl4030_madc_data *madc;
+> -	struct twl4030_madc_platform_data *pdata = dev_get_platdata(&pdev->dev);
+> -	struct device_node *np = pdev->dev.of_node;
+>  	int irq, ret;
+>  	u8 regval;
+>  	struct iio_dev *iio_dev = NULL;
+>  
+> -	if (!pdata && !np) {
+> +	if (!pdata && !dev_fwnode(dev)) {
+>  		dev_err(&pdev->dev, "neither platform data nor Device Tree node available\n");
+>  		return -EINVAL;
+>  	}
+> @@ -779,7 +780,7 @@ static int twl4030_madc_probe(struct platform_device *pdev)
+>  	if (pdata)
+>  		madc->use_second_irq = (pdata->irq_line != 1);
+>  	else
+> -		madc->use_second_irq = of_property_read_bool(np,
+> +		madc->use_second_irq = device_property_read_bool(dev,
+>  				       "ti,system-uses-second-madc-irq");
+>  
+>  	madc->imr = madc->use_second_irq ? TWL4030_MADC_IMR2 :
+> @@ -905,20 +906,18 @@ static void twl4030_madc_remove(struct platform_device *pdev)
+>  	regulator_disable(madc->usb3v1);
+>  }
+>  
+> -#ifdef CONFIG_OF
+>  static const struct of_device_id twl_madc_of_match[] = {
+>  	{ .compatible = "ti,twl4030-madc", },
+> -	{ },
+> +	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, twl_madc_of_match);
+> -#endif
+>  
+>  static struct platform_driver twl4030_madc_driver = {
+>  	.probe = twl4030_madc_probe,
+>  	.remove_new = twl4030_madc_remove,
+>  	.driver = {
+>  		   .name = "twl4030_madc",
+> -		   .of_match_table = of_match_ptr(twl_madc_of_match),
+> +		   .of_match_table = twl_madc_of_match,
+>  	},
+>  };
+>  
+
 

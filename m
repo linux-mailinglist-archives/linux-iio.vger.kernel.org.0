@@ -1,161 +1,224 @@
-Return-Path: <linux-iio+bounces-3424-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3425-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81962877370
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 20:07:06 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 982798774A3
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 01:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3B8B1C20BED
-	for <lists+linux-iio@lfdr.de>; Sat,  9 Mar 2024 19:07:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F38328151E
+	for <lists+linux-iio@lfdr.de>; Sun, 10 Mar 2024 00:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650D34AEFB;
-	Sat,  9 Mar 2024 19:07:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CC58A5F;
+	Sun, 10 Mar 2024 00:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSgcYCY3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R3zOKUb8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0324A2A
-	for <linux-iio@vger.kernel.org>; Sat,  9 Mar 2024 19:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67421FB9;
+	Sun, 10 Mar 2024 00:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710011221; cv=none; b=mSi7nBKK31/swDCxbVXwvMaQTbtlPepoftG+Ci++8753YOxXohnjaC9weZ8XcGpRrVO8oxezRI7F1+YNkZpViX3tvUtOaafxIdFehW3efQw5SqFaUKfeWG/r4WzTwO5Aja5S67ENXVwoQ6D5TdVWJ9FXuD7/SxJfv//vIb418/E=
+	t=1710032156; cv=none; b=JIV1lC+CO2ixoBSwVoAsr64wQ+x7mSXtmRw94N948JbM5uz+sgrXlf++wSMuPASkX9+0f3Nd+/bZp7+QR82ldMd7OHBQ15F3K0CNbZXZk6qgTNAhitMrsexrU9GTDwo2wgI0suGSJJfnaHG5ztFY3bTvCy3spSCgYSeoF6mKOE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710011221; c=relaxed/simple;
-	bh=l+E5knTm106NChr1G+H7nQsZfmww+heyhg9acaF1kfk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nmLGoSwck1TL4fM9xY7OXuDAK+rcU96OdoylCQS1+TtG/UFAocam9M5wUYL3zXmkcJ6wuXWbzf73mGgJo3ksn3h6AoYX4S7G0L4omhaX+xXx4/PV6FjKc1Dbyi2pbmxZkUZhQuqgR9r+d6PsCvC+xHoTLxW7IdMxCcZZ3mddppo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSgcYCY3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 849E4C433F1;
-	Sat,  9 Mar 2024 19:06:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710011220;
-	bh=l+E5knTm106NChr1G+H7nQsZfmww+heyhg9acaF1kfk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RSgcYCY34PspTvuxX9KdKgFbJ+vI3O3hmhvmLvd9ShKlgBXn4MMBhg0eA4e1d28Du
-	 UCI8aJfjfvWuQa3Up1lG10H/HnWcgkZAnPWvyQpP0gFRiBYyFaOrV6jTiMcmuFBn23
-	 o43ABCkDQN+2SSkfb5oGHRb/Il0UeEz8uIZypIv5YQMbNoUMby+HNVv/P0ieiAoImm
-	 2vejfXfL0nWjEQer0dH/cLVs8wAo+Af604YMM4WI9S5U7themxy4md3/MNwKiXbTnJ
-	 gPciJygbDjlU5Y/S/ev0AzlFchwnMPuNa8l4a4SOEtODXOs6NIE0rvaCJeK1igtszx
-	 1ffXfjnBj4Fng==
-Date: Sat, 9 Mar 2024 19:06:49 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: Manish Narani <manish.narani@xilinx.com>, Anand Ashok Dumbre
- <anand.ashok.dumbre@xilinx.com>, linux-iio@vger.kernel.org, Jonathan
- Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: iio: xilinx-ams: shift-out-of-bounds in
- ams_enable_channel_sequence
-Message-ID: <20240309190649.04be7261@jic23-huawei>
-In-Reply-To: <a6dd3a2f-c3e9-4781-801b-8e8e72ac9beb@linux.dev>
-References: <a6dd3a2f-c3e9-4781-801b-8e8e72ac9beb@linux.dev>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1710032156; c=relaxed/simple;
+	bh=WSizNHAfSuY2tyhrxSDIPKba58sQViEr4CM533Vwtew=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lq0x/2nueLGI57V875YVpYdiQzlGAYhBJdY3gaz2NwP58jA0udrVidqQerTO93Op4X2HdCH7Z9tPc3xa6ZAKkaQsn11be7IuUflAGDQFpdluhASPum6QN4sZGvXN8kmw4tcyRFd2CCS99wJ3BCpQr61lDgHLFkitykMFqCg+rE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R3zOKUb8; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710032154; x=1741568154;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=WSizNHAfSuY2tyhrxSDIPKba58sQViEr4CM533Vwtew=;
+  b=R3zOKUb8Wpmos543aFi4XOi7eSokbxxt+nBOP/ySDKjsQi9LKMG3QpX/
+   xhprTLdCKriXiGead5aS7WC0BOwrgFDNniMDIUsnhLAo6pYn+M9LxEdEU
+   xVYFnWo3B9qz69BuW4HpSo3cQ3qXBU2hzkNn4UWt3mqTZEyfTn4lH/weq
+   AJANezZ3AW3DVeKyrJ441zTM8tJs177SLXA3O4UKqkjn7hy+5oqMRyKVp
+   4M9BLmKVX6fcC0QhbKJE2XA/EfqnWEr/SmH5rNGDRZhXOv6en+lx8ranr
+   RbNtDWu06iEMWoD1s2Rd8ikso+L+FW+3TeuSasfxjX9vQWKgo6w9mWkoL
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11008"; a="16134081"
+X-IronPort-AV: E=Sophos;i="6.07,113,1708416000"; 
+   d="scan'208";a="16134081"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2024 16:55:53 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,113,1708416000"; 
+   d="scan'208";a="11244977"
+Received: from lkp-server01.sh.intel.com (HELO b21307750695) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 09 Mar 2024 16:55:49 -0800
+Received: from kbuild by b21307750695 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1rj7Td-0007mZ-2J;
+	Sun, 10 Mar 2024 00:55:45 +0000
+Date: Sun, 10 Mar 2024 08:55:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Paul Cercueil <paul@crapouillou.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Lars-Peter Clausen <lars@metafoo.de>, Vinod Koul <vkoul@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Cc: oe-kbuild-all@lists.linux.dev, Nuno Sa <nuno.sa@analog.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
+	Paul Cercueil <paul@crapouillou.net>
+Subject: Re: [PATCH v8 3/6] iio: core: Add new DMABUF interface infrastructure
+Message-ID: <202403100826.wjMQq4I6-lkp@intel.com>
+References: <20240308170046.92899-4-paul@crapouillou.net>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240308170046.92899-4-paul@crapouillou.net>
 
-On Tue, 5 Mar 2024 12:30:53 -0500
-Sean Anderson <sean.anderson@linux.dev> wrote:
+Hi Paul,
 
-> Hi,
-> 
-> When enabling UBSAN on a ZynqMP Ultrascale+, I see the following error during boot:
-> 
-> [    1.447628] ================================================================================
-> [    1.447832] UBSAN: shift-out-of-bounds in ../drivers/iio/adc/xilinx-ams.c:426:16
-> [    1.448019] shift exponent 66 is too large for 64-bit type 'long long unsigned int'
-> [    1.448211] CPU: 2 PID: 1 Comm: swapper/0 Not tainted 6.6.20+ #90
-> [    1.448368] Hardware name: xlnx,zynqmp (DT)
-> [    1.448475] Call trace:
-> [    1.448547]  dump_backtrace+0x9c/0x11c
-> [    1.448655]  show_stack+0x18/0x24
-> [    1.448749]  dump_stack_lvl+0xac/0xd4
-> [    1.448853]  dump_stack+0x18/0x24
-> [    1.448947]  ubsan_epilogue+0x10/0x44
-> [    1.449051]  __ubsan_handle_shift_out_of_bounds+0x98/0x134
-> [    1.449191]  ams_enable_channel_sequence+0x22c/0x23c
-> [    1.449324]  ams_probe+0x570/0x6d4
-> [    1.449423]  platform_probe+0x68/0x108
-> [    1.449530]  really_probe+0x158/0x3b0
-> [    1.449632]  __driver_probe_device+0x88/0x1a0
-> [    1.449747]  driver_probe_device+0x3c/0x138
-> [    1.449859]  __driver_attach+0xe4/0x1bc
-> [    1.449964]  bus_for_each_dev+0x78/0xe0
-> [    1.450068]  driver_attach+0x24/0x30
-> [    1.450167]  bus_add_driver+0x110/0x240
-> [    1.450271]  driver_register+0x60/0x128
-> [    1.450376]  __platform_driver_register+0x28/0x34
-> [    1.450500]  ams_driver_init+0x1c/0x28
-> [    1.450609]  do_one_initcall+0x78/0x2c8
-> [    1.450714]  kernel_init_freeable+0x2f8/0x59c
-> [    1.450831]  kernel_init+0x30/0x150
-> [    1.450932]  ret_from_fork+0x10/0x20
-> [    1.451073] ================================================================================
-> 
-> When applying the following patch:
-> 
-That channel definition looks suspicious. Anyone shed light on what the channel scan index layout
-is supposed to be?
-There seem to be substantial gaps in used numbers.
-If I read it right the offset to jump over the AUX_CHAN is too large (22 - should be 16) but
-that still ends up with us going above the range of supported scan indexes.
+kernel test robot noticed the following build errors:
 
-The PL Sequence mask used is GENMASK_ULL(59, 22)
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on vkoul-dmaengine/next lwn/docs-next linus/master v6.8-rc7 next-20240308]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Whilst the bits are set, nothing actually reads them that I can see.
-So why are they set and how are those channels supposed to work?
+url:    https://github.com/intel-lab-lkp/linux/commits/Paul-Cercueil/dmaengine-Add-API-function-dmaengine_prep_peripheral_dma_vec/20240309-010421
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20240308170046.92899-4-paul%40crapouillou.net
+patch subject: [PATCH v8 3/6] iio: core: Add new DMABUF interface infrastructure
+config: nios2-randconfig-r071-20240309 (https://download.01.org/0day-ci/archive/20240310/202403100826.wjMQq4I6-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240310/202403100826.wjMQq4I6-lkp@intel.com/reproduce)
 
-So agreed buggy; no idea what it supposed to do!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202403100826.wjMQq4I6-lkp@intel.com/
 
-Jonathan
+All errors (new ones prefixed by >>, old ones prefixed by <<):
 
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-celtic.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-greek.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/nls/mac-inuit.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/unicode/utf8data.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/bcachefs/mean_and_variance_test.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/jbd2/jbd2.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/fat/fat.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/fat/fat_test.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/sysv/sysv.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in fs/pstore/pstore.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in security/keys/encrypted-keys/encrypted-keys.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in crypto/cast_common.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in lib/test_ubsan.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/irqchip/irq-meson-gpio.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpio/gpio-gw-pld.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/gpio/gpio-pcf857x.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pwm/pwm-visconti.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/video/fbdev/goldfishfb.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/video/fbdev/vfb.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt6765-vcodec.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt6779-mm.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt6779-cam.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt2712-apmixedsys.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt2712.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt2712-bdp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt2712-img.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt2712-jpgdec.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt2712-mfg.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt2712-vdec.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt2712-venc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt7622-eth.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt7622-aud.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt7986-apmixed.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt7986-topckgen.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt8167-mfgcfg.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/mediatek/clk-mt8195-mfg.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/qcom/lpass-gfm-sm8250.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/qcom/videocc-sdm845.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/sunxi-ng/suniv-f1c100s-ccu.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/sunxi-ng/sun20i-d1-r-ccu.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/sunxi-ng/sun50i-h6-r-ccu.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/sunxi-ng/sun6i-a31-ccu.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/sunxi-ng/sun9i-a80-ccu.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/sunxi-ng/sun9i-a80-de-ccu.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/sunxi-ng/sun9i-a80-usb-ccu.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/clk/clk-gate_test.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/regulator/da9121-regulator.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/regulator/max20411-regulator.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/serial/esp32_uart.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/serial/esp32_acm.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/tty/goldfish.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/lp.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/char/ppdev.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-slimbus.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/base/regmap/regmap-sccb.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/misc/fastrpc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mfd/arizona.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/dax/dax.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mtd/parsers/tplink_safeloader.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/spi/spi-altera-core.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/auxdisplay/line-display.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/host/ohci-exynos.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/class/usbtmc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/serial/mxuport.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/misc/isight_firmware.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_acm.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_ss_lb.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/u_serial.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_serial.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/function/usb_f_obex.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/gadget/legacy/g_zero.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/usb/mon/usbmon.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/input/touchscreen/cyttsp_i2c_common.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/input/vivaldi-fmap.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/input/tests/input_test.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/rc/rc-core.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/media/dvb-frontends/mb86a16.o
+WARNING: modpost: drivers/mmc/host/davinci_mmc: section mismatch in reference: davinci_mmcsd_driver+0x8 (section: .data) -> davinci_mmcsd_remove (section: .exit.text)
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/host/tmio_mmc_core.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/host/renesas_sdhi_core.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/mmc_core.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/pwrseq_simple.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/pwrseq_emmc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/mmc/core/sdio_uart.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/leds/flash/leds-rt4505.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/crypto/xilinx/zynqmp-aes-gcm.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/staging/greybus/gb-light.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/staging/greybus/gb-log.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/staging/greybus/gb-power-supply.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/staging/greybus/gb-i2c.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/staging/greybus/gb-sdio.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/devfreq/governor_performance.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/devfreq/governor_userspace.o
+WARNING: modpost: drivers/memory/emif: section mismatch in reference: emif_driver+0x8 (section: .data) -> emif_remove (section: .exit.text)
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvmem/nvmem_brcm_nvram.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/nvmem/nvmem_u-boot-env.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/parport/parport.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/pcmcia/pcmcia_rsrc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/adc/ingenic-adc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/buffer/kfifo_buf.o
+>> ERROR: modpost: module industrialio uses symbol dma_buf_attach from namespace DMA_BUF, but does not import it.
+>> ERROR: modpost: module industrialio uses symbol dma_buf_map_attachment from namespace DMA_BUF, but does not import it.
+>> ERROR: modpost: module industrialio uses symbol dma_buf_unmap_attachment from namespace DMA_BUF, but does not import it.
+>> ERROR: modpost: module industrialio uses symbol dma_buf_get from namespace DMA_BUF, but does not import it.
+>> ERROR: modpost: module industrialio uses symbol dma_buf_put from namespace DMA_BUF, but does not import it.
+>> ERROR: modpost: module industrialio uses symbol dma_buf_detach from namespace DMA_BUF, but does not import it.
 
-> diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
-> index f0b71a1220e0..1ced8cff461a 100644
-> --- a/drivers/iio/adc/xilinx-ams.c
-> +++ b/drivers/iio/adc/xilinx-ams.c
-> @@ -414,8 +414,17 @@ static void ams_enable_channel_sequence(struct iio_dev *indio_dev)
->  
->         /* Run calibration of PS & PL as part of the sequence */
->         scan_mask = BIT(0) | BIT(AMS_PS_SEQ_MAX);
-> -       for (i = 0; i < indio_dev->num_channels; i++)
-> +       for (i = 0; i < indio_dev->num_channels; i++) {
-> +               if (indio_dev->channels[i].scan_index >= 64) {
-> +                       const struct iio_chan_spec *chan = &indio_dev->channels[i];
-> +
-> +                       dev_warn(&indio_dev->dev,
-> +                                "channel %d (%d %d.%d @ %lx) has scan_index %d\n",
-> +                                i, chan->type, chan->channel, chan->channel2,
-> +                                chan->address, chan->scan_index);
-> +               }
->                 scan_mask |= BIT_ULL(indio_dev->channels[i].scan_index);
-> +       }
->  
->         if (ams->ps_base) {
->                 /* put sysmon in a soft reset to change the sequence */
-> 
-> I see these additional outputs:
-> 
-> [    1.447457] iio iio:device0: channel 0 (0 0.0 @ 60) has scan_index 66
-> [    1.451280] iio iio:device0: channel 1 (0 1.0 @ 6c) has scan_index 67
-> [    1.451446] iio iio:device0: channel 2 (0 2.0 @ 78) has scan_index 68
-> [    1.451612] iio iio:device0: channel 3 (0 3.0 @ 7c) has scan_index 69
-> [    1.451777] iio iio:device0: channel 4 (0 4.0 @ 80) has scan_index 70
-> [    1.451942] iio iio:device0: channel 5 (0 5.0 @ 84) has scan_index 71
-> [    1.452107] iio iio:device0: channel 6 (0 6.0 @ 9c) has scan_index 72
-> 
-> Indicating that the issue is with the ams_ctrl_channels using the
-> AMS_CTRL_CHAN_VOLTAGE macro.
-> 
-> --Sean
-> 
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

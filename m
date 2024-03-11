@@ -1,167 +1,201 @@
-Return-Path: <linux-iio+bounces-3451-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3452-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29554877A62
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 05:34:10 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A2A5877C69
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 10:16:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E18F81C20D4D
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 04:34:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93CBD1F2199A
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 09:16:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8914F6AAD;
-	Mon, 11 Mar 2024 04:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8394720DCC;
+	Mon, 11 Mar 2024 09:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AqMDcybd"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D6Y0QbU0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C0263AE
-	for <linux-iio@vger.kernel.org>; Mon, 11 Mar 2024 04:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832C517578;
+	Mon, 11 Mar 2024 09:15:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710131644; cv=none; b=ADlstTevoUqrR0pFlOyU/zNA4GtSXaKW++k0eSasDPRnqjPZLZsHlh5RICXXoeF/w1MSJKttXrcW7U2ZmRHwMGc6G4sB4jIkiHiWZxUhlCwPKIrTATHmICDppkIJq63zp6GKsUVDBJT9LDBBJKEaRUK4gMxhx9dw0n4QZfC+wS0=
+	t=1710148515; cv=none; b=Da5nInxzfpBrRh/8Hvnje1hycxCCrjZRn3i3EfthvbttTw5RvN33UdxFeH3gVDIqHlYJcC+Wu8uPETHkjjEeAp2FXAw8YXlLT9NdLfBqcARYqPhMjnozITKaTNB6JtEmGW24chsXWj7o0x6BYUsYkJKbzHQt2675a8a83qJYlJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710131644; c=relaxed/simple;
-	bh=HvO0v4u0VVZ2JJEu7Jm8yjzhwwN9z4m3XKkuU3P4APc=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DHrAxTiSL2KzMAfyhwrQIGA830fdph8bkGV4C6sjHr5nIW9i6LdXhjm4bz8/I03HegKNdKjJick5haQRzPxXUlqfi7CGp7iz4vkZtFeiLkGTqSd9EOwFR6cDrxGO2FNzty8jEc1oRkx7y1aWyuUEflFi6+JZ1viy/Zr8v+e8Wag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AqMDcybd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CAB26C433F1
-	for <linux-iio@vger.kernel.org>; Mon, 11 Mar 2024 04:34:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710131643;
-	bh=HvO0v4u0VVZ2JJEu7Jm8yjzhwwN9z4m3XKkuU3P4APc=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=AqMDcybdqP9ug9a3CHPASPKt+vRWB9TVZgYca+9kkRS7t4/o6YRcvxhRgjjH6Tskp
-	 HNFqhsy1sZQok7nttGXpf0aLVQZOMUwWP9/e+FM9LaaZD++ooj0XIbAt28B5q2FavY
-	 avoTQs5I7TxX8haCUs706KCrKBWJZGX7WxITwNKUFfGgMt2roced0UMYWx2un8tdY3
-	 Z54CEmQXMDqd/dY4Nq4xrFmp8JTZOXa0IzMtO/tXGpQ2DYfBB1xvLJcmiyFykJkObT
-	 bBdDdibLrEtmx0znJDZ4h8aB5Q0ulenbb3ZzRnxU3d3TXzeP3EVVzRXVqsD55oP1SH
-	 FrXSRRe4Hi+8Q==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id B1BF2C4332E; Mon, 11 Mar 2024 04:34:03 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Mon, 11 Mar 2024 04:34:03 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: kernelbugzilla@kirkschnable.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218578-217253-wLlCRzHIcK@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
-References: <bug-218578-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=arc-20240116; t=1710148515; c=relaxed/simple;
+	bh=rguz1TbWj7waSq9k6cTHsDuJxtVExG1UCcqMJ6lcxCU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hxtrD+I5W1RjPzjLCXUUsOZ9ZwkdLc4SaJg6wwy4F0eGchDhRh+a9+GQL4gX/CyERPgDpFFBVhpDqvI1aVNqH4y3ab0jy5Vs3+OUBO+/gPowKg/hePfWnZiHZCtGi7SSrgnzLcVCCbiMrAQFJwgY0jgXgAdgUMCW9LdAwv53UIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D6Y0QbU0; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-512e39226efso3957574e87.0;
+        Mon, 11 Mar 2024 02:15:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710148511; x=1710753311; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hVfC7dWRDVEdwYmburdeFeTuR7MqSLqjlM27oJ2hlUQ=;
+        b=D6Y0QbU07E7yCmqG/5e4yuhGGdCeIhaqry0dpFsxkGlVbRiaZegx21awdUYiFSU9Xd
+         gB/+GGERM0h8h5E86l1A22QhnKGfuBzaD1LTiAZshZXzqrQ8VAyz7oP2FH//4MiESRPj
+         jlernuh/bdNR8yCx+wpeE9QUuLdr650gN7PtuzfTM2E4HmPe8mGHFi8TD8tsk28ZwCQj
+         23nqMjzwzxq73nsqWNIC2s2POdtM41/ZqItIBs/HyFTs04d0Cpn3t8ykUaRnyMBitNeJ
+         4fSjEgXPvKTzxey8UrqoAnxspwgzRDi+9B9h2tRNSaSGcGJ5hde4gceY7LHXz68zMM2N
+         RGuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710148511; x=1710753311;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hVfC7dWRDVEdwYmburdeFeTuR7MqSLqjlM27oJ2hlUQ=;
+        b=R0VGTKolPZkvUCD0m534ugPE+cOotARblIWqPkBZLng7QHG/8Fp4024rATvoo3Eqsb
+         ZNKS9QDsvUrV4yODgkKXlVcp2qA69fmKSPxnZk9EHfBjw6/qtiW1OA2KEjHceivKKnBf
+         JwtEyHbIcFuTF9tKr4ZW4V71qnar8aUxevCBgMB3iJfJCkk3ovAvu3l4cmML9q+42EZJ
+         Npjm3FTiBOdj3HbPk8UFjC5u09qGhT8EIL17pEMdfA5lNNPuPpjfpg71nNYIDfmYWJdx
+         O7DpR23mdF5k4HnUVxIYFMlzcn5cz0FdhW6a/VQPU8d+i3ZKKGHjqeG5ldSxhTYTu4wN
+         UwCg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRj0fzJZ+/bDqaUneWKatjeSMpHPunxY4lvll+lUGYqxgKBShs8qtOzSChEFeYOfY/RmvbAMbOSRwTjNJrkQBM3lrraOfNOt7HgX4xzpq9ttHOsvezZjUgHw8yEMirD1hVfMsLT1Kq8j65Gab+p9B1CvyPlRejUhKcqPnmVVxYnUc7jw==
+X-Gm-Message-State: AOJu0YzG/4Lqzo+k8E9XUSebth62ox+jOYhEfYtidPkXUKPKmI0K0mpH
+	MX30hiQbI/nZttGNfeT42ZwUD3NKyWw48aMv9mXcP7z6SjQG8Lji
+X-Google-Smtp-Source: AGHT+IF9BcQoQLLpHtF0e37ZBQTx1DJ5KD7KbcJ7irjGDUuJqjlydGfnwUtZ+Q152Mw6uXTpfNY+2w==
+X-Received: by 2002:ac2:484a:0:b0:513:3741:7357 with SMTP id 10-20020ac2484a000000b0051337417357mr3957581lfy.56.1710148511259;
+        Mon, 11 Mar 2024 02:15:11 -0700 (PDT)
+Received: from [172.16.183.82] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id h4-20020a056512350400b005139c3c584bsm951164lfs.241.2024.03.11.02.15.10
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 11 Mar 2024 02:15:11 -0700 (PDT)
+Message-ID: <02e2210d-9164-431e-8fe2-226cb1aa2d48@gmail.com>
+Date: Mon, 11 Mar 2024 11:15:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 0/5] Support ROHM BU27034 ALS sensor
+Content-Language: en-US, en-GB
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ linux-iio@vger.kernel.org, Shreeya Patel <shreeya.patel@collabora.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ devicetree@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+ Paul Gazzillo <paul@pgazz.com>, Rob Herring <robh+dt@kernel.org>,
+ Dmitry Osipenko <dmitry.osipenko@collabora.com>,
+ linux-kernel@vger.kernel.org,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+References: <cover.1680263956.git.mazziesaccount@gmail.com>
+ <ff8d6d14-6b48-4347-8525-e05eeb9721ff@gmail.com>
+ <20240309175056.3862630f@jic23-huawei>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20240309175056.3862630f@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
+On 3/9/24 19:50, Jonathan Cameron wrote:
+> On Mon, 4 Mar 2024 14:38:38 +0200
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
---- Comment #3 from Kirk Schnable (kernelbugzilla@kirkschnable.com) ---
-Hello Jonathan,
+>> I just found out that the BU27034 sensor which was developed when I
+>> wrote this driver had some "manufacturing issues"... The full model
+>> number was BU27034NUC. The has been cancelled, and, as far as I know, no
+>> significant number of those were manufactured.
+> 
+> ouch. We all have some cancelled products in our history!
+> When that happens I usually go eat cake and moan at anyone standing
+> near by.
 
-Thanks for your response, and I have done some further testing today which =
-has
-led me to some interesting conclusions.
+I like that approach :) Luckily, this was just a sensor. It was much 
+more painful back in the Nokia when some of the BTS variants were 
+cancelled. It flushed 'man years' of work instead of 'man months' :)
 
-I have, as you requested, extracted the DSDT information relevant to the
-accelerometer and attached it.  I found 6 devices containing the word
-"Accelerometer" so I pulled the details of all of them, but I think the fir=
-st
-one, ACC0, is the relevant one since it mentions the MXC6655 model number.
+> At least this seems like there will be some direct use of
+> the work done (sometimes you just have to list the things learnt along
+> the way).
 
-My further testing today has led me to conclude that this problem is more
-"intermittent" than I'd first believed.  It almost led me to incorrectly
-conclude that I'd been mistaken about the whole thing in fact.
+Yes! It wasn't all wasted effort!
 
-I made another post elsewhere and connected with another user of a similar
-Chuwi tablet device who says their accelerometer is working reliably on Fed=
-ora
-39 (after a workaround to correct the fact that the orientation is 90 degre=
-es
-off).  They encouraged me to try it from the live environment, which I did =
-not
-expect to make any difference, however it actually worked exactly as he had
-described.  For the first time, I saw actual updates to the raw data, and t=
-he
-screen was actually rotating (albeit, incorrectly).
+>> One thing that has _not_ changed though is the part-id :rolleyes:
+> 
+> *sigh* Not even a version number?
 
-This prompted me to perform another fresh install of Fedora.  To my shock, =
-the
-fresh install worked at first boot too, then I started to try to fix the 90
-degree orientation issue.  I created a file in /etc/udev/hwdb.d/ with some
-suggested settings and rebooted.  After that, the accelerometer no longer
-worked.  So, I reverted the change and rebooted again.  Still no accelerome=
-ter
-readings anymore.
+No.
 
-Thinking that maybe I'd broken that install somehow (even though I reverted=
- all
-the changes), I did another fresh install.  This fresh install worked too u=
-ntil
-I rebooted the system.  I did nothing else but reboot the system.  Totally
-broken, even several reboots later.
+> Even unreleased / prototype parts should have
+> different IDs if anything in the interface changed.
 
-I tried running DNF updates on this install (over 600 packages needing upda=
-te),
-and rebooted again.  Still no accelerometer.  An update clearly didn't brea=
-k it
-but an update also didn't fix it.
+...tell me about it... Well, I tried to send feedback - but I am not 
+convinced this is not happening again. I think I could fill a book with 
+feedback which has had not been listened in the past - but who knows, 
+occasionally feedback also works. So, we can keep trying. :)
 
-While attempting to begin a third fresh install to try to reproduce this and
-see if this was a pattern, I performed the test again from the live environ=
-ment
-and got no accelerometer readings.  This is the exact same USB I installed =
-from
-earlier that worked several times this morning.
+>> My preferred approach would be to convert the in-tree bu27034 driver to
+>> support this new variant. I think it makes sense because:
+>> - (I expect) the amount of code to review will be much smaller this way
+>>     than it would be if current driver was completely removed, and new one
+>>     submitted.
+>> - This change will not break existing users as there should not be such
+>>     (judging the statement that the original BU27034NUC was cancelled
+>>     before it was sold "en masse").
+>>
+>> It sure is possible to drop the existing driver and submit a new one
+>> too, but I think it will be quite a bit more work with no strong benefits.
+> 
+> Agreed, modify the existing driver. Just needs a clear statement in
+> patch descriptions that the original part is not expected to be in the wild.
 
-Something is very strange.  I would almost believe it was a faulty
-accelerometer if it weren't for the fact that I used this tablet for 3 hours
-today in Windows 11 and experienced no issues with the screen rotation.
+ack.
 
-I will say this much, I have yet to see the problem "go away" on an install
-once it starts.  The installs that work once and then break never start wor=
-king
-again.  The live environment has been the most likely to work, but I have n=
-ow
-seen it not work.  I dumped the ACPI data for you from a live session of Fe=
-dora
-39 when the accelerometer was not working.
+>> I expect the rest of the information to be shared to me during the next
+>> couple of days, and I hope I can start testing the driver immediately
+>> when I get the HW.
+>>
+>> My question is, do you prefer the changes to be sent as one "support
+>> BU27034ANUC patch, of would you rather see changes splitted to pieces
+>> like: "adapt lux calculation to support BU27034ANUC", "remove obsolete
+>> DATA2 channel", "remove unsupported gains"...? Furthermore, the DT
+>> compatible was just rohm,bu27034 and did not include the ending "nuc".
+> 
+> Separate patches preferred for each feature / type of change. Mostly
+> they'll hopefully be trivial to review.
 
-Hopefully this data is helpful.  I am not knowledgeable enough about how th=
-ese
-ACPI components function under the hood, but it seems like the issue is les=
-s an
-issue of "the accelerometer never works" and more of an issue of "the
-accelerometer only works sometimes".
+I've drafted most of the changes and it seems they are more or less 
+trivial. I've not yet received the hardware so the changes are 100% 
+untested though.
 
-Thanks!
-Kirk
+>> Should that compatible be removed and a new one with "anuc"-suffix be
+>> added to denote the new sensor?
+> 
+> Yes. The binding patch in particular will need a really clear statement
+> that we believe there are none in products in the wild.
 
---=20
-You may reply to this email to add a comment.
+ack.
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+>> I am truly sorry for all the unnecessary reviewing and maintenance work
+>> you guys did. I can assure you I didn't go through it for fun either -
+>> even if the coding was fun :) I guess even the "upstream early" process
+>> has it's weaknesses...
+> 
+> True enough. It's always 'interesting' to not know if / when a product
+> you've upstreamed code for will launch.
+
+Indeed. Almost as interesting as having patches for a new product in 
+your "to be sent" - folder for 3 years waiting for the product to launch 
+to get permission to send the patches... Don't we all love maintaining 
+off-tree patches when we have that creeping feeling the patches will 
+never be allowed to be sent...? Asking for a friend :rolleyes:
+
+Yours,
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
+
 

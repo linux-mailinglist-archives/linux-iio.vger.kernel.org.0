@@ -1,82 +1,73 @@
-Return-Path: <linux-iio+bounces-3453-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3454-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F56C877D54
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 10:52:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D8D1877D97
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 11:05:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BF63B2147D
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 09:52:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F9621C2100A
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 10:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA4B1B274;
-	Mon, 11 Mar 2024 09:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49822232A;
+	Mon, 11 Mar 2024 10:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bF5k4Zi7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QRsr7VOw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8219617561;
-	Mon, 11 Mar 2024 09:52:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C79617578;
+	Mon, 11 Mar 2024 10:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710150729; cv=none; b=X4t25kHsqTbFW6Z70qzkJ7FznUCcIJfQB95mOT37/1XJ/DjEsKamQN2q6XfI9KOZMGYEK6o3FrhF4uyD8FeX6JcWAFuMIglBwK3mY+/dmkURjERTONLgAIXIIs/uHXdbERZsHqoF/QjMci3eLpjw2hjuY0w8EYQs2Xw8lBvrGQ8=
+	t=1710151514; cv=none; b=oz+yaA6vD7HnpdsHonBHS/MItyqjUoLpTw8jmqCiP2UIOxR6VO+nLzkt5HDK8A8O9tT/Th7dAYhuTiQ8yAuezfgDez+bOLlRZy8EglzyIDzJztEkiKtHGFjDnRaixkUNJZye7LolhaeHGge/XRO6I+3AGNEgwjmsk6XPWofV12Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710150729; c=relaxed/simple;
-	bh=kHqGNEG12eLe3S/obPhPqU/Qc/8vK1W84077+sxQovU=;
+	s=arc-20240116; t=1710151514; c=relaxed/simple;
+	bh=9raTGoVduTplUkSs6V7+n3GxTuAcH/u1boii2ha37N8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lTlWQYnur3YpzO8mnQeBbL4dc26mEGAWgguao2pfqbEgVevN4nHVLxcZQQNiOHbRHtYJOlPGNtH0MjoOE9iL+aXkV1OUzlMONTH8m4o3F6AB9l4Kh4osVjsNqSo47ZESBCJZq0jMPL/lpQlNFXob6nno8Q2j5jTYMOLkeZMVLwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bF5k4Zi7; arc=none smtp.client-ip=198.175.65.14
+	 Content-Type:Content-Disposition:In-Reply-To; b=utzyBuy0dwG3P7gTzKdUF7ab7PnEVpNLgZCYKU5Nx/FFCOP4FZGisIru83Rm+d9S5sPWircDpK34bLf1tR4XqhJ69bmbZmgxlAYj6AJ/+m4gTVuRidQinfnXwAv9lSrutxnPHT65LbVlHmonYRIfAawxARloVD7EUVgZIaXiy6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QRsr7VOw; arc=none smtp.client-ip=198.175.65.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710150728; x=1741686728;
+  t=1710151513; x=1741687513;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=kHqGNEG12eLe3S/obPhPqU/Qc/8vK1W84077+sxQovU=;
-  b=bF5k4Zi7MyLC0sjzcpebHrvt13p7mYKzLvEYv/FxH2lF2VF2Wd+7eARK
-   fYdLTisO24exmDrXsSwDlUlXP+XdWUFKffrOpjlpyvrI3akpcIRA+LXII
-   FX7J8KLwzwqymNRvFHWmQqwHO2uJ5R9ZilWTD4maAKLwhrkZIi8/fBg93
-   8/RJyJ8U5DiHo06kqGyJKEYh/8ylWLv6eLFTGRN2enxUFOe0rnG7isV79
-   SjDdIo8JhCCEo91ZROoCHqJzLh5IzaveuKdke8UtOO4Fb0rC/kcdaNsFa
-   x0kZW9GcpebXvAtmRkQvxfEFqoJnsu+MkyIic3gI0PDBByB6vV6tFQ0xk
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="8619483"
+  bh=9raTGoVduTplUkSs6V7+n3GxTuAcH/u1boii2ha37N8=;
+  b=QRsr7VOwYZf3UscFLDdYxcaZRMDaYEOi09qorHoNcriN4/6rpI4QiDQ4
+   NY9ExinXiB6Oc+8pm8dzyPnBcLTDdZ+3LEPTMxYWb1CcO8hAReUaMeA//
+   EAIHtRJpWQcjWX3pfqTilAIKQ5Bt9YUxy/tjtRRy+TAJ/3uMcu1Sbo7ZZ
+   YZbGZh5WPkBg62J8EpyROVK31xRR6ziB6G86YICPzJBsJTlzbCJ/swCvk
+   Bs0q/r1qQFGzTvEeHcgWRgeZyr9O397AUrUtrUDJnWaaVWBfHHciDG3Pj
+   x5LLCs/LQRaBfndDzn0F49UbmWdv9k6JAV9kWwxu3OgUpi2W++ZWnffbE
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="4941775"
 X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
-   d="scan'208";a="8619483"
+   d="scan'208";a="4941775"
 Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 02:52:07 -0700
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 03:05:12 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="914354296"
+X-IronPort-AV: E=McAfee;i="6600,9927,11009"; a="914354556"
 X-IronPort-AV: E=Sophos;i="6.07,116,1708416000"; 
-   d="scan'208";a="914354296"
+   d="scan'208";a="914354556"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 02:52:03 -0700
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2024 03:05:10 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rjcK8-0000000BaI1-2XGg;
-	Mon, 11 Mar 2024 11:52:00 +0200
-Date: Mon, 11 Mar 2024 11:52:00 +0200
+	id 1rjcWq-0000000BaT1-06VT;
+	Mon, 11 Mar 2024 12:05:08 +0200
+Date: Mon, 11 Mar 2024 12:05:07 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matti Vaittinen <mazziesaccount@gmail.com>,
-	Marek Vasut <marex@denx.de>, Anshul Dalal <anshulusr@gmail.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Matt Ranostay <matt@ranostay.sg>,
-	Stefan Windfeldt-Prytz <stefan.windfeldt-prytz@axis.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, ang.iglesiasg@gmail.com,
+	phil@raspberrypi.com, 579lpy@gmail.com, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 0/5] Support for Avago APDS9306 Ambient Light Sensor
-Message-ID: <Ze7UQAD4V3n-MKDJ@smile.fi.intel.com>
-References: <20240309105031.10313-1-subhajit.ghosh@tweaklogic.com>
+Subject: Re: [PATCH] iio: pressure: Fixes SPI support for BMP3xx devices
+Message-ID: <Ze7XU5JS8FF5FZdg@smile.fi.intel.com>
+References: <20240311005432.1752853-1-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -85,37 +76,22 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240309105031.10313-1-subhajit.ghosh@tweaklogic.com>
+In-Reply-To: <20240311005432.1752853-1-vassilisamir@gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Sat, Mar 09, 2024 at 09:20:26PM +1030, Subhajit Ghosh wrote:
-> Support for Avago APDS9306 Ambient Light Sensor.
-> 
-> Driver support for Avago (Broadcom) APDS9306 Ambient Light Sensor.
-> It has two channels - ALS and CLEAR. The ALS (Ambient Light Sensor)
-> channel approximates the response of the human-eye providing direct
-> read out where the output count is proportional to ambient light levels.
-> It is internally temperature compensated and rejects 50Hz and 60Hz flicker
-> caused by artificial light sources. Hardware interrupt configuration is
-> optional. It is a low power device with 20 bit resolution and has 
-> configurable adaptive interrupt mode and interrupt persistence mode.
-> The device also features inbuilt hardware gain, multiple integration time
-> selection options and sampling frequency selection options.
-> 
-> This driver also uses the IIO GTS (Gain Time Scale) Helpers Namespace for 
-> Scales, Gains and Integration time implementation.
-> 
-> Link: https://docs.broadcom.com/doc/AV02-4755EN
+On Mon, Mar 11, 2024 at 01:54:32AM +0100, Vasileios Amoiridis wrote:
+> Bosch does not use unique BMPxxx_CHIP_ID for the different versions of
+> the device which leads to misidentification of devices if their ID is
+> used. Use a new value in the chip_info structure instead of the
+> BMPxxx_CHIP_ID, in order to choose the regmap_bus to be used.
 
 ...
 
->  - Removed 'ret' from iio_gts_find_new_gain_by_old_gain_time()
->    as it is not used. The current implementaion of the above
->    function passes all my tests of changing integration times,
->    scales and gains from userspace.
+>  	const struct regmap_config *regmap_config;
+> +	int spi_read_extra_byte;
 
-This is weird. I believe we have to fix the API first before adding / dropping
-the return value from it. This odd API which makes everybody confused.
+Why is it int and not boolean?
+Also, please run `pahole` to see the best place for a new member.
 
 -- 
 With Best Regards,

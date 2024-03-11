@@ -1,147 +1,174 @@
-Return-Path: <linux-iio+bounces-3462-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3464-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC08C878581
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 17:32:18 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BEF88785A5
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 17:44:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED7AB1C22517
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 16:32:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29B8B1C21CD5
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 16:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F9A851C4C;
-	Mon, 11 Mar 2024 16:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBD54594B;
+	Mon, 11 Mar 2024 16:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Bah56hbL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LxFWqFsd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF6E537E3
-	for <linux-iio@vger.kernel.org>; Mon, 11 Mar 2024 16:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D4B2AF06;
+	Mon, 11 Mar 2024 16:44:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710174655; cv=none; b=cA8qSntZiYdB5ESQrQPFlnDzYN4xVJBQty45X8Z/A+g8i04eAFlzNCHGyHsaYqGFu9yJcBoCcMtnbPO+1DwiRxM1n+k7GqGS5pykz2FvzxChnVwIFaIoxfP6cVT9GLuWG7fKaX9S1Ml4+8mtHEDemCVuYEvywq2Mx422UbFyzIo=
+	t=1710175461; cv=none; b=CRSNLIYssk3DOKYhy9ePO+P6BnkSLNp5Kxkfn3AIKpeIpXXBdPJD+xl5xJOTXGe56+oG8ajZTvOm6LwoAlGev+nVjbr5xb4NZqtYIr2M5uyzNaXpzv1bvJ7LcGmNIH+f/yCe23L679a0XTDQElbvAF4T4fvzhpAmXTGrfj7nYMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710174655; c=relaxed/simple;
-	bh=KwxzH5naHfE6wHdizxXEVGM2BPEIZkouheow3wgkYIE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=UoFbP4eYxXgi/1rAHEUPJfAnAS8VfeTvvsRHci3eOwIZkM7NWLYiTF/NiZY5uhmbY+RWT0JMvUBbnx3FjTejy8JMifQtyXovBK5UvK5xGyy7eeCfIvWYOWIYQFsYVXgb/XDbdUTA3sJ49SvB5ZnBU9C2TnlEEzJVe8E6AR5X9Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Bah56hbL; arc=none smtp.client-ip=91.218.175.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <c2e912df-a84b-4cb7-9221-d29cae182aed@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1710174652;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Mhucpk8+s6nnIU/rfJr0jep5WX5DR2EJ/KZln53/P8o=;
-	b=Bah56hbLn/w4SGuiw9WsRcG5jm60zOxekMKINHA7H3vx3X8UdjiZCzIbBXDiZlEQFF10bG
-	JMWL/u2+ej+SSAcKwot38pXeB2ke93IsplXoKxBL5+IGSrfGs4hLqaPzBfvGUwxDvV6rEx
-	FkUvsa2H9U4j5yfIqoluWi8syL9dgok=
-Date: Mon, 11 Mar 2024 12:30:48 -0400
+	s=arc-20240116; t=1710175461; c=relaxed/simple;
+	bh=6NBRISRcZ1DgaQx5Bxk1KXFSBBBVkAQv54OitKcZZ7I=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=npBT3zJDGrbzey8BgrM6EcbLoXivnffWLl9wfmIWx6CLOJ228da9m2ev+rmCwHWq21dNOnIF7ZXYE4UejrtKs8V4f18116BWvOuBT/FO1+8m3QibpJ6sNrO3jngJVhYlNLebHBge88RrYN3s9Z2SXG62Q9fD616qg11OFx3M4V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LxFWqFsd; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a45ba1f8e89so510138766b.1;
+        Mon, 11 Mar 2024 09:44:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710175458; x=1710780258; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UbWkGAayYWenTYqN2oUQ8aST+NcC7qqKrwIVWhosCoU=;
+        b=LxFWqFsdvcuSDJT43BF5h6/j542j0sJmcpXEoCrnY7jhWTNuR6/x6OvUGxEzXUS/Mm
+         gIONODTD6ujLEsuFXI8TDbXxOJ/jPWTCR2I0qWSsTer8hmE9CGrZ09yze1nPf+ynCxPO
+         ThgVO7T6O/IwQpaZQjLcsblAua3AinEC30Z9kk2n4wuZwYW8fuY6rnX4hATTwJMNAdg7
+         /AHYi0/gJUoQrHg4RIFukVptiDR6PtE9CCqwpBekhGI0Fy8kpJb0MTTJEhiznVUn4zhO
+         v9HOKSdw1wV/aTTiTWJv5TwmwC/M3T23Uv7dyso1rJujxIzGAdj7tpsnZNM9ADi6Lmyi
+         VU5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710175458; x=1710780258;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UbWkGAayYWenTYqN2oUQ8aST+NcC7qqKrwIVWhosCoU=;
+        b=HjxOrvsiAiIa+DnFP4RcHKA2/vuAXfFuvRAmz2Nd0qyDt/AGN8rMB0ilVx5qVS8227
+         YQgvI0eiE5MTb2CKorFbh7LOu+TOdtWOoG0ciJ33nqW+iN8uu4+yYlvYMJQOBBgAb3oT
+         WLlTJ3wNw26UJbGqOZY7fXhHfmwpkOJb1EA0H6XSPrZBsTMr6W1c7D9qldj8idXobuy9
+         fWYkrE1Ci8xsCrzMbZ1XbwuG8dY4+vO/taWtqYsEZNN9L9wMpU5C26f8y2FihRdYB+Os
+         mTbbBt1w68s+rUtDZMYC6TOmEvhAvrJi3VSXHfy4H/UvJ4GxS/PIjpDx9vcyEPX3YM3J
+         80EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhkSdKYNe+bk7Z17TxZurjoPrrq4s0wzGPXTAFdYyB+F5VsivwwA0esNk96Fr75DaWOel6JInnu1PN5SPxzdtsIJxqQTxlhsobiBlMgW6SoZzc+p6HIABQ2pDhKVoPyDxeT1bp8Ysv
+X-Gm-Message-State: AOJu0Ywzi7fh+BOI4RNPyQ4qew+ssdXYEbMcNlYKuq2I7k1rVBz3ITfr
+	vacsxMLqbw4pW0LvKAyx69WWCTRo5i4tMxE/R6AweWH/9B+Arjeq
+X-Google-Smtp-Source: AGHT+IHU4DuZOS6itD4uXre3W9irrkXk0UQd7C4PblN7xxtYSrBOZP3YGg5fWv2IbjG+bnJY0sD1Og==
+X-Received: by 2002:a17:907:1681:b0:a46:2fd1:32de with SMTP id cx1-20020a170907168100b00a462fd132demr1890985ejd.12.1710175457405;
+        Mon, 11 Mar 2024 09:44:17 -0700 (PDT)
+Received: from vamoiridPC ([2a04:ee41:82:7577:b24d:a5cc:76ea:4a7a])
+        by smtp.gmail.com with ESMTPSA id i26-20020a170906251a00b00a44cb0bf11bsm3012697ejb.79.2024.03.11.09.44.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Mar 2024 09:44:16 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Mon, 11 Mar 2024 17:44:14 +0100
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
+	lars@metafoo.de, ang.iglesiasg@gmail.com, phil@raspberrypi.com,
+	579lpy@gmail.com, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: pressure: Fixes SPI support for BMP3xx devices
+Message-ID: <20240311164414.GA1790017@vamoiridPC>
+References: <20240311005432.1752853-1-vassilisamir@gmail.com>
+ <Ze7XU5JS8FF5FZdg@smile.fi.intel.com>
+ <20240311155829.00004478@Huawei.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: iio: xilinx-ams: shift-out-of-bounds in
- ams_enable_channel_sequence
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-To: Jonathan Cameron <jic23@kernel.org>,
- "O'Griofa, Conall" <conall.ogriofa@amd.com>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <a6dd3a2f-c3e9-4781-801b-8e8e72ac9beb@linux.dev>
- <20240309190649.04be7261@jic23-huawei>
- <0eb0b1b0-179b-424d-b0e8-94343e0344d1@linux.dev>
-In-Reply-To: <0eb0b1b0-179b-424d-b0e8-94343e0344d1@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240311155829.00004478@Huawei.com>
 
-On 3/11/24 12:11, Sean Anderson wrote:
-> +CC Conall
+On Mon, Mar 11, 2024 at 03:58:29PM +0000, Jonathan Cameron wrote:
+> On Mon, 11 Mar 2024 12:05:07 +0200
+> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 > 
-> On 3/9/24 14:06, Jonathan Cameron wrote:
->> On Tue, 5 Mar 2024 12:30:53 -0500
->> Sean Anderson <sean.anderson@linux.dev> wrote:
->> 
->>> Hi,
->>> 
->>> When enabling UBSAN on a ZynqMP Ultrascale+, I see the following error during boot:
->>> 
->>> [    1.447628] ================================================================================
->>> [    1.447832] UBSAN: shift-out-of-bounds in ../drivers/iio/adc/xilinx-ams.c:426:16
->>> [    1.448019] shift exponent 66 is too large for 64-bit type 'long long unsigned int'
->>> [    1.448211] CPU: 2 PID: 1 Comm: swapper/0 Not tainted 6.6.20+ #90
->>> [    1.448368] Hardware name: xlnx,zynqmp (DT)
->>> [    1.448475] Call trace:
->>> [    1.448547]  dump_backtrace+0x9c/0x11c
->>> [    1.448655]  show_stack+0x18/0x24
->>> [    1.448749]  dump_stack_lvl+0xac/0xd4
->>> [    1.448853]  dump_stack+0x18/0x24
->>> [    1.448947]  ubsan_epilogue+0x10/0x44
->>> [    1.449051]  __ubsan_handle_shift_out_of_bounds+0x98/0x134
->>> [    1.449191]  ams_enable_channel_sequence+0x22c/0x23c
->>> [    1.449324]  ams_probe+0x570/0x6d4
->>> [    1.449423]  platform_probe+0x68/0x108
->>> [    1.449530]  really_probe+0x158/0x3b0
->>> [    1.449632]  __driver_probe_device+0x88/0x1a0
->>> [    1.449747]  driver_probe_device+0x3c/0x138
->>> [    1.449859]  __driver_attach+0xe4/0x1bc
->>> [    1.449964]  bus_for_each_dev+0x78/0xe0
->>> [    1.450068]  driver_attach+0x24/0x30
->>> [    1.450167]  bus_add_driver+0x110/0x240
->>> [    1.450271]  driver_register+0x60/0x128
->>> [    1.450376]  __platform_driver_register+0x28/0x34
->>> [    1.450500]  ams_driver_init+0x1c/0x28
->>> [    1.450609]  do_one_initcall+0x78/0x2c8
->>> [    1.450714]  kernel_init_freeable+0x2f8/0x59c
->>> [    1.450831]  kernel_init+0x30/0x150
->>> [    1.450932]  ret_from_fork+0x10/0x20
->>> [    1.451073] ================================================================================
->>> 
->>> When applying the following patch:
->>> 
->> That channel definition looks suspicious. Anyone shed light on what the channel scan index layout
->> is supposed to be?
->> There seem to be substantial gaps in used numbers.
->> If I read it right the offset to jump over the AUX_CHAN is too large (22 - should be 16) but
->> that still ends up with us going above the range of supported scan indexes.
->> 
->> The PL Sequence mask used is GENMASK_ULL(59, 22)
->> 
->> Whilst the bits are set, nothing actually reads them that I can see.
->> So why are they set and how are those channels supposed to work?
->> 
->> So agreed buggy; no idea what it supposed to do!
+> > On Mon, Mar 11, 2024 at 01:54:32AM +0100, Vasileios Amoiridis wrote:
+> > > Bosch does not use unique BMPxxx_CHIP_ID for the different versions of
+> > > the device which leads to misidentification of devices if their ID is
+> > > used. Use a new value in the chip_info structure instead of the
+> > > BMPxxx_CHIP_ID, in order to choose the regmap_bus to be used.  
+> > 
+> > ...
+> > 
+> > >  	const struct regmap_config *regmap_config;
+> > > +	int spi_read_extra_byte;  
+> > 
+> > Why is it int and not boolean?
+> > Also, please run `pahole` to see the best place for a new member.
 > 
-> OK, so there are three groups of channels in this device, as set up by
-> ams_init_module:
+> Whilst that's good in general, there aren't many of these structs (4ish)
+> so if the 'cheapest' positioning isn't natural or hurts readability
+> ignore what you get from pahole.
 > 
-> 	- CTRL channels (xlnx,zynqmp-ams)
-> 	- PS channels (xlnx,zynqmp-ams-ps)
-> 	- PL channels (xlnx,zynqmp-ams-pl)
+> Jonathan
 > 
-> According to the comment in ams_enable_channel_sequence,
-> 
-> 	/*
-> 	 * Enable channel sequence. First 22 bits of scan_mask represent
-> 	 * PS channels, and next remaining bits represent PL channels.
-> 	 */
-> 
-> and indeed, the following code only touches the PS and PL registers. So
-> I think we just need to add a check for
-> chan->scan_index >= AMS_CTRL_SEQ_BASE, like in ams_read_raw.
 
-https://lore.kernel.org/linux-iio/20240311162800.11074-1-sean.anderson@linux.dev/
+Hello Andy, hello Jonathan,
 
---Sean
+Thank you for your feedback! Andy, I already used pahole as you suggested
+already in one of my previous patch series for this driver, and the
+result looks like it uses only 4 byte values so adding a bool would only
+create a 3 byte hole. Apart from that, I noticed that for example, the 
+num_chip_ids value could have easily been a u8 but instead it's an int,
+I guess to satisfy the alignment requirements. Also the id_reg could
+easily be a u8 but instead it is an unsigned int. Maybe in the future, if
+more values are added it will be good to have a re-organization of those
+values. I can look at it, after the fix is done and it is on the mainline.
+Finally, I chose this specific position because it's next to the 
+regmap_config, and the new value affects the regmap_bus so in my opinion
+it helps readability.
 
+pahole --class_name=bmp280_chip_info bmp280-core.dwo
+struct bmp280_chip_info {
+        unsigned int               id_reg;               /*     0     4 */
+        const u8  *                chip_id;              /*     4     4 */
+        int                        num_chip_id;          /*     8     4 */
+        const struct regmap_config  * regmap_config;     /*    12     4 */
+        int                        spi_read_extra_byte;  /*    16     4 */
+        const struct iio_chan_spec  * channels;          /*    20     4 */
+        int                        num_channels;         /*    24     4 */
+        unsigned int               start_up_time;        /*    28     4 */
+        const int  *               oversampling_temp_avail; /*    32     4 */
+        int                        num_oversampling_temp_avail; /*    36     4 */
+        int                        oversampling_temp_default; /*    40     4 */
+        const int  *               oversampling_press_avail; /*    44     4 */
+        int                        num_oversampling_press_avail; /*    48     4 */
+        int                        oversampling_press_default; /*    52     4 */
+        const int  *               oversampling_humid_avail; /*    56     4 */
+        int                        num_oversampling_humid_avail; /*    60     4 */
+        /* --- cacheline 1 boundary (64 bytes) --- */
+        int                        oversampling_humid_default; /*    64     4 */
+        const int  *               iir_filter_coeffs_avail; /*    68     4 */
+        int                        num_iir_filter_coeffs_avail; /*    72     4 */
+        int                        iir_filter_coeff_default; /*    76     4 */
+        const int  *               sampling_freq_avail;  /*    80     4 */
+        int                        num_sampling_freq_avail; /*    84     4 */
+        int                        sampling_freq_default; /*    88     4 */
+        int                        (*chip_config)(struct bmp280_data *); /*    92     4 */
+        int                        (*read_temp)(struct bmp280_data *, int *, int *); /*    96     4 */
+        int                        (*read_press)(struct bmp280_data *, int *, int *); /*   100     4 */
+        int                        (*read_humid)(struct bmp280_data *, int *, int *); /*   104     4 */
+        int                        (*read_calib)(struct bmp280_data *); /*   108     4 */
+        int                        (*preinit)(struct bmp280_data *); /*   112     4 */
+
+        /* size: 116, cachelines: 2, members: 29 */
+        /* last cacheline: 52 bytes */
+};
+
+Thanks,
+Vasilis
+> > 
+> 
 

@@ -1,135 +1,167 @@
-Return-Path: <linux-iio+bounces-3466-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3467-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F6D2878753
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 19:30:06 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A2DB878918
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 20:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2FF8B20C04
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 18:30:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A05881C21254
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 19:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C7653E27;
-	Mon, 11 Mar 2024 18:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A955579F;
+	Mon, 11 Mar 2024 19:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y47hQk8X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iTfGdCH4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AC053E22
-	for <linux-iio@vger.kernel.org>; Mon, 11 Mar 2024 18:29:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5CD5467F;
+	Mon, 11 Mar 2024 19:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710181796; cv=none; b=NTcDe/FOOVDe9+ngSzhELVBISK2ZTD89N9LpBNAalgBsE31AD6tS6JBzDI2MQ0Te0gtI/gmNtdf6xKUul0zzaNtv9X32iaL7Z7gA8j/L+0wqyYvpbu1YVpctLjjcPCPsWlYSWf2gSJLmidTxGkb7AtTgrFboxls4QFjm3J15WJc=
+	t=1710186544; cv=none; b=AW2H5irq+XdkjV05Ti2RpDPT5WVdNlqxT9FYQ+iV1zCy44PF1fK56gdV28fUbx0Zo3et+zEhHusoEzUTlzIV0NTFW9lumxVSw1zMD3VDYCytHGvBodjSCSV+54M3i7gH6wo8nxlEDunHvYNK2qXHMr/bkLKKzGRi3aqHTM5HCeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710181796; c=relaxed/simple;
-	bh=i/3GP0PpiNsvHjdPBd8lZFtMGUucMiPhWK635lnyVvA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=je8viUf8tLKTmv59/c5EJsoIfPuTZjy6NqdK7o6nxSFLV0vCgxoTkTj/mHGEEYQNd0iOVAyEYzxwb9jX3BawBuU7//sunTZWU/r7kRWGsVKaFkxvVKuqixDnfJ03203okIKdbMJUwbZp7d0mm2TdbwBUkN4F6Z8BCTDx9IpLUZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y47hQk8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 47424C43390
-	for <linux-iio@vger.kernel.org>; Mon, 11 Mar 2024 18:29:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710181796;
-	bh=i/3GP0PpiNsvHjdPBd8lZFtMGUucMiPhWK635lnyVvA=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=Y47hQk8XkJWLxwTCjQDbVDhRaioTliUUMgvcselofx8QmPKbITRaaI0LlmZmVKOm4
-	 7iNMiFh+K+CBvdVIifrlorcl85pe4LT0WPRGCD1b+c7tdCJTu7fb32D47bnA+yTa4W
-	 eIEcLRezkW8Ko5QL0QSfncyleaG6Z90gUtHvg8Om7u4e+LoeWuRNNzQjG5rL+Z0L53
-	 O6TsRZL7B/ihWQdFXvKWmI5BVXZ9qkFOoKyr0LY8Un20L2014leK4OV/LYuR5hO/Ui
-	 wL25gpbF+xX4xhqHXzcA0F9g7jC8YTYwvMpmx0ZtAY/2KpGYf47OqT5tqiiNAGA7xU
-	 CZJA7aQSRA+HA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 2FF4EC53BD0; Mon, 11 Mar 2024 18:29:56 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Mon, 11 Mar 2024 18:29:55 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: jwrdegoede@fedoraproject.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: cc
-Message-ID: <bug-218578-217253-RZT2sBnTrr@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
-References: <bug-218578-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=arc-20240116; t=1710186544; c=relaxed/simple;
+	bh=z42cvLsMGMKyxMOm2R5aqURqk1KQo5qfG34ILC6ocFo=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=iFI2OBJ04bg0HPhklhQ1TMz9oS9S1tMgMQ3X/e47swxvki3IRdCnZ/UK2Yc9mr9jz68JDx2g20G2HD06DWE8jlXrXdPZZ/p619LY1MrSxa141h2H28MX7Ng4t7b8cZn7leqffqDBwJOqFYniBU6p0sq/vLePABEI/rubItDlrw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iTfGdCH4; arc=none smtp.client-ip=209.85.216.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-29c23f53eabso526742a91.0;
+        Mon, 11 Mar 2024 12:49:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710186542; x=1710791342; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EzTmwfaFSntQTdaehiwcLGkptt+X4zDnltJsaffYEjA=;
+        b=iTfGdCH42mN6elwbj+QB9SYttR3PwVcJESv0fK/4boMT9rOqwm1YMkazg22uv45U0O
+         OOO/WrsNgXOZdcNtHA7t1/WKypA9Pq1auoOkeA2CaJVHk3U61KpbWo+apYw3YpTfdhpK
+         YpC01Yhszuyz9Zgz27pajzVLozzVM67XTvolxFACd8nalWpUIPPYlBdBVLpM+66OlCcv
+         CxhhuPsPp49FJoqruA2q4yc4MguwOt8Y3Q+idabTdf4FWr9judrj+wb+LqaPu6v7OU7m
+         ztFB/AW20vX9k+rMAv643tJxE9bQNPDlwYayYi2ASnXwM9d9aZc26b6nP9qL/jzROUW2
+         lKNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710186542; x=1710791342;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EzTmwfaFSntQTdaehiwcLGkptt+X4zDnltJsaffYEjA=;
+        b=vo5xg908cTmlJ/hrS8IwmeWuKWFARkx2dBatcKRQ+d1XvnL+XgV6gcSPICxyezPfTE
+         Wmr1nrbJI/cZ7roUxR7Y/mdz/YqHGs3hXDWr0zWyJ0pvjGCqDRpJHNy5fEl8HVGHGovu
+         wNpZDI3Tet45WxwYA1o52V7M4gOcO6QyHgbp3YdXuAWvngamV3Yi3SfJcT9iBmCscihC
+         ulcTZmC6ZUycCwIbW5x4/uxOp1VKmvxJ9Mkcvl1d466ZtcHFYk+L5cbi/lEiULltUDQm
+         QZcqZQayXd5g4Fz9rNfAPVFPsk67KTwPobMxVfggAhyZlgt2oKWNP1Xqls8kmveXOGwI
+         Yepg==
+X-Forwarded-Encrypted: i=1; AJvYcCUA4m1X8E2qqBJnjLMW6Lqz+il6yZrMWXWgxq6KLU91UOHYcHzADsrBea+uyyUEIoi/6V8nMWKRJ4QlvO5CyWKLgxdugUoUyQeI
+X-Gm-Message-State: AOJu0Ywiv5xtwoGSkBp+4YXYzs6glpyzITX2aClNU3ww+syqq3/QE5eS
+	UecoM4E7fgHyWggNo/hHVC4s5WnHWiXPRqMAOdq5az7MkkraXgUSXGYqg5QGMwEZL8ja7meoBSF
+	+5kqhAMNocH3DhLpwozPcafyOpA==
+X-Google-Smtp-Source: AGHT+IFTG7a3zlFSXzyGWycdYmEnCok1uSP4A9iNrHnIawbLU4gv7sjpwIWFJ0ipcEJjwtArnwZtUCK04BSTO43t1aU=
+X-Received: by 2002:a17:90b:3ce:b0:299:33c5:9583 with SMTP id
+ go14-20020a17090b03ce00b0029933c59583mr5516694pjb.14.1710186542061; Mon, 11
+ Mar 2024 12:49:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+From: Chenyuan Yang <chenyuan0y@gmail.com>
+Date: Mon, 11 Mar 2024 14:48:50 -0500
+Message-ID: <CALGdzur-rsLbd4BcgtR9QV2=ZH8xHAVySjm2z2TT=Aog74mdPw@mail.gmail.com>
+Subject: [drivers/iio] Question about `iio_gts_build_avail_time_table`
+To: mazziesaccount@gmail.com, jic23@kernel.org, lars@metafoo.de, 
+	linux-iio@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Zijie Zhao <zzjas98@gmail.com>
+Content-Type: multipart/mixed; boundary="00000000000056fc64061367d5f0"
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
+--00000000000056fc64061367d5f0
+Content-Type: text/plain; charset="UTF-8"
 
-Hans de Goede (jwrdegoede@fedoraproject.org) changed:
+Dear Linux Developers for IIO Driver,
 
-           What    |Removed                     |Added
-----------------------------------------------------------------------------
-                 CC|                            |jwrdegoede@fedoraproject.or
-                   |                            |g
+We are curious about the functionality of
+`iio_gts_build_avail_time_table`
+(https://elixir.bootlin.com/linux/latest/source/drivers/iio/industrialio-gts-helper.c#L363)
 
---- Comment #4 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
-Kirk, Jonathan Cc-ed me on this bug since I've done a lot of work on
-accelerometers on x86 tablets.
+```
+static int iio_gts_build_avail_time_table(struct iio_gts *gts)
+{
+  int *times, i, j, idx = 0, *int_micro_times;
 
-I notice you use the word "reboot(ed)" a lot in your last comment.
+  if (!gts->num_itime)
+    return 0;
 
-What happens if you power off the tablet and then power it back on again and
-then directly start the livecd (presumably this is what you did during your
-first test?).
+  times = kcalloc(gts->num_itime, sizeof(int), GFP_KERNEL);
+  if (!times)
+    return -ENOMEM;
 
-This way the device is fully reset / in a clean hwstate when starting the
-livecd.
+  /* Sort times from all tables to one and remove duplicates */
+  for (i = gts->num_itime - 1; i >= 0; i--) {
+    int new = gts->itime_table[i].time_us;
 
-Or reboot from a working Windows environment into the livecd ?  (maybe Wind=
-ows
-does something extra and rebooting keeps that state, combined with the live=
-cd
-because you have had the accelerometer work there before)
+    if (times[idx] < new) {
+      times[idx++] = new;
+      continue;
+    }
 
-As for figuring out which DSDT node is actually the one used on your tablet.
-Lets first focus on 1 single tablet (of your choosing) and ignore the other
-tablet for now.
+    for (j = 0; j <= idx; j++) {
+      if (times[j] > new) {
+        memmove(&times[j + 1], &times[j],
+                                (idx - j) * sizeof(int));
+        times[j] = new;
+        idx++;
+      }
+    }
+  ...
+}
+```
 
-On the chosen tablet can you do:
+For this function, we are trying to understand how it works but not
+sure how this sorting is done.
 
-ls -l /sys/bus/i2c/devices/
+1. When the gts->itime_table[i].time_us is zero, e.g., the time
+sequence is `3, 0, 1`, the inner for-loop will not terminate and do
+out-of-bound writes. This is because once `times[j] > new`, the value
+`new` will be added in the current position and the `times[j]` will be
+moved to `j+1` position, which makes the if-condition always hold.
+Meanwhile, idx will be added one, making the loop keep running without
+termination and out-of-bound write.
+2. If none of the gts->itime_table[i].time_us is zero, the elements
+will just be copied without being sorted as described in the comment
+"Sort times from all tables to one and remove duplicates".
 
-This should show a device for your accelerometer. E.g. "i2c-MXC6655:00" (but
-maybe something else) please run:
+Please correct us if we miss some key prerequisites for this function
+or the data structure.
+Thanks in advance!
 
-cat /sys/bus/i2c/devices/i2c-MXC6655:00/firmware_node/path
+A possible patch based on our understanding is attached.
 
-replacing "i2c-MXC6655:00" with the actual accelerometer i2c-device and then
-let us know the output.
+Best,
+Chenyuan
 
-Also please run:
+--00000000000056fc64061367d5f0
+Content-Type: application/octet-stream; name="iio.patch"
+Content-Disposition: attachment; filename="iio.patch"
+Content-Transfer-Encoding: base64
+Content-ID: <f_ltncwab40>
+X-Attachment-Id: f_ltncwab40
 
-sudo acpidump -o acpidump.txt
-sudo dmesg > dmesg.txt
-
-And attach both generated .txt files here.
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+ZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL2luZHVzdHJpYWxpby1ndHMtaGVscGVyLmMgYi9kcml2
+ZXJzL2lpby9pbmR1c3RyaWFsaW8tZ3RzLWhlbHBlci5jCmluZGV4IDc2NTMyNjFkMmRjMi4uMDY2
+N2RhOTg4Mjk1IDEwMDY0NAotLS0gYS9kcml2ZXJzL2lpby9pbmR1c3RyaWFsaW8tZ3RzLWhlbHBl
+ci5jCisrKyBiL2RyaXZlcnMvaWlvL2luZHVzdHJpYWxpby1ndHMtaGVscGVyLmMKQEAgLTM3NSwx
+OSArMzc1LDE3IEBAIHN0YXRpYyBpbnQgaWlvX2d0c19idWlsZF9hdmFpbF90aW1lX3RhYmxlKHN0
+cnVjdCBpaW9fZ3RzICpndHMpCiAJZm9yIChpID0gZ3RzLT5udW1faXRpbWUgLSAxOyBpID49IDA7
+IGktLSkgewogCQlpbnQgbmV3ID0gZ3RzLT5pdGltZV90YWJsZVtpXS50aW1lX3VzOwogCi0JCWlm
+ICh0aW1lc1tpZHhdIDwgbmV3KSB7Ci0JCQl0aW1lc1tpZHgrK10gPSBuZXc7Ci0JCQljb250aW51
+ZTsKLQkJfQorCQl0aW1lc1tpZHhdID0gbmV3OwogCiAJCWZvciAoaiA9IDA7IGogPD0gaWR4OyBq
+KyspIHsKIAkJCWlmICh0aW1lc1tqXSA+IG5ldykgewogCQkJCW1lbW1vdmUoJnRpbWVzW2ogKyAx
+XSwgJnRpbWVzW2pdLAogCQkJCQkoaWR4IC0gaikgKiBzaXplb2YoaW50KSk7CiAJCQkJdGltZXNb
+al0gPSBuZXc7Ci0JCQkJaWR4Kys7CisJCQkJYnJlYWs7CiAJCQl9CiAJCX0KKwkJaWR4Kys7CiAJ
+fQogCiAJLyogY3JlYXRlIGEgbGlzdCBvZiB0aW1lcyBmb3JtYXR0ZWQgYXMgbGlzdCBvZiBJSU9f
+VkFMX0lOVF9QTFVTX01JQ1JPICovCg==
+--00000000000056fc64061367d5f0--
 

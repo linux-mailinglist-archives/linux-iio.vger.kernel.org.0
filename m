@@ -1,174 +1,135 @@
-Return-Path: <linux-iio+bounces-3464-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3466-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BEF88785A5
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 17:44:27 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6D2878753
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 19:30:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29B8B1C21CD5
-	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 16:44:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2FF8B20C04
+	for <lists+linux-iio@lfdr.de>; Mon, 11 Mar 2024 18:30:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBD54594B;
-	Mon, 11 Mar 2024 16:44:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C7653E27;
+	Mon, 11 Mar 2024 18:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LxFWqFsd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y47hQk8X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D4B2AF06;
-	Mon, 11 Mar 2024 16:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AC053E22
+	for <linux-iio@vger.kernel.org>; Mon, 11 Mar 2024 18:29:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710175461; cv=none; b=CRSNLIYssk3DOKYhy9ePO+P6BnkSLNp5Kxkfn3AIKpeIpXXBdPJD+xl5xJOTXGe56+oG8ajZTvOm6LwoAlGev+nVjbr5xb4NZqtYIr2M5uyzNaXpzv1bvJ7LcGmNIH+f/yCe23L679a0XTDQElbvAF4T4fvzhpAmXTGrfj7nYMM=
+	t=1710181796; cv=none; b=NTcDe/FOOVDe9+ngSzhELVBISK2ZTD89N9LpBNAalgBsE31AD6tS6JBzDI2MQ0Te0gtI/gmNtdf6xKUul0zzaNtv9X32iaL7Z7gA8j/L+0wqyYvpbu1YVpctLjjcPCPsWlYSWf2gSJLmidTxGkb7AtTgrFboxls4QFjm3J15WJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710175461; c=relaxed/simple;
-	bh=6NBRISRcZ1DgaQx5Bxk1KXFSBBBVkAQv54OitKcZZ7I=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=npBT3zJDGrbzey8BgrM6EcbLoXivnffWLl9wfmIWx6CLOJ228da9m2ev+rmCwHWq21dNOnIF7ZXYE4UejrtKs8V4f18116BWvOuBT/FO1+8m3QibpJ6sNrO3jngJVhYlNLebHBge88RrYN3s9Z2SXG62Q9fD616qg11OFx3M4V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LxFWqFsd; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a45ba1f8e89so510138766b.1;
-        Mon, 11 Mar 2024 09:44:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710175458; x=1710780258; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UbWkGAayYWenTYqN2oUQ8aST+NcC7qqKrwIVWhosCoU=;
-        b=LxFWqFsdvcuSDJT43BF5h6/j542j0sJmcpXEoCrnY7jhWTNuR6/x6OvUGxEzXUS/Mm
-         gIONODTD6ujLEsuFXI8TDbXxOJ/jPWTCR2I0qWSsTer8hmE9CGrZ09yze1nPf+ynCxPO
-         ThgVO7T6O/IwQpaZQjLcsblAua3AinEC30Z9kk2n4wuZwYW8fuY6rnX4hATTwJMNAdg7
-         /AHYi0/gJUoQrHg4RIFukVptiDR6PtE9CCqwpBekhGI0Fy8kpJb0MTTJEhiznVUn4zhO
-         v9HOKSdw1wV/aTTiTWJv5TwmwC/M3T23Uv7dyso1rJujxIzGAdj7tpsnZNM9ADi6Lmyi
-         VU5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710175458; x=1710780258;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UbWkGAayYWenTYqN2oUQ8aST+NcC7qqKrwIVWhosCoU=;
-        b=HjxOrvsiAiIa+DnFP4RcHKA2/vuAXfFuvRAmz2Nd0qyDt/AGN8rMB0ilVx5qVS8227
-         YQgvI0eiE5MTb2CKorFbh7LOu+TOdtWOoG0ciJ33nqW+iN8uu4+yYlvYMJQOBBgAb3oT
-         WLlTJ3wNw26UJbGqOZY7fXhHfmwpkOJb1EA0H6XSPrZBsTMr6W1c7D9qldj8idXobuy9
-         fWYkrE1Ci8xsCrzMbZ1XbwuG8dY4+vO/taWtqYsEZNN9L9wMpU5C26f8y2FihRdYB+Os
-         mTbbBt1w68s+rUtDZMYC6TOmEvhAvrJi3VSXHfy4H/UvJ4GxS/PIjpDx9vcyEPX3YM3J
-         80EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhkSdKYNe+bk7Z17TxZurjoPrrq4s0wzGPXTAFdYyB+F5VsivwwA0esNk96Fr75DaWOel6JInnu1PN5SPxzdtsIJxqQTxlhsobiBlMgW6SoZzc+p6HIABQ2pDhKVoPyDxeT1bp8Ysv
-X-Gm-Message-State: AOJu0Ywzi7fh+BOI4RNPyQ4qew+ssdXYEbMcNlYKuq2I7k1rVBz3ITfr
-	vacsxMLqbw4pW0LvKAyx69WWCTRo5i4tMxE/R6AweWH/9B+Arjeq
-X-Google-Smtp-Source: AGHT+IHU4DuZOS6itD4uXre3W9irrkXk0UQd7C4PblN7xxtYSrBOZP3YGg5fWv2IbjG+bnJY0sD1Og==
-X-Received: by 2002:a17:907:1681:b0:a46:2fd1:32de with SMTP id cx1-20020a170907168100b00a462fd132demr1890985ejd.12.1710175457405;
-        Mon, 11 Mar 2024 09:44:17 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:b24d:a5cc:76ea:4a7a])
-        by smtp.gmail.com with ESMTPSA id i26-20020a170906251a00b00a44cb0bf11bsm3012697ejb.79.2024.03.11.09.44.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Mar 2024 09:44:16 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Mon, 11 Mar 2024 17:44:14 +0100
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
-	lars@metafoo.de, ang.iglesiasg@gmail.com, phil@raspberrypi.com,
-	579lpy@gmail.com, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: pressure: Fixes SPI support for BMP3xx devices
-Message-ID: <20240311164414.GA1790017@vamoiridPC>
-References: <20240311005432.1752853-1-vassilisamir@gmail.com>
- <Ze7XU5JS8FF5FZdg@smile.fi.intel.com>
- <20240311155829.00004478@Huawei.com>
+	s=arc-20240116; t=1710181796; c=relaxed/simple;
+	bh=i/3GP0PpiNsvHjdPBd8lZFtMGUucMiPhWK635lnyVvA=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=je8viUf8tLKTmv59/c5EJsoIfPuTZjy6NqdK7o6nxSFLV0vCgxoTkTj/mHGEEYQNd0iOVAyEYzxwb9jX3BawBuU7//sunTZWU/r7kRWGsVKaFkxvVKuqixDnfJ03203okIKdbMJUwbZp7d0mm2TdbwBUkN4F6Z8BCTDx9IpLUZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y47hQk8X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 47424C43390
+	for <linux-iio@vger.kernel.org>; Mon, 11 Mar 2024 18:29:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710181796;
+	bh=i/3GP0PpiNsvHjdPBd8lZFtMGUucMiPhWK635lnyVvA=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=Y47hQk8XkJWLxwTCjQDbVDhRaioTliUUMgvcselofx8QmPKbITRaaI0LlmZmVKOm4
+	 7iNMiFh+K+CBvdVIifrlorcl85pe4LT0WPRGCD1b+c7tdCJTu7fb32D47bnA+yTa4W
+	 eIEcLRezkW8Ko5QL0QSfncyleaG6Z90gUtHvg8Om7u4e+LoeWuRNNzQjG5rL+Z0L53
+	 O6TsRZL7B/ihWQdFXvKWmI5BVXZ9qkFOoKyr0LY8Un20L2014leK4OV/LYuR5hO/Ui
+	 wL25gpbF+xX4xhqHXzcA0F9g7jC8YTYwvMpmx0ZtAY/2KpGYf47OqT5tqiiNAGA7xU
+	 CZJA7aQSRA+HA==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 2FF4EC53BD0; Mon, 11 Mar 2024 18:29:56 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
+Date: Mon, 11 Mar 2024 18:29:55 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: jwrdegoede@fedoraproject.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: cc
+Message-ID: <bug-218578-217253-RZT2sBnTrr@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
+References: <bug-218578-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240311155829.00004478@Huawei.com>
 
-On Mon, Mar 11, 2024 at 03:58:29PM +0000, Jonathan Cameron wrote:
-> On Mon, 11 Mar 2024 12:05:07 +0200
-> Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> 
-> > On Mon, Mar 11, 2024 at 01:54:32AM +0100, Vasileios Amoiridis wrote:
-> > > Bosch does not use unique BMPxxx_CHIP_ID for the different versions of
-> > > the device which leads to misidentification of devices if their ID is
-> > > used. Use a new value in the chip_info structure instead of the
-> > > BMPxxx_CHIP_ID, in order to choose the regmap_bus to be used.  
-> > 
-> > ...
-> > 
-> > >  	const struct regmap_config *regmap_config;
-> > > +	int spi_read_extra_byte;  
-> > 
-> > Why is it int and not boolean?
-> > Also, please run `pahole` to see the best place for a new member.
-> 
-> Whilst that's good in general, there aren't many of these structs (4ish)
-> so if the 'cheapest' positioning isn't natural or hurts readability
-> ignore what you get from pahole.
-> 
-> Jonathan
-> 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
 
-Hello Andy, hello Jonathan,
+Hans de Goede (jwrdegoede@fedoraproject.org) changed:
 
-Thank you for your feedback! Andy, I already used pahole as you suggested
-already in one of my previous patch series for this driver, and the
-result looks like it uses only 4 byte values so adding a bool would only
-create a 3 byte hole. Apart from that, I noticed that for example, the 
-num_chip_ids value could have easily been a u8 but instead it's an int,
-I guess to satisfy the alignment requirements. Also the id_reg could
-easily be a u8 but instead it is an unsigned int. Maybe in the future, if
-more values are added it will be good to have a re-organization of those
-values. I can look at it, after the fix is done and it is on the mainline.
-Finally, I chose this specific position because it's next to the 
-regmap_config, and the new value affects the regmap_bus so in my opinion
-it helps readability.
+           What    |Removed                     |Added
+----------------------------------------------------------------------------
+                 CC|                            |jwrdegoede@fedoraproject.or
+                   |                            |g
 
-pahole --class_name=bmp280_chip_info bmp280-core.dwo
-struct bmp280_chip_info {
-        unsigned int               id_reg;               /*     0     4 */
-        const u8  *                chip_id;              /*     4     4 */
-        int                        num_chip_id;          /*     8     4 */
-        const struct regmap_config  * regmap_config;     /*    12     4 */
-        int                        spi_read_extra_byte;  /*    16     4 */
-        const struct iio_chan_spec  * channels;          /*    20     4 */
-        int                        num_channels;         /*    24     4 */
-        unsigned int               start_up_time;        /*    28     4 */
-        const int  *               oversampling_temp_avail; /*    32     4 */
-        int                        num_oversampling_temp_avail; /*    36     4 */
-        int                        oversampling_temp_default; /*    40     4 */
-        const int  *               oversampling_press_avail; /*    44     4 */
-        int                        num_oversampling_press_avail; /*    48     4 */
-        int                        oversampling_press_default; /*    52     4 */
-        const int  *               oversampling_humid_avail; /*    56     4 */
-        int                        num_oversampling_humid_avail; /*    60     4 */
-        /* --- cacheline 1 boundary (64 bytes) --- */
-        int                        oversampling_humid_default; /*    64     4 */
-        const int  *               iir_filter_coeffs_avail; /*    68     4 */
-        int                        num_iir_filter_coeffs_avail; /*    72     4 */
-        int                        iir_filter_coeff_default; /*    76     4 */
-        const int  *               sampling_freq_avail;  /*    80     4 */
-        int                        num_sampling_freq_avail; /*    84     4 */
-        int                        sampling_freq_default; /*    88     4 */
-        int                        (*chip_config)(struct bmp280_data *); /*    92     4 */
-        int                        (*read_temp)(struct bmp280_data *, int *, int *); /*    96     4 */
-        int                        (*read_press)(struct bmp280_data *, int *, int *); /*   100     4 */
-        int                        (*read_humid)(struct bmp280_data *, int *, int *); /*   104     4 */
-        int                        (*read_calib)(struct bmp280_data *); /*   108     4 */
-        int                        (*preinit)(struct bmp280_data *); /*   112     4 */
+--- Comment #4 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
+Kirk, Jonathan Cc-ed me on this bug since I've done a lot of work on
+accelerometers on x86 tablets.
 
-        /* size: 116, cachelines: 2, members: 29 */
-        /* last cacheline: 52 bytes */
-};
+I notice you use the word "reboot(ed)" a lot in your last comment.
 
-Thanks,
-Vasilis
-> > 
-> 
+What happens if you power off the tablet and then power it back on again and
+then directly start the livecd (presumably this is what you did during your
+first test?).
+
+This way the device is fully reset / in a clean hwstate when starting the
+livecd.
+
+Or reboot from a working Windows environment into the livecd ?  (maybe Wind=
+ows
+does something extra and rebooting keeps that state, combined with the live=
+cd
+because you have had the accelerometer work there before)
+
+As for figuring out which DSDT node is actually the one used on your tablet.
+Lets first focus on 1 single tablet (of your choosing) and ignore the other
+tablet for now.
+
+On the chosen tablet can you do:
+
+ls -l /sys/bus/i2c/devices/
+
+This should show a device for your accelerometer. E.g. "i2c-MXC6655:00" (but
+maybe something else) please run:
+
+cat /sys/bus/i2c/devices/i2c-MXC6655:00/firmware_node/path
+
+replacing "i2c-MXC6655:00" with the actual accelerometer i2c-device and then
+let us know the output.
+
+Also please run:
+
+sudo acpidump -o acpidump.txt
+sudo dmesg > dmesg.txt
+
+And attach both generated .txt files here.
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

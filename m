@@ -1,380 +1,217 @@
-Return-Path: <linux-iio+bounces-3469-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3470-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC240879062
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Mar 2024 10:08:45 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86B78792CC
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Mar 2024 12:16:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 210751F22D2F
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Mar 2024 09:08:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0409E1C21600
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Mar 2024 11:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EF5E77F25;
-	Tue, 12 Mar 2024 09:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D1579B67;
+	Tue, 12 Mar 2024 11:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eBe/H1KL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cXWA79EV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17D7377A03;
-	Tue, 12 Mar 2024 09:08:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D4C69D0A;
+	Tue, 12 Mar 2024 11:16:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710234520; cv=none; b=s4wUrzJkPmuoFLcWY4I7p4vjxIaUtrOnIQDo9NwjF1u8c+dW9BgM7nMIwInfaLTiG692PNYrLSQVxTXntXMkpwwsnRU2OOjxyLnKb3ceWz6ByMLKHgzQWJ8tA36mtrcyx9gjL3hyd8rG1x0TBkqblk2g4FfRgwQ6W/OgQqDnpeA=
+	t=1710242197; cv=none; b=YLCk1dg/aF04ySFGy6ylxdNRGXhYZoHnREWsR35VspanaYA27tiHOR1iH8jDZ/6Vj5+YKX//OoVzUbPht+ml+Fa19yvyEsA3zD7Q7wCGVYjSipxUoh1VQyE4yv+nlvUAxFeuWGFyh283BYJniTTcRjxo5HKuMMfiR3Fgv8DhrvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710234520; c=relaxed/simple;
-	bh=ukSztBsSglx2TNZSXnpNCiegJM8kO05XL1ZJVzgY/AA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gCw/LV1RVenrOnWpHjVL7wFmvcR3PFz0QMgL8RKw1a3uqp3tuLo2GOj0HtmeJ3iX8BPtPmQ+3qN4vW6Q9aI+pGMpjoAhabclohEOg1ownD6bEgBFzfdUpbLRa/HRFO1CKAtyFzLRGRHpzuAav6WPDnaQsSomynzTSTEK2F5nxsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eBe/H1KL; arc=none smtp.client-ip=209.85.208.48
+	s=arc-20240116; t=1710242197; c=relaxed/simple;
+	bh=rXCQMoPnbQrK2DoGOWi/2IAc66hjG44/JK5fA2xDgi8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=toqymQ1l57ozO55EWWv356P1dMJjHLPGuqB/cXgi8kE7MUhu4V1T1R4tE3ktwRxPoBudiwuMOKVYVh9sZd9PAuRNX0pP5IROh7YsN4Hi2RMP/YwNI2D4F1OCMqZ0Djp4feBT993vFvgnxlzwFaqoJgjgYdmrCFU0Ev3p5AmrG7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cXWA79EV; arc=none smtp.client-ip=209.85.167.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-565c6cf4819so10985887a12.1;
-        Tue, 12 Mar 2024 02:08:37 -0700 (PDT)
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-513c53ed3d8so38088e87.3;
+        Tue, 12 Mar 2024 04:16:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710234516; x=1710839316; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=T96FvsxYY1+xQtpMgDTuXuEBfsArSAWtQvXinsZOiNE=;
-        b=eBe/H1KLUldFTn826unEFXeLKqwE5AJrLMiPSz4OTsbJrHB/fKi6WhGSbi1iVz9ju8
-         wxEpQI9N4rHLwYNWvFrPIf6BcyNaxIZ26HOJPndkXu0ui1NpBJEus+4dlj2jwESSxOXD
-         rpknqlN4eKPK7xbQQI7NDTHfHjCjNlsEPTzCPLA/tCJWZ+mVXrsTDyTWGCzNUrVYZJPU
-         MkNmFofat/4DhDZbA7paaewHoSANVqtBhMnw+nGqPUZTUcIRi4ueru9EdwZgMcS5NrQf
-         dd4oLyRSggvE0PbiQBxPKPZdNWEjVtSb4ftXatL4fTgjLEcKBabwcTvTeQ3zf7uu91TD
-         Nk+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710234516; x=1710839316;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=gmail.com; s=20230601; t=1710242193; x=1710846993; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=T96FvsxYY1+xQtpMgDTuXuEBfsArSAWtQvXinsZOiNE=;
-        b=Eg3b35DacJLb0+0NDsHsxwnwzYNuZQG2i2fdIterduCP13iob35qtUHCYlnU7j1Zs/
-         ILgKqc3K9uGPuHc43iFF9VqHkdLGw3eEwkToWtBsv5yeUWpE9jngrJZtlHJUloi3IcmM
-         LMUGjKkh2qkUP3Ck75VFJEEJS+qQJqDC6WuGxUv+XHaHxe5Xdoe3Y781zi+O9zJuDgef
-         kd3VB6/S3mhtO+YwprqS4c88MD4DnsEAh07pUa2iHeRNjqHyTqWArnYkwDXZO5nnTyJf
-         hxPjFJ+c0KMZ9zyBxeG9j/5+vV/5n596rriCXwbt8c4hysyko/Z0dRLgdIv23GyLDl6L
-         f+ZA==
-X-Forwarded-Encrypted: i=1; AJvYcCXwLzsWRvGWEjc8/+9g2kFp0Ku5EG/e3MId0/32CUos+MjcemwzZbelRIr7WCzrYRXVvPubHQq7sfxVLE8Vx9AGQk75UyA0axUyUblot0GreC2AmZW1K/pXjXqjjKkHaSdbnwHOFQS4
-X-Gm-Message-State: AOJu0YwP79PhustBXMqQRhD6sCPq69D4UYbwnacIbBHDzcr308O8/7CY
-	ERJf5dDklKdn+A38E7jFYZHmKsvHIIfyqd+1y88XpatzSxLsS5WdISnW/slvyr3eYg==
-X-Google-Smtp-Source: AGHT+IHI72IVFRdcef20r7NQhdVEDmFlxq8bjiHReWIimP8PiHZm9ob9b5fi3T2Ag2UZG0ApqkfWWw==
-X-Received: by 2002:a17:906:aec7:b0:a46:3792:204 with SMTP id me7-20020a170906aec700b00a4637920204mr2768309ejb.10.1710234515969;
-        Tue, 12 Mar 2024 02:08:35 -0700 (PDT)
-Received: from ?IPv6:2001:a61:343e:8301:d737:22b0:7431:8d01? ([2001:a61:343e:8301:d737:22b0:7431:8d01])
-        by smtp.gmail.com with ESMTPSA id j12-20020a170906474c00b00a45bd9ccb55sm3615335ejs.155.2024.03.12.02.08.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 Mar 2024 02:08:35 -0700 (PDT)
-Message-ID: <8ee551edeff9c4c959a4dbda53d1a2a26a9bb62c.camel@gmail.com>
-Subject: Re: [PATCH] iio: adc: ad7944: Add support for "3-wire mode"
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
- <jic23@kernel.org>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Tue, 12 Mar 2024 10:08:35 +0100
-In-Reply-To: <20240311-mainline-ad7944-3-wire-mode-v1-1-8e8199efa1f7@baylibre.com>
-References: 
-	<20240311-mainline-ad7944-3-wire-mode-v1-1-8e8199efa1f7@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+        bh=gLdQNFOVM/pPG6LlBIiHy/tpPuE7zfP+IIyyMxjL5xE=;
+        b=cXWA79EVHu1BP96mVtSRtOB6O2oJf72D79ZnRo2tIGvnwROeo+j9U/spqbKAdgiAAo
+         xeMW+dhP6WSBZPPGIo+CccD6BVYBpxj0DJXivFdzQKgo7ZZkN6SrcFaFjrpqLupV/pZW
+         o1iTVZHAsQQZFQ550ECTWnxGXo/fJB3tYjehw02y6OMOIjmXIRCsRvukVjFLu4cB7fYp
+         6P546kU3nuRbf+4VDUvr6dj+8Qu+LvFhl8GOqZrQlupzg9uc2zzCniabxDrbPibeK65Z
+         92n1LnC7qeCeUnL8S+rDs2VVHfGlbQ3aDrVX3R/bXqwqA925rlit2Uz/nJSgChlJN32j
+         2cTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710242193; x=1710846993;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gLdQNFOVM/pPG6LlBIiHy/tpPuE7zfP+IIyyMxjL5xE=;
+        b=j9hPAhFdgClCo7sbYcUqYaIckQY5319VahKSCi9qdndjseLDKuV9JRWLXodsPzNMGd
+         g8D1t4kq7NPGeDxnqlh2y+0UhRu88quvcFU9ZOdRQD4fGnUT0NkAZVKY8h/LtTWiWSqE
+         VS6+YXHMAYJzhIr69pktRN7CsqQ/ff2j6HQFXLMDA8oseWQxI0B+HcksavyLeAhbdyik
+         My3sAc7FCigFavwdbz5wb3qfLr//YxpWzYA/JKrK5fz4tfP96ukTH/4SN1+2R56YjHJy
+         YHgH5N+1UqM7eFFP38P1SIkzYCAB0mJ6bFoZo1Wcby6L0yM0amdJx8NUMLS8hA9VbKtf
+         ko4g==
+X-Forwarded-Encrypted: i=1; AJvYcCWUdRigjk+5ruTBmoj+02giAq4AXcpAPNhEquYz4Vt7/9uLJ4dbQfp4wxiSJ/qyn317nzmcidN7E/5p0v+D8AvY4m4THE0V7RWS
+X-Gm-Message-State: AOJu0YyUzePPVdIledr2rYqv/hgkp25KOJioz1MjY/R4aD8GVCYSszg0
+	dUOiPskykA80HM8YTU7j3G6anZryFJMLkvBCbHKgimwWNETlKZSBlBgrOhg1
+X-Google-Smtp-Source: AGHT+IFyVcVoLljfPDittekwPfe4Jrbzt/eefSFN+OHvxQ9dAdAe195eMEtO7thTNgrVEMF3jjcjaA==
+X-Received: by 2002:a05:6512:34c5:b0:513:2858:6a67 with SMTP id w5-20020a05651234c500b0051328586a67mr4515249lfr.63.1710242193072;
+        Tue, 12 Mar 2024 04:16:33 -0700 (PDT)
+Received: from [172.16.183.82] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id f12-20020a0565123b0c00b005131d145ae6sm234027lfv.57.2024.03.12.04.16.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 12 Mar 2024 04:16:32 -0700 (PDT)
+Message-ID: <6dd0d822-046c-4dd2-9532-79d7ab96ec05@gmail.com>
+Date: Tue, 12 Mar 2024 13:16:31 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [drivers/iio] Question about `iio_gts_build_avail_time_table`
+Content-Language: en-US, en-GB
+To: Chenyuan Yang <chenyuan0y@gmail.com>, jic23@kernel.org, lars@metafoo.de,
+ linux-iio@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Zijie Zhao <zzjas98@gmail.com>
+References: <CALGdzur-rsLbd4BcgtR9QV2=ZH8xHAVySjm2z2TT=Aog74mdPw@mail.gmail.com>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <CALGdzur-rsLbd4BcgtR9QV2=ZH8xHAVySjm2z2TT=Aog74mdPw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, 2024-03-11 at 16:26 -0500, David Lechner wrote:
-> This adds support for AD7944 ADCs wired in "3-wire mode". (NOTE: 3-wire
-> is the datasheet name for this wiring configuration and has nothing to
-> do with SPI_3WIRE.)
->=20
-> In the 3-wire mode, the SPI controller CS line can be wired to the CNV
-> line on the ADC and used to trigger conversions rather that using a
-> separate GPIO line.
->=20
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
+Hi Chenyuan!
 
-Just some minor stuff from me... With that addressed (at least the 'else if=
-' stuff):
+Thank you for pointing out the problems :)
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+On 3/11/24 21:48, Chenyuan Yang wrote:
+> Dear Linux Developers for IIO Driver,
+> 
+> We are curious about the functionality of
+> `iio_gts_build_avail_time_table`
+> (https://elixir.bootlin.com/linux/latest/source/drivers/iio/industrialio-gts-helper.c#L363)
+> 
+> ```
+> static int iio_gts_build_avail_time_table(struct iio_gts *gts)
+> {
+>    int *times, i, j, idx = 0, *int_micro_times;
+> 
+>    if (!gts->num_itime)
+>      return 0;
+> 
+>    times = kcalloc(gts->num_itime, sizeof(int), GFP_KERNEL);
+>    if (!times)
+>      return -ENOMEM;
+> 
+>    /* Sort times from all tables to one and remove duplicates */
+>    for (i = gts->num_itime - 1; i >= 0; i--) {
+>      int new = gts->itime_table[i].time_us;
+> 
+>      if (times[idx] < new) {
+>        times[idx++] = new;
+>        continue;
+>      }
+> 
+>      for (j = 0; j <= idx; j++) {
+>        if (times[j] > new) {
+>          memmove(&times[j + 1], &times[j],
+>                                  (idx - j) * sizeof(int));
+>          times[j] = new;
+>          idx++;
+>        }
+>      }
+>    ...
+> }
+> ```
+> 
+> For this function, we are trying to understand how it works but not
+> sure how this sorting is done.
+> 
+> 1. When the gts->itime_table[i].time_us is zero, e.g., the time
+> sequence is `3, 0, 1`, the inner for-loop will not terminate and do
+> out-of-bound writes. This is because once `times[j] > new`, the value
+> `new` will be added in the current position and the `times[j]` will be
+> moved to `j+1` position, which makes the if-condition always hold.
+> Meanwhile, idx will be added one, making the loop keep running without
+> termination and out-of-bound write.
+> 2. If none of the gts->itime_table[i].time_us is zero, the elements
+> will just be copied without being sorted as described in the comment
+> "Sort times from all tables to one and remove duplicates".
+> 
+> Please correct us if we miss some key prerequisites for this function
+> or the data structure.
+> Thanks in advance!
 
-> =C2=A0drivers/iio/adc/ad7944.c | 157 ++++++++++++++++++++++++++++++++++++=
-+++++------
-> =C2=A01 file changed, 139 insertions(+), 18 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
-> index adb007cdd287..8f466eb66bc4 100644
-> --- a/drivers/iio/adc/ad7944.c
-> +++ b/drivers/iio/adc/ad7944.c
-> @@ -32,8 +32,25 @@ struct ad7944_timing_spec {
-> =C2=A0	unsigned int turbo_conv_ns;
-> =C2=A0};
-> =C2=A0
-> +enum ad7944_spi_mode {
-> +	/* datasheet calls this "4-wire mode" */
-> +	AD7944_SPI_MODE_DEFAULT,
-> +	/* datasheet calls this "3-wire mode" (not related to SPI_3WIRE!) */
-> +	AD7944_SPI_MODE_SINGLE,
-> +	/* datasheet calls this "chain mode" */
-> +	AD7944_SPI_MODE_CHAIN,
-> +};
-> +
-> +/* maps adi,spi-mode property value to enum */
-> +static const char * const ad7944_spi_modes[] =3D {
-> +	[AD7944_SPI_MODE_DEFAULT] =3D "",
-> +	[AD7944_SPI_MODE_SINGLE] =3D "single",
-> +	[AD7944_SPI_MODE_CHAIN] =3D "chain",
-> +};
-> +
-> =C2=A0struct ad7944_adc {
-> =C2=A0	struct spi_device *spi;
-> +	enum ad7944_spi_mode spi_mode;
-> =C2=A0	/* Chip-specific timing specifications. */
-> =C2=A0	const struct ad7944_timing_spec *timing_spec;
-> =C2=A0	/* GPIO connected to CNV pin. */
-> @@ -58,6 +75,9 @@ struct ad7944_adc {
-> =C2=A0	 } sample __aligned(IIO_DMA_MINALIGN);
-> =C2=A0};
-> =C2=A0
-> +/* quite time before CNV rising edge */
-> +#define T_QUIET_NS	20
-> +
-> =C2=A0static const struct ad7944_timing_spec ad7944_timing_spec =3D {
-> =C2=A0	.conv_ns =3D 420,
-> =C2=A0	.turbo_conv_ns =3D 320,
-> @@ -110,6 +130,65 @@ AD7944_DEFINE_CHIP_INFO(ad7985, ad7944, 16, 0);
-> =C2=A0/* fully differential */
-> =C2=A0AD7944_DEFINE_CHIP_INFO(ad7986, ad7986, 18, 1);
-> =C2=A0
-> +/*
-> + * ad7944_3wire_cs_mode_conversion - Perform a 3-wire CS mode conversion=
- and
-> + *=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 acquisition
-> + * @adc: The ADC device structure
-> + * @chan: The channel specification
-> + * Return: 0 on success, a negative error code on failure
-> + *
-> + * This performs a conversion and reads data when the chip is wired in 3=
--wire
-> + * mode with the CNV line on the ADC tied to the CS line on the SPI cont=
-roller.
-> + *
-> + * Upon successful return adc->sample.raw will contain the conversion re=
-sult.
-> + */
-> +static int ad7944_3wire_cs_mode_conversion(struct ad7944_adc *adc,
-> +					=C2=A0=C2=A0 const struct iio_chan_spec *chan)
-> +{
-> +	unsigned int t_conv_ns =3D adc->always_turbo ? adc->timing_spec-
-> >turbo_conv_ns
-> +						=C2=A0=C2=A0 : adc->timing_spec->conv_ns;
-> +	struct spi_transfer xfers[] =3D {
-> +		{
-> +			/*
-> +			 * NB: can get better performance from some SPI
-> +			 * controllers if we use the same bits_per_word
-> +			 * in every transfer.
-> +			 */
-> +			.bits_per_word =3D chan->scan_type.realbits,
-> +			/*
-> +			 * CS is tied to CNV and we need a low to high
-> +			 * transition to start the conversion, so place CNV
-> +			 * low for t_QUIET to prepare for this.
-> +			 */
-> +			.delay =3D {
-> +				.value =3D T_QUIET_NS,
-> +				.unit =3D SPI_DELAY_UNIT_NSECS,
-> +			},
-> +
-> +		},
-> +		{
-> +			.bits_per_word =3D chan->scan_type.realbits,
-> +			/*
-> +			 * CS has to be high for full conversion time to avoid
-> +			 * triggering the busy indication.
-> +			 */
-> +			.cs_off =3D 1,
-> +			.delay =3D {
-> +				.value =3D t_conv_ns,
-> +				.unit =3D SPI_DELAY_UNIT_NSECS,
-> +			},
-> +		},
-> +		{
-> +			/* Then we can read the data during the acquisition phase
-> */
-> +			.rx_buf =3D &adc->sample.raw,
-> +			.len =3D BITS_TO_BYTES(chan->scan_type.storagebits),
-> +			.bits_per_word =3D chan->scan_type.realbits,
-> +		},
-> +	};
-> +
-> +	return spi_sync_transfer(adc->spi, xfers, ARRAY_SIZE(xfers));
-> +}
-> +
-> =C2=A0/*
-> =C2=A0 * ad7944_4wire_mode_conversion - Perform a 4-wire mode conversion =
-and acquisition
-> =C2=A0 * @adc: The ADC device structure
-> @@ -167,9 +246,22 @@ static int ad7944_single_conversion(struct ad7944_ad=
-c *adc,
-> =C2=A0{
-> =C2=A0	int ret;
-> =C2=A0
-> -	ret =3D ad7944_4wire_mode_conversion(adc, chan);
-> -	if (ret)
-> -		return ret;
-> +	switch (adc->spi_mode) {
-> +	case AD7944_SPI_MODE_DEFAULT:
-> +		ret =3D ad7944_4wire_mode_conversion(adc, chan);
-> +		if (ret)
-> +			return ret;
-> +
-> +		break;
-> +	case AD7944_SPI_MODE_SINGLE:
-> +		ret =3D ad7944_3wire_cs_mode_conversion(adc, chan);
-> +		if (ret)
-> +			return ret;
-> +
-> +		break;
-> +	case AD7944_SPI_MODE_CHAIN:
-> +		return -EOPNOTSUPP;
+You are correct. The sorting is not working as intended! It has only 
+worked and passed the tests because the arrays in the test and driver 
+code have been ordered in "descending time" - order. The code above has 
+done a copying of items in reverse order, resulting a working set of 
+available times.
 
-This mode is not really supported for now and in theory we can't really hav=
-e
-adc->spi_mode =3D AD7944_SPI_MODE_CHAIN, right? So, I would just make this =
-the
-'default' branch and not care about chain mode (implementing it when adding=
- it).
+> A possible patch based on our understanding is attached.
 
-> +	}
-> =C2=A0
-> =C2=A0	if (chan->scan_type.storagebits > 16)
-> =C2=A0		*val =3D adc->sample.raw.u32;
-> @@ -230,9 +322,23 @@ static irqreturn_t ad7944_trigger_handler(int irq, v=
-oid *p)
-> =C2=A0	struct ad7944_adc *adc =3D iio_priv(indio_dev);
-> =C2=A0	int ret;
-> =C2=A0
-> -	ret =3D ad7944_4wire_mode_conversion(adc, &indio_dev->channels[0]);
-> -	if (ret)
-> +	switch (adc->spi_mode) {
-> +	case AD7944_SPI_MODE_DEFAULT:
-> +		ret =3D ad7944_4wire_mode_conversion(adc, &indio_dev->channels[0]);
-> +		if (ret)
-> +			goto out;
-> +
-> +		break;
-> +	case AD7944_SPI_MODE_SINGLE:
-> +		ret =3D ad7944_3wire_cs_mode_conversion(adc, &indio_dev-
-> >channels[0]);
-> +		if (ret)
-> +			goto out;
-> +
-> +		break;
-> +	case AD7944_SPI_MODE_CHAIN:
-> +		/* not supported */
-> =C2=A0		goto out;
-> +	}
-> =C2=A0
-> =C2=A0	iio_push_to_buffers_with_timestamp(indio_dev, &adc->sample.raw,
-> =C2=A0					=C2=A0=C2=A0 pf->timestamp);
-> @@ -260,16 +366,9 @@ static int ad7944_probe(struct spi_device *spi)
-> =C2=A0	struct ad7944_adc *adc;
-> =C2=A0	bool have_refin =3D false;
-> =C2=A0	struct regulator *ref;
-> +	const char *str_val;
-> =C2=A0	int ret;
-> =C2=A0
-> -	/*
-> -	 * driver currently only supports the conventional "4-wire" mode and
-> -	 * not other special wiring configurations.
-> -	 */
-> -	if (device_property_present(dev, "adi,spi-mode"))
-> -		return dev_err_probe(dev, -EINVAL,
-> -				=C2=A0=C2=A0=C2=A0=C2=A0 "adi,spi-mode is not currently supported\n"=
-);
-> -
-> =C2=A0	indio_dev =3D devm_iio_device_alloc(dev, sizeof(*adc));
-> =C2=A0	if (!indio_dev)
-> =C2=A0		return -ENOMEM;
-> @@ -283,6 +382,22 @@ static int ad7944_probe(struct spi_device *spi)
-> =C2=A0
-> =C2=A0	adc->timing_spec =3D chip_info->timing_spec;
-> =C2=A0
-> +	if (device_property_read_string(dev, "adi,spi-mode", &str_val) =3D=3D 0=
-) {
-> +		ret =3D sysfs_match_string(ad7944_spi_modes, str_val);
-> +		if (ret < 0)
-> +			return dev_err_probe(dev, -EINVAL,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 "unsupported adi,spi-mode\n");
-> +
-> +		adc->spi_mode =3D ret;
-> +	} else {
-> +		/* absence of adi,spi-mode property means default mode */
-> +		adc->spi_mode =3D AD7944_SPI_MODE_DEFAULT;
-> +	}
-> +
-> +	if (adc->spi_mode =3D=3D AD7944_SPI_MODE_CHAIN)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 "chain mode is not implemented\n");
-> +
-> =C2=A0	/*
-> =C2=A0	 * Some chips use unusual word sizes, so check now instead of wait=
-ing
-> =C2=A0	 * for the first xfer.
-> @@ -349,15 +464,17 @@ static int ad7944_probe(struct spi_device *spi)
-> =C2=A0		adc->ref_mv =3D AD7944_INTERNAL_REF_MV;
-> =C2=A0	}
-> =C2=A0
-> -	/*
-> -	 * CNV gpio is required in 4-wire mode which is the only currently
-> -	 * supported mode.
-> -	 */
-> -	adc->cnv =3D devm_gpiod_get(dev, "cnv", GPIOD_OUT_LOW);
-> +	adc->cnv =3D devm_gpiod_get_optional(dev, "cnv", GPIOD_OUT_LOW);
-> =C2=A0	if (IS_ERR(adc->cnv))
-> =C2=A0		return dev_err_probe(dev, PTR_ERR(adc->cnv),
-> =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0 "failed to get CNV GPIO\n");
-> =C2=A0
-> +	if (!adc->cnv && adc->spi_mode =3D=3D AD7944_SPI_MODE_DEFAULT)
-> +		return dev_err_probe(&spi->dev, -EINVAL, "CNV GPIO is
-> required\n");
-> +	else if (adc->cnv && adc->spi_mode !=3D AD7944_SPI_MODE_DEFAULT)
-> +		return dev_err_probe(&spi->dev, -EINVAL,
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 "CNV GPIO in single and chain mode is not
-> currently supported\n");
-> +
+I copied your suggested fix here for my initial thoughts:
 
-Redundant else...
+diff --git a/drivers/iio/industrialio-gts-helper.c 
+b/drivers/iio/industrialio-gts-helper.c
+index 7653261d2dc2..0667da988295 100644
+--- a/drivers/iio/industrialio-gts-helper.c
++++ b/drivers/iio/industrialio-gts-helper.c
+@@ -375,19 +375,17 @@ static int iio_gts_build_avail_time_table(struct 
+iio_gts *gts)
+  	for (i = gts->num_itime - 1; i >= 0; i--) {
+  		int new = gts->itime_table[i].time_us;
 
-> =C2=A0	adc->turbo =3D devm_gpiod_get_optional(dev, "turbo", GPIOD_OUT_LOW=
-);
-> =C2=A0	if (IS_ERR(adc->turbo))
-> =C2=A0		return dev_err_probe(dev, PTR_ERR(adc->turbo),
-> @@ -369,6 +486,10 @@ static int ad7944_probe(struct spi_device *spi)
-> =C2=A0		return dev_err_probe(dev, -EINVAL,
-> =C2=A0			"cannot have both turbo-gpios and adi,always-turbo\n");
-> =C2=A0
-> +	if (adc->spi_mode =3D=3D AD7944_SPI_MODE_CHAIN && adc->always_turbo)
-> +		return dev_err_probe(dev, -EINVAL,
-> +			"cannot have both chain mode and always turbo\n");
-> +
+-		if (times[idx] < new) {
+-			times[idx++] = new;
+-			continue;
+-		}
++		times[idx] = new;
+
+The idea of the check which has been removed was to assign the value in 
+the array in first free spot if it is bigger than the last value. As you 
+pointed out, the implementation is wrong, but I think the idea is Ok. 
+Here you do unconditional assignment which is slightly sub-optimal.
+
+  		for (j = 0; j <= idx; j++) {
+  			if (times[j] > new) {
+  				memmove(&times[j + 1], &times[j],
+  					(idx - j) * sizeof(int));
+  				times[j] = new;
+-				idx++;
++				break;
+  			}
+  		}
++		idx++;
+  	}
+  	/* create a list of times formatted as list of IIO_VAL_INT_PLUS_MICRO */
 
 
-I'm fine in having this now but shouldn't we only have the above when we do=
- support
-chain mode? A bit odd having it when we don't even allow chain mode.
+I will fire-up a setup with the IIO-GTS Kunit tests, and alter the order 
+of times in array for the available times test.
 
-- Nuno S=C3=A1
+I would appreciate if you could post formal fixup-patch in inline 
+message as per usual Linux review and merge process. That would simplify 
+the process for Jonathan and other reviewers. Please, let me know if you 
+don't want to send a formal fix. In that case I will write a fix by myself.
+
+Finally, your finding and report is _very much_ appreciated! Thanks!
+
+Yours,
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 
 

@@ -1,240 +1,185 @@
-Return-Path: <linux-iio+bounces-3472-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3473-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4C10879967
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Mar 2024 17:53:47 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 251BA879B03
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Mar 2024 19:11:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69BC2283ECD
-	for <lists+linux-iio@lfdr.de>; Tue, 12 Mar 2024 16:53:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9107DB22BA1
+	for <lists+linux-iio@lfdr.de>; Tue, 12 Mar 2024 18:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0BBA137C25;
-	Tue, 12 Mar 2024 16:53:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15921386D8;
+	Tue, 12 Mar 2024 18:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E9thJUeP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFNV3KHR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E273137922;
-	Tue, 12 Mar 2024 16:53:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C68353BE;
+	Tue, 12 Mar 2024 18:11:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710262420; cv=none; b=pYm+qK9jeD5sv3Ezf3cx0tIQLyeEyZr1pWs5gFQ3hyQrXXIapFWtoxMB++sESTWOrZcKUYLjrXEmVQes2uYugF0OH38FVrQ/CVFyEBsY3oGxClPEt9aPsSujMvX5NtSCWs3vDlYkdTrj+OwcMcnSHHjZACLBjfnHn7KNOqi7jfY=
+	t=1710267063; cv=none; b=kE/IhMzJW+rvG0dASWoYd4aHdzfXUWfgSkoN2hyN281HVUmmHKlIn7J65i4V/u5cLGZ71MFbsbXssVusqp0FpryYCQnuHSdj2yzPU4WrjSUzCLZKohYlmyfaxcCGddNRLmDzInYfX+/nUsuF2/KrS0fkqcgF27nunF5jUImIXH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710262420; c=relaxed/simple;
-	bh=62ZNJkCWnpg6uw2sY4QlOwD0WO15Qg1v7rcp10Vqvvs=;
+	s=arc-20240116; t=1710267063; c=relaxed/simple;
+	bh=iXvp6qLfbM2ZBb4HstqZ7NW7nEQLjt2bZ1lyrtz0h14=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lEdNeXBDSEaCwc5XR7uDVoJhWoxOK9XWycEQZOoehLLEKUSZ9xDHAj7t/mSRvLKg1Mbfm/UeNf5aupT+IJMKXw0mAJGw/K5yAu9dWVRidYanPUuZhmCIR64FfwYvdGqMBOl6M1f9MwBzaNCz2ar9PHZ+0BWCRFOnxxPv7Pd+A5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E9thJUeP; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1dd9568fc51so22682805ad.2;
-        Tue, 12 Mar 2024 09:53:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710262418; x=1710867218; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k29YCBv1oSFNYkMP2kxo5OqxARtTRzAAo6P/8vA6HEM=;
-        b=E9thJUePzIG5iBEz83w8GULAXvsgLqWzDIKPB5yC/EY1PgzerVABVxtigT3OeoHuL/
-         OSv9JNvEk9qv6k7vuujqXve4M3DZRLR3eklNEgCsEUBw5aQIrscNSt1N6SZEJ9KS0/CU
-         9n7P+df04n51luVbl28olZBe3uhTklsyne0tX+9DLBNO+tP072jmzEZfAKoKt+zQ2yja
-         FJb/kcxVBKXojPF0gEX2ABVPbLNDSfosLt83bThkpKuPkz6IgQBzNTZT/spi1rPldsRw
-         zE3JMbdHubPw5Rnx1C7rZwHdx6aT0yipApPBN4A2ebrGTG6ja/uI/fdVh+92LBWVH5YU
-         njTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710262418; x=1710867218;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k29YCBv1oSFNYkMP2kxo5OqxARtTRzAAo6P/8vA6HEM=;
-        b=GTOjvVLZ7+bq3QHuMyLV29TutlsKYBHziVmicqlsYfqeWUnXat+s4Mck6vai0qrudt
-         VJmb1YkVpdX5Q3QZfxIbSL5jTfL5Ayczceg33s1M2eCb11L5Yf35nYC4Geu0OgDgLW+s
-         qAAM7C0inLTEyjvFIAnqJ+cvzjq7g0Y3mqV6tYLtmYXwxhYlqbhE8PENd/Nn48VtZte9
-         7Yda7HNVIjIoEMnvARf0Fa224qje1Ca0Lu6cKqV32RDNofzTIf0ARDhcZ1vffDC799YM
-         Qzt9/ws8TJvn/1VhkmYMeyzM0XlE0/wu4KA6ZsGuOrDiTrpwB2YupwET9fRc+bcaiFK7
-         5HZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWzW3GQCAMq9LXQH0CG/l5/Pdaqhh/flHY2XAyYkoAJdHIbELPvwRmcy4wvzIz0x47rMKPYDNUAUFWD6z+eHrQ9ws0mcQh1ZMsBWDtjKIeq2ewO1xsSssaFZZ5OILnf0+R9PvwpwtAa
-X-Gm-Message-State: AOJu0YwhK76C0oM3q0p3b3rHob9ieAm6VOY9AN1wkIr5MHmmEwXr6BjU
-	Y5MRaMSb4SGtLqDud7xJEHpf5zUG3ZchIqIPoz7/VebEmSXEOY0EnNNI0+hc++wAxBF0OFA/Emm
-	feMD26VSt9opItwMpaLuPIIBE79wWriIluA==
-X-Google-Smtp-Source: AGHT+IEKM8bVJ4Ssnabzg/XfL0JCdFzi0jKEQLB6R8vWe+I6RxykGYNrraBtSFW6TCjYZKgMXm0MMowzUKBMJKcNd6o=
-X-Received: by 2002:a17:902:d2c4:b0:1dd:c90a:f6bb with SMTP id
- n4-20020a170902d2c400b001ddc90af6bbmr552684plc.51.1710262418245; Tue, 12 Mar
- 2024 09:53:38 -0700 (PDT)
+	 To:Cc:Content-Type; b=CcrKESnl9s4orfKmBcexpEkE7whL36c0BzYTDijD6CYBzKWGh31xpKzRKfxu5vDsJrkHWqGDqcvZtDdxSg2OprLyRLBjutRxp1neTpGfWCSlwPMwCLIc5E4lJLCmemz8BqRDXM+X2kZ4BeCTzlZlRZEcGm79c8TCkzjMmg8PaRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IFNV3KHR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF29C433F1;
+	Tue, 12 Mar 2024 18:11:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710267063;
+	bh=iXvp6qLfbM2ZBb4HstqZ7NW7nEQLjt2bZ1lyrtz0h14=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=IFNV3KHRA1kg+FK/m0lc3NwSGSlNtZmVfahkQZv3/dqWUaCV3HiiK6dZzF+r7CJmP
+	 ipRBAcPi1pQ0/ejnMiZGPDpJ/MBRGbNSz61FIi1scGnjz7dZICfmE+66kxIQVcR0Tf
+	 wAx8YL7sUv7CZzopfOA75Lk/BS6eGn7AZlAETv3pZ3fng6hDspq3xCHH2NF2OXIukN
+	 DNV279VgiVgUmVRj3hKWlIcVk/KDNlZWAPJJAvpKymizuuku5QOEIqMNKZQIlldZGv
+	 Q6BIbMcqBD10QUo+aEC6TzN5LyJOCeJkKz8UOEDzXTTsHE0pgSPtoswFeQhnCkdXQb
+	 eYTruViHenG7w==
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2d4515ec3aaso990801fa.1;
+        Tue, 12 Mar 2024 11:11:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXIWBBnD7Nmd1GqvX33JJWSrMoPBtrvAdEFMKFKHEqnNqXNXFlhWWecEi4t80Ok3AtjW7X691R+DY8c1NLljpN5V0OsGzeqKvpT
+X-Gm-Message-State: AOJu0YzHhP26oMv4MWvWUwlygg22sFGoTZHVUjvOTuijf7WUTy+Gujv1
+	0RzaDZ3IVkg4b7RtHrRglz25EukyoF1oW+GZfVdet/3x57aveDZCF1aUEXprjguf5eeTPcqt/J2
+	QO8N2muKMwOgMpu40tZKFsZaZ8w==
+X-Google-Smtp-Source: AGHT+IGFIpWi+XnSEBcTESH0jVN7cI01f0pj25ek64QARYYkargkU/fdKRqPF8fouUcSyN19xJtoBKxhjf1St89RWPw=
+X-Received: by 2002:a2e:92c3:0:b0:2d4:e6d:ab5b with SMTP id
+ k3-20020a2e92c3000000b002d40e6dab5bmr101309ljh.22.1710267061179; Tue, 12 Mar
+ 2024 11:11:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CALGdzur-rsLbd4BcgtR9QV2=ZH8xHAVySjm2z2TT=Aog74mdPw@mail.gmail.com>
- <6dd0d822-046c-4dd2-9532-79d7ab96ec05@gmail.com>
-In-Reply-To: <6dd0d822-046c-4dd2-9532-79d7ab96ec05@gmail.com>
-From: Chenyuan Yang <chenyuan0y@gmail.com>
-Date: Tue, 12 Mar 2024 11:53:27 -0500
-Message-ID: <CALGdzuoA4ANBurXyP+00hFPmPznixcMTgrYNp1P4VwvpFb_GtA@mail.gmail.com>
-Subject: Re: [drivers/iio] Question about `iio_gts_build_avail_time_table`
-To: Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Zijie Zhao <zzjas98@gmail.com>
+References: <20240225142714.286440-1-jic23@kernel.org> <20240301223942.GA3179769-robh@kernel.org>
+ <20240303115633.41128a62@jic23-huawei> <20240309173332.277fce7d@jic23-huawei>
+In-Reply-To: <20240309173332.277fce7d@jic23-huawei>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 12 Mar 2024 12:10:46 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJ5XaxoL9=urL4ReVv5rhkkti5LN+nFGy1btyO2u7qjEw@mail.gmail.com>
+Message-ID: <CAL_JsqJ5XaxoL9=urL4ReVv5rhkkti5LN+nFGy1btyO2u7qjEw@mail.gmail.com>
+Subject: Re: [RESEND PATCH v2 0/4] of: automate of_node_put() - new approach
+ to loops.
+To: Jonathan Cameron <jic23@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: devicetree@vger.kernel.org, linux-iio@vger.kernel.org, 
+	Frank Rowand <frowand.list@gmail.com>, Julia Lawall <Julia.Lawall@inria.fr>, 
+	Peter Zijlstra <peterz@infradead.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	marek.vasut@gmail.com, Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Matti,
+On Sat, Mar 9, 2024 at 10:33=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Sun, 3 Mar 2024 11:56:33 +0000
+> Jonathan Cameron <jic23@kernel.org> wrote:
+>
+> > On Fri, 1 Mar 2024 16:39:42 -0600
+> > Rob Herring <robh@kernel.org> wrote:
+> >
+> > > On Sun, Feb 25, 2024 at 02:27:10PM +0000, Jonathan Cameron wrote:
+> > > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > >
+> > > > Some discussion occured on previous posting.
+> > > > https://lore.kernel.org/linux-iio/20240223124432.26443-1-Jonathan.C=
+ameron@huawei.com/
+> > > >
+> > > > Summary:
+> > > > * fwnode conversions should be considered when applying this
+> > > >   infrastructure to a driver. Perhaps better to move directly to
+> > > >   the generic FW property handling rather than improve existing
+> > > >   of specific code.
+> > > > * There are lots of potential places to use this based on detection=
+s
+> > > >   from Julia's coccinelle scripts linked below.
+> > > >
+> > > > The equivalent device_for_each_child_node_scoped() series for
+> > > > fwnode will be queued up in IIO for the merge window shortly as
+> > > > it has gathered sufficient tags. Hopefully the precdent set there
+> > > > for the approach will reassure people that instantiating the
+> > > > child variable inside the macro definition is the best approach.
+> > > > https://lore.kernel.org/linux-iio/20240217164249.921878-1-jic23@ker=
+nel.org/
+> > > >
+> > > > v2: Andy suggested most of the original converted set should move t=
+o
+> > > >     generic fwnode / property.h handling.  Within IIO that was
+> > > >     a reasonable observation given we've been trying to move away f=
+rom
+> > > >     firmware specific handling for some time. Patches making that c=
+hange
+> > > >     to appropriate drivers posted.
+> > > >     As we discussed there are cases which are not suitable for such
+> > > >     conversion and this infrastructure still provides clear benefit=
+s
+> > > >     for them.
+> > > >
+> > > > Ideally it would be good if this introductory series adding the
+> > > > infrastructure makes the 6.9 merge window. There are no dependencie=
+s
+> > > > on work queued in the IIO tree, so this can go via devicetree
+> > > > if the maintainers would prefer. I've had some off list messages
+> > > > asking when this would be merged, as there is interest in building
+> > > > on it next cycle for other parts of the kernel (where conversion to
+> > > > fwnode handling may be less appropriate).
+> > >
+> > > I'll let you take it. For the series:
+> > >
+> > > Reviewed-by: Rob Herring <robh@kernel.org>
+> > >
+> > > I've got some drivers/of/ conversions too, but they are probably next
+> > > cycle at this point.
+> > >
+> > > Rob
+> >
+> > Thanks Rob,
+> >
+> > Whether this makes it for this cycle is probably dependent on whether
+> > Linus does decide to do got to rc8 as hinted at as a possibility
+> > + whether Greg feels comfortable taking these through his tree
+> > (char-misc is the normal path for IIO).  I know various people
+> > are hoping this series makes it, but if doesn't we can do an immutable
+> > tree early next cycle (though obviously that may reduce speed of adopti=
+on).
+> >
+> > We are discussing the equivalent pull request for the fwnode version he=
+re:
+> >
+> > https://lore.kernel.org/linux-iio/2024030239-gift-cabdriver-266b@gregkh=
+/T/#m87e7208820ebf6416a77a2973773b65a087b4796
+> >
+> > I've optimistically applied this series to my togreg-cleanup branch
+> > and merged that into the togreg branch of iio.git for linux-next to pic=
+k up.
+> >
+>
+> Greg, would you consider a last minute pull request for these, or picking=
+ them up
+> directly?  It would be helpful for Rob's follow ups and the work Julia is=
+ doing
+> with coccinelle and automating of locating cases to apply this approach.
+>
+> If the device_for_each_child_node_scoped() series is fine this is almostl=
+y
+> exactly the same thing for the device tree specific case. Not sure what y=
+our
+> plans are for that pull request so I might be jumping the gun.
+>
+> If not (and assuming the generic property version does make it in) I'll d=
+o
+> an immutable branch based on rc1 so that others can build on this via tha=
+t.
+> Fiddlier solution for everyone but given how late we are, perhaps the wis=
+er
+> one.
 
-I have a question about the "The idea of the check which has been
-removed was to assign the value in
-the array in first free spot if it is bigger than the last value".
+I'm happy to pick up the first 3 patches for 6.9 if you want.
 
--               if (times[idx] < new) {
--                       times[idx++] =3D new;
--                       continue;
--               }
-+               times[idx] =3D new;
-
-It appears that the comparison should perhaps be made with `idx-1`
-rather than `idx`, given that `idx` represents the current number of
-copied values in times, whereas `idx-1` points to the last value.
-Could I have your thoughts on this?
-
-Best,
-Chenyuan
-
-On Tue, Mar 12, 2024 at 6:16=E2=80=AFAM Matti Vaittinen
-<mazziesaccount@gmail.com> wrote:
->
-> Hi Chenyuan!
->
-> Thank you for pointing out the problems :)
->
-> On 3/11/24 21:48, Chenyuan Yang wrote:
-> > Dear Linux Developers for IIO Driver,
-> >
-> > We are curious about the functionality of
-> > `iio_gts_build_avail_time_table`
-> > (https://elixir.bootlin.com/linux/latest/source/drivers/iio/industriali=
-o-gts-helper.c#L363)
-> >
-> > ```
-> > static int iio_gts_build_avail_time_table(struct iio_gts *gts)
-> > {
-> >    int *times, i, j, idx =3D 0, *int_micro_times;
-> >
-> >    if (!gts->num_itime)
-> >      return 0;
-> >
-> >    times =3D kcalloc(gts->num_itime, sizeof(int), GFP_KERNEL);
-> >    if (!times)
-> >      return -ENOMEM;
-> >
-> >    /* Sort times from all tables to one and remove duplicates */
-> >    for (i =3D gts->num_itime - 1; i >=3D 0; i--) {
-> >      int new =3D gts->itime_table[i].time_us;
-> >
-> >      if (times[idx] < new) {
-> >        times[idx++] =3D new;
-> >        continue;
-> >      }
-> >
-> >      for (j =3D 0; j <=3D idx; j++) {
-> >        if (times[j] > new) {
-> >          memmove(&times[j + 1], &times[j],
-> >                                  (idx - j) * sizeof(int));
-> >          times[j] =3D new;
-> >          idx++;
-> >        }
-> >      }
-> >    ...
-> > }
-> > ```
-> >
-> > For this function, we are trying to understand how it works but not
-> > sure how this sorting is done.
-> >
-> > 1. When the gts->itime_table[i].time_us is zero, e.g., the time
-> > sequence is `3, 0, 1`, the inner for-loop will not terminate and do
-> > out-of-bound writes. This is because once `times[j] > new`, the value
-> > `new` will be added in the current position and the `times[j]` will be
-> > moved to `j+1` position, which makes the if-condition always hold.
-> > Meanwhile, idx will be added one, making the loop keep running without
-> > termination and out-of-bound write.
-> > 2. If none of the gts->itime_table[i].time_us is zero, the elements
-> > will just be copied without being sorted as described in the comment
-> > "Sort times from all tables to one and remove duplicates".
-> >
-> > Please correct us if we miss some key prerequisites for this function
-> > or the data structure.
-> > Thanks in advance!
->
-> You are correct. The sorting is not working as intended! It has only
-> worked and passed the tests because the arrays in the test and driver
-> code have been ordered in "descending time" - order. The code above has
-> done a copying of items in reverse order, resulting a working set of
-> available times.
->
-> > A possible patch based on our understanding is attached.
->
-> I copied your suggested fix here for my initial thoughts:
->
-> diff --git a/drivers/iio/industrialio-gts-helper.c
-> b/drivers/iio/industrialio-gts-helper.c
-> index 7653261d2dc2..0667da988295 100644
-> --- a/drivers/iio/industrialio-gts-helper.c
-> +++ b/drivers/iio/industrialio-gts-helper.c
-> @@ -375,19 +375,17 @@ static int iio_gts_build_avail_time_table(struct
-> iio_gts *gts)
->         for (i =3D gts->num_itime - 1; i >=3D 0; i--) {
->                 int new =3D gts->itime_table[i].time_us;
->
-> -               if (times[idx] < new) {
-> -                       times[idx++] =3D new;
-> -                       continue;
-> -               }
-> +               times[idx] =3D new;
->
-> The idea of the check which has been removed was to assign the value in
-> the array in first free spot if it is bigger than the last value. As you
-> pointed out, the implementation is wrong, but I think the idea is Ok.
-> Here you do unconditional assignment which is slightly sub-optimal.
->
->                 for (j =3D 0; j <=3D idx; j++) {
->                         if (times[j] > new) {
->                                 memmove(&times[j + 1], &times[j],
->                                         (idx - j) * sizeof(int));
->                                 times[j] =3D new;
-> -                               idx++;
-> +                               break;
->                         }
->                 }
-> +               idx++;
->         }
->         /* create a list of times formatted as list of IIO_VAL_INT_PLUS_M=
-ICRO */
->
->
-> I will fire-up a setup with the IIO-GTS Kunit tests, and alter the order
-> of times in array for the available times test.
->
-> I would appreciate if you could post formal fixup-patch in inline
-> message as per usual Linux review and merge process. That would simplify
-> the process for Jonathan and other reviewers. Please, let me know if you
-> don't want to send a formal fix. In that case I will write a fix by mysel=
-f.
->
-> Finally, your finding and report is _very much_ appreciated! Thanks!
->
-> Yours,
->         -- Matti
->
-> --
-> Matti Vaittinen
-> Linux kernel developer at ROHM Semiconductors
-> Oulu Finland
->
-> ~~ When things go utterly wrong vim users can always type :help! ~~
->
+Rob
 

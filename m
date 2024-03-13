@@ -1,230 +1,124 @@
-Return-Path: <linux-iio+bounces-3483-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3484-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E209987B036
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 19:46:50 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B1987B17C
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 20:17:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 535371F2CF75
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 18:46:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C3DC1C27E65
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 19:17:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C3C5339D;
-	Wed, 13 Mar 2024 17:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6708B20B33;
+	Wed, 13 Mar 2024 18:54:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d3fMC6X7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HyY4TDpC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1A8132C15;
-	Wed, 13 Mar 2024 17:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AD3210F8;
+	Wed, 13 Mar 2024 18:54:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710351628; cv=none; b=FYFBBb0l2dVpF2RJO7sO3GVbXJ9bAEjrJAeY8NB2mYNJZTKBEsYEi91gyZmMk7NdY/m4Ozalbdyt3dWabiBZbBAStLhj2SR2UhLxXJFF1xLFRprd4bwV/EwnaGnkUV5+O9jleCKF8m72NU8m+9e9Hdqz4LuKrp9i/DOM7y5svGM=
+	t=1710356096; cv=none; b=alIlLmCsVmhjep9G6F/6/HaRN16O4y0Kw2sDo2ie1CTnc6F+YAI8CF91xiv/yIW/FJjC8EwH5AQLQSD7SOM2fRLBCC+EaYe1FXUFcW33gdHqW5nuZIk6XKCQIJfUTLTU1M7eH7HdfX1+BAJE+ksBnAWWnwhOv6ZNBzB34AILHp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710351628; c=relaxed/simple;
-	bh=tc9DKMBR8KwBT2icGVg5+ZgjQyRhDAM94iKrIGcjx/s=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rY7luiytaiM2xFjvdvJLr74dfQFeDhNNOkHVCkRydalDvQXQobyJQZ+9izS+NoqocxNjNT6zZK6D8DXNsiZr4rkyMXJjQAuSMdDI7zc0KTaHCuiuxAGOlvx3iuD5a9xSmnRUVtzkzmDoCLX70EB1ypP/yBJfHDHEwn7SQVHY52k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d3fMC6X7; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-56845954fffso87620a12.3;
-        Wed, 13 Mar 2024 10:40:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710351625; x=1710956425; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pDUkRWMU6Em/8H0zDUO+LaCCaghhRbcYZfIR5KeSXa8=;
-        b=d3fMC6X7XPrf3kV+3bWnuVFzDz7bYwRKX25gSkUsTipzxzkogKEPRC+zyogmGq0VNb
-         o51Q61PeNNG1a6z4CZKIQILH+9q9dSURjTqL8rlkwI5/A2gWD5cP5NTexznq0GPx5n31
-         CIRiRUBUsPPYJAP79gF8Qqw6oAGqZbLpff5zSU9c+/ffLB8K+eKZ7rCeqfBUx+AgfSGI
-         3rtw/jXRoxcQICv6UyGVxc4rai2tv5JVn33xiNtHUxhR+apmy8PS7UH+3cLTv4lEBxPe
-         WkyYR7WWeqVyjE4fLmOS05IZo3EvoYNwyyz18raq+RAioBedn2CPenL7K92Re5fnjmI9
-         0qGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710351625; x=1710956425;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pDUkRWMU6Em/8H0zDUO+LaCCaghhRbcYZfIR5KeSXa8=;
-        b=FZLQbUYiu9bs7lofLf79kgMf2qJPspmoF0hKH8dN4KgAkSlHprnkKRZTzyApNWq+Xs
-         W2g0dRAxfOBfiTjS/515EUj/DAc0rn4XRfd5BHj3J9SDGSCNiDodxd28jIy4M/MkmUGB
-         UJHLrHXuzSJaIdJ2glj6FTB1Sox//rxcP2YKQ8nURjd6sZ+ANaovK52PautIf+P0EWY3
-         wh82ecWHn9OdBA6A6U+G3nxEVMlvMjFvHhxacmkl7ysBoRQGR5SN5sKVhpSzZfqwJK5w
-         yeL53KeIBbU3+gIRhjVKdYQUADJjNrv6g0cZVApyT9QK7YtxnCPyt5Rk2jq/u2q2HqeJ
-         WxUA==
-X-Forwarded-Encrypted: i=1; AJvYcCW7J14xEeQXfucS6TSuUCDBhVBJ94wdciBbFHa0x86XZs6677KtP/DAW9a3CF7SVL+4bZLvkA4CQEDCUmT9O8Xf6yduaXnAzSvSz6mKErqbfKhK4BXWFgh3br3Z3d/EIIprc911sMjV
-X-Gm-Message-State: AOJu0Yw5PGyr99k8dgMSQV1NDUj7apJ4KHiHR+KJLwpwRX71WzoOEKGo
-	dDqeUweUzxN5lRgm7cf75qpBcJm5q5FsJ9IFZAoaFj9OhYGygveDv27ubJQ44dmFLYKg
-X-Google-Smtp-Source: AGHT+IFnomHxxYnPOy5YMpL0B+A3GiwKNdZ/A9KAwzNIJEuZEqLNCTOE0dLpx9FOf/kA0WSh938wIQ==
-X-Received: by 2002:a17:907:d389:b0:a45:92c4:7892 with SMTP id vh9-20020a170907d38900b00a4592c47892mr10865628ejc.56.1710351624808;
-        Wed, 13 Mar 2024 10:40:24 -0700 (PDT)
-Received: from localhost.localdomain ([2a04:ee41:82:7577:fa35:157e:1a40:3463])
-        by smtp.gmail.com with ESMTPSA id m17-20020a1709061ed100b00a449076d0dbsm5028215ejj.53.2024.03.13.10.40.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 10:40:24 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: jic23@kernel.org
-Cc: lars@metafoo.de,
-	andriy.shevchenko@linux.intel.com,
-	ang.iglesiasg@gmail.com,
-	mazziesaccount@gmail.com,
-	ak@it-klinger.de,
-	petre.rodan@subdimension.ro,
-	linus.walleij@linaro.org,
-	phil@raspberrypi.com,
-	579lpy@gmail.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vasileios Amoiridis <vassilisamir@gmail.com>
-Subject: [PATCH v2 6/6] iio: pressure: Add triggered buffer support for BMP280 driver
-Date: Wed, 13 Mar 2024 18:40:07 +0100
-Message-Id: <20240313174007.1934983-7-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240313174007.1934983-1-vassilisamir@gmail.com>
+	s=arc-20240116; t=1710356096; c=relaxed/simple;
+	bh=ZG1LuLekRiLfxzr/Jqbgw2nhEBHoB9a7CHQNHKlXSjA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FPAKm3+c6G3DoX2ggHFNVFWOSNXXRWJ674K65G+6R3MunbIwaKe8+ypGqXUZKaE51BxAq/cbl/Byyokep2608nAcrCDw0QJYUGHxHwq/LHqaDClh8T6HvMDpFz7nMOY99J6f1xHvn1/hOsczzgxsAjXTH7xjFJhwNnTYZwUcVWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HyY4TDpC; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710356095; x=1741892095;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ZG1LuLekRiLfxzr/Jqbgw2nhEBHoB9a7CHQNHKlXSjA=;
+  b=HyY4TDpCBQz9e5NsE8v5i+JFFzk6UOIT2D/oclrMEMz3VbV8LPeryGNX
+   C5IgEyfHHr5y7ddzU89JJP3GVyutAupqoqdDOCaTdoLLr6e1jO1t+W3De
+   MaKvwWvKho0R42yIhmOeUK5wMl/7uZh0xl2Ke1BZGgzz522/XkxV3aiJS
+   ahWGh4m0aqQ+lpY6RMw95FIMcqnv+w+xU5N7a4WzBoJJtQaZRH++Z8L3J
+   pilG8AA7I6qf4aLafRCa7VPM2Xc5fDnQRIH4pI8la+Z3y43CkZ2sYTYQJ
+   zYaciv9vDdtoIwZSzAlfLsaVfedAKIPGikk+fsgzPdz1Za3n9gAbstAxH
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="8965627"
+X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; 
+   d="scan'208";a="8965627"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 11:54:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="914439124"
+X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; 
+   d="scan'208";a="914439124"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 11:54:50 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rkTkV-0000000CIce-3mnc;
+	Wed, 13 Mar 2024 20:54:47 +0200
+Date: Wed, 13 Mar 2024 20:54:47 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, ang.iglesiasg@gmail.com,
+	mazziesaccount@gmail.com, ak@it-klinger.de,
+	petre.rodan@subdimension.ro, linus.walleij@linaro.org,
+	phil@raspberrypi.com, 579lpy@gmail.com, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/6] iio: pressure: Add timestamp and scan_masks for
+ BMP280 driver
+Message-ID: <ZfH2dxmSzcw1_3vt@smile.fi.intel.com>
 References: <20240313174007.1934983-1-vassilisamir@gmail.com>
+ <20240313174007.1934983-6-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240313174007.1934983-6-vassilisamir@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Add a buffer struct that will hold the values of the measurements
-and will be pushed to userspace and a buffer_handler function to
-read the data and push them.
+On Wed, Mar 13, 2024 at 06:40:06PM +0100, Vasileios Amoiridis wrote:
+> The scan mask for the BME280 supports humidity measurement needs
+> to be distinguished from the rest in order for the timestamp to
+> be able to work. Scan masks are added for different combinations
+> of measurements. The temperature measurement is always needed for
+> pressure and humidity measurements.
 
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
----
- drivers/iio/pressure/Kconfig       |  2 +
- drivers/iio/pressure/bmp280-core.c | 61 ++++++++++++++++++++++++++++++
- drivers/iio/pressure/bmp280.h      |  7 ++++
- 3 files changed, 70 insertions(+)
+(Just to make sure if you used --histogram diff algo when preparing the series)
 
-diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
-index 79adfd059c3a..5145b94b4679 100644
---- a/drivers/iio/pressure/Kconfig
-+++ b/drivers/iio/pressure/Kconfig
-@@ -31,6 +31,8 @@ config BMP280
- 	select REGMAP
- 	select BMP280_I2C if (I2C)
- 	select BMP280_SPI if (SPI_MASTER)
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say yes here to build support for Bosch Sensortec BMP180, BMP280, BMP380
- 	  and BMP580 pressure and temperature sensors. Also supports the BME280 with
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index f2cf9bef522c..7c889cda396a 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -40,7 +40,10 @@
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- 
-+#include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
- 
- #include <asm/unaligned.h>
- 
-@@ -2188,6 +2191,57 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
- 	return 0;
- }
- 
-+static irqreturn_t bmp280_buffer_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct bmp280_data *data = iio_priv(indio_dev);
-+	int ret, temp;
-+
-+	/*
-+	 * data->buf[3] is used to transfer data from the device. Whenever a
-+	 * pressure or a humidity reading takes place, the data written in the
-+	 * data->buf[3] overwrites the iio_buf.temperature value. Keep the
-+	 * temperature value and apply it after the readings.
-+	 */
-+	mutex_lock(&data->lock);
-+
-+	if (test_bit(BMP280_TEMP, indio_dev->active_scan_mask)) {
-+		ret = data->chip_info->read_temp(data);
-+		if (ret < 0)
-+			goto done;
-+
-+		temp = ret;
-+	}
-+
-+	if (test_bit(BMP280_PRESS, indio_dev->active_scan_mask)) {
-+		ret = data->chip_info->read_press(data);
-+		if (ret < 0)
-+			goto done;
-+
-+		data->iio_buf.pressure = ret;
-+		data->iio_buf.temperature = temp;
-+	}
-+
-+	if (test_bit(BME280_HUMID, indio_dev->active_scan_mask)) {
-+		ret = data->chip_info->read_humid(data);
-+		if (ret < 0)
-+			goto done;
-+
-+		data->iio_buf.humidity = ret;
-+		data->iio_buf.temperature = temp;
-+	}
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->iio_buf,
-+					   iio_get_time_ns(indio_dev));
-+
-+done:
-+	mutex_unlock(&data->lock);
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static void bmp280_pm_disable(void *data)
- {
- 	struct device *dev = data;
-@@ -2329,6 +2383,13 @@ int bmp280_common_probe(struct device *dev,
- 			return ret;
- 	}
- 
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      &bmp280_buffer_handler, NULL);
-+	if (ret)
-+		return dev_err_probe(data->dev, ret,
-+				     "iio triggered buffer setup failed\n");
-+
- 	/* Enable runtime PM */
- 	pm_runtime_get_noresume(dev);
- 	pm_runtime_set_active(dev);
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index c8cb7c417dab..b5369dd496ba 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -407,6 +407,13 @@ struct bmp280_data {
- 	union {
- 		/* Sensor data buffer */
- 		u8 buf[3];
-+		/* Data buffer to push to userspace */
-+		struct {
-+			s32 temperature;
-+			u32 pressure;
-+			u32 humidity;
-+			s64 timestamp __aligned(8);
-+		} iio_buf;
- 		/* Calibration data buffers */
- 		__le16 bmp280_cal_buf[BMP280_CONTIGUOUS_CALIB_REGS / 2];
- 		__be16 bmp180_cal_buf[BMP180_REG_CALIB_COUNT / 2];
+...
+
+>  	{
+> -		.type = IIO_HUMIDITYRELATIVE,
+> +		.type = IIO_PRESSURE,
+>  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
+>  				      BIT(IIO_CHAN_INFO_RAW) |
+>  				      BIT(IIO_CHAN_INFO_SCALE) |
+>  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
+> -		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+> +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+
+Stray change
+
+>  					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
+> +		.scan_index = 1,
+> +		.scan_type = {
+> +			.sign = 'u',
+> +			.realbits = 32,
+> +			.storagebits = 32,
+> +			.endianness = IIO_CPU,
+> +		},
+>  	},
+
 -- 
-2.25.1
+With Best Regards,
+Andy Shevchenko
+
 
 

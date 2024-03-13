@@ -1,70 +1,72 @@
-Return-Path: <linux-iio+bounces-3495-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3496-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F7587B2E0
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 21:28:35 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91ED787B2E2
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 21:28:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0D851C2220F
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 20:28:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47D421F25385
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 20:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E3851C4B;
-	Wed, 13 Mar 2024 20:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5D25337E;
+	Wed, 13 Mar 2024 20:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oRLgsPtD"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="U8vz1Gii"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+Received: from mail-oi1-f173.google.com (mail-oi1-f173.google.com [209.85.167.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89A84D108
-	for <linux-iio@vger.kernel.org>; Wed, 13 Mar 2024 20:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C274E50A62
+	for <linux-iio@vger.kernel.org>; Wed, 13 Mar 2024 20:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710361705; cv=none; b=j4zlW2omTtpYNM8W5rauWROvCi5BBgW8Ao3t8DB9McoYQOcR58OdbE1ysNwptW0OSk+Pe18TEzK2T0eOwZjbFk+y19qXNehicVeTdQhtlK5bzI8Krff+w4CXtPvyWH9h3fN6jkPRc0SUc5bt5UHYi6ZZRoblydVc99AZpXpHKlw=
+	t=1710361706; cv=none; b=NgRNqZtcr+Te7nwm1eAZBfHHgiJ39BBRzcFyxvYp2/gAfZ10YTf044DXbXMJb0T7c0w/hWPDBpvhEnX1AbIRYm7f2epCgIOxNnpFT+/zBnvJQwqFPy8RqchII0Kw5a9Gv3Ul04T7XoLbw/K+VUQI3uIG2jQfeLAKbVgjccfCC00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710361705; c=relaxed/simple;
-	bh=iMCRzKCwtOFIDF9hmdcyBiISQPSwyJVzWj1dCAmbdA4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GfNmRWnrIn+j8vu/OarHCxS8oXsQJQMwNuEA1cdZLjpFPxbgHl1sUt3SZOzw/9xpochC3/VDstS1mFEaOCSq88W+VNb1KR3YPtL6nwgb2Dd6ESUcrnpm0e9wo7ORKOLrLUE8rwUOJSXjey+krqvym/Vyk0xj2WHh9/YVE/PF8Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oRLgsPtD; arc=none smtp.client-ip=209.85.167.181
+	s=arc-20240116; t=1710361706; c=relaxed/simple;
+	bh=jYLrs9FzuD/uXocxQfXfUA+/zRjYUAxdEYngmXiXnyE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qN5ZOpSd/kTTIF6IijdaJ6lyaqBeG20CVYb0uK60WNWjHqba87kN0vtZ2XXWqfBuNlxCFYuusdlWyEkKRMhcXIuYL+YtEqsGrSrXcc14yJzM0JGWtuzgsAn9l85thD3atyKLkPQf7tXmLbj5zebk+J+2SWxltWYv7ntAjpAaLIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=U8vz1Gii; arc=none smtp.client-ip=209.85.167.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3c19e18470aso254169b6e.1
-        for <linux-iio@vger.kernel.org>; Wed, 13 Mar 2024 13:28:22 -0700 (PDT)
+Received: by mail-oi1-f173.google.com with SMTP id 5614622812f47-3c25eaad717so171109b6e.2
+        for <linux-iio@vger.kernel.org>; Wed, 13 Mar 2024 13:28:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1710361702; x=1710966502; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=KAWRgWU6WLEXQVBoGzfJEbXOKTd+ZWBJGPDK+Tp7qSI=;
-        b=oRLgsPtD1jgq5FFcuvFAyA9vruYinPqt5BIzo5MdfSVG4FqBlNzn+UBg6ucGg53hoD
-         pv3uFOzuEbGxX5XjGEZpmKEfQAcwUsE3vFb86la4RwxKLu4rJPqP1NRcS9JaW80ax6CR
-         1pCGb7pnf3uJdaL1UmMzF7eGFdbul8sWX0eYcNzjzB+JOTxzX27Fc1YdXZAIKonvDMSW
-         2cqGUEAUvEFY82ECMRGmqWw9y5O0esewP4gf4c9OnhtbkK7CxgS1R7zKbZyCe0fM0DaN
-         SIbhmV6Rgn22oxztjlRXyRNJUgrD74XHmKnG1eUyKpg2+zJJQlfEq2RNLHBeriW6Mgv0
-         kqEw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1710361703; x=1710966503; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8CLFi25Vmi0M7L3CTPnrBRviDBPZHtDLMk3xJ3WKq50=;
+        b=U8vz1Gii+mpp2oQkq44YI/KakIh2DgAYDtrryuv6od6Efd/OL1+8JEmwF+zSSF2aTO
+         6MR6De2Qb/r0ASsTzlvw8YniL3CHhCHrp64GPRbAceVgo71nrsiUc5h9iswy2h6m3VxZ
+         S1lt23IuK5tc9QiC07GOmUfbSHcdMSyRuAtJUkkRPsi2bi6D+FSBuxo4ZrZrf2vDJL17
+         9JK0baPgqsUQoBAO4K1NJBY0tJfne48NCpZFnvTP+rZjdPEvE5gPGPQJw7+zMWNZv+qz
+         uArrDQS5Tm+AKAYkV8Zf3GEzFXO8bwHgK5ucwaYnJwczz8+JT5DTvri4mnmUdRAZyZGh
+         A1HQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710361702; x=1710966502;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=KAWRgWU6WLEXQVBoGzfJEbXOKTd+ZWBJGPDK+Tp7qSI=;
-        b=KJokLhQYDr9wLcf7e91s2/lEAfLj4we6INB8n/+6I0JCWQoBKClfPHoSVLR2vPjrOG
-         tJoQNO1kxzIOelTKV4SaOIfNDJa+SaozrTPTc1zaIFSm0RlDlUkeVx90yP/1GXPK0ysZ
-         vSZ4P4HmiwhCcDo/s3vHaz/9VAavH/fiYvXZZ98QGluMyP8+zrLMuiAczzOkRmZ82XnJ
-         +ODXdYD8bUOz7Gv+wdqgZmbs5omLBLsKvZ61Z0zFQWm4UkhnP8zeshyWY28yHMfZ1Tne
-         YX0PoNlXggXqi9yjnqgM7NNVjSpfzA9YgX1dHeK7slcqGbOs1o8yAQP8wxM4tV8YickH
-         cm/A==
-X-Forwarded-Encrypted: i=1; AJvYcCUkCRKECudqI2od+aNhVhIhVB+z0TtDyV/UB2Ec12bVMCoHrYsW6kBmJr5WdquCu+Ho2e7H34rPLKLXExSxhhWpJ/GFRx9zqDyc
-X-Gm-Message-State: AOJu0YxwejQ5XyDFjGevPDR6u5eIJpIYBDhK1OYM2agRDyLGJzPHKDia
-	QkTa+lSi3o8MUkG7rb79+IteYKGOJDj8TOXFg2toOKm8VuklE93wxO8RIK4NeR0=
-X-Google-Smtp-Source: AGHT+IEOPc5OEL968XGI9Srb8DwBFMxD/2mugMqwuczh3UoC7IERpmKsonAhCJ+UnsiA3uICMUraLA==
-X-Received: by 2002:a05:6808:ecd:b0:3c1:d184:98c9 with SMTP id q13-20020a0568080ecd00b003c1d18498c9mr964366oiv.13.1710361701855;
-        Wed, 13 Mar 2024 13:28:21 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1710361703; x=1710966503;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8CLFi25Vmi0M7L3CTPnrBRviDBPZHtDLMk3xJ3WKq50=;
+        b=pCbmNRPd4abTAOOiVkS46kHddAzrUfvLyFj0sFhMnjBnrJzhMbPUvjH3EE4gvw5YFl
+         VY6cZdrBluMeKo4S9vTyR1XZaHV+dqame2rnKOxZNFj7fsiDceo/WAsLUIx/m1p73yMt
+         JpYzJlvpuRho5mNFJc4WybJnVOpsc2KCvo8WoPbBKy+jQkqm0XsSjuaUXlWraaqsCkkD
+         53UdwJ37HKHV9OOWe87EgSfVMOtFiwpdH/n937dUzvuliepBz87M9xx8hESabcAiP/Rq
+         v0WxZ/romMe1nLubm34arcdh78CgC+2WULYo4/5wfDhchWjIsYoXISJtsHWApqVWJalt
+         6ZiA==
+X-Forwarded-Encrypted: i=1; AJvYcCU5hezKDSAbt6y5jdHluvLLom2sqOvLPw5OJhLnpPLYe5UUytlLwcL94fe/w1zpgA5RiUr5PTnIP9aCyEoMAIpo1PddJhMSpcJL
+X-Gm-Message-State: AOJu0YzZLUar9F1edk37sMZD3bjKX/eW3NJdsN2y+6jgcpl6VFDsAO+o
+	6O/pkJnzjdpCDC95ww7lfuy1m8po6hW1BCpy/jsH9sO0U7bLEzLQEWECzaYPXWE=
+X-Google-Smtp-Source: AGHT+IGDSFxjduSuPwDmDtjTbGOtbt606z3slx4WCA0+AShK30IMsbb7bUCPojEYu+ofYCX6R1NNLQ==
+X-Received: by 2002:a05:6808:11c5:b0:3c1:db9c:543b with SMTP id p5-20020a05680811c500b003c1db9c543bmr1005885oiv.16.1710361702866;
+        Wed, 13 Mar 2024 13:28:22 -0700 (PDT)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id s8-20020a9d58c8000000b006e4eaa4ba7esm21520oth.61.2024.03.13.13.28.20
+        by smtp.gmail.com with ESMTPSA id s8-20020a9d58c8000000b006e4eaa4ba7esm21520oth.61.2024.03.13.13.28.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 13:28:21 -0700 (PDT)
+        Wed, 13 Mar 2024 13:28:22 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -74,10 +76,12 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	linux-doc@vger.kernel.org,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 0/2] docs: iio: new docs for ad7944 driver
-Date: Wed, 13 Mar 2024 15:21:50 -0500
-Message-ID: <20240313-mainline-ad7944-doc-v1-0-7860416726e4@baylibre.com>
+Subject: [PATCH 1/2] MAINTAINERS: add Documentation/iio/ to IIO subsystem
+Date: Wed, 13 Mar 2024 15:21:51 -0500
+Message-ID: <20240313-mainline-ad7944-doc-v1-1-7860416726e4@baylibre.com>
 X-Mailer: git-send-email 2.43.2
+In-Reply-To: <20240313-mainline-ad7944-doc-v1-0-7860416726e4@baylibre.com>
+References: <20240313-mainline-ad7944-doc-v1-0-7860416726e4@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -88,31 +92,28 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-Adding documentation for the recently applied ad7944 driver.
+Patches touching the IIO subsystem documentation should also be sent to
+the IIO mailing list.
 
-Note: this also covers the features added in [1] that hasn't been
-applied yet.
-
-[1]: https://lore.kernel.org/linux-iio/20240311-mainline-ad7944-3-wire-mode-v1-1-8e8199efa1f7@baylibre.com/
-
-Also updating the MAINTAINERS file to catch iio documentation since this
-seems to have been overlooked.
-
+Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-David Lechner (2):
-      MAINTAINERS: add Documentation/iio/ to IIO subsystem
-      docs: iio: new docs for ad7944 driver
+ MAINTAINERS | 1 +
+ 1 file changed, 1 insertion(+)
 
- Documentation/iio/ad7944.rst | 227 +++++++++++++++++++++++++++++++++++++++++++
- Documentation/iio/index.rst  |   1 +
- MAINTAINERS                  |   2 +
- 3 files changed, 230 insertions(+)
----
-base-commit: bbafdb305d6b00934cc09a90ec1bb659d43e5171
-change-id: 20240313-mainline-ad7944-doc-285b47ed6d35
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7b1a6f2d0c9c..fb2377bad376 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -10466,6 +10466,7 @@ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git
+ F:	Documentation/ABI/testing/configfs-iio*
+ F:	Documentation/ABI/testing/sysfs-bus-iio*
+ F:	Documentation/devicetree/bindings/iio/
++F:	Documentation/iio/
+ F:	drivers/iio/
+ F:	drivers/staging/iio/
+ F:	include/dt-bindings/iio/
 
-Best regards,
 -- 
-David Lechner <dlechner@baylibre.com>
+2.43.2
 
 

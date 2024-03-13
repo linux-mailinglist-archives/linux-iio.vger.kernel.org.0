@@ -1,86 +1,79 @@
-Return-Path: <linux-iio+bounces-3493-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3494-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4B6D87B26B
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 21:00:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C505887B27B
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 21:04:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C53F41C25C8C
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 20:00:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E82921C25674
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 20:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652794CB41;
-	Wed, 13 Mar 2024 20:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CA94CB41;
+	Wed, 13 Mar 2024 20:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q3aYi3co"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IykUHfmR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951CB225AF;
-	Wed, 13 Mar 2024 20:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54950261;
+	Wed, 13 Mar 2024 20:04:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710360037; cv=none; b=QykGSpKiScmqO5XsOcYf6LENxwi7TsL67g4DfcF8BAetY1vPviveV1VCnit8V41/q5kdq+6kifFc+GfZs9xjpE5EOOZ7oGwiDbNGLcH8ul9r8NLw4C6adu04CmOppMUFQcMgL+68wAOFVlo+2NqlM4Qa6xNaGsL1vABZL5VFy60=
+	t=1710360253; cv=none; b=EUPSZAShhjZBdBXze+sLfPCilmsVCjW9SHuQJIzJGoOD1Vn37L5rx8A5mwmT66EAFPaI3/icwdVFjJ1cBKkgV9z7xO0yg2x3w/2ug/nl9+83piu/GRGQrq1dfa8Y6/XzpddgyQd8fbHipZCElXvW6090Xr86X8XoqslXNBwXrVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710360037; c=relaxed/simple;
-	bh=I4XcGuTburoMv8FJwJYZcsdnM+xWLlluJGDQPgI1Rtg=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k158DKrnM4kON/R2OLeelBz7nrwJcefXrRa4MzTVFKjxKw1ed6yCA7XloZ/E0P1yX6iw1vJatblETaKRjQGeP/Ws9BzBz648fQuEm/jgSvPFZEJVocIvkOXZYd4kGTiSUvNBwGtDj1ZCZwnXPNf771dmyV28HRJkq21N4KmJczk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q3aYi3co; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a4649c6f040so33827966b.0;
-        Wed, 13 Mar 2024 13:00:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710360034; x=1710964834; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=A1HmNv+yMo2ZvddaEye/rC5NZtopLXcTAFzBOCzH5/s=;
-        b=Q3aYi3coTsavNVq8G2DGDAYfbEETuskYVmCjyq2pg/BvUKaFD+B3WuZoVVCbInY0Me
-         6ndnPGP1arAWnp2BpdEpdUvxuVw6Xt3SrxI0qx6PJAOkLSsbxTnsou7dYFXouPgO7v3M
-         r2UNwu+SCxroJRY5ro58aiWuat5d3Mpsv1vYDrdM4p1/sOM5vyovXsBWmVkm7fLmWCaM
-         i5iK8H9gTrcD9rYsmUoYtUc+07ovZvD5tYfVmXMEMgBQiD/mbhZ/BmUJu8yh1ZQOAHrz
-         XjzjngXRuTi6HeCWbg0OM9sKeoIRFmGbEf7gnZAhcMSHVyqCJajqnHYNlkI6CG55K+JA
-         z7Ug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710360034; x=1710964834;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A1HmNv+yMo2ZvddaEye/rC5NZtopLXcTAFzBOCzH5/s=;
-        b=krix0BL6F9BQ+u8YW8ZnLy7p4suwCxVJZ7E8DGlDgHMNnfMr5dO2xxjWcJj3/4AvGM
-         sfnL41XVXDihSg0fBsnJkhBdbZc0gPx2GeRA8Sc+jPYj3/o77AwQw5JtXt7nSlnV+YMs
-         04Vt1o7LhcX7fWjJi21Ehy7AfC8YAVc8FmVFx2c9aXqWvSJcqelkmID2eySMa/QovayY
-         AFbKGNEmlERqCB6/BeH9XzQRRvImCVpsf40OV+XC3vpTnMqQnd15gRYu2c3WvHvXW3jt
-         MEjYCYafjcymlzGHPRmMtkLjPkere1YtDNta18HT/g5wA5CRLx8FNzpBWs22HEM1hHob
-         5i7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXdav9Lkp2KavjFwbsQIXVmdv1K/6FoOU+ycHUoYRqy3nLWQDI6m8/TQP9ZaNP7g2lEGdud7KYt8dSjzu+gKGW2L0a6kAMYePcaSWO9muKXlfVmtgEO+Lqm2sE9ifnKyq/gAiYNfAVr
-X-Gm-Message-State: AOJu0YzrGde/Cwhr9J64DNDvRN12rp6HJ9gMXSE6ODfGEgCghrdFAVR/
-	hNHoaW3hPUBCzOyhSSB4ShrDcAPCUxFXbXzlMCGmqvJ1b2misUQx
-X-Google-Smtp-Source: AGHT+IFifPyXM1JWvUAQeP4T4qXLYuAC/uZ6RDCKhYihgRi/7pnFNXrW0vmQFdAzqMgt30VVdx46Gw==
-X-Received: by 2002:a17:906:fb81:b0:a43:29e1:6db8 with SMTP id lr1-20020a170906fb8100b00a4329e16db8mr8815457ejb.9.1710360033769;
-        Wed, 13 Mar 2024 13:00:33 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:fa35:157e:1a40:3463])
-        by smtp.gmail.com with ESMTPSA id rn16-20020a170906d93000b00a441a7a75b5sm5091731ejb.209.2024.03.13.13.00.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 13:00:33 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Wed, 13 Mar 2024 21:00:31 +0100
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
-	lars@metafoo.de, ang.iglesiasg@gmail.com, mazziesaccount@gmail.com,
-	ak@it-klinger.de, petre.rodan@subdimension.ro,
-	linus.walleij@linaro.org, phil@raspberrypi.com, 579lpy@gmail.com,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] iio: pressure: Add triggered buffer support for
- BMP280 driver
-Message-ID: <20240313200031.GD1938985@vamoiridPC>
+	s=arc-20240116; t=1710360253; c=relaxed/simple;
+	bh=1isCJ/HiRQqsOQID7hdC+OE/BFsB1DwZ8Ioqspcdcsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UshDd1En+1z3YNPMECa9Kt2Op7Y+oA9cKWn39xL3Rnw98bZ6g99lAcN5XmFbvDQDHnnbpTJzckRJ40B3PGCVBVzoVrCmNeRTnHCYfjBvAaHbpA87MP1oIxCVHZbPAJfQTuhBlaaHrxOa9wtV5KsWfmUCdTFFTupqo2mF0ZXmyeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IykUHfmR; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710360252; x=1741896252;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=1isCJ/HiRQqsOQID7hdC+OE/BFsB1DwZ8Ioqspcdcsk=;
+  b=IykUHfmRmQZuQEI0EKY2o/GdzjDbmuzVJRzoifaCUlBrpo5HjgYVxDrA
+   39b14ya611PcooA6D/PCVxbFCIrDiwRbq/B/iu1NPH5j4Btm0J8u5O5Xq
+   1qZz+WQw/W4Ra6VilQwkqpMNwMXoCHW6D0Oa5QiO4s29r6ndBhPMtdFBp
+   kM9D87gHreoalgQsi6RW9k+Pmj1eg1TCw9fsbRnx8Ppn1kWQYoRx6fhvn
+   cDUUkBXwP+FYjR0zJ5TFYbh7ZmoOEs+eIJUMRBs0gQEVpPbwUj7CU/bI5
+   NW2+OOTuOrlP9u0+Fuqw0tOSkeD8bDPCu91URkoVgeP0t5NK7zhIz4J3o
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="15880485"
+X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; 
+   d="scan'208";a="15880485"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 13:04:11 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="914440421"
+X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; 
+   d="scan'208";a="914440421"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 13:04:08 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rkUpa-0000000CJiw-0kRb;
+	Wed, 13 Mar 2024 22:04:06 +0200
+Date: Wed, 13 Mar 2024 22:04:05 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, ang.iglesiasg@gmail.com,
+	mazziesaccount@gmail.com, ak@it-klinger.de,
+	petre.rodan@subdimension.ro, linus.walleij@linaro.org,
+	phil@raspberrypi.com, 579lpy@gmail.com, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/6] iio: pressure: add SCALE and RAW values for
+ channels
+Message-ID: <ZfIGtUPZpyDBnWwz@smile.fi.intel.com>
 References: <20240313174007.1934983-1-vassilisamir@gmail.com>
- <20240313174007.1934983-7-vassilisamir@gmail.com>
- <ZfH3P9dTiBHpjN5b@smile.fi.intel.com>
+ <20240313174007.1934983-4-vassilisamir@gmail.com>
+ <ZfH4bET-HX0e3PO_@smile.fi.intel.com>
+ <20240313195110.GB1938985@vamoiridPC>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -89,39 +82,60 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZfH3P9dTiBHpjN5b@smile.fi.intel.com>
+In-Reply-To: <20240313195110.GB1938985@vamoiridPC>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Mar 13, 2024 at 08:58:07PM +0200, Andy Shevchenko wrote:
-> On Wed, Mar 13, 2024 at 06:40:07PM +0100, Vasileios Amoiridis wrote:
-> > Add a buffer struct that will hold the values of the measurements
-> > and will be pushed to userspace and a buffer_handler function to
-> > read the data and push them.
-> 
-> ...
-> 
-> > +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> 
-> dev here
-> 
-> > +					      iio_pollfunc_store_time,
-> > +					      &bmp280_buffer_handler, NULL);
-> > +	if (ret)
-> > +		return dev_err_probe(data->dev, ret,
-> 
-> data->dev here
-> 
-> Are they the same? If not, why this difference?
-> 
-They are the same. I didn't notice it, but I will fix it for consistency.
+On Wed, Mar 13, 2024 at 08:51:10PM +0100, Vasileios Amoiridis wrote:
+> On Wed, Mar 13, 2024 at 09:03:08PM +0200, Andy Shevchenko wrote:
+> > On Wed, Mar 13, 2024 at 06:40:04PM +0100, Vasileios Amoiridis wrote:
+> > > Add extra IIO_CHAN_INFO_SCALE and IIO_CHAN_INFO_RAW in order to be
+> > > able to calculate the processed value with standard userspace IIO
+> > > tools. Can be used for triggered buffers as well.
 
-> > +				     "iio triggered buffer setup failed\n");
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+...
 
-Best regards,
-Vasileios Amoiridis
+> > > +	case IIO_CHAN_INFO_RAW:
+> > > +		switch (chan->type) {
+> > > +		case IIO_HUMIDITYRELATIVE:
+> > > +			*val = data->chip_info->read_humid(data);
+> > > +			ret = IIO_VAL_INT;
+> > > +			break;
+> > > +		case IIO_PRESSURE:
+> > > +			*val = data->chip_info->read_press(data);
+> > > +			ret = IIO_VAL_INT;
+> > > +			break;
+> > > +		case IIO_TEMP:
+> > > +			*val = data->chip_info->read_temp(data);
+> > > +			ret = IIO_VAL_INT;
+> > > +			break;
+> > > +		default:
+> > > +			ret = -EINVAL;
+> > > +			break;
+> > 
+> > Is it mutex that prevents us from returning here?
+> > If so, perhaps switching to use cleanup.h first?
+> 
+> I haven't seen cleanup.h used in any file and now that I searched,
+> only 5-6 are including it.
+
+Hmm... Which repository you are checking with?
+
+$ git grep -lw cleanup.h -- drivers/ | wc -l
+47
+
+(Today's Linux Next)
+
+> I am currently thinking if the mutex
+> that already exists is really needed since most of the drivers
+> don't have it + I feel like this is something that should be done
+> by IIO, thus maybe it's not even needed here.
+
+> > > +		}
+> > > +		break;
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

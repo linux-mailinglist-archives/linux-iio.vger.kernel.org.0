@@ -1,141 +1,118 @@
-Return-Path: <linux-iio+bounces-3494-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3495-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C505887B27B
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 21:04:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7F7587B2E0
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 21:28:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E82921C25674
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 20:04:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0D851C2220F
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 20:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CA94CB41;
-	Wed, 13 Mar 2024 20:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E3851C4B;
+	Wed, 13 Mar 2024 20:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IykUHfmR"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oRLgsPtD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f181.google.com (mail-oi1-f181.google.com [209.85.167.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54950261;
-	Wed, 13 Mar 2024 20:04:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89A84D108
+	for <linux-iio@vger.kernel.org>; Wed, 13 Mar 2024 20:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710360253; cv=none; b=EUPSZAShhjZBdBXze+sLfPCilmsVCjW9SHuQJIzJGoOD1Vn37L5rx8A5mwmT66EAFPaI3/icwdVFjJ1cBKkgV9z7xO0yg2x3w/2ug/nl9+83piu/GRGQrq1dfa8Y6/XzpddgyQd8fbHipZCElXvW6090Xr86X8XoqslXNBwXrVk=
+	t=1710361705; cv=none; b=j4zlW2omTtpYNM8W5rauWROvCi5BBgW8Ao3t8DB9McoYQOcR58OdbE1ysNwptW0OSk+Pe18TEzK2T0eOwZjbFk+y19qXNehicVeTdQhtlK5bzI8Krff+w4CXtPvyWH9h3fN6jkPRc0SUc5bt5UHYi6ZZRoblydVc99AZpXpHKlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710360253; c=relaxed/simple;
-	bh=1isCJ/HiRQqsOQID7hdC+OE/BFsB1DwZ8Ioqspcdcsk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UshDd1En+1z3YNPMECa9Kt2Op7Y+oA9cKWn39xL3Rnw98bZ6g99lAcN5XmFbvDQDHnnbpTJzckRJ40B3PGCVBVzoVrCmNeRTnHCYfjBvAaHbpA87MP1oIxCVHZbPAJfQTuhBlaaHrxOa9wtV5KsWfmUCdTFFTupqo2mF0ZXmyeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IykUHfmR; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710360252; x=1741896252;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1isCJ/HiRQqsOQID7hdC+OE/BFsB1DwZ8Ioqspcdcsk=;
-  b=IykUHfmRmQZuQEI0EKY2o/GdzjDbmuzVJRzoifaCUlBrpo5HjgYVxDrA
-   39b14ya611PcooA6D/PCVxbFCIrDiwRbq/B/iu1NPH5j4Btm0J8u5O5Xq
-   1qZz+WQw/W4Ra6VilQwkqpMNwMXoCHW6D0Oa5QiO4s29r6ndBhPMtdFBp
-   kM9D87gHreoalgQsi6RW9k+Pmj1eg1TCw9fsbRnx8Ppn1kWQYoRx6fhvn
-   cDUUkBXwP+FYjR0zJ5TFYbh7ZmoOEs+eIJUMRBs0gQEVpPbwUj7CU/bI5
-   NW2+OOTuOrlP9u0+Fuqw0tOSkeD8bDPCu91URkoVgeP0t5NK7zhIz4J3o
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="15880485"
-X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; 
-   d="scan'208";a="15880485"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 13:04:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11012"; a="914440421"
-X-IronPort-AV: E=Sophos;i="6.07,123,1708416000"; 
-   d="scan'208";a="914440421"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Mar 2024 13:04:08 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rkUpa-0000000CJiw-0kRb;
-	Wed, 13 Mar 2024 22:04:06 +0200
-Date: Wed, 13 Mar 2024 22:04:05 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, ang.iglesiasg@gmail.com,
-	mazziesaccount@gmail.com, ak@it-klinger.de,
-	petre.rodan@subdimension.ro, linus.walleij@linaro.org,
-	phil@raspberrypi.com, 579lpy@gmail.com, linux-iio@vger.kernel.org,
+	s=arc-20240116; t=1710361705; c=relaxed/simple;
+	bh=iMCRzKCwtOFIDF9hmdcyBiISQPSwyJVzWj1dCAmbdA4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GfNmRWnrIn+j8vu/OarHCxS8oXsQJQMwNuEA1cdZLjpFPxbgHl1sUt3SZOzw/9xpochC3/VDstS1mFEaOCSq88W+VNb1KR3YPtL6nwgb2Dd6ESUcrnpm0e9wo7ORKOLrLUE8rwUOJSXjey+krqvym/Vyk0xj2WHh9/YVE/PF8Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oRLgsPtD; arc=none smtp.client-ip=209.85.167.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f181.google.com with SMTP id 5614622812f47-3c19e18470aso254169b6e.1
+        for <linux-iio@vger.kernel.org>; Wed, 13 Mar 2024 13:28:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1710361702; x=1710966502; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KAWRgWU6WLEXQVBoGzfJEbXOKTd+ZWBJGPDK+Tp7qSI=;
+        b=oRLgsPtD1jgq5FFcuvFAyA9vruYinPqt5BIzo5MdfSVG4FqBlNzn+UBg6ucGg53hoD
+         pv3uFOzuEbGxX5XjGEZpmKEfQAcwUsE3vFb86la4RwxKLu4rJPqP1NRcS9JaW80ax6CR
+         1pCGb7pnf3uJdaL1UmMzF7eGFdbul8sWX0eYcNzjzB+JOTxzX27Fc1YdXZAIKonvDMSW
+         2cqGUEAUvEFY82ECMRGmqWw9y5O0esewP4gf4c9OnhtbkK7CxgS1R7zKbZyCe0fM0DaN
+         SIbhmV6Rgn22oxztjlRXyRNJUgrD74XHmKnG1eUyKpg2+zJJQlfEq2RNLHBeriW6Mgv0
+         kqEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710361702; x=1710966502;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KAWRgWU6WLEXQVBoGzfJEbXOKTd+ZWBJGPDK+Tp7qSI=;
+        b=KJokLhQYDr9wLcf7e91s2/lEAfLj4we6INB8n/+6I0JCWQoBKClfPHoSVLR2vPjrOG
+         tJoQNO1kxzIOelTKV4SaOIfNDJa+SaozrTPTc1zaIFSm0RlDlUkeVx90yP/1GXPK0ysZ
+         vSZ4P4HmiwhCcDo/s3vHaz/9VAavH/fiYvXZZ98QGluMyP8+zrLMuiAczzOkRmZ82XnJ
+         +ODXdYD8bUOz7Gv+wdqgZmbs5omLBLsKvZ61Z0zFQWm4UkhnP8zeshyWY28yHMfZ1Tne
+         YX0PoNlXggXqi9yjnqgM7NNVjSpfzA9YgX1dHeK7slcqGbOs1o8yAQP8wxM4tV8YickH
+         cm/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUkCRKECudqI2od+aNhVhIhVB+z0TtDyV/UB2Ec12bVMCoHrYsW6kBmJr5WdquCu+Ho2e7H34rPLKLXExSxhhWpJ/GFRx9zqDyc
+X-Gm-Message-State: AOJu0YxwejQ5XyDFjGevPDR6u5eIJpIYBDhK1OYM2agRDyLGJzPHKDia
+	QkTa+lSi3o8MUkG7rb79+IteYKGOJDj8TOXFg2toOKm8VuklE93wxO8RIK4NeR0=
+X-Google-Smtp-Source: AGHT+IEOPc5OEL968XGI9Srb8DwBFMxD/2mugMqwuczh3UoC7IERpmKsonAhCJ+UnsiA3uICMUraLA==
+X-Received: by 2002:a05:6808:ecd:b0:3c1:d184:98c9 with SMTP id q13-20020a0568080ecd00b003c1d18498c9mr964366oiv.13.1710361701855;
+        Wed, 13 Mar 2024 13:28:21 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id s8-20020a9d58c8000000b006e4eaa4ba7esm21520oth.61.2024.03.13.13.28.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 Mar 2024 13:28:21 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] iio: pressure: add SCALE and RAW values for
- channels
-Message-ID: <ZfIGtUPZpyDBnWwz@smile.fi.intel.com>
-References: <20240313174007.1934983-1-vassilisamir@gmail.com>
- <20240313174007.1934983-4-vassilisamir@gmail.com>
- <ZfH4bET-HX0e3PO_@smile.fi.intel.com>
- <20240313195110.GB1938985@vamoiridPC>
+Subject: [PATCH 0/2] docs: iio: new docs for ad7944 driver
+Date: Wed, 13 Mar 2024 15:21:50 -0500
+Message-ID: <20240313-mainline-ad7944-doc-v1-0-7860416726e4@baylibre.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240313195110.GB1938985@vamoiridPC>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 13, 2024 at 08:51:10PM +0100, Vasileios Amoiridis wrote:
-> On Wed, Mar 13, 2024 at 09:03:08PM +0200, Andy Shevchenko wrote:
-> > On Wed, Mar 13, 2024 at 06:40:04PM +0100, Vasileios Amoiridis wrote:
-> > > Add extra IIO_CHAN_INFO_SCALE and IIO_CHAN_INFO_RAW in order to be
-> > > able to calculate the processed value with standard userspace IIO
-> > > tools. Can be used for triggered buffers as well.
+Adding documentation for the recently applied ad7944 driver.
 
-...
+Note: this also covers the features added in [1] that hasn't been
+applied yet.
 
-> > > +	case IIO_CHAN_INFO_RAW:
-> > > +		switch (chan->type) {
-> > > +		case IIO_HUMIDITYRELATIVE:
-> > > +			*val = data->chip_info->read_humid(data);
-> > > +			ret = IIO_VAL_INT;
-> > > +			break;
-> > > +		case IIO_PRESSURE:
-> > > +			*val = data->chip_info->read_press(data);
-> > > +			ret = IIO_VAL_INT;
-> > > +			break;
-> > > +		case IIO_TEMP:
-> > > +			*val = data->chip_info->read_temp(data);
-> > > +			ret = IIO_VAL_INT;
-> > > +			break;
-> > > +		default:
-> > > +			ret = -EINVAL;
-> > > +			break;
-> > 
-> > Is it mutex that prevents us from returning here?
-> > If so, perhaps switching to use cleanup.h first?
-> 
-> I haven't seen cleanup.h used in any file and now that I searched,
-> only 5-6 are including it.
+[1]: https://lore.kernel.org/linux-iio/20240311-mainline-ad7944-3-wire-mode-v1-1-8e8199efa1f7@baylibre.com/
 
-Hmm... Which repository you are checking with?
+Also updating the MAINTAINERS file to catch iio documentation since this
+seems to have been overlooked.
 
-$ git grep -lw cleanup.h -- drivers/ | wc -l
-47
+---
+David Lechner (2):
+      MAINTAINERS: add Documentation/iio/ to IIO subsystem
+      docs: iio: new docs for ad7944 driver
 
-(Today's Linux Next)
+ Documentation/iio/ad7944.rst | 227 +++++++++++++++++++++++++++++++++++++++++++
+ Documentation/iio/index.rst  |   1 +
+ MAINTAINERS                  |   2 +
+ 3 files changed, 230 insertions(+)
+---
+base-commit: bbafdb305d6b00934cc09a90ec1bb659d43e5171
+change-id: 20240313-mainline-ad7944-doc-285b47ed6d35
 
-> I am currently thinking if the mutex
-> that already exists is really needed since most of the drivers
-> don't have it + I feel like this is something that should be done
-> by IIO, thus maybe it's not even needed here.
-
-> > > +		}
-> > > +		break;
-
+Best regards,
 -- 
-With Best Regards,
-Andy Shevchenko
-
+David Lechner <dlechner@baylibre.com>
 
 

@@ -1,86 +1,86 @@
-Return-Path: <linux-iio+bounces-3492-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3493-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B3787B25C
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 20:56:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B6D87B26B
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 21:00:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78AB02825E4
-	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 19:56:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C53F41C25C8C
+	for <lists+linux-iio@lfdr.de>; Wed, 13 Mar 2024 20:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD344C600;
-	Wed, 13 Mar 2024 19:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652794CB41;
+	Wed, 13 Mar 2024 20:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UiWcLg9w"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q3aYi3co"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03849482D4;
-	Wed, 13 Mar 2024 19:56:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951CB225AF;
+	Wed, 13 Mar 2024 20:00:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710359765; cv=none; b=XoQo+LMWVFPxcDXv1NyjmXGYxoahaEgFFkoDCze/X6NxlJb6TTC3/490UuzdRpR8BpLJjfPNCEr+ly46uDQ/Bi6Wxb4apVncT0n+yPe1xfciXpmr3CTjC7KWODyIlIKBPCphTsP7hY5I0k6DDYQAJHMOWUsqyr+VRK8EwYIx7wQ=
+	t=1710360037; cv=none; b=QykGSpKiScmqO5XsOcYf6LENxwi7TsL67g4DfcF8BAetY1vPviveV1VCnit8V41/q5kdq+6kifFc+GfZs9xjpE5EOOZ7oGwiDbNGLcH8ul9r8NLw4C6adu04CmOppMUFQcMgL+68wAOFVlo+2NqlM4Qa6xNaGsL1vABZL5VFy60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710359765; c=relaxed/simple;
-	bh=GopJVs09YC8B31IStPnxUVp3Zcqx8IaRJ1z0E3WCq0k=;
+	s=arc-20240116; t=1710360037; c=relaxed/simple;
+	bh=I4XcGuTburoMv8FJwJYZcsdnM+xWLlluJGDQPgI1Rtg=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BPOhY6LpwYz6NbcvuNGsqeWgQDHFCC01nnW+yJ7xAfGSPL+jAw9iToH45Ztp/pSdA8pZld8fJQvzFxc/P50paxaSm0fWd7ajNPRwqnrQ36qMWYQEl5en7lYdYrD1Xlisre9Lj30SUWvekJyHFUn9HSDTSz62afhBiI0WgQ7xDGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UiWcLg9w; arc=none smtp.client-ip=209.85.208.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=k158DKrnM4kON/R2OLeelBz7nrwJcefXrRa4MzTVFKjxKw1ed6yCA7XloZ/E0P1yX6iw1vJatblETaKRjQGeP/Ws9BzBz648fQuEm/jgSvPFZEJVocIvkOXZYd4kGTiSUvNBwGtDj1ZCZwnXPNf771dmyV28HRJkq21N4KmJczk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q3aYi3co; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5682ecd1f81so332142a12.0;
-        Wed, 13 Mar 2024 12:56:03 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a4649c6f040so33827966b.0;
+        Wed, 13 Mar 2024 13:00:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710359762; x=1710964562; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1710360034; x=1710964834; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4UlZ0qXaHrxjPwMvupsh66nrXfN2ATU7nRdRC9at3BQ=;
-        b=UiWcLg9w0yPFsN9FFfMndmgcVmT08WTiN5Ux6HNTSED+9wMtxPyhp7v9pYR+IStVOy
-         u04w10L6kEh9Mj2s8D9JwKVT5D736fLOKKHFf/xMXdQooIZKcL6XL+AvoSGOFbEYHqTC
-         PrGduPtSMg+9kIUMpLWyQsKmrZPCtW9e3ltacKaZR+LdIXru3gtfdqfWQGfikEn/v3KZ
-         e0rxeCOo8Ldj/rbQFA5qYd+3t9M2gQgkwUxo6HE4cTaEUrUIiY2gZCoqApSuufz8KJ/1
-         txZ9UqBnugyowESgcDuIxmm+CcgZrbjdKMGD/spT6wpT/hhJnMY+8OzYV7aHdatRgVA/
-         2ixg==
+        bh=A1HmNv+yMo2ZvddaEye/rC5NZtopLXcTAFzBOCzH5/s=;
+        b=Q3aYi3coTsavNVq8G2DGDAYfbEETuskYVmCjyq2pg/BvUKaFD+B3WuZoVVCbInY0Me
+         6ndnPGP1arAWnp2BpdEpdUvxuVw6Xt3SrxI0qx6PJAOkLSsbxTnsou7dYFXouPgO7v3M
+         r2UNwu+SCxroJRY5ro58aiWuat5d3Mpsv1vYDrdM4p1/sOM5vyovXsBWmVkm7fLmWCaM
+         i5iK8H9gTrcD9rYsmUoYtUc+07ovZvD5tYfVmXMEMgBQiD/mbhZ/BmUJu8yh1ZQOAHrz
+         XjzjngXRuTi6HeCWbg0OM9sKeoIRFmGbEf7gnZAhcMSHVyqCJajqnHYNlkI6CG55K+JA
+         z7Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710359762; x=1710964562;
+        d=1e100.net; s=20230601; t=1710360034; x=1710964834;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4UlZ0qXaHrxjPwMvupsh66nrXfN2ATU7nRdRC9at3BQ=;
-        b=mF446DIGkIW/XS+4RcdAtQAkK9YcU4OrDfml8dOagUoAepctjjRRCXhi6A9SAjWCDV
-         8tYVr7nt4myn0LT/CisawcjY9dtkkL0w0US8rfkz3Lk5WMA7eEZMd4gqlxmuXiIgT1iB
-         4Ju3mIv0WFkGyFZ4zqJEpfjpL6rIFR7nvWPMZKyEpWDFeLDtBmxvU+9UErg3fOZm/hAb
-         QzqpHt0lFYHHzBlW8lMG90f5EBrSJZWYPi/WAFaQcI91o2plPnQuncsOePdF/oTvRPzp
-         ltKAquMm76VRNDLnMGWuDsRwn7Bhd6DzOup3FLcAcnOIEEpP9vXTjAuvbgZ8ZAHcSHBu
-         meZA==
-X-Forwarded-Encrypted: i=1; AJvYcCURIwHcZCUQLaQvR9A97ejHhD4subIJROETZ4aydeu3d3lNE4+MJF9UNTNggsIqXiuXXWjI0VUMM3DrxSqCZuKuddmJEGWJi5R4CW+DnWcLm3qpq5mzM7dMlbD1go+HiEjfdITPfD0w
-X-Gm-Message-State: AOJu0YyffH7ZIVwz2OVCDONX3XtViIT1zhTUFC36xqRgXMGlMNN8JsX9
-	kiCqc8fug0YmtIP/H5YmDMetX9CLqVCPmOwi/FfOJm1GifUjQ3Y2
-X-Google-Smtp-Source: AGHT+IH8cNdgWX+LUUV7wY6S2o3bUPbzsboy+KMW8TCu6oCxNEmi/ELSH1RwS2TTqnG4UygXYJ6MKw==
-X-Received: by 2002:a50:9b5d:0:b0:566:fbf5:a279 with SMTP id a29-20020a509b5d000000b00566fbf5a279mr2995432edj.20.1710359762056;
-        Wed, 13 Mar 2024 12:56:02 -0700 (PDT)
+        bh=A1HmNv+yMo2ZvddaEye/rC5NZtopLXcTAFzBOCzH5/s=;
+        b=krix0BL6F9BQ+u8YW8ZnLy7p4suwCxVJZ7E8DGlDgHMNnfMr5dO2xxjWcJj3/4AvGM
+         sfnL41XVXDihSg0fBsnJkhBdbZc0gPx2GeRA8Sc+jPYj3/o77AwQw5JtXt7nSlnV+YMs
+         04Vt1o7LhcX7fWjJi21Ehy7AfC8YAVc8FmVFx2c9aXqWvSJcqelkmID2eySMa/QovayY
+         AFbKGNEmlERqCB6/BeH9XzQRRvImCVpsf40OV+XC3vpTnMqQnd15gRYu2c3WvHvXW3jt
+         MEjYCYafjcymlzGHPRmMtkLjPkere1YtDNta18HT/g5wA5CRLx8FNzpBWs22HEM1hHob
+         5i7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXdav9Lkp2KavjFwbsQIXVmdv1K/6FoOU+ycHUoYRqy3nLWQDI6m8/TQP9ZaNP7g2lEGdud7KYt8dSjzu+gKGW2L0a6kAMYePcaSWO9muKXlfVmtgEO+Lqm2sE9ifnKyq/gAiYNfAVr
+X-Gm-Message-State: AOJu0YzrGde/Cwhr9J64DNDvRN12rp6HJ9gMXSE6ODfGEgCghrdFAVR/
+	hNHoaW3hPUBCzOyhSSB4ShrDcAPCUxFXbXzlMCGmqvJ1b2misUQx
+X-Google-Smtp-Source: AGHT+IFifPyXM1JWvUAQeP4T4qXLYuAC/uZ6RDCKhYihgRi/7pnFNXrW0vmQFdAzqMgt30VVdx46Gw==
+X-Received: by 2002:a17:906:fb81:b0:a43:29e1:6db8 with SMTP id lr1-20020a170906fb8100b00a4329e16db8mr8815457ejb.9.1710360033769;
+        Wed, 13 Mar 2024 13:00:33 -0700 (PDT)
 Received: from vamoiridPC ([2a04:ee41:82:7577:fa35:157e:1a40:3463])
-        by smtp.gmail.com with ESMTPSA id f8-20020a056402004800b00568550a0762sm3716486edu.6.2024.03.13.12.56.01
+        by smtp.gmail.com with ESMTPSA id rn16-20020a170906d93000b00a441a7a75b5sm5091731ejb.209.2024.03.13.13.00.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Mar 2024 12:56:01 -0700 (PDT)
+        Wed, 13 Mar 2024 13:00:33 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Wed, 13 Mar 2024 20:55:59 +0100
+Date: Wed, 13 Mar 2024 21:00:31 +0100
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
 	lars@metafoo.de, ang.iglesiasg@gmail.com, mazziesaccount@gmail.com,
 	ak@it-klinger.de, petre.rodan@subdimension.ro,
 	linus.walleij@linaro.org, phil@raspberrypi.com, 579lpy@gmail.com,
 	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 5/6] iio: pressure: Add timestamp and scan_masks for
+Subject: Re: [PATCH v2 6/6] iio: pressure: Add triggered buffer support for
  BMP280 driver
-Message-ID: <20240313195559.GC1938985@vamoiridPC>
+Message-ID: <20240313200031.GD1938985@vamoiridPC>
 References: <20240313174007.1934983-1-vassilisamir@gmail.com>
- <20240313174007.1934983-6-vassilisamir@gmail.com>
- <ZfH2dxmSzcw1_3vt@smile.fi.intel.com>
+ <20240313174007.1934983-7-vassilisamir@gmail.com>
+ <ZfH3P9dTiBHpjN5b@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -89,43 +89,32 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZfH2dxmSzcw1_3vt@smile.fi.intel.com>
+In-Reply-To: <ZfH3P9dTiBHpjN5b@smile.fi.intel.com>
 
-On Wed, Mar 13, 2024 at 08:54:47PM +0200, Andy Shevchenko wrote:
-> On Wed, Mar 13, 2024 at 06:40:06PM +0100, Vasileios Amoiridis wrote:
-> > The scan mask for the BME280 supports humidity measurement needs
-> > to be distinguished from the rest in order for the timestamp to
-> > be able to work. Scan masks are added for different combinations
-> > of measurements. The temperature measurement is always needed for
-> > pressure and humidity measurements.
-> 
-> (Just to make sure if you used --histogram diff algo when preparing the series)
+On Wed, Mar 13, 2024 at 08:58:07PM +0200, Andy Shevchenko wrote:
+> On Wed, Mar 13, 2024 at 06:40:07PM +0100, Vasileios Amoiridis wrote:
+> > Add a buffer struct that will hold the values of the measurements
+> > and will be pushed to userspace and a buffer_handler function to
+> > read the data and push them.
 > 
 > ...
 > 
-> >  	{
-> > -		.type = IIO_HUMIDITYRELATIVE,
-> > +		.type = IIO_PRESSURE,
-> >  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> >  				      BIT(IIO_CHAN_INFO_RAW) |
-> >  				      BIT(IIO_CHAN_INFO_SCALE) |
-> >  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> > -		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> > +	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
+> > +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
 > 
-> Stray change
+> dev here
 > 
-I didn't notice that, and the checkpatch.pl didn't actually say something,
-thanks for pointing out.
-> >  					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-> > +		.scan_index = 1,
-> > +		.scan_type = {
-> > +			.sign = 'u',
-> > +			.realbits = 32,
-> > +			.storagebits = 32,
-> > +			.endianness = IIO_CPU,
-> > +		},
-> >  	},
+> > +					      iio_pollfunc_store_time,
+> > +					      &bmp280_buffer_handler, NULL);
+> > +	if (ret)
+> > +		return dev_err_probe(data->dev, ret,
+> 
+> data->dev here
+> 
+> Are they the same? If not, why this difference?
+> 
+They are the same. I didn't notice it, but I will fix it for consistency.
+
+> > +				     "iio triggered buffer setup failed\n");
 > 
 > -- 
 > With Best Regards,
@@ -134,5 +123,5 @@ thanks for pointing out.
 > 
 
 Best regards,
-Vasilis Amoiridis
+Vasileios Amoiridis
 

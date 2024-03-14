@@ -1,59 +1,55 @@
-Return-Path: <linux-iio+bounces-3519-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3520-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96E7B87C063
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 16:35:50 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB3587C06C
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 16:37:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C74D91C216EF
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 15:35:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2431B1F21BDF
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 15:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17B373514;
-	Thu, 14 Mar 2024 15:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374D171B37;
+	Thu, 14 Mar 2024 15:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WO4zFE6l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EmTggI4m"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6553C7175B;
-	Thu, 14 Mar 2024 15:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85D171B20
+	for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 15:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710430421; cv=none; b=cQrjj5AYkwJg7krFqOzSX6lbbDSK2ZqCDl4duRFP5zISvxRqes1H72mUsD4Z6M9jViS5lkBH7UycVDTx51tkpwbduNug7tcrtB04KbzJLya7pv6sz1XtSO41nP31OrG3HzauMt7FweYfAckvdl1WgL1yuABGn/D+RBbAQGJe6iI=
+	t=1710430630; cv=none; b=BVI/q8HRYv1yjDtx37tfEFqJk3+TCyRSmvLwQytMCZ6jdj+Ho2NAv7gQ2GBjv3U/lGU9Ln2/lK6Y5kWtzZsLRGfsDB75a7TWUNdrYzJ8OJ6rJY7i+/kRf5lzQywmebVjoo0n75iFCARh1pLINWBtE+g30pxY4CeIcLi/dwGnFT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710430421; c=relaxed/simple;
-	bh=aCDonrkKYBPwiH8R2bMD582lXFzDsl0VVpShAkgDxdQ=;
+	s=arc-20240116; t=1710430630; c=relaxed/simple;
+	bh=cPADldGSwQorMVNrWhzYNIKpsz4a507wmnA2WUujMM8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rx3E4FjTqxAsPRARcRfZclKYoJtRfrZZt+nbAl/XMo0nDOQbe/gtOMsddLcCZ8lnnaT6kMhPBEXEk/KwnvZ6dRBYnniCwaM6abORbX5b64kzysT2F4ZN2ryiT6n4jQshzqOrI9lJmrYdMm+0Lzv6mi9DYctvwP3xHuxBl/joaG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WO4zFE6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2783EC433F1;
-	Thu, 14 Mar 2024 15:33:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xz3vwRMzojy602IVywnWuxVEtHn+482HuJAUdlGiTNn7gOsjUBoPKv/9fgsNK2gzMEbPStAvg+zIEUUNXYAP2sKp7NAHqsYf+aI4qlnxAoe5flu46tAuICXrJfP8h1DeqFXP8yJgcGUxifnzNNmYA7pJ5l5jo9jDqM1E7DStV6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EmTggI4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8EDC433C7;
+	Thu, 14 Mar 2024 15:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710430421;
-	bh=aCDonrkKYBPwiH8R2bMD582lXFzDsl0VVpShAkgDxdQ=;
+	s=k20201202; t=1710430629;
+	bh=cPADldGSwQorMVNrWhzYNIKpsz4a507wmnA2WUujMM8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WO4zFE6l0q3diFd5YdMxGJymp+DtRSFJ0f/VuXvm56UlZuAIBWndg8n91L0PeH1px
-	 AFAdRDau5Y4nedRpjHWd4atk8FrhZT4MMq4/lDYy8C/RveYRfl9wFyBS7/ZYfgkep+
-	 3nZO0GZJxb3GwTEzGaER4ayeBiWcKI+naAm3lxVq/edC2xsgmfnORe9+dmBks5SmrS
-	 Xym6FcxFXw2aiBQirXqOQeP8Gg+58iz7fzXe/VzcxlwMXYVxTcGNjJexH0V7uOXZ8S
-	 4ljz2IYlI56V6C7jiO7HNPq0O4mqmcZULEsi/qAPk5VKGB4ehflOXyXAL6Q1d48Kmy
-	 wXHbn691YoVZg==
-Date: Thu, 14 Mar 2024 15:33:26 +0000
+	b=EmTggI4mXHp6n8ZErK+D3yrB8puhs/+24uu/9cFDq3UIhhLBfEPDAvm+YUWs7zk4O
+	 dk5NIw2IVJexwKijG5VYdvNQZKgQJJoc6z1nBhclq9y2DiWN/SBUYJs8X7c+dDo/WS
+	 K4rYKAgxei7lFlWL8BXF4zl5AG7NCNNUN4KHFKc9uDwdn/EnKftRNBAeiJcvBlBCeI
+	 K6HTAna/90QWBxouXq2lVbZFfKrtOP9zh95PfH5drFEtka47sKpnwZhrY3cpOTMDSy
+	 hV2avSiodkUA6ZNv29soSNQgb81+XHNR6BjhVRP62HR2u765NHiDj4/YYcQBqfuykR
+	 eixrN4dp1A+pA==
+Date: Thu, 14 Mar 2024 15:36:56 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Li Zhijian <lizhijian@fujitsu.com>
-Cc: linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>, Srinivas
- Pandruvada <srinivas.pandruvada@linux.intel.com>, Benjamin Tissoires
- <benjamin.tissoires@redhat.com>, linux-input@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] HID: hid-sensor-custom: Convert sprintf/snprintf
- to sysfs_emit
-Message-ID: <20240314153326.2126d3df@jic23-huawei>
-In-Reply-To: <20240314084753.1322110-2-lizhijian@fujitsu.com>
-References: <20240314084753.1322110-1-lizhijian@fujitsu.com>
-	<20240314084753.1322110-2-lizhijian@fujitsu.com>
+To: Chenyuan Yang <chenyuan0y@gmail.com>
+Cc: mazziesaccount@gmail.com, lars@metafoo.de, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: Fix the sorting functionality in
+ iio_gts_build_avail_time_table
+Message-ID: <20240314153656.493ee487@jic23-huawei>
+In-Reply-To: <ZfHM73ZqgnCp6CZv@cy-server>
+References: <ZfHM73ZqgnCp6CZv@cy-server>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,77 +60,72 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 14 Mar 2024 16:47:51 +0800
-Li Zhijian <lizhijian@fujitsu.com> wrote:
+On Wed, 13 Mar 2024 10:57:35 -0500
+Chenyuan Yang <chenyuan0y@gmail.com> wrote:
 
-> Per filesystems/sysfs.rst, show() should only use sysfs_emit()
-> or sysfs_emit_at() when formatting the value to be returned to user space.
-> 
-> coccinelle complains that there are still a couple of functions that use
-> snprintf(). Convert them to sysfs_emit().
-> 
-> sprintf() will be converted as weel if they have.
-> 
-> Generally, this patch is generated by
-> make coccicheck M=<path/to/file> MODE=patch \
-> COCCI=scripts/coccinelle/api/device_attr_show.cocci
-> 
-> No functional change intended
-> 
-> CC: Jiri Kosina <jikos@kernel.org>
-> CC: Jonathan Cameron <jic23@kernel.org>
-> CC: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> CC: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> CC: linux-input@vger.kernel.org
-> CC: linux-iio@vger.kernel.org
-> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Hi Li Zhijian,
+> The sorting in iio_gts_build_avail_time_table is not working as intended.
+For function names, add () so
+The sorting in iio_gts_build_avail_time_table() is not working as intended.
 
-One trivial comment inline.
-Otherwise straight forward so
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I can fix this up whilst applying but will be waiting for a RB or related
+from Matti before queuing this up.
 
+I'm assuming there are no existing drivers in tree that hit this problem?
+If there are reply saying which ones so I can assess whether to rush this
+fix in or not.
+
+Thanks,
+
+Jonathan
+
+
+> It could result in an out-of-bounds access when the time is zero.
+> 
+> Here are more details:
+> 
+> 1. When the gts->itime_table[i].time_us is zero, e.g., the time
+> sequence is `3, 0, 1`, the inner for-loop will not terminate and do
+> out-of-bound writes. This is because once `times[j] > new`, the value
+> `new` will be added in the current position and the `times[j]` will be
+> moved to `j+1` position, which makes the if-condition always hold.
+> Meanwhile, idx will be added one, making the loop keep running without
+> termination and out-of-bound write.
+> 2. If none of the gts->itime_table[i].time_us is zero, the elements
+> will just be copied without being sorted as described in the comment
+> "Sort times from all tables to one and remove duplicates".
+> 
+> For more details, please refer to https://lore.kernel.org/all/6dd0d822-046c-4dd2-9532-79d7ab96ec05@gmail.com.
+> 
+> Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+> Suggested-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Fixes: 38416c28e16890b52fdd5eb73479299ec3f062f3 ("iio: light: Add gain-time-scale helpers")
+> Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
 > ---
-> This is a part of the work "Fix coccicheck device_attr_show warnings"[1]
-> Split them per subsystem so that the maintainer can review it easily
-> [1] https://lore.kernel.org/lkml/20240116041129.3937800-1-lizhijian@fujitsu.com/
-> ---
->  drivers/hid/hid-sensor-custom.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+> index 7653261d2dc2..61714a8d5717 100644
+> --- a/drivers/iio/industrialio-gts-helper.c
+> +++ b/drivers/iio/industrialio-gts-helper.c
+> @@ -375,7 +375,7 @@ static int iio_gts_build_avail_time_table(struct iio_gts *gts)
+>  	for (i = gts->num_itime - 1; i >= 0; i--) {
+>  		int new = gts->itime_table[i].time_us;
+>  
+> -		if (times[idx] < new) {
+> +		if (idx == 0 || times[idx - 1] < new) {
+>  			times[idx++] = new;
+>  			continue;
+>  		}
+> @@ -385,9 +385,10 @@ static int iio_gts_build_avail_time_table(struct iio_gts *gts)
+>  				memmove(&times[j + 1], &times[j],
+>  					(idx - j) * sizeof(int));
+>  				times[j] = new;
+> -				idx++;
+> +				break;
+>  			}
+>  		}
+> +		idx++;
+>  	}
+>  
+>  	/* create a list of times formatted as list of IIO_VAL_INT_PLUS_MICRO */
 > 
-> diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
-> index d85398721659..ee1a118834f0 100644
-> --- a/drivers/hid/hid-sensor-custom.c
-> +++ b/drivers/hid/hid-sensor-custom.c
-> @@ -155,7 +155,7 @@ static ssize_t enable_sensor_show(struct device *dev,
->  {
->  	struct hid_sensor_custom *sensor_inst = dev_get_drvdata(dev);
->  
-> -	return sprintf(buf, "%d\n", sensor_inst->enable);
-> +	return sysfs_emit(buf, "%d\n", sensor_inst->enable);
->  }
->  
->  static int set_power_report_state(struct hid_sensor_custom *sensor_inst,
-> @@ -372,14 +372,14 @@ static ssize_t show_value(struct device *dev, struct device_attribute *attr,
->  				     sizeof(struct hid_custom_usage_desc),
->  				     usage_id_cmp);
->  		if (usage_desc)
-> -			return snprintf(buf, PAGE_SIZE, "%s\n",
-> -					usage_desc->desc);
-> +			return sysfs_emit(buf, "%s\n",
-> +					  usage_desc->desc);
-rewrap the line as will be under 80 chars.
-
->  		else
-> -			return sprintf(buf, "not-specified\n");
-> +			return sysfs_emit(buf, "not-specified\n");
->  	 } else
->  		return -EINVAL;
->  
-> -	return sprintf(buf, "%d\n", value);
-> +	return sysfs_emit(buf, "%d\n", value);
->  }
->  
->  static ssize_t store_value(struct device *dev, struct device_attribute *attr,
 
 

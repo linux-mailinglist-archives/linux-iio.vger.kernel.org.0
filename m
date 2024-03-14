@@ -1,173 +1,131 @@
-Return-Path: <linux-iio+bounces-3508-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3509-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A2C87BB9E
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 11:58:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CAB7B87BEDA
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 15:27:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A2641C21558
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 10:58:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 080411C20B1E
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 14:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858886F06D;
-	Thu, 14 Mar 2024 10:57:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6556B6FE17;
+	Thu, 14 Mar 2024 14:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bSEoxgrS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fw43UPCC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B006EB73;
-	Thu, 14 Mar 2024 10:57:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2191F5D8F8;
+	Thu, 14 Mar 2024 14:27:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710413855; cv=none; b=Evv4fygb00GMMfi2YB36IA7i5xoDSPlX+C/yhiQjT2d3rCrK8ZbUgOJDelwCmPfR8sG0zy5nxTU4xwS0YfY3nogpDPA7GisfNChMaagyVgOLFZ/+wm0icaOFExEtZsE4n4h/Cur3tUlEiTTHxbC/SGZS4jxnrvsEebVh/gzXka4=
+	t=1710426437; cv=none; b=BOaY5/ro0hQi7L6/Cad+oxQjf7KQWdBHlUtIAC/NWfcgRqChTLU8zqpAwv9nGAzoPl+xL6Ivc8d0UOzSngC5TPTNsSOv0go/nALkQinB3BVIEtis4d4aRvs6YuMWG3WOJCfVqU+zsiDPm9evUsqb13PDA/wNi3Nm3Fm3Gu31ChA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710413855; c=relaxed/simple;
-	bh=r896VFbfcS0xuGXvgjLwcx9xIEMapA2z9gV09qYRM7o=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lJDEYLHlTBshSXELTrr+rgLpAZ4S1lDtBsxVaeFuDUaSgdk/WkIADq4s3k8DTW4dG2MLFrT+xlsChCbVKXEf6GzDtuQ+QvdsOfLBuC+CqI44ZyPEe9+1maEujf+eyGjVmnbNrgTQFSo2hyUrgE3i6a5xsjdtAE65g1U/KrY1zTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bSEoxgrS; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5683576ea18so1038163a12.3;
-        Thu, 14 Mar 2024 03:57:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710413851; x=1711018651; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xo1CXpxaozz3bIcU8SWM6IvQgEAj2vZ6WjYgjDbJujM=;
-        b=bSEoxgrSQ4pxwo/EHAu3SNbKethMBpjameqeJLtFQf7Wz3nFsRTDIbhy8Uver1BF5V
-         a5RE8SdcwE+o2kRm5sl6uxAPOy5Gc3pFMruz4OOfHMur+m4TideqwEWNFp3N4lWURYuc
-         T0AgYoBc7GFklldury6gWDNygqPmA9rp6YHvRDd3+HselTw5r0UHiBdy7fjj/r/R+M2p
-         Z+9bcEcMpObI3mZ50hey1dd4yMlSCSufxk1XjgLhhZlBx5LteL/7EFjs778K+0jI0fmZ
-         KHTVrfJezu+V4YOecmD7nOnTrKVAkzlguY4mWTZhstXD3bGcHKyrqvyi+GUzuXoXCH96
-         SGsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710413851; x=1711018651;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xo1CXpxaozz3bIcU8SWM6IvQgEAj2vZ6WjYgjDbJujM=;
-        b=GTMLY3pd9eRTwVzVCq8sZkTmxE4NnkhLe/O05WV2Eav8Z3+9V2/NkwGH8pE/V+G+yT
-         NWXGgi4O1fXr3qHs+h4LD2xDDn51w2imNX+YuwXswTdFDf3xDsrCsz2tSooaZKz/sIJv
-         aqhLB0LzMmR2PCKmv2oO5sLUEc2ijKkSGZ8OIHxycSGufdFLORDA9nLBMNHng5sVGfjK
-         /8nlKh0aDIAB0B+WJ98kwGRKg8JfR2LPwCYrUM//NtaUN6m/uFfreYVhJ5+sgVZP+PCA
-         ZQS4vGRqGHnqHWF/8QDSMvnYWMtBts3ATDHq+4kVZs+d9Uhp9EvdG9E9EuDQfU1WTHST
-         KSIg==
-X-Forwarded-Encrypted: i=1; AJvYcCXNHdgZ6m1qe5YkKj4Re7GWy2elnaeHXcN0kjGkjH5XNOoGPsnT5uUWYJdlSA9PjBs8pLv2WBzhnkJh2ldfrmUqlcaYm5WVnzkLlfxdb+AuiCABZJWzJTj3ew596IhZYpBPWGrmuepA
-X-Gm-Message-State: AOJu0YxXrWJYnu1cUbro4oRvQACVcgncl1ZAmBCGV1cxuXBZ0m/5h0tC
-	BXs49QjLLsjqJ42pRvMCzRvDJcPeYS7tXtLA1y1xnFOAvpGcHou4
-X-Google-Smtp-Source: AGHT+IGw/KeaG17TYOgZ30Ngr/ndiMiQGoIcXycvl1tBSZjJ7CzVWdChe7/tUBvg0IT6qFXkb6YcSA==
-X-Received: by 2002:a17:907:cbc6:b0:a46:22a3:4798 with SMTP id vk6-20020a170907cbc600b00a4622a34798mr1298961ejc.46.1710413850593;
-        Thu, 14 Mar 2024 03:57:30 -0700 (PDT)
-Received: from vamoirid-EDL-PC ([2001:1458:204:1::102:bd5f])
-        by smtp.gmail.com with ESMTPSA id p25-20020a1709061b5900b00a461d8335f2sm587897ejg.45.2024.03.14.03.57.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Mar 2024 03:57:30 -0700 (PDT)
-From: vamoirid <vassilisamir@gmail.com>
-X-Google-Original-From: vamoirid <vamoirid@vamoirid-edl-pc>
-Date: Thu, 14 Mar 2024 11:57:28 +0100
+	s=arc-20240116; t=1710426437; c=relaxed/simple;
+	bh=x8duBZfq2CwdbVtYRgrRjeErlATVcK0LqzfKY/hrrRs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aAsqo8Y3S2w4JWcTgTIr6vigG6g/HrA3pTOG+crBBuowMtMDJG72zbNly6oWI9ciNhF2XEvkr9DMgbxyU9JiT55Nn1IsgHGHm2Uoq2alfFd5AHJGA0sKuQ2NdYst/6UQYUkr6EYybAdkwdl/EUx6626vXF9kHC58xJSoN9j4u2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fw43UPCC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1FCC433C7;
+	Thu, 14 Mar 2024 14:27:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710426436;
+	bh=x8duBZfq2CwdbVtYRgrRjeErlATVcK0LqzfKY/hrrRs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Fw43UPCCPAUskpMLXmkzS+5p+FnIUsZEfgNHQhEu3mU8R17Ld+KbLbSm5JYWmbT0S
+	 X3qsH3lY/DxgvcEKoHl8ylTfb0eOVCVYAOnkRlLzIZAk4Me3S7XjsBlJhxRyCEfDrv
+	 tjYRK/K/uE1+jAe+BnZ5aeiTMBL8nURHuEqibAcXBjpMzR8Dfx9xtnmzFz6BHNVH8Q
+	 El/C5e6llmytVWSDRJe1+lpU28xS3q009KppF1tbsuk3C/Zp7ybfRxSXrTgXJN3+kB
+	 2n9OqA1uYgHsCJSDYrrQzG26QAsc87taVyIPd8zIHl1diCfcAvZh52SVjyWCfpVKJu
+	 EskIxOdPDwXUw==
+Date: Thu, 14 Mar 2024 14:27:00 +0000
+From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, jic23@kernel.org,
-	lars@metafoo.de, ang.iglesiasg@gmail.com, mazziesaccount@gmail.com,
-	ak@it-klinger.de, petre.rodan@subdimension.ro,
-	linus.walleij@linaro.org, phil@raspberrypi.com, 579lpy@gmail.com,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] iio: pressure: add SCALE and RAW values for
- channels
-Message-ID: <ZfLYGL/vXMHUGghz@vamoirid-EDL-PC>
-References: <20240313174007.1934983-1-vassilisamir@gmail.com>
- <20240313174007.1934983-4-vassilisamir@gmail.com>
- <ZfH4bET-HX0e3PO_@smile.fi.intel.com>
- <20240313195110.GB1938985@vamoiridPC>
- <ZfIGtUPZpyDBnWwz@smile.fi.intel.com>
- <20240313212812.GE1938985@vamoiridPC>
+Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
+ ang.iglesiasg@gmail.com, phil@raspberrypi.com, 579lpy@gmail.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: pressure: Fixes SPI support for BMP3xx devices
+Message-ID: <20240314142700.32df91a2@jic23-huawei>
+In-Reply-To: <20240311005432.1752853-1-vassilisamir@gmail.com>
+References: <20240311005432.1752853-1-vassilisamir@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240313212812.GE1938985@vamoiridPC>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 13, 2024 at 10:28:12PM +0100, Vasileios Amoiridis wrote:
-> On Wed, Mar 13, 2024 at 10:04:05PM +0200, Andy Shevchenko wrote:
-> > On Wed, Mar 13, 2024 at 08:51:10PM +0100, Vasileios Amoiridis wrote:
-> > > On Wed, Mar 13, 2024 at 09:03:08PM +0200, Andy Shevchenko wrote:
-> > > > On Wed, Mar 13, 2024 at 06:40:04PM +0100, Vasileios Amoiridis wrote:
-> > > > > Add extra IIO_CHAN_INFO_SCALE and IIO_CHAN_INFO_RAW in order to be
-> > > > > able to calculate the processed value with standard userspace IIO
-> > > > > tools. Can be used for triggered buffers as well.
-> > 
-> > ...
-> > 
-> > > > > +	case IIO_CHAN_INFO_RAW:
-> > > > > +		switch (chan->type) {
-> > > > > +		case IIO_HUMIDITYRELATIVE:
-> > > > > +			*val = data->chip_info->read_humid(data);
-> > > > > +			ret = IIO_VAL_INT;
-> > > > > +			break;
-> > > > > +		case IIO_PRESSURE:
-> > > > > +			*val = data->chip_info->read_press(data);
-> > > > > +			ret = IIO_VAL_INT;
-> > > > > +			break;
-> > > > > +		case IIO_TEMP:
-> > > > > +			*val = data->chip_info->read_temp(data);
-> > > > > +			ret = IIO_VAL_INT;
-> > > > > +			break;
-> > > > > +		default:
-> > > > > +			ret = -EINVAL;
-> > > > > +			break;
-> > > > 
-> > > > Is it mutex that prevents us from returning here?
-> > > > If so, perhaps switching to use cleanup.h first?
-> > > 
-> > > I haven't seen cleanup.h used in any file and now that I searched,
-> > > only 5-6 are including it.
-> > 
-> > Hmm... Which repository you are checking with?
-> > 
-> > $ git grep -lw cleanup.h -- drivers/ | wc -l
-> > 47
-> > 
-> > (Today's Linux Next)
-> >
+On Mon, 11 Mar 2024 01:54:32 +0100
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+
+> Bosch does not use unique BMPxxx_CHIP_ID for the different versions of
+> the device which leads to misidentification of devices if their ID is
+> used. Use a new value in the chip_info structure instead of the
+> BMPxxx_CHIP_ID, in order to choose the regmap_bus to be used.
 > 
-> I am checking the drivers/iio of 6.8 (on sunday) and I can only find 7
-> drivers that use it.
+> Fixes: a9dd9ba32311 ("iio: pressure: Fixes BMP38x and BMP390 SPI support")
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Other than switching to a bool as Andy suggested, this looks fine to me.
+
+Jonathan
+
+> ---
+>  drivers/iio/pressure/bmp280-core.c | 1 +
+>  drivers/iio/pressure/bmp280-spi.c  | 9 ++-------
+>  drivers/iio/pressure/bmp280.h      | 1 +
+>  3 files changed, 4 insertions(+), 7 deletions(-)
 > 
-> > > I am currently thinking if the mutex
-> > > that already exists is really needed since most of the drivers
-> > > don't have it + I feel like this is something that should be done
-> > > by IIO, thus maybe it's not even needed here.
-> >
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index fe8734468ed3..5ea9039caf75 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -1233,6 +1233,7 @@ const struct bmp280_chip_info bmp380_chip_info = {
+>  	.chip_id = bmp380_chip_ids,
+>  	.num_chip_id = ARRAY_SIZE(bmp380_chip_ids),
+>  	.regmap_config = &bmp380_regmap_config,
+> +	.spi_read_extra_byte = 1,
+>  	.start_up_time = 2000,
+>  	.channels = bmp380_channels,
+>  	.num_channels = 2,
+> diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+> index a444d4b2978b..3a5fec5d47fd 100644
+> --- a/drivers/iio/pressure/bmp280-spi.c
+> +++ b/drivers/iio/pressure/bmp280-spi.c
+> @@ -96,15 +96,10 @@ static int bmp280_spi_probe(struct spi_device *spi)
+>  
+>  	chip_info = spi_get_device_match_data(spi);
+>  
+> -	switch (chip_info->chip_id[0]) {
+> -	case BMP380_CHIP_ID:
+> -	case BMP390_CHIP_ID:
+> +	if (chip_info->spi_read_extra_byte)
+>  		bmp_regmap_bus = &bmp380_regmap_bus;
+> -		break;
+> -	default:
+> +	else
+>  		bmp_regmap_bus = &bmp280_regmap_bus;
+> -		break;
+> -	}
+>  
+>  	regmap = devm_regmap_init(&spi->dev,
+>  				  bmp_regmap_bus,
+> diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+> index 4012387d7956..70bceaccf447 100644
+> --- a/drivers/iio/pressure/bmp280.h
+> +++ b/drivers/iio/pressure/bmp280.h
+> @@ -423,6 +423,7 @@ struct bmp280_chip_info {
+>  	int num_chip_id;
+>  
+>  	const struct regmap_config *regmap_config;
+> +	int spi_read_extra_byte;
+>  
+>  	const struct iio_chan_spec *channels;
+>  	int num_channels;
 
-After some researching today, I realized that all the                           
-{read/write}_{raw/avail}_{multi/}() functions are in drivers/iio/inkern.c
-for channel mapping in the kernel and it looks like they are guarded by
-the mutex_{un}lock(&iio_dev_opaque->info_exist_lock). So I feel that the
-mutexes in the aforementioned functions can be dropped. When you have the
-time please have a look, maybe the could be dropped.
-
-In general, there is quite some cleaning that can be done in this driver
-but is it wise to include it in the triggered buffer support series??? I
-have noticed quite some things that could be improved but I am hesitating
-to do it now in order to not "pollute" this series with many cleanups and
-leave it for another cleanup series for example.
-
-Best regards,
-Vasilis Amoiridis
-
-> > > > > +		}
-> > > > > +		break;
-> > 
-> > -- 
-> > With Best Regards,
-> > Andy Shevchenko
-> > 
-> > 
 

@@ -1,63 +1,74 @@
-Return-Path: <linux-iio+bounces-3502-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3503-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46F1D87B94A
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 09:29:12 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09B187B960
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 09:36:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B0721C21987
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 08:29:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37ECB1F23EAF
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 08:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE09C5D8F5;
-	Thu, 14 Mar 2024 08:29:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF7D36BB37;
+	Thu, 14 Mar 2024 08:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="SScl5PSS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="h76hchDn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94B154677;
-	Thu, 14 Mar 2024 08:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026B96AF99
+	for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 08:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710404943; cv=none; b=BICi61uJf3A5pSHOlFToXADcLD2O8xMDVgy8mM0GcQlNkINxeY2L8wHwdgEU2MzKFQSp52Ir9LF5oWJ193Enxspa4GMkm1V9aXZg9nZIgGwmoDRy1LOoUSaVElh46wjd92I9/XwAPEK8NSfU0NzY7EsmATIP5hkunTEOqSKwENI=
+	t=1710405376; cv=none; b=OJKdFrDOG7thdZhW/SP4HsnfvBKixVD/Ykewj6N3AWn5f6sYFSmjAkkTRUtiLRkVBAg648Sk3Zb4S59JsmfVnxjC81S6wsHQgzE4F8OIC4PGGdCe2S6NDmNWVZkfUsCGfGUCd1H2HroMTA1TePQXHkr/ACYNjFwNrjK5+gc7yaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710404943; c=relaxed/simple;
-	bh=JzGyHEjo0l5+t705kG/iFokneXzvLXfTOvbSZ7ORaQ0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GCiUP1imq8OFWqMXtGZbk6rjHWyDxwKLUikYqIyYGejicQ9BsaHg6Voy/fSrNamknMTOLlml7qdM6uCw5nl2bzlOaqsxsFCMKbIuOYXKxq6B+TWjfS/6fNbsgS4VSlKhCfp9xPYz56qJk/v7ZvX6Lb04tBaWbZN82A5Emz++2Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=SScl5PSS; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 42E7MsdY032381;
-	Thu, 14 Mar 2024 08:28:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	message-id:date:mime-version:subject:to:cc:references:from
-	:in-reply-to:content-type:content-transfer-encoding; s=
-	qcppdkim1; bh=K1DI991HbjwKV63GHD7ax9zV5QvSZ/lxPe4APc6ldJ4=; b=SS
-	cl5PSSel+4Erl0rURjtjYVAKuPzxU5tpymP0aSMamry9oQQoNq/ndKGhvtSrISog
-	QVRj1XoTte7kaNod5lRayBkTa9uxCrm15wb1mYLV5NJpOg9bcFrQqJQjwIz7zDWa
-	w3tnGWg5pGf2r+lEfBKS0Iel+fYbIkHN2ibpZSC3s0hUkntD5zUS0h7Hzvgw33lz
-	2r/Dcg8k+WyqCCM/VWL09DoiI8FFQDKMajHtYzKJPYhUI33xq3XiDdZhbDE1yjxD
-	BhKkhqUeW9alHPvSCUHu7EdbJaD+y0duSJTrEmtFmoyUsavFPxLQAum0j90ExWgp
-	hQ6A73Jn6HNmuBF7gGuw==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3wusxgghmj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 08:28:37 +0000 (GMT)
-Received: from nalasex01b.na.qualcomm.com (nalasex01b.na.qualcomm.com [10.47.209.197])
-	by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 42E8SaMu007591
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 Mar 2024 08:28:36 GMT
-Received: from [10.217.217.28] (10.80.80.8) by nalasex01b.na.qualcomm.com
- (10.47.209.197) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1118.40; Thu, 14 Mar
- 2024 01:28:24 -0700
-Message-ID: <1537d42f-fe61-48c2-9ee2-1066db71a19e@quicinc.com>
-Date: Thu, 14 Mar 2024 13:58:21 +0530
+	s=arc-20240116; t=1710405376; c=relaxed/simple;
+	bh=fjbWlaQOikwKMnwZOz8/d8vqFrfC7KHDtintYgjI3K0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QEAOm/odypT26Fk/jQyWLJJPYadgilyTuIrUQZgypj8yw8nO/vH3umT3FdWA/9Mh1ohjE3BU9MinGcUeD6+Sv1UkiDOYqziNexXqeSStVx4SF0B7cNoBejtkcdPXOWMhOggs/7Oj5PglnT71vQVIo/hv33K3Rt+G5A8fMDAEnNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=h76hchDn; arc=none smtp.client-ip=209.85.167.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5101cd91017so1191166e87.2
+        for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 01:36:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1710405373; x=1711010173; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=hj/WaHxD/qNMmrcRTKT2ci5bqw6SYan4groqkVU9P0E=;
+        b=h76hchDnBKjjXkxRbAf1ymo1yYHVSGX/vE5MYuYOw/LniQcDQCsHBv5h9OvllF71Yq
+         NwsveUquZ3Lz2pJ+58CjYnVtCVsXJSYEJbgbk/DKKR2EEWdbTEteLP2QwXkfyL8CQLmv
+         sbXVxkEhyEZsst7mAocG1EI/ziw8bjZQhSF6UKUfZN+x8vOdq4PvD/+xYiOvtnVN5qFG
+         VKwdo2i3UmB/dKfeUgwdN95BuQEt00ML0u4WzwcF6wVvJq7MqEXJVG1IAtGMd3EqAwJG
+         MdQYvJVMTtNQKUu/PD3flCkCgfbLfJwdW9A/Ze+S/Cfx6IDENUPFLRLLd0edcUQET22G
+         6KLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710405373; x=1711010173;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=hj/WaHxD/qNMmrcRTKT2ci5bqw6SYan4groqkVU9P0E=;
+        b=qDMW3cRW9/r90t6qifk1nTkzIOteCbBhTVfmj6n568m6Yvf6k9NcVhhHWc1/Y2z4zi
+         V5iRKh9UefnVnY6UXk0S35Ta270PkUr6/OJSVyJQTnoHOfxsln4OBVIvOtuQSIFcivJD
+         Jd7OxBbed8Cjxg75FoBfJLpjP3On3QqWKBr7dDl5+lQjT7lIeoOM2WqK32K17CIUaHqI
+         gY7/Sx3uB/crq3DQTrnSm3yjOIo2m4+dGsI6zAYXiuGxBU1FkTD7sBD274TcExPHdEDJ
+         qfF2qHrKqrg4ajWlnSqrFQuqyfyRCW3FrAgy8jLY14wDmBw5Y4kqq8NjQhhXzXto+LGf
+         TR0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWTvIYBlQyIkrLlRO8S+v2X78YXOwCKTcRAx6aSBJg7DpTvb9oSAXc01A9hOREr+FFdWVjcEaXaWgdCMfE5oRDrZR8Q/CBBUJD+
+X-Gm-Message-State: AOJu0Ywwemz9QPu5V++aJOQbtM/m7RYh1+NJApC4w+o4frylrdDSZ+kt
+	iCsvdcGeV/bhabwdGxR1ny+MFRXMsgsGt7xAHmgUnMIfwgqBOjRVLjtz4INrQdc=
+X-Google-Smtp-Source: AGHT+IHg2phWpA6wr0Ec2JY5vMTzDKNCDe3uQE5/b2ulf3w4ZnDGpniqfyMBM8L5ZJNhTuBmWoDrLg==
+X-Received: by 2002:a19:ae17:0:b0:513:cd2e:ceb1 with SMTP id f23-20020a19ae17000000b00513cd2eceb1mr619712lfc.48.1710405373003;
+        Thu, 14 Mar 2024 01:36:13 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.97])
+        by smtp.gmail.com with ESMTPSA id n23-20020a05600c3b9700b00412d4c8b743sm1709942wms.30.2024.03.14.01.36.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 Mar 2024 01:36:12 -0700 (PDT)
+Message-ID: <75fd6970-f3a0-4eec-957c-3d8f6a553e0f@linaro.org>
+Date: Thu, 14 Mar 2024 09:36:08 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -68,22 +79,19 @@ User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v3 2/3] dt-bindings: iio: adc: Add support for QCOM PMIC5
  Gen3 ADC
 Content-Language: en-US
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, <jic23@kernel.org>,
-        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
-        <conor+dt@kernel.org>, <andersson@kernel.org>,
-        <konrad.dybcio@linaro.org>, <lee@kernel.org>,
-        <andriy.shevchenko@linux.intel.com>, <daniel.lezcano@linaro.org>,
-        <dmitry.baryshkov@linaro.org>
-CC: <lars@metafoo.de>, <luca@z3ntu.xyz>, <marijn.suijten@somainline.org>,
-        <agross@kernel.org>, <sboyd@kernel.org>, <rafael@kernel.org>,
-        <rui.zhang@intel.com>, <lukasz.luba@arm.com>,
-        <linus.walleij@linaro.org>, <quic_subbaram@quicinc.com>,
-        <quic_collinsd@quicinc.com>, <quic_amelende@quicinc.com>,
-        <quic_kamalw@quicinc.com>, <kernel@quicinc.com>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-arm-msm-owner@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <cros-qcom-dts-watchers@chromium.org>
+To: Jishnu Prakash <quic_jprakash@quicinc.com>, jic23@kernel.org,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ andersson@kernel.org, konrad.dybcio@linaro.org, lee@kernel.org,
+ andriy.shevchenko@linux.intel.com, daniel.lezcano@linaro.org,
+ dmitry.baryshkov@linaro.org
+Cc: lars@metafoo.de, luca@z3ntu.xyz, marijn.suijten@somainline.org,
+ agross@kernel.org, sboyd@kernel.org, rafael@kernel.org, rui.zhang@intel.com,
+ lukasz.luba@arm.com, linus.walleij@linaro.org, quic_subbaram@quicinc.com,
+ quic_collinsd@quicinc.com, quic_amelende@quicinc.com,
+ quic_kamalw@quicinc.com, kernel@quicinc.com, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-arm-msm-owner@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
+ devicetree@vger.kernel.org, cros-qcom-dts-watchers@chromium.org
 References: <20231231171237.3322376-1-quic_jprakash@quicinc.com>
  <20231231171237.3322376-3-quic_jprakash@quicinc.com>
  <3f812ffa-ec33-448e-b72a-ce698618a8c1@linaro.org>
@@ -91,134 +99,84 @@ References: <20231231171237.3322376-1-quic_jprakash@quicinc.com>
  <f52b2d5e-b2b4-48ae-a6a6-fc00c89662d2@linaro.org>
  <0b9e807d-e0ca-411c-9a2b-3d804bdf168c@quicinc.com>
  <d3dc9a41-4738-4634-9a98-fefcf418f552@linaro.org>
-From: Jishnu Prakash <quic_jprakash@quicinc.com>
-In-Reply-To: <d3dc9a41-4738-4634-9a98-fefcf418f552@linaro.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+ <1537d42f-fe61-48c2-9ee2-1066db71a19e@quicinc.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <1537d42f-fe61-48c2-9ee2-1066db71a19e@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01b.na.qualcomm.com (10.47.209.197)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: USFgAHj3NNLldE_h9mKjClq3LRVoHbpe
-X-Proofpoint-GUID: USFgAHj3NNLldE_h9mKjClq3LRVoHbpe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-03-14_05,2024-03-13_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 suspectscore=0
- mlxlogscore=999 priorityscore=1501 adultscore=0 impostorscore=0
- malwarescore=0 clxscore=1011 mlxscore=0 phishscore=0 lowpriorityscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2402120000 definitions=main-2403140057
 
-Hi Krzysztof,
-
-On 2/21/2024 12:49 PM, Krzysztof Kozlowski wrote:
-> On 21/02/2024 06:36, Jishnu Prakash wrote:
->> Hi Krzysztof,
->>
->> On 2/17/2024 7:43 PM, Krzysztof Kozlowski wrote:
->>> On 16/02/2024 11:39, Jishnu Prakash wrote:
->>>> Hi Krzysztof,
->>>>
-
-
->>
->>> How is this a problem?
->>
->> In qcom,spmi-vadc.yaml, we have the following top-level constraints for
->> the "reg" and "interrupts" properties:
->>
->>     reg:
->>       maxItems: 1
->>
->>     interrupts:
->>       maxItems: 1
->>
->> For the ADC5 Gen3 device being added now, these constraints cannot be
->> followed always, as there may be more than one peripheral under one
->> device instance, each with a corresponding interrupt. For example, the
->> above properties could be like this for a ADC5 Gen3 device:
->>
->>       reg = <0x9000>, <0x9100>;
->>       interrupts = <0x0 0x90 0x1 IRQ_TYPE_EDGE_RISING>,
->>                    <0x0 0x91 0x1 IRQ_TYPE_EDGE_RISING>;
->>
->>
->> I could not overwrite the top-level constraints for the new device
->> "qcom,spmi-adc5-gen3" alone in qcom,spmi-vadc.yaml, so I tried to remove
->> the constraints from the top level and add them back conditionally for
->> all the device types separately, but you told me not to remove them
->> (full message:
->> https://lore.kernel.org/linux-iio/832053f4-bd5d-4e58-81bb-1a8188e7f364@linaro.org/)
+On 14/03/2024 09:28, Jishnu Prakash wrote:
 > 
-> Because top-level widest constraints must stay, but it is not a problem.
-> Most of the multi-device bindings work like this. Dozen of Qualcomm. Why
-> you cannot do this the same way we do for all Qualcomm devices?
+> followed by updating maxItems back to 1 for all the earlier existing 
+> compatibles, using if:then: conditions, like the below example?
 > 
-
-I would like to clarify a point with you related to the top-level 
-constraints, as I think I have not asked this exact question earlier.
-
-For these top-level constraints in qcom,spmi-vadc.yaml:
-
-     reg:
-       maxItems: 1
-
-     interrupts:
-       maxItems: 1
-
-If we add ADC5 Gen3 bindings in the same file, is it acceptable to 
-update the top-level constraints to something like this:
-
-     reg:
-       minItems: 1
-       maxItems: 2
-
-     interrupts:
-       minItems: 1
-       maxItems: 2
-
-followed by updating maxItems back to 1 for all the earlier existing 
-compatibles, using if:then: conditions, like the below example?
-
-   - if:
-       properties:
-         compatible:
-           contains:
-             const: qcom,spmi-adc5
-
-     then:
-       properties:
-         reg:
-           maxItems: 1
-         interrupts:
-           maxItems: 1
-
-
-If this is acceptable, I'll add ADC5 Gen3 bindings in the same file with 
-changes like the above, else I'll add them in a new file after first 
-creating a common schema file as you suggested.
-
-Thanks,
-Jishnu
-
->>
->> Since these constraints cannot be modified for a specific new device or
+>    - if:
+>        properties:
+>          compatible:
+>            contains:
+>              const: qcom,spmi-adc5
 > 
-> ???
+>      then:
+>        properties:
+>          reg:
+>            maxItems: 1
+>          interrupts:
+>            maxItems: 1
 > 
->> removed, I think the only way to accommodate this new device is to add
->> it in its own new file.
->>
->> Is this a sufficient justification for adding this documentation in a
->> new file or do you have any other suggestions?
 > 
-> I already gave you the suggestions and you ignored them. Do like we are
-> doing for all other drivers. Don't re-invent stuff. Either this fits to
-> existing schema or come with common schema (and then provide rationale
-> why it does not fit to existing one).
-> 
-> Best regards,
-> Krzysztof
-> 
+> If this is acceptable, I'll add ADC5 Gen3 bindings in the same file with 
+> changes like the above, else I'll add them in a new file after first 
+> creating a common schema file as you suggested.
+
+Please refer to existing files how it is done:
+https://elixir.bootlin.com/linux/v6.8/source/Documentation/devicetree/bindings/ufs/qcom,ufs.yaml#L132
+
+
+Best regards,
+Krzysztof
+
 

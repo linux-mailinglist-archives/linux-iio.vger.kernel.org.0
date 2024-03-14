@@ -1,92 +1,87 @@
-Return-Path: <linux-iio+bounces-3530-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3531-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9036687C407
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 21:07:08 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3205D87C412
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 21:14:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B304C1C215F1
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 20:07:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6EF283733
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 20:14:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4C1762E5;
-	Thu, 14 Mar 2024 20:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678727603C;
+	Thu, 14 Mar 2024 20:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Md6Z9Y6q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V3Mimyx+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFD876020;
-	Thu, 14 Mar 2024 20:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BDB6FE0B;
+	Thu, 14 Mar 2024 20:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710446798; cv=none; b=TNcpHBV9AGIsJs2sPlQUKZoUh4RMwCzU2ez7kbaPm1AcYmfOUXfvjqcYLEwXoLiCornO8zPRssNDphGwgoYvHyhoW7EpSzZ4+MPK18sGxKAZcq8m4gLJ9symG10pJ26F1evag0Rn+dVHWP9huDOYf6Yjw1lDY5gZxywzGTu14l4=
+	t=1710447278; cv=none; b=n4Io89PsOLZC2r4vWHCWB+veTNdAHV8zAM+ClxQHd1h8iij5xJQjYaiV+TsLW3Zfmc+TYqNPGRWmbQBgaa0UyQG6NelT2aN7wZejaxBXCYCdVZBXVTN/do0xJW//JIyrceGpYsH/tCVX9HGwYxHg5E8ZiyEdw3WDEe1iep/l/u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710446798; c=relaxed/simple;
-	bh=uG6TRQMGLMiupX26itOp9SVRhnU7pyd5Vv1ntd0MO9Y=;
+	s=arc-20240116; t=1710447278; c=relaxed/simple;
+	bh=9AlVAxpgVU1ZZvQH4zImz5SRa+iBaVpQEvxehfbaugc=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CyoWPkxGzukRDe+o8K6rFF3gbxUKzDa7NQzgrBToCUOHoo9KkQR894FzCDXciL3+yDajDLX8vRmJH2nGgfapzia52MYVp7nU5iKE89YSpl7ffahC1zN4kafjpK7lI6ea85rPGPen48HZdVxKo/trXpN3Rpo6J8ud1VdMihYoWYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Md6Z9Y6q; arc=none smtp.client-ip=209.85.208.170
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZMR+J/kOyTvsWf9X/rORHBFITZ7X/uOPvWnAB9TiKzm5L8AED5wDQUl4R0/G5B9JbJFXFw6ccwmlfxESI2dBIA29J/tPKlCsoXdu58OAsDbGiDW7nNcdS1ixigtEk/iJxwlHrNgOQ33R55T9/8VCDtczqOm2aaQHmSC3ZmIuOUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V3Mimyx+; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d28051376eso17068631fa.0;
-        Thu, 14 Mar 2024 13:06:36 -0700 (PDT)
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-568a3292916so1201710a12.1;
+        Thu, 14 Mar 2024 13:14:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710446795; x=1711051595; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1710447275; x=1711052075; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=tMSMoF4sWu22K90iVg3HlWc7k64o9qa1vNgxWQ2mgsg=;
-        b=Md6Z9Y6q8oC0PeVcF7DKgDrzDY2AMFyc7QmjVMmz5tniMm/W/oSyom+xHQvmqijL9I
-         x70AR6whir/V4xyqrIgopvBi/ZCks+ZI5ECXWA1YZujh447a69+ZVdAfIYKj9Q5w5xs9
-         OfwLjY5fo/PPWYfoB/U3OGKs5baC1L1jlRyN15Wb25raJG4R4FdNuqWlRENeYhlPzYnw
-         lVB/8SVbOCDQj56TnxX1dXv7gv5IgWzFRrwcAOodnZXjJcRvT6BVgcFnJJ9bSUcm98IP
-         orVRa4MPPJwLfgOOibpSWzG1cU5bV8jmdvShudjFK9ir0xFzq0tApO/hoOtBOHcnI0iE
-         KYNA==
+        bh=dAVsxRpCSAmbyqn5Fk9wwRXZVBrTcp4mGzqqEGhqJG4=;
+        b=V3Mimyx+RM46oO5LPImQ8CB0yIrfGZAqoQ0CQGSHwiFF6xlYixQ+Kkpnn7j3Csjtkx
+         mFt5o6sOLvp+XYx4Mp+WK2kR/29QOVJ+2MqCeKfkvOeaUSmF6PIq8IAeIlvy4WTudjws
+         2gF+6cupdSGPu1q6zTNEc8SEqmA7oQxtmkKvMyqMBS2ttv6OqzpVARsUOWNlN8gAzKfo
+         XszO6YhRVlOrwXkHCpvU/TjoJ6asoOrOm21rwd/m3viUF+nfr0jNqTDVW8F9Q81NSBjt
+         a8ROBe5DxekvcnqgkM8JPyXmDGgdtZyRfVnrQ3b9scqaC05P0n9oj/EeHudEx30g6lS1
+         LAhw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710446795; x=1711051595;
+        d=1e100.net; s=20230601; t=1710447275; x=1711052075;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tMSMoF4sWu22K90iVg3HlWc7k64o9qa1vNgxWQ2mgsg=;
-        b=LzIatLLVkX3hi1ARySyYVlj5Z27VGQURSiRV7B2tOJTtPEzdggdbCw39fFpIGH7OKV
-         bWD9QlnlOd/w6jlaMIFRIiHO5/Pih1S3lm2NQEn86eyS3cFUcdfVb0CKJWNExeksogBd
-         p8BS9NYsF9L7YcPKrvEhApwDFuxqY1yolPzr5PwDBYtLQwSMeHXphCzbpgWTmGdFSKs8
-         oES8ddaEz2KU60NU+5pLW8YoxYamc4+Y6mHDrWKfkIDadd+g+mFwBDroEHKpHtI/Zho2
-         zUjLZU42WLgzbrzpUA1N6K+zDqd1+eqe+V+xEygIGQHqrzuZETH19cM0UkGCce3o2FSi
-         3+PA==
-X-Forwarded-Encrypted: i=1; AJvYcCW1UW05Ki1Jn1Fh+NNb4uK1vl7mxe4RIoskgzGOevRLjtOsuf7kOtnhKQdO2cGbyv1nXz6ebrJ7WI+Y1VZbFGrzVULLXPATgnwuyxxyfbDCyZUcjAYDrUL19JcxR4JdxybJJK9FsPi7
-X-Gm-Message-State: AOJu0Yw1Q1PrHE+Zy+ZKx6ddNRwIo+mordKTPz/Z32SKYua4R9KYVZP5
-	pfRKkgLBzxA5XdFukEMr7eqjVUPC+5zGEUmFGelZS+HaqLuwguRT
-X-Google-Smtp-Source: AGHT+IH7mQoMPG/bkAVKYsAzozgfN3o44fOKz16Tu25G2wZJcEEsy7/st9OjAYbYGNlMpkpd79o4vw==
-X-Received: by 2002:a2e:321a:0:b0:2d3:5020:17e5 with SMTP id y26-20020a2e321a000000b002d3502017e5mr846397ljy.36.1710446794701;
-        Thu, 14 Mar 2024 13:06:34 -0700 (PDT)
+        bh=dAVsxRpCSAmbyqn5Fk9wwRXZVBrTcp4mGzqqEGhqJG4=;
+        b=uwxx3KzwdqfYlV/BSIuA0IKsVzkt7TLS8v/WLbT93Z9fGzGVizPL/ONhuodCKhj97Z
+         x1/Jck+DNFMfkPX/YhQs9buz7GVF0W49JXzyzw+IWiPq+o0UhdUGUb8JMyJNYT0ENFRh
+         J+6HJH81v9tl0EEEywJBC0J1kOCgMO6+ij5jSDkYj5maEJSLiHgSBaxFFJjTWiSs95Ki
+         a6MRmwcH2FQfEuLq6+PP5NccY5dGNLB9cqzeXIfgGu2sG39afshDAtZ2vfQ1q7RnfqgM
+         JODtqvEz0zIAR7PKniRoi3Q5d9j0E3/V9oua2PiSymXybp01KbEx317/lAK+5P0dWASt
+         b7aw==
+X-Forwarded-Encrypted: i=1; AJvYcCUvdn4Ntn58sA9d5+tbboBFVPToAI1fXfoNCWPYf01cAb1fbd/1zSqmuX+SGKomHrfK6xv53zHsdiRrhleQfrRwJitvYKyVEoYpj5MihH0YqrgdAg4KiOxWTj09oREEMt1yJ6eZ5IqH
+X-Gm-Message-State: AOJu0YzjX0inBQdSzl3vHrb5Ew1HMGifEg27a928Kl6RSPzhjHZ7cWw2
+	54rJUmqpzB5rhKsiAP8Mdf/rMhdCyceFHCQz0VfkpQJwEPsFY+vmnJiODXxv3D0Oig==
+X-Google-Smtp-Source: AGHT+IGhQkemnkZd/TucjCUzFP/DS2v6zPKoQ11EDcmGDeN9EYpwgHeosTFfHQZwVYrpNwAyS6VGfg==
+X-Received: by 2002:a05:6402:321f:b0:568:aa62:738a with SMTP id g31-20020a056402321f00b00568aa62738amr350639eda.35.1710447274300;
+        Thu, 14 Mar 2024 13:14:34 -0700 (PDT)
 Received: from vamoiridPC ([2a04:ee41:82:7577:3844:3925:f1c1:4bc5])
-        by smtp.gmail.com with ESMTPSA id v19-20020a1709060b5300b00a465f73df07sm1025024ejg.148.2024.03.14.13.06.33
+        by smtp.gmail.com with ESMTPSA id et4-20020a056402378400b00568a15b063csm832891edb.2.2024.03.14.13.14.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Mar 2024 13:06:34 -0700 (PDT)
+        Thu, 14 Mar 2024 13:14:33 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Thu, 14 Mar 2024 21:06:31 +0100
+Date: Thu, 14 Mar 2024 21:14:31 +0100
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: vamoirid <vassilisamir@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	lars@metafoo.de, ang.iglesiasg@gmail.com, mazziesaccount@gmail.com,
-	ak@it-klinger.de, petre.rodan@subdimension.ro,
-	linus.walleij@linaro.org, phil@raspberrypi.com, 579lpy@gmail.com,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] iio: pressure: add SCALE and RAW values for
- channels
-Message-ID: <20240314200631.GB1964894@vamoiridPC>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
+	andriy.shevchenko@linux.intel.com, ang.iglesiasg@gmail.com,
+	mazziesaccount@gmail.com, ak@it-klinger.de,
+	petre.rodan@subdimension.ro, linus.walleij@linaro.org,
+	phil@raspberrypi.com, 579lpy@gmail.com, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 6/6] iio: pressure: Add triggered buffer support for
+ BMP280 driver
+Message-ID: <20240314201431.GC1964894@vamoiridPC>
 References: <20240313174007.1934983-1-vassilisamir@gmail.com>
- <20240313174007.1934983-4-vassilisamir@gmail.com>
- <ZfH4bET-HX0e3PO_@smile.fi.intel.com>
- <20240313195110.GB1938985@vamoiridPC>
- <ZfIGtUPZpyDBnWwz@smile.fi.intel.com>
- <20240313212812.GE1938985@vamoiridPC>
- <ZfLYGL/vXMHUGghz@vamoirid-EDL-PC>
- <20240314144647.291a1100@jic23-huawei>
+ <20240313174007.1934983-7-vassilisamir@gmail.com>
+ <20240314152525.51bcdcd6@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -95,143 +90,186 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240314144647.291a1100@jic23-huawei>
+In-Reply-To: <20240314152525.51bcdcd6@jic23-huawei>
 
-On Thu, Mar 14, 2024 at 02:46:47PM +0000, Jonathan Cameron wrote:
-> On Thu, 14 Mar 2024 11:57:28 +0100
-> vamoirid <vassilisamir@gmail.com> wrote:
+On Thu, Mar 14, 2024 at 03:25:25PM +0000, Jonathan Cameron wrote:
+> On Wed, 13 Mar 2024 18:40:07 +0100
+> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 > 
-> > On Wed, Mar 13, 2024 at 10:28:12PM +0100, Vasileios Amoiridis wrote:
-> > > On Wed, Mar 13, 2024 at 10:04:05PM +0200, Andy Shevchenko wrote:  
-> > > > On Wed, Mar 13, 2024 at 08:51:10PM +0100, Vasileios Amoiridis wrote:  
-> > > > > On Wed, Mar 13, 2024 at 09:03:08PM +0200, Andy Shevchenko wrote:  
-> > > > > > On Wed, Mar 13, 2024 at 06:40:04PM +0100, Vasileios Amoiridis wrote:  
-> > > > > > > Add extra IIO_CHAN_INFO_SCALE and IIO_CHAN_INFO_RAW in order to be
-> > > > > > > able to calculate the processed value with standard userspace IIO
-> > > > > > > tools. Can be used for triggered buffers as well.  
-> > > > 
-> > > > ...
-> > > >   
-> > > > > > > +	case IIO_CHAN_INFO_RAW:
-> > > > > > > +		switch (chan->type) {
-> > > > > > > +		case IIO_HUMIDITYRELATIVE:
-> > > > > > > +			*val = data->chip_info->read_humid(data);
-> > > > > > > +			ret = IIO_VAL_INT;
-> > > > > > > +			break;
-> > > > > > > +		case IIO_PRESSURE:
-> > > > > > > +			*val = data->chip_info->read_press(data);
-> > > > > > > +			ret = IIO_VAL_INT;
-> > > > > > > +			break;
-> > > > > > > +		case IIO_TEMP:
-> > > > > > > +			*val = data->chip_info->read_temp(data);
-> > > > > > > +			ret = IIO_VAL_INT;
-> > > > > > > +			break;
-> > > > > > > +		default:
-> > > > > > > +			ret = -EINVAL;
-> > > > > > > +			break;  
-> > > > > > 
-> > > > > > Is it mutex that prevents us from returning here?
-> > > > > > If so, perhaps switching to use cleanup.h first?  
-> > > > > 
-> > > > > I haven't seen cleanup.h used in any file and now that I searched,
-> > > > > only 5-6 are including it.  
-> > > > 
-> > > > Hmm... Which repository you are checking with?
-> > > > 
-> > > > $ git grep -lw cleanup.h -- drivers/ | wc -l
-> > > > 47
-> > > > 
-> > > > (Today's Linux Next)
-> > > >  
-> > > 
-> > > I am checking the drivers/iio of 6.8 (on sunday) and I can only find 7
-> > > drivers that use it.
-> 
-> Yes - but that's because it's new - most of the stuff in 6.8 was the proof
-> points for the patches originally introducing support for autocleanup (so typically
-> one or two cases for each type of handling) That doesn't mean we don't want it
-> in drivers that are being worked upon if it gives a significant advantage.
-> Some features we need will merge shortly, and a great deal more usage
-> of this autocleanup will occur.
-> 
-> > >   
-> > > > > I am currently thinking if the mutex
-> > > > > that already exists is really needed since most of the drivers
-> > > > > don't have it + I feel like this is something that should be done
-> > > > > by IIO, thus maybe it's not even needed here.  
-> > > >  
+> > Add a buffer struct that will hold the values of the measurements
+> > and will be pushed to userspace and a buffer_handler function to
+> > read the data and push them.
 > > 
-> > After some researching today, I realized that all the                           
-> > {read/write}_{raw/avail}_{multi/}() functions are in drivers/iio/inkern.c
-> > for channel mapping in the kernel and it looks like they are guarded by
-> > the mutex_{un}lock(&iio_dev_opaque->info_exist_lock).
-> 
-> Why is that relevant to this patch which isn't using that interface at all?
-> Those protections are to ensure that a consumer driver doesn't access a removed
-> IIO device, not accesses directly from userspace.
-> 
-> >so I feel that the
-> > mutexes in the aforementioned functions can be dropped. When you have the
-> > time please have a look, maybe the could be dropped.
-> 
-> Identify what your locks are protecting.  Those existence locks have
-> very specific purpose and should not be relied on for anything else.
-> 
-> If this driver is protecting state known only to itself, then it must
-> be responsible for appropriate locking.
-> 
+> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> > ---
+> >  drivers/iio/pressure/Kconfig       |  2 +
+> >  drivers/iio/pressure/bmp280-core.c | 61 ++++++++++++++++++++++++++++++
+> >  drivers/iio/pressure/bmp280.h      |  7 ++++
+> >  3 files changed, 70 insertions(+)
 > > 
-> > In general, there is quite some cleaning that can be done in this driver
-> > but is it wise to include it in the triggered buffer support series??? 
+> > diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
+> > index 79adfd059c3a..5145b94b4679 100644
+> > --- a/drivers/iio/pressure/Kconfig
+> > +++ b/drivers/iio/pressure/Kconfig
+> > @@ -31,6 +31,8 @@ config BMP280
+> >  	select REGMAP
+> >  	select BMP280_I2C if (I2C)
+> >  	select BMP280_SPI if (SPI_MASTER)
+> > +	select IIO_BUFFER
+> > +	select IIO_TRIGGERED_BUFFER
+> >  	help
+> >  	  Say yes here to build support for Bosch Sensortec BMP180, BMP280, BMP380
+> >  	  and BMP580 pressure and temperature sensors. Also supports the BME280 with
+> > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> > index f2cf9bef522c..7c889cda396a 100644
+> > --- a/drivers/iio/pressure/bmp280-core.c
+> > +++ b/drivers/iio/pressure/bmp280-core.c
+> > @@ -40,7 +40,10 @@
+> >  #include <linux/regmap.h>
+> >  #include <linux/regulator/consumer.h>
+> >  
+> > +#include <linux/iio/buffer.h>
+> >  #include <linux/iio/iio.h>
+> > +#include <linux/iio/trigger_consumer.h>
+> > +#include <linux/iio/triggered_buffer.h>
+> >  
+> >  #include <asm/unaligned.h>
+> >  
+> > @@ -2188,6 +2191,57 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
+> >  	return 0;
+> >  }
+> >  
+> > +static irqreturn_t bmp280_buffer_handler(int irq, void *p)
+> > +{
+> > +	struct iio_poll_func *pf = p;
+> > +	struct iio_dev *indio_dev = pf->indio_dev;
+> > +	struct bmp280_data *data = iio_priv(indio_dev);
+> > +	int ret, temp;
+> > +
+> > +	/*
+> > +	 * data->buf[3] is used to transfer data from the device. Whenever a
+> > +	 * pressure or a humidity reading takes place, the data written in the
+> > +	 * data->buf[3] overwrites the iio_buf.temperature value. Keep the
+> > +	 * temperature value and apply it after the readings.
 > 
-> Generally if working on a driver and you see cleanup that you think should
-> be done, it belongs before any series adding new features, precisely because
-> that code can typically end up simpler as a result.  This sounds like one
-> of those cases.  Normally that only includes things that are directly related
-> to resulting code for new features (or applying the same cleanup across a driver)
-> as we don't want to make people do a full scrub of a driver before adding
-> anything as it will just create too much noise.
+> See comment below. Given you saw this problem did you not think maybe you
+> were doing something a little unusual / wrong? Should have rung alarm
+> bells beyond just putting a comment here to explain you needed to work around
+> the issue.
 > 
-> So for this case, it does look like a quick use of guard(mutex) in
-> a precursor patch will simplify what you add here - hence that's a reasonable
-> request for Andy to make.
+> > +	 */
+> > +	mutex_lock(&data->lock);
+> > +
+> > +	if (test_bit(BMP280_TEMP, indio_dev->active_scan_mask)) {
+> > +		ret = data->chip_info->read_temp(data);
+> > +		if (ret < 0)
+> > +			goto done;
+> > +
+> > +		temp = ret;
+> > +	}
+> > +
+> > +	if (test_bit(BMP280_PRESS, indio_dev->active_scan_mask)) {
+> > +		ret = data->chip_info->read_press(data);
+> > +		if (ret < 0)
+> > +			goto done;
+> > +
+> > +		data->iio_buf.pressure = ret;
+> > +		data->iio_buf.temperature = temp;
+> Try running this with the tooling in tools/iio and you'll see that
+> you are getting the wrong output if you have just humidity and
+> temperature enabled - IIO packs channels, so disable an early
+> one and everything moves down in address.
+> 
+> If you an this device without timestamps and only a single channel
+> the buffer used will have one s32 per scan for example.
+> 
+> > +	}
+> > +
+> > +	if (test_bit(BME280_HUMID, indio_dev->active_scan_mask)) {
+> > +		ret = data->chip_info->read_humid(data);
+> > +		if (ret < 0)
+> > +			goto done;
+> > +
+> > +		data->iio_buf.humidity = ret;
+> > +		data->iio_buf.temperature = temp;
+> > +	}
+> > +
+> > +	iio_push_to_buffers_with_timestamp(indio_dev, &data->iio_buf,
+> > +					   iio_get_time_ns(indio_dev));
+> > +
+> > +done:
+> > +	mutex_unlock(&data->lock);
+> > +	iio_trigger_notify_done(indio_dev->trig);
+> > +
+> > +	return IRQ_HANDLED;
+> > +}
+> > +
+> >  static void bmp280_pm_disable(void *data)
+> >  {
+> >  	struct device *dev = data;
+> > @@ -2329,6 +2383,13 @@ int bmp280_common_probe(struct device *dev,
+> >  			return ret;
+> >  	}
+> >  
+> > +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
+> > +					      iio_pollfunc_store_time,
+> > +					      &bmp280_buffer_handler, NULL);
+> > +	if (ret)
+> > +		return dev_err_probe(data->dev, ret,
+> > +				     "iio triggered buffer setup failed\n");
+> > +
+> >  	/* Enable runtime PM */
+> >  	pm_runtime_get_noresume(dev);
+> >  	pm_runtime_set_active(dev);
+> > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+> > index c8cb7c417dab..b5369dd496ba 100644
+> > --- a/drivers/iio/pressure/bmp280.h
+> > +++ b/drivers/iio/pressure/bmp280.h
+> > @@ -407,6 +407,13 @@ struct bmp280_data {
+> >  	union {
+> >  		/* Sensor data buffer */
+> >  		u8 buf[3];
+> > +		/* Data buffer to push to userspace */
+> 
+> Why is this in the union?  This union is to ensure cache safe buffers for
+> DMAing directly into.  That's not applicable here.  Even though it may
+> be safe to do this (I was reading backwards so wrote a comment here
+> on you corrupting temperature before seeing the comment above)
+> it is giving a misleading impression of how this struct is used.
+> Pull the struct to after t_fine - It only needs to
+> be 8 byte aligned and the aligned marking you have will ensure that
+>  
+> > +		struct {
+> > +			s32 temperature;
+> > +			u32 pressure;
+> > +			u32 humidity;
+> 
+> As above, this is 3 4 byte buffers but they don't have these meanings
+> unless all channels are enabled.
+> 
+> You could set available mask to enforce that, but don't as it makes
+> limited sense for this hardware.  Just make these
+> 			u32 chans[3];
+> and fill them in with an index incremented for each channel that is
+> enabled.
 > 
 > Jonathan
 > 
 
-Hi Jonathan.
-
-Thank you very much for the feedback once again. I didn't know that cleanup.h
-was a new thing. I also didn't understand it when Andy mentioned it. Now that
-I saw it better and I read about it, it certainly looks like a very good thing
-to add.
-
-I don't know if I sounded like I didn't like that request, but just to clarify,
-I see it as a very good thing all the proposals that you do because first I
-get to learn and understand how to write better code and second the users will
-use a better driver! So please, the more requests, the better.
-
-So a precursor patch adding the new functionality of the guard(mutex) in this
-and possibly other places in the driver will be good indeed, thank you!
+I wanted to put it inside the union to save some space but you are right
+that it is quite misleading. I was just trying in general, along with the
+previous patches to avoid reading the temperature twice. Along with your
+comments in the previous patch, if a user has enabled both temperature
+and pressure and humidity we could save ourselves from reading the
+temperature 3 times instead of 1. But in any case, your previous proposal
+with a separate get_t_fine structure looks good.
 
 Best regards,
 Vasilis
-> 
-> > I
-> > have noticed quite some things that could be improved but I am hesitating
-> > to do it now in order to not "pollute" this series with many cleanups and
-> > leave it for another cleanup series for example.
-> > 
-> > Best regards,
-> > Vasilis Amoiridis
-> > 
-> > > > > > > +		}
-> > > > > > > +		break;  
-> > > > 
-> > > > -- 
-> > > > With Best Regards,
-> > > > Andy Shevchenko
-> > > > 
-> > > >   
+> > +			s64 timestamp __aligned(8);
+> > +		} iio_buf;
+> >  		/* Calibration data buffers */
+> >  		__le16 bmp280_cal_buf[BMP280_CONTIGUOUS_CALIB_REGS / 2];
+> >  		__be16 bmp180_cal_buf[BMP180_REG_CALIB_COUNT / 2];
 > 
 

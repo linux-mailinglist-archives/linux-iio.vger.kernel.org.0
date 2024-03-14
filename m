@@ -1,59 +1,65 @@
-Return-Path: <linux-iio+bounces-3511-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3512-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA3187BF16
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 15:38:39 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE5D87BF40
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 15:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B802B23C49
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 14:38:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2EB31F23122
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 14:47:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B565B683;
-	Thu, 14 Mar 2024 14:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB4770CDD;
+	Thu, 14 Mar 2024 14:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ElSDM7sw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gsvGsT7o"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3226626AF3;
-	Thu, 14 Mar 2024 14:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B52970CD7;
+	Thu, 14 Mar 2024 14:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710427111; cv=none; b=rfGZ4Wd29mKNLbH1lrKHBV17mYOkUTnyGky9OKfN9AqTrb3NDV40x7yEKTVRKk/NxP6/2JuYxcM4GXTgby6nppFCfUoPI7y/BvNzq8rRCzmjm8VlfMNEaGarKhZ+sVwee21ucmTJLaR9GX6OcngkpD2jI9rts6YUwyArSQNp4jU=
+	t=1710427623; cv=none; b=Zy3ZdHhKGrFLYLmAjCMlgS7v3YRrdkiTsYFNj94y/74k8VPvZFEK3qoFsuQhvHJg3NGeQWuwyAn0VYqRqBRYkVaMAFAJKkeVTO5X73x+wmbclC0iuwefGmvzjvi9iOLc5Ygg462l9d7ejBQLMtSsFvD+IMv1+aUc7CONPXrpgE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710427111; c=relaxed/simple;
-	bh=UDk+oouaBX8vVHCqM/TYisvTh91sSlyDcrs/ar3dbao=;
+	s=arc-20240116; t=1710427623; c=relaxed/simple;
+	bh=KIWfn4W4v4tAUOArg/XuKX2M+N5FZo3xkEGC4dNchJg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MwybZpneYyjyG+rrXgIAp+MWXnUDKxbxfxZaQuw4Jbidb+HkBlxYJLDH035AEVvgJkPdXNutoLKCPJNEjyj82DUQ08Fi+mRLyG4Xt7k3P0MVS2MonhXyQDuu6TUxrz3Sk5RLf2SsFcWErfCuyLQmK0LlP2oFGAinyzLkxh14/j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ElSDM7sw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F80C433C7;
-	Thu, 14 Mar 2024 14:38:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rSj2ti9LcX2H0vtJtRx6Yx2LqObz2Y9I8shIsWDkbOVFLl3yloBJzhsmEXcHXBgDIt2t+lLLrZKr7AsDsplZDKPyKOA6En1fYm/1+vUjKAN8LaD34drNpLLCxlhTZncoZiuMjA5BtZ9tePQikurBNk34FsLwssw7ABHzzuLzops=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gsvGsT7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B62C433F1;
+	Thu, 14 Mar 2024 14:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710427110;
-	bh=UDk+oouaBX8vVHCqM/TYisvTh91sSlyDcrs/ar3dbao=;
+	s=k20201202; t=1710427622;
+	bh=KIWfn4W4v4tAUOArg/XuKX2M+N5FZo3xkEGC4dNchJg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ElSDM7swuEJhZdfFJUhSL28X/ug43a3P0rJeX2yHMmd75M4L90jXWxVxQ/ZYLk101
-	 YmKjFk7s6kC+pkZQl/meBtwT/BxQHc2+BDNdakhTV2p6K5IzhkPdaJkQdgy8KTXErW
-	 MozzxrwGlaWslqoD5XE9+ksCvqwlc39533V3LWLDHOEf3stTyn31xT+Q8Q/ZEmM+cf
-	 ky5ZY2yDvAV+YKj4Gxvaxx8r8KRW6EV3aJLbaM3wLHbrqHcT+qdeSZW2pzTKsenMIM
-	 ThixMA5LcZFKveP+WiuHkBRcIojqmqzt2WFbjnnq/xnVAwVYDRtz+IW7kMGhrqao/e
-	 9pnvR88MSCD7A==
-Date: Thu, 14 Mar 2024 14:38:13 +0000
+	b=gsvGsT7o9VYTDCWasKc/M/ZE4q/eBDo7/S3qVpyope98JbQluvGU0KEbEgigEwBwn
+	 m3ijK66ktd9vUdly1Y+OUXOHGCb9ac+hGjQyYOFUjy7Hrgpygi7xpjPXSpCs/Yh3Xt
+	 ugGrKOQEHliTRRpMXJFF6kQG4CVFb2y7ivc2WMZCwcZ3pmkKcolHcPjjQgE1bAV19G
+	 4bwW9eFhY+Ld1fKYgZI9xtEudm8NB/jegZIxtc5C24gtDnZnbloyk7JhCnH8JJR8Px
+	 eJBw1y0Qoc7eqaQgBch7cfcoE+ELmJQPXlBoiIOVEz7iycX3LwBkOzLWKAmZB38xlR
+	 ahWtwLstddh4w==
+Date: Thu, 14 Mar 2024 14:46:47 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
+To: vamoirid <vassilisamir@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, lars@metafoo.de,
  ang.iglesiasg@gmail.com, mazziesaccount@gmail.com, ak@it-klinger.de,
  petre.rodan@subdimension.ro, linus.walleij@linaro.org,
  phil@raspberrypi.com, 579lpy@gmail.com, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/6] iio: pressure: Simplify read_* functions
-Message-ID: <20240314143813.69087bf3@jic23-huawei>
-In-Reply-To: <20240313174007.1934983-3-vassilisamir@gmail.com>
+Subject: Re: [PATCH v3 3/6] iio: pressure: add SCALE and RAW values for
+ channels
+Message-ID: <20240314144647.291a1100@jic23-huawei>
+In-Reply-To: <ZfLYGL/vXMHUGghz@vamoirid-EDL-PC>
 References: <20240313174007.1934983-1-vassilisamir@gmail.com>
-	<20240313174007.1934983-3-vassilisamir@gmail.com>
+	<20240313174007.1934983-4-vassilisamir@gmail.com>
+	<ZfH4bET-HX0e3PO_@smile.fi.intel.com>
+	<20240313195110.GB1938985@vamoiridPC>
+	<ZfIGtUPZpyDBnWwz@smile.fi.intel.com>
+	<20240313212812.GE1938985@vamoiridPC>
+	<ZfLYGL/vXMHUGghz@vamoirid-EDL-PC>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,134 +70,122 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 13 Mar 2024 18:40:03 +0100
-Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+On Thu, 14 Mar 2024 11:57:28 +0100
+vamoirid <vassilisamir@gmail.com> wrote:
 
-> Add the coefficients for the IIO standard units inside the chip_info
-> structure.
+> On Wed, Mar 13, 2024 at 10:28:12PM +0100, Vasileios Amoiridis wrote:
+> > On Wed, Mar 13, 2024 at 10:04:05PM +0200, Andy Shevchenko wrote:  
+> > > On Wed, Mar 13, 2024 at 08:51:10PM +0100, Vasileios Amoiridis wrote:  
+> > > > On Wed, Mar 13, 2024 at 09:03:08PM +0200, Andy Shevchenko wrote:  
+> > > > > On Wed, Mar 13, 2024 at 06:40:04PM +0100, Vasileios Amoiridis wrote:  
+> > > > > > Add extra IIO_CHAN_INFO_SCALE and IIO_CHAN_INFO_RAW in order to be
+> > > > > > able to calculate the processed value with standard userspace IIO
+> > > > > > tools. Can be used for triggered buffers as well.  
+> > > 
+> > > ...
+> > >   
+> > > > > > +	case IIO_CHAN_INFO_RAW:
+> > > > > > +		switch (chan->type) {
+> > > > > > +		case IIO_HUMIDITYRELATIVE:
+> > > > > > +			*val = data->chip_info->read_humid(data);
+> > > > > > +			ret = IIO_VAL_INT;
+> > > > > > +			break;
+> > > > > > +		case IIO_PRESSURE:
+> > > > > > +			*val = data->chip_info->read_press(data);
+> > > > > > +			ret = IIO_VAL_INT;
+> > > > > > +			break;
+> > > > > > +		case IIO_TEMP:
+> > > > > > +			*val = data->chip_info->read_temp(data);
+> > > > > > +			ret = IIO_VAL_INT;
+> > > > > > +			break;
+> > > > > > +		default:
+> > > > > > +			ret = -EINVAL;
+> > > > > > +			break;  
+> > > > > 
+> > > > > Is it mutex that prevents us from returning here?
+> > > > > If so, perhaps switching to use cleanup.h first?  
+> > > > 
+> > > > I haven't seen cleanup.h used in any file and now that I searched,
+> > > > only 5-6 are including it.  
+> > > 
+> > > Hmm... Which repository you are checking with?
+> > > 
+> > > $ git grep -lw cleanup.h -- drivers/ | wc -l
+> > > 47
+> > > 
+> > > (Today's Linux Next)
+> > >  
+> > 
+> > I am checking the drivers/iio of 6.8 (on sunday) and I can only find 7
+> > drivers that use it.
+
+Yes - but that's because it's new - most of the stuff in 6.8 was the proof
+points for the patches originally introducing support for autocleanup (so typically
+one or two cases for each type of handling) That doesn't mean we don't want it
+in drivers that are being worked upon if it gives a significant advantage.
+Some features we need will merge shortly, and a great deal more usage
+of this autocleanup will occur.
+
+> >   
+> > > > I am currently thinking if the mutex
+> > > > that already exists is really needed since most of the drivers
+> > > > don't have it + I feel like this is something that should be done
+> > > > by IIO, thus maybe it's not even needed here.  
+> > >  
 > 
-> Remove the calculations with the coefficients for the IIO compatibility
-> from inside the read_(temp/press/humid) functions and move it to the
-> read_raw function.
+> After some researching today, I realized that all the                           
+> {read/write}_{raw/avail}_{multi/}() functions are in drivers/iio/inkern.c
+> for channel mapping in the kernel and it looks like they are guarded by
+> the mutex_{un}lock(&iio_dev_opaque->info_exist_lock).
+
+Why is that relevant to this patch which isn't using that interface at all?
+Those protections are to ensure that a consumer driver doesn't access a removed
+IIO device, not accesses directly from userspace.
+
+>so I feel that the
+> mutexes in the aforementioned functions can be dropped. When you have the
+> time please have a look, maybe the could be dropped.
+
+Identify what your locks are protecting.  Those existence locks have
+very specific purpose and should not be relied on for anything else.
+
+If this driver is protecting state known only to itself, then it must
+be responsible for appropriate locking.
+
 > 
-> Execute the calculations with the coefficients inside the read_raw
-> oneshot capture functions.
-> 
-> Also fix raw_* and comp_* values signs.
+> In general, there is quite some cleaning that can be done in this driver
+> but is it wise to include it in the triggered buffer support series??? 
 
-That needs some more explanation.  Is this a fix that needs backporting?
+Generally if working on a driver and you see cleanup that you think should
+be done, it belongs before any series adding new features, precisely because
+that code can typically end up simpler as a result.  This sounds like one
+of those cases.  Normally that only includes things that are directly related
+to resulting code for new features (or applying the same cleanup across a driver)
+as we don't want to make people do a full scrub of a driver before adding
+anything as it will just create too much noise.
 
-> 
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> ---
->  drivers/iio/pressure/bmp280-core.c | 150 +++++++++++++----------------
->  drivers/iio/pressure/bmp280.h      |  10 +-
->  2 files changed, 74 insertions(+), 86 deletions(-)
-> 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 871b2214121b..dfd845acfa22 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -363,8 +363,7 @@ static u32 bmp280_compensate_press(struct bmp280_data *data,
->  	return (u32)p;
->  }
->  
-> -static int bmp280_read_temp(struct bmp280_data *data,
-> -			    int *val, int *val2)
-> +static s32 bmp280_read_temp(struct bmp280_data *data)
-
-It's returning error codes through here. If you need to force a specific type,
-don't use the return code.  Pass in a variable to put it in.
-
-static int bm280_read_temp(struct bmp280_data *data, u32 *result)
-
-
->  {
->  	s32 adc_temp, comp_temp;
->  	int ret;
-> @@ -384,27 +383,17 @@ static int bmp280_read_temp(struct bmp280_data *data,
->  	}
->  	comp_temp = bmp280_compensate_temp(data, adc_temp);
->  
-> -	/*
-> -	 * val might be NULL if we're called by the read_press routine,
-> -	 * who only cares about the carry over t_fine value.
-> -	 */
-> -	if (val) {
-> -		*val = comp_temp * 10;
-> -		return IIO_VAL_INT;
-> -	}
-> -
-> -	return 0;
-> +	return comp_temp;
->  }
->  
-> -static int bmp280_read_press(struct bmp280_data *data,
-> -			     int *val, int *val2)
-> +static u32 bmp280_read_press(struct bmp280_data *data)
->  {
->  	u32 comp_press;
->  	s32 adc_press;
->  	int ret;
->  
->  	/* Read and compensate temperature so we get a reading of t_fine. */
-> -	ret = bmp280_read_temp(data, NULL, NULL);
-> +	ret = bmp280_read_temp(data);
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -423,20 +412,17 @@ static int bmp280_read_press(struct bmp280_data *data,
->  	}
->  	comp_press = bmp280_compensate_press(data, adc_press);
->  
-> -	*val = comp_press;
-> -	*val2 = 256000;
-> -
-> -	return IIO_VAL_FRACTIONAL;
-> +	return comp_press;
->  }
->  
-> -static int bmp280_read_humid(struct bmp280_data *data, int *val, int *val2)
-> +static u32 bmp280_read_humid(struct bmp280_data *data)
->  {
->  	u32 comp_humidity;
->  	s32 adc_humidity;
->  	int ret;
->  
->  	/* Read and compensate temperature so we get a reading of t_fine. */
-> -	ret = bmp280_read_temp(data, NULL, NULL);
-> +	ret = bmp280_read_temp(data);
->  	if (ret < 0)
->  		return ret;
->  
-> @@ -455,9 +441,7 @@ static int bmp280_read_humid(struct bmp280_data *data, int *val, int *val2)
->  	}
->  	comp_humidity = bmp280_compensate_humidity(data, adc_humidity);
->  
-> -	*val = comp_humidity * 1000 / 1024;
-> -
-> -	return IIO_VAL_INT;
-> +	return comp_humidity;
->  }
->  
->  static int bmp280_read_raw(struct iio_dev *indio_dev,
-> @@ -474,13 +458,27 @@ static int bmp280_read_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_PROCESSED:
->  		switch (chan->type) {
->  		case IIO_HUMIDITYRELATIVE:
-> -			ret = data->chip_info->read_humid(data, val, val2);
-> +			ret = data->chip_info->read_humid(data);
-
-You can still get an error code back from this and you must handle it.
-Previously it was fine because both errors and IIO_VAL_ were returned by
-the callback so error returns were handled, now they aren't.
-
-> +			*val = data->chip_info->humid_coeffs[0] * ret;
-> +			*val2 = data->chip_info->humid_coeffs[1];
-> +			ret = IIO_VAL_FRACTIONAL;
->  			break;
-Same applies in all the other cases.
+So for this case, it does look like a quick use of guard(mutex) in
+a precursor patch will simplify what you add here - hence that's a reasonable
+request for Andy to make.
 
 Jonathan
+
+
+> I
+> have noticed quite some things that could be improved but I am hesitating
+> to do it now in order to not "pollute" this series with many cleanups and
+> leave it for another cleanup series for example.
+> 
+> Best regards,
+> Vasilis Amoiridis
+> 
+> > > > > > +		}
+> > > > > > +		break;  
+> > > 
+> > > -- 
+> > > With Best Regards,
+> > > Andy Shevchenko
+> > > 
+> > >   
 
 

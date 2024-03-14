@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-3518-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3519-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E1587C037
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 16:31:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96E7B87C063
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 16:35:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A26E11C215DE
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 15:31:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C74D91C216EF
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 15:35:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0844471B3B;
-	Thu, 14 Mar 2024 15:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17B373514;
+	Thu, 14 Mar 2024 15:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GoHGtf4K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WO4zFE6l"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13AF51C3B;
-	Thu, 14 Mar 2024 15:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6553C7175B;
+	Thu, 14 Mar 2024 15:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710430264; cv=none; b=rSNVzzhN1lx9PdhkGAHE8VeZOaUQVA7jBl1C8WovfADauDdJWxdyv0A4Pn29OiPBgvz6ioYnnB3f48Bhv3t6LeXMEPoojGl7LYTtL938RtuT1e6LN+RJiqhIodiz+ev0IhfPwPrWwYTj1eAEfnLGoOaNk6DGD+k4QOYWf8TUrDk=
+	t=1710430421; cv=none; b=cQrjj5AYkwJg7krFqOzSX6lbbDSK2ZqCDl4duRFP5zISvxRqes1H72mUsD4Z6M9jViS5lkBH7UycVDTx51tkpwbduNug7tcrtB04KbzJLya7pv6sz1XtSO41nP31OrG3HzauMt7FweYfAckvdl1WgL1yuABGn/D+RBbAQGJe6iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710430264; c=relaxed/simple;
-	bh=P4R5rvdPbrYzDtuRH0MY+VhzazE1F5Yf9nqntNMPj0I=;
+	s=arc-20240116; t=1710430421; c=relaxed/simple;
+	bh=aCDonrkKYBPwiH8R2bMD582lXFzDsl0VVpShAkgDxdQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ns6x6k9MrQ5DXrQQEb+j3otA54PRyLVQdtaZBjSW9YAYq0PEcHHHX3NUYbT0JtxazasPuis1mHzPIesexoWUAIvUWLkpnOwiZohvWUTJ17lNzwJckGYbt76m+NDy8IfeLBr1Ww+q20B3KapRZ6WCizIxhqDJNYFBYiyP9PYVsK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GoHGtf4K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F66CC433F1;
-	Thu, 14 Mar 2024 15:31:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rx3E4FjTqxAsPRARcRfZclKYoJtRfrZZt+nbAl/XMo0nDOQbe/gtOMsddLcCZ8lnnaT6kMhPBEXEk/KwnvZ6dRBYnniCwaM6abORbX5b64kzysT2F4ZN2ryiT6n4jQshzqOrI9lJmrYdMm+0Lzv6mi9DYctvwP3xHuxBl/joaG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WO4zFE6l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2783EC433F1;
+	Thu, 14 Mar 2024 15:33:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710430264;
-	bh=P4R5rvdPbrYzDtuRH0MY+VhzazE1F5Yf9nqntNMPj0I=;
+	s=k20201202; t=1710430421;
+	bh=aCDonrkKYBPwiH8R2bMD582lXFzDsl0VVpShAkgDxdQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=GoHGtf4K0Ea5Bn1ObXjForkxtSUmTv7QkIjE07GRk/nKrGHZYRGwvG4GMOIB6kwiC
-	 f2xOenaZCYAQuumCoKpQufcUFL1LLti3M6nNGI+pa+n2GjPtnujZNtiH+YN+P9hnOp
-	 wDend5Grsh7gVrhLrJDS+zaWL3AQvClipf4XPk6lVrrohS13J7pPOvbT5a5whNxQKv
-	 gghbVtlIqbq200Cz/pUF/hoymJ8KlAkAtD7QTpIOucCswnDmfJcxTCrZ79rKlqnX7K
-	 Hg7FE3DjjdYhQiSBHKjHJUWJtyHQPAsFgCPxNmLGZGTwIVSlMd1VW82ZS2OUHj3hzu
-	 AB3mMUqu/NM3g==
-Date: Thu, 14 Mar 2024 15:30:49 +0000
+	b=WO4zFE6l0q3diFd5YdMxGJymp+DtRSFJ0f/VuXvm56UlZuAIBWndg8n91L0PeH1px
+	 AFAdRDau5Y4nedRpjHWd4atk8FrhZT4MMq4/lDYy8C/RveYRfl9wFyBS7/ZYfgkep+
+	 3nZO0GZJxb3GwTEzGaER4ayeBiWcKI+naAm3lxVq/edC2xsgmfnORe9+dmBks5SmrS
+	 Xym6FcxFXw2aiBQirXqOQeP8Gg+58iz7fzXe/VzcxlwMXYVxTcGNjJexH0V7uOXZ8S
+	 4ljz2IYlI56V6C7jiO7HNPq0O4mqmcZULEsi/qAPk5VKGB4ehflOXyXAL6Q1d48Kmy
+	 wXHbn691YoVZg==
+Date: Thu, 14 Mar 2024 15:33:26 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Jonathan Corbet <corbet@lwn.net>,
- linux-doc@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] docs: iio: new docs for ad7944 driver
-Message-ID: <20240314153049.5895703d@jic23-huawei>
-In-Reply-To: <20240313-mainline-ad7944-doc-v1-2-7860416726e4@baylibre.com>
-References: <20240313-mainline-ad7944-doc-v1-0-7860416726e4@baylibre.com>
-	<20240313-mainline-ad7944-doc-v1-2-7860416726e4@baylibre.com>
+To: Li Zhijian <lizhijian@fujitsu.com>
+Cc: linux-kernel@vger.kernel.org, Jiri Kosina <jikos@kernel.org>, Srinivas
+ Pandruvada <srinivas.pandruvada@linux.intel.com>, Benjamin Tissoires
+ <benjamin.tissoires@redhat.com>, linux-input@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] HID: hid-sensor-custom: Convert sprintf/snprintf
+ to sysfs_emit
+Message-ID: <20240314153326.2126d3df@jic23-huawei>
+In-Reply-To: <20240314084753.1322110-2-lizhijian@fujitsu.com>
+References: <20240314084753.1322110-1-lizhijian@fujitsu.com>
+	<20240314084753.1322110-2-lizhijian@fujitsu.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,25 +64,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 13 Mar 2024 15:21:52 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Thu, 14 Mar 2024 16:47:51 +0800
+Li Zhijian <lizhijian@fujitsu.com> wrote:
 
-> This adds a new page to document how to use the ad7944 ADC driver.
+> Per filesystems/sysfs.rst, show() should only use sysfs_emit()
+> or sysfs_emit_at() when formatting the value to be returned to user space.
 > 
-> Credit: the basic structure and some of the text is copied from the
-> adis16475 docs.
+> coccinelle complains that there are still a couple of functions that use
+> snprintf(). Convert them to sysfs_emit().
 > 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> sprintf() will be converted as weel if they have.
+> 
+> Generally, this patch is generated by
+> make coccicheck M=<path/to/file> MODE=patch \
+> COCCI=scripts/coccinelle/api/device_attr_show.cocci
+> 
+> No functional change intended
+> 
+> CC: Jiri Kosina <jikos@kernel.org>
+> CC: Jonathan Cameron <jic23@kernel.org>
+> CC: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> CC: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+> CC: linux-input@vger.kernel.org
+> CC: linux-iio@vger.kernel.org
+> Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+Hi Li Zhijian,
 
-In many cases I don't think it's useful to have a per driver doc, but
-for this particular part the asci art diagrams make it useful - so thanks
-for putting this together.
+One trivial comment inline.
+Otherwise straight forward so
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-LGTM, but I'll let it sit on the list for others to take a look.
-Poke me if it looks like I've forgotten it (which I used to manage
-a lot, but patchwork keeps me organized better these days!)
+> ---
+> This is a part of the work "Fix coccicheck device_attr_show warnings"[1]
+> Split them per subsystem so that the maintainer can review it easily
+> [1] https://lore.kernel.org/lkml/20240116041129.3937800-1-lizhijian@fujitsu.com/
+> ---
+>  drivers/hid/hid-sensor-custom.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
+> index d85398721659..ee1a118834f0 100644
+> --- a/drivers/hid/hid-sensor-custom.c
+> +++ b/drivers/hid/hid-sensor-custom.c
+> @@ -155,7 +155,7 @@ static ssize_t enable_sensor_show(struct device *dev,
+>  {
+>  	struct hid_sensor_custom *sensor_inst = dev_get_drvdata(dev);
+>  
+> -	return sprintf(buf, "%d\n", sensor_inst->enable);
+> +	return sysfs_emit(buf, "%d\n", sensor_inst->enable);
+>  }
+>  
+>  static int set_power_report_state(struct hid_sensor_custom *sensor_inst,
+> @@ -372,14 +372,14 @@ static ssize_t show_value(struct device *dev, struct device_attribute *attr,
+>  				     sizeof(struct hid_custom_usage_desc),
+>  				     usage_id_cmp);
+>  		if (usage_desc)
+> -			return snprintf(buf, PAGE_SIZE, "%s\n",
+> -					usage_desc->desc);
+> +			return sysfs_emit(buf, "%s\n",
+> +					  usage_desc->desc);
+rewrap the line as will be under 80 chars.
 
-Jonathan
-
+>  		else
+> -			return sprintf(buf, "not-specified\n");
+> +			return sysfs_emit(buf, "not-specified\n");
+>  	 } else
+>  		return -EINVAL;
+>  
+> -	return sprintf(buf, "%d\n", value);
+> +	return sysfs_emit(buf, "%d\n", value);
+>  }
+>  
+>  static ssize_t store_value(struct device *dev, struct device_attribute *attr,
 
 

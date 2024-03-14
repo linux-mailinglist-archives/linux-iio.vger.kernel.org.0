@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-3521-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3522-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B03DE87C08D
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 16:41:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8084487C09E
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 16:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61ADA1F21927
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 15:41:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B144C1C21E53
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 15:48:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C300171B2F;
-	Thu, 14 Mar 2024 15:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B469471B5E;
+	Thu, 14 Mar 2024 15:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4lUgtH2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bPzhtKkE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813B371723;
-	Thu, 14 Mar 2024 15:41:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5F370CDE;
+	Thu, 14 Mar 2024 15:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710430911; cv=none; b=UBPW0sDAAnmWTzT1NB96vn12qQBCv/9waCjFLUc312MNSGa1UrpocPpq8q4cZoiSUBnKff3NMpSpqZFsewAeP+7LA3Hvh/qBeiQU5YdUiiBi2aisYMHV8SvfTa1Gcja3dJXT01Pea3jMSdSm4APp/CAXUDYAukCHxO/1AFqrUIs=
+	t=1710431319; cv=none; b=q6e17FLbJtwHBV2bZ4WpKPnWGA+PISfmb45oGrffeVdwq0aV2nXQN2Nsmtq19sZiCGVACeDwqf3W88MKQp8bvU6eluHsYNEgzmZzZ16r3mrChHdqEjBlIJQIdKpDVW5Cvf5S96j8CLuIRfc8T4iepjfKEd3QfgtLiwnmgwJB6uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710430911; c=relaxed/simple;
-	bh=eUVCx3NdID6p/BA28jS+KfLIL/YiKtdyVU65SQqdyP4=;
+	s=arc-20240116; t=1710431319; c=relaxed/simple;
+	bh=OLsVf26jNfkPFiisfEugFBO1YbcQjLA5KAEGjzL2Fls=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=raenhc1SNJWoptdrkgl5g7y+XuEQQ2LFgvdB97MQIdRQP4Uko5LiUArlPbjZ6t8Ak+CjlZ+3cqlI10ZWGIvDMCJrPzELmDrUiUw8DHeA4LjIMRRZs9RusyLYiJLUz+iP86bR6QDSgxA1x0dmWyzYjmak2PRU7s1d8MimIWgxIkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4lUgtH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8297C433C7;
-	Thu, 14 Mar 2024 15:41:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WNeLVUvV6hg4EyMxmqJR8bYnEU5slG/N0l3JQ25HLONM4APrvB2QTN4mZ3R9YYyKfca05A1nHdXnHDjGITP6+TNaqvYTSQjOw1ERrCwx5kTH8Yvu05RGb2UkbAUnyWZtKKtVzi0aKRbuHEJukrji+2fPKZIa8eZbdn7s3nuRI7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bPzhtKkE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98E77C433F1;
+	Thu, 14 Mar 2024 15:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710430911;
-	bh=eUVCx3NdID6p/BA28jS+KfLIL/YiKtdyVU65SQqdyP4=;
+	s=k20201202; t=1710431319;
+	bh=OLsVf26jNfkPFiisfEugFBO1YbcQjLA5KAEGjzL2Fls=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=d4lUgtH2H7p8HGTKr2Vre3wTxWY3ug1n2ud4wFKUe3aGfZNrtU1C9j+NQGQD+aYzv
-	 nINVHcmPT2/rG26sWiqBfK8BiEMiPANgjxrgDTf5yDTbdzOiaZDumQe7Kf75C/EfOp
-	 24Qtv82XKL34t1VBC8XfCzus3dlb/NOYz4mJCHw1FhoKCOz+hM71gAMHthPEoWGZhP
-	 9tlU8LdJf3IgFy3aoSx2XpXS8pM7Y90+LcYUd3V0RrkUJxt8XVBHYxiXOOmkFDXmCf
-	 jDHXje5Bu8/rZyeo9s24l/yD1Ss9U1QazBk6PDheDkG8O+Jht0ONwkMLOS1A1BWucs
-	 Dm7er3uFJsjpA==
-Date: Thu, 14 Mar 2024 15:41:37 +0000
+	b=bPzhtKkEhBHnuGWggN1nm4nQo0KhM1ldUYWfoBQTGfDO1T9hGpq67UPj8H7FDITGN
+	 7wtXS/ZM5VHib8AGEgYWVDVOCqv82XEAoqMj06KxmU9riKG6pfIjLSEraOdgiMrj23
+	 aZe1tDnBIWbb1ZM6blvYH/4vT1+9cS0DSomOKhTIIS/HTZsO3/hg4+O8vjIDfsUPaM
+	 vpQQ2E2iux+1g7RXHDV2Eh65RwlcO0Ck6YP/WqcjTAs0i/XeoUqBSvS+kNZRHxalp3
+	 vkXfXEnH1U0OyPie7GgK/OIlqhIppBH/fhEKTrekPwL5Y5X9vEJOuCJ8osMuh7KHap
+	 L2XceuIrwXPkQ==
+Date: Thu, 14 Mar 2024 15:48:24 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Michael Hennerich
- <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ad7944: Add support for "3-wire mode"
-Message-ID: <20240314154137.2fdf82ba@jic23-huawei>
-In-Reply-To: <CAMknhBE8OwrtbJ9xYVZ8ObsZTnxmn9Fpk2a-gj1aCSaN-whDRg@mail.gmail.com>
-References: <20240311-mainline-ad7944-3-wire-mode-v1-1-8e8199efa1f7@baylibre.com>
-	<8ee551edeff9c4c959a4dbda53d1a2a26a9bb62c.camel@gmail.com>
-	<CAMknhBE8OwrtbJ9xYVZ8ObsZTnxmn9Fpk2a-gj1aCSaN-whDRg@mail.gmail.com>
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: linux-iio@vger.kernel.org, Conall O'Griofa <conall.ogriofa@amd.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: [PATCH] iio: xilinx-ams: Don't include ams_ctrl_channels in
+ scan_mask
+Message-ID: <20240314154824.37150a54@jic23-huawei>
+In-Reply-To: <20240311162800.11074-1-sean.anderson@linux.dev>
+References: <20240311162800.11074-1-sean.anderson@linux.dev>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,104 +59,60 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 12 Mar 2024 09:13:56 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Mon, 11 Mar 2024 12:28:00 -0400
+Sean Anderson <sean.anderson@linux.dev> wrote:
 
-> On Tue, Mar 12, 2024 at 4:08=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.c=
-om> wrote:
-> >
-> > On Mon, 2024-03-11 at 16:26 -0500, David Lechner wrote: =20
->=20
-> ...
->=20
-> > >  /*
-> > >   * ad7944_4wire_mode_conversion - Perform a 4-wire mode conversion a=
-nd acquisition
-> > >   * @adc: The ADC device structure
-> > > @@ -167,9 +246,22 @@ static int ad7944_single_conversion(struct ad794=
-4_adc *adc,
-> > >  {
-> > >       int ret;
-> > >
-> > > -     ret =3D ad7944_4wire_mode_conversion(adc, chan);
-> > > -     if (ret)
-> > > -             return ret;
-> > > +     switch (adc->spi_mode) {
-> > > +     case AD7944_SPI_MODE_DEFAULT:
-> > > +             ret =3D ad7944_4wire_mode_conversion(adc, chan);
-> > > +             if (ret)
-> > > +                     return ret;
-> > > +
-> > > +             break;
-> > > +     case AD7944_SPI_MODE_SINGLE:
-> > > +             ret =3D ad7944_3wire_cs_mode_conversion(adc, chan);
-> > > +             if (ret)
-> > > +                     return ret;
-> > > +
-> > > +             break;
-> > > +     case AD7944_SPI_MODE_CHAIN:
-> > > +             return -EOPNOTSUPP; =20
-> >
-> > This mode is not really supported for now and in theory we can't really=
- have
-> > adc->spi_mode =3D AD7944_SPI_MODE_CHAIN, right? So, I would just make t=
-his the
-> > 'default' branch and not care about chain mode (implementing it when ad=
-ding it). =20
->=20
-> The compiler was happy with this, but yeah, default: is probably safer.
->=20
-> ...
->=20
-> > > +     if (!adc->cnv && adc->spi_mode =3D=3D AD7944_SPI_MODE_DEFAULT)
-> > > +             return dev_err_probe(&spi->dev, -EINVAL, "CNV GPIO is
-> > > required\n");
-> > > +     else if (adc->cnv && adc->spi_mode !=3D AD7944_SPI_MODE_DEFAULT)
-> > > +             return dev_err_probe(&spi->dev, -EINVAL,
-> > > +                                  "CNV GPIO in single and chain mode=
- is not
-> > > currently supported\n");
-> > > + =20
-> >
-> > Redundant else... =20
->=20
-> yup
->=20
-> > =20
-> > >       adc->turbo =3D devm_gpiod_get_optional(dev, "turbo", GPIOD_OUT_=
-LOW);
-> > >       if (IS_ERR(adc->turbo))
-> > >               return dev_err_probe(dev, PTR_ERR(adc->turbo),
-> > > @@ -369,6 +486,10 @@ static int ad7944_probe(struct spi_device *spi)
-> > >               return dev_err_probe(dev, -EINVAL,
-> > >                       "cannot have both turbo-gpios and adi,always-tu=
-rbo\n");
-> > >
-> > > +     if (adc->spi_mode =3D=3D AD7944_SPI_MODE_CHAIN && adc->always_t=
-urbo)
-> > > +             return dev_err_probe(dev, -EINVAL,
-> > > +                     "cannot have both chain mode and always turbo\n=
-");
-> > > + =20
-> >
-> >
-> > I'm fine in having this now but shouldn't we only have the above when w=
-e do support
-> > chain mode? A bit odd having it when we don't even allow chain mode.
-> > =20
->=20
-> Yeah, we could wait to add this. It seemed like something easy to
-> overlook though if we don't add chain mode right away, so I just went
-> ahead and added it now.
-Seems reasonable - maybe just mention it in the patch description.
+> ams_enable_channel_sequence constructs a "scan_mask" for all the PS and
+> PL channels. This works out fine, since scan_index for these channels is
+> less than 64. However, it also includes the ams_ctrl_channels, where
+> scan_index is greater than 64, triggering undefined behavior. Since we
+> don't need these channels anyway, just exclude them.
+> 
+> Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
 
-Other than the tidying up Nuno pointed out looks good to me, so I'll pick up
-v2 once posted.
+Hi Sean,
+
+I'd ideally like to understand why we have channels with such large
+scan indexes.  Those values should only be used for buffered capture.
+It feels like they are being abused here.  Can we set them to -1 instead
+and check based on that?
+For a channel, a scan index of -1 means it can't be captured via the buffered
+interfaces but only accessed via sysfs reads.
+I think that's what we have here?
+
+I just feel like if we leave these as things stand, we will get bitten
+by similar bugs in the future.  At least with -1 it should be obvious why!
 
 Jonathan
 
+
+> ---
+> 
+>  drivers/iio/adc/xilinx-ams.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+> index a55396c1f8b2..4de7ce598e4d 100644
+> --- a/drivers/iio/adc/xilinx-ams.c
+> +++ b/drivers/iio/adc/xilinx-ams.c
+> @@ -414,8 +414,12 @@ static void ams_enable_channel_sequence(struct iio_dev *indio_dev)
+>  
+>  	/* Run calibration of PS & PL as part of the sequence */
+>  	scan_mask = BIT(0) | BIT(AMS_PS_SEQ_MAX);
+> -	for (i = 0; i < indio_dev->num_channels; i++)
+> -		scan_mask |= BIT_ULL(indio_dev->channels[i].scan_index);
+> +	for (i = 0; i < indio_dev->num_channels; i++) {
+> +		const struct iio_chan_spec *chan = &indio_dev->channels[i];
+> +
+> +		if (chan->scan_index < AMS_CTRL_SEQ_BASE)
+> +			scan_mask |= BIT_ULL(chan->scan_index);
+> +	}
+>  
+>  	if (ams->ps_base) {
+>  		/* put sysmon in a soft reset to change the sequence */
 
 

@@ -1,129 +1,133 @@
-Return-Path: <linux-iio+bounces-3526-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3527-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F63C87C1C8
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 18:06:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C6E87C222
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 18:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCCA6284087
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 17:06:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 389F8282D1B
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 17:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88B5745E0;
-	Thu, 14 Mar 2024 17:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF9C745FA;
+	Thu, 14 Mar 2024 17:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kAtIjkg2"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="VnhCHumO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-175.mta0.migadu.com (out-175.mta0.migadu.com [91.218.175.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB64E18E20
-	for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 17:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30249745E1
+	for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 17:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710435936; cv=none; b=TTlVI7ViY0EAvQmqWrhZ0GWQAT5m+mF0j+fIMgd9fL0/Y3BtPmxD+zL6H1Qlfh+pBy6JAk56LdWOt/3o9EB8GFwEex+uro8kV5uNIkg8Ryu9eMxotZh9oEqJXnGwhVRUlS8TZ1u9DBF4bg5g/xS1OLkhfLDRwjGvlrszRdU2f5c=
+	t=1710437419; cv=none; b=HZjJVeqbTA3OY+G4Xa6bGfvLjS9fjI2d2/51Etf7ji/p6id/BUpuZ3tWYPiuQhQCj+Bz9i+0ewBuLcAQgYBdiT4qaB2ZMvKbIeLl5ndZIQY6EzEpTTRdskAGK3Z+wOxXE4aSYcNd4syAr0iM02sK89vAXQsHhXdM3yNTeaOqZSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710435936; c=relaxed/simple;
-	bh=I+yEakZLbc89Llm1zwNn5fxLD+wh2EQjZ2UFXgN8l+4=;
+	s=arc-20240116; t=1710437419; c=relaxed/simple;
+	bh=mvbufNwV6uuDAXa1Za1BY8YcXWB+UiVwFDzPNSHkqwg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IeBntI6kFDpKtxEYvh+nzSOEYv2Owb9LTAQmHIYvuFnT3+O/NwQlhfsLiyau/THYxGsT3igk2VakFVsI+ZDWcc73lY7r6NqxdKbKfizNgQnTZZ0E85I1c3TTGthKJKh0qSlvZctE4tccmbWJTsUXbuTmnjnt59SoYVE8YyC5Hn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kAtIjkg2; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-512e4f4e463so1394261e87.1
-        for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 10:05:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710435933; x=1711040733; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wkLdvZnZB72+YMhb6+j/TxBevhgiJuQOwF79EtoYOIw=;
-        b=kAtIjkg2jvuwD741qeihVZ92OyW68ldtAf1ukE3Jnq5tYTQybOV8LZZqt2zc1AtzpE
-         gTKYGA/poUEIKHLL59vQePH9u8QMLqpCrQYh+2pNH3jBqaQaOYPTn/+eU3xWL4ScncHW
-         +s0asg85ntM1llcx2M9q7YlvjDoAEounazn5cKVQnqR/xpd0m94DOMeUCwqVt7KQVjrZ
-         zFxoIhxhTdy+/nUMQrLMPV22LIhragpwRoGRJ3bBXoyW68uQWHRjxMt/tU65VMILkPZl
-         OvKjJ1jkwB+N8FSuea8OwISNAkpUfERX8jZ5Xm+I/9qyzZWFTxY3UPaKj3PWFj7mNZNi
-         L4DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710435933; x=1711040733;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wkLdvZnZB72+YMhb6+j/TxBevhgiJuQOwF79EtoYOIw=;
-        b=aJRDsVB0sjZhzTruj1T1dI74KrXQqR4anfMakQP/dUa2W+CS+nZbq5FfuMh9Ibpe6K
-         t23PS+7ELTBB9ASKCg7eBK73rX5BIlibo9Xm+MchGJgHixxIqc5I05Z3ItjHjaNNMeaD
-         U+IdJ0D+Cl9QJ0eD4rBUro2AIKNhcov5woVXbTv5fqTi5bxZIap/27aZBAszvqs/xLrM
-         huubs/J9dyV9U1tj2d7GSsGl5VjnuH+3bOropCPhR6skdsm9oT0fP3XssOm2Uhh2V0tl
-         ChDebsDeJ4ILrRgVr4pBJTDZYq66nkXKsYGPI/Gk5qscWjqZeQ+BRoN38yQwXIXid3yQ
-         IO2A==
-X-Forwarded-Encrypted: i=1; AJvYcCVY+N1k7F4R+iAHrbD0TDsk+wQYGKQPnc0WrvQMLZtyw/fvhUE3shsCvqJXaInsHSCXtHyGaZvv1TbjTZlN5TIFtqadDX0+LYjD
-X-Gm-Message-State: AOJu0YynTLTtDFPjfLmPvgxzJx8U8S0U3jKQMR++UpZABBEkNr1iii3V
-	Y5yzww1oQKIGFms42AV6BBhDZnPR4+UNCrF9uYnbcOTVBD/GVzieDsUXesv2
-X-Google-Smtp-Source: AGHT+IGM80WreUp1Po6BPAlVtweTlZWq738jZRQ8NBxjcHId+d7WTPOAgK+ocn6IXjjyfaO7AA7BPg==
-X-Received: by 2002:a19:6914:0:b0:513:bcaf:c339 with SMTP id e20-20020a196914000000b00513bcafc339mr1808666lfc.13.1710435932580;
-        Thu, 14 Mar 2024 10:05:32 -0700 (PDT)
-Received: from ?IPV6:2001:14ba:7426:df00::6? (drtxq0yyyyyyyyyyyyydy-3.rev.dnainternet.fi. [2001:14ba:7426:df00::6])
-        by smtp.gmail.com with ESMTPSA id t24-20020a195f18000000b00513cfd6d15fsm356431lfb.57.2024.03.14.10.05.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 Mar 2024 10:05:32 -0700 (PDT)
-Message-ID: <bd4e9aa4-71cd-4e29-a4e7-e00ad0732a7d@gmail.com>
-Date: Thu, 14 Mar 2024 19:05:31 +0200
+	 In-Reply-To:Content-Type; b=J9Ngj3Ka+XcKMbzK6fqXL3W5wvCXu/UpGtwRBHaPBBpzq5grRBs+m2EGY8LwVPe+rxOdg68OMubr+s1z6uYZmvVPokbKxDFmvrP6rONLbaRhsBFrBF1YVMD+a3sh3x6iIQM/F5QTn3F2n5gWwwQ907PYqyo9BgtJHTIZS5RPrSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=VnhCHumO; arc=none smtp.client-ip=91.218.175.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <a9ed95ec-aafe-49f6-93dd-c94c73620de2@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1710437415;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JEBIKds7ABWFBzR1V0Wt+1agR4evvGmxh9zbarQta3w=;
+	b=VnhCHumOkxcleb39VeThgoudLqqD/mLpqBVDSxM7QxzkuClZzRHq7SMzyrTSMLIitFAQqa
+	eofiaPewK/4Z3tmEtoiz49+xrtpK5vINFQ2y5oanaW0uQgI45+yiPeqxQk/nxO93d95i2l
+	TtXVPnZt2RVGUdfC51fYAD+ERj7kAPQ=
+Date: Thu, 14 Mar 2024 13:30:11 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: Fix the sorting functionality in
- iio_gts_build_avail_time_table
-Content-Language: en-US, en-GB
-To: Jonathan Cameron <jic23@kernel.org>, Chenyuan Yang <chenyuan0y@gmail.com>
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org
-References: <ZfHM73ZqgnCp6CZv@cy-server>
- <20240314153656.493ee487@jic23-huawei>
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240314153656.493ee487@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] iio: xilinx-ams: Don't include ams_ctrl_channels in
+ scan_mask
+Content-Language: en-US
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, Conall O'Griofa <conall.ogriofa@amd.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Lars-Peter Clausen <lars@metafoo.de>
+References: <20240311162800.11074-1-sean.anderson@linux.dev>
+ <20240314154824.37150a54@jic23-huawei>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <20240314154824.37150a54@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 3/14/24 17:36, Jonathan Cameron wrote:
-> On Wed, 13 Mar 2024 10:57:35 -0500
-> Chenyuan Yang <chenyuan0y@gmail.com> wrote:
+On 3/14/24 11:48, Jonathan Cameron wrote:
+> On Mon, 11 Mar 2024 12:28:00 -0400
+> Sean Anderson <sean.anderson@linux.dev> wrote:
 > 
->> The sorting in iio_gts_build_avail_time_table is not working as intended.
-> For function names, add () so
-> The sorting in iio_gts_build_avail_time_table() is not working as intended.
+>> ams_enable_channel_sequence constructs a "scan_mask" for all the PS and
+>> PL channels. This works out fine, since scan_index for these channels is
+>> less than 64. However, it also includes the ams_ctrl_channels, where
+>> scan_index is greater than 64, triggering undefined behavior. Since we
+>> don't need these channels anyway, just exclude them.
+>> 
+>> Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
+>> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
 > 
-> I can fix this up whilst applying but will be waiting for a RB or related
-> from Matti before queuing this up.
-
-Thanks for waiting Jonathan. I wanted to run a set of tests before 
-acking this - but I didn't manage to find the required half an hour for 
-it Today... I'll handle this early tomorrow.
-
-> I'm assuming there are no existing drivers in tree that hit this problem?
-
-I don't think so. The ROHM drivers which use the avail_times have (by 
-luck) the time tables already sorted in a suitable way.
-
-> If there are reply saying which ones so I can assess whether to rush this
-> fix in or not.
+> Hi Sean,
 > 
-> Thanks,
+> I'd ideally like to understand why we have channels with such large
+> scan indexes.  Those values should only be used for buffered capture.
+> It feels like they are being abused here.  Can we set them to -1 instead
+> and check based on that?
+> For a channel, a scan index of -1 means it can't be captured via the buffered
+> interfaces but only accessed via sysfs reads.
+> I think that's what we have here?
+
+From what I can tell, none of the channels support buffered reads. And
+we can't naïvely convert the scan_index to -1, since that causes sysfs
+naming conflicts (not to mention the compatibility break).
+
 > 
+> I just feel like if we leave these as things stand, we will get bitten
+> by similar bugs in the future.  At least with -1 it should be obvious why!
+
+There are just as likely to be bugs confusing the PL/PS subdevices...
+
+FWIW I had no trouble identifying the channels involved with this bug.
+
+--Sean
+
 > Jonathan
 > 
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+> 
+>> ---
+>> 
+>>  drivers/iio/adc/xilinx-ams.c | 8 ++++++--
+>>  1 file changed, 6 insertions(+), 2 deletions(-)
+>> 
+>> diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+>> index a55396c1f8b2..4de7ce598e4d 100644
+>> --- a/drivers/iio/adc/xilinx-ams.c
+>> +++ b/drivers/iio/adc/xilinx-ams.c
+>> @@ -414,8 +414,12 @@ static void ams_enable_channel_sequence(struct iio_dev *indio_dev)
+>>  
+>>  	/* Run calibration of PS & PL as part of the sequence */
+>>  	scan_mask = BIT(0) | BIT(AMS_PS_SEQ_MAX);
+>> -	for (i = 0; i < indio_dev->num_channels; i++)
+>> -		scan_mask |= BIT_ULL(indio_dev->channels[i].scan_index);
+>> +	for (i = 0; i < indio_dev->num_channels; i++) {
+>> +		const struct iio_chan_spec *chan = &indio_dev->channels[i];
+>> +
+>> +		if (chan->scan_index < AMS_CTRL_SEQ_BASE)
+>> +			scan_mask |= BIT_ULL(chan->scan_index);
+>> +	}
+>>  
+>>  	if (ams->ps_base) {
+>>  		/* put sysmon in a soft reset to change the sequence */
+> 
 

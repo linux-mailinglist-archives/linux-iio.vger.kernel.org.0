@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-3506-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3507-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFE8E87BA8F
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 10:37:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0F3C87BA91
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 10:37:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 750EA1F23C22
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 09:37:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 276361F21A56
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 09:37:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E417D6CDCC;
-	Thu, 14 Mar 2024 09:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD955D478;
+	Thu, 14 Mar 2024 09:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q5wr6N8f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ry8IudeZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29786CDD4
-	for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 09:36:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C48992D629
+	for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 09:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710409017; cv=none; b=P809ab+l69nWKdII87UaElQNRh1wiIAEjNHXSH/G22QW+67cHb6+qCOKbDBBAY1W3DGRPO6Jh31tf6NKh7uRJBzDvO0RuEmKGpw6UDhVsAtIKNot0aUdPuahozh65R5YIxxDPuokwizgZwsbYboaSciNXasj7vunMHLWxIpmP2U=
+	t=1710409060; cv=none; b=abnEEYDCWFGtsSca1EKi6nJdJ93YNhwf0ZZhhjshuYWBJeAqvt6kzlWi0nzsIrqXWqmQ0ticDHI0PlE/zBu/o5/P+vZErZZxRThg38p2Zt0sApLlx4+DxTedrOakqAQ57H4oPI6TZBrYJmqDfw5fTd7ENt5COvsS3vag8+oosWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710409017; c=relaxed/simple;
-	bh=yq8DfW36Mdo3AU6y2k9fC7v+l27ojjQWsD0Frjc4ri8=;
+	s=arc-20240116; t=1710409060; c=relaxed/simple;
+	bh=KoiKWJbV1oAmHbpp3/e1PgR6nkMz8nkr5nW/GVf1hMo=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=h/f+cqGHaCAw+9daZDGYvhcMDQq7Ejl6NdTyyEfJgZQMjOsKZ74K+rAxO1zUM3shhEDo63kdHxzEQxDHgNuOFbgiDjt9gxabNTUYhOfB+kFR5Lmp3ovlaD18lBhx34ggtxHJEtk9X7rVuAWyUXxTdLK7DFygBqZbkV+AbYD5ljA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q5wr6N8f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 20959C433C7
-	for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 09:36:57 +0000 (UTC)
+	 Content-Type:MIME-Version; b=jw/fgwe6GZB5VQNEvyT06bCn7o5+XVhUxQmVNq9Es53EHCwOMyfPBB9EMMdEWULbX6PXLwkYHJIt5JocAw+5rAIrgUVuqjlKinLvFn5/cHSFF4ql4S4QaGRysEoBIU4/fPXwbeQXmJyOMJhG1ewDxfq9/dm66BYWimdI84pYu/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ry8IudeZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 44F84C433F1
+	for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 09:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710409017;
-	bh=yq8DfW36Mdo3AU6y2k9fC7v+l27ojjQWsD0Frjc4ri8=;
+	s=k20201202; t=1710409060;
+	bh=KoiKWJbV1oAmHbpp3/e1PgR6nkMz8nkr5nW/GVf1hMo=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=q5wr6N8fF+YECpPhwgRFgODQF17+XqNdgz7XMaUTJ5Remv8kgjxWIxn33CG2688ez
-	 JRVUKtJObKqbP6WVgFvMJtlcZj2GXRHeLuSVmacU6XJQVX+nFEZK1arReTekSbDBLx
-	 24Ou3OSclSyy9od68rX1tr6OCuv0yCXE6scPNoONmXwKcW5/MLF4fl4Zdi2j86s91+
-	 XZ2higP59MgqekzGmREPxX53u/oN9MjCTQtVY6FrImjCfs2K0FANSWx50gmu3hXZun
-	 6iCtHU56Efr5Z2H4AZjTiWw4tYOxSi9gCZGPoDSiNqG2NrCVwRv7wb33pfrnSxEBfd
-	 3hPd3chTyDzXQ==
+	b=ry8IudeZWpYDVLlMIwrswggimAhJHE8u0zLRdE0eR9nK2DWeTQ9XubBL7TPHlw1K4
+	 7Vd7VnzNCVIY1ORNums9oe8qRVSPWh8i0a6K6tbdqPCGtSXyP10MrG9aFuYHB/H8id
+	 pEBg7ZFFURWGOO+W4LGIUx7OBjjGck2473s1ZQ2mcia7oulyi9FKwHp/nh0si//WGa
+	 vjWKN7+H9rYCXLCnhmz0rKbSEckEdtA5B3TaktweT4baCiIcM4OP/bPCzAMdZoLlkH
+	 rx5ld9U7/cDZDH5E4OJkiEt5QSSCR0nwljvIYn2UizsOTvcV8/zzaQDTwXh8zLPVAL
+	 CLslHAbmLwqRg==
 Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 1A91DC53BD0; Thu, 14 Mar 2024 09:36:57 +0000 (UTC)
+	id 3D2B8C53BC6; Thu, 14 Mar 2024 09:37:40 +0000 (UTC)
 From: bugzilla-daemon@kernel.org
 To: linux-iio@vger.kernel.org
 Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Thu, 14 Mar 2024 09:36:56 +0000
+Date: Thu, 14 Mar 2024 09:37:40 +0000
 X-Bugzilla-Reason: None
 X-Bugzilla-Type: changed
 X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
@@ -62,7 +62,7 @@ X-Bugzilla-Priority: P3
 X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
 X-Bugzilla-Flags: 
 X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218578-217253-WBd9pU9Yvs@https.bugzilla.kernel.org/>
+Message-ID: <bug-218578-217253-MVi2qj5NvF@https.bugzilla.kernel.org/>
 In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
 References: <bug-218578-217253@https.bugzilla.kernel.org/>
 Content-Type: text/plain; charset="UTF-8"
@@ -78,12 +78,11 @@ MIME-Version: 1.0
 
 https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
 
---- Comment #9 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
-p.s.
+--- Comment #10 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
+p.s. (again)
 
-In your next comment please also let me know if the accel started working a=
-fter
-the reset.
+And (likely stating the obvious) please attach all the i2cdump-*.txt files
+here.
 
 --=20
 You may reply to this email to add a comment.

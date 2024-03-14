@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-3531-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3532-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3205D87C412
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 21:14:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46DCD87C419
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 21:17:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6EF283733
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 20:14:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6072814F0
+	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 20:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 678727603C;
-	Thu, 14 Mar 2024 20:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6E7762DC;
+	Thu, 14 Mar 2024 20:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V3Mimyx+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZZgnzhjI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BDB6FE0B;
-	Thu, 14 Mar 2024 20:14:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29EEF762D6;
+	Thu, 14 Mar 2024 20:17:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710447278; cv=none; b=n4Io89PsOLZC2r4vWHCWB+veTNdAHV8zAM+ClxQHd1h8iij5xJQjYaiV+TsLW3Zfmc+TYqNPGRWmbQBgaa0UyQG6NelT2aN7wZejaxBXCYCdVZBXVTN/do0xJW//JIyrceGpYsH/tCVX9HGwYxHg5E8ZiyEdw3WDEe1iep/l/u4=
+	t=1710447448; cv=none; b=kJUhTh0kfR6oMS6eqdjcWbG+E2WOeBfcanB2O6UCoXogJ8m1nPrLFIm8/aICeP2a1KIrVyFenNt63BzwnpGPP/A9ZLg6Jn58WG3lFhHh3rAS+7qbQBN3GJEG/0Oc1COJeveVnFRDCGGjhuAFwXcmUiWFpnxwE9vEqGItIazN+bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710447278; c=relaxed/simple;
-	bh=9AlVAxpgVU1ZZvQH4zImz5SRa+iBaVpQEvxehfbaugc=;
+	s=arc-20240116; t=1710447448; c=relaxed/simple;
+	bh=oOAciFN3IjrXwyfoHlJ9VKAhZBF0yKi2rLAIDTxL58Y=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZMR+J/kOyTvsWf9X/rORHBFITZ7X/uOPvWnAB9TiKzm5L8AED5wDQUl4R0/G5B9JbJFXFw6ccwmlfxESI2dBIA29J/tPKlCsoXdu58OAsDbGiDW7nNcdS1ixigtEk/iJxwlHrNgOQ33R55T9/8VCDtczqOm2aaQHmSC3ZmIuOUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V3Mimyx+; arc=none smtp.client-ip=209.85.208.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=EqUDOlqL/jzKwLxh9vvqWSju668xUbCh8Jn2ipsw2z1p2MJ94o5ZmsRdKdE0PqUgjVhWy9JxK/XGYJS51RCpnWCcFzVhBi5Z4o2aO3uPQmAsivJtAPs91JwEDrhIHKQZ9zZ9UO2o619BNasgSECvrhy7pY26WpMJ3fQSg91aINs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZZgnzhjI; arc=none smtp.client-ip=209.85.167.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-568a3292916so1201710a12.1;
-        Thu, 14 Mar 2024 13:14:36 -0700 (PDT)
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-513cfd48224so1697264e87.2;
+        Thu, 14 Mar 2024 13:17:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710447275; x=1711052075; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1710447441; x=1711052241; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dAVsxRpCSAmbyqn5Fk9wwRXZVBrTcp4mGzqqEGhqJG4=;
-        b=V3Mimyx+RM46oO5LPImQ8CB0yIrfGZAqoQ0CQGSHwiFF6xlYixQ+Kkpnn7j3Csjtkx
-         mFt5o6sOLvp+XYx4Mp+WK2kR/29QOVJ+2MqCeKfkvOeaUSmF6PIq8IAeIlvy4WTudjws
-         2gF+6cupdSGPu1q6zTNEc8SEqmA7oQxtmkKvMyqMBS2ttv6OqzpVARsUOWNlN8gAzKfo
-         XszO6YhRVlOrwXkHCpvU/TjoJ6asoOrOm21rwd/m3viUF+nfr0jNqTDVW8F9Q81NSBjt
-         a8ROBe5DxekvcnqgkM8JPyXmDGgdtZyRfVnrQ3b9scqaC05P0n9oj/EeHudEx30g6lS1
-         LAhw==
+        bh=WScc3493+71uc4zQshj39+CRqkWav60PlPiDu6utj1k=;
+        b=ZZgnzhjIbRofvpBkzwihWQ5rAbWn+Ppg3HIN2fTbTI9xooXyUFfd1AiotujjHuBeAf
+         jY5TWfkiWDBJtYbWB76VQ3lyuEBL/ECZ4CZolpSJWJaCibRokrLytmaG8D+3+KIpH70A
+         JcNJIwph3LBczsbuHqO5iXvl3pMpsg0tJ2SSo22r1zfZ6ZNHRozm2mpPxdhwWqCjI2ub
+         AQknj9cofmC9Bz0gfEKuoES3aC0V+IOIyrfWLtTzupSdsTib+Vv9jyTm8dqKVdRsQYig
+         /acYx7mwYkU+UE171Yq4JFdpDjF8MRGBV9JrF59wBkkqsebnxQNmKz8/TPAHQZkqxLbj
+         NOzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710447275; x=1711052075;
+        d=1e100.net; s=20230601; t=1710447441; x=1711052241;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dAVsxRpCSAmbyqn5Fk9wwRXZVBrTcp4mGzqqEGhqJG4=;
-        b=uwxx3KzwdqfYlV/BSIuA0IKsVzkt7TLS8v/WLbT93Z9fGzGVizPL/ONhuodCKhj97Z
-         x1/Jck+DNFMfkPX/YhQs9buz7GVF0W49JXzyzw+IWiPq+o0UhdUGUb8JMyJNYT0ENFRh
-         J+6HJH81v9tl0EEEywJBC0J1kOCgMO6+ij5jSDkYj5maEJSLiHgSBaxFFJjTWiSs95Ki
-         a6MRmwcH2FQfEuLq6+PP5NccY5dGNLB9cqzeXIfgGu2sG39afshDAtZ2vfQ1q7RnfqgM
-         JODtqvEz0zIAR7PKniRoi3Q5d9j0E3/V9oua2PiSymXybp01KbEx317/lAK+5P0dWASt
-         b7aw==
-X-Forwarded-Encrypted: i=1; AJvYcCUvdn4Ntn58sA9d5+tbboBFVPToAI1fXfoNCWPYf01cAb1fbd/1zSqmuX+SGKomHrfK6xv53zHsdiRrhleQfrRwJitvYKyVEoYpj5MihH0YqrgdAg4KiOxWTj09oREEMt1yJ6eZ5IqH
-X-Gm-Message-State: AOJu0YzjX0inBQdSzl3vHrb5Ew1HMGifEg27a928Kl6RSPzhjHZ7cWw2
-	54rJUmqpzB5rhKsiAP8Mdf/rMhdCyceFHCQz0VfkpQJwEPsFY+vmnJiODXxv3D0Oig==
-X-Google-Smtp-Source: AGHT+IGhQkemnkZd/TucjCUzFP/DS2v6zPKoQ11EDcmGDeN9EYpwgHeosTFfHQZwVYrpNwAyS6VGfg==
-X-Received: by 2002:a05:6402:321f:b0:568:aa62:738a with SMTP id g31-20020a056402321f00b00568aa62738amr350639eda.35.1710447274300;
-        Thu, 14 Mar 2024 13:14:34 -0700 (PDT)
+        bh=WScc3493+71uc4zQshj39+CRqkWav60PlPiDu6utj1k=;
+        b=GBQy5yNe9g4EwvrKHVWdm6RcJ1+p+6AwbHJ3P6chcDZcF02xENvGfbM3CVvRMtgPQx
+         NHJHSmSj1cb5Ddg9wGD0g3tKxtM5DAb56/+Uwr6lFOJoF2OHGQ49Fw+EdQ88sg7R4CI6
+         tjJu/xUDXuTmm6z6qG1OcrqB+OAsKkRwrLdJtzVpkAR+v0E50H72lw6OK+84BM/YxBU0
+         dO1OzfzlxvTsdm5Ys3b22tS1TVfs7wVDaDeF9F7SsziT0QpalRTT/5NbOzAHDgvY5YEw
+         PkZXQsg7+k5yFv6lEsfZJvHPXi64bl6Qq9gCUv/HDmcawHLnjRl6JmTG3NsNn/u2r7/m
+         uqhA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3d5DEC4NFnN2Vhn/l6U+I99nW5jC7vSRtifeHXWOI4sbs7TiZ9i82OCLYhwgYVPoNk5cN2ljbQ58a9mRe/tVOjqKk1kuT5fyyUSaCrN7NpuvmoRG9UZWFFWpYFlAl4XLWBxvipA9r
+X-Gm-Message-State: AOJu0Ywr96utHH7mQ84goDYZgKJu6FFYt0hj6D+elLYf2W9jpxxuVXJK
+	7vzd1tJEjnDUyua32kb4kgLPVbuF0kZYotOddko4FgwgvglZdTWQ
+X-Google-Smtp-Source: AGHT+IHcSrFMbHPK4/WuinqRzK+JEa1bDU+oLv+kqvwZ2qBqdE29194Pbgg+7cMeMR96mcUM1qKqkQ==
+X-Received: by 2002:a05:6512:3284:b0:513:c2e3:226e with SMTP id p4-20020a056512328400b00513c2e3226emr1042966lfe.8.1710447441188;
+        Thu, 14 Mar 2024 13:17:21 -0700 (PDT)
 Received: from vamoiridPC ([2a04:ee41:82:7577:3844:3925:f1c1:4bc5])
-        by smtp.gmail.com with ESMTPSA id et4-20020a056402378400b00568a15b063csm832891edb.2.2024.03.14.13.14.33
+        by smtp.gmail.com with ESMTPSA id d10-20020a170907272a00b00a44ef54b6b6sm1008822ejl.58.2024.03.14.13.17.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Mar 2024 13:14:33 -0700 (PDT)
+        Thu, 14 Mar 2024 13:17:20 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Thu, 14 Mar 2024 21:14:31 +0100
+Date: Thu, 14 Mar 2024 21:17:18 +0100
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
 	andriy.shevchenko@linux.intel.com, ang.iglesiasg@gmail.com,
@@ -76,12 +76,12 @@ Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
 	petre.rodan@subdimension.ro, linus.walleij@linaro.org,
 	phil@raspberrypi.com, 579lpy@gmail.com, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 6/6] iio: pressure: Add triggered buffer support for
- BMP280 driver
-Message-ID: <20240314201431.GC1964894@vamoiridPC>
+Subject: Re: [PATCH v2 4/6] iio: pressure: Simplify and make more clear
+ temperature readings
+Message-ID: <20240314201718.GD1964894@vamoiridPC>
 References: <20240313174007.1934983-1-vassilisamir@gmail.com>
- <20240313174007.1934983-7-vassilisamir@gmail.com>
- <20240314152525.51bcdcd6@jic23-huawei>
+ <20240313174007.1934983-5-vassilisamir@gmail.com>
+ <20240314150959.585367b5@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,186 +90,210 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240314152525.51bcdcd6@jic23-huawei>
+In-Reply-To: <20240314150959.585367b5@jic23-huawei>
 
-On Thu, Mar 14, 2024 at 03:25:25PM +0000, Jonathan Cameron wrote:
-> On Wed, 13 Mar 2024 18:40:07 +0100
+On Thu, Mar 14, 2024 at 03:09:59PM +0000, Jonathan Cameron wrote:
+> On Wed, 13 Mar 2024 18:40:05 +0100
 > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 > 
-> > Add a buffer struct that will hold the values of the measurements
-> > and will be pushed to userspace and a buffer_handler function to
-> > read the data and push them.
+> > The read_press/read_humid functions need the updated t_fine value
+> > in order to calculate the current pressure/humidity. Temperature
+> > reads should be removed from the read_press/read_humid functions
+> > and should be placed in the oneshot captures before the pressure
+> > and humidity reads. This makes the code more intuitive.
 > > 
 > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> > ---
-> >  drivers/iio/pressure/Kconfig       |  2 +
-> >  drivers/iio/pressure/bmp280-core.c | 61 ++++++++++++++++++++++++++++++
-> >  drivers/iio/pressure/bmp280.h      |  7 ++++
-> >  3 files changed, 70 insertions(+)
-> > 
-> > diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
-> > index 79adfd059c3a..5145b94b4679 100644
-> > --- a/drivers/iio/pressure/Kconfig
-> > +++ b/drivers/iio/pressure/Kconfig
-> > @@ -31,6 +31,8 @@ config BMP280
-> >  	select REGMAP
-> >  	select BMP280_I2C if (I2C)
-> >  	select BMP280_SPI if (SPI_MASTER)
-> > +	select IIO_BUFFER
-> > +	select IIO_TRIGGERED_BUFFER
-> >  	help
-> >  	  Say yes here to build support for Bosch Sensortec BMP180, BMP280, BMP380
-> >  	  and BMP580 pressure and temperature sensors. Also supports the BME280 with
-> > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> > index f2cf9bef522c..7c889cda396a 100644
-> > --- a/drivers/iio/pressure/bmp280-core.c
-> > +++ b/drivers/iio/pressure/bmp280-core.c
-> > @@ -40,7 +40,10 @@
-> >  #include <linux/regmap.h>
-> >  #include <linux/regulator/consumer.h>
-> >  
-> > +#include <linux/iio/buffer.h>
-> >  #include <linux/iio/iio.h>
-> > +#include <linux/iio/trigger_consumer.h>
-> > +#include <linux/iio/triggered_buffer.h>
-> >  
-> >  #include <asm/unaligned.h>
-> >  
-> > @@ -2188,6 +2191,57 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
-> >  	return 0;
-> >  }
-> >  
-> > +static irqreturn_t bmp280_buffer_handler(int irq, void *p)
-> > +{
-> > +	struct iio_poll_func *pf = p;
-> > +	struct iio_dev *indio_dev = pf->indio_dev;
-> > +	struct bmp280_data *data = iio_priv(indio_dev);
-> > +	int ret, temp;
-> > +
-> > +	/*
-> > +	 * data->buf[3] is used to transfer data from the device. Whenever a
-> > +	 * pressure or a humidity reading takes place, the data written in the
-> > +	 * data->buf[3] overwrites the iio_buf.temperature value. Keep the
-> > +	 * temperature value and apply it after the readings.
 > 
-> See comment below. Given you saw this problem did you not think maybe you
-> were doing something a little unusual / wrong? Should have rung alarm
-> bells beyond just putting a comment here to explain you needed to work around
-> the issue.
+> To me this makes the use of these calls less obvious than they were
+> previously.  The calls are made close to where t_fine is used and
+> don't have to go via the indirection of chip_info.
 > 
-> > +	 */
-> > +	mutex_lock(&data->lock);
-> > +
-> > +	if (test_bit(BMP280_TEMP, indio_dev->active_scan_mask)) {
-> > +		ret = data->chip_info->read_temp(data);
-> > +		if (ret < 0)
-> > +			goto done;
-> > +
-> > +		temp = ret;
-> > +	}
-> > +
-> > +	if (test_bit(BMP280_PRESS, indio_dev->active_scan_mask)) {
-> > +		ret = data->chip_info->read_press(data);
-> > +		if (ret < 0)
-> > +			goto done;
-> > +
-> > +		data->iio_buf.pressure = ret;
-> > +		data->iio_buf.temperature = temp;
-> Try running this with the tooling in tools/iio and you'll see that
-> you are getting the wrong output if you have just humidity and
-> temperature enabled - IIO packs channels, so disable an early
-> one and everything moves down in address.
-> 
-> If you an this device without timestamps and only a single channel
-> the buffer used will have one s32 per scan for example.
-> 
-> > +	}
-> > +
-> > +	if (test_bit(BME280_HUMID, indio_dev->active_scan_mask)) {
-> > +		ret = data->chip_info->read_humid(data);
-> > +		if (ret < 0)
-> > +			goto done;
-> > +
-> > +		data->iio_buf.humidity = ret;
-> > +		data->iio_buf.temperature = temp;
-> > +	}
-> > +
-> > +	iio_push_to_buffers_with_timestamp(indio_dev, &data->iio_buf,
-> > +					   iio_get_time_ns(indio_dev));
-> > +
-> > +done:
-> > +	mutex_unlock(&data->lock);
-> > +	iio_trigger_notify_done(indio_dev->trig);
-> > +
-> > +	return IRQ_HANDLED;
-> > +}
-> > +
-> >  static void bmp280_pm_disable(void *data)
-> >  {
-> >  	struct device *dev = data;
-> > @@ -2329,6 +2383,13 @@ int bmp280_common_probe(struct device *dev,
-> >  			return ret;
-> >  	}
-> >  
-> > +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> > +					      iio_pollfunc_store_time,
-> > +					      &bmp280_buffer_handler, NULL);
-> > +	if (ret)
-> > +		return dev_err_probe(data->dev, ret,
-> > +				     "iio triggered buffer setup failed\n");
-> > +
-> >  	/* Enable runtime PM */
-> >  	pm_runtime_get_noresume(dev);
-> >  	pm_runtime_set_active(dev);
-> > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-> > index c8cb7c417dab..b5369dd496ba 100644
-> > --- a/drivers/iio/pressure/bmp280.h
-> > +++ b/drivers/iio/pressure/bmp280.h
-> > @@ -407,6 +407,13 @@ struct bmp280_data {
-> >  	union {
-> >  		/* Sensor data buffer */
-> >  		u8 buf[3];
-> > +		/* Data buffer to push to userspace */
-> 
-> Why is this in the union?  This union is to ensure cache safe buffers for
-> DMAing directly into.  That's not applicable here.  Even though it may
-> be safe to do this (I was reading backwards so wrote a comment here
-> on you corrupting temperature before seeing the comment above)
-> it is giving a misleading impression of how this struct is used.
-> Pull the struct to after t_fine - It only needs to
-> be 8 byte aligned and the aligned marking you have will ensure that
->  
-> > +		struct {
-> > +			s32 temperature;
-> > +			u32 pressure;
-> > +			u32 humidity;
-> 
-> As above, this is 3 4 byte buffers but they don't have these meanings
-> unless all channels are enabled.
-> 
-> You could set available mask to enforce that, but don't as it makes
-> limited sense for this hardware.  Just make these
-> 			u32 chans[3];
-> and fill them in with an index incremented for each channel that is
-> enabled.
-> 
-> Jonathan
+> So I disagree. I think this change makes the code a lot less
+> clear.
 > 
 
-I wanted to put it inside the union to save some space but you are right
-that it is quite misleading. I was just trying in general, along with the
-previous patches to avoid reading the temperature twice. Along with your
-comments in the previous patch, if a user has enabled both temperature
-and pressure and humidity we could save ourselves from reading the
-temperature 3 times instead of 1. But in any case, your previous proposal
-with a separate get_t_fine structure looks good.
+This was mainly driven by the fact that I wanted to avoid reading
+the temperature 3 times in case temp, press and humid are enabled
+and there are consecutive buffer readings. But thank you for the
+proposal I really appreciate it!
 
 Best regards,
 Vasilis
-> > +			s64 timestamp __aligned(8);
-> > +		} iio_buf;
-> >  		/* Calibration data buffers */
-> >  		__le16 bmp280_cal_buf[BMP280_CONTIGUOUS_CALIB_REGS / 2];
-> >  		__be16 bmp180_cal_buf[BMP180_REG_CALIB_COUNT / 2];
+
+> The only improvement I can readily see would be to move the
+> temperature read into the compensation functions themselves, possibly
+> removing t_fine from data and having a function that reads everything
+> relevant to computing it directly but doesn't do the maths to get
+> a temperature reading.  That can be reused in bmp280_compensate_temp()
+> 
+> Something along lines of.
+> 
+> static s32 bmp280_calc_tfine(struct bmp280_calib *calib, s32 adc_temp) 
+> {
+> 	s32 var1, var2;
+> 
+> 	var1 = (((adc_temp >> 3) - ((s32)calib->T1 << 1)) *
+> 		((s32)calib->T2)) >> 11;
+> 	var2 = (((((adc_temp >> 4) - ((s32)calib->T1)) *
+> 		  ((adc_temp >> 4) - ((s32)calib->T1))) >> 12) *
+> 		((s32)calib->T3)) >> 14;
+> 	return var1 + var2;
+> }
+> 
+> static int bmp280_read_temp_raw(struct bmp280_data *data,
+> 			    	s32 *raw)
+> {
+> 	s32 adc_temp;
+> 	int ret;
+> 
+> 	ret = regmap_bulk_read(data->regmap, BMP280_REG_TEMP_MSB,
+> 			       data->buf, sizeof(data->buf));
+> 	if (ret < 0) {
+> 		dev_err(data->dev, "failed to read temperature\n");
+> 		return ret;
+> 	}
+> 
+> 	adc_temp = FIELD_GET(BMP280_MEAS_TRIM_MASK, get_unaligned_be24(data->buf));
+> 	if (adc_temp == BMP280_TEMP_SKIPPED) {
+> 		/* reading was skipped */
+> 		dev_err(data->dev, "reading temperature skipped\n");
+> 		return -EIO;
+> 	}
+> 	*raw = adc_temp;
+> 
+> 	return 0;
+> }
+> static int bmp280_get_t_fine(.., s32 *t_fine)
+> {
+> 	s32 adc_temp, comp_temp;
+> 	s32 t_fine;
+> 	int ret;
+> 
+> 	ret = bmp280_read_temp_raw(data, &adc_temp;
+> 	if (ret)
+> 		return ret;
+> 
+> 	*t_fine = bmp280_calc_tfine(&data->calib.bmp280, adc_temp);
+> 	return 0;
+> }
+> 
+> static int bmp280_read_temp(struct bmp280_data *data, s32 *temp)
+> {
+> 	int ret;
+> 	s32 t_fine;
+> 
+> 	ret = bmp280_get_t_fine(data, &t_fine);
+> 	if (ret)
+> 		return ret;
+> 
+> 	*temp = (t_fine * 5 + 128) / 256;
+> //division rather than shift as then it's obvious what the 128 is there for
+> 	return 0;
+> }
+> 
+> Now you have a nice function to get you t_fine which is all you want in some
+> of these paths.  Call it directly where it is needed instead of as
+> a side effect of a temperature read.
+> 
+> 
+> 
+> > ---
+> >  drivers/iio/pressure/bmp280-core.c | 38 ++++++++++++++----------------
+> >  1 file changed, 18 insertions(+), 20 deletions(-)
+> > 
+> > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> > index 6d7734f867bc..377e90d9e5a2 100644
+> > --- a/drivers/iio/pressure/bmp280-core.c
+> > +++ b/drivers/iio/pressure/bmp280-core.c
+> > @@ -404,11 +404,6 @@ static u32 bmp280_read_press(struct bmp280_data *data)
+> >  	s32 adc_press;
+> >  	int ret;
+> >  
+> > -	/* Read and compensate temperature so we get a reading of t_fine. */
+> > -	ret = bmp280_read_temp(data);
+> > -	if (ret < 0)
+> > -		return ret;
+> > -
+> >  	ret = regmap_bulk_read(data->regmap, BMP280_REG_PRESS_MSB,
+> >  			       data->buf, sizeof(data->buf));
+> >  	if (ret < 0) {
+> > @@ -433,11 +428,6 @@ static u32 bmp280_read_humid(struct bmp280_data *data)
+> >  	s32 adc_humidity;
+> >  	int ret;
+> >  
+> > -	/* Read and compensate temperature so we get a reading of t_fine. */
+> > -	ret = bmp280_read_temp(data);
+> > -	if (ret < 0)
+> > -		return ret;
+> > -
+> >  	ret = regmap_bulk_read(data->regmap, BMP280_REG_HUMIDITY_MSB,
+> >  			       &data->be16, sizeof(data->be16));
+> >  	if (ret < 0) {
+> > @@ -470,12 +460,21 @@ static int bmp280_read_raw(struct iio_dev *indio_dev,
+> >  	case IIO_CHAN_INFO_PROCESSED:
+> >  		switch (chan->type) {
+> >  		case IIO_HUMIDITYRELATIVE:
+> > +			/* Read temperature to update the t_fine value */
+> > +			data->chip_info->read_temp(data);
+> >  			ret = data->chip_info->read_humid(data);
+> >  			*val = data->chip_info->humid_coeffs[0] * ret;
+> >  			*val2 = data->chip_info->humid_coeffs[1];
+> >  			ret = IIO_VAL_FRACTIONAL;
+> >  			break;
+> >  		case IIO_PRESSURE:
+> > +			/*
+> > +			 * Read temperature to update the t_fine value.
+> > +			 * BMP5xx devices do this in hardware, so skip it.
+> > +			 */
+> > +			if (strcmp(indio_dev->name, "bmp580"))
+> > +				data->chip_info->read_temp(data);
+> > +
+> >  			ret = data->chip_info->read_press(data);
+> >  			*val = data->chip_info->press_coeffs[0] * ret;
+> >  			*val2 = data->chip_info->press_coeffs[1];
+> > @@ -500,10 +499,19 @@ static int bmp280_read_raw(struct iio_dev *indio_dev,
+> >  	case IIO_CHAN_INFO_RAW:
+> >  		switch (chan->type) {
+> >  		case IIO_HUMIDITYRELATIVE:
+> > +			/* Read temperature to update the t_fine value */
+> > +			data->chip_info->read_temp(data);
+> >  			*val = data->chip_info->read_humid(data);
+> >  			ret = IIO_VAL_INT;
+> >  			break;
+> >  		case IIO_PRESSURE:
+> > +			/*
+> > +			 * Read temperature to update the t_fine value.
+> > +			 * BMP5xx devices do this in hardware, so skip it.
+> > +			 */
+> > +			if (strcmp(indio_dev->name, "bmp580"))
+> > +				data->chip_info->read_temp(data);
+> > +
+> >  			*val = data->chip_info->read_press(data);
+> >  			ret = IIO_VAL_INT;
+> >  			break;
+> > @@ -1092,11 +1100,6 @@ static u32 bmp380_read_press(struct bmp280_data *data)
+> >  	s32 adc_press;
+> >  	int ret;
+> >  
+> > -	/* Read and compensate for temperature so we get a reading of t_fine */
+> > -	ret = bmp380_read_temp(data);
+> > -	if (ret)
+> > -		return ret;
+> > -
+> >  	ret = regmap_bulk_read(data->regmap, BMP380_REG_PRESS_XLSB,
+> >  			       data->buf, sizeof(data->buf));
+> >  	if (ret) {
+> > @@ -2009,11 +2012,6 @@ static u32 bmp180_read_press(struct bmp280_data *data)
+> >  	s32 adc_press;
+> >  	int ret;
+> >  
+> > -	/* Read and compensate temperature so we get a reading of t_fine. */
+> > -	ret = bmp180_read_temp(data);
+> > -	if (ret)
+> > -		return ret;
+> > -
+> >  	ret = bmp180_read_adc_press(data, &adc_press);
+> >  	if (ret)
+> >  		return ret;
 > 
 

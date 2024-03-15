@@ -1,135 +1,188 @@
-Return-Path: <linux-iio+bounces-3533-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3534-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD20887C5E1
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 00:23:03 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7F6587C6E1
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 02:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 65C25B215A5
-	for <lists+linux-iio@lfdr.de>; Thu, 14 Mar 2024 23:23:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EFA81F22091
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 01:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8100FC09;
-	Thu, 14 Mar 2024 23:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C30C10F4;
+	Fri, 15 Mar 2024 01:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TGGDFYBv"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="m276eB8d"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2069.outbound.protection.outlook.com [40.107.103.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62EE7483;
-	Thu, 14 Mar 2024 23:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710458575; cv=none; b=oolDQ4cDvWQHpZFnJsNWciU6/pwDaeyLgLozkHak19nVV4d8XbnNPeZctr1Ate+7aKeNMD4WeWyczrgp0IkUgcV6A1TbLLYVCRDeMAmXVbMjnCeWXcp34X60KvBMhD/ChH/Zj7ylaskIbSScr6H2XiDZs8f1c5MGaRvy8v1H1wk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710458575; c=relaxed/simple;
-	bh=ebW77Cq0ykeHSF9zIHkxJMfuD/RbWc017L6+v1WhjMQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QYHCDydZVsPQ+A/dzuO89mpl4J/gn77dwIVBQRguxRf/J1qgWQqHZdEvBgpHv3MrJVG2ZU71aCRjjDuiBHCPrGdt5N4D8XsUUhEt7Fy7dblQgCKNXYD0dO4f9uz4VEssxP0H+e2TF/HSjiLgkYz6FTdd9YOVz+vfU+Z9N6ievo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TGGDFYBv; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-413fead1b46so2571795e9.1;
-        Thu, 14 Mar 2024 16:22:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710458572; x=1711063372; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ebW77Cq0ykeHSF9zIHkxJMfuD/RbWc017L6+v1WhjMQ=;
-        b=TGGDFYBvxg6YlJskrCBmyyrJhGIVrZUfG8CyTwuutKBujgNhK2dh8usdxYG4cASbwV
-         74XuBZwl3Z3Nlp8Iz7xps2xRANAU+tLUeVZP2ABycQWIqN5SsYbiqknsl7zNxmA6e2js
-         ZRGAY4+m+eo8vJGU27QSz1Jtq56EbPJ9h9pXwCV0eVMUfxt2XSZe2Gi0biIwRa9xWFun
-         YenLJbUCATZzNFOiFVGFqNhQAaxDIWRuqi/vGHyf5XfoDkwus87OZT2G86LdtzjGWkow
-         LbtUEVk3pp7D+tKWAFeTWgNTLns17DV26lri4jKybp7Q6p2/vSW0Nc2FLsF/FwPs8IJv
-         FPLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710458572; x=1711063372;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ebW77Cq0ykeHSF9zIHkxJMfuD/RbWc017L6+v1WhjMQ=;
-        b=FehFGCtSCQmXtuE8/DsfoYblwaMlQUR2aarqyIzVF5PhSJfvlLAakxPXhgmu/rrFxv
-         wnJah3F4VAJKWf7HVaa3qE+2N0La8wMUwyMuhFblvu8Gt9zZABKZkMtalWcSscR+LvOl
-         d/GKRKM8X1vwjshYOa+/mU+sjG8eP21L+j3cXOd/RBs4OslvqNDs291PbU2p5d9f+v9M
-         MPVCmVzYm4ah2+S3/n+zKYiuTGPOiERtv/pkeTAbI2mitbq/RQaB9Cg5tIYFLCcuql+v
-         NXfI3kGfkyyNoEa+dp+SKtcKk87C57SrFcqIM/thChcSMhYKDS+UtjAbQJIajD2JzJkF
-         IGSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5yGYXIXsglo9E5Jz/jP5sozARgME+TMnRv9NxMO6MSuhl1ESTe+LtkO4n+2c0a2ivjaThcR6cFFTnoKFok+yG60863m82ie+gQksFD1IRqW51XEDb1BlwJO/zFfICmEzTELDVZqGj
-X-Gm-Message-State: AOJu0YwiCudaEb9yya+vz5xyNQfeG1SxV2El7NHOzR9pTmHPpHrkSYIb
-	YNBGfAUH+PVuTKx6Hr/JALqfrLBhXkApjAv1K/SdilPK7zgzCTFk
-X-Google-Smtp-Source: AGHT+IHP+5rR0w7iVPHwmOrHbWmRoWOvQOKIUQFMX2LfaxWlPCOCYj036Y71am2TSqcuO8uWlpWzfQ==
-X-Received: by 2002:a05:600c:19c9:b0:413:1f65:ec19 with SMTP id u9-20020a05600c19c900b004131f65ec19mr2413383wmq.37.1710458571916;
-        Thu, 14 Mar 2024 16:22:51 -0700 (PDT)
-Received: from [192.168.90.166] (121.red-83-37-9.dynamicip.rima-tde.net. [83.37.9.121])
-        by smtp.gmail.com with ESMTPSA id u8-20020a5d4688000000b0033e3c4e600asm1777808wrq.7.2024.03.14.16.22.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 Mar 2024 16:22:51 -0700 (PDT)
-Message-ID: <46389801aeb20f18affed86d979aff7a62cf36d5.camel@gmail.com>
-Subject: Re: [PATCH v2 4/6] iio: pressure: Simplify and make more clear
- temperature readings
-From: Angel Iglesias <ang.iglesiasg@gmail.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>, Jonathan Cameron
-	 <jic23@kernel.org>
-Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com, 
-	mazziesaccount@gmail.com, ak@it-klinger.de, petre.rodan@subdimension.ro, 
-	linus.walleij@linaro.org, phil@raspberrypi.com, 579lpy@gmail.com, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 15 Mar 2024 00:22:50 +0100
-In-Reply-To: <20240314201718.GD1964894@vamoiridPC>
-References: <20240313174007.1934983-1-vassilisamir@gmail.com>
-	 <20240313174007.1934983-5-vassilisamir@gmail.com>
-	 <20240314150959.585367b5@jic23-huawei>
-	 <20240314201718.GD1964894@vamoiridPC>
-Content-Type: text/plain; charset="UTF-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C741361;
+	Fri, 15 Mar 2024 01:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1710464467; cv=fail; b=jK3JX2753py2HJoPhLyGf5WfCIsAPjQ9LZnWVQvraFyScz3ZdCon1F7u7hYa6D1YKW6DkAwlbAVp6g5sO/rG/zl6Zr74Utsp0pO+u0gznUiMHCj1fN3+aD96RKxnMOPjTY25o6LM4r8LIUtDn2XyoIWAud5UYALpnoxHAjlr+Jw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1710464467; c=relaxed/simple;
+	bh=+4HD/i8bssSYmS4gHBpV7TpanO/JjzVk25SXbOo6Zno=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=a3ZrtFZxQKWQtTm0joQeS0BeWbUF4ztFiHrJowtnbSsW0Y1p3vOI8Xali7o+J3uLX8i2vlFWQnpXspkayiRQcuMpx/lWSKS2KCTwG+6v7azlEcRnf9NOfCGHIV3p4CGCvy5Ep5h0ffcyn54J5awxGbiw3lktruBtytL1TeZQ38M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=m276eB8d; arc=fail smtp.client-ip=40.107.103.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=FAzdDdt/YnL8QfHo9aWMq4J2RlqlHuSw6c2xaKCTfnFXflMogegjvbQ/ihrngJ9NtsUnaGUhoaHPpJHVGHcTDkefc2tPCiub5rH4J/2LYHS/Q6v3qzeXsL/l57N3abTXjkNChMj5iNdqJKmF4aRu+phy9P1feXwKNOQy7gni6hTIqOeKAQFYgKR83SWjXypEvLO3mAJSxQktj3zFxiq7W9a1/XGZ2kr7aNkO/wi5dPS0qOvH/x2gat6nd2saelf9R8yWCIOJfWHZnkEoozpSFaNUgrhZKXhy2mdl7v36fXQgMaTowb3QiUsTQ9y9wvZKiqWPISFOoy3gFTPRfkY+yA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+ZFZqFKUo0ZssTnjR3ckTsUtHGbBYCqa/8hcpHiHjXo=;
+ b=UtQ+WrDH54Z8TckSxnjt8BzA/M07zv0TjBMpyq/01jHfxOzrYU05X2463R6cwhQlffYJq1r0i/Sow/my460foOtelwTZPUrHFlGI1TwsrO8JlCpQFh/m6tAYOUfMHxdgy8Hew69aF0gDDxkavfSxe6TsKzRPhog39zFPeKm3vpyd0dFBOkz0/aze1bjuigsYT/4RgsGBOd9uDqLi3uZIFjHaOkMfBQk1li1mADadx+UGcAXqfdMr3bA7SJG0C7a7NK2NM9rzCRV+e06ZXgX0d4+mNVfliwgK6xYw2kqqbwAeLSVLFparlGF9OldGHiqe8DtR6Z/LHgwV8pGhzJ1m0Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+ZFZqFKUo0ZssTnjR3ckTsUtHGbBYCqa/8hcpHiHjXo=;
+ b=m276eB8dxiW9k2dkxbvai1dPzjt1H+mp3bVgHZxgosBQRlv54O/hx/B59jMuhNPNTsgbIAeRbTwtVggRihATat8yNk3AFwUoGJSzqvjeJfkS7T0HuPafbtrT7MGIAbMAqXtxqiCgLKPt6Kcs3e575ANMpFdbKrYhiRTHCqgyBrg=
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by AS8PR04MB7864.eurprd04.prod.outlook.com (2603:10a6:20b:2a4::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7386.21; Fri, 15 Mar
+ 2024 01:01:00 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7386.017; Fri, 15 Mar 2024
+ 01:01:00 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, Bough Chen <haibo.chen@nxp.com>,
+	"jic23@kernel.org" <jic23@kernel.org>, "lars@metafoo.de" <lars@metafoo.de>,
+	"robh@kernel.org" <robh@kernel.org>, "krzysztof.kozlowski+dt@linaro.org"
+	<krzysztof.kozlowski+dt@linaro.org>, "conor+dt@kernel.org"
+	<conor+dt@kernel.org>, "shawnguo@kernel.org" <shawnguo@kernel.org>,
+	"s.hauer@pengutronix.de" <s.hauer@pengutronix.de>, "kernel@pengutronix.de"
+	<kernel@pengutronix.de>
+CC: "festevam@gmail.com" <festevam@gmail.com>, dl-linux-imx
+	<linux-imx@nxp.com>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 2/2] arm64: dts: imx93: drop the 4th interrupt for ADC
+Thread-Topic: [PATCH 2/2] arm64: dts: imx93: drop the 4th interrupt for ADC
+Thread-Index: AQHaaLPCjH2/a6vnk0q9QpbqOHDEk7E4Fr3Q
+Date: Fri, 15 Mar 2024 01:01:00 +0000
+Message-ID:
+ <DU0PR04MB941754A55F21B32418DDC2EC88282@DU0PR04MB9417.eurprd04.prod.outlook.com>
+References: <20240226130826.3824251-1-peng.fan@oss.nxp.com>
+ <20240226130826.3824251-2-peng.fan@oss.nxp.com>
+In-Reply-To: <20240226130826.3824251-2-peng.fan@oss.nxp.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|AS8PR04MB7864:EE_
+x-ms-office365-filtering-correlation-id: 6dd47cf8-7402-45a6-dc05-08dc448b6133
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ 0UPV0HUge7na+b4jWEXX2qcy9Ho1xEAN6kdjOUGfvwjmGlmRFsAgmmzCXpWvIg/xTrtPDl2Dr2ScyPLgnW+Aa5wv1Vt84wOqExAvUZhURyylD6l+EG30/CLUuXkhjL1Cw/yEbfZ6LlTV4uSHl/UvjkgMUjaxyWSSiKHXLz7r6z1GszBH4UOqyu6P8T3FXVDO9L7vAOpwNXIV88zS0FBMDnTATumR8TPKvSdTFgMWQM7zvxRK7rXUAe5VkaS6vut4oTplTfpMfQEglGZDhiRt3qjlopFekA6d2ZIGV/YAxnQEsUewem/tP0HEFcbgTICaXehzVD5+F8xYPptS4yRojjknJv50XhUIAZp0A6THWce6ZX8MMNPgjnfq/D8X4tLZtv3/JD3i3pMBP8QQhvt1ZW+UK4LjcBB68LxLerTnKykvsfCZYC5RVHwH5FBpjiD2pmiSo5j4NSO2dFhAjohG2koFrjq0FMWpudW/Fz+J9ksXKCfCSO78gC/tcOf8NYEcjDcZq1pfKm1aSVpxRYNj2bt3oZ4PpgEZ3yHvOc/FS1QGvfsU+bpyglmWGXzHYuaW2FjUlUn9Wb4ESwS1rjBE0Jk+EDvP1Ap64k+XipyLkq21WMakgZqG+DMthqcNIlxP/KEvRZIfJS7wgYk0ysY/00obiEhWxhQ28Gxw55QexjR1xRAqS5LKNPtH0mSeJy/HmPd+YSVxJ+82MgiNCoK6/A1FS/c2K4VyE/SiA1H33ow=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015)(7416005)(921011)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?U6rsHcNEpVKoSPklZ3l51QWBZSV5Nqpkzuy5Vx8XJLtaqu8Riv3zpiUpeUt2?=
+ =?us-ascii?Q?qSG7+2CZQqlA8hVdF2xUv6QJEdCcCL9zs/oeuVRZR4OkHuoO6bkagKAodql4?=
+ =?us-ascii?Q?iX9O0XQuZSKuiv7VegkgDdc81vOXGNLEOHPV2F2XCghUAFz4DNJKUJ9HHEIv?=
+ =?us-ascii?Q?zvPJ9Z/90/5KxXvFRlidZq/oIrbrGWGtlIkKQuz6fmPVUb5Xq3xlj6u1aOXn?=
+ =?us-ascii?Q?8PXs36NJ3O18J1lIlzsL8hms8ZLPpgdq7kVgTAMVWSNDc3T34AzFjwpH27q6?=
+ =?us-ascii?Q?CKCelFn57dT9nKOqNE1fyhScJk54FyK4EcI2dPLt/kaEuGUoC/t+CgkCSlh3?=
+ =?us-ascii?Q?gUz1MOxO97IvFXWxknj+nCWuzNeGoKTM6POLe8g5S+cvNck1PJP9BFAombHh?=
+ =?us-ascii?Q?pFan3xS8UcEF0tQKzFMUtjIMfydPqCe5LadoiLzr7Z/ZF0cs+s8vE9bkrtKz?=
+ =?us-ascii?Q?79gH101GnC/7zTgfAsD0aL9F0sZg6SLsH+5CRYYsVYldwtPGvk6rwiEQXFyD?=
+ =?us-ascii?Q?RjxcM6LvCNNJEA+XVAH31jWSDr6areDllzq8Yds6u1tAy+9cz6qs9IQn6Ln4?=
+ =?us-ascii?Q?mObGRnX86lvuDyAANDh3pn4IibrK5MmziUWLdbayXmb+ROvR+CeZ+zs81ksg?=
+ =?us-ascii?Q?4R4HqGGiDWvf5FIfIJmnW2ShBqKfYDTRHFkBbVkK+/UMJ6BvXY/grrXESRa7?=
+ =?us-ascii?Q?Zxcl5z57iAiNnWv12TEKxIyEI9oTPwVuHyOACvx4Rk6wzkbOgBZP1useeCQv?=
+ =?us-ascii?Q?zQoWF3VssJVikH5R86o+rHJlrQvY71QJlmeyc+c8H1GwsxQ9R5TJeY2nia01?=
+ =?us-ascii?Q?sL8+QHtTRID4ZU3IdJufPSHB3eeZMP8RHAhByjGxvauWj711yQiUEStddLI4?=
+ =?us-ascii?Q?e7ONiTDimavggfAanveQDmx4U72FAhUBfxCcnutZCHi5HkEoBxZqHBKjRQO3?=
+ =?us-ascii?Q?gprAHggGhcvP+MYogObiINjLphUvtpiHOUSFeD3nw1oZzsf8VdC22XnBZh5s?=
+ =?us-ascii?Q?QRytz115uF0VuxGcI3g68ua2XwM/rHY2fIP+QMYsdAao6EjBu2N4Im6Ioe8w?=
+ =?us-ascii?Q?IbbuApUtm/uxgnjquZXeubkVDoY6pjl9lYQq3LATtnnyf+aetUtrE0mNg6Lw?=
+ =?us-ascii?Q?iHPXMOufdvdEUj486EWNDslIl+GaxjkV6/vegIjPIg8HznrIEFB9n95+Ap0Y?=
+ =?us-ascii?Q?vHtxiRwWrSgbmCLYCj6fzRezyR53csz0p7MO9iM0rdnLf2ste4N1F5Wj+uLo?=
+ =?us-ascii?Q?SsepSjbXwn6CjKXFrKebz0YUgo/lzka77XSOQvFHOMm0N1t50lJzHgRIDuEW?=
+ =?us-ascii?Q?wkdYlhV0OZxUj/6q4Am3LDXbA77+R7NtjezTgonWxxgJc3vEIN9NR0uQ6Z8i?=
+ =?us-ascii?Q?suufeh0/m8ImkqRj/byGJHokQsTgUSAnhpZVIoFdGB8kXW4RQp3Gqbsf8mta?=
+ =?us-ascii?Q?do9zoS6Kn0F2/Pv00NHOuyh5ASEETfOV5d1nc7UM21qNzJ8jZC92ucrRTEMc?=
+ =?us-ascii?Q?GX3LSA1nmS2nDycqKPzyO2dqxOFnHhiTdx+ONu7HWIPEaeYxtObdpHSnTm/9?=
+ =?us-ascii?Q?181zZtvx7l5WGVo+yeU=3D?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (by Flathub.org) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6dd47cf8-7402-45a6-dc05-08dc448b6133
+X-MS-Exchange-CrossTenant-originalarrivaltime: 15 Mar 2024 01:01:00.1323
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: p+IZJPhuJzvPOjCJtphRhwUkbwjhHXEAqaFNhIjS4Zf9Cl2M5kT9OX7PGoevDeqrJFovydBCVkXAPF7XIazxmw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR04MB7864
 
-On Thu, 2024-03-14 at 21:17 +0100, Vasileios Amoiridis wrote:
-> On Thu, Mar 14, 2024 at 03:09:59PM +0000, Jonathan Cameron wrote:
-> > On Wed, 13 Mar 2024 18:40:05 +0100
-> > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> >=20
-> > > The read_press/read_humid functions need the updated t_fine value
-> > > in order to calculate the current pressure/humidity. Temperature
-> > > reads should be removed from the read_press/read_humid functions
-> > > and should be placed in the oneshot captures before the pressure
-> > > and humidity reads. This makes the code more intuitive.
-> > >=20
-> > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> >=20
-> > To me this makes the use of these calls less obvious than they were
-> > previously.=C2=A0 The calls are made close to where t_fine is used and
-> > don't have to go via the indirection of chip_info.
-> >=20
-> > So I disagree. I think this change makes the code a lot less
-> > clear.
-> >=20
+Hi Shawn,
+
+> Subject: [PATCH 2/2] arm64: dts: imx93: drop the 4th interrupt for ADC
+
+The Patch 1/2 has been accepted. Would you please check this dts part?
+
+Thanks,
+Peng.
+
 >=20
-> This was mainly driven by the fact that I wanted to avoid reading
-> the temperature 3 times in case temp, press and humid are enabled
-> and there are consecutive buffer readings. But thank you for the
-> proposal I really appreciate it!
+> From: Peng Fan <peng.fan@nxp.com>
 >=20
+> Per i.MX93 Reference Mannual Rev.4, 12/2023, there is no interrupt 268,
+> drop it.
+>=20
+> Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  arch/arm64/boot/dts/freescale/imx93.dtsi | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+>=20
+> diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi
+> b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> index 601c94e1fac8..b8ef9b938856 100644
+> --- a/arch/arm64/boot/dts/freescale/imx93.dtsi
+> +++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
+> @@ -509,8 +509,7 @@ adc1: adc@44530000 {
+>  				reg =3D <0x44530000 0x10000>;
+>  				interrupts =3D <GIC_SPI 217
+> IRQ_TYPE_LEVEL_HIGH>,
+>  					     <GIC_SPI 218
+> IRQ_TYPE_LEVEL_HIGH>,
+> -					     <GIC_SPI 219
+> IRQ_TYPE_LEVEL_HIGH>,
+> -					     <GIC_SPI 268
+> IRQ_TYPE_LEVEL_HIGH>;
+> +					     <GIC_SPI 219
+> IRQ_TYPE_LEVEL_HIGH>;
+>  				clocks =3D <&clk IMX93_CLK_ADC1_GATE>;
+>  				clock-names =3D "ipg";
+>  				#io-channel-cells =3D <1>;
+> --
+> 2.37.1
 
-Hi, just a side note reflecting on this. Depending on your sampling frequen=
-cy
-and registers data shadowing, to avoid compensating with different samples
-between readings, we should be doing burst readings to get a bundle of the
-temperature+pressure and/or humidity.
-On the bmp/bme280 and bmp380 this can be done as registers are contiguous o=
-n the
-memory. On the bmp580 this is not a problem as the values are already
-compensated, you`ll get always the latest reading.
-
-Kind regard,
-Angel
 

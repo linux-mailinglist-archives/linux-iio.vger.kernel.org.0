@@ -1,208 +1,149 @@
-Return-Path: <linux-iio+bounces-3541-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3542-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 868C887C97E
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 08:55:23 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83D4587CA5C
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 10:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 174581C21EA2
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 07:55:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87B75B21403
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 09:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B5B14280;
-	Fri, 15 Mar 2024 07:55:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B3A175A6;
+	Fri, 15 Mar 2024 09:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aTss0qVp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A16aS3m7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57D114A83
-	for <linux-iio@vger.kernel.org>; Fri, 15 Mar 2024 07:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1379B1755A;
+	Fri, 15 Mar 2024 09:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710489311; cv=none; b=EUkftBNN7dVIg8OJXCnPX4NajbJ1ju1HnLoS81HL0B7NmMABCTqj4ELvL1J6amdwsdqPdlZX947svl7ahJphZfJd2kgg1WgaUAWO+t/IjJ5jT8Qas7CMP55YlSLY2hmETKQGr0i5H97VfnYAkXjnScE3vmxHgIEFZtawiJizEIU=
+	t=1710493532; cv=none; b=u6M5uZTBGDwqoQQu9eAL5mckdL7dhvNSMdEueRzUoDpNVXVbvSh6ypNvj/uxuJ4bBjGG97mfmLv3qNCWbuNEYPeYzGdclbQ6Ih2e4fDE0J4YixljSty/gJMrg9oe53zLxT5Me5O7hjsoVNm8feEM8OFPCIK96iR9doWmyQYiq1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710489311; c=relaxed/simple;
-	bh=yTf51qCFTPfpTwpYfMOqa6zUeAbeKAudBMqnLPMByQg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=LOxP9VIgBJvDzgkQsH6WSD1xEEA2hfKw3lnzdZqLWNQBRZvOCfs0GrYTLYw0bKNjBEXIuMENldY+hf72y+2fHOQIsCFzFp+7dltrV50ApWa7d3VIC1WcttYYdLseCyqAKwnA/lDYDz4qNcOKXUHWTMIKzf+DlrJcF9r3Sa2LY7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aTss0qVp; arc=none smtp.client-ip=209.85.167.46
+	s=arc-20240116; t=1710493532; c=relaxed/simple;
+	bh=9Wr/WHl5jjd+r6BC9zDAQHL3m+G4K5aBLL3K0PtAJ/o=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vf8eKw7xUu1kSeg0sOCoNN8AMfwfnqV5FvCyAmW8M+WIhPkNoNJvQGBe7Vw3yrzci21inOhuQPT3tAWEYB25qqnHrSEsYFFBZ34pisJ5Eh6lkmRUWHsomq6YuQXj+RqI+ISPafiI5+2oulXzT+8q3OUmrizPTUrqR48qh1JIxSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A16aS3m7; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-513b022a238so2255127e87.0
-        for <linux-iio@vger.kernel.org>; Fri, 15 Mar 2024 00:55:09 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a45f257b81fso230892466b.0;
+        Fri, 15 Mar 2024 02:05:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710489308; x=1711094108; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Kx9unUjy8lM0QqEt0Znz/PPI/iFP/JIz1rJxeciiZ1Q=;
-        b=aTss0qVp4kq5hltn6nigfSyUENdgA/jnXDKZWwTyeb6SdKoBtjhZI2OQdnOX92Jy4f
-         xV5oX2BB+1zzuiYhrGQocm4RexGiOTT55UgVFo6VuxRAx1yNq4aYSBbvfr8qU3wsGJqx
-         tpbsrJVrme1q5uOAOKU/bIzFiiZPinuLVwg5ZcD5BHH4FHgeIB+qBe2aaZI7mA9yEZJl
-         QJFqUIKD32NQkZps974LXCZ2s5WD4cHvqqWl3oxmSCfVSIZls/0EP9Elie9mNZmf/Nxq
-         p7n085jkg6qkgfLBxedFgKAnRDMbe6JaWLBgB8GYfJ7ISg/ybah8EX/iLyZyFYa86Pa4
-         PCNA==
+        d=gmail.com; s=20230601; t=1710493529; x=1711098329; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=TxeRvHu/Cn5xVdouc/KQm2ZkL4m6+rAgdA+KuVZtW9A=;
+        b=A16aS3m77cz0owKtcZeMkgX9IgM7lQ7hzebQO2HHFTUr+OHCnupJkPPh2/XOsafodO
+         lWtaxPbgL1cOnXgNCHIDTf6ShRmhwp+PO3pUGhFByIBNn7c3hOmHwQGGAsHBrPz/vzqF
+         +w7fE+UPDGk3CY9aPtVuMgyhRibynP54Rg5blntNsv8DCwmmJFUhU6q3FL8CXiFnkbHE
+         6gbTa2wDP/HU1+WF8XamGLR0+1MZcgJUlAHDPWYwDnyjIcIpHQi58Zn7yIu6gjYgi1kQ
+         61ONPfdzrJ4a7wV9KisVEDHNkuFgCT7op4VTnxqqEckzPgtvI1f1+CqyhQz+IGUT1GTj
+         apjA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710489308; x=1711094108;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1710493529; x=1711098329;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:date:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kx9unUjy8lM0QqEt0Znz/PPI/iFP/JIz1rJxeciiZ1Q=;
-        b=CPjuHYd3gDgQamtdPgLfDYtrOFUQWQBJxGu1hFfcOGfZc4hMljz6zS4NQ4QPOkYWjj
-         /YwVlCW+Ncqmttne/kTjpV9PsihLMaYNK1C3Hn5FGsvJbxI3GIa39EhhB83IqMfKJSui
-         oVx4ca4oHTFvYQ/7JAcDAASk9fKkBT7Avq01nw4hDherDHdcPTpNVFT8hZf7CHQ6cGzz
-         paeJkf0pOmEFq6gBqevZ11sBgnnN9fLUmcBQhpDo17oZ7YroHnMOxMoG5WE6anigvz37
-         IO20UYm/kG+e8lvd6yZN2niVrzvunhF6scbj5GATZeai7xJDjxNikkH1Gh4/gbhBQbsG
-         Gqmg==
-X-Forwarded-Encrypted: i=1; AJvYcCWJPvoRubgbv1fJb8XTgjTOGy0k3Kc8jTRSOVprvzB1DjcBivp91kHlA+dOHxc5t4cDgJS3L0a06jo8l6VGsnCOPu7Af/lwECv+
-X-Gm-Message-State: AOJu0Ywupt19tOls2EOgVa8qyzaiGxJpY7HHSqFGOJBJMkYo91isKgLr
-	uULc/LHX40/QFiXhp4GBVmDqTSG1M0Y4QOCSEbP4Q59s6vsT16Vh
-X-Google-Smtp-Source: AGHT+IE07UevTv53UY+wnGP1zbPj5osfgFaGcp5dgKjjowa7c6Q8/Q2SrWMdhBc1aSsMFy3oBjBS6g==
-X-Received: by 2002:a05:6512:521:b0:513:9e13:6403 with SMTP id o1-20020a056512052100b005139e136403mr3065830lfc.21.1710489307623;
-        Fri, 15 Mar 2024 00:55:07 -0700 (PDT)
-Received: from [172.16.183.82] ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 6-20020ac25f06000000b00513a84035a6sm561967lfq.237.2024.03.15.00.55.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 Mar 2024 00:55:07 -0700 (PDT)
-Message-ID: <a59061f8-5caa-43d4-bd4f-5ac4c39515ba@gmail.com>
-Date: Fri, 15 Mar 2024 09:55:06 +0200
+        bh=TxeRvHu/Cn5xVdouc/KQm2ZkL4m6+rAgdA+KuVZtW9A=;
+        b=VrujilUKcRd1N3Zw3rsDG7ZhDN7XgYjG/kIYaQISvG6lTReQpmoEjyT8L/Vfks/ACr
+         +cvwL4UafM/sk1OBVJvjbm2oLmcKNZWlZTtOVyaoogxFGxAAL09g8nDGCHluM56emdp6
+         aZv1weF4I4465Is1paETWZSTiAlcKd+JIYhqp5J8QmvCBLvV+lyD3onhmniNZpBKXhzi
+         vZ+nKQP+0yyeXpxi4/vQAAv6WPgw5sZ/ZIuyVWmHoh+x65jdWbD5vAM1GSL7swNb2+zZ
+         RTUxJKGPzBy655yqTTN2BY/E9bc+OPy1nQMe1fixFv1gM6qNbXl1bnOwAUFFWFOVBk1p
+         0asg==
+X-Forwarded-Encrypted: i=1; AJvYcCUEgKDJfs8yC/dOVP3uyQxDuSPv2W5/sAx3kMTofU7kgDl6tsZPJ9tjJxNcDyrVnArqlFRLR6UxbVQjjNtnAiW9v/JKevkkBK3C/ONvH3l91j1NkQmSTeLQLliMRtIncjqtkTwOfDGQ
+X-Gm-Message-State: AOJu0Yw98Mgo7yd9xBkBYVC8ypmPr+xI0GnnDK6H90bZL+a2Si+CvTP8
+	4FJk49SrYQZMWCMd1fpg1Nqf137K9fEgAEJVWIreemBIjsZS76Ye
+X-Google-Smtp-Source: AGHT+IGB2COdTYW4uDyufoSziJPEzTPjjGdlCx1qqcqrkvp10SASXDI5BR5O4vj6BoDuUeBr6psKQg==
+X-Received: by 2002:a17:906:8406:b0:a46:7384:3233 with SMTP id n6-20020a170906840600b00a4673843233mr2416679ejx.57.1710493529117;
+        Fri, 15 Mar 2024 02:05:29 -0700 (PDT)
+Received: from vamoirid-EDL-PC ([2001:1458:202:121::101:4e8c])
+        by smtp.gmail.com with ESMTPSA id jz8-20020a17090775e800b00a461d2a3374sm1495608ejc.47.2024.03.15.02.05.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Mar 2024 02:05:28 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoirid-edl-pc>
+Date: Fri, 15 Mar 2024 10:05:26 +0100
+To: Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de,
+	andriy.shevchenko@linux.intel.com, mazziesaccount@gmail.com,
+	ak@it-klinger.de, petre.rodan@subdimension.ro,
+	linus.walleij@linaro.org, phil@raspberrypi.com, 579lpy@gmail.com,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/6] iio: pressure: Simplify and make more clear
+ temperature readings
+Message-ID: <ZfQPVlqv7A3zxExl@vamoirid-EDL-PC>
+References: <20240313174007.1934983-1-vassilisamir@gmail.com>
+ <20240313174007.1934983-5-vassilisamir@gmail.com>
+ <20240314150959.585367b5@jic23-huawei>
+ <20240314201718.GD1964894@vamoiridPC>
+ <46389801aeb20f18affed86d979aff7a62cf36d5.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: Fix the sorting functionality in
- iio_gts_build_avail_time_table
-Content-Language: en-US, en-GB
-To: Chenyuan Yang <chenyuan0y@gmail.com>, jic23@kernel.org, lars@metafoo.de,
- linux-iio@vger.kernel.org
-References: <ZfHM73ZqgnCp6CZv@cy-server>
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <ZfHM73ZqgnCp6CZv@cy-server>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <46389801aeb20f18affed86d979aff7a62cf36d5.camel@gmail.com>
 
-Hi Chenyuan,
-
-Thank you very much for taking the time and effort to fix my bugs! :)
-
-On 3/13/24 17:57, Chenyuan Yang wrote:
-> The sorting in iio_gts_build_avail_time_table is not working as intended.
-> It could result in an out-of-bounds access when the time is zero.
+On Fri, Mar 15, 2024 at 12:22:50AM +0100, Angel Iglesias wrote:
+> On Thu, 2024-03-14 at 21:17 +0100, Vasileios Amoiridis wrote:
+> > On Thu, Mar 14, 2024 at 03:09:59PM +0000, Jonathan Cameron wrote:
+> > > On Wed, 13 Mar 2024 18:40:05 +0100
+> > > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> > > 
+> > > > The read_press/read_humid functions need the updated t_fine value
+> > > > in order to calculate the current pressure/humidity. Temperature
+> > > > reads should be removed from the read_press/read_humid functions
+> > > > and should be placed in the oneshot captures before the pressure
+> > > > and humidity reads. This makes the code more intuitive.
+> > > > 
+> > > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> > > 
+> > > To me this makes the use of these calls less obvious than they were
+> > > previously.  The calls are made close to where t_fine is used and
+> > > don't have to go via the indirection of chip_info.
+> > > 
+> > > So I disagree. I think this change makes the code a lot less
+> > > clear.
+> > > 
+> > 
+> > This was mainly driven by the fact that I wanted to avoid reading
+> > the temperature 3 times in case temp, press and humid are enabled
+> > and there are consecutive buffer readings. But thank you for the
+> > proposal I really appreciate it!
+> > 
 > 
-> Here are more details:
+> Hi, just a side note reflecting on this. Depending on your sampling frequency
+> and registers data shadowing, to avoid compensating with different samples
+> between readings, we should be doing burst readings to get a bundle of the
+> temperature+pressure and/or humidity.
+> On the bmp/bme280 and bmp380 this can be done as registers are contiguous on the
+> memory. On the bmp580 this is not a problem as the values are already
+> compensated, you`ll get always the latest reading.
 > 
-> 1. When the gts->itime_table[i].time_us is zero, e.g., the time
-> sequence is `3, 0, 1`, the inner for-loop will not terminate and do
-> out-of-bound writes. This is because once `times[j] > new`, the value
-> `new` will be added in the current position and the `times[j]` will be
-> moved to `j+1` position, which makes the if-condition always hold.
-> Meanwhile, idx will be added one, making the loop keep running without
-> termination and out-of-bound write.
-> 2. If none of the gts->itime_table[i].time_us is zero, the elements
-> will just be copied without being sorted as described in the comment
-> "Sort times from all tables to one and remove duplicates".
-> 
-> For more details, please refer to https://lore.kernel.org/all/6dd0d822-046c-4dd2-9532-79d7ab96ec05@gmail.com.
-> 
-> Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
-> Suggested-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Kind regard,
+> Angel
 
-I think the suggested-by tag is a bit of an overkill :) I don't feel 
-like taking the credit - you spotted the problem and fixed it!
+Hi Angel,
 
-> Fixes: 38416c28e16890b52fdd5eb73479299ec3f062f3 ("iio: light: Add gain-time-scale helpers")
-> Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-> ---
-> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
-> index 7653261d2dc2..61714a8d5717 100644
-> --- a/drivers/iio/industrialio-gts-helper.c
-> +++ b/drivers/iio/industrialio-gts-helper.c
-> @@ -375,7 +375,7 @@ static int iio_gts_build_avail_time_table(struct iio_gts *gts)
->   	for (i = gts->num_itime - 1; i >= 0; i--) {
->   		int new = gts->itime_table[i].time_us;
->   
-> -		if (times[idx] < new) {
-> +		if (idx == 0 || times[idx - 1] < new) {
+Thank you for pointing this out! Indeed that's true but I noticed that this is not
+the case for the BMP{085/180} devices. I just feel that some changes might make
+data acquisition/processing faster for a device (like the one you proposed) but
+it might make the code much more unreadable and unmaintanable. I will try and
+see if something could be done in that sense but I feel that keeping it simple will
+be good for everyone!
 
-This part should work just fine - thanks.
-
->   			times[idx++] = new;
->   			continue;
->   		}
-> @@ -385,9 +385,10 @@ static int iio_gts_build_avail_time_table(struct iio_gts *gts)
->   				memmove(&times[j + 1], &times[j],
->   					(idx - j) * sizeof(int));
->   				times[j] = new;
-> -				idx++;
-> +				break;
->   			}
->   		}
-> +		idx++;
->   	}
-
-Here you successfully fix the sorting but the duplicates aren't removed. 
-I'd like to have the removal of duplicates as occasionally we see 
-hardware where multiple register values mean same setting. In such a 
-case we probably want to have multiple entries with same integration 
-time in the time array - so the driver can convert all register values 
-to correct times. We, however, don't want to list same values for 
-available times via sysfs. Hence I think removing the duplicates makes 
-sense.
-
-I think the logic we try to achieve is something like:
-
-         /* Sort times from all tables to one and remove duplicates */ 
-
-         for (i = gts->num_itime - 1; i >= 0; i--) {
-                 int new = gts->itime_table[i].time_us;
-
-                 if (idx == 0 || times[idx - 1] < new) {
-                         times[idx++] = new;
-                         continue;
-                 }
-
-                 for (j = 0; j <= idx; j++) {
-                         if (times[j] == new) {
-                                 idx--;
-                                 break;
-                         }
-                         if (times[j] > new) {
-                                 memmove(&times[j + 1], &times[j],
-                                         (idx - j) * sizeof(int));
-                                 times[j] = new;
-                                 break;
-                         }
-                 }
-                 idx++;
-         }
-
-but the flow can probably be further improved to avoid doing idx--; 
-followed by idx++; for a duplicate.
-
-Do you think you could fix the removal of the duplicates too?
-
-In any case, this patch is far better than the existing code, and I did 
-run some tests on it too, but I would be happy if the duplicates were 
-handled as well :)
-
->   
->   	/* create a list of times formatted as list of IIO_VAL_INT_PLUS_MICRO */
-> 
-
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+Cheers,
+Vasilis
 

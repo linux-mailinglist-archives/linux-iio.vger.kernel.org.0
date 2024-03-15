@@ -1,149 +1,113 @@
-Return-Path: <linux-iio+bounces-3542-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3543-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D4587CA5C
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 10:05:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D8F87CA76
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 10:14:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87B75B21403
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 09:05:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 016BD1C216E9
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 09:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B3A175A6;
-	Fri, 15 Mar 2024 09:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D813C17736;
+	Fri, 15 Mar 2024 09:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A16aS3m7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VBdseELT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1379B1755A;
-	Fri, 15 Mar 2024 09:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 030FA13AC5;
+	Fri, 15 Mar 2024 09:14:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710493532; cv=none; b=u6M5uZTBGDwqoQQu9eAL5mckdL7dhvNSMdEueRzUoDpNVXVbvSh6ypNvj/uxuJ4bBjGG97mfmLv3qNCWbuNEYPeYzGdclbQ6Ih2e4fDE0J4YixljSty/gJMrg9oe53zLxT5Me5O7hjsoVNm8feEM8OFPCIK96iR9doWmyQYiq1I=
+	t=1710494081; cv=none; b=fnrfVtHqvjCb4UcNVKQsAWEvYF0lg3Zi63wOFFRXGQeqMNMhtQmN0TspylGdAjdlZv2BRC5RnFefJzOBYXvzoRyP1BmJiCMhbbIJdGuueVbOsDtTvy08VkakMFzOVydnWH6pMSP1DDr5GiURWNgZABFwoabeY6oUeqZy3NCsUDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710493532; c=relaxed/simple;
-	bh=9Wr/WHl5jjd+r6BC9zDAQHL3m+G4K5aBLL3K0PtAJ/o=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vf8eKw7xUu1kSeg0sOCoNN8AMfwfnqV5FvCyAmW8M+WIhPkNoNJvQGBe7Vw3yrzci21inOhuQPT3tAWEYB25qqnHrSEsYFFBZ34pisJ5Eh6lkmRUWHsomq6YuQXj+RqI+ISPafiI5+2oulXzT+8q3OUmrizPTUrqR48qh1JIxSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A16aS3m7; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1710494081; c=relaxed/simple;
+	bh=UsJgKbEx0AKH4pAVybDI3SH53hz+4clcfF4q3S14ZMA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=jf2iRK6Km3v7ZExLENU3kQSuu4DC+P1wpjBhJMLVn8bon4it4YAZ1d5ezljXdyEEvcFj+V5M+mNQZLiR91u10cyqkcPsZZorNaTwECvMcD2ZcAmXlvoehDR8G2fonHBWFEUfZuPEU+bGQL4TA6Lco03HxKylouVhiS4MjekXpTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VBdseELT; arc=none smtp.client-ip=209.85.208.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a45f257b81fso230892466b.0;
-        Fri, 15 Mar 2024 02:05:30 -0700 (PDT)
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2d21cdbc85bso24027501fa.2;
+        Fri, 15 Mar 2024 02:14:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710493529; x=1711098329; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=TxeRvHu/Cn5xVdouc/KQm2ZkL4m6+rAgdA+KuVZtW9A=;
-        b=A16aS3m77cz0owKtcZeMkgX9IgM7lQ7hzebQO2HHFTUr+OHCnupJkPPh2/XOsafodO
-         lWtaxPbgL1cOnXgNCHIDTf6ShRmhwp+PO3pUGhFByIBNn7c3hOmHwQGGAsHBrPz/vzqF
-         +w7fE+UPDGk3CY9aPtVuMgyhRibynP54Rg5blntNsv8DCwmmJFUhU6q3FL8CXiFnkbHE
-         6gbTa2wDP/HU1+WF8XamGLR0+1MZcgJUlAHDPWYwDnyjIcIpHQi58Zn7yIu6gjYgi1kQ
-         61ONPfdzrJ4a7wV9KisVEDHNkuFgCT7op4VTnxqqEckzPgtvI1f1+CqyhQz+IGUT1GTj
-         apjA==
+        d=gmail.com; s=20230601; t=1710494078; x=1711098878; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kdhg2x3t8Nf/uv6nbcx14LUHcWP8lBLkCrAgVBOR3+8=;
+        b=VBdseELTJq+R0fUmhkj8cs6NfGuFz93eDsRx6H4vqdYT96yHoRSLetBTnPTyn0pPwB
+         avlo5UUbkWnN2zPRYINsdzlz2nck/1iqkyisyCtxu5GB+7sA7niCEf5/vdEAscpujti6
+         f3A/1fkjH9ZnqKQZz3IySaSHQ63D2Vr7bUt+opHYsB8AyHyw9RHYIOjsiXs4QqrBXvdN
+         r5yX8uHBcW4GB07fXDyb6+k+KP4r5B5kYu9z0AfGaVOOqqbhEZ1MUQLJJd8ULjkXWM+B
+         3CWKAzZhFqtwyhOflmJGl3jj915KfaFjVlL1bsB6rcY69VcHh9bWoYTYLDUh7+SMJCFY
+         a41A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710493529; x=1711098329;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:date:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TxeRvHu/Cn5xVdouc/KQm2ZkL4m6+rAgdA+KuVZtW9A=;
-        b=VrujilUKcRd1N3Zw3rsDG7ZhDN7XgYjG/kIYaQISvG6lTReQpmoEjyT8L/Vfks/ACr
-         +cvwL4UafM/sk1OBVJvjbm2oLmcKNZWlZTtOVyaoogxFGxAAL09g8nDGCHluM56emdp6
-         aZv1weF4I4465Is1paETWZSTiAlcKd+JIYhqp5J8QmvCBLvV+lyD3onhmniNZpBKXhzi
-         vZ+nKQP+0yyeXpxi4/vQAAv6WPgw5sZ/ZIuyVWmHoh+x65jdWbD5vAM1GSL7swNb2+zZ
-         RTUxJKGPzBy655yqTTN2BY/E9bc+OPy1nQMe1fixFv1gM6qNbXl1bnOwAUFFWFOVBk1p
-         0asg==
-X-Forwarded-Encrypted: i=1; AJvYcCUEgKDJfs8yC/dOVP3uyQxDuSPv2W5/sAx3kMTofU7kgDl6tsZPJ9tjJxNcDyrVnArqlFRLR6UxbVQjjNtnAiW9v/JKevkkBK3C/ONvH3l91j1NkQmSTeLQLliMRtIncjqtkTwOfDGQ
-X-Gm-Message-State: AOJu0Yw98Mgo7yd9xBkBYVC8ypmPr+xI0GnnDK6H90bZL+a2Si+CvTP8
-	4FJk49SrYQZMWCMd1fpg1Nqf137K9fEgAEJVWIreemBIjsZS76Ye
-X-Google-Smtp-Source: AGHT+IGB2COdTYW4uDyufoSziJPEzTPjjGdlCx1qqcqrkvp10SASXDI5BR5O4vj6BoDuUeBr6psKQg==
-X-Received: by 2002:a17:906:8406:b0:a46:7384:3233 with SMTP id n6-20020a170906840600b00a4673843233mr2416679ejx.57.1710493529117;
-        Fri, 15 Mar 2024 02:05:29 -0700 (PDT)
-Received: from vamoirid-EDL-PC ([2001:1458:202:121::101:4e8c])
-        by smtp.gmail.com with ESMTPSA id jz8-20020a17090775e800b00a461d2a3374sm1495608ejc.47.2024.03.15.02.05.28
+        d=1e100.net; s=20230601; t=1710494078; x=1711098878;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Kdhg2x3t8Nf/uv6nbcx14LUHcWP8lBLkCrAgVBOR3+8=;
+        b=SAVhM8KFrPzSwqvzgg2PcSmWGXqbSkO02dA1ZljgdO/vr5+pYO/8W1/ZIB7QXyxKbc
+         s/BZO+H5/N6xbvyEtsWHNKaagwxebkhanbWsqPjEcuOksjyKGfN5NaiTMSqs1YQW6y3x
+         DglQOiAqTBZ/RC4guCGMmObVPXYIohI/byXv81XgmOP0QiCZ2gk6qe0TOL0PMW4bIPYz
+         QcfZautjPJ2buk/SrQNvdsV7WzNyW3XsC0WvdGrFbf4wDqXoYEwBt4CYeM4lXX/Xl59H
+         30JDDSvixB4pQK448RONIp34a4vnONMBuXS8AX7bWB4yVU6V6ZY5fniPSGHpmeDrV2qb
+         jpQg==
+X-Forwarded-Encrypted: i=1; AJvYcCVb2OoQzRuaamSZCi9SodvoyEKEY8rsttuDEVi7gcqAIRVUDFz9P1nEJ5/bRLFqu19TyRONa8qGZ+7G8BfpoAl6xSO3Y692zAUqBnZtu/XmPLPWNLtMLE8qUyw3I0RGNy/lZYBfD/zt
+X-Gm-Message-State: AOJu0YyySt8B2q06mW7TNAsVHqaQGccomsVluhuFwX+9R3Yj3VRKfpkG
+	VBBVpyI+MD1fLFxssSAjTHaWzML23nSDbBbWCHLhVtDvrpY+8W06
+X-Google-Smtp-Source: AGHT+IFkANNGzB0Gt1dRmpu4/6570ZhiIh3q/3WxPkx8sXXzRwN27f8fcui1dezilc/yejo7Yqxf+g==
+X-Received: by 2002:a2e:b611:0:b0:2d4:251f:c151 with SMTP id r17-20020a2eb611000000b002d4251fc151mr1655141ljn.46.1710494077935;
+        Fri, 15 Mar 2024 02:14:37 -0700 (PDT)
+Received: from localhost (cpc154979-craw9-2-0-cust193.16-3.cable.virginm.net. [80.193.200.194])
+        by smtp.gmail.com with ESMTPSA id f5-20020adffcc5000000b0033e7b05edf3sm2710694wrs.44.2024.03.15.02.14.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 Mar 2024 02:05:28 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoirid-edl-pc>
-Date: Fri, 15 Mar 2024 10:05:26 +0100
-To: Angel Iglesias <ang.iglesiasg@gmail.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de,
-	andriy.shevchenko@linux.intel.com, mazziesaccount@gmail.com,
-	ak@it-klinger.de, petre.rodan@subdimension.ro,
-	linus.walleij@linaro.org, phil@raspberrypi.com, 579lpy@gmail.com,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/6] iio: pressure: Simplify and make more clear
- temperature readings
-Message-ID: <ZfQPVlqv7A3zxExl@vamoirid-EDL-PC>
-References: <20240313174007.1934983-1-vassilisamir@gmail.com>
- <20240313174007.1934983-5-vassilisamir@gmail.com>
- <20240314150959.585367b5@jic23-huawei>
- <20240314201718.GD1964894@vamoiridPC>
- <46389801aeb20f18affed86d979aff7a62cf36d5.camel@gmail.com>
+        Fri, 15 Mar 2024 02:14:37 -0700 (PDT)
+From: Colin Ian King <colin.i.king@gmail.com>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Cosmin Tanislav <cosmin.tanislav@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	linux-iio@vger.kernel.org
+Cc: kernel-janitors@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH][next] iio: accel: adxl367: Remove second semicolon
+Date: Fri, 15 Mar 2024 09:14:36 +0000
+Message-Id: <20240315091436.2430227-1-colin.i.king@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <46389801aeb20f18affed86d979aff7a62cf36d5.camel@gmail.com>
 
-On Fri, Mar 15, 2024 at 12:22:50AM +0100, Angel Iglesias wrote:
-> On Thu, 2024-03-14 at 21:17 +0100, Vasileios Amoiridis wrote:
-> > On Thu, Mar 14, 2024 at 03:09:59PM +0000, Jonathan Cameron wrote:
-> > > On Wed, 13 Mar 2024 18:40:05 +0100
-> > > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> > > 
-> > > > The read_press/read_humid functions need the updated t_fine value
-> > > > in order to calculate the current pressure/humidity. Temperature
-> > > > reads should be removed from the read_press/read_humid functions
-> > > > and should be placed in the oneshot captures before the pressure
-> > > > and humidity reads. This makes the code more intuitive.
-> > > > 
-> > > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> > > 
-> > > To me this makes the use of these calls less obvious than they were
-> > > previously.  The calls are made close to where t_fine is used and
-> > > don't have to go via the indirection of chip_info.
-> > > 
-> > > So I disagree. I think this change makes the code a lot less
-> > > clear.
-> > > 
-> > 
-> > This was mainly driven by the fact that I wanted to avoid reading
-> > the temperature 3 times in case temp, press and humid are enabled
-> > and there are consecutive buffer readings. But thank you for the
-> > proposal I really appreciate it!
-> > 
-> 
-> Hi, just a side note reflecting on this. Depending on your sampling frequency
-> and registers data shadowing, to avoid compensating with different samples
-> between readings, we should be doing burst readings to get a bundle of the
-> temperature+pressure and/or humidity.
-> On the bmp/bme280 and bmp380 this can be done as registers are contiguous on the
-> memory. On the bmp580 this is not a problem as the values are already
-> compensated, you`ll get always the latest reading.
-> 
-> Kind regard,
-> Angel
+There is a statement with two semicolons. Remove the second one, it
+is redundant.
 
-Hi Angel,
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+---
+ drivers/iio/accel/adxl367.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thank you for pointing this out! Indeed that's true but I noticed that this is not
-the case for the BMP{085/180} devices. I just feel that some changes might make
-data acquisition/processing faster for a device (like the one you proposed) but
-it might make the code much more unreadable and unmaintanable. I will try and
-see if something could be done in that sense but I feel that keeping it simple will
-be good for everyone!
+diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
+index 210228affb80..5cf4828a5eb5 100644
+--- a/drivers/iio/accel/adxl367.c
++++ b/drivers/iio/accel/adxl367.c
+@@ -621,7 +621,7 @@ static int _adxl367_set_odr(struct adxl367_state *st, enum adxl367_odr odr)
+ static int adxl367_set_odr(struct iio_dev *indio_dev, enum adxl367_odr odr)
+ {
+ 	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+-		struct adxl367_state *st = iio_priv(indio_dev);;
++		struct adxl367_state *st = iio_priv(indio_dev);
+ 		int ret;
+ 
+ 		guard(mutex)(&st->lock);
+-- 
+2.39.2
 
-Cheers,
-Vasilis
 

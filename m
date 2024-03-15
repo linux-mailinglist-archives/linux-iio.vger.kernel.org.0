@@ -1,203 +1,208 @@
-Return-Path: <linux-iio+bounces-3540-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3541-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A095187C8B1
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 06:58:01 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868C887C97E
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 08:55:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5575F282E7B
-	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 05:58:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 174581C21EA2
+	for <lists+linux-iio@lfdr.de>; Fri, 15 Mar 2024 07:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DB012E74;
-	Fri, 15 Mar 2024 05:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B5B14280;
+	Fri, 15 Mar 2024 07:55:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="ZJcHtxeH";
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="LUqGr1Wz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aTss0qVp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569578BFB
-	for <linux-iio@vger.kernel.org>; Fri, 15 Mar 2024 05:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57D114A83
+	for <linux-iio@vger.kernel.org>; Fri, 15 Mar 2024 07:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710482274; cv=none; b=tS8IykJLalT7vOQmiU4OdYSjPRWoY8AHxoXCrBK1u2CF/Goh7mXDOiHy2GnBF6E4YWmL19bZUROqoDxHzMFTQN7/XpofRzAFyiKRXKdIEGQjg7IzyaGcAmwlVXLzn2ogF5QQ0q5c3yana2/Ylp/+u1d3q1msSzoMS0V3cwjK5v0=
+	t=1710489311; cv=none; b=EUkftBNN7dVIg8OJXCnPX4NajbJ1ju1HnLoS81HL0B7NmMABCTqj4ELvL1J6amdwsdqPdlZX947svl7ahJphZfJd2kgg1WgaUAWO+t/IjJ5jT8Qas7CMP55YlSLY2hmETKQGr0i5H97VfnYAkXjnScE3vmxHgIEFZtawiJizEIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710482274; c=relaxed/simple;
-	bh=689CVoU4hSkkdi+xckfkMtotCp/WIXunG9G7U95p51Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jp1QfPvZYvuZLWle6eKVc8w1ZPCXA4ZFXR0W5FswYlDaBhabV1xODhh9yHvsMt3I2dofMNt3QbhUK9QfZM0XrqWsdCOuwIpxp9yl90EmFUn8hDaIo/jf5onnSxxVFmdwFjukQyrNZy6ToaKo4+GOzNUEyNFitGHlUGnVTURMbRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=ZJcHtxeH; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=LUqGr1Wz; arc=none smtp.client-ip=35.74.137.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
-	s=gw2_bookworm; t=1710481673;
-	bh=689CVoU4hSkkdi+xckfkMtotCp/WIXunG9G7U95p51Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZJcHtxeHYquE6WIV8k927gOu21f2DOZPiugLeOnWdLAiwGTCI58XS1EUBhYk8sDJY
-	 i8WahKViHF2cxu7MjATZAFrErpGxtV7LF0gVM39W0KfZrG9sU6yXgcwtLtVOIa/I7N
-	 BPf3DxnAbQW4Cnuuxq3Vbx8TytBJ+g/POi9Upij36oVKtw9GFFPzK/L2gFnQwVVM46
-	 r5xRMRIs00wdoua/eN+Ncyqs5lHPJZgQ+j+T3yC9vI+VrE3+LeNhErEtWXIAKHFeWb
-	 ScgryDSEzKDyQpt0aNOtJCvrFFUrPo7t4i5aPB8MN/G9ifuZlD9KACdZ/LjTNWkzT1
-	 jdxYI7Af8ycWQ==
-Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
-	by gw2.atmark-techno.com (Postfix) with ESMTP id D2F6BA09
-	for <linux-iio@vger.kernel.org>; Fri, 15 Mar 2024 14:47:53 +0900 (JST)
-Authentication-Results: gw2.atmark-techno.com;
-	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=LUqGr1Wz;
-	dkim-atps=neutral
-Received: from mail-pf1-f197.google.com (mail-pf1-f197.google.com [209.85.210.197])
-	by gw2.atmark-techno.com (Postfix) with ESMTPS id 6FF9A6E2
-	for <linux-iio@vger.kernel.org>; Fri, 15 Mar 2024 14:47:52 +0900 (JST)
-Received: by mail-pf1-f197.google.com with SMTP id d2e1a72fcca58-6e04e1ac036so1703357b3a.3
-        for <linux-iio@vger.kernel.org>; Thu, 14 Mar 2024 22:47:52 -0700 (PDT)
+	s=arc-20240116; t=1710489311; c=relaxed/simple;
+	bh=yTf51qCFTPfpTwpYfMOqa6zUeAbeKAudBMqnLPMByQg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=LOxP9VIgBJvDzgkQsH6WSD1xEEA2hfKw3lnzdZqLWNQBRZvOCfs0GrYTLYw0bKNjBEXIuMENldY+hf72y+2fHOQIsCFzFp+7dltrV50ApWa7d3VIC1WcttYYdLseCyqAKwnA/lDYDz4qNcOKXUHWTMIKzf+DlrJcF9r3Sa2LY7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aTss0qVp; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-513b022a238so2255127e87.0
+        for <linux-iio@vger.kernel.org>; Fri, 15 Mar 2024 00:55:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atmark-techno.com; s=google; t=1710481671; x=1711086471; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bYMS5/DXfaIpI+pTTahoABUn10+eXSS/XEewvoMgNdw=;
-        b=LUqGr1WzOm+02rv+c8Ap/x7k2syQ0pqh/poh5vY1pWyas4RZflTBomX4kIx9N2rWBX
-         wL4PajSDOLWQKlLMQkJ/G4rsnagF1fOejFuL+dpnsMDKr4tjWD6/0+uZl8ftUtcyZWB/
-         hyIeF2HwkBv6NeuRWZFCM7vJAxgYbdaEsUO65YzHPXtw1l4SvCTnswlCS6KUZaS/Aw1D
-         YMi1vWIHzlujqA4U4MaTg2novA/ZNcNUVC8TpyhAPCB0PFaWUJrgSFknrRJFI/n0bNwp
-         bt3QwOIX/W4M+rBCP0hu/wi+MdSzVFoEtMVVLzoZcmqxXUGPmwb+ZDeuvH9HAkqoRxDj
-         XxFQ==
+        d=gmail.com; s=20230601; t=1710489308; x=1711094108; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Kx9unUjy8lM0QqEt0Znz/PPI/iFP/JIz1rJxeciiZ1Q=;
+        b=aTss0qVp4kq5hltn6nigfSyUENdgA/jnXDKZWwTyeb6SdKoBtjhZI2OQdnOX92Jy4f
+         xV5oX2BB+1zzuiYhrGQocm4RexGiOTT55UgVFo6VuxRAx1yNq4aYSBbvfr8qU3wsGJqx
+         tpbsrJVrme1q5uOAOKU/bIzFiiZPinuLVwg5ZcD5BHH4FHgeIB+qBe2aaZI7mA9yEZJl
+         QJFqUIKD32NQkZps974LXCZ2s5WD4cHvqqWl3oxmSCfVSIZls/0EP9Elie9mNZmf/Nxq
+         p7n085jkg6qkgfLBxedFgKAnRDMbe6JaWLBgB8GYfJ7ISg/ybah8EX/iLyZyFYa86Pa4
+         PCNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710481671; x=1711086471;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bYMS5/DXfaIpI+pTTahoABUn10+eXSS/XEewvoMgNdw=;
-        b=lK3bHb+3dFQschlOK7dGJt48TzlmuaLL2TAz9udOePZao8uwc/c1aROjqSsVXADt1Q
-         SySfE5o7fadWm02gbXGGStLeoAhg0UMEpNeKIHPhKdAp4aGtTZhnaPxLeIvrE0s09X24
-         X8db1L8Q0mMWwyIJfGelNVSPP9Mff4PPyJeni3mIM0WXWwijsI355DZ1pjer5Mm7Zlol
-         E5SZr+cQ5ygxIv79FsOTOG8XNQXxuHcdk4JxsjSJtyf4E7+Jl82vWC/XLzELY0s0ZcPZ
-         pR6tgYm0orpQvYlk6LSYad0ZOBQCqpG6mg91qKqUlifXrfBWfmOiUeEAcbtDFH1RQi+S
-         Le7w==
-X-Forwarded-Encrypted: i=1; AJvYcCVtJ8LATIXHCwyvs+aYUqo2UEh/oYVPMoMoXB/KT06wJQ9qH/YJg72KpqAHEhZKjDQ/Djca5jVGbc7W/K+UT52elYhuyAjxBgrF
-X-Gm-Message-State: AOJu0YxX8oV/NdrvzUBB4PfDTWd1BooFKpe0ASBhHxxdtonh7/VTrT7m
-	prYapLNMyJJqPdu7U9VdtUCzNo/dFI8Du+2Pr5BSkFW8SzAUzxFi7L1rAxkVhD6eOr83dbKhQEC
-	FFP/rviht9h3l+0+Yc5gc98ZqfjAi3GjQ1zsv7ICNxtm6U4pZ+hSQAeRhde8=
-X-Received: by 2002:a05:6a20:6f03:b0:1a3:4438:be20 with SMTP id gt3-20020a056a206f0300b001a34438be20mr4088613pzb.48.1710481671420;
-        Thu, 14 Mar 2024 22:47:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGCUH0IHN6AHGei3jkhHFFHGzGL76YbEw4+7QRI/GsRpKTjLzKIfiwMSllJzEGapNdawt2QAw==
-X-Received: by 2002:a05:6a20:6f03:b0:1a3:4438:be20 with SMTP id gt3-20020a056a206f0300b001a34438be20mr4088593pzb.48.1710481670857;
-        Thu, 14 Mar 2024 22:47:50 -0700 (PDT)
-Received: from pc-0182.atmarktech (117.209.187.35.bc.googleusercontent.com. [35.187.209.117])
-        by smtp.gmail.com with ESMTPSA id o197-20020a62cdce000000b006e68b422850sm2635895pfg.81.2024.03.14.22.47.49
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 14 Mar 2024 22:47:49 -0700 (PDT)
-Received: from martinet by pc-0182.atmarktech with local (Exim 4.96)
-	(envelope-from <martinet@pc-zest>)
-	id 1rl0Q0-002zK0-2A;
-	Fri, 15 Mar 2024 14:47:48 +0900
-Date: Fri, 15 Mar 2024 14:47:38 +0900
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Syunya Ohshio <syunya.ohshio@atmark-techno.com>,
-	Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
- device index
-Message-ID: <ZfPg-nMANUtBlr6S@atmark-techno.com>
-References: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
- <7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
- <Zd7hSOw3_zosyrn3@atmark-techno.com>
- <daed8ada-9e01-41ad-82af-5da5cbbc865c@linaro.org>
- <Zd7qz1Qte8HWieF_@atmark-techno.com>
- <20240228142441.00002a79@Huawei.com>
- <Zd_zB_ymxkx0HB3q@atmark-techno.com>
+        d=1e100.net; s=20230601; t=1710489308; x=1711094108;
+        h=content-transfer-encoding:in-reply-to:from:references:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kx9unUjy8lM0QqEt0Znz/PPI/iFP/JIz1rJxeciiZ1Q=;
+        b=CPjuHYd3gDgQamtdPgLfDYtrOFUQWQBJxGu1hFfcOGfZc4hMljz6zS4NQ4QPOkYWjj
+         /YwVlCW+Ncqmttne/kTjpV9PsihLMaYNK1C3Hn5FGsvJbxI3GIa39EhhB83IqMfKJSui
+         oVx4ca4oHTFvYQ/7JAcDAASk9fKkBT7Avq01nw4hDherDHdcPTpNVFT8hZf7CHQ6cGzz
+         paeJkf0pOmEFq6gBqevZ11sBgnnN9fLUmcBQhpDo17oZ7YroHnMOxMoG5WE6anigvz37
+         IO20UYm/kG+e8lvd6yZN2niVrzvunhF6scbj5GATZeai7xJDjxNikkH1Gh4/gbhBQbsG
+         Gqmg==
+X-Forwarded-Encrypted: i=1; AJvYcCWJPvoRubgbv1fJb8XTgjTOGy0k3Kc8jTRSOVprvzB1DjcBivp91kHlA+dOHxc5t4cDgJS3L0a06jo8l6VGsnCOPu7Af/lwECv+
+X-Gm-Message-State: AOJu0Ywupt19tOls2EOgVa8qyzaiGxJpY7HHSqFGOJBJMkYo91isKgLr
+	uULc/LHX40/QFiXhp4GBVmDqTSG1M0Y4QOCSEbP4Q59s6vsT16Vh
+X-Google-Smtp-Source: AGHT+IE07UevTv53UY+wnGP1zbPj5osfgFaGcp5dgKjjowa7c6Q8/Q2SrWMdhBc1aSsMFy3oBjBS6g==
+X-Received: by 2002:a05:6512:521:b0:513:9e13:6403 with SMTP id o1-20020a056512052100b005139e136403mr3065830lfc.21.1710489307623;
+        Fri, 15 Mar 2024 00:55:07 -0700 (PDT)
+Received: from [172.16.183.82] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 6-20020ac25f06000000b00513a84035a6sm561967lfq.237.2024.03.15.00.55.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 15 Mar 2024 00:55:07 -0700 (PDT)
+Message-ID: <a59061f8-5caa-43d4-bd4f-5ac4c39515ba@gmail.com>
+Date: Fri, 15 Mar 2024 09:55:06 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Zd_zB_ymxkx0HB3q@atmark-techno.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: Fix the sorting functionality in
+ iio_gts_build_avail_time_table
+Content-Language: en-US, en-GB
+To: Chenyuan Yang <chenyuan0y@gmail.com>, jic23@kernel.org, lars@metafoo.de,
+ linux-iio@vger.kernel.org
+References: <ZfHM73ZqgnCp6CZv@cy-server>
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <ZfHM73ZqgnCp6CZv@cy-server>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Jonathan,
+Hi Chenyuan,
 
-Dominique Martinet wrote on Thu, Feb 29, 2024 at 11:59:19AM +0900:
-> Jonathan Cameron wrote on Wed, Feb 28, 2024 at 02:24:41PM +0000:
-> > A given IIO device driver may create multiple sysfs directories (registers
-> > device + one or more triggers), so I'm not sure how this would work.
+Thank you very much for taking the time and effort to fix my bugs! :)
+
+On 3/13/24 17:57, Chenyuan Yang wrote:
+> The sorting in iio_gts_build_avail_time_table is not working as intended.
+> It could result in an out-of-bounds access when the time is zero.
 > 
-> Thanks for pointing this out, the driver I'm using doesn't seem to
-> create extra triggers (iio_trigger_alloc doesn't seem to be called), but
-> the current patch would only affect iio_device_register, so presumably
-> would have no impact for these extra directories.
-
-So my device doesn't have any "built-in" trigger if that's a thing (let
-alone multiple), but I've played with iio-trig-sysfs and also had a look
-at what's in the tree's dts, and as far as I can see the 'name'
-(/sys/bus/iio/devices/trigger*/name, also used when registering a
-trigger for a device) seems to be fixed by the driver with parameters of
-the dts (e.g. 'reg'), so if there are multiple triggers and one wants
-something in the triggerX directory they're supposed to check all the
-names?
-
-
-So as far as I can see, I keep thinking it's orthogonal:
-- devices get a link as /sys/bus/iio/devices/iio:deviceX ; which contains:
- * 'name', set by driver (some have an index but many are constant), and
-   does not have to be unique,
- * 'label' contains whatever was set as label if set
- * 'of_node', a symlink to the device tree node which is what we
-   currently use to differentiate devices in our code
-- triggers get /sys/bus/iio/devices/triggerX, which has a 'name' file
-that probably must be unique (as it's can be written in device's
-trigger/current_trigger to select it)
-
-> I'm sure we can make something work out while preserving compatibility,
-> the patch I sent might not be great but it wouldn't bother anyone not
-> using said aliases.
+> Here are more details:
 > 
-> aliases are apparently not appropriate for this (still not sure why?),
-> but if for example labels are better we could keep the current
-> iio:deviceX path (/sys/bus/iio/devices/iio:device0) with a label file in
-> it as current software expect, but add a brand new directory with a link
-> named as per the label itself (for example /sys/class/iio/<label>;
-> my understanding is that /sys/class is meant for "easier" links and we
-> don't have anything iio-related there yet)
+> 1. When the gts->itime_table[i].time_us is zero, e.g., the time
+> sequence is `3, 0, 1`, the inner for-loop will not terminate and do
+> out-of-bound writes. This is because once `times[j] > new`, the value
+> `new` will be added in the current position and the `times[j]` will be
+> moved to `j+1` position, which makes the if-condition always hold.
+> Meanwhile, idx will be added one, making the loop keep running without
+> termination and out-of-bound write.
+> 2. If none of the gts->itime_table[i].time_us is zero, the elements
+> will just be copied without being sorted as described in the comment
+> "Sort times from all tables to one and remove duplicates".
+> 
+> For more details, please refer to https://lore.kernel.org/all/6dd0d822-046c-4dd2-9532-79d7ab96ec05@gmail.com.
+> 
+> Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+> Suggested-by: Matti Vaittinen <mazziesaccount@gmail.com>
 
-I've looked at this /sys/class/iio idea (could use the label or fallback
-to iio:deviceX for devices, and name for triggers), but /sys/class seems
-to be entierly managed by the linux core driver framework so that
-doesn't leave much room for compromise...
-The links there use the device name (so iio:deviceX for devices), and if
-creating such a link fails it'll also fail the whole device creation
-(cdev_device_add() -> device_add() -> device_add_class_symlinks()), so
-my evil plan is foiled. (/sys/bus/iio/devices links are also
-automatically created by device_add() -> bus_add_device() from the
-device name)
+I think the suggested-by tag is a bit of an overkill :) I don't feel 
+like taking the credit - you spotted the problem and fixed it!
 
+> Fixes: 38416c28e16890b52fdd5eb73479299ec3f062f3 ("iio: light: Add gain-time-scale helpers")
+> Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+> ---
+> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+> index 7653261d2dc2..61714a8d5717 100644
+> --- a/drivers/iio/industrialio-gts-helper.c
+> +++ b/drivers/iio/industrialio-gts-helper.c
+> @@ -375,7 +375,7 @@ static int iio_gts_build_avail_time_table(struct iio_gts *gts)
+>   	for (i = gts->num_itime - 1; i >= 0; i--) {
+>   		int new = gts->itime_table[i].time_us;
+>   
+> -		if (times[idx] < new) {
+> +		if (idx == 0 || times[idx - 1] < new) {
 
-I guess we could manage another new directory somewhere or haphazardly
-create extra redundant links in the current bus directory, but that's
-not exactly something I'd consider workable given there is no possible
-deprecation path down the road, so ultimately I still think the aliases
-patch I sent is amongst the least bad options we have here:
-- there's currently no alias for iio so it won't break anything;
-- even if one adds some on a device with multiple iio devices all that
-can happen is some indices will be shuffled, but paths will still be
-compatible with all current applications.
+This part should work just fine - thanks.
 
+>   			times[idx++] = new;
+>   			continue;
+>   		}
+> @@ -385,9 +385,10 @@ static int iio_gts_build_avail_time_table(struct iio_gts *gts)
+>   				memmove(&times[j + 1], &times[j],
+>   					(idx - j) * sizeof(int));
+>   				times[j] = new;
+> -				idx++;
+> +				break;
+>   			}
+>   		}
+> +		idx++;
+>   	}
 
-Did you have time to think about this or another possible way forward?
+Here you successfully fix the sorting but the duplicates aren't removed. 
+I'd like to have the removal of duplicates as occasionally we see 
+hardware where multiple register values mean same setting. In such a 
+case we probably want to have multiple entries with same integration 
+time in the time array - so the driver can convert all register values 
+to correct times. We, however, don't want to list same values for 
+available times via sysfs. Hence I think removing the duplicates makes 
+sense.
 
-Thanks,
+I think the logic we try to achieve is something like:
+
+         /* Sort times from all tables to one and remove duplicates */ 
+
+         for (i = gts->num_itime - 1; i >= 0; i--) {
+                 int new = gts->itime_table[i].time_us;
+
+                 if (idx == 0 || times[idx - 1] < new) {
+                         times[idx++] = new;
+                         continue;
+                 }
+
+                 for (j = 0; j <= idx; j++) {
+                         if (times[j] == new) {
+                                 idx--;
+                                 break;
+                         }
+                         if (times[j] > new) {
+                                 memmove(&times[j + 1], &times[j],
+                                         (idx - j) * sizeof(int));
+                                 times[j] = new;
+                                 break;
+                         }
+                 }
+                 idx++;
+         }
+
+but the flow can probably be further improved to avoid doing idx--; 
+followed by idx++; for a duplicate.
+
+Do you think you could fix the removal of the duplicates too?
+
+In any case, this patch is far better than the existing code, and I did 
+run some tests on it too, but I would be happy if the duplicates were 
+handled as well :)
+
+>   
+>   	/* create a list of times formatted as list of IIO_VAL_INT_PLUS_MICRO */
+> 
+
+Yours,
+	-- Matti
+
 -- 
-Dominique
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
+~~ When things go utterly wrong vim users can always type :help! ~~
 
 

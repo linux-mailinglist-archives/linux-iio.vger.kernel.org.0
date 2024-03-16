@@ -1,55 +1,65 @@
-Return-Path: <linux-iio+bounces-3560-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3561-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7D4187DA56
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 14:54:20 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8CE387DA59
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 15:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA9791C20C83
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 13:54:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFEC31C20D4D
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 14:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBBA618C38;
-	Sat, 16 Mar 2024 13:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E5218E1E;
+	Sat, 16 Mar 2024 14:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YACP471a"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CwxaQ75s"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F1D2F4A
-	for <linux-iio@vger.kernel.org>; Sat, 16 Mar 2024 13:54:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B8F18AED;
+	Sat, 16 Mar 2024 14:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710597254; cv=none; b=gG40E79s/22GeB1MScf49DIR1W5rBgYipdJ9Rfr6K2R9t+mAcuFpL9EJF1uuKhoqciGRz+HTio0jv7UJBwhSz1FIGKmWEDsOjq9Oz8GgIiuTvlEAw5aGeb1Ob7wP4NF3fsu0Z5/yjRhVZh/LeyFNpKIKFXx/DA3NR4e58L8nOf4=
+	t=1710597642; cv=none; b=LzXjh0AHnfzJ0PgpAypu5vSOWmZ6c7NUjQJS34FUf36Vnf0U3nR1AW1DdbZe5y23EbSFxQ46kCAiNUSU9LpD1UklQsSr865bHGYqcX+dfv0NBO3cRdDaymHLy4NEUBwE9reYn/VdogzkNwAySx3kZlGpbIq3AJs5OXNzOI0GDZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710597254; c=relaxed/simple;
-	bh=SIfCb+sbAvYjkscVMwZoTA++yp3e3DUiXlKfVWJMTkc=;
+	s=arc-20240116; t=1710597642; c=relaxed/simple;
+	bh=OsANXNq+J2cqDLKb0p8kEa9kLFEZDomwY/SqKXI9w5k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F7S8ne/70Svzxbo7kMszIsvg9sFTQOoSVoZ6UT4WJaEWjqKuefc8WUQIrhbitvaH08Q6qmRsa2B7+zDDUR0wd3Epazc6Ypmm8ljg6hGMjyfMXrYK8tFaA9czo03pEhf1i51cgMQ8vjJkDLk6gzhX1Z70QIkKnL/UK9ulnbFMycQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YACP471a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 077EDC433C7;
-	Sat, 16 Mar 2024 13:54:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UugaHSBbHjxn4w6KKarS9Z5rjDAtajVBXxMUn6IIYcYQufiYvjIHTsFtT29QfMLzyVXIbVXSP5xsWPprSUd1NSNyVtvxm8XIMf7+T3bQNoCyc6wO4tMfMNY9JStWaUDOBzF5dEtJ2onViqblwZfj6JDbyHGZI2E9C2UP5xQ4pBE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CwxaQ75s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2323C433F1;
+	Sat, 16 Mar 2024 14:00:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710597253;
-	bh=SIfCb+sbAvYjkscVMwZoTA++yp3e3DUiXlKfVWJMTkc=;
+	s=k20201202; t=1710597642;
+	bh=OsANXNq+J2cqDLKb0p8kEa9kLFEZDomwY/SqKXI9w5k=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YACP471a9+Xky7f5wiXDaW4ul50f7xBgnWSmCtYrwj3I/tjVeq2PEzXAajFf1OXEq
-	 5gWyATD/aG2HEfTcJ2uUQ1YPsudOOlmFHJQBL6dzzjHqmrZSX1kFWsYxgELELdENrc
-	 LUyQOc9Oj69s7T12QymGKDJAWnCZkIoiQ4MMvmeChvDWr+ucovawYQZIPVfQGpkMlD
-	 HY2zGyKxnbaLJgVQlv2ZVu7ZqWttorhhktfQKph8aU9d2k75sIpLzFAoH8tk5+h99R
-	 xm46jy3mgBVfqNz6myo/Pngu1ugDe14VPoH/D++577w8Epebx9hW7jaRYEBMh7wB6s
-	 MG8lmmfFjtsrw==
-Date: Sat, 16 Mar 2024 13:54:00 +0000
+	b=CwxaQ75sL/MY2rDZYUgNRX8An/nNeL45UcRhFGqDo2TPjK4TfTs6E0HqaTDyEpXFg
+	 4j5JyiOKfnuQDjm1YFEC5CnY4W73JX27Nrvpw4mpsm/Ug2dAgvi5EnGlxcGyqJWwlY
+	 /8LM7egri4URcmDyAz9aeI/BaVxMdEKH78ghp+v2xsaD+sQuQwRrvW1LwQdG1pwTfZ
+	 zsXRtGzztVSO0MHXQSJNDzQFvtrz8D0edy92hRg8QPbz6T07ofdMOIyoJNVcK8PWy9
+	 HhaJfIho7xRuORWiU4HUrQ8JvRjla+x9jPHaQUB572CjwS4QV1COLmU0FA13p8jPPY
+	 UNk2QTxlyGneg==
+Date: Sat, 16 Mar 2024 14:00:26 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: inv.git-commit@tdk.com
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, Jean-Baptiste Maneyrol
- <jean-baptiste.maneyrol@tdk.com>
-Subject: Re: [PATCH v3 0/4] Add WoM feature as an IIO event
-Message-ID: <20240316135330.7556bccb@jic23-huawei>
-In-Reply-To: <20240311160557.437337-1-inv.git-commit@tdk.com>
-References: <20240311160557.437337-1-inv.git-commit@tdk.com>
+To: Angel Iglesias <ang.iglesiasg@gmail.com>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
+ andriy.shevchenko@linux.intel.com, mazziesaccount@gmail.com,
+ ak@it-klinger.de, petre.rodan@subdimension.ro, linus.walleij@linaro.org,
+ phil@raspberrypi.com, 579lpy@gmail.com, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/6] iio: pressure: Simplify and make more clear
+ temperature readings
+Message-ID: <20240316140026.4daa2480@jic23-huawei>
+In-Reply-To: <63d6a4b0cb2155d5c194b3b65fa60c985a6338ca.camel@gmail.com>
+References: <20240313174007.1934983-1-vassilisamir@gmail.com>
+	<20240313174007.1934983-5-vassilisamir@gmail.com>
+	<20240314150959.585367b5@jic23-huawei>
+	<20240314201718.GD1964894@vamoiridPC>
+	<46389801aeb20f18affed86d979aff7a62cf36d5.camel@gmail.com>
+	<ZfQPVlqv7A3zxExl@vamoirid-EDL-PC>
+	<63d6a4b0cb2155d5c194b3b65fa60c985a6338ca.camel@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,52 +67,125 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 11 Mar 2024 16:05:53 +0000
-inv.git-commit@tdk.com wrote:
+On Fri, 15 Mar 2024 14:28:30 +0100
+Angel Iglesias <ang.iglesiasg@gmail.com> wrote:
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> 
-> Add WoM (Wake-on-Motion) feature for all chips supporting it (all except
-> MPU-6000/6050/9150). WoM compares the magnitude of the current accel sample
-> with the previous one against a threshold and returns an interrupt event if
-> the value is higher.
-> 
-> WoM is checking against all axes and maps best to ROC since it compares the
-> last 2 samples. Thus report WoM as an accel x|y|z roc_rising IIO event, add
-> system wakeup functionality if WoM is on and put the chip in low-power mode
-> when the system is suspended. Corresponding ROC value is in SI units since
-> the chip is using an absolute value in mg.
-> 
-> v2:
-> - Rework to use accel x|y|z roc for reporting WoM event
-> - Use only datasheet advertised bits for MPU-6500 family chips
-> 
-> v3
-> - Coding style fixes
-> - Convert mutex usage to guard/scoped_guard
-> 
-Applied to the togreg-normal branch of iio.git and pushed out for 0-day
-to get started. I'll be rebasing that tree after rc1 so use at your
-own risk ;)
+> On Fri, 2024-03-15 at 10:05 +0100, Vasileios Amoiridis wrote:
+> > On Fri, Mar 15, 2024 at 12:22:50AM +0100, Angel Iglesias wrote: =20
+> > > On Thu, 2024-03-14 at 21:17 +0100, Vasileios Amoiridis wrote: =20
+> > > > On Thu, Mar 14, 2024 at 03:09:59PM +0000, Jonathan Cameron wrote: =
+=20
+> > > > > On Wed, 13 Mar 2024 18:40:05 +0100
+> > > > > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> > > > >  =20
+> > > > > > The read_press/read_humid functions need the updated t_fine val=
+ue
+> > > > > > in order to calculate the current pressure/humidity. Temperature
+> > > > > > reads should be removed from the read_press/read_humid functions
+> > > > > > and should be placed in the oneshot captures before the pressure
+> > > > > > and humidity reads. This makes the code more intuitive.
+> > > > > >=20
+> > > > > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com> =20
+> > > > >=20
+> > > > > To me this makes the use of these calls less obvious than they we=
+re
+> > > > > previously.=C2=A0 The calls are made close to where t_fine is use=
+d and
+> > > > > don't have to go via the indirection of chip_info.
+> > > > >=20
+> > > > > So I disagree. I think this change makes the code a lot less
+> > > > > clear.
+> > > > >  =20
+> > > >=20
+> > > > This was mainly driven by the fact that I wanted to avoid reading
+> > > > the temperature 3 times in case temp, press and humid are enabled
+> > > > and there are consecutive buffer readings. But thank you for the
+> > > > proposal I really appreciate it!
+> > > >  =20
+> > >=20
+> > > Hi, just a side note reflecting on this. Depending on your sampling
+> > > frequency
+> > > and registers data shadowing, to avoid compensating with different sa=
+mples
+> > > between readings, we should be doing burst readings to get a bundle o=
+f the
+> > > temperature+pressure and/or humidity.
+> > > On the bmp/bme280 and bmp380 this can be done as registers are contig=
+uous on
+> > > the
+> > > memory. On the bmp580 this is not a problem as the values are already
+> > > compensated, you`ll get always the latest reading.
+> > >=20
+> > > Kind regard,
+> > > Angel =20
+> >=20
+> > Hi Angel,
+> >=20
+> > Thank you for pointing this out! Indeed that's true but I noticed that =
+this is
+> > not
+> > the case for the BMP{085/180} devices. I just feel that some changes mi=
+ght
+> > make
+> > data acquisition/processing faster for a device (like the one you propo=
+sed)
+> > but
+> > it might make the code much more unreadable and unmaintanable. I will t=
+ry and
+> > see if something could be done in that sense but I feel that keeping it=
+ simple
+> > will
+> > be good for everyone!
+> >=20
+> > Cheers,
+> > Vasilis =20
+>=20
+> Yeah, data adquisition on bmp085/180 is already different as they don't s=
+upport
+> continuous mode as the newer models and you have to warm-up the sensor an=
+d do
+> one-shot readings. There's already a different code path in place for that
+> models. I guess that is the price to pay to support that wide range of
+> sensors...
+> Anyway, this patches are already big and you're doing quite a lot of heav=
+y-
+> lifting right now, so don't pay much attention to my ramblings! Regardles=
+s,
+> happy to help with tasks polishing and updating this driver :)
 
-btw thought I'd sent this on Thursday  - just found it still open on my screen :(
+If burst readings do make sense: We can reasonably assume anyone who is usi=
+ng
+this sensor and is using buffered mode probably wants to 'mostly' grab all =
+the
+channels, then a specific function that always grabs them all, plus use of
+available_scan_masks =3D { ALL BITS, 0 }; will let the IIO core deal with a=
+ny
+cases where only some channels are requested.  This is something we
+do in drivers where there is some interaction between the channels (like he=
+re)
+or where burst reads are much more efficient than single channels (possibly
+also true here) and complexity is significant for switching between burst
+and single channels reads.
+
+That covers a lot of devices and is part of why we have the core code
+do channel de-multiplexing rather than leaving it for the drivers. The other
+reason that drove that complexity was unrelated to this driver (SoC ADCs wi=
+th
+some channels used for touchscreens, and others for unrelated purposes).
+
+You may just want to reduce how much code you are reusing from
+the oneshot single channel sysfs reads so that you can just do a single set
+of readings and use them as needed for compensation etc.
 
 Jonathan
 
-> Jean-Baptiste Maneyrol (4):
->   iio: imu: inv_mpu6050: add WoM (Wake-on-Motion) sensor
->   iio: imu: inv_mpu6050: add WoM event as accel event
->   iio: imu: inv_mpu6050: add new interrupt handler for WoM events
->   iio: imu: inv_mpu6050: add WoM suspend wakeup with low-power mode
-> 
->  drivers/iio/imu/inv_mpu6050/inv_mpu_core.c    | 542 ++++++++++++++++--
->  drivers/iio/imu/inv_mpu6050/inv_mpu_iio.h     |  36 +-
->  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  17 +-
->  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  83 ++-
->  4 files changed, 595 insertions(+), 83 deletions(-)
-> 
+=20
+>=20
+> Kind regards,
+> Angel
+>=20
 
 

@@ -1,62 +1,58 @@
-Return-Path: <linux-iio+bounces-3557-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3558-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6A787DA4B
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 14:36:49 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41CE087DA4F
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 14:40:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 978DF1C20B62
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 13:36:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E042F281F49
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 13:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153EB18AF8;
-	Sat, 16 Mar 2024 13:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF0E18AF8;
+	Sat, 16 Mar 2024 13:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PO0TnXNO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MvqkylY1"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57082F4A;
-	Sat, 16 Mar 2024 13:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C3D28EA
+	for <linux-iio@vger.kernel.org>; Sat, 16 Mar 2024 13:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710596202; cv=none; b=DqzD1syLxEC0lxvjWcmi21c3cbxwMtITEDa1CJ0JSWOY1NcmNRW1RdVU75UPcHmYmTx+ajMLIpQ64GndGfZ9CZxKX1/OCSJuWAl2sxeY86xnfzxLMYFlDt8XBluFbwJdajOYa1Vs45S0hZRvaUPfvwEVx8/arTltF1k2IlOnspk=
+	t=1710596450; cv=none; b=rKcBXxPGwPzM7z3/pdrltRVgxv3Jle61eebMCAuiZ1xOgWDNx0PS/1bXQ0UvFQxJlrViO5vowf7+31Q4ZDq7mzunJLfZ2TOBglGo55veyp3pqms4s079FooBBg15gsnSqrz+9lFiEsuxJQEf7suxy8KDFZ9yiW6QzBbJGIfyaYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710596202; c=relaxed/simple;
-	bh=XdPZXsL26Mxip3HHx+7NpZ0egkvJ9o2OTxsp0p3pia0=;
+	s=arc-20240116; t=1710596450; c=relaxed/simple;
+	bh=TgQHFHhVvNGjdsUWUtPcY+I34esPdZ7jW1t5eZzCESU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GkTEBzOZLNbYXGbBlofyTL6c/FmznHsBvlQHxJM4W/GHwYDPexCYoOthu6c64PbQB02AzAaG9aBIRJS8nNUysswTd6xeD4WnhseerOq3o2G9ysRM1u+W++owD3gcKAEMOpsoH+dYtevbE5BNKETxie5NLO5Xyt4VSdK58AJSkWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PO0TnXNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C9CC433F1;
-	Sat, 16 Mar 2024 13:36:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BmgckPvPa49dsAHQw9+m6G2/RZKodEtJtQRTopbvVjC1V2KG9kFDXHqbI15QMOus3EIEfbyNadtL9Ykj2Q11PiJiQMuS1zV5dQHe6xOL93TOVgWkI5hC98XJa3aiHUmcAo0uLIZJ+t9ZeCKpTwLoFhnINXb4At899T+w0KaUj+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MvqkylY1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DAEC433C7;
+	Sat, 16 Mar 2024 13:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710596202;
-	bh=XdPZXsL26Mxip3HHx+7NpZ0egkvJ9o2OTxsp0p3pia0=;
+	s=k20201202; t=1710596449;
+	bh=TgQHFHhVvNGjdsUWUtPcY+I34esPdZ7jW1t5eZzCESU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PO0TnXNOGamjsfEbRH6yEFyRPVD8RjF2gBrc8MCuTjX/19Iec1G3oDKOTADkQ6JbF
-	 hvs/YoBB0J5dU2Swq4I4wb4a3LmIwn3n50IsHVK5Dc2z2r7mZjUxSPfeYADMOuxli9
-	 8NbBW2cLqq8M0gffAXC1i7JZS5fPzpbJqFXyiwZAzPGtgDjWtKtbt+JUYkL2G6GdgO
-	 W0GoWLgEYUptw8RLHEve+Jgk1KAZDI+HK1RImUJOZuZXUsLS09ICXtBLLeZxBMlJOj
-	 IrmzUGewQ6AFLe/Zw5+Ng7AwnBYr9flOS/jlrkfYkV0qsJuKx8zxyKy7bZkmtniAWC
-	 tRD9eBkMqTZfg==
-Date: Sat, 16 Mar 2024 13:36:27 +0000
+	b=MvqkylY1SSqobERh8w9ytAxfIXEAQetr6YQVWheQTqzaGHnWWKAG7kGhFpUNhPKZs
+	 Nt7xMB+u+eg2qAWkVp2kD4awy0Cs4WbAj0M2qOUgnADNAsJGXWIUVCiO6H4j+rfelC
+	 JzAH5/M/1mQoeTO73CN12L9OhMzw7tM/MZGSs/BG7cF/EooimjSM71XnpsBoxgH5qM
+	 +wRqIv2Jg2tM4oSbjybMLBnIbr1uQO9vE+dDxxAF4RDEK5Bw5LDYKNVAwPwF1Vswjh
+	 DUw34fAas8q/VZWOYepcskjtjHMN2cojWkxTxnr5ogWcgC8zyPdsm02sT+F4IyQGum
+	 rLv0pwZ3LeVag==
+Date: Sat, 16 Mar 2024 13:40:35 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: "O'Griofa, Conall" <conall.ogriofa@amd.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH] iio: xilinx-ams: Don't include ams_ctrl_channels in
- scan_mask
-Message-ID: <20240316133627.5d2bf585@jic23-huawei>
-In-Reply-To: <3b481539-0c9c-4110-ad03-bd252e80efb0@linux.dev>
-References: <20240311162800.11074-1-sean.anderson@linux.dev>
-	<20240314154824.37150a54@jic23-huawei>
-	<a9ed95ec-aafe-49f6-93dd-c94c73620de2@linux.dev>
-	<DM6PR12MB4217EAA1049F815F234EE6D18B282@DM6PR12MB4217.namprd12.prod.outlook.com>
-	<3b481539-0c9c-4110-ad03-bd252e80efb0@linux.dev>
+To: Chenyuan Yang <chenyuan0y@gmail.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>, lars@metafoo.de,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: Fix the sorting functionality in
+ iio_gts_build_avail_time_table
+Message-ID: <20240316134035.5eb47a69@jic23-huawei>
+In-Reply-To: <ZfS0Rhk5WTJbwXU/@cy-server>
+References: <ZfHM73ZqgnCp6CZv@cy-server>
+	<a59061f8-5caa-43d4-bd4f-5ac4c39515ba@gmail.com>
+	<ZfS0Rhk5WTJbwXU/@cy-server>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,140 +60,68 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, 15 Mar 2024 13:47:40 -0400
-Sean Anderson <sean.anderson@linux.dev> wrote:
+On Fri, 15 Mar 2024 15:49:10 -0500
+Chenyuan Yang <chenyuan0y@gmail.com> wrote:
 
-> Hi Conall,
->=20
-> On 3/15/24 09:18, O'Griofa, Conall wrote:
-> > [AMD Official Use Only - General]
-> >=20
-> > Hi,
-> >=20
-> > I think there was a fix for this issue applied to the version that was =
-running on 5.15 that didn't seem to make it into the upstream driver.
-> > Please see link for reference https://github.com/Xilinx/linux-xlnx/comm=
-it/608426961f16ab149b1b699f1c35f7ad244c0720
-> >=20
-> > I think a similar fix to the above patch is may be beneficial? =20
->=20
-> These patches look functionally identical to me.
+> Hi Matti,
+> 
+> Thanks for your reply!
+> 
+> > I think the suggested-by tag is a bit of an overkill :) I don't feel
+> > like taking the credit - you spotted the problem and fixed it!  
+> 
+> You did help me figure out the real issue here and how to fix it :)
+> 
+> > Do you think you could fix the removal of the duplicates too?  
+> 
+> Sure, I can help to implement the deduplication logic.
+> Here is a potential patch for it based on your help.
+> Besides, I changed the stop condition in the inner loop to `j < idx`
+> since the current last index should be `idx - 1`.
 
-Because there are no channels with scan index between
-22 * 2 + 16 (that patch) and 22 * 3 (your patch) that is
-the effect is indeed the same. But given the issues is the
-64 limit on maximum scan index, 22 * 3 =3D 66 is an ugly value
-to compare with.
+Matti, I didn't follow why duplicates are a problem?
 
-I'm still very against the use of scan_index for anything other
-than scan indices (which is why partly how this bug wasn't noticed
-in the first palce). So the check should be scan_index !=3D -1
-and uses of those values elsewhere in the driver should be fixed
-(which looks simple to do from a quick glance at the code).
+Sure the code is less efficient, but do we end up with a wrong
+answer as a result (I've not checked logic, but I'd expect either
+first or last of repeating values to be used depending on the alg).
+
+I'm not convinced adding to complexity of the code is worthwhile if
+its not a functional problem.  I would expect a unit test to verify
+that duplicates aren't a problem though (given you have unit tests!)
 
 Jonathan
 
-
->=20
-> --Sean
->=20
-> >> -----Original Message-----
-> >> From: Sean Anderson <sean.anderson@linux.dev>
-> >> Sent: Thursday, March 14, 2024 5:30 PM
-> >> To: Jonathan Cameron <jic23@kernel.org>
-> >> Cc: linux-iio@vger.kernel.org; O'Griofa, Conall <conall.ogriofa@amd.co=
-m>;
-> >> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; La=
-rs-Peter
-> >> Clausen <lars@metafoo.de>
-> >> Subject: Re: [PATCH] iio: xilinx-ams: Don't include ams_ctrl_channels =
-in
-> >> scan_mask
-> >>
-> >> Caution: This message originated from an External Source. Use proper c=
-aution
-> >> when opening attachments, clicking links, or responding.
-> >>
-> >>
-> >> On 3/14/24 11:48, Jonathan Cameron wrote: =20
-> >> > On Mon, 11 Mar 2024 12:28:00 -0400
-> >> > Sean Anderson <sean.anderson@linux.dev> wrote:
-> >> > =20
-> >> >> ams_enable_channel_sequence constructs a "scan_mask" for all the PS
-> >> >> and PL channels. This works out fine, since scan_index for these
-> >> >> channels is less than 64. However, it also includes the
-> >> >> ams_ctrl_channels, where scan_index is greater than 64, triggering
-> >> >> undefined behavior. Since we don't need these channels anyway, just=
- =20
-> >> exclude them. =20
-> >> >>
-> >> >> Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
-> >> >> Signed-off-by: Sean Anderson <sean.anderson@linux.dev> =20
-> >> >
-> >> > Hi Sean,
-> >> >
-> >> > I'd ideally like to understand why we have channels with such large
-> >> > scan indexes.  Those values should only be used for buffered capture.
-> >> > It feels like they are being abused here.  Can we set them to -1
-> >> > instead and check based on that?
-> >> > For a channel, a scan index of -1 means it can't be captured via the
-> >> > buffered interfaces but only accessed via sysfs reads.
-> >> > I think that's what we have here? =20
-> >>
-> >> From what I can tell, none of the channels support buffered reads. And=
- we can't
-> >> nai=CC=88vely convert the scan_index to -1, since that causes sysfs na=
-ming conflicts
-> >> (not to mention the compatibility break).
-> >> =20
-> >> >
-> >> > I just feel like if we leave these as things stand, we will get bitt=
-en
-> >> > by similar bugs in the future.  At least with -1 it should be obviou=
-s why! =20
-> >>
-> >> There are just as likely to be bugs confusing the PL/PS subdevices...
-> >>
-> >> FWIW I had no trouble identifying the channels involved with this bug.
-> >>
-> >> --Sean
-> >> =20
-> >> > Jonathan
-> >> >
-> >> > =20
-> >> >> ---
-> >> >>
-> >> >>  drivers/iio/adc/xilinx-ams.c | 8 ++++++--
-> >> >>  1 file changed, 6 insertions(+), 2 deletions(-)
-> >> >>
-> >> >> diff --git a/drivers/iio/adc/xilinx-ams.c
-> >> >> b/drivers/iio/adc/xilinx-ams.c index a55396c1f8b2..4de7ce598e4d
-> >> >> 100644
-> >> >> --- a/drivers/iio/adc/xilinx-ams.c
-> >> >> +++ b/drivers/iio/adc/xilinx-ams.c
-> >> >> @@ -414,8 +414,12 @@ static void ams_enable_channel_sequence(struct
-> >> >> iio_dev *indio_dev)
-> >> >>
-> >> >>      /* Run calibration of PS & PL as part of the sequence */
-> >> >>      scan_mask =3D BIT(0) | BIT(AMS_PS_SEQ_MAX);
-> >> >> -    for (i =3D 0; i < indio_dev->num_channels; i++)
-> >> >> -            scan_mask |=3D BIT_ULL(indio_dev->channels[i].scan_ind=
-ex);
-> >> >> +    for (i =3D 0; i < indio_dev->num_channels; i++) {
-> >> >> +            const struct iio_chan_spec *chan =3D
-> >> >> + &indio_dev->channels[i];
-> >> >> +
-> >> >> +            if (chan->scan_index < AMS_CTRL_SEQ_BASE)
-> >> >> +                    scan_mask |=3D BIT_ULL(chan->scan_index);
-> >> >> +    }
-> >> >>
-> >> >>      if (ams->ps_base) {
-> >> >>              /* put sysmon in a soft reset to change the sequence *=
-/ =20
-> >> > =20
->=20
+> ---
+> diff --git a/drivers/iio/industrialio-gts-helper.c b/drivers/iio/industrialio-gts-helper.c
+> index 7653261d2dc2..32f0635ffc18 100644
+> --- a/drivers/iio/industrialio-gts-helper.c
+> +++ b/drivers/iio/industrialio-gts-helper.c
+> @@ -375,17 +375,20 @@ static int iio_gts_build_avail_time_table(struct iio_gts *gts)
+>  	for (i = gts->num_itime - 1; i >= 0; i--) {
+>  		int new = gts->itime_table[i].time_us;
+>  
+> -		if (times[idx] < new) {
+> +		if (idx == 0 || times[idx - 1] < new) {
+>  			times[idx++] = new;
+>  			continue;
+>  		}
+>  
+> -		for (j = 0; j <= idx; j++) {
+> +		for (j = 0; j < idx; j++) {
+> +			if (times[j] == new)
+> +				break;
+>  			if (times[j] > new) {
+>  				memmove(&times[j + 1], &times[j],
+>  					(idx - j) * sizeof(int));
+>  				times[j] = new;
+>  				idx++;
+> +				break;
+>  			}
+>  		}
+>  	}
+> 
 
 

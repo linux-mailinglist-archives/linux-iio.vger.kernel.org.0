@@ -1,158 +1,192 @@
-Return-Path: <linux-iio+bounces-3554-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3555-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAF087D9D6
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 12:08:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2789287DA44
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 14:26:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AA08282268
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 11:08:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52DBB1C20BC4
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 13:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55467179B2;
-	Sat, 16 Mar 2024 11:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48C2179A7;
+	Sat, 16 Mar 2024 13:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T9lmXG8B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DbeEqOiQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A6317BB9;
-	Sat, 16 Mar 2024 11:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7573117BAF
+	for <linux-iio@vger.kernel.org>; Sat, 16 Mar 2024 13:26:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710587279; cv=none; b=qPE2imVVqQ9++GahKCn2X6kxshdUgh+m1jHgbw2x9Z2KS8Ww8IqTOd8JQR9Qzee6J+CUAO2RpQHtWRWGl7V9WKFs6ILoIfYIqLgekTBkXckWmJ21/dIHV5x4Zu3vfXOqeGjXgvjPAA/FPevAn65phFuQxOr6rLjZA34E+9BL074=
+	t=1710595592; cv=none; b=cg6qvRWD6U2fvB1BI+91VVlUADV/ZcrnUq74Uo8at2IW3rrqil8bIAA4eorKx/74NOmSzVaxY6MZe0CTpZlqeJJNKp20aNfAoyGLV7W0oS1c8uw8Jvc3qJpCch9lNu06sxe4dauRVaj9rRxoCDTsRVUDN4lPkq33xT18ssZcDKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710587279; c=relaxed/simple;
-	bh=t7LYZX6EKUgQo+LXunj7XiFMrdyQ/qdtMmGXsGcqKCc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XkUGZFH00/f8Vm/Qr7DYcLEi9Pj29CwPxDITgAL44MI0fcsJetiXTceqcOI5eVDy39wtiEHQuGWp8DbjfvchAlt0/+WMP5v571Q1rtOb7VOhKmK4rplznmSuN9x34vLytFxX1q4KnWRBTe0YQjjxoL4ahgwhtK7h7pumrB5IlqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T9lmXG8B; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a466a27d30aso381391566b.1;
-        Sat, 16 Mar 2024 04:07:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710587275; x=1711192075; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QzhojDgRoybSBlASTJXy9XhM8QalAu20Y2x6klhiLUo=;
-        b=T9lmXG8B1Zj32ndoJ6zNLXiCtAgyVnSW6mAxtKPmam9U2rIF3knMj7L5KsRsCrFpny
-         rG38ZV+iAu2u9C5KP6XcJM9Ngw/DpAK0pX/1L2t5flqntkqOreZLssyPh47arlqh+3Xr
-         RRZeWlHsUkjWRpUmoShG7kFMmy0GXbQa8KBnIaKY90t3P5URyZyY3Ok65JwPZ0aNAvpt
-         YljjbzvNpzwj4+apUN3KwjZ5tN1UiD8xojN7C/AxmdWs2n+/JqrZKf0FRID19aAyQXQr
-         6ygqkRtFInoXt57dOslDok79yiF21YZj9VT3K4p7oi/Y4HxXsJAd6J9Q+cHoih5ErFG4
-         sQUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710587275; x=1711192075;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QzhojDgRoybSBlASTJXy9XhM8QalAu20Y2x6klhiLUo=;
-        b=GNVTj3N3x2Ehka+ykEElv6MCwAXUZFiUznjD2GrU3R+XlHuFj83SvWASnOoQHPVn7E
-         TgKvwodRn1EscaYmcEUVsrUYT5ZITgXk8Vugn96NWRvU6XP4Ou72hmwAXMaxjgHi8qHC
-         CizmvNh4xUhA4Pltrp1bY02hcniakbTWYmgHeUSRBREZVBYfXJETQP3VI1hwwglTIGIO
-         1NBO0jD4FxHYYISvs1c9iaxDIQKMI5MKkdnI7E5KQQnr98NRtQiP3h/J7LvkCswOgqCe
-         nIVbY03BoYrNB/iyb1txsQ5T1Ai+/mPW/p2n+9vWEfrtErVTsNqaM21wp3Mk9q1Zhi1m
-         kBMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXGIDmxqbSW4ijjRgU5f3h+6IANj0V156O8WbXRa94NLFu2kOJ+RYDYK4z72eQNPUOh6as4TnWWcCSqWDEanTCFOF+yIAHKk9Skr2jVvbf4aoQv/PfXLlAozSavTGo0D7Zu6wsIGFk8
-X-Gm-Message-State: AOJu0YwNieu2o/6XGEuPon9/ziZAj+DfVDxaIOkSMGFwnS+h+ZyzcAop
-	5isx+T7kB85dSnZZ1F8WxgBE5K+aVqh02boadVXLPtW/EQksT2s/
-X-Google-Smtp-Source: AGHT+IHeGO3sFQuS706QJQR8+Od/qOSAjzSdeW2DTbU/Uo23rwzDsghcX0Fk8hADRWrQkEsY2MqZuQ==
-X-Received: by 2002:a17:906:d296:b0:a46:aba1:cd71 with SMTP id ay22-20020a170906d29600b00a46aba1cd71mr319625ejb.54.1710587275312;
-        Sat, 16 Mar 2024 04:07:55 -0700 (PDT)
-Received: from localhost.localdomain ([2a04:ee41:82:7577:c0f3:8008:e41a:ce01])
-        by smtp.gmail.com with ESMTPSA id bx21-20020a170906a1d500b00a4655976025sm2627223ejb.82.2024.03.16.04.07.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 Mar 2024 04:07:54 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: jic23@kernel.org
-Cc: lars@metafoo.de,
-	andriy.shevchenko@linux.intel.com,
-	ang.iglesiasg@gmail.com,
-	linus.walleij@linaro.org,
-	phil@raspberrypi.com,
-	579lpy@gmail.com,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vasileios Amoiridis <vassilisamir@gmail.com>
-Subject: [PATCH v2 2/2] iio: pressure: Fixes SPI support for BMP3xx devices
-Date: Sat, 16 Mar 2024 12:07:43 +0100
-Message-Id: <20240316110743.1998400-3-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240316110743.1998400-1-vassilisamir@gmail.com>
-References: <20240316110743.1998400-1-vassilisamir@gmail.com>
+	s=arc-20240116; t=1710595592; c=relaxed/simple;
+	bh=bPiGxqy/7Ev9VovY1nEuD30cL/1DJiw6LXQO2lKPicQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tY/DGzgYFYHm+O0GE7d4tJE6q0aeG05CCK6a+OFJ9v2ZpfCmskv3HBgOJzldhCVBi6tZN84iNFcXob6PaZc73hsxgmYLNLG1g59+Q28ndX5hfUCEPJNCJ+kXoILE8wcOsnJ1c0q+bjnIHrqHvztBNNigIXeFpDvuOMyImi4elAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DbeEqOiQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E083BC433F1;
+	Sat, 16 Mar 2024 13:26:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710595591;
+	bh=bPiGxqy/7Ev9VovY1nEuD30cL/1DJiw6LXQO2lKPicQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DbeEqOiQW0QT21LYwf5NYNPwWE1mZ/WWEKXUoQ1ZSeI8BX4oL9ji1ULB1FB8b0n/7
+	 DTyfOQeGyQM+KbeXvO1ogt/5CKc/gtxCYLZMK3U0+9K07PI1NvuxWjwmk+S24mapKP
+	 gggE4xGXC4RnTmbVuTTrZDDuYkFyKn0mQuNOH3u+wnezgdKYJPS9BecKCrStBtAdiI
+	 WhlXMP6U5nVNvHN+vlTAuVQXMI7nfbUD11sF4TihUGu6InIw3JMHEg+gIMt5KL0JnG
+	 GaCIXJvzwsI/57gIPYtzJGoeRsQhbm5AvvkFMBfvlfOoY2EJwbf35axne8pUHvcUFU
+	 S3dRoKhRCg6LA==
+Date: Sat, 16 Mar 2024 13:26:18 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v3 4/4] iio: inkern: move to the cleanup.h magic
+Message-ID: <20240316132618.434ff138@jic23-huawei>
+In-Reply-To: <20240309174145.0834de04@jic23-huawei>
+References: <20240229-iio-use-cleanup-magic-v3-0-c3d34889ae3c@analog.com>
+	<20240229-iio-use-cleanup-magic-v3-4-c3d34889ae3c@analog.com>
+	<20240303142431.506c05a2@jic23-huawei>
+	<740c98678f943c761623800544a8ba998aa4aa93.camel@gmail.com>
+	<20240309174145.0834de04@jic23-huawei>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Bosch does not use unique BMPxxx_CHIP_ID for the different versions
-of the device which leads to misidentification of devices if their
-ID is used. Use a new value in the chip_info structure instead of
-the BMPxxx_CHIP_ID, in order to choose the correct regmap_bus to
-be used.
+On Sat, 9 Mar 2024 17:41:45 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-Fixes: a9dd9ba32311 ("iio: pressure: Fixes BMP38x and BMP390 SPI support")
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
----
- drivers/iio/pressure/bmp280-core.c | 1 +
- drivers/iio/pressure/bmp280-spi.c  | 9 ++-------
- drivers/iio/pressure/bmp280.h      | 1 +
- 3 files changed, 4 insertions(+), 7 deletions(-)
+> On Mon, 04 Mar 2024 09:04:49 +0100
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>=20
+> > On Sun, 2024-03-03 at 14:24 +0000, Jonathan Cameron wrote: =20
+> > > On Thu, 29 Feb 2024 16:10:28 +0100
+> > > Nuno Sa <nuno.sa@analog.com> wrote:
+> > >    =20
+> > > > Use the new cleanup magic for handling mutexes in IIO. This allows =
+us to
+> > > > greatly simplify some code paths.
+> > > >=20
+> > > > While at it, also use __free(kfree) where allocations are done and =
+drop
+> > > > obvious comment in iio_channel_read_min().
+> > > >=20
+> > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>   =20
+> > >=20
+> > > Hi Nuno
+> > >=20
+> > > Series looks very nice. One trivial thing inline - I can tidy that up=
+ whilst
+> > > applying if nothing else comes up.
+> > >=20
+> > > Given this obviously touches a lot of core code, so even though simpl=
+e it's
+> > > high risk for queuing up late. I also have a complex mess already que=
+ued up
+> > > for the coming merge window. Hence I'm going to hold off on applying =
+this
+> > > series until the start of the next cycle.
+> > >=20
+> > > Nothing outside IIO is going to depend on it, so it's rather simpler =
+decision
+> > > to hold it than for the ones that add new general purpose infrastruct=
+ure.
+> > >=20
+> > >    =20
+> >=20
+> > Seems reasonable... It may even give us some time to see how the cond_g=
+uard()
+> > and scoped_cond_guard() will end up. =20
+>=20
+> Absolutely - thankfully converting to the suggestions Linus made will be =
+straight
+> forwards, so hopefully the worst that happens is a complex merge, or some
+> fixing up to do afterwards.
+>=20
+> >  =20
+> > >=20
+> > >    =20
+> > > > =C2=A0EXPORT_SYMBOL_GPL(iio_read_channel_attribute);
+> > > > =C2=A0
+> > > > @@ -757,29 +711,24 @@ int iio_read_channel_processed_scale(struct
+> > > > iio_channel *chan, int *val,
+> > > > =C2=A0	struct iio_dev_opaque *iio_dev_opaque =3D to_iio_dev_opaque(=
+chan-   =20
+> > > > >indio_dev);   =20
+> > > > =C2=A0	int ret;
+> > > > =C2=A0
+> > > > -	mutex_lock(&iio_dev_opaque->info_exist_lock);
+> > > > -	if (!chan->indio_dev->info) {
+> > > > -		ret =3D -ENODEV;
+> > > > -		goto err_unlock;
+> > > > -	}
+> > > > +	guard(mutex)(&iio_dev_opaque->info_exist_lock);
+> > > > +	if (!chan->indio_dev->info)
+> > > > +		return -ENODEV;
+> > > > =C2=A0
+> > > > =C2=A0	if (iio_channel_has_info(chan->channel, IIO_CHAN_INFO_PROCES=
+SED)) {
+> > > > =C2=A0		ret =3D iio_channel_read(chan, val, NULL,
+> > > > =C2=A0				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 IIO_CHAN_INFO_PROCES=
+SED);
+> > > > =C2=A0		if (ret < 0)
+> > > > -			goto err_unlock;
+> > > > +			return ret;
+> > > > =C2=A0		*val *=3D scale;   =20
+> > >=20
+> > > 		return 0;
+> > >    =20
+> > > > =C2=A0	} else {   =20
+> > > could drop the else.
+> > >    =20
+> > > > =C2=A0		ret =3D iio_channel_read(chan, val, NULL, IIO_CHAN_INFO_RAW=
+);
+> > > > =C2=A0		if (ret < 0)
+> > > > -			goto err_unlock;
+> > > > +			return ret;
+> > > > =C2=A0		ret =3D iio_convert_raw_to_processed_unlocked(chan, *val,
+> > > > val,
+> > > > =C2=A0							=C2=A0=C2=A0=C2=A0 scale);   =20
+> > > 		return iio_convert_raw_to_proc...
+> > >    =20
+> >=20
+> > Hmm, unless I completely misunderstood your comments on v2, this was ex=
+actly
+> > what I had but you recommended to leave the else branch :).
+> >  =20
+> That was a younger me :)  Either way is fine.
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index fe8734468ed3..62e9e93d915d 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1233,6 +1233,7 @@ const struct bmp280_chip_info bmp380_chip_info = {
- 	.chip_id = bmp380_chip_ids,
- 	.num_chip_id = ARRAY_SIZE(bmp380_chip_ids),
- 	.regmap_config = &bmp380_regmap_config,
-+	.spi_read_extra_byte = true,
- 	.start_up_time = 2000,
- 	.channels = bmp380_channels,
- 	.num_channels = 2,
-diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
-index 038d36aad3eb..4e19ea0b4d39 100644
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -96,15 +96,10 @@ static int bmp280_spi_probe(struct spi_device *spi)
- 
- 	chip_info = spi_get_device_match_data(spi);
- 
--	switch (chip_info->chip_id[0]) {
--	case BMP380_CHIP_ID:
--	case BMP390_CHIP_ID:
-+	if (chip_info->spi_read_extra_byte)
- 		bmp_regmap_bus = &bmp380_regmap_bus;
--		break;
--	default:
-+	else
- 		bmp_regmap_bus = &bmp280_regmap_bus;
--		break;
--	}
- 
- 	regmap = devm_regmap_init(&spi->dev,
- 				  bmp_regmap_bus,
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index 4012387d7956..5812a344ed8e 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -423,6 +423,7 @@ struct bmp280_chip_info {
- 	int num_chip_id;
- 
- 	const struct regmap_config *regmap_config;
-+	bool spi_read_extra_byte;
- 
- 	const struct iio_chan_spec *channels;
- 	int num_channels;
--- 
-2.25.1
+I compromised - move the returns into the two branches, but kept the else.
+
+Given I've started queuing stuff up for next cycle, seemed sensible to pick=
+ these
+up. Applied to the togreg-normal branch of iio.git.
+
+That will get rebased on rc1 and become togreg as normal in a few weeks time
+and hopefully I'll retire the togreg-normal / togreg-cleanup split.
+
+Thanks,
+
+Jonathan
+
+>=20
+> Jonathan
+>=20
+>=20
+> > - Nuno S=C3=A1
+> >  =20
+>=20
+>=20
 
 

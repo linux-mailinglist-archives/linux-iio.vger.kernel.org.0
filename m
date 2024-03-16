@@ -1,42 +1,45 @@
-Return-Path: <linux-iio+bounces-3572-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3573-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D140F87DB6D
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 21:21:26 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB4D87DB6B
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 21:21:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E6731F21B06
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 20:21:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE968281EC8
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 20:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E1F1C6AF;
-	Sat, 16 Mar 2024 20:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93AB31CD2B;
+	Sat, 16 Mar 2024 20:17:33 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
+Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4971C68D
-	for <linux-iio@vger.kernel.org>; Sat, 16 Mar 2024 20:14:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31753D0C5
+	for <linux-iio@vger.kernel.org>; Sat, 16 Mar 2024 20:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710620086; cv=none; b=gbXQjGdLFNXIhseaEDljH5lJlv4o98LOM2khbm1Gxw/WC9uVoceRmiZXdVE+KDy3S2dSnF/VMB8sFFiXWekm2czS+JsvpOUL95E5wVrsCtBhNGkEhUy+Rmmdw6Wk2w4Hp7dJVk8J4QgYpA2tktSlBGk/00FztlEndVQeao63hFk=
+	t=1710620251; cv=none; b=Zf9Xv9Yeq4V5Tu78OeR4l7E7nPi6+IhqxmfXYMsnbgMdXEulEkSIuvzRgMbaYs0BUdH5dyqiFG7goxKw+InYAu+kpn1nxdSTOd6SvLVXQNMXe994rfOLzQ7WSwE1y/fZQ+mB0F6xRAqfz549k5VcyquJ7JvqRWTFkICxNnzz6no=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710620086; c=relaxed/simple;
-	bh=RauXkEzmN7SZO4F1m+jEV8VKhQgNgAvhOgY28JNq/wk=;
+	s=arc-20240116; t=1710620251; c=relaxed/simple;
+	bh=L4Kr3W03WnDRFmtdwt7+DIdItUZViAX7DVeASVj0Nj0=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yl4bOOEHzToiAnZoFfxAptq8Sz1UtKno1Iq7++J5ve6sPcds4Xee8ItIOa0WzhFHDdHxb0eTNfZAUFO2TwJpt+qb3XCuJT/9oY6uS52qO/QYpJUNm4xFtCKMxulLcoDe6mzVnWT3brl/sL3LM2C8NI89aGeCiorBDbkhAxrR0sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.82
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZIITOz8T5vs53VpbKMNEcLsc+KNT/eWHswcWRBVB47eWfA4LikpFgMU9tPS5eVUNuBCsvmwBg/EaktvGOKbaPjXM3itNRIdrod5TyfZ/sPiuOUPHswp78vXE3Nb+kGXdeuMDUof6DEfh5v7Xys9SloWoxuZDShYSheCiF3KXbdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
 Received: from localhost (88-113-26-217.elisa-laajakaista.fi [88.113.26.217])
-	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
-	id cf37add6-e3d1-11ee-abf4-005056bdd08f;
-	Sat, 16 Mar 2024 22:14:36 +0200 (EET)
+	by fgw23.mail.saunalahti.fi (Halon) with ESMTP
+	id 2edfabe6-e3d2-11ee-b972-005056bdfda7;
+	Sat, 16 Mar 2024 22:17:17 +0200 (EET)
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 16 Mar 2024 22:14:35 +0200
-To: Dominique Martinet <dominique.martinet@atmark-techno.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
+Date: Sat, 16 Mar 2024 22:17:16 +0200
+To: David Lechner <dlechner@baylibre.com>
+Cc: Dominique Martinet <dominique.martinet@atmark-techno.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jonathan Cameron <jic23@kernel.org>,
 	Syunya Ohshio <syunya.ohshio@atmark-techno.com>,
 	Guido =?iso-8859-1?Q?G=FCnther?= <agx@sigxcpu.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
@@ -46,73 +49,40 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
  device index
-Message-ID: <ZfX9qyFUPwARjCVT@surfacebook.localdomain>
+Message-ID: <ZfX-TEJFPpMPfHum@surfacebook.localdomain>
 References: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
+ <7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
+ <Zd7hSOw3_zosyrn3@atmark-techno.com>
+ <daed8ada-9e01-41ad-82af-5da5cbbc865c@linaro.org>
+ <Zd7qz1Qte8HWieF_@atmark-techno.com>
+ <20240228142441.00002a79@Huawei.com>
+ <Zd_zB_ymxkx0HB3q@atmark-techno.com>
+ <ZfPg-nMANUtBlr6S@atmark-techno.com>
+ <CAMknhBG_kJx8JPvTBQo7zpy3mFAkUjZpRY3DLBfXt+39nRJWiA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
+In-Reply-To: <CAMknhBG_kJx8JPvTBQo7zpy3mFAkUjZpRY3DLBfXt+39nRJWiA@mail.gmail.com>
 
-Wed, Feb 28, 2024 at 02:12:54PM +0900, Dominique Martinet kirjoitti:
-> From: Syunya Ohshio <syunya.ohshio@atmark-techno.com>
-> 
-> When using dtb overlays it can be difficult to predict which iio device
-
-DTB
-IIO
-
-> will get assigned what index, and there is no easy way to create
-> symlinks for /sys nodes through udev so to simplify userspace code make
-> it possible to request fixed indices for iio devices in device tree.
-
-IIO
-
-> 
-> For platforms without device trees of_alias_get_id will just fail and
-
-We refer to functions as func():
-of_alias_get_id()
-
-> ida_alloc_range will behave as ida_alloc currently does.
-
-Ditto.
-
-> For platforms with device trees, they can not set an alias, for example
-> this would try to get 10 from the ida for the device corresponding to
-> adc2:
-> aliases {
->   iio10 = &adc2
-> };
-
-> To: Jonathan Cameron <jic23@kernel.org>
-> Cc: Guido Günther <agx@sigxcpu.org>
-> Cc: Lars-Peter Clausen <lars@metafoo.de>
-> Cc: Rob Herring <robh+dt@kernel.org>
-> Cc: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
-> Cc: Conor Dooley <conor+dt@kernel.org>
-> Cc: linux-iio@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-
-Please, make sure you don't pollute commit message with these.
-Either use specific --to and --cc when formating patch or move
-them into comment block (after '---' line below).
-
-> Signed-off-by: Syunya Ohshio <syunya.ohshio@atmark-techno.com>
-> Signed-off-by: Dominique Martinet <dominique.martinet@atmark-techno.com>
+Fri, Mar 15, 2024 at 10:53:36AM -0500, David Lechner kirjoitti:
+> On Fri, Mar 15, 2024 at 12:58â€¯AM Dominique Martinet
+> <dominique.martinet@atmark-techno.com> wrote:
 
 ...
 
-> +#include <linux/of.h>
+> How about using udev rules to create symlinks for each device based on
+> the label attribute? No changes to the kernel are needed.
 
-What about ACPI?
-Please try avoid hard to use OF-specific code for the new features.
++1 for the suggestion. We have a lot of information in sysfs to distinguish
+devices by a physical connection, even if we have the same names/labels they
+may not have the same physical connections (if there is a possibility of the
+collision, then it means it has to be fixed elsewhere).
 
 -- 
 With Best Regards,

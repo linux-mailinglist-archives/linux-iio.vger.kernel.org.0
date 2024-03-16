@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-3570-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3571-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D70A87DB57
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 20:49:26 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0653E87DB5E
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 20:57:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A58F1F21429
-	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 19:49:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C1771F215A9
+	for <lists+linux-iio@lfdr.de>; Sat, 16 Mar 2024 19:57:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0AF1BDE2;
-	Sat, 16 Mar 2024 19:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36FE61BF2B;
+	Sat, 16 Mar 2024 19:57:08 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fgw23-7.mail.saunalahti.fi (fgw23-7.mail.saunalahti.fi [62.142.5.84])
+Received: from fgw21-7.mail.saunalahti.fi (fgw21-7.mail.saunalahti.fi [62.142.5.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25551A38E5
-	for <linux-iio@vger.kernel.org>; Sat, 16 Mar 2024 19:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5548D1843
+	for <linux-iio@vger.kernel.org>; Sat, 16 Mar 2024 19:57:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710618561; cv=none; b=s18aFdkHs6D41UIsvGlQF+Wo+YCLOkGC0EuIYXnxAj9GgqIdtEE4mgxmtCt/eS/g0b+RWtPDyZcd/tLa2rkbkIiQn54u1dkgcBbYZoSfGd9ttxrjKGYxtOZUtr8xHzWQiLpkHnzEzGhcCAGpzJY050uMAKANbSSPnwvjAQmKxOk=
+	t=1710619028; cv=none; b=OZSnhT3ktr/LZmjDR4Meu0EMaeCLh+V8yBPOJhDU/wKEJKaseYxB3SNCOEQId8hx4UnDxm0M3qXLkGAVpycthjoICMWRaGIcyOfUdcL2lDqLclVGjiBvUPpp89KUD+y7B+pbIX/H+b+GwYJNIqvJLQivrCtVgOKTBJ7hD47ZNAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710618561; c=relaxed/simple;
-	bh=xZvpYBpQr3Dz9jQMjkfFj+YHY5lZ6NVZmjfgy2dQ9as=;
+	s=arc-20240116; t=1710619028; c=relaxed/simple;
+	bh=UKCzykZaeKbXBkkY+1MpRT1JBdvsdYA5sQSWa+u0EDw=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mdrkemfTB2kqfXcw2X5DT4gx9iZcFvPURg1ftW0aW1vsaYUfr1gO0HoqgIgwiEjx+UjuPkR3KXQ3Ig8a0umL9A7nwB2tUS/x47qE/lk7C0hxLq16LfcyAqvq5TGVIuXupcAKMSBHVVog0cqkY2QqFW9CLEJuIOuKeViAo1uZ9Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.84
+	 Content-Type:Content-Disposition:In-Reply-To; b=gNtbHg5Ma3nSawJq68H1OsESs/xTaYvAsYLD8pCCQU8yhIzcp+XSH6kSXcBqR+h7P+aGN/fv2dbWr7jyLiQl0iICc0RduQVryWxh/I7ncbaXZ6IFQXTOGPSwgdNWLrt9RmBkfOIZvL/Rlh4/oYdZXiE2E2Q3+CcHpQhQx91ZmWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.82
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
 Received: from localhost (88-113-26-217.elisa-laajakaista.fi [88.113.26.217])
-	by fgw23.mail.saunalahti.fi (Halon) with ESMTP
-	id 4611a19e-e3ce-11ee-b972-005056bdfda7;
-	Sat, 16 Mar 2024 21:49:17 +0200 (EET)
+	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
+	id 5bec0d5d-e3cf-11ee-abf4-005056bdd08f;
+	Sat, 16 Mar 2024 21:57:03 +0200 (EET)
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sat, 16 Mar 2024 21:49:17 +0200
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v3 3/4] iio: buffer: iio: core: move to the cleanup.h
- magic
-Message-ID: <ZfX3vQ-0EWFcFN0f@surfacebook.localdomain>
-References: <20240229-iio-use-cleanup-magic-v3-0-c3d34889ae3c@analog.com>
- <20240229-iio-use-cleanup-magic-v3-3-c3d34889ae3c@analog.com>
+Date: Sat, 16 Mar 2024 21:57:03 +0200
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: adc: ad7944: Add support for "3-wire mode"
+Message-ID: <ZfX5jynjW4M9pvw1@surfacebook.localdomain>
+References: <20240314-mainline-ad7944-3-wire-mode-v2-1-d469da0705d2@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -51,13 +51,152 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240229-iio-use-cleanup-magic-v3-3-c3d34889ae3c@analog.com>
+In-Reply-To: <20240314-mainline-ad7944-3-wire-mode-v2-1-d469da0705d2@baylibre.com>
 
-Thu, Feb 29, 2024 at 04:10:27PM +0100, Nuno Sa kirjoitti:
-> Use the new cleanup magic for handling mutexes in IIO. This allows us to
-> greatly simplify some code paths.
+Thu, Mar 14, 2024 at 12:43:38PM -0500, David Lechner kirjoitti:
+> This adds support for AD7944 ADCs wired in "3-wire mode". (NOTE: 3-wire
+> is the datasheet name for this wiring configuration and has nothing to
+> do with SPI_3WIRE.)
+> 
+> In the 3-wire mode, the SPI controller CS line can be wired to the CNV
+> line on the ADC and used to trigger conversions rather that using a
+> separate GPIO line.
+> 
+> The turbo/chain mode compatibility check at the end of the probe
+> function is technically can't be triggered right now but adding it now
+> anyway so that we don't forget to add it later when support for
+> daisy-chaining is added.
 
-Forgot, the Subject has a leftover 'iio: core:'.
+...
+
+> +enum ad7944_spi_mode {
+> +	/* datasheet calls this "4-wire mode" */
+> +	AD7944_SPI_MODE_DEFAULT,
+> +	/* datasheet calls this "3-wire mode" (not related to SPI_3WIRE!) */
+> +	AD7944_SPI_MODE_SINGLE,
+> +	/* datasheet calls this "chain mode" */
+> +	AD7944_SPI_MODE_CHAIN,
+
+Why not kernel doc?
+
+> +};
+
+...
+
+>  struct ad7944_adc {
+>  	struct spi_device *spi;
+> +	enum ad7944_spi_mode spi_mode;
+>  	/* Chip-specific timing specifications. */
+>  	const struct ad7944_timing_spec *timing_spec;
+>  	/* GPIO connected to CNV pin. */
+> @@ -58,6 +75,9 @@ struct ad7944_adc {
+>  	 } sample __aligned(IIO_DMA_MINALIGN);
+>  };
+
+Have you run `pahole` to see if there is a better place for a new member?
+
+...
+
+> +/*
+
+The below is mimicing the kernel doc, but there is no marker for this.
+Why?
+
+> + * ad7944_3wire_cs_mode_conversion - Perform a 3-wire CS mode conversion and
+> + *                                   acquisition
+> + * @adc: The ADC device structure
+> + * @chan: The channel specification
+> + * Return: 0 on success, a negative error code on failure
+> + *
+> + * This performs a conversion and reads data when the chip is wired in 3-wire
+> + * mode with the CNV line on the ADC tied to the CS line on the SPI controller.
+> + *
+> + * Upon successful return adc->sample.raw will contain the conversion result.
+> + */
+
+...
+
+> +	struct spi_transfer xfers[] = {
+> +		{
+> +			/*
+> +			 * NB: can get better performance from some SPI
+> +			 * controllers if we use the same bits_per_word
+> +			 * in every transfer.
+
+I believe you may reformat this to reduce by 1 line.
+
+> +			 */
+> +			.bits_per_word = chan->scan_type.realbits,
+> +			/*
+> +			 * CS is tied to CNV and we need a low to high
+> +			 * transition to start the conversion, so place CNV
+> +			 * low for t_QUIET to prepare for this.
+
+This also seems narrow.
+
+> +			 */
+> +			.delay = {
+> +				.value = T_QUIET_NS,
+> +				.unit = SPI_DELAY_UNIT_NSECS,
+> +			},
+> +
+> +		},
+> +		{
+> +			.bits_per_word = chan->scan_type.realbits,
+> +			/*
+> +			 * CS has to be high for full conversion time to avoid
+> +			 * triggering the busy indication.
+> +			 */
+> +			.cs_off = 1,
+> +			.delay = {
+> +				.value = t_conv_ns,
+> +				.unit = SPI_DELAY_UNIT_NSECS,
+> +			},
+> +		},
+> +		{
+> +			/* Then we can read the data during the acquisition phase */
+> +			.rx_buf = &adc->sample.raw,
+> +			.len = BITS_TO_BYTES(chan->scan_type.storagebits),
+> +			.bits_per_word = chan->scan_type.realbits,
+> +		},
+> +	};
+
+...
+
+> +	case AD7944_SPI_MODE_SINGLE:
+> +		ret = ad7944_3wire_cs_mode_conversion(adc, &indio_dev->channels[0]);
+> +		if (ret)
+> +			goto out;
+> +
+> +		break;
+> +	default:
+> +		/* not supported */
+
+No error code set?
+
+>  		goto out;
+> +	}
+
+...
+
+> +	if (device_property_read_string(dev, "adi,spi-mode", &str_val) == 0) {
+> +		ret = sysfs_match_string(ad7944_spi_modes, str_val);
+
+Don't you want use new fwnode/device property API for making these two in
+one go?
+
+> +		if (ret < 0)
+> +			return dev_err_probe(dev, -EINVAL,
+
+Why shadowing the error code?
+
+> +					     "unsupported adi,spi-mode\n");
+> +
+> +		adc->spi_mode = ret;
+> +	} else {
+> +		/* absence of adi,spi-mode property means default mode */
+> +		adc->spi_mode = AD7944_SPI_MODE_DEFAULT;
+> +	}
 
 -- 
 With Best Regards,

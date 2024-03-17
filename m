@@ -1,213 +1,132 @@
-Return-Path: <linux-iio+bounces-3576-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3577-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F101787DC91
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Mar 2024 09:24:03 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E815287DD6C
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Mar 2024 15:37:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DABA1C204BF
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Mar 2024 08:24:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7430FB20CA8
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Mar 2024 14:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E5B1EEA9;
-	Sun, 17 Mar 2024 08:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18CE2594;
+	Sun, 17 Mar 2024 14:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uh307Yvt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bJrBpD07"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7D2FBEA;
-	Sun, 17 Mar 2024 08:23:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F891C693;
+	Sun, 17 Mar 2024 14:37:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710663838; cv=none; b=OzJKbZshRVMX6GgBgd2Wdk5EjcoxxK0VG+Uu3nh7kpI0yVedhyfqYmt8g+elT3RHztS/nGlC8+V86E5KmJ+xp/Gb36/RMmjR3/x4xxXhSbDnstjuLHFCeEd0oYaUoPuZNzXUQ4KRVmw/ztAPNs3zovYIwh8TLgruabyjoLbQ3o8=
+	t=1710686264; cv=none; b=qU5QgynxZwxHUZGIZ0fh+chr710d6KoyvKEVzgVU403O5i2/uXFkTlt7Uz7PQ+B75OkUn+uTY5p3FXeO06uXj/zP/rr5LT5xXteejIoiGTBj3jgzCEde3TUji/rqIgDfPWAKRe6TZsGHjAozYCSQvAAWnxASTLkCz60fLC/J2VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710663838; c=relaxed/simple;
-	bh=5efYS0Mz1r4k8/xBfdeZ5uezDz3yfNPpDBbLm2tF4do=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nx+n9atFSskY9Rsm78kJycbshUATZUgi1KiOjuIiz3luXoitsPHXnji7CTtxgcQ18tWr3ah73wvWtndFO6EaODYd4i5rDXCN1UZy2WND6nQXDpkQpkzP0QYZmPRnebE+/I5SCBVUgNS06z1iKzDvAl99vSQqJrkWO/N54VLFT4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uh307Yvt; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-568c6c391d8so623689a12.3;
-        Sun, 17 Mar 2024 01:23:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710663835; x=1711268635; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ymcnCfzxIXJPRJZKuRvTXsxDMCvEERb4Lu1UACKCvMM=;
-        b=Uh307Yvt2YknydGVHpitElt3hPT9l0q8TGzrWk/7lnDpvd4k/qPT2Eb3WAqGZSv3by
-         7CsyQZsv3k1qxxVii1+gUlSSGMPlMUKSHUnl/rcjOfoeqJlROCI5jvnc790cliAZ99OL
-         bfX6qv1Ek5jD1G/wS/YtTgf55coN7ShUptEZfw1HZRjmCldtZUQ83Kzir3ix9rmhVhmr
-         sM1e0kdy80bLYNiHj+W/Hxlbfel0V0kHczsAfkEBhQ/+K37rg7AvmsPQUIke3G0/At8R
-         0Syo/5Q38XBZxhS20sDX4KXI54q+h35Fa1QoyaHiKEt7dsaQAvnp9Ym5CKxmvNgXomXy
-         RBDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710663835; x=1711268635;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ymcnCfzxIXJPRJZKuRvTXsxDMCvEERb4Lu1UACKCvMM=;
-        b=Li6C/uVLnycfh+k7vECYCLNWnA07SKHrwL19ZGfS4mSgeMFB36yGhd1bFfOgYG8hf+
-         pCFq14W7SMxV93YiMm/3FpxSdFUZBVTLykzwPCOa57nWVSquVOlN1H3W2OfudNikTRt6
-         6bVN2UwPULKIVRoFv90oAmBxM6F8d5Jb6buHGSs5sBqdls0GHyHI3nei2IEbDGPL7WWD
-         BcPcLWfPrBf2iWBFjD6OVtuwBk7qBSaAykdZOFgnoXRIGO58JhXFicLkcctYWoYO5s8q
-         CtKtxRCVAIFAd1RfbOgTTe2pRFbJLo93ensZ1ua+pWymKuWDSk0FtH08N87i9wTCB6tA
-         vZMg==
-X-Forwarded-Encrypted: i=1; AJvYcCXSYvGNzE3kgor1vQlHKjbNh/hGlk0/C/hlHjttqFS+aM0uIDNJFmpsO6Krd68l6qQFmJgH6K6Lyw4KGAUd2uBs02kaiagiEAJNwO2ESDFMjRGX7AGB+h74uluClUm6tUNwUIeHj2VJ
-X-Gm-Message-State: AOJu0YxWp181+NodPh98Savp8d9k3WHTKR7JMFtvLAeTHe0BhOXpijLi
-	0cl8vtcRFtQyg58PAr7w0/NKm4q3NhafdG3fwVyzDTHxEayBAob6EcPJOXnafC+ipZk5wOU2Ss+
-	vQQoMIVejDa+vkgL7G3TePWnbn5A=
-X-Google-Smtp-Source: AGHT+IEG/45MPPL42t7BqEeTOXPjDgozwk0UVr8x9PA5b+mVpjqnodS3p2OvFWi4swSx/5X/1sbGF7hhq1NnkICWlAo=
-X-Received: by 2002:a17:907:c783:b0:a45:a7f8:1b6b with SMTP id
- tz3-20020a170907c78300b00a45a7f81b6bmr7644169ejc.46.1710663834825; Sun, 17
- Mar 2024 01:23:54 -0700 (PDT)
+	s=arc-20240116; t=1710686264; c=relaxed/simple;
+	bh=PT9YxTRcdtJLj8jNoUrOToUdo8MYa58ycoiSVTas14o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QlBNiJLQI6yXGTnLL/ZGt3r6JPVVRLOFVZWZrXo9kcd0ZVBLrves1Br1WmXRvI1GEhv0clmSQszVf682uFaIgoI2NZnZ1n9uB1wRUSbh+QtiaNOTHe0bBzjI9ZqEzBp21raJZXKjB1KF1YwPNYmJKy+kjPScixkrXCGIaGTI3Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bJrBpD07; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96865C433C7;
+	Sun, 17 Mar 2024 14:37:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710686263;
+	bh=PT9YxTRcdtJLj8jNoUrOToUdo8MYa58ycoiSVTas14o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bJrBpD079vjEMroEdPDcgoZ9AlhiXQLbJ97scn4FJGAycSNSCDui2S9DJC6tki/Sw
+	 Hdf/4gniJcVYv1sjEA1Ad/D5jFhIIBngNhqNZP4l36jnYBgv1iDIZl6nkyx3xMNNxX
+	 mSTXnLvhRE5LogW8dMhvt51xxuyzWcBc0KGHUrWzeQ/b2OYLBebPw5rLlDRQDHidzS
+	 tsRA7uwOpzgeNataMsf3bS5/X5e7psgXEgwTPSINqA+0xmJ8e1ZNXhP0xALMXSKiqr
+	 5H3nUqX4t0D/5s/4iOr8HG1rLOYKtle3C+t4fLnwTwPqeUlsNpJTLenqE0jKil2yxN
+	 gHWnmkzQBEH2w==
+Date: Sun, 17 Mar 2024 14:37:39 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Matt Ranostay <matt@ranostay.sg>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: health: maxim,max30102: fix compatible
+ check
+Message-ID: <20240317-bakery-numeric-a34b928efa6d@spud>
+References: <20240316-max30102_binding_fix-v1-1-e8e58f69ef8a@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240314-mainline-ad7944-3-wire-mode-v2-1-d469da0705d2@baylibre.com>
- <ZfX5jynjW4M9pvw1@surfacebook.localdomain> <CAMknhBGMUQFoQ9TxTTgy0dxHoyXkt+5tS93tpwz5Wo=h1UQD3Q@mail.gmail.com>
-In-Reply-To: <CAMknhBGMUQFoQ9TxTTgy0dxHoyXkt+5tS93tpwz5Wo=h1UQD3Q@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Sun, 17 Mar 2024 10:23:18 +0200
-Message-ID: <CAHp75VcP7sZKgoXzgTihf96rc5rz=U0Amoardj1Sy9uTMDHknA@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: adc: ad7944: Add support for "3-wire mode"
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="3m7Apa/RWUaBOpCe"
+Content-Disposition: inline
+In-Reply-To: <20240316-max30102_binding_fix-v1-1-e8e58f69ef8a@gmail.com>
+
+
+--3m7Apa/RWUaBOpCe
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 17, 2024 at 1:10=E2=80=AFAM David Lechner <dlechner@baylibre.co=
-m> wrote:
-> On Sat, Mar 16, 2024 at 2:57=E2=80=AFPM Andy Shevchenko
-> <andy.shevchenko@gmail.com> wrote:
-> > Thu, Mar 14, 2024 at 12:43:38PM -0500, David Lechner kirjoitti:
+On Sat, Mar 16, 2024 at 11:56:57PM +0100, Javier Carrasco wrote:
+> The "maxim,green-led-current-microamp" property is only available for
+> the max30105 part (it provides an extra green LED), and must be set to
+> false for the max30102 part.
+>=20
+> Instead, the max30100 part has been used for that, which is not
+> supported by this binding (it has its own binding).
+>=20
+> This error was introduced during the txt to yaml conversion.
+>=20
+> Fixes: 5a6a65b11e3a ("dt-bindings:iio:health:maxim,max30102: txt to yaml =
+conversion")
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-...
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-> > > +enum ad7944_spi_mode {
-> > > +     /* datasheet calls this "4-wire mode" */
-> > > +     AD7944_SPI_MODE_DEFAULT,
-> > > +     /* datasheet calls this "3-wire mode" (not related to SPI_3WIRE=
-!) */
-> > > +     AD7944_SPI_MODE_SINGLE,
-> > > +     /* datasheet calls this "chain mode" */
-> > > +     AD7944_SPI_MODE_CHAIN,
-> >
-> > Why not kernel doc?
->
-> This isn't a public/shared enum so it doesn't seem like it needs it.
+> ---
+>  Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/health/maxim,max30102.=
+yaml b/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
+> index c13c10c8d65d..eed0df9d3a23 100644
+> --- a/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
+> +++ b/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
+> @@ -42,7 +42,7 @@ allOf:
+>        properties:
+>          compatible:
+>            contains:
+> -            const: maxim,max30100
+> +            const: maxim,max30102
+>      then:
+>        properties:
+>          maxim,green-led-current-microamp: false
+>=20
+> ---
+> base-commit: c1f10ac840caced7a9f717d4170dcc14b3fac076
+> change-id: 20240316-max30102_binding_fix-898e7c94cce9
+>=20
+> Best regards,
+> --=20
+> Javier Carrasco <javier.carrasco.cruz@gmail.com>
+>=20
 
-It doesn't matter.
+--3m7Apa/RWUaBOpCe
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> It would just add redundant enum member names.
+-----BEGIN PGP SIGNATURE-----
 
-These comments make it harder to follow in my opinion.
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZfcAMwAKCRB4tDGHoIJi
+0iQVAQDqnSYSNHsDNk/8FIR4UROHkzfm7B7BmeUbEVUcYw+gIwEA47Rm8mdO6nPq
+1tpXINAFvlSKjbaAvg9+B+ayG6xtqwM=
+=5kuB
+-----END PGP SIGNATURE-----
 
-...
-
-> > > +/*
-> >
-> > The below is mimicking the kernel doc, but there is no marker for this.
-> > Why?
->
-> I received feedback on another patch in a different subsystem that
-> static functions shouldn't use /** since they aren't used outside of
-> the file where they are.
-
-Was it the IIO subsystem? (I believe not).
-Again, that feedback is bogus as we control what to share and what not
-in the documentation (when importing we may say internal or external
-or even on the function granularity), however, even for static
-functions it's good to have documentation in the approved format as it
-makes it easier to render.
-
-> > > + * ad7944_3wire_cs_mode_conversion - Perform a 3-wire CS mode conver=
-sion and
-> > > + *                                   acquisition
-> > > + * @adc: The ADC device structure
-> > > + * @chan: The channel specification
-> > > + * Return: 0 on success, a negative error code on failure
-> > > + *
-> > > + * This performs a conversion and reads data when the chip is wired =
-in 3-wire
-> > > + * mode with the CNV line on the ADC tied to the CS line on the SPI =
-controller.
-> > > + *
-> > > + * Upon successful return adc->sample.raw will contain the conversio=
-n result.
-> > > + */
-
-...
-
-> > > +     case AD7944_SPI_MODE_SINGLE:
-> > > +             ret =3D ad7944_3wire_cs_mode_conversion(adc, &indio_dev=
-->channels[0]);
-> > > +             if (ret)
-> > > +                     goto out;
-> > > +
-> > > +             break;
-> > > +     default:
-> > > +             /* not supported */
-> >
-> > No error code set?
->
-> This is in an interrupt handler, so I didn't think there was anything
-> we can do with an error.
-
-return IRQ_NONE?
-
-> > >               goto out;
-> > > +     }
-
-...
-
-> > > +     if (device_property_read_string(dev, "adi,spi-mode", &str_val) =
-=3D=3D 0) {
-> > > +             ret =3D sysfs_match_string(ad7944_spi_modes, str_val);
-> >
-> > Don't you want use new fwnode/device property API for making these two =
-in
-> > one go?
->
-> I didn't know there was one. I assume you mean
-> fwnode_property_match_property_string().
-
-Yes, but here is the device_ variant of it.
-
-> > > +             if (ret < 0)
-> > > +                     return dev_err_probe(dev, -EINVAL,
-> >
-> > Why shadowing the error code?
->
-> Cargo culted from one of a few of users of sysfs_match_string() that does=
- this.
->
-> Jonathan already picked this patch up so I can follow up with a patch
-> to clean up these two items.
-
-As far as I remember he was planning to rebase, so I believe he can
-easily fold fixups.
-
-> > > +                                          "unsupported adi,spi-mode\=
-n");
-> > > +
-> > > +             adc->spi_mode =3D ret;
-> > > +     } else {
-> > > +             /* absence of adi,spi-mode property means default mode =
-*/
-> > > +             adc->spi_mode =3D AD7944_SPI_MODE_DEFAULT;
-> > > +     }
-
---=20
-With Best Regards,
-Andy Shevchenko
+--3m7Apa/RWUaBOpCe--
 

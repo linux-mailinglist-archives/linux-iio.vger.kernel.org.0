@@ -1,132 +1,99 @@
-Return-Path: <linux-iio+bounces-3577-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3578-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E815287DD6C
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Mar 2024 15:37:56 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86F5D87E123
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 00:45:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7430FB20CA8
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Mar 2024 14:37:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DFE81C2091B
+	for <lists+linux-iio@lfdr.de>; Sun, 17 Mar 2024 23:45:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18CE2594;
-	Sun, 17 Mar 2024 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50C7219ED;
+	Sun, 17 Mar 2024 23:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bJrBpD07"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJcL6k00"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F891C693;
-	Sun, 17 Mar 2024 14:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915B3200C1
+	for <linux-iio@vger.kernel.org>; Sun, 17 Mar 2024 23:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710686264; cv=none; b=qU5QgynxZwxHUZGIZ0fh+chr710d6KoyvKEVzgVU403O5i2/uXFkTlt7Uz7PQ+B75OkUn+uTY5p3FXeO06uXj/zP/rr5LT5xXteejIoiGTBj3jgzCEde3TUji/rqIgDfPWAKRe6TZsGHjAozYCSQvAAWnxASTLkCz60fLC/J2VU=
+	t=1710719125; cv=none; b=tu8BMHmkmaci/Uh5U0IrJssdip9fpRENHzooTc+oQiMcSzAdGBvWVWzrVFOmQRhj7uLxAUmEkxORXIBhLyp24VoTRyCwQx85pM2LlazQ/JQdARCOaWbnR7bwNxeTNzCrUslOtnkYT7x2u4wom7mc23Orb7G093Dvuw7uiO/Wv5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710686264; c=relaxed/simple;
-	bh=PT9YxTRcdtJLj8jNoUrOToUdo8MYa58ycoiSVTas14o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QlBNiJLQI6yXGTnLL/ZGt3r6JPVVRLOFVZWZrXo9kcd0ZVBLrves1Br1WmXRvI1GEhv0clmSQszVf682uFaIgoI2NZnZ1n9uB1wRUSbh+QtiaNOTHe0bBzjI9ZqEzBp21raJZXKjB1KF1YwPNYmJKy+kjPScixkrXCGIaGTI3Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bJrBpD07; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96865C433C7;
-	Sun, 17 Mar 2024 14:37:41 +0000 (UTC)
+	s=arc-20240116; t=1710719125; c=relaxed/simple;
+	bh=qS8OgpafELdrr8mpjENTulc1x7WVHvCrGR8KpMl/ioE=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=rQ0PVNPT7Do7eO/WwkTaP6NN8WQfZE/ZVRsqB5D1is6WyDVyyl/B+Gc8LcQuf84SecsBj41MGpCIz1gq5dfg2pcDH57BBvVq/Tn1bjYi0DetlLj+MVklGez/SCDumCcxUmo1Nm5E1sUsS7EYHSHR4MRB1GJU5BIrvQwKZfF9xxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJcL6k00; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A859C43394
+	for <linux-iio@vger.kernel.org>; Sun, 17 Mar 2024 23:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710686263;
-	bh=PT9YxTRcdtJLj8jNoUrOToUdo8MYa58ycoiSVTas14o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bJrBpD079vjEMroEdPDcgoZ9AlhiXQLbJ97scn4FJGAycSNSCDui2S9DJC6tki/Sw
-	 Hdf/4gniJcVYv1sjEA1Ad/D5jFhIIBngNhqNZP4l36jnYBgv1iDIZl6nkyx3xMNNxX
-	 mSTXnLvhRE5LogW8dMhvt51xxuyzWcBc0KGHUrWzeQ/b2OYLBebPw5rLlDRQDHidzS
-	 tsRA7uwOpzgeNataMsf3bS5/X5e7psgXEgwTPSINqA+0xmJ8e1ZNXhP0xALMXSKiqr
-	 5H3nUqX4t0D/5s/4iOr8HG1rLOYKtle3C+t4fLnwTwPqeUlsNpJTLenqE0jKil2yxN
-	 gHWnmkzQBEH2w==
-Date: Sun, 17 Mar 2024 14:37:39 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matt Ranostay <matt@ranostay.sg>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: health: maxim,max30102: fix compatible
- check
-Message-ID: <20240317-bakery-numeric-a34b928efa6d@spud>
-References: <20240316-max30102_binding_fix-v1-1-e8e58f69ef8a@gmail.com>
+	s=k20201202; t=1710719125;
+	bh=qS8OgpafELdrr8mpjENTulc1x7WVHvCrGR8KpMl/ioE=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=MJcL6k00HSYJeQ7IXgwb7dtDZR9f8OznzhZJbnAI9euwMQ/FMxZSFNV3Uc+r3P56G
+	 wHXk3TO8/B11t1745orqwsl09ml/0bOgFpRbWwRbx1Dp4nd4MHTUHu8pbF9YXw4Uls
+	 QbHxjR1AprUR5HHFGV2QlrHJaiILQ4Ei2Duulg9hGl+fRJz0zZroep2sPUiztgif5f
+	 31xQrrpobo52WTvUxQeNUCpvjZFs6NezzsQ0wlZ6H/18ZjNaHEwIEiLYjP2d6NvFtg
+	 h8EFszfbtxT5QpY1c+oTn07+4qqc/YyjZ6g+G+YWy9ti8ryUrW+KMGzeuQ9/7iqE/I
+	 55LdJ0Naa8AAg==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 08645C53BCD; Sun, 17 Mar 2024 23:45:25 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
+Date: Sun, 17 Mar 2024 23:45:24 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: kernelbugzilla@kirkschnable.com
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-218578-217253-yFF4x53bsR@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
+References: <bug-218578-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3m7Apa/RWUaBOpCe"
-Content-Disposition: inline
-In-Reply-To: <20240316-max30102_binding_fix-v1-1-e8e58f69ef8a@gmail.com>
 
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
 
---3m7Apa/RWUaBOpCe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+--- Comment #16 from Kirk Schnable (kernelbugzilla@kirkschnable.com) ---
+Thanks for the continued support Hans!  I have actually never compiled my o=
+wn
+kernel before, but there's a first time for everything.  I'm down to give i=
+t a
+go.
 
-On Sat, Mar 16, 2024 at 11:56:57PM +0100, Javier Carrasco wrote:
-> The "maxim,green-led-current-microamp" property is only available for
-> the max30105 part (it provides an extra green LED), and must be set to
-> false for the max30102 part.
->=20
-> Instead, the max30100 part has been used for that, which is not
-> supported by this binding (it has its own binding).
->=20
-> This error was introduced during the txt to yaml conversion.
->=20
-> Fixes: 5a6a65b11e3a ("dt-bindings:iio:health:maxim,max30102: txt to yaml =
-conversion")
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Also FWIW, my further testing has indicated that there are also problems wh=
+en
+coming out of a sleep state.  Will your proposed fix also be likely to corr=
+ect
+that behavior too?
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+--=20
+You may reply to this email to add a comment.
 
-> ---
->  Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/health/maxim,max30102.=
-yaml b/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
-> index c13c10c8d65d..eed0df9d3a23 100644
-> --- a/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
-> +++ b/Documentation/devicetree/bindings/iio/health/maxim,max30102.yaml
-> @@ -42,7 +42,7 @@ allOf:
->        properties:
->          compatible:
->            contains:
-> -            const: maxim,max30100
-> +            const: maxim,max30102
->      then:
->        properties:
->          maxim,green-led-current-microamp: false
->=20
-> ---
-> base-commit: c1f10ac840caced7a9f717d4170dcc14b3fac076
-> change-id: 20240316-max30102_binding_fix-898e7c94cce9
->=20
-> Best regards,
-> --=20
-> Javier Carrasco <javier.carrasco.cruz@gmail.com>
->=20
-
---3m7Apa/RWUaBOpCe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZfcAMwAKCRB4tDGHoIJi
-0iQVAQDqnSYSNHsDNk/8FIR4UROHkzfm7B7BmeUbEVUcYw+gIwEA47Rm8mdO6nPq
-1tpXINAFvlSKjbaAvg9+B+ayG6xtqwM=
-=5kuB
------END PGP SIGNATURE-----
-
---3m7Apa/RWUaBOpCe--
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

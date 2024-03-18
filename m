@@ -1,118 +1,118 @@
-Return-Path: <linux-iio+bounces-3589-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3590-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAD187E9DF
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 14:10:18 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276BA87E9E8
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 14:13:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 502E21F21C9B
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 13:10:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A31A4B20BC7
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 13:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA783383B2;
-	Mon, 18 Mar 2024 13:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F140383BC;
+	Mon, 18 Mar 2024 13:13:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YBG2Zh7c"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xsp5mz4e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2040C33CF1;
-	Mon, 18 Mar 2024 13:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 560F5383B0
+	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 13:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710767412; cv=none; b=kbU0HsvHrEmFEUiGJUHK0kL8oaRgHh6Tz3EYgbQUAgcoLwBNxOPWhPEK5XlXHTUcNfulsLTHnqLa6ZUzn1LZS1D0iijZCc72N4O3kTsdXF8tVyDbUPfc7DebeFQiXFuv31I6cTiWDkWZcGod05q8LZctUBGArK5vwQi7MgatLa4=
+	t=1710767579; cv=none; b=b6eBgnpmbeQ2LnTSFZKt5hOf5d7qBWrFBfqrL7jQD54sSTQrjjNYNPCiM/QFzSyf1kGYoCQTvgv1n3oZrPotD+pnEN/c801j3v+iAs0GlHQ/pUTmU6+rT2HR8gC9uADVnUDLcVDKbm4mJ8YCvBpd8HiM06NFap2qf2sTITVRpvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710767412; c=relaxed/simple;
-	bh=mE7jqQ5jElAIH2bMnT6FZSF2mEu0TvZtFmmRGoCQkIk=;
+	s=arc-20240116; t=1710767579; c=relaxed/simple;
+	bh=jYkAnM8eppUrlws4R1s9jQ/Qf2vFnNIaiWtULiZknqA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sYRFW7k8iY7NBrUAFy4PbJMWELVg1RgdIZ3VZOCV1kbG3ExGb0yCPfg0apRNLrOgTrYIResBGAs0WB0jEn0gnuWnuIxXZJOLtcrs4f3AbImKZo0CAf/7nE2D6sTbqlk2BReBV5zwpSVJxujfepTV6Lar2ert4TYmunwMz64THfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YBG2Zh7c; arc=none smtp.client-ip=209.85.167.50
+	 To:Cc:Content-Type; b=t+DSgw+rrFEHYM4mfcoBQWcWUZA1t+Lrw3g+uLHGh5qmK5Z0owwblBNKUr2cBDoJg/Wc+X6iwMv/Wzn+lxeJOOhGw4NY3UZU0xgZrYgRgIEtsUEM6kWS7WCAIFTQd9IUHjNcWfJyXR9m+/eqm+YXQvQkINNcF7Tc8KKTm8Vm3nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xsp5mz4e; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-513ccc70a6dso7382559e87.1;
-        Mon, 18 Mar 2024 06:10:10 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a2f22bfb4e6so599856366b.0
+        for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 06:12:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710767409; x=1711372209; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1710767577; x=1711372377; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=BBZLCMh0SA3DZ15OEaT+twgEPYQm8UQNknXIM0mZma4=;
-        b=YBG2Zh7cY4mWWeDrAxplk7Z5+X8KpgJsLEbwyv4xuNYUhl81b1Uk9kA58IsZGQrmd9
-         /JTJ1hJYML+4Yj23I62Xrt+IBWP+r7nQUX4Pwi+tXSkX8Bhwj7dax3bwcFo/awsyVnZu
-         lbPrsPs2N/CO/qHQRNgL46uR8O5h9e827WeTavw5Y3lZjkENnNzH7TM+HQ7wmu1MvGfF
-         flznr7EZLHdZoPB0ZgqD+VdQ56WnqOgYj7gQd+NKUSbxxQ/z9WvJ6klk+U/Apz+Ehm75
-         cCspk3fcNzdn5LcbdVdOeBdnKJtZlDBZIn5+/fkJcxnEnfVB+FwYmP6XGrOH0AV8ZHQb
-         OhmQ==
+        bh=1AEFB2IpgBJ6bFRDSJcxBXudQWTfz8m0gY8E3WDEBVo=;
+        b=Xsp5mz4eG+lgwjhUxGwH7cCESAwRlDyXaROVJrhoMaJoYLNltALoxj76bcWSVfMir/
+         cXzMNYFW/L19oZnBZN3eAPfldruekbiRdS2BIu23RO6fzmZZXXQc2edtASIH0P0nstgD
+         uqMrNwA+xFQQ2BkWOkRIZSbr7RjCKeQeSupsv4ute7QesnuyEq0Sv/6cCX1LwSJNds2V
+         nwovidP6ZCrlZiF24yKOjlJ1z8gu8UbfHUQCc+4DVu+BUb0ydhk5sLDPwSTaojp2l1nH
+         /Pk5nOvWOzaZj7Q8AtX+aOCKPm9yPtkt6rusW0RCXGcfSYPqLHjaqM0Lk3z8UePYYnYx
+         U+jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710767409; x=1711372209;
+        d=1e100.net; s=20230601; t=1710767577; x=1711372377;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BBZLCMh0SA3DZ15OEaT+twgEPYQm8UQNknXIM0mZma4=;
-        b=kX30hqWaDojMXPKePIl8I0IFlg+zGVeLg1Qx8zNciAjf7sTUsioh5dbq39v+1IwXTC
-         UTawTTY8eIyYOgemvxo9ESRZk9L+p8InRWzXAXPSHAkaEZ7JwV/S2hqtEKIASzFmF1NC
-         EoiChpcc6RsY/jMLlgBpUUjelGLzlLO7wbsGVvim06vF2MO/u8n7ZVV65bllemkyVt8m
-         shIE45CWugIl/pJ3pHS0hHW9CjHi4ISkpwxiWMx2RzNMiDGBAFYPQTdpbEDfa7waW9YK
-         D1hqiS7oG0v5XASRSEfdaYqnOybpd5N/RGZE0RWHrAGfA3zQgIa6gePHN0c7YElakMr0
-         +ZEA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2//QYT16ab5PpQ3SzXSagT3Q/dMZbkFfei6BaqS9/Ebx3sA4iXAOzdPyzgrhLxHu6hCvy0+IUZptPOATtAkvAMbLU5BCuEGZ3kEkvWSMP8ASYyq+y9DYplXqanWws8MoCby7mEoMN
-X-Gm-Message-State: AOJu0Yz+7LK1t/+3CsEv0DoCSM1+b++M99lZkszJdca6ee7blr78v+0r
-	BXtyAqAyejnaTk5AKpCJ74CiUyMjE5n4Yly++dlGPuoWS8W+9jwTXQJ4Fysl8pr4u9untGF5z6e
-	3NXx5hqoi/5iIWbR78vyTyLppZO8=
-X-Google-Smtp-Source: AGHT+IGLMWALI01ckCqs4+f3ML0k0Gp83dbLOhxzM6RvJU2rs4Ord/rFMnwPmqWS9EGUNEOIM2sADJZaDFAzykB43hY=
-X-Received: by 2002:a05:6512:2394:b0:513:e348:fbc0 with SMTP id
- c20-20020a056512239400b00513e348fbc0mr5826916lfv.20.1710767409038; Mon, 18
- Mar 2024 06:10:09 -0700 (PDT)
+        bh=1AEFB2IpgBJ6bFRDSJcxBXudQWTfz8m0gY8E3WDEBVo=;
+        b=LbbKv2UAiQBlAm5kDvQZe3wJx0xjTjjIbUTy2A4VvnJGGkCmUarUF9tF6yQkG5qwWv
+         G30+zFWdu/Xc1iujOibFMkV3Mn53PpnoyqRLVcsnxi0KRJqF0tLqczHEhckVXcKM9p5R
+         WSbsaESW2+4BZNxl7LU6v8bIayYJnfIjszgh5JXS/k3U00X68kXnCFajmYHwoG4ghbVn
+         5Kt93RRP7Vb21sUTPAq61CLKp0K9dJDVHBEtvEC0Z9s3gJgSnOWaUqGPM8NULrOOZjOi
+         ME5Fx6i64KcjI+xnEL2n4rptdYDB7p3P+zl6YZDQ4H3F1TuEZ5t53BYrWFzll5cBOYmJ
+         Vsug==
+X-Forwarded-Encrypted: i=1; AJvYcCWi+uLHL71MEBhPsMU7NsONHUmNlKMcq4Y6rMN06I5G4DRBa2l/ZrD247Z1BHDJ5aHDOZQqcD1EJP6LTN4o8hBbVjQzB/bTZkGu
+X-Gm-Message-State: AOJu0YzY/0P7WnjYS+htoCIzuftEHfR59aQu0I6Vz9vm4dkuOMTOLlTz
+	ALWkHDPaBmArIUQ76BUcLtFr/3Jwxa7wNTrv/uZOxUcGvXD1DL0YDMh308CrYafGXh7eSgNWX5r
+	EavoTbAMtj2kNFTm83TpFzVGZLH0=
+X-Google-Smtp-Source: AGHT+IGp7UX1tWSXOwRvYjAqzlKuzFX/aChngQ95vGb5seeK8MLrLkdbOJJCXakEDeeSEzxsxXQRbV+vjhxj6L0Segs=
+X-Received: by 2002:a17:906:27d1:b0:a46:1e:d199 with SMTP id
+ k17-20020a17090627d100b00a46001ed199mr7214337ejc.39.1710767576586; Mon, 18
+ Mar 2024 06:12:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240314-mainline-ad7944-3-wire-mode-v2-1-d469da0705d2@baylibre.com>
- <ZfX5jynjW4M9pvw1@surfacebook.localdomain> <20240318124041.0000032d@Huawei.com>
-In-Reply-To: <20240318124041.0000032d@Huawei.com>
+References: <20240229-iio-use-cleanup-magic-v3-0-c3d34889ae3c@analog.com>
+ <20240229-iio-use-cleanup-magic-v3-2-c3d34889ae3c@analog.com>
+ <ZfXz6E086KPWUn8Q@surfacebook.localdomain> <20240318123320.000030d3@Huawei.com>
+In-Reply-To: <20240318123320.000030d3@Huawei.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 18 Mar 2024 15:09:32 +0200
-Message-ID: <CAHp75VeQcvuEy4V6-+3PeWTZJ9=Qae0AiiNB93OOw3wuc-uh3A@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: adc: ad7944: Add support for "3-wire mode"
+Date: Mon, 18 Mar 2024 15:12:20 +0200
+Message-ID: <CAHp75VcQbjSqvtDxcoAFkC84560UuZ1xwDu+kdpXHu9MKXuHWA@mail.gmail.com>
+Subject: Re: [PATCH v3 2/4] iio: trigger: move to the cleanup.h magic
 To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Michael Hennerich <michael.hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org, 
+	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Mar 18, 2024 at 2:41=E2=80=AFPM Jonathan Cameron
+On Mon, Mar 18, 2024 at 2:33=E2=80=AFPM Jonathan Cameron
 <Jonathan.Cameron@huawei.com> wrote:
-> > >  struct ad7944_adc {
-> > >     struct spi_device *spi;
-> > > +   enum ad7944_spi_mode spi_mode;
-> > >     /* Chip-specific timing specifications. */
-> > >     const struct ad7944_timing_spec *timing_spec;
-> > >     /* GPIO connected to CNV pin. */
-> > > @@ -58,6 +75,9 @@ struct ad7944_adc {
-> > >      } sample __aligned(IIO_DMA_MINALIGN);
-> > >  };
-> >
-> > Have you run `pahole` to see if there is a better place for a new membe=
-r?
->
-> I know this matters for structures where we see lots of them, but do we a=
-ctually
-> care for one offs?  Whilst it doesn't matter here I'd focus much more
-> on readability and like parameter grouping for cases like this than wasti=
-ng
-> a few bytes.
+> On Sat, 16 Mar 2024 21:32:56 +0200
+> Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+> > Thu, Feb 29, 2024 at 04:10:26PM +0100, Nuno Sa kirjoitti:
 
-This is _also_ true, but think more about cache line contamination.
-Even not-so-important bytes may decrease the performance. In some
-cases it's tolerable, in some it is not (high-speed ADC). In general I
-assume that the developer has to understand many aspects of the
-software and cache line contamination may be last but definitely not
-least.
+...
+
+> > > -   ret =3D bitmap_find_free_region(trig->pool,
+> > > -                                 CONFIG_IIO_CONSUMERS_PER_TRIGGER,
+> > > -                                 ilog2(1));
+> >
+> > > +           ret =3D bitmap_find_free_region(trig->pool,
+> > > +                                         CONFIG_IIO_CONSUMERS_PER_TR=
+IGGER,
+> > > +                                         ilog2(1));
+> >
+> > Despite being in the original code, this is funny magic constant...
+>
+> Not that magic, build time config variable to avoid adding complexity
+> of dynamic expansion of various structures. We could have picked a big
+> number but someone will always want a bigger one and from what I recall
+> actually make it expandable was nasty to do.  Been a long time, though
+> so I'm open to patches that get rid of this in favor of a dynamic solutio=
+n.
+
+I didn't get you, sorry. Logarithm (by any base) from 1 is 0. Writing
+it as arithmetic expression seems funny to me.
 
 --=20
 With Best Regards,

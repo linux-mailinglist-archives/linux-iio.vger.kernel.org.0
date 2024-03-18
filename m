@@ -1,110 +1,121 @@
-Return-Path: <linux-iio+bounces-3584-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3585-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40D0987E792
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 11:43:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F9CD87E958
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 13:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7177F1C20DE1
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 10:43:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 476B11F233EB
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 12:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A3AB2D610;
-	Mon, 18 Mar 2024 10:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dO6u6ASh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563A1210EC;
+	Mon, 18 Mar 2024 12:30:54 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7E92206B
-	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 10:43:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7551B1EF18;
+	Mon, 18 Mar 2024 12:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710758602; cv=none; b=qadjQJ3atp2s2CjtdkW24ywa5dkRruh4qUN3B2g2iq45M15w2Hk+NyD2MXdr9GONU1h/LQeimP3rmGgLJBrq7ThJuvsAvtNEFCgd+arjwohKYAVe8ru/pBUgjty9gifAs4Z2eVEzRdfAWBlRnY1X3m89CbcUigBujsO1lWONnbE=
+	t=1710765054; cv=none; b=TtSiOTqhlOz339sH27ATSyuKMydJ2/HL6IqKz+jv3QxbcWRHjgug5OhTZLGhHdvXVueilHt0YpCf2xL88kFl9WpYQiVvd784g3k/q9ptkoX0OD+FpcvFDW/9ailaQ5EqdeYsHq7HAueJI0a4STk9Y2VJ5uwrCT4ES3wkc7k+2Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710758602; c=relaxed/simple;
-	bh=hGWMuTu/xHvhXQucwDW6anfkQo3Du+ViKgz9PBTe2CM=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oaHtF5xonglvTdQz0A75po+R5oTK2ZgyBKPAE7vjATJxrfmH5tS5Eln3IrimiJKLPnPiBbEVS5tAzuy3hr4EnLt3O0RfBe2qfqFkWgCi0KmJ5XiPt6CqCj2obwBq8kRLC6WT/51EhA8NweQeyBneoIwpckXvzyax6dUev3SCKlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dO6u6ASh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E5AD7C433F1
-	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 10:43:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710758601;
-	bh=hGWMuTu/xHvhXQucwDW6anfkQo3Du+ViKgz9PBTe2CM=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=dO6u6ASh4VIZokOgTecsNQqCREhNpE80OSF9+K3exy3Wam/kEAJdWgP7dULQL/Dd4
-	 VgNqW7TvqGhgaf9BZ14SVRK+2Hpte61nmvdOo83NmIPwJduGfxzV5bq7I4mnSI5lyh
-	 c9YBd6qYV3JManiGOwB7ENliZzdOS671CTpFb4TjNu45XQpSKlF8rQ2gBjgvvq/TFn
-	 87OGuZzFXzcwSGpxjJbPR6sM74xW6NmirKZv+Ys53kSfDvAL+Qqd7JDmmjs5PjUZrX
-	 glWvuNI31+tpDlgU3JYiZYZmnU6CK9i5/4pxRRk964k8T7iuOhKDG7EIRs7iZJL0FF
-	 veABbsND9lubQ==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id D2A72C53BD0; Mon, 18 Mar 2024 10:43:21 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Mon, 18 Mar 2024 10:43:21 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: jwrdegoede@fedoraproject.org
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218578-217253-5XgfUn25UH@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
-References: <bug-218578-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=arc-20240116; t=1710765054; c=relaxed/simple;
+	bh=0oFjsR8UMfssqHaMgHT3LLZ1XLAc6e6F+5fJPvG3290=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Fp53wZBl7+PA5uuTGZOuYTBqiAMDretLMncHM5BcXOlY8ohCwMtpzrnPBK9J4nJlKDt2gL1m8L5Tl4N2fCrBnQa88HtG5y+PBIlQHK7MjXd54UzJN96tvIMmJ8d1jRlqrN0CWj5+HZGInucmrPKxYytATr4R61g93jecwc0eTVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TyvM83LKRz6JBZp;
+	Mon, 18 Mar 2024 20:30:12 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id C0D73140A78;
+	Mon, 18 Mar 2024 20:30:41 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 18 Mar
+ 2024 12:29:54 +0000
+Date: Mon, 18 Mar 2024 12:29:53 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Dominique Martinet <dominique.martinet@atmark-techno.com>
+CC: David Lechner <dlechner@baylibre.com>, Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>, Jonathan Cameron <jic23@kernel.org>, Syunya
+ Ohshio <syunya.ohshio@atmark-techno.com>, Guido =?ISO-8859-1?Q?G?=
+ =?ISO-8859-1?Q?=FCnther?= <agx@sigxcpu.org>, Lars-Peter Clausen
+	<lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
+ device index
+Message-ID: <20240318122953.000013f3@Huawei.com>
+In-Reply-To: <ZfejyEvPIncygKJ9@atmark-techno.com>
+References: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
+	<7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
+	<Zd7hSOw3_zosyrn3@atmark-techno.com>
+	<daed8ada-9e01-41ad-82af-5da5cbbc865c@linaro.org>
+	<Zd7qz1Qte8HWieF_@atmark-techno.com>
+	<20240228142441.00002a79@Huawei.com>
+	<Zd_zB_ymxkx0HB3q@atmark-techno.com>
+	<ZfPg-nMANUtBlr6S@atmark-techno.com>
+	<CAMknhBG_kJx8JPvTBQo7zpy3mFAkUjZpRY3DLBfXt+39nRJWiA@mail.gmail.com>
+	<ZfejyEvPIncygKJ9@atmark-techno.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
+On Mon, 18 Mar 2024 11:15:36 +0900
+Dominique Martinet <dominique.martinet@atmark-techno.com> wrote:
 
---- Comment #17 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
-(In reply to Kirk Schnable from comment #16)
-> Thanks for the continued support Hans!  I have actually never compiled my
-> own kernel before, but there's a first time for everything.  I'm down to
-> give it a go.
+> David Lechner wrote on Fri, Mar 15, 2024 at 10:53:36AM -0500:
+> > How about using udev rules to create symlinks for each device based on
+> > the label attribute? No changes to the kernel are needed.  
+> 
+> Right, it's definitely possible to make symlinks for each "device" -- my
+> patch comment links to such an udev script "solution":
+> https://git.toradex.com/cgit/meta-toradex-bsp-common.git/tree/recipes-core/udev/files/verdin-imx8mm/toradex-adc.sh?h=kirkstone-6.x.y
+> (the script is launched by udev here:
+> https://git.toradex.com/cgit/meta-toradex-bsp-common.git/tree/recipes-core/udev/files/verdin-imx8mm/99-toradex.rules
+> )
+> 
+> My conceptual problem with this is that this makes symlinks in /dev to
+> files in /sys and it feels like we're crossing boundaries.
+> As far as I can tell there is no way for userspace to create arbitrary
+> symlinks in /sys, so I think we could have an interface more
+> user-friendly by allowing paths to be static for users with multiple
+> devices.
+> (I guess that's a weak argument given e.g. disks etc will also have an
+> unreliable name in /sys in the general case, but simple programs don't
+> interact with them in /sys and can use stable links in /dev so my
+> expectations here aren't quite the same)
+> 
+> 
+> Ultimately, the problem might run deeper in that we're having userspace
+> interact with the device through /sys and not the /dev char dev... As
+> far as I could see /dev/iio:deviceX only allows reading buffered values
+> and doesn't have any ioctl or other way of reading immediate values as
+> is possible in /sys though, so that'd require quite a bit of work to
+> duplicate the interface there...
 
-I see in your attached dmesg that you are actually running Fedora, in that =
-case
-I can actually provide pre-build kernel rpms with the patch for you.
+Don't.  The sysfs interface as only control is entirely intentional and
+we do not want IOCTL based duplication.
 
-I'll try to make some time to write a patch for this and provide rpms somet=
-ime
-this week.
+Just addressing this bit as I'm still a bit snowed under to think about this
+more generally.
 
-> Also FWIW, my further testing has indicated that there are also problems
-> when coming out of a sleep state.  Will your proposed fix also be likely =
-to
-> correct that behavior too?
 
-That is good to know, that means that the driver also needs to reset the ch=
-ip
-on resume (and restore any non default settings). I'll add this to the patc=
-h.
 
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
 

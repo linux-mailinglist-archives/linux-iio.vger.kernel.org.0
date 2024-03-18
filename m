@@ -1,165 +1,194 @@
-Return-Path: <linux-iio+bounces-3579-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3580-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F9DE87E1AC
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 02:29:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 29D1A87E213
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 03:16:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EDD11C215BF
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 01:29:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DB241C21329
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 02:16:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E71418029;
-	Mon, 18 Mar 2024 01:29:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4A81DFC1;
+	Mon, 18 Mar 2024 02:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="JdNraSZf"
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="by/cq4iX";
+	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="ak2fGyJp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
+Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207632032D;
-	Mon, 18 Mar 2024 01:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D279A14F6C
+	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 02:15:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710725343; cv=none; b=UpYyli2IZX8lV8fBevM72TdtBIgDnvSPLoeQETdUNnBz4mckgT/t8iWLyNdpdbAmboF+RMvTi6QSilhBG4nJTpN0YPf/Yo6RwwY9j+yT1Tu8QuS75YDcgXsifb4gXisYmVAgoFd5KbjCdOZczZipg9t3R3S/iYbgPl7UaXULs3E=
+	t=1710728160; cv=none; b=FxyLmw8PHGJMq9qejWt79I3Of09xSDDUQeuCPqHdHzYGAX4Jgs7us+QSKphdBPcvtu42YiysNCbaD6VckzuznLkW4zvjHePZ+ZaLTHKxnwExe01X7+l01nxMYNsR2l0kPybUm7vyjSY3kWD36lNI4hxJ9WyGR8JgQU5OTtsUcfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710725343; c=relaxed/simple;
-	bh=lEAICoD6xublrvyvwGo3OfFKv8FKH3HxG+GESGhe6oc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=peYwfEpiFPoXFHfTEIQ2DKHzgBt40NqsvN9vi8rA+AeCj242ueGbimf2ZnJuTi57mZU5D7TzfBWf4UcehL3GjNGZo4Zs8GHdrqRIwhYp3tBRR4NLD+3ksycF0aIido0o/9CVP4JYCngnfooj2haRi063JkFEgJbbPER8IoQFmOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=JdNraSZf; arc=none smtp.client-ip=68.232.139.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
-  t=1710725342; x=1742261342;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=lEAICoD6xublrvyvwGo3OfFKv8FKH3HxG+GESGhe6oc=;
-  b=JdNraSZf/VPCf4r4QFUnGgq9ulAFuwCk8bz5aybzlQNem3bZnpa8/m+b
-   PEobNAdmEzXmXvcfFrw6YSbZ2e3lHYMY2USpbhp/hm618Z51oXMI3vDEZ
-   IjhvNOTXWirSF5Fm2SX1W1RK4bBA+GhcWnC8/aqNcoNNYEc3dn8pjyCjp
-   +Ffem6fWMgcRdU9a9M+xSQFNpIehcTr2scuWgjBsK0r5m2JtuNneGrhI6
-   3+M/vnYxJJsM9XLjELpnxxSE7wHV1m1fonyiGzjxnKFOncACiqzcLErm2
-   XX2lSeLS2snb7UwnB9tg/Tgmrz0FgFni4WCAvOo45iXtQmGXzeX6huw+B
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="154385599"
-X-IronPort-AV: E=Sophos;i="6.07,133,1708354800"; 
-   d="scan'208";a="154385599"
-Received: from unknown (HELO yto-r4.gw.nic.fujitsu.com) ([218.44.52.220])
-  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 10:28:52 +0900
-Received: from yto-m2.gw.nic.fujitsu.com (yto-nat-yto-m2.gw.nic.fujitsu.com [192.168.83.65])
-	by yto-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 5EF95D9F03;
-	Mon, 18 Mar 2024 10:28:49 +0900 (JST)
-Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com [192.51.206.21])
-	by yto-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id 8FDA8D561E;
-	Mon, 18 Mar 2024 10:28:48 +0900 (JST)
-Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
-	by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 19FA120098E1C;
-	Mon, 18 Mar 2024 10:28:48 +0900 (JST)
-Received: from localhost.localdomain (unknown [10.167.226.45])
-	by edo.cn.fujitsu.com (Postfix) with ESMTP id 609231A006D;
-	Mon, 18 Mar 2024 09:28:47 +0800 (CST)
-From: Li Zhijian <lizhijian@fujitsu.com>
-To: linux-kernel@vger.kernel.org
-Cc: Li Zhijian <lizhijian@fujitsu.com>,
-	Jiri Kosina <jikos@kernel.org>,
+	s=arc-20240116; t=1710728160; c=relaxed/simple;
+	bh=jIv2QeeJVYaC9+Bza9LsMgEwMk6QP2pxph52rQ3Solk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bSWbYIhuUzgTdVHjuza1DZPheHSp736jDZ6exxLGhQ8mBVCg5dc0AO8GOTj6nuYHmUtdul1ioMIALNkIQe5mGcGdNi2FgNFhvV0xlyOZugvy4y5txngBj0PGDgb77DgTsS2F690NB2EWyfnXTy4b5dkxnTAuCh5mjXfuER2/Jug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=by/cq4iX; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=ak2fGyJp; arc=none smtp.client-ip=35.74.137.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
+	s=gw2_bookworm; t=1710728151;
+	bh=jIv2QeeJVYaC9+Bza9LsMgEwMk6QP2pxph52rQ3Solk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=by/cq4iXu+dCYTw8ZSEZjaQIFZZEBsLF5xZrkcpQ/iNsAWutgfDYN3LhH1ZiOrU3p
+	 tSnHzl7COUUtwFOcO4s08RSopgeN75+0Vbh5CjMaRYTRVPz4tbaOUjnYDVC08Ud4AG
+	 WXtw6qyFhVoVBAYv8wYDPLYfM/yoXVexPDBBNCGgcqRcIi3pWpiBp1bmF6CXFO+xCK
+	 P4r6RBPu+3+AIFjE2zd9ci1oKCU0jMIMVkC4vIgQ6dBNEhYlGQ5gEEfOBwBHpV2HHA
+	 L5/MLmLGf6wx5OBtU8BU3SiX6bU65MlZPxLUIt5tOT8hlijCCNq1lgORg56ky1GzGD
+	 n3yFh6waS7H/g==
+Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
+	by gw2.atmark-techno.com (Postfix) with ESMTP id C070CB95
+	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 11:15:51 +0900 (JST)
+Authentication-Results: gw2.atmark-techno.com;
+	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=ak2fGyJp;
+	dkim-atps=neutral
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by gw2.atmark-techno.com (Postfix) with ESMTPS id 1938EB95
+	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 11:15:50 +0900 (JST)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-1dd72cc8590so45318195ad.3
+        for <linux-iio@vger.kernel.org>; Sun, 17 Mar 2024 19:15:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=atmark-techno.com; s=google; t=1710728149; x=1711332949; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xZRLjO7yES26IA5YTCwawjya15G39VD0oILYUFB1uhQ=;
+        b=ak2fGyJpDNiFolycHx4ogCk9+RcToZ+fydmfJL6ykRf/l8AzWhyY8bDUjYup0Ta0DW
+         U7cq8t8UUqUiQSuBT9wEQ3fGcP4VeX1GsTUT7LaMGFJEYX+nNNawE4H3H7THruucWjT2
+         /cPO6bf7QlYvbgY1UaJS5CwQVNjBGw/BPNLU2HJZSBpxYhty7OWCVs1zi8gAhRSb256o
+         XZgqwXavkPtuhLc/hytEAkbpQWchp52zcOAJhkq1yVo0re2lMxZwNE75gkRUyNORbLEm
+         kopiUHcSiE16ls1h29cGL+ErH/j3qnz+YdEHkmeTxDU+kNLPW/M2KLUCU0qVB3/BKaIk
+         YGMQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710728149; x=1711332949;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xZRLjO7yES26IA5YTCwawjya15G39VD0oILYUFB1uhQ=;
+        b=gQf05L/oME5KtqBFbaHarXqegewFhVNFIprBllbFeCZFXzbMvkrL6AtZzSrWsbLNB9
+         dAyKKd7kDPBPJBAZj07TxWkIup7JJppNHJMROwjIK8/uDv4gbKj3YXRtNaJpnscbyzO9
+         UsUXG5Y6Zwv41zY0dqChFHTJoXqt9KNX1F16dydIOkjZncPpi6rqKEGRgKxvKBlvkXnN
+         GKh9blM8IMwtMV8Rb1rox9B/HXNynaEDR8DjgyeZqy707OeFdj5ZKXIgFdK3R4GoChge
+         3FJSNZ2Qkknfs6hT7rNr8ZJ4ZK7SYuIkZq+1wCPrdC3qEZZpvdq2XAaVy8K1s7QGbkLZ
+         plYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXGExazUPledD7809ngD+dSeya3FvInqtQ0VaGmQE3FUzfimN3EM4axre4/k9gzd44TFCGAvahvNM1/jGssw2I+K5TyyEUb/NFC
+X-Gm-Message-State: AOJu0YwN7ecTgjMwwtF4eil1dq2XP8B6RqzjSHA9uu/ijKmE6V06yhRT
+	7a2vT4ylh8+NeLjxhDJJQcj3g3GTEdKStyZ3cK0EO1bzQ3oknlX9fEgQPC97xmX+qw8PPzuhZ1y
+	OjhtLHFx108IqiFKSkch/7uUP/J/yxtGMfhZA/ifoisdu7C8YFLgVqdIoC0s=
+X-Received: by 2002:a17:902:650e:b0:1db:4941:f703 with SMTP id b14-20020a170902650e00b001db4941f703mr12482664plk.15.1710728148953;
+        Sun, 17 Mar 2024 19:15:48 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFCfH8jMO/aZB8DOpQyNXjy2tRo7yh1p/1BZpESd2N/XQNCV+0cg/uTQfDxBRcLSP0Q1MAffA==
+X-Received: by 2002:a17:902:650e:b0:1db:4941:f703 with SMTP id b14-20020a170902650e00b001db4941f703mr12482649plk.15.1710728148480;
+        Sun, 17 Mar 2024 19:15:48 -0700 (PDT)
+Received: from pc-0182.atmarktech (76.125.194.35.bc.googleusercontent.com. [35.194.125.76])
+        by smtp.gmail.com with ESMTPSA id mp16-20020a170902fd1000b001dbb6fef41fsm7918365plb.257.2024.03.17.19.15.47
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 17 Mar 2024 19:15:47 -0700 (PDT)
+Received: from martinet by pc-0182.atmarktech with local (Exim 4.96)
+	(envelope-from <martinet@pc-zest>)
+	id 1rm2XS-005oGb-2I;
+	Mon, 18 Mar 2024 11:15:46 +0900
+Date: Mon, 18 Mar 2024 11:15:36 +0900
+From: Dominique Martinet <dominique.martinet@atmark-techno.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	linux-input@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v3 2/4] HID: hid-sensor-custom: Convert sprintf/snprintf to sysfs_emit
-Date: Mon, 18 Mar 2024 09:28:17 +0800
-Message-Id: <20240318012819.1405003-2-lizhijian@fujitsu.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20240318012819.1405003-1-lizhijian@fujitsu.com>
-References: <20240318012819.1405003-1-lizhijian@fujitsu.com>
+	Syunya Ohshio <syunya.ohshio@atmark-techno.com>,
+	Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
+ device index
+Message-ID: <ZfejyEvPIncygKJ9@atmark-techno.com>
+References: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
+ <7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
+ <Zd7hSOw3_zosyrn3@atmark-techno.com>
+ <daed8ada-9e01-41ad-82af-5da5cbbc865c@linaro.org>
+ <Zd7qz1Qte8HWieF_@atmark-techno.com>
+ <20240228142441.00002a79@Huawei.com>
+ <Zd_zB_ymxkx0HB3q@atmark-techno.com>
+ <ZfPg-nMANUtBlr6S@atmark-techno.com>
+ <CAMknhBG_kJx8JPvTBQo7zpy3mFAkUjZpRY3DLBfXt+39nRJWiA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28258.003
-X-TM-AS-User-Approved-Sender: Yes
-X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28258.003
-X-TMASE-Result: 10--5.660400-10.000000
-X-TMASE-MatchedRID: aug7Rh7TzMkI7eJeU5hen5iHtCNYjckMjkDrBOJwwnQ8JmmJxjOaQXVX
-	Q3/qdw5yDiqGKKMcNgRhoUIS5GGeEs1HQN/TlJ3ZOIQ9GP2P2u/0swHSFcVJ6OTpBuL72LoPQiM
-	ingSlKoKMx5HzfQifbPE41045MrHXFDCN/1eC4ASdVNZaI2n6/8E5XPQnBzGXq8KsbROd9VSArq
-	oIZrVn15fzUkBpc072hKK/bK+QypCR9GF2J2xqMxRFJJyf5BJe3QfwsVk0UbtuRXh7bFKB7tk/P
-	KAEDs5ka64lbDnlTvs+39t8ZqOEjsNJi689wOTYNkUSDDq742k=
-X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMknhBG_kJx8JPvTBQo7zpy3mFAkUjZpRY3DLBfXt+39nRJWiA@mail.gmail.com>
 
-Per filesystems/sysfs.rst, show() should only use sysfs_emit()
-or sysfs_emit_at() when formatting the value to be returned to user space.
+David Lechner wrote on Fri, Mar 15, 2024 at 10:53:36AM -0500:
+> How about using udev rules to create symlinks for each device based on
+> the label attribute? No changes to the kernel are needed.
 
-coccinelle complains that there are still a couple of functions that use
-snprintf(). Convert them to sysfs_emit().
+Right, it's definitely possible to make symlinks for each "device" -- my
+patch comment links to such an udev script "solution":
+https://git.toradex.com/cgit/meta-toradex-bsp-common.git/tree/recipes-core/udev/files/verdin-imx8mm/toradex-adc.sh?h=kirkstone-6.x.y
+(the script is launched by udev here:
+https://git.toradex.com/cgit/meta-toradex-bsp-common.git/tree/recipes-core/udev/files/verdin-imx8mm/99-toradex.rules
+)
 
-sprintf() will be converted as weel if they have.
+My conceptual problem with this is that this makes symlinks in /dev to
+files in /sys and it feels like we're crossing boundaries.
+As far as I can tell there is no way for userspace to create arbitrary
+symlinks in /sys, so I think we could have an interface more
+user-friendly by allowing paths to be static for users with multiple
+devices.
+(I guess that's a weak argument given e.g. disks etc will also have an
+unreliable name in /sys in the general case, but simple programs don't
+interact with them in /sys and can use stable links in /dev so my
+expectations here aren't quite the same)
 
-Generally, this patch is generated by
-make coccicheck M=<path/to/file> MODE=patch \
-COCCI=scripts/coccinelle/api/device_attr_show.cocci
 
-No functional change intended
+Ultimately, the problem might run deeper in that we're having userspace
+interact with the device through /sys and not the /dev char dev... As
+far as I could see /dev/iio:deviceX only allows reading buffered values
+and doesn't have any ioctl or other way of reading immediate values as
+is possible in /sys though, so that'd require quite a bit of work to
+duplicate the interface there...
 
-CC: Jiri Kosina <jikos@kernel.org>
-CC: Jonathan Cameron <jic23@kernel.org>
-CC: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-CC: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-CC: linux-input@vger.kernel.org
-CC: linux-iio@vger.kernel.org
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
----
-V3:
-   rewrap the line as will be under 80 chars and add Reviewed-by # Jonathan
-This is a part of the work "Fix coccicheck device_attr_show warnings"[1]
-Split them per subsystem so that the maintainer can review it easily
-[1] https://lore.kernel.org/lkml/20240116041129.3937800-1-lizhijian@fujitsu.com/
----
- drivers/hid/hid-sensor-custom.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+Perhaps I'm just thinking too much and symlinks from /dev to /sys are a
+thing in the IIO world? I've not seen it done anywhere except in that
+toradex tree when I was looking earlier.
 
-diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
-index d85398721659..ac214777d7d9 100644
---- a/drivers/hid/hid-sensor-custom.c
-+++ b/drivers/hid/hid-sensor-custom.c
-@@ -155,7 +155,7 @@ static ssize_t enable_sensor_show(struct device *dev,
- {
- 	struct hid_sensor_custom *sensor_inst = dev_get_drvdata(dev);
- 
--	return sprintf(buf, "%d\n", sensor_inst->enable);
-+	return sysfs_emit(buf, "%d\n", sensor_inst->enable);
- }
- 
- static int set_power_report_state(struct hid_sensor_custom *sensor_inst,
-@@ -372,14 +372,13 @@ static ssize_t show_value(struct device *dev, struct device_attribute *attr,
- 				     sizeof(struct hid_custom_usage_desc),
- 				     usage_id_cmp);
- 		if (usage_desc)
--			return snprintf(buf, PAGE_SIZE, "%s\n",
--					usage_desc->desc);
-+			return sysfs_emit(buf, "%s\n", usage_desc->desc);
- 		else
--			return sprintf(buf, "not-specified\n");
-+			return sysfs_emit(buf, "not-specified\n");
- 	 } else
- 		return -EINVAL;
- 
--	return sprintf(buf, "%d\n", value);
-+	return sysfs_emit(buf, "%d\n", value);
- }
- 
- static ssize_t store_value(struct device *dev, struct device_attribute *attr,
+
+Andy Shevchenko wrote on Sat, Mar 16, 2024 at 10:14:35PM +0200:
+> [...]
+
+Thank you for the review!
+
+>> +#include <linux/of.h>
+>
+> What about ACPI?
+> Please try avoid hard to use OF-specific code for the new features.
+
+Given my suggestion here relied on users giving manual hints in the DTB
+I'm not sure how that could be interfaced with ACPI, but if you have a
+suggestion to make paths static that'd work with either interfaces I'd
+be more than happy to give it a try.
+
+I'd also like to add that in my particular case it's a problem created
+by the OF interface in the first place: devices are currently created in
+the order they're parsed from OF, and it just so happens that this order
+doesn't work well for us; I'm not aware of how IIO interacts with ACPI
+but perhaps the way the list of devices processed from ACPI is "stable
+enough" in practice?
+
+
+Thank you,
 -- 
-2.29.2
+Dominique
+
 
 

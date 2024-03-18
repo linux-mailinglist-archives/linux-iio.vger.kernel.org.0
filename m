@@ -1,224 +1,136 @@
-Return-Path: <linux-iio+bounces-3599-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3600-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5669987EC2C
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 16:29:08 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9BDB87ED74
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 17:25:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75E661C212B5
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 15:29:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 066641C21751
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 16:25:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1AD4F5ED;
-	Mon, 18 Mar 2024 15:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124E75339F;
+	Mon, 18 Mar 2024 16:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CeD3uX43"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fK8GHzEf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE01A4F885
-	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 15:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A6853800;
+	Mon, 18 Mar 2024 16:25:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710775737; cv=none; b=Co91EuriV7kaV9IhiBcZ0hLE6LrfedCCrkIHmIxqNQhAcTTrEI5n7d5y5udgShNs/oJkFKR6j9KyzVjPmFqfVEGFVg2dhJKoSZ++mYuF4Edmy4BeeCRVqyhl1rxBMpf7mBiS/tcXuBa6qKMy39MH69G5mkp4iDR46hxZ6ZHo86I=
+	t=1710779141; cv=none; b=cZBBYo2yQPDQ3NvsBEIfsvgAdW9gmqgH73RuvKdyDNMektHN0MsqshtvIiOJI1eOn0hcmYCTKmfjIqYQbk905k5Q3HkTexyeb96xUAgp0EG+I0Ty9KAMUH0U6nLcC1TAk2SfRhPaLJLwnk7vS7nsxeg/sCCehS7vTWPpXWFCf18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710775737; c=relaxed/simple;
-	bh=ksLvNZ2Wo837ga0lzZfmm0D62wGihKXV3yyTa57lg/Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mDNcgEm6ha3s6x6JKGiVgZz7OfPxicakr0lySg+XWTWXceezMMyZ/o+gY2T5Oec2Xa0sxdUkUpnagGEcmAvpyNHVAGvuMCbd9B/kp7JMMpekJnpa10dbfmBkUl+Gp4l9qGZqYXGlB1zIsl88Bf1Pqr6aeFC3GUHI3aTap1FXAcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CeD3uX43; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <7ddf8d4a-5b68-432d-93c1-ff270403cb60@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1710775732;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ogI4Ujs+JUHaqHuKV+R+xjZenZ7/y4llr8moF4vivgo=;
-	b=CeD3uX43HXFbFfXit67H1ug3tLxw14uwn69KdgqJY0uGyDjouwGdY0g31D4a+9TGx7skth
-	GihOEAZaixaQoGqpmLFiL7HsYAiJvTXJyG2BKW2A31ien2JWXzni4LAf4TaKPek/uy1IvJ
-	EyFVfxklW7aSc8nHZ6BV6CioQ9GqzB0=
-Date: Mon, 18 Mar 2024 11:28:49 -0400
+	s=arc-20240116; t=1710779141; c=relaxed/simple;
+	bh=giesbGcq46KOYjY4GQjwDETYa8Xdax981n2V4JqW9Us=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pSSraL5zT6h8ZuejXSJwBTGvmYdjAW1hZE8T+vS1I4Zs9rBqAGv3T7+pV554KGK/jUaVTBdY2uMR3fVm46H7C/UDyYF5zVBAg1hY8ddBpa80tgbG6tApsrhCPlf4oh/Do0HuoeTzHtoDYqbXXrNGkoxUNO8SoSPw0taoJOp7Sk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fK8GHzEf; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-512f54fc2dbso4203130e87.1;
+        Mon, 18 Mar 2024 09:25:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710779138; x=1711383938; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3rKzlf71EVD205LMfgxNC4ncRodr1B+XZa8lyvjKqeg=;
+        b=fK8GHzEf/pv5Qo1KbkCa52NyuWgxPo+m5Tauzxbd230lCtYXYnfhWPDxnJDkbPfJCS
+         joCloX4fcBlhhYnzDJcuwX4+1+n1/n9XB9xL8B4gZ6fqzFsI+NaL79cxY1ULtoUpMUs5
+         S0nh8vfte4YHu5/+l3lYXzNFSMNUdge4XMHKGoNqunXsg++Kq4BaZ9JR+PicDreT7obX
+         UFz943/qEB7Ap+212FcU/Tsgr0HP9BTBKgia98m0MeDPDmf3EaKEIYcS0xtL711kCEZ1
+         wOfwi8UF0mCsNhMYFG3xySS1guBamtO7PkWfH6FZ9fTsEuvpM1rpQwffNsnJQeKHTFGJ
+         DC7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710779138; x=1711383938;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3rKzlf71EVD205LMfgxNC4ncRodr1B+XZa8lyvjKqeg=;
+        b=Hhk++oqBfaKpPpZ3WSwBtVG/jEOSCWnGhaBtglNMnIG/mvZIdYfXpaLVBa6kM+6+Ku
+         g5t72YojcKYIRjVG8ROu36MPrq3jzvur6RcrRFddB2CfEZJ1B8TJ4gGGErgsYpO/gmWd
+         X1W3KmQfo+hjgK2Lr5KCRTLvbRLBFeARPetu2XbCCKzHtCM5Kk8DaKjAPEf1aN7gfjNg
+         fcCP9TlRKU/RYlfsADKYsRPYtjpOTSho/mGAbpbwwKzynP2hjwargVFcS0HR6YwEBB3V
+         bOS/w5KgfvCobm0BCP6AMzoqbGlHFX/XsihMnPZmbWKeHRQlqKIKnxg5V7n5Qz2llAuu
+         JRAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXA0rlKGlAo16i4lPZUeIHBPx0i440/cK5LAW3HDg9De3LZiOd4Lm+3/FYlYx1vYyV5OgvuKKAEbfS9ysh8+Og00N3V5NsrhSnrFZvUQZcm628Y7IfVzstwNy11OPsNuXg3S1J9LYuT
+X-Gm-Message-State: AOJu0Yw5jfHgmKiNK/6upQfoKk+eTBNvxS1ETmtzFDbd3PwVKp7nbTZQ
+	dlHUGjd8uGn2s9hB7+En+GIpdf8IW7PhQ4ywxBnDA9HW6qARFhROI+lm0RymnMekIgA9KRUvVeX
+	ysb6w03rDqONw6UAPSMfnNGlWXLk=
+X-Google-Smtp-Source: AGHT+IHUVjI+PiZTW/dgaH8rFzDbABi0kBoA7wGjdMUWeKhXqVOvRy6JM3ZhYq76Nb8UlEyHjKdduSpwKRa9nyTv2jg=
+X-Received: by 2002:ac2:5b10:0:b0:513:dd66:d5ed with SMTP id
+ v16-20020ac25b10000000b00513dd66d5edmr5869957lfn.29.1710779137934; Mon, 18
+ Mar 2024 09:25:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] iio: xilinx-ams: Don't include ams_ctrl_channels in
- scan_mask
-Content-Language: en-US
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
- "O'Griofa, Conall" <conall.ogriofa@amd.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>
-References: <20240311162800.11074-1-sean.anderson@linux.dev>
- <20240314154824.37150a54@jic23-huawei>
- <a9ed95ec-aafe-49f6-93dd-c94c73620de2@linux.dev>
- <DM6PR12MB4217EAA1049F815F234EE6D18B282@DM6PR12MB4217.namprd12.prod.outlook.com>
- <3b481539-0c9c-4110-ad03-bd252e80efb0@linux.dev>
- <20240316133627.5d2bf585@jic23-huawei>
- <7ee83f15-88fc-4530-84b7-b8ee31663dbc@linux.dev>
- <20240318152446.00001345@Huawei.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <20240318152446.00001345@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20240314-mainline-ad7944-3-wire-mode-v2-1-d469da0705d2@baylibre.com>
+ <ZfX5jynjW4M9pvw1@surfacebook.localdomain> <20240318124041.0000032d@Huawei.com>
+ <CAHp75VeQcvuEy4V6-+3PeWTZJ9=Qae0AiiNB93OOw3wuc-uh3A@mail.gmail.com> <CAMknhBG4OAc=qsZZrahYBiwOEK=XM3pUWup9O5J5W4dMCS4FUw@mail.gmail.com>
+In-Reply-To: <CAMknhBG4OAc=qsZZrahYBiwOEK=XM3pUWup9O5J5W4dMCS4FUw@mail.gmail.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 18 Mar 2024 18:25:01 +0200
+Message-ID: <CAHp75VcvbMP4TvJLb+3PZWARNj0gc-MYayv6GiMY9GjZ4usT_Q@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: adc: ad7944: Add support for "3-wire mode"
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Michael Hennerich <michael.hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/18/24 11:24, Jonathan Cameron wrote:
-> On Mon, 18 Mar 2024 11:18:43 -0400
-> Sean Anderson <sean.anderson@linux.dev> wrote:
-> 
->> On 3/16/24 09:36, Jonathan Cameron wrote:
->> > On Fri, 15 Mar 2024 13:47:40 -0400
->> > Sean Anderson <sean.anderson@linux.dev> wrote:
->> >   
->> >> Hi Conall,
->> >> 
->> >> On 3/15/24 09:18, O'Griofa, Conall wrote:  
->> >> > [AMD Official Use Only - General]
->> >> > 
->> >> > Hi,
->> >> > 
->> >> > I think there was a fix for this issue applied to the version that was running on 5.15 that didn't seem to make it into the upstream driver.
->> >> > Please see link for reference https://github.com/Xilinx/linux-xlnx/commit/608426961f16ab149b1b699f1c35f7ad244c0720
->> >> > 
->> >> > I think a similar fix to the above patch is may be beneficial?    
->> >> 
->> >> These patches look functionally identical to me.  
->> > 
->> > Because there are no channels with scan index between
->> > 22 * 2 + 16 (that patch) and 22 * 3 (your patch) that is
->> > the effect is indeed the same. But given the issues is the
->> > 64 limit on maximum scan index, 22 * 3 = 66 is an ugly value
->> > to compare with.
->> > 
->> > I'm still very against the use of scan_index for anything other
->> > than scan indices (which is why partly how this bug wasn't noticed
->> > in the first palce). So the check should be scan_index != -1
->> > and uses of those values elsewhere in the driver should be fixed
->> > (which looks simple to do from a quick glance at the code).  
->> 
->> OK, so how do the sysfs files get named then?
-> 
-> Using channel and channel2 as appropriate (+ index and modified
-> which change the meaning of channel2) - scan_index never had
-> anything to do with sysfs file names - just the value in
-> bufferX/in_xyz_scan_index
+On Mon, Mar 18, 2024 at 4:17=E2=80=AFPM David Lechner <dlechner@baylibre.co=
+m> wrote:
+> On Mon, Mar 18, 2024 at 8:10=E2=80=AFAM Andy Shevchenko
+> <andy.shevchenko@gmail.com> wrote:
+> > On Mon, Mar 18, 2024 at 2:41=E2=80=AFPM Jonathan Cameron
+> > <Jonathan.Cameron@huawei.com> wrote:
 
-I tried to prototype setting scan_index to -1, but when registering channels I saw
+...
 
-[    1.637049] iio iio:device0: tried to double register : in_voltage_raw
-[    1.637245] xilinx-ams ffa50000.ams: Failed to register sysfs interfaces
-[    1.637433] xilinx-ams: probe of ffa50000.ams failed with error -16
+> > > > >  struct ad7944_adc {
+> > > > >     struct spi_device *spi;
+> > > > > +   enum ad7944_spi_mode spi_mode;
+> > > > >     /* Chip-specific timing specifications. */
+> > > > >     const struct ad7944_timing_spec *timing_spec;
+> > > > >     /* GPIO connected to CNV pin. */
+> > > > > @@ -58,6 +75,9 @@ struct ad7944_adc {
+> > > > >      } sample __aligned(IIO_DMA_MINALIGN);
+> > > > >  };
+> > > >
+> > > > Have you run `pahole` to see if there is a better place for a new m=
+ember?
+> > >
+> > > I know this matters for structures where we see lots of them, but do =
+we actually
+> > > care for one offs?  Whilst it doesn't matter here I'd focus much more
+> > > on readability and like parameter grouping for cases like this than w=
+asting
+> > > a few bytes.
+> >
+> > This is _also_ true, but think more about cache line contamination.
+> > Even not-so-important bytes may decrease the performance. In some
+> > cases it's tolerable, in some it is not (high-speed ADC). In general I
+> > assume that the developer has to understand many aspects of the
+> > software and cache line contamination may be last but definitely not
+> > least.
+>
+> Where could someone who doesn't know anything about cache line
+> contamination learn more about it? (searching the web for that phrase
+> doesn't turn up much)
 
-And AIUI .channel is filled in by ams_parse_firmware.
+Agree that I have written a rarely used term.
 
---Sean
+[1]: https://en.wikipedia.org/wiki/Cache_pollution
 
->> 
->> --Sean
->> 
->> >> 
->> >> --Sean
->> >>   
->> >> >> -----Original Message-----
->> >> >> From: Sean Anderson <sean.anderson@linux.dev>
->> >> >> Sent: Thursday, March 14, 2024 5:30 PM
->> >> >> To: Jonathan Cameron <jic23@kernel.org>
->> >> >> Cc: linux-iio@vger.kernel.org; O'Griofa, Conall <conall.ogriofa@amd.com>;
->> >> >> linux-arm-kernel@lists.infradead.org; linux-kernel@vger.kernel.org; Lars-Peter
->> >> >> Clausen <lars@metafoo.de>
->> >> >> Subject: Re: [PATCH] iio: xilinx-ams: Don't include ams_ctrl_channels in
->> >> >> scan_mask
->> >> >>
->> >> >> Caution: This message originated from an External Source. Use proper caution
->> >> >> when opening attachments, clicking links, or responding.
->> >> >>
->> >> >>
->> >> >> On 3/14/24 11:48, Jonathan Cameron wrote:    
->> >> >> > On Mon, 11 Mar 2024 12:28:00 -0400
->> >> >> > Sean Anderson <sean.anderson@linux.dev> wrote:
->> >> >> >    
->> >> >> >> ams_enable_channel_sequence constructs a "scan_mask" for all the PS
->> >> >> >> and PL channels. This works out fine, since scan_index for these
->> >> >> >> channels is less than 64. However, it also includes the
->> >> >> >> ams_ctrl_channels, where scan_index is greater than 64, triggering
->> >> >> >> undefined behavior. Since we don't need these channels anyway, just    
->> >> >> exclude them.    
->> >> >> >>
->> >> >> >> Fixes: d5c70627a794 ("iio: adc: Add Xilinx AMS driver")
->> >> >> >> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>    
->> >> >> >
->> >> >> > Hi Sean,
->> >> >> >
->> >> >> > I'd ideally like to understand why we have channels with such large
->> >> >> > scan indexes.  Those values should only be used for buffered capture.
->> >> >> > It feels like they are being abused here.  Can we set them to -1
->> >> >> > instead and check based on that?
->> >> >> > For a channel, a scan index of -1 means it can't be captured via the
->> >> >> > buffered interfaces but only accessed via sysfs reads.
->> >> >> > I think that's what we have here?    
->> >> >>
->> >> >> From what I can tell, none of the channels support buffered reads. And we can't
->> >> >> naïvely convert the scan_index to -1, since that causes sysfs naming conflicts
->> >> >> (not to mention the compatibility break).
->> >> >>    
->> >> >> >
->> >> >> > I just feel like if we leave these as things stand, we will get bitten
->> >> >> > by similar bugs in the future.  At least with -1 it should be obvious why!    
->> >> >>
->> >> >> There are just as likely to be bugs confusing the PL/PS subdevices...
->> >> >>
->> >> >> FWIW I had no trouble identifying the channels involved with this bug.
->> >> >>
->> >> >> --Sean
->> >> >>    
->> >> >> > Jonathan
->> >> >> >
->> >> >> >    
->> >> >> >> ---
->> >> >> >>
->> >> >> >>  drivers/iio/adc/xilinx-ams.c | 8 ++++++--
->> >> >> >>  1 file changed, 6 insertions(+), 2 deletions(-)
->> >> >> >>
->> >> >> >> diff --git a/drivers/iio/adc/xilinx-ams.c
->> >> >> >> b/drivers/iio/adc/xilinx-ams.c index a55396c1f8b2..4de7ce598e4d
->> >> >> >> 100644
->> >> >> >> --- a/drivers/iio/adc/xilinx-ams.c
->> >> >> >> +++ b/drivers/iio/adc/xilinx-ams.c
->> >> >> >> @@ -414,8 +414,12 @@ static void ams_enable_channel_sequence(struct
->> >> >> >> iio_dev *indio_dev)
->> >> >> >>
->> >> >> >>      /* Run calibration of PS & PL as part of the sequence */
->> >> >> >>      scan_mask = BIT(0) | BIT(AMS_PS_SEQ_MAX);
->> >> >> >> -    for (i = 0; i < indio_dev->num_channels; i++)
->> >> >> >> -            scan_mask |= BIT_ULL(indio_dev->channels[i].scan_index);
->> >> >> >> +    for (i = 0; i < indio_dev->num_channels; i++) {
->> >> >> >> +            const struct iio_chan_spec *chan =
->> >> >> >> + &indio_dev->channels[i];
->> >> >> >> +
->> >> >> >> +            if (chan->scan_index < AMS_CTRL_SEQ_BASE)
->> >> >> >> +                    scan_mask |= BIT_ULL(chan->scan_index);
->> >> >> >> +    }
->> >> >> >>
->> >> >> >>      if (ams->ps_base) {
->> >> >> >>              /* put sysmon in a soft reset to change the sequence */    
->> >> >> >    
->> >>   
->> >   
->> 
->> 
-> 
-
+--=20
+With Best Regards,
+Andy Shevchenko
 

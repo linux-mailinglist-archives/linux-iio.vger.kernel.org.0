@@ -1,87 +1,120 @@
-Return-Path: <linux-iio+bounces-3588-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3589-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63E087E97C
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 13:41:18 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BAD187E9DF
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 14:10:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A550C1C210F8
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 12:41:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 502E21F21C9B
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 13:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9582C1B6;
-	Mon, 18 Mar 2024 12:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA783383B2;
+	Mon, 18 Mar 2024 13:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YBG2Zh7c"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BAF208CA;
-	Mon, 18 Mar 2024 12:41:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2040C33CF1;
+	Mon, 18 Mar 2024 13:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710765672; cv=none; b=TlUNxmvS9dIvBW1oTZLgqjPZRe9ovjsM4coCj+/QjAwptOauSrG2lC3RDpIBrs/DPHkBsNiM7xUazHlUf8lnyJ5KoAAeVLWa4hRzGi47dQiuzhGizQs0rd2Aid239GCTc78/3q9OgpUA7VrU3nBKABzOsr1Z5ZBcWaMqvvy7RqE=
+	t=1710767412; cv=none; b=kbU0HsvHrEmFEUiGJUHK0kL8oaRgHh6Tz3EYgbQUAgcoLwBNxOPWhPEK5XlXHTUcNfulsLTHnqLa6ZUzn1LZS1D0iijZCc72N4O3kTsdXF8tVyDbUPfc7DebeFQiXFuv31I6cTiWDkWZcGod05q8LZctUBGArK5vwQi7MgatLa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710765672; c=relaxed/simple;
-	bh=hbCWsyyyVc2IxKC9ULbhavy+FEcr/XWMY4tqRuI8NbM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FeToIy0gel4O/fEEFX1CXs72QzPP3A5U8L0MUW2BJmLXHz+rKFmHr83L0I2p8Jo+E1NyC+qFQsVvP5LDwlImmfWjssQ2YGocpiuqmyQ1ereMcaclhuTQxi9xjRJIf4ytxHUV5mwBj2wTOW0woSAqfXz2Kqe1habkg/5M6hCYGsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4TyvbD1T1pz6K6ST;
-	Mon, 18 Mar 2024 20:40:40 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id D5A75141D1E;
-	Mon, 18 Mar 2024 20:41:05 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 18 Mar
- 2024 12:40:42 +0000
-Date: Mon, 18 Mar 2024 12:40:41 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-CC: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
-	<jic23@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] iio: adc: ad7944: Add support for "3-wire mode"
-Message-ID: <20240318124041.0000032d@Huawei.com>
-In-Reply-To: <ZfX5jynjW4M9pvw1@surfacebook.localdomain>
-References: <20240314-mainline-ad7944-3-wire-mode-v2-1-d469da0705d2@baylibre.com>
-	<ZfX5jynjW4M9pvw1@surfacebook.localdomain>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1710767412; c=relaxed/simple;
+	bh=mE7jqQ5jElAIH2bMnT6FZSF2mEu0TvZtFmmRGoCQkIk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sYRFW7k8iY7NBrUAFy4PbJMWELVg1RgdIZ3VZOCV1kbG3ExGb0yCPfg0apRNLrOgTrYIResBGAs0WB0jEn0gnuWnuIxXZJOLtcrs4f3AbImKZo0CAf/7nE2D6sTbqlk2BReBV5zwpSVJxujfepTV6Lar2ert4TYmunwMz64THfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YBG2Zh7c; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-513ccc70a6dso7382559e87.1;
+        Mon, 18 Mar 2024 06:10:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710767409; x=1711372209; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BBZLCMh0SA3DZ15OEaT+twgEPYQm8UQNknXIM0mZma4=;
+        b=YBG2Zh7cY4mWWeDrAxplk7Z5+X8KpgJsLEbwyv4xuNYUhl81b1Uk9kA58IsZGQrmd9
+         /JTJ1hJYML+4Yj23I62Xrt+IBWP+r7nQUX4Pwi+tXSkX8Bhwj7dax3bwcFo/awsyVnZu
+         lbPrsPs2N/CO/qHQRNgL46uR8O5h9e827WeTavw5Y3lZjkENnNzH7TM+HQ7wmu1MvGfF
+         flznr7EZLHdZoPB0ZgqD+VdQ56WnqOgYj7gQd+NKUSbxxQ/z9WvJ6klk+U/Apz+Ehm75
+         cCspk3fcNzdn5LcbdVdOeBdnKJtZlDBZIn5+/fkJcxnEnfVB+FwYmP6XGrOH0AV8ZHQb
+         OhmQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710767409; x=1711372209;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BBZLCMh0SA3DZ15OEaT+twgEPYQm8UQNknXIM0mZma4=;
+        b=kX30hqWaDojMXPKePIl8I0IFlg+zGVeLg1Qx8zNciAjf7sTUsioh5dbq39v+1IwXTC
+         UTawTTY8eIyYOgemvxo9ESRZk9L+p8InRWzXAXPSHAkaEZ7JwV/S2hqtEKIASzFmF1NC
+         EoiChpcc6RsY/jMLlgBpUUjelGLzlLO7wbsGVvim06vF2MO/u8n7ZVV65bllemkyVt8m
+         shIE45CWugIl/pJ3pHS0hHW9CjHi4ISkpwxiWMx2RzNMiDGBAFYPQTdpbEDfa7waW9YK
+         D1hqiS7oG0v5XASRSEfdaYqnOybpd5N/RGZE0RWHrAGfA3zQgIa6gePHN0c7YElakMr0
+         +ZEA==
+X-Forwarded-Encrypted: i=1; AJvYcCW2//QYT16ab5PpQ3SzXSagT3Q/dMZbkFfei6BaqS9/Ebx3sA4iXAOzdPyzgrhLxHu6hCvy0+IUZptPOATtAkvAMbLU5BCuEGZ3kEkvWSMP8ASYyq+y9DYplXqanWws8MoCby7mEoMN
+X-Gm-Message-State: AOJu0Yz+7LK1t/+3CsEv0DoCSM1+b++M99lZkszJdca6ee7blr78v+0r
+	BXtyAqAyejnaTk5AKpCJ74CiUyMjE5n4Yly++dlGPuoWS8W+9jwTXQJ4Fysl8pr4u9untGF5z6e
+	3NXx5hqoi/5iIWbR78vyTyLppZO8=
+X-Google-Smtp-Source: AGHT+IGLMWALI01ckCqs4+f3ML0k0Gp83dbLOhxzM6RvJU2rs4Ord/rFMnwPmqWS9EGUNEOIM2sADJZaDFAzykB43hY=
+X-Received: by 2002:a05:6512:2394:b0:513:e348:fbc0 with SMTP id
+ c20-20020a056512239400b00513e348fbc0mr5826916lfv.20.1710767409038; Mon, 18
+ Mar 2024 06:10:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+References: <20240314-mainline-ad7944-3-wire-mode-v2-1-d469da0705d2@baylibre.com>
+ <ZfX5jynjW4M9pvw1@surfacebook.localdomain> <20240318124041.0000032d@Huawei.com>
+In-Reply-To: <20240318124041.0000032d@Huawei.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 18 Mar 2024 15:09:32 +0200
+Message-ID: <CAHp75VeQcvuEy4V6-+3PeWTZJ9=Qae0AiiNB93OOw3wuc-uh3A@mail.gmail.com>
+Subject: Re: [PATCH v2] iio: adc: ad7944: Add support for "3-wire mode"
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Michael Hennerich <michael.hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> >  struct ad7944_adc {
-> >  	struct spi_device *spi;
-> > +	enum ad7944_spi_mode spi_mode;
-> >  	/* Chip-specific timing specifications. */
-> >  	const struct ad7944_timing_spec *timing_spec;
-> >  	/* GPIO connected to CNV pin. */
-> > @@ -58,6 +75,9 @@ struct ad7944_adc {
-> >  	 } sample __aligned(IIO_DMA_MINALIGN);
-> >  };  
-> 
-> Have you run `pahole` to see if there is a better place for a new member?
+On Mon, Mar 18, 2024 at 2:41=E2=80=AFPM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+> > >  struct ad7944_adc {
+> > >     struct spi_device *spi;
+> > > +   enum ad7944_spi_mode spi_mode;
+> > >     /* Chip-specific timing specifications. */
+> > >     const struct ad7944_timing_spec *timing_spec;
+> > >     /* GPIO connected to CNV pin. */
+> > > @@ -58,6 +75,9 @@ struct ad7944_adc {
+> > >      } sample __aligned(IIO_DMA_MINALIGN);
+> > >  };
+> >
+> > Have you run `pahole` to see if there is a better place for a new membe=
+r?
+>
+> I know this matters for structures where we see lots of them, but do we a=
+ctually
+> care for one offs?  Whilst it doesn't matter here I'd focus much more
+> on readability and like parameter grouping for cases like this than wasti=
+ng
+> a few bytes.
 
-I know this matters for structures where we see lots of them, but do we actually
-care for one offs?  Whilst it doesn't matter here I'd focus much more
-on readability and like parameter grouping for cases like this than wasting
-a few bytes.
+This is _also_ true, but think more about cache line contamination.
+Even not-so-important bytes may decrease the performance. In some
+cases it's tolerable, in some it is not (high-speed ADC). In general I
+assume that the developer has to understand many aspects of the
+software and cache line contamination may be last but definitely not
+least.
 
-Jonathan
-
+--=20
+With Best Regards,
+Andy Shevchenko
 

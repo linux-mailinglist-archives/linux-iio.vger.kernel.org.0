@@ -1,194 +1,219 @@
-Return-Path: <linux-iio+bounces-3580-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3581-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29D1A87E213
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 03:16:07 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4BB87E584
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 10:17:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4DB241C21329
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 02:16:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B0861F215C1
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 09:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F4A81DFC1;
-	Mon, 18 Mar 2024 02:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFF0528E2B;
+	Mon, 18 Mar 2024 09:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="by/cq4iX";
-	dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b="ak2fGyJp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Le02hEea"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gw2.atmark-techno.com (gw2.atmark-techno.com [35.74.137.57])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D279A14F6C
-	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 02:15:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.74.137.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F06528E22
+	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 09:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710728160; cv=none; b=FxyLmw8PHGJMq9qejWt79I3Of09xSDDUQeuCPqHdHzYGAX4Jgs7us+QSKphdBPcvtu42YiysNCbaD6VckzuznLkW4zvjHePZ+ZaLTHKxnwExe01X7+l01nxMYNsR2l0kPybUm7vyjSY3kWD36lNI4hxJ9WyGR8JgQU5OTtsUcfw=
+	t=1710753414; cv=none; b=h4mwHfkKxV7VCeS2wa1XOCjZKnsZ3W34Euqd1enUlEBxW5Sy8vlZem+imzasZB5iUWxHZdpqvyzviKNymgahRkkE/DYzzF6/D3qf6QLZU//Ms7kwmLncbd+SGgKDXoXELlL3maCigzT8ejNqA5WVWtYHYPGYnxMy+meYgiU4M+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710728160; c=relaxed/simple;
-	bh=jIv2QeeJVYaC9+Bza9LsMgEwMk6QP2pxph52rQ3Solk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bSWbYIhuUzgTdVHjuza1DZPheHSp736jDZ6exxLGhQ8mBVCg5dc0AO8GOTj6nuYHmUtdul1ioMIALNkIQe5mGcGdNi2FgNFhvV0xlyOZugvy4y5txngBj0PGDgb77DgTsS2F690NB2EWyfnXTy4b5dkxnTAuCh5mjXfuER2/Jug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com; spf=pass smtp.mailfrom=atmark-techno.com; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=by/cq4iX; dkim=pass (2048-bit key) header.d=atmark-techno.com header.i=@atmark-techno.com header.b=ak2fGyJp; arc=none smtp.client-ip=35.74.137.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=atmark-techno.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=atmark-techno.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=atmark-techno.com;
-	s=gw2_bookworm; t=1710728151;
-	bh=jIv2QeeJVYaC9+Bza9LsMgEwMk6QP2pxph52rQ3Solk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=by/cq4iXu+dCYTw8ZSEZjaQIFZZEBsLF5xZrkcpQ/iNsAWutgfDYN3LhH1ZiOrU3p
-	 tSnHzl7COUUtwFOcO4s08RSopgeN75+0Vbh5CjMaRYTRVPz4tbaOUjnYDVC08Ud4AG
-	 WXtw6qyFhVoVBAYv8wYDPLYfM/yoXVexPDBBNCGgcqRcIi3pWpiBp1bmF6CXFO+xCK
-	 P4r6RBPu+3+AIFjE2zd9ci1oKCU0jMIMVkC4vIgQ6dBNEhYlGQ5gEEfOBwBHpV2HHA
-	 L5/MLmLGf6wx5OBtU8BU3SiX6bU65MlZPxLUIt5tOT8hlijCCNq1lgORg56ky1GzGD
-	 n3yFh6waS7H/g==
-Received: from gw2.atmark-techno.com (localhost [127.0.0.1])
-	by gw2.atmark-techno.com (Postfix) with ESMTP id C070CB95
-	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 11:15:51 +0900 (JST)
-Authentication-Results: gw2.atmark-techno.com;
-	dkim=pass (2048-bit key; unprotected) header.d=atmark-techno.com header.i=@atmark-techno.com header.a=rsa-sha256 header.s=google header.b=ak2fGyJp;
-	dkim-atps=neutral
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by gw2.atmark-techno.com (Postfix) with ESMTPS id 1938EB95
-	for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 11:15:50 +0900 (JST)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-1dd72cc8590so45318195ad.3
-        for <linux-iio@vger.kernel.org>; Sun, 17 Mar 2024 19:15:50 -0700 (PDT)
+	s=arc-20240116; t=1710753414; c=relaxed/simple;
+	bh=BE2s4spaxz2JV5fG1hg+0xedY8C62gqs47KNuQ9Bj24=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=i2ku+5rPJxmJtRaD5As5Luz4wm/Q03MFu2DWeFmu/2QiEwasfQoU64ecB+X2PDag812koAWhk23qYK1kLCxgN7mrAXlEdHaZF0LBARDBi4DeVuq3NhMYHcchV5pMjcFNEyc1ts7WIBLevN+xZCeCYNdJ73PpGR+OfzcuF4QnHKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Le02hEea; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-6e675181ceaso2359656a34.2
+        for <linux-iio@vger.kernel.org>; Mon, 18 Mar 2024 02:16:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=atmark-techno.com; s=google; t=1710728149; x=1711332949; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xZRLjO7yES26IA5YTCwawjya15G39VD0oILYUFB1uhQ=;
-        b=ak2fGyJpDNiFolycHx4ogCk9+RcToZ+fydmfJL6ykRf/l8AzWhyY8bDUjYup0Ta0DW
-         U7cq8t8UUqUiQSuBT9wEQ3fGcP4VeX1GsTUT7LaMGFJEYX+nNNawE4H3H7THruucWjT2
-         /cPO6bf7QlYvbgY1UaJS5CwQVNjBGw/BPNLU2HJZSBpxYhty7OWCVs1zi8gAhRSb256o
-         XZgqwXavkPtuhLc/hytEAkbpQWchp52zcOAJhkq1yVo0re2lMxZwNE75gkRUyNORbLEm
-         kopiUHcSiE16ls1h29cGL+ErH/j3qnz+YdEHkmeTxDU+kNLPW/M2KLUCU0qVB3/BKaIk
-         YGMQ==
+        d=gmail.com; s=20230601; t=1710753412; x=1711358212; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5l0x+oGJ/qn2zWLeEBYquAx/qYhFRQ2JoGZJ1DOKe/A=;
+        b=Le02hEeari8ePooCXPbmtfQuvZ2BWNEJtBdL3qUfx8yCYpq6GM6MPgJizYuWTidW59
+         9Yt/UhdiliSBmIfIX1FLXxRj7LbuUmTtFgN35gHI97checFxJbP+v6B6mMwm1kQcMKVG
+         Np+5IGZvLQyR6gkqgH9pusxsVeU/zYV9ackG6QhJWhCdj3JdZKELm2VgCpLqFpmwRSvb
+         I1xvkiUWrw7igDEfoKqMZjDugA/1HUGZWBm2WOVbu8rQd3qIzQXRpM+ugVpKlI0LcjfS
+         PkqXvmzPGnGqt0YDrOBfJWZXOyteewc1qbfcMf0qgTPk2SWFox1xxSR3zxgOTbKthuu+
+         Jg0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710728149; x=1711332949;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xZRLjO7yES26IA5YTCwawjya15G39VD0oILYUFB1uhQ=;
-        b=gQf05L/oME5KtqBFbaHarXqegewFhVNFIprBllbFeCZFXzbMvkrL6AtZzSrWsbLNB9
-         dAyKKd7kDPBPJBAZj07TxWkIup7JJppNHJMROwjIK8/uDv4gbKj3YXRtNaJpnscbyzO9
-         UsUXG5Y6Zwv41zY0dqChFHTJoXqt9KNX1F16dydIOkjZncPpi6rqKEGRgKxvKBlvkXnN
-         GKh9blM8IMwtMV8Rb1rox9B/HXNynaEDR8DjgyeZqy707OeFdj5ZKXIgFdK3R4GoChge
-         3FJSNZ2Qkknfs6hT7rNr8ZJ4ZK7SYuIkZq+1wCPrdC3qEZZpvdq2XAaVy8K1s7QGbkLZ
-         plYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXGExazUPledD7809ngD+dSeya3FvInqtQ0VaGmQE3FUzfimN3EM4axre4/k9gzd44TFCGAvahvNM1/jGssw2I+K5TyyEUb/NFC
-X-Gm-Message-State: AOJu0YwN7ecTgjMwwtF4eil1dq2XP8B6RqzjSHA9uu/ijKmE6V06yhRT
-	7a2vT4ylh8+NeLjxhDJJQcj3g3GTEdKStyZ3cK0EO1bzQ3oknlX9fEgQPC97xmX+qw8PPzuhZ1y
-	OjhtLHFx108IqiFKSkch/7uUP/J/yxtGMfhZA/ifoisdu7C8YFLgVqdIoC0s=
-X-Received: by 2002:a17:902:650e:b0:1db:4941:f703 with SMTP id b14-20020a170902650e00b001db4941f703mr12482664plk.15.1710728148953;
-        Sun, 17 Mar 2024 19:15:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFCfH8jMO/aZB8DOpQyNXjy2tRo7yh1p/1BZpESd2N/XQNCV+0cg/uTQfDxBRcLSP0Q1MAffA==
-X-Received: by 2002:a17:902:650e:b0:1db:4941:f703 with SMTP id b14-20020a170902650e00b001db4941f703mr12482649plk.15.1710728148480;
-        Sun, 17 Mar 2024 19:15:48 -0700 (PDT)
-Received: from pc-0182.atmarktech (76.125.194.35.bc.googleusercontent.com. [35.194.125.76])
-        by smtp.gmail.com with ESMTPSA id mp16-20020a170902fd1000b001dbb6fef41fsm7918365plb.257.2024.03.17.19.15.47
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 17 Mar 2024 19:15:47 -0700 (PDT)
-Received: from martinet by pc-0182.atmarktech with local (Exim 4.96)
-	(envelope-from <martinet@pc-zest>)
-	id 1rm2XS-005oGb-2I;
-	Mon, 18 Mar 2024 11:15:46 +0900
-Date: Mon, 18 Mar 2024 11:15:36 +0900
-From: Dominique Martinet <dominique.martinet@atmark-techno.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Syunya Ohshio <syunya.ohshio@atmark-techno.com>,
-	Guido =?utf-8?Q?G=C3=BCnther?= <agx@sigxcpu.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
- device index
-Message-ID: <ZfejyEvPIncygKJ9@atmark-techno.com>
-References: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
- <7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
- <Zd7hSOw3_zosyrn3@atmark-techno.com>
- <daed8ada-9e01-41ad-82af-5da5cbbc865c@linaro.org>
- <Zd7qz1Qte8HWieF_@atmark-techno.com>
- <20240228142441.00002a79@Huawei.com>
- <Zd_zB_ymxkx0HB3q@atmark-techno.com>
- <ZfPg-nMANUtBlr6S@atmark-techno.com>
- <CAMknhBG_kJx8JPvTBQo7zpy3mFAkUjZpRY3DLBfXt+39nRJWiA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1710753412; x=1711358212;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5l0x+oGJ/qn2zWLeEBYquAx/qYhFRQ2JoGZJ1DOKe/A=;
+        b=t5SrqNps+fSARigYrjBv1IsMtdkhrk/nv4oYo9m4PB+2naCbnySSxWAEX+TZ5qI0ut
+         +0MPIIsV7hcSn7FGwBzFRUeeltML6hVn5fXKdYaQ1WrdBcbVOAfNGQeMQKk4iT28tKSk
+         VrqONN69ZAbn1psSTmy9Ew6OCk79JhnwFj9f64d83rJCSD2nIHDMx85PiqJ6M20Eb4Ov
+         HlEho8uZNxfy/ycOtU0mpOtUcLAKheeuFVeEi2QdouQM4k58fRpTDUFgIX3bMFtlBUY8
+         xYM70jMfSno9fSH5rzaSPEG1quCzLQcSmE0Jf3bgb3Q5TGowG+FpESzP6IIfSfLxuiYY
+         PBwg==
+X-Gm-Message-State: AOJu0YyR8rzgHmsjObYUvqBRBxxi9aqafGmij7C2aobun3iJ9QKrJir7
+	1atW8N45neWUn23FMUcY7yQ478GMjgfnookkKfvlOcicWEls4Z7b
+X-Google-Smtp-Source: AGHT+IE1jmY2bXjrcEcbJCCW9jYx4vFbwlv0pWXfZGiPynf1uQnzSauZQX5mDCb4Db6AwJZYZ88Iew==
+X-Received: by 2002:a9d:798f:0:b0:6e4:e1c2:9465 with SMTP id h15-20020a9d798f000000b006e4e1c29465mr10505686otm.4.1710753412059;
+        Mon, 18 Mar 2024 02:16:52 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47? (p200300f6ef1b2000944ccbc71e1c2c47.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:944c:cbc7:1e1c:2c47])
+        by smtp.gmail.com with ESMTPSA id gf8-20020a056214250800b00690f8192656sm5073100qvb.112.2024.03.18.02.16.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 Mar 2024 02:16:51 -0700 (PDT)
+Message-ID: <6de1c271b3e4bee83e858141d6e22d5c12024458.camel@gmail.com>
+Subject: Re: [PATCH v3 4/4] iio: inkern: move to the cleanup.h magic
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>, Nuno Sa <nuno.sa@analog.com>
+Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen
+	 <lars@metafoo.de>
+Date: Mon, 18 Mar 2024 10:20:17 +0100
+In-Reply-To: <ZfX3gnbwYcZlGpBq@surfacebook.localdomain>
+References: <20240229-iio-use-cleanup-magic-v3-0-c3d34889ae3c@analog.com>
+	 <20240229-iio-use-cleanup-magic-v3-4-c3d34889ae3c@analog.com>
+	 <ZfX3gnbwYcZlGpBq@surfacebook.localdomain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMknhBG_kJx8JPvTBQo7zpy3mFAkUjZpRY3DLBfXt+39nRJWiA@mail.gmail.com>
 
-David Lechner wrote on Fri, Mar 15, 2024 at 10:53:36AM -0500:
-> How about using udev rules to create symlinks for each device based on
-> the label attribute? No changes to the kernel are needed.
+On Sat, 2024-03-16 at 21:48 +0200, Andy Shevchenko wrote:
+> Thu, Feb 29, 2024 at 04:10:28PM +0100, Nuno Sa kirjoitti:
+> > Use the new cleanup magic for handling mutexes in IIO. This allows us t=
+o
+> > greatly simplify some code paths.
+> >=20
+> > While at it, also use __free(kfree) where allocations are done and drop
+> > obvious comment in iio_channel_read_min().
+>=20
+> ...
+>=20
+> > =C2=A0int iio_map_array_register(struct iio_dev *indio_dev, struct iio_=
+map *maps)
+> > =C2=A0{
+> > -	int i =3D 0, ret =3D 0;
+> > +	int i =3D 0, ret;
+> > =C2=A0	struct iio_map_internal *mapi;
+>=20
+> Why not making it reversed xmas tree order at the same time?
+>=20
+> > =C2=A0	if (!maps)
+> > =C2=A0		return 0;
+>=20
+> ...
+>=20
+> > -error_ret:
+> > -	if (ret)
+> > -		iio_map_array_unregister_locked(indio_dev);
+> > -	mutex_unlock(&iio_map_list_lock);
+> > =C2=A0
+> > +	return 0;
+> > +error_ret:
+> > +	iio_map_array_unregister_locked(indio_dev);
+> > =C2=A0	return ret;
+> > =C2=A0}
+>=20
+> Do we really need to split this? (I'm fine with a new code, but seems to =
+me as
+> unneeded churn.)
+>=20
+> ...
+>=20
+> > +	struct iio_channel *channel __free(kfree) =3D
+> > kzalloc(sizeof(*channel),
+> > +							=C2=A0=C2=A0=C2=A0 GFP_KERNEL);
+>=20
+> I would indent a bit differently:
+>=20
+> 	struct iio_channel *channel __free(kfree) =3D
+> 					kzalloc(sizeof(*channel),
+> GFP_KERNEL);
+>=20
+> (maybe less TABs, but you got the idea)
+>=20
+> > =C2=A0	if (!channel)
+> > =C2=A0		return ERR_PTR(-ENOMEM);
+>=20
+> ...
+>=20
+> > +	struct iio_channel *chans __free(kfree) =3D kcalloc(nummaps + 1,
+> > +							=C2=A0 sizeof(*chans),
+> > +							=C2=A0 GFP_KERNEL);
+>=20
+> Ditto.
+>=20
+> > =C2=A0	if (!chans)
+> > =C2=A0		return ERR_PTR(-ENOMEM);
+>=20
+> ...
+>=20
+> > =C2=A0	/* first find matching entry the channel map */
+> > -	mutex_lock(&iio_map_list_lock);
+> > -	list_for_each_entry(c_i, &iio_map_list, l) {
+> > -		if ((name && strcmp(name, c_i->map->consumer_dev_name) !=3D
+> > 0) ||
+> > -		=C2=A0=C2=A0=C2=A0 (channel_name &&
+> > -		=C2=A0=C2=A0=C2=A0=C2=A0 strcmp(channel_name, c_i->map->consumer_cha=
+nnel) !=3D
+> > 0))
+> > -			continue;
+> > -		c =3D c_i;
+> > -		iio_device_get(c->indio_dev);
+> > -		break;
+> > +	scoped_guard(mutex, &iio_map_list_lock) {
+> > +		list_for_each_entry(c_i, &iio_map_list, l) {
+> > +			if ((name && strcmp(name, c_i->map-
+> > >consumer_dev_name) !=3D 0) ||
+> > +			=C2=A0=C2=A0=C2=A0 (channel_name &&
+> > +			=C2=A0=C2=A0=C2=A0=C2=A0 strcmp(channel_name, c_i->map-
+> > >consumer_channel) !=3D 0))
+>=20
+> I would kill these ' !=3D 0' pieces, but I see they are in the original c=
+ode.
+>=20
+> > +				continue;
+> > +			c =3D c_i;
+> > +			iio_device_get(c->indio_dev);
+> > +			break;
+> > +		}
+> > =C2=A0	}
+>=20
+> ...
+>=20
+> > -	channel =3D kzalloc(sizeof(*channel), GFP_KERNEL);
+> > +	struct iio_channel *channel __free(kfree) =3D
+> > kzalloc(sizeof(*channel),
+> > +							=C2=A0=C2=A0=C2=A0 GFP_KERNEL);
+>=20
+> Indentation?
+>=20
+> ...
+>=20
+> > -error_no_chan:
+> > -	kfree(channel);
+> > =C2=A0error_no_mem:
+> > =C2=A0	iio_device_put(c->indio_dev);
+> > =C2=A0	return ERR_PTR(err);
+>=20
+> Effectively you move kfree after device put, would it be a problem?
+>=20
 
-Right, it's definitely possible to make symlinks for each "device" -- my
-patch comment links to such an udev script "solution":
-https://git.toradex.com/cgit/meta-toradex-bsp-common.git/tree/recipes-core/udev/files/verdin-imx8mm/toradex-adc.sh?h=kirkstone-6.x.y
-(the script is launched by udev here:
-https://git.toradex.com/cgit/meta-toradex-bsp-common.git/tree/recipes-core/udev/files/verdin-imx8mm/99-toradex.rules
-)
+This one got my attention... But I think we're fine. But yeah, subtle order=
+ing
+change that I did not unnoticed.
 
-My conceptual problem with this is that this makes symlinks in /dev to
-files in /sys and it feels like we're crossing boundaries.
-As far as I can tell there is no way for userspace to create arbitrary
-symlinks in /sys, so I think we could have an interface more
-user-friendly by allowing paths to be static for users with multiple
-devices.
-(I guess that's a weak argument given e.g. disks etc will also have an
-unreliable name in /sys in the general case, but simple programs don't
-interact with them in /sys and can use stable links in /dev so my
-expectations here aren't quite the same)
-
-
-Ultimately, the problem might run deeper in that we're having userspace
-interact with the device through /sys and not the /dev char dev... As
-far as I could see /dev/iio:deviceX only allows reading buffered values
-and doesn't have any ioctl or other way of reading immediate values as
-is possible in /sys though, so that'd require quite a bit of work to
-duplicate the interface there...
-
-Perhaps I'm just thinking too much and symlinks from /dev to /sys are a
-thing in the IIO world? I've not seen it done anywhere except in that
-toradex tree when I was looking earlier.
-
-
-Andy Shevchenko wrote on Sat, Mar 16, 2024 at 10:14:35PM +0200:
-> [...]
-
-Thank you for the review!
-
->> +#include <linux/of.h>
->
-> What about ACPI?
-> Please try avoid hard to use OF-specific code for the new features.
-
-Given my suggestion here relied on users giving manual hints in the DTB
-I'm not sure how that could be interfaced with ACPI, but if you have a
-suggestion to make paths static that'd work with either interfaces I'd
-be more than happy to give it a try.
-
-I'd also like to add that in my particular case it's a problem created
-by the OF interface in the first place: devices are currently created in
-the order they're parsed from OF, and it just so happens that this order
-doesn't work well for us; I'm not aware of how IIO interacts with ACPI
-but perhaps the way the list of devices processed from ACPI is "stable
-enough" in practice?
-
-
-Thank you,
--- 
-Dominique
+- Nuno S=C3=A1
 
 
 

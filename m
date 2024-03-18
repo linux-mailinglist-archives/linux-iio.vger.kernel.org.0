@@ -1,99 +1,165 @@
-Return-Path: <linux-iio+bounces-3578-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3579-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86F5D87E123
-	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 00:45:31 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F9DE87E1AC
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 02:29:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DFE81C2091B
-	for <lists+linux-iio@lfdr.de>; Sun, 17 Mar 2024 23:45:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EDD11C215BF
+	for <lists+linux-iio@lfdr.de>; Mon, 18 Mar 2024 01:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E50C7219ED;
-	Sun, 17 Mar 2024 23:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E71418029;
+	Mon, 18 Mar 2024 01:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MJcL6k00"
+	dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b="JdNraSZf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa6.hc1455-7.c3s2.iphmx.com (esa6.hc1455-7.c3s2.iphmx.com [68.232.139.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915B3200C1
-	for <linux-iio@vger.kernel.org>; Sun, 17 Mar 2024 23:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207632032D;
+	Mon, 18 Mar 2024 01:29:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.139.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710719125; cv=none; b=tu8BMHmkmaci/Uh5U0IrJssdip9fpRENHzooTc+oQiMcSzAdGBvWVWzrVFOmQRhj7uLxAUmEkxORXIBhLyp24VoTRyCwQx85pM2LlazQ/JQdARCOaWbnR7bwNxeTNzCrUslOtnkYT7x2u4wom7mc23Orb7G093Dvuw7uiO/Wv5I=
+	t=1710725343; cv=none; b=UpYyli2IZX8lV8fBevM72TdtBIgDnvSPLoeQETdUNnBz4mckgT/t8iWLyNdpdbAmboF+RMvTi6QSilhBG4nJTpN0YPf/Yo6RwwY9j+yT1Tu8QuS75YDcgXsifb4gXisYmVAgoFd5KbjCdOZczZipg9t3R3S/iYbgPl7UaXULs3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710719125; c=relaxed/simple;
-	bh=qS8OgpafELdrr8mpjENTulc1x7WVHvCrGR8KpMl/ioE=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rQ0PVNPT7Do7eO/WwkTaP6NN8WQfZE/ZVRsqB5D1is6WyDVyyl/B+Gc8LcQuf84SecsBj41MGpCIz1gq5dfg2pcDH57BBvVq/Tn1bjYi0DetlLj+MVklGez/SCDumCcxUmo1Nm5E1sUsS7EYHSHR4MRB1GJU5BIrvQwKZfF9xxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MJcL6k00; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1A859C43394
-	for <linux-iio@vger.kernel.org>; Sun, 17 Mar 2024 23:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710719125;
-	bh=qS8OgpafELdrr8mpjENTulc1x7WVHvCrGR8KpMl/ioE=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=MJcL6k00HSYJeQ7IXgwb7dtDZR9f8OznzhZJbnAI9euwMQ/FMxZSFNV3Uc+r3P56G
-	 wHXk3TO8/B11t1745orqwsl09ml/0bOgFpRbWwRbx1Dp4nd4MHTUHu8pbF9YXw4Uls
-	 QbHxjR1AprUR5HHFGV2QlrHJaiILQ4Ei2Duulg9hGl+fRJz0zZroep2sPUiztgif5f
-	 31xQrrpobo52WTvUxQeNUCpvjZFs6NezzsQ0wlZ6H/18ZjNaHEwIEiLYjP2d6NvFtg
-	 h8EFszfbtxT5QpY1c+oTn07+4qqc/YyjZ6g+G+YWy9ti8ryUrW+KMGzeuQ9/7iqE/I
-	 55LdJ0Naa8AAg==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 08645C53BCD; Sun, 17 Mar 2024 23:45:25 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Sun, 17 Mar 2024 23:45:24 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: kernelbugzilla@kirkschnable.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218578-217253-yFF4x53bsR@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
-References: <bug-218578-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=arc-20240116; t=1710725343; c=relaxed/simple;
+	bh=lEAICoD6xublrvyvwGo3OfFKv8FKH3HxG+GESGhe6oc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=peYwfEpiFPoXFHfTEIQ2DKHzgBt40NqsvN9vi8rA+AeCj242ueGbimf2ZnJuTi57mZU5D7TzfBWf4UcehL3GjNGZo4Zs8GHdrqRIwhYp3tBRR4NLD+3ksycF0aIido0o/9CVP4JYCngnfooj2haRi063JkFEgJbbPER8IoQFmOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com; spf=pass smtp.mailfrom=fujitsu.com; dkim=pass (2048-bit key) header.d=fujitsu.com header.i=@fujitsu.com header.b=JdNraSZf; arc=none smtp.client-ip=68.232.139.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fujitsu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fujitsu.com
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=fujitsu.com; i=@fujitsu.com; q=dns/txt; s=fj2;
+  t=1710725342; x=1742261342;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=lEAICoD6xublrvyvwGo3OfFKv8FKH3HxG+GESGhe6oc=;
+  b=JdNraSZf/VPCf4r4QFUnGgq9ulAFuwCk8bz5aybzlQNem3bZnpa8/m+b
+   PEobNAdmEzXmXvcfFrw6YSbZ2e3lHYMY2USpbhp/hm618Z51oXMI3vDEZ
+   IjhvNOTXWirSF5Fm2SX1W1RK4bBA+GhcWnC8/aqNcoNNYEc3dn8pjyCjp
+   +Ffem6fWMgcRdU9a9M+xSQFNpIehcTr2scuWgjBsK0r5m2JtuNneGrhI6
+   3+M/vnYxJJsM9XLjELpnxxSE7wHV1m1fonyiGzjxnKFOncACiqzcLErm2
+   XX2lSeLS2snb7UwnB9tg/Tgmrz0FgFni4WCAvOo45iXtQmGXzeX6huw+B
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11016"; a="154385599"
+X-IronPort-AV: E=Sophos;i="6.07,133,1708354800"; 
+   d="scan'208";a="154385599"
+Received: from unknown (HELO yto-r4.gw.nic.fujitsu.com) ([218.44.52.220])
+  by esa6.hc1455-7.c3s2.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Mar 2024 10:28:52 +0900
+Received: from yto-m2.gw.nic.fujitsu.com (yto-nat-yto-m2.gw.nic.fujitsu.com [192.168.83.65])
+	by yto-r4.gw.nic.fujitsu.com (Postfix) with ESMTP id 5EF95D9F03;
+	Mon, 18 Mar 2024 10:28:49 +0900 (JST)
+Received: from kws-ab3.gw.nic.fujitsu.com (kws-ab3.gw.nic.fujitsu.com [192.51.206.21])
+	by yto-m2.gw.nic.fujitsu.com (Postfix) with ESMTP id 8FDA8D561E;
+	Mon, 18 Mar 2024 10:28:48 +0900 (JST)
+Received: from edo.cn.fujitsu.com (edo.cn.fujitsu.com [10.167.33.5])
+	by kws-ab3.gw.nic.fujitsu.com (Postfix) with ESMTP id 19FA120098E1C;
+	Mon, 18 Mar 2024 10:28:48 +0900 (JST)
+Received: from localhost.localdomain (unknown [10.167.226.45])
+	by edo.cn.fujitsu.com (Postfix) with ESMTP id 609231A006D;
+	Mon, 18 Mar 2024 09:28:47 +0800 (CST)
+From: Li Zhijian <lizhijian@fujitsu.com>
+To: linux-kernel@vger.kernel.org
+Cc: Li Zhijian <lizhijian@fujitsu.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	linux-input@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH v3 2/4] HID: hid-sensor-custom: Convert sprintf/snprintf to sysfs_emit
+Date: Mon, 18 Mar 2024 09:28:17 +0800
+Message-Id: <20240318012819.1405003-2-lizhijian@fujitsu.com>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20240318012819.1405003-1-lizhijian@fujitsu.com>
+References: <20240318012819.1405003-1-lizhijian@fujitsu.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-TM-AS-Product-Ver: IMSS-9.1.0.1417-9.0.0.1002-28258.003
+X-TM-AS-User-Approved-Sender: Yes
+X-TMASE-Version: IMSS-9.1.0.1417-9.0.1002-28258.003
+X-TMASE-Result: 10--5.660400-10.000000
+X-TMASE-MatchedRID: aug7Rh7TzMkI7eJeU5hen5iHtCNYjckMjkDrBOJwwnQ8JmmJxjOaQXVX
+	Q3/qdw5yDiqGKKMcNgRhoUIS5GGeEs1HQN/TlJ3ZOIQ9GP2P2u/0swHSFcVJ6OTpBuL72LoPQiM
+	ingSlKoKMx5HzfQifbPE41045MrHXFDCN/1eC4ASdVNZaI2n6/8E5XPQnBzGXq8KsbROd9VSArq
+	oIZrVn15fzUkBpc072hKK/bK+QypCR9GF2J2xqMxRFJJyf5BJe3QfwsVk0UbtuRXh7bFKB7tk/P
+	KAEDs5ka64lbDnlTvs+39t8ZqOEjsNJi689wOTYNkUSDDq742k=
+X-TMASE-SNAP-Result: 1.821001.0001-0-1-22:0,33:0,34:0-0
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
+Per filesystems/sysfs.rst, show() should only use sysfs_emit()
+or sysfs_emit_at() when formatting the value to be returned to user space.
 
---- Comment #16 from Kirk Schnable (kernelbugzilla@kirkschnable.com) ---
-Thanks for the continued support Hans!  I have actually never compiled my o=
-wn
-kernel before, but there's a first time for everything.  I'm down to give i=
-t a
-go.
+coccinelle complains that there are still a couple of functions that use
+snprintf(). Convert them to sysfs_emit().
 
-Also FWIW, my further testing has indicated that there are also problems wh=
-en
-coming out of a sleep state.  Will your proposed fix also be likely to corr=
-ect
-that behavior too?
+sprintf() will be converted as weel if they have.
 
---=20
-You may reply to this email to add a comment.
+Generally, this patch is generated by
+make coccicheck M=<path/to/file> MODE=patch \
+COCCI=scripts/coccinelle/api/device_attr_show.cocci
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+No functional change intended
+
+CC: Jiri Kosina <jikos@kernel.org>
+CC: Jonathan Cameron <jic23@kernel.org>
+CC: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+CC: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+CC: linux-input@vger.kernel.org
+CC: linux-iio@vger.kernel.org
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
+---
+V3:
+   rewrap the line as will be under 80 chars and add Reviewed-by # Jonathan
+This is a part of the work "Fix coccicheck device_attr_show warnings"[1]
+Split them per subsystem so that the maintainer can review it easily
+[1] https://lore.kernel.org/lkml/20240116041129.3937800-1-lizhijian@fujitsu.com/
+---
+ drivers/hid/hid-sensor-custom.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/hid/hid-sensor-custom.c b/drivers/hid/hid-sensor-custom.c
+index d85398721659..ac214777d7d9 100644
+--- a/drivers/hid/hid-sensor-custom.c
++++ b/drivers/hid/hid-sensor-custom.c
+@@ -155,7 +155,7 @@ static ssize_t enable_sensor_show(struct device *dev,
+ {
+ 	struct hid_sensor_custom *sensor_inst = dev_get_drvdata(dev);
+ 
+-	return sprintf(buf, "%d\n", sensor_inst->enable);
++	return sysfs_emit(buf, "%d\n", sensor_inst->enable);
+ }
+ 
+ static int set_power_report_state(struct hid_sensor_custom *sensor_inst,
+@@ -372,14 +372,13 @@ static ssize_t show_value(struct device *dev, struct device_attribute *attr,
+ 				     sizeof(struct hid_custom_usage_desc),
+ 				     usage_id_cmp);
+ 		if (usage_desc)
+-			return snprintf(buf, PAGE_SIZE, "%s\n",
+-					usage_desc->desc);
++			return sysfs_emit(buf, "%s\n", usage_desc->desc);
+ 		else
+-			return sprintf(buf, "not-specified\n");
++			return sysfs_emit(buf, "not-specified\n");
+ 	 } else
+ 		return -EINVAL;
+ 
+-	return sprintf(buf, "%d\n", value);
++	return sysfs_emit(buf, "%d\n", value);
+ }
+ 
+ static ssize_t store_value(struct device *dev, struct device_attribute *attr,
+-- 
+2.29.2
+
 

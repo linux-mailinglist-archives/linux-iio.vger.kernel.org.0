@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-3626-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3627-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8004C880311
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Mar 2024 18:11:17 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36FC1880355
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Mar 2024 18:24:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 378F8283C8C
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Mar 2024 17:11:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BAAF9B229CF
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Mar 2024 17:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72D322086;
-	Tue, 19 Mar 2024 17:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B72719BDC;
+	Tue, 19 Mar 2024 17:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NObJJsxo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+T7Pfh+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD26210E6;
-	Tue, 19 Mar 2024 17:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFE224B2F;
+	Tue, 19 Mar 2024 17:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710868254; cv=none; b=IAs4A6uVKu+bMwecvNMvsYL40SkDp0379ZqFghorafhJpETE5jfx6X//kCVHt6UQSjMallW5rmtrI48AKLkkPNDmp3XSBdpzumyPOTIniyF9Z7GbKyTrIu3+GWlZlZt3fPMEtVrr1oZpwK1lKt8+Zc05aoAsb/c9sUxBODKquPI=
+	t=1710869076; cv=none; b=IqBykF9YzYDoaNt4XBHCAOWezjgP/wGe0MXnOj09tVh1N5OkErf9ys1NK9g3GJJi9m+YYQV8nOfZdKVa+G07H6NW2wZK3kI70FKTZ4uqFdjyZCOTrST2LzYlcMrUwquxocZNU5GxX3JdkirJJDBJzkeCBtmvJ6Nd3KiIaLdKo+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710868254; c=relaxed/simple;
-	bh=iE7hgBUgh9pLwag2DUIbFk0wKbpQx/A8AbEUFmM4glc=;
+	s=arc-20240116; t=1710869076; c=relaxed/simple;
+	bh=U7CbCyFjLydvSjfnUfIRPciwoVaztbmBFmc+BRFRz10=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gxMrnh3wNTSf/ariHHMZERbbuAY+RVF2h3WUqILwTFUF9tkdgwu38tBa343ChI6Mf/D10eSM5b19es6qzF4phTQ/Y9oBmDTG14HXS2uCVvLY1NR7KJPrHLfZVHd8X5fNrGY+yfvb1ni2wYfIdvoJ7HS7E+J0soQcx/Wxf1dYgAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NObJJsxo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8521AC433B2;
-	Tue, 19 Mar 2024 17:10:51 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=DT7NHtMHgYTbQkIzuXrQyTPoYSANAdA8anDUIZLm7cBLMQdEhID/IFVtAt1955fgiW3BwHG7g+nklKXHCweQVpwKakGI8KUll+BXWHm4ZUdFohP+nVmlQZS4z1BQ+8kxn8TMGYyiQUEdWJPbA9nAn7WCCl8sa+l/N+paPrEhPDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+T7Pfh+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91B5DC433C7;
+	Tue, 19 Mar 2024 17:24:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710868254;
-	bh=iE7hgBUgh9pLwag2DUIbFk0wKbpQx/A8AbEUFmM4glc=;
+	s=k20201202; t=1710869075;
+	bh=U7CbCyFjLydvSjfnUfIRPciwoVaztbmBFmc+BRFRz10=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NObJJsxosq3j1km2UrMN6rdRzfL829XRC58cKfSuiqCNrbknyROut7IPyYYQlY9SD
-	 YLyMw8EdLuid+yu/Ho1JWmzWl56XFbYHWF6xljmzWXgwK0hZnN0Eig/OyEL/pZqVte
-	 h9cikC6PWtM/3TFVz1CMRXpwBdBF3kzQyChCon2Dbgq4I7ju6HD8ZNPQytBstIy2PT
-	 t+sngo7ZhbpQae+iir6byQuIIXddOXIaH452rOrYhxD++L9eQJqOy9SWfuO2gD2/Yz
-	 JlnsfY+mFnJnefozuBKAP+BOw0sC5yiqZ9KnO4RTy70tDnhEZo2FuZC1+JRw+psimN
-	 9JcPdpb89kv7g==
-Date: Tue, 19 Mar 2024 17:10:49 +0000
+	b=V+T7Pfh+x4kg/wi9odomn/H6dSSgiXZthIJ+MyrTOmH5/PWeWsx09bI0P70Ws5iOV
+	 0ByOguj8ewD0dF6xZ8jOzyrZbWOtVv399zMQxghygGWsZZXG80bwW/jZ6CebrltMBn
+	 SomCJMEOBkTr79WTsCXvz+mKy1J+vz6Rrldn/SlS760vZeW6TyIrdJ+vKsgZTjEb6M
+	 EKek/mTrJIoaZKIiz1NIvzP5GQdMov/lYEb/O8fPRxV3zfi023rs6jleJVeD1f91mV
+	 0od2ukYUYCVHv4l7zOBiSZjenDu+3Y7xRF7MqcHYww+A201XfsxZpS7eNCeq1+YXLk
+	 nihTozkAI7IZA==
+Date: Tue, 19 Mar 2024 17:24:30 +0000
 From: Conor Dooley <conor@kernel.org>
 To: Julien Stephan <jstephan@baylibre.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
@@ -56,11 +56,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v5 3/7] dt-bindings: iio: adc: ad7380: add
- pseudo-differential parts
-Message-ID: <20240319-clothes-resisting-1238980300e1@spud>
+Subject: Re: [PATCH v5 6/7] dt-bindings: iio: adc: ad7380: add support for
+ ad738x-4 4 channels variants
+Message-ID: <20240319-dice-overpower-b551ccf08aaa@spud>
 References: <20240319-adding-new-ad738x-driver-v5-0-ce7df004ceb3@baylibre.com>
- <20240319-adding-new-ad738x-driver-v5-3-ce7df004ceb3@baylibre.com>
+ <20240319-adding-new-ad738x-driver-v5-6-ce7df004ceb3@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -68,42 +68,36 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="AAHZqaSZHdYHsTHM"
+	protocol="application/pgp-signature"; boundary="1YE01LAM9wdFxmi7"
 Content-Disposition: inline
-In-Reply-To: <20240319-adding-new-ad738x-driver-v5-3-ce7df004ceb3@baylibre.com>
+In-Reply-To: <20240319-adding-new-ad738x-driver-v5-6-ce7df004ceb3@baylibre.com>
 
 
---AAHZqaSZHdYHsTHM
+--1YE01LAM9wdFxmi7
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 19, 2024 at 11:11:24AM +0100, Julien Stephan wrote:
-> From: David Lechner <dlechner@baylibre.com>
+On Tue, Mar 19, 2024 at 11:11:27AM +0100, Julien Stephan wrote:
+> Add compatible support for ad7380/1/3/4-4 parts which are 4 channels
+> variants from ad7380/1/3/4
 >=20
-> Adding AD7383 and AD7384 compatible parts that are pseudo-differential.
->=20
-> Pseudo-differential require common mode voltage supplies, so add them
-> conditionally
->=20
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
 > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 
 Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
-Thanks,
-Conor.
 
---AAHZqaSZHdYHsTHM
+
+--1YE01LAM9wdFxmi7
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZfnHGQAKCRB4tDGHoIJi
-0vACAP9iDMvhw9YrBRGMQEe5Lde7Eerkrn7w61VRAmvFtLtY4AEA2zYUtehEv4EC
-rIsHRfp4TuYdHPxxvm/2imbwxMb8ogE=
-=yaS1
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZfnKTgAKCRB4tDGHoIJi
+0sqVAQDlnpYjSM6Fvba7o1vgq4n5c7KGSi4udvQpm384U2RN0AEAmwemHzNjHj2p
+r/WBQmKlt23T/dldXwF4ejBtffZQ0g4=
+=QpFs
 -----END PGP SIGNATURE-----
 
---AAHZqaSZHdYHsTHM--
+--1YE01LAM9wdFxmi7--
 

@@ -1,145 +1,109 @@
-Return-Path: <linux-iio+bounces-3625-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3626-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE12880092
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Mar 2024 16:28:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8004C880311
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Mar 2024 18:11:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2000CB2109B
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Mar 2024 15:28:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 378F8283C8C
+	for <lists+linux-iio@lfdr.de>; Tue, 19 Mar 2024 17:11:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529FC657AE;
-	Tue, 19 Mar 2024 15:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72D322086;
+	Tue, 19 Mar 2024 17:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="koSpH4Tf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NObJJsxo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D41B651B1
-	for <linux-iio@vger.kernel.org>; Tue, 19 Mar 2024 15:28:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CD26210E6;
+	Tue, 19 Mar 2024 17:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710862128; cv=none; b=Fox1FP3r3fg4zT2epNT03vvwCoEC60gfA9nIsPED6DFsS78dUjZPkdJfo+ECUIQZNsD79aJHSjn4egeknRNtAif4697ukXsdcYZoXAhFZx6HI3vxQZZm/YI8FyXeo8j5rTWsB622Kh53oW7XgP4z/jPhw73D/WD6VkMgQa/sLzs=
+	t=1710868254; cv=none; b=IAs4A6uVKu+bMwecvNMvsYL40SkDp0379ZqFghorafhJpETE5jfx6X//kCVHt6UQSjMallW5rmtrI48AKLkkPNDmp3XSBdpzumyPOTIniyF9Z7GbKyTrIu3+GWlZlZt3fPMEtVrr1oZpwK1lKt8+Zc05aoAsb/c9sUxBODKquPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710862128; c=relaxed/simple;
-	bh=12kIwNAxFbOIGoSa+XT9zKHmXpAAXrGcmFskxrE3FY4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oMh8w6dgavOnQGUQAC61rhZY7ROeKu+RVn0D9iSC5v4CzvMVB18HU9aqKeiO02Vp9I4dSHPlv+QbR5WK3o++WdcqFybwM/Syupx1FTt+OxPHPiiH345xsqodTMGkPpGbhEulIvS4eOktdWfewrx2AD2vIUU8MrAAlhs8mV3OKnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=koSpH4Tf; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d4698f4936so81612031fa.1
-        for <linux-iio@vger.kernel.org>; Tue, 19 Mar 2024 08:28:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1710862123; x=1711466923; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L0YRQCzEtPOovqBNC+M8TvgB+q1bgObduWmwuxVs4xE=;
-        b=koSpH4TfSiPqpr51FGdLdyJz8Vsy2XzbkLTD3PxZslCYXZdWvx73ffXYzVl5OU/Iax
-         pfbGXyIsst08Z3T2QymVjx0CMwR0ZMTUj20utZSLH7Q+r7bv5/AQh7DP9Xdt9d9attvS
-         2LBJ+c9AB5/mTh7pogQCEHJE8/zLQSzhHY3fXXHbPtfIIyFjbxtmyXLgd/w/YMkexsWa
-         aFfIXn9DuzNk7nPOnpRrdg1VNlGzwFq9NH++bDzrv/tYOzhQ9KzvSaOsh7ajFnyVI+Vt
-         EfrOuC51Lu7/6VJkzkrJrDiyRHsr+pA4kWcEC9rqjCjwAj7msdL3ra+HFjYi+Lo4ko4y
-         PCUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710862123; x=1711466923;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L0YRQCzEtPOovqBNC+M8TvgB+q1bgObduWmwuxVs4xE=;
-        b=JUr/+UjYi+/TiWkBQfgIudoN9pdRibFHAfAxY09urZlClUpZA+5Mg19t5n4XlSnWNQ
-         xdnK6N/cKONMlXekDhzpBbHbsgziMt6jEhc+Ie0AdeDH4+p5Jv8VX7boWB2HMwb7Q+do
-         +60jSTYLNxCWviy+81n3INIQisGVQBEA/rxIY2xq+CvRWPYpqTn6Bmd9MNOKJHuH+45Z
-         i7a7bizxwpwdhOVRbsNvGw7Cxvw6PCtjfQpZ4GkLE0iAdjKVg4dx0ZDh2aXdOoVQpnA3
-         JikQT6LDJHxorfo52Dk/d4BDf9eFKDUUu1+Lvj9QYPm5m7Nz13iuqO/sMt+7BdL0xuzh
-         DpMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWLUFsN4DYCH7W1fsZpu1w3Njn3Fr7oe5O3g3wADZ7pH5dzDUpKM/aZeQcr9zorW8OCEr8ZDmOspZJCqSXov6lzqdrU/WvR+fwD
-X-Gm-Message-State: AOJu0Yyboo3Qj/6HG6cFICCtZM81LfqkscJ8267rUzBxAqqEFPWQxFRZ
-	xDeC4AunIQlQnxG0Il7QL9Rh6X2D4qQi6bT5OhzwRYvw/a3G5bwr2luOoJ4CKPMi4fO6Burk6Ww
-	Pg784hWRBADJMkraDonqBngo1RShR5TZqOm1SOg==
-X-Google-Smtp-Source: AGHT+IH57csUMlqpNIHKlT6Bfa/3wVTkoYXItlIM1+aBeNDM3LhhVaSf1Xxg3j/2AW9C55ufKxw+GbzavjRq+ggDMbg=
-X-Received: by 2002:a2e:b16c:0:b0:2d4:61b6:7a2a with SMTP id
- a12-20020a2eb16c000000b002d461b67a2amr10423928ljm.1.1710862123335; Tue, 19
- Mar 2024 08:28:43 -0700 (PDT)
+	s=arc-20240116; t=1710868254; c=relaxed/simple;
+	bh=iE7hgBUgh9pLwag2DUIbFk0wKbpQx/A8AbEUFmM4glc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gxMrnh3wNTSf/ariHHMZERbbuAY+RVF2h3WUqILwTFUF9tkdgwu38tBa343ChI6Mf/D10eSM5b19es6qzF4phTQ/Y9oBmDTG14HXS2uCVvLY1NR7KJPrHLfZVHd8X5fNrGY+yfvb1ni2wYfIdvoJ7HS7E+J0soQcx/Wxf1dYgAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NObJJsxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8521AC433B2;
+	Tue, 19 Mar 2024 17:10:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710868254;
+	bh=iE7hgBUgh9pLwag2DUIbFk0wKbpQx/A8AbEUFmM4glc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NObJJsxosq3j1km2UrMN6rdRzfL829XRC58cKfSuiqCNrbknyROut7IPyYYQlY9SD
+	 YLyMw8EdLuid+yu/Ho1JWmzWl56XFbYHWF6xljmzWXgwK0hZnN0Eig/OyEL/pZqVte
+	 h9cikC6PWtM/3TFVz1CMRXpwBdBF3kzQyChCon2Dbgq4I7ju6HD8ZNPQytBstIy2PT
+	 t+sngo7ZhbpQae+iir6byQuIIXddOXIaH452rOrYhxD++L9eQJqOy9SWfuO2gD2/Yz
+	 JlnsfY+mFnJnefozuBKAP+BOw0sC5yiqZ9KnO4RTy70tDnhEZo2FuZC1+JRw+psimN
+	 9JcPdpb89kv7g==
+Date: Tue, 19 Mar 2024 17:10:49 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Julien Stephan <jstephan@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v5 3/7] dt-bindings: iio: adc: ad7380: add
+ pseudo-differential parts
+Message-ID: <20240319-clothes-resisting-1238980300e1@spud>
+References: <20240319-adding-new-ad738x-driver-v5-0-ce7df004ceb3@baylibre.com>
+ <20240319-adding-new-ad738x-driver-v5-3-ce7df004ceb3@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240319-ad7944-cleanups-v2-1-50e77269351b@baylibre.com> <CAHp75VeO_=r_pMBUTaQQYKDRAV-OVfTnPYPwV8f7KDzOhaBCvQ@mail.gmail.com>
-In-Reply-To: <CAHp75VeO_=r_pMBUTaQQYKDRAV-OVfTnPYPwV8f7KDzOhaBCvQ@mail.gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 19 Mar 2024 10:28:31 -0500
-Message-ID: <CAMknhBETEP123=EHycGtFEJjQ+NPssLXmw9ZdDoY8CRsWiSxVQ@mail.gmail.com>
-Subject: Re: [PATCH v2] iio: adc: ad7944: simplify adi,spi-mode property parsing
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="AAHZqaSZHdYHsTHM"
+Content-Disposition: inline
+In-Reply-To: <20240319-adding-new-ad738x-driver-v5-3-ce7df004ceb3@baylibre.com>
+
+
+--AAHZqaSZHdYHsTHM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 19, 2024 at 10:01=E2=80=AFAM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
->
-> On Tue, Mar 19, 2024 at 4:28=E2=80=AFPM David Lechner <dlechner@baylibre.=
-com> wrote:
-> >
-> > This simplifies the adi,spi-mode property parsing by using
-> > device_property_match_property_string() instead of two separate
-> > functions. Also, the error return value is now more informative
-> > in cases where there was problem parsing the property.
->
-> a problem
->
-> ...
->
-> > +       ret =3D device_property_match_property_string(dev, "adi,spi-mod=
-e",
-> > +                                                   ad7944_spi_modes,
-> > +                                                   ARRAY_SIZE(ad7944_s=
-pi_modes));
-> > +       if (ret < 0) {
-> > +               if (ret !=3D -EINVAL)
-> > +                       return dev_err_probe(dev, ret,
-> > +                                            "getting adi,spi-mode prop=
-erty failed\n");
->
-> > -               adc->spi_mode =3D ret;
-> > -       } else {
->
-> Actually we may even leave these unchanged
->
-> >                 /* absence of adi,spi-mode property means default mode =
-*/
-> >                 adc->spi_mode =3D AD7944_SPI_MODE_DEFAULT;
-> > +       } else {
-> > +               adc->spi_mode =3D ret;
-> >         }
->
->        ret =3D device_property_match_property_string(dev, "adi,spi-mode",
->                                                    ad7944_spi_modes,
->
-> ARRAY_SIZE(ad7944_spi_modes));
->        if (ret >=3D 0) {
->                adc->spi_mode =3D ret;
->        } else if (ret !=3D -EINVAL) {
->                        return dev_err_probe(dev, ret,
->                                             "getting adi,spi-mode
-> property failed\n");
->        } else {
->                /* absence of adi,spi-mode property means default mode */
->                adc->spi_mode =3D AD7944_SPI_MODE_DEFAULT;
->        }
->
-> But I can admit this is not an often used approach.
->
+On Tue, Mar 19, 2024 at 11:11:24AM +0100, Julien Stephan wrote:
+> From: David Lechner <dlechner@baylibre.com>
+>=20
+> Adding AD7383 and AD7384 compatible parts that are pseudo-differential.
+>=20
+> Pseudo-differential require common mode voltage supplies, so add them
+> conditionally
+>=20
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 
-I think Jonathan prefers to have the error path first, so I would like
-to wait and see if he has an opinion here.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+
+Thanks,
+Conor.
+
+--AAHZqaSZHdYHsTHM
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZfnHGQAKCRB4tDGHoIJi
+0vACAP9iDMvhw9YrBRGMQEe5Lde7Eerkrn7w61VRAmvFtLtY4AEA2zYUtehEv4EC
+rIsHRfp4TuYdHPxxvm/2imbwxMb8ogE=
+=yaS1
+-----END PGP SIGNATURE-----
+
+--AAHZqaSZHdYHsTHM--
 

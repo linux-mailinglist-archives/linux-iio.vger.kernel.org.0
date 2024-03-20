@@ -1,194 +1,154 @@
-Return-Path: <linux-iio+bounces-3636-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3637-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 355B5880FCC
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 11:30:52 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF68A880FF6
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 11:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5650A1C22F78
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 10:30:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AE161C2312F
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 10:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D931F3DB89;
-	Wed, 20 Mar 2024 10:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1333B2232A;
+	Wed, 20 Mar 2024 10:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GdaUk7EU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aw1LCjbr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-vk1-f177.google.com (mail-vk1-f177.google.com [209.85.221.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8572955774
-	for <linux-iio@vger.kernel.org>; Wed, 20 Mar 2024 10:26:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4443BBCE
+	for <linux-iio@vger.kernel.org>; Wed, 20 Mar 2024 10:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710930397; cv=none; b=altW5YqldM91/ltG/2OTQk6sxkRk7rea4WTQ4b/vLJLsiMqZQg4wKYsKRGOKJW4PqnMhvCNsHJV1ghNKtex9+td4FM/U9mUefejsyyy7iyx5T25DOsYcP+4T/uXC0AEX9huqHZp4RuGqnFRpJlR3sPuhKk7+Drur5ZmVapOIeO0=
+	t=1710930656; cv=none; b=E0N3BTE7/pePX6cvw848hxL22BL3dDd3832I42gk68Zc9UYcF2zvMv/F6HlkULbo4zHP4nzrxgpKgF0f3E27MLF6vUp0WV65njW1ljZmwQQS+uLpzSGDh7TsMkX3Hg2J0yxSo/MJfz7nP0QghdG1B0SSPIkD71v/x0qaZ1V+OPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710930397; c=relaxed/simple;
-	bh=hPDbL9yBCJ01jeYZbd3qhOOSH+Ky4c+saEdUE0mgHoM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k4q4kKhV2bAb9CRstvRVg+Hxoixw/W78mjHSNxJPF2CHCS/hQKO7HVYBWVOY/UoQOwZ5fJXqyvMkkblO2M9cL2KKcWaJZEyo4wTg4Qpkc+1T1dafa3mup0llCOkIWdsdfA2ayxa0iJEgsl1dUIxl1pZkDKaj4Kx3q9jDj34yLFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GdaUk7EU; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a46ba938de0so466329366b.3
-        for <linux-iio@vger.kernel.org>; Wed, 20 Mar 2024 03:26:35 -0700 (PDT)
+	s=arc-20240116; t=1710930656; c=relaxed/simple;
+	bh=dmBIwpNva7TEkXpnOO/Czw8tTCnWdlg7AwIKfESnwyo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=q7RaNPtzURB+YTPu5aiKbCf75GJsFAWwcGIqMLBz/lLzD7zeHv3oTvGlOdEN+AlOXb/RK9fLi6zrl/GZD3nKohX3YJHEkFQEvIBizj36SWXT8pCrqazlwmactVaK0M4Z5GSU5R0c5UzeAnq331X5lM8RJDgQ/ezVAjedmPW61P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aw1LCjbr; arc=none smtp.client-ip=209.85.221.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f177.google.com with SMTP id 71dfb90a1353d-4d4404fbdf5so1212666e0c.0
+        for <linux-iio@vger.kernel.org>; Wed, 20 Mar 2024 03:30:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1710930394; x=1711535194; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=VpGoMrlo5DQZa6xGPeNOdlYE7HApDeslsKoUD+MA1nw=;
-        b=GdaUk7EUCFtpgb8ycx/V8KcN+n30/ODAw9kanlPZAtJIFuzdHTVZKwUPxp2tuheNL+
-         IRpPfanvNZUUEsxNzpyJcOHOm++Htjk4tSCoWP0qJFEWRQVsbIooOPKaeIG1xFDoYSZm
-         /DJKF/pqfp+8e7CXyEjT3dfaKAACfQz4K/X2mwkg0Rv4G5HkjkfXJLfUGTeuQ+ZuxVQk
-         6qoG2/xOKCMKuos6+MVF2s9swBi0lstmSpSsqCTj4aHOkiZa/9TiwzknFfF6Kfj5TTzF
-         oxJlJ9xfLPGNQS3jzYwA2VdOk77SoLL3x3juaIocqp6LAudFf/4xYHCyGRphl5Fo9jli
-         /ZCQ==
+        d=gmail.com; s=20230601; t=1710930654; x=1711535454; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=wqX+KnAanv2iuqfGETlGsbj1uZm9TQcxB/bIQKGRSN8=;
+        b=Aw1LCjbruHheMea1qCe9tHUfJpa3uX7R5H3RObDhbsJaZq8EIZpRaDFrR9xi8QBf6p
+         erAdXw0GoDJo0ENcvXwvLJ8/aEtnuQLhuRGO+EW21zMlCYuAI8i+WFZe9bPqRouWtHGA
+         Z/gInQTvZ49/eMMlradrCmiWIy9+ZhONO0B08Ll+se2csM/r0k3JjD2L5Nrk1Xog3Uiy
+         h8AyY5KvNRjrdADbJszPBKLfPUnURX03uQ059OHfhh70+nA8tP7zr9WAuBujqxnUt+Ih
+         PWVu3zaFizusLtCGLUS0AYqk1mt49QXXOkdJ9XaTcs+ot2Sf0OMhYBYIrmi8Xqd3movL
+         VhDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710930394; x=1711535194;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VpGoMrlo5DQZa6xGPeNOdlYE7HApDeslsKoUD+MA1nw=;
-        b=UEwMQor+YQh2AyDpiSQ7Y8MQZ/d+5HotT2I6sE2iwFFwZGDCyTX7U81isRAqAT/ULA
-         rS/58Rl3ORuzf4ZxX5Dh8q/+8cJwkKX68ppw3wByYn1mSJ5Oh+yvu6ZXsE2oK9CmANsl
-         hLAsnizkFj7SQmQpQuG+dg7TX8N6yyIT8Qw9RS6vp3tu1ZDB6d5c1th6y2PtleSCBims
-         tAck1f97AmuOu7A3G7e1aZ8mw6boGDPk3fpUv39AuN2njBuqctCcEMJ/bROswlUOv/as
-         zDgvXEd7gXvwd3arS2rXVE42FwB2RSO5e4pvkzNMni059tcCDR/3vMbN5nl2M3Mfzmvu
-         tUMg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1JTFtJSX78DwvJeCnZL23e7uG3l4msFNvIWxAEDSVa+tp0GLumZZ/l0l7i8nIu66togp0PtYsHTR18O7eVNnrAusQDCs4Zyzl
-X-Gm-Message-State: AOJu0YzpJj++GJ9VpD2MMB+Af1nFlG2rdpOwfxETk86jbhrGz1TcnUQ0
-	2Un4/+8wNVssI1Hnx9PTzmEw3Q/MqjxNw0/BfE9og9zyf4jJju+8tJhvxSp6+ns=
-X-Google-Smtp-Source: AGHT+IHPiPe0RfzKoIIjIyq+CzGyloBtWq2u0upRoGyb1bMEJldqSg+3ylAVly06RqGqc2N9YEJSuQ==
-X-Received: by 2002:a17:906:88b:b0:a46:8e02:19c4 with SMTP id n11-20020a170906088b00b00a468e0219c4mr8436008eje.77.1710930393818;
-        Wed, 20 Mar 2024 03:26:33 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.222.97])
-        by smtp.gmail.com with ESMTPSA id u6-20020a1709063b8600b00a44efa48c24sm7059666ejf.117.2024.03.20.03.26.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 20 Mar 2024 03:26:33 -0700 (PDT)
-Message-ID: <38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
-Date: Wed, 20 Mar 2024 11:26:31 +0100
+        d=1e100.net; s=20230601; t=1710930654; x=1711535454;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wqX+KnAanv2iuqfGETlGsbj1uZm9TQcxB/bIQKGRSN8=;
+        b=k7zd8pEL6VM4sw8WvIMjyADyyZQypCvdecr406alOOIygmuZKosQL40kULVqG0MVim
+         MJEgn2SNV8huIcjGSBx7hSTTqJihspVp+VsuHzWbrM3oRRdWXGTZwJxRBPdm85mCWcnm
+         0yf+m0dFaRp6tyndNiUXBPYU1inuHYLRLOUPWX1Ii4emCo0ezSjvbVyWAVb15rt26DBf
+         3L6BHSCyhxePEV89SVV+2+pdPoXyNBf7KCF6Kxy3aQOZzaTg6Vc8x1pHYQc/CovT/A/P
+         MjY5MvTgbAsno3bEMlaBGMDK7JjKqwJvs002BGIeYJfP3Lax26lt6hyMDnWxci+g7Ws+
+         fEGw==
+X-Gm-Message-State: AOJu0YyWuoJhl4Ecj0DUWhlHECt6snK955lvaGGi1XfLfU5nRFPkT/r9
+	wMxuF9+xo3BWC1uk1i3Gprw7FB/hFx2fAEKgyluqXIxIGiGzx7Tdpkn7DEKTF9zpCQ==
+X-Google-Smtp-Source: AGHT+IHGMmZhBPHDN3av5lN90uOe+UWcbkos5SqSfjc/wOChZ+7tof+BX1+8ciuk9qKJWmwhFcGSBg==
+X-Received: by 2002:a05:6122:d9e:b0:4d4:3bfa:ba0c with SMTP id bc30-20020a0561220d9e00b004d43bfaba0cmr12638708vkb.9.1710930654066;
+        Wed, 20 Mar 2024 03:30:54 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
+        by smtp.gmail.com with ESMTPSA id n136-20020a1f728e000000b004b723acd1e1sm1692891vkc.11.2024.03.20.03.30.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Mar 2024 03:30:53 -0700 (PDT)
+Message-ID: <95b4f98948f1c3a802d185e947ad0bbcfef0a779.camel@gmail.com>
+Subject: Re: [PATCH 1/2] iio: adxl345: add spi-3wire
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Lothar Rubusch <l.rubusch@gmail.com>, lars@metafoo.de, 
+	Michael.Hennerich@analog.com, jic23@kernel.org
+Cc: linux-iio@vger.kernel.org, eraretuya@gmail.com
+Date: Wed, 20 Mar 2024 11:34:20 +0100
+In-Reply-To: <20240319212713.257600-2-l.rubusch@gmail.com>
+References: <20240319212713.257600-1-l.rubusch@gmail.com>
+	 <20240319212713.257600-2-l.rubusch@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.4 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
- calibration properties
-To: Andrej Picej <andrej.picej@norik.com>, haibo.chen@nxp.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: jic23@kernel.org, lars@metafoo.de, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- upstream@lists.phytec.de
-References: <20240320100407.1639082-1-andrej.picej@norik.com>
- <20240320100407.1639082-3-andrej.picej@norik.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
- m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
- HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
- XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
- mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
- v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
- cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
- rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
- qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
- aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
- gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
- dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
- NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
- hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
- oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
- H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
- yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
- 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
- 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
- +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
- FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
- 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
- DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
- oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
- 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
- Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
- qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
- /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
- qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
- EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
- KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
- fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240320100407.1639082-3-andrej.picej@norik.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 20/03/2024 11:04, Andrej Picej wrote:
-> Document calibration properties and how to set them.
-
-Bindings are before users.
-
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching.
-There is no file extension in prefixes.
-
-> 
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+On Tue, 2024-03-19 at 21:27 +0000, Lothar Rubusch wrote:
+> Adds the spi-3wire feature and adds general refactoring to the
+> iio driver.
+>=20
+> The patch moves driver wide constants and fields into the
+> header. Thereby reduces redundant info struct definitions.
+> Allows to pass a function pointer from SPI/I2C specific probe,
+> and smaller refactorings. A regmap_update_bits() in the core
+> file replaces the regmap_write() to format_data.
+>=20
+> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
 > ---
->  .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
->  1 file changed, 15 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> index dacc526dc695..64958be62a6a 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
-> @@ -46,6 +46,21 @@ properties:
->    "#io-channel-cells":
->      const: 1
->  
-> +  nxp,calib-avg-en:
-> +    description:
-> +      Enable or disable averaging of calibration time.
-> +    enum: [ 0, 1 ]
+
+On top of what Krzysztof already said I would also like for you to split th=
+e=20
+spi-3wire (which is adding a new feature) from the refactor in two differen=
+t
+patches. One more comment inline...
+
+> =C2=A0drivers/iio/accel/adxl345.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 4=
+4 +++++++++++-
+> =C2=A0drivers/iio/accel/adxl345_core.c | 116 +++++++++++++++++-----------=
+---
+> =C2=A0drivers/iio/accel/adxl345_i2c.c=C2=A0 |=C2=A0 30 ++++----
+> =C2=A0drivers/iio/accel/adxl345_spi.c=C2=A0 |=C2=A0 50 ++++++++-----
+> =C2=A04 files changed, 153 insertions(+), 87 deletions(-)
+>=20
+
+...
+
+> diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_=
+spi.c
+> index 93ca349f1..e456b61c6 100644
+> --- a/drivers/iio/accel/adxl345_spi.c
+> +++ b/drivers/iio/accel/adxl345_spi.c
+> @@ -20,48 +20,62 @@ static const struct regmap_config
+> adxl345_spi_regmap_config =3D {
+> =C2=A0	.read_flag_mask =3D BIT(7) | BIT(6),
+> =C2=A0};
+> =C2=A0
+> +static int adxl345_spi_setup(struct device *dev, struct regmap *regmap)
+> +{
+> +	struct spi_device *spi =3D container_of(dev, struct spi_device, dev);
+> +	int ret;
 > +
-> +  nxp,calib-nr-samples:
-> +    description:
-> +      Selects the number of averaging samples to be used during calibration.
-> +    enum: [ 16, 32, 128, 512 ]
+> +	if (spi->mode & SPI_3WIRE) {
+> +		ret =3D regmap_write(regmap, ADXL345_REG_DATA_FORMAT,
+> +				=C2=A0=C2=A0 ADXL345_DATA_FORMAT_SPI);
+> +		if (ret)
+> +			return ret;
+> +	}
 > +
-> +  nxp,calib-t-samples:
-> +    description:
-> +      Specifies the sample time of calibration conversions.
-> +    enum: [ 8, 16, 22, 32 ]
+> +	return 0;
 
-No, use existing, generic properties. Open other bindings for this.
+I think this would be neater:
 
-Also, none of these were tested. I am not going to review such untested
-code.
+if (!(spi->mode & SPI_3WIRE))
+	return 0;
 
-It does not look like you tested the bindings, at least after quick
-look. Please run `make dt_binding_check` (see
-Documentation/devicetree/bindings/writing-schema.rst for instructions).
-Maybe you need to update your dtschema and yamllint.
+return regmap_write(regmap, ADXL345_REG_DATA_FORMAT,
+		    ADXL345_DATA_FORMAT_SPI);
 
-Best regards,
-Krzysztof
+- Nuno S=C3=A1
+
 
 

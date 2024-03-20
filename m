@@ -1,179 +1,166 @@
-Return-Path: <linux-iio+bounces-3647-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3648-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC578810B6
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 12:17:27 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C5A881174
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 13:05:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7D421F2181D
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 11:17:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 589441F2458E
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 12:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E943FB9E;
-	Wed, 20 Mar 2024 11:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A77453FB21;
+	Wed, 20 Mar 2024 12:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Oi5X4rSs"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=norik.com header.i=@norik.com header.b="YBf9YfYa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C40103FB83;
-	Wed, 20 Mar 2024 11:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901E1347B6;
+	Wed, 20 Mar 2024 12:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710933373; cv=none; b=E8T27OaJTLvMNMAn5rwmqL5H+X6m9nseGExHd1/v6PyjMm22SZ2QNtI+SLSNCoX99W2jxbspVDvT2X8SEiowEblhLiLFUp0bP05l3GHb7e4v/ZJTdtIT+Xf3+wVKW1LamiDR0K88Zs6XnlEp3ooIy/fhWtN/tcbe55w3DoBErFk=
+	t=1710936340; cv=none; b=cFXWOPNzC3PQX8iHQdGel+shKaVt7dAVKaoljSk5PhlMqLMjMmAHtn9QLjptB/KCPlNS8xm9YGtzOrr+hzWaUGPHFcn4UZPNg0SthDJqjhiUicvjtEQfd06rqOBN7LHmznWCzg8CA5Z9aUBwFnTHwWddFz4TKN+EdnZnn1zzRyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710933373; c=relaxed/simple;
-	bh=/jLqpWHjEC9vw4QQMcy5/bsS1ANfJ+WaN4wN29FCKxY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RAUZDuL/Ss5QJVhsSdk2ah4QRgJ4ecd06Dsrx0S2HGfxsBgtDYfO0iqReIwaFUlkeR9xDCa/OIpyDbpR6lXbuXBMAElzDYtGX0zIX+6fMXVji+dkgTDC7B+mGnwm/R+cBhhVkjnb7ORnk8J8VSi1Bbm07FWjWf8ldAdsFP9SlCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Oi5X4rSs; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1710933371; x=1742469371;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=/jLqpWHjEC9vw4QQMcy5/bsS1ANfJ+WaN4wN29FCKxY=;
-  b=Oi5X4rSs6ebLdwLwQk+He76SN8jyi9mdmqGHYlBqDF5NY61mq3ocaGCz
-   vk69NOTZtkuzcCBu3ieejQ8oK0Mbs3nOEGciebKb2XBVdZLaBdDaFbeXT
-   K1KqhOOCxxImT8yabHoZ2h92gy5GjmGptFcvi/dK+OZPOqdurW1T1+DVy
-   HMzcEG7+NZ0nVkP73OXpmUetln57JBNn/zeUxClyVQqDir12IzHF88nmy
-   fieJM2Q7U+TXY1YvIAyZNTeWAK1wqGnYsgL6526vscQYpp7Lv1fdXLcRf
-   YlleJq/o7LZ8PVS2I2ntL9LiEzhr5ExF1ggYtA7xtD6PeE4Yxh7Xh6VHt
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="17296053"
-X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
-   d="scan'208";a="17296053"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 04:16:10 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,11018"; a="914663385"
-X-IronPort-AV: E=Sophos;i="6.07,140,1708416000"; 
-   d="scan'208";a="914663385"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 04:16:06 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rmtvQ-0000000EYFD-00Yw;
-	Wed, 20 Mar 2024 13:16:04 +0200
-Date: Wed, 20 Mar 2024 13:16:03 +0200
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, lars@metafoo.de, ang.iglesiasg@gmail.com,
-	mazziesaccount@gmail.com, ak@it-klinger.de,
-	petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
-	linus.walleij@linaro.org, semen.protsenko@linaro.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 6/6] iio: pressure: Add triggered buffer support for
- BMP280 driver
-Message-ID: <ZfrFc9GF0_Jix5YT@smile.fi.intel.com>
-References: <20240319002925.2121016-1-vassilisamir@gmail.com>
- <20240319002925.2121016-7-vassilisamir@gmail.com>
+	s=arc-20240116; t=1710936340; c=relaxed/simple;
+	bh=Bv0vnDFIE4l1ckdc9yIZADTw7OuOYa398zh7BG+c0nA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LXvXPLCk/uEc/bWb1fOAnFai2+l6Q+/N8j2RepMBDWGJ3mLJQ4ChL9RRGI1A6bkZoREXirJgAIWgf1dXCodYIsNqVja+tMAb7XmbQsW0IDpzvCafyV10cJWG/7PxYmVfeCK/fwl4dn1cmEppvDQkaJ+I3my5ie4TCpQskg2d5ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=YBf9YfYa; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=V38z3dXzsoQdcHr/9aA6f+pJAC6EF/1U7YiXTRMIxXU=; b=YBf9YfYaD5mjsz6HfDj0lOx/CH
+	nXV3cytfORkWXz5TQdmOvMyeR4Vm97N+ozlYxZuCjIrJjMclEaUoW+dGMjBmVg+IVjEb8eOCgjPgH
+	D+F9RRP561uQOl41AdIbH1PkB/d9OqsU8kMznFzVnEDax/yDaAZJh5P1d8HIOxVVqBczvv0cQYNdM
+	hZNY1NIDJ6rxbu6LShFZbj8Z9ap47jRep0KpRjzduKJtdW2WIg/rEdsz9ZtnA5tmPkrtDcXMhLVoj
+	/+5gRhMa/oMz7DOSGzR4BGGWfkGG6VUQsWMpVDMNFJhUcHabSBVkkDk1o2zSsL4+xZasKDg/FRyAH
+	YmPCmdIQ==;
+Received: from [89.212.21.243] (port=54340 helo=[192.168.69.84])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1rmuhG-005rRw-0q;
+	Wed, 20 Mar 2024 13:05:30 +0100
+Message-ID: <e994b756-7f4e-4be3-b8f3-310988174b44@norik.com>
+Date: Wed, 20 Mar 2024 13:05:29 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240319002925.2121016-7-vassilisamir@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
+ calibration properties
+Content-Language: en-GB
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, haibo.chen@nxp.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: jic23@kernel.org, lars@metafoo.de, shawnguo@kernel.org,
+ s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ upstream@lists.phytec.de
+References: <20240320100407.1639082-1-andrej.picej@norik.com>
+ <20240320100407.1639082-3-andrej.picej@norik.com>
+ <38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
+From: Andrej Picej <andrej.picej@norik.com>
+In-Reply-To: <38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Tue, Mar 19, 2024 at 01:29:25AM +0100, Vasileios Amoiridis wrote:
-> BMP2xx, BMP3xx, and BMP5xx use consecutive buffers for their
-> temperature, pressure and humidity readings. This facilitates
-> the use of burst reads in order to acquire data much faster
-> and in a different way from the one used in oneshot captures.
+Hi Krzysztof,
+
+On 20. 03. 24 11:26, Krzysztof Kozlowski wrote:
+> On 20/03/2024 11:04, Andrej Picej wrote:
+>> Document calibration properties and how to set them.
 > 
-> BMP085 and BMP180 use a completely different measurement
-> process that is well defined and is used in their buffer_handler().
+> Bindings are before users.
 
-...
+will change patch order when I send a v2.
 
->  	ret = regmap_bulk_read(data->regmap, BMP280_REG_TEMP_MSB,
-> -			       data->buf, sizeof(data->buf));
-> +			       data->buf, BMP280_NUM_TEMP_BYTES);
+> 
+> Please use subject prefixes matching the subsystem. You can get them for
+> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+> your patch is touching.
+> There is no file extension in prefixes.
 
->  	ret = regmap_bulk_read(data->regmap, BMP280_REG_PRESS_MSB,
-> -			       data->buf, sizeof(data->buf));
-> +			       data->buf, BMP280_NUM_PRESS_BYTES);
+So: dt-bindings: iio/adc: nxp,imx93-adc: Add calibration properties?
 
->  	ret = regmap_bulk_read(data->regmap, BMP280_REG_HUMIDITY_MSB,
-> -			       &data->be16, sizeof(data->be16));
-> +			       &data->be16, BME280_NUM_HUMIDITY_BYTES);
+> 
+>>
+>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+>> ---
+>>   .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
+>>   1 file changed, 15 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>> index dacc526dc695..64958be62a6a 100644
+>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+>> @@ -46,6 +46,21 @@ properties:
+>>     "#io-channel-cells":
+>>       const: 1
+>>   
+>> +  nxp,calib-avg-en:
+>> +    description:
+>> +      Enable or disable averaging of calibration time.
+>> +    enum: [ 0, 1 ]
+>> +
+>> +  nxp,calib-nr-samples:
+>> +    description:
+>> +      Selects the number of averaging samples to be used during calibration.
+>> +    enum: [ 16, 32, 128, 512 ]
+>> +
+>> +  nxp,calib-t-samples:
+>> +    description:
+>> +      Specifies the sample time of calibration conversions.
+>> +    enum: [ 8, 16, 22, 32 ]
+> 
+> No, use existing, generic properties. Open other bindings for this.
 
-> -	adc_humidity = be16_to_cpu(data->be16);
-> +	adc_humidity = get_unaligned_be16(&data->be16);
+You mean I should use generic properties for the ADC calibration 
+settings? Is there already something in place? Because as I understand 
+it, these calib-* values only effect the calibration process of the ADC.
 
->  	ret = regmap_bulk_read(data->regmap, BMP380_REG_TEMP_XLSB,
-> -			       data->buf, sizeof(data->buf));
-> +			       data->buf, BMP280_NUM_TEMP_BYTES);
+> 
+> Also, none of these were tested. I am not going to review such untested
+> code.
+> 
+> It does not look like you tested the bindings, at least after quick
+> look. Please run `make dt_binding_check` (see
+> Documentation/devicetree/bindings/writing-schema.rst for instructions).
+> Maybe you need to update your dtschema and yamllint.
 
->  	ret = regmap_bulk_read(data->regmap, BMP380_REG_PRESS_XLSB,
-> -			       data->buf, sizeof(data->buf));
-> +			       data->buf, BMP280_NUM_PRESS_BYTES);
+You are right, I did not run the dt_binding_check, sorry for this, 
+forgot that this existed. I see now I have to add the:
+> $ref: /schemas/types.yaml#/definitions/uint32
 
->  	ret = regmap_bulk_read(data->regmap, BMP580_REG_TEMP_XLSB, data->buf,
-> -			       sizeof(data->buf));
-> +			       BMP280_NUM_TEMP_BYTES);
+Will fix in v2.
 
->  	ret = regmap_bulk_read(data->regmap, BMP580_REG_PRESS_XLSB, data->buf,
-> -			       sizeof(data->buf));
-> +			       BMP280_NUM_PRESS_BYTES);
+BR,
+Andrej
 
-These smell to me as candidates to a separate patch with more explanation why.
-(Yes, with the definitions you introduced.) But I leave it to Jonathan to
-decide if we need to split.
-
-...
-
-The below are applicable to the bmp280_buffer_handler(),
-bmp380_buffer_handler() implementations as well.
-
-...
-
-> +	/* Burst read data registers */
-> +	ret = regmap_bulk_read(data->regmap, BMP580_REG_TEMP_XLSB,
-> +			       data->buf, 6);
-
-Magic size.
-
-...
-
-> +	/* Temperature calculations */
-> +	memcpy(&chan_value, &data->buf[3], 3);
-
-_le24() + sign_extend32()?
-
-...
-
-> +	/* Pressure calculations */
-> +	memcpy(&chan_value, &data->buf[0], 3);
-
-_le24() + sign_extend32()?
-
-...
-
->  	/*
-> -	 * Maximum number of consecutive bytes read for a temperature or
-> -	 * pressure measurement is 3.
-> +	 * Maximum number of a burst read for temperature, pressure, humidity
-> +	 * is 8 bytes.
->  	 */
-> -	if (val_size > 3)
-> +	if (val_size > 8)
-
-sizeof() / new definition for the buf[] size?
-
->  		return -EINVAL;
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+> 
+> Best regards,
+> Krzysztof
+> 
 

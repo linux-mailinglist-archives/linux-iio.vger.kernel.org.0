@@ -1,113 +1,145 @@
-Return-Path: <linux-iio+bounces-3631-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3632-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E319B8806BB
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Mar 2024 22:28:10 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD55880BA5
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 08:02:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 820681F22D09
-	for <lists+linux-iio@lfdr.de>; Tue, 19 Mar 2024 21:28:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F09871C226E2
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 07:02:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E233A405FF;
-	Tue, 19 Mar 2024 21:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A83D1DFEA;
+	Wed, 20 Mar 2024 07:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BdSom7TR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O0jTKXUY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A1163FE31
-	for <linux-iio@vger.kernel.org>; Tue, 19 Mar 2024 21:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6774E1EB25
+	for <linux-iio@vger.kernel.org>; Wed, 20 Mar 2024 07:02:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710883685; cv=none; b=JOb4mnOuv8iTYh9RCVEB+X2kvjqpF4N0Q5fIcrC4nYoCQZwnkh/ChapeI0WHF8gbp0E6R6VlEiqBuYIGdtSvpMMWlw3mOU7ncifBctCI3cHSDpIvXJfUcLiaXxthIW5ZzLz8Er9YaroU5lp4PgHV1zcCy9Uz3/CbZ+27U9vaNtQ=
+	t=1710918171; cv=none; b=OP1IY5tLcDdDKPQ9F6/51jFTvIYVsm8rJL7uNFOG1IA9WyVpIVoK3DXP5eKg4amCKpiCr7F6RxYmTj0HJ4IvWG58Lv8OQXv4coOo9HKJpFFGraWkeK1sovsz06kYftmlEpW1F+5mUvGh+AuCe0UHstoZi5P0PF84eqL2QOj9F0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710883685; c=relaxed/simple;
-	bh=LPB/loTv6jwLemSVQJ5Jso+LA3c9y+5gnY3dnI88Nt4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=otN264FE6X2kPFW+dAubBYAWe7rv2cGTeXlqwEcqVUr8745Uu9Mg4uuD0widv31fClDeE2mVjbh9t7X3O1EJhhLweHqX916GKAtQVNHNmFHXfSDj+EdXqVRhvrrSRA3JaIdAxVc3bVqChdpfcfun4jJ+hlREhsx9reoT+biETHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BdSom7TR; arc=none smtp.client-ip=209.85.167.48
+	s=arc-20240116; t=1710918171; c=relaxed/simple;
+	bh=5iyvIFlD4FhYRNqSuqk71+rs0J22Qw6NtXQi3HOJt4I=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=WNGQq+ZzRHjYg/ubeVdqkH1S63zTX0HB0UKTSLZucePZVfDkS07dwiftktmgnQt+Jf/tXnPD9UdnNy0zzKcTt+W6WWf2yuao+T4l98JTSuD+m003WE2r6Zu3Vol7xYanQxi86wUicmRTGsPioIAjq6Y5xvn8eVcLW51VeNAyzH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O0jTKXUY; arc=none smtp.client-ip=209.85.167.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-512f892500cso6835695e87.3
-        for <linux-iio@vger.kernel.org>; Tue, 19 Mar 2024 14:28:03 -0700 (PDT)
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-513e4dd6ca4so535629e87.0
+        for <linux-iio@vger.kernel.org>; Wed, 20 Mar 2024 00:02:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710883682; x=1711488482; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yaWaiuiJkKvicNkhaHabUPm411hAG420T4S0Vhvt0XI=;
-        b=BdSom7TRQyROfPgrSwDYNpp7Va0Yu/UHzfbY01W8ujn1Wg1OGYawQ8uDytSsi1H0YY
-         QL3GagpKaKOc2mzD3Ie07k50zNy1eKzKAQwUnGJdJlrE1UY0rvCUNIxV+bsjDJzwE9Zf
-         xDWvqw3/1lcgr3sSUgCgLG2Mw5oQObGr7e6OwLyoV5LQerDVzwItFw5RAwINIY22+jV6
-         XFzdk1i1OW6UCoZmEju0x5+oMtn2qHXdf/OJelphTZpvwgAkQgdXFGwyY0imqdnTx7iI
-         C7Mz/n+qeZLgKp8JmS6Yn8whpOzFaQ8XrwdyDAeUGjemaQEo1mrC0p3SdxKpOGBUH5su
-         5Rkw==
+        d=gmail.com; s=20230601; t=1710918167; x=1711522967; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=aPLaiDxzrgD7YvfOBc8RhjjgS013xRBrOKJxJB3oCrE=;
+        b=O0jTKXUYluh7y+fY6IU5UVY+NsxZljmhNA8FGcJxGQDku9yyleBxXwS7gVcMOfexLl
+         NwgoQTHEECh9fAPT3qWK9LYe+feXe5Oc5Joo1dw3qOMt7XLaGL/CUUOAe7t6ZFM8ZdJO
+         eIVc0H4h3jRq+UP6aWqUXls586u3YYq/H55wacNLSAS7d8OAZVnjuEtY4PeafiQ83Hb4
+         HMNSq5z8mQajY3pvLKxzOVh8d0UsLeYKS5hgaw4dP+P9R9mPoxiiiCi1loGcwoVR581O
+         NcZ50f4Qvxi23yw57JUMliOTFRMoehwQ9eStQb6sFpdyiDeh9ZGJZZE2Svg/qL1q0dSz
+         erHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710883682; x=1711488482;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yaWaiuiJkKvicNkhaHabUPm411hAG420T4S0Vhvt0XI=;
-        b=lRsWAa3WnBby67soPnuInlCmQQJT3PYbo0yr7YrCyvaG8e//gxn7n1iuY6/CzT35Oi
-         Z66Dtfrk9LBtxM7vMUIRpIC8JaSaEnysVDWfNcwKG6ydPY6M/JEOoCPE9OoqEWb267tR
-         fz7ULRXu0RRUUa9QzJODXy3fBiAyUeGFoNg0qIug2o0pHgrktzeML1lop228rDJsyzwN
-         Veb+n7W6elmmVAerL9v+S4n20w5/WAdrBkdBpL8d2FpH6tQIIql7o0yRFM8gfsyI+dN9
-         dTqDJexV7M3x2na2+xIvUfrhO8SnQXMP038kF00gCpo5Ori45Pipvq+xhUcRCxgN43LH
-         MmDw==
-X-Gm-Message-State: AOJu0YwW0fINmwM1GUTR+QYVXRmxD/I/ae+Cgx/iXjcP+06y/mcRS7dG
-	lCs6Y9+8iI7XEKdGlkd08CDodfTO+u5tjXe0JgkDrSPOr2YWM1lb
-X-Google-Smtp-Source: AGHT+IEGQYR82edYXqyPc3sWbHmabQ+EkIlTMNX4h8yunGN+eIT3RvVjU0bzQvQ/oSqjuPAM6K1Fyw==
-X-Received: by 2002:a19:644d:0:b0:513:d5ec:afb with SMTP id b13-20020a19644d000000b00513d5ec0afbmr8562340lfj.40.1710883682198;
-        Tue, 19 Mar 2024 14:28:02 -0700 (PDT)
-Received: from a989ef099cc9.v.cablecom.net (46-126-232-210.dynamic.hispeed.ch. [46.126.232.210])
-        by smtp.gmail.com with ESMTPSA id a3-20020a17090640c300b00a46a4a14555sm4402518ejk.86.2024.03.19.14.28.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 Mar 2024 14:28:01 -0700 (PDT)
-From: Lothar Rubusch <l.rubusch@gmail.com>
-To: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	eraretuya@gmail.com,
-	l.rubusch@gmail.com
-Subject: [PATCH 2/2] iio: adxl345: update documentation for spi-3wire
-Date: Tue, 19 Mar 2024 21:27:13 +0000
-Message-Id: <20240319212713.257600-3-l.rubusch@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240319212713.257600-1-l.rubusch@gmail.com>
-References: <20240319212713.257600-1-l.rubusch@gmail.com>
+        d=1e100.net; s=20230601; t=1710918167; x=1711522967;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:from:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aPLaiDxzrgD7YvfOBc8RhjjgS013xRBrOKJxJB3oCrE=;
+        b=j14Rz4Mget/MRXZvkPQ6zX4HYBDudAHAAKsVSg+imuYIWV1Z83p+0ohOW33434uFMW
+         c9fxra+J4aY0Gdnu0HCmyJGxYTjkswB9fO6GCvTbSyop7vqEayiXMmqsWzoImKqWfYCR
+         4LY01a9ltlXI4vISeEzBDxsHQFLWzrEqA9EOG7C/8+EWxdFZ6quAY0iAy3xvDZLP9Q3D
+         zrGPwR5gseb/0vliGC3KzUYj/hDKGKY0pNtqHV95D+Qgkg4kkqGG8m41bNlZVqh0Ul6h
+         4OmZiAUpzm8w7wDIi8JIudtqtTOi9PFnpYah25MQuWWtgHq3rl4QqDyOzqflq92KK7/e
+         FuAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUXrKm7rYPOXm6aeW+X82XcYTTUoe0ixyYZ0fuOqhFd7ic29acgtJ8haH4/XrSCUytPVnzvqglhS6EgCrvtPQ7IrJ5Wb6zOhJKc
+X-Gm-Message-State: AOJu0YzOrofSIoHitH6q5wH+YkpUxA4WKbUquC1dxl1vQj59iEd0O4Uk
+	3WK2ijhDgCwP8aSD6LPoMBk9ci87qK3IESYpm8PCLtySXOqZoOhr
+X-Google-Smtp-Source: AGHT+IEwUU6E0kHLfyVA6PUYCDFhGoEmBvsDR1cdt8VHgCW23eVTyMLveQh+gbR/58bmRoDRo/HvkQ==
+X-Received: by 2002:ac2:5f87:0:b0:513:c4b5:aff2 with SMTP id r7-20020ac25f87000000b00513c4b5aff2mr1541177lfe.6.1710918167229;
+        Wed, 20 Mar 2024 00:02:47 -0700 (PDT)
+Received: from [172.16.183.82] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id g21-20020ac24d95000000b00513cdde18efsm2174907lfe.75.2024.03.20.00.02.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 Mar 2024 00:02:46 -0700 (PDT)
+Message-ID: <a9b12f52-c59a-455b-889c-786c0a2158e9@gmail.com>
+Date: Wed, 20 Mar 2024 09:02:46 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+Subject: Re: [PATCH] iio: Fix the sorting functionality in
+ iio_gts_build_avail_time_table
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Chenyuan Yang <chenyuan0y@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio <linux-iio@vger.kernel.org>
+References: <ZfHM73ZqgnCp6CZv@cy-server>
+ <a59061f8-5caa-43d4-bd4f-5ac4c39515ba@gmail.com> <ZfS0Rhk5WTJbwXU/@cy-server>
+ <20240316134035.5eb47a69@jic23-huawei>
+Content-Language: en-US, en-GB
+In-Reply-To: <20240316134035.5eb47a69@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Provide the optional spi-3wire option for the DT binding.
+Hi Jonathan, all.
 
-Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
----
- Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+I am resending this as I don't think I found the mail from lore. I wrote 
+this using my phone so maybe it was sent as HTML and stuck to some 
+filters. If you receive this twice - I am sorry...
 
-diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-index 07cacc3f6..280ed479e 100644
---- a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-+++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-@@ -32,6 +32,8 @@ properties:
- 
-   spi-cpol: true
- 
-+  spi-3wire: true
-+
-   interrupts:
-     maxItems: 1
- 
--- 
-2.25.1
+la 16. maalisk. 2024 klo 15.40 Jonathan Cameron <jic23@kernel.org 
+<mailto:jic23@kernel.org>> kirjoitti:
 
+ > On Fri, 15 Mar 2024 15:49:10 -0500
+ > Chenyuan Yang <chenyuan0y@gmail.com <mailto:chenyuan0y@gmail.com>>
+ > wrote:
+ >
+ > > Hi Matti,
+ > >
+ > > Thanks for your reply!
+ > >
+ > > > I think the suggested-by tag is a bit of an overkill :) I don't feel
+ > > > like taking the credit - you spotted the problem and fixed it!
+ > >
+ > > You did help me figure out the real issue here and how to fix it :)
+ > >
+ > > > Do you think you could fix the removal of the duplicates too?
+ > >
+ > > Sure, I can help to implement the deduplication logic.
+ > > Here is a potential patch for it based on your help.
+ > > Besides, I changed the stop condition in the inner loop to `j < idx`
+ > > since the current last index should be `idx - 1`.
+ >
+ > Matti, I didn't follow why duplicates are a problem?
+
+The function here builds the tables for available integration times. 
+These are shown to users via sysfs (if I'm not mistaken) - and while the 
+user-space algorithms may tolerate dublicates, they are ugly (in my 
+opinon) when available times are manually listed.
+
+
+ > Sure the code is less efficient, but do we end up with a wrong
+ > answer as a result (I've not checked logic, but I'd expect either
+ > first or last of repeating values to be used depending on the alg).
+
+If we discuss completely omitting duplicated times from the driver 
+(which was one thing I referred in my previous mail) - then we are 
+likely to face problems as there can be register values, which then 
+can't be translated to times, read from a HW.
+
+Eg, we need to have everything described in driver tables used for 
+driver's computations - but (in my opinion) we should drop duplicates 
+from these tables which we hand over via sysfs.
+
+Yours,
+-- Matti
 

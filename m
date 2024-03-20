@@ -1,87 +1,79 @@
-Return-Path: <linux-iio+bounces-3651-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3652-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58CC188176D
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 19:45:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B109C8818AB
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 21:38:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E16D6283075
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 18:45:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6330A284233
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 20:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9251D8528D;
-	Wed, 20 Mar 2024 18:45:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7CC636B08;
+	Wed, 20 Mar 2024 20:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B4mRI5wQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QgJGxvIL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFE2652F78;
-	Wed, 20 Mar 2024 18:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4547B1B7F5;
+	Wed, 20 Mar 2024 20:38:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710960323; cv=none; b=bUGrmOM4CkT3GsT0oiA2IVlivlJfo8tOFEQrKXBoynIk6TqzZM3xI0etoYpXDugjp991bjTfn3UVdSXqzNzjqI5Aar89MFSf3tfOg4UnAPtGBzP1/HByarF9tqGKNM+NUdauao2Jtp3ZmWV+/tdzyRruaFRv2JtlLzthEgzLBcY=
+	t=1710967092; cv=none; b=i/tRzWiED9WMDVw3+gKiwjuudphTdDyhwWQ1Sg7mOsuozzkIrDoH1nqKn9ohxxXWNTD75bf9KjyfNE9xO/pEbZ36+1KewZGNQfGoSF13NxS3/41GmDkir6glSGzdusP2m0RSlhQE933XwzkytSZ72MGyWU0cNH3FQh9RoA+8W/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710960323; c=relaxed/simple;
-	bh=IIoFYLWjjgoGol2FMUHfgDpjuS9/7LVzzfTTe9iYYnY=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YJnf5VJkfFYQP/IdF8xxdIIefN+M+F6QOwuUnRsA43e7uDGAVo+giI75iPc1lh0OxxG3wZrS7ypw7TH50GpLpXLUXj54clM+GsjMybuE+hcQEuEoT1sxBkJPRJ4AxO43+Fj7Gbq44sBoO69B0MPh0X41+h9DpXuJIvtEom6teKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B4mRI5wQ; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-513a08f2263so204889e87.3;
-        Wed, 20 Mar 2024 11:45:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710960320; x=1711565120; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Afz0eCjmB5LW6m89O9fLaUrWwF2XDDN/YPKtH4GdqXE=;
-        b=B4mRI5wQ9GIGwSk6R5yg+055XA2+UfbWMS8TIedYWQVmoZdQP6A97nDRHbWhh3yDDJ
-         6I7hMXTAG1w1PpEykga8yDJwg1fb08ih1yZszGe7x0qDUzzty7FYtcQFzMVsFKKAiEuj
-         geTsj0W/C4AulYTHnRP+fhAgJ8YneLqT0sBLqm6PNmyHBS3+zm4nnsZXZEglHas22XrK
-         m1BCsJclnUHya+EghQasHYzh6extHWbBUihjfquUNpMQhGf/6i5sMuNccw15aTvvqhhY
-         cUidUcKewBgMNZbrIHPEJydlEXErOOwKs9o3am6q9zt381mJE/MDMqFRh0ZJTEWyK4bN
-         EGOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710960320; x=1711565120;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Afz0eCjmB5LW6m89O9fLaUrWwF2XDDN/YPKtH4GdqXE=;
-        b=ofgu+ROMaUhYKHojj+E56fwWL8UO0XdwC5XqubtaCf7t/ud44MkPa0gR9TDMGTgaMG
-         T4MAxcaGK/2krsB0IdVhPcxwnwoF90VEUpiipXOYzE5DzByQsu0eXXV2QU6FNuz6R66S
-         MKaVf41hWlGRjOkd1S48RvQsJolN0MMFIBMwQFn2hpdG45XMakts8Lz5ZdqqyBkOVR8K
-         8Ql2lrs64IWe//vf48YhhmBEJMqs2PFpOINH6U/4rQl2S4GUHTc970el0gsDQxd4oFHx
-         vekUYvlVdpcO6qNvvR4j7P/6btLIA33/ppUUd/VMi1dIB3KbMJcVmyQ+cFxHfPVj0iAF
-         gGQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUyZZayeFprHrWh8QpMVCnrvxgpSQZlVGgsBBeXeILp1MNlyWQfXcxC6IPDm5T5fRXVHdXZREqwFwrBcQW+wEZPqgDicBWUC8Jb+GDPIddzaev2pXKkxH4T9C2wYijdbnTMfDOyQ/gW
-X-Gm-Message-State: AOJu0YyXcBlkFisIawrqB+LhABYKuqjXDP5oBedxofKHXIb3uelju40h
-	STTugXeZx7dfkp9Jbk4J+qJIaXYJrH4EpKCwtMSZ0aYSU28lwH3/
-X-Google-Smtp-Source: AGHT+IGAzxTDRvMWWm8SlK54TTSL+cl6Rn4zD6aAd2YVvVB4w+OYGkDfhXBbRBVox1R2SW/YCddGxw==
-X-Received: by 2002:a05:6512:310c:b0:512:ee61:c32b with SMTP id n12-20020a056512310c00b00512ee61c32bmr4967422lfb.43.1710960319670;
-        Wed, 20 Mar 2024 11:45:19 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:9be1:7bef:ff5c:57fc])
-        by smtp.gmail.com with ESMTPSA id jx25-20020a170907761900b00a4661f0f1e7sm7554317ejc.205.2024.03.20.11.45.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Mar 2024 11:45:19 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Wed, 20 Mar 2024 19:45:16 +0100
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
-	lars@metafoo.de, ang.iglesiasg@gmail.com, mazziesaccount@gmail.com,
-	ak@it-klinger.de, petre.rodan@subdimension.ro, phil@raspberrypi.com,
-	579lpy@gmail.com, linus.walleij@linaro.org,
-	semen.protsenko@linaro.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1710967092; c=relaxed/simple;
+	bh=hNgRL40LSQB7xQcowVuzTKGVxepJYYGDnej/MLNsDIE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YXYAVA9vUmRxJkEHo9xahIxwtudP6zfkwmP53peM7TgeAVOzo6LB45+7eAUxlPJeJPjzIzbBHeq7nYT4rjdR1c41kyMriZD39d2MWOd+gkPxXTbp3Zt2TH95u8hr9iKXbSPw5hbzxbWNh+Mau4ErsWgaLcXZdz/eO5Hhi4zu710=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QgJGxvIL; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1710967091; x=1742503091;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=hNgRL40LSQB7xQcowVuzTKGVxepJYYGDnej/MLNsDIE=;
+  b=QgJGxvIL5Ame/tjQhnONkB8JFVUSufY1AqI9EyQDOKjnOeZsH0PySuyj
+   jrx7vWnOrYaLJ/LWK+U6JuVCcty3Z/27nu5obz1jyU1jNXF3P+1Y+3zo1
+   yxYHVs0X3FcN/k0QIAJgceJugMm/y15bXZVW0MsXj7x5JEjrfW9zAbs1I
+   y1KLgzgLGPq90nZRP4e7KdiMHSDhzdnFhILMFRwOSqaweeMfjDeiJxtaW
+   Woy27HPSnzmM63e1G96jtCNAVaLrQXREowoFzzSGq4saAzIeLbAQekzSU
+   yYHQw85P7olwKNd4qF0HBSI/lRUYmGTg3+TLa/DBp1Ghy6Oy8Q0kVA/iY
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="5792099"
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
+   d="scan'208";a="5792099"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 13:38:09 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11019"; a="914678292"
+X-IronPort-AV: E=Sophos;i="6.07,141,1708416000"; 
+   d="scan'208";a="914678292"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Mar 2024 13:38:06 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rn2hH-0000000EgP1-2vqb;
+	Wed, 20 Mar 2024 22:38:03 +0200
+Date: Wed, 20 Mar 2024 22:38:03 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, ang.iglesiasg@gmail.com,
+	mazziesaccount@gmail.com, ak@it-klinger.de,
+	petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
+	linus.walleij@linaro.org, semen.protsenko@linaro.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v3 5/6] iio: pressure: Add timestamp and scan_masks for
  BMP280 driver
-Message-ID: <20240320184516.GB36450@vamoiridPC>
+Message-ID: <ZftJK3cqFNU9-dCG@smile.fi.intel.com>
 References: <20240319002925.2121016-1-vassilisamir@gmail.com>
  <20240319002925.2121016-6-vassilisamir@gmail.com>
  <ZfrDW1ESxnFg__od@smile.fi.intel.com>
+ <20240320184516.GB36450@vamoiridPC>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,38 +82,39 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZfrDW1ESxnFg__od@smile.fi.intel.com>
+In-Reply-To: <20240320184516.GB36450@vamoiridPC>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Wed, Mar 20, 2024 at 01:07:07PM +0200, Andy Shevchenko wrote:
-> On Tue, Mar 19, 2024 at 01:29:24AM +0100, Vasileios Amoiridis wrote:
-> > The scan mask for the BME280 supports humidity measurement and
-> > needs to be distinguished from the rest in order for the timestamp
-> > to be able to work.
-> 
-> ...
-> 
-> > +enum bmp280_scan {
-> > +	BMP280_TEMP,
-> > +	BMP280_PRESS,
-> > +	BME280_HUMID
-> 
-> The last is not a terminator, please leave trailing comma.
-> 
-> > +};
-> 
+On Wed, Mar 20, 2024 at 07:45:16PM +0100, Vasileios Amoiridis wrote:
+> On Wed, Mar 20, 2024 at 01:07:07PM +0200, Andy Shevchenko wrote:
+> > On Tue, Mar 19, 2024 at 01:29:24AM +0100, Vasileios Amoiridis wrote:
 
-What do you mean it is not a terminator? In general with the enum
-variables I would write:
+...
 
-	enum var { a, b, c };
-
-Why in this case there is a comma needed after the BME280_HUMID element?
-
-Cheers,
-Vasilis
-> -- 
-> With Best Regards,
-> Andy Shevchenko
+> > > +enum bmp280_scan {
+> > > +	BMP280_TEMP,
+> > > +	BMP280_PRESS,
+> > > +	BME280_HUMID
+> > 
+> > The last is not a terminator, please leave trailing comma.
+> > 
+> > > +};
 > 
+> What do you mean it is not a terminator? In general with the enum
+> variables I would write:
 > 
+> 	enum var { a, b, c };
+
+This example is different to what you used. I.o.w. _this_ example is okay.
+
+> Why in this case there is a comma needed after the BME280_HUMID element?
+
+It's pure style issue that helps to avoid the unneeded churn in the future in
+case the list is getting expanded. You can easily imagine what I mean.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

@@ -1,133 +1,105 @@
-Return-Path: <linux-iio+bounces-3655-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3656-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55941881931
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 22:35:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D68E388193E
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 22:41:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 871391C21050
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 21:35:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13F871C20F8E
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 21:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574EB8595C;
-	Wed, 20 Mar 2024 21:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D252F85C43;
+	Wed, 20 Mar 2024 21:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="avjYfL9e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NZvQisZb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC7D33062;
-	Wed, 20 Mar 2024 21:35:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDC68613F;
+	Wed, 20 Mar 2024 21:41:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710970512; cv=none; b=JfUDKUYkxUma7EKO+QRM4wwu+EtSNN50PCAge3ayKPdnzVJXl49tzKoA1aQ1qnDK60+9KJBv0N/MNi3ZgfemhZjO1LHpFcsWxz9FVPPHhxL8mPdG+YuxYLLQYf+XvudWC2UEoWtR7nRNSlsUy7zIBJf4BazG9+TSoHZWt+4IUto=
+	t=1710970898; cv=none; b=OKlvm8oAavMkOIqWNWg8ysRUg9iXaZ4gB6NG2MkToRtt23vlyoLtRCh7iw6UENAvuiQnD1d9YV3StEhSQAr/SuSr84LChI2Nru8lePTxZbZSZ4Ug8iaOrnRy8FPa4WmWZ3+cGibMDp1etUiHurgY5NuSCCYq6kAnfrSJqD27BWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710970512; c=relaxed/simple;
-	bh=TcWmYjPumbIlPBomNV9YOOX92d2441jgONKaND86xeg=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LmV/udWm+iHCAEUuWsbBfVYS0E3ZHWcBnsO4/Amdhr8GUffWy1ezFTSY8PjXvEGGVotH2kORRGvn9UfE5hKMl7PS42ZBsV0Dt4DFVNq9o53nMByX9ueHGFtcHRfrO2bMu5E9ShmW36k1e4/7uHPcM++ioJEJkIfFjT2IJWE9HNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=avjYfL9e; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a46dd7b4bcbso39510666b.3;
-        Wed, 20 Mar 2024 14:35:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710970509; x=1711575309; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2488KgiQz0Ozm6AmLdfbpRuHfsugl87Zu2zk1y9WHjg=;
-        b=avjYfL9ekBibXEI6Upo8xCed7Fg/n83urK/8LViFVocshnqPdlWcK7vZi0OCIZzqUl
-         kHbZ5i2LihT8PyHDxiiaI585WZAZV9IxLl5U8q30ZqYOogJQbwwXiOM0khkR8rQKJRz2
-         NEkxHX+uEjvG8It03Cg1op58KVTXL6nh+G8u0M9a3RYMudoWNTakOHc6ybvxhqwkdxPk
-         T6Gafkay7sIJOZbyrL9SvAnVB62Ik5VW6CWVEe2f/QeZVMF+cVj6EWFMspnl062Op0Ld
-         AHs7RvzDmtt44nB1USbq9DHCHyVjNlu7nXalzGQVPihgA16OxDxKXDS04/Pz/VzJvg/2
-         QSPQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710970509; x=1711575309;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2488KgiQz0Ozm6AmLdfbpRuHfsugl87Zu2zk1y9WHjg=;
-        b=BH5ZjWY+myaYQ3NpAKLfdqeJFxc/0qS1lT4GQ1kzwstwa7ND1+hO6YEv140b0nZkZM
-         +yXU2oKPpMHDSa/d1ToosazSPYhQ5ll8uQhsPGyIpMHti1RNyXztOQ3nHBJAUgcFfiOG
-         HGkSEL1iE3uispwe4dWADI2XhdEal+Z0o/7hOCvPRtzy45IwAtCBBzxTeZ4WV7ucwD0K
-         6CbNGXqa1A4lYqToWGSG54snJPXggZ4eeDTgYjJpAp3kBNZLybpqtaO6mk+Oo72rpHCL
-         fDHC9WY1KgDzIEP1xpRPNOdbSxlnTz1EjnNwPUGdYXE+DsxazApok+BIzky56fBng8HC
-         wNIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUElehLtkCmhx2x1z95VFzGMiQE+WfATOEl/W7TIlTNH88rBKxYRz/17j+fZa3Q7BGbq49PA3VhouQLmD0QTj8VkvUaEaTEUi+YRDr6ZfNMyQfbYguddG/6Tqd+WEafSpa3b6yMaxRG
-X-Gm-Message-State: AOJu0YySKanz7YBm2I8EMZRcM/UWd6Kp4mT5MQ1+0pkLJq24s+33Ge6D
-	B17WVrdqjKlY5IoscbfI/2h/wsN/IkzVpmMqSHKAJOd3yfeV/fdu
-X-Google-Smtp-Source: AGHT+IH8szzncBG1aLLxaZjuATsI9dcfMdIIBEgaidEn0FkFhM1jMeSmv2gEXSy/ocnkY1wlGxOkow==
-X-Received: by 2002:a17:906:4f18:b0:a46:a17b:c44e with SMTP id t24-20020a1709064f1800b00a46a17bc44emr84105eju.30.1710970508756;
-        Wed, 20 Mar 2024 14:35:08 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:9be1:7bef:ff5c:57fc])
-        by smtp.gmail.com with ESMTPSA id wp2-20020a170907060200b00a46faaf7427sm964913ejb.121.2024.03.20.14.35.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Mar 2024 14:35:08 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Wed, 20 Mar 2024 22:35:05 +0100
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
-	lars@metafoo.de, ang.iglesiasg@gmail.com, mazziesaccount@gmail.com,
-	ak@it-klinger.de, petre.rodan@subdimension.ro, phil@raspberrypi.com,
-	579lpy@gmail.com, linus.walleij@linaro.org,
-	semen.protsenko@linaro.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 6/6] iio: pressure: Add triggered buffer support for
- BMP280 driver
-Message-ID: <20240320213505.GB52721@vamoiridPC>
-References: <20240319002925.2121016-1-vassilisamir@gmail.com>
- <20240319002925.2121016-7-vassilisamir@gmail.com>
- <ZfrFc9GF0_Jix5YT@smile.fi.intel.com>
- <20240320174602.GA36450@vamoiridPC>
- <ZftUWg31QvA99syr@smile.fi.intel.com>
+	s=arc-20240116; t=1710970898; c=relaxed/simple;
+	bh=XsmAB7EXFsutDSIAv8tlhZP7IVJx0037ZDdYmvdHizE=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=Ttbv+GVEw6s+7cptAZrAJVcfKtxJ4/sXWKfwc4EK8jj5zDO2mW5t82NgPCvkrCAuz8nRkcJJgXJnqu+US05nWnh9nBaDBG86kSxbctpBoU3uhNCUF3zrYq8ZJ9KCTxahyi9WUBSsnU+l2/DcprD0CUNmWX+hpcXBdeUDz2mS9H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NZvQisZb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27C2C433F1;
+	Wed, 20 Mar 2024 21:41:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1710970898;
+	bh=XsmAB7EXFsutDSIAv8tlhZP7IVJx0037ZDdYmvdHizE=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=NZvQisZb1fCrQfqweiQ3QTxklIRPVt9kHrKc8gnBYBZSy/OSqLGdujGLHt6Lg+CD5
+	 /W3yn4f99IRgB/vkxdfQ8dCps6zTMtkk2mi75aqMYNODArAt92LRt1EA2OZ6h0S5oR
+	 BOVE4Cbv1gQv/ylTqkCdwSEPxEsY6S8o1iuLbahTpXZzV+25pc8ecK/zEfx8KxvmuU
+	 bu83rn/Hj3zKOe8Rbc7agSRuRvOctkK9WRNJWtz7cVUYa8uxjyI9fBH4j4pe2FPZja
+	 aEH9Ou0qeooJX+oLtjn6nf0yF3qRG258tCm3n2QzTW8H8Sy4qJDmNkk7JJOuRuvSxc
+	 YFND0xwN3XXKg==
+Date: Wed, 20 Mar 2024 16:41:36 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZftUWg31QvA99syr@smile.fi.intel.com>
+From: Rob Herring <robh@kernel.org>
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: kernel@pengutronix.de, jic23@kernel.org, devicetree@vger.kernel.org, 
+ haibo.chen@nxp.com, s.hauer@pengutronix.de, linux-iio@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, festevam@gmail.com, 
+ linux-kernel@vger.kernel.org, conor+dt@kernel.org, upstream@lists.phytec.de, 
+ imx@lists.linux.dev, shawnguo@kernel.org, lars@metafoo.de, 
+ krzysztof.kozlowski+dt@linaro.org
+In-Reply-To: <20240320100407.1639082-3-andrej.picej@norik.com>
+References: <20240320100407.1639082-1-andrej.picej@norik.com>
+ <20240320100407.1639082-3-andrej.picej@norik.com>
+Message-Id: <171096725727.717649.376674198278388315.robh@kernel.org>
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
+ calibration properties
 
-On Wed, Mar 20, 2024 at 11:25:46PM +0200, Andy Shevchenko wrote:
-> On Wed, Mar 20, 2024 at 06:46:02PM +0100, Vasileios Amoiridis wrote:
-> > On Wed, Mar 20, 2024 at 01:16:03PM +0200, Andy Shevchenko wrote:
-> > > On Tue, Mar 19, 2024 at 01:29:25AM +0100, Vasileios Amoiridis wrote:
+
+On Wed, 20 Mar 2024 11:04:06 +0100, Andrej Picej wrote:
+> Document calibration properties and how to set them.
 > 
-> ...
-> 
-> > > >  	/*
-> > > > -	 * Maximum number of consecutive bytes read for a temperature or
-> > > > -	 * pressure measurement is 3.
-> > > > +	 * Maximum number of a burst read for temperature, pressure, humidity
-> > > > +	 * is 8 bytes.
-> > > >  	 */
-> > > > -	if (val_size > 3)
-> > > > +	if (val_size > 8)
-> > > 
-> > > sizeof() / new definition for the buf[] size?
-> > 
-> > In a previous commit that I was fixing this SPI driver, Jonathan had mentioned
-> > that there is no need for a specific definition since it will only be used
-> > here so that's why I kept it as is.
-> 
-> It seems not only here, but also in the buf[] definition in the struct.
+> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> ---
+>  .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
+>  1 file changed, 15 insertions(+)
 > 
 
-You are totally right, I didn't think of that!
-It makes sense to use a definition.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-Cheers,
-Vasilis
+yamllint warnings/errors:
 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml: nxp,calib-avg-en: missing type definition
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml: nxp,calib-nr-samples: missing type definition
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml: nxp,calib-t-samples: missing type definition
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240320100407.1639082-3-andrej.picej@norik.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 

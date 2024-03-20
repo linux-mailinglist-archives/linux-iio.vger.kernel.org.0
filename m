@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-3654-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3655-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7665588191E
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 22:31:51 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55941881931
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 22:35:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 282022869D8
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 21:31:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 871391C21050
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 21:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA2B8594E;
-	Wed, 20 Mar 2024 21:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 574EB8595C;
+	Wed, 20 Mar 2024 21:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aHDL3pog"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="avjYfL9e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7356B1DFC6;
-	Wed, 20 Mar 2024 21:31:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC7D33062;
+	Wed, 20 Mar 2024 21:35:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710970305; cv=none; b=ED0F3SkjTX+0RBrsdVm3ZAHqX6muZSRDkztIJSBpayMblsEdCtsAI9HkHyd63g495DgNFDqxYUt80LvhWuQfI7WQALCEmfV0W6EZNAwRcb9ZteHdhqWiO8oa8tX/4W+wp7MfCNAWzj/lLJmu5VN+DkVwd58JjA42RmxrFOxj1kU=
+	t=1710970512; cv=none; b=JfUDKUYkxUma7EKO+QRM4wwu+EtSNN50PCAge3ayKPdnzVJXl49tzKoA1aQ1qnDK60+9KJBv0N/MNi3ZgfemhZjO1LHpFcsWxz9FVPPHhxL8mPdG+YuxYLLQYf+XvudWC2UEoWtR7nRNSlsUy7zIBJf4BazG9+TSoHZWt+4IUto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710970305; c=relaxed/simple;
-	bh=zZkPNzov1U+2g3d3e8PS0S63IwHAgOpyM3LsJwAUW4M=;
+	s=arc-20240116; t=1710970512; c=relaxed/simple;
+	bh=TcWmYjPumbIlPBomNV9YOOX92d2441jgONKaND86xeg=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=o+AkXQK/f0PFOSQDuH31sNn9szpIaQNGCtLEoA2qj5or5bwe/zqtKSCoJ0QHqAMPofL718CnLvHNjXzn+IiyR+372SncaHBbkAKj9YGnVyFfdhJWn3X4ApiCthLk4ZVJgDWgICRa95qegvSudqsLZFuxh3uR41U9dOGYcblDYvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aHDL3pog; arc=none smtp.client-ip=209.85.208.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=LmV/udWm+iHCAEUuWsbBfVYS0E3ZHWcBnsO4/Amdhr8GUffWy1ezFTSY8PjXvEGGVotH2kORRGvn9UfE5hKMl7PS42ZBsV0Dt4DFVNq9o53nMByX9ueHGFtcHRfrO2bMu5E9ShmW36k1e4/7uHPcM++ioJEJkIfFjT2IJWE9HNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=avjYfL9e; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-56b85146589so620043a12.0;
-        Wed, 20 Mar 2024 14:31:43 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a46dd7b4bcbso39510666b.3;
+        Wed, 20 Mar 2024 14:35:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710970301; x=1711575101; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1710970509; x=1711575309; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YkXNsWFyS9IroqdDegvv78No9qBhWM69YWkvvWKZWwc=;
-        b=aHDL3pogjfF7PHFtc/yEuyJKnhugPFOSWNXh3099/AVbrfoBX8QV0/UMdwjxaDqU+9
-         mX9MStVHal+HXK6pX2uUwdo/knwAdKC1EB9qs0Xnx4VT0MrHeourB3Tg28rxOaLI/6yB
-         1GqFBP6Fzb6TTCLbm9uPpuETkES6gXpHuRkaPvVTxGQF6liC/c7Ogix4QkvgIEhVp3xx
-         7+wpEEsxa3Qegc8RgW5xzuUa5zbLEy7ZDNYDa2DYSGusvTGYUgH8XSfoShi4QQSPKDMX
-         2rfbmM7kv3nHfpwk4Di9YSQGp6UfDvXuchlYL0vTk0lLxB6OPSDy9xOA9x2QT7eLLg1h
-         LPnA==
+        bh=2488KgiQz0Ozm6AmLdfbpRuHfsugl87Zu2zk1y9WHjg=;
+        b=avjYfL9ekBibXEI6Upo8xCed7Fg/n83urK/8LViFVocshnqPdlWcK7vZi0OCIZzqUl
+         kHbZ5i2LihT8PyHDxiiaI585WZAZV9IxLl5U8q30ZqYOogJQbwwXiOM0khkR8rQKJRz2
+         NEkxHX+uEjvG8It03Cg1op58KVTXL6nh+G8u0M9a3RYMudoWNTakOHc6ybvxhqwkdxPk
+         T6Gafkay7sIJOZbyrL9SvAnVB62Ik5VW6CWVEe2f/QeZVMF+cVj6EWFMspnl062Op0Ld
+         AHs7RvzDmtt44nB1USbq9DHCHyVjNlu7nXalzGQVPihgA16OxDxKXDS04/Pz/VzJvg/2
+         QSPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710970301; x=1711575101;
+        d=1e100.net; s=20230601; t=1710970509; x=1711575309;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YkXNsWFyS9IroqdDegvv78No9qBhWM69YWkvvWKZWwc=;
-        b=UoH000rFJuGcoDWDv+muQahJZL64odn9C1uEeq/pDEsqydVNeMQe9suWn5XdanvNQV
-         1IQDVPZddGXDLie0vmABvrn2EhKxaV+iOP4wL6pI9P5rcK8U/4hmP8uUm8dbTSBlyGXk
-         anReYzPNdSfXOWTvftNE5ROMwjCuAiRA48AzYH89lRKz6bYWtM7KVwlGHu01TbYaX0Pq
-         M/VhJtJOaOVS2kX3zPydlkKBwJJbd2AV/XoMh/vimIiMzR/Xy/qg1Ez+S1PVd95O5sWY
-         FhB4IUY4UePkjrhYQoOc/U862lUljN928/PwwxgMXv1k7uT6sTFwqzN8+k9uBPlXjEVf
-         v20w==
-X-Forwarded-Encrypted: i=1; AJvYcCUKXkqJ+bRXxj+SlrV+NTkhSk11XhdRi2hbq2fUj03lcp2h9jUsUCv1ju23LCwVF8msT6LnamCybsAazVNeZCG/AzlAN37EA79/mMYqztVwvN8SFxxLPH1sdkMEnW8zFT7hvY1hjGK1
-X-Gm-Message-State: AOJu0Yyj9CqVKjpLhuz4aJ/XRPmQ9t38hKVEgyAebByaGDHZcx3Dg4sK
-	DxTwgWNeZGD9K7PFYaf0V1KNTn6pczD1+cNgrzvOBCMOpv7rzMl+
-X-Google-Smtp-Source: AGHT+IGJARAIaj/QFlDOhPInMMiZr7TxIYCf173dV4SXkMAh9bXCeF5fke/WV0h4Cqs55mY9jawm0w==
-X-Received: by 2002:a50:d5d3:0:b0:568:d6a2:716 with SMTP id g19-20020a50d5d3000000b00568d6a20716mr772925edj.7.1710970301353;
-        Wed, 20 Mar 2024 14:31:41 -0700 (PDT)
+        bh=2488KgiQz0Ozm6AmLdfbpRuHfsugl87Zu2zk1y9WHjg=;
+        b=BH5ZjWY+myaYQ3NpAKLfdqeJFxc/0qS1lT4GQ1kzwstwa7ND1+hO6YEv140b0nZkZM
+         +yXU2oKPpMHDSa/d1ToosazSPYhQ5ll8uQhsPGyIpMHti1RNyXztOQ3nHBJAUgcFfiOG
+         HGkSEL1iE3uispwe4dWADI2XhdEal+Z0o/7hOCvPRtzy45IwAtCBBzxTeZ4WV7ucwD0K
+         6CbNGXqa1A4lYqToWGSG54snJPXggZ4eeDTgYjJpAp3kBNZLybpqtaO6mk+Oo72rpHCL
+         fDHC9WY1KgDzIEP1xpRPNOdbSxlnTz1EjnNwPUGdYXE+DsxazApok+BIzky56fBng8HC
+         wNIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUElehLtkCmhx2x1z95VFzGMiQE+WfATOEl/W7TIlTNH88rBKxYRz/17j+fZa3Q7BGbq49PA3VhouQLmD0QTj8VkvUaEaTEUi+YRDr6ZfNMyQfbYguddG/6Tqd+WEafSpa3b6yMaxRG
+X-Gm-Message-State: AOJu0YySKanz7YBm2I8EMZRcM/UWd6Kp4mT5MQ1+0pkLJq24s+33Ge6D
+	B17WVrdqjKlY5IoscbfI/2h/wsN/IkzVpmMqSHKAJOd3yfeV/fdu
+X-Google-Smtp-Source: AGHT+IH8szzncBG1aLLxaZjuATsI9dcfMdIIBEgaidEn0FkFhM1jMeSmv2gEXSy/ocnkY1wlGxOkow==
+X-Received: by 2002:a17:906:4f18:b0:a46:a17b:c44e with SMTP id t24-20020a1709064f1800b00a46a17bc44emr84105eju.30.1710970508756;
+        Wed, 20 Mar 2024 14:35:08 -0700 (PDT)
 Received: from vamoiridPC ([2a04:ee41:82:7577:9be1:7bef:ff5c:57fc])
-        by smtp.gmail.com with ESMTPSA id l8-20020aa7c308000000b0056b7ed75a46sm3263658edq.27.2024.03.20.14.31.40
+        by smtp.gmail.com with ESMTPSA id wp2-20020a170907060200b00a46faaf7427sm964913ejb.121.2024.03.20.14.35.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Mar 2024 14:31:40 -0700 (PDT)
+        Wed, 20 Mar 2024 14:35:08 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Wed, 20 Mar 2024 22:31:39 +0100
+Date: Wed, 20 Mar 2024 22:35:05 +0100
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
 	lars@metafoo.de, ang.iglesiasg@gmail.com, mazziesaccount@gmail.com,
@@ -76,14 +76,14 @@ Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org,
 	579lpy@gmail.com, linus.walleij@linaro.org,
 	semen.protsenko@linaro.org, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] iio: pressure: Add timestamp and scan_masks for
+Subject: Re: [PATCH v3 6/6] iio: pressure: Add triggered buffer support for
  BMP280 driver
-Message-ID: <20240320213139.GA52721@vamoiridPC>
+Message-ID: <20240320213505.GB52721@vamoiridPC>
 References: <20240319002925.2121016-1-vassilisamir@gmail.com>
- <20240319002925.2121016-6-vassilisamir@gmail.com>
- <ZfrDW1ESxnFg__od@smile.fi.intel.com>
- <20240320184516.GB36450@vamoiridPC>
- <ZftJK3cqFNU9-dCG@smile.fi.intel.com>
+ <20240319002925.2121016-7-vassilisamir@gmail.com>
+ <ZfrFc9GF0_Jix5YT@smile.fi.intel.com>
+ <20240320174602.GA36450@vamoiridPC>
+ <ZftUWg31QvA99syr@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -92,39 +92,38 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZftJK3cqFNU9-dCG@smile.fi.intel.com>
+In-Reply-To: <ZftUWg31QvA99syr@smile.fi.intel.com>
 
-On Wed, Mar 20, 2024 at 10:38:03PM +0200, Andy Shevchenko wrote:
-> On Wed, Mar 20, 2024 at 07:45:16PM +0100, Vasileios Amoiridis wrote:
-> > On Wed, Mar 20, 2024 at 01:07:07PM +0200, Andy Shevchenko wrote:
-> > > On Tue, Mar 19, 2024 at 01:29:24AM +0100, Vasileios Amoiridis wrote:
+On Wed, Mar 20, 2024 at 11:25:46PM +0200, Andy Shevchenko wrote:
+> On Wed, Mar 20, 2024 at 06:46:02PM +0100, Vasileios Amoiridis wrote:
+> > On Wed, Mar 20, 2024 at 01:16:03PM +0200, Andy Shevchenko wrote:
+> > > On Tue, Mar 19, 2024 at 01:29:25AM +0100, Vasileios Amoiridis wrote:
 > 
 > ...
 > 
-> > > > +enum bmp280_scan {
-> > > > +	BMP280_TEMP,
-> > > > +	BMP280_PRESS,
-> > > > +	BME280_HUMID
+> > > >  	/*
+> > > > -	 * Maximum number of consecutive bytes read for a temperature or
+> > > > -	 * pressure measurement is 3.
+> > > > +	 * Maximum number of a burst read for temperature, pressure, humidity
+> > > > +	 * is 8 bytes.
+> > > >  	 */
+> > > > -	if (val_size > 3)
+> > > > +	if (val_size > 8)
 > > > 
-> > > The last is not a terminator, please leave trailing comma.
-> > > 
-> > > > +};
+> > > sizeof() / new definition for the buf[] size?
 > > 
-> > What do you mean it is not a terminator? In general with the enum
-> > variables I would write:
-> > 
-> > 	enum var { a, b, c };
+> > In a previous commit that I was fixing this SPI driver, Jonathan had mentioned
+> > that there is no need for a specific definition since it will only be used
+> > here so that's why I kept it as is.
 > 
-> This example is different to what you used. I.o.w. _this_ example is okay.
-> 
-> > Why in this case there is a comma needed after the BME280_HUMID element?
-> 
-> It's pure style issue that helps to avoid the unneeded churn in the future in
-> case the list is getting expanded. You can easily imagine what I mean.
+> It seems not only here, but also in the buf[] definition in the struct.
 > 
 
-Ok, that definitely makes sense, thank you! In general, should this be applied
-to structs as well?
+You are totally right, I didn't think of that!
+It makes sense to use a definition.
+
+Cheers,
+Vasilis
 
 > -- 
 > With Best Regards,

@@ -1,171 +1,113 @@
-Return-Path: <linux-iio+bounces-3635-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3639-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6050880EC3
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 10:37:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20085881016
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 11:40:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 125B91C21E3F
-	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 09:37:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0B49281E57
+	for <lists+linux-iio@lfdr.de>; Wed, 20 Mar 2024 10:40:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50333B78B;
-	Wed, 20 Mar 2024 09:37:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AABF3A8C2;
+	Wed, 20 Mar 2024 10:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gSEL64Yh"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=norik.com header.i=@norik.com header.b="jbjwjpsd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AF732C60
-	for <linux-iio@vger.kernel.org>; Wed, 20 Mar 2024 09:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EF739FED;
+	Wed, 20 Mar 2024 10:40:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1710927469; cv=none; b=NZ8cbsuvHTvlgnOo7xxTKYXm7HTFqWXfbplK0a008g488+X2qpgY6gIOuKg/HITyYInRIv4J07a6UVy1YuiaN3lSeWVWrcZLZppuAd3leJd5JCF4khCfd5FLajOvntjN2JKicyxzlW13rAkc+ovETYktO2pPJSPwtO1eH/j3M00=
+	t=1710931230; cv=none; b=SJP5c59zlz1/g4u2cPSQ8RZ6ODbBqzsSbfE2uNDhAdU9gBS7bpjD27Po/ycLWTcp3Kp8cbVImedST/CgXT507e4f/Sf7M9+0CGGgzS8h/5FcLrPpYStQ6IR1pp3itHtiW15X7b4rty+bfk+krtliqkusgWhNoPSB/03Ezo+PnfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1710927469; c=relaxed/simple;
-	bh=i/o5sRNIfaA5hJadnKQb+e+WdwHMkKnKubv664PT9M0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ea7/iMFqXRq1anY44ekWJL2FfSuGus9ePw3OTFTL6saU6o6p0MEJIZaDQqCGtFXpv5uG5CHKdSSm02zIppkGpP25WL7Osqi1M0v8FzK+HzW5xu+UzXZmxpj7BFCSgG5d+zMohyLM4tZHISUFBNA5RqEZjbyj2t72kV5wq+dlUdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gSEL64Yh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E86C433C7;
-	Wed, 20 Mar 2024 09:37:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1710927468;
-	bh=i/o5sRNIfaA5hJadnKQb+e+WdwHMkKnKubv664PT9M0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=gSEL64YhZ9ncxgqEkm2QOmLNEK4niRX9UOpJ2nl+w5GnOWq+OSi0XtHSygAQueBoB
-	 CCmyZB3R/Jbc6bcig5Yd7M2f8wyr4lvvjy86Ou8vqi1NEI4kPRGA+AYYXsyu3HXSBQ
-	 yriT/VETvNiL9dEYbD908+qC1aG7rCBzN2XIpzFw1Q7yxb6TSS69SL/MkLkzm7O6uV
-	 +U/tROhxJPNvYR+TM496eJiCu/h16EZRNiHYqlXDVdMjpMwyMk7VoPm5C/z/8l9ozs
-	 Q1diaGDj8Bx/z9bW4k5q/giLy4/hgCzE3j/rYnNY6ZsNXsetkGituDf++JYG8J+4yk
-	 Qhu/JVNjpP4NA==
-Message-ID: <7f349041-bf2f-434d-a9cd-a82ac902f613@kernel.org>
-Date: Wed, 20 Mar 2024 10:37:42 +0100
+	s=arc-20240116; t=1710931230; c=relaxed/simple;
+	bh=ls6xLhp/KwBA1fCnfVdKXiKvpHzqIRtYfTSXA2EgX4o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TZhJWC8GKa/NlLkwprTGzaL+wbLU+fc/6u8jBBfRwA8JtAsUuW1Swnu3lIfMF+ynysXc9JBetdwfRuNkJrtSZ1m4XDesG0L8ml2y49hBehgTD0lQUFvAxJ5l1KxpOPpG6T1IYMJGhhdY7K/ZVlZpZ5IgVI6jq0D+IMq08I8+doY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=jbjwjpsd; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+	Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=k/hQjJjKM/6k2dIpkZOd1CRB2GRUhhh9M/CTbWGkxv4=; b=jbjwjpsdmK16TTuRIvVxOmhZIc
+	HlhCLjlWDtjLAD9FUfGYndwLoeClywCY8MSkgv3l8kFFL30PvXMfY8fFQafC7itVkT9bhXVsQc3P2
+	8o5+caqTrTmGyCBCJkHfJUnxW2kLSdt66gTADdXVxy98l/ZaOA214ohvxJ3JFTsLJ0MqCAzmUaoAx
+	wYOneq0ntlulQr8RziSi/iwJT1J6jWfQ1jpwNLr91Wdv6REaiqf70ygVvK5Bd20KbSecQNIXMpS8v
+	o1ZvqXn5xAp1qQrPbLb/Lselh3/zNPuMH5Y8yZUExM+UFJZNqmWEL1jQkI26cEm6UR5pDFGzZQX40
+	tajbO/GA==;
+Received: from [89.212.21.243] (port=57750 helo=localhost.localdomain)
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <andrej.picej@norik.com>)
+	id 1rmsnx-005Tm8-0g;
+	Wed, 20 Mar 2024 11:04:17 +0100
+From: Andrej Picej <andrej.picej@norik.com>
+To: haibo.chen@nxp.com,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org
+Cc: jic23@kernel.org,
+	lars@metafoo.de,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	festevam@gmail.com,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	upstream@lists.phytec.de
+Subject: [PATCH 0/2] i.MX93 ADC calibration settings
+Date: Wed, 20 Mar 2024 11:04:04 +0100
+Message-Id: <20240320100407.1639082-1-andrej.picej@norik.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] iio: adxl345: add spi-3wire
-To: Lothar Rubusch <l.rubusch@gmail.com>, lars@metafoo.de,
- Michael.Hennerich@analog.com, jic23@kernel.org
-Cc: linux-iio@vger.kernel.org, eraretuya@gmail.com
-References: <20240319212713.257600-1-l.rubusch@gmail.com>
- <20240319212713.257600-2-l.rubusch@gmail.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240319212713.257600-2-l.rubusch@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: andrej.picej@norik.com
+X-Authenticated-Sender: cpanel.siel.si: andrej.picej@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On 19/03/2024 22:27, Lothar Rubusch wrote:
-> Adds the spi-3wire feature and adds general refactoring to the
+Hi all,
 
-Add
+we had some problems with failing ADC calibration on the i.MX93 boards.
+Changing default calibration settings fixed this. The board where this
+patches are useful is not yet upstream but will be soon (hopefully).
 
-> iio driver.
-> 
-> The patch moves driver wide constants and fields into the
-
-Please do not use "This commit/patch/change", but imperative mood. See
-longer explanation here:
-https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/submitting-patches.rst#L95
-
-> header. Thereby reduces redundant info struct definitions.
-> Allows to pass a function pointer from SPI/I2C specific probe,
-> and smaller refactorings. A regmap_update_bits() in the core
-> file replaces the regmap_write() to format_data.
-> 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> ---
-
-
-
->  static int adxl345_spi_probe(struct spi_device *spi)
->  {
-> +	const struct adxl345_chip_info *chip_data;
->  	struct regmap *regmap;
->  
-> +	/* Retrieve device name to pass it as driver specific data */
-> +	chip_data = device_get_match_data(&spi->dev);
-> +	if (!chip_data)
-> +		chip_data = (const struct adxl345_chip_info *) spi_get_device_id(spi)->driver_data;
-
-Are you sure you need the cast?
-
-And why aren't you using spi_get_device_match_data()?
-
-> +
->  	/* Bail out if max_speed_hz exceeds 5 MHz */
->  	if (spi->max_speed_hz > ADXL345_MAX_SPI_FREQ_HZ)
->  		return dev_err_probe(&spi->dev, -EINVAL, "SPI CLK, %d Hz exceeds 5 MHz\n",
->  				     spi->max_speed_hz);
->  
->  	regmap = devm_regmap_init_spi(spi, &adxl345_spi_regmap_config);
-> -	if (IS_ERR(regmap))
-> -		return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing regmap\n");
-> +	if (IS_ERR(regmap)) {
-> +		dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing spi regmap: %ld\n",
-> +			      PTR_ERR(regmap));
-> +		return PTR_ERR(regmap);
-
-Why are you changing correct code into incorrect?
-
-> +	}
->  
-> -	return adxl345_core_probe(&spi->dev, regmap);
-> +	return adxl345_core_probe(&spi->dev, regmap, chip_data, &adxl345_spi_setup);
->  }
-
+Since we had these patches laying around we thought they might also be
+useful for someone else.
 
 Best regards,
-Krzysztof
+Andrej
+
+Andrej Picej (2):
+  iio: adc: imx93: Make calibration properties configurable
+  dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add calibration properties
+
+ .../bindings/iio/adc/nxp,imx93-adc.yaml       | 15 +++++
+ drivers/iio/adc/imx93_adc.c                   | 66 +++++++++++++++++--
+ 2 files changed, 76 insertions(+), 5 deletions(-)
+
+-- 
+2.25.1
 
 

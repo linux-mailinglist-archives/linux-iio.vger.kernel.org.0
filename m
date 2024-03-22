@@ -1,93 +1,127 @@
-Return-Path: <linux-iio+bounces-3670-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3671-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FDD4886523
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 03:17:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 665C0886648
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 06:36:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E7591F22D68
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 02:17:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B0E02824D2
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 05:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6763184E;
-	Fri, 22 Mar 2024 02:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9D58C1F;
+	Fri, 22 Mar 2024 05:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWdQxxhj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWlcMUnw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DA771396;
-	Fri, 22 Mar 2024 02:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE3CB654
+	for <linux-iio@vger.kernel.org>; Fri, 22 Mar 2024 05:36:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711073862; cv=none; b=UjEgzE45qnAPvwpFAGXKHpy8wHX6Y8MJ+hfBu2SRPeWgKmHliOJCbVMTjBpqiweVlhZ3DmT5fmY4A/5ybonOvsC5tZVM5J0XdoihzVEGwD+vlL9UryNxK90ig3zq4TZ/9OBOtrK0V7rSM13xfEc5mG+Ku3XpQv1aHGNBlF30BLA=
+	t=1711085785; cv=none; b=eV1IzpnFxMPvfubiNVFOtYvWh/10uUe259DQ4M3O2VE+GYPknXt/SLNkSuF5klnuPVAMlFME+FQgzWD1Z6hFZ6AAU12hQ+4koZE5FQSPGCOlYRf8khVAUVJUM4T/egF6plcKWH48QtH2v87Iy6RvbDC9j1mv/BTAB1irM88N2H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711073862; c=relaxed/simple;
-	bh=b3KFT+VyDIpm+tPl8Ceas4dzeaJGWnlNhgr2Sbub8qE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IFvpIY07HqTK/jqCcb7VYOaVeSS7G6fFdqGusAQt47rCzhHjBVuwo9TcUK6rWHMDKGuXx96t+2QZKVRGOb7F0ceTOc4lo6ybD5Ek71JDWrgwEodbFNH0N2jW8ZddkmlV831I48zE89ITcnxxCh9nygcEngaVsjj+4RbqBnf8edo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWdQxxhj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6481C433C7;
-	Fri, 22 Mar 2024 02:17:41 +0000 (UTC)
+	s=arc-20240116; t=1711085785; c=relaxed/simple;
+	bh=aD91xooDm4MVBDUVWQwfpseGmxQysRpnOTdcf1KMC3w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QAGfcwCXQ0AtII81mr4sE+3E4+Vm6FEWcnhdbM9DM2tb3bg/9i9aYag7Jk0CqjXnC9N9LlaEAQbWg80iID2E8hx5alc5ZLJJyTJxlPNTg/BFFjGMFgWjeK66p35vdqOqloiQmmPVhVePwU3P07BuhUCyh1uJ1AY026nVSqI7+mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWlcMUnw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7611AC433C7;
+	Fri, 22 Mar 2024 05:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711073862;
-	bh=b3KFT+VyDIpm+tPl8Ceas4dzeaJGWnlNhgr2Sbub8qE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gWdQxxhjVeP3ytZhnvufek2SCCX3Q8KecK0+yjTtMqk9rmLpDDpnLcEYxTLug/isT
-	 kqrtlwZgr/v8IXorzQTiaD0WKmsI00v2jAw9NweUj9M7vKcU2P16fYKQ/NF84oBqLw
-	 6Cz1gA76LOl9+W2LPMssYAy/C6/B6qfBoKMlezctUZUrBJVzvqRKj9KqIBxq90ilxh
-	 TRM/jcvkNQGIqyZ42+qgzF1FrxrMt6NuQtx2DH9D7VBJPJCrnf0s5UkTvp1FFZKlMJ
-	 ES7IukISNnODy2x6O8JjsF3rostKL2wLkdKJAb4DEm/RS0HNSi5kzaOSqzcW8moTfn
-	 5qxiDdJhNEzew==
-Date: Thu, 21 Mar 2024 21:17:39 -0500
-From: Rob Herring <robh@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Subject: Re: [PATCH v2 3/3] dt-bindings: iio: accel: adxl345: Add spi-3wire
-Message-ID: <20240322021739.GA3418523-robh@kernel.org>
-References: <20240322003713.6918-1-l.rubusch@gmail.com>
- <20240322003713.6918-4-l.rubusch@gmail.com>
+	s=k20201202; t=1711085785;
+	bh=aD91xooDm4MVBDUVWQwfpseGmxQysRpnOTdcf1KMC3w=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZWlcMUnwDqX5l5MYwInypM7noqXVQr4N8WuaXAKY4FeOuI8nMnl9MHO+OB2NgBHxE
+	 KhTOOROVC9uNTYJxCFFm+X3Choi8Yg4ZlYfn1xOm3kkhb+eyybECV8Qct/AeMC8zgp
+	 E1YU5Foi4071wuJaRjjJEHm3R7Sg2fuy/Vbk4Qg2Z9wk7Rhe8jKXNwNGUJg3JJVKcA
+	 CJvZfHGfqTPcmboBa7Yd7TaAk9Q0mbMp9SmpVs56PQUSb92VVqj5cyvWMk5TezHUyS
+	 BP3tQnosKg0f4lGmf0kjU9yYGxUmOVLNU2Auqaez4GKWxxUHwEJyW5uzf5uUgOjeVy
+	 jncKiqns2PxFg==
+Message-ID: <8a173c7c-74d6-4816-a517-54a9cdf11354@kernel.org>
+Date: Fri, 22 Mar 2024 06:36:19 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240322003713.6918-4-l.rubusch@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: adxl345: update documentation for spi-3wire
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+ linux-iio@vger.kernel.org, eraretuya@gmail.com
+References: <20240319212713.257600-1-l.rubusch@gmail.com>
+ <20240319212713.257600-3-l.rubusch@gmail.com>
+ <27a7b77b-af88-4b6b-8444-02917a744967@kernel.org>
+ <CAFXKEHZ3G6Ce0ZeD8snosDL9wYrEtJ7YLbjO6JQVrSDeYKZVAg@mail.gmail.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <CAFXKEHZ3G6Ce0ZeD8snosDL9wYrEtJ7YLbjO6JQVrSDeYKZVAg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 22, 2024 at 12:37:13AM +0000, Lothar Rubusch wrote:
-> Provide the optional spi-3wire in the example.
+On 22/03/2024 01:27, Lothar Rubusch wrote:
+> 
+>> Please use subject prefixes matching the subsystem. You can get them for
+>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+>> your patch is touching.
+> 
+> Yes. Next time I'll chose better prefixes. For now I keep the subject
+> to the mail to not break the mailing thread and update the patches in a
+> follow up. I hope this is ok?
 
-That doesn't match the diff as you don't touch the example. But really, 
-this should say why you need spi-3wire.
+No. Email threading depends on reply-to headers, not subject. It's
+irrelevant.
 
-> 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> ---
->  Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> index 07cacc3f6..280ed479e 100644
-> --- a/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> +++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl345.yaml
-> @@ -32,6 +32,8 @@ properties:
->  
->    spi-cpol: true
->  
-> +  spi-3wire: true
-> +
->    interrupts:
->      maxItems: 1
->  
-> -- 
-> 2.25.1
-> 
+
+Best regards,
+Krzysztof
+
 

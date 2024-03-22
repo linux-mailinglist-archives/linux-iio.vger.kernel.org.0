@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-3671-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3672-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665C0886648
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 06:36:30 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E8D886649
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 06:37:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B0E02824D2
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 05:36:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 023C41C23668
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 05:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9D58C1F;
-	Fri, 22 Mar 2024 05:36:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A73A8C1F;
+	Fri, 22 Mar 2024 05:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZWlcMUnw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rp5nl16F"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBE3CB654
-	for <linux-iio@vger.kernel.org>; Fri, 22 Mar 2024 05:36:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC1E515BB
+	for <linux-iio@vger.kernel.org>; Fri, 22 Mar 2024 05:37:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711085785; cv=none; b=eV1IzpnFxMPvfubiNVFOtYvWh/10uUe259DQ4M3O2VE+GYPknXt/SLNkSuF5klnuPVAMlFME+FQgzWD1Z6hFZ6AAU12hQ+4koZE5FQSPGCOlYRf8khVAUVJUM4T/egF6plcKWH48QtH2v87Iy6RvbDC9j1mv/BTAB1irM88N2H8=
+	t=1711085838; cv=none; b=p6zab3oHNL6CML07X7BsYe1Tnp2UoJC317hK1ksLCA75Vy8cFsZlfgMWeX/Bsx03B+cNfsQCTej18wYRxS2l+iXX+F4jUshOK4kiwln4losb0JPrrlObWzQyAxqzCky4xJEUHCWkwNvN+z2uMHbGeUsVO5EuKcpAC8GdI3ASn1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711085785; c=relaxed/simple;
-	bh=aD91xooDm4MVBDUVWQwfpseGmxQysRpnOTdcf1KMC3w=;
+	s=arc-20240116; t=1711085838; c=relaxed/simple;
+	bh=lLbqV/fWiErqi5MYcsBeNnvZRzwwrz4iIDOaapV4TYc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QAGfcwCXQ0AtII81mr4sE+3E4+Vm6FEWcnhdbM9DM2tb3bg/9i9aYag7Jk0CqjXnC9N9LlaEAQbWg80iID2E8hx5alc5ZLJJyTJxlPNTg/BFFjGMFgWjeK66p35vdqOqloiQmmPVhVePwU3P07BuhUCyh1uJ1AY026nVSqI7+mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZWlcMUnw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7611AC433C7;
-	Fri, 22 Mar 2024 05:36:23 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=Y56yAd/JXveURPhm+o2DOiTSAC6jv0iJKuvAqGnQ9FrGfuWI1lwxbE6UjsFNURpOF9NuUNyyG380pTFI3c/+ruFdw9Ie3m9J8NEuwFHJBnGEgYOsojO+66BRQnSOVFH0hDk2QzYVNYty9kB2/TgVUnADBgPU+Ejg/WTyBjg4yks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rp5nl16F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F60EC433F1;
+	Fri, 22 Mar 2024 05:37:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711085785;
-	bh=aD91xooDm4MVBDUVWQwfpseGmxQysRpnOTdcf1KMC3w=;
+	s=k20201202; t=1711085838;
+	bh=lLbqV/fWiErqi5MYcsBeNnvZRzwwrz4iIDOaapV4TYc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZWlcMUnwDqX5l5MYwInypM7noqXVQr4N8WuaXAKY4FeOuI8nMnl9MHO+OB2NgBHxE
-	 KhTOOROVC9uNTYJxCFFm+X3Choi8Yg4ZlYfn1xOm3kkhb+eyybECV8Qct/AeMC8zgp
-	 E1YU5Foi4071wuJaRjjJEHm3R7Sg2fuy/Vbk4Qg2Z9wk7Rhe8jKXNwNGUJg3JJVKcA
-	 CJvZfHGfqTPcmboBa7Yd7TaAk9Q0mbMp9SmpVs56PQUSb92VVqj5cyvWMk5TezHUyS
-	 BP3tQnosKg0f4lGmf0kjU9yYGxUmOVLNU2Auqaez4GKWxxUHwEJyW5uzf5uUgOjeVy
-	 jncKiqns2PxFg==
-Message-ID: <8a173c7c-74d6-4816-a517-54a9cdf11354@kernel.org>
-Date: Fri, 22 Mar 2024 06:36:19 +0100
+	b=Rp5nl16FtuDriOrslEBESZ4qhknzS8Y3g3mjeK5iIDFc+v82nCQxeUuK/IDa31kV3
+	 dM2KgLLMgu24ncK0YJDhVfCp1n39DY2OMrJFya7Nw5s82ym4nMx909v2MAsU6xRo8K
+	 KftuYt4gODAg9eLZG7X/KzHjJVl95qNtmFqoPsC79gHuE4CYrYl0Gs1ylp61lh+YSO
+	 CsGoZJ1qcLQJERURTDEO2vQU3RjORo+/9tUA/g/EDjsRoEGxeIaO3GsKvNE5FeGKB0
+	 YrUPDDXR+ZKu13lvero2sD470p9PlobgVN0NsVMKaS8K0NzpZSipzavZ+qI+y933CJ
+	 vSQBMpRG5O5cA==
+Message-ID: <4a9c9108-9de0-4ff0-ad1e-1945b09f5388@kernel.org>
+Date: Fri, 22 Mar 2024 06:37:13 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,14 +50,14 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: adxl345: update documentation for spi-3wire
+Subject: Re: [PATCH 1/2] iio: adxl345: add spi-3wire
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
  linux-iio@vger.kernel.org, eraretuya@gmail.com
 References: <20240319212713.257600-1-l.rubusch@gmail.com>
- <20240319212713.257600-3-l.rubusch@gmail.com>
- <27a7b77b-af88-4b6b-8444-02917a744967@kernel.org>
- <CAFXKEHZ3G6Ce0ZeD8snosDL9wYrEtJ7YLbjO6JQVrSDeYKZVAg@mail.gmail.com>
+ <20240319212713.257600-2-l.rubusch@gmail.com>
+ <7f349041-bf2f-434d-a9cd-a82ac902f613@kernel.org>
+ <CAFXKEHZr5S83sra6_eWPS+Hn03rFDPh5nmNHb9dfXYGjfpsx9g@mail.gmail.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,22 +103,34 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <CAFXKEHZ3G6Ce0ZeD8snosDL9wYrEtJ7YLbjO6JQVrSDeYKZVAg@mail.gmail.com>
+In-Reply-To: <CAFXKEHZr5S83sra6_eWPS+Hn03rFDPh5nmNHb9dfXYGjfpsx9g@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 22/03/2024 01:27, Lothar Rubusch wrote:
+On 22/03/2024 01:32, Lothar Rubusch wrote:
 > 
->> Please use subject prefixes matching the subsystem. You can get them for
->> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
->> your patch is touching.
+>>> +
+>>>       /* Bail out if max_speed_hz exceeds 5 MHz */
+>>>       if (spi->max_speed_hz > ADXL345_MAX_SPI_FREQ_HZ)
+>>>               return dev_err_probe(&spi->dev, -EINVAL, "SPI CLK, %d Hz exceeds 5 MHz\n",
+>>>                                    spi->max_speed_hz);
+>>>
+>>>       regmap = devm_regmap_init_spi(spi, &adxl345_spi_regmap_config);
+>>> -     if (IS_ERR(regmap))
+>>> -             return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing regmap\n");
+>>> +     if (IS_ERR(regmap)) {
+>>> +             dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing spi regmap: %ld\n",
+>>> +                           PTR_ERR(regmap));
+>>> +             return PTR_ERR(regmap);
+>>
+>> Why are you changing correct code into incorrect?
 > 
-> Yes. Next time I'll chose better prefixes. For now I keep the subject
-> to the mail to not break the mailing thread and update the patches in a
-> follow up. I hope this is ok?
+> I'll adjust that. It looks odd, I agree, but is this incorrect code? I found
+> similar code in the neighbor adxl313 accel driver. I may change/update
+> that then, too. Thank   you for the hints.
 
-No. Email threading depends on reply-to headers, not subject. It's
-irrelevant.
+Please explain why you are doing this. How is this related to adding SPI
+3-wire mode?
 
 
 Best regards,

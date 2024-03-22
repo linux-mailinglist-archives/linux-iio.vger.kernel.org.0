@@ -1,139 +1,174 @@
-Return-Path: <linux-iio+bounces-3662-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3663-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 823A3886455
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 01:28:28 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A038F88645F
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 01:33:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21A401F22B96
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 00:28:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55EEE1F231FB
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 00:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7F6387;
-	Fri, 22 Mar 2024 00:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A322B389;
+	Fri, 22 Mar 2024 00:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ad6FZbi2"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dfI8V4G3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
+Received: from mail-yb1-f176.google.com (mail-yb1-f176.google.com [209.85.219.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D08376
-	for <linux-iio@vger.kernel.org>; Fri, 22 Mar 2024 00:28:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17076116
+	for <linux-iio@vger.kernel.org>; Fri, 22 Mar 2024 00:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711067301; cv=none; b=I3uNjaldWKDxIlTyKp7H+udAW7tH/hIo5KnGWK+UlWyW2mq8VH8Zk+5TKQPrxKeNn1CuRrdcew9Mk3f8QnZHZJkgiI5Ivofkge1RqbhEdIPz3k5NfGahWbj8h9ng+KUdKHNALIix/e1ZW66v1IMv4LPrRE7nUdA1UBJKGnN2FNw=
+	t=1711067570; cv=none; b=ZXsJZuwUH99MRN7T9Vsxm6A/jXE9LfaZh2vqf/LT3Ls0qQDWisw7B5HObMFNdk6jEDOV5NAJhInAT9cemsTPw8HG+MRW4yPhB39m6iDZllMnYlIbNxKw2KyTTakLz1t19I6cycnb6AKCSO8nLMC8ZSHxmbCztzY95awoJnzQGhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711067301; c=relaxed/simple;
-	bh=QrKkppO28KXlF2NSaQI91PURjkRT0ALmsv86GAJjZEs=;
+	s=arc-20240116; t=1711067570; c=relaxed/simple;
+	bh=3NyE07jVlltZu9uXkueR9hRTE+EAxoi1jC/8SBKHTlM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MN34N5ThiuI75WDRij8z0SXyFiaMznBCX7bTFTj55bWkn4d3EZie1ifAvLdA5oy/lvOwOSIKpMZSzNm3LLGc4V3oAcfQCcL/Hh6mNaNWb3RLLRU6zte8jOOIBBX8dNipay27guWLfQLSipfUjO7eUu71WQpHokmcymie4uCI/Fk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ad6FZbi2; arc=none smtp.client-ip=209.85.219.170
+	 To:Cc:Content-Type; b=V2eFZRWy11ioe/CL+/eLLFhmxf/UlENtNL/ZCTykYHRNbtLjxn3BWK9DK/lS6yPVsI/iwdMqdrvAPml/pT4EIOJqvHTV72M3ZVj/nAhkT5TTZPy89/nu5jziCn/0HQkBfgmX2ZiQevSu2QCm3me3bxNbjl1gNFlgd5Hg8Joq8ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dfI8V4G3; arc=none smtp.client-ip=209.85.219.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dcd9e34430cso1677951276.1
-        for <linux-iio@vger.kernel.org>; Thu, 21 Mar 2024 17:28:19 -0700 (PDT)
+Received: by mail-yb1-f176.google.com with SMTP id 3f1490d57ef6-dc6dcd9124bso1617624276.1
+        for <linux-iio@vger.kernel.org>; Thu, 21 Mar 2024 17:32:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711067299; x=1711672099; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1711067568; x=1711672368; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wWbW5UEPLuyHdNRYG0HCoOLt4yqpHHeORq6DVqer/2E=;
-        b=ad6FZbi2naPnjjYX6049loRww0F9tmL5xQmslsiYlImuM60pHYvzpAbJZ+IccJr6Ys
-         B8kmFzh93oeQrLSxe6C4XBvz7W4Hq0fAJ2eBOdIWt3lvgdHvAv3xrQi7o0Z6ODjjAPb4
-         WD6nYh8n7JLH83tCuh/ilyNH7XvxOWTLM4FV7E+EyXEKl4OLFGfTbExFuxbvE/cshKgz
-         wvZK9pkuAF3gOsVp5beVQYIMljG7J2fyRtSi6WL+z8QUyMXKRKKQGpVP8bAq/sAz1MhD
-         BUsNONW2mgNTJf4Yq4Qxnu1Mxrq+eoMUk0GafUI69rfZEnM7H++7vlK+ZSPccHMPY96x
-         nzXw==
+        bh=Kfhh3JG6TiZK8YLP9ybK+DwTAzB2uyFOYgJ/DBPSiC4=;
+        b=dfI8V4G3kVNYGJN7cjxfTvBWW2LqFcbqzkZHqxv4s8OebhVJS5OgTXUVNQyaSl9NXd
+         hGhvIR/MuLee2T8L5lb6yagwCeNjSqxKlx84T4V5suUC3PapQECDWpGYxXJt1+WRvaL7
+         C61rjoYT3tNr2TgTNmtV4V5+bNwIbmKMr9e+fmS2vXzwKeVsHAqJRiM6x8nY6rXa+q+o
+         nhHVeeLNSKhkS2LeODkBSyRfHDO04ATZsoHTcI6p3nZITkQSCrNPkS4mj6BPsP47bkRr
+         j53blfSaVq00mU2BQnhpDMEBc+aZrW8KmxNpC2Z/svQIRIjwlYiPGkZICFQ1GVqdye5H
+         CspQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711067299; x=1711672099;
+        d=1e100.net; s=20230601; t=1711067568; x=1711672368;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wWbW5UEPLuyHdNRYG0HCoOLt4yqpHHeORq6DVqer/2E=;
-        b=eKeM/WFzGxkhPbcNDFc+yjPmVhyzm9OC+ITCGTWXOUMsoiR6ON0pP7U2q+r9gm/zY/
-         eUo2Zsgud8wFl4/Dq71DwKbCzq2OpnuHelM3hGp2uAjsmfTiqIWr5UURg5AszkWBb72p
-         YRoSMVL8th1MjY5cUPVGnjThVjn5sXiDOxNejSqk7/vb5HcQrMHglNJR3FAWwouPJGdS
-         v8Y6S9Iex2Y2O0BOLG3/tSfnmEcxu2bFi/XI3p7K2lE6WzZtLTiwN8UEwOMkw76duU52
-         r8bpmqncdWpYzWdjQU01oPTywvKeC6XDVYOIVSDn+wW4qGPFPP8phgEGBOSD4auxZu8y
-         vH0A==
-X-Forwarded-Encrypted: i=1; AJvYcCXarBqeprlBRaCvTg1Jz80mVH0ZeVbuxe/XkZQB7T2jk7BWtk8whnGenIj/qNX3FlP7dgHDuljdY+GQHufydvWcrC6bxCcnPUnM
-X-Gm-Message-State: AOJu0YwUcVZGFFr+M69d4ZZCJ4sW/4OB0QY1qANlKhziP6mMN+exAok5
-	KBZ9S8RKWahmXCRj9vFXX+bYf6KmCeoGHkU561+zpICyKle5FJ+NGaiPYLHnNVflK74WlnlygVS
-	sMbo9+8dNbHf42GP12gUsV6T7ITY=
-X-Google-Smtp-Source: AGHT+IGGNVSswf5pmxkmxiP0v7evgBUrhB0vmbwjVN8LA6KEbjf7+4gWkKzpDbeAwzwGsFY0zAJIPpXO5tsKDQ7Pwe4=
-X-Received: by 2002:a25:844b:0:b0:dcf:ef13:4cff with SMTP id
- r11-20020a25844b000000b00dcfef134cffmr782116ybm.16.1711067298909; Thu, 21 Mar
- 2024 17:28:18 -0700 (PDT)
+        bh=Kfhh3JG6TiZK8YLP9ybK+DwTAzB2uyFOYgJ/DBPSiC4=;
+        b=U7gz/3oH6oywDqarAffZAGR/XuYScc+1VG5nhzrBsINVPcoFSA6MDqShLtI8Yp/VWW
+         mmqD1fibLPIqb98TzdEnvC9BX+guCXCe7RGiakrz3SrttzwpzBSsKDKNxXLgLbHUqVUs
+         tKvCv0/Y2WYxsZ4oNcE6o84V0mxVCDPpaUAp9uLFgjcrz+V+llU4atR7l/dThsOoTLEk
+         w/wpD466wznDrABFDa1UDvFnoyhcAp1yp7g0JOzaDXxUYcUtqkoOB0Bo9dLkYHHmtac6
+         MIOkd990aStGYsxS6lmOGCJCwsM5tw6sJKlklfrFRcV4uLZ6mjDeUuF0fFhJpj0HvL3N
+         cO7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ7oPK4REu9+5ebh9Qgsl0IoMyCzVTvLjXhbaWnhny62Q3PMDBro1U+IAHuriYRfRpDopeqVxUnzJHNIZECI3WFPMNGFeb2hT8
+X-Gm-Message-State: AOJu0Yzv6Pl5ldT0qzhus5+O0za+2hY+kYVMx2MMmDXlqMibkDfhDcvj
+	FQslBZ+X4d8Uk/OW1Vsv9kGtY5OCSVB8kyTkWEiZmgC+kUtLBtH0TTLHcqSkE2xGBhT3pUsGeLf
+	gmOGxH1mAizC60ch3gFnrmoYgU7xsKmFKKy/QvUfT
+X-Google-Smtp-Source: AGHT+IHeuOP9bV931ATO9eA9I7kXDo+csPgRZ0vW38ApZzpxwwhz+jVUg3E7KTumx0T0QI2l6gnT2WoW0JeYoNiCK/I=
+X-Received: by 2002:a25:d349:0:b0:dd1:7532:c0f3 with SMTP id
+ e70-20020a25d349000000b00dd17532c0f3mr767000ybf.16.1711067567877; Thu, 21 Mar
+ 2024 17:32:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240319212713.257600-1-l.rubusch@gmail.com> <20240319212713.257600-3-l.rubusch@gmail.com>
- <27a7b77b-af88-4b6b-8444-02917a744967@kernel.org>
-In-Reply-To: <27a7b77b-af88-4b6b-8444-02917a744967@kernel.org>
+References: <20240319212713.257600-1-l.rubusch@gmail.com> <20240319212713.257600-2-l.rubusch@gmail.com>
+ <7f349041-bf2f-434d-a9cd-a82ac902f613@kernel.org>
+In-Reply-To: <7f349041-bf2f-434d-a9cd-a82ac902f613@kernel.org>
 From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Fri, 22 Mar 2024 01:27:43 +0100
-Message-ID: <CAFXKEHZ3G6Ce0ZeD8snosDL9wYrEtJ7YLbjO6JQVrSDeYKZVAg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] iio: adxl345: update documentation for spi-3wire
+Date: Fri, 22 Mar 2024 01:32:11 +0100
+Message-ID: <CAFXKEHZr5S83sra6_eWPS+Hn03rFDPh5nmNHb9dfXYGjfpsx9g@mail.gmail.com>
+Subject: Re: [PATCH 1/2] iio: adxl345: add spi-3wire
 To: Krzysztof Kozlowski <krzk@kernel.org>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
 	linux-iio@vger.kernel.org, eraretuya@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 20, 2024 at 10:34=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.o=
+On Wed, Mar 20, 2024 at 10:37=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.o=
 rg> wrote:
 >
 > On 19/03/2024 22:27, Lothar Rubusch wrote:
-> > Provide the optional spi-3wire option for the DT binding.
+> > Adds the spi-3wire feature and adds general refactoring to the
+>
+> Add
+>
+> > iio driver.
+> >
+> > The patch moves driver wide constants and fields into the
+>
+> Please do not use "This commit/patch/change", but imperative mood. See
+> longer explanation here:
+> https://elixir.bootlin.com/linux/v5.17.1/source/Documentation/process/sub=
+mitting-patches.rst#L95
+>
+> > header. Thereby reduces redundant info struct definitions.
+> > Allows to pass a function pointer from SPI/I2C specific probe,
+> > and smaller refactorings. A regmap_update_bits() in the core
+> > file replaces the regmap_write() to format_data.
 > >
 > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
->
-> A nit, subject: drop second/last, redundant "documentation". The
-> "dt-bindings" prefix is already stating that these are bindings.
-> See also:
-> https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree=
-/bindings/submitting-patches.rst#L18
->
-> Also, everything is an update. Be descriptive.
+> > ---
 
-Ok
+Agree
 
-> Please use subject prefixes matching the subsystem. You can get them for
-> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-> your patch is touching.
+> >  static int adxl345_spi_probe(struct spi_device *spi)
+> >  {
+> > +     const struct adxl345_chip_info *chip_data;
+> >       struct regmap *regmap;
+> >
+> > +     /* Retrieve device name to pass it as driver specific data */
+> > +     chip_data =3D device_get_match_data(&spi->dev);
+> > +     if (!chip_data)
+> > +             chip_data =3D (const struct adxl345_chip_info *) spi_get_=
+device_id(spi)->driver_data;
+>
+> Are you sure you need the cast?
+>
+> And why aren't you using spi_get_device_match_data()?
 
-Yes. Next time I'll chose better prefixes. For now I keep the subject
-to the mail to not break the mailing thread and update the patches in a
-follow up. I hope this is ok?
+Agree
 
-> Please use scripts/get_maintainers.pl to get a list of necessary people
-> and lists to CC. It might happen, that command when run on an older
-> kernel, gives you outdated entries. Therefore please be sure you base
-> your patches on recent Linux kernel.
+> > +
+> >       /* Bail out if max_speed_hz exceeds 5 MHz */
+> >       if (spi->max_speed_hz > ADXL345_MAX_SPI_FREQ_HZ)
+> >               return dev_err_probe(&spi->dev, -EINVAL, "SPI CLK, %d Hz =
+exceeds 5 MHz\n",
+> >                                    spi->max_speed_hz);
+> >
+> >       regmap =3D devm_regmap_init_spi(spi, &adxl345_spi_regmap_config);
+> > -     if (IS_ERR(regmap))
+> > -             return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error i=
+nitializing regmap\n");
+> > +     if (IS_ERR(regmap)) {
+> > +             dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initiali=
+zing spi regmap: %ld\n",
+> > +                           PTR_ERR(regmap));
+> > +             return PTR_ERR(regmap);
 >
-> Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-> people, so fix your workflow. Tools might also fail if you work on some
-> ancient tree (don't, instead use mainline), work on fork of kernel
-> (don't, instead use mainline) or you ignore some maintainers (really
-> don't). Just use b4 and everything should be fine, although remember
-> about `b4 prep --auto-to-cc` if you added new patches to the patchset.
+> Why are you changing correct code into incorrect?
+
+I'll adjust that. It looks odd, I agree, but is this incorrect code? I foun=
+d
+similar code in the neighbor adxl313 accel driver. I may change/update
+that then, too. Thank   you for the hints.
+
+adxl313_i2c.c
+72        if (IS_ERR(regmap)) {
+73                dev_err(&client->dev, "Error initializing i2c regmap: %ld=
+\n",
+74                        PTR_ERR(regmap));
+75                return PTR_ERR(regmap);
+76        }
+
+> > +     }
+> >
+> > -     return adxl345_core_probe(&spi->dev, regmap);
+> > +     return adxl345_core_probe(&spi->dev, regmap, chip_data, &adxl345_=
+spi_setup);
+> >  }
 >
-> You missed at least devicetree list (maybe more), so this won't be
-> tested by automated tooling. Performing review on untested code might be
-> a waste of time, thus I will skip this patch entirely till you follow
-> the process allowing the patch to be tested.
->
-> Please kindly resend and include all necessary To/Cc entries.
 >
 > Best regards,
 > Krzysztof
-
-I understand. I took linux-next. I fetched it this week from mainline
-kernel.org. I took "get_maintainers.pl" as a mere
-recommendation rather than mandatory and skipped most of the emails.
-Sry for that. Thank you  for all the information.
+>
 

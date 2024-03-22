@@ -1,90 +1,126 @@
-Return-Path: <linux-iio+bounces-3688-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3689-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 529418874B9
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 23:09:58 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C7F8875C1
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 00:28:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01A5B1F221CB
-	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 22:09:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3294E284CF2
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 23:28:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29AFF81207;
-	Fri, 22 Mar 2024 22:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD6E82C60;
+	Fri, 22 Mar 2024 23:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hsHaTCCA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHkhM23K"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9F080059
-	for <linux-iio@vger.kernel.org>; Fri, 22 Mar 2024 22:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236D21CD00;
+	Fri, 22 Mar 2024 23:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711145396; cv=none; b=C3L06QnP5tSJUaP8vuaR5X9rjaeiUESbg3hFRmlGNux8Ct8+Zko8usRRlwFOOq7iOpaVm0yFSRZw7cKqxulsnO0mFyUwqkQ9KjwfPpDnMohzi3qRA8rW4RXDPs+FD7Fp64t976qvXFzvO4v/VC363WLQcuUw7cNs/P8qpSRJmyM=
+	t=1711150121; cv=none; b=L2KHDehsU26iY6EX7rWvmza2DGaOHd3dIXP3bken7wbxJ7iTmnfRX62ngYW/lWli6NmKNE4snuk+WsTLxCWuPxUkAXzR9EyZVut5Z8MFRaW3JnL9RCZBq23rbWrOxQlVGThD8S2Dtv/w0M15KcYz9jcVwq0OOSXCThjd8VvKGRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711145396; c=relaxed/simple;
-	bh=yOTalFP3b2VVMhQ2BtXzP5nWi+bZwIuRXgW0vBUtsZQ=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fVIhBNDxKfsvO792nYijNeTZzObasKrX87VfRYbtBRLKJjhO5kMBeqgrnFIfFRhoqb4mlRLYHRiggNMUA9WJ1qD6LDBamrvhGlATgJiuVj7WooEkPixW83f4eMJ9nP7rlKoTzybDEP/cfOsrorkfsYK4/pEUWeecNiFWPOvVYHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hsHaTCCA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5CC61C433F1
-	for <linux-iio@vger.kernel.org>; Fri, 22 Mar 2024 22:09:55 +0000 (UTC)
+	s=arc-20240116; t=1711150121; c=relaxed/simple;
+	bh=YFtHhfLzz8/7v1vBubH8h8uEuI/BziV8a0nXHGeydRI=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=UqippLzjQC1lwM5anVE1rrs/DKBOBi+A5LF3UBalgJ1RZiU1NQ30vE9z+yXnF7OG5ojrA/VpDqGyv9eYP6TADoPQSFV6fXPFW7wgEBolxBzJP4EZByJHD382IyusHPXm6lm6MsoRtL/pV1IbEOsiiK3DzEFZOWmbO+wst8p5Me0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHkhM23K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55671C433F1;
+	Fri, 22 Mar 2024 23:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711145395;
-	bh=yOTalFP3b2VVMhQ2BtXzP5nWi+bZwIuRXgW0vBUtsZQ=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=hsHaTCCAqYvYzQFTWD0fN/fLv32qdOpgeXd27DFWXQEfnEf4DuMZvbbrVpv3q1vG7
-	 OZfkcT+RUks0oA3Tt1OgVrfCp21CEfbFi22klVEH+F0gmvqvveBHdGLjoW+1VvFBEb
-	 DSbG0lZmxKqxyanLHM9ttNipsiFzwSDaWI6KdQyElrm1J+dCzJFvJcGALvW3y1LNqW
-	 EnSp1Etkm1RaDs9rVhyMC2xG8xk8V7CjDkQYlthNkSkFA9D0PnSF4gjYjwZRIC8GH7
-	 rAzkUMVREBrQly23mudDxAJXuQkEP5bd3MVOEcTkbdolMiptYjpkRF4giHHDAwCRAJ
-	 U0Qzf4P/bZPiw==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 56BC0C53BD0; Fri, 22 Mar 2024 22:09:55 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Fri, 22 Mar 2024 22:09:55 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: kernelbugzilla@kirkschnable.com
-X-Bugzilla-Status: NEW
-X-Bugzilla-Resolution: 
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218578-217253-0lhsOG68qE@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
-References: <bug-218578-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=k20201202; t=1711150120;
+	bh=YFtHhfLzz8/7v1vBubH8h8uEuI/BziV8a0nXHGeydRI=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=HHkhM23KGT5NLvz8CwrOm8UxPYtJv5Dcx0ZjeZFnZjeP1U6/LpfShNLtBwkQtvNd5
+	 MYUluD1pAyBycVi+4mBai/H6Hxy537sTei0Kd1GIcYqSLVDpj1RhkC0GYJupg7Rh77
+	 06TVErmWbvluefyR0tziVRzGG8LbqcSOVXYe9Nf6PU07bgnafkt3ZUiujEdCH2rUQi
+	 dfvbFCEOa/1j5VBUJd5crAGmRiUuL8j0NgBzAyoc5QJWkPjjWtMJ/mYNIejDyRyd0E
+	 5YncAZSITZQbc9lk3USR/2RUlVIZHTb439LRgGb2opN02T8mm0j0/feYVcW8f+V0KC
+	 4g7ssUfhrvL3A==
+Date: Fri, 22 Mar 2024 18:28:39 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+From: Rob Herring <robh@kernel.org>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+ marcelo.schmitt1@gmail.com, robh+dt@kernel.org, devicetree@vger.kernel.org, 
+ lars@metafoo.de, linux-iio@vger.kernel.org, jic23@kernel.org, 
+ Michael.Hennerich@analog.com, linux-kernel@vger.kernel.org
+In-Reply-To: <81665b5f0d37d593e6d299528de8d68da8574077.1711131830.git.marcelo.schmitt@analog.com>
+References: <cover.1711131830.git.marcelo.schmitt@analog.com>
+ <81665b5f0d37d593e6d299528de8d68da8574077.1711131830.git.marcelo.schmitt@analog.com>
+Message-Id: <171115011818.1710405.2845384923597786826.robh@kernel.org>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add AD4000
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
 
---- Comment #19 from Kirk Schnable (kernelbugzilla@kirkschnable.com) ---
-No worries Hans, it's been a busy week over here as well.  Thanks for the
-continued support! :)
+On Fri, 22 Mar 2024 19:05:08 -0300, Marcelo Schmitt wrote:
+> Add device tree documentation for AD4000 series of ADC devices.
+> 
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4000-4004-4008.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4001-4005.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4002-4006-4010.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4003-4007-4011.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4020-4021-4022.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4001.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4003.pdf
+> 
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+> Pasting relevant comment from cover letter here to aid reviewers.
+> 
+> These devices have the same SPI (Strange Peripheral Interface) as AD7944
+> devices, which has been documented in ad7944.rst [1].
+> The device tree description for SPI connections and mode can be the same as of
+> ad7944 adi,spi-mode [2].
+> Because ad4000 driver does not currently support daisy-chain mode, I simplified
+> things a little bit. If having a more complete doc is preferred, I'm fine
+> changing to that.
+> 
+> [1]: https://lore.kernel.org/linux-iio/20240313-mainline-ad7944-doc-v1-2-7860416726e4@baylibre.com/
+> [2]: https://lore.kernel.org/linux-iio/20240304-ad7944-mainline-v5-1-f0a38cea8901@baylibre.com/
+> 
+>  .../bindings/iio/adc/adi,ad4000.yaml          | 151 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 158 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+> 
 
---=20
-You may reply to this email to add a comment.
+My bot found errors running 'make DT_CHECKER_FLAGS=-m dt_binding_check'
+on your patch (DT_CHECKER_FLAGS is new in v5.13):
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad4000.example.dtb: adc@0: Unevaluated properties are not allowed ('#address-cells', '#size-cells' were unexpected)
+	from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad4000.yaml#
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad4000.example.dtb: adc@0: Unevaluated properties are not allowed ('#address-cells', '#size-cells' were unexpected)
+	from schema $id: http://devicetree.org/schemas/iio/adc/adi,ad4000.yaml#
+
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/81665b5f0d37d593e6d299528de8d68da8574077.1711131830.git.marcelo.schmitt@analog.com
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 

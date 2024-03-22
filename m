@@ -1,135 +1,139 @@
-Return-Path: <linux-iio+bounces-3661-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3662-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EA6A886098
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Mar 2024 19:34:31 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 823A3886455
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 01:28:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FC671C21820
-	for <lists+linux-iio@lfdr.de>; Thu, 21 Mar 2024 18:34:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21A401F22B96
+	for <lists+linux-iio@lfdr.de>; Fri, 22 Mar 2024 00:28:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1E8134428;
-	Thu, 21 Mar 2024 18:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE7F6387;
+	Fri, 22 Mar 2024 00:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jANCOR/X"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ad6FZbi2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485A5133423;
-	Thu, 21 Mar 2024 18:34:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D08376
+	for <linux-iio@vger.kernel.org>; Fri, 22 Mar 2024 00:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711046042; cv=none; b=gpmsH8QnVQAuA7hbKAPjoxVPqSBcpEZvdm2J9HU9eyI0dEMdNf4JpdjA3KaEAU6wJrajpZwzpNisomguEGTF1H5YZfpz/AUbvoNP6EypeJxSPyMlkM+N1nwezGejoeFJoF50kw5Mx+cVvIWHreeXE1EhKhLDrUWCwU8v4+Jm0/g=
+	t=1711067301; cv=none; b=I3uNjaldWKDxIlTyKp7H+udAW7tH/hIo5KnGWK+UlWyW2mq8VH8Zk+5TKQPrxKeNn1CuRrdcew9Mk3f8QnZHZJkgiI5Ivofkge1RqbhEdIPz3k5NfGahWbj8h9ng+KUdKHNALIix/e1ZW66v1IMv4LPrRE7nUdA1UBJKGnN2FNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711046042; c=relaxed/simple;
-	bh=7xiP7a7c+JxaaenvtRnKz3pbYlEuJfkFC57nCHzqmio=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=SKPWQCC1Rh4GgqHbMTYeXFoDMABSpNOg0Z4O8VWsg/2RrFiyRkTm8gi3TJB/Yez39EEIcW0GQn177QMQfAZMq8JTBzEiHDBWVaZZy4Iv/rqIarDmTGi9pFVBZ0tZrmNNDQcnKjBCg7Df+0bqHpvLdEnypGnzeLKmHF0OuCiBQY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jANCOR/X; arc=none smtp.client-ip=209.85.218.43
+	s=arc-20240116; t=1711067301; c=relaxed/simple;
+	bh=QrKkppO28KXlF2NSaQI91PURjkRT0ALmsv86GAJjZEs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MN34N5ThiuI75WDRij8z0SXyFiaMznBCX7bTFTj55bWkn4d3EZie1ifAvLdA5oy/lvOwOSIKpMZSzNm3LLGc4V3oAcfQCcL/Hh6mNaNWb3RLLRU6zte8jOOIBBX8dNipay27guWLfQLSipfUjO7eUu71WQpHokmcymie4uCI/Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ad6FZbi2; arc=none smtp.client-ip=209.85.219.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a44ad785a44so162317966b.3;
-        Thu, 21 Mar 2024 11:34:00 -0700 (PDT)
+Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-dcd9e34430cso1677951276.1
+        for <linux-iio@vger.kernel.org>; Thu, 21 Mar 2024 17:28:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711046039; x=1711650839; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/wjCWlFIYSFB5yCG74NtFNwwkx6eRRKsau/wQBzaYZI=;
-        b=jANCOR/X7OM1UIZRsIxLa6UbE4LLJ/4B2MPE+bZUu538nuT+aX0/o+2u7408mOzbvh
-         nRtl0VSPMSEyy7nPnKRRE5n3d8pN0EjBxBz3tpBJAYUv/bjtOU2TenKLmiakPiwjJOg5
-         fRRdmUXwp2dibXm3mcOegylw3V9nEUIbCwwzoddEABqzmIGnYAHemvIWg6/XrH6W4uJi
-         Esdg9/i45t7n86AA3Lzi7xHOL8CcRhnq5dbNw5oau5thMUceCb6wpDzj9oiUOWS32AEQ
-         +5g5wnEgB+TcCmDCvnuocVPCbkk9xj97S8Y2E6KZMZ67uVJUHoIOXdTTgciEihRhujdV
-         3q4A==
+        d=gmail.com; s=20230601; t=1711067299; x=1711672099; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wWbW5UEPLuyHdNRYG0HCoOLt4yqpHHeORq6DVqer/2E=;
+        b=ad6FZbi2naPnjjYX6049loRww0F9tmL5xQmslsiYlImuM60pHYvzpAbJZ+IccJr6Ys
+         B8kmFzh93oeQrLSxe6C4XBvz7W4Hq0fAJ2eBOdIWt3lvgdHvAv3xrQi7o0Z6ODjjAPb4
+         WD6nYh8n7JLH83tCuh/ilyNH7XvxOWTLM4FV7E+EyXEKl4OLFGfTbExFuxbvE/cshKgz
+         wvZK9pkuAF3gOsVp5beVQYIMljG7J2fyRtSi6WL+z8QUyMXKRKKQGpVP8bAq/sAz1MhD
+         BUsNONW2mgNTJf4Yq4Qxnu1Mxrq+eoMUk0GafUI69rfZEnM7H++7vlK+ZSPccHMPY96x
+         nzXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711046039; x=1711650839;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1711067299; x=1711672099;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/wjCWlFIYSFB5yCG74NtFNwwkx6eRRKsau/wQBzaYZI=;
-        b=N87+dtHVg57Fb2OMut3UrqtNuw6IODb3AR0R8Pgm2bTwk+oFyta+bH34t3t2lDtd1n
-         tKeqbjsFneexJwD18qulA8QxttTfUlEVpsLZThc4ON7CUp0EsAbb0F9D/i9DuEpT7aXH
-         77QM7ySFDl5GWs6PMEU2ST6s2B+0nA1j0hScVX14iHWOSMETDtXyK77k+PQv4CiMctNd
-         cRBDiO8p5evfS3uZbJ266zczOK5X5yYvW4QahfGK2DSIsJWpxn4DHqFAzfHGvLRRwBLl
-         ox0swRNqbtg32wwBPkC0Pk08KwdRb6AuKI7Xsj9hiIMcrsacUjOJTLaKztqSHCZ4OmHH
-         6gIg==
-X-Forwarded-Encrypted: i=1; AJvYcCXFPpwsldBmDTMNR/1yly8StFRq8YfaetUwujBDcbxCzIr7Ljj/zj5BwdeWJ7602Zcqk+vjXRGnMTbCSFkpYg3UroXukx588eueEUUiPHHDYwvrNIUh8R/JeNX/NF0SKqImnlGWb8tYNQ==
-X-Gm-Message-State: AOJu0YxWDdUOWuWW8HANCAj0ry654mHWJ7usNOkKRAR3+tOLFs00dL+n
-	YV1nAbPnqcBqBmghstBYvFSFhRgB7ySdCwNNoJgHWiR+GQxf7NxkMorJsDofsQo7bA==
-X-Google-Smtp-Source: AGHT+IFf8Jg9aCrejcgaXxXMXUX2MxqCqZrm7ikC89u/wfAcOtUALsq0zG+LKzRZnCQHjZQIH33RQw==
-X-Received: by 2002:a17:906:39c9:b0:a46:74fe:904f with SMTP id i9-20020a17090639c900b00a4674fe904fmr186915eje.26.1711046039590;
-        Thu, 21 Mar 2024 11:33:59 -0700 (PDT)
-Received: from [127.0.1.1] (2a02-8389-41cf-e200-7db2-5855-2c59-b89b.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:7db2:5855:2c59:b89b])
-        by smtp.gmail.com with ESMTPSA id hg18-20020a1709072cd200b00a4661caeed7sm191511ejc.48.2024.03.21.11.33.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 Mar 2024 11:33:59 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Thu, 21 Mar 2024 19:33:49 +0100
-Subject: [PATCH 2/2] iio: health: max30102: add support for max30101
+        bh=wWbW5UEPLuyHdNRYG0HCoOLt4yqpHHeORq6DVqer/2E=;
+        b=eKeM/WFzGxkhPbcNDFc+yjPmVhyzm9OC+ITCGTWXOUMsoiR6ON0pP7U2q+r9gm/zY/
+         eUo2Zsgud8wFl4/Dq71DwKbCzq2OpnuHelM3hGp2uAjsmfTiqIWr5UURg5AszkWBb72p
+         YRoSMVL8th1MjY5cUPVGnjThVjn5sXiDOxNejSqk7/vb5HcQrMHglNJR3FAWwouPJGdS
+         v8Y6S9Iex2Y2O0BOLG3/tSfnmEcxu2bFi/XI3p7K2lE6WzZtLTiwN8UEwOMkw76duU52
+         r8bpmqncdWpYzWdjQU01oPTywvKeC6XDVYOIVSDn+wW4qGPFPP8phgEGBOSD4auxZu8y
+         vH0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXarBqeprlBRaCvTg1Jz80mVH0ZeVbuxe/XkZQB7T2jk7BWtk8whnGenIj/qNX3FlP7dgHDuljdY+GQHufydvWcrC6bxCcnPUnM
+X-Gm-Message-State: AOJu0YwUcVZGFFr+M69d4ZZCJ4sW/4OB0QY1qANlKhziP6mMN+exAok5
+	KBZ9S8RKWahmXCRj9vFXX+bYf6KmCeoGHkU561+zpICyKle5FJ+NGaiPYLHnNVflK74WlnlygVS
+	sMbo9+8dNbHf42GP12gUsV6T7ITY=
+X-Google-Smtp-Source: AGHT+IGGNVSswf5pmxkmxiP0v7evgBUrhB0vmbwjVN8LA6KEbjf7+4gWkKzpDbeAwzwGsFY0zAJIPpXO5tsKDQ7Pwe4=
+X-Received: by 2002:a25:844b:0:b0:dcf:ef13:4cff with SMTP id
+ r11-20020a25844b000000b00dcfef134cffmr782116ybm.16.1711067298909; Thu, 21 Mar
+ 2024 17:28:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240321-max30101-v1-2-00b83e966824@gmail.com>
-References: <20240321-max30101-v1-0-00b83e966824@gmail.com>
-In-Reply-To: <20240321-max30101-v1-0-00b83e966824@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Matt Ranostay <matt@ranostay.sg>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711046035; l=1134;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=7xiP7a7c+JxaaenvtRnKz3pbYlEuJfkFC57nCHzqmio=;
- b=GqM8SG4IKmQSjjGx9ANWhEXgwQF1sKrh9nP3LExH/gTWzHVrz6e+htgtkXace0BnMO9mHirKJ
- bGzdnPEfsvkA0lZ6xd3B0dAXrIm+Te3xV/VX5DXqAgvX0d83IFDF2nS
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+References: <20240319212713.257600-1-l.rubusch@gmail.com> <20240319212713.257600-3-l.rubusch@gmail.com>
+ <27a7b77b-af88-4b6b-8444-02917a744967@kernel.org>
+In-Reply-To: <27a7b77b-af88-4b6b-8444-02917a744967@kernel.org>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Fri, 22 Mar 2024 01:27:43 +0100
+Message-ID: <CAFXKEHZ3G6Ce0ZeD8snosDL9wYrEtJ7YLbjO6JQVrSDeYKZVAg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] iio: adxl345: update documentation for spi-3wire
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
+	linux-iio@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The Maxim max30101 is the replacement for the max30105, which is no
-longer recommended for future designs.
+On Wed, Mar 20, 2024 at 10:34=E2=80=AFAM Krzysztof Kozlowski <krzk@kernel.o=
+rg> wrote:
+>
+> On 19/03/2024 22:27, Lothar Rubusch wrote:
+> > Provide the optional spi-3wire option for the DT binding.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+>
+> A nit, subject: drop second/last, redundant "documentation". The
+> "dt-bindings" prefix is already stating that these are bindings.
+> See also:
+> https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree=
+/bindings/submitting-patches.rst#L18
+>
+> Also, everything is an update. Be descriptive.
 
-Their internal structure is identical, as well as the register map,
-configuration options and sensitivity, which allows for code recycling.
+Ok
 
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/iio/health/max30102.c | 2 ++
- 1 file changed, 2 insertions(+)
+> Please use subject prefixes matching the subsystem. You can get them for
+> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+> your patch is touching.
 
-diff --git a/drivers/iio/health/max30102.c b/drivers/iio/health/max30102.c
-index 37e619827e8a..6616729af5b7 100644
---- a/drivers/iio/health/max30102.c
-+++ b/drivers/iio/health/max30102.c
-@@ -613,6 +613,7 @@ static void max30102_remove(struct i2c_client *client)
- }
- 
- static const struct i2c_device_id max30102_id[] = {
-+	{ "max30101", max30105 },
- 	{ "max30102", max30102 },
- 	{ "max30105", max30105 },
- 	{}
-@@ -620,6 +621,7 @@ static const struct i2c_device_id max30102_id[] = {
- MODULE_DEVICE_TABLE(i2c, max30102_id);
- 
- static const struct of_device_id max30102_dt_ids[] = {
-+	{ .compatible = "maxim,max30101" },
- 	{ .compatible = "maxim,max30102" },
- 	{ .compatible = "maxim,max30105" },
- 	{ }
+Yes. Next time I'll chose better prefixes. For now I keep the subject
+to the mail to not break the mailing thread and update the patches in a
+follow up. I hope this is ok?
 
--- 
-2.40.1
+> Please use scripts/get_maintainers.pl to get a list of necessary people
+> and lists to CC. It might happen, that command when run on an older
+> kernel, gives you outdated entries. Therefore please be sure you base
+> your patches on recent Linux kernel.
+>
+> Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+> people, so fix your workflow. Tools might also fail if you work on some
+> ancient tree (don't, instead use mainline), work on fork of kernel
+> (don't, instead use mainline) or you ignore some maintainers (really
+> don't). Just use b4 and everything should be fine, although remember
+> about `b4 prep --auto-to-cc` if you added new patches to the patchset.
+>
+> You missed at least devicetree list (maybe more), so this won't be
+> tested by automated tooling. Performing review on untested code might be
+> a waste of time, thus I will skip this patch entirely till you follow
+> the process allowing the patch to be tested.
+>
+> Please kindly resend and include all necessary To/Cc entries.
+>
+> Best regards,
+> Krzysztof
 
+I understand. I took linux-next. I fetched it this week from mainline
+kernel.org. I took "get_maintainers.pl" as a mere
+recommendation rather than mandatory and skipped most of the emails.
+Sry for that. Thank you  for all the information.
 

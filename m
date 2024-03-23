@@ -1,664 +1,355 @@
-Return-Path: <linux-iio+bounces-3711-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3712-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B09C887A1E
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 20:12:41 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7BF6887A43
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 21:19:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F89C1C20BE5
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 19:12:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56E8C1F2173F
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 20:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77BDA58AA4;
-	Sat, 23 Mar 2024 19:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D2F59B52;
+	Sat, 23 Mar 2024 20:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKThrdjJ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="htIvVvLP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BB352E410;
-	Sat, 23 Mar 2024 19:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B2D58106
+	for <linux-iio@vger.kernel.org>; Sat, 23 Mar 2024 20:19:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711221155; cv=none; b=pwAM51mggZqqYt5tSv/ifLXOuoZmgN1intdp4XlcxWtdtcjyGBDmZtGi3BFcrdtXf/OjSRdAHAL8bnV8WUfZKgu7fj8O9Z4zHytO0rkV5Y9IXZVcSbEHfFi8n/LqGoZrxoFxbxgLhSgLLlDUcrCaoYG+PAdkUrJp/FxG2lUpPs8=
+	t=1711225144; cv=none; b=f75aQo3gWHeVJvKi8ncRp+Oxna77yQ0bYInxGTmboK7g6uVgDNosxbE+u0vK5PcNPkd2Bm+kH0l6sNb20Dh/ORdiH3VT/rRq2k1uC+3epftJTm+jWSMwMzNZNWTszLJmSZIcdJ+G1a31etMCsre91TA22xipk3Jrp4IF907gJ8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711221155; c=relaxed/simple;
-	bh=GRSwfmgFTok5Pc4Yw4GjhfG1CwvygHNkjpiogDVt0uM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AibN1K/sVWx8jAWSoLLLeRH/21f/y7PL98JVfsUOrIMAmNT4PAkHMQjnT3z+XuZcAXeHZiVFID+tBvFK/yV7DMhwB83F6y3p4nqSCBhri09YK02QYGWyUaS8QujPVvKNhObQ5XNCI9bNMJJce+hbVVS74PjJSKvK300bH0RpnWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKThrdjJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D723C433F1;
-	Sat, 23 Mar 2024 19:12:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711221154;
-	bh=GRSwfmgFTok5Pc4Yw4GjhfG1CwvygHNkjpiogDVt0uM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OKThrdjJcMFCBtTSdZ+Q4/VofxNHbc9c/9gHc17pDq31DWN1Zt6FKSf1+nSgOvLY8
-	 EKF2R5iZh8a0cnx6rmW9l6AhQXam+h5GWOVBoS8NnCXbw9Avgm3T9/9qGI05Wjxpp8
-	 0M+HWmdE69sHxOAS3RZHFYRrmlu07mic0VZrrCrTPTLXyXe6H0YIVBU3LIB7Ksr7x7
-	 VSvILnp3js9Uh8w4v9SNYclGmZmh8k54amW79/w85Fd9sHRlqzzwbMA/t8dX+DUOxD
-	 /V7J+vKN0/mxqDtmCh3gtg4xdt2fni2Ax2i+qPX7PmfSKv1QCralQTCrfJXbRnrgZu
-	 tqA8xGidr9BAQ==
-Date: Sat, 23 Mar 2024 19:12:20 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: <lars@metafoo.de>, <Michael.Hennerich@analog.com>, <robh+dt@kernel.org>,
- <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
- <marcelo.schmitt1@gmail.com>, <linux-iio@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/2] iio: adc: Add support for AD4000
-Message-ID: <20240323191220.4333e372@jic23-huawei>
-In-Reply-To: <15a70e55d7b6f0a97c4042bdaa41c2b672eb4f2f.1711131830.git.marcelo.schmitt@analog.com>
-References: <cover.1711131830.git.marcelo.schmitt@analog.com>
-	<15a70e55d7b6f0a97c4042bdaa41c2b672eb4f2f.1711131830.git.marcelo.schmitt@analog.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1711225144; c=relaxed/simple;
+	bh=yF9tgIOTw/Pz3Oq00reWuwJoaxt/ocFSZJWqGKmiY8U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YVZ0oqbivjcT17ktZ2BkiF8J8Ip4EclTi/aFHEsBP3inu1iyrN2aANhRu00ZDQTnHJ/7Yx+871h41ravAcE2HF7B5HTY85FgIINQuE3iivrrzNMk+JPGLO6HbV3u5L6ZI53Pcgeedq+lgJ7EzE7MKIogQ1YlAUkOGi9qBSW1iDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=htIvVvLP; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2d4541bf57eso44311141fa.2
+        for <linux-iio@vger.kernel.org>; Sat, 23 Mar 2024 13:19:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711225140; x=1711829940; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IwKoue/JycJ5C5eskOmYEmBYSHXL2+1E+Dj8y9vrNj4=;
+        b=htIvVvLPHMqwGmBDXriJLoc3gapc7pcvFEa7pPuYY2JXY7t5VLV4ugTMK3mdegc0rm
+         pDE/0ZbF/gMscSH4nOYD/t3tzLNEL3A01SX5WdDwi6drm7tD8fewvt6WpHd7p44wCOSh
+         F8jDv0D5l2/OCYgy6HKO/BJOS7LGMifJ/I9ae2ixOavMTZeCwnbqb4ejEazoq2+qS0ZS
+         ePNHw+SPKhxK6eQzP3QEKY6QKO2JBIITpZFB2pzr5XbKcrmAjm6dKJy7LpFIF1JAiDHm
+         7hwH2PGvHqWLcBKt3VjZh0mqwosgkgvmM6X6Fzxn0aoafceLGXdXRHVCARB0tsNwAe8J
+         A1Rg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711225140; x=1711829940;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IwKoue/JycJ5C5eskOmYEmBYSHXL2+1E+Dj8y9vrNj4=;
+        b=hxxW0abagCrJplZ6u6g9XGT/gqUls+9LPdAKQdhqpWpLvKFSkCJISuH9SG32HFfrBH
+         FptBrXrBV0ish95BMJ1BQC2n26zXZ1TIrlBGflWRQa8tUcf9d5vqdg13/8q9zRcISOm5
+         vkeN8Bw6F89TMCfrvTOn9mWUxzyRm/Ingi8JW1v4pbXa6GMNU3T3ZkmQP2R6xpmQ1W/Y
+         xTpHLE0Gu0lu7xEtTC0E6IouxzDlq37MxD5hxSnV/cQjXeJ9PoOLHyHTC15tuSemM7zS
+         8JmIsPww580OBiwzjvzctFQVW8TMo9zZfuJTiAsA1Lsft8i1YfwFkoFNZPB+BYLYA6fe
+         t7yw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNa8XOqeREnpePQewrqhfffOQZd+6stzyhGIT3Jzyr+92i4IX9M+Zwrv2MblJ5TsDLoKVK4RJFs0Zz1vl3PEBzIi6c7aO795Rs
+X-Gm-Message-State: AOJu0YzLAPVnSrSZy5rLTDoMnsfyGnvcJn7DTke6a5yiMod+KnNqWsKK
+	kO2YNpQwHbNZa7ZiVaasgUrDo86wpuwD+GHZIhwHceMf2gEhW21IZ9UykcKkHZT0s0v8rp9E095
+	MkRrY8ZU4kSA9SFTjMnnTS8oukmHaTaKdNMHYsw==
+X-Google-Smtp-Source: AGHT+IHXb2n1QgoAGJw4rCrvCmSPt+Xctcfjoe3mOglZ/rmKGPtBVrpMNpxIirDAUPPmdzMDRDLzLo9/gfdba6VfBEo=
+X-Received: by 2002:a2e:380a:0:b0:2d4:b061:da01 with SMTP id
+ f10-20020a2e380a000000b002d4b061da01mr1860928lja.19.1711225139678; Sat, 23
+ Mar 2024 13:18:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <cover.1711131830.git.marcelo.schmitt@analog.com>
+ <81665b5f0d37d593e6d299528de8d68da8574077.1711131830.git.marcelo.schmitt@analog.com>
+ <20240323184454.201edbc3@jic23-huawei>
+In-Reply-To: <20240323184454.201edbc3@jic23-huawei>
+From: David Lechner <dlechner@baylibre.com>
+Date: Sat, 23 Mar 2024 15:18:48 -0500
+Message-ID: <CAMknhBFRa-AwM3o-AdDDmPnwLAer8x=9TJNasSbY2bu5h9mMdQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add AD4000
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de, 
+	Michael.Hennerich@analog.com, robh+dt@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 22 Mar 2024 19:05:34 -0300
-Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+On Sat, Mar 23, 2024 at 1:45=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Fri, 22 Mar 2024 19:05:08 -0300
+> Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
+>
+> > Add device tree documentation for AD4000 series of ADC devices.
+> >
+> > Datasheet: https://www.analog.com/media/en/technical-documentation/data=
+-sheets/ad4000-4004-4008.pdf
+> > Datasheet: https://www.analog.com/media/en/technical-documentation/data=
+-sheets/ad4001-4005.pdf
+> > Datasheet: https://www.analog.com/media/en/technical-documentation/data=
+-sheets/ad4002-4006-4010.pdf
+> > Datasheet: https://www.analog.com/media/en/technical-documentation/data=
+-sheets/ad4003-4007-4011.pdf
+> > Datasheet: https://www.analog.com/media/en/technical-documentation/data=
+-sheets/ad4020-4021-4022.pdf
+> > Datasheet: https://www.analog.com/media/en/technical-documentation/data=
+-sheets/adaq4001.pdf
+> > Datasheet: https://www.analog.com/media/en/technical-documentation/data=
+-sheets/adaq4003.pdf
+> >
+> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> > ---
+> > Pasting relevant comment from cover letter here to aid reviewers.
+> >
+> > These devices have the same SPI (Strange Peripheral Interface) as AD794=
+4
+> > devices, which has been documented in ad7944.rst [1].
+> > The device tree description for SPI connections and mode can be the sam=
+e as of
+> > ad7944 adi,spi-mode [2].
+> > Because ad4000 driver does not currently support daisy-chain mode, I si=
+mplified
+> > things a little bit. If having a more complete doc is preferred, I'm fi=
+ne
+> > changing to that.
 
-> Add support for AD4000 series of high accuracy, high speed, low power,
-> successive aproximation register (SAR) ADCs.
-> 
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
-> Pasting relevant comment from cover letter here to aid reviewers.
-> 
-> Differently from AD7944, AD4000 devices have a configuration register to
-> toggle some features. For instance, turbo mode is set through configuration
-> register rather than an external pin. This simplifies hardware connections,
-> but then requires software interface. So, additional ABI being proposed 
-> in sysfs-bus-iio-adc-ad4000. The one I'm most in doubt about is 
-> span_compression_en which affects the in_voltageY_scale attribute.
-> That might be instead supported by providing _scale_available and allowing write
-> to _scale.
+Yes, having a complete binding is always preferred [1]. Bindings
+should never omit anything just because it isn't implemented in the
+driver.
 
-Yes. That's what I suggested inline before reading this properly. Much
-prefer that as standard tooling will know how to use it.
+[1]: https://www.kernel.org/doc/html/latest/devicetree/bindings/writing-bin=
+dings.html
 
+...
 
-Various comments inline. In particularly look at the spi helpers.
-It's unusual to see a driver do so much manual handling of transfers.
+> > +
+> > +  adi,spi-cs-mode:
+>
+> We've just merged a driver for the ad7944 and bindings which has a
+> similar 3-wire-mode.  Please share the approach used in that binding.
+> Whilst it seems we don't have the other mode here, I think we still want
+> to use a similar enum.
 
-Jonathan
+The ad40xx chips actually do have the same daisy chain mode. So the
+exact same property and all enum values apply.
 
-> 
->  .../ABI/testing/sysfs-bus-iio-adc-ad4000      |  36 +
->  MAINTAINERS                                   |   2 +
->  drivers/iio/adc/Kconfig                       |  12 +
->  drivers/iio/adc/Makefile                      |   1 +
->  drivers/iio/adc/ad4000.c                      | 666 ++++++++++++++++++
->  5 files changed, 717 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad4000
->  create mode 100644 drivers/iio/adc/ad4000.c
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad4000 b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad4000
-> new file mode 100644
-> index 000000000000..98fb7539ad6d
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad4000
-> @@ -0,0 +1,36 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/turbo_en
-> +KernelVersion:	6.9
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		This attribute is used to enable/disable turbo mode allowing
-> +		slower SPI clock rates (at a minimum SCK rate of 75 MHz) to
-> +		achieve the maximum throughput of 2 MSPS.
+> +CC David to take a look at this one given he went through long
+> discussions on how to deal with it for the driver he was working on
+> so probably remembers the reasoning etc better than I do :)
+>
 
-When would we turn this on or off from userspace?  From this brief description
-it sounds like either we are trying to run very fast and the SPI bus can't clock
-quick enough for the non turbo mode.  In which case detect that we need it
-and then turn it on.
+In addition to the SPI wiring modes, the proposed bindings are also
+missing power supplies and the busy interrupt.
 
-Right now I have no idea why I'd ever turn this off.  Who doesn't want to
-press the turbo button?
+Also, since the ADAQ chips are quite different from the AD chips, it
+would be very helpful for reviewers (and git history) to split out
+adding those chips to the DT bindings and driver into separate
+patches. This way we can clearly see which features only apply to the
+ADAQ chips.
 
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/span_compression_en
-> +KernelVersion:	6.9
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		This attribute is used to enable/disable the input span
-> +		compression feature that reduces the ADC input range by 10% from
-> +		the top and bottom of the range while still accessing all
-> +		available ADC codes. Enabling span compression causes a
-> +		decrease in ADC scale which is reflected in the channel
-> +		in_voltageY_scale attribute.
-Can you not control it via in_voltageY_scale then?
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/status_bits_en
-> +KernelVersion:	6.9
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		This attribute is used to make the chip append a 6-bit status
-> +		word at the end of conversion results. The 6 status bits contain
-> +		the configuration register fields for OV clamp flag, span
-> +		compression, high-z mode, and turbo mode.
-
-Why would I want this? Which of these isn't something I control?
-This sounds like a debug feature we shouldn't enable.
-
-
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/high_impedance_en
-> +KernelVersion:	6.9
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		This attribute is used to enable/disable high impedance mode
-> +		(high-z) which reduces nonlinear charge kickback to the ADC
-> +		input.
-
-For this one, do we have precendence in other drivers?  I'm find with a control
-just not sure if this the write ABI to use.
+Here is what I would consider a reasonably complete binding for the
+AD40XX chips (excluding ADAQ for now as I suggested).
 
 
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index b3c434722364..f535d617ae89 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -6,6 +6,7 @@
->  # When adding new entries keep the list in alphabetical order
->  obj-$(CONFIG_AB8500_GPADC) += ab8500-gpadc.o
->  obj-$(CONFIG_AD_SIGMA_DELTA) += ad_sigma_delta.o
-> +obj-$(CONFIG_AD4000) += ad4000.o
->  obj-$(CONFIG_AD4130) += ad4130.o
->  obj-$(CONFIG_AD7091R) += ad7091r-base.o
->  obj-$(CONFIG_AD7091R5) += ad7091r5.o
-> diff --git a/drivers/iio/adc/ad4000.c b/drivers/iio/adc/ad4000.c
-> new file mode 100644
-> index 000000000000..f77104755979
-> --- /dev/null
-> +++ b/drivers/iio/adc/ad4000.c
-> @@ -0,0 +1,666 @@
-> +// SPDX-License-Identifier: GPL-2.0+
-> +/*
-> + * AD4000 SPI ADC driver
-> + *
-> + * Copyright 2024 Analog Devices Inc.
-> + */
-> +#include <asm/unaligned.h>
-> +#include <linux/bits.h>
-> +#include <linux/bitfield.h>
-> +#include <linux/device.h>
-> +#include <linux/err.h>
-> +#include <linux/kernel.h>
-> +#include <linux/math.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
+---
+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+%YAML 1.2
+---
+$id: http://devicetree.org/schemas/iio/adc/adi,ad4000.yaml#
+$schema: http://devicetree.org/meta-schemas/core.yaml#
 
-Why?  Probably want mod_devicetable.h
+title: Analog Devices AD4000 and similar Analog to Digital Converters
 
-> +#include <linux/gpio/consumer.h>
-> +#include <linux/regulator/consumer.h>
-> +#include <linux/spi/spi.h>
-> +#include <linux/sysfs.h>
-> +#include <linux/units.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/iio/sysfs.h>
-> +#include <linux/iio/buffer.h>
-> +#include <linux/iio/trigger.h>
+maintainers:
+  - Marcelo Schmitt <marcelo.schmitt@analog.com>
 
-You aren't providing a trigger so shouldn't need this one I think.
+description: |
+  Analog Devices AD4000 family of Analog to Digital Converters with SPI sup=
+port.
+  Specifications can be found at:
+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4=
+000-4004-4008.pdf
+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4=
+001-4005.pdf
+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4=
+002-4006-4010.pdf
+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4=
+003-4007-4011.pdf
+    https://www.analog.com/media/en/technical-documentation/data-sheets/ad4=
+020-4021-4022.pdf
 
-> +#include <linux/iio/triggered_buffer.h>
-> +#include <linux/iio/trigger_consumer.h>
-> +
-> +#define AD400X_READ_COMMAND	0x54
-> +#define AD400X_WRITE_COMMAND	0x14
-> +
-> +#define AD4000_CONFIG_REG_MSK	0xFF
-> +
-> +/* AD4000 Configuration Register programmable bits */
-> +#define AD4000_STATUS		BIT(4) /* Status bits output */
-> +#define AD4000_SPAN_COMP	BIT(3) /* Input span compression  */
-> +#define AD4000_HIGHZ		BIT(2) /* High impedance mode  */
-> +#define AD4000_TURBO		BIT(1) /* Turbo mode */
-> +
-> +#define AD4000_16BIT_MSK	GENMASK(31, 16)
-> +#define AD4000_18BIT_MSK	GENMASK(31, 14)
-> +#define AD4000_20BIT_MSK	GENMASK(31, 12)
-> +
-> +#define AD4000_CHANNEL(_sign, _real_bits)				\
-> +	{								\
-> +		.type = IIO_VOLTAGE,					\
-> +		.indexed = 1,						\
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
-> +				      BIT(IIO_CHAN_INFO_SCALE),		\
-> +		.scan_type = {						\
-> +			.sign = _sign,					\
-> +			.realbits = _real_bits,				\
-> +			.storagebits = 32,				\
+$ref: /schemas/spi/spi-peripheral-props.yaml#
 
-Why store a 16 bit value in 32 bits?
-Obviously will make code more complex to handling it differently but
-the memory saving could be significant if the buffer is large.
+properties:
+  compatible:
+    enum:
+      - adi,ad4000
+      - adi,ad4001
+      - adi,ad4002
+      - adi,ad4003
+      - adi,ad4004
+      - adi,ad4005
+      - adi,ad4006
+      - adi,ad4007
+      - adi,ad4008
+      - adi,ad4010
+      - adi,ad4011
+      - adi,ad4020
+      - adi,ad4021
+      - adi,ad4022
 
-> +			.endianness = IIO_BE,				\
-> +		},							\
-> +	}								\
-> +
+  reg:
+    maxItems: 1
 
-> +
-> +static int ad4000_write_reg(struct ad4000_state *st, uint8_t val)
-> +{
-> +	struct spi_transfer t = {
-> +		.tx_buf	= st->data.d8,
-> +		.len = 2,
-> +	};
-> +	struct spi_message m;
-> +
-> +	put_unaligned_be16(AD400X_WRITE_COMMAND << BITS_PER_BYTE | val, st->data.d8);
-> +
-> +	spi_message_init(&m);
-> +	spi_message_add_tail(&t, &m);
+  spi-max-frequency:
+    maximum: 102040816 # for VIO > 2.7 V, 81300813 for VIO > 1.7 V
 
-Why can't use init_with_transfers?  Though maybe spi_write() is enough here and in
-other cases. + look at spi_write_then_read() and see if that's appropriate for
-others.
+  spi-cpha: true
 
-> +
-> +	return spi_sync(st->spi, &m);
-> +}
-> +
-> +static int ad4000_read_reg(struct ad4000_state *st, unsigned int *val)
-> +{
-> +	struct spi_transfer t = {0};
-> +	struct spi_message m;
-> +	int ret;
-> +
-> +	st->data.d8[0] = AD400X_READ_COMMAND;
-> +
-> +	t.rx_buf = st->data.d8;
-> +	t.tx_buf = st->data.d8;
-> +	t.len = 2;
+  adi,spi-mode:
+    $ref: /schemas/types.yaml#/definitions/string
+    enum: [ single, chain ]
+    description: |
+      This property indicates the SPI wiring configuration.
 
-As below on structure initialization.
+      When this property is omitted, it is assumed that the device is using=
+ what
+      the datasheet calls "4-wire mode". This is the conventional SPI mode =
+used
+      when there are multiple devices on the same bus. In this mode, the CN=
+V
+      line is used to initiate the conversion and the SDI line is connected=
+ to
+      CS on the SPI controller.
 
-> +
-> +	spi_message_init_with_transfers(&m, &t, 1);
-> +
-> +	ret = spi_sync(st->spi, &m);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val = FIELD_GET(AD4000_CONFIG_REG_MSK, get_unaligned_be16(st->data.d8));
-> +
-> +	return ret;
-> +}
-> +
-> +static int ad4000_read_sample(struct ad4000_state *st, uint32_t *val)
-> +{
-> +	struct spi_transfer t = {0};
-> +	struct spi_message m;
-> +	int ret;
-> +
-> +	t.rx_buf = &st->data.scan.sample_buf;
-> +	t.len = 4;
-> +	t.delay.value = 60;
-> +	t.delay.unit = SPI_DELAY_UNIT_NSECS;
+      When this property is present, it indicates that the device is using =
+one
+      of the following alternative wiring configurations:
 
-Similar to below, use c99 style structure initialization.
+      * single: The datasheet calls this "3-wire mode". (NOTE: The datashee=
+t's
+        definition of 3-wire mode is NOT at all related to the standard
+        spi-3wire property!) This mode is often used when the ADC is the on=
+ly
+        device on the bus. In this mode, SDI is tied to VIO, and the CNV li=
+ne
+        can be connected to the CS line of the SPI controller or to a GPIO,=
+ in
+        which case the CS line of the controller is unused.
+      * chain: The datasheet calls this "chain mode". This mode is used to =
+save
+        on wiring when multiple ADCs are used. In this mode, the SDI line o=
+f
+        one chip is tied to the SDO of the next chip in the chain and the S=
+DI of
+        the last chip in the chain is tied to GND. Only the first chip in t=
+he
+        chain is connected to the SPI bus. The CNV line of all chips are ti=
+ed
+        together. The CS line of the SPI controller can be used as the CNV =
+line
+        only if it is active high.
 
-> +
-> +	spi_message_init_with_transfers(&m, &t, 1);
-> +
-> +	if (st->cnv_gpio)
-> +		gpiod_set_value_cansleep(st->cnv_gpio, GPIOD_OUT_HIGH);
-> +
-> +	ret = spi_sync(st->spi, &m);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	if (st->cnv_gpio)
-> +		gpiod_set_value_cansleep(st->cnv_gpio, GPIOD_OUT_LOW);
-> +
-> +	*val = get_unaligned_be32(&st->data.scan.sample_buf);
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad4000_single_conversion(struct iio_dev *indio_dev,
-> +				    const struct iio_chan_spec *chan, int *val)
-> +{
-> +	struct ad4000_state *st = iio_priv(indio_dev);
-> +	u32 sample;
-> +	int ret;
-> +
-> +	ret = iio_device_claim_direct_mode(indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ad4000_read_sample(st, &sample);
-> +
-> +	iio_device_release_direct_mode(indio_dev);
-> +
-> +	if (ret)
-> +		return ret;
-Scoped version works here too to avoid the need for delaying the error check.
-(see below)
+  '#daisy-chained-devices': true
 
-> +
-> +	switch (chan->scan_type.realbits) {
-> +	case 16:
-> +		sample = FIELD_GET(AD4000_16BIT_MSK, sample);
-> +		break;
-> +	case 18:
-> +		sample = FIELD_GET(AD4000_18BIT_MSK, sample);
-> +		break;
-> +	case 20:
-> +		sample = FIELD_GET(AD4000_20BIT_MSK, sample);
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (chan->scan_type.sign == 's')
-> +		*val = sign_extend32(sample, chan->scan_type.realbits - 1);
-> +
-> +	return IIO_VAL_INT;
-> +}
+  vdd-supply:
+    description: A 1.8V supply that powers the chip (VDD).
 
-> +static ssize_t ad4000_store(struct device *dev, struct device_attribute *attr,
-> +			    const char *buf, size_t len)
-> +{
-> +	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> +	struct ad4000_state *st = iio_priv(indio_dev);
-> +	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
-> +	unsigned int reg_val;
-> +	bool val;
-> +	int ret;
-> +
-> +	ret = kstrtobool(buf, &val);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = iio_device_claim_direct_mode(indio_dev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = ad4000_read_reg(st, &reg_val);
-> +	if (ret < 0)
-> +		goto err_release;
-> +
-> +	switch ((u32)this_attr->address) {
-> +	case AD4000_STATUS:
-> +		reg_val &= ~AD4000_STATUS;
-> +		reg_val |= FIELD_PREP(AD4000_STATUS, val);
-> +		ret = ad4000_write_reg(st, reg_val);
-> +		if (ret < 0)
-> +			goto err_release;
-> +
-> +		st->status_bits = val;
-> +		break;
-> +	case AD4000_SPAN_COMP:
-> +		reg_val &= ~AD4000_SPAN_COMP;
-> +		reg_val |= FIELD_PREP(AD4000_SPAN_COMP, val);
-> +		ret = ad4000_write_reg(st, reg_val);
-> +		if (ret < 0)
-> +			goto err_release;
-> +
-> +		st->span_comp = val;
-> +		break;
-> +	case AD4000_HIGHZ:
-> +		reg_val &= ~AD4000_HIGHZ;
-> +		reg_val |= FIELD_PREP(AD4000_HIGHZ, val);
-> +		ret = ad4000_write_reg(st, reg_val);
-> +		if (ret < 0)
-> +			goto err_release;
-> +
-> +		st->high_z_mode = val;
-> +		break;
-> +	case AD4000_TURBO:
-> +		reg_val &= ~AD4000_TURBO;
-> +		reg_val |= FIELD_PREP(AD4000_TURBO, val);
-> +		ret = ad4000_write_reg(st, reg_val);
-> +		if (ret < 0)
-> +			goto err_release;
-> +
-> +		st->turbo_mode = val;
-> +		break;
-> +	default:
-> +		ret = -EINVAL;
-> +		goto err_release;
-> +	}
-> +
-> +err_release:
-> +	iio_device_release_direct_mode(indio_dev);
-The scoped cleanup.h based version of this is no upstream and would clean#
-this code up a lot by allowing early returns
+  vio-supply:
+    description:
+      A 1.8V to 5V supply for the digital inputs and outputs (VIO).
 
-See iio_device_claim_direct_scoped()
+  ref-supply:
+    description:
+      A 2.5 to 5V supply for the external reference voltage (REF).
 
+  cnv-gpios:
+    description:
+      The Convert Input (CNV). This input has multiple functions. It initia=
+tes
+      the conversions and selects the SPI mode of the device (chain or CS).=
+ In
+      'single' mode, this property is omitted if the CNV pin is connected t=
+o the
+      CS line of the SPI controller.
+    maxItems: 1
 
+  interrupts:
+    description:
+      The SDO pin can also function as a busy indicator. This node should b=
+e
+      connected to an interrupt that is triggered when the SDO line goes lo=
+w
+      while the SDI line is high and the CNV line is low ('single' mode) or=
+ the
+      SDI line is low and the CNV line is high ('multi' mode); or when the =
+SDO
+      line goes high while the SDI and CNV lines are high (chain mode),
+    maxItems: 1
 
-> +	return ret ? ret : len;
-> +}
+required:
+  - compatible
+  - reg
+  - vdd-supply
+  - vio-supply
+  - ref-supply
 
+allOf:
+  # in '4-wire' mode, cnv-gpios is required, for other modes it is optional
+  - if:
+      not:
+        required:
+          - adi,spi-mode
+    then:
+      required:
+        - cnv-gpios
+  # chain mode has lower SCLK max rate
+  - if:
+      required:
+        - adi,spi-mode
+      properties:
+        adi,spi-mode:
+          const: chain
+    then:
+      properties:
+        spi-max-frequency:
+          maximum: 50000000 # for VIO > 2.7 V, 40000000 for VIO > 1.7 V
+      required:
+        - '#daisy-chained-devices'
+    else:
+      properties:
+        '#daisy-chained-devices': false
 
-> +static irqreturn_t ad4000_trigger_handler(int irq, void *p)
-> +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct ad4000_state *st = iio_priv(indio_dev);
-> +	struct spi_transfer t = {0};
+unevaluatedProperties: false
 
-Spaces around the 0, though technically I think you just need {};
-
-> +	struct spi_message m;
-> +	int ret;
-> +
-> +	t.rx_buf = &st->data.scan.sample_buf;
-> +	t.len = 4;
-> +	t.delay.value = 60;
-> +	t.delay.unit = SPI_DELAY_UNIT_NSECS;
-Better still.
-	struct spi_transfer t = {
-		.rx_buf = &...
-		etc
-
-	};
-> +
-> +	spi_message_init_with_transfers(&m, &t, 1);
-> +
-> +	if (st->cnv_gpio)
-> +		gpiod_set_value(st->cnv_gpio, GPIOD_OUT_HIGH);
-> +
-> +	ret = spi_sync(st->spi, &m);
-> +	if (ret < 0)
-> +		goto err_out;
-> +
-> +	if (st->cnv_gpio)
-> +		gpiod_set_value(st->cnv_gpio, GPIOD_OUT_LOW);
-> +
-> +	iio_push_to_buffers_with_timestamp(indio_dev, &st->data.scan,
-> +					   iio_get_time_ns(indio_dev));
-> +
-> +err_out:
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +	return IRQ_HANDLED;
-> +}
-> +
-> +static const struct iio_info ad4000_info = {
-> +	.read_raw = &ad4000_read_raw,
-> +	.attrs = &ad4000_attribute_group,
-> +};
-> +
-> +static void ad4000_regulator_disable(void *reg)
-> +{
-> +	regulator_disable(reg);
-> +}
-> +
-> +static int ad4000_probe(struct spi_device *spi)
-> +{
-> +	const struct ad4000_chip_info *chip;
-> +	struct regulator *vref_reg;
-> +	struct iio_dev *indio_dev;
-> +	struct ad4000_state *st;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	chip = (const struct ad4000_chip_info *)device_get_match_data(&spi->dev);
-
-Shouldn't need the cast.  It's casting const void * to another const pointer
-which the c spec allows to be done implicitly
-
-> +	if (!chip)
-> +		return -EINVAL;
-> +
-> +	st = iio_priv(indio_dev);
-> +	st->spi = spi;
-> +
-> +	vref_reg = devm_regulator_get(&spi->dev, "vref");
-
-I'm guessing there are other power supplies?  You should enable
-them as well and given you don't use the voltage of the others you
-can just use the calls to get them enabled.
-
-> +	if (IS_ERR(vref_reg))
-> +		return dev_err_probe(&spi->dev, PTR_ERR(vref_reg),
-> +				     "Failed to get vref regulator\n");
-> +
-> +	ret = regulator_enable(vref_reg);
-> +	if (ret < 0)
-> +		return dev_err_probe(&spi->dev, ret,
-> +				     "Failed to enable voltage regulator\n");
-> +
-> +	ret = devm_add_action_or_reset(&spi->dev, ad4000_regulator_disable, vref_reg);
-> +	if (ret)
-> +		return dev_err_probe(&spi->dev, ret,
-> +				     "Failed to add regulator disable action\n");
-> +
-> +	st->vref = regulator_get_voltage(vref_reg);
-> +	if (st->vref < 0)
-> +		return dev_err_probe(&spi->dev, st->vref, "Failed to get vref\n");
-> +
-> +	if (!device_property_present(&spi->dev, "adi,spi-cs-mode")) {
-> +		st->cnv_gpio = devm_gpiod_get(&spi->dev, "cnv", GPIOD_OUT_HIGH);
-> +		if (IS_ERR(st->cnv_gpio)) {
-> +			if (PTR_ERR(st->cnv_gpio) == -EPROBE_DEFER)
-> +				return -EPROBE_DEFER;
-> +
-> +			return dev_err_probe(&spi->dev, PTR_ERR(st->cnv_gpio),
-> +					     "Failed to get CNV GPIO");
-> +		}
-> +	}
-> +
-> +	indio_dev->name = chip->dev_name;
-> +	indio_dev->info = &ad4000_info;
-> +	indio_dev->channels = &chip->chan_spec;
-> +	indio_dev->num_channels = 1;
-> +
-> +	if (device_property_present(&spi->dev, "adi,gain-milli")) {
-> +		u32 val;
-> +
-> +		ret = device_property_read_u32(&spi->dev, "adi,gain-milli", &val);
-> +		if (ret)
-> +			return ret;
-> +
-> +		switch (val) {
-> +		case 454:
-> +			st->pin_gain = AD4000_0454_GAIN;
-> +			break;
-> +		case 909:
-> +			st->pin_gain = AD4000_0909_GAIN;
-> +			break;
-> +		case 1000:
-> +			st->pin_gain = AD4000_1_GAIN;
-> +			break;
-> +		case 1900:
-> +			st->pin_gain = AD4000_1900_GAIN;
-> +			break;
-> +		default:
-> +			return dev_err_probe(&spi->dev, -EINVAL,
-> +					     "Invalid firmware provided gain\n");
-> +		}
-> +	} else {
-> +		st->pin_gain = AD4000_1_GAIN;
-For defaults, a nice pattern is to just set them before the
-attempt to read the property and don't update them if the property
-isn't available.
-
-	st->pin_gain = AD4000_1_GAIN;
-	if (device_property_present(&spi->dev, "adi,gain-milli")) {
-		...
-	}
-
-
-> +	}
-
-> +static const struct spi_device_id ad4000_id[] = {
-> +	{ "ad4000", (kernel_ulong_t)&ad4000_chips[ID_AD4000] },
-> +	{ "ad4001", (kernel_ulong_t)&ad4000_chips[ID_AD4001] },
-> +	{ "ad4002", (kernel_ulong_t)&ad4000_chips[ID_AD4002] },
-> +	{ "ad4003", (kernel_ulong_t)&ad4000_chips[ID_AD4003] },
-> +	{ "ad4004", (kernel_ulong_t)&ad4000_chips[ID_AD4004] },
-> +	{ "ad4005", (kernel_ulong_t)&ad4000_chips[ID_AD4005] },
-> +	{ "ad4006", (kernel_ulong_t)&ad4000_chips[ID_AD4006] },
-> +	{ "ad4007", (kernel_ulong_t)&ad4000_chips[ID_AD4007] },
-> +	{ "ad4008", (kernel_ulong_t)&ad4000_chips[ID_AD4008] },
-> +	{ "ad4010", (kernel_ulong_t)&ad4000_chips[ID_AD4010] },
-> +	{ "ad4011", (kernel_ulong_t)&ad4000_chips[ID_AD4011] },
-> +	{ "ad4020", (kernel_ulong_t)&ad4000_chips[ID_AD4020] },
-> +	{ "ad4021", (kernel_ulong_t)&ad4000_chips[ID_AD4021] },
-> +	{ "ad4022", (kernel_ulong_t)&ad4000_chips[ID_AD4022] },
-> +	{ "adaq4001", (kernel_ulong_t)&ad4000_chips[ID_ADAQ4001] },
-> +	{ "adaq4003", (kernel_ulong_t)&ad4000_chips[ID_ADAQ4003] },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(spi, ad4000_id);
-> +
-> +static const struct of_device_id ad4000_of_match[] = {
-> +	{ .compatible = "adi,ad4000",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4000] },
-
-Why the casts? Shouldn't need them as data is a const void * and you
-are casting from another const pointer.
-
-> +	{ .compatible = "adi,ad4001",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4001] },
-> +	{ .compatible = "adi,ad4002",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4002] },
-> +	{ .compatible = "adi,ad4003",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4003] },
-> +	{ .compatible = "adi,ad4004",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4004] },
-> +	{ .compatible = "adi,ad4005",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4005] },
-> +	{ .compatible = "adi,ad4006",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4006] },
-> +	{ .compatible = "adi,ad4007",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4007] },
-> +	{ .compatible = "adi,ad4008",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4008] },
-> +	{ .compatible = "adi,ad4010",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4010] },
-> +	{ .compatible = "adi,ad4011",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4011] },
-> +	{ .compatible = "adi,ad4020",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4020] },
-> +	{ .compatible = "adi,ad4021",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4021] },
-> +	{ .compatible = "adi,ad4022",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_AD4022] },
-> +	{ .compatible = "adi,adaq4001",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_ADAQ4001] },
-> +	{ .compatible = "adi,adaq4003",
-> +	  .data = (struct ad4000_chip_info *)&ad4000_chips[ID_ADAQ4003] },
-> +	{ }
-> +};
-> +MODULE_DEVICE_TABLE(of, ad4000_of_match);
-
+examples:
+  - |
+    #include <dt-bindings/gpio/gpio.h>
+    spi {
+        #address-cells =3D <1>;
+        #size-cells =3D <0>;
+        adc@0 {
+            compatible =3D "adi,ad4020";
+            reg =3D <0>;
+            spi-max-frequency =3D <71000000>;
+            vdd-supply =3D <&supply_1_8V>;
+            vio-supply =3D <&supply_1_8V>;
+            ref-supply =3D <&supply_5V>;
+            cnv-gpios =3D <&gpio0 88 GPIO_ACTIVE_HIGH>;
+        };
+    };
 

@@ -1,153 +1,124 @@
-Return-Path: <linux-iio+bounces-3693-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3694-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44477887880
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 13:17:42 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AD5887895
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 13:20:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 690021C21D1D
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 12:17:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E8B91F23F41
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 12:20:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6FE18EB2;
-	Sat, 23 Mar 2024 12:17:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0661E1B5BB;
+	Sat, 23 Mar 2024 12:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aU9xrwqE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TjLEVJPQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90CE1C157;
-	Sat, 23 Mar 2024 12:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290C73B193;
+	Sat, 23 Mar 2024 12:20:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711196255; cv=none; b=h0a6DBHIbtldYiOFAecRltDLilG1n24RVdIegbD72rskobwikqaH0ypPhDxoBIHTc3Xzi3np0Eew2rNk8FCM7lXHU8GRLOpAPwumZyK6eciaYh9Iha0DS0XnAUNSwLt5bn9KbMXnmIYRdeoUdzHHAUclZ7boS/3k+s26OFnQ5d0=
+	t=1711196442; cv=none; b=n/aGLRu7DR1gX9D/I5y27ubk6no++TkqIYHcjFMLFhR6mYTNl1m7EH9iBLclZ8bGPQT1bfEBawQ9U+db1HY9BXmjbxRqlkJA2aFY1DFBoWsZv5mK+gX1xUOfNiyKDMMDmijPB1iWubLoZ9O63pwshOF+3TszgocrTPV4fWVj2L4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711196255; c=relaxed/simple;
-	bh=IPM7SrXbcPNHecQTdTFyVqK8ijt6QdlNkXGPW1J/fE4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ue0ILaGVmmzl1PSDI1e4FoIbl8JCQo+WQkF0qo6bo2TOorAZfhSSbRDp4eYbvYDt5q3cWjA7kGotflGdfYasMoyl5olVZbpi92QWXv/dIDWY79mBYbNiUtHPqIOMmjA4xuej7FrcFm+YgEM0tsYZ9Edx6quwxgImVxIYhRXiCdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aU9xrwqE; arc=none smtp.client-ip=209.85.128.170
+	s=arc-20240116; t=1711196442; c=relaxed/simple;
+	bh=mhr1GSL3eFbC2H+hd2iN6RdNtiKSBL7v8xeFscpj5e4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VsUqOGHfTwkrp+7JcyxbMGiGdoWOUagsi8QC7WfghvP9vtxmpkF11VUDYoHa5cZjWfxhMluQ1hOQ8Ah0H7s2i9iLz+2uzyFMzfRgvZzcLAmaBJX5/IgQrpoR1aOvVORsbQA5w7cGBr4leSf3Q1ni2nfD10+d54OH9mU3DxOTWPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TjLEVJPQ; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-60a104601dcso34184057b3.2;
-        Sat, 23 Mar 2024 05:17:33 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a46cd9e7fcaso351139366b.1;
+        Sat, 23 Mar 2024 05:20:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711196252; x=1711801052; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=N9muYwrr5siQd/JSyRtkrxFkYsG9VIDfFrsB3T/A7s8=;
-        b=aU9xrwqEESepGKVHB2aNoxMziLBcyf12m6LQfwJ0igaG7EgH9HqLACjcFTS7gSYgkJ
-         bBJW9TR8FIdAQ0ZwgBt/vSQObjqk9/piP8HhSy/GIo4IKL5VxAhRqMeALE2TBZTlDIpz
-         d2PxqhaIllcdk6ruWz5K7k8fDKtRfw4v9K0YfGuKX9TO7JIrQ70FY/ux7lPJBbf3vHZh
-         ZfsS1A4YuRzofL59/qa+k+erFyA2gqd8xg0m6i5Q0JCEiWLil0P3xsJKnLWuIQ9eR4dj
-         D732yEOPqNAjE8tDCOUglOyDk8UHvJeCHsvXbA4o8wo0sFXeFzSjY+obR2pO6SGkt7Ln
-         bjcQ==
+        d=gmail.com; s=20230601; t=1711196439; x=1711801239; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+ooGuh7xBF/G4N1iw+8MZFTm7X/18XpLCl1peI1pSFg=;
+        b=TjLEVJPQjE1sGvgyXGoQO1JrTP5mGfKuxKK76Z3zIN/ZaQUhcWem2F1NvTQYYVo3co
+         PE2I+VHBfbTs7MR17FWGFvnHHk4O+qWqlWsddvyNqYJJC8XPlB2FpgkFa4rz2psME+Fg
+         p/t/b/SMirI7Yz99rGSk1+9eyG7O8hlBR3M0xKtX6Z2CGyXppaVP0aaBzjzdmLPEjk9+
+         g2d7PlPHTTpjvC7NkaSLQPxYey+rd1Wh/S0oFCrGZhEDwONdAHyPJ7sM3CRIb16SvnVo
+         4thYSscHrSvZp2y6snECYTs1OQ2DFwqyI3yTwdai8HtQsk6/23/xNbgdpMrPqISjiL/E
+         c+eQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711196252; x=1711801052;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1711196439; x=1711801239;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=N9muYwrr5siQd/JSyRtkrxFkYsG9VIDfFrsB3T/A7s8=;
-        b=tYkWzK/U79H/DiAvYsVDw2Iq2pybZv4piHXTafinb4SKBr4YkRgHUxMtLWtt5VHLKM
-         Rhtxw6e01Wq8rUKBm4TAzrqvWAj9erSiy8zmlu0l0J2GIljOzG9lT0Lop3JSGohmkcnf
-         x2xKeweVBOwZjKAmCJI5kvh0IvxhS1ZGC1bfzrswgB8VwwANHkX8te2PiijrbdbRAv5s
-         YNhBlRIHRPgJrt5pI3K0r2k6vM6pjYO1FlnY+UqgO1iuU5QDdR55AnReDYOLId2SOdke
-         aFOBS1yIv09IDwuWBURwCEEQQAbTC4dgGAIxXJIIXei2CJzy43Q2KywOeRYOAz6cDsRJ
-         P3Hw==
-X-Forwarded-Encrypted: i=1; AJvYcCWzHihc0JJrAZShgJSROmTCtn6lsfekB0SxBH0HoZuijY1VDiAQWHblSrfaJeL7hnS1jb7/mmBA7igEXsg6fLVv/fvAucuF34oo3gzcxvSIM6fbbuzo2x2DwRWJtKqqytN1dwOt8kvKgr/i9j4QTRA4JXt0m72U3cIUPeCY280e6lGmEA==
-X-Gm-Message-State: AOJu0YwEgYwqxPgKFXRf/bOCpC1ZWSfw6ljN64ClxRqEAV2WMKNioWY7
-	CTP6y+CtSkIArFrX863FwLwa6v7xkp4uZytqIFRaLrqgRvjAXeYfW1LDIYLlfN14h/7apOMnona
-	EYqOd4N5yCTnOWdX5nmWqeeGXv5c=
-X-Google-Smtp-Source: AGHT+IHnoiDiQMiEplIMllv8uUcrOQqfBT1/SHpRch47p55g2nnS7+PqK3vLgbbllMYGzDN9aGU7v+olCYhiyYSgNuA=
-X-Received: by 2002:a25:1941:0:b0:dd0:2076:4706 with SMTP id
- 62-20020a251941000000b00dd020764706mr1328550ybz.31.1711196252566; Sat, 23 Mar
- 2024 05:17:32 -0700 (PDT)
+        bh=+ooGuh7xBF/G4N1iw+8MZFTm7X/18XpLCl1peI1pSFg=;
+        b=DxaSwgmicwhVFwutpj+EQbf6ZZKCeh8y3pqqhuGpo6DYpsXqHYqetxvUb0W/l9PPG8
+         M2NsfZA1ufM5sNiq8X0Aj/waMxXfC1A0HOs6so09eE9of/hizF2aiCzZkNlxdaO1Gbkx
+         a63lsQNW4UFfRdJfi3Qi7oLkXrfdy6nafuAQEZHZDIGQWfI5TuQMRwZhk13SymMYOGa/
+         06n4GuN5oeML3PbHQctQx2KGLuP4i7ucPGYbzlxej7g6yqBlbuqRoG1VrVBjfepT+Tbq
+         1kSAB2LoDyO4B0WoP24Qnkb8X2jrhueZW0qbzHvHaSgJnKmbXfqO/OrJqGzG6+zLamgP
+         lZ5w==
+X-Forwarded-Encrypted: i=1; AJvYcCXA/AepjE6666L2eFBWwIx7hRg1pXmQIT7Zmgg3pT+3PqogugXsg639Gf1j26DySzoaspeueyN/fb5b/sgE98SVDh3R0X+ki1wAcrbpCG/wxtbUvDe69w6WLo5FzcQB+ODLZ0cGuzz1iA==
+X-Gm-Message-State: AOJu0Yz4+gePnBkR0hIlcEoEisHPy/nG962AdCFKz4zCzXbKU0yQNljU
+	2qhKo+FPiWtUwrOLEGB0tHBGpn7Sv0VlE5RZ/r4oDjZUfWlr3Jej
+X-Google-Smtp-Source: AGHT+IGj/M5V3ZqDG9laogCURap0i/Gb5Ek12zOx6QP8gTVk/D1XeFuWNkd64qM5dlyhmWXffCw+lw==
+X-Received: by 2002:a17:906:6d91:b0:a47:669:d0f2 with SMTP id h17-20020a1709066d9100b00a470669d0f2mr1922397ejt.50.1711196439335;
+        Sat, 23 Mar 2024 05:20:39 -0700 (PDT)
+Received: from 764c7355c69b.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
+        by smtp.gmail.com with ESMTPSA id gx24-20020a1709068a5800b00a46f0d133b9sm857265ejc.98.2024.03.23.05.20.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 23 Mar 2024 05:20:38 -0700 (PDT)
+From: Lothar Rubusch <l.rubusch@gmail.com>
+To: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	eraretuya@gmail.com,
+	l.rubusch@gmail.com
+Subject: [PATCH v3 0/6] iio: accel: adxl345: Add spi-3wire feature
+Date: Sat, 23 Mar 2024 12:20:24 +0000
+Message-Id: <20240323122030.21800-1-l.rubusch@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240322003713.6918-1-l.rubusch@gmail.com> <20240322003713.6918-2-l.rubusch@gmail.com>
- <51e3683f-be53-4bb7-a994-ffd05744a745@linaro.org>
-In-Reply-To: <51e3683f-be53-4bb7-a994-ffd05744a745@linaro.org>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Sat, 23 Mar 2024 13:16:56 +0100
-Message-ID: <CAFXKEHYUVoiW6MthJokV2=AYcZnqw36jETL=-m6kpDCP_UNHAg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/3] iio: accel: adxl345: Update adxl345
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-(...)
-> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > ---
-> >  drivers/iio/accel/adxl345.h      |  44 +++++++++++-
-> >  drivers/iio/accel/adxl345_core.c | 117 +++++++++++++++++--------------
-> >  drivers/iio/accel/adxl345_i2c.c  |  30 ++++----
-> >  drivers/iio/accel/adxl345_spi.c  |  28 ++++----
-> >  4 files changed, 134 insertions(+), 85 deletions(-)
-> >
-> > diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-> > index 284bd387c..01493c999 100644
-> > --- a/drivers/iio/accel/adxl345.h
-> > +++ b/drivers/iio/accel/adxl345.h
-> > @@ -8,6 +8,39 @@
-> >  #ifndef _ADXL345_H_
-> >  #define _ADXL345_H_
-> >
-> > +#include <linux/iio/iio.h>
-> > +
-> > +/* ADXL345 register definitions */
-> > +#define ADXL345_REG_DEVID            0x00
-> > +#define ADXL345_REG_OFSX             0x1E
-> > +#define ADXL345_REG_OFSY             0x1F
-> > +#define ADXL345_REG_OFSZ             0x20
-> > +#define ADXL345_REG_OFS_AXIS(index)  (ADXL345_REG_OFSX + (index))
-> > +#define ADXL345_REG_BW_RATE          0x2C
-> > +#define ADXL345_REG_POWER_CTL                0x2D
-> > +#define ADXL345_REG_DATA_FORMAT              0x31
-> > +#define ADXL345_REG_DATAX0           0x32
-> > +#define ADXL345_REG_DATAY0           0x34
-> > +#define ADXL345_REG_DATAZ0           0x36
-> > +#define ADXL345_REG_DATA_AXIS(index) \
-> > +     (ADXL345_REG_DATAX0 + (index) * sizeof(__le16))
-> > +
-> > +#define ADXL345_BW_RATE                      GENMASK(3, 0)
-> > +#define ADXL345_BASE_RATE_NANO_HZ    97656250LL
-> > +
-> > +#define ADXL345_POWER_CTL_MEASURE    BIT(3)
-> > +#define ADXL345_POWER_CTL_STANDBY    0x00
-> > +
-> > +#define ADXL345_DATA_FORMAT_FULL_RES BIT(3) /* Up to 13-bits resolution */
-> > +#define ADXL345_DATA_FORMAT_SPI         BIT(6) /* spi-3wire */
-> > +#define ADXL345_DATA_FORMAT_2G               0
-> > +#define ADXL345_DATA_FORMAT_4G               1
-> > +#define ADXL345_DATA_FORMAT_8G               2
-> > +#define ADXL345_DATA_FORMAT_16G              3
-> > +#define ADXL345_DATA_FORMAT_MSK              ~((u8) BIT(6)) /* ignore spi-3wire */
-> > +
-> > +#define ADXL345_DEVID                        0xE5
-> > +
-(...)
+Pass a function setup() as pointer from SPI/I2C specific modules
+to the core module. Implement setup() to pass the spi-3wire bus
+option, if declared in the device-tree.
 
-I think I see your point. My patch has more noise and lacks a logic
-structure in proceding.
-I will resubmit, but may I ask one question in particular. I moved the
-entire list of register
-defines from the adxl345_core.c to the common adxl345.h.
-For setting spi-3wire with my approach, only two of those defines are
-needed. I think it is
-nicer for readability to keep the defines together, though, in a
-commonly shared header.
-Nevertheless most of the defines are just used locally in the .._core.c
-Should I move them for refactory?
-I feel there is no reason to move them. On the other hand I see many
-drivers keep them in a common header. Hence, is there a best practice
-which justifies moving them to a header?
+In the core module, then update data_format register
+configuration bits instead of overwriting it. The changes allow
+to remove a data_range field, remove I2C and SPI redundant info
+instances and replace them by a common info array instance.
+
+Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+---
+V1 -> V2: split into spi-3wire and refactoring
+V2 -> V3: split further, focus on needed changesets
+
+Lothar Rubusch (6):
+  iio: accel: adxl345: Pass function pointer to core
+  iio: accel: adxl345: Make data_format obsolete
+  iio: accel: adxl345: Add the spi-3wire
+  iio: accel: adxl345: Remove single info instances
+  iio: accel: adxl345: Group bus configuration
+  dt-bindings: iio: accel: adxl345: Add spi-3wire
+
+ .../bindings/iio/accel/adi,adxl345.yaml       |  2 +
+ drivers/iio/accel/adxl345.h                   | 13 ++++-
+ drivers/iio/accel/adxl345_core.c              | 48 +++++++++++++++----
+ drivers/iio/accel/adxl345_i2c.c               | 22 +++------
+ drivers/iio/accel/adxl345_spi.c               | 32 ++++++-------
+ 5 files changed, 75 insertions(+), 42 deletions(-)
+
+-- 
+2.25.1
+
 

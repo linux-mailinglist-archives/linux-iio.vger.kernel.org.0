@@ -1,115 +1,131 @@
-Return-Path: <linux-iio+bounces-3713-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3714-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47320887A4D
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 21:38:56 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A09E1887A5A
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 21:44:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB4DC28207B
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 20:38:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECC972820ED
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 20:44:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A6111E51D;
-	Sat, 23 Mar 2024 20:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iOA1vw0C"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B493A29B;
+	Sat, 23 Mar 2024 20:44:48 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fgw22-7.mail.saunalahti.fi (fgw22-7.mail.saunalahti.fi [62.142.5.83])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2694A1B
-	for <linux-iio@vger.kernel.org>; Sat, 23 Mar 2024 20:38:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436451DFEF
+	for <linux-iio@vger.kernel.org>; Sat, 23 Mar 2024 20:44:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.142.5.83
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711226328; cv=none; b=ri9uiQ9pBLsy2SHiVRWq81ueM6MHLfIbQUzALvo/uGqVth1VQJS4/t83/EUA+Hrxzqy99H6dRsyNwZCWBl2899wPE+eigU2itsLkSduLZ+l9p6MpPsMnINy4IT0J3/YhYrUMx1KLLx6nznbXk52wCl6F8OT5ou4nDbhLzpFVIk0=
+	t=1711226687; cv=none; b=XW31EWxfmw2AemU6Isn8i0oUm0omTcq+n4no0v6Va6l3SWjfPmT8X+cqKazjH0yaMUBWPNhP47t5aKvx3swc6aBK4QWmw+IdtTjZZKfD0Pkb0dW7yXtB9k+YISC6fe75zAiKTbmuixxzm6FS/K4Sg98cV+gTHpYuFMVBJuuY8Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711226328; c=relaxed/simple;
-	bh=vcSa+/XZIEqadCu5SXdhOSO9Qef7nSbtGvHRiqFxrGI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OkzhMFYHD65D3kpCaRqAG38hvj/9aWrGneIvKlD5kzzJhiDvUFX29Zzctk4GxeexXHowTbTspcRrCdCSMTfvsnmWNUjYGo46T812QasCLLR6tSMUleOqBdF4lhqtPaEYPNpNX4i1Go7zSGBfoaG/m8OO0C8UZdyR8XT/kT3x8dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iOA1vw0C; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d52e65d4a8so43894501fa.0
-        for <linux-iio@vger.kernel.org>; Sat, 23 Mar 2024 13:38:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711226324; x=1711831124; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fDxvg9UbnnX+rObAJA4VzsyPDBq51ZQBy54uGmarkxI=;
-        b=iOA1vw0CXvBljxsIEAd0sWOL057EOFDWjcSrhmLgjxf4TO+m9p++NBDSH4DodZVEC1
-         a1B+V0iuTtBergqf8TzLu2hko94nv05zgHaxUYPhBCxczC97lWQvk8EATNRtSaiSuZ/2
-         jAmv2Jgpd0poHCqXw/QCG9IBaIhZEF3QxrdeO2tfoFAKhwgfUOjgVaQV/+KGU3lXq5Lj
-         X1wOdgpALol/L/8bZ/hJXK11+tB1cmePSHXAun1V5S24YT1I14/d0zxqyDId4uVwPnUi
-         3NS30gx3M6kOES54Q06kSHeSRDDu13Pxf4ANfNPd5mP4GhBAPOQLsMAYiCENp8HunClH
-         iyrw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711226324; x=1711831124;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=fDxvg9UbnnX+rObAJA4VzsyPDBq51ZQBy54uGmarkxI=;
-        b=bcp8ascAKLt7Yb10VgH2yFjg6nm/5vcxhuw1jGnpkXlZzzDNA1qN6Jlo6l79t4NtVj
-         Jk3x/4iK02z355ral0xet23vaCa372sehlhZwrc580IUV4OhYahdLGn1ejGLSQDupGpm
-         TrzT0C6rXv/rifGAv1Sfo6vJ5iGUgelh4tbNmg+0oZ7Tb8Y8d1zliENDyRm67EidJyk5
-         oJ3ygQ5pJjBkq8RonePWaYEkMgWjA1CiTUtpq5NWyY+5jteIrDYsFPDWc2luXiBORb0c
-         CeDEWvBxzI9HW+NQ7fyvMAgadIl24Rsy5UoFpJ86SPTe2EFbdA+4wJW/QHlJJJ20sn49
-         lhCA==
-X-Forwarded-Encrypted: i=1; AJvYcCU/BvQDi8QVShB+s1FQI/Tpn9DzWTbubRbh1nZh/Qf/L2B0ASQ3lBdUfG+aOOo/2j+KYvdRbAm8cIuzZ7con8//dB+JAFlLd3cf
-X-Gm-Message-State: AOJu0Yz/FCgkkR/foPmKjrYLclp2sbvorhwumHcu1xL37g90uH6RTLU3
-	IcSlrbmEDukHfPBtdoAj1FzxuegoePyk/X/nD7qniMT6+wcmvdgYlViuOVjnjJe8dGHC8fydi2o
-	Ka0KvvQ/uO1BsgxystF4rAVgPW0EuzoKtUne18Q==
-X-Google-Smtp-Source: AGHT+IHr0pE+R57iPjnjYEDRZYdDxbFdYp7TmFmdO2MPAFrT/tVKn7D5ShflgfmdKDfqHqMrZkB3iCx040qJhegMFII=
-X-Received: by 2002:a05:651c:386:b0:2d2:b840:1c78 with SMTP id
- e6-20020a05651c038600b002d2b8401c78mr1744597ljp.48.1711226324183; Sat, 23 Mar
- 2024 13:38:44 -0700 (PDT)
+	s=arc-20240116; t=1711226687; c=relaxed/simple;
+	bh=4cn7e1ZNgP9JRFS2MR28C3me8UKkrRDxTuHIiMG8WD0=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q8ubAwY3AY5XBcorM6YEEIHFtc1Opyq9hVpePNWoB4lPL3BAwkXkU//JTwbjdD/CAjIKovYfMkY6KQU3w1omhPlfhtziSZlh+/iUNEiTBKUNejoP6bNUgRCLY3bAeeVvF9ho/KIny3JuJ1YnvXWAs7It9dL6EANDlEWoX0FhIhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com; spf=fail smtp.mailfrom=gmail.com; arc=none smtp.client-ip=62.142.5.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=gmail.com
+Received: from localhost (88-113-26-217.elisa-laajakaista.fi [88.113.26.217])
+	by fgw21.mail.saunalahti.fi (Halon) with ESMTP
+	id 29c2437a-e956-11ee-abf4-005056bdd08f;
+	Sat, 23 Mar 2024 22:44:37 +0200 (EET)
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 23 Mar 2024 22:44:37 +0200
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy.shevchenko@gmail.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] iio: adc: ad7944: simplify adi,spi-mode property
+ parsing
+Message-ID: <Zf8_NZ5cNb9TVThx@surfacebook.localdomain>
+References: <20240319-ad7944-cleanups-v2-1-50e77269351b@baylibre.com>
+ <CAHp75VeO_=r_pMBUTaQQYKDRAV-OVfTnPYPwV8f7KDzOhaBCvQ@mail.gmail.com>
+ <CAMknhBETEP123=EHycGtFEJjQ+NPssLXmw9ZdDoY8CRsWiSxVQ@mail.gmail.com>
+ <20240323182918.2cf624b6@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1711131830.git.marcelo.schmitt@analog.com>
- <81665b5f0d37d593e6d299528de8d68da8574077.1711131830.git.marcelo.schmitt@analog.com>
- <20240323184454.201edbc3@jic23-huawei> <CAMknhBFRa-AwM3o-AdDDmPnwLAer8x=9TJNasSbY2bu5h9mMdQ@mail.gmail.com>
-In-Reply-To: <CAMknhBFRa-AwM3o-AdDDmPnwLAer8x=9TJNasSbY2bu5h9mMdQ@mail.gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Sat, 23 Mar 2024 15:38:33 -0500
-Message-ID: <CAMknhBFZa4eQ1bbJQb+ESZdsbLh5xSBn+feMwmWbc58mT2UWPA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: Add AD4000
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de, 
-	Michael.Hennerich@analog.com, robh+dt@kernel.org, 
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240323182918.2cf624b6@jic23-huawei>
 
-On Sat, Mar 23, 2024 at 3:18=E2=80=AFPM David Lechner <dlechner@baylibre.co=
-m> wrote:
+Sat, Mar 23, 2024 at 06:29:18PM +0000, Jonathan Cameron kirjoitti:
+> On Tue, 19 Mar 2024 10:28:31 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
+> > On Tue, Mar 19, 2024 at 10:01 AM Andy Shevchenko
+> > <andy.shevchenko@gmail.com> wrote:
+> > > On Tue, Mar 19, 2024 at 4:28 PM David Lechner <dlechner@baylibre.com> wrote:  
 
 ...
 
-> Here is what I would consider a reasonably complete binding for the
-> AD40XX chips (excluding ADAQ for now as I suggested).
+> > > > +       ret = device_property_match_property_string(dev, "adi,spi-mode",
+> > > > +                                                   ad7944_spi_modes,
+> > > > +                                                   ARRAY_SIZE(ad7944_spi_modes));
+> > > > +       if (ret < 0) {
+> > > > +               if (ret != -EINVAL)
+> > > > +                       return dev_err_probe(dev, ret,
+> > > > +                                            "getting adi,spi-mode property failed\n");  
+> > >  
+> > > > -               adc->spi_mode = ret;
+> > > > -       } else {  
+> > >
+> > > Actually we may even leave these unchanged
+> > >  
+> > > >                 /* absence of adi,spi-mode property means default mode */
+> > > >                 adc->spi_mode = AD7944_SPI_MODE_DEFAULT;
+> > > > +       } else {
+> > > > +               adc->spi_mode = ret;
+> > > >         }  
+> > >
+> > >        ret = device_property_match_property_string(dev, "adi,spi-mode",
+> > >                                                    ad7944_spi_modes,
+> > >
+> > > ARRAY_SIZE(ad7944_spi_modes));
+> > >        if (ret >= 0) {
+> > >                adc->spi_mode = ret;
+> > >        } else if (ret != -EINVAL) {
+> > >                        return dev_err_probe(dev, ret,
+> > >                                             "getting adi,spi-mode
+> > > property failed\n");
+> > >        } else {
+> > >                /* absence of adi,spi-mode property means default mode */
+> > >                adc->spi_mode = AD7944_SPI_MODE_DEFAULT;
+> > >        }
+> > >
+> > > But I can admit this is not an often used approach.
+> > >  
+> > 
+> > I think Jonathan prefers to have the error path first, so I would like
+> > to wait and see if he has an opinion here.
+> I do prefer error paths first.  Thanks.
 
-I missed one...
+Still the above can be refactored to have one line less
 
-I also think it makes sense for the High-Z mode selection to be a DT
-property since needing to enable it or disable it depends entirely on
-what is connected to the analog input pins.
+	ret = device_property_match_property_string(dev, "adi,spi-mode",
+                                                    ad7944_spi_modes,
+						    ARRAY_SIZE(ad7944_spi_modes));
+	if (ret == -EINVAL) {
+		/* absence of adi,spi-mode property means default mode */
+		adc->spi_mode = AD7944_SPI_MODE_DEFAULT;
+	} else if (ret < 0) {
+		return dev_err_probe(dev, ret, "getting adi,spi-mode property failed\n");
+	} else {
+		adc->spi_mode = ret;
+        }
 
----
+-- 
+With Best Regards,
+Andy Shevchenko
 
-  adi,high-z-input:
-    type: boolean
-    description:
-      High-Z mode allows the amplifier and RC filter in front of the ADC to=
- be
-      chosen based on the signal bandwidth of interest, rather than the set=
-tling
-      requirements of the switched capacitor SAR ADC inputs.
+
 

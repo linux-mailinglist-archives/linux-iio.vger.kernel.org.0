@@ -1,145 +1,250 @@
-Return-Path: <linux-iio+bounces-3703-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3704-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2748879CD
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 18:45:45 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 898A18879E2
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 19:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03A73282097
-	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 17:45:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08265282155
+	for <lists+linux-iio@lfdr.de>; Sat, 23 Mar 2024 18:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89A056B72;
-	Sat, 23 Mar 2024 17:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FD454772;
+	Sat, 23 Mar 2024 18:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gT0DGOjM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A9/VDTVl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7A056440;
-	Sat, 23 Mar 2024 17:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA3D4D9ED
+	for <linux-iio@vger.kernel.org>; Sat, 23 Mar 2024 18:10:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711215931; cv=none; b=eFSH9VXkrUunKjIBoU7rSRaiZkKtyUIHzw40OaqNsxPzlr8zrHk6WSG1HC78wlQO+YhrTTbNNiQWDJoYqzOfk8Lt5KS8f11EcGGsmalJetYft7vtBZhNxJrVSmIO+Fh7C65/d6Qff84o1X3FlLwyhVW8Jw3VkUM7ClVrwcrRCKM=
+	t=1711217405; cv=none; b=dBgA1+ITh3mwfNn7lZz16f9/LQq3pw3jLDq/LAo84eCtmCtgq8MJjbCFtY2E8NkNitc6NzIuyzRZ+qAm3Ny7JAz9nwzomaNYLv8rPjexlYqj8jKS/5mzrPzLDuY6v6oGIsV1IOXj8XeV/IiiREParplfW2KdU4HZcgnIh9HbvF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711215931; c=relaxed/simple;
-	bh=09Jlw6JAYNxan0UgyQwmL0W49AB8IvibjbCytlUkkmI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LTHLJICnKN0TBii7o/sZcCa4EIgwd4Z1X63z3Sj/Bc476HCzogVxG0wo1H+PmmyGupcmPakjUQB0/Zshl1TS/ncJcCxpKuaLGrusH+guhANlAnFN9HfJB4/ZBWAsHirYvU1rgJL7zmVgOyHZcJiH0j7j+TL8XGfBOyu9OUZHCRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gT0DGOjM; arc=none smtp.client-ip=209.85.219.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f170.google.com with SMTP id 3f1490d57ef6-db4364ecd6aso3028413276.2;
-        Sat, 23 Mar 2024 10:45:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711215929; x=1711820729; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=09Jlw6JAYNxan0UgyQwmL0W49AB8IvibjbCytlUkkmI=;
-        b=gT0DGOjMJvCm8SPXawi+8jE4daHdbnslTFHIFtNTxR9peiEeLVJGPt5pikp09H7WNe
-         WXmLq3CzVVuSfUT5ITh62/q8KliihSzK0z94/X2AP4vhqRR3aXH5+/VCt2rGPFiMASZi
-         LRimtEcZPurMyZPuBLjKFer+TrtYdnEOK/0VpMK3Kdi/cs8wsxmfrPIn/2E4E7GmJ5RT
-         Own4CyPkDkzK+Yy5cWHnPafqSMgM7cvwkTSjzbShuUrcE2HtZMXbwRKKlfDIlLdPxXff
-         2fq5mVQs/coar/GaLPp0vmvK6+W8wGi7qNf3o3ZOZrsuhXNuEilZIbafLDV7AAS/kCma
-         uMbA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711215929; x=1711820729;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=09Jlw6JAYNxan0UgyQwmL0W49AB8IvibjbCytlUkkmI=;
-        b=umu0GibHo5Ur6aFdfFFiO1UFkZGMzAHr4rvRtO03bAP6cU4tWHOeoyyGGg+hsLfLav
-         1rznj6ce9xQJFo6arqOnkBopVm59cUzRfLBxQyKo3ejMLY2Slpfol3yKAICfZE330hM5
-         BzBRYWd7bQNJjfCAXstZZa8H/zSJaNVUZSKWqEmGM5pyJBDuUSDqHEx4n+r32OOU7vVF
-         m3003dk1GXuVSHgkoN0FCO7hbl0Y0kqNFBlR442v99aRAE4AhVF8fD3Bfokgeo2Zx029
-         4OsJrUkqGf/0jIVd3dorau7GpL4pqRCdCtYVcCtBpts1O+mWEq+AlS9zZb1UxBtaLkrm
-         DddA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOdEwLhpLeyLr+uLGXhp7WCr83wdlbVpuUwVpxdZr9o+pbQIIZUl5zjDwp2uFzPq25yO7yFF5j+jrobDWAj3BJ5J4fQsUcbPESFfh8JxyzX3OxJggON1xZAQVHLr9rMDDxjfgT+UVT40BTZerh8uE5BpUu1YCTHRhtTbuffAUukDtBmg==
-X-Gm-Message-State: AOJu0Yy5JqATBTHRT5iPw/8EBBRHB6b7CtqlRBardca1y0L6+CQL4oKC
-	UKReSKfyyA8htEMyZMVsBl7by98NKKzqbhWkllLdvV3vJ6WYAuI3gY3jXGqfWe/GAUqlNJoGf0H
-	3GGIg7exKD//0p2u6a7obmaGu/TE=
-X-Google-Smtp-Source: AGHT+IEFb6YvIfpbWjIkc0eHeWpdtr2FGrRcO1jVvrslMjqGs/8hmtHC2bqq1nx/GCiXoXXoEJxM6NTxA7rIqLiBKF8=
-X-Received: by 2002:a25:2690:0:b0:dd1:3cc1:5352 with SMTP id
- m138-20020a252690000000b00dd13cc15352mr2152175ybm.15.1711215928904; Sat, 23
- Mar 2024 10:45:28 -0700 (PDT)
+	s=arc-20240116; t=1711217405; c=relaxed/simple;
+	bh=4QBrM+MLxNHP+XSxqfZPZ17R3s3ofDWD5M3NJ/roqFg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rGe0ByntWf2PuMiTjX4zX9WkPuzH0Vg/zLMkdV2RKDvHqufDDDD2W6fXmelwQ7Z1P/x5Oh6ZbNaD60btjNLw9oz2Mp9kKzoKVt+4nSfAbud4BZwm5IP8OiACKjaDpJTjp0/WDdnGp/9HjxQGfH1e6WSFqEekCtr/ibtV6Lf70qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A9/VDTVl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19794C433F1;
+	Sat, 23 Mar 2024 18:10:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711217404;
+	bh=4QBrM+MLxNHP+XSxqfZPZ17R3s3ofDWD5M3NJ/roqFg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=A9/VDTVlCS6oVk6DdzhUW9icJE0V80Ken7VXb2NA4L+GCLRjkcjzE+TEHPQTPQchf
+	 wwiKJfQpXRi+VwG3tVBk/bAZdRxkTZtB9dG3ZvqR/KrHd5SFZoQmxC3qGAgPyJbOfy
+	 ewpg5ChiE6n7fuMDbOBRrL58i7sD2ATx3wdULyXxFb8E2qYLgOimZPptQNmurgenNl
+	 71Wzlzav/vMzdsQWdsTGMqMl/9+xnUvsF7aYVxnM3OQGehdOULWFVgLQkYLXgcdPly
+	 VyYTIkArRHnNCakUg+XxSTkXPKxBE6f5V7xVd/2UhmbLRZXjsLkbPSRjBpk5CpRhSb
+	 CfmftxXIeM8uA==
+Date: Sat, 23 Mar 2024 18:09:51 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>
+Subject: Re: [PATCH v3 4/4] iio: inkern: move to the cleanup.h magic
+Message-ID: <20240323180951.5e990e11@jic23-huawei>
+In-Reply-To: <ZfX3gnbwYcZlGpBq@surfacebook.localdomain>
+References: <20240229-iio-use-cleanup-magic-v3-0-c3d34889ae3c@analog.com>
+	<20240229-iio-use-cleanup-magic-v3-4-c3d34889ae3c@analog.com>
+	<ZfX3gnbwYcZlGpBq@surfacebook.localdomain>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240322003713.6918-1-l.rubusch@gmail.com> <20240322003713.6918-4-l.rubusch@gmail.com>
- <20240322021739.GA3418523-robh@kernel.org> <CAFXKEHYrRn+vKZB9eX_RFDLanhqLsRwT1b-wxUdeZTrBrshSzA@mail.gmail.com>
- <60ed3d61-1ece-498f-97a2-7b1c618ceacb@linaro.org>
-In-Reply-To: <60ed3d61-1ece-498f-97a2-7b1c618ceacb@linaro.org>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Sat, 23 Mar 2024 18:44:52 +0100
-Message-ID: <CAFXKEHYVhj2yhaEjJmh+qRN8YbtN_LyeQ65YX1aL-4j7FJ=r6Q@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] dt-bindings: iio: accel: adxl345: Add spi-3wire
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, lars@metafoo.de, Michael.Hennerich@analog.com, 
-	jic23@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, Mar 23, 2024 at 3:27=E2=80=AFPM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 23/03/2024 13:04, Lothar Rubusch wrote:
-> > On Fri, Mar 22, 2024 at 3:17=E2=80=AFAM Rob Herring <robh@kernel.org> w=
-rote:
-> >>
-> >> On Fri, Mar 22, 2024 at 12:37:13AM +0000, Lothar Rubusch wrote:
-> >>> Provide the optional spi-3wire in the example.
-> >>
-> >> That doesn't match the diff as you don't touch the example. But really=
-,
-> >> this should say why you need spi-3wire.
-> >
-> > I understand. The change does not add anything to the example. which
-> > is definitely wrong.
-> > Anyway I'm unsure about this change in particular. I know the spi-3wire
-> > binding exists and can be implemented. Not all spi devices offer it. No=
-t all
-> > drivers implement it. My patch set tries to implement spi-3wire for the
-> > particular accelerometer.
-> > Do I need to add something here to dt-bindings documentation of the
-> > adxl345? Or, as an optional spi feature, is it covered anyway by
-> > documentation of optional spi bindings? So, should I refrase this parti=
-cular
-> > patch or may I drop it entirely? Could you please clarify.
->
-> Whether you need to change bindings or not, dtbs_check will tell you.
-> Just run dtbs_check on your DTS.
->
+On Sat, 16 Mar 2024 21:48:18 +0200
+Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-I'm not changing upstream DTS. At most, the documentation should
-mention something.
+> Thu, Feb 29, 2024 at 04:10:28PM +0100, Nuno Sa kirjoitti:
+> > Use the new cleanup magic for handling mutexes in IIO. This allows us to
+> > greatly simplify some code paths.
+> > 
+> > While at it, also use __free(kfree) where allocations are done and drop
+> > obvious comment in iio_channel_read_min().  
+> 
+> ...
+> 
+> >  int iio_map_array_register(struct iio_dev *indio_dev, struct iio_map *maps)
+> >  {
+> > -	int i = 0, ret = 0;
+> > +	int i = 0, ret;
+> >  	struct iio_map_internal *mapi;  
+> 
+> Why not making it reversed xmas tree order at the same time?
+> 
 
-> It does not look like you tested the DTS against bindings. Please run
-> `make dtbs_check W=3D1` (see
-> Documentation/devicetree/bindings/writing-schema.rst or
-> https://www.linaro.org/blog/tips-and-tricks-for-validating-devicetree-sou=
-rces-with-the-devicetree-schema/
-> for instructions).
->
+I tweaked this. Went a bit further as mixing declarations that
+set values and ones that don't is a bad pattern for readability.
 
-No, I didn't. dtbs_check did not work right out of the box, but it
-sounds great and I will figure out. Currently my setup is a bit
-customized. I compile the modules out of tree, dockerized with several
-DTBOs. I use an automized setup to verify spi, spi-3wire and i2c
-probing still works on the hardware. It is tested at least somehow.
+	struct iio_map_internal *mapi;
+	int i = 0;
+	int ret;
 
-> AFAIR, spi-3wire requires being explicitly mentioned in the device bindin=
-gs.
->
->
-> Best regards,
-> Krzysztof
->
+> >  	if (!maps)
+> >  		return 0;  
+> 
+> ...
+> 
+> > -error_ret:
+> > -	if (ret)
+> > -		iio_map_array_unregister_locked(indio_dev);
+> > -	mutex_unlock(&iio_map_list_lock);
+> >  
+> > +	return 0;
+> > +error_ret:
+> > +	iio_map_array_unregister_locked(indio_dev);
+> >  	return ret;
+> >  }  
+> 
+> Do we really need to split this? (I'm fine with a new code, but seems to me as
+> unneeded churn.)
+
+I much prefer not to have the
+	if (ret) // error case
+		do something.
+
+	//back to both good and bad paths.
+	return ret;
+
+pattern - so I've very keen to have this spit as I disliked the original
+code and there is even less reason to combine the paths now we don't need
+the mutex_unlock.
+
+
+> 
+> ...
+> 
+> > +	struct iio_channel *channel __free(kfree) = kzalloc(sizeof(*channel),
+> > +							    GFP_KERNEL);  
+> 
+> I would indent a bit differently:
+> 
+> 	struct iio_channel *channel __free(kfree) =
+> 					kzalloc(sizeof(*channel), GFP_KERNEL);
+> 
+> (maybe less TABs, but you got the idea)
+Given I was rebasing anyway, tidied this up (in 4 places) as well (fewer tabs ;)
+
+> 
+> >  	if (!channel)
+> >  		return ERR_PTR(-ENOMEM);  
+> 
+> ...
+> 
+> > +	struct iio_channel *chans __free(kfree) = kcalloc(nummaps + 1,
+> > +							  sizeof(*chans),
+> > +							  GFP_KERNEL);  
+> 
+> Ditto.
+> 
+> >  	if (!chans)
+> >  		return ERR_PTR(-ENOMEM);  
+> 
+> ...
+> 
+> >  	/* first find matching entry the channel map */
+> > -	mutex_lock(&iio_map_list_lock);
+> > -	list_for_each_entry(c_i, &iio_map_list, l) {
+> > -		if ((name && strcmp(name, c_i->map->consumer_dev_name) != 0) ||
+> > -		    (channel_name &&
+> > -		     strcmp(channel_name, c_i->map->consumer_channel) != 0))
+> > -			continue;
+> > -		c = c_i;
+> > -		iio_device_get(c->indio_dev);
+> > -		break;
+> > +	scoped_guard(mutex, &iio_map_list_lock) {
+> > +		list_for_each_entry(c_i, &iio_map_list, l) {
+> > +			if ((name && strcmp(name, c_i->map->consumer_dev_name) != 0) ||
+> > +			    (channel_name &&
+> > +			     strcmp(channel_name, c_i->map->consumer_channel) != 0))  
+> 
+> I would kill these ' != 0' pieces, but I see they are in the original code.
+
+Don't mind a change doing that, but not in this patch.
+
+> 
+> > +				continue;
+> > +			c = c_i;
+> > +			iio_device_get(c->indio_dev);
+> > +			break;
+> > +		}
+> >  	}  
+> 
+> ...
+> 
+> > -	channel = kzalloc(sizeof(*channel), GFP_KERNEL);
+> > +	struct iio_channel *channel __free(kfree) = kzalloc(sizeof(*channel),
+> > +							    GFP_KERNEL);  
+> 
+> Indentation?
+> 
+> ...
+> 
+> > -error_no_chan:
+> > -	kfree(channel);
+> >  error_no_mem:
+> >  	iio_device_put(c->indio_dev);
+> >  	return ERR_PTR(err);  
+> 
+> Effectively you move kfree after device put, would it be a problem?
+It's not immediately obvious what that put pairs with so we should probably
+address that a bit more clearly anyway - but the change should be safe.
+
+> 
+> ...
+> 
+> >  struct iio_channel *iio_channel_get_all(struct device *dev)
+> >  {
+> >  	const char *name;
+> > -	struct iio_channel *chans;
+> > +	struct iio_channel *fw_chans;
+> >  	struct iio_map_internal *c = NULL;  
+> 
+> Move it here for better ordering?
+Trivial, but meh, I'm tweaking anyway so done.
+> 
+> >  	int nummaps = 0;
+> >  	int mapind = 0;  
+> 
+> ...
+> 
+> > -	chans = fwnode_iio_channel_get_all(dev);
+> > +	fw_chans = fwnode_iio_channel_get_all(dev);  
+> 
+> I would move it before conditional...
+> 
+> >  	/*
+> >  	 * We only want to carry on if the error is -ENODEV.  Anything else
+> >  	 * should be reported up the stack.
+> >  	 */
+> > -	if (!IS_ERR(chans) || PTR_ERR(chans) != -ENODEV)
+> > -		return chans;  
+> 
+> ...here.
+> 
+> > +	if (!IS_ERR(fw_chans) || PTR_ERR(fw_chans) != -ENODEV)
+> > +		return fw_chans;  
+> 
+> ...
+> 
+> > +	struct iio_channel *chans __free(kfree) = kcalloc(nummaps + 1,
+> > +							  sizeof(*chans),
+> > +							  GFP_KERNEL);  
+> 
+> Indentation?
+> 
+> > +	if (!chans)
+> > +		return ERR_PTR(-ENOMEM);  
+> 
+
 

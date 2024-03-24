@@ -1,60 +1,62 @@
-Return-Path: <linux-iio+bounces-3722-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3723-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753CB887C91
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 12:43:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 394D7887C97
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 12:56:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFDE41C20757
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 11:43:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 506D61C20A81
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 11:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10ACD17732;
-	Sun, 24 Mar 2024 11:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D265C17756;
+	Sun, 24 Mar 2024 11:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p4Pu0sFd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHPS1b+h"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCF928E7;
-	Sun, 24 Mar 2024 11:43:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDAD1759E;
+	Sun, 24 Mar 2024 11:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711280611; cv=none; b=jSMRBUtCHRNF3rAe5D/4jmeXHpzdrcx7+EoyjAtHFYd8YmWPf531swau4roBnGIRSaFET3LtqQ9mPFSKTgM6q+/s+65VOucczzcSIYp61YBaHa9v1eZnWa5lrTRH34GGtbZn5o4c+IV3CcQav8l6f28E62lx9+vr6N6F10yITr0=
+	t=1711281363; cv=none; b=Rv+irXh5rcH9xnaPXKO9xSywYx2h5JN1VzxUaiPyyUT8NxbLtnCpXIPZYfUvWTQPGG+XKtxordUTXN6DV6jWHbW000PXKPu9QraLUEV2xa7SB5JG6Pb2QKJouZLHKlX1DmyBBVmhFSpBXa5/FG6eSdpkmh8CLp/IPiBUoJc5UXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711280611; c=relaxed/simple;
-	bh=I/NgdRgrmfOu8lyvLzMrgCyS9pAJxb+fLcFX7Ruhzcs=;
+	s=arc-20240116; t=1711281363; c=relaxed/simple;
+	bh=uFc5xOYMorRP4iyAhVgBe+McyNhmHUYOH62YqMisnBQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=koVG386YEhyTXTNEDega5JfGP0X28IMAGTBbjmbvNv/7yE4vkPyaAr8pUdFopJaAimDweGDQtgyCqhjJwFLs12vm/xNjtIP3C5XZdiNFhxxJRGQuvEkCOWp0lfvEpuL4yEY0OqGiKRNJ2BZ+wmxIjPWye5fdyK/8w9aTvTAaZjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p4Pu0sFd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29374C433C7;
-	Sun, 24 Mar 2024 11:43:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y04x3mo4xL37Vk9bWjys16pPaDwQvRIZzIMbQITYt7QsJLQdQ8I8Us+/hmrWkC9ZZcVCLOBYNUzml9s7f5uBBSWtpwTJLqxqYikafu+TYX2FA/VpABCtSP0Tn0hFCUn6R4+x3CqwTkwaBmFXmzxbjWXq5eFSOJXts1xmBnLDxDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHPS1b+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5E7C433C7;
+	Sun, 24 Mar 2024 11:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711280611;
-	bh=I/NgdRgrmfOu8lyvLzMrgCyS9pAJxb+fLcFX7Ruhzcs=;
+	s=k20201202; t=1711281363;
+	bh=uFc5xOYMorRP4iyAhVgBe+McyNhmHUYOH62YqMisnBQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p4Pu0sFd/bozjma4BaKw4n8ma3hz+pAnIoRK16RvfYhmRLcrmIg4dXT9a2H7Kunw/
-	 q/4MTx2cV7KF8bJuPAOrPagzw5TOO1jjYO04WPnSzioM7RtUweSSH044xWPyQcXMQv
-	 N5NIDdoFF4/1Cu8Ji3lnlukkbJQS/8EpcjoRAWeLm3USNSH/r6Kj8p2mf2sv9VxOxj
-	 tfe7lTXV6DNKQdBDxbGXrXfQA1onA212X7HlS471aKMvW/QKOJU6QaQDEqUuHfaTBp
-	 z5VRV8Nkp4HPishImI2FIwDfGSTHeicuvNgoWjP0kb5tRh/ko/79+v3aS0vRdb52ZI
-	 gbjwYKIXACaOw==
-Date: Sun, 24 Mar 2024 11:43:14 +0000
+	b=EHPS1b+htFbdIdhUpG07yQ+GSFFX2ipaeESGWCCw77WlyieKqBpo7yFph22STMKV7
+	 U2BpzZra0RMtZbbrzU28LCGiXIDNE0YHe4mpKPaJKNmEXdXuJwcgCHn8t+rxKS33aL
+	 SNfkb1WnI5yf1l9Kaz+YVUvMVbMiE/Swhp+FBDpMHgygMpUYaPQzMVDgDs9hz3WtCK
+	 lvaSlbmdbPDk7t9K+CWrZjszamWpDwTT8kP8RjVj+DT5YxhPPqeVqgVMN+GftdsFUN
+	 JfGVCVbSvMS+Ipsh7bUpiqkhtloCaHQvCLdhAqNSUCHudb+cIeS9D9lOSqA72AN1Xo
+	 IHk4dRJ4XavFg==
+Date: Sun, 24 Mar 2024 11:55:46 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, lars@metafoo.de,
  ang.iglesiasg@gmail.com, mazziesaccount@gmail.com, ak@it-klinger.de,
  petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
  linus.walleij@linaro.org, semen.protsenko@linaro.org,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] iio: pressure: Add timestamp and scan_masks for
+Subject: Re: [PATCH v3 6/6] iio: pressure: Add triggered buffer support for
  BMP280 driver
-Message-ID: <20240324114314.4f70490a@jic23-huawei>
-In-Reply-To: <20240319002925.2121016-6-vassilisamir@gmail.com>
+Message-ID: <20240324115546.695d3e33@jic23-huawei>
+In-Reply-To: <20240320174602.GA36450@vamoiridPC>
 References: <20240319002925.2121016-1-vassilisamir@gmail.com>
-	<20240319002925.2121016-6-vassilisamir@gmail.com>
+	<20240319002925.2121016-7-vassilisamir@gmail.com>
+	<ZfrFc9GF0_Jix5YT@smile.fi.intel.com>
+	<20240320174602.GA36450@vamoiridPC>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,28 +67,153 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 19 Mar 2024 01:29:24 +0100
+On Wed, 20 Mar 2024 18:46:02 +0100
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> The scan mask for the BME280 supports humidity measurement and
-> needs to be distinguished from the rest in order for the timestamp
-> to be able to work.
+> On Wed, Mar 20, 2024 at 01:16:03PM +0200, Andy Shevchenko wrote:
+> > On Tue, Mar 19, 2024 at 01:29:25AM +0100, Vasileios Amoiridis wrote:  
+> > > BMP2xx, BMP3xx, and BMP5xx use consecutive buffers for their
+> > > temperature, pressure and humidity readings. This facilitates
+> > > the use of burst reads in order to acquire data much faster
+> > > and in a different way from the one used in oneshot captures.
+> > > 
+> > > BMP085 and BMP180 use a completely different measurement
+> > > process that is well defined and is used in their buffer_handler().  
+> > 
+> > ...
+> >   
+> > >  	ret = regmap_bulk_read(data->regmap, BMP280_REG_TEMP_MSB,
+> > > -			       data->buf, sizeof(data->buf));
+> > > +			       data->buf, BMP280_NUM_TEMP_BYTES);  
+> >   
+> > >  	ret = regmap_bulk_read(data->regmap, BMP280_REG_PRESS_MSB,
+> > > -			       data->buf, sizeof(data->buf));
+> > > +			       data->buf, BMP280_NUM_PRESS_BYTES);  
+> >   
+> > >  	ret = regmap_bulk_read(data->regmap, BMP280_REG_HUMIDITY_MSB,
+> > > -			       &data->be16, sizeof(data->be16));
+> > > +			       &data->be16, BME280_NUM_HUMIDITY_BYTES);  
+> >   
+> > > -	adc_humidity = be16_to_cpu(data->be16);
+> > > +	adc_humidity = get_unaligned_be16(&data->be16);  
+> >   
+> > >  	ret = regmap_bulk_read(data->regmap, BMP380_REG_TEMP_XLSB,
+> > > -			       data->buf, sizeof(data->buf));
+> > > +			       data->buf, BMP280_NUM_TEMP_BYTES);  
+> >   
+> > >  	ret = regmap_bulk_read(data->regmap, BMP380_REG_PRESS_XLSB,
+> > > -			       data->buf, sizeof(data->buf));
+> > > +			       data->buf, BMP280_NUM_PRESS_BYTES);  
+> >   
+> > >  	ret = regmap_bulk_read(data->regmap, BMP580_REG_TEMP_XLSB, data->buf,
+> > > -			       sizeof(data->buf));
+> > > +			       BMP280_NUM_TEMP_BYTES);  
+> >   
+> > >  	ret = regmap_bulk_read(data->regmap, BMP580_REG_PRESS_XLSB, data->buf,
+> > > -			       sizeof(data->buf));
+> > > +			       BMP280_NUM_PRESS_BYTES);  
+> > 
+> > These smell to me as candidates to a separate patch with more explanation why.
+> > (Yes, with the definitions you introduced.) But I leave it to Jonathan to
+> > decide if we need to split.
 
-This needs a rewrite.  I read that as the measurement needed to be
-distinguished from other measurements, not the device needs to be
-distinguished from other devices.
+The are somewhat confusing, though only when you start doing bulk reads
+to do these makes sense - so I'm not sure how to do it as 2 patches.
 
-It's also unusual to update the scan masks to add timestamps or
-scan_index / scan_type before they are actually used.
+Pity we don't have sizeof(be24) available.
 
-Hence this first patch should just split the definitions but
-not add the additional elements until the next patch that adds
-buffered support (where these get used).
+> > 
+> > ...
+> > 
+> > The below are applicable to the bmp280_buffer_handler(),
+> > bmp380_buffer_handler() implementations as well.
+> > 
+> > ...
+> >   
+> > > +	/* Burst read data registers */
+> > > +	ret = regmap_bulk_read(data->regmap, BMP580_REG_TEMP_XLSB,
+> > > +			       data->buf, 6);  
+> > 
+> > Magic size.
+> >   
+> 
+> Hi Andy,
+> 
+> Thank you again for your feedback. When I was writing it, it was 
+> looking as a magic number to me as well but then I though that 
+> since I put the comment above it could be obvious. Now that I see 
+> it again, I think it was not a good idea and maybe some type of 
+> definition like
+> 
+> 	#define BMP280_BURST_READ_NUM_BYTES 6
+> 	#define BME280_BURST_READ_NUM_BYTES 8
+I think these are sums of the other quantities.  Better to
+express them as such if possible.
 
-So resulting code is fine, but the patch breakup can be improved
-so all the bits we need to look at for a given feature are
-in a single patch (but not the refactoring).
+> 
+> could look better and be more intuitive.
+> 
+> > ...
+> >   
+> > > +	/* Temperature calculations */
+> > > +	memcpy(&chan_value, &data->buf[3], 3);  
+> > 
+> > _le24() + sign_extend32()?
+> >   
+> 
+> In the next line from your comment the _le24 or _be24 takes place.
+I think you can get that data directly rather than bouncing it via
+a memcpy.
+e.g.
+adc_temp = FIELD_GET(BMP280_MEAS_TRIM_MASK, get_unaligned_be24(&data->buf[3]);
+
+> If the sign_extend32() is needed here, shouldn't it also be used
+> in all the oneshot captures as well?
+
+Is this actually signed?  Compensated values are, but at this point
+it's just a raw adc count.  So I'm not seeing why we'd sign extend it
+(unless the device is returning a signed be24 - I haven't checked.)
+
+
+> 
+> > ...
+> >   
+> > > +	/* Pressure calculations */
+> > > +	memcpy(&chan_value, &data->buf[0], 3);  
+> > 
+> > _le24() + sign_extend32()?
+> > 
+> > ...
+> >   
+> > >  	/*
+> > > -	 * Maximum number of consecutive bytes read for a temperature or
+> > > -	 * pressure measurement is 3.
+> > > +	 * Maximum number of a burst read for temperature, pressure, humidity
+> > > +	 * is 8 bytes.
+> > >  	 */
+> > > -	if (val_size > 3)
+> > > +	if (val_size > 8)  
+> > 
+> > sizeof() / new definition for the buf[] size?
+> >   
+> 
+> In a previous commit that I was fixing this SPI driver, Jonathan had mentioned
+> that there is no need for a specific definition since it will only be used
+> here so that's why I kept it as is.
+
+Never trust me ;)  Size of the buf is sensible here.
 
 Jonathan
+
+> 
+> Cheers,
+> Vasilis
+> > >  		return -EINVAL;  
+> > 
+> > -- 
+> > With Best Regards,
+> > Andy Shevchenko
+> > 
+> >   
 
 

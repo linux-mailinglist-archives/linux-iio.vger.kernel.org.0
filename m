@@ -1,215 +1,128 @@
-Return-Path: <linux-iio+bounces-3744-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3745-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE643887D22
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 15:02:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF8EC887E81
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 20:00:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E0071C209DA
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 14:02:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD8FA1C20BAB
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 19:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B40A18032;
-	Sun, 24 Mar 2024 14:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3538D53B;
+	Sun, 24 Mar 2024 19:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iocRzubY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WCk43MTH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 161DE17BCA;
-	Sun, 24 Mar 2024 14:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF24DD51D;
+	Sun, 24 Mar 2024 19:00:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711288971; cv=none; b=LpWqt5UWEM61Na/WMCtUIgXqJq2np2iH0j1sbZ+6zi3NYIoLMvFCzFILYoHzf32naoMjjNHCFXUJq5fQ0EWw/f88XZ17EQyfjI0rryc+tCt2udlNFGK0Lh1oZdYRkfpBWHr1wZ/9ePh7AXoG3hRLk3BM7+g3JY8sXb+/lmBaWtg=
+	t=1711306823; cv=none; b=iiHTOCTGVqY0W4yUpi/7kN+urePCvfq3Hr9X9VwYFbQzLLvXi13z1X/HoZBdz0ZYTNewttLU0mkbETz8WP4IgUhjc49AIIgy3ZuQ3MNKaSbS7Pxv6SvZ0r+OoN5XgKtJu0i1SXDi6ZeUEDpmMGFfyRKBktw1soLP+XfvQXx65EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711288971; c=relaxed/simple;
-	bh=UfZd2p5tNkBkFrZRa5tr3fGEBwV6K/YpHB/x3kzX/JU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rhx1NuM1RnV3Y+hQon8tMhpr3jQXTbnQxwK3KI9I0MsSVH01Kymso3Ub2cpYUMdTa7WmjwejXap825nTsPEYHl24ZnVV/lJvlqXmwHhsUm+uK8zRXK13+tO9svQ64EFb6fN5RVd6gpAPgPacgGw104i7Ff8Cvjf2Uo0RHot7nTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iocRzubY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8804BC433F1;
-	Sun, 24 Mar 2024 14:02:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711288970;
-	bh=UfZd2p5tNkBkFrZRa5tr3fGEBwV6K/YpHB/x3kzX/JU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iocRzubYwZ1OKfJwCTRaiPcqD0ndkLQteZlweRalKFBdE4gF/jQ8ZmrHdRaaEzJo5
-	 XKx2HU6830nWboScE/PnKfwoIeyVytaOnoyc6aO6qOI5gBog/r7nkMnNMAx6TE38ow
-	 BBWrRDNjz3VY5UDKohpimzkH+6P57Wh7Xxd7XDAJpxdrYoEOnUlzwLDw53HMOVopaa
-	 ZjZLnmHx21JVQdXmrw8JM5mR8Sy18ayzxivy+RiA/E8b5mtHjbTVfR5X0I/9/rFvSx
-	 /pA7+MZEiQ4a+h2FLOaOMY/kYZU6vYMIh5r4EgZ5ZAsb5CSaL7Nyt/78ub3BE0QLrL
-	 gBjTiExMm0v0A==
-Date: Sun, 24 Mar 2024 14:02:33 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andrej Picej <andrej.picej@norik.com>
-Cc: haibo.chen@nxp.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, lars@metafoo.de, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- upstream@lists.phytec.de
-Subject: Re: [PATCH 1/2] iio: adc: imx93: Make calibration properties
- configurable
-Message-ID: <20240324140233.577ec7d3@jic23-huawei>
-In-Reply-To: <20240320100407.1639082-2-andrej.picej@norik.com>
-References: <20240320100407.1639082-1-andrej.picej@norik.com>
-	<20240320100407.1639082-2-andrej.picej@norik.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1711306823; c=relaxed/simple;
+	bh=0uDTXPO9DAZL/Vz6XeOcY9b3jjyTrfYWOY4uqX6iy14=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hwG4yPfm+ZEubMdr0GvPcLP/nScjzeRtxxBKu07XNXVRAJSUbVeSZwLh2PlNkFD1FXLoOSP5U4PISJEZwnrfxOMfqx7W4jLgBTWrfit7pg9vPGCo80eRIxlKCJJ7OKg+5ft4U+gW2yPc9LoOJHPFcSaP22iQDl6i3ya5RL45TLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WCk43MTH; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-dcbf82cdf05so3284554276.2;
+        Sun, 24 Mar 2024 12:00:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1711306816; x=1711911616; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zs3jwcD+bSMxZx0cQlLSPlfHe7+Vx3v1SzeuR8ex/8w=;
+        b=WCk43MTHvwdKZ2rMA5K/H3f02ncp1nEOt73mwCmiJEdameR3bfCV97Xd/3cLBjXK54
+         yuGGFS1ai5mXdBdQy9WPyWWYGaWcVaTYspfdrSHupGKjZZXTun9f3sA0qsqhpIh6G7Yw
+         5uNFKM/mLpu+f7e3Ti2XwYg4QIC3ikp0sTTHdCdXGSAPiRhnqginpDVQImez9zH3jSFp
+         92K9ZIfbccVINq0+4fYMH3O0RgLjEW3+qYC2mJSee2a4/nYFdh3AX60kLFHg3HGx28PF
+         9Pn2OoYU9h4EeLgOcON4UNwFYRj/MPUfmSwMwG0T/eKGoIesbVwOUFJ9WolPjAt2ftur
+         NU4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711306816; x=1711911616;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Zs3jwcD+bSMxZx0cQlLSPlfHe7+Vx3v1SzeuR8ex/8w=;
+        b=eZGtVO/m8x9V9E5Jq9yeuLRnYV34jaBlpeadkpfDjXN5o3BONaAR9gE60qeu09f6Nw
+         O8L6RIJEkD8XLrDVXlh/Fba9NhZpsKaGFn74zI/+b2vY/tIkA1wm94WlAVOStLyKLss+
+         IvC1wv+TfYzgwRDRe3Ig7oC7IkaZc6jJOS0fgc8Ehmm3EU6/MEL3CTHi9uw7Mvvx7zf4
+         mLHXoxy1VsQmwaUnxHzIyTaEoo/xvzs8ZXATun2I0sk3FxrwIsFx93n6188nfzVtY0Yw
+         HbRVjvh43DMC4nlr6PFqFqNNErB/NQqquvAnHTEcslXGYxH7sDgnbdEEzHriIIu5g6qf
+         rYdw==
+X-Forwarded-Encrypted: i=1; AJvYcCWi77NA9RSORxt7SCVV6bshVHuXVb5IHqa3lyZTyMOZ6r+/7j1CCSTi24C25EWBnUGx3SvHKs0WScss0zda0G0u4FHap//Bh1IUyhZCjqeAr8H9Umin6sTplPicA79V6Ii1DU3MSuDv62tiyTEyzYGTP/bvg0oEExtBYLSOzQse2yLOGg==
+X-Gm-Message-State: AOJu0YwYsbW5WPLiYFvhU4geoPdywWENWaB8scJPFAjxqirylmvj137A
+	IIsU2C5yCWp8VlqCKcvLJj+KSi8whOzElA1RxYY3NaLcs0mck+Yasd2HwLMZVO9Euqd1zBcbOrp
+	ta0U+c69crlmZ3hFRStvwVgWIx84=
+X-Google-Smtp-Source: AGHT+IHrUHSUlApoRrfkRpt7zMExqBxrDGo9f0m60Rh2RG+K+WM9Y21zRhb+EO3yu0XN+fiKxztqhEdYDuiOXHvXrpg=
+X-Received: by 2002:a25:8609:0:b0:dcc:f6e2:44d0 with SMTP id
+ y9-20020a258609000000b00dccf6e244d0mr3338435ybk.37.1711306815913; Sun, 24 Mar
+ 2024 12:00:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20240323122030.21800-1-l.rubusch@gmail.com> <20240323122030.21800-4-l.rubusch@gmail.com>
+ <20240324133238.61d5f989@jic23-huawei>
+In-Reply-To: <20240324133238.61d5f989@jic23-huawei>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Sun, 24 Mar 2024 19:59:39 +0100
+Message-ID: <CAFXKEHaeWbLV6g9eEdp9de5sZO0TJPRrJvsVxnGCf9jzdxwgHA@mail.gmail.com>
+Subject: Re: [PATCH v3 3/6] iio: accel: adxl345: Add spi-3wire option
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 20 Mar 2024 11:04:05 +0100
-Andrej Picej <andrej.picej@norik.com> wrote:
+On Sun, Mar 24, 2024 at 2:32=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Sat, 23 Mar 2024 12:20:27 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Add a setup function implementation to the spi module to enable
+> > spi-3wire as option when specified in the device-tree.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > ---
+> >  drivers/iio/accel/adxl345.h     |  3 +++
+> >  drivers/iio/accel/adxl345_spi.c | 12 +++++++++++-
+> >  2 files changed, 14 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
+> > index 3c1ded0c2..6b84a2cee 100644
+> > --- a/drivers/iio/accel/adxl345.h
+> > +++ b/drivers/iio/accel/adxl345.h
+> > @@ -8,6 +8,9 @@
+> >  #ifndef _ADXL345_H_
+> >  #define _ADXL345_H_
+> >
+> > +#define ADXL345_REG_DATA_FORMAT              0x31
+> > +#define ADXL345_DATA_FORMAT_SPI         BIT(6) /* spi-3wire */
+> Name it that, rather than using a comment.   No need to precisely
+> match datasheet naming - you are naming the value not the field here.
+>
+> ADXL345_DATA_FORMAT_SPI_3_WRITE perhaps?
+>
 
-> Make calibration properties:
->  - AVGEN: allow averaging of calibration time,
+Would you accept the following instead?
+ADXL345_DATA_FORMAT_SPI_3WIRE
 
-Confused. How do you average time?   Or is this enabling averaging of
-ADC readings at calibration time?
+In the OF binding it is SPI_3WIRE. So, from this perspective I think it wou=
+ld
+be consistent naming.
 
->  - NRSMPL: select the number of averaging samples during calibration and
-
-Assuming I read AVGEN right, just have a value of 1 in here mean AVGEN is
-disabled.
-
->  - TSAMP: specifies the sample time of calibration conversions
-
-Not sure what this means.  Is it acquisition time? Is it time after a mux
-changes?  Anyhow, more info needed.
-This is the only one I can see being possibly board related.  But if it
-is and is needed for calibration, why not for normal read out?
-
-> 
-> configurable with device tree properties:
->  - nxp,calib-avg-en,
->  - nxp,calib-nr-samples and
->  - nxp,calib-t-samples.
-> 
-> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
-> ---
->  drivers/iio/adc/imx93_adc.c | 66 ++++++++++++++++++++++++++++++++++---
->  1 file changed, 61 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/imx93_adc.c b/drivers/iio/adc/imx93_adc.c
-> index 4ccf4819f1f1..ad24105761ab 100644
-> --- a/drivers/iio/adc/imx93_adc.c
-> +++ b/drivers/iio/adc/imx93_adc.c
-> @@ -18,6 +18,7 @@
->  #include <linux/platform_device.h>
->  #include <linux/pm_runtime.h>
->  #include <linux/regulator/consumer.h>
-> +#include <linux/property.h>
->  
->  #define IMX93_ADC_DRIVER_NAME	"imx93-adc"
->  
-> @@ -43,6 +44,9 @@
->  #define IMX93_ADC_MCR_MODE_MASK			BIT(29)
->  #define IMX93_ADC_MCR_NSTART_MASK		BIT(24)
->  #define IMX93_ADC_MCR_CALSTART_MASK		BIT(14)
-> +#define IMX93_ADC_MCR_AVGEN_MASK		BIT(13)
-> +#define IMX93_ADC_MCR_NRSMPL_MASK		GENMASK(12, 11)
-> +#define IMX93_ADC_MCR_TSAMP_MASK		GENMASK(10, 9)
->  #define IMX93_ADC_MCR_ADCLKSE_MASK		BIT(8)
->  #define IMX93_ADC_MCR_PWDN_MASK			BIT(0)
->  #define IMX93_ADC_MSR_CALFAIL_MASK		BIT(30)
-> @@ -145,7 +149,7 @@ static void imx93_adc_config_ad_clk(struct imx93_adc *adc)
->  
->  static int imx93_adc_calibration(struct imx93_adc *adc)
->  {
-> -	u32 mcr, msr;
-> +	u32 mcr, msr, value;
->  	int ret;
->  
->  	/* make sure ADC in power down mode */
-> @@ -156,12 +160,64 @@ static int imx93_adc_calibration(struct imx93_adc *adc)
->  	mcr &= ~FIELD_PREP(IMX93_ADC_MCR_ADCLKSE_MASK, 1);
->  	writel(mcr, adc->regs + IMX93_ADC_MCR);
->  
-> -	imx93_adc_power_up(adc);
-> -
->  	/*
-> -	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
-> -	 * can add the setting of these bit if need in future.
-> +	 * Set calibration settings:
-> +	 * - AVGEN: allow averaging of calibration time,
-> +	 * - NRSMPL: select the number of averaging samples during calibration,
-> +	 * - TSAMP: specifies the sample time of calibration conversions.
->  	 */
-> +	if (!device_property_read_u32(adc->dev, "nxp,calib-avg-en", &value)) {
-> +		mcr &= ~IMX93_ADC_MCR_AVGEN_MASK;
-> +		mcr |= FIELD_PREP(IMX93_ADC_MCR_AVGEN_MASK, value);
-> +	}
-> +
-> +	if (!device_property_read_u32(adc->dev, "nxp,calib-nr-samples", &value)) {
-Handle error for not present different from a failure to read or similar.
-Not present isn't an error, just a fall back to defaults.
-For other error codes we should fail the probe.
-> +		switch (value) {
-> +		case 16:
-> +			value = 0x0;
-Don't do this in place, meaning of value before this point different to what
-you have in it going forwards. Use a different variable name to make that clear.
-reg_val vs nr_samples perhaps?
-> +			break;
-> +		case 32:
-> +			value = 0x1;
-> +			break;
-> +		case 128:
-> +			value = 0x2;
-> +			break;
-> +		case 512:
-> +			value = 0x3;
-> +			break;
-> +		default:
-> +			dev_warn(adc->dev, "NRSMPL: wrong value, using default: 512\n");
-
-Fail the probe rather than papering over a wrong value. I'd rather we got the DT fixed
-quickly and if someone wanted another value, they really did want it.
-
-We probably do want a default though for the property not being present (given it is new).
-so take setting of this variable outside the if(!device_property_read_u32);
-> +			value = 0x3;
-> +		}
-> +		mcr &= ~IMX93_ADC_MCR_NRSMPL_MASK;
-> +		mcr |= FIELD_PREP(IMX93_ADC_MCR_NRSMPL_MASK, value);
-> +	}
-> +
-> +	if (!device_property_read_u32(adc->dev, "nxp,calib-t-samples", &value)) {
-> +		switch (value) {
-> +		case 8:
-> +			value = 0x1;
-> +			break;
-> +		case 16:
-> +			value = 0x2;
-> +			break;
-> +		case 22:
-> +			value = 0x0;
-> +			break;
-> +		case 32:
-> +			value = 0x3;
-> +			break;
-> +		default:
-> +			dev_warn(adc->dev, "TSAMP: wrong value, using default: 22\n");
-> +			value = 0x0;
-> +		}
-> +		mcr &= ~IMX93_ADC_MCR_TSAMP_MASK;
-> +		mcr |= FIELD_PREP(IMX93_ADC_MCR_TSAMP_MASK, value);
-> +	}
-> +
-> +	writel(mcr, adc->regs + IMX93_ADC_MCR);
-> +
-> +	imx93_adc_power_up(adc);
->  
->  	/* run calibration */
->  	mcr = readl(adc->regs + IMX93_ADC_MCR);
-
+(...)
 

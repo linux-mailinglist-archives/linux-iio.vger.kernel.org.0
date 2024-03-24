@@ -1,56 +1,68 @@
-Return-Path: <linux-iio+bounces-3741-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3742-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392EC887CF3
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 14:51:31 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA327887CF8
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 14:54:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD61E1F2133B
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 13:51:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 201E9B20C5A
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 13:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9BE17C71;
-	Sun, 24 Mar 2024 13:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A7D117C9B;
+	Sun, 24 Mar 2024 13:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EY39n9/2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sfiiQY+T"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 458401A38DA;
-	Sun, 24 Mar 2024 13:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD38E17BCA;
+	Sun, 24 Mar 2024 13:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711288283; cv=none; b=m6Vtv97N/3FpasyS/qXSjQ+gj2MMpnRbiVhdWvouQ+ICOn8Wp3ZAVxJK0oIDN9Zx1f2qSd4b9b8+TQRrBDjEEjfRQjL8WE2Oljef0NCBrA0mG926sb95pomVRVEuFZB2pGCV/UpjwZJdE3QebVUDTRINdRNn1aGZIKx936WooH8=
+	t=1711288482; cv=none; b=OeyAl4YW4L9NOrwF1kmnGff31NRnCt3gr5UBtFBnfllc/HtzgyK72dXYWcL6FZQRGBHWdQBJ2euYonQfVFd98nvQSZmeQ6n9IBs5vGr423lxWa0rfCO/sn9D4SdmUEkXkfGXcqmaDnT62N8lspgRQL5+6LXbBrV6ZJ/DFXyZue8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711288283; c=relaxed/simple;
-	bh=Q1qsaNc4Xf1RFSr+vL9gGoT1ITWqAgeVcD4vzkh8OOU=;
+	s=arc-20240116; t=1711288482; c=relaxed/simple;
+	bh=L3eiBM3uq6W9B54PHA6++0VN5SYP8Sh0IVo8b/FkvIE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V/KLuJso9tM53Wzy9UtwymKb0wEQgh8E7J/rwNj9coVIrinNVXLtWWCZ0KDKxFye9cwypg05EHDmQTFrfy6UylWijetpCTawvNoh6AaA0xRco3g/f+UAGOZ7pt0/OQADXyskj9Wzvc9VzADRXRJu+vD+cdTRe5maX5rlMaDuZ1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EY39n9/2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC09FC433F1;
-	Sun, 24 Mar 2024 13:51:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hn5kGOcuMq9PSvQ60q+pysDqNiQ9lhPldRUac3RJT8H9S4hIOSgA7Pz6sWnqXmZpuaEIoStbHohcYCGsIj3lloS6pyDaUwuk1Zm1uTYGGpylBJGwniflLzkdg5iuUJKzwrPcVJFwEHLJIqJNoJe2rfBYTbPKY93tovagKXCwvlk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sfiiQY+T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F4FAC433F1;
+	Sun, 24 Mar 2024 13:54:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711288282;
-	bh=Q1qsaNc4Xf1RFSr+vL9gGoT1ITWqAgeVcD4vzkh8OOU=;
+	s=k20201202; t=1711288481;
+	bh=L3eiBM3uq6W9B54PHA6++0VN5SYP8Sh0IVo8b/FkvIE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EY39n9/2Iz9Dw5jZ6/LFN/6DfJYpsBVf8aF1plriJ8crGr/BSN4Xpb+MXOlnj98a7
-	 TUaddxR9bi3Pao2Vg9lCO+XWPB11WobJTJY+Ms8JdLAtM8kqaJh/PYkJRR6ytyEnfb
-	 0Rd7jp4FS+6DQiwGeaTBtYCFMiyQu0A5epbtn1+kq4URa+0kJaHsLF2IiDC5/esIjB
-	 k4OBXz7PxLKid0bb0jF1OzNsjqNdAPf3Y3P2RAoaSwLf2Jzl4u/tONSM16OuKZePDl
-	 SCeHhZxD1l54+YUunXtspAgqWgWvmfUnH+JVrHv+DqPvdexbxS+gUXpQfZb+eIZ2ah
-	 7Qy3c1rY16pwA==
-Date: Sun, 24 Mar 2024 13:51:10 +0000
+	b=sfiiQY+TsD3FaX0kL3X/fKuSvqjPE3/1wMNAfjfC/BqoJ5/mloZ6YrOYfOBQF0rFc
+	 R4NNlmOifgOI3sXL13QlHJh+Pwg/nL4WwcJz3Lr2XfiAcWGEEwBfe896Z1OwcR0r2m
+	 VPaf2gSw75Fw5G7pjqm0g2DPh0Rgi6UmfGatEhnLbl11vVGbFLz5W+OTtHyevrdPjO
+	 YoRJImLD9Hh28Dt25hWC4VK0ZV6ZPplCuEwMQhEhORzmrx5dBqHNgIQcledk8BOmYu
+	 Nj0kphW0O1KKo5wthVGBrbH6iYZcPIXPe5Ne40U/31yGoNadxnaMgfWYzsAy4KYGWc
+	 4zxp3apamBadQ==
+Date: Sun, 24 Mar 2024 13:54:25 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Petre Rodan <petre.rodan@subdimension.ro>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-kernel@vger.kernel.org,
- kernel-janitors@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: pressure: hsc030pa: Use spi_read()
-Message-ID: <20240324135110.1e71572d@jic23-huawei>
-In-Reply-To: <8327ac591d244ac85aa83c01e559076159c7ba12.1711283728.git.christophe.jaillet@wanadoo.fr>
-References: <8327ac591d244ac85aa83c01e559076159c7ba12.1711283728.git.christophe.jaillet@wanadoo.fr>
+To: Andrej Picej <andrej.picej@norik.com>
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ haibo.chen@nxp.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ lars@metafoo.de, shawnguo@kernel.org, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ upstream@lists.phytec.de
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
+ calibration properties
+Message-ID: <20240324135425.229622d6@jic23-huawei>
+In-Reply-To: <1bbd4fdf-59c5-42b2-8698-95f402645c67@norik.com>
+References: <20240320100407.1639082-1-andrej.picej@norik.com>
+	<20240320100407.1639082-3-andrej.picej@norik.com>
+	<38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
+	<e994b756-7f4e-4be3-b8f3-310988174b44@norik.com>
+	<7e58bf96-3c38-467f-86b6-06ff5feedb31@linaro.org>
+	<40e08a5e-e7e9-47c7-9102-24a2bbba67cf@norik.com>
+	<a1b173c0-5120-40f6-9708-cd810b4a2406@linaro.org>
+	<1bbd4fdf-59c5-42b2-8698-95f402645c67@norik.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,44 +73,120 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun, 24 Mar 2024 13:36:16 +0100
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
+On Fri, 22 Mar 2024 10:58:54 +0100
+Andrej Picej <andrej.picej@norik.com> wrote:
 
-> Use spi_read() instead of hand-writing it.
-> It is less verbose.
+> On 22. 03. 24 09:14, Krzysztof Kozlowski wrote:
+> > On 22/03/2024 08:39, Andrej Picej wrote:  
+> >> On 20. 03. 24 13:15, Krzysztof Kozlowski wrote:  
+> >>> On 20/03/2024 13:05, Andrej Picej wrote:  
+> >>>> Hi Krzysztof,
+> >>>>
+> >>>> On 20. 03. 24 11:26, Krzysztof Kozlowski wrote:  
+> >>>>> On 20/03/2024 11:04, Andrej Picej wrote:  
+> >>>>>> Document calibration properties and how to set them.  
+> >>>>>
+> >>>>> Bindings are before users.  
+> >>>>
+> >>>> will change patch order when I send a v2.
+> >>>>  
+> >>>>>
+> >>>>> Please use subject prefixes matching the subsystem. You can get them for
+> >>>>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+> >>>>> your patch is touching.
+> >>>>> There is no file extension in prefixes.  
+> >>>>
+> >>>> So: dt-bindings: iio/adc: nxp,imx93-adc: Add calibration properties?  
+> >>>
+> >>> Did you run the command I proposed? I don't see much of "/", but except
+> >>> that looks good.  
+> >>
+> >> Ok noted.
+> >>  
+> >>>  
+> >>>>  
+> >>>>>  
+> >>>>>>
+> >>>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> >>>>>> ---
+> >>>>>>     .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
+> >>>>>>     1 file changed, 15 insertions(+)
+> >>>>>>
+> >>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> >>>>>> index dacc526dc695..64958be62a6a 100644
+> >>>>>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> >>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> >>>>>> @@ -46,6 +46,21 @@ properties:
+> >>>>>>       "#io-channel-cells":
+> >>>>>>         const: 1
+> >>>>>>     
+> >>>>>> +  nxp,calib-avg-en:
+> >>>>>> +    description:
+> >>>>>> +      Enable or disable averaging of calibration time.
+> >>>>>> +    enum: [ 0, 1 ]
+> >>>>>> +
+> >>>>>> +  nxp,calib-nr-samples:
+> >>>>>> +    description:
+> >>>>>> +      Selects the number of averaging samples to be used during calibration.
+> >>>>>> +    enum: [ 16, 32, 128, 512 ]
+> >>>>>> +
+> >>>>>> +  nxp,calib-t-samples:
+> >>>>>> +    description:
+> >>>>>> +      Specifies the sample time of calibration conversions.
+> >>>>>> +    enum: [ 8, 16, 22, 32 ]  
+> >>>>>
+> >>>>> No, use existing, generic properties. Open other bindings for this.  
+> >>>>
+> >>>> You mean I should use generic properties for the ADC calibration
+> >>>> settings? Is there already something in place? Because as I understand
+> >>>> it, these calib-* values only effect the calibration process of the ADC.  
+> >>>
+> >>> Please take a look at other devices and dtschema. We already have some
+> >>> properties for this... but maybe they cannot be used?
+> >>>  
+> >>
+> >> I did look into other ADC devices, grep across iio/adc, adc bindings
+> >> folders and couldn't find anything closely related to what we are
+> >> looking for. Could you please point me to the properties that you think
+> >> should be used for this?  
+> > 
+> > Indeed, there are few device specific like qcom,avg-samples. We have
+> > though oversampling-ratio, settling-time-us and min-sample-time (which
+> > is not that good because does not use unit suffix).  
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Applied to the togreg-normal branch of iio.git.
-
-Thanks,
-
-Jonathan
-
-> ---
-> Compile test only
-> ---
->  drivers/iio/pressure/hsc030pa_spi.c | 7 +------
->  1 file changed, 1 insertion(+), 6 deletions(-)
+> Ok, these are examples but I think I should not use them, since these 
+> are i.MX93 ADC specific settings, which are used for configuration of 
+> calibration process, and are not related to the standard conversion 
+> process during runtime. Calibration process is the first step that 
+> should be done after every power-on reset.
 > 
-> diff --git a/drivers/iio/pressure/hsc030pa_spi.c b/drivers/iio/pressure/hsc030pa_spi.c
-> index 818fa6303454..337eecc577d2 100644
-> --- a/drivers/iio/pressure/hsc030pa_spi.c
-> +++ b/drivers/iio/pressure/hsc030pa_spi.c
-> @@ -23,14 +23,9 @@
->  static int hsc_spi_recv(struct hsc_data *data)
->  {
->  	struct spi_device *spi = to_spi_device(data->dev);
-> -	struct spi_transfer xfer = {
-> -		.tx_buf = NULL,
-> -		.rx_buf = data->buffer,
-> -		.len = HSC_REG_MEASUREMENT_RD_SIZE,
-> -	};
->  
->  	msleep_interruptible(HSC_RESP_TIME_MS);
-> -	return spi_sync_transfer(spi, &xfer, 1);
-> +	return spi_read(spi, data->buffer, HSC_REG_MEASUREMENT_RD_SIZE);
->  }
->  
->  static int hsc_spi_probe(struct spi_device *spi)
+> > 
+> > Then follow up questions:
+> >   - nxp,calib-avg-en: Why is it a board-level decision? I would assume
+> > this depends on user choice and what kind of input you have (which could
+> > be board dependent or could be runtime decision).  
+> 
+> Not really sure I get your question, so please elaborate if I missed the 
+> point.
+> This is a user choice, to enable or disable the averaging function in 
+> calibration, but this is a board-level decision, probably relates on 
+> external ADC regulators and input connections. The same options are used 
+> for every ADC channel and this can not be a runtime decision, since 
+> calibration is done before the ADC is even registered.
+
+I'll raise this question in reply to the cover letter or patch 1 where
+it is perhaps more appropriate, but I'd really like to know more about why
+these are useful at all. 
+
+> 
+> >   - nxp,calib-t-samples: what does it mean? Time is expressed in time
+> > units, but there is nothing about units in the property name.
+> >   
+> 
+> You are right, basically this is "time" in cycles of AD_CLK. I should at 
+> least add that to the property description.
+> 
+> Best regards,
+> Andrej Picej
 
 

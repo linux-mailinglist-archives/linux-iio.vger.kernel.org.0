@@ -1,58 +1,57 @@
-Return-Path: <linux-iio+bounces-3736-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3737-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C20C887CE3
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 14:38:12 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E60887CE7
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 14:40:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 964271C20A34
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 13:38:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A654C1C20BA0
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 13:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B524717C69;
-	Sun, 24 Mar 2024 13:38:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E28617C69;
+	Sun, 24 Mar 2024 13:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nvwfy8ON"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FLWBkroE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E82217BD8;
-	Sun, 24 Mar 2024 13:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A701A38DA;
+	Sun, 24 Mar 2024 13:39:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711287486; cv=none; b=Ce/xurh2nhVYhbkN+aF++HUzo22gGfsVdrwcdQwN6Qz+yJsuSAHMAdoQuxkOaFnrAr7pwu3kccTHUVJdLAsQKd4MQqr7ThuLocAjvBWdgOjVKF1Jqhr/lY402BhHdn4zTifHIxu7NSxxgFgGMS51al27Eod1Sd/1sSjY0AYd5/8=
+	t=1711287596; cv=none; b=kq9FyO9Tb1xo/ZiOZng2kEqwJMX/IOuP+RvzXajope9m3CKRd3OsgNy3ZtlAzHXDBfrOIJ4V6WGI5ZEYHTLsoBjXS4nXFRZ1XOgmgtyUJqXCrgi21yW+IZ82FPjEgEEusLB7vF0pkNs5HNfOD+cEQdWuD9QSXbRUOzg634bFef8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711287486; c=relaxed/simple;
-	bh=CfPLowhVJWOgHSpIDdiRA2W3/MXOWwK0oT2i32knapo=;
+	s=arc-20240116; t=1711287596; c=relaxed/simple;
+	bh=YKFMBj2kiq7RfXQL4DsoVd4QBUTciDzc2eqHAYf/zTs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NxjeeQ3Fnch0l/qUpitWu5LrK7Wr5hZCAt5CgE9oX/9pIQkucZd58Bel/QeXAngGlKCc4TFJ2v6zZ7i0bybvll3qNnNSo4pqs+UDIN21E+DQPgTWPgYE8/O5qDw98rKNmQVF0nP24MVvcpmkBLWuVaxab16o50576wnh8m93rFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nvwfy8ON; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7CBC433C7;
-	Sun, 24 Mar 2024 13:38:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SwOsMzdzI3KV3sYiYckm/RQS+H/OXi+5/7gdlAaiLTKzKBu3hCMayZbiOZTrQM2WBDs7zBZPfSwcpaEtmiAwNv1RoQkVIrULhFB1HlpDnan9Ok9vh+6xuqUB8kBI2uTLSpC2BbyR5ROvQZDz+UGPgF70KDb42ThSlB0/D1SCGrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FLWBkroE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59737C433C7;
+	Sun, 24 Mar 2024 13:39:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711287485;
-	bh=CfPLowhVJWOgHSpIDdiRA2W3/MXOWwK0oT2i32knapo=;
+	s=k20201202; t=1711287595;
+	bh=YKFMBj2kiq7RfXQL4DsoVd4QBUTciDzc2eqHAYf/zTs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Nvwfy8ONivkIFPmVWdx15JfEoa6wfD/HQtoReundd1lzpXBvRCKc6JLBarvEy5ezg
-	 JUd61M9giQ+6TQIswk6W37druB5ziRi6JpCd8C8aM3bDxRf2XUba5VtQPFAG0VPXoS
-	 3AP1m6NRFv+E9PPc5trbrN1cJgAwTqsqHrleUDljkg9g+BVjuDC8mc953uFerj+r80
-	 6KJx1/ky2qBZj3XAq3631o2Fs7cTfbIzWy6FmMagZz3X9Y+qwUdWNWtaA2VDFZk/6w
-	 AT5446lVsdcmZ2k//A1wp5fuxfwaOo6llw5oA52iNXRyoXR1IXmJV3z9P55IUCmSRX
-	 89a1C8kQi1a9g==
-Date: Sun, 24 Mar 2024 13:37:49 +0000
+	b=FLWBkroEr5q7ie8g4JwhZgqGyM2SuqtY5pdEgO3ZRrwL+UjO22QAsXtL+1DYBU6rd
+	 XAV8Wo2Ut7j4Tf3DaZYaGMkmdjtfXQAltOoN8fQFSqp6jR0BKAnCKqbxbQUxNgYlP1
+	 /nu/1rMNq93308Gi9BHZQxzOkmxjrjGtDP+skx8U31as5c1AEsHMGrOW4SJMlRearL
+	 r3e7iicuodnKc7L2XwtcgdF1EEzwDBwW0p49615zolZ+KTxuNLOwgCTJ2K+YKZcp4j
+	 akRx3DXfoluWFJ60Brj56ilGUyWTzwfvdzchWOFD+T3KAKdeMbE0e9fTnwzi8FqgSg
+	 jZcgViXP7JhLQ==
+Date: Sun, 24 Mar 2024 13:39:41 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org,
  krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Subject: Re: [PATCH v3 5/6] iio: accel: adxl345: Group bus configuration
-Message-ID: <20240324133749.636e1df4@jic23-huawei>
-In-Reply-To: <20240323122030.21800-6-l.rubusch@gmail.com>
+Subject: Re: [PATCH v3 0/6] iio: accel: adxl345: Add spi-3wire feature
+Message-ID: <20240324133941.26814432@jic23-huawei>
+In-Reply-To: <20240323122030.21800-1-l.rubusch@gmail.com>
 References: <20240323122030.21800-1-l.rubusch@gmail.com>
-	<20240323122030.21800-6-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,75 +62,57 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 23 Mar 2024 12:20:29 +0000
+On Sat, 23 Mar 2024 12:20:24 +0000
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> In the probe function group bus configuration and the
-> indio_dev initialization to improve readability. Add a
-> comment to the probe function to explain function arguments.
-Doing 2 unrelated things. 2 Patches.
-
+> Pass a function setup() as pointer from SPI/I2C specific modules
+> to the core module. Implement setup() to pass the spi-3wire bus
+> option, if declared in the device-tree.
+> 
+> In the core module, then update data_format register
+> configuration bits instead of overwriting it. The changes allow
+> to remove a data_range field, remove I2C and SPI redundant info
+> instances and replace them by a common info array instance.
 > 
 > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+That patch break up seems reasonable (one minor request for a split
+in the relevant patch), but normal convention would be do do
+refactoring first, then functionality at the end. Also removal stuff
+and group, before adding things. 
+
+So roughly speaking reorder as
+
+>   iio: accel: adxl345: Make data_format obsolete
+>   iio: accel: adxl345: Remove single info instances
+>   iio: accel: adxl345: Group bus configuration
+>   dt-bindings: iio: accel: adxl345: Add spi-3wire
+>   iio: accel: adxl345: Pass function pointer to core
+>   iio: accel: adxl345: Add the spi-3wire
+
+Thanks,
+
+Jonathan
+
+
+
 > ---
->  drivers/iio/accel/adxl345_core.c | 23 +++++++++++++++++------
->  1 file changed, 17 insertions(+), 6 deletions(-)
+> V1 -> V2: split into spi-3wire and refactoring
+> V2 -> V3: split further, focus on needed changesets
 > 
-> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
-> index e3718d0dd..662628cdf 100644
-> --- a/drivers/iio/accel/adxl345_core.c
-> +++ b/drivers/iio/accel/adxl345_core.c
-> @@ -209,6 +209,16 @@ static void adxl345_powerdown(void *regmap)
->  	regmap_write(regmap, ADXL345_REG_POWER_CTL, ADXL345_POWER_CTL_STANDBY);
->  }
->  
-> +/**
-> + * adxl345_core_probe() - probe and setup for the adxl345 accelerometer,
-> + *                        also covers the adlx375 accelerometer
-> + * @dev:	Driver model representation of the device
-> + * @regmap:	Regmap instance for the device
-> + * @setup:	Setup routine to be executed right before the standard device
-> + *		setup, can also be set to NULL if not required
- * @setup:	Optional setup routine to be executed right before standard
- *		device setup.
-
-For a function pointer, optional implies NULL if you don't want it.
-
-> + *
-> + * Return: 0 on success, negative errno on error
-> + */
->  int adxl345_core_probe(struct device *dev, struct regmap *regmap,
->  	int (*setup)(struct device*, struct regmap*))
->  {
-> @@ -238,22 +248,23 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap,
->  
->  	data = iio_priv(indio_dev);
->  	data->regmap = regmap;
-> -	/* Enable full-resolution mode */
-> +
->  	data->info = device_get_match_data(dev);
->  	if (!data->info)
->  		return -ENODEV;
->  
-> -	ret = regmap_update_bits(regmap, ADXL345_REG_DATA_FORMAT,
-> -				 ADXL345_DATA_FORMAT_MSK, ADXL345_DATA_FORMAT_FULL_RES);
-> -	if (ret)
-> -		return dev_err_probe(dev, ret, "Failed to set data range\n");
-> -
->  	indio_dev->name = data->info->name;
->  	indio_dev->info = &adxl345_info;
->  	indio_dev->modes = INDIO_DIRECT_MODE;
->  	indio_dev->channels = adxl345_channels;
->  	indio_dev->num_channels = ARRAY_SIZE(adxl345_channels);
->  
-> +	/* Enable full-resolution mode */
-> +	ret = regmap_update_bits(regmap, ADXL345_REG_DATA_FORMAT,
-> +				 ADXL345_DATA_FORMAT_MSK, ADXL345_DATA_FORMAT_FULL_RES);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to set data range\n");
-> +
->  	/* Enable measurement mode */
->  	ret = adxl345_powerup(data->regmap);
->  	if (ret < 0)
+> Lothar Rubusch (6):
+>   iio: accel: adxl345: Pass function pointer to core
+>   iio: accel: adxl345: Make data_format obsolete
+>   iio: accel: adxl345: Add the spi-3wire
+>   iio: accel: adxl345: Remove single info instances
+>   iio: accel: adxl345: Group bus configuration
+>   dt-bindings: iio: accel: adxl345: Add spi-3wire
+> 
+>  .../bindings/iio/accel/adi,adxl345.yaml       |  2 +
+>  drivers/iio/accel/adxl345.h                   | 13 ++++-
+>  drivers/iio/accel/adxl345_core.c              | 48 +++++++++++++++----
+>  drivers/iio/accel/adxl345_i2c.c               | 22 +++------
+>  drivers/iio/accel/adxl345_spi.c               | 32 ++++++-------
+>  5 files changed, 75 insertions(+), 42 deletions(-)
+> 
 
 

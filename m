@@ -1,152 +1,103 @@
-Return-Path: <linux-iio+bounces-3726-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3727-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C51887CB5
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 13:19:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08C44887CC0
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 13:36:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E61F91F2145C
-	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 12:19:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39ED21C20873
+	for <lists+linux-iio@lfdr.de>; Sun, 24 Mar 2024 12:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CF2017BA2;
-	Sun, 24 Mar 2024 12:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67386BE7F;
+	Sun, 24 Mar 2024 12:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YYMg6VO/"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="myamaYhu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from msa.smtpout.orange.fr (smtp-82.smtpout.orange.fr [80.12.242.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF2B2CA4;
-	Sun, 24 Mar 2024 12:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 317B61A38EA;
+	Sun, 24 Mar 2024 12:36:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711282747; cv=none; b=pbGuRqq2nXqSdO9u1zJIHVEHlRBrC6R9KrlO/JNPArfXZpm6l1guHEuRvgBg9RDQHnoPU6W+4sCvLkgiSvmA515jTWmS5ypJQJ2MTLGOuLjdn6dF7EwAyDiH9F2T1emjxKO04l36VVOsJqAZcaC61IxXO+00EgYsbVj0Xm+dEFU=
+	t=1711283793; cv=none; b=ffa3Xz3l8IAGpO63zvE8c3MqbMsncmlLcfrH8e+QdfkzfhosLwqOb6dOPA7vGMC18EBzTcP/I0DZqfpiHA45ICSyDICBpnEMMMk2qopnJEM2xOiLT1qwdxzddWP/H1WJIL9M3ePyBlPkzZ08VnRhWss+vwf022k7O0rmOpED1FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711282747; c=relaxed/simple;
-	bh=+pU0k+ZWilbCia11XhbE7gGOdKY/GmRecul8h9PKu88=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LQeHp5lpuJRbGHynVivNYMfOYr0wzmmejL2U+rDLvb7+TsK7vF7ZC8K41jK01D+ltDA7kyOLzH825YP3J97WuMYv6yaJhyO4YO+3WnFi1Ei2YylANc5pdlJ+kjDvEZBjGzGASD/mVGbk+myIDTXxUOXXRwom9dckqBn/6odCEQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YYMg6VO/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E44C433C7;
-	Sun, 24 Mar 2024 12:19:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711282747;
-	bh=+pU0k+ZWilbCia11XhbE7gGOdKY/GmRecul8h9PKu88=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YYMg6VO/64puC/UfwZMRjYpEiwE10K9N5zInYwqr9GFBeEjm9EIgT2f04QGJ4WeYC
-	 6A+jillw6tEA3Y0HS56QKe8LahS8ev7njVTBVN4Qqjaeb/+w9WfntMLFzjpR9NK3O0
-	 6u1UbMxKNfCO4vJ6q834jG31nz3LMutzsdjRKm0fXrfy70nn/y0QsZHTXjbhRO7kR6
-	 Jh4qaF353ifpq8CmzsCj7w19wODa3f72Z5W9OwQ5Tm5b184/ux03gbGtYqFp+OZ/RS
-	 mDebvOoBO8+CiRW8mZzkNkgNl/I8bo1a5HA6r9FEoZ1z7rocdlxchm7zt4mMSdA9Ex
-	 AE26KNGlwVrBA==
-Date: Sun, 24 Mar 2024 12:18:53 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Michael Hennerich
- <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] iio: adc: ad7944: simplify adi,spi-mode property
- parsing
-Message-ID: <20240324121853.460ba5f8@jic23-huawei>
-In-Reply-To: <Zf8_NZ5cNb9TVThx@surfacebook.localdomain>
-References: <20240319-ad7944-cleanups-v2-1-50e77269351b@baylibre.com>
-	<CAHp75VeO_=r_pMBUTaQQYKDRAV-OVfTnPYPwV8f7KDzOhaBCvQ@mail.gmail.com>
-	<CAMknhBETEP123=EHycGtFEJjQ+NPssLXmw9ZdDoY8CRsWiSxVQ@mail.gmail.com>
-	<20240323182918.2cf624b6@jic23-huawei>
-	<Zf8_NZ5cNb9TVThx@surfacebook.localdomain>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1711283793; c=relaxed/simple;
+	bh=lWwQT6POGscHInaUBXSVs3Bvzl6JJjKrLFC4q7X2oXc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fe2DVSBBiu18uYpdLijxhOjgKETL7b8UAadu+esrL6Ey+WP45toXAhzlDGSb7D6hTeRm8ybSNCxb1w+g95tp1t/AFxQOpPh0eAgYBIX1vRtnFWL8Ib1Dn9wrHjXwMydW+e8HmcsQK8T83e7eTIFRt15ivJ23uuetN8KVGld6xmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=myamaYhu; arc=none smtp.client-ip=80.12.242.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from fedora.home ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id oN5IrIYha6CS1oN5JrDlnb; Sun, 24 Mar 2024 13:36:22 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1711283782;
+	bh=AAKPnCD08n1Ivbegax1tBgxYyf6ck38NkApHtw35RgI=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=myamaYhuvINo6+J4tEXYZmXa/jZmdPUzjt8agUOV9bfclSuBufCperDAgb/I8v6hj
+	 AL4OtzwgO0Q0e5OMWvbWWiUfHEuZacREINBto9K+29h7xWRsCwv+SHxLU6yIX7lsmC
+	 prg3rXml3JE57XWT8AwaNIiAqNfDbwyffONYdWaKsL3yJJE+i1RA4VD9FZuV7gxJEe
+	 vPDgHSSGUuBacl5iJGkYpmfVbIX6pcQ1t+kVpHjgq18z956sBDzuXwtDdMdN0Ytr96
+	 oWn/UVvJOiJ1TGgpgv5NyCDE/3RlzgFtvI0eYUMXCGcYGthx30VvqYnJZVw9VwjwDX
+	 ylXwaHWTw6ewA==
+X-ME-Helo: fedora.home
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 24 Mar 2024 13:36:22 +0100
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Petre Rodan <petre.rodan@subdimension.ro>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: pressure: hsc030pa: Use spi_read()
+Date: Sun, 24 Mar 2024 13:36:16 +0100
+Message-ID: <8327ac591d244ac85aa83c01e559076159c7ba12.1711283728.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sat, 23 Mar 2024 22:44:37 +0200
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+Use spi_read() instead of hand-writing it.
+It is less verbose.
 
-> Sat, Mar 23, 2024 at 06:29:18PM +0000, Jonathan Cameron kirjoitti:
-> > On Tue, 19 Mar 2024 10:28:31 -0500
-> > David Lechner <dlechner@baylibre.com> wrote: =20
-> > > On Tue, Mar 19, 2024 at 10:01=E2=80=AFAM Andy Shevchenko
-> > > <andy.shevchenko@gmail.com> wrote: =20
-> > > > On Tue, Mar 19, 2024 at 4:28=E2=80=AFPM David Lechner <dlechner@bay=
-libre.com> wrote:   =20
->=20
-> ...
->=20
-> > > > > +       ret =3D device_property_match_property_string(dev, "adi,s=
-pi-mode",
-> > > > > +                                                   ad7944_spi_mo=
-des,
-> > > > > +                                                   ARRAY_SIZE(ad=
-7944_spi_modes));
-> > > > > +       if (ret < 0) {
-> > > > > +               if (ret !=3D -EINVAL)
-> > > > > +                       return dev_err_probe(dev, ret,
-> > > > > +                                            "getting adi,spi-mod=
-e property failed\n");   =20
-> > > >   =20
-> > > > > -               adc->spi_mode =3D ret;
-> > > > > -       } else {   =20
-> > > >
-> > > > Actually we may even leave these unchanged
-> > > >   =20
-> > > > >                 /* absence of adi,spi-mode property means default=
- mode */
-> > > > >                 adc->spi_mode =3D AD7944_SPI_MODE_DEFAULT;
-> > > > > +       } else {
-> > > > > +               adc->spi_mode =3D ret;
-> > > > >         }   =20
-> > > >
-> > > >        ret =3D device_property_match_property_string(dev, "adi,spi-=
-mode",
-> > > >                                                    ad7944_spi_modes,
-> > > >
-> > > > ARRAY_SIZE(ad7944_spi_modes));
-> > > >        if (ret >=3D 0) {
-> > > >                adc->spi_mode =3D ret;
-> > > >        } else if (ret !=3D -EINVAL) {
-> > > >                        return dev_err_probe(dev, ret,
-> > > >                                             "getting adi,spi-mode
-> > > > property failed\n");
-> > > >        } else {
-> > > >                /* absence of adi,spi-mode property means default mo=
-de */
-> > > >                adc->spi_mode =3D AD7944_SPI_MODE_DEFAULT;
-> > > >        }
-> > > >
-> > > > But I can admit this is not an often used approach.
-> > > >   =20
-> > >=20
-> > > I think Jonathan prefers to have the error path first, so I would like
-> > > to wait and see if he has an opinion here. =20
-> > I do prefer error paths first.  Thanks. =20
->=20
-> Still the above can be refactored to have one line less
->=20
-> 	ret =3D device_property_match_property_string(dev, "adi,spi-mode",
->                                                     ad7944_spi_modes,
-> 						    ARRAY_SIZE(ad7944_spi_modes));
-> 	if (ret =3D=3D -EINVAL) {
-> 		/* absence of adi,spi-mode property means default mode */
-> 		adc->spi_mode =3D AD7944_SPI_MODE_DEFAULT;
-> 	} else if (ret < 0) {
-> 		return dev_err_probe(dev, ret, "getting adi,spi-mode property failed\n"=
-);
-> 	} else {
-> 		adc->spi_mode =3D ret;
->         }
->=20
-True.  I'll take a patch doing that, but I'm not going to tweak
-it again directly.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile test only
+---
+ drivers/iio/pressure/hsc030pa_spi.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-Thanks,
-
-Jonathan
+diff --git a/drivers/iio/pressure/hsc030pa_spi.c b/drivers/iio/pressure/hsc030pa_spi.c
+index 818fa6303454..337eecc577d2 100644
+--- a/drivers/iio/pressure/hsc030pa_spi.c
++++ b/drivers/iio/pressure/hsc030pa_spi.c
+@@ -23,14 +23,9 @@
+ static int hsc_spi_recv(struct hsc_data *data)
+ {
+ 	struct spi_device *spi = to_spi_device(data->dev);
+-	struct spi_transfer xfer = {
+-		.tx_buf = NULL,
+-		.rx_buf = data->buffer,
+-		.len = HSC_REG_MEASUREMENT_RD_SIZE,
+-	};
+ 
+ 	msleep_interruptible(HSC_RESP_TIME_MS);
+-	return spi_sync_transfer(spi, &xfer, 1);
++	return spi_read(spi, data->buffer, HSC_REG_MEASUREMENT_RD_SIZE);
+ }
+ 
+ static int hsc_spi_probe(struct spi_device *spi)
+-- 
+2.44.0
 
 

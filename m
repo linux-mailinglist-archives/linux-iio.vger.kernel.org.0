@@ -1,118 +1,188 @@
-Return-Path: <linux-iio+bounces-3782-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3783-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3355C88AF50
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:05:57 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC18A88AF77
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:10:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64A5C1C617D8
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 19:05:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60ECE300E3D
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 19:10:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C4F579F3;
-	Mon, 25 Mar 2024 19:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6521211718;
+	Mon, 25 Mar 2024 19:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k/JFiSKo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1ROJjS2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6CFD4A33;
-	Mon, 25 Mar 2024 19:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2233F10940;
+	Mon, 25 Mar 2024 19:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711393523; cv=none; b=Cxdg35NXqJNyjNQIf/g/UklVciOLlWQkn6y9jtYjR7Yafy+rn12XhzlFm3tgOhOMYEBQqGckx153vS1xavCl8amsacgLSiA50yymaA7xMk47+B6dIhiSQasmIOaU6ZXYP7U7RWrZ/fBSLW4ozTXh0bfXQmUfCnNxuT8CIygSe7A=
+	t=1711393856; cv=none; b=OwioBDKHJfchDZTqzt25utYXXdlCskUwTEmhVDeBRn17wxX2PTahMASFM/7CCh9PcpWZ/Ta22paX2GLCuYUxEMCuSJ8eZ/acB6Kp0s4mpFyuqNjbM+5xMojuh7V6ilJDAwtx64DqsWw+8hehlK3EL2Q/Pd3K1500ZYtGVWuHy58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711393523; c=relaxed/simple;
-	bh=imG8xgxcPx30/lu9EJ3K96nuumxUx7F7pd9ZvWzDEV0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AEAKLqGBauc9Zk1VdWd4yemX1PnQNPiuovxDO+GXmPgmo5iP0WCLHXZmmGSX44f6WYyKhXXCuYc0VW9xg5ymwbyUtEWpydeKSSe/hdeyl+g5D/qLQq/itGAiLpMGQRaKQVHudDyUvnynp/rARmIyEDYxudpWOFmo3kg8HZXnde4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k/JFiSKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8B2C433C7;
-	Mon, 25 Mar 2024 19:05:19 +0000 (UTC)
+	s=arc-20240116; t=1711393856; c=relaxed/simple;
+	bh=Acg0P6AHCvwEDQelG6mbWObj6GUgihKlFCeUtBlOkuw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V4pEORIWtRrHmxDIkCFpEOSccCtDi+lPsOA5GOQEW8CJCB4l0BFwX/WrCYxWVVgMpDaH7QM2EHHj+Sn+n8IEWQtbzC9CycBj+sg54E3GpKCFdpo5/A4N1zvDvLYrQ1KOsYlIinhojJGFYt6u4rKJPPbFav+B0UPjTc0iz1yjK4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1ROJjS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B701C433F1;
+	Mon, 25 Mar 2024 19:10:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711393522;
-	bh=imG8xgxcPx30/lu9EJ3K96nuumxUx7F7pd9ZvWzDEV0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k/JFiSKoWsiSp0ACzCjFZpKAiiw5bw7e7o0gffKtyrp1Le6QiasdS2VMaw+dcPEyW
-	 i6CaFyzqAXBBahSk6mspmgg46bbIGM4MCYXc429wnHJsrBJf8ldSMv142nAt7LqTp2
-	 nstYltr3iAz++qCRZNwwYQ/0abtHsXWl5MiV00lbBAmXKunyLMTO8J62i57htp3gMf
-	 tcaDwv/CDNkb7B9TYayQefSi06TQqYyttqRurO2//9biidVQNxr+ESbD+4za11wlmz
-	 eKjw7bNqRm4jNM2BzfYfTdi0OLYbfQkenWiTqEzIPqaOd0YHogecZDiq+TJgT+QsB9
-	 3GGkejg4dZBgQ==
-Date: Mon, 25 Mar 2024 19:05:18 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Matt Ranostay <matt@ranostay.sg>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: health: maxim,max30102: fix compatible
- check
-Message-ID: <20240325-partake-nearby-4e129032a347@spud>
-References: <20240316-max30102_binding_fix-v1-1-e8e58f69ef8a@gmail.com>
- <20240317-bakery-numeric-a34b928efa6d@spud>
- <20240324110715.0832e6d6@jic23-huawei>
+	s=k20201202; t=1711393855;
+	bh=Acg0P6AHCvwEDQelG6mbWObj6GUgihKlFCeUtBlOkuw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Z1ROJjS2wfitCIoVCEDPjtOEzHQJT0uiW4XAkfhJGVsq0eIJPR3HFqfqxRBSEQQrE
+	 ot6UYgldEy44NAtGF25VtzyH+Rp9hr0E1dJwYo7yOHh3qyyKfyl+HIzi4lIKqQdsDk
+	 ztNbvHxwbB0f5hvdCfce/KM+gtfpUKuiIYoRSJsRfDaY8aogS/I0KFw2ukxSMrz0cW
+	 5GJ9fSIe3JSyaIK2HTd+8sMZlDq/UB9mmNTtd+obfbhn430C/1XFSpegURmurrM7Ek
+	 J9c+YsNRpOq23e6+R1Sa2c/eNd/RqwvFqGaH8q612iyzRASCPzF9Meq1v/ygCadU9M
+	 f6ctZt892CJ5Q==
+Date: Mon, 25 Mar 2024 19:10:43 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Harald Geyer <harald@ccbib.org>
+Cc: George Stark <gnstark@salutedevices.com>, lars@metafoo.de,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel@salutedevices.com
+Subject: Re: [PATCH] iio: dht11: set debug log level for parsing error
+ messages
+Message-ID: <20240325191043.4acd6532@jic23-huawei>
+In-Reply-To: <c2fb93a5b2e6f437e2c92d0d797509c619cb63a8.camel@ccbib.org>
+References: <20240325165406.226916-1-gnstark@salutedevices.com>
+	<c2fb93a5b2e6f437e2c92d0d797509c619cb63a8.camel@ccbib.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="SaQXNpdG6TnkXA9f"
-Content-Disposition: inline
-In-Reply-To: <20240324110715.0832e6d6@jic23-huawei>
-
-
---SaQXNpdG6TnkXA9f
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Mar 24, 2024 at 11:07:15AM +0000, Jonathan Cameron wrote:
-> On Sun, 17 Mar 2024 14:37:39 +0000
-> Conor Dooley <conor@kernel.org> wrote:
+On Mon, 25 Mar 2024 19:48:00 +0100
+Harald Geyer <harald@ccbib.org> wrote:
+
+> Hi George!
 >=20
-> > On Sat, Mar 16, 2024 at 11:56:57PM +0100, Javier Carrasco wrote:
-> > > The "maxim,green-led-current-microamp" property is only available for
-> > > the max30105 part (it provides an extra green LED), and must be set to
-> > > false for the max30102 part.
-> > >=20
-> > > Instead, the max30100 part has been used for that, which is not
-> > > supported by this binding (it has its own binding).
-> > >=20
-> > > This error was introduced during the txt to yaml conversion.
-> > >=20
-> > > Fixes: 5a6a65b11e3a ("dt-bindings:iio:health:maxim,max30102: txt to y=
-aml conversion")
-> > > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com> =20
+> I'm torn on this:
+>=20
+> Am Montag, dem 25.03.2024 um 19:54 +0300 schrieb George Stark:
+> > Protocol parsing errors could happen due to several reasons like
+> > noise
+> > environment, heavy load on system etc. If to poll the sensor
+> > frequently
+> > and/or for a long period kernel log will become polluted with error
+> > messages if their log level is err (i.e. on by default). =20
+>=20
+> Yes, these error are often recoverable. (As are many other HW errors,
+> that typically are logged. Eg USB bus resets due to EMI)
+>=20
+> However they are still genuine errors of the HW.
+>=20
+> >  Also some types
+> > of those messages already have dbg level so use unified log level for
+> > all such cases. =20
+>=20
+> My take so far has been: Debug level messages are for debugging the
+> code (ie adding/testing support of new device variants etc). Users
+> aren't expected to know about or enable debug output. OTOH anything
+> actually going wrong is an error and should be logged as such.
+>=20
+> The idea is, that these messages help users understand issues with
+> their HW (like too long cables, broken cables etc). But it is true,
+> that they will slowly accumulate in many real world scenarios without
+> anything being truly wrong.
+>=20
+> I don't consider the dmesg buffer being rotated after a month or two a
+> bug. But I suppose this is a corner case. I'll happily accept whatever
+> Jonathan thinks is reasonable.
+My take:
+
+If the errors are eaten with no user visibility then they should
+be logged (errors in interrupt handlers etc) but for errors in
+code that returns an error code to the userspace read or similar there
+is info that 'something went wrong' available via that then it's fine
+to use dev_dbg() with expectation anyone who is looking into issues
+can turn them on.  However, I defer to driver maintainers on whether
+they prefer dev_err() or dev_dbg() for these sorts of cases. Far
+as I'm concerned either choice is fine and it's a judgement on
+the expected rates of error and impact.
+
+Jonathan
+
+>=20
+> Best regards,
+> Harald
+>=20
+>=20
+> > Signed-off-by: George Stark <gnstark@salutedevices.com>
+> > ---
+> > I use DHT22 sensor with Raspberry Pi Zero W as a simple home meteo
+> > station.
+> > Even if to poll the sensor once per tens of seconds after month or
+> > two dmesg
+> > may become full of useless parsing error messages. Anyway those
+> > errors are caught
+> > in the user software thru return values.
 > >=20
-> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> Applied to the fixes-togreg branch of iio.git (which I'll rebase on rc1 o=
-nce available)
-> and marked for stable.  Not really a critical thing to backport, but mayb=
-e it is worth
-> doing as risk is very low
+> > =C2=A0drivers/iio/humidity/dht11.c | 4 ++--
+> > =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
+> >=20
+> > diff --git a/drivers/iio/humidity/dht11.c
+> > b/drivers/iio/humidity/dht11.c
+> > index c97e25448772..e2cbc442177b 100644
+> > --- a/drivers/iio/humidity/dht11.c
+> > +++ b/drivers/iio/humidity/dht11.c
+> > @@ -156,7 +156,7 @@ static int dht11_decode(struct dht11 *dht11, int
+> > offset)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0dht11->temperature =3D temp_int * 1000;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0dht11->humidity =3D hum_int * 1000;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0dev_err(dht11->dev,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0dev_dbg(dht11->dev,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+"Don't know how to decode data: %d %d %d
+> > %d\n",
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+hum_int, hum_dec, temp_int, temp_dec);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0return -EIO;
+> > @@ -239,7 +239,7 @@ static int dht11_read_raw(struct iio_dev
+> > *iio_dev,
+> > =C2=A0#endif
+> >=20
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret =3D=3D 0 && dht11->num_edges <
+> > DHT11_EDGES_PER_READ - 1) {
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dev_er=
+r(dht11->dev, "Only %d signal edges
+> > detected\n",
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dev_db=
+g(dht11->dev, "Only %d signal edges
+> > detected\n",
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dht11->num_edges);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ret =3D -ETIMEDOUT;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > --
+> > 2.25.1
+> >  =20
+>=20
 
-Yeah, I figure stuff like this is worth just backporting in case someone
-is using a stable tree to add some new board.
-
---SaQXNpdG6TnkXA9f
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZgHK7QAKCRB4tDGHoIJi
-0sjGAP4q/vqH88hSy9HXL/nd2BnMWzzYbl8iHBLAShDeoazxqQD/c/M5csTskIJh
-JJU63H9Qfuj0zPvcDluLcbuq9eVSnQc=
-=XyhC
------END PGP SIGNATURE-----
-
---SaQXNpdG6TnkXA9f--
 

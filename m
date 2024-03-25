@@ -1,217 +1,137 @@
-Return-Path: <linux-iio+bounces-3788-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3789-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3F2188B12C
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 21:18:48 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6704288B134
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 21:21:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EE9A1F314DD
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:18:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25FFF29C4A0
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:21:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4A33F9FC;
-	Mon, 25 Mar 2024 20:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC0864085A;
+	Mon, 25 Mar 2024 20:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="DJRLAW/1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kX48fFzF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24C9FC01;
-	Mon, 25 Mar 2024 20:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.89.224.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF3AFC01
+	for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 20:21:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711397922; cv=none; b=KgMVKO6zGsv78bK+6IlzWUM5nChyoLQTcGCXLZXjafkOCUhxnMTuz1WtV4zV4do61fIKBy/Ys73ydac4AkNgd6s548kg5coIZzLL9mTXguAplE7nqk3PWF34dNvtYpFxENouwi/JrnNPUMgB5uFz0fpvzl8JX5bP4nLa06/bZ8w=
+	t=1711398090; cv=none; b=LFDYrdAhOnjyFc7oAQiv0032XQFelmF7CC69v2Lo9wjphYYrPHqtAnCJCgGnN7WLvBzp3DKO2dzpC03jbaSbS1GtQqQpI+2wc6OysjdqksOlblGMG3W6Dr8lpLNsNq9+BOJq7Mj6kO+xy4YUf7lauKV36zcZY9XXIx4y3y5SAws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711397922; c=relaxed/simple;
-	bh=Gmb2BaijEb4m5JgrvZZz3HH7oDI3q6QmBj33VjTQq8M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=VOkKplpQN0nYcK/2JgYVde8iUhvA+u7zEM3cxK12X/2UGqMOEH0nfo7oaqE7ZZb6XxhV3rKbk5Xt0Kv6Tf1AaIklOaD1WRHNab4TZFKGlfUsqdfZMU/VHfcdeXv+yf6kQb+nbkx49KLvtDBIpEsaJwvxZDs5dsQg90TWru1/cZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=DJRLAW/1; arc=none smtp.client-ip=45.89.224.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
-Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
-	by mx1.sberdevices.ru (Postfix) with ESMTP id D7DA512000B;
-	Mon, 25 Mar 2024 23:18:33 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru D7DA512000B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=mail; t=1711397913;
-	bh=ag/Xt50izz8cSF9yG1EEgnKoOdRbmA9hyWMHr06p+jM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=DJRLAW/1rpTIEtDVub8hh36iuJwSL1w2ucxfIcQNn1CSyMZ7jSUZYABrf9s3VJMnV
-	 mZ7/3TEl8VmpZKYYTi9I83y8HnO0RAgAvFrWqPhpK9pfHMc18VbKkq7bDcDBv8M1fF
-	 UzERFN1AoDHTVv5oEFkP+nr3BUaKOUp8i87DloNtjYrpkZV/euvXiu5J6acq591MMl
-	 siDktPxm9Rj4j46yaft3ldmO6YXfCcoldU2v6SRM1hddPgNEHNZjx5UemA5FyjR8rd
-	 GZJsvUFufLucFHVeH+aqmPfcRGvPZ48XwwPVqy8nPqq/6PdGkPuZ9IdOV+pnPqewVl
-	 ANQQJGglgAE3g==
-Received: from smtp.sberdevices.ru (p-i-exch-sc-m02.sberdevices.ru [172.16.192.103])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.sberdevices.ru (Postfix) with ESMTPS;
-	Mon, 25 Mar 2024 23:18:33 +0300 (MSK)
-Received: from [172.28.66.90] (100.64.160.123) by
- p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.40; Mon, 25 Mar 2024 23:18:33 +0300
-Message-ID: <01ed720d-a990-40dd-8a59-a95ea960ecec@salutedevices.com>
-Date: Mon, 25 Mar 2024 23:18:32 +0300
+	s=arc-20240116; t=1711398090; c=relaxed/simple;
+	bh=D/esCVEn91AU6/5Wuz3Wp1GAZSdd5s1IlOkrZtAVhVU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Dj/6PYr034LFYSVrk+MD65NsH2cuZlCOo4VMgYGPmEaEbwIn8SHLS6GtEfePH1XhM0U5TEaUOBlZsAIHGU2Ee+vjJ57swRSjaeTpjnkCcR02xImeNwRK4xLNdvyMN0CykbB87VSPRmxzJiYMO7xvNkJv8go5zb3AavGr4Ta+xPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kX48fFzF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A128AC433F1;
+	Mon, 25 Mar 2024 20:21:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711398090;
+	bh=D/esCVEn91AU6/5Wuz3Wp1GAZSdd5s1IlOkrZtAVhVU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kX48fFzFY3PQgbP10kzTwQLkNXuxkZBY4UwIrAlGNJg2GIDoJV1RR1RIIzWaz1DZw
+	 vAXlIfeKsVIjMk/B/s3fQDJ6eLwyt8F0Uzii+D5HJRwgGs9fCR9chlJTXbde8PQh16
+	 9dSgGMM13wGLkHM//TpiqhqoJkizJTUlcqdQbfFOlxXu9ULE3dAJrkJXkvNmHESEfz
+	 l4wpy9/BkkjRQbRb7rlUV0vHtroDjTnaYYJ2BEOqUAF33k5NRzJgYw47wNdN9jHW1q
+	 ViOT69livCjEHjWpjdB327rPmXApXZxLm8hcWFJD4ERIj3ewxdeVN6qRZr3Ypom5+G
+	 v7ez6UEq0+jHw==
+Date: Mon, 25 Mar 2024 20:21:17 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: linux-iio@vger.kernel.org
+Subject: Re: [PULL] IIO: 3rd set for 6.9 - cleanup.h handling of
+ fwnode_handle_put() related (not ordered wrt to PULL 2)
+Message-ID: <20240325202117.4bd0c080@jic23-huawei>
+In-Reply-To: <20240303114137.194421b1@jic23-huawei>
+References: <20240229202300.3321cc11@jic23-huawei>
+	<2024030239-gift-cabdriver-266b@gregkh>
+	<20240303114137.194421b1@jic23-huawei>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: dht11: set debug log level for parsing error
- messages
-Content-Language: en-US
-To: Harald Geyer <harald@ccbib.org>, <lars@metafoo.de>, <jic23@kernel.org>
-CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<kernel@salutedevices.com>
-References: <20240325165406.226916-1-gnstark@salutedevices.com>
- <c2fb93a5b2e6f437e2c92d0d797509c619cb63a8.camel@ccbib.org>
-From: George Stark <gnstark@salutedevices.com>
-In-Reply-To: <c2fb93a5b2e6f437e2c92d0d797509c619cb63a8.camel@ccbib.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
- p-i-exch-sc-m02.sberdevices.ru (172.16.192.103)
-X-KSMG-Rule-ID: 10
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 184404 [Mar 25 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.4
-X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 11 0.3.11 5ecf9895443a5066245fcb91e8430edf92b1b594, {Tracking_from_domain_doesnt_match_to}, salutedevices.com:7.1.1;smtp.sberdevices.ru:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;100.64.160.123:7.1.2, FromAlignment: s, ApMailHostAddress: 100.64.160.123
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/03/25 18:32:00 #24438765
-X-KSMG-AntiVirus-Status: Clean, skipped
-
-Hello Harald
-
-Thanks for the review.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
 
-On 3/25/24 21:48, Harald Geyer wrote:
-> Hi George!
+> > > 
+> > > ----------------------------------------------------------------
+> > > Jonathan Cameron (16):
+> > >       device property: Move fwnode_handle_put() into property.h
+> > >       device property: Add cleanup.h based fwnode_handle_put() scope based cleanup.
+> > >       device property: Introduce device_for_each_child_node_scoped()
+> > >       iio: adc: max11410: Use device_for_each_child_node_scoped()
+> > >       iio: addac: ad74413r: Use device_for_each_child_node_scoped()
+> > >       iio: dac: ltc2688: Use device_for_each_child_node_scoped()
+> > >       iio: adc: fsl-imx25-gcq: Switch from of specific handing to fwnode based.
+> > >       iio: adc: fsl-imx25-gcq: Use devm_* and dev_err_probe() to simplify probe
+> > >       iio: adc: ad7124: Switch from of specific to fwnode based property handling
+> > >       iio: adc: ad7292: Switch from of specific to fwnode property handling
+> > >       iio: adc: ad7192: Convert from of specific to fwnode property handling
+> > >       iio: accel: mma8452: Switch from of specific to fwnode property handling.
+> > >       iio: accel: fxls8962af: Switch from of specific to fwnode based properties.
+> > >       iio: adc: hx711: Switch from of specific to fwnode property handling.
+> > >       iio: temp: ltc2983: Use __free(fwnode_handle) and device_for_each_node_scoped()
+> > >       iio: adc: rzg2l_adc: Use device_for_each_child_node_scoped()    
+> > 
+> > You are mixing the two different handlers in this series, right?  How
+> > about 2 different ones, one for each?  Or do they start to conflict?  
 > 
-> I'm torn on this:
+> It's one handler in here but two usecases so they are dependent.
+> First the basic __free(fwnode_handle) then the device_for_each_child_node_scoped()
+> which uses it internally..  The patches that mention DT are conversions over
+> to fwnode_handle that incorporate using device_for_each_child_node()
 > 
-> Am Montag, dem 25.03.2024 um 19:54 +0300 schrieb George Stark:
->> Protocol parsing errors could happen due to several reasons like
->> noise
->> environment, heavy load on system etc. If to poll the sensor
->> frequently
->> and/or for a long period kernel log will become polluted with error
->> messages if their log level is err (i.e. on by default).
+> As for the ltc2983, there are users of just the __free(fwnode_handle) but in
+> IIO at least, far more users of it via device_for_each_child_node_scoped().
+> So not that useful to split the series :( 
 > 
-> Yes, these error are often recoverable. (As are many other HW errors,
-> that typically are logged. Eg USB bus resets due to EMI)
-> 
-> However they are still genuine errors of the HW.
-> 
->>   Also some types
->> of those messages already have dbg level so use unified log level for
->> all such cases.
-> 
-> My take so far has been: Debug level messages are for debugging the
-> code (ie adding/testing support of new device variants etc). Users
-> aren't expected to know about or enable debug output. OTOH anything
-> actually going wrong is an error and should be logged as such.
-> 
-> The idea is, that these messages help users understand issues with
-> their HW (like too long cables, broken cables etc). But it is true,
-> that they will slowly accumulate in many real world scenarios without
-> anything being truly wrong.
+> The device tree equivalent is a separate series not included here.
+> That just got the necessary DT maintainer tags RB from Rob Herring today.
+> If we get a little more time (i.e. an rc8) this cycle, it would be
+> good to get that in place as well - I'll queue it up for linux-next today.
+> This is the DT series.
+> https://lore.kernel.org/linux-iio/20240301223942.GA3179769-robh@kernel.org/T/#t
 
-I agree with you that it's very convenient to just take a look to dmesg
-and see device connection problems at once. But unlike e.g. usb user has
-to actually start reading sensor to perform communication and read
-errors will be propagated to the userspace and could be noticed \
-handled.
+Given there were no issues raised with the DT equivalent patches that Rob took,
+I think I was being overly cautions.  Ah well, I'm sure I'll veer the other way
+next time :)
 
-Anyway I believe we should use uniform approach for read errors -
-currently in the driver there're already dbg messages:
+Anyhow, I'm going to put these at the top of my tree (based on v6.9-rc1) so
+that I can tag the first couple for anyone who wants them for other trees.
+(a lazy way to get an immutable branch given I'm rebasing the togreg tree anyway)
+Note that means I'm retiring the two separate feeder branches and going back to
+togreg alone (the one linux-next picks up). 
 
-"lost synchronisation at edge %d\n"
-"invalid checksum\n"
+So please ignore this PULL request as it will be superseded by a fresh one for
+6.10.
 
-I changed log level from err to dbg for the messages:
+For those that want it (who happen to be reading this thread)
+im-tag-device_for_each_child_node_scoped() and includes patches 1-3 of this
+pull request.
 
-"Only %d signal edges detected\n"
-"Don't know how to decode data: %d %d %d %d\n"
+Thanks,
 
-They all are from a single callback and say the same thing -
-communication problem.
-
-If we make all those messages as errors it'd be great to have mechanism
-to disable them e.g. thru module parameter or somehow without rebuilding
-kernel. Those errors can be bypassed by increasing read rate.
+Jonathan
 
 > 
-> I don't consider the dmesg buffer being rotated after a month or two a
-> bug. But I suppose this is a corner case. I'll happily accept whatever
-> Jonathan thinks is reasonable.
-> 
-> Best regards,
-> Harald
+> Jonathan
 > 
 > 
->> Signed-off-by: George Stark <gnstark@salutedevices.com>
->> ---
->> I use DHT22 sensor with Raspberry Pi Zero W as a simple home meteo
->> station.
->> Even if to poll the sensor once per tens of seconds after month or
->> two dmesg
->> may become full of useless parsing error messages. Anyway those
->> errors are caught
->> in the user software thru return values.
->>
->>   drivers/iio/humidity/dht11.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/iio/humidity/dht11.c
->> b/drivers/iio/humidity/dht11.c
->> index c97e25448772..e2cbc442177b 100644
->> --- a/drivers/iio/humidity/dht11.c
->> +++ b/drivers/iio/humidity/dht11.c
->> @@ -156,7 +156,7 @@ static int dht11_decode(struct dht11 *dht11, int
->> offset)
->>                  dht11->temperature = temp_int * 1000;
->>                  dht11->humidity = hum_int * 1000;
->>          } else {
->> -               dev_err(dht11->dev,
->> +               dev_dbg(dht11->dev,
->>                          "Don't know how to decode data: %d %d %d
->> %d\n",
->>                          hum_int, hum_dec, temp_int, temp_dec);
->>                  return -EIO;
->> @@ -239,7 +239,7 @@ static int dht11_read_raw(struct iio_dev
->> *iio_dev,
->>   #endif
->>
->>                  if (ret == 0 && dht11->num_edges <
->> DHT11_EDGES_PER_READ - 1) {
->> -                       dev_err(dht11->dev, "Only %d signal edges
->> detected\n",
->> +                       dev_dbg(dht11->dev, "Only %d signal edges
->> detected\n",
->>                                  dht11->num_edges);
->>                          ret = -ETIMEDOUT;
->>                  }
->> --
->> 2.25.1
->>
+> > 
+> > thanks,
+> > 
+> > greg k-h  
+> 
 > 
 
--- 
-Best regards
-George
 

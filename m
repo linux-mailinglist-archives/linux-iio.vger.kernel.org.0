@@ -1,75 +1,74 @@
-Return-Path: <linux-iio+bounces-3760-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3761-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EB488A3CF
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 15:12:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EBC888A5D5
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 16:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0001229CC82
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 14:12:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F67A2A5F14
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 15:08:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCDA14D426;
-	Mon, 25 Mar 2024 10:47:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9ABD14D43C;
+	Mon, 25 Mar 2024 12:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IoGuhJrW"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="SJ7KxEQ/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2597618E0C8
-	for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 09:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB37184435
+	for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 12:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711360740; cv=none; b=RuhgXTCIw+ttMXKVZ2LCXfRI7oJRceAW+rLt60ZwY+4U0izFAAFwCWLkmm3vEDPcrVVhv2Z9JJcMc8UIbLhEnILx66IuC1+8qlOcsQfeoZ1/wnyHx6C6k7ed1KsR9+Z8T4xpTV1u+7s3EE315Geh9dkCYU4v4Uh20/myTdWKlZY=
+	t=1711369102; cv=none; b=Zi1Ylw+4RQOKggRq/p4Ix10mSYSzuRqkUzLxqiH8kGTAcj+6RqenqiLmybEPjXLJIhBN59r/lWiXX940pUYlyRHY4fC0dXpqHrLMmbVTbLf57N2aGdAQ32CjdklBP4wzp+R1FAnFQec9vTlZqhLQXCHwPIKcIWcD3ZnQQigGR5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711360740; c=relaxed/simple;
-	bh=0HodlRK92+uecruCh4htnK2LTN1iC+38uJY7KjoYeFc=;
+	s=arc-20240116; t=1711369102; c=relaxed/simple;
+	bh=getJxZoxxtNONUNECvx+f3lk7OBZuNWtAUhRw1+vT3g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DqcB/NLGLzzqPjcg2fhu59F6XJcxSaJ6lmw88IyzPgoXRfDSjf3ye5Goir6mC3T9Umq6ued5+PzsuF29OJiUNFvOeqIQnyzAa54IGKoTLws5G6kTtHm5Bjl7L6ATUVDbwPEDnJUr25zAnbdsrdfQymjWvNa9PnvTkyGeU9JCF1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IoGuhJrW; arc=none smtp.client-ip=209.85.167.45
+	 In-Reply-To:Content-Type; b=jOOrNvba5OVY7/cxulVq7++r32KDkE9+/fiY6QybQ/Pjj2qCaKqh11qox3gg+bwTSJn+Thqvykfmomg4tpN3LZdw6YX6Ex2eRp/YNNGmNtbG+ghWTwFjRerpqoaK0bYnXXIawMHCQfgUv7oPHwxTqqH6ZJGVOwHU89jwBidt4vY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=SJ7KxEQ/; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-513d23be0b6so4900232e87.0
-        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 02:58:56 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a466e53f8c0so560173166b.1
+        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 05:18:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711360735; x=1711965535; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1711369097; x=1711973897; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qvul6s5HtP/ZlpqUVoqPGz55enL0nlUDBRgMBFp+K5w=;
-        b=IoGuhJrWwts8QDjyyl+JjGcnDGR+kOu7Eev/rHRxxC4ko3+OG7s3L0ld7MjqWpTWJ7
-         /mXqeBJaEjWLnQ2DyG/9uKkkUcdKQ8suAqblcFfMOfe5ibw8juTyE0/UksMjmFAx5oVJ
-         woMgFjxN06osvSDXIbh99De75fJzu574WRXjhwDLB0t3UhjDSTR8GFsrJT9WMFWJh3jT
-         KCnZYREPo10ynXZEiXy76WFMHsE/KdmaEP3HOPkqP4/c56eS+A5+VAJOffU88HiWi4QR
-         beTXvcv47AwGZeQznX7Yf9GRQ/y/k3WF0TMoUlyABxXYSLwx0EZ2E0BJDQJWxnHV9Xbq
-         EySA==
+        bh=gYKaUHac0hp0FC4+7MmumUmTUSHaQ1uo7FRmC/8kMd0=;
+        b=SJ7KxEQ/W41/bvB30IG0AuR3Q0oSQUFG/mOjR7kDgoq46x/sj6w8C1PDzRNXnogD0z
+         za7ucltuu1PtA3pA3LzimODbjqiamupic8V5tbs5DrGRlFoIQaYpGDuTW6P/AoCveCwV
+         aRNVEnC+qgLEpPnf8vGUVnl1EUKCFBIqU4UybZxz63gZAORArlxnDIIRe4MLR1y26W/5
+         80zyk3dRIMMcSSGUacJjIPliTF9v2kN7LIqwUMihKuH/Jfw6/i9quTL+yaw25KQT2cpi
+         3QbP3GsNTPj5F5IPrP8TmSbyv+07YRz44j7n3MioUnYha0IC2reqADHWRnjUbmqMPvM+
+         thIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711360735; x=1711965535;
+        d=1e100.net; s=20230601; t=1711369097; x=1711973897;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Qvul6s5HtP/ZlpqUVoqPGz55enL0nlUDBRgMBFp+K5w=;
-        b=snG+kgzNoIao07VlJK/l5a/zvDAPqqc9aKfkFacAiLxQbIh3EN0PO+cl+Xgmh7G29d
-         Mzp3sg0x6v3lY/klr4fGHrsa7n5VNbuSERBwO9VcA548Pl7JerbNlFJjXVsL+089eQNk
-         lkVEDe/oOonCLzUJpRneeVtXcwqls9NFR+2HN/98NAVDjFs+Zc45NGzCrRFXXBy7oDm9
-         GdbhqpjTsQlhkcAJaKUQ97gNLYYfzVWtvVmty9iXJyaDw6euz3fLCO6hD9ipwQCem9Tj
-         QP7MM6wFxtf1yWoX9wigfuRS4ZtXJy4yO9D9XYr4Z66togcV5A3641Rx7d4c1EkxrLOz
-         nJJA==
-X-Forwarded-Encrypted: i=1; AJvYcCXIDicm81jyIWBreAmSe65D5fEbuwipXnRgiWFwqFW1eduf0VIlCJTH+ATPR9l74kFM0vzPNSgMgJtJcuLV4XraofcKpH8+gsqi
-X-Gm-Message-State: AOJu0Yy0Bixyi8ygLSQ0HNwQjQga0jGiRW7jCN1tPJfq2Ri+cOYyRauN
-	vz3Bkk6OFCJbUWPEJRW1wpGcS2NOrAHUBkNKhOwlqj5fKL4WM0ukuAx3CRZucTo=
-X-Google-Smtp-Source: AGHT+IGzb3SBz6tSy5Lr7i7F/Sz3cD4j3aUG8XDPJWjEsVe9L0DAU0zPAgHOII3D8qom8JbnUMqTbw==
-X-Received: by 2002:a19:2d41:0:b0:513:cdde:18f9 with SMTP id t1-20020a192d41000000b00513cdde18f9mr4422360lft.54.1711360735218;
-        Mon, 25 Mar 2024 02:58:55 -0700 (PDT)
+        bh=gYKaUHac0hp0FC4+7MmumUmTUSHaQ1uo7FRmC/8kMd0=;
+        b=nKmJiFm0GYagDrxmcxROsDc8zoOqkSMfbYE5nClWTTJzpdhbUDd/6kVIxe4eyc8N3t
+         UTNzOnkySePj5FG/L4ueeZTTL0wmcE2FjdtKGKftYQ7IxFYFfx2nB9pblKxLRNn8yLqr
+         k1aDHWePBTb9sPnfGk4n5gtbGZ3Ji19zIjf/iUk9GaC9zlwU4Pjp8qgtdrqjuH/2690F
+         uhY5FmcMuT5gQ8E2vdsV+sWaJB8HnF6ZG7Z5RtgRJkvQqYvRkraMkO/gIRIDyNbPSeUS
+         6czmqIEyaFoy8R2PbD/JZMsr7aqtCPSoO48at74uxqvdb1QNAfpHxmWF89onXO/VjWQJ
+         9Q3Q==
+X-Gm-Message-State: AOJu0YxrWUf2a3UtF7J5yG/grDuTU5N2yOdQeF5F/DsanuijEL8ENVon
+	jwaFGOn2DCd40VCjUNk80xHIKl0X1gqRUyzwY2MEk1Lc+DqnyZqXgh/ygRKoo9s=
+X-Google-Smtp-Source: AGHT+IFlVeMvy3/Wu9GkO8ieBLGEndikMEfvwQOSYSnsyUjaSqCenPRxKeFj2TzYosjIeto6reB5Cg==
+X-Received: by 2002:a17:907:970f:b0:a47:4293:947f with SMTP id jg15-20020a170907970f00b00a474293947fmr5482495ejc.8.1711369096701;
+        Mon, 25 Mar 2024 05:18:16 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.222.44])
-        by smtp.gmail.com with ESMTPSA id a25-20020ac25059000000b005132bf9f8dcsm1011799lfm.303.2024.03.25.02.58.52
+        by smtp.gmail.com with ESMTPSA id o22-20020a17090611d600b00a46647b6496sm2961836eja.155.2024.03.25.05.18.15
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 02:58:54 -0700 (PDT)
-Message-ID: <178594a2-cd5f-4608-aae6-7d68fd0817e0@linaro.org>
-Date: Mon, 25 Mar 2024 10:58:51 +0100
+        Mon, 25 Mar 2024 05:18:16 -0700 (PDT)
+Message-ID: <b37af0e0-c707-48e0-980d-4866b9a662db@linaro.org>
+Date: Mon, 25 Mar 2024 13:18:14 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,24 +76,17 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
- calibration properties
-To: Andrej Picej <andrej.picej@norik.com>, haibo.chen@nxp.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: jic23@kernel.org, lars@metafoo.de, shawnguo@kernel.org,
- s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- upstream@lists.phytec.de
-References: <20240320100407.1639082-1-andrej.picej@norik.com>
- <20240320100407.1639082-3-andrej.picej@norik.com>
- <38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
- <e994b756-7f4e-4be3-b8f3-310988174b44@norik.com>
- <7e58bf96-3c38-467f-86b6-06ff5feedb31@linaro.org>
- <40e08a5e-e7e9-47c7-9102-24a2bbba67cf@norik.com>
- <a1b173c0-5120-40f6-9708-cd810b4a2406@linaro.org>
- <1bbd4fdf-59c5-42b2-8698-95f402645c67@norik.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: health: maxim,max30102: add
+ max30101
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Matt Ranostay <matt@ranostay.sg>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240324-max30101-v2-0-611deb510c97@gmail.com>
+ <20240324-max30101-v2-1-611deb510c97@gmail.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -141,118 +133,24 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <1bbd4fdf-59c5-42b2-8698-95f402645c67@norik.com>
+In-Reply-To: <20240324-max30101-v2-1-611deb510c97@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 22/03/2024 10:58, Andrej Picej wrote:
-> On 22. 03. 24 09:14, Krzysztof Kozlowski wrote:
->> On 22/03/2024 08:39, Andrej Picej wrote:
->>> On 20. 03. 24 13:15, Krzysztof Kozlowski wrote:
->>>> On 20/03/2024 13:05, Andrej Picej wrote:
->>>>> Hi Krzysztof,
->>>>>
->>>>> On 20. 03. 24 11:26, Krzysztof Kozlowski wrote:
->>>>>> On 20/03/2024 11:04, Andrej Picej wrote:
->>>>>>> Document calibration properties and how to set them.
->>>>>>
->>>>>> Bindings are before users.
->>>>>
->>>>> will change patch order when I send a v2.
->>>>>
->>>>>>
->>>>>> Please use subject prefixes matching the subsystem. You can get them for
->>>>>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
->>>>>> your patch is touching.
->>>>>> There is no file extension in prefixes.
->>>>>
->>>>> So: dt-bindings: iio/adc: nxp,imx93-adc: Add calibration properties?
->>>>
->>>> Did you run the command I proposed? I don't see much of "/", but except
->>>> that looks good.
->>>
->>> Ok noted.
->>>
->>>>
->>>>>
->>>>>>
->>>>>>>
->>>>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
->>>>>>> ---
->>>>>>>     .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
->>>>>>>     1 file changed, 15 insertions(+)
->>>>>>>
->>>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>>>> index dacc526dc695..64958be62a6a 100644
->>>>>>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
->>>>>>> @@ -46,6 +46,21 @@ properties:
->>>>>>>       "#io-channel-cells":
->>>>>>>         const: 1
->>>>>>>     
->>>>>>> +  nxp,calib-avg-en:
->>>>>>> +    description:
->>>>>>> +      Enable or disable averaging of calibration time.
->>>>>>> +    enum: [ 0, 1 ]
->>>>>>> +
->>>>>>> +  nxp,calib-nr-samples:
->>>>>>> +    description:
->>>>>>> +      Selects the number of averaging samples to be used during calibration.
->>>>>>> +    enum: [ 16, 32, 128, 512 ]
->>>>>>> +
->>>>>>> +  nxp,calib-t-samples:
->>>>>>> +    description:
->>>>>>> +      Specifies the sample time of calibration conversions.
->>>>>>> +    enum: [ 8, 16, 22, 32 ]
->>>>>>
->>>>>> No, use existing, generic properties. Open other bindings for this.
->>>>>
->>>>> You mean I should use generic properties for the ADC calibration
->>>>> settings? Is there already something in place? Because as I understand
->>>>> it, these calib-* values only effect the calibration process of the ADC.
->>>>
->>>> Please take a look at other devices and dtschema. We already have some
->>>> properties for this... but maybe they cannot be used?
->>>>
->>>
->>> I did look into other ADC devices, grep across iio/adc, adc bindings
->>> folders and couldn't find anything closely related to what we are
->>> looking for. Could you please point me to the properties that you think
->>> should be used for this?
->>
->> Indeed, there are few device specific like qcom,avg-samples. We have
->> though oversampling-ratio, settling-time-us and min-sample-time (which
->> is not that good because does not use unit suffix).
+On 24/03/2024 20:20, Javier Carrasco wrote:
+> The Maxim max30101 is the replacement for the max30105, which is no
+> longer recommended for future designs.
 > 
-> Ok, these are examples but I think I should not use them, since these 
-> are i.MX93 ADC specific settings, which are used for configuration of 
-
-
-No vendor prefix, so they rather should be generic, not imx93
-specific... But this the binding for imx93, so I don't understand your
-statement.
-
-> calibration process, and are not related to the standard conversion 
-> process during runtime. Calibration process is the first step that 
-> should be done after every power-on reset.
+> The max30101 does not require new properties, and it can be described
+> with the existing ones for the max30105, which will be used as a
+> fallback compatible.
 > 
->>
->> Then follow up questions:
->>   - nxp,calib-avg-en: Why is it a board-level decision? I would assume
->> this depends on user choice and what kind of input you have (which could
->> be board dependent or could be runtime decision).
-> 
-> Not really sure I get your question, so please elaborate if I missed the 
-> point.
-> This is a user choice, to enable or disable the averaging function in 
-> calibration, but this is a board-level decision, probably relates on 
-> external ADC regulators and input connections. The same options are used 
-> for every ADC channel and this can not be a runtime decision, since 
-> calibration is done before the ADC is even registered.
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+>  .../devicetree/bindings/iio/health/maxim,max30102.yaml       | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
 
-You now mix how Linux driver behaves with hardware. Why you cannot
-recalibrate later, e.g. when something else is being connected to the
-exposed pins?
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof

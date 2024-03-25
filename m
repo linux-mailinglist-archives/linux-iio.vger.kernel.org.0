@@ -1,61 +1,58 @@
-Return-Path: <linux-iio+bounces-3790-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3791-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65EB188B14A
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 21:26:14 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A22C88B178
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 21:33:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97BBB1C35167
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:26:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB8FC1C35BD8
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C2745977;
-	Mon, 25 Mar 2024 20:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34285A0EA;
+	Mon, 25 Mar 2024 20:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m68b8oji"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mm3I6HRb"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5E03DABEF;
-	Mon, 25 Mar 2024 20:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3ED5810D;
+	Mon, 25 Mar 2024 20:32:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711398367; cv=none; b=JhNuSBJVdeFzvyqiNnY8GaPQI+Hdu4O0w403QoYKOf1ZesqxEoKKzhdO1/SXWu4lhFTmaxGpDcspRZ+7js+D+DOdIEZqZZ/Gg1uTIg+jXM0kupB3u9pp3dMJRRAARa0N7DHujMFmfWpoHIgO4vswJy7rbdWiMFs8K+mSW7iUU/E=
+	t=1711398731; cv=none; b=VdBgSO5Ok/vXG8c/NXwjO31zDfW2X2FJ5k68XBParUkW8YoeY5wcsMeHuUsecGNHurUrbc5aI+gf3/SRRbQW6qWZbw0mmtFoeIEampSQBStwE7G7TK5dCxR9nnwh4vUskcURbT7z1Dr0TRpem6Ctu1rURITk07QyWhj21wAB3Tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711398367; c=relaxed/simple;
-	bh=ahuP5cTSDTyRzTCnReAUhrTSWcQzWcxEGNOUAM8m4TA=;
+	s=arc-20240116; t=1711398731; c=relaxed/simple;
+	bh=qILMoowlP+MlDq1kLYWNHuIzJ//eEQGBD9+LRceFSfI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=csCbaT240JXQWB8z+bY8RXK8v+ujiHo6Rbv5fc93xs1J2bIiaa+jW0lum+ge0m5VPy95qT5l0aXBnVkx1ryn8XWQWil4pPmcq4Nv+SDvtPBJLjpYK0CcShKLO2ftzEozqcUwbsnqIKrcGAE4thrqeDsmaJskflBKQiTHv4rHFtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m68b8oji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6CBC433F1;
-	Mon, 25 Mar 2024 20:26:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=caVO3QQVw7FyAVPRq22Arvbx0JvDoQf/OjR8TDYn38cB6bmyewohcAGgtZ+6HHs22efZFXc126tP0wf8lRkrHyhLk+jEgjgDIYKW1iAMPyu44BU1isOKPOVjkuE1lrpH2H1X8DTQsiZwL//R/5MPAD0cpgki7XHXY0cBrcLdxgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mm3I6HRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DAAC433C7;
+	Mon, 25 Mar 2024 20:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711398367;
-	bh=ahuP5cTSDTyRzTCnReAUhrTSWcQzWcxEGNOUAM8m4TA=;
+	s=k20201202; t=1711398730;
+	bh=qILMoowlP+MlDq1kLYWNHuIzJ//eEQGBD9+LRceFSfI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=m68b8ojiqR+8PDZ6qymfh7FmaXvPADImGLtI2PXySB+KB0IaF7v+jYxf+LX5y4uFL
-	 th0kQ3OykQe/xqFuAo03cMnWn4IkG0dpzXePKOWoecLeYgBvRSVvOdlCzXHP7RYFIA
-	 l39E9QGRbFmEvZb9uagJeo9uKNiKIOJUoPuBuKGKjvvbP9iRGXpmMWXnAm/DRjG4p3
-	 mq2jIhVLfRmYfCcAfJlpqmP7wvS8I/P+WEWYDACf3uZ87gEO8DTjOvMhYfKmCHrXVR
-	 bsrnUejZ13MW4YJqGIWmgQ0jQ9geE3cNCVlW2U+0/M2ycpc3ekGPw/DFqBxPsoJtuB
-	 +so7ZlFhX2qxA==
-Date: Mon, 25 Mar 2024 20:25:51 +0000
+	b=mm3I6HRbRRayzxvsaz8irY6sEI96CCtz+DF85bnvgwe2FflFXo50kOkwh5axGc12u
+	 S137VQPA8INyQnJDXY4eAh5iQOwQUT3QsHLjIWf0zCuedTbi/M6fiFA4ZdeynmyI6G
+	 X5Vss3HOSkQ+HfCZJ6u94ra8xJcb/DZhoVHSzOHSkv0wICRtxvn7JF40dKZAve8CiZ
+	 fN6pwRAF5yTHi2GtZIAUmU85cxhJ2b7kn07HUq8ocTCXWO8EUXH5Qh+5IuYUxeghMm
+	 7Qwp0tH+vBbaQVU0TvgX3AK4g6Tid4WUNJB+0W40DZE0DwQ6+bxiX82QzhoNFB9vgn
+	 a5ePSNW1E3o6Q==
+Date: Mon, 25 Mar 2024 20:31:55 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Matt Ranostay <matt@ranostay.sg>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: health: maxim,max30102: add
- max30101
-Message-ID: <20240325202551.08a8a877@jic23-huawei>
-In-Reply-To: <b37af0e0-c707-48e0-980d-4866b9a662db@linaro.org>
-References: <20240324-max30101-v2-0-611deb510c97@gmail.com>
-	<20240324-max30101-v2-1-611deb510c97@gmail.com>
-	<b37af0e0-c707-48e0-980d-4866b9a662db@linaro.org>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Subject: Re: [PATCH v4 1/7] iio: accel: adxl345: Make data_range obsolete
+Message-ID: <20240325203155.23ddfe3d@jic23-huawei>
+In-Reply-To: <20240325153356.46112-2-l.rubusch@gmail.com>
+References: <20240325153356.46112-1-l.rubusch@gmail.com>
+	<20240325153356.46112-2-l.rubusch@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,35 +63,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 25 Mar 2024 13:18:14 +0100
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Mon, 25 Mar 2024 15:33:50 +0000
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> On 24/03/2024 20:20, Javier Carrasco wrote:
-> > The Maxim max30101 is the replacement for the max30105, which is no
-> > longer recommended for future designs.
-> > 
-> > The max30101 does not require new properties, and it can be described
-> > with the existing ones for the max30105, which will be used as a
-> > fallback compatible.
-> > 
-> > Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> > ---
-> >  .../devicetree/bindings/iio/health/maxim,max30102.yaml       | 12 ++++++++----
-> >  1 file changed, 8 insertions(+), 4 deletions(-)  
+> Replace write() data_format by regmap_update_bits(), because
+> bus specific pre-configuration may have happened before on
+> the same register. Changes then need to be masked.
 > 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Remove the data_range field from the struct adxl345_data,
+> because it is not used anymore.
 > 
-> Best regards,
-> Krzysztof
+> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> ---
+>  drivers/iio/accel/adxl345_core.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
 > 
-> 
+> diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl345_core.c
+> index 8bd30a23e..be6758015 100644
+> --- a/drivers/iio/accel/adxl345_core.c
+> +++ b/drivers/iio/accel/adxl345_core.c
+> @@ -42,13 +42,13 @@
+>  #define ADXL345_DATA_FORMAT_4G		1
+>  #define ADXL345_DATA_FORMAT_8G		2
+>  #define ADXL345_DATA_FORMAT_16G		3
+> +#define ADXL345_DATA_FORMAT_MSK		~((u8) BIT(6)) /* ignore spi-3wire */
 
-Thanks,
+I'm not keen on seeing masking of a bit we don't yet
+handle done by value.  Can we instead build this up by what we 'want' to
+write rather than don't. Will need a few more defines perhaps to cover
+the masks of SELF_TEST, INT_INVERT, FULL_RES, Justify and Range.
 
-Series applied to the togreg branch of iio.git and initially pushed out
-as testing to get it some build testing from 0-day.
+>  
+>  #define ADXL345_DEVID			0xE5
+>  
+>  struct adxl345_data {
+>  	const struct adxl345_chip_info *info;
+>  	struct regmap *regmap;
+> -	u8 data_range;
+>  };
+>  
+>  #define ADXL345_CHANNEL(index, axis) {					\
+> @@ -219,14 +219,13 @@ int adxl345_core_probe(struct device *dev, struct regmap *regmap)
+>  	data = iio_priv(indio_dev);
+>  	data->regmap = regmap;
+>  	/* Enable full-resolution mode */
+> -	data->data_range = ADXL345_DATA_FORMAT_FULL_RES;
+>  	data->info = device_get_match_data(dev);
+>  	if (!data->info)
+>  		return -ENODEV;
+>  
+> -	ret = regmap_write(data->regmap, ADXL345_REG_DATA_FORMAT,
+> -			   data->data_range);
+> -	if (ret < 0)
+> +	ret = regmap_update_bits(regmap, ADXL345_REG_DATA_FORMAT,
+> +				 ADXL345_DATA_FORMAT_MSK, ADXL345_DATA_FORMAT_FULL_RES);
+> +	if (ret)
+>  		return dev_err_probe(dev, ret, "Failed to set data range\n");
+>  
+>  	indio_dev->name = data->info->name;
 
-Thanks,
-
-Jonathan
 

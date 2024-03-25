@@ -1,332 +1,181 @@
-Return-Path: <linux-iio+bounces-3803-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3804-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C866D88B35E
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 23:04:41 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06D2588B38C
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 23:10:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FC001F64370
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 22:04:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2380D1C36ACE
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 22:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F8D7173A;
-	Mon, 25 Mar 2024 22:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C91D74E0C;
+	Mon, 25 Mar 2024 22:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Eqmuq35q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OZalcUGf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f53.google.com (mail-oa1-f53.google.com [209.85.160.53])
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E596570CB3
-	for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 22:04:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805837441C;
+	Mon, 25 Mar 2024 22:09:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711404276; cv=none; b=S9ucvJl7gyJ/7PmqU9nEXJJtujgMqj043yLvpkv6m0wmd55jCeIaZwXMo3LbjGbbitBjNERpeTQgqNxYK3s1mEVKkGw5lR8Ju0dJOlny89zPgh3iQgVAs5RKlT5UkLux7P+b8JFLYGbvfQ3TasSOZ9/W6fTykc1xgtFLJhAfUno=
+	t=1711404593; cv=none; b=oVC/uJlEqx2VPfbZMEUzlrOgDpMzHBJeWoTc/K6ktXObuRVsdBWSxjBmrG/YmfsGOh3rQdq8plW//Ub0L3/eRWTEvfFN/I4wOUXp2p4X1kMg+ehyQkKyJ8CYAvWAhGxjLSwYai0VwX5Dhcy+/wRolLu2Dv7gbuIJNlMFB/tPcx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711404276; c=relaxed/simple;
-	bh=yF1sq2YPQ2TPw93z5U5pn/DAoF1k8JLyhryca4ogEM0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=C0+ppNcOE/lsa+FwP/Um8RLSOc0nA7BQpvwvj1PCc3ChI9tRpgBq+84HkGL2YYDAegrP5RGOcGB2/edVq2Mdre8piRkK6A4klJynYUVCoYLLrYAOfFM84zV/0Wau7RQKiYox6Es2jqhkMeFjtUASKREcgFOfAKWBOiqP9tHPCgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Eqmuq35q; arc=none smtp.client-ip=209.85.160.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-221816e3ab9so2082803fac.2
-        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 15:04:32 -0700 (PDT)
+	s=arc-20240116; t=1711404593; c=relaxed/simple;
+	bh=tyNzq8sMRVHXjs1GnDWzeBNhhdt7M1nl7Y20AhpptkI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=K7seTmM+sw0e/5SJOtt7kndZLDXiecTlHtdyf4Jebkb1pYT3H/ESzXgRre/Alz2mbEyCL1T4S1V8cpwa14QCk0+O03u/+CuWUvNsl6LlC7CgdguhNwDxEWI77Ah8I7AZ5wjxwNyu16w9Jq3vzFEh5XDFo4HRPqnQUX6qJLoo4Lo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OZalcUGf; arc=none smtp.client-ip=209.85.128.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-60a046c5262so46286937b3.2;
+        Mon, 25 Mar 2024 15:09:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711404272; x=1712009072; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CjXGYJw5dXwvdxus40r7I6gcFP0lejncjGW57vGc8Lc=;
-        b=Eqmuq35qekxgZtz09HAEFEyRBROy109UwcW1ONFRVGNfdGZZCJvqAtQ5Gu02uYZk4j
-         3CBDoD5I7tlTqlVEyvhAvhW2UjhBPFQER/gX8Z0grsRmxzcGQGqDpkgV1ALgEdFyOb6m
-         xHcWwxb0qVIvXnWMsNVk3SwMQBHCG7j5mxdI6XlWohOks8Qr1Ai9BZoo4M3jwpwV2EfQ
-         OL4IxILvpLy5+E2+G7kPJoUPZoESBgZFS5OMJ9BTRhUfEzZquznaSTmnCr68yUDEY6ha
-         9p+jf1fwLndXqyYrYwfmMmWZuzRpJ31gngpOssds0PWoo2iijg/7mtjWaT/E+sq2jNF5
-         vUnw==
+        d=gmail.com; s=20230601; t=1711404590; x=1712009390; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tyNzq8sMRVHXjs1GnDWzeBNhhdt7M1nl7Y20AhpptkI=;
+        b=OZalcUGfH52tAvHHFEjw0CI7IkpgycHOXbd09y1AG5K18SAoa7cqkUSyor3FGi7CtC
+         pVem2QhsS4lj4KLr76wqm0Wgky1KnnHx+kCcAXYkrFPN8UxQNbukzJBiBSXloEtR/nUK
+         32I6rYJTvTQems5k95V3oyWjE8xhDrphJNNrR20QhUfUgeuWP/KODpz06xYSs2xvVX3d
+         tssQdb54E78EWwmt9NHXskxjg0BeEoc6q5zK/Mww9jB8oPqw4b6OYb1DIilruNz5Eqim
+         CCApgm/FeWZtaZqDSqKaNuupgQnDJyE8CZF2r9+WcNTwCBJqV61KIaxbG9OE18/YzaRo
+         vxQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711404272; x=1712009072;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CjXGYJw5dXwvdxus40r7I6gcFP0lejncjGW57vGc8Lc=;
-        b=n15IygBOzAsxfJ3T/b7Z62OJtJzwEQw0Uw3LmtVFyA3qW9m2b36/HL2PEbeiIIFDNE
-         pwqFGLbmR9J85Rk1IB3dQ8QMxc9my0SQyJc5rMfbhV/DKI9ifiJv03SJGt9ofpDryH0h
-         ITYwDluJYu7PolQBBIRchmlYzt4sE1aLOCoCodHYq1CbL9JotSIqgPhPDsOLFf84UzYl
-         mWgXwYl11oUN32efBt5oZBXNux84zkitavNgkphj7kjS5b/nz5R+QGdq7zY6CviSYeDI
-         Y1ifBOUMnAt5rOK5CRw4koA+EYjSLTeSPp+h467P54LIlfRzP9f6/DCjDT7VcNDCLXxw
-         xZyw==
-X-Forwarded-Encrypted: i=1; AJvYcCVLIlMFhEj/St8636f0/JHlnl75fwTI94+exF2UgO8J6T3y4944sYDySuekS1emB9g9PH0fMt3gKpJ74/Rjgkk/+u1YjCLzPoTP
-X-Gm-Message-State: AOJu0YwIHJQJwenKTjH0r5nOmMPNE0jdkB+84mi7QAiUs2jK4phNLxHd
-	OIJqjnhIcXcJqfdpz9Y14/8W0/TS+svVWXxPdYdvSMXyeeUp2bf/OGBYU82dmuY=
-X-Google-Smtp-Source: AGHT+IE1gsXGo3HHr2b05fM533KZAA1WTWHmTgSSj4HJQufRdPPcaGIZuIqAuE1QzTHLdkeVhD0mAw==
-X-Received: by 2002:a05:6870:8997:b0:22a:5690:f056 with SMTP id f23-20020a056870899700b0022a5690f056mr2112618oaq.44.1711404271848;
-        Mon, 25 Mar 2024 15:04:31 -0700 (PDT)
-Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id qa17-20020a056871e71100b0022a05f6647asm1791991oac.24.2024.03.25.15.04.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 15:04:31 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] iio: adc: ad7944: use spi_optimize_message()
-Date: Mon, 25 Mar 2024 17:03:13 -0500
-Message-ID: <20240325-ad7944-spi-optimize-message-v1-1-cded69b9e27f@baylibre.com>
-X-Mailer: git-send-email 2.43.2
+        d=1e100.net; s=20230601; t=1711404590; x=1712009390;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tyNzq8sMRVHXjs1GnDWzeBNhhdt7M1nl7Y20AhpptkI=;
+        b=M6YcnW4KItO/2IbfZoxxIDK32zrrhnYHL8nNThW4JxBRsvwqrdtUOujPD9Aa73ug7e
+         gOpUAH/mKnBhv8EH26J+iy0AE24JUduWGAZbooSzIMcBUkDWWpD3+cJd9PA0pLZeh/8W
+         4CjTIJYwqMciiNuvAcEwghn1/+3vHom14nHjrewH1svTRyq5r3wIaCXC+8j/Qb2Lqea9
+         XloGxvK4YrW/2HM3G6mqhks2ERhsAN8eq7fX9B2K5tWAnA1lPn79RGKKAugQLldyMSyf
+         nxIbmVo8hlK5M71HIL4xNFbdRWsGzxU+NidEOLyUKBQKuZY1CS7D90SZOfKyPz+tP7M0
+         sY7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVDpsc8XxLGvDW626qh99YRBgoB/FcKHJZY5i/KEMi3vXPE8CyPZ3YT6RUKVZ/vWotCI8x/s4nn3n+G25bg1FPIBhhv7xG3KX/qzmJXVctsZZ7ICXoxZlcqFeVmFv6nx8h/VHQBfI7fx6uJVCfSDu6uJ+tzPqsYWLkDIk2y8p2PeKLoCw==
+X-Gm-Message-State: AOJu0Yz4Sy4NfUYUGc1W6O1OjLjEpLmcSuknC/us4vRc9hHCSc2HGY3K
+	ZfIZgMXJ33AGRvtjzjuRBemL9ag+9YacZIsskhH1tksYH8SOmiB9o82bFkMrWQ9Sar89uAq+8+X
+	vmVzjk0xGmf7xEvkMFvfctZ4RyLo=
+X-Google-Smtp-Source: AGHT+IEUnQ61pYOdy6iBI6EKL8f+BYQGPiPimulDGq52iO7ygQltC+cIgsF+VqiTGHc/9ZtzaODGr88cfFatzs3X4o0=
+X-Received: by 2002:a25:8a0f:0:b0:dd0:3a7a:fb70 with SMTP id
+ g15-20020a258a0f000000b00dd03a7afb70mr6309495ybl.52.1711404590425; Mon, 25
+ Mar 2024 15:09:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.12.4
-Content-Transfer-Encoding: 8bit
+References: <20240325153356.46112-1-l.rubusch@gmail.com> <20240325153356.46112-5-l.rubusch@gmail.com>
+ <f74a01bd-46a3-46cd-a47a-fcfccd7e4dc6@linaro.org> <CAFXKEHbJ_5unY24aZeutvM-xrjevQ=z7ngDcgwJR=NXzXONx5A@mail.gmail.com>
+ <334970e7-2edd-43c8-9f18-b7b3ec5f4d17@linaro.org>
+In-Reply-To: <334970e7-2edd-43c8-9f18-b7b3ec5f4d17@linaro.org>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Mon, 25 Mar 2024 23:09:14 +0100
+Message-ID: <CAFXKEHaEVwiAW9co0+=kZ5w5a8eWg3QL0dmg38bvrmLdnBEA7w@mail.gmail.com>
+Subject: Re: [PATCH v4 4/7] dt-bindings: iio: accel: adxl345: Add spi-3wire
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This modifies the ad7944 driver to use spi_optimize_message() to reduce
-CPU usage and increase the max sample rate by avoiding repeating
-validation of the spi message on each transfer.
+On Mon, Mar 25, 2024 at 10:40=E2=80=AFPM Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> On 25/03/2024 22:05, Lothar Rubusch wrote:
+> > On Mon, Mar 25, 2024 at 7:32=E2=80=AFPM Krzysztof Kozlowski
+> > <krzysztof.kozlowski@linaro.org> wrote:
+> >>
+> >> On 25/03/2024 16:33, Lothar Rubusch wrote:
+> >>> Add spi-3wire because the driver optionally supports spi-3wire.
+> >>
+> >> This is a friendly reminder during the review process.
+> >>
+> >> It seems my or other reviewer's previous comments were not fully
+> >> addressed. Maybe the feedback got lost between the quotes, maybe you
+> >> just forgot to apply it. Please go back to the previous discussion and
+> >> either implement all requested changes or keep discussing them.
+> >>
+> >> Thank you.
+> >>
+> >
+> > You refer yourself to the above mentioned wording. Would replacing
+> > "driver" by "device" in the dt-bindings patch comment be sufficient?
+> > Did I miss something else?
+>
+> Yes, the wording, but isn't the device require 3-wire mode? Don't just
+> replace one word with another, but write the proper rationale for your
+> hardware.
+>
+It does not require 3-wire SPI. By default the device communicates
+regular SPI. It can be configured, though, to communicate 3-wire. The
+given patch offers this as option in the DT.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/ad7944.c | 177 +++++++++++++++++++++++++++--------------------
- 1 file changed, 103 insertions(+), 74 deletions(-)
+> >
+> >>>
+> >>> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> >>> ---
+> >>
+> >> This is a friendly reminder during the review process.
+> >>
+> >> It looks like you received a tag and forgot to add it.
+> >>
+> >> If you do not know the process, here is a short explanation:
+> >> Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+> >> versions, under or above your Signed-off-by tag. Tag is "received", wh=
+en
+> >> provided in a message replied to you on the mailing list. Tools like b=
+4
+> >> can help here. However, there's no need to repost patches *only* to ad=
+d
+> >
+> > Just for confirmation: when I receive a feedback, requesting a change.
+> > And, I accept the change request. This means, I received a tag
+> > "Reviewed-by" which I have to mention in the upcoming patch version
+> > where this change is implemented and in that particular patch?
+>
+> Please go through the docs. Yes, you received a tag which should be
+> included with the change.
+>
+> Reviewer's feedback should not be ignored.
+>
+>
+> >
+> >> the tags. The upstream maintainer will do that for tags received on th=
+e
+> >> version they apply.
+> >>
+> >
+> > I'm pretty sure we will still see further iterations. So, I apply the
+> > tags in the next version, already scheduled. Ok?
+> >
+> >> https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process=
+/submitting-patches.rst#L577
+> >>
+> >
+> > Going over the books I feel it does not make sense to still mention
+> > feedback ("Reveiewed-by") for the v1 or v2 of the patch here in a v5,
+> > does it? Your link mentiones "However if the patch has changed
+>
+> I don't understand. When did you receive the tag? v3, right? So what do
+> you mean by v1 and v2?
+>
 
-diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
-index 261a3f645fd8..c767401712af 100644
---- a/drivers/iio/adc/ad7944.c
-+++ b/drivers/iio/adc/ad7944.c
-@@ -51,6 +51,8 @@ static const char * const ad7944_spi_modes[] = {
- struct ad7944_adc {
- 	struct spi_device *spi;
- 	enum ad7944_spi_mode spi_mode;
-+	struct spi_transfer xfers[3];
-+	struct spi_message msg;
- 	/* Chip-specific timing specifications. */
- 	const struct ad7944_timing_spec *timing_spec;
- 	/* GPIO connected to CNV pin. */
-@@ -130,6 +132,88 @@ AD7944_DEFINE_CHIP_INFO(ad7985, ad7944, 16, 0);
- /* fully differential */
- AD7944_DEFINE_CHIP_INFO(ad7986, ad7986, 18, 1);
- 
-+static void ad7944_unoptimize_msg(void *msg)
-+{
-+	spi_unoptimize_message(msg);
-+}
-+
-+static int ad7944_3wire_cs_mode_init_msg(struct device *dev, struct ad7944_adc *adc,
-+					 const struct iio_chan_spec *chan)
-+{
-+	unsigned int t_conv_ns = adc->always_turbo ? adc->timing_spec->turbo_conv_ns
-+						   : adc->timing_spec->conv_ns;
-+	struct spi_transfer *xfers = adc->xfers;
-+	int ret;
-+
-+	/*
-+	 * NB: can get better performance from some SPI controllers if we use
-+	 * the same bits_per_word in every transfer.
-+	 */
-+	xfers[0].bits_per_word = chan->scan_type.realbits;
-+	/*
-+	 * CS is tied to CNV and we need a low to high transition to start the
-+	 * conversion, so place CNV low for t_QUIET to prepare for this.
-+	 */
-+	xfers[0].delay.value = T_QUIET_NS;
-+	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
-+
-+	/*
-+	 * CS has to be high for full conversion time to avoid triggering the
-+	 * busy indication.
-+	 */
-+	xfers[1].cs_off = 1;
-+	xfers[1].delay.value = t_conv_ns;
-+	xfers[1].delay.unit = SPI_DELAY_UNIT_NSECS;
-+	xfers[0].bits_per_word = chan->scan_type.realbits;
-+
-+	/* Then we can read the data during the acquisition phase */
-+	xfers[2].rx_buf = &adc->sample.raw;
-+	xfers[2].len = BITS_TO_BYTES(chan->scan_type.storagebits);
-+	xfers[2].bits_per_word = chan->scan_type.realbits;
-+
-+	spi_message_init_with_transfers(&adc->msg, xfers, 3);
-+
-+	ret = spi_optimize_message(adc->spi, &adc->msg);
-+	if (ret)
-+		return ret;
-+
-+	return devm_add_action_or_reset(dev, ad7944_unoptimize_msg, &adc->msg);
-+}
-+
-+static int ad7944_4wire_mode_init_msg(struct device *dev, struct ad7944_adc *adc,
-+				      const struct iio_chan_spec *chan)
-+{
-+	unsigned int t_conv_ns = adc->always_turbo ? adc->timing_spec->turbo_conv_ns
-+						   : adc->timing_spec->conv_ns;
-+	struct spi_transfer *xfers = adc->xfers;
-+	int ret;
-+
-+	/*
-+	 * NB: can get better performance from some SPI controllers if we use
-+	 * the same bits_per_word in every transfer.
-+	 */
-+	xfers[0].bits_per_word = chan->scan_type.realbits;
-+	/*
-+	 * CS has to be high for full conversion time to avoid triggering the
-+	 * busy indication.
-+	 */
-+	xfers[0].cs_off = 1;
-+	xfers[0].delay.value = t_conv_ns;
-+	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
-+
-+	xfers[1].rx_buf = &adc->sample.raw;
-+	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits);
-+	xfers[1].bits_per_word = chan->scan_type.realbits;
-+
-+	spi_message_init_with_transfers(&adc->msg, xfers, 3);
-+
-+	ret = spi_optimize_message(adc->spi, &adc->msg);
-+	if (ret)
-+		return ret;
-+
-+	return devm_add_action_or_reset(dev, ad7944_unoptimize_msg, &adc->msg);
-+}
-+
- /*
-  * ad7944_3wire_cs_mode_conversion - Perform a 3-wire CS mode conversion and
-  *                                   acquisition
-@@ -145,48 +229,7 @@ AD7944_DEFINE_CHIP_INFO(ad7986, ad7986, 18, 1);
- static int ad7944_3wire_cs_mode_conversion(struct ad7944_adc *adc,
- 					   const struct iio_chan_spec *chan)
- {
--	unsigned int t_conv_ns = adc->always_turbo ? adc->timing_spec->turbo_conv_ns
--						   : adc->timing_spec->conv_ns;
--	struct spi_transfer xfers[] = {
--		{
--			/*
--			 * NB: can get better performance from some SPI
--			 * controllers if we use the same bits_per_word
--			 * in every transfer.
--			 */
--			.bits_per_word = chan->scan_type.realbits,
--			/*
--			 * CS is tied to CNV and we need a low to high
--			 * transition to start the conversion, so place CNV
--			 * low for t_QUIET to prepare for this.
--			 */
--			.delay = {
--				.value = T_QUIET_NS,
--				.unit = SPI_DELAY_UNIT_NSECS,
--			},
--
--		},
--		{
--			.bits_per_word = chan->scan_type.realbits,
--			/*
--			 * CS has to be high for full conversion time to avoid
--			 * triggering the busy indication.
--			 */
--			.cs_off = 1,
--			.delay = {
--				.value = t_conv_ns,
--				.unit = SPI_DELAY_UNIT_NSECS,
--			},
--		},
--		{
--			/* Then we can read the data during the acquisition phase */
--			.rx_buf = &adc->sample.raw,
--			.len = BITS_TO_BYTES(chan->scan_type.storagebits),
--			.bits_per_word = chan->scan_type.realbits,
--		},
--	};
--
--	return spi_sync_transfer(adc->spi, xfers, ARRAY_SIZE(xfers));
-+	return spi_sync(adc->spi, &adc->msg);
- }
- 
- /*
-@@ -200,33 +243,6 @@ static int ad7944_3wire_cs_mode_conversion(struct ad7944_adc *adc,
- static int ad7944_4wire_mode_conversion(struct ad7944_adc *adc,
- 					const struct iio_chan_spec *chan)
- {
--	unsigned int t_conv_ns = adc->always_turbo ? adc->timing_spec->turbo_conv_ns
--						   : adc->timing_spec->conv_ns;
--	struct spi_transfer xfers[] = {
--		{
--			/*
--			 * NB: can get better performance from some SPI
--			 * controllers if we use the same bits_per_word
--			 * in every transfer.
--			 */
--			.bits_per_word = chan->scan_type.realbits,
--			/*
--			 * CS has to be high for full conversion time to avoid
--			 * triggering the busy indication.
--			 */
--			.cs_off = 1,
--			.delay = {
--				.value = t_conv_ns,
--				.unit = SPI_DELAY_UNIT_NSECS,
--			},
--
--		},
--		{
--			.rx_buf = &adc->sample.raw,
--			.len = BITS_TO_BYTES(chan->scan_type.storagebits),
--			.bits_per_word = chan->scan_type.realbits,
--		},
--	};
- 	int ret;
- 
- 	/*
-@@ -234,7 +250,7 @@ static int ad7944_4wire_mode_conversion(struct ad7944_adc *adc,
- 	 * and acquisition process.
- 	 */
- 	gpiod_set_value_cansleep(adc->cnv, 1);
--	ret = spi_sync_transfer(adc->spi, xfers, ARRAY_SIZE(xfers));
-+	ret = spi_sync(adc->spi, &adc->msg);
- 	gpiod_set_value_cansleep(adc->cnv, 0);
- 
- 	return ret;
-@@ -395,10 +411,6 @@ static int ad7944_probe(struct spi_device *spi)
- 		adc->spi_mode = ret;
- 	}
- 
--	if (adc->spi_mode == AD7944_SPI_MODE_CHAIN)
--		return dev_err_probe(dev, -EINVAL,
--				     "chain mode is not implemented\n");
--
- 	/*
- 	 * Some chips use unusual word sizes, so check now instead of waiting
- 	 * for the first xfer.
-@@ -491,6 +503,23 @@ static int ad7944_probe(struct spi_device *spi)
- 		return dev_err_probe(dev, -EINVAL,
- 			"cannot have both chain mode and always turbo\n");
- 
-+	switch (adc->spi_mode) {
-+	case AD7944_SPI_MODE_DEFAULT:
-+		ret = ad7944_4wire_mode_init_msg(dev, adc, &chip_info->channels[0]);
-+		if (ret)
-+			return ret;
-+
-+		break;
-+	case AD7944_SPI_MODE_SINGLE:
-+		ret = ad7944_3wire_cs_mode_init_msg(dev, adc, &chip_info->channels[0]);
-+		if (ret)
-+			return ret;
-+
-+		break;
-+	case AD7944_SPI_MODE_CHAIN:
-+		return dev_err_probe(dev, -EINVAL, "chain mode is not implemented\n");
-+	}
-+
- 	indio_dev->name = chip_info->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->info = &ad7944_iio_info;
+V1: The first version of the 3wire patch. I have split the single
+patch upon some feedback (yours?!) - V2... So, my current
+interpretation is, that every feedback I need to mention as
+Reviewed-by tag, no?
 
----
-base-commit: 526f7f17b651c78ead26fea7cea20948c00e47a5
-change-id: 20240325-ad7944-spi-optimize-message-82debaa2a5a7
+>
+> Best regards,
+> Krzysztof
+>
 

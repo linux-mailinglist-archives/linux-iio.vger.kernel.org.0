@@ -1,188 +1,154 @@
-Return-Path: <linux-iio+bounces-3783-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3784-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC18A88AF77
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:10:59 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE8988B041
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:41:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60ECE300E3D
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 19:10:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F26FC1FA3851
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 19:41:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6521211718;
-	Mon, 25 Mar 2024 19:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31ECD1CA9C;
+	Mon, 25 Mar 2024 19:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1ROJjS2"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ffR0YzS1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2233F10940;
-	Mon, 25 Mar 2024 19:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D47B1C68A
+	for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 19:40:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711393856; cv=none; b=OwioBDKHJfchDZTqzt25utYXXdlCskUwTEmhVDeBRn17wxX2PTahMASFM/7CCh9PcpWZ/Ta22paX2GLCuYUxEMCuSJ8eZ/acB6Kp0s4mpFyuqNjbM+5xMojuh7V6ilJDAwtx64DqsWw+8hehlK3EL2Q/Pd3K1500ZYtGVWuHy58=
+	t=1711395644; cv=none; b=Ud373Atkrl6zT9D8mIwSyVTVYgvS9POlqmc4IoTBmQw4IH4P3uvMNCTmD8/H6pmNjXLsiJGZJ7UNOxPyVroEqBaLmqwNnavzZx+QzORy4+2A21TJTNcMrh7+AJtCxOWq2DyRPi0lI2SwOEiD3cYUkgfQozqT/YIhKl3rp/mDu14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711393856; c=relaxed/simple;
-	bh=Acg0P6AHCvwEDQelG6mbWObj6GUgihKlFCeUtBlOkuw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V4pEORIWtRrHmxDIkCFpEOSccCtDi+lPsOA5GOQEW8CJCB4l0BFwX/WrCYxWVVgMpDaH7QM2EHHj+Sn+n8IEWQtbzC9CycBj+sg54E3GpKCFdpo5/A4N1zvDvLYrQ1KOsYlIinhojJGFYt6u4rKJPPbFav+B0UPjTc0iz1yjK4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1ROJjS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B701C433F1;
-	Mon, 25 Mar 2024 19:10:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711393855;
-	bh=Acg0P6AHCvwEDQelG6mbWObj6GUgihKlFCeUtBlOkuw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Z1ROJjS2wfitCIoVCEDPjtOEzHQJT0uiW4XAkfhJGVsq0eIJPR3HFqfqxRBSEQQrE
-	 ot6UYgldEy44NAtGF25VtzyH+Rp9hr0E1dJwYo7yOHh3qyyKfyl+HIzi4lIKqQdsDk
-	 ztNbvHxwbB0f5hvdCfce/KM+gtfpUKuiIYoRSJsRfDaY8aogS/I0KFw2ukxSMrz0cW
-	 5GJ9fSIe3JSyaIK2HTd+8sMZlDq/UB9mmNTtd+obfbhn430C/1XFSpegURmurrM7Ek
-	 J9c+YsNRpOq23e6+R1Sa2c/eNd/RqwvFqGaH8q612iyzRASCPzF9Meq1v/ygCadU9M
-	 f6ctZt892CJ5Q==
-Date: Mon, 25 Mar 2024 19:10:43 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Harald Geyer <harald@ccbib.org>
-Cc: George Stark <gnstark@salutedevices.com>, lars@metafoo.de,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- kernel@salutedevices.com
-Subject: Re: [PATCH] iio: dht11: set debug log level for parsing error
- messages
-Message-ID: <20240325191043.4acd6532@jic23-huawei>
-In-Reply-To: <c2fb93a5b2e6f437e2c92d0d797509c619cb63a8.camel@ccbib.org>
-References: <20240325165406.226916-1-gnstark@salutedevices.com>
-	<c2fb93a5b2e6f437e2c92d0d797509c619cb63a8.camel@ccbib.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1711395644; c=relaxed/simple;
+	bh=6zCujOYaTCPgwFb4TRVnXKAm1KvhcyIh/4UUj9uy3D4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jAEjEzTDWni9P+yVaFdnQZedwG2fxmNgPpsNjMiI3s6H8nOWrB5oBjkNShqGEdwEsbxeicIgCUInbQZqQLAxU9I5fQiz91LNu7NXiWNAKzUuYrtTGhHgWIPO6EIVpO5X4nFgNLH8IcQMIstpDu6DbTuMwhNBAULrAw+V81zE9QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ffR0YzS1; arc=none smtp.client-ip=209.85.161.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5a49261093cso2359979eaf.3
+        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 12:40:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711395640; x=1712000440; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cu4UkxchV2M53KPLFlI+CnD5WRrZCvujRJAKi+5DJjo=;
+        b=ffR0YzS1uosNzzpBcwXyiaIDDNdN5tL4pf3uzGyl1CZ0v9GjtVO6ogBcktRqwyopID
+         aNtUENOXQj+1UBsVfpRcMIx0G3cKU88GtcHHqQjjxuksUcFz0IT87ITgOvEo5TXMktcf
+         /IYJYXLPb/lt8ZoU47RSGwppitfmHDouBF03zHJGcAIOUoXm7oWdXFPtDmSyb1k77wzp
+         GvXUqZFJwjHOYUMTn4KCHAPRI7rvfisu320f2eef1hsHL0cjrSVf8UtcKEgvGtIyoBXk
+         2z78sokDpfaRn6D2sgJwIc6Kyn6nsQXfhH97CHcQ/xgVQyjKdG19ULzJZwGAuYKmicBL
+         DqIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711395640; x=1712000440;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cu4UkxchV2M53KPLFlI+CnD5WRrZCvujRJAKi+5DJjo=;
+        b=gnKMfxnrKrHx+2GW/rzxWZe+cj+ZcJvjuN0P9fbDCcg/2O6aVaLPtUzwSaCT9OE8Zp
+         StxDoV0b6P36ZX0mFOislqvhWGihjF/+vYToYwdLdb6vDoeA2b32kG/2dKqlgOuakYkS
+         npTZmCkt7Brxivhnb9hJbN8RiZUy+QaDw4Xyg2AbX9TTwz0tj3rMo7MqeMBuJPljyPGI
+         nBLUSeJMXkNF10Q8aRnywkU1VQxmSQeN7DL0YgOxZ6tlHXR/LL03mMs6F2sj3omyTXjN
+         yCKMn2F4gjbQ+dZ1xKOoFZomGRdO/LfRVylabGB39KSmAihIPjxRgT1HTdlHtU8QWANz
+         fTeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWD1XqhDGYTx+obFVeH3PjnfHd6pTg176axmbzyKsx71Ix0fA4/BiJEXHqE2RpIY8i+AQpeXPw35K1Ee46FnDzR8un7Zzb4c0hY
+X-Gm-Message-State: AOJu0YztYamTFUadYbN0Ob4Oj/ob+eTaFLXZ+29puKt3d8s6JBlJt8F2
+	01wSf6wDWwMAETdiGScsMY6mbBxxaa3e5xAxwSDJZxdLlV2DaA1iFd2CO9uli/s=
+X-Google-Smtp-Source: AGHT+IGw7NPFevROk+cVlQFzRhkKFe8w6rJLeHSWp9/RPJSgWlvH8NmK4IghYVHNVG1/nnOuFvYSVw==
+X-Received: by 2002:a05:6870:6125:b0:222:3792:d968 with SMTP id s37-20020a056870612500b002223792d968mr8679490oae.4.1711395640637;
+        Mon, 25 Mar 2024 12:40:40 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id bx22-20020a056830601600b006e6d4cffa31sm617068otb.51.2024.03.25.12.40.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 12:40:40 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andy Shevchenko <andy.shevchenko@gmail.com>
+Subject: [PATCH v3] iio: adc: ad7944: simplify adi,spi-mode property parsing
+Date: Mon, 25 Mar 2024 14:40:36 -0500
+Message-ID: <20240325-ad7944-cleanups-v3-1-3a19120cdd06@baylibre.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 
-On Mon, 25 Mar 2024 19:48:00 +0100
-Harald Geyer <harald@ccbib.org> wrote:
+This simplifies the adi,spi-mode property parsing by using
+device_property_match_property_string() instead of two separate
+functions. Also, the error return value is now more informative
+in cases where there was a problem parsing the property.
 
-> Hi George!
->=20
-> I'm torn on this:
->=20
-> Am Montag, dem 25.03.2024 um 19:54 +0300 schrieb George Stark:
-> > Protocol parsing errors could happen due to several reasons like
-> > noise
-> > environment, heavy load on system etc. If to poll the sensor
-> > frequently
-> > and/or for a long period kernel log will become polluted with error
-> > messages if their log level is err (i.e. on by default). =20
->=20
-> Yes, these error are often recoverable. (As are many other HW errors,
-> that typically are logged. Eg USB bus resets due to EMI)
->=20
-> However they are still genuine errors of the HW.
->=20
-> >  Also some types
-> > of those messages already have dbg level so use unified log level for
-> > all such cases. =20
->=20
-> My take so far has been: Debug level messages are for debugging the
-> code (ie adding/testing support of new device variants etc). Users
-> aren't expected to know about or enable debug output. OTOH anything
-> actually going wrong is an error and should be logged as such.
->=20
-> The idea is, that these messages help users understand issues with
-> their HW (like too long cables, broken cables etc). But it is true,
-> that they will slowly accumulate in many real world scenarios without
-> anything being truly wrong.
->=20
-> I don't consider the dmesg buffer being rotated after a month or two a
-> bug. But I suppose this is a corner case. I'll happily accept whatever
-> Jonathan thinks is reasonable.
-My take:
+Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+Changes in v3:
+- Fix "a problem" in commit message.
+- Remove nested if to save a few lines.
+- Link to v2: https://lore.kernel.org/r/20240319-ad7944-cleanups-v2-1-50e77269351b@baylibre.com
 
-If the errors are eaten with no user visibility then they should
-be logged (errors in interrupt handlers etc) but for errors in
-code that returns an error code to the userspace read or similar there
-is info that 'something went wrong' available via that then it's fine
-to use dev_dbg() with expectation anyone who is looking into issues
-can turn them on.  However, I defer to driver maintainers on whether
-they prefer dev_err() or dev_dbg() for these sorts of cases. Far
-as I'm concerned either choice is fine and it's a judgement on
-the expected rates of error and impact.
+Changes in v2:
+- Reorder error path to avoid else statement
+- Link to v1: https://lore.kernel.org/r/20240318-ad7944-cleanups-v1-1-0cbb0349a14f@baylibre.com
+---
+ drivers/iio/adc/ad7944.c | 21 ++++++++++-----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
-Jonathan
+diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
+index d5ec6b5a41c7..9aa3e98cd75c 100644
+--- a/drivers/iio/adc/ad7944.c
++++ b/drivers/iio/adc/ad7944.c
+@@ -366,7 +366,6 @@ static int ad7944_probe(struct spi_device *spi)
+ 	struct ad7944_adc *adc;
+ 	bool have_refin = false;
+ 	struct regulator *ref;
+-	const char *str_val;
+ 	int ret;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
+@@ -382,17 +381,17 @@ static int ad7944_probe(struct spi_device *spi)
+ 
+ 	adc->timing_spec = chip_info->timing_spec;
+ 
+-	if (device_property_read_string(dev, "adi,spi-mode", &str_val) == 0) {
+-		ret = sysfs_match_string(ad7944_spi_modes, str_val);
+-		if (ret < 0)
+-			return dev_err_probe(dev, -EINVAL,
+-					     "unsupported adi,spi-mode\n");
+-
+-		adc->spi_mode = ret;
+-	} else {
+-		/* absence of adi,spi-mode property means default mode */
++	ret = device_property_match_property_string(dev, "adi,spi-mode",
++						    ad7944_spi_modes,
++						    ARRAY_SIZE(ad7944_spi_modes));
++	/* absence of adi,spi-mode property means default mode */
++	if (ret == -EINVAL)
+ 		adc->spi_mode = AD7944_SPI_MODE_DEFAULT;
+-	}
++	else if (ret < 0)
++		return dev_err_probe(dev, ret,
++				     "getting adi,spi-mode property failed\n");
++	else
++		adc->spi_mode = ret;
+ 
+ 	if (adc->spi_mode == AD7944_SPI_MODE_CHAIN)
+ 		return dev_err_probe(dev, -EINVAL,
 
->=20
-> Best regards,
-> Harald
->=20
->=20
-> > Signed-off-by: George Stark <gnstark@salutedevices.com>
-> > ---
-> > I use DHT22 sensor with Raspberry Pi Zero W as a simple home meteo
-> > station.
-> > Even if to poll the sensor once per tens of seconds after month or
-> > two dmesg
-> > may become full of useless parsing error messages. Anyway those
-> > errors are caught
-> > in the user software thru return values.
-> >=20
-> > =C2=A0drivers/iio/humidity/dht11.c | 4 ++--
-> > =C2=A01 file changed, 2 insertions(+), 2 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/humidity/dht11.c
-> > b/drivers/iio/humidity/dht11.c
-> > index c97e25448772..e2cbc442177b 100644
-> > --- a/drivers/iio/humidity/dht11.c
-> > +++ b/drivers/iio/humidity/dht11.c
-> > @@ -156,7 +156,7 @@ static int dht11_decode(struct dht11 *dht11, int
-> > offset)
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0dht11->temperature =3D temp_int * 1000;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0dht11->humidity =3D hum_int * 1000;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0dev_err(dht11->dev,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0dev_dbg(dht11->dev,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-"Don't know how to decode data: %d %d %d
-> > %d\n",
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-hum_int, hum_dec, temp_int, temp_dec);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0return -EIO;
-> > @@ -239,7 +239,7 @@ static int dht11_read_raw(struct iio_dev
-> > *iio_dev,
-> > =C2=A0#endif
-> >=20
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret =3D=3D 0 && dht11->num_edges <
-> > DHT11_EDGES_PER_READ - 1) {
-> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dev_er=
-r(dht11->dev, "Only %d signal edges
-> > detected\n",
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dev_db=
-g(dht11->dev, "Only %d signal edges
-> > detected\n",
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0dht11->num_edges);
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-ret =3D -ETIMEDOUT;
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> > --
-> > 2.25.1
-> >  =20
->=20
-
+---
+base-commit: 1446d8ef48196409f811c25071b2cc510a49fc60
+change-id: 20240318-ad7944-cleanups-9f95a7c598b6
 

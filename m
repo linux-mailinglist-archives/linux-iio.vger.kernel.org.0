@@ -1,154 +1,181 @@
-Return-Path: <linux-iio+bounces-3784-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3785-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE8988B041
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:41:16 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F242B88B08A
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:54:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F26FC1FA3851
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 19:41:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 747732E3625
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 19:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31ECD1CA9C;
-	Mon, 25 Mar 2024 19:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66B3C4AECB;
+	Mon, 25 Mar 2024 19:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ffR0YzS1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XS9EwVrd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D47B1C68A
-	for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 19:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B024AEC8;
+	Mon, 25 Mar 2024 19:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711395644; cv=none; b=Ud373Atkrl6zT9D8mIwSyVTVYgvS9POlqmc4IoTBmQw4IH4P3uvMNCTmD8/H6pmNjXLsiJGZJ7UNOxPyVroEqBaLmqwNnavzZx+QzORy4+2A21TJTNcMrh7+AJtCxOWq2DyRPi0lI2SwOEiD3cYUkgfQozqT/YIhKl3rp/mDu14=
+	t=1711396432; cv=none; b=ObXmace8GyBii1ZtlotxGUtxAI28Qz9lovbtDpeWP0n25VI9ridELeOxQOHSm+qZBzY7HioAUtJo+y0SpaU0Ts+EXXVco55dnjBeYdQguc0fS5Ek7DYjF1rdIeMaV9qbFEZkC5ArsSXkztGicLNeAF5nhLDeaYx0brPajW87IRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711395644; c=relaxed/simple;
-	bh=6zCujOYaTCPgwFb4TRVnXKAm1KvhcyIh/4UUj9uy3D4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jAEjEzTDWni9P+yVaFdnQZedwG2fxmNgPpsNjMiI3s6H8nOWrB5oBjkNShqGEdwEsbxeicIgCUInbQZqQLAxU9I5fQiz91LNu7NXiWNAKzUuYrtTGhHgWIPO6EIVpO5X4nFgNLH8IcQMIstpDu6DbTuMwhNBAULrAw+V81zE9QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ffR0YzS1; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5a49261093cso2359979eaf.3
-        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 12:40:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711395640; x=1712000440; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cu4UkxchV2M53KPLFlI+CnD5WRrZCvujRJAKi+5DJjo=;
-        b=ffR0YzS1uosNzzpBcwXyiaIDDNdN5tL4pf3uzGyl1CZ0v9GjtVO6ogBcktRqwyopID
-         aNtUENOXQj+1UBsVfpRcMIx0G3cKU88GtcHHqQjjxuksUcFz0IT87ITgOvEo5TXMktcf
-         /IYJYXLPb/lt8ZoU47RSGwppitfmHDouBF03zHJGcAIOUoXm7oWdXFPtDmSyb1k77wzp
-         GvXUqZFJwjHOYUMTn4KCHAPRI7rvfisu320f2eef1hsHL0cjrSVf8UtcKEgvGtIyoBXk
-         2z78sokDpfaRn6D2sgJwIc6Kyn6nsQXfhH97CHcQ/xgVQyjKdG19ULzJZwGAuYKmicBL
-         DqIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711395640; x=1712000440;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cu4UkxchV2M53KPLFlI+CnD5WRrZCvujRJAKi+5DJjo=;
-        b=gnKMfxnrKrHx+2GW/rzxWZe+cj+ZcJvjuN0P9fbDCcg/2O6aVaLPtUzwSaCT9OE8Zp
-         StxDoV0b6P36ZX0mFOislqvhWGihjF/+vYToYwdLdb6vDoeA2b32kG/2dKqlgOuakYkS
-         npTZmCkt7Brxivhnb9hJbN8RiZUy+QaDw4Xyg2AbX9TTwz0tj3rMo7MqeMBuJPljyPGI
-         nBLUSeJMXkNF10Q8aRnywkU1VQxmSQeN7DL0YgOxZ6tlHXR/LL03mMs6F2sj3omyTXjN
-         yCKMn2F4gjbQ+dZ1xKOoFZomGRdO/LfRVylabGB39KSmAihIPjxRgT1HTdlHtU8QWANz
-         fTeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWD1XqhDGYTx+obFVeH3PjnfHd6pTg176axmbzyKsx71Ix0fA4/BiJEXHqE2RpIY8i+AQpeXPw35K1Ee46FnDzR8un7Zzb4c0hY
-X-Gm-Message-State: AOJu0YztYamTFUadYbN0Ob4Oj/ob+eTaFLXZ+29puKt3d8s6JBlJt8F2
-	01wSf6wDWwMAETdiGScsMY6mbBxxaa3e5xAxwSDJZxdLlV2DaA1iFd2CO9uli/s=
-X-Google-Smtp-Source: AGHT+IGw7NPFevROk+cVlQFzRhkKFe8w6rJLeHSWp9/RPJSgWlvH8NmK4IghYVHNVG1/nnOuFvYSVw==
-X-Received: by 2002:a05:6870:6125:b0:222:3792:d968 with SMTP id s37-20020a056870612500b002223792d968mr8679490oae.4.1711395640637;
-        Mon, 25 Mar 2024 12:40:40 -0700 (PDT)
-Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id bx22-20020a056830601600b006e6d4cffa31sm617068otb.51.2024.03.25.12.40.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 12:40:40 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: [PATCH v3] iio: adc: ad7944: simplify adi,spi-mode property parsing
-Date: Mon, 25 Mar 2024 14:40:36 -0500
-Message-ID: <20240325-ad7944-cleanups-v3-1-3a19120cdd06@baylibre.com>
-X-Mailer: git-send-email 2.43.2
+	s=arc-20240116; t=1711396432; c=relaxed/simple;
+	bh=kXcAHUIetVbRyjbtKeQYiiL+n8qiDIttqJSMygp6HMc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MyI+Lbhk3B9fp4fwRNEXcFFaSd+vg6o6LFGTAP71rkHI7fvut5LSobTTqdvXZ39JDze/1+1IYpBw2hTFoX5BZyZgvExJMwCVuz5x3ubp31SRWRHlJX0W1wYmNdt4vHLlk9R7C/c6LsRGBESRgj5SKlqPcij6xeJXMSUSJZ0u90M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XS9EwVrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B1EC433F1;
+	Mon, 25 Mar 2024 19:53:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711396431;
+	bh=kXcAHUIetVbRyjbtKeQYiiL+n8qiDIttqJSMygp6HMc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=XS9EwVrdlwYox7g8Fb6j4PP3b8BuFO/KOnAyDIRk3yzwL9RBklwd2Gue3l0ZKhq7c
+	 UeGoBuQ7w+hxlxNPJ9rS8DQ5b9BWapJpzqksUtBPxeixubIY7/C82k9sHg0YVAjuUR
+	 P8T9k6gbFaGWigeIyhw1dyqJ103aAGcWPbPig0i3oCCFZCXLnWGAHqGSrHR1iUjAoO
+	 o477mtrpU6OCOU5/hKM/9tR6L51iMhE9ayntSEmLjAUybyYogN1ZVFEjm+bRVFAWfq
+	 heCN8Kn5+TxVycbu/GKO+C0WHXD6OKN6rhHTvojdWxlz2qkp8CY27/agD2e/Zdbywo
+	 BpktQil6URIVw==
+Date: Mon, 25 Mar 2024 19:53:36 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: devicetree@vger.kernel.org, linux-iio@vger.kernel.org, Rob Herring
+ <robh@kernel.org>, Frank Rowand <frowand.list@gmail.com>,
+ linux-kernel@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
+Cc: Peter Zijlstra <peterz@infradead.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, marek.vasut@gmail.com, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>
+Subject: Re: [RESEND PATCH v2 4/4] iio: adc: rcar-gyroadc: use
+ for_each_available_child_node_scoped()
+Message-ID: <20240325195336.5528172d@jic23-huawei>
+In-Reply-To: <20240225142714.286440-5-jic23@kernel.org>
+References: <20240225142714.286440-1-jic23@kernel.org>
+	<20240225142714.286440-5-jic23@kernel.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.12.4
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This simplifies the adi,spi-mode property parsing by using
-device_property_match_property_string() instead of two separate
-functions. Also, the error return value is now more informative
-in cases where there was a problem parsing the property.
+On Sun, 25 Feb 2024 14:27:14 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
-Changes in v3:
-- Fix "a problem" in commit message.
-- Remove nested if to save a few lines.
-- Link to v2: https://lore.kernel.org/r/20240319-ad7944-cleanups-v2-1-50e77269351b@baylibre.com
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> 
+> Using automated cleanup to replace of_node_put() handling allows for
+> a simplfied flow by enabling direct returns on errors.
+> 
+> Non available child nodes should never have been considered; that
+> is ones where status != okay and was defined.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Applied to the togreg branch of iio.git and pushed out as testing
+for all the normal reasons.
 
-Changes in v2:
-- Reorder error path to avoid else statement
-- Link to v1: https://lore.kernel.org/r/20240318-ad7944-cleanups-v1-1-0cbb0349a14f@baylibre.com
----
- drivers/iio/adc/ad7944.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+Thanks,
 
-diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
-index d5ec6b5a41c7..9aa3e98cd75c 100644
---- a/drivers/iio/adc/ad7944.c
-+++ b/drivers/iio/adc/ad7944.c
-@@ -366,7 +366,6 @@ static int ad7944_probe(struct spi_device *spi)
- 	struct ad7944_adc *adc;
- 	bool have_refin = false;
- 	struct regulator *ref;
--	const char *str_val;
- 	int ret;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
-@@ -382,17 +381,17 @@ static int ad7944_probe(struct spi_device *spi)
- 
- 	adc->timing_spec = chip_info->timing_spec;
- 
--	if (device_property_read_string(dev, "adi,spi-mode", &str_val) == 0) {
--		ret = sysfs_match_string(ad7944_spi_modes, str_val);
--		if (ret < 0)
--			return dev_err_probe(dev, -EINVAL,
--					     "unsupported adi,spi-mode\n");
--
--		adc->spi_mode = ret;
--	} else {
--		/* absence of adi,spi-mode property means default mode */
-+	ret = device_property_match_property_string(dev, "adi,spi-mode",
-+						    ad7944_spi_modes,
-+						    ARRAY_SIZE(ad7944_spi_modes));
-+	/* absence of adi,spi-mode property means default mode */
-+	if (ret == -EINVAL)
- 		adc->spi_mode = AD7944_SPI_MODE_DEFAULT;
--	}
-+	else if (ret < 0)
-+		return dev_err_probe(dev, ret,
-+				     "getting adi,spi-mode property failed\n");
-+	else
-+		adc->spi_mode = ret;
- 
- 	if (adc->spi_mode == AD7944_SPI_MODE_CHAIN)
- 		return dev_err_probe(dev, -EINVAL,
+Jonathan
 
----
-base-commit: 1446d8ef48196409f811c25071b2cc510a49fc60
-change-id: 20240318-ad7944-cleanups-9f95a7c598b6
+> ---
+>  drivers/iio/adc/rcar-gyroadc.c | 21 ++++++---------------
+>  1 file changed, 6 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/rcar-gyroadc.c b/drivers/iio/adc/rcar-gyroadc.c
+> index d524f2e8e927..15a21d2860e7 100644
+> --- a/drivers/iio/adc/rcar-gyroadc.c
+> +++ b/drivers/iio/adc/rcar-gyroadc.c
+> @@ -318,7 +318,6 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+>  	struct rcar_gyroadc *priv = iio_priv(indio_dev);
+>  	struct device *dev = priv->dev;
+>  	struct device_node *np = dev->of_node;
+> -	struct device_node *child;
+>  	struct regulator *vref;
+>  	unsigned int reg;
+>  	unsigned int adcmode = -1, childmode;
+> @@ -326,7 +325,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+>  	unsigned int num_channels;
+>  	int ret, first = 1;
+>  
+> -	for_each_child_of_node(np, child) {
+> +	for_each_available_child_of_node_scoped(np, child) {
+>  		of_id = of_match_node(rcar_gyroadc_child_match, child);
+>  		if (!of_id) {
+>  			dev_err(dev, "Ignoring unsupported ADC \"%pOFn\".",
+> @@ -352,7 +351,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+>  			num_channels = ARRAY_SIZE(rcar_gyroadc_iio_channels_3);
+>  			break;
+>  		default:
+> -			goto err_e_inval;
+> +			return -EINVAL;
+>  		}
+>  
+>  		/*
+> @@ -369,7 +368,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+>  				dev_err(dev,
+>  					"Failed to get child reg property of ADC \"%pOFn\".\n",
+>  					child);
+> -				goto err_of_node_put;
+> +				return ret;
+>  			}
+>  
+>  			/* Channel number is too high. */
+> @@ -377,7 +376,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+>  				dev_err(dev,
+>  					"Only %i channels supported with %pOFn, but reg = <%i>.\n",
+>  					num_channels, child, reg);
+> -				goto err_e_inval;
+> +				return -EINVAL;
+>  			}
+>  		}
+>  
+> @@ -386,7 +385,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+>  			dev_err(dev,
+>  				"Channel %i uses different ADC mode than the rest.\n",
+>  				reg);
+> -			goto err_e_inval;
+> +			return -EINVAL;
+>  		}
+>  
+>  		/* Channel is valid, grab the regulator. */
+> @@ -396,8 +395,7 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+>  		if (IS_ERR(vref)) {
+>  			dev_dbg(dev, "Channel %i 'vref' supply not connected.\n",
+>  				reg);
+> -			ret = PTR_ERR(vref);
+> -			goto err_of_node_put;
+> +			return PTR_ERR(vref);
+>  		}
+>  
+>  		priv->vref[reg] = vref;
+> @@ -422,7 +420,6 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+>  		 * we can stop parsing here.
+>  		 */
+>  		if (childmode == RCAR_GYROADC_MODE_SELECT_1_MB88101A) {
+> -			of_node_put(child);
+>  			break;
+>  		}
+>  	}
+> @@ -433,12 +430,6 @@ static int rcar_gyroadc_parse_subdevs(struct iio_dev *indio_dev)
+>  	}
+>  
+>  	return 0;
+> -
+> -err_e_inval:
+> -	ret = -EINVAL;
+> -err_of_node_put:
+> -	of_node_put(child);
+> -	return ret;
+>  }
+>  
+>  static void rcar_gyroadc_deinit_supplies(struct iio_dev *indio_dev)
+
 

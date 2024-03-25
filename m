@@ -1,45 +1,45 @@
-Return-Path: <linux-iio+bounces-3767-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3768-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2065688A9A5
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 17:39:24 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77D488B2E8
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 22:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98E913039C4
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 16:39:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07185BC142C
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 16:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D729013CFAA;
-	Mon, 25 Mar 2024 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5788212FF66;
+	Mon, 25 Mar 2024 14:51:59 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1224113CC56;
-	Mon, 25 Mar 2024 14:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F7E4AEC6;
+	Mon, 25 Mar 2024 14:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711378144; cv=none; b=MJEpVelmxaUPz6Mj7pwPDixvQEDqG/0QvGE5l2E9I/Gk6BowJCNrdz9Gqt5u9+wbCBfhcI7xHQ/IQuZR7e2j6a8NEETKhq0NejLyjCmaW79Fr/XfIEajbMR1VKXDSrznBc1x15TbowuogvIJ+6cb+grQgl5r+Pro6eQR3mfvxIw=
+	t=1711378319; cv=none; b=W4iOHMWljqnd8RQVkrWbUzsrE8Uxf4FA/ujpUpMBDRM0YOYmsmX/fSTmr1kdD+OwjxhbaUhcnzBAie56lQDa54+MCb2VGqCYHc5/TFfXPY0hBreUdXbcMLYoKXe+FUkkBYBMMmqt68EZDg0H1VLff3P/s+70uStCqv+C2xc8kfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711378144; c=relaxed/simple;
-	bh=IuU2/7ewmGvoGLx3m/MQEnHlk5Ob0Q4OW6aJ2yIFh0A=;
+	s=arc-20240116; t=1711378319; c=relaxed/simple;
+	bh=FFCmFrNwcXbMm/+jiDCnkizcrS7m5UEBdgAEK/RdHDE=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y6vDj6POIfsak6lRRimul1mJ66kLpfOETsdgXkhQ29orD6MaWNe+6OzIIsd6aewTxOum4DP+1ydt4r3W4S9gLkhiXOIn0VhQ3AFqfeVMcJPvW802+j1sqTCr5yFIE0r4zTZY58nb7U46WpfkM+84Qf1RXBTk9ntxsMEbQnAat54=
+	 MIME-Version:Content-Type; b=XLvP8EeOcRcR3xuu7oGxtZW7EBOjbtJjpZBUHl3ADe8dZ1iVA3g3TniNV8qZswOCJjl4ISVqEyyqQ45OgoqlrGhZFpwH2iKmd/Gd/syAtoAsjNwii51D/MCgFrXUOBOYlqp0DleXSadcyRY2urtpUg9wUCmNiRh5NhQhNF6HSNg=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4V3G565Bc4z6K6Xy;
-	Mon, 25 Mar 2024 22:48:10 +0800 (CST)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4V3G8M4xxcz6D8YL;
+	Mon, 25 Mar 2024 22:50:59 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 574001400D5;
-	Mon, 25 Mar 2024 22:48:58 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 8B5301400CF;
+	Mon, 25 Mar 2024 22:51:53 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 25 Mar
- 2024 14:48:57 +0000
-Date: Mon, 25 Mar 2024 14:48:57 +0000
+ 2024 14:51:53 +0000
+Date: Mon, 25 Mar 2024 14:51:51 +0000
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Lothar Rubusch <l.rubusch@gmail.com>
 CC: Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
@@ -47,14 +47,12 @@ CC: Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
 	<krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
 	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<linux-kernel@vger.kernel.org>, <eraretuya@gmail.com>
-Subject: Re: [PATCH v3 4/6] iio: accel: adxl345: Remove single info
- instances
-Message-ID: <20240325144857.000017fb@Huawei.com>
-In-Reply-To: <CAFXKEHZWArvErzeoaO+jMrrA7AuQ4izJioNW_wWTza-bLXV22A@mail.gmail.com>
+Subject: Re: [PATCH v3 0/6] iio: accel: adxl345: Add spi-3wire feature
+Message-ID: <20240325145151.000035c2@Huawei.com>
+In-Reply-To: <CAFXKEHbvdQoqyirUC8ueihfTcCs7m5CViP27S1sNDA0VerUVYQ@mail.gmail.com>
 References: <20240323122030.21800-1-l.rubusch@gmail.com>
-	<20240323122030.21800-5-l.rubusch@gmail.com>
-	<20240324133536.01067770@jic23-huawei>
-	<CAFXKEHZWArvErzeoaO+jMrrA7AuQ4izJioNW_wWTza-bLXV22A@mail.gmail.com>
+	<20240324133941.26814432@jic23-huawei>
+	<CAFXKEHbvdQoqyirUC8ueihfTcCs7m5CViP27S1sNDA0VerUVYQ@mail.gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -68,110 +66,64 @@ Content-Transfer-Encoding: quoted-printable
 X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Sun, 24 Mar 2024 20:06:51 +0100
+On Sun, 24 Mar 2024 20:20:21 +0100
 Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-> On Sun, Mar 24, 2024 at 2:35=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
+> On Sun, Mar 24, 2024 at 2:39=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
 g> wrote:
 > >
-> > On Sat, 23 Mar 2024 12:20:28 +0000
+> > On Sat, 23 Mar 2024 12:20:24 +0000
 > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
 > > =20
-> > > Add a common array adxl3x5_chip_info and an enum for
-> > > indexing. This allows to remove local redundantly
-> > > initialized code in the bus specific modules.
+> > > Pass a function setup() as pointer from SPI/I2C specific modules
+> > > to the core module. Implement setup() to pass the spi-3wire bus
+> > > option, if declared in the device-tree.
 > > >
-> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > > ---
-> > >  drivers/iio/accel/adxl345.h      |  7 +++++++
-> > >  drivers/iio/accel/adxl345_core.c | 12 ++++++++++++
-> > >  drivers/iio/accel/adxl345_i2c.c  | 20 +++++---------------
-> > >  drivers/iio/accel/adxl345_spi.c  | 20 +++++---------------
-> > >  4 files changed, 29 insertions(+), 30 deletions(-)
+> > > In the core module, then update data_format register
+> > > configuration bits instead of overwriting it. The changes allow
+> > > to remove a data_range field, remove I2C and SPI redundant info
+> > > instances and replace them by a common info array instance.
 > > >
-> > > diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-> > > index 6b84a2cee..de6b1767d 100644
-> > > --- a/drivers/iio/accel/adxl345.h
-> > > +++ b/drivers/iio/accel/adxl345.h
-> > > @@ -26,11 +26,18 @@
-> > >   */
-> > >  #define ADXL375_USCALE       480000
-> > >
-> > > +enum adxl345_device_type {
-> > > +     ADXL345,
-> > > +     ADXL375,
-> > > +};
-> > > +
-> > >  struct adxl345_chip_info {
-> > >       const char *name;
-> > >       int uscale;
-> > >  };
-> > >
-> > > +extern const struct adxl345_chip_info adxl3x5_chip_info[];
-> > > +
-> > >  int adxl345_core_probe(struct device *dev, struct regmap *regmap,
-> > >                      int (*setup)(struct device*, struct regmap*));
-> > >
-> > > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adx=
-l345_core.c
-> > > index 33424edca..e3718d0dd 100644
-> > > --- a/drivers/iio/accel/adxl345_core.c
-> > > +++ b/drivers/iio/accel/adxl345_core.c
-> > > @@ -62,6 +62,18 @@ struct adxl345_data {
-> > >               BIT(IIO_CHAN_INFO_SAMP_FREQ),                          =
- \
-> > >  }
-> > >
-> > > +const struct adxl345_chip_info adxl3x5_chip_info[] =3D {
-> > > +     [ADXL345] =3D {
-> > > +             .name =3D "adxl345",
-> > > +             .uscale =3D ADXL345_USCALE,
-> > > +     },
-> > > +     [ADXL375] =3D {
-> > > +             .name =3D "adxl375",
-> > > +             .uscale =3D ADXL375_USCALE,
-> > > +     },
-> > > +};
-> > > +EXPORT_SYMBOL_NS_GPL(adxl3x5_chip_info, IIO_ADXL345); =20
+> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com> =20
+> > That patch break up seems reasonable (one minor request for a split
+> > in the relevant patch), but normal convention would be do do
+> > refactoring first, then functionality at the end. Also removal stuff
+> > and group, before adding things.
 > >
-> > There is little advantage here form using an array.  I'd just have
-> > two exported structures.   Then the name alone is enough in the
-> > id tables.  And probably no need for the enum definition.
-> >
-> > This use of arrays is an old pattern that makes little sense if the
-> > IDs have no actual meaning and you aren't supporting lots of different
-> > parts.  For 2 parts I'd argue definitely not worth it.
+> > So roughly speaking reorder as
+> > =20
+> > >   iio: accel: adxl345: Make data_format obsolete
+> > >   iio: accel: adxl345: Remove single info instances
+> > >   iio: accel: adxl345: Group bus configuration
+> > >   dt-bindings: iio: accel: adxl345: Add spi-3wire
+> > >   iio: accel: adxl345: Pass function pointer to core
+> > >   iio: accel: adxl345: Add the spi-3wire =20
 > > =20
 >=20
-> Agree. I see your point. I drop the info array enum patch.
+> Ok. If I split "Group bus configuration" into the grouping of the
+> indio_dev in the probe() and adding a comment to the core's probe(), I
+> will end up with something like this:
 >=20
-> (...)
+> $ git log --oneline --reverse
+>  iio: accel: adxl345: Make data_range obsolete
+>  iio: accel: adxl345: Group bus configuration
+>  iio: accel: adxl345: Move defines to header <--- new
+>  dt-bindings: iio: accel: adxl345: Add spi-3wire
+>  iio: accel: adxl345: Pass function pointer to core
+>  iio: accel: adxl345: Add comment to probe  <--- new after split
+>  iio: accel: adxl345: Add spi-3wire option
 >=20
-> Btw. may I ask another question: The adxl345/75 driver is doing the
-> configuration
-> inside the probe(). Other Analog drivers moved that out into a
-> xxx_setup() and call
-> this function in the probe(). In general, is it better to keep all
-> inside  the probe() or
-> separate? I mean, the probe is still quite short, and reading through
-> severl call
-> hierarchies feels a bit "sparghetti". On the other side I can see a
-> certain idea of
-> separation of functionality: dedicated chip configuration. Would you
-> mind to give
-> me a small statement/opinion on this please?
+> I feel I have to add the comment after adding the passed function
+> pointer. Bascially I liked to add a comment mentioning especially the
+> new function pointer there. So, although being a comment, the commit
+> will be in this "high" position. Is this ok, or am I doing something
+> wrong? Should I split into setting the comment first, then inside
+> "Pass function pointer.." also update the comment?
 
-I'd based it on code complexity.
-If it's one call (and error handling) to do it then inline makes sense.
-
-If it's  lots of lines, a separate function make sense.
-
-Where the boundary between the two lies is subjective so I tend to
-just go with whatever an author prefers.  Note that I'm not keen
-to see the noise of refactors if the code lies in this gray area?
+This is fine.  Either of the options you suggest would be fine, but
+given you've done the above already let's go with that.
 
 Jonathan
-
 
 >=20
 

@@ -1,121 +1,217 @@
-Return-Path: <linux-iio+bounces-3787-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3788-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7F788B11E
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 21:16:22 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3F2188B12C
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 21:18:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 564AB30044B
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:16:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EE9A1F314DD
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED2D4AED0;
-	Mon, 25 Mar 2024 20:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4A33F9FC;
+	Mon, 25 Mar 2024 20:18:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iuCw32tm"
+	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="DJRLAW/1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C84F4C618
-	for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 20:14:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24C9FC01;
+	Mon, 25 Mar 2024 20:18:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.89.224.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711397676; cv=none; b=WPNSpStT+a20sSx7epcKOAfsTS5RyqIqhEgPzhdLBvSpz/adW0ZXn8UGlYMcmiAfpDsjUvt7sV2cFo7T/jkucA0U1i+F5If/BfHSATx8IotiISQkBHkLRMmTwTinPFteqajR96XhKh0XniQg4Pot0t9i5qbOpU48yqmMUHVCgbI=
+	t=1711397922; cv=none; b=KgMVKO6zGsv78bK+6IlzWUM5nChyoLQTcGCXLZXjafkOCUhxnMTuz1WtV4zV4do61fIKBy/Ys73ydac4AkNgd6s548kg5coIZzLL9mTXguAplE7nqk3PWF34dNvtYpFxENouwi/JrnNPUMgB5uFz0fpvzl8JX5bP4nLa06/bZ8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711397676; c=relaxed/simple;
-	bh=y/Copnmio+r4JHJn7cH1SHr0SKFHmhJFbDXHchbZThs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tn7/Ug+IAVJZ88f54FDxku1rWoQLQQRcBrb9dfVdvVI/pjDpJmOut+44PuvDHx91y+OwWC4sewf9yY4fbnlpTmc+Q31XnOFaNXr8KS3QV+kRqZfzQXPsbMFrS7wGQdSkDWFq1BIrCppCvqJpw/p0GD3YzjqbbsE9vLFADlp3je0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iuCw32tm; arc=none smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d6dda3adb9so11226991fa.1
-        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 13:14:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711397671; x=1712002471; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y/Copnmio+r4JHJn7cH1SHr0SKFHmhJFbDXHchbZThs=;
-        b=iuCw32tmWhnvpIewveu6AYiYQem76Mvuok28exwJhKuuVd9PPE3un09zFyzpvWdRCI
-         TZAgsWjtKBs9iUKm9xLnRdpCeXrwLHmzTQ12WFULfOw+pLRcf7IpcXjAmu1DzvQqeWJa
-         s8H0kNyJtbA4e3VwLQPNXDk32TUumk7eYDBv/2xA0aYs71xBTurLoZfCp838PSBMSuTv
-         Oo5XXzKCJ5hoknalahHv1ODni1grES9CSg6/6j+6Tx8jrdqkaynTSv7IwSTKM0eowuw2
-         aGtWqxcOV8O7XK07cWN8s+HEZF58qR1/aQAeA65XXbZSlyXcWWJaH/snXMGk23zF4h/w
-         x6kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711397671; x=1712002471;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y/Copnmio+r4JHJn7cH1SHr0SKFHmhJFbDXHchbZThs=;
-        b=a92Eb+svbDck6/+R1B427gV8WniXg5aH/MaTU4K+LZMT/6HifDHXhvSTeDLtK4o5CC
-         dWOFdLNI57qZdIxQCKmGFwwZ7c47/THriegHtuZmR6hGKot4U39xO0lCAEA2YlR/oBvz
-         igikZ++PF3YH6mrfc6Ff0txKyPSB2fFG+q0RSGHZF8ADljRv5Py3gBM/2gpfvOaZme85
-         v5gZmzsJd2K654M/3poXubrxhvEiU2Xkmgnnzq+mKGUU/L8K9f8lkUo9rFtBmYUXLw+n
-         9WeQqTlV5MurztuvwugolKzVrWpcnaeyJJdoOhHTrW0m48DNpGpKRqCxiaBb5oy1J7Hd
-         wcVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTa1YtMFnP+2w6FuiVhQnwek2LAF2qgHv5ZS18KIHTavV7XKavI30SibCFI7Nmdn9UCEFZWM7IudVgZnJU8RofFQ2t6qL+y07V
-X-Gm-Message-State: AOJu0YxvNr2VcN2h2/0FDaZE6higskeTrKzJ2shoVcRx2aYi/iLwemdl
-	V2gDiKS3nWw1dYp9GkzVxPFwdBP9FyTsEZFHtXnIUnX8NtjOszZyHxAeljO/1kNZ9YfZ+a6KkeC
-	rdhQiPXTBkMqDZOH7c/zvuw+w9/nSYrS8vSvhmQ==
-X-Google-Smtp-Source: AGHT+IFxfzGP4GDD9D61DOApZnzJcZ5mRVakIzo2HcSyu+da0kxkxSHBt5x0XHbve5H0YnB5oZP4U6ETJVrQilfX3uE=
-X-Received: by 2002:a05:651c:b0f:b0:2d6:a2cd:bb8c with SMTP id
- b15-20020a05651c0b0f00b002d6a2cdbb8cmr657809ljr.10.1711397670501; Mon, 25 Mar
- 2024 13:14:30 -0700 (PDT)
+	s=arc-20240116; t=1711397922; c=relaxed/simple;
+	bh=Gmb2BaijEb4m5JgrvZZz3HH7oDI3q6QmBj33VjTQq8M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=VOkKplpQN0nYcK/2JgYVde8iUhvA+u7zEM3cxK12X/2UGqMOEH0nfo7oaqE7ZZb6XxhV3rKbk5Xt0Kv6Tf1AaIklOaD1WRHNab4TZFKGlfUsqdfZMU/VHfcdeXv+yf6kQb+nbkx49KLvtDBIpEsaJwvxZDs5dsQg90TWru1/cZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=DJRLAW/1; arc=none smtp.client-ip=45.89.224.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
+Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
+	by mx1.sberdevices.ru (Postfix) with ESMTP id D7DA512000B;
+	Mon, 25 Mar 2024 23:18:33 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru D7DA512000B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
+	s=mail; t=1711397913;
+	bh=ag/Xt50izz8cSF9yG1EEgnKoOdRbmA9hyWMHr06p+jM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+	b=DJRLAW/1rpTIEtDVub8hh36iuJwSL1w2ucxfIcQNn1CSyMZ7jSUZYABrf9s3VJMnV
+	 mZ7/3TEl8VmpZKYYTi9I83y8HnO0RAgAvFrWqPhpK9pfHMc18VbKkq7bDcDBv8M1fF
+	 UzERFN1AoDHTVv5oEFkP+nr3BUaKOUp8i87DloNtjYrpkZV/euvXiu5J6acq591MMl
+	 siDktPxm9Rj4j46yaft3ldmO6YXfCcoldU2v6SRM1hddPgNEHNZjx5UemA5FyjR8rd
+	 GZJsvUFufLucFHVeH+aqmPfcRGvPZ48XwwPVqy8nPqq/6PdGkPuZ9IdOV+pnPqewVl
+	 ANQQJGglgAE3g==
+Received: from smtp.sberdevices.ru (p-i-exch-sc-m02.sberdevices.ru [172.16.192.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.sberdevices.ru (Postfix) with ESMTPS;
+	Mon, 25 Mar 2024 23:18:33 +0300 (MSK)
+Received: from [172.28.66.90] (100.64.160.123) by
+ p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 25 Mar 2024 23:18:33 +0300
+Message-ID: <01ed720d-a990-40dd-8a59-a95ea960ecec@salutedevices.com>
+Date: Mon, 25 Mar 2024 23:18:32 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240319-adding-new-ad738x-driver-v5-0-ce7df004ceb3@baylibre.com>
- <20240319-adding-new-ad738x-driver-v5-4-ce7df004ceb3@baylibre.com>
- <20240324130135.35f4b0eb@jic23-huawei> <CAMknhBGmM7yt1JR1tW4SS5RLGpN9PtnMrf0WvZ-bhU-gSv3YUQ@mail.gmail.com>
- <20240325200625.5a07cec4@jic23-huawei>
-In-Reply-To: <20240325200625.5a07cec4@jic23-huawei>
-From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 25 Mar 2024 15:14:19 -0500
-Message-ID: <CAMknhBHNhL62A8KY3vnNqQm+c+5M-0=w3qAWN=54FxYGjicUQw@mail.gmail.com>
-Subject: Re: [PATCH v5 4/7] iio: adc: ad7380: add support for
- pseudo-differential parts
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Julien Stephan <jstephan@baylibre.com>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: dht11: set debug log level for parsing error
+ messages
+Content-Language: en-US
+To: Harald Geyer <harald@ccbib.org>, <lars@metafoo.de>, <jic23@kernel.org>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<kernel@salutedevices.com>
+References: <20240325165406.226916-1-gnstark@salutedevices.com>
+ <c2fb93a5b2e6f437e2c92d0d797509c619cb63a8.camel@ccbib.org>
+From: George Stark <gnstark@salutedevices.com>
+In-Reply-To: <c2fb93a5b2e6f437e2c92d0d797509c619cb63a8.camel@ccbib.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: p-i-exch-sc-m01.sberdevices.ru (172.16.192.107) To
+ p-i-exch-sc-m02.sberdevices.ru (172.16.192.103)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 184404 [Mar 25 2024]
+X-KSMG-AntiSpam-Version: 6.1.0.4
+X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 11 0.3.11 5ecf9895443a5066245fcb91e8430edf92b1b594, {Tracking_from_domain_doesnt_match_to}, salutedevices.com:7.1.1;smtp.sberdevices.ru:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;100.64.160.123:7.1.2, FromAlignment: s, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean
+X-KSMG-LinksScanning: Clean
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/03/25 18:32:00 #24438765
+X-KSMG-AntiVirus-Status: Clean, skipped
 
-On Mon, Mar 25, 2024 at 3:06=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> >
-> > But given that this is a common pattern in many IIO drivers, maybe we
-> > make a devm_regulator_get_enable_get_voltage()? This would return the
-> > voltage on success or an error code. (If the regulator subsystem
-> > doesn't want this maybe we could have
-> > devm_iio_regulator_get_enable_get_voltage()).
-> >
-> > If the dev_err_probe() calls were included in
-> > devm_regulator_get_enable_get_voltage(), then the 10+ lines of code
-> > here and in many other drivers to get the regulator, enable it, add
-> > the reset action and get the voltage could be reduced to 3 lines.
->
-> I like this proposal a lot. RFC, so it's visible outside the depths
-> of this thread?
+Hello Harald
 
-Yes, I can send an RFC separately so it doesn't hold up this patch/series.
+Thanks for the review.
 
-> Particularly good as it will keep the regulator opaque in the same
-> fashion as devm_regulator_get_enabled()
->
-> As you say, we have a 'lot' of instances of this (quick grep
-> suggests > 50 in IIO alone and smaller numbers elsewhere).
->
+
+On 3/25/24 21:48, Harald Geyer wrote:
+> Hi George!
+> 
+> I'm torn on this:
+> 
+> Am Montag, dem 25.03.2024 um 19:54 +0300 schrieb George Stark:
+>> Protocol parsing errors could happen due to several reasons like
+>> noise
+>> environment, heavy load on system etc. If to poll the sensor
+>> frequently
+>> and/or for a long period kernel log will become polluted with error
+>> messages if their log level is err (i.e. on by default).
+> 
+> Yes, these error are often recoverable. (As are many other HW errors,
+> that typically are logged. Eg USB bus resets due to EMI)
+> 
+> However they are still genuine errors of the HW.
+> 
+>>   Also some types
+>> of those messages already have dbg level so use unified log level for
+>> all such cases.
+> 
+> My take so far has been: Debug level messages are for debugging the
+> code (ie adding/testing support of new device variants etc). Users
+> aren't expected to know about or enable debug output. OTOH anything
+> actually going wrong is an error and should be logged as such.
+> 
+> The idea is, that these messages help users understand issues with
+> their HW (like too long cables, broken cables etc). But it is true,
+> that they will slowly accumulate in many real world scenarios without
+> anything being truly wrong.
+
+I agree with you that it's very convenient to just take a look to dmesg
+and see device connection problems at once. But unlike e.g. usb user has
+to actually start reading sensor to perform communication and read
+errors will be propagated to the userspace and could be noticed \
+handled.
+
+Anyway I believe we should use uniform approach for read errors -
+currently in the driver there're already dbg messages:
+
+"lost synchronisation at edge %d\n"
+"invalid checksum\n"
+
+I changed log level from err to dbg for the messages:
+
+"Only %d signal edges detected\n"
+"Don't know how to decode data: %d %d %d %d\n"
+
+They all are from a single callback and say the same thing -
+communication problem.
+
+If we make all those messages as errors it'd be great to have mechanism
+to disable them e.g. thru module parameter or somehow without rebuilding
+kernel. Those errors can be bypassed by increasing read rate.
+
+> 
+> I don't consider the dmesg buffer being rotated after a month or two a
+> bug. But I suppose this is a corner case. I'll happily accept whatever
+> Jonathan thinks is reasonable.
+> 
+> Best regards,
+> Harald
+> 
+> 
+>> Signed-off-by: George Stark <gnstark@salutedevices.com>
+>> ---
+>> I use DHT22 sensor with Raspberry Pi Zero W as a simple home meteo
+>> station.
+>> Even if to poll the sensor once per tens of seconds after month or
+>> two dmesg
+>> may become full of useless parsing error messages. Anyway those
+>> errors are caught
+>> in the user software thru return values.
+>>
+>>   drivers/iio/humidity/dht11.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/iio/humidity/dht11.c
+>> b/drivers/iio/humidity/dht11.c
+>> index c97e25448772..e2cbc442177b 100644
+>> --- a/drivers/iio/humidity/dht11.c
+>> +++ b/drivers/iio/humidity/dht11.c
+>> @@ -156,7 +156,7 @@ static int dht11_decode(struct dht11 *dht11, int
+>> offset)
+>>                  dht11->temperature = temp_int * 1000;
+>>                  dht11->humidity = hum_int * 1000;
+>>          } else {
+>> -               dev_err(dht11->dev,
+>> +               dev_dbg(dht11->dev,
+>>                          "Don't know how to decode data: %d %d %d
+>> %d\n",
+>>                          hum_int, hum_dec, temp_int, temp_dec);
+>>                  return -EIO;
+>> @@ -239,7 +239,7 @@ static int dht11_read_raw(struct iio_dev
+>> *iio_dev,
+>>   #endif
+>>
+>>                  if (ret == 0 && dht11->num_edges <
+>> DHT11_EDGES_PER_READ - 1) {
+>> -                       dev_err(dht11->dev, "Only %d signal edges
+>> detected\n",
+>> +                       dev_dbg(dht11->dev, "Only %d signal edges
+>> detected\n",
+>>                                  dht11->num_edges);
+>>                          ret = -ETIMEDOUT;
+>>                  }
+>> --
+>> 2.25.1
+>>
+> 
+
+-- 
+Best regards
+George
 

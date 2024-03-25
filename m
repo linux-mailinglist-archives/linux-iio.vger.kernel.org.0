@@ -1,90 +1,67 @@
-Return-Path: <linux-iio+bounces-3777-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3778-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4184488B022
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 20:36:42 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6149488AC2E
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 18:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C384FBE5E6F
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 17:05:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92F511C3EE00
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 17:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B6C12BF3C;
-	Mon, 25 Mar 2024 15:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603546FE11;
+	Mon, 25 Mar 2024 16:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FWJDz+yz"
+	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="WfV9tcVS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.sberdevices.ru (mx2.sberdevices.ru [45.89.224.132])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB00A82D74;
-	Mon, 25 Mar 2024 15:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C308136E1D;
+	Mon, 25 Mar 2024 16:57:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.89.224.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711380897; cv=none; b=YCkgz6AKHps+1i76WZglMLpyZGqGpM0WXIVo53s2qO4imgq/NKN1m9dxcYWuSKQxsEGeZu9ZtK10C7/sRdQZvr62UUQA8yC95MRLlx1codyon6d7JjmRoElqpBg+CVxI+nk3fNQoeA27J99V0CM+BfHKE1KYbvVhO+BP8tofE+s=
+	t=1711385834; cv=none; b=rQ85XeHwKiEjCyP2wcS6xMl7WEqlwbeUBnMl7EZcI9MSEeOp+mENRRFcfOJI/JbKa6hsOW2bz1dBHPQOi3rij1XdLQS75pFpl751eOatNZHBauoWdXnxPqi/YKp81h3RQyIRvmX8Ky0SLqe+23gvncuOUJ3qbsrez0Us2hqJMVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711380897; c=relaxed/simple;
-	bh=VpmSCUo4LCSDAreg17AyaXZjU/kMgoCoxrBfLAVsbns=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Kk4i5vZXgCn18DNbj4E3Puoajum0c/GzWDlPgkdMgtR08CGG6975am7501rVgwOhwXN8NXi+uXA9W3c670SxIGfCzrWxbLLoYEHn0VmVIL4v4z70mMjB6/puF+AK1SxI3caPdgL/IxKMyxUvrwE3i16UtSOkThDEuTWl4aQXqH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FWJDz+yz; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-513dc9d6938so5617942e87.2;
-        Mon, 25 Mar 2024 08:34:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711380894; x=1711985694; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CiSHINdO4QQ9dGEkUNG8gKxPDwA7BezRYNLVvF2c4GI=;
-        b=FWJDz+yzomkrbc6FXZUNN8OTlDrCAwaVNBb9ATK7zlo3//HaVnlcy4f4DUKoW0tZS7
-         m5fzTb9JpOGNmwZBaZG3sbvv4WiXnGz+njQrett79NQ8NoeInXPYCR/Fwziex1Wa/sJ7
-         6Mu/jX7F30qdWexK8CtrpdLdhh8s+/qEx+t+oTQ5T4w2YLCi1gxnnvdp0m0tUhY9+LXn
-         GEJ177dQZpAq8jfjSN+QG3Y298VaTQmHznd2bzrTQ+xUbCSDlYkg4yEYIb1c7pbitvk/
-         NnTPA6Li01IgrJhVlFoZixjBKuPnO21qyxmIudegx7lpuP+9QIQbOPQN/Z6kg1Jbu/fp
-         BN0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711380894; x=1711985694;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CiSHINdO4QQ9dGEkUNG8gKxPDwA7BezRYNLVvF2c4GI=;
-        b=HanqLK1OhkTA4wl96vwuJhRRFCJ8WDp569eLZbiebjHVcWJWyh/4pf54d+pkv7w+RI
-         iGmYUqXvDfBFeiupkazvIhKDKBkSlKD8XrFurz1zray68JmFfvqv1K/vz8UGpMLKYTVZ
-         EUOxrt8giwuOfg/OJm0JX76SzBsW/w+euPgonU21agmwk7GRs9mz62/8kocx9DIcDrrM
-         wCo7BcWTFP5A/Ks9zPeV3rE74unJrbuOsHP4LdUHUSD2Yu4sHTNSfWqbS9F79s2vavIU
-         uuC4IaZjyeL3VdNs0PG0wOucbLACLKsMCRXjKoanFoDROS7/tfja7qeSBdhwdHFuO2i9
-         b+2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWN83047bVa8EdEMJPROixvC7ubyd+C7SAdzNEcCsnanwOfS6KME9bhG20VVtCsuirPpq+VuP6DW5nv/I5Al5Tg5RzZZf5fme5/Gmmauw8A08ss/XD0SLCQwgM/TaBbcWpjVJzMOgsRyQ==
-X-Gm-Message-State: AOJu0Yztj+e+t0/6qzbPwI0a/DZsu/Timc3Iah2yi6nuApMsd9UznJWs
-	q3NmxTrVQpDyL+xFQwRCC+RDuEgZou8c3FiKdUkg+K8q2sJkrd4/
-X-Google-Smtp-Source: AGHT+IEwy3EYA8kKvQPY3gjgvTL1CYxxrX54THrLiN66C1zBx3z6uDkuHjcp5TU9+9lJcfYG7H660w==
-X-Received: by 2002:ac2:554c:0:b0:513:d339:8b1 with SMTP id l12-20020ac2554c000000b00513d33908b1mr4663596lfk.27.1711380893781;
-        Mon, 25 Mar 2024 08:34:53 -0700 (PDT)
-Received: from 764c7355c69b.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id u13-20020a17090626cd00b00a45200fe2b5sm3142382ejc.224.2024.03.25.08.34.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 Mar 2024 08:34:53 -0700 (PDT)
-From: Lothar Rubusch <l.rubusch@gmail.com>
-To: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	eraretuya@gmail.com,
-	l.rubusch@gmail.com
-Subject: [PATCH v4 7/7] iio: accel: adxl345: Add spi-3wire option
-Date: Mon, 25 Mar 2024 15:33:56 +0000
-Message-Id: <20240325153356.46112-8-l.rubusch@gmail.com>
+	s=arc-20240116; t=1711385834; c=relaxed/simple;
+	bh=yGM4irWrOGL/RrRmQtB8pS5xeSrk9c3qzsw0hBez+uQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M0O2yOwGf9mJGB6+MRopany+nCsDt5j803pGt4UKYTCW6LmtRT3Rpjdseu6QvNQKLAFz353a3l/kjeJg1xaDBZhPdpgz8HV7La+2zaRBgVfHLCvQdgtbXJbNQA3teySCYIaAYJD8xxklQEwibdymx6p3p+zM5kkBJXHXioVdotM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=WfV9tcVS; arc=none smtp.client-ip=45.89.224.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=salutedevices.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
+Received: from p-infra-ksmg-sc-msk02 (localhost [127.0.0.1])
+	by mx1.sberdevices.ru (Postfix) with ESMTP id 61553120004;
+	Mon, 25 Mar 2024 19:57:00 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.sberdevices.ru 61553120004
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
+	s=mail; t=1711385820;
+	bh=gH+zZTG2XTxDhXno5HnG1q7mVFathfIQiMuRGllPg9I=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=WfV9tcVSItH3bplVNXX82ohdZn7KYBMsDVDQ4jPe7M8TfeG0jKDxbNSk4EJD1x0On
+	 u5SPikbk1cjTo1QfPR3i1P2brE9e6ZOXgFlpR+LIF/tZ4/qagpV3obDnh4TveAp4AY
+	 9sVbMFLTuGAtc9Telf+URL4u1oJ8ETT5jy+nAn+WkBIGs30AJ7uGC3wLhVMWcgxGtY
+	 mKDzIdAm99NuJGtYKdzSeTjLPSncV47IrRzY6t8FrTfzF3UnKQa4xqrSUXkgqNEB32
+	 Vb6YPSAeDgC1C7XQkYF9yU0Gvx3W5kteBl3iTBgXAJBR/14m0pRqOq/y+GUwfexhlz
+	 dW9w5hyRd2zLQ==
+Received: from smtp.sberdevices.ru (p-i-exch-sc-m02.sberdevices.ru [172.16.192.103])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.sberdevices.ru (Postfix) with ESMTPS;
+	Mon, 25 Mar 2024 19:57:00 +0300 (MSK)
+Received: from work.sberdevices.ru (100.64.160.123) by
+ p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.40; Mon, 25 Mar 2024 19:56:59 +0300
+From: George Stark <gnstark@salutedevices.com>
+To: <jic23@kernel.org>, <lars@metafoo.de>, <harald@ccbib.org>,
+	<gnstark@salutedevices.com>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<kernel@salutedevices.com>
+Subject: [PATCH] iio: dht11: set debug log level for parsing error messages
+Date: Mon, 25 Mar 2024 19:54:06 +0300
+Message-ID: <20240325165406.226916-1-gnstark@salutedevices.com>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240325153356.46112-1-l.rubusch@gmail.com>
-References: <20240325153356.46112-1-l.rubusch@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -92,59 +69,66 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: p-i-exch-sc-m02.sberdevices.ru (172.16.192.103) To
+ p-i-exch-sc-m02.sberdevices.ru (172.16.192.103)
+X-KSMG-Rule-ID: 10
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 184403 [Mar 25 2024]
+X-KSMG-AntiSpam-Version: 6.1.0.4
+X-KSMG-AntiSpam-Envelope-From: gnstark@salutedevices.com
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 11 0.3.11 5ecf9895443a5066245fcb91e8430edf92b1b594, {Tracking_from_domain_doesnt_match_to}, 100.64.160.123:7.1.2;smtp.sberdevices.ru:5.0.1,7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;salutedevices.com:7.1.1, FromAlignment: s, ApMailHostAddress: 100.64.160.123
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean
+X-KSMG-LinksScanning: Clean
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/03/25 14:48:00 #24435619
+X-KSMG-AntiVirus-Status: Clean, skipped
 
-Add a setup function implementation to the spi module to enable
-spi-3wire as option when specified in the device-tree.
+Protocol parsing errors could happen due to several reasons like noise
+environment, heavy load on system etc. If to poll the sensor frequently
+and/or for a long period kernel log will become polluted with error
+messages if their log level is err (i.e. on by default). Also some types
+of those messages already have dbg level so use unified log level for
+all such cases.
 
-Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+Signed-off-by: George Stark <gnstark@salutedevices.com>
 ---
- drivers/iio/accel/adxl345.h     |  1 +
- drivers/iio/accel/adxl345_spi.c | 12 +++++++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+I use DHT22 sensor with Raspberry Pi Zero W as a simple home meteo station.
+Even if to poll the sensor once per tens of seconds after month or two dmesg
+may become full of useless parsing error messages. Anyway those errors are caught
+in the user software thru return values.
 
-diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-index 620a2e0f0..55a72ca38 100644
---- a/drivers/iio/accel/adxl345.h
-+++ b/drivers/iio/accel/adxl345.h
-@@ -36,6 +36,7 @@
- #define ADXL345_DATA_FORMAT_8G		2
- #define ADXL345_DATA_FORMAT_16G		3
- #define ADXL345_DATA_FORMAT_MSK		~((u8) BIT(6)) /* ignore spi-3wire */
-+#define ADXL345_DATA_FORMAT_SPI_3WIRE	BIT(6)
- 
- #define ADXL345_DEVID			0xE5
- 
-diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_spi.c
-index 1c0513bd3..f145d5c1d 100644
---- a/drivers/iio/accel/adxl345_spi.c
-+++ b/drivers/iio/accel/adxl345_spi.c
-@@ -20,6 +20,16 @@ static const struct regmap_config adxl345_spi_regmap_config = {
- 	.read_flag_mask = BIT(7) | BIT(6),
- };
- 
-+static int adxl345_spi_setup(struct device *dev, struct regmap *regmap)
-+{
-+	struct spi_device *spi = container_of(dev, struct spi_device, dev);
-+
-+	if (spi->mode & SPI_3WIRE)
-+		return regmap_write(regmap, ADXL345_REG_DATA_FORMAT,
-+				    ADXL345_DATA_FORMAT_SPI_3WIRE);
-+	return 0;
-+}
-+
- static int adxl345_spi_probe(struct spi_device *spi)
- {
- 	struct regmap *regmap;
-@@ -33,7 +43,7 @@ static int adxl345_spi_probe(struct spi_device *spi)
- 	if (IS_ERR(regmap))
- 		return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing regmap\n");
- 
--	return adxl345_core_probe(&spi->dev, regmap, NULL);
-+	return adxl345_core_probe(&spi->dev, regmap, adxl345_spi_setup);
- }
- 
- static const struct adxl345_chip_info adxl345_spi_info = {
--- 
+ drivers/iio/humidity/dht11.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/humidity/dht11.c b/drivers/iio/humidity/dht11.c
+index c97e25448772..e2cbc442177b 100644
+--- a/drivers/iio/humidity/dht11.c
++++ b/drivers/iio/humidity/dht11.c
+@@ -156,7 +156,7 @@ static int dht11_decode(struct dht11 *dht11, int offset)
+ 		dht11->temperature = temp_int * 1000;
+ 		dht11->humidity = hum_int * 1000;
+ 	} else {
+-		dev_err(dht11->dev,
++		dev_dbg(dht11->dev,
+ 			"Don't know how to decode data: %d %d %d %d\n",
+ 			hum_int, hum_dec, temp_int, temp_dec);
+ 		return -EIO;
+@@ -239,7 +239,7 @@ static int dht11_read_raw(struct iio_dev *iio_dev,
+ #endif
+
+ 		if (ret == 0 && dht11->num_edges < DHT11_EDGES_PER_READ - 1) {
+-			dev_err(dht11->dev, "Only %d signal edges detected\n",
++			dev_dbg(dht11->dev, "Only %d signal edges detected\n",
+ 				dht11->num_edges);
+ 			ret = -ETIMEDOUT;
+ 		}
+--
 2.25.1
 
 

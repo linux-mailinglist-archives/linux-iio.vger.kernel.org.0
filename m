@@ -1,49 +1,49 @@
-Return-Path: <linux-iio+bounces-3753-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3755-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4727E889637
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 09:47:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E302D889660
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 09:50:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77EAC1C2FFA4
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 08:47:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 212451C30199
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 08:50:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5A2130E4E;
-	Mon, 25 Mar 2024 05:31:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B553146A8E;
+	Mon, 25 Mar 2024 05:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H5v5+h49"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IW3oS+vk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC32149C6F;
-	Mon, 25 Mar 2024 01:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11502153568;
+	Mon, 25 Mar 2024 02:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711331664; cv=none; b=GJotvEpMU2t96ExlDP3QYkgti/oue1B5/XZ2/OAaIXFHBOg1K26ltNX9kzVIaC/PnayRyFTRu4YN4f21q8FdTbC9asELWe8D6wb/XNMMmEug7fnwPJGVoT5EkY2oD+cMj3e1Xyxxr/P3JU9ZaKKy5lFZlvUtn2KgsaoMl5MvKZo=
+	t=1711332789; cv=none; b=u7REQ7lAzJE27FtSPJ1eSaA5qN0mvEhGELx5KLu7mFDtGkmiWdlIWfp21k78JdllIhO//sDXhPAUsfbh/vMkGt+dQGEXXgrUdx41IkRb3wCemAJnrlLDvob0Dfn42azqF+4jn3mVSMq6+MYtJGIMuO5JDf6RhBDkk/o2r9S0UbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711331664; c=relaxed/simple;
-	bh=6oSruhpUUM/JsOE/DmTpdI2vwwDBrgPZ0a067ebg71g=;
+	s=arc-20240116; t=1711332789; c=relaxed/simple;
+	bh=OQ6DaWqLtLK0mHL2i6HS0EPqyqAvookaS2ecZGz/nWM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BXavgyVIwbI0XKt1bmIkdF8F+g0tHgU1gEza/QMi5atTyUN40Y2UP4Zw6q60v2jdLAevl79doPcqwa3mWV37MQAFut45u2PH4gdHOaD5f3a/3JCcsD95+91BVI6QTqL08yDZxgNdIsE1jv1Y6zYz+VCooluQ5p0gBwpWn7T7MgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H5v5+h49; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B6E65C3278A;
-	Mon, 25 Mar 2024 01:54:22 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=g43doJD1Zwd+SjGFr2tDawQRyGxaqDWtHOLzHbbPbdlZEifs5MViBVSEdcqAq4MXmI+EdlTb8RCW8B/c0Gl7UUu7O5d1K+qyZXe2jCfHGN1ApxYSjBtyyzvY+nuAnF/lYyilRgmLDNgJoFct7k0iusd1Lr+w+/W9TO8YCmiI934=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IW3oS+vk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A56A5C4166B;
+	Mon, 25 Mar 2024 02:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711331662;
-	bh=6oSruhpUUM/JsOE/DmTpdI2vwwDBrgPZ0a067ebg71g=;
+	s=k20201202; t=1711332787;
+	bh=OQ6DaWqLtLK0mHL2i6HS0EPqyqAvookaS2ecZGz/nWM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=H5v5+h49ENxYpO4Qx7Bxhx6rXvKE1uOYwWRPMuOMKAAAGjbVLOwiVpxBUGFp5tgD0
-	 bRdst26F9hDjh7YUZUwWr0x2cAfYNRnj+dxtl/ne6glopIwxX+aoKUy6CJcxbWbaUd
-	 MNr0+9gadKcBt3ZsPaHE1sxCHjuCpj1s5bpqLzxDj5YOy3Dta1gaLkaSqBQAzpz4LX
-	 MIdCzDsNSrkQbOQKie0yC9qHiPkAzdY9UedzZ5MflJ7Du/7ighdOEZfL1lo9oLnp14
-	 irlDyqzxpGP8P9NN8Jv7v8MMGYjdEJEFqvc3HShkoC9g70mAo7FfNU3xI07MtYbvbK
-	 tzSw6JGLkISEA==
+	b=IW3oS+vkvE1rg2omkWdnXg451W2R8QWxmUug1tn/Bg6l3cfmeu1XEIle4W9BtNPp4
+	 0oal/S4apZS+BzY3gBaCjlntTY0jgQlz1t3PTdy9XjaTcskT+il7ElSZAp+JWMzJPx
+	 t4H/ihZGECuHFrRbX8V87SXD5ftRGwC5bn6CdPejAvtWiLKQtnbNuipuyb5sBYBBYm
+	 r76u6K1eEb3PqAdmigNT4nSlFA/s5U3UgALZVL8Mu6HumRAnW3tR7xT39q806nrvhq
+	 m7JZPsTIIGWptqQY1qCZ3jSIb5cnxMaBAWbnn/lCp4J/k3we+Ge3Bv+ms0rQoNcWaw
+	 NOIkisLFJZphg==
 Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id A9007D2D0E0;
-	Mon, 25 Mar 2024 01:54:22 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 90BCDD2D0E3;
+	Mon, 25 Mar 2024 02:13:07 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -52,50 +52,69 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] treewide,
- serdev: change receive_buf() return type to size_t
+Subject: Re: [PATCH v3 00/32] spi: get rid of some legacy macros
 From: patchwork-bot+chrome-platform@kernel.org
 Message-Id: 
- <171133166268.9916.3624245768126440750.git-patchwork-notify@kernel.org>
-Date: Mon, 25 Mar 2024 01:54:22 +0000
-References: <20240122180551.34429-1-francesco@dolcini.it>
-In-Reply-To: <20240122180551.34429-1-francesco@dolcini.it>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: gregkh@linuxfoundation.org, jirislaby@kernel.org,
- linux-bluetooth@vger.kernel.org, linux-mediatek@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- greybus-dev@lists.linaro.org, linux-iio@vger.kernel.org,
- netdev@vger.kernel.org, chrome-platform@lists.linux.dev,
- platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
- linux-sound@vger.kernel.org, francesco.dolcini@toradex.com,
- luiz.dentz@gmail.com, johan@kernel.org, elder@kernel.org, jic23@kernel.org,
- lee@kernel.org, kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
- davem@davemloft.net, krzysztof.kozlowski@linaro.org, hdegoede@redhat.com,
- ilpo.jarvinen@linux.intel.com, bleung@chromium.org, tzungbi@kernel.org,
- robh@kernel.org, Jonathan.Cameron@huawei.com
+ <171133278756.9916.16032493309661657935.git-patchwork-notify@kernel.org>
+Date: Mon, 25 Mar 2024 02:13:07 +0000
+References: <cover.1707324793.git.u.kleine-koenig@pengutronix.de>
+In-Reply-To: <cover.1707324793.git.u.kleine-koenig@pengutronix.de>
+To: =?utf-8?q?Uwe_Kleine-K=C3=B6nig_=3Cu=2Ekleine-koenig=40pengutronix=2Ede=3E?=@codeaurora.org
+Cc: broonie@kernel.org, kernel@pengutronix.de, mdf@kernel.org,
+ hao.wu@intel.com, yilun.xu@intel.com, trix@redhat.com,
+ linux-fpga@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alex.aring@gmail.com, stefan@datenfreihafen.org, miquel.raynal@bootlin.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ linux-wpan@vger.kernel.org, netdev@vger.kernel.org, lars@metafoo.de,
+ Michael.Hennerich@analog.com, jic23@kernel.org, linux-iio@vger.kernel.org,
+ dmitry.torokhov@gmail.com, Jonathan.Cameron@huawei.com,
+ linux-input@vger.kernel.org, gregkh@linuxfoundation.org,
+ andriy.shevchenko@linux.intel.com, ulf.hansson@linaro.org,
+ martin.tuma@digiteqautomotive.com, mchehab@kernel.org,
+ linux-media@vger.kernel.org, serjk@netup.ru, arnd@arndb.de,
+ yangyingliang@huawei.com, linux-mmc@vger.kernel.org, richard@nod.at,
+ vigneshr@ti.com, robh@kernel.org, amit.kumar-mahapatra@amd.com,
+ alsa-devel@alsa-project.org, linux-mtd@lists.infradead.org, horms@kernel.org,
+ ronald.wahl@raritan.com, bleung@chromium.org, tzungbi@kernel.org,
+ groeck@chromium.org, chrome-platform@lists.linux.dev, michal.simek@amd.com,
+ jcmvbkbc@gmail.com, linux-spi@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, andersson@kernel.org,
+ konrad.dybcio@linaro.org, linux-arm-msm@vger.kernel.org,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ linux-mediatek@lists.infradead.org, tzimmermann@suse.de, javierm@redhat.com,
+ sam@ravnborg.org, dri-devel@lists.freedesktop.org,
+ linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+ vireshk@kernel.org, rmfrfs@gmail.com, johan@kernel.org, elder@kernel.org,
+ greybus-dev@lists.linaro.org, peterhuewe@gmx.de, jarkko@kernel.org,
+ jgg@ziepe.ca, linux-integrity@vger.kernel.org, herve.codina@bootlin.com,
+ krzysztof.kozlowski@linaro.org, linux-usb@vger.kernel.org, deller@gmx.de,
+ dario.binacchi@amarulasolutions.com, kvalo@kernel.org, dmantipov@yandex.ru,
+ libertas-dev@lists.infradead.org, linux-wireless@vger.kernel.org,
+ corbet@lwn.net, bhelgaas@google.com, james.clark@arm.com,
+ linux-doc@vger.kernel.org
 
 Hello:
 
-This patch was applied to chrome-platform/linux.git (for-kernelci)
-by Greg Kroah-Hartman <gregkh@linuxfoundation.org>:
+This patch was applied to chrome-platform/linux.git (for-next)
+by Mark Brown <broonie@kernel.org>:
 
-On Mon, 22 Jan 2024 19:05:51 +0100 you wrote:
-> From: Francesco Dolcini <francesco.dolcini@toradex.com>
+On Wed,  7 Feb 2024 19:40:14 +0100 you wrote:
+> Changes since v2
+> (https://lore.kernel.org/linux-spi/cover.1705944943.git.u.kleine-koenig@pengutronix.de):
 > 
-> receive_buf() is called from ttyport_receive_buf() that expects values
-> ">= 0" from serdev_controller_receive_buf(), change its return type from
-> ssize_t to size_t.
-> 
-> The need for this clean-up was noticed while fixing a warning, see
-> commit 94d053942544 ("Bluetooth: btnxpuart: fix recv_buf() return value").
-> Changing the callback prototype to return an unsigned seems the best way
-> to document the API and ensure that is properly used.
+>  - Drop patch "mtd: rawnand: fsl_elbc: Let .probe retry if local bus is
+>    missing" which doesn't belong into this series.
+>  - Fix a build failure noticed by the kernel build bot in
+>    drivers/spi/spi-au1550.c. (I failed to catch this because this driver
+>    is mips only, but not enabled in a mips allmodconfig. That's a bit
+>    unfortunate, but not easily fixable.)
+>  - Add the Reviewed-by: and Acked-by: tags I received for v2.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2] treewide, serdev: change receive_buf() return type to size_t
-    https://git.kernel.org/chrome-platform/c/fed99212acae
+  - [v3,15/32] platform/chrome: cros_ec_spi: Follow renaming of SPI "master" to "controller"
+    https://git.kernel.org/chrome-platform/c/85ad0ec049a7
 
 You are awesome, thank you!
 -- 

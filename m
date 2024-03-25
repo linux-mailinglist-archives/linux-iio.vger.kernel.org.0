@@ -1,116 +1,127 @@
-Return-Path: <linux-iio+bounces-3769-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3770-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 067A388A9F1
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 17:47:35 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED71688B43F
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 23:37:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40FCC1C3A759
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 16:47:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD01EBE7BD8
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 17:03:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA64212FF88;
-	Mon, 25 Mar 2024 15:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E48D80BE1;
+	Mon, 25 Mar 2024 15:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wkPdG6oJ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OZE8CCiN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA6F44C64
-	for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 15:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D943E498;
+	Mon, 25 Mar 2024 15:34:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711378905; cv=none; b=Xj8SXwbQUYXadpgOdV1WD02iiDAUIwMHvdnq6hiiP6qmvbYWYHB6M/VJDtkDPpS9VhjlJspcIHHijnwycpcWYDmPKmzma9SRHCPI7zj5VzcgB787bwSkoUyzGfNY5iVnQwU9MxsQIarFu2rg7zqsEJHMagaMUhJlyAb0J9/LnsE=
+	t=1711380889; cv=none; b=B6+kngji055FcEze8AyYrEZSYW+gBjqQMi0meDYE6rNarMVOAyy/Tlj7PtMhDIFxXQyp1xNRoZuxd/MoXlG4+HmgLzf39d30fDXPwmZy50oXX6ZaRtTRpvRw0+eN5J7uQBrrvOCzoBKKE7PBYa0CdJbOPJN3rBTy5/2LjCBoSAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711378905; c=relaxed/simple;
-	bh=J1GJWD2Uw75AizZkYb7+DSC6vbUI9FgQBFn59jiHELI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LDUsw3qTXqJ+kaGrVtCe+TCR7CZlZCDW2dM10/5huskfg1jqF64aIQYTci6mrwbpSJGauQubEHamYNYwZBhVTor7A9c5k830oMDXgmwcjmMITihrBPXM6Nauye7KGpltF9H6i+LOQaHsWS3GdXyvpJqzQrh5Sz11GAEcO24NgVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wkPdG6oJ; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-513cfc93f4eso4786827e87.3
-        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 08:01:42 -0700 (PDT)
+	s=arc-20240116; t=1711380889; c=relaxed/simple;
+	bh=SWJPUdbdgBsLocJw9zZUxGwhw9WQL7BJpTcevlbtIPI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jh8XQvcNhieQ7fSTd/w1QUGOvz6t0uJfwav8lh6pzB+0rSInomtgOqa5amVEUzw5VqvpYxToOinXZ8dC6cNRTcfTagXckOtbYWs0/9jh2T1pVlnP639kj2AHZZ1SffrACtg3srkcm7869tGvsaF5uViFckESWJVP/YYYSMB0uXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OZE8CCiN; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a46d0a8399aso922828066b.1;
+        Mon, 25 Mar 2024 08:34:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711378901; x=1711983701; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=J1GJWD2Uw75AizZkYb7+DSC6vbUI9FgQBFn59jiHELI=;
-        b=wkPdG6oJ0VZTuqpGTI/gNdDKCqmqrJ/cx+k6nAXTANZspgyCcddCzQLje1hAiKnY+n
-         DGXHkqFnnVJQj0u7JFZh6zWCMLj+MqToUF0GN2gZpypx1zBuReKXYWj2OQ7dvSFDPx4n
-         v4MyCeJJJ8vayhngmx8kCoRQOnYTJEtEeT8tPvbTXCyVWAB0lXQIlH9+MwShTaeWzsdr
-         d6EGk+WqKcS+PtR0EscRJCj7e/AWn9BEa5G6aCEZkGB93SDYLju7iiezIPaJ878FfSFO
-         Mcl1lm0ExLpDztXySCt464O6SnfR/oMQ1uayBfSFgLS7EuUQPvRE9PSQdFfGikhOEiHR
-         5OfQ==
+        d=gmail.com; s=20230601; t=1711380886; x=1711985686; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=to0pyQPfxcJtcILU9vgU3qUOhuelSOLbFp6VJfVGk2E=;
+        b=OZE8CCiNIBq2/t3jcAecfkX+CFiL6zMoBTwTJHeon0o8aGtk+Xazagj8X1ZnVNXXMU
+         UNy3Jcu5H5JDq5GZaa0yLXey9ohZwqaRzvGMOAtwVIXCRwWKm9+kB5y9/D0ExtGPJfwj
+         9lEQaXMjpuzzEwAZnFzX8KLux91hpZ1ZWNCM61d6kkUEXWPL54TNPf1lZI3q90LICcyd
+         uzYHABIKHby8pWpcgqyoobumf7kE5fTbMlBFEK492cOkxNHD+loIneehYp6NXc1JIErT
+         SMCcxIRJpGYjUUe1+gAO81fFVyigsPX1ycOo/466KZ4G1DkaSXPHWTxx5SGIyGB8/jmk
+         wXEw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711378901; x=1711983701;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J1GJWD2Uw75AizZkYb7+DSC6vbUI9FgQBFn59jiHELI=;
-        b=d9lZhmCUzARNdVQyInnNmqnpzUdHSEUSnadHJvROOsOyiZxEm8r7K8PyWAySQcOwPy
-         7Ki8chcRQPXH3J3yMdR90KXSMAVeAIUxj8FGbjVy48e9OVZQbZxMFZ1DwFRwwvir5zzh
-         WEu8zblgCKuDgjC+x+dJyuQbr3ycBGWVO19EkZiuV/gP2fWIMZE8/eIYIXnjPfZWhJzg
-         8rOhnIrmPDYrsXpmYSNXxfS+w4d+qweNfYchqZiiAqa+4XNgbmsVoU1aDmNimV+Zs5JX
-         jA7uXiDPDjbD1QlVWvmo4gKcqpkv8yyWPT01PXK+2BQs+NlyV4VCgGIN8Lu87gzU6dvr
-         AytQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXUsXhmn9yAqKAUvwqfLN3WKNwHzmcfTrVtzR3z4+cjI+1N8ztfKnjlDGqEYn5cCs3apoUIoABz9g2UHfyKEJ45gm0HZo+waSxH
-X-Gm-Message-State: AOJu0YyG0bbH9CJEK9mxsV9SMuSEVezreaCTH2w/EN54vql5w2Ex3kum
-	IiSwSNAnKDWEhPKFkY9Jbg15OevtLVrMFKKW2WCC4vJMZCl7yIZNOg1T7vHUnC7PkEVSR6GnM8Z
-	oEBpZTATjhlnmD5cPRH8Pk6NF9FenFRqZ1TPbuw==
-X-Google-Smtp-Source: AGHT+IEXWyh8xd3VomCJthT7kJfFp+OHTh+i9uf/Ek3pq0kOY3hlzw+qYnSAMFsfi1PIn1RIyt45npMZCd1BRSd8e1M=
-X-Received: by 2002:a05:651c:232:b0:2d6:a5e0:f50 with SMTP id
- z18-20020a05651c023200b002d6a5e00f50mr56296ljn.11.1711378901034; Mon, 25 Mar
- 2024 08:01:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711380886; x=1711985686;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=to0pyQPfxcJtcILU9vgU3qUOhuelSOLbFp6VJfVGk2E=;
+        b=ZXcoZTNKt5DM+uWQGxJCXa2U5bs5Y2ZKKsh4daulYavda2t+aVyh/BJ9uwXlzBppt0
+         5EN1U+jj1NA1AVSxMpbYuUT0WAQi68y23buZW0dk9FR4eipiKSG3Uz85ZnAAe78Wzrjr
+         1VzvUbFNY8r65aJXpBABhjtpsq6C/SLADrHRwzX/TaEGnk2UOlu51bBJnp2WsLHVpjD6
+         C4lKsPfO+NnLJmlu9nFKZLsLqw51B2LOvmWanA/8MrMtbeLic5bjxO16LexA4mU4OjM1
+         T1jH0b+ixnp7bD72H37Srisy+L/N2LDAnO4filDBy6UdvUC0vSJwDFsN7+rQ63+NhN+3
+         Sfew==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ3F9FJmJ0bo3u2qgnPIBGhwqG6QwcBqXBVF9EbvAky0n09x2hrRr80q3/U3Bw02TObKZhYQwPoQ7N3gxJ43BtMxlCiUP2QcSSN2OCqmkITa4PL+Vz5AqSwNBaGFgweonS486EL3OsGg==
+X-Gm-Message-State: AOJu0YwrWH16SLxAzFeS1nL7d4rqKRyl+ghylee4RyoMKefamdYpn1Ug
+	sfBPIMkuIIXyvH6RzrMcA/0dF9UAdJxMy7544eNxocmHZ32os/6Y
+X-Google-Smtp-Source: AGHT+IFqZwMHFvugb9QsdtsjUYOYi8QnDy/LqS6hxibY50EeL9RebKW4aeHWYPSRQDRgRyvqsgpmxA==
+X-Received: by 2002:a17:906:64d:b0:a47:4141:f60f with SMTP id t13-20020a170906064d00b00a474141f60fmr5349239ejb.17.1711380886158;
+        Mon, 25 Mar 2024 08:34:46 -0700 (PDT)
+Received: from 764c7355c69b.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
+        by smtp.gmail.com with ESMTPSA id u13-20020a17090626cd00b00a45200fe2b5sm3142382ejc.224.2024.03.25.08.34.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Mar 2024 08:34:45 -0700 (PDT)
+From: Lothar Rubusch <l.rubusch@gmail.com>
+To: lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org
+Cc: linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	eraretuya@gmail.com,
+	l.rubusch@gmail.com
+Subject: [PATCH v4 0/7] iio: accel: adxl345: Add spi-3wire feature
+Date: Mon, 25 Mar 2024 15:33:49 +0000
+Message-Id: <20240325153356.46112-1-l.rubusch@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240319-adding-new-ad738x-driver-v5-0-ce7df004ceb3@baylibre.com>
- <20240319-adding-new-ad738x-driver-v5-7-ce7df004ceb3@baylibre.com> <20240324131059.77fa8e68@jic23-huawei>
-In-Reply-To: <20240324131059.77fa8e68@jic23-huawei>
-From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 25 Mar 2024 10:01:29 -0500
-Message-ID: <CAMknhBH0E258geq8WOKf3X0r7VngdDoSfNB5g6KTGBzEoUtMqA@mail.gmail.com>
-Subject: Re: [PATCH v5 7/7] iio: adc: ad7380: add support for ad738x-4 4
- channels variants
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Mar 24, 2024 at 8:11=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Tue, 19 Mar 2024 11:11:28 +0100
-> Julien Stephan <jstephan@baylibre.com> wrote:
->
-> > Add support for ad7380/1/2/3-4 parts which are 4 channels
-> > variants from ad7380/1/2/3
-> >
-> > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-> This and other patches I didn't comment on all look good to me.
-> So just those minor few bits and bobs for v6 and I'll pick this up
-> if nothing else comes in.
->
+Pass a function setup() as pointer from SPI/I2C specific modules
+to the core module. Implement setup() to pass the spi-3wire bus
+option, if declared in the device-tree.
 
-Hi Jonathan, as a reminder, this is the driver we dropped from the 6.9
-cycle. We still don't have a patch prepared for the resolution boost
-feature that may require us to reconsider some of our userspace
-interface choices here. Hopefully we can get that sorted out in the
-next 6 weeks, but I just wanted to make you aware ahead of time so
-that we don't end up in the same situation in case things don't go as
-planned again. Do you have "usual" way you prefer to handle a
-situation like this?
+In the core module, then update data_format register
+configuration bits instead of overwriting it. The changes allow
+to remove a data_range field.
+
+Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+---
+V1 -> V2: split into spi-3wire and refactoring
+V2 -> V3: split further, focus on needed changesets
+V3 -> V4: drop "Remove single info instances";
+          split "Group bus configuration" into separat
+          comment patch; reorder patch set
+
+Lothar Rubusch (7):
+  iio: accel: adxl345: Make data_range obsolete
+  iio: accel: adxl345: Group bus configuration
+  iio: accel: adxl345: Move defines to header
+  dt-bindings: iio: accel: adxl345: Add spi-3wire
+  iio: accel: adxl345: Pass function pointer to core
+  iio: accel: adxl345: Add comment to probe
+  iio: accel: adxl345: Add spi-3wire option
+
+ .../bindings/iio/accel/adi,adxl345.yaml       |  2 +
+ drivers/iio/accel/adxl345.h                   | 35 ++++++++++-
+ drivers/iio/accel/adxl345_core.c              | 63 ++++++++-----------
+ drivers/iio/accel/adxl345_i2c.c               |  2 +-
+ drivers/iio/accel/adxl345_spi.c               | 12 +++-
+ 5 files changed, 74 insertions(+), 40 deletions(-)
+
+-- 
+2.25.1
+
 

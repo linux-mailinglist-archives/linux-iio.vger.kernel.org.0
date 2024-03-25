@@ -1,245 +1,216 @@
-Return-Path: <linux-iio+bounces-3763-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3764-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E91088A8AC
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 17:15:27 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DB788A97E
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 17:34:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3A14344F3E
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 16:14:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B645732155F
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 16:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4259145B0D;
-	Mon, 25 Mar 2024 14:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QFsoV7l4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 182EA15AAD9;
+	Mon, 25 Mar 2024 14:38:30 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA88612FB36
-	for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 14:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2002C13CFB1;
+	Mon, 25 Mar 2024 14:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711375724; cv=none; b=WfzHwC93/6vjcRbooUBm7NzPGpVlr1WPWF4RK6AK9N+GfdnuavAnHqQC3kTczvekAPg/VulxTq7Bu+99PHWwt7QoLveYGe2d3OAcC2mN1ot/97kHf1Mjtm3fYb7QOjij+EXNjhNmtLH0whTXdz+MFVJfs+6wrSUue0wBPBJzmXU=
+	t=1711377509; cv=none; b=Xu67CCl1CBphMcgmOL4J2AzQWc0Zwc8lN3/ZM1l23kXzjoOUQ09LEN93JiHTTRq6nOwFONDZTyPl/e6YXwlSvML8boHbqjCzijE0GgvRIPAPBA0t8jWpV4yjJe9OEzgKjlPRru2Htrfsp90hflOdyIKq697o0RCSDodNopSNqNc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711375724; c=relaxed/simple;
-	bh=OxCqtQVpFOuTtdqfzmdtYyBMioRTbETJ+YVhNovAZhA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HnfDAdF9nOlAxAKvXe7MLKlclPZHjERe4uJsh5TaRTpQ9M4ZFf+KYS1rkZZCg5NUiQevSLIgigOom5KAYHqYrTwg2p9l/u3d/oJ98MQCa4OnDYG+3e/RBWEKbKeaKXHk3qkokek2Lxkn0INkiDA/Gh4X2mwLn4YI9mVWhh6swUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QFsoV7l4; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d6c220a377so23988441fa.2
-        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 07:08:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711375719; x=1711980519; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oFWGgnNqSnGHrWUWocmZy6YK/dw2hXbl8LIbQZaVaus=;
-        b=QFsoV7l4msJ1BSv84qKYZCh1XrcfPx9SPts9lKoRoRI3tYu47Sh76Z+uHqktEH7GUJ
-         U6D2b2RM/lDmQ5an92vtpg1yW9YWp6Scsb/aE51D/FzBtMreKrE+NS5zwZFe+YalO6F1
-         asUMuipg7gGViE4ZEYtHkOBSqvPjCi1XLcZ1L+5LuzXBb6urN001LbwoKu3FPPnPlbVx
-         txy4hehMZfTKKircHo5+nzoDtYh3lG3TeEPdpUhwtTRyGcdfItJ7PH9A9eI3W01nArLy
-         y6pMmwODnUfiVK23BdoTjvr0509pA/wiUeYH2UWq+Ic9db4MkisgHGxJaB6xeK+n55I0
-         zFvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711375719; x=1711980519;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oFWGgnNqSnGHrWUWocmZy6YK/dw2hXbl8LIbQZaVaus=;
-        b=HrcLpu27ED/TUzuJ8sqTyGBPLXiW/wP7DqgZWiyr321xD3lS39pkuxGnnbPidh313y
-         R8AlxQzZ6XLeMxzN2+S7EM7uQVr3V3FTkrbJC3OY/GEG8hzYHZKBxuF0RJXSSp741SY+
-         3as8tArQtl2Zmuyo1vGw5DrO8KyX/6AoWDn3Ln/Ru03EEOfBa0dYAqtD+NZUbmCddPkW
-         cyRVciTdiSkM52M+vOQm8pbm4hdZIMKtAspqy4OTrsjbPaNJIw3GnN05oAEqNWxtueSW
-         15xe9Zw29qwcB91kACPwCs3Di8FPqdkgNFB4046+9DuQuNZ0llbnscvvI42fr+PBmGSw
-         kTQg==
-X-Forwarded-Encrypted: i=1; AJvYcCWXA5mqsuu4ozwBgV7n0MSuqOO+bvUkf/ief1C68gVrSSDxioAyzBz9PHQ/2CXV/QKaQZULzY6sBlGXThd3YoZVBWamy/lEAVsm
-X-Gm-Message-State: AOJu0YzTHFx6fQly/Oe7DzkBBvma0025qz4T7dGXeZle6THbQ44kMy9G
-	PppXY2364CubTp+m1LYt2bb4dfv0kE4zK0GYyU8uiEnPKtpjkCmDynTyfgtFC0hT39lnNjBC8uM
-	53e0YTrFbnWoTHRbvYbEbAqhTjVpQZDi/dujjjw==
-X-Google-Smtp-Source: AGHT+IFXJTugPxOd1SjsFqmPOD0Aur7rPUGaGzR3jjwtIDR508eJqX8kU1m3OUZjS3P0PLy57Ad5InV6xaj5ZqCXKAE=
-X-Received: by 2002:a2e:8806:0:b0:2d4:49d2:a3d1 with SMTP id
- x6-20020a2e8806000000b002d449d2a3d1mr5146126ljh.1.1711375718894; Mon, 25 Mar
- 2024 07:08:38 -0700 (PDT)
+	s=arc-20240116; t=1711377509; c=relaxed/simple;
+	bh=Ckca2N9m0ahjegAreV5WnqCxxSRm3G5AE9yrUUmr61A=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RSfzlf24lgnXK30x7n5/0/i3/l5tvPK+bObAdzTXy1LGyB6qcYB/zadu32QUEHCz8DpezJxTXBHv34yCdaDFjCldXfSRCAh40gnGsbI66h1wWIRhrnbclqfiE3uM0Sja936POVcvZT562mP4Uwgw6VSETbQ/vFknwFwz+CvvWso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4V3Fmm0GCCz6K9Tn;
+	Mon, 25 Mar 2024 22:34:00 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 55533140B39;
+	Mon, 25 Mar 2024 22:38:24 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 25 Mar
+ 2024 14:38:23 +0000
+Date: Mon, 25 Mar 2024 14:38:22 +0000
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+CC: Andrej Picej <andrej.picej@norik.com>, <haibo.chen@nxp.com>,
+	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<jic23@kernel.org>, <lars@metafoo.de>, <shawnguo@kernel.org>,
+	<s.hauer@pengutronix.de>, <kernel@pengutronix.de>, <festevam@gmail.com>,
+	<imx@lists.linux.dev>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <robh@kernel.org>,
+	<krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
+	<upstream@lists.phytec.de>
+Subject: Re: [PATCH 2/2] dt-bindings: iio: adc: nxp,imx93-adc.yaml: Add
+ calibration properties
+Message-ID: <20240325143822.000060db@Huawei.com>
+In-Reply-To: <178594a2-cd5f-4608-aae6-7d68fd0817e0@linaro.org>
+References: <20240320100407.1639082-1-andrej.picej@norik.com>
+	<20240320100407.1639082-3-andrej.picej@norik.com>
+	<38637621-1611-4268-ae79-7ac93a72c5ee@linaro.org>
+	<e994b756-7f4e-4be3-b8f3-310988174b44@norik.com>
+	<7e58bf96-3c38-467f-86b6-06ff5feedb31@linaro.org>
+	<40e08a5e-e7e9-47c7-9102-24a2bbba67cf@norik.com>
+	<a1b173c0-5120-40f6-9708-cd810b4a2406@linaro.org>
+	<1bbd4fdf-59c5-42b2-8698-95f402645c67@norik.com>
+	<178594a2-cd5f-4608-aae6-7d68fd0817e0@linaro.org>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240319-adding-new-ad738x-driver-v5-0-ce7df004ceb3@baylibre.com>
- <20240319-adding-new-ad738x-driver-v5-4-ce7df004ceb3@baylibre.com> <20240324130135.35f4b0eb@jic23-huawei>
-In-Reply-To: <20240324130135.35f4b0eb@jic23-huawei>
-From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 25 Mar 2024 09:08:27 -0500
-Message-ID: <CAMknhBGmM7yt1JR1tW4SS5RLGpN9PtnMrf0WvZ-bhU-gSv3YUQ@mail.gmail.com>
-Subject: Re: [PATCH v5 4/7] iio: adc: ad7380: add support for
- pseudo-differential parts
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Sun, Mar 24, 2024 at 8:01=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Tue, 19 Mar 2024 11:11:25 +0100
-> Julien Stephan <jstephan@baylibre.com> wrote:
->
-> > From: David Lechner <dlechner@baylibre.com>
-> >
-> > Add support for AD7383, AD7384 pseudo-differential compatible parts.
-> > Pseudo differential parts require common mode voltage supplies so add
-> > the support for them and add the support of IIO_CHAN_INFO_OFFSET to
-> > retrieve the offset
-> >
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
->
-> Hi Julien,
->
-> A few aditional comments inline.  The one about
-> optional regulators may be something others disagree with.
-> Mark, perhaps you have time to comment.
-> Is this usage of devm_regulator_get_optional() to check a real regulator
-> is supplied (as we are going to get the voltage) sensible?  Feels wrong
-> given the regulator is the exact opposite of optional.
->
-> Jonathan
->
-> >  struct ad7380_state {
-> >       const struct ad7380_chip_info *chip_info;
-> >       struct spi_device *spi;
-> >       struct regmap *regmap;
-> >       unsigned int vref_mv;
-> > +     unsigned int vcm_mv[2];
-> >       /*
-> >        * DMA (thus cache coherency maintenance) requires the
-> >        * transfer buffers to live in their own cache lines.
-> > @@ -304,6 +333,11 @@ static int ad7380_read_raw(struct iio_dev *indio_d=
-ev,
-> >               *val2 =3D chan->scan_type.realbits;
-> >
-> >               return IIO_VAL_FRACTIONAL_LOG2;
-> > +     case IIO_CHAN_INFO_OFFSET:
-> > +             *val =3D st->vcm_mv[chan->channel] * (1 << chan->scan_typ=
-e.realbits)
-> > +                     / st->vref_mv;
->
-> So this maths seems to be right to me, but it took me a while to figure i=
-t out.
-> Perhaps a comment would help along the lines of this is transforming
->
->         (raw * scale) + vcm_mv
-> to
->         (raw + vcm_mv / scale) * scale
-> as IIO ABI says offset is applied before scale.
->
-> > +
-> > +             return IIO_VAL_INT;
-> >       }
-> >
-> >       return -EINVAL;
-> > @@ -350,7 +384,7 @@ static int ad7380_probe(struct spi_device *spi)
-> >       struct iio_dev *indio_dev;
-> >       struct ad7380_state *st;
-> >       struct regulator *vref;
-> > -     int ret;
-> > +     int ret, i;
-> >
-> >       indio_dev =3D devm_iio_device_alloc(&spi->dev, sizeof(*st));
-> >       if (!indio_dev)
-> > @@ -394,6 +428,40 @@ static int ad7380_probe(struct spi_device *spi)
-> >               st->vref_mv =3D AD7380_INTERNAL_REF_MV;
-> >       }
-> >
-> > +     if (st->chip_info->num_vcm_supplies > ARRAY_SIZE(st->vcm_mv))
-> > +             return dev_err_probe(&spi->dev, -EINVAL,
-> > +                                  "invalid number of VCM supplies\n");
-> > +
-> > +     /*
-> > +      * pseudo-differential chips have common mode supplies for the ne=
-gative
-> > +      * input pin.
-> > +      */
-> > +     for (i =3D 0; i < st->chip_info->num_vcm_supplies; i++) {
-> > +             struct regulator *vcm;
-> > +
-> > +             vcm =3D devm_regulator_get_optional(&spi->dev,
->
-> Why optional?
->
-> > +                                               st->chip_info->vcm_supp=
-lies[i]);
-> > +             if (IS_ERR(vcm))
->
-> This will fail if it's not there, so I'm guessing you are using this to a=
-void
-> getting to the regulator_get_voltage?  If it's not present I'd rely on th=
-at
-> failing rather than the confusing handling here.
->
-> When the read of voltage wasn't in probe this would have resulted in a pr=
-oblem
-> much later than initial setup, now it is, we are just pushing it down a f=
-ew lines.
->
-> Arguably we could have a devm_regulator_get_not_dummy()
-> that had same implementation to as get_optional() but whilst it's called =
-that
-> I think it's confusing to use like this.
+On Mon, 25 Mar 2024 10:58:51 +0100
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-Despite the misleading naming, I guess I am used to
-devm_regulator_get_optional() by now having used it enough times.
-Since it fails either way though, technically both ways seem fine so I
-can't really argue for one over the other.
+> On 22/03/2024 10:58, Andrej Picej wrote:
+> > On 22. 03. 24 09:14, Krzysztof Kozlowski wrote:  
+> >> On 22/03/2024 08:39, Andrej Picej wrote:  
+> >>> On 20. 03. 24 13:15, Krzysztof Kozlowski wrote:  
+> >>>> On 20/03/2024 13:05, Andrej Picej wrote:  
+> >>>>> Hi Krzysztof,
+> >>>>>
+> >>>>> On 20. 03. 24 11:26, Krzysztof Kozlowski wrote:  
+> >>>>>> On 20/03/2024 11:04, Andrej Picej wrote:  
+> >>>>>>> Document calibration properties and how to set them.  
+> >>>>>>
+> >>>>>> Bindings are before users.  
+> >>>>>
+> >>>>> will change patch order when I send a v2.
+> >>>>>  
+> >>>>>>
+> >>>>>> Please use subject prefixes matching the subsystem. You can get them for
+> >>>>>> example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+> >>>>>> your patch is touching.
+> >>>>>> There is no file extension in prefixes.  
+> >>>>>
+> >>>>> So: dt-bindings: iio/adc: nxp,imx93-adc: Add calibration properties?  
+> >>>>
+> >>>> Did you run the command I proposed? I don't see much of "/", but except
+> >>>> that looks good.  
+> >>>
+> >>> Ok noted.
+> >>>  
+> >>>>  
+> >>>>>  
+> >>>>>>  
+> >>>>>>>
+> >>>>>>> Signed-off-by: Andrej Picej <andrej.picej@norik.com>
+> >>>>>>> ---
+> >>>>>>>     .../bindings/iio/adc/nxp,imx93-adc.yaml           | 15 +++++++++++++++
+> >>>>>>>     1 file changed, 15 insertions(+)
+> >>>>>>>
+> >>>>>>> diff --git a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> >>>>>>> index dacc526dc695..64958be62a6a 100644
+> >>>>>>> --- a/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> >>>>>>> +++ b/Documentation/devicetree/bindings/iio/adc/nxp,imx93-adc.yaml
+> >>>>>>> @@ -46,6 +46,21 @@ properties:
+> >>>>>>>       "#io-channel-cells":
+> >>>>>>>         const: 1
+> >>>>>>>     
+> >>>>>>> +  nxp,calib-avg-en:
+> >>>>>>> +    description:
+> >>>>>>> +      Enable or disable averaging of calibration time.
+> >>>>>>> +    enum: [ 0, 1 ]
+> >>>>>>> +
+> >>>>>>> +  nxp,calib-nr-samples:
+> >>>>>>> +    description:
+> >>>>>>> +      Selects the number of averaging samples to be used during calibration.
+> >>>>>>> +    enum: [ 16, 32, 128, 512 ]
+> >>>>>>> +
+> >>>>>>> +  nxp,calib-t-samples:
+> >>>>>>> +    description:
+> >>>>>>> +      Specifies the sample time of calibration conversions.
+> >>>>>>> +    enum: [ 8, 16, 22, 32 ]  
+> >>>>>>
+> >>>>>> No, use existing, generic properties. Open other bindings for this.  
+> >>>>>
+> >>>>> You mean I should use generic properties for the ADC calibration
+> >>>>> settings? Is there already something in place? Because as I understand
+> >>>>> it, these calib-* values only effect the calibration process of the ADC.  
+> >>>>
+> >>>> Please take a look at other devices and dtschema. We already have some
+> >>>> properties for this... but maybe they cannot be used?
+> >>>>  
+> >>>
+> >>> I did look into other ADC devices, grep across iio/adc, adc bindings
+> >>> folders and couldn't find anything closely related to what we are
+> >>> looking for. Could you please point me to the properties that you think
+> >>> should be used for this?  
+> >>
+> >> Indeed, there are few device specific like qcom,avg-samples. We have
+> >> though oversampling-ratio, settling-time-us and min-sample-time (which
+> >> is not that good because does not use unit suffix).  
+> > 
+> > Ok, these are examples but I think I should not use them, since these 
+> > are i.MX93 ADC specific settings, which are used for configuration of   
+> 
+> 
+> No vendor prefix, so they rather should be generic, not imx93
+> specific... But this the binding for imx93, so I don't understand your
+> statement.
 
-But given that this is a common pattern in many IIO drivers, maybe we
-make a devm_regulator_get_enable_get_voltage()? This would return the
-voltage on success or an error code. (If the regulator subsystem
-doesn't want this maybe we could have
-devm_iio_regulator_get_enable_get_voltage()).
+Based on my current understanding what we have here is not remotely
+generic, so standard properties don't make sense (though naming the
+nxp ones in a consistent fashion with other bindings is useful)
 
-If the dev_err_probe() calls were included in
-devm_regulator_get_enable_get_voltage(), then the 10+ lines of code
-here and in many other drivers to get the regulator, enable it, add
-the reset action and get the voltage could be reduced to 3 lines.
+I'm not entirely convinced there is a strong argument to support them at all
+though.  Still thinking / gathering info on that.
 
->
-> > +                     return dev_err_probe(&spi->dev, PTR_ERR(vcm),
-> > +                                          "Failed to get %s regulator\=
-n",
-> > +                                          st->chip_info->vcm_supplies[=
-i]);
-> > +
-> > +             ret =3D regulator_enable(vcm);
-> > +             if (ret)
-> > +                     return ret;
-> > +
-> > +             ret =3D devm_add_action_or_reset(&spi->dev,
-> > +                                            ad7380_regulator_disable, =
-vcm);
-> > +             if (ret)
-> > +                     return ret;
-> > +
-> > +             ret =3D regulator_get_voltage(vcm);
->
-> I'd let this fail if we have a dummy regulator.
->
-> > +             if (ret < 0)
-> > +                     return ret;
-> > +
-> > +             st->vcm_mv[i] =3D ret / 1000;
-> > +     }
-> > +
+> 
+> > calibration process, and are not related to the standard conversion 
+> > process during runtime. Calibration process is the first step that 
+> > should be done after every power-on reset.
+> >   
+> >>
+> >> Then follow up questions:
+> >>   - nxp,calib-avg-en: Why is it a board-level decision? I would assume
+> >> this depends on user choice and what kind of input you have (which could
+> >> be board dependent or could be runtime decision).  
+> > 
+> > Not really sure I get your question, so please elaborate if I missed the 
+> > point.
+> > This is a user choice, to enable or disable the averaging function in 
+> > calibration, but this is a board-level decision, probably relates on 
+> > external ADC regulators and input connections. The same options are used 
+> > for every ADC channel and this can not be a runtime decision, since 
+> > calibration is done before the ADC is even registered.  
+> 
+> You now mix how Linux driver behaves with hardware. Why you cannot
+> recalibrate later, e.g. when something else is being connected to the
+> exposed pins?
+
+Generally we don't make strong efforts to support dev board use cases where
+the components wired tend to change.  So normally this isn't too much of
+a concern.  Previously, we've tried to support this stuff and it always
+ends up as a mess because of the crazy range of things that can be wired.
+
+Jonathan
+
+> 
+> Best regards,
+> Krzysztof
+> 
+> 
+> _______________________________________________
+> linux-arm-kernel mailing list
+> linux-arm-kernel@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+
 

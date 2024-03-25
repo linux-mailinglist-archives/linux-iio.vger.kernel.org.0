@@ -1,130 +1,116 @@
-Return-Path: <linux-iio+bounces-3768-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3769-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77D488B2E8
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 22:37:19 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 067A388A9F1
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 17:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07185BC142C
-	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 16:41:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40FCC1C3A759
+	for <lists+linux-iio@lfdr.de>; Mon, 25 Mar 2024 16:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5788212FF66;
-	Mon, 25 Mar 2024 14:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA64212FF88;
+	Mon, 25 Mar 2024 15:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wkPdG6oJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F7E4AEC6;
-	Mon, 25 Mar 2024 14:51:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA6F44C64
+	for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 15:01:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711378319; cv=none; b=W4iOHMWljqnd8RQVkrWbUzsrE8Uxf4FA/ujpUpMBDRM0YOYmsmX/fSTmr1kdD+OwjxhbaUhcnzBAie56lQDa54+MCb2VGqCYHc5/TFfXPY0hBreUdXbcMLYoKXe+FUkkBYBMMmqt68EZDg0H1VLff3P/s+70uStCqv+C2xc8kfk=
+	t=1711378905; cv=none; b=Xj8SXwbQUYXadpgOdV1WD02iiDAUIwMHvdnq6hiiP6qmvbYWYHB6M/VJDtkDPpS9VhjlJspcIHHijnwycpcWYDmPKmzma9SRHCPI7zj5VzcgB787bwSkoUyzGfNY5iVnQwU9MxsQIarFu2rg7zqsEJHMagaMUhJlyAb0J9/LnsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711378319; c=relaxed/simple;
-	bh=FFCmFrNwcXbMm/+jiDCnkizcrS7m5UEBdgAEK/RdHDE=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XLvP8EeOcRcR3xuu7oGxtZW7EBOjbtJjpZBUHl3ADe8dZ1iVA3g3TniNV8qZswOCJjl4ISVqEyyqQ45OgoqlrGhZFpwH2iKmd/Gd/syAtoAsjNwii51D/MCgFrXUOBOYlqp0DleXSadcyRY2urtpUg9wUCmNiRh5NhQhNF6HSNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4V3G8M4xxcz6D8YL;
-	Mon, 25 Mar 2024 22:50:59 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8B5301400CF;
-	Mon, 25 Mar 2024 22:51:53 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 25 Mar
- 2024 14:51:53 +0000
-Date: Mon, 25 Mar 2024 14:51:51 +0000
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-CC: Jonathan Cameron <jic23@kernel.org>, <lars@metafoo.de>,
-	<Michael.Hennerich@analog.com>, <robh+dt@kernel.org>,
-	<krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <eraretuya@gmail.com>
-Subject: Re: [PATCH v3 0/6] iio: accel: adxl345: Add spi-3wire feature
-Message-ID: <20240325145151.000035c2@Huawei.com>
-In-Reply-To: <CAFXKEHbvdQoqyirUC8ueihfTcCs7m5CViP27S1sNDA0VerUVYQ@mail.gmail.com>
-References: <20240323122030.21800-1-l.rubusch@gmail.com>
-	<20240324133941.26814432@jic23-huawei>
-	<CAFXKEHbvdQoqyirUC8ueihfTcCs7m5CViP27S1sNDA0VerUVYQ@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1711378905; c=relaxed/simple;
+	bh=J1GJWD2Uw75AizZkYb7+DSC6vbUI9FgQBFn59jiHELI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LDUsw3qTXqJ+kaGrVtCe+TCR7CZlZCDW2dM10/5huskfg1jqF64aIQYTci6mrwbpSJGauQubEHamYNYwZBhVTor7A9c5k830oMDXgmwcjmMITihrBPXM6Nauye7KGpltF9H6i+LOQaHsWS3GdXyvpJqzQrh5Sz11GAEcO24NgVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wkPdG6oJ; arc=none smtp.client-ip=209.85.167.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-513cfc93f4eso4786827e87.3
+        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 08:01:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711378901; x=1711983701; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=J1GJWD2Uw75AizZkYb7+DSC6vbUI9FgQBFn59jiHELI=;
+        b=wkPdG6oJ0VZTuqpGTI/gNdDKCqmqrJ/cx+k6nAXTANZspgyCcddCzQLje1hAiKnY+n
+         DGXHkqFnnVJQj0u7JFZh6zWCMLj+MqToUF0GN2gZpypx1zBuReKXYWj2OQ7dvSFDPx4n
+         v4MyCeJJJ8vayhngmx8kCoRQOnYTJEtEeT8tPvbTXCyVWAB0lXQIlH9+MwShTaeWzsdr
+         d6EGk+WqKcS+PtR0EscRJCj7e/AWn9BEa5G6aCEZkGB93SDYLju7iiezIPaJ878FfSFO
+         Mcl1lm0ExLpDztXySCt464O6SnfR/oMQ1uayBfSFgLS7EuUQPvRE9PSQdFfGikhOEiHR
+         5OfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711378901; x=1711983701;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J1GJWD2Uw75AizZkYb7+DSC6vbUI9FgQBFn59jiHELI=;
+        b=d9lZhmCUzARNdVQyInnNmqnpzUdHSEUSnadHJvROOsOyiZxEm8r7K8PyWAySQcOwPy
+         7Ki8chcRQPXH3J3yMdR90KXSMAVeAIUxj8FGbjVy48e9OVZQbZxMFZ1DwFRwwvir5zzh
+         WEu8zblgCKuDgjC+x+dJyuQbr3ycBGWVO19EkZiuV/gP2fWIMZE8/eIYIXnjPfZWhJzg
+         8rOhnIrmPDYrsXpmYSNXxfS+w4d+qweNfYchqZiiAqa+4XNgbmsVoU1aDmNimV+Zs5JX
+         jA7uXiDPDjbD1QlVWvmo4gKcqpkv8yyWPT01PXK+2BQs+NlyV4VCgGIN8Lu87gzU6dvr
+         AytQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXUsXhmn9yAqKAUvwqfLN3WKNwHzmcfTrVtzR3z4+cjI+1N8ztfKnjlDGqEYn5cCs3apoUIoABz9g2UHfyKEJ45gm0HZo+waSxH
+X-Gm-Message-State: AOJu0YyG0bbH9CJEK9mxsV9SMuSEVezreaCTH2w/EN54vql5w2Ex3kum
+	IiSwSNAnKDWEhPKFkY9Jbg15OevtLVrMFKKW2WCC4vJMZCl7yIZNOg1T7vHUnC7PkEVSR6GnM8Z
+	oEBpZTATjhlnmD5cPRH8Pk6NF9FenFRqZ1TPbuw==
+X-Google-Smtp-Source: AGHT+IEXWyh8xd3VomCJthT7kJfFp+OHTh+i9uf/Ek3pq0kOY3hlzw+qYnSAMFsfi1PIn1RIyt45npMZCd1BRSd8e1M=
+X-Received: by 2002:a05:651c:232:b0:2d6:a5e0:f50 with SMTP id
+ z18-20020a05651c023200b002d6a5e00f50mr56296ljn.11.1711378901034; Mon, 25 Mar
+ 2024 08:01:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240319-adding-new-ad738x-driver-v5-0-ce7df004ceb3@baylibre.com>
+ <20240319-adding-new-ad738x-driver-v5-7-ce7df004ceb3@baylibre.com> <20240324131059.77fa8e68@jic23-huawei>
+In-Reply-To: <20240324131059.77fa8e68@jic23-huawei>
+From: David Lechner <dlechner@baylibre.com>
+Date: Mon, 25 Mar 2024 10:01:29 -0500
+Message-ID: <CAMknhBH0E258geq8WOKf3X0r7VngdDoSfNB5g6KTGBzEoUtMqA@mail.gmail.com>
+Subject: Re: [PATCH v5 7/7] iio: adc: ad7380: add support for ad738x-4 4
+ channels variants
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Rob Herring <robh+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel test robot <lkp@intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100004.china.huawei.com (7.191.162.219) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Sun, 24 Mar 2024 20:20:21 +0100
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
-
-> On Sun, Mar 24, 2024 at 2:39=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
-g> wrote:
+On Sun, Mar 24, 2024 at 8:11=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
+>
+> On Tue, 19 Mar 2024 11:11:28 +0100
+> Julien Stephan <jstephan@baylibre.com> wrote:
+>
+> > Add support for ad7380/1/2/3-4 parts which are 4 channels
+> > variants from ad7380/1/2/3
 > >
-> > On Sat, 23 Mar 2024 12:20:24 +0000
-> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> > =20
-> > > Pass a function setup() as pointer from SPI/I2C specific modules
-> > > to the core module. Implement setup() to pass the spi-3wire bus
-> > > option, if declared in the device-tree.
-> > >
-> > > In the core module, then update data_format register
-> > > configuration bits instead of overwriting it. The changes allow
-> > > to remove a data_range field, remove I2C and SPI redundant info
-> > > instances and replace them by a common info array instance.
-> > >
-> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com> =20
-> > That patch break up seems reasonable (one minor request for a split
-> > in the relevant patch), but normal convention would be do do
-> > refactoring first, then functionality at the end. Also removal stuff
-> > and group, before adding things.
-> >
-> > So roughly speaking reorder as
-> > =20
-> > >   iio: accel: adxl345: Make data_format obsolete
-> > >   iio: accel: adxl345: Remove single info instances
-> > >   iio: accel: adxl345: Group bus configuration
-> > >   dt-bindings: iio: accel: adxl345: Add spi-3wire
-> > >   iio: accel: adxl345: Pass function pointer to core
-> > >   iio: accel: adxl345: Add the spi-3wire =20
-> > =20
->=20
-> Ok. If I split "Group bus configuration" into the grouping of the
-> indio_dev in the probe() and adding a comment to the core's probe(), I
-> will end up with something like this:
->=20
-> $ git log --oneline --reverse
->  iio: accel: adxl345: Make data_range obsolete
->  iio: accel: adxl345: Group bus configuration
->  iio: accel: adxl345: Move defines to header <--- new
->  dt-bindings: iio: accel: adxl345: Add spi-3wire
->  iio: accel: adxl345: Pass function pointer to core
->  iio: accel: adxl345: Add comment to probe  <--- new after split
->  iio: accel: adxl345: Add spi-3wire option
->=20
-> I feel I have to add the comment after adding the passed function
-> pointer. Bascially I liked to add a comment mentioning especially the
-> new function pointer there. So, although being a comment, the commit
-> will be in this "high" position. Is this ok, or am I doing something
-> wrong? Should I split into setting the comment first, then inside
-> "Pass function pointer.." also update the comment?
+> > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> This and other patches I didn't comment on all look good to me.
+> So just those minor few bits and bobs for v6 and I'll pick this up
+> if nothing else comes in.
+>
 
-This is fine.  Either of the options you suggest would be fine, but
-given you've done the above already let's go with that.
-
-Jonathan
-
->=20
-
+Hi Jonathan, as a reminder, this is the driver we dropped from the 6.9
+cycle. We still don't have a patch prepared for the resolution boost
+feature that may require us to reconsider some of our userspace
+interface choices here. Hopefully we can get that sorted out in the
+next 6 weeks, but I just wanted to make you aware ahead of time so
+that we don't end up in the same situation in case things don't go as
+planned again. Do you have "usual" way you prefer to handle a
+situation like this?
 

@@ -1,146 +1,164 @@
-Return-Path: <linux-iio+bounces-3821-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3822-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6EF288CE1C
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 21:17:54 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCA8888CF8F
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 22:02:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A16132656F
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 20:17:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51550B28CC8
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 21:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E4013D29B;
-	Tue, 26 Mar 2024 20:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B32B913D539;
+	Tue, 26 Mar 2024 21:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DA2w8bRV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bJ4ybbDM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5041B2AD2C;
-	Tue, 26 Mar 2024 20:17:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD60D12B157;
+	Tue, 26 Mar 2024 21:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711484269; cv=none; b=Q4L2LAOHTMxkiAARozHyd0Pj5etc+/nLKjl1bszQqK1ysKkYb8UXqyt+o5Z673yUOC2JbGwOZy/y5W15UFsv6yDdS0mgta+HVDOox0tJaPVU0DBDG27gXMGbiYHTSxSTmlBy0s7c2I/ldDXvrKWpjp28PXyk7shWWfioWFEso3c=
+	t=1711486814; cv=none; b=ZETfweHHrpBaDZqNL2k9qaL1KIDjjWLMjTk16bkZmRfwctjI6VVPWCK8sIYiWMxUVN/VJXcEKGER2L2BxePf2XPiT4Os3Vo+csr22z6vDQeYTpqKy6YQaVWILgY4SlxS+uG0vm9tavSKrrMGZKDZap2l9GKEZcGSORnFBaeHFr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711484269; c=relaxed/simple;
-	bh=l0PAwS1wlrqxNRSQuJrQPY3+Q45IBLEvftbyUMrb048=;
+	s=arc-20240116; t=1711486814; c=relaxed/simple;
+	bh=BMDy0xEWSqRLIBS7dqDM7r65pTCpIKpqHbzXnYc8qSg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Jb8RQFpZbOtGyoglxPPaJ60Ip3QlSoIZRw9UaaWccK2xDNURLtVj6M/ae+yr375vyp+6LAQ0+Jjq4OSLDD4Wu6CvfxoQX3whM3ZPEJ2skmMIaavmUf/73bxxa/yDkXtbGZ4NjcRT3LAJLiD5bs+wYyGt1eKgF6eN6lKFhFUY3v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DA2w8bRV; arc=none smtp.client-ip=209.85.128.171
+	 To:Cc:Content-Type; b=FtV1nu8x5u4hEJLotwJnaNrnXHHX3BfcImGci7gg8c8lwSg6ETPWYGpkYO+IHDdWafGTcflQWBsHnnXn1ueZfuLd1kS83nMHulVQEJU5Z2eoGMN/DPDmm/x3SxmrG8iIOpcnqzlqJgH8/Zx6pmo4DTRaBqxuQQMCbgoC58GYMds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bJ4ybbDM; arc=none smtp.client-ip=209.85.219.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-60a046c5262so56857677b3.2;
-        Tue, 26 Mar 2024 13:17:48 -0700 (PDT)
+Received: by mail-yb1-f172.google.com with SMTP id 3f1490d57ef6-dcc73148611so6699741276.3;
+        Tue, 26 Mar 2024 14:00:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711484267; x=1712089067; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1711486812; x=1712091612; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Rh3YW0AOZPmvBcjKfoYP1w8P/SW8q70+JN9/BHH1CxE=;
-        b=DA2w8bRV5SCFuWH3CARhUfEAofPgnZnmI4mfN13AMAcLPfeMYmYcGys+WPNpg1EEqK
-         fbjDDnrTXyZ+AI23hDjc5sVkIT1nuVlvLFKRMm5eUWsX9vIv2NWKb2IzakDle9mxkuXb
-         fUMq2Z9RylMb9lQaZu03jpMJJqnLxsEouYDK8TxRCwj6tn08cFowyUuWqi/QYdk1xenM
-         rsnNQy15wg20Esoe2RhqPFqYMHfjX+2iqITyU/ICUlfzYpSMAr9gk5j/vFlDCMESW/TP
-         j/+znKWDq0rn4EYOUqJeaSwB1mqcngCLlEPiprJXHutE/eliAHJlW8+C7ELzesD5P5a1
-         UP+w==
+        bh=FGCp3Hdv4uExC/POBDKFeOwya+tu2FDjTleJp+1lj24=;
+        b=bJ4ybbDMbnyN0AY01ONxvhRhwHZETgbrYY7ZqPMGCGMlHLOsGnkvKB9Wpk8itcGZ00
+         nSV2xLbOXgR1h3+nJOYAAMtt85gq1gmD19hAH2JYtWXExbkN/gLSacD9uLPrYJ4QcEet
+         kKPVpHBStk3xGxDmaWchmGxbknJ+agLajtkmeqQzndEnclVFGulNcJAKYbX7xekZWMHh
+         Pa8P3qgt0QqbyVnqVDYubYQEqIFmbhSmv7LI3mA+UT5UqhP6rl4x7Ef+BZalI08cB4DI
+         MtUKnq/adVAEvwwOidmDwKkjzChte7RrxcCqaSicObwNiTXxVfqL2gzbS0JOzQlDsPQy
+         2Cqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711484267; x=1712089067;
+        d=1e100.net; s=20230601; t=1711486812; x=1712091612;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Rh3YW0AOZPmvBcjKfoYP1w8P/SW8q70+JN9/BHH1CxE=;
-        b=ggQ3oOqhhADKRwhxWNaTC0mJcXFoHUHAxsAMcga/iFjFWBcl8R/UcpOeEdVbUXy0PC
-         7pb5PWuSGMpIyH3PymA8vAB5mC4ImLJse+I+Zp6/7JSFu+kJjlEiGMIXPAXe/yneQXxy
-         l926TFqv56yD8RDTnmjqSeeNgYq1Smy/X7dxXYjBwVB6RxWvnxC+6BYEbjh1yJ5yuYiH
-         H07AxJp8PdmCjcr0fbHn1SODtUKm+I0mDqJFD4D1qDSS/ilELncika/8vAwIsKUSt5/T
-         ZXQhAsvDs6h4MdPdi5QZJIdlVK2H12sdgKtLJ7Fv6kj5+Zw/55KijPmHl8JGIJHJZKMt
-         lScA==
-X-Forwarded-Encrypted: i=1; AJvYcCXU0EQYjzAR5DbmcrGq0levPPyszVErgFh69R0n8u5E6Se8Fy4cSXHK2cJsBLzLfXoVr90CU6ApfGRCliLco10uih/TqaO/F4OT+Yx3HwRCXA2c7fCE3akRzTu9cRqnBjzMBaDTjOwAfx+mikOArbGjp36450Esx28xqN7ONoL6pyiBxw==
-X-Gm-Message-State: AOJu0YzI5B72kYCcyiMoUKk5hqrSq8lEBq3PEcv24KE+TIDODFbNEiUN
-	D8wNVMEX302zqB5nliBahEBs7B+dYc5BVg5jCMMyF2wGiAnCb+ZfmA+rzjROfl8O4kBAvVK1btY
-	09ubmS7uHnw11yqzC1ipAoJ/ppjM=
-X-Google-Smtp-Source: AGHT+IEq2DLXMHVyXMCQwnTcmcIMKlEbMRR9WzaSE8uHUUfLZEFBAzdAE0HEkuyUY9Qwy+5HaX/bY7RP0ttLMl20OKA=
-X-Received: by 2002:a25:a2c5:0:b0:dcc:467c:cecb with SMTP id
- c5-20020a25a2c5000000b00dcc467ccecbmr8989710ybn.37.1711484267271; Tue, 26 Mar
- 2024 13:17:47 -0700 (PDT)
+        bh=FGCp3Hdv4uExC/POBDKFeOwya+tu2FDjTleJp+1lj24=;
+        b=kqqtcOQc2R0YJeHLK6X+e55TcbCWHvZwR1KpU0KIXV7dp2gnix4OVD8KDxRCkILxt+
+         n3HIdYHTfDzqQixyylnHq5Va9byU06uKZYo3mrGkedhjXNZ5V7PmFMwIcxaG8mMqYaTj
+         igd6zQEaKLM/3UHxKx6c+obRSM/w9frPPr9HpyuRGyWuy7qmLN4LtcSylborhlMf9lsA
+         +JIlLex4NqkQ2vaHkazbIwg1nV+AUHxsDVXdg+O5FHgcAtpkC+qcNHKbm3bVVAEW81jA
+         HeBCXdx3ouvIp1+xi7zp6TlHNgI3Mywua2rqK0o5Ek+pkm3xIrOpMeSqvV6/fwksvNEs
+         nthw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8O4KBhm9QEe+7qMMqqR4Qev44LAXWw63sdtCXrzf8z5HFuGFLDiIQKmfwiCTgG3h/zZ8DWTvnYJCwxtNsN6EoXMhWcFtMBoaZdAcgNqofrn7q9VWU6A5+RDkxQsf8ciPuRu+/Zu0Hu8St8WCpkGWA5PA+Xlj3O5fV+f/8OE/HM5xQOw==
+X-Gm-Message-State: AOJu0YxGLrNT1EYwihqpP3qPqQnTtVXPct1hFOGGQAGbb8kyiXb0Pa+a
+	qfCzRpPtckfWH9eZ0qqmWGhsKU0XEfuDkN53mRk7Mzps4W9SdHORjkCo9V2aMrC6J6UgoQwDN7w
+	Ybs3mBJ0Ds4p1xTZxjQ/Wb0NtM8Q=
+X-Google-Smtp-Source: AGHT+IGnBS3uYEPzzhWdmO60nBwmDa62VvwywhNlYBEtbXjLv1cMyRZvHokMWD6A29XZ3J9dV656THZwPA8V+zsZvj4=
+X-Received: by 2002:a25:dccd:0:b0:dcc:8d09:c7c4 with SMTP id
+ y196-20020a25dccd000000b00dcc8d09c7c4mr2182951ybe.7.1711486810191; Tue, 26
+ Mar 2024 14:00:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240325153356.46112-1-l.rubusch@gmail.com> <20240325153356.46112-5-l.rubusch@gmail.com>
- <f74a01bd-46a3-46cd-a47a-fcfccd7e4dc6@linaro.org> <CAFXKEHbJ_5unY24aZeutvM-xrjevQ=z7ngDcgwJR=NXzXONx5A@mail.gmail.com>
- <334970e7-2edd-43c8-9f18-b7b3ec5f4d17@linaro.org> <CAFXKEHaEVwiAW9co0+=kZ5w5a8eWg3QL0dmg38bvrmLdnBEA7w@mail.gmail.com>
- <b13ca51c-db57-4a09-b689-cf27265d348f@linaro.org>
-In-Reply-To: <b13ca51c-db57-4a09-b689-cf27265d348f@linaro.org>
+References: <20240325153356.46112-1-l.rubusch@gmail.com> <20240325153356.46112-2-l.rubusch@gmail.com>
+ <20240325203155.23ddfe3d@jic23-huawei>
+In-Reply-To: <20240325203155.23ddfe3d@jic23-huawei>
 From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Tue, 26 Mar 2024 21:17:11 +0100
-Message-ID: <CAFXKEHYMiARxrN7=jqnJtEVREseZ-zmZmVeY1uNXZV6viwHbmw@mail.gmail.com>
-Subject: Re: [PATCH v4 4/7] dt-bindings: iio: accel: adxl345: Add spi-3wire
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+Date: Tue, 26 Mar 2024 21:59:34 +0100
+Message-ID: <CAFXKEHaQLu9WFJe4r4+QaWO-wjM0hpYkWF_s8NOSh2Hoo5w8FQ@mail.gmail.com>
+Subject: Re: [PATCH v4 1/7] iio: accel: adxl345: Make data_range obsolete
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org, 
+	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, eraretuya@gmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Mar 26, 2024 at 7:30=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
+On Mon, Mar 25, 2024 at 9:32=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
+ wrote:
 >
-> On 25/03/2024 23:09, Lothar Rubusch wrote:
-> >>
-> >>
-> >>>
-> >>>> the tags. The upstream maintainer will do that for tags received on =
-the
-> >>>> version they apply.
-> >>>>
-> >>>
-> >>> I'm pretty sure we will still see further iterations. So, I apply the
-> >>> tags in the next version, already scheduled. Ok?
-> >>>
-> >>>> https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/proce=
-ss/submitting-patches.rst#L577
-> >>>>
-> >>>
-> >>> Going over the books I feel it does not make sense to still mention
-> >>> feedback ("Reveiewed-by") for the v1 or v2 of the patch here in a v5,
-> >>> does it? Your link mentiones "However if the patch has changed
-> >>
-> >> I don't understand. When did you receive the tag? v3, right? So what d=
-o
-> >> you mean by v1 and v2?
-> >>
+> On Mon, 25 Mar 2024 15:33:50 +0000
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > Replace write() data_format by regmap_update_bits(), because
+> > bus specific pre-configuration may have happened before on
+> > the same register. Changes then need to be masked.
 > >
-> > V1: The first version of the 3wire patch. I have split the single
-> > patch upon some feedback (yours?!) - V2... So, my current
-> > interpretation is, that every feedback I need to mention as
-> > Reviewed-by tag, no?
+> > Remove the data_range field from the struct adxl345_data,
+> > because it is not used anymore.
+> >
+> > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > ---
+> >  drivers/iio/accel/adxl345_core.c | 9 ++++-----
+> >  1 file changed, 4 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adxl3=
+45_core.c
+> > index 8bd30a23e..be6758015 100644
+> > --- a/drivers/iio/accel/adxl345_core.c
+> > +++ b/drivers/iio/accel/adxl345_core.c
+> > @@ -42,13 +42,13 @@
+> >  #define ADXL345_DATA_FORMAT_4G               1
+> >  #define ADXL345_DATA_FORMAT_8G               2
+> >  #define ADXL345_DATA_FORMAT_16G              3
+> > +#define ADXL345_DATA_FORMAT_MSK              ~((u8) BIT(6)) /* ignore =
+spi-3wire */
 >
-> What? Feedback is not review. It's clearly explained in submitting
-> patches. Please read it.
+> I'm not keen on seeing masking of a bit we don't yet
+> handle done by value.  Can we instead build this up by what we 'want' to
+> write rather than don't. Will need a few more defines perhaps to cover
+> the masks of SELF_TEST, INT_INVERT, FULL_RES, Justify and Range.
 >
 
-Exactly. My missunderstanding here is this:  Why did you send me a
-reminder that I forgot to add "Reviewed-by" tag in your last mail?
-Could you please clarify your last mail? You wrote:
-"(...)
-This is a friendly reminder during the review process.
+Good point. Anyway, there is also an input driver implementation for
+the adxl345, mainly dealing with the interrupt feature as input
+device. Thus, for the iio implementation I would suggest to reduce the
+mask just to cover SELF_TEST and FULL_RES and leave INT_INVERT out. Is
+this ok?
 
-It looks like you received a tag and forgot to add it.
-
-If you do not know the process, here is a short explanation:
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, (...)"
-
-AFAIK noone literally had told me: "please add a Reviewed-by me tag",
-or did I miss something? I'm a bit lost here, sorry.
-
-> Best regards,
-> Krzysztof
+> >
+> >  #define ADXL345_DEVID                        0xE5
+> >
+> >  struct adxl345_data {
+> >       const struct adxl345_chip_info *info;
+> >       struct regmap *regmap;
+> > -     u8 data_range;
+> >  };
+> >
+> >  #define ADXL345_CHANNEL(index, axis) {                                =
+       \
+> > @@ -219,14 +219,13 @@ int adxl345_core_probe(struct device *dev, struct=
+ regmap *regmap)
+> >       data =3D iio_priv(indio_dev);
+> >       data->regmap =3D regmap;
+> >       /* Enable full-resolution mode */
+> > -     data->data_range =3D ADXL345_DATA_FORMAT_FULL_RES;
+> >       data->info =3D device_get_match_data(dev);
+> >       if (!data->info)
+> >               return -ENODEV;
+> >
+> > -     ret =3D regmap_write(data->regmap, ADXL345_REG_DATA_FORMAT,
+> > -                        data->data_range);
+> > -     if (ret < 0)
+> > +     ret =3D regmap_update_bits(regmap, ADXL345_REG_DATA_FORMAT,
+> > +                              ADXL345_DATA_FORMAT_MSK, ADXL345_DATA_FO=
+RMAT_FULL_RES);
+> > +     if (ret)
+> >               return dev_err_probe(dev, ret, "Failed to set data range\=
+n");
+> >
+> >       indio_dev->name =3D data->info->name;
 >
 

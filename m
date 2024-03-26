@@ -1,175 +1,140 @@
-Return-Path: <linux-iio+bounces-3806-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3808-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A952088BA74
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 07:30:54 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7849088BD0A
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 10:00:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108C32E3668
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 06:30:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E17081F3C605
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 09:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9778062E;
-	Tue, 26 Mar 2024 06:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25B645C18;
+	Tue, 26 Mar 2024 09:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="T0gJL7kr"
+	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="ZQAP6Bev"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA74974BEB
-	for <linux-iio@vger.kernel.org>; Tue, 26 Mar 2024 06:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D9E3F9ED;
+	Tue, 26 Mar 2024 09:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711434649; cv=none; b=WCIhdt1ueKNTPzviuSaa5bkqinOYhUgg46dA9AZ3p2RjbmKc4sf/UuOQp73fK3R1n/YnlTt922AK9v/Wqr++8yBXrsOKEXq2pTSQ3flYUAmuSlfEGvUKIr7+PlRxX/Ap0ohTNxoCJLAMSpVXrGrhE/m9SfXHwpq9kyvqaZGa2Jk=
+	t=1711443628; cv=none; b=XMMqAAeCAGwrRO3iQlYyfYbxe6Xj11/TiiHvsAuxoUsWDO9hbxfqze+BzXZ2c7qu32TiNf+v2KT2G0lF+6+TPsLuutgekZWrsdiU0aD49UrDNausvyOldLDmDphd+8zblktfvWGhDaElEAcaqcfAA6mMGsfhJB8ypwQVkcKqIoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711434649; c=relaxed/simple;
-	bh=FUJcMJ5WIrNl21GXWnK0zrKAgnGK0z97IPHayeUpCn8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W2TF6Lg+flSMSI/xlHNlmw6+zI55qfXvp5oE4LFOH4alGcneu1LyMGObT29b63da4CU5ONLFoMBDbFJ+Ivn5yc8nfihtAtXNbnyS1yqZ77tPXq9nN+k/xXdaVoG0P4hSrWTi/paK4mqO/kHdMN6R3dSn83yiaInVKqh4WzLKfrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=T0gJL7kr; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-56bc5a3aeb9so6639623a12.3
-        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 23:30:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1711434646; x=1712039446; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=PyZLais0P0S7a3QnbwG1jwarGKeL/wfFUecKaJc8uoU=;
-        b=T0gJL7krMhCekvkxG8hTTvmbOixkqdUUUDR+y0xOWkubJ7/9ccmD1JjVVdwkNw7nPJ
-         r7/5DpM7SCV6z6NeBbZZtKC0kS5AqxcB6rVt47mtZMofuygctUKx+Edpaqj19bxke0mo
-         dJsDkXUStbahSKwRfgPsSRxcKrOnPGDeSDDa7p+7cdb9m1XolxrfC+duzdLNTXzoLMVt
-         +kFxcsXDc78caaMVKbaoj6RJ0nKEdW5dyckt1g8l/Cw0/Q7Imkk7cK6gZvxjp9un2VRW
-         OgYk/RyO2YVxy+QubUvXbhwkc22M+O2d65AtlYRh9OaLdVvwBLawyrCsiA8h9ZGjZFvx
-         bcUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711434646; x=1712039446;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PyZLais0P0S7a3QnbwG1jwarGKeL/wfFUecKaJc8uoU=;
-        b=IWsxmwKiQEdzKTwApe45zAO2FIpiMbAh4zw9TXnhl7khuxqDV8gbcbSBuZEeSMVHf7
-         bNZtykujxjh/tsez/e46Sas46nP5WKoynlLEziEAs3Mn8pI2scJbHiux5Y4Gp0UA1teG
-         3KTs7Yj5YgSpZISGvMiS2PlRfyjdUZ2LtsENhX+pLrmA1yWW0RDgXvvlPqN3BteVMkWJ
-         msHkoa1UK82zi0/7YcM8uK6wz0sUJzNqUztfhgcjnM+pbucR0YxeJ9HGhi7/XPJDTNgd
-         QL2WbNPe82hSC5T2/RNOeWgjdKcU1fQUifUJx5Tdgla4bC6k0a5lxrOeT084wpg9mp70
-         oZXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVIHaWRENKrrhjpBYggb3KsTq6QFghp0Hc2qokR8Uu6cgIZTCJQif4L9ttsPXSeeWnwQmsBwyzszE25zDqBIs7TzQ9eayvyZQ0B
-X-Gm-Message-State: AOJu0Yywcwp5JKkl0tWhibvRNqgY2dRc9YWf8k15JklPBMauwWx3hR3n
-	o72KA7ct/txqZ7M2iaFE1IkvbrJTcPODPZMM8L+5aZq4OVPntmoGAMlc2ojh+EA=
-X-Google-Smtp-Source: AGHT+IGiqkEMIMCfN8VeIzkyEbhOlA27nha84CkBn6o6JgnYBGWGtiau3bW7PGsOVCa+1/5chE0HEQ==
-X-Received: by 2002:a50:d5d5:0:b0:568:d74f:bb8e with SMTP id g21-20020a50d5d5000000b00568d74fbb8emr6274519edj.3.1711434645977;
-        Mon, 25 Mar 2024 23:30:45 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.222.44])
-        by smtp.gmail.com with ESMTPSA id c14-20020aa7c98e000000b0056c2409ce15sm888733edt.49.2024.03.25.23.30.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 Mar 2024 23:30:45 -0700 (PDT)
-Message-ID: <b13ca51c-db57-4a09-b689-cf27265d348f@linaro.org>
-Date: Tue, 26 Mar 2024 07:30:44 +0100
+	s=arc-20240116; t=1711443628; c=relaxed/simple;
+	bh=3Tt1EQy9QY5+yDcNnE7KBJQv3Ctt4dPYPHyySoY5K/I=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=Tk4pIU7pSnl1hFTb1vbckI+BIqB8fmbZgW7RItlqVMVXb9TAj6QsudO4z9V8nR/m6N4MOayoCnwGOSZwGruwl4LrLC7RSjSaq9W6Yng9FD2abmiOASD/3jrGvQTIAt1Ho7AiKMcGzNZy8e2pYs2zYQxQ9iohS6QN6OA50Zbwl7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=ZQAP6Bev; arc=none smtp.client-ip=188.40.30.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
+	s=default2211; h=To:References:Message-Id:Content-Transfer-Encoding:Cc:Date:
+	In-Reply-To:From:Subject:Mime-Version:Content-Type:Sender:Reply-To:Content-ID
+	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=/djGL67+NWnDPrRkxvM0aNHvT6Zkhfa6nfqpOBGeR24=;
+	b=ZQAP6Bev1yFZGV2AwattLpzK2wPyLfqoq+y8JfWprenE+s1ZPdXI/HTAOqnTku7ATM8ohBDYTmm
+	9x5JylHhVzP/q5QwThubQxd8YqQLqhx8/32X/uoxyd9HaqMauNoOD2fzXDNyNpP2HK1DiOGdnVxFS
+	mAzWqN4cpioxTgcytwZUgc01VQt6njjVf3C1pSeJK4J5oq/jK5+mnLKEtoJSeDHHCqOgLPqNmxhwP
+	OVHTm5OSk2arh3hV94z2ttrkxlxz5VCYjDFWRF8CB8683IUuRoG2xtIThfDPLqyTzytl7IUmrmGYU
+	1y7y1/pJGKtRhHtrenE8n25bLvn06ypdJltQ==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sean@geanix.com>)
+	id 1rp2fM-0009TD-IP; Tue, 26 Mar 2024 10:00:20 +0100
+Received: from [185.17.218.86] (helo=smtpclient.apple)
+	by sslproxy07.your-server.de with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <sean@geanix.com>)
+	id 1rp2fL-000DcW-2w;
+	Tue, 26 Mar 2024 10:00:19 +0100
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/7] dt-bindings: iio: accel: adxl345: Add spi-3wire
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, eraretuya@gmail.com
-References: <20240325153356.46112-1-l.rubusch@gmail.com>
- <20240325153356.46112-5-l.rubusch@gmail.com>
- <f74a01bd-46a3-46cd-a47a-fcfccd7e4dc6@linaro.org>
- <CAFXKEHbJ_5unY24aZeutvM-xrjevQ=z7ngDcgwJR=NXzXONx5A@mail.gmail.com>
- <334970e7-2edd-43c8-9f18-b7b3ec5f4d17@linaro.org>
- <CAFXKEHaEVwiAW9co0+=kZ5w5a8eWg3QL0dmg38bvrmLdnBEA7w@mail.gmail.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <CAFXKEHaEVwiAW9co0+=kZ5w5a8eWg3QL0dmg38bvrmLdnBEA7w@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.400.31\))
+Subject: Re: [PATCH 2/5] iio: dac: ti-dac5571: Add DAC081C081 support
+From: Sean Nyekjaer <sean@geanix.com>
+In-Reply-To: <20240325203245.31660-3-laurent.pinchart@ideasonboard.com>
+Date: Tue, 26 Mar 2024 10:00:09 +0100
+Cc: devicetree@vger.kernel.org,
+ imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org,
+ Trevor Zaharichuk <trevor@au-zone.com>,
+ Greg Lytle <greg@au-zone.com>,
+ Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0261441D-46A9-4513-B598-B1204FD86B30@geanix.com>
+References: <20240325203245.31660-1-laurent.pinchart@ideasonboard.com>
+ <20240325203245.31660-3-laurent.pinchart@ideasonboard.com>
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+X-Mailer: Apple Mail (2.3774.400.31)
+X-Authenticated-Sender: sean@geanix.com
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27225/Mon Mar 25 09:30:27 2024)
 
-On 25/03/2024 23:09, Lothar Rubusch wrote:
->>
->>
->>>
->>>> the tags. The upstream maintainer will do that for tags received on the
->>>> version they apply.
->>>>
->>>
->>> I'm pretty sure we will still see further iterations. So, I apply the
->>> tags in the next version, already scheduled. Ok?
->>>
->>>> https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
->>>>
->>>
->>> Going over the books I feel it does not make sense to still mention
->>> feedback ("Reveiewed-by") for the v1 or v2 of the patch here in a v5,
->>> does it? Your link mentiones "However if the patch has changed
->>
->> I don't understand. When did you receive the tag? v3, right? So what do
->> you mean by v1 and v2?
->>
-> 
-> V1: The first version of the 3wire patch. I have split the single
-> patch upon some feedback (yours?!) - V2... So, my current
-> interpretation is, that every feedback I need to mention as
-> Reviewed-by tag, no?
 
-What? Feedback is not review. It's clearly explained in submitting
-patches. Please read it.
 
-Best regards,
-Krzysztof
+> On 25 Mar 2024, at 21.32, Laurent Pinchart =
+<laurent.pinchart@ideasonboard.com> wrote:
+>=20
+> The DAC081C081 is a TI DAC whose software interface is compatible with
+> the DAC5571. It is the 8-bit version of the DAC121C081, already
+> supported by the DAC5571 driver. Extends the driver to support this
+> chip.
+>=20
+> Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Sean Nyekjaer <sean@geanix.com <mailto:sean@geanix.com>>
+> ---
+> drivers/iio/dac/ti-dac5571.c | 3 +++
+> 1 file changed, 3 insertions(+)
+>=20
+> diff --git a/drivers/iio/dac/ti-dac5571.c =
+b/drivers/iio/dac/ti-dac5571.c
+> index efb1269a77c1..c5162b72951a 100644
+> --- a/drivers/iio/dac/ti-dac5571.c
+> +++ b/drivers/iio/dac/ti-dac5571.c
+> @@ -13,6 +13,7 @@
+>  * https://www.ti.com/lit/ds/symlink/dac5573.pdf
+>  * https://www.ti.com/lit/ds/symlink/dac6573.pdf
+>  * https://www.ti.com/lit/ds/symlink/dac7573.pdf
+> + * https://www.ti.com/lit/ds/symlink/dac081c081.pdf
+>  * https://www.ti.com/lit/ds/symlink/dac121c081.pdf
+>  */
+>=20
+> @@ -386,6 +387,7 @@ static void dac5571_remove(struct i2c_client *i2c)
+> }
+>=20
+> static const struct of_device_id dac5571_of_id[] =3D {
+> + {.compatible =3D "ti,dac081c081", .data =3D =
+&dac5571_spec[single_8bit] },
+> {.compatible =3D "ti,dac121c081", .data =3D =
+&dac5571_spec[single_12bit] },
+> {.compatible =3D "ti,dac5571", .data =3D &dac5571_spec[single_8bit] },
+> {.compatible =3D "ti,dac6571", .data =3D &dac5571_spec[single_10bit] =
+},
+> @@ -401,6 +403,7 @@ static const struct of_device_id dac5571_of_id[] =3D=
+ {
+> MODULE_DEVICE_TABLE(of, dac5571_of_id);
+>=20
+> static const struct i2c_device_id dac5571_id[] =3D {
+> + {"dac081c081", (kernel_ulong_t)&dac5571_spec[single_8bit] },
+> {"dac121c081", (kernel_ulong_t)&dac5571_spec[single_12bit] },
+> {"dac5571", (kernel_ulong_t)&dac5571_spec[single_8bit] },
+> {"dac6571", (kernel_ulong_t)&dac5571_spec[single_10bit] },
+> --=20
+> Regards,
+>=20
+> Laurent Pinchart
+>=20
+
 
 

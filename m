@@ -1,213 +1,110 @@
-Return-Path: <linux-iio+bounces-3812-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3813-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D37D488C0ED
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 12:38:22 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4289388C119
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 12:46:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10807B226D5
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 11:38:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1926300541
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 11:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3BE46E61B;
-	Tue, 26 Mar 2024 11:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2A55C90B;
+	Tue, 26 Mar 2024 11:45:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UyPzCJmr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ve8Hm6iJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3802A4AED0
-	for <linux-iio@vger.kernel.org>; Tue, 26 Mar 2024 11:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09AE5A0F0
+	for <linux-iio@vger.kernel.org>; Tue, 26 Mar 2024 11:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711453039; cv=none; b=OSke3/cr4oAqVA5Aoesij7UWZ3mRTXZJxkNXL1xn4bjYkS7GbcmJz5FolFOsjLXtMOcJRZKbrc7gJ/5dXCc5OpaJ/T8ezU1496vxDHjfdHObyU1Lgvjq0goqDpTBSmXhkM5pZdWfDS23E6OY2Oe3ZaeFtuWsEa9CVLWYFlpry58=
+	t=1711453556; cv=none; b=kgw/oA2wetOFBwEnqnW340gwl2uUyBhKu3Gx4tt7bDqOF7okjz2mgK7aaQ1NFw/8ChDIl2NC7SwxM4WD5FEUCTz33/YQ8jv098H1LGAZ4InXdT++W4iOhlsHHb3Kg/s0P6xPXM+ua4qyoP6OiQ1s0VtSmiOKeKmXUOWJrE9H+Ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711453039; c=relaxed/simple;
-	bh=kQlciq0z6zUviyaNSc0GvmD3ifQ/zVzxezMucJAR7Gk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IEgpqPIRZRcr6PQ5MnaYMO4QNG4RwGPun/RbQ1GbQ0+rSTE6y//sTT58uz9ML+B8+pHyYKeXILdcaTsdJbuUcyC+UNVPR1QGeQ8bgjZnz0j5jD+0ZMUAwb5gJ1cpe6uivdxYMV2Gt9RhWCPjuvpP2RW2CuMiMwn63ku+2vvKiTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UyPzCJmr; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1711453036;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nXHegUA/00RbAFGtq/iyvPkt5h3uYPQYc059Xoen7U8=;
-	b=UyPzCJmrryrHh/Pa+NsGTFO+57T4+DfsVRLE3rOe6ySHMFnshjCol8qTxFR21yxxORtmdR
-	MpQ6dw1Aq/dDQM3B49hvDIb02zaNyBTlc8kyJEM/oQ/pcPuu9SQvmUSlJMpn0GUMy+OWTt
-	1/OugVbPUANoKuUEe16ekAWGTMioMjw=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-338-zKrQo6KJPhGchAA_Yxlm4A-1; Tue, 26 Mar 2024 07:37:13 -0400
-X-MC-Unique: zKrQo6KJPhGchAA_Yxlm4A-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 81EC4856D23;
-	Tue, 26 Mar 2024 11:37:13 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.193.26])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id A44C9492BD3;
-	Tue, 26 Mar 2024 11:37:12 +0000 (UTC)
-From: Hans de Goede <hdegoede@redhat.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Christian Oder <me@myself5.de>,
-	Nikita Mikhailevich <ermyril@gmail.com>,
-	linux-iio@vger.kernel.org
-Subject: [RFC 2/2] iio: accel: mxc4005: Reset chip on probe() and resume()
-Date: Tue, 26 Mar 2024 12:37:00 +0100
-Message-ID: <20240326113700.56725-3-hdegoede@redhat.com>
-In-Reply-To: <20240326113700.56725-1-hdegoede@redhat.com>
-References: <20240326113700.56725-1-hdegoede@redhat.com>
+	s=arc-20240116; t=1711453556; c=relaxed/simple;
+	bh=lwpJasEIvE8ex//n3fVhgTDhu0VNbxdg5FEkW2t4K5Y=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=IV9uqp6F0zzHIUp8jm+unDtlRx4fK4+eUwRxWGIcj+2wJq9VzSl812K5ZNWQb0egAzNZ5KwPTNW61G2pEo49kUQugvCs2m5NncYHK287ZUSDO06capNrsoIvooagT4hwKHFVwiZdPWa/oAYJQ7St3SRaRZQJxB8Q32Rwl6wlRXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ve8Hm6iJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 57DB7C43390
+	for <linux-iio@vger.kernel.org>; Tue, 26 Mar 2024 11:45:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711453555;
+	bh=lwpJasEIvE8ex//n3fVhgTDhu0VNbxdg5FEkW2t4K5Y=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=Ve8Hm6iJLxwOfoR7wTEyJ9f7xGfiU+2bUS9A08mhitXSl4Vlbe8CUVh3DCMUkyOPY
+	 HhlbxiLY40U5vkcmlHMdSAQlqBu0EE/wddWmIyWbEv6gC16AMGsLK1pP46r3nbkSim
+	 Vlids6Lxtvp04/7WodXKQPJcRI5pvnkR3wIBfE7dqQi2LBwfaISK0wI5G+WutEZEj5
+	 /BrTSbT/UoyOh3pHaF+lEfX45wOuTGc7z8ADRAXUBs2hfD3vQSveJxgMZaJcWRni/K
+	 WuT5g3S3R0E/oV2p4Xv5Wkd++B9eeVCEbQAcYpFqSIjjjFh03+qDxLQe6kuDxJgi4l
+	 4L7udSpcdV4zQ==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 3DCE9C53BD4; Tue, 26 Mar 2024 11:45:55 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
+Date: Tue, 26 Mar 2024 11:45:54 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: jwrdegoede@fedoraproject.org
+X-Bugzilla-Status: NEW
+X-Bugzilla-Resolution: 
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-218578-217253-012HuUtiRt@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
+References: <bug-218578-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.9
 
-On some designs the chip is not properly reset when powered up at boot or
-after a suspend/resume cycle.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
 
-Use the sw-reset feature to ensure that the chip is in a clean state
-after probe() / resume() and in the case of resume() restore the settings
-(scale, trigger-enabled).
+--- Comment #20 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
+Ok I have written a set of fixes for this and posted this upstream (as RFC =
+for
+now since these are untested):
+https://lore.kernel.org/linux-iio/20240326113700.56725-1-hdegoede@redhat.co=
+m/
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218578
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/iio/accel/mxc4005.c | 58 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 58 insertions(+)
+I have also started a build of the latest Fedora 39 kernel with these patch=
+es
+(and the MDA6655 ACPI id which was recently added) for you to test:
+https://koji.fedoraproject.org/koji/taskinfo?taskID=3D115457033
 
-diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
-index 111f4bcf24ad..9f38d3a08299 100644
---- a/drivers/iio/accel/mxc4005.c
-+++ b/drivers/iio/accel/mxc4005.c
-@@ -5,6 +5,7 @@
-  * Copyright (c) 2014, Intel Corporation.
-  */
- 
-+#include <linux/delay.h>
- #include <linux/module.h>
- #include <linux/i2c.h>
- #include <linux/iio/iio.h>
-@@ -36,6 +37,7 @@
- 
- #define MXC4005_REG_INT_CLR1		0x01
- #define MXC4005_REG_INT_CLR1_BIT_DRDYC	0x01
-+#define MXC4005_REG_INT_CLR1_SW_RST	0x10
- 
- #define MXC4005_REG_CONTROL		0x0D
- #define MXC4005_REG_CONTROL_MASK_FSR	GENMASK(6, 5)
-@@ -43,6 +45,9 @@
- 
- #define MXC4005_REG_DEVICE_ID		0x0E
- 
-+/* Datasheet does not specify a reset time, this is a conservative guess */
-+#define MXC4005_RESET_TIME_US		2000
-+
- enum mxc4005_axis {
- 	AXIS_X,
- 	AXIS_Y,
-@@ -66,6 +71,8 @@ struct mxc4005_data {
- 		s64 timestamp __aligned(8);
- 	} scan;
- 	bool trigger_enabled;
-+	unsigned int control;
-+	unsigned int int_mask1;
- };
- 
- /*
-@@ -349,6 +356,7 @@ static int mxc4005_set_trigger_state(struct iio_trigger *trig,
- 		return ret;
- 	}
- 
-+	data->int_mask1 = val;
- 	data->trigger_enabled = state;
- 	mutex_unlock(&data->mutex);
- 
-@@ -384,6 +392,13 @@ static int mxc4005_chip_init(struct mxc4005_data *data)
- 
- 	dev_dbg(data->dev, "MXC4005 chip id %02x\n", reg);
- 
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_CLR1,
-+			   MXC4005_REG_INT_CLR1_SW_RST);
-+	if (ret < 0)
-+		return dev_err_probe(data->dev, ret, "resetting chip\n");
-+
-+	fsleep(MXC4005_RESET_TIME_US);
-+
- 	ret = regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
- 	if (ret < 0)
- 		return dev_err_probe(data->dev, ret, "writing INT_MASK0\n");
-@@ -479,6 +494,48 @@ static int mxc4005_probe(struct i2c_client *client)
- 	return devm_iio_device_register(&client->dev, indio_dev);
- }
- 
-+static int mxc4005_suspend(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct mxc4005_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	/* Save control to restore it on resume */
-+	ret = regmap_read(data->regmap, MXC4005_REG_CONTROL, &data->control);
-+	if (ret < 0)
-+		dev_err(data->dev, "failed to read reg_control\n");
-+
-+	return ret;
-+}
-+
-+static int mxc4005_resume(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-+	struct mxc4005_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	ret = regmap_write(data->regmap, MXC4005_REG_INT_CLR1,
-+			   MXC4005_REG_INT_CLR1_SW_RST);
-+	if (ret) {
-+		dev_err(data->dev, "failed to reset chip: %d\n", ret);
-+		return ret;
-+	}
-+
-+	fsleep(MXC4005_RESET_TIME_US);
-+
-+	ret = regmap_write(data->regmap, MXC4005_REG_CONTROL, data->control);
-+	ret |= regmap_write(data->regmap, MXC4005_REG_INT_MASK0, 0);
-+	ret |= regmap_write(data->regmap, MXC4005_REG_INT_MASK1, data->int_mask1);
-+	if (ret) {
-+		dev_err(data->dev, "failed to restore registers\n");
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+static DEFINE_SIMPLE_DEV_PM_OPS(mxc4005_pm_ops, mxc4005_suspend, mxc4005_resume);
-+
- static const struct acpi_device_id mxc4005_acpi_match[] = {
- 	{"MXC4005",	0},
- 	{"MXC6655",	0},
-@@ -506,6 +563,7 @@ static struct i2c_driver mxc4005_driver = {
- 		.name = MXC4005_DRV_NAME,
- 		.acpi_match_table = mxc4005_acpi_match,
- 		.of_match_table = mxc4005_of_match,
-+		.pm = pm_sleep_ptr(&mxc4005_pm_ops),
- 	},
- 	.probe		= mxc4005_probe,
- 	.id_table	= mxc4005_id,
--- 
-2.44.0
+This is still building atm, this should complete building in a couple of ho=
+urs.
+Once this is done building please give this a test run. Here are some
+instructions for directly installing a kernel from koji (Fedora's buildsyst=
+em):
+https://fedorapeople.org/~jwrdegoede/kernel-test-instructions.txt
 
+If you don't have time to test the next couple of days, please at least
+download the kernel rpms. Since this is a test kernel build the build-resul=
+ts
+will be cleaned up to reclaim diskspace in about 5 days from now.
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

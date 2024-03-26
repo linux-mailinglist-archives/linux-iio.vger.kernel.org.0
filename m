@@ -1,139 +1,175 @@
-Return-Path: <linux-iio+bounces-3807-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3806-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5220688BB27
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 08:24:20 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A952088BA74
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 07:30:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DAB42E2DFF
-	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 07:24:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108C32E3668
+	for <lists+linux-iio@lfdr.de>; Tue, 26 Mar 2024 06:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F2F130A65;
-	Tue, 26 Mar 2024 07:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9778062E;
+	Tue, 26 Mar 2024 06:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="T0gJL7kr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx2.mythic-beasts.com (mx2.mythic-beasts.com [46.235.227.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A88F184D29;
-	Tue, 26 Mar 2024 07:24:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA74974BEB
+	for <linux-iio@vger.kernel.org>; Tue, 26 Mar 2024 06:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711437857; cv=none; b=sKndtGarr/Lhitz9nR9UOMUi9OjmtKzz+/2TthrbAiBSyDBLFNIFKRHZsxlEJ6Zyq1v1dzfpNO5WAVCuIXTk4FLXA0NDjLif/dHz3QboeacETuFgxMUccA8J2P/C0Ko6MPHwnV3aWJLwrShuHdtNsawmfAAy1bpvmp8BPzTaKaI=
+	t=1711434649; cv=none; b=WCIhdt1ueKNTPzviuSaa5bkqinOYhUgg46dA9AZ3p2RjbmKc4sf/UuOQp73fK3R1n/YnlTt922AK9v/Wqr++8yBXrsOKEXq2pTSQ3flYUAmuSlfEGvUKIr7+PlRxX/Ap0ohTNxoCJLAMSpVXrGrhE/m9SfXHwpq9kyvqaZGa2Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711437857; c=relaxed/simple;
-	bh=l6JtmrWNF3LKBIp+HzdX8pz/gxhDJudluV04fWRvOo4=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=ApBOAAa2ytMoQkGDQyAxXosEjN8wklmkos2MSB0idHJMB4GLZHPJom1d0RyhgqV8RQTY1CSadW6UoqZoSp4SucHRF8iR+EK/3XCcQZtaPKLSF5NuSFYQT8N5WIw5owsQTlbAH7IN6opY8Q4QLWtitubZ5GUIfEbt0nzvvOiEOuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jic23.retrosnub.co.uk; spf=pass smtp.mailfrom=jic23.retrosnub.co.uk; arc=none smtp.client-ip=46.235.227.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jic23.retrosnub.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jic23.retrosnub.co.uk
-Received: by mailhub-hex-d.mythic-beasts.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <jic23@jic23.retrosnub.co.uk>)
-	id 1rp19q-00CxpK-M5; Tue, 26 Mar 2024 07:23:57 +0000
-Date: Mon, 25 Mar 2024 22:32:59 +0000
-From: Jonathan Cameron <jic23@jic23.retrosnub.co.uk>
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
- Jonathan Cameron <jic23@kernel.org>
-CC: devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, Trevor Zaharichuk <trevor@au-zone.com>,
- Greg Lytle <greg@au-zone.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Sean Nyekjaer <sean@geanix.com>,
- linux-iio@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_1/5=5D_dt-bindings=3A_iio=3A_da?=
- =?US-ASCII?Q?c=3A_ti=2Cdac5571=3A_Add_DAC081C081_support?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20240325222308.GA31216@pendragon.ideasonboard.com>
-References: <20240325203245.31660-1-laurent.pinchart@ideasonboard.com> <20240325203245.31660-2-laurent.pinchart@ideasonboard.com> <20240325204857.4f2fd468@jic23-huawei> <20240325205641.GD23988@pendragon.ideasonboard.com> <20240325222308.GA31216@pendragon.ideasonboard.com>
-Message-ID: <435DAE05-A189-4238-AAD4-C5F4E3032DD6@jic23.retrosnub.co.uk>
+	s=arc-20240116; t=1711434649; c=relaxed/simple;
+	bh=FUJcMJ5WIrNl21GXWnK0zrKAgnGK0z97IPHayeUpCn8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=W2TF6Lg+flSMSI/xlHNlmw6+zI55qfXvp5oE4LFOH4alGcneu1LyMGObT29b63da4CU5ONLFoMBDbFJ+Ivn5yc8nfihtAtXNbnyS1yqZ77tPXq9nN+k/xXdaVoG0P4hSrWTi/paK4mqO/kHdMN6R3dSn83yiaInVKqh4WzLKfrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=T0gJL7kr; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-56bc5a3aeb9so6639623a12.3
+        for <linux-iio@vger.kernel.org>; Mon, 25 Mar 2024 23:30:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1711434646; x=1712039446; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=PyZLais0P0S7a3QnbwG1jwarGKeL/wfFUecKaJc8uoU=;
+        b=T0gJL7krMhCekvkxG8hTTvmbOixkqdUUUDR+y0xOWkubJ7/9ccmD1JjVVdwkNw7nPJ
+         r7/5DpM7SCV6z6NeBbZZtKC0kS5AqxcB6rVt47mtZMofuygctUKx+Edpaqj19bxke0mo
+         dJsDkXUStbahSKwRfgPsSRxcKrOnPGDeSDDa7p+7cdb9m1XolxrfC+duzdLNTXzoLMVt
+         +kFxcsXDc78caaMVKbaoj6RJ0nKEdW5dyckt1g8l/Cw0/Q7Imkk7cK6gZvxjp9un2VRW
+         OgYk/RyO2YVxy+QubUvXbhwkc22M+O2d65AtlYRh9OaLdVvwBLawyrCsiA8h9ZGjZFvx
+         bcUQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1711434646; x=1712039446;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PyZLais0P0S7a3QnbwG1jwarGKeL/wfFUecKaJc8uoU=;
+        b=IWsxmwKiQEdzKTwApe45zAO2FIpiMbAh4zw9TXnhl7khuxqDV8gbcbSBuZEeSMVHf7
+         bNZtykujxjh/tsez/e46Sas46nP5WKoynlLEziEAs3Mn8pI2scJbHiux5Y4Gp0UA1teG
+         3KTs7Yj5YgSpZISGvMiS2PlRfyjdUZ2LtsENhX+pLrmA1yWW0RDgXvvlPqN3BteVMkWJ
+         msHkoa1UK82zi0/7YcM8uK6wz0sUJzNqUztfhgcjnM+pbucR0YxeJ9HGhi7/XPJDTNgd
+         QL2WbNPe82hSC5T2/RNOeWgjdKcU1fQUifUJx5Tdgla4bC6k0a5lxrOeT084wpg9mp70
+         oZXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVIHaWRENKrrhjpBYggb3KsTq6QFghp0Hc2qokR8Uu6cgIZTCJQif4L9ttsPXSeeWnwQmsBwyzszE25zDqBIs7TzQ9eayvyZQ0B
+X-Gm-Message-State: AOJu0Yywcwp5JKkl0tWhibvRNqgY2dRc9YWf8k15JklPBMauwWx3hR3n
+	o72KA7ct/txqZ7M2iaFE1IkvbrJTcPODPZMM8L+5aZq4OVPntmoGAMlc2ojh+EA=
+X-Google-Smtp-Source: AGHT+IGiqkEMIMCfN8VeIzkyEbhOlA27nha84CkBn6o6JgnYBGWGtiau3bW7PGsOVCa+1/5chE0HEQ==
+X-Received: by 2002:a50:d5d5:0:b0:568:d74f:bb8e with SMTP id g21-20020a50d5d5000000b00568d74fbb8emr6274519edj.3.1711434645977;
+        Mon, 25 Mar 2024 23:30:45 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.44])
+        by smtp.gmail.com with ESMTPSA id c14-20020aa7c98e000000b0056c2409ce15sm888733edt.49.2024.03.25.23.30.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 25 Mar 2024 23:30:45 -0700 (PDT)
+Message-ID: <b13ca51c-db57-4a09-b689-cf27265d348f@linaro.org>
+Date: Tue, 26 Mar 2024 07:30:44 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-BlackCat-Spam-Score: 25
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 4/7] dt-bindings: iio: accel: adxl345: Add spi-3wire
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, eraretuya@gmail.com
+References: <20240325153356.46112-1-l.rubusch@gmail.com>
+ <20240325153356.46112-5-l.rubusch@gmail.com>
+ <f74a01bd-46a3-46cd-a47a-fcfccd7e4dc6@linaro.org>
+ <CAFXKEHbJ_5unY24aZeutvM-xrjevQ=z7ngDcgwJR=NXzXONx5A@mail.gmail.com>
+ <334970e7-2edd-43c8-9f18-b7b3ec5f4d17@linaro.org>
+ <CAFXKEHaEVwiAW9co0+=kZ5w5a8eWg3QL0dmg38bvrmLdnBEA7w@mail.gmail.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <CAFXKEHaEVwiAW9co0+=kZ5w5a8eWg3QL0dmg38bvrmLdnBEA7w@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 25/03/2024 23:09, Lothar Rubusch wrote:
+>>
+>>
+>>>
+>>>> the tags. The upstream maintainer will do that for tags received on the
+>>>> version they apply.
+>>>>
+>>>
+>>> I'm pretty sure we will still see further iterations. So, I apply the
+>>> tags in the next version, already scheduled. Ok?
+>>>
+>>>> https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+>>>>
+>>>
+>>> Going over the books I feel it does not make sense to still mention
+>>> feedback ("Reveiewed-by") for the v1 or v2 of the patch here in a v5,
+>>> does it? Your link mentiones "However if the patch has changed
+>>
+>> I don't understand. When did you receive the tag? v3, right? So what do
+>> you mean by v1 and v2?
+>>
+> 
+> V1: The first version of the 3wire patch. I have split the single
+> patch upon some feedback (yours?!) - V2... So, my current
+> interpretation is, that every feedback I need to mention as
+> Reviewed-by tag, no?
 
+What? Feedback is not review. It's clearly explained in submitting
+patches. Please read it.
 
-On 25 March 2024 22:23:08 GMT, Laurent Pinchart <laurent=2Epinchart@ideaso=
-nboard=2Ecom> wrote:
->On Mon, Mar 25, 2024 at 10:56:44PM +0200, Laurent Pinchart wrote:
->> On Mon, Mar 25, 2024 at 08:48:57PM +0000, Jonathan Cameron wrote:
->> > On Mon, 25 Mar 2024 22:32:41 +0200 Laurent Pinchart wrote:
->> >=20
->> > > The DAC081C081 is a TI DAC whose software interface is compatible w=
-ith
->> > > the DAC5571=2E It is the 8-bit version of the DAC121C081, already
->> > > supported by the DAC5571 bindings=2E Extends the bindings to suppor=
-t this
->> > > chip=2E
->> > >=20
->> > > Signed-off-by: Laurent Pinchart <laurent=2Epinchart@ideasonboard=2E=
-com>
->> >=20
->> > Hi Laurent,
->> >=20
->> > Given it's a part number where no one is going to guess it is compati=
-ble
->> > with the DAC5571 and that we don't have a history of fallback compati=
-bles
->> > I'm fine with this change, but just wanted to ask is a fallback compa=
-tible
->> > useful to you to run with older kernels?
->> >=20
->> > I should have noticed when Peter added the dac121c081=2E If we add a =
-fallback
->> > should do that one as well=2E
->>=20
->> I've indeed noticed that there should have been a fallback for
->> dac121c081, but didn't stop to ponder why that wasn't the case, and jus=
-t
->> went along with the flow :-) I agree a fallback could be useful, which
->> would then allow dropping patch 2/5 from this series (*)=2E I can do so=
- if
->> you prefer=2E
->
->And in that case, should I first introduce support in the bindings for
->"ti,dac121c081", "ti,dac7571" and deprecate usage of "ti,dac121c081"
->alone ?
+Best regards,
+Krzysztof
 
-Yes=2E Not sure if we need an explicit binding entry for deprecated versio=
-n=2E=2E=2E
-
->
->> * This is not entirely true=2E While the DAC1081C081 is largely compati=
-ble
->> with the DAC5573, they have different values for one of the power-down
->> resistors (2=2E5k=CE=A9 instead of 1k=CE=A9 if I recall correctly)=2E T=
-o be completely
->> accurate, the driver should report that=2E We could still use the fallb=
-ack
->> compatible, reporting the wrong power-down resistor value=2E
->>=20
->> > > ---
->> > >  Documentation/devicetree/bindings/iio/dac/ti,dac5571=2Eyaml | 1 +
->> > >  1 file changed, 1 insertion(+)
->> > >=20
->> > > diff --git a/Documentation/devicetree/bindings/iio/dac/ti,dac5571=
-=2Eyaml b/Documentation/devicetree/bindings/iio/dac/ti,dac5571=2Eyaml
->> > > index 79da0323c327=2E=2Ee59db861e2eb 100644
->> > > --- a/Documentation/devicetree/bindings/iio/dac/ti,dac5571=2Eyaml
->> > > +++ b/Documentation/devicetree/bindings/iio/dac/ti,dac5571=2Eyaml
->> > > @@ -21,6 +21,7 @@ properties:
->> > >        - ti,dac5573
->> > >        - ti,dac6573
->> > >        - ti,dac7573
->> > > +      - ti,dac081c081
->> > >        - ti,dac121c081
->> > > =20
->> > >    reg:
->
 

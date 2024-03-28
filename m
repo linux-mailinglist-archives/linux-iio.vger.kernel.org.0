@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-3877-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3878-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C808089019B
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 15:21:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DCFE28901A5
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 15:22:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84813297432
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 14:21:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 951B12976BD
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 14:22:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4045D12EBC7;
-	Thu, 28 Mar 2024 14:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AD78565D;
+	Thu, 28 Mar 2024 14:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZGw97JH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qW+heum+"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D7812A157;
-	Thu, 28 Mar 2024 14:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09BF81AB1;
+	Thu, 28 Mar 2024 14:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711635657; cv=none; b=q/3+jeD74MQleA3o3sijF7enck89dOvvjLY/tMMrBNbszuox5SM7JSMJL8Yz7Tjw8dxLrXNfDJcCUzgLFvuh1r/pmnka0LRS+VAi/ZgBCDGzgHhW70btKhAUuN5xWl/F9D8t5OyxE0beIGVjSl9NAGHlZM7arQxmk2a3MoJ7FVE=
+	t=1711635736; cv=none; b=UmDS0d6syVOWfqTsI3Hg7XMynDA4sg2Etk4DrNOfXMnWENTScAK+Z5xuObjmXH2Gos47NWgiVmNuTd2CJfcVmQ1zBAipTvl4wDg1urgKEDQOky0ulwNgZm5IZRYOEbMXOq6xnF0fI+1BBqqUCHOWe+LOt3Lxuqj6JKWATcPXVGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711635657; c=relaxed/simple;
-	bh=/mzKcAcVee2eDwo7xSaEAAot3AENIEbBi8tazumkqxw=;
+	s=arc-20240116; t=1711635736; c=relaxed/simple;
+	bh=P56jOi+vB8F/gMU79xMGuZt5R/KzQ/6nNhG9zp3Tbzs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=olpUBa1c1kLdSWQ8mRcwmQ3J3qxhuPwDPoWRsjwlHP0M0oJMZNyRr91BlsjIHwy2RqEf+LSc6Oj6UvK3bQ2xnApOnWyd75Rz/C+WhzGdZgw04zWYyZvIh1SHHSarHSFN+Set+aFarCGTP0spkXhUorJTho2M9m1lVdF2rwA7WqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZGw97JH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07FAC433F1;
-	Thu, 28 Mar 2024 14:20:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pG+NC5wDUEg//PvFDfmP6DrCwQVmsPdCjskMv4RLCHI5CVKHnnLMXnIyu2KyymCkq/eqSTIkjP+c4XlAfPx+pKt3aNwzWM0TjkTF9n46cjkXziyQeTEGTppHZbflroTC/BGBQMCEpQzVHPg8Tb0J9iBVX4utiRbSIpagdlbhKUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qW+heum+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B217DC433C7;
+	Thu, 28 Mar 2024 14:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711635656;
-	bh=/mzKcAcVee2eDwo7xSaEAAot3AENIEbBi8tazumkqxw=;
+	s=k20201202; t=1711635735;
+	bh=P56jOi+vB8F/gMU79xMGuZt5R/KzQ/6nNhG9zp3Tbzs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=iZGw97JHpv2rPipXEAsc3DpK4QsdoAqKyqoFPu3f9fMs2GYquXDrM9QwWUGKem+Gv
-	 teYRiV8pcY3RtLVO4rIVxoHtSK5G0WdW8tujyxd/nZtKoKO/utXKpkiE2cFTSTmgn0
-	 nVXtrG4+iH4CGFQ6RM/tR/H9YwlpktlfW2cwJyendK1+V2Z20gGF3ysd1y0MOZLD/r
-	 pW1XLdPX9cbT6edtiZY1CFDMkw/M4HMLCOh6dXJjWfN5WTR6mYquAJLbP5pSz+/a1Y
-	 RZjt+8VyzXSHGxhhRB8q8UHLz4s8G5MapjJL84wBv6Kcfyp35NXjbxTDTCIOD+ub1R
-	 uDzbZk7mzN6XA==
-Date: Thu, 28 Mar 2024 14:20:38 +0000
+	b=qW+heum+mVGRg4Y8WD/6/b5KDOfVXXCaezVOK5N5kNlmQKXB+4xgq886lcXn+VCHZ
+	 nvtP+Jpzo3FgDgMkphAbyJNVdL2Btul4fMPChIBvEfxGkghWBpkyEFw0FwDa6Ls5ET
+	 OYJk/wXBKRia4xnvbG8q7ixE2E8WZO6/s0NvDBLS6Q9zfdslkT1SVYhNg/n/ACD3g5
+	 iXw9neckqjuysP8U2VI8A/pZaiGzGFNZ7f6bFJuNzlxGoLTETp3JHR/dGXj0s5tRVh
+	 KULLcNWOKbBgyQCVa6rX7+MtEN0PdIGx1uFp8AN+j2HQXH4R8UAzk98CECzVVI6si0
+	 jn5mqWWWk3nXw==
+Date: Thu, 28 Mar 2024 14:21:57 +0000
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Jonathan Corbet <corbet@lwn.net>, Liam Girdwood <lgirdwood@gmail.com>,
@@ -55,12 +55,12 @@ Cc: Jonathan Corbet <corbet@lwn.net>, Liam Girdwood <lgirdwood@gmail.com>,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
  linux-staging@lists.linux.dev, linux-input@vger.kernel.org
-Subject: Re: [PATCH RFC 3/7] hwmon: (da9052) Use
+Subject: Re: [PATCH RFC 7/7] Input: mpr121: Use
  devm_regulator_get_enable_get_voltage()
-Message-ID: <20240328142038.33ad68bc@jic23-huawei>
-In-Reply-To: <20240327-regulator-get-enable-get-votlage-v1-3-5f4517faa059@baylibre.com>
+Message-ID: <20240328142157.2165dc5d@jic23-huawei>
+In-Reply-To: <20240327-regulator-get-enable-get-votlage-v1-7-5f4517faa059@baylibre.com>
 References: <20240327-regulator-get-enable-get-votlage-v1-0-5f4517faa059@baylibre.com>
-	<20240327-regulator-get-enable-get-votlage-v1-3-5f4517faa059@baylibre.com>
+	<20240327-regulator-get-enable-get-votlage-v1-7-5f4517faa059@baylibre.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,85 +71,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 27 Mar 2024 18:18:52 -0500
+On Wed, 27 Mar 2024 18:18:56 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
 > We can reduce boilerplate code by using
 > devm_regulator_get_enable_get_voltage().
 > 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-
-A few comments inline, but nothing substantial.
+LGTM though you may want to bring an error message back if you drop the
+prints from the regulator functions.
 
 Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
->  drivers/hwmon/da9052-hwmon.c | 33 +++++++--------------------------
->  1 file changed, 7 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/hwmon/da9052-hwmon.c b/drivers/hwmon/da9052-hwmon.c
-> index 2bd7ae8100d7..70e7bc72e980 100644
-> --- a/drivers/hwmon/da9052-hwmon.c
-> +++ b/drivers/hwmon/da9052-hwmon.c
-> @@ -26,7 +26,6 @@ struct da9052_hwmon {
->  	struct mutex		hwmon_lock;
->  	bool			tsi_as_adc;
->  	int			tsiref_mv;
-> -	struct regulator	*tsiref;
->  	struct completion	tsidone;
->  };
->  
-> @@ -414,32 +413,19 @@ static int da9052_hwmon_probe(struct platform_device *pdev)
->  		device_property_read_bool(pdev->dev.parent, "dlg,tsi-as-adc");
->  
->  	if (hwmon->tsi_as_adc) {
-> -		hwmon->tsiref = devm_regulator_get(pdev->dev.parent, "tsiref");
-> -		if (IS_ERR(hwmon->tsiref)) {
-> -			err = PTR_ERR(hwmon->tsiref);
-> -			dev_err(&pdev->dev, "failed to get tsiref: %d", err);
-> +		err = devm_regulator_get_enable_get_voltage(pdev->dev.parent,
-> +							    "tsiref");
-> +		if (err < 0)
->  			return err;
-> -		}
-> -
-> -		err = regulator_enable(hwmon->tsiref);
-> -		if (err)
-> -			return err;
-> -
-> -		hwmon->tsiref_mv = regulator_get_voltage(hwmon->tsiref);
-> -		if (hwmon->tsiref_mv < 0) {
-> -			err = hwmon->tsiref_mv;
-> -			goto exit_regulator;
-> -		}
->  
->  		/* convert from microvolt (DT) to millivolt (hwmon) */
-> -		hwmon->tsiref_mv /= 1000;
-> +		hwmon->tsiref_mv = err / 1000;
->
-
-Using a variable called err for a good value is a bit ugly but fair enough if that
-is precedence in this driver.
-
->  }
-> @@ -483,10 +466,8 @@ static void da9052_hwmon_remove(struct platform_device *pdev)
->  {
->  	struct da9052_hwmon *hwmon = platform_get_drvdata(pdev);
->  
-> -	if (hwmon->tsi_as_adc) {
-> +	if (hwmon->tsi_as_adc)
->  		da9052_free_irq(hwmon->da9052, DA9052_IRQ_TSIREADY, hwmon);
-Superficially looks like devm_da9052_request_irq could be added that
-uses devm_request_threaded_irq() to allow dropping this remaining handling.
-
-Thanks,
-
-Jonathan
-
-> -		regulator_disable(hwmon->tsiref);
-> -	}
->  }
->  
->  static struct platform_driver da9052_hwmon_driver = {
-> 
 
 

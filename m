@@ -1,208 +1,129 @@
-Return-Path: <linux-iio+bounces-3890-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3891-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F4B689046B
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 17:02:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8BC8904FB
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 17:22:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E097F1F22351
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 16:02:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0302B1F25530
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 16:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D7B131E2E;
-	Thu, 28 Mar 2024 15:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A153131E50;
+	Thu, 28 Mar 2024 16:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qv48bbru"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fgmsvwWr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB561304A2;
-	Thu, 28 Mar 2024 15:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5463C13118C;
+	Thu, 28 Mar 2024 16:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711641585; cv=none; b=dlxY+c5v5iJGa3WAWKJ3I6odVw0zG4k9vanNT0vKhSweezJDTZSdlR7syWB3SnXyyyFz9K9/ECptv/WXyPm1y4iYEBJ93MJ/uNBA9yx9txa1ZWKLQLAWXPljxHMOIXMlME1Z2p5Bb8mlCB2F8cYx9ggMFFLO82N7yggIg7QJ0vU=
+	t=1711642927; cv=none; b=WARF9FuMGuiAibB0y5nVZfmzmloZVBsw+LRu3N3DuN4cl4MXhwhBn15GinxOM6dMyOSdpMTbI4q+RQrTg00akeN3bDjy+LvpTXsfA16Ztpu6F/hoqBRvBzB+K11hM2E0X5f2Ud4jy6WPy9hQmInE7JOJ5qLwBHWWx+oDcSB93UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711641585; c=relaxed/simple;
-	bh=qyQUoXy023JIBQTtvFF+Bd/yOnnqvkyALUjGrxU1/h0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JxL5YfLitMg6ckgCjPIFpECI9kOehFp3GxmHDoYkIazagDlMGqPF8doNte9cBWKcgGz77bdwWQ0GQYxnx4ru0SPLfamOD9LwIN0Z5KACTUgHXaX/a5CrGqEkavKzheqDklYUBZiix6NtwVutlJdAmZ1M8XN743ivmqOuJjaIIHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qv48bbru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E59B9C433C7;
-	Thu, 28 Mar 2024 15:59:40 +0000 (UTC)
+	s=arc-20240116; t=1711642927; c=relaxed/simple;
+	bh=zBhogSNxNauQDqG7V2YIRjTJ7pHNH4Qj7ezF+eXpGV0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Q8YeqUBfWnmaOw5hiBvd2CRwZdkfCb9WWSaKCInVRCh105c7Iyhw0nzqos6uIWNAifQNpZa7WUVp3BoGD+0ssJHHHpqaBds//cyGuLx451fF7FdMWDSXUkFpAzrCuCYlPS+J7wWXGzunyDjeE9seYOIwtF0ZEVTnCptGdApvo9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fgmsvwWr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C1808C433A6;
+	Thu, 28 Mar 2024 16:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711641584;
-	bh=qyQUoXy023JIBQTtvFF+Bd/yOnnqvkyALUjGrxU1/h0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qv48bbruU2M0h8t/1bXyZHf9hHNm2f31cadRKh0DbLd3hq7Bh/N1HtDbFuOSxMqEg
-	 mQrBZ3sHjTnDzJpCsntqgtAquj04hmbcfNS8gUED+2Qnsb0wBbD6tpyHIUf/QJvkVq
-	 PxYjrr2RWSJRgtzZwKpaYVcS4IUivZWB/7ohU3N+DBDPXY/tvNfYvgwR9UDGARMkVk
-	 7N7SCFbiQj2Fs7KR3luENIONQo8UxRRri8mA0PiIVA+IE/T0j/0ksq4le0QyoR19kK
-	 z87MfCAuOFKeQLMLMxUe9mMgjxUDU6vu+pGgRAGDwhZgwX8tZHy0MXilQEBRE5tz92
-	 u++xwi0DOYEcg==
-Date: Thu, 28 Mar 2024 15:59:29 +0000
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Nuno Sa via B4 Relay  <devnull+nuno.sa.analog.com@kernel.org>,
- nuno.sa@analog.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- Dragos Bogdan <dragos.bogdan@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH 08/10] iio: backend: add new functionality
-Message-ID: <20240328155929.20848a6a@jic23-huawei>
-In-Reply-To: <cec2ac9c67aeae7c59434a86713f35461d171c04.camel@gmail.com>
-References: <20240328-iio-backend-axi-dac-v1-0-afc808b3fde3@analog.com>
-	<20240328-iio-backend-axi-dac-v1-8-afc808b3fde3@analog.com>
-	<20240328151632.298bd95f@jic23-huawei>
-	<cec2ac9c67aeae7c59434a86713f35461d171c04.camel@gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=k20201202; t=1711642926;
+	bh=zBhogSNxNauQDqG7V2YIRjTJ7pHNH4Qj7ezF+eXpGV0=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=fgmsvwWrV1E1iopjBIDtM6GXoD/bXq6DjZcgg4tJIKe5jVKtKkqd8zIryOLmjlPPg
+	 Tz8qIAzrADFTWTQERC8km7SoLV4d94tNWHMjPldiZ7H1LwDqYSE2lnR38swF8m59gE
+	 NVi5p6UbeByDgHEEdKpIFlYuKGi0K0t8Xks9dPmWGnNI44yoUGXhIhv64X7KzQi5y8
+	 ZzeAhppoNzvCqaqpCp9/UVuYV9auXNjKYiylbyNJFLYoioRIk7Vaq4vbwCDBg/gzMS
+	 R7Qx0zn1AD1vCGMkMsWEK2vvk1dfKPqly3ZQKAIcr69iRCQR00eQ12piuTWbjCFAu4
+	 Nnq4BoVaTZ3mQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A0762CD1284;
+	Thu, 28 Mar 2024 16:22:06 +0000 (UTC)
+From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v4 0/6] iio: temperature: ltc2983: small improvements
+Date: Thu, 28 Mar 2024 17:22:00 +0100
+Message-Id: <20240328-ltc2983-misc-improv-v4-0-0cc428c07cd5@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIACiZBWYC/22Nyw6CMBBFf4XM2jF9oFJW/odhUYcCkwAlLWk0h
+ H+34tblOck9d4PoArsIdbFBcIkj+zlDeSqABjv3DrnNDEqoUih1w3ElZSqNE0dCnpbgE7aGSqs
+ raZ6yg7xcguv4dVQfTeaB4+rD+zhJ+mt/PS3k317SKJCEucirJeE6utvZjr4/k5+g2ff9Ax5YN
+ Du3AAAA
+To: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org
+Cc: =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>, 
+ Jyoti Bhayana <jbhayana@google.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711642925; l=1447;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=zBhogSNxNauQDqG7V2YIRjTJ7pHNH4Qj7ezF+eXpGV0=;
+ b=/wppr/f3yBPWBOrF9QxOnuWQh+UT4MUEz7k/gAKAKugqeXNaT5a/rg5waRpDGfNPv5Wo39m6h
+ TQrgwlv1OSrC3RjIrcwWtqMdCtOj678YLeGrOs7R5E5A3eCH+bxU3A6
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: Nuno Sa <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-On Thu, 28 Mar 2024 16:42:38 +0100
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+The v4 introduces an new dev_errp_probe() helper to deal with cases
+where we want to return error pointers. The refactor in the IIO ltc2983
+is an heavy user of the pattern and was the main motivation for this.
 
-> On Thu, 2024-03-28 at 15:16 +0000, Jonathan Cameron wrote:
-> > On Thu, 28 Mar 2024 14:22:32 +0100
-> > Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
-> >  =20
-> > > From: Nuno Sa <nuno.sa@analog.com>
-> > >=20
-> > > This adds the needed backend ops for supporting a backend inerfacing
-> > > with an high speed dac. The new ops are:
-> > >=20
-> > > * data_source_set();
-> > > * set_sampling_freq();
-> > > * extend_chan_spec();
-> > > * ext_info_set();
-> > > * ext_info_get().
-> > >=20
-> > > Also to note the new helpers that are meant to be used by the backends
-> > > +		return 0;
-> > > +	/*
-> > > +	 * !\NOTE: this will break as soon as we have multiple backends on =
-one
-> > > +	 * frontend and all of them extend channels. In that case, the core
-> > > +	 * backend code has no way to get the correct backend given the
-> > > +	 * iio device.
-> > > +	 *
-> > > +	 * One solution for this could be introducing a new backend
-> > > +	 * dedicated callback in struct iio_info so we can callback into the
-> > > +	 * frontend so it can give us the right backend given a chan_spec.
-> > > +	 */ =20
-> >=20
-> > Hmm. This is indeed messy.=C2=A0 Could we associate it with the buffer =
-as presuably
-> > a front end with multiple backends is using multiple IIO buffers?
-> >  =20
->=20
-> Hmm, the assumption of having multiple buffers seems plausible to me but =
-considering
-> the example we have in hands it would be cumbersome to get the backend. C=
-onsidering
-> iio_backend_ext_info_get(), how could we get the backend if it was associ=
-ated to one
-> of the IIO buffers? I think we would need more "intrusive" changes to mak=
-e that work
-> or do you have something in mind=3D
+Also added two new patches so we have three users of the new
+dev_errp_probe() helper. 
 
-Nope. Just trying to get my head around the associations. I hadn't thought =
-about
-how to make that visible in the code.  Probably a callabck anyway.
+---
+Changes in v4:
+- Link to v3: https://lore.kernel.org/r/20240301-ltc2983-misc-improv-v3-0-c09516ac0efc@analog.com
+- Patch 1
+ * New patch
+- Patch 2
+ * Use dev_errp_probe() instead of local variant
+- Patch 5
+ * New patch
+- Patch 6
+ * New patch
 
-> =20
-> > As you say a dance via the front end would work fine. =20
->=20
-> I'm happy you're also open for a proper solution already. I mention this =
-in the
-> cover. My idea was something like (consider the iio_backend_ext_info_get(=
-)):
->=20
-> if (!indio_dev->info->get_iio_backend())
-> 	return -EOPNOTSUPP;
->=20
-> back =3D indio_dev->info->get_iio_backend(indio_dev, chan_spec);
->=20
-> It would be nice to have some "default/generic" implementation for cases =
-where we
-> only have one backend per frontend so that the frontend would not need to=
- define the
-> callback.
-Agreed - either a default that means if the callback isn't provided we get =
-the
-single backend or if that proves fiddly at least a standard callback we can
-use in all such cases.
+---
+Nuno Sa (6):
+      printk: add new dev_errp_probe() helper
+      iio: temperature: ltc2983: convert to dev_err_probe()
+      dt-bindings: iio: temperature: ltc2983: document power supply
+      iio: temperature: ltc2983: support vdd regulator
+      iio: backend: make use dev_errp_probe()
+      iio: common: scmi_iio: convert to dev_err_probe()
 
->  =20
-> >=20
-> >  =20
-> > > +	iio_device_set_drvdata(indio_dev, back);
-> > > +
-> > > +	/* Don't allow backends to get creative and force their own handler=
-s */
-> > > +	for (ext_info =3D chan->ext_info; ext_info->name; ext_info++) {
-> > > +		if (ext_info->read !=3D iio_backend_ext_info_get)
-> > > +			return -EINVAL;
-> > > +		if (ext_info->write !=3D iio_backend_ext_info_set)
-> > > +			return -EINVAL;
-> > > +	}
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +EXPORT_SYMBOL_NS_GPL(iio_backend_extend_chan_spec, IIO_BACKEND); =20
-> >  =20
-> > > diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
-> > > index a6d79381866e..09ff2f8f9fd8 100644
-> > > --- a/include/linux/iio/backend.h
-> > > +++ b/include/linux/iio/backend.h
-> > > @@ -4,6 +4,7 @@
-> > > =C2=A0
-> > > =C2=A0#include <linux/types.h>
-> > > =C2=A0
-> > > +struct iio_chan_spec;
-> > > =C2=A0struct fwnode_handle;
-> > > =C2=A0struct iio_backend;
-> > > =C2=A0struct device;
-> > > @@ -15,6 +16,26 @@ enum iio_backend_data_type {
-> > > =C2=A0	IIO_BACKEND_DATA_TYPE_MAX
-> > > =C2=A0};
-> > > =C2=A0
-> > > +enum iio_backend_data_source {
-> > > +	IIO_BACKEND_INTERNAL_CW, =20
-> >=20
-> > CW?=C2=A0 Either expand out what ever that is in definition of add a co=
-mment
-> > at least. =20
->=20
-> Continuous wave :)
+ .../bindings/iio/temperature/adi,ltc2983.yaml      |   4 +
+ drivers/iio/common/scmi_sensors/scmi_iio.c         |  45 ++--
+ drivers/iio/industrialio-backend.c                 |   8 +-
+ drivers/iio/temperature/ltc2983.c                  | 260 ++++++++++-----------
+ include/linux/dev_printk.h                         |   5 +
+ 5 files changed, 151 insertions(+), 171 deletions(-)
+---
+base-commit: 27eea4778db8268cd6dc80a5b853c599bd3099f1
+change-id: 20240227-ltc2983-misc-improv-d9c4a3819b1f
+--
 
-Spell that out.
+Thanks!
+- Nuno Sá
 
->=20
-> >  =20
-> > > +	IIO_BACKEND_EXTERNAL, =20
-> > What does external mean in this case? =20
->=20
-> In this particular case comes from a DMA source (IP). I thought external =
-to be more
-> generic but if you prefer, I can do something like IIO_BACKEND_DMA?
-
-So from another IP block?   For that to be reasonably 'generic' we'd need a=
- way
-to known where it was coming from.
-
-Now I remember advantage of reviewing on weekends - fewer replies during th=
-e reviews :)
-
-Jonathan
 
 

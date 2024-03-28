@@ -1,134 +1,162 @@
-Return-Path: <linux-iio+bounces-3873-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3874-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5058900D4
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 14:52:55 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32A608900F7
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 14:58:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 443A02938AE
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 13:52:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E298D293E0C
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 13:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF034811FB;
-	Thu, 28 Mar 2024 13:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B41481216;
+	Thu, 28 Mar 2024 13:58:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jlQ1qYjw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ijk/u6/e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C697E576;
-	Thu, 28 Mar 2024 13:52:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD95D847C;
+	Thu, 28 Mar 2024 13:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711633968; cv=none; b=ZpxPGMrrOogq9xCj0XjNZ69TSgR393aTFf1JyyQxKZZ+KkprpSAEVIIQQJw95xCFU2TKeBkT4dE4DZDLsm8BQTOw2uVfhCdN8YtyLZuEIwRk8xdulWt4j1EGybAXE8w0dLwmtOgQb21UoHrnmnR1UFXhhZuN3Wh4iInB12El+Bk=
+	t=1711634308; cv=none; b=f92cR0R/7LZCJcpp3EeTVIzjSlAfuCWBiMPNWPkrOi9OGuNI1uwoeNEs0+7gzf74HG19QQ/J5Hb4pzuXjTW157KJImFqYAbPSvGtVquvKTU4JO4YzMbExC2kMxgTk6QRWlYwPAPfGD0UeYNeMXWvqws0NT9Nmy3KgBMGVHWNlYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711633968; c=relaxed/simple;
-	bh=1aPjyoXqmFxLfK6o+5iZel4+zDjnpr9bD3BghFXePn0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XuHsrfbps4+AtfjJ/wxbh1Bm5WWktRYl4njL6P3qjcPr1zZghwycDa22Ha/E64z0cIWyiDq4P/ijM74KCKL3L2zvg0xgGRqgMCo2qY1LezY/Y3K7AH3WZc1GTLmmi+/eNo5B+XWlrgufQxZ3yXW5gIFEp50CRCcwTwQuR5GvYac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jlQ1qYjw; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a467d8efe78so119237866b.3;
-        Thu, 28 Mar 2024 06:52:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711633964; x=1712238764; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=vzaEWnUOwAlG7dJRIzF1qLENohK2A9mrRih4ZTj2DJY=;
-        b=jlQ1qYjwm6USRhdgklsUPFiussJkRv/hnpba7UY/tyljcI9OKk9UMT+0eMBgXUGvrt
-         kcuvJVcMehDGAHs5yZ3PdKjByYn/amtfMhpHJa2inlZ6lCNzX4PRRaTValgDiMfOb+VF
-         nG+AkT3+Mg34Y4FpEOq91+OPenM3D9t1d4LHQxkcz70Rk6a7wKC4dbH/dyqiQ4zQFmGg
-         45XZo6nAm2WVHv5ruv+gz6UIai8TbQbTNjcYDq9BL8s0OhH4F8KGZHNAFzruKxNyiKw1
-         gsBGGgVt8ExBuN4iawqwJ/4QD2F3w74UByBWARCyVeqsBM2lYESWPnpLXW+1DPE/NnTT
-         YyFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711633964; x=1712238764;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vzaEWnUOwAlG7dJRIzF1qLENohK2A9mrRih4ZTj2DJY=;
-        b=fKoXPUx4Mnv81dEIPFwuVvnBmhgFUeBbrSiAIuMJFucDnd5J/VN79lkgfESlCBL4hm
-         Jtiv8Y1FG6a2nvpoSSoXwkmLn3JHuvyjf/4mAbMNYlHh2LlDVQzewazdtTRgxglJd9nM
-         jT8XsA0Rguz2NmjRO8PEoVpQi6f/1myyDqiuL7JoW09ckIr6DIe9vJnDu38nYBK1usgT
-         5BzlmGsEUzkwSGdA/j693V5T1sGE4rLPsIx0766KN2oaIOyYmmZbX9pZM7diSJbiMgQS
-         5Jtbcn5o9d2EZcBQCtZf49I/HB/yMCB8zlYsRxDW7Qq4XQAag+25TIyNck9f7QvM35rj
-         33uw==
-X-Forwarded-Encrypted: i=1; AJvYcCWHbu6aVLzGaRer8PlYbRI/33rqrfu/SHz+gb1IpoKqjCXFvyR0mwHNsAE2arPc1jmAU83cEOB0ZVz1WA5QpXhiBX/MMtvSDGRqxUslR3LB0rYzxNali80XDe8Dfz07XdQBt5509CHD
-X-Gm-Message-State: AOJu0Yx65IO9LZPcw2aLlTSGHJx7pGCjPAfqE3lOcC+95OyMAtjqAgLm
-	H3pOei6OPxmPS39VKI0VSTLJhyFcCk+W2xFRl+otak9yYm9DdEUM
-X-Google-Smtp-Source: AGHT+IHjIbBVxTsKxHOyi9aLa7fb+eKUlD7d5l5hLW76KyIoVNxG75GiAjx3gTFkW95dm/1ZrsJC3g==
-X-Received: by 2002:a17:906:7854:b0:a4e:26a:6558 with SMTP id p20-20020a170906785400b00a4e026a6558mr1758497ejm.24.1711633964122;
-        Thu, 28 Mar 2024 06:52:44 -0700 (PDT)
-Received: from ?IPv6:2001:a61:343e:8301:d737:22b0:7431:8d01? ([2001:a61:343e:8301:d737:22b0:7431:8d01])
-        by smtp.gmail.com with ESMTPSA id n7-20020a170906840700b00a46caa13e67sm776638ejx.105.2024.03.28.06.52.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Mar 2024 06:52:43 -0700 (PDT)
-Message-ID: <3db9a68c6f71a67d95d25886fdc708de6269adc2.camel@gmail.com>
-Subject: Re: [PATCH][next] iio: addac: ad74115: remove redundant if statement
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Colin Ian King <colin.i.king@gmail.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Cosmin
- Tanislav <cosmin.tanislav@analog.com>, Jonathan Cameron <jic23@kernel.org>,
-  linux-iio@vger.kernel.org
-Cc: kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 28 Mar 2024 14:52:43 +0100
-In-Reply-To: <20240328112211.761618-1-colin.i.king@gmail.com>
-References: <20240328112211.761618-1-colin.i.king@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
+	s=arc-20240116; t=1711634308; c=relaxed/simple;
+	bh=bI2xEoV9PU+GOHtJWeJ4LDOmjUoV6Fg9c+kVebNAsUo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Pyqw8PJrNwD5n+wFoKn2j8KyNP0IYuXcWl9HoI7fBrMibYJvhul3TiLiN+q8ddHEswV3uoxd9DZ/z9vEgf6MUOidQb192tgxJlWbNK2cIX+ZpU4pxH3bPRIjKGyVFgUfVWxiW28jlaF3hstwb9DLRKVYpMLMjyIIh9VBb4BCP30=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ijk/u6/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF513C433C7;
+	Thu, 28 Mar 2024 13:58:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711634307;
+	bh=bI2xEoV9PU+GOHtJWeJ4LDOmjUoV6Fg9c+kVebNAsUo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Ijk/u6/eIMs0lJPAUjxbsR8WiYAYiZVl1UkN1qf+SvK29HyDnofHeu6+55lPtof+t
+	 sUFuhEnV8CCDhb5a4PAh7lrPKW7HKjsUMo1lGUrKAel7cu3vKppeHMf84JQx6cI1KG
+	 l3NIX4jVBSWljSlAzrdcskx2mC4ZlrtXRq7pZGvfbU9IeFjoHf6e7vEknJH3zCOVqW
+	 YlFjMye65+sZbqjb161UUfvWQZtFZqy4dQpJD6Z5qcz5Wty5wqkaNcqcVEQG6wgLY0
+	 QH4btS1yAf/GCJr44H857zWNTPOcpX6IyS/dxm1TQok+PchHzVM9dNTXLW828yPNlU
+	 nORfpvBzYSquw==
+Date: Thu, 28 Mar 2024 13:58:08 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Jean Delvare <jdelvare@suse.com>, Guenter
+ Roeck <linux@roeck-us.net>, Support Opensource
+ <support.opensource@diasemi.com>, Cosmin Tanislav
+ <cosmin.tanislav@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Antoniu Miclaus
+ <antoniu.miclaus@analog.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-input@vger.kernel.org
+Subject: Re: [PATCH RFC 4/7] iio: addac: ad74115: Use
+ devm_regulator_get_enable_get_voltage()
+Message-ID: <20240328135808.7aff4fb5@jic23-huawei>
+In-Reply-To: <20240327-regulator-get-enable-get-votlage-v1-4-5f4517faa059@baylibre.com>
+References: <20240327-regulator-get-enable-get-votlage-v1-0-5f4517faa059@baylibre.com>
+	<20240327-regulator-get-enable-get-votlage-v1-4-5f4517faa059@baylibre.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Colin,
+On Wed, 27 Mar 2024 18:18:53 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-Thanks for your patch...
+> We can reduce boilerplate code by using
+> devm_regulator_get_enable_get_voltage().
+There is a change in behaviour in this one. I'd like some
+explanation in the patch title for why it is always safe to get
+the voltage of avdd_mv when previously it wasn't.
 
-On Thu, 2024-03-28 at 11:22 +0000, Colin Ian King wrote:
-> The if statement is redundant because the variable i being
-> assigned in the statement is never read afterwards. Remove it.
->=20
-> Cleans up clang scan build warning:
-> drivers/iio/addac/ad74115.c:570:3: warning: Value stored to 'i'
-> is never read [deadcode.DeadStores]
->=20
-> Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+There seems to me to be a corner case where a DTS is not providing
+the entry because it's always powered on so we get a stub regulator
+but that doesn't matter because we aren't in DIN_THRESHOLD_MOD_AVDD.
+After this change that dts is broken as now we read the voltage
+whatever.
+
+You could use the optional form and then fail the probe if
+in a mode where the value will be used?
+
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
-> =C2=A0drivers/iio/addac/ad74115.c | 3 ---
-> =C2=A01 file changed, 3 deletions(-)
->=20
+>  drivers/iio/addac/ad74115.c | 28 +++-------------------------
+>  1 file changed, 3 insertions(+), 25 deletions(-)
+> 
 > diff --git a/drivers/iio/addac/ad74115.c b/drivers/iio/addac/ad74115.c
-> index e6bc5eb3788d..d31d4adb017e 100644
+> index e6bc5eb3788d..01073d7de6aa 100644
 > --- a/drivers/iio/addac/ad74115.c
 > +++ b/drivers/iio/addac/ad74115.c
-> @@ -566,9 +566,6 @@ static int ad74115_set_comp_debounce(struct ad74115_s=
-tate *st,
-> unsigned int val)
-> =C2=A0		if (val <=3D ad74115_debounce_tbl[i])
-> =C2=A0			break;
-> =C2=A0
-> -	if (i =3D=3D len)
-> -		i =3D len - 1;
+> @@ -199,7 +199,6 @@ struct ad74115_state {
+>  	struct spi_device		*spi;
+>  	struct regmap			*regmap;
+>  	struct iio_trigger		*trig;
+> -	struct regulator		*avdd;
+>  
+>  	/*
+>  	 * Synchronize consecutive operations when doing a one-shot
+> @@ -1672,14 +1671,6 @@ static int ad74115_setup(struct iio_dev *indio_dev)
+>  	if (ret)
+>  		return ret;
+>  
+> -	if (val == AD74115_DIN_THRESHOLD_MODE_AVDD) {
+> -		ret = regulator_get_voltage(st->avdd);
+> -		if (ret < 0)
+> -			return ret;
 > -
-
-Hmm, this change is clearly good but I think we're actually missing the pro=
-per fix in
-here. I'm being lazy and not checking the datasheet and Cosmin can further =
-comment.
-But I'm fairly sure that the intent of the code is actually to use i in the=
- call to
-regmap_update_bits(). I mean if we look at the mask AD74115_DIN_DEBOUNCE_MA=
-SK and the
-possible values of val...
-
-- Nuno S=C3=A1
+> -		st->avdd_mv = ret / 1000;
+> -	}
+> -
+>  	st->din_threshold_mode = val;
+>  
+>  	ret = ad74115_apply_fw_prop(st, &ad74115_dac_bipolar_fw_prop, &val);
+> @@ -1788,11 +1779,6 @@ static int ad74115_reset(struct ad74115_state *st)
+>  	return 0;
+>  }
+>  
+> -static void ad74115_regulator_disable(void *data)
+> -{
+> -	regulator_disable(data);
+> -}
+> -
+>  static int ad74115_setup_trigger(struct iio_dev *indio_dev)
+>  {
+>  	struct ad74115_state *st = iio_priv(indio_dev);
+> @@ -1855,19 +1841,11 @@ static int ad74115_probe(struct spi_device *spi)
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+>  	indio_dev->info = &ad74115_info;
+>  
+> -	st->avdd = devm_regulator_get(dev, "avdd");
+> -	if (IS_ERR(st->avdd))
+> -		return PTR_ERR(st->avdd);
+> -
+> -	ret = regulator_enable(st->avdd);
+> -	if (ret) {
+> -		dev_err(dev, "Failed to enable avdd regulator\n");
+> +	ret = devm_regulator_get_enable_get_voltage(dev, "avdd");
+> +	if (ret < 0)
+>  		return ret;
+> -	}
+>  
+> -	ret = devm_add_action_or_reset(dev, ad74115_regulator_disable, st->avdd);
+> -	if (ret)
+> -		return ret;
+> +	st->avdd_mv = ret / 1000;
+>  
+>  	ret = devm_regulator_bulk_get_enable(dev, ARRAY_SIZE(regulator_names),
+>  					     regulator_names);
+> 
 
 

@@ -1,52 +1,53 @@
-Return-Path: <linux-iio+bounces-3856-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3857-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5D4989000A
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 14:22:42 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4286C89000F
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 14:22:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02FBA1C23710
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 13:22:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5206B225FD
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 13:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97448060A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41718063B;
 	Thu, 28 Mar 2024 13:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fWHB4HcF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+/FkLRw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 760EE7EF1C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB787EF0D;
 	Thu, 28 Mar 2024 13:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711632151; cv=none; b=d5v1BEl7FZaXmMPJZUP9oTFJD1Z/q2aZgpB22wDCI/o7u74nuKfBMLhHALngz7dRolcPU/MwnZZjVG0PH+duwlhzQgjDaYlntFJZcw90Fpsgziu3RmD9q3M0u1Vqj20azYO/K+36wx7jC4H1U5cKVReYe5/MCOHvW3pfKSx4ovU=
+	t=1711632151; cv=none; b=tRbBXB78kRbMw2H07uKicEl5Ly6Gls0qkxec3QWQcU3Js50mH0IxGkvlzaYvxgPX+exqVju36EljJXMxJJhKr8qBx9+kU/x2PO9lbnUjJz/ymLy9dS88uYLeIt2k48gn2lR8T1NgR5RnZ6VEpWXHspZqLruITHL7t1kKtmtUVSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1711632151; c=relaxed/simple;
-	bh=Zhpd8WzkLG2F5zW5Uvp82LSK9+vK4KrStNMmwiVeLwg=;
+	bh=LRS3rt6TicXfYuFlOhhxQs3qLQWMSYhItKcuxXNBxbc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Lx5Ypd5MVVswokmVfCMi5PURmhpUXDl35NLm4y1isT8iI5hmhFnqUif3bpAzWNsxB2QifqZ3IA/Jh/u1CTlDOy1hIueOopsEKC/sjzUvuQB3y0NbegpNyCoqLRMImNyppRHDWBzWGu5xqmqBSAtB6iYMY2tCuuQQeXZGmeUnWLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fWHB4HcF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 1B89CC43390;
+	 In-Reply-To:To:Cc; b=He6/Q+cy+3sBwlZs61usfRPFxGTb90/tqkjXqG/mXhvQafLVuHVhtCuf622p3hf55GsBLn4qKJxuXhJowtHiaHj0U+6cppYcifHPlZjETFF7/9kJXYTWr1zv/fti1fAKuYA2MosFSrZ4rHUkwuPbCL8Lxrmx44BpR9zktMfS1l0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+/FkLRw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 28335C433F1;
 	Thu, 28 Mar 2024 13:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1711632151;
-	bh=Zhpd8WzkLG2F5zW5Uvp82LSK9+vK4KrStNMmwiVeLwg=;
+	bh=LRS3rt6TicXfYuFlOhhxQs3qLQWMSYhItKcuxXNBxbc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=fWHB4HcF5mZFa2aNtlc0W980cIM0NEIQvsluRxl9D0CBoQPm73jippPIGSFXUk0SU
-	 PQVuhryKV0VzF4PdbvcfU6SSBL913HqVIRa8X0Qsw4uJVJ7lvBPL3j9lYTI9SmM4jJ
-	 7mJjixgfhef44yBBprWoEWnPgoYH10FDVsHn1r7442qvsB5EoM6ELwlOBNOJKTE6S/
-	 kNZLW40EZQ8aUIwLmB/3Z0M9SwXlSut/mYv6J8S3vcqaa9DooE0oB6grWLN4fkrJP2
-	 93r5DwuXjugc+q9X1xxTmI/AVz8E1zTsH0r2Xr+LyQGpuphj0CFbXIox+HP6UKCeth
-	 v/g3oOSd7NLXg==
+	b=V+/FkLRwk+4ZvYVkRyr7Sz1KB448tmnZtwq0z1V0mHMLhpJOxXAJXeeKLlLDo9fPm
+	 jYTPMGSCZF9ZvQs/n3watkSP8xqHLAGulneInuXtibkB3QPD998y2xf0PnEN2ZD6UQ
+	 wfpIc774v1ERjuWpv5djmdOIT/BfY6fK7UC+74+UIMxE+3lmQY7IbmZy5fhIhC6EwO
+	 4pEHUWf/xhd8z2EjXZaJWRnYvWsyt3jABq+5vaNxTz47Kp7n4bKicfcFmxI+py06We
+	 P4ozGbGblsY0N6bCYOqqJzoCrk0b48pRw8Hk6jkHcVgcAlg3RTq8Wk/MSGH8wzGpFA
+	 ZUj5bmFy5O+/A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 070ABC54E67;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 12CBCCD1287;
 	Thu, 28 Mar 2024 13:22:31 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Thu, 28 Mar 2024 14:22:25 +0100
-Subject: [PATCH 01/10] iio: buffer: add helper for setting direction
+Date: Thu, 28 Mar 2024 14:22:26 +0100
+Subject: [PATCH 02/10] iio: buffer-dma: Rename
+ iio_dma_buffer_data_available()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240328-iio-backend-axi-dac-v1-1-afc808b3fde3@analog.com>
+Message-Id: <20240328-iio-backend-axi-dac-v1-2-afc808b3fde3@analog.com>
 References: <20240328-iio-backend-axi-dac-v1-0-afc808b3fde3@analog.com>
 In-Reply-To: <20240328-iio-backend-axi-dac-v1-0-afc808b3fde3@analog.com>
 To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
@@ -65,13 +66,14 @@ Cc: Dragos Bogdan <dragos.bogdan@analog.com>,
  Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
- Olivier Moysan <olivier.moysan@foss.st.com>, Nuno Sa <nuno.sa@analog.com>
+ Olivier Moysan <olivier.moysan@foss.st.com>, 
+ Paul Cercueil <paul@crapouillou.net>, Nuno Sa <nuno.sa@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711632149; l=1414;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711632149; l=3293;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=lt7Z8RtIdxVgrFaJw2wbb9LfqTru+QeAjVGlcUx2ZmQ=;
- b=YLdcKzTC+ACwMMpn0xzv2NB3s4QralrrXazg9t1SIQP7uy/w+RRq3Rgl7jmXevXFSEwPUZ2C1
- FVOvjF3XC2FCSohkp+rZmxd4a49eEsMvkPBYCx6aiO52KTdDgokTXhG
+ bh=pnGz0IvIMOvc3W8GugiHOr2smQMJ1XHymguYmuxH0E8=;
+ b=kZyFUV24Qavk9g5njiC2rh85qnccUwghLRpCof5xrJYL8VffLa8vs8sxnB+GoQHYw0T550tPN
+ B+d3HcyykbTAyh+3mesKPNtS2UDDTFPB39JhpxhtHfSzvhxPFWdSmpC
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -79,47 +81,77 @@ X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
 X-Original-From: Nuno Sa <nuno.sa@analog.com>
 Reply-To: nuno.sa@analog.com
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Paul Cercueil <paul@crapouillou.net>
 
-Simple helper for setting the buffer direction when it's allocated using
-iio_dmaengine_buffer_alloc().
+Change its name to iio_dma_buffer_usage(), as this function can be used
+both for the .data_available and the .space_available callbacks.
 
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/industrialio-buffer.c | 7 +++++++
- include/linux/iio/buffer.h        | 3 +++
- 2 files changed, 10 insertions(+)
+ drivers/iio/buffer/industrialio-buffer-dma.c       | 11 ++++++-----
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c |  2 +-
+ include/linux/iio/buffer-dma.h                     |  2 +-
+ 3 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index 1d950a3e153b..4b1ca6ad86ee 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -1956,6 +1956,13 @@ void iio_buffer_put(struct iio_buffer *buffer)
- }
- EXPORT_SYMBOL_GPL(iio_buffer_put);
+diff --git a/drivers/iio/buffer/industrialio-buffer-dma.c b/drivers/iio/buffer/industrialio-buffer-dma.c
+index 5610ba67925e..404f9867bdc5 100644
+--- a/drivers/iio/buffer/industrialio-buffer-dma.c
++++ b/drivers/iio/buffer/industrialio-buffer-dma.c
+@@ -547,13 +547,14 @@ int iio_dma_buffer_read(struct iio_buffer *buffer, size_t n,
+ EXPORT_SYMBOL_GPL(iio_dma_buffer_read);
  
-+void iio_buffer_set_dir(struct iio_buffer *buffer,
-+			enum iio_buffer_direction dir)
-+{
-+	buffer->direction = dir;
-+}
-+EXPORT_SYMBOL_GPL(iio_buffer_set_dir);
-+
  /**
-  * iio_device_attach_buffer - Attach a buffer to a IIO device
-  * @indio_dev: The device the buffer should be attached to
-diff --git a/include/linux/iio/buffer.h b/include/linux/iio/buffer.h
-index 418b1307d3f2..7e70bb5adc01 100644
---- a/include/linux/iio/buffer.h
-+++ b/include/linux/iio/buffer.h
-@@ -55,4 +55,7 @@ bool iio_validate_scan_mask_onehot(struct iio_dev *indio_dev,
- int iio_device_attach_buffer(struct iio_dev *indio_dev,
- 			     struct iio_buffer *buffer);
+- * iio_dma_buffer_data_available() - DMA buffer data_available callback
++ * iio_dma_buffer_usage() - DMA buffer data_available and
++ * space_available callback
+  * @buf: Buffer to check for data availability
+  *
+- * Should be used as the data_available callback for iio_buffer_access_ops
+- * struct for DMA buffers.
++ * Should be used as the data_available and space_available callbacks for
++ * iio_buffer_access_ops struct for DMA buffers.
+  */
+-size_t iio_dma_buffer_data_available(struct iio_buffer *buf)
++size_t iio_dma_buffer_usage(struct iio_buffer *buf)
+ {
+ 	struct iio_dma_buffer_queue *queue = iio_buffer_to_queue(buf);
+ 	struct iio_dma_buffer_block *block;
+@@ -586,7 +587,7 @@ size_t iio_dma_buffer_data_available(struct iio_buffer *buf)
  
-+void iio_buffer_set_dir(struct iio_buffer *buffer,
-+			enum iio_buffer_direction dir);
-+
- #endif /* _IIO_BUFFER_GENERIC_H_ */
+ 	return data_available;
+ }
+-EXPORT_SYMBOL_GPL(iio_dma_buffer_data_available);
++EXPORT_SYMBOL_GPL(iio_dma_buffer_usage);
+ 
+ /**
+  * iio_dma_buffer_set_bytes_per_datum() - DMA buffer set_bytes_per_datum callback
+diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+index a18c1da292af..ccf6e0b19019 100644
+--- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
++++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+@@ -117,7 +117,7 @@ static const struct iio_buffer_access_funcs iio_dmaengine_buffer_ops = {
+ 	.request_update = iio_dma_buffer_request_update,
+ 	.enable = iio_dma_buffer_enable,
+ 	.disable = iio_dma_buffer_disable,
+-	.data_available = iio_dma_buffer_data_available,
++	.data_available = iio_dma_buffer_usage,
+ 	.release = iio_dmaengine_buffer_release,
+ 
+ 	.modes = INDIO_BUFFER_HARDWARE,
+diff --git a/include/linux/iio/buffer-dma.h b/include/linux/iio/buffer-dma.h
+index 18d3702fa95d..52a838ec0e57 100644
+--- a/include/linux/iio/buffer-dma.h
++++ b/include/linux/iio/buffer-dma.h
+@@ -132,7 +132,7 @@ int iio_dma_buffer_disable(struct iio_buffer *buffer,
+ 	struct iio_dev *indio_dev);
+ int iio_dma_buffer_read(struct iio_buffer *buffer, size_t n,
+ 	char __user *user_buffer);
+-size_t iio_dma_buffer_data_available(struct iio_buffer *buffer);
++size_t iio_dma_buffer_usage(struct iio_buffer *buffer);
+ int iio_dma_buffer_set_bytes_per_datum(struct iio_buffer *buffer, size_t bpd);
+ int iio_dma_buffer_set_length(struct iio_buffer *buffer, unsigned int length);
+ int iio_dma_buffer_request_update(struct iio_buffer *buffer);
 
 -- 
 2.44.0

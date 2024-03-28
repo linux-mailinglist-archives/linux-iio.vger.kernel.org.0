@@ -1,53 +1,52 @@
-Return-Path: <linux-iio+bounces-3858-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3861-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19BDE89000E
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 14:22:47 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDD5189001B
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 14:22:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE3871F252F7
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 13:22:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A2E328AD8A
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 13:22:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0B8811E9;
-	Thu, 28 Mar 2024 13:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A62181AA3;
+	Thu, 28 Mar 2024 13:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OA3YnRYU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PYSjdgag"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9210E7F48B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FC680BE3;
 	Thu, 28 Mar 2024 13:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711632151; cv=none; b=pB70XYP36lafRrX1KuAHPW5TpR9y0DQx9UOKFuUFALc6I4JP6pzSfN5cugGVLrVsSN26wS+xIPzPzoZiaS8dXqMoT1J8xMYjQ/9U8arbaQikElF3hund8lKuvMwAlR0O+fNeGsFVEKQfFeZo8/XvPuxZeDfkgNc5+KBc43NMGAA=
+	t=1711632151; cv=none; b=Ox/zSJT0Js16I63VrcSNKAP9LNL8kqrHFgTU4rF5ylT5peXpp9IgXHXwGN+gOLQdirvpyhh4fcmhfrkVhMOLn4GYns8lh9eMe4dde08ELyXJPkY6cPz8zQ3uh9Mh8ePdY3CJWa1yetrmDeYnISUrTo/SCZTp3tmWHWWD5GK/bss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1711632151; c=relaxed/simple;
-	bh=U7eugRZ0onsk1ecBmL8dcjYyAcI4CEkYadmrnw5LOJw=;
+	bh=5NCTwqp0/VL05f5aoUnTF7pYtP3n/rPaf1XK2xqJjGM=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Pr0y5tG2w40jrrBS0nMg+JwSxZ334ndq5yBj1FjzAcOYa49gbEgdfBovIkCrL3geAAUreCwtxz2YxOKSb7sN6aySgZhAA22OTw3DPY4WH94l8drR7QznREItQW2DcHoDwi0Fpbck3n1lzpbI8hvErxe2vksACUCQrTwhKg5/XL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OA3YnRYU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 376A3C433A6;
+	 In-Reply-To:To:Cc; b=dSK3QYZcmrLFnBH4oStVL6a3rUagBz8Bd04ShUHDuvicTx43ic0feKOSNNVyoaebWeL8TuHTUFXAHZ1BOr2nP4OeeI/jg8Ad4mtF1reR8ZFiVzDTG8OVRJD84zamox9kZ3Mkl71MMWhx+hfUd6GVw77jXciYxslKeUgdcW7by+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PYSjdgag; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 4A81DC43601;
 	Thu, 28 Mar 2024 13:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1711632151;
-	bh=U7eugRZ0onsk1ecBmL8dcjYyAcI4CEkYadmrnw5LOJw=;
+	bh=5NCTwqp0/VL05f5aoUnTF7pYtP3n/rPaf1XK2xqJjGM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=OA3YnRYUQk0ncNDbU4eo4RppfK/2//v/qGxEFdmuD/09fvUMpEVrZJratl/bHYctn
-	 50HTNhzvQw78x8hAvV56KQslGJbNgjStUwqQgtjCBhc9I3pdG3xssjOnDpDVYZ0afD
-	 UQRrnfZOn78JNQF+2hKZU8R1UZbir6EJSygYXX3Bd02WnuJOAhoyd05skbCxKIlxcL
-	 SmIIoUs4ZZMHDkC5n1pf9uheH1Sd0h+zYzaGj6dmS0EvdoWbf+t545OEhxaz3uoDWi
-	 t8mTMgp5WXD9uSJTSRjSeJz5lUKZvuyu95GNB5NPMKk/3BXJvOiV7jRj45u+w4BAzh
-	 +25eAJkKB1hdw==
+	b=PYSjdgaghJ/HsWcaHxjfxyp7a0u3GHpFnasPbqr0Kbp29pPsilVbn9BIwiLUnpslL
+	 Cl2kRfKxBwvA3X9jwzZ8RCEpuUOhOTWMx7EQ9sf+USknbuxTfJQPtUZReAIILythcj
+	 7BG4KaJ1HZVRuh2/UeAYgzSS2fvG2OiCiAY2FeHUXoy6BGz9shpbDCEvc3r5K8Mpio
+	 zVC2pHWwAIjl1Ciz4hrORsNKiEyyeuSnC5tqJkZwVtIeBJ9qjSW9l1Xrr6ZIfjvwMR
+	 nOZ/rT3sgNSuk6FPvQYvMKpdVvDVdwBcRXkeVv/Fm81bTvqgT5lDLieY9WAgcFKoXL
+	 uxGvslQlE5kkQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2E1CDCD1284;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 415F4C54E67;
 	Thu, 28 Mar 2024 13:22:31 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Thu, 28 Mar 2024 14:22:28 +0100
-Subject: [PATCH 04/10] iio: buffer-dmaengine: Support specifying buffer
- direction
+Date: Thu, 28 Mar 2024 14:22:29 +0100
+Subject: [PATCH 05/10] iio: buffer-dmaengine: Enable write support
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240328-iio-backend-axi-dac-v1-4-afc808b3fde3@analog.com>
+Message-Id: <20240328-iio-backend-axi-dac-v1-5-afc808b3fde3@analog.com>
 References: <20240328-iio-backend-axi-dac-v1-0-afc808b3fde3@analog.com>
 In-Reply-To: <20240328-iio-backend-axi-dac-v1-0-afc808b3fde3@analog.com>
 To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
@@ -70,11 +69,11 @@ Cc: Dragos Bogdan <dragos.bogdan@analog.com>,
  Paul Cercueil <paul@crapouillou.net>, 
  Alexandru Ardelean <ardeleanalex@gmail.com>, Nuno Sa <nuno.sa@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1711632149; l=3320;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711632149; l=1350;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=K0DaW1NvLTF6FP5FkoLaCwonpUuBlGRixF54Kc6llO8=;
- b=qKgYfHbOONfuB8LpNUZbEdfpaPdzPgaN1hnDNLjaQ6jJDu9/WCIjuUURlRVRGRYTAXNJLN8ZZ
- 0q+rWBup17JAckjBnFwFxvBAMpuNFnsg/FTA/VMSXGbxUku/0QpW8xr
+ bh=fAbl1tHATN4k7f5YdDrD3IPPBFiik7XcUZ987EP1q04=;
+ b=5T0qqbYggFoRGj5numeuSXuEjERRT8gvitBj7MBegHH0651jwhxZ8K8Uq5eMnUQJ8xpyk4KJD
+ RmjyfQZZywKDUgmD+85d8rhnz9974hCEZKnpG2thnfd24wF65X6LF19
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -84,96 +83,36 @@ Reply-To: nuno.sa@analog.com
 
 From: Paul Cercueil <paul@crapouillou.net>
 
-Update the devm_iio_dmaengine_buffer_setup() function to support
-specifying the buffer direction.
-
-Update the iio_dmaengine_buffer_submit() function to handle input
-buffers as well as output buffers.
+Use the iio_dma_buffer_write() and iio_dma_buffer_space_available()
+functions provided by the buffer-dma core, to enable write support in
+the buffer-dmaengine code.
 
 Signed-off-by: Paul Cercueil <paul@crapouillou.net>
 Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/buffer/industrialio-buffer-dmaengine.c | 24 +++++++++++++++++-----
- include/linux/iio/buffer-dmaengine.h               |  6 +++++-
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-index ccf6e0b19019..d9d72f7cba60 100644
+index d9d72f7cba60..e151af7e8907 100644
 --- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
 +++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
-@@ -64,14 +64,25 @@ static int iio_dmaengine_buffer_submit_block(struct iio_dma_buffer_queue *queue,
- 	struct dmaengine_buffer *dmaengine_buffer =
- 		iio_buffer_to_dmaengine_buffer(&queue->buffer);
- 	struct dma_async_tx_descriptor *desc;
-+	enum dma_transfer_direction dma_dir;
-+	size_t max_size;
- 	dma_cookie_t cookie;
+@@ -123,12 +123,14 @@ static void iio_dmaengine_buffer_release(struct iio_buffer *buf)
  
--	block->bytes_used = min(block->size, dmaengine_buffer->max_size);
--	block->bytes_used = round_down(block->bytes_used,
--			dmaengine_buffer->align);
-+	max_size = min(block->size, dmaengine_buffer->max_size);
-+	max_size = round_down(max_size, dmaengine_buffer->align);
-+
-+	if (queue->buffer.direction == IIO_BUFFER_DIRECTION_IN) {
-+		block->bytes_used = max_size;
-+		dma_dir = DMA_DEV_TO_MEM;
-+	} else {
-+		dma_dir = DMA_MEM_TO_DEV;
-+	}
-+
-+	if (!block->bytes_used || block->bytes_used > max_size)
-+		return -EINVAL;
+ static const struct iio_buffer_access_funcs iio_dmaengine_buffer_ops = {
+ 	.read = iio_dma_buffer_read,
++	.write = iio_dma_buffer_write,
+ 	.set_bytes_per_datum = iio_dma_buffer_set_bytes_per_datum,
+ 	.set_length = iio_dma_buffer_set_length,
+ 	.request_update = iio_dma_buffer_request_update,
+ 	.enable = iio_dma_buffer_enable,
+ 	.disable = iio_dma_buffer_disable,
+ 	.data_available = iio_dma_buffer_usage,
++	.space_available = iio_dma_buffer_usage,
+ 	.release = iio_dmaengine_buffer_release,
  
- 	desc = dmaengine_prep_slave_single(dmaengine_buffer->chan,
--		block->phys_addr, block->bytes_used, DMA_DEV_TO_MEM,
-+		block->phys_addr, block->bytes_used, dma_dir,
- 		DMA_PREP_INTERRUPT);
- 	if (!desc)
- 		return -ENOMEM;
-@@ -277,7 +288,8 @@ static struct iio_buffer *devm_iio_dmaengine_buffer_alloc(struct device *dev,
-  */
- int devm_iio_dmaengine_buffer_setup(struct device *dev,
- 				    struct iio_dev *indio_dev,
--				    const char *channel)
-+				    const char *channel,
-+				    enum iio_buffer_direction dir)
- {
- 	struct iio_buffer *buffer;
- 
-@@ -287,6 +299,8 @@ int devm_iio_dmaengine_buffer_setup(struct device *dev,
- 
- 	indio_dev->modes |= INDIO_BUFFER_HARDWARE;
- 
-+	buffer->direction = dir;
-+
- 	return iio_device_attach_buffer(indio_dev, buffer);
- }
- EXPORT_SYMBOL_NS_GPL(devm_iio_dmaengine_buffer_setup, IIO_DMAENGINE_BUFFER);
-diff --git a/include/linux/iio/buffer-dmaengine.h b/include/linux/iio/buffer-dmaengine.h
-index cbb8ba957fad..f0d750ce2880 100644
---- a/include/linux/iio/buffer-dmaengine.h
-+++ b/include/linux/iio/buffer-dmaengine.h
-@@ -7,6 +7,8 @@
- #ifndef __IIO_DMAENGINE_H__
- #define __IIO_DMAENGINE_H__
- 
-+#include <linux/iio/buffer.h>
-+
- struct iio_dev;
- struct device;
- 
-@@ -15,6 +17,8 @@ struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
- void iio_dmaengine_buffer_free(struct iio_buffer *buffer);
- int devm_iio_dmaengine_buffer_setup(struct device *dev,
- 				    struct iio_dev *indio_dev,
--				    const char *channel);
-+				    const char *channel,
-+				    enum iio_buffer_direction dir);
-+
- 
- #endif
+ 	.modes = INDIO_BUFFER_HARDWARE,
 
 -- 
 2.44.0

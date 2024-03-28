@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-3866-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3867-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2832589001E
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 14:23:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 281EB890056
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 14:34:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB3DCB22609
-	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 13:23:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95122B21389
+	for <lists+linux-iio@lfdr.de>; Thu, 28 Mar 2024 13:34:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966677F48B;
-	Thu, 28 Mar 2024 13:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE5780020;
+	Thu, 28 Mar 2024 13:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pWMV9tpt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PtrmNpjL"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554CA7E572;
-	Thu, 28 Mar 2024 13:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685D27E0E5;
+	Thu, 28 Mar 2024 13:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711632207; cv=none; b=M1oA7VHR+RrVAnp6oTvFCKnliw0xTnIFZyn4uc4vTP9zQyXE/yQCCeTut0HewmQYAVVG3KwDPA9DPa6tP0L3HD1Yls6z0S/xj4tuaFgMmyG+8cdgXEz35ryMoaBNGQkBQmAWdUei1KSejDsyN64SOgVK/gAU7U333qhwWCQq9lg=
+	t=1711632877; cv=none; b=SZ4+nstyCBy02zJGrDF0zsKk2LZiAmPvQt3ERAcSlY+1URdFW7/LnDZYiw9FjeVWm+LOTv7RDj6okXyWR5OwLLHk5sqBvx8tc3P42mJvlKPSHTtnNhosjbbnJR9IVs9hFwte3ajz5ohGq+7pjgUyvCm2SwTkaX9/C+tvPjs0nao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711632207; c=relaxed/simple;
-	bh=WwrHa0cIn3sLHwgL4ee6fSwgygq41ZkzFEiD39Kmi60=;
+	s=arc-20240116; t=1711632877; c=relaxed/simple;
+	bh=1NmwgZQEt4WxSUfU0jQNuBtFGQG8gZZKskF/G6lPMV8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qYITA/k4DC9YtwAnHrXqb1rc/CLK7ddU8+4MwkgP1vJ4NAMnB4ieKsY/E06wLEOtHDu5isdl3drAmsxEi5+zjqIY5gAK4L/w5ORiU0LoQ5KR1COtnJQWueh5z5RCzeFVwQFR4pHSIRNsV5FgbNPNo3F3mXMDaUhK0zz/ioJXcwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pWMV9tpt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4158C433C7;
-	Thu, 28 Mar 2024 13:23:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BYIR9v+pfop7hHsVm34GlI/E99wo9dEq6P/9vYNFNLkY3r3UwjnaDNR5QCuXxXjqq6vld/0ZZXeGR074Io34FasLSANxI49ZwT82eU+mJwaiN30Gnh7Q85llYBKO1Y/w7099ES7gI0gWdiSSpPVA+MHSLPpnDnUf7LPZtRN0K90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PtrmNpjL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA01BC433F1;
+	Thu, 28 Mar 2024 13:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711632207;
-	bh=WwrHa0cIn3sLHwgL4ee6fSwgygq41ZkzFEiD39Kmi60=;
+	s=k20201202; t=1711632876;
+	bh=1NmwgZQEt4WxSUfU0jQNuBtFGQG8gZZKskF/G6lPMV8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pWMV9tptovIXjeBwemw0pnxq1huQpLWmAQqPv35HutFscCATEVH48Gw4BHVSD41Q0
-	 6M0Tz9i9I+pXKZuiWRy0D0YvHa4+lg9hNVlOol4roJelanQLGcjOizTSsb2gP0cWCJ
-	 rz1F8qDnJyWHkeG9Fd/JsoPv9I2LZGxp2y5ttGHBeOlcTOHEgC1Xz8YAjajpWa0fdG
-	 2wm09Roj1SuLT5LwGutE2M9ZSyxFuI96O9R+ZTGrsH184Ty4LuXzrkZIB/x5+ClMz3
-	 06i6yAD6D4GwmF0Q8Vd8YCAFuyxzYrzpFTfNagJqdRNwv/vhsdRYiVgh2IuNJ0srq4
-	 DUdoKfHIpiyng==
-Date: Thu, 28 Mar 2024 13:23:12 +0000
+	b=PtrmNpjLmARH0mFur4fcmsRnS+NkMjCh69rTibYgJryMeRha1sXpiAoxC4WswSJPv
+	 +HcrXDcP6Fj7Ah9P9A4OaiSz1hbu6BMXADveOR7xZUji+z0md1bF/UR5rZ/V1B9yy0
+	 fn44UE/aNMgswFifQkvzp4TpeuBhQwDZ71E+dR8CzKvls8eFlpNtTKS55hXdA666Me
+	 iZg8a+Xsli7d4iyTKK2HsC21VDunS+QLJXQ4KTKi8fk+zhkZBEBoogxCQECA8U/MIW
+	 ++SGCWTgkZ2yl+rxEYIJikv845H+/xJLGp4oynCIxeo5eVI4OrGsWaxdY13YQHNthp
+	 NLYgkfIjRyRnw==
+Date: Thu, 28 Mar 2024 13:34:21 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Michael Hennerich <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v3] iio: adc: ad7944: simplify adi,spi-mode property
- parsing
-Message-ID: <20240328132312.52f34df4@jic23-huawei>
-In-Reply-To: <20240325-ad7944-cleanups-v3-1-3a19120cdd06@baylibre.com>
-References: <20240325-ad7944-cleanups-v3-1-3a19120cdd06@baylibre.com>
+To: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+Cc: joel@jms.id.au, bsp-development.geo@leica-geosystems.com, Eddie James
+ <eajames@linux.ibm.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: pressure: dps310: support negative pressure and
+ temperature values
+Message-ID: <20240328133421.1844a83c@jic23-huawei>
+In-Reply-To: <20240327084937.3801125-1-thomas.haemmerle@leica-geosystems.com>
+References: <20240327084937.3801125-1-thomas.haemmerle@leica-geosystems.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,23 +62,176 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 25 Mar 2024 14:40:36 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Wed, 27 Mar 2024 09:49:36 +0100
+Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com> wrote:
 
-> This simplifies the adi,spi-mode property parsing by using
-> device_property_match_property_string() instead of two separate
-> functions. Also, the error return value is now more informative
-> in cases where there was a problem parsing the property.
+> The current implementation interprets negative values returned from
+> function invocation as error codes, even those that report actual data.
+> This has a side effect that when temperature values are calculated -
+> they also converted by error code, which leads to false interpretation
+> of results.
 > 
-> Suggested-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> Fix this by using the return values only for error handling and passing
+> a pointer for the values.
+> 
+> Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+Hi Thomas,
 
-For this I'd already picked up part of an earlier version so hopefully
-the rebase of my togreg branch needed to take this didn't cause anyone
-any major problems.
+This needs a fixes tag so we know where to backport it to.
 
-Anyhow, dropped earlier version in favour of this one.
+A few other comments inline.  Note that one aim in a fix is to keep things
+minimal to make it easy to backport.  If you want to the follow the fix
+with a cleanup patch that makes the driver more consistent that is great,
+just don't combine that with the bug fix.
 
 Jonathan
+
+> ---
+>  drivers/iio/pressure/dps310.c | 122 +++++++++++++++++++---------------
+>  1 file changed, 69 insertions(+), 53 deletions(-)
+> 
+> diff --git a/drivers/iio/pressure/dps310.c b/drivers/iio/pressure/dps310.c
+> index 1ff091b2f764..373d1c063b05 100644
+> --- a/drivers/iio/pressure/dps310.c
+> +++ b/drivers/iio/pressure/dps310.c
+> @@ -171,7 +171,7 @@ static int dps310_temp_workaround(struct dps310_data *data)
+>  	int reg;
+>  
+>  	rc = regmap_read(data->regmap, 0x32, &reg);
+> -	if (rc)
+> +	if (rc < 0)
+>  		return rc;
+
+Why this change?  It seems unrelated to the issue you are fixing.
+
+>  
+>  	/*
+> @@ -256,24 +256,24 @@ static int dps310_startup(struct dps310_data *data)
+>  	return dps310_temp_workaround(data);
+>  }
+>  
+> -static int dps310_get_pres_precision(struct dps310_data *data)
+> +static int dps310_get_pres_precision(struct dps310_data *data, int *val)
+>  {
+>  	int rc;
+> -	int val;
+>  
+> -	rc = regmap_read(data->regmap, DPS310_PRS_CFG, &val);
+> +	rc = regmap_read(data->regmap, DPS310_PRS_CFG, val);
+>  	if (rc < 0)
+>  		return rc;
+I'd prefer a local variable here for the intermediate result.
+>  
+> -	return BIT(val & GENMASK(2, 0));
+> +	*val = BIT(*val & GENMASK(2, 0));
+For these precision values, it's positive anyway, so why
+change it to report this way?  Consistency only or am I missing something else?
+> +
+> +	return 0;
+>  }
+>  
+> -static int dps310_get_temp_precision(struct dps310_data *data)
+> +static int dps310_get_temp_precision(struct dps310_data *data, int *val)
+>  {
+>  	int rc;
+> -	int val;
+>  
+> -	rc = regmap_read(data->regmap, DPS310_TMP_CFG, &val);
+> +	rc = regmap_read(data->regmap, DPS310_TMP_CFG, val);
+As above, local variable for intermediate result would be clearer.
+>  	if (rc < 0)
+>  		return rc;
+>  
+> @@ -281,7 +281,9 @@ static int dps310_get_temp_precision(struct dps310_data *data)
+>  	 * Scale factor is bottom 4 bits of the register, but 1111 is
+>  	 * reserved so just grab bottom three
+>  	 */
+> -	return BIT(val & GENMASK(2, 0));
+> +	*val = BIT(*val & GENMASK(2, 0));
+> +
+> +	return 0;
+>  }
+>  
+>  /* Called with lock held */
+> @@ -350,48 +352,56 @@ static int dps310_set_temp_samp_freq(struct dps310_data *data, int freq)
+>  				  DPS310_TMP_RATE_BITS, val);
+>  }
+>  
+> -static int dps310_get_pres_samp_freq(struct dps310_data *data)
+> +static int dps310_get_pres_samp_freq(struct dps310_data *data, int *val)
+>  {
+>  	int rc;
+> -	int val;
+>  
+> -	rc = regmap_read(data->regmap, DPS310_PRS_CFG, &val);
+> +	rc = regmap_read(data->regmap, DPS310_PRS_CFG, val);
+Same again.
+>  	if (rc < 0)
+>  		return rc;
+>  
+> -	return BIT((val & DPS310_PRS_RATE_BITS) >> 4);
+> +	*val = BIT((*val & DPS310_PRS_RATE_BITS) >> 4);
+Whilst here nice to use BIT(FIELD_GET(regval, DPS310_PRS_RATE_BITS));
+> +
+> +	return 0;
+>  }
+>  
+> -static int dps310_get_temp_samp_freq(struct dps310_data *data)
+> +static int dps310_get_temp_samp_freq(struct dps310_data *data, int *val)
+>  {
+>  	int rc;
+> -	int val;
+>  
+> -	rc = regmap_read(data->regmap, DPS310_TMP_CFG, &val);
+> +	rc = regmap_read(data->regmap, DPS310_TMP_CFG, val);
+>  	if (rc < 0)
+>  		return rc;
+>  
+> -	return BIT((val & DPS310_TMP_RATE_BITS) >> 4);
+> +	*val = BIT((*val & DPS310_TMP_RATE_BITS) >> 4);
+As above.
+
+> +
+> +	return 0;
+>  }
+>  
+> -static int dps310_get_pres_k(struct dps310_data *data)
+> +static int dps310_get_pres_k(struct dps310_data *data, int *val)
+>  {
+> -	int rc = dps310_get_pres_precision(data);
+> +	int rc;
+>  
+> -	if (rc < 0)
+> +	rc = dps310_get_pres_precision(data, val);
+> +	if (rc)
+>  		return rc;
+>  
+> -	return scale_factors[ilog2(rc)];
+> +	*val = scale_factors[ilog2(*val)];
+This only just went to the effort of 2^val, so why not skip that step and
+pull the BIT() section out to read_pressure() where we do want that form.
+You will need an extra local variable at that call site I think, but
+in general it is a useful additional simplification of the code.
+> +
+> +	return 0;
+>  }
+>  
+> -static int dps310_get_temp_k(struct dps310_data *data)
+> +static int dps310_get_temp_k(struct dps310_data *data, int *val)
+>  {
+> -	int rc = dps310_get_temp_precision(data);
+> +	int rc;
+>  
+> -	if (rc < 0)
+> +	rc = dps310_get_temp_precision(data, val);
+> +	if (rc)
+>  		return rc;
+>  
+> -	return scale_factors[ilog2(rc)];
+> +	*val = scale_factors[ilog2(*val)];
+As above.
+> +
+> +	return 0;
+>  }
 
 

@@ -1,165 +1,138 @@
-Return-Path: <linux-iio+bounces-3925-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3926-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 019078923D4
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Mar 2024 20:06:54 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD3D8924CA
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Mar 2024 21:05:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6161F23027
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Mar 2024 19:06:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E42071C216D2
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Mar 2024 20:05:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3690F12F5A4;
-	Fri, 29 Mar 2024 19:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8104B13B58B;
+	Fri, 29 Mar 2024 20:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="inTMR2Ax"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jGBkqM7E"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F30185629
-	for <linux-iio@vger.kernel.org>; Fri, 29 Mar 2024 19:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC37F13AA48
+	for <linux-iio@vger.kernel.org>; Fri, 29 Mar 2024 20:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711739207; cv=none; b=KC7wwwrStQ+5PlCagmTHpCG8Dl8dI+eqaqbNUXiRjVZQpbloPrKIdDgW6H2LjZ8/36e02FVT1RiwfIbfU0LgFxFUD1um1vu4ZqdlCmrdQt0lImsg0PGdoX3rFVY53Gz521j/fd4cKMWoQmDJdhyC/dEQO/IFvMAYjDkoBFSZi3o=
+	t=1711742712; cv=none; b=ZGkTWAn5A/vM8Vj5pE7ke2ZQcaJXmco/fXRPtxvHszRwbrZ9Fr2NnABTGVuZv1xNS89URCziThcSnB7wvt2cgMOa5z9mJSgc345Y9/OYx7bs+8Kc7ytnGdn76Dv9ZUHfIvsQX8jbScEQqdMat6twq4HtPStUF3mOYNDKOGKs3XY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711739207; c=relaxed/simple;
-	bh=Lpa/0EbpcSgU2C8N8Q28pKWafOZU+ilY+53iyrQPmBc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=X/nrKtOQsGP4IGAalYxIJv45RC4R4WA/hFSQgFkiX8ynzDMNsIo2aV/EPRC1Yk3LzlY8pI1Ffz38tMau8vVdtC9ey/lt/4Oum7e58BdPfIERYdFH4F5/JSUeg5/WsgIVF1EYpYqsrXaaFMXntuI7XmwpXHq9+xQah7HhYBhjN68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=inTMR2Ax; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d6c9678cbdso26523141fa.2
-        for <linux-iio@vger.kernel.org>; Fri, 29 Mar 2024 12:06:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1711739202; x=1712344002; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rWS9d526Zrdj4YY+GMvBiR62zSADNrt4nDy1cYfB8Ug=;
-        b=inTMR2AxLSaNWuA/6Rj9p6PNAbuSpwMyPKaw2SDajZQHFSzIczBuYbYkJ9/M7+rrlh
-         VNOALLkewyd2J/wdw4D/JL1rgUlIGY6R1WTHJa1001oZ8Blw16zroGQDpAuS8LVzmiSn
-         sICiUEo1Afl4h4X9byMAuGU2tA+nEVdhU+Jd+cVU9xvHoUP1OKKKWLTmfzcSGnoKpPU5
-         Tg4O6S6RmyTDMBFxut81hyMQ66YZuqFmuWvHorn8WsegQYxlflYXN7HMWFmK/9mNJeJE
-         yC2msO8sTpoulkoNuOGSTCmms530H0Lcm+h1QZM3/4JJznHnlQA4FQAVzb0kdkBlafSE
-         RDWA==
+	s=arc-20240116; t=1711742712; c=relaxed/simple;
+	bh=cIbe2NRCQP7djfpbM+11L+WlZLa/v/ScA4ZubIQlJek=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A6YBEL2yEEKOus75+c+EtnC14WfCM+XieEdOKwnHodCzkIVvb5Sx4TwUu9B4POMO/xyEQHjO/NSQdSHFW8oQ++sRlgl3CwLGAL7ZgmWZ7BArbujaV/goGudXbkdklJETe5fbN3HW8E3VO461Lg09zVLchS87zCO0uvoK9RHHY9A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jGBkqM7E; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1711742709;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=SnHjQH48YnJt749mCO2kgMTpPbKk2F0bzExQRDPnK30=;
+	b=jGBkqM7E1xdvT4WuSlrGo/FzGu+P323MbZBaxuPBkD6BVidOEECBc5FiSaZ3Flgs+sNivd
+	WxzaOig01l+HEvsEaVA4e1SJ+4VYao/m0ZwNIBPO/1Q26hvb4igK3EHgiN/A1aOO3aw8KY
+	ZRKUrOMr5/jjk2XWOe9nkCFsed9qpmc=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-256-_vnt1uSgONikYpdA2YGSFA-1; Fri, 29 Mar 2024 16:05:05 -0400
+X-MC-Unique: _vnt1uSgONikYpdA2YGSFA-1
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-6ea7dfa61d8so1928081b3a.0
+        for <linux-iio@vger.kernel.org>; Fri, 29 Mar 2024 13:05:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711739202; x=1712344002;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rWS9d526Zrdj4YY+GMvBiR62zSADNrt4nDy1cYfB8Ug=;
-        b=cb6uyian/6SQvVhRsTWuKsmUonkX8lvSYPNKDPwDDkCom17kv65Hanpw1AtzIC7CfG
-         krehq9rQp0EtA4xcxYQP2kw7LN/MF+Yv7Z+LjnzgWtJz1/ZwSNNh4XzYdf9ZcJh6euHg
-         j+nZH+3z5jOkxRGfcCVIdDDjhLP4mbrdy9CpzDoE9B8Ixa/UoGWoOKQQ5JJLyJIDQv1I
-         bDo5JAfvPsOQxFDnNLEx2ddAm+gGufSYYNEU7DnvuhFiSt2b+MBXym4fCPraEj4AlJOt
-         2AX4RDFL2P9taHtfpvB5xjPcIKApEQDm2ezYBpIGZWuchTtolhdN3sUQRkllyBLG+Xdv
-         T6Kg==
-X-Gm-Message-State: AOJu0Yz2sbeG+KtbyLkvs/Uo6O+it1enFxsI4NIJcZ4Tc+CE3Tjr2u5f
-	mrvcjtVWbSlgJZyAb9iJ+LrnOzQg2RimvhVcq/4yfmqD7oTlp9SUtytQdHaaI1mHVK/S8XfKEZ0
-	kZCL3qVGOGJBNNAyAnNAe7XZjBU18lA+OuazdqOk9Q4W/XVisY2I=
-X-Google-Smtp-Source: AGHT+IEncymz1fIe4aZNkqHiPFrFp27C+k10VmKIwyn8D6GDdQiCa+4mGHs+YiOjdBifpHBiIJIOFraWKU96UpARd3U=
-X-Received: by 2002:a2e:a4d5:0:b0:2d6:a244:1ba4 with SMTP id
- p21-20020a2ea4d5000000b002d6a2441ba4mr1664064ljm.33.1711739202463; Fri, 29
- Mar 2024 12:06:42 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1711742705; x=1712347505;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SnHjQH48YnJt749mCO2kgMTpPbKk2F0bzExQRDPnK30=;
+        b=U0EnbYUHr9+3Y7ayLR8ZIvJgb1UOYhQUr+mJi9egW0VEe8ZSxZWtYEhIQP73TpHQQz
+         ueukmXgENBENtB+HoJ2QvWMgn5/vaO4cXfNJEwTGAyi0Gx2Cf1hUWl/KMCa7aAiZM7E8
+         qeYNyAjTTX2l0jgBLXMSxrDjzmNDLKg+I9sy7kg+VUxY1hyL+rYrELsiXcr8VrFghWRA
+         Emh77Agsn6k8SlCKMgAn4vtSa6/GSYUEOddqk37sG2cm/YsUYTHtYDXRZT622Yus44cE
+         bSm9Cfnk4+KJ8PVuFsQrihtPe4BtDOpKpjtrphh7tbx1vdEUKV46G49fRpsOW0NLCbwT
+         H+YA==
+X-Forwarded-Encrypted: i=1; AJvYcCWmiYcOUXtiVjAiQfVjKixdjJuMAnixs3C05D31LvxpxKtX+MxSsSiSrUY55GM86L/KgBJU5qVd6FslFPXpAuySvfV70jmPzhLB
+X-Gm-Message-State: AOJu0YySkxV0oLNFYYe3AAukabxMcAqL/Fia+a552MdbuFarf8b3ME8E
+	2+52K7BpWej9gqXBz5Z6dw4CFVk9e13FjEa+FLBBP9XdcA0PAOKhTvNZSuDZT64qeE70y8Jmhf4
+	3hIs+4agy2MZlGMaRQWdwn2QOsAz5t1whOJzp/In2SdS29VLxphVrzOUfEw==
+X-Received: by 2002:a05:6a21:193:b0:1a3:c8d5:707a with SMTP id le19-20020a056a21019300b001a3c8d5707amr3325582pzb.7.1711742704932;
+        Fri, 29 Mar 2024 13:05:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzus5TYmyBQIJzw2X4oGKdRnzm+fHezhgpcMAHRkbhzjBiVvj5MPNNZHf4gEN4NnQQtcePCw==
+X-Received: by 2002:a05:6a21:193:b0:1a3:c8d5:707a with SMTP id le19-20020a056a21019300b001a3c8d5707amr3325536pzb.7.1711742704523;
+        Fri, 29 Mar 2024 13:05:04 -0700 (PDT)
+Received: from localhost.localdomain ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id e4-20020a17090301c400b001dd6ebd88b0sm3830017plh.198.2024.03.29.13.04.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 29 Mar 2024 13:05:04 -0700 (PDT)
+From: wefu@redhat.com
+To: jszhang@kernel.org,
+	guoren@kernel.org,
+	conor@kernel.org,
+	robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	andriy.shevchenko@linux.intel.com,
+	nuno.sa@analog.com,
+	marcelo.schmitt@analog.com,
+	bigunclemax@gmail.com,
+	marius.cristea@microchip.com,
+	fr0st61te@gmail.com,
+	okan.sahin@analog.com,
+	marcus.folkesson@gmail.com,
+	schnelle@linux.ibm.com,
+	lee@kernel.org,
+	mike.looijmans@topic.nl
+Cc: linux-riscv@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	Wei Fu <wefu@redhat.com>
+Subject: [PATCH 0/3] iio: adc: add ADC driver for XuanTie TH1520 SoC
+Date: Sat, 30 Mar 2024 04:01:23 +0800
+Message-ID: <20240329200241.4122000-1-wefu@redhat.com>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240328-iio-backend-axi-dac-v1-0-afc808b3fde3@analog.com> <20240328-iio-backend-axi-dac-v1-7-afc808b3fde3@analog.com>
-In-Reply-To: <20240328-iio-backend-axi-dac-v1-7-afc808b3fde3@analog.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 29 Mar 2024 14:06:31 -0500
-Message-ID: <CAMknhBHA3LOhZicUCG32RyiV4+OROJymzm0Qc=wqhfo3u=8vnQ@mail.gmail.com>
-Subject: Re: [PATCH 07/10] dt-bindings: iio: dac: add bindings doc for AD9739A
-To: nuno.sa@analog.com
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	Dragos Bogdan <dragos.bogdan@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 28, 2024 at 8:23=E2=80=AFAM Nuno Sa via B4 Relay
-<devnull+nuno.sa.analog.com@kernel.org> wrote:
->
-> From: Nuno Sa <nuno.sa@analog.com>
->
-> This adds the bindings documentation for the 14 bit
-> RF Digital-to-Analog converter.
->
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
->  .../devicetree/bindings/iio/dac/adi,ad9739a.yaml   | 88 ++++++++++++++++=
-++++++
->  MAINTAINERS                                        |  8 ++
->  2 files changed, 96 insertions(+)
->
-> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad9739a.yaml b=
-/Documentation/devicetree/bindings/iio/dac/adi,ad9739a.yaml
-> new file mode 100644
-> index 000000000000..24bcec763a9b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad9739a.yaml
-> @@ -0,0 +1,88 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/dac/adi,ad9739a.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD9739A RF DAC
-> +
-> +maintainers:
-> +  - Dragos Bogdan <dragos.bogdan@analog.com>
-> +  - Nuno Sa <nuno.sa@analog.com>
-> +
-> +description: |
-> +  The AD9739A is a 14-bit, 2.5 GSPS high performance RF DACs that are ca=
-pable
-> +  of synthesizing wideband signals from dc up to 3 GHz.
-> +
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
-9737a_9739a.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad9739a
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
+From: Wei Fu <wefu@redhat.com>
 
-I also see an IRQ pin on the datasheet. Do we need an interrupts
-property for that?
+This patchset adds initial support for XuanTie TH1520 ADC driver.
+This is modified from XuanTie TH1520 Linux_SDK_V1.4.2(linux v5.10.113)
+The original author is Fugang Duan <duanfugang.dfg@linux.alibaba.com>
 
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +
-> +  vdd_3_3-supply:
-> +    description: 3.3V Digital input supply.
+Wei Fu (3):
+  drivers/iio/adc: Add XuanTie TH1520 ADC driver
+  riscv: dts: thead: Add XuanTie TH1520 ADC device node
+  dt-bindings: adc: Document XuanTie TH1520 ADC
 
-vdd33-supply would better match the datasheet name
+ .../bindings/iio/adc/thead,th1520.yaml        |  52 ++
+ arch/riscv/boot/dts/thead/th1520.dtsi         |  10 +
+ drivers/iio/adc/Kconfig                       |  13 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/xuantie-th1520-adc.c          | 572 ++++++++++++++++++
+ drivers/iio/adc/xuantie-th1520-adc.h          | 193 ++++++
+ 6 files changed, 841 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/thead,th1520.yaml
+ create mode 100644 drivers/iio/adc/xuantie-th1520-adc.c
+ create mode 100644 drivers/iio/adc/xuantie-th1520-adc.h
 
-> +
-> +  vdd-supply:
-> +    description: 1.8V Digital input supply.
-> +
-> +  vdda-supply:
-> +    description: 3.3V Analog input supply.
-> +
-> +  vddc-supply:
-> +    description: 1.8V Clock input supply.
+-- 
+2.44.0
 
-I see a VREF voltage reference input in the datasheet. Do we need a vref-su=
-pply?
 

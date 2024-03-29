@@ -1,150 +1,244 @@
-Return-Path: <linux-iio+bounces-3918-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3919-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF74890FCE
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Mar 2024 01:42:32 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1154D8914EF
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Mar 2024 08:59:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6600EB244C2
-	for <lists+linux-iio@lfdr.de>; Fri, 29 Mar 2024 00:42:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AC141C23E4D
+	for <lists+linux-iio@lfdr.de>; Fri, 29 Mar 2024 07:59:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC0536AE1;
-	Fri, 29 Mar 2024 00:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AB6446B7;
+	Fri, 29 Mar 2024 07:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GpE4F/GI"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=norik.com header.i=@norik.com header.b="cvhrZWSP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cpanel.siel.si (cpanel.siel.si [46.19.9.99])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 629312E3E4;
-	Fri, 29 Mar 2024 00:40:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974EA3B78E;
+	Fri, 29 Mar 2024 07:58:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.19.9.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711672850; cv=none; b=oZTUZAXGKHQkKAwmFnruFj4YerZjJdYSvHbiTmWXx7sk/ReM3TwaRecJ1br7HVijNNFcdJtOK2f0iqAfEly4l40xPycEl1o6k9c6YAXR8O/WxOuQx/g3h6WBhr1mI/HnC+D7bmm8qiKj0sujbXQSWREthVwdfkOEmjwyfRsQJZU=
+	t=1711699135; cv=none; b=MkovHR/X4byqRCurghL970pc/5M3e4bu0KzR3ZIxulps34PwYaWY96Cag10mV9Nkd7aqUe+PoBzEi91EecWEEYYFv1jt8jpHYmkxPlhLbrLuq/428y2IAfnUsPhMW9TmGMpcnh3hqkx2z44ROmNbRw++aoYvwdubZrZkh6sg6yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711672850; c=relaxed/simple;
-	bh=NSe/liSARxHCFd61SUaS5BJlcIU6UF1iYHqxn3SBHPM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KJhQwF+ZfQLawU7Ut/t4c4J/cNSwY7yP9YOJwuoBNT5FbGvcUQXEzi0Lx27a0kt7rZ8KCxSFTGakEedY1xCqSeSyGNrbfNRkF33UmrzKV/9KwiBdXDRbxIZ9aZUVeGDMDM6BHrc16cgT2WNZeOqK4ushR67fQZLzuhNWI2jPeTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GpE4F/GI; arc=none smtp.client-ip=209.85.167.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-51588f70d2dso1751713e87.3;
-        Thu, 28 Mar 2024 17:40:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711672846; x=1712277646; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TWDCltR+Y0wCwsz+KfQOWGNlirk4O0tCkzhshtRNMtE=;
-        b=GpE4F/GIVKVKT2AA1MhkrM27AhPnd9KPX1nb/C/GgBjsc84J+E9lbwmBNQ1MJGg8Y2
-         xQV7Ld+hOl0WhP5ozbG/MHmb9cZWKS3t/X7sNFzHZP4gP1s76dDxnnkA7v9DlHfRbzA1
-         +Z9woe4IkfXxJ3btnz3uYd/bwp6Exxi5Re8B7NnyZnWndr8EVYFTdQTgyrIHDLjRr2IU
-         7/JqeIlKjkS/Hf45LTm+YtgU2E9leLDjX8C0BsKZw5SviICyk7WYRaDBQ/CoyygLu2R9
-         4G2jKsL8G2e8q7F0iisZO4VhKWiHStp4xRc+OT2ehQ3cm1g9eg/o4Wtc8bNASgzzYBDp
-         p3qQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711672846; x=1712277646;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TWDCltR+Y0wCwsz+KfQOWGNlirk4O0tCkzhshtRNMtE=;
-        b=JEkjHBYXyTuvzmCewOzljMtkvvUtzd08JkpxYha8cVQcjP5MK5Tq6D8aBgb28ttBXD
-         OJA6QlS2BWlSaralPw5gpFcQkynEwr+OzcdAXD11/rC2Sip6ue/zWGYo0kPsT9qecPkA
-         Bc9jm5TpLAPBeEXs0V2r1wVW4mwMEAeI1md7ceBBXr6T+ctTQVnQTbvi2/PqoRn3Xd12
-         m8yBaZY1yCLtsGTg9PY3sTxoG9UpGLrfV9mNGlRK9+6uChodBf2Zb4lAjuHuFVnmZt8l
-         puXHFPGQzRmG8ryKnV+efyinaGDLNJOKTAZUK9faHDmJRns1j1gnw27Rw3OTixEMWvhz
-         IoVw==
-X-Forwarded-Encrypted: i=1; AJvYcCVBMCE0mldLmmj4AbMz3HkEgtPg3vep/CW2IBndYA35zJWaKnneq5DhW3wAlpHc3NkFt83lU9X5x6FhoUHAXimwaYMctKlH+yxQDgHj/swSuLBpg2IZ+rJ2SkFq97XIXoqgPtkO7W5KyQ==
-X-Gm-Message-State: AOJu0YzErxVccGDOMPMVEKlyjHc2nDFQHUO+uQUcy5kGy6f0+SvBdQpU
-	iAwuPIpTOV4WlSiY+0+08sGcusVz0L7uD9+ZA6ztYsodtAmWjhai
-X-Google-Smtp-Source: AGHT+IFfU522CAsPYJZupOVr0I9Lv9VQDy4tTJgSmd5P8rmRqKVKhe+9Ur+tEMAOoHAMG58D8qPMng==
-X-Received: by 2002:a05:6512:3e4:b0:515:ccd8:37c2 with SMTP id n4-20020a05651203e400b00515ccd837c2mr542083lfq.44.1711672846487;
-        Thu, 28 Mar 2024 17:40:46 -0700 (PDT)
-Received: from 13a4f82a8f12.v.cablecom.net (84-72-156-211.dclient.hispeed.ch. [84.72.156.211])
-        by smtp.gmail.com with ESMTPSA id h7-20020a0564020e0700b00568e3d3337bsm1391679edh.18.2024.03.28.17.40.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 28 Mar 2024 17:40:46 -0700 (PDT)
-From: Lothar Rubusch <l.rubusch@gmail.com>
-To: lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org
-Cc: linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	eraretuya@gmail.com,
-	l.rubusch@gmail.com
-Subject: [PATCH v6 7/7] iio: accel: adxl345: Add spi-3wire option
-Date: Fri, 29 Mar 2024 00:40:30 +0000
-Message-Id: <20240329004030.16153-8-l.rubusch@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240329004030.16153-1-l.rubusch@gmail.com>
-References: <20240329004030.16153-1-l.rubusch@gmail.com>
+	s=arc-20240116; t=1711699135; c=relaxed/simple;
+	bh=yBqdFYWJ7meNuEn1L+kQXqFNRWSolH3SOPxtgfU/HK8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uEeliS1vbSc9qhFXoZFUH47Il+JsyRDEHvBykRLbDPawxgSQMOD9671IRIYnjycZGLsF8P7GwhRSPYZq4MHNk7Oq53/TVoxOL08uI6hHj8k4gFtTEO64aLwyiBs4IORfhZPWdL1GbwP1WwNK5Jdrjip/N5HfZd+inEtFlDrNZsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com; spf=pass smtp.mailfrom=norik.com; dkim=pass (2048-bit key) header.d=norik.com header.i=@norik.com header.b=cvhrZWSP; arc=none smtp.client-ip=46.19.9.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=norik.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=norik.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=norik.com;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=VB+uYV6z1osfsY3qvVmgNrhkcULtGFhdn5kc4Qzej/U=; b=cvhrZWSPR+Yv98T3SACOGJoTbj
+	/92sDiJPAIdKFqbQpQFDxMGds6Uuaeq2/bq2G7ogYz0lhvXlUFmMJYmVfB24YK2oxkIoBS7oGwP6H
+	f3SuFIA1xiz8tK2pps/Xz9w3rPTyNkw2YAbbCzeQ8vOaQ7ZX10a5GJmpvcPmkmExS522ncxG91xoJ
+	6ztsz0ABBW+TDQ/u4xJw9f+6TjnMnq8uEmQ87toUtLjaes0+PPk9H0of8LUj1k2xnDYqVQKh41Ojh
+	ykIg9heBPjNsW++47JxBTJmOqRwi/aXWC3zLxoe10Zr/eWzPhKJuxbmCypAq/3ojpIWAypOqgLykp
+	28fVe3nQ==;
+Received: from 89-212-21-243.static.t-2.net ([89.212.21.243]:57518 helo=[192.168.69.116])
+	by cpanel.siel.si with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <primoz.fiser@norik.com>)
+	id 1rq78Q-009wAj-2G;
+	Fri, 29 Mar 2024 08:58:46 +0100
+Message-ID: <d9a233d6-95cd-4901-9c06-d8319f2eb3b4@norik.com>
+Date: Fri, 29 Mar 2024 08:58:42 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Upstream] [PATCH 0/2] i.MX93 ADC calibration settings
+Content-Language: en-US
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Andrej Picej <andrej.picej@norik.com>, Jonathan Cameron
+ <jic23@kernel.org>, devicetree@vger.kernel.org, conor+dt@kernel.org,
+ lars@metafoo.de, krzysztof.kozlowski+dt@linaro.org, imx@lists.linux.dev,
+ linux-iio@vger.kernel.org, festevam@gmail.com, s.hauer@pengutronix.de,
+ upstream@lists.phytec.de, linux-kernel@vger.kernel.org, haibo.chen@nxp.com,
+ kernel@pengutronix.de, shawnguo@kernel.org, robh@kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20240320100407.1639082-1-andrej.picej@norik.com>
+ <20240324135559.1640551d@jic23-huawei>
+ <3423ea96-859d-4c4b-a9a7-e0d9c3c00727@norik.com>
+ <44ac8977-cf98-46a5-be15-1bec330c6a2e@norik.com>
+ <20240325144555.00002d16@Huawei.com>
+From: Primoz Fiser <primoz.fiser@norik.com>
+Organization: Norik systems d.o.o.
+In-Reply-To: <20240325144555.00002d16@Huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - cpanel.siel.si
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - norik.com
+X-Get-Message-Sender-Via: cpanel.siel.si: authenticated_id: primoz.fiser@norik.com
+X-Authenticated-Sender: cpanel.siel.si: primoz.fiser@norik.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-Add a setup function implementation to the spi module to enable spi-3wire
-when specified in the device-tree.
+Hi Jonathan,
 
-Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
----
- drivers/iio/accel/adxl345.h     |  1 +
- drivers/iio/accel/adxl345_spi.c | 12 +++++++++++-
- 2 files changed, 12 insertions(+), 1 deletion(-)
+On 25. 03. 24 15:45, Jonathan Cameron wrote:
+> On Mon, 25 Mar 2024 09:55:23 +0100
+> Primoz Fiser <primoz.fiser@norik.com> wrote:
+> 
+>> Hi Jonathan,
+>>
+>> On 25. 03. 24 09:32, Andrej Picej wrote:
+>>> Hi Jonathan,
+>>>
+>>> On 24. 03. 24 14:55, Jonathan Cameron wrote:  
+>>>> On Wed, 20 Mar 2024 11:04:04 +0100
+>>>> Andrej Picej <andrej.picej@norik.com> wrote:
+>>>>  
+>>>>> Hi all,
+>>>>>
+>>>>> we had some problems with failing ADC calibration on the i.MX93 boards.
+>>>>> Changing default calibration settings fixed this. The board where this
+>>>>> patches are useful is not yet upstream but will be soon (hopefully).  
+>>>>
+>>>> Tell us more.  My initial instinct is that this shouldn't be board
+>>>> specific.
+>>>> What's the trade off we are making here?  Time vs precision of
+>>>> calibration or
+>>>> something else?  If these are set to a level by default that doesn't work
+>>>> for our board, maybe we should just change them for all devices?
+>>>>  
+>>
+>> The imx93_adc driver is quite new.
+>>
+>> If you look at line #162, you will find a comment by the original author:
+>>
+>>> 	/*
+>>> 	 * TODO: we use the default TSAMP/NRSMPL/AVGEN in MCR,
+>>> 	 * can add the setting of these bit if need in future.
+>>> 	 */  
+>>
+>> URL:
+>> https://github.com/torvalds/linux/blob/master/drivers/iio/adc/imx93_adc.c#L162
+>>
+>> So, for most use-cases the default setting should work, but why not make
+>> them configurable?
+>>
+>> So this patch-series just implement what was missing from the beginning
+>> / was planned for later.
+> Hi Primoz,
+> 
+> I doubt anyone reviewed the comment closely enough to say if what it was
+> suggesting was sensible or not, so the fact it was listed as a todo
+> doesn't directly impact this discussion.
 
-diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-index e859c01d4..3d5c8719d 100644
---- a/drivers/iio/accel/adxl345.h
-+++ b/drivers/iio/accel/adxl345.h
-@@ -31,6 +31,7 @@
- #define ADXL345_DATA_FORMAT_RANGE	GENMASK(1, 0)	/* Set the g range */
- #define ADXL345_DATA_FORMAT_JUSTIFY	BIT(2)	/* Left-justified (MSB) mode */
- #define ADXL345_DATA_FORMAT_FULL_RES	BIT(3)	/* Up to 13-bits resolution */
-+#define ADXL345_DATA_FORMAT_SPI_3WIRE	BIT(6)	/* 3-wire SPI mode */
- #define ADXL345_DATA_FORMAT_SELF_TEST	BIT(7)	/* Enable a self test */
- 
- #define ADXL345_DATA_FORMAT_2G		0
-diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_spi.c
-index 1c0513bd3..f145d5c1d 100644
---- a/drivers/iio/accel/adxl345_spi.c
-+++ b/drivers/iio/accel/adxl345_spi.c
-@@ -20,6 +20,16 @@ static const struct regmap_config adxl345_spi_regmap_config = {
- 	.read_flag_mask = BIT(7) | BIT(6),
- };
- 
-+static int adxl345_spi_setup(struct device *dev, struct regmap *regmap)
-+{
-+	struct spi_device *spi = container_of(dev, struct spi_device, dev);
-+
-+	if (spi->mode & SPI_3WIRE)
-+		return regmap_write(regmap, ADXL345_REG_DATA_FORMAT,
-+				    ADXL345_DATA_FORMAT_SPI_3WIRE);
-+	return 0;
-+}
-+
- static int adxl345_spi_probe(struct spi_device *spi)
- {
- 	struct regmap *regmap;
-@@ -33,7 +43,7 @@ static int adxl345_spi_probe(struct spi_device *spi)
- 	if (IS_ERR(regmap))
- 		return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing regmap\n");
- 
--	return adxl345_core_probe(&spi->dev, regmap, NULL);
-+	return adxl345_core_probe(&spi->dev, regmap, adxl345_spi_setup);
- }
- 
- static const struct adxl345_chip_info adxl345_spi_info = {
+I agree.
+
+However on the other hand, since we stumbled upon a use-case that
+requires adjusting the driver provided default settings of the i.MX93
+ADC, this TODO to us is and was a clear indication from the original
+author that the driver needs little TLC.
+
+Anyhow, a stance from the author/NXP would be highly welcoming in this
+situation.
+
+BR,
+Primoz
+
+
+> 
+>>
+>> BR,
+>> Primoz
+>>
+>>
+>>>
+>>> So we have two different boards with the same SoC. On one, the
+>>> calibration works with the default values, on the second one the
+>>> calibration fails, which makes the ADC unusable. What the ADC lines
+>>> measure differ between the boards though. But the implementation is
+>>> nothing out of the ordinary.
+>>>
+>>> We tried different things but the only thing that helped is to use
+>>> different calibration properties. We tried deferring the probe and
+>>> calibration until later boot and after boot, but it did not help.
+>>>
+>>> In the Reference Manual [1] (chapter 72.5.1) it is written:
+>>>   
+>>>> 4. Configure desired calibration settings (default values kept for
+>>>> highest accuracy maximum time).  
+>>>
+>>> So your assumption is correct, longer calibration time (more averaging
+>>> samples) -> higher precision. The default values go for a high accuracy.
+>>> And since we use a NRSMPL (Number of Averaging Samples) of 32 instead of
+>>> default 512, we reduce the accuracy so the calibration values pass the
+>>> internal defined limits.
+> 
+> Ouch.  Let me try to dig into this. Is this effectively relaxing the
+> constraints? I guess because a value that is perhaps always biased one way
+> is considered within bounds if those acceptable bounds are wider because
+> of lower precision?
+> 
+> I was assuming it was the other way around and the device had fixed constraint
+> limits and you needed to take more samples due to higher noise. Seems the
+> opposite is true here and that worries me.
+> 
+> I'll definitely need input from NXP on this as a workaround and their
+> strong support to consider it.
+> 
+>>>
+>>> I'm not sure that changing default values is the right solution here. We
+>>> saw default values work with one of the boards. And since the NXP kept
+>>> these values adjustable I think there is a reason behind it.
+> 
+> I'd assume trade off between time and calibration precision, not the
+> sort of use I think you are describing.
+> 
+>>>
+>>> Note: When I say one of the boards I mean one board form. So same board
+>>> version, but different HW.
+> 
+> Superficially I'm struggling to not see this as broken hardware that it
+> is out of expected tolerances in some fashion.  Maybe I misunderstood
+> the issue.
+> 
+> Jonathan
+> 
+>>>
+>>> Best regards,
+>>> Andrej
+>>>
+>>> [1] i.MX 93 Applications Processor Reference Manual, Rev. 4, 12/2023
+>>> _______________________________________________
+>>> upstream mailing list
+>>> upstream@lists.phytec.de
+>>> http://lists.phytec.de/cgi-bin/mailman/listinfo/upstream  
+>>
+>>
+>> _______________________________________________
+>> linux-arm-kernel mailing list
+>> linux-arm-kernel@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/linux-arm-kernel
+> 
+
 -- 
-2.25.1
+Primoz Fiser                    | phone: +386-41-390-545
+<tel:+386-41-390-545> |
+---------------------------------------------------------|
+Norik systems d.o.o.            | https://www.norik.com
+<https://www.norik.com>  |
+Your embedded software partner  | email: info@norik.com
+<mailto:info@norik.com> |
+Slovenia, EU                    | phone: +386-41-540-545
+<tel:+386-41-540-545> |
 
 

@@ -1,131 +1,178 @@
-Return-Path: <linux-iio+bounces-3931-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3932-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170C6892B08
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 12:58:52 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 721B6892BC3
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 16:18:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 489FA1C20C6A
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 11:58:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0865C28254B
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 15:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32EC43984D;
-	Sat, 30 Mar 2024 11:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD19138389;
+	Sat, 30 Mar 2024 15:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="m3qiuv6J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jrmX2loK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A363C38DDC;
-	Sat, 30 Mar 2024 11:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6170C381B1;
+	Sat, 30 Mar 2024 15:18:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711799919; cv=none; b=MLH3+5tGpqnHUr9pZub2NJvHfJPPNyWrnB39ku+18bawxiqPX0UViCRZke2+PR785UCRQDZIwQ1oWDNxEPcjd443MoE/dnHx9dK7wT0ImxlPA5WaozX37KNdSSEDuM4NIwrqyvZ/ceHScbZYO4gSFtrsUrGQymB7Wo7YcecTdEw=
+	t=1711811912; cv=none; b=TVgt+GPdBnHR0xK60bBg2Hc+FSkOIZ/xDdxNvMwbYhGAgBhzNCcmYSa0beepjdPdGoS3idmnNGeepBSYZTpjI6f06MdH3eC2xD4x+etq4+zfbsa7cjPfGf3ltC8gRwPziPMN18uCygJyWajIyfAiUQZS9hGgRF6kC7rIeVfzTso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711799919; c=relaxed/simple;
-	bh=ynfTQ/GVycFwNXOPFSe6F0brkpnNBWsKnsVlyJvCxJE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=U28qVO+cpz0uk3BduDvy6kk62IDbn+WXCPW5TbM5D9+6d/0+fQ44Xfay9+hrS2Y7Mj5QYrqG97rao3F8D3Y7sU5FvplCSGca/z+6FWoGW9np6PPRkgqp/6cgC0X0+d/GKpAu0Yqxp2kDVix/m8tNMZydN6Pa9zjGiGFzPTkrh4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=m3qiuv6J; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1711799916; x=1743335916;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ynfTQ/GVycFwNXOPFSe6F0brkpnNBWsKnsVlyJvCxJE=;
-  b=m3qiuv6JhVTcRCBoUSmri3xcu54TsZ8Z4sZ31keiDoP1Jif+i/tL/oMR
-   a02vwR1z8SlmHXQdOLd49CcKt+l3xwYVapoN1dN/5D7orWtFdqev2W8pH
-   H6mJYEdQwD4gISnfRxpSbkzueNTRIfgXuo0Qd3SNG0bbUdUH1tFfnRBSI
-   Mmlbe+SWNqZ7BI9qxIts2BXmtWhjmmhry+XRtgLjqvtLJkcRi/krfUX/B
-   HZ8TGI3Cdl5YvT9EPbxkgxPAqyHmqMt99UaLUNVtNtwrcbcJkIAP+RwRj
-   4hX+oj+/EAimr7WoTUi6aGs3m+GKrOxUv68CW8S/Whz8ejYi5L0Wf5ZC2
-   Q==;
-X-CSE-ConnectionGUID: IRqAldnrRdmu1RXH9IfrZA==
-X-CSE-MsgGUID: 4jUVBjVFQkOvFZJlAP3zvg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11028"; a="18120529"
-X-IronPort-AV: E=Sophos;i="6.07,166,1708416000"; 
-   d="scan'208";a="18120529"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2024 04:58:35 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,166,1708416000"; 
-   d="scan'208";a="17292158"
-Received: from lkp-server01.sh.intel.com (HELO be39aa325d23) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 30 Mar 2024 04:58:30 -0700
-Received: from kbuild by be39aa325d23 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rqXLv-0004EM-2E;
-	Sat, 30 Mar 2024 11:58:27 +0000
-Date: Sat, 30 Mar 2024 19:58:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: wefu@redhat.com, jszhang@kernel.org, guoren@kernel.org,
-	conor@kernel.org, robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, paul.walmsley@sifive.com,
-	palmer@dabbelt.com, aou@eecs.berkeley.edu, jic23@kernel.org,
-	lars@metafoo.de, andriy.shevchenko@linux.intel.com,
-	nuno.sa@analog.com, marcelo.schmitt@analog.com,
-	bigunclemax@gmail.com, marius.cristea@microchip.com,
-	fr0st61te@gmail.com, okan.sahin@analog.com,
-	marcus.folkesson@gmail.com, schnelle@linux.ibm.com, lee@kernel.org,
-	mike.looijmans@topic.nl
-Cc: oe-kbuild-all@lists.linux.dev, linux-riscv@lists.infradead.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, Wei Fu <wefu@redhat.com>
-Subject: Re: [PATCH 3/3] dt-bindings: adc: Document XuanTie TH1520 ADC
-Message-ID: <202403301900.9wSnTE6y-lkp@intel.com>
-References: <20240329200241.4122000-4-wefu@redhat.com>
+	s=arc-20240116; t=1711811912; c=relaxed/simple;
+	bh=xeYmStBqD5EyQ428GGaiyigQwLaLHFrZUspwncdiUjo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sMCWW58fTI3/gflEeOA6tenujFn7b2ptGEDIPGc1Wt6PuRnrRFUgfvrXpu1glOelaMIQMeWE8Zsecy2jc/mViVi/rjxz+VIG5uiqQh56dgXYWO3PoziNnIcgkMginhDX6eaR/k/dahflPSDMiBwRz/yv164U81sVBYOOwRhbXCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jrmX2loK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87709C433F1;
+	Sat, 30 Mar 2024 15:18:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1711811911;
+	bh=xeYmStBqD5EyQ428GGaiyigQwLaLHFrZUspwncdiUjo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=jrmX2loKIXLlb+YHC/rU0NWrqfAhBGvDvJqcY311c+9szJJfd9jFNGRQEz+x40OYL
+	 gAgO6zmeGBTHIjm1sxp0XIrmlBzmbpOSM1PFQVMtF5OC7et+d9UffSl0DqP+KMSKFe
+	 YJL8hwGAPgzW9uG5sW11yDt0OPKqHzLOfHmanhKyjTwkhx8d2s6fb9qN59JsUlAc+V
+	 oML9ZWsqRQJPIf5LXvv/RwJq/GDGiW+P8OysYXtzbSN0m/nJ+BA4DrqP2dNEOtqnZP
+	 Cmirp/FcaG5UNAblC79OdQzcLBpGEolp8oFjZPNSnprrDY88o93uV+hKj+wIgz00fW
+	 JOgfM97jkJcyg==
+Date: Sat, 30 Mar 2024 15:18:17 +0000
+From: Jonathan Cameron <jic23@kernel.org>
+To: Lothar Rubusch <l.rubusch@gmail.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Subject: Re: [PATCH v5 1/7] iio: accel: adxl345: Make data_range obsolete
+Message-ID: <20240330151817.25c11a5f@jic23-huawei>
+In-Reply-To: <CAFXKEHaPcbRMVJTWW0Atg37jqb97JBdPoSmm3gAZEO1Q=SZm9w@mail.gmail.com>
+References: <20240327220320.15509-1-l.rubusch@gmail.com>
+	<20240327220320.15509-2-l.rubusch@gmail.com>
+	<20240328133720.7dfd46b0@jic23-huawei>
+	<CAFXKEHaPcbRMVJTWW0Atg37jqb97JBdPoSmm3gAZEO1Q=SZm9w@mail.gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240329200241.4122000-4-wefu@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Fri, 29 Mar 2024 01:03:29 +0100
+Lothar Rubusch <l.rubusch@gmail.com> wrote:
 
-kernel test robot noticed the following build warnings:
+> On Thu, Mar 28, 2024 at 2:37=E2=80=AFPM Jonathan Cameron <jic23@kernel.or=
+g> wrote:
+> >
+> > On Wed, 27 Mar 2024 22:03:14 +0000
+> > Lothar Rubusch <l.rubusch@gmail.com> wrote:
+> > =20
+> > > Replace write() data_format by regmap_update_bits(), because bus spec=
+ific
+> > > pre-configuration may have happened before on the same register. For
+> > > further updates to the data_format register then bus pre-configuration
+> > > needs to be masked out.
+> > >
+> > > Remove the data_range field from the struct adxl345_data, because it =
+is
+> > > not used anymore.
+> > >
+> > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > > ---
+> > >  drivers/iio/accel/adxl345_core.c | 18 ++++++++++++------
+> > >  1 file changed, 12 insertions(+), 6 deletions(-)
+> > >
+> > > diff --git a/drivers/iio/accel/adxl345_core.c b/drivers/iio/accel/adx=
+l345_core.c
+> > > index 8bd30a23e..35df5e372 100644
+> > > --- a/drivers/iio/accel/adxl345_core.c
+> > > +++ b/drivers/iio/accel/adxl345_core.c
+> > > @@ -37,7 +37,15 @@
+> > >  #define ADXL345_POWER_CTL_MEASURE    BIT(3)
+> > >  #define ADXL345_POWER_CTL_STANDBY    0x00
+> > >
+> > > +#define ADXL345_DATA_FORMAT_RANGE    GENMASK(1, 0) /* Set the g rang=
+e */
+> > > +#define ADXL345_DATA_FORMAT_JUSTIFY  BIT(2) /* Left-justified (MSB) =
+mode */
+> > >  #define ADXL345_DATA_FORMAT_FULL_RES BIT(3) /* Up to 13-bits resolut=
+ion */
+> > > +#define ADXL345_DATA_FORMAT_SELF_TEST        BIT(7) /* Enable a self=
+ test */
+> > > +#define ADXL345_DATA_FORMAT_MSK              (ADXL345_DATA_FORMAT_RA=
+NGE | \
+> > > +                                      ADXL345_DATA_FORMAT_JUSTIFY | =
+ \
+> > > +                                      ADXL345_DATA_FORMAT_FULL_RES |=
+ \
+> > > +                                      ADXL345_DATA_FORMAT_SELF_TEST)=
+ =20
+> > This needs renaming.  It's not a mask of everything in the register, or
+> > even just of everything related to format.
+> >
+> > Actually I'd just not have this definition.  Use the build up value
+> > from all the submasks at the call site.  Then we are just making it cle=
+ar
+> > only a subset of fields are being cleared.
+> > =20
+> I understand this solution was not very useful. I'm not sure, I
+> understood you correctly. Please have a look into v6 if this matches
+> your comment.
+> Now, I remove the mask, instead I use a local variable in core's
+> probe() for the update mask. I added a comment. Nevertheless, I keep
+> the used flags for FORMAT_DATA. Does this go into the direction of
+> using the build up value from the submasks at the call site?
+>=20
+The new code looks good to me.  A local variable doesn't carry the
+same implication of global applicability as the define did.
+Thanks,
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on robh/for-next linus/master v6.9-rc1 next-20240328]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+J
+> > Jonathan
+> > =20
+> > > +
+> > >  #define ADXL345_DATA_FORMAT_2G               0
+> > >  #define ADXL345_DATA_FORMAT_4G               1
+> > >  #define ADXL345_DATA_FORMAT_8G               2
+> > > @@ -48,7 +56,6 @@
+> > >  struct adxl345_data {
+> > >       const struct adxl345_chip_info *info;
+> > >       struct regmap *regmap;
+> > > -     u8 data_range;
+> > >  };
+> > >
+> > >  #define ADXL345_CHANNEL(index, axis) {                              =
+         \
+> > > @@ -218,15 +225,14 @@ int adxl345_core_probe(struct device *dev, stru=
+ct regmap *regmap)
+> > >
+> > >       data =3D iio_priv(indio_dev);
+> > >       data->regmap =3D regmap;
+> > > -     /* Enable full-resolution mode */
+> > > -     data->data_range =3D ADXL345_DATA_FORMAT_FULL_RES;
+> > >       data->info =3D device_get_match_data(dev);
+> > >       if (!data->info)
+> > >               return -ENODEV;
+> > >
+> > > -     ret =3D regmap_write(data->regmap, ADXL345_REG_DATA_FORMAT,
+> > > -                        data->data_range);
+> > > -     if (ret < 0)
+> > > +     /* Enable full-resolution mode */
+> > > +     ret =3D regmap_update_bits(regmap, ADXL345_REG_DATA_FORMAT,
+> > > +                              ADXL345_DATA_FORMAT_MSK, ADXL345_DATA_=
+FORMAT_FULL_RES);
+> > > +     if (ret)
+> > >               return dev_err_probe(dev, ret, "Failed to set data rang=
+e\n");
+> > >
+> > >       indio_dev->name =3D data->info->name; =20
+> > =20
 
-url:    https://github.com/intel-lab-lkp/linux/commits/wefu-redhat-com/drivers-iio-adc-Add-XuanTie-TH1520-ADC-driver/20240330-041029
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240329200241.4122000-4-wefu%40redhat.com
-patch subject: [PATCH 3/3] dt-bindings: adc: Document XuanTie TH1520 ADC
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20240330/202403301900.9wSnTE6y-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202403301900.9wSnTE6y-lkp@intel.com/
-
-dtcheck warnings: (new ones prefixed by >>)
->> Documentation/devicetree/bindings/iio/adc/thead,th1520.yaml:45:1: [error] syntax error: found character '\t' that cannot start any token (syntax)
---
->> Documentation/devicetree/bindings/iio/adc/thead,th1520.yaml:45:1: found a tab character where an indentation space is expected
---
->> Documentation/devicetree/bindings/iio/adc/thead,th1520.yaml: ignoring, error parsing file
-
-vim +45 Documentation/devicetree/bindings/iio/adc/thead,th1520.yaml
-
-    41	
-    42	examples:
-    43	  - |
-    44	    adc: adc@0xfffff51000 {
-  > 45		compatible = "thead,th1520-adc";
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

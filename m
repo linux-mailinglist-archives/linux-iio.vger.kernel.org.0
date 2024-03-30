@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-3957-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3958-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF677892CBA
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 20:09:34 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FA7B892CB9
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 20:09:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90A45B22079
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 830201C211E5
 	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C763E40846;
-	Sat, 30 Mar 2024 19:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF4240867;
+	Sat, 30 Mar 2024 19:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uo9RHRe4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k05ELnRy"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E4B200D9
-	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 19:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5AA200D9
+	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 19:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711825767; cv=none; b=rl+92ybSo7T2fXUMOT36XEBRtXuNHLmpi23TapahRy/r+FBnzeUbbQe57iYwZ8x2rsrVxOiKrJTmmfjJqapo4GPP86Ge8dfl1+dPRS0KssDbrF/CKVeulcJxjP17xlb2B5Cmxx2zawyB2xKlABKAx9KF4F48kPQyn3LQPCyY+Ks=
+	t=1711825771; cv=none; b=dx5spUV9yEq0XSfnnQqtvvBg8sk6jS/gXqJulpLjGUAPM93NvKe2Gh+ovRXb1XEc1toqkv9p+CEjwFzRl/7hfg7KLEJwQxKUQ1lWsTNnxX9H4hGF7E4NbsFyxsqdvXkO79InjhWUAOCFvFGdL0NbX7h36uZ+xVHijb8KHqL7Y7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711825767; c=relaxed/simple;
-	bh=qf+vFt4eHBKb9wC1ML+JrZeUlBlFfrqpC/PNsmXCNhc=;
+	s=arc-20240116; t=1711825771; c=relaxed/simple;
+	bh=zO1Fm8arirm596tju5FVU2TBB6HGajHMgVL9jq1CBWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4vGKihNJiN3qcrCD7oXN2xZwGHjh1vIxnyWUJMqYa9GV9dwhOqwFLKwHDQitXmxDE2kTn21AUUhhcor00Wv5VqaUUkeJ3kok0h/S8PT5CyDbkTQtiA90dKN7UYWTiqyxkt4LRCrFXRCUyYw5uHIoEQ9zqsMD2/rRoWED6M/o88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uo9RHRe4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64283C433F1;
-	Sat, 30 Mar 2024 19:09:24 +0000 (UTC)
+	 MIME-Version; b=TbK7QImdIzgd/dBIB6AcRTpO1MJ05bAWvSs+cOJ9crJV/e0cMfv3SvFaA70SerBOElnfLZbbpIsBY0Zx8lw8Pi6MkXfXsx8x9bFXpXoVhJxCGKPRW2ofl2/5Zj3JcPxVU4OWTlXoo0MDgJKqpeoy1MafASBljU8jlwiKRwDJWHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k05ELnRy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B89C433F1;
+	Sat, 30 Mar 2024 19:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711825767;
-	bh=qf+vFt4eHBKb9wC1ML+JrZeUlBlFfrqpC/PNsmXCNhc=;
+	s=k20201202; t=1711825770;
+	bh=zO1Fm8arirm596tju5FVU2TBB6HGajHMgVL9jq1CBWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uo9RHRe4DIrrcBYYkXjFVCXY9HnZki/b3Wu4w9depCOHFFim0Hbsy3KIDikSqbBSQ
-	 gDsZNhwZKpuaiCQ6CBoBgAvx9XXuR9QnY19AS+NOYrDNN3oPbWlE/U1g6hfSkw+ZHf
-	 gZiW71YEw+LNYQezyvE0PMib0KhmNTy2I4XAH997vDFfGYjduYBcz0NJSoa23RVG8J
-	 6o3Gh0GPmAMmJ4mNTFjjh1EcO1ujOEBAmES2k2mDBifeA0E4d4nBKo9nMPRa+TSXZG
-	 SPQmgf9UxdRC62ftSYJwNg6izFruGuHN0DwjyZW/edyIQ6uyM2oUe58Mm4+/R87y5i
-	 oGk4TK+HhfGEA==
+	b=k05ELnRyYMDjukwGoEfJN4m9k+/elgh44O7nr8JqTmex4I4L34h41B0937KH/zKe2
+	 feCIqShs81L1x+Omu8xSns9kxp6agbvjtrfgB3OG3Wmnpa2q9JU8kpND/RF+tZvfjB
+	 GCrVNmVfmk6MaVfzy1MNLhAqd0nDdYku/YekcobfFkBMoarVw42MHfto7YoOsrDuhs
+	 pLpB49G5VXJGcsg/7yBzGStO/0SS0AT/TTScyPYTA6IwMs/aCVRb6JFKV3fZQS/ZPw
+	 Hebjx+Rk17IIlKuIN37bw2/1Baav8wqi5Vnd7pJokdOLK/xbp4B0/Id9swi0tcMStU
+	 3S7QUV6kmJvBA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Marius Cristea <marius.cristea@microchip.com>,
@@ -52,9 +52,9 @@ Cc: Marius Cristea <marius.cristea@microchip.com>,
 	Nuno Sa <nuno.sa@analog.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 7/8] iio: dac: ad3552: Use __free(fwnode_handle) to simplify error handling.
-Date: Sat, 30 Mar 2024 19:08:48 +0000
-Message-ID: <20240330190849.1321065-8-jic23@kernel.org>
+Subject: [PATCH 8/8] iio: adc: pac1934: Use device_for_each_available_child_node_scoped() to simplify error handling.
+Date: Sat, 30 Mar 2024 19:08:49 +0000
+Message-ID: <20240330190849.1321065-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240330190849.1321065-1-jic23@kernel.org>
 References: <20240330190849.1321065-1-jic23@kernel.org>
@@ -68,117 +68,190 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-By using this scoped based cleanup direct returns on errors are enabled
-simplifying the code.
+Also change both firmware parsing functions to return meaningful errors.
+Whilst for the ACPI case this isn't that useful, for the generic fwnode
+case we can return the errors coming from the property parsing instead
+of just whether we succeeded or not.
 
-Cc: Mihail Chindris <mihail.chindris@analog.com>
-Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Marius Cristea <marius.cristea@microchip.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/dac/ad3552r.c | 59 +++++++++++++++------------------------
- 1 file changed, 23 insertions(+), 36 deletions(-)
+ drivers/iio/adc/pac1934.c | 77 ++++++++++++++++-----------------------
+ 1 file changed, 31 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
-index e14a065b29ca..8aa942896b5b 100644
---- a/drivers/iio/dac/ad3552r.c
-+++ b/drivers/iio/dac/ad3552r.c
-@@ -801,51 +801,45 @@ static int ad3552r_configure_custom_gain(struct ad3552r_desc *dac,
- 					 u32 ch)
+diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
+index e0c2742da523..f751260605e4 100644
+--- a/drivers/iio/adc/pac1934.c
++++ b/drivers/iio/adc/pac1934.c
+@@ -1079,8 +1079,8 @@ static int pac1934_chip_identify(struct pac1934_chip_info *info)
+  * documentation related to the ACPI device definition
+  * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC1934-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
+  */
+-static bool pac1934_acpi_parse_channel_config(struct i2c_client *client,
+-					      struct pac1934_chip_info *info)
++static int pac1934_acpi_parse_channel_config(struct i2c_client *client,
++					     struct pac1934_chip_info *info)
  {
- 	struct device *dev = &dac->spi->dev;
--	struct fwnode_handle *gain_child;
- 	u32 val;
- 	int err;
- 	u8 addr;
- 	u16 reg = 0, offset;
+ 	acpi_handle handle;
+ 	union acpi_object *rez;
+@@ -1095,7 +1095,7 @@ static bool pac1934_acpi_parse_channel_config(struct i2c_client *client,
  
--	gain_child = fwnode_get_named_child_node(child,
--						 "custom-output-range-config");
--	if (!gain_child) {
--		dev_err(dev,
--			"mandatory custom-output-range-config property missing\n");
--		return -EINVAL;
--	}
-+	struct fwnode_handle *gain_child __free(fwnode_handle)
-+		= fwnode_get_named_child_node(child,
-+					      "custom-output-range-config");
-+	if (!gain_child)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "mandatory custom-output-range-config property missing\n");
+ 	rez = acpi_evaluate_dsm(handle, &guid, 0, PAC1934_ACPI_GET_NAMES_AND_MOHMS_VALS, NULL);
+ 	if (!rez)
+-		return false;
++		return -EINVAL;
  
- 	dac->ch_data[ch].range_override = 1;
- 	reg |= ad3552r_field_prep(1, AD3552R_MASK_CH_RANGE_OVERRIDE);
+ 	for (i = 0; i < rez->package.count; i += 2) {
+ 		idx = i / 2;
+@@ -1118,7 +1118,7 @@ static bool pac1934_acpi_parse_channel_config(struct i2c_client *client,
+ 		 * and assign the default sampling rate
+ 		 */
+ 		info->sample_rate_value = PAC1934_DEFAULT_CHIP_SAMP_SPEED_HZ;
+-		return true;
++		return 0;
+ 	}
  
- 	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-p", &val);
--	if (err) {
--		dev_err(dev, "mandatory adi,gain-scaling-p property missing\n");
--		goto put_child;
--	}
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "mandatory adi,gain-scaling-p property missing\n");
- 	reg |= ad3552r_field_prep(val, AD3552R_MASK_CH_GAIN_SCALING_P);
- 	dac->ch_data[ch].p = val;
+ 	for (i = 0; i < rez->package.count; i++) {
+@@ -1131,7 +1131,7 @@ static bool pac1934_acpi_parse_channel_config(struct i2c_client *client,
  
- 	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-n", &val);
--	if (err) {
--		dev_err(dev, "mandatory adi,gain-scaling-n property missing\n");
--		goto put_child;
--	}
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "mandatory adi,gain-scaling-n property missing\n");
- 	reg |= ad3552r_field_prep(val, AD3552R_MASK_CH_GAIN_SCALING_N);
- 	dac->ch_data[ch].n = val;
+ 	rez = acpi_evaluate_dsm(handle, &guid, 1, PAC1934_ACPI_GET_BIPOLAR_SETTINGS, NULL);
+ 	if (!rez)
+-		return false;
++		return -EINVAL;
  
- 	err = fwnode_property_read_u32(gain_child, "adi,rfb-ohms", &val);
--	if (err) {
--		dev_err(dev, "mandatory adi,rfb-ohms property missing\n");
--		goto put_child;
--	}
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "mandatory adi,rfb-ohms property missing\n");
- 	dac->ch_data[ch].rfb = val;
+ 	bi_dir_mask = rez->package.elements[0].integer.value;
+ 	info->bi_dir[0] = ((bi_dir_mask & (1 << 3)) | (bi_dir_mask & (1 << 7))) != 0;
+@@ -1143,19 +1143,18 @@ static bool pac1934_acpi_parse_channel_config(struct i2c_client *client,
  
- 	err = fwnode_property_read_u32(gain_child, "adi,gain-offset", &val);
--	if (err) {
--		dev_err(dev, "mandatory adi,gain-offset property missing\n");
--		goto put_child;
--	}
-+	if (err)
-+		return dev_err_probe(dev, err,
-+				     "mandatory adi,gain-offset property missing\n");
- 	dac->ch_data[ch].gain_offset = val;
+ 	rez = acpi_evaluate_dsm(handle, &guid, 1, PAC1934_ACPI_GET_SAMP, NULL);
+ 	if (!rez)
+-		return false;
++		return -EINVAL;
  
- 	offset = abs((s32)val);
-@@ -855,21 +849,14 @@ static int ad3552r_configure_custom_gain(struct ad3552r_desc *dac,
- 	addr = AD3552R_REG_ADDR_CH_GAIN(ch);
- 	err = ad3552r_write_reg(dac, addr,
- 				offset & AD3552R_MASK_CH_OFFSET_BITS_0_7);
--	if (err) {
--		dev_err(dev, "Error writing register\n");
--		goto put_child;
--	}
-+	if (err)
-+		return dev_err_probe(dev, err, "Error writing register\n");
+ 	info->sample_rate_value = rez->package.elements[0].integer.value;
  
- 	err = ad3552r_write_reg(dac, addr, reg);
--	if (err) {
--		dev_err(dev, "Error writing register\n");
--		goto put_child;
--	}
--
--put_child:
--	fwnode_handle_put(gain_child);
-+	if (err)
-+		return dev_err_probe(dev, err, "Error writing register\n");
+ 	ACPI_FREE(rez);
  
--	return err;
+-	return true;
 +	return 0;
  }
  
- static void ad3552r_reg_disable(void *reg)
+-static bool pac1934_of_parse_channel_config(struct i2c_client *client,
+-					    struct pac1934_chip_info *info)
++static int pac1934_fw_parse_channel_config(struct i2c_client *client,
++					   struct pac1934_chip_info *info)
+ {
+-	struct fwnode_handle *node, *fwnode;
+ 	struct device *dev = &client->dev;
+ 	unsigned int current_channel;
+ 	int idx, ret;
+@@ -1163,46 +1162,38 @@ static bool pac1934_of_parse_channel_config(struct i2c_client *client,
+ 	info->sample_rate_value = 1024;
+ 	current_channel = 1;
+ 
+-	fwnode = dev_fwnode(dev);
+-	fwnode_for_each_available_child_node(fwnode, node) {
++	device_for_each_child_node_scoped(dev, node) {
+ 		ret = fwnode_property_read_u32(node, "reg", &idx);
+-		if (ret) {
+-			dev_err_probe(dev, ret,
+-				      "reading invalid channel index\n");
+-			goto err_fwnode;
+-		}
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "reading invalid channel index\n");
++
+ 		/* adjust idx to match channel index (1 to 4) from the datasheet */
+ 		idx--;
+ 
+ 		if (current_channel >= (info->phys_channels + 1) ||
+-		    idx >= info->phys_channels || idx < 0) {
+-			dev_err_probe(dev, -EINVAL,
+-				      "%s: invalid channel_index %d value\n",
+-				      fwnode_get_name(node), idx);
+-			goto err_fwnode;
+-		}
++		    idx >= info->phys_channels || idx < 0)
++			return dev_err_probe(dev, -EINVAL,
++					     "%s: invalid channel_index %d value\n",
++					     fwnode_get_name(node), idx);
+ 
+ 		/* enable channel */
+ 		info->active_channels[idx] = true;
+ 
+ 		ret = fwnode_property_read_u32(node, "shunt-resistor-micro-ohms",
+ 					       &info->shunts[idx]);
+-		if (ret) {
+-			dev_err_probe(dev, ret,
+-				      "%s: invalid shunt-resistor value: %d\n",
+-				      fwnode_get_name(node), info->shunts[idx]);
+-			goto err_fwnode;
+-		}
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "%s: invalid shunt-resistor value: %d\n",
++					     fwnode_get_name(node), info->shunts[idx]);
+ 
+ 		if (fwnode_property_present(node, "label")) {
+ 			ret = fwnode_property_read_string(node, "label",
+ 							  (const char **)&info->labels[idx]);
+-			if (ret) {
+-				dev_err_probe(dev, ret,
+-					      "%s: invalid rail-name value\n",
+-					      fwnode_get_name(node));
+-				goto err_fwnode;
+-			}
++			if (ret)
++				return dev_err_probe(dev, ret,
++						     "%s: invalid rail-name value\n",
++						     fwnode_get_name(node));
+ 		}
+ 
+ 		info->bi_dir[idx] = fwnode_property_read_bool(node, "bipolar");
+@@ -1210,12 +1201,7 @@ static bool pac1934_of_parse_channel_config(struct i2c_client *client,
+ 		current_channel++;
+ 	}
+ 
+-	return true;
+-
+-err_fwnode:
+-	fwnode_handle_put(node);
+-
+-	return false;
++	return 0;
+ }
+ 
+ static void pac1934_cancel_delayed_work(void *dwork)
+@@ -1485,7 +1471,6 @@ static int pac1934_probe(struct i2c_client *client)
+ 	const struct pac1934_features *chip;
+ 	struct iio_dev *indio_dev;
+ 	int cnt, ret;
+-	bool match = false;
+ 	struct device *dev = &client->dev;
+ 
+ 	indio_dev = devm_iio_device_alloc(dev, sizeof(*info));
+@@ -1519,16 +1504,16 @@ static int pac1934_probe(struct i2c_client *client)
+ 	}
+ 
+ 	if (acpi_match_device(dev->driver->acpi_match_table, dev))
+-		match = pac1934_acpi_parse_channel_config(client, info);
++		ret = pac1934_acpi_parse_channel_config(client, info);
+ 	else
+ 		/*
+ 		 * This makes it possible to use also ACPI PRP0001 for
+ 		 * registering the device using device tree properties.
+ 		 */
+-		match = pac1934_of_parse_channel_config(client, info);
++		ret = pac1934_fw_parse_channel_config(client, info);
+ 
+-	if (!match)
+-		return dev_err_probe(dev, -EINVAL,
++	if (ret)
++		return dev_err_probe(dev, ret,
+ 				     "parameter parsing returned an error\n");
+ 
+ 	mutex_init(&info->lock);
 -- 
 2.44.0
 

@@ -1,58 +1,70 @@
-Return-Path: <linux-iio+bounces-3934-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3935-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7EF892BD8
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 16:30:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF3A892BEC
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 17:03:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08D91282BE0
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 15:30:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4918B283354
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 16:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0888E38FA7;
-	Sat, 30 Mar 2024 15:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B583B1B2;
+	Sat, 30 Mar 2024 16:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Lrj7TQ/m"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJSGLSLA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B021AEBB;
-	Sat, 30 Mar 2024 15:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C471C0DEF;
+	Sat, 30 Mar 2024 16:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711812604; cv=none; b=LwpXCpkXJ++9kldJ2gbZYIxa3DSUcxSk8lkMGjc5IfTpPCt/sm4Y/UFrTK4S5p9hNXRuklxOq0kD4l5ljrMRuP+/nwKtMMjTQDXk/5tIURgXPPn+yzoOSa/KDfO4SQWWwjCGuacIOFhhg7GWW0s9Wj2fxNA7rX0oAObBQ+Cxh2E=
+	t=1711814583; cv=none; b=rMZoabn8Pvy3/WtUdRbXOs+8zhGhQA/RSXa5wUkSA3iw1DvTYO9EY+NNqa1Wx0J3HqWF5YckGDm4wgss6j+NFPSS+h2w7/3MwxRaHtPm46fwYWoA2M9vcjv7RiYywjOJeA2PPwtFU3Jjo6+UcMWmpI2/vKlM6JAhG42vlE2l1E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711812604; c=relaxed/simple;
-	bh=Pbmbq7nuZF3H9Ax34ZWnOo7CvSuQfF6wpVQhJF2egis=;
+	s=arc-20240116; t=1711814583; c=relaxed/simple;
+	bh=UluV6B2CNyYDGwjho9wujbbGinHQfPzIlXhBRj5/jwM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YQUG26/YfyIyilJH/7i29+CVrBKTsAZrAsg/ev1s0GZvKwCPRNTvVH4Iuv8Bk6wdaxysA/tkONoXfx2WeQ6tUomGv9K/2YIaHCoavYtikB7erMTVmdjbWqQ+48grpmndtjoEkas/leVpHDyoWoI/KrZGecFsCiOtJUjwLwhtf3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Lrj7TQ/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E8CC433C7;
-	Sat, 30 Mar 2024 15:29:59 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oSjZgNoXUwlQZ3YIF8tDweDnZY/Z/rNXWQJ5FcFyikeipYs3JsisERVBm3/F9Va4IIvMVanmNwvhVfWch71gxoE4t+7TK0zWmfxIjYOGzg3UiQd/71sx7Rrl7ayJ5u9VNjIzwYzVLzPa3BaF3TlyatDDkSUvddPYtRwYewVszGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tJSGLSLA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8FA4C43390;
+	Sat, 30 Mar 2024 16:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711812603;
-	bh=Pbmbq7nuZF3H9Ax34ZWnOo7CvSuQfF6wpVQhJF2egis=;
+	s=k20201202; t=1711814583;
+	bh=UluV6B2CNyYDGwjho9wujbbGinHQfPzIlXhBRj5/jwM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Lrj7TQ/mWOtTKEO7HXWRap81QLzCuJXGrzduzwDYUuKT7dBnPugagRgA9yyRJZKRq
-	 1Vz9g9oi1AQefGVh2IlRneycGjFn2uYm2qTT7mQF1jFDEmgjtzsFwgj4Gw3fFcQ1zD
-	 xdfbf+Vcmjac6uxQ74uT2mcvM4rnymr86+T/FNdN/tNj6MbwK35HIZF+84YLra298N
-	 YemMIHgeFOJ3jNDZ6m3rmNmukVYMchWp/0hqU7z95DHt/9Zz+tUF/8hOAmaJgs3nvs
-	 92jj0DS1S9LnEyzJp7dcoJHbNYWc1MfnVdpVsSTTt2hcqZYr520M0vMoVQcTPvkiT8
-	 lTpssbNk7hgZA==
-Date: Sat, 30 Mar 2024 15:29:49 +0000
+	b=tJSGLSLAib4ZkmpSDD8pBKfDUosNtVmyEkJK8+xeWQ2RVi+l2/uiyFl+ZHsK26w2U
+	 sg/JDS8+wJ4obfWX5+RA0jLYrKoWy/69TMOHt8NNbHMZtVMkHNn1Z2pUxdRFSzdJkK
+	 vVA8ONMxBpcbAY/3IuiPJx1zA6f8BCOpWj8nrAz3O+sVZhjJ1CMT8KqZOmnp24ZXko
+	 Ujh4f2a5wNvRBBuguv9c7t/Xs5Fiut1pLT5B13kgANH6zi0BgtXTQNJ97kcxjmQnJ2
+	 QkbJ2xinb1NCih5rlauTuDtUaTWelA9jhVrKB8k9/dY3YxvINFjmR3JcJTHfGgX5Kh
+	 MtPcc26yM2Pmw==
+Date: Sat, 30 Mar 2024 16:02:46 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Subject: Re: [PATCH v6 7/7] iio: accel: adxl345: Add spi-3wire option
-Message-ID: <20240330152949.7e10ebcc@jic23-huawei>
-In-Reply-To: <20240329004030.16153-8-l.rubusch@gmail.com>
-References: <20240329004030.16153-1-l.rubusch@gmail.com>
-	<20240329004030.16153-8-l.rubusch@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>, David Lechner
+ <dlechner@baylibre.com>, Jonathan Corbet <corbet@lwn.net>, Liam Girdwood
+ <lgirdwood@gmail.com>, Jean Delvare <jdelvare@suse.com>, Guenter Roeck
+ <linux@roeck-us.net>, Support Opensource <support.opensource@diasemi.com>,
+ Cosmin Tanislav <cosmin.tanislav@analog.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-input@vger.kernel.org
+Subject: Re: [PATCH RFC 1/7] regulator: devres: add APIs for reference
+ supplies
+Message-ID: <20240330160246.6b74bd3b@jic23-huawei>
+In-Reply-To: <8d98fab7-d73b-45c5-a46a-ace57907d25b@sirena.org.uk>
+References: <20240327-regulator-get-enable-get-votlage-v1-0-5f4517faa059@baylibre.com>
+	<20240327-regulator-get-enable-get-votlage-v1-1-5f4517faa059@baylibre.com>
+	<ZgWw66OpLnLPdCn-@google.com>
+	<043b347b-2652-4ffb-a8e0-954a89899ade@sirena.org.uk>
+	<ZgXQcGlMiewRzki5@google.com>
+	<8d98fab7-d73b-45c5-a46a-ace57907d25b@sirena.org.uk>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,71 +75,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 29 Mar 2024 00:40:30 +0000
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On Thu, 28 Mar 2024 20:25:31 +0000
+Mark Brown <broonie@kernel.org> wrote:
 
-> Add a setup function implementation to the spi module to enable spi-3wire
-> when specified in the device-tree.
+> On Thu, Mar 28, 2024 at 01:17:52PM -0700, Dmitry Torokhov wrote:
+> > On Thu, Mar 28, 2024 at 06:18:32PM +0000, Mark Brown wrote:  
 > 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> ---
->  drivers/iio/accel/adxl345.h     |  1 +
->  drivers/iio/accel/adxl345_spi.c | 12 +++++++++++-
->  2 files changed, 12 insertions(+), 1 deletion(-)
+> > > I don't follow what you're saying here?  What normal APIs are not
+> > > available?  AFAICT this has nothing to do with a devm enable, it's a
+> > > combined operation which reports the voltage for the regulator if one is
+> > > available which would still be being added even if it used a devm
+> > > enable.  
 > 
-> diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl345.h
-> index e859c01d4..3d5c8719d 100644
-> --- a/drivers/iio/accel/adxl345.h
-> +++ b/drivers/iio/accel/adxl345.h
-> @@ -31,6 +31,7 @@
->  #define ADXL345_DATA_FORMAT_RANGE	GENMASK(1, 0)	/* Set the g range */
->  #define ADXL345_DATA_FORMAT_JUSTIFY	BIT(2)	/* Left-justified (MSB) mode */
->  #define ADXL345_DATA_FORMAT_FULL_RES	BIT(3)	/* Up to 13-bits resolution */
-> +#define ADXL345_DATA_FORMAT_SPI_3WIRE	BIT(6)	/* 3-wire SPI mode */
->  #define ADXL345_DATA_FORMAT_SELF_TEST	BIT(7)	/* Enable a self test */
->  
->  #define ADXL345_DATA_FORMAT_2G		0
-> diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/adxl345_spi.c
-> index 1c0513bd3..f145d5c1d 100644
-> --- a/drivers/iio/accel/adxl345_spi.c
-> +++ b/drivers/iio/accel/adxl345_spi.c
-> @@ -20,6 +20,16 @@ static const struct regmap_config adxl345_spi_regmap_config = {
->  	.read_flag_mask = BIT(7) | BIT(6),
->  };
->  
-> +static int adxl345_spi_setup(struct device *dev, struct regmap *regmap)
-> +{
-> +	struct spi_device *spi = container_of(dev, struct spi_device, dev);
-> +
-> +	if (spi->mode & SPI_3WIRE)
-> +		return regmap_write(regmap, ADXL345_REG_DATA_FORMAT,
-> +				    ADXL345_DATA_FORMAT_SPI_3WIRE);
-My only remaining comment on this patch set is to add equivalent of
-	else
-		return regmap_write(regmap, ADXL345_REG_DATA_FORMAT, 0);
+> > You can not do devm_regulator_get_enable() and then call
+> > regulator_get_voltage(), you need a new combined API.  
+> 
+> I think the theory here is that there are so many instances of this
+> reference voltage pattern that it's useful to have a helper for that
+> reason alone.
 
-If the hardware had some sort of software reset, that was used,
-this wouldn't be needed as the status of those other bits would be known.
-If we leave them alone in the non 3wire path we may in the future have
-subtle issues because some other code left this in an odd state and
-we clear those other bits only for 3wire mode.
+Exactly that - this is just adding a convenience function to
+remove boilerplate.  -20ish lines of cut and paste code per
+driver. 
 
 Jonathan
 
-> +	return 0;
-> +}
-> +
->  static int adxl345_spi_probe(struct spi_device *spi)
->  {
->  	struct regmap *regmap;
-> @@ -33,7 +43,7 @@ static int adxl345_spi_probe(struct spi_device *spi)
->  	if (IS_ERR(regmap))
->  		return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Error initializing regmap\n");
->  
-> -	return adxl345_core_probe(&spi->dev, regmap, NULL);
-> +	return adxl345_core_probe(&spi->dev, regmap, adxl345_spi_setup);
->  }
->  
->  static const struct adxl345_chip_info adxl345_spi_info = {
 
 

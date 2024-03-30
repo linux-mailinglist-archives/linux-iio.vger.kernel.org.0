@@ -1,45 +1,46 @@
-Return-Path: <linux-iio+bounces-3950-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3951-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0FBB892CB2
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 20:09:09 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28078892CB3
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 20:09:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05C1D1F22769
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:09:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6E0B282F8E
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B6A3FB8D;
-	Sat, 30 Mar 2024 19:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED793FBBF;
+	Sat, 30 Mar 2024 19:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onY0+uGt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmCL69k6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3123D0D2
-	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 19:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F34EB200D9
+	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 19:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711825744; cv=none; b=DtLPpyOftlQSxj+ZVZBF5R05CSUBqhUiIMDN/FOxWVY96TH2nPpDVFUr3VK0qLNDyQ1RK3W51xncwY75QqhNXRWOATCV1qykxNgg+AYn9sGsy4a0hncYeQ0qmSR2Kodd0+A8AFplzVqWVhISP/MqPRL/Q0TYaqBRFqbuEUqh184=
+	t=1711825747; cv=none; b=m5IYNZkGY/fq4lQxaxUMxMrcqJFgQ5GgmqkVYo/OKCxIjgjQLflonMrIZxgJEdDEaSxcCBFlLAo2iePvdO76EPxkg9wyq0oydbSZJmsUpE1ztJ3PtXwaxm79Zazbzm0ZWgQ64+8eZC4Gg6oUu9bxj0JcgBsi0UXXfhO2j6voBy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711825744; c=relaxed/simple;
-	bh=yRTBcwVXckJQ8yXbbcqo8uEk/JD9wgwpQLVNHdF9TwE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T6IOcPTUkPthy9bPNufCSCwJwBPmUmDf9iKoj8lMCsHyjt0vP63Bbqrm4bYRRoEa40SfIcgFbhBs/LVEPkwYeT2vsQgvLkHME0nhcfHSvhmkEkS/1EdLbDPxD3+09F3dRVZ/xNWhpemGyU+OufIcsJUbBvMIC/IyZUc5YA0s99g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onY0+uGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A08CC433C7;
-	Sat, 30 Mar 2024 19:08:59 +0000 (UTC)
+	s=arc-20240116; t=1711825747; c=relaxed/simple;
+	bh=pBrBX8N/AVh05V+rxL7ttckidHUEbDcbAnCAdcL7fis=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JjZRbq7hUNAVAHjJzZAOYTRHE9tpd8/L2RwO7yPj1VUMT0YOBDSN+1tcz0WSqvhKktR603M/yS0YfXNif9rJ/S7UoCC6FAETUpV8fv7kP9IE09oeznaAL8hXnoXJFqQIhd84zfsZVG/oZrktGOnJ6daSQPXxBKVfA/ZvXrGF15U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmCL69k6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9BFC43390;
+	Sat, 30 Mar 2024 19:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711825743;
-	bh=yRTBcwVXckJQ8yXbbcqo8uEk/JD9wgwpQLVNHdF9TwE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=onY0+uGtxAXcum5O/xi/IgNuuF1QXz+/IUu4BF47TPFAtaT5kPvPtde36ft2IFzSV
-	 m3MKyzSD0eiGU3WkAG00grQ3tVEcmsXBEwpslKIZbGLv/Ss8i4Aka7SFddD+bs/AJI
-	 qJYuOCJaIwVysGcuDsTJxqEfjxH/o7H08VNpz129NQEXViu99GMIT+Zl2fOX74m1al
-	 q6ET+Qe4pfpJomzp7oDZwUN9oIimk9JuKL+zmIumPMZFKwq7xpTP1QqYRGs066Qy9T
-	 WZ4Dtw+9HgZpfsQYYu93OROkl2m35NGssFb0cCEFu1Sv8Fw8AG32mniMAYDdcUH3XK
-	 +8q7Cyb1V7puQ==
+	s=k20201202; t=1711825746;
+	bh=pBrBX8N/AVh05V+rxL7ttckidHUEbDcbAnCAdcL7fis=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NmCL69k6i01OsnPW64Ekkb5PtcHhP2jBDY+DBEEHeOzgrBpJxld2AT4lGUTWR7FVW
+	 R4jxB38RZKdGvjsjfqaHGbXSuuhQJeeH+yKpDFV7x0z0TCGJjxsIAcSWq7C13QbT4y
+	 KN5PFvcTUuFtHpckR4EcL40c6MAi+v5EXYfkaZXn/chHAA2DNPRL/tl9ZCURcMfi3y
+	 k9bU3iUEkL5Bfk4uB90QD69D3RhfZVobcxeN4uh2NAx1CHckC/LSCr9ztvPJddu+Wl
+	 Gip6Wvv2jHhIQ8peSznvbMuLDo4zdXYXzqOxEMBIsIypm+MR0/dDQpUvyTGiDTReFD
+	 vNTpKSBmQqGRw==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Marius Cristea <marius.cristea@microchip.com>,
@@ -51,10 +52,12 @@ Cc: Marius Cristea <marius.cristea@microchip.com>,
 	Nuno Sa <nuno.sa@analog.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 0/8] IIO: More use of device_for_each_child_node_scoped() and __free()
-Date: Sat, 30 Mar 2024 19:08:41 +0000
-Message-ID: <20240330190849.1321065-1-jic23@kernel.org>
+Subject: [PATCH 1/8] iio: adc: ab8500-gpadc: Allow COMPILE_TEST builds
+Date: Sat, 30 Mar 2024 19:08:42 +0000
+Message-ID: <20240330190849.1321065-2-jic23@kernel.org>
 X-Mailer: git-send-email 2.44.0
+In-Reply-To: <20240330190849.1321065-1-jic23@kernel.org>
+References: <20240330190849.1321065-1-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,46 +68,29 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Mixture of new code that entered in parallel with the original conversion
-set to use this new scoped cleanup and cases I missed.  Note the
-relevant code didn't make the 6.9 merge window but is queued up for
-6.10 in the togreg branch of iio.git and linux-next.
+The dependencies on various ab8500 components prevent this driver
+being useful but they don't seem to prevent it being built.
+Improve build coverage by allowing COMPILE_TEST.
 
-Includes allowing easier building of the ab8500-gpadc driver to enable
-testing the changes. Seems a sensible change to make in general.
+Cc: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/adc/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This series is making us of the automated cleanup introduced in
-linux/cleanup.h and new device_for_each_child_node_scoped() to avoid
-the need to remember to call fwnode_handle_put() in early exits from
-loops over the child nodes. This can also be used for simple scope
-based cleanup as seen in the ad3552 patch. In general this makes it
-easier to avoid a common class of bug.
-
-Jonathan Cameron (8):
-  iio: adc: ab8500-gpadc: Allow COMPILE_TEST builds
-  iio: adc: ab8500-gpadc: Fix kernel-doc parameter names.
-  iio: adc: ab8500-gpadc: Use device_for_each_child_node_scoped() to
-    simplify erorr paths.
-  iio: adc: ad4130: Use device_for_each_child_node_scoped() to simplify
-    error paths.
-  iio: adc: ad7173: Use device_for_each_child_node_scoped() to simplify
-    error paths.
-  iio: frequency: admfm2000: Use device_for_each_child_node_scoped() to
-    simplify error paths.
-  iio: dac: ad3552: Use __free(fwnode_handle) to simplify error
-    handling.
-  iio: adc: pac1934: Use device_for_each_available_child_node_scoped()
-    to simplify error handling.
-
- drivers/iio/adc/Kconfig           |  2 +-
- drivers/iio/adc/ab8500-gpadc.c    |  8 ++--
- drivers/iio/adc/ad4130.c          |  7 +--
- drivers/iio/adc/ad7173.c          | 24 +++-------
- drivers/iio/adc/pac1934.c         | 77 +++++++++++++------------------
- drivers/iio/dac/ad3552r.c         | 59 +++++++++--------------
- drivers/iio/frequency/admfm2000.c | 24 +++-------
- 7 files changed, 73 insertions(+), 128 deletions(-)
-
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 8db68b80b391..e648198b0a0a 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -8,7 +8,7 @@ menu "Analog to digital converters"
+ 
+ config AB8500_GPADC
+ 	bool "ST-Ericsson AB8500 GPADC driver"
+-	depends on AB8500_CORE && REGULATOR_AB8500
++	depends on (AB8500_CORE && REGULATOR_AB8500) || COMPILE_TEST
+ 	default y
+ 	help
+ 	  AB8500 Analog Baseband, mixed signal integrated circuit GPADC
 -- 
 2.44.0
 

@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-3948-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3949-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 094A1892CAC
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:54:04 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BE43892CAD
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:54:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B12A01F22943
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 18:54:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E79C1C20EA9
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 18:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D9B3BBE3;
-	Sat, 30 Mar 2024 18:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65CC3EA8C;
+	Sat, 30 Mar 2024 18:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DL6QgJIF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dea63eox"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494B82E3E5
-	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 18:53:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD613D0D2
+	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 18:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711824838; cv=none; b=tO4FLFYU/jXxrJ7cOBYgJuI3lw+56pPwbZ9v2lQApIBISfCWH29YuB9pL5mFjYuK1pLST5PJ1EYsJ+7a7IoMwhM4RVB5Lbor/P79hTE6th/QbnnxxGLbJRF1HcO1nKhY8RKb7BN8jA+UzJIKYgbQ+ftXt6k8B43VsciCaIQvpVY=
+	t=1711824843; cv=none; b=izErZUV7dM0jNxR/lXBbcYkhpLiCc9yeU9M0kZzfWplKuYoyNwgKVgek/Pm3wQ8OZQdyCaHzldeSQgVlaiejmWIdlQTU5mgPSR3M4raPlCztRq0qc0TXEUfRsZtEJMdUJgsGsDz002rcFXR1lRTQxrnxBiUWS9VYb+qML6E5XSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711824838; c=relaxed/simple;
-	bh=ZEX5V6rA/qW9iOHSltdQCogQSODPZOZ+ahDrhUmzuXE=;
+	s=arc-20240116; t=1711824843; c=relaxed/simple;
+	bh=bG+TeFde3DyITfgrg0EFAq3aPgezHodRADkhJV7nv3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HO5+LgY665lbR/2bNcu7D8eeQaq52ACUc87IKoYVSmVOv9vtsObNgY/98Q8ApD8n3ENDpqiJqzkQ9t+hfFL5wHQ9kwAURKNvA52tVK6l0UVb+g0RtPilmCovSWVWv0k+36YrqXuJml5HddZRy0Yv8QVwWFzWmVeOwfT1lCEWk58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DL6QgJIF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EE1C433C7;
-	Sat, 30 Mar 2024 18:53:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VezzQaEci+2VXHgl2JG5KwmTIGfgW+NPLrD+UTPGtGbcp5kq94l2uKPDi6C1wWtmHplBeMEh/KZc2rzVRHT19QlZl+LhsvaWsfm60Hf8MSWOr2CwYtQLd1DrOEJhvbx7c8YsNdqZgrWkCGrHFDdsnspTUMmq3kTgvsAQ+/XMx2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dea63eox; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C62C433F1;
+	Sat, 30 Mar 2024 18:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711824837;
-	bh=ZEX5V6rA/qW9iOHSltdQCogQSODPZOZ+ahDrhUmzuXE=;
+	s=k20201202; t=1711824843;
+	bh=bG+TeFde3DyITfgrg0EFAq3aPgezHodRADkhJV7nv3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DL6QgJIFLGQNBn3eexFoRBN+yc12j0lsHANgcnuMBH7Xn0QShWgpoTj7b5WTjHbUl
-	 RBj9tK+aUGYj849qEp+baW373VDhr0E/CsT5CM7yMXIDp1CYnU350WHXKYAR6nLIiL
-	 K7liwidi4Q9FiI3kKoiZ3V4x02I4JIVL+1CBz548o/APhaJfaJYbTBCFJ7cj6URLhK
-	 YRrUbGEYb+Vxvc7t9X9V/xnceunV52rgRh6cttOtzCEuwAIsskW8WCz7T9NnV4U2Qb
-	 HIXwrxUiHz2zyIRUtp+gJ2k0Ucl9PopdQQOhr+OKWjYOr1LMXtRX6m+VnFJV8pI2U3
-	 v1jiPHLYHIbGw==
+	b=Dea63eoxYo5tNDPyNC0FXIEzYu0ETvTcYUQLfIt4XtAhTqB4+fZ2/Rozkr3baquyO
+	 9XOHkOEYuC2v6dULvKQWuKAN7w5ipLRZsyg1Kmgn8hyPt0GSf9VHj5nuuzDkqX0BUW
+	 CHmbh23DqqyLPSYWDVumYPER3u2YDLUbzkW+gDO/l8I+Wofei6Mswh7P4MvReO69ZJ
+	 +TSqYbbnxJ0MgTJwG1+Q9UAEAVOI7xaAUttEsdg7+4k1tfHayLpBbIHV3amn/MQKhn
+	 Dx0KNecQHpOEAAw3AQPOwDQdoeMPdH0+pjujnEODfqekcGuZpkclRKW6IZU+vK7Eyd
+	 EGdsEkJbuXbQA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
@@ -58,9 +58,9 @@ Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>,
 	Marius Cristea <marius.cristea@microchip.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v6 7/8] iio: dac: ad3552r: Use device_for_each_child_node_scoped()
-Date: Sat, 30 Mar 2024 18:53:04 +0000
-Message-ID: <20240330185305.1319844-8-jic23@kernel.org>
+Subject: [PATCH v6 8/8] iio: dac: ad5770r: Use device_for_each_child_node_scoped()
+Date: Sat, 30 Mar 2024 18:53:05 +0000
+Message-ID: <20240330185305.1319844-9-jic23@kernel.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240330185305.1319844-1-jic23@kernel.org>
 References: <20240330185305.1319844-1-jic23@kernel.org>
@@ -70,6 +70,7 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
@@ -78,119 +79,62 @@ Switching to the _scoped() version removes the need for manual
 calling of fwnode_handle_put() in the paths where the code
 exits the loop early. In this case that's all in error paths.
 
-Removing the goto err; statements also allows more extensive use of
-dev_err_probe() further simplifying the code.
-
-Cc: Mihail Chindris <mihail.chindris@analog.com>
+Cc: Nuno Sá <nuno.sa@analog.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/dac/ad3552r.c | 51 +++++++++++++++------------------------
- 1 file changed, 19 insertions(+), 32 deletions(-)
+ drivers/iio/dac/ad5770r.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
-index a492e8f2fc0f..e14a065b29ca 100644
---- a/drivers/iio/dac/ad3552r.c
-+++ b/drivers/iio/dac/ad3552r.c
-@@ -880,7 +880,6 @@ static void ad3552r_reg_disable(void *reg)
- static int ad3552r_configure_device(struct ad3552r_desc *dac)
+diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
+index f66d67402e43..c360ebf5297a 100644
+--- a/drivers/iio/dac/ad5770r.c
++++ b/drivers/iio/dac/ad5770r.c
+@@ -515,39 +515,32 @@ static int ad5770r_channel_config(struct ad5770r_state *st)
  {
- 	struct device *dev = &dac->spi->dev;
+ 	int ret, tmp[2], min, max;
+ 	unsigned int num;
 -	struct fwnode_handle *child;
- 	struct regulator *vref;
- 	int err, cnt = 0, voltage, delta = 100000;
- 	u32 vals[2], val, ch;
-@@ -949,53 +948,45 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
- 		return -ENODEV;
+ 
+ 	num = device_get_child_node_count(&st->spi->dev);
+ 	if (num != AD5770R_MAX_CHANNELS)
+ 		return -EINVAL;
+ 
+-	device_for_each_child_node(&st->spi->dev, child) {
++	device_for_each_child_node_scoped(&st->spi->dev, child) {
+ 		ret = fwnode_property_read_u32(child, "reg", &num);
+ 		if (ret)
+-			goto err_child_out;
+-		if (num >= AD5770R_MAX_CHANNELS) {
+-			ret = -EINVAL;
+-			goto err_child_out;
+-		}
++			return ret;
++		if (num >= AD5770R_MAX_CHANNELS)
++			return -EINVAL;
+ 
+ 		ret = fwnode_property_read_u32_array(child,
+ 						     "adi,range-microamp",
+ 						     tmp, 2);
+ 		if (ret)
+-			goto err_child_out;
++			return ret;
+ 
+ 		min = tmp[0] / 1000;
+ 		max = tmp[1] / 1000;
+ 		ret = ad5770r_store_output_range(st, min, max, num);
+ 		if (ret)
+-			goto err_child_out;
++			return ret;
  	}
  
--	device_for_each_child_node(dev, child) {
-+	device_for_each_child_node_scoped(dev, child) {
- 		err = fwnode_property_read_u32(child, "reg", &ch);
--		if (err) {
--			dev_err(dev, "mandatory reg property missing\n");
--			goto put_child;
--		}
--		if (ch >= AD3552R_NUM_CH) {
--			dev_err(dev, "reg must be less than %d\n",
--				AD3552R_NUM_CH);
--			err = -EINVAL;
--			goto put_child;
--		}
-+		if (err)
-+			return dev_err_probe(dev, err,
-+					     "mandatory reg property missing\n");
-+		if (ch >= AD3552R_NUM_CH)
-+			return dev_err_probe(dev, -EINVAL,
-+					     "reg must be less than %d\n",
-+					     AD3552R_NUM_CH);
- 
- 		if (fwnode_property_present(child, "adi,output-range-microvolt")) {
- 			err = fwnode_property_read_u32_array(child,
- 							     "adi,output-range-microvolt",
- 							     vals,
- 							     2);
--			if (err) {
--				dev_err(dev,
-+			if (err)
-+				return dev_err_probe(dev, err,
- 					"adi,output-range-microvolt property could not be parsed\n");
--				goto put_child;
--			}
- 
- 			err = ad3552r_find_range(dac->chip_id, vals);
--			if (err < 0) {
--				dev_err(dev,
--					"Invalid adi,output-range-microvolt value\n");
--				goto put_child;
--			}
-+			if (err < 0)
-+				return dev_err_probe(dev, err,
-+						     "Invalid adi,output-range-microvolt value\n");
-+
- 			val = err;
- 			err = ad3552r_set_ch_value(dac,
- 						   AD3552R_CH_OUTPUT_RANGE_SEL,
- 						   ch, val);
- 			if (err)
--				goto put_child;
-+				return err;
- 
- 			dac->ch_data[ch].range = val;
- 		} else if (dac->chip_id == AD3542R_ID) {
--			dev_err(dev,
--				"adi,output-range-microvolt is required for ad3542r\n");
--			err = -EINVAL;
--			goto put_child;
-+			return dev_err_probe(dev, -EINVAL,
-+					     "adi,output-range-microvolt is required for ad3542r\n");
- 		} else {
- 			err = ad3552r_configure_custom_gain(dac, child, ch);
- 			if (err)
--				goto put_child;
-+				return err;
- 		}
- 
- 		ad3552r_calc_gain_and_offset(dac, ch);
-@@ -1003,7 +994,7 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
- 
- 		err = ad3552r_set_ch_value(dac, AD3552R_CH_SELECT, ch, 1);
- 		if (err < 0)
--			goto put_child;
-+			return err;
- 
- 		dac->channels[cnt] = AD3552R_CH_DAC(ch);
- 		++cnt;
-@@ -1021,10 +1012,6 @@ static int ad3552r_configure_device(struct ad3552r_desc *dac)
- 	dac->num_ch = cnt;
- 
  	return 0;
--put_child:
--	fwnode_handle_put(child);
 -
--	return err;
+-err_child_out:
+-	fwnode_handle_put(child);
+-	return ret;
  }
  
- static int ad3552r_init(struct ad3552r_desc *dac)
+ static int ad5770r_init(struct ad5770r_state *st)
 -- 
 2.44.0
 

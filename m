@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-3956-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3957-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24D3E892CB8
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 20:09:26 +0100 (CET)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF677892CBA
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 20:09:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51E8E1C2148F
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:09:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90A45B22079
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:09:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5564084A;
-	Sat, 30 Mar 2024 19:09:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C763E40846;
+	Sat, 30 Mar 2024 19:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qx2W28Zw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uo9RHRe4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F358F200D9
-	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 19:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E4B200D9
+	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 19:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711825764; cv=none; b=JzIVw6ggqSvfDeRyT7zojWVsRkj9uJql1DErWNhm7M1fivVamLBcUOHl8hyoMBgCioRD0Xw1Kxu0YSmPqC1bsUwZRKfU9M82zmGfGYSgT8nZLjVwv9MRpNPW/9DQBTbViw7X0NsZeaMq7r/5PEcup/mZUhqx0EvMT1sYJzzu70Q=
+	t=1711825767; cv=none; b=rl+92ybSo7T2fXUMOT36XEBRtXuNHLmpi23TapahRy/r+FBnzeUbbQe57iYwZ8x2rsrVxOiKrJTmmfjJqapo4GPP86Ge8dfl1+dPRS0KssDbrF/CKVeulcJxjP17xlb2B5Cmxx2zawyB2xKlABKAx9KF4F48kPQyn3LQPCyY+Ks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711825764; c=relaxed/simple;
-	bh=CAkeo+GKk3RatumWU31CHPHEyLJ87H39Sk1V9uNQku4=;
+	s=arc-20240116; t=1711825767; c=relaxed/simple;
+	bh=qf+vFt4eHBKb9wC1ML+JrZeUlBlFfrqpC/PNsmXCNhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nxf1O2k8duzsuiO9C3IMiiIewLS41fQQX5zp0MXmt08UExuStpBXJPToovck9PT38LD492Vk8WKir+2QYUZjLgInPU3pTB2EsrbSKC1GXNYofT1zjvw+Dk8f045IwaLOl8ODu9AIsiiibIEyDQPjjaAzNcnZIKYm1q5TMwvPtkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qx2W28Zw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E3CC43390;
-	Sat, 30 Mar 2024 19:09:20 +0000 (UTC)
+	 MIME-Version; b=S4vGKihNJiN3qcrCD7oXN2xZwGHjh1vIxnyWUJMqYa9GV9dwhOqwFLKwHDQitXmxDE2kTn21AUUhhcor00Wv5VqaUUkeJ3kok0h/S8PT5CyDbkTQtiA90dKN7UYWTiqyxkt4LRCrFXRCUyYw5uHIoEQ9zqsMD2/rRoWED6M/o88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uo9RHRe4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64283C433F1;
+	Sat, 30 Mar 2024 19:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711825763;
-	bh=CAkeo+GKk3RatumWU31CHPHEyLJ87H39Sk1V9uNQku4=;
+	s=k20201202; t=1711825767;
+	bh=qf+vFt4eHBKb9wC1ML+JrZeUlBlFfrqpC/PNsmXCNhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qx2W28ZwSf+NdI0lgxPF2eOW/c4EsIsgMAKA6oSyvtuUwSrq2Ieln2XxrGtRiEl25
-	 E+UFh+d96/glc07dFLCZPONt6LuqYyKrQMm1R6R6Aw+crWl/kIDIxL7wl5tG6icqGi
-	 lJGbz//wbflETpCldcCzzRmjCOR36lPi2xIevy0fV2p8vD0ReArtqMdLEUwXrS8GQ9
-	 80QGZk0uvrsAhGBvUXUuqA7Z9lhVRAQ8c5CMDZNGW8Lffh8QMNeNUds33G1WmQMh9v
-	 qYlQTHGek/b7QukJt91M/QYOu0W8dn0ixtgLov5+Ca5qkffJpQA0AMqSY8Bo3ybTpb
-	 VzzvEcVjl0eqQ==
+	b=uo9RHRe4DIrrcBYYkXjFVCXY9HnZki/b3Wu4w9depCOHFFim0Hbsy3KIDikSqbBSQ
+	 gDsZNhwZKpuaiCQ6CBoBgAvx9XXuR9QnY19AS+NOYrDNN3oPbWlE/U1g6hfSkw+ZHf
+	 gZiW71YEw+LNYQezyvE0PMib0KhmNTy2I4XAH997vDFfGYjduYBcz0NJSoa23RVG8J
+	 6o3Gh0GPmAMmJ4mNTFjjh1EcO1ujOEBAmES2k2mDBifeA0E4d4nBKo9nMPRa+TSXZG
+	 SPQmgf9UxdRC62ftSYJwNg6izFruGuHN0DwjyZW/edyIQ6uyM2oUe58Mm4+/R87y5i
+	 oGk4TK+HhfGEA==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org
 Cc: Marius Cristea <marius.cristea@microchip.com>,
@@ -52,9 +52,9 @@ Cc: Marius Cristea <marius.cristea@microchip.com>,
 	Nuno Sa <nuno.sa@analog.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6/8] iio: frequency: admfm2000: Use device_for_each_child_node_scoped() to simplify error paths.
-Date: Sat, 30 Mar 2024 19:08:47 +0000
-Message-ID: <20240330190849.1321065-7-jic23@kernel.org>
+Subject: [PATCH 7/8] iio: dac: ad3552: Use __free(fwnode_handle) to simplify error handling.
+Date: Sat, 30 Mar 2024 19:08:48 +0000
+Message-ID: <20240330190849.1321065-8-jic23@kernel.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240330190849.1321065-1-jic23@kernel.org>
 References: <20240330190849.1321065-1-jic23@kernel.org>
@@ -68,89 +68,117 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-This loop definition automatically release the fwnode_handle on early exit
-simplifying error handling paths.
+By using this scoped based cleanup direct returns on errors are enabled
+simplifying the code.
 
-Cc: Kim Seer Paller <kimseer.paller@analog.com>
+Cc: Mihail Chindris <mihail.chindris@analog.com>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/frequency/admfm2000.c | 24 ++++++------------------
- 1 file changed, 6 insertions(+), 18 deletions(-)
+ drivers/iio/dac/ad3552r.c | 59 +++++++++++++++------------------------
+ 1 file changed, 23 insertions(+), 36 deletions(-)
 
-diff --git a/drivers/iio/frequency/admfm2000.c b/drivers/iio/frequency/admfm2000.c
-index c34d79e55a7c..b2263b9afeda 100644
---- a/drivers/iio/frequency/admfm2000.c
-+++ b/drivers/iio/frequency/admfm2000.c
-@@ -160,26 +160,21 @@ static int admfm2000_channel_config(struct admfm2000_state *st,
+diff --git a/drivers/iio/dac/ad3552r.c b/drivers/iio/dac/ad3552r.c
+index e14a065b29ca..8aa942896b5b 100644
+--- a/drivers/iio/dac/ad3552r.c
++++ b/drivers/iio/dac/ad3552r.c
+@@ -801,51 +801,45 @@ static int ad3552r_configure_custom_gain(struct ad3552r_desc *dac,
+ 					 u32 ch)
  {
- 	struct platform_device *pdev = to_platform_device(indio_dev->dev.parent);
- 	struct device *dev = &pdev->dev;
--	struct fwnode_handle *child;
- 	struct gpio_desc **dsa;
- 	struct gpio_desc **sw;
- 	int ret, i;
- 	bool mode;
- 	u32 reg;
+ 	struct device *dev = &dac->spi->dev;
+-	struct fwnode_handle *gain_child;
+ 	u32 val;
+ 	int err;
+ 	u8 addr;
+ 	u16 reg = 0, offset;
  
--	device_for_each_child_node(dev, child) {
-+	device_for_each_child_node_scoped(dev, child) {
- 		ret = fwnode_property_read_u32(child, "reg", &reg);
--		if (ret) {
--			fwnode_handle_put(child);
-+		if (ret)
- 			return dev_err_probe(dev, ret,
- 					     "Failed to get reg property\n");
--		}
+-	gain_child = fwnode_get_named_child_node(child,
+-						 "custom-output-range-config");
+-	if (!gain_child) {
+-		dev_err(dev,
+-			"mandatory custom-output-range-config property missing\n");
+-		return -EINVAL;
+-	}
++	struct fwnode_handle *gain_child __free(fwnode_handle)
++		= fwnode_get_named_child_node(child,
++					      "custom-output-range-config");
++	if (!gain_child)
++		return dev_err_probe(dev, -EINVAL,
++				     "mandatory custom-output-range-config property missing\n");
  
--		if (reg >= indio_dev->num_channels) {
--			fwnode_handle_put(child);
-+		if (reg >= indio_dev->num_channels)
- 			return dev_err_probe(dev, -EINVAL, "reg bigger than: %d\n",
- 					     indio_dev->num_channels);
--		}
+ 	dac->ch_data[ch].range_override = 1;
+ 	reg |= ad3552r_field_prep(1, AD3552R_MASK_CH_RANGE_OVERRIDE);
  
- 		if (fwnode_property_present(child, "adi,mixer-mode"))
- 			mode = ADMFM2000_MIXER_MODE;
-@@ -196,36 +191,29 @@ static int admfm2000_channel_config(struct admfm2000_state *st,
- 			dsa = st->dsa2_gpios;
- 			break;
- 		default:
--			fwnode_handle_put(child);
- 			return -EINVAL;
- 		}
+ 	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-p", &val);
+-	if (err) {
+-		dev_err(dev, "mandatory adi,gain-scaling-p property missing\n");
+-		goto put_child;
+-	}
++	if (err)
++		return dev_err_probe(dev, err,
++				     "mandatory adi,gain-scaling-p property missing\n");
+ 	reg |= ad3552r_field_prep(val, AD3552R_MASK_CH_GAIN_SCALING_P);
+ 	dac->ch_data[ch].p = val;
  
- 		for (i = 0; i < ADMFM2000_MODE_GPIOS; i++) {
- 			sw[i] = devm_fwnode_gpiod_get_index(dev, child, "switch",
- 							    i, GPIOD_OUT_LOW, NULL);
--			if (IS_ERR(sw[i])) {
--				fwnode_handle_put(child);
-+			if (IS_ERR(sw[i]))
- 				return dev_err_probe(dev, PTR_ERR(sw[i]),
- 						     "Failed to get gpios\n");
--			}
- 		}
+ 	err = fwnode_property_read_u32(gain_child, "adi,gain-scaling-n", &val);
+-	if (err) {
+-		dev_err(dev, "mandatory adi,gain-scaling-n property missing\n");
+-		goto put_child;
+-	}
++	if (err)
++		return dev_err_probe(dev, err,
++				     "mandatory adi,gain-scaling-n property missing\n");
+ 	reg |= ad3552r_field_prep(val, AD3552R_MASK_CH_GAIN_SCALING_N);
+ 	dac->ch_data[ch].n = val;
  
- 		for (i = 0; i < ADMFM2000_DSA_GPIOS; i++) {
- 			dsa[i] = devm_fwnode_gpiod_get_index(dev, child,
- 							     "attenuation", i,
- 							     GPIOD_OUT_LOW, NULL);
--			if (IS_ERR(dsa[i])) {
--				fwnode_handle_put(child);
-+			if (IS_ERR(dsa[i]))
- 				return dev_err_probe(dev, PTR_ERR(dsa[i]),
- 						     "Failed to get gpios\n");
--			}
- 		}
+ 	err = fwnode_property_read_u32(gain_child, "adi,rfb-ohms", &val);
+-	if (err) {
+-		dev_err(dev, "mandatory adi,rfb-ohms property missing\n");
+-		goto put_child;
+-	}
++	if (err)
++		return dev_err_probe(dev, err,
++				     "mandatory adi,rfb-ohms property missing\n");
+ 	dac->ch_data[ch].rfb = val;
  
- 		ret = admfm2000_mode(indio_dev, reg, mode);
--		if (ret) {
--			fwnode_handle_put(child);
-+		if (ret)
- 			return ret;
--		}
- 	}
+ 	err = fwnode_property_read_u32(gain_child, "adi,gain-offset", &val);
+-	if (err) {
+-		dev_err(dev, "mandatory adi,gain-offset property missing\n");
+-		goto put_child;
+-	}
++	if (err)
++		return dev_err_probe(dev, err,
++				     "mandatory adi,gain-offset property missing\n");
+ 	dac->ch_data[ch].gain_offset = val;
  
- 	return 0;
+ 	offset = abs((s32)val);
+@@ -855,21 +849,14 @@ static int ad3552r_configure_custom_gain(struct ad3552r_desc *dac,
+ 	addr = AD3552R_REG_ADDR_CH_GAIN(ch);
+ 	err = ad3552r_write_reg(dac, addr,
+ 				offset & AD3552R_MASK_CH_OFFSET_BITS_0_7);
+-	if (err) {
+-		dev_err(dev, "Error writing register\n");
+-		goto put_child;
+-	}
++	if (err)
++		return dev_err_probe(dev, err, "Error writing register\n");
+ 
+ 	err = ad3552r_write_reg(dac, addr, reg);
+-	if (err) {
+-		dev_err(dev, "Error writing register\n");
+-		goto put_child;
+-	}
+-
+-put_child:
+-	fwnode_handle_put(gain_child);
++	if (err)
++		return dev_err_probe(dev, err, "Error writing register\n");
+ 
+-	return err;
++	return 0;
+ }
+ 
+ static void ad3552r_reg_disable(void *reg)
 -- 
 2.44.0
 

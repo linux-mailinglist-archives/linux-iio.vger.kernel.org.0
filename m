@@ -1,46 +1,46 @@
-Return-Path: <linux-iio+bounces-3943-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3944-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ADEA892CA7
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:53:36 +0100 (CET)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D581892CA8
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:53:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D62F1C212A1
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 18:53:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E3781C21469
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 18:53:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CB5374C3;
-	Sat, 30 Mar 2024 18:53:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661753BBE3;
+	Sat, 30 Mar 2024 18:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qcr2f2kF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uVATFS1Q"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189372E3E5
-	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 18:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234A53BBD8
+	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 18:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711824811; cv=none; b=YxmNF+krvXbiyVNVE35pYYgCU4MHDbAWc1CSk6xsfYLlO5wgK7G/BapLwFHdFA5BzFO9kWOvUnpRzL5Rue9AGvU39OiQK1jMzNE63Qlzs99b9yGbosN5qGSHHJJ1X+1OXNAgC3C80DXIzUUmN4unMG8AHxt+zdj/yQCA2UuYhTk=
+	t=1711824816; cv=none; b=GbU3V6LM7FQJO3yWZy3dT0HcXlPAo3l4FKQ5Sa0U40hSuggu/B8Z6fDWxyfPateVx+OMI5O+2UlAkfJD/WSMfLo29hkxUSQFlcxNi+JgtMXY+xyeH2oKpSxylV8ONvAdL0bu2iXb3XdTsh2aDBH/LnsDe5xkYDBxvZZPRIVdaPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711824811; c=relaxed/simple;
-	bh=6GckLYsNuC3zH2eXzNl8m+O6ErjjCU39FK09wLysA60=;
+	s=arc-20240116; t=1711824816; c=relaxed/simple;
+	bh=PSB86HBqhFM/Jq33fgYAZAnTAFpcofY1CqBhWw+Va8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j0xd1jmROWwMhfagkXOJ+ps/EdEBTFo5Yc4yJAMeQk0IjBSZkiorOyYpWVJkGtJPtbFvcvasasGM0pCVtOIBe5junv/eadmCj9qaNZeOEliVI+UvnCT/Zf0QYqMBecrGhg5rOzqYfODBG16zz3LXGJ7dWUYwF/9fD3BMrwlSeRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qcr2f2kF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA70EC433C7;
-	Sat, 30 Mar 2024 18:53:26 +0000 (UTC)
+	 MIME-Version; b=sPDqEEMcSFMFXKuigEWfB9obQ1ke3/TgFhLegI7AGxZNTRMiSoKWSumCC7onDL83C0jRIjc2b0Z1NPDqtqFL6Mku6+Q8qyS4LYPpkgr4hIYQkr+QAh3FzjqdgpI4eQDjfcOM83i25spFnTqHaddeobJ9X16IhMotafad+QrJqWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uVATFS1Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A2CC43390;
+	Sat, 30 Mar 2024 18:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711824810;
-	bh=6GckLYsNuC3zH2eXzNl8m+O6ErjjCU39FK09wLysA60=;
+	s=k20201202; t=1711824815;
+	bh=PSB86HBqhFM/Jq33fgYAZAnTAFpcofY1CqBhWw+Va8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qcr2f2kF52THMLloiyJj4FzmpfmsPfEKfMzrgDXGtBxIlLQXsCfYIIspKBLH+bn++
-	 CqFxPusnD9Ax1KrS6gf7sXlcX78gWzQhwIjCZjpOzP6MlDYJH4UqqFdATiEK/Po0zs
-	 3WGJB+H6K7bZzyTxB05zM4SZhX8uUxlJkzWXxzlCHSPlFNN87kgdlKT2tZzLbkxKfP
-	 bueXiFtVBq+nPqhRgpadNLgZVodc3guoePARQMMbdzYb8//QYXJwR74Y0RxPAISrus
-	 MLCVQK4dBcH+wq2W4d2xPqzmm3QRYKGbMMr6DSH5eWTZxtvO4G9DMNdBvVhX0oTc63
-	 oo5URrnozD7lQ==
+	b=uVATFS1Q+iIuiZK2V/CYsMnJh1zPLPVNiaZTOwyC6+ymdgVl448jBvymVyvEd96p4
+	 5AJNVKIviuwSvdZYRTYL09wyZM1iL2EiV0h51TL4xQmn6yaa+ypME6b8HeheipJCOx
+	 PHe4kFws3Q0NfiSp0ThfM5ze37RZKI5320xoVxforPrRPoLXoXr5XXwV/5PEPRnNgx
+	 oJ0uRueSk4oshtl4NpxtWTlIy5gaGyFgKbbz4dcu43QsPt8Yz0LMcUlryO81Hz4kcc
+	 9PZqYwOU5lLdnNXEqWqb7C0yraYYNGcZOAfcNFUBrgYGHMdn9MrKQXRSoACFyfibSs
+	 QeU79dPgrkY1Q==
 From: Jonathan Cameron <jic23@kernel.org>
 To: linux-iio@vger.kernel.org,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
@@ -58,9 +58,9 @@ Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>,
 	Marius Cristea <marius.cristea@microchip.com>,
 	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v6 2/8] iio: adc: qcom-spmi-adc5: Use device_for_each_child_node_scoped()
-Date: Sat, 30 Mar 2024 18:52:59 +0000
-Message-ID: <20240330185305.1319844-3-jic23@kernel.org>
+Subject: [PATCH v6 3/8] iio: adc: stm32: Fixing err code to not indicate success
+Date: Sat, 30 Mar 2024 18:53:00 +0000
+Message-ID: <20240330185305.1319844-4-jic23@kernel.org>
 X-Mailer: git-send-email 2.44.0
 In-Reply-To: <20240330185305.1319844-1-jic23@kernel.org>
 References: <20240330185305.1319844-1-jic23@kernel.org>
@@ -74,50 +74,28 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Switching to the _scoped() version removes the need for manual
-calling of fwnode_handle_put() in the paths where the code
-exits the loop early. In this case that's all in error paths.
+This path would result in returning 0 / success on an error path.
 
-A slightly less convincing usecase than many as all the failure paths
-are wrapped up in a call to a per fwnode_handle utility function.
-The complexity in that function is sufficient that it makes sense to
-factor it out even if it this new auto cleanup would enable simpler
-returns if the code was inline at the call site. Hence I've left it alone.
-
-Cc: Marijn Suijten <marijn.suijten@somainline.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Fixes: 95bc818404b2 ("iio: adc: stm32-adc: add support of generic channels binding")
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 ---
- drivers/iio/adc/qcom-spmi-adc5.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/iio/adc/stm32-adc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
-index b6b612d733ff..9b69f40beed8 100644
---- a/drivers/iio/adc/qcom-spmi-adc5.c
-+++ b/drivers/iio/adc/qcom-spmi-adc5.c
-@@ -825,7 +825,6 @@ static int adc5_get_fw_data(struct adc5_chip *adc)
- 	const struct adc5_channels *adc_chan;
- 	struct iio_chan_spec *iio_chan;
- 	struct adc5_channel_prop prop, *chan_props;
--	struct fwnode_handle *child;
- 	unsigned int index = 0;
- 	int ret;
- 
-@@ -849,12 +848,10 @@ static int adc5_get_fw_data(struct adc5_chip *adc)
- 	if (!adc->data)
- 		adc->data = &adc5_data_pmic;
- 
--	device_for_each_child_node(adc->dev, child) {
-+	device_for_each_child_node_scoped(adc->dev, child) {
- 		ret = adc5_get_fw_channel_data(adc, &prop, child, adc->data);
--		if (ret) {
--			fwnode_handle_put(child);
-+		if (ret)
- 			return ret;
--		}
- 
- 		prop.scale_fn_type =
- 			adc->data->adc_chans[prop.channel].scale_fn_type;
+diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+index b5d3c9cea5c4..283c20757106 100644
+--- a/drivers/iio/adc/stm32-adc.c
++++ b/drivers/iio/adc/stm32-adc.c
+@@ -2234,6 +2234,7 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+ 			if (vin[0] != val || vin[1] >= adc_info->max_channels) {
+ 				dev_err(&indio_dev->dev, "Invalid channel in%d-in%d\n",
+ 					vin[0], vin[1]);
++				ret = -EINVAL;
+ 				goto err;
+ 			}
+ 		} else if (ret != -EINVAL) {
 -- 
 2.44.0
 

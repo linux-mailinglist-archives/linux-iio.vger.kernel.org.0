@@ -1,140 +1,110 @@
-Return-Path: <linux-iio+bounces-3949-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3950-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BE43892CAD
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:54:05 +0100 (CET)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0FBB892CB2
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 20:09:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E79C1C20EA9
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 18:54:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05C1D1F22769
+	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B65CC3EA8C;
-	Sat, 30 Mar 2024 18:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B6A3FB8D;
+	Sat, 30 Mar 2024 19:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dea63eox"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="onY0+uGt"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DD613D0D2
-	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 18:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3123D0D2
+	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 19:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711824843; cv=none; b=izErZUV7dM0jNxR/lXBbcYkhpLiCc9yeU9M0kZzfWplKuYoyNwgKVgek/Pm3wQ8OZQdyCaHzldeSQgVlaiejmWIdlQTU5mgPSR3M4raPlCztRq0qc0TXEUfRsZtEJMdUJgsGsDz002rcFXR1lRTQxrnxBiUWS9VYb+qML6E5XSI=
+	t=1711825744; cv=none; b=DtLPpyOftlQSxj+ZVZBF5R05CSUBqhUiIMDN/FOxWVY96TH2nPpDVFUr3VK0qLNDyQ1RK3W51xncwY75QqhNXRWOATCV1qykxNgg+AYn9sGsy4a0hncYeQ0qmSR2Kodd0+A8AFplzVqWVhISP/MqPRL/Q0TYaqBRFqbuEUqh184=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711824843; c=relaxed/simple;
-	bh=bG+TeFde3DyITfgrg0EFAq3aPgezHodRADkhJV7nv3c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VezzQaEci+2VXHgl2JG5KwmTIGfgW+NPLrD+UTPGtGbcp5kq94l2uKPDi6C1wWtmHplBeMEh/KZc2rzVRHT19QlZl+LhsvaWsfm60Hf8MSWOr2CwYtQLd1DrOEJhvbx7c8YsNdqZgrWkCGrHFDdsnspTUMmq3kTgvsAQ+/XMx2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dea63eox; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C62C433F1;
-	Sat, 30 Mar 2024 18:53:58 +0000 (UTC)
+	s=arc-20240116; t=1711825744; c=relaxed/simple;
+	bh=yRTBcwVXckJQ8yXbbcqo8uEk/JD9wgwpQLVNHdF9TwE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T6IOcPTUkPthy9bPNufCSCwJwBPmUmDf9iKoj8lMCsHyjt0vP63Bbqrm4bYRRoEa40SfIcgFbhBs/LVEPkwYeT2vsQgvLkHME0nhcfHSvhmkEkS/1EdLbDPxD3+09F3dRVZ/xNWhpemGyU+OufIcsJUbBvMIC/IyZUc5YA0s99g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=onY0+uGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A08CC433C7;
+	Sat, 30 Mar 2024 19:08:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711824843;
-	bh=bG+TeFde3DyITfgrg0EFAq3aPgezHodRADkhJV7nv3c=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dea63eoxYo5tNDPyNC0FXIEzYu0ETvTcYUQLfIt4XtAhTqB4+fZ2/Rozkr3baquyO
-	 9XOHkOEYuC2v6dULvKQWuKAN7w5ipLRZsyg1Kmgn8hyPt0GSf9VHj5nuuzDkqX0BUW
-	 CHmbh23DqqyLPSYWDVumYPER3u2YDLUbzkW+gDO/l8I+Wofei6Mswh7P4MvReO69ZJ
-	 +TSqYbbnxJ0MgTJwG1+Q9UAEAVOI7xaAUttEsdg7+4k1tfHayLpBbIHV3amn/MQKhn
-	 Dx0KNecQHpOEAAw3AQPOwDQdoeMPdH0+pjujnEODfqekcGuZpkclRKW6IZU+vK7Eyd
-	 EGdsEkJbuXbQA==
+	s=k20201202; t=1711825743;
+	bh=yRTBcwVXckJQ8yXbbcqo8uEk/JD9wgwpQLVNHdF9TwE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=onY0+uGtxAXcum5O/xi/IgNuuF1QXz+/IUu4BF47TPFAtaT5kPvPtde36ft2IFzSV
+	 m3MKyzSD0eiGU3WkAG00grQ3tVEcmsXBEwpslKIZbGLv/Ss8i4Aka7SFddD+bs/AJI
+	 qJYuOCJaIwVysGcuDsTJxqEfjxH/o7H08VNpz129NQEXViu99GMIT+Zl2fOX74m1al
+	 q6ET+Qe4pfpJomzp7oDZwUN9oIimk9JuKL+zmIumPMZFKwq7xpTP1QqYRGs066Qy9T
+	 WZ4Dtw+9HgZpfsQYYu93OROkl2m35NGssFb0cCEFu1Sv8Fw8AG32mniMAYDdcUH3XK
+	 +8q7Cyb1V7puQ==
 From: Jonathan Cameron <jic23@kernel.org>
-To: linux-iio@vger.kernel.org,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>,
+To: linux-iio@vger.kernel.org
+Cc: Marius Cristea <marius.cristea@microchip.com>,
 	Mihail Chindris <mihail.chindris@analog.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Tomislav Denis <tomislav.denis@avl.com>,
-	Marek Vasut <marex@denx.de>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Marijn Suijten <marijn.suijten@somainline.org>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Kim Seer Paller <kimseer.paller@analog.com>,
+	Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Cosmin Tanislav <demonsingur@gmail.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v6 8/8] iio: dac: ad5770r: Use device_for_each_child_node_scoped()
-Date: Sat, 30 Mar 2024 18:53:05 +0000
-Message-ID: <20240330185305.1319844-9-jic23@kernel.org>
+Subject: [PATCH 0/8] IIO: More use of device_for_each_child_node_scoped() and __free()
+Date: Sat, 30 Mar 2024 19:08:41 +0000
+Message-ID: <20240330190849.1321065-1-jic23@kernel.org>
 X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240330185305.1319844-1-jic23@kernel.org>
-References: <20240330185305.1319844-1-jic23@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Switching to the _scoped() version removes the need for manual
-calling of fwnode_handle_put() in the paths where the code
-exits the loop early. In this case that's all in error paths.
+Mixture of new code that entered in parallel with the original conversion
+set to use this new scoped cleanup and cases I missed.  Note the
+relevant code didn't make the 6.9 merge window but is queued up for
+6.10 in the togreg branch of iio.git and linux-next.
 
-Cc: Nuno Sá <nuno.sa@analog.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/dac/ad5770r.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+Includes allowing easier building of the ab8500-gpadc driver to enable
+testing the changes. Seems a sensible change to make in general.
 
-diff --git a/drivers/iio/dac/ad5770r.c b/drivers/iio/dac/ad5770r.c
-index f66d67402e43..c360ebf5297a 100644
---- a/drivers/iio/dac/ad5770r.c
-+++ b/drivers/iio/dac/ad5770r.c
-@@ -515,39 +515,32 @@ static int ad5770r_channel_config(struct ad5770r_state *st)
- {
- 	int ret, tmp[2], min, max;
- 	unsigned int num;
--	struct fwnode_handle *child;
- 
- 	num = device_get_child_node_count(&st->spi->dev);
- 	if (num != AD5770R_MAX_CHANNELS)
- 		return -EINVAL;
- 
--	device_for_each_child_node(&st->spi->dev, child) {
-+	device_for_each_child_node_scoped(&st->spi->dev, child) {
- 		ret = fwnode_property_read_u32(child, "reg", &num);
- 		if (ret)
--			goto err_child_out;
--		if (num >= AD5770R_MAX_CHANNELS) {
--			ret = -EINVAL;
--			goto err_child_out;
--		}
-+			return ret;
-+		if (num >= AD5770R_MAX_CHANNELS)
-+			return -EINVAL;
- 
- 		ret = fwnode_property_read_u32_array(child,
- 						     "adi,range-microamp",
- 						     tmp, 2);
- 		if (ret)
--			goto err_child_out;
-+			return ret;
- 
- 		min = tmp[0] / 1000;
- 		max = tmp[1] / 1000;
- 		ret = ad5770r_store_output_range(st, min, max, num);
- 		if (ret)
--			goto err_child_out;
-+			return ret;
- 	}
- 
- 	return 0;
--
--err_child_out:
--	fwnode_handle_put(child);
--	return ret;
- }
- 
- static int ad5770r_init(struct ad5770r_state *st)
+This series is making us of the automated cleanup introduced in
+linux/cleanup.h and new device_for_each_child_node_scoped() to avoid
+the need to remember to call fwnode_handle_put() in early exits from
+loops over the child nodes. This can also be used for simple scope
+based cleanup as seen in the ad3552 patch. In general this makes it
+easier to avoid a common class of bug.
+
+Jonathan Cameron (8):
+  iio: adc: ab8500-gpadc: Allow COMPILE_TEST builds
+  iio: adc: ab8500-gpadc: Fix kernel-doc parameter names.
+  iio: adc: ab8500-gpadc: Use device_for_each_child_node_scoped() to
+    simplify erorr paths.
+  iio: adc: ad4130: Use device_for_each_child_node_scoped() to simplify
+    error paths.
+  iio: adc: ad7173: Use device_for_each_child_node_scoped() to simplify
+    error paths.
+  iio: frequency: admfm2000: Use device_for_each_child_node_scoped() to
+    simplify error paths.
+  iio: dac: ad3552: Use __free(fwnode_handle) to simplify error
+    handling.
+  iio: adc: pac1934: Use device_for_each_available_child_node_scoped()
+    to simplify error handling.
+
+ drivers/iio/adc/Kconfig           |  2 +-
+ drivers/iio/adc/ab8500-gpadc.c    |  8 ++--
+ drivers/iio/adc/ad4130.c          |  7 +--
+ drivers/iio/adc/ad7173.c          | 24 +++-------
+ drivers/iio/adc/pac1934.c         | 77 +++++++++++++------------------
+ drivers/iio/dac/ad3552r.c         | 59 +++++++++--------------
+ drivers/iio/frequency/admfm2000.c | 24 +++-------
+ 7 files changed, 73 insertions(+), 128 deletions(-)
+
 -- 
 2.44.0
 

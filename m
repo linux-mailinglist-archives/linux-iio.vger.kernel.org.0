@@ -1,258 +1,164 @@
-Return-Path: <linux-iio+bounces-3958-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3959-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FA7B892CB9
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 20:09:33 +0100 (CET)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E098931F5
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Mar 2024 16:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 830201C211E5
-	for <lists+linux-iio@lfdr.de>; Sat, 30 Mar 2024 19:09:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA9B0281DC2
+	for <lists+linux-iio@lfdr.de>; Sun, 31 Mar 2024 14:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF4240867;
-	Sat, 30 Mar 2024 19:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15686145325;
+	Sun, 31 Mar 2024 14:20:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k05ELnRy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYKHmwAP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5AA200D9
-	for <linux-iio@vger.kernel.org>; Sat, 30 Mar 2024 19:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD932144D2A;
+	Sun, 31 Mar 2024 14:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711825771; cv=none; b=dx5spUV9yEq0XSfnnQqtvvBg8sk6jS/gXqJulpLjGUAPM93NvKe2Gh+ovRXb1XEc1toqkv9p+CEjwFzRl/7hfg7KLEJwQxKUQ1lWsTNnxX9H4hGF7E4NbsFyxsqdvXkO79InjhWUAOCFvFGdL0NbX7h36uZ+xVHijb8KHqL7Y7c=
+	t=1711894856; cv=none; b=h/r98nbj1q+G8lH8n7zYae2C+2YmUAmZAjV83iPxwzWLULchc1zUGKg35Kia/qJykidalxxzSOJu9VWsB2+7Kez2QazY8vRQFUePJt09VgN7plgTcWmqglO2Jhvbch9I8Lpg9QXoU2ZexDK7rl5hODQRPwVkPdYufwndCRYWeaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711825771; c=relaxed/simple;
-	bh=zO1Fm8arirm596tju5FVU2TBB6HGajHMgVL9jq1CBWk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TbK7QImdIzgd/dBIB6AcRTpO1MJ05bAWvSs+cOJ9crJV/e0cMfv3SvFaA70SerBOElnfLZbbpIsBY0Zx8lw8Pi6MkXfXsx8x9bFXpXoVhJxCGKPRW2ofl2/5Zj3JcPxVU4OWTlXoo0MDgJKqpeoy1MafASBljU8jlwiKRwDJWHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k05ELnRy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B89C433F1;
-	Sat, 30 Mar 2024 19:09:27 +0000 (UTC)
+	s=arc-20240116; t=1711894856; c=relaxed/simple;
+	bh=MhZ+GNwAIgsUTcIkXuF7X0kiB2apEfQgvIGqYvrAc/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=f1hTiyoaVHJbCIUgxf4qlw80U2pBmzILrs7ANe0U6jNHr1BX/CNOykv2cMGW5NQIOmWMrktwqEWrSSOX+ak8XSo/gIdlJcZo9uoVCUnWk8FvIr2973LkEJX5UXK9aMnOmmBvgFg5Q5jrdykWd51IAOIGPZAYdjZGgC2H9/VJ+RA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYKHmwAP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19DBC433F1;
+	Sun, 31 Mar 2024 14:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711825770;
-	bh=zO1Fm8arirm596tju5FVU2TBB6HGajHMgVL9jq1CBWk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k05ELnRyYMDjukwGoEfJN4m9k+/elgh44O7nr8JqTmex4I4L34h41B0937KH/zKe2
-	 feCIqShs81L1x+Omu8xSns9kxp6agbvjtrfgB3OG3Wmnpa2q9JU8kpND/RF+tZvfjB
-	 GCrVNmVfmk6MaVfzy1MNLhAqd0nDdYku/YekcobfFkBMoarVw42MHfto7YoOsrDuhs
-	 pLpB49G5VXJGcsg/7yBzGStO/0SS0AT/TTScyPYTA6IwMs/aCVRb6JFKV3fZQS/ZPw
-	 Hebjx+Rk17IIlKuIN37bw2/1Baav8wqi5Vnd7pJokdOLK/xbp4B0/Id9swi0tcMStU
-	 3S7QUV6kmJvBA==
+	s=k20201202; t=1711894856;
+	bh=MhZ+GNwAIgsUTcIkXuF7X0kiB2apEfQgvIGqYvrAc/Y=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=NYKHmwAPHxH908yfjReJj3s5LqlkFu+hqeyf6R3JKvUdwJ2CxXP7G65iuUi98d5YE
+	 jGuAeo74BElsHwjXvbUi0r4VNa0h1JXBXSnauW2Xmb1dxLXVVqz997lKns1jG+/WvB
+	 kOiHNL/OHMjOcDr6uYlFYx/ym10GPbiPlbdiNtznO72r5jMj1+klBA3Fn2SREW1odh
+	 qL8k9KboyXDlnUDBXpl2OXQifFiV3OeKnAZ5qj1GVR6nQa0Xmd9GCQiWrKqjQwcRVk
+	 Dk3ZgLZBqjSR1vri/hGvOnhoJChXxCjExYp8hn7C48tVwElLLYH8gYzDJDjUQgRwp8
+	 Mr8t4UnXpcCgQ==
+Date: Sun, 31 Mar 2024 15:20:42 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: linux-iio@vger.kernel.org
-Cc: Marius Cristea <marius.cristea@microchip.com>,
-	Mihail Chindris <mihail.chindris@analog.com>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Kim Seer Paller <kimseer.paller@analog.com>,
-	Dumitru Ceclan <mitrutzceclan@gmail.com>,
-	Cosmin Tanislav <demonsingur@gmail.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 8/8] iio: adc: pac1934: Use device_for_each_available_child_node_scoped() to simplify error handling.
-Date: Sat, 30 Mar 2024 19:08:49 +0000
-Message-ID: <20240330190849.1321065-9-jic23@kernel.org>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240330190849.1321065-1-jic23@kernel.org>
-References: <20240330190849.1321065-1-jic23@kernel.org>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Dominique Martinet <dominique.martinet@atmark-techno.com>, David Lechner
+ <dlechner@baylibre.com>, Krzysztof Kozlowski
+ <krzysztof.kozlowski@linaro.org>, Syunya Ohshio
+ <syunya.ohshio@atmark-techno.com>, Guido =?UTF-8?B?R8O8bnRoZXI=?=
+ <agx@sigxcpu.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
+ <robh+dt@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
+ device index
+Message-ID: <20240331152042.394b4289@jic23-huawei>
+In-Reply-To: <20240318122953.000013f3@Huawei.com>
+References: <20240228051254.3988329-1-dominique.martinet@atmark-techno.com>
+	<7f03bb12-0976-4cb7-9ca9-4e4e28170bdd@linaro.org>
+	<Zd7hSOw3_zosyrn3@atmark-techno.com>
+	<daed8ada-9e01-41ad-82af-5da5cbbc865c@linaro.org>
+	<Zd7qz1Qte8HWieF_@atmark-techno.com>
+	<20240228142441.00002a79@Huawei.com>
+	<Zd_zB_ymxkx0HB3q@atmark-techno.com>
+	<ZfPg-nMANUtBlr6S@atmark-techno.com>
+	<CAMknhBG_kJx8JPvTBQo7zpy3mFAkUjZpRY3DLBfXt+39nRJWiA@mail.gmail.com>
+	<ZfejyEvPIncygKJ9@atmark-techno.com>
+	<20240318122953.000013f3@Huawei.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Mon, 18 Mar 2024 12:29:53 +0000
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-Also change both firmware parsing functions to return meaningful errors.
-Whilst for the ACPI case this isn't that useful, for the generic fwnode
-case we can return the errors coming from the property parsing instead
-of just whether we succeeded or not.
+> On Mon, 18 Mar 2024 11:15:36 +0900
+> Dominique Martinet <dominique.martinet@atmark-techno.com> wrote:
+> 
+> > David Lechner wrote on Fri, Mar 15, 2024 at 10:53:36AM -0500:  
+> > > How about using udev rules to create symlinks for each device based on
+> > > the label attribute? No changes to the kernel are needed.    
+> > 
+> > Right, it's definitely possible to make symlinks for each "device" -- my
+> > patch comment links to such an udev script "solution":
+> > https://git.toradex.com/cgit/meta-toradex-bsp-common.git/tree/recipes-core/udev/files/verdin-imx8mm/toradex-adc.sh?h=kirkstone-6.x.y
+> > (the script is launched by udev here:
+> > https://git.toradex.com/cgit/meta-toradex-bsp-common.git/tree/recipes-core/udev/files/verdin-imx8mm/99-toradex.rules
+> > )
+> > 
+> > My conceptual problem with this is that this makes symlinks in /dev to
+> > files in /sys and it feels like we're crossing boundaries.
+> > As far as I can tell there is no way for userspace to create arbitrary
+> > symlinks in /sys, so I think we could have an interface more
+> > user-friendly by allowing paths to be static for users with multiple
+> > devices.
+> > (I guess that's a weak argument given e.g. disks etc will also have an
+> > unreliable name in /sys in the general case, but simple programs don't
+> > interact with them in /sys and can use stable links in /dev so my
+> > expectations here aren't quite the same)
+> > 
+> > 
+> > Ultimately, the problem might run deeper in that we're having userspace
+> > interact with the device through /sys and not the /dev char dev... As
+> > far as I could see /dev/iio:deviceX only allows reading buffered values
+> > and doesn't have any ioctl or other way of reading immediate values as
+> > is possible in /sys though, so that'd require quite a bit of work to
+> > duplicate the interface there...  
+> 
+> Don't.  The sysfs interface as only control is entirely intentional and
+> we do not want IOCTL based duplication.
+> 
+> Just addressing this bit as I'm still a bit snowed under to think about this
+> more generally.
+> 
 
-Cc: Marius Cristea <marius.cristea@microchip.com>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/iio/adc/pac1934.c | 77 ++++++++++++++++-----------------------
- 1 file changed, 31 insertions(+), 46 deletions(-)
+Hi, got back to this finally...
 
-diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
-index e0c2742da523..f751260605e4 100644
---- a/drivers/iio/adc/pac1934.c
-+++ b/drivers/iio/adc/pac1934.c
-@@ -1079,8 +1079,8 @@ static int pac1934_chip_identify(struct pac1934_chip_info *info)
-  * documentation related to the ACPI device definition
-  * https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ApplicationNotes/ApplicationNotes/PAC1934-Integration-Notes-for-Microsoft-Windows-10-and-Windows-11-Driver-Support-DS00002534.pdf
-  */
--static bool pac1934_acpi_parse_channel_config(struct i2c_client *client,
--					      struct pac1934_chip_info *info)
-+static int pac1934_acpi_parse_channel_config(struct i2c_client *client,
-+					     struct pac1934_chip_info *info)
- {
- 	acpi_handle handle;
- 	union acpi_object *rez;
-@@ -1095,7 +1095,7 @@ static bool pac1934_acpi_parse_channel_config(struct i2c_client *client,
- 
- 	rez = acpi_evaluate_dsm(handle, &guid, 0, PAC1934_ACPI_GET_NAMES_AND_MOHMS_VALS, NULL);
- 	if (!rez)
--		return false;
-+		return -EINVAL;
- 
- 	for (i = 0; i < rez->package.count; i += 2) {
- 		idx = i / 2;
-@@ -1118,7 +1118,7 @@ static bool pac1934_acpi_parse_channel_config(struct i2c_client *client,
- 		 * and assign the default sampling rate
- 		 */
- 		info->sample_rate_value = PAC1934_DEFAULT_CHIP_SAMP_SPEED_HZ;
--		return true;
-+		return 0;
- 	}
- 
- 	for (i = 0; i < rez->package.count; i++) {
-@@ -1131,7 +1131,7 @@ static bool pac1934_acpi_parse_channel_config(struct i2c_client *client,
- 
- 	rez = acpi_evaluate_dsm(handle, &guid, 1, PAC1934_ACPI_GET_BIPOLAR_SETTINGS, NULL);
- 	if (!rez)
--		return false;
-+		return -EINVAL;
- 
- 	bi_dir_mask = rez->package.elements[0].integer.value;
- 	info->bi_dir[0] = ((bi_dir_mask & (1 << 3)) | (bi_dir_mask & (1 << 7))) != 0;
-@@ -1143,19 +1143,18 @@ static bool pac1934_acpi_parse_channel_config(struct i2c_client *client,
- 
- 	rez = acpi_evaluate_dsm(handle, &guid, 1, PAC1934_ACPI_GET_SAMP, NULL);
- 	if (!rez)
--		return false;
-+		return -EINVAL;
- 
- 	info->sample_rate_value = rez->package.elements[0].integer.value;
- 
- 	ACPI_FREE(rez);
- 
--	return true;
-+	return 0;
- }
- 
--static bool pac1934_of_parse_channel_config(struct i2c_client *client,
--					    struct pac1934_chip_info *info)
-+static int pac1934_fw_parse_channel_config(struct i2c_client *client,
-+					   struct pac1934_chip_info *info)
- {
--	struct fwnode_handle *node, *fwnode;
- 	struct device *dev = &client->dev;
- 	unsigned int current_channel;
- 	int idx, ret;
-@@ -1163,46 +1162,38 @@ static bool pac1934_of_parse_channel_config(struct i2c_client *client,
- 	info->sample_rate_value = 1024;
- 	current_channel = 1;
- 
--	fwnode = dev_fwnode(dev);
--	fwnode_for_each_available_child_node(fwnode, node) {
-+	device_for_each_child_node_scoped(dev, node) {
- 		ret = fwnode_property_read_u32(node, "reg", &idx);
--		if (ret) {
--			dev_err_probe(dev, ret,
--				      "reading invalid channel index\n");
--			goto err_fwnode;
--		}
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "reading invalid channel index\n");
-+
- 		/* adjust idx to match channel index (1 to 4) from the datasheet */
- 		idx--;
- 
- 		if (current_channel >= (info->phys_channels + 1) ||
--		    idx >= info->phys_channels || idx < 0) {
--			dev_err_probe(dev, -EINVAL,
--				      "%s: invalid channel_index %d value\n",
--				      fwnode_get_name(node), idx);
--			goto err_fwnode;
--		}
-+		    idx >= info->phys_channels || idx < 0)
-+			return dev_err_probe(dev, -EINVAL,
-+					     "%s: invalid channel_index %d value\n",
-+					     fwnode_get_name(node), idx);
- 
- 		/* enable channel */
- 		info->active_channels[idx] = true;
- 
- 		ret = fwnode_property_read_u32(node, "shunt-resistor-micro-ohms",
- 					       &info->shunts[idx]);
--		if (ret) {
--			dev_err_probe(dev, ret,
--				      "%s: invalid shunt-resistor value: %d\n",
--				      fwnode_get_name(node), info->shunts[idx]);
--			goto err_fwnode;
--		}
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "%s: invalid shunt-resistor value: %d\n",
-+					     fwnode_get_name(node), info->shunts[idx]);
- 
- 		if (fwnode_property_present(node, "label")) {
- 			ret = fwnode_property_read_string(node, "label",
- 							  (const char **)&info->labels[idx]);
--			if (ret) {
--				dev_err_probe(dev, ret,
--					      "%s: invalid rail-name value\n",
--					      fwnode_get_name(node));
--				goto err_fwnode;
--			}
-+			if (ret)
-+				return dev_err_probe(dev, ret,
-+						     "%s: invalid rail-name value\n",
-+						     fwnode_get_name(node));
- 		}
- 
- 		info->bi_dir[idx] = fwnode_property_read_bool(node, "bipolar");
-@@ -1210,12 +1201,7 @@ static bool pac1934_of_parse_channel_config(struct i2c_client *client,
- 		current_channel++;
- 	}
- 
--	return true;
--
--err_fwnode:
--	fwnode_handle_put(node);
--
--	return false;
-+	return 0;
- }
- 
- static void pac1934_cancel_delayed_work(void *dwork)
-@@ -1485,7 +1471,6 @@ static int pac1934_probe(struct i2c_client *client)
- 	const struct pac1934_features *chip;
- 	struct iio_dev *indio_dev;
- 	int cnt, ret;
--	bool match = false;
- 	struct device *dev = &client->dev;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*info));
-@@ -1519,16 +1504,16 @@ static int pac1934_probe(struct i2c_client *client)
- 	}
- 
- 	if (acpi_match_device(dev->driver->acpi_match_table, dev))
--		match = pac1934_acpi_parse_channel_config(client, info);
-+		ret = pac1934_acpi_parse_channel_config(client, info);
- 	else
- 		/*
- 		 * This makes it possible to use also ACPI PRP0001 for
- 		 * registering the device using device tree properties.
- 		 */
--		match = pac1934_of_parse_channel_config(client, info);
-+		ret = pac1934_fw_parse_channel_config(client, info);
- 
--	if (!match)
--		return dev_err_probe(dev, -EINVAL,
-+	if (ret)
-+		return dev_err_probe(dev, ret,
- 				     "parameter parsing returned an error\n");
- 
- 	mutex_init(&info->lock);
--- 
-2.44.0
+So the problems compared to other 'alias' users is that IIO is a bit more
+complex than for example LEDs.  A single DT node/compatible (or equivalent) can
+result in a 1+ IIO devices and 1+ triggers. Triggers can also be instantiated
+via configfs (technically devices can as well but we can ignore that).
+Any alias scheme needs to work for all these options. To my mind that makes
+it a userspace problem, not something the kernel can deal with in generic
+enough way. I think that all IIO devices have ways to stability identify them
+(label, or parent devices)
+
+There is an approximate equivalent of DT alias entries in SMBIOS but
+I suspect not all ACPI platforms will provide that (it's typically used for
+stable disk / network device naming on complex servers).
+
+So I've messed around a bit and can think of various possible options to make
+this simpler.
+1) Use a tmpfs mount and link from that.
+   Now we 'could' put an alias directory somewhere under /sys/bus/iio/ that
+   is a mount point created via sysfs_create_mount_point() - I abused the
+   /sys/kernel/debug directory to test this (unmounted debugfs and mounted
+   a tmpfs).  That would provide somewhere in sysfs that allows suitable
+   links. However, this is unusual so likely to be controversial.
+2) Alternatively the relevant platform could create one of these somewhere
+   outside of sysfs and use udev rules to create the links.
+3) Stick to the oddity of doing it under /dev/
+4) Access the things in the first place via more stable paths?
+  /sys/bus/i2c/devices/i2c-0/0-0008/iio\:device?/ etc 
+   Relying on the alias support for i2c bus numbering to make that stable should work
+   and if you are sure there will only be one entry (most devices) that matches
+   the wild card, should be easy enough to use in scripts.
+
+My personal preference is this last option.  Basically if you want stable paths
+don't use /sys/bus/iio/devices/ to get them.
+
+Jonathan
+
+
+
 
 

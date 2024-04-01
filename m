@@ -1,229 +1,182 @@
-Return-Path: <linux-iio+bounces-3972-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3973-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFC6893EB7
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Apr 2024 18:07:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6195D8941F1
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Apr 2024 18:48:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF5A51F21EA4
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Apr 2024 16:07:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8538B1C219D0
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Apr 2024 16:48:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8425D383BA;
-	Mon,  1 Apr 2024 16:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IYtYLQwz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BBE481D5;
+	Mon,  1 Apr 2024 16:48:05 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f182.google.com (mail-yb1-f182.google.com [209.85.219.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8E251CA8F;
-	Mon,  1 Apr 2024 16:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AB95481C6;
+	Mon,  1 Apr 2024 16:48:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711987623; cv=none; b=Gm7AMgr/SZbIhgzwyhDbOneixRWYrY6GKiKkan9JX7EHolvHAM+797t6MuEiVQpDGzeU4CMQkN4oCIWOW9TWOvKds1HGXCEyM9+85ZWRjUVmQgVtRBcHSHKWDxdRlavk/qMK8aVj3J9IEyOBTfqAY3oSvSdDw2D2+n7Wf9i9N9I=
+	t=1711990084; cv=none; b=bMZ9wNCXyXg5HkdoaRSlqINupYquyPOSUC4QbRcrUwCZS0dlQHCm2sZkITA5xgWEcTmkQejmCIRZDJLryl9S34j7OBD5pdTFDse30KH+ixxSdAa4bvCediPjvQsv8yoGMuR9Z3r13yv/8Y0aEYzHvLvqt12fkCVfpSoLibanhQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711987623; c=relaxed/simple;
-	bh=75pLzrvTuDGI5dx5WohkbFjhSR2aCpPDejzDATL4oRg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Chc9Ol4wVhrAHWjUj/P8YVA1nn4HIpf8DwCwEzZxEq+skCK+NaZSKK4EQlk1ODYgJG5EcQsQSlgUgh6gvg7XYvTn6igbcSlap3wMiZ6KEfyTlVsOjkXUYmD30lRln6ou2i/DQn+nBcq8vP8dF6ezLh2R5bffFiMcvgvif0ok1S0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IYtYLQwz; arc=none smtp.client-ip=209.85.219.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f182.google.com with SMTP id 3f1490d57ef6-dbed179f0faso3309291276.1;
-        Mon, 01 Apr 2024 09:07:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1711987620; x=1712592420; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v0tHN7TxG38kjHDZVWnDgVEj1Az1vXT85uVmni/sB1I=;
-        b=IYtYLQwziNW8hMPtfxlcqHSeaVnR6x/zo53kj4+1/guD+kkghLxCAsWZmF3/U/jtFg
-         ibGbYk2H/o5vvqReNh+Lot54dIjjHM6PQU13pq/NQGuOOeOPhbMvLOw+rRJtQzNbkfWf
-         jVR9OD3Uswixt4VCWw0/OHLyTAQL76xec9sv4fwXT05YH39hyPld+lJQwjNxOnQi/fJC
-         WaH2KlMSl9WDz6reIY0tkPQHChiyRyKuhR4+DhcSHvEAgc3ThHEHgWp5o52eiuu0c4C5
-         F9/akGqVT7QIL9N4Fg8gxlD625eReNcDG80wVMLjE4/FlNQWIZ9OnD/da+Uy1UfDKgW5
-         njOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1711987620; x=1712592420;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v0tHN7TxG38kjHDZVWnDgVEj1Az1vXT85uVmni/sB1I=;
-        b=k7B/KpHorw3QiPlesyE6hvLMn30IIWuuC1/yZ5Ij//2levZFz/rmDGCcQjcQnSmCVz
-         XtMGZnPus4ifpeSiNRrmMq6vOTVBiS56wOCqA/7StUaBOSLlxpE3JdNzrRGSPp5oMtt1
-         waccblPs3fNX4IP1Q1/OL6ciyc9cafl8ALGT6ArzGWwI3ORdhaJxYDtXQ8lilBDlTMKy
-         nbigA2d0UQCPXT4FrSmgO8Y6FjuuWsuKQVUN1Cx/QrmNs3jvM9T9nQF2OsjXmz1dz75R
-         iE5J37rjCAGSdQ8nO5h6+4qoULDFnBCAzqoADh8NPib/+PhizFHa4oExBX/nt1S+eW0h
-         mpUA==
-X-Forwarded-Encrypted: i=1; AJvYcCXjKLxy3wW5/RRIX/cQCi79ZiqKIf6MfMr7XumJdMasXIfwYSDovBQwR7dgCaetHjAr2F5j2BdrOQO8LRzatXw82DnS/uEGGNi/sIuGKDWklO9npPULAwXVqnEHwT34r8LOEZTfjQ0HvqyUC5+KLh8YUzAnTBUy4V3ZAhngYgmHBbtfBA==
-X-Gm-Message-State: AOJu0Ywyky9TbmruZyD5hBog40oGm2S3xc2iFTsYEiyA03FwAmswPCsM
-	wEieJDy6dzwS/B3B+hRt95EZ496D9RsI9fnzsPTN8/K8TZIv1r9KlJYv+UBeyU0MV4xAOyJp8pu
-	Up/Or061HgYKxok0YUiAPDCaTz8c=
-X-Google-Smtp-Source: AGHT+IHFC40eE5Z3E1NsJt0aSM5ri4j6lmmn9kFDd4CWvw9namBexhNLZ195ANzDIMoo8LD/jUo2Qm6YLJo9pQdW5Cc=
-X-Received: by 2002:a25:bf82:0:b0:dc6:d1a9:d858 with SMTP id
- l2-20020a25bf82000000b00dc6d1a9d858mr6429732ybk.8.1711987620495; Mon, 01 Apr
- 2024 09:07:00 -0700 (PDT)
+	s=arc-20240116; t=1711990084; c=relaxed/simple;
+	bh=804Vw/RbErS2pmzr890A96kbwN5Kbbf7T2Xg3aXgqik=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=HX7eknx49X4YYDrjW9oSrSRsZUFPc1jb7IBAiSTauuzVc5Oth4pwYesVzjYmeHyxbIhBm1+aFGi42GFf4IPdYXx2UDVh1B5+0Fz32QhRK8JEkTz7PC2GiYzznyHhoK1oxRL9rV3TVbKGoAvCy6phYwJHCdCvpU/O998x3yoTSrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4V7cJq34QHz6K7JS;
+	Tue,  2 Apr 2024 00:43:23 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 728E51400D9;
+	Tue,  2 Apr 2024 00:47:58 +0800 (CST)
+Received: from localhost (10.48.156.172) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 1 Apr
+ 2024 17:47:57 +0100
+Date: Mon, 1 Apr 2024 17:47:56 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Dominique Martinet <dominique.martinet@atmark-techno.com>
+CC: Jonathan Cameron <jic23@kernel.org>, David Lechner
+	<dlechner@baylibre.com>, Krzysztof Kozlowski
+	<krzysztof.kozlowski@linaro.org>, Syunya Ohshio
+	<syunya.ohshio@atmark-techno.com>, Guido =?ISO-8859-1?Q?G=FCnther?=
+	<agx@sigxcpu.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
+	<robh+dt@kernel.org>, Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: industrialio-core: look for aliases to request
+ device index
+Message-ID: <20240401174756.0000786a@Huawei.com>
+In-Reply-To: <Zgpt136Q2rGL-cl_@atmark-techno.com>
+References: <Zd7hSOw3_zosyrn3@atmark-techno.com>
+	<daed8ada-9e01-41ad-82af-5da5cbbc865c@linaro.org>
+	<Zd7qz1Qte8HWieF_@atmark-techno.com>
+	<20240228142441.00002a79@Huawei.com>
+	<Zd_zB_ymxkx0HB3q@atmark-techno.com>
+	<ZfPg-nMANUtBlr6S@atmark-techno.com>
+	<CAMknhBG_kJx8JPvTBQo7zpy3mFAkUjZpRY3DLBfXt+39nRJWiA@mail.gmail.com>
+	<ZfejyEvPIncygKJ9@atmark-techno.com>
+	<20240318122953.000013f3@Huawei.com>
+	<20240331152042.394b4289@jic23-huawei>
+	<Zgpt136Q2rGL-cl_@atmark-techno.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240327220320.15509-1-l.rubusch@gmail.com> <20240327220320.15509-8-l.rubusch@gmail.com>
- <20240328133927.7e49f3bf@jic23-huawei> <CAFXKEHZva5AE=sinx_i0Gec2FbB4ZfyEu8mWg52omzGBvr5uXw@mail.gmail.com>
- <20240330152401.034aedad@jic23-huawei>
-In-Reply-To: <20240330152401.034aedad@jic23-huawei>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Mon, 1 Apr 2024 18:06:24 +0200
-Message-ID: <CAFXKEHZJZU69udvM86rDSNU1J9o=v62BJcJfTrB=Y9Tgsjm4fw@mail.gmail.com>
-Subject: Re: [PATCH v5 7/7] iio: accel: adxl345: Add spi-3wire option
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org, 
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500005.china.huawei.com (7.191.163.240) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Sat, Mar 30, 2024 at 4:24=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Fri, 29 Mar 2024 01:33:01 +0100
-> Lothar Rubusch <l.rubusch@gmail.com> wrote:
->
-> > On Thu, Mar 28, 2024 at 2:39=E2=80=AFPM Jonathan Cameron <jic23@kernel.=
-org> wrote:
-> > >
-> > > On Wed, 27 Mar 2024 22:03:20 +0000
-> > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> > >
-> > > > Add a setup function implementation to the spi module to enable spi=
--3wire
-> > > > as option when specified in the device-tree.
-> > > >
-> > > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > > > ---
-> > > >  drivers/iio/accel/adxl345.h     |  2 ++
-> > > >  drivers/iio/accel/adxl345_spi.c | 12 +++++++++++-
-> > > >  2 files changed, 13 insertions(+), 1 deletion(-)
-> > > >
-> > > > diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/adxl34=
-5.h
-> > > > index 4ea9341d4..e6bc3591c 100644
-> > > > --- a/drivers/iio/accel/adxl345.h
-> > > > +++ b/drivers/iio/accel/adxl345.h
-> > > > @@ -30,6 +30,8 @@
-> > > >  #define ADXL345_POWER_CTL_MEASURE    BIT(3)
-> > > >  #define ADXL345_POWER_CTL_STANDBY    0x00
-> > > >
-> > > > +#define ADXL345_DATA_FORMAT_SPI_3WIRE        BIT(6) /* 3-wire SPI =
-mode */
-> > > > +
-> > > >  #define ADXL345_DATA_FORMAT_RANGE    GENMASK(1, 0) /* Set the g ra=
-nge */
-> > > >  #define ADXL345_DATA_FORMAT_JUSTIFY  BIT(2) /* Left-justified (MSB=
-) mode */
-> > > >  #define ADXL345_DATA_FORMAT_FULL_RES BIT(3) /* Up to 13-bits resol=
-ution */
-> > > > diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/accel/ad=
-xl345_spi.c
-> > > > index 1c0513bd3..f145d5c1d 100644
-> > > > --- a/drivers/iio/accel/adxl345_spi.c
-> > > > +++ b/drivers/iio/accel/adxl345_spi.c
-> > > > @@ -20,6 +20,16 @@ static const struct regmap_config adxl345_spi_re=
-gmap_config =3D {
-> > > >       .read_flag_mask =3D BIT(7) | BIT(6),
-> > > >  };
-> > > >
-> > > > +static int adxl345_spi_setup(struct device *dev, struct regmap *re=
-gmap)
-> > > > +{
-> > > > +     struct spi_device *spi =3D container_of(dev, struct spi_devic=
-e, dev);
-> > > > +
-> > > > +     if (spi->mode & SPI_3WIRE)
-> > > > +             return regmap_write(regmap, ADXL345_REG_DATA_FORMAT,
-> > > > +                                 ADXL345_DATA_FORMAT_SPI_3WIRE);
-> > > Your earlier patch carefully (I think) left one or two fields alone, =
-then
-> > > this write just comes in and changes them. In particular INT_INVERT.
-> > >
-> > Why do you refer here to INT_INVERT? In this code above I try to set
-> > SPI to 3 lines. Since this is a SPI configuration, i.e. bus specific,
-> > it happens in adxl345_spi.c. Passing this function to the bus
-> > independent adxl345_core.c file allows to configure the bus first.
-> > Therefore, I'm using the update function in core masking out the SPI
-> > filag.
->
-> Ah. Ok.  It was only intended to mask out the SPI3-wire bit, not the
-> other bits that you also masked out.  I thought intent was to leave
-> them untouched for some reason.  Given they don't matter in the driver
-> at the moment (no interrupt support) then no problem.
->
-> >
-> > My reason why I try to keep INT_INVERT out is different. There is
-> > another driver for the same part in the kernel:
-> > ./drivers/input/misc/adxl34x.c - This is a input driver, using the
-> > interrupts of the adxl345 for the input device implementation. I
-> > assumed, that in the iio implementation there won't be interrupt
-> > handling for the adx345, since it is not an input device. Does this
-> > make sense?
->
-> No. You can't use these two drivers at the same time.  They will almost
-> certainly trample over each other in actually reading channels etc.
->
-> Their is some legacy of old drivers in input from a long time back.
-> Given this driver clearly doesn't have full functionality yet in IIO ther=
-e
-> and the different userspace ABI, we've just left the input driver alone.
->
-Going by the git history gave this impression, too. But it was still a
-bit confusing to me.
+On Mon, 1 Apr 2024 17:18:31 +0900
+Dominique Martinet <dominique.martinet@atmark-techno.com> wrote:
 
-The IIO driver so far does not handle any of the interrupt features.
-The older driver also seems to support more of the chip's features.
-Would it make sense to continue implement/port what's missing -
-feature by feature - for the IIO driver in order to make the input
-driver obsolete (one day)?
+> Jonathan Cameron wrote on Sun, Mar 31, 2024 at 03:20:42PM +0100:
+> > Hi, got back to this finally...  
+> 
+> Thank you for taking the time to express your thoughts!
+> 
+> > So the problems compared to other 'alias' users is that IIO is a bit more
+> > complex than for example LEDs.  A single DT node/compatible (or equivalent) can
+> > result in a 1+ IIO devices and 1+ triggers.  
+> 
+> Right. I'm no longer really arguing for it at this point, but for
+> comparison in the patch I sent, the alias sets the start of the idr for
+> the device index, so if you have a driver that creates two IIO devices
+> you could just "reserve" two for this DT node and assuming the order
+> within this node is constant you'd still get constant numbering, so I
+> think it still somewhat holds up here.
+> 
+> For triggers though the numbers are separate and it wouldn't make sense
+> to use the same alias, if we wanted a coherent design with this we'd
+> need to add a second alias (such as iio_trigger = ..), but that makes
+> much less sense to me given they're also likely to be dynamically
+> instancied via configfs from what I've seen; I wouldn't want to do this
+> kind of mapping, so I agree with you.
+> 
+> > So I've messed around a bit and can think of various possible options to make
+> > this simpler.
+> > 1) Use a tmpfs mount and link from that.
+> >    Now we 'could' put an alias directory somewhere under /sys/bus/iio/ that
+> >    is a mount point created via sysfs_create_mount_point() - I abused the
+> >    /sys/kernel/debug directory to test this (unmounted debugfs and mounted
+> >    a tmpfs).  That would provide somewhere in sysfs that allows suitable
+> >    links. However, this is unusual so likely to be controversial.  
+> 
+> Agreed that's probably not something we want to put our hands into.
+> 
+> > 2) Alternatively the relevant platform could create one of these somewhere
+> >    outside of sysfs and use udev rules to create the links.  
+> 
+> I'm not sure I understood this one, something akin to the udev rules
+> I've showed that made links to the /sys iio device in /dev?
+> "relevant platform" here would be vendors?
 
-> >
-> > > If it doesn't makes sense to write it there, either write that bit
-> > > every time here, or leave it alone every time.  Not decide on whether
-> > > to write the bit based on SPI_3WIRE or not.  As far as I know they
-> > > are unconnected features.
-> > >
-> > I think I did not understand. Could you please specify a bit more?
-> > When spi-3wire is configured in the DT it has to be parsed and handled
-> > in the bus specific part, i.e. the adxl345_spi.c Therefore I configure
-> > SPI_3WIRE there. I don't want to place SPI specific code in the core
-> > file.
->
-> My confusion was that you were deliberately not touching the other unused
-> flags.  In reality you are touching the but only if you enable 3wire.
-> I would write them register to 0 in the !3wire case so all other values
-> are the same in both paths.
->
-> >
-> > > > +     return 0;
-> > > > +}
-> > > > +
-> > > >  static int adxl345_spi_probe(struct spi_device *spi)
-> > > >  {
-> > > >       struct regmap *regmap;
-> > > > @@ -33,7 +43,7 @@ static int adxl345_spi_probe(struct spi_device *s=
-pi)
-> > > >       if (IS_ERR(regmap))
-> > > >               return dev_err_probe(&spi->dev, PTR_ERR(regmap), "Err=
-or initializing regmap\n");
-> > > >
-> > > > -     return adxl345_core_probe(&spi->dev, regmap, NULL);
-> > > > +     return adxl345_core_probe(&spi->dev, regmap, adxl345_spi_setu=
-p);
-> > > >  }
-> > > >
-> > > >  static const struct adxl345_chip_info adxl345_spi_info =3D {
-> > >
->
+Yes.  Just somewhere other than /dev because I agree that feels wrong.
+> 
+> > 3) Stick to the oddity of doing it under /dev/
+> > 4) Access the things in the first place via more stable paths?
+> >   /sys/bus/i2c/devices/i2c-0/0-0008/iio\:device?/ etc 
+> >    Relying on the alias support for i2c bus numbering to make that stable should work
+> >    and if you are sure there will only be one entry (most devices) that matches
+> >    the wild card, should be easy enough to use in scripts.
+> > 
+> > My personal preference is this last option.  Basically if you want stable paths
+> > don't use /sys/bus/iio/devices/ to get them.  
+> 
+> Hmm, I wouldn't call that path stable given the '?' portion can change,
+> but at least that certainly is a single glob away so it's definitely
+> simpler than checking every labels all the time.
+
+Agreed - this does rely on that wildcard.
+
+> 
+> My second nitpick with this is that while these paths are stable for a
+> given kernel version, but we've had some paths changes over many years
+> (not sure if it was 3.14 or 4.9 but one of these perhaps didn't have
+> /sys/devices/platform yet? and things got moved there at some point with
+> some subtle name changes, breaking a couple of scripts).
+> OTOH /sys/bus/iio/devices feels less likely to change, but I guess this
+> is something that'd come up on tests when preparing a new kernel anyway,
+> so this is probably acceptable; I'm just thinking out loud.
+
+Agreed they have changed in the past. Mostly a case of fixing up
+devices that didn't have their parents set (there are lots of those left
+- that reminds me that I was cleaning up perf drivers that do this wrong
+last year and only got part way through it :(
+
+We will keep the /sys/bus/iio/devices/ path the same and continue to
+support all paths below there (there are already compatibility links
+in place for buffers for example from when we added multiple buffer support).
+However, sysfs docs are pretty blunt on not relying on reliable paths for
+classes (and the IIO bus is effectively a class from this point of view).
+
+> 
+> 
+> With that said I can't think of anything that'd work everywhere either,
+> so I guess we can stick to the status-quo and I'll rediscuss what we
+> want to do with coworkers.
+
+Good luck.  If you have time it might be good to hear what you end up
+with!
+
+Thanks,
+
+Jonathan
+
+> 
+> 
+> Thanks,
+
 

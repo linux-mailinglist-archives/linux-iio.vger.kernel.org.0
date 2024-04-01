@@ -1,202 +1,129 @@
-Return-Path: <linux-iio+bounces-3963-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-3964-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81701893BB5
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Apr 2024 16:02:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37412893C99
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Apr 2024 17:10:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A1ED1F21224
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Apr 2024 14:02:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 570451C20ED8
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Apr 2024 15:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3285B3FE52;
-	Mon,  1 Apr 2024 14:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4C2D47779;
+	Mon,  1 Apr 2024 15:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BlB1HkG8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lmvnDyNX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33098BF0;
-	Mon,  1 Apr 2024 14:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A3B45974;
+	Mon,  1 Apr 2024 15:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1711980130; cv=none; b=elTSlDLi7BVxod4EB8Ae4e1ax2m0l4eAwqX8vhAwIZAKJOhAyxN7wlw1zcnKWxlVKvaxOzIjI/5Cg/ESBZJbDCdsGYz2n7XLt5/5YIxCAAAKHpV9B/tG7/08rvq0e5jxMp5rQw+SCprsB9rvazczT8Dq/hlu0EI9gXns55Ul4WI=
+	t=1711984217; cv=none; b=MDfYs9GtPgzQNw4MIC2wHZnSghtwVpoF7LdQ72uJNE8Cub+kCUIlN7Nj3vrJh+XDTOyjxU4cU1hblMWmFTJ3e2fY82nRhaTE81r+h6UPYdgag3nZErTG9EMVEpjXnJSqwQRSr2mam/UcDQLJ2Be5VbnmdXDsH2pctyRPMkOfJIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1711980130; c=relaxed/simple;
-	bh=KL9VJZme0DHIxfzxC50Ri0kz+SdP7JpKJohNJpF0YJQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m3RikMfyVYpTmk6dedrvYGE9YTbozIesEsl1u58tRIIOhv40Ev4SSzQzgjqe5U/wHoOfdlrQMJkThfexA5QZ+osqnLXMUQx+lAX1/3TIahUcIjOiTG7hPGhcgcq817rCKdwiUpCp7dYrHsaIDsiTe8b1uRj8EIvA9HPdlrqNU3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BlB1HkG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A6BCC433C7;
-	Mon,  1 Apr 2024 14:02:09 +0000 (UTC)
+	s=arc-20240116; t=1711984217; c=relaxed/simple;
+	bh=10B9kij4RJ8Moszjff2kF8cKqehkeXTDRYV4vE4emTg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=CO5aZGxLUisU1B5Kw01ECibm+gGQ5zN2EfXf8unjzz5C8ICqUb+JiK1qy/NnVRNCFzIihyo99fSzVdfJrpM/odAS7TJXUktSzUdf89yQbIfcSZwX/5INCfNiO9zCVdG+7VeHJTxgPGgEpn45LciBW7AdPz1QM6oGkcCmDZbC4ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lmvnDyNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 046F8C433C7;
+	Mon,  1 Apr 2024 15:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1711980129;
-	bh=KL9VJZme0DHIxfzxC50Ri0kz+SdP7JpKJohNJpF0YJQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BlB1HkG8XoDapjJQg5R4ahspJ0sz/Q7QTVofP1XuuMySaEeD5haE0yn4l2AmFWhOf
-	 6274XQFFuqPEPcc1OyISQXyoSPlnV6mljWsl0c/tH0QLWWKjVVOjo1uPNqJhaIEHoL
-	 sk8olfvb6g5paksOjfElVB27+EhjZDwqm0opYHE7BsW0ZAKVNme9fNhOUBocip+iln
-	 vsGTGi3rEub152QbIHu4eT8m7JxpiRorzfE+PTyLrwro78Xk4CdNSRfoFu9wWfOFtf
-	 0+VwFJ0dGnAsfuUBW+1laSu6HMNAJIFkzo9Kkn50NCPlYll0l+Tr5NI3dy+kgm+uH7
-	 zZXNKOZ7kT/mA==
-Date: Mon, 1 Apr 2024 09:02:07 -0500
-From: Rob Herring <robh@kernel.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	Dragos Bogdan <dragos.bogdan@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH 07/10] dt-bindings: iio: dac: add bindings doc for AD9739A
-Message-ID: <20240401140207.GA353303-robh@kernel.org>
-References: <20240328-iio-backend-axi-dac-v1-0-afc808b3fde3@analog.com>
- <20240328-iio-backend-axi-dac-v1-7-afc808b3fde3@analog.com>
+	s=k20201202; t=1711984217;
+	bh=10B9kij4RJ8Moszjff2kF8cKqehkeXTDRYV4vE4emTg=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=lmvnDyNXrQmePxOdWlP/Mz9noqy2ujaQWVXS4amlmG+jzqOXv4Mc9hhTKl03VDbL8
+	 2/n+qgK7s1yLDNC0zr/xZHwXW0VwqKUsp9wppd/IiCLcLEW9Jz3m21tZNXHqswmyFH
+	 vsOCyolLPqAPYGA+uYgQ6EsLKMfmNivpAOUfxGm6+Ecy4A9nhQaxZrZEx5J88Xe9/i
+	 lbzRQt1vue5xiPXpBm51ZyED3oXPLlMO4sbS5Y0WCjtbsd7YiZ4lB7umJUtAVtJEUH
+	 r/tOs3R2XngD80ErdsUSZt3atkML36LtawbyFuPB7xJXSX1CyARm1wpKFznSunLVNI
+	 iwrfc9N1eCSPA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E18AECD128D;
+	Mon,  1 Apr 2024 15:10:16 +0000 (UTC)
+From: Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org>
+Subject: [PATCH 0/6] Add support for AD411x
+Date: Mon, 01 Apr 2024 18:32:18 +0300
+Message-Id: <20240401-ad4111-v1-0-34618a9cc502@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240328-iio-backend-axi-dac-v1-7-afc808b3fde3@analog.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIPTCmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDY0Mj3cQUE0NDQ13z1NQkY5PUJJNE0zQloOKCotS0zAqwQdGxtbUApX1
+ /H1gAAAA=
+To: Ceclan Dumitru <dumitru.ceclan@analog.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, 
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Dumitru Ceclan <mitrutzceclan@gmail.com>
+X-Mailer: b4 0.12.4
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1711985550; l=2067;
+ i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
+ bh=10B9kij4RJ8Moszjff2kF8cKqehkeXTDRYV4vE4emTg=;
+ b=XLN9Nt8v7bv1mWjyDAWDeyL+7eBHCtShfmeS9aiFjAAWhNLQnF8WvA3P84LoqGXId7oimiFXZ
+ njaVyz3tn1JC8NxVW9DB6cuu1ZuAS2yhvJA9QrY4mondxwUlXGQn1ip
+X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
+ pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
+X-Endpoint-Received: by B4 Relay for dumitru.ceclan@analog.com/20240313
+ with auth_id=140
+X-Original-From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Reply-To: dumitru.ceclan@analog.com
 
-On Thu, Mar 28, 2024 at 02:22:31PM +0100, Nuno Sa wrote:
-> This adds the bindings documentation for the 14 bit
-> RF Digital-to-Analog converter.
+This patch series adds support for the Analog Devices AD4111, AD4112,
+ AD4114, AD4115, AD4116 within the existing AD7173 driver.
 
-Reword the subject to say 'bindings' only once.
+  The AD411X family encompasses a series of low power, low noise, 24-bit,
+sigma-delta analog-to-digital converters that offer a versatile range of
+specifications. They integrate an analog front end suitable for processing
+fully differential/single-ended and bipolar voltage inputs.
 
-> 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> ---
->  .../devicetree/bindings/iio/dac/adi,ad9739a.yaml   | 88 ++++++++++++++++++++++
->  MAINTAINERS                                        |  8 ++
->  2 files changed, 96 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad9739a.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad9739a.yaml
-> new file mode 100644
-> index 000000000000..24bcec763a9b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad9739a.yaml
-> @@ -0,0 +1,88 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/dac/adi,ad9739a.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD9739A RF DAC
-> +
-> +maintainers:
-> +  - Dragos Bogdan <dragos.bogdan@analog.com>
-> +  - Nuno Sa <nuno.sa@analog.com>
-> +
-> +description: |
-> +  The AD9739A is a 14-bit, 2.5 GSPS high performance RF DACs that are capable
-> +  of synthesizing wideband signals from dc up to 3 GHz.
-> +
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad9737a_9739a.pdf
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad9739a
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  clocks:
-> +    maxItems: 1
-> +
-> +  reset-gpios:
-> +    maxItems: 1
-> +
-> +  vdd_3_3-supply:
+- All ADCs have inputs with a precision voltage divider with a division
+ratio of 10.
+- AD4116 has 5 low level inputs without a voltage divider.
+- AD4111 and AD4112 support current inputs (0 mA to 20 mA) using a 50ohm
+shunt resistor.
 
-vdd-3-3-supply or vdd-3p3-supply
+Datasheets:
+https://www.analog.com/media/en/technical-documentation/data-sheets/AD4111.pdf
+https://www.analog.com/media/en/technical-documentation/data-sheets/AD4112.pdf
+https://www.analog.com/media/en/technical-documentation/data-sheets/AD4114.pdf
+https://www.analog.com/media/en/technical-documentation/data-sheets/AD4115.pdf
+https://www.analog.com/media/en/technical-documentation/data-sheets/AD4116.pdf
 
-> +    description: 3.3V Digital input supply.
-> +
-> +  vdd-supply:
-> +    description: 1.8V Digital input supply.
-> +
-> +  vdda-supply:
-> +    description: 3.3V Analog input supply.
-> +
-> +  vddc-supply:
-> +    description: 1.8V Clock input supply.
-> +
-> +  io-backends:
-> +    maxItems: 1
-> +
-> +  adi,full-scale-microamp:
-> +    description: This property represents the DAC full scale current.
-> +    minimum: 8700
-> +    maximum: 31700
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - clocks
-> +  - io-backends
-> +  - vdd_3_3-supply
-> +  - vdd-supply
-> +  - vdda-supply
-> +  - vddc-supply
-> +
-> +allOf:
-> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +
-> +        dac@0 {
-> +            compatible = "adi,ad9739a";
-> +            reg = <0>;
-> +
-> +            clocks = <&dac_clk>;
-> +
-> +            io-backends = <&iio_backend>;
-> +
-> +            vdd_3_3-supply = <&vdd_3_3>;
-> +            vdd-supply = <&vdd>;
-> +            vdda-supply = <&vdd_3_3>;
-> +            vddc-supply = <&vdd>;
-> +        };
-> +    };
-> +...
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2137eb452376..76e872e320d7 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -1234,6 +1234,14 @@ W:	https://ez.analog.com/linux-software-drivers
->  F:	Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
->  F:	drivers/iio/adc/ad7780.c
->  
-> +ANALOG DEVICES INC AD9739a DRIVER
-> +M:	Nuno Sa <nuno.sa@analog.com>
-> +M:	Dragos Bogdan <dragos.bogdan@analog.com>
-> +L:	linux-iio@vger.kernel.org
-> +S:	Supported
-> +W:	https://ez.analog.com/linux-software-drivers
-> +F:	Documentation/devicetree/bindings/iio/dac/adi,ad9739a.yaml
-> +
->  ANALOG DEVICES INC ADA4250 DRIVER
->  M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
->  L:	linux-iio@vger.kernel.org
-> 
-> -- 
-> 2.44.0
-> 
+This series depends on patch:
+(iio: adc: ad7173: Use device_for_each_child_node_scoped() to simplify error paths.)
+https://lore.kernel.org/all/20240330190849.1321065-6-jic23@kernel.org
+
+Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+---
+Dumitru Ceclan (6):
+      dt-bindings: adc: ad7173: add support for ad411x
+      iio: adc: ad7173: fix buffers enablement for ad7176-2
+      iio: adc: ad7173: refactor channel configuration parsing
+      iio: adc: ad7173: refactor ain and vref selection
+      iio: adc: ad7173: Remove index from temp channel
+      iio: adc: ad7173: Add support for AD411x devices
+
+ .../devicetree/bindings/iio/adc/adi,ad7173.yaml    |  59 +++-
+ drivers/iio/adc/ad7173.c                           | 318 ++++++++++++++++++---
+ 2 files changed, 331 insertions(+), 46 deletions(-)
+---
+base-commit: 5ab61121a34759eb2418977f0b3589b7edc57776
+change-id: 20240312-ad4111-7eeb34eb4a5f
+
+Best regards,
+-- 
+Dumitru Ceclan <dumitru.ceclan@analog.com>
+
+
 

@@ -1,252 +1,284 @@
-Return-Path: <linux-iio+bounces-3998-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4001-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C7F894E7A
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Apr 2024 11:17:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A55E894FA9
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Apr 2024 12:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3945B23E8F
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Apr 2024 09:17:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CCDB1C22011
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Apr 2024 10:12:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B5157315;
-	Tue,  2 Apr 2024 09:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ED65A106;
+	Tue,  2 Apr 2024 10:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="fFuRyEL5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l4jH8k2u"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00549402.pphosted.com (mx0b-00549402.pphosted.com [205.220.178.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6243F1E525;
-	Tue,  2 Apr 2024 09:17:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712049461; cv=fail; b=oFImUmtleZcJwukh6tooGNPzxK8mM/56U7E89ueWR5AGlegacTzvNr9DTiTaTNbCQsTmmHugA3/3EwoqtfGvYynvlYUZSweLGHq4kjLJB8ipKBGgLyifS5XYe1LzXKw0HwcngApIthJjVmwTb7rRTb1e9Mfbij4hv+fTDw0cEuU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712049461; c=relaxed/simple;
-	bh=TPg2QkOKg63223nn7IVuEx3jMChUuzo9Vf5Ur/uN+5M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tXgT8+xXO9XTcHFWFHVTDRb91nIeLe5SUZWN5HJiRD5/nVEZ42T1N5c4Vh43d7OVJjGUTt2g/tvv4z8z+xqh8/OwxNf6vh/MvyGzEnGCZQ2UZ6jUQe/SH92wMhRq0CKofkOwFzz5LBKzhE1VZsuf/JcR9IEQYBtLw9PqRBcU19s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=fFuRyEL5; arc=fail smtp.client-ip=205.220.178.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
-Received: from pps.filterd (m0233779.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 431MZkfb003135;
-	Tue, 2 Apr 2024 09:01:17 GMT
-Received: from jpn01-os0-obe.outbound.protection.outlook.com (mail-os0jpn01lp2105.outbound.protection.outlook.com [104.47.23.105])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3x6c3jhwd9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 02 Apr 2024 09:01:17 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=n/NGEf/2V0nAepuuOCz8iQWoMS/IkjOX47sCwnXJMOU6WCCTzHmMUAsGZJF6nIliCPQTLSfi7dWqFomc92zINNSP9afJASTqjqSNtpS7CHeRPzdE71X+4/8ZEzGDRc+MSUC2FEHWH7dCPw3/UH7u9EC09JIASTIuzbVpY5wzECVLB9wTAJ6ZknWHiYyyaHXlUxCZBSmcAa0m8Fkg9Ok9lSW1Cmk4Vzpwu6FwdvP54UKT86JLjlo2s/Rusio4Q0IkW68kzAZk0mD6xuBD0ExTK8lqOrMiURLPJVXIexSK3hmEVv2ZXB3mZ2d2na2EINUsf29+R2gBBG3BCoxEJY/znQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CRduI5j9/fZIeI4OQXmRcLdheeCKfWItFk9DFSvaDTA=;
- b=FzhklNobBc2Xyj0YDhvzaTFcEo4kWsNuG5tP92D8EwydRk3cn42FwjqYRX9Q1bRhabgcHbwyO3V+sRo03fGM36yMnoXpI1A0k5w3e7mKmd8RlvUZk4eGDsUz9jd9JGwF/mo2q+bQ0NAWW/KTFOVdfV8hVFB14AV/wDaKAnfu+ObQ6tVz7ybRcYmqCLap5/998rbrzPEArTibG4u4EnBRHVo0YYIjc9FIMS/npLsTAbt7TDXesmWaLvn8ghN0tSMA14kscUaK/ESk+NYD3I9nmWIvtg/4oYXa5E/UITVjrFzofVRmOs9nKde4F9lms8iNe2PR6fIY9VgnVWhdzHVGug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CRduI5j9/fZIeI4OQXmRcLdheeCKfWItFk9DFSvaDTA=;
- b=fFuRyEL5PX8fDdsuXAv+lQAwOMwRmFhM6lO/LKFKCHOtvquzZLOHvuPgXtFgtf6suySpggVXL18QcAgRFJUkxjGUg5Ml8ytRMRaBlni3mj5ziks9WjuWZZn5GC+VB32rQMpyPDLhaDNKE578/xqmc690QqTp5hDDsABpsQhyLJZDMkpgzJTFydNnMyr6bGztRtij+XD8U/HOFB0Pps7JN0ZtxALT6lQGr9nXqSi04iSgeGu8JJkWFKZEUx9u8sIhlkld8FunzSe9cuAy5NCqIq7/haq9xQyoGv/pZ4YqirvEJAzum1sOgZpal7ccxTnewCW/9k/Z2aCFfTngEZE6hw==
-Received: from OS3P286MB1950.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:174::14)
- by OS3P286MB2216.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:19e::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Tue, 2 Apr
- 2024 09:01:10 +0000
-Received: from OS3P286MB1950.JPNP286.PROD.OUTLOOK.COM
- ([fe80::6e47:e0f5:b361:f441]) by OS3P286MB1950.JPNP286.PROD.OUTLOOK.COM
- ([fe80::6e47:e0f5:b361:f441%4]) with mapi id 15.20.7409.042; Tue, 2 Apr 2024
- 09:01:10 +0000
-From: inv.git-commit@tdk.com
-To: jic23@kernel.org, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-        conor+dt@kernel.org
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: [PATCH v2 2/2] iio: imu: inv_icm42600: add support of ICM-42688-P
-Date: Tue,  2 Apr 2024 09:00:46 +0000
-Message-Id: <20240402090046.764572-3-inv.git-commit@tdk.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240402090046.764572-1-inv.git-commit@tdk.com>
-References: <20240402090046.764572-1-inv.git-commit@tdk.com>
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
-X-ClientProxiedBy: ZR0P278CA0120.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:20::17) To OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:1a7::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172DC59151;
+	Tue,  2 Apr 2024 10:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712052742; cv=none; b=LKtWaZaQuPaqBmCbLPwe+C70uB3ncAS6wq4AbHVX53O9sO7dNcpZMF0F6s4kcUmdyqGz0nUmTSzrGWFdu3Mlz9ABB9WM31TKiRvAlD4qNRhFfBbHyVxkG7OotctqeiuxKNk8cvGCw9hy1wVRYJRGwwXjtNmlx/TSiAWb4zlGs1o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712052742; c=relaxed/simple;
+	bh=mKSFc6n/JiYsinC/ofRpA2VZGHdbV2ldjiX/sYtEI6U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cbcNHah6KQvze9XR8r97YdqNWR/oKDJJcGYjAl4bK/hh2//BYDKdRAlsuVah76DSqLPdf2bVrxzIf38N2iHZQMPpGOqJZfUZy51pm4BkI6uIA0c3Y4TexYId3SkicYgDNx8V/l5yiu1274e20+E6N779Z30dFdxkyg2H3zslD4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l4jH8k2u; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-61448d00c59so24843337b3.0;
+        Tue, 02 Apr 2024 03:12:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712052740; x=1712657540; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dCfPr7OgZf9uP49di2tEZcJnki5yiPQqsVQPfZqM+9U=;
+        b=l4jH8k2ubD0aSTklWyoD4Cru/MrxP/TLKDl7pMYb2VrVJikDbwu8XAmDWUxWZOCcPp
+         Z6+1awwsEfCgODeItWwoeSMrwWDnduTIQ/H61g37OMY3dIZiGtttChVO2lLpD7l3weCe
+         7kitRF/T/TwZwm/VUlvJ4jJ6FnLPbIUhtkWpLy+NL6Q+iX2/AhXv++QylLHLUhBhS3N5
+         GaXzNlozDZLBS+JHKQQRk/zPGSXPS3dsWFyey3cw9D21vLh/uRuq5LhgSUxQdWTBrUTp
+         uw9cWKLr1s1YN0qBPDQBm251pEvMt+y+/d8Nur3gHln+yzLigqpj2nQLHEKx7E5mSU9y
+         QzEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712052740; x=1712657540;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dCfPr7OgZf9uP49di2tEZcJnki5yiPQqsVQPfZqM+9U=;
+        b=AZjx86v5z6k12zhevJH0hKcTBThCehNlBH3bz1njXJw7Su87Sc6RS/CI1UFy0mYHTz
+         GIXdxHCEQV9iev6lYOilGAmaR2zVO3ucObc3SWPkSRvePOy/zIAG7X11mV5M3Via1I4L
+         fXPI9iM8dxIpkhOv31wuPzRguG6G80wkLC273lvB1A2CQ6HBLXxIa5UkA1+WbC0QhKO9
+         xGe7IeeNVDqf5KfVmVQNBXcxSntYHlvSAG6jU/cWfBa6B9nHlKk92vHMUdkQAV+4JTEE
+         LhOiKqM2n3vGoA/Vujl5hUgoZhBJmUWRL0P3PlSHWWy/x+D7NLjRLNQ6phkGr5TIflx1
+         5rUA==
+X-Forwarded-Encrypted: i=1; AJvYcCV8vnmsaWivX/up6kvyeLhScwPBJnE4XRYQMxC+4L8k0kvA55G1PDiPhcxhDFiaZfujXAhQNu2ZAypgUosjfTGbxXGqUYgjwB9XaCsbRhMPWJdM7khP5+LpazeREL16deKF2v8ESUSQXGjcTrN5dvUxshLyijBvLzLvBVsfKrBTO2gBtQ==
+X-Gm-Message-State: AOJu0Yy13htc+twx5cRuKvCiU62rZb1bSLSxDFujnEsGPy/rMTYAaXyE
+	i2adenhiPnkySEGxUanH3dOW6qOYnHaCZoHpIFPr/Uk2Px5vZtxIfgzx4H4Tnj3Msih8XjDssOr
+	GBkf+VgpDfr+uGy9LagEyLiehoZ8=
+X-Google-Smtp-Source: AGHT+IHWWxw3EVJaMYd5HLS/1c+ZJLxr4KXYPYqy+h3D86Y/l2858g2V7nbugjK26BSWwmS7BGwKM74d+/kKuwjE5BE=
+X-Received: by 2002:a25:d0d7:0:b0:dcc:efa2:93fb with SMTP id
+ h206-20020a25d0d7000000b00dccefa293fbmr10688485ybg.45.1712052739884; Tue, 02
+ Apr 2024 03:12:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OS3P286MB1950:EE_|OS3P286MB2216:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 
-	5zEyReXFZ8BVSa7uIYwlKDRKED3Ttl9YHXxIpCi/NCw6lVtzkE6yhsZgFWmViEFR9m/58CyjDzTu6gc34xWIxvJ51i0aw0JQIkwe/KWV40+QAJ/I67oBqcSNGzEiVlUll4Qu2fIU3aDliPCDouyj71ljqXkUUhZA0dNAGxDGC2S16gkjaJs8C9wti7Zcomp0lyfR1UvJS0NmLThFpmf0LKIjmn4dAxIWzfxhnNEyUBYiGasWrVizQK0rpFu97d2qU99T7oQiO6WMpWtJjIhBftPE71hfx8NlNZ9rqlompmNoFb/rWIIEvWBCu5t6zbhFPFg8r28VImebdsvxnVToSoRhNtDM6E9CG9C1FYib82vBUaYV01xNnfT+80unQ5GDVW3Hmy7FM7F6MMawH/MIZ0qcf7ePZmI7xKlj2C6H2OIohGfQ5BcOjpA8SHMNtWWPeRfrGEgOmdGBQyKXnXZSgEZ9cqLlLcxFiSwWj/1GVT8uDuphIDUE/RT7Lu6GAXIfC+N+CGsdLdlnkj4f9IY4AjMtLvkGijsc7baDjWNXHlk5RpSXXFwIUa/TAME6ug70p3kFQ2FhUY3npF+sVIQ8qfVQZnm+H+TjKw2DUtBDT8qtje9OPt5KvASA90nmI6NxZw/MnXdX2ACY+LMVuf+hUpNU1/fmFHfmBXUK6GcFyQ0OlJ7hrEIeiGmIY0CCLjVRLtnRJOrbIDtisoSkrIBJMgbHHvxhG2Xcz4gJbV4usJQnHm1q/fzveGrcsg2gOvvz
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OS3P286MB1950.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(52116005)(1800799015)(38350700005)(3613699003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?mRLmfOpAL6PdWi7f4pz5LpER0wX8xClEInSLmR7jdcaEdloTnNxlIzLcUWDK?=
- =?us-ascii?Q?QTckAZXLkqd0pY35P5g1gNXwtllWzLUaMJZnXcs6RH1IyguztTWCcdlDn4To?=
- =?us-ascii?Q?j+tA1nbG+37ZL3jNZZwApU/T3CKadY53vFZmE3knKVzXuvE5sHqu7IZwhqrV?=
- =?us-ascii?Q?WeVFSqvdd0UxOhiR8XaxygeA1X5S5PwlmIZaYozOKiKAioUYvJ4EELMMdCIV?=
- =?us-ascii?Q?rF4jjqOS8m+c7DFODPW9PKNG4i0bWt3IrxuuJX9n4BF0toQM2fCo3SybzKTm?=
- =?us-ascii?Q?Oh4+aqzOoXRlrHCoqtuYRaYFsoZoQo1/ecKAJuoCiU5Rc2psw5O+8MgUVUmQ?=
- =?us-ascii?Q?8OjKP5PLbErDx8YE1Hyreu4aws87gkmTgavlo/kpIZLohzMXCfFavIPwfRu2?=
- =?us-ascii?Q?TLtJ2JuqNFab4DyfG/El6cpXM8BbUt93nRRQnVB7SptV9Sp5OK6IJ7MdSAk8?=
- =?us-ascii?Q?wqfpcKuAxSPoSFj7QJGhXuWILf47j/akKAOzsaQtWJvhXHT6jqbqsMrgn0DM?=
- =?us-ascii?Q?odFRvw2nrM5GtexhHPfIWlgbYP85WuwifXyX/mX5/Chbiv4oNhmagDAK6EI7?=
- =?us-ascii?Q?JxjbTGVEV1PNeEFjGcJJbnrdSzwNE8E0KTg1LszqNGuDm3rrXV+gIH6TooGZ?=
- =?us-ascii?Q?jqAjXVr37X/YplYASKZmO1+63sc8R1eWgaCmZ3+ovbg1fngc4/yBfGI0mabw?=
- =?us-ascii?Q?LnUMC2SYmWy8yUdQ0tA6bliVea787J2ZOFmUNt2M1IfUbgL4W4rLzWya6pbS?=
- =?us-ascii?Q?zJqd7EaCTfgDvYYGtVuP8Qd1zheRGNDRir5Dbzh5/BgvM6TQKZQ1duAbnFlw?=
- =?us-ascii?Q?0nuHqC8bxvvnGbJgagn2t+3ETLUf+WfsFQijaHy3h//q8oZv7Aa+pDfPb1NI?=
- =?us-ascii?Q?lzAytNEkxF1+2GhUWz2IHaURiMfzEdzkZXSXFRchbQHWXh/Y0EF1mlE9jjen?=
- =?us-ascii?Q?IP+Htw0IO1AFipaVObZ0XTyc3ilba9Hm5nAX1XPKPbbpoDYGkAjU37sEbgpk?=
- =?us-ascii?Q?u06iqUDd8R5S+I2BTBlzo2SPUFXBNr55rxaUugfgMokcpWBww4dP05ClORN6?=
- =?us-ascii?Q?n/qFXL8/mU4VAEtEQl6k4njfdo+7oAruiu+oDVoudElQy7XqiILTdMbHyC1C?=
- =?us-ascii?Q?PhUzfvSzR2wRc8gxwluWMs4h3Bngxq8zFW+qPxDoW4ElpSjMxFKkPHV9E7iQ?=
- =?us-ascii?Q?GFZt5QM2zkeKDt+wxeWhIvKvXRL8PP0nPHZwWjTaZ+4pnZtjB91Ud9lbyyXY?=
- =?us-ascii?Q?z+fc89yB2ETLvto9zyWU0uVWqrgoK9nruD1Y5D46kTpBcN4JVcvqZW5n2sn6?=
- =?us-ascii?Q?hMcMu9I30Fb59CLMAB9nLARmaUMeQzezxr3qErFx2Gei+QeRP/sbe4xoe8L5?=
- =?us-ascii?Q?fY1oHCtb2rcPzV3d1fbqnoCP/Y7eNUvkm4ykcGkg/SbvF8udZS/yRY/wpwq3?=
- =?us-ascii?Q?ZFvGqwNGxyoQQFCryMQamdrvx6TtpzNNyGp293XBWSOv4Pr8YE1m3dLxkVwp?=
- =?us-ascii?Q?F4yfofXYHbz31Fgm1VDTz4yOnxkqEYhz/H/5PwEbHNjVZy6F1xCOeL487Yw9?=
- =?us-ascii?Q?Pv1+Tz9s9FP6qmf+IteHI3G96QXQlv9GchuzPzfG?=
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf6bb67e-364b-4c53-69ae-08dc52f370bf
-X-MS-Exchange-CrossTenant-AuthSource: OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2024 09:01:10.3835
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 5tn0ZvZcnctqzHhsRgKyBEv6hWGVOds341Kf42ZJe9ui8o3gEu5JG4cwGVj8MqjU+hbpIn/e/SBGM/KvGRsdPA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: OS3P286MB2216
-X-Proofpoint-ORIG-GUID: nzr9Gfqjf7uJbb46J2kQCK0-YDh6IzO9
-X-Proofpoint-GUID: nzr9Gfqjf7uJbb46J2kQCK0-YDh6IzO9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-02_03,2024-04-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0
- impostorscore=0 malwarescore=0 clxscore=1015 mlxscore=0 spamscore=0
- adultscore=0 lowpriorityscore=0 priorityscore=1501 mlxlogscore=999
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2403210001 definitions=main-2404020064
+References: <20240327220320.15509-1-l.rubusch@gmail.com> <20240327220320.15509-8-l.rubusch@gmail.com>
+ <20240328133927.7e49f3bf@jic23-huawei> <CAFXKEHZva5AE=sinx_i0Gec2FbB4ZfyEu8mWg52omzGBvr5uXw@mail.gmail.com>
+ <20240330152401.034aedad@jic23-huawei> <CAFXKEHZJZU69udvM86rDSNU1J9o=v62BJcJfTrB=Y9Tgsjm4fw@mail.gmail.com>
+ <20240401175304.000022ed@Huawei.com>
+In-Reply-To: <20240401175304.000022ed@Huawei.com>
+From: Lothar Rubusch <l.rubusch@gmail.com>
+Date: Tue, 2 Apr 2024 12:11:43 +0200
+Message-ID: <CAFXKEHYrqA2iaQJeMqPbQJYEu10xiRt92c-ySGcfH76MSriufw@mail.gmail.com>
+Subject: Re: [PATCH v5 7/7] iio: accel: adxl345: Add spi-3wire option
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de, Michael.Hennerich@analog.com, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, eraretuya@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+On Mon, Apr 1, 2024 at 6:53=E2=80=AFPM Jonathan Cameron
+<Jonathan.Cameron@huawei.com> wrote:
+>
+> On Mon, 1 Apr 2024 18:06:24 +0200
+> Lothar Rubusch <l.rubusch@gmail.com> wrote:
+>
+> > On Sat, Mar 30, 2024 at 4:24=E2=80=AFPM Jonathan Cameron <jic23@kernel.=
+org> wrote:
+> > >
+> > > On Fri, 29 Mar 2024 01:33:01 +0100
+> > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
+> > >
+> > > > On Thu, Mar 28, 2024 at 2:39=E2=80=AFPM Jonathan Cameron <jic23@ker=
+nel.org> wrote:
+> > > > >
+> > > > > On Wed, 27 Mar 2024 22:03:20 +0000
+> > > > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
+> > > > >
+> > > > > > Add a setup function implementation to the spi module to enable=
+ spi-3wire
+> > > > > > as option when specified in the device-tree.
+> > > > > >
+> > > > > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
+> > > > > > ---
+> > > > > >  drivers/iio/accel/adxl345.h     |  2 ++
+> > > > > >  drivers/iio/accel/adxl345_spi.c | 12 +++++++++++-
+> > > > > >  2 files changed, 13 insertions(+), 1 deletion(-)
+> > > > > >
+> > > > > > diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/ad=
+xl345.h
+> > > > > > index 4ea9341d4..e6bc3591c 100644
+> > > > > > --- a/drivers/iio/accel/adxl345.h
+> > > > > > +++ b/drivers/iio/accel/adxl345.h
+> > > > > > @@ -30,6 +30,8 @@
+> > > > > >  #define ADXL345_POWER_CTL_MEASURE    BIT(3)
+> > > > > >  #define ADXL345_POWER_CTL_STANDBY    0x00
+> > > > > >
+> > > > > > +#define ADXL345_DATA_FORMAT_SPI_3WIRE        BIT(6) /* 3-wire =
+SPI mode */
+> > > > > > +
+> > > > > >  #define ADXL345_DATA_FORMAT_RANGE    GENMASK(1, 0) /* Set the =
+g range */
+> > > > > >  #define ADXL345_DATA_FORMAT_JUSTIFY  BIT(2) /* Left-justified =
+(MSB) mode */
+> > > > > >  #define ADXL345_DATA_FORMAT_FULL_RES BIT(3) /* Up to 13-bits r=
+esolution */
+> > > > > > diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/acce=
+l/adxl345_spi.c
+> > > > > > index 1c0513bd3..f145d5c1d 100644
+> > > > > > --- a/drivers/iio/accel/adxl345_spi.c
+> > > > > > +++ b/drivers/iio/accel/adxl345_spi.c
+> > > > > > @@ -20,6 +20,16 @@ static const struct regmap_config adxl345_sp=
+i_regmap_config =3D {
+> > > > > >       .read_flag_mask =3D BIT(7) | BIT(6),
+> > > > > >  };
+> > > > > >
+> > > > > > +static int adxl345_spi_setup(struct device *dev, struct regmap=
+ *regmap)
+> > > > > > +{
+> > > > > > +     struct spi_device *spi =3D container_of(dev, struct spi_d=
+evice, dev);
+> > > > > > +
+> > > > > > +     if (spi->mode & SPI_3WIRE)
+> > > > > > +             return regmap_write(regmap, ADXL345_REG_DATA_FORM=
+AT,
+> > > > > > +                                 ADXL345_DATA_FORMAT_SPI_3WIRE=
+);
+> > > > > Your earlier patch carefully (I think) left one or two fields alo=
+ne, then
+> > > > > this write just comes in and changes them. In particular INT_INVE=
+RT.
+> > > > >
+> > > > Why do you refer here to INT_INVERT? In this code above I try to se=
+t
+> > > > SPI to 3 lines. Since this is a SPI configuration, i.e. bus specifi=
+c,
+> > > > it happens in adxl345_spi.c. Passing this function to the bus
+> > > > independent adxl345_core.c file allows to configure the bus first.
+> > > > Therefore, I'm using the update function in core masking out the SP=
+I
+> > > > filag.
+> > >
+> > > Ah. Ok.  It was only intended to mask out the SPI3-wire bit, not the
+> > > other bits that you also masked out.  I thought intent was to leave
+> > > them untouched for some reason.  Given they don't matter in the drive=
+r
+> > > at the moment (no interrupt support) then no problem.
+> > >
+> > > >
+> > > > My reason why I try to keep INT_INVERT out is different. There is
+> > > > another driver for the same part in the kernel:
+> > > > ./drivers/input/misc/adxl34x.c - This is a input driver, using the
+> > > > interrupts of the adxl345 for the input device implementation. I
+> > > > assumed, that in the iio implementation there won't be interrupt
+> > > > handling for the adx345, since it is not an input device. Does this
+> > > > make sense?
+> > >
+> > > No. You can't use these two drivers at the same time.  They will almo=
+st
+> > > certainly trample over each other in actually reading channels etc.
+> > >
+> > > Their is some legacy of old drivers in input from a long time back.
+> > > Given this driver clearly doesn't have full functionality yet in IIO =
+there
+> > > and the different userspace ABI, we've just left the input driver alo=
+ne.
+> > >
+> > Going by the git history gave this impression, too. But it was still a
+> > bit confusing to me.
+> >
+> > The IIO driver so far does not handle any of the interrupt features.
+> > The older driver also seems to support more of the chip's features.
+> > Would it make sense to continue implement/port what's missing -
+> > feature by feature - for the IIO driver in order to make the input
+> > driver obsolete (one day)?
+>
+> Yes, though it will be challenging because of the ABI differences.
+> We do have a few cross subsystem bridge drivers, but the few goes we've
+> had at an accel bridge driver haven't made it into the kernel.  In partic=
+ular
+> we don't have an in kernel interface for threshold events and similar in =
+IIO.
+> It would be easy enough to add one, but no one has ever cared enough to
+> do the work. :(
+>
+Perhaps there are easier things (precision, power saving measures,
+etc) of that particular accelerometer to port first. Open issues which
+even I could give a try here. Sounds really exciting to me, though,
+but before I definitely need a bit more experience with community and
+APIs.
 
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
- drivers/iio/imu/inv_icm42600/inv_icm42600.h      | 2 ++
- drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 5 +++++
- drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c  | 3 +++
- drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  | 3 +++
- 4 files changed, 13 insertions(+)
+What do you mean with cross subsystem bridge drivers, or this accel
+bridge driver? I mean, can you provide me with a link to that driver
+to have a look into what direction that is going to?
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600.h b/drivers/iio/imu/=
-inv_icm42600/inv_icm42600.h
-index 0e290c807b0f..0566340b2660 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600.h
-@@ -22,6 +22,7 @@ enum inv_icm42600_chip {
-        INV_CHIP_ICM42602,
-        INV_CHIP_ICM42605,
-        INV_CHIP_ICM42622,
-+       INV_CHIP_ICM42688,
-        INV_CHIP_ICM42631,
-        INV_CHIP_NB,
- };
-@@ -304,6 +305,7 @@ struct inv_icm42600_state {
- #define INV_ICM42600_WHOAMI_ICM42602                   0x41
- #define INV_ICM42600_WHOAMI_ICM42605                   0x42
- #define INV_ICM42600_WHOAMI_ICM42622                   0x46
-+#define INV_ICM42600_WHOAMI_ICM42688                   0x47
- #define INV_ICM42600_WHOAMI_ICM42631                   0x5C
+Anyway, I really appreciate already your patience with my patches, the
+direct and helpful answers! I appreciate the support. Thinking and
+re-thinking over every particular line of code is really an
+experience. I don't want to go too much into off-topic discussions
+here, if this is not the forum for that, please let me know :)
 
- /* User bank 1 (MSB 0x10) */
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio=
-/imu/inv_icm42600/inv_icm42600_core.c
-index a5e81906e37e..82e0a2e2ad70 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -87,6 +87,11 @@ static const struct inv_icm42600_hw inv_icm42600_hw[INV_=
-CHIP_NB] =3D {
-                .name =3D "icm42622",
-                .conf =3D &inv_icm42600_default_conf,
-        },
-+       [INV_CHIP_ICM42688] =3D {
-+               .whoami =3D INV_ICM42600_WHOAMI_ICM42688,
-+               .name =3D "icm42688",
-+               .conf =3D &inv_icm42600_default_conf,
-+       },
-        [INV_CHIP_ICM42631] =3D {
-                .whoami =3D INV_ICM42600_WHOAMI_ICM42631,
-                .name =3D "icm42631",
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c b/drivers/iio/=
-imu/inv_icm42600/inv_icm42600_i2c.c
-index 1af559403ba6..ebb28f84ba98 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c
-@@ -84,6 +84,9 @@ static const struct of_device_id inv_icm42600_of_matches[=
-] =3D {
-        }, {
-                .compatible =3D "invensense,icm42622",
-                .data =3D (void *)INV_CHIP_ICM42622,
-+       }, {
-+               .compatible =3D "invensense,icm42688",
-+               .data =3D (void *)INV_CHIP_ICM42688,
-        }, {
-                .compatible =3D "invensense,icm42631",
-                .data =3D (void *)INV_CHIP_ICM42631,
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c b/drivers/iio/=
-imu/inv_icm42600/inv_icm42600_spi.c
-index 6be4ac794937..50217a10e0bb 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c
-@@ -80,6 +80,9 @@ static const struct of_device_id inv_icm42600_of_matches[=
-] =3D {
-        }, {
-                .compatible =3D "invensense,icm42622",
-                .data =3D (void *)INV_CHIP_ICM42622,
-+       }, {
-+               .compatible =3D "invensense,icm42688",
-+               .data =3D (void *)INV_CHIP_ICM42688,
-        }, {
-                .compatible =3D "invensense,icm42631",
-                .data =3D (void *)INV_CHIP_ICM42631,
---
-2.34.1
-
-TDK-Micronas GmbH
-Company Headquarters / Sitz der Gesellschaft: Freiburg i. Br. - Municipal C=
-ourt of / Amtsgericht: Freiburg i. Br. HRB 6108. VAT ID / USt-IdNr.: DE 812=
-878184
-Management / Gesch=E4ftsf=FChrung: Sam Maddalena
-
-This e-mail and any files transmitted with it are confidential information =
-of TDK-Micronas and intended solely for the use of the individual or entity=
- to whom they are addressed. If you have received this e-mail in error plea=
-se notify the sender by return e-mail and delete all copies of this e-mail =
-message along with all attachments. If you are not the named addressee you =
-should not disseminate, distribute or copy this e-mail.
-
-Bitte vermeiden Sie den Ausdruck dieser E-Mail.
-Please consider your environmental responsibility before printing this e-ma=
-il.
-
-[X]
-
-[https://www.micronas.tdk.com/sites/default/files/header/2024_04_TDK_Trades=
-how_Banner_250x135px_96dpi_embeddedworld.png]<https://www.tdk.com/en/news_c=
-enter/press/20240312_01.html>
+> Jonathan
+>
+>
+> >
+> > > >
+> > > > > If it doesn't makes sense to write it there, either write that bi=
+t
+> > > > > every time here, or leave it alone every time.  Not decide on whe=
+ther
+> > > > > to write the bit based on SPI_3WIRE or not.  As far as I know the=
+y
+> > > > > are unconnected features.
+> > > > >
+> > > > I think I did not understand. Could you please specify a bit more?
+> > > > When spi-3wire is configured in the DT it has to be parsed and hand=
+led
+> > > > in the bus specific part, i.e. the adxl345_spi.c Therefore I config=
+ure
+> > > > SPI_3WIRE there. I don't want to place SPI specific code in the cor=
+e
+> > > > file.
+> > >
+> > > My confusion was that you were deliberately not touching the other un=
+used
+> > > flags.  In reality you are touching the but only if you enable 3wire.
+> > > I would write them register to 0 in the !3wire case so all other valu=
+es
+> > > are the same in both paths.
+> > >
+> > > >
+> > > > > > +     return 0;
+> > > > > > +}
+> > > > > > +
+> > > > > >  static int adxl345_spi_probe(struct spi_device *spi)
+> > > > > >  {
+> > > > > >       struct regmap *regmap;
+> > > > > > @@ -33,7 +43,7 @@ static int adxl345_spi_probe(struct spi_devic=
+e *spi)
+> > > > > >       if (IS_ERR(regmap))
+> > > > > >               return dev_err_probe(&spi->dev, PTR_ERR(regmap), =
+"Error initializing regmap\n");
+> > > > > >
+> > > > > > -     return adxl345_core_probe(&spi->dev, regmap, NULL);
+> > > > > > +     return adxl345_core_probe(&spi->dev, regmap, adxl345_spi_=
+setup);
+> > > > > >  }
+> > > > > >
+> > > > > >  static const struct adxl345_chip_info adxl345_spi_info =3D {
+> > > > >
+> > >
+> >
+>
 

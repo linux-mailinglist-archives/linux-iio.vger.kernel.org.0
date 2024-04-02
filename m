@@ -1,284 +1,270 @@
-Return-Path: <linux-iio+bounces-4001-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4002-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A55E894FA9
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Apr 2024 12:12:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BBBE8951B5
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Apr 2024 13:22:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CCDB1C22011
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Apr 2024 10:12:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF4311F25009
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Apr 2024 11:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07ED65A106;
-	Tue,  2 Apr 2024 10:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254056026A;
+	Tue,  2 Apr 2024 11:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l4jH8k2u"
+	dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b="s/bqvpyZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2133.outbound.protection.outlook.com [40.107.21.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172DC59151;
-	Tue,  2 Apr 2024 10:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712052742; cv=none; b=LKtWaZaQuPaqBmCbLPwe+C70uB3ncAS6wq4AbHVX53O9sO7dNcpZMF0F6s4kcUmdyqGz0nUmTSzrGWFdu3Mlz9ABB9WM31TKiRvAlD4qNRhFfBbHyVxkG7OotctqeiuxKNk8cvGCw9hy1wVRYJRGwwXjtNmlx/TSiAWb4zlGs1o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712052742; c=relaxed/simple;
-	bh=mKSFc6n/JiYsinC/ofRpA2VZGHdbV2ldjiX/sYtEI6U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cbcNHah6KQvze9XR8r97YdqNWR/oKDJJcGYjAl4bK/hh2//BYDKdRAlsuVah76DSqLPdf2bVrxzIf38N2iHZQMPpGOqJZfUZy51pm4BkI6uIA0c3Y4TexYId3SkicYgDNx8V/l5yiu1274e20+E6N779Z30dFdxkyg2H3zslD4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l4jH8k2u; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-61448d00c59so24843337b3.0;
-        Tue, 02 Apr 2024 03:12:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712052740; x=1712657540; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dCfPr7OgZf9uP49di2tEZcJnki5yiPQqsVQPfZqM+9U=;
-        b=l4jH8k2ubD0aSTklWyoD4Cru/MrxP/TLKDl7pMYb2VrVJikDbwu8XAmDWUxWZOCcPp
-         Z6+1awwsEfCgODeItWwoeSMrwWDnduTIQ/H61g37OMY3dIZiGtttChVO2lLpD7l3weCe
-         7kitRF/T/TwZwm/VUlvJ4jJ6FnLPbIUhtkWpLy+NL6Q+iX2/AhXv++QylLHLUhBhS3N5
-         GaXzNlozDZLBS+JHKQQRk/zPGSXPS3dsWFyey3cw9D21vLh/uRuq5LhgSUxQdWTBrUTp
-         uw9cWKLr1s1YN0qBPDQBm251pEvMt+y+/d8Nur3gHln+yzLigqpj2nQLHEKx7E5mSU9y
-         QzEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712052740; x=1712657540;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dCfPr7OgZf9uP49di2tEZcJnki5yiPQqsVQPfZqM+9U=;
-        b=AZjx86v5z6k12zhevJH0hKcTBThCehNlBH3bz1njXJw7Su87Sc6RS/CI1UFy0mYHTz
-         GIXdxHCEQV9iev6lYOilGAmaR2zVO3ucObc3SWPkSRvePOy/zIAG7X11mV5M3Via1I4L
-         fXPI9iM8dxIpkhOv31wuPzRguG6G80wkLC273lvB1A2CQ6HBLXxIa5UkA1+WbC0QhKO9
-         xGe7IeeNVDqf5KfVmVQNBXcxSntYHlvSAG6jU/cWfBa6B9nHlKk92vHMUdkQAV+4JTEE
-         LhOiKqM2n3vGoA/Vujl5hUgoZhBJmUWRL0P3PlSHWWy/x+D7NLjRLNQ6phkGr5TIflx1
-         5rUA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8vnmsaWivX/up6kvyeLhScwPBJnE4XRYQMxC+4L8k0kvA55G1PDiPhcxhDFiaZfujXAhQNu2ZAypgUosjfTGbxXGqUYgjwB9XaCsbRhMPWJdM7khP5+LpazeREL16deKF2v8ESUSQXGjcTrN5dvUxshLyijBvLzLvBVsfKrBTO2gBtQ==
-X-Gm-Message-State: AOJu0Yy13htc+twx5cRuKvCiU62rZb1bSLSxDFujnEsGPy/rMTYAaXyE
-	i2adenhiPnkySEGxUanH3dOW6qOYnHaCZoHpIFPr/Uk2Px5vZtxIfgzx4H4Tnj3Msih8XjDssOr
-	GBkf+VgpDfr+uGy9LagEyLiehoZ8=
-X-Google-Smtp-Source: AGHT+IHWWxw3EVJaMYd5HLS/1c+ZJLxr4KXYPYqy+h3D86Y/l2858g2V7nbugjK26BSWwmS7BGwKM74d+/kKuwjE5BE=
-X-Received: by 2002:a25:d0d7:0:b0:dcc:efa2:93fb with SMTP id
- h206-20020a25d0d7000000b00dccefa293fbmr10688485ybg.45.1712052739884; Tue, 02
- Apr 2024 03:12:19 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580C2612EB;
+	Tue,  2 Apr 2024 11:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.133
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712056951; cv=fail; b=EmX2a9CGJ9F2KkEyAR0BYgai6X9LzZ7xN/CL97hPxw4KETdm5uCwiOlZJQNmSlY8DraIooYK58KAfW0Fto3N/1n4rkFWZElS/0SMy2LgN/Dtgy8R2c8wn6FSmUbU6ZHyfL5rklTz+3KardluzvlwCYBFTuUJkHEiCXUUR6ZhCe4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712056951; c=relaxed/simple;
+	bh=TffXcSebXGOvx0ho7XTMe9hTIfhlHk7/auIerKjcg9Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=jIn/7hQLI4uuHba4++PdbJOWSMdSnRlBKrevYV4FIHHekfZ04vY3IKx/9QxTAMf3aoVL8rg9NBCq0kMWSHBKS76t6+i9Har51+ZoMYLyMnc6F5lroCV/mERBIYIbP1iIRSJeLmZkPT8J/EI5kDITAVGY9leGuiFRxF3bV2v0f6Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com; spf=fail smtp.mailfrom=leica-geosystems.com; dkim=pass (1024-bit key) header.d=leica-geosystems.com header.i=@leica-geosystems.com header.b=s/bqvpyZ; arc=fail smtp.client-ip=40.107.21.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=leica-geosystems.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=leica-geosystems.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=UV/BQjatgEuy197nDOeI/ZguoteLG1lEcsUm2VUQh9aenyGTJ+8S57tU6zuigoa3A5Lxf6KpLWwnKVmCwjCb6H8yCQbqUlNPdR1tzMUTMwsB5jDLVLvq5Pzet3d1HiX2KPO2XWEuBRyfRDNy1/Io8OcLT5POUs17rIyS/Qm42EtZ+V6Zs3ZVcg1hYSrpdZHHh8CC+yHaDO4TThsoLdDn9bZpMG1voufB01g1LY2GG5+JnxaKzfDd3RxYec99RNQrzQNl90so1NhEF+H03eTDMd3Zb2vB63K604I6RzDq7emZr+dGbs4Nk/N3yw4K7UvhPphUPSXsSCKIg0uuG1x5gw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TffXcSebXGOvx0ho7XTMe9hTIfhlHk7/auIerKjcg9Q=;
+ b=GPaRykNSemheeVBNezxuFbBn5SxL9kVK+RtKNuraq+MUCiPAn+EfVwaWj46N5mrRSSN4HmjjLbIEehtuhpUdsYM/cdrmhGGswHnU/EVkYV/7SWk/XkgEXMwbuL6RlonsK4KPzFInUDzryL+rVkxQtoW/pE5InwQieYTCDNkzFAOLvJcw1nWAiFaq6tRBSI/pXVmAXGhOOTtYENpGYDmkGSXrKywCo2CBaKCKmyarOERq4POhJ0+RRI+/xrZYsWZa3NgvlH3gvk+XTcn0eELgooo3V3WgzI9phm4qs3gvKFH2tTmylA7twCuxU3XfZGuf6nPcnrZJlVMWTmiZ5y7EMg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=leica-geosystems.com; dmarc=pass action=none
+ header.from=leica-geosystems.com; dkim=pass header.d=leica-geosystems.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=leica-geosystems.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TffXcSebXGOvx0ho7XTMe9hTIfhlHk7/auIerKjcg9Q=;
+ b=s/bqvpyZv9xXDB4OxU2D6jbVm3oqRbS7VJi3OYftSJLz3ypBUxHYYFA9qMKUroVeyn1Ftt7KKOn4Bn2L5bbFpCD0V6K2G1uQWtK4S4T5l31fTmBcpBvU81kkAclLad0jdVVxkTj7YFxYmt/ChkQ5jO+RDr6iSnil1uG6fo2Ze80=
+Received: from AS5PR06MB8920.eurprd06.prod.outlook.com (2603:10a6:20b:653::19)
+ by PA2PR06MB9756.eurprd06.prod.outlook.com (2603:10a6:102:419::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.24; Tue, 2 Apr
+ 2024 11:22:26 +0000
+Received: from AS5PR06MB8920.eurprd06.prod.outlook.com
+ ([fe80::93c8:5d0a:b6ce:428e]) by AS5PR06MB8920.eurprd06.prod.outlook.com
+ ([fe80::93c8:5d0a:b6ce:428e%7]) with mapi id 15.20.7452.019; Tue, 2 Apr 2024
+ 11:22:25 +0000
+From: HAEMMERLE Thomas <thomas.haemmerle@leica-geosystems.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: "joel@jms.id.au" <joel@jms.id.au>, GEO-CHHER-bsp-development
+	<bsp-development.geo@leica-geosystems.com>, Eddie James
+	<eajames@linux.ibm.com>, Lars-Peter Clausen <lars@metafoo.de>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] iio: pressure: dps310: support negative pressure and
+ temperature values
+Thread-Topic: [PATCH] iio: pressure: dps310: support negative pressure and
+ temperature values
+Thread-Index: AQHagCPBb/DiHmnN4k+xFPqn0gLXpbFNKQCAgAe2ygA=
+Date: Tue, 2 Apr 2024 11:22:25 +0000
+Message-ID: <34c1c26a-4787-4713-8c7d-040732a18092@leica-geosystems.com>
+References: <20240327084937.3801125-1-thomas.haemmerle@leica-geosystems.com>
+ <20240328133421.1844a83c@jic23-huawei>
+In-Reply-To: <20240328133421.1844a83c@jic23-huawei>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AS5PR06MB8920:EE_|PA2PR06MB9756:EE_
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:
+ Y+1H1oL56zottIcl3nshdfjTzlSxB1vhMaXTQLIYnIv41MEHFPpA6q5mbzAyDDz/MTE/hz/fUHFTO+SiA9fDvb9QcX2YvEl0iCoFZNw7L+EJUiW0KAaTxLRs/arTg7BO9SnIzC0+HNkAhgHaLX4zLndT54KtafJtB6gaAkPD+5FIH3OfjWVGmjcggYvSajN8LuzI0AAsRROFgPL1t6ZDHy71hz2ZxLkKF850FWhLh1cXWv2lIyc2fq1gPid2d/VaPRbT11XhPAeW2pMzDQX8N/T4mZA9cAWdJ4PfXWrLhRnY7xgx/oKc2pGfn1Xh633Cp9HD7Te12hn1Asj4nhQ4QUi5ejRSrP5MfOUKOQiF6zvrNzqVKGNWwcXtRKACR5gWuiq6p6/whVgAR1MRpAmZKJTtOsVOcrh9a9tfgAFe7FcsHclXMhkI0x1IbpuRxAEf7pURljvxJFK+Pa+H7EnEx7Q+EL/dTAGN6gnhYxn25zisNw74zkoC9wfQ2yJvWOjZO0IKGK+vagg92Qp0KndFeuTCS4q0DwZodijftPrkvHlZzt7I2MJLLargDRhiE7ygopeK1XpxlMd7878sKUCFzkfDLxtDwu9v/Sa/ZvL7IH5CJOUWu4BUscV107PcSyMQJrsy0wugnz1vaEZ2n/Xcn0CjG6GIKcX0cSghXezNKiY=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS5PR06MB8920.eurprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?utf-8?B?TERHQWI0RHRmeU9pbWxTZFUxTHg4T01CY1ZrblJIOTdmUmh4ZWF5cDdNaFZy?=
+ =?utf-8?B?ZkRFaUp5SlFrUlUxeE1SSHcxZkFRRTc2WmVnTzJCNy9zYTB5WFZqOWxpc2J1?=
+ =?utf-8?B?TDJYdjUzeEFucVhQYmpjVnVSenhSV0o1b3h3OE01UnFQcHNWNmNNb2NSTFFB?=
+ =?utf-8?B?eTlteThjZ3BMa0ljQ3ZydWthRVRTVnorcGY2S1pxb3p2NHprTFJXbDQ1aWpH?=
+ =?utf-8?B?eER0Y2JkWnY3RUN1TkdyQlZxaUVSUnRzMHg2aE42UnZPb2MrZkZIemN2bmZR?=
+ =?utf-8?B?Z2wxSU5LYVRmNVIzcUxpRlIzNjlNa1RNaUlJaGFEWFZycisrV0VLL3pqZlV4?=
+ =?utf-8?B?dmZwdU11a0pmOG1YM1BUVk40OGk1UE1HU2JhSHBnK0pUMk1uRjE0ZXNQUXdu?=
+ =?utf-8?B?YWpXOFEwNi9nYWU3MkNRbkZDb2FHWW1JZDFKTEdUVWp6RlVsYVJFcVp4bXVQ?=
+ =?utf-8?B?UCtJU1lzYWFPWlBPaEFrV2VhYkhKd2VFSVBtZk1mZndvRU1HZjBDbjZ4VHVB?=
+ =?utf-8?B?RE1wL29RT1lSTEtZUU5WWStyN2wrc3FwNlRBRUVHRVhPSDlGa1c1NHdlSWdz?=
+ =?utf-8?B?MzVwdDQwbmw1Y3FVcEpuVk90ek1KdThkN1FNR2x5cUFBSEc4NkJQK3R3QlNT?=
+ =?utf-8?B?K3VGaTJTcjZZcU9zZTlyTmprb0dvdmt5QWtBTktIVXdpcTcrcFUwbWE4bjdq?=
+ =?utf-8?B?dTcydFJlWDM2aE1uOHZnT29LY2pKM0d5eHlQT01oR2VCdlNDOXJRQ3cycCtS?=
+ =?utf-8?B?d0lxWFlxRk5qaTErNUVHbDJ3T3BtVVJoaHpNd2FtV2F1TDVhckZVMHJjaUo4?=
+ =?utf-8?B?M0VoTmhEL1F5aUlrVG53bTNLb2J1b29aVlkvbnhtRWNKVkhHYVlHVUVIYTQv?=
+ =?utf-8?B?aXYyR0NrcStlVEVhbUVwallkNlRZY3J1eVFxa09uQUtkYkRNdG5PVEFsSjJi?=
+ =?utf-8?B?Y0h1ZWFWVDRNTGtIOUFQRUtxQ0s2QWR5QkhyK2xsRlBUTnJYVmpFakZKL1kx?=
+ =?utf-8?B?WkNMQTRub0RTQ3JZVXc5RUF1MFNtakFLWWdpOUJTMGlhNVFabXFjT01HWmdu?=
+ =?utf-8?B?N3Y0b2ZnOTVZZ1JFNjZvZkRNdVF4YlpXL1MxNDMyMG5NREd0VXVEMFlhMlFo?=
+ =?utf-8?B?aStpcEMrN2hXTUxkVFk4T2dpZjljL0thWGxjNXNkRmc1YUl0Ump1Vi9EVmNo?=
+ =?utf-8?B?Z3ZKQzhVeEZybE9mVm51M2pXS0EzOTZVeFBvY1MxTWwvQU83cEpnU1dES3pi?=
+ =?utf-8?B?OTIrWVNOV3VWRitrcDkrbERPaVpBNjBiUy84am8rQVAyb0Z5SWkxNEVaTnUy?=
+ =?utf-8?B?dUpVcGpYQ3J3TVR1b1k2R2MyYmtSKzFaV2pQaFUrVzNRZjlLa2JLbUhwVlJT?=
+ =?utf-8?B?N3BZT2hUcUZLQSt4TFlvcXF4Q3NXVmh5U3VCaEVnZHREczdveCtDM3FFSS8z?=
+ =?utf-8?B?VzhxNGtiMWh1bit0QXRLc0taek1IOUg5S0ROSDdMRy9aMGVTdTJvc2tEK29W?=
+ =?utf-8?B?Rk02SnlhUmNYUCtXUExpNUd3aWhtK0lvR0VWNEtMRXVkdFVUTnhtYmdCT2J1?=
+ =?utf-8?B?UFUrZDMvOWVmZDhjbElXUVBzQ2NDQnUyVkpTRFNqM3BQV0UrclRCTndGVU15?=
+ =?utf-8?B?QlhqN0FadXlFMjVwZHo4SGVmeHU3d21SSWZGbm1ERkEyM3h4SVpLZXdQNHpJ?=
+ =?utf-8?B?dkYxNHNCSnVXQ0hqQnVDQmt0alNRcXlQYkhaYTk1RytrMnowUUFDbm04Sll6?=
+ =?utf-8?B?T0tLUzR4MmNGS29TZ011N2wxeFRhaEhJL1JHMkJpdENHWWpLWFQzOVc3S0Fq?=
+ =?utf-8?B?TlAvY1VLQ2JNY0hzVnBoUnQ5YmdhOUdxWktzaE9tbkU2SU9IMk9BNU9ObW1x?=
+ =?utf-8?B?ZFBHcVpCa3Vkako2MnVHbjhxQVJMdThhSDh1NS8wUi9vRVFWYnVjUGhpUjY1?=
+ =?utf-8?B?dXcwanRiR1J6MEdDdit2ZHJpNlg3Q1FacndkOWZXOUdlN1dGN3k4SU56czUx?=
+ =?utf-8?B?YysvUGlzN0M2UXhGZjNOaVBoYXF0a0NPOVh0NTI3QXQ1Z1hzNS96YWxCMkRH?=
+ =?utf-8?B?ZHkzYUZoU2ltNWFMMEpXVnZyUWtvTXYybWlXNVVmdkFBNjQyQlA4M1N3YmVi?=
+ =?utf-8?B?bUlMd3l6Rlpkc0VGV0ZHRk5ONVdZTXlSaldtYUEzMUV2czR2Qys3WjhYLzFz?=
+ =?utf-8?Q?Du760HbCXuU1XCkAtj4QXDM=3D?=
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <3A304E0B45FDBC49B6DCE2DE4A321F59@eurprd06.prod.outlook.com>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240327220320.15509-1-l.rubusch@gmail.com> <20240327220320.15509-8-l.rubusch@gmail.com>
- <20240328133927.7e49f3bf@jic23-huawei> <CAFXKEHZva5AE=sinx_i0Gec2FbB4ZfyEu8mWg52omzGBvr5uXw@mail.gmail.com>
- <20240330152401.034aedad@jic23-huawei> <CAFXKEHZJZU69udvM86rDSNU1J9o=v62BJcJfTrB=Y9Tgsjm4fw@mail.gmail.com>
- <20240401175304.000022ed@Huawei.com>
-In-Reply-To: <20240401175304.000022ed@Huawei.com>
-From: Lothar Rubusch <l.rubusch@gmail.com>
-Date: Tue, 2 Apr 2024 12:11:43 +0200
-Message-ID: <CAFXKEHYrqA2iaQJeMqPbQJYEu10xiRt92c-ySGcfH76MSriufw@mail.gmail.com>
-Subject: Re: [PATCH v5 7/7] iio: accel: adxl345: Add spi-3wire option
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de, Michael.Hennerich@analog.com, 
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: leica-geosystems.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AS5PR06MB8920.eurprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ddaf25e9-61c7-4d1e-68da-08dc53072c94
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Apr 2024 11:22:25.7281
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 1b16ab3e-b8f6-4fe3-9f3e-2db7fe549f6a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: W6t3IKUKofCFR3HoJIm8z+oZGTdsuiNm4STwDs5PQ69ps7pAGiLDjrF9XMID6v29d3NsgG0ae+e0CPQ3LrNM1AxxQjBjkfLTgRAFxhH6W8TOxYJkepmj4hnjpky1+kSq
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA2PR06MB9756
 
-On Mon, Apr 1, 2024 at 6:53=E2=80=AFPM Jonathan Cameron
-<Jonathan.Cameron@huawei.com> wrote:
->
-> On Mon, 1 Apr 2024 18:06:24 +0200
-> Lothar Rubusch <l.rubusch@gmail.com> wrote:
->
-> > On Sat, Mar 30, 2024 at 4:24=E2=80=AFPM Jonathan Cameron <jic23@kernel.=
-org> wrote:
-> > >
-> > > On Fri, 29 Mar 2024 01:33:01 +0100
-> > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> > >
-> > > > On Thu, Mar 28, 2024 at 2:39=E2=80=AFPM Jonathan Cameron <jic23@ker=
-nel.org> wrote:
-> > > > >
-> > > > > On Wed, 27 Mar 2024 22:03:20 +0000
-> > > > > Lothar Rubusch <l.rubusch@gmail.com> wrote:
-> > > > >
-> > > > > > Add a setup function implementation to the spi module to enable=
- spi-3wire
-> > > > > > as option when specified in the device-tree.
-> > > > > >
-> > > > > > Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-> > > > > > ---
-> > > > > >  drivers/iio/accel/adxl345.h     |  2 ++
-> > > > > >  drivers/iio/accel/adxl345_spi.c | 12 +++++++++++-
-> > > > > >  2 files changed, 13 insertions(+), 1 deletion(-)
-> > > > > >
-> > > > > > diff --git a/drivers/iio/accel/adxl345.h b/drivers/iio/accel/ad=
-xl345.h
-> > > > > > index 4ea9341d4..e6bc3591c 100644
-> > > > > > --- a/drivers/iio/accel/adxl345.h
-> > > > > > +++ b/drivers/iio/accel/adxl345.h
-> > > > > > @@ -30,6 +30,8 @@
-> > > > > >  #define ADXL345_POWER_CTL_MEASURE    BIT(3)
-> > > > > >  #define ADXL345_POWER_CTL_STANDBY    0x00
-> > > > > >
-> > > > > > +#define ADXL345_DATA_FORMAT_SPI_3WIRE        BIT(6) /* 3-wire =
-SPI mode */
-> > > > > > +
-> > > > > >  #define ADXL345_DATA_FORMAT_RANGE    GENMASK(1, 0) /* Set the =
-g range */
-> > > > > >  #define ADXL345_DATA_FORMAT_JUSTIFY  BIT(2) /* Left-justified =
-(MSB) mode */
-> > > > > >  #define ADXL345_DATA_FORMAT_FULL_RES BIT(3) /* Up to 13-bits r=
-esolution */
-> > > > > > diff --git a/drivers/iio/accel/adxl345_spi.c b/drivers/iio/acce=
-l/adxl345_spi.c
-> > > > > > index 1c0513bd3..f145d5c1d 100644
-> > > > > > --- a/drivers/iio/accel/adxl345_spi.c
-> > > > > > +++ b/drivers/iio/accel/adxl345_spi.c
-> > > > > > @@ -20,6 +20,16 @@ static const struct regmap_config adxl345_sp=
-i_regmap_config =3D {
-> > > > > >       .read_flag_mask =3D BIT(7) | BIT(6),
-> > > > > >  };
-> > > > > >
-> > > > > > +static int adxl345_spi_setup(struct device *dev, struct regmap=
- *regmap)
-> > > > > > +{
-> > > > > > +     struct spi_device *spi =3D container_of(dev, struct spi_d=
-evice, dev);
-> > > > > > +
-> > > > > > +     if (spi->mode & SPI_3WIRE)
-> > > > > > +             return regmap_write(regmap, ADXL345_REG_DATA_FORM=
-AT,
-> > > > > > +                                 ADXL345_DATA_FORMAT_SPI_3WIRE=
-);
-> > > > > Your earlier patch carefully (I think) left one or two fields alo=
-ne, then
-> > > > > this write just comes in and changes them. In particular INT_INVE=
-RT.
-> > > > >
-> > > > Why do you refer here to INT_INVERT? In this code above I try to se=
-t
-> > > > SPI to 3 lines. Since this is a SPI configuration, i.e. bus specifi=
-c,
-> > > > it happens in adxl345_spi.c. Passing this function to the bus
-> > > > independent adxl345_core.c file allows to configure the bus first.
-> > > > Therefore, I'm using the update function in core masking out the SP=
-I
-> > > > filag.
-> > >
-> > > Ah. Ok.  It was only intended to mask out the SPI3-wire bit, not the
-> > > other bits that you also masked out.  I thought intent was to leave
-> > > them untouched for some reason.  Given they don't matter in the drive=
-r
-> > > at the moment (no interrupt support) then no problem.
-> > >
-> > > >
-> > > > My reason why I try to keep INT_INVERT out is different. There is
-> > > > another driver for the same part in the kernel:
-> > > > ./drivers/input/misc/adxl34x.c - This is a input driver, using the
-> > > > interrupts of the adxl345 for the input device implementation. I
-> > > > assumed, that in the iio implementation there won't be interrupt
-> > > > handling for the adx345, since it is not an input device. Does this
-> > > > make sense?
-> > >
-> > > No. You can't use these two drivers at the same time.  They will almo=
-st
-> > > certainly trample over each other in actually reading channels etc.
-> > >
-> > > Their is some legacy of old drivers in input from a long time back.
-> > > Given this driver clearly doesn't have full functionality yet in IIO =
-there
-> > > and the different userspace ABI, we've just left the input driver alo=
-ne.
-> > >
-> > Going by the git history gave this impression, too. But it was still a
-> > bit confusing to me.
-> >
-> > The IIO driver so far does not handle any of the interrupt features.
-> > The older driver also seems to support more of the chip's features.
-> > Would it make sense to continue implement/port what's missing -
-> > feature by feature - for the IIO driver in order to make the input
-> > driver obsolete (one day)?
->
-> Yes, though it will be challenging because of the ABI differences.
-> We do have a few cross subsystem bridge drivers, but the few goes we've
-> had at an accel bridge driver haven't made it into the kernel.  In partic=
-ular
-> we don't have an in kernel interface for threshold events and similar in =
-IIO.
-> It would be easy enough to add one, but no one has ever cared enough to
-> do the work. :(
->
-Perhaps there are easier things (precision, power saving measures,
-etc) of that particular accelerometer to port first. Open issues which
-even I could give a try here. Sounds really exciting to me, though,
-but before I definitely need a bit more experience with community and
-APIs.
-
-What do you mean with cross subsystem bridge drivers, or this accel
-bridge driver? I mean, can you provide me with a link to that driver
-to have a look into what direction that is going to?
-
-Anyway, I really appreciate already your patience with my patches, the
-direct and helpful answers! I appreciate the support. Thinking and
-re-thinking over every particular line of code is really an
-experience. I don't want to go too much into off-topic discussions
-here, if this is not the forum for that, please let me know :)
-
-> Jonathan
->
->
-> >
-> > > >
-> > > > > If it doesn't makes sense to write it there, either write that bi=
-t
-> > > > > every time here, or leave it alone every time.  Not decide on whe=
-ther
-> > > > > to write the bit based on SPI_3WIRE or not.  As far as I know the=
-y
-> > > > > are unconnected features.
-> > > > >
-> > > > I think I did not understand. Could you please specify a bit more?
-> > > > When spi-3wire is configured in the DT it has to be parsed and hand=
-led
-> > > > in the bus specific part, i.e. the adxl345_spi.c Therefore I config=
-ure
-> > > > SPI_3WIRE there. I don't want to place SPI specific code in the cor=
-e
-> > > > file.
-> > >
-> > > My confusion was that you were deliberately not touching the other un=
-used
-> > > flags.  In reality you are touching the but only if you enable 3wire.
-> > > I would write them register to 0 in the !3wire case so all other valu=
-es
-> > > are the same in both paths.
-> > >
-> > > >
-> > > > > > +     return 0;
-> > > > > > +}
-> > > > > > +
-> > > > > >  static int adxl345_spi_probe(struct spi_device *spi)
-> > > > > >  {
-> > > > > >       struct regmap *regmap;
-> > > > > > @@ -33,7 +43,7 @@ static int adxl345_spi_probe(struct spi_devic=
-e *spi)
-> > > > > >       if (IS_ERR(regmap))
-> > > > > >               return dev_err_probe(&spi->dev, PTR_ERR(regmap), =
-"Error initializing regmap\n");
-> > > > > >
-> > > > > > -     return adxl345_core_probe(&spi->dev, regmap, NULL);
-> > > > > > +     return adxl345_core_probe(&spi->dev, regmap, adxl345_spi_=
-setup);
-> > > > > >  }
-> > > > > >
-> > > > > >  static const struct adxl345_chip_info adxl345_spi_info =3D {
-> > > > >
-> > >
-> >
->
+SGkgSm9uYXRoYW4hDQoNClRoYW5rcyBmb3IgdGhlIHJldmlldyENCg0KT24gMjguMDMuMjQgMTQ6
+MzQsIEpvbmF0aGFuIENhbWVyb24gd3JvdGU6DQo+IA0KPiBPbiBXZWQsIDI3IE1hciAyMDI0IDA5
+OjQ5OjM2ICswMTAwDQo+IFRob21hcyBIYWVtbWVybGUgPHRob21hcy5oYWVtbWVybGVAbGVpY2Et
+Z2Vvc3lzdGVtcy5jb20+IHdyb3RlOg0KPiANCj4+IFRoZSBjdXJyZW50IGltcGxlbWVudGF0aW9u
+IGludGVycHJldHMgbmVnYXRpdmUgdmFsdWVzIHJldHVybmVkIGZyb20NCj4+IGZ1bmN0aW9uIGlu
+dm9jYXRpb24gYXMgZXJyb3IgY29kZXMsIGV2ZW4gdGhvc2UgdGhhdCByZXBvcnQgYWN0dWFsIGRh
+dGEuDQo+PiBUaGlzIGhhcyBhIHNpZGUgZWZmZWN0IHRoYXQgd2hlbiB0ZW1wZXJhdHVyZSB2YWx1
+ZXMgYXJlIGNhbGN1bGF0ZWQgLQ0KPj4gdGhleSBhbHNvIGNvbnZlcnRlZCBieSBlcnJvciBjb2Rl
+LCB3aGljaCBsZWFkcyB0byBmYWxzZSBpbnRlcnByZXRhdGlvbg0KPj4gb2YgcmVzdWx0cy4NCj4+
+DQo+PiBGaXggdGhpcyBieSB1c2luZyB0aGUgcmV0dXJuIHZhbHVlcyBvbmx5IGZvciBlcnJvciBo
+YW5kbGluZyBhbmQgcGFzc2luZw0KPj4gYSBwb2ludGVyIGZvciB0aGUgdmFsdWVzLg0KPj4NCj4+
+IFNpZ25lZC1vZmYtYnk6IFRob21hcyBIYWVtbWVybGUgPHRob21hcy5oYWVtbWVybGVAbGVpY2Et
+Z2Vvc3lzdGVtcy5jb20+DQo+IEhpIFRob21hcywNCj4gDQo+IFRoaXMgbmVlZHMgYSBmaXhlcyB0
+YWcgc28gd2Uga25vdyB3aGVyZSB0byBiYWNrcG9ydCBpdCB0by4NCg0KV2lsbCBhZGQgaXQuDQoN
+Cj4gDQo+IEEgZmV3IG90aGVyIGNvbW1lbnRzIGlubGluZS4gIE5vdGUgdGhhdCBvbmUgYWltIGlu
+IGEgZml4IGlzIHRvIGtlZXAgdGhpbmdzDQo+IG1pbmltYWwgdG8gbWFrZSBpdCBlYXN5IHRvIGJh
+Y2twb3J0LiAgSWYgeW91IHdhbnQgdG8gdGhlIGZvbGxvdyB0aGUgZml4DQo+IHdpdGggYSBjbGVh
+bnVwIHBhdGNoIHRoYXQgbWFrZXMgdGhlIGRyaXZlciBtb3JlIGNvbnNpc3RlbnQgdGhhdCBpcyBn
+cmVhdCwNCj4ganVzdCBkb24ndCBjb21iaW5lIHRoYXQgd2l0aCB0aGUgYnVnIGZpeC4NCg0KQUNL
+IC0gSSB3aWxsIHNwbGl0IHRoZSBwYXRjaC4NCg0KPiANCj4gSm9uYXRoYW4NCj4gDQo+PiAtLS0N
+Cj4+ICAgZHJpdmVycy9paW8vcHJlc3N1cmUvZHBzMzEwLmMgfCAxMjIgKysrKysrKysrKysrKysr
+KysrKy0tLS0tLS0tLS0tLS0tLQ0KPj4gICAxIGZpbGUgY2hhbmdlZCwgNjkgaW5zZXJ0aW9ucygr
+KSwgNTMgZGVsZXRpb25zKC0pDQo+Pg0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaWlvL3ByZXNz
+dXJlL2RwczMxMC5jIGIvZHJpdmVycy9paW8vcHJlc3N1cmUvZHBzMzEwLmMNCj4+IGluZGV4IDFm
+ZjA5MWIyZjc2NC4uMzczZDFjMDYzYjA1IDEwMDY0NA0KPj4gLS0tIGEvZHJpdmVycy9paW8vcHJl
+c3N1cmUvZHBzMzEwLmMNCj4+ICsrKyBiL2RyaXZlcnMvaWlvL3ByZXNzdXJlL2RwczMxMC5jDQo+
+PiBAQCAtMTcxLDcgKzE3MSw3IEBAIHN0YXRpYyBpbnQgZHBzMzEwX3RlbXBfd29ya2Fyb3VuZChz
+dHJ1Y3QgZHBzMzEwX2RhdGEgKmRhdGEpDQo+PiAgICAgICAgaW50IHJlZzsNCj4+DQo+PiAgICAg
+ICAgcmMgPSByZWdtYXBfcmVhZChkYXRhLT5yZWdtYXAsIDB4MzIsICZyZWcpOw0KPj4gLSAgICAg
+aWYgKHJjKQ0KPj4gKyAgICAgaWYgKHJjIDwgMCkNCj4+ICAgICAgICAgICAgICAgIHJldHVybiBy
+YzsNCj4gDQo+IFdoeSB0aGlzIGNoYW5nZT8gIEl0IHNlZW1zIHVucmVsYXRlZCB0byB0aGUgaXNz
+dWUgeW91IGFyZSBmaXhpbmcuDQoNClRoZSByZXR1cm4gdmFsdWVzIGluIHRoaXMgZHJpdmVyIGFy
+ZSBub3QgY2hlY2tlZCBjb25zaXN0ZW50bHksIGFuZCB0aGlzIA0KYWxpZ25zIHdpdGggdGhlIG90
+aGVyIGNhbGwocykgb2YgYHJlZ21hcF9yZWFkYC4gQnV0IEkgYWdyZWUgLSBpdCdzIG5vdCANCnJl
+bGF0ZWQgdG8gdGhlIGlzc3VlLg0KDQo+IA0KPj4NCj4+ICAgICAgICAvKg0KPj4gQEAgLTI1Niwy
+NCArMjU2LDI0IEBAIHN0YXRpYyBpbnQgZHBzMzEwX3N0YXJ0dXAoc3RydWN0IGRwczMxMF9kYXRh
+ICpkYXRhKQ0KPj4gICAgICAgIHJldHVybiBkcHMzMTBfdGVtcF93b3JrYXJvdW5kKGRhdGEpOw0K
+Pj4gICB9DQo+Pg0KPj4gLXN0YXRpYyBpbnQgZHBzMzEwX2dldF9wcmVzX3ByZWNpc2lvbihzdHJ1
+Y3QgZHBzMzEwX2RhdGEgKmRhdGEpDQo+PiArc3RhdGljIGludCBkcHMzMTBfZ2V0X3ByZXNfcHJl
+Y2lzaW9uKHN0cnVjdCBkcHMzMTBfZGF0YSAqZGF0YSwgaW50ICp2YWwpDQo+PiAgIHsNCj4+ICAg
+ICAgICBpbnQgcmM7DQo+PiAtICAgICBpbnQgdmFsOw0KPj4NCj4+IC0gICAgIHJjID0gcmVnbWFw
+X3JlYWQoZGF0YS0+cmVnbWFwLCBEUFMzMTBfUFJTX0NGRywgJnZhbCk7DQo+PiArICAgICByYyA9
+IHJlZ21hcF9yZWFkKGRhdGEtPnJlZ21hcCwgRFBTMzEwX1BSU19DRkcsIHZhbCk7DQo+PiAgICAg
+ICAgaWYgKHJjIDwgMCkNCj4+ICAgICAgICAgICAgICAgIHJldHVybiByYzsNCj4gSSdkIHByZWZl
+ciBhIGxvY2FsIHZhcmlhYmxlIGhlcmUgZm9yIHRoZSBpbnRlcm1lZGlhdGUgcmVzdWx0Lg0KDQpB
+Q0suDQoNCj4+DQo+PiAtICAgICByZXR1cm4gQklUKHZhbCAmIEdFTk1BU0soMiwgMCkpOw0KPj4g
+KyAgICAgKnZhbCA9IEJJVCgqdmFsICYgR0VOTUFTSygyLCAwKSk7DQo+IEZvciB0aGVzZSBwcmVj
+aXNpb24gdmFsdWVzLCBpdCdzIHBvc2l0aXZlIGFueXdheSwgc28gd2h5DQo+IGNoYW5nZSBpdCB0
+byByZXBvcnQgdGhpcyB3YXk/ICBDb25zaXN0ZW5jeSBvbmx5IG9yIGFtIEkgbWlzc2luZyBzb21l
+dGhpbmcgZWxzZT8NCg0KWWVzIC0gZm9yIGNvbnNpc3RlbmN5Lg0KDQo+PiArDQo+PiArICAgICBy
+ZXR1cm4gMDsNCj4+ICAgfQ0KPj4NCj4+IC1zdGF0aWMgaW50IGRwczMxMF9nZXRfdGVtcF9wcmVj
+aXNpb24oc3RydWN0IGRwczMxMF9kYXRhICpkYXRhKQ0KPj4gK3N0YXRpYyBpbnQgZHBzMzEwX2dl
+dF90ZW1wX3ByZWNpc2lvbihzdHJ1Y3QgZHBzMzEwX2RhdGEgKmRhdGEsIGludCAqdmFsKQ0KPj4g
+ICB7DQo+PiAgICAgICAgaW50IHJjOw0KPj4gLSAgICAgaW50IHZhbDsNCj4+DQo+PiAtICAgICBy
+YyA9IHJlZ21hcF9yZWFkKGRhdGEtPnJlZ21hcCwgRFBTMzEwX1RNUF9DRkcsICZ2YWwpOw0KPj4g
+KyAgICAgcmMgPSByZWdtYXBfcmVhZChkYXRhLT5yZWdtYXAsIERQUzMxMF9UTVBfQ0ZHLCB2YWwp
+Ow0KPiBBcyBhYm92ZSwgbG9jYWwgdmFyaWFibGUgZm9yIGludGVybWVkaWF0ZSByZXN1bHQgd291
+bGQgYmUgY2xlYXJlci4NCg0KQUNLLg0KDQo+PiAgICAgICAgaWYgKHJjIDwgMCkNCj4+ICAgICAg
+ICAgICAgICAgIHJldHVybiByYzsNCj4+DQo+PiBAQCAtMjgxLDcgKzI4MSw5IEBAIHN0YXRpYyBp
+bnQgZHBzMzEwX2dldF90ZW1wX3ByZWNpc2lvbihzdHJ1Y3QgZHBzMzEwX2RhdGEgKmRhdGEpDQo+
+PiAgICAgICAgICogU2NhbGUgZmFjdG9yIGlzIGJvdHRvbSA0IGJpdHMgb2YgdGhlIHJlZ2lzdGVy
+LCBidXQgMTExMSBpcw0KPj4gICAgICAgICAqIHJlc2VydmVkIHNvIGp1c3QgZ3JhYiBib3R0b20g
+dGhyZWUNCj4+ICAgICAgICAgKi8NCj4+IC0gICAgIHJldHVybiBCSVQodmFsICYgR0VOTUFTSygy
+LCAwKSk7DQo+PiArICAgICAqdmFsID0gQklUKCp2YWwgJiBHRU5NQVNLKDIsIDApKTsNCj4+ICsN
+Cj4+ICsgICAgIHJldHVybiAwOw0KPj4gICB9DQo+Pg0KPj4gICAvKiBDYWxsZWQgd2l0aCBsb2Nr
+IGhlbGQgKi8NCj4+IEBAIC0zNTAsNDggKzM1Miw1NiBAQCBzdGF0aWMgaW50IGRwczMxMF9zZXRf
+dGVtcF9zYW1wX2ZyZXEoc3RydWN0IGRwczMxMF9kYXRhICpkYXRhLCBpbnQgZnJlcSkNCj4+ICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIERQUzMxMF9UTVBfUkFURV9CSVRTLCB2YWwp
+Ow0KPj4gICB9DQo+Pg0KPj4gLXN0YXRpYyBpbnQgZHBzMzEwX2dldF9wcmVzX3NhbXBfZnJlcShz
+dHJ1Y3QgZHBzMzEwX2RhdGEgKmRhdGEpDQo+PiArc3RhdGljIGludCBkcHMzMTBfZ2V0X3ByZXNf
+c2FtcF9mcmVxKHN0cnVjdCBkcHMzMTBfZGF0YSAqZGF0YSwgaW50ICp2YWwpDQo+PiAgIHsNCj4+
+ICAgICAgICBpbnQgcmM7DQo+PiAtICAgICBpbnQgdmFsOw0KPj4NCj4+IC0gICAgIHJjID0gcmVn
+bWFwX3JlYWQoZGF0YS0+cmVnbWFwLCBEUFMzMTBfUFJTX0NGRywgJnZhbCk7DQo+PiArICAgICBy
+YyA9IHJlZ21hcF9yZWFkKGRhdGEtPnJlZ21hcCwgRFBTMzEwX1BSU19DRkcsIHZhbCk7DQo+IFNh
+bWUgYWdhaW4uDQoNCkFDSy4NCg0KPj4gICAgICAgIGlmIChyYyA8IDApDQo+PiAgICAgICAgICAg
+ICAgICByZXR1cm4gcmM7DQo+Pg0KPj4gLSAgICAgcmV0dXJuIEJJVCgodmFsICYgRFBTMzEwX1BS
+U19SQVRFX0JJVFMpID4+IDQpOw0KPj4gKyAgICAgKnZhbCA9IEJJVCgoKnZhbCAmIERQUzMxMF9Q
+UlNfUkFURV9CSVRTKSA+PiA0KTsNCj4gV2hpbHN0IGhlcmUgbmljZSB0byB1c2UgQklUKEZJRUxE
+X0dFVChyZWd2YWwsIERQUzMxMF9QUlNfUkFURV9CSVRTKSk7DQo+PiArDQo+PiArICAgICByZXR1
+cm4gMDsNCj4+ICAgfQ0KPj4NCj4+IC1zdGF0aWMgaW50IGRwczMxMF9nZXRfdGVtcF9zYW1wX2Zy
+ZXEoc3RydWN0IGRwczMxMF9kYXRhICpkYXRhKQ0KPj4gK3N0YXRpYyBpbnQgZHBzMzEwX2dldF90
+ZW1wX3NhbXBfZnJlcShzdHJ1Y3QgZHBzMzEwX2RhdGEgKmRhdGEsIGludCAqdmFsKQ0KPj4gICB7
+DQo+PiAgICAgICAgaW50IHJjOw0KPj4gLSAgICAgaW50IHZhbDsNCj4+DQo+PiAtICAgICByYyA9
+IHJlZ21hcF9yZWFkKGRhdGEtPnJlZ21hcCwgRFBTMzEwX1RNUF9DRkcsICZ2YWwpOw0KPj4gKyAg
+ICAgcmMgPSByZWdtYXBfcmVhZChkYXRhLT5yZWdtYXAsIERQUzMxMF9UTVBfQ0ZHLCB2YWwpOw0K
+Pj4gICAgICAgIGlmIChyYyA8IDApDQo+PiAgICAgICAgICAgICAgICByZXR1cm4gcmM7DQo+Pg0K
+Pj4gLSAgICAgcmV0dXJuIEJJVCgodmFsICYgRFBTMzEwX1RNUF9SQVRFX0JJVFMpID4+IDQpOw0K
+Pj4gKyAgICAgKnZhbCA9IEJJVCgoKnZhbCAmIERQUzMxMF9UTVBfUkFURV9CSVRTKSA+PiA0KTsN
+Cj4gQXMgYWJvdmUuDQo+IA0KDQpBQ0suDQoNCj4+ICsNCj4+ICsgICAgIHJldHVybiAwOw0KPj4g
+ICB9DQo+Pg0KPj4gLXN0YXRpYyBpbnQgZHBzMzEwX2dldF9wcmVzX2soc3RydWN0IGRwczMxMF9k
+YXRhICpkYXRhKQ0KPj4gK3N0YXRpYyBpbnQgZHBzMzEwX2dldF9wcmVzX2soc3RydWN0IGRwczMx
+MF9kYXRhICpkYXRhLCBpbnQgKnZhbCkNCj4+ICAgew0KPj4gLSAgICAgaW50IHJjID0gZHBzMzEw
+X2dldF9wcmVzX3ByZWNpc2lvbihkYXRhKTsNCj4+ICsgICAgIGludCByYzsNCj4+DQo+PiAtICAg
+ICBpZiAocmMgPCAwKQ0KPj4gKyAgICAgcmMgPSBkcHMzMTBfZ2V0X3ByZXNfcHJlY2lzaW9uKGRh
+dGEsIHZhbCk7DQo+PiArICAgICBpZiAocmMpDQo+PiAgICAgICAgICAgICAgICByZXR1cm4gcmM7
+DQo+Pg0KPj4gLSAgICAgcmV0dXJuIHNjYWxlX2ZhY3RvcnNbaWxvZzIocmMpXTsNCj4+ICsgICAg
+ICp2YWwgPSBzY2FsZV9mYWN0b3JzW2lsb2cyKCp2YWwpXTsNCj4gVGhpcyBvbmx5IGp1c3Qgd2Vu
+dCB0byB0aGUgZWZmb3J0IG9mIDJedmFsLCBzbyB3aHkgbm90IHNraXAgdGhhdCBzdGVwIGFuZA0K
+PiBwdWxsIHRoZSBCSVQoKSBzZWN0aW9uIG91dCB0byByZWFkX3ByZXNzdXJlKCkgd2hlcmUgd2Ug
+ZG8gd2FudCB0aGF0IGZvcm0uDQo+IFlvdSB3aWxsIG5lZWQgYW4gZXh0cmEgbG9jYWwgdmFyaWFi
+bGUgYXQgdGhhdCBjYWxsIHNpdGUgSSB0aGluaywgYnV0DQo+IGluIGdlbmVyYWwgaXQgaXMgYSB1
+c2VmdWwgYWRkaXRpb25hbCBzaW1wbGlmaWNhdGlvbiBvZiB0aGUgY29kZS4NCg0KSSdtIG5vdCBz
+dXJlIGlmIEkgZ2V0IHlvdSBjb3JyZWN0LCBhcyB0aGlzIGZ1bmN0aW9uIGlzIG5vdCBkaXJlY3Rs
+eSANCmNhbGxlZCBpbiBgcmVhZF9wcmVzc3VyZWA6DQpZb3Ugc3VnZ2VzdCBkcm9wcGluZyB0aGlz
+IGZ1bmN0aW9uIGF0IGFsbCwgY2FsbCANCmBkcHMzMTBfZ2V0X3ByZXNfcHJlY2lzaW9uYCBkaXJl
+Y3RseSBpbiBgZHBzMzEwX2NhbGN1bGF0ZV9wcmVzc3VyZWAgYW5kIA0KbW92ZSB0aGUgbG9va3Vw
+IG9mIHRoZSBjb21wZW5zYXRpb24gc2NhbGUgZmFjdG9yIHRoZXJlPw0KDQo+PiArDQo+PiArICAg
+ICByZXR1cm4gMDsNCj4+ICAgfQ0KPj4NCj4+IC1zdGF0aWMgaW50IGRwczMxMF9nZXRfdGVtcF9r
+KHN0cnVjdCBkcHMzMTBfZGF0YSAqZGF0YSkNCj4+ICtzdGF0aWMgaW50IGRwczMxMF9nZXRfdGVt
+cF9rKHN0cnVjdCBkcHMzMTBfZGF0YSAqZGF0YSwgaW50ICp2YWwpDQo+PiAgIHsNCj4+IC0gICAg
+IGludCByYyA9IGRwczMxMF9nZXRfdGVtcF9wcmVjaXNpb24oZGF0YSk7DQo+PiArICAgICBpbnQg
+cmM7DQo+Pg0KPj4gLSAgICAgaWYgKHJjIDwgMCkNCj4+ICsgICAgIHJjID0gZHBzMzEwX2dldF90
+ZW1wX3ByZWNpc2lvbihkYXRhLCB2YWwpOw0KPj4gKyAgICAgaWYgKHJjKQ0KPj4gICAgICAgICAg
+ICAgICAgcmV0dXJuIHJjOw0KPj4NCj4+IC0gICAgIHJldHVybiBzY2FsZV9mYWN0b3JzW2lsb2cy
+KHJjKV07DQo+PiArICAgICAqdmFsID0gc2NhbGVfZmFjdG9yc1tpbG9nMigqdmFsKV07DQo+IEFz
+IGFib3ZlLg0KDQpCYXNlZCBvbiBteSBpbnRlcnByZXRhdGlvbiBhYm92ZToNCkZvciBgZHBzMzEw
+X2dldF90ZW1wX2tgIGl0IHdvdWxkIHJlcXVpcmUgdG8gbW92ZSB0aGUgbG9va3VwIG9mIHRoZSAN
+CmNvbXBlbnNhdGlvbiBzY2FsZSBmYWN0b3IgdG8gYGRwczMxMF9jYWxjdWxhdGVfcHJlc3N1cmVg
+IGFuZCANCmBkcHMzMTBfY2FsY3VsYXRlX3RlbXBgLg0KTWF5YmUgdGhpcyB3b3VsZCBzaW1wbGlm
+eSB0aGUgY29kZSwgYnV0IGl0IHdvdWxkIG1ha2UgaXQgaGFyZGVyIHRvIHJlYWQuDQoNCg0KVGhv
+bWFzDQoNCj4+ICsNCj4+ICsgICAgIHJldHVybiAwOw0KPj4gICB9DQo+IA0KDQo=
 

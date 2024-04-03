@@ -1,74 +1,76 @@
-Return-Path: <linux-iio+bounces-4016-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4017-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE60B896B15
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 11:53:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA65896B20
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 11:55:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E8FF1C241DE
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 09:53:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C4161F27C94
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 09:55:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 391EB134CEF;
-	Wed,  3 Apr 2024 09:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 200E91350F8;
+	Wed,  3 Apr 2024 09:55:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c4CHKIj/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AQbymm3+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A716EB73;
-	Wed,  3 Apr 2024 09:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182F81350D6
+	for <linux-iio@vger.kernel.org>; Wed,  3 Apr 2024 09:55:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712137989; cv=none; b=hdw8smOus0BlWfCV7muVKSiZ2j2lsH0p3q7hYOpucpmm10VpNInb7qfSwXAV/Ayih8QKLEg8C/f/lAQ5eum8TLZDpwbHw9FCphacLCUN6CCOmRLS2ku/mguEJTH3E/tOfbDGfDdYROI6qsX0IPtNwfwUI4hdgwlbQbajrMhg274=
+	t=1712138111; cv=none; b=R9MV5aRJjM5IUuRxTdiSSC8WA0fLE2tMvG9hzL9HxSlFuQ18QF9sYSAKeUm3HeDjJofUwlIfpymVIU+N6Db6rY4UJ6zvKDNCyF6aZ4gWCneE62t1gS9SwROD4nBt47dNHoR4tQj7XjplbPq2ETu49bhaoZ/VPmUsMMa/z1zE2aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712137989; c=relaxed/simple;
-	bh=nVU7niFzDwvRHhsC91XdjmYYEnpugKgc/2s1l6flgyI=;
+	s=arc-20240116; t=1712138111; c=relaxed/simple;
+	bh=XhIoISbb6jkXxx7mCbSQi1uT0uQRKzY+oGNhBdb0ouA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GUWwC30gYbIlMYkdlxyy9GinJkEGQanDb0FJsAHb4vtIA3b7yy9qKAJFuQ+NQlDMXgdgdolYcCQgJPmVLJfDdsJlUTOKL+IBDFCWW1TZ61NvvgYjcP/nTeTIYWYh9RybbZX6JQXpdd85B73s4xylSw22eQVLIzsANj31xMumV2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c4CHKIj/; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-430a25ed4e7so40794221cf.0;
-        Wed, 03 Apr 2024 02:53:07 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=cWlnVRR1C+I+6NkKBXC+YfbiCGXXXmzbd/foq3OjfnMUVVj3eEqYtSSdrty/XdsNoQi+SrE2FrR60Pct0l87gDW5Dzm0w7DYM+VWj6+Ngn8MbpTjaw0+I/7bzDKD77/9VgJYEXuzM3UFA4JO6GkHquydebih7PmDPtg2GiB7ZrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AQbymm3+; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-56dfb52d10cso1176863a12.2
+        for <linux-iio@vger.kernel.org>; Wed, 03 Apr 2024 02:55:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712137986; x=1712742786; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WJEtfEgGOvZ4NQDXQ/7+cf0sv8jHi6x8Pc+R36zNRao=;
-        b=c4CHKIj/od518Y8ZYB2C4XQMk0FWdxDsjraMHSwBn+JUvc+8Q3W4QP6a6w3DZ2a1JD
-         1RFk0v/pF/N3wJB3+gzUZ/jNe+Z45I+Cl8iuqnZ813hex1UcicocpJRvJYoTC3TTGccO
-         yyj/DNzjTWW3G/yQ2SeajsUMZsD8HDgUVz3dCURheeDeeKx+vZelMBs5CuRhrdDyd1+y
-         V5OhgsTWH3LNiD3PBX6apfn7+j/mwig/H35Tyjdd0y8mx17KpdY00ALsE/UTuWsAE8Y/
-         9ZoIKG9D+mCJp/ssUyLJ1wGbtTA0RGQRyeDHkXhnxiru758bF9J6J96HVxu/HOk6cSPP
-         EiDw==
+        d=linaro.org; s=google; t=1712138108; x=1712742908; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=LwshzO3TQu4dUqZI02YeauZwBjbBVz3srjF4haSFM6I=;
+        b=AQbymm3+97qPnNqNDpBPgPvQIZ/7sK5FQnOHiLVMKBOZ6xeI7PDXBjYYKJgrgYIeTO
+         FHDkWYqVbLdD6oryk6t+xY+C9uq21MM4l3IvPX7AU8Ld/LaeszVPEBSSk4vNTktVlItJ
+         JqfZ/4nfEANZZhqyqo7Y44A/xJozIohOvNHZQ8PtIRv2uKrbD+pD+Xhce4okVmlA8ufl
+         P8bq3gfdMuOEBNq0lODIIw3SVrbn49TObu+B95AjxSIdDWs1r1na1muqAUoWnuOUREyO
+         QiNLDWWh4AYIHSaLpQJ9rxPI5DKiqmVyLtrWgeCq91AHsBRRw+rQC+buehBG/8llOF/F
+         aO3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712137986; x=1712742786;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WJEtfEgGOvZ4NQDXQ/7+cf0sv8jHi6x8Pc+R36zNRao=;
-        b=HPfA4y4/Ta7HXdkqhAHCRo0c2wDhGLPdF2lQx36tT+/zOcjv8PG0HjHel6PYDpz+xS
-         /kheD+O2e6CMApyPpxzHPUaMas9140LqhemlT7E9LWV7ZCXt6vDpfzSbwS2YV/RLuWgz
-         cr+SFZ/OFjF+iT10vgXpHnleBm7uysJwKdDWs4p1CvLu9Z1/IzUS7ZHrSPLLe7GtTvR/
-         Gr7gkn/nc+8Ik6WUUHmqp6BXr8J2LTFNF9obrBxBaek98JBqdpcNo5GJWwJCSRIbHKvi
-         BKq7cube8o7YdYWkFU/chDINjGWY7BjIpvbU4lwb5Fipu+uJ4tKq5xZsuOwKvHa+kG7j
-         zsoA==
-X-Forwarded-Encrypted: i=1; AJvYcCVDrWhaUlyKRSgllM7HgpgKOVgjytzISzlXvBohkH95RqTwO1QCC/KmiRiQGI/Ho/X3FiqvaP47SceWNB6FZZoFDgDPROVAW3pz8I+nfFQ0q/b/g7c6Z2geiwqyIfGkl3nXFKA69kvt6m8QrLf17t5YdEboucdvQIHjdN4K43YKyiNKrg==
-X-Gm-Message-State: AOJu0Yz/9xoXQtrflj9kxMAnCA+wXSkmNfGaWW5cozeYj3KlB+wIJRuP
-	jIn8SdQ12p7lOGuQdWbioye/Dl6xgEAxiLCgJJze4ufBp+qiVJsa
-X-Google-Smtp-Source: AGHT+IGk3Sphsu/CS6tCyXd5ivhB2YIIX7J+CLaAoaRbfEpzUhcezLUU4kLxt4hyV0KYHMfLxSDbcQ==
-X-Received: by 2002:a05:622a:491:b0:431:7c36:7f86 with SMTP id p17-20020a05622a049100b004317c367f86mr17090861qtx.59.1712137986137;
-        Wed, 03 Apr 2024 02:53:06 -0700 (PDT)
-Received: from [10.76.84.174] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id et16-20020a05622a4b1000b00430b385f721sm6385650qtb.15.2024.04.03.02.53.04
+        d=1e100.net; s=20230601; t=1712138108; x=1712742908;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LwshzO3TQu4dUqZI02YeauZwBjbBVz3srjF4haSFM6I=;
+        b=Ulbz5fzdt+pK3QN04qeHgUUnWGegIVjFZXPYvkI6metrtfF2Dn7WZRlqvtMO4ntRw7
+         9bWowTqXTPDfIcPeGvX9a6XAJGptBnWhqEyPyQtfIuhe38GXdd2BHkPTl3c5Hah8mcaU
+         /jNjIyCPoq+/RtMli6N7YQ/EIWs/o9KXAxbZtbuDCn79xjZOE5XnN2ufy5BOTx1iKh2/
+         C3a+FNkjUAcPNtray6O9CsFmQ5df+kapIpS3GA+Su85glFriyuG++ZL0LL+8vVmKi+4e
+         MZtMzIgNjJuMTTsx1cQs6C0Mdk1OUfw4CkqsB2FY4ruKbF5BHSFFBTHAIdL93d/N55XG
+         SAnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWrEUZCl3zut/0LxbfeD2D00eDqRGp8kB8NpsoZGedC1oYuvUV3WFyg+338OIqHh4vC6OqjVE8/7Lew9S3fRG+F9ELE+LOJ93dn
+X-Gm-Message-State: AOJu0YytVfa6LdBJlwWQR+ka4VsW0udDRuGKAesvlr6LSEgyZJxjslSM
+	AZFG9ln1RfdLuYl8GcTUCxlNRrBL/2L3GvScESBHd/YMV8EXAIm93kjQd2zkNx9IzKyYEAda7eO
+	M
+X-Google-Smtp-Source: AGHT+IE18ppznA1IOkAq3MPxNHqMgIB/7rvjOKGki2vrOOXMspoNFfdmE3n52z0EJXKBE04hz7qy2g==
+X-Received: by 2002:a17:907:94c5:b0:a46:cea5:5e7e with SMTP id dn5-20020a17090794c500b00a46cea55e7emr12926687ejc.52.1712138108403;
+        Wed, 03 Apr 2024 02:55:08 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id dp12-20020a170906c14c00b00a473a1fe089sm7589683ejc.1.2024.04.03.02.55.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 03 Apr 2024 02:53:05 -0700 (PDT)
-Message-ID: <c7c26d36-ab08-420c-b634-8eb6d9cee9b5@gmail.com>
-Date: Wed, 3 Apr 2024 12:53:02 +0300
+        Wed, 03 Apr 2024 02:55:07 -0700 (PDT)
+Message-ID: <e9aefdcd-5ee7-4b19-847e-5fb3d95cf46c@linaro.org>
+Date: Wed, 3 Apr 2024 11:55:06 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,178 +78,107 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/6] iio: adc: ad7173: Add support for AD411x devices
-To: David Lechner <dlechner@baylibre.com>, dumitru.ceclan@analog.com
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
+Subject: Re: [PATCH 16/34] iio: ad5755: hook up of_device_id lookup to
+ platform driver
+To: Arnd Bergmann <arnd@kernel.org>, linux-kernel@vger.kernel.org,
+ Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240401-ad4111-v1-0-34618a9cc502@analog.com>
- <20240401-ad4111-v1-6-34618a9cc502@analog.com>
- <CAMknhBFdtv84E_S4wa4UW0pO2yiUEk9=jn=_i4F=b8VHdR6v+w@mail.gmail.com>
+ Jonathan Cameron <jic23@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, linux-iio@vger.kernel.org
+References: <20240403080702.3509288-1-arnd@kernel.org>
+ <20240403080702.3509288-17-arnd@kernel.org>
 Content-Language: en-US
-From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
-In-Reply-To: <CAMknhBFdtv84E_S4wa4UW0pO2yiUEk9=jn=_i4F=b8VHdR6v+w@mail.gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240403080702.3509288-17-arnd@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-
-On 01/04/2024 22:45, David Lechner wrote:
-> On Mon, Apr 1, 2024 at 10:10 AM Dumitru Ceclan via B4 Relay
-> <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
->>
->> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
->>
-
-...
-
->>  #define AD7175_2_ID                    0x0cd0
->>  #define AD7172_4_ID                    0x2050
->>  #define AD7173_ID                      0x30d0
->> +#define AD4111_ID                      0x30d0
->> +#define AD4112_ID                      0x30d0
->> +#define AD4114_ID                      0x30d0
+On 03/04/2024 10:06, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
-> It might make it a bit more obvious that not all chips have a unique
-> ID if we rename AD7173_ID to AD7173_AD4111_AD4112_AD4114_ID rather
-> than introducing multiple macros with the same value.
+> When the driver is built-in, 'make W=1' warns about an unused
+> ID table:
 > 
-> Or leave it as AD7173_ID to keep it short and add a comment where it
-> is used with 411x chips in ad7173_device_info[].
+> drivers/iio/dac/ad5755.c:866:34: error: 'ad5755_of_match' defined but not used [-Werror=unused-const-variable=]
+>   866 | static const struct of_device_id ad5755_of_match[] = {
 > 
-
-Sure
-
->> +#define AD4116_ID                      0x34d0
->> +#define AD4115_ID                      0x38d0
->>  #define AD7175_8_ID                    0x3cd0
->>  #define AD7177_ID                      0x4fd0
->>  #define AD7173_ID_MASK                 GENMASK(15, 4)
-
-...
-
->>  struct ad7173_device_info {
->>         const unsigned int *sinc5_data_rates;
->>         unsigned int num_sinc5_data_rates;
->>         unsigned int odr_start_value;
->> +       unsigned int num_inputs_with_divider;
->>         unsigned int num_channels;
->>         unsigned int num_configs;
->>         unsigned int num_inputs;
+> While the data is duplicated in the spi_device_id, it's common
+> to use the actual OF compatible strings in the driver.
 > 
-> Probably a good idea to change num_inputs to num_voltage_inputs so it
-> isn't confused with the total number of inputs.
+> Since there are no in-tree users of plain platform devices, the
+> spi_device_id table could actually be dropped entirely with this.
 > 
-> Similarly num_voltage_inputs_with_divider instead of num_inputs_with_divider.
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  drivers/iio/dac/ad5755.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> Also could use a comment to make it clear if num_voltage_inputs
-> includes num_voltage_inputs_with_divider or not. And that it doesn't
-> include VINCOM.
-> 
+> diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+> index 404865e35460..5c1e7f428c25 100644
+> --- a/drivers/iio/dac/ad5755.c
+> +++ b/drivers/iio/dac/ad5755.c
+> @@ -876,6 +876,7 @@ MODULE_DEVICE_TABLE(of, ad5755_of_match);
+>  static struct spi_driver ad5755_driver = {
+>  	.driver = {
+>  		.name = "ad5755",
+> +		.of_match_table = ad5755_of_match,
 
-Alright for these 3 statements above.
+I was working on this as well and have a bit bigger solution, following
+Jonathan's preference (I think):
 
-> Probably also need some flag here to differentiate ADCINxx voltage
-> inputs on AD4116.
-> 
+https://lore.kernel.org/all/20240226192555.14aa178e@jic23-huawei/
 
-That is the purpose of num_inputs_with_divider. Mangled some changes
-when splitting into individual patches. Will include in V2.
-"
-if (ain[1] == AD411X_VCOM_INPUT &&
-		    ain[0] >= st->info->num_inputs_with_divider)
-			return dev_err_probe(dev, -EINVAL,
-		"VCOM must be paired with inputs having divider.\n");
-"
+I need to send v3, somehow I missed his comments.
 
-...
+Jonathan,
+Do you want me to still work on this according to your comments (which I
+missed, I am sorry).
 
->>
->> +static unsigned int ad4111_current_channel_config[] = {
->> +       [AD4111_CURRENT_IN0P_IN0N] = 0x1E8,
->> +       [AD4111_CURRENT_IN1P_IN1N] = 0x1C9,
->> +       [AD4111_CURRENT_IN2P_IN2N] = 0x1AA,
->> +       [AD4111_CURRENT_IN3P_IN3N] = 0x18B,
->> +};
-> 
-> As mentioned in the DT bindings review, it would make more sense to
-> just use the datasheet numbers for the current input channels in the
-> diff-channels DT property, then we don't need this lookup table.
->
-Yet, the datasheet does not specify the numbers, just a single bitfield
-for each pair. It is too much of a churn to need to decode that bitfield
-into individual values when the user just wants to select a single pair.
+Best regards,
+Krzysztof
 
-...
-
->> +               case IIO_CURRENT:
->> +                       *val = ad7173_get_ref_voltage_milli(st, ch->cfg.ref_sel);
->> +                       *val /= AD4111_SHUNT_RESISTOR_OHM;
->> +                       *val2 = chan->scan_type.realbits - !!(ch->cfg.bipolar);
-> 
-> Static analysis tools like to complain about using bool as int.
-> Probably more clear to write it as (ch->cfg.bipolar ? 1 : 0) anyway.
-> 
-Maybe it does not apply here, but i followed this advice:
-
-Andy Shevchenko V1 of AD7173 (named initially ad717x)
-"
-> +	return (bool)(value & mask);
-
-This is weird. You have int which you get from bool, wouldn't be better
-to use
-!!(...) as other GPIO drivers do?
-
-"
-
-
->> +               case IIO_CURRENT:
->>                         *val = -BIT(chan->scan_type.realbits - 1);
-> 
-> Expecting a special case here, at least when ADCIN15 is configured for
-> pseudo-differential inputs.
-> 
-
-And what configuration would that be?
-The only configurable part is the BI_UNIPOLARx bit in the channel
-register, which is addressed here.
-
-There seems to be a confusion similar to what we had with single-ended
-channels. The ADC is differential. Pseudo-differential in this datasheet
-just means that you wired a fixed voltage(higher than 0) to the negative
-analog input.
-
- Which you can also do on the other inputs with a divider.
-
-...
-
->> -               chan_st_priv->ain = AD7173_CH_ADDRESS(ain[0], ain[1]);
->> +               if (reg >= AD4111_CURRENT_CHAN_CUTOFF) {
->> +                       chan->type = IIO_CURRENT;
->> +                       chan->channel = ain[0];
->> +                       chan_st_priv->ain = ad4111_current_channel_config[ain[0]];
->> +               } else {
->> +                       chan->channel = ain[0];
->> +                       chan->channel2 = ain[1];
->> +                       chan->differential = true;
-> 
-> Expecting chan->differential = false when ADCIN15 is configured for
-> pseudo-differential inputs.
-> 
-> Also, perhaps missed in previous reviews, I would expect
-> chan->differential = false when channels are used as single-ended.
->
-Why?
-Also, how would one detect if you are using single-ended channels?
-
-The ADC is still differential. Single ended is represented as connecting
-AVSS(or another fixed voltage) and only letting the AIN+ input to fluctuate.
-
-In the IIO framework the only difference this makes is in the naming of
-the channel:
- voltage0-voltage1 vs just voltage0
-
-All channels are differential. Pseudo differential: still differential.
 

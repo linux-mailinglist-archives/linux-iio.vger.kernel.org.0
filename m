@@ -1,90 +1,120 @@
-Return-Path: <linux-iio+bounces-4023-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4025-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAE67896E27
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 13:24:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 808E4896EC7
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 14:16:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B5861F22035
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 11:24:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE2BCB21159
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 12:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2565E143891;
-	Wed,  3 Apr 2024 11:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D137B145FF8;
+	Wed,  3 Apr 2024 12:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ewnkyJC8"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="CDssN7lk"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D59143874;
-	Wed,  3 Apr 2024 11:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2484C6E60F;
+	Wed,  3 Apr 2024 12:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712143434; cv=none; b=rg4TjAQ/Jy7oGYIu2l3vDbaqzrN/Dude3t3J4z0GbpStORzuY+6J6OfWy/UgAnWllGzdidkmAd5yTl1Qw+LBpIEVwSPu89zLy+upiV9MiMR9K584FmjtrfLZfeNksRmTR8u2TwiWIiLhtvMUD8L5tTVVlH/hFbV26JaLO9SkW1U=
+	t=1712146583; cv=none; b=XGbsIhpfZd6c0XeiH/YhWv7ED8xyejTn1n93d9RiNmaI16FfATEAYB8H3kKWtLafsvKMUCIyPK4fB9mh2CmHFTeMKHKIw+G8cfboBJuKCVOuZNo18zJETGYhAw5b+KbVlmDPBPhrlHPCkS6E8ISJFD1bb26/IxgaexghRwcTDv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712143434; c=relaxed/simple;
-	bh=Yt+RnJL5y2H1KaDSc7YxFYnA7Ph19WWyILBFYqaUHNc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=jI21Zy2woAJ9BtXLk6filVKCOyZOmsQ4CkRba0KEeJlB6um2kAoN80vQmcBhkCUHiXHcf99dePu1O1YKf7oNSV2BbaTLYWJTcOW89GvBjqPceeDqt0LdNkR6t9PpT3wmdY97dAIdDk1tRovl0DrhRL1HdLLBLvWcHgj3H38wbFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ewnkyJC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AAFC433C7;
-	Wed,  3 Apr 2024 11:23:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712143434;
-	bh=Yt+RnJL5y2H1KaDSc7YxFYnA7Ph19WWyILBFYqaUHNc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=ewnkyJC8bgU9TxBx9xgqRlGoOnpOgddAFGG/voiONHNz7l0/Xm4S34qm4x4CQsps7
-	 LBIwwUaWdgI3OJmVio8mvhSirQK9dGb+a3BjyK2VtFbf0MIFH/UYqaDbsCy/A9BRZ7
-	 0cLSaiH9F+AqOrS4eTz7bT4oMXnCJABOwjzJ+E04diD7WELFJ30vEQjcAh0a8CVTWs
-	 Air3JwHHcILxoVt9opHdrdnE+8PLUN1MfteHAw52KEW52epgsBeqrVKfPUdrnyJ2mk
-	 CCgq4huu8/t31NvMy7ud9Sg3U3blUPLM261SwpRtejBMZumJIgs7bE0Z6DYi8e8Q2W
-	 Ua6nwu38X9Iiw==
-Date: Wed, 3 Apr 2024 13:23:51 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: =?ISO-8859-15?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
-    linux-input@vger.kernel.org, kernel@pengutronix.de, 
-    Jonathan Cameron <jic23@kernel.org>, 
-    Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
-    linux-iio@vger.kernel.org, Maximilian Luz <luzmaximilian@gmail.com>, 
-    platform-driver-x86@vger.kernel.org
-Subject: Re: [PATCH 0/3] HID: Convert to platform remove callback returning
- void
-In-Reply-To: <cover.1709747164.git.u.kleine-koenig@pengutronix.de>
-Message-ID: <nycvar.YFH.7.76.2404031323430.20263@cbobk.fhfr.pm>
-References: <cover.1709747164.git.u.kleine-koenig@pengutronix.de>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=arc-20240116; t=1712146583; c=relaxed/simple;
+	bh=rkDWyKFHQlcK//l8NqLN4Od3LQ6jwyS9wT6NmXfTJO4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gan1ACRqSH3D+qodM2RARaaYFjyC4W2JkcWkRO/PvOkjjqdFPOHb+8z3RpOCZKQS+GprmHrUDkVojCVdmL/O0xVhGAj/kmGUA5+JUlImIRrJKDZLmMJBiI5oszWkyx7RYUlUqhtUgM5RX04TBRILXTvMGVMXK7SF8qkr8f7y7ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=CDssN7lk; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4337M1Ag015941;
+	Wed, 3 Apr 2024 07:14:12 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding:content-type; s=DKIM;
+	 bh=PXD3z/o/txzzPGoWI9hDoubN7IcsO/NqLqeUrJhqVfs=; b=CDssN7lk0dbD
+	KCzmLE4Fo88z8/kJgBTS+myvckq4U3NvM4/BeRCeljEDh9PdyGPV3w2qhkFy7xZr
+	xKKLy+gEiBL50ySXz+6L7zWSaxNnLBgYJuqhmo8TnWC/V398S268ctDWchpapqdl
+	N8ixzNC1fH1BrcLT/dkVjYUCM5W5725snEQnV2KYniGBPzPJYm1mxk4tCm265ZEW
+	rlKNRuXupEMlzS/f1JjFIbpA+dDV8bxFDIg0q0PXqt4sxSlckuHwbl6VqQWg/8/U
+	LuUVrVnVfPp1E2tBKcCKlA5f/lTeMJnaZcP3HIbzK0TEszj7ALg3QIe3TRC/bLlB
+	cDNTjxpsqw==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3x92nh0tnf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 03 Apr 2024 07:14:12 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 433BEBhg034631
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 3 Apr 2024 07:14:11 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 3 Apr 2024
+ 07:14:10 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 3 Apr 2024 07:14:10 -0400
+Received: from rbolboac.ad.analog.com ([10.48.65.117])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 433BE16q019608;
+	Wed, 3 Apr 2024 07:14:06 -0400
+From: Ramona Gradinariu <ramona.gradinariu@analog.com>
+To: <linux-kernel@vger.kernel.org>, <jic23@kernel.org>, <nuno.sa@analog.com>,
+        <linux-iio@vger.kernel.org>
+CC: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Subject: [PATCH 1/1] iio:imu: adis16475: Fix sync mode setting
+Date: Wed, 3 Apr 2024 14:13:57 +0300
+Message-ID: <20240403111357.1074511-2-ramona.gradinariu@analog.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240403111357.1074511-1-ramona.gradinariu@analog.com>
+References: <20240403111357.1074511-1-ramona.gradinariu@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: 4zXI8UjcwJ439MGpJGpvhI9NBGLi0s_Q
+X-Proofpoint-ORIG-GUID: 4zXI8UjcwJ439MGpJGpvhI9NBGLi0s_Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-03_10,2024-04-01_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 malwarescore=0 mlxscore=0 priorityscore=1501 clxscore=1011
+ mlxlogscore=999 bulkscore=0 phishscore=0 adultscore=0 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2403210001 definitions=main-2404030077
 
-On Wed, 6 Mar 2024, Uwe Kleine-K=C3=B6nig wrote:
+Fix sync mode setting by applying the necessary shift bits.
 
-> Hello,
->=20
-> this series converts all platform drivers below drivers/hid to use
-> struct platform_driver::remove_new(). See commit 5c5a7680e67b
-> ("platform: Provide a remove callback that returns no value") for an
-> extended explanation and the eventual goal.
->=20
-> All conversations are trivial, because their .remove() callbacks
-> returned zero unconditionally.
->=20
-> There are no interdependencies between these patches, so they could be
-> picked up individually. But I'd hope that they get picked up all
-> together.
+Fixes: fff7352bf7a3 ("iio: imu: Add support for adis16475")
+Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+---
+ drivers/iio/imu/adis16475.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Applied, thanks.
-
---=20
-Jiri Kosina
-SUSE Labs
+diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
+index 01f55cc902fa..bd30c3469d9a 100644
+--- a/drivers/iio/imu/adis16475.c
++++ b/drivers/iio/imu/adis16475.c
+@@ -1351,7 +1351,8 @@ static int adis16475_config_sync_mode(struct adis16475 *st)
+ 	 * in chip_info.
+ 	 */
+ 	ret = __adis_update_bits(&st->adis, ADIS16475_REG_MSG_CTRL,
+-				 ADIS16475_SYNC_MODE_MASK, sync->sync_mode);
++				 ADIS16475_SYNC_MODE_MASK,
++				 ADIS16475_SYNC_MODE(sync->sync_mode));
+ 	if (ret)
+ 		return ret;
+ 
+-- 
+2.34.1
 
 

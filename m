@@ -1,70 +1,70 @@
-Return-Path: <linux-iio+bounces-4027-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4028-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8698973CA
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 17:18:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E54B38973E4
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 17:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D93D628501E
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 15:18:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 994F428B7FD
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 15:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 203D414B095;
-	Wed,  3 Apr 2024 15:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FDF414A098;
+	Wed,  3 Apr 2024 15:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="AWMVjxtY"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="oHpR8Fh1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F0B14A4C4
-	for <linux-iio@vger.kernel.org>; Wed,  3 Apr 2024 15:14:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D4D149E1D
+	for <linux-iio@vger.kernel.org>; Wed,  3 Apr 2024 15:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712157290; cv=none; b=sFj8xlJPaTjWdDTHgPXdTbvvHpEgB8qVz1aXlLZyb28Ahi9HyQqWBuZDcy+m82SNQ2OjwqwjBOG3KjhcYb9CipqJRVGFKK8pCXNtlMxwgNw9eOfS69bVGlPXacjod1tUoqxgPMyq2ZiwGTc2H+I9vr/GdUCFspxZSzyYnyMozfI=
+	t=1712157760; cv=none; b=NAuAklMlW60DVyFr4tCq/msD/4XNfg1dzEr0zQ1LweCdmUoUSf2H/v35gm2rS7+jQwZNKe4SKTdbbiI3gsdmY3MEfAwcIVM8uGfotcK3XJ3yR6+l4whGoKKaqpCyyn7KLrBPkCn/P700FRZn2SYajB5ZzR1F4TNsljrsucW5ons=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712157290; c=relaxed/simple;
-	bh=okMqtAJdJt2mKknsEiqIBDifkB1qCYqpQVnmksBqJLg=;
+	s=arc-20240116; t=1712157760; c=relaxed/simple;
+	bh=+euYMyeiV2Y357ZoVmZYtuw+AONkDMoF2no3e3eLI0g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Okjvaezy2yYnyqJ2YNImTqhwcT2geXmbReXGiQaIP1fwRFG1RuKU6i2nSysepuWMf7tm3gIqf4rhl9wrfTWZBtVIcPlw+Ss/N5ETqPaLD5SvRyGNLY8ckdm2IpbsKgy2cc3itZr1gUnYRBCVVKRkNS4MSKpjcRaf+dWJzJtKwpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=AWMVjxtY; arc=none smtp.client-ip=209.85.208.177
+	 To:Cc:Content-Type; b=RfJ7HXVy9m7yJQ94IKjq3O2q5lXlpjcsgPBXhPsWq04Kfj0Q+pZ8Hrn06MDFkJRNz03TlrGTeYOUaBqLEpuE1uh2wz8OMOznV/jWeiGdURdvDkImbzgqCk26wVNjZY3flbelooPcg5ciEr7eCsIfOt2DvnWvR1GYDHphch9jtRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=oHpR8Fh1; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d4360ab3daso85519101fa.3
-        for <linux-iio@vger.kernel.org>; Wed, 03 Apr 2024 08:14:48 -0700 (PDT)
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2d48d75ab70so96796891fa.0
+        for <linux-iio@vger.kernel.org>; Wed, 03 Apr 2024 08:22:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712157287; x=1712762087; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712157756; x=1712762556; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8On6x+LYibbtDP6IBIgF4A+aMOZN1d3uu3/VQOdT6Nc=;
-        b=AWMVjxtYCIvAHhRmFKuPHli/mfkYqal/o/qp+19PaRvbbFmF8FkYkGA2fPLgMpKvWA
-         8kqExIolNOPOa+SktvatzD5t7ZhxvMR2Lw2DtrmMeBNmF1VKa/2GBht468wdeLW0xrjL
-         jWaXrU0VYou2I0vPcWdxKewpfprsRKl1dtr383nVSR3pIHh0Q2xdbjT5KKttA5pI9hSO
-         P6kMmAg9jADUF1c+rUoRV1Ook2K1pq7H8dSsM5YnWcQOcwTw7AGMajWrAw1aAPzZ9S+D
-         y0Ng0frrV1UHwbNFAYLNLp2GeuWB1QYhWT1iNXeoch1J3KLjeCjnqoukPEQAYBREjnBq
-         f0Rg==
+        bh=9AhMCAZ2/eS3a0ixlKk0nZZhuoVDu0//HBZjMJIcZVA=;
+        b=oHpR8Fh1docopGaELBgDA2FoPtiw6BZKeRyJmkJIEyIySRqPxDSbNltoO+SJTF+WE1
+         dp41BrsxBu7TXsw8Gq0LxtuQRDAPWherWns1t6wB7ldi/FMs7QZHd+ZexG49umPu1auV
+         v/3jPk155UWyTUI3PHv3Kv/Us6030ITCa6l9nf/ZGSKK4FlydANYj2ek2lhAlf8who9Y
+         CBnZBjWjA/VARK3DvwSVYTXoX/VhQfKvuiB11HmzqRBfvUK687dxzkjybHNLnrJDOp6Q
+         Igcv6qAA61WaPNKhtbRhfiAtTAJhROlzsHoUh0oIfgARE7yObI54FuiCADgJZ1y6oood
+         bMhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712157287; x=1712762087;
+        d=1e100.net; s=20230601; t=1712157756; x=1712762556;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8On6x+LYibbtDP6IBIgF4A+aMOZN1d3uu3/VQOdT6Nc=;
-        b=dHABM/sUaAJ2liehD2y8l8Rxak/V4EVJwFDMsYsQ8+pMxHpJXmqzZkMASrEX0WTiY7
-         sQmiTfjD81CP2X78O8hYDSW27xQLxylszBUuJ8otLvxbnlNv5Kj2wFCEgRZBaSqEvG+2
-         J95LAN9MR01tIRgW/Drhi44aBEwMqmJMy44R0jJIDZrBUuvmYUUqVUPlaMFJr0UdKzy9
-         3puEGjwSldqlEatdi/bdqYS3FtVaR42DRKDfnVFp4Mk1sCMGjVTIRpSWTP6aJ1YB/uan
-         C49uZaYwhGoiS8dltNVL0tG6yX5pYfE8WNeU3FmmEpviHyI8Vl/OIK3SschToTF4V1mk
-         glKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWKQZyZryNhfGpXiQqDv8YIgD1gEu/wO4zecPlIzdyvd8pD3gFIz0B/yu/r4742GB09T0LdrT5Cb0QSRaXultD+Z4AkH1PXSZD6
-X-Gm-Message-State: AOJu0YzkqfZN6BXwLURt4QKZ/HsM0JFEFP4XAiWM/4FSdFV4YAkA4Aie
-	/qsX/cFLWsva0H+OpQugTSEW96I/Dlm3oSzu6ksV6Uv20Fni/q3F++3euy4Is6ZA/hthbiR4GN/
-	laQrBxIUYb4Lp3ywYfqfa/4z71NoAIBkX3CHrkQ==
-X-Google-Smtp-Source: AGHT+IH7piIbVZFBEOcJtVy6rEGRW0U40dXyS1jzVfSYyjpbI87gg+pbV2IGLZoqKJDqmJFZJ6ZDhT4+Zh0znZwRjiM=
-X-Received: by 2002:a2e:9ace:0:b0:2d4:1fa4:9eb8 with SMTP id
- p14-20020a2e9ace000000b002d41fa49eb8mr9893359ljj.40.1712157286650; Wed, 03
- Apr 2024 08:14:46 -0700 (PDT)
+        bh=9AhMCAZ2/eS3a0ixlKk0nZZhuoVDu0//HBZjMJIcZVA=;
+        b=fy61bHPCcxaabi4IyS3CaGZhYCS+ZSa49kCZwhdamRtRM9T81jTq+UBIA1LlFL2YOG
+         p2WhNk3IKOOKgmLl1ymAnyBNFrshTdSPPxS5GbGeedJ/N+B2kBlal4YfW3Bm8xfV9zSM
+         OERzZYyOtUC1988Dcsmz65U3InKLzgKpAE0NmUwi/roIzBhh40FotgEBFJz/p5G2CWNz
+         4+B85BAxtuGqSDnSNknzOTPSil5sJWiKEmczmL+eNnxtAgeoydO/IoMbz65tIX54Jl4k
+         I68hSunHLoNpNXNXYPQl+7cvBTYPsBZoal8SD1cCX1XCJbMckxsxDiUW4tz2lWwJoS1O
+         jCrg==
+X-Forwarded-Encrypted: i=1; AJvYcCWrGWDzd8Lpfhixfqm6irxvxy+HwAxtFJPNV2ud4/5cItqEwGbLI0PqUSQO7hlZfP9kQ4Fg89zH3kafG6kLTJ4cARJl71I+C34+
+X-Gm-Message-State: AOJu0Ywn2TaRwG7ool4kWCR9t0jcN+gi1i7/aJRIO+b8nk7/1BtVZlxy
+	xmbl8rb4ePthUGg4HchpQF2xW50YNfASLBSKtNlpV+o02SCfe2KbKiy5XES8Al0MFY0avLJSgUY
+	DM31Ko2JRvToiz/yIrnZOQ6/w8nHH196QhFvLqQ==
+X-Google-Smtp-Source: AGHT+IEnQhiOU4GX8bo/SHle2zD7mlsLc2kj8YUFjmP2SJmtJ1ZEfMbLwzQksNssblYF4Mup1RfvHNNasQpvSQ89XV4=
+X-Received: by 2002:a2e:8417:0:b0:2d4:720f:6f46 with SMTP id
+ z23-20020a2e8417000000b002d4720f6f46mr1955414ljg.15.1712157755978; Wed, 03
+ Apr 2024 08:22:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -73,12 +73,11 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240401-ad4111-v1-0-34618a9cc502@analog.com> <20240401-ad4111-v1-1-34618a9cc502@analog.com>
  <CAMknhBHeKAQ45=5-dL1T1tv-mZcPN+bNo3vxWJYgWpEPE+8p3Q@mail.gmail.com>
- <CAMknhBGJt1TG0-UXMqqCT6nxJKAX7ZbsPF19eeWqwKsXbKOQoQ@mail.gmail.com>
- <0db40597-0d66-4d5b-8165-d9a4c068a42e@gmail.com> <dce3ae6c-6e65-4134-8927-549e9b4afd4c@gmail.com>
-In-Reply-To: <dce3ae6c-6e65-4134-8927-549e9b4afd4c@gmail.com>
+ <CAMknhBGVuMSg+OpS5QTLWi9vA=Xa33AJ+cVS8ZCDyKsAVEe-ww@mail.gmail.com> <0a72de29-6d25-4d2d-9824-ca407af69153@gmail.com>
+In-Reply-To: <0a72de29-6d25-4d2d-9824-ca407af69153@gmail.com>
 From: David Lechner <dlechner@baylibre.com>
-Date: Wed, 3 Apr 2024 10:14:35 -0500
-Message-ID: <CAMknhBHLEjtiQVOVODdvfH=pOP656=1RNb=9-rt37H7iowVDBw@mail.gmail.com>
+Date: Wed, 3 Apr 2024 10:22:24 -0500
+Message-ID: <CAMknhBHhxi7mN88+peU7BGkzSP2vtipCuvM-XfQzgusqKvARsg@mail.gmail.com>
 Subject: Re: [PATCH 1/6] dt-bindings: adc: ad7173: add support for ad411x
 To: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
 Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>, 
@@ -89,61 +88,81 @@ Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 3, 2024 at 5:08=E2=80=AFAM Ceclan, Dumitru <mitrutzceclan@gmail=
+On Wed, Apr 3, 2024 at 2:50=E2=80=AFAM Ceclan, Dumitru <mitrutzceclan@gmail=
 .com> wrote:
 >
-> On 03/04/2024 10:45, Ceclan, Dumitru wrote:
-> > On 01/04/2024 23:22, David Lechner wrote:
-> >> On Mon, Apr 1, 2024 at 2:37=E2=80=AFPM David Lechner <dlechner@baylibr=
-e.com> wrote:
-> >>>
-> >>> On Mon, Apr 1, 2024 at 10:10=E2=80=AFAM Dumitru Ceclan via B4 Relay
-> >>> <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
-> >
-> > ...
-> >
+> On 02/04/2024 00:16, David Lechner wrote:
+> > On Mon, Apr 1, 2024 at 2:37=E2=80=AFPM David Lechner <dlechner@baylibre=
+.com> wrote:
 > >>
-> >> Also, I just noticed that AD411x have only one AVDD input instead of
-> >> AVDD1 and AVDD2. So we need an if statement that says if properties:
-> >> compatible: enum: - adi,ad411x, then properties: avdd2-supply: false.
+> >> On Mon, Apr 1, 2024 at 10:10=E2=80=AFAM Dumitru Ceclan via B4 Relay
+> >> <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
+> >>>
+> >>> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+> >>>
+>
+> ...
+>
+> >>>
+> >>>      properties:
+> >>>        reg:
+> >>> +        description:
+> >>> +          Reg values 16-19 are only permitted for ad4111/ad4112 curr=
+ent channels.
+> >>>          minimum: 0
+> >>> -        maximum: 15
+> >>> +        maximum: 19
+> >>
+> >> This looks wrong. Isn't reg describing the number of logical channels
+> >> (# of channel config registers)?
+> >>
+> >> After reviewing the driver, I see that > 16 is used as a way of
+> >> flagging current inputs, but still seems like the wrong way to do it.
+> >> See suggestion below.
+> >>
+> >>>
+> >>>        diff-channels:
+> >>> +        description:
+> >>> +          For using current channels specify only the positive chann=
+el.
+> >>> +            (IIN2+, IIN2=E2=88=92) -> diff-channels =3D <2 0>
+> >>
+> >> I find this a bit confusing since 2 is already VIN2 and 0 is already
+> >> VIN0. I think it would make more sense to assign unique channel
+> >> numbers individually to the negative and positive current inputs.
+> >> Also, I think it makes sense to use the same numbers that the
+> >> registers in the datasheet use (8 - 11 for negative and 12 to 15 for
+> >> positive).
+> >>
+> >> So: (IIN2+, IIN2=E2=88=92) -> diff-channels =3D <13 10>
 > >
-> > Already addressed by this:
-> > "
-> >   # Only ad7172-4, ad7173-8 and ad7175-8 support vref2
-> >   - if:
-> >       properties:
-> >         compatible:
-> >           not:
-> >             contains:
-> >               enum:
-> >                 - adi,ad7172-4
-> >                 - adi,ad7173-8
-> >                 - adi,ad7175-8
-> >     then:
-> >       properties:
-> >         vref2-supply: false
-> >       patternProperties:
-> >         "^channel@[0-9a-f]$":
-> >           properties:
-> >             adi,reference-select:
-> >               enum:
-> >                 - vref
-> >                 - refout-avss
-> >                 - avdd
-> > "
+> > Thinking about this a bit more...
+> >
+> > Since the current inputs have dedicated pins and aren't mix-and-match
+> > with multiple valid wiring configurations like the voltage inputs, do
+> > we even need to describe them in the devicetree?
+> >
+> > In the driver, the current channels would just be hard-coded like the
+> > temperature channel since there isn't any application-specific
+> > variation.
 >
-> Mistaken vref2-supply to avdd2-supply.
+>  Sure, but we still need to offer the user a way to configure which
+> current inputs he wants and if they should use bipolar or unipolar coding=
+.
+
+From the datasheet, it looks like only positive current input is
+allowed so I'm not sure bipolar applies here. But, yes, if there is
+some other variation in wiring or electrical signal that needs to be
+describe here, then it makes sense to allow a channel configuration
+node for it.
+
 >
-> But still, the presence of avdd2-supply does not influence anything at al=
-l.
-> Driver does not use it, you cannot select it for channel conversions.
-> Would a restriction like this really be required?
+>  One other issue that arises is the fact that we will reserve 5
+> (including temp) channels out of the 15 that the user has the option to
+> configure. While the binding will configure only 11 channels for
+> example, the driver probe will error out with the message "Too many
+> channels specified".
+>
 
-It is true that it is not likely to cause any problems we don't fix
-this but why would we want the bindings to intentionally be incorrect
-when there is an easy fix? Driver implementations should not influence
-leaving something out of the bindings [1].
-
-[1]: https://www.kernel.org/doc/html//v5.10/devicetree/bindings/writing-bin=
-dings.html#overall-design
+Surely the driver could be changed to fix this, if needed. :-)
 

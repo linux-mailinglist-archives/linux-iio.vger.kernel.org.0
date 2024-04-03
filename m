@@ -1,45 +1,45 @@
-Return-Path: <linux-iio+bounces-4035-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4036-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D14A8976C6
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 19:33:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C36848976F7
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 19:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2E921F2F8D2
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 17:33:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E596297226
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 17:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 026781534EE;
-	Wed,  3 Apr 2024 17:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E201155736;
+	Wed,  3 Apr 2024 17:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3RF+Rrg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVbIR+r8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B050C433CB;
-	Wed,  3 Apr 2024 17:19:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB1C15445F;
+	Wed,  3 Apr 2024 17:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164750; cv=none; b=WZSnX2POfHm+Zavw9vH57dNcIvu0vGXkITufAyf76wc6iTCvXWX9CUnKaVr6Rf3SIVeZm/tgUmHb0ikO9oxcMIAfWdYPvjmf0guuee7g9ddtAbyj4NzvrnaiWFDCE0NXXqCmsq9msfD5THnS66sMBAFZAD2ZgnMsNZWJy4gRl7I=
+	t=1712164786; cv=none; b=OTgJsmIdtS6sBveLy46Lu+O/PXSIRlO85PTtBPSpeAAcaTTiXtJvlcL5sySeBxWAw6qnnJKrSuH5Pv5PMzmJ7yEqTDVHBjRWNWrwSveVDZ4KoDA1dtiTWsFp+c9DPX7iOogv4NJ4dvz2dGDm3C1jOufuIgE90G3UkilZRA0PatQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164750; c=relaxed/simple;
+	s=arc-20240116; t=1712164786; c=relaxed/simple;
 	bh=77b04zM3oNqv9H+eXalmP3gDnp2TBRyKL9pr39qzZ0I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZDFU2XhV0UyMeftyzT5u/08ffww+gHhclGlUcWwdDE1ghDU76ELzRtQ979I4naZ2Padw18bq5yq2YN/44/Py0oV0GALAZu2x01zq5BlKjfOl0FzIcXcga+LqNMLN9y8GkZgAkAH58kgLso2dv4nOcLPgjgL4H7emWZF3pZd/0hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3RF+Rrg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749DAC433C7;
-	Wed,  3 Apr 2024 17:19:09 +0000 (UTC)
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GGla2lTzWbzheD5M1UXmkqjkxtGmAth1pxbAJkkxS1VVFH9ywA8ys2IWOVKncC25rqdFG25webB+QYuhZaH9lIThV4mRpDtPutFsQvQaAVAj3sTWCBoU5PsnXjerVUjdFUV/X7lCg5pnMHFJN1m9zTIAvOhGsMAr3rZv+VIYCnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVbIR+r8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4202BC433C7;
+	Wed,  3 Apr 2024 17:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164750;
+	s=k20201202; t=1712164786;
 	bh=77b04zM3oNqv9H+eXalmP3gDnp2TBRyKL9pr39qzZ0I=;
 	h=From:To:Cc:Subject:Date:From;
-	b=l3RF+Rrgflu4DB516XN9qGQ+ScWhFlHfCsGt9yrUgTH2q3RZNv1NtMDLnJrht1Esr
-	 8kHDlO1e64N1zF87O7wOdcGe0aJYB9k0jQd4i1MWYC4pUoFZ+tLvUTenxmUyK6Yk9N
-	 vheEWcWxv4ZqT4G71AjOaBcZIZ35bYevDrt0KKJeHKhp6VEqwtYe2TD4ZhKltcjcNU
-	 iL9tmE0I6CP8t6AJPsxBNHPCtDhixt7/y1c6lwNuTTmS3wC4MCmFPwy2/QOZ0EP7sY
-	 CwZAqIwy3c6b1z9DgGrtl/o5+Gdy0gfH7E4wqJXoEzz6fuFcZZPtDXCJL3vEAGcrJi
-	 X3mCWyuynI1oA==
+	b=EVbIR+r8J0z1LSA6g3ojvDMv4776mo+GBk3H2S+mLRvWJKq2CbNQPRuHuefdKa1qB
+	 L20jqlDry7Oa7bIiaXS0WE9UUrCC1v3IuC5Z47fbgBlIYf3c9i0cR5e5x12dNyOnH7
+	 aQS9kk0s1TOS74Ws6tOQ21EmPvvc9J8JOorK8uZfwTjJWD/IkdRF6zHBio1rnINw9p
+	 No4nsjVkgAeqgQ7DzswNCvxiyah+Hia1b2L5pc5w4EjvL4wHbyDvI9RR5D8xsGF68Z
+	 UPJll4oS7ch7RHHdCTqqeBfFRanlxc+zJs0e+YbkXXrZG1xBLIg8twFXqsdebrLZkQ
+	 pvo6FswTd/etQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: Petre Rodan <petre.rodan@subdimension.ro>,
 	Sasha Levin <sashal@kernel.org>,
 	jic23@kernel.org,
 	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 01/15] tools: iio: replace seekdir() in iio_generic_buffer
-Date: Wed,  3 Apr 2024 13:18:45 -0400
-Message-ID: <20240403171909.345570-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.15 1/8] tools: iio: replace seekdir() in iio_generic_buffer
+Date: Wed,  3 Apr 2024 13:19:34 -0400
+Message-ID: <20240403171945.350716-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.84
+X-stable-base: Linux 5.15.153
 Content-Transfer-Encoding: 8bit
 
 From: Petre Rodan <petre.rodan@subdimension.ro>

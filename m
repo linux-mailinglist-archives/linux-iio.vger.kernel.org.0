@@ -1,45 +1,45 @@
-Return-Path: <linux-iio+bounces-4036-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4037-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36848976F7
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 19:37:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C08EB897723
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 19:44:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E596297226
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 17:37:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0DAFB34FBD
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 17:41:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E201155736;
-	Wed,  3 Apr 2024 17:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB9716D336;
+	Wed,  3 Apr 2024 17:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVbIR+r8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmmLGj9v"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB1C15445F;
-	Wed,  3 Apr 2024 17:19:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B5416D339;
+	Wed,  3 Apr 2024 17:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712164786; cv=none; b=OTgJsmIdtS6sBveLy46Lu+O/PXSIRlO85PTtBPSpeAAcaTTiXtJvlcL5sySeBxWAw6qnnJKrSuH5Pv5PMzmJ7yEqTDVHBjRWNWrwSveVDZ4KoDA1dtiTWsFp+c9DPX7iOogv4NJ4dvz2dGDm3C1jOufuIgE90G3UkilZRA0PatQ=
+	t=1712164807; cv=none; b=P9N/vgmyIde9/EpPAvDYrH5qPJuUvqqgV36Auysi5sEMkbU/p4TRPNOLcFcgrJwGG8Eo9EqBvhhgnwCZobpZJLMkGdFFDDSH45XR1a1eXmQAX0BAO1VpsfzqmVDELkvkLISFOW+URk1g8fDSucA+5qrkIRB5z2rLnBbpKn5oEmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712164786; c=relaxed/simple;
-	bh=77b04zM3oNqv9H+eXalmP3gDnp2TBRyKL9pr39qzZ0I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GGla2lTzWbzheD5M1UXmkqjkxtGmAth1pxbAJkkxS1VVFH9ywA8ys2IWOVKncC25rqdFG25webB+QYuhZaH9lIThV4mRpDtPutFsQvQaAVAj3sTWCBoU5PsnXjerVUjdFUV/X7lCg5pnMHFJN1m9zTIAvOhGsMAr3rZv+VIYCnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVbIR+r8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4202BC433C7;
-	Wed,  3 Apr 2024 17:19:45 +0000 (UTC)
+	s=arc-20240116; t=1712164807; c=relaxed/simple;
+	bh=n7saXgpZFFhdB2bpOB45XPxdJLSkbI0Y1Yd6vPZwHLY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TEMXpcaHjSrf8GPF9VC7wUad1rTPuIBetmS68XFw20BoHS/rXBra4J42J3a/5X0mcNG8tCrQXyN+/bWk9oXdd6oG3UC7zobwNQUHxvEyI8halO701qDWswnHOOnoLaYzU/I9Vfm1doykropzhq6ki73WbE6cralPBYtj6sFmO6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmmLGj9v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 518C3C433C7;
+	Wed,  3 Apr 2024 17:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712164786;
-	bh=77b04zM3oNqv9H+eXalmP3gDnp2TBRyKL9pr39qzZ0I=;
+	s=k20201202; t=1712164807;
+	bh=n7saXgpZFFhdB2bpOB45XPxdJLSkbI0Y1Yd6vPZwHLY=;
 	h=From:To:Cc:Subject:Date:From;
-	b=EVbIR+r8J0z1LSA6g3ojvDMv4776mo+GBk3H2S+mLRvWJKq2CbNQPRuHuefdKa1qB
-	 L20jqlDry7Oa7bIiaXS0WE9UUrCC1v3IuC5Z47fbgBlIYf3c9i0cR5e5x12dNyOnH7
-	 aQS9kk0s1TOS74Ws6tOQ21EmPvvc9J8JOorK8uZfwTjJWD/IkdRF6zHBio1rnINw9p
-	 No4nsjVkgAeqgQ7DzswNCvxiyah+Hia1b2L5pc5w4EjvL4wHbyDvI9RR5D8xsGF68Z
-	 UPJll4oS7ch7RHHdCTqqeBfFRanlxc+zJs0e+YbkXXrZG1xBLIg8twFXqsdebrLZkQ
-	 pvo6FswTd/etQ==
+	b=CmmLGj9vAfWM9iIltFC+Jp74PtPKNuWmp0JHxzncCxkno+ouYT9c2hMT5M5piHTHF
+	 0GkK2ib+O/qObYdLEHe/OaG+mCZy20IJDqOYbReb15AJOBPeMfFwOnpXaX4h0+N5d7
+	 CTLTk0L34wjYUzo9M0uaHculmES/YLH3VkwY6yZApJ7US6OtfChSbE3q6QWvdijFHe
+	 PEq9zbtToNuViQdFvM7faW7fTGJHv6FPq7lz9+pEiIHsFP4FbjOYEmh7vOqF655r9K
+	 jXumVwwWnyOShfosVdl4nfwNR+2bJYEwLOKQkXyQ7s3GgKS4rySqXKjuaDzbebNwF9
+	 UDp1V/ilBMY4A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -48,9 +48,9 @@ Cc: Petre Rodan <petre.rodan@subdimension.ro>,
 	Sasha Levin <sashal@kernel.org>,
 	jic23@kernel.org,
 	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 1/8] tools: iio: replace seekdir() in iio_generic_buffer
-Date: Wed,  3 Apr 2024 13:19:34 -0400
-Message-ID: <20240403171945.350716-1-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 1/8] tools: iio: replace seekdir() in iio_generic_buffer
+Date: Wed,  3 Apr 2024 13:19:55 -0400
+Message-ID: <20240403172006.353022-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.153
+X-stable-base: Linux 5.10.214
 Content-Transfer-Encoding: 8bit
 
 From: Petre Rodan <petre.rodan@subdimension.ro>
@@ -88,10 +88,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/iio/iio_utils.c b/tools/iio/iio_utils.c
-index 6a00a6eecaef0..c5c5082cb24e5 100644
+index 48360994c2a13..b8745873928c5 100644
 --- a/tools/iio/iio_utils.c
 +++ b/tools/iio/iio_utils.c
-@@ -376,7 +376,7 @@ int build_channel_array(const char *device_dir, int buffer_idx,
+@@ -373,7 +373,7 @@ int build_channel_array(const char *device_dir,
  		goto error_close_dir;
  	}
  

@@ -1,102 +1,90 @@
-Return-Path: <linux-iio+bounces-4024-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4023-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2C43896EA2
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 14:04:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE67896E27
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 13:24:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C4D728ABAF
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 12:04:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B5861F22035
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Apr 2024 11:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 120DC141991;
-	Wed,  3 Apr 2024 12:04:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2565E143891;
+	Wed,  3 Apr 2024 11:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="XmJDrd+t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ewnkyJC8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3063B1386A8;
-	Wed,  3 Apr 2024 12:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D59143874;
+	Wed,  3 Apr 2024 11:23:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712145860; cv=none; b=O/QqWLJ3KYg9MLWTzbcTLl23v3S6liUOOugmLghRyM8BXvMXmuwiuXkHSUeP1mmwT69Ob/2gXMpAqBRAMu9QiJpVpDz5iDDBQJtyg8+OA4rByFn3mUxGWpFrtxAQuRUcV0Jncu5mokznq3lNsxJfTW7Z/RLUcl8+Sl4ykvYBSFc=
+	t=1712143434; cv=none; b=rg4TjAQ/Jy7oGYIu2l3vDbaqzrN/Dude3t3J4z0GbpStORzuY+6J6OfWy/UgAnWllGzdidkmAd5yTl1Qw+LBpIEVwSPu89zLy+upiV9MiMR9K584FmjtrfLZfeNksRmTR8u2TwiWIiLhtvMUD8L5tTVVlH/hFbV26JaLO9SkW1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712145860; c=relaxed/simple;
-	bh=hdLUuD8fx1CMGkGXwESeN9RSE2VD3mvgjslSyivSGQQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZawTMeSjUYlLRXiwx1B0H8Gygu2AUtdaMxzwvoTebf1bCVlP8qEccEqrVWgN4+hg9IogNJO51Cccy0okrWzYIpDlOurfRzBLqKrdaQwkndhRyGwax1rE+kBtQbIzGwLseXK/Fa8KEi60R2uVmC1tRTKvRKjtQhr+ORgAa9eCmc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=XmJDrd+t; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4339ab75016340;
-	Wed, 3 Apr 2024 07:14:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding:content-type; s=DKIM; bh=T2FYrIWfqhlY
-	ziqC5pSMisEdsl1NqWOtXWWgDNIMMA4=; b=XmJDrd+tUy6PMvJv3DVZ1bGYkDjM
-	pHqPcV6WskAcBE4padRSwEk+fMDrEox/ZqVXc/ITt8sM54DmG+GEgddCopE0HbEP
-	V4C7fN+/F+8mbKFz6RvuyQFvhMakdsZvfWCoof+qSw+Sxgraoy8JX8Fkhq8epk03
-	Z6EgBaZ/7iKHqI5jkhIhc6blGp8HuZfCiVaf/QazBsokAHMIKk457rp5bnXQxxSd
-	vcFF8FM7UGVCgUGpqOlzHmZmLBsPt5ZAKLKqfUvnO5MDvaXSzL6+H6xNaz820r0s
-	ynKqGgA6/rVabnheK7+mATSYJxZTHgB9isvhRfKW3gkQfKksmMbxvgzQLA==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3x87c6f0hp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Apr 2024 07:14:13 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 433BEB3a030966
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 3 Apr 2024 07:14:11 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 3 Apr 2024
- 07:14:10 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 3 Apr 2024 07:14:10 -0400
-Received: from rbolboac.ad.analog.com ([10.48.65.117])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 433BE16p019608;
-	Wed, 3 Apr 2024 07:14:03 -0400
-From: Ramona Gradinariu <ramona.gradinariu@analog.com>
-To: <linux-kernel@vger.kernel.org>, <jic23@kernel.org>, <nuno.sa@analog.com>,
-        <linux-iio@vger.kernel.org>
-CC: Ramona Gradinariu <ramona.gradinariu@analog.com>
-Subject: [PATCH 0/1] iio:imu: adis16475: Fix sync mode setting
-Date: Wed, 3 Apr 2024 14:13:56 +0300
-Message-ID: <20240403111357.1074511-1-ramona.gradinariu@analog.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1712143434; c=relaxed/simple;
+	bh=Yt+RnJL5y2H1KaDSc7YxFYnA7Ph19WWyILBFYqaUHNc=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=jI21Zy2woAJ9BtXLk6filVKCOyZOmsQ4CkRba0KEeJlB6um2kAoN80vQmcBhkCUHiXHcf99dePu1O1YKf7oNSV2BbaTLYWJTcOW89GvBjqPceeDqt0LdNkR6t9PpT3wmdY97dAIdDk1tRovl0DrhRL1HdLLBLvWcHgj3H38wbFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ewnkyJC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AAFC433C7;
+	Wed,  3 Apr 2024 11:23:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712143434;
+	bh=Yt+RnJL5y2H1KaDSc7YxFYnA7Ph19WWyILBFYqaUHNc=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=ewnkyJC8bgU9TxBx9xgqRlGoOnpOgddAFGG/voiONHNz7l0/Xm4S34qm4x4CQsps7
+	 LBIwwUaWdgI3OJmVio8mvhSirQK9dGb+a3BjyK2VtFbf0MIFH/UYqaDbsCy/A9BRZ7
+	 0cLSaiH9F+AqOrS4eTz7bT4oMXnCJABOwjzJ+E04diD7WELFJ30vEQjcAh0a8CVTWs
+	 Air3JwHHcILxoVt9opHdrdnE+8PLUN1MfteHAw52KEW52epgsBeqrVKfPUdrnyJ2mk
+	 CCgq4huu8/t31NvMy7ud9Sg3U3blUPLM261SwpRtejBMZumJIgs7bE0Z6DYi8e8Q2W
+	 Ua6nwu38X9Iiw==
+Date: Wed, 3 Apr 2024 13:23:51 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: =?ISO-8859-15?Q?Uwe_Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
+cc: Benjamin Tissoires <benjamin.tissoires@redhat.com>, 
+    linux-input@vger.kernel.org, kernel@pengutronix.de, 
+    Jonathan Cameron <jic23@kernel.org>, 
+    Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, 
+    linux-iio@vger.kernel.org, Maximilian Luz <luzmaximilian@gmail.com>, 
+    platform-driver-x86@vger.kernel.org
+Subject: Re: [PATCH 0/3] HID: Convert to platform remove callback returning
+ void
+In-Reply-To: <cover.1709747164.git.u.kleine-koenig@pengutronix.de>
+Message-ID: <nycvar.YFH.7.76.2404031323430.20263@cbobk.fhfr.pm>
+References: <cover.1709747164.git.u.kleine-koenig@pengutronix.de>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: 5FDR5Wh8e7KCreIrYZ1CMBk7WL2Y2iAP
-X-Proofpoint-GUID: 5FDR5Wh8e7KCreIrYZ1CMBk7WL2Y2iAP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-03_10,2024-04-01_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- phishscore=0 impostorscore=0 suspectscore=0 bulkscore=0 mlxscore=0
- lowpriorityscore=0 mlxlogscore=831 adultscore=0 priorityscore=1501
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2403210001 definitions=main-2404030077
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-Fix sync mode setting by applying the necessary shift bits.
+On Wed, 6 Mar 2024, Uwe Kleine-K=C3=B6nig wrote:
 
-Ramona Gradinariu (1):
-  iio:imu: adis16475: Fix sync mode setting
+> Hello,
+>=20
+> this series converts all platform drivers below drivers/hid to use
+> struct platform_driver::remove_new(). See commit 5c5a7680e67b
+> ("platform: Provide a remove callback that returns no value") for an
+> extended explanation and the eventual goal.
+>=20
+> All conversations are trivial, because their .remove() callbacks
+> returned zero unconditionally.
+>=20
+> There are no interdependencies between these patches, so they could be
+> picked up individually. But I'd hope that they get picked up all
+> together.
 
- drivers/iio/imu/adis16475.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Applied, thanks.
 
---
-2.34.1
+--=20
+Jiri Kosina
+SUSE Labs
 
 

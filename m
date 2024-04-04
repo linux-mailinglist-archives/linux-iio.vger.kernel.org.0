@@ -1,161 +1,154 @@
-Return-Path: <linux-iio+bounces-4053-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4055-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAE8898508
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 12:32:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D078985A8
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 13:04:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A6B91C21D16
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 10:32:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 960DF1F27E18
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 11:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D0176F1B;
-	Thu,  4 Apr 2024 10:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85F3B823DC;
+	Thu,  4 Apr 2024 11:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CBye+VUW"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="P7g4AvrR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F65626AC2
-	for <linux-iio@vger.kernel.org>; Thu,  4 Apr 2024 10:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EAF745C3;
+	Thu,  4 Apr 2024 11:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712226772; cv=none; b=GlzWfDljMTCfeBWAQcfJ7dxZAIlTUw+nB93xc7uk9XvifiRkW0bkKqr9IkHyayPfO+tYD8KUuRTA0FppdO2rp/k+C1QmbI83TN0OLhNeTFKH8HZJYPDZNIIrvwjkUVQ2/STFd9BZ3xGsuVKvjAmfIF97RIsPHx8kFs7Dx0xZMbU=
+	t=1712228637; cv=none; b=qsjIt93hUgEcr8CdjIHIKFkVkNdNg/XnB2+4mxsUvwvL2kXqeIMMumN3zizW/TWPzWeJiguaOkBCNMMoO6LyFnzwfjCQU5hIAurSF6EcDK3GqGHGn6ajpV0PS/iDkR/gyTj3EOQLmMhibidxABofiA3nEYaTSQ+kRiDJkCOVOLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712226772; c=relaxed/simple;
-	bh=2tmnlwMrEbblML/RTG5OIDUhuSLFTklLsvkxM6XMqHA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SGw5SVt8VNYGrtmmOV1vATPJ+zeG9LCJY6FiSA47N9wwyDn10FPFmmclP33Q7vTkAABOkddC3PTH8Q8O71//gBtGZB9DchHom0twer8AQq4L1n0R7urP6SdKsDmnpcOXXTdTo7pAm+Qv55iBKXLQ/CcyQWg+M9yz7ZJ9xcUA01g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CBye+VUW; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a44ad785a44so100363866b.3
-        for <linux-iio@vger.kernel.org>; Thu, 04 Apr 2024 03:32:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712226769; x=1712831569; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=FFWtRoupfOP9RI4YS4XE0eTHYz+U+gVMZ5NU+Ifwu8U=;
-        b=CBye+VUWiR5peB32a+zOi4XWC7Zf1YBgtwYui4s+yqf8lfcDWx/DtLcsNCwUaj0+Zr
-         ATRLHPTGzMvAxEQ5rLJpurbIBG4WRPABAkJQHeXj6IozdVBCrypQxF/sFF2drvoz5KXu
-         QJIooAaA3dJBidJfHBkosoOsJoms/lk44IBoY9BTNhT+01Iea4A/xlwPMqqyF9lYyuQe
-         Crml00yPHgjRSxOpQmSygls7M2Ndci7Bf6rYLKtXbhQnPjpZj9UbN7ANgA2An3qy4oIA
-         tqqlUxPbhxrPZPF6v+7Hf+Nauciv2g795GzKRBEHgUjQN/7vjqhXr9RM/DNNBZBVsSqN
-         o8Bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712226769; x=1712831569;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FFWtRoupfOP9RI4YS4XE0eTHYz+U+gVMZ5NU+Ifwu8U=;
-        b=FPEwWOWw9x4q0x6hHGHOwCzs+SHCaD5ADUmyH/mKDBQcFI02Gf1U3YdxcCf0Pac6Z6
-         8g6tNH9U0NlaAASNH63SnKw3eYGF6GYRZEt9f371YJ2wnrCDDcim0kWtJp512CX+Sy5q
-         fDM7bH+4Vk1H9PrTMQyWgNiXmJkWSP5j0cP240DrMfSVbGcC748CUEwCMbRCVbO9upsv
-         w1JPaWVa8kErPFlipwJud6kyucee5Thao/kLsPYcIzSkOUiFZHDZg4KhPb+ylaAWnCNS
-         g1Yaqn1+VrVt/Ip4hJOUPGg7770PKpqacybwKvBVGMuhmE6RSi1ECbwOpwYWE1r4xVRf
-         IXJg==
-X-Forwarded-Encrypted: i=1; AJvYcCVkB6CluUU34ZaXKzXpNqDbIg0JpzwzoIx+jXGX8mzUF6DJ0XA1BGJQx3uX0xnmnkaOt63F7mJpeb8H0+mSsI7KksfAMxtmX5Ng
-X-Gm-Message-State: AOJu0Yy/wRd5h+LQniQxdxan4QSzr9yUYCodD1+C+edrJvXGhnVsfVFX
-	JKMqu+9MOP6DlA3ptXkdgxmnRbh3tN4pcpjHdjmTSk+bYjchyZq2leyfbcsEkQg=
-X-Google-Smtp-Source: AGHT+IHkzcWcnSbBANU26vUAdkogIg3vkiEoZnM5ZBOE6LjQahnZzypWZByf9cDJ3vWQlBz3xcq4Ww==
-X-Received: by 2002:a17:907:7e99:b0:a4e:95eb:34a6 with SMTP id qb25-20020a1709077e9900b00a4e95eb34a6mr1541590ejc.49.1712226769639;
-        Thu, 04 Apr 2024 03:32:49 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id kf16-20020a17090776d000b00a46bf6d890bsm8962854ejc.91.2024.04.04.03.32.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Apr 2024 03:32:49 -0700 (PDT)
-Message-ID: <744c154f-328a-4d06-84ca-e42a09b44ec2@linaro.org>
-Date: Thu, 4 Apr 2024 12:32:47 +0200
+	s=arc-20240116; t=1712228637; c=relaxed/simple;
+	bh=87v1wghWfpMJ0bHVd3Jee9dLM2aOFzaMiSOSC+PXCsw=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=neRt1YeG8PbJVqwOlve8kgzNEXOyH99jpwnRTnEpwkvqUZDkH7nZw/rGy7AOP6jtPsDJystsu7J+W/xTl+qRy5G95lTcUcBXCFC8F3C6BrS8M0M7h6DqPDcbzG/wxUqoCJQI22TVhDSeMJjJc5rU7AwaJtI/LHkTy5e4U8G7yT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=P7g4AvrR; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4348RPhE001360;
+	Thu, 4 Apr 2024 07:03:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding:to:cc; s=DKIM; bh=uWqk0JO3baIctyaWPjp
+	fcs40ZE8bKsqU4sHSf23WV8s=; b=P7g4AvrRy9w2BmdAYK+/BSIGVv3TdxZx4gq
+	yAEIdRwJYSni54fBJZTaVCozv86UHkqwtH0tJ9ccPnGPevnoaRxXuc5NtwdQ3C0n
+	KuwVcK4wClLTGM9XLFqPa//1QlcoLsWEYHZyEU5LVPF9yqi3jxRDDuXY2jDFH117
+	P9BMj9ih91VVJFjRCYQxAPdmfqb90ubk+BavXO1Xy1odmEqhSK+sszId04YiFgF/
+	lSUtyhUQFeT57iZvOv40oVHmo420WUPZiDJb3GKujUDHlb5sLT5hFVv3DpT87lvw
+	V9i1+m7zi2e1KMMOrmKF+mSIsTRBD/mt7DYgm5bpihwwF7qQAIA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3x9eks2kxf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 04 Apr 2024 07:03:20 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 434B3J4K018912
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 4 Apr 2024 07:03:19 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 4 Apr 2024 07:03:18 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 4 Apr 2024 07:03:18 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 4 Apr 2024 07:03:18 -0400
+Received: from [127.0.0.1] ([10.44.3.56])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 434B2vc8008372;
+	Thu, 4 Apr 2024 07:03:00 -0400
+From: Nuno Sa <nuno.sa@analog.com>
+Subject: [PATCH 0/4] dev_printk: add dev_errp_probe() helper
+Date: Thu, 4 Apr 2024 13:06:22 +0200
+Message-ID: <20240404-dev-add_dev_errp_probe-v1-0-d18e3eb7ec3f@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: imu: add icm42688 inside
- inv_icm42600
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>,
- INV Git Commit <INV.git-commit@tdk.com>, "jic23@kernel.org"
- <jic23@kernel.org>, "robh@kernel.org" <robh@kernel.org>,
- "krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
- "conor+dt@kernel.org" <conor+dt@kernel.org>
-Cc: "lars@metafoo.de" <lars@metafoo.de>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <20240402090046.764572-1-inv.git-commit@tdk.com>
- <20240402090046.764572-2-inv.git-commit@tdk.com>
- <beb68fc5-1ad8-4052-80c6-b706b62c267b@linaro.org>
- <FR3P281MB175794A23F9A706C6E532836CE3C2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <FR3P281MB175794A23F9A706C6E532836CE3C2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAK6JDmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDINRNSS3TTUxJiQfS8alFRQXxBUX5Sam6Zpap5qZGJslGFgbGSkDNBUW
+ paZkVYIOjY2trAd/SrnFoAAAA
+To: Petr Mladek <pmladek@suse.com>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Olivier Moysan
+	<olivier.moysan@foss.st.com>,
+        Jyoti Bhayana <jbhayana@google.com>,
+        "Andy
+ Shevchenko" <andriy.shevchenko@linux.intel.com>,
+        Chris Down
+	<chris@chrisdown.name>,
+        John Ogness <john.ogness@linutronix.de>,
+        "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1712228790; l=1552;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=87v1wghWfpMJ0bHVd3Jee9dLM2aOFzaMiSOSC+PXCsw=;
+ b=K5ua3M1fp8McUAe46RoYz9pu0EtKvriBWwVhiuiHthke0oFGOW89EfaiWWWY/dhw/qZlZF3rn
+ ctenC+k3qtTAG83veAaaQttLKycdbk4bLf2UgKpXD7KJRnoeEMeonWr
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: gymPCS_wSV0XUHuI-F9ZCPIaml9eF14g
+X-Proofpoint-ORIG-GUID: gymPCS_wSV0XUHuI-F9ZCPIaml9eF14g
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-04_07,2024-04-04_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=716 clxscore=1015
+ suspectscore=0 bulkscore=0 spamscore=0 priorityscore=1501 phishscore=0
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 mlxscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2404040075
 
-On 04/04/2024 12:28, Jean-Baptiste Maneyrol wrote:
-> Hello,
-> 
-> sorry about this mess, this is due to a problem in mail system configuration.
-> 
-> These patches are obviously not confidential. And IP from TDK-Micronas obviously is not applying to TDK-InvenSense products.
-> 
-> I will resend the patches when the issue is fixed.
-> 
-> Sorry for the inconvenience.
+This series adds a dev_errp_probe() helper. This is similar to
+dev_err_probe() but for cases where an ERR_PTR() is to be returned
+simplifying patterns like:
 
-Consider b4 web relay for this:
-https://b4.docs.kernel.org/en/latest/contributor/send.html
+	dev_err_probe(dev, ret, ...);
+	return ERR_PTR(ret)
 
-Best regards,
-Krzysztof
+The other three patches are adding users for it. The main motivator for
+this were the changes in the commit ("iio: temperature: ltc2983: convert
+to dev_err_probe()"). Initially I just had a local helper [1] but then
+it was suggested to try a new, common helper. As a result, I looked for
+a couple more users.
+
+I then move into dev_errp_probe() [2] but it was then suggested to separare
+the patch series so we have onde dedicated for the printk helper.
+
+[1]: https://lore.kernel.org/all/20240301-ltc2983-misc-improv-v3-1-c09516ac0efc@analog.com/
+[2]: https://lore.kernel.org/all/20240328-ltc2983-misc-improv-v4-0-0cc428c07cd5@analog.com/
+
+---
+Nuno Sa (4):
+      dev_printk: add new dev_errp_probe() helper
+      iio: temperature: ltc2983: convert to dev_err_probe()
+      iio: backend: make use of dev_errp_probe()
+      iio: common: scmi_iio: convert to dev_err_probe()
+
+ drivers/iio/common/scmi_sensors/scmi_iio.c |  45 +++--
+ drivers/iio/industrialio-backend.c         |   8 +-
+ drivers/iio/temperature/ltc2983.c          | 255 +++++++++++++----------------
+ include/linux/dev_printk.h                 |   5 +
+ 4 files changed, 142 insertions(+), 171 deletions(-)
+---
+base-commit: 2b3d5988ae2cb5cd945ddbc653f0a71706231fdd
+change-id: 20240404-dev-add_dev_errp_probe-69e7524c2803
+--
+
+Thanks!
+- Nuno Sá
 
 

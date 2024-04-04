@@ -1,141 +1,123 @@
-Return-Path: <linux-iio+bounces-4046-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4047-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40E3B898393
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 10:55:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D198983A9
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 11:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFD75288C11
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 08:55:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C5A91F216CC
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 09:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E51BE7351C;
-	Thu,  4 Apr 2024 08:55:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A92457351A;
+	Thu,  4 Apr 2024 09:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="0UVTtqLV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fGxIBB6G"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3856271B5F;
-	Thu,  4 Apr 2024 08:55:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6DEE3D96B;
+	Thu,  4 Apr 2024 08:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712220928; cv=none; b=SutqK1RkHFYIVk4H4h/orKKIwfl5izx5oWSH2yfPgYe5KaYV00dHVdqmYQzKajR5GV0hQhhMGRza7mvlOwm+L7swn9Gm8JFLGnwlXQNBYqFR3tyrMo1J3ii4G5QUyOB8TMcozKkuvVk146jhNWn5wdlxSlIVbrEotYNiPxyU4fw=
+	t=1712221201; cv=none; b=FHoJfDRJJkzMvvfs5Qc6FUuXF3OEryRf9zXc6+D0ia+cD2Yv7rHoJruhKhk6In1MYts0+pXPYp4kG2nj2Pq0i1R5ciDaauLNj40O7z81RNs2sGjNH7SESjM8z1CVDU5IlI+a49O5UlemPcgMXbR0uGHYE6YrcVUSYzyajnkSyjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712220928; c=relaxed/simple;
-	bh=3UYDorInvey7nQI7WMgBACMDcgbmPy0ynB6yOVD2j6Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=id7oDo8EhP+3nbd5GcGdo+8/rnnpOK1pUTB3/Uw3AIJ53L8MYT6s9+D6Fg9IpNpG6Kfjq9M+Ty/zSg4XsGUAK3Rhiu6DLeo1VVe6l7DfaXPhqxpKG3bZ3iPJ1VfJ0vl93V8o3mki0DeFVRtLJItkNjcFYFRAa+bN+LrmRBCsMp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=0UVTtqLV; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 4348ducW001566;
-	Thu, 4 Apr 2024 04:55:13 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	from:date:subject:mime-version:content-type
-	:content-transfer-encoding:message-id:references:in-reply-to:to
-	:cc; s=DKIM; bh=S/JE/q+yecJ+hhhn20Pa60Y1rLF+8emoePICUwwC3zM=; b=
-	0UVTtqLV+KoqxizD0OlBX+f7/dao1LN2uN9BIQ3I5ZpmATXA1vrhAKSoSFB+npCM
-	3MGdA0IQ58joaeF7//8dlIG2yul/ZC/JnW1s5d6wn7zLIm1A2ktLZqt2Su17ezz7
-	9GWJdX4tpLqZQ++/CN33F9B4xjAfw+VjxR/BqHZ6DNihFsP/yEywXUVGsaVat1TZ
-	Z8ejEHtEkJZuDUykYEe7WAhDbYPY+5WCOKLdIWXU0N2Nrvz54DrXQmHZsT1omrtg
-	ws7/X9URckTB/VOGs4p0lZjkCnGcSrsJmSCkTbTt4atdyU7NpIfvoOAcYjSuLWj3
-	IwrJHhuSMW9N2/z6dla/8g==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3x9eks27d4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Apr 2024 04:55:13 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4348tCcb008120
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 4 Apr 2024 04:55:12 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Thu, 4 Apr 2024
- 04:55:11 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 4 Apr 2024 04:55:11 -0400
-Received: from [127.0.0.1] ([10.44.3.56])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4348sssf001282;
-	Thu, 4 Apr 2024 04:55:05 -0400
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Thu, 4 Apr 2024 10:58:18 +0200
-Subject: [PATCH v5 2/2] iio: temperature: ltc2983: support vdd regulator
+	s=arc-20240116; t=1712221201; c=relaxed/simple;
+	bh=zFV67fOp03KxbIcwK8vP/lP0IGis8ozPjbOeUJBXnYQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=aVQnaCuXZs7QRNhrj8YozhoXq0oIAQTv9soXpTvbpfJp09+t+D/0FTDZ+Fd8sK6WLFdEOFnXiZM3jQuC7n1joohpejkkEcovzZmPWl1YIByRSJ4OybsmUTQYewguFqYZPNKkAmcg1vq64VC95hd/+te86HjXG+qgBZtFkY2N2/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fGxIBB6G; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-56e1bbdb362so651882a12.1;
+        Thu, 04 Apr 2024 01:59:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712221198; x=1712825998; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OOhldulBQUILs95IIEuLjdbv/PRLLb7tYoW3G02BM1Q=;
+        b=fGxIBB6GwGSg3ORo18n22QSxykmpNuOSZRPpKYz+S/Zft55fOunJKt+v0uttlFNNsr
+         D+dNelPqOphSF9H06bUWvTMdBw/bv3At/v7f4tUJml+krleLtDPHpVwd1MQ5sx281biK
+         wZKxMpP/RSAjsEcJeeTtt2g/qBrXEXdDlhCcWdpWoSaLhNYvrlKiTGIVN4adnLQROgvn
+         8mKVkSlHgTFPhbZtSfynG0pgG1Envkh7KaablJ6U5C2YvG2dkbz3h3+3KkHDufBI/h7M
+         1kHibHUBt6VbSDJUyKzY3ktDy6nKrkzGfJvmniHQKyOFZUpnBUdCEsx3uPmu2mHnrvjO
+         5YRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712221198; x=1712825998;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OOhldulBQUILs95IIEuLjdbv/PRLLb7tYoW3G02BM1Q=;
+        b=XB6TZs67WoGRh6I2o/ToxT97Ng1ENlDN0R1rB0qZmFcKwQeW9CBHy06/2mHVdPWz7u
+         S3kq2tLOcB7VeEd4Hm6eQbjShsJo2J0U1xajSAMaRWT65dgr6xh2mNbEGJER/GNJ/Qcj
+         GXQxGDpLHn26wX6GEaS2SJYiejmrRhUQINYir+prTYYmVeEjkbDD+ADlpjTAtRVXWnZG
+         rIVANlBWBbqh8nwiUqYyhHwHNYHP3YDBK+Etnp3RH/shWweAoe1+Qp/B26DW07ggTtIt
+         T60IqI86CHYZZlacejAdUGA93I+hvmOXhBFirEDNB2E91JjJaek+1ox/n6PlOgngLh6m
+         9c+A==
+X-Forwarded-Encrypted: i=1; AJvYcCWuW0RGgxM4JB2dyxNI8sxFx/g1N7l2hxx4yETdoK/HCe9tYqXgWpcWbfs9rfMtFxMZHl6/zXq2L9B4r3SgAmPSb8kaOatRbdRAiSahbsi3MrNc8mn7f04H6x4ptqh2kcTF8OU997v/sUaWUfzvipHDXW5T92Ib6A6ka7R+I9Q9X0WF+FGKFJfJ
+X-Gm-Message-State: AOJu0YzRbtCx0MYyMlMk27hZocZZHGh143l06eafpbybtV0zsSctPiL3
+	YdlnvfgA+UMTj5Yu3g7ovwncE+zxuQbk/+ZiUxoeRjdIqBLBAvXuT5A0zqShWxDv+Q==
+X-Google-Smtp-Source: AGHT+IGY+C7YfnEBCwiRkSDQ7u8iEooJJomfeXMR+JEgEVhZyoKeF281Qcvg+5HUFUHi+lrqfU8O4g==
+X-Received: by 2002:a17:906:2314:b0:a51:7a24:4de4 with SMTP id l20-20020a170906231400b00a517a244de4mr1422298eja.41.1712221197942;
+        Thu, 04 Apr 2024 01:59:57 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
+        by smtp.gmail.com with ESMTPSA id i25-20020a17090639d900b00a4df5e48d11sm8805509eje.72.2024.04.04.01.59.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Apr 2024 01:59:57 -0700 (PDT)
+Message-ID: <8faeeb203456ceb8c07c5f2a46f8a7b367f574e4.camel@gmail.com>
+Subject: Re: [PATCH] iio: adc: ad7173: Fix ! vs ~ typo in ad7173_sel_clk()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Dan Carpenter <dan.carpenter@linaro.org>, Dumitru Ceclan
+	 <mitrutzceclan@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>,
+ Michael Walle <michael@walle.cc>, Andy Shevchenko <andy@kernel.org>, Nuno
+ Sa <nuno.sa@analog.com>,  linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  kernel-janitors@vger.kernel.org
+Date: Thu, 04 Apr 2024 11:03:29 +0200
+In-Reply-To: <5401c681-c4aa-4fab-8c8c-8f0a379e2687@moroto.mountain>
+References: <5401c681-c4aa-4fab-8c8c-8f0a379e2687@moroto.mountain>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240404-ltc2983-misc-improv-v5-2-c1f58057fcea@analog.com>
-References: <20240404-ltc2983-misc-improv-v5-0-c1f58057fcea@analog.com>
-In-Reply-To: <20240404-ltc2983-misc-improv-v5-0-c1f58057fcea@analog.com>
-To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Rob Herring
-	<robh+dt@kernel.org>,
-        Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1712221106; l=918;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=3UYDorInvey7nQI7WMgBACMDcgbmPy0ynB6yOVD2j6Y=;
- b=FIXo+0S++5vWrGo6zYMMnZaIQLPkuh0+KT92qBt+vnyndiSWuL9J59TPqgkwAx6AX/X3JQ7Ql
- AuPbcbPYs56Agj/Hvp/E6ewlPrSO3m0OMkWZ7J1xx8RMtcAbpwvAeGQ
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: jWyLloGnCYJWMScZ17kfPNwGJYG7MGvu
-X-Proofpoint-ORIG-GUID: jWyLloGnCYJWMScZ17kfPNwGJYG7MGvu
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-04_04,2024-04-04_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=818 clxscore=1015
- suspectscore=0 bulkscore=0 spamscore=0 priorityscore=1501 phishscore=0
- lowpriorityscore=0 malwarescore=0 impostorscore=0 mlxscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2404040058
 
-Add support for the power supply regulator.
+On Thu, 2024-04-04 at 10:31 +0300, Dan Carpenter wrote:
+> This was obviously supposed to be a bitwise negate instead of logical.
+>=20
+> Fixes: 76a1e6a42802 ("iio: adc: ad7173: add AD7173 driver")
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> ---
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/temperature/ltc2983.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-diff --git a/drivers/iio/temperature/ltc2983.c b/drivers/iio/temperature/ltc2983.c
-index 3c4524d57b8e..24d19f3c7292 100644
---- a/drivers/iio/temperature/ltc2983.c
-+++ b/drivers/iio/temperature/ltc2983.c
-@@ -16,6 +16,7 @@
- #include <linux/module.h>
- #include <linux/property.h>
- #include <linux/regmap.h>
-+#include <linux/regulator/consumer.h>
- #include <linux/spi/spi.h>
- 
- #include <asm/byteorder.h>
-@@ -1597,6 +1598,10 @@ static int ltc2983_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
-+	ret = devm_regulator_get_enable(&spi->dev, "vdd");
-+	if (ret)
-+		return ret;
-+
- 	gpio = devm_gpiod_get_optional(&st->spi->dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(gpio))
- 		return PTR_ERR(gpio);
-
--- 
-2.44.0
+> =C2=A0drivers/iio/adc/ad7173.c | 2 +-
+> =C2=A01 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+> index 4ff6ce46b02c..b1d6ea17ced3 100644
+> --- a/drivers/iio/adc/ad7173.c
+> +++ b/drivers/iio/adc/ad7173.c
+> @@ -835,7 +835,7 @@ static unsigned long ad7173_sel_clk(struct ad7173_sta=
+te
+> *st,
+> =C2=A0{
+> =C2=A0	int ret;
+> =C2=A0
+> -	st->adc_mode &=3D !AD7173_ADC_MODE_CLOCKSEL_MASK;
+> +	st->adc_mode &=3D ~AD7173_ADC_MODE_CLOCKSEL_MASK;
+> =C2=A0	st->adc_mode |=3D FIELD_PREP(AD7173_ADC_MODE_CLOCKSEL_MASK, clk_se=
+l);
+> =C2=A0	ret =3D ad_sd_write_reg(&st->sd, AD7173_REG_ADC_MODE, 0x2, st-
+> >adc_mode);
+> =C2=A0
 
 

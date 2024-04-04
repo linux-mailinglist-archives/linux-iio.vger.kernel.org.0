@@ -1,105 +1,124 @@
-Return-Path: <linux-iio+bounces-4061-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4062-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39CB989861F
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 13:37:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DF289870D
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 14:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CE419B21B7F
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 11:37:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 403B11C2117D
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 12:19:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD5D839E5;
-	Thu,  4 Apr 2024 11:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56AB8128372;
+	Thu,  4 Apr 2024 12:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="YlXbY1WY"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KKjKxSi6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E027F7C8
-	for <linux-iio@vger.kernel.org>; Thu,  4 Apr 2024 11:37:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEEB86244;
+	Thu,  4 Apr 2024 12:15:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712230664; cv=none; b=ncL2c6udU1X8mksKzuLE3Sc3iB96Bd0Mr8yPEmmQWMWCySZsj4OpAK8r+unantrMVl2vuiUmFKCe77yDQyxfC4H4ceTA0ZVYTDgWt3xzuQG0837r7jU+g8HqYBcdRjnV8evN+VDHBH0hq766jf0Kg/BtqTFyNIAf9aQAXra77Ls=
+	t=1712232946; cv=none; b=SaEuwH4LN5enqxdx1j9svExM3zUfkdKMHIWiky50WdHDxrIv6vozQx8EOjRUk9m+TlzlZQfsy4vsirq4mVYj9mt9iHFwGdqiGw9Jcx5qv8LrjUsB12KDEu64zAAOhPtLFC4GOiIW+xjNtSbXaDvvVr2cBY0YNDkY0g/X/9MtgWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712230664; c=relaxed/simple;
-	bh=0TxjT53bZ1dq1CHNeD8eIJFhqKeW4Iu7Nye6eOxj58s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=quI6TeLkXgDheXoAOfW5nCTFKcAjQHtn6DdNVycmVlUr8NwEKF7bzIPQ1QjVZ8H94h/Ij5hHfqm45qAV85iHA11PVzJdYL6OF31mPg3GR+yiv+Bdp9pZJaGyUjfjEkkf8cnol7W/yEjr06YSNybJgK2i34+4akvQuZ0o7mFe3U8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=YlXbY1WY; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6114c9b4d83so8298437b3.3
-        for <linux-iio@vger.kernel.org>; Thu, 04 Apr 2024 04:37:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712230662; x=1712835462; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0TxjT53bZ1dq1CHNeD8eIJFhqKeW4Iu7Nye6eOxj58s=;
-        b=YlXbY1WYuP+vBADpugJVaxuoJU2vcevIUbNMBeRx1K2W0hHu7ys+qHgwf7y9ozJhP6
-         z0HwxZT0te+S8HxvCwiC2sMsPJqxAcI/gK+wXcL6GZ3JY3CyQY3xWy6da9MPT+ydSqff
-         Z+oS+RJh/EqOPM/a3IAcbaAgXSf2teL9BPgrAXOVzBWjN/gx8CsGE7X658mUXsleJl6c
-         9yHaU+2FHfrIc+0rcCTZ7DI921ocKpVMUsGUyzzP7YwR7dszPb7XRgq27gtBfPUo6Qjh
-         +DpMdetDIGLBMJ3RPQxfg032ECMnK4jq1nvuC1WfvqGJbW5eneBzGKAExC1kuFdpgXn/
-         iYyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712230662; x=1712835462;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0TxjT53bZ1dq1CHNeD8eIJFhqKeW4Iu7Nye6eOxj58s=;
-        b=pPWR+GdFCRUlDB83XL3vyOjOSUOm07UDz5gkEgjEAJIpFO5qkdsp0RrDKbZ2uONolz
-         vtMeUkqxI74gbMt/FJGKggAMVWeBkBg2TyReZpikXzQR3GIbz4zlETD2jmic1t6l4MTW
-         8fMoRfOMEyiWNE77/bkVm3pqX9+08U5EUn8z7Q4+aPmec1aHPz3flIJxp630VuRSx4fG
-         2aTNjBTyHAEHQYyxR8cNuJTeSdV75PgD3olty+DlcSBRB2VcuyUGfnyBE2J/RUdZ3fER
-         ApTZqpVbJ7Ytt7YfQ8BM8iy09xTIEGKiBjI6+niDbrDcvK/bEuMItcSCAdOoU4/Ck4/S
-         kBtw==
-X-Gm-Message-State: AOJu0Yz9kxU5PkY/PK3qGzJYZ8Y0icHwQjKFeH3dfsYn/PjaLzesg94O
-	A1IfhB9zyuvTeY7rvUNdwP9gECK8oX3daW1KZfoxDpfYwztOF+qfnAtm7ryPyqkNq3fUSYOeTnT
-	2uysZ17s94bcXFNSkHJ3Jv3fRQLGaWWivS8D2lA==
-X-Google-Smtp-Source: AGHT+IFYEBsIKezbtgKbEawWWwemMnhtBhmtRro2id4I1VHv5fa3egft11jWYpeN/GpHG2ry1obumDH9xjSoWk3os/I=
-X-Received: by 2002:a25:bac6:0:b0:dc7:4460:878a with SMTP id
- a6-20020a25bac6000000b00dc74460878amr2069900ybk.3.1712230661955; Thu, 04 Apr
- 2024 04:37:41 -0700 (PDT)
+	s=arc-20240116; t=1712232946; c=relaxed/simple;
+	bh=ExeJC1M+3bZl05QwBaKfCI9mym+Fc6VBmZBjMFs3yM8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RArrUv7xJIhFZeZ+UqLwD/R5sG+1ESJiJ/afJbNtUSacIIGLlE2QbELJ8Slx8W8COLm+OVaP0NTJAT/7F5T1cNuITyaaNouroEIp154pR2oSwjM+ngunprGO1vgWouE6eYZShjtmHrWBtZNeNnCdT7/u2lszGo7fR8xA5ehv/As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KKjKxSi6; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1712232943; x=1743768943;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ExeJC1M+3bZl05QwBaKfCI9mym+Fc6VBmZBjMFs3yM8=;
+  b=KKjKxSi6qY+UA9lPHkkfz7bE+HAf8MJhK7dl0qc16nmxKocqHrlcJzVG
+   d55VAkTId2I53uKgT2STFD8PcUJUXMNJ12qmMFbqeWO0bwnCHfFc/R+FN
+   PCHrIzcNBqjDAfgZzrcKwo+4KJZcHvc0PY8xyTHIRRi1bq+DVwiry9glV
+   WFZdy8lxaelzehgvsZxP2nhJYn0W7yEYGraBs57kuBl2Qb2DZd0FxFsCn
+   XBtpb8yk5G6gFWVfJbht4RPHqg0yUvmNU7FNxQvLXDhQv2Y8JMO107fuw
+   yOOL568q5nnKL0O9Rd5+73sB6pgqqWIkwqhJKnqFk+fbjntuTeuu1pBKb
+   A==;
+X-CSE-ConnectionGUID: eGOvBaEkRhGGklZqBU/e8Q==
+X-CSE-MsgGUID: b0jMuyTPTs6ZkWU9QcJmAQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7352015"
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
+   d="scan'208";a="7352015"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 05:15:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="915216493"
+X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
+   d="scan'208";a="915216493"
+Received: from smile.fi.intel.com (HELO smile) ([10.237.72.54])
+  by fmsmga002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 05:15:38 -0700
+Received: from andy by smile with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rsM0F-00000001QEr-26v6;
+	Thu, 04 Apr 2024 15:15:35 +0300
+Date: Thu, 4 Apr 2024 15:15:35 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Nuno Sa <nuno.sa@analog.com>, Andi Shyti <andi.shyti@kernel.org>
+Cc: Petr Mladek <pmladek@suse.com>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Jyoti Bhayana <jbhayana@google.com>,
+	Chris Down <chris@chrisdown.name>,
+	John Ogness <john.ogness@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 0/4] dev_printk: add dev_errp_probe() helper
+Message-ID: <Zg6Z51uebr2dWLq2@smile.fi.intel.com>
+References: <20240404-dev-add_dev_errp_probe-v1-0-d18e3eb7ec3f@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240330190849.1321065-1-jic23@kernel.org> <20240330190849.1321065-4-jic23@kernel.org>
-In-Reply-To: <20240330190849.1321065-4-jic23@kernel.org>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 4 Apr 2024 13:37:31 +0200
-Message-ID: <CACRpkdbn+5KNu7o4K2+9wNpSjbuXQBgMNPhrM=rM2w_aXXi_8A@mail.gmail.com>
-Subject: Re: [PATCH 3/8] iio: adc: ab8500-gpadc: Use device_for_each_child_node_scoped()
- to simplify erorr paths.
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, Marius Cristea <marius.cristea@microchip.com>, 
-	Mihail Chindris <mihail.chindris@analog.com>, Marcelo Schmitt <marcelo.schmitt1@gmail.com>, 
-	Kim Seer Paller <kimseer.paller@analog.com>, Dumitru Ceclan <mitrutzceclan@gmail.com>, 
-	Cosmin Tanislav <demonsingur@gmail.com>, Nuno Sa <nuno.sa@analog.com>, 
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240404-dev-add_dev_errp_probe-v1-0-d18e3eb7ec3f@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Sat, Mar 30, 2024 at 8:09=E2=80=AFPM Jonathan Cameron <jic23@kernel.org>=
- wrote:
++Cc: Andi
 
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->
-> This new loop definition automatically releases the handle on early exit
-> reducing the chance of bugs that cause resource leaks.
->
-> Cc: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Thu, Apr 04, 2024 at 01:06:22PM +0200, Nuno Sa wrote:
+> This series adds a dev_errp_probe() helper. This is similar to
+> dev_err_probe() but for cases where an ERR_PTR() is to be returned
+> simplifying patterns like:
+> 
+> 	dev_err_probe(dev, ret, ...);
+> 	return ERR_PTR(ret)
 
-Neat! I love it.
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+What about ERR_CAST() cases?
 
-Yours,
-Linus Walleij
+> The other three patches are adding users for it. The main motivator for
+> this were the changes in the commit ("iio: temperature: ltc2983: convert
+> to dev_err_probe()"). Initially I just had a local helper [1] but then
+> it was suggested to try a new, common helper. As a result, I looked for
+> a couple more users.
+> 
+> I then move into dev_errp_probe() [2] but it was then suggested to separare
+> the patch series so we have onde dedicated for the printk helper.
+> 
+> [1]: https://lore.kernel.org/all/20240301-ltc2983-misc-improv-v3-1-c09516ac0efc@analog.com/
+> [2]: https://lore.kernel.org/all/20240328-ltc2983-misc-improv-v4-0-0cc428c07cd5@analog.com/
+
+Have you seen mine?
+
+20220214143248.502-1-andriy.shevchenko@linux.intel.com
+
+(Note, I'm pretty much fine and thankful that you take care of this)
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
+
 

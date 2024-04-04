@@ -1,88 +1,87 @@
-Return-Path: <linux-iio+bounces-4069-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4070-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A313898A74
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 16:55:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2765A898A8F
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 17:01:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DC7828C62D
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 14:55:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1EFF1F27534
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 15:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C663E1C2AD;
-	Thu,  4 Apr 2024 14:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28D4112BEAC;
+	Thu,  4 Apr 2024 15:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ks+2N8TU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KaW/5ApO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4AADDBC;
-	Thu,  4 Apr 2024 14:54:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384BB1BDC4;
+	Thu,  4 Apr 2024 15:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712242499; cv=none; b=YtKFz4bScNqTx/KmJeb4XDGo3miqx7ybVsYrqFDblDfjHd+ehT2gB1s82iNlGwpGXQ1MNhx3X75tJzeDPWTfp6CqOtDpggcRduzVtHgkQpEtTbY75AnwDqN0yL6rOGi5LZXKeRn+uBaiGRi3w9+Oqn9Fkg197RD/kQ955oPECnI=
+	t=1712242825; cv=none; b=c3CeClHSE1KYbCF7Ugi/0lIqgfHQ+CDq4rlBKVprrmlG/AvzwG1QACOK8uRodPWg0KjEHQt3UvJh1VM5bIw/eg9PX4lUYx0Zfe4SUoPvPkalBdTuYMPOSrfUtLUoGdSNbPee0Q1ML29Nrt8mVs+rZyUHWMrTSCvGtLf+e0io+1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712242499; c=relaxed/simple;
-	bh=x78rj90TFRZ7cOjs3pNg4nRwg+XPusDjo2DznyCzO2s=;
+	s=arc-20240116; t=1712242825; c=relaxed/simple;
+	bh=82Ksk5MRce8FoFdBZGQ2WHseU6zKUxpaW0NKXsqB680=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=V+agLvvNyNjlnqGJr/+U81y+i4AUhS0GaWE+1TWT5uUDUo4YAC/M9vQcxeQYM1L/Hq1fvxWMbKavSThhoO1b0ChSjQJp239v7jlXLbPkO3Tinkk+MM2PRx9Mf/KJS/MGslcwgcTg6b8bjFEovVR5N9xXdHFFQipmhNXFBpYYNnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ks+2N8TU; arc=none smtp.client-ip=209.85.128.48
+	 Content-Type:MIME-Version; b=Uf3b3RdlveHxE1Cj9KJ1lAOnI+H5OGyFlSLNdpwjftuP4ema6mwzNs6vliQpqOtAiA5tX+G4NB72T0YDlYCKiadRrckKGFSmvegy8FXw1zimvKq+I3JMA34wNzfDwwFiN+7UpXDJaVq36M3lmlKBN4n35Shed5suGimSkEJ9Hw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KaW/5ApO; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4162bac959cso4018085e9.0;
-        Thu, 04 Apr 2024 07:54:57 -0700 (PDT)
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4162bac959cso4082545e9.0;
+        Thu, 04 Apr 2024 08:00:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712242496; x=1712847296; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1712242822; x=1712847622; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=glulz4AZ62PEl1FtV867d3/xaAkvpKKca8G8SD97D8A=;
-        b=Ks+2N8TUYpRAhjzGJikLruvc75rlHWsOMiVPPg7isgygq7Slj+LaPdKmat+CiHPx1b
-         MYfpRY5mFn7jouCLcVQj7MF3m4V2ANPP6cTRXyulcu2GiZkVdKhVqOn74UD48dv5ZUcQ
-         a7zbJxmKdXmvQXk/nSTXgGuL5eUtTyYlkpjW/6WAbQ7ibJwgAfccRgl8HRPl+t0mvrM0
-         g/5H0KkZnjzQRIThgS1sGvsTrzlay4TMVYf0kDXNuFJjzgkGUceNtqBe+zl5AFwU3npm
-         gy3O2qaAHo6AhA7LTZE2SWUUuAnsrgl+m1EdizRk5k40v+i7Fa4ea6ZD5IKLoK+3yfyd
-         /NCQ==
+        bh=VnLzhYhrH3H0+vxV47dmFzyztuQARB+T4eF07NyGj34=;
+        b=KaW/5ApOlklVERCA7CVcj9lskuUQpRIFclbCo2HRIWm7oFtpC1V2oylEc9fsUZujuH
+         w5SUCdKqvKiKMHwi3tDaJElmS504JUUaho4t4x+b5NXEMvsjx5O72RpMgdalUsXFC99W
+         JbjZut6KjJBtEIxPoWh3vQ8QcQox7czPF3EcS0ZnRbBhzWgxc7XMH+B8cXGoONe4sKHk
+         9PmUT4APC56d/EIY4PNyuDjzC9HaXtgZAPAY4bRCO2QQ1VJHsh2DXzcS1X20Q8MNQoQr
+         kOjK9ScBgIbkItfxnONfT1tnt7FceXKWZj1JYDlQhryJ28YPOibZzu+ObT6n6XVM/mBZ
+         vk0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712242496; x=1712847296;
+        d=1e100.net; s=20230601; t=1712242822; x=1712847622;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=glulz4AZ62PEl1FtV867d3/xaAkvpKKca8G8SD97D8A=;
-        b=JVYPozf4UZriv4pMfl83z4/6Z14Qf8xlkMv+Ny4qggHqCJRtq5+oVqsuswP6yewKsz
-         PhhqA2lCVWWimYNCKSBdPvuSjwBpe96uxXCz2XfF03nPmu1gF8EAagHcDQrdc2f1ktz2
-         POFu6NgCryYLt3SHya82NAS72Rqpl5dDNN61dQOKhTpYAeB18fpSDEEMq3wMTNAro4OO
-         8pwHD20Cle2ZOA2gm63QrD7YxVJQRIkNn+aAZvV/byxeefBv6qUv9yFxZHuVL3jozBtp
-         tFfttm3y7xL+gMUILAGY27hhw2Mp3po14wzB3dS+Sbn/15DikmZFOXF1uBYHn80/HY1k
-         yFeA==
-X-Forwarded-Encrypted: i=1; AJvYcCUBSV0z9PjKOF6BYKRF46yuJXGtn/+CHq7MRAmvjkEJK35CKyyeV/U5G3oPZ2NyNN56tiKCkRg/Q7lFsUZBTn/x2XMOWQes7vSXZ4GUq4+YSrO/Eq3Ob2W8r4CMJD8My7IU28FQHoRB
-X-Gm-Message-State: AOJu0Yx39f7Xyoah5hz87qI0Fi5t5p+t2Pi9GjdQ1ZF5OKx3WI/Ga+xF
-	+2Ndj545hEgpO8MiJZuFmzyCOfVzqC4iXqxqxTsWOKoSDr5I+uKd
-X-Google-Smtp-Source: AGHT+IE/IrvuvbWC2KToqhYIKbLS8TuFoPDm6Z5Y0Js0av+z/qFyTnmMZGDwD+Ok2+gD0JTz8TdGlw==
-X-Received: by 2002:a7b:c450:0:b0:414:ff4:5957 with SMTP id l16-20020a7bc450000000b004140ff45957mr2153060wmi.5.1712242496120;
-        Thu, 04 Apr 2024 07:54:56 -0700 (PDT)
+        bh=VnLzhYhrH3H0+vxV47dmFzyztuQARB+T4eF07NyGj34=;
+        b=U2+OHhSsF/tWhNfMYZG5mlyEgVRIIAuvgtccfhk/vdeLzhlk1ofPdeFcHJXERuGA1w
+         s/ZQW9th8Tz7lWWLrRktE3UO7APLemX6Y0DKsS9f4YZ3m4CqAt6eUHeaA5880eB5Y6DW
+         esrw+PvhWdpFGxfxrO+XWtonX5/U7rOvTsd0hVzFMeqNHi7eOqb6dE8cCPulMBKW7k58
+         C4+hjdujCFKgKsJBCzbTdfZ6ALOTORSxX7LczBS4q1WfE9FB9KKqeU93fR7QYfwsL82e
+         1mnYmEdDaQb7NBJkG0hE3S8IFPpV4BAeajyEf8ibnHd28pOGgp983gp7v/ofwUt5Dry5
+         rmyA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0BwAB0EHYqWY1T8nhopWci33KVx0eahmBYkbwJmwek/iBGalmnj6wNDFZ40rHi5ErDM3O73EuwM7z9r3MGF+QPY3VTH3/on/9L8oAG3cOWzzNdpx7Mg+Vkxzp6zz03O2LyIGeSCTc
+X-Gm-Message-State: AOJu0YwAFDD0jrZDuVlXKT8bxDTAc5IZrhIvBZ7wHYQ9K79CcmJh9HH3
+	ewrzy5cYEJ25fNwrM4uKYNdyijyLsmBswCL+TubaEHuhHGGKtyn4krfI2yMBNugs0c2z
+X-Google-Smtp-Source: AGHT+IFwYrzFVkxm9CrZafBJhQH+12w/vURVKxfcNMhINXV03zlxagWwBCJtK6FpV/Zvv8QOPmHLUw==
+X-Received: by 2002:a5d:60ce:0:b0:33d:fb3:9021 with SMTP id x14-20020a5d60ce000000b0033d0fb39021mr1541782wrt.54.1712242822364;
+        Thu, 04 Apr 2024 08:00:22 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1b:2000:15d4:fc17:481e:8afe? (p200300f6ef1b200015d4fc17481e8afe.dip0.t-ipconnect.de. [2003:f6:ef1b:2000:15d4:fc17:481e:8afe])
-        by smtp.gmail.com with ESMTPSA id n10-20020a05600c4f8a00b0041493aae77esm2963505wmq.23.2024.04.04.07.54.55
+        by smtp.gmail.com with ESMTPSA id a1-20020a5d4561000000b00343c0c24a65sm1904999wrc.89.2024.04.04.08.00.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Apr 2024 07:54:55 -0700 (PDT)
-Message-ID: <9f91388faee750e16021f2c0544e7a158a16202b.camel@gmail.com>
-Subject: Re: [PATCH 3/4] iio: backend: make use of dev_errp_probe()
+        Thu, 04 Apr 2024 08:00:22 -0700 (PDT)
+Message-ID: <f6d171499b622b463a174ce56fabc40c1e732bf9.camel@gmail.com>
+Subject: Re: [PATCH 0/4] dev_printk: add dev_errp_probe() helper
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Nuno Sa
-	 <nuno.sa@analog.com>
+	 <nuno.sa@analog.com>, Andi Shyti <andi.shyti@kernel.org>
 Cc: Petr Mladek <pmladek@suse.com>, Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, Olivier Moysan
  <olivier.moysan@foss.st.com>, Jyoti Bhayana <jbhayana@google.com>, Chris
  Down <chris@chrisdown.name>, John Ogness <john.ogness@linutronix.de>, Greg
  Kroah-Hartman <gregkh@linuxfoundation.org>,  linux-kernel@vger.kernel.org,
  linux-iio@vger.kernel.org
-Date: Thu, 04 Apr 2024 16:58:27 +0200
-In-Reply-To: <Zg6bsS3WMvp-nY3S@smile.fi.intel.com>
+Date: Thu, 04 Apr 2024 17:03:53 +0200
+In-Reply-To: <Zg6Z51uebr2dWLq2@smile.fi.intel.com>
 References: <20240404-dev-add_dev_errp_probe-v1-0-d18e3eb7ec3f@analog.com>
-	 <20240404-dev-add_dev_errp_probe-v1-3-d18e3eb7ec3f@analog.com>
-	 <Zg6bsS3WMvp-nY3S@smile.fi.intel.com>
+	 <Zg6Z51uebr2dWLq2@smile.fi.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.0 
@@ -93,36 +92,50 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Thu, 2024-04-04 at 15:23 +0300, Andy Shevchenko wrote:
-> On Thu, Apr 04, 2024 at 01:06:25PM +0200, Nuno Sa wrote:
-> > Using dev_errp_probe() to simplify the code.
+On Thu, 2024-04-04 at 15:15 +0300, Andy Shevchenko wrote:
+> +Cc: Andi
 >=20
-> ...
+> On Thu, Apr 04, 2024 at 01:06:22PM +0200, Nuno Sa wrote:
+> > This series adds a dev_errp_probe() helper. This is similar to
+> > dev_err_probe() but for cases where an ERR_PTR() is to be returned
+> > simplifying patterns like:
+> >=20
+> > 	dev_err_probe(dev, ret, ...);
+> > 	return ERR_PTR(ret)
 >=20
-> > +	if (IS_ERR(fwnode))
-> > +		return dev_errp_probe(dev, PTR_ERR(fwnode),
-> > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Cannot get Firmware reference\n");
+> What about ERR_CAST() cases?
+
+In theory not really needed (I think) but see my reply to the other patch.
 >=20
-> ERR_CAST() seems quite good candidate to have here.
+> > The other three patches are adding users for it. The main motivator for
+> > this were the changes in the commit ("iio: temperature: ltc2983: conver=
+t
+> > to dev_err_probe()"). Initially I just had a local helper [1] but then
+> > it was suggested to try a new, common helper. As a result, I looked for
+> > a couple more users.
+> >=20
+> > I then move into dev_errp_probe() [2] but it was then suggested to sepa=
+rare
+> > the patch series so we have onde dedicated for the printk helper.
+> >=20
+> > [1]:
+> > https://lore.kernel.org/all/20240301-ltc2983-misc-improv-v3-1-c09516ac0=
+efc@analog.com/
+> > [2]:
+> > https://lore.kernel.org/all/20240328-ltc2983-misc-improv-v4-0-0cc428c07=
+cd5@analog.com/
 >=20
-> 		return dev_errp_probe(dev, fwnode, "Cannot get Firmware
-> reference\n");
+> Have you seen mine?
 >=20
-> (Assuming dev_errp_probe() magically understands that, note you may have =
-it as
-> =C2=A0a macro and distinguish parameter type with _Generic() or so and be=
-have
-> =C2=A0differently: ERR_PTR() vs. ERR_CAST(), see acpi_dev_hid_uid_match()
-> =C2=A0implementation, but also keep in mind that it doesn't distinguish N=
-ULL/0,
-> there
-> =C2=A0is a patch available in the mailing list to fix that, though.)
+> 20220214143248.502-1-andriy.shevchenko@linux.intel.com
+>=20
+> (Note, I'm pretty much fine and thankful that you take care of this)
 >=20
 
-Do we care that much for going with that trouble? I understand like this we=
- go
-PTR_ERR() to then comeback to ERR_PTR() but this for probe() which is not a
-fastpath. So perhaps we could just keep it simple?
+Ups nope... I very prefer your naming :). I can take care of this only if y=
+ou
+don't intend to continue with your series. You sent it first so... :)
 
-- Nuno S=C3=A1=20
+- Nuno S=C3=A1
+
 

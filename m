@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-4040-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4041-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E4228981D1
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 09:03:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E6208981D6
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 09:05:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E881EB2279C
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 07:03:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA96FB22EAD
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 07:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C349B548FA;
-	Thu,  4 Apr 2024 07:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ED8B56B72;
+	Thu,  4 Apr 2024 07:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sU1UfhQS"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j/WozZ17"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26545479F
-	for <linux-iio@vger.kernel.org>; Thu,  4 Apr 2024 07:03:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EAB54BCF
+	for <linux-iio@vger.kernel.org>; Thu,  4 Apr 2024 07:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712214215; cv=none; b=oFTfFCGXUiiJcYM4mhRg/mokuL9k/CbL2MyQzvJPNnabdjpOumlFvJRpRd4174bPUOBOz6LYxWoGkXJonZ2CdBW9zXnr7kjXtoYuYQeL6cjKBKQc3YEATJADnEJ3eSfy3LLqSCdqa/0Oc8Itb6G2GADB7qniBRCnzULfc5JxPQM=
+	t=1712214289; cv=none; b=F7b3fHMoUxrBKmmnU2sJz0lYU8FMHnmSHgoUBq6T6KTOjy6yFqRgEbDzqRulIeveRZnsFmtca5QozcSY6yN2kt4PzjtZH3eoFCdzFfCkOx0EMY/t0ejYR7ojDXL+ebdWsDwxR329L4buHA0jFPOC5uU14/l2r0bk1/KCzFOX7UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712214215; c=relaxed/simple;
-	bh=xSZhQALcDek1sVyX0yM9A7bgLyenyyG0Xq43MAWyjT8=;
+	s=arc-20240116; t=1712214289; c=relaxed/simple;
+	bh=SAjv6RGnBR8J3f4UDEx40SZcv2JBjI2SotfhBl2mya4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BoRbTWhA1FLsEDlvWj1rorOnoIcAsXaOOFAFStkXwqoTygN1QSdZKRBT7aG8lBt1JlXN0j5FDzSAlAXlo0mIijKdVjQHFWHXJKkClhLIVdwW3fBfgFl4uHco8CjCDQBlniodsmku/EnEBxVYsw3m/bn+rD1JO/mcnsamdvIdXB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sU1UfhQS; arc=none smtp.client-ip=209.85.218.47
+	 In-Reply-To:Content-Type; b=ZSrCLXZWKfdEpzzAg0jA0/lkVlRLV1uO7+Vo2gD5NwoXk3JNxGUwkDTZiSbgVE9Wd3zN7BiHdfp+ZILdCWjfDmnH9IDBQdTSW43NWvNxUyKWG+wwNOebDx7hHaLA69wGKuO3NcM7MMMprA6js6xukSXPYPA283vkSB51T0isE4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j/WozZ17; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a4f1928bda5so81189666b.2
-        for <linux-iio@vger.kernel.org>; Thu, 04 Apr 2024 00:03:33 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-513e134f73aso941843e87.2
+        for <linux-iio@vger.kernel.org>; Thu, 04 Apr 2024 00:04:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712214212; x=1712819012; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1712214285; x=1712819085; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=Sa5/D2w4HAOG9StMZL08dYHErea08A7xD8z4vksW0jw=;
-        b=sU1UfhQSxAxVA/CKB62/TXteX40Kyc7riKx13J2cZdUlVby+68gSb4doLeU5KaPFHi
-         O3I4w6ZxDqM5NIxUKhFRXkOeweAt2wrQJAiE+0phhbH/xHzhvoC7gKwiVjEIfgZNuXRH
-         16QMlmL4bpWy3QRZiiHwFZF65Vgt4P/wWb96B6+2eEg9WNWSreTkEcbTEa/6UvOsKi8Z
-         jN7JMCOnxadlcaP40t8pFRjgGWpJVttF26BSRcOr1CxnBx6j4Dc+S4zKkAaBUTnypDM7
-         VsAwKGi7Ea5CECiyfdFgRPyQaunpzvD5u1bAlGVsjdK3QS0ZlCnChCfu6nzTYL3KXszw
-         NB+w==
+        bh=sXZLFSY2Y6jaTrC8c++mRC62bTKE3uJxdBu7mLsCWUk=;
+        b=j/WozZ17GRz2oN1Tg/aUviAORlnb9+xiX/c8k/ZR2VFZ8mlwymUIm0/F3gr8SMCRTa
+         0Yt9UHJBEVnTEa4IjhyFN7wMmMvHtPK/PDy0lym7c/Qvh3xVCWRsICB/JgClPmmBn0EU
+         R7nzcG4EoIcBV1RMKW5y8CyfaRACqvjq7mSfnmgKGiDHvOqu1cQZx/E/7Mm5P+GL7HE9
+         ReOCRUPqPP5QQjoU44EBDzMwsvhXcfNQnakYHIDREeWkHefaf9ZOeoDCvC2A54sEy712
+         C552ysUtHZzHd/vxWM44w1ry+dR1MnjDEKbn4UtxOp4OkDhgoE6UAETblTMM00x4Ougx
+         kCEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712214212; x=1712819012;
+        d=1e100.net; s=20230601; t=1712214285; x=1712819085;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Sa5/D2w4HAOG9StMZL08dYHErea08A7xD8z4vksW0jw=;
-        b=Cu7F/fstRtynKKwMYl6uEOxXvHtQVh9xzpHT7sxQ5myoKC3FpyZV4CU/k+J7pjlt7q
-         Kl4cNi23THWB2Ph1E/IBXbZKVH/lNoB3+dHSjYNgCcz+5tyu+3fc2O/Gt7b6NjGOjMKh
-         TS2+F4zh9xhWXQcNSRR6kG+Sj9NHsUv+b1BhoLwya+g51jxmOHgFj5Sk3HSeFiHxvNOt
-         fx+Zt5FBuE4U8Dhg4rUqzVP3fjuZCwlGBxtMK6HjfhtadqZmFmlwYXsJV9poaKFfCKCo
-         epZWpv/1eE8Re/rEsXvzeJmInMNcQPyTGlDtyrL847yXh8BBIGPAWGKwF078G3cv5vKn
-         G50Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU+SYU2ubEF33WGseRIn5f6aRNiT/fjQEgXE4NpDNhXd52asit2p6Rps6/tPr5sOWKFwtQoc42ExCUuXOQPNhbjkx8DUAYv4ZSP
-X-Gm-Message-State: AOJu0Yz4iPq1aeqcDpOuhUh34THtmtFWC0vEMrInSlMjb3maLc26s+IR
-	42QpyqPN2BXZujWfM93otSOF+OYFLv/W8hXvzQFc0qYQK8rsK0s2SYPKmeRcMIo=
-X-Google-Smtp-Source: AGHT+IEnfXmS/wT7bTyss1un8ZYWBejbj7WTT8VFL4JxX2hDhF/tSpCOOHzqljhIKy7YwWJ7VrmlNw==
-X-Received: by 2002:a17:906:240a:b0:a4e:676f:c34b with SMTP id z10-20020a170906240a00b00a4e676fc34bmr1053552eja.61.1712214212433;
-        Thu, 04 Apr 2024 00:03:32 -0700 (PDT)
+        bh=sXZLFSY2Y6jaTrC8c++mRC62bTKE3uJxdBu7mLsCWUk=;
+        b=w1f3EZL95kejMj7nC1iHU/5AAhiMDMX/ivcS+O3D0s1znxAr2m8jyTngrqr9GYhpSO
+         Y593B0sCnqI4veWiVUHnd00AjfN7t0emtQdspDWKAOf794TKS+v0N+JewFbiF4GdU3sn
+         RUQF1CTTOHMG/k5NA0+833M0hK5zv0M2fuY6sArEfbf7oGJnF4c1QH0oSH5nKP5oaYXW
+         9FA2EilZX4Q0X4Dm8Wu95TVYJQ2cVLqb2MvgXyhgl92QaKb+sMeWz2WyHcE9S3FifRF0
+         MlmTHfv6pfYp5gpAV7VfFHrXh3S9yMMh+9HAOHV6pMoXnazXDd6Hvpf0A81wpTACn6n2
+         gKDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV9pTO4fgut81Oy8hI3ob4Ni+xbZQfgQLF9wQ8OM1vUKKszITl6D9YIojLLPhuekZO1RAM0L3vmptYo5uYO+ENkzNVkM+a0zaeh
+X-Gm-Message-State: AOJu0Yxu/ASB6V2nKKgwPA7i3F5SBZoOTzlzxHUSRjvjsMUxgLJRAfAd
+	zziGIz9YqWIgM4hJ+ntHYt9iHkVTt0339HLdcxbBxz5pFlN2GYegjOOwk3M43HU=
+X-Google-Smtp-Source: AGHT+IGK2MMJfDHA/RmBTX/w8HS2DQi6pEVwKkJGBNOvDtoDa6tUoMgxk+m3PCMKOcDOvxC0XrgEqg==
+X-Received: by 2002:ac2:4851:0:b0:516:9ee5:e02c with SMTP id 17-20020ac24851000000b005169ee5e02cmr1340681lfy.2.1712214285438;
+        Thu, 04 Apr 2024 00:04:45 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id wv12-20020a170907080c00b00a4660b63502sm8695747ejb.12.2024.04.04.00.03.30
+        by smtp.gmail.com with ESMTPSA id 12-20020a170906300c00b00a47342b53a4sm8578870ejz.191.2024.04.04.00.04.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Apr 2024 00:03:31 -0700 (PDT)
-Message-ID: <beb68fc5-1ad8-4052-80c6-b706b62c267b@linaro.org>
-Date: Thu, 4 Apr 2024 09:03:29 +0200
+        Thu, 04 Apr 2024 00:04:44 -0700 (PDT)
+Message-ID: <882e018d-73e2-4505-b613-50e759a25420@linaro.org>
+Date: Thu, 4 Apr 2024 09:04:42 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,14 +77,13 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: imu: add icm42688 inside
- inv_icm42600
+Subject: Re: [PATCH v2 2/2] iio: imu: inv_icm42600: add support of ICM-42688-P
 To: inv.git-commit@tdk.com, jic23@kernel.org, robh@kernel.org,
  krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org
 Cc: lars@metafoo.de, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 References: <20240402090046.764572-1-inv.git-commit@tdk.com>
- <20240402090046.764572-2-inv.git-commit@tdk.com>
+ <20240402090046.764572-3-inv.git-commit@tdk.com>
 Content-Language: en-US
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -131,33 +130,25 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240402090046.764572-2-inv.git-commit@tdk.com>
+In-Reply-To: <20240402090046.764572-3-inv.git-commit@tdk.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 On 02/04/2024 11:00, inv.git-commit@tdk.com wrote:
 > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 > 
-> Add bindings for ICM-42688-P chip.
-> 
+
+Missing commit msg explaining why/what is happening.
+
 > Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
 > ---
->  .../devicetree/bindings/iio/imu/invensense,icm42600.yaml         | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
-> index 7cd05bcbee31..5e0bed2c45de 100644
-> --- a/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
-> +++ b/Documentation/devicetree/bindings/iio/imu/invensense,icm42600.yaml
-> @@ -32,6 +32,7 @@ properties:
->        - invensense,icm42605
->        - invensense,icm42622
->        - invensense,icm42631
-> +      - invensense,icm42688
-> 
->    reg:
->      maxItems: 1
-> --
+>  drivers/iio/imu/inv_icm42600/inv_icm42600.h      | 2 ++
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_core.c | 5 +++++
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c  | 3 +++
+>  drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c  | 3 +++
+>  4 files changed, 13 insertions(+)
+
+
 > 2.34.1
 > 
 > TDK-Micronas GmbH
@@ -166,7 +157,9 @@ On 02/04/2024 11:00, inv.git-commit@tdk.com wrote:
 > 
 > This e-mail and any files transmitted with it are confidential information of TDK-Micronas and intended solely for the use of the individual or entity to whom they are addressed. If you have received this e-mail in error please notify the sender by return e-mail and delete all copies of this e-mail message along with all attachments. If you are not the named addressee you should not disseminate, distribute or copy this e-mail.
 
-Don't send patches which are confidential. Community cannot take them.
+Sorry, we cannot work with confidential IP. You also made public your
+company confidential data, so it looks bad. Please double check it with
+your company legal department.
 
 Best regards,
 Krzysztof

@@ -1,363 +1,167 @@
-Return-Path: <linux-iio+bounces-4067-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4068-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E07C898889
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 15:08:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5128889888E
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 15:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13061282697
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 13:08:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCC04B25BFF
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Apr 2024 13:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 483DA86AE9;
-	Thu,  4 Apr 2024 13:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B0C126F0F;
+	Thu,  4 Apr 2024 13:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J1tqs8ab"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f3huWUUd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B5D76023;
-	Thu,  4 Apr 2024 13:07:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CC61EB56;
+	Thu,  4 Apr 2024 13:09:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712236083; cv=none; b=t+4rRD9bIP5CMYU7VYXzrE3fa5GQM+sEp+TAny67w5oADH25FZUzFwJwJLBF3XNdttLqbZRkXSL7scw3zYV/4Zk1xaduVNFhOBYCxrMM2waUU0+olVeNlM1zb9fSVrd5uKDBnNaDZpYLWQPNS/TZ0n6DQQ3moJs2dUuqn7qa4KE=
+	t=1712236142; cv=none; b=AVU048JsiRAkuj5Hi5wf9EyDefxS3AS/dRKueU38TzFEZS0igfNYjH41xx7/BEcU2giYZUXXm6JSPEsUcdclQgIwlEK8bXopl+B5HO0Jg2rtVgumphZJfuhKXO+4XU4OC10m8GR73RNH2uWUVbIqmkai1GLstPu3iRWj/sGxkv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712236083; c=relaxed/simple;
-	bh=1hEQj/oWWyx0J1J6VGsp6XnfJEApArtnARvf2ByUOyc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Qbpyun2zvBW/bAni4/e2YUtvq3pt3v0UXT5QxY+1SsqAp+Sk+yt9NCGEd3QOkRdoD+2WiHo/fdMGTrc3AK9QA5Y8Tl5vfKn8+E6OGKPTqk86K9ERxVCXE+O+20U5dHR2RKbIsrA47iT3HzuuaZPruTdWc5HJDCHC57RCQmCdbhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J1tqs8ab; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1712236080; x=1743772080;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=1hEQj/oWWyx0J1J6VGsp6XnfJEApArtnARvf2ByUOyc=;
-  b=J1tqs8abJBQ4OxF4CZYenO6O8moNslc+1Nadk/kHdKFzk9cvMUFinwI+
-   Rx839OFnVXgr5HzTgzPVOPSgkd8WRWBAmXxVhF7I1FMFADGQixm2IY+OO
-   N5iyFnTpQMxFh8aTmruL34O3HcAVd86a/xpx0END4QPwLaJcoEVz4QtWc
-   W/KmdP15NnYh461mAkbRSmzw90bvrwKRfCMVH+osZ0QzbQyTA6fG5RDnN
-   Mix1fbFhLX6ZArvIBBagMEcESSzawhIho/+gJVeShX/4D3MHGZ88a0L8J
-   4n33q1UK87GHLYsyZBaajhPmp7vHX3LLvnpBs5BotjXjDm7Fdda6Haziz
-   g==;
-X-CSE-ConnectionGUID: a92jq0IoSJakB7X/4gSHAA==
-X-CSE-MsgGUID: yIcoph0vSXCROe7YEG6jgg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11033"; a="7410622"
-X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
-   d="scan'208";a="7410622"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Apr 2024 06:07:51 -0700
-X-CSE-ConnectionGUID: 2zC0UZcJTrKDQoBX7whFdQ==
-X-CSE-MsgGUID: DcQegI9RQtiZuliCmSsEtA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,179,1708416000"; 
-   d="scan'208";a="19217383"
-Received: from lkp-server01.sh.intel.com (HELO e61807b1d151) ([10.239.97.150])
-  by orviesa007.jf.intel.com with ESMTP; 04 Apr 2024 06:07:50 -0700
-Received: from kbuild by e61807b1d151 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1rsMol-00015E-10;
-	Thu, 04 Apr 2024 13:07:47 +0000
-Date: Thu, 4 Apr 2024 21:07:40 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ramona Gradinariu <ramona.gradinariu@analog.com>,
-	linux-kernel@vger.kernel.org, jic23@kernel.org, nuno.sa@analog.com,
-	linux-iio@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Ramona Gradinariu <ramona.gradinariu@analog.com>
-Subject: Re: [PATCH 1/1] iio:imu: adis16475: Fix sync mode setting
-Message-ID: <202404042023.NqdNbrAI-lkp@intel.com>
-References: <20240403111357.1074511-2-ramona.gradinariu@analog.com>
+	s=arc-20240116; t=1712236142; c=relaxed/simple;
+	bh=h2UbZkyXiaKgL6uH4uuNeFsZ2ez34zgm0Oisdg5vyqg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qkzsQrfmSR+4EIJUaEX5jzbp+PgT2eMwI3MVdE0OQBON4PYPHnbLAq92S5b8HzK3IWWied6YKShn7u99kWgvH07cNP7YdLvorutcFr4dmH7b/U3VXEmeFzXL7+hK2KjFVNZ55mQ0igHW2yBHv24q+WjedVvQFZSbemL9z9DQW/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f3huWUUd; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-343b7c015a8so602455f8f.1;
+        Thu, 04 Apr 2024 06:09:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712236139; x=1712840939; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pv/Qi7KoaOEOMUmjC6u59B8rww1PLzXdvZJxWlohLyk=;
+        b=f3huWUUdFHC7NF9ANT4gubAf+iqJR/pAReY2bjZ+as2hwd0/2BPlw33ppR7PkjZIbU
+         ZgwqQ0KQGOsRZwdZE3bf+BFa/CtEi/a4XGGTHahqNltMxlk/kDu5BRfDgJj4KmK2y+0n
+         C2CLCG+68FgmCkh2dB188r/KkKRaNz4DcKnSV1NABTubyhBlDMDJW4XcAvwHm7eof+Vc
+         JHDfARukpwPZjsLnzGmmQqN0FWkN0OHqJzMuk9OZF5I2uM3rFecFny75R73CosfTFujX
+         kPFT4/CHSydNDObMLAPJpdUHwHbEiE4xFjRZxHAyYa4wC6e46iZzhavVSfD8f6WToekJ
+         hECw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712236139; x=1712840939;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pv/Qi7KoaOEOMUmjC6u59B8rww1PLzXdvZJxWlohLyk=;
+        b=QNtloPSqHN7rpr3jh86Liuv67KvfeyX8QaaYnBIwSOR3scEcjYQ8zJN7gW4kkWvLQE
+         pPM3lQPo5cQKgK+8/PrqZS2+QTTIOltP6ZCHl520jGZbYpyyXrbeLhUqF5ab+yyNEKNr
+         JuxvKNiPmkFwbgJTCmmfZVk7zckfUVBUPOyAIHrIBeHnQcx+7PanBEjgOSOj3Ak9IqYj
+         64XdsaTpOyePIR2H8U3xD2DeU2R2ZzIXNFrGEvgDagSoOfbAxOnEPZfYA3lfMVB1oYH1
+         bBtbCrAPsiOilInfK1cjmRfDYPyN8uiopfRLP/C3WBK7IL5lPn2H7Dx8Cxtr2dfCP1/n
+         OH7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVML4LvNX3uahFclvqCZ0OjqhISoikpWEgpFk46eq5fU0q7f4ayXOHgYZofzqOGbh3XobE2l+u1wTVAXAYzi/N/uc4XuOad4BWdT533TiTVSFEpyth8fSC5D/JYp2Io6QiMU8fO3InaCI2qdF+G9hnTi5xrq79hUfGATMAU+jZVE9d6uQ==
+X-Gm-Message-State: AOJu0YwL+Y5vcogsAJrAI12J2dAUbpWmKYx0YixTCBMfHVsIuTOqrjGu
+	KqfEM6KnzK4rYXH4FXifMICMXUCA9k6jKujMi/z0qqzABeoyjh7t
+X-Google-Smtp-Source: AGHT+IHZ5ilaONhEc/8resaz7bIMJaPEbNbv2CtcO8bEWOzL11rySsrX3HZyWDX2SNIHxZNkYKa9/w==
+X-Received: by 2002:a5d:4a8e:0:b0:343:98ee:524 with SMTP id o14-20020a5d4a8e000000b0034398ee0524mr1825796wrq.36.1712236138600;
+        Thu, 04 Apr 2024 06:08:58 -0700 (PDT)
+Received: from [10.76.84.174] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id y17-20020a056000109100b00341de3abb0esm19986243wrw.20.2024.04.04.06.08.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Apr 2024 06:08:57 -0700 (PDT)
+Message-ID: <aa84a3c5-a3e6-4c76-9b67-624ed8d8c704@gmail.com>
+Date: Thu, 4 Apr 2024 16:08:56 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20240403111357.1074511-2-ramona.gradinariu@analog.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/6] dt-bindings: adc: ad7173: add support for ad411x
+To: David Lechner <dlechner@baylibre.com>
+Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240401-ad4111-v1-0-34618a9cc502@analog.com>
+ <20240401-ad4111-v1-1-34618a9cc502@analog.com>
+ <CAMknhBHeKAQ45=5-dL1T1tv-mZcPN+bNo3vxWJYgWpEPE+8p3Q@mail.gmail.com>
+ <CAMknhBGVuMSg+OpS5QTLWi9vA=Xa33AJ+cVS8ZCDyKsAVEe-ww@mail.gmail.com>
+ <0a72de29-6d25-4d2d-9824-ca407af69153@gmail.com>
+ <CAMknhBHhxi7mN88+peU7BGkzSP2vtipCuvM-XfQzgusqKvARsg@mail.gmail.com>
+Content-Language: en-US
+From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
+In-Reply-To: <CAMknhBHhxi7mN88+peU7BGkzSP2vtipCuvM-XfQzgusqKvARsg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Ramona,
+On 03/04/2024 18:22, David Lechner wrote:
+> On Wed, Apr 3, 2024 at 2:50 AM Ceclan, Dumitru <mitrutzceclan@gmail.com> wrote:
+>> On 02/04/2024 00:16, David Lechner wrote:
+>>> On Mon, Apr 1, 2024 at 2:37 PM David Lechner <dlechner@baylibre.com> wrote:
+>>>> On Mon, Apr 1, 2024 at 10:10 AM Dumitru Ceclan via B4 Relay
+>>>> <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
+>>>>> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+>>>>>
+>> ...
+>>
+>>>>>      properties:
+>>>>>        reg:
+>>>>> +        description:
+>>>>> +          Reg values 16-19 are only permitted for ad4111/ad4112 current channels.
+>>>>>          minimum: 0
+>>>>> -        maximum: 15
+>>>>> +        maximum: 19
+>>>> This looks wrong. Isn't reg describing the number of logical channels
+>>>> (# of channel config registers)?
+>>>>
+>>>> After reviewing the driver, I see that > 16 is used as a way of
+>>>> flagging current inputs, but still seems like the wrong way to do it.
+>>>> See suggestion below.
+>>>>
+>>>>>        diff-channels:
+>>>>> +        description:
+>>>>> +          For using current channels specify only the positive channel.
+>>>>> +            (IIN2+, IIN2−) -> diff-channels = <2 0>
+>>>> I find this a bit confusing since 2 is already VIN2 and 0 is already
+>>>> VIN0. I think it would make more sense to assign unique channel
+>>>> numbers individually to the negative and positive current inputs.
+>>>> Also, I think it makes sense to use the same numbers that the
+>>>> registers in the datasheet use (8 - 11 for negative and 12 to 15 for
+>>>> positive).
+>>>>
+>>>> So: (IIN2+, IIN2−) -> diff-channels = <13 10>
+>>> Thinking about this a bit more...
+>>>
+>>> Since the current inputs have dedicated pins and aren't mix-and-match
+>>> with multiple valid wiring configurations like the voltage inputs, do
+>>> we even need to describe them in the devicetree?
+>>>
+>>> In the driver, the current channels would just be hard-coded like the
+>>> temperature channel since there isn't any application-specific
+>>> variation.
+>>  Sure, but we still need to offer the user a way to configure which
+>> current inputs he wants and if they should use bipolar or unipolar coding.
+> From the datasheet, it looks like only positive current input is
+> allowed so I'm not sure bipolar applies here. But, yes, if there is
+> some other variation in wiring or electrical signal that needs to be
+> describe here, then it makes sense to allow a channel configuration
+> node for it.
 
-kernel test robot noticed the following build errors:
+AD4111 datasheet pg.29:
+When the ADC is configured for bipolar operation, the output
+code is offset binary with a negative full-scale voltage resulting
+in a code of 000 … 000, a zero differential input voltage resulting in
+a code of 100 … 000, and a positive full-scale input voltage
+resulting in a code of 111 … 111. The output code for any
+analog input voltage can be represented as
+Code = 2^(N – 1) × ((V_IN × 0.1/V REF) + 1)
+The output code for any input current is represented as
+Code = 2^(N − 1) × ((I_IN × 50 Ω/V REF) + 1)
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master v6.9-rc2 next-20240404]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I would say bipolar applies here, not a great idea because of the limitation on
+ the negative side (Input Current Range min:−0.5 max:+24 mA) so still, the option
+ is available.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ramona-Gradinariu/ii=
-o-imu-adis16475-Fix-sync-mode-setting/20240403-201755
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240403111357.1074511-2-ramona.gr=
-adinariu%40analog.com
-patch subject: [PATCH 1/1] iio:imu: adis16475: Fix sync mode setting
-config: loongarch-allmodconfig (https://download.01.org/0day-ci/archive/202=
-40404/202404042023.NqdNbrAI-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archive=
-/20240404/202404042023.NqdNbrAI-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new versio=
-n of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202404042023.NqdNbrAI-lkp@i=
-ntel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from <command-line>:
-   drivers/iio/imu/adis16475.c: In function 'adis16475_config_sync_mode':
->> include/linux/compiler_types.h:449:45: error: call to '__compiletime_ass=
-ert_494' declared with attribute error: BUILD_BUG_ON failed: sizeof(({ ({ d=
-o { __attribute__((__noreturn__)) extern void __compiletime_assert_489(void=
-) __attribute__((__error__("FIELD_PREP: " "mask is not constant"))); if (!(=
-!(!__builtin_constant_p(((((int)(sizeof(struct { int:(-!!(__builtin_choose_=
-expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) :=
- (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1)=
- & (~((0UL)) >> ((8 * 8) - 1 - (4))))))))) __compiletime_assert_489(); } wh=
-ile (0); do { __attribute__((__noreturn__)) extern void __compiletime_asser=
-t_490(void) __attribute__((__error__("FIELD_PREP: " "mask is zero"))); if (=
-!(!((((((int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(int) =
-=3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) >=
- (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8=
- * 8) - 1 - (4)))))) =3D=3D 0))) __compiletime_assert_490(); } while (0); d=
-o { __attribute__((__noreturn__)) extern void __compiletime_assert_491(void=
-) __attribute__((__error__("FIELD_PREP: " "value too large for the field"))=
-); if (!(!(__builtin_constant_p(sync->sync_mode) ? ~((((((int)(sizeof(struc=
-t { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void=
- *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((=
-0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) >> (_=
-_builtin_ffsll(((((int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (si=
-zeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8=
-))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0U=
-L)) >> ((8 * 8) - 1 - (4)))))) - 1)) & (0 + (sync->sync_mode)) : 0))) __com=
-piletime_assert_491(); } while (0); do { __attribute__((__noreturn__)) exte=
-rn void __compiletime_assert_492(void) __attribute__((__error__("FIELD_PREP=
-: " "type of reg too small for mask"))); if (!(!(((typeof( _Generic((((((in=
-t)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D size=
-of(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0)));=
- })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 -=
- (4)))))), char: (unsigned char)0, unsigned char: (unsigned char)0, signed =
-char: (unsigned char)0, unsigned short: (unsigned short)0, signed short: (u=
-nsigned short)0, unsigned int: (unsigned int)0, signed int: (unsigned int)0=
-, unsigned long: (unsigned long)0, signed long: (unsigned long)0, unsigned =
-long long: (unsigned long long)0, signed long long: (unsigned long long)0, =
-default: (((((int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(=
-int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))), =
-(2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >=
-> ((8 * 8) - 1 - (4)))))))))(((((int)(sizeof(struct { int:(-!!(__builtin_ch=
-oose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0=
-l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2))=
- + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4))))))) > ((typeof( _Generic((0ULL), =
-char: (unsigned char)0, unsigned char: (unsigned char)0, signed char: (unsi=
-gned char)0, unsigned short: (unsigned short)0, signed short: (unsigned sho=
-rt)0, unsigned int: (unsigned int)0, signed int: (unsigned int)0, unsigned =
-long: (unsigned long)0, signed long: (unsigned long)0, unsigned long long: =
-(unsigned long long)0, signed long long: (unsigned long long)0, default: (0=
-ULL))))(~0ull))))) __compiletime_assert_492(); } while (0); do { __attribut=
-e__((__noreturn__)) extern void __compiletime_assert_493(void) __attribute_=
-_((__error__("BUILD_BUG_ON failed: " "(((((((int)(sizeof(struct { int:(-!!(=
-__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2=
-) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1=
-UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) + (1ULL << (__buil=
-tin_ffsll(((((int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(=
-int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))), =
-(2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >=
-> ((8 * 8) - 1 - (4)))))) - 1))) & (((((((int)(sizeof(struct { int:(-!!(__b=
-uiltin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) >=
- (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)=
-) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) + (1ULL << (__builtin=
-_ffsll(((((int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(int=
-) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))), (2)=
- > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> (=
-(8 * 8) - 1 - (4)))))) - 1))) - 1)) !=3D 0"))); if (!(!((((((((int)(sizeof(=
-struct { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? (=
-(void *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (=
-((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) =
-+ (1ULL << (__builtin_ffsll(((((int)(sizeof(struct { int:(-!!(__builtin_cho=
-ose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l=
-)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) =
-+ 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) - 1))) & (((((((int)(sizeof(str=
-uct { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((vo=
-id *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~=
-((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) + (=
-1ULL << (__builtin_ffsll(((((int)(sizeof(struct { int:(-!!(__builtin_choose=
-_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) =
-: (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1=
-) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) - 1))) - 1)) !=3D 0))) __compileti=
-me_assert_493(); } while (0); }); ((typeof(((((int)(sizeof(struct { int:(-!=
-!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)(=
-(2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - ((=
-(1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))))(sync->sync_mode=
-) << (__builtin_ffsll(((((int)(sizeof(struct { int:(-!!(__builtin_choose_ex=
-pr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (=
-int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) &=
- (~((0UL)) >> ((8 * 8) - 1 - (4)))))) - 1)) & (((((int)(sizeof(struct { int=
-:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((lo=
-ng)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) =
-- (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))); })) !=3D 2 =
-&& sizeof(({ ({ do { __attribute__((__noreturn__)) extern void __compiletim=
-e_assert_489(void) __attribute__((__error__("FIELD_PREP: " "mask is not con=
-stant"))); if (!(!(!__builtin_constant_p(((((int)(sizeof(struct { int:(-!!(=
-__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2=
-) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1=
-UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4))))))))) __compiletime_a=
-ssert_489(); } while (0); do { __attribute__((__noreturn__)) extern void __=
-compiletime_assert_490(void) __attribute__((__error__("FIELD_PREP: " "mask =
-is zero"))); if (!(!((((((int)(sizeof(struct { int:(-!!(__builtin_choose_ex=
-pr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (=
-int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) &=
- (~((0UL)) >> ((8 * 8) - 1 - (4)))))) =3D=3D 0))) __compiletime_assert_490(=
-); } while (0); do { __attribute__((__noreturn__)) extern void __compiletim=
-e_assert_491(void) __attribute__((__error__("FIELD_PREP: " "value too large=
- for the field"))); if (!(!(__builtin_constant_p(sync->sync_mode) ? ~((((((=
-int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D si=
-zeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))=
-); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1=
- - (4)))))) >> (__builtin_ffsll(((((int)(sizeof(struct { int:(-!!(__builtin=
-_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) =
-* 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (=
-2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) - 1)) & (0 + (sync->sync_mo=
-de)) : 0))) __compiletime_assert_491(); } while (0); do { __attribute__((__=
-noreturn__)) extern void __compiletime_assert_492(void) __attribute__((__er=
-ror__("FIELD_PREP: " "type of reg too small for mask"))); if (!(!(((typeof(=
- _Generic((((((int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof=
-(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))),=
- (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) =
->> ((8 * 8) - 1 - (4)))))), char: (unsigned char)0, unsigned char: (unsigne=
-d char)0, signed char: (unsigned char)0, unsigned short: (unsigned short)0,=
- signed short: (unsigned short)0, unsigned int: (unsigned int)0, signed int=
-: (unsigned int)0, unsigned long: (unsigned long)0, signed long: (unsigned =
-long)0, unsigned long long: (unsigned long long)0, signed long long: (unsig=
-ned long long)0, default: (((((int)(sizeof(struct { int:(-!!(__builtin_choo=
-se_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)=
-) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) +=
- 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))))))(((((int)(sizeof(struct { int:=
-(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((lon=
-g)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) -=
- (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4))))))) > ((typeof( =
-_Generic((0ULL), char: (unsigned char)0, unsigned char: (unsigned char)0, s=
-igned char: (unsigned char)0, unsigned short: (unsigned short)0, signed sho=
-rt: (unsigned short)0, unsigned int: (unsigned int)0, signed int: (unsigned=
- int)0, unsigned long: (unsigned long)0, signed long: (unsigned long)0, uns=
-igned long long: (unsigned long long)0, signed long long: (unsigned long lo=
-ng)0, default: (0ULL))))(~0ull))))) __compiletime_assert_492(); } while (0)=
-; do { __attribute__((__noreturn__)) extern void __compiletime_assert_493(v=
-oid) __attribute__((__error__("BUILD_BUG_ON failed: " "(((((((int)(sizeof(s=
-truct { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((=
-void *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + ((=
-(~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) +=
- (1ULL << (__builtin_ffsll(((((int)(sizeof(struct { int:(-!!(__builtin_choo=
-se_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)=
-) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) +=
- 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) - 1))) & (((((((int)(sizeof(stru=
-ct { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((voi=
-d *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~(=
-(0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) + (1=
-ULL << (__builtin_ffsll(((((int)(sizeof(struct { int:(-!!(__builtin_choose_=
-expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) :=
- (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1)=
- & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) - 1))) - 1)) !=3D 0"))); if (!(!(((=
-(((((int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=
-=3D sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4=
-), 0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * =
-8) - 1 - (4)))))) + (1ULL << (__builtin_ffsll(((((int)(sizeof(struct { int:=
-(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((lon=
-g)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) -=
- (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) - 1))) & ((((=
-(((int)(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D=
- sizeof(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), =
-0))); })))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) =
-- 1 - (4)))))) + (1ULL << (__builtin_ffsll(((((int)(sizeof(struct { int:(-!=
-!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)(=
-(2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - ((=
-(1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) - 1))) - 1)) !=
-=3D 0))) __compiletime_assert_493(); } while (0); }); ((typeof(((((int)(siz=
-eof(struct { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8=
- ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); }))))=
- + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))=
-))))(sync->sync_mode) << (__builtin_ffsll(((((int)(sizeof(struct { int:(-!!=
-(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof(*(8 ? ((void *)((long)((=
-2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); })))) + (((~((0UL))) - (((=
-1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (4)))))) - 1)) & (((((int)=
-(sizeof(struct { int:(-!!(__builtin_choose_expr( (sizeof(int) =3D=3D sizeof=
-(*(8 ? ((void *)((long)((2) > (4)) * 0l)) : (int *)8))), (2) > (4), 0))); }=
-)))) + (((~((0UL))) - (((1UL)) << (2)) + 1) & (~((0UL)) >> ((8 * 8) - 1 - (=
-4)))))); })) !=3D 4
-     449 |         _compiletime_assert(condition, msg, __compiletime_assert=
-_, __COUNTER__)
-         |                                             ^
-   include/linux/compiler_types.h:430:25: note: in definition of macro '__c=
-ompiletime_assert'
-     430 |                         prefix ## suffix();                     =
-        \
-         |                         ^~~~~~
-   include/linux/compiler_types.h:449:9: note: in expansion of macro '_comp=
-iletime_assert'
-     449 |         _compiletime_assert(condition, msg, __compiletime_assert=
-_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletim=
-e_assert'
-      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), =
-msg)
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_O=
-N_MSG'
-      50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #con=
-dition)
-         |         ^~~~~~~~~~~~~~~~
-   include/linux/iio/imu/adis.h:402:9: note: in expansion of macro 'BUILD_B=
-UG_ON'
-     402 |         BUILD_BUG_ON(sizeof(val) !=3D 2 && sizeof(val) !=3D 4); =
-            \
-         |         ^~~~~~~~~~~~
-   drivers/iio/imu/adis16475.c:1353:15: note: in expansion of macro '__adis=
-_update_bits'
-    1353 |         ret =3D __adis_update_bits(&st->adis, ADIS16475_REG_MSG_=
-CTRL,
-         |               ^~~~~~~~~~~~~~~~~~
-
-
-vim +449 include/linux/compiler_types.h
-
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  435 =20
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  436  #define _compiletime_assert(co=
-ndition, msg, prefix, suffix) \
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  437  	__compiletime_assert(conditio=
-n, msg, prefix, suffix)
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  438 =20
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  439  /**
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  440   * compiletime_assert - break =
-build and emit msg if condition is false
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  441   * @condition: a compile-time =
-constant condition to check
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  442   * @msg:       a message to em=
-it if condition is false
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  443   *
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  444   * In tradition of POSIX asser=
-t, this macro will break the build if the
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  445   * supplied condition is *fals=
-e*, emitting the supplied error message if the
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  446   * compiler has support to do =
-so.
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  447   */
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  448  #define compiletime_assert(con=
-dition, msg) \
-eb5c2d4b45e3d2d Will Deacon 2020-07-21 @449  	_compiletime_assert(condition=
-, msg, __compiletime_assert_, __COUNTER__)
-eb5c2d4b45e3d2d Will Deacon 2020-07-21  450 =20
-
---=20
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

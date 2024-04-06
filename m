@@ -1,60 +1,56 @@
-Return-Path: <linux-iio+bounces-4114-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4115-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A8C89ABA8
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:32:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C80789ABAF
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:39:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 136AFB20DA0
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 15:32:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDA9528235B
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 15:39:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F0D39FE0;
-	Sat,  6 Apr 2024 15:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3A739FE5;
+	Sat,  6 Apr 2024 15:39:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="manFzp8B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qtR9QAY1"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 219C439FC6;
-	Sat,  6 Apr 2024 15:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADF826AC2;
+	Sat,  6 Apr 2024 15:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712417529; cv=none; b=SF5/AwHTqV/tRL5DCKpNjMC3Ser9A8u7COhejudmLDDKOINaALajuxOyps8xudbB573FUsbhybZTnVXVu3rkvgkfMqv93r6kVgs334ud3rgcwxqU1O+ynEL1653BYooW8W0i/fhpMMmAMX3DSeahYHICJRwLhco0MuELEO6SxUQ=
+	t=1712417982; cv=none; b=XfUBBaSsjO9qKw1n0up24Z6i+D7mwD2MZZ+iub732DnETokdiLV5kGeEVMdmmn9buKtbBJp9rR2X+EPsI3Pvu6Wtu1NpwnYMp+gbO1wfFewFjgFuE748f9zVc5uT0D/KTZTMtTOM/y1M/tmjTitANf03MttPg9CI21PucpL01mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712417529; c=relaxed/simple;
-	bh=ZiWKqTlVngAKanx11YFdGqJCzaJQdlTtuRJlfIa+Y4M=;
+	s=arc-20240116; t=1712417982; c=relaxed/simple;
+	bh=ZS1O5rlPBLfEcou8rXXarcrf4dxatgQV4muJCx/cFFc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aq8lesH9la0J8xiCrJ7sflRT6HLu5d4mBDfgEV3ciXNuYLVNo8bYBu2Dd79AcXYy4TlTtacLdYJ99vOSVkmZPUJyJ2/aboxViI9KUEy3Jif5lJCPT8tdIS4vpjFAxOW7vikb3jDabLnJJhEfLaaWgRCNN2wG2ixc17wwGf4FXN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=manFzp8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637D8C433C7;
-	Sat,  6 Apr 2024 15:32:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ref69XZjIYYbHqfqpC1nwLn0NZcp+DOe0WRvJQHgSsyEUIFED4gTpEd5JeNJha8VA1RqK2xEu5pkDxHwTtwHU7tZPfhXnnYL9QO4QJbgoR0VqUWFpSKdlTibiyD8ydmixlSD4/rZkYe8Y3Oz0saIuFGTM2/OkugISghHSk7g0pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qtR9QAY1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC1BC433F1;
+	Sat,  6 Apr 2024 15:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712417528;
-	bh=ZiWKqTlVngAKanx11YFdGqJCzaJQdlTtuRJlfIa+Y4M=;
+	s=k20201202; t=1712417981;
+	bh=ZS1O5rlPBLfEcou8rXXarcrf4dxatgQV4muJCx/cFFc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=manFzp8Bt1uRVZSBAFwz+W3JmzpoCbxt4xV7y0m0DvY87KAiIWeP8NmDtOS50hiKf
-	 m/ylKXgqT1dCHTc7gTc3NZvJ+bDtBaiSOxvZIIY+FYEg7AK4pPso39ww2rJIT+INF1
-	 R9ng10FjwAmnfWlpv0nQA8WwmnIB6WZr3gRjgD8cX+bRV0zVy7lP/Nn3k/6XK3gZAi
-	 +lMQ0GKPrrg+OqcbXQ7bPj0F12FGLAPzKvNBL6qtJ5lE6WwdMnjJYsbHTP245CEP8q
-	 XJicP59jtQML+768OsVk0CpRDaxNpl0CSgUmU3cFOk3omCggANazBudCH2FLOQKJMZ
-	 X6n8n48P3Tvlg==
-Date: Sat, 6 Apr 2024 16:31:55 +0100
+	b=qtR9QAY1JXq6fhIlfvdEkVE/7MG3waliLEaScKgd5DOMhCU8VLLPqN1qToUl5k27g
+	 QRRGLU441wYKZR80Avbi0cDAno3NarLeXbRoyPTRHrx1FGn6JmmkV/AJ6aHsxiQdCC
+	 4ZnsiLnDu0x+fcGTIrGN/lmUMmOUi8vpKQfsLaM0vF36j2GVfFyV1jlTK6xKXZMwqC
+	 5tlS5FuRUV2+bnKNpHfn8iWyREwnCCKLGEvdkn+e++O8ta4TMYwG9t0FozlUgGzLT5
+	 SOQ20FKCllzrkGpkbrnItlsY6VNXUcZpo/ezjf8rUY4Y2G4r/T2k7rCr5GmCOf+QvI
+	 YyfSp7NaJSztg==
+Date: Sat, 6 Apr 2024 16:39:28 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Arnd Bergmann <arnd@kernel.org>, linux-kernel@vger.kernel.org,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Arnd Bergmann <arnd@arndb.de>,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH 16/34] iio: ad5755: hook up of_device_id lookup to
- platform driver
-Message-ID: <20240406163155.799f515a@jic23-huawei>
-In-Reply-To: <e9aefdcd-5ee7-4b19-847e-5fb3d95cf46c@linaro.org>
-References: <20240403080702.3509288-1-arnd@kernel.org>
-	<20240403080702.3509288-17-arnd@kernel.org>
-	<e9aefdcd-5ee7-4b19-847e-5fb3d95cf46c@linaro.org>
+To: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Cc: <linux-kernel@vger.kernel.org>, <nuno.sa@analog.com>,
+ <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH 1/1] iio:imu: adis16475: Fix sync mode setting
+Message-ID: <20240406163928.1ea36f04@jic23-huawei>
+In-Reply-To: <20240403111357.1074511-2-ramona.gradinariu@analog.com>
+References: <20240403111357.1074511-1-ramona.gradinariu@analog.com>
+	<20240403111357.1074511-2-ramona.gradinariu@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,61 +61,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 3 Apr 2024 11:55:06 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+On Wed, 3 Apr 2024 14:13:57 +0300
+Ramona Gradinariu <ramona.gradinariu@analog.com> wrote:
 
-> On 03/04/2024 10:06, Arnd Bergmann wrote:
-> > From: Arnd Bergmann <arnd@arndb.de>
-> > 
-> > When the driver is built-in, 'make W=1' warns about an unused
-> > ID table:
-> > 
-> > drivers/iio/dac/ad5755.c:866:34: error: 'ad5755_of_match' defined but not used [-Werror=unused-const-variable=]
-> >   866 | static const struct of_device_id ad5755_of_match[] = {
-> > 
-> > While the data is duplicated in the spi_device_id, it's common
-> > to use the actual OF compatible strings in the driver.
-> > 
-> > Since there are no in-tree users of plain platform devices, the
-> > spi_device_id table could actually be dropped entirely with this.
-> > 
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > ---
-> >  drivers/iio/dac/ad5755.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> > 
-> > diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
-> > index 404865e35460..5c1e7f428c25 100644
-> > --- a/drivers/iio/dac/ad5755.c
-> > +++ b/drivers/iio/dac/ad5755.c
-> > @@ -876,6 +876,7 @@ MODULE_DEVICE_TABLE(of, ad5755_of_match);
-> >  static struct spi_driver ad5755_driver = {
-> >  	.driver = {
-> >  		.name = "ad5755",
-> > +		.of_match_table = ad5755_of_match,  
+> Fix sync mode setting by applying the necessary shift bits.
 > 
-> I was working on this as well and have a bit bigger solution, following
-> Jonathan's preference (I think):
+> Fixes: fff7352bf7a3 ("iio: imu: Add support for adis16475")
+> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> ---
+>  drivers/iio/imu/adis16475.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> https://lore.kernel.org/all/20240226192555.14aa178e@jic23-huawei/
-> 
-> I need to send v3, somehow I missed his comments.
-> 
-> Jonathan,
-> Do you want me to still work on this according to your comments (which I
-> missed, I am sorry).
+> diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
+> index 01f55cc902fa..bd30c3469d9a 100644
+> --- a/drivers/iio/imu/adis16475.c
+> +++ b/drivers/iio/imu/adis16475.c
+> @@ -1351,7 +1351,8 @@ static int adis16475_config_sync_mode(struct adis16475 *st)
+>  	 * in chip_info.
+>  	 */
+>  	ret = __adis_update_bits(&st->adis, ADIS16475_REG_MSG_CTRL,
+> -				 ADIS16475_SYNC_MODE_MASK, sync->sync_mode);
+> +				 ADIS16475_SYNC_MODE_MASK,
+> +				 ADIS16475_SYNC_MODE(sync->sync_mode));
+As per the build bots, this is triggering a check on the size the last variable.
+See definition of adis_update_bits()
+There is even a comment in there to 'beware' of what you hit here.
 
-No problem on missing the reply! (I'd forgotten all about this!)
-I would prefer that solution to this one that relies on the two
-tables having equivalent entries.  So I'll not pick up this patch.
+Easiest is probably to force that with 
+ (u16)ADIS16475_SYNC_MODE(sync->sync_mode));
+or a local variable.
 
-Thanks,
 
-Jonathan
-
-> 
-> Best regards,
-> Krzysztof
-> 
+>  	if (ret)
+>  		return ret;
+>  
 
 

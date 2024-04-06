@@ -1,119 +1,82 @@
-Return-Path: <linux-iio+bounces-4128-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4129-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3F0D89AC8C
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 19:47:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D95389ACA2
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 20:35:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 500A31F21A97
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:47:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1160B22510
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 18:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467AA446A9;
-	Sat,  6 Apr 2024 17:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77F13E49E;
+	Sat,  6 Apr 2024 18:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="OUY6OY7F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EwwkuCxw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E806340BE6;
-	Sat,  6 Apr 2024 17:47:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689BF1E86E;
+	Sat,  6 Apr 2024 18:35:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712425645; cv=none; b=HOnD7hLhMimtptGTjPDBXjCW/HC5KqFYI+ET4oFChrSEO54bkOgt811HZp4US9x8LZv8PHI8gcR9Agi8/ROBQgYBXv2xnFyxVylW+OJLMwdeRLEILnniFsYorm6UcB/xnXkdYS+gLjtMj9doGsh9oKLlcw51lTkEzMJrI9SP3GI=
+	t=1712428515; cv=none; b=pCkkMSmEXWtJh5Xrk2ZQBI/4ALTGFBL97/BQJxCBTOQvof19Bi6XQV2vt436FMwB2MHEqaFAq368K7Ty3c0EcAvECt7wZvlWBc+vlDrAvscgWQJruKZSq+yUy3sYuYC56iXTh3nHtSw9MusD3SsGngCrpNuqPrxz17y1ZdAQ9So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712425645; c=relaxed/simple;
-	bh=1TbzBF6TZ7jowuvFuef763KmaAKfAp+fdsyr87ylRCw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TxVDRxVToxRU1pXD+egYrH19aA/kCPbocgLvheXW32Tu+s9Y6YXfBoDzAyyneyGg6v6jmt74jIOd+z/UtDzMVKwLLBp08I1nxNS+0712M9gL3kmRwabUZdAYbsrW8KZAzb7Y7KQ3ylCH/gqq13OYVVuvpyAJ3BGHqwUCOi8bxmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=OUY6OY7F; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1712425641; bh=1TbzBF6TZ7jowuvFuef763KmaAKfAp+fdsyr87ylRCw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=OUY6OY7Frgh4YJTlpMVYJVHU7kPr3lSRxipzfVFrvSlT15eBgJhpbywmpcJzb7wgB
-	 5quYEZKpVZnYFBTdqd1kA71iEjLMY0qLaPztl+EPM0peDRAEUamMuoA5EPYzsYVwcz
-	 +QJrYGKd2Ladfy40cdK/dxHTgMlXBhoLZdXutvj4=
-From: Luca Weiss <luca@z3ntu.xyz>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Documentation: ABI: document in_temp_input file
-Date: Sat, 06 Apr 2024 19:47:18 +0200
-Message-ID: <2850305.mvXUDI8C0e@g550jk>
-In-Reply-To: <20240406174513.13b4e9e4@jic23-huawei>
-References:
- <20240406-in_temp_input-v1-1-a1744a4a49e3@z3ntu.xyz>
- <20240406174513.13b4e9e4@jic23-huawei>
+	s=arc-20240116; t=1712428515; c=relaxed/simple;
+	bh=JJadtLGGQU8Da7vaVgG5DqXtyVsPFDQjEHLVDvlD7dI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hu6PIVTEa/iZ5YaEWDTbBsFWfItJn4oAzVVYFSIZwa6nXn73aX0HXd6RdY1aD74cBAp040RY+ekt1RDxttwOyUZKIi+Zk2f6I2SZWBJWdTp8N2u6ihp6nHf6YUtX4XHIalC2VFEzepI8kWQyCeo5O1zOUz6DhI9+/Fw7Ntya+YU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EwwkuCxw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EE9C433C7;
+	Sat,  6 Apr 2024 18:35:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1712428514;
+	bh=JJadtLGGQU8Da7vaVgG5DqXtyVsPFDQjEHLVDvlD7dI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EwwkuCxw0LPpMhXloIykbX0iRg9kDG2/A+sszXhH/h/arXdpLmXgM5lzqhWBb1FEi
+	 wRnXxP+Ic1pGkQtK3KwMjEURdpMN8q8gGmDo5UjpTmeYWKDGERg/1NusTO7GaoJjiW
+	 +IY2ROGO3v8hK+w8vrVVURIo+WEyzBYKXJRRIHJL2ixxEd7yRGiuWRmWuxVgXI5PS8
+	 ZPT9DjnbCD4uFuHe2WWgDc5sMqOIHDPMI+zWcoATln5hdDHtAjw/E9yjJqOrUHdC4W
+	 3iJlF/YbZ1/jH+nR6Dyl/1732DqpnGN9Ao/AjpZQsww8PIxQld1KAT47ZarOZT9VS0
+	 x/K/8NzKuEFZQ==
+Date: Sat, 6 Apr 2024 20:35:07 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: Petr Mladek <pmladek@suse.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Olivier Moysan <olivier.moysan@foss.st.com>, 
+	Jyoti Bhayana <jbhayana@google.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Chris Down <chris@chrisdown.name>, John Ogness <john.ogness@linutronix.de>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/4] dev_printk: add new dev_errp_probe() helper
+Message-ID: <42sw4ugekugyqzjylsci6tvw5zfxlwz6ypnetnau6dyqnrqfiq@5jde2w4etpfh>
+References: <20240404-dev-add_dev_errp_probe-v1-0-d18e3eb7ec3f@analog.com>
+ <20240404-dev-add_dev_errp_probe-v1-1-d18e3eb7ec3f@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240404-dev-add_dev_errp_probe-v1-1-d18e3eb7ec3f@analog.com>
 
-On Samstag, 6. April 2024 18:45:21 CEST Jonathan Cameron wrote:
-> On Sat, 06 Apr 2024 17:31:04 +0200
-> Luca Weiss <luca@z3ntu.xyz> wrote:
-> 
-> > For example the BMP280 barometric pressure sensor on Qualcomm
-> > MSM8974-based Nexus 5 smartphone exposes such file in sysfs.
-> > Document it.
-> > 
-> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-> 
-> Hi Luca,
-> 
-> Applied with a note added on fixing the line above to not reuse X.
-> A good additional thing but needs mentioning in the commit message.
+Hi Nuno,
 
-Good point! I wrote the patch in Feb 2021 without any description so
-I had to retroactively make something up ;)
+...
 
-Thanks for amending and applying!
+> +/* Simple helper for dev_err_probe() when ERR_PTR() is to be returned. */
+> +#define dev_errp_probe(dev, ___err, fmt, ...)	({		\
+> +	ERR_PTR(dev_err_probe(dev, ___err, fmt, ##__VA_ARGS__));	\
+> +})
 
-Regards
-Luca
+I have a whole series adding a set of error oriente printk's. But
+for the time being this looks OK.
 
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> > ---
-> >  Documentation/ABI/testing/sysfs-bus-iio | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> > index 2e6d5ebfd3c7..7cee78ad4108 100644
-> > --- a/Documentation/ABI/testing/sysfs-bus-iio
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> > @@ -243,7 +243,8 @@ Description:
-> >  		less measurements. Units after application of scale and offset
-> >  		are milli degrees Celsius.
-> >  
-> > -What:		/sys/bus/iio/devices/iio:deviceX/in_tempX_input
-> > +What:		/sys/bus/iio/devices/iio:deviceX/in_tempY_input
-> > +What:		/sys/bus/iio/devices/iio:deviceX/in_temp_input
-> >  KernelVersion:	2.6.38
-> >  Contact:	linux-iio@vger.kernel.org
-> >  Description:
-> > 
-> > ---
-> > base-commit: 8568bb2ccc278f344e6ac44af6ed010a90aa88dc
-> > change-id: 20240406-in_temp_input-4505d7fafff8
-> > 
-> > Best regards,
-> 
-> 
+I just don't like the name, the 'p' is an important detail, but
+a bit hidden... how about dev_err_ptr_probe(...)?
 
-
-
-
+Andi
 

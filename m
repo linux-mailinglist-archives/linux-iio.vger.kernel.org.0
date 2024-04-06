@@ -1,57 +1,64 @@
-Return-Path: <linux-iio+bounces-4120-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4121-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8EAF89ABCE
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC56D89ABE8
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 18:07:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8876A1F2197B
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 15:53:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C45E1F2177D
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 16:07:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB5EE3BBC5;
-	Sat,  6 Apr 2024 15:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93DF3BBF0;
+	Sat,  6 Apr 2024 16:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTgRRDQ0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mQmIhjkS"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671853B18D;
-	Sat,  6 Apr 2024 15:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C9939FC5;
+	Sat,  6 Apr 2024 16:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712418806; cv=none; b=uj85MfuxcScP/kdVYa8p3CE3PdtOm4qAizdjn2n9ZnERneI2i4/0fB6FDc5jCVTdlp+SwkYcQJnJBEannwOSUUc2/FP4Z2pjzSAHLP5A54ZpMuGbGo6meibQkaa82/zw0pQszJoQrAGDyvCq0IQ1SBJktKHNZcvvar+4u2wlrsY=
+	t=1712419650; cv=none; b=B+l8yPM/XleGZpqBFxT/0VWUF0FB6PzwHP9G3AW9V/9gyBTmgRTn1oMyNVlOoyEFtTEvu+J41x/jqkacoh4kTJwxMcEwtMcnCct8mjHF27wQkXrIXVUC1QZZUoCVfAmzTK+D+UHp98zfB4rE9+GTSZEQkZuiF3ESMnL1GfdcpC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712418806; c=relaxed/simple;
-	bh=cA3GkqTWw5E8y/RoN2cAyWjMv+WvEeEnY27Bkl1E75w=;
+	s=arc-20240116; t=1712419650; c=relaxed/simple;
+	bh=zVT1kTFyJpggrN2Vq9amRM/0R/MdFrOjEQnNLK1sYHc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=anMsgzBQiXkvICh34Jodn055XvBseGr1HpdXL5DQ83pUL751EZW5Vv5axqpzBUqK+ubb7ClDbPaTuS3GqYLRpZu7VLzCwJUe3eQPRlqn3XncPC9rfTMbuRTq5aE88MGme9ZpxWFFDYRURNyh9xckTy9TaQxeQV7Y9bVHbvCiflc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTgRRDQ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ABB0C433F1;
-	Sat,  6 Apr 2024 15:53:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GwGjTxWL49jh/RerOiRAHP+uOo+OeH9Zoln9WtMzeFV0H3EOBcRUAhNMNxneEB01UgEzD5BmqDX+bir62E74YUjKFt4vPJovGSC0DvClBEczFpDVT76jaPQe4UH3wMCcZRLpJFu1IpA8tt/EtUYrhd2gWWiJJpgo2O6a/wYgRwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mQmIhjkS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8779FC433C7;
+	Sat,  6 Apr 2024 16:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712418806;
-	bh=cA3GkqTWw5E8y/RoN2cAyWjMv+WvEeEnY27Bkl1E75w=;
+	s=k20201202; t=1712419649;
+	bh=zVT1kTFyJpggrN2Vq9amRM/0R/MdFrOjEQnNLK1sYHc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HTgRRDQ0yraghY/nHAhMzHQ7zi+KZB2WKHEg5AG+nr+lz0RA7EVU1urfNHXEQI19K
-	 QLBxR7/CcOoVIns5OaHcqsbAdS0B4NAXCNZ8wVjjo1aEGGjAWUpisOOqIWfclKCXMj
-	 VPYE/vgftuHA4olpkgqGzozUTmaHmGDvDFsQodLO0NBSOO5f59c57IV2eL4plgjehG
-	 8fGQ9La0YazjM+11omEoySrQjUaZY1JP4QMJ8rJFPI3weh/D5gvQ2Z4GoFxGbU0+FJ
-	 dU2UPjZsdk5ss9FXiVsguY2ZC/NijdvVjmjh4e0Uu/Ji0AMXccK/nQWFfsqMOPm6xG
-	 MHmihy9bzLwLQ==
-Date: Sat, 6 Apr 2024 16:53:14 +0100
+	b=mQmIhjkSlsHCV3tzg2qGznXeY83la3QN1daXmG1AiYQsu/4iqvPj8bWs6JERDHPrq
+	 fG4lFV+O83dxD+X3rsq1xTJ3ufdjd8DzXYgGjXoBnvtYXt1BtKtok8sD1IW3AxU4/G
+	 fasr7sKbGmwKctlBu8255KzOuvVTXz7AwX9vOr7h3PIOcJJxQ++bcs+A3HNbnLUAjn
+	 IfMBDFYIIrFIr1UB+Cv2z/31d/LOOwe5968mUcIlIoNAcwGt5n20ZHufYnOXerZS/p
+	 zDyfJCy2JkJ7y5kuoUiqIpwXGgUCeVquDGLZ8pUeRUOvoX2qJYlARseHvyQI8zXUOY
+	 ULCUurC5EBPqw==
+Date: Sat, 6 Apr 2024 17:07:17 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Dan Carpenter
- <dan.carpenter@linaro.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: light: apds9306: Improve
- apds9306_write_event_config()
-Message-ID: <20240406165314.1b3403df@jic23-huawei>
-In-Reply-To: <20240405104641.29478-1-subhajit.ghosh@tweaklogic.com>
-References: <20240405104641.29478-1-subhajit.ghosh@tweaklogic.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Nuno Sa
+ <nuno.sa@analog.com>, Petr Mladek <pmladek@suse.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Olivier Moysan <olivier.moysan@foss.st.com>, Jyoti
+ Bhayana <jbhayana@google.com>, Chris Down <chris@chrisdown.name>, John
+ Ogness <john.ogness@linutronix.de>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH 3/4] iio: backend: make use of dev_errp_probe()
+Message-ID: <20240406170717.31ab7e47@jic23-huawei>
+In-Reply-To: <Zg7DWQtY6SP9E_1m@smile.fi.intel.com>
+References: <20240404-dev-add_dev_errp_probe-v1-0-d18e3eb7ec3f@analog.com>
+	<20240404-dev-add_dev_errp_probe-v1-3-d18e3eb7ec3f@analog.com>
+	<Zg6bsS3WMvp-nY3S@smile.fi.intel.com>
+	<9f91388faee750e16021f2c0544e7a158a16202b.camel@gmail.com>
+	<Zg7DWQtY6SP9E_1m@smile.fi.intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,113 +66,68 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri,  5 Apr 2024 21:16:41 +1030
-Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
+On Thu, 4 Apr 2024 18:12:25 +0300
+Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
 
-> Simplify event configuration flow.
-> 
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Link: https://lore.kernel.org/all/20240310124237.52fa8a56@jic23-huawei/
-> Signed-off-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
-LGTM
-Applied to the togreg branch of iio.git and pushed out initially as testing
-to let 0-day see if we missed anything.
+> On Thu, Apr 04, 2024 at 04:58:27PM +0200, Nuno S=C3=A1 wrote:
+> > On Thu, 2024-04-04 at 15:23 +0300, Andy Shevchenko wrote: =20
+> > > On Thu, Apr 04, 2024 at 01:06:25PM +0200, Nuno Sa wrote: =20
+> > > > Using dev_errp_probe() to simplify the code. =20
+>=20
+> ...
+>=20
+> > > > +	if (IS_ERR(fwnode))
+> > > > +		return dev_errp_probe(dev, PTR_ERR(fwnode),
+> > > > +				=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Cannot get Firmware reference\=
+n"); =20
+> > >=20
+> > > ERR_CAST() seems quite good candidate to have here.
+> > >=20
+> > > 		return dev_errp_probe(dev, fwnode, "Cannot get Firmware
+> > > reference\n");
+> > >=20
+> > > (Assuming dev_errp_probe() magically understands that, note you may h=
+ave it as
+> > > =C2=A0a macro and distinguish parameter type with _Generic() or so an=
+d behave
+> > > =C2=A0differently: ERR_PTR() vs. ERR_CAST(), see acpi_dev_hid_uid_mat=
+ch()
+> > > =C2=A0implementation, but also keep in mind that it doesn't distingui=
+sh NULL/0,
+> > > there
+> > > =C2=A0is a patch available in the mailing list to fix that, though.) =
+=20
+> >=20
+> > Do we care that much for going with that trouble? =20
+>=20
+> I don't think we do. We are not supposed to be called with ret =3D=3D 0/N=
+ULL.
+> That's why I pointed out to the current version.
+>=20
+> > I understand like this we go
+> > PTR_ERR() to then comeback to ERR_PTR() but this for probe() which is n=
+ot a
+> > fastpath. So perhaps we could just keep it simple? =20
+>=20
+> It's not about performance, it's about readability. See the difference be=
+tween
+> yours and mine.
+>=20
+
+You are suggesting making it transparently take an error ptr or an integer?
+Whilst clever, I'm not seeing that as a good idea for readability / reviewa=
+bility.
+I expect something that looks like a function to take the same parameters (=
+other vargs)
+always.  _Generic messes with that.
+
+Maybe I just don't like to learn new things!  If consensus comes down in fa=
+vour
+of _Generic trickery then I'll get used to it eventually.
 
 Jonathan
-
-> ---
->  drivers/iio/light/apds9306.c | 48 ++++++++++++++++++++----------------
->  1 file changed, 27 insertions(+), 21 deletions(-)
-> 
-> diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
-> index 4d8490602cd7..465b6957682b 100644
-> --- a/drivers/iio/light/apds9306.c
-> +++ b/drivers/iio/light/apds9306.c
-> @@ -1075,14 +1075,16 @@ static int apds9306_write_event_config(struct iio_dev *indio_dev,
->  {
->  	struct apds9306_data *data = iio_priv(indio_dev);
->  	struct apds9306_regfields *rf = &data->rf;
-> -	int ret, val;
-> -
-> -	state = !!state;
-> +	int ret, enabled;
->  
->  	switch (type) {
->  	case IIO_EV_TYPE_THRESH: {
->  		guard(mutex)(&data->mutex);
->  
-> +		ret = regmap_field_read(rf->int_en, &enabled);
-> +		if (ret)
-> +			return ret;
-> +
->  		/*
->  		 * If interrupt is enabled, the channel is set before enabling
->  		 * the interrupt. In case of disable, no need to switch
-> @@ -1091,38 +1093,42 @@ static int apds9306_write_event_config(struct iio_dev *indio_dev,
->  		 */
->  		if (state) {
->  			if (chan->type == IIO_LIGHT)
-> -				val = 1;
-> +				ret = regmap_field_write(rf->int_src, 1);
->  			else if (chan->type == IIO_INTENSITY)
-> -				val = 0;
-> +				ret = regmap_field_write(rf->int_src, 0);
->  			else
->  				return -EINVAL;
->  
-> -			ret = regmap_field_write(rf->int_src, val);
->  			if (ret)
->  				return ret;
-> -		}
->  
-> -		ret = regmap_field_read(rf->int_en, &val);
-> -		if (ret)
-> -			return ret;
-> -
-> -		if (val == state)
-> -			return 0;
-> +			if (enabled)
-> +				return 0;
->  
-> -		ret = regmap_field_write(rf->int_en, state);
-> -		if (ret)
-> -			return ret;
-> +			ret = regmap_field_write(rf->int_en, 1);
-> +			if (ret)
-> +				return ret;
->  
-> -		if (state)
->  			return pm_runtime_resume_and_get(data->dev);
-> +		} else {
-> +			if (!enabled)
-> +				return 0;
->  
-> -		pm_runtime_mark_last_busy(data->dev);
-> -		pm_runtime_put_autosuspend(data->dev);
-> +			ret = regmap_field_write(rf->int_en, 0);
-> +			if (ret)
-> +				return ret;
->  
-> -		return 0;
-> +			pm_runtime_mark_last_busy(data->dev);
-> +			pm_runtime_put_autosuspend(data->dev);
-> +
-> +			return 0;
-> +		}
->  	}
->  	case IIO_EV_TYPE_THRESH_ADAPTIVE:
-> -		return regmap_field_write(rf->int_thresh_var_en, state);
-> +		if (state)
-> +			return regmap_field_write(rf->int_thresh_var_en, 1);
-> +		else
-> +			return regmap_field_write(rf->int_thresh_var_en, 0);
->  	default:
->  		return -EINVAL;
->  	}
-> 
-> base-commit: 526f7f17b651c78ead26fea7cea20948c00e47a5
 
 

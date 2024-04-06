@@ -1,68 +1,62 @@
-Return-Path: <linux-iio+bounces-4103-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4104-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CB9B89AA50
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 12:19:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8147089AA53
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 12:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC6CDB218A1
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 10:19:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 829EB1C20E17
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 10:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726F922EED;
-	Sat,  6 Apr 2024 10:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED7422EED;
+	Sat,  6 Apr 2024 10:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AmqaH9D9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aGo6eGx4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3355A2561D
-	for <linux-iio@vger.kernel.org>; Sat,  6 Apr 2024 10:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0772C182
+	for <linux-iio@vger.kernel.org>; Sat,  6 Apr 2024 10:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712398762; cv=none; b=GH3XVF6kBBdnO4huxqtDs7ftUia8jOQhVot4HOwrRLYOBct1m16nvB4brjX3b/BUg4jkRn0ZkKXLxAi8UbwXs2A7BMw6gTlCU/9jqpsEhOoP/WbhxJCxFObt5NytAj+5EFdslRwAv2cso+C4h4jewxXvLVxaHqb2kO9z1uR5j/Q=
+	t=1712399278; cv=none; b=YWohoiFRGvmzVl6vEcT3OHdL9mMSIcMWR57D4gC0PqqSABl3cZS9KEGRctvfZwOqRFCfcoGOuXObvL85qoBVSFy2nd05CHiUNZ009MNshopN8W0wG2Y8QD7zd77tNrQlo/uFCW+izW5P14iNYQLka7omkfILEhfg/J74v5IuXQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712398762; c=relaxed/simple;
-	bh=JRi28ltzSUInBPgwS8Er6xqHi9CJJvTWSiLywUfLjmg=;
+	s=arc-20240116; t=1712399278; c=relaxed/simple;
+	bh=55oC2znzUpXZqVs1SGzpYux6yxLYhgx79gP0AwFlGDo=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ubOMnb6HLhIVS5d+WJ7E2+RH1YT4Fdc7SHc+HvaXKs6wiXzSfcr1tIoD97V+x4yHi3GlH1eI9YQo/yAqq4d7TbfCxKeeN0b9vtnTP5b2Ey96KdTUOQac8CowdS76RUqh3i7HmTZ/DjJzyWN1Stwwgc9QPi9PEycjFIdnhtVASzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AmqaH9D9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B323C433F1;
-	Sat,  6 Apr 2024 10:19:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hKfYof5IBMjMjqIHYbtimItQ2W2Yq0ehyXTNxYGmnsyxBeeKBTYa3lpH6VQXy3jvaVp49PpKbDe2TNN2mlziZ/4aAitbaNVeoR6eDbH3krQxW8J26VyMILQvTAEoKrQdpJJByYvjrBiHD/rQGw2EVm0sK8l1j7lr9rjpUhU0/Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aGo6eGx4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C1AC433F1;
+	Sat,  6 Apr 2024 10:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712398761;
-	bh=JRi28ltzSUInBPgwS8Er6xqHi9CJJvTWSiLywUfLjmg=;
+	s=k20201202; t=1712399277;
+	bh=55oC2znzUpXZqVs1SGzpYux6yxLYhgx79gP0AwFlGDo=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AmqaH9D90ozrT6KIyGVTeQ4P6HtvJafRpOUEnSraE3pSOepiYycCo+iDtJL/Y1Ui6
-	 viWxKcK9efbVeCWbDQDisZH3Gl6mdVVCgerJFRelbGidtMIlTMYro5qJ1O1tY1Bt2U
-	 H6Dg3A4MTYbuq29nVE+xey6vtjrtdKYoFgvR4PC7U8+hf+gYrVsW4wjjNJA86jwOF+
-	 jyN4iT+6YGK3rHp+4OkhA8HOInQQxf1oVLbHvBWkfpR3MfKcnfzOGhOIWciCQiVMdg
-	 pZyv22IDsrM5T+8IBu3Cj0E6yirQqsJy6yjD5ClV0IEML2rm60EN/3m3mX459veY8m
-	 JcPrDPn806YZw==
-Date: Sat, 6 Apr 2024 11:19:05 +0100
+	b=aGo6eGx4iYrX4Q/eH8xp+hOGK+2txBjb9vyIti0FDrVwfXtIWPhDn0jNg7Ky0EWHX
+	 1IIEJXzOCssS3dMkRuFOvRTpxqGMJEia7TmQnm2Bdc0XDzI0mNCehIbhi8SRy3+dnp
+	 KpFSol/VdwW0frktKkLyKsPonO6zuYz6gwWCedsCaM7IZDfoY6mg9r1pq1orpyTGlL
+	 EIX5Vrn5Yl/4EDzmY2DLjLkzsYl4f8ATDlKgD2J4AbiqinW1OHRz5WEGrayG9gRRff
+	 AP9QOceECAo2ihhCXWJWBIJEJRVcAw+Z9q1TxlKlvDtdqKUwRUYKE7zUwvi3eQsMLj
+	 mDU12egYk55eA==
+Date: Sat, 6 Apr 2024 11:27:44 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?=  <nuno.sa@analog.com>,
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Cosmin Tanislav
- <cosmin.tanislav@analog.com>, Mihail Chindris <mihail.chindris@analog.com>,
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, Tomislav Denis
- <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>, Olivier Moysan
- <olivier.moysan@foss.st.com>, Fabrice Gasnier
- <fabrice.gasnier@foss.st.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
- <dmitry.baryshkov@linaro.org>, Marijn Suijten
- <marijn.suijten@somainline.org>, Marius Cristea
- <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v6 8/8] iio: dac: ad5770r: Use
- device_for_each_child_node_scoped()
-Message-ID: <20240406111905.5bbe983f@jic23-huawei>
-In-Reply-To: <e479cbeca4b78fb5ccf901a833ba1734735b4993.camel@gmail.com>
-References: <20240330185305.1319844-1-jic23@kernel.org>
-	<20240330185305.1319844-9-jic23@kernel.org>
-	<e479cbeca4b78fb5ccf901a833ba1734735b4993.camel@gmail.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>, <linux-iio@vger.kernel.org>,
+ "Marius Cristea" <marius.cristea@microchip.com>, Mihail Chindris
+ <mihail.chindris@analog.com>, Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+ Kim Seer Paller <kimseer.paller@analog.com>, Dumitru Ceclan
+ <mitrutzceclan@gmail.com>, Cosmin Tanislav <demonsingur@gmail.com>, Nuno Sa
+ <nuno.sa@analog.com>
+Subject: Re: [PATCH 1/8] iio: adc: ab8500-gpadc: Allow COMPILE_TEST builds
+Message-ID: <20240406112744.64f53089@jic23-huawei>
+In-Reply-To: <20240405113622.00000896@Huawei.com>
+References: <20240330190849.1321065-1-jic23@kernel.org>
+	<20240330190849.1321065-2-jic23@kernel.org>
+	<CACRpkdZzOi5vv6yxqheqGZAZYBLTEL-uB=dt-i6ByDEhF6H0Kw@mail.gmail.com>
+	<20240405113622.00000896@Huawei.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -73,21 +67,39 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 04 Apr 2024 11:11:11 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Fri, 5 Apr 2024 11:36:22 +0100
+Jonathan Cameron <Jonathan.Cameron@Huawei.com> wrote:
 
-> On Sat, 2024-03-30 at 18:53 +0000, Jonathan Cameron wrote:
-> > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> >=20
-> > Switching to the _scoped() version removes the need for manual
-> > calling of fwnode_handle_put() in the paths where the code
-> > exits the loop early. In this case that's all in error paths.
-> >=20
-> > Cc: Nuno S=C3=A1 <nuno.sa@analog.com>
-> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > --- =20
+> On Thu, 4 Apr 2024 13:36:15 +0200
+> Linus Walleij <linus.walleij@linaro.org> wrote:
 >=20
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > On Sat, Mar 30, 2024 at 8:09=E2=80=AFPM Jonathan Cameron <jic23@kernel.=
+org> wrote:
+> >  =20
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > >
+> > > The dependencies on various ab8500 components prevent this driver
+> > > being useful but they don't seem to prevent it being built.
+> > > Improve build coverage by allowing COMPILE_TEST.
+> > >
+> > > Cc: Linus Walleij <linus.walleij@linaro.org>
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>   =20
+> >=20
+> > ...but I think AB8500_CORE is a hard requirement because
+> > <linux/mfd/abx500.h> does not provide register accessor stubs?
+> >  =20
+> hmm. I clearly didn't test enough.  Ah well, I'll drop this one.
+> > Yours,
+> > Linus Walleij =20
+
+Tested again, nope, AB8500_CORE isn't needed as far as I can tell.
+What register accessor stubs were you referring to? There are some calls fo=
+r debug dumps
+in that header, but those aren't used by the ADC driver.
+
+Jonathan
+
+
 >=20
-Applied.
+
 

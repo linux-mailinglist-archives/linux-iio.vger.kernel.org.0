@@ -1,57 +1,61 @@
-Return-Path: <linux-iio+bounces-4122-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4123-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51C7E89ABF9
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 18:17:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F00B89AC00
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 18:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83BD11C20A6E
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 16:17:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3CB11F21C10
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 16:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D173C087;
-	Sat,  6 Apr 2024 16:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D09303BBF5;
+	Sat,  6 Apr 2024 16:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SZrIJ05H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HHGANBPA"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCAA2D792;
-	Sat,  6 Apr 2024 16:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEA63FB92;
+	Sat,  6 Apr 2024 16:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712420262; cv=none; b=Chg3fXJnHSBbk3cjO9iFmyT0VCUTBFz1TN0XgR3FA1cAmKWE2Os1/NAmuDmgvYH3fwAgPy4GxhIDyTv2Zg1TJnWsKPuDQGIzAUGZDlGNeKOAf9IvHX8DOTODd53mqHRMUwYIN9sur7nznJUouyyO4Z35eQs9aWowOBuPrQQJH3I=
+	t=1712420365; cv=none; b=SX1zcxF1TTghClWbooY1qcKecw6FjjW93s+tVNI7MlFidXJQ766QEqgZI8iviqB+QtI41+J7oBPBNCwBIpoGm1fTvW1MUNAgtAuVnhQaj05SaklSYhRXmBU3CeFJSeW+3f5AQ5J7ycf9r8Wcx2CnmzHhHPPPzgm2JhD1HH358Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712420262; c=relaxed/simple;
-	bh=jPQwg+meiOCUrY3cRR9RHhS/GVu17MEx5UyV6Tze9gs=;
+	s=arc-20240116; t=1712420365; c=relaxed/simple;
+	bh=hKjZzBjVc1EV183isG7l6YRJCa161WhqgGhK2XOXCD0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c2/8VPYEWfFTjAnjIW4YUxDJnFlPjaWRg82aI9vsONo+oeE4/YYXbFzqxfSrXknpWLMoDGf8q4BpPmJ3uGH3+V3DOjjHedCfbMkKVlMxWxuvD6T1SxkcFhUuKe7sttZ5RfNQGCXBVJuc8sn9JshOKCMa/uwow54u7zqMuoJwWeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SZrIJ05H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B21C433C7;
-	Sat,  6 Apr 2024 16:17:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ub4drYtSnt8KK8ZO2WyX8eZtUUa2uavxvB8h4rY/hTv6lTmwKWHEoxR+DAdfPsclvVhLKzN+8M5FvL3NJdQkQ7v0CpgG3QtoixhSwnX7Pa4F1NyLTxmwTWBKTrmQRYQnVMOmioKQDU2MWCI8obAT1fMOD/nqt6Nz3iTWdxdwi8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HHGANBPA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6038C433F1;
+	Sat,  6 Apr 2024 16:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712420261;
-	bh=jPQwg+meiOCUrY3cRR9RHhS/GVu17MEx5UyV6Tze9gs=;
+	s=k20201202; t=1712420365;
+	bh=hKjZzBjVc1EV183isG7l6YRJCa161WhqgGhK2XOXCD0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SZrIJ05HvJ+5Csyn7NwIImLjil89NscHRzJ0eMFYEvWXY6Q0+2db3z92iazCRiRSu
-	 H38Tp6Q3FlTuSIgwsONzWGh/zHDXyRdEKbYJrPXza+jMRLZwDzfB80IGTx/vbGCjCi
-	 mm8NQIKjBB7cziAvZovBch9B5sJ/zDxIVnxuAITm8QQhXdlOJLT9PseN4P+PtDo02j
-	 XtS2HfCKcuj9ZEWd3uPtZrtBMvUqZJ82b1oIDRwk7+rzJX2qyVMiLS7Fo07f1yMpZV
-	 ijX2E3Bk7ukfyFoVUb82cR+alVzhDhHMoHPxrL9reTjkpVS+3hD6wnJpaOXU/SBWsy
-	 vAR//L07Dz2dw==
-Date: Sat, 6 Apr 2024 17:17:28 +0100
+	b=HHGANBPAyYiI03069rYTej43PliFKZaXWW6TKMvO1BrGrKJqa/4bORM8WH8UKGma0
+	 u+xLzm5kASNGKrDYObvi3HusL3oqxFzIjf7yIp04/7fK6nK6sFVr5DDIMWRvlSbp+r
+	 XetlyvhhlM+rpWRLONaDyvAG3ajjZvx5gwmpTnbfXt5uCDY9yBds4Em9G24Q7QNdGo
+	 ike2jGcC2kPGfR1rlUqDbF0TCImG7S/Sm4c6JpxlGAXc5AUwQ7Mgjo7avajBrzozHV
+	 qjkPQtoNsQojxRPlYDy5Hcz+KpSDle2tzwjI1Mm29C7YsrtOEbzBcAb765DeM41UFX
+	 C+rwzEzgSuxdQ==
+Date: Sat, 6 Apr 2024 17:19:09 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Markus Burri <markus.burri@mt.com>
-Cc: linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- linux-iio@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH v1] iio: adc: ad_sigma_delta: Clear pending interrupts
- before enable
-Message-ID: <20240406171728.16170b48@jic23-huawei>
-In-Reply-To: <20240404175126.110208-1-markus.burri@mt.com>
-References: <20240404175126.110208-1-markus.burri@mt.com>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Dragos Bogdan
+ <dragos.bogdan@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Olivier Moysan <olivier.moysan@foss.st.com>, "Paul
+ Cercueil" <paul@crapouillou.net>, Alexandru Ardelean
+ <ardeleanalex@gmail.com>
+Subject: Re: [PATCH v2 00/11] iio: dac: support IIO backends on the output
+ direction
+Message-ID: <20240406171909.4419dccd@jic23-huawei>
+In-Reply-To: <20240405-iio-backend-axi-dac-v2-0-293bab7d5552@analog.com>
+References: <20240405-iio-backend-axi-dac-v2-0-293bab7d5552@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,57 +63,133 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu,  4 Apr 2024 19:51:26 +0200
-Markus Burri <markus.burri@mt.com> wrote:
+On Fri, 5 Apr 2024 16:59:58 +0200
+Nuno Sa <nuno.sa@analog.com> wrote:
 
-Hi Markus,
+> Hi Jonathan,
+>=20
+> Here it goes version 2 of the output backend series. The main points in
+> here:
+>  - The refactoring the DMA BUF api for setup. I pretty much like how it
+>    turned out. Note that Paul's patch ("iio: buffer-dmaengine: Support
+>    specifying buffer direction") had to be updated accordingly.
+>  - Introduction of the struct iio_info callback for getting the backend.
+>    I'm not sure about this one as we have no user for it and we may not
+>    have one for sometime. I like how the "default" implementation for
+>    getting the backend turned out and it should cover 99% of the cases. It
+>    will only fail if the iio parent device is not the same device where we
+>    bound the backend.
 
+I've not looked at it yet, but this description makes me think perhaps
+that should be ripped out for now?  We can bring it back if we ever need it.
 
-> For device will enable and disable irq contiously like AD7195,
-> it use DOUT/RDY pin for both SPI transfer and data ready.
-> It will disable irq during SPI transfer, and re-eanble irq after SPI transfer.
-> That may cause irq status bit set to 1 during spi transfer.
-
-Superficially that sounds like it might be an irq driver bug to me...
-Or just possibly an irq chip doing lazy disabling?
-
-> 
-> When the active condition has been detected, the corresponding bit
-> remains set until cleared by software. Status flags are cleared
-> by writing a 1 to the corresponding bit position.
-> 
-> Signed-off-by: Markus Burri <markus.burri@mt.com>
-
-I'll need an appropriate ADI ack for this one.
-
-It seems highly unusual to be calling a generic irqchip related function in a
-driver (there are no other such users).  So this seems unlikely to be
-the right fix for this particular problem.
-
+>  - As mentioned above, we now get the backend from the iio device
+>    matching the IIO parent device with the device used when getting the
+>    backend. This should cover almost all the cases I think. Should be very
+>    unlikely to use a different device in devm_iio_backend_get() and
+>    devm_iio_device_alloc().
+>=20
+> For the bindings, I still did not addressed Rob's point about dma-names.
+> I did reply [1] but still no feedback.
+>=20
+> Anyways, full log:
+>=20
+> v1:
+>  * https://lore.kernel.org/all/20240328-iio-backend-axi-dac-v1-0-afc808b3=
+fde3@analog.com/
+>=20
+> v2:
+>  * Patch 1:
+>   - New patch.
+>=20
+>  * Patch 4:
+>   - Make things consistent with the triggered buffer case.
+>=20
+>  * Patch 6:
+>   - Fixed description as it's an output device;
+>   - Avoid duplicating the "bindings" word in the commit title.
+> =20
+>  * Patch 7:
+>   - Renamed vdd_3_3-supply -> vdd-3p3-supply;
+>   - Added IRQ and vref properties;
+>   - Avoid duplicating the "bindings" word in the commit title.
+>=20
+>  * Patch 8:
+>   - New patch.
+>=20
+>  * Patch 9:
+>   - Fixed some typos in kerneldocs;
+>   - Add iio_backend_from_indio_dev_parent(). Default way of getting backe=
+nds
+>     from IIO devices;
+>   - Explicitly differentiate frontends and backends ext_info in
+>     iio_backend_extend_chan_spec().
+>   - Spell out CW as CONTINUOUS_WAVE;
+>   - Add _hz suffix in set_sample_rate().
+>=20
+>  * Patch 10:
+>   - Rephrase comment in axi_dac_set_sample_rate() when DDS is disabled;
+>   - Use the new iio_dmaengine_buffer_setup_ext() API;
+>   - Passed tone as 0,1 value being 1 second tone.
+>=20
+>  * Patch 11:
+>   - Fixed mixed spaces with tabs in ABI file and dac -> DAC;
+>   - Add COMPILE_TEST to kconfig;
+>   - Dropped operating mode enum. Use defines;
+>   - Add comments for IIO enum operating mode and the value we need to
+>     set on the device;
+>   - Add spaces around {} in the reg_sequence;
+>   - Always use Mu instead of mixture of Mu and MU;
+>   - Don't error out if we do not recognize the part id;
+>   - Make sure to deal with other errors than TIMEOUT in ad9739a_init().
+>=20
+> [1]: https://lore.kernel.org/linux-iio/04e2a0569953792673319f7fcab3fe03e6=
+670c03.camel@gmail.com/
+>=20
 > ---
->  drivers/iio/adc/ad_sigma_delta.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
-> index a602429cdde4..59544c39642a 100644
-> --- a/drivers/iio/adc/ad_sigma_delta.c
-> +++ b/drivers/iio/adc/ad_sigma_delta.c
-> @@ -515,6 +515,10 @@ static irqreturn_t ad_sd_trigger_handler(int irq, void *p)
->  
->  irq_handled:
->  	iio_trigger_notify_done(indio_dev->trig);
-> +	/*
-> +	 * ACK pending interrupts from spi transfer.
-
-Single line comment format would be fine here.
-
-> +	 */
-> +	irq_gc_ack_set_bit(irq_get_irq_data(sigma_delta->spi->irq));
->  	sigma_delta->irq_dis = false;
->  	enable_irq(sigma_delta->spi->irq);
->  
+> Nuno Sa (7):
+>       iio: buffer-dma: add iio_dmaengine_buffer_setup()
+>       dt-bindings: iio: dac: add docs for AXI DAC IP
+>       dt-bindings: iio: dac: add docs for AD9739A
+>       iio: core: add get_iio_backend() callback
+>       iio: backend: add new functionality
+>       iio: dac: add support for AXI DAC IP core
+>       iio: dac: support the ad9739a RF DAC
+>=20
+> Paul Cercueil (4):
+>       iio: buffer-dma: Rename iio_dma_buffer_data_available()
+>       iio: buffer-dma: Enable buffer write support
+>       iio: buffer-dmaengine: Support specifying buffer direction
+>       iio: buffer-dmaengine: Enable write support
+>=20
+>  Documentation/ABI/testing/sysfs-bus-iio-ad9739a    |  19 +
+>  .../devicetree/bindings/iio/dac/adi,ad9739a.yaml   |  94 +++
+>  .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   |  62 ++
+>  MAINTAINERS                                        |  17 +
+>  drivers/iio/adc/adi-axi-adc.c                      |  16 +-
+>  drivers/iio/buffer/industrialio-buffer-dma.c       | 100 +++-
+>  drivers/iio/buffer/industrialio-buffer-dmaengine.c |  83 +--
+>  drivers/iio/dac/Kconfig                            |  37 ++
+>  drivers/iio/dac/Makefile                           |   2 +
+>  drivers/iio/dac/ad9739a.c                          | 454 +++++++++++++++
+>  drivers/iio/dac/adi-axi-dac.c                      | 635 +++++++++++++++=
+++++++
+>  drivers/iio/industrialio-backend.c                 | 179 ++++++
+>  include/linux/iio/backend.h                        |  49 ++
+>  include/linux/iio/buffer-dma.h                     |   4 +-
+>  include/linux/iio/buffer-dmaengine.h               |  24 +-
+>  include/linux/iio/iio.h                            |   2 +
+>  16 files changed, 1698 insertions(+), 79 deletions(-)
+> ---
+> base-commit: 6020ca4de8e5404b20f15a6d9873cd6eb5f6d8d6
+> change-id: 20240405-iio-backend-axi-dac-be99373b036b
+> --
+>=20
+> Thanks!
+> - Nuno S=C3=A1
+>=20
 
 

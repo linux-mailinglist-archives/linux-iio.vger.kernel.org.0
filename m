@@ -1,107 +1,119 @@
-Return-Path: <linux-iio+bounces-4127-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4128-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24CCB89AC17
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 18:45:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3F0D89AC8C
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 19:47:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 513991C208C6
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 16:45:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 500A31F21A97
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3431F3F9D4;
-	Sat,  6 Apr 2024 16:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467AA446A9;
+	Sat,  6 Apr 2024 17:47:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eY2lnDp/"
+	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="OUY6OY7F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B963839D;
-	Sat,  6 Apr 2024 16:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E806340BE6;
+	Sat,  6 Apr 2024 17:47:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712421935; cv=none; b=MUGXx0CpOrWn5JMuzyVp4g5C+fNzkff4oKxXHH7SY9PQrUTtTVa4XSEgyX3nSZD59EzgFCV7nKsZhEJWCZSuUnifTwt/Z/SMTzGRTnEfXrsOOwH58IGiAo5SP0GG/C2mkY8UtQdSJv+2ZvLUh1Se5tIMnbwfwOuhy85yqckJ+jA=
+	t=1712425645; cv=none; b=HOnD7hLhMimtptGTjPDBXjCW/HC5KqFYI+ET4oFChrSEO54bkOgt811HZp4US9x8LZv8PHI8gcR9Agi8/ROBQgYBXv2xnFyxVylW+OJLMwdeRLEILnniFsYorm6UcB/xnXkdYS+gLjtMj9doGsh9oKLlcw51lTkEzMJrI9SP3GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712421935; c=relaxed/simple;
-	bh=Tnp1inQU7Buh6+yx2ER0/mIIwxvWAJA8D3UAlLEh2uc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dfr/wCeNUduxAHOnUjLa13zoiixDMrKbFMx/c3x1ia1ZlTBxNC/5bVwTsSEfYq8A4r+79Xgn09tLiPkct57gtU1RG+YXYnPPymS78WF8/5ivSQr892S96Y37CM/6a1eZFKl+TU7RCjHQmqK8t6tveS9tOMZ+guwzYQ5N1rz6e5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eY2lnDp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AE5DC433C7;
-	Sat,  6 Apr 2024 16:45:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712421934;
-	bh=Tnp1inQU7Buh6+yx2ER0/mIIwxvWAJA8D3UAlLEh2uc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=eY2lnDp/Mbw2PeO85q5zSgscHcXApqQ/elAgRadwl2Zb57xKdzKzQ5eIl5Xp67DyF
-	 sZnsSSVAvsWtiMPzEvGZh3PxVoBbOkt2rP7NodV9EXvDHp/rdYcRp/O3veROdnAsju
-	 o7hqhNTn+kPtEuXZZtBriQ4qgK6hoLbaSHjH7cMyI5zicU9Dmb8hFyGmPW8qrwZyVZ
-	 lMQub1IBE/WU1q779r4ZDE/vFg21NOdPkVELuf5M62JROC2WXG53GjnCDRW8dOYWcq
-	 7JXEqutQTHp40q2ovn3wxX9F1RbKQAKTdUOEti4YuFOslhepjtoGoFuuA1dyPPwqZI
-	 HIU4L7x9S+12g==
-Date: Sat, 6 Apr 2024 17:45:21 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Luca Weiss <luca@z3ntu.xyz>
+	s=arc-20240116; t=1712425645; c=relaxed/simple;
+	bh=1TbzBF6TZ7jowuvFuef763KmaAKfAp+fdsyr87ylRCw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TxVDRxVToxRU1pXD+egYrH19aA/kCPbocgLvheXW32Tu+s9Y6YXfBoDzAyyneyGg6v6jmt74jIOd+z/UtDzMVKwLLBp08I1nxNS+0712M9gL3kmRwabUZdAYbsrW8KZAzb7Y7KQ3ylCH/gqq13OYVVuvpyAJ3BGHqwUCOi8bxmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=OUY6OY7F; arc=none smtp.client-ip=128.199.32.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
+	t=1712425641; bh=1TbzBF6TZ7jowuvFuef763KmaAKfAp+fdsyr87ylRCw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=OUY6OY7Frgh4YJTlpMVYJVHU7kPr3lSRxipzfVFrvSlT15eBgJhpbywmpcJzb7wgB
+	 5quYEZKpVZnYFBTdqd1kA71iEjLMY0qLaPztl+EPM0peDRAEUamMuoA5EPYzsYVwcz
+	 +QJrYGKd2Ladfy40cdK/dxHTgMlXBhoLZdXutvj4=
+From: Luca Weiss <luca@z3ntu.xyz>
+To: Jonathan Cameron <jic23@kernel.org>
 Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
  Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] Documentation: ABI: document in_temp_input file
-Message-ID: <20240406174513.13b4e9e4@jic23-huawei>
-In-Reply-To: <20240406-in_temp_input-v1-1-a1744a4a49e3@z3ntu.xyz>
-References: <20240406-in_temp_input-v1-1-a1744a4a49e3@z3ntu.xyz>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+Date: Sat, 06 Apr 2024 19:47:18 +0200
+Message-ID: <2850305.mvXUDI8C0e@g550jk>
+In-Reply-To: <20240406174513.13b4e9e4@jic23-huawei>
+References:
+ <20240406-in_temp_input-v1-1-a1744a4a49e3@z3ntu.xyz>
+ <20240406174513.13b4e9e4@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
 
-On Sat, 06 Apr 2024 17:31:04 +0200
-Luca Weiss <luca@z3ntu.xyz> wrote:
-
-> For example the BMP280 barometric pressure sensor on Qualcomm
-> MSM8974-based Nexus 5 smartphone exposes such file in sysfs.
-> Document it.
+On Samstag, 6. April 2024 18:45:21 CEST Jonathan Cameron wrote:
+> On Sat, 06 Apr 2024 17:31:04 +0200
+> Luca Weiss <luca@z3ntu.xyz> wrote:
 > 
-> Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-
-Hi Luca,
-
-Applied with a note added on fixing the line above to not reuse X.
-A good additional thing but needs mentioning in the commit message.
-
-Thanks,
-
-Jonathan
-
-> ---
->  Documentation/ABI/testing/sysfs-bus-iio | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> > For example the BMP280 barometric pressure sensor on Qualcomm
+> > MSM8974-based Nexus 5 smartphone exposes such file in sysfs.
+> > Document it.
+> > 
+> > Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
-> index 2e6d5ebfd3c7..7cee78ad4108 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio
-> @@ -243,7 +243,8 @@ Description:
->  		less measurements. Units after application of scale and offset
->  		are milli degrees Celsius.
->  
-> -What:		/sys/bus/iio/devices/iio:deviceX/in_tempX_input
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_tempY_input
-> +What:		/sys/bus/iio/devices/iio:deviceX/in_temp_input
->  KernelVersion:	2.6.38
->  Contact:	linux-iio@vger.kernel.org
->  Description:
+> Hi Luca,
 > 
-> ---
-> base-commit: 8568bb2ccc278f344e6ac44af6ed010a90aa88dc
-> change-id: 20240406-in_temp_input-4505d7fafff8
+> Applied with a note added on fixing the line above to not reuse X.
+> A good additional thing but needs mentioning in the commit message.
+
+Good point! I wrote the patch in Feb 2021 without any description so
+I had to retroactively make something up ;)
+
+Thanks for amending and applying!
+
+Regards
+Luca
+
 > 
-> Best regards,
+> Thanks,
+> 
+> Jonathan
+> 
+> > ---
+> >  Documentation/ABI/testing/sysfs-bus-iio | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio b/Documentation/ABI/testing/sysfs-bus-iio
+> > index 2e6d5ebfd3c7..7cee78ad4108 100644
+> > --- a/Documentation/ABI/testing/sysfs-bus-iio
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio
+> > @@ -243,7 +243,8 @@ Description:
+> >  		less measurements. Units after application of scale and offset
+> >  		are milli degrees Celsius.
+> >  
+> > -What:		/sys/bus/iio/devices/iio:deviceX/in_tempX_input
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_tempY_input
+> > +What:		/sys/bus/iio/devices/iio:deviceX/in_temp_input
+> >  KernelVersion:	2.6.38
+> >  Contact:	linux-iio@vger.kernel.org
+> >  Description:
+> > 
+> > ---
+> > base-commit: 8568bb2ccc278f344e6ac44af6ed010a90aa88dc
+> > change-id: 20240406-in_temp_input-4505d7fafff8
+> > 
+> > Best regards,
+> 
+> 
+
+
+
 
 

@@ -1,57 +1,61 @@
-Return-Path: <linux-iio+bounces-4111-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4112-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8374289AB9B
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C529A89ABA1
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:30:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEFB91C20CC7
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 15:19:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 023381C20AE4
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 15:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922AF39AF3;
-	Sat,  6 Apr 2024 15:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61C039FC6;
+	Sat,  6 Apr 2024 15:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mEQ5BuWm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uigZlPzx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE19381A4;
-	Sat,  6 Apr 2024 15:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AD1383A2;
+	Sat,  6 Apr 2024 15:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712416789; cv=none; b=EW9HXyT2FFKhhJQA2yY6vh/pyvMTvOPt0RmYBCPn0lRWXB7E3hwxilY+s3j/dZVRqGHJeUaXinlYLmdMA78PuE63I3I/cmVEiexOU+MHrUH29SHPwqbwFLs/MAj7E/6GA8/ckSriof5OXBHjrvRI9GSTBvRl0ZRTOMw09lMcaP0=
+	t=1712417428; cv=none; b=jmXMoQdrTk3zSnoWKqO6j7dNy3aW4B9dCNoL0vqf1jHKA1GO8lTS1fWxB2w1FrFrdFq6Ou35Ldx9XnqpK79wIVNfeh0A7fb5/WVpa+0iMYjSq5J/Gg5BATHZaP/llTdbhSJ6u7/qbQjVQv9DA+arYictKeQJ3D1I8vkFX5MCS5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712416789; c=relaxed/simple;
-	bh=F0yD2te0Q85dmAD07i6O7OobeJIw3035Mh6eXZKnERY=;
+	s=arc-20240116; t=1712417428; c=relaxed/simple;
+	bh=CHrvBh0xlbqvJFjsw9a5/YCVy0HroQy11ohIn2uKx3s=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KPZOdXkiS9mpeVl8geYkDrNUJG+9KzJtUUOOVZ0CQ2/vAlpYjuK6UkkvSf+1FfEgCcSnZluGdu1YGC3TrmK8GW/vFiymXd7KMWRaYFo9QbVBe6b/xYErKD1oPxjA+2zFIUUEe+JDJnayZI6Uh5C9bdFSh6gIwTA//R6mhx/ujAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mEQ5BuWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E45C433C7;
-	Sat,  6 Apr 2024 15:19:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PwGiNiP4Lz952j2AEgoruZKweUfEdAIDG/DSY8z+Gq+wxGRawlzwkuGQmA5z1qtAB9K1/NFqPb6O6Tq1NaMk4sPG10Kzg5PBa2QX3z0quzDUFff7kY57dlC9dv9yEMIivzewxomBo8l/kQwUkxGxjvbzkvM/V+/Uc1RVhxU7jtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uigZlPzx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580A6C433C7;
+	Sat,  6 Apr 2024 15:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712416788;
-	bh=F0yD2te0Q85dmAD07i6O7OobeJIw3035Mh6eXZKnERY=;
+	s=k20201202; t=1712417428;
+	bh=CHrvBh0xlbqvJFjsw9a5/YCVy0HroQy11ohIn2uKx3s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mEQ5BuWmG8QsLe9rfJTRZ8DTfgoFzmPBoWN905oUQ+1V6iOLJbX9u+jG0Nw9PAK4x
-	 De7bd6r8v/z8XFHt6e+5+mYLOq4RKQNNEH9aZ56rvoKTViutm5rXUmVjCB7N4gwHKb
-	 JyGoPYl5Rg4BMNOhux4bliCmxeJLBbPNMvdLfVvri4ujp9uQepgSoD/CJKsQRTGV/e
-	 YBCn9XqIXgBF9/qwfdb0Y3x9nIwacbMpFlNos3YBYtDEj9hMD+0/SeUsVFRQncv/Cy
-	 CrJktO5MDDaBf3zzD5DjmuCqL0W9OiK/8Rfx9S26SX2/b1rksFLh9ufdSK0cPOfjUZ
-	 RXdPVCz1Aaxlg==
-Date: Sat, 6 Apr 2024 16:19:33 +0100
+	b=uigZlPzxny7KqiVn4dn24kityK3XVkJiusL5plC484/Ct9WelFhh81dgXBC+NGJAA
+	 Ztk3O+mTFvHO+pvCj0Lsuif6XKo0hplreukX+czwSvp7xHt6EI2vgu3qrxlWvOkAn8
+	 R5e/FRg61nM9Nt9XO8R2YjzQVw9CPShcjyz6wgQ+jt0KClleNKQ+9Li0fRKC0fQ/9t
+	 tNNNQEErKs2MVwcEh0hD1YQU6MDMLv5y6fhMZSLOV/aN2e5Tl5zgo3u+mdjs8dB4in
+	 fc6CuRP9IQI6NJBWEz4vfyWqHfh61+oHCkasb1gFlsNkUCPuNXUhvn9q2goKYf2blJ
+	 iGNki8QxlPxgg==
+Date: Sat, 6 Apr 2024 16:30:13 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Lothar Rubusch <l.rubusch@gmail.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, eraretuya@gmail.com
-Subject: Re: [PATCH v7 0/8]  iio: accel: adxl345: Add spi-3wire feature
-Message-ID: <20240406161933.56da10a0@jic23-huawei>
-In-Reply-To: <20240401194906.56810-1-l.rubusch@gmail.com>
-References: <20240401194906.56810-1-l.rubusch@gmail.com>
+To: "Arnd Bergmann" <arnd@arndb.de>
+Cc: "Krzysztof Kozlowski" <krzysztof.kozlowski@linaro.org>, "Arnd Bergmann"
+ <arnd@kernel.org>, linux-kernel@vger.kernel.org, "Lars-Peter Clausen"
+ <lars@metafoo.de>, "Michael Hennerich" <Michael.Hennerich@analog.com>,
+ linux-iio@vger.kernel.org
+Subject: Re: [PATCH 16/34] iio: ad5755: hook up of_device_id lookup to
+ platform driver
+Message-ID: <20240406163013.76e4646e@jic23-huawei>
+In-Reply-To: <65788cd8-3c2d-48ca-8b58-af741884c729@app.fastmail.com>
+References: <20240403080702.3509288-1-arnd@kernel.org>
+	<20240403080702.3509288-17-arnd@kernel.org>
+	<e9aefdcd-5ee7-4b19-847e-5fb3d95cf46c@linaro.org>
+	<65788cd8-3c2d-48ca-8b58-af741884c729@app.fastmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,61 +66,63 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  1 Apr 2024 19:48:58 +0000
-Lothar Rubusch <l.rubusch@gmail.com> wrote:
+On Wed, 03 Apr 2024 12:01:13 +0200
+"Arnd Bergmann" <arnd@arndb.de> wrote:
 
-> Pass a function setup() as pointer from SPI/I2C specific modules to the
-> core module. Implement setup() to pass the spi-3wire bus option, if
-> declared in the device-tree.
+> On Wed, Apr 3, 2024, at 11:55, Krzysztof Kozlowski wrote:
+> > On 03/04/2024 10:06, Arnd Bergmann wrote:  
+> >> From: Arnd Bergmann <arnd@arndb.de>
+> >> 
+> >> When the driver is built-in, 'make W=1' warns about an unused
+> >> ID table:
+> >> 
+> >> drivers/iio/dac/ad5755.c:866:34: error: 'ad5755_of_match' defined but not used [-Werror=unused-const-variable=]
+> >>   866 | static const struct of_device_id ad5755_of_match[] = {
+> >> 
+> >> While the data is duplicated in the spi_device_id, it's common
+> >> to use the actual OF compatible strings in the driver.
+> >> 
+> >> Since there are no in-tree users of plain platform devices, the
+> >> spi_device_id table could actually be dropped entirely with this.
+> >> 
+> >> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> >> ---
+> >>  drivers/iio/dac/ad5755.c | 1 +
+> >>  1 file changed, 1 insertion(+)
+> >> 
+> >> diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+> >> index 404865e35460..5c1e7f428c25 100644
+> >> --- a/drivers/iio/dac/ad5755.c
+> >> +++ b/drivers/iio/dac/ad5755.c
+> >> @@ -876,6 +876,7 @@ MODULE_DEVICE_TABLE(of, ad5755_of_match);
+> >>  static struct spi_driver ad5755_driver = {
+> >>  	.driver = {
+> >>  		.name = "ad5755",
+> >> +		.of_match_table = ad5755_of_match,  
+> >
+> > I was working on this as well and have a bit bigger solution, following
+> > Jonathan's preference (I think):
+> >
+> > https://lore.kernel.org/all/20240226192555.14aa178e@jic23-huawei/
+> >
+> > I need to send v3, somehow I missed his comments.  
 > 
-> In the core module then update data_format register configuration bits
-> instead of overwriting it. The changes allow to remove a data_range field.
-> 
-> Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-Series applied to the togreg branch of iio.git and pushed out initially
-as testing to let 0-day work it's magic (find build issues for us!)
+> Yes, that looks good as well, though you might need to drop
+> spi_device_id table if you convert it to using pointers.
 
-I'll push it out for linux-next to pick up sometime in next week (ish)
+Put them in there as well (with appropriate cast). We don't want
+to stop supporting probe paths that might be using that.
+
+My preference is for both tables, same pointers in each then
+the use of the relevant bus specific wrapper - here
+spi_get_device_match_data() which will happily deal with matches
+in either table (thus avoiding the potential mess of them getting out
+of sync)
 
 Jonathan
 
-> ---
-> V1 -> V2: Split into spi-3wire and refactoring
-> V2 -> V3: Split further, focus on needed changesets
-> V3 -> V4: Drop "Remove single info instances";
->           split "Group bus configuration" into separat
->           comment patch; reorder patch set
-> V4 -> V5: Refrase comments; Align comments to 75; rebuild FORMAT_MASK by
->           available flags; fix indention
-> V5 -> V6: Remove FORMAT_MASK by a local variable on call site;
->           Refrase comments;
->           Remove unneeded include
-> V6 -> V7: Restructure optional passing the setup() to core's probe()
->           Guarantee that initially a regmap_write() was called to init
->           all bits to a defined state
->           - When a setup() e.g. for 3wire is passed, then call
->             regmap_write() inside the setup(). In the following
->             core's probe() has to call regmap_update()
->           - When NULL is passed, then call regmap_write() in core's
->             probe()
->           - Refactoring: remove obvious comments and simplify code
+
 > 
-> Lothar Rubusch (8):
->   iio: accel: adxl345: Make data_range obsolete
->   iio: accel: adxl345: Group bus configuration
->   iio: accel: adxl345: Move defines to header
->   dt-bindings: iio: accel: adxl345: Add spi-3wire
->   iio: accel: adxl345: Pass function pointer to core
->   iio: accel: adxl345: Reorder probe initialization
->   iio: accel: adxl345: Add comment to probe
->   iio: accel: adxl345: Add spi-3wire option
-> 
->  .../bindings/iio/accel/adi,adxl345.yaml       |  2 +
->  drivers/iio/accel/adxl345.h                   | 36 +++++++-
->  drivers/iio/accel/adxl345_core.c              | 92 ++++++++++---------
->  drivers/iio/accel/adxl345_i2c.c               |  2 +-
->  drivers/iio/accel/adxl345_spi.c               | 10 +-
->  5 files changed, 94 insertions(+), 48 deletions(-)
-> 
+>      Arnd
 
 

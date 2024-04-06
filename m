@@ -1,57 +1,58 @@
-Return-Path: <linux-iio+bounces-4118-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4119-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D3D89ABC1
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:46:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F2989ABC4
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E5281C20BD4
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 15:46:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 829E31F21A06
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 15:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66383A8F9;
-	Sat,  6 Apr 2024 15:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE53C3B18D;
+	Sat,  6 Apr 2024 15:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PH8beJvJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h/tXOGuK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DD838FA5;
-	Sat,  6 Apr 2024 15:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0D62B9CE;
+	Sat,  6 Apr 2024 15:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712418406; cv=none; b=MbocLYEUuLlaZ8TBSeH0/v10s84oPcampZx5qkD9eEe6a/coNHEA6uYD0SNRAxaAzhzoHeuCCJLhidvAV8ztjCODHAe3oE5p3aTdNM8DlfG7YSRb0WrnmkT2LarDfA6vRBGOyst2T9oqOd8HJGMPzaJIEAVfuf7njlpYcBlmry4=
+	t=1712418593; cv=none; b=JT0t02qn0XwMsPmPk+aUAWtMtmwAbxZwZdT7w5BGAe5UyEjF8NdCrLNbAzDnM4bQbPkK2Iva9upWEU1O6Tz3PWbCiZqncVOmqijQFmgyKEdCBeH1n4ZV6kk3pL0uuB+CAf/GqjxWqdo2e3Kz1wQDGfantX9pmbt0SA2WyWCqLq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712418406; c=relaxed/simple;
-	bh=AduoKm/UmGHvrrIH2O3jYTpeQVXIbbUL7w25qENLi68=;
+	s=arc-20240116; t=1712418593; c=relaxed/simple;
+	bh=dt5gIwVJ9TpUm45a85VZLB2+AR9vyst2+0tiJqdgYtw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kfKIkjUUYE60ekl5KdQd+YFGBrlGEzgNsj9Y59GRVmT0LQ58c/DmTFK7wAwzTCUUh7cvNqiluejTaCX7/4VEQWra6m1AS8aGM8S5jQJ7x0h5Um6n6YzTyUM1NGgnqrdSx7CJbmCYicA+yQlaS2UE1sGiJg60eFY77eNKAVH4+yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PH8beJvJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DD4C433F1;
-	Sat,  6 Apr 2024 15:46:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OTpqP4S54FOB5i2NmfxXIGJS/7yi9SPCERMLH8yF/PR8cJAf8/0lbH9xrwxI3UVjzJzAb9rdGy7fNi1TuDnJe+Z/muGkzoXSIN+sjP4LQ3Num99ZduTsHZpzJf5ESNHlYIntes1dOTCyOiBCxAJLJKNqn8KUtXhB0XIJSvp5x2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h/tXOGuK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA903C433C7;
+	Sat,  6 Apr 2024 15:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712418406;
-	bh=AduoKm/UmGHvrrIH2O3jYTpeQVXIbbUL7w25qENLi68=;
+	s=k20201202; t=1712418593;
+	bh=dt5gIwVJ9TpUm45a85VZLB2+AR9vyst2+0tiJqdgYtw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PH8beJvJ3ggS32MNcSmFjLO6h19KDkT/zvwS7+65RYW//MKzcE73CzdlHYA9cqHbX
-	 NI4ujxlq3WoWIPRbenPWvIEV1OQT05Cqj4sSDbHwWdUTkctlmIuWHCIcbVT69g8s4n
-	 qc6RolkuApZGRrVb3j5i1dBTnNVPq4Tu5U/nNSMBmLmm8J8EZP5l9q3iea56bUMerL
-	 Bs/+iDoS2/LCfqh4/2QAeqjLZxv2Bw8N6/9iY9l+kTYYDCDOv+8svyMhn5wJ5Sujj+
-	 u6BBsLLu4RDpcQ39zgmnELqYwH9IGcuWwLjLsH4HvA/lSvZC/9w54lfe1zDhNRztbJ
-	 nUYv9ZwVCJSyw==
-Date: Sat, 6 Apr 2024 16:46:33 +0100
+	b=h/tXOGuKTRsqfzGdY1v9r9nmrbowXeBSs+IjGpS9SUYbTTxQMUYeSPobEF2pZShRn
+	 GAvTl7+oR9VNSmfrw2i/eC2cJ0GhXIfUsB1tKQ3jW1qaE87yCpOIXhKLglbE569jAi
+	 DSRBWfpqgUjzQ937FozITu8o7o4iXFnk0oU+jjK/dp4EYjIt3Bg35dZHxBs4x52SIm
+	 EDIU5fGD0uNYqz5RmdhTVirwOGoxCir4JVxa/sH5sPbwrl5rEGA1OzhD7Ip95c3zaO
+	 DJK7rr9Mlkcgx9sQTy8G3Sy1ngRGU1+8BIDh0tkV5F50RWHmBCGT+nAge2Us2Pvw40
+	 Ds1JZs81PpgaA==
+Date: Sat, 6 Apr 2024 16:49:41 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
- linux-kernel@vger.kernel.org, nuno.sa@analog.com, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 1/1] iio:imu: adis16475: Fix sync mode setting
-Message-ID: <20240406164633.76e3601b@jic23-huawei>
-In-Reply-To: <00ed6785db2b43ec3727f42c71dc2c8dd1b627f1.camel@gmail.com>
-References: <20240405045309.816328-1-ramona.bolboaca13@gmail.com>
-	<20240405045309.816328-2-ramona.bolboaca13@gmail.com>
-	<00ed6785db2b43ec3727f42c71dc2c8dd1b627f1.camel@gmail.com>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Lars-Peter
+ Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh+dt@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH v5 0/2] iio: temperature: ltc2983: small improvements
+Message-ID: <20240406164941.4e1bbe69@jic23-huawei>
+In-Reply-To: <20240404-ltc2983-misc-improv-v5-0-c1f58057fcea@analog.com>
+References: <20240404-ltc2983-misc-improv-v5-0-c1f58057fcea@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,63 +63,43 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 05 Apr 2024 09:02:33 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Thu, 4 Apr 2024 10:58:16 +0200
+Nuno Sa <nuno.sa@analog.com> wrote:
 
-> On Fri, 2024-04-05 at 07:53 +0300, Ramona Gradinariu wrote:
-> > Fix sync mode setting by applying the necessary shift bits.
-> >=20
-> > Fixes: fff7352bf7a3 ("iio: imu: Add support for adis16475")
-> > Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-> > --- =20
+> Hi Jonathan,
 >=20
-> Not sure there was a reason to drop my tag... Anyways:
->=20
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Missing -S on b4 maybe?  A special parameter I save just for you Nuno ;)
-
-Applied to the fixes-togreg branch of iio.git and marked for stable.
+> As suggested by you, v5 only has the regulator stuff. I'll send another
+> series for the new dev_errp_helper().
+Applied.
 
 Thanks,
 
 Jonathan
 
 >=20
-> > changes in v2:
-> > =C2=A0- added u16 value to call __adis_update_bits to fix build error
-> > =C2=A0drivers/iio/imu/adis16475.c | 4 +++-
-> > =C2=A01 file changed, 3 insertions(+), 1 deletion(-)
-> >=20
-> > diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-> > index 01f55cc902fa..060a21c70460 100644
-> > --- a/drivers/iio/imu/adis16475.c
-> > +++ b/drivers/iio/imu/adis16475.c
-> > @@ -1289,6 +1289,7 @@ static int adis16475_config_sync_mode(struct adis=
-16475
-> > *st)
-> > =C2=A0	struct device *dev =3D &st->adis.spi->dev;
-> > =C2=A0	const struct adis16475_sync *sync;
-> > =C2=A0	u32 sync_mode;
-> > +	u16 val;
-> >=20
-> > =C2=A0	/* default to internal clk */
-> > =C2=A0	st->clk_freq =3D st->info->int_clk * 1000;
-> > @@ -1350,8 +1351,9 @@ static int adis16475_config_sync_mode(struct adis=
-16475
-> > *st)
-> > =C2=A0	 * I'm keeping this for simplicity and avoiding extra variables
-> > =C2=A0	 * in chip_info.
-> > =C2=A0	 */
-> > +	val =3D ADIS16475_SYNC_MODE(sync->sync_mode);
-> > =C2=A0	ret =3D __adis_update_bits(&st->adis, ADIS16475_REG_MSG_CTRL,
-> > -				 ADIS16475_SYNC_MODE_MASK, sync->sync_mode);
-> > +				 ADIS16475_SYNC_MODE_MASK, val);
-> > =C2=A0	if (ret)
-> > =C2=A0		return ret;
-> >=20
-> > --
-> > 2.34.1
-> >  =20
+> ---
+> Changes in v5:
+> - Dropped patches 1,2,5 and 6.
+> - Link to v4: https://lore.kernel.org/all/20240328-ltc2983-misc-improv-v4=
+-0-0cc428c07cd5@analog.com/
+>=20
+> ---
+> Nuno Sa (2):
+>       dt-bindings: iio: temperature: ltc2983: document power supply
+>       iio: temperature: ltc2983: support vdd regulator
+>=20
+>  Documentation/devicetree/bindings/iio/temperature/adi,ltc2983.yaml | 4 +=
++++
+>  drivers/iio/temperature/ltc2983.c                                  | 5 +=
+++++
+>  2 files changed, 9 insertions(+)
+> ---
+> base-commit: 6020ca4de8e5404b20f15a6d9873cd6eb5f6d8d6
+> change-id: 20240222-ltc2983-misc-improv-1c7a78ece93f
+> --
+>=20
+> Thanks!
+> - Nuno S=C3=A1
 >=20
 
 

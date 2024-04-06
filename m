@@ -1,56 +1,58 @@
-Return-Path: <linux-iio+bounces-4115-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4116-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C80789ABAF
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:39:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A772B89ABB2
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 17:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDA9528235B
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 15:39:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21EE32823B5
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Apr 2024 15:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A3A739FE5;
-	Sat,  6 Apr 2024 15:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291C33A1B0;
+	Sat,  6 Apr 2024 15:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qtR9QAY1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dO0OFTzQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EADF826AC2;
-	Sat,  6 Apr 2024 15:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1F33A1AB;
+	Sat,  6 Apr 2024 15:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712417982; cv=none; b=XfUBBaSsjO9qKw1n0up24Z6i+D7mwD2MZZ+iub732DnETokdiLV5kGeEVMdmmn9buKtbBJp9rR2X+EPsI3Pvu6Wtu1NpwnYMp+gbO1wfFewFjgFuE748f9zVc5uT0D/KTZTMtTOM/y1M/tmjTitANf03MttPg9CI21PucpL01mg=
+	t=1712418169; cv=none; b=ETWgPrBcD09ACwVkOMnExacQLNTz7S/ZJ0oEG0S4fALtsgwDCQa+rXCq107CIPa55FdZ3tcmJOjaeW7kB1dYtf1v3kflr3H1DnCVAWXICblFdyRCbhpFW/kzyPI1ttnjMkMk+DYNI9Md/BscPOfmU5ObnBidcKvCfQYtSVA3o+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712417982; c=relaxed/simple;
-	bh=ZS1O5rlPBLfEcou8rXXarcrf4dxatgQV4muJCx/cFFc=;
+	s=arc-20240116; t=1712418169; c=relaxed/simple;
+	bh=hCjVczF/+i7ArwQOZesXRzF8mpKkIe90t9B2oG+LLs4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ref69XZjIYYbHqfqpC1nwLn0NZcp+DOe0WRvJQHgSsyEUIFED4gTpEd5JeNJha8VA1RqK2xEu5pkDxHwTtwHU7tZPfhXnnYL9QO4QJbgoR0VqUWFpSKdlTibiyD8ydmixlSD4/rZkYe8Y3Oz0saIuFGTM2/OkugISghHSk7g0pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qtR9QAY1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC1BC433F1;
-	Sat,  6 Apr 2024 15:39:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AmSAzUZIf3SLTizC2vE+wpnLglUpCHCd6K7FpzZPYvh1B68ysyjMfbo7Y47rxnfYuEKM/3viEq2q75kK/+X72j4hKks6LOvvkND34C6FqkjnK2Pzt0ow3LQD2XwFi0m7TEOYUOXrqPCJboRxijXuS8+hgQjhz+lstTr9GeraFzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dO0OFTzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BDE7C433C7;
+	Sat,  6 Apr 2024 15:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712417981;
-	bh=ZS1O5rlPBLfEcou8rXXarcrf4dxatgQV4muJCx/cFFc=;
+	s=k20201202; t=1712418169;
+	bh=hCjVczF/+i7ArwQOZesXRzF8mpKkIe90t9B2oG+LLs4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qtR9QAY1JXq6fhIlfvdEkVE/7MG3waliLEaScKgd5DOMhCU8VLLPqN1qToUl5k27g
-	 QRRGLU441wYKZR80Avbi0cDAno3NarLeXbRoyPTRHrx1FGn6JmmkV/AJ6aHsxiQdCC
-	 4ZnsiLnDu0x+fcGTIrGN/lmUMmOUi8vpKQfsLaM0vF36j2GVfFyV1jlTK6xKXZMwqC
-	 5tlS5FuRUV2+bnKNpHfn8iWyREwnCCKLGEvdkn+e++O8ta4TMYwG9t0FozlUgGzLT5
-	 SOQ20FKCllzrkGpkbrnItlsY6VNXUcZpo/ezjf8rUY4Y2G4r/T2k7rCr5GmCOf+QvI
-	 YyfSp7NaJSztg==
-Date: Sat, 6 Apr 2024 16:39:28 +0100
+	b=dO0OFTzQK8FQP88si9FI6Mzyhtt6Zl0Y21i4i0Ydkc2HfcxfXXAEL2MnBXYDQB2K4
+	 +Qr/X0i3iBMflqfh0WFKGc3kW3JU33sqH0o1TOeU8QjxrKX6ojwkayK40n143BsfKy
+	 eIN2Pb0zSyCvtyD/eZ7A3sbuF3wOJ32/H0Lz4821fAMaVQGYaRbyvA6ZZBwNLmijXd
+	 ud6gwcs/WeCKNshS3khphIrQ/rVthAQx9aQSjqc0/ej4nEo41YZWtsTS9D4CjdJTkI
+	 LRi6DetaZu2SUbKhOW0FbiVbV6wpdqLQ5DQAqWxyqWWOSWmqG0G9t1IlixlZDicvLE
+	 S8Astdtm+UBgw==
+Date: Sat, 6 Apr 2024 16:42:35 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Ramona Gradinariu <ramona.gradinariu@analog.com>
-Cc: <linux-kernel@vger.kernel.org>, <nuno.sa@analog.com>,
- <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 1/1] iio:imu: adis16475: Fix sync mode setting
-Message-ID: <20240406163928.1ea36f04@jic23-huawei>
-In-Reply-To: <20240403111357.1074511-2-ramona.gradinariu@analog.com>
-References: <20240403111357.1074511-1-ramona.gradinariu@analog.com>
-	<20240403111357.1074511-2-ramona.gradinariu@analog.com>
+To: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
+Cc: Dan Carpenter <dan.carpenter@linaro.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+Subject: Re: [PATCH] iio: light: apds9306: Fix off by one in
+ apds9306_sampling_freq_get()
+Message-ID: <20240406164235.55193b5f@jic23-huawei>
+In-Reply-To: <7a54d993-8aff-472f-8132-85e0ca79ff13@tweaklogic.com>
+References: <69c5cb83-0209-40ff-a276-a0ae5e81c528@moroto.mountain>
+	<7a54d993-8aff-472f-8132-85e0ca79ff13@tweaklogic.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,39 +63,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 3 Apr 2024 14:13:57 +0300
-Ramona Gradinariu <ramona.gradinariu@analog.com> wrote:
+On Fri, 5 Apr 2024 17:44:31 +1030
+Subhajit Ghosh <subhajit.ghosh@tweaklogic.com> wrote:
 
-> Fix sync mode setting by applying the necessary shift bits.
+> On 4/4/24 18:01, Dan Carpenter wrote:
+> > The > comparison needs to be >= to prevent an out of bounds access.
+> > 
+> > Fixes: 620d1e6c7a3f ("iio: light: Add support for APDS9306 Light Sensor")
+> > Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> > ---
+> >   drivers/iio/light/apds9306.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/iio/light/apds9306.c b/drivers/iio/light/apds9306.c
+> > index 4d8490602cd7..49fa6b7d5170 100644
+> > --- a/drivers/iio/light/apds9306.c
+> > +++ b/drivers/iio/light/apds9306.c
+> > @@ -635,7 +635,7 @@ static int apds9306_sampling_freq_get(struct apds9306_data *data, int *val,
+> >   	if (ret)
+> >   		return ret;
+> >   
+> > -	if (repeat_rate_idx > ARRAY_SIZE(apds9306_repeat_rate_freq))
+> > +	if (repeat_rate_idx >= ARRAY_SIZE(apds9306_repeat_rate_freq))
+> >   		return -EINVAL;  
+> Good find.
 > 
-> Fixes: fff7352bf7a3 ("iio: imu: Add support for adis16475")
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> ---
->  drivers/iio/imu/adis16475.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> Reviewed-by: Subhajit Ghosh <subhajit.ghosh@tweaklogic.com>
 > 
-> diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-> index 01f55cc902fa..bd30c3469d9a 100644
-> --- a/drivers/iio/imu/adis16475.c
-> +++ b/drivers/iio/imu/adis16475.c
-> @@ -1351,7 +1351,8 @@ static int adis16475_config_sync_mode(struct adis16475 *st)
->  	 * in chip_info.
->  	 */
->  	ret = __adis_update_bits(&st->adis, ADIS16475_REG_MSG_CTRL,
-> -				 ADIS16475_SYNC_MODE_MASK, sync->sync_mode);
-> +				 ADIS16475_SYNC_MODE_MASK,
-> +				 ADIS16475_SYNC_MODE(sync->sync_mode));
-As per the build bots, this is triggering a check on the size the last variable.
-See definition of adis_update_bits()
-There is even a comment in there to 'beware' of what you hit here.
+Applied to the togreg branch of iio.git (where the fixes patch is currently)
+and pushed out as testing initially because there is other stuff in there
+I want 0-day to checkout before I make a mess of linux-next.
 
-Easiest is probably to force that with 
- (u16)ADIS16475_SYNC_MODE(sync->sync_mode));
-or a local variable.
+Thanks,
 
+Jonathan
 
->  	if (ret)
->  		return ret;
->  
+> Regards,
+> Subhajit Ghosh
+> >   
+> >   	*val = apds9306_repeat_rate_freq[repeat_rate_idx][0];  
+> 
 
 

@@ -1,137 +1,115 @@
-Return-Path: <linux-iio+bounces-4159-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4160-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28D7F89C9B8
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 18:36:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7175D89C9E3
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 18:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AFAF1C24844
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 16:36:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D3A828ACDE
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 16:40:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC103145B2E;
-	Mon,  8 Apr 2024 16:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7511428E8;
+	Mon,  8 Apr 2024 16:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b="h4AmvDjp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V/PVPAYQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from ahti.lucaweiss.eu (ahti.lucaweiss.eu [128.199.32.197])
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A75CB145B0C;
-	Mon,  8 Apr 2024 16:34:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=128.199.32.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3801442F5;
+	Mon,  8 Apr 2024 16:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712594090; cv=none; b=oaI7SKe83bCFQuNIERxAvnN/gzqFTU5u39o4iZDpm29JReDr8XPklNnSjUwQh+UXd7VyW5LiWj78Gl1KPIpD9G2HB1J3PwzJ5Ff39U+iaz1vpJYoxrqCcwwkD9BZXANagH/xbremmIicjcDeE3efSuguBcgA1v5qm8lH7EsaoRE=
+	t=1712594433; cv=none; b=HFyOXVSLv8rpYHQqAmbWMQG01obEc6kp2YU2Bv8TZIkYHMVJZVxMgas4hAJd/6SsmxSTz5DyyGY/Hebwj7mj/Sakt2EKTr506HP1QuvcGkpKgpIVO3flsxYilR6hIZ01trFc0azCgG3+zciEZiRzwuCHnnUOiZBPDQKhpgvknNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712594090; c=relaxed/simple;
-	bh=qvnGOQ4wjXBKzINryA0Oef5MwTy2fQxVBq/S+8Agw2Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=adus7K+JDy+7tTjTvxVqV4ICM1zqyaaOqvc0PTgOQpiL7dHdqxy+hhiQMebOvAmt1+KR9rAUNWKUJl1cx2WyfbidgEVMKskoTdWUqOE6BBnEglbMYGvhitf7pUEF2t5AHHTZAuqAFkAXJW9hXw8noHY81w3WM75RViCQGLH1AEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz; spf=pass smtp.mailfrom=z3ntu.xyz; dkim=pass (1024-bit key) header.d=z3ntu.xyz header.i=@z3ntu.xyz header.b=h4AmvDjp; arc=none smtp.client-ip=128.199.32.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=z3ntu.xyz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=z3ntu.xyz
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=z3ntu.xyz; s=s1;
-	t=1712594080; bh=qvnGOQ4wjXBKzINryA0Oef5MwTy2fQxVBq/S+8Agw2Y=;
-	h=From:Date:Subject:To:Cc;
-	b=h4AmvDjprPpaCHFC3VFnqEHkF7s0Izxi6UkKUa8nRGM76eTH2Zvp/mdeOiiGBPWnI
-	 ki6MUrN+CLCDX05zi7cK0Lutay3A3kuVdCH/Ih9JLxPWIZR3P7yT/1bilyOO1SIc8Z
-	 Gpa81Itt+BzcId5pj/mhNvuqm4ATMxiUuRHX4s5s=
-From: Luca Weiss <luca@z3ntu.xyz>
-Date: Mon, 08 Apr 2024 18:34:33 +0200
-Subject: [PATCH] dt-bindings: iio: imu: mpu6050: Improve i2c-gate disallow
- list
+	s=arc-20240116; t=1712594433; c=relaxed/simple;
+	bh=KNLg88FDFZziI3Q4rRsKevIbI9E2kVu8ALwI04NKQBk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t9TMHlGgnKz9SiDht55UVc4dHSBnPQwjgO6H3mobuXdfItjb859yG5elfsL2gjZClpGa3u2sg36Kpy68q7U9KXfpFzQB+Ov9QIF+wABKGCcfNkdSYyyBgYftKy/1NBDy4R6KYMVOE8efMq8gLWBU4C/Mp21I+OWv5ZZaqj/Bbrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V/PVPAYQ; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-789f1b59a28so291451385a.3;
+        Mon, 08 Apr 2024 09:40:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1712594431; x=1713199231; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q3b4yBHuf1ruxqd60hNeXDRSgZ49Thrf7aM7f8JfkjY=;
+        b=V/PVPAYQ8n9OpJyMiIavWKsPfjQHOtSswBAsjekQhvQ/BaQCOHsxG374wOsxyq/dk5
+         c5pTo8HDxHVQvu3pzkxebSueSbIX8QyWjYTK3GU5r7scIq03wBzaa7tnFSWjgwbwsX9a
+         H5lN/ng8fdzj1ayqyGSrGa9MgTKfN1a4kxJFBe/NCOVkOkfZoN8PQGq3ytcGNzdDEtgt
+         TBVMXIUDAXoJkabaZxNjnyFGzwr401xzxqxpQSmAfolMYY9dQzYUOLGO7W+7ZILvjcSg
+         Vvwf832XWTgzfS/69i8CJ9oILGxeyTJK/08C8L+Zahc+PBlxqaQSu9/+4q7th86kqP1N
+         J1XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712594431; x=1713199231;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q3b4yBHuf1ruxqd60hNeXDRSgZ49Thrf7aM7f8JfkjY=;
+        b=h2wvX1WHqJe1OvY/wUjawOBv+jfMaYb/5RL7iFfHRBARozW/UfUGUsbo0/KM4lStVg
+         kzeQ+xOmgvalOLFdxgF8vrkH/ZaGuECqFoPlD9Fb4H7SoRATC7IUD63QckYDjbcc0BXx
+         I8v0phhdTUQDgnQ82RlJm7BCZdOfz1wWvrHTcM9jjZZESZfjj0530k9tdOuyFwe2mwsv
+         rnCKp8a6xysyUzWiLwKrTz3s3K5QOAQZn2OjkkGSsOhyhdvl0zF1BaEV3bHRhk15/j3C
+         KYyMbNtFH/mr3pF/Pk8oMmHK/HYlyScp2GDTqw/tYAZ/SSdSu0Iby9E+t/xD2RSmsJYq
+         d0lQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXFQWV+U4pdPf79OJnxXXPB1VxDDyJZJl+2WysLdjnk0O1gMboqpMi221onQriYQri0P1q9FCvIRWKaG1cG8L6WXw+xqfIjUZtsj81DCU+H9ukBKy7cwfJlKzuQKXlSOOSJbqonfBWUOen1Un8ND4Sel/hNq1NfpCaR1BIThAwW5C63Rw==
+X-Gm-Message-State: AOJu0YyxDw7GbyzNizBqvr5xXNWxrf18kNt97ddnOMtZd1zbWplhboNe
+	UsAfEvc9SLGlszBEjEp1zIA9O1ZE++kQEH0Dd3Y5ZpdDWUf2Bd/xGCV4xvzN0N02ww==
+X-Google-Smtp-Source: AGHT+IFT2EEhMHS/nWXwbSrY+4dCwBEruz70IkDtMjsBcli1YmKK3OsF+Yso3JOinJ3eojPPPTTUkw==
+X-Received: by 2002:a05:620a:b84:b0:78b:e8a2:cc51 with SMTP id k4-20020a05620a0b8400b0078be8a2cc51mr9012910qkh.56.1712594431078;
+        Mon, 08 Apr 2024 09:40:31 -0700 (PDT)
+Received: from [10.76.84.174] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id c27-20020a05620a11bb00b0078d6574d609sm1240380qkk.52.2024.04.08.09.40.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Apr 2024 09:40:30 -0700 (PDT)
+Message-ID: <05ef3e35-1ce0-48c4-9517-e8c1280cf96d@gmail.com>
+Date: Mon, 8 Apr 2024 19:40:26 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/6] iio: adc: ad7173: fix buffers enablement for ad7176-2
+To: Jonathan Cameron <jic23@kernel.org>,
+ Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org>
+Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240401-ad4111-v1-0-34618a9cc502@analog.com>
+ <20240401-ad4111-v1-2-34618a9cc502@analog.com>
+ <20240406155646.694f710b@jic23-huawei>
+Content-Language: en-US
+From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
+In-Reply-To: <20240406155646.694f710b@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240408-mpu6050-i2c-gate-v1-1-621f051ce7de@z3ntu.xyz>
-X-B4-Tracking: v=1; b=H4sIAJgcFGYC/x3MSQqAMAxA0atI1gZijeNVxEXRqFk40KoI0rtbX
- L7F/y94cSoe2uQFJ7d63beILE1gWOw2C+oYDYYME1ON63GVVBCqGXC2pyCL5SoXbszEELPDyaT
- Pv+z6ED62G1XZYgAAAA==
-To: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org, 
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Luca Weiss <luca@z3ntu.xyz>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2368; i=luca@z3ntu.xyz;
- h=from:subject:message-id; bh=qvnGOQ4wjXBKzINryA0Oef5MwTy2fQxVBq/S+8Agw2Y=;
- b=owEBbQKS/ZANAwAIAXLYQ7idTddWAcsmYgBmFBycxBKS0t7+PhZbuZ4QPqgAnd1HaVGlCHuGC
- oHmew1B+IqJAjMEAAEIAB0WIQQ5utIvCCzakboVj/py2EO4nU3XVgUCZhQcnAAKCRBy2EO4nU3X
- Vv0ZD/9JNUtWSrR42AK5CKQoOxnEa2zSvCXJu2h3oOeeXjg1UFx7CSH7gG5jm4vd0vHzngHqpYH
- 0nRKJ4IyQSLcEIVZjugNvHsSha7qhhoFLPX9iHEVD9RNf+aWrERd1qDVsEfUWhtKkDYVnKkamA2
- ZniDBuGMfnB53mqSG7gUfqqmArP06/lOI2cjC3qfINdz9IOLdZaKy7I7G4cHPEM3Avy29n6GZ+V
- Yg38AdMkwBXvEPEwWsLRq+AwARZWlti9GHuISrEijRD9GOjS3MP5WgoYv620Q25T3ry71BmnfZ3
- PUNHjod7CpUxGHgmwDJyBPepbmK8TbTgly3anKaxWwmKkwDY4bWZwRqevu6KulBGoUbHAqZRc9b
- Vh7Tz7Ku9yo+vABOI2T5umZFj3dsl2QzDpiKEPUJuGawHEqhVkgKo4Lt3b6FxwTJYwk7B1MV2VE
- 842q0AJXfmDBY2Y4PtpuIYhBt5NpqIWzKcLt2dP2qyziCywwQI6PTqlWkyT6tSBA+e6GKgfZhef
- d2kb+KaSnm6aKqMiFIpQGS11Z4HkbQQCJhwegvF04EWNwBYSwj49V3lqJi6OGK74XR3M0UqMUlV
- x2686vNZLejkPcVbpHfFvTVKiZRmDuoZHMMjl0SR5/SRBSdWiM7q/X8u6imN1Jy/B4fMthhexSH
- 35oIqKaQ69TEaRg==
-X-Developer-Key: i=luca@z3ntu.xyz; a=openpgp;
- fpr=BD04DA24C971B8D587B2B8D7FAF69CF6CD2D02CD
 
-Before all supported sensors except for MPU{9150,9250,9255} were not
-allowed to use i2c-gate in the bindings which excluded quite a few
-supported sensors where this functionality is supported.
+On 06/04/2024 17:56, Jonathan Cameron wrote:
+> On Mon, 01 Apr 2024 18:32:20 +0300
+> Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
+> 
+>> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+>>
+>> AD7176-2 does not feature input buffers, enable buffers only on
+>>  supported models.
+>>
+>> Fixes: cff259bf7274 ("iio: adc: ad7173: fix buffers enablement for ad7176-2")
+>> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+> How bad is this?  If you can find out if writing those bits does anything
+> harmful (they are reserved and datasheet says should be written 0 I think)
+> That will help people decide whether to backport the fix?
 
-Switch the list of sensors to ones where the Linux driver explicitly
-disallows support for the auxiliary bus ("inv_mpu_i2c_aux_bus"). Since
-the driver is also based on "default: return true" this should scale
-better into the future.
-
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
----
-This fixes dt validation error on qcom-msm8974-lge-nexus5-hammerhead
-which uses mpu6515
-
-arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dtb: mpu6515@68: i2c-gate: False schema does not allow {'#address-cells': [[1]], '#size-cells': [[0]], 'ak8963@f': {'compatible': ['asahi-kasei,ak8963'], 'reg': [[15]], 'gpios': [[40, 67, 0]], 'vid-supply': [[50]], 'vdd-supply': [[49]]}, 'bmp280@76': {'compatible': ['bosch,bmp280'], 'reg': [[118]], 'vdda-supply': [[50]], 'vddd-supply': [[49]]}}
-        from schema $id: http://devicetree.org/schemas/iio/imu/invensense,mpu6050.yaml#
----
- .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
-index 297b8a1a7ffb..587ff2bced2d 100644
---- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
-+++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml
-@@ -62,14 +62,15 @@ properties:
- allOf:
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#
-   - if:
--      not:
--        properties:
--          compatible:
--            contains:
--              enum:
--                - invensense,mpu9150
--                - invensense,mpu9250
--                - invensense,mpu9255
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - invensense,iam20680
-+              - invensense,icm20602
-+              - invensense,icm20608
-+              - invensense,icm20609
-+              - invensense,icm20689
-     then:
-       properties:
-         i2c-gate: false
-
----
-base-commit: 8568bb2ccc278f344e6ac44af6ed010a90aa88dc
-change-id: 20240408-mpu6050-i2c-gate-4ea473e492f4
-
-Best regards,
--- 
-Luca Weiss <luca@z3ntu.xyz>
-
+The bits are marked as read-only and there does not seem to be any effect on the ADC.
+So drop this one?
 

@@ -1,121 +1,87 @@
-Return-Path: <linux-iio+bounces-4140-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4141-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C37589B42B
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Apr 2024 23:51:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ADED89BA38
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 10:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B08E71C20A94
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Apr 2024 21:51:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3788B22371
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 08:28:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570734437C;
-	Sun,  7 Apr 2024 21:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF5A2D05D;
+	Mon,  8 Apr 2024 08:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lGYN71X3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KCgs3AYs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EED71DFDE;
-	Sun,  7 Apr 2024 21:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AD638FA7;
+	Mon,  8 Apr 2024 08:27:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712526687; cv=none; b=lW4VXAcFXA46PKPJ5Psr2/fTJOQv/w7kpRZbQFuEMwMD7jqtrZbeuwXNtBjPTw/dp1KSXTxHsYTQbSkSu0xnpYq3yiOLQC73y5Qn7VI/CRimaLqL87QzW8eQWe5CHNIeZ9bVqnDEu87So0VMh2aWFm5pQUVg9eHOV2wnQKdCVd0=
+	t=1712564873; cv=none; b=kMT4P2diWVgte5cGPHHNy4hy8t8DgZ2Z4+r77qqXyDP0NYGxDAAbEKF2EK4MIKFd140B6lLWs1pedAzYjz7Eo/+zmYYJZs1QShwg7+Sv7V6IWql7j4zVQQu41KgRs25bxvE6i6NSm0g+G12G5LEdzRGe+EgP6r1ufPcjqrVTnSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712526687; c=relaxed/simple;
-	bh=f2BE/YI3xI3WQEaLDeBhgTVDQX30B7qq5OPHegjNfNs=;
+	s=arc-20240116; t=1712564873; c=relaxed/simple;
+	bh=iDRZ7NACy/T0uhiXZjIuXu3NxT/V6Mg0k8eu2ro0ehM=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tQoQGcyCfKzJJCsW15S0WIi1y8FHykikr6/knXAHlSO5I6yvNT688N0w4t4u42PaeMT84GRaegXTwSQ5AHjSnHAHd5N/trlM88t55d0LUUIV603uDbag33oh2adtkCuf7JhgWttKlcmUezFkwO9xnXCGh4o3C8jXSiQdfV5XFtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lGYN71X3; arc=none smtp.client-ip=209.85.221.47
+	 Content-Type:MIME-Version; b=DktipVVl20DTMawM7GbbiF6bGPnIA9kq/QVvFz/LWjLLfhUkSb6VjU94lOF9xdptpvjtL7K4TJof4qMu39RDCes+u4w67XT2mtjFdbyLy3bPuVAVunn3+QVpASYRG2jYSWrKpk+mCsCyG7/IxiB1rh9FdYfRHJXUicyawpB3A3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KCgs3AYs; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-343bccc0b2cso2773228f8f.1;
-        Sun, 07 Apr 2024 14:51:25 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a46a7208eedso606526366b.0;
+        Mon, 08 Apr 2024 01:27:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712526684; x=1713131484; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=f2BE/YI3xI3WQEaLDeBhgTVDQX30B7qq5OPHegjNfNs=;
-        b=lGYN71X34XvUBcOIYNCeoJnTTlMm1qizD0oygVHL305izSnmjzYHDYMZV8M223khto
-         4EGzPmmVPdrsgvjWbSwSxN0cVKNycgOsfSoXFnEU3dX/jRukHxzPWXcvwzAntdcPLIVy
-         kj/D3x6fnKhXdJbK3hmQD21NEuLoCpvWfoPPPWnMz7cn1DI6xS+zKcJWX/LRWHfcNRk2
-         G5Z7/5YMx3XRljafhqTwNpGmB0ESWQKROzG51t5RW4UYFfjm/EQzIGUfenqX80giVfbm
-         RKaogtjjurwZzqQnwXNukVPSTUGPszOvdZXN4Z1+IBeIZbHdveHHmJMRbYicxiZiB2++
-         8E+A==
+        d=gmail.com; s=20230601; t=1712564870; x=1713169670; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iDRZ7NACy/T0uhiXZjIuXu3NxT/V6Mg0k8eu2ro0ehM=;
+        b=KCgs3AYsklV3+jlY5WOBBM3eC9FaLZ970jZsdH1PdnsYFlezqFYbB1aWD+SH/+pHiz
+         cpuhPyGyNQxQ7RMl4YwjsCi+sVHcX94BOeMKlr5Y1M2MNZfCCfIfYhFH7KOcdiXFW2vw
+         1C7MMjTVbBwSoqfuxPwNX9hMlMEEpWbJaERlo7iFhXpdmUgJJSOLSxjiWYwS3XGEOqv4
+         npvDqlocUoLkz2Od++vdK2mDyflskHL+3S0G5sF5D2cWP9oxGxZdHoHGOvYSFMrOeHpt
+         VwrIwa7sd/Xn1vA2FRTWrBZzQJowp0lvlwQgIY/yKLBgu8xqSOQbwX6l9KffHUK+STJS
+         iyTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712526684; x=1713131484;
-        h=mime-version:user-agent:content-transfer-encoding:autocrypt
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f2BE/YI3xI3WQEaLDeBhgTVDQX30B7qq5OPHegjNfNs=;
-        b=v/6MMY/XQB9mSbmDdAI5IztnXwwbzzkswD+m1Kgy8Lsh/Pprc/xqfDAaFRZrzLcUNK
-         JCiXJzrrV6kUSctcfHbVVXBfJiElv8m+kB59GniI2qtZ7MDAG1NhfAIpVLK+LTcoOqF+
-         Dx9t+RNlWV5fGgMOVsuoeKL7ujdLo8sRDWaBXQmPjvvvXaOuEZHq5Xy/WiVd74kILhGb
-         /MfuWj/uuyzV54KOZlPsDAlZeecKTCe4/brxO8q+X72+fuUhsmC5/B68dJD5S/JiwoF+
-         FURN1ZpOGRpVslfE4kcci+6DdhPaEgcNzQTy9ddkJYjLKElQVXjzTkmbKhTrJIUqHEKw
-         ycIw==
-X-Forwarded-Encrypted: i=1; AJvYcCWLdkN/Me0M2zMkklD1fVX9oxp8X3JZpEu6HIG71hSG8IyCRyAslK55J3AVeKdhUwUnPNSxdxDxh4FAc+0Neh1572yEpKG1ITb6k57AdQif3l2WqqVEXtKBhQS+SvJ/Q4Wcfo49G5/o
-X-Gm-Message-State: AOJu0YxdYdGGUSwDJBSW7frNzssckq2NgY3l+9y9hqqFNq4rr7iCaxwz
-	/rvk/0U0OJ2IilM/rT/BQz3WbFX0nGbrmuo0FHk+pge80/HFNSuW
-X-Google-Smtp-Source: AGHT+IFNa8Pgxn6ToZdy8WzhCnupBKfVBgYlsCz1D41N1qsNSX2cEfMSiK4ubfGwaCOw7jETL0ZHzA==
-X-Received: by 2002:a5d:5985:0:b0:345:7fb2:4ced with SMTP id n5-20020a5d5985000000b003457fb24cedmr2250858wri.58.1712526683687;
-        Sun, 07 Apr 2024 14:51:23 -0700 (PDT)
-Received: from [192.168.90.25] (121.red-83-37-9.dynamicip.rima-tde.net. [83.37.9.121])
-        by smtp.gmail.com with ESMTPSA id k2-20020a5d5242000000b00343c0c24a65sm7389249wrc.89.2024.04.07.14.51.22
+        d=1e100.net; s=20230601; t=1712564870; x=1713169670;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=iDRZ7NACy/T0uhiXZjIuXu3NxT/V6Mg0k8eu2ro0ehM=;
+        b=LFP0pAKJPkQTLu0BqMuNVc5E3voU75J4Vi0Y2KWBVBZPQiJIITX3O4tH9VEh468Qaq
+         iq5bHxa4zBFNUIeQ8Ql3ioHjBwgKY7EkGNIshG7lUtOxMLgeNOpxwJtPcWPVB/1mN84I
+         u8y0Zz/KFEODZnSDidAu7hP5XUtxCq8U9dlnxI/UFBawVfSNuXbQeB3UjQkQrMv4sJ6F
+         eoxv812Uf9/5BLJBg8BaeAwpLLMA2NLDo8gqOZvwV3TaVmwe6MhKHP3iG1X8n0UyvTcz
+         tklRO40yZELEQbHMdeNnkCo21T/orxiMAhV1a/CQr+GFGvZtCmoTKZ8/t3c2KzYiLdD0
+         Rd8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUE6vbeJE8wFTgclqzWk9ydrRUaElo4MIa+iBSz7fxv85h7739jKQfF/mbCw6fvRV70vqdJmJhaprrGlZZiiV6SAvxHf9+Cwzy3
+X-Gm-Message-State: AOJu0YxgY0kBXgs7mLil5+PJ1DebVZecrP4WzNKKNXET4HMn0DurtccB
+	eZiy6in6OWZB9KCbvBbQ/eDBCUVr7RxK/35T7sdmNqLuC2OvciNO
+X-Google-Smtp-Source: AGHT+IHg5+lrP7tvoC+ALMJ4gdEovq3a1kuvBB+v2TYMUycN77t34ozFlvzlLhjogKeEl+Oztg8+Lg==
+X-Received: by 2002:a17:907:7293:b0:a51:aebf:7e4c with SMTP id dt19-20020a170907729300b00a51aebf7e4cmr5655739ejc.9.1712564869512;
+        Mon, 08 Apr 2024 01:27:49 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
+        by smtp.gmail.com with ESMTPSA id h21-20020a1709066d9500b00a4dacd6b8b3sm4159224ejt.68.2024.04.08.01.27.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 07 Apr 2024 14:51:23 -0700 (PDT)
-Message-ID: <57fe9ec305efff58a2ef1e2ba6e334f042a2ad77.camel@gmail.com>
-Subject: Re: [PATCH v4 0/6] Driver cleanup and series to add triggered buffer
-From: Angel Iglesias <ang.iglesiasg@gmail.com>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>, jic23@kernel.org
-Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com, 
- mazziesaccount@gmail.com, ak@it-klinger.de, petre.rodan@subdimension.ro, 
- phil@raspberrypi.com, 579lpy@gmail.com, u.kleine-koenig@pengutronix.de, 
- biju.das.jz@bp.renesas.com, linus.walleij@linaro.org,
- semen.protsenko@linaro.org,  linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Date: Sun, 07 Apr 2024 23:51:22 +0200
-In-Reply-To: <20240407172920.264282-1-vassilisamir@gmail.com>
-References: <20240407172920.264282-1-vassilisamir@gmail.com>
-Autocrypt: addr=ang.iglesiasg@gmail.com; prefer-encrypt=mutual;
- keydata=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
+        Mon, 08 Apr 2024 01:27:49 -0700 (PDT)
+Message-ID: <b6c6700d924916dd09afd2878321a7c87b8e922d.camel@gmail.com>
+Subject: Re: [PATCH v1] iio: adc: ad_sigma_delta: Clear pending interrupts
+ before enable
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>, Markus Burri <markus.burri@mt.com>
+Cc: linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ linux-iio@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>
+Date: Mon, 08 Apr 2024 10:31:21 +0200
+In-Reply-To: <20240406171728.16170b48@jic23-huawei>
+References: <20240404175126.110208-1-markus.burri@mt.com>
+	 <20240406171728.16170b48@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.0 (by Flathub.org) 
+User-Agent: Evolution 3.52.0 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -123,18 +89,55 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sun, 2024-04-07 at 19:29 +0200, Vasileios Amoiridis wrote:
-> Based on next-20240405.
+On Sat, 2024-04-06 at 17:17 +0100, Jonathan Cameron wrote:
+> On Thu,=C2=A0 4 Apr 2024 19:51:26 +0200
+> Markus Burri <markus.burri@mt.com> wrote:
+>=20
+> Hi Markus,
+>=20
+>=20
+> > For device will enable and disable irq contiously like AD7195,
+> > it use DOUT/RDY pin for both SPI transfer and data ready.
+> > It will disable irq during SPI transfer, and re-eanble irq after SPI
+> > transfer.
+> > That may cause irq status bit set to 1 during spi transfer.
+>=20
+> Superficially that sounds like it might be an irq driver bug to me...
+> Or just possibly an irq chip doing lazy disabling?
 
-Hi there! Small tip, with git's format-patch, you can include this informat=
-ion
-for the people applying the patches with the argument --base=3D<commit or b=
-ranch>.
-This will point to git the base commit from which the series build the
-changeset.
+Yes, this sounds odd as we are already explicitly disabling lazy disabling:
 
-Kind regards,
-Angel
+https://elixir.bootlin.com/linux/latest/source/drivers/iio/adc/ad_sigma_del=
+ta.c#L589
 
+>=20
+> >=20
+> > When the active condition has been detected, the corresponding bit
+> > remains set until cleared by software. Status flags are cleared
+> > by writing a 1 to the corresponding bit position.
+> >=20
+> > Signed-off-by: Markus Burri <markus.burri@mt.com>
+>=20
+> I'll need an appropriate ADI ack for this one.
+>=20
 
+Yeah, I wanted to reply to this one Friday but then completely forgot. I ca=
+n't
+really ack this one. I would need some insights from someone with more core=
+ IRQ
+knowledge. But...
+
+> It seems highly unusual to be calling a generic irqchip related function =
+in a
+> driver (there are no other such users).=C2=A0 So this seems unlikely to b=
+e
+> the right fix for this particular problem.
+>=20
+
+Yes, and this (I think) would not even fix (if a fix is needed) this for al=
+l
+irqchips which to me already sounds not the way to go.
+
+- Nuno S=C3=A1
+>=20
 

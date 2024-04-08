@@ -1,168 +1,187 @@
-Return-Path: <linux-iio+bounces-4151-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4155-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 663AD89BC57
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 11:52:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47F9189C71D
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 16:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A44F1C212A8
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 09:52:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF489284D29
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 14:31:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9A34D10A;
-	Mon,  8 Apr 2024 09:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EC913D284;
+	Mon,  8 Apr 2024 14:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wfk4lDvE"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="d0g6MJwQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0254C62E
-	for <linux-iio@vger.kernel.org>; Mon,  8 Apr 2024 09:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AC0413D264;
+	Mon,  8 Apr 2024 14:31:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712569948; cv=none; b=SBlE5enGcD6OZfGJ6ZSnDz7NQzNU0bubu4RA0g97qEY8mXKpA/AFRYonrJXPel+DAshebzMdyglzNwK9ryRmryCCxPGHZmdwba2WTpuDsDdoEAy/XYp8V4iH61Zt4/NZKiFAHJqLDRfEh9IOf5AwaaGDyw5B2vuZCLzuFTswd+E=
+	t=1712586705; cv=none; b=Fjjjc/dNp2kvkZ3rxxo5ejvzE+msCGdpvCUIr05aHOegw6WpPpePo+wUhRLE0dJXJSuuBrjnxrmTVHPRt73YFULTBnoqnq96mr3Jy0wnQ12fQhieMae17I5GJMU3Jz2xnZ2oJLt+mtaXDzoiZUwpocTymPUThnZ+NYr+4ayDheY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712569948; c=relaxed/simple;
-	bh=8NDNzea5ccXfcLHSxLqgkSNK9J82qxWM8O92ulqUr+8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QKz76b8y+SV2J90JHcCvBKiSw1r7uNWymaA1g2PDG6KlM/NtHS83OASTDuw9JuOIhbG6xrmTi9ZLP/1IGZD5cmrFOPM/1DKvcnD/5nE/ewXM+IiBz7VI5IQbfAWTAi3wZtXbyJxjWvPJ5pSqlRpIZKZwuURYvkhGu3lJ9Hucqdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wfk4lDvE; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5684db9147dso5603182a12.2
-        for <linux-iio@vger.kernel.org>; Mon, 08 Apr 2024 02:52:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712569944; x=1713174744; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=GCMUzPyK00k87Jw5sHkWba5FiMib4VTOJ9PqHifwIPQ=;
-        b=wfk4lDvEGQRSEhIlENjuwgB/klRJTkMROq+EjgFhW8S8mG7LczTtGLN6I0xptyLF6u
-         wfvbyh06Ny/Hzj35SuJ37jOmBrLysEzz7P22/qC+VQGlDYlNvv+DJb9sl+r/+wfL9uTz
-         OKkhiZGv4oVq63C+YXWahw1Ba/mYKiuDD8y1Y4E+3wycE0udTrzuNJu42yrDaWgbTJoZ
-         b4rEL/eaadlMZ5DCtWZXMLdaCjdOUNyK/96hMyaSM5EVnttlL3BBfhmtDM0uM6yisOXM
-         +75vZzqFup3gPbkV+K9WuALYfv64qGGiM+B81owDQZddvmhEUWVE3dK1RwyriIuFuI1S
-         q6nw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712569944; x=1713174744;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GCMUzPyK00k87Jw5sHkWba5FiMib4VTOJ9PqHifwIPQ=;
-        b=WTYXQYcCUNNiJiyo/QS2OWfQFCTs96Xtf8ltFO6Y1ToVIglVr4ILIoXxnEXhS8G2sB
-         Wn6OpyzKNRQc/j3fvskTe2VTlsD4NWr3oH5Xz9r1UnL6+qrCmACVghPEDFxez5kz8LNi
-         Gf7rsb4REXZfkIoBTn17CyekQtzin1c79sfBNUm4zBwP2fOn1qjG1roMws53tP5youof
-         sX+yE21Jj+IjzsxQ+HgSniaU7UhTw5nrhKnltL3sv4+uT0VO5mjJPL95DnYViPEUj+ka
-         taA0D3mVuttB/l3MTxg80JP1qzR3/x5iglGpQEvoCYg6v5XIHcgBoKYgdRMwHWRr8ShI
-         NKnw==
-X-Forwarded-Encrypted: i=1; AJvYcCUYVDAisOSdCbI6no4gK1iCQLCBrwsm+s011+SPvwTJCRiMLiOjGdBa4qvlwsiwBW0DP1D9hQW26nWwFA1bI09iAfC9VRzTsWKa
-X-Gm-Message-State: AOJu0YwobqwVdoHnqHuFUxKXZZQ1kS2Mjo6UDLWB7YWogtaTDVt6ep+H
-	l2fI3UKkNvV+mCUk/yXpzg6zr7aiLfr9c4gfdEwqyUUtzFQVdu7TRb2YL83qjzI=
-X-Google-Smtp-Source: AGHT+IEsrOhbe9PaPfGhogJAEej5OdI3r1yjGhHxAnP21dHKBc9PFDnaYDstoOljgHXx570ugzC7EA==
-X-Received: by 2002:a17:906:d787:b0:a51:a0e6:1b20 with SMTP id pj7-20020a170906d78700b00a51a0e61b20mr5090218ejb.55.1712569944074;
-        Mon, 08 Apr 2024 02:52:24 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id qa34-20020a17090786a200b00a519423fdaesm4176836ejc.122.2024.04.08.02.52.22
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Apr 2024 02:52:23 -0700 (PDT)
-Message-ID: <993a250a-37e7-4dc3-9f37-78c92538551b@linaro.org>
-Date: Mon, 8 Apr 2024 11:52:21 +0200
+	s=arc-20240116; t=1712586705; c=relaxed/simple;
+	bh=EvtVPmC2a8GrbYiUa8nf5b5/yGVqGSuBquGmjhHCG2A=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A0w5DL942+0vUrgNbFbTRJZTuNiQAuHmJi9STgte+NKujwOQHQ974zzJPOEt8/e4F+Yy03M66EY8Nkz3u08fVvryY8OTDc2E9+Np7NZ6hmEEEZwreCnhmzgZF+mNjQZTSQ5Oq4HYFXSFvPqcGnR8RRV48SCshKbKOxJyisfhyq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=d0g6MJwQ; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 438BnEZ7027951;
+	Mon, 8 Apr 2024 10:31:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=DKIM; bh=J3KVBpz+p8Bb
+	sjloP3ipPohes/eBdHpznTwlRE3dPvo=; b=d0g6MJwQB5mLa6mCosEhjwhqEgYG
+	Ea/+SjLmEZ1hDc7cLYrHdtwkMj3rh8Z9sL3VxgCSmodItHDq/L7S4LJxoVEJqzBj
+	sCVA71bLOB6QqnGGQvqeae2vdBIWOoKOKk1y2JlAQJfUeMJKtk3kbh+gwvusajvQ
+	2aTwzf9JVbY2KYH1I81enLnohEdBcL323tRd9iK3ZnQLeTiZ7Yssy/EKL3Hq/Adq
+	mSsIWyqZT++B7/5MNTiEgniJ5ESFyesV77kIRNoOTA2PIwB+adnulAWNdM/qIXvB
+	A6aWXIgY7sOnWK1vqvaLIRpIqAORfCn0ieS53m25u1mqpmIG/bt3yzERwg==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3xcbbn1qf1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 08 Apr 2024 10:31:14 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 438EVDkF039117
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 8 Apr 2024 10:31:13 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 8 Apr 2024
+ 10:31:12 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 8 Apr 2024 10:31:12 -0400
+Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.129])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 438EUsew017936;
+	Mon, 8 Apr 2024 10:30:57 -0400
+From: Marcelo Schmitt <marcelo.schmitt@analog.com>
+To: <lars@metafoo.de>, <Michael.Hennerich@analog.com>, <jic23@kernel.org>,
+        <robh+dt@kernel.org>, <krzysztof.kozlowski+dt@linaro.org>,
+        <conor+dt@kernel.org>, <marcelo.schmitt1@gmail.com>
+CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 0/2] Add support for AD4000 series
+Date: Mon, 8 Apr 2024 11:30:50 -0300
+Message-ID: <cover.1712585500.git.marcelo.schmitt@analog.com>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: imu: add icm42688 inside
- inv_icm42600
-To: inv.git-commit@tdk.com, jic23@kernel.org, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-References: <20240408090720.847107-1-inv.git-commit@tdk.com>
- <20240408090720.847107-2-inv.git-commit@tdk.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240408090720.847107-2-inv.git-commit@tdk.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: QoTcOSGl1jWg0r1YwsM7F9Amu-qwkuT3
+X-Proofpoint-ORIG-GUID: QoTcOSGl1jWg0r1YwsM7F9Amu-qwkuT3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-08_12,2024-04-05_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
+ suspectscore=0 spamscore=0 bulkscore=0 malwarescore=0 mlxlogscore=999
+ impostorscore=0 priorityscore=1501 adultscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404080111
 
-On 08/04/2024 11:07, inv.git-commit@tdk.com wrote:
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> 
-> Add bindings for ICM-42688-P chip.
-> 
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> ---
+This is more like an RFC patch set since configuration read/write is currently
+buggy.
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Change log v1 -> v2:
+- Took device tree provided by David.
+- Dropped ABI additions in favor of device tree properties.
+- Set differential IIO channel subtype for differential ADCs.
+- Set scan_type shift bits to mask out correct real bits from buffer.
+- Added __aligned(8) to buffer timestamp.
+- Used union to reduce buffer memory usage for 16-bit devices.
+- Used SPI transfer functions rather than SPI message.
+- Used c99 style structure initialization.
+- Used iio_device_claim_direct_scoped().
+- Removed unneeded pointer casts.
+- Added other power supplies (VDD and VIO).
+
+Link to v1: https://lore.kernel.org/linux-iio/cover.1711131830.git.marcelo.schmitt@analog.com/
+
+Additional topics:
+
+- Why there is no different handling for the different SPI wiring modes?
+It looks like there is no need for different handling of "4-wire" and "3-wire"
+modes.
+If in "4-wire" (dt default mode), SDI is connected to SPI controller CS and
+CNV is active high. We can activate the CNV GPIO then let the SPI controller
+bring CS (connected to SDI) down when starting the transfer.
+If in "3-wire" (dt single mode), if we have a CNV (active low) GPIO we activate
+it and then proceed with with the transfer. If controller CS is connected to
+CNV it works the same way.
+I'm thinking it's better if we can support these devices in similar way
+other SPI ADCs are supported. Does that make sense?
+To me, the "3-wire" mode with controller CS to ADC CNV is what most resembles
+conventional SPI. The only important distinction is that the
+controller must be able to keep ADC SDI line high during conversions.
+Although, while the spi-engine implementation provided to me can keep SDI up
+during conversions, I'm not sure its a thing all SPI controllers can do.
+I tried a raspberry pi 4 some time ago and it was leaving the SDI line low if
+no tx buffer was provided. Even with a tx full of 1s the controller would 
+bring SDI down between each 8 bits of transfer.
+Anyway, single-shot and buffered reads work with the spi-engine controller
+with ADC in "3-wire"/single mode with controller CS line connected to ADC CNV
+pin which is how I've been testing it.
+
+- Why did not make vref regulator optional?
+Other SAR ADCs I've seen needed a voltage reference otherwise they simply
+could not provide any reasonable readings. Isn't it preferable to fail rather
+than having a device that can't provide reliable data?
+
+- Why did not split into AD and ADAQ patches?
+The main difference between AD and ADAQ is the amplifier in front of the ADC.
+If only supporting AD, we could probably avoid the scale table since it would
+only have two possible values per ADC. But then the handling of span compression
+scale would need refactoring to be in the scale table when adding ADAQ.
+I'm not excited to implement something knowing it will need rework in the
+following patch. Will do if required.
+
+- Span compression and offset.
+For non-differential ADCs, enabling the span compression requires an input offset.
+Link: https://www.analog.com/media/en/technical-documentation/data-sheets/AD4000-4004-4008.pdf
+page 18
+and
+Link: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4002-4006-4010.pdf
+page 19
+I updated the _offset attribute for those ADCs according to span compression
+being enabled or not. Is it okay to have an attribute update cause an update to
+another one?
+Maybe also make the span compression a dt property and have it fixed after probe?
+
+- Configuration register
+Despite it doing single-shot and buffered captures, read and writes to the
+configuration register are currently buggy. It is as if the register was
+"floating". I tried setting up buffers like ad7768-1, adxl355_core, bma220_spi,
+bma400_core, and mcp3911.
 
 
----
+Thanks,
+Marcelo
 
-This is an automated instruction, just in case, because many review tags
-are being ignored. If you know the process, you can skip it (please do
-not feel offended by me posting it here - no bad intentions intended).
-If you do not know the process, here is a short explanation:
+Marcelo Schmitt (2):
+  dt-bindings: iio: adc: Add AD4000
+  iio: adc: Add support for AD4000
 
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, under or above your Signed-off-by tag. Tag is "received", when
-provided in a message replied to you on the mailing list. Tools like b4
-can help here. However, there's no need to repost patches *only* to add
-the tags. The upstream maintainer will do that for tags received on the
-version they apply.
+ .../bindings/iio/adc/adi,ad4000.yaml          | 201 ++++++
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  12 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/ad4000.c                      | 649 ++++++++++++++++++
+ 5 files changed, 871 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+ create mode 100644 drivers/iio/adc/ad4000.c
 
-https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
-
-Best regards,
-Krzysztof
+-- 
+2.43.0
 
 

@@ -1,84 +1,86 @@
-Return-Path: <linux-iio+bounces-4141-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4142-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADED89BA38
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 10:28:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E74789BA74
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 10:38:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3788B22371
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 08:28:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B0222835CE
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 08:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF5A2D05D;
-	Mon,  8 Apr 2024 08:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2DF38FA7;
+	Mon,  8 Apr 2024 08:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KCgs3AYs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BpyG0kzu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AD638FA7;
-	Mon,  8 Apr 2024 08:27:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CB610E9;
+	Mon,  8 Apr 2024 08:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712564873; cv=none; b=kMT4P2diWVgte5cGPHHNy4hy8t8DgZ2Z4+r77qqXyDP0NYGxDAAbEKF2EK4MIKFd140B6lLWs1pedAzYjz7Eo/+zmYYJZs1QShwg7+Sv7V6IWql7j4zVQQu41KgRs25bxvE6i6NSm0g+G12G5LEdzRGe+EgP6r1ufPcjqrVTnSQ=
+	t=1712565487; cv=none; b=Yzt/lVyEzRr0YdcH+j6wxdP7/7MSgqoJsvUXx3yI7WXUXwShky44pWGBzlV/VhNdd5g0Pg/sI+TzxyYG7qTLUSqQmdkTgBLcMcCcLTjeIdzVKKZ6rBPNSTLwRu/4VmMRNrp/rkn9f3QpLr/5nyXG+7oiMLs83GcEwWejiUGoun0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712564873; c=relaxed/simple;
-	bh=iDRZ7NACy/T0uhiXZjIuXu3NxT/V6Mg0k8eu2ro0ehM=;
+	s=arc-20240116; t=1712565487; c=relaxed/simple;
+	bh=rrM4TxubxqPeEYOH+wck6tg3nhRCRKAf7aYuz1HQhoE=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DktipVVl20DTMawM7GbbiF6bGPnIA9kq/QVvFz/LWjLLfhUkSb6VjU94lOF9xdptpvjtL7K4TJof4qMu39RDCes+u4w67XT2mtjFdbyLy3bPuVAVunn3+QVpASYRG2jYSWrKpk+mCsCyG7/IxiB1rh9FdYfRHJXUicyawpB3A3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KCgs3AYs; arc=none smtp.client-ip=209.85.218.41
+	 Content-Type:MIME-Version; b=kJx9P/8a4XC5CzRpqWkZefKGUCtu0qiLkV7A2GnNEUbM9WWjoF8KXDxWeXMRpHM/g2/5va5AxsPt/Wi+7EldvYOssyX9z37o3s258YIpwRorpwOjvejNkWGRKzuzbDsYdtxKegj5eAkJOA7rmCNtGKvXz3Ap2a/YdRoYhdqQ/M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BpyG0kzu; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a46a7208eedso606526366b.0;
-        Mon, 08 Apr 2024 01:27:51 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a51a1c8d931so331559066b.0;
+        Mon, 08 Apr 2024 01:38:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712564870; x=1713169670; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1712565484; x=1713170284; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=iDRZ7NACy/T0uhiXZjIuXu3NxT/V6Mg0k8eu2ro0ehM=;
-        b=KCgs3AYsklV3+jlY5WOBBM3eC9FaLZ970jZsdH1PdnsYFlezqFYbB1aWD+SH/+pHiz
-         cpuhPyGyNQxQ7RMl4YwjsCi+sVHcX94BOeMKlr5Y1M2MNZfCCfIfYhFH7KOcdiXFW2vw
-         1C7MMjTVbBwSoqfuxPwNX9hMlMEEpWbJaERlo7iFhXpdmUgJJSOLSxjiWYwS3XGEOqv4
-         npvDqlocUoLkz2Od++vdK2mDyflskHL+3S0G5sF5D2cWP9oxGxZdHoHGOvYSFMrOeHpt
-         VwrIwa7sd/Xn1vA2FRTWrBZzQJowp0lvlwQgIY/yKLBgu8xqSOQbwX6l9KffHUK+STJS
-         iyTw==
+        bh=rrM4TxubxqPeEYOH+wck6tg3nhRCRKAf7aYuz1HQhoE=;
+        b=BpyG0kzuGqyxC08raoFpvDqedHM7NSMH42mYd7wXN+QhiuY8dX58vsiuqeLyOKY0b8
+         vo725qLccRf8Mdt2qFHT+Oe9c+tlqN5Qcka0A04nJLtk8AERdrJJvXeP7FIOJl3/5/xM
+         aZ5gbq0Y3nF4/l2tgDFZjAOvddZVMVTFKZ3EoPURSP2L4pqRqey+wmjq8zyka58MikdH
+         1RMa2SfRF/KilqlNCAsF/D78CMVkEjDlid2BnZZzTfGKXpomSb3YH8ys5/U3j1pfZz0P
+         ekRikUePvraMK/gttSuFgnZPHQkoI6/nru+10kKQml5sRXVC+epoR8cy0Fx5wLx50h41
+         En+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712564870; x=1713169670;
+        d=1e100.net; s=20230601; t=1712565484; x=1713170284;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=iDRZ7NACy/T0uhiXZjIuXu3NxT/V6Mg0k8eu2ro0ehM=;
-        b=LFP0pAKJPkQTLu0BqMuNVc5E3voU75J4Vi0Y2KWBVBZPQiJIITX3O4tH9VEh468Qaq
-         iq5bHxa4zBFNUIeQ8Ql3ioHjBwgKY7EkGNIshG7lUtOxMLgeNOpxwJtPcWPVB/1mN84I
-         u8y0Zz/KFEODZnSDidAu7hP5XUtxCq8U9dlnxI/UFBawVfSNuXbQeB3UjQkQrMv4sJ6F
-         eoxv812Uf9/5BLJBg8BaeAwpLLMA2NLDo8gqOZvwV3TaVmwe6MhKHP3iG1X8n0UyvTcz
-         tklRO40yZELEQbHMdeNnkCo21T/orxiMAhV1a/CQr+GFGvZtCmoTKZ8/t3c2KzYiLdD0
-         Rd8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUE6vbeJE8wFTgclqzWk9ydrRUaElo4MIa+iBSz7fxv85h7739jKQfF/mbCw6fvRV70vqdJmJhaprrGlZZiiV6SAvxHf9+Cwzy3
-X-Gm-Message-State: AOJu0YxgY0kBXgs7mLil5+PJ1DebVZecrP4WzNKKNXET4HMn0DurtccB
-	eZiy6in6OWZB9KCbvBbQ/eDBCUVr7RxK/35T7sdmNqLuC2OvciNO
-X-Google-Smtp-Source: AGHT+IHg5+lrP7tvoC+ALMJ4gdEovq3a1kuvBB+v2TYMUycN77t34ozFlvzlLhjogKeEl+Oztg8+Lg==
-X-Received: by 2002:a17:907:7293:b0:a51:aebf:7e4c with SMTP id dt19-20020a170907729300b00a51aebf7e4cmr5655739ejc.9.1712564869512;
-        Mon, 08 Apr 2024 01:27:49 -0700 (PDT)
+        bh=rrM4TxubxqPeEYOH+wck6tg3nhRCRKAf7aYuz1HQhoE=;
+        b=XEXBVhHzKoHDK5pkrgOTZa0UrI/BgQ/IStidpxGbQpw1SZwglwxqVNdmVQ7mpQegnB
+         xtNGx4YnSR5IpEJ63lIxJ3OFcyZVQhM9Ko1aQ4uwv+lec3+imBAqiayf6JmCAbMwDWMp
+         N0E4/NviiZybhuECc8rMZySFWzOXUU3QmX+/L1MC3QHXbFQC4EcIkhStWALJ/IdZUsw2
+         sfTspqGHiyEVpB2zdAtmAO22vHyb1zskFDnAa7MM+89iYfOT8J8mnVd7XyRHY85a+BCi
+         VP3ON2hIBFRAPC/RY/TDJP/a07m+/IEQ54+tpRTjjzwFuPrvnbDn9/iofsIu0QIY59Bn
+         vyFw==
+X-Forwarded-Encrypted: i=1; AJvYcCViEmWo8wLsN9WJxBoHLaw2PNkP6TybPBAU+lEPVI/NSsJPn4pLed0uPOydesQ2ZXhGCAEkL0G94BOq0XOpd+hrYw7cxgbsMTe4zA==
+X-Gm-Message-State: AOJu0YzM+l6NrV2vIkTqLsoT7++QnfuvqJatcl0aMFT5K1UP2HsQ/GKm
+	PkM0c9T2vNdSz8MRAwg9vkXcQqF6ZgESMukhXHpixbSwqsXkw17EwZqqcTPaKLyYBw==
+X-Google-Smtp-Source: AGHT+IGZITCwEhqKnga08lueR88bZHZNvfA+2v34n+8j0x6NZXchZuKLHpZl8KpUG0XsMiHxkhBSFA==
+X-Received: by 2002:a17:907:175d:b0:a51:99b8:9dc1 with SMTP id lf29-20020a170907175d00b00a5199b89dc1mr4851255ejc.51.1712565483514;
+        Mon, 08 Apr 2024 01:38:03 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id h21-20020a1709066d9500b00a4dacd6b8b3sm4159224ejt.68.2024.04.08.01.27.48
+        by smtp.gmail.com with ESMTPSA id en1-20020a17090728c100b00a51adace6ebsm3552256ejc.79.2024.04.08.01.38.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Apr 2024 01:27:49 -0700 (PDT)
-Message-ID: <b6c6700d924916dd09afd2878321a7c87b8e922d.camel@gmail.com>
-Subject: Re: [PATCH v1] iio: adc: ad_sigma_delta: Clear pending interrupts
- before enable
+        Mon, 08 Apr 2024 01:38:03 -0700 (PDT)
+Message-ID: <b79b30bcaab03d2bcfc096829cdb443712376da9.camel@gmail.com>
+Subject: Re: [PATCH v2 09/11] iio: backend: add new functionality
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, Markus Burri <markus.burri@mt.com>
-Cc: linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>,
- linux-iio@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>
-Date: Mon, 08 Apr 2024 10:31:21 +0200
-In-Reply-To: <20240406171728.16170b48@jic23-huawei>
-References: <20240404175126.110208-1-markus.burri@mt.com>
-	 <20240406171728.16170b48@jic23-huawei>
+To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Dragos Bogdan
+ <dragos.bogdan@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>,  Olivier Moysan <olivier.moysan@foss.st.com>
+Date: Mon, 08 Apr 2024 10:41:35 +0200
+In-Reply-To: <20240406173248.2a574251@jic23-huawei>
+References: <20240405-iio-backend-axi-dac-v2-0-293bab7d5552@analog.com>
+	 <20240405-iio-backend-axi-dac-v2-9-293bab7d5552@analog.com>
+	 <20240406173248.2a574251@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.0 
@@ -89,54 +91,69 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sat, 2024-04-06 at 17:17 +0100, Jonathan Cameron wrote:
-> On Thu,=C2=A0 4 Apr 2024 19:51:26 +0200
-> Markus Burri <markus.burri@mt.com> wrote:
+On Sat, 2024-04-06 at 17:32 +0100, Jonathan Cameron wrote:
+> On Fri, 5 Apr 2024 17:00:07 +0200
+> Nuno Sa <nuno.sa@analog.com> wrote:
 >=20
-> Hi Markus,
->=20
->=20
-> > For device will enable and disable irq contiously like AD7195,
-> > it use DOUT/RDY pin for both SPI transfer and data ready.
-> > It will disable irq during SPI transfer, and re-eanble irq after SPI
-> > transfer.
-> > That may cause irq status bit set to 1 during spi transfer.
->=20
-> Superficially that sounds like it might be an irq driver bug to me...
-> Or just possibly an irq chip doing lazy disabling?
-
-Yes, this sounds odd as we are already explicitly disabling lazy disabling:
-
-https://elixir.bootlin.com/linux/latest/source/drivers/iio/adc/ad_sigma_del=
-ta.c#L589
-
->=20
+> > This adds the needed backend ops for supporting a backend inerfacing
+> > with an high speed dac. The new ops are:
 > >=20
-> > When the active condition has been detected, the corresponding bit
-> > remains set until cleared by software. Status flags are cleared
-> > by writing a 1 to the corresponding bit position.
+> > * data_source_set();
+> > * set_sampling_freq();
+> > * extend_chan_spec();
+> > * ext_info_set();
+> > * ext_info_get().
 > >=20
-> > Signed-off-by: Markus Burri <markus.burri@mt.com>
+> > Also to note the new helpers that are meant to be used by the backends
+> > when extending an IIO channel (adding extended info):
+> >=20
+> > * iio_backend_ext_info_set();
+> > * iio_backend_ext_info_get().
+> >=20
+> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 >=20
-> I'll need an appropriate ADI ack for this one.
+> Whilst the code for the backend retrieval callback is simple
+> I wonder if we are better off just not having it for now.
 >=20
-
-Yeah, I wanted to reply to this one Friday but then completely forgot. I ca=
-n't
-really ack this one. I would need some insights from someone with more core=
- IRQ
-knowledge. But...
-
-> It seems highly unusual to be calling a generic irqchip related function =
-in a
-> driver (there are no other such users).=C2=A0 So this seems unlikely to b=
-e
-> the right fix for this particular problem.
+> Keep the infrastructure that checks for the default approach not working
+> but don't actually provide the alternative until we need it.
 >=20
 
-Yes, and this (I think) would not even fix (if a fix is needed) this for al=
-l
-irqchips which to me already sounds not the way to go.
+Yeps, agreed. That's why I brought it up in the cover. I'll place a comment
+stating we're aware and what may be the proper solution and have it when ne=
+eded.
+
+> Advantage is pretty minor though so maybe just keep it.
+> Unless others have strong opinions, up to you to decide whether to keep i=
+t.
+
+> One trivial thing noticed inline.
+>=20
+> > ---
+> > =C2=A0drivers/iio/industrialio-backend.c | 179
+> > +++++++++++++++++++++++++++++++++++++
+> > =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 49 ++++++++++
+> > =C2=A02 files changed, 228 insertions(+)
+> >=20
+> > diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industria=
+lio-
+> > backend.c
+> > index 2fea2bbbe47f..ac554798897f 100644
+> > --- a/drivers/iio/industrialio-backend.c
+> > +++ b/drivers/iio/industrialio-backend.c
+> > @@ -29,6 +29,7 @@
+> > =C2=A0 *
+> > =C2=A0 * Copyright (C) 2023-2024 Analog Devices Inc.
+> > =C2=A0 */
+> > +#include "asm-generic/errno-base.h"
+>=20
+> You'll need a strong reason if you want to do that include rather than
+> a normal one like linux/errno.h
+>=20
+
+Hmm crap, Fairly sure this was clangd automatically adding the header file.
+Sometimes it's actually useful. Not in this case :)
 
 - Nuno S=C3=A1
 >=20

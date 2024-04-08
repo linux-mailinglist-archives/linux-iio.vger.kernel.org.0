@@ -1,86 +1,87 @@
-Return-Path: <linux-iio+bounces-4142-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4143-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E74789BA74
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 10:38:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD6289BA78
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 10:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B0222835CE
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 08:38:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5893B20FDF
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 08:39:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2DF38FA7;
-	Mon,  8 Apr 2024 08:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D59A838FB9;
+	Mon,  8 Apr 2024 08:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BpyG0kzu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KH70WkZ7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CB610E9;
-	Mon,  8 Apr 2024 08:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AB13B298;
+	Mon,  8 Apr 2024 08:39:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712565487; cv=none; b=Yzt/lVyEzRr0YdcH+j6wxdP7/7MSgqoJsvUXx3yI7WXUXwShky44pWGBzlV/VhNdd5g0Pg/sI+TzxyYG7qTLUSqQmdkTgBLcMcCcLTjeIdzVKKZ6rBPNSTLwRu/4VmMRNrp/rkn9f3QpLr/5nyXG+7oiMLs83GcEwWejiUGoun0=
+	t=1712565569; cv=none; b=dfMGgSUdQH4EoZ+kD8F1kPHkyxGhqI3pPXYAsTWEI43GD7B2Ngur8x1p30ojUWpku1DGOU7o6e7FpDfpV61U7VdkWIIomwaIRSdtEzbd/+fFs6cFkZ1uEIA6PhPXI0xQZ+WOnOhkZ9uEiiFl+dS2LC+TLkSlKZA+Qf79FZqSl6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712565487; c=relaxed/simple;
-	bh=rrM4TxubxqPeEYOH+wck6tg3nhRCRKAf7aYuz1HQhoE=;
+	s=arc-20240116; t=1712565569; c=relaxed/simple;
+	bh=1qROFuujq2tL9WuXLtizRkvBECBqPbdKvVLQMOBmYC0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=kJx9P/8a4XC5CzRpqWkZefKGUCtu0qiLkV7A2GnNEUbM9WWjoF8KXDxWeXMRpHM/g2/5va5AxsPt/Wi+7EldvYOssyX9z37o3s258YIpwRorpwOjvejNkWGRKzuzbDsYdtxKegj5eAkJOA7rmCNtGKvXz3Ap2a/YdRoYhdqQ/M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BpyG0kzu; arc=none smtp.client-ip=209.85.218.54
+	 Content-Type:MIME-Version; b=EyBKMVfrIzLGL5pLv/mBho6qddGasRFEi5j/J94vdjT9/yFUXh56bZGtsXzomPXQGSlmjDdfl8IPK9/b41nU1m9uCgR5p0ldbWD+yFgpisqK3K4t4r5ker9F5byEsp/t3Rmm6yzVe2L1AgpQnGPOdtQFB74V1M9nwz4qAsoBEY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KH70WkZ7; arc=none smtp.client-ip=209.85.218.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a51a1c8d931so331559066b.0;
-        Mon, 08 Apr 2024 01:38:05 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a51d90def9eso61778566b.0;
+        Mon, 08 Apr 2024 01:39:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1712565484; x=1713170284; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1712565566; x=1713170366; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=rrM4TxubxqPeEYOH+wck6tg3nhRCRKAf7aYuz1HQhoE=;
-        b=BpyG0kzuGqyxC08raoFpvDqedHM7NSMH42mYd7wXN+QhiuY8dX58vsiuqeLyOKY0b8
-         vo725qLccRf8Mdt2qFHT+Oe9c+tlqN5Qcka0A04nJLtk8AERdrJJvXeP7FIOJl3/5/xM
-         aZ5gbq0Y3nF4/l2tgDFZjAOvddZVMVTFKZ3EoPURSP2L4pqRqey+wmjq8zyka58MikdH
-         1RMa2SfRF/KilqlNCAsF/D78CMVkEjDlid2BnZZzTfGKXpomSb3YH8ys5/U3j1pfZz0P
-         ekRikUePvraMK/gttSuFgnZPHQkoI6/nru+10kKQml5sRXVC+epoR8cy0Fx5wLx50h41
-         En+w==
+        bh=Ggn9exM1EaINLQ4p5qpv5HFO8yOhiQUmK3beChxflIE=;
+        b=KH70WkZ7jFOo4I//Edc9MhcF0GBjRBkthLJUBIXykQT9HUA6l9pl2vyJmq8Ti0QO0N
+         P8LUeX4OMkqe7s2lNdLM9vpJwQiyzCwpCesyzBdYovMjAVTimeJ/WNCVedB7b3vBSN+B
+         7uAsxK+XVMbo64n9BvogEKa5yMUx+f8AV1Yy2EuEyVH0b7ogPJfaYy0ZG7cD4IoRWhEE
+         91niu/cWe79ySyLZ70rHBKeWUl+V2lS0JzUMD7zqh4+UhZ29ZQs99hfcEOMDUa4V9oc+
+         7O8eEYqMb66zcH3RZ4sypX05CIq/Sd+QeLPqIN/Ty+gcxhZmNievlaOxdl/DDsMODNaE
+         /oSQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712565484; x=1713170284;
+        d=1e100.net; s=20230601; t=1712565566; x=1713170366;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=rrM4TxubxqPeEYOH+wck6tg3nhRCRKAf7aYuz1HQhoE=;
-        b=XEXBVhHzKoHDK5pkrgOTZa0UrI/BgQ/IStidpxGbQpw1SZwglwxqVNdmVQ7mpQegnB
-         xtNGx4YnSR5IpEJ63lIxJ3OFcyZVQhM9Ko1aQ4uwv+lec3+imBAqiayf6JmCAbMwDWMp
-         N0E4/NviiZybhuECc8rMZySFWzOXUU3QmX+/L1MC3QHXbFQC4EcIkhStWALJ/IdZUsw2
-         sfTspqGHiyEVpB2zdAtmAO22vHyb1zskFDnAa7MM+89iYfOT8J8mnVd7XyRHY85a+BCi
-         VP3ON2hIBFRAPC/RY/TDJP/a07m+/IEQ54+tpRTjjzwFuPrvnbDn9/iofsIu0QIY59Bn
-         vyFw==
-X-Forwarded-Encrypted: i=1; AJvYcCViEmWo8wLsN9WJxBoHLaw2PNkP6TybPBAU+lEPVI/NSsJPn4pLed0uPOydesQ2ZXhGCAEkL0G94BOq0XOpd+hrYw7cxgbsMTe4zA==
-X-Gm-Message-State: AOJu0YzM+l6NrV2vIkTqLsoT7++QnfuvqJatcl0aMFT5K1UP2HsQ/GKm
-	PkM0c9T2vNdSz8MRAwg9vkXcQqF6ZgESMukhXHpixbSwqsXkw17EwZqqcTPaKLyYBw==
-X-Google-Smtp-Source: AGHT+IGZITCwEhqKnga08lueR88bZHZNvfA+2v34n+8j0x6NZXchZuKLHpZl8KpUG0XsMiHxkhBSFA==
-X-Received: by 2002:a17:907:175d:b0:a51:99b8:9dc1 with SMTP id lf29-20020a170907175d00b00a5199b89dc1mr4851255ejc.51.1712565483514;
-        Mon, 08 Apr 2024 01:38:03 -0700 (PDT)
+        bh=Ggn9exM1EaINLQ4p5qpv5HFO8yOhiQUmK3beChxflIE=;
+        b=ATUiG+cAREY6cBgKHlDxO7mcaTrOuFfIKyRkdhAg2SNJPNNzI27ex0Q6Tk2zCfiuKz
+         sibXOn0mxu2eAUMB2Ee+izcgftYSDX3J2SqiyyIRwM62LsuqMYbnKfuhUfkY7B4CYGck
+         yBfo1bQ/hGBuPT1h8IaiNAOWglZcc09JvmQb6EjRnQ2w9tcFUuFYNd1HQlNFzdmc8AYQ
+         MsYOI9ynTqNsObDwei6D75uMz76a2GBDJxS8OpWiAwhubZXyAHsyuDrhM3UWOeQaN83M
+         MOhQHQVJI2UkuVvOw3IYGdsnLTMJ7GogAvIfCFiyFkqWRogVgKEfatQM2bg5zTTxVh+t
+         gRog==
+X-Forwarded-Encrypted: i=1; AJvYcCUXLohcQvnW67/6n5ivWhEg0oV86OuFApTziB1gTGiRXIEpjYyJN2xP84Jf0MSS79NGOj4gNe8bWOuzGiOBaUE/sxlFipvcvUfRmA==
+X-Gm-Message-State: AOJu0Yysqph98XCwkMJUU3LkTqye1e6OZ1ZpGB2Mv0YmPgot055O/lp6
+	TS4PbOy5Kgr9rkidy/lMiaNApRzjrhzupKo/CdqCnlpXyM1+d3De
+X-Google-Smtp-Source: AGHT+IE+pv57Gi7+DHUuwKa8elQdvQK+g5+W8zngx1vEN1tPf/A5WB9flY105MqYJ2qj1b5zd+ZD8g==
+X-Received: by 2002:a17:906:374c:b0:a51:7ff3:5d5f with SMTP id e12-20020a170906374c00b00a517ff35d5fmr5381817ejc.67.1712565566129;
+        Mon, 08 Apr 2024 01:39:26 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id en1-20020a17090728c100b00a51adace6ebsm3552256ejc.79.2024.04.08.01.38.02
+        by smtp.gmail.com with ESMTPSA id p26-20020a17090635da00b00a51bd07b525sm2744108ejb.66.2024.04.08.01.39.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Apr 2024 01:38:03 -0700 (PDT)
-Message-ID: <b79b30bcaab03d2bcfc096829cdb443712376da9.camel@gmail.com>
-Subject: Re: [PATCH v2 09/11] iio: backend: add new functionality
+        Mon, 08 Apr 2024 01:39:25 -0700 (PDT)
+Message-ID: <dab21fac537be5d4158e3d08aa035736bcedaa5b.camel@gmail.com>
+Subject: Re: [PATCH v2 03/11] iio: buffer-dma: Enable buffer write support
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Dragos Bogdan
  <dragos.bogdan@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
  Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>,  Olivier Moysan <olivier.moysan@foss.st.com>
-Date: Mon, 08 Apr 2024 10:41:35 +0200
-In-Reply-To: <20240406173248.2a574251@jic23-huawei>
+ <conor+dt@kernel.org>,  Olivier Moysan <olivier.moysan@foss.st.com>, Paul
+ Cercueil <paul@crapouillou.net>, Alexandru Ardelean <ardeleanalex@gmail.com>
+Date: Mon, 08 Apr 2024 10:42:58 +0200
+In-Reply-To: <20240406172352.6784c6e6@jic23-huawei>
 References: <20240405-iio-backend-axi-dac-v2-0-293bab7d5552@analog.com>
-	 <20240405-iio-backend-axi-dac-v2-9-293bab7d5552@analog.com>
-	 <20240406173248.2a574251@jic23-huawei>
+	 <20240405-iio-backend-axi-dac-v2-3-293bab7d5552@analog.com>
+	 <20240406172352.6784c6e6@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.0 
@@ -91,70 +92,51 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sat, 2024-04-06 at 17:32 +0100, Jonathan Cameron wrote:
-> On Fri, 5 Apr 2024 17:00:07 +0200
+On Sat, 2024-04-06 at 17:23 +0100, Jonathan Cameron wrote:
+> On Fri, 5 Apr 2024 17:00:01 +0200
 > Nuno Sa <nuno.sa@analog.com> wrote:
 >=20
-> > This adds the needed backend ops for supporting a backend inerfacing
-> > with an high speed dac. The new ops are:
+> > From: Paul Cercueil <paul@crapouillou.net>
 > >=20
-> > * data_source_set();
-> > * set_sampling_freq();
-> > * extend_chan_spec();
-> > * ext_info_set();
-> > * ext_info_get().
+> > Adding write support to the buffer-dma code is easy - the write()
+> > function basically needs to do the exact same thing as the read()
+> > function: dequeue a block, read or write the data, enqueue the block
+> > when entirely processed.
 > >=20
-> > Also to note the new helpers that are meant to be used by the backends
-> > when extending an IIO channel (adding extended info):
+> > Therefore, the iio_buffer_dma_read() and the new iio_buffer_dma_write()
+> > now both call a function iio_buffer_dma_io(), which will perform this
+> > task.
 > >=20
-> > * iio_backend_ext_info_set();
-> > * iio_backend_ext_info_get().
+> > Note that we preemptively reset block->bytes_used to the buffer's size
+> > in iio_dma_buffer_request_update(), as in the future the
+> > iio_dma_buffer_enqueue() function won't reset it.
 > >=20
+> > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> > Reviewed-by: Alexandru Ardelean <ardeleanalex@gmail.com>
 > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 >=20
-> Whilst the code for the backend retrieval callback is simple
-> I wonder if we are better off just not having it for now.
+> One trivial comment on alignment that I noticed whilst reminding
+> myself of this patch. Otherwise looks good.
 >=20
-> Keep the infrastructure that checks for the default approach not working
-> but don't actually provide the alternative until we need it.
 >=20
+> > +
+> > +/**
+> > + * iio_dma_buffer_read() - DMA buffer read callback
+> > + * @buffer: Buffer to read form
+> > + * @n: Number of bytes to read
+> > + * @user_buffer: Userspace buffer to copy the data to
+> > + *
+> > + * Should be used as the read callback for iio_buffer_access_ops
+> > + * struct for DMA buffers.
+> > + */
+> > +int iio_dma_buffer_read(struct iio_buffer *buffer, size_t n,
+> > +	char __user *user_buffer)
+>=20
+> Prefer aligning char with after the (
 
-Yeps, agreed. That's why I brought it up in the cover. I'll place a comment
-stating we're aware and what may be the proper solution and have it when ne=
-eded.
+I was keeping it as it was. But I can fix it up while doing the change, yes=
+.
 
-> Advantage is pretty minor though so maybe just keep it.
-> Unless others have strong opinions, up to you to decide whether to keep i=
-t.
-
-> One trivial thing noticed inline.
->=20
-> > ---
-> > =C2=A0drivers/iio/industrialio-backend.c | 179
-> > +++++++++++++++++++++++++++++++++++++
-> > =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 |=C2=A0 49 ++++++++++
-> > =C2=A02 files changed, 228 insertions(+)
-> >=20
-> > diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industria=
-lio-
-> > backend.c
-> > index 2fea2bbbe47f..ac554798897f 100644
-> > --- a/drivers/iio/industrialio-backend.c
-> > +++ b/drivers/iio/industrialio-backend.c
-> > @@ -29,6 +29,7 @@
-> > =C2=A0 *
-> > =C2=A0 * Copyright (C) 2023-2024 Analog Devices Inc.
-> > =C2=A0 */
-> > +#include "asm-generic/errno-base.h"
->=20
-> You'll need a strong reason if you want to do that include rather than
-> a normal one like linux/errno.h
->=20
-
-Hmm crap, Fairly sure this was clangd automatically adding the header file.
-Sometimes it's actually useful. Not in this case :)
 
 - Nuno S=C3=A1
->=20
 

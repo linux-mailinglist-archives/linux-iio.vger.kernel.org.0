@@ -1,254 +1,303 @@
-Return-Path: <linux-iio+bounces-4162-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4163-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B75D489CCA9
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 21:50:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC1C89D086
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Apr 2024 04:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA2271C2190E
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Apr 2024 19:50:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57AC91C23F33
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Apr 2024 02:54:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D775C146599;
-	Mon,  8 Apr 2024 19:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7199B54664;
+	Tue,  9 Apr 2024 02:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="tE9zmm+u"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="lntESCoi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C58146007;
-	Mon,  8 Apr 2024 19:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712605799; cv=fail; b=iQFQ0AE/1VaRKQfCe0BsVzdnOEz9+ZOysYbv48RIRKwaJgItk833jfvVcbDfsG9RISt3xWWxhG7/eOGZOBCedSbObURj2Z10GJvwpFza4Nu+HFifMj/a8ks6okMuUulILIZF+8qgSApY3UFNNgQSNiTKcYQPnQBIvO7CDPQUu3U=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712605799; c=relaxed/simple;
-	bh=y0r9UOxg6uGMHjf/xHT+2BOYd+BoCODUVubesVY7QPM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=QAlpe5iOpfuM2cK3RQpKlA15ZcKIes57x5/szB1PW5d2Qr9R0NbHlvGS/qAB+tTOHcbPv761m0ZLBNa/HHNBi0n8CNC9zy+T7c+wDmAciFt6Y7Nu5yDBP8FgbHjPshgrPfDr2UyajyEyXv/jpD3776E8g3iV5tNvMIu9PPuzSgo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=tE9zmm+u; arc=fail smtp.client-ip=205.220.166.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
-Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 438JNvrK002304;
-	Mon, 8 Apr 2024 19:49:38 GMT
-Received: from deu01-be0-obe.outbound.protection.outlook.com (mail-be0deu01lp2168.outbound.protection.outlook.com [104.47.7.168])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3xavryhgxr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Apr 2024 19:49:38 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=MyxovdsUr00fRfSiZud+5nsUtsWk3ctOIxyB9PFYTkdohniqMumQQnYVSL3AVnkflAsCiFIG2jwuSzzzeZW64xeqEpOLemyqWeSRaJTiqOrKWHywcoUek5mcZ/CjnlvH/c22DY4H1Iv3ab32yT03VCjoaqJcv0ULyCGgdZ3BxD1H8xRjWtWaDG5PdsoJ2UkQ12WLMyzqkvXSID0cc3sBAjHu9c5BHp9KDSK1s4nji+N5Lpq2BIOvmj16cFr4j0taX3vFTQy1cwGzrG4NOeR+xDQbzEJHxo8LsniUbobQaECy+22i5xqLK9x2U0iTaY9P+fR5KEzPm/LKYQ3c83houg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GMj48TlTOWN8cOqjDJAZPzW6/UaDwb2y/jO/gQVIKHw=;
- b=UhDiZgMI5eL0Gg06mcJc89auyMLnlBUe7DpWk4UOSzSDAoYE/gRtt+e5aczKCK5D5mOETx2yLFLarPloqN9AbmxLybwMuSvxlukzlF7Pp9PCk8MmzaG+BEsSZvQ+HVv9/TO5J8Uvwz/ZC6bZAHKAhv8quuz01mrc8cShBXpGSXbv6qudlibX9HAGNrCwyF6oHNl7oV4IhAEBqY7TZ2ONH+cnfvDK2yi+sdIzikzo26O/1siRSQuqSzYHFdyVVuG0Qc6NjegcpVUEMkqCikfm5v3gsMExqv2X/x6fV5MWS0u3++E1kWM0zkWflUsMoFoSb6lseajE8BBgwJMkjj+npA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GMj48TlTOWN8cOqjDJAZPzW6/UaDwb2y/jO/gQVIKHw=;
- b=tE9zmm+uybNZWhR9ld4SQr74Gll9xapVf+4H/d/H+VOHSqiitMdjYyqxLa5jKMkQ6S6WUYi8Eq9cVzx6m4SwbYiRti/tPMpinVUZU4q0FQIOKAeZET/hg8ajmh4BRjk8WBatN3wYx/wR5EV5D5TcEEPaDRBsjEXmSGLjZKgurYrA8SElcmzthpPj2swLWsvNQd73pGNYxm44/XGcBT+Ow3R8qALnqHHh2Hy1r/z3wKPdxdKP7c3jg0pr1TwyklcHMaW8PI/kn3ZqKLkiF1+BnKOYaby0KrMlqBxOwm2EuZpIsSTLoeY54gIDjOBYZvxpjtgGgXxJ1kUy9WJ0Mp9LzA==
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
- by FR6P281MB3724.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:c3::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.55; Mon, 8 Apr
- 2024 19:49:32 +0000
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::ed6d:53c2:7987:ea18]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::ed6d:53c2:7987:ea18%4]) with mapi id 15.20.7409.042; Mon, 8 Apr 2024
- 19:49:31 +0000
-From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-To: Luca Weiss <luca@z3ntu.xyz>,
-        "~postmarketos/upstreaming@lists.sr.ht"
-	<~postmarketos/upstreaming@lists.sr.ht>,
-        "phone-devel@vger.kernel.org"
-	<phone-devel@vger.kernel.org>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>
-CC: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] dt-bindings: iio: imu: mpu6050: Improve i2c-gate disallow
- list
-Thread-Topic: [PATCH] dt-bindings: iio: imu: mpu6050: Improve i2c-gate
- disallow list
-Thread-Index: AQHaidKwc1spTU+Cy0SOvLRms3HCILFexeuR
-Date: Mon, 8 Apr 2024 19:49:31 +0000
-Message-ID: 
- <FR3P281MB17571BB638E31DC630C3F78CCE002@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20240408-mpu6050-i2c-gate-v1-1-621f051ce7de@z3ntu.xyz>
-In-Reply-To: <20240408-mpu6050-i2c-gate-v1-1-621f051ce7de@z3ntu.xyz>
-Accept-Language: en-US, fr-FR
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: FR3P281MB1757:EE_|FR6P281MB3724:EE_
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: 
- 8shUAhs4uTFnvTSc1T4FYnxnDJQP33TzlUDVNcc/2V/dmamFaHX1DqJgHQcr5usLJg3HnXHasexbbr6lGueBBxPtvPAk6cmjUAtNVvKPhQI2Miie+bRbrLTEQ2YR14ipUy1RFDgoR/QNAmR4QXlCUOByHv2pDRn+PUmWLLOiBxpbpGjSewss7qyL5X0ZxD6YS5zl8dtkgaKK2359mVkAKbc12Dn1o8iFgfB+j2vnOgIGr3pjA0aQjszOTjF/M5yOWEARnzivyn6m+RUlGUMmkNQ7nnPCekbryD4hhh7iIvzW/KGk6Al1mPSGZGNHmJN+R//15VNyReuwQRnlSM17t7d5j0GpYX0K9Jy8Qso1+DHXIdP56GKf2OVqZmEhAWsEqit4Hs4z4yWniRA8w0hEzadWG3rRdCrre6mcPRgMDV7rbjYxn7+Ay62LSzeGFjqsYW7BKtoXFN0qUzDGB0wpKJn/rbVkul/UTdXzC1WiL1hdxHEs3W1xscbbyS7m8578dzt+emxYZ6IP5Ko1d3Czk5j19yEfjOI4KxEmA3OYAursP37alKxHz5TirTdwkDxSjjMnSrAx87SOKEGF1FtckMMqJhefPcov0fZYCfvKi50=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(7416005)(376005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?iso-8859-1?Q?Q8VG1Eo93AoK4J4iGwMHk3TpJFR2Coetj0bb1LCe/JhMEy9ZjnpyL3Ex4J?=
- =?iso-8859-1?Q?OZmAUFijyqkeds91MQan2guWrWa40qXSZk515ExRH07OFypSFBZSPhR3V0?=
- =?iso-8859-1?Q?93a/2SxCIfnId9fODbokjEEeHbBK5cm/uLaixxUuNa4OKk7bTxQhGHhRkr?=
- =?iso-8859-1?Q?u/5hwUBo7dj2ZxqcXKhAQAuerjOEWNw95mMYjAQGH5A/Rqgp+cg4ENNaqu?=
- =?iso-8859-1?Q?nB05CENkf2Oh3CndpHfRRB169X1Bbvqg+TxI2eqejtqgcntfdM95LsLus2?=
- =?iso-8859-1?Q?cirTNPH4/BO1W+j4lNv1RwuDUjc5+5e0KYbH2hzMw+wDUhsluFU5orqY8t?=
- =?iso-8859-1?Q?csLExi5rZgjc4XjHZ0cXju2IacETvFaTcRP29+afqRx9HKP2qjV/zhfk67?=
- =?iso-8859-1?Q?Z/Zbxd4+/1BsUciF9qzIF7j9EuzKEKvNi4nxmZUb0sbiqvwCypaX7WhzIg?=
- =?iso-8859-1?Q?4g1C/swjHJrDhPJLMqf0gqwORCtdJ005AFiDrTro8FN0yMSWiiuROgRG7/?=
- =?iso-8859-1?Q?Dp1bKdDIH430GcNoGY7vSYH/OEmzcLlPmk576F47YZnaYgz/phHQpDUTfb?=
- =?iso-8859-1?Q?3/D+0UaiJ/FZv92AM4u9pQa3LFTyPtwf+fI0T6mdNM0Dqi2XJCyZTvZRuW?=
- =?iso-8859-1?Q?gr51CwsuCp4vxTYrisuWfFqpytpiJCXTZ2Dgy9ljNYDrktK9mnXrXyvJ6b?=
- =?iso-8859-1?Q?ol2XOwCMfChOxJGX5Bnozbb7PyHd1sO0gafmjEYug4/a+lEfqDi2xe3gVD?=
- =?iso-8859-1?Q?gag1gYM23TUek2l0CB3Ak4uTieZq/TQbFYOSVBzb4heoSva10Tp8Suq/ju?=
- =?iso-8859-1?Q?Rxrk+ehRQJGzHKtuha3lLLbn1rS/U9wtBYpc4Du8BqRvWNc42FcdIAFcAM?=
- =?iso-8859-1?Q?WsZgEFXeKsT+zPfeSf6aSUX0sgPlsaRYR5QSNDrP131S3ulaCmfzjFar1X?=
- =?iso-8859-1?Q?GIjaMPuKme/nitCSGl2qfZMS2/CsP5Yz5uzn/1XeCR7nz4FnLBrI/Vf/Tl?=
- =?iso-8859-1?Q?Up06kV3qdX2BalVy1seXL7XqN4OlGaPRRiZU8dPMLBtuYg16zMJnXoGpb+?=
- =?iso-8859-1?Q?4RmrKWJOyXvEbWI47xZdPTDx84vCqNkmRe/bWyErE68Xz8QbS8NInTWlGI?=
- =?iso-8859-1?Q?9jHPtSHqP3Dkq0d9e73OcZIyVmuh8FdAAh7rLDop1I24j53Z44i1OlBS/P?=
- =?iso-8859-1?Q?Pzj7InsWWbnjD+AisU6IPR9ZmHPIIhnOjVv3v0iMaTZ+WXiRYUpHtOvWIn?=
- =?iso-8859-1?Q?oVAy82abOfJMddahpiyzjhYZc0qYtSKZ3nB8uNxPGfPqTPL2bANyTv1HP3?=
- =?iso-8859-1?Q?fKHxp9J/JnUbJydvuf6boShbBlpLad5hevz+5Y7VOnMbif85XgqAK0ciX6?=
- =?iso-8859-1?Q?6Ch+x/3ElPQuHtqSR0M4mRGR9fF1R08fu2lUaXP+T5SsbpiOG0k9unUHbP?=
- =?iso-8859-1?Q?+UEnJiEGBjZ00FhFGnpjIir3Eef4m2ooBxl8ME9H/GWTpcFoMjwK2vxhzE?=
- =?iso-8859-1?Q?DFBniPiq02Uhk7Rkd8znsOuI8OJrqRC9gGuamGKlAnRLfMB1dPIMTEsvBA?=
- =?iso-8859-1?Q?RdAFsceTbCjYj0Ux72jhpcdf2I7JRglwlGRKV7Pt/a0Lr5CTfx5YxQerLE?=
- =?iso-8859-1?Q?OlMZB5Rgg8gsQEohrE4sF3/dh6Nwwl7MiObzZt9Ejp5VN6Sai+yUQVzwRw?=
- =?iso-8859-1?Q?SFdb6EPHTS2lxeFmONAHBGaB0GxyXV7+Ndyp5zxnoQtf0iKwIYfeT/bjTX?=
- =?iso-8859-1?Q?J6lA=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02DF3EA64
+	for <linux-iio@vger.kernel.org>; Tue,  9 Apr 2024 02:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1712631256; cv=none; b=dSjEOHQMm/kD4zDVRN61uih/LT+es91MFkt22kx0PWb8DVMFop3i8oYQIFs2WAu6Pfecho/9araOwUr5JJwmpfTdXl+iMNCwFBxcPgydhLjBBKRJiaQHdQh/Re6Wh5IO0tFd1ZR5ule5pyJ94fzau48hIohvY+NDsehsgyIl82k=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1712631256; c=relaxed/simple;
+	bh=pwkxEx6Cpl4S6pKfT9Tv7amm9+UnSJQSrIhPM/QX4e4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ERjsaTnT9BvAijDGj1spsiZdbDJw81eHjXxoo6N6Zs/FjuRfV0r1Vc5mfd/nS6niJGikyTmDRvI0u7nAxRkLbFZcmJwIp0uTHOMCsUxLuI0xpIcf5iGeoadwXdWiY6qapmeNimSMRvFc5c9pZAisy4Aim+fanhb4HRgC0RtRwFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=lntESCoi; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d485886545so89498611fa.2
+        for <linux-iio@vger.kernel.org>; Mon, 08 Apr 2024 19:54:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712631252; x=1713236052; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1+KbxJNBdJ5Qx+spF3lWWzpc0KdOklFkXilWrtlAms0=;
+        b=lntESCoir1SrvmLR+x5Y8dNvkmRALsuFo+Z8wZ+NwaPYeucTCbgYeoLhXNbl0Q6wFg
+         mirb9EQ/2L2xPOGfaDGGr8jum5O8Uh06EcAYtJSY4aKYlFbyQJXjV9pdK1fJn5ijaU6X
+         EilpJrSJeNvcBH9297/5xYRE+uUnrteARSQAheHFFKHrvGxY/AfBk2pf4dIiXrlm+u5N
+         nQZi8yJKnI3UGCqFwgCj7WZUiFMhAQ4DjMBi1rIYbzxuSEZhhOGfxJsLsn3F5TYHkNX4
+         x9lGdtYWtAMdX6Y9ajNcwE6H/BctWwJAvvW/TD9G/1UiEuqLMT9OgxJwlv0VFoj2QtPS
+         MRTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1712631252; x=1713236052;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1+KbxJNBdJ5Qx+spF3lWWzpc0KdOklFkXilWrtlAms0=;
+        b=MdtXwfwQEpbO3LpacG+YboHpHcRyyDGKkAs3Hv1KbVBjIMV/8DRmAR7X0Bm3nqn0Gt
+         lytxWXbGG51my/tLPqhNTFuZ3j64wDsRQkM3ARBvtA7+zztaSaP81WlVxdYqhGELgjAK
+         cyZLROi+EOCEZxy89PiB5LGUYDBEAHdUdT6ylqVNtfoZs734oaAnN6XNmiigH6dKHnZU
+         /BUXF8KL45odC3BxVojaB1v7/g+vUyWe3ZcqET/8Ut6HYpdAHbpT8rG4MFBvDOvaNxMU
+         tw7mQWVO1sqUw9R/IVXpNOM8/G3fP3JO3PM1IYyQK9PMZ6wps+3sCsTAbXyw5MC9XamC
+         nGIw==
+X-Forwarded-Encrypted: i=1; AJvYcCUE19TfLx2GyzjHhYBjHEc72Qvd0z6UWy+uOWh7MVB1vZGLLGqDt8fvkAjGpzmbe6BKZ6ExoPFlgj/7GQjgN4RFDDZ0vojJacX0
+X-Gm-Message-State: AOJu0YxoMtrlm4WxBh9zcKL+ncoq0eJwO5zcCeFndt6x5JSrgVBJounD
+	4qI2TaZH3P9995v9QVXawVAUYASicEPhxcj6MYHQshbdxuP63pnWm6sfECXJkrwPcUovC4NllBM
+	GPDgfM0UNeDI5Z06wOlVxj56p69HUNb2x547lcQ==
+X-Google-Smtp-Source: AGHT+IEj5sghCEmy0WmmzGc2UBYrG2TOAQp5CUK2H67k7mD/5JQX8nsuDutKBMYh/6xAmS89SPwJj5GMSO+9ZHnmh8w=
+X-Received: by 2002:a05:651c:153:b0:2d8:3ccc:60e8 with SMTP id
+ c19-20020a05651c015300b002d83ccc60e8mr9404459ljd.48.1712631251643; Mon, 08
+ Apr 2024 19:54:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: e1c8c2d0-04bc-4a69-5caf-08dc58050260
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Apr 2024 19:49:31.7439
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0NG+U03mHawk3DLMLRRt/YiQJJjJdkUpw9YS7R4bkaPuS5Cy/cRI5NEGwyJ+UdKRQD6dZpPPgcPfQK582ucHupfUuEv+OtUsWGVQs5aR/aA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR6P281MB3724
-X-Proofpoint-GUID: mmUdzb40YsE5V-LVT2AXjG1wuqZW_jCD
-X-Proofpoint-ORIG-GUID: mmUdzb40YsE5V-LVT2AXjG1wuqZW_jCD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
- definitions=2024-04-08_17,2024-04-05_02,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 adultscore=0 malwarescore=0
- clxscore=1011 mlxscore=0 priorityscore=1501 phishscore=0 mlxlogscore=999
- impostorscore=0 lowpriorityscore=0 bulkscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
- definitions=main-2404080153
+References: <cover.1712585500.git.marcelo.schmitt@analog.com>
+In-Reply-To: <cover.1712585500.git.marcelo.schmitt@analog.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Mon, 8 Apr 2024 21:54:00 -0500
+Message-ID: <CAMknhBFoX9mC3F43GSmYZyET9oQvHEB+AAsesZv-aEgFPZPA_w@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Add support for AD4000 series
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
+	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello Luca,=0A=
-=0A=
-good catch, thanks for the patch!=0A=
-=0A=
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=0A=
-=0A=
-=0A=
-From:=A0Luca Weiss <luca@z3ntu.xyz>=0A=
-Sent:=A0Monday, April 8, 2024 18:34=0A=
-To:=A0~postmarketos/upstreaming@lists.sr.ht <~postmarketos/upstreaming@list=
-s.sr.ht>; phone-devel@vger.kernel.org <phone-devel@vger.kernel.org>; Jonath=
-an Cameron <jic23@kernel.org>; Lars-Peter Clausen <lars@metafoo.de>; Rob He=
-rring <robh@kernel.org>; Krzysztof Kozlowski <krzk+dt@kernel.org>; Conor Do=
-oley <conor+dt@kernel.org>; Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@=
-tdk.com>=0A=
-Cc:=A0linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; devicetree@vge=
-r.kernel.org <devicetree@vger.kernel.org>; linux-kernel@vger.kernel.org <li=
-nux-kernel@vger.kernel.org>; Luca Weiss <luca@z3ntu.xyz>=0A=
-Subject:=A0[PATCH] dt-bindings: iio: imu: mpu6050: Improve i2c-gate disallo=
-w list=0A=
-=A0=0A=
-This Message Is From an Untrusted Sender=0A=
-You have not previously corresponded with this sender.=0A=
-=A0=0A=
-Before all supported sensors except for MPU{9150,9250,9255} were not=0A=
-allowed to use i2c-gate in the bindings which excluded quite a few=0A=
-supported sensors where this functionality is supported.=0A=
-=0A=
-Switch the list of sensors to ones where the Linux driver explicitly=0A=
-disallows support for the auxiliary bus ("inv_mpu_i2c_aux_bus"). Since=0A=
-the driver is also based on "default: return true" this should scale=0A=
-better into the future.=0A=
-=0A=
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>=0A=
----=0A=
-This fixes dt validation error on qcom-msm8974-lge-nexus5-hammerhead=0A=
-which uses mpu6515=0A=
-=0A=
-arch/arm/boot/dts/qcom/qcom-msm8974-lge-nexus5-hammerhead.dtb: mpu6515@68: =
-i2c-gate: False schema does not allow {'#address-cells': [[1]], '#size-cell=
-s': [[0]], 'ak8963@f': {'compatible': ['asahi-kasei,ak8963'], 'reg': [[15]]=
-, 'gpios': [[40, 67, 0]], 'vid-supply': [[50]], 'vdd-supply': [[49]]}, 'bmp=
-280@76': {'compatible': ['bosch,bmp280'], 'reg': [[118]], 'vdda-supply': [[=
-50]], 'vddd-supply': [[49]]}}=0A=
-        from schema $id: https://urldefense.com/v3/__http://devicetree.org/=
-schemas/iio/imu/invensense,mpu6050.yaml*__;Iw!!FtrhtPsWDhZ6tw!Athn1pwCL_LPp=
-Z97exHEFSkirApIqFF2ISY01IuyHtFBxpbPkcPWh_FmzB_TiCzb8uv1HO0AHY4IeIlv1-o$[dev=
-icetree[.]org]=0A=
----=0A=
- .../devicetree/bindings/iio/imu/invensense,mpu6050.yaml | 17 +++++++++----=
-----=0A=
- 1 file changed, 9 insertions(+), 8 deletions(-)=0A=
-=0A=
-diff --git a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.y=
-aml b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml=0A=
-index 297b8a1a7ffb..587ff2bced2d 100644=0A=
---- a/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml=0A=
-+++ b/Documentation/devicetree/bindings/iio/imu/invensense,mpu6050.yaml=0A=
-@@ -62,14 +62,15 @@ properties:=0A=
- allOf:=0A=
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#=0A=
-   - if:=0A=
--      not:=0A=
--        properties:=0A=
--          compatible:=0A=
--            contains:=0A=
--              enum:=0A=
--                - invensense,mpu9150=0A=
--                - invensense,mpu9250=0A=
--                - invensense,mpu9255=0A=
-+      properties:=0A=
-+        compatible:=0A=
-+          contains:=0A=
-+            enum:=0A=
-+              - invensense,iam20680=0A=
-+              - invensense,icm20602=0A=
-+              - invensense,icm20608=0A=
-+              - invensense,icm20609=0A=
-+              - invensense,icm20689=0A=
-     then:=0A=
-       properties:=0A=
-         i2c-gate: false=0A=
-=0A=
----=0A=
-base-commit: 8568bb2ccc278f344e6ac44af6ed010a90aa88dc=0A=
-change-id: 20240408-mpu6050-i2c-gate-4ea473e492f4=0A=
-=0A=
-Best regards,=0A=
--- =0A=
-Luca Weiss <luca@z3ntu.xyz>=0A=
-=0A=
+On Mon, Apr 8, 2024 at 9:31=E2=80=AFAM Marcelo Schmitt
+<marcelo.schmitt@analog.com> wrote:
+>
+> This is more like an RFC patch set since configuration read/write is curr=
+ently
+> buggy.
+>
+> Change log v1 -> v2:
+> - Took device tree provided by David.
+> - Dropped ABI additions in favor of device tree properties.
+> - Set differential IIO channel subtype for differential ADCs.
+> - Set scan_type shift bits to mask out correct real bits from buffer.
+> - Added __aligned(8) to buffer timestamp.
+> - Used union to reduce buffer memory usage for 16-bit devices.
+> - Used SPI transfer functions rather than SPI message.
+> - Used c99 style structure initialization.
+> - Used iio_device_claim_direct_scoped().
+> - Removed unneeded pointer casts.
+> - Added other power supplies (VDD and VIO).
+>
+> Link to v1: https://lore.kernel.org/linux-iio/cover.1711131830.git.marcel=
+o.schmitt@analog.com/
+>
+> Additional topics:
+>
+> - Why there is no different handling for the different SPI wiring modes?
+> It looks like there is no need for different handling of "4-wire" and "3-=
+wire"
+> modes.
+> If in "4-wire" (dt default mode), SDI is connected to SPI controller CS a=
+nd
+> CNV is active high. We can activate the CNV GPIO then let the SPI control=
+ler
+> bring CS (connected to SDI) down when starting the transfer.
+> If in "3-wire" (dt single mode), if we have a CNV (active low) GPIO we ac=
+tivate
+> it and then proceed with with the transfer. If controller CS is connected=
+ to
+> CNV it works the same way.
+> I'm thinking it's better if we can support these devices in similar way
+> other SPI ADCs are supported. Does that make sense?
+
+In the AD7944 driver, I handled the "3-wire" mode separately because
+the sample conversion is triggered on the rising edge of the CNV line.
+In "4-wire" mode, since we have a GPIO connected to CNV, we can just
+toggle the GPIO from low to high, wait for the conversion time
+(t_CONV) and then read the sample (SPI xfer) then toggle the CNV line
+low again. In 3-wire mode, the CS line is connected to the CNV pin, so
+in order to get an up-to-date sample, we need to to toggle the CS line
+from low to high to trigger a conversion (spi xfer with no data, only
+delay), then wait for the conversion time, then read the sample (2nd
+spi xfer). So in "4-wire" mode, the CS line is getting toggled once
+per sample, but in "3-wire" mode, it is getting toggled twice per
+sample. I didn't add support for "3-wire" mode where CNV is connected
+to GPIO because we can't get max sample rate that way and it is
+unusual to not have CS connected to something. But if we do that here,
+the timing has to be different from 4-wire mode in order to not get
+stale data.
+
+> To me, the "3-wire" mode with controller CS to ADC CNV is what most resem=
+bles
+> conventional SPI. The only important distinction is that the
+> controller must be able to keep ADC SDI line high during conversions.
+> Although, while the spi-engine implementation provided to me can keep SDI=
+ up
+> during conversions, I'm not sure its a thing all SPI controllers can do.
+> I tried a raspberry pi 4 some time ago and it was leaving the SDI line lo=
+w if
+> no tx buffer was provided. Even with a tx full of 1s the controller would
+> bring SDI down between each 8 bits of transfer.
+
+This is a good point. It sounds like additional bindings are needed to
+describe the various wiring cases of the SDI line.
+
+It sounds like possibilities are:
+
+1. SDI is hard-wired high -> can't write to registers, CNV is
+connected to SPI controller CS, chip is in "3-wire" mode. Currently
+adi,spi-mode=3D"single"
+2. SDI is connected to SDO of another chip, SDI of last chip is
+hard-wired low -> can't write to registers, CNV is connected to SPI
+controller CS, chips are in daisy chain mode. Currently
+adi,spi-mode=3D"chain"
+3. SDI is connected to SPI controller CS -> can't write registers,
+chip can operate in 4-wire mode with CNV connected to GPIO, Currently
+adi,spi-mode omitted.
+4. SDI is connected to SPI controller SDO -> can write registers, and
+support all writing modes (3-wire, 4-wire, daisy chain) as long as SPI
+controller SDO line can be kept high or low at the appropriate time.
+Currently not handled.
+5. There could be a pin mux that switches between the one of the first
+three and the 4th option (needed to avoid the issue with SPI
+controller not being able to place the SDI pin in the correct state
+during conversion trigger as described above).
+
+On AD7944, the proposed adi,spi-mode property was sufficient to
+describe what was wired to the SDI pin because we only had the first 3
+options (the AD7944 doesn't have SPI registers to write to).
+
+Also see related comments in my reply to the DT bindings patch.
+
+(From the complete bindings point of view, we should probably also
+consider the possibility of variations of 1. and 2. where CS of the
+SPI controller is not wired and CNV is connected to a GPIO - this can
+be determined by the combination of the adi,spi-mode property and the
+presence or absence of the cnv-gpios property.)
+
+> Anyway, single-shot and buffered reads work with the spi-engine controlle=
+r
+> with ADC in "3-wire"/single mode with controller CS line connected to ADC=
+ CNV
+> pin which is how I've been testing it.
+
+Technically, yes data can be captured in "3-wire" mode with a single
+CS toggle, but then the data is stale and doesn't correspond to the
+soft timestamp because it is reading the data from the previous
+conversion triggered by the last SPI xfer, whenever that was. Since it
+is trivial to avoid this by adding the extra CS/CNV toggle I describe
+above, I don't see any reason not to.
+
+But the way the driver is written now, it is actually only supporting
+the unnamed wiring option 4 from above, so now I understand the
+confusion about 3-wire vs. 4-wire mode in that context.
+
+>
+> - Why did not make vref regulator optional?
+> Other SAR ADCs I've seen needed a voltage reference otherwise they simply
+> could not provide any reasonable readings. Isn't it preferable to fail ra=
+ther
+> than having a device that can't provide reliable data?
+
+In the device tree bindings, making vref-supply required makes sense
+since there is no internal reference.  In the driver, as discussed in
+V1, it will fail if vref-supply in regulator_get_voltage() if
+vref-supply is missing and we use devm_regulator_get() instead of
+devm_regulator_get_optional(). So leaving it as-is is fine. We have a
+plan to clean this up later anyway.
+
+>
+> - Why did not split into AD and ADAQ patches?
+> The main difference between AD and ADAQ is the amplifier in front of the =
+ADC.
+> If only supporting AD, we could probably avoid the scale table since it w=
+ould
+> only have two possible values per ADC. But then the handling of span comp=
+ression
+> scale would need refactoring to be in the scale table when adding ADAQ.
+> I'm not excited to implement something knowing it will need rework in the
+> following patch. Will do if required.
+
+If it isn't that much work, it seems worth it to me. If the driver
+work is too much, maybe just split the DT patch?
+
+>
+> - Span compression and offset.
+> For non-differential ADCs, enabling the span compression requires an inpu=
+t offset.
+> Link: https://www.analog.com/media/en/technical-documentation/data-sheets=
+/AD4000-4004-4008.pdf
+> page 18
+> and
+> Link: https://www.analog.com/media/en/technical-documentation/data-sheets=
+/ad4002-4006-4010.pdf
+> page 19
+> I updated the _offset attribute for those ADCs according to span compress=
+ion
+> being enabled or not. Is it okay to have an attribute update cause an upd=
+ate to
+> another one?
+> Maybe also make the span compression a dt property and have it fixed afte=
+r probe?
+
+This doesn't sound like something that belongs in DT since it doesn't
+depend on the physical properties of what is wired to the input.
+
+But the fact that offset should not be read until after scale is set
+sounds like a quirk that would be worth documenting in some
+chip-specific docs.
+
+>
+> - Configuration register
+> Despite it doing single-shot and buffered captures, read and writes to th=
+e
+> configuration register are currently buggy. It is as if the register was
+> "floating". I tried setting up buffers like ad7768-1, adxl355_core, bma22=
+0_spi,
+> bma400_core, and mcp3911.
+
+If the ADC CNV pin is connected to a GPIO and the ADC SDI pin is
+connected to SDO of the SPI controller, then nothing is connected to
+CS of the SPI controller, so that might be the problem.
+
+>
+>
+> Thanks,
+> Marcelo
+>
+> Marcelo Schmitt (2):
+>   dt-bindings: iio: adc: Add AD4000
+>   iio: adc: Add support for AD4000
+>
+>  .../bindings/iio/adc/adi,ad4000.yaml          | 201 ++++++
+>  MAINTAINERS                                   |   8 +
+>  drivers/iio/adc/Kconfig                       |  12 +
+>  drivers/iio/adc/Makefile                      |   1 +
+>  drivers/iio/adc/ad4000.c                      | 649 ++++++++++++++++++
+>  5 files changed, 871 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4000.=
+yaml
+>  create mode 100644 drivers/iio/adc/ad4000.c
+>
+> --
+> 2.43.0
+>
+>
 

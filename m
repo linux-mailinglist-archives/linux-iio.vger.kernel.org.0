@@ -1,82 +1,82 @@
-Return-Path: <linux-iio+bounces-4163-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4164-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC1C89D086
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Apr 2024 04:54:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B865E89D08E
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Apr 2024 04:57:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57AC91C23F33
-	for <lists+linux-iio@lfdr.de>; Tue,  9 Apr 2024 02:54:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01C97B245FC
+	for <lists+linux-iio@lfdr.de>; Tue,  9 Apr 2024 02:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7199B54664;
-	Tue,  9 Apr 2024 02:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C1554745;
+	Tue,  9 Apr 2024 02:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="lntESCoi"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Tnx7eNah"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02DF3EA64
-	for <linux-iio@vger.kernel.org>; Tue,  9 Apr 2024 02:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BD6554679
+	for <linux-iio@vger.kernel.org>; Tue,  9 Apr 2024 02:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712631256; cv=none; b=dSjEOHQMm/kD4zDVRN61uih/LT+es91MFkt22kx0PWb8DVMFop3i8oYQIFs2WAu6Pfecho/9araOwUr5JJwmpfTdXl+iMNCwFBxcPgydhLjBBKRJiaQHdQh/Re6Wh5IO0tFd1ZR5ule5pyJ94fzau48hIohvY+NDsehsgyIl82k=
+	t=1712631437; cv=none; b=R6N7l/uaUBQWYEzJiaGY7sqVZZw8PfbVt8zOaYw8+s/Jz6JxgbRYTRnS6zN0QQyVsfDMkr65GJwtISMkYd8fV4f+ETynTq7DI+nU7T8CQJOMS0PuaU02fddwoKtvfvO3bsCJg5DvX7L1600ftV06rBPGvGtIQlGinoeSbnvhjZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712631256; c=relaxed/simple;
-	bh=pwkxEx6Cpl4S6pKfT9Tv7amm9+UnSJQSrIhPM/QX4e4=;
+	s=arc-20240116; t=1712631437; c=relaxed/simple;
+	bh=GXgy3D19Jmy+ZElcf6OzQKj4z//+/uSjztVnU0INY14=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ERjsaTnT9BvAijDGj1spsiZdbDJw81eHjXxoo6N6Zs/FjuRfV0r1Vc5mfd/nS6niJGikyTmDRvI0u7nAxRkLbFZcmJwIp0uTHOMCsUxLuI0xpIcf5iGeoadwXdWiY6qapmeNimSMRvFc5c9pZAisy4Aim+fanhb4HRgC0RtRwFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=lntESCoi; arc=none smtp.client-ip=209.85.208.172
+	 To:Cc:Content-Type; b=lAsu4ml01cXvUO3FLYHga/Ka1uJxsY5ckfExW4cPSbKpxhaT1xd7FP52bujw7/dyIJCF/qYAvFBfu80Wh9/EdDbgOR5qK8GkazhDX5KAKVUSCEluUteLhFncRzS96N1+RXGL/415dg/oedEzuCgV7ZBOPDT00W9xvEcBuk/ECLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Tnx7eNah; arc=none smtp.client-ip=209.85.208.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2d485886545so89498611fa.2
-        for <linux-iio@vger.kernel.org>; Mon, 08 Apr 2024 19:54:13 -0700 (PDT)
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2d48d75ab70so69388681fa.0
+        for <linux-iio@vger.kernel.org>; Mon, 08 Apr 2024 19:57:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712631252; x=1713236052; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712631433; x=1713236233; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1+KbxJNBdJ5Qx+spF3lWWzpc0KdOklFkXilWrtlAms0=;
-        b=lntESCoir1SrvmLR+x5Y8dNvkmRALsuFo+Z8wZ+NwaPYeucTCbgYeoLhXNbl0Q6wFg
-         mirb9EQ/2L2xPOGfaDGGr8jum5O8Uh06EcAYtJSY4aKYlFbyQJXjV9pdK1fJn5ijaU6X
-         EilpJrSJeNvcBH9297/5xYRE+uUnrteARSQAheHFFKHrvGxY/AfBk2pf4dIiXrlm+u5N
-         nQZi8yJKnI3UGCqFwgCj7WZUiFMhAQ4DjMBi1rIYbzxuSEZhhOGfxJsLsn3F5TYHkNX4
-         x9lGdtYWtAMdX6Y9ajNcwE6H/BctWwJAvvW/TD9G/1UiEuqLMT9OgxJwlv0VFoj2QtPS
-         MRTA==
+        bh=uMkhUrq0dHh3BVa5TCrKH8G2EJVYRVx8BZxFyRplNXE=;
+        b=Tnx7eNahedoWm6HpfcYELTZzXuiUX9/pbq7rf2Yx13Tf2v5ycPFLMI5A3fsTLtMlWP
+         QY2Bn3idESaDcjv3OhGOkBS8EIQr8jcG/2WTv9UKma6ocI+yPeQ8S1TgR9q8nK4MUZRE
+         YiDK5hyGJyxiEtRYtsoocsyFHRV0wNsCMGzxHirkPju1YLaMz2wF7rq0M1woHpQfAahs
+         N9s+hVEWvHZj1WA09II4Bo0qe5JSEsGYlIhwSN9cNQHvRVVGSRxR96hWXai1BNVauxCg
+         mSmCPQ6g/3iI0V6xyhq6+Pn0PB0iqy2zlLQd/JE7Uk0eYQmqylV9IyviVetmK2WuOb9v
+         nnnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712631252; x=1713236052;
+        d=1e100.net; s=20230601; t=1712631433; x=1713236233;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1+KbxJNBdJ5Qx+spF3lWWzpc0KdOklFkXilWrtlAms0=;
-        b=MdtXwfwQEpbO3LpacG+YboHpHcRyyDGKkAs3Hv1KbVBjIMV/8DRmAR7X0Bm3nqn0Gt
-         lytxWXbGG51my/tLPqhNTFuZ3j64wDsRQkM3ARBvtA7+zztaSaP81WlVxdYqhGELgjAK
-         cyZLROi+EOCEZxy89PiB5LGUYDBEAHdUdT6ylqVNtfoZs734oaAnN6XNmiigH6dKHnZU
-         /BUXF8KL45odC3BxVojaB1v7/g+vUyWe3ZcqET/8Ut6HYpdAHbpT8rG4MFBvDOvaNxMU
-         tw7mQWVO1sqUw9R/IVXpNOM8/G3fP3JO3PM1IYyQK9PMZ6wps+3sCsTAbXyw5MC9XamC
-         nGIw==
-X-Forwarded-Encrypted: i=1; AJvYcCUE19TfLx2GyzjHhYBjHEc72Qvd0z6UWy+uOWh7MVB1vZGLLGqDt8fvkAjGpzmbe6BKZ6ExoPFlgj/7GQjgN4RFDDZ0vojJacX0
-X-Gm-Message-State: AOJu0YxoMtrlm4WxBh9zcKL+ncoq0eJwO5zcCeFndt6x5JSrgVBJounD
-	4qI2TaZH3P9995v9QVXawVAUYASicEPhxcj6MYHQshbdxuP63pnWm6sfECXJkrwPcUovC4NllBM
-	GPDgfM0UNeDI5Z06wOlVxj56p69HUNb2x547lcQ==
-X-Google-Smtp-Source: AGHT+IEj5sghCEmy0WmmzGc2UBYrG2TOAQp5CUK2H67k7mD/5JQX8nsuDutKBMYh/6xAmS89SPwJj5GMSO+9ZHnmh8w=
-X-Received: by 2002:a05:651c:153:b0:2d8:3ccc:60e8 with SMTP id
- c19-20020a05651c015300b002d83ccc60e8mr9404459ljd.48.1712631251643; Mon, 08
- Apr 2024 19:54:11 -0700 (PDT)
+        bh=uMkhUrq0dHh3BVa5TCrKH8G2EJVYRVx8BZxFyRplNXE=;
+        b=XucFv2/b84RSX37j+XqZdeq7gQ+eMOOaN1qk4enpUl5V+Q+xDLx+IP5a7lbIGSIVIN
+         6WPUg2NbHtR0G3c+G2y9cmb4XbUy24Va8Erb3BhG3S7lbuuqOJUj6yh3qzhgpjSPtPhT
+         wCRrUGb+5dUj/E3nElwdV3Oyy0SBxW0dt6EcvX9lSsI0jn4zakyrh7T3KDNOGjwsvlyC
+         EkoUxNlctDckt0kJpujuS26k0PthFmeAbiZONZmi/f2EQHAhRJn0PnT4pq0xaB0E4DZ5
+         sPRNrUNP37X0Yv3W554r686A/SpNxnSUeqgmb4HELK4p7tRRLVZ0QheyD4LP02QW/cSa
+         jnHw==
+X-Forwarded-Encrypted: i=1; AJvYcCVQUlHecU/wupMEDQGVG4WLnF0dSsItCSeahHDJc+oK28Jkdy8YAVbDHBQ7pAyZTvZs8wyQ+piUOyCaFwW9t04yaHuIsjzo4i01
+X-Gm-Message-State: AOJu0YztVAKVSZ5ZOTbmA7y3NA9mVpyy1zEG5aSinlGLvdoHTNletN9g
+	hVRmE0z4D0nunBcVRdO18YRRbu4IPdcR3xFU5RJxlLU5aCRiI0k4aknbcfyL34xn69B/Q9lrvr/
+	PGC2MP4ZGMJpKS+VY8lYwSi1byCquJdPTDLN8Eg==
+X-Google-Smtp-Source: AGHT+IEbWcT33vONJvtIvt4iYl4X7oi5SXfzHXGifOFeQmxXEYX5nZZCtNpOWL+Qac2KzQVtiExE/N/Sx6axxWObJ9k=
+X-Received: by 2002:a2e:8894:0:b0:2d8:59cb:89ef with SMTP id
+ k20-20020a2e8894000000b002d859cb89efmr6670865lji.24.1712631433527; Mon, 08
+ Apr 2024 19:57:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1712585500.git.marcelo.schmitt@analog.com>
-In-Reply-To: <cover.1712585500.git.marcelo.schmitt@analog.com>
+References: <cover.1712585500.git.marcelo.schmitt@analog.com> <7c877c865f0b7da28d9f1f177b3b2692b0ae20b9.1712585500.git.marcelo.schmitt@analog.com>
+In-Reply-To: <7c877c865f0b7da28d9f1f177b3b2692b0ae20b9.1712585500.git.marcelo.schmitt@analog.com>
 From: David Lechner <dlechner@baylibre.com>
-Date: Mon, 8 Apr 2024 21:54:00 -0500
-Message-ID: <CAMknhBFoX9mC3F43GSmYZyET9oQvHEB+AAsesZv-aEgFPZPA_w@mail.gmail.com>
-Subject: Re: [PATCH v2 0/2] Add support for AD4000 series
+Date: Mon, 8 Apr 2024 21:57:02 -0500
+Message-ID: <CAMknhBGKNZhGbD7pQ0Z7SMCWqxqGux0LcO_wW0XGP4hLTOwNBg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Add AD4000
 To: Marcelo Schmitt <marcelo.schmitt@analog.com>
 Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
 	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
@@ -85,219 +85,302 @@ Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 8, 2024 at 9:31=E2=80=AFAM Marcelo Schmitt
+On Mon, Apr 8, 2024 at 9:32=E2=80=AFAM Marcelo Schmitt
 <marcelo.schmitt@analog.com> wrote:
 >
-> This is more like an RFC patch set since configuration read/write is curr=
-ently
-> buggy.
+> Add device tree documentation for AD4000 family of ADC devices.
 >
-> Change log v1 -> v2:
-> - Took device tree provided by David.
-> - Dropped ABI additions in favor of device tree properties.
-> - Set differential IIO channel subtype for differential ADCs.
-> - Set scan_type shift bits to mask out correct real bits from buffer.
-> - Added __aligned(8) to buffer timestamp.
-> - Used union to reduce buffer memory usage for 16-bit devices.
-> - Used SPI transfer functions rather than SPI message.
-> - Used c99 style structure initialization.
-> - Used iio_device_claim_direct_scoped().
-> - Removed unneeded pointer casts.
-> - Added other power supplies (VDD and VIO).
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
+heets/ad4000-4004-4008.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
+heets/ad4001-4005.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
+heets/ad4002-4006-4010.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
+heets/ad4003-4007-4011.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
+heets/ad4020-4021-4022.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
+heets/adaq4001.pdf
+> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
+heets/adaq4003.pdf
 >
-> Link to v1: https://lore.kernel.org/linux-iio/cover.1711131830.git.marcel=
-o.schmitt@analog.com/
->
-> Additional topics:
->
-> - Why there is no different handling for the different SPI wiring modes?
-> It looks like there is no need for different handling of "4-wire" and "3-=
-wire"
-> modes.
-> If in "4-wire" (dt default mode), SDI is connected to SPI controller CS a=
-nd
-> CNV is active high. We can activate the CNV GPIO then let the SPI control=
-ler
-> bring CS (connected to SDI) down when starting the transfer.
-> If in "3-wire" (dt single mode), if we have a CNV (active low) GPIO we ac=
-tivate
-> it and then proceed with with the transfer. If controller CS is connected=
- to
-> CNV it works the same way.
-> I'm thinking it's better if we can support these devices in similar way
-> other SPI ADCs are supported. Does that make sense?
 
-In the AD7944 driver, I handled the "3-wire" mode separately because
-the sample conversion is triggered on the rising edge of the CNV line.
-In "4-wire" mode, since we have a GPIO connected to CNV, we can just
-toggle the GPIO from low to high, wait for the conversion time
-(t_CONV) and then read the sample (SPI xfer) then toggle the CNV line
-low again. In 3-wire mode, the CS line is connected to the CNV pin, so
-in order to get an up-to-date sample, we need to to toggle the CS line
-from low to high to trigger a conversion (spi xfer with no data, only
-delay), then wait for the conversion time, then read the sample (2nd
-spi xfer). So in "4-wire" mode, the CS line is getting toggled once
-per sample, but in "3-wire" mode, it is getting toggled twice per
-sample. I didn't add support for "3-wire" mode where CNV is connected
-to GPIO because we can't get max sample rate that way and it is
-unusual to not have CS connected to something. But if we do that here,
-the timing has to be different from 4-wire mode in order to not get
-stale data.
+Suggested-by: David Lechner <dlechner@baylibre.com>
 
-> To me, the "3-wire" mode with controller CS to ADC CNV is what most resem=
-bles
-> conventional SPI. The only important distinction is that the
-> controller must be able to keep ADC SDI line high during conversions.
-> Although, while the spi-engine implementation provided to me can keep SDI=
- up
-> during conversions, I'm not sure its a thing all SPI controllers can do.
-> I tried a raspberry pi 4 some time ago and it was leaving the SDI line lo=
-w if
-> no tx buffer was provided. Even with a tx full of 1s the controller would
-> bring SDI down between each 8 bits of transfer.
+(if you still use mostly my suggestions in the end)
 
-This is a good point. It sounds like additional bindings are needed to
-describe the various wiring cases of the SDI line.
-
-It sounds like possibilities are:
-
-1. SDI is hard-wired high -> can't write to registers, CNV is
-connected to SPI controller CS, chip is in "3-wire" mode. Currently
-adi,spi-mode=3D"single"
-2. SDI is connected to SDO of another chip, SDI of last chip is
-hard-wired low -> can't write to registers, CNV is connected to SPI
-controller CS, chips are in daisy chain mode. Currently
-adi,spi-mode=3D"chain"
-3. SDI is connected to SPI controller CS -> can't write registers,
-chip can operate in 4-wire mode with CNV connected to GPIO, Currently
-adi,spi-mode omitted.
-4. SDI is connected to SPI controller SDO -> can write registers, and
-support all writing modes (3-wire, 4-wire, daisy chain) as long as SPI
-controller SDO line can be kept high or low at the appropriate time.
-Currently not handled.
-5. There could be a pin mux that switches between the one of the first
-three and the 4th option (needed to avoid the issue with SPI
-controller not being able to place the SDI pin in the correct state
-during conversion trigger as described above).
-
-On AD7944, the proposed adi,spi-mode property was sufficient to
-describe what was wired to the SDI pin because we only had the first 3
-options (the AD7944 doesn't have SPI registers to write to).
-
-Also see related comments in my reply to the DT bindings patch.
-
-(From the complete bindings point of view, we should probably also
-consider the possibility of variations of 1. and 2. where CS of the
-SPI controller is not wired and CNV is connected to a GPIO - this can
-be determined by the combination of the adi,spi-mode property and the
-presence or absence of the cnv-gpios property.)
-
-> Anyway, single-shot and buffered reads work with the spi-engine controlle=
-r
-> with ADC in "3-wire"/single mode with controller CS line connected to ADC=
- CNV
-> pin which is how I've been testing it.
-
-Technically, yes data can be captured in "3-wire" mode with a single
-CS toggle, but then the data is stale and doesn't correspond to the
-soft timestamp because it is reading the data from the previous
-conversion triggered by the last SPI xfer, whenever that was. Since it
-is trivial to avoid this by adding the extra CS/CNV toggle I describe
-above, I don't see any reason not to.
-
-But the way the driver is written now, it is actually only supporting
-the unnamed wiring option 4 from above, so now I understand the
-confusion about 3-wire vs. 4-wire mode in that context.
-
->
-> - Why did not make vref regulator optional?
-> Other SAR ADCs I've seen needed a voltage reference otherwise they simply
-> could not provide any reasonable readings. Isn't it preferable to fail ra=
-ther
-> than having a device that can't provide reliable data?
-
-In the device tree bindings, making vref-supply required makes sense
-since there is no internal reference.  In the driver, as discussed in
-V1, it will fail if vref-supply in regulator_get_voltage() if
-vref-supply is missing and we use devm_regulator_get() instead of
-devm_regulator_get_optional(). So leaving it as-is is fine. We have a
-plan to clean this up later anyway.
-
->
-> - Why did not split into AD and ADAQ patches?
-> The main difference between AD and ADAQ is the amplifier in front of the =
-ADC.
-> If only supporting AD, we could probably avoid the scale table since it w=
-ould
-> only have two possible values per ADC. But then the handling of span comp=
-ression
-> scale would need refactoring to be in the scale table when adding ADAQ.
-> I'm not excited to implement something knowing it will need rework in the
-> following patch. Will do if required.
-
-If it isn't that much work, it seems worth it to me. If the driver
-work is too much, maybe just split the DT patch?
-
->
-> - Span compression and offset.
-> For non-differential ADCs, enabling the span compression requires an inpu=
-t offset.
-> Link: https://www.analog.com/media/en/technical-documentation/data-sheets=
-/AD4000-4004-4008.pdf
-> page 18
-> and
-> Link: https://www.analog.com/media/en/technical-documentation/data-sheets=
-/ad4002-4006-4010.pdf
-> page 19
-> I updated the _offset attribute for those ADCs according to span compress=
-ion
-> being enabled or not. Is it okay to have an attribute update cause an upd=
-ate to
-> another one?
-> Maybe also make the span compression a dt property and have it fixed afte=
-r probe?
-
-This doesn't sound like something that belongs in DT since it doesn't
-depend on the physical properties of what is wired to the input.
-
-But the fact that offset should not be read until after scale is set
-sounds like a quirk that would be worth documenting in some
-chip-specific docs.
-
->
-> - Configuration register
-> Despite it doing single-shot and buffered captures, read and writes to th=
-e
-> configuration register are currently buggy. It is as if the register was
-> "floating". I tried setting up buffers like ad7768-1, adxl355_core, bma22=
-0_spi,
-> bma400_core, and mcp3911.
-
-If the ADC CNV pin is connected to a GPIO and the ADC SDI pin is
-connected to SDO of the SPI controller, then nothing is connected to
-CS of the SPI controller, so that might be the problem.
-
->
->
-> Thanks,
-> Marcelo
->
-> Marcelo Schmitt (2):
->   dt-bindings: iio: adc: Add AD4000
->   iio: adc: Add support for AD4000
->
->  .../bindings/iio/adc/adi,ad4000.yaml          | 201 ++++++
->  MAINTAINERS                                   |   8 +
->  drivers/iio/adc/Kconfig                       |  12 +
->  drivers/iio/adc/Makefile                      |   1 +
->  drivers/iio/adc/ad4000.c                      | 649 ++++++++++++++++++
->  5 files changed, 871 insertions(+)
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+>  .../bindings/iio/adc/adi,ad4000.yaml          | 201 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 208 insertions(+)
 >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4000.=
 yaml
->  create mode 100644 drivers/iio/adc/ad4000.c
 >
-> --
-> 2.43.0
->
->
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+> new file mode 100644
+> index 000000000000..ca06afb5149e
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
+> @@ -0,0 +1,201 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/adi,ad4000.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Analog Devices AD4000 and similar Analog to Digital Converters
+> +
+> +maintainers:
+> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
+> +
+> +description: |
+> +  Analog Devices AD4000 family of Analog to Digital Converters with SPI =
+support.
+> +  Specifications can be found at:
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad4000-4004-4008.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad4001-4005.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad4002-4006-4010.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad4003-4007-4011.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad4020-4021-4022.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+adaq4001.pdf
+> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
+adaq4003.pdf
+> +
+> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +properties:
+> +  compatible:
+> +    enum:
+> +      - adi,ad4000
+> +      - adi,ad4001
+> +      - adi,ad4002
+> +      - adi,ad4003
+> +      - adi,ad4004
+> +      - adi,ad4005
+> +      - adi,ad4006
+> +      - adi,ad4007
+> +      - adi,ad4008
+> +      - adi,ad4010
+> +      - adi,ad4011
+> +      - adi,ad4020
+> +      - adi,ad4021
+> +      - adi,ad4022
+> +      - adi,adaq4001
+> +      - adi,adaq4003
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 102040816 # for VIO > 2.7 V, 81300813 for VIO > 1.7 V
+> +
+> +  spi-cpha: true
+> +
+> +  adi,spi-mode:
+> +    $ref: /schemas/types.yaml#/definitions/string
+> +    enum: [ single, chain ]
+
+It sounds like there are more possible wiring configurations for these
+chips that I thought when suggesting reusing this binding from AD7944
+so we probably need more options here. (see my reply to the cover
+letter for the complete context of these remarks)
+
+We identified A) an additional wiring configuration where SDI of the
+ADC chip is wired to SDO of the SPI controller and B) a potential need
+to pin mux between wiring modes to work around SPI controller
+limitations perhaps we could omit the adi,spi-mode property and just
+use the standard pinctrl properties.
+
+  pinctrl-names:
+    description: |
+      Names for possible ways the SDI line of the controller is wired.
+
+      * default: The SDI line of the ADC is connected to the SDO line of th=
+e
+        SPI controller.  CNV line of the ADC is connected to CS of the SPI
+        controller.
+      * single: The datasheet calls this "3-wire mode".  (NOTE: The datashe=
+et's
+        definition of 3-wire mode is NOT at all related to the standard
+        spi-3wire property!)  In this mode, SDI is tied to VIO, and the CNV=
+ line
+        can be connected to the CS line of the SPI controller (typical) or =
+to a
+        GPIO, in which case the CS line of the controller is unused.  The S=
+DO
+        line of the SPI controller is not connected.
+      * multi: The datasheet calls this "4-wire mode" and is used when mult=
+iple
+        chips are connected in parallel.  In this mode, the ADC SDI line is=
+ tied
+        to the CS line on the SPI controller and the CNV line is connected =
+to
+        a GPIO.  The SDO line of the SPI controller is not connected.
+      * chain: The datasheet calls this "chain mode".  This mode is used to=
+ save
+        on wiring when multiple ADCs are used.  In this mode, the SDI line =
+of
+        one chip is tied to the SDO of the next chip in the chain and the S=
+DI of
+        the last chip in the chain is tied to GND.  Only the first chip in =
+the
+        chain is connected to the SPI bus.  The CNV line of all chips are t=
+ied
+        together.  The CS line of the SPI controller can be used as the CNV=
+ line
+        only if it is active high.
+
+      If one name is specified, it is assumed the chip is hard-wired in thi=
+s
+      configuration.
+
+      If two names are specified, it is assumed that a pinmux can switch be=
+tween
+      the two wiring configurations.  The first is the default mode for rea=
+ding
+      and writing registers on the chip and the second is the mode for read=
+ing
+      the conversion data from the chip.
+    oneOf:
+      - items:
+          - enum:
+            - default
+            - single
+            - multi
+            - chain
+      - items:
+          - const: default
+          - enum:
+            - single
+            - multi
+            - chain
+
+  pinctrl-0:
+    maxItems: 1
+
+  pinctrl-1:
+    maxItems: 1
+
+
+> +    description: |
+> +      This property indicates the SPI wiring configuration.
+> +
+> +      When this property is omitted, it is assumed that the device is us=
+ing what
+> +      the datasheet calls "4-wire mode". This is the conventional SPI mo=
+de used
+> +      when there are multiple devices on the same bus. In this mode, the=
+ CNV
+> +      line is used to initiate the conversion and the SDI line is connec=
+ted to
+> +      CS on the SPI controller.
+> +
+> +      When this property is present, it indicates that the device is usi=
+ng one
+> +      of the following alternative wiring configurations:
+> +
+> +      * single: The datasheet calls this "3-wire mode". (NOTE: The datas=
+heet's
+> +        definition of 3-wire mode is NOT at all related to the standard
+> +        spi-3wire property!) This mode is often used when the ADC is the=
+ only
+> +        device on the bus. In this mode, SDI is tied to VIO, and the CNV=
+ line
+> +        can be connected to the CS line of the SPI controller or to a GP=
+IO, in
+> +        which case the CS line of the controller is unused.
+> +      * chain: The datasheet calls this "chain mode". This mode is used =
+to save
+> +        on wiring when multiple ADCs are used. In this mode, the SDI lin=
+e of
+> +        one chip is tied to the SDO of the next chip in the chain and th=
+e SDI of
+> +        the last chip in the chain is tied to GND. Only the first chip i=
+n the
+> +        chain is connected to the SPI bus. The CNV line of all chips are=
+ tied
+> +        together. The CS line of the SPI controller can be used as the C=
+NV line
+> +        only if it is active high.
+> +
+> +  '#daisy-chained-devices': true
+> +
+> +  vdd-supply:
+> +    description: A 1.8V supply that powers the chip (VDD).
+> +
+> +  vio-supply:
+> +    description:
+> +      A 1.8V to 5.5V supply for the digital inputs and outputs (VIO).
+> +
+> +  ref-supply:
+> +    description:
+> +      A 2.5 to 5V supply for the external reference voltage (REF).
+> +
+> +  cnv-gpios:
+> +    description:
+> +      The Convert Input (CNV). This input has multiple functions. It ini=
+tiates
+> +      the conversions and selects the SPI mode of the device (chain or C=
+S). In
+> +      'single' mode, this property is omitted if the CNV pin is connecte=
+d to the
+> +      CS line of the SPI controller. If 'single' mode is selected and th=
+is GPIO
+> +      is provided, it must be active low.
+
+Since the conversion is triggered on the low to high transition of
+CNV, I think it only makes sense to have it active high and not active
+low.
+
+> +    maxItems: 1
+> +
+> +  adi,high-z-input:
+> +    type: boolean
+> +    description:
+> +      High-Z mode allows the amplifier and RC filter in front of the ADC=
+ to be
+> +      chosen based on the signal bandwidth of interest, rather than the =
+settling
+> +      requirements of the switched capacitor SAR ADC inputs.
+> +
+> +  adi,gain-milli:
+> +    description: |
+> +      The hardware gain applied to the ADC input (in milli units).
+> +      The gain provided by the ADC input scaler is defined by the hardwa=
+re
+> +      connections between chip pins OUT+, R1K-, R1K1-, R1K+, R1K1+, and =
+OUT-.
+> +      If not present, default to 1000 (no actual gain applied).
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [454, 909, 1000, 1900]
+> +    default: 1000
+
+Same suggestion as in V1 - we should make it clear that this property
+only applies to ADAQ chips (in the description and also a -if: for the
+bindings validator). Also, looking at the datasheet, it looks like
+there are a lot more pins on the ADAQ chips, so I think there are more
+properties missing here.
+
+Some trivial ones:
+
+vs-pos-supply (VS+ pin, 0 to 11V supply) and vs-neg-supply (VS- pin,
+-11 to 0V supply)
+
+pd-amp-gpios (active low) and pd-ref-gpios (active low) for optional
+runtime power management.
+
+Also the datasheet says the ADAQ chips supports "Single-ended to
+differential conversion". So it seems like we might need some extra
+properties to describe that case (a flag for indicating single-ended
+wiring and an optional voltage supply to describe what is connected to
+the negative input if it isn't tied to GND)
 

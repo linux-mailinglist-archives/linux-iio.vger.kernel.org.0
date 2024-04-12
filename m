@@ -1,231 +1,213 @@
-Return-Path: <linux-iio+bounces-4211-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4212-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 312008A37D6
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 23:26:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D38D8A38E4
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 01:25:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D60C1F231A5
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 21:26:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13A7A1F21FF9
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 23:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C31152174;
-	Fri, 12 Apr 2024 21:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B84152532;
+	Fri, 12 Apr 2024 23:25:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dl3FSX5P"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dqw/ELXu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 933182556F
-	for <linux-iio@vger.kernel.org>; Fri, 12 Apr 2024 21:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7067715217D
+	for <linux-iio@vger.kernel.org>; Fri, 12 Apr 2024 23:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712957192; cv=none; b=dQKvZb1d+mFCqV3/fq2GsLynxx5vBT3Kaqr7ufRiKreyUdkuSO0txy8XgSY+Q2aSHYW5Rns3gkICtIJsGHlXbSBAW03Vg3Ewr1RdOgryunaQER9q9JRBHXABaYRqKxtB2ey2geFDF0twUSMutc8msKoL057Isn/m4oFbyvUGfts=
+	t=1712964311; cv=none; b=Phfi35fES2T8xfwdbw53pmx27o2GR/dKOULrK20H5xkOO1P0cOB+tcj0LLYmdArJHj7N8n7/JpSXU7l2LwB3JhJezR8c95tmhaycxwO8G2LXR7izjJiiMy5qWlm6uRTVDDQv6Nml4tw3YRMyV5MXKHipkq8HjtprLCu2TQ4NIno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712957192; c=relaxed/simple;
-	bh=TnychJnfZ1ARNa8XlNX4o7oKmSbkl+T/lHYLu9auJRY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ujJ7rlRLkRH7YqNbtoRl7+BPCwZyehAqRzGjLYz3ArBbMLCpzTx2BjD77HJC/lmcGB591VhyGW9RdIi1FxdPJAXWeZmpqMYaM7ZbVaq1AQMtTbMODUZqIv6jyAo8ngjybBGmHm5r2Gx9QKUn1umLM4BeKnnsxlR1apr3ORLQUS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dl3FSX5P; arc=none smtp.client-ip=209.85.208.173
+	s=arc-20240116; t=1712964311; c=relaxed/simple;
+	bh=KGyMekWTlazKBqS5Mf0nI0xFELlChiDJZMmvQrG+A+A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=fFNo0z3XPUKoiAXvfgwRN7tOqsxag9Wfi5hY14IrlVBqlirJmcGDUMQrmv0sJPyiDFexZJ71auSmzpaE8l/orfv/XyXM+tXo7F18EWTfFM3trql61PeH4Cy1H0h5IY4IHWpZjJTuCTRFDzao93941WKEpKe9GrCPRfPUx/ruYcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dqw/ELXu; arc=none smtp.client-ip=209.85.210.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2d4886a1cb4so14802061fa.0
-        for <linux-iio@vger.kernel.org>; Fri, 12 Apr 2024 14:26:30 -0700 (PDT)
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6eb5887f225so1009489a34.2
+        for <linux-iio@vger.kernel.org>; Fri, 12 Apr 2024 16:25:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712957189; x=1713561989; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q2/FnCSkb0G/WX1xU5FT6ophn/HhrSA5iG0uPSjN8aw=;
-        b=dl3FSX5PFE7nKwrsizdFbp10QHI3DlMmngJLGM3HfsAtjWyj8reBVRplzP6cpnQFD5
-         /Ue+dzvXbytwhixlORFE+5QWZi6k9T89JPFIhKzdfkg2ALt4rd6j+zGYPaoau0/jtNeR
-         Q17yFnVk0AbyTSbHY2Ym0G0r4gmRm5xC9fsFXSJxePD158SnzsLlW1fCSoBk5ImQMTZZ
-         abntmnicTLhLnHpCsYICq8I6elBKtTRtLz0v4eBlsIaFwXnxCiUVTWQ5p7J1IWQ66tQ1
-         k9/SpdgFm5fqkb9fJSf5eqxOmhL84rnAe6aMBlSb1QcE/bgh5m/gaG1lI8qUQDkJVPMG
-         U+EA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1712964306; x=1713569106; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lmhooQqIc2chRcc2CAcdYrKYNFL3maDSCzi5ZTdPPdo=;
+        b=dqw/ELXuyY+mPMEQBBcaMcuPrESkGoJJ/exIivvVmKpijjq04YOuqVln0osFb45XP5
+         cQJFN7ylI099jWf8BromQLiovz4H9j/5gZyI7wgwX6PGI20vypXx7PxKDStG7gN5N0Fg
+         YPzsdO+MvgZDHidM1dt4IuqrdtWLKW8noMUyNq0zRybmNZs+Fl1mbymbzqKT1sIRA1pq
+         VuTivesSBuvTZxO5185cJ8R8pP84vp2acDNN9UgBL0MEEzrpt6sN/0IhA4hqG993vBz6
+         jhWK9MgxFZ4ssNltWt/2SOWiVL0eDmp1MT3FZnEovyNg4fWaACuCcyPmF9xn3yOfTT2S
+         tQMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712957189; x=1713561989;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q2/FnCSkb0G/WX1xU5FT6ophn/HhrSA5iG0uPSjN8aw=;
-        b=G5zvB2Jxf4dBIU10SE9FAPLypXk5iinql5hhqlDN0ZUtg1p6oOW84YNn+wz447fZXu
-         /tCynFImmm3Xe0SJKrJjL9VUXa9ndlj/vRpTcBxFLeukeeDZrwZeLzyKPzfr5I0ijxSC
-         /01EhnMpX9iBpA9N0eDsgcE3TQZOHBkwiwjPzI2P0R8Kvhm6I7WJkj6M8eu1emoiD7Va
-         4oYRZN9RqWdsBp/KC0t7qRHZ/GrnYyrIBnHn8PbDofF6JjzskVW1kei1eTskXLBm//Ym
-         gQAj0I3EAY6evwnRx3d5cOtxe8KkkwM2k4zS9ILeGZkKgnI9ZFEZ+S0csN9U75MzefSi
-         JyXg==
-X-Gm-Message-State: AOJu0YyZJBg4Fq6YITASSg9X7aSFEyDH5UoD4vyjfbVXc5MWkhBlFoe1
-	SsQif4snfNU8GsTpUqCguurYg+UN49aMEoeneLJVlcLgzb6IznoQv/CJ8Rtu7PMXSVlkCJ9TjFq
-	siu3Q5CtNQ/NB1Qj8A8sgIFcDrA/sWZVrIc/uaA==
-X-Google-Smtp-Source: AGHT+IGTDBXy40PBbc0Sok6v9xzaHIivLOEmGwOHQlmv8Pl5J+Ds/tVLRXSLxDMTmkrMsVJ63VA+1c5LECt9e27CPQY=
-X-Received: by 2002:a05:651c:1502:b0:2d8:e978:e38d with SMTP id
- e2-20020a05651c150200b002d8e978e38dmr3258335ljf.10.1712957188591; Fri, 12 Apr
- 2024 14:26:28 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1712964306; x=1713569106;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lmhooQqIc2chRcc2CAcdYrKYNFL3maDSCzi5ZTdPPdo=;
+        b=FvWWnCsXlxMNRvaaDa5yuGPUbgr+78IpNktaDNcTTOwj74+qu5tv3WxBZ67spEPI/I
+         p+KgVD0JzwM/NYNDRL+JgfauH27nAux1z19v2To/X3f053eE281/xS8NnXuekkRTO3AQ
+         hvOlLcjb2+INjDaI3tziSqm1J5NSp6POFYdkMFVk6/Ejj3+apuduSeEyYhsFb3KdGllW
+         2JJpydGvX/UkRqlBBwxigb1+zAVUGdgsjGWJoyX+sE8Vcoh/38+E7Yz45VfVUqK8JPNx
+         QuRATUFCDoIUGEl9hILLOY0akeZXdyj29Id+LBjzRxwmC9P1G6HEyY2uMqIyYKSQU7Fv
+         iksg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKw8BmyG48aHENgj37siyv1gbVvWIhzp8V/YnBCdVw7wdKxxK6rzy7qR8TwUCZyW0Xunj5lgOPWRKp/duqzzNhOdqDWc5zA559
+X-Gm-Message-State: AOJu0YwZfenAikFAx1qfV+mO9OpE1dBcyp5HJXk9HPdJ4JwhdmkGNvyx
+	WfExWPDPah27PWAKDYk9Y0bg6wYa3bBL4RBMAxxK65D1D4qwk+6oHgIIaPY8wpc=
+X-Google-Smtp-Source: AGHT+IFKhbeDy09RPmweEEU2kr604GNlIZ6syKQfPoxLifZv0u4Qu3LWVrmTGfIVSOd1G+fOG0HqtA==
+X-Received: by 2002:aca:1107:0:b0:3c5:e03a:8f51 with SMTP id 7-20020aca1107000000b003c5e03a8f51mr3716220oir.48.1712964306530;
+        Fri, 12 Apr 2024 16:25:06 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5-20020aca2805000000b003c5f72e5a6asm751372oix.58.2024.04.12.16.25.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Apr 2024 16:25:06 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: ad7944: Consolidate spi_sync() wrapper
+Date: Fri, 12 Apr 2024 18:25:02 -0500
+Message-ID: <20240412-ad7944-consolidate-msg-v1-1-7fdeff89172f@baylibre.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240412032102.136071-1-kimseer.paller@analog.com> <20240412032102.136071-3-kimseer.paller@analog.com>
-In-Reply-To: <20240412032102.136071-3-kimseer.paller@analog.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Fri, 12 Apr 2024 16:26:17 -0500
-Message-ID: <CAMknhBE9XihK27pRhyPwTNM3VQX=osYdDyCmjNspz1aqe_NVTw@mail.gmail.com>
-Subject: Re: [PATCH 2/4] iio: ABI: add ABI file for the LTC2664 DAC
-To: Kim Seer Paller <kimseer.paller@analog.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Michael Hennerich <michael.hennerich@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 
-On Thu, Apr 11, 2024 at 10:21=E2=80=AFPM Kim Seer Paller
-<kimseer.paller@analog.com> wrote:
->
-> Define the sysfs interface for toggle capable channels.
->
-> Toggle enabled channels will have:
->
->  * out_voltageY_toggle_en
+Since commit 6020ca4de8e5 ("iio: adc: ad7944: use spi_optimize_message()"),
+The helper functions wrapping spi_sync() for 3-wire and 4-wire modes are
+virtually identical. Since gpiod_set_value_cansleep() does a NULL check
+internally, we can consolidate the two functions into one and avoid
+switch statements at the call sites.
 
-It looks like there are 3 toggle modes.
+The default cases of the removed switch statement were just to make the
+compiler happy and are not reachable since the mode is validated in the
+probe function. So removing those should be safe.
 
-Two involve the notion of "enabled" outputs that I assume this attribute is=
- for:
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+---
+ drivers/iio/adc/ad7944.c | 67 ++++++++++--------------------------------------
+ 1 file changed, 13 insertions(+), 54 deletions(-)
 
-1. Toggling all enabled pins at the same time using a software trigger
-(global toggle bit)
-2. Toggling all enabled pins at the same time using a hardware trigger
-(TGP pin) and toggling pins
+diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
+index 9dc86ec23c36..4af574ffa864 100644
+--- a/drivers/iio/adc/ad7944.c
++++ b/drivers/iio/adc/ad7944.c
+@@ -214,40 +214,26 @@ static int ad7944_4wire_mode_init_msg(struct device *dev, struct ad7944_adc *adc
+ 	return devm_add_action_or_reset(dev, ad7944_unoptimize_msg, &adc->msg);
+ }
+ 
+-/*
+- * ad7944_3wire_cs_mode_conversion - Perform a 3-wire CS mode conversion and
+- *                                   acquisition
++/**
++ * ad7944_convert_and_acquire - Perform a single conversion and acquisition
+  * @adc: The ADC device structure
+  * @chan: The channel specification
+  * Return: 0 on success, a negative error code on failure
+  *
+- * This performs a conversion and reads data when the chip is wired in 3-wire
+- * mode with the CNV line on the ADC tied to the CS line on the SPI controller.
+- *
+- * Upon successful return adc->sample.raw will contain the conversion result.
+- */
+-static int ad7944_3wire_cs_mode_conversion(struct ad7944_adc *adc,
+-					   const struct iio_chan_spec *chan)
+-{
+-	return spi_sync(adc->spi, &adc->msg);
+-}
+-
+-/*
+- * ad7944_4wire_mode_conversion - Perform a 4-wire mode conversion and acquisition
+- * @adc: The ADC device structure
+- * @chan: The channel specification
+- * Return: 0 on success, a negative error code on failure
++ * Perform a conversion and acquisition of a single sample using the
++ * pre-optimized adc->msg.
+  *
+  * Upon successful return adc->sample.raw will contain the conversion result.
+  */
+-static int ad7944_4wire_mode_conversion(struct ad7944_adc *adc,
+-					const struct iio_chan_spec *chan)
++static int ad7944_convert_and_acquire(struct ad7944_adc *adc,
++				      const struct iio_chan_spec *chan)
+ {
+ 	int ret;
+ 
+ 	/*
+ 	 * In 4-wire mode, the CNV line is held high for the entire conversion
+-	 * and acquisition process.
++	 * and acquisition process. In other modes adc->cnv is NULL and is
++	 * ignored (CS is wired to CNV in those cases).
+ 	 */
+ 	gpiod_set_value_cansleep(adc->cnv, 1);
+ 	ret = spi_sync(adc->spi, &adc->msg);
+@@ -262,22 +248,9 @@ static int ad7944_single_conversion(struct ad7944_adc *adc,
+ {
+ 	int ret;
+ 
+-	switch (adc->spi_mode) {
+-	case AD7944_SPI_MODE_DEFAULT:
+-		ret = ad7944_4wire_mode_conversion(adc, chan);
+-		if (ret)
+-			return ret;
+-
+-		break;
+-	case AD7944_SPI_MODE_SINGLE:
+-		ret = ad7944_3wire_cs_mode_conversion(adc, chan);
+-		if (ret)
+-			return ret;
+-
+-		break;
+-	default:
+-		return -EOPNOTSUPP;
+-	}
++	ret = ad7944_convert_and_acquire(adc, chan);
++	if (ret)
++		return ret;
+ 
+ 	if (chan->scan_type.storagebits > 16)
+ 		*val = adc->sample.raw.u32;
+@@ -338,23 +311,9 @@ static irqreturn_t ad7944_trigger_handler(int irq, void *p)
+ 	struct ad7944_adc *adc = iio_priv(indio_dev);
+ 	int ret;
+ 
+-	switch (adc->spi_mode) {
+-	case AD7944_SPI_MODE_DEFAULT:
+-		ret = ad7944_4wire_mode_conversion(adc, &indio_dev->channels[0]);
+-		if (ret)
+-			goto out;
+-
+-		break;
+-	case AD7944_SPI_MODE_SINGLE:
+-		ret = ad7944_3wire_cs_mode_conversion(adc, &indio_dev->channels[0]);
+-		if (ret)
+-			goto out;
+-
+-		break;
+-	default:
+-		/* not supported */
++	ret = ad7944_convert_and_acquire(adc, &indio_dev->channels[0]);
++	if (ret)
+ 		goto out;
+-	}
+ 
+ 	iio_push_to_buffers_with_timestamp(indio_dev, &adc->sample.raw,
+ 					   pf->timestamp);
 
-The third mode though looks like it uses the same toggle select
-register for selecting A or B for each channel instead of enabling or
-disabling each channel.
-
-3. Toggling all pins to A or B based on the toggle select register. No
-notion of enabled pins here.
-
-I haven't looked at the driver implementation, but it sounds like
-out_voltageY_toggle_en and out_voltageY_symbol would be writing to the
-same register in conflicting ways. So maybe we need yet another custom
-attribute to select the currently active toggle mode?
-
-In any case, it would be helpful if the documentation below explained
-a bit better the intention and conditions required to use each
-attribute (or add a .rst documentation file for these chips to explain
-how to use it in more detail since this is rather complex feature).
-
->  * out_voltageY_raw0
->  * out_voltageY_raw1
-
-I guess there is no enum iio_modifier that fits this. It seems like we
-could still have out_voltageY_raw for register A so that users that
-don't need to do any toggling can use standard ABI. And maybe
-out_voltageY_raw_toggled for register B (question for Jonathan)?
-
-Or just have 8 channels instead of 4 where even channels are register
-A and odd channels are register B?
-
->  * out_voltageY_symbol
-
-"symbol" is a confusing name. It sounds like this just supports
-toggling one channel individually so _toggle_select would make more
-sense to me. Are there plans for supporting toggling multiple channels
-at the same time using a software trigger as well?
-
->
-> The common interface present in all channels is:
->
->  * out_voltageY_raw (not present in toggle enabled channels)
-
-As mentioned above, I don't think we need to have to make a
-distinction between toggle enabled channels and not enabled channels.
-
->  * out_voltageY_raw_available
->  * out_voltageY_powerdown
-
-Is _powerdown a standard attribute? I don't see it documented
-anywhere. Perhaps you meant _en (via IIO_CHAN_INFO_ENABLE)?
-
-
->  * out_voltageY_scale
->  * out_voltageY_offset
->
-> Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
-> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> ---
->  .../ABI/testing/sysfs-bus-iio-dac-ltc2664     | 30 +++++++++++++++++++
->  MAINTAINERS                                   |  1 +
->  2 files changed, 31 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2664
->
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2664 b/Docume=
-ntation/ABI/testing/sysfs-bus-iio-dac-ltc2664
-> new file mode 100644
-> index 000000000..4b656b7af
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2664
-> @@ -0,0 +1,30 @@
-> +What:          /sys/bus/iio/devices/iio:deviceX/out_voltageY_toggle_en
-> +KernelVersion: 5.18
-> +Contact:       linux-iio@vger.kernel.org
-> +Description:
-> +               Toggle enable. Write 1 to enable toggle or 0 to disable i=
-t. This is
-> +               useful when one wants to change the DAC output codes. The=
- way it should
-> +               be done is:
-> +
-> +               - disable toggle operation;
-> +               - change out_voltageY_raw0 and out_voltageY_raw1;
-> +               - enable toggle operation.
-> +
-> +What:          /sys/bus/iio/devices/iio:deviceX/out_voltageY_raw0
-> +What:          /sys/bus/iio/devices/iio:deviceX/out_voltageY_raw1
-> +KernelVersion: 5.18
-> +Contact:       linux-iio@vger.kernel.org
-> +Description:
-> +               It has the same meaning as out_voltageY_raw. This attribu=
-te is
-> +               specific to toggle enabled channels and refers to the DAC=
- output
-> +               code in INPUT_A (_raw0) and INPUT_B (_raw1). The same sca=
-le and offset
-> +               as in out_voltageY_raw applies.
-> +
-> +What:          /sys/bus/iio/devices/iio:deviceX/out_voltageY_symbol
-> +KernelVersion: 5.18
-> +Contact:       linux-iio@vger.kernel.org
-> +Description:
-> +               Performs a SW toggle. This attribute is specific to toggl=
-e
-> +               enabled channels and allows to toggle between out_voltage=
-Y_raw0
-> +               and out_voltageY_raw1 through software. Writing 0 will se=
-lect
-> +               out_voltageY_raw0 while 1 selects out_voltageY_raw1.
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index bd8645f6e..9ed00b364 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12842,6 +12842,7 @@ M:      Kim Seer Paller <kimseer.paller@analog.co=
-m>
->  L:     linux-iio@vger.kernel.org
->  S:     Supported
->  W:     https://ez.analog.com/linux-software-drivers
-> +F:     Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2664
->  F:     Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
->
->  LTC2688 IIO DAC DRIVER
-> --
-> 2.34.1
->
+---
+base-commit: aabc0aa90c927a03d509d0b592720d9897894ce4
+change-id: 20240412-ad7944-consolidate-msg-378515e51628
 

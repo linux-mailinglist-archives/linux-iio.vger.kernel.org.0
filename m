@@ -1,75 +1,65 @@
-Return-Path: <linux-iio+bounces-4197-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4198-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4098A25F0
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 07:50:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7078A2E5A
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 14:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EED41C2210B
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 05:50:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BECF81C226C0
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 12:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853F61BDDF;
-	Fri, 12 Apr 2024 05:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00A245BF3;
+	Fri, 12 Apr 2024 12:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IioVJYwU"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="QO5/ZnkY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537FA1BC56
-	for <linux-iio@vger.kernel.org>; Fri, 12 Apr 2024 05:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F35B4595B
+	for <linux-iio@vger.kernel.org>; Fri, 12 Apr 2024 12:33:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712901024; cv=none; b=hYKMtHXMh3be9jAbCdDsgbuGYvRnvnuERQGTNkuH5Td2+RVABwKkL24WVnzSDzqL48Y8ulRtzbeVNeAyoXvjM4rioUfuFBDjg8bTLZKib0vIKM2D2ar1UtI05R69+PAHhxKzPMYxjZ2pLR6K6Y4uNcwpREhM/j8xM4tXJQ52bS0=
+	t=1712925217; cv=none; b=gyNFhmAUgEwhSVu32D2Oj1phd7JW2XWS6KkqjmRiEYiriGUDB+TT+ZXtW1V7dnbrw56VrRyhH6gV03lmAMieNZGXAacgMTcs06k6be/g/gvVtSaIYREkZrhFnmMrmZ2u+MnMR71fhd6/Nkjv6kdPio5Rk3phrM7nOFSaJFuoYhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712901024; c=relaxed/simple;
-	bh=u2fBRb2MppOqSy4keS9S2tRusxCbNGSH9M8O8szneiE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tio1853I6ufWnDaFm/RfbLddHZY5DnbhfOhpiNGIa4Ks/OIiuhJ9nPsaZ6wY1ImKC6bJMlUacIXTaSDRB8wW6ixLH5hX7a0oEL/+sS1uwMwNWrC0wr3gY9mXjnJSbwL1DbLNEj0jO9bgtrBJewT9YPI1P6rXFmo3JFzCtl7MSfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IioVJYwU; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a51aac16b6eso23682366b.1
-        for <linux-iio@vger.kernel.org>; Thu, 11 Apr 2024 22:50:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1712901019; x=1713505819; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=OR54SlsdcNnu/qmb8DNsogrMX6VvD/PSPML5TmmcnNY=;
-        b=IioVJYwUmEctAaZbZLM2F1Jy2fms9ltTCoL1eqb2B8ERrFOjCSV9UL5ReF4IK+zgZJ
-         vmdefpCJF9TRHERXLYhYsukvN1rwOUnDAS6NaBeIaP+nPF42Yx9el3cK9cZ46h/tLcjI
-         bRYWr6xK5X94RTSFGG91BGditnxv8VtnvM5Bi7wT3qMz4Y0UF5qzbdy/cWQLLOIOTr37
-         1mY0FcgxowsSCeRahsWet7jTZeAj87Y9t9qSwSbao7AKtpF2BurZgQcg4jPDXkSKIHwG
-         4H68zvtfvXWmKAl4QBTPYXKalNYeQODyaw5efAwFEhvs6TuAQS8FJUL1RtrwXcPWs2DZ
-         Or3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1712901019; x=1713505819;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OR54SlsdcNnu/qmb8DNsogrMX6VvD/PSPML5TmmcnNY=;
-        b=Ey+fwZaq05O+kIwtr90TiBR41b5dILoJJ8FNSNs/PRrlwGaEtUpIAWvovmo4T0WXcf
-         Exh8dgyZLt+VMLumdD5+LzVwSYgRAQ/8lYx0E2gBN3QcwDsbQWXQIGF0V4Ri1AxO7gXM
-         mkl5FuNOPG5P4yGvc3rkoqp2HO4JLqtYoxy8QbNRvVVENfSqwleVE1Z3sujuOJJBFpKS
-         5jTKROjOq4D8HW81qe+zKhDUpXCpnVkXmrGYoMMMQ8NQWDRe2bh3MASqWKUETucRYtqH
-         hUS+m48CWwePRw2DV1ExCFkZGvCH3Uid4x6j9VEW0OUgX9LycSL7YqeDoYjBRSSKtp/G
-         heBw==
-X-Forwarded-Encrypted: i=1; AJvYcCXsdjHPMuKW6BJZAsfUzpiF72W7QjS6P4Wb04RpDh0aIqI08PaUMRvtp4ZGPr50oz2rzzjcgzCb9k8wxITK/6RPc8yXj8RewO54
-X-Gm-Message-State: AOJu0YyjXLIRvt4UaEd/nfjlzsmeAg+8CzL/Ss3AEnmivyrN6r8Guin5
-	l70DAXvEJliC2Y7tG0uv1+0Eh91yp4KK63sCLV25RPTFjfdwAY+xy0nvWRIjtVk=
-X-Google-Smtp-Source: AGHT+IExi1jAUfeOXVkPYiwJYVCGENvkywJmwiCyKsAm0POBLtZ9B23nXH8iJT1aVrHInVp4KbRWJg==
-X-Received: by 2002:a50:cc94:0:b0:56e:2d93:3f7f with SMTP id q20-20020a50cc94000000b0056e2d933f7fmr1391584edi.39.1712901019445;
-        Thu, 11 Apr 2024 22:50:19 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id b11-20020aa7c6cb000000b0056e7ba0497dsm1325309eds.28.2024.04.11.22.50.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 11 Apr 2024 22:50:18 -0700 (PDT)
-Message-ID: <34de2d9b-c62e-4f18-806c-560ba4474237@linaro.org>
-Date: Fri, 12 Apr 2024 07:50:17 +0200
+	s=arc-20240116; t=1712925217; c=relaxed/simple;
+	bh=xy8zBcIFRDa1WwX7m0uzbcsyuKBRYsxCgNr+4fgXhNA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=rKbPdDiujMHEsQvnhzjAeGRBSCZk3c+mlRRL3bvb3EnD6YabiJPEkROnEQafbVLT2n3ivazy0j9pLJqo4+kTI5+7gRbK1JysMxYTrC9i20GqjJQgRDcRR+xmKhXpBp7MOaLbV2kJiMzfWJanHRAtk1O/Clhl+PVbY6xKjxswWB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=QO5/ZnkY; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0288072.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43CC06cT016590;
+	Fri, 12 Apr 2024 14:32:51 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	message-id:date:mime-version:subject:to:cc:references:from
+	:in-reply-to:content-type:content-transfer-encoding; s=
+	selector1; bh=hFKwqDIFKt5+2bDaoIY+EsjsZNmh+ui4K5adntdmA2I=; b=QO
+	5/ZnkY08sdPve3n5s+dpmypvnW9A6P4bblOb1RQUnDdF78MVz/LNAY56vd3D9VJA
+	AnP1LvYZoWqaCJYC/mkjvwtaXp0q0MIXwx7FVzwdrrOv9doMLX+HYbTYoF48FpiG
+	DzK0AG4/s2iKzQmPspXJyV44zmQxhXFQyet9P90SMgpzSPzArjFcnzfNRDX/o7Zk
+	ZF5uQ7vEUSPeqtB761iIOXVPTjYKsdIhsbj4oOtJ3qaF6p1Yaxi0K2gNSOOQGYQY
+	umYzKvJPoeiZGw2zJ5CXzu3hve3zWquzEudCL9fYD96Ti+A1fZ6eCEUxa4udymx3
+	Fbcd0Gn/mTHCE6xdmbZA==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3xautg9y6v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 12 Apr 2024 14:32:51 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 953B44002D;
+	Fri, 12 Apr 2024 14:32:29 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node2.st.com [10.75.129.70])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8EEA52132F2;
+	Fri, 12 Apr 2024 14:31:22 +0200 (CEST)
+Received: from [10.252.23.222] (10.252.23.222) by SHFDAG1NODE2.st.com
+ (10.75.129.70) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 12 Apr
+ 2024 14:31:21 +0200
+Message-ID: <900004c4-0a30-4dff-85ba-ad6f61fe3818@foss.st.com>
+Date: Fri, 12 Apr 2024 14:31:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,291 +67,75 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: iio: dac: Add adi,ltc2664.yaml
-To: Kim Seer Paller <kimseer.paller@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, David Lechner <dlechner@baylibre.com>,
- Michael Hennerich <michael.hennerich@analog.com>
-References: <20240412032102.136071-1-kimseer.paller@analog.com>
- <20240412032102.136071-2-kimseer.paller@analog.com>
+Subject: Re: [PATCH v6 3/8] iio: adc: stm32: Fixing err code to not indicate
+ success
+To: Jonathan Cameron <jic23@kernel.org>, <linux-iio@vger.kernel.org>,
+        =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+        Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>
+CC: Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Mihail Chindris
+	<mihail.chindris@analog.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Tomislav Denis <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>,
+        Olivier
+ Moysan <olivier.moysan@foss.st.com>,
+        Lad Prabhakar
+	<prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Dmitry Baryshkov
+	<dmitry.baryshkov@linaro.org>,
+        Marijn Suijten
+	<marijn.suijten@somainline.org>,
+        Marius Cristea
+	<marius.cristea@microchip.com>,
+        Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20240330185305.1319844-1-jic23@kernel.org>
+ <20240330185305.1319844-4-jic23@kernel.org>
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
- m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
- HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
- XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
- mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
- v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
- cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
- rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
- qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
- aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
- gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
- dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
- NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
- hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
- oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
- H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
- yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
- 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
- 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
- +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
- FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
- 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
- DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
- oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
- 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
- Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
- qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
- /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
- qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
- EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
- KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
- fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240412032102.136071-2-kimseer.paller@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+In-Reply-To: <20240330185305.1319844-4-jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE2.st.com
+ (10.75.129.70)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-12_09,2024-04-09_01,2023-05-22_02
 
-On 12/04/2024 05:20, Kim Seer Paller wrote:
-> Add documentation for ltc2664 and ltc2672.
+On 3/30/24 19:53, Jonathan Cameron wrote:
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
-> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> This path would result in returning 0 / success on an error path.
+> 
+> Cc: Olivier Moysan <olivier.moysan@foss.st.com>
+> Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+> Fixes: 95bc818404b2 ("iio: adc: stm32-adc: add support of generic channels binding")
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > ---
->  .../bindings/iio/dac/adi,ltc2664.yaml         | 230 ++++++++++++++++++
->  MAINTAINERS                                   |   8 +
->  2 files changed, 238 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
+>  drivers/iio/adc/stm32-adc.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
-> new file mode 100644
-> index 000000000..2f581a9e5
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
-> @@ -0,0 +1,230 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/dac/adi,ltc2664.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices LTC2664 and LTC2672 DAC
-> +
-> +maintainers:
-> +  - Michael Hennerich <michael.hennerich@analog.com>
-> +  - Kim Seer Paller <kimseer.paller@analog.com>
-> +
-> +description: |
-> +  Analog Devices LTC2664 4 channel, 16 bit, +-10V DAC
-> +  Analog Devices LTC2672 5 channel, 16 bit, 300mA DAC
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc2664.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc2672.pdf
-> +
-> +$defs:
-> +  toggle-operation:
-> +    type: object
-> +    description: Toggle mode channel setting.
-> +
-> +    properties:
-> +      reg:
-> +        description: Channel number.
-> +        minimum: 0
-> +        maximum: 4
-> +
-> +      adi,toggle-mode:
-> +        description:
-> +          Set the channel as a toggle enabled channel. Toggle operation enables
-> +          fast switching of a DAC output between two different DAC codes without
-> +          any SPI transaction.
-> +        type: boolean
-> +
-> +patternProperties:
-> +  "^channel@[0-4]$":
-> +    type: object
 
-patternProps go after properties.  You miss additionalProperties: false
-and actual properties defined in top-level part of the binding.
+Hi Jonathan,
 
-I wouldn't call your schema easiest to read. You have two quite
-different devices.
+You can add my:
+Reviewed-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ltc2664
-> +      - adi,ltc2672
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  spi-max-frequency:
-> +    maximum: 50000000
+Best Regards,
+Thanks,
+Fabrice
 
-Missing definition of this property, so ref to spi-peripheral-props.
-Look at other bindings having this property.
-
-> +
-> +  vcc-supply:
-> +    description: Analog Supply Voltage Input.
-> +
-> +  iovcc-supply:
-> +    description: Digital Input/Output Supply Voltage.
-> +
-> +  vref-supply:
-> +    description:
-> +      Reference Input/Output. The voltage at the REF pin sets the full-scale
-> +      range of all channels. If not provided the internal reference is used and
-> +      also provided on the VREF pin.
-> +
-> +  clr-gpios:
-> +    description:
-> +      If specified, it will be asserted during driver probe. As the line is
-> +      active low, it should be marked GPIO_ACTIVE_LOW.
-
-First sentence tells nothing about hardware. Do not describe driver
-behavior, but hardware.
-
-Second sentence is 90% redundant - just say, when describing the
-hardware, that the line for foo bar is active low.
-
-
-> +    maxItems: 1
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +allOf:
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: adi,ltc2664
-> +    then:
-> +      properties:
-> +        adi,manual-span-operation-config:
-> +          description:
-> +            This property must mimic the MSPAN pin configurations.
-> +            By tying the MSPAN pins (MSP2, MSP1 and MSP0) to GND
-> +            and/or VCC, any output range can be hardware-configured
-> +            with different mid-scale or zero-scale reset options.
-> +            The hardware configuration is latched during power on reset
-> +            for proper operation.
-> +              0 - MPS2=GND, MPS1=GND, MSP0=GND
-> +              1 - MPS2=GND, MPS1=GND, MSP0=VCC
-> +              2 - MPS2=GND, MPS1=VCC, MSP0=GND
-> +              3 - MPS2=GND, MPS1=VCC, MSP0=VCC
-> +              4 - MPS2=VCC, MPS1=GND, MSP0=GND
-> +              5 - MPS2=VCC, MPS1=GND, MSP0=VCC
-> +              6 - MPS2=VCC, MPS1=VCC, MSP0=GND
-> +              7 - MPS2=VCC, MPS1=VCC, MSP0=VCC (enables SoftSpan feature)
-> +          $ref: /schemas/types.yaml#/definitions/uint32
-> +          enum: [0, 1, 2, 3, 4, 5, 6, 7]
-> +          default: 7
-> +
-> +      patternProperties:
-> +        "^channel@([0-3])$":
-
-and the channel@4 is? You allow anything.
-
-> +          $ref: '#/$defs/toggle-operation'
-> +          unevaluatedProperties: false
-> +
-> +          description: Channel in toggle functionality.
-> +
-> +          properties:
-> +            adi,output-range-microvolt:
-> +              description: Specify the channel output full scale range.
-> +              oneOf:
-> +                - items:
-> +                    - const: 0
-> +                    - enum: [5000000, 10000000]
-> +                - items:
-> +                    - const: -5000000
-> +                    - const: 5000000
-> +                - items:
-> +                    - const: -10000000
-> +                    - const: 10000000
-> +                - items:
-> +                    - const: -2500000
-> +                    - const: 2500000
-> +
-> +          required:
-> +            - adi,output-range-microvolt
-> +
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            const: adi,ltc2672
-> +    then:
-> +      properties:
-> +        adi,rfsadj-ohms:
-> +          description: If FSADJ is tied to VCC, an internal RFSADJ (20 kΩ) is
-> +            selected, which results in nominal output ranges. When an external
-> +            resistor of 19 kΩ to 41 kΩ can be used instead by connecting the
-> +            resistor between FSADJ and GND it controls the scaling of the
-> +            ranges, and the internal resistor is automatically disconnected.
-> +          minimum: 19000
-> +          maximum: 41000
-> +          default: 20000
-> +
-> +      patternProperties:
-> +        "^channel@([0-4])$":
-> +          $ref: '#/$defs/toggle-operation'
-> +          unevaluatedProperties: false
-> +
-> +          description: Configuration properties for a channel in toggle mode
-> +
-> +          properties:
-> +            adi,output-range-microamp:
-> +              description: Specify the channel output full scale range.
-> +              $ref: /schemas/types.yaml#/definitions/uint32
-> +              enum: [3125000, 6250000, 12500000, 25000000, 50000000, 100000000,
-> +                     200000000, 300000000]
-> +
-> +          required:
-> +            - adi,output-range-microamp
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - spi-max-frequency
-> +  - vcc-supply
-> +  - iovcc-supply
-> +
-> +additionalProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi {
-> +          #address-cells = <1>;
-
-Use 4 spaces for example indentation.
-
-
-
-Best regards,
-Krzysztof
-
+> diff --git a/drivers/iio/adc/stm32-adc.c b/drivers/iio/adc/stm32-adc.c
+> index b5d3c9cea5c4..283c20757106 100644
+> --- a/drivers/iio/adc/stm32-adc.c
+> +++ b/drivers/iio/adc/stm32-adc.c
+> @@ -2234,6 +2234,7 @@ static int stm32_adc_generic_chan_init(struct iio_dev *indio_dev,
+>  			if (vin[0] != val || vin[1] >= adc_info->max_channels) {
+>  				dev_err(&indio_dev->dev, "Invalid channel in%d-in%d\n",
+>  					vin[0], vin[1]);
+> +				ret = -EINVAL;
+>  				goto err;
+>  			}
+>  		} else if (ret != -EINVAL) {
 

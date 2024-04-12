@@ -1,72 +1,144 @@
-Return-Path: <linux-iio+bounces-4191-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4192-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0610F8A14E4
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Apr 2024 14:46:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C02398A2448
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 05:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AA181F23C8E
-	for <lists+linux-iio@lfdr.de>; Thu, 11 Apr 2024 12:45:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E18EB2129B
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 03:21:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE0C53F9D5;
-	Thu, 11 Apr 2024 12:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF5215ACB;
+	Fri, 12 Apr 2024 03:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMcLvh9U"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="LopAmj1U"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD3D3987C
-	for <linux-iio@vger.kernel.org>; Thu, 11 Apr 2024 12:45:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC9716426;
+	Fri, 12 Apr 2024 03:21:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712839548; cv=none; b=BUCZuBsSmXPSOqYn9M9FvXfw2ml5NNd/VMB/Rl+pwwamL/L8fjXiWRCdHmmNVseBI/kIReGLEOBr/+j2hwOvDo5S6On4QIxfBIklybQsDtmlJdVNI3X2AhycvHoEcXEJ9+DK3T9ddzfwi3ts8Vksc2HUYvfz0bBLQW9dg7WYgxY=
+	t=1712892103; cv=none; b=tr8xwXQwpmlUvsTyPBmDZcWF36REoKSv63JKqe7g3V/BAtbCnnNn31G777OXFcBlqfuMvfr6eYQLWbZulVGyfpKEI0Za9HvWBRcOr9pdz1Wxi9XkoG1Ejiv1deGxBAhwG+CIp4jK9IByi9aSu1dKfjLWYbIj2ctVr9uRWIJ9qTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712839548; c=relaxed/simple;
-	bh=+3H98kBgNnvDYV6r6wAgT9JT5hssLr92l6iTawQU6Ps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XdyAap3JcoXvM4+89v3qWJcHq947N/uVz7E5hrbrIjDCV1raFPgirjrelgMLY4QuC4/zlaKHww2su1A3ewsD9mq7wSQhwGQpQ4GqKaKPtjQwgTvpFC90OhAiVAbQq4/y73ZAuyTrwGM7oERCAyvj9hO5q17jqetOjm5BvadImYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMcLvh9U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7952C433F1;
-	Thu, 11 Apr 2024 12:45:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1712839548;
-	bh=+3H98kBgNnvDYV6r6wAgT9JT5hssLr92l6iTawQU6Ps=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CMcLvh9U8GeODqR5JCHYAj5WZL6wxTFMdXlipz0wrOiPNFxbyARtiw5AUnAoocaaN
-	 p6o44jzHrjmJvH7w9/ZJU/dtb0/mfGpBytE/UJSiy5dc5wcenwAi+Wj6QDrxseW86i
-	 f3Cl7sJWeJHaLlGuUTmij4shyNgMWoS84aIQQy8k=
-Date: Thu, 11 Apr 2024 14:45:45 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: William Breathitt Gray <wbg@kernel.org>
-Cc: linux-iio@vger.kernel.org
-Subject: Re: [GIT PULL] Counter updates for 6.9
-Message-ID: <2024041131-implicit-decipher-76f4@gregkh>
-References: <ZeyMLe1lmfyMcrss@ishi>
+	s=arc-20240116; t=1712892103; c=relaxed/simple;
+	bh=k9QBzxKZzxtZuk28uNHFvqqSgtLDW1PHZOzO/qPeL20=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QSlYsgdX5N5bPOqUINGkkSGqUVfzaSIVbX3Ajxx/38jIjufzKkvN3zFliwpa6zTunuXovwhDCsSQOS+ZgMYD/e6KLlDmDbuWSXrvGmEIFsVV0WCx1n+RQmbBIWUZcMQ3Chmba14mZTZRvsjjNeINezfkMMFyiaQSkTy27c5KAbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=LopAmj1U; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.17.1.24/8.17.1.24) with ESMTP id 43C2ekPr017703;
+	Thu, 11 Apr 2024 23:21:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding:content-type; s=DKIM; bh=YcFyLivoUu4Y
+	2ck+EIRcC6nVLwmCQ2o31tgZ4TY8kus=; b=LopAmj1UOKJrALf5KgEcfPB85GCW
+	tbY5Sj1BRN19IeiKpaxZZcH/hYbcANgfJAZgDiRiM26OvX9TGOOfahQ/cZxfHq1q
+	8RDOdvfBcEQUrkvW71EqoKLmXq+K8NWxLUPIDpSKickI/8Bi58qdjq3k8BeNZ8Q6
+	Q7Bpi5xJxRGrVPfOA9vivSz31sZvmJ6FL5bwJbHIqsLSRvdEPzYs9p1W9QorBZGt
+	1IYSSXIRUeV5YAvepoJzj14V67s8W8IvUiSgs2De4g+hxhEBcYOchczVSY+RIusr
+	iT2fmWu+6iqc3mFkxrqQYIjztsHNnYbKWYMNTNmxnZ7YKdoQkTh6jMqiLQ==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3xek1fa877-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 11 Apr 2024 23:21:24 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 43C3LNr0021560
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 11 Apr 2024 23:21:23 -0400
+Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 11 Apr 2024 23:21:22 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 11 Apr 2024 23:21:22 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 11 Apr 2024 23:21:22 -0400
+Received: from kim-VirtualBox.ad.analog.com (KPALLER2-L03.ad.analog.com [10.117.220.36])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 43C3L8pe021230;
+	Thu, 11 Apr 2024 23:21:10 -0400
+From: Kim Seer Paller <kimseer.paller@analog.com>
+To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        "Liam Girdwood" <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+        "David Lechner" <dlechner@baylibre.com>,
+        Michael Hennerich
+	<michael.hennerich@analog.com>
+Subject: [PATCH 0/4] Add driver for LTC2664 and LTC2672
+Date: Fri, 12 Apr 2024 11:20:58 +0800
+Message-ID: <20240412032102.136071-1-kimseer.paller@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZeyMLe1lmfyMcrss@ishi>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: WEB6zb_F89hJGGM2ixbTgTcALdoN4nCN
+X-Proofpoint-ORIG-GUID: WEB6zb_F89hJGGM2ixbTgTcALdoN4nCN
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1011,Hydra:6.0.619,FMLib:17.11.176.26
+ definitions=2024-04-11_14,2024-04-09_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
+ malwarescore=0 phishscore=0 impostorscore=0 mlxscore=0 lowpriorityscore=0
+ bulkscore=0 mlxlogscore=999 suspectscore=0 clxscore=1011
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2404010003 definitions=main-2404120023
 
-On Sat, Mar 09, 2024 at 11:19:57AM -0500, William Breathitt Gray wrote:
-> The following changes since commit 6613476e225e090cc9aad49be7fa504e290dd33d:
-> 
->   Linux 6.8-rc1 (2024-01-21 14:11:32 -0800)
-> 
-> are available in the Git repository at:
-> 
->   git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/counter-updates-for-6.9
+The LTC2664 is a 4 Channel, Voltage Output SoftSpan DAC while LTC2672 is a 5
+channel, Current Output Softspan DAC. The ABI defined for the driver:
 
-Did this ever get taken?  If so, should it be for 6.10?
+LTC2664 - toggle mode channels:
+        * out_voltageY_toggle_en
+        * out_voltageY_raw0
+        * out_voltageY_raw1
+        * out_voltageY_symbol
 
-confused,
+LTC2672 - toggle mode channels:
+        * out_currentY_toggle_en
+        * out_currentY_raw0
+        * out_currentY_raw1
+        * out_currentY_symbol
 
-greg k-h
+Default channels won't have any of the above ABIs.
+
+Kim Seer Paller (4):
+  dt-bindings: iio: dac: Add adi,ltc2664.yaml
+  iio: ABI: add ABI file for the LTC2664 DAC
+  iio: ABI: add ABI file for the LTC2672 DAC
+  iio: dac: ltc2664: Add driver for LTC2664 and LTC2672
+
+ .../ABI/testing/sysfs-bus-iio-dac-ltc2664     |  30 +
+ .../ABI/testing/sysfs-bus-iio-dac-ltc2672     |  30 +
+ .../bindings/iio/dac/adi,ltc2664.yaml         | 230 +++++
+ MAINTAINERS                                   |  11 +
+ drivers/iio/dac/Kconfig                       |  11 +
+ drivers/iio/dac/Makefile                      |   1 +
+ drivers/iio/dac/ltc2664.c                     | 785 ++++++++++++++++++
+ 7 files changed, 1098 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2664
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2672
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
+ create mode 100644 drivers/iio/dac/ltc2664.c
+
+
+base-commit: 27eea4778db8268cd6dc80a5b853c599bd3099f1
+-- 
+2.34.1
+
 

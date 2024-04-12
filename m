@@ -1,53 +1,52 @@
-Return-Path: <linux-iio+bounces-4199-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4200-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B2838A2F86
-	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 15:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 549898A2F88
+	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 15:36:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24E8EB21986
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A32A6B21B24
 	for <lists+linux-iio@lfdr.de>; Fri, 12 Apr 2024 13:36:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132DB83CDC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1527483CDD;
 	Fri, 12 Apr 2024 13:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lhvoL0aK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LBVz0kap"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C343559B4B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34768288A;
 	Fri, 12 Apr 2024 13:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712928970; cv=none; b=lnDeUKkS7e5LkFkgS71BUGY2S+diPhRUNqY2QgraPiOYx8z9M9bBZm4RDJyLEMYvFooKsb9I8KJ0L0dGBFAonnH8wa87EZrA+Lu86FPfBk+EAoBCSNEx7nSKeKFxtYWIGi9af1jbDSG6HVNOwlHyV2bH6u6EgicBBm2tpuvZmuc=
+	t=1712928970; cv=none; b=kLKRBpMO66mGlRdCzo5EGnCfiIq5BM0+YM+gOJz0lLI1zg8nC45KfRIVQMwxdhZktE9aQfrPV5r7buBHPjdpFkE42+RGg4Fd3npmeolTLZ2Iti7vPfKkN26hza7zQHvRboSfpTtpyRvtmZmegliikp5vSTAF7eDe4CSoSytwzfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1712928970; c=relaxed/simple;
-	bh=6oxKzxB+8rFGDVu9kvubnME1zu8znjwX0ryuim96c6o=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mxFOXjQzUZgul/GYFkMrSaSNpHXllMv1hi4kTvQ5FJ7XbLHitHve6dSXzDSsXWOSBHrfLmgFNpJ/hy7eyKe35pxJDcLdv+ySyyMX9QLyvPey16DPfgkccMsXGRIWBeTulbq6ewuakGyYm8S9hfb+xeyFulWa1NiQcGM01ifKuQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lhvoL0aK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4D65BC113CC;
+	bh=idxDXgT45IxlXbQsQfbizuTTntZa7WbsLnmv1Z3aTC0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rQHdyg49FtTLy7/bB/15kUZYpihYGZRkds4KQzrnVhmZQAq7Lwe2IsPleECgZmk/suOkLn6UiCRzhQTGhqyk4RW4l+S3lx8OD3gFEJuziIGuilNMUOtEzkV81Y7hrugfymYT2GTkLITKW76N5Mtbfqbu0u4nEO0J4BtgnHQ2QU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LBVz0kap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 52030C2BD10;
 	Fri, 12 Apr 2024 13:36:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1712928970;
-	bh=6oxKzxB+8rFGDVu9kvubnME1zu8znjwX0ryuim96c6o=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=lhvoL0aKqcrcYg8oW7x/FAEJk5h9+5Xc0Yci2A+Wl8Y6ZCfYqdnvhUGdcLgvU0uwl
-	 10VwJ2bk1i0d0XU05t021EbgcOdOwvn6lKddel08KA9gKm/RgP+d9AdeM6UFSHmaTF
-	 CwtbIJcLy5JxR0d6glH7uPZNhUWj0drlAyGQQc3FAwKqj9tODOr100e70PbgT+dFj1
-	 U16SFJmMohjvp2srbRBfBwmYuxSy+BgWDU59R2IpyoiuJdJyClVuKMkQXPBSkpBVSw
-	 E+1N+51AiiY6ZLKgHMIpCoQ5Kgcy6fY3s/NZULykTrMVLlXqgjCgDUXKKnWGgE9Imt
-	 KKjneQ7Be04NQ==
+	bh=idxDXgT45IxlXbQsQfbizuTTntZa7WbsLnmv1Z3aTC0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=LBVz0kapySHXT9m9nL90CXjmGgf1kftGVx/NiRjMpArtmtYq/F8GHx+uZ77hBr3Sf
+	 0M7TXN3SCmHVNNvkRIj+IFLV1DPLMdlvmkgCVzQIgpEoQQTJjEAs9LeboM5M1x/oyR
+	 PZaoSnFLy2/1u9X92Rv1atpugsXo5wgvAjYIdzXGuMxWF4H8VozFKpKOCzwQfuZf67
+	 B2MrBzSiI2i1K4EIBB7tl/yZJ+6d30y+b4J1rwNyM6lIkNpW+hqaYS+MDn2K3fdc8r
+	 aPTK7FbZ9etpXnaqJAzbegh8dWyze0iALSrAtwZd/s57L+w4FO+oizWlx+GeUZKgXo
+	 vpsglqYpWXaNQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F598C4345F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F0F9C04FF8;
 	Fri, 12 Apr 2024 13:36:10 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Subject: [PATCH v3 00/10] iio: dac: support IIO backends on the output
- direction
-Date: Fri, 12 Apr 2024 15:36:07 +0200
-Message-Id: <20240412-iio-backend-axi-dac-v3-0-3e9d4c5201fb@analog.com>
+Date: Fri, 12 Apr 2024 15:36:08 +0200
+Subject: [PATCH v3 01/10] iio: buffer-dma: add iio_dmaengine_buffer_setup()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,10 +54,10 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAMc4GWYC/x3MQQqAIBBA0avIrBswlaCuEi1GnWoINBQiiO6et
- HyL/x+oXIQrTOqBwpdUyanBdgrCTmljlNgMRhunXW9QJKOncHCKSLdgpIDeDiPFQG4gDa08C69
- y/9d5ed8Px1ATkGUAAAA=
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240412-iio-backend-axi-dac-v3-1-3e9d4c5201fb@analog.com>
+References: <20240412-iio-backend-axi-dac-v3-0-3e9d4c5201fb@analog.com>
+In-Reply-To: <20240412-iio-backend-axi-dac-v3-0-3e9d4c5201fb@analog.com>
 To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
 Cc: Dragos Bogdan <dragos.bogdan@analog.com>, 
  Lars-Peter Clausen <lars@metafoo.de>, 
@@ -66,15 +65,13 @@ Cc: Dragos Bogdan <dragos.bogdan@analog.com>,
  Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
- Olivier Moysan <olivier.moysan@foss.st.com>, Nuno Sa <nuno.sa@analog.com>, 
- Paul Cercueil <paul@crapouillou.net>, 
- Alexandru Ardelean <ardeleanalex@gmail.com>
+ Olivier Moysan <olivier.moysan@foss.st.com>, Nuno Sa <nuno.sa@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1712928968; l=2523;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1712928968; l=5827;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=6oxKzxB+8rFGDVu9kvubnME1zu8znjwX0ryuim96c6o=;
- b=ZCNsOMhBadBinoP/FmWDKvnMW9b9E73q5IYzBTA2qO+DOWTDFB8eE5xeoXXZqr5r4o/EA77Eu
- P65K9TxGJRiAEW+iBlYM4nro/nxjv4NmH3VP8B00UMlP+uWqqyWlbqi
+ bh=lRZEOGUYHClEFXbBx817QEbybtssYWIkz+H5KwsO9to=;
+ b=wTqh5C0ZvDrMzMc4VUJGOjQzdj1tQh3OhYXMYXM8Yti4q72s3BTPsclb/9JD6LGtI2FC1JVW2
+ 5y/uEGDWs/UB6S1Tz0Exis5rXQ41FzX4iodsOI5Xwgpf6Si5C2xsCEA
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -82,69 +79,170 @@ X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
 X-Original-From: Nuno Sa <nuno.sa@analog.com>
 Reply-To: nuno.sa@analog.com
 
-Hi Jonathan,
+From: Nuno Sa <nuno.sa@analog.com>
 
-Here it goes v3. Only thing that is not exactly closed is the 2 channels
-in the DAC driver. So, I kind of added a comment with something similar
-to my reply in v2 [1].
+This brings the DMA buffer API more in line with what we have in the
+triggered buffer. There's no need of having both
+devm_iio_dmaengine_buffer_setup() and devm_iio_dmaengine_buffer_alloc().
+Hence we introduce the new iio_dmaengine_buffer_setup() that together
+with devm_iio_dmaengine_buffer_setup() should be all we need.
 
-Full log:
+Note that as part of this change iio_dmaengine_buffer_alloc() is again
+static and the axi-adc was updated accordingly.
 
-v1:
- * https://lore.kernel.org/all/20240328-iio-backend-axi-dac-v1-0-afc808b3fde3@analog.com/
-
-v2:
- * https://lore.kernel.org/all/20240405-iio-backend-axi-dac-v2-0-293bab7d5552@analog.com 
-
-v3:
- - Patch 3:
-   * Align on open parenthesis.
- - Patch 8
-   * Removed asm-generic/errno-base.h;
-   * Only use default (1 to 1 backend frontend) method to get backends.
- - Patch 10:
-   * Add comment for having 2 different channels.
-
-[1]: https://lore.kernel.org/linux-iio/20240405-iio-backend-axi-dac-v2-4-293bab7d5552@analog.com/T/#m11d3716a702e49c217879940cdda14805609909c
-
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
-Nuno Sa (6):
-      iio: buffer-dma: add iio_dmaengine_buffer_setup()
-      dt-bindings: iio: dac: add docs for AXI DAC IP
-      dt-bindings: iio: dac: add docs for AD9739A
-      iio: backend: add new functionality
-      iio: dac: add support for AXI DAC IP core
-      iio: dac: support the ad9739a RF DAC
+ drivers/iio/adc/adi-axi-adc.c                      | 16 +-------
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c | 48 +++++++++-------------
+ include/linux/iio/buffer-dmaengine.h               |  5 ++-
+ 3 files changed, 24 insertions(+), 45 deletions(-)
 
-Paul Cercueil (4):
-      iio: buffer-dma: Rename iio_dma_buffer_data_available()
-      iio: buffer-dma: Enable buffer write support
-      iio: buffer-dmaengine: Support specifying buffer direction
-      iio: buffer-dmaengine: Enable write support
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index 4156639b3c8bd..184b36dca6d03 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -124,26 +124,12 @@ static struct iio_buffer *axi_adc_request_buffer(struct iio_backend *back,
+ 						 struct iio_dev *indio_dev)
+ {
+ 	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+-	struct iio_buffer *buffer;
+ 	const char *dma_name;
+-	int ret;
+ 
+ 	if (device_property_read_string(st->dev, "dma-names", &dma_name))
+ 		dma_name = "rx";
+ 
+-	buffer = iio_dmaengine_buffer_alloc(st->dev, dma_name);
+-	if (IS_ERR(buffer)) {
+-		dev_err(st->dev, "Could not get DMA buffer, %ld\n",
+-			PTR_ERR(buffer));
+-		return ERR_CAST(buffer);
+-	}
+-
+-	indio_dev->modes |= INDIO_BUFFER_HARDWARE;
+-	ret = iio_device_attach_buffer(indio_dev, buffer);
+-	if (ret)
+-		return ERR_PTR(ret);
+-
+-	return buffer;
++	return iio_dmaengine_buffer_setup(st->dev, indio_dev, dma_name);
+ }
+ 
+ static void axi_adc_free_buffer(struct iio_backend *back,
+diff --git a/drivers/iio/buffer/industrialio-buffer-dmaengine.c b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+index a18c1da292af2..97f3116566f58 100644
+--- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
++++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+@@ -159,7 +159,7 @@ static const struct iio_dev_attr *iio_dmaengine_buffer_attrs[] = {
+  * Once done using the buffer iio_dmaengine_buffer_free() should be used to
+  * release it.
+  */
+-struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
++static struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
+ 	const char *channel)
+ {
+ 	struct dmaengine_buffer *dmaengine_buffer;
+@@ -210,7 +210,6 @@ struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
+ 	kfree(dmaengine_buffer);
+ 	return ERR_PTR(ret);
+ }
+-EXPORT_SYMBOL_NS_GPL(iio_dmaengine_buffer_alloc, IIO_DMAENGINE_BUFFER);
+ 
+ /**
+  * iio_dmaengine_buffer_free() - Free dmaengine buffer
+@@ -230,39 +229,33 @@ void iio_dmaengine_buffer_free(struct iio_buffer *buffer)
+ }
+ EXPORT_SYMBOL_NS_GPL(iio_dmaengine_buffer_free, IIO_DMAENGINE_BUFFER);
+ 
+-static void __devm_iio_dmaengine_buffer_free(void *buffer)
+-{
+-	iio_dmaengine_buffer_free(buffer);
+-}
+-
+-/**
+- * devm_iio_dmaengine_buffer_alloc() - Resource-managed iio_dmaengine_buffer_alloc()
+- * @dev: Parent device for the buffer
+- * @channel: DMA channel name, typically "rx".
+- *
+- * This allocates a new IIO buffer which internally uses the DMAengine framework
+- * to perform its transfers. The parent device will be used to request the DMA
+- * channel.
+- *
+- * The buffer will be automatically de-allocated once the device gets destroyed.
+- */
+-static struct iio_buffer *devm_iio_dmaengine_buffer_alloc(struct device *dev,
+-	const char *channel)
++struct iio_buffer *iio_dmaengine_buffer_setup(struct device *dev,
++					      struct iio_dev *indio_dev,
++					      const char *channel)
+ {
+ 	struct iio_buffer *buffer;
+ 	int ret;
+ 
+ 	buffer = iio_dmaengine_buffer_alloc(dev, channel);
+ 	if (IS_ERR(buffer))
+-		return buffer;
++		return ERR_CAST(buffer);
+ 
+-	ret = devm_add_action_or_reset(dev, __devm_iio_dmaengine_buffer_free,
+-				       buffer);
+-	if (ret)
++	indio_dev->modes |= INDIO_BUFFER_HARDWARE;
++
++	ret = iio_device_attach_buffer(indio_dev, buffer);
++	if (ret) {
++		iio_dmaengine_buffer_free(buffer);
+ 		return ERR_PTR(ret);
++	}
+ 
+ 	return buffer;
+ }
++EXPORT_SYMBOL_NS_GPL(iio_dmaengine_buffer_setup, IIO_DMAENGINE_BUFFER);
++
++static void __devm_iio_dmaengine_buffer_free(void *buffer)
++{
++	iio_dmaengine_buffer_free(buffer);
++}
+ 
+ /**
+  * devm_iio_dmaengine_buffer_setup() - Setup a DMA buffer for an IIO device
+@@ -281,13 +274,12 @@ int devm_iio_dmaengine_buffer_setup(struct device *dev,
+ {
+ 	struct iio_buffer *buffer;
+ 
+-	buffer = devm_iio_dmaengine_buffer_alloc(dev, channel);
++	buffer = iio_dmaengine_buffer_setup(dev, indio_dev, channel);
+ 	if (IS_ERR(buffer))
+ 		return PTR_ERR(buffer);
+ 
+-	indio_dev->modes |= INDIO_BUFFER_HARDWARE;
+-
+-	return iio_device_attach_buffer(indio_dev, buffer);
++	return devm_add_action_or_reset(dev, __devm_iio_dmaengine_buffer_free,
++					buffer);
+ }
+ EXPORT_SYMBOL_NS_GPL(devm_iio_dmaengine_buffer_setup, IIO_DMAENGINE_BUFFER);
+ 
+diff --git a/include/linux/iio/buffer-dmaengine.h b/include/linux/iio/buffer-dmaengine.h
+index cbb8ba957fade..acb60f9a3fffa 100644
+--- a/include/linux/iio/buffer-dmaengine.h
++++ b/include/linux/iio/buffer-dmaengine.h
+@@ -10,9 +10,10 @@
+ struct iio_dev;
+ struct device;
+ 
+-struct iio_buffer *iio_dmaengine_buffer_alloc(struct device *dev,
+-					      const char *channel);
+ void iio_dmaengine_buffer_free(struct iio_buffer *buffer);
++struct iio_buffer *iio_dmaengine_buffer_setup(struct device *dev,
++					      struct iio_dev *indio_dev,
++					      const char *channel);
+ int devm_iio_dmaengine_buffer_setup(struct device *dev,
+ 				    struct iio_dev *indio_dev,
+ 				    const char *channel);
 
- Documentation/ABI/testing/sysfs-bus-iio-ad9739a    |  19 +
- .../devicetree/bindings/iio/dac/adi,ad9739a.yaml   |  94 +++
- .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   |  62 ++
- MAINTAINERS                                        |  17 +
- drivers/iio/adc/adi-axi-adc.c                      |  16 +-
- drivers/iio/buffer/industrialio-buffer-dma.c       | 100 +++-
- drivers/iio/buffer/industrialio-buffer-dmaengine.c |  83 +--
- drivers/iio/dac/Kconfig                            |  37 ++
- drivers/iio/dac/Makefile                           |   2 +
- drivers/iio/dac/ad9739a.c                          | 463 +++++++++++++++
- drivers/iio/dac/adi-axi-dac.c                      | 635 +++++++++++++++++++++
- drivers/iio/industrialio-backend.c                 | 179 ++++++
- include/linux/iio/backend.h                        |  49 ++
- include/linux/iio/buffer-dma.h                     |   4 +-
- include/linux/iio/buffer-dmaengine.h               |  24 +-
- 15 files changed, 1705 insertions(+), 79 deletions(-)
----
-base-commit: aabc0aa90c927a03d509d0b592720d9897894ce4
-change-id: 20240412-iio-backend-axi-dac-b369adca46a0
---
-
-Thanks!
-- Nuno Sá
+-- 
+2.44.0
 
 
 

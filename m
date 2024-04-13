@@ -1,60 +1,59 @@
-Return-Path: <linux-iio+bounces-4242-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4243-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3848A3D8F
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 17:56:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BAC48A3D9A
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 18:07:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE1CE1C20A7E
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 15:56:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A98E31F2194A
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 16:07:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFDC4AEC6;
-	Sat, 13 Apr 2024 15:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CE24AEC6;
+	Sat, 13 Apr 2024 16:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t9VaNt4z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mzcw2efK"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC4CD482D7;
-	Sat, 13 Apr 2024 15:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D033D68;
+	Sat, 13 Apr 2024 16:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713023810; cv=none; b=SReE9wopxCcI5of/R5oHvS9xy3KQh1VadfpT+EOCLSuHDdpzXJ8Mdw5XUDJJ9Vs9Le/SiK+69jnbmfnGXWsne/F60CX8gfqLNyfyzNQ3c2QTzQmeRDr+oB+DNcj2l3L5hzjZRDTEC8s9HftSTcR+KrGl5AN9UbT+7Saq4IgKU4Y=
+	t=1713024458; cv=none; b=AXByBnSg2HpxaTI5+wIJ39KxFhJiO7lADXwPJGTTfZ7/aMPqqsoGAWLzMfMorSO1rBf7EzO8mbj4+VXyifD6ke7WNLhcJJPl0FWlWJwZ3FCgtGNvt8b55m3m7ZuhkjJmmM+00v8fFplypzevjSPvPG016ZKEritB0xabGBZNs2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713023810; c=relaxed/simple;
-	bh=Eqn8o/vQ2xD/zqTQkwHC++iNh3PooxhBNtrftfC+J5s=;
+	s=arc-20240116; t=1713024458; c=relaxed/simple;
+	bh=Q0/0rpvxAebSkQxJM0MspGBlJ94tc5YKn/wuQsvYPOY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z3tixWyvmKZ2RMlEhKHr9IHT4RvumUU0XYkPV2qlEMTNh1k5Tz/J0pNRLGdHZ+bfkkypgfgKv6CVcfeUpa1DzdLwRM4dQwqxD0gY5ossRHjRhJ2M29nysXO3yV6aFdj5VToTrZI+DdUQ9SP/MiQRBeIu1nbrdDScPgntgLTXPmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t9VaNt4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EF3C113CE;
-	Sat, 13 Apr 2024 15:56:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RAfO/8y647w9djzNm7BT8RutVw43eCLlUv5p8ClP1NYFpuyIYffBvniJt7bTO1ADloaOcf9h1uEohXQzaCJpkzQ/tWLyFq3uzygY6eksPY6x0o0n2imjwYkwqt/z7rE3U79q1AtCK+s0ccbAN9WgtG3IzbXiqPKTFGmiC8ZV7AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mzcw2efK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A4AC3277B;
+	Sat, 13 Apr 2024 16:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713023810;
-	bh=Eqn8o/vQ2xD/zqTQkwHC++iNh3PooxhBNtrftfC+J5s=;
+	s=k20201202; t=1713024458;
+	bh=Q0/0rpvxAebSkQxJM0MspGBlJ94tc5YKn/wuQsvYPOY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=t9VaNt4z8a4ZX4PXDsL4J68nc8hmUkGHSkkoO82ambhCahfQAx8d2CPPzzkMDZOuc
-	 S7nC76zVY7lsUvIeWeXGDLn321EA9DwSsgKDnK06amybws3NaOEFxhNmQqqYpdhJ4Q
-	 2ZVAlhCkorRuuJqrazvw2zeFDgmI5y2XVx2IL1kJ6jdEoYbhyqMCpwff6h2hFa6QoF
-	 cwQxDmgkc6vEJogu/O2ZfTZBifHjiYW5O2EKDnXS3EkGd1H+6rpq7SXquNfV9TAeHX
-	 7cYWVFVUqh0XK7aId+wGa6Jv97teuBzGwVid+UWkbxSmyUKQgilSuXt5U+fwY5VDKp
-	 mIiXpo3zw9wiQ==
-Date: Sat, 13 Apr 2024 16:56:36 +0100
+	b=Mzcw2efKX/5hB0dsAbm+IM0eJaUYCk4JEHJA7esEchc+oBSNlquHjj0h5tbkccMzU
+	 Fh5Sz+GoRvwE47ZZ3u1HZAKQGZefSKQ6AAvS2jVp+JaVn6VpDOASaQjGKG7Wu6KtT1
+	 oxpPfxJEXOmtSbGi7pf6xWZumtpaI9yLaqKVnxKjwBS3SifgRHeJVC2OtZE27EUvlB
+	 zKW41vpVUYmTxujwO45+WoRteq3Us3wdY4alOI8pAMtbZAKV2kApnPXZFL9RXPKcot
+	 LCP9hdlPb8B/oHzpcXovOlWImemlK9FuqscwUlm7AuEOxWrebmkZ/K9bzsHh3rW4f+
+	 Dm8tey5JNoI7A==
+Date: Sat, 13 Apr 2024 17:07:22 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Markus Burri <markus.burri@mt.com>, linux-kernel@vger.kernel.org,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org, Nuno Sa
- <nuno.sa@analog.com>
-Subject: Re: [PATCH v1] iio: adc: ad_sigma_delta: Clear pending interrupts
- before enable
-Message-ID: <20240413165636.4fa8eb60@jic23-huawei>
-In-Reply-To: <b6c6700d924916dd09afd2878321a7c87b8e922d.camel@gmail.com>
-References: <20240404175126.110208-1-markus.burri@mt.com>
-	<20240406171728.16170b48@jic23-huawei>
-	<b6c6700d924916dd09afd2878321a7c87b8e922d.camel@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de,
+ Michael.Hennerich@analog.com, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/2] Add support for AD4000 series
+Message-ID: <20240413170722.44399921@jic23-huawei>
+In-Reply-To: <CAMknhBFoX9mC3F43GSmYZyET9oQvHEB+AAsesZv-aEgFPZPA_w@mail.gmail.com>
+References: <cover.1712585500.git.marcelo.schmitt@analog.com>
+	<CAMknhBFoX9mC3F43GSmYZyET9oQvHEB+AAsesZv-aEgFPZPA_w@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,67 +61,51 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 08 Apr 2024 10:31:21 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On Sat, 2024-04-06 at 17:17 +0100, Jonathan Cameron wrote:
-> > On Thu,=C2=A0 4 Apr 2024 19:51:26 +0200
-> > Markus Burri <markus.burri@mt.com> wrote:
-> >=20
-> > Hi Markus,
-> >=20
-> >  =20
-> > > For device will enable and disable irq contiously like AD7195,
-> > > it use DOUT/RDY pin for both SPI transfer and data ready.
-> > > It will disable irq during SPI transfer, and re-eanble irq after SPI
-> > > transfer.
-> > > That may cause irq status bit set to 1 during spi transfer. =20
-> >=20
-> > Superficially that sounds like it might be an irq driver bug to me...
-> > Or just possibly an irq chip doing lazy disabling? =20
->=20
-> Yes, this sounds odd as we are already explicitly disabling lazy disablin=
-g:
->=20
-> https://elixir.bootlin.com/linux/latest/source/drivers/iio/adc/ad_sigma_d=
-elta.c#L589
+> >
+> > - Span compression and offset.
+> > For non-differential ADCs, enabling the span compression requires an input offset.
+> > Link: https://www.analog.com/media/en/technical-documentation/data-sheets/AD4000-4004-4008.pdf
+> > page 18
+> > and
+> > Link: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4002-4006-4010.pdf
+> > page 19
+> > I updated the _offset attribute for those ADCs according to span compression
+> > being enabled or not. Is it okay to have an attribute update cause an update to
+> > another one?
 
-Markus, can you confirm you are running no a kernel with that line present?
-Maybe this is just an old kernel not having the fix?
+Yes.  Happens all the time and it's not possible in general to define an ABI where
+this doesn't happen on some combinations.   scale in particular can be affected in lots
+of fun non linear ways by other attributes.
 
->=20
-> >  =20
-> > >=20
-> > > When the active condition has been detected, the corresponding bit
-> > > remains set until cleared by software. Status flags are cleared
-> > > by writing a 1 to the corresponding bit position.
-> > >=20
-> > > Signed-off-by: Markus Burri <markus.burri@mt.com> =20
-> >=20
-> > I'll need an appropriate ADI ack for this one.
-> >  =20
->=20
-> Yeah, I wanted to reply to this one Friday but then completely forgot. I =
-can't
-> really ack this one. I would need some insights from someone with more co=
-re IRQ
-> knowledge. But...
->=20
-> > It seems highly unusual to be calling a generic irqchip related functio=
-n in a
-> > driver (there are no other such users).=C2=A0 So this seems unlikely to=
- be
-> > the right fix for this particular problem.
-> >  =20
->=20
-> Yes, and this (I think) would not even fix (if a fix is needed) this for =
-all
-> irqchips which to me already sounds not the way to go.
->=20
-> - Nuno S=C3=A1
-> >  =20
+How you handle it is a bit up to the driver writer and interpretation of what is
+most natural for a given combination.
+Sometimes:
+a) Stash previously set value of the other attributes and try to find a new value
+   as near as possible give constraint of whatever else was just written
+b) Just use whatever the register value now corresponds to given the other attribute
+   changed
 
+Either way userspace needs to take another look at other attributes to see if they
+changed after changing anything that might have an influence.  It can then update
+them however it likes.
+
+> > Maybe also make the span compression a dt property and have it fixed after probe?  
+> 
+> This doesn't sound like something that belongs in DT since it doesn't
+> depend on the physical properties of what is wired to the input.
+
+
+> 
+> But the fact that offset should not be read until after scale is set
+> sounds like a quirk that would be worth documenting in some
+> chip-specific docs.
+
+Agreed - it is useful to hint at this but in general software has to check
+everything as there are lots of these sorts of interactions :(
+
+Jonathan
 

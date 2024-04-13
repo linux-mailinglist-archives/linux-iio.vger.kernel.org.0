@@ -1,63 +1,56 @@
-Return-Path: <linux-iio+bounces-4253-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4254-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E268A3DE3
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 19:10:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 566148A3DE8
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 19:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BB141C20CAE
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 17:10:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F04731F2159D
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 17:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF53482D7;
-	Sat, 13 Apr 2024 17:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640F0482D7;
+	Sat, 13 Apr 2024 17:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCnOdxm2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dBVBPVVO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF396282EE;
-	Sat, 13 Apr 2024 17:10:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217ED1D696;
+	Sat, 13 Apr 2024 17:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713028242; cv=none; b=CSOtYuxbo7MQyx4lQ8fbogxEujDkvVxZmrWH+pP7Rt5M/QillRPjqaZScWGTmPSE/W5m66GCWfTUB9kejdIH+2xr58daVmfbBrmJBOpQ7JMnBzUxg5Cv3pR1pHIw1KI70Xr7hQrbkJ8K6WuVl3zppsxEXEO78tmmhNei8M968S4=
+	t=1713028406; cv=none; b=edXU/5b27zBbCF7ahXWrWhhXSlV50fInzqIqW4umQj9WG3Y7oBEetq2Hn2STX4N5qIw8ERS/fkJZcoGgl/4nH8ZPnRDIAbyWKw4hp1+Ce0qx7Z9BMK9ZCx2piQsrTa16lpuW0iX2gIjkw11IhGzZxFR1oa9g/Jp0/xGvJykqp3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713028242; c=relaxed/simple;
-	bh=IzyicTygVPL8TrsSuC1OhkdvoCcDqBn35t5oGA/FRLc=;
+	s=arc-20240116; t=1713028406; c=relaxed/simple;
+	bh=wzU2x996W99SPd342HnQZWaKhCHWFbUf/VpcY/S67u0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a+pvYJWoKLYSa57QCKhsfKResB3suGN/lBRZpppDeWJIsAhCz9SgF/HNljhnXoA5y8c6xeDvLyoCKRsIl+gPYXwubBFSDTKuEQuXB4dp4fipDnC2Ejsl1lIhR17bK+91Fh0POR+0YurNDfwz9R7SMf6pUIi5FljwUSbljRQ58OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCnOdxm2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9416BC2BD11;
-	Sat, 13 Apr 2024 17:10:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iMNun1dFhrQ+Uwi3Bog0sJBLEgOrmH9QzhTjBSBnXSv8rMIDNkNTjNqfIgz1XA3QxKNVSDZzSvOG+Z3ZbCb1q3ciiG4FuCMuEKdUwLi4KyCEsoh7WXnR4Ohn+Ty2pEHSdHazkQmgKIF/Yjk7q+ojIPvQw1IT63wO8fatLNGPWAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dBVBPVVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3D9C2BD11;
+	Sat, 13 Apr 2024 17:13:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713028240;
-	bh=IzyicTygVPL8TrsSuC1OhkdvoCcDqBn35t5oGA/FRLc=;
+	s=k20201202; t=1713028405;
+	bh=wzU2x996W99SPd342HnQZWaKhCHWFbUf/VpcY/S67u0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fCnOdxm2I9+CZXrSVMKRSEdUMHRjFqbU8/cE7Prl4xN/zlIH98/2By3Vpt4qyT7Xt
-	 B4gqUcLHgfZIl7RCbdHuVgXN230Gp4yyOAVX791+SWqfKm0ISLdkoYjHaRCPuOjp/1
-	 NhSpYyD0R1JOGDChM2PYks4Tn+zmIsUNc0wlegpZoQdf+yB8uvmOH6ZAkSdG4INVK/
-	 Dwb8YrwuSrCiEpUNYl4+YGgeetiCMwGUEuB0KGouMqqMK/Q8UUCfXDjTYRzBlb25Ct
-	 0PMomrlklTkM4X2HBz5M9jAa8SJ59mZbaxtUYMsoZzRcpx89bR1SNAyjcERCYcuK0C
-	 XzWRyBhrrAsgg==
-Date: Sat, 13 Apr 2024 18:10:25 +0100
+	b=dBVBPVVOj698PtOWSw+BhGfNn439y0jmpgeuSkzMoPWA7zc4P4mIgfsqBqcJJUHZv
+	 6aUAGQ4YoAfvNI3K82I52TZ6L1CsQqB8KaVX3FD7554tXBaI2x3YKjvZaqeeD2evMe
+	 vzQPwZSVyajDX7DiahtFj2dS6lQgVTk1Ledz/awoGRnUhihHr4+sw9NqI4l/CJo9bP
+	 efMI95bobKVJGWvuduXi2OKJa9oZtthR500gORByDBv8d/pxpMyHlD235oGzzFjFkB
+	 RJU3XlVL3YggKhSfZ6ahqlaHbaU+IvzUc5exMiAGja3GUuuzw6urLxb7lAn82Olk80
+	 LVMT5EulJOyOw==
+Date: Sat, 13 Apr 2024 18:13:11 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Kim Seer Paller <kimseer.paller@analog.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
- Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>
-Subject: Re: [PATCH 1/4] dt-bindings: iio: dac: Add adi,ltc2664.yaml
-Message-ID: <20240413181025.39d1a62e@jic23-huawei>
-In-Reply-To: <CAMknhBHMd2mK3yVoH_XjW7BapX5BTRZjUJpF=ZQrF8Mctf-NJQ@mail.gmail.com>
-References: <20240412032102.136071-1-kimseer.paller@analog.com>
-	<20240412032102.136071-2-kimseer.paller@analog.com>
-	<CAMknhBHgKK_OEcPz-5ktxj+YEkB7jHpw5owdh9HVj_qfwuVXkQ@mail.gmail.com>
-	<20240413160610.4cec010b@jic23-huawei>
-	<CAMknhBHMd2mK3yVoH_XjW7BapX5BTRZjUJpF=ZQrF8Mctf-NJQ@mail.gmail.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH v3] iio: dac: ad5755: make use of of_device_id table
+Message-ID: <20240413181311.674fbf95@jic23-huawei>
+In-Reply-To: <20240413154511.52576-1-krzysztof.kozlowski@linaro.org>
+References: <20240413154511.52576-1-krzysztof.kozlowski@linaro.org>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,116 +58,107 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Sat, 13 Apr 2024 11:21:55 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Sat, 13 Apr 2024 17:45:11 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-> On Sat, Apr 13, 2024 at 10:06=E2=80=AFAM Jonathan Cameron <jic23@kernel.o=
-rg> wrote:
-> >
-> > On Fri, 12 Apr 2024 16:23:00 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
-> > =20
-> > > On Thu, Apr 11, 2024 at 10:21=E2=80=AFPM Kim Seer Paller
-> > > <kimseer.paller@analog.com> wrote: =20
-> > > > =20
->=20
-> ...
->=20
-> > >
-> > > And there is V~ on both which can be between -5.5V/-15.75V and GND, so
-> > > optional v-neg-supply seems appropriate. =20
-> >
-> > Only make it optional in the binding if the settings of the device chan=
-ge
-> > depending on whether it is there or not.  Looks like there is an intern=
-al
-> > reference, so maybe it really is optional. =20
->=20
-> I suggested optional with the thinking that if the pin is tied to GND,
-> then the property would be omitted.
+> Store pointers to chip info (struct ad5755_chip_info) in driver match
+> data, instead of enum, so every value will be != 0, populate the
+> of_device_id table and use it in driver.  Even though it is one change,
+> it gives multiple benefits:
+> 1. Allows to use spi_get_device_match_data() dropping local 'type'
+>    variable.
+> 2. Makes both ID tables usable, so kernel can match via any of these
+>    methods.
+> 3. Code is more obvious as both tables are properly filled.
+> 4. Fixes W=1 warning:
+>    ad5755.c:866:34: error: unused variable 'ad5755_of_match' [-Werror,-Wunused-const-variable]
+> 
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> 
+Applied but only pushed out as testing for 0-day so far, so I can rebase
+to add tags (or pull it if anyone finds an issue!)
 
-We could but given VND isn't really that special in this case I think
-I'd prefer a fixed voltage reg of 0V if someone does wire it like that.
-(I think that works, though not sure I've tried a 0V supply ;)
->=20
->=20
-> ...
->=20
->=20
-> > >
-> > > * (both) The MUX/MUXOUT pins look like we have an embedded pin mux, so
-> > > it could mean we need #pinctrl-cells. ltc2664 would also need
-> > > muxin-gpios for this. =20
-> > Not convinced that's the right approach - looks more like a channel
-> > selector than a conventional mux or pin control. Sure that's a mux, but
-> > we want a clean userspace control to let us choose a signal to measure
-> > at runtime
-> >
-> > If you wanted to support this I'd have the binding describe optional
-> > stuff to act as a consumer of an ADC channel on another device.
-> > The IIO driver would then provide a bunch of input channels to allow
-> > measurement of each of the signals.
-> >
-> > Look at io-channels etc in existing bindings for how to do that.
-> > =20
->=20
-> Right. I was thinking that this pin might be connected to something
-> else external rather than the signal coming back to the SoC (or
-> whatever has the SPI controller). But it makes more sense that we
-> would want it as extra channels being read back by the SoC for
-> diagnostics.
-
-It might indeed.  But I think that's an exercise for the future if
-it matters.  Might be a debugfs control only perhaps.
-
->=20
-> ...
->=20
-> > > =20
-> > > > +
-> > > > +      patternProperties:
-> > > > +        "^channel@([0-3])$":
-> > > > +          $ref: '#/$defs/toggle-operation'
-> > > > +          unevaluatedProperties: false
-> > > > +
-> > > > +          description: Channel in toggle functionality.
-> > > > +
-> > > > +          properties:
-> > > > +            adi,output-range-microvolt:
-> > > > +              description: Specify the channel output full scale r=
-ange. =20
-> > >
-> > > How would someone writing a .dts know what values to select for this
-> > > property? Or is this something that should be configured at runtime
-> > > instead of in the devicetree? Or should this info come from the
-> > > missing voltage supplies I mentioned? =20
-> >
-> > Sometimes this one is a wiring related choice.  Sometimes to the extent
-> > that picking the wrong one from any userspace control can cause damage
-> > or is at least nonsense.
-> >
-> > You look to be right though that the possible values here aren' fine
-> > if the internal reference is used, but not the external.
-> >
-> > However, it's keyed off MPS pins so you can't control it if they aren't
-> > tied to all high.  So I'd imagine if the board can be damaged it will
-> > be hard wired.  Hence these could be controlled form userspace.
-> > It's a bit fiddly though as combines scale and offset controls and
-> > you can end trying to set things to an invalid combination.
-> > E.g. scale set to cover 20V range and offset set to 0V
-> > To get around that you have to clamp one parameter to nearest
-> > possible when the other is changed.
-> > =20
->=20
-> Thanks for the explanation. It sounds like I missed something in the
-> datasheet that would be helpful to call out in the description for
-> this property.
-Agreed - it needs more detail.
+Thanks for doing this Krzysztof.
 
 Jonathan
 
+> ---
+> 
+> Changes in v3:
+> 1. Use pointers, according to Jonathan comments.
+> 
+> v2: https://lore.kernel.org/all/20240226192555.14aa178e@jic23-huawei/
+> 
+> An old v1:
+> https://lore.kernel.org/all/20230810111933.205619-1-krzysztof.kozlowski@linaro.org/
+> ---
+>  drivers/iio/dac/ad5755.c | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+> index 404865e35460..0b24cb19ac9d 100644
+> --- a/drivers/iio/dac/ad5755.c
+> +++ b/drivers/iio/dac/ad5755.c
+> @@ -809,7 +809,6 @@ static struct ad5755_platform_data *ad5755_parse_fw(struct device *dev)
+>  
+>  static int ad5755_probe(struct spi_device *spi)
+>  {
+> -	enum ad5755_type type = spi_get_device_id(spi)->driver_data;
+>  	const struct ad5755_platform_data *pdata;
+>  	struct iio_dev *indio_dev;
+>  	struct ad5755_state *st;
+> @@ -824,7 +823,7 @@ static int ad5755_probe(struct spi_device *spi)
+>  	st = iio_priv(indio_dev);
+>  	spi_set_drvdata(spi, indio_dev);
+>  
+> -	st->chip_info = &ad5755_chip_info_tbl[type];
+> +	st->chip_info = spi_get_device_match_data(spi);
+>  	st->spi = spi;
+>  	st->pwr_down = 0xf;
+>  
+> @@ -854,21 +853,21 @@ static int ad5755_probe(struct spi_device *spi)
+>  }
+>  
+>  static const struct spi_device_id ad5755_id[] = {
+> -	{ "ad5755", ID_AD5755 },
+> -	{ "ad5755-1", ID_AD5755 },
+> -	{ "ad5757", ID_AD5757 },
+> -	{ "ad5735", ID_AD5735 },
+> -	{ "ad5737", ID_AD5737 },
+> +	{ "ad5755", (kernel_ulong_t)&ad5755_chip_info_tbl[ID_AD5755] },
+> +	{ "ad5755-1", (kernel_ulong_t)&ad5755_chip_info_tbl[ID_AD5755] },
+> +	{ "ad5757", (kernel_ulong_t)&ad5755_chip_info_tbl[ID_AD5757] },
+> +	{ "ad5735", (kernel_ulong_t)&ad5755_chip_info_tbl[ID_AD5735] },
+> +	{ "ad5737", (kernel_ulong_t)&ad5755_chip_info_tbl[ID_AD5737] },
+>  	{}
+>  };
+>  MODULE_DEVICE_TABLE(spi, ad5755_id);
+>  
+>  static const struct of_device_id ad5755_of_match[] = {
+> -	{ .compatible = "adi,ad5755" },
+> -	{ .compatible = "adi,ad5755-1" },
+> -	{ .compatible = "adi,ad5757" },
+> -	{ .compatible = "adi,ad5735" },
+> -	{ .compatible = "adi,ad5737" },
+> +	{ .compatible = "adi,ad5755", &ad5755_chip_info_tbl[ID_AD5755] },
+> +	{ .compatible = "adi,ad5755-1", &ad5755_chip_info_tbl[ID_AD5755] },
+> +	{ .compatible = "adi,ad5757", &ad5755_chip_info_tbl[ID_AD5757] },
+> +	{ .compatible = "adi,ad5735", &ad5755_chip_info_tbl[ID_AD5735] },
+> +	{ .compatible = "adi,ad5737", &ad5755_chip_info_tbl[ID_AD5737] },
+>  	{ }
+>  };
+>  MODULE_DEVICE_TABLE(of, ad5755_of_match);
+> @@ -876,6 +875,7 @@ MODULE_DEVICE_TABLE(of, ad5755_of_match);
+>  static struct spi_driver ad5755_driver = {
+>  	.driver = {
+>  		.name = "ad5755",
+> +		.of_match_table = ad5755_of_match,
+>  	},
+>  	.probe = ad5755_probe,
+>  	.id_table = ad5755_id,
 
 

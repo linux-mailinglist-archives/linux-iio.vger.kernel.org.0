@@ -1,378 +1,266 @@
-Return-Path: <linux-iio+bounces-4237-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4238-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E4B88A3D2C
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 17:13:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC5D8A3D6C
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 17:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B6581F218A3
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 15:13:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6EFE2824DD
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 15:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE06047F79;
-	Sat, 13 Apr 2024 15:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56A146B91;
+	Sat, 13 Apr 2024 15:25:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z1RCDhW+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APPgoGnp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64DC4597E;
-	Sat, 13 Apr 2024 15:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69DD246430;
+	Sat, 13 Apr 2024 15:25:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713021199; cv=none; b=cuFOu+kKk2eWiZV1JpLsDC4zbh+run6c0is733Zp6r6kISvnSj4SqfGIIgBnCqWPv0kTRfl2z8jPmUZzxrHm37KMGnLgAHeKYq8iMG5hISSAr1VEY0Kjr/dwqpVuheFrMWNHbOp2bS7nxIFNJ7YbouhzP6uNBhtpk8l7rG1vnn8=
+	t=1713021934; cv=none; b=k4YTk9wVWWDC+Wg70dq8HweDpUMn8wLtOD7byKM7kMcbEi554ITSVI0W2vzP5leUpCuNLL3DGhjcxReBWlhlvmOYv4ZPpavLbk2OAIip6PUjMRjgEuxP+d7N0Fq+Yj2uTwqpmiGC9KtNNCA9up3xu4YcltGsBsbAYSiBzzKqFxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713021199; c=relaxed/simple;
-	bh=HOzFAL8yYAEMAgDOJ95pg4Wj7zWkAIIRw10A3SkOE0Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Gx2QrsJnVlBP/4KqKgCHkQWyerJIAl32cynjzA9uKcsYADC+/ynv7msoOiig2joFRefH64pJgVmC1wg64HdBfNN1PmERMCe/VCh8t+44PnCK9w5hpfuJLw5BKBSjmz4/r0ryl1eX0BpnJAmKwrxOuUDPYZ4880Q3p8Wz9QE5oZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z1RCDhW+; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-56e6a1edecfso2883487a12.1;
-        Sat, 13 Apr 2024 08:13:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713021196; x=1713625996; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kGBXZT9zN7ekVSL6HG3HPphozJFpFD+fpudeCxgE3nM=;
-        b=Z1RCDhW+lhgIhUVTMaJtAhTZoRDdxp59dqtIeTQwt0YDgndbJMG3mgJQGyfYAzB9uq
-         KcAK1tqf6bbW1n0lMfulM46YrMdxIPghZHjZ1SUQvEuetU+BJ6HXoC8nwXhhoFe+kiqJ
-         zL/Q8vQw2qBbIj4sEBDGgyMvhAI6NmCx9NhRRYrBq7ghvIidVUucb6yJKbunH66/G1eZ
-         V6ZN6LWXhlv1Jan5kjM2nfOyBQdXAC7YloFjasW2nhs+jCAko9OuktwA+klTNjDHbQ3g
-         vQBTx1WnZxMxhqa54BvfJGfI+xDdJQ+laJdWrltkwObl6Z/QN+BB/7KWBqSBgb930g9i
-         n3bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713021196; x=1713625996;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kGBXZT9zN7ekVSL6HG3HPphozJFpFD+fpudeCxgE3nM=;
-        b=ITJftT/aX4iFMxv46uY3PXFdkvStDw4q3LcWInHWBvVFoejOjfMQHnv/SejamtTNGX
-         p/CiccSd4SOYKiEp/iUjUbqIypakY4GBUfML0cUEvUGt9dy0Ku03fR8LWj5slzx0uJuB
-         spBo503WmjBC8igvKuWmHLjJhQnEoRBI6WNHAUtmYiiz1ed+GG4AhkeLXBm+CKK4ieRD
-         hyRfgvIR8Lo1lWp2+pcgqQNyqw3sjXxxGH9eqsCbQPtHKYun2uKuf08rkXEEbfQyw3Iq
-         QGrgMvreAO7E4oa8uYhoVLHmLoiZyrOZGV+kvTaA6lj1v90qC2HMg74dthQfO9mu2nBP
-         y8cw==
-X-Forwarded-Encrypted: i=1; AJvYcCV0e15scrau7JXh/J83/6CqDiVIMTPeQyIW9qge6ny8tcYq4ZC7rL5q1vr09hnlzLKSSsddFQcXN5hzBUVTWS2WG00JeGdTKfCo4+hO4FwZN7pSimihkxyUiDg791O5vyimgG4QeyNaQBADWYEK0t84ttGMXC5Eknpqxmq7ucw4sKynhQ==
-X-Gm-Message-State: AOJu0YyB4jyLV0IzRjCX0iiMcG73ijOwTcyFOIEaDJA82X/WGb6dVQyc
-	dANe8GfZOC4bpvGHcJrAByf2lpeln4S9sFRpwCrIL9Ks1FzeQbBg
-X-Google-Smtp-Source: AGHT+IGZTsb04Cb1Z3Fq6VjXL8jX9l295NRiV65Hfmc9gP5pFkhTU2P8PnBWm1KkJmcrnSB0Ocua/w==
-X-Received: by 2002:a50:9e4e:0:b0:56c:1db1:f9eb with SMTP id z72-20020a509e4e000000b0056c1db1f9ebmr4530504ede.19.1713021196065;
-        Sat, 13 Apr 2024 08:13:16 -0700 (PDT)
-Received: from spiri.. ([5.14.146.31])
-        by smtp.gmail.com with ESMTPSA id w4-20020a056402128400b0056e2b351956sm2749883edv.22.2024.04.13.08.13.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Apr 2024 08:13:15 -0700 (PDT)
-From: Alisa-Dariana Roman <alisadariana@gmail.com>
-X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
-To: michael.hennerich@analog.com,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: alexandru.tachici@analog.com,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org,
-	robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	andy@kernel.org,
-	nuno.sa@analog.com,
-	marcelo.schmitt@analog.com,
-	bigunclemax@gmail.com,
-	dlechner@baylibre.com,
-	okan.sahin@analog.com,
-	fr0st61te@gmail.com,
-	alisa.roman@analog.com,
-	marcus.folkesson@gmail.com,
-	schnelle@linux.ibm.com,
-	liambeguin@gmail.com
-Subject: [PATCH v5 5/5] iio: adc: ad7192: Add AD7194 support
-Date: Sat, 13 Apr 2024 18:11:52 +0300
-Message-Id: <20240413151152.165682-6-alisa.roman@analog.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240413151152.165682-1-alisa.roman@analog.com>
-References: <20240413151152.165682-1-alisa.roman@analog.com>
+	s=arc-20240116; t=1713021934; c=relaxed/simple;
+	bh=3Kn+y4YDBM2ctdCpS5YTUODlgq4383kifzR5wIs9IQo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JaT4X+NRF2bv5ieO++BsL80y0VvQ9roKVjHiWBo9U1cmmzQRawI4uZc+4UqAAaHW4caKMBEvMgHa8UoZ9JZjmPVtHbNLf5arIHwPex7V0+mzmuyK6dVLB81FOGrUZsnXR7y+sdi3Cvcla3lgvBHa89uEcwkFIwtW+G/IQn2B8zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APPgoGnp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 579CAC113CD;
+	Sat, 13 Apr 2024 15:25:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713021934;
+	bh=3Kn+y4YDBM2ctdCpS5YTUODlgq4383kifzR5wIs9IQo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=APPgoGnp0cL3SqQyDBqwsrAH/OGfC5N1ZffOEvX/OtY8kcHnzW/PSQ76dSs6qNJb6
+	 kCCUp5/vQPoLT9UTBb+Urpfgt/JSQCwlXwF2qnEeRxar6Fd8oLa+o2nXSC8EE8fDZn
+	 +hCmR44mC6FmUIIQ4vFEof/sMZPlF6hql3+KjwGdzTYuf4bMySfml1XPmUZHaJAnfo
+	 QJCddWkSnvo1NzWqs1lSIyg5an7aAh3ktEVyIX8AU1/hcaDYCjQvPnpThLjUDq8/dj
+	 KB21GehKr3TDBCdgpPSTbRJ3k/nG7wE2KsG7Vx4/M4XTJ+y0ta2EcaJJa4MoagBkUS
+	 UkNb+DkZMhDFg==
+Date: Sat, 13 Apr 2024 16:25:17 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Kim Seer Paller <kimseer.paller@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
+ <broonie@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>
+Subject: Re: [PATCH 2/4] iio: ABI: add ABI file for the LTC2664 DAC
+Message-ID: <20240413162517.4644b649@jic23-huawei>
+In-Reply-To: <CAMknhBE9XihK27pRhyPwTNM3VQX=osYdDyCmjNspz1aqe_NVTw@mail.gmail.com>
+References: <20240412032102.136071-1-kimseer.paller@analog.com>
+	<20240412032102.136071-3-kimseer.paller@analog.com>
+	<CAMknhBE9XihK27pRhyPwTNM3VQX=osYdDyCmjNspz1aqe_NVTw@mail.gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Unlike the other AD719Xs, AD7194 has configurable differential
-channels. The user can dynamically configure them in the devicetree.
+On Fri, 12 Apr 2024 16:26:17 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-Also modify config AD7192 description for better scaling.
+> On Thu, Apr 11, 2024 at 10:21=E2=80=AFPM Kim Seer Paller
+> <kimseer.paller@analog.com> wrote:
+> >
+> > Define the sysfs interface for toggle capable channels.
+> >
+> > Toggle enabled channels will have:
+> >
+> >  * out_voltageY_toggle_en =20
+The big missing thing in this ABI is a reference to existing precedence.
+You aren't actually defining anything new, it just hasn't yet been generali=
+zed
+beyond 1 device (unless you include PSK / FSK DDS drivers that are 'still' =
+after
+13+ years in staging!)
 
-Moved ad7192_chip_info struct definition to allow use of callback
-function parse_channels().
+This patch needs to be generalizing that documentation from the ltc2688.
 
-Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
----
- drivers/iio/adc/Kconfig  |  11 ++-
- drivers/iio/adc/ad7192.c | 140 ++++++++++++++++++++++++++++++++++++---
- 2 files changed, 138 insertions(+), 13 deletions(-)
+Probably in sysfs-bus-iio-dac
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 8db68b80b391..74fecc284f1a 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -88,12 +88,17 @@ config AD7173
- 	  called ad7173.
- 
- config AD7192
--	tristate "Analog Devices AD7190 AD7192 AD7193 AD7195 ADC driver"
-+	tristate "Analog Devices AD7192 and similar ADC driver"
- 	depends on SPI
- 	select AD_SIGMA_DELTA
- 	help
--	  Say yes here to build support for Analog Devices AD7190,
--	  AD7192, AD7193 or AD7195 SPI analog to digital converters (ADC).
-+	  Say yes here to build support for Analog Devices SPI analog to digital
-+	  converters (ADC):
-+	  - AD7190
-+	  - AD7192
-+	  - AD7193
-+	  - AD7194
-+	  - AD7195
- 	  If unsure, say N (but it's safe to say "Y").
- 
- 	  To compile this driver as a module, choose M here: the
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index a9eb4fab39ca..646ab56b87e3 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * AD7190 AD7192 AD7193 AD7195 SPI ADC driver
-+ * AD7192 and similar SPI ADC driver
-  *
-  * Copyright 2011-2015 Analog Devices Inc.
-  */
-@@ -128,10 +128,21 @@
- #define AD7193_CH_AIN8		0x480 /* AIN7 - AINCOM */
- #define AD7193_CH_AINCOM	0x600 /* AINCOM - AINCOM */
- 
-+#define AD7194_CH_POS(x)	(((x) - 1) << 4)
-+#define AD7194_CH_NEG(x)	((x) - 1)
-+#define AD7194_CH_DIFF(pos, neg) \
-+		(((neg) == 0 ? BIT(10) : AD7194_CH_NEG(neg)) | AD7194_CH_POS(pos))
-+#define AD7194_CH_TEMP		0x100 /* Temp sensor */
-+#define AD7194_CH_BASE_NR	18
-+#define AD7194_CH_AIN_START	1
-+#define AD7194_CH_AIN_NR	16
-+#define AD7194_CH_DIFF_NR_MAX	256
-+
- /* ID Register Bit Designations (AD7192_REG_ID) */
- #define CHIPID_AD7190		0x4
- #define CHIPID_AD7192		0x0
- #define CHIPID_AD7193		0x2
-+#define CHIPID_AD7194		0x3
- #define CHIPID_AD7195		0x6
- #define AD7192_ID_MASK		GENMASK(3, 0)
- 
-@@ -169,17 +180,10 @@ enum {
- 	ID_AD7190,
- 	ID_AD7192,
- 	ID_AD7193,
-+	ID_AD7194,
- 	ID_AD7195,
- };
- 
--struct ad7192_chip_info {
--	unsigned int			chip_id;
--	const char			*name;
--	struct iio_chan_spec		*channels;
--	u8				num_channels;
--	const struct iio_info		*info;
--};
--
- struct ad7192_state {
- 	const struct ad7192_chip_info	*chip_info;
- 	struct regulator		*avdd;
-@@ -201,6 +205,15 @@ struct ad7192_state {
- 	struct ad_sigma_delta		sd;
- };
- 
-+struct ad7192_chip_info {
-+	unsigned int			chip_id;
-+	const char			*name;
-+	struct iio_chan_spec		*channels;
-+	u8				num_channels;
-+	const struct iio_info		*info;
-+	int (*parse_channels)(struct iio_dev *indio_dev);
-+};
-+
- static const char * const ad7192_syscalib_modes[] = {
- 	[AD7192_SYSCALIB_ZERO_SCALE] = "zero_scale",
- 	[AD7192_SYSCALIB_FULL_SCALE] = "full_scale",
-@@ -925,6 +938,15 @@ static const struct iio_info ad7192_info = {
- 	.update_scan_mode = ad7192_update_scan_mode,
- };
- 
-+static const struct iio_info ad7194_info = {
-+	.read_raw = ad7192_read_raw,
-+	.write_raw = ad7192_write_raw,
-+	.write_raw_get_fmt = ad7192_write_raw_get_fmt,
-+	.read_avail = ad7192_read_avail,
-+	.validate_trigger = ad_sd_validate_trigger,
-+	.update_scan_mode = ad7192_update_scan_mode,
-+};
-+
- static const struct iio_info ad7195_info = {
- 	.read_raw = ad7192_read_raw,
- 	.write_raw = ad7192_write_raw,
-@@ -1016,6 +1038,90 @@ static struct iio_chan_spec ad7193_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(14),
- };
- 
-+static int ad7192_parse_channel(struct fwnode_handle *child,
-+				struct iio_chan_spec *ad7194_channels)
-+{
-+	u32 ain[2];
-+	int ret;
-+
-+	ret = fwnode_property_read_u32_array(child, "diff-channels", ain,
-+					     ARRAY_SIZE(ain));
-+	if (ret)
-+		return ret;
-+
-+	if (!in_range(ain[0], AD7194_CH_AIN_START, AD7194_CH_AIN_NR) ||
-+	    !in_range(ain[1], AD7194_CH_AIN_START, AD7194_CH_AIN_NR))
-+		return -EINVAL;
-+
-+	ad7194_channels->channel = ain[0];
-+	ad7194_channels->channel2 = ain[1];
-+	ad7194_channels->address = AD7194_CH_DIFF(ain[0], ain[1]);
-+
-+	return 0;
-+}
-+
-+static int ad7192_parse_channels(struct iio_dev *indio_dev)
-+{
-+	struct ad7192_state *st = iio_priv(indio_dev);
-+	struct device *dev = indio_dev->dev.parent;
-+	struct iio_chan_spec *ad7194_channels;
-+	struct fwnode_handle *child;
-+	struct iio_chan_spec ad7194_chan = AD7193_CHANNEL(0, 0, 0);
-+	struct iio_chan_spec ad7194_chan_diff = AD7193_DIFF_CHANNEL(0, 0, 0, 0);
-+	struct iio_chan_spec ad7194_chan_temp = AD719x_TEMP_CHANNEL(0, 0);
-+	struct iio_chan_spec ad7194_chan_timestamp = IIO_CHAN_SOFT_TIMESTAMP(0);
-+	unsigned int num_channels, index = 0, ain_chan;
-+	int ret;
-+
-+	num_channels = device_get_child_node_count(dev);
-+	if (num_channels > AD7194_CH_DIFF_NR_MAX)
-+		return -EINVAL;
-+
-+	num_channels += AD7194_CH_BASE_NR;
-+
-+	ad7194_channels = devm_kcalloc(dev, sizeof(*ad7194_channels),
-+				       num_channels, GFP_KERNEL);
-+	if (!ad7194_channels)
-+		return -ENOMEM;
-+
-+	indio_dev->channels = ad7194_channels;
-+	indio_dev->num_channels = num_channels;
-+
-+	device_for_each_child_node(dev, child) {
-+		*ad7194_channels = ad7194_chan_diff;
-+		ad7194_channels->scan_index = index++;
-+		ret = ad7192_parse_channel(child, ad7194_channels);
-+		if (ret) {
-+			fwnode_handle_put(child);
-+			return ret;
-+		}
-+		ad7194_channels++;
-+	}
-+
-+	*ad7194_channels = ad7194_chan_temp;
-+	ad7194_channels->scan_index = index++;
-+	ad7194_channels->address = AD7194_CH_TEMP;
-+	ad7194_channels++;
-+
-+	for (ain_chan = 1; ain_chan <= 16; ain_chan++) {
-+		if (st->aincom_mv) {
-+			*ad7194_channels = ad7194_chan;
-+		} else {
-+			*ad7194_channels = ad7194_chan_diff;
-+			ad7194_channels->channel2 = 0;
-+		}
-+		ad7194_channels->scan_index = index++;
-+		ad7194_channels->channel = ain_chan;
-+		ad7194_channels->address = AD7194_CH_DIFF(ain_chan, 0);
-+		ad7194_channels++;
-+	}
-+
-+	*ad7194_channels = ad7194_chan_timestamp;
-+	ad7194_channels->scan_index = index;
-+
-+	return 0;
-+}
-+
- static const struct ad7192_chip_info ad7192_chip_info_tbl[] = {
- 	[ID_AD7190] = {
- 		.chip_id = CHIPID_AD7190,
-@@ -1038,6 +1144,12 @@ static const struct ad7192_chip_info ad7192_chip_info_tbl[] = {
- 		.num_channels = ARRAY_SIZE(ad7193_channels),
- 		.info = &ad7192_info,
- 	},
-+	[ID_AD7194] = {
-+		.chip_id = CHIPID_AD7194,
-+		.name = "ad7194",
-+		.info = &ad7194_info,
-+		.parse_channels = ad7192_parse_channels,
-+	},
- 	[ID_AD7195] = {
- 		.chip_id = CHIPID_AD7195,
- 		.name = "ad7195",
-@@ -1164,6 +1276,12 @@ static int ad7192_probe(struct spi_device *spi)
- 	indio_dev->num_channels = st->chip_info->num_channels;
- 	indio_dev->info = st->chip_info->info;
- 
-+	if (st->chip_info->parse_channels) {
-+		ret = st->chip_info->parse_channels(indio_dev);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	ret = ad_sd_init(&st->sd, indio_dev, spi, &ad7192_sigma_delta_info);
- 	if (ret)
- 		return ret;
-@@ -1201,6 +1319,7 @@ static const struct of_device_id ad7192_of_match[] = {
- 	{ .compatible = "adi,ad7190", .data = &ad7192_chip_info_tbl[ID_AD7190] },
- 	{ .compatible = "adi,ad7192", .data = &ad7192_chip_info_tbl[ID_AD7192] },
- 	{ .compatible = "adi,ad7193", .data = &ad7192_chip_info_tbl[ID_AD7193] },
-+	{ .compatible = "adi,ad7194", .data = &ad7192_chip_info_tbl[ID_AD7194] },
- 	{ .compatible = "adi,ad7195", .data = &ad7192_chip_info_tbl[ID_AD7195] },
- 	{}
- };
-@@ -1210,6 +1329,7 @@ static const struct spi_device_id ad7192_ids[] = {
- 	{ "ad7190", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7190] },
- 	{ "ad7192", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7192] },
- 	{ "ad7193", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7193] },
-+	{ "ad7194", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7194] },
- 	{ "ad7195", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7195] },
- 	{}
- };
-@@ -1226,6 +1346,6 @@ static struct spi_driver ad7192_driver = {
- module_spi_driver(ad7192_driver);
- 
- MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
--MODULE_DESCRIPTION("Analog Devices AD7190, AD7192, AD7193, AD7195 ADC");
-+MODULE_DESCRIPTION("Analog Devices AD7192 and similar ADC");
- MODULE_LICENSE("GPL v2");
- MODULE_IMPORT_NS(IIO_AD_SIGMA_DELTA);
--- 
-2.34.1
+>=20
+> It looks like there are 3 toggle modes.
+>=20
+> Two involve the notion of "enabled" outputs that I assume this attribute =
+is for:
+>=20
+> 1. Toggling all enabled pins at the same time using a software trigger
+> (global toggle bit)
+> 2. Toggling all enabled pins at the same time using a hardware trigger
+> (TGP pin) and toggling pins
+>=20
+
+This is presumably the tricky one as that hardware toggle may not be in
+control of the host CPU.
+
+> The third mode though looks like it uses the same toggle select
+> register for selecting A or B for each channel instead of enabling or
+> disabling each channel.
+>=20
+> 3. Toggling all pins to A or B based on the toggle select register. No
+> notion of enabled pins here.
+>=20
+> I haven't looked at the driver implementation, but it sounds like
+> out_voltageY_toggle_en and out_voltageY_symbol would be writing to the
+> same register in conflicting ways. So maybe we need yet another custom
+> attribute to select the currently active toggle mode?
+
+This one feels like it could be handled as a software optimisation over
+just changing the DAC value directly.
+
+>=20
+> In any case, it would be helpful if the documentation below explained
+> a bit better the intention and conditions required to use each
+> attribute (or add a .rst documentation file for these chips to explain
+> how to use it in more detail since this is rather complex feature).
+>=20
+> >  * out_voltageY_raw0
+> >  * out_voltageY_raw1 =20
+>=20
+> I guess there is no enum iio_modifier that fits this. It seems like we
+> could still have out_voltageY_raw for register A so that users that
+> don't need to do any toggling can use standard ABI. And maybe
+> out_voltageY_raw_toggled for register B (question for Jonathan)?
+
+There is precedence for doing it like this (ltc2688)
+Note that we should only see these attribute for changes specifically
+configured for 'hardware' triggered toggling.
+
+Note that we cannot have duplicate documentation so we need to create
+a common docs file covering this and existing ltc2688 ABI that overlaps.
+That may need some generalising to cover both parts.
+
+>=20
+> Or just have 8 channels instead of 4 where even channels are register
+> A and odd channels are register B?
+>=20
+> >  * out_voltageY_symbol =20
+>=20
+> "symbol" is a confusing name. It sounds like this just supports
+> toggling one channel individually so _toggle_select would make more
+> sense to me. Are there plans for supporting toggling multiple channels
+> at the same time using a software trigger as well?
+
+Again, precedence should have been called out.  It's not great ABI
+but it corresponds to earlier work on Frequency Shift Keying DDS devices
+(and I think Phase Shift Keying as well) in which this is call symbol.
+Hence the name.
+
+>=20
+> >
+> > The common interface present in all channels is:
+> >
+> >  * out_voltageY_raw (not present in toggle enabled channels) =20
+>=20
+> As mentioned above, I don't think we need to have to make a
+> distinction between toggle enabled channels and not enabled channels.
+
+Was a while back but I think that last time this turned up we concluded
+we did need a different interface because the current 'toggle value'
+is not in our control.  Hence you are programming one channel that
+does different things - think of it as setting the Max and Min values
+for a generated waveform - perhaps the toggle pin is connected to a PWM
+for example.
+
+>=20
+> >  * out_voltageY_raw_available
+> >  * out_voltageY_powerdown =20
+>=20
+> Is _powerdown a standard attribute? I don't see it documented
+> anywhere. Perhaps you meant _en (via IIO_CHAN_INFO_ENABLE)?
+
+It's there in Documentation/ABI/testing/sysfs-bus-iio
+Different form simple enable (which came much later as ABI) because
+it means entering a powerdown state in which a particular thing happens
+on the output pin.  It is defined alongside powerdown_mode which=20
+defines what happens. (often a choice between different impedance / High Z =
+etc)
+
+
+>=20
+>=20
+> >  * out_voltageY_scale
+> >  * out_voltageY_offset
+> >
+> > Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
+> > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+> > ---
+> >  .../ABI/testing/sysfs-bus-iio-dac-ltc2664     | 30 +++++++++++++++++++
+> >  MAINTAINERS                                   |  1 +
+> >  2 files changed, 31 insertions(+)
+> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2664
+> >
+> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2664 b/Docu=
+mentation/ABI/testing/sysfs-bus-iio-dac-ltc2664
+> > new file mode 100644
+> > index 000000000..4b656b7af
+> > --- /dev/null
+> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2664
+> > @@ -0,0 +1,30 @@
+> > +What:          /sys/bus/iio/devices/iio:deviceX/out_voltageY_toggle_en
+> > +KernelVersion: 5.18
+> > +Contact:       linux-iio@vger.kernel.org
+> > +Description:
+> > +               Toggle enable. Write 1 to enable toggle or 0 to disable=
+ it. This is
+> > +               useful when one wants to change the DAC output codes. T=
+he way it should
+> > +               be done is:
+> > +
+> > +               - disable toggle operation;
+> > +               - change out_voltageY_raw0 and out_voltageY_raw1;
+> > +               - enable toggle operation.
+> > +
+> > +What:          /sys/bus/iio/devices/iio:deviceX/out_voltageY_raw0
+> > +What:          /sys/bus/iio/devices/iio:deviceX/out_voltageY_raw1
+> > +KernelVersion: 5.18
+> > +Contact:       linux-iio@vger.kernel.org
+> > +Description:
+> > +               It has the same meaning as out_voltageY_raw. This attri=
+bute is
+> > +               specific to toggle enabled channels and refers to the D=
+AC output
+> > +               code in INPUT_A (_raw0) and INPUT_B (_raw1). The same s=
+cale and offset
+> > +               as in out_voltageY_raw applies.
+> > +
+> > +What:          /sys/bus/iio/devices/iio:deviceX/out_voltageY_symbol
+> > +KernelVersion: 5.18
+> > +Contact:       linux-iio@vger.kernel.org
+> > +Description:
+> > +               Performs a SW toggle. This attribute is specific to tog=
+gle
+> > +               enabled channels and allows to toggle between out_volta=
+geY_raw0
+> > +               and out_voltageY_raw1 through software. Writing 0 will =
+select
+> > +               out_voltageY_raw0 while 1 selects out_voltageY_raw1.
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index bd8645f6e..9ed00b364 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -12842,6 +12842,7 @@ M:      Kim Seer Paller <kimseer.paller@analog.=
+com>
+> >  L:     linux-iio@vger.kernel.org
+> >  S:     Supported
+> >  W:     https://ez.analog.com/linux-software-drivers
+> > +F:     Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2664
+> >  F:     Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
+> >
+> >  LTC2688 IIO DAC DRIVER
+> > --
+> > 2.34.1
+> > =20
 
 

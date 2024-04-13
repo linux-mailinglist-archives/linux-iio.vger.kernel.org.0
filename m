@@ -1,109 +1,106 @@
-Return-Path: <linux-iio+bounces-4215-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4216-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B06DA8A3B96
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 10:09:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E33898A3BE9
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 11:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30C13B2164A
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 08:09:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81CC41F21C41
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 09:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409241D55D;
-	Sat, 13 Apr 2024 08:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960512576B;
+	Sat, 13 Apr 2024 09:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QbKbnhs6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9Hn57IX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C5A1D54F
-	for <linux-iio@vger.kernel.org>; Sat, 13 Apr 2024 08:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E68218B14;
+	Sat, 13 Apr 2024 09:27:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1712995792; cv=none; b=P1Uji9v0Uex2f0yEVMbd67ZOa9Uc7zEg2dWy4z4nTq1xN8ldETT7tVAaYpHKQwNSPGh4+VF84g8QosJTKa5xqgJo2AfT2BCQ8Rys61XTL8shk4SLT0QxGLUTk9MCoeuKfgZ/34NWR32EjJcVbrYYdOiespDoLDlgun8Ho+YH4Nc=
+	t=1713000451; cv=none; b=cigDI8fwjEBY+ENRke5uvxvC7zWcTs7SjYhry4uhx6dfamSAKH1AN/04xbl7LTrD9rlI+3PoGvxE+tazrTBreaxhPHgmoqBsOtiGyeNcwkUJJlkUbK/dOxQ8opMKCGQ7ususN6U0K12qbTMZWE01rSKZ79bxbRK5qoPkCB1yYPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1712995792; c=relaxed/simple;
-	bh=APnm7LXpcHb4ZCh332GH/q7XCNbXWuojiptOVmUTWM4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q8AhwWgjAPW8iIUpLluxBXBRQbRdke8v6yxwBHR3VHT0QvI/oq+8EHvFlJnxI7ubzbcPWjqZtwOqo6OcjPjSrtBnhyVh3XoX8wZycWsPzlVMtUjRHkJIJs6ZqhIPB2TE7j8uo6/O/TNK8h5XO7QfnmG21nxYicJLLhjwF+c+2Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QbKbnhs6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB151C113CD;
-	Sat, 13 Apr 2024 08:09:50 +0000 (UTC)
+	s=arc-20240116; t=1713000451; c=relaxed/simple;
+	bh=8FmkxRB0I6lztwgCbDGCSRZG9dB3qR5SIonDflggVww=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=thiaVFUBXXckpyVDIFarEFCDpKkleFsaR1P35cwOFqiXZEFp1HZMC+8uYvi9x3jBAWhgosqi26Ke2PM7DtIEHDRL8cdcfZ2ZB/OLDIXosEOpdyej2osgHWs7+0W38qsWHxJMb5Cv2ADjuGI0ettx/ZTnUMIVC5iK0uUl3w/vOYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b9Hn57IX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB09C113CD;
+	Sat, 13 Apr 2024 09:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1712995791;
-	bh=APnm7LXpcHb4ZCh332GH/q7XCNbXWuojiptOVmUTWM4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QbKbnhs6w2Ul5QOPh+rV/PKD0xBvj2Mq1pMz9GzYzN2lP1HJj4I0GgmMYEFOEFVWp
-	 iHO3/yGEclrTeV3oFFV6rBIpCEt51jO9oo5ytESmWQbtmdd8uLDFH8wD1+HhmA7Ca2
-	 V2DZCOH0tskQbf+66ygEZanz1sN8EnZCJJ00EnFzfKIUSFfbX739uPsD/a1HOJLuLJ
-	 1cCk5vLJgPLOQMOZUZquVToiHgUsUMViCQ5eDs1WkfMeBfd7LWCW5nygnhl+2L8ma2
-	 6CKZvBW0wgxJsLRcHAj63Ni8kTEJaT69MO9eOnf4rVuq9MX+LU2vDpA2aLoqJLG9Nk
-	 la8c+LmNa+7eg==
-Date: Sat, 13 Apr 2024 04:09:48 -0400
-From: William Breathitt Gray <wbg@kernel.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: linux-iio@vger.kernel.org
-Subject: Re: [GIT PULL] Counter updates for 6.9
-Message-ID: <Zho9zH489TTk4Sbq@ishi>
-References: <ZeyMLe1lmfyMcrss@ishi>
- <2024041131-implicit-decipher-76f4@gregkh>
+	s=k20201202; t=1713000450;
+	bh=8FmkxRB0I6lztwgCbDGCSRZG9dB3qR5SIonDflggVww=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=b9Hn57IX/VvTNUy9obuO8zlFnX+pRlFGrpvIqioTwwuScVCBVb5ogzv9pvoWuvVgg
+	 CdEXKW5u345k2qQWe01PwyguqSgOt41OMYFyGmYKAxuo1rGXj4rZaNOPMgpq0Czysc
+	 wTg+hO8PZMXlaWPGA/ObXguuOdsf/PB08UOazC6pKcfIVrkzggdYDZajDaqUyKHqLg
+	 A2EtU63HpGI7phjtOvR2FFPJWHpuUocLhSy9+Ik/2KFPO7rfW/RbCGrl3dhZRTJslp
+	 NENuo2+7vFLdbaAkEkqOIkNXZQTBGmTt9NVuNZQBGNnAiT18MveFHS938SosRb7dJL
+	 rHDrVDzwbTasw==
+Date: Sat, 13 Apr 2024 10:27:17 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+Cc: joel@jms.id.au, bsp-development.geo@leica-geosystems.com, Eddie James
+ <eajames@linux.ibm.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/4] iio: pressure: dps310: support negative
+ temperature values
+Message-ID: <20240413102717.1ad05f7e@jic23-huawei>
+In-Reply-To: <20240410103604.992989-1-thomas.haemmerle@leica-geosystems.com>
+References: <20240327084937.3801125-1-thomas.haemmerle@leica-geosystems.com>
+	<20240410103604.992989-1-thomas.haemmerle@leica-geosystems.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="pr0Plz8H+ZrC3GXq"
-Content-Disposition: inline
-In-Reply-To: <2024041131-implicit-decipher-76f4@gregkh>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Wed, 10 Apr 2024 12:36:00 +0200
+Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com> wrote:
 
---pr0Plz8H+ZrC3GXq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> This patch set fixes the reading of negative temperatures (returned in
+> millidegree celsius). As this requires a change of the error handling
+> other functions are aligned with this.
+> In addition a small code simplification for reading the scale factors
+> for temperature and pressure is included.
+One quick process thing.
+For IIO (and probably most of the rest of the kernel) we strongly discourage
+sending new versions in reply to a previous version.
 
-On Thu, Apr 11, 2024 at 02:45:45PM +0200, Greg KH wrote:
-> On Sat, Mar 09, 2024 at 11:19:57AM -0500, William Breathitt Gray wrote:
-> > The following changes since commit 6613476e225e090cc9aad49be7fa504e290d=
-d33d:
-> >=20
-> >   Linux 6.8-rc1 (2024-01-21 14:11:32 -0800)
-> >=20
-> > are available in the Git repository at:
-> >=20
-> >   git://git.kernel.org/pub/scm/linux/kernel/git/wbg/counter.git tags/co=
-unter-updates-for-6.9
->=20
-> Did this ever get taken?  If so, should it be for 6.10?
->=20
-> confused,
->=20
-> greg k-h
+The only real result is that in a typical email client the threads become
+confused and the new version may be missed entirely.
 
-Sorry, I should have submitted that sooner for the 6.9 cycle. I've
-created a new tag[^1] for 6.10 that includes these commits, so please
-pull that one instead.
+Just sent a fresh thread - the naming makes it easy to connect new
+versions to older ones and tools like b4 deal with this automatically.
 
-Thanks,
+Jonathan
+> 
+> ---
+> Changes in v2:
+>  - include fixes tag
+>  - Split up patch
+>  - introduce variables for intermediate results in functions
+>  - simplify scale factor reading
+> 
+> Thomas Haemmerle (4):
+>   iio: pressure: dps310: support negative temperature values
+>   iio: pressure: dps310: introduce consistent error handling
+>   iio: pressure: dps310: consistently check return value of
+>     `regmap_read`
+>   iio: pressure: dps310: simplify scale factor reading
+> 
+>  drivers/iio/pressure/dps310.c | 138 +++++++++++++++++++---------------
+>  1 file changed, 77 insertions(+), 61 deletions(-)
+> 
+> 
+> base-commit: 2c71fdf02a95b3dd425b42f28fd47fb2b1d22702
 
-William Breathitt Gray
-
-[^1] https://lore.kernel.org/linux-iio/Zho9QUfTfT-uHptA@ishi/
-
---pr0Plz8H+ZrC3GXq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZho9zAAKCRC1SFbKvhIj
-K80XAQDGOrZPGwqY1+6e8v28noPIeLe+rWtLRgFytZ3tlqVvmgEA35bsxVXfSyuA
-LOGhgY8FqUsNTs9NEOFblijJBePxXgA=
-=CoLP
------END PGP SIGNATURE-----
-
---pr0Plz8H+ZrC3GXq--
 

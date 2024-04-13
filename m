@@ -1,59 +1,66 @@
-Return-Path: <linux-iio+bounces-4217-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4218-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F40D28A3BF4
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 11:33:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8D78A3BF8
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 11:36:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE15282D56
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 09:33:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4863B21381
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 09:36:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20BF2576B;
-	Sat, 13 Apr 2024 09:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0A11E515;
+	Sat, 13 Apr 2024 09:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="asjzzgpX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMyHjA8o"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D78E3E474;
-	Sat, 13 Apr 2024 09:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C50B321B4
+	for <linux-iio@vger.kernel.org>; Sat, 13 Apr 2024 09:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713000798; cv=none; b=q227cb/NkMAjuyHUoHeHy8FNPjgvv9B/0DrSUYMSZfGq6v1T5lsFq4OOrT/lIt4L9tgGMP56bVVySzDeHU8wh3R1YaJsyIuPLFfbOVkDE3eLvEZTedCNuJvF9XXWUWckT1OyElol/A9vMT2k/I40Q+pX+OdsZ7AiOwjM3ZAK8Bo=
+	t=1713001008; cv=none; b=mKqf7UK49GQgk34kRaO2KYgz+6jf/r4KWKp4Rb/mrng6yKN0J88YYWNZYB9anNv05E4mLL7f1EBR/9Jtu2AJNvzuaqF8COerI3uu1G5qXO69ZsFsS6pyetqd+fnNJLCPiZHEhw4ikEbEnVjtsF0wBzulMChpH+oHSIp+pzRGP9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713000798; c=relaxed/simple;
-	bh=OvMv3asuhExZTAVwKzsT7vF0MOuPx/aZkjJ1VZfVZ0Q=;
+	s=arc-20240116; t=1713001008; c=relaxed/simple;
+	bh=W93DaJNz7OtsaEntpd5Lidj86gt3tWqmEz+Qye5V4xA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ezjE8dqWc0MkvvJIJ+KEBm4W1neu8GBN0NwbE3LY1e9AAXeVLYjzumm7j4fAwPFt2X622uvtp66dskoyvqNXRsNZrwk0J9F37LXoA6xmBhD2gzLaOuVVVtuvyuyhEiSl+WUBSKa8LA1OQO1t73bn1i3WzHvMDZBl+0Vpvf1n4aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=asjzzgpX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E00DC113CD;
-	Sat, 13 Apr 2024 09:33:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rBr0SsMyfx9VemXtl2VZsLOW2a66p9yDYj/znDvdfvjfL5X0gzaYW7NLkssTLmF2NrBktT9065tP0nllD+i4QG+b6rKtymupVFQ7wO13u6zVtyIZ4Ut2uQ3/ebkUiMw4CWspvXvMu4bHlWDA2y6Gaku4Fv9XWLn4H3khUuGz7Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMyHjA8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6597CC113CD;
+	Sat, 13 Apr 2024 09:36:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713000797;
-	bh=OvMv3asuhExZTAVwKzsT7vF0MOuPx/aZkjJ1VZfVZ0Q=;
+	s=k20201202; t=1713001007;
+	bh=W93DaJNz7OtsaEntpd5Lidj86gt3tWqmEz+Qye5V4xA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=asjzzgpX6t8hrg7GDgvrzk7/Y81VpfIy1nt+4lRz5x3HoSlRr9aywX/HK2hQ6SC7D
-	 wOBCCAZf/8qWGhmqtjIjlQRbIKlCtv+h3qjp62Q36fNGzVJdMvEujRtYT3YB/cqdxm
-	 yjD8HI3ARA1ORZeekBOTYyvSNvGpTbB5Z4xF3fVZIiiF9bTXrPgJavC2RhG5+HKRG/
-	 +VHDofOcoYZM7wR/Pyg8jqI5+H8AbqnqQLMde2Cwr3LzVwyGGGgvSFQhWZJAr9Al2R
-	 faE77ahJxt5v5ViyMfnoK+761xXrYPWyuDjA4pgxvALnSWZngJm94Bt8trO2QMg/Cf
-	 JTKxvGCkAdkSQ==
-Date: Sat, 13 Apr 2024 10:33:05 +0100
+	b=RMyHjA8o5rjGJkTIrtsXnyZMRpAxgqi4YdGDlSBdXy5QzjaQyX1Q+3s3zvYdXQAZQ
+	 zWlQ4P5P29B6Bl181RA3q3PrHLqlhQWoCQbG50GcncF3S223P/tf94k0EN/l6u3bCD
+	 9DHg7+Niea1ond5ArAL/6CNM86mWyNecMAcZ9QvzT59mn322zXrqFxoX+mEa5Yl90f
+	 Gz7zzNZTSQJRz3u/2B2SCJerjKfw7iccnjf7sCQtutHN5y5XjxUfte6L3qntZI1KHh
+	 X8ehDqsZVzPwZ5EMKgryi4HDsKwFXwGDEbeKO6JJV1icLdu8xEBZSAD9obwtYpnYKm
+	 GUWEYR3YClIeQ==
+Date: Sat, 13 Apr 2024 10:36:31 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-Cc: joel@jms.id.au, bsp-development.geo@leica-geosystems.com, Eddie James
- <eajames@linux.ibm.com>, Lars-Peter Clausen <lars@metafoo.de>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] iio: pressure: dps310: introduce consistent
- error handling
-Message-ID: <20240413103305.39a9aaad@jic23-huawei>
-In-Reply-To: <20240410103604.992989-3-thomas.haemmerle@leica-geosystems.com>
-References: <20240327084937.3801125-1-thomas.haemmerle@leica-geosystems.com>
-	<20240410103604.992989-1-thomas.haemmerle@leica-geosystems.com>
-	<20240410103604.992989-3-thomas.haemmerle@leica-geosystems.com>
+To: linux-iio@vger.kernel.org, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>, Mihail Chindris
+ <mihail.chindris@analog.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+ Tomislav Denis <tomislav.denis@avl.com>, Marek Vasut <marex@denx.de>,
+ Olivier Moysan <olivier.moysan@foss.st.com>, Fabrice Gasnier
+ <fabrice.gasnier@foss.st.com>, Lad Prabhakar
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Dmitry Baryshkov
+ <dmitry.baryshkov@linaro.org>, Marijn Suijten
+ <marijn.suijten@somainline.org>, Marius Cristea
+ <marius.cristea@microchip.com>, Ibrahim Tilki <Ibrahim.Tilki@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v6 2/8] iio: adc: qcom-spmi-adc5: Use
+ device_for_each_child_node_scoped()
+Message-ID: <20240413103631.6ffb90c4@jic23-huawei>
+In-Reply-To: <20240330185305.1319844-3-jic23@kernel.org>
+References: <20240330185305.1319844-1-jic23@kernel.org>
+	<20240330185305.1319844-3-jic23@kernel.org>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,23 +71,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 10 Apr 2024 12:36:02 +0200
-Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com> wrote:
+On Sat, 30 Mar 2024 18:52:59 +0000
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Align error handling with `dps310_calculate_temp`, where it's not
-> possible to differentiate between errors and valid calculations by
-> checking if the returned value is negative.
+> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > 
-> Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
-Other than the reported locking issue the rest of this series now looks
-fine to me.  So hopefully that should be easy to resolve and I'll pick
-up v3.  Given we are some way into the cycle and the negative value bug
-has been there quite a while I'll probably just queue the whole series
-for the next merge window rather than going through the dance of taking
-the fix patch separately and having to wait before merging the rest.
+> Switching to the _scoped() version removes the need for manual
+> calling of fwnode_handle_put() in the paths where the code
+> exits the loop early. In this case that's all in error paths.
+> 
+> A slightly less convincing usecase than many as all the failure paths
+> are wrapped up in a call to a per fwnode_handle utility function.
+> The complexity in that function is sufficient that it makes sense to
+> factor it out even if it this new auto cleanup would enable simpler
+> returns if the code was inline at the call site. Hence I've left it alone.
+> 
+> Cc: Marijn Suijten <marijn.suijten@somainline.org>
+> Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+I'm not sure why I didn't pick this one up before now given it has
+an RB from Dmitry. Applied.
 
 Thanks,
 
-
 Jonathan
+
+> ---
+>  drivers/iio/adc/qcom-spmi-adc5.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/qcom-spmi-adc5.c b/drivers/iio/adc/qcom-spmi-adc5.c
+> index b6b612d733ff..9b69f40beed8 100644
+> --- a/drivers/iio/adc/qcom-spmi-adc5.c
+> +++ b/drivers/iio/adc/qcom-spmi-adc5.c
+> @@ -825,7 +825,6 @@ static int adc5_get_fw_data(struct adc5_chip *adc)
+>  	const struct adc5_channels *adc_chan;
+>  	struct iio_chan_spec *iio_chan;
+>  	struct adc5_channel_prop prop, *chan_props;
+> -	struct fwnode_handle *child;
+>  	unsigned int index = 0;
+>  	int ret;
+>  
+> @@ -849,12 +848,10 @@ static int adc5_get_fw_data(struct adc5_chip *adc)
+>  	if (!adc->data)
+>  		adc->data = &adc5_data_pmic;
+>  
+> -	device_for_each_child_node(adc->dev, child) {
+> +	device_for_each_child_node_scoped(adc->dev, child) {
+>  		ret = adc5_get_fw_channel_data(adc, &prop, child, adc->data);
+> -		if (ret) {
+> -			fwnode_handle_put(child);
+> +		if (ret)
+>  			return ret;
+> -		}
+>  
+>  		prop.scale_fn_type =
+>  			adc->data->adc_chans[prop.channel].scale_fn_type;
+
 

@@ -1,58 +1,59 @@
-Return-Path: <linux-iio+bounces-4216-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4217-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33898A3BE9
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 11:27:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F40D28A3BF4
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 11:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81CC41F21C41
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 09:27:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EE15282D56
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 09:33:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960512576B;
-	Sat, 13 Apr 2024 09:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20BF2576B;
+	Sat, 13 Apr 2024 09:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b9Hn57IX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="asjzzgpX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E68218B14;
-	Sat, 13 Apr 2024 09:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D78E3E474;
+	Sat, 13 Apr 2024 09:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713000451; cv=none; b=cigDI8fwjEBY+ENRke5uvxvC7zWcTs7SjYhry4uhx6dfamSAKH1AN/04xbl7LTrD9rlI+3PoGvxE+tazrTBreaxhPHgmoqBsOtiGyeNcwkUJJlkUbK/dOxQ8opMKCGQ7ususN6U0K12qbTMZWE01rSKZ79bxbRK5qoPkCB1yYPs=
+	t=1713000798; cv=none; b=q227cb/NkMAjuyHUoHeHy8FNPjgvv9B/0DrSUYMSZfGq6v1T5lsFq4OOrT/lIt4L9tgGMP56bVVySzDeHU8wh3R1YaJsyIuPLFfbOVkDE3eLvEZTedCNuJvF9XXWUWckT1OyElol/A9vMT2k/I40Q+pX+OdsZ7AiOwjM3ZAK8Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713000451; c=relaxed/simple;
-	bh=8FmkxRB0I6lztwgCbDGCSRZG9dB3qR5SIonDflggVww=;
+	s=arc-20240116; t=1713000798; c=relaxed/simple;
+	bh=OvMv3asuhExZTAVwKzsT7vF0MOuPx/aZkjJ1VZfVZ0Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=thiaVFUBXXckpyVDIFarEFCDpKkleFsaR1P35cwOFqiXZEFp1HZMC+8uYvi9x3jBAWhgosqi26Ke2PM7DtIEHDRL8cdcfZ2ZB/OLDIXosEOpdyej2osgHWs7+0W38qsWHxJMb5Cv2ADjuGI0ettx/ZTnUMIVC5iK0uUl3w/vOYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b9Hn57IX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB09C113CD;
-	Sat, 13 Apr 2024 09:27:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ezjE8dqWc0MkvvJIJ+KEBm4W1neu8GBN0NwbE3LY1e9AAXeVLYjzumm7j4fAwPFt2X622uvtp66dskoyvqNXRsNZrwk0J9F37LXoA6xmBhD2gzLaOuVVVtuvyuyhEiSl+WUBSKa8LA1OQO1t73bn1i3WzHvMDZBl+0Vpvf1n4aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=asjzzgpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E00DC113CD;
+	Sat, 13 Apr 2024 09:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713000450;
-	bh=8FmkxRB0I6lztwgCbDGCSRZG9dB3qR5SIonDflggVww=;
+	s=k20201202; t=1713000797;
+	bh=OvMv3asuhExZTAVwKzsT7vF0MOuPx/aZkjJ1VZfVZ0Q=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=b9Hn57IX/VvTNUy9obuO8zlFnX+pRlFGrpvIqioTwwuScVCBVb5ogzv9pvoWuvVgg
-	 CdEXKW5u345k2qQWe01PwyguqSgOt41OMYFyGmYKAxuo1rGXj4rZaNOPMgpq0Czysc
-	 wTg+hO8PZMXlaWPGA/ObXguuOdsf/PB08UOazC6pKcfIVrkzggdYDZajDaqUyKHqLg
-	 A2EtU63HpGI7phjtOvR2FFPJWHpuUocLhSy9+Ik/2KFPO7rfW/RbCGrl3dhZRTJslp
-	 NENuo2+7vFLdbaAkEkqOIkNXZQTBGmTt9NVuNZQBGNnAiT18MveFHS938SosRb7dJL
-	 rHDrVDzwbTasw==
-Date: Sat, 13 Apr 2024 10:27:17 +0100
+	b=asjzzgpX6t8hrg7GDgvrzk7/Y81VpfIy1nt+4lRz5x3HoSlRr9aywX/HK2hQ6SC7D
+	 wOBCCAZf/8qWGhmqtjIjlQRbIKlCtv+h3qjp62Q36fNGzVJdMvEujRtYT3YB/cqdxm
+	 yjD8HI3ARA1ORZeekBOTYyvSNvGpTbB5Z4xF3fVZIiiF9bTXrPgJavC2RhG5+HKRG/
+	 +VHDofOcoYZM7wR/Pyg8jqI5+H8AbqnqQLMde2Cwr3LzVwyGGGgvSFQhWZJAr9Al2R
+	 faE77ahJxt5v5ViyMfnoK+761xXrYPWyuDjA4pgxvALnSWZngJm94Bt8trO2QMg/Cf
+	 JTKxvGCkAdkSQ==
+Date: Sat, 13 Apr 2024 10:33:05 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
 Cc: joel@jms.id.au, bsp-development.geo@leica-geosystems.com, Eddie James
  <eajames@linux.ibm.com>, Lars-Peter Clausen <lars@metafoo.de>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] iio: pressure: dps310: support negative
- temperature values
-Message-ID: <20240413102717.1ad05f7e@jic23-huawei>
-In-Reply-To: <20240410103604.992989-1-thomas.haemmerle@leica-geosystems.com>
+Subject: Re: [PATCH v2 2/4] iio: pressure: dps310: introduce consistent
+ error handling
+Message-ID: <20240413103305.39a9aaad@jic23-huawei>
+In-Reply-To: <20240410103604.992989-3-thomas.haemmerle@leica-geosystems.com>
 References: <20240327084937.3801125-1-thomas.haemmerle@leica-geosystems.com>
 	<20240410103604.992989-1-thomas.haemmerle@leica-geosystems.com>
+	<20240410103604.992989-3-thomas.haemmerle@leica-geosystems.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,44 +64,23 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 10 Apr 2024 12:36:00 +0200
+On Wed, 10 Apr 2024 12:36:02 +0200
 Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com> wrote:
 
-> This patch set fixes the reading of negative temperatures (returned in
-> millidegree celsius). As this requires a change of the error handling
-> other functions are aligned with this.
-> In addition a small code simplification for reading the scale factors
-> for temperature and pressure is included.
-One quick process thing.
-For IIO (and probably most of the rest of the kernel) we strongly discourage
-sending new versions in reply to a previous version.
+> Align error handling with `dps310_calculate_temp`, where it's not
+> possible to differentiate between errors and valid calculations by
+> checking if the returned value is negative.
+> 
+> Signed-off-by: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+Other than the reported locking issue the rest of this series now looks
+fine to me.  So hopefully that should be easy to resolve and I'll pick
+up v3.  Given we are some way into the cycle and the negative value bug
+has been there quite a while I'll probably just queue the whole series
+for the next merge window rather than going through the dance of taking
+the fix patch separately and having to wait before merging the rest.
 
-The only real result is that in a typical email client the threads become
-confused and the new version may be missed entirely.
+Thanks,
 
-Just sent a fresh thread - the naming makes it easy to connect new
-versions to older ones and tools like b4 deal with this automatically.
 
 Jonathan
-> 
-> ---
-> Changes in v2:
->  - include fixes tag
->  - Split up patch
->  - introduce variables for intermediate results in functions
->  - simplify scale factor reading
-> 
-> Thomas Haemmerle (4):
->   iio: pressure: dps310: support negative temperature values
->   iio: pressure: dps310: introduce consistent error handling
->   iio: pressure: dps310: consistently check return value of
->     `regmap_read`
->   iio: pressure: dps310: simplify scale factor reading
-> 
->  drivers/iio/pressure/dps310.c | 138 +++++++++++++++++++---------------
->  1 file changed, 77 insertions(+), 61 deletions(-)
-> 
-> 
-> base-commit: 2c71fdf02a95b3dd425b42f28fd47fb2b1d22702
-
 

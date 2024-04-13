@@ -1,82 +1,82 @@
-Return-Path: <linux-iio+bounces-4261-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4262-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8553B8A3E47
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 22:06:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 833128A3E82
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 22:31:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5440281E05
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 20:06:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0DEA1F21766
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 20:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10885478B;
-	Sat, 13 Apr 2024 20:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21F9841238;
+	Sat, 13 Apr 2024 20:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="iFokChrM"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GWfBoP65"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185CE53E16
-	for <linux-iio@vger.kernel.org>; Sat, 13 Apr 2024 20:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747CD2C9D
+	for <linux-iio@vger.kernel.org>; Sat, 13 Apr 2024 20:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713038757; cv=none; b=TA4IArNXtGOtkoeQQviBR0YkiKR/oF9DFXQb+TWP2eFBag98eCitkUhQz8ife0phh1k6uAy4yCPPZC49obwrFGRHAylw3eQREEf9wa2aXXcvDkzFB10NrFpk2afEG5NimQ/pAWaFml0B+Xt/UoMtAPZ78zAvqwj3Cbsc+LLRhq8=
+	t=1713040289; cv=none; b=Oydn0N2pIlhN2aefoYVtdu8QbDMRWVJu/WBYKDrkrlqsrT5Ks0NRvrpPQAi3ibvwCyG2zD66US6PLP76JEIJVZzCnOGIFVKQpEa5TKgO4VZ5N6yqQH6gS7kkV+6gXI0GRWo/34LWGj8kUakLCTWYBIK1K7iKuVTmiYxJDczO1PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713038757; c=relaxed/simple;
-	bh=G5KyVytV//vNjdLRl1XvHHCAToStbzy2uRg8qGFTybs=;
+	s=arc-20240116; t=1713040289; c=relaxed/simple;
+	bh=zPnKbyggW02GZFESP1/3jpSugPAH/BCgKb0vmgRJNj0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=psWh2DKvjboJmTnyDrlHhRLIxwCUFk9QBkNAUwmJyfupR9AWWIpZTCaW60GlGlNrj4V+f3PVuJRApZHLaBvsHRI+bI44rC4pTx+OUV4eKElhlaJFhcDF+JlXF4FxIRg6JJS8MNJlwc0+rOKV1bSbygHuiRRzBvQuBMVso1NNfzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=iFokChrM; arc=none smtp.client-ip=209.85.208.177
+	 To:Cc:Content-Type; b=jmJkUUDg9kjdnX4Jr++GF79EpBV81NCuahrMGhqVrYvXkoLY/JzHR7ngdiUwnVjQMTwMWhFKwHI9jtVio5ktaW6BfSfMTMMVWgk+bHhF49BfONGftz9qGX1KhVjfu0ZuhDm5Hq2Id10HxaYOLLoz3INqOJA70wpuDGRZvHLh70s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GWfBoP65; arc=none smtp.client-ip=209.85.208.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2d8863d8a6eso24266221fa.3
-        for <linux-iio@vger.kernel.org>; Sat, 13 Apr 2024 13:05:53 -0700 (PDT)
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2d485886545so30128181fa.2
+        for <linux-iio@vger.kernel.org>; Sat, 13 Apr 2024 13:31:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1713038752; x=1713643552; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1713040285; x=1713645085; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jlGD+qdCOiEZc9bytwKuo7IS7+QuzfujJRMSsaN5K3I=;
-        b=iFokChrMBjRscjurnpHvSOGpso5snfreJLckXE3nWt+v4zV9+4Yn2Sok5qu93RE3xQ
-         wbphat+obYuUtjb+XLzxQFAFnq3/YhA+gOS5k9uNOjzm+uEHsxeXHqehWtPuS9hEiEfy
-         Is2CTckM+CBMpd05vmEydFvP77ihvMiLcRtN0Fesw/FK5F0fr4VrP3QkJWb+WBt3w174
-         xnG54FXHQzhUmyJxHJHIypDPdNtR+Gss+b0O+ou3TUdUvxJs47vifjcw0+FPbe9ocgpu
-         0ADDMmoRCZV/86QyJYTxJIBWw8rlVt4n/mkEL/Ra4y5aQX+cId1WBVZAhHp8dckpURAZ
-         xmLw==
+        bh=TjrMB1ZUNpuer39IbGQklxA6x6b3XJD77HTu/DFLCMk=;
+        b=GWfBoP65Hrnfwmvs+4PX6XRSKystDZ9vIqJ0/G4wafC27HJygEG7UJykGwbMLf5KHe
+         QaOTKz1fVdTZkefUoXOY8zdqEXI1WFTLk9QXZZBxtYiOJvzkcS+jqkWEFSbuKCe/F8XB
+         bhKtGws+GkDEVQtawxCwTmskZD9UroW8RQ3/JX2+VKdto6CEMGO/+xjzBspu/2btYTI0
+         v8jWVEgomf/HSpcuJJhwHbQTOasP/t6T+C1TtMWxz82ECWW8b40om2i8BsnSPOB0v5mQ
+         3S/lMHE1IFa2Rf3jWMe6d3rJh34iMf5R8UobjJJA6k4p/+87xlU9l9IuEA6EfjjWaaV/
+         /ldQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713038752; x=1713643552;
+        d=1e100.net; s=20230601; t=1713040285; x=1713645085;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jlGD+qdCOiEZc9bytwKuo7IS7+QuzfujJRMSsaN5K3I=;
-        b=epnNEOVBBgGs6TgzVRfeFLLZOI8TUEuE6ni7OPX0VHBSSEvpyO2SjJWJaOHlypqgcX
-         yhNAs82+Qmb0a33/SGvClSE6CsZQ+f/XZfpcRhB3D28gXfXWDo1x7gf49fCTXYVeMQ/c
-         vId0b7tYPVOb5BFg6AnEYyg0Q1ixdNPIm6sZ/jPrSFfipr36cti5gA6ujUiIcLjYlwiL
-         mpto3eDRXUrdVt4V7fttZBJjJI0Tj5gpVeGlIvIkxqD+vy3U6esmq1rW2RN2nHf3rvyg
-         yRG1QWoLc5Vb5bhMYN528vo6GVMi67ttpkFH+LA1e5UUGw3afZqPcHM34a7J62mVpb3y
-         ICzA==
-X-Forwarded-Encrypted: i=1; AJvYcCX0UjvVFFS2mXKAPKRQA8U60/kQU6z3QvLXpHYWXF2HdL13pq7xHkfi3yHGFi8Kf/qsK2ED10Ty7c2BqEU48cbNkOU978XrnvrL
-X-Gm-Message-State: AOJu0YxlhotyqXcbruzG19hKNAmIRXQQffgdJgcYS1dzPmfSPOEFvG85
-	d0d0ZjPOvwoLA09YPt+lWcp8WZquQW52SPoTSQDe8AYf6V/rb5+d22fH4NXAh7AcKbd4YKeOf4g
-	/+jpVGaKEQ+5f52hvUg1Ru+5bRIB/dkrsYyS3OQ==
-X-Google-Smtp-Source: AGHT+IHdj4RXGAiLDEWiRQg8fQCONsSW/SLIaSMHnBuczdmm80HYmxVvr4Bkj7VB6XblcZNd4Yhay0HNzkgoZ0x3mi8=
-X-Received: by 2002:a2e:9cd5:0:b0:2d9:fde0:86e2 with SMTP id
- g21-20020a2e9cd5000000b002d9fde086e2mr4334962ljj.15.1713038752033; Sat, 13
- Apr 2024 13:05:52 -0700 (PDT)
+        bh=TjrMB1ZUNpuer39IbGQklxA6x6b3XJD77HTu/DFLCMk=;
+        b=RyQ/gssSMWW9SR6xllgWHsyVf5ArT1VZNA7k8c8ClicgeEO9KS5qpwLYPeQppek/EF
+         XkjhO6DFRqGUV/zbj4H85e7bY0BI2MNsW5jjVAGV1uWJ2mPJgYg8g5xWe9sT+6sp6JeW
+         9sZ2VzQjDIpWCxQ091MJbXozbdy09qR2cU1Ku1a7z4/f2a2HKevUoQLG/95blk0aVwX7
+         RDS82aLuWVO+Pw54Ly0/vAz2AbmYMGc4fSBamlzGePmNqvafYMyJeDoln4KFZ2OJhVbo
+         cmJz8EOvFNnICRAE0BDmJhUOM8BpqFaXv0b6xpa7Q6ty/jZxbjb6WLHWPPzHrPosDQGh
+         avxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJd/jp+tO6wshMIsR8I2eKPsCEJeuGQxqQOgGiK4E64GiaHpkCv0pXCQCHjB7hXl65GvzMVAuihC2Zjn6xN+FgWeyy1+arTOxV
+X-Gm-Message-State: AOJu0YyFBizlvfF8rZ1j78WN+oz6nO1XBb5Qz7xUboIVvt6tFWfCuQJw
+	euUpPiRx5kmCdLOpkrDxQRlWtq5N4o88mqNaOmYICzFrJwW0Visronirx8B0KPguGnvik3X0ADL
+	ByECxSp/bkfXsNnMLah/QCsEdNlfMq6RYslS7yw==
+X-Google-Smtp-Source: AGHT+IENh6flnft8na0SxgvmSEr2Ex5ghZZs7IfT+rp50Hl2MvuV1CwaAQoFIBfCINdUp2BovA24ee7jGaa+eVn/wF4=
+X-Received: by 2002:a2e:a451:0:b0:2d8:d972:67e3 with SMTP id
+ v17-20020a2ea451000000b002d8d97267e3mr4796053ljn.5.1713040284644; Sat, 13 Apr
+ 2024 13:31:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240413151152.165682-1-alisa.roman@analog.com> <20240413151152.165682-6-alisa.roman@analog.com>
-In-Reply-To: <20240413151152.165682-6-alisa.roman@analog.com>
+References: <20240413151152.165682-1-alisa.roman@analog.com> <20240413151152.165682-2-alisa.roman@analog.com>
+In-Reply-To: <20240413151152.165682-2-alisa.roman@analog.com>
 From: David Lechner <dlechner@baylibre.com>
-Date: Sat, 13 Apr 2024 15:05:40 -0500
-Message-ID: <CAMknhBFzUeW5+rs_GgCZCiit=eW04VHyCnt-__jXLnO3Z29ksA@mail.gmail.com>
-Subject: Re: [PATCH v5 5/5] iio: adc: ad7192: Add AD7194 support
+Date: Sat, 13 Apr 2024 15:31:13 -0500
+Message-ID: <CAMknhBH8UewSoZu-V6ERda=q8wO2NYg8RinnC2+RMF3LhKwtUg@mail.gmail.com>
+Subject: Re: [PATCH v5 1/5] iio: adc: ad7192: Use standard attribute
 To: Alisa-Dariana Roman <alisadariana@gmail.com>
 Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -89,323 +89,213 @@ Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Apr 13, 2024 at 10:13=E2=80=AFAM Alisa-Dariana Roman
+On Sat, Apr 13, 2024 at 10:12=E2=80=AFAM Alisa-Dariana Roman
 <alisadariana@gmail.com> wrote:
 >
-> Unlike the other AD719Xs, AD7194 has configurable differential
-> channels. The user can dynamically configure them in the devicetree.
+> Replace custom attribute filter_low_pass_3db_frequency_available with
+> standard attribute.
 >
-> Also modify config AD7192 description for better scaling.
+> Store the available values in ad7192_state struct.
 >
-> Moved ad7192_chip_info struct definition to allow use of callback
-> function parse_channels().
-
-It looks like this no longer needs to be moved in this revision.
-
+> The function that used to compute those values replaced by
+> ad7192_update_filter_freq_avail().
+>
+> Function ad7192_show_filter_avail() is no longer needed.
+>
+> Note that the initial available values are hardcoded.
 >
 > Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 > ---
->  drivers/iio/adc/Kconfig  |  11 ++-
->  drivers/iio/adc/ad7192.c | 140 ++++++++++++++++++++++++++++++++++++---
->  2 files changed, 138 insertions(+), 13 deletions(-)
+
+With the question below addressed:
+
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+
+>  drivers/iio/adc/ad7192.c | 67 ++++++++++++++++++----------------------
+>  1 file changed, 30 insertions(+), 37 deletions(-)
 >
-> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> index 8db68b80b391..74fecc284f1a 100644
-> --- a/drivers/iio/adc/Kconfig
-> +++ b/drivers/iio/adc/Kconfig
-> @@ -88,12 +88,17 @@ config AD7173
->           called ad7173.
->
->  config AD7192
-> -       tristate "Analog Devices AD7190 AD7192 AD7193 AD7195 ADC driver"
-> +       tristate "Analog Devices AD7192 and similar ADC driver"
->         depends on SPI
->         select AD_SIGMA_DELTA
->         help
-> -         Say yes here to build support for Analog Devices AD7190,
-> -         AD7192, AD7193 or AD7195 SPI analog to digital converters (ADC)=
-.
-> +         Say yes here to build support for Analog Devices SPI analog to =
-digital
-> +         converters (ADC):
-> +         - AD7190
-> +         - AD7192
-> +         - AD7193
-> +         - AD7194
-> +         - AD7195
->           If unsure, say N (but it's safe to say "Y").
->
->           To compile this driver as a module, choose M here: the
 > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index a9eb4fab39ca..646ab56b87e3 100644
+> index 7bcc7e2aa2a2..ac737221beae 100644
 > --- a/drivers/iio/adc/ad7192.c
 > +++ b/drivers/iio/adc/ad7192.c
-> @@ -1,6 +1,6 @@
->  // SPDX-License-Identifier: GPL-2.0
->  /*
-> - * AD7190 AD7192 AD7193 AD7195 SPI ADC driver
-> + * AD7192 and similar SPI ADC driver
->   *
->   * Copyright 2011-2015 Analog Devices Inc.
->   */
-> @@ -128,10 +128,21 @@
->  #define AD7193_CH_AIN8         0x480 /* AIN7 - AINCOM */
->  #define AD7193_CH_AINCOM       0x600 /* AINCOM - AINCOM */
+> @@ -190,6 +190,7 @@ struct ad7192_state {
+>         u32                             mode;
+>         u32                             conf;
+>         u32                             scale_avail[8][2];
+> +       u32                             filter_freq_avail[4][2];
+>         u32                             oversampling_ratio_avail[4];
+>         u8                              gpocon;
+>         u8                              clock_sel;
+> @@ -473,6 +474,16 @@ static int ad7192_setup(struct iio_dev *indio_dev, s=
+truct device *dev)
+>         st->oversampling_ratio_avail[2] =3D 8;
+>         st->oversampling_ratio_avail[3] =3D 16;
 >
-> +#define AD7194_CH_POS(x)       (((x) - 1) << 4)
-> +#define AD7194_CH_NEG(x)       ((x) - 1)
-> +#define AD7194_CH_DIFF(pos, neg) \
-> +               (((neg) =3D=3D 0 ? BIT(10) : AD7194_CH_NEG(neg)) | AD7194=
-_CH_POS(pos))
-> +#define AD7194_CH_TEMP         0x100 /* Temp sensor */
-> +#define AD7194_CH_BASE_NR      18
-> +#define AD7194_CH_AIN_START    1
-> +#define AD7194_CH_AIN_NR       16
-> +#define AD7194_CH_DIFF_NR_MAX  256
+> +       st->filter_freq_avail[0][0] =3D 600;
+> +       st->filter_freq_avail[1][0] =3D 800;
+> +       st->filter_freq_avail[2][0] =3D 2300;
+> +       st->filter_freq_avail[3][0] =3D 2720;
 > +
->  /* ID Register Bit Designations (AD7192_REG_ID) */
->  #define CHIPID_AD7190          0x4
->  #define CHIPID_AD7192          0x0
->  #define CHIPID_AD7193          0x2
-> +#define CHIPID_AD7194          0x3
->  #define CHIPID_AD7195          0x6
->  #define AD7192_ID_MASK         GENMASK(3, 0)
+> +       st->filter_freq_avail[0][1] =3D 1000;
+> +       st->filter_freq_avail[1][1] =3D 1000;
+> +       st->filter_freq_avail[2][1] =3D 1000;
+> +       st->filter_freq_avail[3][1] =3D 1000;
+> +
+>         return 0;
+>  }
 >
-> @@ -169,17 +180,10 @@ enum {
->         ID_AD7190,
->         ID_AD7192,
->         ID_AD7193,
-> +       ID_AD7194,
->         ID_AD7195,
->  };
+> @@ -586,48 +597,24 @@ static int ad7192_get_f_adc(struct ad7192_state *st=
+)
+>                                  f_order * FIELD_GET(AD7192_MODE_RATE_MAS=
+K, st->mode));
+>  }
 >
-> -struct ad7192_chip_info {
-> -       unsigned int                    chip_id;
-> -       const char                      *name;
-> -       struct iio_chan_spec            *channels;
-> -       u8                              num_channels;
-> -       const struct iio_info           *info;
-> -};
+> -static void ad7192_get_available_filter_freq(struct ad7192_state *st,
+> -                                                   int *freq)
+> +static void ad7192_update_filter_freq_avail(struct ad7192_state *st)
+>  {
+>         unsigned int fadc;
+>
+>         /* Formulas for filter at page 25 of the datasheet */
+>         fadc =3D ad7192_compute_f_adc(st, false, true);
+> -       freq[0] =3D DIV_ROUND_CLOSEST(fadc * 240, 1024);
+> +       st->filter_freq_avail[0][0] =3D DIV_ROUND_CLOSEST(fadc * 240, 102=
+4);
+>
+>         fadc =3D ad7192_compute_f_adc(st, true, true);
+> -       freq[1] =3D DIV_ROUND_CLOSEST(fadc * 240, 1024);
+> +       st->filter_freq_avail[1][0] =3D DIV_ROUND_CLOSEST(fadc * 240, 102=
+4);
+>
+>         fadc =3D ad7192_compute_f_adc(st, false, false);
+> -       freq[2] =3D DIV_ROUND_CLOSEST(fadc * 230, 1024);
+> +       st->filter_freq_avail[2][0] =3D DIV_ROUND_CLOSEST(fadc * 230, 102=
+4);
+>
+>         fadc =3D ad7192_compute_f_adc(st, true, false);
+> -       freq[3] =3D DIV_ROUND_CLOSEST(fadc * 272, 1024);
+> +       st->filter_freq_avail[3][0] =3D DIV_ROUND_CLOSEST(fadc * 272, 102=
+4);
+>  }
+>
+> -static ssize_t ad7192_show_filter_avail(struct device *dev,
+> -                                       struct device_attribute *attr,
+> -                                       char *buf)
+> -{
+> -       struct iio_dev *indio_dev =3D dev_to_iio_dev(dev);
+> -       struct ad7192_state *st =3D iio_priv(indio_dev);
+> -       unsigned int freq_avail[4], i;
+> -       size_t len =3D 0;
 > -
->  struct ad7192_state {
->         const struct ad7192_chip_info   *chip_info;
->         struct regulator                *avdd;
-> @@ -201,6 +205,15 @@ struct ad7192_state {
->         struct ad_sigma_delta           sd;
+> -       ad7192_get_available_filter_freq(st, freq_avail);
+> -
+> -       for (i =3D 0; i < ARRAY_SIZE(freq_avail); i++)
+> -               len +=3D sysfs_emit_at(buf, len, "%d.%03d ", freq_avail[i=
+] / 1000,
+> -                                    freq_avail[i] % 1000);
+> -
+> -       buf[len - 1] =3D '\n';
+> -
+> -       return len;
+> -}
+> -
+> -static IIO_DEVICE_ATTR(filter_low_pass_3db_frequency_available,
+> -                      0444, ad7192_show_filter_avail, NULL, 0);
+> -
+>  static IIO_DEVICE_ATTR(bridge_switch_en, 0644,
+>                        ad7192_show_bridge_switch, ad7192_set,
+>                        AD7192_REG_GPOCON);
+> @@ -637,7 +624,6 @@ static IIO_DEVICE_ATTR(ac_excitation_en, 0644,
+>                        AD7192_REG_CONF);
+>
+>  static struct attribute *ad7192_attributes[] =3D {
+> -       &iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.at=
+tr,
+>         &iio_dev_attr_bridge_switch_en.dev_attr.attr,
+>         NULL
+>  };
+> @@ -647,7 +633,6 @@ static const struct attribute_group ad7192_attribute_=
+group =3D {
 >  };
 >
-> +struct ad7192_chip_info {
-> +       unsigned int                    chip_id;
-> +       const char                      *name;
-> +       struct iio_chan_spec            *channels;
-> +       u8                              num_channels;
-> +       const struct iio_info           *info;
-> +       int (*parse_channels)(struct iio_dev *indio_dev);
-> +};
-> +
->  static const char * const ad7192_syscalib_modes[] =3D {
->         [AD7192_SYSCALIB_ZERO_SCALE] =3D "zero_scale",
->         [AD7192_SYSCALIB_FULL_SCALE] =3D "full_scale",
-> @@ -925,6 +938,15 @@ static const struct iio_info ad7192_info =3D {
->         .update_scan_mode =3D ad7192_update_scan_mode,
->  };
+>  static struct attribute *ad7195_attributes[] =3D {
+> -       &iio_dev_attr_filter_low_pass_3db_frequency_available.dev_attr.at=
+tr,
+>         &iio_dev_attr_bridge_switch_en.dev_attr.attr,
+>         &iio_dev_attr_ac_excitation_en.dev_attr.attr,
+>         NULL
+> @@ -665,17 +650,15 @@ static unsigned int ad7192_get_temp_scale(bool unip=
+olar)
+>  static int ad7192_set_3db_filter_freq(struct ad7192_state *st,
+>                                       int val, int val2)
+>  {
+> -       int freq_avail[4], i, ret, freq;
+> +       int i, ret, freq;
+>         unsigned int diff_new, diff_old;
+>         int idx =3D 0;
 >
-> +static const struct iio_info ad7194_info =3D {
-> +       .read_raw =3D ad7192_read_raw,
-> +       .write_raw =3D ad7192_write_raw,
-> +       .write_raw_get_fmt =3D ad7192_write_raw_get_fmt,
-> +       .read_avail =3D ad7192_read_avail,
-> +       .validate_trigger =3D ad_sd_validate_trigger,
-> +       .update_scan_mode =3D ad7192_update_scan_mode,
-> +};
-> +
->  static const struct iio_info ad7195_info =3D {
->         .read_raw =3D ad7192_read_raw,
->         .write_raw =3D ad7192_write_raw,
-> @@ -1016,6 +1038,90 @@ static struct iio_chan_spec ad7193_channels[] =3D =
-{
->         IIO_CHAN_SOFT_TIMESTAMP(14),
->  };
+>         diff_old =3D U32_MAX;
+>         freq =3D val * 1000 + val2;
 >
-> +static int ad7192_parse_channel(struct fwnode_handle *child,
-> +                               struct iio_chan_spec *ad7194_channels)
+> -       ad7192_get_available_filter_freq(st, freq_avail);
+> -
+> -       for (i =3D 0; i < ARRAY_SIZE(freq_avail); i++) {
+> -               diff_new =3D abs(freq - freq_avail[i]);
+> +       for (i =3D 0; i < ARRAY_SIZE(st->filter_freq_avail); i++) {
+> +               diff_new =3D abs(freq - st->filter_freq_avail[i][0]);
+>                 if (diff_new < diff_old) {
+>                         diff_old =3D diff_new;
+>                         idx =3D i;
+> @@ -826,6 +809,7 @@ static int ad7192_write_raw(struct iio_dev *indio_dev=
+,
+>                 st->mode &=3D ~AD7192_MODE_RATE_MASK;
+>                 st->mode |=3D FIELD_PREP(AD7192_MODE_RATE_MASK, div);
+>                 ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
+> +               ad7192_update_filter_freq_avail(st);
+>                 break;
+>         case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+>                 ret =3D ad7192_set_3db_filter_freq(st, val, val2 / 1000);
+> @@ -846,6 +830,7 @@ static int ad7192_write_raw(struct iio_dev *indio_dev=
+,
+>                                 break;
+>                         }
+>                 mutex_unlock(&st->lock);
+> +               ad7192_update_filter_freq_avail(st);
 
-nit: this is only requiring one "channel" and is not used as
-"channels" array, so I would leave out the "s".
+Does this need to go inside of the mutex guard to avoid potential race
+conditions?
 
-> +{
-> +       u32 ain[2];
-> +       int ret;
-> +
-> +       ret =3D fwnode_property_read_u32_array(child, "diff-channels", ai=
-n,
-> +                                            ARRAY_SIZE(ain));
-> +       if (ret)
-> +               return ret;
-> +
-> +       if (!in_range(ain[0], AD7194_CH_AIN_START, AD7194_CH_AIN_NR) ||
-> +           !in_range(ain[1], AD7194_CH_AIN_START, AD7194_CH_AIN_NR))
-> +               return -EINVAL;
-> +
-> +       ad7194_channels->channel =3D ain[0];
-> +       ad7194_channels->channel2 =3D ain[1];
-> +       ad7194_channels->address =3D AD7194_CH_DIFF(ain[0], ain[1]);
-> +
-> +       return 0;
-> +}
-> +
-> +static int ad7192_parse_channels(struct iio_dev *indio_dev)
-
-Better name might be ad7194_parse_channels() or
-ad7192_parse_ad7194_channels() since this is specific to the ad7194
-chip.
-
-> +{
-> +       struct ad7192_state *st =3D iio_priv(indio_dev);
-> +       struct device *dev =3D indio_dev->dev.parent;
-> +       struct iio_chan_spec *ad7194_channels;
-> +       struct fwnode_handle *child;
-> +       struct iio_chan_spec ad7194_chan =3D AD7193_CHANNEL(0, 0, 0);
-> +       struct iio_chan_spec ad7194_chan_diff =3D AD7193_DIFF_CHANNEL(0, =
-0, 0, 0);
-> +       struct iio_chan_spec ad7194_chan_temp =3D AD719x_TEMP_CHANNEL(0, =
-0);
-> +       struct iio_chan_spec ad7194_chan_timestamp =3D IIO_CHAN_SOFT_TIME=
-STAMP(0);
-> +       unsigned int num_channels, index =3D 0, ain_chan;
-> +       int ret;
-> +
-> +       num_channels =3D device_get_child_node_count(dev);
-> +       if (num_channels > AD7194_CH_DIFF_NR_MAX)
-> +               return -EINVAL;
-> +
-> +       num_channels +=3D AD7194_CH_BASE_NR;
-> +
-> +       ad7194_channels =3D devm_kcalloc(dev, sizeof(*ad7194_channels),
-> +                                      num_channels, GFP_KERNEL);
-
-nit: technically, the argument order is supposed to be count then size
-
-> +       if (!ad7194_channels)
-> +               return -ENOMEM;
-> +
-> +       indio_dev->channels =3D ad7194_channels;
-> +       indio_dev->num_channels =3D num_channels;
-> +
-> +       device_for_each_child_node(dev, child) {
-> +               *ad7194_channels =3D ad7194_chan_diff;
-> +               ad7194_channels->scan_index =3D index++;
-> +               ret =3D ad7192_parse_channel(child, ad7194_channels);
-> +               if (ret) {
-> +                       fwnode_handle_put(child);
-> +                       return ret;
-> +               }
-> +               ad7194_channels++;
-> +       }
-> +
-> +       *ad7194_channels =3D ad7194_chan_temp;
-> +       ad7194_channels->scan_index =3D index++;
-> +       ad7194_channels->address =3D AD7194_CH_TEMP;
-> +       ad7194_channels++;
-
-nit: It would seem more natural to have all voltage channels
-altogether rather than having the temperature channel in between.
-
-> +
-> +       for (ain_chan =3D 1; ain_chan <=3D 16; ain_chan++) {
-> +               if (st->aincom_mv) {
-> +                       *ad7194_channels =3D ad7194_chan;
-> +               } else {
-> +                       *ad7194_channels =3D ad7194_chan_diff;
-> +                       ad7194_channels->channel2 =3D 0;
-> +               }
-
-Same comment as on [PATCH 3/5] pseudo-differential channels have
-differential =3D 0 and so nothing should depend on st->aincom_mv being 0
-or not.
-
-> +               ad7194_channels->scan_index =3D index++;
-> +               ad7194_channels->channel =3D ain_chan;
-> +               ad7194_channels->address =3D AD7194_CH_DIFF(ain_chan, 0);
-> +               ad7194_channels++;
-> +       }
-> +
-> +       *ad7194_channels =3D ad7194_chan_timestamp;
-> +       ad7194_channels->scan_index =3D index;
-> +
-> +       return 0;
-> +}
-> +
->  static const struct ad7192_chip_info ad7192_chip_info_tbl[] =3D {
->         [ID_AD7190] =3D {
->                 .chip_id =3D CHIPID_AD7190,
-> @@ -1038,6 +1144,12 @@ static const struct ad7192_chip_info ad7192_chip_i=
-nfo_tbl[] =3D {
->                 .num_channels =3D ARRAY_SIZE(ad7193_channels),
->                 .info =3D &ad7192_info,
->         },
-> +       [ID_AD7194] =3D {
-> +               .chip_id =3D CHIPID_AD7194,
-> +               .name =3D "ad7194",
-> +               .info =3D &ad7194_info,
-> +               .parse_channels =3D ad7192_parse_channels,
-> +       },
->         [ID_AD7195] =3D {
->                 .chip_id =3D CHIPID_AD7195,
->                 .name =3D "ad7195",
-> @@ -1164,6 +1276,12 @@ static int ad7192_probe(struct spi_device *spi)
->         indio_dev->num_channels =3D st->chip_info->num_channels;
->         indio_dev->info =3D st->chip_info->info;
+>                 break;
+>         default:
+>                 ret =3D -EINVAL;
+> @@ -888,6 +873,12 @@ static int ad7192_read_avail(struct iio_dev *indio_d=
+ev,
+>                 /* Values are stored in a 2D matrix  */
+>                 *length =3D ARRAY_SIZE(st->scale_avail) * 2;
 >
-> +       if (st->chip_info->parse_channels) {
-> +               ret =3D st->chip_info->parse_channels(indio_dev);
-> +               if (ret)
-> +                       return ret;
-> +       }
-
-Take it or leave it, but I think it would be nice to move
-
-    indio_dev->channels =3D st->chip_info->channels;
-    indio_dev->num_channels =3D st->chip_info->num_channels;
-
-into an else { } here to make it clear what parse_channels is doing.
-
+> +               return IIO_AVAIL_LIST;
+> +       case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+> +               *vals =3D (int *)st->filter_freq_avail;
+> +               *type =3D IIO_VAL_FRACTIONAL;
+> +               *length =3D ARRAY_SIZE(st->filter_freq_avail) * 2;
 > +
->         ret =3D ad_sd_init(&st->sd, indio_dev, spi, &ad7192_sigma_delta_i=
-nfo);
->         if (ret)
->                 return ret;
-> @@ -1201,6 +1319,7 @@ static const struct of_device_id ad7192_of_match[] =
-=3D {
->         { .compatible =3D "adi,ad7190", .data =3D &ad7192_chip_info_tbl[I=
-D_AD7190] },
->         { .compatible =3D "adi,ad7192", .data =3D &ad7192_chip_info_tbl[I=
-D_AD7192] },
->         { .compatible =3D "adi,ad7193", .data =3D &ad7192_chip_info_tbl[I=
-D_AD7193] },
-> +       { .compatible =3D "adi,ad7194", .data =3D &ad7192_chip_info_tbl[I=
-D_AD7194] },
->         { .compatible =3D "adi,ad7195", .data =3D &ad7192_chip_info_tbl[I=
-D_AD7195] },
->         {}
->  };
-> @@ -1210,6 +1329,7 @@ static const struct spi_device_id ad7192_ids[] =3D =
-{
->         { "ad7190", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7190] },
->         { "ad7192", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7192] },
->         { "ad7193", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7193] },
-> +       { "ad7194", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7194] },
->         { "ad7195", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7195] },
->         {}
->  };
-> @@ -1226,6 +1346,6 @@ static struct spi_driver ad7192_driver =3D {
->  module_spi_driver(ad7192_driver);
->
->  MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
-> -MODULE_DESCRIPTION("Analog Devices AD7190, AD7192, AD7193, AD7195 ADC");
-> +MODULE_DESCRIPTION("Analog Devices AD7192 and similar ADC");
->  MODULE_LICENSE("GPL v2");
->  MODULE_IMPORT_NS(IIO_AD_SIGMA_DELTA);
+>                 return IIO_AVAIL_LIST;
+>         case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+>                 *vals =3D (int *)st->oversampling_ratio_avail;
+> @@ -956,7 +947,9 @@ static const struct iio_info ad7195_info =3D {
+>                         BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) =
+| \
+>                         (_mask_all), \
+>                 .info_mask_shared_by_type_available =3D (_mask_type_av), =
+\
+> -               .info_mask_shared_by_all_available =3D (_mask_all_av), \
+> +               .info_mask_shared_by_all_available =3D \
+> +                       BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY) =
+| \
+> +                       (_mask_all_av), \
+>                 .ext_info =3D (_ext_info), \
+>                 .scan_index =3D (_si), \
+>                 .scan_type =3D { \
 > --
 > 2.34.1
 >

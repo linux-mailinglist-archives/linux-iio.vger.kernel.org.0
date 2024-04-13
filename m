@@ -1,183 +1,166 @@
-Return-Path: <linux-iio+bounces-4246-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4247-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6524E8A3DAE
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 18:22:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B5AB8A3DB7
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 18:34:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B3DF281F29
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 16:22:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D15B328224C
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 16:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 883B54D106;
-	Sat, 13 Apr 2024 16:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DF915E89;
+	Sat, 13 Apr 2024 16:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="0EI+W7EK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LZoLC1xy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC2C44CB41
-	for <linux-iio@vger.kernel.org>; Sat, 13 Apr 2024 16:22:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C93D272;
+	Sat, 13 Apr 2024 16:34:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713025331; cv=none; b=UPIcqD8EPHhV1RCmhDD95T6+7A8JfoAmzc5G0wicsX9r55mM0Pf64vgFFGCpYyqwaKE2evPBL3chA9IvLIRo6UPWL2YwZ6YlI9J3Lf7lyKvp8K91uD/+PFi8dQSlGsDtNnp3u6KUDp2IoklxpIe8+JGKwGYLMonwpkO47CWJ+WM=
+	t=1713026065; cv=none; b=Ybuw7ayj22mEpoPAwnAL1R1qhBr+NdlegZq94C90N5+bJF1I7Mvi65PH6rnsV7giBJ0J7w5opZ0GclOJu35hcUKfbUf+0vuPYvuX3dtuqgNNXvak0COozjiejywMrGM3w6RUyJsYkAieF44SYTWY1jkWSPTf6FS1UlM6YQvpEwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713025331; c=relaxed/simple;
-	bh=nbGy+ywMlYZDeVQzLzbUm56CmdghV/bErN6nIoXGelw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k+5l/CFRve1rT99KiR/8r6ZeSRzcGWYgZIPOttmlK/agbmnqB7LvUo2l6esNAm8vayTdM996VoXfCCRcg28Y9PqJSN4AHhtzJIe/dZLbGxgv2XXLH1M9WARBm/8NgwJ3eNZME5WvNI7BqjEAoqTLutA0OyBQlFUW9KtKvygSXyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=0EI+W7EK; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2d8b194341eso16928151fa.3
-        for <linux-iio@vger.kernel.org>; Sat, 13 Apr 2024 09:22:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1713025327; x=1713630127; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YXOXrGDd5z9PLa2ziUwG/oevPNYw+NSWjiKaJx5XAcA=;
-        b=0EI+W7EK3HSbLArLFx3euvX/W2rYk9M2GFxAGUJpl64UniQwQSqXDcBkqM6e1K/Abn
-         4Wo32QENUO798GWP7rC0Mtv+u4zs9HTtMLwjWcZjLcqrBqDuaw29I0iBW6W+ckwWohiG
-         ayUwyDtzHUXmNOk4H1JWDrFpXoi0JBqSu9nKorNFjAvuJEJN4LRJX1mT7loCt8y2cUjj
-         NH9K75HBTJninLGH6yrdSwnXC2etEjwDo9D3I6AtfUmCV1uLVrkE4oULWcupVqsYMwyp
-         j44vVbTnUFbNX2e6d+IyKTsZZZhDegaH6Md0+3syHkC0wOzEX06suaTrl89mijO1cAlG
-         SZ0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713025327; x=1713630127;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YXOXrGDd5z9PLa2ziUwG/oevPNYw+NSWjiKaJx5XAcA=;
-        b=FJjeyGjs/njzn+nfAh8M5L6Q61rI25pJvD+I5Rj/1WabwiZ5ESnur5HP0OfpZvvRcF
-         n9j7eyj21UElNDc2sNLffoISZatBTWy3PFBMEQMk77YQHBSIK+vxooXWzu8oaBanTH0E
-         Abfmk64j+eDd5FGg19Jc5RftMfY+xME0NcpPJNYOR9cG41safBkBgMZALQhGXh5OPPuk
-         ImCnyYGW6zgO+X7WtFVAQX8pHcnXESnJcNtHwsncNbtTj/aBKaTgDDk1zcZ/+U5VrEAe
-         M1jEOL7kypMUSSTbqDcm0KUdHG/MFU6WzZlW0lp8jvSz4dV+dyz4xHJ7X2YkU2iYa7on
-         25wQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXhOfsjkRX3yaVEtH3/VRuVQJqQP+4YWDfkzMoBuyypFSj62KEfj/VJKk2NLEjYLuJOxo4EMRAPywCm+B+7ak2x60F8tzxZMtoI
-X-Gm-Message-State: AOJu0YwGvMv6LXcIb40dMMeNNzFR7UIaAremdfB9Yun2y6imXKK7NGrL
-	JaVec2uleR65QU2jsD6SgNBtElBz9qd1tG1/9fzZX7VRJSNrZJKD6NxkeJxef0VRcNCkaHqmoKK
-	TEvXPOGnXyPnpJYV+KO/NoDhV2ZY7kPnRHt6/TQ==
-X-Google-Smtp-Source: AGHT+IHuEs+Ug89vXvWX/+tZddISAesIXOCVXXp90n+3hTrdL0we6y2BUxjT33u7JDX77EDLE6F0m4gCGiTTAmXCxnI=
-X-Received: by 2002:a2e:87ce:0:b0:2d9:ec13:3349 with SMTP id
- v14-20020a2e87ce000000b002d9ec133349mr3520729ljj.2.1713025326643; Sat, 13 Apr
- 2024 09:22:06 -0700 (PDT)
+	s=arc-20240116; t=1713026065; c=relaxed/simple;
+	bh=tRKoTfG5rbwd19Ypqyf3ktswgzx9Alw0vdHmCSCXVCU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PeU8p2004LLGhRyQ1kr5Mf1pDYVJ+i1GjAb7EuQLfIriXpeBAL8ZzqqDWkAjTtV7h6GECUZ8c1mnVQtkblGzxieP0zdeWmasTaOfZEywEWHDpB2CM5TTTA2wrCmbup+dnv+B8oKdNHbEBwH4mn/YQyACcn4nJ/vMvOlw3PABMVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LZoLC1xy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A336C113CE;
+	Sat, 13 Apr 2024 16:34:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713026065;
+	bh=tRKoTfG5rbwd19Ypqyf3ktswgzx9Alw0vdHmCSCXVCU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=LZoLC1xyncJS6z/D4woVXMKIlcbNSMPm/yg71KwoJPSbTSsYTsyDJtFFGpy4umqWe
+	 wpMKQLqSIOvAxXTP0yu+W0NqCkIsWLVEXxnXDHlttkyM+OotkKoHIodBJCiAEVHABy
+	 VPtGaXshDIS/9eKlW7HVQLjKC/4pgDwmhW23m0OhU7v+YXBuW1RMN999xF7xqEP+Bf
+	 /X9UeKL68+883ClyG2vPDcBrIS3FU66zl/935Xp5tAWTAViTGNvZWWxnizKyOdIoAS
+	 DMIiZFiLFjm34k5iBg8wMz7VZcn49xwAuNmZTHKLnWUBNu725sejbimJVamxQO+n3x
+	 kUBMKhjNb8D+g==
+Date: Sat, 13 Apr 2024 17:34:09 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, lars@metafoo.de,
+ Michael.Hennerich@analog.com, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] iio: adc: Add support for AD4000
+Message-ID: <20240413173409.63d33a0a@jic23-huawei>
+In-Reply-To: <CAMknhBGVkv9sP0pjmmdFngKmGVu+G4Y3MUDG199az1wOUtwasw@mail.gmail.com>
+References: <cover.1712585500.git.marcelo.schmitt@analog.com>
+	<1d95d7d023dad69b894a2d0e7b0bad9d569ae382.1712585500.git.marcelo.schmitt@analog.com>
+	<CAMknhBEMDg3YF5pvoKJ-6y0Y5OJpmBthWfogCjy90B=F84SvzA@mail.gmail.com>
+	<ZhVoTi2amNTOJ4eS@debian-BULLSEYE-live-builder-AMD64>
+	<CAMknhBGVkv9sP0pjmmdFngKmGVu+G4Y3MUDG199az1wOUtwasw@mail.gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240412032102.136071-1-kimseer.paller@analog.com>
- <20240412032102.136071-2-kimseer.paller@analog.com> <CAMknhBHgKK_OEcPz-5ktxj+YEkB7jHpw5owdh9HVj_qfwuVXkQ@mail.gmail.com>
- <20240413160610.4cec010b@jic23-huawei>
-In-Reply-To: <20240413160610.4cec010b@jic23-huawei>
-From: David Lechner <dlechner@baylibre.com>
-Date: Sat, 13 Apr 2024 11:21:55 -0500
-Message-ID: <CAMknhBHMd2mK3yVoH_XjW7BapX5BTRZjUJpF=ZQrF8Mctf-NJQ@mail.gmail.com>
-Subject: Re: [PATCH 1/4] dt-bindings: iio: dac: Add adi,ltc2664.yaml
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Kim Seer Paller <kimseer.paller@analog.com>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Michael Hennerich <michael.hennerich@analog.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Apr 13, 2024 at 10:06=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
-> wrote:
->
-> On Fri, 12 Apr 2024 16:23:00 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
->
-> > On Thu, Apr 11, 2024 at 10:21=E2=80=AFPM Kim Seer Paller
-> > <kimseer.paller@analog.com> wrote:
+On Tue, 9 Apr 2024 11:44:26 -0500
+David Lechner <dlechner@baylibre.com> wrote:
+
+> On Tue, Apr 9, 2024 at 11:09=E2=80=AFAM Marcelo Schmitt
+> <marcelo.schmitt1@gmail.com> wrote:
+> >
+> > On 04/08, David Lechner wrote: =20
+> > > On Mon, Apr 8, 2024 at 9:32=E2=80=AFAM Marcelo Schmitt
+> > > <marcelo.schmitt@analog.com> wrote: =20
+> > > > =20
+>=20
+> ...
+>=20
 > > >
-
-...
-
+> > > I also still have doubts about using IIO_BE and 8-bit xfers when it
+> > > comes to adding support later to achieve max sample rate with a SPI
+> > > offload. For example to get 2MSPS with an 18-bit chip, it will require
+> > > an approx 33% faster SPI clock than the actual slowest clock possible
+> > > because it will have to read 6 extra bits per sample. I didn't check
+> > > the specs, but this may not even be physically possible without
+> > > exceeding the datasheet max SPI clock rate. Also errors could be
+> > > reduced if we could actually use the slowest allowable SPI clock rate.
+> > > Furthermore, the offload hardware would have to be capable of adding
+> > > an extra byte per sample for 18 and 20-bit chips when piping the data
+> > > to DMA in order to get the 32-bit alignment in the buffer required by
+> > > IIO scan_type and the natural alignment requirements of IIO buffers in
+> > > general. =20
 > >
-> > And there is V~ on both which can be between -5.5V/-15.75V and GND, so
-> > optional v-neg-supply seems appropriate.
->
-> Only make it optional in the binding if the settings of the device change
-> depending on whether it is there or not.  Looks like there is an internal
-> reference, so maybe it really is optional.
-
-I suggested optional with the thinking that if the pin is tied to GND,
-then the property would be omitted.
-
-
-...
-
-
+> > Maybe I should already implement support for reading with SPI offload
+> > rather than doing it after this set is merged?
+> > So we can test what happens at faster sample rates before we commit to =
+a solution.
+> > =20
+>=20
+> Yes, that sounds like a wise thing to do.
+>=20
+> > =20
+> > > =20
+> > > > +               } data;
+> > > > +               s64 timestamp __aligned(8);
+> > > > +       } scan;
+> > > > +       __be16 tx_buf __aligned(IIO_DMA_MINALIGN);
+> > > > +       __be16 rx_buf;
+> > > > +}; =20
+> > >
+> > > scan.data is used as SPI rx_buf so __aligned(IIO_DMA_MINALIGN); needs
+> > > to be moved to the scan field. =20
 > >
-> > * (both) The MUX/MUXOUT pins look like we have an embedded pin mux, so
-> > it could mean we need #pinctrl-cells. ltc2664 would also need
-> > muxin-gpios for this.
-> Not convinced that's the right approach - looks more like a channel
-> selector than a conventional mux or pin control. Sure that's a mux, but
-> we want a clean userspace control to let us choose a signal to measure
-> at runtime
->
-> If you wanted to support this I'd have the binding describe optional
-> stuff to act as a consumer of an ADC channel on another device.
-> The IIO driver would then provide a bunch of input channels to allow
-> measurement of each of the signals.
->
-> Look at io-channels etc in existing bindings for how to do that.
->
+> > I have already tried it. Maybe I did something wrong besides buffer ali=
+gnment
+> > at that time. Will give it another try. =20
+>=20
+> This is the alignment for DMA cache coherency. So it should not have
+> any affect on the actual data read, only performance.
 
-Right. I was thinking that this pin might be connected to something
-else external rather than the signal coming back to the SoC (or
-whatever has the SPI controller). But it makes more sense that we
-would want it as extra channels being read back by the SoC for
-diagnostics.
+Nope. It's a correctness issue not a performance one (though you may get
+advantages there as well)  You can get potential corruption of
+other fields that end up in the same cacheline - so the aim is to make
+sure that nothing that we might use concurrently is in that cacheline.
+=20
+There was a good description of what is going on here in a talk Wolfram
+gave a few years back when he was exploring how to avoid bounce buffers
+in I2C https://www.youtube.com/watch?v=3DJDwaMClvV-s that includes links to=
+ descriptions
+of the fun that can happen.  The short description is that a DMA controller=
+ is
+allowed to grab the whole of a cacheline (typically 64 bytes, can be bigger)
+in coherently from the host (basically takes a copy).  It can then merrily
+do it's operations before finally copying it back to the actual memory.
+The problem lies in that there may be other data in that cacheline that
+is accessed at whilst the DMA controller was working on it's own prviate
+copy.  Those changes will be wiped out.
 
-...
+Now you probably didn't see it because:
+a) Many controllers don't do this - either they don't cache stale data, or
+   are sufficiently coherent with CPU caches etc that any changes in this
+   'near by' data are correctly handled.
 
-> >
-> > > +
-> > > +      patternProperties:
-> > > +        "^channel@([0-3])$":
-> > > +          $ref: '#/$defs/toggle-operation'
-> > > +          unevaluatedProperties: false
-> > > +
-> > > +          description: Channel in toggle functionality.
-> > > +
-> > > +          properties:
-> > > +            adi,output-range-microvolt:
-> > > +              description: Specify the channel output full scale ran=
-ge.
-> >
-> > How would someone writing a .dts know what values to select for this
-> > property? Or is this something that should be configured at runtime
-> > instead of in the devicetree? Or should this info come from the
-> > missing voltage supplies I mentioned?
->
-> Sometimes this one is a wiring related choice.  Sometimes to the extent
-> that picking the wrong one from any userspace control can cause damage
-> or is at least nonsense.
->
-> You look to be right though that the possible values here aren' fine
-> if the internal reference is used, but not the external.
->
-> However, it's keyed off MPS pins so you can't control it if they aren't
-> tied to all high.  So I'd imagine if the board can be damaged it will
-> be hard wired.  Hence these could be controlled form userspace.
-> It's a bit fiddly though as combines scale and offset controls and
-> you can end trying to set things to an invalid combination.
-> E.g. scale set to cover 20V range and offset set to 0V
-> To get around that you have to clamp one parameter to nearest
-> possible when the other is changed.
->
+b) It's really hard to hit the races anyway. I've only seen it once when
+   debugging real systems, but people run into this occasionally on IIO
+   drivers and it is really nasty to debug.
 
-Thanks for the explanation. It sounds like I missed something in the
-datasheet that would be helpful to call out in the description for
-this property.
+c) On arm64 at least in many cases the DMA core will bounce buffer anyway
+   after some changes made a couple of years back.  Unfortunately that isn't
+   true on all architectures yet (I think anyway) so we still need to be
+   careful around this.
+
+Note some architectures (x86 I think) never allowed this cacheline corrupti=
+on
+path in the first place so the DMA_MINALIGN value is 8 bytes (IIRC).
+
+Coherency is hard (but fun if you have time, particularly the places where
+it is allowed to break and how they are avoided :)
+
+Jonathan
 

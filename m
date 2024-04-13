@@ -1,153 +1,181 @@
-Return-Path: <linux-iio+bounces-4239-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4240-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 905D48A3D70
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 17:27:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1FA58A3D87
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 17:45:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B84F01C20BFF
-	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 15:27:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3C17B214B2
+	for <lists+linux-iio@lfdr.de>; Sat, 13 Apr 2024 15:45:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E78B46535;
-	Sat, 13 Apr 2024 15:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B377847A52;
+	Sat, 13 Apr 2024 15:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SF1OPY7g"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="j51xE/oR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89E245C0B;
-	Sat, 13 Apr 2024 15:26:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8F1746B91
+	for <linux-iio@vger.kernel.org>; Sat, 13 Apr 2024 15:45:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713022017; cv=none; b=aZCdZ4g5g50ovnSrhx6RUQKkk+pvRqRaXiCb3F6WJoX3Xc3m6g8GB+/gKisFoNJRLIb7srtx8q++EU26RlZjJy2ix1mIcrtqJlhcBiRhX/6tXQPT7IoiKfTOA7OZTluvq5LfzSCq+sa0GEhf7fv4pe6fGMizUfVv+jicjaOstrQ=
+	t=1713023119; cv=none; b=E5X5v3fkk1gYmeAHijRTLk30g10bXkdfl0kcl69083gJhCNiT+YKkycBZOPhjJTEjvh8UVNe03dxuMNkhq/QNls8eLQwx+jXOAd5hrLk5bp49j3jARZ+V6kxIEjtY4zI/49Jmx+Z86gWDfxRi3vIR4q1zQxmgshVa94B1fSeYdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713022017; c=relaxed/simple;
-	bh=yjYE4O7v8bZRGxr3/fWFg7rBzUco5Yk1lqn4sxx6848=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CxDuTZzl9vrtJrDj96Ybcl129vSHTs2tvx76wUIJIonYUn94Ezsg9fjVJP8iMwBSjNfEiqFWam9+EHuvkydPEOkzCXnIbYcxEOGqxb5rl3qrUeFAJEX/8GSB9iT+/qpwzQry3EyMMnFMvLSsRpu1RaxzhLlsMmB4EzVAx1xwmMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SF1OPY7g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9040CC113CD;
-	Sat, 13 Apr 2024 15:26:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713022016;
-	bh=yjYE4O7v8bZRGxr3/fWFg7rBzUco5Yk1lqn4sxx6848=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SF1OPY7gtVfCVCF2OwCr+czoXz8yLNtPKWcUg5kkOV2l3krgyqVQEhlD5Q4B9WJG1
-	 8EytEX09YOM47V76Q9p0u5QITIMmTF67MALEL8yX37kRym9qzJ4Z7PfuSP9ppCbIkC
-	 I6WKSbV1aIAUW68BoZYaHhdF4smqFdV93fMQ7Ux0bsahCJnoSPC32OqpfhYqplE9j5
-	 AnZ3pmIgt7d2eKk1wDWqVW2SwCJSi0cIMbu+hRXJlOZby4WBx+vHndxj0RH8BEIfNc
-	 J+GXw9Rq7FhTleWkyZMx+Q2i8l14qfEiNxXvCRt1uXlQV8FhZZFIzxkE/LQzmnn3VI
-	 qnv6TQ+ndV/iQ==
-Date: Sat, 13 Apr 2024 16:26:40 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Kim Seer Paller <kimseer.paller@analog.com>
-Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- "Liam Girdwood" <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- "David Lechner" <dlechner@baylibre.com>, Michael Hennerich
- <michael.hennerich@analog.com>
-Subject: Re: [PATCH 3/4] iio: ABI: add ABI file for the LTC2672 DAC
-Message-ID: <20240413162640.77c6fc56@jic23-huawei>
-In-Reply-To: <20240412032102.136071-4-kimseer.paller@analog.com>
-References: <20240412032102.136071-1-kimseer.paller@analog.com>
-	<20240412032102.136071-4-kimseer.paller@analog.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1713023119; c=relaxed/simple;
+	bh=2JEeEAKK+fM9/amx8WJRJ3XYvGn0sAnfwgksY9PdaRg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=HPglj53LezeOjLUQvMvEURorIMEbNiNjoUuBcw90fvW42UApflC2ynic/28XI2nmzsWt7K5KCRlx2Y/94TUruK34FIAfKPJYfxvS25pLyy/C8wnOEy1epQgysIjq5LQ70jdjnEz7cAYANm1ZPwNFiz9G5M+uw9Zze9Xwgj8OHQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=j51xE/oR; arc=none smtp.client-ip=209.85.218.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a51a1c8d931so234286166b.0
+        for <linux-iio@vger.kernel.org>; Sat, 13 Apr 2024 08:45:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713023116; x=1713627916; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tlcxDayxy7liV/dNtJA0sj3nxRJNURx3h61HUHMkCRg=;
+        b=j51xE/oRuEn4+A/ufUVddpV+xmkedGMEXILhpMmyu3/9LncXJlXroxt3q9N+mA4Qbx
+         4GpEWudDcuXF7ntFNPtGIMi4BVs4Lfgugk07CgUYyFHou02nraL3eNoeTKI647jQZicW
+         KNkwJbB7mtBKh9ma7ExTqoZrtzg63aJenGesNH4EIdqB6m0wZAXbpHDOMxcoJc2dCcK1
+         a3j57/UCzwYOYBsFz1BH/VbM0NDVQuhNOd7XKwZkq4G7s8mKRLPaQDxSN9JvGrI2Ve+k
+         aLSFmezWLAaNI+rZV6dxGVvKNKWKxgenvn4Hcof4ubc/HKGqM+yGv+dZnSWZMGPEFspf
+         U17g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713023116; x=1713627916;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tlcxDayxy7liV/dNtJA0sj3nxRJNURx3h61HUHMkCRg=;
+        b=u5NEKgItAJJGhYpPRKx9PA51cLMOphSxd4+dqMkQtFUlyKkGHPwQZSixS7iIbxOdfE
+         PNaSVX12kCqJTk9Ov+bdIS7EaKu9Bm8TCWp7C6MJeJHWd/HMBL35IZB8SVSIknvWZLE6
+         NSRstO0GCvKGkFx3S6Wi3M2e0p9+XJpGJ+pE1WHK3WZrFcG/Lq7VIB+xdmoOv7cj9wGL
+         4d7NbLiJGdTw9PRrnS/KOORbKoQR2WqquS5IrzXfyVzhX6Gd/86dQtxyH5/QYjN81I0W
+         JMUovLJJglBOPcIiVCOQYLI15IUcSd4bK30U4Lui8hVZNQfnOy071pD+pXGRMrVOFf6h
+         L6ig==
+X-Forwarded-Encrypted: i=1; AJvYcCXS8maqtCRgqd5LBAz9gh8ZUw7DNINUGHYFjPzz0F6zDCvDTiREdCJ+QWJpQfLwwvX77sfVMGzZS4231Y38V8eGgpqpbRwgjH12
+X-Gm-Message-State: AOJu0YytNDvi6Kifk4muWet3OCOhalEK9oHWl70eVhw8y4R8k+r81lay
+	leMUawyFpCHjXjk79PfaZD6v1p64e05JFl+jBE+OL08quS9RNBlw+Cg4B3u+beZ+p+JPIyZcJSD
+	k
+X-Google-Smtp-Source: AGHT+IH9nITMH1NYXvvNGCWOo5LpcfxyT/1mKLAquxmsTCBUpElTHPDzGJwDeR2jyobj1TP+8ro/HQ==
+X-Received: by 2002:a17:906:3c49:b0:a52:40b5:aedf with SMTP id i9-20020a1709063c4900b00a5240b5aedfmr1989672ejg.9.1713023116031;
+        Sat, 13 Apr 2024 08:45:16 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.223.16])
+        by smtp.gmail.com with ESMTPSA id en5-20020a17090728c500b00a51b8e8c8besm3128294ejc.86.2024.04.13.08.45.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 13 Apr 2024 08:45:15 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH v3] iio: dac: ad5755: make use of of_device_id table
+Date: Sat, 13 Apr 2024 17:45:11 +0200
+Message-Id: <20240413154511.52576-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 12 Apr 2024 11:21:01 +0800
-Kim Seer Paller <kimseer.paller@analog.com> wrote:
+Store pointers to chip info (struct ad5755_chip_info) in driver match
+data, instead of enum, so every value will be != 0, populate the
+of_device_id table and use it in driver.  Even though it is one change,
+it gives multiple benefits:
+1. Allows to use spi_get_device_match_data() dropping local 'type'
+   variable.
+2. Makes both ID tables usable, so kernel can match via any of these
+   methods.
+3. Code is more obvious as both tables are properly filled.
+4. Fixes W=1 warning:
+   ad5755.c:866:34: error: unused variable 'ad5755_of_match' [-Werror,-Wunused-const-variable]
 
-> Define the sysfs interface for toggle capable channels.
-> 
-> Toggle enabled channels will have:
-> 
->  * out_currentY_toggle_en
->  * out_currentY_raw0
->  * out_currentY_raw1
->  * out_currentY_symbol
-> 
-> The common interface present in all channels is:
-> 
->  * out_currentY_raw (not present in toggle enabled channels)
->  * out_currentY_raw_available
->  * out_currentY_powerdown
->  * out_currentY_scale
->  * out_currentY_offset
-> 
-> Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
-> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> ---
->  .../ABI/testing/sysfs-bus-iio-dac-ltc2672     | 30 +++++++++++++++++++
+Cc: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-You can only have per device ABI defined if that is the only user
-of the ABI.  That may actually be true here but given I've asked you to generalize
-the voltage equivalent, I think we've shown this is general enough that the current
-version should also be raised to sysfs-bus-iio-dac
+---
 
->  MAINTAINERS                                   |  1 +
->  2 files changed, 31 insertions(+)
->  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2672
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2672 b/Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2672
-> new file mode 100644
-> index 000000000..b984d92f7
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2672
-> @@ -0,0 +1,30 @@
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_currentY_toggle_en
-> +KernelVersion:	5.18
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Toggle enable. Write 1 to enable toggle or 0 to disable it. This is
-> +		useful when one wants to change the DAC output codes. The way it should
-> +		be done is:
-> +
-> +		- disable toggle operation;
-> +		- change out_currentY_raw0 and out_currentY_raw1;
-> +		- enable toggle operation.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_currentY_raw0
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_currentY_raw1
-> +KernelVersion:	5.18
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		It has the same meaning as out_currentY_raw. This attribute is
-> +		specific to toggle enabled channels and refers to the DAC output
-> +		code in INPUT_A (_raw0) and INPUT_B (_raw1). The same scale and offset
-> +		as in out_currentY_raw applies.
-> +
-> +What:		/sys/bus/iio/devices/iio:deviceX/out_currentY_symbol
-> +KernelVersion:	5.18
-> +Contact:	linux-iio@vger.kernel.org
-> +Description:
-> +		Performs a SW toggle. This attribute is specific to toggle
-> +		enabled channels and allows to toggle between out_currentY_raw0
-> +		and out_currentY_raw1 through software. Writing 0 will select
-> +		out_currentY_raw0 while 1 selects out_currentY_raw1.
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 9ed00b364..fba8bacc0 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12843,6 +12843,7 @@ L:	linux-iio@vger.kernel.org
->  S:	Supported
->  W:	https://ez.analog.com/linux-software-drivers
->  F:	Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2664
-> +F:	Documentation/ABI/testing/sysfs-bus-iio-dac-ltc2672
->  F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
->  
->  LTC2688 IIO DAC DRIVER
+Changes in v3:
+1. Use pointers, according to Jonathan comments.
+
+v2: https://lore.kernel.org/all/20240226192555.14aa178e@jic23-huawei/
+
+An old v1:
+https://lore.kernel.org/all/20230810111933.205619-1-krzysztof.kozlowski@linaro.org/
+---
+ drivers/iio/dac/ad5755.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/iio/dac/ad5755.c b/drivers/iio/dac/ad5755.c
+index 404865e35460..0b24cb19ac9d 100644
+--- a/drivers/iio/dac/ad5755.c
++++ b/drivers/iio/dac/ad5755.c
+@@ -809,7 +809,6 @@ static struct ad5755_platform_data *ad5755_parse_fw(struct device *dev)
+ 
+ static int ad5755_probe(struct spi_device *spi)
+ {
+-	enum ad5755_type type = spi_get_device_id(spi)->driver_data;
+ 	const struct ad5755_platform_data *pdata;
+ 	struct iio_dev *indio_dev;
+ 	struct ad5755_state *st;
+@@ -824,7 +823,7 @@ static int ad5755_probe(struct spi_device *spi)
+ 	st = iio_priv(indio_dev);
+ 	spi_set_drvdata(spi, indio_dev);
+ 
+-	st->chip_info = &ad5755_chip_info_tbl[type];
++	st->chip_info = spi_get_device_match_data(spi);
+ 	st->spi = spi;
+ 	st->pwr_down = 0xf;
+ 
+@@ -854,21 +853,21 @@ static int ad5755_probe(struct spi_device *spi)
+ }
+ 
+ static const struct spi_device_id ad5755_id[] = {
+-	{ "ad5755", ID_AD5755 },
+-	{ "ad5755-1", ID_AD5755 },
+-	{ "ad5757", ID_AD5757 },
+-	{ "ad5735", ID_AD5735 },
+-	{ "ad5737", ID_AD5737 },
++	{ "ad5755", (kernel_ulong_t)&ad5755_chip_info_tbl[ID_AD5755] },
++	{ "ad5755-1", (kernel_ulong_t)&ad5755_chip_info_tbl[ID_AD5755] },
++	{ "ad5757", (kernel_ulong_t)&ad5755_chip_info_tbl[ID_AD5757] },
++	{ "ad5735", (kernel_ulong_t)&ad5755_chip_info_tbl[ID_AD5735] },
++	{ "ad5737", (kernel_ulong_t)&ad5755_chip_info_tbl[ID_AD5737] },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(spi, ad5755_id);
+ 
+ static const struct of_device_id ad5755_of_match[] = {
+-	{ .compatible = "adi,ad5755" },
+-	{ .compatible = "adi,ad5755-1" },
+-	{ .compatible = "adi,ad5757" },
+-	{ .compatible = "adi,ad5735" },
+-	{ .compatible = "adi,ad5737" },
++	{ .compatible = "adi,ad5755", &ad5755_chip_info_tbl[ID_AD5755] },
++	{ .compatible = "adi,ad5755-1", &ad5755_chip_info_tbl[ID_AD5755] },
++	{ .compatible = "adi,ad5757", &ad5755_chip_info_tbl[ID_AD5757] },
++	{ .compatible = "adi,ad5735", &ad5755_chip_info_tbl[ID_AD5735] },
++	{ .compatible = "adi,ad5737", &ad5755_chip_info_tbl[ID_AD5737] },
+ 	{ }
+ };
+ MODULE_DEVICE_TABLE(of, ad5755_of_match);
+@@ -876,6 +875,7 @@ MODULE_DEVICE_TABLE(of, ad5755_of_match);
+ static struct spi_driver ad5755_driver = {
+ 	.driver = {
+ 		.name = "ad5755",
++		.of_match_table = ad5755_of_match,
+ 	},
+ 	.probe = ad5755_probe,
+ 	.id_table = ad5755_id,
+-- 
+2.34.1
 
 

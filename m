@@ -1,75 +1,74 @@
-Return-Path: <linux-iio+bounces-4274-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4275-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6EB8A44A5
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 20:39:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BBC28A4500
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 22:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C874E1C21148
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 18:39:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8E221C20C0F
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 20:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF0BF1350D1;
-	Sun, 14 Apr 2024 18:39:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B367A1369B5;
+	Sun, 14 Apr 2024 20:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lZFeGY8N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IwelWVQ6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F4FB134CEF
-	for <linux-iio@vger.kernel.org>; Sun, 14 Apr 2024 18:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171A813698D;
+	Sun, 14 Apr 2024 20:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713119976; cv=none; b=mGksEhKVGlM8dcMHZzV/0LFXmt3hbqVVaNLbKBifPeqv7UgMWwWmR3RSGuv6pz/RnEzXZz6tnrwnNqoZLcEhCkSZxMbFpOZSYX5LoA105K5PZgjWrInGpdqM4W5HEvQFwtSIcvLl4S45tNZ+ZzWl6kY4fS485pgjqZiSrxGpinE=
+	t=1713125676; cv=none; b=SXWD1H3gUmMzx63CyvfPtYMEN9LP6v1LZhUtEidHuZckLOUDhYW+6CkQvEZIv9oUOputnhNrlKOgDC9s2BiIUrtKst+8vAlqxRPsLpCdqo/pCP/L5m5Fh6Nn6jfDoNLalVF0kihoLucSEyCGH2DcSlek30mudCoIyZibICJNuiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713119976; c=relaxed/simple;
-	bh=T+lOO0H/dwaxfERd74WfBr8H7WEqFJ7KUcuBKFolGBY=;
+	s=arc-20240116; t=1713125676; c=relaxed/simple;
+	bh=PccxBh7zo/tvz64Ww80Rk/YO/brWUZ3Re7wd2ekGWQk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bsaASGcKxs5ksjJKfXpfg1uXAOHvrxG8iNBHMzJD0WO0WlxW3ruZhajwAoUUE1vfg4a87OFXb6etaUTYsMC4otay0loFK9JTshYiQocwphslbmgnXaUZDbGgJGD5vvMXV96RpPrrVPOpOe7TpON8mPe1AfOKSnwZUPoiQWHN0Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lZFeGY8N; arc=none smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-57013379e17so757913a12.0
-        for <linux-iio@vger.kernel.org>; Sun, 14 Apr 2024 11:39:34 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=RmJZEfwDT4B7kfmZWoWjzhj8ogrxaCo06xFrVgCbDZRYA0HEU1HcQUVt95Nliu1jJgGeon11KygBvzSMh/v+Dl/k0rJPEXS9MBgaS90ElteOKRmk2kkCMURzsikn7FkhknbxmurnleyUIsaMex+cqn12CgORHam5pB4RUM7CZIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IwelWVQ6; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-518bad5f598so941716e87.2;
+        Sun, 14 Apr 2024 13:14:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713119972; x=1713724772; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=T+lOO0H/dwaxfERd74WfBr8H7WEqFJ7KUcuBKFolGBY=;
-        b=lZFeGY8NcC7mWaXZ0oAIxb+jt3GFCCVmnpMhKYHKbI+3xvq/u71RBZyhDlP2FW9LZE
-         htdcQWJXEMr33wb2SEvcNM+DfPb7e8ltWTD1JBwOUEOejKi+mg2L9cylTDeb+vnhgDXf
-         oyQ//HJ+fzGATFBAD0H3/JwmzMJ4gk87aXEbm+DN+mihV+uubY9l5CZfr1bQ67MLj1LK
-         5C/WLT/DgDhSwU9onAE1r+SlxvlXli76u9JtqBkX/gnbriXnCuaiBt2i7Sj+AU888a9+
-         txObrN/ILMhRYvp/gbhzPlT7fkWiBdqgnMpngDdS0DEHo00uPHcosxR172K3bSz72oXB
-         R5Pg==
+        d=gmail.com; s=20230601; t=1713125671; x=1713730471; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CQqN6YrToit4xX74oO1hdA+XGzZL0o4Rxaz/inovTzQ=;
+        b=IwelWVQ6/YrNfPIGWgBrCRf04eQ7Zgs8/y4A3HyhX798J6LzQhxU61iFC277qkiNp2
+         Oq5087Yy1BwloLykwtwVZ8bGDanip0LtzzBdklVjXVYcZ8X3dxTb6qva2kGttP/uqUau
+         kbKsoHYrnEpZX6VcEnWmjjPOGEw83lQ65g+WY/Tf5aUP5eU7VGE1tqFx9uv4tsOuStSG
+         XYBwy6LKidyWqVqaowxrBTCfBaIpQBmoypXWNkxjG3X/YKULf8mp4YAJRZB0ngYxePH1
+         mdDsApR0akDx+B5yBkbd21bgcpC9FDO3ILsbsQhIsAF3a9mgRfEWKpDaYn9PkZv2Y+hW
+         UYwQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713119972; x=1713724772;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T+lOO0H/dwaxfERd74WfBr8H7WEqFJ7KUcuBKFolGBY=;
-        b=pj7BLO3fy/7Ufbd/O0vKkTNcAdCRYQ74cR2ELTKKfzbTA5bV+kyrGapdyEtcVHDcoQ
-         3IgNH3tLsCfR6CkVvP8OuQetQvQfKR1hs6Dw6tGk9G1XLBCINoCvVSTGjJ+lOfayz8vF
-         OJOGTkggAhd9JtUdUdFp03WgQoxQ9q/Ym84fofXFldw2vowCJg6U305os0JzMEV0ZUG4
-         UAw9lR+Kl7b9HllVXSF+JEIuj40q3Ju//6QWFaoifjgjYY3JnyUXuighTeZXj9aAQFCP
-         r3HPQWSfo3sZpnqDf5C7bXt7sDfttUiBOr3+GyShIXgzr9ASGj4AN4JM5T294n6RM6vj
-         0B6A==
-X-Forwarded-Encrypted: i=1; AJvYcCXcu6C3tcR4mY8mKvF/C4/mvbRKdVnDPfX4NWJi0FblozGbjJrTTdDXMZ8yR/vdsJI7/kqXtBsBo9CaULaDl4PYmXXYK1mIL6vt
-X-Gm-Message-State: AOJu0Yzyd0V1NO/YIs1+84mzHtgujqq68sYuBd1kq3rcUMyhWLpQuyzF
-	85/eiBsT+qT7JK7ieHI2WQZzDHR1vio2ky9sQa5x+bHzK1/DBGnYQId6CQGDGt8=
-X-Google-Smtp-Source: AGHT+IHWOC0Sp3tJXDzOLy9TuelxAYCMR8/ZXLwTrrHy0SrmBvBWJlKoFi+FBoWYdGl7bSgZzZCRtw==
-X-Received: by 2002:a17:906:e288:b0:a52:6d1e:a2a3 with SMTP id gg8-20020a170906e28800b00a526d1ea2a3mr126665ejb.45.1713119972570;
-        Sun, 14 Apr 2024 11:39:32 -0700 (PDT)
-Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id c19-20020a170906529300b00a4da28f42f1sm4532538ejm.177.2024.04.14.11.39.30
+        d=1e100.net; s=20230601; t=1713125671; x=1713730471;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=CQqN6YrToit4xX74oO1hdA+XGzZL0o4Rxaz/inovTzQ=;
+        b=areH0/gN2LC0/NA4USfXb0ues4HDanXaIQkR3nN1aVSiJhFh6EBs34QWKbpa+7xXvA
+         hMZXtGXWizv+dCEmZpgzCo259IM6CTyHUmDLup6NObDB93TCyN+9/C5h1l2m0fHXIWf8
+         Aj4vbK1Qn7CzBO+oUIlvvXP6xU1O1crQchaEGO6qMIwlBl+3l3P/oydmEFpGBZa/iRCz
+         h6v99qohQYOlO4M24I3EuOHVCqlFtJSeZLjfBsA1BKt2C2IsoIEC5xXUs0qoOOx1etBK
+         IDARv15dSicGGarLdSl2MrRa0M04DYHWder9gxt0cF1W0mgg+j6/2eDFyf+joZS5QzGc
+         4ttw==
+X-Forwarded-Encrypted: i=1; AJvYcCVGmLLPpWoNjE7wtE9InAIVvL1ftrbSR4zNfITkV4TgVO6e1mtzChEwrE6ea1NeAY92EEtO98vgeD6cJz/uh+YYgH58PHEMj/jSApZQyC2pG37vI3y5dFDFcA/NBN86/OSBYq+yBFui7UVMUOzOwtaxFGiN8Zv7qkfsIiQ4adQPrpf/9Q==
+X-Gm-Message-State: AOJu0Yz1XmxOhkBRgi8aiKoorQ2SR36SlfeKsdJBv3ulH7IZB+fCjwc/
+	DHmwcdIaheLzMefPeabsF0GHFvGCuXNFF5OY/9kkpqvXUiKUeHek
+X-Google-Smtp-Source: AGHT+IEd27NZXiLTF0O+mBYFf7M2dCfew/0+9Hq+7Czir7Cp2Phg+ZLekld8YXy1PrP2QyKSSrCizg==
+X-Received: by 2002:a19:ca55:0:b0:513:cae8:4406 with SMTP id h21-20020a19ca55000000b00513cae84406mr4555882lfj.48.1713125670723;
+        Sun, 14 Apr 2024 13:14:30 -0700 (PDT)
+Received: from [172.27.138.193] (c7.campus.utcluj.ro. [193.226.6.226])
+        by smtp.gmail.com with ESMTPSA id n22-20020aa7c796000000b0056feeb85ed0sm3451030eds.19.2024.04.14.13.14.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Apr 2024 11:39:32 -0700 (PDT)
-Message-ID: <2f317b2b-3d74-4493-9492-91435f3cc209@linaro.org>
-Date: Sun, 14 Apr 2024 20:39:29 +0200
+        Sun, 14 Apr 2024 13:14:30 -0700 (PDT)
+Message-ID: <dfa86da4-7d2d-4d7e-ac50-86d3713f44d9@gmail.com>
+Date: Sun, 14 Apr 2024 23:14:28 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,86 +76,95 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/4] dt-bindings: iio: light: stk33xx: add regulator for
- vdd supply
-To: Aren Moynihan <aren@peacevolution.org>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>,
- Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>
-Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Ondrej Jirman <megi@xff.cz>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- linux-iio@vger.kernel.org, phone-devel@vger.kernel.org,
+Subject: Re: [PATCH v5 5/5] iio: adc: ad7192: Add AD7194 support
+To: David Lechner <dlechner@baylibre.com>
+Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
- Willow Barraco <contact@willowbarraco.fr>
-References: <20240414175300.956243-1-aren@peacevolution.org>
- <20240414175716.958831-1-aren@peacevolution.org>
+ alexandru.tachici@analog.com, lars@metafoo.de, jic23@kernel.org,
+ robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ lgirdwood@gmail.com, broonie@kernel.org, andy@kernel.org,
+ nuno.sa@analog.com, marcelo.schmitt@analog.com, bigunclemax@gmail.com,
+ okan.sahin@analog.com, fr0st61te@gmail.com, alisa.roman@analog.com,
+ marcus.folkesson@gmail.com, schnelle@linux.ibm.com, liambeguin@gmail.com
+References: <20240413151152.165682-1-alisa.roman@analog.com>
+ <20240413151152.165682-6-alisa.roman@analog.com>
+ <CAMknhBFzUeW5+rs_GgCZCiit=eW04VHyCnt-__jXLnO3Z29ksA@mail.gmail.com>
 Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzTRLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnp5c3p0b2Yua296bG93c2tpQGxpbmFyby5vcmc+wsGUBBMBCgA+FiEE
- m9B+DgxR+NWWd7dUG5NDfTtBYpsFAmI+BxMCGwMFCRRfreEFCwkIBwIGFQoJCAsCBBYCAwEC
- HgECF4AACgkQG5NDfTtBYptgbhAAjAGunRoOTduBeC7V6GGOQMYIT5n3OuDSzG1oZyM4kyvO
- XeodvvYv49/ng473E8ZFhXfrre+c1olbr1A8pnz9vKVQs9JGVa6wwr/6ddH7/yvcaCQnHRPK
- mnXyP2BViBlyDWQ71UC3N12YCoHE2cVmfrn4JeyK/gHCvcW3hUW4i5rMd5M5WZAeiJj3rvYh
- v8WMKDJOtZFXxwaYGbvFJNDdvdTHc2x2fGaWwmXMJn2xs1ZyFAeHQvrp49mS6PBQZzcx0XL5
- cU9ZjhzOZDn6Apv45/C/lUJvPc3lo/pr5cmlOvPq1AsP6/xRXsEFX/SdvdxJ8w9KtGaxdJuf
- rpzLQ8Ht+H0lY2On1duYhmro8WglOypHy+TusYrDEry2qDNlc/bApQKtd9uqyDZ+rx8bGxyY
- qBP6bvsQx5YACI4p8R0J43tSqWwJTP/R5oPRQW2O1Ye1DEcdeyzZfifrQz58aoZrVQq+innR
- aDwu8qDB5UgmMQ7cjDSeAQABdghq7pqrA4P8lkA7qTG+aw8Z21OoAyZdUNm8NWJoQy8m4nUP
- gmeeQPRc0vjp5JkYPgTqwf08cluqO6vQuYL2YmwVBIbO7cE7LNGkPDA3RYMu+zPY9UUi/ln5
- dcKuEStFZ5eqVyqVoZ9eu3RTCGIXAHe1NcfcMT9HT0DPp3+ieTxFx6RjY3kYTGLOwU0EVUNc
- NAEQAM2StBhJERQvgPcbCzjokShn0cRA4q2SvCOvOXD+0KapXMRFE+/PZeDyfv4dEKuCqeh0
- hihSHlaxTzg3TcqUu54w2xYskG8Fq5tg3gm4kh1Gvh1LijIXX99ABA8eHxOGmLPRIBkXHqJY
- oHtCvPc6sYKNM9xbp6I4yF56xVLmHGJ61KaWKf5KKWYgA9kfHufbja7qR0c6H79LIsiYqf92
- H1HNq1WlQpu/fh4/XAAaV1axHFt/dY/2kU05tLMj8GjeQDz1fHas7augL4argt4e+jum3Nwt
- yupodQBxncKAUbzwKcDrPqUFmfRbJ7ARw8491xQHZDsP82JRj4cOJX32sBg8nO2N5OsFJOcd
- 5IE9v6qfllkZDAh1Rb1h6DFYq9dcdPAHl4zOj9EHq99/CpyccOh7SrtWDNFFknCmLpowhct9
- 5ZnlavBrDbOV0W47gO33WkXMFI4il4y1+Bv89979rVYn8aBohEgET41SpyQz7fMkcaZU+ok/
- +HYjC/qfDxT7tjKXqBQEscVODaFicsUkjheOD4BfWEcVUqa+XdUEciwG/SgNyxBZepj41oVq
- FPSVE+Ni2tNrW/e16b8mgXNngHSnbsr6pAIXZH3qFW+4TKPMGZ2rZ6zITrMip+12jgw4mGjy
- 5y06JZvA02rZT2k9aa7i9dUUFggaanI09jNGbRA/ABEBAAHCwXwEGAEKACYCGwwWIQSb0H4O
- DFH41ZZ3t1Qbk0N9O0FimwUCYDzvagUJFF+UtgAKCRAbk0N9O0Fim9JzD/0auoGtUu4mgnna
- oEEpQEOjgT7l9TVuO3Qa/SeH+E0m55y5Fjpp6ZToc481za3xAcxK/BtIX5Wn1mQ6+szfrJQ6
- 59y2io437BeuWIRjQniSxHz1kgtFECiV30yHRgOoQlzUea7FgsnuWdstgfWi6LxstswEzxLZ
- Sj1EqpXYZE4uLjh6dW292sO+j4LEqPYr53hyV4I2LPmptPE9Rb9yCTAbSUlzgjiyyjuXhcwM
- qf3lzsm02y7Ooq+ERVKiJzlvLd9tSe4jRx6Z6LMXhB21fa5DGs/tHAcUF35hSJrvMJzPT/+u
- /oVmYDFZkbLlqs2XpWaVCo2jv8+iHxZZ9FL7F6AHFzqEFdqGnJQqmEApiRqH6b4jRBOgJ+cY
- qc+rJggwMQcJL9F+oDm3wX47nr6jIsEB5ZftdybIzpMZ5V9v45lUwmdnMrSzZVgC4jRGXzsU
- EViBQt2CopXtHtYfPAO5nAkIvKSNp3jmGxZw4aTc5xoAZBLo0OV+Ezo71pg3AYvq0a3/oGRG
- KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
- fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240414175716.958831-1-aren@peacevolution.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+In-Reply-To: <CAMknhBFzUeW5+rs_GgCZCiit=eW04VHyCnt-__jXLnO3Z29ksA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 14/04/2024 19:57, Aren Moynihan wrote:
-> Signed-off-by: Aren Moynihan <aren@peacevolution.org>
-> ---
+On 13.04.2024 23:05, David Lechner wrote:
+> On Sat, Apr 13, 2024 at 10:13 AM Alisa-Dariana Roman
+> <alisadariana@gmail.com> wrote:
+>>
+>> Unlike the other AD719Xs, AD7194 has configurable differential
+>> channels. The user can dynamically configure them in the devicetree.
+>>
+>> Also modify config AD7192 description for better scaling.
+>>
+>> Moved ad7192_chip_info struct definition to allow use of callback
+>> function parse_channels().
+> 
+> It looks like this no longer needs to be moved in this revision.
+> 
+>>
+>> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+>> ---
+>>   drivers/iio/adc/Kconfig  |  11 ++-
+>>   drivers/iio/adc/ad7192.c | 140 ++++++++++++++++++++++++++++++++++++---
+>>   2 files changed, 138 insertions(+), 13 deletions(-)
 
-Why? Please provide proper commit msg which will explain why you are
-doing it (e.g. say about hardware).
+...
 
-Anyway empty commit msgs cannot be accepted.
+> 
+>> +       if (!ad7194_channels)
+>> +               return -ENOMEM;
+>> +
+>> +       indio_dev->channels = ad7194_channels;
+>> +       indio_dev->num_channels = num_channels;
+>> +
+>> +       device_for_each_child_node(dev, child) {
+>> +               *ad7194_channels = ad7194_chan_diff;
+>> +               ad7194_channels->scan_index = index++;
+>> +               ret = ad7192_parse_channel(child, ad7194_channels);
+>> +               if (ret) {
+>> +                       fwnode_handle_put(child);
+>> +                       return ret;
+>> +               }
+>> +               ad7194_channels++;
+>> +       }
+>> +
+>> +       *ad7194_channels = ad7194_chan_temp;
+>> +       ad7194_channels->scan_index = index++;
+>> +       ad7194_channels->address = AD7194_CH_TEMP;
+>> +       ad7194_channels++;
+> 
+> nit: It would seem more natural to have all voltage channels
+> altogether rather than having the temperature channel in between.
 
+I wrote the channels like this to match the other chips:
 
+static const struct iio_chan_spec ad7193_channels[] = {
+	AD7193_DIFF_CHANNEL(0, 1, 2, AD7193_CH_AIN1P_AIN2M),
+	AD7193_DIFF_CHANNEL(1, 3, 4, AD7193_CH_AIN3P_AIN4M),
+	AD7193_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
+	AD7193_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
+	AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
+	AD7193_DIFF_CHANNEL(5, 2, 2, AD7193_CH_AIN2P_AIN2M),
+	AD7193_CHANNEL(6, 1, AD7193_CH_AIN1),
+	AD7193_CHANNEL(7, 2, AD7193_CH_AIN2),
+	AD7193_CHANNEL(8, 3, AD7193_CH_AIN3),
+	AD7193_CHANNEL(9, 4, AD7193_CH_AIN4),
+	AD7193_CHANNEL(10, 5, AD7193_CH_AIN5),
+	AD7193_CHANNEL(11, 6, AD7193_CH_AIN6),
+	AD7193_CHANNEL(12, 7, AD7193_CH_AIN7),
+	AD7193_CHANNEL(13, 8, AD7193_CH_AIN8),
+	IIO_CHAN_SOFT_TIMESTAMP(14),
+};
 
-Best regards,
-Krzysztof
+Kind regards,
+Alisa-Dariana Roman
 
 

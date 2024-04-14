@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-4277-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4278-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E8A8A450E
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 22:24:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D295B8A451C
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 22:32:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8C021F211A8
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 20:24:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF0261C20883
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 20:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B27D13698A;
-	Sun, 14 Apr 2024 20:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E9813699C;
+	Sun, 14 Apr 2024 20:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ajuK0QBy"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gmU8vl0K"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F06136663
-	for <linux-iio@vger.kernel.org>; Sun, 14 Apr 2024 20:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D410024B28;
+	Sun, 14 Apr 2024 20:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713126269; cv=none; b=QNowTOsmGHfZGLhy6j44Q11VPjVSYYqdY1/pRgAAvdC6VGRuhl8P6DrK5TWWYl5rAmkMK2ExqaNaHmsL6kOSjHrh/ADzja33AsMXUUSc8Y2bDBPoJkRncfyJMgDmaWJpLB6zExGAMUruKW0BShlmIWtdtpl4/OQYccS9F0bpRcs=
+	t=1713126699; cv=none; b=WqM1r8pprEXG+c5FkmBxkCQpmyp2HqYC+2WQ/9Tw1tjMkGqjpyBMezb9IYxBPbe2vzJFiqggAzIf8VP177PqaopKOl35MbbHoJKlX5VOlpT/VGFY5s3KPaGFFzMK+fCV8q5ItbZ3sv5XgZV+hUxwXJ5k3mo8sf6gTG+Vgo2G/jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713126269; c=relaxed/simple;
-	bh=hpG76AXQMNJSTW6q8p9oAbDZCw5GU7vZBrY397xUNAM=;
+	s=arc-20240116; t=1713126699; c=relaxed/simple;
+	bh=KiZI1eDYSppAbrCtjM8QTFZgOeAOOCTkojlRKCffmoI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OwV1PkgUXMMjk0UrLcVJJy4aI4Yh4DFIpku9h83+sKmzj7ksuAOfiM/eTXRuPdT+WTZEeVCVaT94SKA43GS+wcqZYMB7U02TdlH0rtgORUtQ96ajWDIjzvrr+qbbAr1hhFJCYneGkw6Helf9x8TqJDJAFMlqWkW8DKCfMYr1Y/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ajuK0QBy; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-6eb7ac9e726so397464a34.3
-        for <linux-iio@vger.kernel.org>; Sun, 14 Apr 2024 13:24:27 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=gV8BaANlg/6QeNPkg97LDX+Y/RMwnC/VDvAfptov7TBVVH09kQOCfMIWolo6tVeZFo4z45OTN8Zw7cPsNFKkQkyT8OGg6tt2Ff9WkiU82SKiPbZ8LFMIflYoON9yGWEuCk5fbKIueeFyVf4iK/i7shhEb5oPBbozjnlmbgeBqsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gmU8vl0K; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a526698f228so51333966b.1;
+        Sun, 14 Apr 2024 13:31:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1713126267; x=1713731067; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1713126696; x=1713731496; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=wdgK/xtc7abW4FhKh59TEUuplN1RfRrEnq28gtTaSyU=;
-        b=ajuK0QBylswuYiriDpobjmId/LzKT6rY/synfzLq6uRCru3qPlPPxVYD5uTBGLEBp8
-         TcZm4zc0ZjXl0k8lUSS+m85oBI6yAZAcwRKe0GWTZ7RhIyiU+Peegp2LzPKCwWXVuzTV
-         KbwpiK2shx0bwq1Nw6nowYW86UtNLBW2RO4+PJQhgU/xkjSiKnA6HHID033xfJQwLdJZ
-         jvjpZmYyEiNL5nh506ym6Ac4e71SdOVNrb2KOHfLiM0CY8p2dyYkYDcWvEFn/lqIwaIG
-         B0VbZMr9FW9v+u990AkjjLqa2wtX16ZGxGn9PssSCfLb7mipwYahfD1YfN5B1fTbexg7
-         wLPQ==
+        bh=nREPFOOYGgHIZaRHKi35j5pPCOGBubEsYEeqw+j/IwU=;
+        b=gmU8vl0KF03Vsl9QosVWISPBdIo44QO+wh16tZaLJ+KoNwDpORH4zN8XTZJr9204zc
+         yTAQPlKfESBuXgMym0BCU6JbJLtQpT2LznjUKGxjbpUAUpmBse8G8ha+Pz+ANp7ZBZ2y
+         0U/J4hrxJS4SjOv1ZSLVpMsl4w85igKgoCWFGxfobzzyPabKVY9j7ZwH2k3mL4VVU03b
+         rSnii4iRyTQPuAjyZqmwaDYS+3RhRrK0WVZaUc4tpxgm5oWPmAQlWwu1q/yiy9Mr59Sm
+         gobm6TM6SPvC0bLwb9xFzrDsdgBbOIt79zn0QN2RXfJthq5mjALAeqItP7rwmOKcrX5F
+         xFtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713126267; x=1713731067;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1713126696; x=1713731496;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wdgK/xtc7abW4FhKh59TEUuplN1RfRrEnq28gtTaSyU=;
-        b=Rp272KXtb/U6wYkUyezpAZcI0cZIn8AIef30yutDJ+8i48KtkUkphrAj+s+o4MsGLg
-         A4AY3H5QbnITVEjXPpWfXgE4oxM4IVsPUwge4m7SJBEPFksQy+hG5IEr46tBFxpP39fv
-         yXrsIdCEt4iddYpmrBvtNaDTcCuQBjPkVgqi0gocVqMR6k2pYsvyLOQtjAujShEiCy0F
-         KXl2eZ8Lkl5cKJiFQJi/rKdJFisz0m8qUWHcQT4T3xGyY4ZGt+/EjyPVbJWWkDGkuakR
-         SHlITZ3ouaBjgLGieXmtTeF1BxVgtcGPMyvV+kNKRKG8OhUcoqJ1mexEqzH27OhXF4bv
-         y0NQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVjYvfwit65GlcqlMURlvrcwkeWVkRaLSj2v+lsRsADczfjoz3gVzzcoH62CvEF4tn8tZCs5z7+1N+tOBkG6HlqmFUJPK2559Aw
-X-Gm-Message-State: AOJu0YzwrjJEdlELFjo84ZCDqzgWjbed63LmfxwXbGPIVoagdZjnEzPp
-	HPsFuZOSqERTF57FzsIVdSZAYmJXGSWs8S/jp+vvEgPIk6+gdlILH+W4p5rCTgU=
-X-Google-Smtp-Source: AGHT+IGSQ9n8Spb2DdgblHtgvUMvEgGhpKI45I0vDjzH7W8brusklAhPJt2w/vyyYYOPEKFb42bkUg==
-X-Received: by 2002:a05:6870:ac1f:b0:22e:be3e:b32 with SMTP id kw31-20020a056870ac1f00b0022ebe3e0b32mr10150823oab.37.1713126266900;
-        Sun, 14 Apr 2024 13:24:26 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id wz2-20020a0568707ec200b0022e9ffdb5a5sm1924841oab.24.2024.04.14.13.24.25
+        bh=nREPFOOYGgHIZaRHKi35j5pPCOGBubEsYEeqw+j/IwU=;
+        b=WUVr9aud2pVgqeIAqFNHK6L6GAV27CtrzhB2j4vh3JsRDQ+IeXzhIaoOpWQePoOcBs
+         2bXSD4xkI35MumpYUsylOM5ywdWe6/MSmEVxuJgGmxQSZZ1oEmszHhuXxDDbK9t4xV+5
+         MV/axexZvolaMGMmy0/edOVr+iHxUNIkVxf+H5vihv/RAnyKfoErqZTtqXWvTU/BO4Zz
+         8z6sweaY/slbaFLO+RRR9aG5qrzCWkswzxdQlwArXhlZyRg0ZBbRhfNSyd/fqGBGknKr
+         gp0UysCREeZgIDMu0j/xWpKwWCWjRI8q1hKHg/9o2W11Qwbb9hQZZV5s9FCtaND6e/Tg
+         KMTw==
+X-Forwarded-Encrypted: i=1; AJvYcCWwZ2Z6IxIAZYB12Yezlk5D30on+nFeYYwSLtGr2GkYpVJb2i4xQcHxclniyt7OOMhKIA5YAYO75iE/SAejeNJZ4UE0zHlBuc1CrOlhgB8tGtgR+SxoSB17ElYXTz1564FZjgUf9VM17T602tIvaG9AML6k4iASpwo2qvOQwdx5BuKymw==
+X-Gm-Message-State: AOJu0YwRhAmFPbV51z0jfs7EyqIwQJs3iL5NTNMa3kd0c0cSb7RvnqcH
+	y8WcXzzhZTQwAiFSD4JhNnzy8H5WezS2xW2gqFYP1vonKGIgEUtM
+X-Google-Smtp-Source: AGHT+IGUD/oYKuhmyY9fKyM8jgrVJ/LDpQDRupyPukzlQUDYrG8HXHzCHsXQITnhFuy1xolGzQAJ7w==
+X-Received: by 2002:a17:907:3f9e:b0:a52:1a7b:2ef8 with SMTP id hr30-20020a1709073f9e00b00a521a7b2ef8mr6243899ejc.27.1713126696004;
+        Sun, 14 Apr 2024 13:31:36 -0700 (PDT)
+Received: from [172.27.138.193] (c7.campus.utcluj.ro. [193.226.6.226])
+        by smtp.gmail.com with ESMTPSA id jg25-20020a170907971900b00a4e5ab88803sm4572628ejc.183.2024.04.14.13.31.34
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Apr 2024 13:24:26 -0700 (PDT)
-Message-ID: <2c6b6383-dbf5-4b80-ae97-79a1725b2cb5@baylibre.com>
-Date: Sun, 14 Apr 2024 15:24:25 -0500
+        Sun, 14 Apr 2024 13:31:35 -0700 (PDT)
+Message-ID: <1834b3fe-b345-4d93-97bb-82d0ffd75fa8@gmail.com>
+Date: Sun, 14 Apr 2024 23:31:33 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,8 +76,9 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 5/5] iio: adc: ad7192: Add AD7194 support
-To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Subject: Re: [PATCH v5 4/5] dt-bindings: iio: adc: ad7192: Add AD7194 support
+Content-Language: en-US
+To: David Lechner <dlechner@baylibre.com>
 Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  alexandru.tachici@analog.com, lars@metafoo.de, jic23@kernel.org,
@@ -87,90 +88,79 @@ Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org,
  okan.sahin@analog.com, fr0st61te@gmail.com, alisa.roman@analog.com,
  marcus.folkesson@gmail.com, schnelle@linux.ibm.com, liambeguin@gmail.com
 References: <20240413151152.165682-1-alisa.roman@analog.com>
- <20240413151152.165682-6-alisa.roman@analog.com>
- <CAMknhBFzUeW5+rs_GgCZCiit=eW04VHyCnt-__jXLnO3Z29ksA@mail.gmail.com>
- <dfa86da4-7d2d-4d7e-ac50-86d3713f44d9@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <dfa86da4-7d2d-4d7e-ac50-86d3713f44d9@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+ <20240413151152.165682-5-alisa.roman@analog.com>
+ <CAMknhBHJpOxRmJbiprVNfYB4JbLzjR2a9S8=5iVz_9O+013u1Q@mail.gmail.com>
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+In-Reply-To: <CAMknhBHJpOxRmJbiprVNfYB4JbLzjR2a9S8=5iVz_9O+013u1Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 4/14/24 3:14 PM, Alisa-Dariana Roman wrote:
-> On 13.04.2024 23:05, David Lechner wrote:
->> On Sat, Apr 13, 2024 at 10:13 AM Alisa-Dariana Roman
->> <alisadariana@gmail.com> wrote:
->>>
->>> Unlike the other AD719Xs, AD7194 has configurable differential
->>> channels. The user can dynamically configure them in the devicetree.
->>>
->>> Also modify config AD7192 description for better scaling.
->>>
->>> Moved ad7192_chip_info struct definition to allow use of callback
->>> function parse_channels().
+On 13.04.2024 22:29, David Lechner wrote:
+> On Sat, Apr 13, 2024 at 10:13 AM Alisa-Dariana Roman
+> <alisadariana@gmail.com> wrote:
 >>
->> It looks like this no longer needs to be moved in this revision.
+>> Unlike the other AD719Xs, AD7194 has configurable differential
+>> channels. The user can dynamically configure them in the devicetree.
 >>
->>>
->>> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
->>> ---
->>>   drivers/iio/adc/Kconfig  |  11 ++-
->>>   drivers/iio/adc/ad7192.c | 140 ++++++++++++++++++++++++++++++++++++---
->>>   2 files changed, 138 insertions(+), 13 deletions(-)
-> 
-> ...
-> 
+>> Also add an example for AD7194 devicetree.
 >>
->>> +       if (!ad7194_channels)
->>> +               return -ENOMEM;
->>> +
->>> +       indio_dev->channels = ad7194_channels;
->>> +       indio_dev->num_channels = num_channels;
->>> +
->>> +       device_for_each_child_node(dev, child) {
->>> +               *ad7194_channels = ad7194_chan_diff;
->>> +               ad7194_channels->scan_index = index++;
->>> +               ret = ad7192_parse_channel(child, ad7194_channels);
->>> +               if (ret) {
->>> +                       fwnode_handle_put(child);
->>> +                       return ret;
->>> +               }
->>> +               ad7194_channels++;
->>> +       }
->>> +
->>> +       *ad7194_channels = ad7194_chan_temp;
->>> +       ad7194_channels->scan_index = index++;
->>> +       ad7194_channels->address = AD7194_CH_TEMP;
->>> +       ad7194_channels++;
+>> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+>> ---
+>>   .../bindings/iio/adc/adi,ad7192.yaml          | 74 +++++++++++++++++++
+>>   1 file changed, 74 insertions(+)
 >>
->> nit: It would seem more natural to have all voltage channels
->> altogether rather than having the temperature channel in between.
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+>> index ba506af3b73e..855f0a2d7d75 100644
+>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+>> @@ -21,8 +21,15 @@ properties:
+>>         - adi,ad7190
+>>         - adi,ad7192
+>>         - adi,ad7193
+>> +      - adi,ad7194
+>>         - adi,ad7195
+>>
+>> +  "#address-cells":
+>> +    const: 1
+>> +
+>> +  "#size-cells":
+>> +    const: 0
+>> +
+>>     reg:
+>>       maxItems: 1
+>>
+>> @@ -104,8 +111,43 @@ required:
+>>     - spi-cpol
+>>     - spi-cpha
+>>
+>> +patternProperties:
+>> +  "^channel@[0-9]+$":
+>> +    type: object
+>> +    $ref: adc.yaml
+>> +    unevaluatedProperties: false
+>> +
+>> +    properties:
+>> +      reg:
+>> +        description: The channel index.
+>> +        minimum: 1
+>> +        maximum: 256
+>> +
+>> +      diff-channels:
+>> +        description: |
+>> +          Both inputs can be connected to pins AIN1 to AIN16 by choosing the
+>> +          appropriate value from 1 to 16.
+>> +        items:
+>> +          minimum: 1
+>> +          maximum: 16
 > 
-> I wrote the channels like this to match the other chips:
-> 
-> static const struct iio_chan_spec ad7193_channels[] = {
->     AD7193_DIFF_CHANNEL(0, 1, 2, AD7193_CH_AIN1P_AIN2M),
->     AD7193_DIFF_CHANNEL(1, 3, 4, AD7193_CH_AIN3P_AIN4M),
->     AD7193_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
->     AD7193_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
->     AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
->     AD7193_DIFF_CHANNEL(5, 2, 2, AD7193_CH_AIN2P_AIN2M),
->     AD7193_CHANNEL(6, 1, AD7193_CH_AIN1),
->     AD7193_CHANNEL(7, 2, AD7193_CH_AIN2),
->     AD7193_CHANNEL(8, 3, AD7193_CH_AIN3),
->     AD7193_CHANNEL(9, 4, AD7193_CH_AIN4),
->     AD7193_CHANNEL(10, 5, AD7193_CH_AIN5),
->     AD7193_CHANNEL(11, 6, AD7193_CH_AIN6),
->     AD7193_CHANNEL(12, 7, AD7193_CH_AIN7),
->     AD7193_CHANNEL(13, 8, AD7193_CH_AIN8),
->     IIO_CHAN_SOFT_TIMESTAMP(14),
-> };
-> 
-> Kind regards,
-> Alisa-Dariana Roman
-> 
+> Don't we also need to allow 0 for AINCOM here? Or is this property
+> only for fully differential pairs and not pseudo-differential pairs?
 
-Consistency is good too. ;-)
+I thought it would be a good idea to have the pseudo-differential pairs 
+set in the driver (all from AIN1 to AIN16 referenced to AINCOM). Only 
+differential ones are fully configurable in the devicetree.
 
+Kind regards,
+Alisa-Dariana Roman
 
 

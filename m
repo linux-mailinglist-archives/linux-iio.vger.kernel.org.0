@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-4276-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4277-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8FAD8A4505
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 22:21:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E8A8A450E
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 22:24:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7E7CB20C98
-	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 20:21:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8C021F211A8
+	for <lists+linux-iio@lfdr.de>; Sun, 14 Apr 2024 20:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 736EE136982;
-	Sun, 14 Apr 2024 20:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B27D13698A;
+	Sun, 14 Apr 2024 20:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dUCVKUBA"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ajuK0QBy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFF4135A59
-	for <linux-iio@vger.kernel.org>; Sun, 14 Apr 2024 20:21:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F06136663
+	for <linux-iio@vger.kernel.org>; Sun, 14 Apr 2024 20:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713126064; cv=none; b=EH2gdDElscZgvZh02ViUv77P9G0gpG50oWWUt3Y8BqVQDIJNTEJCjsJkIV76Nz1vGUpZ+S0rmdr1Kx2VNOUwwMPwIrFlwDOI9VAHfnxdga/HDMY5GZmN0Bv8bpz0S0soQZWuEcR4dKnx2C9S1fK6V713WENPI2f242YsHojshgY=
+	t=1713126269; cv=none; b=QNowTOsmGHfZGLhy6j44Q11VPjVSYYqdY1/pRgAAvdC6VGRuhl8P6DrK5TWWYl5rAmkMK2ExqaNaHmsL6kOSjHrh/ADzja33AsMXUUSc8Y2bDBPoJkRncfyJMgDmaWJpLB6zExGAMUruKW0BShlmIWtdtpl4/OQYccS9F0bpRcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713126064; c=relaxed/simple;
-	bh=pccfd4aCf73rzGa64v46jpRn5G8JUnnvFWF69b1Ys5U=;
+	s=arc-20240116; t=1713126269; c=relaxed/simple;
+	bh=hpG76AXQMNJSTW6q8p9oAbDZCw5GU7vZBrY397xUNAM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mjvrxbtBKaIWThziXvRzeDuumJGuS9b12ZPGjDt9dkwDgYNKbCe84bV+cPnouLNxQcEF0reG6d3lNojBMNMSBzzTPD4XjU6gj3HLSueXYepPBLFjuHEjT2dltnHgh+afdE40ORQnmq2D4iMd7hLkqKwkS51Zr6amirea0qR9WVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dUCVKUBA; arc=none smtp.client-ip=209.85.210.51
+	 In-Reply-To:Content-Type; b=OwV1PkgUXMMjk0UrLcVJJy4aI4Yh4DFIpku9h83+sKmzj7ksuAOfiM/eTXRuPdT+WTZEeVCVaT94SKA43GS+wcqZYMB7U02TdlH0rtgORUtQ96ajWDIjzvrr+qbbAr1hhFJCYneGkw6Helf9x8TqJDJAFMlqWkW8DKCfMYr1Y/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ajuK0QBy; arc=none smtp.client-ip=209.85.210.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6eb77e56b20so718069a34.3
-        for <linux-iio@vger.kernel.org>; Sun, 14 Apr 2024 13:21:01 -0700 (PDT)
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-6eb7ac9e726so397464a34.3
+        for <linux-iio@vger.kernel.org>; Sun, 14 Apr 2024 13:24:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1713126060; x=1713730860; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1713126267; x=1713731067; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=7WFsBERXce7Fsz35acZjndQC2yQGU84N+dal9ykpXRE=;
-        b=dUCVKUBApIQXh7EhyhSsFTYkxwWN5jtx1fe/x6eLItD1haGtV/xrUakt7taxMs1Ehp
-         F1AeROVBmIElWy/VfuWPIgna1yMexT5skIVEXNgnj+mF+NRHHvnf4HNTTgKkPos5nG/c
-         nvM88xxBYV13STFwwlmRtdi12XEKbwAjnCed8bOfG/ycP6y7Z4K0vleStbdHl5SM3Ux3
-         e7uoviMw8/ak19sWoqvq5ibTMCh8MjWloUwFpJOGTI0ePMM5qPvd4qNF6PzdfA+jRQXy
-         d1oZWRBgwBiTbDnKRAk72pki6dOoeSeE6EZl6n9FuTMYYc+bNvzFFVkkqGm/TjI2uRbK
-         +Ixw==
+        bh=wdgK/xtc7abW4FhKh59TEUuplN1RfRrEnq28gtTaSyU=;
+        b=ajuK0QBylswuYiriDpobjmId/LzKT6rY/synfzLq6uRCru3qPlPPxVYD5uTBGLEBp8
+         TcZm4zc0ZjXl0k8lUSS+m85oBI6yAZAcwRKe0GWTZ7RhIyiU+Peegp2LzPKCwWXVuzTV
+         KbwpiK2shx0bwq1Nw6nowYW86UtNLBW2RO4+PJQhgU/xkjSiKnA6HHID033xfJQwLdJZ
+         jvjpZmYyEiNL5nh506ym6Ac4e71SdOVNrb2KOHfLiM0CY8p2dyYkYDcWvEFn/lqIwaIG
+         B0VbZMr9FW9v+u990AkjjLqa2wtX16ZGxGn9PssSCfLb7mipwYahfD1YfN5B1fTbexg7
+         wLPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713126060; x=1713730860;
+        d=1e100.net; s=20230601; t=1713126267; x=1713731067;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7WFsBERXce7Fsz35acZjndQC2yQGU84N+dal9ykpXRE=;
-        b=eRS6nWAay/3CN71Xa6mgFIDraf8xfnOGyGoJbWswdxfbg+8gob1n+3xyTPkKepm+sM
-         8eXsZfRF4JeS5V/r/BpGyu0/JwC3Pun1Z2p0+kX2jUGZ/3PzePPv5StDW70jeOE4qYh+
-         4RcRjau2sdYnPdT4Cy9szW04atrL+aLIbg8VMboIgS7VaybBeq/phOaasbTPEuoYcScI
-         eWTdigzIKQHQAIT/+Wk+cGg9v9mPYdB87nC5VWKnnRvLzMucBplwRL3ZF4csXeNP2SH7
-         pujKy45qvHOmicjNrvYkhvTZlTF2Tkn4gw81NSA5x8eMFrhZusvLdmiOfIoBy5JhkySh
-         rQvw==
-X-Forwarded-Encrypted: i=1; AJvYcCWfODXbhkL7uRIfo9mSUAKN4MiR84v4yt7c0Tq/eLElKkLSqK1c7b8PaL5av4QEB91V0NZKSTGcIPeliQRqwaaMIuYvfb8De6Tw
-X-Gm-Message-State: AOJu0YxFHCoQMPKUvsaATaxCl4mQIHgzECkiTNkCRXZtzl1xp4evIVKx
-	9H7fw3uCWYPN35dUhc01G82g4pPVdHbQFR14r31UhSQ6/yAnq4Y28apZsI0ZQ0A=
-X-Google-Smtp-Source: AGHT+IHnPiQiA44NWwv6yMFq7FL05gYBLcc5hgPtuXJ98SI2K6IjMN8gBtPQP/9Fb3kZvhY2rWze1Q==
-X-Received: by 2002:a05:6830:1109:b0:6ea:193c:d55c with SMTP id w9-20020a056830110900b006ea193cd55cmr10103697otq.6.1713126060261;
-        Sun, 14 Apr 2024 13:21:00 -0700 (PDT)
+        bh=wdgK/xtc7abW4FhKh59TEUuplN1RfRrEnq28gtTaSyU=;
+        b=Rp272KXtb/U6wYkUyezpAZcI0cZIn8AIef30yutDJ+8i48KtkUkphrAj+s+o4MsGLg
+         A4AY3H5QbnITVEjXPpWfXgE4oxM4IVsPUwge4m7SJBEPFksQy+hG5IEr46tBFxpP39fv
+         yXrsIdCEt4iddYpmrBvtNaDTcCuQBjPkVgqi0gocVqMR6k2pYsvyLOQtjAujShEiCy0F
+         KXl2eZ8Lkl5cKJiFQJi/rKdJFisz0m8qUWHcQT4T3xGyY4ZGt+/EjyPVbJWWkDGkuakR
+         SHlITZ3ouaBjgLGieXmtTeF1BxVgtcGPMyvV+kNKRKG8OhUcoqJ1mexEqzH27OhXF4bv
+         y0NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVjYvfwit65GlcqlMURlvrcwkeWVkRaLSj2v+lsRsADczfjoz3gVzzcoH62CvEF4tn8tZCs5z7+1N+tOBkG6HlqmFUJPK2559Aw
+X-Gm-Message-State: AOJu0YzwrjJEdlELFjo84ZCDqzgWjbed63LmfxwXbGPIVoagdZjnEzPp
+	HPsFuZOSqERTF57FzsIVdSZAYmJXGSWs8S/jp+vvEgPIk6+gdlILH+W4p5rCTgU=
+X-Google-Smtp-Source: AGHT+IGSQ9n8Spb2DdgblHtgvUMvEgGhpKI45I0vDjzH7W8brusklAhPJt2w/vyyYYOPEKFb42bkUg==
+X-Received: by 2002:a05:6870:ac1f:b0:22e:be3e:b32 with SMTP id kw31-20020a056870ac1f00b0022ebe3e0b32mr10150823oab.37.1713126266900;
+        Sun, 14 Apr 2024 13:24:26 -0700 (PDT)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id p5-20020a9d6945000000b006eb7d7dc9e2sm229895oto.28.2024.04.14.13.20.58
+        by smtp.gmail.com with ESMTPSA id wz2-20020a0568707ec200b0022e9ffdb5a5sm1924841oab.24.2024.04.14.13.24.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 14 Apr 2024 13:20:59 -0700 (PDT)
-Message-ID: <99724bd6-6b1d-413b-a884-4b5b00d6bc0b@baylibre.com>
-Date: Sun, 14 Apr 2024 15:20:58 -0500
+        Sun, 14 Apr 2024 13:24:26 -0700 (PDT)
+Message-ID: <2c6b6383-dbf5-4b80-ae97-79a1725b2cb5@baylibre.com>
+Date: Sun, 14 Apr 2024 15:24:25 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,7 +76,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/5] iio: adc: ad7192: Add aincom supply
+Subject: Re: [PATCH v5 5/5] iio: adc: ad7192: Add AD7194 support
 To: Alisa-Dariana Roman <alisadariana@gmail.com>
 Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -87,79 +87,90 @@ Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org,
  okan.sahin@analog.com, fr0st61te@gmail.com, alisa.roman@analog.com,
  marcus.folkesson@gmail.com, schnelle@linux.ibm.com, liambeguin@gmail.com
 References: <20240413151152.165682-1-alisa.roman@analog.com>
- <20240413151152.165682-4-alisa.roman@analog.com>
- <CAMknhBFk9e=VDYFVUhKmabHKwhJKbVVA4tRz758QszjHLGUEpg@mail.gmail.com>
- <34b08785-86f9-4c28-8d03-928866dbdc10@gmail.com>
+ <20240413151152.165682-6-alisa.roman@analog.com>
+ <CAMknhBFzUeW5+rs_GgCZCiit=eW04VHyCnt-__jXLnO3Z29ksA@mail.gmail.com>
+ <dfa86da4-7d2d-4d7e-ac50-86d3713f44d9@gmail.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <34b08785-86f9-4c28-8d03-928866dbdc10@gmail.com>
+In-Reply-To: <dfa86da4-7d2d-4d7e-ac50-86d3713f44d9@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 4/14/24 8:58 AM, Alisa-Dariana Roman wrote:
-> On 13.04.2024 22:10, David Lechner wrote:
->> On Sat, Apr 13, 2024 at 10:12 AM Alisa-Dariana Roman
+On 4/14/24 3:14 PM, Alisa-Dariana Roman wrote:
+> On 13.04.2024 23:05, David Lechner wrote:
+>> On Sat, Apr 13, 2024 at 10:13 AM Alisa-Dariana Roman
 >> <alisadariana@gmail.com> wrote:
 >>>
->>> AINCOM should actually be a supply. If present and it has a non-zero
->>> voltage, the pseudo-differential channels are configured as single-ended
->>> with an offset. Otherwise, they are configured as differential channels
->>> between AINx and AINCOM pins.
+>>> Unlike the other AD719Xs, AD7194 has configurable differential
+>>> channels. The user can dynamically configure them in the devicetree.
+>>>
+>>> Also modify config AD7192 description for better scaling.
+>>>
+>>> Moved ad7192_chip_info struct definition to allow use of callback
+>>> function parse_channels().
+>>
+>> It looks like this no longer needs to be moved in this revision.
+>>
 >>>
 >>> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 >>> ---
->>>   drivers/iio/adc/ad7192.c | 53 +++++++++++++++++++++++++++++++++++++---
->>>   1 file changed, 49 insertions(+), 4 deletions(-)
+>>>   drivers/iio/adc/Kconfig  |  11 ++-
+>>>   drivers/iio/adc/ad7192.c | 140 ++++++++++++++++++++++++++++++++++++---
+>>>   2 files changed, 138 insertions(+), 13 deletions(-)
 > 
 > ...
 > 
->>> @@ -745,6 +746,9 @@ static int ad7192_read_raw(struct iio_dev *indio_dev,
->>>                  /* Kelvin to Celsius */
 >>
->> Not related to this patch, but I'm not a fan of the way the
->> temperature case writes over *val (maybe clean that up using a switch
->> statement instead in another patch while we are working on this?).
->> Adding the else if to this makes it even harder to follow.
+>>> +       if (!ad7194_channels)
+>>> +               return -ENOMEM;
+>>> +
+>>> +       indio_dev->channels = ad7194_channels;
+>>> +       indio_dev->num_channels = num_channels;
+>>> +
+>>> +       device_for_each_child_node(dev, child) {
+>>> +               *ad7194_channels = ad7194_chan_diff;
+>>> +               ad7194_channels->scan_index = index++;
+>>> +               ret = ad7192_parse_channel(child, ad7194_channels);
+>>> +               if (ret) {
+>>> +                       fwnode_handle_put(child);
+>>> +                       return ret;
+>>> +               }
+>>> +               ad7194_channels++;
+>>> +       }
+>>> +
+>>> +       *ad7194_channels = ad7194_chan_temp;
+>>> +       ad7194_channels->scan_index = index++;
+>>> +       ad7194_channels->address = AD7194_CH_TEMP;
+>>> +       ad7194_channels++;
 >>
->>>                  if (chan->type == IIO_TEMP)
->>>                          *val -= 273 * ad7192_get_temp_scale(unipolar);
->>> +               else if (st->aincom_mv && chan->channel2 == -1)
->>
->> I think the logic should be !chan->differential instead of
->> chan->channel2 = -1 (more explanation on this below).
->>
->>> +                       *val += DIV_ROUND_CLOSEST_ULL((u64)st->aincom_mv * 1000000000,
->>> +                                                     st->scale_avail[gain][1]);
->>>                  return IIO_VAL_INT;
+>> nit: It would seem more natural to have all voltage channels
+>> altogether rather than having the temperature channel in between.
 > 
-> Hi David,
+> I wrote the channels like this to match the other chips:
 > 
-> I am very grateful for your suggestions!
+> static const struct iio_chan_spec ad7193_channels[] = {
+>     AD7193_DIFF_CHANNEL(0, 1, 2, AD7193_CH_AIN1P_AIN2M),
+>     AD7193_DIFF_CHANNEL(1, 3, 4, AD7193_CH_AIN3P_AIN4M),
+>     AD7193_DIFF_CHANNEL(2, 5, 6, AD7193_CH_AIN5P_AIN6M),
+>     AD7193_DIFF_CHANNEL(3, 7, 8, AD7193_CH_AIN7P_AIN8M),
+>     AD719x_TEMP_CHANNEL(4, AD7193_CH_TEMP),
+>     AD7193_DIFF_CHANNEL(5, 2, 2, AD7193_CH_AIN2P_AIN2M),
+>     AD7193_CHANNEL(6, 1, AD7193_CH_AIN1),
+>     AD7193_CHANNEL(7, 2, AD7193_CH_AIN2),
+>     AD7193_CHANNEL(8, 3, AD7193_CH_AIN3),
+>     AD7193_CHANNEL(9, 4, AD7193_CH_AIN4),
+>     AD7193_CHANNEL(10, 5, AD7193_CH_AIN5),
+>     AD7193_CHANNEL(11, 6, AD7193_CH_AIN6),
+>     AD7193_CHANNEL(12, 7, AD7193_CH_AIN7),
+>     AD7193_CHANNEL(13, 8, AD7193_CH_AIN8),
+>     IIO_CHAN_SOFT_TIMESTAMP(14),
+> };
 > 
->     case IIO_CHAN_INFO_OFFSET:
->         if (!unipolar)
->             *val = -(1 << (chan->scan_type.realbits - 1));
->         else
->             *val = 0;
->         switch(chan->type) {
->         case IIO_VOLTAGE:
->             if (st->aincom_mv && !chan->differential)
->                 *val += DIV_ROUND_CLOSEST_ULL((u64)st->aincom_mv * 1000000000,
->                                   st->scale_avail[gain][1]);
->             return IIO_VAL_INT;
->         /* Kelvin to Celsius */
->         case IIO_TEMP:
->             *val -= 273 * ad7192_get_temp_scale(unipolar);
->             return IIO_VAL_INT;
->         default:
->             return -EINVAL;
->         }
-> 
-> I added a switch because it looks neater indeed. But I would keep the if else for the unipolar in order not to have duplicate code. Is this alright?
+> Kind regards,
+> Alisa-Dariana Roman
 > 
 
+Consistency is good too. ;-)
 
-I didn't notice before that the temperature channel could also be
-unipolor or bipolar, so yes this seems fine.
 
 

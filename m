@@ -1,108 +1,121 @@
-Return-Path: <linux-iio+bounces-4294-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4295-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51A218A52ED
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 16:19:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE3CC8A55FD
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 17:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836DA1C21EB1
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 14:19:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A985283E0D
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 15:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9682C74C07;
-	Mon, 15 Apr 2024 14:18:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BC978C88;
+	Mon, 15 Apr 2024 15:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fkESSmo9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KM0BZX19"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A834973175;
-	Mon, 15 Apr 2024 14:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 859647868B;
+	Mon, 15 Apr 2024 15:06:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713190739; cv=none; b=SwBzYhEHfXsayLpPX0m94K/RzyIsoFdIhfi89dVRP1vqHyGoyDeAGWFPw/MEZZSrGBnLnEMO7JixrZ0oQN5q0vyiq88xXLw8hL3BMNR4eRdz73mkZZYOmc+zH2Qr7ASaENyFq2QgZ0wf+eKr254fjShCZ7m3hrkjTvwSGSV2mVA=
+	t=1713193595; cv=none; b=smx8QKElwYy5/Ydymw5iwp9NqW5AFR9ZHzygl1OyeLOVDqTq2tj/5UpKAZOedK3qIjzc66/S0ha2e3C53xOOIqG7BGrdN/vkLDUIjdlCriEGXZiJdTGHt5PwTwrCtYT8suYcND+4iQnPR6og3Cb+uijiE7h1zZ2bFwkbyU79ihE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713190739; c=relaxed/simple;
-	bh=6ADPjgD9QQhJ43e2oiyLf588Js1OyldkNAhzTKchJME=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ItX6BL/qyMcbhrheqtwZE3PU3G495Sx2wkiJLD4acmFlSGYKXERLWEgRAsvnvAb1dcNIeEy857QeYAyNswuUhsR6AfgsEoPEOAifm6iVgQVdA22DnfwKNEyc1naawT6TBnSXZBYNUnB4CkkNoEX4KDALDW3+5t3flaWaBdbZSDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fkESSmo9; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713190738; x=1744726738;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=6ADPjgD9QQhJ43e2oiyLf588Js1OyldkNAhzTKchJME=;
-  b=fkESSmo9F1JoqZ8fWQ+uEOA6zNb/ang/yH8xOG/ZOMBBfg9tVO/tJecY
-   k4MKNUx+K2leTG0j3J5K2nN4pOiWBViFdCsRwhRLw7RDaBDrK11bFIcJZ
-   UBzow6RIm9bztDAnmJsJWSPq9hEwj9y4iSVcwqApKu1T51+IMzPYHi4U7
-   W5hofvNrjBYv253f21j2iwFb0JrG5TJp4QbJX0XAhtjuGmbKssecgFkXV
-   +j8SKRL48QcDHh5wH7xKeAWGHm7i5xjThnGaHSQk1mSVPzXXFCqpuzdu4
-   DPKLn7MHfOruFDbdwkrQCuDrwMdQACFzlEuQELb1HWM/N21Nd9k9xoc0r
-   w==;
-X-CSE-ConnectionGUID: l4xlMDI3QoSeDM7FY0U3tw==
-X-CSE-MsgGUID: HksOqgBtRCiTdZM97QwpQA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="19184626"
-X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
-   d="scan'208";a="19184626"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 07:18:57 -0700
-X-CSE-ConnectionGUID: PXuKd1zlT1q4A8p18SiWPg==
-X-CSE-MsgGUID: aMFZxfavRn26xUAd8/9j+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
-   d="scan'208";a="22026966"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by fmviesa008.fm.intel.com with ESMTP; 15 Apr 2024 07:18:55 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id DDDCA455; Mon, 15 Apr 2024 17:18:53 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Martijn Braam <martijn@brixit.nl>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v1 1/1] iio: light: stk3310: Drop most likely fake ACPI ID
-Date: Mon, 15 Apr 2024 17:18:52 +0300
-Message-ID: <20240415141852.853490-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+	s=arc-20240116; t=1713193595; c=relaxed/simple;
+	bh=mOsRfd5qxASFakmIqOXVcTvu3CyoQSRnAIxxp1fG+4M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RDr0mPcaMr+zxVk+MhpptPOwTmCzssUF7wSa0ALqksHI0wGkPyoAHO7Jh4L5BF6bNE2eJT5Wmpqql/TAzZWKA9srOuM/DSKTlmFGaY5eI+zt03oSjDNGTI7ctVMP38YszsyArDN6KJIccnYKO+0UB3cN2V+ShKyVmGj9lkeS7RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KM0BZX19; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-57030fa7381so909037a12.2;
+        Mon, 15 Apr 2024 08:06:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713193591; x=1713798391; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/7/TBRaaPIPtSJDv4IMqFEGZB5oTZKPTNBkY3AEKti8=;
+        b=KM0BZX19UxPfb4hlyvh/+Af4ZaDBBqk/VAOe8/s95nEk8NnQ76cfVv54IaY8Z+FEdV
+         RX2nPssJELFeQffCg3sUbkeNIKbEnIOdJvA3OTtpIcSbZBEA0F4bwHUd4sU7m0DPCV60
+         YPOGzI06wBjWtyQqpJ+xptXMMvj443kUwZNgwZtwjxcIO7yXlxfw/BCTyLSsPi/AelMw
+         aupciKDdAJf0XuysYlJbzI9tUIRsfa9DGjELCG96+pvoBJTjRRrpfd59aSP2iH1B3vrz
+         L2/Pbf4vXffPD9dDRCUB2QWnX+7L7ZcxJ4s422t77tPKM2Q1VZKhWq1sJ3jcTOuZmvLa
+         t4qA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713193591; x=1713798391;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/7/TBRaaPIPtSJDv4IMqFEGZB5oTZKPTNBkY3AEKti8=;
+        b=iWOrGgo2DGPPc+sOZs3eLY+8Y4GMxl0rh9KU57HOlzX5Ma/EiJrxq4RdJezmr6DE5t
+         WYPa85upKK/HRHXR8FXZJ3jR9AyG8JQCsCKtrPp8cewXOnXbVDepVFYNuer/Jmes1uVi
+         f7pVFyckCqnaYOlQnf/X3pumoaKFm8IyWt1bObU67YRnvD9VW8kQTTCxcLz5yqTJdT1d
+         MHWQSNLk2p7vY9SVc5JuwriIOHzD3m1o/10vEJu0ts97r+gzrzlwYqLJF+KsT6mqCnAT
+         PIWcMq4/alMAb3G4nxH2FRovMqtHTxuHkIDeXeXiOnlKXZVCaqJaFmg7AjJ3VPK9iUzZ
+         qELQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWK5d9dywDQtGdZiO1uB4QsqnzeP/tvdfYLPtF5xKMHB2t4o7CISRFrInL+P1QZzM0tfZUbdmnp5YTU9saGwKcX3Q4GNVtdOrNwpCZm8GaMS+qD2bfKOKBrLcDge2CxszTlVWJoH1AVLuSo4VCaG16XCm9GnJdmMZ6fAsirNbrqJeoNqNTh8DkChsCXbmZk6uv1lufMVa4mYarQivPuiAQ3
+X-Gm-Message-State: AOJu0Ywuz7zv2xgMUkTWdH4yyJkDbNOgk3Oj1dla8U+vKicCvuaLlM+5
+	h5e9YPdu84VL7Q8J2KwMhW9KATrwXtJDKYc5rg4EmAoNqaFZ9zrOG1oQ6mLeA5rou5UECCwu4bS
+	y2JenBUjY4oawZUvIYfNuzjE1HI0=
+X-Google-Smtp-Source: AGHT+IEZOaeQQWk/r3eJ/DbVb/nwCv9r/tKA3MdsC0SedQqpmw8jPxhTIbiLf3bZtwJnwgsZOK4XztHqpSaPZiAKWVk=
+X-Received: by 2002:a17:906:3fc9:b0:a51:f915:bf5a with SMTP id
+ k9-20020a1709063fc900b00a51f915bf5amr5280873ejj.75.1713193590873; Mon, 15 Apr
+ 2024 08:06:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240414175300.956243-1-aren@peacevolution.org>
+ <20240414175716.958831-1-aren@peacevolution.org> <20240414175716.958831-3-aren@peacevolution.org>
+In-Reply-To: <20240414175716.958831-3-aren@peacevolution.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 15 Apr 2024 18:05:54 +0300
+Message-ID: <CAHp75Vf_JX1Uv=_cvoiukzSaTVWbmQSW0P_nneP8C-kxX4fBXQ@mail.gmail.com>
+Subject: Re: [PATCH 3/4] iio: light: stk3310: log error if reading the chip id fails
+To: Aren Moynihan <aren@peacevolution.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	Willow Barraco <contact@willowbarraco.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The commit in question does not proove that ACPI ID exists.
-Quite likely it was a cargo cult addition while doint that
-for DT-based enumeration.  Drop most likely fake ACPI ID.
+On Sun, Apr 14, 2024 at 8:57=E2=80=AFPM Aren Moynihan <aren@peacevolution.o=
+rg> wrote:
+>
+> If the chip isn't powered, this call is likely to return an error.
+> Without a log here the driver will silently fail to probe. Common errors
+> are ENXIO (when the chip isn't powered) and ETIMEDOUT (when the i2c bus
+> isn't powered).
 
-Googling for STK3335 gives no useful results in regard to DSDT.
+>         ret =3D regmap_read(data->regmap, STK3310_REG_ID, &chipid);
+> -       if (ret < 0)
+> +       if (ret < 0) {
+> +               dev_err(&client->dev, "failed to read chip id: %d", ret);
+>                 return ret;
+> +       }
 
-Fixes: 677f16813a92 ("iio: light: stk3310: Add support for stk3335")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- drivers/iio/light/stk3310.c | 1 -
- 1 file changed, 1 deletion(-)
+Briefly looking at the code it seems that this one is strictly part of
+the probe phase, which means we may use
 
-diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
-index 7b71ad71d78d..08d471438175 100644
---- a/drivers/iio/light/stk3310.c
-+++ b/drivers/iio/light/stk3310.c
-@@ -693,7 +693,6 @@ MODULE_DEVICE_TABLE(i2c, stk3310_i2c_id);
- static const struct acpi_device_id stk3310_acpi_id[] = {
- 	{"STK3310", 0},
- 	{"STK3311", 0},
--	{"STK3335", 0},
- 	{}
- };
- 
--- 
-2.43.0.rc1.1336.g36b5255a03ac
+  return dev_err_probe(...);
 
+pattern. Yet, you may add another patch to clean up all of them:
+_probe(), _init(), _regmap_init() to use the same pattern everywhere.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

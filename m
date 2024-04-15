@@ -1,166 +1,108 @@
-Return-Path: <linux-iio+bounces-4293-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4294-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634DD8A52A5
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 16:05:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A218A52ED
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 16:19:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83BE81C21F97
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 14:05:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836DA1C21EB1
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 14:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0247442E;
-	Mon, 15 Apr 2024 14:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9682C74C07;
+	Mon, 15 Apr 2024 14:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jpzx8k0X"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fkESSmo9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0DD74420;
-	Mon, 15 Apr 2024 14:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A834973175;
+	Mon, 15 Apr 2024 14:18:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713189936; cv=none; b=KSbGRzHbl7Ei3IJtOI6+NgekFDiOytgd6WivQpUin0bpD4eQb7WemNG9BRtNKm3783j4HW8ywSbyyBtotWoR35i8H0Xodd9qpI8cx60Vv8RetcIr3LkyXMd7oGxEoSEDe6L8b/xMYI68ieQbpaBXECNANGaAPi4QpJE7UzsB9D4=
+	t=1713190739; cv=none; b=SwBzYhEHfXsayLpPX0m94K/RzyIsoFdIhfi89dVRP1vqHyGoyDeAGWFPw/MEZZSrGBnLnEMO7JixrZ0oQN5q0vyiq88xXLw8hL3BMNR4eRdz73mkZZYOmc+zH2Qr7ASaENyFq2QgZ0wf+eKr254fjShCZ7m3hrkjTvwSGSV2mVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713189936; c=relaxed/simple;
-	bh=C2RaXFcuh6uhrQqFZdquLpLy57EbGKkPUni9Jf4Km8E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gQPDm4x5IosXjz312JCq5OUHq9IJV2631BLzYVNQDkl5TG8QANgKSyMDhsIKA8weBO5ZXyIAtG34F88QZGUvwT765EHIhMNcDInMJzxpxPOAKIMBlix0Zkn69KeUkcs1Lr9q1JCf3vROxUvd2aSA3l9VKT++PUyEkP3HIuMVd+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jpzx8k0X; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-563cb3ba9daso3121476a12.3;
-        Mon, 15 Apr 2024 07:05:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713189929; x=1713794729; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ce+RZRNdvY2/c7BMbLG8IKG8g7W50m+r0bqN56BPld4=;
-        b=jpzx8k0XvsE30XWjgOnfcrzTqufdwG0YJLdCGuWsWyorExU7YcQ5d1dQXT4ynOw2uY
-         IxAhq3MiH5qaRTcWmgyg5XRpN95GW9pAnY440FKkbp0I2luXggqwvvnlP+gMUoXWY3BZ
-         Hldh1RGHlbD57FcYBpFhBZ9pVx3CQx5LbHZG/AW0lWr2qLrAoBKcjZY8KkvmZGTOD+sr
-         YTC5eefT7+fedTPXGLIrwQbUHvddnw3NDsWmzfHRFDeLpAlg3MKX25Upflgw8yA7Eogb
-         oQPV2Gs2a+OIiyvJsBXbxe1UTZ38eNqIgoznRoAoxRAAKSwBnfKIzTWrUAaheJK66VVQ
-         C/+w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713189929; x=1713794729;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ce+RZRNdvY2/c7BMbLG8IKG8g7W50m+r0bqN56BPld4=;
-        b=nWFvHhGZ7DdEJY3mIMW5wwJsT55+DTkXwZo1hrX6OSV4M+qcNQBiibY2l/bRP1dLY5
-         YXM7Fi/FOGBTEmyqiLogQ7ep6pTtoV/bogHKzwH6ElM5t8X37vdXlWB9OKMjAYHQz5wA
-         MJp28yifH40vbVCoKQxemMmCxlYeiDYtNkHOeon65+uzg7NkzN9uqAvJWS5ubzbn1vGC
-         ipa9kNQzGq6lHP4QW79dX/gAy83xh5ZDOzuN/bkMLALKHu0lVmMi2qWi8wkoAB9QQQGS
-         RVwW1ovU/lzpkbVbQMc7SRlTG+xbeGiEhgw2PTpadLSrQQkON6xGkTsPQbI5Vl8l4f4I
-         TDWw==
-X-Forwarded-Encrypted: i=1; AJvYcCVFkolld2GFSqzusotWP8OWhiy852shbAkkZ4sdOoL1vqM9DqmpzM3oaP2asPDb7EZzUK5ci+5EDywlfrsoaXqCBddOwNGzw3AVmhDZx++InNs+ZNMs0Ziz4RkDXD3oHUtWbC2gAFBUComXH4Ztat1IAvz7ArN9iHOZO3DoNx8j487LzhGhwoZ6OYiUVllvkIDbbSpiZsn2mfm8M92xUwwa
-X-Gm-Message-State: AOJu0Yy0FZY007OVcR8AAdQuqipFhgID2qZDOl+X3VE0RilWqSAM6FzT
-	yR//VpNJd0o6w5zME25rCSat/DrAYB4zSfSZNLm+CnrT6eeHuDpMgC+PayWuabZOFSDiuE80S0h
-	DyfFN0kgLanOaCSeiMIvGqSyZChQ=
-X-Google-Smtp-Source: AGHT+IH86wMUY1Sjlbl77b74h8OkFHcq+fDgDK9uWIRulsSWUGwrIz3dHKroKOaN9XoU6ownWtnCcV0AOUGrp658hc4=
-X-Received: by 2002:a17:906:1355:b0:a4a:3441:2e2a with SMTP id
- x21-20020a170906135500b00a4a34412e2amr6807358ejb.55.1713189929060; Mon, 15
- Apr 2024 07:05:29 -0700 (PDT)
+	s=arc-20240116; t=1713190739; c=relaxed/simple;
+	bh=6ADPjgD9QQhJ43e2oiyLf588Js1OyldkNAhzTKchJME=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ItX6BL/qyMcbhrheqtwZE3PU3G495Sx2wkiJLD4acmFlSGYKXERLWEgRAsvnvAb1dcNIeEy857QeYAyNswuUhsR6AfgsEoPEOAifm6iVgQVdA22DnfwKNEyc1naawT6TBnSXZBYNUnB4CkkNoEX4KDALDW3+5t3flaWaBdbZSDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fkESSmo9; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713190738; x=1744726738;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6ADPjgD9QQhJ43e2oiyLf588Js1OyldkNAhzTKchJME=;
+  b=fkESSmo9F1JoqZ8fWQ+uEOA6zNb/ang/yH8xOG/ZOMBBfg9tVO/tJecY
+   k4MKNUx+K2leTG0j3J5K2nN4pOiWBViFdCsRwhRLw7RDaBDrK11bFIcJZ
+   UBzow6RIm9bztDAnmJsJWSPq9hEwj9y4iSVcwqApKu1T51+IMzPYHi4U7
+   W5hofvNrjBYv253f21j2iwFb0JrG5TJp4QbJX0XAhtjuGmbKssecgFkXV
+   +j8SKRL48QcDHh5wH7xKeAWGHm7i5xjThnGaHSQk1mSVPzXXFCqpuzdu4
+   DPKLn7MHfOruFDbdwkrQCuDrwMdQACFzlEuQELb1HWM/N21Nd9k9xoc0r
+   w==;
+X-CSE-ConnectionGUID: l4xlMDI3QoSeDM7FY0U3tw==
+X-CSE-MsgGUID: HksOqgBtRCiTdZM97QwpQA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11045"; a="19184626"
+X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
+   d="scan'208";a="19184626"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Apr 2024 07:18:57 -0700
+X-CSE-ConnectionGUID: PXuKd1zlT1q4A8p18SiWPg==
+X-CSE-MsgGUID: aMFZxfavRn26xUAd8/9j+w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,203,1708416000"; 
+   d="scan'208";a="22026966"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by fmviesa008.fm.intel.com with ESMTP; 15 Apr 2024 07:18:55 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1003)
+	id DDDCA455; Mon, 15 Apr 2024 17:18:53 +0300 (EEST)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Martijn Braam <martijn@brixit.nl>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v1 1/1] iio: light: stk3310: Drop most likely fake ACPI ID
+Date: Mon, 15 Apr 2024 17:18:52 +0300
+Message-ID: <20240415141852.853490-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240414175300.956243-1-aren@peacevolution.org>
- <20240414175716.958831-1-aren@peacevolution.org> <20240414175716.958831-2-aren@peacevolution.org>
-In-Reply-To: <20240414175716.958831-2-aren@peacevolution.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Mon, 15 Apr 2024 17:04:53 +0300
-Message-ID: <CAHp75VdZavToGYqLYnkKYt53HXoQxXnRER5Cn5b2==gWTvkAWQ@mail.gmail.com>
-Subject: Re: [PATCH 2/4] iio: light: stk3310: Implement vdd supply and power
- it off during suspend
-To: Aren Moynihan <aren@peacevolution.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	Willow Barraco <contact@willowbarraco.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Sun, Apr 14, 2024 at 8:57=E2=80=AFPM Aren Moynihan <aren@peacevolution.o=
-rg> wrote:
->
-> From: Ondrej Jirman <megi@xff.cz>
->
-> VDD power input can be used to completely power off the chip during
-> system suspend. Do so if available.
+The commit in question does not proove that ACPI ID exists.
+Quite likely it was a cargo cult addition while doint that
+for DT-based enumeration.  Drop most likely fake ACPI ID.
 
-...
+Googling for STK3335 gives no useful results in regard to DSDT.
 
->  #include <linux/iio/events.h>
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
+Fixes: 677f16813a92 ("iio: light: stk3310: Add support for stk3335")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ drivers/iio/light/stk3310.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-> +#include <linux/regulator/consumer.h>
+diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+index 7b71ad71d78d..08d471438175 100644
+--- a/drivers/iio/light/stk3310.c
++++ b/drivers/iio/light/stk3310.c
+@@ -693,7 +693,6 @@ MODULE_DEVICE_TABLE(i2c, stk3310_i2c_id);
+ static const struct acpi_device_id stk3310_acpi_id[] = {
+ 	{"STK3310", 0},
+ 	{"STK3311", 0},
+-	{"STK3335", 0},
+ 	{}
+ };
+ 
+-- 
+2.43.0.rc1.1336.g36b5255a03ac
 
-Move it to be ordered and add a blank line to separate iio/*.h group.
-
-...
-
-> +       data->vdd_reg =3D devm_regulator_get_optional(&client->dev, "vdd"=
-);
-> +       if (IS_ERR(data->vdd_reg)) {
-> +               ret =3D PTR_ERR(data->vdd_reg);
-> +               if (ret =3D=3D -ENODEV)
-> +                       data->vdd_reg =3D NULL;
-
-> +               else
-
-Redundant 'else' when you follow the pattern "check for error condition fir=
-st".
-
-> +                       return dev_err_probe(&client->dev, ret,
-> +                                            "get regulator vdd failed\n"=
-);
-> +       }
-
-...
-
-> +       if (data->vdd_reg) {
-> +               ret =3D regulator_enable(data->vdd_reg);
-> +               if (ret)
-> +                       return dev_err_probe(&client->dev, ret,
-> +                                            "regulator vdd enable failed=
-\n");
-> +
-> +               usleep_range(1000, 2000);
-
-fsleep()
-
-> +       }
-
-...
-
->         stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
-> +       if (data->vdd_reg)
-> +               regulator_disable(data->vdd_reg);
-
-I forgot to check the order of freeing resources, be sure you have no
-devm_*() releases happening before this call.
-
-...
-
-> +               usleep_range(1000, 2000);
-
-fsleep()
-
---=20
-With Best Regards,
-Andy Shevchenko
 

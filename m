@@ -1,137 +1,166 @@
-Return-Path: <linux-iio+bounces-4292-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4293-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AADF8A5265
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 15:55:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 634DD8A52A5
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 16:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 008561F22CCD
-	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 13:55:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83BE81C21F97
+	for <lists+linux-iio@lfdr.de>; Mon, 15 Apr 2024 14:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B2D7351A;
-	Mon, 15 Apr 2024 13:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0247442E;
+	Mon, 15 Apr 2024 14:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Vq1M0w/G"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jpzx8k0X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD257317C
-	for <linux-iio@vger.kernel.org>; Mon, 15 Apr 2024 13:55:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0DD74420;
+	Mon, 15 Apr 2024 14:05:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713189324; cv=none; b=RVAPtPc2aMe/xWmuCkf6ILVgwGhw0N1Q5iYFcPZuGgexAV8OIJOKPp/BaksozjLqr0bh1wlJxyRAVCZZYtwdfQB5WxM94WaFoUORDSF4T8nkmqdRv8Zn7QZRc8ZHhX+HXmTBiI1xFCuIK69VyZnCqI0a9iM8kyyx7P5/zdaJM1s=
+	t=1713189936; cv=none; b=KSbGRzHbl7Ei3IJtOI6+NgekFDiOytgd6WivQpUin0bpD4eQb7WemNG9BRtNKm3783j4HW8ywSbyyBtotWoR35i8H0Xodd9qpI8cx60Vv8RetcIr3LkyXMd7oGxEoSEDe6L8b/xMYI68ieQbpaBXECNANGaAPi4QpJE7UzsB9D4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713189324; c=relaxed/simple;
-	bh=/KqtpQiX1Bts9vzHpMoMbXJoUvqDULdQ15ObKyQGkQ8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N+85IMiLbfqTk+iWfeqptprI+m2bHqNwElV6oOohmV8ZrAq2/elnMdETc5RDWeNHL4Z0wE8fqJbiKh6NLD7Wt/Mrn5HrnLIDNk5fqaeAcRgBy0RW7UTVFOVFF7KAJSJiQzao/yE+Yf0opm0lPggwyn/FqKpfKW8F6Aqexl4CF3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Vq1M0w/G; arc=none smtp.client-ip=209.85.210.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6eb7036e3bbso1379220a34.2
-        for <linux-iio@vger.kernel.org>; Mon, 15 Apr 2024 06:55:23 -0700 (PDT)
+	s=arc-20240116; t=1713189936; c=relaxed/simple;
+	bh=C2RaXFcuh6uhrQqFZdquLpLy57EbGKkPUni9Jf4Km8E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gQPDm4x5IosXjz312JCq5OUHq9IJV2631BLzYVNQDkl5TG8QANgKSyMDhsIKA8weBO5ZXyIAtG34F88QZGUvwT765EHIhMNcDInMJzxpxPOAKIMBlix0Zkn69KeUkcs1Lr9q1JCf3vROxUvd2aSA3l9VKT++PUyEkP3HIuMVd+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jpzx8k0X; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-563cb3ba9daso3121476a12.3;
+        Mon, 15 Apr 2024 07:05:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1713189322; x=1713794122; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=FDybaBLDv2wiDu+VluN3PgOq81UE8XZcMt1MU2BUL6M=;
-        b=Vq1M0w/GpnnE/tCK6gq04CvjneEpphicmA4ufDVVoOYQ0msR7w9nKFuXTlW6N9oyQB
-         uRmXz7zMPt/NIHro5UNULn4pxYoPRAM8WYl01ZEPEBzSUSr5/Cy22/pseUBQ88OPz2SZ
-         3/4EeOey5C7CANFfaeUe9HppRtQvRHMuXaYbTNrBfFp+IaRCVZvQNlQ3ZPeJQPXmgOi6
-         5RiPxdiPalmZINvbrHqpkF+sq+G91KyRdAormX2Vg6o4VbeJBduUnO6tmNVJ7dH50bu9
-         JkqUuNFqxusKVUc9lVf/v6AJRFPd3uU5ZNkIQWHUc9Md0x+sfy+ObSect1zCw0zZA7GI
-         Ybdg==
+        d=gmail.com; s=20230601; t=1713189929; x=1713794729; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ce+RZRNdvY2/c7BMbLG8IKG8g7W50m+r0bqN56BPld4=;
+        b=jpzx8k0XvsE30XWjgOnfcrzTqufdwG0YJLdCGuWsWyorExU7YcQ5d1dQXT4ynOw2uY
+         IxAhq3MiH5qaRTcWmgyg5XRpN95GW9pAnY440FKkbp0I2luXggqwvvnlP+gMUoXWY3BZ
+         Hldh1RGHlbD57FcYBpFhBZ9pVx3CQx5LbHZG/AW0lWr2qLrAoBKcjZY8KkvmZGTOD+sr
+         YTC5eefT7+fedTPXGLIrwQbUHvddnw3NDsWmzfHRFDeLpAlg3MKX25Upflgw8yA7Eogb
+         oQPV2Gs2a+OIiyvJsBXbxe1UTZ38eNqIgoznRoAoxRAAKSwBnfKIzTWrUAaheJK66VVQ
+         C/+w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713189322; x=1713794122;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FDybaBLDv2wiDu+VluN3PgOq81UE8XZcMt1MU2BUL6M=;
-        b=MUACP947G2gt5iaNrOtLK8zUP2Z9lVc8RTt7HIsVBydeQ8lpwdHj3KH6SHY3MCX4gd
-         Vbuf2w5YKgK2PfKhOV6E48iJpvYfZZ8QH8uhJoL4aYNCJJMPz/TXdENw/xBNBm3tpZmC
-         SOfwmsGgyR56Jh9dEKQpDMkSvM51mK8DODXT+zNLladiNwNbFF9q0y96Hfyb3w8hx/Ap
-         83D4UyEux3zLvg5u0Gvn12IFrfi1/666nbRuwHB2xu61UGI8MquJTuh5jIUDvyRhZp3g
-         FBgdrvrI2MxQ2CRWbHANSZF+juHm4hdf21vWWzeZ2zW0TVHohwMqjK/aNRCSUOPPg9ok
-         0CVw==
-X-Forwarded-Encrypted: i=1; AJvYcCVNk3lqaUnLmxAygDbjKEVpJOYmJUbU5tVfG7jJAbJl9tnQsQrqpU2G6wnvc5HVYd0EF16UuoYkhkxAbxxBbkA3Z7dyGVHC3ZW0
-X-Gm-Message-State: AOJu0YzgfONILcBCRM/MeQWk1yRI0LvfhI/lfr3Qy5c58HgRdiYBmi/R
-	nEZ2DAsIjJ9E0D2Ncf4G6sf4wd1vTxUAc3vJj6dFzm8vK5ytBKKdtHlxJp8+k+M=
-X-Google-Smtp-Source: AGHT+IFASyl13hC9uptACMxhhHeBMOBOY+sePtjxfpf//vvHEOFGYAvbdA85itseafAEj76cF6dB4Q==
-X-Received: by 2002:a05:6830:1619:b0:6eb:7d34:e1d7 with SMTP id g25-20020a056830161900b006eb7d34e1d7mr3280527otr.15.1713189321521;
-        Mon, 15 Apr 2024 06:55:21 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id h13-20020a9d600d000000b006ea23d8fcaasm1836074otj.32.2024.04.15.06.55.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Apr 2024 06:55:20 -0700 (PDT)
-Message-ID: <c9c33784-d047-42d1-934e-d9e10cf47a65@baylibre.com>
-Date: Mon, 15 Apr 2024 08:55:19 -0500
+        d=1e100.net; s=20230601; t=1713189929; x=1713794729;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Ce+RZRNdvY2/c7BMbLG8IKG8g7W50m+r0bqN56BPld4=;
+        b=nWFvHhGZ7DdEJY3mIMW5wwJsT55+DTkXwZo1hrX6OSV4M+qcNQBiibY2l/bRP1dLY5
+         YXM7Fi/FOGBTEmyqiLogQ7ep6pTtoV/bogHKzwH6ElM5t8X37vdXlWB9OKMjAYHQz5wA
+         MJp28yifH40vbVCoKQxemMmCxlYeiDYtNkHOeon65+uzg7NkzN9uqAvJWS5ubzbn1vGC
+         ipa9kNQzGq6lHP4QW79dX/gAy83xh5ZDOzuN/bkMLALKHu0lVmMi2qWi8wkoAB9QQQGS
+         RVwW1ovU/lzpkbVbQMc7SRlTG+xbeGiEhgw2PTpadLSrQQkON6xGkTsPQbI5Vl8l4f4I
+         TDWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFkolld2GFSqzusotWP8OWhiy852shbAkkZ4sdOoL1vqM9DqmpzM3oaP2asPDb7EZzUK5ci+5EDywlfrsoaXqCBddOwNGzw3AVmhDZx++InNs+ZNMs0Ziz4RkDXD3oHUtWbC2gAFBUComXH4Ztat1IAvz7ArN9iHOZO3DoNx8j487LzhGhwoZ6OYiUVllvkIDbbSpiZsn2mfm8M92xUwwa
+X-Gm-Message-State: AOJu0Yy0FZY007OVcR8AAdQuqipFhgID2qZDOl+X3VE0RilWqSAM6FzT
+	yR//VpNJd0o6w5zME25rCSat/DrAYB4zSfSZNLm+CnrT6eeHuDpMgC+PayWuabZOFSDiuE80S0h
+	DyfFN0kgLanOaCSeiMIvGqSyZChQ=
+X-Google-Smtp-Source: AGHT+IH86wMUY1Sjlbl77b74h8OkFHcq+fDgDK9uWIRulsSWUGwrIz3dHKroKOaN9XoU6ownWtnCcV0AOUGrp658hc4=
+X-Received: by 2002:a17:906:1355:b0:a4a:3441:2e2a with SMTP id
+ x21-20020a170906135500b00a4a34412e2amr6807358ejb.55.1713189929060; Mon, 15
+ Apr 2024 07:05:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/5] dt-bindings: iio: adc: ad7192: Add AD7194 support
-To: Alisa-Dariana Roman <alisadariana@gmail.com>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- michael.hennerich@analog.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: alexandru.tachici@analog.com, lars@metafoo.de, jic23@kernel.org,
- robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- lgirdwood@gmail.com, broonie@kernel.org, andy@kernel.org,
- nuno.sa@analog.com, marcelo.schmitt@analog.com, bigunclemax@gmail.com,
- okan.sahin@analog.com, fr0st61te@gmail.com, alisa.roman@analog.com,
- marcus.folkesson@gmail.com, schnelle@linux.ibm.com, liambeguin@gmail.com
-References: <20240413151152.165682-1-alisa.roman@analog.com>
- <20240413151152.165682-5-alisa.roman@analog.com>
- <2ad06ea8-220f-4d09-bbe7-c4dd12d0d8bd@linaro.org>
- <105bd25b-e5ea-4649-b9b2-2547e94b103e@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <105bd25b-e5ea-4649-b9b2-2547e94b103e@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240414175300.956243-1-aren@peacevolution.org>
+ <20240414175716.958831-1-aren@peacevolution.org> <20240414175716.958831-2-aren@peacevolution.org>
+In-Reply-To: <20240414175716.958831-2-aren@peacevolution.org>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 15 Apr 2024 17:04:53 +0300
+Message-ID: <CAHp75VdZavToGYqLYnkKYt53HXoQxXnRER5Cn5b2==gWTvkAWQ@mail.gmail.com>
+Subject: Re: [PATCH 2/4] iio: light: stk3310: Implement vdd supply and power
+ it off during suspend
+To: Aren Moynihan <aren@peacevolution.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	Willow Barraco <contact@willowbarraco.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/15/24 8:08 AM, Alisa-Dariana Roman wrote:
-> On 14.04.2024 00:19, Krzysztof Kozlowski wrote:
->> On 13/04/2024 17:11, Alisa-Dariana Roman wrote:
->>> Unlike the other AD719Xs, AD7194 has configurable differential
->>> channels. The user can dynamically configure them in the devicetree.
->>>
->>> Also add an example for AD7194 devicetree.
->>>
->>> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
->>> ---
->>>   .../bindings/iio/adc/adi,ad7192.yaml          | 74 +++++++++++++++++++
->>>   1 file changed, 74 insertions(+)
->>>
->>> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>> index ba506af3b73e..855f0a2d7d75 100644
->>> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
->>> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> 
-> ...
-> 
->>
->>> +  "^channel@[0-9]+$":
->>
->> Why restricting the pattern? If you have 256 channels, how are you going
->> to encode it?
-> 
-> Hi Krzysztof,
-> 
-> Thank you for your feedback! I applied the rest, but as for this one isn't channel@1 -> channel@256 encoding sufficient?
-> 
-> Kind regards,
-> Alisa-Dariana Roman
-> 
-> 
+On Sun, Apr 14, 2024 at 8:57=E2=80=AFPM Aren Moynihan <aren@peacevolution.o=
+rg> wrote:
+>
+> From: Ondrej Jirman <megi@xff.cz>
+>
+> VDD power input can be used to completely power off the chip during
+> system suspend. Do so if available.
 
-The number after @ is hexidecimal (without leading 0x), so it should be
-[0-9a-f]. channel@0 to channel@ff.
+...
+
+>  #include <linux/iio/events.h>
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+
+> +#include <linux/regulator/consumer.h>
+
+Move it to be ordered and add a blank line to separate iio/*.h group.
+
+...
+
+> +       data->vdd_reg =3D devm_regulator_get_optional(&client->dev, "vdd"=
+);
+> +       if (IS_ERR(data->vdd_reg)) {
+> +               ret =3D PTR_ERR(data->vdd_reg);
+> +               if (ret =3D=3D -ENODEV)
+> +                       data->vdd_reg =3D NULL;
+
+> +               else
+
+Redundant 'else' when you follow the pattern "check for error condition fir=
+st".
+
+> +                       return dev_err_probe(&client->dev, ret,
+> +                                            "get regulator vdd failed\n"=
+);
+> +       }
+
+...
+
+> +       if (data->vdd_reg) {
+> +               ret =3D regulator_enable(data->vdd_reg);
+> +               if (ret)
+> +                       return dev_err_probe(&client->dev, ret,
+> +                                            "regulator vdd enable failed=
+\n");
+> +
+> +               usleep_range(1000, 2000);
+
+fsleep()
+
+> +       }
+
+...
+
+>         stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
+> +       if (data->vdd_reg)
+> +               regulator_disable(data->vdd_reg);
+
+I forgot to check the order of freeing resources, be sure you have no
+devm_*() releases happening before this call.
+
+...
+
+> +               usleep_range(1000, 2000);
+
+fsleep()
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

@@ -1,165 +1,93 @@
-Return-Path: <linux-iio+bounces-4322-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4323-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E5C8A89EA
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 19:09:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4EE8A8C25
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 21:32:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A4B71C222C8
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 17:09:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B3EC1F2258A
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 19:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269BE171661;
-	Wed, 17 Apr 2024 17:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30E428DB3;
+	Wed, 17 Apr 2024 19:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VlWIee21"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jQzLmK/e"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B35117109B;
-	Wed, 17 Apr 2024 17:09:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633661DFF0
+	for <linux-iio@vger.kernel.org>; Wed, 17 Apr 2024 19:32:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713373756; cv=none; b=jmIyR2rfksrmltuOEYXnC/+1fYZ5dp4YF/jrCfK4rkzWduBNQxdXAakaNUBOdRit7EI3yUMrT9gTgcmMYdinyRmtHVOUe+9mUQk3hrT65mSerYj53XphHxmjJLm4s+i3ZPTLe1ZMCPpJKgKgWAjQxnJVuGtrZ2fPY7YBvELLCBM=
+	t=1713382348; cv=none; b=b9PGqzIDYFbvWTcimahonWgZxO69Y6d3Zf5TUgX4kWip3mDEXtWiVa2AdvRIM/jIHEHRPv0wapm5wwooL3cDxbyE68Q16vSk18nHVbxps/qw7NDc6wbN2fddbsX6okobtkMyrrNXz0R9tRdjOTbIW0fg6eCpEDPW+056Mbo+Ix0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713373756; c=relaxed/simple;
-	bh=9crrGJWSO/pmgfGBhncc5oXIfUwpP6oo0bwAmhis4mY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lbz/C7FjaVwJn5FNj4+C2DXfFSOGOjA5ZrFDcc3t5y4RAiaj/y3tX9AeNDLP3zBFjZfvGpqJgbfX1ilC+ZkQ0FCJSvCFvWrk7U0pfOeKZkfSSpvO3DPtYYfTLbLFFin4L/wc380lPeOt0WBrqQDBrbSY3FoQTVSuxHwNjYYnLsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VlWIee21; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a555b203587so108472766b.3;
-        Wed, 17 Apr 2024 10:09:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713373754; x=1713978554; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oPwBYmncLO39M6iuxDIL5VGVqta8zUBMbRZjwo+JNAI=;
-        b=VlWIee21uT0QrqUl9xZO7cAsP8jC1gn9p6/fo8r80y8Tfo5WRSXX5vSoaE4YeKlJFF
-         WD6HaHrPcaGDYA/4cHnv9NO7mf2XlNsSX/SOTuWYG6s1uqC9c60mjX7StNYZ0kxdWdHd
-         RdAEkTXrlFA38m8l8owhwexvzaSJhw+tt+y3QgXXxdV+bFEJESsgsNhfc76C85C/BeK/
-         QRkWJ7s0ZLjzRNKpQf1Rso6Z8H2Vg7Qn1rd+r8JTVfMQ8fWN/nmh9PvDWyI/NoyTm80v
-         M62bceD6o/4KQgjAKbjO2LupRBgw8TVm+ACMPb7xw9Xt/PLU0Vtp3IM+FkInonQUTFAp
-         bNSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713373754; x=1713978554;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oPwBYmncLO39M6iuxDIL5VGVqta8zUBMbRZjwo+JNAI=;
-        b=fxcNwGRXMz9T3SIQBkjszmMLUrVrzVHugqzwp8MZR2fZPi+7ERVnq6E/HKs/tlnn0u
-         VHXPw3jk5oInLerDvdFJokmE2YAYqhEU4c1quFfXPeW3Pbpgz8gefcxBxagZfvWvtY+M
-         IH5EirX/EVnKPdjAvRM4P58XvGISyCSxrAsJPlHLq9HwTYdkCRLuIIKid+ghaTx3ccF/
-         +uCiDezSPBcRAEgRwfgpQ2kurV6aDJz/scUlvDqFHQOMJvFjhSRM0RGgcsBlnYT0SeE6
-         hXJYsNyev+7Bglm8P26noVgUwq07uLE//ikh22ecw7VtRzKvsCM6M2WT8QXi+dyTPHyY
-         hfVA==
-X-Forwarded-Encrypted: i=1; AJvYcCWok/GPNcMqSYEDuk0KbJ6dC1kbSKGRSJyPk68xbE/OeJWUVBQFGIs7FdqhwtxCgca32O/5wPk8yy0dNLVmdKpaFhV13xvAkP32oLFMBldgbrwHmJAxOSkNluaQZeQHIMltSGoXBzM5794y5E/mcYa/CsfCmFhZZ1yhMm9brIaWHuQBlA==
-X-Gm-Message-State: AOJu0YyVF7Tvf32wz/QkJUE7laATbEVHN6s8TQt3YfiK5OhCPtDoovRX
-	C03xY6MRbGjhljvdZBMUfyD9gCArYuXh7fWWPUMLKKNNoYBTyVTnED7i/LnYLlXKOw9iznd1xJA
-	UPN5abcLPi6wqMU7d1apydFUAIOI=
-X-Google-Smtp-Source: AGHT+IGr2IF61Tq5V2UoeP6NsqjvosuELY8jr+3LLYgQOP9eBfScgTsWuXwRjeksq/gzaCVFXN++KM9eLd0ViexGnK0=
-X-Received: by 2002:a17:906:28d6:b0:a55:41fd:a013 with SMTP id
- p22-20020a17090628d600b00a5541fda013mr97880ejd.23.1713373753535; Wed, 17 Apr
- 2024 10:09:13 -0700 (PDT)
+	s=arc-20240116; t=1713382348; c=relaxed/simple;
+	bh=UiN5hoFKpdS51MgJIwsHIkMIlUaXyQxtC2lVRCgyBh4=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ITjITr4yMwVWdKu7HJDFW1hFAIp8FTKFBrw9HUZQK/gw0Yi6FChryo9AFybPtGHJ4SUgiHtq9VeeAV/FRcc6FNBJi53mQs6poLWGpsgnB4ukygOMOp3aB/QviEEYDxZ3f+ke2QB8lWcFLbd7dEkeBIKqh45RbR3eYqu9Rj18Jbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jQzLmK/e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id E3635C3277B
+	for <linux-iio@vger.kernel.org>; Wed, 17 Apr 2024 19:32:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713382347;
+	bh=UiN5hoFKpdS51MgJIwsHIkMIlUaXyQxtC2lVRCgyBh4=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=jQzLmK/ej3H2ppGgCKTWdSnGRW3pRFaxFq8PD19W56/fac8JFdlDsUlPdUg5FrDCK
+	 UPc5qjOMeFDl9L8Vnr5KaiKsP/b5s9f0Vn/SOisxy2a5K2V/n07zNA6LaKo2C/oEwd
+	 YGjkx8zXe2VIealXAU2gRX3tPaCKUjv9pf0HfHEVEB/bpWS+mXf54uMklXbWBcDF1E
+	 7RkImwiITttamCa+taNmyeXfByxsWEOF9PpZvc2P5YXWvUpcdQu3IaxHJbQR1XvOMX
+	 XQK0qbuMPID+XS5QUjb7+vjAZYNd6YEKAK/4UnQ3tkYxmwox8KtsBdvIiqZvpN8XbQ
+	 YkHUIMzqct0Yg==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id D362AC433E2; Wed, 17 Apr 2024 19:32:27 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
+Date: Wed, 17 Apr 2024 19:32:27 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: jwrdegoede@fedoraproject.org
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-218578-217253-F6mi9tjKWS@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
+References: <bug-218578-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240417170054.140587-1-alisa.roman@analog.com> <20240417170054.140587-4-alisa.roman@analog.com>
-In-Reply-To: <20240417170054.140587-4-alisa.roman@analog.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 17 Apr 2024 20:08:37 +0300
-Message-ID: <CAHp75VcT3VHcA8YVjc02PBXUxErnWg56Wyn1iiJshYVWv1YWxQ@mail.gmail.com>
-Subject: Re: [PATCH v6 3/5] iio: adc: ad7192: Add aincom supply
-To: Alisa-Dariana Roman <alisadariana@gmail.com>
-Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	alexandru.tachici@analog.com, lars@metafoo.de, jic23@kernel.org, 
-	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	lgirdwood@gmail.com, broonie@kernel.org, andy@kernel.org, nuno.sa@analog.com, 
-	marcelo.schmitt@analog.com, bigunclemax@gmail.com, dlechner@baylibre.com, 
-	okan.sahin@analog.com, fr0st61te@gmail.com, alisa.roman@analog.com, 
-	marcus.folkesson@gmail.com, schnelle@linux.ibm.com, liambeguin@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Apr 17, 2024 at 8:01=E2=80=AFPM Alisa-Dariana Roman
-<alisadariana@gmail.com> wrote:
->
-> AINCOM should actually be a supply. AINx inputs are referenced to AINCOM
-> in pseduo-differential operation mode. AINCOM voltage represets the
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
 
-pseudo
+--- Comment #30 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
+Ok, so my first build failed due to some diskspace issue on the builder. A =
+new
+successful build with the patches to parse the "ROTM" ACPI method is here:
 
-> offset of corresponding channels.
-
-...
-
-> +               case IIO_VOLTAGE:
-> +                       if (st->aincom_mv && !chan->differential)
-> +                               *val +=3D DIV_ROUND_CLOSEST_ULL((u64)st->=
-aincom_mv * 1000000000,
-
-It's quite easy to make a mistake in this long constant. Can you use
-an appropriate one from units.h?
-
-> +                                                             st->scale_a=
-vail[gain][1]);
-> +                       return IIO_VAL_INT;
-
-...
-
-> +       aincom =3D devm_regulator_get_optional(&spi->dev, "aincom");
-> +       if (!IS_ERR(aincom)) {
-
-Why not a positive condition?
-
-> +               ret =3D regulator_enable(aincom);
-> +               if (ret) {
-
-> +                       dev_err(&spi->dev, "Failed to enable specified AI=
-NCOM supply\n");
-
-return dev_err_probe();
-
-> +                       return ret;
-> +               }
-> +
-> +               ret =3D devm_add_action_or_reset(&spi->dev, ad7192_reg_di=
-sable, aincom);
-> +               if (ret)
-> +                       return ret;
-> +
-> +               ret =3D regulator_get_voltage(aincom);
-> +               if (ret < 0)
-> +                       return dev_err_probe(&spi->dev, ret,
-> +                                            "Device tree error, AINCOM v=
-oltage undefined\n");
-> +               st->aincom_mv =3D ret / 1000;
-> +       } else {
-> +               st->aincom_mv =3D 0;
-> +       }
-
-...
-
-> @@ -1113,6 +1145,7 @@ static int ad7192_probe(struct spi_device *spi)
->         st->int_vref_mv =3D ret / 1000;
->
->         st->chip_info =3D spi_get_device_match_data(spi);
-> +
->         indio_dev->name =3D st->chip_info->name;
->         indio_dev->modes =3D INDIO_DIRECT_MODE;
->         indio_dev->channels =3D st->chip_info->channels;
-
-Stray change.
+https://koji.fedoraproject.org/koji/taskinfo?taskID=3D116519225
 
 --=20
-With Best Regards,
-Andy Shevchenko
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

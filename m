@@ -1,158 +1,136 @@
-Return-Path: <linux-iio+bounces-4308-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4309-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D84088A8955
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 18:47:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF208A897F
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 18:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6692823AE
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 16:47:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 243A8B24774
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 16:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1255217106D;
-	Wed, 17 Apr 2024 16:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD0D17108F;
+	Wed, 17 Apr 2024 16:57:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZhKFfV9Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oui+M67N"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5470F16FF5A
-	for <linux-iio@vger.kernel.org>; Wed, 17 Apr 2024 16:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D350E171084
+	for <linux-iio@vger.kernel.org>; Wed, 17 Apr 2024 16:57:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713372399; cv=none; b=KqvFsII2seX8ZBDHvAm0qcarYmpzhj3IMVOUqLd5H1wB5TeXq0Os+qlrU5nA8msRdeTa86IKqOEnhcU8o4Oa7fPq3AdaS/J2ScJkBsJ5w30JXZWG2kMo4bL5VT6LC3pLntaiUbqZg0/ex+/3DiFzi6eSXUrvm+hVY2t1VVIhjAs=
+	t=1713373062; cv=none; b=Dk2CKkxeocKc5u4t+SlwTLKWJCU3lSEhoTlqtsiHpYFcUo9+aWNrAvqNXuvGVhGtepvYjlIgunYDcgWGps7rozJ8tCiiHNXatDZdpuk0NBANEJ93DZ2HY4DdL16w+A2cbdDEWyjadcjszWb10bWlggUZU5Xq5HXwtFjlsmAeNQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713372399; c=relaxed/simple;
-	bh=wZ3QxhBJiaOMw/VyXlSBTx2mSSnLkPa1eNl03oRZ8f0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aFUu9TnNAWZFJuhpW4vKCXabuwiOn/qTq5Ejpo5yugnRrJMBz1cNIISXMYiC8GwF70e4TlJ7HnT8nSv8S3IJSS03+zbpxQwIuUyjCfs1Y9GncW+PyxjQDlg5O7kx/5Q8C0H2/Wjrr7vPYXhtmbAdxn8HjCFsPCfRfzvpYy4fgaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZhKFfV9Q; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713372397;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/kWFFgyICdCuvnm6V12HK3Hu8XORVXgNv8ShxjjESyI=;
-	b=ZhKFfV9QTGSyMMuqOIasC+6BuYUGI3MmnQUbChLlU04rEYEBifGiGfDflyZeifYp3eDYn+
-	jXoiy+D6+ok9S5eRYKl4Qiw+jrH0ylwCjCsca2Kofyn/Zlqkm6qcKppKUS/DrqZygx2Hoa
-	qAQTAwVsWwaxIOvRtE92dSzmVzZqYFo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-39-XODW_6XMPNqUmD23ZU9WDQ-1; Wed, 17 Apr 2024 12:46:35 -0400
-X-MC-Unique: XODW_6XMPNqUmD23ZU9WDQ-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6C65E18065AE;
-	Wed, 17 Apr 2024 16:46:31 +0000 (UTC)
-Received: from localhost.localdomain (unknown [10.39.192.26])
-	by smtp.corp.redhat.com (Postfix) with ESMTP id A5A022166B34;
-	Wed, 17 Apr 2024 16:46:30 +0000 (UTC)
-From: Hans de Goede <hdegoede@redhat.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Sean Rhodes <sean@starlabs.systems>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH 4/4] iio: accel: mxc4005: Read orientation matrix from ACPI ROTM method
-Date: Wed, 17 Apr 2024 18:46:16 +0200
-Message-ID: <20240417164616.74651-5-hdegoede@redhat.com>
-In-Reply-To: <20240417164616.74651-1-hdegoede@redhat.com>
-References: <20240417164616.74651-1-hdegoede@redhat.com>
+	s=arc-20240116; t=1713373062; c=relaxed/simple;
+	bh=FKqR+iLserS8Lwwezm9AmBtKimMKYuZgwbez4TU/juQ=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=cS3UC7q/gar1418LfZMBl5vx2NPLe9CViokwH7IGrNDYJtYevPMBrlGBjLabIszSmrsOJ8qKpiCfnTXq+XF9zR0qAWRBYdNoQ5r08QItnraCLNwwGoSXo9wbTzBYyppsMlNZ8qmJrJ0Z6RNeWPA3A0uE9nKFo3rLJFo6DhVECPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oui+M67N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E781C072AA
+	for <linux-iio@vger.kernel.org>; Wed, 17 Apr 2024 16:57:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713373062;
+	bh=FKqR+iLserS8Lwwezm9AmBtKimMKYuZgwbez4TU/juQ=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=oui+M67NO1yyIVFxjyHlneWqmAkT1GTu8lcb6ZqtEPvWWf5dSyVNsq9Lm4auE+ugr
+	 WNfZHCFfDzT8/uXd7qx6QfL884HSL3Tgobq18cwW7fkK7WbLCFxPm2TGmy0PnOvHeQ
+	 krYUqdenFobkLmRAl0CL/BZJ13JbaLa7J7IvE7cDcoviYladcEza47Ih/XY2EHiqwO
+	 +q5/nS0+aauMhNFDtFhv4O0YHl7EAjRNvWVJU0rdH81/c6YKG8GiSTYZNfDmOEMJy8
+	 QHkPn52o9nySUSzGi5aSdndmektFgirLjdFBdr4pelNooT2L6yrov3eJgNu/FJV5kF
+	 ATBmZnFkB9Z+g==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id 52168C433E2; Wed, 17 Apr 2024 16:57:42 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
+Date: Wed, 17 Apr 2024 16:57:42 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: jwrdegoede@fedoraproject.org
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-218578-217253-cfPWTduCx0@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
+References: <bug-218578-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.6
 
-Some devices use the semi-standard ACPI "ROTM" method to store
-the accelerometers orientation matrix.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
 
-Add support for this using the new acpi_read_mount_matrix() helper, if
-the helper fails to read the matrix fall back to iio_read_mount_matrix()
-which will try to get it from device-properties (devicetree) and if
-that fails it will fill the matrix with the identity matrix.
+--- Comment #28 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
+> I have attached an ACPI Dump as requested.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218578
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
----
- drivers/iio/accel/mxc4005.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+Thank you. First of all sorry for asking for one needlessly I now see there
+already was one attached to this bug.
 
-diff --git a/drivers/iio/accel/mxc4005.c b/drivers/iio/accel/mxc4005.c
-index 9f38d3a08299..c54c98a4d902 100644
---- a/drivers/iio/accel/mxc4005.c
-+++ b/drivers/iio/accel/mxc4005.c
-@@ -17,6 +17,8 @@
- #include <linux/iio/triggered_buffer.h>
- #include <linux/iio/trigger_consumer.h>
- 
-+#include "acpi-helpers.h"
-+
- #define MXC4005_DRV_NAME		"mxc4005"
- #define MXC4005_IRQ_NAME		"mxc4005_event"
- #define MXC4005_REGMAP_NAME		"mxc4005_regmap"
-@@ -65,6 +67,7 @@ struct mxc4005_data {
- 	struct mutex mutex;
- 	struct regmap *regmap;
- 	struct iio_trigger *dready_trig;
-+	struct iio_mount_matrix orientation;
- 	/* Ensure timestamp is naturally aligned */
- 	struct {
- 		__be16 chans[3];
-@@ -272,6 +275,20 @@ static int mxc4005_write_raw(struct iio_dev *indio_dev,
- 	}
- }
- 
-+static const struct iio_mount_matrix *
-+mxc4005_get_mount_matrix(const struct iio_dev *indio_dev,
-+			   const struct iio_chan_spec *chan)
-+{
-+	struct mxc4005_data *data = iio_priv(indio_dev);
-+
-+	return &data->orientation;
-+}
-+
-+static const struct iio_chan_spec_ext_info mxc4005_ext_info[] = {
-+	IIO_MOUNT_MATRIX(IIO_SHARED_BY_TYPE, mxc4005_get_mount_matrix),
-+	{ }
-+};
-+
- static const struct iio_info mxc4005_info = {
- 	.read_raw	= mxc4005_read_raw,
- 	.write_raw	= mxc4005_write_raw,
-@@ -298,6 +315,7 @@ static const unsigned long mxc4005_scan_masks[] = {
- 		.shift = 4,					\
- 		.endianness = IIO_BE,				\
- 	},							\
-+	.ext_info = mxc4005_ext_info,				\
- }
- 
- static const struct iio_chan_spec mxc4005_channels[] = {
-@@ -440,6 +458,12 @@ static int mxc4005_probe(struct i2c_client *client)
- 
- 	mutex_init(&data->mutex);
- 
-+	if (!acpi_read_mount_matrix(&client->dev, &data->orientation, "ROTM")) {
-+		ret = iio_read_mount_matrix(&client->dev, &data->orientation);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	indio_dev->channels = mxc4005_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(mxc4005_channels);
- 	indio_dev->available_scan_masks = mxc4005_scan_masks;
--- 
-2.44.0
+So the ACPI firmware node describing the MXC6655 does contain a ROTM method
+like we have also seen on BOSC0200 and KIOX000A ACPI firmware nodes and that
+does correctly describe the rotation matrix of the accelerometer if I compa=
+re
+it with your hwdb, the only thing which is different is that it inverts the=
+ Z
+axis, but that axis is not used for rotation so chances are that inverting =
+it
+is actually correct for apps which do care about it.
 
+I have prepared a set of patches:
+https://lore.kernel.org/linux-iio/20240417164616.74651-1-hdegoede@redhat.co=
+m/
+
+Which adds ROTM parsing to the mxc4005 driver. I have started a F39 kernel
+build with the original set of fixes + these patches on top here:
+
+https://koji.fedoraproject.org/koji/taskinfo?taskID=3D116515238
+
+This is still building atm, this should complete building in a couple of ho=
+urs.
+Once this is done building please give this a test run. Here are some
+instructions for directly installing a kernel from koji (Fedora's buildsyst=
+em):
+https://fedorapeople.org/~jwrdegoede/kernel-test-instructions.txt
+
+If you don't have time to test the next couple of days, please at least
+download the kernel rpms.
+
+After booting this kernel you should be able to do:
+
+cat /sys/bus/iio/devices/iio:device0/in_mount_matrix
+
+(assuming iio:device0 is the accel)
+
+And this should then show:
+
+0, -1, 0; -1, 0, 0; 0, 0, -1
+
+and you could drop the hwdb entry for the tablet if you want since
+iio-sensor-proxy should now pick it up from this file (hwdb entries will
+override the contents of this file so that broken firmware settings can be
+fixed).
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

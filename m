@@ -1,136 +1,182 @@
-Return-Path: <linux-iio+bounces-4309-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4310-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF208A897F
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 18:58:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D47C8A899D
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 19:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 243A8B24774
-	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 16:58:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33189282180
+	for <lists+linux-iio@lfdr.de>; Wed, 17 Apr 2024 17:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD0D17108F;
-	Wed, 17 Apr 2024 16:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C09171085;
+	Wed, 17 Apr 2024 17:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oui+M67N"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IlN5N42p"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D350E171084
-	for <linux-iio@vger.kernel.org>; Wed, 17 Apr 2024 16:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE53A17106C;
+	Wed, 17 Apr 2024 17:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713373062; cv=none; b=Dk2CKkxeocKc5u4t+SlwTLKWJCU3lSEhoTlqtsiHpYFcUo9+aWNrAvqNXuvGVhGtepvYjlIgunYDcgWGps7rozJ8tCiiHNXatDZdpuk0NBANEJ93DZ2HY4DdL16w+A2cbdDEWyjadcjszWb10bWlggUZU5Xq5HXwtFjlsmAeNQE=
+	t=1713373265; cv=none; b=ri9tnouN7nX7VxBffNzNwFPxgrCqpgkDlBFuNuKS6o6bsiI82nNWwj1RMWFCRcScEtmQWqGS7SgZixoUEGxGYYaksZNw0/kNyFN/Lnwle75JsUUsrWw02vjg5jx5vZmsnW3emSFvrZnck0q+Nr4j/xhXChO15cQl/WJI3R1wXd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713373062; c=relaxed/simple;
-	bh=FKqR+iLserS8Lwwezm9AmBtKimMKYuZgwbez4TU/juQ=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cS3UC7q/gar1418LfZMBl5vx2NPLe9CViokwH7IGrNDYJtYevPMBrlGBjLabIszSmrsOJ8qKpiCfnTXq+XF9zR0qAWRBYdNoQ5r08QItnraCLNwwGoSXo9wbTzBYyppsMlNZ8qmJrJ0Z6RNeWPA3A0uE9nKFo3rLJFo6DhVECPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oui+M67N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5E781C072AA
-	for <linux-iio@vger.kernel.org>; Wed, 17 Apr 2024 16:57:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713373062;
-	bh=FKqR+iLserS8Lwwezm9AmBtKimMKYuZgwbez4TU/juQ=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=oui+M67NO1yyIVFxjyHlneWqmAkT1GTu8lcb6ZqtEPvWWf5dSyVNsq9Lm4auE+ugr
-	 WNfZHCFfDzT8/uXd7qx6QfL884HSL3Tgobq18cwW7fkK7WbLCFxPm2TGmy0PnOvHeQ
-	 krYUqdenFobkLmRAl0CL/BZJ13JbaLa7J7IvE7cDcoviYladcEza47Ih/XY2EHiqwO
-	 +q5/nS0+aauMhNFDtFhv4O0YHl7EAjRNvWVJU0rdH81/c6YKG8GiSTYZNfDmOEMJy8
-	 QHkPn52o9nySUSzGi5aSdndmektFgirLjdFBdr4pelNooT2L6yrov3eJgNu/FJV5kF
-	 ATBmZnFkB9Z+g==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 52168C433E2; Wed, 17 Apr 2024 16:57:42 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Wed, 17 Apr 2024 16:57:42 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: jwrdegoede@fedoraproject.org
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: CODE_FIX
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218578-217253-cfPWTduCx0@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
-References: <bug-218578-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=arc-20240116; t=1713373265; c=relaxed/simple;
+	bh=g7bYmI9z5WPpy0G5QsJtGrJukZj5hsolIddTlKoRjF8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AgT89SrZtvmPdQtqCz5KiJ1wxAuP2smdB2ksZiYjpuU53vplx+krqnpcifBTFTDBQyEQqx5tFXm5XURIkf/KHWKst59qpEl9ctn7veksUip7ikn1FK66r9jeXdVewiqNWCgvda9VSwtQ5US6EG6wYNFRKs8hP5ehU6Z+MOcHNM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IlN5N42p; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-349545c3eb8so1342817f8f.2;
+        Wed, 17 Apr 2024 10:01:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713373262; x=1713978062; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=B521hDt7nLJljyJEdIYozlEz0F5MRo++dHaSN5wbsNY=;
+        b=IlN5N42pYCBD7r5qrrTdiHHWkFjXx9bUS1fSPvBX7LeMwKcpVQkb482lLLUURV13dB
+         WHa9c59FrtbwhFiaNbYnZfXKZ//6TBAanV0sDpErUhxe1SJDwRevSPUCKmTbgdxegqEf
+         aZcuMU2YAhi1yWWZanJlqSvMWnlzHchp2ynjzXh8yGJS8lcqsddvGR88ZVRGF+Jusaa+
+         0rMV0zMYhNLLAbwl7oZRuzRybcq/uD6KTIW+n9eP4k8f6d2tEQLp8JcYf0Xbu4zBqRSo
+         w0keQ4P4z0qTwts9xObWrgfGYYK9JFwHcgCVImI1gC4tdI5Vof+3D1QlJEhO9qdpgzU2
+         W3Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713373262; x=1713978062;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=B521hDt7nLJljyJEdIYozlEz0F5MRo++dHaSN5wbsNY=;
+        b=fSvg3qDqYKaJobwhFf7g6DkZqbWYOspekAL5CBk/3HH7snoedXJhoG+UujKiMqhsDK
+         6zzMC/njLMvPF1rOo8BIcfzGjBRpf4VC1W3W1zSwpLEb481PeZQWp/HGv7KqGXMC9npk
+         8/AMR/k1CR+q7rtrRfZlmzYyk/GC9WPGfXKy7IVF217QWGpbpd1V8w8+PC56BbMkdFBx
+         liM0lzRZlwAheVHYOrobefp6Z++26+h9V5FJFfLiZD8xryMdwzUKEUDjB+WIzLUbqKSu
+         8EP2wsNFPZFaZ2fo2B2+YoRCaBjH8W1n4tdLqqnwdWu/qj6IcvA93Dcf84oJjPKy6pB/
+         0Ggg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2uNSPxc54xmknGv91QNV9VkCT5YKD2n+rfZKu1DghwveQjgNUfQXWG1rHaGCCUFKmyjNiW4q9WDrGkFj1svqOxDRZiK/ASGDL6cU3J9OPHtdWRDEJMlbx6xjXYNstleVs/28Gna3nwipJXm3UqSd+XEsbBiYvePsq6XvlXzm/QffKjA==
+X-Gm-Message-State: AOJu0Yw6++KrxJYAKd2vzio+bTJkXOEsEaXwSADV9dYB7eVsqBTdkUSv
+	9UWy62+Wr7tN07NduhtJmEc2h2FhVyFjMsMMCcugnHL+X9c38aLP
+X-Google-Smtp-Source: AGHT+IFBgSLAKnJWy/yoYt0incQcA2cye6eZ9TR41TnhlVmKVN8AHeJkao9bG1Wzye1H+2dHmrT4yA==
+X-Received: by 2002:a5d:4104:0:b0:343:bb25:82f0 with SMTP id l4-20020a5d4104000000b00343bb2582f0mr10374571wrp.11.1713373262076;
+        Wed, 17 Apr 2024 10:01:02 -0700 (PDT)
+Received: from spiri.. ([86.124.122.31])
+        by smtp.gmail.com with ESMTPSA id g2-20020adff3c2000000b00343300a4eb8sm17949441wrp.49.2024.04.17.10.00.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Apr 2024 10:01:01 -0700 (PDT)
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
+To: michael.hennerich@analog.com,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: alexandru.tachici@analog.com,
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	andy@kernel.org,
+	nuno.sa@analog.com,
+	marcelo.schmitt@analog.com,
+	bigunclemax@gmail.com,
+	dlechner@baylibre.com,
+	okan.sahin@analog.com,
+	fr0st61te@gmail.com,
+	alisa.roman@analog.com,
+	marcus.folkesson@gmail.com,
+	schnelle@linux.ibm.com,
+	liambeguin@gmail.com
+Subject: [PATCH v6 0/5] iio: adc: ad7192: Add AD7194 support
+Date: Wed, 17 Apr 2024 20:00:49 +0300
+Message-Id: <20240417170054.140587-1-alisa.roman@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
+Dear maintainers,
 
---- Comment #28 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
-> I have attached an ACPI Dump as requested.
+Thank you all for the feedback!
 
-Thank you. First of all sorry for asking for one needlessly I now see there
-already was one attached to this bug.
+I am submitting the upgraded series of patches for the ad7192 driver.
 
-So the ACPI firmware node describing the MXC6655 does contain a ROTM method
-like we have also seen on BOSC0200 and KIOX000A ACPI firmware nodes and that
-does correctly describe the rotation matrix of the accelerometer if I compa=
-re
-it with your hwdb, the only thing which is different is that it inverts the=
- Z
-axis, but that axis is not used for rotation so chances are that inverting =
-it
-is actually correct for apps which do care about it.
+Please consider applying in order.
 
-I have prepared a set of patches:
-https://lore.kernel.org/linux-iio/20240417164616.74651-1-hdegoede@redhat.co=
-m/
+Thank you!
 
-Which adds ROTM parsing to the mxc4005 driver. I have started a F39 kernel
-build with the original set of fixes + these patches on top here:
+v5 -> v6
+  - protect ad7192_update_filter_freq_avail with lock
+  - better bindings description for AINCOM
+  - the pseudo-differential channels are no longer configured as differential
+    when aincom supply is not present in devicetree, in this case the offset for
+    the channels is set to 0
+  - because of the above change, there is no longer a need for multiple channel
+    options
+  - correct channels regex in bindings
+  - no need to move chip_info anymore
+  - change names to ad7194_parse_channel/s
+  - add else statement to highlight parse_channels effect
 
-https://koji.fedoraproject.org/koji/taskinfo?taskID=3D116515238
+v4 -> v5
+  - add aincom supply as discussed previously
+    https://lore.kernel.org/all/CAMknhBF5mAsN1c-194Qwa5oKmqKzef2khXnqA1cSdKpWHKWp0w@mail.gmail.com/#t
+  - ad7194 differential channels are now dynamically configured in the
+    devicetree
 
-This is still building atm, this should complete building in a couple of ho=
-urs.
-Once this is done building please give this a test run. Here are some
-instructions for directly installing a kernel from koji (Fedora's buildsyst=
-em):
-https://fedorapeople.org/~jwrdegoede/kernel-test-instructions.txt
+v3 -> v4
+  - drop device properties patch, changes already applied to tree
+  - change bindings and driver such that for AD7194 there are 16
+    differential channels, by default set to AINx - AINCOM, which can be
+    configured in devicetree however the user likes
+  - corrected mistake regarding positive and negative channel macros:
+    subtract 1 from the number corresponding to AIN input
 
-If you don't have time to test the next couple of days, please at least
-download the kernel rpms.
+v2 -> v3
+  - add precursor patch to simply functions to only pass
+    ad7192_state
+  - add patch to replace custom attribute
+  - bindings patch: correct use of allOf and some minor changes to
+    the ad7194 example
+  - add ad7194 patch:
+    - use "ad7192 and similar"
+    - ad7194 no longer needs attribute group
+    - use callback function in chip_info to parse channels
+    - move struct ad7192_chip_info
+    - change position of parse functions
+  - drop clock bindings patch
 
-After booting this kernel you should be able to do:
+v1 -> v2
+  - new commit with missing documentation for properties
+  - add constraint for channels in binding
+  - correct pattern for channels
+  - correct commit message by adding "()" to functions
+  - use in_range
+  - use preferred structure in Kconfig
 
-cat /sys/bus/iio/devices/iio:device0/in_mount_matrix
+Kind regards,
 
-(assuming iio:device0 is the accel)
+Alisa-Dariana Roman (5):
+  iio: adc: ad7192: Use standard attribute
+  dt-bindings: iio: adc: ad7192: Add aincom supply
+  iio: adc: ad7192: Add aincom supply
+  dt-bindings: iio: adc: ad7192: Add AD7194 support
+  iio: adc: ad7192: Add AD7194 support
 
-And this should then show:
+ .../bindings/iio/adc/adi,ad7192.yaml          |  83 +++++++
+ drivers/iio/adc/Kconfig                       |  11 +-
+ drivers/iio/adc/ad7192.c                      | 226 ++++++++++++++----
+ 3 files changed, 274 insertions(+), 46 deletions(-)
 
-0, -1, 0; -1, 0, 0; 0, 0, -1
+-- 
+2.34.1
 
-and you could drop the hwdb entry for the tablet if you want since
-iio-sensor-proxy should now pick it up from this file (hwdb entries will
-override the contents of this file so that broken firmware settings can be
-fixed).
-
---=20
-You may reply to this email to add a comment.
-
-You are receiving this mail because:
-You are watching the assignee of the bug.=
 

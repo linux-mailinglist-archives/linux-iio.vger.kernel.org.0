@@ -1,109 +1,103 @@
-Return-Path: <linux-iio+bounces-4345-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4346-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5BD8AA567
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 00:16:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00F08AA5A2
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 01:08:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F6E11F22570
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Apr 2024 22:16:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D15ED1C2105C
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Apr 2024 23:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A102E1A0B15;
-	Thu, 18 Apr 2024 22:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D9454EB2B;
+	Thu, 18 Apr 2024 23:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="alhx/ILv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CMlCSOn6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFA0199EB8;
-	Thu, 18 Apr 2024 22:15:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 540EF441D
+	for <linux-iio@vger.kernel.org>; Thu, 18 Apr 2024 23:08:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713478516; cv=none; b=SiOuXHIMBMtFBG3KqkTzvWgUJ/Xgcn8e3RMZ2sFaIdx6tTsaJAEDZlAil5jLSzJVJzgs17wJt0cvdBirBpDtNGoYOSIJ6xFzxgAv5PXpzu+BCEt9tw6s2M/VnCsUvRrVpep/9sOvELwz2q+lXrg1Gr7bc3600xk6uThu8HuVN5c=
+	t=1713481731; cv=none; b=fHVLAbjeUcAyFM0eU/FTWRcVDKiADB01LMT8CKFBBQH53xSQupJYvr3tlsTAfgtIyLrFAs7iU99C1ozRPDagAjl0M2/VAfkJcNY3NzXA1p/ySA4prIER1C487P+yi9AEy7VBDb4Qvlctez4xqttxjy3pgZGgeaoKvOxDngeEq9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713478516; c=relaxed/simple;
-	bh=eYdgec8c5xQ7QfSdXEkUrs0hZD5r+DLtp1GPDT+x1/U=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O4ZtjwDCUp1Uv65sJOX9sc1XN+R8YMl2zbjUKmCX3cJBBu6YGSrJdPHJZwQadHsq55hQ4ESK2h7tpyec9Ock25uTJYni8k84XiXjsSX9N6XqfpoSO9VCgKza98AdH5hR7Rk4U/aBwwD5vqMfekuHjM2tAZqpcZdwcTF4K2Q5oRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=alhx/ILv; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 43IMEIs6042849;
-	Thu, 18 Apr 2024 17:14:18 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1713478458;
-	bh=YvKikMi9SpSnNO/8MzpfVDPH6rLrUCpnxZZoT+RxDl8=;
-	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=alhx/ILvv8ks//XRKP2sZYwPB0AXRFoidQ6bWrWG8Rl3P+GFbo1L4AEdcVRvuvcqN
-	 mxzChYCmDDdlMsK5ctVfv/+PsmAEFGeU5R0zJqLxCBNsgh9WFSVXhz5KoTRJzHz/9w
-	 khUxEL/zhjQlTzi3L6pu4TAOv47/LPwLbQAvakLA=
-Received: from DLEE103.ent.ti.com (dlee103.ent.ti.com [157.170.170.33])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 43IMEIDl031597
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 18 Apr 2024 17:14:18 -0500
-Received: from DLEE110.ent.ti.com (157.170.170.21) by DLEE103.ent.ti.com
- (157.170.170.33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 18
- Apr 2024 17:14:17 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE110.ent.ti.com
- (157.170.170.21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Thu, 18 Apr 2024 17:14:17 -0500
-Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 43IMEHqv111027;
-	Thu, 18 Apr 2024 17:14:17 -0500
-From: Judith Mendez <jm@ti.com>
-To: Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        William Breathitt Gray <william.gray@linaro.org>
-CC: David Lechner <david@lechnology.com>,
-        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: [PATCH 7/7] arm64: defconfig: Enable TI eQEP Driver
-Date: Thu, 18 Apr 2024 17:14:17 -0500
-Message-ID: <20240418221417.1592787-8-jm@ti.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240418221417.1592787-1-jm@ti.com>
-References: <20240418221417.1592787-1-jm@ti.com>
+	s=arc-20240116; t=1713481731; c=relaxed/simple;
+	bh=6Tn+baBpfbVeKdzkRacF/IVL+28v0EuG9c/v9KI/rM4=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dZrGgi1ZSjnnbBJ0ULKssT4hWddDEXofxhqGz9iguUxJC77FzR6eDV3HYAotGvYPGrYWy+u0iUw3TWSzm1+Ca5xgjvhKyaUiqzL4nir3UXpv3kG9ie/nikJ2XYtRq+cm2X5ad+7yzypyqDy4YDpEJRybkb6hnyapdBVXxDLWvvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CMlCSOn6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C801FC32781
+	for <linux-iio@vger.kernel.org>; Thu, 18 Apr 2024 23:08:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713481730;
+	bh=6Tn+baBpfbVeKdzkRacF/IVL+28v0EuG9c/v9KI/rM4=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=CMlCSOn6DQawvJE/Syxa5vqj6FZ/BpRQrP20G86l4TmdAeRXx/iTh7OAFMLkorbhf
+	 tb6tUDj7lXIl0/uKWINtYJCwMhL/fFWHiShSVSOiXlqvd4Cuk9omwbI/+SpwKyH27e
+	 O1+VOANiC+5dZt+nZlcnBKhF9L9nggLY+e5+NBGgSM4HLfEvZDKyfXKsq58B4suroT
+	 MbekAUNQ+LZnY3+XX4z28pRdFIHtHf1wtPnDiFJeCC86aIXBBWf12u5oHxSN5/+Xjg
+	 Xg/0U4PNrtdJ0/boSNPHBSQDDYjsxMVhxOT9sxIzlWNJVCs/P7posKuOHrz/Harpcy
+	 SAY7TCk/0tg+Q==
+Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
+	id B9B77C433E5; Thu, 18 Apr 2024 23:08:50 +0000 (UTC)
+From: bugzilla-daemon@kernel.org
+To: linux-iio@vger.kernel.org
+Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
+Date: Thu, 18 Apr 2024 23:08:50 +0000
+X-Bugzilla-Reason: None
+X-Bugzilla-Type: changed
+X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Product: Drivers
+X-Bugzilla-Component: IIO
+X-Bugzilla-Version: 2.5
+X-Bugzilla-Keywords: 
+X-Bugzilla-Severity: normal
+X-Bugzilla-Who: kernelbugzilla@kirkschnable.com
+X-Bugzilla-Status: RESOLVED
+X-Bugzilla-Resolution: CODE_FIX
+X-Bugzilla-Priority: P3
+X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
+X-Bugzilla-Flags: 
+X-Bugzilla-Changed-Fields: 
+Message-ID: <bug-218578-217253-mSrQO1cBDi@https.bugzilla.kernel.org/>
+In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
+References: <bug-218578-217253@https.bugzilla.kernel.org/>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Bugzilla-URL: https://bugzilla.kernel.org/
+Auto-Submitted: auto-generated
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-TI K3 SoC's support eQEP hardware, so enable TI eQEP driver
-to be built as a module.
+https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
 
-Signed-off-by: Judith Mendez <jm@ti.com>
----
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+--- Comment #31 from Kirk Schnable (kernelbugzilla@kirkschnable.com) ---
+Hello Hans,
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 2c30d617e1802..23d11a1b20195 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -1593,6 +1593,7 @@ CONFIG_INTERCONNECT_QCOM_SM8550=y
- CONFIG_INTERCONNECT_QCOM_SM8650=y
- CONFIG_INTERCONNECT_QCOM_X1E80100=y
- CONFIG_COUNTER=m
-+CONFIG_TI_EQEP=m
- CONFIG_RZ_MTU3_CNT=m
- CONFIG_HTE=y
- CONFIG_HTE_TEGRA194=y
--- 
-2.43.2
+Awesome, thanks!  I tested the new build (and removed my udev workaround). =
+ It
+looks to be working perfectly. :)=20
 
+The path /sys/bus/iio/devices/iio:device0/in_mount_matrix didn't exist but I
+found /sys/bus/iio/devices/iio:device0/in_accel_mount_matrix which does con=
+tain
+the matrix.
+
+Looks like this now resolves all of the issues!
+
+Cheers,
+Kirk
+
+--=20
+You may reply to this email to add a comment.
+
+You are receiving this mail because:
+You are watching the assignee of the bug.=
 

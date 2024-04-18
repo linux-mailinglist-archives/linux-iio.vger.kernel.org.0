@@ -1,160 +1,128 @@
-Return-Path: <linux-iio+bounces-4333-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4334-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 275678A9E40
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Apr 2024 17:22:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A84CB8A9F3F
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Apr 2024 17:56:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EC98B2614B
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Apr 2024 15:22:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 629A6281D64
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Apr 2024 15:56:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0065516D330;
-	Thu, 18 Apr 2024 15:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE3216F837;
+	Thu, 18 Apr 2024 15:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b="ErrhPbxu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YNp3qgbJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12olkn2089.outbound.protection.outlook.com [40.92.23.89])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4558516ABEE;
-	Thu, 18 Apr 2024 15:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.23.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713453725; cv=fail; b=PmshDpP9ntQX2TMbQ9edPZjba4YtDv2TaF5vydI+rxfxxNs107NnogveV4LKNi5dTGPaxCVHkC6OSYy64RlyYQ/P5XyKf0y/4I2HxwWTJvIIhz1/m9Jm9ZsuCt5IirFthQqWwOwTO2MJFBgxJV/Naei4syGnMRCrmoxHDAvQkYY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713453725; c=relaxed/simple;
-	bh=6nEnePp0Ld6EyteoeD6jjDNGKcySXPFzqihydlieu9Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Mhi0Zi3LqHbKmclgAfq55A7qQUUbsYYhodLndGVUxtahjfVqh4QZS9InYTqSenZXRAcQEiLJ5J85aMjWFqSryTlS+5WUFD4t5p1C67vsNZrK49wAAjPVGxfYbUQL7+cDpNnGcXg+n4hcVEScEsvpAYlqRv1y708ELXwCf2i/SEQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com; spf=pass smtp.mailfrom=hotmail.com; dkim=pass (2048-bit key) header.d=hotmail.com header.i=@hotmail.com header.b=ErrhPbxu; arc=fail smtp.client-ip=40.92.23.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotmail.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Kj2cPjeHuuyZGarHYBMZYpCJ4CGv79ZVWxjHHAZuiHN4/sa6HvuXZrby5df9V9U4uJIR0w19p3EURiskXeLnuDmuzTX8opB7/PgG8GhNCfNtrgrOP7+lUsp5c45Mh4TWTv0yu8jdD5NEIX3sHmMy1hctcuCHofPItFFgihj5TlocSqhY3Zgvugen3zUtL754nE9MfRCiWoAw/JLPsetsuX6Lwz/jmkZiaMj4e1jf/OzMBTfNPbGesRA7yfmtMLFnoFFsahMzq9f7aOm/yEW6WvHDhJuerWqeJcXb7gVMwsiSU+bMA65f77nAWdnXJB5MNJcuf41Ay70/mymKcUIqZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8IxiV5t6usA7D9F0EmSLqND0VEC/srdFemvbh+cbZgA=;
- b=JVmzXjITmsB0bhkgVXT4C1eqUN80oPSoXFGfrSRwuF0mZjgmD9ONfAmA0iSw9mUj5TS3FvFf1xoKtifKH/oNhvTNwyvC/CC/T3rgCGpxpPs58KGkgtjDAdhlyFnSAfYP6vS6i1hMzzqlDocUkww06y8+EiJEmsQSFVsV2+aUnht9oJMyoTfgtFWbDEiAvWQJ+2ZWenb0DrTeNiuTgpbDjlBRp6p1ZlcdTcobYGyQSpORrbrbIcvuXPmdbFqir7i53j2m5J2WQZcBsbUVcy/Behlp+ezeZrFetqovPpHpGYZHPwRytKhRQ6Lzu+quYA2uU+T71MmbBdlzNHv1sbjMgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hotmail.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8IxiV5t6usA7D9F0EmSLqND0VEC/srdFemvbh+cbZgA=;
- b=ErrhPbxuvM4OcRKlzhTqUIb3wBUcF/OFOxm/qmb6kZ4IBNuit4Os6NMW4ls5zMBeMCH0HZ4emFYlt+5uPt+KzSR47lrk5EeGJXhhHbf7sESqIJod/V2UDQNLEwwbGg1IpuipjzI2F49Ky9FXV+bv+r5S83Dyef1zuH8uYlPG+8k90v7dEqp2qZqM3JgougqQGFLfrRcUe6rgi1TkzeHcFbQkLHbbuBQHtestJAs32M0mkmZNG/GzY+dYp/drydtw+bObeEsQgJyjzQN3zu2mqWkwQkmpdjQEDpnH0AVrthn9Qh/GPBq1oCTsMKS9lzzOAkHYhHZaPYnqYO4UFni1uw==
-Received: from DM4PR05MB9229.namprd05.prod.outlook.com (2603:10b6:8:88::20) by
- SJ0PR05MB9302.namprd05.prod.outlook.com (2603:10b6:a03:44c::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7472.37; Thu, 18 Apr 2024 15:22:01 +0000
-Received: from DM4PR05MB9229.namprd05.prod.outlook.com
- ([fe80::12a8:4f88:32b0:9407]) by DM4PR05MB9229.namprd05.prod.outlook.com
- ([fe80::12a8:4f88:32b0:9407%6]) with mapi id 15.20.7472.037; Thu, 18 Apr 2024
- 15:22:01 +0000
-Date: Thu, 18 Apr 2024 10:21:58 -0500
-From: Chris Morgan <macromorgan@hotmail.com>
-To: Rob Herring <robh@kernel.org>
-Cc: Andre Przywara <andre.przywara@arm.com>,
-	Chris Morgan <macroalpha82@gmail.com>, linux-sunxi@lists.linux.dev,
-	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-iio@vger.kernel.org, p.zabel@pengutronix.de, sboyd@kernel.org,
-	mturquette@baylibre.com, samuel@sholland.org,
-	jernej.skrabec@gmail.com, wens@csie.org, conor+dt@kernel.org,
-	krzk+dt@kernel.org
-Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add GPADC for Allwinner H616
-Message-ID:
- <DM4PR05MB92297515415B77F307DFB46DA50E2@DM4PR05MB9229.namprd05.prod.outlook.com>
-References: <20240417170423.20640-1-macroalpha82@gmail.com>
- <20240417170423.20640-3-macroalpha82@gmail.com>
- <20240417234957.2fcd14bb@minigeek.lan>
- <20240418151650.GA1824475-robh@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240418151650.GA1824475-robh@kernel.org>
-X-TMN: [+xLSvDM7Y2rYkhBmdQ3RFgm+oM2MVh+Y]
-X-ClientProxiedBy: DS0PR17CA0006.namprd17.prod.outlook.com
- (2603:10b6:8:191::22) To DM4PR05MB9229.namprd05.prod.outlook.com
- (2603:10b6:8:88::20)
-X-Microsoft-Original-Message-ID: <ZiE6lizBcJrA28Kg@wintermute.localhost.fail>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A6116D4C0;
+	Thu, 18 Apr 2024 15:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713455810; cv=none; b=qZPtc5QQB9KNOeIpV6MFqsAKGWuqtGIf8Mn14Jq45hgWR0jfg0p7ftScnufpVYHPaaZptDze2LXvXrO1rCe1BJsYfuJm/a7r40BJxEKuw+brm76ckZeiI6ngaySS5/0cS1QPO7sQVJEpmM/7Z96QxYH3tcK8KP7F/LOIiIVbFeI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713455810; c=relaxed/simple;
+	bh=aBUT2+pQDzYwiVZKUr+Rvc3cYxV7V4n7dBGY3Vt9cNM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dxU5bt75kgLHZzrf338bXiHz3YasJfvsje+B2MHB5NEJGhEzTyPXSzwMTR6InmdS/1WJEYkIQVSeNojuYjxcn/ZcNLoM/bEX+rkZzk/U/psSYg41v3hxNRZ9VCZ9npZJLJ9Gzw2YIwpZOW1lXlptsJ1BBSif0BSrFJpC8S2uyL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YNp3qgbJ; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-518a56cdbcfso1698772e87.2;
+        Thu, 18 Apr 2024 08:56:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713455807; x=1714060607; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yVAgtcipfkcWMHjlW6nU5upWM2mMxhSXqMN6JngOSHk=;
+        b=YNp3qgbJrbjjBWuirX0TRgGuMKJqG6tJzt4WupmJYKCTK52NTWYZSAP4lMn47lGdGb
+         Ix6KiGEKGdscZ9pUGRYS7hYxAsFn2AfUb9f10fVVXB6L1Sbf7AdZNU7EdCaVWYZ++JOi
+         zaenZ9OflDADMvtqCFkyFXoDur6MyLaGI1s8R3m52Rr/wXJ+0jgWSPAUd5r5RMCj6ABV
+         q9Ex9HQRSBQ04jVY0pHtfhO3J7+94dwMpRdNyY7ThIC2MUg2iZuxG71/jca8XW3LmD8D
+         zfK/6HaVFRl/tT3KpyU6xPNE+urxfzW/BQOMrocNU/1NQx6rb2E9mWd33bg1X7rI2w7S
+         20pQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713455807; x=1714060607;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yVAgtcipfkcWMHjlW6nU5upWM2mMxhSXqMN6JngOSHk=;
+        b=wiwpgrULwyy9w7ALnutQLw+RqJou65g7ogP24sj7DYqtVBxS+4IJHrgfaUNQz7yC9d
+         6rNrJNVzxxfnapriaEF6KDHAvuYK/bWcXojzvIF4eB20OqMeka9rRnQMzL56zYEit7W9
+         vApcbJIgqUqITLyJ9EWNjid0VtI75zU6dC0DwkOZL2cZVvMeQY8AeFcwVAErKNNGBOX/
+         x84+NADKDTjLULI9b/ASWzjE0pXh9QiFcvDegfblX9JZh9XStrV/S3veoW777UZ7q0WM
+         qbhKAbYP6pIQk+yfen1aDlTD5QgrRUmW+hvPt0ot6JTZT89qbHSf0MUnci1bnkVuvcdB
+         2IOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ+dSxK7wXtO/IXUt0d1I2NkApT0TgGDt/z6bea2eOQflBZJoYlQeqpgYATJoILUQW+jL6RYb8o53FO8arGKZy0aQ5TU6iSxBAJB4Itorwt6cr8P0Dqgka2gxZL0kw+jwUNZO7tskmpDOU/pzNr/n3rG64ycE7C5f0UwR/BUZGcTT8IL4ra3QuiOd/RrT3eprKllsyTXvSCavSpaDnub84
+X-Gm-Message-State: AOJu0YxLvm1D+bGd9fBt9FX9PlTyYgYJop4k3UDwJIwESt/FILNGFRHe
+	AP0MX2jyiR0kJnZ0k9NeSkuLHahHsC4pmJm71Ps5iGV82Goedr2bw2UgUorNHjq+kmDTwQvcow3
+	6Rsxu/4mEZ8imtnrfOPspKnMDZFg=
+X-Google-Smtp-Source: AGHT+IG1UvVvPMawq0PN1G95h2KMXcAMXcVnwWBMLVJAP/s7QKISoICSyXIA62E97yFHemf7G8s5MxQ9F1kvhWxIZAo=
+X-Received: by 2002:a2e:8383:0:b0:2da:b1fc:8095 with SMTP id
+ x3-20020a2e8383000000b002dab1fc8095mr2163555ljg.7.1713455806891; Thu, 18 Apr
+ 2024 08:56:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR05MB9229:EE_|SJ0PR05MB9302:EE_
-X-MS-Office365-Filtering-Correlation-Id: 91c3e420-f62e-4e93-2a10-08dc5fbb4b7c
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info:
-	vJEmduisCrWkyOcn+gr8aXQbjO4ns75JCUCala0I/FM9SWDNIPu2MHE012xnXmKpds0Fx2TKE4RVSV/LXBW4U4dqO2jEvyWDe9RlvufV9TufdUclszmOHBrSyF9TnaR7te31TAmgM2qc/Cf+g2jDxe8h3RY7x7Qfj4Xrj0wrDaKR/RTNOGG0kK++EOKTnnSPOdM70tXnOV6Fn0dVPVuiNqtbuYxUHttMfhGF7AvAHqkZ8Ufzlc22ca3nz21j4CiuRa3My5MYZKhRBM3Wt3J+4XabuuuDY34nyWrbCa6ldoOtQSjUUfSL/O71TRtaOS7ilLsOuepjZIMmCeUyCXlvh8TUMT+ENtzthbb2uwNKMmaxeFIt5R3avk1nQUhc+Jwrdil2C2E0e0/xk+Uov6xIIlP4Aizhud6qfCkW37ONXqJw9zM542UxRJUaBa2O7z/TYy0JusK79l9kThW2+aK6AT8Ehz/K3laSKnXc1OKm/SnnCqcwt5DOujCa35+DH3SX9duNPHbeMP7tACjBe1DKnCLUXIbffzwewidUharPFcd6sHDAqSP2GZ+rIIB1Z2Iz
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?KjlirQv1bSpsRHI6rMSr4VCXJA7G9SoGZXQCUU/79qAJ0AgqX++1qNwjPgcf?=
- =?us-ascii?Q?5Pe+n3FUyxSUYfe1tk3X0Arwn2FILsXrAcvACyQzgPmxN+p7G0y00kXQRxDp?=
- =?us-ascii?Q?jqYdFRpKZc1hphFkrlrQEcSvkJ3QtRm/3FzT1BFLf/+STn8T1kImzjm2GF0H?=
- =?us-ascii?Q?q3RkZ69gzA20lTGjEzmpTg4FECUIfrMG2hEhFX763WTey5ZKkyxedbdGQDHp?=
- =?us-ascii?Q?kSUA7as+x93pTKNZH2Y7fr8BafzY4X2GSaDFnRhu0JRNyxeWti0/tNBNm5J8?=
- =?us-ascii?Q?Ie5b8957g1szm8fXPd409T0SlsBxf7OjsoiV1LJ1r00tPPELqaJFCmeQ+/JO?=
- =?us-ascii?Q?dMO4wqMuv4suwbThhxIzqhbYZSrN0al+OuDZljHPHrI/QunxMhzlFvkybszD?=
- =?us-ascii?Q?50nJdJx/LmcezxmbmDF/06UJ7tNuLzV5n3a2iIlMC0oIF+X2o7NDtsq4cn2v?=
- =?us-ascii?Q?0zZc0cHnm4IXo/uhFQXxEJnl3Z1ffYn/5x9JR/oumerbxwNLJ749lKMkgxa+?=
- =?us-ascii?Q?tR4VX0sMBQ4RVtXOALXJWqhclmCyYHmJYSWlyhm7BWI9SYm1l/KKDQ4OAgug?=
- =?us-ascii?Q?TqkK+YWv7HAJDJdedZjnahOj0JF/lTReuZku0TlcJhzbCJ4CzspXV+SSnsvO?=
- =?us-ascii?Q?4gDOAa5mPiABwD+jgidCjey0siPvvIhTREntwpTLNqZZeSZgU1XiYZABvJGn?=
- =?us-ascii?Q?JjkZEWkvDPqpdRtwbbTN09jsSUrdvL+TXfrtulKCBQcRhujjtcyBP/8Foiyb?=
- =?us-ascii?Q?fTR3Vsc/MpRAp3PzU5de7GSFP+rehdY5Dkz2l0xKpALlGJywKRh7Z0gAA13D?=
- =?us-ascii?Q?Mh3Kh08cLr19COpM9MzEOR9a+MwObl4R9xh4DIAi0+5HzLB1CurAPDHgC/Ft?=
- =?us-ascii?Q?64j5rihv0IuOmYh+ruUJCTdKbhJXiKctKcj7haGW3v68pa0U4yzLTF8OoFpS?=
- =?us-ascii?Q?x/+MFKo19KvgAU9v5nI1/fuBwfM8goUIVf0ZjnefRaMh2N8jxgRzMASiVlkF?=
- =?us-ascii?Q?+MkxCZ3FKJT0Q8Ca5A1zgJyv1UgP368z1tlM5GsQd65Iw4gyBNaYCAvk896/?=
- =?us-ascii?Q?Wj+IQyr72DVkXB//GnY/oL4OoukSbpsJDE3hb99f4agUKFgdQdAoJR1qd2IQ?=
- =?us-ascii?Q?zZul3027QfGXAXsgXPN+1P8vm/+DKearwGgZPP4t4/+jiC7EEUXQAD7Pl4Qb?=
- =?us-ascii?Q?ehL9FZmYPfOcCxGYRP0PZrcq6Vs8v5qCnFK9svQlThuQ4Y9/0OItfVysPYo?=
- =?us-ascii?Q?=3D?=
-X-OriginatorOrg: sct-15-20-4823-7-msonline-outlook-84f76.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: 91c3e420-f62e-4e93-2a10-08dc5fbb4b7c
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR05MB9229.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Apr 2024 15:22:01.3202
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR05MB9302
+References: <20240414175300.956243-1-aren@peacevolution.org>
+ <20240414175716.958831-1-aren@peacevolution.org> <20240414175716.958831-2-aren@peacevolution.org>
+ <CAHp75VdZavToGYqLYnkKYt53HXoQxXnRER5Cn5b2==gWTvkAWQ@mail.gmail.com> <xxeg3as5m5vmmu6fbjujcnvchrerxs2rr42nloirwsktbv4r57@vpxtxblxmspl>
+In-Reply-To: <xxeg3as5m5vmmu6fbjujcnvchrerxs2rr42nloirwsktbv4r57@vpxtxblxmspl>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Thu, 18 Apr 2024 18:56:09 +0300
+Message-ID: <CAHp75Veoibnk2pYuAY-T+u=8t7ackQ8zBjxSHcWb1AeHnq84yQ@mail.gmail.com>
+Subject: Re: [PATCH 2/4] iio: light: stk3310: Implement vdd supply and power
+ it off during suspend
+To: Aren <aren@peacevolution.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+	Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+	Willow Barraco <contact@willowbarraco.fr>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 18, 2024 at 10:16:50AM -0500, Rob Herring wrote:
-> On Wed, Apr 17, 2024 at 11:49:57PM +0100, Andre Przywara wrote:
-> > On Wed, 17 Apr 2024 12:04:22 -0500
-> > Chris Morgan <macroalpha82@gmail.com> wrote:
-> > 
-> > Hi,
-> > 
-> > > From: Chris Morgan <macromorgan@hotmail.com>
-> > > 
-> > > Add support for the GPADC for the Allwinner H616. It is identical to
-> > > the existing ADC for the D1/T113s/R329/T507 SoCs.
-> > 
-> > The H616 is using the same die as the T507 and the H700, and since the
-> > T507 is already mentioned in the commit message for the original
-> > binding, I wonder if we actually need a new compatible?
-> 
-> For same die, I would say no you don't. But adding a compatible is fine, 
-> too.
-> 
-> Rob
+On Thu, Apr 18, 2024 at 6:06=E2=80=AFPM Aren <aren@peacevolution.org> wrote=
+:
+> On Mon, Apr 15, 2024 at 05:04:53PM +0300, Andy Shevchenko wrote:
+> > On Sun, Apr 14, 2024 at 8:57=E2=80=AFPM Aren Moynihan <aren@peacevoluti=
+on.org> wrote:
 
-I've been burned before, if it's just the same to you I'd like to do a
-compatible. But I will defer to the experts on this matter.
+...
 
-Also if there is a more compact way of expressing this while still
-maintaining backwards compatibility please let me know. Otherwise,
-I'm okay with this if you all are (it passes dt_binding_check,
-yamllint, and checkpatch.pl so I'm okay with it if you are).
+> > >         stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY)=
+;
+> > > +       if (data->vdd_reg)
+> > > +               regulator_disable(data->vdd_reg);
+> >
+> > I forgot to check the order of freeing resources, be sure you have no
+> > devm_*() releases happening before this call.
+>
+> If I understand what you're saying, this should be fine. The driver just
+> uses devm to clean up acquired resources after remove is called. Or am I
+> missing something and resources could be freed before calling
+> stk3310_remove?
 
-Chris
+I'm not objecting to that. The point here is that the resources should
+be freed in the reversed order. devm-allocated resources are deferred
+to be freed after the explicit driver ->remove() callback. At the end
+it should not interleave with each other, i.o.w. it should be
+probe: devm followed by non-devm
+remove: non-devm only.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

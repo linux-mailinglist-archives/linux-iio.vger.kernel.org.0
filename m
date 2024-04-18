@@ -1,149 +1,87 @@
-Return-Path: <linux-iio+bounces-4330-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4331-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A028A9DF8
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Apr 2024 17:06:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81E1C8A9E1D
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Apr 2024 17:17:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31F571C21B1B
-	for <lists+linux-iio@lfdr.de>; Thu, 18 Apr 2024 15:06:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEDF6B21FFA
+	for <lists+linux-iio@lfdr.de>; Thu, 18 Apr 2024 15:16:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 586E316C448;
-	Thu, 18 Apr 2024 15:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D0316C457;
+	Thu, 18 Apr 2024 15:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b="p6RTzvLK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pCuA+8Od"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from a.peacevolution.org (a.peacevolution.org [206.189.193.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4947E16ABFA;
-	Thu, 18 Apr 2024 15:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.193.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA973B18D;
+	Thu, 18 Apr 2024 15:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713452809; cv=none; b=lF0vhN1uF/y15BC/Q0BAqUs45o9B4xnMT95jy7lU1x6TwMt9nuWDIlrvHF2bhLOq09FKBNULqKpitaX4+zeWq0OhaZdhlAQhEecOq9yPbn/GfjbnkC/DaQSto+CrBXzahFbnnLEAQblV/eQnMEF1cqZMBrljKJTGL4MzFH9yJEk=
+	t=1713453413; cv=none; b=fG/AWbHQdXoUb3M1DTtFEkkIIBk8Ub2rDYd8twVQLSx3ZI1UtH67MdZfpVRog7JqVAg7dt+QHb9JSEAo/Rf1TcGRkyE1v2wCoXMoYkKBZ/Eg5NLZxkTBm4LggJC5eLnvelKTaPqocp0chUxzZYQqwjoWg1SwSq08MVLPvYqyWIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713452809; c=relaxed/simple;
-	bh=oGcY+BupHlocn3xxw4/g576DsNISjK2nsy9HQ+Z9ZzE=;
+	s=arc-20240116; t=1713453413; c=relaxed/simple;
+	bh=gyqpke4mdKN6g/7pEOb9Jx/mf5rRpnQ/SSaor2er6W4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bbq0bPi8qHN5Rokyzg9yawWN1O5mwHyfmcBT1nxIq1Bk+l01L7z+k5VvV4XlsZpoIv3uRMh+xx6lE0v+QdwSA1DVxvkg++8JAFxuehvPU+wMljkWacPBZNV8VEUjirqDZdHJZ0eHF9tunRozgIlkgiw4jI9MRpdJlLImNgSRK9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org; spf=pass smtp.mailfrom=peacevolution.org; dkim=pass (1024-bit key) header.d=peacevolution.org header.i=@peacevolution.org header.b=p6RTzvLK; arc=none smtp.client-ip=206.189.193.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=peacevolution.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=peacevolution.org
-Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
-	by a.peacevolution.org (Postfix) with ESMTPA id 732C7479B3;
-	Thu, 18 Apr 2024 15:06:35 +0000 (UTC)
-Date: Thu, 18 Apr 2024 11:06:32 -0400
-From: Aren <aren@peacevolution.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, 
-	Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, 
-	Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	Willow Barraco <contact@willowbarraco.fr>
-Subject: Re: [PATCH 2/4] iio: light: stk3310: Implement vdd supply and power
- it off during suspend
-Message-ID: <xxeg3as5m5vmmu6fbjujcnvchrerxs2rr42nloirwsktbv4r57@vpxtxblxmspl>
-References: <20240414175300.956243-1-aren@peacevolution.org>
- <20240414175716.958831-1-aren@peacevolution.org>
- <20240414175716.958831-2-aren@peacevolution.org>
- <CAHp75VdZavToGYqLYnkKYt53HXoQxXnRER5Cn5b2==gWTvkAWQ@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=tIQzdZD09ti9nZgI+gL6FKRYQp8K3G6NwewRxqf0vWTaAXkDjVVnJi22J+37N+YX0FQky1KdRoek6HvuLg87vPzaqQ7YJr7k7YzryP1IxSaNgWfv/u0SSFxbEd0kPWt7AWn/cXfgdNmwafno9WtB81jRg026qS+NK6hUZx7AR50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pCuA+8Od; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CDFC113CE;
+	Thu, 18 Apr 2024 15:16:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713453412;
+	bh=gyqpke4mdKN6g/7pEOb9Jx/mf5rRpnQ/SSaor2er6W4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pCuA+8Od8TZUPQvN9vUEYKLAUgNIPe/pf1nrCBKQ2WGAOH/N+eJdU2fr4Gs9Xt+oA
+	 VrL7JLUd1+WWGwmbMPKEtFoL1qi/PDDI0PmYzvtF4CSfbor4+M1viguO4GQKPinvqA
+	 TtZHKzwRB420GAUh3IsoQg8FRqizawF0r73+iqyoj0znCyXA3ePU/nuWSREHDfQGh6
+	 5zywLrZEVPIbD3QfjRrQSRXnHqLZATXHGlU5GYDtSLMCgLSFyk8Ki7XY+bqbBWK9xx
+	 kZ5rEko5wG2tu0RB9YSKURjF0Vdfk6ZpW2y0RMnQabLN0Ss9t1AqPWwbHRN7ByI4uK
+	 jEB9d2Ux8DYmQ==
+Date: Thu, 18 Apr 2024 10:16:50 -0500
+From: Rob Herring <robh@kernel.org>
+To: Andre Przywara <andre.przywara@arm.com>
+Cc: Chris Morgan <macroalpha82@gmail.com>, linux-sunxi@lists.linux.dev,
+	linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org, p.zabel@pengutronix.de, sboyd@kernel.org,
+	mturquette@baylibre.com, samuel@sholland.org,
+	jernej.skrabec@gmail.com, wens@csie.org, conor+dt@kernel.org,
+	krzk+dt@kernel.org, Chris Morgan <macromorgan@hotmail.com>
+Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add GPADC for Allwinner H616
+Message-ID: <20240418151650.GA1824475-robh@kernel.org>
+References: <20240417170423.20640-1-macroalpha82@gmail.com>
+ <20240417170423.20640-3-macroalpha82@gmail.com>
+ <20240417234957.2fcd14bb@minigeek.lan>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHp75VdZavToGYqLYnkKYt53HXoQxXnRER5Cn5b2==gWTvkAWQ@mail.gmail.com>
-X-Spamd-Bar: /
-Authentication-Results: auth=pass smtp.auth=aren@peacevolution.org smtp.mailfrom=aren@peacevolution.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=peacevolution.org;
-	s=dkim; t=1713452796;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:content-transfer-encoding:in-reply-to:references;
-	bh=VCd0NHg7beAhJoKEm/QgbRTnUak2JYtg99vMXKxsa0M=;
-	b=p6RTzvLKnixYbPyShowQRtk19eTobmvfGZGGbbHynE1W98DtGm0Vh5jeKHhResC5i2ODzI
-	QmnANwv6xJ5A5/etHiIwvwPYQc8XhSBcelf2FJGftSilB6sfgJ4ltbihnMVY+IUz+N9HFF
-	voTKduELX/t3TDY4UpOiD+UwsPnkvag=
+In-Reply-To: <20240417234957.2fcd14bb@minigeek.lan>
 
-On Mon, Apr 15, 2024 at 05:04:53PM +0300, Andy Shevchenko wrote:
-> On Sun, Apr 14, 2024 at 8:57 PM Aren Moynihan <aren@peacevolution.org> wrote:
-> >
-> > From: Ondrej Jirman <megi@xff.cz>
-> >
-> > VDD power input can be used to completely power off the chip during
-> > system suspend. Do so if available.
+On Wed, Apr 17, 2024 at 11:49:57PM +0100, Andre Przywara wrote:
+> On Wed, 17 Apr 2024 12:04:22 -0500
+> Chris Morgan <macroalpha82@gmail.com> wrote:
 > 
-> ...
+> Hi,
 > 
-> >  #include <linux/iio/events.h>
-> >  #include <linux/iio/iio.h>
-> >  #include <linux/iio/sysfs.h>
+> > From: Chris Morgan <macromorgan@hotmail.com>
+> > 
+> > Add support for the GPADC for the Allwinner H616. It is identical to
+> > the existing ADC for the D1/T113s/R329/T507 SoCs.
 > 
-> > +#include <linux/regulator/consumer.h>
-> 
-> Move it to be ordered and add a blank line to separate iio/*.h group.
-> 
-> ...
-> 
-> > +       data->vdd_reg = devm_regulator_get_optional(&client->dev, "vdd");
-> > +       if (IS_ERR(data->vdd_reg)) {
-> > +               ret = PTR_ERR(data->vdd_reg);
-> > +               if (ret == -ENODEV)
-> > +                       data->vdd_reg = NULL;
-> 
-> > +               else
-> 
-> Redundant 'else' when you follow the pattern "check for error condition first".
-> 
-> > +                       return dev_err_probe(&client->dev, ret,
-> > +                                            "get regulator vdd failed\n");
-> > +       }
-> 
-> ...
-> 
-> > +       if (data->vdd_reg) {
-> > +               ret = regulator_enable(data->vdd_reg);
-> > +               if (ret)
-> > +                       return dev_err_probe(&client->dev, ret,
-> > +                                            "regulator vdd enable failed\n");
-> > +
-> > +               usleep_range(1000, 2000);
-> 
-> fsleep()
-> 
-> > +       }
-> 
-> ...
-> 
-> >         stk3310_set_state(iio_priv(indio_dev), STK3310_STATE_STANDBY);
-> > +       if (data->vdd_reg)
-> > +               regulator_disable(data->vdd_reg);
-> 
-> I forgot to check the order of freeing resources, be sure you have no
-> devm_*() releases happening before this call.
+> The H616 is using the same die as the T507 and the H700, and since the
+> T507 is already mentioned in the commit message for the original
+> binding, I wonder if we actually need a new compatible?
 
-If I understand what you're saying, this should be fine. The driver just
-uses devm to clean up acquired resources after remove is called. Or am I
-missing something and resources could be freed before calling
-stk3310_remove?
+For same die, I would say no you don't. But adding a compatible is fine, 
+too.
 
-> ...
-> 
-> > +               usleep_range(1000, 2000);
-> 
-> fsleep()
-
-Everything else makes sense, I'll include those in v2 along with a patch
-to switch stk3310_init to dev_err_probe.
-
-Thanks for taking the time to review
- - Aren
+Rob
 

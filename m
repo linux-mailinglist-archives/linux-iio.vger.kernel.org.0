@@ -1,526 +1,154 @@
-Return-Path: <linux-iio+bounces-4372-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4374-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3FB78AB21A
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 17:38:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BAD68AB303
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 18:12:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D847285E81
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 15:38:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF54A1C20FA4
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 16:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABBB136669;
-	Fri, 19 Apr 2024 15:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF21B134CED;
+	Fri, 19 Apr 2024 16:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pTFmBzYT"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lqWOKAz1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF5A134416;
-	Fri, 19 Apr 2024 15:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F02E130AF0
+	for <linux-iio@vger.kernel.org>; Fri, 19 Apr 2024 16:11:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713541012; cv=none; b=qHrd11TzzV36rFwqjTU+X59dowAEBeFJIHHKCmOAan/v0YSGGydBuD26h9rp/O6rrv6LWfnxnV5KAqI2UacThr9DVvtcf3vwIz5x3kWjIQ1TIlEdM72XOBCfVPdCZWzw+VuY7QJNhQgr+/9rKcLl3XDabR7u2ZW7y+IW0Dix7uA=
+	t=1713543119; cv=none; b=UakjM9fny5iJBMqQdE8p13VAMwezT7fPafkgoJfbJzFvPRO7Snmbdo16rtF9x7vVHQs9UrStX3Pszm5Lm/x1/d9uSD+gsAgFXxg8dChPuMU1GZrP+NUyO9jDmiNcyTnyq5zZ8H+oB16aYER05bd6OAF7kfsi1hf9pF1fgxPMoLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713541012; c=relaxed/simple;
-	bh=+DGHBdnrTYRitHjsY9XAZPyW9GtYKlA/s3wxV5NPYoA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=W8j81m6iizLh51jfFTPk2huriPtZsCfks9ojCfuY5W/LnU3inxuo09ax3Bd4z7u2SeV1zxwBrA9O0SUBrDKOb1mUkqGmGygtwtF9No7PXUnYuwUW/IoEQJGHVa27C1aXDBZ3YKfa4aFMO4G8lMq1kJ+1vcKHpfgDavIOREmRYZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pTFmBzYT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7EA68C2BD10;
-	Fri, 19 Apr 2024 15:36:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713541012;
-	bh=+DGHBdnrTYRitHjsY9XAZPyW9GtYKlA/s3wxV5NPYoA=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=pTFmBzYTOiHB3krBGT2/jQxXh5Fa+34mBEQRjv4IQmBR/spD514a2XrPcC502smuJ
-	 FYyXQh4WcrRsW/uPwepBq/v6ebu3LTbs7OXf3usHJDV2qcE9ddcdW4xXLi67Zx85Xj
-	 65WsjPDVF6uyKbnK+h/2sobP6LyhYp2Bq5qyWHQjtJF8bjQuTJCnxqIAqN0W6uDd5g
-	 ysCFGa8QbQSUfZqn86GcMOBKNlf2VdClJtT4HLd5TeiJHR+1VpgrDfYDxeZkmIssA3
-	 5fAHMuHGtVJ11r/mYknu8KuyfDy8BkvqhGGAwXMgXZom5oiULRgDFjBKNmLRsuXUek
-	 MTGc86jVEtcQA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 758DAC4345F;
-	Fri, 19 Apr 2024 15:36:52 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 19 Apr 2024 17:36:51 +0200
-Subject: [PATCH 8/8] iio: adc: ad9467: support digital interface
- calibration
+	s=arc-20240116; t=1713543119; c=relaxed/simple;
+	bh=FNgAl46ULEMP7u5HdRKsyrgLJBZ21oSduu43Vw0mqrY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b/HnOIlY8A2Wd6IBfeIDJZIjPFevWjCNReQkwKoT2CP1gJCJtdnNaStYeCZARzRDz2C4VpR4/iu9NEYgDbSHvz7vydzlsbmUtZpXefa0kxwS1p9L1MV9ccYJbc3NAQ9bqmODwsK3rpFodenZRqttBOIdwbHGQ2otebFK0kjE+ks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lqWOKAz1; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6ed20fb620fso1877951b3a.2
+        for <linux-iio@vger.kernel.org>; Fri, 19 Apr 2024 09:11:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1713543117; x=1714147917; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=8dc4Ms99LBRGrIqP0+CdoFO8dpvQ1QG48vdBO0u0MyA=;
+        b=lqWOKAz1QAtoxOhouSJs8G5roM8ZniDtTKnzlmPCQm75oCef702nmeLxnPo07BfrKx
+         Xk6BSRVDl5lTGyn0akqY3Y4ksjH3PGMGJz8k76qVF0Yff/LGqerRbj1Wld4d8gDOksub
+         X412Qq9HU0+ERo6SNbrUzD6ZxJciWW52ro79rEJFO8yEg3XXc9bhyUI8VYRMMIimRE+M
+         /4OOpS+TlvDKnXxrGcFzn2a8TUh2heT+DaUcbw3/DuMwJJxnqUoV9w4yLnl1fzoAA7bo
+         D34pC8xsTw3MJQzhkx/MvRtSkJUTkmiPtINk0Ozd4yQn3CYGVtSgG0JLgZZtN4jqVWW0
+         edWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713543117; x=1714147917;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8dc4Ms99LBRGrIqP0+CdoFO8dpvQ1QG48vdBO0u0MyA=;
+        b=ki0ZX6EikNI45C0vA2Tqw7bJ75TY9D5EugPaMeCQgM62EL92d+J4bdTS/FpCyG1avc
+         fWPSxGVidoM8ac5/q7A9SinB6hk3P8tXrJUjYsrx80kzyG8aslz6jP+gZywBDGBE3CSe
+         Yaw/yVonHsAZ53qsC/+zT5tYtG/b+d2hKRJVRYEV1dcBWWFWxfT++HN773JmQ4T/DIYV
+         eOmxk1zobHuj4TINN4dicBzoXODAiiBb00dULj/8wJwvl8b6BPSDWMkYps2qfmwvXFkj
+         o1ekxG/YcPwJtsoZ9hfTf5gUkI9UXKoJ98OaJBi5zcHnh10fv6Vo76dELA1qkFfYuZ6b
+         vcrA==
+X-Forwarded-Encrypted: i=1; AJvYcCXPEwNx2XPElwFXBpWdMHbnmhe+kZE9oA48mQzu/kVD47X+WfsTx79cPfKJXGbZyTDX2k8LFbo0T34djEVz1PCQjBEzGk/Wfawr
+X-Gm-Message-State: AOJu0YxSXq522sizpK2YQJ5HPM0HSULjdH1ekwsM39qTxrtWqu1Axqwg
+	V5LECrLb8hbKNOB/5dMKBYurMuimXvNhiHwd8siceKTGmltRlrCRiixNSUcUPLU=
+X-Google-Smtp-Source: AGHT+IEfmEn80bk0LQvQmkauvwFGRXgiuRyCp0Rxl5JkBcXJa+Yg91+5bVUl+84LZ3wsnvejbI1bng==
+X-Received: by 2002:a05:6a00:1906:b0:6ea:aaf5:9e00 with SMTP id y6-20020a056a00190600b006eaaaf59e00mr2865256pfi.33.1713543117643;
+        Fri, 19 Apr 2024 09:11:57 -0700 (PDT)
+Received: from [172.20.9.36] ([209.37.221.130])
+        by smtp.gmail.com with ESMTPSA id c2-20020a62e802000000b006ed4f616ec4sm3404528pfi.57.2024.04.19.09.11.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 19 Apr 2024 09:11:57 -0700 (PDT)
+Message-ID: <2608692c-7723-4ee5-884c-2dd691f03fe4@linaro.org>
+Date: Fri, 19 Apr 2024 18:11:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240419-ad9467-new-features-v1-8-3e7628ff6d5e@analog.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/8] dt-bindings: adc: axi-adc: add clocks property
+To: nuno.sa@analog.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Alexandru Ardelean <alexandru.ardelean@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Olivier Moysan <olivier.moysan@foss.st.com>
 References: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
-In-Reply-To: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
-To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Alexandru Ardelean <alexandru.ardelean@analog.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Olivier Moysan <olivier.moysan@foss.st.com>, Nuno Sa <nuno.sa@analog.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1713541010; l=11433;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=u8Tbte3YlvHi71mA8qJNTe770otJEy1OCeXGxPuLYyg=;
- b=brBhJ2v2ZGqz3S/MqlvurO/FklUWTZlyFe1cfBPLd1IJv4TxJCLGHTKAxSWOvF/X7zWEvEij3
- QAQ8H+/R+dRCMO4y8ugyU0a/Q+Xj0ikIILYmaxL5lWRQybbF9ncul4K
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
+ <20240419-ad9467-new-features-v1-3-3e7628ff6d5e@analog.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240419-ad9467-new-features-v1-3-3e7628ff6d5e@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Nuno Sa <nuno.sa@analog.com>
+On 19/04/2024 17:36, Nuno Sa via B4 Relay wrote:
+> From: Nuno Sa <nuno.sa@analog.com>
+> 
+> Add a required clock property as we can't access the device registers if
+> the AXI bus clock is not properly enabled.
+> 
 
-To make sure that we have the best timings on the serial data interface
-we should calibrate it. This means going through the device supported
-values and see for which ones we get a successful result. To do that, we
-use a prbs test pattern both in the IIO backend and in the frontend
-devices. Then for each of the test points we see if there are any
-errors. Note that the backend is responsible to look for those errors.
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-As calibrating the interface also requires that the data format is disabled
-(the one thing being done in ad9467_setup()), ad9467_setup() was removed
-and configuring the data fomat is now part of the calibration process.
-
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/adc/ad9467.c | 337 +++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 296 insertions(+), 41 deletions(-)
-
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index 7db87ccc1ea4..44552dd6f4c6 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -4,6 +4,9 @@
-  *
-  * Copyright 2012-2020 Analog Devices Inc.
-  */
-+
-+#include <linux/bitmap.h>
-+#include <linux/bitops.h>
- #include <linux/cleanup.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
-@@ -100,6 +103,8 @@
- #define AD9467_DEF_OUTPUT_MODE		0x08
- #define AD9467_REG_VREF_MASK		0x0F
- 
-+#define AD9647_MAX_TEST_POINTS		32
-+
- struct ad9467_chip_info {
- 	const char		*name;
- 	unsigned int		id;
-@@ -110,6 +115,8 @@ struct ad9467_chip_info {
- 	unsigned long		max_rate;
- 	unsigned int		default_output_mode;
- 	unsigned int		vref_mask;
-+	unsigned int		num_lanes;
-+	bool			has_dco;
- };
- 
- struct ad9467_state {
-@@ -243,6 +250,7 @@ static const struct ad9467_chip_info ad9467_chip_tbl = {
- 	.num_channels = ARRAY_SIZE(ad9467_channels),
- 	.default_output_mode = AD9467_DEF_OUTPUT_MODE,
- 	.vref_mask = AD9467_REG_VREF_MASK,
-+	.num_lanes = 8,
- };
- 
- static const struct ad9467_chip_info ad9434_chip_tbl = {
-@@ -255,6 +263,7 @@ static const struct ad9467_chip_info ad9434_chip_tbl = {
- 	.num_channels = ARRAY_SIZE(ad9434_channels),
- 	.default_output_mode = AD9434_DEF_OUTPUT_MODE,
- 	.vref_mask = AD9434_REG_VREF_MASK,
-+	.num_lanes = 6,
- };
- 
- static const struct ad9467_chip_info ad9265_chip_tbl = {
-@@ -267,6 +276,7 @@ static const struct ad9467_chip_info ad9265_chip_tbl = {
- 	.num_channels = ARRAY_SIZE(ad9467_channels),
- 	.default_output_mode = AD9265_DEF_OUTPUT_MODE,
- 	.vref_mask = AD9265_REG_VREF_MASK,
-+	.has_dco = true,
- };
- 
- static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
-@@ -322,6 +332,276 @@ static int ad9467_set_scale(struct ad9467_state *st, int val, int val2)
- 	return -EINVAL;
- }
- 
-+static void ad9467_dump_table(const unsigned long *err_map, unsigned int size,
-+			      bool invert)
-+{
-+#ifdef DEBUG
-+	unsigned int bit;
-+
-+	pr_debug("Dump calibration table:\n");
-+	for (bit = 0; bit < size; bit++) {
-+		if (bit == size / 2) {
-+			if (!invert)
-+				break;
-+			pr_cont("\n");
-+		}
-+
-+		pr_cont("%c", test_bit(bit, err_map) ? 'x' : 'o');
-+	}
-+#endif
-+}
-+
-+static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
-+{
-+	int ret;
-+
-+	ret = ad9467_spi_write(spi, AN877_ADC_REG_OUTPUT_MODE, mode);
-+	if (ret < 0)
-+		return ret;
-+
-+	return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
-+				AN877_ADC_TRANSFER_SYNC);
-+}
-+
-+static int ad9647_calibrate_prepare(const struct ad9467_state *st)
-+{
-+	struct iio_backend_data_fmt data = {
-+		.enable = false,
-+	};
-+	unsigned int c;
-+	int ret;
-+
-+	ret = ad9467_spi_write(st->spi, AN877_ADC_REG_TEST_IO,
-+			       AN877_ADC_TESTMODE_PN9_SEQ);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
-+			       AN877_ADC_TRANSFER_SYNC);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad9467_outputmode_set(st->spi, st->info->default_output_mode);
-+	if (ret)
-+		return ret;
-+
-+	for (c = 0; c < st->info->num_channels; c++) {
-+		ret = iio_backend_data_format_set(st->back, c, &data);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = iio_backend_test_pattern_set(st->back, 0,
-+					   IIO_BACKEND_ADI_PRBS_9A);
-+	if (ret)
-+		return ret;
-+
-+	return iio_backend_chan_enable(st->back, 0);
-+}
-+
-+static int ad9647_calibrate_polarity_set(const struct ad9467_state *st,
-+					 bool invert)
-+{
-+	enum iio_backend_sample_trigger trigger;
-+
-+	if (st->info->has_dco) {
-+		unsigned int phase = AN877_ADC_OUTPUT_EVEN_ODD_MODE_EN;
-+
-+		if (invert)
-+			phase |= AN877_ADC_INVERT_DCO_CLK;
-+
-+		return ad9467_spi_write(st->spi, AN877_ADC_REG_OUTPUT_PHASE,
-+					phase);
-+	}
-+
-+	if (invert)
-+		trigger = IIO_BACKEND_SAMPLE_TRIGGER_EDGE_FALLING;
-+	else
-+		trigger = IIO_BACKEND_SAMPLE_TRIGGER_EDGE_RISING;
-+
-+	return iio_backend_data_sample_trigger(st->back, trigger);
-+}
-+
-+static int ad9467_calibrate_status_check(const struct ad9467_state *st,
-+					 bool *stat)
-+{
-+	struct iio_backend_chan_status status = {0};
-+	int ret;
-+
-+	ret = iio_backend_chan_status(st->back, 0, &status);
-+	if (ret)
-+		return ret;
-+
-+	*stat = status.errors;
-+
-+	return 0;
-+}
-+
-+/*
-+ * The idea is pretty simple. Find the max number of successful points in a row
-+ * and get the one in the middle.
-+ */
-+static unsigned int ad9467_find_optimal_point(const unsigned long *err_map,
-+					      unsigned int start,
-+					      unsigned int nbits,
-+					      unsigned int *val)
-+{
-+	unsigned int bit = start, end, start_cnt, cnt = 0;
-+
-+	for_each_clear_bitrange_from(bit, end, err_map, nbits + start) {
-+		if (end - bit > cnt) {
-+			cnt = end - bit;
-+			start_cnt = bit;
-+		}
-+	}
-+
-+	if (cnt)
-+		*val = start_cnt + cnt / 2;
-+
-+	return cnt;
-+}
-+
-+static int ad9467_calibrate_apply(const struct ad9467_state *st,
-+				  unsigned int val)
-+{
-+	unsigned int lane;
-+	int ret;
-+
-+	if (st->info->has_dco) {
-+		int ret;
-+
-+		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_OUTPUT_DELAY,
-+				       val);
-+		if (ret)
-+			return ret;
-+
-+		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
-+					AN877_ADC_TRANSFER_SYNC);
-+	}
-+
-+	for (lane = 0; lane < st->info->num_lanes; lane++) {
-+		ret = iio_backend_iodelay_set(st->back, lane, val);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+static int ad9647_calibrate_stop(const struct ad9467_state *st)
-+{
-+	struct iio_backend_data_fmt data = {
-+		.sign_extend = true,
-+		.enable = true,
-+	};
-+	unsigned int c, mode;
-+	int ret;
-+
-+	ret = iio_backend_chan_disable(st->back, 0);
-+	if (ret)
-+		return ret;
-+
-+	for (c = 0; c < st->info->num_channels; c++) {
-+		ret = iio_backend_data_format_set(st->back, c, &data);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	mode = st->info->default_output_mode | AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
-+	ret = ad9467_outputmode_set(st->spi, mode);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad9467_spi_write(st->spi, AN877_ADC_REG_TEST_IO,
-+			       AN877_ADC_TESTMODE_OFF);
-+	if (ret)
-+		return ret;
-+
-+	return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
-+			       AN877_ADC_TRANSFER_SYNC);
-+}
-+
-+static int ad9467_calibrate(const struct ad9467_state *st)
-+{
-+	DECLARE_BITMAP(err_map, AD9647_MAX_TEST_POINTS * 2);
-+	unsigned int point, val, inv_val, cnt, inv_cnt = 0;
-+	/*
-+	 * Half of the bitmap is for the inverted signal. The number of test
-+	 * points is the same though...
-+	 */
-+	unsigned int test_points = AD9647_MAX_TEST_POINTS;
-+	unsigned long sample_rate = clk_get_rate(st->clk);
-+	struct device *dev = &st->spi->dev;
-+	bool invert = false, stat;
-+	int ret;
-+
-+	ret = ad9647_calibrate_prepare(st);
-+	if (ret)
-+		return ret;
-+retune:
-+	ret = ad9647_calibrate_polarity_set(st, invert);
-+	if (ret)
-+		return ret;
-+
-+	for (point = 0; point < test_points; point++) {
-+		ret = ad9467_calibrate_apply(st, point);
-+		if (ret)
-+			return ret;
-+
-+		ret = ad9467_calibrate_status_check(st, &stat);
-+		if (ret < 0)
-+			return ret;
-+
-+		__assign_bit(point + invert * test_points, err_map, stat);
-+	}
-+
-+	if (!invert) {
-+		cnt = ad9467_find_optimal_point(err_map, 0, test_points, &val);
-+		/*
-+		 * We're happy if we find, at least, three good test points in
-+		 * a row.
-+		 */
-+		if (cnt < 3) {
-+			invert = true;
-+			goto retune;
-+		}
-+	} else {
-+		inv_cnt = ad9467_find_optimal_point(err_map, test_points,
-+						    test_points, &inv_val);
-+		if (!inv_cnt && !cnt)
-+			return -EIO;
-+	}
-+
-+	ad9467_dump_table(err_map, BITS_PER_TYPE(err_map), invert);
-+
-+	if (inv_cnt < cnt) {
-+		ret = ad9647_calibrate_polarity_set(st, false);
-+		if (ret)
-+			return ret;
-+	} else {
-+		/*
-+		 * polarity inverted is the last test to run. Hence, there's no
-+		 * need to re-do any configuration. We just need to "normalize"
-+		 * the selected value.
-+		 */
-+		val = inv_val - test_points;
-+	}
-+
-+	if (st->info->has_dco)
-+		dev_dbg(dev, "%sDCO 0x%X CLK %lu Hz\n", inv_cnt >= cnt ? "INVERT " : "",
-+			val, sample_rate);
-+	else
-+		dev_dbg(dev, "%sIDELAY 0x%x\n", inv_cnt >= cnt ? "INVERT " : "",
-+			val);
-+
-+	ret = ad9467_calibrate_apply(st, val);
-+	if (ret)
-+		return ret;
-+
-+	/* finally apply the optimal value */
-+	return ad9647_calibrate_stop(st);
-+}
-+
- static int ad9467_read_raw(struct iio_dev *indio_dev,
- 			   struct iio_chan_spec const *chan,
- 			   int *val, int *val2, long m)
-@@ -360,12 +640,22 @@ static int ad9467_write_raw(struct iio_dev *indio_dev,
- 			return -EINVAL;
- 		}
- 
--		ret = clk_set_rate(st->clk, r_clk);
--		if (ret)
--			return ret;
-+		/*
-+		 * clk_set_rate() would also do this but since we would still
-+		 * need it for avoiding an unnecessary calibration, do it now.
-+		 */
-+		if (st->sample_rate == r_clk)
-+			return 0;
- 
--		st->sample_rate = r_clk;
--		return 0;
-+		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+			ret = clk_set_rate(st->clk, r_clk);
-+			if (ret)
-+				return ret;
-+
-+			st->sample_rate = r_clk;
-+			ret = ad9467_calibrate(st);
-+		}
-+		return ret;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -418,18 +708,6 @@ static const struct iio_info ad9467_info = {
- 	.read_avail = ad9467_read_avail,
- };
- 
--static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
--{
--	int ret;
--
--	ret = ad9467_spi_write(spi, AN877_ADC_REG_OUTPUT_MODE, mode);
--	if (ret < 0)
--		return ret;
--
--	return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
--				AN877_ADC_TRANSFER_SYNC);
--}
--
- static int ad9467_scale_fill(struct ad9467_state *st)
- {
- 	const struct ad9467_chip_info *info = st->info;
-@@ -449,29 +727,6 @@ static int ad9467_scale_fill(struct ad9467_state *st)
- 	return 0;
- }
- 
--static int ad9467_setup(struct ad9467_state *st)
--{
--	struct iio_backend_data_fmt data = {
--		.sign_extend = true,
--		.enable = true,
--	};
--	unsigned int c, mode;
--	int ret;
--
--	mode = st->info->default_output_mode | AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
--	ret = ad9467_outputmode_set(st->spi, mode);
--	if (ret)
--		return ret;
--
--	for (c = 0; c < st->info->num_channels; c++) {
--		ret = iio_backend_data_format_set(st->back, c, &data);
--		if (ret)
--			return ret;
--	}
--
--	return 0;
--}
--
- static int ad9467_reset(struct device *dev)
- {
- 	struct gpio_desc *gpio;
-@@ -589,7 +844,7 @@ static int ad9467_probe(struct spi_device *spi)
- 	if (ret)
- 		return ret;
- 
--	ret = ad9467_setup(st);
-+	ret = ad9467_calibrate(st);
- 	if (ret)
- 		return ret;
- 
-
--- 
-2.44.0
-
+Best regards,
+Krzysztof
 
 

@@ -1,154 +1,467 @@
-Return-Path: <linux-iio+bounces-4374-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4375-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BAD68AB303
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 18:12:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 265818AB454
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 19:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF54A1C20FA4
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 16:12:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2F9F287980
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 17:24:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF21B134CED;
-	Fri, 19 Apr 2024 16:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lqWOKAz1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65A8D13B5BE;
+	Fri, 19 Apr 2024 17:24:29 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F02E130AF0
-	for <linux-iio@vger.kernel.org>; Fri, 19 Apr 2024 16:11:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB0D13AD1E;
+	Fri, 19 Apr 2024 17:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713543119; cv=none; b=UakjM9fny5iJBMqQdE8p13VAMwezT7fPafkgoJfbJzFvPRO7Snmbdo16rtF9x7vVHQs9UrStX3Pszm5Lm/x1/d9uSD+gsAgFXxg8dChPuMU1GZrP+NUyO9jDmiNcyTnyq5zZ8H+oB16aYER05bd6OAF7kfsi1hf9pF1fgxPMoLc=
+	t=1713547469; cv=none; b=F5ODLpFzV9fA9g1uVskDcZktbh6N08GL76Ihvg9zwnKx96LgcVAXsej0VKCp8LQyDW1Qg86WsGuW5mdmcN245zVwP3KW1V7grtnuXQ636bvt/pRRQkgTOmTV3kQ48gJYc2KJhIILTM9K4o2HrTWFM6xgqz4WAjYuR2vi98j4In4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713543119; c=relaxed/simple;
-	bh=FNgAl46ULEMP7u5HdRKsyrgLJBZ21oSduu43Vw0mqrY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b/HnOIlY8A2Wd6IBfeIDJZIjPFevWjCNReQkwKoT2CP1gJCJtdnNaStYeCZARzRDz2C4VpR4/iu9NEYgDbSHvz7vydzlsbmUtZpXefa0kxwS1p9L1MV9ccYJbc3NAQ9bqmODwsK3rpFodenZRqttBOIdwbHGQ2otebFK0kjE+ks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lqWOKAz1; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6ed20fb620fso1877951b3a.2
-        for <linux-iio@vger.kernel.org>; Fri, 19 Apr 2024 09:11:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713543117; x=1714147917; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=8dc4Ms99LBRGrIqP0+CdoFO8dpvQ1QG48vdBO0u0MyA=;
-        b=lqWOKAz1QAtoxOhouSJs8G5roM8ZniDtTKnzlmPCQm75oCef702nmeLxnPo07BfrKx
-         Xk6BSRVDl5lTGyn0akqY3Y4ksjH3PGMGJz8k76qVF0Yff/LGqerRbj1Wld4d8gDOksub
-         X412Qq9HU0+ERo6SNbrUzD6ZxJciWW52ro79rEJFO8yEg3XXc9bhyUI8VYRMMIimRE+M
-         /4OOpS+TlvDKnXxrGcFzn2a8TUh2heT+DaUcbw3/DuMwJJxnqUoV9w4yLnl1fzoAA7bo
-         D34pC8xsTw3MJQzhkx/MvRtSkJUTkmiPtINk0Ozd4yQn3CYGVtSgG0JLgZZtN4jqVWW0
-         edWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713543117; x=1714147917;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8dc4Ms99LBRGrIqP0+CdoFO8dpvQ1QG48vdBO0u0MyA=;
-        b=ki0ZX6EikNI45C0vA2Tqw7bJ75TY9D5EugPaMeCQgM62EL92d+J4bdTS/FpCyG1avc
-         fWPSxGVidoM8ac5/q7A9SinB6hk3P8tXrJUjYsrx80kzyG8aslz6jP+gZywBDGBE3CSe
-         Yaw/yVonHsAZ53qsC/+zT5tYtG/b+d2hKRJVRYEV1dcBWWFWxfT++HN773JmQ4T/DIYV
-         eOmxk1zobHuj4TINN4dicBzoXODAiiBb00dULj/8wJwvl8b6BPSDWMkYps2qfmwvXFkj
-         o1ekxG/YcPwJtsoZ9hfTf5gUkI9UXKoJ98OaJBi5zcHnh10fv6Vo76dELA1qkFfYuZ6b
-         vcrA==
-X-Forwarded-Encrypted: i=1; AJvYcCXPEwNx2XPElwFXBpWdMHbnmhe+kZE9oA48mQzu/kVD47X+WfsTx79cPfKJXGbZyTDX2k8LFbo0T34djEVz1PCQjBEzGk/Wfawr
-X-Gm-Message-State: AOJu0YxSXq522sizpK2YQJ5HPM0HSULjdH1ekwsM39qTxrtWqu1Axqwg
-	V5LECrLb8hbKNOB/5dMKBYurMuimXvNhiHwd8siceKTGmltRlrCRiixNSUcUPLU=
-X-Google-Smtp-Source: AGHT+IEfmEn80bk0LQvQmkauvwFGRXgiuRyCp0Rxl5JkBcXJa+Yg91+5bVUl+84LZ3wsnvejbI1bng==
-X-Received: by 2002:a05:6a00:1906:b0:6ea:aaf5:9e00 with SMTP id y6-20020a056a00190600b006eaaaf59e00mr2865256pfi.33.1713543117643;
-        Fri, 19 Apr 2024 09:11:57 -0700 (PDT)
-Received: from [172.20.9.36] ([209.37.221.130])
-        by smtp.gmail.com with ESMTPSA id c2-20020a62e802000000b006ed4f616ec4sm3404528pfi.57.2024.04.19.09.11.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Apr 2024 09:11:57 -0700 (PDT)
-Message-ID: <2608692c-7723-4ee5-884c-2dd691f03fe4@linaro.org>
-Date: Fri, 19 Apr 2024 18:11:54 +0200
+	s=arc-20240116; t=1713547469; c=relaxed/simple;
+	bh=TATDmTElaYBpAYch8soSPQH6hF0nZrDGpo42zohaAmw=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aqjA0VdqX8dLwHE+FO/DlGQrZWL+fGnx81wMeYAXxy6BrmGcM5iC51rXnpSQfY23oxDhiHkRb492gZqDO0YpfXu8XZ81RdsUV6ZqNieFKEbI1mxCDBJSqjZT3fO0zm5sgUBffiHiMalYQo4e01rfPBdiyeo+EIJxhvwgAeNYOHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VLhKM6xwXz67gJd;
+	Sat, 20 Apr 2024 01:22:15 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0C9B7140AB8;
+	Sat, 20 Apr 2024 01:24:22 +0800 (CST)
+Received: from localhost (10.48.152.95) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Fri, 19 Apr
+ 2024 18:24:20 +0100
+Date: Fri, 19 Apr 2024 18:24:19 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+CC: Andrzej Hajda <andrzej.hajda@intel.com>, Neil Armstrong
+	<neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, "Laurent
+ Pinchart" <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+	<jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, "Maarten
+ Lankhorst" <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+	<mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+	<airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Wolfram Sang
+	<wsa@kernel.org>, Peter Rosin <peda@axentia.se>, Peter Korsgaard
+	<peter.korsgaard@barco.com>, Michael Hennerich
+	<michael.hennerich@analog.com>, Vadim Pasternak <vadimp@nvidia.com>, Michael
+ Shych <michaelsh@nvidia.com>, Guenter Roeck <linux@roeck-us.net>, Linus
+ Walleij <linus.walleij@linaro.org>, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, "Mauro Carvalho Chehab"
+	<mchehab@kernel.org>, Jacopo Mondi <jacopo+renesas@jmondi.org>, Kieran
+ Bingham <kieran.bingham+renesas@ideasonboard.com>, Niklas
+ =?ISO-8859-1?Q?S=F6derlund?= <niklas.soderlund+renesas@ragnatech.se>, "Rob
+ Herring" <robh@kernel.org>, Saravana Kannan <saravanak@google.com>, "open
+ list:AMD KFD" <dri-devel@lists.freedesktop.org>, "linux-i2c@vger.kernel.org"
+	<linux-i2c@vger.kernel.org>, "linux-iio@vger.kernel.org"
+	<linux-iio@vger.kernel.org>, <linux-media@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH] i2c: mux: Remove class argument from
+ i2c_mux_add_adapter()
+Message-ID: <20240419182419.00001fcc@Huawei.com>
+In-Reply-To: <17145dc5-e68e-4566-bedf-251bebe36ebb@gmail.com>
+References: <17145dc5-e68e-4566-bedf-251bebe36ebb@gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/8] dt-bindings: adc: axi-adc: add clocks property
-To: nuno.sa@analog.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Alexandru Ardelean <alexandru.ardelean@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Olivier Moysan <olivier.moysan@foss.st.com>
-References: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
- <20240419-ad9467-new-features-v1-3-3e7628ff6d5e@analog.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240419-ad9467-new-features-v1-3-3e7628ff6d5e@analog.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On 19/04/2024 17:36, Nuno Sa via B4 Relay wrote:
-> From: Nuno Sa <nuno.sa@analog.com>
+On Thu, 18 Apr 2024 22:55:39 +0200
+Heiner Kallweit <hkallweit1@gmail.com> wrote:
+
+> 99a741aa7a2d ("i2c: mux: gpio: remove support for class-based device
+> instantiation") removed the last call to i2c_mux_add_adapter() with a
+> non-null class argument. Therefore the class argument can be removed.
 > 
-> Add a required clock property as we can't access the device registers if
-> the AXI bus clock is not properly enabled.
+> Note: Class-based device instantiation is a legacy mechanism which
+> shouldn't be used in new code, so we can rule out that this argument
+> may be needed again in the future.
 > 
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+For iio
 
-Best regards,
-Krzysztof
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+
+> ---
+>  drivers/gpu/drm/bridge/sii902x.c           |  2 +-
+>  drivers/i2c/i2c-mux.c                      | 24 +---------------------
+>  drivers/i2c/muxes/i2c-arb-gpio-challenge.c |  2 +-
+>  drivers/i2c/muxes/i2c-mux-gpio.c           |  2 +-
+>  drivers/i2c/muxes/i2c-mux-gpmux.c          |  2 +-
+>  drivers/i2c/muxes/i2c-mux-ltc4306.c        |  2 +-
+>  drivers/i2c/muxes/i2c-mux-mlxcpld.c        |  2 +-
+>  drivers/i2c/muxes/i2c-mux-pca9541.c        |  2 +-
+>  drivers/i2c/muxes/i2c-mux-pca954x.c        |  2 +-
+>  drivers/i2c/muxes/i2c-mux-pinctrl.c        |  2 +-
+>  drivers/i2c/muxes/i2c-mux-reg.c            |  2 +-
+>  drivers/iio/gyro/mpu3050-i2c.c             |  2 +-
+>  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c  |  2 +-
+>  drivers/media/dvb-frontends/af9013.c       |  2 +-
+>  drivers/media/dvb-frontends/lgdt3306a.c    |  2 +-
+>  drivers/media/dvb-frontends/m88ds3103.c    |  2 +-
+>  drivers/media/dvb-frontends/rtl2830.c      |  2 +-
+>  drivers/media/dvb-frontends/rtl2832.c      |  2 +-
+>  drivers/media/dvb-frontends/si2168.c       |  2 +-
+>  drivers/media/i2c/max9286.c                |  2 +-
+>  drivers/media/usb/cx231xx/cx231xx-i2c.c    |  5 +----
+>  drivers/of/unittest.c                      |  2 +-
+>  include/linux/i2c-mux.h                    |  3 +--
+>  23 files changed, 23 insertions(+), 49 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/sii902x.c b/drivers/gpu/drm/bridge/sii902x.c
+> index 8f84e9824..2fbeda902 100644
+> --- a/drivers/gpu/drm/bridge/sii902x.c
+> +++ b/drivers/gpu/drm/bridge/sii902x.c
+> @@ -1092,7 +1092,7 @@ static int sii902x_init(struct sii902x *sii902x)
+>  	}
+>  
+>  	sii902x->i2cmux->priv = sii902x;
+> -	ret = i2c_mux_add_adapter(sii902x->i2cmux, 0, 0, 0);
+> +	ret = i2c_mux_add_adapter(sii902x->i2cmux, 0, 0);
+>  	if (ret)
+>  		goto err_unreg_audio;
+>  
+> diff --git a/drivers/i2c/i2c-mux.c b/drivers/i2c/i2c-mux.c
+> index 57ff09f18..fda72e8be 100644
+> --- a/drivers/i2c/i2c-mux.c
+> +++ b/drivers/i2c/i2c-mux.c
+> @@ -127,19 +127,6 @@ static u32 i2c_mux_functionality(struct i2c_adapter *adap)
+>  	return parent->algo->functionality(parent);
+>  }
+>  
+> -/* Return all parent classes, merged */
+> -static unsigned int i2c_mux_parent_classes(struct i2c_adapter *parent)
+> -{
+> -	unsigned int class = 0;
+> -
+> -	do {
+> -		class |= parent->class;
+> -		parent = i2c_parent_is_i2c_adapter(parent);
+> -	} while (parent);
+> -
+> -	return class;
+> -}
+> -
+>  static void i2c_mux_lock_bus(struct i2c_adapter *adapter, unsigned int flags)
+>  {
+>  	struct i2c_mux_priv *priv = adapter->algo_data;
+> @@ -281,8 +268,7 @@ static const struct i2c_lock_operations i2c_parent_lock_ops = {
+>  };
+>  
+>  int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+> -			u32 force_nr, u32 chan_id,
+> -			unsigned int class)
+> +			u32 force_nr, u32 chan_id)
+>  {
+>  	struct i2c_adapter *parent = muxc->parent;
+>  	struct i2c_mux_priv *priv;
+> @@ -340,14 +326,6 @@ int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+>  	else
+>  		priv->adap.lock_ops = &i2c_parent_lock_ops;
+>  
+> -	/* Sanity check on class */
+> -	if (i2c_mux_parent_classes(parent) & class & ~I2C_CLASS_DEPRECATED)
+> -		dev_err(&parent->dev,
+> -			"Segment %d behind mux can't share classes with ancestors\n",
+> -			chan_id);
+> -	else
+> -		priv->adap.class = class;
+> -
+>  	/*
+>  	 * Try to populate the mux adapter's of_node, expands to
+>  	 * nothing if !CONFIG_OF.
+> diff --git a/drivers/i2c/muxes/i2c-arb-gpio-challenge.c b/drivers/i2c/muxes/i2c-arb-gpio-challenge.c
+> index 24168e9f7..7aa6e795d 100644
+> --- a/drivers/i2c/muxes/i2c-arb-gpio-challenge.c
+> +++ b/drivers/i2c/muxes/i2c-arb-gpio-challenge.c
+> @@ -167,7 +167,7 @@ static int i2c_arbitrator_probe(struct platform_device *pdev)
+>  	}
+>  
+>  	/* Actually add the mux adapter */
+> -	ret = i2c_mux_add_adapter(muxc, 0, 0, 0);
+> +	ret = i2c_mux_add_adapter(muxc, 0, 0);
+>  	if (ret)
+>  		i2c_put_adapter(muxc->parent);
+>  
+> diff --git a/drivers/i2c/muxes/i2c-mux-gpio.c b/drivers/i2c/muxes/i2c-mux-gpio.c
+> index 0fbb33a3d..d6bbb8b68 100644
+> --- a/drivers/i2c/muxes/i2c-mux-gpio.c
+> +++ b/drivers/i2c/muxes/i2c-mux-gpio.c
+> @@ -207,7 +207,7 @@ static int i2c_mux_gpio_probe(struct platform_device *pdev)
+>  	for (i = 0; i < mux->data.n_values; i++) {
+>  		u32 nr = mux->data.base_nr ? (mux->data.base_nr + i) : 0;
+>  
+> -		ret = i2c_mux_add_adapter(muxc, nr, mux->data.values[i], 0);
+> +		ret = i2c_mux_add_adapter(muxc, nr, mux->data.values[i]);
+>  		if (ret)
+>  			goto add_adapter_failed;
+>  	}
+> diff --git a/drivers/i2c/muxes/i2c-mux-gpmux.c b/drivers/i2c/muxes/i2c-mux-gpmux.c
+> index 8305661e1..10d63307b 100644
+> --- a/drivers/i2c/muxes/i2c-mux-gpmux.c
+> +++ b/drivers/i2c/muxes/i2c-mux-gpmux.c
+> @@ -124,7 +124,7 @@ static int i2c_mux_probe(struct platform_device *pdev)
+>  			goto err_children;
+>  		}
+>  
+> -		ret = i2c_mux_add_adapter(muxc, 0, chan, 0);
+> +		ret = i2c_mux_add_adapter(muxc, 0, chan);
+>  		if (ret)
+>  			goto err_children;
+>  	}
+> diff --git a/drivers/i2c/muxes/i2c-mux-ltc4306.c b/drivers/i2c/muxes/i2c-mux-ltc4306.c
+> index 23766d853..19a7c3709 100644
+> --- a/drivers/i2c/muxes/i2c-mux-ltc4306.c
+> +++ b/drivers/i2c/muxes/i2c-mux-ltc4306.c
+> @@ -279,7 +279,7 @@ static int ltc4306_probe(struct i2c_client *client)
+>  
+>  	/* Now create an adapter for each channel */
+>  	for (num = 0; num < chip->nchans; num++) {
+> -		ret = i2c_mux_add_adapter(muxc, 0, num, 0);
+> +		ret = i2c_mux_add_adapter(muxc, 0, num);
+>  		if (ret) {
+>  			i2c_mux_del_adapters(muxc);
+>  			return ret;
+> diff --git a/drivers/i2c/muxes/i2c-mux-mlxcpld.c b/drivers/i2c/muxes/i2c-mux-mlxcpld.c
+> index 4c6ed1d58..3f06aa333 100644
+> --- a/drivers/i2c/muxes/i2c-mux-mlxcpld.c
+> +++ b/drivers/i2c/muxes/i2c-mux-mlxcpld.c
+> @@ -154,7 +154,7 @@ static int mlxcpld_mux_probe(struct platform_device *pdev)
+>  
+>  	/* Create an adapter for each channel. */
+>  	for (num = 0; num < pdata->num_adaps; num++) {
+> -		err = i2c_mux_add_adapter(muxc, 0, pdata->chan_ids[num], 0);
+> +		err = i2c_mux_add_adapter(muxc, 0, pdata->chan_ids[num]);
+>  		if (err)
+>  			goto virt_reg_failed;
+>  	}
+> diff --git a/drivers/i2c/muxes/i2c-mux-pca9541.c b/drivers/i2c/muxes/i2c-mux-pca9541.c
+> index ce0fb6924..e28694d99 100644
+> --- a/drivers/i2c/muxes/i2c-mux-pca9541.c
+> +++ b/drivers/i2c/muxes/i2c-mux-pca9541.c
+> @@ -314,7 +314,7 @@ static int pca9541_probe(struct i2c_client *client)
+>  
+>  	i2c_set_clientdata(client, muxc);
+>  
+> -	ret = i2c_mux_add_adapter(muxc, 0, 0, 0);
+> +	ret = i2c_mux_add_adapter(muxc, 0, 0);
+>  	if (ret)
+>  		return ret;
+>  
+> diff --git a/drivers/i2c/muxes/i2c-mux-pca954x.c b/drivers/i2c/muxes/i2c-mux-pca954x.c
+> index c3f4ff08a..6f8401825 100644
+> --- a/drivers/i2c/muxes/i2c-mux-pca954x.c
+> +++ b/drivers/i2c/muxes/i2c-mux-pca954x.c
+> @@ -644,7 +644,7 @@ static int pca954x_probe(struct i2c_client *client)
+>  
+>  	/* Now create an adapter for each channel */
+>  	for (num = 0; num < data->chip->nchans; num++) {
+> -		ret = i2c_mux_add_adapter(muxc, 0, num, 0);
+> +		ret = i2c_mux_add_adapter(muxc, 0, num);
+>  		if (ret)
+>  			goto fail_cleanup;
+>  	}
+> diff --git a/drivers/i2c/muxes/i2c-mux-pinctrl.c b/drivers/i2c/muxes/i2c-mux-pinctrl.c
+> index 6ebca7bfd..02aaf0781 100644
+> --- a/drivers/i2c/muxes/i2c-mux-pinctrl.c
+> +++ b/drivers/i2c/muxes/i2c-mux-pinctrl.c
+> @@ -151,7 +151,7 @@ static int i2c_mux_pinctrl_probe(struct platform_device *pdev)
+>  
+>  	/* Do not add any adapter for the idle state (if it's there at all). */
+>  	for (i = 0; i < num_names - !!muxc->deselect; i++) {
+> -		ret = i2c_mux_add_adapter(muxc, 0, i, 0);
+> +		ret = i2c_mux_add_adapter(muxc, 0, i);
+>  		if (ret)
+>  			goto err_del_adapter;
+>  	}
+> diff --git a/drivers/i2c/muxes/i2c-mux-reg.c b/drivers/i2c/muxes/i2c-mux-reg.c
+> index 8489971ba..ef765fcd3 100644
+> --- a/drivers/i2c/muxes/i2c-mux-reg.c
+> +++ b/drivers/i2c/muxes/i2c-mux-reg.c
+> @@ -213,7 +213,7 @@ static int i2c_mux_reg_probe(struct platform_device *pdev)
+>  	for (i = 0; i < mux->data.n_values; i++) {
+>  		nr = mux->data.base_nr ? (mux->data.base_nr + i) : 0;
+>  
+> -		ret = i2c_mux_add_adapter(muxc, nr, mux->data.values[i], 0);
+> +		ret = i2c_mux_add_adapter(muxc, nr, mux->data.values[i]);
+>  		if (ret)
+>  			goto err_del_mux_adapters;
+>  	}
+> diff --git a/drivers/iio/gyro/mpu3050-i2c.c b/drivers/iio/gyro/mpu3050-i2c.c
+> index 52b6feed2..29ecfa6fd 100644
+> --- a/drivers/iio/gyro/mpu3050-i2c.c
+> +++ b/drivers/iio/gyro/mpu3050-i2c.c
+> @@ -72,7 +72,7 @@ static int mpu3050_i2c_probe(struct i2c_client *client)
+>  	else {
+>  		mpu3050->i2cmux->priv = mpu3050;
+>  		/* Ignore failure, not critical */
+> -		i2c_mux_add_adapter(mpu3050->i2cmux, 0, 0, 0);
+> +		i2c_mux_add_adapter(mpu3050->i2cmux, 0, 0);
+>  	}
+>  
+>  	return 0;
+> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> index 410ea39fd..0e03137fb 100644
+> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c
+> @@ -142,7 +142,7 @@ static int inv_mpu_probe(struct i2c_client *client)
+>  		if (!st->muxc)
+>  			return -ENOMEM;
+>  		st->muxc->priv = dev_get_drvdata(&client->dev);
+> -		result = i2c_mux_add_adapter(st->muxc, 0, 0, 0);
+> +		result = i2c_mux_add_adapter(st->muxc, 0, 0);
+>  		if (result)
+>  			return result;
+>  		result = inv_mpu_acpi_create_mux_client(client);
+> diff --git a/drivers/media/dvb-frontends/af9013.c b/drivers/media/dvb-frontends/af9013.c
+> index a829c8979..5afdbe244 100644
+> --- a/drivers/media/dvb-frontends/af9013.c
+> +++ b/drivers/media/dvb-frontends/af9013.c
+> @@ -1480,7 +1480,7 @@ static int af9013_probe(struct i2c_client *client)
+>  		goto err_regmap_exit;
+>  	}
+>  	state->muxc->priv = state;
+> -	ret = i2c_mux_add_adapter(state->muxc, 0, 0, 0);
+> +	ret = i2c_mux_add_adapter(state->muxc, 0, 0);
+>  	if (ret)
+>  		goto err_regmap_exit;
+>  
+> diff --git a/drivers/media/dvb-frontends/lgdt3306a.c b/drivers/media/dvb-frontends/lgdt3306a.c
+> index 263887592..91c71b24c 100644
+> --- a/drivers/media/dvb-frontends/lgdt3306a.c
+> +++ b/drivers/media/dvb-frontends/lgdt3306a.c
+> @@ -2203,7 +2203,7 @@ static int lgdt3306a_probe(struct i2c_client *client)
+>  		goto err_kfree;
+>  	}
+>  	state->muxc->priv = client;
+> -	ret = i2c_mux_add_adapter(state->muxc, 0, 0, 0);
+> +	ret = i2c_mux_add_adapter(state->muxc, 0, 0);
+>  	if (ret)
+>  		goto err_kfree;
+>  
+> diff --git a/drivers/media/dvb-frontends/m88ds3103.c b/drivers/media/dvb-frontends/m88ds3103.c
+> index e0272054f..6c69bcc7a 100644
+> --- a/drivers/media/dvb-frontends/m88ds3103.c
+> +++ b/drivers/media/dvb-frontends/m88ds3103.c
+> @@ -1866,7 +1866,7 @@ static int m88ds3103_probe(struct i2c_client *client)
+>  		goto err_kfree;
+>  	}
+>  	dev->muxc->priv = dev;
+> -	ret = i2c_mux_add_adapter(dev->muxc, 0, 0, 0);
+> +	ret = i2c_mux_add_adapter(dev->muxc, 0, 0);
+>  	if (ret)
+>  		goto err_kfree;
+>  
+> diff --git a/drivers/media/dvb-frontends/rtl2830.c b/drivers/media/dvb-frontends/rtl2830.c
+> index 35c969fd2..30d10fe4b 100644
+> --- a/drivers/media/dvb-frontends/rtl2830.c
+> +++ b/drivers/media/dvb-frontends/rtl2830.c
+> @@ -838,7 +838,7 @@ static int rtl2830_probe(struct i2c_client *client)
+>  		goto err_regmap_exit;
+>  	}
+>  	dev->muxc->priv = client;
+> -	ret = i2c_mux_add_adapter(dev->muxc, 0, 0, 0);
+> +	ret = i2c_mux_add_adapter(dev->muxc, 0, 0);
+>  	if (ret)
+>  		goto err_regmap_exit;
+>  
+> diff --git a/drivers/media/dvb-frontends/rtl2832.c b/drivers/media/dvb-frontends/rtl2832.c
+> index 601cf45c3..5142820b1 100644
+> --- a/drivers/media/dvb-frontends/rtl2832.c
+> +++ b/drivers/media/dvb-frontends/rtl2832.c
+> @@ -1082,7 +1082,7 @@ static int rtl2832_probe(struct i2c_client *client)
+>  		goto err_regmap_exit;
+>  	}
+>  	dev->muxc->priv = dev;
+> -	ret = i2c_mux_add_adapter(dev->muxc, 0, 0, 0);
+> +	ret = i2c_mux_add_adapter(dev->muxc, 0, 0);
+>  	if (ret)
+>  		goto err_regmap_exit;
+>  
+> diff --git a/drivers/media/dvb-frontends/si2168.c b/drivers/media/dvb-frontends/si2168.c
+> index dae1f2153..26828fd41 100644
+> --- a/drivers/media/dvb-frontends/si2168.c
+> +++ b/drivers/media/dvb-frontends/si2168.c
+> @@ -744,7 +744,7 @@ static int si2168_probe(struct i2c_client *client)
+>  		goto err_kfree;
+>  	}
+>  	dev->muxc->priv = client;
+> -	ret = i2c_mux_add_adapter(dev->muxc, 0, 0, 0);
+> +	ret = i2c_mux_add_adapter(dev->muxc, 0, 0);
+>  	if (ret)
+>  		goto err_kfree;
+>  
+> diff --git a/drivers/media/i2c/max9286.c b/drivers/media/i2c/max9286.c
+> index d685d445c..dfcb3fc03 100644
+> --- a/drivers/media/i2c/max9286.c
+> +++ b/drivers/media/i2c/max9286.c
+> @@ -383,7 +383,7 @@ static int max9286_i2c_mux_init(struct max9286_priv *priv)
+>  	for_each_source(priv, source) {
+>  		unsigned int index = to_index(priv, source);
+>  
+> -		ret = i2c_mux_add_adapter(priv->mux, 0, index, 0);
+> +		ret = i2c_mux_add_adapter(priv->mux, 0, index);
+>  		if (ret < 0)
+>  			goto error;
+>  	}
+> diff --git a/drivers/media/usb/cx231xx/cx231xx-i2c.c b/drivers/media/usb/cx231xx/cx231xx-i2c.c
+> index c6659253c..6da8e7943 100644
+> --- a/drivers/media/usb/cx231xx/cx231xx-i2c.c
+> +++ b/drivers/media/usb/cx231xx/cx231xx-i2c.c
+> @@ -567,10 +567,7 @@ int cx231xx_i2c_mux_create(struct cx231xx *dev)
+>  
+>  int cx231xx_i2c_mux_register(struct cx231xx *dev, int mux_no)
+>  {
+> -	return i2c_mux_add_adapter(dev->muxc,
+> -				   0,
+> -				   mux_no /* chan_id */,
+> -				   0 /* class */);
+> +	return i2c_mux_add_adapter(dev->muxc, 0, mux_no);
+>  }
+>  
+>  void cx231xx_i2c_mux_unregister(struct cx231xx *dev)
+> diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
+> index 6b5c36b6a..c8ee866d7 100644
+> --- a/drivers/of/unittest.c
+> +++ b/drivers/of/unittest.c
+> @@ -2815,7 +2815,7 @@ static int unittest_i2c_mux_probe(struct i2c_client *client)
+>  	if (!muxc)
+>  		return -ENOMEM;
+>  	for (i = 0; i < nchans; i++) {
+> -		if (i2c_mux_add_adapter(muxc, 0, i, 0)) {
+> +		if (i2c_mux_add_adapter(muxc, 0, i)) {
+>  			dev_err(dev, "Failed to register mux #%d\n", i);
+>  			i2c_mux_del_adapters(muxc);
+>  			return -ENODEV;
+> diff --git a/include/linux/i2c-mux.h b/include/linux/i2c-mux.h
+> index 98ef73b7c..1784ac7af 100644
+> --- a/include/linux/i2c-mux.h
+> +++ b/include/linux/i2c-mux.h
+> @@ -56,8 +56,7 @@ struct i2c_adapter *i2c_root_adapter(struct device *dev);
+>   * callback functions to perform hardware-specific mux control.
+>   */
+>  int i2c_mux_add_adapter(struct i2c_mux_core *muxc,
+> -			u32 force_nr, u32 chan_id,
+> -			unsigned int class);
+> +			u32 force_nr, u32 chan_id);
+>  
+>  void i2c_mux_del_adapters(struct i2c_mux_core *muxc);
+>  
 
 

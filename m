@@ -1,96 +1,149 @@
-Return-Path: <linux-iio+bounces-4349-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4350-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FE4D8AA94E
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 09:37:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40E118AAA09
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 10:25:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B80A1C20B97
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 07:37:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD4711F228A5
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 08:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ACC543ACB;
-	Fri, 19 Apr 2024 07:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A88753360;
+	Fri, 19 Apr 2024 08:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bsabzreP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G7mc/P9B"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5444314E
-	for <linux-iio@vger.kernel.org>; Fri, 19 Apr 2024 07:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267C43EA8C;
+	Fri, 19 Apr 2024 08:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713512237; cv=none; b=BW/2Xj2nYxJOvL852TUTDoYBNeZfx5CWRGWiNnu3Tm1TiCsNa3J22Z1OQTV2+A0JBgailn4yG86fVxfLXwdOJvaIHOhk0tnnmKCLI34PRUbP2p+F0yFMpLUvHPTtK3B4iV5OdAbA3DS/NLhd/x9a4epkg4KAcrjIrkeusnate30=
+	t=1713515137; cv=none; b=iLrxyW2OFPK6QpLapZ32p3smJ0iV1ufHAGJwJChrF+70B2RSBNFqoyXKJbs3s6KH2snfQ1r8szUY20g0VDSnN82J8+h8y5LWjUNDsZGb7bbIckBEJlGqhOFhhie9x0vY0AWWydJJlnKvM9lHEoq8Tob4D+huE8tbbQ16vK0As58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713512237; c=relaxed/simple;
-	bh=FjudQEObzRPxzjSMMcAabDi7Qczsym6VSreKEpR34Jc=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lGwzm1IgbYumX7u8P8e3Kvi7DxgMv1/VdFPh3whwOYxZ8E190kf2A+QC85hHbcM4N6zMOBVxyLOgtBXWqXbXmk+CTAAlnwAZM0DNoMk2hMOKcvpPnaEiTSMJVMlId0gD3LottX2cUV+g98GQv26VefBre2s//HILrlQjfKAYTi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bsabzreP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 69C74C2BD11
-	for <linux-iio@vger.kernel.org>; Fri, 19 Apr 2024 07:37:16 +0000 (UTC)
+	s=arc-20240116; t=1713515137; c=relaxed/simple;
+	bh=6Jc63Ty3AclW4Qt3X4Q3sXMZP6yZwhBtynEVSVLwiZo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=XIJNEi1GNiNuHyrOzgD8VLOMB9ucea15HWvGL5zqn9twAVE7WUVWdMFWuZRQfn0ZBxNs/umE3DPv98QUFRQgrO+eJ9X/GPW650D/LSQ94T1isYUdpO0yBZa1rokB5J0xBsBUSkqQQxdiLsw0feW/gZ4BGdLLIWbjQOLE1xsU52Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G7mc/P9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DD79BC072AA;
+	Fri, 19 Apr 2024 08:25:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713512236;
-	bh=FjudQEObzRPxzjSMMcAabDi7Qczsym6VSreKEpR34Jc=;
-	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=bsabzreP+F0nhPxSE1fhOhmeJdejJ29qlez8jwFSNHGAfGsTd625eTq5cp5LcJ60z
-	 /pZYu+PEBkn3pwIykTKCCrTJ4FhtmNJFubp+7BQYuQ+g4O1AAfaTgpg5kNvYUOvNod
-	 gfPrEFQJoNfDBDV8SZDp80NkmtfjOaU2QhhpZeRzpKON4hVDiTxbCd4ssOkpHEs730
-	 +2c5pp2Ggzvd7z5G7DyMOLChiUp4XPUddsENl+mhsdsjmsu4mZooJqaAV6jlyiVCFI
-	 Q/N1SO7plBv9DLavCf345EKF58XV8/vRaKYtfPSNCKJznF71KL/vlOp2tDhFOtM19j
-	 epIp6/QUJ9omA==
-Received: by aws-us-west-2-korg-bugzilla-1.web.codeaurora.org (Postfix, from userid 48)
-	id 594BBC433E2; Fri, 19 Apr 2024 07:37:16 +0000 (UTC)
-From: bugzilla-daemon@kernel.org
-To: linux-iio@vger.kernel.org
-Subject: [Bug 218578] MXC6655 accelerometer not working with MXC4005 driver
-Date: Fri, 19 Apr 2024 07:37:16 +0000
-X-Bugzilla-Reason: None
-X-Bugzilla-Type: changed
-X-Bugzilla-Watch-Reason: AssignedTo drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Product: Drivers
-X-Bugzilla-Component: IIO
-X-Bugzilla-Version: 2.5
-X-Bugzilla-Keywords: 
-X-Bugzilla-Severity: normal
-X-Bugzilla-Who: jwrdegoede@fedoraproject.org
-X-Bugzilla-Status: RESOLVED
-X-Bugzilla-Resolution: CODE_FIX
-X-Bugzilla-Priority: P3
-X-Bugzilla-Assigned-To: drivers_iio@kernel-bugs.kernel.org
-X-Bugzilla-Flags: 
-X-Bugzilla-Changed-Fields: 
-Message-ID: <bug-218578-217253-0TG6RWUVjK@https.bugzilla.kernel.org/>
-In-Reply-To: <bug-218578-217253@https.bugzilla.kernel.org/>
-References: <bug-218578-217253@https.bugzilla.kernel.org/>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Bugzilla-URL: https://bugzilla.kernel.org/
-Auto-Submitted: auto-generated
+	s=k20201202; t=1713515136;
+	bh=6Jc63Ty3AclW4Qt3X4Q3sXMZP6yZwhBtynEVSVLwiZo=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=G7mc/P9B2NzcbmGGDqylb7J0UkIJ0omU2vmiVE5//sYP+pT2eC/HS7X9zzTUQd3B0
+	 TqdH12uVKHEj1DDdkeyzpfDyhYSZwQQOI4NU8zKq9CW/uVFY78KVHIUlG+y1vW+Lnj
+	 3aYmGe8j9xPEZTxAwX+U2rLBHhuaXNQRpbdPZlQxqEpnq0dIuQFxhzBi4aCqShA/Fs
+	 hisI1ABltNMXBlAw4XGDOMVgh2S6Yrm7hE5hgTgOc+Jq1pAQiWdaUm6l92Npq+LHL+
+	 K28LErVZkP3Iw80hoYYcqqfHAvOw2KLHBu1NvOo+Yi6fmw49bIejb0CdUWQNjDV1bQ
+	 A8gAX4bVNGmrg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D62EEC4345F;
+	Fri, 19 Apr 2024 08:25:36 +0000 (UTC)
+From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH v4 00/10] iio: dac: support IIO backends on the output
+ direction
+Date: Fri, 19 Apr 2024 10:25:33 +0200
+Message-Id: <20240419-iio-backend-axi-dac-v4-0-5ca45b4de294@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAH0qImYC/32NQQ6CMBBFr0Jm7ZjSVhJceQ/DYmgHmKgtaQ3BE
+ O5u5QAu30v++xtkTsIZrtUGiRfJEkMBe6rATRRGRvGFQSttla01ikTsyT04eKRV0JPD3jQteUe
+ 2IQVlOSceZD2q967wJPkd0+c4WczP/u8tBhUabr11F63qob9RoGcczy6+oNv3/QsJjeE2twAAA
+ A==
+To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Dragos Bogdan <dragos.bogdan@analog.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>, Nuno Sa <nuno.sa@analog.com>, 
+ Paul Cercueil <paul@crapouillou.net>, 
+ Alexandru Ardelean <ardeleanalex@gmail.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1713515134; l=2355;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=6Jc63Ty3AclW4Qt3X4Q3sXMZP6yZwhBtynEVSVLwiZo=;
+ b=btC7zoHobyKtlNXdb77uQliTZs2BXBv2Fv5mSzJu9UQBdqwV00mwAoA9STXrQQDyhU4l6mI1+
+ n7xxElW+5nLCEggR1im35BrVMtY8b0aSVfu8vq4k1fChNx/MsD+PzaB
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: Nuno Sa <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-https://bugzilla.kernel.org/show_bug.cgi?id=3D218578
+Hi Jonathan,
 
---- Comment #32 from Hans de Goede (jwrdegoede@fedoraproject.org) ---
-(In reply to Kirk Schnable from comment #31)
-> Awesome, thanks!  I tested the new build (and removed my udev workaround)=
-.=20
-> It looks to be working perfectly. :)=20
+Here it goes v4. Added default value for full scale current and
+corrected the minimum value.
 
-Great thank you for testing. I've send a reply to the upstream patch submis=
-sion
-to indicate that this has been tested now.
+Full log:
 
---=20
-You may reply to this email to add a comment.
+v1:
+ * https://lore.kernel.org/all/20240328-iio-backend-axi-dac-v1-0-afc808b3fde3@analog.com
 
-You are receiving this mail because:
-You are watching the assignee of the bug.=
+v2:
+ * https://lore.kernel.org/all/20240405-iio-backend-axi-dac-v2-0-293bab7d5552@analog.com 
+
+v3:
+ * https://lore.kernel.org/r/20240412-iio-backend-axi-dac-v3-0-3e9d4c5201fb@analog.com 
+
+v4:
+ * Patch 7:
+   - Added default value for full scale current;
+   - Corrected the minimum value for full scale current.
+ * Patch 10:
+   - Corrected the minimum value for full scale current. 
+
+---
+Nuno Sa (6):
+      iio: buffer-dma: add iio_dmaengine_buffer_setup()
+      dt-bindings: iio: dac: add docs for AXI DAC IP
+      dt-bindings: iio: dac: add docs for AD9739A
+      iio: backend: add new functionality
+      iio: dac: add support for AXI DAC IP core
+      iio: dac: support the ad9739a RF DAC
+
+Paul Cercueil (4):
+      iio: buffer-dma: Rename iio_dma_buffer_data_available()
+      iio: buffer-dma: Enable buffer write support
+      iio: buffer-dmaengine: Support specifying buffer direction
+      iio: buffer-dmaengine: Enable write support
+
+ Documentation/ABI/testing/sysfs-bus-iio-ad9739a    |  19 +
+ .../devicetree/bindings/iio/dac/adi,ad9739a.yaml   |  95 +++
+ .../devicetree/bindings/iio/dac/adi,axi-dac.yaml   |  62 ++
+ MAINTAINERS                                        |  17 +
+ drivers/iio/adc/adi-axi-adc.c                      |  16 +-
+ drivers/iio/buffer/industrialio-buffer-dma.c       | 100 +++-
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c |  83 +--
+ drivers/iio/dac/Kconfig                            |  37 ++
+ drivers/iio/dac/Makefile                           |   2 +
+ drivers/iio/dac/ad9739a.c                          | 463 +++++++++++++++
+ drivers/iio/dac/adi-axi-dac.c                      | 635 +++++++++++++++++++++
+ drivers/iio/industrialio-backend.c                 | 179 ++++++
+ include/linux/iio/backend.h                        |  49 ++
+ include/linux/iio/buffer-dma.h                     |   4 +-
+ include/linux/iio/buffer-dmaengine.h               |  24 +-
+ 15 files changed, 1706 insertions(+), 79 deletions(-)
+---
+base-commit: aabc0aa90c927a03d509d0b592720d9897894ce4
+change-id: 20240412-iio-backend-axi-dac-b369adca46a0
+--
+
+Thanks!
+- Nuno Sá
+
+
 

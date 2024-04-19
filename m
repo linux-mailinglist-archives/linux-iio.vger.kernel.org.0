@@ -1,653 +1,181 @@
-Return-Path: <linux-iio+bounces-4359-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4361-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 884E98AAA1C
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 10:26:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8CA08AAAD7
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 10:48:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1F95B24504
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 08:26:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECE3D1C21A54
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 08:48:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17A7A64CF7;
-	Fri, 19 Apr 2024 08:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6771E71722;
+	Fri, 19 Apr 2024 08:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rnRC4XZv"
+	dkim=pass (1024-bit key) header.d=axentia.se header.i=@axentia.se header.b="EZXgHfA+"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2137.outbound.protection.outlook.com [40.107.241.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C563B5F569;
-	Fri, 19 Apr 2024 08:25:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713515137; cv=none; b=fCGowMceVR4KtnAqWB0X26Cn85Wgfe+ZKVvq1HOwKD9x8++r862ZM0UqAKjQua26cZsVXNgD+1mTNxoa5h2RvlnIfvbLqfKDpCy6eqnYrR9I5YvVfsRgqgsmZ6AMLvYrmE9+zmR5fmsPiPHkY5e2JW8cbyGqGlOEDkccEuMDPWU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713515137; c=relaxed/simple;
-	bh=vv1sZWuK/m7+PM7Uk6de+tA1gCCCHUzNBPxqvztleyk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=RRvF4muOvjjc9ZIucgG5ebiKSovrqqoAwzGsqCO6sxMr2eOrZAlZU/S11lnb6B6rb7UQaQ13WYWuHmwdXm+OUrEAegexJgY/YuVbFJD8vY6Qc0TJMwFQj/LH+JyDE8qCkCdem2UCagEGW5FOuEnMgB/a63USPNFTCXQ3saGbLRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rnRC4XZv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id A3C14C4AF08;
-	Fri, 19 Apr 2024 08:25:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713515137;
-	bh=vv1sZWuK/m7+PM7Uk6de+tA1gCCCHUzNBPxqvztleyk=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rnRC4XZvLMP+9DuYgXpn4EAEz0GIsjAcRPBOMKbZ2Rm/E1jOu0HFVhE4wG0Gc/JvE
-	 cz5V4WQyz+Y/hmr1N8QAC1YXWR+hh1oQC9TUJkQqvXruG97pG51pMJ2iyrr4R6oacX
-	 LVQX8sCwUH/OEl2JMCYyIIrSVT31NpsRYYnZgh+fcjtDZMAedzcXN/g5TdRjQlPYRZ
-	 jOQr/eYGhB16jSU60q1P6lw1k7HXQOXsCV6cKK4/6mzchEWECf5N1EVZ4OQR4HepJf
-	 TXuXYMf43sEj5M+Z/Vo0eYhDbDmCSDSJP8LB+y3elC9nt7qZxDkVVU80+O5aIIWqOC
-	 ecT/CBccEK+3Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E9D9C4345F;
-	Fri, 19 Apr 2024 08:25:37 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 19 Apr 2024 10:25:43 +0200
-Subject: [PATCH v4 10/10] iio: dac: support the ad9739a RF DAC
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE3E1E4BE;
+	Fri, 19 Apr 2024 08:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.137
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1713516486; cv=fail; b=K8Mn0mnbJUgKgzjGeuk63o81EBKpD31204F83irImDDnnSP/U8HDrxRbAark/voVy88JRljKaEod6WvQ2W5eEJ7gpwzCFVBbkURYdvDAcG+ZzpVDy1t3FGlHrc/OzQOQ5U8TGJ51HLN70//jFC5JG2MXEc2j1gY0Jd5MKS5YwEI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1713516486; c=relaxed/simple;
+	bh=q2bi0VG2ta8+4FYa5jjwkbGz1YQLZlmTErZ852Xlwqs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=oI4OM+oX4lwjc4+jwZ9+HdyArOxrdWoL8mixVp/HFvq7X6539uQU3tMh9LYo9R4IDKJ0rgSUvl3Hz7jv4PWCdmGzv8p8zwaIOWKE7a5AYKq5qceoW5WgpCBLNYSuTRML67hGi4jgAs7v2q+5o4JTCFiq3h53xqGR7c5jgKuzh3s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axentia.se; spf=pass smtp.mailfrom=axentia.se; dkim=pass (1024-bit key) header.d=axentia.se header.i=@axentia.se header.b=EZXgHfA+; arc=fail smtp.client-ip=40.107.241.137
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axentia.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axentia.se
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=D+YmWkHD+QFM9m9twGkD+AzP1nboB3MU5/6bQ5jLqm/JCg9M9Q1aTUIPmSDuJgGYwm7nOtQBin01M6aVst489/Dl7Yx+qKJzPSMT4cgFHdCgXLskWk4m+N8L/Cfaxc1sxUUifo5Km1TMIvGNLExP70Dnv3FF82Gm5I89BWD3n9Uyp54hls5hCIMN88ZthCNaLR0eXDhYW6o873808C5J8Q6fFgG+aoa4goimas+EbHexyE879KsPftu6snecOs+KrKpGtrcmCqVfMRMPEFLOyHNYbBS4QXwHqKZ0voESVMtV+62ApHwpxYZNfEcA1lNRfsRnRPaOkjJ5QjcUmcZ6pg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=flj7qQjItZmapGvuBEYGhg3pCPVSq53CK5wVZB7HtQA=;
+ b=gUoBvHyLdyGTkqFaDLuF1Xj0jmxUuqpegEm6eBSBgCI6ZAPpqKxKWe30Mvljb9q66yndO34ppxbiTOmEnD3XBU9UBQzFglKP79j74JkA7DY8kr9oLRebAGSIfb6u4QV4nv5TJatuDYOX8n2YIxuT+NIC95TiXSfBGo4gVYPafLF1aLOstt13wjP2l9FCA9Pv0zpjxXIl9OT5f7Rs6CnFJUanYicUth2t8xxLqP9RkNoY1PS8eynhDJE6uN50P4+F3wQVlTT2CRaoxWzZRBcvMixOT7xkSQr7o+9c94ZH00yW/AS/LwgKnyvCYqNlEMlVEfrg7X4lqGON2bA6xKRkEA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
+ dkim=pass header.d=axentia.se; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=flj7qQjItZmapGvuBEYGhg3pCPVSq53CK5wVZB7HtQA=;
+ b=EZXgHfA+dH+M+tmvg6vkzjjSNaOEjGv95+SxSXGU/qszep9DQo5HlnnacvFVxivLJzS5eAkYuelZKi7kbZ5ypvvWm6pjJRnMiqUch4EA13zplg5pQTuXZddr+qrUKFlLCQfu4mOT9CSdrKKOuciur2eGagQ4HlNN7Ut3dMhoccI=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=axentia.se;
+Received: from DU0PR02MB8500.eurprd02.prod.outlook.com (2603:10a6:10:3e3::8)
+ by DBAPR02MB6118.eurprd02.prod.outlook.com (2603:10a6:10:188::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7452.50; Fri, 19 Apr
+ 2024 08:47:56 +0000
+Received: from DU0PR02MB8500.eurprd02.prod.outlook.com
+ ([fe80::aff4:cbc7:ff18:b827]) by DU0PR02MB8500.eurprd02.prod.outlook.com
+ ([fe80::aff4:cbc7:ff18:b827%4]) with mapi id 15.20.7472.042; Fri, 19 Apr 2024
+ 08:47:56 +0000
+Message-ID: <8b8b1b11-7a79-fe80-a5a8-db407d0e49c6@axentia.se>
+Date: Fri, 19 Apr 2024 10:47:53 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.0
+Subject: Re: [PATCH] i2c: mux: Remove class argument from
+ i2c_mux_add_adapter()
+Content-Language: sv-SE
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Wolfram Sang <wsa@kernel.org>, Peter Korsgaard <peter.korsgaard@barco.com>,
+ Michael Hennerich <michael.hennerich@analog.com>,
+ Vadim Pasternak <vadimp@nvidia.com>, Michael Shych <michaelsh@nvidia.com>,
+ Guenter Roeck <linux@roeck-us.net>, Linus Walleij
+ <linus.walleij@linaro.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Jacopo Mondi <jacopo+renesas@jmondi.org>,
+ Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
+ =?UTF-8?Q?Niklas_S=c3=b6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+ Rob Herring <robh@kernel.org>, Saravana Kannan <saravanak@google.com>
+Cc: "open list:AMD KFD" <dri-devel@lists.freedesktop.org>,
+ "linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ linux-media@vger.kernel.org,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+References: <17145dc5-e68e-4566-bedf-251bebe36ebb@gmail.com>
+From: Peter Rosin <peda@axentia.se>
+In-Reply-To: <17145dc5-e68e-4566-bedf-251bebe36ebb@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: GV3P280CA0028.SWEP280.PROD.OUTLOOK.COM (2603:10a6:150:b::8)
+ To DU0PR02MB8500.eurprd02.prod.outlook.com (2603:10a6:10:3e3::8)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240419-iio-backend-axi-dac-v4-10-5ca45b4de294@analog.com>
-References: <20240419-iio-backend-axi-dac-v4-0-5ca45b4de294@analog.com>
-In-Reply-To: <20240419-iio-backend-axi-dac-v4-0-5ca45b4de294@analog.com>
-To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
-Cc: Dragos Bogdan <dragos.bogdan@analog.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Olivier Moysan <olivier.moysan@foss.st.com>, Nuno Sa <nuno.sa@analog.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1713515134; l=17533;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=/3P9v3ybQjq/WOzXcbmKywJYR05xzdayCRC6OKXZSOc=;
- b=Z90qi/XouNUmOZGgPv2Pp42DNxdqfgCyyK6c2KnOXHfAbejERGyspu+1d5NhAok75JDP3Vmh+
- J/tUTHT4HWeC0FGEPXu3JUasbCZKOVecDnGbCgv8wmpb3yfyAC6CXsQ
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU0PR02MB8500:EE_|DBAPR02MB6118:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac77a3be-3668-4ba7-72c2-08dc604d68c0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info:
+	BaKwH3rHmSBOKBNey98hD5o+yrgDh1dOZls17aFPWPByItBIvRic5I42O6mAVUy6GzhL8f+zwP+TnNnmYxGCxjJr2Kqx3EJkVqYfMny554BLo1SDz3WnBOTdmwxaexoPEeMeOgap4i/sVD3QAXctRRsoR4B06OP8JVO6gyCsFyP7SMmFt9moUQ+upitTyv4wtWCmB0khWchF7L9x2Rg3/fp5AhPHnOrUX4Aan8SPu3ltY8yiookUiRIvv+PWjjK/Bc3RWIxUzVToyWk9aa1JoWbfIy1tElLM0KfjYO2Ty/nXUJMJ3S1DNLYmywcPq6Sm/265Vq4uaZWoroCCnK5WFUKvDWckVcBEt5VkKp50t3CysMTl7ojH7YacqqF3c9Pzvq6kfeCNbhQ4eOD2GJE3/EVZPQxDcVCIrImFncn+IVNoCceFWBEi4bWbqBTlpmFwkTbspxerU595d8IdRsqAPi7QwV4XBGKlLPFA20Wqra+DCxFy++RbQwku7BeyuaMSR//ETp0KkVSiP3tgcu6Jsrl7zCMgxLudysJuRIyGoKWPXBwNa1wlRDvysFsjyR5CdQJScEr9I6LbCw3rmKS3YutQAa7gI6WPn2BOq+lL/AbhFDXmIyMHnRLc7RmejMwFpTmbwUsyc5YJXqS9SwC6hkFIsKY5iNKafQjyUyHvKohbflchCbFxcpvWVeqBLX6C9uIfL0ecABT3MHYv/h1hfw==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR02MB8500.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(7416005)(1800799015)(376005)(921011);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dGRONzhyZTgrWkJBYXI5NmJRY1ZxbUp0T1FkSjBLK3ZHN0JjaGhMem1RMi9l?=
+ =?utf-8?B?TDNPM0ppZm5HWk1IMWxsREFlVExmQkFRRjFtOWhVTnFTZkZ1WU5HeC9YNCs4?=
+ =?utf-8?B?aWI3LzZFU2FiMUtwZjNwU0tqOVIyMjZqNU5WTmx6d3ZCOVVxeXMyYXVEeEVZ?=
+ =?utf-8?B?Q3F0blloVkFZa01kU1BDaW02dDZOaDNMQlFTODd3am0vbncvbGpXb2pUZjVq?=
+ =?utf-8?B?NlJMcStnZDhpckREdzhhbWpUQTB5QmFTdENEVFJJRmpBUzJJbGI2dVh4R3lT?=
+ =?utf-8?B?SGZJcWpLZUg4OWk4amp1TE9sYjJsMnQxTFJESVhiMDJSWkJkQ3c1NVFqZDJO?=
+ =?utf-8?B?TlNZYTFYb2hHRVJSejFObEUrUWtFN3IycklhUVFmRm5KcFVPL2k4RlcrUW92?=
+ =?utf-8?B?V2Z5azdwMGxOM0RYYUNveHl2RmdWOWRUd0ZTNUp4ejRWWW1NNGRNRUU4M05k?=
+ =?utf-8?B?T2Iva2l3bk1renN1WWpVWm1BalptVHpKVktQcjlGYW1qSUhEY1NJMmxSNGVN?=
+ =?utf-8?B?czJuU1J1ZkF3NW5TOUM0UkMrWGNCVzE1dzJtWG9MV3BUVFkwMnR6YVkvRHJ4?=
+ =?utf-8?B?RmxNVmg3T3hmN2hMYlkyUnhVcVlhVWhGTjJ5b0JrY0hxRVFXWWYwSWVrOWhW?=
+ =?utf-8?B?amowMGZyaC9NZDZuY1duejYyTGNhNS9peDFYQ0xtMjFzQU5mczQ5TitQSXR5?=
+ =?utf-8?B?Vy9WTHBrcVdjaER6NmNCcnpJeEpvRGQva0I5aHFELzg1N1JxcklWL2pIWVlV?=
+ =?utf-8?B?aHJIK2NkVERPMHJYZWk5cmVOUnFac09zOVU4WGpjYWg5Ym1Tcmxwb3IxQzA5?=
+ =?utf-8?B?ejlzL3NaSEhhZTRoTWVwYmZvd3FnWlNBdWJLWUsxQTQ3MWFMRCtGRkx2Wi80?=
+ =?utf-8?B?c0I1M1FVR25jYmhzMTJWSU5qOTA2cTc3VEIvRWJ4aHhCYkh2Zno0NkNFU3pl?=
+ =?utf-8?B?akJSU2tOWkFIeHRxL1lLTEFOZ0xnQTdFbUxRcU5IblJJOXZiOFRtZHZzUzJB?=
+ =?utf-8?B?YThwU1kzeE96RTNhLzRoSlpJV2RBVjVQK2VKYTFEdUhGMWFlYmUxcWpDdnd6?=
+ =?utf-8?B?amxvNDAxYTJLV2dyTjRyVmlJWWNnSUQzdk5TQ28wbm1VVmFKRWJuTU1MMTBi?=
+ =?utf-8?B?SDk5WWoxMldTZGtNb1Z1dHJTL01nVXk0aS9ld3NjOWhYZmZqK01xaElTbElD?=
+ =?utf-8?B?VXdCUklKQ0tieU54TnFnQjlWaCthL1RzZ0Y5YkE1UGxKN016ZXhDUW5Nbmgr?=
+ =?utf-8?B?bjA4bkdTTmIzU3V1V0krVmliQjdZTEl4T1JsYUFRSzA4UXErSlVGRElhaTlY?=
+ =?utf-8?B?Y293YUJ4OTNHV0JXdm1oY3VZaXRicENiTjFkUWlUbFZTSXcybk51Q2JnNUFi?=
+ =?utf-8?B?U1U1bys1NStWK3FRTjAwZjRHVjdUVUE5bmNtSDJ6a2hBeFVNOUVJeGRDWVJJ?=
+ =?utf-8?B?ZFNxbkh0TnVkbmUyV2xDZkRFL1QwamllRzRYN0ZYZ2ZHbFo0cUw2Q3pIcjMr?=
+ =?utf-8?B?a2xuUHZxMmVxTU5TM3hvTTRTcnl2UkpJN1hvUzZ4RGJKNGxIZHQ1WWdMYzlI?=
+ =?utf-8?B?dVl3VkZFMU1taDdScGU2aGhpc0lLSFJ5MG03WjNxb0p3b0tDVmhCMVNpRmFs?=
+ =?utf-8?B?MTZ2N1Ztc05HMjZBWjZaV05mRXE5eEl3RUJIc1ZwYmtmZm13ZEM5RFp2VzJN?=
+ =?utf-8?B?MTB2K0o2OVRtbVU3blBMbnhCdTZMejdqbE5JVWU0cHpLOVNybGoxSjcvSFVv?=
+ =?utf-8?B?UTBLaEZQN1gycHlsdEUyVTdLdnVEaUs3ZTFibkwwcHc5K245ZGo0enRwVGxk?=
+ =?utf-8?B?MWhESGx2Q3JQbFZ2TjNXTTlOVXlwcjUrZFl4b2t6cFY5YXVnUXZHMlNka0h5?=
+ =?utf-8?B?dXY0bnZBTG12OFRyemdYMzhQMUJ6WnF0RFFaeWFtVENmb05aeTNJdVZhNnBx?=
+ =?utf-8?B?VXNld3NLTlNxeUhLanlYY0lxbnBaT1YyNHF3cC8va05XLzN2NUJSdjEyQUFx?=
+ =?utf-8?B?QkdnT09CYTNWQlNmMWtnUFhkaTVVazVBUkxpTm0vZHAwMG5pczZESHRYRE1P?=
+ =?utf-8?B?OXNZaHFBSzc1RVdDOXFTOXRHQjhtVG9jdkhZTXZRSndLK0xpWkNMSjNQRDYx?=
+ =?utf-8?Q?JVmzTWFwWEIZKwgvQh8k19oKJ?=
+X-OriginatorOrg: axentia.se
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac77a3be-3668-4ba7-72c2-08dc604d68c0
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR02MB8500.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Apr 2024 08:47:56.8286
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UZRY4Vk1MnGu/ZEkLz+NrdHU3NevWSXwm7ncWj/vAg3Iq9x0HB8CUt8H2dE5ye9t
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR02MB6118
 
-From: Nuno Sa <nuno.sa@analog.com>
+Hi!
 
-The AD9739A is a 14-bit, 2.5 GSPS high performance RF DACs that are capable
-of synthesizing wideband signals from DC up to 3 GHz.
+2024-04-18 at 22:55, Heiner Kallweit wrote:
+> 99a741aa7a2d ("i2c: mux: gpio: remove support for class-based device
+> instantiation") removed the last call to i2c_mux_add_adapter() with a
+> non-null class argument. Therefore the class argument can be removed.
+> 
+> Note: Class-based device instantiation is a legacy mechanism which
+> shouldn't be used in new code, so we can rule out that this argument
+> may be needed again in the future.
+> 
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 
-A dual-port, source synchronous, LVDS interface simplifies the digital
-interface with existing FGPA/ASIC technology. On-chip controllers are used
-to manage external and internal clock domain variations over temperature to
-ensure reliable data transfer from the host to the DAC core.
+Acked-by: Peter Rosin <peda@axentia.se>
 
-Co-developed-by: Dragos Bogdan <dragos.bogdan@analog.com>
-Signed-off-by: Dragos Bogdan <dragos.bogdan@analog.com>
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- Documentation/ABI/testing/sysfs-bus-iio-ad9739a |  19 +
- MAINTAINERS                                     |   1 +
- drivers/iio/dac/Kconfig                         |  16 +
- drivers/iio/dac/Makefile                        |   1 +
- drivers/iio/dac/ad9739a.c                       | 463 ++++++++++++++++++++++++
- 5 files changed, 500 insertions(+)
-
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-ad9739a b/Documentation/ABI/testing/sysfs-bus-iio-ad9739a
-new file mode 100644
-index 0000000000000..ed59299e6f8d9
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-ad9739a
-@@ -0,0 +1,19 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_operating_mode
-+KernelVersion:	6.9
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		DAC operating mode. One of the following modes can be selected:
-+
-+		* normal: This is DAC normal mode.
-+		* mixed-mode: In this mode the output is effectively chopped at
-+			      the DAC sample rate. This has the effect of
-+			      reducing the power of the fundamental signal while
-+			      increasing the power of the images centered around
-+			      the DAC sample rate, thus improving the output
-+			      power of these images.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_operating_mode_available
-+KernelVersion:	6.9
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Available operating modes.
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 505f28dc6da68..8ad79cf705524 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1241,6 +1241,7 @@ L:	linux-iio@vger.kernel.org
- S:	Supported
- W:	https://ez.analog.com/linux-software-drivers
- F:	Documentation/devicetree/bindings/iio/dac/adi,ad9739a.yaml
-+F:	drivers/iio/dac/ad9739a.c
- 
- ANALOG DEVICES INC ADA4250 DRIVER
- M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
-diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
-index 7c0a8caa9a343..3c2bf620f00fb 100644
---- a/drivers/iio/dac/Kconfig
-+++ b/drivers/iio/dac/Kconfig
-@@ -131,6 +131,22 @@ config AD5624R_SPI
- 	  Say yes here to build support for Analog Devices AD5624R, AD5644R and
- 	  AD5664R converters (DAC). This driver uses the common SPI interface.
- 
-+config AD9739A
-+	tristate "Analog Devices AD9739A RF DAC spi driver"
-+	depends on SPI || COMPILE_TEST
-+	select REGMAP_SPI
-+	select IIO_BACKEND
-+	help
-+	  Say yes here to build support for Analog Devices AD9739A Digital-to
-+	  Analog Converter.
-+
-+	  The driver requires the assistance of the AXI DAC IP core to operate,
-+	  since SPI is used for configuration only, while data has to be
-+	  streamed into memory via DMA.
-+
-+	  To compile this driver as a module, choose M here: the module will be
-+	  called ad9739a.
-+
- config ADI_AXI_DAC
- 	tristate "Analog Devices Generic AXI DAC IP core driver"
- 	select IIO_BUFFER
-diff --git a/drivers/iio/dac/Makefile b/drivers/iio/dac/Makefile
-index 6bcaa65434b24..8432a81a19dc2 100644
---- a/drivers/iio/dac/Makefile
-+++ b/drivers/iio/dac/Makefile
-@@ -29,6 +29,7 @@ obj-$(CONFIG_AD5696_I2C) += ad5696-i2c.o
- obj-$(CONFIG_AD7293) += ad7293.o
- obj-$(CONFIG_AD7303) += ad7303.o
- obj-$(CONFIG_AD8801) += ad8801.o
-+obj-$(CONFIG_AD9739A) += ad9739a.o
- obj-$(CONFIG_ADI_AXI_DAC) += adi-axi-dac.o
- obj-$(CONFIG_CIO_DAC) += cio-dac.o
- obj-$(CONFIG_DPOT_DAC) += dpot-dac.o
-diff --git a/drivers/iio/dac/ad9739a.c b/drivers/iio/dac/ad9739a.c
-new file mode 100644
-index 0000000000000..ff33120075bf6
---- /dev/null
-+++ b/drivers/iio/dac/ad9739a.c
-@@ -0,0 +1,463 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Analog Devices AD9739a SPI DAC driver
-+ *
-+ * Copyright 2015-2024 Analog Devices Inc.
-+ */
-+#include <linux/bitfield.h>
-+#include <linux/bits.h>
-+#include <linux/clk.h>
-+#include <linux/delay.h>
-+#include <linux/device.h>
-+#include <linux/err.h>
-+#include <linux/errno.h>
-+#include <linux/gpio/consumer.h>
-+#include <linux/minmax.h>
-+#include <linux/module.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/property.h>
-+#include <linux/regmap.h>
-+#include <linux/spi/spi.h>
-+#include <linux/units.h>
-+
-+#include <linux/iio/backend.h>
-+#include <linux/iio/iio.h>
-+#include <linux/iio/types.h>
-+
-+#define AD9739A_REG_MODE		0
-+#define   AD9739A_RESET_MASK		BIT(5)
-+#define AD9739A_REG_FSC_1		0x06
-+#define AD9739A_REG_FSC_2		0x07
-+#define   AD9739A_FSC_MSB		GENMASK(1, 0)
-+#define AD9739A_REG_DEC_CNT		0x8
-+#define   AD9739A_NORMAL_MODE		0
-+#define   AD9739A_MIXED_MODE		2
-+#define   AD9739A_DAC_DEC		GENMASK(1, 0)
-+#define AD9739A_REG_LVDS_REC_CNT1	0x10
-+#define   AD9739A_RCVR_LOOP_EN_MASK	GENMASK(1, 0)
-+#define AD9739A_REG_LVDS_REC_CNT4	0x13
-+#define   AD9739A_FINE_DEL_SKW_MASK	GENMASK(3, 0)
-+#define AD9739A_REG_LVDS_REC_STAT9	0x21
-+#define   AD9739A_RCVR_TRACK_AND_LOCK	(BIT(3) | BIT(0))
-+#define AD9739A_REG_CROSS_CNT1		0x22
-+#define AD9739A_REG_CROSS_CNT2		0x23
-+#define AD9739A_REG_PHS_DET		0x24
-+#define AD9739A_REG_MU_DUTY		0x25
-+#define AD9739A_REG_MU_CNT1		0x26
-+#define   AD9739A_MU_EN_MASK		BIT(0)
-+#define AD9739A_REG_MU_CNT2		0x27
-+#define AD9739A_REG_MU_CNT3		0x28
-+#define AD9739A_REG_MU_CNT4		0x29
-+#define   AD9739A_MU_CNT4_DEFAULT	0xcb
-+#define AD9739A_REG_MU_STAT1		0x2A
-+#define   AD9739A_MU_LOCK_MASK		BIT(0)
-+#define AD9739A_REG_ANA_CNT_1		0x32
-+#define AD9739A_REG_ID			0x35
-+
-+#define AD9739A_ID			0x24
-+#define AD9739A_REG_IS_RESERVED(reg)	\
-+	((reg) == 0x5 || (reg) == 0x9 || (reg) == 0x0E || (reg) == 0x0D || \
-+	 (reg) == 0x2B || (reg) == 0x2C || (reg) == 0x34)
-+
-+#define AD9739A_FSC_MIN		8580
-+#define AD9739A_FSC_MAX		31700
-+#define AD9739A_FSC_RANGE	(AD9739A_FSC_MAX - AD9739A_FSC_MIN + 1)
-+
-+#define AD9739A_MIN_DAC_CLK	(1600 * MEGA)
-+#define AD9739A_MAX_DAC_CLK	(2500 * MEGA)
-+#define AD9739A_DAC_CLK_RANGE	(AD9739A_MAX_DAC_CLK - AD9739A_MIN_DAC_CLK + 1)
-+/* as recommended by the datasheet */
-+#define AD9739A_LOCK_N_TRIES	3
-+
-+struct ad9739a_state {
-+	struct iio_backend *back;
-+	struct regmap *regmap;
-+	unsigned long sample_rate;
-+};
-+
-+static int ad9739a_oper_mode_get(struct iio_dev *indio_dev,
-+				 const struct iio_chan_spec *chan)
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+	u32 mode;
-+	int ret;
-+
-+	ret = regmap_read(st->regmap, AD9739A_REG_DEC_CNT, &mode);
-+	if (ret)
-+		return ret;
-+
-+	mode = FIELD_GET(AD9739A_DAC_DEC, mode);
-+	/* sanity check we get valid values from the HW */
-+	if (mode != AD9739A_NORMAL_MODE && mode != AD9739A_MIXED_MODE)
-+		return -EIO;
-+	if (!mode)
-+		return AD9739A_NORMAL_MODE;
-+
-+	/*
-+	 * We get 2 from the device but for IIO modes, that means 1. Hence the
-+	 * minus 1.
-+	 */
-+	return AD9739A_MIXED_MODE - 1;
-+}
-+
-+static int ad9739a_oper_mode_set(struct iio_dev *indio_dev,
-+				 const struct iio_chan_spec *chan, u32 mode)
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+
-+	/*
-+	 * On the IIO interface we have 0 and 1 for mode. But for mixed_mode, we
-+	 * need to write 2 in the device. That's what the below check is about.
-+	 */
-+	if (mode == AD9739A_MIXED_MODE - 1)
-+		mode = AD9739A_MIXED_MODE;
-+
-+	return regmap_update_bits(st->regmap, AD9739A_REG_DEC_CNT,
-+				  AD9739A_DAC_DEC, mode);
-+}
-+
-+static int ad9739a_read_raw(struct iio_dev *indio_dev,
-+			    struct iio_chan_spec const *chan,
-+			    int *val, int *val2, long mask)
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_SAMP_FREQ:
-+		*val = st->sample_rate;
-+		*val2 = 0;
-+		return IIO_VAL_INT_64;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static int ad9739a_buffer_preenable(struct iio_dev *indio_dev)
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+
-+	return iio_backend_data_source_set(st->back, 0, IIO_BACKEND_EXTERNAL);
-+}
-+
-+static int ad9739a_buffer_postdisable(struct iio_dev *indio_dev)
-+{
-+	struct ad9739a_state *st = iio_priv(indio_dev);
-+
-+	return iio_backend_data_source_set(st->back, 0,
-+					   IIO_BACKEND_INTERNAL_CONTINUOS_WAVE);
-+}
-+
-+static bool ad9739a_reg_accessible(struct device *dev, unsigned int reg)
-+{
-+	if (AD9739A_REG_IS_RESERVED(reg))
-+		return false;
-+	if (reg > AD9739A_REG_MU_STAT1 && reg < AD9739A_REG_ANA_CNT_1)
-+		return false;
-+
-+	return true;
-+}
-+
-+static int ad9739a_reset(struct device *dev, const struct ad9739a_state *st)
-+{
-+	struct gpio_desc *gpio;
-+	int ret;
-+
-+	gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_HIGH);
-+	if (IS_ERR(gpio))
-+		return PTR_ERR(gpio);
-+	if (gpio) {
-+		/* minimum pulse width of 40ns */
-+		ndelay(40);
-+		gpiod_set_value_cansleep(gpio, 0);
-+		return 0;
-+	}
-+
-+	/* bring all registers to their default state */
-+	ret = regmap_set_bits(st->regmap, AD9739A_REG_MODE, AD9739A_RESET_MASK);
-+	if (ret)
-+		return ret;
-+
-+	ndelay(40);
-+
-+	return regmap_clear_bits(st->regmap, AD9739A_REG_MODE,
-+				 AD9739A_RESET_MASK);
-+}
-+
-+/*
-+ * Recommended values (as per datasheet) for the dac clk common mode voltage
-+ * and Mu controller. Look at table 29.
-+ */
-+static const struct reg_sequence ad9739a_clk_mu_ctrl[] = {
-+	/* DAC clk common mode voltage */
-+	{ AD9739A_REG_CROSS_CNT1, 0x0f },
-+	{ AD9739A_REG_CROSS_CNT2, 0x0f },
-+	/* Mu controller configuration */
-+	{ AD9739A_REG_PHS_DET, 0x30 },
-+	{ AD9739A_REG_MU_DUTY, 0x80 },
-+	{ AD9739A_REG_MU_CNT2, 0x44 },
-+	{ AD9739A_REG_MU_CNT3, 0x6c },
-+};
-+
-+static int ad9739a_init(struct device *dev, const struct ad9739a_state *st)
-+{
-+	unsigned int i = 0, lock, fsc;
-+	u32 fsc_raw;
-+	int ret;
-+
-+	ret = regmap_multi_reg_write(st->regmap, ad9739a_clk_mu_ctrl,
-+				     ARRAY_SIZE(ad9739a_clk_mu_ctrl));
-+	if (ret)
-+		return ret;
-+
-+	/*
-+	 * Try to get the Mu lock. Repeat the below steps AD9739A_LOCK_N_TRIES
-+	 * (as specified by the datasheet) until we get the lock.
-+	 */
-+	do {
-+		ret = regmap_write(st->regmap, AD9739A_REG_MU_CNT4,
-+				   AD9739A_MU_CNT4_DEFAULT);
-+		if (ret)
-+			return ret;
-+
-+		/* Enable the Mu controller search and track mode. */
-+		ret = regmap_set_bits(st->regmap, AD9739A_REG_MU_CNT1,
-+				      AD9739A_MU_EN_MASK);
-+		if (ret)
-+			return ret;
-+
-+		/* Ensure the DLL loop is locked */
-+		ret = regmap_read_poll_timeout(st->regmap, AD9739A_REG_MU_STAT1,
-+					       lock, lock & AD9739A_MU_LOCK_MASK,
-+					       0, 1000);
-+		if (ret && ret != -ETIMEDOUT)
-+			return ret;
-+	} while (ret && ++i < AD9739A_LOCK_N_TRIES);
-+
-+	if (i == AD9739A_LOCK_N_TRIES)
-+		return dev_err_probe(dev, ret, "Mu lock timeout\n");
-+
-+	/* Receiver tracking and lock. Same deal as the Mu controller */
-+	i = 0;
-+	do {
-+		ret = regmap_update_bits(st->regmap, AD9739A_REG_LVDS_REC_CNT4,
-+					 AD9739A_FINE_DEL_SKW_MASK,
-+					 FIELD_PREP(AD9739A_FINE_DEL_SKW_MASK, 2));
-+		if (ret)
-+			return ret;
-+
-+		/* Disable the receiver and the loop. */
-+		ret = regmap_write(st->regmap, AD9739A_REG_LVDS_REC_CNT1, 0);
-+		if (ret)
-+			return ret;
-+
-+		/*
-+		 * Re-enable the loop so it falls out of lock and begins the
-+		 * search/track routine again.
-+		 */
-+		ret = regmap_set_bits(st->regmap, AD9739A_REG_LVDS_REC_CNT1,
-+				      AD9739A_RCVR_LOOP_EN_MASK);
-+		if (ret)
-+			return ret;
-+
-+		/* Ensure the DLL loop is locked */
-+		ret = regmap_read_poll_timeout(st->regmap,
-+					       AD9739A_REG_LVDS_REC_STAT9, lock,
-+					       lock == AD9739A_RCVR_TRACK_AND_LOCK,
-+					       0, 1000);
-+		if (ret && ret != -ETIMEDOUT)
-+			return ret;
-+	} while (ret && ++i < AD9739A_LOCK_N_TRIES);
-+
-+	if (i == AD9739A_LOCK_N_TRIES)
-+		return dev_err_probe(dev, ret, "Receiver lock timeout\n");
-+
-+	ret = device_property_read_u32(dev, "adi,full-scale-microamp", &fsc);
-+	if (ret && ret == -EINVAL)
-+		return 0;
-+	if (ret)
-+		return ret;
-+	if (!in_range(fsc, AD9739A_FSC_MIN, AD9739A_FSC_RANGE))
-+		return dev_err_probe(dev, -EINVAL,
-+				     "Invalid full scale current(%u) [%u %u]\n",
-+				     fsc, AD9739A_FSC_MIN, AD9739A_FSC_MAX);
-+	/*
-+	 * IOUTFS is given by
-+	 *	Ioutfs = 0.0226 * FSC + 8.58
-+	 * and is given in mA. Hence we'll have to multiply by 10 * MILLI in
-+	 * order to get rid of the fractional.
-+	 */
-+	fsc_raw = DIV_ROUND_CLOSEST(fsc * 10 - 85800, 226);
-+
-+	ret = regmap_write(st->regmap, AD9739A_REG_FSC_1, fsc_raw & 0xff);
-+	if (ret)
-+		return ret;
-+
-+	return regmap_update_bits(st->regmap, AD9739A_REG_FSC_2,
-+				  AD9739A_FSC_MSB, fsc_raw >> 8);
-+}
-+
-+static const char * const ad9739a_modes_avail[] = { "normal", "mixed-mode" };
-+
-+static const struct iio_enum ad9739a_modes = {
-+	.items = ad9739a_modes_avail,
-+	.num_items = ARRAY_SIZE(ad9739a_modes_avail),
-+	.get = ad9739a_oper_mode_get,
-+	.set = ad9739a_oper_mode_set,
-+};
-+
-+static const struct iio_chan_spec_ext_info ad9739a_ext_info[] = {
-+	IIO_ENUM_AVAILABLE("operating_mode", IIO_SEPARATE, &ad9739a_modes),
-+	IIO_ENUM("operating_mode", IIO_SEPARATE, &ad9739a_modes),
-+	{ }
-+};
-+
-+/*
-+ * The reason for having two different channels is because we have, in reality,
-+ * two sources of data:
-+ *   ALTVOLTAGE: It's a Continuous Wave that's internally generated by the
-+ *               backend device.
-+ *   VOLTAGE: It's the typical data we can have in a DAC device and the source
-+ *            of it has nothing to do with the backend. The backend will only
-+ *            forward it into our data interface to be sent out.
-+ */
-+static struct iio_chan_spec ad9739a_channels[] = {
-+	{
-+		.type = IIO_ALTVOLTAGE,
-+		.indexed = 1,
-+		.output = 1,
-+		.scan_index = -1,
-+	},
-+	{
-+		.type = IIO_VOLTAGE,
-+		.indexed = 1,
-+		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
-+		.output = 1,
-+		.ext_info = ad9739a_ext_info,
-+		.scan_type = {
-+			.sign = 's',
-+			.storagebits = 16,
-+			.realbits = 16,
-+		},
-+	}
-+};
-+
-+static const struct iio_info ad9739a_info = {
-+	.read_raw = ad9739a_read_raw,
-+};
-+
-+static const struct iio_buffer_setup_ops ad9739a_buffer_setup_ops = {
-+	.preenable = &ad9739a_buffer_preenable,
-+	.postdisable = &ad9739a_buffer_postdisable,
-+};
-+
-+static const struct regmap_config ad9739a_regmap_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.readable_reg = ad9739a_reg_accessible,
-+	.writeable_reg = ad9739a_reg_accessible,
-+	.max_register = AD9739A_REG_ID,
-+};
-+
-+static int ad9739a_probe(struct spi_device *spi)
-+{
-+	struct device *dev = &spi->dev;
-+	struct iio_dev *indio_dev;
-+	struct ad9739a_state *st;
-+	unsigned int id;
-+	struct clk *clk;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*st));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	st = iio_priv(indio_dev);
-+
-+	clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(clk))
-+		return dev_err_probe(dev, PTR_ERR(clk), "Could not get clkin\n");
-+
-+	st->sample_rate = clk_get_rate(clk);
-+	if (!in_range(st->sample_rate, AD9739A_MIN_DAC_CLK,
-+		      AD9739A_DAC_CLK_RANGE))
-+		return dev_err_probe(dev, -EINVAL,
-+				     "Invalid dac clk range(%lu) [%lu %lu]\n",
-+				     st->sample_rate, AD9739A_MIN_DAC_CLK,
-+				     AD9739A_MAX_DAC_CLK);
-+
-+	st->regmap = devm_regmap_init_spi(spi, &ad9739a_regmap_config);
-+	if (IS_ERR(st->regmap))
-+		return PTR_ERR(st->regmap);
-+
-+	ret = regmap_read(st->regmap, AD9739A_REG_ID, &id);
-+	if (ret)
-+		return ret;
-+
-+	if (id != AD9739A_ID)
-+		dev_warn(dev, "Unrecognized CHIP_ID 0x%X", id);
-+
-+	ret = ad9739a_reset(dev, st);
-+	if (ret)
-+		return ret;
-+
-+	ret = ad9739a_init(dev, st);
-+	if (ret)
-+		return ret;
-+
-+	st->back = devm_iio_backend_get(dev, NULL);
-+	if (IS_ERR(st->back))
-+		return PTR_ERR(st->back);
-+
-+	ret = devm_iio_backend_request_buffer(dev, st->back, indio_dev);
-+	if (ret)
-+		return ret;
-+
-+	ret = iio_backend_extend_chan_spec(indio_dev, st->back,
-+					   &ad9739a_channels[0]);
-+	if (ret)
-+		return ret;
-+
-+	ret = iio_backend_set_sampling_freq(st->back, 0, st->sample_rate);
-+	if (ret)
-+		return ret;
-+
-+	ret = devm_iio_backend_enable(dev, st->back);
-+	if (ret)
-+		return ret;
-+
-+	indio_dev->name = "ad9739a";
-+	indio_dev->info = &ad9739a_info;
-+	indio_dev->channels = ad9739a_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(ad9739a_channels);
-+	indio_dev->setup_ops = &ad9739a_buffer_setup_ops;
-+
-+	return devm_iio_device_register(&spi->dev, indio_dev);
-+}
-+
-+static const struct of_device_id ad9739a_of_match[] = {
-+	{ .compatible = "adi,ad9739a" },
-+	{}
-+};
-+MODULE_DEVICE_TABLE(of, ad9739a_of_match);
-+
-+static const struct spi_device_id ad9739a_id[] = {
-+	{"ad9739a"},
-+	{}
-+};
-+MODULE_DEVICE_TABLE(spi, ad9739a_id);
-+
-+static struct spi_driver ad9739a_driver = {
-+	.driver = {
-+		.name = "ad9739a",
-+		.of_match_table = ad9739a_of_match,
-+	},
-+	.probe = ad9739a_probe,
-+	.id_table = ad9739a_id,
-+};
-+module_spi_driver(ad9739a_driver);
-+
-+MODULE_AUTHOR("Dragos Bogdan <dragos.bogdan@analog.com>");
-+MODULE_AUTHOR("Nuno Sa <nuno.sa@analog.com>");
-+MODULE_DESCRIPTION("Analog Devices AD9739 DAC");
-+MODULE_LICENSE("GPL");
-+MODULE_IMPORT_NS(IIO_BACKEND);
-
--- 
-2.44.0
-
-
+Cheers,
+Peter
 

@@ -1,171 +1,140 @@
-Return-Path: <linux-iio+bounces-4364-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4365-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E4848AAFDB
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 15:57:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A83B78AB20E
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 17:38:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FD012813F0
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 13:57:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D5F11F23B95
+	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 15:38:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E47B12D745;
-	Fri, 19 Apr 2024 13:56:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90B0B13343F;
+	Fri, 19 Apr 2024 15:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="snPv7bew"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GgVHw+KN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A3612837C
-	for <linux-iio@vger.kernel.org>; Fri, 19 Apr 2024 13:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B25F12E1E7;
+	Fri, 19 Apr 2024 15:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713535017; cv=none; b=FPw+kGilcdac9pVb9w9TYbvkjfNDEcGeR6dHMbY6F3CS14iZLoknstdgzWPVg23OBbPYeOxUxF9pg4MbOm4WHNSzrygd5PC/bQsMummNGJl7IUjZuojntKj8NLvwmcRcFbtS4jhvETzUMzcUASi/EOlXDpBmmoEFMne3lnwCf2Y=
+	t=1713541012; cv=none; b=V8aVphERxQjHitRrwtLkFG8CqzLtlTRXvHl6SPZgsZMxALyHkOkt6iMRNYEQon4G9DH9o/+r92BDuxen9nqQRfNnFc6Y+cUMStow7FVUKGqMgIgwsdCaRcu2ItNgFX9qN30hcoM5azmAjtDbpewQl3TnMJBStq/B4f0qRx/QtMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713535017; c=relaxed/simple;
-	bh=HC5AjpYaeHDj8Mj5jLA96RcnHiHzcC4W3BA/9eZj0A8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oAkZsQL3V2I5NvVuCbpBvvu8voIyR1qQ9NRm3sbQy8jjYC0tvD9kZ2hn3ZaOQyTjpO4oTX4nRxD0kOzlr6+MadhR2QGJvAuRKTVjCuMVSHnuvG08KHBtH4VX2SWJgu1L07M1yfJHQYPNiElgmbFK4CP2NRNlvM2RsfosJqwxyXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=snPv7bew; arc=none smtp.client-ip=209.85.215.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-5cedfc32250so1361416a12.0
-        for <linux-iio@vger.kernel.org>; Fri, 19 Apr 2024 06:56:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713535014; x=1714139814; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=lDxhWRlfVkx8ifw3fFXKI2zA+Tw6hAZQJsO5ryHPBLg=;
-        b=snPv7bewwmntbEEECfrOZO5k/lFluS9Uq/J8U91NAYik5ibg29XSe1iXP5wh1ChGy2
-         sv8QOJOCN4F6AYg9Y9I6N309yQuKWoNYrbVWDYTeSKrI0mL9OocezNyg46ElbSAhnM92
-         VpSGrjC7mO30mofUpDVAHn1Nb3L7seINnLRXDXJLZP5By81ct22gz6o49pahLuq2b5oD
-         NFiq70p5UB6L5iAf7ZY/R1P6v9pvPJyyB6efQudheEetVz90NVoR9nPbF1amvOvNXwNq
-         2WsOag8X3s962KsgSaMf9nngkC0tBeKJmLR3EUBskH4nfQfa4Nl8PLKVX8d/gwOoe9Jl
-         DnLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713535014; x=1714139814;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lDxhWRlfVkx8ifw3fFXKI2zA+Tw6hAZQJsO5ryHPBLg=;
-        b=BQ1s8Tr2HPRmgUg8Eh9DkhchBOa3kA01Jxe8zyGSyF0gpMcxI8SLU6nWDEEOwdb20R
-         wCevlbW36CDrekn/EBBY9Zawpfd0PTqinTBbUeqomO5ldjPqXwIF3ms5bU9iq8WuvlgG
-         aj9snFW6ehyHPdwJ0JaDkm2JyuH5r0R2mgo57yUlap0W2KX8ynj6OKJJhNByTZXgnheI
-         LnBP6lNSIuiNajYz3y8/b2YDEHkpPcH7/oUDgaftkE7Eb/PqP46sNecEeB14YZqdTqpt
-         sFxVw/CvHM1s+JDMlHOdGtVGOrCcNg+iHhd0vlc9qER0lamg4pS90Rbmy10GIsRZMadE
-         eXrA==
-X-Forwarded-Encrypted: i=1; AJvYcCU3dE/Tiu4/ax8SZ32jCDSzrY2anCoWSrz5gUPfDKrssPubN50QgTkOc79OESos/91F4Y0F+PoLe925/d2tje6b7R5YNXOtCiQ4
-X-Gm-Message-State: AOJu0YxO/VWvq75m2cDeMceyT2ZHOBUsm83HpWkst90ipJxT+F5P18bd
-	QM7pZMJoaeLRvASHWimE/kq/wc1Q3GAZ2WojVw7Mi+v5/33NRYWGUj+2p9L3G1U=
-X-Google-Smtp-Source: AGHT+IEgMbiLkd1PuoCMXAPdhR42Mglbd/GTuMi3fUokX/KI02xKefFL9uHE/uCFgcq9jdB6EpU+pA==
-X-Received: by 2002:a17:90b:3587:b0:2ac:88e4:2dd with SMTP id mm7-20020a17090b358700b002ac88e402ddmr1610993pjb.0.1713535014305;
-        Fri, 19 Apr 2024 06:56:54 -0700 (PDT)
-Received: from [172.20.9.36] ([209.37.221.130])
-        by smtp.gmail.com with ESMTPSA id f21-20020a17090a4a9500b002a058af5e12sm4861636pjh.12.2024.04.19.06.56.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Apr 2024 06:56:54 -0700 (PDT)
-Message-ID: <f297210a-ad3b-40f5-b8ab-e51e11cefbe4@linaro.org>
-Date: Fri, 19 Apr 2024 15:56:52 +0200
+	s=arc-20240116; t=1713541012; c=relaxed/simple;
+	bh=XcTC4nhrKFpu4l4Ue99zz7dLYgzqq+aK6wzay67YX2g=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KZTf5FDUUrcLiepplj2RUEBhaUQE4UqtLaEhi2tTphAn3umCqQTnDXN7AP6lUdb22z6/oek9RrCVmZTMY0aD5eSHJ2GLeAE54I6wNkHM5WMyrNLide/xsJlpVbaLeizGKWxY0/4FfAt73PDRcXFPidy816V6vbg4pcgg2dQf/Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GgVHw+KN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DD793C072AA;
+	Fri, 19 Apr 2024 15:36:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713541011;
+	bh=XcTC4nhrKFpu4l4Ue99zz7dLYgzqq+aK6wzay67YX2g=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=GgVHw+KN12bqqhEix2S+zY3Ws8OJrRp+AyPecEhvQ96iWdvMrANXp2skoQrh7M/jS
+	 OBTGsAzgrL+HVDgKHsOIGy22kN/3u18qmL5AzDh3rE5ldQE7Y9oJPwjBe0vio8dAea
+	 YvIebaOqGYLtGTGfVOasBzDvTUN8d9B28C4928EEgI4sYuGbocibtKU3VrBS5vU3Ce
+	 XwdabRhxb0Y+NlYrXUn5fJ/5m5IA8z5qeFjgB62+uJZPi0/ITZRGekft5flS6/QXpS
+	 FfubATlro49pbXiay6PK3Au7TqeqeUf5VGR9ZjfKE2CaeJUkbCpR6dcO604mCnse3M
+	 z1/o+jFp2dEkQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id BFCACC4345F;
+	Fri, 19 Apr 2024 15:36:51 +0000 (UTC)
+From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH 0/8] iio: ad9467: support interface tuning
+Date: Fri, 19 Apr 2024 17:36:43 +0200
+Message-Id: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/7] arm64: dts: ti: k3-am62-main: Add eQEP nodes
-To: Judith Mendez <jm@ti.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- William Breathitt Gray <william.gray@linaro.org>
-Cc: David Lechner <david@lechnology.com>,
- linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20240418221417.1592787-1-jm@ti.com>
- <20240418221417.1592787-2-jm@ti.com>
-Content-Language: en-US
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240418221417.1592787-2-jm@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAIuPImYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDE0NL3cQUSxMzc9281HLdtNTEktKi1GLdtKS0pMRE09SUNAMzJaDOgqL
+ UtMwKsKnRsbW1AH7/8pJlAAAA
+To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Alexandru Ardelean <alexandru.ardelean@analog.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Olivier Moysan <olivier.moysan@foss.st.com>, Nuno Sa <nuno.sa@analog.com>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1713541010; l=2508;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=XcTC4nhrKFpu4l4Ue99zz7dLYgzqq+aK6wzay67YX2g=;
+ b=Y69JHjIU3I4VRJrq1jupgSU9yq2gEXvNAZDtA7RK67ZCfN73+UG6KFO+FhOftw1bAX+wXx+Og
+ 7Yc5xET3WQ3DRk99dgTQfbU4b+lFS0E+T9GXsehMY2mAxYw0He7vdWp
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: Nuno Sa <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-On 19/04/2024 00:14, Judith Mendez wrote:
-> Add eQEP DT nodes 0-2 for AM625 SoC.
-> 
-> Since external hardware was needed to test eQEP, the DT nodes
-> for eQEP were not included in the introductory commit. Now that
-> eQEP has been validated, add nodes to k3-am62-main.dtsi.
-> 
-> Fixes: f1d17330a5be ("arm64: dts: ti: Introduce base support for AM62x SoC")
-> Signed-off-by: Judith Mendez <jm@ti.com>
-> ---
->  arch/arm64/boot/dts/ti/k3-am62-main.dtsi | 30 ++++++++++++++++++++++++
->  1 file changed, 30 insertions(+)
-> 
-> diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-> index e9cffca073efc..0877899b90667 100644
-> --- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-> +++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-> @@ -844,6 +844,36 @@ ecap2: pwm@23120000 {
->  		status = "disabled";
->  	};
->  
-> +	eqep0: counter@23200000 {
-> +		compatible = "ti,am3352-eqep";
+Hi Jonathan,
 
-That's k3-am62, not am3352. See writing-bindings (and numerous
-presentations telling you how to do it, e.g. from two previous EOSS/ELCE).
+Here it goes one more set of new functionality for the backend
+framework. This allows for one of the most important missing features of
+the ad9467 driver. I hope the new interfaces to be fairly straight.
+Though, there's one that's likely to catch your attention:
 
-Best regards,
-Krzysztof
+iio_backend_iodelay_set()
+
+as you would expect (rightfully) some delay with actual units. The
+reason why it does not have any units is because the IO delay thing is
+mostly a calibration done at the backend level and the actually values
+and timings (each tap corresponds to) is very HW specific. For example
+the Xilinx/AMD zedboard has different specifications when compared to
+zc706.
+
+Given the above, I admit (:sweat smile:) I went the easier path and just added a
+parameter with no meaningful unit (with proper docs). I'm definitely open
+for ideas if this fells to hacky. One thing that I thought would be to
+have any additional API that could be called during probe and get an
+array of delays from the backend. Something like:
+
+iio_backend_iodelays_get(back, const unsigned int **delays_ps, unsigned int *ndelays)
+
+The backend should know what delays it supports. For the axi-adc IP we
+do have registers to detect the fpga grade etc so we could return the
+delays based on the HW we are running on. We would also need an addition
+refclk as the actual delay each tap introduces depends on a refclk.
+
+The series also has some "unrelated" patches for improvements and fixes. 
+
+---
+Nuno Sa (8):
+      iio: backend: add API for interface tuning
+      iio: adc: adi-axi-adc: only error out in major version mismatch
+      dt-bindings: adc: axi-adc: add clocks property
+      iio: adc: axi-adc: make sure AXI clock is enabled
+      iio: adc: adi-axi-adc: remove regmap max register
+      iio: adc: adi-axi-adc: support digital interface calibration
+      iio: adc: ad9467: cache the sample rate
+      iio: adc: ad9467: support digital interface calibration
+
+ .../devicetree/bindings/iio/adc/adi,axi-adc.yaml   |   5 +
+ drivers/iio/adc/ad9467.c                           | 340 ++++++++++++++++++---
+ drivers/iio/adc/adi-axi-adc.c                      | 123 +++++++-
+ drivers/iio/industrialio-backend.c                 |  86 ++++++
+ include/linux/iio/backend.h                        |  57 +++-
+ 5 files changed, 561 insertions(+), 50 deletions(-)
+---
+base-commit: 62d3fb9dcc091ccdf25eb3b716e90e07e3ed861f
+change-id: 20240419-ad9467-new-features-fbfbaa5edf06
+--
+
+Thanks!
+- Nuno Sá
+
 
 

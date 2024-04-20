@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-4400-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4401-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D4598ABC1F
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 17:02:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11BC88ABC20
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 17:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C4EB281AF8
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:02:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C28F3281B25
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504DD26291;
-	Sat, 20 Apr 2024 15:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABE427737;
+	Sat, 20 Apr 2024 15:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fBPwjYGy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nliXy8Bd"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D025625;
-	Sat, 20 Apr 2024 15:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB90520DCC;
+	Sat, 20 Apr 2024 15:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713625358; cv=none; b=HMhJmVd940Blqlhj6SdBF6rJkZ5eAkG2vHjsS1pCKKRthNcbZoFvUCWq/aCitoR5SFXxoi4enMvAFRhvUg5oyQlGtya5Py3sp/rp5oVCGDB04nlATc8e5ZCDvhsz0ZgcTG3aT9TOrsvjjfBSPZJ3BeuGuq/znByyHsJS3aCe/AI=
+	t=1713625456; cv=none; b=Duj0UErphLftKMnd/oYeJRTeIJXEVRinS79SXHBWJ9Tmpu6jiSAeI+mymyTdG2n+ujQZl7T9JTFAx5eYxo7Fs6/iZ5ZRRUag8czRXnx0tMRIcQgIhlsJZUTQkb+7WfHo7hvlAQ+MzADNA7Rcp5sIC62ZfaPAgwa7fKUnjJPDB44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713625358; c=relaxed/simple;
-	bh=M0hJ++t3zPzJ1x0oBXKRPVTje5D0VytVxiYpWNu8Ye0=;
+	s=arc-20240116; t=1713625456; c=relaxed/simple;
+	bh=sOXikMt7fviqLp9McB77G/nTgFckTp+Le1oSAGvNfe0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Mz2dU3FKsDCPkarh2jRR9oMgtLEv8DjEgDRfUQjFOoPB4WyD5tPTsWDAbd+2EVYUoe2gFjuwFrvDmATnoCg4z9hErXLHJoA431tBp4LgWqpcFpFCC/ykyIXvSayD4SSRiJneJcLDvWZep44ROxlhwPFFJuv9BxSSPTG9auDC9Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fBPwjYGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FEA9C072AA;
-	Sat, 20 Apr 2024 15:02:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dts7HMUGySQUzPDqD+HEKAi7alt8PPlT4+rJ9fRNu8ar3NTyegUjBN76Klw2egQAKNLZQmIt4Xw1YvgFgbjxzdrSp82MkhqM3eIA9hMUmiH0JxULR+qYKfLDusAEjtVebH+mTG6LtRjCIncbeQVvs19GMyGLeI8HlZztqtmXM+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nliXy8Bd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35A8C072AA;
+	Sat, 20 Apr 2024 15:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713625357;
-	bh=M0hJ++t3zPzJ1x0oBXKRPVTje5D0VytVxiYpWNu8Ye0=;
+	s=k20201202; t=1713625456;
+	bh=sOXikMt7fviqLp9McB77G/nTgFckTp+Le1oSAGvNfe0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fBPwjYGyR5T7MfeHZ/zfYto0tKlIxLhinu79tsErvjGh40GpzxHjGkCzvSsgVtycv
-	 Enh5EWNjswdot8h0MASbs3YMMvD/scstqmSrqV45PFKKq/SRo8g3l27Af7JXqK2ecW
-	 9XtHnAGonROTMVLABEcgyPJMZWuBA8T2qE6RjLg2wnuCokSYfG/aoTC1A48OBlbwOU
-	 jy4mT1JQDwrCuL/UNP6tDIwdCEULSczwMkLuPd59HgGtN+QPViidYplOst1m4scSzN
-	 luh5HDfQqcwS0p22ddr4qKqMU3oRhWmkGHbmc9c5M0rQP/fDX5N2t8HTSpiPvd+fSl
-	 Rhrrepj/qdYXw==
-Date: Sat, 20 Apr 2024 16:02:25 +0100
+	b=nliXy8BdaBv/2/BoF3UI50z8VhWnGYZwQPkAS3CXFlVSo++4O98XPDTD3lYVJ9W3z
+	 Ud4Ik0BStMed6EjCvEQ6r7YVB0WZbNIoWUzY8K01pokFyL6Ks+10dzScbtuJuM7so8
+	 6sC2q6hP2a0VDyGOcZtpVq4zgfaVQ5flkHlcoGr3E0fv6D2kjUCVbv9ecLJLq3nmI4
+	 nvyy7l30YPxnjIkOG0LQkcGvXyI9/SwFKTv0oVkyIgplJT0rqb00EyL3kYFeyVCd4S
+	 WI9GsjkWj+KGlFvzyzNfT+zzgOPBYoQ+0lElUCoQRzWJirE1CC8JFnPycqZi0ApqHY
+	 3YTSNHboWgECA==
+Date: Sat, 20 Apr 2024 16:04:03 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
 Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
@@ -51,12 +51,11 @@ Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
  Herring <robh@kernel.org>, Krzysztof Kozlowski
  <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
  Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH 2/8] iio: adc: adi-axi-adc: only error out in major
- version mismatch
-Message-ID: <20240420160225.270f804b@jic23-huawei>
-In-Reply-To: <20240419-ad9467-new-features-v1-2-3e7628ff6d5e@analog.com>
+Subject: Re: [PATCH 3/8] dt-bindings: adc: axi-adc: add clocks property
+Message-ID: <20240420160404.57bd835d@jic23-huawei>
+In-Reply-To: <20240419-ad9467-new-features-v1-3-3e7628ff6d5e@analog.com>
 References: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
-	<20240419-ad9467-new-features-v1-2-3e7628ff6d5e@analog.com>
+	<20240419-ad9467-new-features-v1-3-3e7628ff6d5e@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,52 +66,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 19 Apr 2024 17:36:45 +0200
+On Fri, 19 Apr 2024 17:36:46 +0200
 Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
 > From: Nuno Sa <nuno.sa@analog.com>
 > 
-> The IP core only has breaking changes when there major version changes.
-> Hence, only match the major number. This is also in line with the other
-> core ADI has upstream. The current check for erroring out
-> 'expected_version > current_version"' is then wrong as we could just
-> increase the core major with breaking changes and that would go
-> unnoticed.
+> Add a required clock property as we can't access the device registers if
+> the AXI bus clock is not properly enabled.
 > 
-> Fixes: ef04070692a2 ("iio: adc: adi-axi-adc: add support for AXI ADC IP core")
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-You did point out in the cover letter that there were some unrelated
-changes in this series.   Would have been better to just pull the out as
-a precursor and hence not have to mention it!
+Fix, or doesn't matter until this series?
 
-Anyhow, I'll pick at least this one up now but I'm not rushing it in as
-doesn't feel urgent.  Applied to the togreg branch of iio.git and pushed out as
-testing.
-
-Thanks,
+Obviously should have been in the binding anyway, but whether
+it matters already affects whether this should go to stable or not.
 
 Jonathan
 
 > ---
->  drivers/iio/adc/adi-axi-adc.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+>  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 5 +++++
+>  1 file changed, 5 insertions(+)
 > 
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index 4156639b3c8bd..a543b91124b07 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -207,9 +207,9 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
->  	if (ret)
->  		return ret;
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> index 3d49d21ad33df..e1f450b80db27 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> @@ -28,6 +28,9 @@ properties:
+>    reg:
+>      maxItems: 1
 >  
-> -	if (*expected_ver > ver) {
-> +	if (ADI_AXI_PCORE_VER_MAJOR(ver) != ADI_AXI_PCORE_VER_MAJOR(*expected_ver)) {
->  		dev_err(&pdev->dev,
-> -			"IP core version is too old. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
-> +			"Major version mismatch. Expected %d.%.2d.%c, Reported %d.%.2d.%c\n",
->  			ADI_AXI_PCORE_VER_MAJOR(*expected_ver),
->  			ADI_AXI_PCORE_VER_MINOR(*expected_ver),
->  			ADI_AXI_PCORE_VER_PATCH(*expected_ver),
+> +  clocks:
+> +    maxItems: 1
+> +
+>    dmas:
+>      maxItems: 1
+>  
+> @@ -48,6 +51,7 @@ required:
+>    - compatible
+>    - dmas
+>    - reg
+> +  - clocks
+>  
+>  additionalProperties: false
+>  
+> @@ -58,6 +62,7 @@ examples:
+>          reg = <0x44a00000 0x10000>;
+>          dmas = <&rx_dma 0>;
+>          dma-names = "rx";
+> +        clocks = <&axi_clk>;
+>          #io-backend-cells = <0>;
+>      };
+>  ...
 > 
 
 

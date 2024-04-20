@@ -1,61 +1,67 @@
-Return-Path: <linux-iio+bounces-4378-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4379-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B21698ABAF0
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 12:10:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D36118ABAF2
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 12:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67CCD1F21C3A
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 10:10:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52F311F21C25
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 10:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B02417BD5;
-	Sat, 20 Apr 2024 10:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9E217C60;
+	Sat, 20 Apr 2024 10:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AT3+ivAw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cRvE0v4u"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B68CEAE5;
-	Sat, 20 Apr 2024 10:10:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FB717BCB;
+	Sat, 20 Apr 2024 10:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713607849; cv=none; b=YNeLDafNzPwekhx66cJj4FFCO+SKRVSu0lqpYhaPiV5sFOXFD+CmBk4NmfKvEQFgbz/I8f/DgVwvzp1KSGt0p9aO8rdbbD+lgKaC1p5QcKJ6w8lYOgdSnGthAC7NX84ytHoJ/PUBuFsesB55BklfbG2viSt+ZqyQv6Lg/5IBxZs=
+	t=1713608018; cv=none; b=aVQA7Nz5TokDUC8OMNyr3Yp1QyVk93ADaKL7gadoxypPvzCvmXsTwF8Hcd4+Boda6u8MogI+B/kAwmen4Yucn2TVbDKprvV6Sb6IUx/cPVnrrpV5oKN202nPkEumppcLuAerc3GhVd+I57R4kfBeUewOjC/5fdfpm2wgHcisBzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713607849; c=relaxed/simple;
-	bh=uk0pVEWCGbr3TBbjkduaSqh9FacH2xhZgqD7X6xJQUQ=;
+	s=arc-20240116; t=1713608018; c=relaxed/simple;
+	bh=T6hRC6jL+eTBc3PIphJU7PiQYuX26KZYCYa6iUkWykk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IaHXmCIHmjaDsTnUbEQ6c4uDquMzfKCoTPqdCAB+4vV8VYGRD/IedLpicO6AHyZp3CHq4W6qUwwAOldv6QSKoTne7OVVVISC+g3j1ZOO6jC4VFJxn85WMzq/H0+B8i6+++Xys5k8tSs5Y0mawHEEszkGQJjJLtsYlrUrzEvATVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AT3+ivAw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720D6C072AA;
-	Sat, 20 Apr 2024 10:10:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aRg3ktcud8FCOf59zkO8DCUQBwMAxU91RuC1G6EjSupwNfuzJG0kMoqqVlFee7L4E6NSxDExlaqRkR2EApjqFgfRGAVzBZ3pcq4MuhBhpbd9gKCMopNc20ITEln30m2rOBbcyrmUBMwlT2Mqsut7+qMxurQCebfJrx8TjKF30c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cRvE0v4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FEAC072AA;
+	Sat, 20 Apr 2024 10:13:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713607848;
-	bh=uk0pVEWCGbr3TBbjkduaSqh9FacH2xhZgqD7X6xJQUQ=;
+	s=k20201202; t=1713608017;
+	bh=T6hRC6jL+eTBc3PIphJU7PiQYuX26KZYCYa6iUkWykk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AT3+ivAwM9+Gvs9pmXWfbISAc5nlQtPxhT5HzkTQm090zDk0692NY2InqWSh0HGLq
-	 Yrd6r3ct9lkGhZM3s6hdIJqVEH2/ahZ10Wyz7YDXTpTnB90RpxtcPo23EYbXosZA7u
-	 son/yySLzsagddbwelMaqyZKOSlxa9Xz8dd7dd22GmmArY5f3ounV4VaXYLL5yfBNx
-	 WEEO3D+6qmGBcm4tNZ1Hc1MB8be0PIaRR8pYVRvs60jzyOj2QRYUwcTK4rtfFuilDT
-	 PSI5CZzqguFtLBmJU+kFjhMXkyWXnwgrl+M+ib6tJkx/TvL8J4v7pwpu+e8HNLWukX
-	 7NOh1Ip88Ysfw==
-Date: Sat, 20 Apr 2024 11:10:32 +0100
+	b=cRvE0v4uPE16ZnqeL4tVgZVjjWzj5nHT4HVY0UO1bMDa1rKeO+oydra+IWH0QsMa6
+	 R1N3F+srHlzqBwKcvYuGwOyZl4jLWLhj1zbDbDOUrEyoOBKI/0F1S2x1WI/SNdTbK9
+	 BGqlwNjFo4kfIh7+01rf8WRypcHe8ytH49ogosnY8lq2Ln2x5DL+vjabT1auphR0V2
+	 Ucw4EAndP1a5qAasVi5+Xd2bjNbbkXBMOmDXvgpnSLaRuNBV34wDVxlDNPxeIs4t2n
+	 b7k3uHa9gIRR+kCAKpPYThrdtPZczZtEjqT0ycL2Znny7+vZ38+UJCsipLkCSx4saY
+	 X1V5e3P4fe4Bw==
+Date: Sat, 20 Apr 2024 11:13:22 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Rob Herring <robh@kernel.org>
-Cc: Chris Morgan <macroalpha82@gmail.com>, sboyd@kernel.org,
- conor+dt@kernel.org, devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-iio@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>,
- wens@csie.org, mturquette@baylibre.com, samuel@sholland.org,
- linux-sunxi@lists.linux.dev, jernej.skrabec@gmail.com, krzk+dt@kernel.org,
- p.zabel@pengutronix.de
-Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add GPADC for Allwinner H616
-Message-ID: <20240420111032.5d9d94c9@jic23-huawei>
-In-Reply-To: <171345342441.1843687.15293376169534019509.robh@kernel.org>
-References: <20240417170423.20640-1-macroalpha82@gmail.com>
-	<20240417170423.20640-3-macroalpha82@gmail.com>
-	<171345342441.1843687.15293376169534019509.robh@kernel.org>
+To: "Paller, Kim Seer" <KimSeer.Paller@analog.com>
+Cc: David Lechner <dlechner@baylibre.com>, "linux-iio@vger.kernel.org"
+ <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
+ <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ "Hennerich, Michael" <Michael.Hennerich@analog.com>
+Subject: Re: [PATCH 1/4] dt-bindings: iio: dac: Add adi,ltc2664.yaml
+Message-ID: <20240420111322.4fa026f3@jic23-huawei>
+In-Reply-To: <PH0PR03MB714170F4494EA0E1B4112291F9082@PH0PR03MB7141.namprd03.prod.outlook.com>
+References: <20240412032102.136071-1-kimseer.paller@analog.com>
+	<20240412032102.136071-2-kimseer.paller@analog.com>
+	<CAMknhBHgKK_OEcPz-5ktxj+YEkB7jHpw5owdh9HVj_qfwuVXkQ@mail.gmail.com>
+	<20240413160610.4cec010b@jic23-huawei>
+	<CAMknhBHMd2mK3yVoH_XjW7BapX5BTRZjUJpF=ZQrF8Mctf-NJQ@mail.gmail.com>
+	<20240413181025.39d1a62e@jic23-huawei>
+	<PH0PR03MB714170F4494EA0E1B4112291F9082@PH0PR03MB7141.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,29 +69,164 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 18 Apr 2024 10:17:33 -0500
-Rob Herring <robh@kernel.org> wrote:
+On Tue, 16 Apr 2024 14:40:56 +0000
+"Paller, Kim Seer" <KimSeer.Paller@analog.com> wrote:
 
-> On Wed, 17 Apr 2024 12:04:22 -0500, Chris Morgan wrote:
-> > From: Chris Morgan <macromorgan@hotmail.com>
-> > 
-> > Add support for the GPADC for the Allwinner H616. It is identical to
-> > the existing ADC for the D1/T113s/R329/T507 SoCs.
-> > 
-> > Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-> > ---
-> >  .../bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml      | 9 +++++++--
-> >  1 file changed, 7 insertions(+), 2 deletions(-)
-> >   
-> 
-> Acked-by: Rob Herring (Arm) <robh@kernel.org>
-> 
-> 
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Sunday, April 14, 2024 1:10 AM
+> > To: David Lechner <dlechner@baylibre.com>
+> > Cc: Paller, Kim Seer <KimSeer.Paller@analog.com>; linux-iio@vger.kernel=
+.org;
+> > devicetree@vger.kernel.org; linux-kernel@vger.kernel.org; Lars-Peter Cl=
+ausen
+> > <lars@metafoo.de>; Rob Herring <robh@kernel.org>; Krzysztof Kozlowski
+> > <krzysztof.kozlowski+dt@linaro.org>; Conor Dooley <conor+dt@kernel.org>;
+> > Liam Girdwood <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
+> > Hennerich, Michael <Michael.Hennerich@analog.com>
+> > Subject: Re: [PATCH 1/4] dt-bindings: iio: dac: Add adi,ltc2664.yaml
+> >=20
+> > [External]
+> >=20
+> > On Sat, 13 Apr 2024 11:21:55 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >  =20
+> > > On Sat, Apr 13, 2024 at 10:06=E2=80=AFAM Jonathan Cameron <jic23@kern=
+el.org> =20
+> > wrote: =20
+> > > >
+> > > > On Fri, 12 Apr 2024 16:23:00 -0500
+> > > > David Lechner <dlechner@baylibre.com> wrote:
+> > > > =20
+> > > > > On Thu, Apr 11, 2024 at 10:21=E2=80=AFPM Kim Seer Paller
+> > > > > <kimseer.paller@analog.com> wrote: =20
+> > > > > > =20
+> > >
+> > > ...
+> > > =20
+> > > > >
+> > > > > And there is V~ on both which can be between -5.5V/-15.75V and GN=
+D, so
+> > > > > optional v-neg-supply seems appropriate. =20
+> > > >
+> > > > Only make it optional in the binding if the settings of the device =
+change
+> > > > depending on whether it is there or not.  Looks like there is an in=
+ternal
+> > > > reference, so maybe it really is optional. =20
+> > >
+> > > I suggested optional with the thinking that if the pin is tied to GND,
+> > > then the property would be omitted. =20
+> >=20
+> > We could but given VND isn't really that special in this case I think
+> > I'd prefer a fixed voltage reg of 0V if someone does wire it like that.
+> > (I think that works, though not sure I've tried a 0V supply ;) =20
+>=20
+> To clarify, does this mean we should still add an optional property for i=
+t in the binding?
+I think it should not be optional.  Should be fine providing a 0V fixed reg=
+ulator
+via DT if it is wired to 0.
 
-Applied this patch to the IIO tree.
+Given that is a little unusual, check it works!
 
-Jonathan
+>=20
+> > > ...
+> > >
+> > > =20
+> > > > >
+> > > > > * (both) The MUX/MUXOUT pins look like we have an embedded pin mu=
+x, =20
+> > so =20
+> > > > > it could mean we need #pinctrl-cells. ltc2664 would also need
+> > > > > muxin-gpios for this. =20
+> > > > Not convinced that's the right approach - looks more like a channel
+> > > > selector than a conventional mux or pin control. Sure that's a mux,=
+ but
+> > > > we want a clean userspace control to let us choose a signal to meas=
+ure
+> > > > at runtime
+> > > >
+> > > > If you wanted to support this I'd have the binding describe optional
+> > > > stuff to act as a consumer of an ADC channel on another device.
+> > > > The IIO driver would then provide a bunch of input channels to allow
+> > > > measurement of each of the signals.
+> > > >
+> > > > Look at io-channels etc in existing bindings for how to do that.
+> > > > =20
+> > >
+> > > Right. I was thinking that this pin might be connected to something
+> > > else external rather than the signal coming back to the SoC (or
+> > > whatever has the SPI controller). But it makes more sense that we
+> > > would want it as extra channels being read back by the SoC for
+> > > diagnostics. =20
+> >=20
+> > It might indeed.  But I think that's an exercise for the future if
+> > it matters.  Might be a debugfs control only perhaps. =20
+>=20
+> We can consider potential future use cases as they become relevant.
+> For now, we might not to include or support this functionality.
+
+The pins should be in the DT binding, though the driver support can of cour=
+se
+be a future exercise.  Make them optional.
+
+>=20
+> > >
+> > > ...
+> > > =20
+> > > > > =20
+> > > > > > +
+> > > > > > +      patternProperties:
+> > > > > > +        "^channel@([0-3])$":
+> > > > > > +          $ref: '#/$defs/toggle-operation'
+> > > > > > +          unevaluatedProperties: false
+> > > > > > +
+> > > > > > +          description: Channel in toggle functionality.
+> > > > > > +
+> > > > > > +          properties:
+> > > > > > +            adi,output-range-microvolt:
+> > > > > > +              description: Specify the channel output full sca=
+le range. =20
+> > > > >
+> > > > > How would someone writing a .dts know what values to select for t=
+his
+> > > > > property? Or is this something that should be configured at runti=
+me
+> > > > > instead of in the devicetree? Or should this info come from the
+> > > > > missing voltage supplies I mentioned? =20
+> > > >
+> > > > Sometimes this one is a wiring related choice.  Sometimes to the ex=
+tent
+> > > > that picking the wrong one from any userspace control can cause dam=
+age
+> > > > or is at least nonsense.
+> > > >
+> > > > You look to be right though that the possible values here aren' fine
+> > > > if the internal reference is used, but not the external.
+> > > >
+> > > > However, it's keyed off MPS pins so you can't control it if they ar=
+en't
+> > > > tied to all high.  So I'd imagine if the board can be damaged it wi=
+ll
+> > > > be hard wired.  Hence these could be controlled form userspace.
+> > > > It's a bit fiddly though as combines scale and offset controls and
+> > > > you can end trying to set things to an invalid combination.
+> > > > E.g. scale set to cover 20V range and offset set to 0V
+> > > > To get around that you have to clamp one parameter to nearest
+> > > > possible when the other is changed.
+> > > > =20
+> > >
+> > > Thanks for the explanation. It sounds like I missed something in the
+> > > datasheet that would be helpful to call out in the description for
+> > > this property. =20
+> > Agreed - it needs more detail.
+> >=20
+> > Jonathan
+> >  =20
+>=20
+
 

@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-4401-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4402-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11BC88ABC20
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 17:04:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E7F8ABC23
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 17:04:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C28F3281B25
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:04:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0032B1C20B8B
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ABE427737;
-	Sat, 20 Apr 2024 15:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1215B282FE;
+	Sat, 20 Apr 2024 15:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nliXy8Bd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B6i0RJDm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB90520DCC;
-	Sat, 20 Apr 2024 15:04:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C250B20DCC;
+	Sat, 20 Apr 2024 15:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713625456; cv=none; b=Duj0UErphLftKMnd/oYeJRTeIJXEVRinS79SXHBWJ9Tmpu6jiSAeI+mymyTdG2n+ujQZl7T9JTFAx5eYxo7Fs6/iZ5ZRRUag8czRXnx0tMRIcQgIhlsJZUTQkb+7WfHo7hvlAQ+MzADNA7Rcp5sIC62ZfaPAgwa7fKUnjJPDB44=
+	t=1713625494; cv=none; b=sIkP+hysKbt+1blGdhyCmdJ6pu83r2uOpKkC8KaT5worjZVVl4MKorKgGjG3wSZsiMgSm/V/eQ+E0aJnDM4H3gJ7stj9dpfmhuvviP/etsswQEj4LZq/iT/5o6eE4hDuxQ4YWpyXv8NC7ghojtab7gzb/HQTmm+qCekKorJiqdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713625456; c=relaxed/simple;
-	bh=sOXikMt7fviqLp9McB77G/nTgFckTp+Le1oSAGvNfe0=;
+	s=arc-20240116; t=1713625494; c=relaxed/simple;
+	bh=Rx/qFNdT/pKTdFjyaMUaeply7T/pY94Bh6MdE8Xwmik=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dts7HMUGySQUzPDqD+HEKAi7alt8PPlT4+rJ9fRNu8ar3NTyegUjBN76Klw2egQAKNLZQmIt4Xw1YvgFgbjxzdrSp82MkhqM3eIA9hMUmiH0JxULR+qYKfLDusAEjtVebH+mTG6LtRjCIncbeQVvs19GMyGLeI8HlZztqtmXM+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nliXy8Bd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C35A8C072AA;
-	Sat, 20 Apr 2024 15:04:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XUF1sdpQALSpuf2J/fIR31BosJLaHb2gHlI94s+IOaUdnRqQtPDkgxpLA345oddmekIjl3zWpvWCNwGqCIq+Jkgz8ImQjreRQWKAfTwz/7iNpWghM1FeA5cu/exj+TuGshCi28/1E7RNm443idQPRI19D7U0XIkAcodAjmFGH6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B6i0RJDm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B27C072AA;
+	Sat, 20 Apr 2024 15:04:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713625456;
-	bh=sOXikMt7fviqLp9McB77G/nTgFckTp+Le1oSAGvNfe0=;
+	s=k20201202; t=1713625494;
+	bh=Rx/qFNdT/pKTdFjyaMUaeply7T/pY94Bh6MdE8Xwmik=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nliXy8BdaBv/2/BoF3UI50z8VhWnGYZwQPkAS3CXFlVSo++4O98XPDTD3lYVJ9W3z
-	 Ud4Ik0BStMed6EjCvEQ6r7YVB0WZbNIoWUzY8K01pokFyL6Ks+10dzScbtuJuM7so8
-	 6sC2q6hP2a0VDyGOcZtpVq4zgfaVQ5flkHlcoGr3E0fv6D2kjUCVbv9ecLJLq3nmI4
-	 nvyy7l30YPxnjIkOG0LQkcGvXyI9/SwFKTv0oVkyIgplJT0rqb00EyL3kYFeyVCd4S
-	 WI9GsjkWj+KGlFvzyzNfT+zzgOPBYoQ+0lElUCoQRzWJirE1CC8JFnPycqZi0ApqHY
-	 3YTSNHboWgECA==
-Date: Sat, 20 Apr 2024 16:04:03 +0100
+	b=B6i0RJDm8qHRt1jnVq/sPhdEtg2THTPAAgnYVZ0M1q/uMx0oPlRYAxvc3vGdOFAiR
+	 bmeImDu0OwkcKYXpoJs3zLKpN6udI2A9QWWefqEaZj/yMTMIGEnOH6EuwE7Z9m2aKK
+	 MvvlIttNFWW0wR+zY2r0BALZOabgOmp5gAPZFgKHNfRN6SipnZaPWCEhW3L4PYsxu1
+	 Mow+i45O9bdwuFjBjWhBefW74cTgHJPI0pLeJzQCANeupl/+p8je1ELF34doFvSDhY
+	 l8iO32bscymMqSuXDR9rsKCnwPgd640mXD92l0lwHLkxU/WnevMC79MNwV1gzB3AEc
+	 Mi/5wTV8BB5xQ==
+Date: Sat, 20 Apr 2024 16:04:42 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
 Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
@@ -51,11 +51,11 @@ Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
  Herring <robh@kernel.org>, Krzysztof Kozlowski
  <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
  Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH 3/8] dt-bindings: adc: axi-adc: add clocks property
-Message-ID: <20240420160404.57bd835d@jic23-huawei>
-In-Reply-To: <20240419-ad9467-new-features-v1-3-3e7628ff6d5e@analog.com>
+Subject: Re: [PATCH 4/8] iio: adc: axi-adc: make sure AXI clock is enabled
+Message-ID: <20240420160442.05be6dc5@jic23-huawei>
+In-Reply-To: <20240419-ad9467-new-features-v1-4-3e7628ff6d5e@analog.com>
 References: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
-	<20240419-ad9467-new-features-v1-3-3e7628ff6d5e@analog.com>
+	<20240419-ad9467-new-features-v1-4-3e7628ff6d5e@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,56 +66,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 19 Apr 2024 17:36:46 +0200
+On Fri, 19 Apr 2024 17:36:47 +0200
 Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
 > From: Nuno Sa <nuno.sa@analog.com>
 > 
-> Add a required clock property as we can't access the device registers if
-> the AXI bus clock is not properly enabled.
+> We can only access the IP core registers if the bus clock is enabled. As
+> such we need to get and enable it and not rely on anyone else to do it.
 > 
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Fix, or doesn't matter until this series?
-
-Obviously should have been in the binding anyway, but whether
-it matters already affects whether this should go to stable or not.
-
-Jonathan
+Likewise - smells like a fix, but no fixes tag?
 
 > ---
->  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 5 +++++
+>  drivers/iio/adc/adi-axi-adc.c | 5 +++++
 >  1 file changed, 5 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> index 3d49d21ad33df..e1f450b80db27 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-> @@ -28,6 +28,9 @@ properties:
->    reg:
->      maxItems: 1
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+> index a543b91124b07..e3b2158829416 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -175,6 +175,7 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+>  	struct adi_axi_adc_state *st;
+>  	void __iomem *base;
+>  	unsigned int ver;
+> +	struct clk *clk;
+>  	int ret;
 >  
-> +  clocks:
-> +    maxItems: 1
+>  	st = devm_kzalloc(&pdev->dev, sizeof(*st), GFP_KERNEL);
+> @@ -195,6 +196,10 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+>  	if (!expected_ver)
+>  		return -ENODEV;
+>  
+> +	clk = devm_clk_get_enabled(&pdev->dev, NULL);
+> +	if (IS_ERR(clk))
+> +		return PTR_ERR(clk);
 > +
->    dmas:
->      maxItems: 1
->  
-> @@ -48,6 +51,7 @@ required:
->    - compatible
->    - dmas
->    - reg
-> +  - clocks
->  
->  additionalProperties: false
->  
-> @@ -58,6 +62,7 @@ examples:
->          reg = <0x44a00000 0x10000>;
->          dmas = <&rx_dma 0>;
->          dma-names = "rx";
-> +        clocks = <&axi_clk>;
->          #io-backend-cells = <0>;
->      };
->  ...
+>  	/*
+>  	 * Force disable the core. Up to the frontend to enable us. And we can
+>  	 * still read/write registers...
 > 
 
 

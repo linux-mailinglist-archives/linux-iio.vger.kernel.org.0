@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-4404-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4405-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0485E8ABC2C
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 17:19:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AA3F8ABC37
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 17:34:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36F6E1C20A4D
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:19:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A602028172D
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E8128387;
-	Sat, 20 Apr 2024 15:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD4F28DDF;
+	Sat, 20 Apr 2024 15:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRG7COGt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EEY1Mgxp"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8690010A31;
-	Sat, 20 Apr 2024 15:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82E47F;
+	Sat, 20 Apr 2024 15:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713626393; cv=none; b=ZfjfEa0up4VtKITQwsoe3WMJGd0MhlySGynum+sQu4/G+Y/wStDoDGPpA5Tu6o2xouryV0ps0RCxRiV0xBcrSEHBWAVbQLTlvjfIfoYz1Zp3jtdj/TbLGKHyzOBEnYw194dAISYxjylZgS40Nz/CN/XHKIVwMjFmmOfWGxt05nM=
+	t=1713627258; cv=none; b=D2K5rvcuoWYR+sGhFHJrWgZ1MBKXeA0FMbhBweikMOUjaG5tAzj/kWH1Ot/VFqEiyf5w+Ar+A2eC2xppLylOM3q0I2VWiEnuxFl4G6ab8DTAYGhrmRjLmjkFhx+eTppMakvuVAPyA9H7Z812JzobNU7tPSqq9OYiPcprvIUklc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713626393; c=relaxed/simple;
-	bh=FyGENaf8xK4DdFFkT6suNGtXn8WgaJLV5sg8m9bRPck=;
+	s=arc-20240116; t=1713627258; c=relaxed/simple;
+	bh=kU9vY1riYEmT4bSzAjudG1GDTXrNljQFD7zMC7TPRdM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nq8l3m3zLyU7qmIOVFbo45YQ/+ZZPfMJlMvgd1oUaKtI1kslWFqekcgMT+fI2N981IAClrWCSzN4GKEfB4YFnyqjzF3Bckxw1+VGzBEgkWzqPKhf0yRhF9CklfGxf0G8Bhx0XQiri/LuT0U9Y3pPVP0xFWvUp/jRtp+NXOsknfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRG7COGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1505C072AA;
-	Sat, 20 Apr 2024 15:19:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h8JPPYhRHeu+N6eYH14R7snjW0K5LSG6YaiXcldbD2S87aofaCZFBaTirYAmp7GdpQemDkP2i+JHTh4/h5ZtU4Do38V3esEr/lqvnwecBPLrbJs/jr1BPeq/YxhngU2h0j2Nqc89UErK60erThWu45jdnUHpS4i1LM/VtvXxvpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEY1Mgxp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5092C072AA;
+	Sat, 20 Apr 2024 15:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713626393;
-	bh=FyGENaf8xK4DdFFkT6suNGtXn8WgaJLV5sg8m9bRPck=;
+	s=k20201202; t=1713627258;
+	bh=kU9vY1riYEmT4bSzAjudG1GDTXrNljQFD7zMC7TPRdM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bRG7COGtxBAYnmSFA6yKSPJFiJnTC4BkkyCCccFyXNmtD1AkxX7PSvvBQYdYp6FlF
-	 0ZOnuSlhowyLIWED94MMAtMYFqu7m/UtTBF6y1PnXOp8D3dWn9lz5WKQgNeb6Q7gsf
-	 ciafXJkcoP5bcwBHdjpwHQazNjzv/nbgTQpDelQoKi+oWVx1aF+R70SZUl72DAOpJv
-	 0Zoaa1W8N6GakhP+RtVI6Pdls2I8TxCAQ4jsgrNAltUstyVSVKLoIl/SQmKh6tcyQF
-	 8kC2NcYeSGitR6kI9CSNR/PfoBw4Uo+1XKEBVFlFIQ9Z1HYzwCCWhz63YLfxsGAl49
-	 cRDHfbDQr0Rqw==
-Date: Sat, 20 Apr 2024 16:19:41 +0100
+	b=EEY1Mgxpcfq1qnRGNgYJBE4oSX28Yj/HOsoV2uToS3xIcC0U7xS2yFnwUbBnGecgb
+	 nt6P02geDrtj23Z2hMK3szz/RN73Us20r37A41bbhkLjPwdUCJJ3vEMOWrMEGnJD3G
+	 JOb9uwi92f2rgyqtKnH5s462FBqoJIbcRkTf6W0rfapDy9/xrGohkLTGcMyhOVWVpy
+	 qOUsloZsf7Vlmiby4CwKAFUN2wb/lg/hKw1Olhh/61rpcaJPqVsWR4t3nyUJcs5agh
+	 9V8XcBiZV9rXg1XTu6vh4IoEsVib0/PuACoUfLP+6YUKYxRVB8XBjLOGVtExy/K/BO
+	 zygW5MakTqRZQ==
+Date: Sat, 20 Apr 2024 16:34:04 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
 Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
@@ -51,11 +51,12 @@ Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
  Herring <robh@kernel.org>, Krzysztof Kozlowski
  <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
  Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH 7/8] iio: adc: ad9467: cache the sample rate
-Message-ID: <20240420161941.212e92c5@jic23-huawei>
-In-Reply-To: <20240419-ad9467-new-features-v1-7-3e7628ff6d5e@analog.com>
+Subject: Re: [PATCH 8/8] iio: adc: ad9467: support digital interface
+ calibration
+Message-ID: <20240420163404.0fc01ed5@jic23-huawei>
+In-Reply-To: <20240419-ad9467-new-features-v1-8-3e7628ff6d5e@analog.com>
 References: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
-	<20240419-ad9467-new-features-v1-7-3e7628ff6d5e@analog.com>
+	<20240419-ad9467-new-features-v1-8-3e7628ff6d5e@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,84 +67,203 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 19 Apr 2024 17:36:50 +0200
+On Fri, 19 Apr 2024 17:36:51 +0200
 Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
 > From: Nuno Sa <nuno.sa@analog.com>
 > 
-> Since we allow to change the sampling frequency and do it with
-> clk_round_rate(), we can cache it and use on the read_raw() interface.
-> This will also be useful in a following patch supporting interface
-> calibration.
+> To make sure that we have the best timings on the serial data interface
+> we should calibrate it. This means going through the device supported
+> values and see for which ones we get a successful result. To do that, we
+> use a prbs test pattern both in the IIO backend and in the frontend
+> devices. Then for each of the test points we see if there are any
+> errors. Note that the backend is responsible to look for those errors.
+> 
+> As calibrating the interface also requires that the data format is disabled
+> (the one thing being done in ad9467_setup()), ad9467_setup() was removed
+> and configuring the data fomat is now part of the calibration process.
 > 
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-
-The clk subsystem caches the clock rate in most cases anyway, so
-I'm not sure why we need this.  Or it the point that you are going
-to temporarily change it in the next patch?
-
-Patch looks fine, but I think a clearer requirements statement is
-needed.
+Trivial comments inline.
 
 Jonathan
 
-
 > ---
->  drivers/iio/adc/ad9467.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/ad9467.c | 337 +++++++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 296 insertions(+), 41 deletions(-)
 > 
 > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> index 7475ec2a56c72..7db87ccc1ea4b 100644
+> index 7db87ccc1ea4..44552dd6f4c6 100644
 > --- a/drivers/iio/adc/ad9467.c
 > +++ b/drivers/iio/adc/ad9467.c
-> @@ -117,6 +117,7 @@ struct ad9467_state {
->  	struct iio_backend		*back;
->  	struct spi_device		*spi;
->  	struct clk			*clk;
-> +	unsigned long			sample_rate;
->  	unsigned int			output_mode;
->  	unsigned int                    (*scales)[2];
+> @@ -4,6 +4,9 @@
+>   *
+>   * Copyright 2012-2020 Analog Devices Inc.
+>   */
+> +
+> +#include <linux/bitmap.h>
+> +#include <linux/bitops.h>
+>  #include <linux/cleanup.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+> @@ -100,6 +103,8 @@
+>  #define AD9467_DEF_OUTPUT_MODE		0x08
+>  #define AD9467_REG_VREF_MASK		0x0F
 >  
-> @@ -331,7 +332,7 @@ static int ad9467_read_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_SCALE:
->  		return ad9467_get_scale(st, val, val2);
->  	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		*val = clk_get_rate(st->clk);
-> +		*val = st->sample_rate;
+> +#define AD9647_MAX_TEST_POINTS		32
+> +
+>  struct ad9467_chip_info {
+>  	const char		*name;
+>  	unsigned int		id;
+> @@ -110,6 +115,8 @@ struct ad9467_chip_info {
+>  	unsigned long		max_rate;
+>  	unsigned int		default_output_mode;
+>  	unsigned int		vref_mask;
+> +	unsigned int		num_lanes;
+> +	bool			has_dco;
+
+What is dco?  Perhaps a comment, or expand the naming somewhat.
+
+>  };
+
 >  
->  		return IIO_VAL_INT;
->  	default:
-> @@ -346,6 +347,7 @@ static int ad9467_write_raw(struct iio_dev *indio_dev,
->  	struct ad9467_state *st = iio_priv(indio_dev);
->  	const struct ad9467_chip_info *info = st->info;
->  	long r_clk;
+> +static void ad9467_dump_table(const unsigned long *err_map, unsigned int size,
+> +			      bool invert)
+> +{
+> +#ifdef DEBUG
+> +	unsigned int bit;
+> +
+> +	pr_debug("Dump calibration table:\n");
+
+If it's useful, poke it in debugfs, otherwise, drop this code.
+
+> +	for (bit = 0; bit < size; bit++) {
+> +		if (bit == size / 2) {
+> +			if (!invert)
+> +				break;
+> +			pr_cont("\n");
+> +		}
+> +
+> +		pr_cont("%c", test_bit(bit, err_map) ? 'x' : 'o');
+> +	}
+> +#endif
+> +}
+> +
+
+> +static int ad9467_calibrate_apply(const struct ad9467_state *st,
+> +				  unsigned int val)
+> +{
+> +	unsigned int lane;
 > +	int ret;
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_SCALE:
-> @@ -358,7 +360,12 @@ static int ad9467_write_raw(struct iio_dev *indio_dev,
->  			return -EINVAL;
->  		}
->  
-> -		return clk_set_rate(st->clk, r_clk);
-> +		ret = clk_set_rate(st->clk, r_clk);
+> +
+> +	if (st->info->has_dco) {
+> +		int ret;
+Shadowing ret above.
+
+> +
+> +		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_OUTPUT_DELAY,
+> +				       val);
 > +		if (ret)
 > +			return ret;
 > +
-> +		st->sample_rate = r_clk;
-> +		return 0;
->  	default:
->  		return -EINVAL;
->  	}
-> @@ -543,6 +550,8 @@ static int ad9467_probe(struct spi_device *spi)
->  	if (IS_ERR(st->clk))
->  		return PTR_ERR(st->clk);
->  
-> +	st->sample_rate = clk_get_rate(st->clk);
+> +		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
+> +					AN877_ADC_TRANSFER_SYNC);
+> +	}
 > +
->  	st->pwrdown_gpio = devm_gpiod_get_optional(&spi->dev, "powerdown",
->  						   GPIOD_OUT_LOW);
->  	if (IS_ERR(st->pwrdown_gpio))
-> 
+> +	for (lane = 0; lane < st->info->num_lanes; lane++) {
+> +		ret = iio_backend_iodelay_set(st->back, lane, val);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+
+> +
+> +static int ad9467_calibrate(const struct ad9467_state *st)
+
+Some docs on the sequence or a reference would be good.
+
+> +{
+> +	DECLARE_BITMAP(err_map, AD9647_MAX_TEST_POINTS * 2);
+> +	unsigned int point, val, inv_val, cnt, inv_cnt = 0;
+> +	/*
+> +	 * Half of the bitmap is for the inverted signal. The number of test
+> +	 * points is the same though...
+> +	 */
+> +	unsigned int test_points = AD9647_MAX_TEST_POINTS;
+> +	unsigned long sample_rate = clk_get_rate(st->clk);
+> +	struct device *dev = &st->spi->dev;
+> +	bool invert = false, stat;
+> +	int ret;
+> +
+> +	ret = ad9647_calibrate_prepare(st);
+> +	if (ret)
+> +		return ret;
+> +retune:
+> +	ret = ad9647_calibrate_polarity_set(st, invert);
+> +	if (ret)
+> +		return ret;
+> +
+> +	for (point = 0; point < test_points; point++) {
+> +		ret = ad9467_calibrate_apply(st, point);
+> +		if (ret)
+> +			return ret;
+> +
+> +		ret = ad9467_calibrate_status_check(st, &stat);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		__assign_bit(point + invert * test_points, err_map, stat);
+> +	}
+> +
+> +	if (!invert) {
+> +		cnt = ad9467_find_optimal_point(err_map, 0, test_points, &val);
+> +		/*
+> +		 * We're happy if we find, at least, three good test points in
+> +		 * a row.
+> +		 */
+> +		if (cnt < 3) {
+> +			invert = true;
+> +			goto retune;
+> +		}
+> +	} else {
+> +		inv_cnt = ad9467_find_optimal_point(err_map, test_points,
+> +						    test_points, &inv_val);
+> +		if (!inv_cnt && !cnt)
+> +			return -EIO;
+> +	}
+> +
+> +	ad9467_dump_table(err_map, BITS_PER_TYPE(err_map), invert);
+> +
+> +	if (inv_cnt < cnt) {
+> +		ret = ad9647_calibrate_polarity_set(st, false);
+> +		if (ret)
+> +			return ret;
+> +	} else {
+> +		/*
+> +		 * polarity inverted is the last test to run. Hence, there's no
+> +		 * need to re-do any configuration. We just need to "normalize"
+> +		 * the selected value.
+> +		 */
+> +		val = inv_val - test_points;
+> +	}
+> +
+> +	if (st->info->has_dco)
+> +		dev_dbg(dev, "%sDCO 0x%X CLK %lu Hz\n", inv_cnt >= cnt ? "INVERT " : "",
+> +			val, sample_rate);
+> +	else
+> +		dev_dbg(dev, "%sIDELAY 0x%x\n", inv_cnt >= cnt ? "INVERT " : "",
+> +			val);
+> +
+> +	ret = ad9467_calibrate_apply(st, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* finally apply the optimal value */
+> +	return ad9647_calibrate_stop(st);
+> +}
+> +
+
 
 

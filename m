@@ -1,68 +1,57 @@
-Return-Path: <linux-iio+bounces-4393-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4394-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AB2A8ABBAA
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:06:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD62C8ABBDA
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:54:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D7DA1C208F7
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 13:06:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF9C11C208CA
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 13:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97A91CA92;
-	Sat, 20 Apr 2024 13:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3FC28DDF;
+	Sat, 20 Apr 2024 13:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QYK0GRP+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FdLv+alO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7890A625;
-	Sat, 20 Apr 2024 13:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8415220326;
+	Sat, 20 Apr 2024 13:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713618412; cv=none; b=I4ftQ8+xB2hojlZKW6bjRBQgmEKflof/hzTmIuE+7eLMYbOId7KfGFuKAyNX474MOpUsrgvFtd+8vWSqKj+ZAeB3q7h7hNXYyH768ZJaMhv1FaGRTqGPag8kCKEmGG0Obo6Th7yVXAXhvTA0m4oNVvcRzDYPhcCbaVKVueoGtuA=
+	t=1713621253; cv=none; b=O5S2MmhDcHHQx5rqb5x1ziVUaibd5ew4hpRtfquNbz4MWVTOUX1kmgxrL/nJPXjuxN1zVC6nhJdHcbTNoLB0Wal3DHO6b+NLeeRlEhMnn626NSAY5Floa7L9AopxrA5Z0S4RZBoqNx9nEuHm2AhnjkB8uSzMWpACx6zn4/dSJYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713618412; c=relaxed/simple;
-	bh=N4vN3xcboLIjcxz6Bmykno3uW1Git1Vd/uH85dY0LS4=;
+	s=arc-20240116; t=1713621253; c=relaxed/simple;
+	bh=16q168MlSLTeQaQ+4PyfDNW73mGocL4Qi8jMsgDul3k=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KhZRo4qIKXAZbo+hFdGUpig+LvKJh8BMmCp3qwGleuvjgPKbd5540vSpp3Vb+p2/9lG0oJZGFHptpvfRJf5R09ZoAh4fI/mkvjKf+YSpPx9P5LahHK6jkOcV9F2rNpZ21jN1yAUzK8q+xH79MuaT+1xpmdQMlkCPtQtw7+iIe4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QYK0GRP+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11066C072AA;
-	Sat, 20 Apr 2024 13:06:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mv7MXaLKzhk4rZWDjZ7RsJncAn6h4o+7q8YLz3+xUc21PUaJvkmPgktMCr+k3qA81vQkTNWZdqPahRZtxmVNNHPUDCdyM34rbxHxdvC5RgCMCtTJxwqJ0Sh0EsxpVC9+3erPy/1HUwirQyz/TJjFIAroGsyxrQ/xZWOchGtkG2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FdLv+alO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 008E4C072AA;
+	Sat, 20 Apr 2024 13:54:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713618412;
-	bh=N4vN3xcboLIjcxz6Bmykno3uW1Git1Vd/uH85dY0LS4=;
+	s=k20201202; t=1713621253;
+	bh=16q168MlSLTeQaQ+4PyfDNW73mGocL4Qi8jMsgDul3k=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QYK0GRP+m4Cct/mfSzhcXZFYfRmR4F4A+nQncYRYOW4DLMxbJD1BE6SRBD5xV3Ofe
-	 2AjUjcCbiirX6iZYY4zEy4l2OUgWpnIsAUJlcPCpiHGaKycKG8VBDlILk9ayDo9A6A
-	 KDZWM8ASfUMcg0JPPReGhFT20Gsv2bjRw0Y2FAQbWO4ZAWuxirTDbncjL4DkBDEFDk
-	 IdLMFknMJUF1YYTiqY1nxHbmhbGEgFW5SzrbAenic1DgQizC4uHO+BO52ZIYKakqvD
-	 0rQeDLmpxu9cMQ5mF/SipssCiD86PA9pQBwYyAIabut3WzfHLti89sxmhG5GLM73FD
-	 AXo64nLedJ//A==
-Date: Sat, 20 Apr 2024 14:06:35 +0100
+	b=FdLv+alOWl2XlQEJPcxOC/1KT+pXMyZgrbyD1h3wjyoC303QAeB3gKYHfpT6jIzKe
+	 zrYLy5h3gff0d3bjYMdN9rXWRNcyzG/0RTiffoKZwchGkjfx5qRSYWAbJ3L5eYsLNZ
+	 5zh7YtA07YvYxu4Kk9hhOpizgodPGVVFWKyMFLwccuCoa1Zlqe4XAuUvSXoUNgIFph
+	 Y3QRnVK3KGRpq6tA0RepqImEGrsC0690GkwYOUqZpBgdaQNNZE0BunY4sF/Pley9Vu
+	 Sil2dPzzTQntd1a0BTBkijaVlJ7j45pSzGIbsMQQN4uKUOMvzsjJynx2p5Gj8DJuZH
+	 l6dt8A2yoQVAA==
+Date: Sat, 20 Apr 2024 14:54:00 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Aren Moynihan <aren@peacevolution.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, Uwe
- =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
- linux-iio@vger.kernel.org, phone-devel@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, Willow
- Barraco <contact@willowbarraco.fr>
-Subject: Re: [PATCH 3/4] iio: light: stk3310: log error if reading the chip
- id fails
-Message-ID: <20240420140635.6dffa2fb@jic23-huawei>
-In-Reply-To: <CAHp75Vf_JX1Uv=_cvoiukzSaTVWbmQSW0P_nneP8C-kxX4fBXQ@mail.gmail.com>
-References: <20240414175300.956243-1-aren@peacevolution.org>
-	<20240414175716.958831-1-aren@peacevolution.org>
-	<20240414175716.958831-3-aren@peacevolution.org>
-	<CAHp75Vf_JX1Uv=_cvoiukzSaTVWbmQSW0P_nneP8C-kxX4fBXQ@mail.gmail.com>
+To: Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com>
+Cc: bsp-development.geo@leica-geosystems.com, Eddie James
+ <eajames@linux.ibm.com>, Lars-Peter Clausen <lars@metafoo.de>, Joel Stanley
+ <joel@jms.id.au>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 0/4] iio: pressure: dps310: support negative
+ temperature values
+Message-ID: <20240420145400.03793961@jic23-huawei>
+In-Reply-To: <20240415105030.1161770-1-thomas.haemmerle@leica-geosystems.com>
+References: <20240415105030.1161770-1-thomas.haemmerle@leica-geosystems.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,39 +59,49 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 15 Apr 2024 18:05:54 +0300
-Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
+On Mon, 15 Apr 2024 12:50:26 +0200
+Thomas Haemmerle <thomas.haemmerle@leica-geosystems.com> wrote:
 
-> On Sun, Apr 14, 2024 at 8:57=E2=80=AFPM Aren Moynihan <aren@peacevolution=
-.org> wrote:
-> >
-> > If the chip isn't powered, this call is likely to return an error.
-> > Without a log here the driver will silently fail to probe. Common errors
-> > are ENXIO (when the chip isn't powered) and ETIMEDOUT (when the i2c bus
-> > isn't powered). =20
->=20
-> >         ret =3D regmap_read(data->regmap, STK3310_REG_ID, &chipid);
-> > -       if (ret < 0)
-> > +       if (ret < 0) {
-> > +               dev_err(&client->dev, "failed to read chip id: %d", ret=
-);
-> >                 return ret;
-> > +       } =20
->=20
-> Briefly looking at the code it seems that this one is strictly part of
-> the probe phase, which means we may use
->=20
->   return dev_err_probe(...);
->=20
-> pattern. Yet, you may add another patch to clean up all of them:
-> _probe(), _init(), _regmap_init() to use the same pattern everywhere.
->=20
+> This patch set fixes the reading of negative temperatures (returned in
+> millidegree celsius). As this requires a change of the error handling
+> other functions are aligned with this.
+> In addition a small code simplification for reading the scale factors
+> for temperature and pressure is included.
+Series applied to the togreg branch of iio.git.
+Note I'll first push it out as testing to let the autobuilders see
+if they can find any problems before I make a mess of linux-next.
 
-Yes, a precursor patch to use dev_err_probe() throughout the probe only
-functions in this driver would be excellent.
+Thanks,
 
 Jonathan
+
+> 
+> ---
+> Changes in v2:
+>  - include fixes tag
+>  - Split up patch
+>  - introduce variables for intermediate results in functions
+>  - simplify scale factor reading
+> 
+> Changes in v3:
+>  - fix locking issues reported in https://lore.kernel.org/all/cbdafb33-fd3b-47ad-a678-83fa92475278@moroto.mountain/
+> 
+> Thomas Haemmerle (4):
+>   iio: pressure: dps310: support negative temperature values
+>   iio: pressure: dps310: introduce consistent error handling
+>   iio: pressure: dps310: consistently check return value of
+>     `regmap_read`
+>   iio: pressure: dps310: simplify scale factor reading
+> 
+>  drivers/iio/pressure/dps310.c | 138 +++++++++++++++++++---------------
+>  1 file changed, 77 insertions(+), 61 deletions(-)
+> 
+> 
+> base-commit: 0bbac3facb5d6cc0171c45c9873a2dc96bea9680
+> --
+> 2.34.1
+
 

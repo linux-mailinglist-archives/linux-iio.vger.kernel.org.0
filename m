@@ -1,66 +1,67 @@
-Return-Path: <linux-iio+bounces-4395-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4396-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5158ABBF4
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 16:17:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D928C8ABBFE
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 16:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 624AEB20C93
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 14:17:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B4391C204AB
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 14:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F7122091;
-	Sat, 20 Apr 2024 14:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D335F1E895;
+	Sat, 20 Apr 2024 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hqrNfyoR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QD/k5eqm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE781CAA9;
-	Sat, 20 Apr 2024 14:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C318134DE;
+	Sat, 20 Apr 2024 14:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713622661; cv=none; b=G853/7csDzQdgOrqXvcVucOXetEIcUHnlhqn5KohyA/P2KmUrkznx4H4tQ7SC+D0VZVcOqfQzghZE98j451BOpXJdrlifIcOrkIaSnbMcAYSkRr4Y87B4bdk+9opf2J5kZY8l7dVS/+59PIwK7P2Z4bvmF1pXbB30oihzJHiczQ=
+	t=1713623602; cv=none; b=YDZr4QPHB4UChoDSXFWsPPcSxay5d/2h4AHGJ53AH86thc7lT1wCHWQV75sH45XhMgTPu8RMve/LVxrH4b5gNDyo2CutHP8zNU0vP01Xyk19x66dd8PQaurmxB2P+i6U3Bqt4BBiEftKFEiwo1AED8whcipKdJGeflwj3V50H7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713622661; c=relaxed/simple;
-	bh=Mxf4y0BRq/mUXjfjugfPwbXVy4IObRMWA6nlfpEgOk0=;
+	s=arc-20240116; t=1713623602; c=relaxed/simple;
+	bh=IgQTNMkLykVUqzmkrxrmXVe8Ut0q4JFsZFxDDZCJqzA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rF1wNf8n57YK0BGTk2e1Sa1fFdHAIPXmvne7aPeNGz7VXRByHl0UUTFtujWblsfkmlrRwvspYurT35htHoOeH9tf4OdPkYlD35u8dW4/WPth7p8l5t/xOu2jIhBbRUx7BLi47lxW5lVfJfJ2iEQEGQg9DIKzXnfzgwJrnyGbWfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hqrNfyoR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250EBC072AA;
-	Sat, 20 Apr 2024 14:17:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=vDj1RuHe5AIj6knX7Y5cyf8QeNN5jlUT5+ck64dE6QaIf3htdRzzlvuZwlpKB0BhSkRZv8B+GE7dlgrz+2fBLWTPzhLgs8plTZxOkMsITC1mdeL6OBStix8lhTxuZN33lJztbvSJbyQSRgC8UnnCoXTSp+WIMYQyVc/0ZwdhWO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QD/k5eqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56EE1C072AA;
+	Sat, 20 Apr 2024 14:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713622660;
-	bh=Mxf4y0BRq/mUXjfjugfPwbXVy4IObRMWA6nlfpEgOk0=;
+	s=k20201202; t=1713623602;
+	bh=IgQTNMkLykVUqzmkrxrmXVe8Ut0q4JFsZFxDDZCJqzA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hqrNfyoRqbnCkeagvZZn/miOJyo1V86pdOt+6MHQd92MCs/ltD4+12sRNhq/smUeM
-	 qEEwe1u+EA8dLZlM9o2oWXOE8M03lk/TZZuZZ0urQs7i3M8hou8pYSaXYu2kMqcvz2
-	 bR10GpF6jVU+gOa2xXf9iCKERBuEsK7ViGNnaZhRubGxdVoJB9lBDvZdVp07prWgr0
-	 PmZ91HD8NOppgMjTkglcgHjXvmtnUMAZwYw/m1oc9yxwGp/GeYWE9/+l/81fmdCzPZ
-	 nIYx82re3LgQslgrwF3yVJm390KK5B6Oih2hM8grYaKWHbh6+oP6XRBqi5tasiTbBd
-	 87YWjkt88m62A==
-Date: Sat, 20 Apr 2024 15:17:27 +0100
+	b=QD/k5eqmRN5VVWiUCN/p6g8RyOKRl55u5c1oe/PRV3NNW8nwbPh8Om2zQrT2IgZHR
+	 BGz2PP2htT5lchezZsbz0H6hSRBEQxK5gRfffAVm7kp0D6VpJ3+cN+zYNfT+zmffwz
+	 KD2c/NEhNG7oR1P0RUZxgogt0aO0ol3oG1mzvLE99rqSU+WSx/7KoUYakuqYdGnh1P
+	 5BalAqMic9kFNRYSa1yZjj0haqDertYIuCgns3SKE/HyeV7sg7fZcsR9zlhNpIGHWJ
+	 RzFN9YjfdKFnO5rxuKcuRUWcRJPVMuT1xBYyah1mv7pn5g0HCI0cF6LG/5T8XM7+65
+	 wCPNFBMOec0iA==
+Date: Sat, 20 Apr 2024 15:33:10 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, David Lechner
- <dlechner@baylibre.com>, Marcelo Schmitt <marcelo.schmitt@analog.com>,
- lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: Add AD4000
-Message-ID: <20240420151727.767b2861@jic23-huawei>
-In-Reply-To: <Zh7xo8__v-ghLcHP@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1712585500.git.marcelo.schmitt@analog.com>
-	<7c877c865f0b7da28d9f1f177b3b2692b0ae20b9.1712585500.git.marcelo.schmitt@analog.com>
-	<CAMknhBGKNZhGbD7pQ0Z7SMCWqxqGux0LcO_wW0XGP4hLTOwNBg@mail.gmail.com>
-	<ZhVfARtMfOLOPRid@debian-BULLSEYE-live-builder-AMD64>
-	<20240413171409.4575fe6f@jic23-huawei>
-	<87058695-a1a6-4e68-87c5-accdb8451bf4@baylibre.com>
-	<20240414190907.000011e5@Huawei.com>
-	<Zh7xo8__v-ghLcHP@debian-BULLSEYE-live-builder-AMD64>
+To: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>, dumitru.ceclan@analog.com,
+ Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/6] dt-bindings: adc: ad7173: add support for ad411x
+Message-ID: <20240420153310.7876cb8a@jic23-huawei>
+In-Reply-To: <89e93f4d-e569-46ee-802d-a1668a01b882@gmail.com>
+References: <20240401-ad4111-v1-0-34618a9cc502@analog.com>
+	<20240401-ad4111-v1-1-34618a9cc502@analog.com>
+	<CAMknhBHeKAQ45=5-dL1T1tv-mZcPN+bNo3vxWJYgWpEPE+8p3Q@mail.gmail.com>
+	<25cb3514-1281-49a8-9e9b-40ead9b050dc@gmail.com>
+	<CAMknhBHu8DveBgV3cor8RP2Up4Zs-+QRx7S2aoHZ_3iKiErVjg@mail.gmail.com>
+	<20240406155328.447b594f@jic23-huawei>
+	<64b7fd83-f226-4b1f-a801-0fe1cf20f842@gmail.com>
+	<20240413114825.74e7f3fa@jic23-huawei>
+	<89e93f4d-e569-46ee-802d-a1668a01b882@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,436 +72,381 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 16 Apr 2024 18:46:11 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+On Mon, 15 Apr 2024 21:42:50 +0300
+"Ceclan, Dumitru" <mitrutzceclan@gmail.com> wrote:
 
-> So, I have been trying to make this work, though I haven't been successfu=
-l so
-> far, and I don't really think using pinctrl is a good solution for this e=
-ither.
->=20
-> Comments inline.
->=20
-> On 04/14, Jonathan Cameron wrote:
-> > On Sat, 13 Apr 2024 12:33:54 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
+> On 13/04/2024 13:49, Jonathan Cameron wrote:
+> > On Tue, 9 Apr 2024 11:08:28 +0300
+> > "Ceclan, Dumitru" <mitrutzceclan@gmail.com> wrote:
 > >  =20
-> > > On 4/13/24 11:14 AM, Jonathan Cameron wrote: =20
-> > > > On Tue, 9 Apr 2024 12:30:09 -0300
-> > > > Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
-> > > >    =20
-> > > >> On 04/08, David Lechner wrote:   =20
-> > > >>> On Mon, Apr 8, 2024 at 9:32=E2=80=AFAM Marcelo Schmitt
-> > > >>> <marcelo.schmitt@analog.com> wrote:     =20
-> > > >>>>   =20
-> > >=20
-> > > ...
-> > >  =20
+> >> On 06/04/2024 17:53, Jonathan Cameron wrote: =20
+> >>> On Wed, 3 Apr 2024 10:40:39 -0500
+> >>> David Lechner <dlechner@baylibre.com> wrote:
+> >>>    =20
+> >>>> On Wed, Apr 3, 2024 at 2:43=E2=80=AFAM Ceclan, Dumitru <mitrutzcecla=
+n@gmail.com> wrote:   =20
+> >>>>>
+> >>>>> On 01/04/2024 22:37, David Lechner wrote:     =20
+> >>>>>> On Mon, Apr 1, 2024 at 10:10=E2=80=AFAM Dumitru Ceclan via B4 Relay
+> >>>>>> <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:     =20
+> >>>>>>>
+> >>>>>>> From: Dumitru Ceclan <dumitru.ceclan@analog.com>     =20
+> >>>>> =20
+> ...
+> >> =20
+> >>>>> Other alternative that came to my mind: attribute "adi,current-chan=
+nel".     =20
+> >>>>
+> >>>> Having a boolean flag like this would make more sense to me if we
+> >>>> don't agree that the suggestion below is simpler.
+> >>>>   =20
 >=20
 > ...
 >=20
-> > > >>>
-> > > >>> We identified A) an additional wiring configuration where SDI of =
-the
-> > > >>> ADC chip is wired to SDO of the SPI controller and B) a potential=
- need
-> > > >>> to pin mux between wiring modes to work around SPI controller
-> > > >>> limitations perhaps we could omit the adi,spi-mode property and j=
-ust
-> > > >>> use the standard pinctrl properties.
-> > > >>>
-> > > >>>   pinctrl-names:   =20
-> > > >=20
-> > > > I'm lost on how pinctrl makes sense here.
-> > > > Yes you are changing the modes of the pins, but not in a convention=
-al sense
-> > > > of some register that is being updated to say now use them like thi=
-s.
-> > > > The mode is dependent on the timing sequence of how the pins are us=
-ed.
-> > > > Otherwise looking at it a different way it's an external wiring thi=
-ng we
-> > > > aren't controlling it at all.  Is pinctrl suitable for that?
-> > > > I always thought of it as a way to change configurations of SoC pin=
-s.   =20
-> > >=20
-> > > Yes, this is exactly what I think we need here.
-> > >=20
-> > > To write to the register, the chip has to be wired like this ("defaul=
-t"):
-> > >=20
-> > >                                          +-------------+
-> > >      +-----------------------------------| SDO         |
-> > >      |                                   |             |
-> > >      |              +--------------------| CS          |
-> > >      |              v                    |             |
-> > >      |    +--------------------+         |     HOST    |
-> > >      |    |        CNV         |         |             |
-> > >      +--->| SDI   AD7944   SDO |-------->| SDI         |
-> > >           |        SCK         |         |             |
-> > >           +--------------------+         |             |
-> > >                     ^                    |             |
-> > >                     +--------------------| SCLK        |
-> > >                                          +-------------+
-> > >=20
-> > > But to read sample data, the chip has to be wired in one of these
-> > > 3 configurations:
-> > >=20
-> > >=20
-> > > 3-wire mode ("single"):
-> > >=20
-> > >                                          +-------------+
-> > >                     +--------------------| CS          |
-> > >                     v                    |             |
-> > >     VIO   +--------------------+         |     HOST    |
-> > >      |    |        CNV         |         |             |
-> > >      +--->| SDI   AD7944   SDO |-------->| SDI         |
-> > >           |        SCK         |         |             |
-> > >           +--------------------+         |             |
-> > >                     ^                    |             |
-> > >                     +--------------------| SCLK        |
-> > >                                          +-------------+
-> > >  =20
+> >=20
+> > We do directly relate reg to channel numbers in drivers like the ad7292=
+ (where not
+> > all channels are differential)  I'm not convinced either way on what is=
+ best
+> > here where reg is currently just an index into a channel specification,=
+ not
+> > meaningful for which pins are involved.
+> >=20
+> > It doesn't seem worth adding an equivalent of diff-channels for a singl=
+e channel
+> > setup but I guess it would be more consistent.
+> >  =20
 >=20
-> 3-wire mode like setup can be achieved if the SPI controller is capable of
-> keeping the ADC SDI line high (at VIO level) during ADC sampling, but kee=
-ping
-> controller SDO high throughout the entire transfer is not a thing all SPI
-> controllers can do (RPi's can't).
-> If the ADC is hard wired connected as in the 3-wire diagram then the user
-> can't write/read the configuration register. Same applies to "4-wire" mode
-> where controller CS is connected to ADC SDI.
-> The whole point of having pinctrl configurations was to make it possible
-> to both read/write config register and do ADC sampling if the SPI control=
-ler
-> can't keep ADC SDI at VIO. I don't think pinctrl can solve this problem t=
-hough.
+> Would you agree with the attribute adi,current-channel within the channel=
+ and
+>  diff-channels set to the correspondent current inputs (13 10 for pair IN=
+2)?
+
+=46rom another thread today I've concluded we do need a single-channel
+equivalent of diff-channels, but you are right that here it is a differenti=
+al
+channel so <13 10> seems like the best option to me.
+
 >=20
-> ...
->=20
-> > >=20
-> > > If we want to be able to both write the register and read data,
-> > > some reconfiguration is needed. It might be possible to read data
-> > > using the register-write wiring configuration, but that only
-> > > works if SDO can be set to the correct state *before* the
-> > > CS line changes. This is not something that I think most SPI
-> > > controllers can do (e.g. Marcelo mentioned in the cover letter
-> > > that RPi always returns SDO to low after every xfer while
-> > > the AXI SPI Engine leaves SDO wherever it was last).
-> > >  =20
-> > > >=20
-> > > > A pointer to some precendence in another driver for using it like t=
-his
-> > > > would go some way towards convincing me.
-> > > >=20
-> > > > Jonathan
-> > > >    =20
-> > >=20
-> > >=20
-> > > I didn't find much precedence for something like this, but I
-> > > found devicetree/bindings/net/mediatek-bluetooth.txt that uses
-> > > pinctrl to pull a UART Rx pin low for a bootstrap mode which
-> > > sounds very similar to what we need to do here (pull the SPI
-> > > controller SDO pin high or low for 3-wire or chain mode).
-> > >  =20
->=20
-> The pinctrl configuration for this ADC would not be meant to change once =
-after
-> boot as it looks to be the usual use case for pinctrl (including mediatek=
--bluetooth.txt).
->=20
-> Also, no suitable mux for the "3-wire" mode in
-> Documentation/devicetree/bindings/pinctrl/xlnx,pinctrl-zynq.yaml
-> to do it like Documentation/devicetree/bindings/net/mediatek-bluetooth.tx=
-t.
-> The zynq pinctrl driver (drivers/pinctrl/pinctrl-zynq.c) would have to be
-> updated to add the new mux function in=20
-> static const struct zynq_pinmux_function zynq_pmux_functions[] =3D {
-> 	DEFINE_ZYNQ_PINMUX_FUNCTION(ethernet0, 1),
-> ...
-> 	DEFINE_ZYNQ_PINMUX_FUNCTION(axi_spi_single, 1),
-> 	DEFINE_ZYNQ_PINMUX_FUNCTION(axi_spi_multi, 2),
-> though this is not really a thing that's on zynq, but one that is related=
+> >> =20
+> >>>>   =20
+> >>>>>     =20
+> >>>>>>> +
+> >>>>>>> +          Family AD411x supports a dedicated VCOM voltage input.
+> >>>>>>> +          To select it set the second channel to 16.
+> >>>>>>> +            (VIN2, VCOM) -> diff-channels =3D <2 16>     =20
+> >>>>>>
+> >>>>>> The 411x datasheets call this pin VINCOM so calling it VCOM here i=
+s a
+> >>>>>> bit confusing.
+> >>>>>>     =20
+> >>>>>
+> >>>>> Sure, I'll rename to VINCOM.
+> >>>>>     =20
+> >>>>>> Also, do we need to add a vincom-supply to get this voltage? Or is=
+ it
+> >>>>>> safe to assume it is always connected to AVSS? The datasheet seems=
  to
-> these ADCs so I'm not sure it should go there.
-
-
-I'd argue we are after a specific SPI controller setup for this.
-A controller driver would need modifying to make it work.
-
->=20
-> > > For example, if we wanted to use 3-wire mode for reading
-> > > data, we would set the pinctrl to "default" to write the
-> > > register to configure the chip during driver probe. Then
-> > > to read data, we would change the pinctrl to "single" before
-> > > doing the SPI xfer to ensure that the ADC SDI pin is pulled
-> > > high independent of what the SDO line of the SPI controller
-> > > is currently doing. =20
->=20
-> No, the pin configuration for this ADCs would be expected to change unres=
-tricted
-> amount of times. The pin configuration would have to change every time a =
-sample
-> read is made after a register access transfers and vice-versa. If we deci=
-de
-> to support span compression, every change to _scale would lead to pinctrl
-> configuration change.
->=20
-> At pin level, we would want to rise SPI controller SDO line to VIO but th=
-en
-> the new SDO pin config would conflict with SPI pin group config.
->=20
-> I included pinctrl properties in my test dts to make use of pinctrl frame=
-work.
-> Yet, that doesn't really alternate SPI line configuration we are using be=
-cause
-> the SPI function that is in the PS (FPGA's Processing System) is not what=
- we are
-> interfacing when using spi-engine. Copy of my test dts at end of email.
->=20
-> Currently, the SPI controller we are using to test with these exotic ADCs
-> is the spi-engine which is implemented in the FPGA as an IP block which
-> owns control of the bus lines (SPI, SDO, CS, ...). To alternate the
-> configuration of SPI lines (pull SDO (ADC SDI) up to VIO, connect control=
-ler CS
-> to ADC SDI, etc.) I think it should be done in the HDL project. I don't t=
-hink
-> it's a good idea to hijack spi-engine lines through pinctrl.
-
-Such functionality would need to be pushed to the spi controller driver
-which could know if there was any need to do anything like this, or if there
-was simply a register to set.
-
->=20
-> >=20
-> > Ah ok.  This is implying that we are switching to a controllable
-> > mode to pull that pin high (or I guess one where it is always
-> > high).  I'm not sure if that's more common than an SPI controller
-> > where you can set the 'don't' care state to high or low.
-> > I assume we can't get away with just setting the output buffer
-> > to all 1s because it won't hold that state between transfers? =20
->=20
-> I tried sending the tx buffer filled with 1s when testing this with a RPi=
-4 but
-> it brought the controller SDO (ADC SDI) line low between each 8 bits of t=
-ransfer
-> (attaching an image (yellow line is SCLK, green lines is controller SDO)).
-
-Pity - thought that was overly optimistic.
-
-> Anyway, can we have any guaranties with respect to controller SDO line be=
-haviour
-> when its not clocking out data?
-
-
->=20
-> >=20
-> > Feels like that could be rolled into the SPI subsystem with
-> > any necessary transitions handled there (maybe) =20
->=20
-> To me, this sounds more reasonable than pinctrl.
-> Yeah, if we can set a don't' care state for the SDO line then that should=
- be
-> enough for these ADCs.
-> Otherwise, can we really do anything if the controller can't keep SDO hig=
-h?
-
-There is one similar (ish) entry already.
-https://elixir.bootlin.com/linux/latest/source/include/uapi/linux/spi/spi.h=
-#L29
-#define	SPI_3WIRE_HIZ		_BITUL(15)	/* high impedance turnaround */
-in that it is controlling state in what I think would normally be a don't c=
-are state.
-
-I think we could have an
-SPI_SDO_DONT_CARE_HIGH (naming to be improved upon ;)=20
-that a driver could advertise support for and the spi device could request.
-
-https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/panel/panel-=
-tpo-tpg110.c#L429
-
-Implement that in the spi-gpio driver as a PoC probably and in your SPI cop=
-ntoller
-driver.
-
-Ultimately if the controller really isn't capable (including dances through=
+> >>>>>> indicate that the latter is the case. But then it also has this
+> >>>>>> special case (at least for AD4116, didn't check all datasheets)
+> >>>>>> "VIN10, VINCOM (single-ended or differential pair)". If it can be =
+used
+> >>>>>> as part of a fully differential input, we probably need some extra
+> >>>>>> flag to indicate that case.
+> >>>>>>     =20
+> >>>>>
+> >>>>> I cannot see any configuration options for these use cases. All inp=
+uts
+> >>>>> are routed to the same mux and routed to the differential positive =
+and
+> >>>>> negative ADC inputs.
+> >>>>>
+> >>>>> "VIN10, VINCOM (single-ended or differential pair)" the only differ=
+ence
+> >>>>> between these two use cases is if you connected VINCOM to AVSS (with
+> >>>>> unipolar coding) or not with bipolar encoding. The channel is still
+> >>>>> measuring the difference between the two selected inputs and compar=
+ing
+> >>>>> to the selected reference.
+> >>>>>     =20
+> >>>>>> Similarly, do we need special handling for ADCIN15 on AD4116? It h=
+as a
+> >>>>>> "(pseudo differential or differential pair)" notation that other
+> >>>>>> inputs don't. In other words, it is more like VINCOM than it is to=
+ the
+> >>>>>> other ADCINxx pins. So we probably need an adcin15-supply for this=
  pin
-mode changes if necessary) then the ADC won't work in this wiring with that=
- host
-controller.
-
-I'd propose something along these lines and see whether Mark + any other ac=
-tive
-SPI folk think it is reasonable or not?
-
->=20
+> >>>>>> to properly get the right channel configuration. I.e. the logic in=
+ the
+> >>>>>> IIO driver would be if adcin15-supply is present, any channels that
+> >>>>>> use this input are pseudo-differential, otherwise any channels that
+> >>>>>> use it are fully differential.
+> >>>>>>     =20
+> >>>>>
+> >>>>> I cannot seem to understand what would a adcin15-supply be needed f=
+or.
+> >>>>> This input, the same as all others, enters the mux and is routed to
+> >>>>> either positive or negative input of the ADC.
+> >>>>>
+> >>>>> The voltage on the ADCIN15 pin is not important to the user, just t=
+he
+> >>>>> difference in voltage between that pin and the other one selected.
+> >>>>> =20
 > >=20
-> > Just to check, this isn't just a case of a missing pull up
-> > resistor to drag that line correctly when it isn't actively
-> > driven (combined with all 1s in the write buffer) etc? =20
+> > That statement is the root of disagreement I think.
+> > If they are wired for pseudo differential measurement ADCIN15 a referen=
+ce voltage
+> > not a varying signal. It can equally be used as a negative channel of
+> > a differential pair.   Not different from point of view of hardware
+> > config, but potentially different from point of view of how the
+> > analog wiring is done and how we may want to present it to userspace.
+> >  =20
+> >>>>
+> >>>> These suggestions come from some recent discussion about
+> >>>> pseudo-differential vs. fully differential inputs (e.g. search the I=
+IO
+> >>>> mailing list for AD7380).
+> >>>>
+> >>>> So what I suggested here might be more technically correct according
+> >>>> to what I got out of that discussion. But for this specific case, I
+> >>>> agree it is good enough to just treat all inputs as always
+> >>>> fully-differential to keep things from getting too unwieldy.   =20
+> >>>
+> >>> Hmm.  That whole approach to pseudo differential does get messy if
+> >>> we have the common line routed through the main MUX rather than an opt
+> >>> in only on the negative side. =20
+> >>>
+> >>> If I read this right, its almost a trick to support a pseudo differen=
+tial
+> >>> wiring with simple registers (I guess reflecting MUX limitations).
+> >>>
+> >>> So what could we do?
+> >>>
+> >>> We could assume that VINCOM is used like a conventional pseudo
+> >>> differential negative signal and have supply-vincom + non diffferenti=
+al
+> >>> channels if that's the configuration wanted.
+> >>>
+> >>> Then for differential channels can support all the VINX VINX+1
+> >>> and swapped options.
+> >>> For VIN10 it gets fun as non differential and differential options
+> >>> I think map to same actual config.   Don't see reason we need to expr=
+ess
+> >>> that in the binding though so let that have VIN10 VINCOM (probably us=
+ing
+> >>> a magic channel number) and  VIN10 pseudo differential.
+> >>>
+> >>> Similar setup for ADCIN15 equivalent usage
+> >>>
+> >>> Code wise this probably won't be particular hard to support in the dr=
+iver
+> >>> (obviously I haven't tried though :) is it worth the effort to keep
+> >>> it inline with other devices that support pseudo differential channes=
+l.   =20
+> >>
+> >> Then this would need to be done to any fully differential ADC as suppo=
+rt
+> >> for pseudo differential channels is present (connect a fixed non 0 vol=
+tage
+> >> to the negative input). =20
+> >=20
+> > Whilst you could argue that, I'd counter that a clearly stated pseudo
+> > differential mode with a simple choice of negative input (typically
+> > only one pin is used for these modes), is a feature of the ADC, rather
+> > than a wiring choice such as tying all negative inputs together and to
+> > a reference supply.
+> >  =20
+> >>
+> >> The AD717x family supports pseudo differential channels as well... sho=
+uld
+> >> this change be applied to them too? It is just the case that the docum=
+entation
+> >> does not mentions this use case. =20
+> >=20
+> > Maybe you could argue that if we used the REF- for the negative input.
+> > Otherwise I think it falls into the category where there isn't a clearl=
+y defined
+> > pseudo differential mode.
+> >  =20
 >=20
-> When using spi-engine, the controller SDO is connected to ADC SDI, contro=
-ller
-> CS to ADC CNV and, for reg access, it works as conventional SPI.
-> spi-engine leaves the SDO line the state it was after last transfer so it=
- we
-> can make it idle high during sample read. No hardware pull-up needed.
+> While re-reading docs I've noticed that AD7176-2 mentions pseudo differen=
+tial usage:
+> "Pseudo Differential Inputs
+>  The user can also choose to measure four different single-ended
+>  analog inputs. In this case, each of the analog inputs is converted
+>  as being the difference between the single-ended input to be
+>  measured and a set analog input common pin. Because there is
+>  a crosspoint multiplexer, the user can set any of the analog inputs
+>  as the common pin. An example of such a scenario is to connect
+>  the AIN4 pin to AVSS or to the REFOUT voltage (that is, AVSS
+>  + 2.5 V) and select this input when configuring the crosspoint
+>  multiplexer. When using the AD7176-2 with pseudo differential
+>  inputs, the INL specification is degraded."
+>=20
+> As the crosspoint mux is present on all models it really makes me think t=
+hat this
+> paragraph applies to all models in the family
 
-Fair enough. No multi master support I guess (that is a bit obscure for
-SPI).  A little ugly that it's dependent on the last access - so you would =
-need
-to do a dummy access if the normal last bit was wrong level?
+Interesting indeed.  So is your thinking that we need to support this
+or take that "degraded" comment to imply that we should not bother
+(at least until someone actually shouts that they want to do this?)
+
+>=20
+> >>
+> >> I think that a distinction needs to be made here:
+> >> - When a device is only pseudo differential, sure, it is in a differen=
+t category
+> >> - When a device is fully differential and you are using it as pseudo-d=
+ifferential
+> >>   you are having two inputs compared to one another
+> >>
+> >> I would need more clarification is why would supply-vincom be a requir=
+ement.
+> >> The voltage supplied to VINCOM will not be used in any computation wit=
+hin=20
+> >> the driver. From the perspective of getting the data it doesn't matter=
+ if=20
+> >> you are using the channel in a pseudo-differential, single ended or fu=
+lly
+> >> differential manner. =20
+> >=20
+> > I'd missed until now that the datasheet (I looked ad4114) says aincomm =
+should be connected to analog
+> > ground so indeed nothing to turn on in this case and no offset to supply
+> > (the offset will be 0 so we don't present it).
+> >=20
+> > I'll note the datasheet describes the VINCOM as follows.
+> >=20
+> > Voltage-Input Copmmon. Voltage inputs are reference to VINCOM when the =
+inputs are configured
+> > as single-ended.  Connect AINCOM to analog ground.
+> >=20
+> > The reference to single ended is pretty clear hint to me that this case
+> > is not a differential channel. The more complex case is the one David
+> > raised of the AD4116 where we have actual pseudo differential inputs.
+> >  =20
+>=20
+> Alright, from my perspective they all pass through the same mux but okay,
+> not differential. The only issue would differentiating cases in AD4116 wh=
+ere
+> the pair VIN10 - VINCOM is specified as single-ended or differential pair.
+>=20
+> Also, AD4116:
+> "0101101111 ADCIN11, ADCIN15. (pseudo differential or differential pair)
+>  0110001111 ADCIN12, ADCIN15. (pseudo differential or differential pair)
+>  0110101111 ADCIN13, ADCIN15. (pseudo differential or differential pair)
+>  0111001111 ADCIN14, ADCIN15. (pseudo differential or differential pair)"
+>=20
+> Not really sure where the "actual pseudo differential" sits.
+>=20
+> Would you agree with having device tree flags that specifies how is the
+> channel used: single-ended, pseudo-differential, differential.
+> For the first two, the differential flag will not be set in IIO.
+
+Yes. I think that makes sense - though as you observe in some cases
+the actual device settings end up the same (the ad4116 note above).
+
+If a given channel supports single-ended and pseudo-differential is
+that really just a low reference change (I assume from an input to the
+the IO ground)? Or is there more going on?
+
+If it's the reference, then can we provide that as the binding control
+signal?  We have other drivers that do that (though we could perhaps make
+it more generic) e.g. adi,ad7124 with adi,reference-select
+
+I don't like that binding because it always ends up have a local enum
+of values, but can't really think of a better solution.
+
+>=20
+> >>
+> >> Regarding VINX VINX+1, it is not mandatory to respect those, from AD41=
+11 page27:
+> >> "Due to the matching resistors on the analog front end, the
+> >>  differential inputs must be paired together in the following
+> >>  pairs: VIN0 and VIN1, VIN2 and VIN3, VIN4 and VIN5, and
+> >>  VIN6 and VIN7. If any two voltage inputs are paired in a
+> >>  configuration other than what is described in this data sheet,
+> >>  the accuracy of the device cannot be guaranteed." =20
+> >=20
+> > OK, but I'll assume no 'good' customer of ADI will do that as any suppo=
+rt
+> > engineer would grumpily point at that statement if they ever reported
+> > a problem :)
+> >  =20
+> >>
+> >> Tried the device and it works as fully differential when pairing any
+> >> VINx with VINCOM. Still works when selecting VINCOM as the positive
+> >> input of the ADC.
+> >>
+> >> I really see this as overly complicated and unnecessary. These families
+> >> of ADCs are fully differential. If you are using it to measure a singl=
+e ended
+> >> (Be it compared to 0V or pseudo differential where you are comparing t=
+o Vref/2
+> >> and obtaining results [Vref/2 , -Vref/2]) the final result will not re=
+quire knowing
+> >> the common voltage. =20
+> >=20
+> > For single ended VINCOM should be tied to analog 0V.  If the chip docs =
+allowed
+> > you to tie it to a different voltage then the single ended mode would b=
+e offset
+> > wrt to that value.
+> >=20
+> > For the AD4116 case in pseudo differential mode, You would need an ADCI=
+N15 supply because
+> > that is not connected to analog 0V.  If the device is being used in a p=
+seudo differential
+> > mode that provides a fixed offset voltage.
+> >=20
+> > So my preference (though I could maybe be convinced it's not worth the =
+effort)
+> > is to treat pseudo differential as single ended channels where 'negativ=
+e' pin is
+> > providing a fixed voltage (or 0V if that's relevant).  Thus measurement=
+s provided
+> > to userspace include the information of that offset.
+> >  =20
+>=20
+> What do you mean by offset? I currently understand that the user will have
+> a way of reading the voltage of that specific supply from the driver.=20
+
+How?  We could do it that way, but we don't have existing ABI for this that
+I can think of.
+
+>=20
+> If you mean provide a different channel offset value when using it as
+> pseudo-differential then I would disagree
+
+Provided to user space as _offset on the channel, userspace can either
+incorporate it if it wants to compute absolute (relative to some 0V somewhe=
+re) value
+or ignore it if it only wants the difference from the reference value.
+
+I'm open to discussion other ABI options, but this is the one we most natur=
+ally have
+available.
+>=20
+>=20
+> > We haven't handled pseudo differential channels that well in the past, =
+but the
+> > recent discussions have lead to a cleaner overall solution and it would=
+ be good
+> > to be consistent going forwards.  We could deprecate the previous bindi=
+ngs in
+> > existing drivers, but that is a job for another day  (possibly never ha=
+ppens!)
+> >  =20
+>=20
+> I really hope that a clean solution could be obtained for this driver as =
+well :)=20
+
+I bet you wish sometimes that you had easier parts to write drivers for! :)
+These continue to stretch the boundaries which is good, but slow.
 
 Jonathan
 
 >=20
-> Marcelo
 >=20
-> >=20
-> > Jonathan
-> >=20
-> >  =20
->=20
-> The device tree source file I was using for testing with the ADC with the
-> changes for using pinctrl. Didn't really work.
->=20
-> // SPDX-License-Identifier: GPL-2.0
-> /*
->  * Analog Devices ADAQ4003
->  * https://wiki.analog.com/resources/tools-software/linux-drivers/iio-adc=
-/ad400x
->  * https://wiki.analog.com/resources/eval/user-guides/ad400x
->  *
->  * hdl_project: <pulsar_adc_pmdz/zed>
->  * board_revision: <>
->  *
->  * Copyright (C) 2016-2023 Analog Devices Inc.
->  */
-> /dts-v1/;
->=20
-> #include "zynq-zed.dtsi"
-> #include "zynq-zed-adv7511.dtsi"
-> #include <dt-bindings/pinctrl/pinctrl-zynq.h>
->=20
-> / {
-> 	adc_vref: regulator-vref {
-> 		compatible =3D "regulator-fixed";
-> 		regulator-name =3D "EVAL 5V Vref";
-> 		regulator-min-microvolt =3D <5000000>;
-> 		regulator-max-microvolt =3D <5000000>;
-> 		regulator-always-on;
-> 	};
->=20
-> 	adc_vdd: regulator-vdd {
-> 		compatible =3D "regulator-fixed";
-> 		regulator-name =3D "Eval VDD supply";
-> 		regulator-min-microvolt =3D <1800000>;
-> 		regulator-max-microvolt =3D <1800000>;
-> 		regulator-always-on;
-> 	};
->=20
-> 	adc_vio: regulator-vio {
-> 		compatible =3D "regulator-fixed";
-> 		regulator-name =3D "Eval VIO supply";
-> 		regulator-min-microvolt =3D <3300000>;
-> 		regulator-max-microvolt =3D <3300000>;
-> 		regulator-always-on;
-> 	};
-> };
->=20
-> &pinctrl0 {
-> 	/* Restore conventional SPI pin configuration */
-> 	pinctrl_spi_default: default_config {
-> 		mux {
-> 			/* Are these the ones used by spi-engine? */
-> 			groups =3D "spi0_0_grp";
-> 			function =3D "spi0";
-> 		};
-> 		conf {
-> 			groups =3D "spi0_0_grp";
-> 			power-source =3D <IO_STANDARD_LVCMOS33>;
-> 		};
-> 		conf-spi-sdo {
-> 			pins =3D "MIO17"; /* SPI0 SDO? */
-> 			bias-disable;
-> 		};
-> 	};
->=20
-> 	/* Pull-up SPI SDO (ADC SDI) to VIO */
-> 	pinctrl_spi_single: single_config {
-> 		conf-spi-sdo {
-> 			pins =3D "MIO17"; /* Conflicts with SPI0 pin group */
-> 			bias-pull-up;
-> 		};
-> 	};
-> };
->=20
-> &fpga_axi {
-> 	rx_dma: rx-dmac@44a30000 {
-> 		compatible =3D "adi,axi-dmac-1.00.a";
-> 		reg =3D <0x44a30000 0x1000>;
-> 		#dma-cells =3D <1>;
-> 		interrupts =3D <0 57 IRQ_TYPE_LEVEL_HIGH>;
-> 		clocks =3D <&clkc 17>;
->=20
-> 		adi,channels {
-> 			#size-cells =3D <0>;
-> 			#address-cells =3D <1>;
->=20
-> 			dma-channel@0 {
-> 				reg =3D <0>;
-> 				adi,source-bus-width =3D <32>;
-> 				adi,source-bus-type =3D <1>;
-> 				adi,destination-bus-width =3D <64>;
-> 				adi,destination-bus-type =3D <0>;
-> 			};
-> 		};
-> 	};
->=20
-> 	axi_pwm_gen: axi-pwm-gen@ {
-> 		compatible =3D "adi,axi-pwmgen";
-> 		reg =3D <0x44b00000 0x1000>;
-> 		label =3D "cnv";
-> 		#pwm-cells =3D <2>;
-> 		clocks =3D <&spi_clk>;
-> 	};
->=20
-> 	spi_clk: axi-clkgen@44a70000 {
-> 		compatible =3D "adi,axi-clkgen-2.00.a";
-> 		reg =3D <0x44a70000 0x10000>;
-> 		#clock-cells =3D <0>;
-> 		clocks =3D <&clkc 15>, <&clkc 15>;
-> 		clock-names =3D "s_axi_aclk", "clkin1";
-> 		clock-output-names =3D "spi_clk";
-> 	};
->=20
-> 	axi_spi_engine_0: spi@44a00000 {
-> 		compatible =3D "adi,axi-spi-engine-1.00.a";
-> 		reg =3D <0x44a00000 0x1000>;
-> 		interrupt-parent =3D <&intc>;
-> 		interrupts =3D <0 56 IRQ_TYPE_LEVEL_HIGH>;
-> 		clocks =3D <&clkc 15 &spi_clk>;
-> 		clock-names =3D "s_axi_aclk", "spi_clk";
-> 		num-cs =3D <1>;
->=20
-> 		#address-cells =3D <0x1>;
-> 		#size-cells =3D <0x0>;
->=20
-> 		adaq4003: adc@0 {
-> 			compatible =3D "adi,adaq4003";
-> 			reg =3D <0>;
-> 			spi-max-frequency =3D <102000000>;
-> 			spi-cpha;
-> 			pinctrl-names =3D "default", "single";
-> 			pinctrl-0 =3D <&pinctrl_spi_default>;
-> 			pinctrl-1 =3D <&pinctrl_spi_single>;
-> 			vdd-supply =3D <&adc_vdd>;
-> 			vio-supply =3D <&adc_vio>;
-> 			ref-supply =3D <&adc_vref>;
-> 			adi,high-z-input;
-> 			adi,gain-milli =3D <454>;
-> 		};
-> 	};
-> };
 
 

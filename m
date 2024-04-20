@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-4403-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4404-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C019B8ABC26
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 17:13:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0485E8ABC2C
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 17:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6BF41C20CCA
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:13:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 36F6E1C20A4D
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F302B28387;
-	Sat, 20 Apr 2024 15:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E8128387;
+	Sat, 20 Apr 2024 15:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FcAdZ3Zh"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bRG7COGt"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE71DF43;
-	Sat, 20 Apr 2024 15:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8690010A31;
+	Sat, 20 Apr 2024 15:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713626001; cv=none; b=FXUpiihlQ24z6baae8kajgBD04I59TkqfYqZGCbyItjfDLaIsWlNNKTpaL9n0yfVIxQIJYd4sz5bslP0WoM1Q5AJpn+sp3sbd4daIIgbxh8WntzGZYj0tZluf1HM30f3wiUyurmGkH6yqHe9PyfYcP6/MHC3yy3hqANWQNF075g=
+	t=1713626393; cv=none; b=ZfjfEa0up4VtKITQwsoe3WMJGd0MhlySGynum+sQu4/G+Y/wStDoDGPpA5Tu6o2xouryV0ps0RCxRiV0xBcrSEHBWAVbQLTlvjfIfoYz1Zp3jtdj/TbLGKHyzOBEnYw194dAISYxjylZgS40Nz/CN/XHKIVwMjFmmOfWGxt05nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713626001; c=relaxed/simple;
-	bh=Ore1GJ4+xs2n/Ajx0XOCs2afoCsJOuQp1xQ9q+wWW7k=;
+	s=arc-20240116; t=1713626393; c=relaxed/simple;
+	bh=FyGENaf8xK4DdFFkT6suNGtXn8WgaJLV5sg8m9bRPck=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fmjx27YKxjTI4EV9iIeQRn7PqhBydKvR5aP1w0BAVpCIM2yIOOgr7Q11D3kLKfO0k8W1YWr8dUi/QsHh20eHGpZ6YZUtWmJ0FEGUNVkXp/S4Y3l21uWvPuWEAjPXjpxPXyEYbd0dj+WRxn6rgZZT9UiYK3TEjL+hZFFE4vyhPNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FcAdZ3Zh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B99FC072AA;
-	Sat, 20 Apr 2024 15:13:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nq8l3m3zLyU7qmIOVFbo45YQ/+ZZPfMJlMvgd1oUaKtI1kslWFqekcgMT+fI2N981IAClrWCSzN4GKEfB4YFnyqjzF3Bckxw1+VGzBEgkWzqPKhf0yRhF9CklfGxf0G8Bhx0XQiri/LuT0U9Y3pPVP0xFWvUp/jRtp+NXOsknfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bRG7COGt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1505C072AA;
+	Sat, 20 Apr 2024 15:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713626001;
-	bh=Ore1GJ4+xs2n/Ajx0XOCs2afoCsJOuQp1xQ9q+wWW7k=;
+	s=k20201202; t=1713626393;
+	bh=FyGENaf8xK4DdFFkT6suNGtXn8WgaJLV5sg8m9bRPck=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FcAdZ3ZhdlKQX8wg3I+eQF7xU1oDD5g66j/fpb1eEHlQKEXxG5oLPuN92RnrMQ3eh
-	 UVqN3cHcCwYWZhZDMyTVrkaPSH2awJvQBKrvsf/d1YCblfesjQYyl0bK8ZoVtaFVyO
-	 Ak8K2vxBHI02WsjXWex4MKNCRXlKJoSA/In01QXP549kk/cTgeTN/Gviu/uT+RoR6A
-	 6PAcCpr3Oc8opZodGE0vPrlu+6N/SasKrwhH1ziiHnnwnxY+FSFOMsCUHdR4KoDfUG
-	 ohVdovh2FTCR2vNfMOaprwl/Qn9KQDaioT8rffGMWd+BRaEFK7iVB+eHkZLZAe5Jer
-	 eFhXXsekhUHVA==
-Date: Sat, 20 Apr 2024 16:13:08 +0100
+	b=bRG7COGtxBAYnmSFA6yKSPJFiJnTC4BkkyCCccFyXNmtD1AkxX7PSvvBQYdYp6FlF
+	 0ZOnuSlhowyLIWED94MMAtMYFqu7m/UtTBF6y1PnXOp8D3dWn9lz5WKQgNeb6Q7gsf
+	 ciafXJkcoP5bcwBHdjpwHQazNjzv/nbgTQpDelQoKi+oWVx1aF+R70SZUl72DAOpJv
+	 0Zoaa1W8N6GakhP+RtVI6Pdls2I8TxCAQ4jsgrNAltUstyVSVKLoIl/SQmKh6tcyQF
+	 8kC2NcYeSGitR6kI9CSNR/PfoBw4Uo+1XKEBVFlFIQ9Z1HYzwCCWhz63YLfxsGAl49
+	 cRDHfbDQr0Rqw==
+Date: Sat, 20 Apr 2024 16:19:41 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
 Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
@@ -51,12 +51,11 @@ Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
  Herring <robh@kernel.org>, Krzysztof Kozlowski
  <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
  Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH 6/8] iio: adc: adi-axi-adc: support digital interface
- calibration
-Message-ID: <20240420161308.67018515@jic23-huawei>
-In-Reply-To: <20240419-ad9467-new-features-v1-6-3e7628ff6d5e@analog.com>
+Subject: Re: [PATCH 7/8] iio: adc: ad9467: cache the sample rate
+Message-ID: <20240420161941.212e92c5@jic23-huawei>
+In-Reply-To: <20240419-ad9467-new-features-v1-7-3e7628ff6d5e@analog.com>
 References: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
-	<20240419-ad9467-new-features-v1-6-3e7628ff6d5e@analog.com>
+	<20240419-ad9467-new-features-v1-7-3e7628ff6d5e@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,160 +66,84 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 19 Apr 2024 17:36:49 +0200
+On Fri, 19 Apr 2024 17:36:50 +0200
 Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
 > From: Nuno Sa <nuno.sa@analog.com>
 > 
-> Implement the new IIO backend APIs for calibrating the data
-> digital interfaces.
-> 
-> While at it, removed the tabs in 'struct adi_axi_adc_state' and used
-> spaces for the members.
-
-Ideally a precursor patch, but meh, it's 2 lines so I'll just moan about
-it and move on.
-
-A few minor things inline.
-
-
+> Since we allow to change the sampling frequency and do it with
+> clk_round_rate(), we can cache it and use on the read_raw() interface.
+> This will also be useful in a following patch supporting interface
+> calibration.
 > 
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+
+The clk subsystem caches the clock rate in most cases anyway, so
+I'm not sure why we need this.  Or it the point that you are going
+to temporarily change it in the next patch?
+
+Patch looks fine, but I think a clearer requirements statement is
+needed.
+
+Jonathan
+
+
 > ---
->  drivers/iio/adc/adi-axi-adc.c | 113 +++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 111 insertions(+), 2 deletions(-)
+>  drivers/iio/adc/ad9467.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index b312369b7366..d58fa05499c4 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -7,11 +7,13 @@
->   */
+> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+> index 7475ec2a56c72..7db87ccc1ea4b 100644
+> --- a/drivers/iio/adc/ad9467.c
+> +++ b/drivers/iio/adc/ad9467.c
+> @@ -117,6 +117,7 @@ struct ad9467_state {
+>  	struct iio_backend		*back;
+>  	struct spi_device		*spi;
+>  	struct clk			*clk;
+> +	unsigned long			sample_rate;
+>  	unsigned int			output_mode;
+>  	unsigned int                    (*scales)[2];
 >  
->  #include <linux/bitfield.h>
-> +#include <linux/cleanup.h>
->  #include <linux/clk.h>
->  #include <linux/err.h>
->  #include <linux/io.h>
->  #include <linux/delay.h>
->  #include <linux/module.h>
-> +#include <linux/mutex.h>
->  #include <linux/of.h>
->  #include <linux/platform_device.h>
->  #include <linux/property.h>
-> @@ -37,6 +39,9 @@
->  #define   ADI_AXI_REG_RSTN_MMCM_RSTN		BIT(1)
->  #define   ADI_AXI_REG_RSTN_RSTN			BIT(0)
+> @@ -331,7 +332,7 @@ static int ad9467_read_raw(struct iio_dev *indio_dev,
+>  	case IIO_CHAN_INFO_SCALE:
+>  		return ad9467_get_scale(st, val, val2);
+>  	case IIO_CHAN_INFO_SAMP_FREQ:
+> -		*val = clk_get_rate(st->clk);
+> +		*val = st->sample_rate;
 >  
-> +#define ADI_AXI_ADC_REG_CTRL			0x0044
-> +#define    ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK	BIT(1)
-> +
->  /* ADC Channel controls */
->  
->  #define ADI_AXI_REG_CHAN_CTRL(c)		(0x0400 + (c) * 0x40)
-> @@ -51,14 +56,28 @@
->  #define   ADI_AXI_REG_CHAN_CTRL_PN_TYPE_OWR	BIT(1)
->  #define   ADI_AXI_REG_CHAN_CTRL_ENABLE		BIT(0)
->  
-> +#define ADI_AXI_ADC_REG_CHAN_STATUS(c)		(0x0404 + (c) * 0x40)
-> +#define   ADI_AXI_ADC_CHAN_STAT_PN_MASK		GENMASK(2, 1)
-> +
-> +#define ADI_AXI_ADC_REG_CHAN_CTRL_3(c)		(0x0418 + (c) * 0x40)
-> +#define   ADI_AXI_ADC_CHAN_PN_SEL_MASK		GENMASK(19, 16)
-> +
-> +/* IO Delays */
-> +#define ADI_AXI_ADC_REG_DELAY(l)		(0x0800 + (l) * 0x4)
-> +#define   AXI_ADC_DELAY_CTRL_MASK		GENMASK(4, 0)
-> +
-> +#define ADI_AXI_ADC_MAX_IO_NUM_LANES		15
-> +
->  #define ADI_AXI_REG_CHAN_CTRL_DEFAULTS		\
->  	(ADI_AXI_REG_CHAN_CTRL_FMT_SIGNEXT |	\
->  	 ADI_AXI_REG_CHAN_CTRL_FMT_EN |		\
->  	 ADI_AXI_REG_CHAN_CTRL_ENABLE)
->  
->  struct adi_axi_adc_state {
-> -	struct regmap				*regmap;
-> -	struct device				*dev;
-> +	struct regmap *regmap;
-> +	struct device *dev;
-> +	/* lock to protect multiple accesses to the device registers */
-
-Why?  The locking in regmap protects register accesses in general I believe.
-I guess this is to prevent accesses during that error detection routine?
-Needs more detail in the comment.
-
-> +	struct mutex lock;
->  };
->  
->  static int axi_adc_enable(struct iio_backend *back)
-> @@ -104,6 +123,92 @@ static int axi_adc_data_format_set(struct iio_backend *back, unsigned int chan,
->  				  ADI_AXI_REG_CHAN_CTRL_FMT_MASK, val);
->  }
->  
-> +static int axi_adc_data_sample_trigger(struct iio_backend *back,
-> +				       enum iio_backend_sample_trigger trigger)
-> +{
-> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-> +
-> +	if (trigger == IIO_BACKEND_SAMPLE_TRIGGER_EDGE_RISING)
-
-It's an enum, so can't have more than one. Hence switch statement is probably
-more extensible and natural to read.
-
-> +		return regmap_clear_bits(st->regmap, ADI_AXI_ADC_REG_CTRL,
-> +					 ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK);
-> +	if (trigger == IIO_BACKEND_SAMPLE_TRIGGER_EDGE_FALLING)
-> +		return regmap_set_bits(st->regmap, ADI_AXI_ADC_REG_CTRL,
-> +				       ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK);
-> +
-> +	return -EINVAL;
-> +}
-> +
-
-
-> +static int axi_adc_chan_status(struct iio_backend *back, unsigned int chan,
-> +			       struct iio_backend_chan_status *status)
-> +{
-> +	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+>  		return IIO_VAL_INT;
+>  	default:
+> @@ -346,6 +347,7 @@ static int ad9467_write_raw(struct iio_dev *indio_dev,
+>  	struct ad9467_state *st = iio_priv(indio_dev);
+>  	const struct ad9467_chip_info *info = st->info;
+>  	long r_clk;
 > +	int ret;
-> +	u32 val;
-> +
-> +	guard(mutex)(&st->lock);
-> +	/* reset test bits by setting them */
-> +	ret = regmap_write(st->regmap, ADI_AXI_ADC_REG_CHAN_STATUS(chan),
-> +			   ADI_AXI_ADC_CHAN_STAT_PN_MASK);
-> +	if (ret)
-> +		return ret;
-> +
-> +	fsleep(1000);
-Why this particular length sleep?  Is this a case of let it sit a while an dsee
-if an error shows up?  If so a comment on that would be good.
-> +
-> +	ret = regmap_read(st->regmap, ADI_AXI_ADC_REG_CHAN_STATUS(chan), &val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (ADI_AXI_ADC_CHAN_STAT_PN_MASK & val)
-> +		status->errors = true;
-> +
-> +	return 0;
-> +}
-> +
->  static int axi_adc_chan_enable(struct iio_backend *back, unsigned int chan)
->  {
->  	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-> @@ -166,6 +271,10 @@ static const struct iio_backend_ops adi_axi_adc_generic = {
->  	.chan_disable = axi_adc_chan_disable,
->  	.request_buffer = axi_adc_request_buffer,
->  	.free_buffer = axi_adc_free_buffer,
-> +	.data_sample_trigger = axi_adc_data_sample_trigger,
-> +	.iodelay_set = axi_adc_iodelays_set,
-> +	.test_pattern_set = axi_adc_test_pattern_set,
-> +	.chan_status = axi_adc_chan_status,
->  };
 >  
->  static int adi_axi_adc_probe(struct platform_device *pdev)
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SCALE:
+> @@ -358,7 +360,12 @@ static int ad9467_write_raw(struct iio_dev *indio_dev,
+>  			return -EINVAL;
+>  		}
+>  
+> -		return clk_set_rate(st->clk, r_clk);
+> +		ret = clk_set_rate(st->clk, r_clk);
+> +		if (ret)
+> +			return ret;
+> +
+> +		st->sample_rate = r_clk;
+> +		return 0;
+>  	default:
+>  		return -EINVAL;
+>  	}
+> @@ -543,6 +550,8 @@ static int ad9467_probe(struct spi_device *spi)
+>  	if (IS_ERR(st->clk))
+>  		return PTR_ERR(st->clk);
+>  
+> +	st->sample_rate = clk_get_rate(st->clk);
+> +
+>  	st->pwrdown_gpio = devm_gpiod_get_optional(&spi->dev, "powerdown",
+>  						   GPIOD_OUT_LOW);
+>  	if (IS_ERR(st->pwrdown_gpio))
 > 
 
 

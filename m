@@ -1,128 +1,91 @@
-Return-Path: <linux-iio+bounces-4377-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4378-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95CA8AB6A8
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 23:54:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B21698ABAF0
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 12:10:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 866962825EF
-	for <lists+linux-iio@lfdr.de>; Fri, 19 Apr 2024 21:54:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67CCD1F21C3A
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 10:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F379B13D256;
-	Fri, 19 Apr 2024 21:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B02417BD5;
+	Sat, 20 Apr 2024 10:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rZU+LPPW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AT3+ivAw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DE385284;
-	Fri, 19 Apr 2024 21:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B68CEAE5;
+	Sat, 20 Apr 2024 10:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713563639; cv=none; b=n9M969ik+gwZohQzFzW+iH7LhT6IIgaWG85NGRssKg5kHbRLs76l672xGTHVXZJAmxb6CRpr4fWCha+6NVJsqV1kkpJH8ztXUPkGegiYil341aav6qWPKywy3pnFzh/LqXaM+cVETapHduPYOKsLexO/8afiNhVj8Xy7oJ/d8+o=
+	t=1713607849; cv=none; b=YNeLDafNzPwekhx66cJj4FFCO+SKRVSu0lqpYhaPiV5sFOXFD+CmBk4NmfKvEQFgbz/I8f/DgVwvzp1KSGt0p9aO8rdbbD+lgKaC1p5QcKJ6w8lYOgdSnGthAC7NX84ytHoJ/PUBuFsesB55BklfbG2viSt+ZqyQv6Lg/5IBxZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713563639; c=relaxed/simple;
-	bh=ttIcqkCyWmr6vD223UIwRsrnIQtQJoEowgOLU2LYMls=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UhZa9HfLvlKC/SecQSJ0ku5XgQIwVEz9lVh5xFJ3BRrd7GKn0hegdR6nYyQXk8WwvUaMio7dhNQ1zgjvR+7FrXPCYwii0HOeZBfD1ZHu8CML+BJrmvSwAE2CfnBO68PRUnEGKAzSygbpV9w0+uOQSFRbSZZIKLsij5JaV/HrgPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rZU+LPPW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00652C072AA;
-	Fri, 19 Apr 2024 21:53:58 +0000 (UTC)
+	s=arc-20240116; t=1713607849; c=relaxed/simple;
+	bh=uk0pVEWCGbr3TBbjkduaSqh9FacH2xhZgqD7X6xJQUQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IaHXmCIHmjaDsTnUbEQ6c4uDquMzfKCoTPqdCAB+4vV8VYGRD/IedLpicO6AHyZp3CHq4W6qUwwAOldv6QSKoTne7OVVVISC+g3j1ZOO6jC4VFJxn85WMzq/H0+B8i6+++Xys5k8tSs5Y0mawHEEszkGQJjJLtsYlrUrzEvATVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AT3+ivAw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 720D6C072AA;
+	Sat, 20 Apr 2024 10:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713563639;
-	bh=ttIcqkCyWmr6vD223UIwRsrnIQtQJoEowgOLU2LYMls=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rZU+LPPWM9ZCrDVCAwqY7YmAVImGP5UqMSMIQaOrKYpNq1SYUuaM6j81qLUzl1PjK
-	 h5IVNIH716t6lkEZ9Fok5lsCKpbkvO7mAF37Gr7wK/MBUwbjgApUxOIkKppNxirlrE
-	 oa79O9czkhrdPgLqlEpdfywiHoJIrPbv6ASkCubRp+9kTfbt1yRs+QzsXEQSzSxRjH
-	 zxjd7yzJ/OrOa7ZIYquXcjFRYdTXNRDHo0Aq9QRh37lb4/BDfByJTUVIaTuxmcr5s7
-	 BNFo4J6gF8rXhlvtxbAIdDhjmlY2q2g214piQgc5ys9VB9E25vzzmlOlnT/nR/bz3A
-	 ZbcJkjdG7lZvA==
-Date: Fri, 19 Apr 2024 16:53:57 -0500
-From: Rob Herring <robh@kernel.org>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Peter Korsgaard <peter.korsgaard@barco.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Michael Shych <michaelsh@nvidia.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Jacopo Mondi <jacopo+renesas@jmondi.org>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Niklas =?iso-8859-1?Q?S=F6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Saravana Kannan <saravanak@google.com>,
-	"open list:AMD KFD" <dri-devel@lists.freedesktop.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	linux-media@vger.kernel.org,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH] i2c: mux: Remove class argument from
- i2c_mux_add_adapter()
-Message-ID: <20240419215357.GA4041284-robh@kernel.org>
-References: <17145dc5-e68e-4566-bedf-251bebe36ebb@gmail.com>
+	s=k20201202; t=1713607848;
+	bh=uk0pVEWCGbr3TBbjkduaSqh9FacH2xhZgqD7X6xJQUQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=AT3+ivAwM9+Gvs9pmXWfbISAc5nlQtPxhT5HzkTQm090zDk0692NY2InqWSh0HGLq
+	 Yrd6r3ct9lkGhZM3s6hdIJqVEH2/ahZ10Wyz7YDXTpTnB90RpxtcPo23EYbXosZA7u
+	 son/yySLzsagddbwelMaqyZKOSlxa9Xz8dd7dd22GmmArY5f3ounV4VaXYLL5yfBNx
+	 WEEO3D+6qmGBcm4tNZ1Hc1MB8be0PIaRR8pYVRvs60jzyOj2QRYUwcTK4rtfFuilDT
+	 PSI5CZzqguFtLBmJU+kFjhMXkyWXnwgrl+M+ib6tJkx/TvL8J4v7pwpu+e8HNLWukX
+	 7NOh1Ip88Ysfw==
+Date: Sat, 20 Apr 2024 11:10:32 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Rob Herring <robh@kernel.org>
+Cc: Chris Morgan <macroalpha82@gmail.com>, sboyd@kernel.org,
+ conor+dt@kernel.org, devicetree@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-iio@vger.kernel.org, Chris Morgan <macromorgan@hotmail.com>,
+ wens@csie.org, mturquette@baylibre.com, samuel@sholland.org,
+ linux-sunxi@lists.linux.dev, jernej.skrabec@gmail.com, krzk+dt@kernel.org,
+ p.zabel@pengutronix.de
+Subject: Re: [PATCH 2/3] dt-bindings: iio: adc: Add GPADC for Allwinner H616
+Message-ID: <20240420111032.5d9d94c9@jic23-huawei>
+In-Reply-To: <171345342441.1843687.15293376169534019509.robh@kernel.org>
+References: <20240417170423.20640-1-macroalpha82@gmail.com>
+	<20240417170423.20640-3-macroalpha82@gmail.com>
+	<171345342441.1843687.15293376169534019509.robh@kernel.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17145dc5-e68e-4566-bedf-251bebe36ebb@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 18, 2024 at 10:55:39PM +0200, Heiner Kallweit wrote:
-> 99a741aa7a2d ("i2c: mux: gpio: remove support for class-based device
-> instantiation") removed the last call to i2c_mux_add_adapter() with a
-> non-null class argument. Therefore the class argument can be removed.
+On Thu, 18 Apr 2024 10:17:33 -0500
+Rob Herring <robh@kernel.org> wrote:
+
+> On Wed, 17 Apr 2024 12:04:22 -0500, Chris Morgan wrote:
+> > From: Chris Morgan <macromorgan@hotmail.com>
+> > 
+> > Add support for the GPADC for the Allwinner H616. It is identical to
+> > the existing ADC for the D1/T113s/R329/T507 SoCs.
+> > 
+> > Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+> > ---
+> >  .../bindings/iio/adc/allwinner,sun20i-d1-gpadc.yaml      | 9 +++++++--
+> >  1 file changed, 7 insertions(+), 2 deletions(-)
+> >   
 > 
-> Note: Class-based device instantiation is a legacy mechanism which
-> shouldn't be used in new code, so we can rule out that this argument
-> may be needed again in the future.
+> Acked-by: Rob Herring (Arm) <robh@kernel.org>
 > 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> ---
->  drivers/gpu/drm/bridge/sii902x.c           |  2 +-
->  drivers/i2c/i2c-mux.c                      | 24 +---------------------
->  drivers/i2c/muxes/i2c-arb-gpio-challenge.c |  2 +-
->  drivers/i2c/muxes/i2c-mux-gpio.c           |  2 +-
->  drivers/i2c/muxes/i2c-mux-gpmux.c          |  2 +-
->  drivers/i2c/muxes/i2c-mux-ltc4306.c        |  2 +-
->  drivers/i2c/muxes/i2c-mux-mlxcpld.c        |  2 +-
->  drivers/i2c/muxes/i2c-mux-pca9541.c        |  2 +-
->  drivers/i2c/muxes/i2c-mux-pca954x.c        |  2 +-
->  drivers/i2c/muxes/i2c-mux-pinctrl.c        |  2 +-
->  drivers/i2c/muxes/i2c-mux-reg.c            |  2 +-
->  drivers/iio/gyro/mpu3050-i2c.c             |  2 +-
->  drivers/iio/imu/inv_mpu6050/inv_mpu_i2c.c  |  2 +-
->  drivers/media/dvb-frontends/af9013.c       |  2 +-
->  drivers/media/dvb-frontends/lgdt3306a.c    |  2 +-
->  drivers/media/dvb-frontends/m88ds3103.c    |  2 +-
->  drivers/media/dvb-frontends/rtl2830.c      |  2 +-
->  drivers/media/dvb-frontends/rtl2832.c      |  2 +-
->  drivers/media/dvb-frontends/si2168.c       |  2 +-
->  drivers/media/i2c/max9286.c                |  2 +-
->  drivers/media/usb/cx231xx/cx231xx-i2c.c    |  5 +----
->  drivers/of/unittest.c                      |  2 +-
+> 
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Applied this patch to the IIO tree.
 
->  include/linux/i2c-mux.h                    |  3 +--
->  23 files changed, 23 insertions(+), 49 deletions(-)
+Jonathan
 

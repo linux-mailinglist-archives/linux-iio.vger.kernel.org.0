@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-4405-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4406-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AA3F8ABC37
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 17:34:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6AD28ABC3A
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 17:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A602028172D
-	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:34:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87BAA1F213AE
+	for <lists+linux-iio@lfdr.de>; Sat, 20 Apr 2024 15:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD4F28DDF;
-	Sat, 20 Apr 2024 15:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93D182CCD7;
+	Sat, 20 Apr 2024 15:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EEY1Mgxp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RoopK/Mi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82E47F;
-	Sat, 20 Apr 2024 15:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C27E28373;
+	Sat, 20 Apr 2024 15:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713627258; cv=none; b=D2K5rvcuoWYR+sGhFHJrWgZ1MBKXeA0FMbhBweikMOUjaG5tAzj/kWH1Ot/VFqEiyf5w+Ar+A2eC2xppLylOM3q0I2VWiEnuxFl4G6ab8DTAYGhrmRjLmjkFhx+eTppMakvuVAPyA9H7Z812JzobNU7tPSqq9OYiPcprvIUklc0=
+	t=1713627576; cv=none; b=b2X66G9b3eEP+TRBgG1gH5YX0Ulo4n8Gnrq416Wy5IwNWCEMMY5tIfs65oPgWoKqYmyBKX8/PYUHr/KYaVV8NKu0Ltku+cpPdPvOJNgf9Joq0a5saYiy7mqiQFULZfO803QYpfuSWqmDCa6xB/XpcQ2YMyHI+tqNoPo60qjGjRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713627258; c=relaxed/simple;
-	bh=kU9vY1riYEmT4bSzAjudG1GDTXrNljQFD7zMC7TPRdM=;
+	s=arc-20240116; t=1713627576; c=relaxed/simple;
+	bh=i9cY9qp6/a0mcmsh3qFB586htevc7etX3YNS7yvrCd0=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h8JPPYhRHeu+N6eYH14R7snjW0K5LSG6YaiXcldbD2S87aofaCZFBaTirYAmp7GdpQemDkP2i+JHTh4/h5ZtU4Do38V3esEr/lqvnwecBPLrbJs/jr1BPeq/YxhngU2h0j2Nqc89UErK60erThWu45jdnUHpS4i1LM/VtvXxvpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EEY1Mgxp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5092C072AA;
-	Sat, 20 Apr 2024 15:34:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hvtMyQfUvFVg76PLYnhxT/sIvRW/mZDCg8jQJnvzTgNK+pfgwbP/k5RQFGy0zYS+giIE8UTuxi5AqaTNhxTswxBPMQux+w7jl/6DN3JI66fJqF6qbBdzDzXcCA4ws9vcONZtP1GzY8WgCaciHUXS0uYWUNWfGMQQVRaQ7cUxmaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RoopK/Mi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765FCC072AA;
+	Sat, 20 Apr 2024 15:39:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713627258;
-	bh=kU9vY1riYEmT4bSzAjudG1GDTXrNljQFD7zMC7TPRdM=;
+	s=k20201202; t=1713627576;
+	bh=i9cY9qp6/a0mcmsh3qFB586htevc7etX3YNS7yvrCd0=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EEY1Mgxpcfq1qnRGNgYJBE4oSX28Yj/HOsoV2uToS3xIcC0U7xS2yFnwUbBnGecgb
-	 nt6P02geDrtj23Z2hMK3szz/RN73Us20r37A41bbhkLjPwdUCJJ3vEMOWrMEGnJD3G
-	 JOb9uwi92f2rgyqtKnH5s462FBqoJIbcRkTf6W0rfapDy9/xrGohkLTGcMyhOVWVpy
-	 qOUsloZsf7Vlmiby4CwKAFUN2wb/lg/hKw1Olhh/61rpcaJPqVsWR4t3nyUJcs5agh
-	 9V8XcBiZV9rXg1XTu6vh4IoEsVib0/PuACoUfLP+6YUKYxRVB8XBjLOGVtExy/K/BO
-	 zygW5MakTqRZQ==
-Date: Sat, 20 Apr 2024 16:34:04 +0100
+	b=RoopK/Mi4T4fahlLvKZqpmYCQDwzA/PWEl9uPvfI130RXWhFoXZ5fW0pi8VR932XB
+	 aHm3f3qkPn7fUVBk65/sSNT1DS7a9QApC8t+T6roUVXvrRnBozeQ7AIJcSgtjurrvy
+	 Whfahws7ERSpc/WOKGmeG/jKpAP4NW1ehpp+LOItwCmA7CoAw9ltWiMITNqMzf0meF
+	 DsomxnlVOD72DrR7p2bK0j0nXvDYdfFp3nk59v4AePNJS9LkYJOsd5ccNlE22y2WF9
+	 BfmY7XJPzXYprZHeI1ov7RKGfkRXM9cthduHozNygOyuM1nCRY36JGpyD6QfG9vvdw
+	 YEJVBNs1CNXwQ==
+Date: Sat, 20 Apr 2024 16:39:26 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
 Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
@@ -51,12 +51,10 @@ Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
  Herring <robh@kernel.org>, Krzysztof Kozlowski
  <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
  Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH 8/8] iio: adc: ad9467: support digital interface
- calibration
-Message-ID: <20240420163404.0fc01ed5@jic23-huawei>
-In-Reply-To: <20240419-ad9467-new-features-v1-8-3e7628ff6d5e@analog.com>
+Subject: Re: [PATCH 0/8] iio: ad9467: support interface tuning
+Message-ID: <20240420163926.3ae99cb1@jic23-huawei>
+In-Reply-To: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
 References: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
-	<20240419-ad9467-new-features-v1-8-3e7628ff6d5e@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,206 +62,98 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 19 Apr 2024 17:36:51 +0200
+On Fri, 19 Apr 2024 17:36:43 +0200
 Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
-> From: Nuno Sa <nuno.sa@analog.com>
-> 
-> To make sure that we have the best timings on the serial data interface
-> we should calibrate it. This means going through the device supported
-> values and see for which ones we get a successful result. To do that, we
-> use a prbs test pattern both in the IIO backend and in the frontend
-> devices. Then for each of the test points we see if there are any
-> errors. Note that the backend is responsible to look for those errors.
-> 
-> As calibrating the interface also requires that the data format is disabled
-> (the one thing being done in ad9467_setup()), ad9467_setup() was removed
-> and configuring the data fomat is now part of the calibration process.
-> 
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Trivial comments inline.
+> Hi Jonathan,
+Hi Nuno,
 
-Jonathan
+Friday special :)
 
+>=20
+> Here it goes one more set of new functionality for the backend
+> framework. This allows for one of the most important missing features of
+> the ad9467 driver. I hope the new interfaces to be fairly straight.
+> Though, there's one that's likely to catch your attention:
+>=20
+> iio_backend_iodelay_set()
+>=20
+> as you would expect (rightfully) some delay with actual units. The
+> reason why it does not have any units is because the IO delay thing is
+> mostly a calibration done at the backend level and the actually values
+> and timings (each tap corresponds to) is very HW specific. For example
+> the Xilinx/AMD zedboard has different specifications when compared to
+> zc706.
+>=20
+> Given the above, I admit (:sweat smile:) I went the easier path and just =
+added a
+> parameter with no meaningful unit (with proper docs). I'm definitely open
+> for ideas if this fells to hacky. One thing that I thought would be to
+> have any additional API that could be called during probe and get an
+> array of delays from the backend. Something like:
+>=20
+> iio_backend_iodelays_get(back, const unsigned int **delays_ps, unsigned i=
+nt *ndelays)
+>=20
+> The backend should know what delays it supports. For the axi-adc IP we
+> do have registers to detect the fpga grade etc so we could return the
+> delays based on the HW we are running on. We would also need an addition
+> refclk as the actual delay each tap introduces depends on a refclk.
+
+=46rom a userspace point of view do we care about the real values? (in units =
+we understand)
+Does the front end driver algorithm ever care about what they actually mean=
+ either?
+
+Feels like all these are is a sequence of magic flags that we try, the only
+thing that assigns them any absolute meaning is that you assume they
+are monotonic in some sense, so picking the middle value of a set in a row =
+that
+works makes sense.
+
+So I'm not really that bothered about the lack of units.
+Whether this interface generalizes well to other device will be interesting
+to see, but if it doesn't and we come up with something better a later stag=
+e,
+this is all in kernel interface, so we can change it anwyay at that point.
+
+>=20
+> The series also has some "unrelated" patches for improvements and fixes.=
+=20
+
+Hmm.  Next time pull those out as a separate set and just mention
+it as a dependency.
+
+>=20
 > ---
->  drivers/iio/adc/ad9467.c | 337 +++++++++++++++++++++++++++++++++++++++++------
->  1 file changed, 296 insertions(+), 41 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> index 7db87ccc1ea4..44552dd6f4c6 100644
-> --- a/drivers/iio/adc/ad9467.c
-> +++ b/drivers/iio/adc/ad9467.c
-> @@ -4,6 +4,9 @@
->   *
->   * Copyright 2012-2020 Analog Devices Inc.
->   */
-> +
-> +#include <linux/bitmap.h>
-> +#include <linux/bitops.h>
->  #include <linux/cleanup.h>
->  #include <linux/module.h>
->  #include <linux/mutex.h>
-> @@ -100,6 +103,8 @@
->  #define AD9467_DEF_OUTPUT_MODE		0x08
->  #define AD9467_REG_VREF_MASK		0x0F
->  
-> +#define AD9647_MAX_TEST_POINTS		32
-> +
->  struct ad9467_chip_info {
->  	const char		*name;
->  	unsigned int		id;
-> @@ -110,6 +115,8 @@ struct ad9467_chip_info {
->  	unsigned long		max_rate;
->  	unsigned int		default_output_mode;
->  	unsigned int		vref_mask;
-> +	unsigned int		num_lanes;
-> +	bool			has_dco;
-
-What is dco?  Perhaps a comment, or expand the naming somewhat.
-
->  };
-
->  
-> +static void ad9467_dump_table(const unsigned long *err_map, unsigned int size,
-> +			      bool invert)
-> +{
-> +#ifdef DEBUG
-> +	unsigned int bit;
-> +
-> +	pr_debug("Dump calibration table:\n");
-
-If it's useful, poke it in debugfs, otherwise, drop this code.
-
-> +	for (bit = 0; bit < size; bit++) {
-> +		if (bit == size / 2) {
-> +			if (!invert)
-> +				break;
-> +			pr_cont("\n");
-> +		}
-> +
-> +		pr_cont("%c", test_bit(bit, err_map) ? 'x' : 'o');
-> +	}
-> +#endif
-> +}
-> +
-
-> +static int ad9467_calibrate_apply(const struct ad9467_state *st,
-> +				  unsigned int val)
-> +{
-> +	unsigned int lane;
-> +	int ret;
-> +
-> +	if (st->info->has_dco) {
-> +		int ret;
-Shadowing ret above.
-
-> +
-> +		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_OUTPUT_DELAY,
-> +				       val);
-> +		if (ret)
-> +			return ret;
-> +
-> +		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
-> +					AN877_ADC_TRANSFER_SYNC);
-> +	}
-> +
-> +	for (lane = 0; lane < st->info->num_lanes; lane++) {
-> +		ret = iio_backend_iodelay_set(st->back, lane, val);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-
-> +
-> +static int ad9467_calibrate(const struct ad9467_state *st)
-
-Some docs on the sequence or a reference would be good.
-
-> +{
-> +	DECLARE_BITMAP(err_map, AD9647_MAX_TEST_POINTS * 2);
-> +	unsigned int point, val, inv_val, cnt, inv_cnt = 0;
-> +	/*
-> +	 * Half of the bitmap is for the inverted signal. The number of test
-> +	 * points is the same though...
-> +	 */
-> +	unsigned int test_points = AD9647_MAX_TEST_POINTS;
-> +	unsigned long sample_rate = clk_get_rate(st->clk);
-> +	struct device *dev = &st->spi->dev;
-> +	bool invert = false, stat;
-> +	int ret;
-> +
-> +	ret = ad9647_calibrate_prepare(st);
-> +	if (ret)
-> +		return ret;
-> +retune:
-> +	ret = ad9647_calibrate_polarity_set(st, invert);
-> +	if (ret)
-> +		return ret;
-> +
-> +	for (point = 0; point < test_points; point++) {
-> +		ret = ad9467_calibrate_apply(st, point);
-> +		if (ret)
-> +			return ret;
-> +
-> +		ret = ad9467_calibrate_status_check(st, &stat);
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		__assign_bit(point + invert * test_points, err_map, stat);
-> +	}
-> +
-> +	if (!invert) {
-> +		cnt = ad9467_find_optimal_point(err_map, 0, test_points, &val);
-> +		/*
-> +		 * We're happy if we find, at least, three good test points in
-> +		 * a row.
-> +		 */
-> +		if (cnt < 3) {
-> +			invert = true;
-> +			goto retune;
-> +		}
-> +	} else {
-> +		inv_cnt = ad9467_find_optimal_point(err_map, test_points,
-> +						    test_points, &inv_val);
-> +		if (!inv_cnt && !cnt)
-> +			return -EIO;
-> +	}
-> +
-> +	ad9467_dump_table(err_map, BITS_PER_TYPE(err_map), invert);
-> +
-> +	if (inv_cnt < cnt) {
-> +		ret = ad9647_calibrate_polarity_set(st, false);
-> +		if (ret)
-> +			return ret;
-> +	} else {
-> +		/*
-> +		 * polarity inverted is the last test to run. Hence, there's no
-> +		 * need to re-do any configuration. We just need to "normalize"
-> +		 * the selected value.
-> +		 */
-> +		val = inv_val - test_points;
-> +	}
-> +
-> +	if (st->info->has_dco)
-> +		dev_dbg(dev, "%sDCO 0x%X CLK %lu Hz\n", inv_cnt >= cnt ? "INVERT " : "",
-> +			val, sample_rate);
-> +	else
-> +		dev_dbg(dev, "%sIDELAY 0x%x\n", inv_cnt >= cnt ? "INVERT " : "",
-> +			val);
-> +
-> +	ret = ad9467_calibrate_apply(st, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* finally apply the optimal value */
-> +	return ad9647_calibrate_stop(st);
-> +}
-> +
-
+> Nuno Sa (8):
+>       iio: backend: add API for interface tuning
+>       iio: adc: adi-axi-adc: only error out in major version mismatch
+>       dt-bindings: adc: axi-adc: add clocks property
+>       iio: adc: axi-adc: make sure AXI clock is enabled
+>       iio: adc: adi-axi-adc: remove regmap max register
+>       iio: adc: adi-axi-adc: support digital interface calibration
+>       iio: adc: ad9467: cache the sample rate
+>       iio: adc: ad9467: support digital interface calibration
+>=20
+>  .../devicetree/bindings/iio/adc/adi,axi-adc.yaml   |   5 +
+>  drivers/iio/adc/ad9467.c                           | 340 +++++++++++++++=
++++---
+>  drivers/iio/adc/adi-axi-adc.c                      | 123 +++++++-
+>  drivers/iio/industrialio-backend.c                 |  86 ++++++
+>  include/linux/iio/backend.h                        |  57 +++-
+>  5 files changed, 561 insertions(+), 50 deletions(-)
+> ---
+> base-commit: 62d3fb9dcc091ccdf25eb3b716e90e07e3ed861f
+> change-id: 20240419-ad9467-new-features-fbfbaa5edf06
+> --
+>=20
+> Thanks!
+> - Nuno S=C3=A1
+>=20
+>=20
 
 

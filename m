@@ -1,145 +1,131 @@
-Return-Path: <linux-iio+bounces-4419-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4420-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFDB28AC6B5
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 10:20:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 017FE8AC6D9
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 10:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5358E1F21773
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 08:20:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6317282ADC
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 08:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB3853E1E;
-	Mon, 22 Apr 2024 08:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8E24F213;
+	Mon, 22 Apr 2024 08:24:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QXsJQno4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from gandalf.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7E8502B6;
-	Mon, 22 Apr 2024 08:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799D3482CA
+	for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 08:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713773930; cv=none; b=KTm7pF/s+L1x4s93exkltT3gtWTwvsrb5ODXQhDqV1rnnAEQ3cC/R1o07e8mV5kWKUt9/m0P52Y/SpCWQmj49+zfMhBkfvGYS8rXuoFDEqNLwia2T6OS19rsiHEZugkH98ZHKaimpuWC36p45qdtEJ9VWGvZGdRVj/5IXH1HAes=
+	t=1713774257; cv=none; b=dsZJAQRdUKNRmGqNTK0IrIHkJlSKplzhngSVkXCS05EfO69p+m3SGYw1Af0YYv+HvF7pT6A1kpnR6HX4UX24QDRSBns4F41GPyLC6VceCbo1RyPEphCKcK8cnaWJ4L1Sz9MNZ+6zkr6vCZbBh6eeR+zwbrqcXIDDDGPV1FI5ckE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713773930; c=relaxed/simple;
-	bh=1R0QdiqBkh2lDI1KZWlD4yhHxXvFKtuxtuwBOw/ITOE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=a+EoWro1vSYv/ZNn5sKp0LrXGEJL9PtjzaARAm/t9y97X+8es7AW8AXSONV2Xlw2Idw0f5RRs3eFRU0usNcj/3jgG7LtGO7qZ0wpNGQ6XH/onCZ8zFLmgWDArikSSFqCwco1GtxsJ9hEpRRlWDQsvNe7S4QvMQlAie6SNuX1T30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; arc=none smtp.client-ip=150.107.74.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4VNJ6g0Nzdz4x1R;
-	Mon, 22 Apr 2024 18:18:35 +1000 (AEST)
-From: Michael Ellerman <patch-notifications@ellerman.id.au>
-To: linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Damien Le Moal <dlemoal@kernel.org>, Jiri Kosina <jikos@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Corey Minyard <minyard@acm.org>, Peter Huewe <peterhuewe@gmx.de>,
-	Jarkko Sakkinen <jarkko@kernel.org>, Tero Kristo <kristo@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>, Ian Abbott <abbotti@mev.co.uk>,
-	H Hartley Sweeten <hsweeten@visionengravers.com>,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	Len Brown <lenb@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
-	John Allen <john.allen@amd.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Vinod Koul <vkoul@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Moritz Fischer <mdf@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Peter Rosin <peda@axentia.se>, Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Markuss Broks <markuss.broks@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
-	Yisen Zhuang <yisen.zhuang@huawei.com>,
-	Stanislaw Gruszka <stf_xl@wp.pl>, Kalle Valo <kvalo@kernel.org>,
-	Sebastian Reichel <sre@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Xiang Chen <chenxiang66@hisilicon.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Vaibhav Hiremath <hvaibhav.linux@gmail.com>,
-	Alex Elder <elder@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
-	Jacky Huang <ychuang3@nuvoton.com>, Helge Deller <deller@gmx.de>,
-	Christoph Hellwig <hch@lst.de>, Robin Murphy <robin.murphy@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <anna@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>, Takashi Iwai <tiwai@suse.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-ide@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net,
-	linux-integrity@vger.kernel.org, linux-omap@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
-	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-efi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-	linux-fpga@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-input@vger.kernel.org, linux-i2c@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-stm32@st-md-mailman.stormr,
-	eply.com@web.codeaurora.org, linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org, linux-leds@vger.kernel.org,
-	linux-wireless@vger.kernel.org, linux-rtc@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org, greybus-dev@lists.linaro.org,
-	linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
-	linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	iommu@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com, linux-hardening@vger.kernel.org,
-	linux-nfs@vger.kernel.org, linux-kbuild@vger.kernel.org,
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
-In-Reply-To: <20240403080702.3509288-1-arnd@kernel.org>
-References: <20240403080702.3509288-1-arnd@kernel.org>
-Subject: Re: (subset) [PATCH 00/34] address all -Wunused-const warnings
-Message-Id: <171377378377.1025456.1313405994816400451.b4-ty@ellerman.id.au>
-Date: Mon, 22 Apr 2024 18:16:23 +1000
+	s=arc-20240116; t=1713774257; c=relaxed/simple;
+	bh=IuVTKV5ygbgHVKz2YztmaxHxtTF9vC+auWE3gvxzutk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=I45fDSB5jqwo+SXB8TUUZWi4Os1DwtfHX4Qq8OeD82UUNql3J8sH6Oi56i6AO4hGVG8nfJmrA3gZ8+3j+85AycEpeU76Adb+SKMd4WSkNAWUw1bRheS3YnkecnuKf6jnsDxcyzlFphVwNFzeJrXn+DsW5jezMFI2HyA+CJAD2/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QXsJQno4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1713774255;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oE4dUwNkWaGPk4l745VLfFvewtALv4dUdVYKrcrS4sk=;
+	b=QXsJQno4rSVF8G/39Uj1hdtaZcwW+LcT/ASgzLHReciSs3fPV9tLbzy7+Nj2GnxaJlejVu
+	5FGMDUNRxpOE6Gino/EMu/uoQrDSQJcxwKtjxU4lp3XBD2Z99t3zXH0s4BupWPXEvy+vgw
+	4glD4DzoV7zop3FEhEkSbWwEW3GdtJ8=
+Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
+ [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-26-I2l5hM9MOZOwdMqvEzWdZw-1; Mon, 22 Apr 2024 04:24:14 -0400
+X-MC-Unique: I2l5hM9MOZOwdMqvEzWdZw-1
+Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-516d6c879c5so2384463e87.3
+        for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 01:24:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713774252; x=1714379052;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oE4dUwNkWaGPk4l745VLfFvewtALv4dUdVYKrcrS4sk=;
+        b=MoDus/r44rYUHHG0JrBI1qWiBqqS57/lzwYhzBPHDyH8tSEnjyhUX3nsFfO5hkcqNh
+         leabC6h8FaBX092FxjbVR5tOl0KQCmS6exE/NDYVI+jIeX6WwxeLw5NeRAvWiCpwVu4H
+         DVDzPYYwwd9Nrrb555dTlhva/jePYuu3AOrLImwgIjdX8XG/R3/+3AwYNy6WcqcReGTi
+         Oyz57Z62ITdcjvF584DefLDy1ayZ35llTgvL5/XeFGMi3VmFzG5BYpziAC4Dyt2F9XjJ
+         sNlhnO0GMok8H1IynFCVSy47t+kh2GFRpZj22ktKzHw/mNj2/Z3ECVIdVRaAzPFB0Ozm
+         wRpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWLV/PHC9LXdyFLKiBDa3uoz/cmxJBG/gmpObc13rcM8u42eNa26587p2MExdk3tua4QYR+9A7Aq1uBHHqDVIN/gKOKUu02wj+k
+X-Gm-Message-State: AOJu0YxMwFQYK+Z41TPhMaiSQyDKgJlrKnLngF+CThD7Ruz/1/GKPdif
+	my0v0AWLSswdHiUYy2FDV236zQvc4qDMOcL0OwPhlfdfq+9ZQyfx60ZfduPvrmSVXgtN0/i+mhQ
+	hUernXz6DyMQpmPeGjdBYV7Z1fsdX1pWsuXlF8I8ZDAz26uVlNRwgsRJkl4cvUddmZYff
+X-Received: by 2002:a05:6512:36c1:b0:515:c7c9:b14e with SMTP id e1-20020a05651236c100b00515c7c9b14emr5309424lfs.57.1713774252217;
+        Mon, 22 Apr 2024 01:24:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHScNTucjVN7bmLv3VWGkppH1UFmB9Tgcd1dfvp50ZtjS8+nWm2bMOsFSmrjo1Mu7RXQtST/A==
+X-Received: by 2002:a05:6512:36c1:b0:515:c7c9:b14e with SMTP id e1-20020a05651236c100b00515c7c9b14emr5309411lfs.57.1713774251839;
+        Mon, 22 Apr 2024 01:24:11 -0700 (PDT)
+Received: from [10.40.98.157] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id r20-20020a170906705400b00a555ef55ab5sm5443400ejj.218.2024.04.22.01.24.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 22 Apr 2024 01:24:11 -0700 (PDT)
+Message-ID: <81f83cd6-6d17-4e11-97b6-7f1f11bc3078@redhat.com>
+Date: Mon, 22 Apr 2024 10:24:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/4] iio: accel: Share ACPI ROTM parsing between drivers
+ and add it to mxc4005
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Sean Rhodes <sean@starlabs.systems>,
+ linux-iio@vger.kernel.org
+References: <20240417164616.74651-1-hdegoede@redhat.com>
+ <ZiYX5JlwS9nGkS2Q@surfacebook.localdomain>
+Content-Language: en-US
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <ZiYX5JlwS9nGkS2Q@surfacebook.localdomain>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Wed, 03 Apr 2024 10:06:18 +0200, Arnd Bergmann wrote:
-> Compilers traditionally warn for unused 'static' variables, but not
-> if they are constant. The reason here is a custom for C++ programmers
-> to define named constants as 'static const' variables in header files
-> instead of using macros or enums.
+Hi,
+
+On 4/22/24 9:55 AM, Andy Shevchenko wrote:
+> Wed, Apr 17, 2024 at 06:46:12PM +0200, Hans de Goede kirjoitti:
+>> Hi All,
+>>
+>> Here is a patch series to refactor the ACPI ROTM orientation matrix
+>> handling in kxcjk-1013 + bmc150-accel to share the code instead of
+>> having 2 copies and then also use the shared implementation in
+>> the mxc4005 driver since some MXC6655 ACPI firmware nodes also
+>> include this.
+>>
+>> Note the mxc4005 support is untested, I will ask the report of:
 > 
-> In W=1 builds, we get warnings only static const variables in C
-> files, but not in headers, which is a good compromise, but this still
-> produces warning output in at least 30 files. These warnings are
-> almost all harmless, but also trivial to fix, and there is no
-> good reason to warn only about the non-const variables being unused.
+> I have briefly looked into this and I like this, except the part of the big
+> function being in the header. Why? Why can't it be in a C-file?
 > 
-> [...]
+> Note, 3 users justify very well to me that shared code, should be shared in
+> binary as well. (I.o.w. you may argue that IRL there will be no more than
+> one of such device connected, but in case of DIY and prototyping it might
+> still be the use case.)
 
-Applied to powerpc/next.
+It is only 1 function and it is not that big. IMHO the static inline
+in a header solution here is much better then making this a separate .ko
+file with all the associated overhead.
 
-[01/34] powerpc/fsl-soc: hide unused const variable
-        https://git.kernel.org/powerpc/c/01acaf3aa75e1641442cc23d8fe0a7bb4226efb1
+Regards,
 
-cheers
+Hans
+
+ 
+
 

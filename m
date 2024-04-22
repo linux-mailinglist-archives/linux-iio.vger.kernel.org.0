@@ -1,56 +1,63 @@
-Return-Path: <linux-iio+bounces-4447-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4448-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 501298AD457
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 20:50:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A891D8AD71B
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 00:08:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEBDEB2644B
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 18:50:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF8921C2198C
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 22:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610A7154454;
-	Mon, 22 Apr 2024 18:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 070101D547;
+	Mon, 22 Apr 2024 22:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b="HluOYFE7"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="wLXErwNx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A3A15442C;
-	Mon, 22 Apr 2024 18:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.142.107.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307D31CF9B;
+	Mon, 22 Apr 2024 22:08:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713811623; cv=none; b=pPy6w7FutFBWDn9v7bxoa2SSDfw1PbFQr81JiZEgar0osU7nZxJEhRbqtKIIUXnYTLez0gNzGKxit9R3CeKW+OWeKPuG7jhWVoynAVgVML3tSQa637bO8wcpFcKqmivs4gmj9xAsvA6FFUaY7QZAeC/QO46QqNKISrBODEdTylE=
+	t=1713823730; cv=none; b=MeQ33gOWNQk5q8VNInnPo1M3jZ95VYT3IsRIz/iKl+vUDFwxRDDo6gMghGo1ttSie3JVu/GGMes/X0o1aKDL22WKLO0mfwup5q5yo0Y+XEmpzFWl/+K5fAd+oFiK5+P/GmOTZq0ywU7IWq6eAae8WJX134s6pr9gEKYGQ10EVt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713811623; c=relaxed/simple;
-	bh=7DbwX/PviFN7M1PW7ebtzi0VSvjqv2voy9Qkj96KIUg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A0VNSoUb3ExL12S7Cguj2oFuZ1mHd/lN2pN03JbmF1qqj7CZqUSjH6hsTA0NLg/6972v3DaL7rLHqN59Ryqmn5gzidPmfMrAsG1H+S0rfw2pqRHYfrBOdZrU8iDmUfCofhAH3CbkBDZK2z17p2OkdP6HKvsnp3/3150NHmE4suA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com; spf=pass smtp.mailfrom=lechnology.com; dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b=HluOYFE7; arc=none smtp.client-ip=98.142.107.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lechnology.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=L5kzskFgMAlt+sf4dc6NATeKvo0TVUxNFW30+QZbNv4=; b=HluOYFE7np7DfRwZaGmV9rQnSb
-	53+GkT1ijwTAQwVzrlj0SBtz6vF7UxLVsW2OhDRbyZgh75G0be2zldU8XX6Nt5OOMuR98i4frRp1j
-	Tu1ad/8wEwBpeP18X3E/D7KZTpQGe3mflnAZcRTyqMP3xWSkTXxUanAIQKqQ1UJp9eJXhgkf9Dr+/
-	WkMpZahs/6TwZcYYY6i9tc3v1ILXia/6kVzCC3KikY+rYrBATOOKo+Cd//hIdAzUVmIXlB/bvmvzx
-	iey+1q6auWfMNMqWsvC7HgDjWdnnJNxBOSA+nt2OseD1RBeQdso8MXldYN2xmpZLh2pPD4kxEhAiQ
-	IJvhlPuQ==;
-Received: from ip98-183-112-25.ok.ok.cox.net ([98.183.112.25]:58238 helo=[192.168.0.142])
-	by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <david@lechnology.com>)
-	id 1ryyMo-000480-2k;
-	Mon, 22 Apr 2024 14:25:54 -0400
-Message-ID: <4cf5f463-dccd-4637-b7ce-e8d8eac044b7@lechnology.com>
-Date: Mon, 22 Apr 2024 13:25:52 -0500
+	s=arc-20240116; t=1713823730; c=relaxed/simple;
+	bh=iwFh/LowvrnnfWd26b5194+KsamPL0FUUxnTCuZhpXY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=NwnhEIseYtToQRzUIP3//eErWAUnYJOGrvFr/rJ4M9ndJoYke0MOyTnDrrn2g8UFuRfIZL1AzEvTHTVPs9fmyI5/HdX5GBToQIjZde7oBc3ScTw8bL7Tj3cgTZk6hQGXY/UevzSl64l+ruxkJopSUP6t/p9n7zt8KUJVaoMEvPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=wLXErwNx; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 43MM7sGd072533;
+	Mon, 22 Apr 2024 17:07:54 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1713823674;
+	bh=nzD5oItknIFpCQaryZQZGLImSq+8x8jfKCtKHdZtycY=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=wLXErwNx1PywVfvA5110AUPxd1QaPIj72xRpPzy240ZQR5RmMaqf7AJ3S7hr1GaAx
+	 6j42Duc4GPW08kElh0OcB9JODvumCalK0/UqfH32fRK3hCZnLDNReTJqLLuTJVRU8U
+	 EE0V4rsEIOJN0Vf2wV8GhRBAmoARPivznTbbmI38=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 43MM7s0K070020
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 22 Apr 2024 17:07:54 -0500
+Received: from DFLE113.ent.ti.com (10.64.6.34) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 22
+ Apr 2024 17:07:53 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE113.ent.ti.com
+ (10.64.6.34) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 22 Apr 2024 17:07:53 -0500
+Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 43MM7rBb053110;
+	Mon, 22 Apr 2024 17:07:53 -0500
+Message-ID: <daa0e2a5-a408-42ee-8204-cba039d38edb@ti.com>
+Date: Mon, 22 Apr 2024 17:07:53 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -58,133 +65,67 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/7] dt-bindings: counter: Update TI eQEP binding
-To: Judith Mendez <jm@ti.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- William Breathitt Gray <william.gray@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 1/7] arm64: dts: ti: k3-am62-main: Add eQEP nodes
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Catalin Marinas
+	<catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        William Breathitt
+ Gray <william.gray@linaro.org>
+CC: David Lechner <david@lechnology.com>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
 References: <20240418221417.1592787-1-jm@ti.com>
- <20240418221417.1592787-6-jm@ti.com>
+ <20240418221417.1592787-2-jm@ti.com>
+ <f297210a-ad3b-40f5-b8ab-e51e11cefbe4@linaro.org>
 Content-Language: en-US
-From: David Lechner <david@lechnology.com>
-Autocrypt: addr=david@lechnology.com; keydata=
- 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
-In-Reply-To: <20240418221417.1592787-6-jm@ti.com>
-Content-Type: text/plain; charset=UTF-8
+From: Judith Mendez <jm@ti.com>
+In-Reply-To: <f297210a-ad3b-40f5-b8ab-e51e11cefbe4@linaro.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 4/18/24 5:14 PM, Judith Mendez wrote:
-> Update eQEP binding for TI K3 devices.
+Hi,
 
-
-It would make more sense to have this patch first in the series
-before the dts changes.
-
+On 4/19/24 8:56 AM, Krzysztof Kozlowski wrote:
+> On 19/04/2024 00:14, Judith Mendez wrote:
+>> Add eQEP DT nodes 0-2 for AM625 SoC.
+>>
+>> Since external hardware was needed to test eQEP, the DT nodes
+>> for eQEP were not included in the introductory commit. Now that
+>> eQEP has been validated, add nodes to k3-am62-main.dtsi.
+>>
+>> Fixes: f1d17330a5be ("arm64: dts: ti: Introduce base support for AM62x SoC")
+>> Signed-off-by: Judith Mendez <jm@ti.com>
+>> ---
+>>   arch/arm64/boot/dts/ti/k3-am62-main.dtsi | 30 ++++++++++++++++++++++++
+>>   1 file changed, 30 insertions(+)
+>>
+>> diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+>> index e9cffca073efc..0877899b90667 100644
+>> --- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+>> +++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
+>> @@ -844,6 +844,36 @@ ecap2: pwm@23120000 {
+>>   		status = "disabled";
+>>   	};
+>>   
+>> +	eqep0: counter@23200000 {
+>> +		compatible = "ti,am3352-eqep";
 > 
-> Signed-off-by: Judith Mendez <jm@ti.com>
-> ---
->  Documentation/devicetree/bindings/counter/ti-eqep.yaml | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
+> That's k3-am62, not am3352. See writing-bindings (and numerous
+> presentations telling you how to do it, e.g. from two previous EOSS/ELCE).
 > 
-> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.yaml b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
-> index 85f1ff83afe72..11755074c8a91 100644
-> --- a/Documentation/devicetree/bindings/counter/ti-eqep.yaml
-> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
-> @@ -14,19 +14,23 @@ properties:
->      const: ti,am3352-eqep
->  
 
-As Krzysztof hinted, it sounds like we need to add new compatibles
-here and have some -if: statements to account for the differences
-in SoCs rather than making the bindings less strict.
+Thanks, will fix and send v2.
 
->    reg:
-> -    maxItems: 1
-> +    minItems: 1
-> +    maxItems: 2
->  
->    interrupts:
->      description: The eQEP event interrupt
->      maxItems: 1
->  
->    clocks:
-> -    description: The clock that determines the SYSCLKOUT rate for the eQEP
-> +    description: The clock that determines the clock rate for the eQEP
->        peripheral.
->      maxItems: 1
->  
->    clock-names:
-> -    const: sysclkout
-> +    maxItems: 1
+~ Judith
 
-In hindsight, this is not the best name. Since we only have one clock
-we don't really need the name anyway, so for the new compatibles, we
-could set clock-names: false.
-
-> +
-> +  power-domains:
-> +    maxItems: 1
->  
->  required:
->    - compatible
-
-
-I see that the CFG0 syscon register on AM62x has some control knobs for
-the EQEP so it would be good to add this to the bindings now too to try
-to make the bindings as complete as possible. (I didn't look at other
-chips so the same may apply to others as well.)
+> Best regards,
+> Krzysztof
+> 
 
 

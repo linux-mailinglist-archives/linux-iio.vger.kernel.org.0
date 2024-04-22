@@ -1,45 +1,45 @@
-Return-Path: <linux-iio+bounces-4444-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4445-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E1268AD319
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 19:09:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 578498AD322
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 19:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 456BD1F2160A
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 17:09:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8926B1C216C1
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 17:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A21153BCF;
-	Mon, 22 Apr 2024 17:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12DF1153BC9;
+	Mon, 22 Apr 2024 17:09:44 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F791153BC1;
-	Mon, 22 Apr 2024 17:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F73153BC1;
+	Mon, 22 Apr 2024 17:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713805738; cv=none; b=Pp9ReRJ9xHmo1L8bhtu+25ugO5ItHNjCi9OJessAHkmOoy1/Y4iou+/4DFnJD0FLroAT2COBXyZqCrVKVAHPD9CGyS0z9DFKV5t5Ra7+lD+Lhld1Irni3MjqK7qg4Dy384dQGw2NKRyNEXe3kryP3jL5vhk3dwX7QoNzVBK2oGw=
+	t=1713805783; cv=none; b=YT9WhCIJG/5di/KyeRXynrvnhigo9aVY+cZi+LPFvE4CBqilpj3Rtk4cKgRjgMcas8LcT+Xr08qbPLFIclZ6X9uCO4q0bdWbvfEl9h6jLQxHqG8bRnMK65Y11g4/1y1LfXCtnpelCMNHpPgjklTSR41IXymkc4tC95yMPz/WvC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713805738; c=relaxed/simple;
-	bh=IbpS6xzjUAS+OaaRcBZ449Fa8wf7UA3mE8vd05w6YwI=;
+	s=arc-20240116; t=1713805783; c=relaxed/simple;
+	bh=7baHeQKiToZpKZ/AYc97PczeedzukBfRzZHO77+bf3M=;
 	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BPtHN3oQ3YG+/by4L+2iujbjFoyP77TgxlJjN7sT32LmJza6OLQ/kMcbOqLQ78tDeTGqcVIW1vhlqaKvrJh60LIyfaUvHFhXSpy5Vs4oBrmI6Yg5q1/PZJxGHAUwXs3nkd6zWQqQg1IO29SRYkEo6S4LOy9gN3UcWfqqHfTXTLA=
+	 MIME-Version:Content-Type; b=tXnvafKVoagilmqxMdhT9IKU0WWyl8FbFJn4kuhZ3kgnkMMJ+iTzuwgTliudzujPM+tRH84Rz8RVNu1mUDw1x1fBGy5hUv/H6eIElZY+XCUspzftBD3RNydUQ819w3H3toufMpP8QPwCKxixzIl+1z4/w6RTebKnfsbl8HfD8JM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VNWqz5J9jz6JBSd;
-	Tue, 23 Apr 2024 01:06:39 +0800 (CST)
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VNWrr67NNz67Ct8;
+	Tue, 23 Apr 2024 01:07:24 +0800 (CST)
 Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0D873140A77;
-	Tue, 23 Apr 2024 01:08:54 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 2CD3F140AB8;
+	Tue, 23 Apr 2024 01:09:39 +0800 (CST)
 Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
  (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 22 Apr
- 2024 18:08:53 +0100
-Date: Mon, 22 Apr 2024 18:08:52 +0100
+ 2024 18:09:38 +0100
+Date: Mon, 22 Apr 2024 18:09:37 +0100
 From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
 To: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 CC: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
@@ -50,13 +50,13 @@ CC: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
 	<robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
 	Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
 	<olivier.moysan@foss.st.com>
-Subject: Re: [PATCH 7/8] iio: adc: ad9467: cache the sample rate
-Message-ID: <20240422180852.00007fad@Huawei.com>
-In-Reply-To: <824d8db92adcd1effd9020e4add873b108f087b4.camel@gmail.com>
+Subject: Re: [PATCH 3/8] dt-bindings: adc: axi-adc: add clocks property
+Message-ID: <20240422180937.00005441@Huawei.com>
+In-Reply-To: <be927df578a936e7699a26edfddd42470689e7cd.camel@gmail.com>
 References: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
-	<20240419-ad9467-new-features-v1-7-3e7628ff6d5e@analog.com>
-	<20240420161941.212e92c5@jic23-huawei>
-	<824d8db92adcd1effd9020e4add873b108f087b4.camel@gmail.com>
+	<20240419-ad9467-new-features-v1-3-3e7628ff6d5e@analog.com>
+	<20240420160404.57bd835d@jic23-huawei>
+	<be927df578a936e7699a26edfddd42470689e7cd.camel@gmail.com>
 Organization: Huawei Technologies Research and Development (UK) Ltd.
 X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
@@ -70,113 +70,37 @@ Content-Transfer-Encoding: quoted-printable
 X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
  lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Mon, 22 Apr 2024 17:46:02 +0200
+On Mon, 22 Apr 2024 17:06:22 +0200
 Nuno S=E1 <noname.nuno@gmail.com> wrote:
 
-> On Sat, 2024-04-20 at 16:19 +0100, Jonathan Cameron wrote:
-> > On Fri, 19 Apr 2024 17:36:50 +0200
+> On Sat, 2024-04-20 at 16:04 +0100, Jonathan Cameron wrote:
+> > On Fri, 19 Apr 2024 17:36:46 +0200
 > > Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 > >  =20
 > > > From: Nuno Sa <nuno.sa@analog.com>
 > > >=20
-> > > Since we allow to change the sampling frequency and do it with
-> > > clk_round_rate(), we can cache it and use on the read_raw() interface.
-> > > This will also be useful in a following patch supporting interface
-> > > calibration.
+> > > Add a required clock property as we can't access the device registers=
+ if
+> > > the AXI bus clock is not properly enabled.
 > > >=20
 > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com> =20
-> >=20
-> > The clk subsystem caches the clock rate in most cases anyway, so
-> > I'm not sure why we need this.=A0 Or it the point that you are going
-> > to temporarily change it in the next patch?
+> > Fix, or doesn't matter until this series?
 > >  =20
 >=20
-> The idea is that in the next patch I want to bail out early if we're not =
-changing the
-> rate (after clk_round_rate()) because I also don't want to re-run tuning =
-in that
-> case. Since the rate is not guaranteed to be cached (even though I think =
-most clock
-> providers don't set the NO_CACHE flag), I went this way. Anyways, this is=
- minor so I
-> can stick to clk_get_rate() if you prefer.
-
-I'd make it local by retrieving current clock just before you consider writ=
-ing
-it.  We can optimize any need to cache it later.
-
-Jonathan
-
+> It does matter. But reality is that it's rare for you to catch this issue=
+ because
+> such a fundamental clock is typically enabled pretty early during boot. B=
+ut we did
+> had some issues (on other cores) regarding this. Anyways, for correctness=
+, I'll add a
+> tag on v2.
 >=20
-> > Patch looks fine, but I think a clearer requirements statement is
-> > needed.
-> >=20
-> > Jonathan
-> >=20
-> >  =20
-> > > ---
-> > > =A0drivers/iio/adc/ad9467.c | 13 +++++++++++--
-> > > =A01 file changed, 11 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> > > index 7475ec2a56c72..7db87ccc1ea4b 100644
-> > > --- a/drivers/iio/adc/ad9467.c
-> > > +++ b/drivers/iio/adc/ad9467.c
-> > > @@ -117,6 +117,7 @@ struct ad9467_state {
-> > > =A0	struct iio_backend		*back;
-> > > =A0	struct spi_device		*spi;
-> > > =A0	struct clk			*clk;
-> > > +	unsigned long			sample_rate;
-> > > =A0	unsigned int			output_mode;
-> > > =A0	unsigned int=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0 (*scales)[2];
-> > > =A0
-> > > @@ -331,7 +332,7 @@ static int ad9467_read_raw(struct iio_dev *indio_=
-dev,
-> > > =A0	case IIO_CHAN_INFO_SCALE:
-> > > =A0		return ad9467_get_scale(st, val, val2);
-> > > =A0	case IIO_CHAN_INFO_SAMP_FREQ:
-> > > -		*val =3D clk_get_rate(st->clk);
-> > > +		*val =3D st->sample_rate;
-> > > =A0
-> > > =A0		return IIO_VAL_INT;
-> > > =A0	default:
-> > > @@ -346,6 +347,7 @@ static int ad9467_write_raw(struct iio_dev *indio=
-_dev,
-> > > =A0	struct ad9467_state *st =3D iio_priv(indio_dev);
-> > > =A0	const struct ad9467_chip_info *info =3D st->info;
-> > > =A0	long r_clk;
-> > > +	int ret;
-> > > =A0
-> > > =A0	switch (mask) {
-> > > =A0	case IIO_CHAN_INFO_SCALE:
-> > > @@ -358,7 +360,12 @@ static int ad9467_write_raw(struct iio_dev *indi=
-o_dev,
-> > > =A0			return -EINVAL;
-> > > =A0		}
-> > > =A0
-> > > -		return clk_set_rate(st->clk, r_clk);
-> > > +		ret =3D clk_set_rate(st->clk, r_clk);
-> > > +		if (ret)
-> > > +			return ret;
-> > > +
-> > > +		st->sample_rate =3D r_clk;
-> > > +		return 0;
-> > > =A0	default:
-> > > =A0		return -EINVAL;
-> > > =A0	}
-> > > @@ -543,6 +550,8 @@ static int ad9467_probe(struct spi_device *spi)
-> > > =A0	if (IS_ERR(st->clk))
-> > > =A0		return PTR_ERR(st->clk);
-> > > =A0
-> > > +	st->sample_rate =3D clk_get_rate(st->clk);
-> > > +
-> > > =A0	st->pwrdown_gpio =3D devm_gpiod_get_optional(&spi->dev, "powerdow=
-n",
-> > > =A0						=A0=A0 GPIOD_OUT_LOW);
-> > > =A0	if (IS_ERR(st->pwrdown_gpio))
-> > >  =20
-> >  =20
+Add that info as well so people can judge how important this is to backport.
+
+J
+
+> - Nuno S=E1
+>=20
 >=20
 
 

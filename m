@@ -1,150 +1,146 @@
-Return-Path: <linux-iio+bounces-4431-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4432-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B0728ACC42
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 13:45:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBC588ACCC0
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 14:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EE4E1C20B19
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 11:45:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 985F1283372
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 12:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D16281465BE;
-	Mon, 22 Apr 2024 11:45:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15CC1474B5;
+	Mon, 22 Apr 2024 12:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YO9n9bww"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="azdWQuLf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44A6614430B
-	for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 11:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3849C4AEE0
+	for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 12:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713786353; cv=none; b=aLBoqhsbbSgK/W/EBk1dr2BuHa1MnxOM1YayCZe/48beVpueYN7ZKOjGhNoUiI1I8P179JSTH9UEI4BQtEsFMpKH82sT8MSzTSW4c/SVBio27YYn+0JUtbUVSDimUoeZVPuaofhCKupGbp9UVrkjmP/lVhPa4MqleSUapxzZaqw=
+	t=1713788968; cv=none; b=X09YVa+Qe8uqmtPwchXT2FE7NCbgkj2zSSrpv3NWZgTQnYw8p5EdEN4hx7Bd3hoOg8AE7tMdQbL3CcZv12QKqZWKV+qtza3X5qK4utvfO3QlL3xTWX2ql8tu+ElQzSrdGeEoqJFxTla4wQm1JhTx1F+aJswilOg8q9KA29zQOZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713786353; c=relaxed/simple;
-	bh=VewZmz2FPY70zmQBK29bE9SI8Fhsf0MxD3GJGO1JHmc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oq8h6zv0A6hWac9wTJHpcCG4c+pOebEyYmiZl/vdSaSSWdd3ZD7IeTCNHg2mFyDxYdC/LmcCvTwi+SVVXKO7wfUvySKooSmLoYQbkWk+Gncn2FT7B96TYX9q/aGaLIoXvkR6H6pzY8x8cTQZVn3wx3EMqdyqMvcVUE1IlIswEB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YO9n9bww; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713786351;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZSVNOiP03+U3RTcQwsX3oH7pwlsQ2kw404w3SlDVhD0=;
-	b=YO9n9bwwJ6VA05gj1mgAi8FobHRcWz8u74Krwy2n6sPVVSf27HIFFvHlnHxPDYq8yC/hna
-	xYZrqcAPRPHqMC3B5Gsa++dCJs5g24lJGODAKxo3sjmN1mHipthpliOkWGEb0YpxVIxI/Y
-	+WcICDi0vm0qp+Nn7STCUQTd1zYb61g=
-Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
- [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-641-SN03tl3KMCKcDkMk9K5Ewg-1; Mon, 22 Apr 2024 07:45:49 -0400
-X-MC-Unique: SN03tl3KMCKcDkMk9K5Ewg-1
-Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2dbfe2d860bso29974651fa.2
-        for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 04:45:49 -0700 (PDT)
+	s=arc-20240116; t=1713788968; c=relaxed/simple;
+	bh=tY3hqOMNYscz9jzHHBdAglRztHVYeixQfzoF5uBTcc8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CMeNkdyl6HWJULpLRQs7xHP9rb2Vsks0s5liag0vkigxy4trRs0B+TWIbcB/QIfSNYux+3bToC8it/TULAa9T/FdUNaLjYho8jdA38AoErxgQMbbhGPiH/lPAxoUyAoqz+76wvirnQzdT3YT5BsDxbwrdXXo78EKWpL7Rs7paUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=azdWQuLf; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-518f8a69f82so5215167e87.2
+        for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 05:29:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713788965; x=1714393765; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2prIhMqy/1vH22JrqOdcseM0ZWL1h/fj9GI5fvBttto=;
+        b=azdWQuLflIqie1rEsFMgG2MtsTXCNpBGPWX3RBHuiYFh1xNYy0kmNi1aVkQ0hKyrAF
+         1+Z46Ew/TjwzpdobOLZhkAFA1R2iDW4UO6IZQp4DwEa404rVwff7DLxUdY0hJXvYqXWB
+         Jap3YvDhwV2KMUB5riygaVaBxQA+kUvcoT2rmkNZT4EuJfc++qb1BVDfvIq+UXZnAy+P
+         jUjXn+M5CYk1XfHGyYM+eCjMpY8UXetyA0EYlzig8hMo8BZjPLgv8757YlrnH1E9QYXA
+         FnOWN8Kw9uL9hKTA9HGDPFAwlJ2JvT/C74mdbG6Xxe+Cmg/B5ttcsYoFfSFqnd9Nr3yv
+         S6jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713786348; x=1714391148;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZSVNOiP03+U3RTcQwsX3oH7pwlsQ2kw404w3SlDVhD0=;
-        b=bwFR3Q1t0++IZBbTPIXOnfp8fFdoOEdvBvcdXsadn4EZ06tWbj6y1/FG6X5qreBJ6h
-         fgxnf2D2sF6CkgY6QzrLbLg+qkPixna1ik1KH+MO7KPIpVqSRU5ubJJ/KgD6Z8qJN6xR
-         HeGd4OAYs9mnJshNuVjFFpOMx5R6Tte5PLOcVflXh/On57755wFdLvvCISADDMgriVv+
-         w+8ZiEZj94SG4iWpOoSKymwxAM2TLvIGMXVmqcOM2f/YF2pjwxODUGKJcM5npKAXKIsd
-         8OvVIMAqVKX2bTUXO/JMpXJUW3CmGtq9h1hRd7bNaroRKhpCKSiF/A5iOBxLd/xefsWf
-         8NHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW0GDimFWF4tX18C1xEMIWg6xcyfh2L0PPVgoaq95U1GtFfkWnQGTY8E9DcmVFKHNmVMByKEU67NzkgtUwXsO2XhFAnjTwU8ABY
-X-Gm-Message-State: AOJu0Yzu/Ac+TClntg9j3VvfV2PTQ513DSH+iRC0CYCGB7emXzDkJlmb
-	u3Mpoymnd76oij6uE3EwRBen5YBvq1ZvEUs+PHVZ7PsnBbJFP7Ah/Hdh3NKs0PFUqCspoWgrk1S
-	tHtBz949+NViqt3YAxIywLhDLW2f8WAhcp+4PXTxJ6x4IK1RLRPH4vNVHxnEKjF6I/oHq
-X-Received: by 2002:a05:6512:b8b:b0:515:bbe9:f208 with SMTP id b11-20020a0565120b8b00b00515bbe9f208mr7198406lfv.19.1713786347285;
-        Mon, 22 Apr 2024 04:45:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEkP8fpE0uMz7hZXEazyTAxZleIyrrueKmV/gYosMvCKM7EgYwdsRpWnlg9DiHOywYVxQeAYA==
-X-Received: by 2002:a05:6512:b8b:b0:515:bbe9:f208 with SMTP id b11-20020a0565120b8b00b00515bbe9f208mr7198389lfv.19.1713786346857;
-        Mon, 22 Apr 2024 04:45:46 -0700 (PDT)
-Received: from [10.40.98.157] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id k18-20020a1709063fd200b00a524b33fd9asm5633040ejj.68.2024.04.22.04.45.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Apr 2024 04:45:46 -0700 (PDT)
-Message-ID: <1b497e81-3e2c-4b07-a922-79d92054d6c8@redhat.com>
-Date: Mon, 22 Apr 2024 13:45:45 +0200
+        d=1e100.net; s=20230601; t=1713788965; x=1714393765;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2prIhMqy/1vH22JrqOdcseM0ZWL1h/fj9GI5fvBttto=;
+        b=Ogz8QqR/l4wJYRZ0cjYNYUXEXFD96VgwxbIBOz0Q1+AC1dl3yz0gQLP6GsgJRs3NQC
+         04V+tjQBrUzREYxNg+3oJnno3BfZlUX0ksiLz1ctt1VUaR+dJTu21BhLV3y3FKglWwHT
+         uV9yrFehtjr1wpWQHyOetGOdlu5aWDoTi7XPfVts8+9POyzqnWNhgzPjApV5f6IixXwd
+         Gsk8/mW5NbuLkeAShmaVx61MOnn3ijtbvOHbaoJRJcghuEFJoHkXWg7Rahw+dfEEVAsr
+         f6FIgMOEO/1x9t5lz4fEmCtEkGXUepGg/uMUpkPHpWTqX/YOUdJoQyBk2mcXsuEZLbx0
+         PHPA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQD6k2BUltPj9l0guYhtONqaNLI6wFGjuCrjHKh8i1glo0hkUY31gO4faNFS6tqXoMOmlIku3uB8gqGjf2bVQ//dzKr4FVwCU6
+X-Gm-Message-State: AOJu0Yx+bJjtG60i+T71rsWRhJradXOPO/jKs9JbAC7g8HzEpy4UPJJr
+	FP4q1baAvN29z8ZX2KnsUICLB5Rf9zkFoTP9MsUDFTTvLnMYAj6baiFsNLVwiqllwx/dqJ7ZnJM
+	Em127xQgZfFzTQGbZnSawMqg7KEE=
+X-Google-Smtp-Source: AGHT+IHtGDCbwfN/GWI+hbwgESlSj9wQP8Hj+23LNPfvVQvDa4tk3tRb1WJK9LGkvJINv04D7bZXYfF6sbfJrxMndgk=
+X-Received: by 2002:a05:6512:31c9:b0:516:cc31:dbf0 with SMTP id
+ j9-20020a05651231c900b00516cc31dbf0mr9618679lfe.17.1713788965135; Mon, 22 Apr
+ 2024 05:29:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20240417164616.74651-1-hdegoede@redhat.com> <ZiYX5JlwS9nGkS2Q@surfacebook.localdomain>
+ <81f83cd6-6d17-4e11-97b6-7f1f11bc3078@redhat.com> <CAHp75Vfsnffq8J=j9-8w2VWHyMp4e5gw7F11S8XMdMN8TXMwKg@mail.gmail.com>
+ <1b497e81-3e2c-4b07-a922-79d92054d6c8@redhat.com>
+In-Reply-To: <1b497e81-3e2c-4b07-a922-79d92054d6c8@redhat.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 22 Apr 2024 15:28:48 +0300
+Message-ID: <CAHp75VcpbQZZtw2ReLuGMoyOYy8sSEuVf7j1dopt6gkWecAoag@mail.gmail.com>
 Subject: Re: [PATCH 0/4] iio: accel: Share ACPI ROTM parsing between drivers
  and add it to mxc4005
-To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Sean Rhodes <sean@starlabs.systems>,
- linux-iio@vger.kernel.org
-References: <20240417164616.74651-1-hdegoede@redhat.com>
- <ZiYX5JlwS9nGkS2Q@surfacebook.localdomain>
- <81f83cd6-6d17-4e11-97b6-7f1f11bc3078@redhat.com>
- <CAHp75Vfsnffq8J=j9-8w2VWHyMp4e5gw7F11S8XMdMN8TXMwKg@mail.gmail.com>
-Content-Language: en-US
-From: Hans de Goede <hdegoede@redhat.com>
-In-Reply-To: <CAHp75Vfsnffq8J=j9-8w2VWHyMp4e5gw7F11S8XMdMN8TXMwKg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Sean Rhodes <sean@starlabs.systems>, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Mon, Apr 22, 2024 at 2:45=E2=80=AFPM Hans de Goede <hdegoede@redhat.com>=
+ wrote:
+> On 4/22/24 1:33 PM, Andy Shevchenko wrote:
+> > On Mon, Apr 22, 2024 at 11:24=E2=80=AFAM Hans de Goede <hdegoede@redhat=
+.com> wrote:
+> >> On 4/22/24 9:55 AM, Andy Shevchenko wrote:
+> >>> Wed, Apr 17, 2024 at 06:46:12PM +0200, Hans de Goede kirjoitti:
 
-On 4/22/24 1:33 PM, Andy Shevchenko wrote:
-> On Mon, Apr 22, 2024 at 11:24 AM Hans de Goede <hdegoede@redhat.com> wrote:
->> On 4/22/24 9:55 AM, Andy Shevchenko wrote:
->>> Wed, Apr 17, 2024 at 06:46:12PM +0200, Hans de Goede kirjoitti:
-> 
-> ...
-> 
->>> I have briefly looked into this and I like this, except the part of the big
->>> function being in the header. Why? Why can't it be in a C-file?
->>>
->>> Note, 3 users justify very well to me that shared code, should be shared in
->>> binary as well. (I.o.w. you may argue that IRL there will be no more than
->>> one of such device connected, but in case of DIY and prototyping it might
->>> still be the use case.)
->>
->> It is only 1 function and it is not that big. IMHO the static inline
->> in a header solution here is much better then making this a separate .ko
->> file with all the associated overhead.
-> 
-> Look how the i8042 RTC header became a disaster. :-)
-> Nevertheless, this can be part of the IIO core for the ACPI enabled
-> kernels. Which eliminates a need for a separate module.
+...
 
-Putting this in the IIO core, with an iio-prefix, so say something like:
+> >>> I have briefly looked into this and I like this, except the part of t=
+he big
+> >>> function being in the header. Why? Why can't it be in a C-file?
+> >>>
+> >>> Note, 3 users justify very well to me that shared code, should be sha=
+red in
+> >>> binary as well. (I.o.w. you may argue that IRL there will be no more =
+than
+> >>> one of such device connected, but in case of DIY and prototyping it m=
+ight
+> >>> still be the use case.)
+> >>
+> >> It is only 1 function and it is not that big. IMHO the static inline
+> >> in a header solution here is much better then making this a separate .=
+ko
+> >> file with all the associated overhead.
+> >
+> > Look how the i8042 RTC header became a disaster. :-)
+> > Nevertheless, this can be part of the IIO core for the ACPI enabled
+> > kernels. Which eliminates a need for a separate module.
+>
+> Putting this in the IIO core, with an iio-prefix, so say something like:
+>
+> #ifdef CONFIG_ACPI
+> bool iio_read_acpi_mount_matrix(struct device *dev, struct iio_mount_matr=
+ix *matrix, const char *method_name);
+> #else
+> static inline bool
+> iio_read_acpi_mount_matrix(struct device *dev, struct iio_mount_matrix *m=
+atrix, const char *method_name)
+> {
+>         return false;
+> }
+>
+> in include/linux/iio/iio.h ?
 
-#ifdef CONFIG_ACPI
-bool iio_read_acpi_mount_matrix(struct device *dev, struct iio_mount_matrix *matrix, const char *method_name);
-#else
-static inline bool
-iio_read_acpi_mount_matrix(struct device *dev, struct iio_mount_matrix *matrix, const char *method_name)
-{
-	return false;
-}
+Yes, like SPI, I=C2=B2C, etc. do in similar cases.
 
-in include/linux/iio/iio.h ?
-
-works for me and that also avoids Jonathan's worry about using an acpi_
-prefix in iio code.
-
-Jonathan how does that sound to you ?
-
-Regards,
-
-Hans
+> works for me and that also avoids Jonathan's worry about using an acpi_
+> prefix in iio code.
+>
+> Jonathan how does that sound to you ?
 
 
-
+--=20
+With Best Regards,
+Andy Shevchenko
 

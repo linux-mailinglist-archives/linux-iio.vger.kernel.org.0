@@ -1,138 +1,118 @@
-Return-Path: <linux-iio+bounces-4429-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4430-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1751C8ACBA0
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 13:06:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9A998ACC13
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 13:34:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C759B2851DB
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 11:06:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D8D31C222F4
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 11:34:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F0FD146011;
-	Mon, 22 Apr 2024 11:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41ABE1465B0;
+	Mon, 22 Apr 2024 11:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SIAvEHjV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nPbUvWpK"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EEE145FF9;
-	Mon, 22 Apr 2024 11:06:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F0D1465A2
+	for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 11:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713783983; cv=none; b=ivQ+fqHB/P8UbUYjZgY+4UoKQ6hIfUF/6mpm/yjQzLUMy5WgFdzbqyzebxE4eWmxSYfASQfCGjokaVIAcUREqvhQaj6Kp7C1guwDAPc5ts2Hmoe8Q/wBXujyx/0zmeeNefio8dhfZaVWWtikm4kJCxoXCExacSW/qnifYlSdo3s=
+	t=1713785678; cv=none; b=TnhD81z4uue3fXnzlELimZnW7IaHdgGgehgx64UjfJeaC8neXXYG0A2Vzik+dlPiP86J5tXwvKZz3DQl4hETOJ3KCH5ZA2XCBtCm4j0JbVJmyQ6LDb5RV3VvjkBZVm+u8B1HyU3k6w3l3cg/USCfJYU23e6Czte475cRET40xp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713783983; c=relaxed/simple;
-	bh=h2UNfTlm5sz5kec3CRBEuMh4kmLjtFE2D+wbJYs4t2Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L+hibmK3BnvsnOF4SEgU/Qqw+rgp6DycAOyTmSH6lbxoteu3b030jIa+r3g16gLGYoBojf2Tt9RrShtwcH+qrJ7LH6EGSGhZiboEwTZci1NRA7B9UFgw2aqllY+cGlRyZ9m1gXmOvHkoKuctcBl6E9hcFS68MNWXrgHSgj6FJ4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SIAvEHjV; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713783981; x=1745319981;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=h2UNfTlm5sz5kec3CRBEuMh4kmLjtFE2D+wbJYs4t2Y=;
-  b=SIAvEHjV1fqXf7aXZX9egc024Uxsk90X8LmiTj1q6aqNTXjMBDBRXvXL
-   +xsPxq+U+yfzAIkYvTA0c76UbgXsMxXOq9aKl+1zSADL7i1pnLdtDFLX6
-   s7YEy84uBsO5C9+euRwwKI5xbeVyTUgsko5lDAGS8KrEkbc13w1xsqGlI
-   77pEdxG7hjEYUBfMNYwqQ6M4jZDeOnzPgr6bEcViYSUmgQKh4YjZ76hX8
-   snIH9dgXxXvfMU51s3fETyw+/lh+nc52jsHuJOHIAnILBb8+eTVRISRKH
-   Zvpv/ATYq5oMI1ldbROMdREP67Y6nzCepqDLs0affj03YBQi2eBHANCm2
-   w==;
-X-CSE-ConnectionGUID: GeAHKSQ2RkyHtnrnCxQjdw==
-X-CSE-MsgGUID: Yml9/MmsT3KlnZitnIXL3Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11051"; a="9232163"
-X-IronPort-AV: E=Sophos;i="6.07,220,1708416000"; 
-   d="scan'208";a="9232163"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 04:06:21 -0700
-X-CSE-ConnectionGUID: rWc1Z1CoQOat4ZePb6tnVw==
-X-CSE-MsgGUID: Ff1bHfyQS9qZ21ybVbQkHA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,220,1708416000"; 
-   d="scan'208";a="55193730"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Apr 2024 04:06:19 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1ryrV2-00000001d0h-2TIL;
-	Mon, 22 Apr 2024 14:06:16 +0300
-Date: Mon, 22 Apr 2024 14:06:16 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Martijn Braam <martijn@brixit.nl>
-Subject: Re: [PATCH v1 1/1] iio: light: stk3310: Drop most likely fake ACPI ID
-Message-ID: <ZiZEqDCqc01Cx3oq@smile.fi.intel.com>
-References: <20240415141852.853490-1-andriy.shevchenko@linux.intel.com>
- <20240420122633.79b4185b@jic23-huawei>
- <ZiZEN807oywU-MAx@smile.fi.intel.com>
+	s=arc-20240116; t=1713785678; c=relaxed/simple;
+	bh=wqq7GZgOXK0DWctXKOkDDT81YbOj9+LPdPIAH4+k7TA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=san6hsabhJkYuQbnbw+rdm7gkcONxiWoL04DRbh1arjS62r8KE+XxerAaXD0B3wb/NEu2MMZXYSorNWJybp36YqfqDyzgJiZHj+AWN1VUMGynCqMfFjbADLFQLnpaElIiL+NjX8AAGRVg5PRFpk6I42u0VA/WhTWvQhn8u2JnB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nPbUvWpK; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2db13ca0363so66594581fa.3
+        for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 04:34:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1713785675; x=1714390475; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wqq7GZgOXK0DWctXKOkDDT81YbOj9+LPdPIAH4+k7TA=;
+        b=nPbUvWpKTa+0fyBqJP+Z3IfBSA6vg5HoX081CGbxs6sLpkiufg6v5IvH52jExowtws
+         UzyHcQV/v7ur/yH2GPCfZOmuybpMb22JLFWr6Dx2ByNnwBY3VRtolc7CrglY18RsB75d
+         8E+QdRJXcdBMTtzLPpYOWPrMW4MVEBrYavJfU1E9cZOxmy7eL2mRVm+7qJqHIcfStmsL
+         Jpavo8mpUnqrBW2cJuOo2S3KMBcEaOuQHlGWTqWX+nHT5WSE+BaK8QARqzzlhz9yqEQd
+         WiviMLnyYU1IhSl5pTtl8xSGahX1RJP8/ge1Qlm/boUaiIBaF9jkoEY6m04JKkBtTzXq
+         96mA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1713785675; x=1714390475;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wqq7GZgOXK0DWctXKOkDDT81YbOj9+LPdPIAH4+k7TA=;
+        b=YXNquSgoEakSFTnDfz4jrMXljpLTvXXk5Sg6qt5GUMpClWnSYhBuhbx91wiT1XS36L
+         H3p1pwcnhSLpmr+TU041O/+nK0HQJu44LbBYxMogq58z12bpasFRPIZmDUq8NvgP4aYJ
+         xM/K+8sJwdmHn/bIxC/Ari//5QBeUlwAua1r7Ja6s3+U2Hke7W6LfD3FRIBJx3qudaWH
+         J/itGYaEUbIwB+EQ+cC0Rc4YYX0FqbMh4Pq1e46CYD+3LVAPMUmXzcIz8UCFU3mUQmO3
+         03ZnAwMA4FHU3ihqdKUCLq7dUZQgY2UlcI3AVVX51yjg2Arjm9bSbO66Ow4gKtXnQIXt
+         w1xg==
+X-Forwarded-Encrypted: i=1; AJvYcCVu0NCFIj2Rko80lQd9W8JEaBbw9JPhW+4fBZncP5ElgiBGLYGIztIzEVv4kOFPI9ldWOX4x3hNeZPt48PKhBc/UEe9qdbwIxub
+X-Gm-Message-State: AOJu0YxRHLf/+22q7igKcptjflATan5ZhXJNzYy1sIt+7I61sCuvSY3Q
+	59udkNyLkCcfwiheoVjhSWEatPtg1jACzQZmhQJTVSk0E7bp73C8KPn0bklOzjV6ryO+XEmex3+
+	/H27fVCT3FrAWLhoEVbIFK3PApR0=
+X-Google-Smtp-Source: AGHT+IGLS3WpiD0rq3S6s9z/a2yXTKgRrqlmcYiq4hw1aAmtY8KmR32vJZm6B69Bi7eFiCbZ4RGpUXsPLW2gBUl3GJg=
+X-Received: by 2002:a2e:7006:0:b0:2dd:c9ad:f748 with SMTP id
+ l6-20020a2e7006000000b002ddc9adf748mr775315ljc.40.1713785674436; Mon, 22 Apr
+ 2024 04:34:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZiZEN807oywU-MAx@smile.fi.intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240417164616.74651-1-hdegoede@redhat.com> <ZiYX5JlwS9nGkS2Q@surfacebook.localdomain>
+ <81f83cd6-6d17-4e11-97b6-7f1f11bc3078@redhat.com>
+In-Reply-To: <81f83cd6-6d17-4e11-97b6-7f1f11bc3078@redhat.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Mon, 22 Apr 2024 14:33:57 +0300
+Message-ID: <CAHp75Vfsnffq8J=j9-8w2VWHyMp4e5gw7F11S8XMdMN8TXMwKg@mail.gmail.com>
+Subject: Re: [PATCH 0/4] iio: accel: Share ACPI ROTM parsing between drivers
+ and add it to mxc4005
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Sean Rhodes <sean@starlabs.systems>, linux-iio@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 22, 2024 at 02:04:23PM +0300, Andy Shevchenko wrote:
-> On Sat, Apr 20, 2024 at 12:26:33PM +0100, Jonathan Cameron wrote:
-> > On Mon, 15 Apr 2024 17:18:52 +0300
-> > Andy Shevchenko <andriy.shevchenko@linux.intel.com> wrote:
-> > 
-> > > The commit in question does not proove that ACPI ID exists.
-> > > Quite likely it was a cargo cult addition while doint that
-> > > for DT-based enumeration.  Drop most likely fake ACPI ID.
-> > > 
-> > > Googling for STK3335 gives no useful results in regard to DSDT.
-> > > 
-> > > Fixes: 677f16813a92 ("iio: light: stk3310: Add support for stk3335")
-> > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> > Hi Andy,
-> > 
-> > It's been there quite a while (5 years) so whilst I agree it should
-> > never have gone in without a known DSDT in the wild, I'm not sure we
-> > should remove it at this point.
-> > 
-> > Definitely not with a fixes tag as I don't want to see this picked up
-> > for stable and breaking some old consumer device we don't know about.
-> > 
-> > If there is a good maintenance reason to scrap these I'm in favour,
-> > but if it's just tidying up errors from the past that have no
-> > real impact then I'm not so sure.
-> > 
-> > Maybe we need a 'deprecated' marking for acpi ids that always prints
-> > a message telling people not to make them up.  Mind you what would that
-> > do beyond make us feel better?
-> 
-> I prefer to find the actual users by removing these IDs. It's the best approach
-> to limiting the presence of wrong ID in time and at the same time harvesting
-> the actual (ab)users of it. Warning or other "soft" approaches makes rottening
-> just longer and _increases_ the chance of mis-use/abuse of these fake IDs.
-> 
-> I understand your position as a maintainer who can be blamed by mere user in
-> case we are (I am) mistaken, but I consider it the least harm than by
-> continuing "supporting" them. Feel free to NAK this patch, but for the record
-> I won't like this :-)
-> 
-> TL;DR: I do not buy 5 / 10 / etc years in the Linux kernel as an argument,
-> sorry.
+On Mon, Apr 22, 2024 at 11:24=E2=80=AFAM Hans de Goede <hdegoede@redhat.com=
+> wrote:
+> On 4/22/24 9:55 AM, Andy Shevchenko wrote:
+> > Wed, Apr 17, 2024 at 06:46:12PM +0200, Hans de Goede kirjoitti:
 
-P.S>
-What I may agree on is to drop Fixes tag.
+...
 
--- 
+> > I have briefly looked into this and I like this, except the part of the=
+ big
+> > function being in the header. Why? Why can't it be in a C-file?
+> >
+> > Note, 3 users justify very well to me that shared code, should be share=
+d in
+> > binary as well. (I.o.w. you may argue that IRL there will be no more th=
+an
+> > one of such device connected, but in case of DIY and prototyping it mig=
+ht
+> > still be the use case.)
+>
+> It is only 1 function and it is not that big. IMHO the static inline
+> in a header solution here is much better then making this a separate .ko
+> file with all the associated overhead.
+
+Look how the i8042 RTC header became a disaster. :-)
+Nevertheless, this can be part of the IIO core for the ACPI enabled
+kernels. Which eliminates a need for a separate module.
+
+--=20
 With Best Regards,
 Andy Shevchenko
-
-
 

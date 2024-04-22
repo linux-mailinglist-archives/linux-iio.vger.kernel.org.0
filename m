@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-4437-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4438-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2F508AD11C
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 17:40:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1138AD126
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 17:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 700F71F232B2
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 15:40:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7C56281BFB
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 15:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A8C7152509;
-	Mon, 22 Apr 2024 15:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A47E153514;
+	Mon, 22 Apr 2024 15:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dWkXu3pe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I+ipiaTV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AAB11534E2;
-	Mon, 22 Apr 2024 15:40:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3121534F1;
+	Mon, 22 Apr 2024 15:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713800450; cv=none; b=IuDUA48dWuJht5fer+yZdE7ldl9CfCvMLOMvmuInYcv7wzoAD5th42Ng9KdKmaM/UPAzx02yEvJEAu27P0NnPdhTXPY4yq8fgy4jmc/XEPh/peFph9L6aGwSsDaFkPX057pnYPXjSaYQtdT/Awd5X7o46ZmEiZVoVPs+0jtcpZI=
+	t=1713800766; cv=none; b=GkLhnmhVznMAnge1LayWvexkRq31xJ6VR/jWYwPYzwlnLW7n9a+yUVrFCMwIz65yztog61JUyiQN3M/fgnLoib3WP6AKNCWFi4wWtI9g9cxtsDPFwiCfWZ4tEA+wb7pBRrZe3heLiJgrCt08tON7FYBIv9259I9cbJGcQwxZBQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713800450; c=relaxed/simple;
-	bh=bDdKoYAB9d9mQ47f7T8q500pdJ/7ql2Phu8MxxLzkpQ=;
+	s=arc-20240116; t=1713800766; c=relaxed/simple;
+	bh=Yd+sKUoe/VBq+F1xL0KTN9Kwwi2P9W1Sqc1cjYgaA5s=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B5FRWExFYpkaDljvSKogqbcwymDMT3kmum78cYZyfT/y7jy006Oq7DlrYR06+/vAVr8jbcClD9Fnmf9V3TbHpb9S1Ake/Z3D8STThvQDw2VTF8Ht5amsFsfHfVMXsJUKwMcpHJy03FO255dkZwES1TZArcOI/tRofmQ0Y0m1B8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dWkXu3pe; arc=none smtp.client-ip=209.85.221.44
+	 Content-Type:MIME-Version; b=O3S2SAhoQaAZI8LHjWHvwlY6pUkRU0jkCaOsl2jyBU1jEc45RUFkD8/MZw7tvZIjndnlfifswMagC/3S1okAQdQLcge83mjUfqJckpbTBM0nWqtb3IIPFYsI/C6l0lF8BSHWepnCQRLSTEgQts80WPLPvBaeCDCYRz1QnQGZkyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I+ipiaTV; arc=none smtp.client-ip=209.85.218.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-343c2f5b50fso3303894f8f.2;
-        Mon, 22 Apr 2024 08:40:48 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a51addddbd4so450260566b.0;
+        Mon, 22 Apr 2024 08:46:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713800447; x=1714405247; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1713800764; x=1714405564; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=RZZ0PLFauS/xD8w/861Ocbo7yL1PKXfpB5Vz/BYqxZY=;
-        b=dWkXu3pemvLS5h5s+nhBZNGVTai9X86dl45jU84kZFZRiIBpTKzTRzcKFXmaYBUf8S
-         VYM8fqHpryFEBtVhtSSv348nTzLcDG/D17hCjAhfIprkJgzFNp+l33yfVsqvVgoDLG4i
-         k/o8yMbjf+nbWhyqgWGOVTPZU4ec4kPYnDNGk2fXQGtltTlZI2E512Q5gwLhC7CgGyQ4
-         DzrOBoKFeyR/GnroHshUuyWhU0IQo2yTmACpsKnzVLdNO6/OjgocK5VLHOU6doiaz7/J
-         Aej61E/Fk2BjBEHiSG1hys0JVjN1xAfBaFIQMjVAftGAAishNF6+yuwmQ5AZYyRSg4NP
-         ndUw==
+        bh=GOjfFx22HpKnDqQf8onlhVi0bz7IC6k9X1OqPubXYbQ=;
+        b=I+ipiaTVIwTPW2HWm2w6K4lK2tpFPtbawJYHtaYYmxpVRsj9h7l96Zbn/m1DoxtCdG
+         MTteAAjL+BxIogLUbLg7Jx57aeULk2mMbnd9HIixSyWx2q16qrpWDRFMjdWkZD2aKYlP
+         I0/9qA4r8/LO1PNjTZ43gTgGY+8oTSmjrf4YT7v6KscZhLoQZ4HgQjOjQNPNo8jy87pP
+         +Intpx31cyuAQNFk2B9twAEwcfnYzjA7FYzjd27QUj+Bd/lkSoy9v2xROxi2pesasStj
+         uzw7sN4dwRH6MXWrPMdjpWroeZsm19D6gwC9lAudOMaFkWsAWK3UYveSbpghQ6aLrUdP
+         sAyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713800447; x=1714405247;
+        d=1e100.net; s=20230601; t=1713800764; x=1714405564;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=RZZ0PLFauS/xD8w/861Ocbo7yL1PKXfpB5Vz/BYqxZY=;
-        b=XzcQBstuZE0VwsiCQdwo2nq1aIcCbxN4lSNsJ3rreHwg9NiG84TtSGLjo+FpTSDhj5
-         a1VD4Qd11Jy3O3UrJhQoqxakqf/iTFoubvQ6qvCbZNnm7Od+Hw4Suvsieo8NvO/O0maU
-         dRkVAixAvPWTwsKEqyfn/JD3flIiak0elCNuEBIjAkhqURzrgW66bY9xsB/8QWeX/s2t
-         BlTBLqV/+9Pzu9hzP0R591I6sz9DRuYrBhhd2G5Tn3i/QK2VFDp1A7s0cfS3fy84Fgve
-         pF+QlHgMulVUOq7KcIA+xfQLz7PqKq5k7EyyZl6slsNdsAwBKTnJ33sBjv6KFMHhBx0a
-         +dpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUOlhuit5XtP1FG0XOcAJLXgeu8jxqaKyHie54ginEglHEzdc81CcdMsT1ro5B6DaU8J3bw7MgH27txe133Q+7igM2COK93mDbhTPEjBFWTkmgsz6TBrmDs2rvKxW7hUkRiWuC1dw==
-X-Gm-Message-State: AOJu0Yy8MeLC1jn4szqfdWpSvqyftqR5k7rKZx+ePu5z137bCJJg54oL
-	oLGcRaS6NG13Lsg+ALk4iHeRbn24F3YnoT+jbx4zDyHWdFeY6Q+qVPti2Q==
-X-Google-Smtp-Source: AGHT+IGDsYjDH7HFIbn+4VgSqEYQyxdzYfUQ7jopUwOv636pZiqz/QWUlFy3bc/kiCK9lj0CoBHSAA==
-X-Received: by 2002:adf:f190:0:b0:33e:a5e1:eccc with SMTP id h16-20020adff190000000b0033ea5e1ecccmr6795438wro.68.1713800446234;
-        Mon, 22 Apr 2024 08:40:46 -0700 (PDT)
+        bh=GOjfFx22HpKnDqQf8onlhVi0bz7IC6k9X1OqPubXYbQ=;
+        b=V62arLTWMF4SFsmchwc1cpG1HzuZAKzDurREkIyYUi3Z9VAofGVRv6DC/75AjXEkWr
+         6O5tIEP+uSfDzppiwXe2rlzMpnomt1tYb4cB7aJgdBb8jgLnoNldfRGoS9rvSl0xl4gl
+         EpGwLlRU0G1AUne14alrQ5F7p7c8ANMQIPe9dM5HJneH0DDJFiMqHU5lOYd79EkCLjo2
+         0sVge8RRTeRVpw2JMRGJ5z6DAaxgPgpTjvFVBnNXVWng8YSNzeTpm8VCXWu+QPxdeBBJ
+         mRWbg4cCd2NuaX5sEfS2Ydk2AEXoDZUhW/+VJMqy4LG8Vllzz0bifrMliaY/NT+vm55m
+         x3yA==
+X-Forwarded-Encrypted: i=1; AJvYcCVb41luPuD9/3h+rvPHlj/93Z5Lo2exMqu+Cuf0bUyg6dKhyqo6Lbx+dPnRVg6n4Ua5ySwzSHpQTBrnbywgZe5hWncfKCaU+6cuyIGu5o+9O9sg0+oE3+tEG3cqjtGfFuD5FhjBAw==
+X-Gm-Message-State: AOJu0YxvRmNNYAzBVAvXkYH+ZhiI+qeNE8QHznmgXOZ6XdTskBAvs7Xf
+	ehf14DejxRq3XZmD9qQCuhR26YlRcLwls0N4Fi/fV0LZ6gTCt66i
+X-Google-Smtp-Source: AGHT+IF8Rhw9snRvO9uPSEP4cXrZ+890aRkomrwgK1yD9RF9RJiz9m0C35p3tUMIsxImHEngOrAneA==
+X-Received: by 2002:a17:907:94c5:b0:a55:9e3d:5606 with SMTP id dn5-20020a17090794c500b00a559e3d5606mr4935581ejc.12.1713800763399;
+        Mon, 22 Apr 2024 08:46:03 -0700 (PDT)
 Received: from ?IPv6:2001:a61:3481:2201:6106:96db:d27b:d2c2? ([2001:a61:3481:2201:6106:96db:d27b:d2c2])
-        by smtp.gmail.com with ESMTPSA id y7-20020a5d6207000000b00346f9071405sm12354207wru.21.2024.04.22.08.40.45
+        by smtp.gmail.com with ESMTPSA id jg36-20020a170907972400b00a526aa9e75asm5936896ejc.77.2024.04.22.08.46.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 22 Apr 2024 08:40:45 -0700 (PDT)
-Message-ID: <2131a0feac13fa8c1341c3546761ff1a34ca79df.camel@gmail.com>
-Subject: Re: [PATCH 1/8] iio: backend: add API for interface tuning
+        Mon, 22 Apr 2024 08:46:03 -0700 (PDT)
+Message-ID: <824d8db92adcd1effd9020e4add873b108f087b4.camel@gmail.com>
+Subject: Re: [PATCH 7/8] iio: adc: ad9467: cache the sample rate
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
 	 <devnull+nuno.sa.analog.com@kernel.org>
@@ -80,11 +80,11 @@ Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
  <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
   Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
  <olivier.moysan@foss.st.com>
-Date: Mon, 22 Apr 2024 17:40:45 +0200
-In-Reply-To: <20240420160006.720a3810@jic23-huawei>
+Date: Mon, 22 Apr 2024 17:46:02 +0200
+In-Reply-To: <20240420161941.212e92c5@jic23-huawei>
 References: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
-	 <20240419-ad9467-new-features-v1-1-3e7628ff6d5e@analog.com>
-	 <20240420160006.720a3810@jic23-huawei>
+	 <20240419-ad9467-new-features-v1-7-3e7628ff6d5e@analog.com>
+	 <20240420161941.212e92c5@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.50.4 (3.50.4-1.fc39) 
@@ -95,324 +95,103 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sat, 2024-04-20 at 16:00 +0100, Jonathan Cameron wrote:
-> On Fri, 19 Apr 2024 17:36:44 +0200
+On Sat, 2024-04-20 at 16:19 +0100, Jonathan Cameron wrote:
+> On Fri, 19 Apr 2024 17:36:50 +0200
 > Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 >=20
 > > From: Nuno Sa <nuno.sa@analog.com>
 > >=20
-> > This is in preparation for supporting interface tuning in one for the
-> > devices using the axi-adc backend. The new added interfaces are all
-> > needed for that calibration:
->=20
-> Would be good to have a little more info in this commit message on what
-> interface tuning involves?=C2=A0 I hope a tuning fork and a very good sen=
-se
-
-will do
-
-> of hearing...
->=20
-> >=20
-> > =C2=A0* iio_backend_test_pattern_set();
-> > =C2=A0* iio_backend_chan_status();
-> > =C2=A0* iio_backend_iodelay_set();
-> > =C2=A0* iio_backend_data_sample_trigger().
+> > Since we allow to change the sampling frequency and do it with
+> > clk_round_rate(), we can cache it and use on the read_raw() interface.
+> > This will also be useful in a following patch supporting interface
+> > calibration.
 > >=20
 > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> Otherwise, trivial stuff inline.=C2=A0 Mostly looks fine.=20
 >=20
-> I appreciate you pointed out the taps thing was unit free and hence
-> possibly controversial.=C2=A0 Not much we can do about it and reality is
-> its a tweak factor - things like calibbias are unit free as well
-> for exactly the reason that they tend to be incredibly hardware dependent
-> and sometimes even instance of hardware dependent.
+> The clk subsystem caches the clock rate in most cases anyway, so
+> I'm not sure why we need this.=C2=A0 Or it the point that you are going
+> to temporarily change it in the next patch?
 >=20
 
-Agreed. We could do the iodelays_get() dance but I don't think that would b=
-e that
-beneficial...
+The idea is that in the next patch I want to bail out early if we're not ch=
+anging the
+rate (after clk_round_rate()) because I also don't want to re-run tuning in=
+ that
+case. Since the rate is not guaranteed to be cached (even though I think mo=
+st clock
+providers don't set the NO_CACHE flag), I went this way. Anyways, this is m=
+inor so I
+can stick to clk_get_rate() if you prefer.
 
+> Patch looks fine, but I think a clearer requirements statement is
+> needed.
+>=20
 > Jonathan
 >=20
+>=20
 > > ---
-> > =C2=A0drivers/iio/industrialio-backend.c | 86 +++++++++++++++++++++++++=
-+++++++++++++
-> > =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 | 57 +++++++++++++++++++++----
-> > =C2=A02 files changed, 136 insertions(+), 7 deletions(-)
+> > =C2=A0drivers/iio/adc/ad9467.c | 13 +++++++++++--
+> > =C2=A01 file changed, 11 insertions(+), 2 deletions(-)
 > >=20
-> > diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industria=
-lio-
-> > backend.c
-> > index 2fea2bbbe47fd..45eea3b725a35 100644
-> > --- a/drivers/iio/industrialio-backend.c
-> > +++ b/drivers/iio/industrialio-backend.c
-> > @@ -186,6 +186,92 @@ int iio_backend_data_format_set(struct iio_backend=
- *back,
-> > unsigned int chan,
-> > =C2=A0}
-> > =C2=A0EXPORT_SYMBOL_NS_GPL(iio_backend_data_format_set, IIO_BACKEND);
+> > diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+> > index 7475ec2a56c72..7db87ccc1ea4b 100644
+> > --- a/drivers/iio/adc/ad9467.c
+> > +++ b/drivers/iio/adc/ad9467.c
+> > @@ -117,6 +117,7 @@ struct ad9467_state {
+> > =C2=A0	struct iio_backend		*back;
+> > =C2=A0	struct spi_device		*spi;
+> > =C2=A0	struct clk			*clk;
+> > +	unsigned long			sample_rate;
+> > =C2=A0	unsigned int			output_mode;
+> > =C2=A0	unsigned int=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 (*scales)[2=
+];
 > > =C2=A0
-> > +/**
-> > + * iio_backend_test_pattern_set - Configure a test pattern
-> > + * @back:	Backend device
-> > + * @chan:	Channel number
-> > + * @pattern:
-> > + *
-> > + * Configure a test pattern on the backend. This is typically used for
-> > + * calibrating the timings on the data digital interface.
-> > + *
-> > + * RETURNS:
-> > + * 0 on success, negative error number on failure.
-> > + */
-> > +int iio_backend_test_pattern_set(struct iio_backend *back,
-> > +				 unsigned int chan,
-> > +				 enum iio_backend_test_pattern pattern)
-> > +{
-> > +	if (pattern >=3D IIO_BACKEND_TEST_PATTERN_MAX)
-> > +		return -EINVAL;
-> > +
-> > +	return iio_backend_op_call(back, test_pattern_set, chan, pattern);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(iio_backend_test_pattern_set, IIO_BACKEND);
-> > +
-> > +/**
-> > + * iio_backend_chan_status - Get the channel status
-> > + * @back:	Backend device
-> > + * @chan:	Channel number
-> > + * @status:	Channel status
->=20
-> Feels premature to define a structure for status when it simply returns i=
-f
-> there is an error so far.=C2=A0 Maybe simplify for now, and revisit once =
-that
-> structure needs to be more complex?
-
-Can do that. No strong feelings :). I'll strip out the boolean and drop the=
- struct.
-
->=20
-> > + *
-> > + * Get the current state of the backend channel. Typically used to che=
-ck if
-> > + * there were any errors sending/receiving data.
-> > + *
-> > + * RETURNS:
-> > + * 0 on success, negative error number on failure.
-> > + */
-> > +int iio_backend_chan_status(struct iio_backend *back, unsigned int cha=
-n,
-> > +			=C2=A0=C2=A0=C2=A0 struct iio_backend_chan_status *status)
-> > +{
-> > +	return iio_backend_op_call(back, chan_status, chan, status);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(iio_backend_chan_status, IIO_BACKEND);
-> > +
-> > +/**
-> > + * iio_backend_iodelay_set - Set digital I/O delay
-> > + * @back:	Backend device
-> > + * @lane:	Lane number
-> > + * @tap:	Number of taps
-> > + *
-> > + * Controls delays on sending/receiving data. One usecase for this is =
-to
-> > + * calibrate the data digital interface so we get the best results whe=
-n
-> > + * transferring data. Note that @tap has no unit since the actual dela=
-y per tap
-> > + * is very backend specific. Hence, frontend devices typically should =
-go through
-> > + * an array of @taps (the size of that array should typically match th=
-e size of
-> > + * calibration points on the frontend device) and call this API.
-> > + *
-> > + * RETURNS:
-> > + * 0 on success, negative error number on failure.
-> > + */
-> > +int iio_backend_iodelay_set(struct iio_backend *back, unsigned int lan=
-e,
-> > +			=C2=A0=C2=A0=C2=A0 unsigned int tap)
->=20
-> taps maybe given it's a number of them?
-
-yeps...
-
-> Is this an industry standard term - sounds like it probably is but my
-> google fu is failing.
->=20
-
-Not really (I think). It's very AMD/Xilinx specific. If you google for Xili=
-nx IDELAY
-control you may found something. I could not find a good name (originally I=
- just had
-'delay' but without a proper unit it felt weird), so I admit I used the one=
- it made
-more sense for my specific usecase. Open to suggestions though :).
-
-> > +{
-> > +	return iio_backend_op_call(back, iodelay_set, lane, tap);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(iio_backend_iodelay_set, IIO_BACKEND);
-> > +
-> > +/**
-> > + * iio_backend_data_sample_trigger - Control when to sample data
-> > + * @back:	Backend device
-> > + * @trigger:	Data trigger
-> > + *
-> > + * Mostly useful for input backends. Configures the backend for when t=
-o sample
-> > + * data (eg: rising vs falling edge).
->=20
-> Feels like it might become a flags field at some point, but enum is fine =
-for
-> trigger for now I guess.
->=20
-> > + *
-> > + * RETURNS:
-> > + * 0 on success, negative error number on failure.
-> > + */
-> > +int iio_backend_data_sample_trigger(struct iio_backend *back,
-> > +				=C2=A0=C2=A0=C2=A0 enum iio_backend_sample_trigger trigger)
-> > +{
-> > +	if (trigger >=3D IIO_BACKEND_SAMPLE_TRIGGER_MAX)
-> > +		return -EINVAL;
-> > +
-> > +	return iio_backend_op_call(back, data_sample_trigger, trigger);
-> > +}
-> > +EXPORT_SYMBOL_NS_GPL(iio_backend_data_sample_trigger, IIO_BACKEND);
-> > +
-> > =C2=A0static void iio_backend_free_buffer(void *arg)
-> > =C2=A0{
-> > =C2=A0	struct iio_backend_buffer_pair *pair =3D arg;
-> > diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
-> > index a6d79381866ec..ad793fe0d78c2 100644
-> > --- a/include/linux/iio/backend.h
-> > +++ b/include/linux/iio/backend.h
-> > @@ -15,6 +15,19 @@ enum iio_backend_data_type {
-> > =C2=A0	IIO_BACKEND_DATA_TYPE_MAX
-> > =C2=A0};
+> > @@ -331,7 +332,7 @@ static int ad9467_read_raw(struct iio_dev *indio_de=
+v,
+> > =C2=A0	case IIO_CHAN_INFO_SCALE:
+> > =C2=A0		return ad9467_get_scale(st, val, val2);
+> > =C2=A0	case IIO_CHAN_INFO_SAMP_FREQ:
+> > -		*val =3D clk_get_rate(st->clk);
+> > +		*val =3D st->sample_rate;
 > > =C2=A0
-> > +/* vendor specific from 32 */
-> > +enum iio_backend_test_pattern {
-> > +	/* modified prbs9 */
-> > +	IIO_BACKEND_ADI_PRBS_9A =3D 32,
->=20
-> Not knowing anything much about this, does it make sense to use an enum,
-> or should we face facts that we can't have a true generic interface
-> and just use a suitably sized int?
->=20
-
-I'm also not a fan of the above but we do have generic/standard patterns in=
- this core
-(and that could be used by others):
-
-- 0x0: pn9a (device specific, modified pn9)
-- 0x1: pn23a (device specific, modified pn23)
-- 0x4: pn7 (standard O.150)
-- 0x5: pn15 (standard O.150)
-- 0x6: pn23 (standard O.150)
-- 0x7: pn31 (standard O.150)
-- 0x9: pnX (device specific, e.g. ad9361)
-- 0x0A: Nibble ramp (Device specific e.g. adrv9001)
-- 0x0B: 16 bit ramp=20
-
-Lucky enough the user we have for this is only using a custom/modified patt=
-ern. my
-issue with the int is that how do frontends know what value do they need to=
- pass into
-the API? It would really be very backend specific. I know we do expect fron=
-tends to
-have some assumed knowledge on the backend they're connected too but I woul=
-d like to
-avoid making those assumptions bigger than they need to be.
-
-My expectation with the enum is that we can have some "contract" between ba=
-ckends and
-frontends on the pattern to use. I guess we could give it a try (unless you=
- have some
-other idea) and if it starts going out of control, I can assume defeat and =
-change it
-to an int.
-
-Or, is the idea to just have the int parameter and some plain defines in th=
-e backend
-header?
-
-> How do you unset the test pattern? I expected a IIO_BACKEND_NO_TESTPATERN=
- =3D 0
-> or something like that.
->=20
-
-Since this is on the input direction (and for our particular core), we don'=
-t have to
-unset it. When you choose a test pattern, it just tells the core to match f=
-or a
-specific signal/pattern. So when you do start getting "real" data, we may s=
-till have
-those status bits saying there are "errors" but in reality we don't care. W=
-e just
-care during the tuning/calibration procedure as we configure matching patte=
-rs between
-frontend and backend...
-
-OTOH for the axi-dac, for example, we do need to unset the test pattern. An=
-d we do
-that by (re)configuring the internal CW tone or the external data source (t=
-ypically
-some DMA core).
-
-
-> > +	IIO_BACKEND_TEST_PATTERN_MAX
-> > +};
-> > +
-> > +enum iio_backend_sample_trigger {
-> > +	IIO_BACKEND_SAMPLE_TRIGGER_EDGE_FALLING,
-> > +	IIO_BACKEND_SAMPLE_TRIGGER_EDGE_RISING,
-> > +	IIO_BACKEND_SAMPLE_TRIGGER_MAX
-> > +};
-> > +
-> > =C2=A0/**
-> > =C2=A0 * struct iio_backend_data_fmt - Backend data format
-> > =C2=A0 * @type:		Data type.
-> > @@ -28,15 +41,27 @@ struct iio_backend_data_fmt {
-> > =C2=A0	bool enable;
-> > =C2=A0};
+> > =C2=A0		return IIO_VAL_INT;
+> > =C2=A0	default:
+> > @@ -346,6 +347,7 @@ static int ad9467_write_raw(struct iio_dev *indio_d=
+ev,
+> > =C2=A0	struct ad9467_state *st =3D iio_priv(indio_dev);
+> > =C2=A0	const struct ad9467_chip_info *info =3D st->info;
+> > =C2=A0	long r_clk;
+> > +	int ret;
 > > =C2=A0
-> > +/**
-> > + * struct iio_backend_chan_status - Backend channel status
-> > + *=C2=A0 @errors:	Errors occurred when sending/receiving data.
->=20
-> error, it's only a bool so we know there was at least one.
-
-ack
-
->=20
-> > + */
-> > +struct iio_backend_chan_status {
-> > +	bool errors;
-> > +};
+> > =C2=A0	switch (mask) {
+> > =C2=A0	case IIO_CHAN_INFO_SCALE:
+> > @@ -358,7 +360,12 @@ static int ad9467_write_raw(struct iio_dev *indio_=
+dev,
+> > =C2=A0			return -EINVAL;
+> > =C2=A0		}
+> > =C2=A0
+> > -		return clk_set_rate(st->clk, r_clk);
+> > +		ret =3D clk_set_rate(st->clk, r_clk);
+> > +		if (ret)
+> > +			return ret;
 > > +
-> > =C2=A0/**
-> > =C2=A0 * struct iio_backend_ops - operations structure for an iio_backe=
-nd
-> > - * @enable:		Enable backend.
-> > - * @disable:		Disable backend.
-> > - * @chan_enable:	Enable one channel.
-> > - * @chan_disable:	Disable one channel.
-> > - * @data_format_set:	Configure the data format for a specific channel.
-> > - * @request_buffer:	Request an IIO buffer.
-> > - * @free_buffer:	Free an IIO buffer.
-> > + * @enable:			Enable backend.
+> > +		st->sample_rate =3D r_clk;
+> > +		return 0;
+> > =C2=A0	default:
+> > =C2=A0		return -EINVAL;
+> > =C2=A0	}
+> > @@ -543,6 +550,8 @@ static int ad9467_probe(struct spi_device *spi)
+> > =C2=A0	if (IS_ERR(st->clk))
+> > =C2=A0		return PTR_ERR(st->clk);
+> > =C2=A0
+> > +	st->sample_rate =3D clk_get_rate(st->clk);
+> > +
+> > =C2=A0	st->pwrdown_gpio =3D devm_gpiod_get_optional(&spi->dev, "powerdo=
+wn",
+> > =C2=A0						=C2=A0=C2=A0 GPIOD_OUT_LOW);
+> > =C2=A0	if (IS_ERR(st->pwrdown_gpio))
+> >=20
 >=20
-> Hmm. I dislike aligning comments because of this sort of noise.
-> I guess I can cope without the ideal precursor patch making the padding
-> change, but I am moaning about it...
 
-Yeah, I also dislike it in struct members but for some reason I went like t=
-his in
-here... I'll send a precursor patch in v2.
-
-
-- Nuno S=C3=A1
 

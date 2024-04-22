@@ -1,222 +1,190 @@
-Return-Path: <linux-iio+bounces-4446-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4447-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CFC88AD328
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 19:13:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 501298AD457
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 20:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0255A1F22138
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 17:13:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEBDEB2644B
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 18:50:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1CF1153BCF;
-	Mon, 22 Apr 2024 17:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610A7154454;
+	Mon, 22 Apr 2024 18:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b="HluOYFE7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C472EB11;
-	Mon, 22 Apr 2024 17:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A3A15442C;
+	Mon, 22 Apr 2024 18:47:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.142.107.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713806001; cv=none; b=SJwo7qdNBKLxWlnV6oOWVgfkCujMfdE6dfLV2ljkvcntRczOxDYH9+l+1f1fQOSkM+zncfggt6K7BU5C3NcgCW2HgQydscNpAHz783oYJS9N64VsDj7cZpnQBuFdO75HxO6jo5QGrNoG5rwj4QZRFVKNnLMrnuB/YYfRF7yDyGs=
+	t=1713811623; cv=none; b=pPy6w7FutFBWDn9v7bxoa2SSDfw1PbFQr81JiZEgar0osU7nZxJEhRbqtKIIUXnYTLez0gNzGKxit9R3CeKW+OWeKPuG7jhWVoynAVgVML3tSQa637bO8wcpFcKqmivs4gmj9xAsvA6FFUaY7QZAeC/QO46QqNKISrBODEdTylE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713806001; c=relaxed/simple;
-	bh=Qi0UashU32EVK41AYe5M6JfOWzLu17qW5BHdjn1C3PY=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nEi6M0h0dGz8xqu/kKGv18NWsDaqTQGgsrQnryU9f8VYCCrvnK7mRe+saYF9SFnI0ibPF+uEkRNIbrdKQs7XoF3rU+I74Jrv98nvb6gotb0MX9uokDPWE42/YdcGKSpD5THMBgh48tt6F9pwMy73nnqJLSJiUQdoc7Z5HzXpyUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VNWzX0rHVz6K8xJ;
-	Tue, 23 Apr 2024 01:13:12 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 268E5140C72;
-	Tue, 23 Apr 2024 01:13:18 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Mon, 22 Apr
- 2024 18:13:17 +0100
-Date: Mon, 22 Apr 2024 18:13:16 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
-	<devnull+nuno.sa.analog.com@kernel.org>, <nuno.sa@analog.com>,
-	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Alexandru Ardelean
-	<alexandru.ardelean@analog.com>, Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>, Olivier Moysan
-	<olivier.moysan@foss.st.com>
-Subject: Re: [PATCH 1/8] iio: backend: add API for interface tuning
-Message-ID: <20240422181316.000060ff@Huawei.com>
-In-Reply-To: <2131a0feac13fa8c1341c3546761ff1a34ca79df.camel@gmail.com>
-References: <20240419-ad9467-new-features-v1-0-3e7628ff6d5e@analog.com>
-	<20240419-ad9467-new-features-v1-1-3e7628ff6d5e@analog.com>
-	<20240420160006.720a3810@jic23-huawei>
-	<2131a0feac13fa8c1341c3546761ff1a34ca79df.camel@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1713811623; c=relaxed/simple;
+	bh=7DbwX/PviFN7M1PW7ebtzi0VSvjqv2voy9Qkj96KIUg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=A0VNSoUb3ExL12S7Cguj2oFuZ1mHd/lN2pN03JbmF1qqj7CZqUSjH6hsTA0NLg/6972v3DaL7rLHqN59Ryqmn5gzidPmfMrAsG1H+S0rfw2pqRHYfrBOdZrU8iDmUfCofhAH3CbkBDZK2z17p2OkdP6HKvsnp3/3150NHmE4suA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com; spf=pass smtp.mailfrom=lechnology.com; dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b=HluOYFE7; arc=none smtp.client-ip=98.142.107.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lechnology.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=L5kzskFgMAlt+sf4dc6NATeKvo0TVUxNFW30+QZbNv4=; b=HluOYFE7np7DfRwZaGmV9rQnSb
+	53+GkT1ijwTAQwVzrlj0SBtz6vF7UxLVsW2OhDRbyZgh75G0be2zldU8XX6Nt5OOMuR98i4frRp1j
+	Tu1ad/8wEwBpeP18X3E/D7KZTpQGe3mflnAZcRTyqMP3xWSkTXxUanAIQKqQ1UJp9eJXhgkf9Dr+/
+	WkMpZahs/6TwZcYYY6i9tc3v1ILXia/6kVzCC3KikY+rYrBATOOKo+Cd//hIdAzUVmIXlB/bvmvzx
+	iey+1q6auWfMNMqWsvC7HgDjWdnnJNxBOSA+nt2OseD1RBeQdso8MXldYN2xmpZLh2pPD4kxEhAiQ
+	IJvhlPuQ==;
+Received: from ip98-183-112-25.ok.ok.cox.net ([98.183.112.25]:58238 helo=[192.168.0.142])
+	by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <david@lechnology.com>)
+	id 1ryyMo-000480-2k;
+	Mon, 22 Apr 2024 14:25:54 -0400
+Message-ID: <4cf5f463-dccd-4637-b7ce-e8d8eac044b7@lechnology.com>
+Date: Mon, 22 Apr 2024 13:25:52 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100001.china.huawei.com (7.191.160.183) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/7] dt-bindings: counter: Update TI eQEP binding
+To: Judith Mendez <jm@ti.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ William Breathitt Gray <william.gray@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20240418221417.1592787-1-jm@ti.com>
+ <20240418221417.1592787-6-jm@ti.com>
+Content-Language: en-US
+From: David Lechner <david@lechnology.com>
+Autocrypt: addr=david@lechnology.com; keydata=
+ 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
+In-Reply-To: <20240418221417.1592787-6-jm@ti.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+
+On 4/18/24 5:14 PM, Judith Mendez wrote:
+> Update eQEP binding for TI K3 devices.
 
 
-> >  =20
-> > > + *
-> > > + * Get the current state of the backend channel. Typically used to c=
-heck if
-> > > + * there were any errors sending/receiving data.
-> > > + *
-> > > + * RETURNS:
-> > > + * 0 on success, negative error number on failure.
-> > > + */
-> > > +int iio_backend_chan_status(struct iio_backend *back, unsigned int c=
-han,
-> > > +			=A0=A0=A0 struct iio_backend_chan_status *status)
-> > > +{
-> > > +	return iio_backend_op_call(back, chan_status, chan, status);
-> > > +}
-> > > +EXPORT_SYMBOL_NS_GPL(iio_backend_chan_status, IIO_BACKEND);
-> > > +
-> > > +/**
-> > > + * iio_backend_iodelay_set - Set digital I/O delay
-> > > + * @back:	Backend device
-> > > + * @lane:	Lane number
-> > > + * @tap:	Number of taps
-> > > + *
-> > > + * Controls delays on sending/receiving data. One usecase for this i=
-s to
-> > > + * calibrate the data digital interface so we get the best results w=
-hen
-> > > + * transferring data. Note that @tap has no unit since the actual de=
-lay per tap
-> > > + * is very backend specific. Hence, frontend devices typically shoul=
-d go through
-> > > + * an array of @taps (the size of that array should typically match =
-the size of
-> > > + * calibration points on the frontend device) and call this API.
-> > > + *
-> > > + * RETURNS:
-> > > + * 0 on success, negative error number on failure.
-> > > + */
-> > > +int iio_backend_iodelay_set(struct iio_backend *back, unsigned int l=
-ane,
-> > > +			=A0=A0=A0 unsigned int tap) =20
-> >=20
-> > taps maybe given it's a number of them? =20
->=20
-> yeps...
->=20
-> > Is this an industry standard term - sounds like it probably is but my
-> > google fu is failing.
-> >  =20
->=20
-> Not really (I think). It's very AMD/Xilinx specific. If you google for Xi=
-linx IDELAY
-> control you may found something. I could not find a good name (originally=
- I just had
-> 'delay' but without a proper unit it felt weird), so I admit I used the o=
-ne it made
-> more sense for my specific usecase. Open to suggestions though :).
+It would make more sense to have this patch first in the series
+before the dts changes.
 
-Taps is fine.
+> 
+> Signed-off-by: Judith Mendez <jm@ti.com>
+> ---
+>  Documentation/devicetree/bindings/counter/ti-eqep.yaml | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.yaml b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
+> index 85f1ff83afe72..11755074c8a91 100644
+> --- a/Documentation/devicetree/bindings/counter/ti-eqep.yaml
+> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
+> @@ -14,19 +14,23 @@ properties:
+>      const: ti,am3352-eqep
+>  
+
+As Krzysztof hinted, it sounds like we need to add new compatibles
+here and have some -if: statements to account for the differences
+in SoCs rather than making the bindings less strict.
+
+>    reg:
+> -    maxItems: 1
+> +    minItems: 1
+> +    maxItems: 2
+>  
+>    interrupts:
+>      description: The eQEP event interrupt
+>      maxItems: 1
+>  
+>    clocks:
+> -    description: The clock that determines the SYSCLKOUT rate for the eQEP
+> +    description: The clock that determines the clock rate for the eQEP
+>        peripheral.
+>      maxItems: 1
+>  
+>    clock-names:
+> -    const: sysclkout
+> +    maxItems: 1
+
+In hindsight, this is not the best name. Since we only have one clock
+we don't really need the name anyway, so for the new compatibles, we
+could set clock-names: false.
+
+> +
+> +  power-domains:
+> +    maxItems: 1
+>  
+>  required:
+>    - compatible
 
 
-> > > =A0
-> > > +/* vendor specific from 32 */
-> > > +enum iio_backend_test_pattern {
-> > > +	/* modified prbs9 */
-> > > +	IIO_BACKEND_ADI_PRBS_9A =3D 32, =20
-> >=20
-> > Not knowing anything much about this, does it make sense to use an enum,
-> > or should we face facts that we can't have a true generic interface
-> > and just use a suitably sized int?
-> >  =20
->=20
-> I'm also not a fan of the above but we do have generic/standard patterns =
-in this core
-> (and that could be used by others):
->=20
-> - 0x0: pn9a (device specific, modified pn9)
-> - 0x1: pn23a (device specific, modified pn23)
-> - 0x4: pn7 (standard O.150)
-> - 0x5: pn15 (standard O.150)
-> - 0x6: pn23 (standard O.150)
-> - 0x7: pn31 (standard O.150)
-> - 0x9: pnX (device specific, e.g. ad9361)
-> - 0x0A: Nibble ramp (Device specific e.g. adrv9001)
-> - 0x0B: 16 bit ramp=20
->=20
-> Lucky enough the user we have for this is only using a custom/modified pa=
-ttern. my
-> issue with the int is that how do frontends know what value do they need =
-to pass into
-> the API? It would really be very backend specific. I know we do expect fr=
-ontends to
-> have some assumed knowledge on the backend they're connected too but I wo=
-uld like to
-> avoid making those assumptions bigger than they need to be.
->=20
-> My expectation with the enum is that we can have some "contract" between =
-backends and
-> frontends on the pattern to use. I guess we could give it a try (unless y=
-ou have some
-> other idea) and if it starts going out of control, I can assume defeat an=
-d change it
-> to an int.
->=20
-> Or, is the idea to just have the int parameter and some plain defines in =
-the backend
-> header?
-
-Keep it as an enum for now and let's see where this goes.  Things called=20
-'modified' are always ominous.  Modified how?  The standard defined ones
-are easier to argue for.
-
-
->=20
-> > How do you unset the test pattern? I expected a IIO_BACKEND_NO_TESTPATE=
-RN =3D 0
-> > or something like that.
-> >  =20
->=20
-> Since this is on the input direction (and for our particular core), we do=
-n't have to
-> unset it. When you choose a test pattern, it just tells the core to match=
- for a
-> specific signal/pattern. So when you do start getting "real" data, we may=
- still have
-> those status bits saying there are "errors" but in reality we don't care.=
- We just
-> care during the tuning/calibration procedure as we configure matching pat=
-ters between
-> frontend and backend...
->=20
-> OTOH for the axi-dac, for example, we do need to unset the test pattern. =
-And we do
-> that by (re)configuring the internal CW tone or the external data source =
-(typically
-> some DMA core).
-
-Can we unset it for both input and output?  May make no difference, but eas=
-ier to reason about
-perhaps.
-
->=20
->=20
-> > > +	IIO_BACKEND_TEST_PATTERN_MAX
-> > > +};
-
-
+I see that the CFG0 syscon register on AM62x has some control knobs for
+the EQEP so it would be good to add this to the bindings now too to try
+to make the bindings as complete as possible. (I didn't look at other
+chips so the same may apply to others as well.)
 
 

@@ -1,80 +1,80 @@
-Return-Path: <linux-iio+bounces-4421-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4422-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB4FF8AC8AB
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 11:17:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370FD8AC8AF
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 11:18:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A8601C20B1C
-	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 09:17:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B7CA1C20BD7
+	for <lists+linux-iio@lfdr.de>; Mon, 22 Apr 2024 09:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD660535D9;
-	Mon, 22 Apr 2024 09:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778B653E35;
+	Mon, 22 Apr 2024 09:18:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IRBSzjC6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LOs+Cvhl"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31AD17C6B
-	for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 09:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F545380C
+	for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 09:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713777467; cv=none; b=jt+3fK4GMz60mPusrbAlkmSyvFkPWn5qJvoiAzvLrRz3eaoTbkue2gS51dRK2jKZw83WetC5HxrJ7yhRDfIAD+c8nZiQbtaE+m6BNkCA7dEaDKX6WRQknrEGsnupL3B89N2pKUTAjBBIQ8dHOYvyVmoj2jX4TZn3Hab0/f/PODc=
+	t=1713777513; cv=none; b=MnApCLM5C7wc8LNa8Y7+ekz9u70d24UEVdBObXIt9dJH7I+6nO5oZQoC8BeJ5f4uGpZhx7Jx+V5aAL8idhYf0SxPkmjahgOsC+zzmjYghQOfIQ2TPAR/aVvPsCEpX5EK5KwKVwjTQEVob1U7pCRHO69YsgD3DW5u+elm2GSXigk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713777467; c=relaxed/simple;
-	bh=0/mzhR3euuAQt28g3nTZ64qU+LnGCHduPlgY060gP6A=;
+	s=arc-20240116; t=1713777513; c=relaxed/simple;
+	bh=XkPe1F7fojBstrkUZSar7UsR/bXJygTVnyW21fd0EV4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hqIZ1zxHzo6+2Z6k/lPtltf+7Hjx6j6DanRcaG7iLIi8Cdn/S4uZmaxdTKuhHclzl7oLnpHWV61em3JRhCV6TmL0VwJ2rBz/07CrhIK6pGkhOD6kAE7YaionVxKK5Fo1JlpHcEKc692S1G0Lbi3bE7naQuwL/xPqigzMLsGvdxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IRBSzjC6; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=oWS2zh6n2/V7xlrlWsKCDoWP1Uc7JfLppwNNnYu6qUvKPGt/ZR3ii6ik14c76QMl1VpyJadxM++u45XkboFSrtJCmG1nO85IRNYTwwbO/4nXteDIQ5AjsfyHmX7JFq9a/7nGktgU09yOHT89tFVW+P/GTaHZXsxQzCAiMQWJeEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LOs+Cvhl; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1713777464;
+	s=mimecast20190719; t=1713777510;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PtRXajcKS7+zq+3Fp3p2qpjy4XIBpS9ncu5N46PMenE=;
-	b=IRBSzjC6vS9Yl/hPo7am63mg/cMj9BB8qlRxPsHpv26K3FWXFiSgHlcNVtr/RI1wwpu6wE
-	9du6zqDkOROY75H2BdTNnZ1Q1y1TdKHJ6hgRa/0MhgXtsigf+kzh2t4uRs+yIQ42siDHRf
-	zR6ZlR0VJuRcMaVNKNpHSYSE6rysn9E=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=1nhem3dNXin8IlnIuBlRUq6yGLigqUBiZvYi08WNtFM=;
+	b=LOs+CvhlbFBfSMFF6dztIS5k4RiuVmBppY322QV6wxMPgyOdcbAJEKvrKxAnafbtX7zGy9
+	sjSKIISScX6xrflvinyEE/Dj2kPRJedC9mx1yGTYtCqBsK+lLvb8rj7t8KGwtRDiyiz/Qw
+	pHG4idG/UUJ15j4xfxIk2j2FxWnK9A4=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-474-iztKZxF-OkmVc7r3wSxWjg-1; Mon, 22 Apr 2024 05:17:42 -0400
-X-MC-Unique: iztKZxF-OkmVc7r3wSxWjg-1
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a5741ee352bso10729266b.1
-        for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 02:17:42 -0700 (PDT)
+ us-mta-435-DhxcjcSUPLKiAk9M8fTQow-1; Mon, 22 Apr 2024 05:18:28 -0400
+X-MC-Unique: DhxcjcSUPLKiAk9M8fTQow-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a572ceb5340so13682166b.0
+        for <linux-iio@vger.kernel.org>; Mon, 22 Apr 2024 02:18:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713777461; x=1714382261;
+        d=1e100.net; s=20230601; t=1713777507; x=1714382307;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PtRXajcKS7+zq+3Fp3p2qpjy4XIBpS9ncu5N46PMenE=;
-        b=q1uAcINChPbQc6BgdFZ87BPAZJDGEJsEoqZpEiPpUj/lOaFg8nWYeLKsWpQEE/Ajc3
-         RrEW2PHWLcInQr7Z9vJS0uOLlvkmjFyMuLwsZrl8fAJZmT3vZSBUOIW5MZUCZqCcfxhN
-         zk6AYw+uMJeC63dwFa2U1xbk1Ae0PXHSgp/djLdlbfrKkizxPqO4R6/7ifFntq9RBKLw
-         0RUJDyribhasN284Q7Vy1xWGsi+q7A1jiA7k+HxnxLUwtCjuw1j/cMzi8zgGYtpS3gCh
-         b1YQ5uETKQiR27yVworaHxblTxN/R6IQVFedx53E8nQOGF51s7lD/nLlwHCbKI8oClL6
-         lMKA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqETjVlCZDSZPlLuqSiGgduAg23m/vCOVOte1TtlA+6maVvfaKHLYquqwizNF5e5d/cUfOVLlcVxAUSHK4cx9q4DjOAwlzLZRj
-X-Gm-Message-State: AOJu0Yz3KSJW4ZI8Tib9szFxxcBh/J+KNBZX/M91CLC16nprMnACPXrr
-	h0xSH3ePOdQY6WqOzZrUD9rIZ4vCXo+PYHvXENrXsCDo3BpimwOTtJebnIfFEapgqMu/0cS48vX
-	h77jSW3zxqsJf8nzEix59Efssb6mVVyJqq44iP434uQGhIJGd9Rl95xNqayTMfyCBg1gc
-X-Received: by 2002:a17:906:da02:b0:a52:5774:69cc with SMTP id fi2-20020a170906da0200b00a52577469ccmr5888342ejb.46.1713777461045;
-        Mon, 22 Apr 2024 02:17:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFh7qMJwi0u9/HF++3iT5lTh6XOj2JCE6+ODbOmVe7F2mcSeDvJfcAOY9YiiH/qvgq+fdDFDg==
-X-Received: by 2002:a17:906:da02:b0:a52:5774:69cc with SMTP id fi2-20020a170906da0200b00a52577469ccmr5888330ejb.46.1713777460679;
-        Mon, 22 Apr 2024 02:17:40 -0700 (PDT)
+        bh=1nhem3dNXin8IlnIuBlRUq6yGLigqUBiZvYi08WNtFM=;
+        b=hWhlt4JOXNtJlv7sQSDx+YYICt1liLJDyVYA3JZLfLukdFPzBy5KK9NXO3ZiHj2eIo
+         +PD9gNjy2k/8ChXAhTHjUNBJkbyJqXz+tdO4YEauT7EGPK34cUXSztlSBEQtZ7USlqR/
+         87v7JV3c7QD0t9P3O1fYQ6IgPFeKsCLZCK3MkqxLuBHg1C/csTDunY3wKpDc3EqRY0TZ
+         jxO3LfLcq9oTpVT0UuoLrY2FxRMuHWfLvjPqfkRQiBT2EGzUBQi1U+382FHN0ufPcsyc
+         4D07HiDqgglTLFvCgpYJyJ+3KCjggUzVN2EXvgATyuMknDnFpeG1yL9MdfczqUW4/iTO
+         PQ9w==
+X-Forwarded-Encrypted: i=1; AJvYcCWL+Ys/T3zuu+1cg0QCAv1eD2N+PASt85RELijmtSaRj/2kjiIGg4Yl/kLvSY+zoJ4N8RC91MFiBK5nvJPRA/4IoZwV/DmEFraa
+X-Gm-Message-State: AOJu0Yx/AqlPctq/+QYljG7yZtpE/tnrIJhf7WYqiRtHP8h8kDIGjDR/
+	QqkeEj1SRP3ermmpIAawgZ2cVw/Jy47MRCCiaQ4Y6JZSihqoWFPGplp+3QmGbbMbFlZAYz0PfOU
+	x6Jf0i1GJIthbJUtwp+XL9lzDXAx2cQjoQdLc0StPjOTsW2sEcoLDXblDmA==
+X-Received: by 2002:a17:906:f145:b0:a52:23b6:19c1 with SMTP id gw5-20020a170906f14500b00a5223b619c1mr5539010ejb.76.1713777507663;
+        Mon, 22 Apr 2024 02:18:27 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGqXPWMaup5hLcdQzdPvELCt9Sd1rxOEjwsjwr27jFADT4edQfNiX8i48EvRb1vRFB/JGaTuA==
+X-Received: by 2002:a17:906:f145:b0:a52:23b6:19c1 with SMTP id gw5-20020a170906f14500b00a5223b619c1mr5539003ejb.76.1713777507398;
+        Mon, 22 Apr 2024 02:18:27 -0700 (PDT)
 Received: from [10.40.98.157] ([78.108.130.194])
-        by smtp.gmail.com with ESMTPSA id h20-20020a170906591400b00a51d3785c7bsm5488503ejq.196.2024.04.22.02.17.40
+        by smtp.gmail.com with ESMTPSA id 13-20020a170906058d00b00a522d34fee8sm5506314ejn.114.2024.04.22.02.18.26
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Apr 2024 02:17:40 -0700 (PDT)
-Message-ID: <6ea43afc-ec8a-41f7-983e-a0f653ce2704@redhat.com>
-Date: Mon, 22 Apr 2024 11:17:39 +0200
+        Mon, 22 Apr 2024 02:18:27 -0700 (PDT)
+Message-ID: <85ec0beb-9ec2-4360-8b53-fe65f8b6f5a8@redhat.com>
+Date: Mon, 22 Apr 2024 11:18:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -129,20 +129,33 @@ On 4/20/24 1:13 PM, Jonathan Cameron wrote:
 > https://learn.microsoft.com/en-us/windows-hardware/drivers/sensors/sensors-acpi-entries
 > and a comment saying this is not part of the ACPI standard.
 
-Ok, so I'll add a comment like this for v2:
+Ok, so I have added the following comment to the v2 which I will send out soon:
 
-> 
-> I'm not grumpy at all about companies who add non standard stuff without
-> at least reserving the ID space.
-> 
-> Why isn't it a _DSM (Device Specific Method) with a microsoft defined UUID? Harrumph.
-> 
-> +CC Rafael and linux-acpi as whilst this remains in IIO, it is named such that it
-> ends up in the acpi_* namespace.  They may not care, but best to check!
-> 
-> Jonathan
-> 
-> 
+diff --git a/drivers/iio/accel/acpi-helpers.h b/drivers/iio/accel/acpi-helpers.h
+index a4357925bf07..4f4140694b59 100644
+--- a/drivers/iio/accel/acpi-helpers.h
++++ b/drivers/iio/accel/acpi-helpers.h
+@@ -7,6 +7,13 @@
+ #include <linux/sprintf.h>
+ 
+ #ifdef CONFIG_ACPI
++/*
++ * Parse mount matrixes defined in the ACPI "ROTM" format from:
++ * https://learn.microsoft.com/en-us/windows-hardware/drivers/sensors/sensors-acpi-entries
++ * This is a Microsoft extension and not part of the official ACPI spec.
++ * The method name is configurable because some dual-accel setups define 2 mount
++ * matrices in a single ACPI device using separate "ROMK" and "ROMS" methods.
++ */
+ static inline bool acpi_read_mount_matrix(struct device *dev,
+ 					  struct iio_mount_matrix *orientation,
+ 					  char *acpi_method)
+
+Regards,
+
+Hans
+
+
+
 >> ---
 >>  drivers/iio/accel/acpi-helpers.h | 76 ++++++++++++++++++++++++++++++++
 >>  drivers/iio/accel/kxcjk-1013.c   | 71 ++---------------------------

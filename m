@@ -1,184 +1,128 @@
-Return-Path: <linux-iio+bounces-4468-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4470-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC638AEAE4
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 17:21:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB898AEB24
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 17:31:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49F05B2268B
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 15:21:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44EC11C22A8D
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 15:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38A313CFB2;
-	Tue, 23 Apr 2024 15:20:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43F5A13C3E3;
+	Tue, 23 Apr 2024 15:31:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCPN5i6U"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PXM5pSNp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB13A13C676;
-	Tue, 23 Apr 2024 15:20:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5BF413BC33;
+	Tue, 23 Apr 2024 15:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713885643; cv=none; b=CbErouB2tmA3rWgW1+xCrLZOvMuvhQFzxiacxzhhy1p6Iassxxckdpm79wHaIBqNSMQUxonreW5MoKBBKIAM25EcLuzBrd/LZ4wpb+zcDqgkx1c+JOCX9tFUs+Q00hKb/pqavYczzEh9v+eTtcREoqfbuX1twx/rbzL294DvPsU=
+	t=1713886291; cv=none; b=LkY9ZO/DHaZbRs02IGPCzwWLmI6N2e1fM4uklq+gov91J6Ho+RvpmtU31jzttyH7sVM6HG7KjURiBzrBmc7PZ3PxitPw7GtE5th2ruEtPnwf5df2Fo8aKmij3c4hzfq3dGd6Mk4bRAo1vXuee1BlAQLi3v9nd0IQpUXJuqMeZFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713885643; c=relaxed/simple;
-	bh=daWyLQmhXixnMBBEbyIlhAgaxicpslZZ0+ILNyeGPzU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L7yquQFgJsV4//LR9lYGED1Oy/FlDoigInp1te1358c8nMKSA6Aqnpeuoh3l0TTqNnt6Ex+mqJ0GjhBTHdDvUYwMKngO9rCBF9pRKJsOfpckFN9VW4HK9AzjpwWAArOzQbEWg/8mMIRp8JjCPxFmlyggg9SVNV8iK7NMkChYrWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCPN5i6U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 62FB1C4AF0A;
-	Tue, 23 Apr 2024 15:20:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1713885643;
-	bh=daWyLQmhXixnMBBEbyIlhAgaxicpslZZ0+ILNyeGPzU=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=TCPN5i6UbvhdkvBt0Us4vgrYZkPqrs6LP2P/Aml3dGG0qEHNc2+pQ+5UQ07NhCDsP
-	 +r1NCD1PLacLHGb+FSr8c5c7Oj/J5OQmwy8FjtHhuiM+9m6NPJQavIn7ZS7vTWp/Fv
-	 H1eU2Ki2ko7wWNT/MA2S6s7Z61HdSW4P2tJyZqSlGNrCgZqnwG/IEhAlhiVkp06604
-	 AWRh/0c52Z3M+8KezBbmSSrgHSq1+rFB2FI40H+xra+rEcdMZk7Rw7q+aJB+3i+Ub3
-	 LuWe5kVYvRZdoejNOTT8tGPqXi52QBPbJUHfY9ldfCh4RQRvyriYOtaxPYLO8r7Gua
-	 JybvCkUCsXnKQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5BC27C19F4F;
-	Tue, 23 Apr 2024 15:20:43 +0000 (UTC)
-From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Tue, 23 Apr 2024 17:20:33 +0200
-Subject: [PATCH v2 4/4] iio: common: scmi_iio: convert to dev_err_probe()
+	s=arc-20240116; t=1713886291; c=relaxed/simple;
+	bh=BlpavYPezI9leAXjmHFPwGvnManzT7FMGBMAmW5A9bk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WkymYwu75BR9LmloWfp7Tl5gAcuiX4lUavR+SF6KBK+1Lyv552fQ6MSOc4atI36CXtUxb29w/jnMQ6udwgukEkt13lJHOCaqCuAwRfD99jkxqmLOOfxdjSnBk9IacWBpeUUT1VyZztgC9TpPivNtN3zWoGiSy4VF9oHhnZH9Slc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PXM5pSNp; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1713886290; x=1745422290;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=BlpavYPezI9leAXjmHFPwGvnManzT7FMGBMAmW5A9bk=;
+  b=PXM5pSNpP5WbLYA3ajOKC5ly27PNCToxlGqTkpgaXaCxR9umm/JR/AFm
+   ci6Ll2dGmDOiv21Km/4vRFQVsOksmoBIuerho5O2My6zsiQq8JJePSNri
+   2yvh86SC82RM677i/D5kxBrfjMSBFEbiksKzUdo4sXKYJcwTB7Nkry0Sh
+   9u761a1NXh7G3moDaeVkGXNLKY6IlX/nstJcM9DcsZmypFM1tLewtVHuc
+   j9PNHFzipd+ZnXm9L2EzpuqCLlx+aOcyGZL+fwF4k9HsP7ncsj1OsygFx
+   SEPdl6NvgTjafL8/lPyqP/9JmJHd035hxuN9Q3z5fB28MTkJFtjC+Qwn0
+   A==;
+X-CSE-ConnectionGUID: SSc2HXT6ROCd7q3+65YTiA==
+X-CSE-MsgGUID: mpRh+nh8SzSjWlM9mb7BFQ==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="9585993"
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="9585993"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 08:31:29 -0700
+X-CSE-ConnectionGUID: 7Wl1e3GhTIiPTuRGr92bFA==
+X-CSE-MsgGUID: Zz8/bys6SDqEXh8Z1+NeTA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
+   d="scan'208";a="55364540"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 08:31:24 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1rzI76-00000000NQF-21FL;
+	Tue, 23 Apr 2024 18:31:20 +0300
+Date: Tue, 23 Apr 2024 18:31:20 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: nuno.sa@analog.com
+Cc: Petr Mladek <pmladek@suse.com>, Chris Down <chris@chrisdown.name>,
+	John Ogness <john.ogness@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jyoti Bhayana <jbhayana@google.com>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] dev_printk: add new dev_err_probe() helpers
+Message-ID: <ZifUSKFh2C4VG5QB@smile.fi.intel.com>
+References: <20240423-dev-add_dev_errp_probe-v2-0-12f43c5d8b0d@analog.com>
+ <20240423-dev-add_dev_errp_probe-v2-1-12f43c5d8b0d@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240423-dev-add_dev_errp_probe-v2-4-12f43c5d8b0d@analog.com>
-References: <20240423-dev-add_dev_errp_probe-v2-0-12f43c5d8b0d@analog.com>
-In-Reply-To: <20240423-dev-add_dev_errp_probe-v2-0-12f43c5d8b0d@analog.com>
-To: Petr Mladek <pmladek@suse.com>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Chris Down <chris@chrisdown.name>, John Ogness <john.ogness@linutronix.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, 
- Olivier Moysan <olivier.moysan@foss.st.com>, 
- Andi Shyti <andi.shyti@kernel.org>, Jyoti Bhayana <jbhayana@google.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- Nuno Sa <nuno.sa@analog.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1713885641; l=3433;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=ClJ3sRzkiojLcrvi0KpVZa+uYfx+C5zcG1LAl2kp8n8=;
- b=VN2nBviGoxHI3FJL9V7BAJfS9jU4cTEgtov2PPD9aWEKmHMliTcjcuctwHjvXVoKDRXsFq0lz
- APclNLIVmvbAAXJetoYeEU2tFiuLJPg5k8W5ParKCVUhDC+dXv26xUR
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
- auth_id=100
-X-Original-From: Nuno Sa <nuno.sa@analog.com>
-Reply-To: nuno.sa@analog.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240423-dev-add_dev_errp_probe-v2-1-12f43c5d8b0d@analog.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From: Nuno Sa <nuno.sa@analog.com>
+On Tue, Apr 23, 2024 at 05:20:30PM +0200, Nuno Sa via B4 Relay wrote:
+> From: Nuno Sa <nuno.sa@analog.com>
+> 
+> This is similar to dev_err_probe() but for cases where an ERR_PTR() or
+> ERR_CAST() is to be returned simplifying patterns like:
+> 
+> 	dev_err_probe(dev, ret, ...);
+> 	return ERR_PTR(ret)
+> or
+> 	dev_err_probe(dev, PTR_ERR(ptr), ...);
+> 	return ERR_CAST(ptr)
 
-Make use of dev_err_probe() and dev_err_ptr_probe() to simplify error paths
-during probe.
+...
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/common/scmi_sensors/scmi_iio.c | 45 +++++++++++++-----------------
- 1 file changed, 19 insertions(+), 26 deletions(-)
+> +/* Simple helper for dev_err_probe() when ERR_PTR() is to be returned. */
+> +#define dev_err_ptr_probe(dev, ___err, fmt, ...)	({		\
+> +	ERR_PTR(dev_err_probe(dev, ___err, fmt, ##__VA_ARGS__));	\
+> +})
 
-diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
-index 0c2caf3570db..841eda79a8cc 100644
---- a/drivers/iio/common/scmi_sensors/scmi_iio.c
-+++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
-@@ -626,12 +626,10 @@ scmi_alloc_iiodev(struct scmi_device *sdev,
- 				SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
- 				&sensor->sensor_info->id,
- 				&sensor->sensor_update_nb);
--	if (ret) {
--		dev_err(&iiodev->dev,
--			"Error in registering sensor update notifier for sensor %s err %d",
--			sensor->sensor_info->name, ret);
--		return ERR_PTR(ret);
--	}
-+	if (ret)
-+		return dev_err_ptr_probe(&iiodev->dev, ret,
-+					 "Error in registering sensor update notifier for sensor %s err %d",
-+					 sensor->sensor_info->name, ret);
- 
- 	scmi_iio_set_timestamp_channel(&iio_channels[i], i);
- 	iiodev->channels = iio_channels;
-@@ -653,10 +651,9 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
- 		return -ENODEV;
- 
- 	sensor_ops = handle->devm_protocol_get(sdev, SCMI_PROTOCOL_SENSOR, &ph);
--	if (IS_ERR(sensor_ops)) {
--		dev_err(dev, "SCMI device has no sensor interface\n");
--		return PTR_ERR(sensor_ops);
--	}
-+	if (IS_ERR(sensor_ops))
-+		return dev_err_probe(dev, PTR_ERR(sensor_ops),
-+				     "SCMI device has no sensor interface\n");
- 
- 	nr_sensors = sensor_ops->count_get(ph);
- 	if (!nr_sensors) {
-@@ -667,8 +664,8 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
- 	for (i = 0; i < nr_sensors; i++) {
- 		sensor_info = sensor_ops->info_get(ph, i);
- 		if (!sensor_info) {
--			dev_err(dev, "SCMI sensor %d has missing info\n", i);
--			return -EINVAL;
-+			return dev_err_probe(dev, -EINVAL,
-+					     "SCMI sensor %d has missing info\n", i);
- 		}
- 
- 		/* This driver only supports 3-axis accel and gyro, skipping other sensors */
-@@ -683,29 +680,25 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
- 		scmi_iio_dev = scmi_alloc_iiodev(sdev, sensor_ops, ph,
- 						 sensor_info);
- 		if (IS_ERR(scmi_iio_dev)) {
--			dev_err(dev,
--				"failed to allocate IIO device for sensor %s: %ld\n",
--				sensor_info->name, PTR_ERR(scmi_iio_dev));
--			return PTR_ERR(scmi_iio_dev);
-+			return dev_err_probe(dev, PTR_ERR(scmi_iio_dev),
-+					     "failed to allocate IIO device for sensor %s: %ld\n",
-+					     sensor_info->name, PTR_ERR(scmi_iio_dev));
- 		}
- 
- 		err = devm_iio_kfifo_buffer_setup(&scmi_iio_dev->dev,
- 						  scmi_iio_dev,
- 						  &scmi_iio_buffer_ops);
- 		if (err < 0) {
--			dev_err(dev,
--				"IIO buffer setup error at sensor %s: %d\n",
--				sensor_info->name, err);
--			return err;
-+			return dev_err_probe(dev, err,
-+					     "IIO buffer setup error at sensor %s: %d\n",
-+					     sensor_info->name, err);
- 		}
- 
- 		err = devm_iio_device_register(dev, scmi_iio_dev);
--		if (err) {
--			dev_err(dev,
--				"IIO device registration failed at sensor %s: %d\n",
--				sensor_info->name, err);
--			return err;
--		}
-+		if (err)
-+			return dev_err_probe(dev, err,
-+					     "IIO device registration failed at sensor %s: %d\n",
-+					     sensor_info->name, err);
- 	}
- 	return err;
- }
+Why ; and hence why ({}) ?
+
+I even believe the compiler may warn if you have double ;; in some cases.
+
+...
+
+> +#define dev_err_cast_probe(dev, ___err_ptr, fmt, ...)	({			\
+> +	ERR_PTR(dev_err_probe(dev, PTR_ERR(___err_ptr), fmt, ##__VA_ARGS__));	\
+> +})
+
+Ditto.
 
 -- 
-2.44.0
+With Best Regards,
+Andy Shevchenko
 
 
 

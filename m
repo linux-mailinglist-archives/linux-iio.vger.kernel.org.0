@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-4462-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4463-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F3D8AE142
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 11:46:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 680308AE16D
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 11:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B78D286117
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 09:46:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DC8D282120
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 09:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D725B5D3;
-	Tue, 23 Apr 2024 09:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D757B5E091;
+	Tue, 23 Apr 2024 09:54:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QV9dkTFI"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jOCOTKvJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C706E59B4D
-	for <linux-iio@vger.kernel.org>; Tue, 23 Apr 2024 09:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183AC59B4E
+	for <linux-iio@vger.kernel.org>; Tue, 23 Apr 2024 09:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713865556; cv=none; b=ayUNRHoM2e8ISmTmkLvZ+wmNIepBWydeFsq1c+QHu9B+vaRVoa7npQLMzsRd7XYH3E1zWlapL0siBlGUeBQ+JA4XlnLjIxleOA9p65i6kGG+x08eMfErhwO2jgBXMIh9PJW0kli05Bvkq9AoT0XmOUwRYBZXvMYFsil3zCV+pok=
+	t=1713866090; cv=none; b=M5Ju3DxC6O+zp0zKZeq623FfIebGY3egBtXIzGIzs0VoQQiY2K2q8Qs3G7ObdB7ObECR9QUClCcJX/Ariuc2UEUjbRVfzVpXBTzZXFqXiGe1T4ExErdu3FCbHOn6ySdd+P7XKTl13sOBg3o9L0XPvVld0raiI8jYwtcmTdDou48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713865556; c=relaxed/simple;
-	bh=0OXawXezReq/pJRii8qLy/MIW9NlwSQfDqgM87a8Cyc=;
+	s=arc-20240116; t=1713866090; c=relaxed/simple;
+	bh=TcvuEYLws2fboubCzoAXSrZP5EX/PhUVq3p1ipmW6hs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=R62R64pK/EIYHtZjInqvnWAkIY1J/pWO8rGkM6/H6GrqlKPJN+zDLJ+oaE8bWUKEXv0fR+zfoCySlgDSHZ/jrNU2Rnsb2wmsz1TwNyZ+AXrOJ/DTQmeEQK5Rj4uwUjifhUjdcsgDLVHvRi//dgxQGTy/eT8lAOZeMSDE9famylg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QV9dkTFI; arc=none smtp.client-ip=209.85.218.41
+	 In-Reply-To:Content-Type; b=UQ5jrvE06WP0iAwEeaMR2Jkdq+TitXHOs945jjEIyqEjRlUFXUuYLa715r/BNeS22SEosbxvzsKAlJR/0UepiTdQi6DGHCGsz0aLZ24OUoGMjViR8ZUvJ69J3IeTxOogsRZFC7Ecw3YFR2EwWlqceB1x4UV5k/khbvAohutLb4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jOCOTKvJ; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a52223e004dso515098266b.2
-        for <linux-iio@vger.kernel.org>; Tue, 23 Apr 2024 02:45:54 -0700 (PDT)
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-41aa15ae26dso7558695e9.3
+        for <linux-iio@vger.kernel.org>; Tue, 23 Apr 2024 02:54:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713865553; x=1714470353; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1713866087; x=1714470887; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=0OXawXezReq/pJRii8qLy/MIW9NlwSQfDqgM87a8Cyc=;
-        b=QV9dkTFIBoSXGdispda3NjaYxHBNH3K25e/b7iwLWosGYMb6qpbAsGyXg+Hj5yOmG/
-         sGEv7f6K3tuk7I/alh67NZHC09qlrjWrOfXBdm8aCVHnyfX+crQ0RPgCR9CjxTlBjSUu
-         h+2Pqah4gtxVvIwieg0q6oB778bD0GQD3uga8T58/8RFldnAjYc1+QzUkVRbXcHGalvS
-         cQS97Z3n2pTCEjQUoQ9gvvypkPypNJLrLffILd2Wxsk+MCuHH2qKlBLxIXgOCOgitqbI
-         055NlysDytSqoorNithSIkq17f86XmUh6rl6BZ4n+b5w3ysR1GAEC8UhY05VG601Ot3I
-         pOEQ==
+        bh=QGmqwrxoYYNL7ItgGfa16lOMAGRJ/1BRq31t1v+wXrE=;
+        b=jOCOTKvJ+bLfBsyZYST5YwRbTvwlEuWSL6OvOXFuCJDj0fvpSmmQ9DRRYFlgf4lajD
+         ONop6jnfZD02vX1x9oDW6GMwvVnipisRjdDeb/uWgFEIzkpNLFt/KUZVKaYWmRhBjn45
+         o3jmJS+sjTWnDqLXZA9YHliB25sbLthFd6aVFbY9oMmtOVHkzR7mjf2Ukt6fjwGeYBvC
+         lQ6qAd7QFwe1GCcLFZnHwJBo4dqvnoieglaDFXJPrMPzbWG/DGbv4WJ1Vj4b/6CpzA7x
+         hcJLufOaKZYLKeP4KgAIoXJd/1Xz+Fxdg6Jm5QWNZ7kh0V0mfDSPmoVKE4kjc8ClHFDT
+         rnlw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713865553; x=1714470353;
+        d=1e100.net; s=20230601; t=1713866087; x=1714470887;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=0OXawXezReq/pJRii8qLy/MIW9NlwSQfDqgM87a8Cyc=;
-        b=xBDLUaAt+2jeylHe6jzCu+LQqGqPpCFAjFpuTtrmgB+Xaz/THdCWosjo5pXBHFzzzw
-         ZjGkZYUeLIfMVKbeNH9/LlZbjgj7iT0Y94CnWc04s1F+eqTRDVjrNeRrqHKg+NQHClwy
-         jJ7OSayl9SuBBwVdvk3WVr8WWovyBGzxYpYI6OjJTJLOCzBB645T6/85rM4awkadKTc7
-         tOK30y9TaRvPyl42WOinS0QV7qdhHAHUKRAQmYkiokYb3kHbHrNszEjFtZGlORWtYwA0
-         +XHMfq46tzCisJh615Sz2YCPwCiQ5RaNBS4SwptkrFY19ww/EqoygFj8TpBLU97uDSob
-         LjuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWbdRVLu8qHYThSnApgfv6xQv+EjSfjO1GYLxPA1V8rjPe78IhnyG1EEuGDWi9hJQCatOBJHg7BeyIpPb2+hZD2JCymV1QiGpaO
-X-Gm-Message-State: AOJu0Yy07tTS9lIX9xW/fIsXu9/R4ADXJxySgxUyVZJfYsdFO1VUyVPP
-	R0mI3nYb/A37/AZdYuFCJu7GTSgOpBGP6WvQ46MA2Iyh9BTzoAFZJyy36KcsvDw=
-X-Google-Smtp-Source: AGHT+IEDNnvCIJghyjpAWJKdMY7UMuoZjbCNlqfphMG1kOwc/wCe7RDUjLqV7plqyEmjEjFqGTPORQ==
-X-Received: by 2002:a17:907:1115:b0:a58:7ea5:c49b with SMTP id qu21-20020a170907111500b00a587ea5c49bmr1395621ejb.42.1713865548776;
-        Tue, 23 Apr 2024 02:45:48 -0700 (PDT)
+        bh=QGmqwrxoYYNL7ItgGfa16lOMAGRJ/1BRq31t1v+wXrE=;
+        b=jIJzU6thplLOEMFXRto0t+QZUt1tzTyxTZ8whNPeM6nO6eRHApkoM8jNRqeafra9s1
+         G8c//P2uIogwwqYFhL9WrJlUyZph5zVHTJOENukxTfmsO2C/Q5Qw7ugblP1O1pIEzL96
+         xHclyLw/vZrt/3/xVKuLFvSSmPFIFxcOe9YZ1FPFsth4grbcTE37w+B5vc5AbLGZeeeS
+         cTI3Om58m/cEdp4TrcDWNml0JHi3uQ+gpLILQyh+7456SEOn4GepAejJspngkM1YEjez
+         mUVL3cnMAyn0CUuJTHFMR9g9Ce27hWAiYTgNlJogmKnQEEbDXVnbgAvk2oRt6uFCcJE8
+         Rkvg==
+X-Forwarded-Encrypted: i=1; AJvYcCX2nKbC3xpH3ZQJBeY8j2+y5P0RfRtvodLB9G9OJlHGoYk1BParAXdeG19Bidt2wtqE1uA/w6MnPAJDI7HQ82uG/dM3CynwHqhB
+X-Gm-Message-State: AOJu0YwRIgv+P6P4FBPWHxTyZ5pVXB0KDp+HGYM21jMtLYH4my5a1EUM
+	0pNw0xzydJC2Ia+wXURiUlHiJTDAieGvDw1D9zfZ+Tj100j7E5eaBkwKYI5MJwg=
+X-Google-Smtp-Source: AGHT+IE/LWXfsKNKZXdZV14oyl4JzTZ8tD01rfU3dW2+ZPhcML7vwZuDNPaGuU/TzZKO5imlcL/WGg==
+X-Received: by 2002:a5d:6743:0:b0:343:ab10:f31e with SMTP id l3-20020a5d6743000000b00343ab10f31emr8273049wrw.42.1713866087320;
+        Tue, 23 Apr 2024 02:54:47 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.223.16])
-        by smtp.gmail.com with ESMTPSA id gc24-20020a170906c8d800b00a55ac217235sm3076796ejb.90.2024.04.23.02.45.47
+        by smtp.gmail.com with ESMTPSA id u11-20020a5d434b000000b0034a2d0b9a4fsm13016234wrr.17.2024.04.23.02.54.45
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 23 Apr 2024 02:45:48 -0700 (PDT)
-Message-ID: <605ebf52-a7d6-455b-9009-dad36b8cd8eb@linaro.org>
-Date: Tue, 23 Apr 2024 11:45:46 +0200
+        Tue, 23 Apr 2024 02:54:46 -0700 (PDT)
+Message-ID: <10006d22-eaa7-4414-ae4b-d1c9d57f5a13@linaro.org>
+Date: Tue, 23 Apr 2024 11:54:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,14 +77,19 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/5] dt-bindings: iio: imu: Add docs for ADIS16545/47
-To: Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
- linux-kernel@vger.kernel.org, jic23@kernel.org, linux-iio@vger.kernel.org,
- linux-doc@vger.kernel.org, devicetree@vger.kernel.org, corbet@lwn.net,
- conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, robh@kernel.org
-Cc: Ramona Gradinariu <ramona.gradinariu@analog.com>
-References: <20240423084210.191987-1-ramona.gradinariu@analog.com>
- <20240423084210.191987-4-ramona.gradinariu@analog.com>
+Subject: Re: [PATCH 5/7] dt-bindings: counter: Update TI eQEP binding
+To: Judith Mendez <jm@ti.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ William Breathitt Gray <william.gray@linaro.org>
+Cc: David Lechner <david@lechnology.com>,
+ linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20240418221417.1592787-1-jm@ti.com>
+ <20240418221417.1592787-6-jm@ti.com>
+ <a0eee08b-17c0-4089-85eb-d645cbcafae3@linaro.org>
+ <e58ff9ee-b050-4ad8-a060-dc0e33cc4896@ti.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -131,22 +136,35 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240423084210.191987-4-ramona.gradinariu@analog.com>
+In-Reply-To: <e58ff9ee-b050-4ad8-a060-dc0e33cc4896@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 23/04/2024 10:42, Ramona Gradinariu wrote:
-> Update ADIS16480 existing documentation with documentation for
-> ADIS16545/47 devices.
+On 23/04/2024 00:11, Judith Mendez wrote:
+>>>   
+>>>     interrupts:
+>>>       description: The eQEP event interrupt
+>>>       maxItems: 1
+>>>   
+>>>     clocks:
+>>> -    description: The clock that determines the SYSCLKOUT rate for the eQEP
+>>> +    description: The clock that determines the clock rate for the eQEP
+>>>         peripheral.
+>>>       maxItems: 1
+>>>   
+>>>     clock-names:
+>>> -    const: sysclkout
+>>> +    maxItems: 1
+>>
+>> NAK. That's just wrong, not explained at all either.
+>>
+> 
+> The intention was to make the binding a bit more generic, but I see
+> that is not the correct direction to go, thanks for the feedback.
 
-Nothing in this commit msg explains me why they are not compatible,
-while driver suggests a bit they are.
-
-A nit, subject: drop second/last, redundant "docs for". The
-"dt-bindings" prefix is already stating that these are bindings which is
-documentation.
-See also:
-https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+Bindings must be specific, because they describe the hardware. Your
+hardware has exactly one clock input pin, not some superposition of pins
+which change depending on photon stream.
 
 Best regards,
 Krzysztof

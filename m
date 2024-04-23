@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-4471-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4472-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BC18AEB55
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 17:43:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C88378AEB5D
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 17:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98477286AAA
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 15:43:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D71D1F23433
+	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 15:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 290FF13C827;
-	Tue, 23 Apr 2024 15:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B84813C909;
+	Tue, 23 Apr 2024 15:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JyHdhBkw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ggWjpk4C"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3FC13BAFE;
-	Tue, 23 Apr 2024 15:43:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E786613BAFE;
+	Tue, 23 Apr 2024 15:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713886981; cv=none; b=gjccHjSwIya5O8T3zOkiB1KxMGxZDkEFzdRx5iO5Jz8GN8vjUES0fLSL3dah2C8fN/NlJIZSzuYGZsNNmEPlC5qA3VmdqbPM0peq2SYeZF214CbBf0nmMKDv0X6pOsQJWk2AvJShSstdzxbG2VADmKzmG9Y5VKz0tfnI93wbzY0=
+	t=1713887138; cv=none; b=U3bV3vEXhgvoKc8aoazlyISTeQeLVc4q0U5mSN1cDlof/SpBzRybNExPmIFjHfr4SGSpXCRstph2G9WRoVPOdFnhsAnx51kZFlW7ckIL/Ka8X5RUtrgnrpVzClTFtVJNXoAeBPBRInxcB8rGzsIvwKgUG9GPoc9w5vIIzXBZDPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713886981; c=relaxed/simple;
-	bh=878iBN1wCLHEB2yRzqkpbitV3mFieot5Pqm94fhfGog=;
+	s=arc-20240116; t=1713887138; c=relaxed/simple;
+	bh=g32tYyNwhHSjBI5XP117/+DCw7CjmkPynMd0Zm5xQ90=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fLjlMwQ2BEc9c6ythNnp1Ld+nja1U75KUYYP+zkzJqACQQuBOA97eatszuOz+n/PSuiwR0F0VVROoYTIWnzc7QFdn5oA6wls25LAwkh8IupZBgTDRFlwhaV5yMJ5XvV2aFZkXaEErTOqV4JhWWqH4tf3pyryB67Oa49fY1E9yFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JyHdhBkw; arc=none smtp.client-ip=192.198.163.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=FT3Qp7hjVyhdU2QfOlMxjS/5SW5MgH+TPyGrqv5Q+A8LJNUkp02SmnD9Djz/8ktYnTJwzN8lPovp3gaH5A/1TBe4WgHXMSCdw3hQJx3pkxClvrBIqEnOKtuT4U+5nqLFD+VJCAlgotJdyuqJ4ZUs5vlstvRSgZge2Z5rqX3t9eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ggWjpk4C; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1713886981; x=1745422981;
+  t=1713887137; x=1745423137;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=878iBN1wCLHEB2yRzqkpbitV3mFieot5Pqm94fhfGog=;
-  b=JyHdhBkwB9qjMTKdE9nbt4efQkzKxkJGpexu1QdsXxQHPT8s7TPO0ncg
-   g3gmlZ9tRCpAYcE9GeGF8gU5v0Lzr2Hk4D7Iizc9/W6Uk3OmWqYB5HQ+y
-   x1+fw34zgG+z8vbChls8CS/WYMjaAM+z0q5aLCwt/fitnSIxl0yrb86Wa
-   Gs3pEHJlmUvheGW0+PUFZ2TdUd52l+o6vnfghjLhtFTpxNRBPoAkVQ1Cl
-   njWAAC0VoJi4Grc4IgiPRD4Xn/wl0223ZNDQ1Ou9xeYzGJ5RIDunl03qS
-   5yDLOehGrzLbzBQ+2Gr5JVERdN3IgKHbPYIHQwfSu6fvDjQ+zfBBlUpb0
+  bh=g32tYyNwhHSjBI5XP117/+DCw7CjmkPynMd0Zm5xQ90=;
+  b=ggWjpk4Ct7tHV5h6/c6+gxgmAT0bXAdXexTj1a7rrLdLTe3wqJCYRLbQ
+   +VwyEL13lwMOtP3w1nuwoNFORMY851OB11Gxz7yRtAibBs3zREjTHs9lZ
+   5PYJo6DUWwzEz2YwVJziI4cEBdI6PprP+7sz93Vs37qytUdzl7/T9FIVm
+   3QUyttbeHv1CxDrRnmOgZvkc5TnNBJd3+PDqZ9WhKDEm8ENEQ9BQcajMQ
+   crF6NCshWksNT1NuJimpG4mM2AhP45Ktv3qYKtTtZ3PJBw8wyQesmdjW4
+   /DadMWFqONqCsIpdmm61ZJY+PR3BRv7R+qLvi1cRyUZBN8SBkakyUmoQf
    w==;
-X-CSE-ConnectionGUID: LnmQdojvSkmqrF2MQBCnig==
-X-CSE-MsgGUID: AEnjRQacTrWlPxL3y8Bx+Q==
-X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="9329281"
+X-CSE-ConnectionGUID: vQ715DZKRS2dfrtPniylZQ==
+X-CSE-MsgGUID: sqniNEsySf6Uob+NUsD01g==
+X-IronPort-AV: E=McAfee;i="6600,9927,11053"; a="13265074"
 X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="9329281"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 08:43:00 -0700
-X-CSE-ConnectionGUID: SVLaXHivTkqKF0jkP1Q+dA==
-X-CSE-MsgGUID: R6Ph6u9PTiWUBmYBFUr1vA==
+   d="scan'208";a="13265074"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 08:45:36 -0700
+X-CSE-ConnectionGUID: NS7n0LC0RDaT5M1xEcfcrQ==
+X-CSE-MsgGUID: R/YEB9pyR/e0vS5U8r4puA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,222,1708416000"; 
-   d="scan'208";a="24274769"
+   d="scan'208";a="24441163"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 08:42:57 -0700
+  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Apr 2024 08:45:33 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1rzIIH-00000000Naj-1sJH;
-	Tue, 23 Apr 2024 18:42:53 +0300
-Date: Tue, 23 Apr 2024 18:42:53 +0300
+	id 1rzIKo-00000000Ndc-2YC6;
+	Tue, 23 Apr 2024 18:45:30 +0300
+Date: Tue, 23 Apr 2024 18:45:30 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: nuno.sa@analog.com
 Cc: Petr Mladek <pmladek@suse.com>, Chris Down <chris@chrisdown.name>,
@@ -74,11 +74,11 @@ Cc: Petr Mladek <pmladek@suse.com>, Chris Down <chris@chrisdown.name>,
 	Andi Shyti <andi.shyti@kernel.org>,
 	Jyoti Bhayana <jbhayana@google.com>, linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 2/4] iio: temperature: ltc2983: convert to
- dev_err_probe()
-Message-ID: <ZifW_fUVcdIpfOWO@smile.fi.intel.com>
+Subject: Re: [PATCH v2 1/4] dev_printk: add new dev_err_probe() helpers
+Message-ID: <ZifXmhyIQASs9UYZ@smile.fi.intel.com>
 References: <20240423-dev-add_dev_errp_probe-v2-0-12f43c5d8b0d@analog.com>
- <20240423-dev-add_dev_errp_probe-v2-2-12f43c5d8b0d@analog.com>
+ <20240423-dev-add_dev_errp_probe-v2-1-12f43c5d8b0d@analog.com>
+ <ZifUSKFh2C4VG5QB@smile.fi.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -87,183 +87,23 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240423-dev-add_dev_errp_probe-v2-2-12f43c5d8b0d@analog.com>
+In-Reply-To: <ZifUSKFh2C4VG5QB@smile.fi.intel.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Apr 23, 2024 at 05:20:31PM +0200, Nuno Sa via B4 Relay wrote:
-> From: Nuno Sa <nuno.sa@analog.com>
-> 
-> Use dev_err_probe() in the probe() path. While at it, made some simple
-> improvements:
->  * Declare a struct device *dev helper. This also makes the style more
->    consistent (some places the helper was used and not in other places);
->  * Explicitly included the err.h and errno.h headers;
->  * Removed an useless else if();
->  * Removed some unnecessary line breaks.
+On Tue, Apr 23, 2024 at 06:31:20PM +0300, Andy Shevchenko wrote:
+> On Tue, Apr 23, 2024 at 05:20:30PM +0200, Nuno Sa via B4 Relay wrote:
+> > From: Nuno Sa <nuno.sa@analog.com>
 
 ...
 
->  	/* Check space on the table. */
->  	if (st->custom_table_size + new_custom->size >
-> -	    (LTC2983_CUST_SENS_TBL_END_REG -
-> -	     LTC2983_CUST_SENS_TBL_START_REG) + 1) {
-
-> +	    (LTC2983_CUST_SENS_TBL_END_REG - LTC2983_CUST_SENS_TBL_START_REG) + 1)
-
-Semi-unrelated change?
-
-...
-
-> +		return dev_err_ptr_probe(dev, -EINVAL,
-> +				      "Invalid chann:%d for differential thermocouple",
-
-While at it, add missing \n.
-
-> +				      sensor->chan);
-
-...
-
-> +		return dev_err_cast_probe(dev, ref,
-> +					  "Property adi,rsense-handle missing or invalid");
-
-Ditto.
-
-...
-
-> +			return dev_err_ptr_probe(dev, -EINVAL,
-> +					      "Invalid number of wires:%u\n",
-> +					      n_wires);
-
-Can be compressed in terms of LoCs?
-
-...
-
-> +				return dev_err_ptr_probe(dev, -EINVAL,
-> +						      "Rotation not allowed for 2/3 Wire RTDs");
-
-\n
-
-...
-
-> +			return dev_err_ptr_probe(dev, -EINVAL,
-> +					      "Invalid rsense chann:%d to use in kelvin rsense",
-> +					      rtd->r_sense_chan);
-
-Ditto.
-
-...
-
-> +			return dev_err_ptr_probe(dev, -EINVAL,
-> +					      "Invalid chann:%d for the rtd config",
-
-Ditto.
-
-> +					      sensor->chan);
-
-...
-
-> +			return dev_err_ptr_probe(dev, -EINVAL,
-> +					      "Invalid chann:%d for RTD",
-
-Ditto.
-
-> +					      sensor->chan);
-
-...
-
-> +			return dev_err_ptr_probe(dev, -EINVAL,
-> +					      "Invalid value for excitation current(%u)",
-
-Ditto.
-
-> +					      excitation_current);
-
-...
-
-> +	if (IS_ERR(ref))
-> +		return dev_err_cast_probe(dev, ref,
-> +					  "Property adi,rsense-handle missing or invalid");
-
-Ditto.
-
-...
-
-> +		return dev_err_ptr_probe(dev, -EINVAL,
-> +				      "Invalid chann:%d for differential thermistor",
-> +				      sensor->chan);
-
-
-Ditto.
-
-...
-
-> +			return dev_err_ptr_probe(dev, -EINVAL,
-> +					      "Invalid value for excitation current(%u)",
-> +					      excitation_current);
-
-Ditto.
-
-...
-
-> +		return dev_err_ptr_probe(dev, -EINVAL,
-> +				      "Invalid chann:%d for differential thermistor",
-> +				      sensor->chan);
-
-Ditto.
-
-...
-
-> +			return dev_err_ptr_probe(dev, -EINVAL,
-> +					      "Invalid value for excitation current(%u)",
-> +					      excitation_current);
-
-Ditto.
-
-...
-
-> +		return dev_err_ptr_probe(dev, -EINVAL,
-> +				      "Invalid chann:%d for r_sense",
-> +				      sensor->chan);
-
-Ditto.
-
-...
-
-> +	if (!st->num_channels)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "At least one channel must be given!");
-
-Ditto.
-
-...
-
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "EEPROM command failed: 0x%02X\n", val);
-
-One line?
-
-...
-
-> +	if (IS_ERR(st->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(st->regmap),
-> +				     "Failed to initialize regmap\n");
-
-Wondering about Andi's proposal in conjunction with %pe to be in use
-
-		return dev_???(dev, st->regmap, "Failed to initialize regmap\n");
-
-where it returns an int and uses const void * as an error pointer for %pe.
-
-
-
-> -	st->iio_chan = devm_kzalloc(&spi->dev,
-> +	st->iio_chan = devm_kzalloc(dev,
->  				    st->iio_channels * sizeof(*st->iio_chan),
->  				    GFP_KERNEL);
-
-Separate change to devm_kzalloc() before this patch?
-In that patch you may also introduce a temporary struct device *dev.
-
+> > +#define dev_err_cast_probe(dev, ___err_ptr, fmt, ...)	({			\
+> > +	ERR_PTR(dev_err_probe(dev, PTR_ERR(___err_ptr), fmt, ##__VA_ARGS__));	\
+> > +})
+
+After looking into the next patch I think this should be rewritten to use %pe,
+hence should be an exported function. Or dev_err_probe() should be split to
+a version that makes the difference between int and const void * (maybe using
+_Generic()).
 
 -- 
 With Best Regards,

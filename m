@@ -1,166 +1,102 @@
-Return-Path: <linux-iio+bounces-4487-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4488-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17A88B016A
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 07:58:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A94498B0645
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 11:42:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75C2F283B0C
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 05:58:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4872A1F23243
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 09:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE544156964;
-	Wed, 24 Apr 2024 05:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A9F158DB8;
+	Wed, 24 Apr 2024 09:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AeQfblBI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qk85HtE1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1888315687F
-	for <linux-iio@vger.kernel.org>; Wed, 24 Apr 2024 05:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E12158A29;
+	Wed, 24 Apr 2024 09:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713938300; cv=none; b=Ru+spKlYSJG8itltLH8REnDSzF/lEn6VI63+OAc2DoJm95TXtRqU9dOG4kHa6LhWUOhq6ICm2mx90SUTdKWM3vPmwij01kC4TEAEOTenXkSuUqYkBQJ/HPTK/mVW0UAY4oQ5+h/xK2Bb9qvoxyY8JWMy82gEIPcL5bOHEMscgSM=
+	t=1713951747; cv=none; b=mk3T5/4urcqriOfEc/Tnn+FtU51Tl4ssoXz2/C47eWKp4HICq3Jf2UVFbYntALM3uAYjavuWq41wARAA/mvFZYWSNPZb7NMnIimxEIgKZ+y0zI+H/sSYjTIk8N1qis5mHYhxBZt7od648OL97OF9+rcZFbnY0Jc2PZHb8lwgvGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713938300; c=relaxed/simple;
-	bh=ukWXJGkwDRwc3UcBBER5J5oFKEGGzue+iwnJ1u/Jr7w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JIYNQ0KxYKJNSRHmzLmieMEBWhdG2vIIKfFKHlTuPapq0ISWv7m+OmUk+UwA5UFaE0Ftz+vgjx3Aiv6mMR65/Kv13UbGpDj2dHFn4cRZGOMbZ+xBQG/vt1QQQOUjMgMz2d7AP9mVnLnQg1Xer8ODjqmxH/R5sibCPjWf/JDDSr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AeQfblBI; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-434ffc2b520so122601cf.0
-        for <linux-iio@vger.kernel.org>; Tue, 23 Apr 2024 22:58:18 -0700 (PDT)
+	s=arc-20240116; t=1713951747; c=relaxed/simple;
+	bh=pdUM2PQ6lmcQ67mgawtuU1EkP4dhP3YHKQUjHS9V2qA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q29T0DFnwUKO+moiOpt+S/kQXmdtZ8mF8q03tNyGYxoF67yZrRr1AALGiOJASLfyqMaIONJfDLtgrVg04BADgNSi7zBFjC+azTl4kxHmQlIBqg7F0HE3OICa2JUSM1SjVAgNW5YiT0uFUh/GxRuANFr2Ds6NddE8km1GWmIG4Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qk85HtE1; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-34b66f0500aso1665261f8f.3;
+        Wed, 24 Apr 2024 02:42:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1713938298; x=1714543098; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X/W5HSMGzNKRFvroL7XEIB583TE1U/at3BEuUXdJmYE=;
-        b=AeQfblBIYDNskyZoINXVuzyw1cDfCp5Ul1CEWRhAk7HhtMpFeqAPZ5YETS7XNZALgj
-         p0KKkpaLRMJPQYK8KDoldGgklt5qesLTh2sE5r8zfeZxvnY2nY2cwYS5HspFiFtlMLmY
-         OdY6tg1RwbsqEFt4TqrY8UVHS22GfO11PqIM/e4HV2sQrL9v9FX5lJGLbOJ9tgScFhAH
-         +GKNrjCUPaSgraWb+EIpAeZ7M2RBhHCX10ETvmMO8tcTn/edvhUH3eDQg6EN3JtRzqgR
-         V/nqggQfsLk2e3z1xXvhn5Z0+jVYLRj91Jd6U6YPluiayupZPG4JAtllDfcsqUvj9JPc
-         lcXA==
+        d=gmail.com; s=20230601; t=1713951743; x=1714556543; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OZ1WcXyOys5YIDWCRIW5mC14e4vDyGa7xvoVt1+JFn8=;
+        b=Qk85HtE1yOgELGZfTIz9Hsze9GS5tcnwo9WATyy4F7pqxNfj8GaHjrCLirKkzz/hKw
+         G3lDsJEekhVc016LGr3xykDoEptG0sUlpgTPYz7BcAObG4J3GoSiDkBvsy6ZtsiZxS8b
+         HMsnK+kRJoF91a+AFZmDsJh50HgfiXbAGEswJ0GZd1ovkPzZNOn7foH9wD8r0wHeMx6M
+         w86dHhY2PbS5w70lZxW0oobQ3OD9AQ/uT+EW+abQVKHfrMLR3n8X7kfE9vbBfCOBRfmW
+         B+6bbgiR/XxHtRKJgMX7YGOqXH5iqRPLjAumtzVS91Tpu3L2STrSPJDwBebuuM45FKnZ
+         ONEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713938298; x=1714543098;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X/W5HSMGzNKRFvroL7XEIB583TE1U/at3BEuUXdJmYE=;
-        b=hqux3cG0Ib247QAt4//yhW2q4r1tdw2ilQL2zxYRyINz4/O3YB5WiutOiH47vxqs0L
-         ArR7re4gErg9Hcum39hO414kWnwl1d8L4fzjrmEIdzQoYPbEgJH7Ec4JxZ5veWYuzafi
-         Zq/mZoXQrUs1Bf6L4Tr4vlK+TEwK0iD2q5pTp0ozfQFPGzvV4h5ko/YTQGAfz45E9Zio
-         aRibx5Fdtav86sxf4N9aZRHQ3dVAmjHKm8X77Ek2FrFooMOimDBgVSy9YGNhPaebneEL
-         3Nr2pJ6SkJdbV3egDNusCAG0m97uC4WgIKoMbD2XccF9KXHnF/HhO520SPnljzktbZjj
-         5h2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXd2dexZWmPZR4P8oREuS4XUHnSj6NwOBm8BsI6fz8BPdLp8xNKbErC1XKsWVjH7ON3whQRJzfbppkOeCNOfcZ83On2mRftOFiB
-X-Gm-Message-State: AOJu0YzEh903ggFipSyyCWkmkxI7Phns7Qcp3RHM6BqVGB7ffEX8oVkg
-	iUmQ/X9GFxoM7P7RodAGSRznUitSIse9VcK+OEmYcwhWWrP17GTPSXQG5KMvzxd04Jmd2MBAQ8C
-	D6tNpCaisZhCGASCTgnGYhsKOXCXEm8q9u11p
-X-Google-Smtp-Source: AGHT+IFtH+TdYnY/R2NkKd7EY8OhaQPa4uA2hOiV9IhRrDt+9zqEvKh32061ELbCkTI4QNocIDZCt4lHutO/oQbF8iw=
-X-Received: by 2002:ac8:6e81:0:b0:437:c89e:245b with SMTP id
- c1-20020ac86e81000000b00437c89e245bmr130751qtv.15.1713938297863; Tue, 23 Apr
- 2024 22:58:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1713951743; x=1714556543;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OZ1WcXyOys5YIDWCRIW5mC14e4vDyGa7xvoVt1+JFn8=;
+        b=wA60arQHyvy9YFct1sr+aw2P9eAKHAGfnT/Uww1HBjdiy9sEC6KTycAktcInTznoCW
+         LAButvcgM5oo9GQhQMH2QYmkMD0yWsAt+3hwRcGBbaAxP3rL9SrpyCU6O66nBIvZsQLI
+         /5cdToLPfuir0/d8jHZ+wP/KTauV5bMuqCOc3hNyQT98lKcbQm1GFG2N0rNrlESgpy0Z
+         nvG9TH0iRQZBfKt00UDv17SNStzSY1dTVfbCESBWrXWZTRDjCbAdPVkUbuSRZaFAY7Zb
+         VxFaJdvCt6ww1hCrVn9sZmXRHldy6jfHjAHRFI4TsOHRuO/+55RwQxq4VT4WEPfcjvwr
+         1VHQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVnfVJ3nscCkjMPmYOgGDA6Am6bmHKPc810M/9MOUNQeyf+jtcx0ghkIooHbolOSiDeL2Rsq5XGvd4O7NlfWSRqOOivPVZQzHEzKyJQpE8KfD7CgZPC5/+lW5UJCEoeZa3HmD5x
+X-Gm-Message-State: AOJu0YzF3w4+5L8PUzgoowP7JLq1QpmGz/HtyWieXQmplC+BCXBU3HWa
+	aJ36a61WNxB8oUgRUISp3LumK4xlDR3IU3Y9A4x/hYMny5xyfYwUJ0EtqS/H
+X-Google-Smtp-Source: AGHT+IE9NZ/+nqIl5BW8fpYLEBP5nud8cGXZ3FcNjn3Pr4uGBSO+WLjwtOAW5sy6nLi2HbHzKQnTHA==
+X-Received: by 2002:a5d:5449:0:b0:34a:a836:b940 with SMTP id w9-20020a5d5449000000b0034aa836b940mr1088278wrv.18.1713951743201;
+        Wed, 24 Apr 2024 02:42:23 -0700 (PDT)
+Received: from rbolboac.. ([2a02:2f0e:320d:e800:6acb:a317:3d30:4165])
+        by smtp.gmail.com with ESMTPSA id a12-20020adfed0c000000b0034635bd6ba5sm16683339wro.92.2024.04.24.02.42.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 24 Apr 2024 02:42:22 -0700 (PDT)
+From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+X-Google-Original-From: Ramona Gradinariu <ramona.gradinariu@analog.com>
+To: linux-kernel@vger.kernel.org,
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	corbet@lwn.net
+Cc: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Subject: [PATCH 0/1] adis16475 documentation fixes
+Date: Wed, 24 Apr 2024 12:41:51 +0300
+Message-Id: <20240424094152.103667-1-ramona.gradinariu@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240105130404.301172-1-gatien.chevallier@foss.st.com> <20240105130404.301172-7-gatien.chevallier@foss.st.com>
-In-Reply-To: <20240105130404.301172-7-gatien.chevallier@foss.st.com>
-From: Saravana Kannan <saravanak@google.com>
-Date: Tue, 23 Apr 2024 22:57:40 -0700
-Message-ID: <CAGETcx8HdnspNfDEJP+cqShJPsDryzGkOVq6B99cFQzkZi3dMg@mail.gmail.com>
-Subject: Re: [PATCH v9 06/13] of: property: fw_devlink: Add support for "access-controller"
-To: Gatien Chevallier <gatien.chevallier@foss.st.com>
-Cc: Oleksii_Moisieiev@epam.com, gregkh@linuxfoundation.org, 
-	herbert@gondor.apana.org.au, davem@davemloft.net, robh+dt@kernel.org, 
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
-	alexandre.torgue@foss.st.com, vkoul@kernel.org, jic23@kernel.org, 
-	olivier.moysan@foss.st.com, arnaud.pouliquen@foss.st.com, mchehab@kernel.org, 
-	fabrice.gasnier@foss.st.com, andi.shyti@kernel.org, ulf.hansson@linaro.org, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	hugues.fruchet@foss.st.com, lee@kernel.org, will@kernel.org, 
-	catalin.marinas@arm.com, arnd@kernel.org, richardcochran@gmail.com, 
-	Frank Rowand <frowand.list@gmail.com>, peng.fan@oss.nxp.com, lars@metafoo.de, 
-	rcsekar@samsung.com, wg@grandegger.com, mkl@pengutronix.de, 
-	linux-crypto@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	dmaengine@vger.kernel.org, linux-i2c@vger.kernel.org, 
-	linux-iio@vger.kernel.org, alsa-devel@alsa-project.org, 
-	linux-media@vger.kernel.org, linux-mmc@vger.kernel.org, 
-	netdev@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-serial@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-usb@vger.kernel.org, Rob Herring <robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jan 5, 2024 at 5:03=E2=80=AFAM Gatien Chevallier
-<gatien.chevallier@foss.st.com> wrote:
->
-> Allows tracking dependencies between devices and their access
-> controller.
->
-> Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
-> Acked-by: Rob Herring <robh@kernel.org>
+Remove in_accel_calibbias_x and in_anglvel_calibbias_x device files
+description, as they do not exist and were added by mistake.
+Add correct naming for in_accel_y_calibbias and in_anglvel_y_calibbias
+device files and update their description.
 
-Please cc me on fw_devlink patches. Also, this patch is breaking the
-norm below. Please send a fix up patch.
+Ramona Gradinariu (1):
+  docs: iio: adis16475: fix device files tables
 
-> ---
-> Changes in V9:
->         - Added Rob's review tag
->
-> Changes in V6:
->         - Renamed access-controller to access-controllers
->
-> Changes in V5:
->         - Rename feature-domain* to access-control*
->
-> Patch not present in V1
->
->  drivers/of/property.c | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/of/property.c b/drivers/of/property.c
-> index afdaefbd03f6..7f737eac91b2 100644
-> --- a/drivers/of/property.c
-> +++ b/drivers/of/property.c
-> @@ -1268,6 +1268,7 @@ DEFINE_SIMPLE_PROP(leds, "leds", NULL)
->  DEFINE_SIMPLE_PROP(backlight, "backlight", NULL)
->  DEFINE_SIMPLE_PROP(panel, "panel", NULL)
->  DEFINE_SIMPLE_PROP(msi_parent, "msi-parent", "#msi-cells")
-> +DEFINE_SIMPLE_PROP(access_controllers, "access-controllers", "#access-co=
-ntroller-cells")
->  DEFINE_SUFFIX_PROP(regulators, "-supply", NULL)
->  DEFINE_SUFFIX_PROP(gpio, "-gpio", "#gpio-cells")
->
-> @@ -1363,6 +1364,7 @@ static const struct supplier_bindings of_supplier_b=
-indings[] =3D {
->         { .parse_prop =3D parse_regulators, },
->         { .parse_prop =3D parse_gpio, },
->         { .parse_prop =3D parse_gpios, },
-> +       { .parse_prop =3D parse_access_controllers, },
+ Documentation/iio/adis16475.rst | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-All the simple properties are listed before the suffix ones as the
-suffix checks are more expensive. So, you should have inserted this
-right before the suffix properties. Also, there's a merge conflict in
-linux-next. So make sure you take that into account when sending the
-fix up and picking the order.
+--
+2.34.1
 
--Saravana
-
->         {}
->  };
-
->
-> --
-> 2.35.3
->
 

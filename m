@@ -1,128 +1,119 @@
-Return-Path: <linux-iio+bounces-4491-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4492-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22DB18B0891
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 13:45:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE62D8B08CF
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 13:58:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD5D9287EB7
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 11:45:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBDB4B24AB1
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 11:58:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506B415AAAB;
-	Wed, 24 Apr 2024 11:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437F915AAA7;
+	Wed, 24 Apr 2024 11:58:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jXo81/GF"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dewPXTB3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9007115A4A0
-	for <linux-iio@vger.kernel.org>; Wed, 24 Apr 2024 11:45:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC8E15A48B
+	for <linux-iio@vger.kernel.org>; Wed, 24 Apr 2024 11:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713959138; cv=none; b=rZN/OdwXMehtniuLM4y/63UfgkWq3HU/Vkv2VXsl5Br7pVnE1NX2SlS2KI0xHNYexZrpgg6cxg/TGIvMKIZbHt2Iatn1fLmd+QEbJhUCIj3gBTyvghl3z+0rt5avHDQsACuanJCj7muFgVcoF81rHT68gak4H//iWszb0raKm/c=
+	t=1713959887; cv=none; b=AaVUToj1AHoG8eqNZYVJNL/KWTx2fGNSdn9dFyczve+ALgf3zJGDFibYum8YLrVkzR/4qA2WTwCRZlwSFlTp0lJkjhlL493Zaddp28mJQGR+VlOJvMsR+ksIxwHeOklcXIjiVI2hWWACnGRahyIxUwHOi9ubYjcFunePfYnkQr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713959138; c=relaxed/simple;
-	bh=LGpHzWFD89nzoHthfxKConElhbe2d1ooFKEdaJu+6GY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=DgbKytZHoPW8lpYP5SNFQkBy4d4RZyuPyOmt38VKeuF72aJyOiqIGPIX7xOfRHVo5r8fF9DLSVPGxTRTcVnBj9hX5z8b0NcA+w0zya/9Ggjoj9hK2/mSq5UFqH0ys3vq8QDsaoZCkuhlZDMUi8IsxKQrdheMbcLygX+nReoqQbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jXo81/GF; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-41b21ed1aaaso621915e9.1
-        for <linux-iio@vger.kernel.org>; Wed, 24 Apr 2024 04:45:36 -0700 (PDT)
+	s=arc-20240116; t=1713959887; c=relaxed/simple;
+	bh=emMWvZcEAzhT3YKKh9o3OcDcXSiS4xqHIaQQ1tV8Xio=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o3ScCJD9+fCTFfEKwd/fO0D6YO5QaeNpskYLcJ3rrInzIka+O076YFqrnctMBc68+IwBQ427swqBGlWsfWfuNRjy61QocppIphZZPTmJdYnFe3eaHnjoBTA9AcUKlcY0fPLCRA3ZPuj6X0yhcfJhZTqgCoDVfDo+4bi1FeyCpZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dewPXTB3; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-343f62d8124so5498253f8f.2
+        for <linux-iio@vger.kernel.org>; Wed, 24 Apr 2024 04:58:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1713959135; x=1714563935; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1713959880; x=1714564680; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=FlbfXfxbLk/Dc9+eU1RLGYFDghoFw/1H6VGbuUIl4lQ=;
-        b=jXo81/GF4NQgw8daA9WY9M43vqkaDe6g/94IAYMY3rXEmGiAchKW56dHRWmRRRQE1P
-         vCeTyouRLOlcP2O+FuBEFPbTFJjjiWggrLTTg7YIkm4jQWBykKcOjWQHUbr2DulEF8EJ
-         WMUcyTTvvP6aSkjWm1RVHylTXymle6vBbhUT3/xp1WUVA0Bb33avkXvzA7tZyyfi/EKs
-         YfJzwwXS3trh0qDfFDsyKzhSbORjO5mpTwstdcdyXRKzt3saSD1Z5dKq/YGG89U9hOsJ
-         ZrycGMCAWVL7hF4SYMwW3FcRBKJ01L2ATs6m4FUTx8NUv36pLareOA/EtHnzd99Vp/4y
-         s9Fw==
+        bh=TmWln6bKBG4CBrts1lYvD1pj2KHD3HpMCL9FzHeEXI0=;
+        b=dewPXTB36durv0/qDUf4Ov/TB7PrX3+kAkUNRPKkomUDtlOxvxV1yT1wImfF2fbYQq
+         o+Vyt5CdWQXcMIJDgAHUkXYeQaMImEVWBrnaJQGGhRL1wGM+e4EK3QKjUE3YqoXQ/Nxs
+         WDB9mcpyROHHfe87eHGS0OD4KAIq8UeNuNumBsRpmY/LcBZcTAEisawC1jN7RUnEzvOj
+         SPm1xO1SnsMBpW84YQtWeIBo1wys2pijC3DYE7f9LbMx1OLGZAMNTbQzIXJih58Frisp
+         mWvOnwNHPgfQilbeTv+okkmto7pMCRC9MbDkMx+d1A1yFrwZYV59+4y38rVwxaLLFEN/
+         h2XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713959135; x=1714563935;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1713959880; x=1714564680;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FlbfXfxbLk/Dc9+eU1RLGYFDghoFw/1H6VGbuUIl4lQ=;
-        b=t0Wcxvh2YA9c5R6Wh/epBMGix44+lLrr00hp0AIPdRYah5X6AwtZPWTu0S/SShSI/Q
-         3QHyMxLh1EonWX1a9Jx0QVQTFumtO2fePFzUiE4gS2aPcqj4Pq3SVDDnmK0iPERBrADS
-         A5WaEkJJcjGqksf7hGqnJs/+K9Jxb07rnH8MOpJkhNZJYdEM55ZtJ1RpgU32uDb72Wiu
-         fKmStFKp0UXtrlyTpPiKsCy37SsdIaRaQWylq1SUYWdJt2LJy5KXNP0cV2myyI4aybjp
-         9AD67qCszN2CxzqekouEjqKCKBVnfBTFK1Y4cIuCbv194vPxwXwShEgnXDVULnlgH7w8
-         /QUA==
-X-Forwarded-Encrypted: i=1; AJvYcCX80+PK7t/y0yR/LLphL9AXpPDWTUIiFsaLE664f4Dm8XhAHvIrBheI+AdtQV4+RUUkPVjY3zIn2H6RdhTnHxNg4ZjAJ7iXt770
-X-Gm-Message-State: AOJu0YwztuctccD7/ZUAkSlSAp1q+S9GTIfhF4vm+5dar4W+c0fLQj4A
-	uKdU4bp6LDXeW5EfQf508cUszua2b8xaxxoI2+UR7c/pSbIDkaCREBSK4TK/mUk=
-X-Google-Smtp-Source: AGHT+IE+LWq81rUtLmev/5MCrGpW7mTkC6YpW93QfAvEXZj/ZhSmYdQtXnSo2HsA+AYn6qnV1Fm+Vg==
-X-Received: by 2002:a05:600c:4750:b0:418:91ae:befc with SMTP id w16-20020a05600c475000b0041891aebefcmr3776672wmo.0.1713959134557;
-        Wed, 24 Apr 2024 04:45:34 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id n7-20020a05600c500700b0041b0cb8b716sm1458267wmr.39.2024.04.24.04.45.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Apr 2024 04:45:34 -0700 (PDT)
-Date: Wed, 24 Apr 2024 14:45:30 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Nuno Sa <nuno.sa@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org
-Subject: [PATCH] iio: dac: adi-axi: fix a mistake in axi_dac_ext_info_set()
-Message-ID: <df7c6e1b-b619-40c3-9881-838587ed15d4@moroto.mountain>
+        bh=TmWln6bKBG4CBrts1lYvD1pj2KHD3HpMCL9FzHeEXI0=;
+        b=IsBrGUuKNbo+LE101mCBK9TQ5htFYYp54b8XzwdV6XIUoUEudPiMtRcEzy4Hf7NgYg
+         tFu8cA+5PYd2DVzrR8uFLueut6vwTUjJYLO8wudNazG3uMYKcdpN2UR0I1MdBKpqmQVr
+         ryD/q2pgtI5obExKxL6BrQ7HGfPL9dmZaOaVdgLNGgkQkBwv31eSiI3iWYLt9BnYKMpk
+         FQ8m/r6EN5UZii8RsS3id8MvsmouPU5dNYBo695s7H1yS4vAZNpl1wdVbDrcfA767Aek
+         h41ynOoBIFWvwDGwf3dKTYtVtP81czDYW3rilWRJ/+3GV2zF9c5ULO7GeQPtRuwWEJin
+         Ap6A==
+X-Gm-Message-State: AOJu0YyIqUWQa+sG9z/z+xQVzgt9xbX7qW4IBIug4eL2gNLy+m65260K
+	gL5WUI3DvYOFazUb1ji9BD+GOOamldfKsBf9eQqsi3/hDU9VMhRo8dYRsF10WqM=
+X-Google-Smtp-Source: AGHT+IHOnvn/t+h/tSQVqcM9yIg1JhxzGapSUpkhBbLv4cSAI29WzDIVYD+89a2zzfjV3Y8FDksjug==
+X-Received: by 2002:adf:e5cd:0:b0:34a:4d1:b914 with SMTP id a13-20020adfe5cd000000b0034a04d1b914mr1523700wrn.48.1713959880346;
+        Wed, 24 Apr 2024 04:58:00 -0700 (PDT)
+Received: from [192.168.0.2] (host-79-16-8-49.retail.telecomitalia.it. [79.16.8.49])
+        by smtp.gmail.com with ESMTPSA id h16-20020adffd50000000b00346d3a626b8sm17175456wrs.3.2024.04.24.04.57.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 24 Apr 2024 04:58:00 -0700 (PDT)
+Message-ID: <5982db7e-1058-4d7d-a434-cfe0f7aae326@baylibre.com>
+Date: Wed, 24 Apr 2024 13:57:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Mailer: git-send-email haha only kidding
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: dac: fix ad354xr output range
+To: Angelo Dureghello <adureghello@baylibre.org>, nuno.sa@analog.com
+Cc: linux-iio@vger.kernel.org
+References: <20240424101848.242749-1-adureghello@baylibre.org>
+Content-Language: en-US
+From: Angelo Dureghello <adureghello@baylibre.com>
+In-Reply-To: <20240424101848.242749-1-adureghello@baylibre.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The last parameter of these axi_dac_(frequency|scale|phase)_set()
-functions is supposed to be true for TONE_2 and false for TONE_1. The
-bug is the last call where it passes "private - TONE_2".  That
-subtraction is going to be zero/false for TONE_2 and and -1/true for
-TONE_1.  Fix the bug, and re-write it as "private == TONE_2" so it's
-more obvious what is happening.
+Hi,
 
-Fixes: 4e3949a192e4 ("iio: dac: add support for AXI DAC IP core")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
----
-This is from code review.  Untested.
----
- drivers/iio/dac/adi-axi-dac.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+sorry, please consider this a s 1/1.
 
-diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
-index 9047c5aec0ff..880d83a014a1 100644
---- a/drivers/iio/dac/adi-axi-dac.c
-+++ b/drivers/iio/dac/adi-axi-dac.c
-@@ -383,15 +383,15 @@ static int axi_dac_ext_info_set(struct iio_backend *back, uintptr_t private,
- 	case AXI_DAC_FREQ_TONE_1:
- 	case AXI_DAC_FREQ_TONE_2:
- 		return axi_dac_frequency_set(st, chan, buf, len,
--					     private - AXI_DAC_FREQ_TONE_1);
-+					     private == AXI_DAC_FREQ_TONE_2);
- 	case AXI_DAC_SCALE_TONE_1:
- 	case AXI_DAC_SCALE_TONE_2:
- 		return axi_dac_scale_set(st, chan, buf, len,
--					 private - AXI_DAC_SCALE_TONE_1);
-+					 private == AXI_DAC_SCALE_TONE_2);
- 	case AXI_DAC_PHASE_TONE_1:
- 	case AXI_DAC_PHASE_TONE_2:
- 		return axi_dac_phase_set(st, chan, buf, len,
--					 private - AXI_DAC_PHASE_TONE_2);
-+					 private == AXI_DAC_PHASE_TONE_2);
- 	default:
- 		return -EOPNOTSUPP;
- 	}
--- 
-2.43.0
+On 24/04/24 12:18 PM, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
+>
+> Fix output range, as per datasheet must be -2.5 to 7.5.
+>
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> ---
+>   Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+> index 96340a05754c..8265d709094d 100644
+> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
+> @@ -139,7 +139,7 @@ allOf:
+>                   Voltage output range of the channel as <minimum, maximum>
+>                   Required connections:
+>                     Rfb1x for: 0 to 2.5 V; 0 to 3V; 0 to 5 V;
+> -                  Rfb2x for: 0 to 10 V; 2.5 to 7.5V; -5 to 5 V;
+> +                  Rfb2x for: 0 to 10 V; -2.5 to 7.5V; -5 to 5 V;
+>                 oneOf:
+>                   - items:
+>                       - const: 0
+
+Regards,
+angelo
 
 

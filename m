@@ -1,156 +1,138 @@
-Return-Path: <linux-iio+bounces-4500-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4501-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D518B1109
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 19:32:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB1EF8B1252
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 20:30:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C8611F263A8
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 17:32:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66F7F28E6D9
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 18:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD09816D339;
-	Wed, 24 Apr 2024 17:32:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F3FE16E86E;
+	Wed, 24 Apr 2024 18:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gB6/MbLd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SeFd4Y7g"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D65316C86C;
-	Wed, 24 Apr 2024 17:32:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F216116D9BD
+	for <linux-iio@vger.kernel.org>; Wed, 24 Apr 2024 18:19:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713979927; cv=none; b=Iv7NENQGWSSQb+u4kn6gbtA8YBUC2sxHQZ2JOSrcYxjrozlpnhEWgPJje7i++jtcqcSTk3WTygrL8R/yxje45Tv1Q3PTIB/YLC8x38fRDWqcy3KnBoTClJlc/Dud2UiZJXsa9JM8n8eCExl4jXjUMo+pgAfFHMx1CW2bl8nqL1Q=
+	t=1713982774; cv=none; b=c7OYrK+laihkSVOrtm9h1p6HyixMiaBXC/elOAvpaq1NCs4twnLYRYyBtxIxWQPMfyp8D5l9YLRRqMmGtjkNVuX8/Vv0pMuZwZV+2QL2dDMnytJaqpcHmvB9ymxe2Jk1hbcyOpmUXn1TDdeLNVfVBB49BHdOeZyDpSq5mkY39LA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713979927; c=relaxed/simple;
-	bh=ky9dC23kSEAjIUMZjZQj9SM0S228EZJh/y7s4ODPVSU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=nA+bttog1B0xtgMeZgMHp51+1W4nEV1TAF4gqkw0PKx0Qko2ppOXkuaRdm3Yh4dnfQ2/1S+QUAysR2VvJQjgHaQcDiSOdKMXxGDi2fzX24jXOjwh3k5R07GDWnprfCB8HNx+I4XKpX8B+HfaTf88jNjaXbGs6BVDTL6mt3coKrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gB6/MbLd; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-57222fc625aso46276a12.3;
-        Wed, 24 Apr 2024 10:32:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713979924; x=1714584724; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=La8CBY8A7K5cRWiONNuB5nscgpRq2aalZ6dE+X4zZYQ=;
-        b=gB6/MbLdDzb8j0rXN9PPzPk6DLS9OXqtp3JHUvs2GRpROOjgpOrS7mx/NXxo/78XZ5
-         ntt5gWz9F+FdUGS9kvaWY8KWTv4vmkuHPYiAd2WvOgBLv81VJAO8BhHvPGZT0C1au6zY
-         dcp8QEa8vVGU2FwNxVK4sM7yA7YD/TJwfnFoGbH4/PQemOfYbAbpVdO05pSiiCgrg0mA
-         U1PA/TNisjD4P8LlhOLzioF44FTQX5BrOEJKqdXqPnRBY+rZkMsqFZhYE1/78GIX1pUU
-         9U0d+Qy15dvYRbcr2s3oYWKa3tEVwXUqquXSPiMuU1CXGekvCFAi+BiliOqK3f/GfIsL
-         +N9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713979924; x=1714584724;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=La8CBY8A7K5cRWiONNuB5nscgpRq2aalZ6dE+X4zZYQ=;
-        b=iDbIqs9mh+JA7ARwNKq/k7PPupbCNPOZV1Ak23cPsfSvCv7+5uaZ1Yh5SxWPEvLMBA
-         dNRBTLE/yJKKHTK2y2Xst25iEOs+h6qg4X7v5mKeB0dyT3LWWEDiwhAUEKtZRpybDa28
-         4HdfQYtvx4r+7D3VyqSG9opHEsvK2MY74hnZWmAE4M3USoOwnpC3pehVxi99s+WeJovs
-         H99dTp19KIcvmnZzj2/AsFpQbwtashptCuC/oJmCN/Cq3UEpd+T7tkWI9LIlMcg/MqYx
-         xSt38uPU3W6WMiIIC2q50vorXlqhnjpvUwQFEDp+Qi0CfYUFCFw43oIMFofiiZj/x8gP
-         VB1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWfA1kzdocg+RFdQYhxwhiwuFQ7QzI6zOBoWzmzOtZmAlcxr/qCXZ6N75oHn0H5paIF5DekksgBNoOaTqeRjojvfxsxMo81NQQjCPo7eK9vtoLyxLaGj5cdfmIxmBDh53jnYGts6VPc7BSLodE7CKgxWG2JdW8w80BuohyluB2B8fS525ejkrqM7EyzvjVx/8tJg+naUZJ0zZNsMN13XO9e
-X-Gm-Message-State: AOJu0YzAa48r0e8Yji2+TSXNHqkjmDkcfZYoZFYvzoEjHwGdpZmBwhsf
-	sYsKaNpQQ/0v6wXbS4Ca1hz51xGLyZ6r/6E7SkKaZEHyjcyLJVXwXjdShimeW5vOhX4ouJxVcxh
-	H3WyDF292J/rirp4DljiHiBFlVeo=
-X-Google-Smtp-Source: AGHT+IEHsGNzCu85UmN/IAwPLj4+iSJ8a0O7TKVWxRZUR6ImV/Qxw+2RnQGWugEoeniUZrj1ox7+m8kyWcG2g89JkaQ=
-X-Received: by 2002:a17:906:6d91:b0:a52:28f:5e61 with SMTP id
- h17-20020a1709066d9100b00a52028f5e61mr2933730ejt.27.1713979924148; Wed, 24
- Apr 2024 10:32:04 -0700 (PDT)
+	s=arc-20240116; t=1713982774; c=relaxed/simple;
+	bh=0Tgyg4AoydwBGPq1Yy7vsyiHbrYYxBheWEoRwOk2K40=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PZjeb0VDCTSG2CLZAwYv4KXEJyICYQqQqU73KfRW46eNFvrLEhWtQTp1uQ8sHGJdNazS4Hwmx/b3doaab1c5obzHyZqfBrzsD/LAOXjCjPSGqnCm5yzApC408gjfx/58jbZNZCPcq9kwLCOZ33o26qC4G3NF6LctKT8qhqeNAno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SeFd4Y7g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAED4C4AF07;
+	Wed, 24 Apr 2024 18:19:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1713982773;
+	bh=0Tgyg4AoydwBGPq1Yy7vsyiHbrYYxBheWEoRwOk2K40=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SeFd4Y7g05UkB+hCUymiclTppCWcsB2w6nxTU8Fkv+CaCBszb7UAwfdqlhEJ636yf
+	 /V1gMJjz2Y45KZBUbM4Q6jLKgQpTBk7ziaG3Tq2ckY+IixQemOZ9ocGYc3pyWXunwu
+	 4w8/Jj+pT5LvXcX6jaeStwzD5rDoe6IgB05pPLtgXU4DPhZaPXRsAzh++nRqR9nyKH
+	 oMYPdGQ/6dJyKVua2rK9ocdV3SzFy5w3HUzfJrs+MK8LZnNrzC7vC2FscXjYcrXNi7
+	 rMlqS77gRn6mAYYSAFQp7Z30TZorSPg95Usx9d3+i8/hR7uU+eO2CHEIf93GHX4iZa
+	 EKHaLZu8Epqdw==
+Message-ID: <c774d772-358b-4028-91ef-18d97fb1cd2d@kernel.org>
+Date: Wed, 24 Apr 2024 20:19:30 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240423223309.1468198-2-aren@peacevolution.org>
- <20240423223309.1468198-4-aren@peacevolution.org> <CAHp75VeRDSPvpmSbUyZPp0RMoTOE193U2ma18qxv_qZQKLCq8g@mail.gmail.com>
- <5qqil7ltqhdeabml6toqpcy773uhjxgwaz3txpy4kv4sz55o2y@hmar674eey7s>
- <CAHp75VdR9HtWbSif+j8QHX5zG9xPF1GzUFY2s-0OjD3RAWD9-Q@mail.gmail.com> <xxbwdl6ebvut3u7qhzfy65e4eheixghqe7yn4qemyuowxyxj5a@r2wa2b7bhw2x>
-In-Reply-To: <xxbwdl6ebvut3u7qhzfy65e4eheixghqe7yn4qemyuowxyxj5a@r2wa2b7bhw2x>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 24 Apr 2024 20:31:27 +0300
-Message-ID: <CAHp75VejwJ7h5jaNL+VL7FE4UMbTEP3QA1E=_y-1PSrz99zBKQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and
- power it off during suspend
-To: =?UTF-8?Q?Ond=C5=99ej_Jirman?= <megi@xff.cz>, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>, Aren Moynihan <aren@peacevolution.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	Willow Barraco <contact@willowbarraco.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] dt-bindings: iio: dac: fix ad354xr output range
+To: Angelo Dureghello <adureghello@baylibre.org>, nuno.sa@analog.com
+Cc: linux-iio@vger.kernel.org, Angelo Dureghello <adureghello@baylibre.com>
+References: <20240424101848.242749-1-adureghello@baylibre.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240424101848.242749-1-adureghello@baylibre.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 24, 2024 at 7:14=E2=80=AFPM Ond=C5=99ej Jirman <megi@xff.cz> wr=
-ote:
-> On Wed, Apr 24, 2024 at 06:20:41PM GMT, Andy Shevchenko wrote:
-> > On Wed, Apr 24, 2024 at 3:59=E2=80=AFPM Ond=C5=99ej Jirman <megi@xff.cz=
-> wrote:
-> > > On Wed, Apr 24, 2024 at 02:16:06AM GMT, Andy Shevchenko wrote:
-> > > > On Wed, Apr 24, 2024 at 1:41=E2=80=AFAM Aren Moynihan <aren@peacevo=
-lution.org> wrote:
+On 24/04/2024 12:18, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
+> 
+> Fix output range, as per datasheet must be -2.5 to 7.5.
+> 
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> ---
 
-...
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
 
-> > > > >         ret =3D stk3310_init(indio_dev);
-> > > > >         if (ret < 0)
-> > > > > -               return ret;
-> > > > > +               goto err_vdd_disable;
-> > > >
-> > > > This is wrong. You will have the regulator being disabled _before_
-> > > > IRQ. Note, that the original code likely has a bug which sets state=
-s
-> > > > before disabling IRQ and removing a handler.
-> > >
-> > > How so? stk3310_init is called before enabling the interrupt.
-> >
-> > Exactly, IRQ is registered with devm and hence the error path and
-> > remove stages will got it in a wrong order.
->
-> Makes no sense.
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline), work on fork of kernel
+(don't, instead use mainline) or you ignore some maintainers (really
+don't). Just use b4 and everything should be fine, although remember
+about `b4 prep --auto-to-cc` if you added new patches to the patchset.
 
-Huh?!
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time.
 
-> IRQ is not enabled here, yet. So in error path, the code will
-> just disable the regulator and devm will unref it later on. IRQ doesn't e=
-nter
-> the picture here at all in the error path.
+Please kindly resend and include all necessary To/Cc entries.
 
-Error path _after_ IRQ handler has been _successfully_ installed.
-And complete ->remove() stage.
+Code looks good though, but why opting out from testing? For that
+reason: no acks.
 
-> > > Original code has a bug that IRQ is enabled before registering the
-> > > IIO device,
-> >
-> > Indeed, but this is another bug.
-> >
-> > > so if IRQ is triggered before registration, iio_push_event
-> > > from IRQ handler may be called on a not yet registered IIO device.
-> > >
-> > > Never saw it happen, though. :)
-> >
-> > Because nobody cares enough to enable DEBUG_SHIRQ.
->
-> Nice debug tool. I bet it makes quite a mess when enabled. :)
+Best regards,
+Krzysztof
 
-FWIW, I have had it enabled for ages, but I have only a few devices,
-so I fixed a few cases in the past WRT shared IRQ issues.
-
---=20
-With Best Regards,
-Andy Shevchenko
 

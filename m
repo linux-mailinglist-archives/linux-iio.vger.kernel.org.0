@@ -1,145 +1,71 @@
-Return-Path: <linux-iio+bounces-4483-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4484-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9158AFC77
-	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 01:16:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1BB8B0049
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 06:00:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D74CB21E5E
-	for <lists+linux-iio@lfdr.de>; Tue, 23 Apr 2024 23:16:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EDE51C22EBD
+	for <lists+linux-iio@lfdr.de>; Wed, 24 Apr 2024 04:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBADA3A8CE;
-	Tue, 23 Apr 2024 23:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA66513FD81;
+	Wed, 24 Apr 2024 03:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SRKFOo6R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JDq8uMjH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E601E891;
-	Tue, 23 Apr 2024 23:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C55213C9D0
+	for <linux-iio@vger.kernel.org>; Wed, 24 Apr 2024 03:59:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1713914206; cv=none; b=GignofCtnNxO/xU/k73TqNdvmWVsYEeT3MUCnSq1cNFbsYUk1MjPs8nTEM765abv9ISDtdxtYUZQrUypqdou+IERGKoryWL2688XugGZShXzoHUk5MIL4AgbFsQIudh5GqW/ADmSV2+BSBXyWWheoboB0l6O/miIOzclInjwmWs=
+	t=1713931194; cv=none; b=qEI7yPF9tZmbIXjfgBUzs9ZaSAALBVSX9986HjrEoFLxlW+AB9h6r+pe3Qw0rfGeyjFXd/jTNQvMdVXSlZ+PRvmbWQuBzPlgL9sAsheiQLtpvdJCWAmi2dPr427pd+SM26PpOMitmFRdLHs/ONCalW2JmWe8r/kt6AvamtYJ2lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1713914206; c=relaxed/simple;
-	bh=7wftDFTjIIAwQlVxhCOtE1A7It3KWm3iQw5DK5y64pw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OzMnK2vxRjbCwlRoZqFrw33y02+pev6xcCRlz25Q5hFA6bT2SPCEbBGHfHFsrpgRYVrzelrUbDA3GGgqQ0ltkAtKQsNsbDZVcNTViNS0fp3hvWlQpmBu85cwSaW5Adv92fu/gOTJLxe5oUT7yiFSpS1zTxXpyrLv9tT56FE/Mak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SRKFOo6R; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-516d2600569so7920849e87.0;
-        Tue, 23 Apr 2024 16:16:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1713914203; x=1714519003; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aca9K8EpXVseGVnleC7T/tkn8XH23MGY+cAgNNEhNds=;
-        b=SRKFOo6Rq75wf3SdtY1TmT0xgdfWawT0XgoV3sJqMb6vawI5BnjNs9BZ/qct93h3ZJ
-         tI2OGk8kHP+v4iAIZK3ZhozQNf/LvuF5/2Cxda0JN9nNf+VBrEBkB7svM1fdpmcEd0hw
-         toCrgRj2/2YfyzQNku8BNdAnM3iu3N8H38P5HXuM+fTSuB+WF9Wc0Yf3g2zd6QbWLtg5
-         0m/7O8LRhrx3G6PoMhaA6D10HwBwphv9mXdUtBg6XoWHUlf+TTrmYbyNW6DtunLTAKPO
-         uBs2OR9iBF/pck1mQch18b/ir18n4P1seipLMuHF060PhKlkml2ARLU2PNaUtMOBBfJ9
-         P1Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1713914203; x=1714519003;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aca9K8EpXVseGVnleC7T/tkn8XH23MGY+cAgNNEhNds=;
-        b=stTDncCEfwu3enyge1dki9p+xd8Dp+tgtwmxa9/6iTvxa6t/xiXOMAXf7g/0GXXGfn
-         mjaegSxg+bKG2Skm5NcgH05JPA2RrQRHDdi8QhCkpU16jSG7246BfaW9qP65n4kSPVQt
-         Pigk6Fj4nh6JURstMDCrcWcMDB20KKYNEgWNgS+jm+fUbjcGmf88mmTzTck9EF5LVAJ3
-         6zIYXWnX0w3xFRKLYmsKKVYfyy81w/bPnchug4o1m1fiaH1Blv/noC8e0bLZZ5DODuvm
-         vXraLLFH5D7XbxWkYuUE9Q5fxlO6nUxdx0xGZC+O3khm67wwS/w2LulBUfkOZkhYsu35
-         o1OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+lCc+AA1QP810YMNouhbMCobsO+h053l6+Gyj0ybjLMmW/Yw5PYQP+N9KzEnsxn1xqqLvwT7Ih39Yh9YX3Uk1Bl/1JgSaNkKem4PP2j+MisoJVoKBO6ANDRcpeIaKdYrMJWSJkKtdbFzPM43qMOqmV4suyXpOi4vMd470KOXDWx8ymhtGgqA7Nq9dq3cE6pQGBhvKiMMoWurt44rOC8l/
-X-Gm-Message-State: AOJu0YxUo85pdogf+Lv/LPX/TrZBYbKqW/7FdSEz71JYjLtoy8pgCulB
-	DyiWifqmydE/PKIAB7Y1DQGk9kGl+yDVJZlhOnmKHaMD6wBpTeVk53cMaHGBRD5fO1q28cWFB/+
-	8at3wHl3Hh07mhWs31ApdMMyDJoA=
-X-Google-Smtp-Source: AGHT+IH10mlUfrVcAQ8LqIHHv7aiYPpNjEMy52tN6YA8d6VSedLkjWnBjwpaw//pCrnhLX3kZ6HsfrXhTzJKHNzrtK8=
-X-Received: by 2002:a19:ca08:0:b0:51a:f3b9:f774 with SMTP id
- a8-20020a19ca08000000b0051af3b9f774mr637571lfg.21.1713914202904; Tue, 23 Apr
- 2024 16:16:42 -0700 (PDT)
+	s=arc-20240116; t=1713931194; c=relaxed/simple;
+	bh=DQyYcJj/ohKRdGCZwgrh24HBsiFNHK/Oq9/cgiU0dF4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GY3/F5IDtxujswGnnX6/Rl5AARnW8+i9QQ01kFMxDwO7B3iLHkkOBrDiKLDAJyiNa9N+RLlxrXuWaz+G8g4aEOs0LWt+8UE68agwpVIMD8YSitGTk7VGMuYxYmWkYbUwWHsrB13UXJHH5gkLf1eDPiaA9MBHsqdrfiYyUEB4FSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JDq8uMjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05D0C113CE;
+	Wed, 24 Apr 2024 03:59:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1713931194;
+	bh=DQyYcJj/ohKRdGCZwgrh24HBsiFNHK/Oq9/cgiU0dF4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JDq8uMjHu6JZ7fmIB9bR2R9OAnpKuKq2FPD77kgGVfRMz5OQev/z6Sd4xSImgCyxV
+	 dJDzVyG8hmbxQQ7jOehXW+uEBi5oS0rTr6w5Y1hOslyhqjaahduBE3BN0URMchcRHp
+	 768+WrSNPtb6kzWhPAPwnVJgx7j+IJiD9I5edfYs=
+Date: Tue, 23 Apr 2024 20:26:12 -0700
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org
+Subject: Re: [PULL] IIO: 1st set of new device support, features and cleanup
+ for 6.10
+Message-ID: <2024042305-fiscally-dash-d3c5@gregkh>
+References: <20240423192104.385c59d6@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240423223309.1468198-2-aren@peacevolution.org> <20240423223309.1468198-4-aren@peacevolution.org>
-In-Reply-To: <20240423223309.1468198-4-aren@peacevolution.org>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Wed, 24 Apr 2024 02:16:06 +0300
-Message-ID: <CAHp75VeRDSPvpmSbUyZPp0RMoTOE193U2ma18qxv_qZQKLCq8g@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and
- power it off during suspend
-To: Aren Moynihan <aren@peacevolution.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
-	Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>, 
-	Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, 
-	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
-	linux-iio@vger.kernel.org, phone-devel@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
-	Willow Barraco <contact@willowbarraco.fr>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240423192104.385c59d6@jic23-huawei>
 
-On Wed, Apr 24, 2024 at 1:41=E2=80=AFAM Aren Moynihan <aren@peacevolution.o=
-rg> wrote:
->
-> From: Ondrej Jirman <megi@xff.cz>
->
-> VDD power input can be used to completely power off the chip during
-> system suspend. Do so if available.
+On Tue, Apr 23, 2024 at 07:21:04PM +0100, Jonathan Cameron wrote:
+> The following changes since commit 4cece764965020c22cff7665b18a012006359095:
+> 
+>   Linux 6.9-rc1 (2024-03-24 14:10:05 -0700)
+> 
+> are available in the Git repository at:
+> 
+>   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-6.10a
 
-...
+Pulled and pushed out, thanks!
 
->         ret =3D stk3310_init(indio_dev);
->         if (ret < 0)
-> -               return ret;
-> +               goto err_vdd_disable;
-
-This is wrong. You will have the regulator being disabled _before_
-IRQ. Note, that the original code likely has a bug which sets states
-before disabling IRQ and removing a handler.
-
-Side note, you may make the driver neater with help of
-
-  struct device *dev =3D &client->dev;
-
-defined in this patch.
-
-...
-
->  static int stk3310_suspend(struct device *dev)
->  {
->         struct stk3310_data *data;
-
->         data =3D iio_priv(i2c_get_clientdata(to_i2c_client(dev)));
-
-Side note: This may be updated (in a separate change) to use
-dev_get_drvdata() directly.
-
-Jonathan, do we have something like iio_priv_from_drvdata(struct
-device *dev)? Seems many drivers may utilise it.
-
->  }
-
-...
-
->  static int stk3310_resume(struct device *dev)
-
-Ditto.
-
---
-With Best Regards,
-Andy Shevchenko
+greg k-h
 

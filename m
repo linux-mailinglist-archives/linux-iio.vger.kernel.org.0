@@ -1,118 +1,117 @@
-Return-Path: <linux-iio+bounces-4507-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4508-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 671788B1AE0
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Apr 2024 08:22:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5F6A8B2091
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Apr 2024 13:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 989161C21151
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Apr 2024 06:22:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED046B218D2
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Apr 2024 11:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247103FB96;
-	Thu, 25 Apr 2024 06:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96A3C12AACE;
+	Thu, 25 Apr 2024 11:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NEpx4oM5"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="UaC2S4av"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846665672
-	for <linux-iio@vger.kernel.org>; Thu, 25 Apr 2024 06:22:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFE401E497;
+	Thu, 25 Apr 2024 11:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714026173; cv=none; b=scvsRY+CN/Rn+v//2JiqUwzEzC0PwGuR46oQcrQS/z/m9260HZhvM0giXJ4FY73iFrDR3dAaP6iIiFnM9lVdLG3/ALMl+b/RSdUEeIuLaHq78WhoPjWVnIN4KQwYOj9gFm1phz7BJmkG6s3iXL7FH+rOECHTbbSketqI8gL6uOg=
+	t=1714045400; cv=none; b=fg4RZoaZqU2Y+/vN9TxM9ljvvmLnBK0ouHNUTDswGTWz0ud19Ca768CYrAS14xoYIfWh93YEw9wHjYW/4cVRon5pGS8a4ijYFiacICfDhf5plFmSQDNk1yc8Jem31qZInPcsh3Xth76rq+P5nLahrWh+HM7sh+d2SaWJgFEtGOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714026173; c=relaxed/simple;
-	bh=r4t8wMua0eZmJqQyloGDotqnpFaD3s8BvYUbNku+tgg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=B59Ndsr9cY8sIAECuULoQ1wlgS7MtizL3WfwFCjScN+XcXVn4i5kgSmNvVna3j2M6R34AdImF17USmJnGoovJLPcaNpcMk0e75sy+yDkEyW2o2eAfJYLvuCnYYQrCo4Ba0gATKkxrybGIC3mSXv8SgWH5fojTvMZX0DHaT7hPe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NEpx4oM5; arc=none smtp.client-ip=209.85.210.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6ea2ac4607aso331764a34.3
-        for <linux-iio@vger.kernel.org>; Wed, 24 Apr 2024 23:22:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714026171; x=1714630971; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Le+L0VmWNYKumCTM7dvjB/4xTTgUPMbARWZobuCCoUw=;
-        b=NEpx4oM5URGsPhgVvzoWTeLnbr5Xshy0KnNc88HDr5pxFAWDBdNGWmlhV9KeD0ZP3M
-         9TXE+U1PgY1KiyIkUjZALPdzPqWr3oXI+a/NzGpU8+nJj3QgH+nhUvv6VrCd8/O6aB14
-         Jau53zT2g4/G6y+2v6qN+jsLG9c0yndXrJXcswWaAsWZbNTR83KQr+3cloz7D34Iqta2
-         nYYFGo/9TNj9tN0HDVpVNIP9ZYubTcv7qSUESZs/hF+4Zqc5mJpgMqrDzQ8IB94J2NyQ
-         IFf/4X44pHFwB+xDVpq2RdDnlUYVujPwEzdisDU9TiSsYZ2pz5G/4QzJyb0yD2UKpfZH
-         PB7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714026171; x=1714630971;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Le+L0VmWNYKumCTM7dvjB/4xTTgUPMbARWZobuCCoUw=;
-        b=SdxCMqwFhUHRZ63W4sCNcpJfbgGcT9mSVds0nVQc73+yPxg/l0uZPMftb4XnjxRt+U
-         60rK6PN5XMAvC5/oxxXNibSNie4Uc41z7EYW1iqB+kDeN7RVshNGWngPJuoA3HW8gf7E
-         1w+P1fYQGERiaDD4CBtiDnM/hx+9d70tTk3JW21YLViVkEkPWTVPo5PP69P+cXMMqUV8
-         1SCtN2DQ0n14Xp1eArVpD1VRQPPW0AhXg8SZ2DFgC5GF+2CkQSqstAOiCyxP1xKYHCll
-         2kZwv3yI0U8xM/L//TQ/dXHSvDcnhYmde7WwxVQgXYW0vVTutAZb/I956SmZwCGAqPiT
-         jYNw==
-X-Gm-Message-State: AOJu0YzSbixEglK/zFexVDCsFHsBN74cKFPfhbiwwzRogM0bixw04FPG
-	fa2k7jHn/NisL+KjOxuQ0wPcF7JdEKXSXc1IfwGB8gyX9ZGvWlKBZG+y6quL
-X-Google-Smtp-Source: AGHT+IHBoRdLH2PWA9qreZOVNHqk3o1Kzvhgqw1S+wQQSlTrR43Qsb+73LJ6K752FUygsEHYUXOYAw==
-X-Received: by 2002:a05:6830:2aa2:b0:6eb:ca73:4813 with SMTP id s34-20020a0568302aa200b006ebca734813mr6347513otu.28.1714026171434;
-        Wed, 24 Apr 2024 23:22:51 -0700 (PDT)
-Received: from adam-asahi.lan ([2605:a601:aa37:b000:4fb9:a9ef:f88:50f6])
-        by smtp.gmail.com with ESMTPSA id o22-20020a9d5c16000000b006ebca4a8083sm2370444otk.78.2024.04.24.23.22.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Apr 2024 23:22:50 -0700 (PDT)
-Date: Thu, 25 Apr 2024 01:22:49 -0500
-From: Adam Rizkalla <ajarizzo@gmail.com>
-To: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Adam Rizkalla <ajarizzo@gmail.com>
-Subject: [PATCH] iio: pressure: bmp280: Fix BMP580 temperature reading
-Message-ID: <Zin2udkXRD0+GrML@adam-asahi.lan>
+	s=arc-20240116; t=1714045400; c=relaxed/simple;
+	bh=r9iQCgsNre3zD/T+CXIOgTbGIYkjP59ItYR/6wtRGDE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Vk16jhmV7m0kXOs9OtjooA+cSwORSe+hTAtC5mwuXKRMzHGyBr96rGYERNdRB+WS7gDJryomTOFb+/9ou6qQfCSYRKOp9oDLxbq5UsWiVcd/Pm4KdTi6oCDEI6pT71VQSikYw9X1dqk2541ZFNHTunEYe2IWOx8cTysj+KMJo8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=UaC2S4av; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1714045398; x=1745581398;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=r9iQCgsNre3zD/T+CXIOgTbGIYkjP59ItYR/6wtRGDE=;
+  b=UaC2S4avZrmuOk+wRRkCKNAIqWXgBBiGTvNb/lGjAGz6Y1jXyHQXi8qA
+   8YGUIxZ04+py4TCmg0SmGSGm9a0yd6yOkZ+JnSpGJmDtR/YjnMdmPmRBJ
+   cGArFt98NBMFs4lnOyHWw6jGl38cjCLFwMiXBP/1iLEuRWk22g13vOvLG
+   VFxZ8ythAVJsj3HxhNlZCO11YFRZG9spvPa5KDmpgRPyTwxvXDKrJRKMi
+   SUbPIx8AmJzL47dYzkBGDVJrkZuA7mO63nY1zEs+tVqKWYJk6inHKele5
+   8aHaE+rxQeeodC2A+1U64EQNx0o1aCSA6tjsHbsvje/BBt3RSfNwZoZwr
+   g==;
+X-CSE-ConnectionGUID: qteOOrYnSzSrTY39UU9dBg==
+X-CSE-MsgGUID: n5dJTltjRx+4BgqX4bl2Zg==
+X-IronPort-AV: E=Sophos;i="6.07,229,1708412400"; 
+   d="scan'208";a="22585804"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Apr 2024 04:43:16 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Thu, 25 Apr 2024 04:42:36 -0700
+Received: from marius-VM.mshome.net (10.10.85.11) by chn-vm-ex04.mchp-main.com
+ (10.10.85.152) with Microsoft SMTP Server id 15.1.2507.35 via Frontend
+ Transport; Thu, 25 Apr 2024 04:42:34 -0700
+From: <marius.cristea@microchip.com>
+To: <jic23@kernel.org>, <lars@metafoo.de>, <lgirdwood@gmail.com>,
+	<broonie@kernel.org>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<conor+dt@kernel.org>, <marius.cristea@microchip.com>
+Subject: [PATCH v1] iio: adc: PAC1934: fix accessing out of bounds array index
+Date: Thu, 25 Apr 2024 14:42:32 +0300
+Message-ID: <20240425114232.81390-1-marius.cristea@microchip.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Fix overflow issue when storing BMP580 temperature reading and
-properly preserve sign of 24-bit data.
+From: Marius Cristea <marius.cristea@microchip.com>
 
-Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>
+Fix accessing out of bounds array index for average
+current and voltage measurements. The device itself has
+only 4 channels, but in sysfs there are "fake"
+channels for the average voltages and currents too.
+
+Fixes: 0fb528c8255b: "iio: adc: adding support for PAC193x"
+Reported-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
 ---
- drivers/iio/pressure/bmp280-core.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/iio/adc/pac1934.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index fe8734468ed3..e79c9715bb28 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -1393,12 +1393,12 @@ static int bmp580_read_temp(struct bmp280_data *data, int *val, int *val2)
+diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
+index f751260605e4..456f12faa348 100644
+--- a/drivers/iio/adc/pac1934.c
++++ b/drivers/iio/adc/pac1934.c
+@@ -787,6 +787,15 @@ static int pac1934_read_raw(struct iio_dev *indio_dev,
+ 	s64 curr_energy;
+ 	int ret, channel = chan->channel - 1;
  
- 	/*
- 	 * Temperature is returned in Celsius degrees in fractional
--	 * form down 2^16. We rescale by x1000 to return milli Celsius
--	 * to respect IIO ABI.
-+	 * form down 2^16. We rescale by x1000 to return millidegrees
-+	 * Celsius to respect IIO ABI.
- 	 */
--	*val = raw_temp * 1000;
--	*val2 = 16;
--	return IIO_VAL_FRACTIONAL_LOG2;
-+	raw_temp = sign_extend32(raw_temp, 23);
-+	*val = ((s64)raw_temp * 1000) / (1 << 16);
-+	return IIO_VAL_INT;
- }
- 
- static int bmp580_read_press(struct bmp280_data *data, int *val, int *val2)
++	/*
++	 * For AVG the index should be between 5 to 8.
++	 * To calculate PAC1934_CH_VOLTAGE_AVERAGE,
++	 * respectively PAC1934_CH_CURRENT real index, we need
++	 * to remove the added offset (PAC1934_MAX_NUM_CHANNELS).
++	 */
++	if (channel >= PAC1934_MAX_NUM_CHANNELS)
++		channel = channel - PAC1934_MAX_NUM_CHANNELS;
++
+ 	ret = pac1934_retrieve_data(info, PAC1934_MIN_UPDATE_WAIT_TIME_US);
+ 	if (ret < 0)
+ 		return ret;
+
+base-commit: b80ad8e3cd2712b78b98804d1f59199680d8ed91
 -- 
-2.40.1
+2.34.1
 
 

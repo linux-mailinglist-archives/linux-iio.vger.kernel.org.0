@@ -1,144 +1,112 @@
-Return-Path: <linux-iio+bounces-4509-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4510-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5CD8B218D
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Apr 2024 14:23:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C838B220F
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Apr 2024 14:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B87891F22F9C
-	for <lists+linux-iio@lfdr.de>; Thu, 25 Apr 2024 12:23:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF0D01F244FF
+	for <lists+linux-iio@lfdr.de>; Thu, 25 Apr 2024 12:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BFE712BF2B;
-	Thu, 25 Apr 2024 12:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0B561494C9;
+	Thu, 25 Apr 2024 12:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="jD9FAo4h"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Wojlkd1m"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0515E12AAC5;
-	Thu, 25 Apr 2024 12:23:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA68612BF29
+	for <linux-iio@vger.kernel.org>; Thu, 25 Apr 2024 12:58:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714047788; cv=none; b=OLtSgtuIyqzIf/9eVP+lrHfgqoX0aueT14fCQLAa8YcY/lNtb6lTkizR2Q7bUlD+tXRA1EU1b7X4HLROyoQUQTloFfNtrOEbA9111bDX+Tk4j3SIuYA0ZG59gL6Q4fPOjGwqmXA7G1RcGz3ue4wLKFqNn6hqHyN60Ek+X5VKtdE=
+	t=1714049884; cv=none; b=HEbzlCK0QmaaN1MbzYmZXID4x7jz997HbQebKijDNtpUE2p6w8D2PTlyi2oE9bu7gQN7B2DdGEvj0Y7p3sW5D8dar2EyJmwuXNxPwL1TRcMYMStiff33cdD5b666l2ebHH3Qgx0ukPyoFYyFctYGV2E6DiBlWo3NcqUld9eFDoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714047788; c=relaxed/simple;
-	bh=ka9MBV9PeSymXBRhhYYBWCDmGPWgFkeaY09SK+d3rqE=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ulQWB9nvTUzjhcqyP/8+/AGfY1Or0cQLASByMRQmJKgTZk2sA5HHnsRyX+nEIk632uGYR9K453SfQvYJQaNH7nziCEuFw+NgawZrRbAgSM/KMKBKNZ3DRd1Xfur4/ptUl1uW5AI4hA/7InhB8QiXBZjpSFwohgCh7JTABpdd+xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=jD9FAo4h; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1714047788; x=1745583788;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ka9MBV9PeSymXBRhhYYBWCDmGPWgFkeaY09SK+d3rqE=;
-  b=jD9FAo4h3WPnuoerVaXpgmugjccqXcoARjvRgo8grPMOhHh6B90vMYsk
-   Lq7f+oUpi/sbQQJ782mbJhFGvF8S0aH5zEhS8KfFHULwKtVOAbJkO2aFt
-   Pq2idJL/rs0Es2YRKphkrZKoV/6hcfNZgcyRqK64JH5mtcDBcv4fmaUSC
-   nXTP4FXIkeHnhWbTsTqgjKaO4Ckp2FSyqRCCkfxRouoB+O1wAmtI+ufrJ
-   62WqC7YWM/sPmjFQtam34KKXiN3/ho0sDZbuNZPWJwkvNMvSNHY/WdVlp
-   o0ud4zmbPJFKlq2QHLj7dzzYu0D2aVhtiBTI9xzZL6P6aOSE+uV4DZJpA
-   g==;
-X-CSE-ConnectionGUID: wwZCvykgROeJ0FlGisTKvw==
-X-CSE-MsgGUID: uqF8t8JRR8qapq0V2oh2pA==
-X-IronPort-AV: E=Sophos;i="6.07,229,1708412400"; 
-   d="asc'?scan'208";a="22628058"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Apr 2024 05:23:06 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 25 Apr 2024 05:23:03 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex04.mchp-main.com (10.10.85.152)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
- Transport; Thu, 25 Apr 2024 05:23:01 -0700
-Date: Thu, 25 Apr 2024 13:22:45 +0100
-From: Conor Dooley <conor.dooley@microchip.com>
-To: <marius.cristea@microchip.com>
-CC: <jic23@kernel.org>, <lars@metafoo.de>, <lgirdwood@gmail.com>,
-	<broonie@kernel.org>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <conor+dt@kernel.org>
-Subject: Re: [PATCH v1] iio: adc: PAC1934: fix accessing out of bounds array
- index
-Message-ID: <20240425-canteen-alias-5a907b1deecc@wendy>
-References: <20240425114232.81390-1-marius.cristea@microchip.com>
+	s=arc-20240116; t=1714049884; c=relaxed/simple;
+	bh=j+62I5iqQ9/fslQzF0VO7C46L1Fh0s3iGlBQHismm+Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Y/6zJk3eBXE3AoYl45RyxGHmp+dIu/AcqioaH+r94hSnyDvhEaTTZxnPlZMfjuTvzLg9PoUeXuXylkYTyQkKr4kCm1KjyLWf6jNSMRM7s74lG5fOoM+VlTvGJOApyaKYFHzyoropFskCyIKPM04x0zzyTWbMaplVrlOH0J0ycFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Wojlkd1m; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1714049881;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=860UmIoTowO5dUY2FthyQfMIs45fBWmV5/EE1kfFeOg=;
+	b=Wojlkd1mPFKaEdxSzzgTh3ikPvVuPI1FUVTHOd5o0aa1pf4DhQhpv5ADO08VD+v0qUz7N8
+	FRPDLwyhmm5PEqxwjoj5tQsTfI2tAzRGufcfWlQ4szrMciZpu7V5fY3Blp/0asRPPFIDsn
+	hjJ5wjOSP+IQmAXfrsk4hlhHWO2t0ME=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-473-5IEPLROmP0Owr4LCi_Jf7g-1; Thu,
+ 25 Apr 2024 08:57:58 -0400
+X-MC-Unique: 5IEPLROmP0Owr4LCi_Jf7g-1
+Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.rdu2.redhat.com [10.11.54.3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mimecast-mx02.redhat.com (Postfix) with ESMTPS id BA9CB38143A4;
+	Thu, 25 Apr 2024 12:57:57 +0000 (UTC)
+Received: from x1.nl (unknown [10.39.192.78])
+	by smtp.corp.redhat.com (Postfix) with ESMTP id 1D271112131D;
+	Thu, 25 Apr 2024 12:57:55 +0000 (UTC)
+From: Hans de Goede <hdegoede@redhat.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Sean Rhodes <sean@starlabs.systems>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH v3 0/4] iio: accel: Share ACPI ROTM parsing between drivers and add it to mxc4005
+Date: Thu, 25 Apr 2024 14:57:50 +0200
+Message-ID: <20240425125754.76010-1-hdegoede@redhat.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1EW7HVGbh5br5EAU"
-Content-Disposition: inline
-In-Reply-To: <20240425114232.81390-1-marius.cristea@microchip.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.11.54.3
 
---1EW7HVGbh5br5EAU
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Hi All,
 
-On Thu, Apr 25, 2024 at 02:42:32PM +0300, marius.cristea@microchip.com wrot=
-e:
-> From: Marius Cristea <marius.cristea@microchip.com>
->=20
-> Fix accessing out of bounds array index for average
-> current and voltage measurements. The device itself has
-> only 4 channels, but in sysfs there are "fake"
-> channels for the average voltages and currents too.
->=20
-> Fixes: 0fb528c8255b: "iio: adc: adding support for PAC193x"
-> Reported-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: Marius Cristea <marius.cristea@microchip.com>
-> ---
->  drivers/iio/adc/pac1934.c | 9 +++++++++
->  1 file changed, 9 insertions(+)
->=20
-> diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
-> index f751260605e4..456f12faa348 100644
-> --- a/drivers/iio/adc/pac1934.c
-> +++ b/drivers/iio/adc/pac1934.c
-> @@ -787,6 +787,15 @@ static int pac1934_read_raw(struct iio_dev *indio_de=
-v,
->  	s64 curr_energy;
->  	int ret, channel =3D chan->channel - 1;
-> =20
-> +	/*
-> +	 * For AVG the index should be between 5 to 8.
-> +	 * To calculate PAC1934_CH_VOLTAGE_AVERAGE,
-> +	 * respectively PAC1934_CH_CURRENT real index, we need
-> +	 * to remove the added offset (PAC1934_MAX_NUM_CHANNELS).
-> +	 */
-> +	if (channel >=3D PAC1934_MAX_NUM_CHANNELS)
-> +		channel =3D channel - PAC1934_MAX_NUM_CHANNELS;
-> +
->  	ret =3D pac1934_retrieve_data(info, PAC1934_MIN_UPDATE_WAIT_TIME_US);
->  	if (ret < 0)
->  		return ret;
->=20
-> base-commit: b80ad8e3cd2712b78b98804d1f59199680d8ed91
-> --=20
-> 2.34.1
->=20
+Here is v2 of the patch series to refactor the ACPI ROTM orientation matrix
+handling in kxcjk-1013 + bmc150-accel to share the code instead of having
+2 copies and then also use the shared implementation in the mxc4005 driver
+since some MXC6655 ACPI firmware nodes also include this.
 
---1EW7HVGbh5br5EAU
-Content-Type: application/pgp-signature; name="signature.asc"
+Changes in v2:
+- Add comment about the Microsoft specification for the "ROTM" ACPI method
 
------BEGIN PGP SIGNATURE-----
+Changes in v3:
+- Add the new iio_read_acpi_mount_matrix() helper to industrialio.ko instead
+  of making it a static inline
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZipLFQAKCRB4tDGHoIJi
-0qv8AP9sDEguR1KU2sc68ldF+YJPVrg4I1a3EynhdNA89mydgwD/Wb9FRgx20W02
-QfTkKi1SgkK8AVqcjXUEUkbim7PBNQQ=
-=6QRm
------END PGP SIGNATURE-----
+Regards,
 
---1EW7HVGbh5br5EAU--
+Hans
+
+
+Hans de Goede (4):
+  iio: core: Add iio_read_acpi_mount_matrix() helper function
+  iio: accel: kxcjk-1013: Use new iio_read_acpi_mount_matrix() helper
+  iio: bmc150-accel-core: Use iio_read_acpi_mount_matrix() helper
+  iio: accel: mxc4005: Read orientation matrix from ACPI ROTM method
+
+ drivers/iio/Makefile                  |  1 +
+ drivers/iio/accel/bmc150-accel-core.c | 44 +-------------
+ drivers/iio/accel/kxcjk-1013.c        | 80 +------------------------
+ drivers/iio/accel/mxc4005.c           | 22 +++++++
+ drivers/iio/industrialio-acpi.c       | 85 +++++++++++++++++++++++++++
+ include/linux/iio/iio.h               | 13 ++++
+ 6 files changed, 124 insertions(+), 121 deletions(-)
+ create mode 100644 drivers/iio/industrialio-acpi.c
+
+-- 
+2.44.0
+
 

@@ -1,80 +1,83 @@
-Return-Path: <linux-iio+bounces-4530-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4531-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CC838B383C
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 15:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A79FA8B3909
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 15:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F1001C224A8
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 13:20:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D95631C2098F
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 13:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0BF145B21;
-	Fri, 26 Apr 2024 13:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD60148316;
+	Fri, 26 Apr 2024 13:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="t+JexH6j"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QuhOv9UJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5544C146D5A
-	for <linux-iio@vger.kernel.org>; Fri, 26 Apr 2024 13:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD201482EB;
+	Fri, 26 Apr 2024 13:53:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714137631; cv=none; b=FQc0e7TPvAVr145GWFwOf5t7GGIkYWFe43E7DjXoACZCLQR6Qk/9Ih1yW8PXVd1Q5Jnp+2noeTZb+BD7I14VQ6u5S1tLTX3D/RfCnWwVHVHVCVc4gcm6UkPWr6dNoGxO4ChQF7eP18NBD5YmBDzt+W4xHTHkMulYiJWIty/mWkk=
+	t=1714139629; cv=none; b=etbS8W0zHvIAbqmlRQDmyQ78rMAf/vqeGMpCYHR6thgAqwaAgESvS7dPOPa48xdzqyjwDPUpGh7Ixf7ScxNdKurXBbKzOe1ohUUyRqs6pwDlB1qt3TXV+DNqdpa5X5In70ZGvFHUxLd9ZAuteQtZjBqoMYtH3kKXBRuY5KIZXow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714137631; c=relaxed/simple;
-	bh=bBfcyWcsBaOXMy0YVS4JtZ7veyB/SGYu/6tkPP2ZLM0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=IapbzkLlkfJaMFVbvvvxzHeI5rsSeAoLLL6bGmjf34fx7Dmk7EW7/AGQNmtlLZACIXjQiURlVudv5enz38R7L1pVDmAHVUFYKDby8MxUvlUQqRsgZQkFsV/JaSEfbfwZMpArWtc77owhEjxEbrjr/2XP35Wj3CGsNZOf3OIEbOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=t+JexH6j; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-6f103b541aeso1847439b3a.3
-        for <linux-iio@vger.kernel.org>; Fri, 26 Apr 2024 06:20:29 -0700 (PDT)
+	s=arc-20240116; t=1714139629; c=relaxed/simple;
+	bh=2diDGfXgoqGZPV0weeNRZMPINUbCViSW6NuyJ9qT79o=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G2nelvFRxFmk8iFxcpsMJm9YQh+03x2k54/rFTOlnCCX7sVkposvmr57Oq7M8n3PU4N+JmyMar4GBNFzhX7lKTtsccXFsdTiSJmVIKjNhe3OzA9sbrbvpoMNXr5dMENZg3FqgHX94eORYCfK3oEdv/OrK69ub9Rsu1whMgrQMUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QuhOv9UJ; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-343e46ec237so1731259f8f.2;
+        Fri, 26 Apr 2024 06:53:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google; t=1714137629; x=1714742429; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1714139625; x=1714744425; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3jrttU6FuayCATh91yMHJuQYMA6i1jbzl2pFuArxbtY=;
-        b=t+JexH6jf70hl46XaV4i5J1Vy8sViMQtvGhS4nd5+52c2c3LsgsJZKMfDgODrYJqXU
-         b62yqaDFoTb8JmcEkri4hwl/79LcTmqcd65FIvos9bRGQaRMhykT8/pOewaIYMkuRmHC
-         3TmN4dnjpD8aa+LnbOtKPFEmAKHLbaRnwQXtHICz60j5D71XnSJ4sKI5D4/CUABCN1TH
-         FS5x7/5v6PMUNLnZquzwIW3f9vXzli4pQQHkcUgINh9dcmjoUcWGA2rdGeqniOgQESq4
-         t8v25F49sXue8HpjIYbM8PyBkmJ4yl5/Rxn+8mA4Cnaj6JGQy4GhhVJTVisNDCzFIafF
-         vexw==
+        bh=ZwRPVp4IQMXqt/6idnRqfFQtuAI0tlXLTfnP1hSTCQM=;
+        b=QuhOv9UJG5tMvISuMKrzF6RmEaT8HlfjLFxXssjVlCtlTLkka/pNpE6Vk0FT3fT5tc
+         ZeCtuyOK8Qvk+mKJoQV25G/gnq0OaTgTpuMqpI0iFBuWnCNZ7yqKAB/ZhjPq6GhdPLDj
+         K1rmbiq7/WhOyied/5dFJ9Dt8rYyB1rUjoRk7LVjyo7XGJPrV1YEhTNwJ8+mkqmYB2LF
+         DfIn0FofiXdzd+jUnLPmlcUFMxKka6gbCHnn8CGnu9BAsYhn4xdbLuVoGPpyLOcCL4jr
+         dQYNV8dbA1D2+p4px25r5QGWVuC/YCaQr2533FmmyqbOJu5fahXQudjqr/Y95pRFqbPw
+         QOUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714137629; x=1714742429;
+        d=1e100.net; s=20230601; t=1714139625; x=1714744425;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=3jrttU6FuayCATh91yMHJuQYMA6i1jbzl2pFuArxbtY=;
-        b=fLBN+38/k22yyQUzA6GCAOkV3hekAGvkpIPDXWtGswda29mRsZa2JDwXefhV8D325M
-         dam7i8KzOXmdc2W//nzUxGgsY9n/wSaiZ2dpXzcF+nx6HK9RKshGNqFuTg5bO+N5iCyY
-         fprvXTtQD1Z81mbQvxWbmHH/le2GIgAFBRxhs1zMCpveX1xeOQrJgkzGf3SgY4Oj7fqU
-         gTQNl4UXnOjbwdhOmK/+aqjjcVxQlCEZwV0ZqH3Ap6/qvj91MGZU+gIYaTUIaQkWstkJ
-         GsX60xZcF4TBh054+/VI1G7D3xVyv3npuhjpRr7eBf1gdcaWc+fETDTwZhg/taDVtsQz
-         2uZA==
-X-Forwarded-Encrypted: i=1; AJvYcCVMQGZvpgKeJkXg4TjhcUY/l3xwQxrtJrSg9pEgigNih6Xe5ifOtIc4BjugHkIkFMkcm3qrC8AaL2pvtHLlZR6UAYalxf4YNY81
-X-Gm-Message-State: AOJu0Yxz2+HfXIgbCRv2HrRPKUZsmXsq2jiCMyxBQgAINgJEehVdMeGx
-	dPJeOIQv+NW9asuuOGv24yvSbV+6w3w2/4wW9QxJwV/0b1kFXMJ6exFE8uz8Iz8=
-X-Google-Smtp-Source: AGHT+IHvrUwpkD3798kAHknqtqRx+fCEbeJIevLQhDueyxEQmVnGfX19BNsubtfDPDEXsx30W0q5eg==
-X-Received: by 2002:a05:6a21:191:b0:1ab:b369:7bd3 with SMTP id le17-20020a056a21019100b001abb3697bd3mr3666066pzb.38.1714137628706;
-        Fri, 26 Apr 2024 06:20:28 -0700 (PDT)
-Received: from lincolnyuji-vaio.. ([201.83.91.252])
-        by smtp.gmail.com with ESMTPSA id e10-20020aa7980a000000b006ed38291aebsm15328529pfl.178.2024.04.26.06.20.25
+        bh=ZwRPVp4IQMXqt/6idnRqfFQtuAI0tlXLTfnP1hSTCQM=;
+        b=MA4z2b294LNB3PElGFb/Sv+EQyQTRnfxj2bSFXPLVtw6BK9JZJb586KRI7c6KWLF/L
+         8jkrBLGjrCjz8HAJ3NljsBd9hDd3iNC6+w04J0W3DvWHnz7ExxYJNciW7bFGqGY1knSH
+         SqnDH+Nf0J+UUUe1sGF5xqSQypRmipsVNsmR0JrM/4XkpBHBvbmz/m7PL0y+PTMiZldD
+         DQP0ECAUm+lgTkssFpBD2FF9rFsnlDgDCBsHA3H1UItcAKxYcHaJgOSjDPKhQ56SL2HG
+         jlyrDVqo8di0FLkKzAt+5BB4LCDvFf967A6dxs5gGtiMwMexKXk6bo0gMOnLqWjPmjvE
+         cN0A==
+X-Forwarded-Encrypted: i=1; AJvYcCVfsoRrFJD8XuDETZipU0SWJVib5jE4YUb1cagEeoWpD6gFcCJTmIBlFojoOoZCqxMLmpnbspBA9AcKqsJ6hQSL4GC5s3PLcFT6wKSeiGSxYCp26rw6MrtBPdE4J44G01lz+fWL6Q==
+X-Gm-Message-State: AOJu0YwiMv8iMlRMbPzNm7dRzxu3ljooLa3keC20oMSERhSxDS7TjV0d
+	xGbLnOvwaWVKpr4QfcBcAt7jn5dXHOrPsT285E80waLzM65R8MtMzzteJ0vL
+X-Google-Smtp-Source: AGHT+IFs9eB77Zr2ZWpQ6HgnBNShWFrml09IBs/i7NOnwkTqdsCCAu4hDuP7h2aRXvx1yNEvyFT6Zw==
+X-Received: by 2002:a5d:66c3:0:b0:34a:2d0c:4463 with SMTP id k3-20020a5d66c3000000b0034a2d0c4463mr2410851wrw.4.1714139625439;
+        Fri, 26 Apr 2024 06:53:45 -0700 (PDT)
+Received: from rbolboac.. ([2a02:2f0e:320d:e800:f4f8:b5e1:d7d4:bf65])
+        by smtp.gmail.com with ESMTPSA id k6-20020a5d6d46000000b003434f526cb5sm22302919wri.95.2024.04.26.06.53.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Apr 2024 06:20:28 -0700 (PDT)
-From: Lincoln Yuji <lincolnyuji@usp.br>
-To: jic23@kernel.org
-Cc: Lincoln Yuji <lincolnyuji@hotmail.com>,
-	Luiza Soezima <lbrsoezima@usp.br>,
-	Sabrina Araujo <sabrinaaraujo@usp.br>,
-	Lincoln Yuji <lincolnyuji@usp.br>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] iio: adc: ti-ads1015: use device_for_each_child_node_scoped()
-Date: Fri, 26 Apr 2024 10:19:53 -0300
-Message-Id: <20240426131953.14933-1-lincolnyuji@usp.br>
+        Fri, 26 Apr 2024 06:53:45 -0700 (PDT)
+From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	conor+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	robh@kernel.org,
+	nuno.sa@analog.com
+Cc: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+Subject: [PATCH 0/7] adis16501 and adis1657x support
+Date: Fri, 26 Apr 2024 16:53:32 +0300
+Message-Id: <20240426135339.185602-1-ramona.bolboaca13@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -84,55 +87,25 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Lincoln Yuji <lincolnyuji@hotmail.com>
+Add adis16501 and adis1657x support in adis16475.
 
-This loop definition removes the need for manual releasing of the fwnode_handle
-in early exit paths (here an error path) allow simplification of the code
-and reducing the chance of future modifications not releasing
-fwnode_handle correctly.
+Ramona Gradinariu (7):
+  dt-bindings: iio: imu: Add ADIS16501 compatibles
+  drivers: iio: imu: Add support for ADIS16501
+  iio: imu: adis16475: Re-define ADIS16475_DATA
+  iio: imu: adis_buffer: Add buffer setup API with buffer attributes
+  iio: imu: adis16475: Create push single sample API
+  dt-bindings: iio: imu: Add ADIS1657X family devices compatibles
+  drivers: iio: imu: Add support for adis1657x family
 
-Co-developed-by: Luiza Soezima <lbrsoezima@usp.br>
-Signed-off-by: Luiza Soezima <lbrsoezima@usp.br>
-Co-developed-by: Sabrina Araujo <sabrinaaraujo@usp.br>
-Signed-off-by: Sabrina Araujo <sabrinaaraujo@usp.br>
-Signed-off-by: Lincoln Yuji <lincolnyuji@usp.br>
----
- drivers/iio/adc/ti-ads1015.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ .../bindings/iio/imu/adi,adis16475.yaml       |  31 +
+ drivers/iio/imu/Kconfig                       |   4 +-
+ drivers/iio/imu/adis16475.c                   | 698 ++++++++++++++++--
+ drivers/iio/imu/adis_buffer.c                 |  32 +-
+ include/linux/iio/imu/adis.h                  |  18 +-
+ 5 files changed, 681 insertions(+), 102 deletions(-)
 
-diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-index 6ae967e4d..d3363d02f 100644
---- a/drivers/iio/adc/ti-ads1015.c
-+++ b/drivers/iio/adc/ti-ads1015.c
-@@ -902,10 +902,9 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
- 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
- 	struct ads1015_data *data = iio_priv(indio_dev);
- 	struct device *dev = &client->dev;
--	struct fwnode_handle *node;
- 	int i = -1;
- 
--	device_for_each_child_node(dev, node) {
-+	device_for_each_child_node_scoped(dev, node) {
- 		u32 pval;
- 		unsigned int channel;
- 		unsigned int pga = ADS1015_DEFAULT_PGA;
-@@ -927,7 +926,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
- 			pga = pval;
- 			if (pga > 5) {
- 				dev_err(dev, "invalid gain on %pfw\n", node);
--				fwnode_handle_put(node);
- 				return -EINVAL;
- 			}
- 		}
-@@ -936,7 +934,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
- 			data_rate = pval;
- 			if (data_rate > 7) {
- 				dev_err(dev, "invalid data_rate on %pfw\n", node);
--				fwnode_handle_put(node);
- 				return -EINVAL;
- 			}
- 		}
--- 
+--
 2.34.1
 
 

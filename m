@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-4544-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4547-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0B848B3BE4
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 17:43:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1141B8B3BEB
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 17:43:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2D9F1C22D45
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 15:43:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C332D283A8B
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 15:43:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39387156649;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE81156F40;
 	Fri, 26 Apr 2024 15:42:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jCPdsD5Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LP/I1KwP"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A2A14AD3D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CFD155A2A;
 	Fri, 26 Apr 2024 15:42:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714146150; cv=none; b=RhKaD8prc4xJinbapxPd7/A68BM7JCGK/+wOHKxNrWKGE0E7j7AdUpf4yhLwD0yzJ50t+jtnXJZeqnys5EVlke2ivYuidGPNRsAnoUmKPlA6CnAnJba02zDlGK3QtnJTGMJSPRvPKiDDkEDRNI4iXecN2fsRltyoC9fAcF8lMBE=
+	t=1714146150; cv=none; b=atJx/en9dnrXN8E8JEa0CvXoB4PDTbcSKcxir0TNedtz7iaoIAsoJdGpm92y8pTSCW48mrRgOmW8EVF0QWx2332ZtXDX4Rjicm7hZhzZQlRVUKF3YFbH3pfOr0fxTjoFIOgX66LaADr6MDi1qkG/MqeH89jZTvAkSsmoQiQpt/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1714146150; c=relaxed/simple;
-	bh=4rO3Z460OWVFFUr9q1DYa57hPeqpXtQlX9nHpGrbGDo=;
+	bh=Sy/61I4jsVV/SaO4Tqs7G3FDOtNf3pkPBFQ4yg8YP5Q=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=R7f2tMLr9QcCo2f08fXJASydgO+G7LO5gRKEsQy1VSO/TkvN0MGsEOB/6GvLM5qiWmQPWoV/75fv4+a0BrQt+Kgs133XAasz0OKkJyc6jH0X4603IcHyUo0Nkw2bYcWEVEhks1Qb0As2u6/JbV0CcSvSqc4+9MtOuNIseq3fUxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jCPdsD5Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 92AF1C32783;
+	 In-Reply-To:To:Cc; b=KEU6TS/r/ABNUEwUYsL4F7eEEOM2J5EQeVJvv+H6jFWuKCKIYF2PZgQ0AVeUTkAu1wwwTXoAF8P0rHK0S7Qc0jlq2ZbCFe/nq0OSCMgSMbyyz4a4fXzayf/1CHOeGH8RIIwCz4vtY2840masT9T/jdMkBaUdc/JTIphMZsNeiwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LP/I1KwP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A9EDFC2BD11;
 	Fri, 26 Apr 2024 15:42:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1714146149;
-	bh=4rO3Z460OWVFFUr9q1DYa57hPeqpXtQlX9nHpGrbGDo=;
+	bh=Sy/61I4jsVV/SaO4Tqs7G3FDOtNf3pkPBFQ4yg8YP5Q=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=jCPdsD5ZHIrq1lsvdnJzvJJuk+RFsWVFWAuPmYaqNPGmgru6jmAGLPOt7d9xqcDiZ
-	 JyKf6o7QCnDOb8+JeCeCmemcoQQ95gW27udq8RT2NidsjkxO9n5K1Uav5pFRAsrf6q
-	 mu6HUpolVhekesgqYcI+kZtfUegMA2A6R9j/Txr0+hT0uGeqzS4PNksJpGZCzvXz98
-	 rAHMkMu9Hd5A+XdTRqVGv+Oxg4z/AncVuaJVWaaP6vAe6TNCa9DABuXMvf0k8Vg2S/
-	 MBla9RFxxbf2PCZsrNXHlAUFqTz9B+blzI8Wj5e7qKMv8JLtYQRqKCgBBwdWmRm46V
-	 44ui319l6RJTA==
+	b=LP/I1KwPkPAg2w/ZkbqPYQnW8taQKuHJL9Wo0jo7VWljZAToGtayp+p+CM7gQ5g8F
+	 PBGkK2qbqSATN0b4G7VEXjDBVp+PstStdbkFW20ezDLReEjfMcCVlQiI34Z6pbR4qq
+	 qVEIfIta1bvC2e8VUXqOxciP3g55ly81ZnBw8nSjKBl9sM42kZ8LSldqz618axjvmX
+	 ZXOhXvakgtC5voJD1GaSQTRbYZ4qc6K5x5HbOM7LAMzm3ilcpQFcflD8n5QoOKdKVM
+	 Yc1COsrs56KE/9RqSfYpOFPrOPYPcX76WmBMjzo/Jj++p3BXakUV3c2MUot03g7eEI
+	 Drp6CsSG9iLcA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 89DB5C25B5C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9E5BEC04FFE;
 	Fri, 26 Apr 2024 15:42:29 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Fri, 26 Apr 2024 17:42:12 +0200
-Subject: [PATCH v2 3/7] dt-bindings: adc: axi-adc: add clocks property
+Date: Fri, 26 Apr 2024 17:42:13 +0200
+Subject: [PATCH v2 4/7] iio: adc: axi-adc: make sure AXI clock is enabled
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240426-ad9467-new-features-v2-3-6361fc3ba1cc@analog.com>
+Message-Id: <20240426-ad9467-new-features-v2-4-6361fc3ba1cc@analog.com>
 References: <20240426-ad9467-new-features-v2-0-6361fc3ba1cc@analog.com>
 In-Reply-To: <20240426-ad9467-new-features-v2-0-6361fc3ba1cc@analog.com>
 To: linux-iio@vger.kernel.org, devicetree@vger.kernel.org
@@ -66,15 +66,13 @@ Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
  Conor Dooley <conor+dt@kernel.org>, 
- Olivier Moysan <olivier.moysan@foss.st.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- Nuno Sa <nuno.sa@analog.com>
+ Olivier Moysan <olivier.moysan@foss.st.com>, Nuno Sa <nuno.sa@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1714146147; l=1362;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1714146147; l=1318;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=Kji5f67mZEzci00M6vCqK7nqcsD4CPN32lsTL2M54tY=;
- b=2PLktNW4hBVWhtlf7tXvDHJdFNDsnNv7SWATfWUTWw1p65eSQWZ3Ofj4EWJrA/MDiUSCeQvEh
- JHwKmwH/XC9DezBpZhQqTbVcd9PbIhzmNpLmhTmpfkTwPDIY/sp+QnH
+ bh=wD4frVePbFQZ5GZZY+496L8YqjIUAosy1WOB2P0XRHA=;
+ b=+ecaEiuo3EuEcqcy+s8TO3a9lqzk+HTfyD+VE2WgEpF5kn3+ev0LlrZ5+c2HjWucKesGdp7pt
+ amki9w4q6+OCzkuH13f/dWxH3eTP+NRbl7Zf2YWZ9xiYDM9wwP1Vzc1
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -84,50 +82,42 @@ Reply-To: nuno.sa@analog.com
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-Add a required clock property as we can't access the device registers if
-the AXI bus clock is not properly enabled.
+We can only access the IP core registers if the bus clock is enabled. As
+such we need to get and enable it and not rely on anyone else to do it.
 
 Note this clock is a very fundamental one that is typically enabled
 pretty early during boot. Independently of that, we should really rely on
 it to be enabled.
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Fixes: 96553a44e96d ("dt-bindings: iio: adc: add bindings doc for AXI ADC driver")
+Fixes: ef04070692a2 ("iio: adc: adi-axi-adc: add support for AXI ADC IP core")
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 5 +++++
+ drivers/iio/adc/adi-axi-adc.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-index 3d49d21ad33d..e1f450b80db2 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
-@@ -28,6 +28,9 @@ properties:
-   reg:
-     maxItems: 1
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index a543b91124b0..e3b215882941 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -175,6 +175,7 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+ 	struct adi_axi_adc_state *st;
+ 	void __iomem *base;
+ 	unsigned int ver;
++	struct clk *clk;
+ 	int ret;
  
-+  clocks:
-+    maxItems: 1
+ 	st = devm_kzalloc(&pdev->dev, sizeof(*st), GFP_KERNEL);
+@@ -195,6 +196,10 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+ 	if (!expected_ver)
+ 		return -ENODEV;
+ 
++	clk = devm_clk_get_enabled(&pdev->dev, NULL);
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
 +
-   dmas:
-     maxItems: 1
- 
-@@ -48,6 +51,7 @@ required:
-   - compatible
-   - dmas
-   - reg
-+  - clocks
- 
- additionalProperties: false
- 
-@@ -58,6 +62,7 @@ examples:
-         reg = <0x44a00000 0x10000>;
-         dmas = <&rx_dma 0>;
-         dma-names = "rx";
-+        clocks = <&axi_clk>;
-         #io-backend-cells = <0>;
-     };
- ...
+ 	/*
+ 	 * Force disable the core. Up to the frontend to enable us. And we can
+ 	 * still read/write registers...
 
 -- 
 2.44.0

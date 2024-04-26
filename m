@@ -1,162 +1,145 @@
-Return-Path: <linux-iio+bounces-4550-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4551-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FFC8B3CFB
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 18:38:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C24478B409E
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 22:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EAA3B25924
-	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 16:38:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D36D8B23395
+	for <lists+linux-iio@lfdr.de>; Fri, 26 Apr 2024 20:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F16515AACD;
-	Fri, 26 Apr 2024 16:38:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABF81CFBC;
+	Fri, 26 Apr 2024 20:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o3f8wcIh"
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="jtzksphb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B9F1DFED;
-	Fri, 26 Apr 2024 16:38:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3625528DC1
+	for <linux-iio@vger.kernel.org>; Fri, 26 Apr 2024 20:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714149498; cv=none; b=B7NTQTa9afGDYGjXlLIsCi8b1o5Z8FtA7UXJY7vqRbHKZVLJFsFeGQhTKxWca2AQCf8Mw3QkME06/Rr+Tb6C6MrWJrY63ocLz9UwIM6eR99AltAiLcic4mcr4MxdKoZc1MSCEHgbj4YgAhlmOunL7RdWh8mKHbdFaUPgl+uJ+28=
+	t=1714161735; cv=none; b=VRMnB41ff9UfurYAjT6u+Wd6U+u/LQ/PWTD/TQxk2qHr9oT8wWwS+OK2gvKg2qv/P8AwQiTekLXg3d2PguBe7PS74azzzn2drovCZ/2AHWNqv0eArlRCJptCAe0SRadE55na+cJ0OK7ISOKBdNzXK5Fo6LWwpLI/JwUcosLx+9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714149498; c=relaxed/simple;
-	bh=Uecbo/6shl3q0S3AL6aRW8DkOSBrWxej2E2gH1SLHkg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AoOqMRkbJXqkm8V4wh5nfJlOvq9oLRQhzEjhESfOoBTpKTeG1i6yjS9oguOSTXgLzGM/kkMbKlc2qzVujeJNAP6BG2e1nAakopNakL2cXfvZDHehRIvwyXFNBLpd52SFxFd6nRKjLqa9fMQ/mOlW4C9S5yEdOKcOF0KSoLMfu9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o3f8wcIh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E3CC113CD;
-	Fri, 26 Apr 2024 16:38:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714149497;
-	bh=Uecbo/6shl3q0S3AL6aRW8DkOSBrWxej2E2gH1SLHkg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o3f8wcIhNMPjl1V2HRhlaXZ3i8UJFsDTD1o0/gLChhJeUwCuA/lTpDEtYE2x28su4
-	 8xaoWGIzeghSRFLZRLCigYAzTD6cOQIpBvY3TJ5XoSeLTzE5JTQrncOHk0PimILt71
-	 C3zcL/ioOO0BQuilMLD2+wWedOLmaMD8+q38hA7GC7zA8BK3CO+rwU95EVO1R40kc9
-	 JLMvW6IqzUQdM62cwgq+m0Llvr++moJDd5po+LaABqhU7PkD2gu/FL27SBoLqMfSO7
-	 Sk9KdRxw3tW3IcCY1z+Dw4Uz2rrHLKDZtXrR843Bdxu15hzg2n+59mKVVbEEsEXHXm
-	 K3H8dgVGCK/pQ==
-Date: Fri, 26 Apr 2024 17:38:13 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-Cc: linux-kernel@vger.kernel.org, jic23@kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	robh@kernel.org, nuno.sa@analog.com
-Subject: Re: [PATCH 6/7] dt-bindings: iio: imu: Add ADIS1657X family devices
- compatibles
-Message-ID: <20240426-museum-sanitary-b3dd62191b99@spud>
-References: <20240426135339.185602-1-ramona.bolboaca13@gmail.com>
- <20240426135339.185602-7-ramona.bolboaca13@gmail.com>
+	s=arc-20240116; t=1714161735; c=relaxed/simple;
+	bh=f1n9LZ8BoducsIpsAgn8GteNDhfL0VIydA9D2geNncY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ti0Fnnuc9Ahdn8mo1VtzN81P0H+bJD9+TQ0fmy/1gUaLXZ/xMTB1F035v9d16aRezAwab2Z3vDaXVrp2QaKg1ha6X9mTgWo0OQwIL3bS1iwMpMXNavIreM14YuOVpqCpbyGRo3UM+VYh8EZXepyD/UcsolX9QxojdP9NskocLRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=jtzksphb; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6ed3cafd766so2448274b3a.0
+        for <linux-iio@vger.kernel.org>; Fri, 26 Apr 2024 13:02:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=usp.br; s=usp-google; t=1714161731; x=1714766531; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FFTcTT6Trice6IHk19ZJPOUnwehgODIkqaj1Y0k+YOM=;
+        b=jtzksphbwJf2580vtGln2qILZnF1k0iwWFDAuzt56XWCaX7Zz2HTqgOCp5ofLzq7qn
+         WcnSezUal/wpjH5ptNKoDnfRx1aJRQb9iH9Ya0K4jTYlwWARQpfuQtJviUI7TMC2Qy0S
+         VMfjc6797SB1JJlV0m5/gLiRqH8SlSHB31t9A6KP8ptxox+3iUy5hESy35d9AcPdhDQD
+         zAusGK/ap1zIi4fYeJ+xQ61Y328sMrcpJ5o5KWq/xWTwOrpOqJD2Iz5K0d7LKa/mcA/B
+         KN1aeqxSk/9XArVLumA/nvmCxIaTBRCuujq+zPD4+OYVgAjVG7v4tfoIl65aa17JVL7L
+         7B+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714161731; x=1714766531;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FFTcTT6Trice6IHk19ZJPOUnwehgODIkqaj1Y0k+YOM=;
+        b=QPEqQaHGUPiDOl/H++tXkTaUpivF+0h8FxbGk5aoOa5nZhFA10DgsH5EvGO7atc5It
+         VivCknEAdNLa8Q7RRNx4nv0isLZ0i2LtDs4nOxdWCsomUTxqTT3RkLfZ5n/6ZqgL93AX
+         AkFM+H7hKVpFx9fsPutoFcBPO8SlHRXP0wnO9yNNd6I4ZfNNJrLM1V0FWs8TIm820z2e
+         SCNSOZyZmQi/MO47lHjcTIKKuVwa+ga1kY9PC1GFUdYRWU2M4EcBSrEXF1RtTSlk5ZOS
+         MpOL5AVJCxq3V/270zfrpRaVcagIw1d+jNY+x5diwLm0c1NfNNIuS+0qrGurBeooQNd6
+         lUVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXo78Wz/g8t3gnJ8TplKAleIodYeIvDQwrn3cuzRNqB4kty4DppYidyNFv4ETyWQAxZq22ZGAMEt/mFIfkLpwBUIgIwNP0DvkhQ
+X-Gm-Message-State: AOJu0YyDrn3uXKcl00K8JB9RpNCT0hXcp8OSGSm0VZjE1AEYhQnL1IIG
+	PvdIoEKfUgYG5zXujUnj1wYLUOli7NBvRW5Hwp3nNzcy9drMsolmexm1es3r+OjRhPg99KURuhy
+	/ncLTCw==
+X-Google-Smtp-Source: AGHT+IE/NmkRfiU932fW9JsnWa/mc7hz22e6Ba8OKGO5O3lwCPU8/lWM+LK7aLiQHwgsgDbz9Kr6Qg==
+X-Received: by 2002:a05:6a20:de13:b0:1aa:41e4:f1b4 with SMTP id kz19-20020a056a20de1300b001aa41e4f1b4mr3618459pzb.44.1714161731510;
+        Fri, 26 Apr 2024 13:02:11 -0700 (PDT)
+Received: from localhost.localdomain ([2804:7f0:bc40:efcb:b1a7:466e:d0e9:635f])
+        by smtp.gmail.com with ESMTPSA id u14-20020a17090ac88e00b002abb4500e97sm15026699pjt.41.2024.04.26.13.02.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Apr 2024 13:02:11 -0700 (PDT)
+From: Gabriel Schwartz <gschwartz@usp.br>
+To: jic23@kernel.org
+Cc: Gabriel Schwartz <gschwartz@usp.br>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: adc: rtq6056: Use automated cleanup for mode handling in write_raw
+Date: Fri, 26 Apr 2024 17:01:14 -0300
+Message-ID: <20240426200118.20900-1-gschwartz@usp.br>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="rnxiZPdD0LG8bJTm"
-Content-Disposition: inline
-In-Reply-To: <20240426135339.185602-7-ramona.bolboaca13@gmail.com>
+Content-Transfer-Encoding: 8bit
 
+Using iio_device_claim_direct_scoped() to automate mode claim and release
+simplifies code flow and allows for straight-forward error handling with
+direct returns on errors.
 
---rnxiZPdD0LG8bJTm
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Gabriel Schwartz <gschwartz@usp.br>
+---
+ drivers/iio/adc/rtq6056.c | 34 +++++++++++-----------------------
+ 1 file changed, 11 insertions(+), 23 deletions(-)
 
-On Fri, Apr 26, 2024 at 04:53:38PM +0300, Ramona Gradinariu wrote:
-> Add ADIS1657X family devices compatibles and specify the according
-> maximum SPI baudrate.
-> Similarly to other ADIS1650X devices, ADIS1657X supports sync-mode
-> values [0,2].
->=20
-> Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-> ---
->  .../bindings/iio/imu/adi,adis16475.yaml       | 29 +++++++++++++++++++
->  1 file changed, 29 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml=
- b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> index db52e7063116..9d185f7bfdcb 100644
-> --- a/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> +++ b/Documentation/devicetree/bindings/iio/imu/adi,adis16475.yaml
-> @@ -37,6 +37,12 @@ properties:
->        - adi,adis16507-1
->        - adi,adis16507-2
->        - adi,adis16507-3
-> +      - adi,adis16575-2
-> +      - adi,adis16575-3
-> +      - adi,adis16576-2
-> +      - adi,adis16576-3
-> +      - adi,adis16577-2
-> +      - adi,adis16577-3
+diff --git a/drivers/iio/adc/rtq6056.c b/drivers/iio/adc/rtq6056.c
+index a5464737e..bcb129840 100644
+--- a/drivers/iio/adc/rtq6056.c
++++ b/drivers/iio/adc/rtq6056.c
+@@ -520,32 +520,20 @@ static int rtq6056_adc_write_raw(struct iio_dev *indio_dev,
+ {
+ 	struct rtq6056_priv *priv = iio_priv(indio_dev);
+ 	const struct richtek_dev_data *devdata = priv->devdata;
+-	int ret;
+ 
+-	ret = iio_device_claim_direct_mode(indio_dev);
+-	if (ret)
+-		return ret;
+-
+-	switch (mask) {
+-	case IIO_CHAN_INFO_SAMP_FREQ:
+-		if (devdata->fixed_samp_freq) {
+-			ret = -EINVAL;
+-			break;
++	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++		switch (mask) {
++		case IIO_CHAN_INFO_SAMP_FREQ:
++			if (devdata->fixed_samp_freq)
++				return -EINVAL;
++			return rtq6056_adc_set_samp_freq(priv, chan, val);
++		case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++			return devdata->set_average(priv, val);
++		default:
++			return -EINVAL;
+ 		}
+-
+-		ret = rtq6056_adc_set_samp_freq(priv, chan, val);
+-		break;
+-	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+-		ret = devdata->set_average(priv, val);
+-		break;
+-	default:
+-		ret = -EINVAL;
+-		break;
+ 	}
+-
+-	iio_device_release_direct_mode(indio_dev);
+-
+-	return ret;
++	unreachable();
+ }
+ 
+ static const char *rtq6056_channel_labels[RTQ6056_MAX_CHANNEL] = {
+-- 
+2.44.0
 
-I'm not checking all of the structs for these ones against eachother,
-please explain why fallback compatible are not suitable.
-
-Thanks,
-Conor.
-
-> =20
->    reg:
->      maxItems: 1
-> @@ -98,6 +104,12 @@ allOf:
->                - adi,adis16507-1
->                - adi,adis16507-2
->                - adi,adis16507-3
-> +              - adi,adis16575-2
-> +              - adi,adis16575-3
-> +              - adi,adis16576-2
-> +              - adi,adis16576-3
-> +              - adi,adis16577-2
-> +              - adi,adis16577-3
-> =20
->      then:
->        properties:
-> @@ -114,6 +126,23 @@ allOf:
->        dependencies:
->          adi,sync-mode: [ clocks ]
-> =20
-> +  - if:
-> +      properties:
-> +        compatible:
-> +          contains:
-> +            enum:
-> +              - adi,adis16575-2
-> +              - adi,adis16575-3
-> +              - adi,adis16576-2
-> +              - adi,adis16576-3
-> +              - adi,adis16577-2
-> +              - adi,adis16577-3
-> +
-> +    then:
-> +      properties:
-> +        spi-max-frequency:
-> +          maximum: 15000000
-> +
->  unevaluatedProperties: false
-> =20
->  examples:
-> --=20
-> 2.34.1
->=20
-
---rnxiZPdD0LG8bJTm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZivYdQAKCRB4tDGHoIJi
-0p4yAPwPb/81Q1NSAN/X2c3n9FKJGnGEQJzfDTgBp192eJfvYQD7B3LGSK50dfTT
-tvUIg3/Cly+rUJ28rhowym1FqAlkUwQ=
-=FWbY
------END PGP SIGNATURE-----
-
---rnxiZPdD0LG8bJTm--
 

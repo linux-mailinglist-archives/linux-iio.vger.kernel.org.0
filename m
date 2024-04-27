@@ -1,81 +1,79 @@
-Return-Path: <linux-iio+bounces-4559-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4560-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1818B45C8
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 13:14:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 786E08B4628
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 13:34:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07409B21696
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 11:14:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E032289A48
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 11:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D5B487BF;
-	Sat, 27 Apr 2024 11:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969FE4C3CD;
+	Sat, 27 Apr 2024 11:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jz1mZy60"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c6dSXBrf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B263482E1
-	for <linux-iio@vger.kernel.org>; Sat, 27 Apr 2024 11:14:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC154CB23
+	for <linux-iio@vger.kernel.org>; Sat, 27 Apr 2024 11:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714216445; cv=none; b=cnYBYK0TB0o9IwGQNaiT+xKcQalLLOKDHoMzuV7Rd5ZnRjSIZ7PGOgQEpUdtPNrJNAVlqcxd/3R8e6MRItT/GTF/XdqwTSQuBQpkgYZ3wbS59hMmqS0OxrdfGpKOivb1DFh9TkMlVq+w+hfA930FlHKRkba+gcDSjhIjXpBycTo=
+	t=1714217668; cv=none; b=i+6nS9rb1HFVCBSAeVhE6UOnDmYGxT0b54SNuKzzHDCUWUqCBt+qQKmlCSEjjW27hDRPHxK8NTdNzuX4ItWgr/XUP39fpNi+0bPdFAA+SZ+7W8/7iTIcmAbPHdoLt0qC39z21BjkaeLKycn7TtHhCQnsOez7AVhLOpI8DqB1ahE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714216445; c=relaxed/simple;
-	bh=dc8H1AsIBx7qbJTfi5bbCIyCCWi65tVvF79n3vOJ1hI=;
+	s=arc-20240116; t=1714217668; c=relaxed/simple;
+	bh=nVt4LZ18xuuBfcv1L11RF1axvXpUoeDtIw2LcNncef4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CKdkAGuC5ndSW/7j/o3WCZxz9T7Y1kWLHCme535b9rO18SbDyXGRmZ1iRx0ymBvTfozSPNQWuAtwr7UAkqPa/SUieUo89L1WeNfaHSAFprRMVi5hJzx9cOs1TSI5orKdlLStF7tH2JhLIUhT93b+XRpuC4XUMRIWCjB2wV6T/YM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jz1mZy60; arc=none smtp.client-ip=209.85.215.175
+	 Content-Type:Content-Disposition:In-Reply-To; b=lgWNoYjfEURblUCaOr1atB/+0iJDi7PCJCe4PNA8Ld5QEmxASnyaqV3AZbQpc/JBV1sC/4ajK/u87ycVoYdWlJERpEH7FhCnPx7E3clcR9Nqs9+mhJqSmGxwtGzLds4QU8Z/L2M4ScN1FqIcITXzhRwdejHMza1ka2gSWuGLRA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c6dSXBrf; arc=none smtp.client-ip=209.85.210.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-5ce07cf1e5dso2223626a12.2
-        for <linux-iio@vger.kernel.org>; Sat, 27 Apr 2024 04:14:02 -0700 (PDT)
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6f0aeee172dso2151571b3a.1
+        for <linux-iio@vger.kernel.org>; Sat, 27 Apr 2024 04:34:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714216442; x=1714821242; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1714217666; x=1714822466; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HFwFEMLz9Y4SvJ0kCtjaCb4pbyDl5bvWmn72Z2y7QrE=;
-        b=jz1mZy60+iHhM6yzRoEaz5YJ2wiPwUv3uCBhyDprTukIiNgYSGFM4+puLd4odvsEvP
-         0QH6ro8wOq7NiTHbHIpkqlyiAB8YUdOJJkJHrKx3wdqG45saXwHfw7aKRSesr1mxnPBc
-         jVlcsLHzsXq+z8u7jCwKDcgzALIK/JvtSJIPzsKOri/xbeN1Tjbe8R6xISlLoylC3NjF
-         w3Aeiitc19oYBH7TC4ftfrvUsZN0A8tqNJYqrJ2G/FwZ57ycotvZzNGpZl1cfxb7JBYT
-         5vmfTa9fN/KwMNA0nI1/I8kZ/OAQFV7lwvlkTGjfTwg103fL/kRJAwfQUsUjwQRJAFev
-         w1HA==
+        bh=NCgm6whC0zZKuOCSNpau2rfV0njTlPTaGHctAufCGdU=;
+        b=c6dSXBrf2wWuKkJW9mUceQ9yxBe6HAqAPxje/881o8lZ182LT1nQBV/UKlvpsXksrt
+         H2iEhOO2QbFsGAn3GKevf9IrZa2fNsF3DvtLixBYaAjMTdp5QP8K2hSKvpo1Vc4XXKQZ
+         7iL1U4HKDnKlVYGcXX2uqYnmSDcHoQzi/WIV7MwcBc/LvKJg2dn/TZhE0+afGqCpCZwg
+         mojfmTazNymDqQkNm6fJIRlROGxRY8sXvromnjevJKKSL5jDHJrcRsLuNxEDVFR+Ls2H
+         nyaxbmlyda6uRtzeSoR/CpQ4ZI+FJDMzi47qJjoCcQAri2GE8EqamViSKR8ZUkImrXCX
+         MKXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714216442; x=1714821242;
+        d=1e100.net; s=20230601; t=1714217666; x=1714822466;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HFwFEMLz9Y4SvJ0kCtjaCb4pbyDl5bvWmn72Z2y7QrE=;
-        b=Z7LD3QFGBTLqLMPs0udyAiVf41viFNWeWdOhiBtZmZC/nQ+ih0X4+YMU8gbQacB1AW
-         lYfhNI6ercJF6V4EKsGIjqGmbs62AnRMNsfgnU6FB/b0AlO2ToNVKx8FqqGXbYKEcdpa
-         rPn3BON9IDUfLksaOn2U82L6rd12tFQxG2iLCPFVGlTK7zbhC2GwryMYVbFukWWOhFBb
-         4yMoQG86G91Od1Z66xfg6v8ni4iOY5zUAoQsb/aw1W8wJsyP88CNgq5uh8mZnb88X68n
-         hxUFx9XzcmGHJGyDGet0ctV/Q/Z+W8chCdQJb9kfJUqO5h9I6o8RfpPFLxMt+GB7ip0H
-         Dafg==
-X-Forwarded-Encrypted: i=1; AJvYcCUNQIK5eiQNdyx3KK6LUhoJfDQgVzo/9zu6NkjUuA4l1RmeOE815fQlqZfzYwUHQ0mQ7ppRZwuurEKgSzD6uxwAeG029g4CAHJL
-X-Gm-Message-State: AOJu0Yy70Hu61WqnKTsJVGUBGcuLU5qp0PMgkRcLKzfCVy7lExUEUKbr
-	Qz+AHYQu+Wf0BMfkomNpeH3hhJLf2lUoopyRleEfP+pDbG+W/vgr
-X-Google-Smtp-Source: AGHT+IE0bpdKG8KyTkkLHAhN1f/mRMkqMTs2yVL9QWrt31MJnmeMpgZDtGOSRfHEDKOEzw5qMRg3Qg==
-X-Received: by 2002:a17:902:f80c:b0:1e6:ac1:9437 with SMTP id ix12-20020a170902f80c00b001e60ac19437mr4550041plb.67.1714216442393;
-        Sat, 27 Apr 2024 04:14:02 -0700 (PDT)
+        bh=NCgm6whC0zZKuOCSNpau2rfV0njTlPTaGHctAufCGdU=;
+        b=TJOqlMsKeliLV3GHG4TK0/eGTRLLrMVLauOwamHF5V1rXIrRdzjRh9By9QWIUrP6r5
+         0i8aoLaXxS0gph2dNm8dLZ9MjMUxZVrYbVsgRnkvmktmSjJCUZN8fkXNEDRHD7nkvDfY
+         8OFpvftTNRs8BU1APPAzVJnwtybYLE/Lk2u7Gs+Hn4s/sUvp7buwzbIduq6dmriSvVa0
+         Bsnc55WbK0BnknlZfJnCgnU4rTmmtAafoNkw3wt6cJuBZGXW5a4qPWRDVVppUHXSFlie
+         Y/Q8KbZJCe5JAL4QWdLTf0Zgjr9YUABgkHj7gwkEKkdoRcYo3/E7+WVpe0Paqe5WYGrp
+         AI3A==
+X-Forwarded-Encrypted: i=1; AJvYcCUP+HCmDrEyOEN3M4JY0ZejW5X7dTCXmYLQB9hp2c0RvpGV+QVAlW4x4PmQs0+f819P0PaaCzyZCszZhIzgTuQtiEa1T50y0+xQ
+X-Gm-Message-State: AOJu0YytyhsJYu9n+u/Z9UlYz6YbOdTcv0s3xzFJms9pQW0V9p5+2njm
+	aifM10gLKH9dCND31XWRlm014+JwN5xTsrZHF7byf3pYhxXKyzn56/ndnaIx
+X-Google-Smtp-Source: AGHT+IEphfLLf68ZLnGC0XfZv8BNxtMXtcdLTznrH6u6hdcSxVFJ0RSGd4LzewVH19NxZovsa2cSdg==
+X-Received: by 2002:a05:6a00:2e20:b0:6ed:de2c:77b9 with SMTP id fc32-20020a056a002e2000b006edde2c77b9mr3255485pfb.14.1714217666384;
+        Sat, 27 Apr 2024 04:34:26 -0700 (PDT)
 Received: from localhost ([2804:30c:1f6c:5400:ea32:e7c8:5bc0:103])
-        by smtp.gmail.com with ESMTPSA id j3-20020a170903028300b001eb15178370sm2482318plr.130.2024.04.27.04.14.01
+        by smtp.gmail.com with ESMTPSA id gx9-20020a056a001e0900b006eb3c2bde43sm16150564pfb.205.2024.04.27.04.34.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Apr 2024 04:14:01 -0700 (PDT)
-Date: Sat, 27 Apr 2024 08:14:50 -0300
+        Sat, 27 Apr 2024 04:34:25 -0700 (PDT)
+Date: Sat, 27 Apr 2024 08:35:15 -0300
 From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Lincoln Yuji <lincolnyuji@usp.br>
-Cc: jic23@kernel.org, Lincoln Yuji <lincolnyuji@hotmail.com>,
-	Luiza Soezima <lbrsoezima@usp.br>,
-	Sabrina Araujo <sabrinaaraujo@usp.br>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ti-ads1015: use
- device_for_each_child_node_scoped()
-Message-ID: <ZizeKo_E7Z5DOR9C@debian-BULLSEYE-live-builder-AMD64>
-References: <20240426131953.14933-1-lincolnyuji@usp.br>
+To: Gabriel Schwartz <gschwartz@usp.br>
+Cc: jic23@kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: rtq6056: Use automated cleanup for mode
+ handling in write_raw
+Message-ID: <Zizi89AJVo2MhWbc@debian-BULLSEYE-live-builder-AMD64>
+References: <20240426200118.20900-1-gschwartz@usp.br>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -84,70 +82,74 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240426131953.14933-1-lincolnyuji@usp.br>
+In-Reply-To: <20240426200118.20900-1-gschwartz@usp.br>
 
-Hi Lincoln, Sabrina, Luiza,
+Hi Gabriel,
 
-The patch looks good, though the message should be wrapped to 75 columns
-and the "From:" tag was not needed and caused an email mismatch.
+Nice patch!
 
-With those adjustments made,
 Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
 
-Regards,
-Marcelo
-
-On 04/26, Lincoln Yuji wrote:
-> From: Lincoln Yuji <lincolnyuji@hotmail.com>
+On 04/26, Gabriel Schwartz wrote:
+> Using iio_device_claim_direct_scoped() to automate mode claim and release
+> simplifies code flow and allows for straight-forward error handling with
+> direct returns on errors.
 > 
-> This loop definition removes the need for manual releasing of the fwnode_handle
-> in early exit paths (here an error path) allow simplification of the code
-> and reducing the chance of future modifications not releasing
-> fwnode_handle correctly.
-> 
-> Co-developed-by: Luiza Soezima <lbrsoezima@usp.br>
-> Signed-off-by: Luiza Soezima <lbrsoezima@usp.br>
-> Co-developed-by: Sabrina Araujo <sabrinaaraujo@usp.br>
-> Signed-off-by: Sabrina Araujo <sabrinaaraujo@usp.br>
-> Signed-off-by: Lincoln Yuji <lincolnyuji@usp.br>
+> Signed-off-by: Gabriel Schwartz <gschwartz@usp.br>
 > ---
->  drivers/iio/adc/ti-ads1015.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
+>  drivers/iio/adc/rtq6056.c | 34 +++++++++++-----------------------
+>  1 file changed, 11 insertions(+), 23 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-> index 6ae967e4d..d3363d02f 100644
-> --- a/drivers/iio/adc/ti-ads1015.c
-> +++ b/drivers/iio/adc/ti-ads1015.c
-> @@ -902,10 +902,9 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
->  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
->  	struct ads1015_data *data = iio_priv(indio_dev);
->  	struct device *dev = &client->dev;
-> -	struct fwnode_handle *node;
->  	int i = -1;
+> diff --git a/drivers/iio/adc/rtq6056.c b/drivers/iio/adc/rtq6056.c
+> index a5464737e..bcb129840 100644
+> --- a/drivers/iio/adc/rtq6056.c
+> +++ b/drivers/iio/adc/rtq6056.c
+> @@ -520,32 +520,20 @@ static int rtq6056_adc_write_raw(struct iio_dev *indio_dev,
+>  {
+>  	struct rtq6056_priv *priv = iio_priv(indio_dev);
+>  	const struct richtek_dev_data *devdata = priv->devdata;
+> -	int ret;
 >  
-> -	device_for_each_child_node(dev, node) {
-> +	device_for_each_child_node_scoped(dev, node) {
->  		u32 pval;
->  		unsigned int channel;
->  		unsigned int pga = ADS1015_DEFAULT_PGA;
-> @@ -927,7 +926,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
->  			pga = pval;
->  			if (pga > 5) {
->  				dev_err(dev, "invalid gain on %pfw\n", node);
-> -				fwnode_handle_put(node);
->  				return -EINVAL;
->  			}
+> -	ret = iio_device_claim_direct_mode(indio_dev);
+> -	if (ret)
+> -		return ret;
+> -
+> -	switch (mask) {
+> -	case IIO_CHAN_INFO_SAMP_FREQ:
+> -		if (devdata->fixed_samp_freq) {
+> -			ret = -EINVAL;
+> -			break;
+> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> +		switch (mask) {
+> +		case IIO_CHAN_INFO_SAMP_FREQ:
+> +			if (devdata->fixed_samp_freq)
+> +				return -EINVAL;
+> +			return rtq6056_adc_set_samp_freq(priv, chan, val);
+> +		case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> +			return devdata->set_average(priv, val);
+> +		default:
+> +			return -EINVAL;
 >  		}
-> @@ -936,7 +934,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
->  			data_rate = pval;
->  			if (data_rate > 7) {
->  				dev_err(dev, "invalid data_rate on %pfw\n", node);
-> -				fwnode_handle_put(node);
->  				return -EINVAL;
->  			}
->  		}
+> -
+> -		ret = rtq6056_adc_set_samp_freq(priv, chan, val);
+> -		break;
+> -	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
+> -		ret = devdata->set_average(priv, val);
+> -		break;
+> -	default:
+> -		ret = -EINVAL;
+> -		break;
+>  	}
+> -
+> -	iio_device_release_direct_mode(indio_dev);
+> -
+> -	return ret;
+> +	unreachable();
+>  }
+>  
+>  static const char *rtq6056_channel_labels[RTQ6056_MAX_CHANNEL] = {
 > -- 
-> 2.34.1
+> 2.44.0
 > 
 > 
 

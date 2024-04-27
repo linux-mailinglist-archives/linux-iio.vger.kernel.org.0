@@ -1,138 +1,162 @@
-Return-Path: <linux-iio+bounces-4553-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4554-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B598B43D9
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 04:44:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FF388B43E3
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 05:06:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 727D4B224A8
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 02:44:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15717283F0A
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 03:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6304E3A1B6;
-	Sat, 27 Apr 2024 02:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4B03BBDC;
+	Sat, 27 Apr 2024 03:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ANoO81yk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SSv8HwzL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BEE8208C1;
-	Sat, 27 Apr 2024 02:44:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A4F1F93E;
+	Sat, 27 Apr 2024 03:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714185867; cv=none; b=duu/ALZwLurNTjBt2j8O5WbZnAo5XxCAlw41udgI7V4aAdorgMdtbQ+n1lmqYBsGwouE8IGFcmVRgfyq3DuOTJSc8ILmDn724dBubAtT8FdqrWhwbIqrvV1LQt+hrRRTcCLUU8sdU1j9idU5scMtmah/Ilw9rzQmghy/ZgWbG3A=
+	t=1714187186; cv=none; b=IbbnT/t6pnC+BrFwadMlji6WhMklWHkWb1rN62nothCBuA5M+umX0+IjApGORxuzeUv/4KkE86fNzLpgNCAMaDyZThDgrgLncbYHQ/R2LsdT41oL8J6oSMRPCnHfQLpVweloG3J0bTFdiBehiS/ki8ajYF2fu4ytmiP0HGZTA78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714185867; c=relaxed/simple;
-	bh=qkrYL1LnJX01BbmP4vKe9fzC867vlBxEr4GWvPFQafk=;
+	s=arc-20240116; t=1714187186; c=relaxed/simple;
+	bh=5s9RUz2MFkTGAYQJ26h2TnEAa/zhOjqbrB7VANRk3lA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WoGnDPHTZYhzX6lSbfgiWqzRykCLWt7Kn2AkzyJI4pJ2zj84/DC7LoxnhXYejcnRQaRpUBxV42v098kJ9iw+1sGiX031eFLlXBGtZSDckjlSw7rwCgLWq6v/CH5VxkHg4KmS5ySNno7DBvbB1i0wPXNi/ob5Ld+oFxobZsef7dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ANoO81yk; arc=none smtp.client-ip=192.198.163.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=IPHLdEFrUV/G2WfBAyPTDKiJdc61+mqDPfmw5ugnI+xgX6rqFsY/aljqjweNnywKoTWeU9tnip0l4hl1KSXJxpDsY3qBH/1kM+G+ZffrEpSD25GVAMimVyoLMdzYnGJ2Lg0odgND5p9zCylODKp8baY7yMsfMtS3L00aU5SDqVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SSv8HwzL; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714185865; x=1745721865;
+  t=1714187185; x=1745723185;
   h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=qkrYL1LnJX01BbmP4vKe9fzC867vlBxEr4GWvPFQafk=;
-  b=ANoO81ykJUVbWQH1VDDFEEPQPzaAsHegDobPkvmh8LX2NVvT34f4PBvc
-   0JSRMUkrsB6eQQiqw7Sxbgxgy5zSseR4/qxUSheXUoi8FPueRXoo3PEVE
-   4OCe8DGkFX2+DjUePmY2ncJeWi7/28qqyCIHGGXABvc6+nDTQKlgS8jUH
-   oPbIlm8RUJVZdSps3mUP4CDueidNS4nKbvDVcM3gTCi/duK4swilQkspr
-   Vd2VVNNIu+0W3r4K4GKycVRhcX2Dle/Rk0nEKvoCP7CjzQK/GdUuCBwv3
-   zSJHBiHy2/qMR/FOoTY3roE3sc9y8EWwDsfyzlfz+V/PA3sSUymGbDiCn
-   A==;
-X-CSE-ConnectionGUID: mOMUE06KRzat/Gbeq3/E5A==
-X-CSE-MsgGUID: Db0n4MiNTcSxK+HpAg/fWw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="20618535"
+   mime-version:in-reply-to;
+  bh=5s9RUz2MFkTGAYQJ26h2TnEAa/zhOjqbrB7VANRk3lA=;
+  b=SSv8HwzLvFuZLHaplno6KDuXk542fxOtj4tbNISshFgycwsJDGLgf4ux
+   2XbWZXxbDryD/JWjT+kQ5RgNZUwSgCVxGMjTZUrSCMk9pe8UD5Pp3NlUL
+   pJrXEQZ0w5s5bvdbGywZBpz+7e6XuVoj41iT7Anllu/XVAnm4HDJd9g+s
+   uFsuWETMfXqoJ0b7aICIXsx7ExjWrQNa+Xx5wDaE8nOT+G8VoWnsyoRwv
+   8e1KkILRrieLhaGN3iZfV0RBxjQV2jMfHreWtocuNjc8YV9mcAcKTJCyh
+   InOhG6Mx8iLcACKjeFV9LDXGsDIENs0HL7761v0nHELt4VjqM9nfzIX+E
+   Q==;
+X-CSE-ConnectionGUID: 2Io5EqItQ/uh2atP6tpBDg==
+X-CSE-MsgGUID: 6aqgQIWBTw+JmGktHyDgmg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="10468292"
 X-IronPort-AV: E=Sophos;i="6.07,234,1708416000"; 
-   d="scan'208";a="20618535"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 19:44:24 -0700
-X-CSE-ConnectionGUID: wrHFTpiOR2i91sUQ1VZIJA==
-X-CSE-MsgGUID: E5sNqbW6QeifjYxcNCZZEA==
+   d="scan'208";a="10468292"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 20:06:24 -0700
+X-CSE-ConnectionGUID: MynFAFYcTw6hsFAehSytYg==
+X-CSE-MsgGUID: nka30g3MRzqwzZjNc2Gf2A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,234,1708416000"; 
-   d="scan'208";a="25565554"
+   d="scan'208";a="56778167"
 Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 26 Apr 2024 19:44:22 -0700
+  by fmviesa001.fm.intel.com with ESMTP; 26 Apr 2024 20:06:21 -0700
 Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1s0Y31-0004b4-0x;
-	Sat, 27 Apr 2024 02:44:19 +0000
-Date: Sat, 27 Apr 2024 10:43:30 +0800
+	id 1s0YOJ-0004ba-1x;
+	Sat, 27 Apr 2024 03:06:19 +0000
+Date: Sat, 27 Apr 2024 11:05:34 +0800
 From: kernel test robot <lkp@intel.com>
 To: Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
 	linux-kernel@vger.kernel.org, jic23@kernel.org,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
 	robh@kernel.org, nuno.sa@analog.com
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+Cc: oe-kbuild-all@lists.linux.dev,
 	Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-Subject: Re: [PATCH 3/7] iio: imu: adis16475: Re-define ADIS16475_DATA
-Message-ID: <202404271034.fsyc7qe2-lkp@intel.com>
-References: <20240426135339.185602-4-ramona.bolboaca13@gmail.com>
+Subject: Re: [PATCH 4/7] iio: imu: adis_buffer: Add buffer setup API with
+ buffer attributes
+Message-ID: <202404271027.ySHRhuOH-lkp@intel.com>
+References: <20240426135339.185602-5-ramona.bolboaca13@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240426135339.185602-4-ramona.bolboaca13@gmail.com>
+In-Reply-To: <20240426135339.185602-5-ramona.bolboaca13@gmail.com>
 
 Hi Ramona,
 
-kernel test robot noticed the following build warnings:
+kernel test robot noticed the following build errors:
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on linus/master v6.9-rc5 next-20240426]
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.9-rc5 next-20240426]
 [If your patch is applied to the wrong git tree, kindly drop us a note.
 And when submitting patch, we suggest to use '--base' as documented in
 https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
 url:    https://github.com/intel-lab-lkp/linux/commits/Ramona-Gradinariu/dt-bindings-iio-imu-Add-ADIS16501-compatibles/20240426-215728
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240426135339.185602-4-ramona.bolboaca13%40gmail.com
-patch subject: [PATCH 3/7] iio: imu: adis16475: Re-define ADIS16475_DATA
-config: arm-randconfig-004-20240427 (https://download.01.org/0day-ci/archive/20240427/202404271034.fsyc7qe2-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project 5ef5eb66fb428aaf61fb51b709f065c069c11242)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240427/202404271034.fsyc7qe2-lkp@intel.com/reproduce)
+patch link:    https://lore.kernel.org/r/20240426135339.185602-5-ramona.bolboaca13%40gmail.com
+patch subject: [PATCH 4/7] iio: imu: adis_buffer: Add buffer setup API with buffer attributes
+config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20240427/202404271027.ySHRhuOH-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240427/202404271027.ySHRhuOH-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202404271034.fsyc7qe2-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202404271027.ySHRhuOH-lkp@intel.com/
 
-All warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
-   In file included from drivers/iio/imu/adis16475.c:16:
-   In file included from include/linux/iio/imu/adis.h:12:
-   In file included from include/linux/spi/spi.h:17:
-   In file included from include/linux/scatterlist.h:8:
-   In file included from include/linux/mm.h:2208:
-   include/linux/vmstat.h:522:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     522 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
->> drivers/iio/imu/adis16475.c:734:34: warning: unused variable 'adis1650x_timeouts' [-Wunused-const-variable]
-     734 | static const struct adis_timeout adis1650x_timeouts = {
-         |                                  ^~~~~~~~~~~~~~~~~~
-   2 warnings generated.
+   drivers/iio/imu/adis_buffer.c: In function 'devm_adis_setup_buffer_and_trigger_with_attrs':
+>> drivers/iio/imu/adis_buffer.c:207:51: error: passing argument 7 of 'devm_iio_triggered_buffer_setup_ext' from incompatible pointer type [-Werror=incompatible-pointer-types]
+     207 |                                                   buffer_attrs);
+         |                                                   ^~~~~~~~~~~~
+         |                                                   |
+         |                                                   const struct attribute **
+   In file included from drivers/iio/imu/adis_buffer.c:19:
+   include/linux/iio/triggered_buffer.h:31:69: note: expected 'const struct iio_dev_attr **' but argument is of type 'const struct attribute **'
+      31 |                                         const struct iio_dev_attr **buffer_attrs);
+         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
 
-vim +/adis1650x_timeouts +734 drivers/iio/imu/adis16475.c
+vim +/devm_iio_triggered_buffer_setup_ext +207 drivers/iio/imu/adis_buffer.c
 
-fff7352bf7a3ce Nuno Sá 2020-04-13  733  
-fff7352bf7a3ce Nuno Sá 2020-04-13 @734  static const struct adis_timeout adis1650x_timeouts = {
-fff7352bf7a3ce Nuno Sá 2020-04-13  735  	.reset_ms = 260,
-fff7352bf7a3ce Nuno Sá 2020-04-13  736  	.sw_reset_ms = 260,
-fff7352bf7a3ce Nuno Sá 2020-04-13  737  	.self_test_ms = 30,
-fff7352bf7a3ce Nuno Sá 2020-04-13  738  };
-fff7352bf7a3ce Nuno Sá 2020-04-13  739  
+   176	
+   177	/**
+   178	 * devm_adis_setup_buffer_and_trigger_with_attrs() - Sets up buffer and trigger
+   179	 * for the managed adis device with buffer attributes.
+   180	 * @adis: The adis device
+   181	 * @indio_dev: The IIO device
+   182	 * @trigger_handler: Trigger handler: should handle the buffer readings.
+   183	 * @ops: Optional buffer setup functions, may be NULL.
+   184	 * @buffer_attrs: Extra buffer attributes.
+   185	 *
+   186	 * Returns 0 on success, a negative error code otherwise.
+   187	 *
+   188	 * This function sets up the buffer (with buffer setup functions and extra
+   189	 * buffer attributes) and trigger for a adis devices with buffer attributes.
+   190	 */
+   191	int
+   192	devm_adis_setup_buffer_and_trigger_with_attrs(struct adis *adis, struct iio_dev *indio_dev,
+   193						      irq_handler_t trigger_handler,
+   194						      const struct iio_buffer_setup_ops *ops,
+   195						      const struct attribute **buffer_attrs)
+   196	{
+   197		int ret;
+   198	
+   199		if (!trigger_handler)
+   200			trigger_handler = adis_trigger_handler;
+   201	
+   202		ret = devm_iio_triggered_buffer_setup_ext(&adis->spi->dev, indio_dev,
+   203							  &iio_pollfunc_store_time,
+   204							  trigger_handler,
+   205							  IIO_BUFFER_DIRECTION_IN,
+   206							  ops,
+ > 207							  buffer_attrs);
 
 -- 
 0-DAY CI Kernel Test Service

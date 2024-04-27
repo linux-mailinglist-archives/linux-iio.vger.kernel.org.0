@@ -1,80 +1,82 @@
-Return-Path: <linux-iio+bounces-4554-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4555-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FF388B43E3
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 05:06:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 457138B452D
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 10:48:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15717283F0A
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 03:06:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE66B282618
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 08:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4B03BBDC;
-	Sat, 27 Apr 2024 03:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A7344C9E;
+	Sat, 27 Apr 2024 08:48:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SSv8HwzL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eoqTZyHa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A4F1F93E;
-	Sat, 27 Apr 2024 03:06:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9763E43AA2;
+	Sat, 27 Apr 2024 08:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714187186; cv=none; b=IbbnT/t6pnC+BrFwadMlji6WhMklWHkWb1rN62nothCBuA5M+umX0+IjApGORxuzeUv/4KkE86fNzLpgNCAMaDyZThDgrgLncbYHQ/R2LsdT41oL8J6oSMRPCnHfQLpVweloG3J0bTFdiBehiS/ki8ajYF2fu4ytmiP0HGZTA78=
+	t=1714207712; cv=none; b=r7DU47kh2ywl68MrIrIVseTGo4yu4As9KH+yqd8z/RcUIgOXi6K1yoQNb0ZHxIVDrTKUJpibl32IxVb9B0KXZjidSjsg5qFY+YP9Ga/POp4H5l2bWHflAz3t2PxbI7yADyzJtmSo3XdeBgbY/Tlnv8Nf/zM7hz7T/E+kFlN5DJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714187186; c=relaxed/simple;
-	bh=5s9RUz2MFkTGAYQJ26h2TnEAa/zhOjqbrB7VANRk3lA=;
+	s=arc-20240116; t=1714207712; c=relaxed/simple;
+	bh=V4NpDnxzjqlT9WYru8l/dQpMschafKVu3wR/Hiqueg0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IPHLdEFrUV/G2WfBAyPTDKiJdc61+mqDPfmw5ugnI+xgX6rqFsY/aljqjweNnywKoTWeU9tnip0l4hl1KSXJxpDsY3qBH/1kM+G+ZffrEpSD25GVAMimVyoLMdzYnGJ2Lg0odgND5p9zCylODKp8baY7yMsfMtS3L00aU5SDqVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SSv8HwzL; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714187185; x=1745723185;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=5s9RUz2MFkTGAYQJ26h2TnEAa/zhOjqbrB7VANRk3lA=;
-  b=SSv8HwzLvFuZLHaplno6KDuXk542fxOtj4tbNISshFgycwsJDGLgf4ux
-   2XbWZXxbDryD/JWjT+kQ5RgNZUwSgCVxGMjTZUrSCMk9pe8UD5Pp3NlUL
-   pJrXEQZ0w5s5bvdbGywZBpz+7e6XuVoj41iT7Anllu/XVAnm4HDJd9g+s
-   uFsuWETMfXqoJ0b7aICIXsx7ExjWrQNa+Xx5wDaE8nOT+G8VoWnsyoRwv
-   8e1KkILRrieLhaGN3iZfV0RBxjQV2jMfHreWtocuNjc8YV9mcAcKTJCyh
-   InOhG6Mx8iLcACKjeFV9LDXGsDIENs0HL7761v0nHELt4VjqM9nfzIX+E
-   Q==;
-X-CSE-ConnectionGUID: 2Io5EqItQ/uh2atP6tpBDg==
-X-CSE-MsgGUID: 6aqgQIWBTw+JmGktHyDgmg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11056"; a="10468292"
-X-IronPort-AV: E=Sophos;i="6.07,234,1708416000"; 
-   d="scan'208";a="10468292"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Apr 2024 20:06:24 -0700
-X-CSE-ConnectionGUID: MynFAFYcTw6hsFAehSytYg==
-X-CSE-MsgGUID: nka30g3MRzqwzZjNc2Gf2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,234,1708416000"; 
-   d="scan'208";a="56778167"
-Received: from lkp-server01.sh.intel.com (HELO e434dd42e5a1) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 26 Apr 2024 20:06:21 -0700
-Received: from kbuild by e434dd42e5a1 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s0YOJ-0004ba-1x;
-	Sat, 27 Apr 2024 03:06:19 +0000
-Date: Sat, 27 Apr 2024 11:05:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
-	linux-kernel@vger.kernel.org, jic23@kernel.org,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	robh@kernel.org, nuno.sa@analog.com
-Cc: oe-kbuild-all@lists.linux.dev,
-	Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-Subject: Re: [PATCH 4/7] iio: imu: adis_buffer: Add buffer setup API with
- buffer attributes
-Message-ID: <202404271027.ySHRhuOH-lkp@intel.com>
-References: <20240426135339.185602-5-ramona.bolboaca13@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UwAUkzzkcAxzD3ntTBOAX6z7jXzYM74n8hyoU3TlpLfo5pM+rpzXvn00dTxxjva9HZAhCSfgTLmNWo2US1D+jfYNVUQT0foAISUzS1wh3Oc/1uS6FHHVfumnN5i3GONPPX/8IjU93wKK6G3Sd6a5Y0E47xT7cv2WGiDTbiDdJTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eoqTZyHa; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-5d81b08d6f2so2120997a12.0;
+        Sat, 27 Apr 2024 01:48:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714207710; x=1714812510; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PXHIbNFrUZ3oIq2rhdb5p0syCAenZ2Q/nUC+x14Dlxc=;
+        b=eoqTZyHaawkjybYL58tlGgfVGMVFyvn+c667tURGccLvW6bhWkw8UoGEtKieUfBFbN
+         umhI+9FZygiEoaop1r6xZwedYGwDxiW4lEkSUyKYp0f/+Ef92jVBY+tBfgicjIwSoQ4X
+         ZuHJ0kDXBml0+RMmuGO/TQtC1ZQC6VhQfSwrBTTT3EgpvCMNbuOCpCryP2D7qnRlvedz
+         Cf09WGMCx6rxHzemuHu3jGA3Bco8O0JjX98jUJnP/cTcpHior0gwaOmurzPh6h+FLHet
+         eFpVsBh4qAKdNeh176B1lDb+HX99hcVnxmNmNkRuSWcZjlHnO9L1R8mlYglES2UvScu5
+         Iu8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714207710; x=1714812510;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PXHIbNFrUZ3oIq2rhdb5p0syCAenZ2Q/nUC+x14Dlxc=;
+        b=usB14MyTbh6eUGEDZGcZcOdD+i90uI8laZEnzPXyPcDI1BKK1DVMRz/wIkWyOucilB
+         rPbSprzijxyjzbkPK2V7nX399p3MARiDGOWkuPcfy2tc4BB+ZGS1PRDQ+MDYn/x27fiW
+         Ik51ZpyBeFH4UK1tZswsgEq5cQsdP3cQbPs2MRXUW2dtnt4En9OQrQ2RvUUA/rnpCEei
+         mcKkXzTyT1qke5581kPi97f22jI8e7dOy+/s5nrifFzYGDpQ5Oh1wkLyc1iDwMnngPFh
+         m2EcHZsOZXdCwk/ly9y/iQYF+iVVDnVIhyQJezcT5+tV7Yp0XMji9qgxYXDFSx8I1azi
+         xgsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUqu4ev7fEr4NhPYKQ5KLPOOvUotrFh7U+uRFvQkZHFfHruWfdXTsgONRgP4OV7Bu8ml/bxotHaZukccKJL4Cry6fCz3p0T0M9LseMoOdcY50mkeBoR3QtOs8GCPaiiEcU/sHBWVFZV
+X-Gm-Message-State: AOJu0Yyjxm7+mze/lsVefDDuDuZelwHo0KT8a/WI4uI19KX46PFYbGc5
+	hBXjh3+8LSSYrhFjNBsxoi6UXsJKlNATvnj75pkWr8GeAnRJWBQO
+X-Google-Smtp-Source: AGHT+IHR5tbH6MWsLG0qWRbuZ84BDJigIemtA0Lf+Sj/Ld57wPUYzXI0snSmQFCm8kXNUnvTOpHeqQ==
+X-Received: by 2002:a05:6a20:3954:b0:1a9:8251:41ba with SMTP id r20-20020a056a20395400b001a9825141bamr5582525pzg.51.1714207710369;
+        Sat, 27 Apr 2024 01:48:30 -0700 (PDT)
+Received: from localhost ([2804:30c:1f6c:5400:ea32:e7c8:5bc0:103])
+        by smtp.gmail.com with ESMTPSA id k1-20020a17090a590100b002afd65ff881sm3946516pji.44.2024.04.27.01.48.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 27 Apr 2024 01:48:29 -0700 (PDT)
+Date: Sat, 27 Apr 2024 05:49:18 -0300
+From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Andrew Hepp <andrew.hepp@ahepp.dev>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: temperature: mcp9600: Fix temperature reading for
+ negative values
+Message-ID: <Ziy8DsMCeAGK79E7@debian-BULLSEYE-live-builder-AMD64>
+References: <20240424185913.1177127-1-dima.fedrau@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,82 +85,52 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240426135339.185602-5-ramona.bolboaca13@gmail.com>
+In-Reply-To: <20240424185913.1177127-1-dima.fedrau@gmail.com>
 
-Hi Ramona,
+Hi Dimitri,
 
-kernel test robot noticed the following build errors:
+Interesting patch this one.
+I think this does apply, although, the cold junction register has for sign bits
+so I think we could also have a mask to clear those out.
+Some code suggestions inline.
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master v6.9-rc5 next-20240426]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Regards,
+Marcelo
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ramona-Gradinariu/dt-bindings-iio-imu-Add-ADIS16501-compatibles/20240426-215728
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240426135339.185602-5-ramona.bolboaca13%40gmail.com
-patch subject: [PATCH 4/7] iio: imu: adis_buffer: Add buffer setup API with buffer attributes
-config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20240427/202404271027.ySHRhuOH-lkp@intel.com/config)
-compiler: m68k-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240427/202404271027.ySHRhuOH-lkp@intel.com/reproduce)
+On 04/24, Dimitri Fedrau wrote:
+> Temperature is stored as 16bit value in two's complement format. Current
+> implementation ignores the sign bit. Make it aware of the sign bit by
+> using sign_extend32.
+> 
+> Fixes: 3f6b9598b6df ("iio: temperature: Add MCP9600 thermocouple EMF converter")
+> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> ---
+>  drivers/iio/temperature/mcp9600.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
+> index 46845804292b..7a3eef5d5e75 100644
+> --- a/drivers/iio/temperature/mcp9600.c
+> +++ b/drivers/iio/temperature/mcp9600.c
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202404271027.ySHRhuOH-lkp@intel.com/
+#define MCP9600_COLD_JUNCTION_SIGN_MSK GENMASK(15,12)
+...
 
-All errors (new ones prefixed by >>):
+> @@ -52,7 +52,8 @@ static int mcp9600_read(struct mcp9600_data *data,
+>  
+>  	if (ret < 0)
+>  		return ret;
+> -	*val = ret;
+> +
+> +	*val = sign_extend32(ret, 15);
+	if (chan->address == MCP9600_COLD_JUNCTION)
+		*val &= ~MCP9600_COLD_JUNCTION_SIGN_MSK;
 
-   drivers/iio/imu/adis_buffer.c: In function 'devm_adis_setup_buffer_and_trigger_with_attrs':
->> drivers/iio/imu/adis_buffer.c:207:51: error: passing argument 7 of 'devm_iio_triggered_buffer_setup_ext' from incompatible pointer type [-Werror=incompatible-pointer-types]
-     207 |                                                   buffer_attrs);
-         |                                                   ^~~~~~~~~~~~
-         |                                                   |
-         |                                                   const struct attribute **
-   In file included from drivers/iio/imu/adis_buffer.c:19:
-   include/linux/iio/triggered_buffer.h:31:69: note: expected 'const struct iio_dev_attr **' but argument is of type 'const struct attribute **'
-      31 |                                         const struct iio_dev_attr **buffer_attrs);
-         |                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~
-   cc1: some warnings being treated as errors
-
-
-vim +/devm_iio_triggered_buffer_setup_ext +207 drivers/iio/imu/adis_buffer.c
-
-   176	
-   177	/**
-   178	 * devm_adis_setup_buffer_and_trigger_with_attrs() - Sets up buffer and trigger
-   179	 * for the managed adis device with buffer attributes.
-   180	 * @adis: The adis device
-   181	 * @indio_dev: The IIO device
-   182	 * @trigger_handler: Trigger handler: should handle the buffer readings.
-   183	 * @ops: Optional buffer setup functions, may be NULL.
-   184	 * @buffer_attrs: Extra buffer attributes.
-   185	 *
-   186	 * Returns 0 on success, a negative error code otherwise.
-   187	 *
-   188	 * This function sets up the buffer (with buffer setup functions and extra
-   189	 * buffer attributes) and trigger for a adis devices with buffer attributes.
-   190	 */
-   191	int
-   192	devm_adis_setup_buffer_and_trigger_with_attrs(struct adis *adis, struct iio_dev *indio_dev,
-   193						      irq_handler_t trigger_handler,
-   194						      const struct iio_buffer_setup_ops *ops,
-   195						      const struct attribute **buffer_attrs)
-   196	{
-   197		int ret;
-   198	
-   199		if (!trigger_handler)
-   200			trigger_handler = adis_trigger_handler;
-   201	
-   202		ret = devm_iio_triggered_buffer_setup_ext(&adis->spi->dev, indio_dev,
-   203							  &iio_pollfunc_store_time,
-   204							  trigger_handler,
-   205							  IIO_BUFFER_DIRECTION_IN,
-   206							  ops,
- > 207							  buffer_attrs);
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+>  
+>  	return 0;
+>  }
+> -- 
+> 2.39.2
+> 
+> 
 

@@ -1,155 +1,135 @@
-Return-Path: <linux-iio+bounces-4560-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4561-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 786E08B4628
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 13:34:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 130418B4653
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 14:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E032289A48
-	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 11:34:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6CE91F2453B
+	for <lists+linux-iio@lfdr.de>; Sat, 27 Apr 2024 12:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 969FE4C3CD;
-	Sat, 27 Apr 2024 11:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA64A4D9F5;
+	Sat, 27 Apr 2024 12:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c6dSXBrf"
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="iv5kZcDc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC154CB23
-	for <linux-iio@vger.kernel.org>; Sat, 27 Apr 2024 11:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B34DF40858
+	for <linux-iio@vger.kernel.org>; Sat, 27 Apr 2024 12:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714217668; cv=none; b=i+6nS9rb1HFVCBSAeVhE6UOnDmYGxT0b54SNuKzzHDCUWUqCBt+qQKmlCSEjjW27hDRPHxK8NTdNzuX4ItWgr/XUP39fpNi+0bPdFAA+SZ+7W8/7iTIcmAbPHdoLt0qC39z21BjkaeLKycn7TtHhCQnsOez7AVhLOpI8DqB1ahE=
+	t=1714219884; cv=none; b=MUnZuD4gwehmptbDDgTRiawCP2OOKj5NVINDJ7/+xbeDJFugLhzF4NU9w/uxGXHDNvCellb7YQ+PkksGNAwud9+rhq+6JR9G3CCySbiDtebFrTHS91k0G5DxhGH/26TLbLsDBiSBdqQuf5aw8WrBtDr3L+T3JF3aNmBog2h70Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714217668; c=relaxed/simple;
-	bh=nVt4LZ18xuuBfcv1L11RF1axvXpUoeDtIw2LcNncef4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lgWNoYjfEURblUCaOr1atB/+0iJDi7PCJCe4PNA8Ld5QEmxASnyaqV3AZbQpc/JBV1sC/4ajK/u87ycVoYdWlJERpEH7FhCnPx7E3clcR9Nqs9+mhJqSmGxwtGzLds4QU8Z/L2M4ScN1FqIcITXzhRwdejHMza1ka2gSWuGLRA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c6dSXBrf; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-6f0aeee172dso2151571b3a.1
-        for <linux-iio@vger.kernel.org>; Sat, 27 Apr 2024 04:34:26 -0700 (PDT)
+	s=arc-20240116; t=1714219884; c=relaxed/simple;
+	bh=z8wSUqIt4j0YXDYe0YyHA8y6o2pwo2p4olscic+kpd0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ee7OJCeXIZgG8le2Bry35Rr5yrt3l0ruo0GQ3pi7P2F6zy3ScBhExwAT+GC0XmokFOpYXueG6eCUWwYaHZX0TyiBeas7PUFMg6nYwTZMztz5gwMcEzBWxVFRUCzyfkps0HNrYdQLxTLJcAdiM5ks5qjybVZStJJZdPwli10ABH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=iv5kZcDc; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6ed112c64beso2930361b3a.1
+        for <linux-iio@vger.kernel.org>; Sat, 27 Apr 2024 05:11:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714217666; x=1714822466; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NCgm6whC0zZKuOCSNpau2rfV0njTlPTaGHctAufCGdU=;
-        b=c6dSXBrf2wWuKkJW9mUceQ9yxBe6HAqAPxje/881o8lZ182LT1nQBV/UKlvpsXksrt
-         H2iEhOO2QbFsGAn3GKevf9IrZa2fNsF3DvtLixBYaAjMTdp5QP8K2hSKvpo1Vc4XXKQZ
-         7iL1U4HKDnKlVYGcXX2uqYnmSDcHoQzi/WIV7MwcBc/LvKJg2dn/TZhE0+afGqCpCZwg
-         mojfmTazNymDqQkNm6fJIRlROGxRY8sXvromnjevJKKSL5jDHJrcRsLuNxEDVFR+Ls2H
-         nyaxbmlyda6uRtzeSoR/CpQ4ZI+FJDMzi47qJjoCcQAri2GE8EqamViSKR8ZUkImrXCX
-         MKXA==
+        d=usp.br; s=usp-google; t=1714219879; x=1714824679; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zEg/vZ651UmK8myJ1duJUtvUGHo3a+rTOk+o6xyb9DI=;
+        b=iv5kZcDc+BH6AQpmV2l3TONY4wMRE+OnSnUj5hOqfwXMmrkEyy1H5MYHWv0HCYg4WP
+         wrAKypbjt4kMgGJos0QPDpHhbI1uzoeA5uNPYiSDw16hL7p4J3bX7G6a/zEdRZkvgYIf
+         UJwGMgzRQisKRH8NgfJyXIRLF6oQaEJXc1bnBSVcNlkt5J66oegmROOugkNz+DFItzd/
+         BCuLafn1i+bcFfghMevT865R7U1HS2ZrXGwX4+Kp2qp5Ac2mN87K6v0zFBWP8aBxQ1K4
+         TbGV/KvgDNsWzmWUvVNNxeewsx41/SvbXP4avEtHj9EI5ycwG+GK0vhZYjVKiAbig5F1
+         hamQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714217666; x=1714822466;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NCgm6whC0zZKuOCSNpau2rfV0njTlPTaGHctAufCGdU=;
-        b=TJOqlMsKeliLV3GHG4TK0/eGTRLLrMVLauOwamHF5V1rXIrRdzjRh9By9QWIUrP6r5
-         0i8aoLaXxS0gph2dNm8dLZ9MjMUxZVrYbVsgRnkvmktmSjJCUZN8fkXNEDRHD7nkvDfY
-         8OFpvftTNRs8BU1APPAzVJnwtybYLE/Lk2u7Gs+Hn4s/sUvp7buwzbIduq6dmriSvVa0
-         Bsnc55WbK0BnknlZfJnCgnU4rTmmtAafoNkw3wt6cJuBZGXW5a4qPWRDVVppUHXSFlie
-         Y/Q8KbZJCe5JAL4QWdLTf0Zgjr9YUABgkHj7gwkEKkdoRcYo3/E7+WVpe0Paqe5WYGrp
-         AI3A==
-X-Forwarded-Encrypted: i=1; AJvYcCUP+HCmDrEyOEN3M4JY0ZejW5X7dTCXmYLQB9hp2c0RvpGV+QVAlW4x4PmQs0+f819P0PaaCzyZCszZhIzgTuQtiEa1T50y0+xQ
-X-Gm-Message-State: AOJu0YytyhsJYu9n+u/Z9UlYz6YbOdTcv0s3xzFJms9pQW0V9p5+2njm
-	aifM10gLKH9dCND31XWRlm014+JwN5xTsrZHF7byf3pYhxXKyzn56/ndnaIx
-X-Google-Smtp-Source: AGHT+IEphfLLf68ZLnGC0XfZv8BNxtMXtcdLTznrH6u6hdcSxVFJ0RSGd4LzewVH19NxZovsa2cSdg==
-X-Received: by 2002:a05:6a00:2e20:b0:6ed:de2c:77b9 with SMTP id fc32-20020a056a002e2000b006edde2c77b9mr3255485pfb.14.1714217666384;
-        Sat, 27 Apr 2024 04:34:26 -0700 (PDT)
-Received: from localhost ([2804:30c:1f6c:5400:ea32:e7c8:5bc0:103])
-        by smtp.gmail.com with ESMTPSA id gx9-20020a056a001e0900b006eb3c2bde43sm16150564pfb.205.2024.04.27.04.34.25
+        d=1e100.net; s=20230601; t=1714219879; x=1714824679;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zEg/vZ651UmK8myJ1duJUtvUGHo3a+rTOk+o6xyb9DI=;
+        b=aWWxg99FGgzxYAWfwB+hNeuaNNI2zyBB0hvnahGc1EDwkJ/T6vDuEkjczGO5Yp9zBR
+         gwQ6cGbL4G9KhjHUcZfSLTJHKT7S1siezYooAl1N5zkBjozfpLORgNq9L4NjNAxluzpv
+         W0u3R/JvzAc/GAUyNhH3+W9U93Nx8QpYuFDzyMRNke7en8r2vz04PPH6aXiozCQsKegR
+         2IP1UyUhemq8KxbD/poUREDgfm4s8UZDUBMWddeXYVwQSYwHLDoQZdx0+e3wFb9JNapX
+         tAhSRPY4rEgappPubMS60yw4PTsQMO5cwQkVtgZvmpWFbWdrB0WGKPVBCsaOI7uzmVjo
+         r+Xg==
+X-Forwarded-Encrypted: i=1; AJvYcCWtQZErVCZeGy4aAnh4xltQF1ZZB0uMLGpNvnpoTVDk+rbyBCqGmWbA43iojggemPYyA9Ls/k73lIJAlVprHx0ONwjuMROoprOB
+X-Gm-Message-State: AOJu0YywrSDmKC36GjYYF7fyCYQ03I2paI1DslFufPtNMacZJyh2GqGS
+	py9l2UR15cw5WmCLvfRP5ngxF4iHwHADPUuJnieOYsjH65fNop8KcUQHiXda/fs=
+X-Google-Smtp-Source: AGHT+IHMXLlWnkifSntuavOoiurrf6kXF1w2B7kONKvyhyA15oKOqk04ZKO0UBM2lYlBK74Q+H7fJg==
+X-Received: by 2002:a05:6a00:9283:b0:6ea:f392:bce9 with SMTP id jw3-20020a056a00928300b006eaf392bce9mr2524259pfb.15.1714219879669;
+        Sat, 27 Apr 2024 05:11:19 -0700 (PDT)
+Received: from lincolnyuji-vaio.. ([201.83.91.252])
+        by smtp.gmail.com with ESMTPSA id c6-20020a633506000000b005f034b4d123sm14034856pga.24.2024.04.27.05.11.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Apr 2024 04:34:25 -0700 (PDT)
-Date: Sat, 27 Apr 2024 08:35:15 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Gabriel Schwartz <gschwartz@usp.br>
-Cc: jic23@kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: rtq6056: Use automated cleanup for mode
- handling in write_raw
-Message-ID: <Zizi89AJVo2MhWbc@debian-BULLSEYE-live-builder-AMD64>
-References: <20240426200118.20900-1-gschwartz@usp.br>
+        Sat, 27 Apr 2024 05:11:19 -0700 (PDT)
+From: Lincoln Yuji <lincolnyuji@usp.br>
+To: jic23@kernel.org
+Cc: Luiza Soezima <lbrsoezima@usp.br>,
+	Sabrina Araujo <sabrinaaraujo@usp.br>,
+	Lincoln Yuji <lincolnyuji@usp.br>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: adc: ti-ads1015: use device_for_each_child_node_scoped()
+Date: Sat, 27 Apr 2024 09:10:55 -0300
+Message-Id: <20240427121055.5639-1-lincolnyuji@usp.br>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240426200118.20900-1-gschwartz@usp.br>
+Content-Transfer-Encoding: 8bit
 
-Hi Gabriel,
+This loop definition removes the need for manual releasing of the
+fwnode_handle in early exit paths (here an error path) allow
+simplification of the code and reducing the chance of future
+modifications not releasing fwnode_handle correctly.
 
-Nice patch!
+Co-developed-by: Luiza Soezima <lbrsoezima@usp.br>
+Signed-off-by: Luiza Soezima <lbrsoezima@usp.br>
+Co-developed-by: Sabrina Araujo <sabrinaaraujo@usp.br>
+Signed-off-by: Sabrina Araujo <sabrinaaraujo@usp.br>
+Signed-off-by: Lincoln Yuji <lincolnyuji@usp.br>
+---
+ drivers/iio/adc/ti-ads1015.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+index 6ae967e4d..d3363d02f 100644
+--- a/drivers/iio/adc/ti-ads1015.c
++++ b/drivers/iio/adc/ti-ads1015.c
+@@ -902,10 +902,9 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+ 	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+ 	struct ads1015_data *data = iio_priv(indio_dev);
+ 	struct device *dev = &client->dev;
+-	struct fwnode_handle *node;
+ 	int i = -1;
+ 
+-	device_for_each_child_node(dev, node) {
++	device_for_each_child_node_scoped(dev, node) {
+ 		u32 pval;
+ 		unsigned int channel;
+ 		unsigned int pga = ADS1015_DEFAULT_PGA;
+@@ -927,7 +926,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+ 			pga = pval;
+ 			if (pga > 5) {
+ 				dev_err(dev, "invalid gain on %pfw\n", node);
+-				fwnode_handle_put(node);
+ 				return -EINVAL;
+ 			}
+ 		}
+@@ -936,7 +934,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+ 			data_rate = pval;
+ 			if (data_rate > 7) {
+ 				dev_err(dev, "invalid data_rate on %pfw\n", node);
+-				fwnode_handle_put(node);
+ 				return -EINVAL;
+ 			}
+ 		}
+-- 
+2.34.1
 
-On 04/26, Gabriel Schwartz wrote:
-> Using iio_device_claim_direct_scoped() to automate mode claim and release
-> simplifies code flow and allows for straight-forward error handling with
-> direct returns on errors.
-> 
-> Signed-off-by: Gabriel Schwartz <gschwartz@usp.br>
-> ---
->  drivers/iio/adc/rtq6056.c | 34 +++++++++++-----------------------
->  1 file changed, 11 insertions(+), 23 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/rtq6056.c b/drivers/iio/adc/rtq6056.c
-> index a5464737e..bcb129840 100644
-> --- a/drivers/iio/adc/rtq6056.c
-> +++ b/drivers/iio/adc/rtq6056.c
-> @@ -520,32 +520,20 @@ static int rtq6056_adc_write_raw(struct iio_dev *indio_dev,
->  {
->  	struct rtq6056_priv *priv = iio_priv(indio_dev);
->  	const struct richtek_dev_data *devdata = priv->devdata;
-> -	int ret;
->  
-> -	ret = iio_device_claim_direct_mode(indio_dev);
-> -	if (ret)
-> -		return ret;
-> -
-> -	switch (mask) {
-> -	case IIO_CHAN_INFO_SAMP_FREQ:
-> -		if (devdata->fixed_samp_freq) {
-> -			ret = -EINVAL;
-> -			break;
-> +	iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-> +		switch (mask) {
-> +		case IIO_CHAN_INFO_SAMP_FREQ:
-> +			if (devdata->fixed_samp_freq)
-> +				return -EINVAL;
-> +			return rtq6056_adc_set_samp_freq(priv, chan, val);
-> +		case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> +			return devdata->set_average(priv, val);
-> +		default:
-> +			return -EINVAL;
->  		}
-> -
-> -		ret = rtq6056_adc_set_samp_freq(priv, chan, val);
-> -		break;
-> -	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> -		ret = devdata->set_average(priv, val);
-> -		break;
-> -	default:
-> -		ret = -EINVAL;
-> -		break;
->  	}
-> -
-> -	iio_device_release_direct_mode(indio_dev);
-> -
-> -	return ret;
-> +	unreachable();
->  }
->  
->  static const char *rtq6056_channel_labels[RTQ6056_MAX_CHANNEL] = {
-> -- 
-> 2.44.0
-> 
-> 
 

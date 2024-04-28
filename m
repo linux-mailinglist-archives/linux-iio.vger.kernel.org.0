@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-4598-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4599-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25A578B4D3D
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 19:31:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB158B4D41
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 19:32:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACA161F212DB
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 17:31:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 78B3F28163B
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 17:32:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BC47350E;
-	Sun, 28 Apr 2024 17:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E056173510;
+	Sun, 28 Apr 2024 17:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTE8BI/8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PdUep3LN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FB1D7317F;
-	Sun, 28 Apr 2024 17:31:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A4D37317F;
+	Sun, 28 Apr 2024 17:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714325502; cv=none; b=bzICi5jH8zePFM2EDb+ZPR7iBo7cmJHP1+ZiEwdS8Fu9rQGV64dp2fPqYbb5QYbCfFoijU7mthiCNmeQ0wDmWbGjJqWZIpCipzkIiVCbc58qfAY7KT6klgqg8xqMFwM7dw84GFES/hmmJdFXF5XuZZQT/bAC7uAj/XPuOpArybk=
+	t=1714325564; cv=none; b=QIcJTSf4Zqa445aGiUv5k1exoMehiu7hLKp4VK3UWAlq1+qCGMwWElFkE08VGImU/aQA4IUWYEywyJ6fKKF0jWKesv+Hl3NZvnvUaMS5enJ0Qo+YADlW5YGaxXat3iN9udTUYz7u7sgS1K+9n7sfTj8wSntt1oTSk+lKnfBi3JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714325502; c=relaxed/simple;
-	bh=hFZjQo/dh+Ie3EsIHfVDyM8xgyYcKVep0AXZkaRSMS4=;
+	s=arc-20240116; t=1714325564; c=relaxed/simple;
+	bh=BeTkXS2XpFoKpa5hMIIbxaIDcnbADrfmce2/K3SeXRA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xewk38/L68xeaj5nnK5CIVLpsDR4wqDYVSgWyyG5yZnlgVQNG8rpA33JpU4/puIZQfNsc+fi+UTEFRl2aXhZwDPVuz0FbsDRTEN+JgTUu8COnt4sXnzVPkSC/tYAE4EkBfLzx3zl4xvNsjaS5qWRS+GW2GpQfr7TLShtgXnfZF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTE8BI/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A37C113CC;
-	Sun, 28 Apr 2024 17:31:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RwTANmcAU5NOxJr1K5X1a8KCe5PJVvdt2Z5LC01ngtCNOlSJdfpP9GI3Q5CfcuUJsy+irzOXqrvJZIhgLsCEXoR5/en1h7QgXKBEoXmTdR4jFs3cfurLc1eXsE77UMcmpPqn0tSjvm9qsJzrs/7jedYfbOnhghyAaDbAEtnNf4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PdUep3LN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD88C113CC;
+	Sun, 28 Apr 2024 17:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714325501;
-	bh=hFZjQo/dh+Ie3EsIHfVDyM8xgyYcKVep0AXZkaRSMS4=;
+	s=k20201202; t=1714325564;
+	bh=BeTkXS2XpFoKpa5hMIIbxaIDcnbADrfmce2/K3SeXRA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YTE8BI/8WbD/9OahnkT8iszK7h+2CtYJZieJkxckD3Pdi05GUGjkkX8h0AhRl8tbb
-	 NATEgGQ1GZ85nifzLF9j4iNzEqkZd/ATqviX/uf0fBW017JcRsjIXkpXnRn3vxvoVg
-	 mmaLbdZh0uVFiPoVkKl0mPQvqUCITf04VWeNvr0QQsnTGVO2+SYZpeyuxoggYSHvZX
-	 C/yfBF4WkxwWR0IuE+QTj4mOHkhmcrz6iiR5zsYvbYClYIVhYXIi9wnhLrlLkcMF/N
-	 xv3rDy7SlGuaua1PXG90PMuN4uDt4EQJOATde2CX7/LLjPEFV3OkPWlm9jcVoJN87S
-	 pdQjPrw0jiqfg==
-Date: Sun, 28 Apr 2024 18:31:23 +0100
+	b=PdUep3LNZzRyO/Fy8MgK58l6WrXMTD6FY6LV9R66XQK1j+PpeDilIy9BCQfY52duT
+	 JRVgtlYjsv9hFQ0Hs5yUQCgfWG9gT4haPn46ytRKhNSdUeB55H3DMFg0N4ro4TdT2J
+	 BK1uQSZQyZmauBr+PQPzC+ghDkAy5QeC9T7NmMWcVCRZYbdSC+U8/CzmIxLFuGZoY3
+	 gHqxOg3rwWijYOEA9iw/x2CPnqyTAef030IB25EtUeyp48sWZ/STAgRbBdm839wUyx
+	 OW96Fj7xnja8GKM1jplK9LWFYs6s1ELBvwUGgMUDU7qbDZ9tkWVAzdulMLLZVPGSVD
+	 hQA5h3MPFno3Q==
+Date: Sun, 28 Apr 2024 18:32:31 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
 Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
@@ -51,12 +51,12 @@ Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org,
  Herring <robh@kernel.org>, Krzysztof Kozlowski
  <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
  Olivier Moysan <olivier.moysan@foss.st.com>
-Subject: Re: [PATCH v2 4/7] iio: adc: axi-adc: make sure AXI clock is
- enabled
-Message-ID: <20240428183123.622eac07@jic23-huawei>
-In-Reply-To: <20240426-ad9467-new-features-v2-4-6361fc3ba1cc@analog.com>
+Subject: Re: [PATCH v2 7/7] iio: adc: ad9467: support digital interface
+ calibration
+Message-ID: <20240428183231.644857bd@jic23-huawei>
+In-Reply-To: <20240426-ad9467-new-features-v2-7-6361fc3ba1cc@analog.com>
 References: <20240426-ad9467-new-features-v2-0-6361fc3ba1cc@analog.com>
-	<20240426-ad9467-new-features-v2-4-6361fc3ba1cc@analog.com>
+	<20240426-ad9467-new-features-v2-7-6361fc3ba1cc@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,58 +67,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 26 Apr 2024 17:42:13 +0200
+On Fri, 26 Apr 2024 17:42:16 +0200
 Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
 
 > From: Nuno Sa <nuno.sa@analog.com>
 > 
-> We can only access the IP core registers if the bus clock is enabled. As
-> such we need to get and enable it and not rely on anyone else to do it.
+> To make sure that we have the best timings on the serial data interface
+> we should calibrate it. This means going through the device supported
+> values and see for which ones we get a successful result. To do that, we
+> use a prbs test pattern both in the IIO backend and in the frontend
+> devices. Then for each of the test points we see if there are any
+> errors. Note that the backend is responsible to look for those errors.
 > 
-> Note this clock is a very fundamental one that is typically enabled
-> pretty early during boot. Independently of that, we should really rely on
-> it to be enabled.
+> As calibrating the interface also requires that the data format is disabled
+> (the one thing being done in ad9467_setup()), ad9467_setup() was removed
+> and configuring the data fomat is now part of the calibration process.
 > 
-> Fixes: ef04070692a2 ("iio: adc: adi-axi-adc: add support for AXI ADC IP core")
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Queued up this and the previous one.
 
-If the rest doesn't quite make the merge window I'd like these two fixed
-to do so anyway.
+One trivial comment.
 
-Also marked for stable.
+I'd have picked up the whole series, but it feels too big to do on a Sunday
+when you only posted on Friday.  Hence, lets let it sit for at least
+a few more days to see if others have comments.
 
-Thanks,
+It might not make this cycle as a result.   I've picked up the 2 fixes
+today to increase the chances those make it.
 
 Jonathan
 
-> ---
->  drivers/iio/adc/adi-axi-adc.c | 5 +++++
->  1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-> index a543b91124b0..e3b215882941 100644
-> --- a/drivers/iio/adc/adi-axi-adc.c
-> +++ b/drivers/iio/adc/adi-axi-adc.c
-> @@ -175,6 +175,7 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
->  	struct adi_axi_adc_state *st;
->  	void __iomem *base;
->  	unsigned int ver;
-> +	struct clk *clk;
->  	int ret;
->  
->  	st = devm_kzalloc(&pdev->dev, sizeof(*st), GFP_KERNEL);
-> @@ -195,6 +196,10 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
->  	if (!expected_ver)
->  		return -ENODEV;
->  
-> +	clk = devm_clk_get_enabled(&pdev->dev, NULL);
-> +	if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-> +
->  	/*
->  	 * Force disable the core. Up to the frontend to enable us. And we can
->  	 * still read/write registers...
-> 
 
+>  static int ad9467_read_raw(struct iio_dev *indio_dev,
+>  			   struct iio_chan_spec const *chan,
+>  			   int *val, int *val2, long m)
+> @@ -345,7 +606,9 @@ static int ad9467_write_raw(struct iio_dev *indio_dev,
+>  {
+>  	struct ad9467_state *st = iio_priv(indio_dev);
+>  	const struct ad9467_chip_info *info = st->info;
+> +	unsigned long sample_rate;
+>  	long r_clk;
+> +	int ret;
+>  
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SCALE:
+> @@ -358,7 +621,23 @@ static int ad9467_write_raw(struct iio_dev *indio_dev,
+>  			return -EINVAL;
+>  		}
+>  
+> -		return clk_set_rate(st->clk, r_clk);
+> +		sample_rate = clk_get_rate(st->clk);
+> +		/*
+> +		 * clk_set_rate() would also do this but since we would still
+> +		 * need it for avoiding an unnecessary calibration, do it now.
+> +		 */
+> +		if (sample_rate == r_clk)
+> +			return 0;
+> +
+> +		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> +			ret = clk_set_rate(st->clk, r_clk);
+> +			if (ret)
+> +				return ret;
+> +
+> +			guard(mutex)(&st->lock);
+> +			ret = ad9467_calibrate(st);
+			return ad9467_calibrate(st);
+> +		}
+		unreachable();
+
+not totally elegant but I think the early return makes more sense and we should
+just use an unreachable() to squash the resulting compiler warning.
+
+> +		return ret;
+>  	default:
+>  		return -EINVAL;
+>  	}
 

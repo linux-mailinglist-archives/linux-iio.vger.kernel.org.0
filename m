@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-4592-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4593-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24018B4CB7
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 18:34:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F858B4CDF
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 18:45:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E090AB212D4
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 16:34:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4218281753
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 16:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484FC71753;
-	Sun, 28 Apr 2024 16:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A869071B3D;
+	Sun, 28 Apr 2024 16:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tKnGjU7D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lX/FJlg4"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E642A10F1;
-	Sun, 28 Apr 2024 16:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B9E410F1;
+	Sun, 28 Apr 2024 16:45:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714322075; cv=none; b=MFz3LchyMXqHwn6gapW5c/5ThN2nMf5ZAIGIPuMkIQefCgieAj+uNTaOXfLS+dAisAG9kWFVU2yVjwFn7m0wsaEhnXPjcgq/ACC5XnhuhP6xw2RP2Wvhlc7i6+ZarnKpLzcKUw95Oq441VrQn8gK1I3hMehrZZJLzJ2ZOZsZ8og=
+	t=1714322725; cv=none; b=Cqo4Hh+UBJSWmlLnVSkaKRt+gsMKm64O+5jB+QQwsQQuYTjIEqm5sCrjXlEvnPRIkqPlg9Cqq4rrmWRWcR/Y/sImLRwQZZ7qFudwal8SX5Ogoj7oiKeMIBlxaS8fAulNSBo8EPlRaxvfBhF3rYE9O7QG+ml11g0wAiSPMr+QUPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714322075; c=relaxed/simple;
-	bh=/ZnkzW7mgNGMkQEi2367jg8Z87SujBjczjx+Ing/UQY=;
+	s=arc-20240116; t=1714322725; c=relaxed/simple;
+	bh=5kYP3pmRZkJtkUEFsEYFM/NTR8a+xkpPppKIoM24f7M=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sgGVk3/JnKbdYfHoqBD5cG5xgEMXyZ+IWgNkQXFrv4nEALwpDce/rYp//l8bDjKNjnZHzLoVu9evgLKHSa/2n0AEPb+mMJh+erJRlQPLSD1c54gAPxa568kN7e9xmdbmeWY0++h5hJJBTUsYNOOpZDouG7yEPAVLBUa73Mp2uGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tKnGjU7D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD75FC113CC;
-	Sun, 28 Apr 2024 16:34:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HfztS3GdYLvuNHoHnEw1ka9XA+abUWllWNc8spzYdTbW6A7qGqiOrTwRRAy3t3vJGJZ4Ji8tHjKWB6VWtAOq5ZKRElXIFJYa4XPBkmKYkvMZcvgBZNo6l0nNUjpJuQWOCeGigzb+Ra6zMTeISHSCY+Yo4DrOsOtm1BecVtWGIdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lX/FJlg4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4545FC113CC;
+	Sun, 28 Apr 2024 16:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714322074;
-	bh=/ZnkzW7mgNGMkQEi2367jg8Z87SujBjczjx+Ing/UQY=;
+	s=k20201202; t=1714322724;
+	bh=5kYP3pmRZkJtkUEFsEYFM/NTR8a+xkpPppKIoM24f7M=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tKnGjU7DWR6jT6vZ3c9NEvLAOdJ+s4gzSvSfuvVpF96zgCj/+y5dj+3U6JMAjj8cI
-	 yMiKUyUFH1PJN0yDqxsE1t5Qlt2iusd6aNWE23PM8ZPlvFtkEi755TryAKfOjcgyMD
-	 Hoekex1uxqA27b3r39Yxjz8AAWsnDyiszKe+bZOvbUD416nbDi+zA6j8THL/ACsVSr
-	 1AYrtje6/73VYuFpios3t8ZwpVnaS56sRKvIPI7chDd8TREcgX/1amK/Uz3gzbPhZL
-	 KJwE157MOzWPjZbEqG4j2+zqRSCAI9ZskqkrGzsZ7CahmxLRkQIUCTXI4/nUSccZ3h
-	 9cAVhbLqTj/XA==
-Date: Sun, 28 Apr 2024 17:34:22 +0100
+	b=lX/FJlg4IpPctey9rwJ5G71OlFBAyAGflEF2JWbzPkYVdFa2eAGLCUuxXDzuyC51U
+	 EQG48mWWgUpvPUUcNKuKLcrZZNNvkWmZ+4Qhcmtwsgm1dP3AUioxs/vXmCq8CILtD4
+	 69ih+C2EZ9BiIeVUbXKJWsmqz6mKaz1TjpCAI745GXZXz0KJBOZQlQFx4eMd7/xxrM
+	 tqkO9mx4TM8zJd75bOeoyxxrnTvUQow7vtK1CoSp0Sspl10td6BINSsZ6Z3S5W58kY
+	 exKRWup/Hg1PG4eqJ3XMLi82kg53EptCw/8Ey6s8RoZn/YA3KHxBGMsPwkWuhM8waE
+	 IXREY/XBX+adg==
+Date: Sun, 28 Apr 2024 17:45:09 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Andy Shevchenko <andy.shevchenko@gmail.com>
-Cc: Aren Moynihan <aren@peacevolution.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>,
- Samuel Holland <samuel@sholland.org>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Ondrej Jirman <megi@xff.cz>, Uwe
+Cc: =?UTF-8?B?T25kxZllag==?= Jirman <megi@xff.cz>, Aren Moynihan
+ <aren@peacevolution.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@csie.org>, Jernej
+ Skrabec <jernej.skrabec@gmail.com>, Samuel Holland <samuel@sholland.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Uwe
  =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>,
  linux-iio@vger.kernel.org, phone-devel@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
@@ -57,11 +57,13 @@ Cc: Aren Moynihan <aren@peacevolution.org>, Lars-Peter Clausen
  Barraco <contact@willowbarraco.fr>
 Subject: Re: [PATCH v2 2/6] iio: light: stk3310: Implement vdd supply and
  power it off during suspend
-Message-ID: <20240428173422.7c0f44cf@jic23-huawei>
-In-Reply-To: <CAHp75VeRDSPvpmSbUyZPp0RMoTOE193U2ma18qxv_qZQKLCq8g@mail.gmail.com>
+Message-ID: <20240428174509.6de97d54@jic23-huawei>
+In-Reply-To: <CAHp75VdR9HtWbSif+j8QHX5zG9xPF1GzUFY2s-0OjD3RAWD9-Q@mail.gmail.com>
 References: <20240423223309.1468198-2-aren@peacevolution.org>
 	<20240423223309.1468198-4-aren@peacevolution.org>
 	<CAHp75VeRDSPvpmSbUyZPp0RMoTOE193U2ma18qxv_qZQKLCq8g@mail.gmail.com>
+	<5qqil7ltqhdeabml6toqpcy773uhjxgwaz3txpy4kv4sz55o2y@hmar674eey7s>
+	<CAHp75VdR9HtWbSif+j8QHX5zG9xPF1GzUFY2s-0OjD3RAWD9-Q@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -72,65 +74,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 24 Apr 2024 02:16:06 +0300
+On Wed, 24 Apr 2024 18:20:41 +0300
 Andy Shevchenko <andy.shevchenko@gmail.com> wrote:
 
-> On Wed, Apr 24, 2024 at 1:41=E2=80=AFAM Aren Moynihan <aren@peacevolution=
-.org> wrote:
-> >
-> > From: Ondrej Jirman <megi@xff.cz>
-> >
-> > VDD power input can be used to completely power off the chip during
-> > system suspend. Do so if available. =20
+> On Wed, Apr 24, 2024 at 3:59=E2=80=AFPM Ond=C5=99ej Jirman <megi@xff.cz> =
+wrote:
+> > On Wed, Apr 24, 2024 at 02:16:06AM GMT, Andy Shevchenko wrote: =20
+> > > On Wed, Apr 24, 2024 at 1:41=E2=80=AFAM Aren Moynihan <aren@peacevolu=
+tion.org> wrote: =20
 >=20
 > ...
 >=20
-> >         ret =3D stk3310_init(indio_dev);
-> >         if (ret < 0)
-> > -               return ret;
-> > +               goto err_vdd_disable; =20
+> > > >         ret =3D stk3310_init(indio_dev);
+> > > >         if (ret < 0)
+> > > > -               return ret;
+> > > > +               goto err_vdd_disable; =20
+> > >
+> > > This is wrong. You will have the regulator being disabled _before_
+> > > IRQ. Note, that the original code likely has a bug which sets states
+> > > before disabling IRQ and removing a handler. =20
+> >
+> > How so? stk3310_init is called before enabling the interrupt. =20
 >=20
-> This is wrong. You will have the regulator being disabled _before_
-> IRQ. Note, that the original code likely has a bug which sets states
-> before disabling IRQ and removing a handler.
+> Exactly, IRQ is registered with devm and hence the error path and
+> remove stages will got it in a wrong order.
 >=20
-> Side note, you may make the driver neater with help of
+> > Original code has a bug that IRQ is enabled before registering the
+> > IIO device, =20
 >=20
->   struct device *dev =3D &client->dev;
->=20
-> defined in this patch.
->=20
-> ...
->=20
-> >  static int stk3310_suspend(struct device *dev)
-> >  {
-> >         struct stk3310_data *data; =20
->=20
-> >         data =3D iio_priv(i2c_get_clientdata(to_i2c_client(dev))); =20
->=20
-> Side note: This may be updated (in a separate change) to use
-> dev_get_drvdata() directly.
->=20
-> Jonathan, do we have something like iio_priv_from_drvdata(struct
-> device *dev)? Seems many drivers may utilise it.
+> Indeed, but this is another bug.
 
-Not yet, but I'm not sure it's a good idea as there is no inherent
-reason to assume the drvdata is a struct iio_dev.  It often is but
-adding a function that assumes that is a path to subtle bugs.
+It shouldn't be.  A device that produces interrupts before we have
+told it to is a) buggy, b) almost certainly already had it's interrupt
+masked due to spurious interrupt detection.
+
+Definitely don't want to do it in the opposite order where userspace
+could turn the device on and have it start generating interrupts before
+the irq is registered.  I'd rather assume non buggy hardware (and
+that if there are bugs, the normal protections kick in) than
+introduce a race into the software.=20
+
+>=20
+> > so if IRQ is triggered before registration, iio_push_event
+> > from IRQ handler may be called on a not yet registered IIO device.
+> >
+> > Never saw it happen, though. :) =20
+>=20
+> Because nobody cares enough to enable DEBUG_SHIRQ
+
+In most devices there is a status register and we should be
+doing nothing unless that is set.  Interestingly this device either
+doesn't have one or the driver doesn't read it - it reads a flag only
+and so will always push an event.  Such a register read doesn't require
+the IIO device registration to be complete.
+
+There are corner cases where that isn't true that need to manually
+mask at the host but they are rare.
+
+There is also a basic level of defense in iio_push_event() against
+that being called when the event interface is not registered.
 
 Jonathan
 
+
 >=20
-> >  } =20
->=20
-> ...
->=20
-> >  static int stk3310_resume(struct device *dev) =20
->=20
-> Ditto.
->=20
-> --
-> With Best Regards,
-> Andy Shevchenko
 
 

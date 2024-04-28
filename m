@@ -1,60 +1,55 @@
-Return-Path: <linux-iio+bounces-4573-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4574-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DAC58B4BFF
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 15:32:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E70E8B4C03
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 15:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED7D02812EE
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 13:32:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E079128157C
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 13:40:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F3C6D1A6;
-	Sun, 28 Apr 2024 13:32:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF81842AA3;
+	Sun, 28 Apr 2024 13:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SfjuQ0Z5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ssj8or9w"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A40F516;
-	Sun, 28 Apr 2024 13:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E06E1E534
+	for <linux-iio@vger.kernel.org>; Sun, 28 Apr 2024 13:40:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714311147; cv=none; b=cVQfT8g4yG8Fh+fBKqw63Wu31HRh32iuWJQ9PQBJKmYYXeQf8sHdGLhA9vF5JwpPFmZungKsKyNHLG5xK5bov5giGA4qyAcN+dpOnNaMyxbCCaCy0AI301vzqKYhkhVwTIpGOX72XivZKkXsRdbXMiuc5awFWulwPmuNHWC1iXY=
+	t=1714311626; cv=none; b=CyEHuJPg8jQNueWtcz12QwEDRp+07YYAJhBNbcay+4G6elMDytVK3Dcq80Ld6VJonNPrUHMwxAJp9V8lk5MCnUj0AgY1oN7TqMROSb2g6Q/6SfHuDmdsTkmPiG6EqB7m1Jdw5kbNbAVNntfP7m3gPBXkbShDzQMeR/sAkLSgMK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714311147; c=relaxed/simple;
-	bh=DpW/WuXrLhtm2ZKRngLmSo7dhMhjdfQekX2EAKWeMXM=;
+	s=arc-20240116; t=1714311626; c=relaxed/simple;
+	bh=VvLWyiBVgY9sM1vVOn7SgYyNoJ8xd5Nyy0rY8D0vWLs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lXlrl8bLSwyT5mFHvxPbLoi6vJHY5gcUF/w1qMI8AvA3sI1nVr8Cklk3AhrQv9A5XuY8kmaQkKFjIvcrpSYq2Vs19dl+oo4R+RQ3UfTVAhZlETjhLe9aS1Ntl/fKvOP9AtB0KshCSaJ5QtpilJ+p/Sxz9PtYAnkEyRpD4jKQvMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SfjuQ0Z5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD39C113CC;
-	Sun, 28 Apr 2024 13:32:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rXh/9LnTqkcuXTPKq8oZvBdU+Zww6aaf6V+KZjhb2Z7sVMZyH9mcJDKSKsOLn5n7ZPzuhCuo9p4fcNOD0ZmXfCLzEgT3yLW2aoK8PWES7IGVANwm1bPZZ7Kg5M3z9Ooqna2f0woKd8OZe2+MXvEnbNCv6lKjRf6DEMU6V5qBfJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ssj8or9w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDE4C113CC;
+	Sun, 28 Apr 2024 13:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714311147;
-	bh=DpW/WuXrLhtm2ZKRngLmSo7dhMhjdfQekX2EAKWeMXM=;
+	s=k20201202; t=1714311626;
+	bh=VvLWyiBVgY9sM1vVOn7SgYyNoJ8xd5Nyy0rY8D0vWLs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SfjuQ0Z5+q3Ohqyg/hpbGu/B5Bkmr6r99A6SRFj7OeMzzBZCezPPuhnvKvjyKw7iC
-	 SZwQ/zlRKeJF6frW9kQ6sGnh9PPnL4GRMuQ88hHgRWYpdU6fi6Rd1v1FbmOoI6HYSe
-	 QlVbYISjLNNHisUuLIbSc8p9XFU4x/8bLlvL5z45v1TUjFG3KrKXe4DxoIDKu53BxF
-	 gyUCqvtMiQ80yDlBeaCzF+kE0VCK7Sxs6VgIhKJNTIq9+bE9D/j2ZkDbjrYGwZRMMb
-	 ee6gWl5EzNH5y2CM7A6FoEptUabwnJmBBwoF7RAKhgb/c0yp6gsI8RUWPqQETSHESi
-	 WXvRvPOlKaCtQ==
-Date: Sun, 28 Apr 2024 14:32:15 +0100
+	b=ssj8or9wyZsq4IwPIe9ZN4OnyzAqRuo3rgNeMQ1gyLJJhT/8lJ2RmjXQbz1qbtoPo
+	 hP3LTlBx7XTY16BxwMmx9RKH1sf5q9pBEsdVW0OV2BZ8NExHJS9yxFmIjc4sX2Qaxi
+	 x00EueYOXSGEGPXoyc0mY6FSX2nSKqpJIjB+xGLAmGLoLBHqXIRglMCrb8Pj+t5tTY
+	 cnMj5EqgvOUiVQEkx4/KhGQKbdTIXlcz1dXFY6utFo+gqelA0F0KBtJQ6jhyLmFa5a
+	 haFibnf3xdJ4w+JRiXVS9FaDngYipqHXwG7eCZNHGgrw6T6te5R7iKEDERaJZtG1Vz
+	 WVm3bFwNGOHoA==
+Date: Sun, 28 Apr 2024 14:40:15 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Conor Dooley <conor.dooley@microchip.com>, marius.cristea@microchip.com,
- lars@metafoo.de, lgirdwood@gmail.com, broonie@kernel.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- conor+dt@kernel.org
-Subject: Re: [PATCH v1] iio: adc: PAC1934: fix accessing out of bounds array
- index
-Message-ID: <20240428143215.3388426d@jic23-huawei>
-In-Reply-To: <20240425-vastly-salad-e56b9225e662@spud>
-References: <20240425114232.81390-1-marius.cristea@microchip.com>
-	<20240425-canteen-alias-5a907b1deecc@wendy>
-	<20240425-vastly-salad-e56b9225e662@spud>
+To: Adam Rizkalla <ajarizzo@gmail.com>
+Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Angel
+ Iglesias <ang.iglesiasg@gmail.com>
+Subject: Re: [PATCH] iio: pressure: bmp280: Fix BMP580 temperature reading
+Message-ID: <20240428144015.4f0e6681@jic23-huawei>
+In-Reply-To: <Zin2udkXRD0+GrML@adam-asahi.lan>
+References: <Zin2udkXRD0+GrML@adam-asahi.lan>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,68 +60,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 25 Apr 2024 16:36:19 +0100
-Conor Dooley <conor@kernel.org> wrote:
+On Thu, 25 Apr 2024 01:22:49 -0500
+Adam Rizkalla <ajarizzo@gmail.com> wrote:
 
-> On Thu, Apr 25, 2024 at 01:22:45PM +0100, Conor Dooley wrote:
-> > On Thu, Apr 25, 2024 at 02:42:32PM +0300, marius.cristea@microchip.com wrote:  
-> > > From: Marius Cristea <marius.cristea@microchip.com>
-> > > 
-> > > Fix accessing out of bounds array index for average
-> > > current and voltage measurements. The device itself has
-> > > only 4 channels, but in sysfs there are "fake"
-> > > channels for the average voltages and currents too.
-> > > 
-> > > Fixes: 0fb528c8255b: "iio: adc: adding support for PAC193x"
-> > > Reported-by: Conor Dooley <conor.dooley@microchip.com>
-> > > Signed-off-by: Marius Cristea <marius.cristea@microchip.com>  
+> Fix overflow issue when storing BMP580 temperature reading and
+> properly preserve sign of 24-bit data.
 > 
-> 
-> Huh, this is an empty message. I intended to send some tags, but must
-> not have saved the buffer.
-> 
-> Closes: https://lore.kernel.org/linux-iio/20240405-embellish-bonnet-ab5f10560d93@wendy/
-> Tested-by: Conor Dooley <conor.dooley@microchip.com>
-Applied to the fixes-togreg branch of iio.git
+> Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>
+Hi Adam,
+
+Looks like a correct fix to me, but leaving on list a little longer
+for Angel to take a look.
 
 Thanks,
 
 Jonathan
 
+> ---
+>  drivers/iio/pressure/bmp280-core.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
 > 
-> Cheers,
-> Conor.
-> 
-> > > ---
-> > >  drivers/iio/adc/pac1934.c | 9 +++++++++
-> > >  1 file changed, 9 insertions(+)
-> > > 
-> > > diff --git a/drivers/iio/adc/pac1934.c b/drivers/iio/adc/pac1934.c
-> > > index f751260605e4..456f12faa348 100644
-> > > --- a/drivers/iio/adc/pac1934.c
-> > > +++ b/drivers/iio/adc/pac1934.c
-> > > @@ -787,6 +787,15 @@ static int pac1934_read_raw(struct iio_dev *indio_dev,
-> > >  	s64 curr_energy;
-> > >  	int ret, channel = chan->channel - 1;
-> > >  
-> > > +	/*
-> > > +	 * For AVG the index should be between 5 to 8.
-> > > +	 * To calculate PAC1934_CH_VOLTAGE_AVERAGE,
-> > > +	 * respectively PAC1934_CH_CURRENT real index, we need
-> > > +	 * to remove the added offset (PAC1934_MAX_NUM_CHANNELS).
-> > > +	 */
-> > > +	if (channel >= PAC1934_MAX_NUM_CHANNELS)
-> > > +		channel = channel - PAC1934_MAX_NUM_CHANNELS;
-> > > +
-> > >  	ret = pac1934_retrieve_data(info, PAC1934_MIN_UPDATE_WAIT_TIME_US);
-> > >  	if (ret < 0)
-> > >  		return ret;
-> > > 
-> > > base-commit: b80ad8e3cd2712b78b98804d1f59199680d8ed91
-> > > -- 
-> > > 2.34.1
-> > >   
-> 
-> 
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> index fe8734468ed3..e79c9715bb28 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -1393,12 +1393,12 @@ static int bmp580_read_temp(struct bmp280_data *data, int *val, int *val2)
+>  
+>  	/*
+>  	 * Temperature is returned in Celsius degrees in fractional
+> -	 * form down 2^16. We rescale by x1000 to return milli Celsius
+> -	 * to respect IIO ABI.
+> +	 * form down 2^16. We rescale by x1000 to return millidegrees
+> +	 * Celsius to respect IIO ABI.
+>  	 */
+> -	*val = raw_temp * 1000;
+> -	*val2 = 16;
+> -	return IIO_VAL_FRACTIONAL_LOG2;
+> +	raw_temp = sign_extend32(raw_temp, 23);
+> +	*val = ((s64)raw_temp * 1000) / (1 << 16);
+> +	return IIO_VAL_INT;
+>  }
+>  
+>  static int bmp580_read_press(struct bmp280_data *data, int *val, int *val2)
 
 

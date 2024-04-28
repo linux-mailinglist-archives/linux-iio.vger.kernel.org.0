@@ -1,55 +1,59 @@
-Return-Path: <linux-iio+bounces-4574-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4575-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E70E8B4C03
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 15:40:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F36818B4C04
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 15:46:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E079128157C
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 13:40:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A3D528175C
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 13:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF81842AA3;
-	Sun, 28 Apr 2024 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AE2D6D1A6;
+	Sun, 28 Apr 2024 13:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ssj8or9w"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JYZIobLc"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E06E1E534
-	for <linux-iio@vger.kernel.org>; Sun, 28 Apr 2024 13:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D416BFBD;
+	Sun, 28 Apr 2024 13:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714311626; cv=none; b=CyEHuJPg8jQNueWtcz12QwEDRp+07YYAJhBNbcay+4G6elMDytVK3Dcq80Ld6VJonNPrUHMwxAJp9V8lk5MCnUj0AgY1oN7TqMROSb2g6Q/6SfHuDmdsTkmPiG6EqB7m1Jdw5kbNbAVNntfP7m3gPBXkbShDzQMeR/sAkLSgMK8=
+	t=1714311977; cv=none; b=QaTBy+eOdLwXRHv7T6upYJ432DIaaw4QQdXBMipryTJ7gQd987OZwYycLEP6ZbhX+umvgXBR9ABvCrmRSwEVrputqgNbX2mQSsl3OkUGMmCS2mBDdD5kEDVR75uFzKz4vV+zPb0JCgLFNMlSCw9b3z0otG28C55d+0bSV+v8f6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714311626; c=relaxed/simple;
-	bh=VvLWyiBVgY9sM1vVOn7SgYyNoJ8xd5Nyy0rY8D0vWLs=;
+	s=arc-20240116; t=1714311977; c=relaxed/simple;
+	bh=XGeSlMdeDD1Qsf+xehzikrE+33otHTVL2krpJMt5DKk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rXh/9LnTqkcuXTPKq8oZvBdU+Zww6aaf6V+KZjhb2Z7sVMZyH9mcJDKSKsOLn5n7ZPzuhCuo9p4fcNOD0ZmXfCLzEgT3yLW2aoK8PWES7IGVANwm1bPZZ7Kg5M3z9Ooqna2f0woKd8OZe2+MXvEnbNCv6lKjRf6DEMU6V5qBfJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ssj8or9w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FDE4C113CC;
-	Sun, 28 Apr 2024 13:40:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JDFCaDYbjkKRViadbJuNND941s+htHztf/tCCl16PqLr/70m4Owfr3uriulAaGceEpzNCZp5+v1j21qb+xX9EvgXuKZo7QWTrUppyQyEDXyReKA8UNxizT851uNRtWTxTj8Q6bc/UFEw2jD7zbRd+MdGgRsaC9ZUhywX3LNdnpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JYZIobLc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADB8DC113CC;
+	Sun, 28 Apr 2024 13:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714311626;
-	bh=VvLWyiBVgY9sM1vVOn7SgYyNoJ8xd5Nyy0rY8D0vWLs=;
+	s=k20201202; t=1714311976;
+	bh=XGeSlMdeDD1Qsf+xehzikrE+33otHTVL2krpJMt5DKk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ssj8or9wyZsq4IwPIe9ZN4OnyzAqRuo3rgNeMQ1gyLJJhT/8lJ2RmjXQbz1qbtoPo
-	 hP3LTlBx7XTY16BxwMmx9RKH1sf5q9pBEsdVW0OV2BZ8NExHJS9yxFmIjc4sX2Qaxi
-	 x00EueYOXSGEGPXoyc0mY6FSX2nSKqpJIjB+xGLAmGLoLBHqXIRglMCrb8Pj+t5tTY
-	 cnMj5EqgvOUiVQEkx4/KhGQKbdTIXlcz1dXFY6utFo+gqelA0F0KBtJQ6jhyLmFa5a
-	 haFibnf3xdJ4w+JRiXVS9FaDngYipqHXwG7eCZNHGgrw6T6te5R7iKEDERaJZtG1Vz
-	 WVm3bFwNGOHoA==
-Date: Sun, 28 Apr 2024 14:40:15 +0100
+	b=JYZIobLcbB6cD1kT4ntLrXTtY7O2WhUy0BSeOJjbeRKtt5tvpipAr2izMNopXdQyk
+	 pPVqDColO/fTFJDJMqv1+tt7X1vhnjD/Upx/e6Po+iqrP+FPSytbleMeFkoN6ykTP9
+	 g/De7HCVuuFJWvG67VTBPqLhGcGN0uDxl+V3+juw0s39ZUXI2ocGhdLt0FHR5XVhQ+
+	 Yibiu7BWlHRCnopbQf0LAZfsPsNTHga9NwKb0XiMPH6wpWfYY+kGuzv2WgfnBFvvWt
+	 oIjOD+Hrly1XGAZQEgV85DGtyJbMfNPMzNYVKwiNwjG+q5PRc4iMVTf+vJ7g26V6QJ
+	 35Mxn7ob0mxfQ==
+Date: Sun, 28 Apr 2024 14:46:06 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Adam Rizkalla <ajarizzo@gmail.com>
-Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Angel
- Iglesias <ang.iglesiasg@gmail.com>
-Subject: Re: [PATCH] iio: pressure: bmp280: Fix BMP580 temperature reading
-Message-ID: <20240428144015.4f0e6681@jic23-huawei>
-In-Reply-To: <Zin2udkXRD0+GrML@adam-asahi.lan>
-References: <Zin2udkXRD0+GrML@adam-asahi.lan>
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Andrew Hepp <andrew.hepp@ahepp.dev>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: temperature: mcp9600: Fix temperature reading for
+ negative values
+Message-ID: <20240428144606.5b3d9a7e@jic23-huawei>
+In-Reply-To: <20240427195758.GA3350@debian>
+References: <20240424185913.1177127-1-dima.fedrau@gmail.com>
+	<Ziy8DsMCeAGK79E7@debian-BULLSEYE-live-builder-AMD64>
+	<20240427195758.GA3350@debian>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -57,50 +61,86 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 25 Apr 2024 01:22:49 -0500
-Adam Rizkalla <ajarizzo@gmail.com> wrote:
+On Sat, 27 Apr 2024 21:57:58 +0200
+Dimitri Fedrau <dima.fedrau@gmail.com> wrote:
 
-> Fix overflow issue when storing BMP580 temperature reading and
-> properly preserve sign of 24-bit data.
-> 
-> Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>
-Hi Adam,
+> Am Sat, Apr 27, 2024 at 05:49:18AM -0300 schrieb Marcelo Schmitt:
+> > Hi Dimitri,
+> >=20
+> > Interesting patch this one.
+> > I think this does apply, although, the cold junction register has for s=
+ign bits
+> > so I think we could also have a mask to clear those out.
+> > Some code suggestions inline.
+> > =20
+> Hi Marcelo,
+>=20
+> the temperature bits are in two=E2=80=99s complement format for hot and c=
+old
+> junction. Equations to calculate the temperature are also the same in
+> the datasheet. There should be no difference when handling them. I don't
+> think we need to do anything more with the value except sign_extend it to
+> the appropriate data type. If the sign bits aren't right, there is a bug
+> in the chip, until then futher processing of it is unneeded. I could add
+> a comment here if it helps.
 
-Looks like a correct fix to me, but leaving on list a little longer
-for Angel to take a look.
+Agreed - by my reading the original patch is correct. Maybe it would act
+as cleaner 'documentation' to have the sign_extend32() for the cold junctio=
+n be
+from bit 12 rather than 15, but I'm not sure it's worth the effort.
 
-Thanks,
+Andrew, would be great if you can review this fix in case we are all missing
+something!
 
 Jonathan
 
-> ---
->  drivers/iio/pressure/bmp280-core.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index fe8734468ed3..e79c9715bb28 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -1393,12 +1393,12 @@ static int bmp580_read_temp(struct bmp280_data *data, int *val, int *val2)
->  
->  	/*
->  	 * Temperature is returned in Celsius degrees in fractional
-> -	 * form down 2^16. We rescale by x1000 to return milli Celsius
-> -	 * to respect IIO ABI.
-> +	 * form down 2^16. We rescale by x1000 to return millidegrees
-> +	 * Celsius to respect IIO ABI.
->  	 */
-> -	*val = raw_temp * 1000;
-> -	*val2 = 16;
-> -	return IIO_VAL_FRACTIONAL_LOG2;
-> +	raw_temp = sign_extend32(raw_temp, 23);
-> +	*val = ((s64)raw_temp * 1000) / (1 << 16);
-> +	return IIO_VAL_INT;
->  }
->  
->  static int bmp580_read_press(struct bmp280_data *data, int *val, int *val2)
+>=20
+> > On 04/24, Dimitri Fedrau wrote: =20
+> > > Temperature is stored as 16bit value in two's complement format. Curr=
+ent
+> > > implementation ignores the sign bit. Make it aware of the sign bit by
+> > > using sign_extend32.
+> > >=20
+> > > Fixes: 3f6b9598b6df ("iio: temperature: Add MCP9600 thermocouple EMF =
+converter")
+> > > Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> > > ---
+> > >  drivers/iio/temperature/mcp9600.c | 3 ++-
+> > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > >=20
+> > > diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperat=
+ure/mcp9600.c
+> > > index 46845804292b..7a3eef5d5e75 100644
+> > > --- a/drivers/iio/temperature/mcp9600.c
+> > > +++ b/drivers/iio/temperature/mcp9600.c =20
+> >=20
+> > #define MCP9600_COLD_JUNCTION_SIGN_MSK GENMASK(15,12)
+> > ...
+> >  =20
+> > > @@ -52,7 +52,8 @@ static int mcp9600_read(struct mcp9600_data *data,
+> > > =20
+> > >  	if (ret < 0)
+> > >  		return ret;
+> > > -	*val =3D ret;
+> > > +
+> > > +	*val =3D sign_extend32(ret, 15); =20
+> > 	if (chan->address =3D=3D MCP9600_COLD_JUNCTION)
+> > 		*val &=3D ~MCP9600_COLD_JUNCTION_SIGN_MSK;
+> > =20
+> This won't work. Assuming int is 32-bit ret =3D 0xfffe and *val =3D -2 af=
+ter
+> sign_extends32, this would result in *val =3D -61442 which is wrong.
+> > > =20
+> > >  	return 0;
+> > >  }
+> > > --=20
+> > > 2.39.2
+> > >=20
+> > >  =20
+> Best regards,
+> Dimitri Fedrau
 
 

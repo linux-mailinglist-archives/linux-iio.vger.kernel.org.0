@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-4582-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4583-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757568B4C64
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 17:33:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2786F8B4C6A
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 17:37:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 309E0281854
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 15:33:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57FD21C2094E
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 15:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768E86F060;
-	Sun, 28 Apr 2024 15:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 407C36AFAE;
+	Sun, 28 Apr 2024 15:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PmUUQhvK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rUV5uP2T"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2801B58105;
-	Sun, 28 Apr 2024 15:33:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2EE41E49F
+	for <linux-iio@vger.kernel.org>; Sun, 28 Apr 2024 15:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714318425; cv=none; b=UtNt6TUJ6DFALv0SI8rx1UtrXBjGJI5xX26I/LIAch4C7M0EkH/Yh0jFDon42lkq120wIB95IN242PHfudEzW91nWNPqgfwDmOwee1IePbbkjhrgqGP/FIEwK7Twc9x/QNXpwdL+NF92OsrMRc4RmBG4lV7nb/ERa/kb4xiJheE=
+	t=1714318623; cv=none; b=WK0nAOtv28lOsaE/O2hzqBQsOsHraTOhPNbLiCfuYZaxw9V+BAGMlh8FLv2kqDPB1aTcfaXa9q4S4vqzbKiwqaujW7T/p/Av7i0TNvZCat11NC97pVB5JEbsaX2QvjSWovq7fcCtvo9NnVrb9ICI2gFBRXHGzHvFBFuEzA4Jtl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714318425; c=relaxed/simple;
-	bh=Bl5Jt/Gi7pD86ZXdSpC6cHLOrRDvkB2Iphv+mf7NzoI=;
+	s=arc-20240116; t=1714318623; c=relaxed/simple;
+	bh=YdBKw2Bg2ktoUcs2+ezDKev6uboK0at9UVEf5rEbqAk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O9f7+Y35ZrtW5/HqoSE/0D/GxROEsWteTJzYRfaWEZECB9X9SE9alp6iSDNHknpOh4C6O5LWXQBt1tMgHI3r/dL7BtGFAN2fFcS1iY1K6dmr8Vs6jn4yp4fIR+K9eciyWLKceB1RENS28MBdktuH+7O1QzpcqcbO4kSvCQnOqdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PmUUQhvK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A3C2C113CC;
-	Sun, 28 Apr 2024 15:33:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ozpHLkAO2wns9kAk3k5NI/ICmOm8EzMPisdi/IlO7o8uqYo1nn584O1tga2mTUeVZQ+YnWRQmmR76c8QtXYFYcbJ72qsu7W5QHt+MRaKrpE3b481RIggVqbu+RmKRO2x6gBMmC6AMbYoAv4j4msqOe39Zf5yzAoMoYo7Uv6v61A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rUV5uP2T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A776C113CC;
+	Sun, 28 Apr 2024 15:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714318424;
-	bh=Bl5Jt/Gi7pD86ZXdSpC6cHLOrRDvkB2Iphv+mf7NzoI=;
+	s=k20201202; t=1714318622;
+	bh=YdBKw2Bg2ktoUcs2+ezDKev6uboK0at9UVEf5rEbqAk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=PmUUQhvKtrxhIlQp/UKL4HJOiswhX6tkK0FAOBtPixvX/Z9miUuXKtKMy7Q05t/Oa
-	 BxZx7hkMROIasX2LlDZAxnOCVNyIorBLDnjI1wE4WvQRfbWeNehkWqlsSXMnnNciOr
-	 VN7ojjAuEAp0iQOqdNKzCw02zlBe9MSFijV6sLUjAfLLIUBvnWc3EBjvpNU+Tvu+cf
-	 2UjEkrdac4heopF6i+fpNw3Lp+3UWtZjI/iVK3q3LZXUM/IW2p33cLSLo64DY6nnKg
-	 alf8IUhqLcuI8IWRGsJBuplLytdwt+y/9esz1ZOJfw2Vt2uQ0mYmGaSiKGikfVrqd4
-	 WuZC50+B6Zi8A==
-Date: Sun, 28 Apr 2024 16:33:32 +0100
+	b=rUV5uP2TLXdH2IWhIvn41BoGC5ayzCaNNtJHBN6aNCxFucyMTxOUCQfBRWUAR8Xq6
+	 LgK8EEXLgqz9Fr+smlmDfkXONMpyWsplc8K5cxCnjjgSnpsGyaa2PThgj4TaURvjDt
+	 /ODTm/Tlyo1QuLEgq5+QjeHol+BZzrupHx6nUEjR2G68dRx6kBCDoLawVQyYpy/dHt
+	 qxdNvDDU++zywTHbOLeOcZjUA1CRfKQgoODwJyuFALZk37nj1jrBmVaYqrauhqcHfG
+	 0zlz6C1aEMGdItLNl/HO4ZNcrjJt8B0mS10HfCWvEuEKhDKWRxB4QmoR9/KdMUW14i
+	 9otSwGoB8xYtw==
+Date: Sun, 28 Apr 2024 16:36:52 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-doc@vger.kernel.org, devicetree@vger.kernel.org, corbet@lwn.net,
- conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, robh@kernel.org,
- Ramona Gradinariu <ramona.gradinariu@analog.com>
-Subject: Re: [PATCH 5/5] docs: iio: add documentation for adis16480 driver
-Message-ID: <20240428163332.1e1327d6@jic23-huawei>
-In-Reply-To: <20240423084210.191987-6-ramona.gradinariu@analog.com>
-References: <20240423084210.191987-1-ramona.gradinariu@analog.com>
-	<20240423084210.191987-6-ramona.gradinariu@analog.com>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: Lincoln Yuji <lincolnyuji@usp.br>, Lincoln Yuji
+ <lincolnyuji@hotmail.com>, Luiza Soezima <lbrsoezima@usp.br>, Sabrina
+ Araujo <sabrinaaraujo@usp.br>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads1015: use
+ device_for_each_child_node_scoped()
+Message-ID: <20240428163652.7da552d1@jic23-huawei>
+In-Reply-To: <ZizeKo_E7Z5DOR9C@debian-BULLSEYE-live-builder-AMD64>
+References: <20240426131953.14933-1-lincolnyuji@usp.br>
+	<ZizeKo_E7Z5DOR9C@debian-BULLSEYE-live-builder-AMD64>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,76 +63,77 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 23 Apr 2024 11:42:10 +0300
-Ramona Gradinariu <ramona.bolboaca13@gmail.com> wrote:
+On Sat, 27 Apr 2024 08:14:50 -0300
+Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
 
-> Add documentation for adis16480 driver which describes the driver
-> device files and shows how the user may use the ABI for various
-> scenarios (configuration, measurement, etc.).
+> Hi Lincoln, Sabrina, Luiza,
 > 
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-
-LGTM.  A few minor comments, and the final section feels to me like
-it belongs somewhere more generic.  I don't want to see much duplication
-in these files and that sort of set of pointers to software stacks is
-something that either needs to be in some higher level docs, or would
-get duplicated.
-
-...
-
->
-> +
-> +3. Device buffers
-> +=================
-> +
-> +This driver supports IIO buffers.
-> +
-> +All devices support retrieving the raw acceleration, gyroscope and temperature
-> +measurements using buffers.
-> +
-> +The following device families also support retrieving the delta velocity, delta
-> +angle and temperature measurements using buffers:
-> +
-> +- ADIS16545
-> +- ADIS16547
-> +
-> +However, when retrieving acceleration or gyroscope data using buffers, delta
-> +readings will not be available and vice versa.
-
-I would add a sentence here on why.
+> The patch looks good, though the message should be wrapped to 75 columns
+> and the "From:" tag was not needed and caused an email mismatch.
+That usually means the commit author in the git tree this was generated
+from is incorrect. Set that to match your email with
+git commit --amend --author="Lincoln Yuji <lincolnyuji@usp.br>"
 
 
-> +
-> +See ``Documentation/iio/iio_devbuf.rst`` for more information about how buffered
-> +data is structured.
-> +
-> +4. IIO Interfacing Tools
-> +========================
-
-This bit looks general.  Good to have, but given we don't want to repeat it in lots
-of drivers, perhaps move it somewhere more general?
-
-> +
-> +Linux Kernel Tools
-> +------------------
-> +
-> +Linux Kernel provides some userspace tools that can be used to retrieve data
-> +from IIO sysfs:
-> +
-> +* lsiio: example application that provides a list of IIO devices and triggers
-> +* iio_event_monitor: example application that reads events from an IIO device
-> +  and prints them
-> +* iio_generic_buffer: example application that reads data from buffer
-> +* iio_utils: set of APIs, typically used to access sysfs files.
-> +
-> +LibIIO
-> +------
-> +
-> +LibIIO is a C/C++ library that provides generic access to IIO devices. The
-> +library abstracts the low-level details of the hardware, and provides a simple
-> +yet complete programming interface that can be used for advanced projects.
-> +
-> +For more information about LibIIO, please see:
-> +https://github.com/analogdevicesinc/libiio
+> 
+> With those adjustments made,
+> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+> 
+> Regards,
+> Marcelo
+> 
+> On 04/26, Lincoln Yuji wrote:
+> > From: Lincoln Yuji <lincolnyuji@hotmail.com>
+> > 
+> > This loop definition removes the need for manual releasing of the fwnode_handle
+> > in early exit paths (here an error path) allow simplification of the code
+> > and reducing the chance of future modifications not releasing
+> > fwnode_handle correctly.
+> > 
+> > Co-developed-by: Luiza Soezima <lbrsoezima@usp.br>
+> > Signed-off-by: Luiza Soezima <lbrsoezima@usp.br>
+> > Co-developed-by: Sabrina Araujo <sabrinaaraujo@usp.br>
+> > Signed-off-by: Sabrina Araujo <sabrinaaraujo@usp.br>
+> > Signed-off-by: Lincoln Yuji <lincolnyuji@usp.br>
+> > ---
+> >  drivers/iio/adc/ti-ads1015.c | 5 +----
+> >  1 file changed, 1 insertion(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+> > index 6ae967e4d..d3363d02f 100644
+> > --- a/drivers/iio/adc/ti-ads1015.c
+> > +++ b/drivers/iio/adc/ti-ads1015.c
+> > @@ -902,10 +902,9 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+> >  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+> >  	struct ads1015_data *data = iio_priv(indio_dev);
+> >  	struct device *dev = &client->dev;
+> > -	struct fwnode_handle *node;
+> >  	int i = -1;
+> >  
+> > -	device_for_each_child_node(dev, node) {
+> > +	device_for_each_child_node_scoped(dev, node) {
+> >  		u32 pval;
+> >  		unsigned int channel;
+> >  		unsigned int pga = ADS1015_DEFAULT_PGA;
+> > @@ -927,7 +926,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+> >  			pga = pval;
+> >  			if (pga > 5) {
+> >  				dev_err(dev, "invalid gain on %pfw\n", node);
+> > -				fwnode_handle_put(node);
+> >  				return -EINVAL;
+> >  			}
+> >  		}
+> > @@ -936,7 +934,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+> >  			data_rate = pval;
+> >  			if (data_rate > 7) {
+> >  				dev_err(dev, "invalid data_rate on %pfw\n", node);
+> > -				fwnode_handle_put(node);
+> >  				return -EINVAL;
+> >  			}
+> >  		}
+> > -- 
+> > 2.34.1
+> > 
+> >   
 
 

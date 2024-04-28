@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-4590-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4591-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6ED58B4CA2
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 18:17:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524878B4CAE
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 18:29:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FD041C208D2
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 16:17:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D34171F212A5
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 16:29:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176CF200D3;
-	Sun, 28 Apr 2024 16:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B966FE20;
+	Sun, 28 Apr 2024 16:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kdv7s3vf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6ivtPvR"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7536F072
-	for <linux-iio@vger.kernel.org>; Sun, 28 Apr 2024 16:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B77200D3;
+	Sun, 28 Apr 2024 16:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714321057; cv=none; b=q7cCbAEgtkJ14zECvWWySX5xdZ55aO08fM/mc1n3GdSjm4weaI/kUO+y8rT2h+RmAx8V162hNXEk1uuF0N+QWD7yK1APJ4BoDY87DFZNc/2G7ecOwX81hWMD10ZZM9UeU4oqP2YBz4XtaBXygjBTuyIRINxBELfBsYtBYrcOqL0=
+	t=1714321772; cv=none; b=TVCKFQ1nvyr9x8E29QFXsWzHmKTEpCBUDQj9Wvfrr/T3+71mPmoDvVHcUP+yR7HHgMsEuqy7uWK5Wmsob3a36oanugqKGsyHrrX9vdDDUv28jYJza9J8A4Cg+5VqTcjj8SCHvnj0JBAFXKPJ7eWVcuHbUzgcp1pMDVTWh+SwTFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714321057; c=relaxed/simple;
-	bh=dCst2lh3Upy9h3lr1UdDABMmBZPhzgO0avyj+iEVV0M=;
+	s=arc-20240116; t=1714321772; c=relaxed/simple;
+	bh=vSrMdYGVa1THJhE9VGHR3c71Wan1QAssbo5bxRU7fyk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nQAYYE+kX1TspwAiUZvkZGY85iQ16bDr8Bp3+uK+kUgVOuWAvBYtt+uT+6P/meN7zC8PigAyAskT6IqPU8FrW7qDdROlBV8aKSe6njdhKm68EXbGNBiKTVlyJkhHsRyVqx4V+MdxySQVwtoIyejCG9IU7RguBpMK1/SvW6RX6sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kdv7s3vf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D4FC113CC;
-	Sun, 28 Apr 2024 16:17:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eE8GZK1jwk+7lqQsSLDi126UKJUi3OpiSQNzTCUe2dapsddRUuLLv1mZCDLG+I3/0jlVmF1/dHt1xAiNCqi5sx113QIXL28HQUz2mVTrPpEH+rhpELeZ0p4dOuHE+bIUqeeMzeDgFDgtulDE7LoArzhv/RC7XW9j+db+ZSiYBfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6ivtPvR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E1DC113CC;
+	Sun, 28 Apr 2024 16:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714321057;
-	bh=dCst2lh3Upy9h3lr1UdDABMmBZPhzgO0avyj+iEVV0M=;
+	s=k20201202; t=1714321771;
+	bh=vSrMdYGVa1THJhE9VGHR3c71Wan1QAssbo5bxRU7fyk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=kdv7s3vf8q5LAvda7mliRJsVrvJpXZcszqrFhPe2bckBkh8cTpq9OD6Z60/fVct1I
-	 cIFLD5tD8XXMxllx/zz0ywJPR9W6LY8fuXjkrEQ4hweMryY/OdkAYE6anq+z7igOqo
-	 501Qt/W/SENiv7Z7HKqY+Pl+aV0yuhyPlFxjrs4iPYuhePbUzEJYWcYznCsFG5ABrp
-	 aREF2/Su7zpBdTrbFKgYvWcTcxM9N6VL+mIcqjfTPMCDgjEZHQE8vK+DWm+qFfMtgA
-	 Y0mG1+gLNVdi4ex7nU8PvabPXCkNYwu8mtqNgDXsj07rzkOhA8bwiZwd8AJuDKSIB+
-	 IIqvWjHbbPqEQ==
-Date: Sun, 28 Apr 2024 17:17:25 +0100
+	b=e6ivtPvR1g/dJdwd2h2A6IrgImRP910wNr/OE0fTPtZ+6UCoicXkyLT/0iN+uq1DU
+	 kB4wxp8DnZ/uMAlwH9+4zjgacZQ0NlJLk7XNsbRDxDh6HJYOU7B0Qlr/+2kjOFJcCO
+	 JP+86oRoGjkcdo83+T1yf5UglcR/jZRIBkGDbXmI7s+tg6scrzM+u+M7V916W8fqyk
+	 F16SUavqdp7hpNcpuucvMLL/uaX0Ave3MwAZMSFpH8ONC65oogurZwVD8nE7pcwN6R
+	 cC9f7cd3jz83aBPsEVEyH7ayZGNYpL7w1kC0H4upFqkc/o7+EzRv1ibCSv+w1qK58q
+	 kFRpaQnU3endA==
+Date: Sun, 28 Apr 2024 17:29:23 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Cc: Pedro Mariano <pedro.mariano@usp.br>, anand.ashok.dumbre@xilinx.com,
- michal.simek@amd.com, Roberto Bolgheroni <robertobolgheroni@usp.br>,
- linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH] iio: adc: xilinx-ams: Use
- device_for_each_child_node_scoped()
-Message-ID: <20240428171725.5c24b858@jic23-huawei>
-In-Reply-To: <ZizBndYiU5GVUtmQ@debian-BULLSEYE-live-builder-AMD64>
-References: <20240424225302.47004-1-pedro.mariano@usp.br>
-	<ZizBndYiU5GVUtmQ@debian-BULLSEYE-live-builder-AMD64>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Jonathan Corbet <corbet@lwn.net>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH 1/2] iio: adc: ad7944: add support for chain mode
+Message-ID: <20240428172923.7dfe00ff@jic23-huawei>
+In-Reply-To: <20240425-iio-ad7944-chain-mode-v1-1-9d9220ff21e1@baylibre.com>
+References: <20240425-iio-ad7944-chain-mode-v1-0-9d9220ff21e1@baylibre.com>
+	<20240425-iio-ad7944-chain-mode-v1-1-9d9220ff21e1@baylibre.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,88 +63,127 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 27 Apr 2024 06:13:01 -0300
-Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+On Thu, 25 Apr 2024 09:09:59 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> Hi Pedro, Roberto,
+> This adds support for the chain mode of the AD7944 ADC. This mode allows
+> multiple ADCs to be daisy-chained together. Data from all of the ADCs in
+> is read by reading multiple words from the first ADC in the chain.
 > 
-> Patch looks overall good except for the _scoped() function name and arguments,
-> must have been miss-typed or miss-copied somehow.
-> Comment inline.
+> Each chip in the chain adds an extra IIO input voltage channel to the
+> IIO device.
 > 
-> Regards,
-> Marcelo
+> Only the wiring configuration where the SPI controller CS line is
+> connected to the CNV pin of all of the ADCs in the chain is supported
+> in this patch.
 > 
-> On 04/24, Pedro Mariano wrote:
-> > Using device_for_each_child_node_scoped instead of
-> > device_for_each_child_node automatically releases the handle on early exit
-> > which reduces the chance of bugs that cause resource leaks.
-> > 
-> > Co-developed-by: Roberto Bolgheroni <robertobolgheroni@usp.br>
-> > Signed-off-by: Roberto Bolgheroni <robertobolgheroni@usp.br>
-> > Signed-off-by: Pedro Mariano <pedro.mariano@usp.br>
-> > ---
-> >  drivers/iio/adc/xilinx-ams.c | 7 ++-----
-> >  1 file changed, 2 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
-> > index f0b71a122..7f5571d9d 100644
-> > --- a/drivers/iio/adc/xilinx-ams.c
-> > +++ b/drivers/iio/adc/xilinx-ams.c
-> > @@ -1261,7 +1261,6 @@ static int ams_parse_firmware(struct iio_dev *indio_dev)
-> >  	struct ams *ams = iio_priv(indio_dev);
-> >  	struct iio_chan_spec *ams_channels, *dev_channels;
-> >  	struct device *dev = indio_dev->dev.parent;
-> > -	struct fwnode_handle *child = NULL;
-> >  	struct fwnode_handle *fwnode = dev_fwnode(dev);
-> >  	size_t ams_size;
-> >  	int ret, ch_cnt = 0, i, rising_off, falling_off;
-> > @@ -1283,13 +1282,11 @@ static int ams_parse_firmware(struct iio_dev *indio_dev)
-> >  		num_channels += ret;
-> >  	}
-> >  
-> > -	fwnode_for_each_child_node(fwnode, child) {
-> > +	fwnode_for_each_child_node_scoped(fwnode, child) {  
-> should be
-> 	device_for_each_child_node_scoped(dev, child) {
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-Yes, we didn't bother with a fwnode specific version of this macro because they
-aren't nearly as common.  I'm not sure why this driver didn't always use the
-device form or why it needs the fwnode_device_is_available()
-I suspect this dates back to some confusion on why there were _available variants.
+Looks good except for one minor tweak needed to ensure the allocated buffer
+is zeroed as we don't necessarily overwrite the the whole thing.
 
-Chances are this driver only cares about DT and in that case the callback used is
+Given that's all I found, I've just switched that to devm_kzalloc and
+applied the series.
 
-static struct fwnode_handle *
-of_fwnode_get_next_child_node(const struct fwnode_handle *fwnode,
-			      struct fwnode_handle *child)
-{
-	return of_fwnode_handle(of_get_next_available_child(to_of_node(fwnode),
-							    to_of_node(child)));
-}
+Applied to the togreg branch of iio.git and pushed out initially as testing
+for 0-day to look at it.
 
-So the fwnode_for_each_child_node() + fwnode_device_is_available() end up doing the
-same as device_for_each_child_node().
-
-So I think there are more opportunities to tidy up in here than simply this scoped
-change and I'd be keen to see them all done together.
+Thanks,
 
 Jonathan
 
-> 
-> >  		if (fwnode_device_is_available(child)) {
-> >  			ret = ams_init_module(indio_dev, child, ams_channels + num_channels);
-> > -			if (ret < 0) {
-> > -				fwnode_handle_put(child);
-> > +			if (ret < 0)
-> >  				return ret;
-> > -			}
-> >  
-> >  			num_channels += ret;
-> >  		}
-> > -- 
-> > 2.44.0
-> > 
-> >   
+
+
+>  
+> +/**
+> + * ad7944_chain_mode_alloc - allocate and initialize channel specs and buffers
+> + *                           for daisy-chained devices
+> + * @dev: The device for devm_ functions
+> + * @chan_template: The channel template for the devices (array of 2 channels
+> + *                 voltage and timestamp)
+> + * @n_chain_dev: The number of devices in the chain
+> + * @chain_chan: Pointer to receive the allocated channel specs
+> + * @chain_mode_buf: Pointer to receive the allocated rx buffer
+> + * @chain_scan_masks: Pointer to receive the allocated scan masks
+> + * Return: 0 on success, a negative error code on failure
+> + */
+> +static int ad7944_chain_mode_alloc(struct device *dev,
+> +				   const struct iio_chan_spec *chan_template,
+> +				   u32 n_chain_dev,
+> +				   struct iio_chan_spec **chain_chan,
+> +				   void **chain_mode_buf,
+> +				   unsigned long **chain_scan_masks)
+> +{
+> +	struct iio_chan_spec *chan;
+> +	size_t chain_mode_buf_size;
+> +	unsigned long *scan_masks;
+> +	void *buf;
+> +	int i;
+> +
+> +	/* 1 channel for each device in chain plus 1 for soft timestamp */
+> +
+> +	chan = devm_kcalloc(dev, n_chain_dev + 1, sizeof(*chan), GFP_KERNEL);
+> +	if (!chan)
+> +		return -ENOMEM;
+> +
+> +	for (i = 0; i < n_chain_dev; i++) {
+> +		chan[i] = chan_template[0];
+> +
+> +		if (chan_template[0].differential) {
+> +			chan[i].channel = 2 * i;
+> +			chan[i].channel2 = 2 * i + 1;
+> +		} else {
+> +			chan[i].channel = i;
+> +		}
+> +
+> +		chan[i].scan_index = i;
+> +	}
+> +
+> +	/* soft timestamp */
+> +	chan[i] = chan_template[1];
+> +	chan[i].scan_index = i;
+> +
+> +	*chain_chan = chan;
+> +
+> +	/* 1 word for each voltage channel + aligned u64 for timestamp */
+> +
+> +	chain_mode_buf_size = ALIGN(n_chain_dev *
+> +		BITS_TO_BYTES(chan[0].scan_type.storagebits), sizeof(u64))
+> +		+ sizeof(u64);
+> +	buf = devm_kmalloc(dev, chain_mode_buf_size, GFP_KERNEL);
+
+Zero it - It's not a problem to leak stale ADC data or similar
+into the gap between the data and the timestamp, but it is a problem
+if it's general kernel data potentially leaking.
+
+So play it safe and devm_kzalloc()
+		
+> +	if (!buf)
+> +		return -ENOMEM;
+> +
+> +	*chain_mode_buf = buf;
+> +
+> +	/*
+> +	 * Have to limit n_chain_dev due to current implementation of
+> +	 * available_scan_masks.
+> +	 */
+> +	if (n_chain_dev > BITS_PER_LONG)
+> +		return dev_err_probe(dev, -EINVAL,
+> +				     "chain is limited to 32 devices\n");
+> +
+> +	scan_masks = devm_kcalloc(dev, 2, sizeof(*scan_masks), GFP_KERNEL);
+> +	if (!scan_masks)
+> +		return -ENOMEM;
+> +
+> +	/*
+> +	 * Scan mask is needed since we always have to read all devices in the
+> +	 * chain in one SPI transfer.
+> +	 */
+> +	scan_masks[0] = GENMASK(n_chain_dev - 1, 0);
+> +
+> +	*chain_scan_masks = scan_masks;
+> +
+> +	return 0;
+> +}
 
 

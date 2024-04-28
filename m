@@ -1,56 +1,62 @@
-Return-Path: <linux-iio+bounces-4569-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4570-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4ACB8B4BED
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 15:14:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA2E98B4BF7
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 15:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C4DA1F2153D
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 13:14:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89FCE281B71
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 13:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5456F6CDAF;
-	Sun, 28 Apr 2024 13:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 089286CDBE;
+	Sun, 28 Apr 2024 13:23:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFX7goyH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W95GWtKH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109273A1DA;
-	Sun, 28 Apr 2024 13:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22383D0C6;
+	Sun, 28 Apr 2024 13:23:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714310042; cv=none; b=u5pYh7/UfGuCvQsD5+Oc9kcxYLdjDDQ03IzY6yOmmdbyZvM4z0s4s6vAPN4nSbptFC2A0ZqRZGBgkhgijihvso79BhAGVvW4s2FL8klCYGDMEGdnCISU2fH28YjZ5ObWDRjYalbp4z40ox0IVvwt8B1HaxCZ604zlf+8lJ/FCx8=
+	t=1714310637; cv=none; b=kYa/IHinVIs02ur8qERSaAfxbLkovyAQ/FZ6r+m/d8P0VXibFQAdSNPzkzBBe5B+sY3LZ/GukKtEZjVmYgf4aFw4TDRdJ+5uVCjkBr4kdrZHAAoqtId7ng9zW0LC5e3trSfg0ry7A7IXLV4y1KVD8FJAgLPXS8loz9G9kZ5kdK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714310042; c=relaxed/simple;
-	bh=npdY6cKzQvoP4QKnpk6wGr71YeC1qQqsUawN0D7vhVo=;
+	s=arc-20240116; t=1714310637; c=relaxed/simple;
+	bh=c0VpPWI8MfsEnOFEBnCqUTmZY3UuYBr9Ipo6drdPZjI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tqOkC6tjkeAUD0jwPW1BtcP7s+M1MdNosRMm8uyvQGrSsO2YwC/3/Es2I+G8/cN9YWrXC/Eh4BiIaWPF+p/6c6FNfC28ot+ba7I7U+m0xk4FMlDOf2WFrH5Wkb8MAQ+Xs+nnYuG9LAB104oeWEDVE0kKu1cNfvC2UTsQNwiq+pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFX7goyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22815C113CC;
-	Sun, 28 Apr 2024 13:13:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TJsustc5clg2Sq0bsHP5Ft+G2W+/DxZzX06sR0kYSi2r5l5dT8zdT3uSCAI9AaCivipK2tHJ3kftP2lT+dxSmKfEYdpQIw2IQMbe5cjWgHS3QR+5Don0Y7Wa6bthBivcK92m6YzEolelWp95yFdwU1IgJc9nH4jd1NFgeIsn7O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W95GWtKH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556E7C113CC;
+	Sun, 28 Apr 2024 13:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714310041;
-	bh=npdY6cKzQvoP4QKnpk6wGr71YeC1qQqsUawN0D7vhVo=;
+	s=k20201202; t=1714310637;
+	bh=c0VpPWI8MfsEnOFEBnCqUTmZY3UuYBr9Ipo6drdPZjI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SFX7goyHuvae4UXx0pxt3rd69b2hsm6yA44Ljc4xuSec1g8DbUD4BmS9miltKo47y
-	 4YtuquS+bO53Yd6qw2HkAXhvMoAwLjYx3JwnaUS9ku9eT/kfTi9o+KbPsgYpT45Gei
-	 pbJAzQwzDpnbigQgyyJkgCYJOfoEngSsYdDlNOA86IfQi/4G4tdCYRF//2pXBdQHUA
-	 BPZ91Ni/p3pzH2gqfEO7p+Z3LPafDgP07q0g+ME3cy7uDC3Nfk8kaCqEXuNZMADiG+
-	 lny/RCYIzqF9JotY+ES6cbsYPfjEHk48+aRV/jHonCwjD8lQ0hDI6sAvxUy1UlbUg0
-	 lOHLhwJReYbiw==
-Date: Sun, 28 Apr 2024 14:13:49 +0100
+	b=W95GWtKHMYke1Orpm1jATH9mnRoGGPx2WAb267oEkzOZO9+lmEKNFnAJBd794Dusx
+	 TdfRcBVELQujdRu+931KvC8ygBu8du6Lb0MM3x73vE9x6p6DJCz0s0VzQTB2Er5Hxm
+	 ZzXncRHJMlC9if97RJrCnuHD48s6JV5ScR6GF2VWu14f9mXp3z3NHqjfe4uUwLjRht
+	 PbUaZJEuMuiyT00+vjLVpK1vMhtVn4m8rJ7X2QwMwhhGmpIAz8C6cIrJsfDkKDProI
+	 riqFH/OKqWgX601bfI1UlQ1qYRtOi1DBjifSWzKCCB1BwmTG4A9+Z2pjFHFL9XG2VK
+	 /HRgVCRo2xvwA==
+Date: Sun, 28 Apr 2024 14:23:43 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: inv.git-commit@tdk.com
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
- Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: Re: [PATCH] iio: invensense: fix timestamp glitches when switching
- frequency
-Message-ID: <20240428141349.116ad03c@jic23-huawei>
-In-Reply-To: <20240426094835.138389-1-inv.git-commit@tdk.com>
-References: <20240426094835.138389-1-inv.git-commit@tdk.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Shawn
+ Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+ <festevam@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 0/3] iio: cleanup masklength usage
+Message-ID: <20240428142343.5067c898@jic23-huawei>
+In-Reply-To: <CAMknhBGQB4MC8ejEs_uLgb=iKehXkoetgHjZnCvCKQbuua5kfA@mail.gmail.com>
+References: <20240425-b4-iio-masklength-cleanup-v1-0-d3d16318274d@baylibre.com>
+	<2630ef8c8363b4fa772a2ff2c95cf115ad3c509d.camel@gmail.com>
+	<CAMknhBGQB4MC8ejEs_uLgb=iKehXkoetgHjZnCvCKQbuua5kfA@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,201 +64,86 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 26 Apr 2024 09:48:35 +0000
-inv.git-commit@tdk.com wrote:
+On Fri, 26 Apr 2024 10:26:31 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> 
-> When a sensor is running and there is a FIFO frequency change due to
-> another sensor turned on/off, there are glitches on timestamp. Fix that
-> by using only interrupt timestamp when there is the corresponding sensor
-> data in the FIFO.
-> 
-> Delete FIFO period handling and simplify internal functions.
-> 
-> Update integration inside inv_mpu6050 and inv_icm42600 drivers.
-> 
-> Fixes: 0ecc363ccea7 ("iio: make invensense timestamp module generic)
-> CC: stable@vger.kernel.org
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+> On Fri, Apr 26, 2024 at 2:13=E2=80=AFAM Nuno S=C3=A1 <noname.nuno@gmail.c=
+om> wrote:
+> >
+> > On Thu, 2024-04-25 at 10:03 -0500, David Lechner wrote: =20
+> > > While working on other patches I noticed that a few drivers are setti=
+ng
+> > > the masklength field of struct iio_dev even though it is marked as
+> > > [INTERN]. It looks like maybe this was not always the case, but we can
+> > > safely clean it up now without breaking anything.
+> > >
+> > > ---
+> > > David Lechner (3):
+> > >       iio: adc: ad7266: don't set masklength
+> > >       iio: adc: mxs-lradc-adc: don't set masklength
+> > >       iio: buffer: initialize masklength accumulator to 0
+> > >
+> > >  drivers/iio/adc/ad7266.c          | 1 -
+> > >  drivers/iio/adc/mxs-lradc-adc.c   | 1 -
+> > >  drivers/iio/industrialio-buffer.c | 2 +-
+> > >  3 files changed, 1 insertion(+), 3 deletions(-)
+> > > ---
+> > > base-commit: b80ad8e3cd2712b78b98804d1f59199680d8ed91
+> > > change-id: 20240425-b4-iio-masklength-cleanup-86b632b19901
+> > > =20
+> >
+> > Hi David,
+> >
+> > Nice cleanup. The patches look good to me but there's one thing missing=
+ :). As you
+> > correctly noted, the field should be internal to the IIO core and drive=
+rs should not
+> > touch it. Hence, you need to make sure not driver is using it so we can=
+ move it into
+> > struct iio_dev_opaque [1]. That's the place all the intern fields shoul=
+d, eventually,
+> > end up.
+> >
+> > Now, quite some drivers in the trigger handler will read the masklength=
+ for looping
+> > with for_each_set_bit(). Hence, the straight thing would be an helper t=
+o get it.
+> > Maybe there's a clever way...
+> >
+> > I know this is more work than what you had in mind but I think it shoul=
+d be fairly
+> > simple (hopefully) and since you started it :), maybe we can get the wh=
+ole thing done
+> > and remove another [INTERN] member from the iio_dev struct.
+> >
+> > [1]: https://elixir.bootlin.com/linux/latest/source/include/linux/iio/i=
+io-opaque.h#L42
+> >
+> > - Nuno S=C3=A1 =20
+>=20
+> Sounds like fun. :-p
+>=20
+> I will look into it.
 
-Whilst I don't fully follow the logic here, the new code is simpler
-and seems reasonable.  Getting my head around this will probably take
-longer than it's worth :(
+I think this one might be miss marked as [INTERN]. It should be constant fr=
+om the driver
+point of view, but given active_scan_masks is meant to be visible to the dr=
+iver,
+it's length should probably be as well.
 
-Hence applied to the fixes-togreg branch of iio.git.
+Sure every driver should be able to trivially work this out for themselves,=
+ but
+do we care about stopping them using this?
+
+It might be worth some nice iterator wrappers with names like
+iio_for_each_active_channel() though I'd expect those to still be accessing=
+ these
+fields directly as this is a high performance path so we don't want to to b=
+ounce
+though a core function to get them.
 
 Jonathan
-
-> ---
->  .../inv_sensors/inv_sensors_timestamp.c       | 24 +++++++++----------
->  .../imu/inv_icm42600/inv_icm42600_buffer.c    | 20 +++++++---------
->  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  2 +-
->  .../linux/iio/common/inv_sensors_timestamp.h  |  3 +--
->  4 files changed, 21 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> index 3b0f9598a7c7..5f3ba77da740 100644
-> --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c
-> @@ -70,13 +70,13 @@ int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
->  }
->  EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_update_odr, IIO_INV_SENSORS_TIMESTAMP);
-> 
-> -static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint32_t period, uint32_t mult)
-> +static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint32_t period)
->  {
->  	uint32_t period_min, period_max;
-> 
->  	/* check that period is acceptable */
-> -	period_min = ts->min_period * mult;
-> -	period_max = ts->max_period * mult;
-> +	period_min = ts->min_period * ts->mult;
-> +	period_max = ts->max_period * ts->mult;
->  	if (period > period_min && period < period_max)
->  		return true;
->  	else
-> @@ -84,15 +84,15 @@ static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint32_t perio
->  }
-> 
->  static bool inv_update_chip_period(struct inv_sensors_timestamp *ts,
-> -				    uint32_t mult, uint32_t period)
-> +				   uint32_t period)
->  {
->  	uint32_t new_chip_period;
-> 
-> -	if (!inv_validate_period(ts, period, mult))
-> +	if (!inv_validate_period(ts, period))
->  		return false;
-> 
->  	/* update chip internal period estimation */
-> -	new_chip_period = period / mult;
-> +	new_chip_period = period / ts->mult;
->  	inv_update_acc(&ts->chip_period, new_chip_period);
->  	ts->period = ts->mult * ts->chip_period.val;
-> 
-> @@ -120,16 +120,14 @@ static void inv_align_timestamp_it(struct inv_sensors_timestamp *ts)
->  }
-> 
->  void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
-> -				      uint32_t fifo_period, size_t fifo_nb,
-> -				      size_t sensor_nb, int64_t timestamp)
-> +				     size_t sample_nb, int64_t timestamp)
->  {
->  	struct inv_sensors_timestamp_interval *it;
->  	int64_t delta, interval;
-> -	const uint32_t fifo_mult = fifo_period / ts->chip.clock_period;
->  	uint32_t period;
->  	bool valid = false;
-> 
-> -	if (fifo_nb == 0)
-> +	if (sample_nb == 0)
->  		return;
-> 
->  	/* update interrupt timestamp and compute chip and sensor periods */
-> @@ -139,14 +137,14 @@ void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
->  	delta = it->up - it->lo;
->  	if (it->lo != 0) {
->  		/* compute period: delta time divided by number of samples */
-> -		period = div_s64(delta, fifo_nb);
-> -		valid = inv_update_chip_period(ts, fifo_mult, period);
-> +		period = div_s64(delta, sample_nb);
-> +		valid = inv_update_chip_period(ts, period);
->  	}
-> 
->  	/* no previous data, compute theoritical value from interrupt */
->  	if (ts->timestamp == 0) {
->  		/* elapsed time: sensor period * sensor samples number */
-> -		interval = (int64_t)ts->period * (int64_t)sensor_nb;
-> +		interval = (int64_t)ts->period * (int64_t)sample_nb;
->  		ts->timestamp = it->up - interval;
->  		return;
->  	}
-> diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> index b52f328fd26c..9cde9a9337ad 100644
-> --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-> @@ -509,20 +509,20 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
->  		return 0;
-> 
->  	/* handle gyroscope timestamp and FIFO data parsing */
-> -	ts = iio_priv(st->indio_gyro);
-> -	inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.total,
-> -					st->fifo.nb.gyro, st->timestamp.gyro);
->  	if (st->fifo.nb.gyro > 0) {
-> +		ts = iio_priv(st->indio_gyro);
-> +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro,
-> +						st->timestamp.gyro);
->  		ret = inv_icm42600_gyro_parse_fifo(st->indio_gyro);
->  		if (ret)
->  			return ret;
->  	}
-> 
->  	/* handle accelerometer timestamp and FIFO data parsing */
-> -	ts = iio_priv(st->indio_accel);
-> -	inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.total,
-> -					st->fifo.nb.accel, st->timestamp.accel);
->  	if (st->fifo.nb.accel > 0) {
-> +		ts = iio_priv(st->indio_accel);
-> +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel,
-> +						st->timestamp.accel);
->  		ret = inv_icm42600_accel_parse_fifo(st->indio_accel);
->  		if (ret)
->  			return ret;
-> @@ -550,9 +550,7 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm42600_state *st,
-> 
->  	if (st->fifo.nb.gyro > 0) {
->  		ts = iio_priv(st->indio_gyro);
-> -		inv_sensors_timestamp_interrupt(ts, st->fifo.period,
-> -						st->fifo.nb.total, st->fifo.nb.gyro,
-> -						gyro_ts);
-> +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro, gyro_ts);
->  		ret = inv_icm42600_gyro_parse_fifo(st->indio_gyro);
->  		if (ret)
->  			return ret;
-> @@ -560,9 +558,7 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm42600_state *st,
-> 
->  	if (st->fifo.nb.accel > 0) {
->  		ts = iio_priv(st->indio_accel);
-> -		inv_sensors_timestamp_interrupt(ts, st->fifo.period,
-> -						st->fifo.nb.total, st->fifo.nb.accel,
-> -						accel_ts);
-> +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel, accel_ts);
->  		ret = inv_icm42600_accel_parse_fifo(st->indio_accel);
->  		if (ret)
->  			return ret;
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> index 86465226f7e1..0dc0f22a5582 100644
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-> @@ -100,7 +100,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
->  		goto end_session;
->  	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
->  	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
-> -	inv_sensors_timestamp_interrupt(&st->timestamp, fifo_period, nb, nb, pf->timestamp);
-> +	inv_sensors_timestamp_interrupt(&st->timestamp, nb, pf->timestamp);
->  	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, nb, 0);
-> 
->  	/* clear internal data buffer for avoiding kernel data leak */
-> diff --git a/include/linux/iio/common/inv_sensors_timestamp.h b/include/linux/iio/common/inv_sensors_timestamp.h
-> index a47d304d1ba7..8d506f1e9df2 100644
-> --- a/include/linux/iio/common/inv_sensors_timestamp.h
-> +++ b/include/linux/iio/common/inv_sensors_timestamp.h
-> @@ -71,8 +71,7 @@ int inv_sensors_timestamp_update_odr(struct inv_sensors_timestamp *ts,
->  				     uint32_t period, bool fifo);
-> 
->  void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,
-> -				     uint32_t fifo_period, size_t fifo_nb,
-> -				     size_t sensor_nb, int64_t timestamp);
-> +				     size_t sample_nb, int64_t timestamp);
-> 
->  static inline int64_t inv_sensors_timestamp_pop(struct inv_sensors_timestamp *ts)
->  {
-> --
-> 2.34.1
-> 
-
 

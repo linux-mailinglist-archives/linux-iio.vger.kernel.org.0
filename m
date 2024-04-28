@@ -1,101 +1,132 @@
-Return-Path: <linux-iio+bounces-4563-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4564-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0C48B4927
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 04:03:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BD18B4B87
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 13:39:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E4ECB21F6C
-	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 02:03:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 471F51C209D7
+	for <lists+linux-iio@lfdr.de>; Sun, 28 Apr 2024 11:39:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 046E610E3;
-	Sun, 28 Apr 2024 02:03:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A4F55C22;
+	Sun, 28 Apr 2024 11:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="UNx5F102"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BZnD5/HD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135A4A59
-	for <linux-iio@vger.kernel.org>; Sun, 28 Apr 2024 02:02:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1838EE573
+	for <linux-iio@vger.kernel.org>; Sun, 28 Apr 2024 11:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714269781; cv=none; b=WKjV9+5vi8Sm2HLvIBO9obkYm4y8LNYta8mHe/575iE11hwAu/QfZkZqb0WjtMmO2D8PwihqQjn2kYtID0OYZAMuFsNBTZ+0bL5MkU4a2ucHl7O0OvpCbe7cxVhvjDjAmrwiluHDHvQPArmDDKDOQzK43A1utRq4YNqedKzeGQA=
+	t=1714304363; cv=none; b=pHeiKel3J1+n9Rwe6F0mX6Mzl8CH32yBjGeJ6LQpkrWR1relXwdMgbGpwZdJKaCkNq55EUFKDyXO6anuh2NgawyU+J8aVMdUHxBdW5wLywoK5nfaDY2lzMLuxjftw7+CvXXXqF9A5tHaCAA73dCZ+Mkor3aa80DVB1TtDBdMOWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714269781; c=relaxed/simple;
-	bh=+IDNJ2iYmH7S6OQ9I1xm3u6CGOmXdHv+EHl2B9vK9ck=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CPBV5s9YBOJ83F8JxlO8sIrOBz7Xgst2IktqJtpQKkmkYkgmfhIpi9G3/NcnRX5q93xqn7BXzY/kSe+x8JxVODH5AnyFBKkB/jqvsvhKZLAY6V6fSzBV5SowINKNXxo9AiicVtdIOGweicfuG/8usynFS9uaQHfeMnUiwRiYiV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=UNx5F102; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1e9451d8b71so29288135ad.0
-        for <linux-iio@vger.kernel.org>; Sat, 27 Apr 2024 19:02:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google; t=1714269778; x=1714874578; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+IDNJ2iYmH7S6OQ9I1xm3u6CGOmXdHv+EHl2B9vK9ck=;
-        b=UNx5F102YQfZMaT+uJmXiccwB1Bd7ZZdEy4Yhx58smSKe4JquLunc6oYyy+wZ6khnE
-         4zHhGL8vkV2ZsqzYRWdkHW1s93+rTWWLdVQwoCZy3xexbTeINzLuRH3TcjuzUdgEp0mn
-         +DnoHJsVTiXncp9DA8T9yEWwa8JUd/Pm/h8bJYS/qDLremXsRReWWn2q2JO9DUJsLwDN
-         cPRDu38vgVM8E8TE+7F98zjAXQYMCgK2e5/vI9PQMgr/eC0v/1iUzZ4K/SXHeH1uBIEO
-         WFjg1FxCmAFy6ZTiztfRpnVJ9c3T9jT3AHjLMqJVv1+y3bIaI6q+lXwG/gvLNwi06vBg
-         xnDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714269778; x=1714874578;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+IDNJ2iYmH7S6OQ9I1xm3u6CGOmXdHv+EHl2B9vK9ck=;
-        b=MVKjmTeBFdAIs7cE1ahYSD9uAL6HnMDuCgYWWhszfTDoKMGtqGkOQOBcgtC6xv1OFC
-         zOMKzi5KcV6xTWs7DclxRHiKxarKNUTJ4O5XksDykSyBteCq4npV3tdz93Jg3++GCUof
-         9/SSFGHnICR9yy1eiTXIig/5l9SuUSXgo9cVWZ7uNFd9IzB73MXFX0/dwfCN6ftkRsUl
-         pNlm+Iq6VTCWVPnxONBxzmQjI3HB+lN6BLUB1NifDvq+v8sYrKn03taBPxNlmLcqI6+x
-         PeRbM4XssqxO/tYNBTNfECvYBy1wWK9oLBpfsB6tUXMwQ2TdrErWfKqjY7ec26XRpQHh
-         FkEw==
-X-Forwarded-Encrypted: i=1; AJvYcCVh3phmzrPsT13QwwgqpXYbt29HeiY1KpDWFL8Ee0V4wZjVHxuaGMBve15+lcBx4Dmhyc8u8akqM6VnGjZma7K0QYUhKWfapuWG
-X-Gm-Message-State: AOJu0YydPCOvVwb0+GXbfLj1XDdVYVfwbgN9MMokkRhoJahey042K36d
-	CruCqTwKE2i60zH4I5IsX8wwtsq7chOaYvnReUuu8f7RmjjpxgvfUAvb/7w1gSA=
-X-Google-Smtp-Source: AGHT+IG7Qnz1gAEEsoGX94Jtonzmr8idOepq33PmkrBEGsYPzrvtAZtZB03HFhPuMEG8FC3eNh9pzg==
-X-Received: by 2002:a17:903:2d0:b0:1e0:b62c:460d with SMTP id s16-20020a17090302d000b001e0b62c460dmr8995574plk.38.1714269778319;
-        Sat, 27 Apr 2024 19:02:58 -0700 (PDT)
-Received: from tars.localdomain ([2804:14c:32:8eef::1000])
-        by smtp.gmail.com with ESMTPSA id b5-20020a170902d60500b001e421f98ebdsm17735850plp.280.2024.04.27.19.02.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 27 Apr 2024 19:02:58 -0700 (PDT)
-From: =?UTF-8?q?Ot=C3=A1vio=20Silva?= <otavio.ols@usp.br>
-To: jic23@kernel.org
-Cc: felipeanibal@usp.br,
-	linux-iio@vger.kernel.org,
-	otavio.ols@usp.br,
-	thiago.duvanel@usp.br
-Subject: Re: [PATCH] iio: adc: use sign_extend32 to provide negative numbers conversion
-Date: Sat, 27 Apr 2024 23:02:46 -0300
-Message-ID: <20240428020247.50114-1-otavio.ols@usp.br>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20240421183820.4e2c0133@jic23-huawei>
-References: <20240421183820.4e2c0133@jic23-huawei>
+	s=arc-20240116; t=1714304363; c=relaxed/simple;
+	bh=47tUTpddw4PXl4fZTvHxf0pOUWqZgUEwCurY3C3rXmM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uY0XuFUnMNzhNJjnxWdfnFJHMifKa3xoCgcYFK11fhckGKJqAElkZrreVkX/LKENC9UtUhOTUbiVboFxVPnSNMTHhzW/Stk1EJ5Hhrh6MW7Dm39sSIEfYuHdVn0tZaS7zjWzfWzEb/K25nek/twzNPSBQgo8SpNsH+ZkjfaAWsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BZnD5/HD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD1BC2BBFC;
+	Sun, 28 Apr 2024 11:39:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714304362;
+	bh=47tUTpddw4PXl4fZTvHxf0pOUWqZgUEwCurY3C3rXmM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=BZnD5/HD/n0Ahy5lhN5Srb4tXnoRHiBQgyg6RMmtjgu98cpKSNLfTnL1axDjjtoLT
+	 MrndMvKu1gNPbE1QAUMv9ts2ifOJyz1zFsFu7GO+P67IFNUcrXSDVkqA55PkvYogzx
+	 iTFuJ2q7SMJTTzlrGGqyQF/R+AtzoMwT7nr07vZ6fmS7NFBiANKcbDiFCsvTIY/4mo
+	 RSzRDdrt3K2ZkR59KuZgawkS0yPFQTiWETyJ6nVDwRME0LGKLke114BUPwSxEzyFvk
+	 FFUsDYntgrQXEm92SJdGm1xkppHkCOfK0eTFqyhoYNBy/L8ev42QbBT2YiVVlW3yTT
+	 MZHvcJZDIvbPA==
+Date: Sun, 28 Apr 2024 12:39:11 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Lincoln Yuji <lincolnyuji@usp.br>
+Cc: Luiza Soezima <lbrsoezima@usp.br>, Sabrina Araujo
+ <sabrinaaraujo@usp.br>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: adc: ti-ads1015: use
+ device_for_each_child_node_scoped()
+Message-ID: <20240428123911.73f54c08@jic23-huawei>
+In-Reply-To: <20240427121055.5639-1-lincolnyuji@usp.br>
+References: <20240427121055.5639-1-lincolnyuji@usp.br>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello!
+On Sat, 27 Apr 2024 09:10:55 -0300
+Lincoln Yuji <lincolnyuji@usp.br> wrote:
 
-Upon further study of the LTC2309 device we realized we were mistaken in
-our last patch. It seems that the driver is set to work only on unipolar
-mode (despite having support for differential and non-differential input),
-so it does not require 2’s complement as we first thought.
+> This loop definition removes the need for manual releasing of the
+> fwnode_handle in early exit paths (here an error path) allow
+> simplification of the code and reducing the chance of future
+> modifications not releasing fwnode_handle correctly.
+> 
+> Co-developed-by: Luiza Soezima <lbrsoezima@usp.br>
+> Signed-off-by: Luiza Soezima <lbrsoezima@usp.br>
+> Co-developed-by: Sabrina Araujo <sabrinaaraujo@usp.br>
+> Signed-off-by: Sabrina Araujo <sabrinaaraujo@usp.br>
+> Signed-off-by: Lincoln Yuji <lincolnyuji@usp.br>
+> ---
+I think this is a response to Marcelo's review of v1.
+If so, a couple of process things you have gotten wrong.
+1) You should pick up tags, assuming you've made the changes
+suggested.   So should include
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+in the block above.
+2) It should be clearly marked as v2. Pass -v2 to git format
+patch is the easiest way to do this, or edit the patch title
+so it says something like
+[PATCH V2] ...
 
-We are sorry for the misunderstanding (and for the wrong emails), and
-thankful for your attention,
-Otávio Silva
+Otherwise the patch looks fine. 
+Please do a v3, correcting the above.
+
+Thanks,
+
+Jonathan
+
+>  drivers/iio/adc/ti-ads1015.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
+> index 6ae967e4d..d3363d02f 100644
+> --- a/drivers/iio/adc/ti-ads1015.c
+> +++ b/drivers/iio/adc/ti-ads1015.c
+> @@ -902,10 +902,9 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+>  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
+>  	struct ads1015_data *data = iio_priv(indio_dev);
+>  	struct device *dev = &client->dev;
+> -	struct fwnode_handle *node;
+>  	int i = -1;
+>  
+> -	device_for_each_child_node(dev, node) {
+> +	device_for_each_child_node_scoped(dev, node) {
+>  		u32 pval;
+>  		unsigned int channel;
+>  		unsigned int pga = ADS1015_DEFAULT_PGA;
+> @@ -927,7 +926,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+>  			pga = pval;
+>  			if (pga > 5) {
+>  				dev_err(dev, "invalid gain on %pfw\n", node);
+> -				fwnode_handle_put(node);
+>  				return -EINVAL;
+>  			}
+>  		}
+> @@ -936,7 +934,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
+>  			data_rate = pval;
+>  			if (data_rate > 7) {
+>  				dev_err(dev, "invalid data_rate on %pfw\n", node);
+> -				fwnode_handle_put(node);
+>  				return -EINVAL;
+>  			}
+>  		}
+
 

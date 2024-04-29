@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-4620-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4621-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503928B52AB
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 09:55:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC188B52BB
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 09:58:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E58AB1F21620
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 07:55:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 055B61F21929
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 07:58:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACC315AE0;
-	Mon, 29 Apr 2024 07:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6636215E8B;
+	Mon, 29 Apr 2024 07:58:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m0b2J07E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YIcFffME"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA78EED4;
-	Mon, 29 Apr 2024 07:55:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B46134BF;
+	Mon, 29 Apr 2024 07:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714377306; cv=none; b=R5Uq92SNtWI0/PjD78Hn/x+j1hmhkzg0Up/ReHnA2xXCXccnbCAk1csDk+3OYrY1Y+bR2W/c9nuGmISBH30JVtnGLkVoB7cw84+G/WhCTu526P2BFfxlbEVBw8hhxELAvqyxJ4Q+6YQTI4zv+I1RUTfYBmB1njhQlVHxI/kfERw=
+	t=1714377488; cv=none; b=XOqd87Zrxi10ZYHMw4qi5yfs/Rcgo3A4w1LL+gFYW5gUVltyoQ6zlih51O22O8fm1Tnq2pGirkWQRbA/nMLYYv6ZZtp+b1KxbgR1YZRypb7iBYv2hD9XLPqICEzJ7a8bT7mqODpHkjpGULJIi7Tq/WL1AAgs1ZVCb/UKCyY73Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714377306; c=relaxed/simple;
-	bh=tiKshYUIgU+C4Jc8N+hBsmNQ/hFvFexXKDmBYginrA0=;
+	s=arc-20240116; t=1714377488; c=relaxed/simple;
+	bh=xYM2yXWnRhqySCaj8k34zqA1nOe3QZmh3OR/nz2Lfss=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tbD6sI9+KOfmDilU7A8YJgasJGMZrvkDYeobAfsu6oEBCOAeSOseefQixRlkWQ5V+gYKfzFM753FWyx+mOD1PU1nOXQa1LlPuuyyVs/TrS8eoYlB3yZivh/ZdGqx+9XqH0p5wirGmAherOBRGkECOnTUivgGvWWjV2OEWHQjZ+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m0b2J07E; arc=none smtp.client-ip=209.85.221.45
+	 Content-Type:MIME-Version; b=Y+a1SxCGCM7j89kPg2aSmbCGbRhosWxd8HBAYgP2q4s9BWcsOfwO1efTGzI2fe9W8dv2lEQdXCUKcVPCSWos0cEuUrKm2fa3kmXW/AN28ilwk7LcD/POq21Hhu7JFO+i1BO4pMyDeDLOJB0C6pLNfpE+3W8i5+qCVTt5+V+T5sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YIcFffME; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-34c0f5f5cd0so3329397f8f.2;
-        Mon, 29 Apr 2024 00:55:04 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-41adf3580dbso23261875e9.0;
+        Mon, 29 Apr 2024 00:58:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714377303; x=1714982103; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1714377485; x=1714982285; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=tiKshYUIgU+C4Jc8N+hBsmNQ/hFvFexXKDmBYginrA0=;
-        b=m0b2J07E5PTjff6MrdcAzfx2aX4vwVjCH8BZM970tQhtt15VNhuaEXi/lqhbvjmCim
-         4vaMwL/vkCEoIUhhkzf7F8z5u4YTYikRow3PeStEPsQ0fmIod/FfJMCqRfG275+qbxSm
-         2eMfOjfLTr8FleQXG5CqFZI6lMStS4xRoqtTdoBAs6aL4TLb1tKDk7I1Kf7F2wy1E3Rm
-         XfIiCVaU/xewKZY6CRuWeYFWOWUNr/6cM0G/zvh24TK5nR4ZpVQHT5BWb2d091XevFWP
-         ecGNbypBfZBOqviPVUj7UsoWs7k3fYF2PP0ny3Ppv7XcLV3RX11bHmlksntK04Rn667r
-         jU6A==
+        bh=xYM2yXWnRhqySCaj8k34zqA1nOe3QZmh3OR/nz2Lfss=;
+        b=YIcFffMEYRPDlYaxvtquul+IbmqRUsE6J4yvtU7trJmU7vKOu+bDq80uQj8R9P+Dbw
+         +o5ilkUmTaEy3c8zdBO4WvVxM7Ul634TIosTRqieLWXF9LZh8mnc+qhGU7JwJYIdtXSt
+         GfiHGodRjr3+QHz7SaAeLp2B1r1L86RL4CbHINtMAOe7+LfoaXfvNbC1UiySfx2ZlN1k
+         rDyrL3MWgTQ75fS4f7O4HzXH8uSWc5CY2zrL7ss2jW2ROBhL0IFspjeyNloQqIFb92ig
+         4O5Cy9M/yZc4V8DLY230z3Yks2Oa+rT5+c55DBrql8ah/SzdFxbT/LssrJTXvs87t8AW
+         dWOQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714377303; x=1714982103;
+        d=1e100.net; s=20230601; t=1714377485; x=1714982285;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tiKshYUIgU+C4Jc8N+hBsmNQ/hFvFexXKDmBYginrA0=;
-        b=KlnqI4YnF5SZZacnBq+yTFwsfA/LVGjGoIBQqNc0n1PTgQ+cL9jRuyxcfUu56uuO46
-         prug8LrLZxjKgR3cTwg6UlbWjDsiHQNh3/X3pv2yqm+owNhXtQmU+hVVuwFaxGkvk9XA
-         dTTuIh43gG4hEALD/1Jc4XFtab9xnf/IOgLux0zA4bVlINXocgDwLleYKgHVV/oMm03o
-         TLGgLFajJnd+KYmTP5PZxpDBJ/qPiDyJt6Gnpg4/fnerjw3qCZ8eiw/Y9txBVILu1V43
-         SItXDXF44Jc7N3lBElhb63z0gBjgYfQ3yfukCgeBubkjGlAnH2kM1+8/AxFBednPpkAQ
-         +KwA==
-X-Forwarded-Encrypted: i=1; AJvYcCXOCsCgPcs2LgSbwVscTU4RSzcCGrYUr8IuSwxxf8p8a7BwMz4uzPXAHiZJJxDSEpd1SpK5kogEOk5xdCrMa1dcgHchejII0nJlj45vYZ3cNKNzzskk04EEq8xGFvzLuuH8xUpWeFVk2C9M0ihnRn+ZRq/IEVZ4FHt4yxuqu24JpQ==
-X-Gm-Message-State: AOJu0YzPkealz2TtPT8Iw5Ro3V6H/0B1W+jyBxMGolFJMwkcOH6dNx8f
-	JhlWQUNUalgEES34Wi2K96S72UxUpaFxp3vbzSTVkFZazk4iTQy+L0aRsaoNH/8=
-X-Google-Smtp-Source: AGHT+IE1t/q4f+QGWHixnNA2MQJglgBMGgcEo52I+k0yP1J/yswyQvKvQcaKnXxVRdS5zUr48uGRCA==
-X-Received: by 2002:a05:6000:1ac8:b0:34d:a9:6642 with SMTP id i8-20020a0560001ac800b0034d00a96642mr2166868wry.28.1714377303111;
-        Mon, 29 Apr 2024 00:55:03 -0700 (PDT)
+        bh=xYM2yXWnRhqySCaj8k34zqA1nOe3QZmh3OR/nz2Lfss=;
+        b=RR1e9efHxbaaf6ih96nhZjuQ2Nl5OqjWqKDdd04fgLQgjzbq4hW2/S9UP8EXat1FFf
+         eAOHSz0jnA3VuE+BSxZe4zKplug1CQ1KD0tew54PPg/NY/HzLjhMCSYLKW3F+qN7oqww
+         tsooMr1eSW835zlit4B+N3dvMB7kBbBiNGjEKP29MbPKCds2lro4WXEyKVHaK9Dy1IfD
+         0456aqQGAT8kcGi2KpVuTRIXmkZ4QUewzJR/VRMPmEkjZkpMhfTl/KKJJp0aVp8cSOe0
+         wvICyTT2/4mTnBm7zl/1xE70Lx8BB2PNBQdxFthCUjbfTpnAzHciclJUr3BDLRTSHBFq
+         gN9w==
+X-Forwarded-Encrypted: i=1; AJvYcCXcUzQTXosWvUBuTIIXFDSbiZ3OebIZDrVZKtpAGZbYe2LGB5/jHvLny3/b8ZNe5wXSvlrxAL32PiO3sMVSlkfB68eqXqRMEhKYrzGt51iK6RA1w4P2Gaa6puntokWUSDjsQZT7TUrAS7B1j2kKbH7QJx3GIzBaiZqSCRdQvgYftg==
+X-Gm-Message-State: AOJu0YzW4mhK9bf33vqN/5HJrZ0FhNmEdOTn4dDDNiVn959Vvj8axOxD
+	hMddIwaJlJq1gLsb1112As8u0g7qynCnbwzfiUAYSsBWU/rmcExs
+X-Google-Smtp-Source: AGHT+IHUXWkWmSGPpEjYl3wk64uAdREH56IKk99xgzW0ANzW0yF5B6m46aVyp4rUqYCBMTndgimAVA==
+X-Received: by 2002:a05:600c:3507:b0:41c:13f6:1ee1 with SMTP id h7-20020a05600c350700b0041c13f61ee1mr2877367wmq.4.1714377484714;
+        Mon, 29 Apr 2024 00:58:04 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
-        by smtp.gmail.com with ESMTPSA id k21-20020adfb355000000b0034c6b368aecsm7480380wrd.26.2024.04.29.00.55.02
+        by smtp.gmail.com with ESMTPSA id o14-20020a05600c510e00b00419f572671dsm32010568wms.20.2024.04.29.00.58.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 00:55:02 -0700 (PDT)
-Message-ID: <e62f8df4b06abc371b1e9fe3232cb593e468d54c.camel@gmail.com>
+        Mon, 29 Apr 2024 00:58:04 -0700 (PDT)
+Message-ID: <51bb337457b6deab93bb1cc3652d8168763f6aa1.camel@gmail.com>
 Subject: Re: [PATCH 4/5] iio: adis16480: add support for adis16545/7 families
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, Ramona Gradinariu
@@ -77,7 +77,7 @@ Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
  conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, robh@kernel.org,
  Ramona Gradinariu <ramona.gradinariu@analog.com>, Nuno
  =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
-Date: Mon, 29 Apr 2024 09:58:40 +0200
+Date: Mon, 29 Apr 2024 10:01:42 +0200
 In-Reply-To: <20240428162555.3ddf31ea@jic23-huawei>
 References: <20240423084210.191987-1-ramona.gradinariu@analog.com>
 	 <20240423084210.191987-5-ramona.gradinariu@analog.com>
@@ -115,36 +115,14 @@ ender
 cit.
 > Perhaps a Co-developed-by or similar is appropriate?
 >=20
-> > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> A few comments inline.=C2=A0 Biggest one is I'd like a clear statement of=
- why you
-> can't do a burst of one type, then a burst of other.=C2=A0 My guess is th=
-at the
-> transition is very time consuming?=C2=A0 If so, that is fine, but you sho=
-uld be
-> able
-> to let available_scan_masks handle the disjoint channel sets.
 
-Yeah, the burst message is a special spi transfer that brings you all of th=
-e
-channels data at once but for the accel/gyro you need to explicitly configu=
-re
-the chip to either give you the "normal vs "delta" readings. Re-configuring=
- the
-chip and then do another burst would destroy performance I think. We could =
-do
-the manual readings as we do in adis16475 for chips not supporting burst32.=
- But
-in the burst32 case those manual readings should be minimal while in here w=
-e
-could have to do 6 of them which could also be very time consuming...
-
-Now, why we don't use available_scan_masks is something I can't really reme=
-mber
-but this implementation goes in line with what we have in the adis16475 dri=
-ver.
+Ah and regarding this is that I guess Ramona just modified my internal patc=
+hes
+adding support for these parts long ago (when they were not public yet). No=
+t
+sure how much did she changed but a Co-developed-by looks the way to go...
 
 - Nuno S=C3=A1
-
+>=20
 
 

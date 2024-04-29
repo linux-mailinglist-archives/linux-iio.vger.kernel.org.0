@@ -1,118 +1,144 @@
-Return-Path: <linux-iio+bounces-4631-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4632-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF7778B56CB
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 13:34:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9728B5757
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 14:02:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FA521F24EE4
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 11:34:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A40DD284D0E
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 12:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E38537FC;
-	Mon, 29 Apr 2024 11:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA985338F;
+	Mon, 29 Apr 2024 12:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="ihc0ZqSZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LWhZaw0X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35EC52F85
-	for <linux-iio@vger.kernel.org>; Mon, 29 Apr 2024 11:33:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D448953383;
+	Mon, 29 Apr 2024 12:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714390406; cv=none; b=WRob/1eR14yuWjjpFyDs/uHF66HvNLHgbyRfizxSQmOcWQ9Dxkkn8Rbt/FZnGE4/NYXhzPysjbs/ZdkldWf7e21snw5wrFVMSKCmw9jrCiOgmYnr3TaHO0dvCp6Et2PmdkDqB/AI8iAgnGURQykXsiWOX2g/vHHuuj7DbrTR10g=
+	t=1714392151; cv=none; b=Xpt3+bEs7o8meSIQ6hUAqOfCT5X4hffYfw1RFHpgUU9JXw0A4hSl5KKoLdVC9rJyD1TXL4SKfL0ygyeQ/BUz41s1FQ06e2HDevy1AZdV8exHPC/11SH2QJ9TcGj5fyS8/3oOKhP8oSeIxl3PTVbeeM7gj2jSY0S6+Lsc05qbQrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714390406; c=relaxed/simple;
-	bh=2uX3wkKhmFCqFWQCxlFoe6vDeE4dnIiY2m9s/rKq9oQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htcXIvGhfXKsIWwdbVLMRktg1BufMQoglihBAcov+r4aNUacMxXhCeLuXklaAhRohY72sm9WapXiZKvk0DZO3kOozWGu2GLFBbgxZs5ro5GezK9VNcHINzxpMC3xoa52pEUEDr+2jPrhyguKP4Y+B/tIn4xWvZgSxUx5tyWT3Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=ihc0ZqSZ; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=from:to:cc:subject:date:message-id
-	:in-reply-to:references:mime-version:content-transfer-encoding;
-	 s=k1; bh=9jrudQes/oY0ss0zHQRh6mDwrbJoU9KkQ26G3FR9LtI=; b=ihc0Zq
-	SZ+nOKe3RRSC5eQoHXP8j8Hk/Po3Xqz96sq8eRhN1khue2jt5X4jQN58u6jU8SFJ
-	2JVq/t8DKkv9Srcoj5KncOteHfb8dj4CS9ZOlqRupOPuMya5hb6u+3+uyt07Lpui
-	TJ5sboFZvNBWE739ZvfnbptMghuQkUAj6LqAo7stf/vp+qEbd1aDCGE8aPw2BaWd
-	2OVKIH/oXEg72lsXa9npyf6wNzpKwghDhdAhEPGSEC1UvvSQiufL9+fP2caxGCVj
-	j2FoS0LLbD0nPO8Ei5nze1Ic7PPsdS6bvjh35p3Ooc7ssLLK9y1cwjUkpYZUQ5sv
-	CXoCgO/OVKFQEF8Q==
-Received: (qmail 2281276 invoked from network); 29 Apr 2024 13:33:22 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 29 Apr 2024 13:33:22 +0200
-X-UD-Smtp-Session: l3s3148p1@tgrlnjoXfEVtKPB4
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: linux-iio@vger.kernel.org
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
+	s=arc-20240116; t=1714392151; c=relaxed/simple;
+	bh=y+5yRp4hZZlhcS8Hnh7ujBkkvEUXh6QrchD4YdBX1c4=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=bZTAeccMMiY6wsEGnEb3/7azF8tD2wiHWO68ZQ/34elF4SujY3sj/Rk92WyUW3yU0A3a2k8oB5SRlISFbXOlXUz7mDVlhb4f+Fj8KzzfXVFzySuZEx/oXEpahp5Fn7GBn+uONoSpyTL3OzdaT4h1rU9KQugTct3NJXy+dxdwYgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LWhZaw0X; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-571ba432477so4505635a12.1;
+        Mon, 29 Apr 2024 05:02:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714392148; x=1714996948; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GLFNprZuwHsZtlRkA4qR4RqYKlel9cjffFWXRNhhgPc=;
+        b=LWhZaw0XMiw565y0MyIEcFalbvRHGcpZXDoZYn3+S4SJxQnhtDiFGLcva1Id+uahns
+         JVFPnJ0m/EFA/l2xENsBNeVUbLFjVAuxYGX/cKQmq64NEnrI243BiGIEU2Vnthym2faZ
+         4l0neufTvUgDukl+C1Rs8Vk06oXKJMMueZHEQw5xNz56/O42isaMHPSivmb+aBhK3wZa
+         gW6pMvLSS94UEedDgCpkFk8SIjsXAAXJu2vmso/cxllKzixxd1ZAdtR7iXDHBuEvuOT/
+         Ey2duNswZdqQR2Qn0atDcQpqK4OA9v9V0/ZfiyxXdnNJ1gveh6w4iY0jJaaZ1HSZAXNs
+         s+6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714392148; x=1714996948;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GLFNprZuwHsZtlRkA4qR4RqYKlel9cjffFWXRNhhgPc=;
+        b=cpxHmwKi3iAOwL4Pe4FKZop8n1S24ZxLxVlBn1vx1qe5bVVTCqs3BTSmOkLuAYcFd8
+         0C5xwtU43A0fGsGPy4g7RL43LfnBy18kmaJe/dQ7FV6DUk+gDLD9lgy0hoU7YBI0VoBk
+         5fOw6CU3hDwWLIGTuA7Fmp5idP28+lfFxbtW/+CgZwzDxqLKCXM1F42lpSvgielBlOhY
+         T0oPI2PSQR7PfZhdaCIs+Q/LITd5ya7v6Mo3fr+1QkbsBhOqXP9faI4KpMNkKBcY3zbY
+         oeSF/bpU3/nojgaHN/hgbd8OizffDhQdRfyaIcmVTIq9dT7j9KMl0VwiqWPzmIbTQ8qe
+         dtvg==
+X-Forwarded-Encrypted: i=1; AJvYcCXFHSYPC82QGnjHi9V1autPXVF72G3gq+sNbAv6rriyqUthodIDql1UEoPHDUy9fcxLbaJb5pPZ/8yXXob6ejj4AEHVJx+wValwGgQaUKSnmeuKhoTOOktg0a1nMPlty7RpnpCnsSeT
+X-Gm-Message-State: AOJu0YwFRdRXGofv2+5INU4/C+KR232R3Rd+hzB2E+/WBSOwa7za7EFi
+	y1DmT20Pl+3kgeK0tZ5NkqH/75oLq/0VmuTB9go+kxJ9cqlhSa/E
+X-Google-Smtp-Source: AGHT+IHCwhcy1snUeqwen+Ie6UtT4Ir4L5ehHoHd1ao15B6fwE9gQFFI/3DtMTy2yR2SLjPrJk5b1w==
+X-Received: by 2002:a50:8747:0:b0:572:71b2:e200 with SMTP id 7-20020a508747000000b0057271b2e200mr3427265edv.22.1714392147757;
+        Mon, 29 Apr 2024 05:02:27 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
+        by smtp.gmail.com with ESMTPSA id 15-20020a508e0f000000b005726e5e8765sm2640289edw.3.2024.04.29.05.02.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Apr 2024 05:02:27 -0700 (PDT)
+Message-ID: <1d9cdfa05150a389433aa399b44fcbcff5bed258.camel@gmail.com>
+Subject: Re: [PATCH 1/8] iio: adc: ad_sigma_delta: use 'time_left' variable
+ with wait_for_completion_timeout()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	linux-iio@vger.kernel.org
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+	 <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 8/8] iio: pressure: zpa2326: use 'time_left' variable with wait_for_completion_interruptible_timeout()
-Date: Mon, 29 Apr 2024 13:33:11 +0200
-Message-ID: <20240429113313.68359-9-wsa+renesas@sang-engineering.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240429113313.68359-1-wsa+renesas@sang-engineering.com>
+Date: Mon, 29 Apr 2024 14:06:05 +0200
+In-Reply-To: <20240429113313.68359-2-wsa+renesas@sang-engineering.com>
 References: <20240429113313.68359-1-wsa+renesas@sang-engineering.com>
+	 <20240429113313.68359-2-wsa+renesas@sang-engineering.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-There is a confusing pattern in the kernel to use a variable named 'timeout' to
-store the result of wait_for_completion_interruptible_timeout() causing patterns like:
+On Mon, 2024-04-29 at 13:33 +0200, Wolfram Sang wrote:
+> There is a confusing pattern in the kernel to use a variable named 'timeo=
+ut'
+> to
+> store the result of wait_for_completion_timeout() causing patterns like:
+>=20
+> 	timeout =3D wait_for_completion_timeout(...)
+> 	if (!timeout) return -ETIMEDOUT;
+>=20
+> with all kinds of permutations. Use 'time_left' as a variable to make the=
+ code
+> self explaining.
+>=20
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> ---
 
-	timeout = wait_for_completion_interruptible_timeout(...)
-	if (!timeout) return -ETIMEDOUT;
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-with all kinds of permutations. Use 'time_left' as a variable to make the code
-self explaining.
-
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
----
- drivers/iio/pressure/zpa2326.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/iio/pressure/zpa2326.c b/drivers/iio/pressure/zpa2326.c
-index 421e059d1f19..dcc87a9015e8 100644
---- a/drivers/iio/pressure/zpa2326.c
-+++ b/drivers/iio/pressure/zpa2326.c
-@@ -861,13 +861,13 @@ static int zpa2326_wait_oneshot_completion(const struct iio_dev   *indio_dev,
- 					   struct zpa2326_private *private)
- {
- 	unsigned int val;
--	long     timeout;
-+	long time_left;
- 
- 	zpa2326_dbg(indio_dev, "waiting for one shot completion interrupt");
- 
--	timeout = wait_for_completion_interruptible_timeout(
-+	time_left = wait_for_completion_interruptible_timeout(
- 		&private->data_ready, ZPA2326_CONVERSION_JIFFIES);
--	if (timeout > 0)
-+	if (time_left > 0)
- 		/*
- 		 * Interrupt handler completed before timeout: return operation
- 		 * status.
-@@ -877,10 +877,10 @@ static int zpa2326_wait_oneshot_completion(const struct iio_dev   *indio_dev,
- 	/* Clear all interrupts just to be sure. */
- 	regmap_read(private->regmap, ZPA2326_INT_SOURCE_REG, &val);
- 
--	if (!timeout) {
-+	if (!time_left) {
- 		/* Timed out. */
- 		zpa2326_warn(indio_dev, "no one shot interrupt occurred (%ld)",
--			     timeout);
-+			     time_left);
- 		return -ETIME;
- 	}
- 
--- 
-2.43.0
+> =C2=A0drivers/iio/adc/ad_sigma_delta.c | 6 +++---
+> =C2=A01 file changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/ad_sigma_delta.c
+> b/drivers/iio/adc/ad_sigma_delta.c
+> index a602429cdde4..40ba6506bfc1 100644
+> --- a/drivers/iio/adc/ad_sigma_delta.c
+> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> @@ -206,7 +206,7 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delt=
+a,
+> =C2=A0	unsigned int mode, unsigned int channel)
+> =C2=A0{
+> =C2=A0	int ret;
+> -	unsigned long timeout;
+> +	unsigned long time_left;
+> =C2=A0
+> =C2=A0	ret =3D ad_sigma_delta_set_channel(sigma_delta, channel);
+> =C2=A0	if (ret)
+> @@ -223,8 +223,8 @@ int ad_sd_calibrate(struct ad_sigma_delta *sigma_delt=
+a,
+> =C2=A0
+> =C2=A0	sigma_delta->irq_dis =3D false;
+> =C2=A0	enable_irq(sigma_delta->spi->irq);
+> -	timeout =3D wait_for_completion_timeout(&sigma_delta->completion, 2 *
+> HZ);
+> -	if (timeout =3D=3D 0) {
+> +	time_left =3D wait_for_completion_timeout(&sigma_delta->completion, 2 *
+> HZ);
+> +	if (time_left =3D=3D 0) {
+> =C2=A0		sigma_delta->irq_dis =3D true;
+> =C2=A0		disable_irq_nosync(sigma_delta->spi->irq);
+> =C2=A0		ret =3D -EIO;
 
 

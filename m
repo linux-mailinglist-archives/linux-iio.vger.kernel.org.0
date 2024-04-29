@@ -1,82 +1,87 @@
-Return-Path: <linux-iio+bounces-4619-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4620-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9220F8B5248
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 09:25:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 503928B52AB
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 09:55:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4E40B2113F
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 07:24:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E58AB1F21620
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 07:55:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D913014273;
-	Mon, 29 Apr 2024 07:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DACC315AE0;
+	Mon, 29 Apr 2024 07:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wtv8N/W0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m0b2J07E"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2526B8472;
-	Mon, 29 Apr 2024 07:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA78EED4;
+	Mon, 29 Apr 2024 07:55:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714375490; cv=none; b=F3nu8NlrPU1LvJXcc8elzQrL4rwq9AnfminumfK4C9JSbOr6mjinWz9Sk99RjkKW+M7352duvh4P+eg5sHQaJ+tKcbMOvro497Fd0Mq046zNGesSOpAJ9ulVVzNtrlMNVmeYIeSQpP0ZlGVRIIFIuob4D2fJFuWgFyXsM+A9l6k=
+	t=1714377306; cv=none; b=R5Uq92SNtWI0/PjD78Hn/x+j1hmhkzg0Up/ReHnA2xXCXccnbCAk1csDk+3OYrY1Y+bR2W/c9nuGmISBH30JVtnGLkVoB7cw84+G/WhCTu526P2BFfxlbEVBw8hhxELAvqyxJ4Q+6YQTI4zv+I1RUTfYBmB1njhQlVHxI/kfERw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714375490; c=relaxed/simple;
-	bh=tVNT6VbdBFtQAczG1sbEjWoUdI1HyWaEhUhOoVRw9uE=;
+	s=arc-20240116; t=1714377306; c=relaxed/simple;
+	bh=tiKshYUIgU+C4Jc8N+hBsmNQ/hFvFexXKDmBYginrA0=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=thA3aiFsUcwLu1Jc4g5gq8xjszHGdYeTY1bUFfo6bca/Z+AkY3+jecr4EYjxYT/AG/Viz/JPZ75Qj2KqgLVzjDyGDu7ekwk+tV0g4+/o+Ja9wcwvP7bBpVl2KTasX7EniGGlPIhTSUNiA5MZB+pYRocDM4a3f3qKgh9DCA4M/no=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wtv8N/W0; arc=none smtp.client-ip=209.85.128.42
+	 Content-Type:MIME-Version; b=tbD6sI9+KOfmDilU7A8YJgasJGMZrvkDYeobAfsu6oEBCOAeSOseefQixRlkWQ5V+gYKfzFM753FWyx+mOD1PU1nOXQa1LlPuuyyVs/TrS8eoYlB3yZivh/ZdGqx+9XqH0p5wirGmAherOBRGkECOnTUivgGvWWjV2OEWHQjZ+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m0b2J07E; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-41bf1b96aeaso8712705e9.3;
-        Mon, 29 Apr 2024 00:24:48 -0700 (PDT)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-34c0f5f5cd0so3329397f8f.2;
+        Mon, 29 Apr 2024 00:55:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714375487; x=1714980287; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1714377303; x=1714982103; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=tVNT6VbdBFtQAczG1sbEjWoUdI1HyWaEhUhOoVRw9uE=;
-        b=Wtv8N/W0siFiVD+cASyprf9tI72fm43T6SdmzWCrVdhPwPLDuimQY6PNKXtlqQZ4CC
-         ff79hpf4YJ8F0+eo5K02k7Qq3BGn1pkrfu14s0/C+OlpWu+oBFLt7C47PI5wcJePx92W
-         Sn2zXfllErUc3ND2TcuGSvPusTQ2fDoGODeK+23ypheQN2Ft70cWcBMhMYMUT5ACLBY6
-         H9XITXfkkn46E3DhnJgDZnWHu4xOulrMwhfTiNpa4hH4N3yquBCYLrvVUzuG9EYcQBmT
-         pbrGP5a8ddj/h2h2wEKMgchnf4YURf4wxKPkRV3JUjA5HJro7eBNwFXyI69rM/lG0gD9
-         pItw==
+        bh=tiKshYUIgU+C4Jc8N+hBsmNQ/hFvFexXKDmBYginrA0=;
+        b=m0b2J07E5PTjff6MrdcAzfx2aX4vwVjCH8BZM970tQhtt15VNhuaEXi/lqhbvjmCim
+         4vaMwL/vkCEoIUhhkzf7F8z5u4YTYikRow3PeStEPsQ0fmIod/FfJMCqRfG275+qbxSm
+         2eMfOjfLTr8FleQXG5CqFZI6lMStS4xRoqtTdoBAs6aL4TLb1tKDk7I1Kf7F2wy1E3Rm
+         XfIiCVaU/xewKZY6CRuWeYFWOWUNr/6cM0G/zvh24TK5nR4ZpVQHT5BWb2d091XevFWP
+         ecGNbypBfZBOqviPVUj7UsoWs7k3fYF2PP0ny3Ppv7XcLV3RX11bHmlksntK04Rn667r
+         jU6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714375487; x=1714980287;
+        d=1e100.net; s=20230601; t=1714377303; x=1714982103;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=tVNT6VbdBFtQAczG1sbEjWoUdI1HyWaEhUhOoVRw9uE=;
-        b=bNCMLKT95+V0jKTqcSWtkSZ04wSvciIRA70L0KPm7MgBZZ8OwR9Sm4N2gE09rxM0QZ
-         Vol9RMeA8WMt0KGd335sw/eBsc0h1CeOnhVS62Dai3FK8me8m3XFfQZJFymNoSQl0U21
-         tx6lbw9/vPj8mO+CE+2Kv03k/EgcpCrxd31wAqZE+w+fssk1nAp1008IN8ynDDHo26mU
-         gPRLOW0M46acZrO4xkwt/zO7zNnOX+j1vGffXjNwQbW5RsgyRkB/jxE1WMdNVSChHKR9
-         xDyG5+pS+wNXAUyrkjN9p57duBa4m77ZB2EkFqrQtumcAwq8mHeqX68X3ythT3HEZVKq
-         wLUg==
-X-Forwarded-Encrypted: i=1; AJvYcCUzraqE0vltG3elhF28nVWBAYW8Mv8/9iL21OKHqW9jaX8ktgopVBVu3uO+ROAjVtYaXnnjJWYjrk/tJUjUWA3uYBefe643e8nuQYdh
-X-Gm-Message-State: AOJu0Yx8c7mTpC5cf4iXKE5Ud5LXHZJIUDN/Mamkhox9fjrr4E8EHp5W
-	IwQ4NTAh+oZDpUe5BrM3gxLwRf3+J9Jj0RBxzqOfgDHFF4EEbZmO
-X-Google-Smtp-Source: AGHT+IFAYkxjdJ3rEJlMSje+bXXPZJ35xi+hbv414bwaq/zTqiEhu3YMKeRNZ2oPLeHb1SfZPnXNsg==
-X-Received: by 2002:a05:600c:358e:b0:41a:be63:afbc with SMTP id p14-20020a05600c358e00b0041abe63afbcmr6006255wmq.28.1714375487277;
-        Mon, 29 Apr 2024 00:24:47 -0700 (PDT)
+        bh=tiKshYUIgU+C4Jc8N+hBsmNQ/hFvFexXKDmBYginrA0=;
+        b=KlnqI4YnF5SZZacnBq+yTFwsfA/LVGjGoIBQqNc0n1PTgQ+cL9jRuyxcfUu56uuO46
+         prug8LrLZxjKgR3cTwg6UlbWjDsiHQNh3/X3pv2yqm+owNhXtQmU+hVVuwFaxGkvk9XA
+         dTTuIh43gG4hEALD/1Jc4XFtab9xnf/IOgLux0zA4bVlINXocgDwLleYKgHVV/oMm03o
+         TLGgLFajJnd+KYmTP5PZxpDBJ/qPiDyJt6Gnpg4/fnerjw3qCZ8eiw/Y9txBVILu1V43
+         SItXDXF44Jc7N3lBElhb63z0gBjgYfQ3yfukCgeBubkjGlAnH2kM1+8/AxFBednPpkAQ
+         +KwA==
+X-Forwarded-Encrypted: i=1; AJvYcCXOCsCgPcs2LgSbwVscTU4RSzcCGrYUr8IuSwxxf8p8a7BwMz4uzPXAHiZJJxDSEpd1SpK5kogEOk5xdCrMa1dcgHchejII0nJlj45vYZ3cNKNzzskk04EEq8xGFvzLuuH8xUpWeFVk2C9M0ihnRn+ZRq/IEVZ4FHt4yxuqu24JpQ==
+X-Gm-Message-State: AOJu0YzPkealz2TtPT8Iw5Ro3V6H/0B1W+jyBxMGolFJMwkcOH6dNx8f
+	JhlWQUNUalgEES34Wi2K96S72UxUpaFxp3vbzSTVkFZazk4iTQy+L0aRsaoNH/8=
+X-Google-Smtp-Source: AGHT+IE1t/q4f+QGWHixnNA2MQJglgBMGgcEo52I+k0yP1J/yswyQvKvQcaKnXxVRdS5zUr48uGRCA==
+X-Received: by 2002:a05:6000:1ac8:b0:34d:a9:6642 with SMTP id i8-20020a0560001ac800b0034d00a96642mr2166868wry.28.1714377303111;
+        Mon, 29 Apr 2024 00:55:03 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
-        by smtp.gmail.com with ESMTPSA id l16-20020a05600c4f1000b0041a1fee2854sm29535191wmq.17.2024.04.29.00.24.46
+        by smtp.gmail.com with ESMTPSA id k21-20020adfb355000000b0034c6b368aecsm7480380wrd.26.2024.04.29.00.55.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 00:24:47 -0700 (PDT)
-Message-ID: <3f8880a7c7bf6be0458ce2ec2deedeb505c4427f.camel@gmail.com>
-Subject: Re: [PATCH 0/3] iio: adc: ad799x: Fix warning generated by
- checkpatch
+        Mon, 29 Apr 2024 00:55:02 -0700 (PDT)
+Message-ID: <e62f8df4b06abc371b1e9fe3232cb593e468d54c.camel@gmail.com>
+Subject: Re: [PATCH 4/5] iio: adis16480: add support for adis16545/7 families
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: ogustavo@usp.br, lars@metafoo.de, Michael.Hennerich@analog.com, 
-	jic23@kernel.org
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 29 Apr 2024 09:28:25 +0200
-In-Reply-To: <20240428194326.2836387-1-ogustavo@usp.br>
-References: <20240428194326.2836387-1-ogustavo@usp.br>
+To: Jonathan Cameron <jic23@kernel.org>, Ramona Gradinariu
+	 <ramona.bolboaca13@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-doc@vger.kernel.org, devicetree@vger.kernel.org, corbet@lwn.net, 
+ conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, robh@kernel.org,
+ Ramona Gradinariu <ramona.gradinariu@analog.com>, Nuno
+ =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>
+Date: Mon, 29 Apr 2024 09:58:40 +0200
+In-Reply-To: <20240428162555.3ddf31ea@jic23-huawei>
+References: <20240423084210.191987-1-ramona.gradinariu@analog.com>
+	 <20240423084210.191987-5-ramona.gradinariu@analog.com>
+	 <20240428162555.3ddf31ea@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.1 
@@ -87,30 +92,59 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sun, 2024-04-28 at 16:43 -0300, ogustavo@usp.br wrote:
-> From: Gustavo Rodrigues <ogustavo@usp.br>
+On Sun, 2024-04-28 at 16:25 +0100, Jonathan Cameron wrote:
+> On Tue, 23 Apr 2024 11:42:09 +0300
+> Ramona Gradinariu <ramona.bolboaca13@gmail.com> wrote:
 >=20
-> Clean code of iio:adc:ad799x to cease warning messages pointed by
-> checkpatch. These include proper variable declaration 'unsigned' to=20
-> 'unsigned int', add blank line and use of octal permission instead of=20
-> symbolic.
+> > The ADIS16545 and ADIS16547 are a complete inertial system that
+> > includes a triaxis gyroscope and a triaxis accelerometer.
+> > The serial peripheral interface (SPI) and register structure provide a
+> > simple interface for data collection and configuration control.
+> >=20
+> > These devices are similar to the ones already supported in the driver,
+> > with changes in the scales, timings and the max spi speed in burst
+> > mode.
+> > Also, they support delta angle and delta velocity readings in burst
+> > mode, for which support was added in the trigger handler.
+> >=20
+> > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 >=20
-> Gustavo (3):
-> =C2=A0 iio: adc: ad799x: change 'unsigned' to 'unsigned int' declaration
-> =C2=A0 iio: adc: ad799x.c: add blank line to avoid warning messages
-> =C2=A0 iio: adc: ad799x: Prefer to use octal permission instead of symbol=
-ic
+> What is Nuno's relationship to this patch?=C2=A0 You are author and the s=
+ender
+> which is fine, but in that case you need to make Nuno's involvement expli=
+cit.
+> Perhaps a Co-developed-by or similar is appropriate?
 >=20
-> =C2=A0drivers/iio/adc/ad799x.c | 7 ++++---
-> =C2=A01 file changed, 4 insertions(+), 3 deletions(-)
->=20
+> > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+> A few comments inline.=C2=A0 Biggest one is I'd like a clear statement of=
+ why you
+> can't do a burst of one type, then a burst of other.=C2=A0 My guess is th=
+at the
+> transition is very time consuming?=C2=A0 If so, that is fine, but you sho=
+uld be
+> able
+> to let available_scan_masks handle the disjoint channel sets.
 
-Patches look good. Just one note... It seems Marcelo gave some feedback on =
-a
-previous iterations so it looks like this should have been marked as v2?
+Yeah, the burst message is a special spi transfer that brings you all of th=
+e
+channels data at once but for the accel/gyro you need to explicitly configu=
+re
+the chip to either give you the "normal vs "delta" readings. Re-configuring=
+ the
+chip and then do another burst would destroy performance I think. We could =
+do
+the manual readings as we do in adis16475 for chips not supporting burst32.=
+ But
+in the burst32 case those manual readings should be minimal while in here w=
+e
+could have to do 6 of them which could also be very time consuming...
 
-Anyways,
+Now, why we don't use available_scan_masks is something I can't really reme=
+mber
+but this implementation goes in line with what we have in the adis16475 dri=
+ver.
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+- Nuno S=C3=A1
+
 
 

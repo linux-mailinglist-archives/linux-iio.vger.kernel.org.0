@@ -1,57 +1,60 @@
-Return-Path: <linux-iio+bounces-4651-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4652-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A95B8B62FC
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 21:58:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8F08B6308
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 22:01:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 396D31F226CC
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 19:58:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DF6CB209F3
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 20:01:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B11F13F006;
-	Mon, 29 Apr 2024 19:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C99B13F006;
+	Mon, 29 Apr 2024 20:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s3eU3oM1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PC94438H"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E5C13C3D3;
-	Mon, 29 Apr 2024 19:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08A5128807
+	for <linux-iio@vger.kernel.org>; Mon, 29 Apr 2024 20:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714420723; cv=none; b=imcEWBzdSVIJP99vvOdgEg/EuuFwLNA5lTcQTMb8BdiOqAvNh9lFlsJwGvT9WNr+huai4eW2KuRpqdJHoIkMBHd38IJKFkGI9bRDFym+konNO46UhjmNM1GGkfRwYpsBRd4IciPv1kQEPjtIYF2VX9MhSl89BOH3ysedgKc076c=
+	t=1714420867; cv=none; b=J34h4grxDeHBe5DOkecVj4Rz9d3IC46I5b3CDgajWp1mZ2Gq1om3AnxtD2FZCLfXU+26CoMuvqPqTvybAZZQpsD3vxP5rdQxxdJ5u2Hv/RflC6lJtDP7cce2tR4vxox1/BRytZv41CzvQOr2nWSHsPgwSAfu46dq83zXVg3+fDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714420723; c=relaxed/simple;
-	bh=FJvmQIwnYA1NbnDbtlcuaDAxLcWJKfCmQ1jIuMLA13E=;
+	s=arc-20240116; t=1714420867; c=relaxed/simple;
+	bh=rmhBbX6yZNFZ3tRjvoeq5Dc6SVHbmADEDajlg4YKIGA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IlVd5HtOAXTTZvoqMhPmKa+0kTMYzHvIVFIHiPv/UUCR5QAIxyV6G9LErfIWg3NFo8MvV4TTUlylu6sYMILqCmoZh0RyXqHbrNB37AhroR6m9ubr/j8NwCR9FBHgyp+a8yDVtP5nMeO0cP4eGV0a+y8L2P8iTQmfW38dlAkCnwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s3eU3oM1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F26C113CD;
-	Mon, 29 Apr 2024 19:58:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=D7KEYZCjV87f61g7P4O1pIYLn9A9njmZECRV7OmyCuR/GocRcc45b+TvnjIuKlIMyxCGvrO318Vf+YLes6TcYk2/78qtZH7ZvEPHpiTCY810fGQD1vTaiNlhhp2BhvrKK7QbTn7qV1uSZxl2DqrkOwnQaUZinogirIFc0/TV64k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PC94438H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F4FC113CD;
+	Mon, 29 Apr 2024 20:01:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714420722;
-	bh=FJvmQIwnYA1NbnDbtlcuaDAxLcWJKfCmQ1jIuMLA13E=;
+	s=k20201202; t=1714420866;
+	bh=rmhBbX6yZNFZ3tRjvoeq5Dc6SVHbmADEDajlg4YKIGA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=s3eU3oM1QkXwXD4bjZjWdebdBqh+YAh+y6kNKuXcwFeYdzF6ubphSDkHtEIy7869I
-	 da8Xut/07eWgM1D/OWqW0DzsNVFCHBm/uloHAXoo297odUnumA3hEC5hFa/NOEsePt
-	 CAKTXl+cWH8Rp8hvhst5LbJkwBD5KPdDDbzcZz7xTWO6MxAxVDva+bBFTRpByD5Sjy
-	 hjjML/kFThMgthiLScU5A2sR4nEVbKgF3mIhOw7uvjcn72VSEZyDx2t35pc0gUFhVX
-	 macpGAarGQhIovNycizSug07OBs8o+A8Bv7wDLjvX4+Os+fRiaNn8bv4GdjgR23Hcb
-	 YpnnlIjIhWf0Q==
-Date: Mon, 29 Apr 2024 20:58:31 +0100
+	b=PC94438H7rrkmOlGJqxQ4DX7rEn4vmabERpoITAGYQvQBYSwAZgIiJGAhmr0LafbK
+	 yHfjg4/N1Ua5om5n88YjXm9A5lSP4bHhmnaxaH4DiprWBZgqRxZ3ar4cJwtmHJ7DbK
+	 oL3TOBwGOmpBu/J8MDUdx0gVwBZVJJRsngwBIQ76hyClMRbqbNXYTNTncx6uebpMEQ
+	 +iBKibAqx2GjEFbUWshcDJhoygQArzrR1J7eCiMq2u3R+e+QOED3xLWSuel88fmLju
+	 2DzsVZHRmTvyQASGJ/7Sjqn0udace028MoW5pV5sjfgA14teXl4Plovd8upOcWONyv
+	 1d3iKW+ScPXow==
+Date: Mon, 29 Apr 2024 21:00:55 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: ogustavo@usp.br, lars@metafoo.de, Michael.Hennerich@analog.com,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] iio: adc: ad799x: Fix warning generated by
- checkpatch
-Message-ID: <20240429205831.662da28a@jic23-huawei>
-In-Reply-To: <3f8880a7c7bf6be0458ce2ec2deedeb505c4427f.camel@gmail.com>
-References: <20240428194326.2836387-1-ogustavo@usp.br>
-	<3f8880a7c7bf6be0458ce2ec2deedeb505c4427f.camel@gmail.com>
+To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: linux-iio@vger.kernel.org, Marius Cristea
+ <marius.cristea@microchip.com>, Marek Vasut <marex@denx.de>, Jonathan
+ Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v6 1/2] iio: adc: mcp3564: Use
+ device_for_each_child_node_scoped()
+Message-ID: <20240429210055.11d0e644@jic23-huawei>
+In-Reply-To: <20240429205623.7e725274@jic23-huawei>
+References: <20240428174020.1832825-1-jic23@kernel.org>
+	<20240428174020.1832825-2-jic23@kernel.org>
+	<Zi6w1V9mBWZAMv-t@debian-BULLSEYE-live-builder-AMD64>
+	<20240429205623.7e725274@jic23-huawei>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,43 +62,107 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 29 Apr 2024 09:28:25 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Mon, 29 Apr 2024 20:56:23 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> On Sun, 2024-04-28 at 16:43 -0300, ogustavo@usp.br wrote:
-> > From: Gustavo Rodrigues <ogustavo@usp.br>
-> >=20
-> > Clean code of iio:adc:ad799x to cease warning messages pointed by
-> > checkpatch. These include proper variable declaration 'unsigned' to=20
-> > 'unsigned int', add blank line and use of octal permission instead of=20
-> > symbolic.
-> >=20
-> > Gustavo (3):
-> > =C2=A0 iio: adc: ad799x: change 'unsigned' to 'unsigned int' declaration
-> > =C2=A0 iio: adc: ad799x.c: add blank line to avoid warning messages
-> > =C2=A0 iio: adc: ad799x: Prefer to use octal permission instead of symb=
-olic
-> >=20
-> > =C2=A0drivers/iio/adc/ad799x.c | 7 ++++---
-> > =C2=A01 file changed, 4 insertions(+), 3 deletions(-)
-> >  =20
->=20
-> Patches look good. Just one note... It seems Marcelo gave some feedback o=
-n a
-> previous iterations so it looks like this should have been marked as v2?
->=20
-> Anyways,
->=20
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
->=20
-
-Indeed on v2.  Anyhow, applied to the togreg branch of iio.git and pushed
-out as testing for the autobuilders to see if we missed anything,
-
-Thanks,
+> On Sun, 28 Apr 2024 17:25:57 -0300
+> Marcelo Schmitt <marcelo.schmitt1@gmail.com> wrote:
+> 
+> > Hi Jonathan,
+> > 
+> > This also looks good to me.
+> > 
+> > Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>  
+> Thanks,
+> 
+> Applied.
+> 
+> 1 to go. Someone must want to give the ads1015 patch the love
+> it needs? :)
+Ah. There was another patch for the same driver doing the same
+thing. I picked that one up instead. Problem solved.
 
 Jonathan
+
+> 
+> Jonathan
+> 
+> > 
+> > On 04/28, Jonathan Cameron wrote:  
+> > > From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > 
+> > > Switching to the _scoped() version removes the need for manual
+> > > calling of fwnode_handle_put() in the paths where the code
+> > > exits the loop early. In this case that's all in error paths.
+> > > 
+> > > Cc: Marius Cristea <marius.cristea@microchip.com>
+> > > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > > ---
+> > >  drivers/iio/adc/mcp3564.c | 16 +++++++---------
+> > >  1 file changed, 7 insertions(+), 9 deletions(-)
+> > > 
+> > > diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
+> > > index 311b613b6057..e2ae13f1e842 100644
+> > > --- a/drivers/iio/adc/mcp3564.c
+> > > +++ b/drivers/iio/adc/mcp3564.c
+> > > @@ -998,7 +998,6 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
+> > >  	struct mcp3564_state *adc = iio_priv(indio_dev);
+> > >  	struct device *dev = &adc->spi->dev;
+> > >  	struct iio_chan_spec *channels;
+> > > -	struct fwnode_handle *child;
+> > >  	struct iio_chan_spec chanspec = mcp3564_channel_template;
+> > >  	struct iio_chan_spec temp_chanspec = mcp3564_temp_channel_template;
+> > >  	struct iio_chan_spec burnout_chanspec = mcp3564_burnout_channel_template;
+> > > @@ -1025,7 +1024,7 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
+> > >  	if (!channels)
+> > >  		return dev_err_probe(dev, -ENOMEM, "Can't allocate memory\n");
+> > >  
+> > > -	device_for_each_child_node(dev, child) {
+> > > +	device_for_each_child_node_scoped(dev, child) {
+> > >  		node_name = fwnode_get_name(child);
+> > >  
+> > >  		if (fwnode_property_present(child, "diff-channels")) {
+> > > @@ -1033,26 +1032,25 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
+> > >  							     "diff-channels",
+> > >  							     inputs,
+> > >  							     ARRAY_SIZE(inputs));
+> > > +			if (ret)
+> > > +				return ret;
+> > > +
+> > >  			chanspec.differential = 1;
+> > >  		} else {
+> > >  			ret = fwnode_property_read_u32(child, "reg", &inputs[0]);
+> > > +			if (ret)
+> > > +				return ret;
+> > >  
+> > >  			chanspec.differential = 0;
+> > >  			inputs[1] = MCP3564_AGND;
+> > >  		}
+> > > -		if (ret) {
+> > > -			fwnode_handle_put(child);
+> > > -			return ret;
+> > > -		}
+> > >  
+> > >  		if (inputs[0] > MCP3564_INTERNAL_VCM ||
+> > > -		    inputs[1] > MCP3564_INTERNAL_VCM) {
+> > > -			fwnode_handle_put(child);
+> > > +		    inputs[1] > MCP3564_INTERNAL_VCM)
+> > >  			return dev_err_probe(&indio_dev->dev, -EINVAL,
+> > >  					     "Channel index > %d, for %s\n",
+> > >  					     MCP3564_INTERNAL_VCM + 1,
+> > >  					     node_name);
+> > > -		}
+> > >  
+> > >  		chanspec.address = (inputs[0] << 4) | inputs[1];
+> > >  		chanspec.channel = inputs[0];
+> > > -- 
+> > > 2.44.0
+> > > 
+> > >     
+> >   
+> 
+
 

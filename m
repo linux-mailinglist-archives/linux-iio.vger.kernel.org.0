@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-4653-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4654-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870D58B6337
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 22:07:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152B58B6347
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 22:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42CD728127C
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 20:07:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66E9EB21629
+	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 20:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A846145325;
-	Mon, 29 Apr 2024 20:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1383F1411F7;
+	Mon, 29 Apr 2024 20:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2Eu+bDc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lD1Y5ukO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20A21442FD;
-	Mon, 29 Apr 2024 20:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8C6C1411EF
+	for <linux-iio@vger.kernel.org>; Mon, 29 Apr 2024 20:11:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714421220; cv=none; b=JHZyneKZbcosxBtYHIs679lL9Vnbu30aatlB0Nb8RQu6RUijHUtefB4BpnE8Z9w3TMC5NMc+BQg2KiihCuIyVklDkAZePUcVa+b04/TCGh4DVOfvddjO2mc30TO6nZ0i1/DC13ToOu8SfkjBDSSLiqr2BtxkkIlSd1s1tZdxTd4=
+	t=1714421495; cv=none; b=BFXvHhIKe7K7YMTAu1UWAy0lY6qXLYgiYekhl/Z/IA4A3CZBT3J0OlghYcGlUhPtF1fSk6+Ug8KOCwa27HalPjF8NblqPLhWPylXDetjz+N04oBXYsrtpjjU4l0unULM4KzhbyyOi8VZv5jL8b2TTWzIvQ1SKPNukduvWaGBrtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714421220; c=relaxed/simple;
-	bh=4A88CtFhO9g0Vm1pMTxYoO6IBnLwMZJMkAtxvaB8yTQ=;
+	s=arc-20240116; t=1714421495; c=relaxed/simple;
+	bh=G3/WSogBbq91sBmKgNmksVVU/d/7YnvDMgutXyISjYU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PD//LsOY5mZSEnj7mhp8kSd5Z2dfL2ZruNetOb9eE8NvqJOcPEg3bkIqzx/zuUfgPdpIEIFUWDZfEPu+uKEIxe9p7MN08LgDDfPxaF/OQ8pwnGJXfGZSJz/Pr9YDRIMMvJjge7dPhVY9bJVsyflDSMo+7IWQblxJyHwYw/D+N/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2Eu+bDc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C298EC4AF14;
-	Mon, 29 Apr 2024 20:06:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CITVIwikU3mVo83Q63H1Ai9tbtImMYt9bMRgoz+rNwdVGJMe3P2yNvHUehou1FRxoxPwP1Zj0cI2jovdkN4ue2hMfFp7EucNBHnWrqhcVqzBCqgjNkM93g04bQjP9xpyVRRqRL3wcA0jQNikbM8eMLC1hxoSk5BzvJDXvIsXZTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lD1Y5ukO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC17C4AF19;
+	Mon, 29 Apr 2024 20:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714421219;
-	bh=4A88CtFhO9g0Vm1pMTxYoO6IBnLwMZJMkAtxvaB8yTQ=;
+	s=k20201202; t=1714421495;
+	bh=G3/WSogBbq91sBmKgNmksVVU/d/7YnvDMgutXyISjYU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=d2Eu+bDcB2VBGxzdNS8FaG+wTdSF6EoPn0gvxQjza1D737089iPlbg0X3lOuJ7qth
-	 yva0Bwg83ykirUtT774C38MB8baxZTN7nAsmiaI4FJKiv2i9/gmHixZUCEOw9MeQ1h
-	 zg6AbK4mBXTHZT+4Cvu/os75HZWacf7PReftRCBMhYTrKwp2XbiaubHfGdTuvfZ5rg
-	 BONtufjopg6ZlMGGhKRZppD2XFeHXoXqHwen53ezbgea/Cg+w9UpW2hDxgRMTqxJC+
-	 07vhFpg9Xe221vL8ol/WQGRNXarUta0VmHYfVOgReolABJxkH5ps5kZNfzH3AFlg8w
-	 9NFnqEt6HKlLQ==
-Date: Mon, 29 Apr 2024 21:06:48 +0100
+	b=lD1Y5ukOZWVumcyC6B/WTDf7asx3kYizBhS3czM0rb6iBSdTp/Nz1WxDd2nBeCkLP
+	 09cKPEc6yI8AA4iY4Z2bzcKT1Vlve2U5FzrT5+exBeea7S6iSetOUWaAQmxlBnGbfL
+	 DUeAG8ilviUCZR5ddPZLn8JxmUppKN/KEJRY0U2m37cVGrOpP3a7RFi+nNf5q6FkVm
+	 DRS5w6TVe2WwhfSWfkq6TfOlL2I0ay+TQt+qydx6ph1KE2dX+T8azocwzIg2JMduy6
+	 t1ZNZbPuea8k4e1WN7ApG4W1xJuGv2TPptBki1Zedh5wou6wKcbBqOH6gSEfCKPTEc
+	 bSdRKe8AXeucQ==
+Date: Mon, 29 Apr 2024 21:11:27 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: linux-iio@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-samsung-soc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH 0/8] iio: use 'time_left' instead of 'timeout' with
- wait_for_*() functions
-Message-ID: <20240429210648.4b429d31@jic23-huawei>
-In-Reply-To: <20240429113313.68359-1-wsa+renesas@sang-engineering.com>
-References: <20240429113313.68359-1-wsa+renesas@sang-engineering.com>
+To: Nuno Sa <nuno.sa@analog.com>
+Cc: <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>, Dragos Bogdan
+ <dragos.bogdan@analog.com>
+Subject: Re: [PATCH] iio: dac: ad9739a: write complete MU_CNT1 register
+ during lock
+Message-ID: <20240429211127.79dc2430@jic23-huawei>
+In-Reply-To: <20240429-ad9739a-improv-v1-1-c076a06a697d@analog.com>
+References: <20240429-ad9739a-improv-v1-1-c076a06a697d@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,60 +59,68 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 29 Apr 2024 13:33:03 +0200
-Wolfram Sang <wsa+renesas@sang-engineering.com> wrote:
+On Mon, 29 Apr 2024 15:54:39 +0200
+Nuno Sa <nuno.sa@analog.com> wrote:
 
-> There is a confusing pattern in the kernel to use a variable named 'timeout' to
-> store the result of wait_for_*() functions causing patterns like:
-> 
->         timeout = wait_for_completion_timeout(...)
->         if (!timeout) return -ETIMEDOUT;
-> 
-> with all kinds of permutations. Use 'time_left' as a variable to make the code
-> obvious and self explaining.
-> 
-> This is part of a tree-wide series. The rest of the patches can be found here
-> (some parts may still be WIP):
-> 
-> git://git.kernel.org/pub/scm/linux/kernel/git/wsa/linux.git i2c/time_left
-> 
-> Because these patches are generated, I audit them before sending. This is why I
-> will send series step by step. Build bot is happy with these patches, though.
-> No functional changes intended.
+> As specified by the datasheet we should write the value 0x3 (enable
+> plus tracking gain) into the MU_CNT1 register during the MU lock phase.
+>=20
+> Currently we were only setting the enable bit (bit 0) as the tracking
+> gain default value is already set to 1. While we should be mostly fine
+> in assuming the tracking gain will have the value it should, better to
+> explicitly write it. On top of that the datasheet also states to
+> re-attempt the writes in case the lock fails which we were not doing for
+> the tracking gain bit.
+>=20
+> Lastly, the recommended value for the MU phase slope lock (bit 6) is 0
+> but for some reason the default value is 1 and hence, we were not
+> changing it accordingly.
+>=20
+> Note there was no problem with the MU lock mechanism so this is not
+> being treated as a fix but rather an improvement.
+>=20
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Applied.
 
-Nice improvement.  Applied
-
-> 
-> Wolfram Sang (8):
->   iio: adc: ad_sigma_delta: use 'time_left' variable with
->     wait_for_completion_timeout()
->   iio: adc: exynos_adc: use 'time_left' variable with
->     wait_for_completion_timeout()
->   iio: adc: fsl-imx25-gcq: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
->   iio: adc: intel_mrfld_adc: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
->   iio: adc: stm32-adc: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
->   iio: adc: stm32-dfsdm-adc: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
->   iio: adc: twl6030-gpadc: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
->   iio: pressure: zpa2326: use 'time_left' variable with
->     wait_for_completion_interruptible_timeout()
-> 
->  drivers/iio/adc/ad_sigma_delta.c  |  6 +++---
->  drivers/iio/adc/exynos_adc.c      | 16 ++++++++--------
->  drivers/iio/adc/fsl-imx25-gcq.c   | 10 +++++-----
->  drivers/iio/adc/intel_mrfld_adc.c | 12 ++++++------
->  drivers/iio/adc/stm32-adc.c       | 10 +++++-----
->  drivers/iio/adc/stm32-dfsdm-adc.c | 12 ++++++------
->  drivers/iio/adc/twl6030-gpadc.c   |  8 ++++----
->  drivers/iio/pressure/zpa2326.c    | 10 +++++-----
->  8 files changed, 42 insertions(+), 42 deletions(-)
-> 
+> ---
+>  drivers/iio/dac/ad9739a.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/iio/dac/ad9739a.c b/drivers/iio/dac/ad9739a.c
+> index ff33120075bf..f56eabe53723 100644
+> --- a/drivers/iio/dac/ad9739a.c
+> +++ b/drivers/iio/dac/ad9739a.c
+> @@ -45,6 +45,7 @@
+>  #define AD9739A_REG_MU_DUTY		0x25
+>  #define AD9739A_REG_MU_CNT1		0x26
+>  #define   AD9739A_MU_EN_MASK		BIT(0)
+> +#define   AD9739A_MU_GAIN_MASK		BIT(1)
+>  #define AD9739A_REG_MU_CNT2		0x27
+>  #define AD9739A_REG_MU_CNT3		0x28
+>  #define AD9739A_REG_MU_CNT4		0x29
+> @@ -220,8 +221,8 @@ static int ad9739a_init(struct device *dev, const str=
+uct ad9739a_state *st)
+>  			return ret;
+> =20
+>  		/* Enable the Mu controller search and track mode. */
+> -		ret =3D regmap_set_bits(st->regmap, AD9739A_REG_MU_CNT1,
+> -				      AD9739A_MU_EN_MASK);
+> +		ret =3D regmap_write(st->regmap, AD9739A_REG_MU_CNT1,
+> +				   AD9739A_MU_EN_MASK | AD9739A_MU_GAIN_MASK);
+>  		if (ret)
+>  			return ret;
+> =20
+>=20
+> ---
+> base-commit: b22457f6c572c1b453207d13613a4e476d3dd0fb
+> change-id: 20240429-ad9739a-improv-adeda16e0dd5
+> --
+>=20
+> Thanks!
+> - Nuno S=C3=A1
+>=20
 
 

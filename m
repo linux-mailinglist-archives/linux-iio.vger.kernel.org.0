@@ -1,105 +1,124 @@
-Return-Path: <linux-iio+bounces-4705-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4706-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D30D58B7E65
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 19:27:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1AE98B8162
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 22:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E77B2836EF
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 17:27:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11A2A1C22E2E
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 20:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB8B17F38C;
-	Tue, 30 Apr 2024 17:26:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BD319DF7A;
+	Tue, 30 Apr 2024 20:28:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GKCf087I"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KnKkWiXe"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F2A17BB20;
-	Tue, 30 Apr 2024 17:26:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4CB71F176;
+	Tue, 30 Apr 2024 20:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714498016; cv=none; b=iuZ2Q60LSbVJHFiXWFAUc9P/J7LRgDvqy+eMgtdKwJXG8fkUnYVdwfrJnIgy1OGhfIUzF3HKsL1EiTdALcArj+Y0I5VWU01KuncutfgIVKw4spsilwRnZ6sZBVqxZokHAQaipSU5+PuEDBi+JfE+fDke1SKn8gH6fiBlnqB0p/E=
+	t=1714508929; cv=none; b=AaPGKUwp6wBm5nFiIMvZQvXbwZXVUV8Vg4/eDgmPcLGf1qJJ8Vz7yrMiDS4ik9YBOS8wmVtpasehKZzXl70OEB8B1TqA/LHi85fobHiL8gtGmUhI0l2fJoSlfsK6iEBQTCYiW/InQa/UlCIES3jPgwMFD5OR0EqipSAH7+mTrmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714498016; c=relaxed/simple;
-	bh=0KeV2u9ksY0YfA2yFgfKkgJQrLCCtz23h5HZRBAWiFI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OtDllCa8fzfgZ4vgXi1+sUZ+vTDqx3Cu/ZuUSVRoQBLCbkfWMcLRJ2alcnxnyoxZZg0rJJezDeMIoHOGNpagJDf4ELdLA5BFDEQxK19EM+PSgAxzBeugDdpQ6tBLUlE0WHoz6MjLMWPXI7vjkq+OEocD/SmY876EiauTslXp5yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GKCf087I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316FBC2BBFC;
-	Tue, 30 Apr 2024 17:26:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714498015;
-	bh=0KeV2u9ksY0YfA2yFgfKkgJQrLCCtz23h5HZRBAWiFI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GKCf087IOPhdKhN23Rh+4nYolxBmxLSO7gl4cTkAbF6IGcHWam/bcbmhNLA0+5hfG
-	 NefAyi4QAhJonrQ2T0uvSS/DlYCnplWB39GhCHO53EgsgQ0NYC1sXg3abQ1zUvVNcs
-	 r/5CFiGjbedNdrNPSNYdu6m6+ypoEZuI1adiGctzrgRXmlEEwbj5c6pqJ+PG1/apNU
-	 5LXjHQvUrx64k0PqjL/h9GDYReGsYZOrdMZD7n2E5GDIqxY4N/HalTeDmOGf4NGWXQ
-	 bhuZMNQP0cxZiOxT/nJ2sEjm8HcuCNshVJZmBpkiQLQRi6SCzJHBgcwS1ntMIyxLXW
-	 U4TKnxxq7IBeQ==
-Date: Tue, 30 Apr 2024 18:26:49 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Alisa-Dariana Roman <alisadariana@gmail.com>
-Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	alexandru.tachici@analog.com, lars@metafoo.de, jic23@kernel.org,
-	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org, lgirdwood@gmail.com, broonie@kernel.org,
-	andy@kernel.org, nuno.sa@analog.com, marcelo.schmitt@analog.com,
-	bigunclemax@gmail.com, dlechner@baylibre.com, okan.sahin@analog.com,
-	fr0st61te@gmail.com, alisa.roman@analog.com,
-	marcus.folkesson@gmail.com, schnelle@linux.ibm.com,
-	liambeguin@gmail.com
-Subject: Re: [PATCH v7 5/6] dt-bindings: iio: adc: ad7192: Add AD7194 support
-Message-ID: <20240430-sandfish-bring-16ce723b8612@spud>
-References: <20240430162946.589423-1-alisa.roman@analog.com>
- <20240430162946.589423-6-alisa.roman@analog.com>
+	s=arc-20240116; t=1714508929; c=relaxed/simple;
+	bh=X4XRyOqZhoouAcC1Q84O7GKsyRYLL98VlCeL84nXFPQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NRyPi4pI8Yy8tCtL+f/4D6MmRUg1T7vHXmVB0L7MZ+wfPkZItn46DcPQSLTCPQdl1NgyOelnRbXjCpZn7+w/gwNxhXgJt+eFYpbpQKrGX07gN/IRL0FqGFG3l3xPaRqfbjEBbPPbZ+ukaxa5bxhDcEr4rJzZha5pgQfuorqW7Tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KnKkWiXe; arc=none smtp.client-ip=209.85.208.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5708d8beec6so7803713a12.0;
+        Tue, 30 Apr 2024 13:28:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714508926; x=1715113726; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YmrpHLX46flU70H17+DNbupiS1vXQOS2XUzjHPnNgH8=;
+        b=KnKkWiXe4CPk4yfdPNxfd5sp1/ipaIbM/ILtvKD+pB7x75pFN6zdnp6ZVKApvRyVme
+         j/wbd0K8686t2+b5D3ZSwppRX62u8m4fj4xtGwefSwAARubsjg2cxoPWqVuR+rCMpM01
+         RobSXQW9dv4+W7y/NiC8oIeAScmS4P0jbhU+hGsy7G5xAW9XwxVdzd2Qq6cvPQikUXR4
+         i7tm0fl4lrcbAzqSHtSr4q447tU90gQKbQk/uLfLsN7yn407aNLr64FfmtAYi+S7hPbH
+         fnFWNECgkWahvf1TYhI0eGuFEIHKnAouRlxFmRSNBnVEaa6hVG9YEbFnX9VnJaAQ/BMb
+         fhog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714508926; x=1715113726;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YmrpHLX46flU70H17+DNbupiS1vXQOS2XUzjHPnNgH8=;
+        b=Sj1uEJqQOaK6DAI9xe+eeYbwkvkQMccivj0ySjLOZ1shykURdZOZx0AJGnJij9McLj
+         iYZRPHIbg9sDZw1xxCPcGyGXGbMPw4LewZGhqALs7Cn6aqS/y7g2gVKErLH4nf1FmrN7
+         46S8JF8UPt4Rt1meNwRQHkbyLfawSGXxwH5TKK6PhaBIhUxsaoYdNZqpjZj3NAOr6gkN
+         pUXdVsNq7QPIArYjBpmvvryZNpp5baVxyIlscGsVNAXdERBUd4EH6JcdoLlV0VQIYGfE
+         OUXXmf5lrvCD8W5kJhBy0fnz2aFmtMji2gYgbVBaKRFlIaGlrk0ldAX9gliLzlZfzPLW
+         0YTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZbTEAZjA5hJmSfBgbuVTbLdEvCiAJl1FcwKDIe0Z6gXXuEkS9rLZmFLmmGMhQEwUVx83el+qdYrk4NblsWmJJ9T/iEDQywi7AkzsjxwY+Zj7aJRiJMk6oc2MOBxgMTt3ssNTcUcbMAo8XXL/nMsQdLhkofVdcRfE+Lst5vzWsIUOUgg==
+X-Gm-Message-State: AOJu0Yxqk/hOhh3d1L/SqNs9YKIhplCygfCdHz17NI3VTJwkfsARvW1s
+	eRI20mUwCDREAbAfV/JwEA3uY5G41iaxBQZzJ9ZIci5ii7zlbnt9yxKpaH4ZE+zSNp/JnORZ3WD
+	LuhkuU0vrsikXjh3xufYqqYs19ss=
+X-Google-Smtp-Source: AGHT+IHbwX88oiFyDn0d3AB7Q1SVGsCIqNerQ7gq2MrtrAzNfHBrnRujxPcKOfKH5sabH7DDp4y1YvxhnW5dr8pysjA=
+X-Received: by 2002:a17:906:c419:b0:a58:e3d5:87ba with SMTP id
+ u25-20020a170906c41900b00a58e3d587bamr698030ejz.75.1714508925684; Tue, 30 Apr
+ 2024 13:28:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="QgM2jKZVHy6EjSwK"
-Content-Disposition: inline
-In-Reply-To: <20240430162946.589423-6-alisa.roman@analog.com>
+References: <20240430162946.589423-1-alisa.roman@analog.com> <20240430162946.589423-4-alisa.roman@analog.com>
+In-Reply-To: <20240430162946.589423-4-alisa.roman@analog.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Tue, 30 Apr 2024 23:28:08 +0300
+Message-ID: <CAHp75Vc+C8g0PFgKLmjyspv_39wXNba58eLgJkNRqWgRyjujbw@mail.gmail.com>
+Subject: Re: [PATCH v7 3/6] iio: adc: ad7192: Add aincom supply
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	alexandru.tachici@analog.com, lars@metafoo.de, jic23@kernel.org, 
+	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org, 
+	lgirdwood@gmail.com, broonie@kernel.org, andy@kernel.org, nuno.sa@analog.com, 
+	marcelo.schmitt@analog.com, bigunclemax@gmail.com, dlechner@baylibre.com, 
+	okan.sahin@analog.com, fr0st61te@gmail.com, alisa.roman@analog.com, 
+	marcus.folkesson@gmail.com, schnelle@linux.ibm.com, liambeguin@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, Apr 30, 2024 at 7:30=E2=80=AFPM Alisa-Dariana Roman
+<alisadariana@gmail.com> wrote:
+>
+> AINCOM should actually be a supply. AINx inputs are referenced to AINCOM
+> in pseudo-differential operation mode. AINCOM voltage represents the
+> offset of corresponding channels.
 
---QgM2jKZVHy6EjSwK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+...
 
-On Tue, Apr 30, 2024 at 07:29:45PM +0300, Alisa-Dariana Roman wrote:
-> From: Alisa-Dariana Roman <alisadariana@gmail.com>
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+> +               ret =3D regulator_enable(aincom);
+> +               if (ret)
+> +                       return dev_err_probe(&spi->dev, ret,
+> +                                            "Failed to enable specified =
+AINCOM supply\n");
+> +
+> +               ret =3D devm_add_action_or_reset(&spi->dev, ad7192_reg_di=
+sable, aincom);
+> +               if (ret)
+> +                       return ret;
+> +
+> +               ret =3D regulator_get_voltage(aincom);
+> +               if (ret < 0)
+> +                       return dev_err_probe(&spi->dev, ret,
+> +                                            "Device tree error, AINCOM v=
+oltage undefined\n");
+> +               st->aincom_mv =3D ret / 1000;
 
-btw, the whole series has a from != signoff email problem. My git
-send-email handles that for me without me having to do anything by
-inserting a From: header in the patches, like so:
-https://lore.kernel.org/all/20240424-tabby-plural-5f1d9fe44f47@spud/
+MILLI ?
 
-I am not sure what option you're missing to suggest, but it may be as
-setting the `--from` arg (or sendemail.from in your gitconfig).
-
-Thanks,
-Conor.
-
-
---QgM2jKZVHy6EjSwK
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZjEp2AAKCRB4tDGHoIJi
-0kziAQDcAT7+brax7bXTdBP5X+1u8YLuwr8T//H8T5XVPYXs8wD/X5FEQlyk1Qg+
-BoUHQ4cGSH7Sp4iWyYrKn7r9j82Wkwk=
-=ue30
------END PGP SIGNATURE-----
-
---QgM2jKZVHy6EjSwK--
+--=20
+With Best Regards,
+Andy Shevchenko
 

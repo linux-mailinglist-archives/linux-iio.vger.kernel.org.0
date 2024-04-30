@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-4688-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4689-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8262F8B7BE2
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 17:38:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 167D68B7BF3
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 17:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 390D21F26575
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 15:38:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C758C286991
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 15:41:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB354143750;
-	Tue, 30 Apr 2024 15:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA08173350;
+	Tue, 30 Apr 2024 15:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aL5mgz6k"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bO8Fv/JI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C9A143722;
-	Tue, 30 Apr 2024 15:38:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EC06172BBF;
+	Tue, 30 Apr 2024 15:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714491484; cv=none; b=VUZnvTgJTcR0k+TwdP9aHpyfgM9u64j7nAlMI7ehQ2Kf1142+o2sE3Gly6OlBCUc2+JblVGvwUj2m56BtjH7rGglQ+7VTyxmeQMxyhX6IyKWnebnVOyzUttHVqsF38OuKlh6heroGJFhdVlTyewCCLrjiWkjsHIQz4hqRi9UVmY=
+	t=1714491641; cv=none; b=Y7EqC30nOE6OiACCZRAhYORX3GdJ9qalkVcJs8q5SbGg2ANHTEEAqaKrHnwIM95ETNSI4W/fmPbGuQL5NuGKWrntPnqcYkAjtibaeGlL8LfmQKcoIE6Hin3+Fh/vGEsKfcGDScufJ5u3LJ0WX+yufhm61kpZVPXtiFYi7LusGlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714491484; c=relaxed/simple;
-	bh=m4xhMmy7sam+xsPd6zPA6Ji4V1IDiqCoOmIlSwQrGA8=;
+	s=arc-20240116; t=1714491641; c=relaxed/simple;
+	bh=AhXim/Cc8ypQWAXX8GYwTtPeMzV9LcwnwpaCMgnFYdE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JAfqBhcLKAUT0kHdi17p+pxOCVWLWavf4LoqGyXQYOGUOpVR8UBiF6COMIFtVeEGXZ+/mp7tYzA/RJvCFjYP0zPC4mTCHBZ3uvtYfjDHWA7WyOx6VrblDTV2WsR13SQYJIPGMNkQLqZKh2DCs14DMdbuKuNwHnFLGg2gOJhNE1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aL5mgz6k; arc=none smtp.client-ip=192.198.163.17
+	 Content-Type:Content-Disposition:In-Reply-To; b=VhOX9wBx00BvzaQSvjqinrBUQbYAgjEuBTBqmvJcBGBTtUilEoga2x1V32lt23aDBkjaJjxz6Dba66hMaZcDm9aNqxiBeJb8FxpGK2Nbx6uTuZj2diQhQD/rRe8jrBIIPN6E6S1lnbgjpkEVL/1/0HFPwZn3T/Gn+b1R1GjEPII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bO8Fv/JI; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714491483; x=1746027483;
+  t=1714491640; x=1746027640;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=m4xhMmy7sam+xsPd6zPA6Ji4V1IDiqCoOmIlSwQrGA8=;
-  b=aL5mgz6kRAHfoOhhQDOl3CAJtBRPnEQEersxIJmpWWagEe8QYEu9fllL
-   CcDJ63RX7eO1mPuGRgL30HiuQAwmjTjbf5L4lyxRxSfVZ0RVSqwvbynnj
-   aYa9OB/K1vpVBEk/AMnGyIDPCq6/6Re/3qZ3hPoPJG3ollB8/J1Mgzmuc
-   tyElMcEWX0saiBqsugGwZq5QAKnr7XR5uE0D7uLpTf8nGX8NuPTWiQmQA
-   MpvVxJhuAlHwiCju9sn8jTjFKTNggzQ45s6Wdpr4B7/iZbDhCodpUFYIH
-   dCbU8vvOAYyr85iy9dL5Hc4M6fv+epZzlRc2Zx3mK6FGEwsxRNiecoLw/
+  bh=AhXim/Cc8ypQWAXX8GYwTtPeMzV9LcwnwpaCMgnFYdE=;
+  b=bO8Fv/JIFcuxv8bWze/OgdH7y7nG2i7laLu4a3xgsaGcizkmGQ08F7FN
+   sXgCsKGgLGHgQsWAiLBOY6XOkVS7zux5Tcfa8LeqILYqjshtWvJa1FKRs
+   jOd6Zd1bXeM19x3p6Q/GocjlAYQxTvLnrufaqBn8erm46zgJQddRaLxGS
+   +J/dO8E4QHIh1Tf6g8PoVbrCVO9MGhYMOdu8Rit7AATAvYF4kTeuNzxxI
+   6gv9PfwsM5PLRBhssarIDEpupUWdH2NAUZbK55InWMYV/SiZWHY6c1x4o
+   Xn84GuM6IeXAcVmkPibJJswh1o9NEDLG04gpekUc5iI7CpLIirZeJSsny
    g==;
-X-CSE-ConnectionGUID: UpZLh0DySKGkAfixIbKiMg==
-X-CSE-MsgGUID: vY++q5t+RraXiuoYGevlVQ==
-X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="10082440"
+X-CSE-ConnectionGUID: 53cGs2IzSJa7biN3ITYL2w==
+X-CSE-MsgGUID: w9Uqr4dsTOGKe9hFnXGabw==
+X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="10066457"
 X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
-   d="scan'208";a="10082440"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 08:38:00 -0700
-X-CSE-ConnectionGUID: TKfjSq4YTPaHJ+kFvT22Bg==
-X-CSE-MsgGUID: HacH/Z/ATMyFIGBGcPp+1A==
+   d="scan'208";a="10066457"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 08:40:40 -0700
+X-CSE-ConnectionGUID: zUTsGXBoR22YHQ6INz1/Zw==
+X-CSE-MsgGUID: f3OF7Y3dTSOPjEERKsuEtQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
-   d="scan'208";a="31308271"
+   d="scan'208";a="31297597"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 08:37:57 -0700
+  by orviesa004.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 08:40:36 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1s1pYI-00000002i8s-0ezK;
-	Tue, 30 Apr 2024 18:37:54 +0300
-Date: Tue, 30 Apr 2024 18:37:53 +0300
+	id 1s1par-00000002iBe-0CR9;
+	Tue, 30 Apr 2024 18:40:33 +0300
+Date: Tue, 30 Apr 2024 18:40:32 +0300
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Petar Stoykov <pd.pstoykov@gmail.com>
 Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
@@ -72,9 +72,9 @@ Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
 	Angel Iglesias <ang.iglesiasg@gmail.com>,
 	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
-Message-ID: <ZjEQUeUmMQmMAj3W@smile.fi.intel.com>
-References: <CADFWO8GC6RP6A7H-Cq5UZHfBY3VJZTCqssdZet61hH031euhwQ@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: pressure: Add driver for Sensirion SDP500
+Message-ID: <ZjEQ8LBxftcr0Z0t@smile.fi.intel.com>
+References: <CADFWO8EQUkGcbE=RXjxXbub2tZge9+ss=gB-Q6wngFAvwFygRg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -83,16 +83,39 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CADFWO8GC6RP6A7H-Cq5UZHfBY3VJZTCqssdZet61hH031euhwQ@mail.gmail.com>
+In-Reply-To: <CADFWO8EQUkGcbE=RXjxXbub2tZge9+ss=gB-Q6wngFAvwFygRg@mail.gmail.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, Apr 30, 2024 at 05:27:20PM +0200, Petar Stoykov wrote:
-> From 60f5cc7f65b07124f19428a713c3bc33b9e4a7a7 Mon Sep 17 00:00:00 2001
+On Tue, Apr 30, 2024 at 05:27:24PM +0200, Petar Stoykov wrote:
+> From 6ae7537517f551540121ca6fb3b99080b7580410 Mon Sep 17 00:00:00 2001
 > From: Petar Stoykov <pd.pstoykov@gmail.com>
-> Date: Mon, 15 Jan 2024 14:29:25 +0100
-> Subject: [PATCH 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
+> Date: Mon, 15 Jan 2024 12:21:26 +0100
+> Subject: [PATCH 2/3] iio: pressure: Add driver for Sensirion SDP500
+> 
+> Sensirion SDP500 is a digital differential pressure sensor. The sensor is
+> accessed over I2C.
 
-You should really fix the email flow on your side.
+Any Datasheet: tag can be added?
+
+...
+
+> +config SDP500
+> +    tristate "Sensirion SDP500 differential pressure sensor I2C driver"
+> +    depends on I2C
+> +    help
+> +      Say Y here to build support for Sensirion SDP500 differential pressure
+> +      sensor I2C driver.
+> +      To compile this driver as a module, choose M here: the core module
+> +      will be called sdp500.
+
+You patch is broken. Fix the way how you send patches.
+
+...
+
+> +static int sdp500_start_measurement(struct sdp500_data *data, const
+> struct iio_dev *indio_dev)
+
+Here is more visible.
 
 -- 
 With Best Regards,

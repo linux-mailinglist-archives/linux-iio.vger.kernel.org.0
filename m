@@ -1,129 +1,120 @@
-Return-Path: <linux-iio+bounces-4679-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4680-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E4EE8B76AC
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 15:13:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032E98B77BF
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 15:59:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FD251C22190
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 13:13:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3A482839BD
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 13:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB96171661;
-	Tue, 30 Apr 2024 13:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ID2zm2bR"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9269172BAC;
+	Tue, 30 Apr 2024 13:59:42 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCA413D29F;
-	Tue, 30 Apr 2024 13:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3207D168A9;
+	Tue, 30 Apr 2024 13:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714482818; cv=none; b=eJ9TChuSLUKG1vLpyBPkantqizwmthrbM+d0HqMQxJmWWZ8QSh5VStHKRTddRDtdVIum5zvT9fy9T/4wdfJQqrT0YeOs4OPPPOYYNOzi4cNcEkHtwcJkt87L3IHNsUywp1lPaSnDts75e3neABWYM6d8k9ud1qXU5hiHqYUhXYI=
+	t=1714485582; cv=none; b=KiHfgBy2FYSgfmRKqi0u2iRA/NtUD7aCfagscwRJyiZ1fL1e1gtr4JsrFXaa4MubRo020NEuz7l2RiN6AoHdXVLixPvThFBP0OsBTkyyrAayNNM6MHNwuis4IENePn2Lty4yqo7JH2IYSW/YrZ07KWKiVj4lukPylciIYfIWKdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714482818; c=relaxed/simple;
-	bh=kLTT8PdSPjqEUj/DINVj3Czn5fUgObf6p+tw6LndT3g=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=cy7h4jXJsHa9M1OYYvWCxI6Wm+jomfOBPoM2Ajb7wONk2h6bXlPidK+Xl8u5Wt9fy+1feNZd0p/msZNrth45FKdIyXj/QJ6z3KI8/KOmXHZ8GVDiyMVupk6DH4CJ/D7ZXLe9/1oeRlT0ACKhtCW0ozEVVV3OyX+seT1MjVGJNOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ID2zm2bR; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2db17e8767cso66649791fa.3;
-        Tue, 30 Apr 2024 06:13:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714482815; x=1715087615; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=lEiQCh8/vM164hKtCV0cZlzJ7+O6D+BB5JWCNOESyBM=;
-        b=ID2zm2bRfoTcnbCajTS/0HcSUWYOP7ndj/NIEtLmBz7FurFc86kzigE9nPdVJepDF0
-         pisRfGQpzraTL3Q6ILOJB4yLywGTSHuXAcd+X2wbzOtfahrLPV3b3HNkgBNZPGAR6Lca
-         MNQ6Q/uvVMTevNtl9RONbjsv8iyHQd6uBvONDqUUXq/TtN7QAveiRrnOZ4mLMgEEok/S
-         8d47pP00GnHaMuEhrqEIdob89t6sIoBnOhFWTUcL9wdblN+SRAbLRhRIfWyTkFLbPeLy
-         YuXfsm8/ZSUBvQFd87j66WRGRidwPv2a+7nLIysTG+85U1DG3aCMlnCpiHdyh4dMGrT4
-         lsuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714482815; x=1715087615;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lEiQCh8/vM164hKtCV0cZlzJ7+O6D+BB5JWCNOESyBM=;
-        b=vbfA3W52McY8SicmPJUrH5E85QY0ttGPTAC4Jl8azRBEwxXJFA8t3tNb9KmAFPw95U
-         F06yCUtDxfc1XvO1ZyZg+alGM2oXDcDyK8/UNwpw8q5NoQBUuLxT1sN97zw7Hu2/3FWT
-         HxIyItGadIuSqgmmB3Tp4WgXhOUCaO4meYrDh8wGf2Rod8tbAekRJl/fv/QtB0KbOSz8
-         Dm6Ez2p6dojcxXMFcWO2eKprJQqxnF6hhwPaP+RK0gwiExkNrxs1A7fPzYsp2kW4IsQS
-         tox9xsIxVT37wHIcVoE+mtIU6o2NQ+v8Uvw/OBTb+lrDM/3hoAO34GeQu64nbpf9OkOD
-         2uiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTUsAvL1uRI2q3oLBb715mKGrt0O2KmvYqpcWH1c/vTLkiWGJLIcS3DQv0SQ4ubdMCu8g7bmUKJp/kcenDQ4kqe4ypxW9j0RPXvuHBaKhxlkcIGfC196c15N4POs25gmH0HSdI7D1S
-X-Gm-Message-State: AOJu0YxFLr9McarBIpbbgEUDRhE7lO7oMlo+Fi6gHCzM9W6iCz+XvYxg
-	X+GLrkjOmgYrE4K5SiRYVy9w5kClHykMfffy8d/B/r9sbLN5zRsO
-X-Google-Smtp-Source: AGHT+IHSQ1phnYo2moNmnJNL94VwDtHV0Egi0VDLViK0e8Oi8fWuCIp0D4JhX5mU7RyqiM+pa52ceA==
-X-Received: by 2002:a05:651c:1182:b0:2d5:9703:263f with SMTP id w2-20020a05651c118200b002d59703263fmr1603754ljo.44.1714482815133;
-        Tue, 30 Apr 2024 06:13:35 -0700 (PDT)
-Received: from mfe-desktop.Sonatest.net (ipagstaticip-d73c7528-4de5-0861-800b-03d8b15e3869.sdsl.bell.ca. [174.94.156.236])
-        by smtp.googlemail.com with ESMTPSA id z10-20020a05600c220a00b0041bef325c4esm6404235wml.1.2024.04.30.06.13.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Apr 2024 06:13:34 -0700 (PDT)
-From: marc.ferland@gmail.com
-X-Google-Original-From: marc.ferland@sonatest.com
-To: lars@metafoo.de
-Cc: Michael.Hennerich@analog.com,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Marc Ferland <marc.ferland@sonatest.com>
-Subject: [PATCH] iio: dac: ad5592r: fix temperature scale
-Date: Tue, 30 Apr 2024 09:13:30 -0400
-Message-Id: <20240430131330.1555849-1-marc.ferland@sonatest.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1714485582; c=relaxed/simple;
+	bh=BF/HcpVihLl6z0OazbQoAOflp/oOteZiMrbMpBDAbOA=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rn0cAGwmj1f7KGAv4Ebl25v08vxlrPp53Um2EsnZBJlMm1ISevzeB2ko0owpq+Y1NnW6pASaecbKt1veLsSSZs4/x5NDD1EcQXqgCrOZrV017DUZdepEnJgubkzor5ypCNe4WRv0GDsPGqL+QYXpv92JPBW/XTuFoUESa0aLDjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VTMJ70qSVz6K910;
+	Tue, 30 Apr 2024 21:59:19 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 946DE140A08;
+	Tue, 30 Apr 2024 21:59:37 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.35; Tue, 30 Apr
+ 2024 14:59:37 +0100
+Date: Tue, 30 Apr 2024 14:59:35 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: <marc.ferland@gmail.com>
+CC: <lars@metafoo.de>, <Michael.Hennerich@analog.com>, <jic23@kernel.org>,
+	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Marc Ferland
+	<marc.ferland@sonatest.com>
+Subject: Re: [PATCH] iio: dac: ad5592r: fix temperature scale
+Message-ID: <20240430145935.0000055d@Huawei.com>
+In-Reply-To: <20240430131330.1555849-1-marc.ferland@sonatest.com>
+References: <20240430131330.1555849-1-marc.ferland@sonatest.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-From: Marc Ferland <marc.ferland@sonatest.com>
+On Tue, 30 Apr 2024 09:13:30 -0400
+marc.ferland@gmail.com wrote:
 
-For temperature readings, the remainder is returned as nano Celsius
-_but_ we mark it as IIO_VAL_INT_PLUS_MICRO. This results in incorrect
-temperature reporting through hwmon for example. I have a board here
-which reports the following when running 'sensors':
+> From: Marc Ferland <marc.ferland@sonatest.com>
+>=20
+> For temperature readings, the remainder is returned as nano Celsius
+> _but_ we mark it as IIO_VAL_INT_PLUS_MICRO. This results in incorrect
+> temperature reporting through hwmon for example. I have a board here
+> which reports the following when running 'sensors':
+>=20
+> iio_hwmon-isa-0000
+> Adapter: ISA adapter
+> temp1:        +93.3=B0C
+>=20
+> With the patch applied, it returns the correct temperature:
+>=20
+> iio_hwmon-isa-0000
+> Adapter: ISA adapter
+> temp1:        +30.5=B0C
+>=20
+> Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
 
-iio_hwmon-isa-0000
-Adapter: ISA adapter
-temp1:        +93.3°C
+IIO temperature units are milli celcius, so I'm not following
+the argument here.  The driver might be reporting in pico celcius
+I suppose?  Call out that this is the scale factor though, so
+it corresponds to 1LSB hence a small number is certainly plausible..
 
-With the patch applied, it returns the correct temperature:
+Reasonable to argue it's taking the integer and dividing by 10^9 hence
+INT_PLUS_NANO is the right answer, but it isn't nano celsius.
 
-iio_hwmon-isa-0000
-Adapter: ISA adapter
-temp1:        +30.5°C
 
-Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
----
- drivers/iio/dac/ad5592r-base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Jonathan
 
-diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
-index 076bc9ecfb49..4763402dbcd6 100644
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -415,7 +415,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
- 			s64 tmp = *val * (3767897513LL / 25LL);
- 			*val = div_s64_rem(tmp, 1000000000LL, val2);
- 
--			return IIO_VAL_INT_PLUS_MICRO;
-+			return IIO_VAL_INT_PLUS_NANO;
- 		}
- 
- 		mutex_lock(&st->lock);
 
-base-commit: 98369dccd2f8e16bf4c6621053af7aa4821dcf8e
--- 
-2.34.1
+> ---
+>  drivers/iio/dac/ad5592r-base.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-bas=
+e.c
+> index 076bc9ecfb49..4763402dbcd6 100644
+> --- a/drivers/iio/dac/ad5592r-base.c
+> +++ b/drivers/iio/dac/ad5592r-base.c
+> @@ -415,7 +415,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+>  			s64 tmp =3D *val * (3767897513LL / 25LL);
+>  			*val =3D div_s64_rem(tmp, 1000000000LL, val2);
+> =20
+> -			return IIO_VAL_INT_PLUS_MICRO;
+> +			return IIO_VAL_INT_PLUS_NANO;
+>  		}
+> =20
+>  		mutex_lock(&st->lock);
+>=20
+> base-commit: 98369dccd2f8e16bf4c6621053af7aa4821dcf8e
 
 

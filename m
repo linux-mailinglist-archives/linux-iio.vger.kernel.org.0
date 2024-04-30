@@ -1,196 +1,226 @@
-Return-Path: <linux-iio+bounces-4663-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4664-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCA08B6694
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 01:42:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28BCD8B677D
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 03:36:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68298B23C8A
-	for <lists+linux-iio@lfdr.de>; Mon, 29 Apr 2024 23:42:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A814E1F234B8
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 01:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 092A91A38EF;
-	Mon, 29 Apr 2024 23:40:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B651843;
+	Tue, 30 Apr 2024 01:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="pbHWLuh1"
+	dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b="Q0irHgAh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f43.google.com (mail-oa1-f43.google.com [209.85.160.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR01-VE1-obe.outbound.protection.outlook.com (mail-ve1eur01on2079.outbound.protection.outlook.com [40.107.14.79])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6533D1A0AF4
-	for <linux-iio@vger.kernel.org>; Mon, 29 Apr 2024 23:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.43
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714434044; cv=none; b=HB/KHLby1GVMqcLhbvxcDyAwHqE8D5J2ygH/ELa9Cb822hdNfkdZ6EegKz4NSME9U4wYgEsPFQJ7sjCFy2yxRr1fORfF53h09Llw8733jbD57N9+PneF//lxSL2cH4J4zyNqPeoJSoBMkkehR3Cd7fkxXz46PAk60wFN4ZLOa+E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714434044; c=relaxed/simple;
-	bh=f4G2L1z1zSkKaPQHDBq/6+aryPTA/FbiB2tWbX2f5ms=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O8muAnIFRnOkhK0IDKYsISD5XT1UZOxJrft6HBsDUKrr2Wn+WUtprtQ8x5FPFIJvOFMxya1XxCI2aPauRzqfD7B970V8qJsMskX+iul8ow2WZOmDUQwe/X5jBnA/6lPtWXyOAdOQkqTlTVQDuC4ph2w3ASKVk1U8tPdlsDyw5jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=pbHWLuh1; arc=none smtp.client-ip=209.85.160.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f43.google.com with SMTP id 586e51a60fabf-233f389a61eso2596568fac.3
-        for <linux-iio@vger.kernel.org>; Mon, 29 Apr 2024 16:40:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1714434041; x=1715038841; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BJ+ZTMWPcJc+hIlvH7T2PbKtWet9tgeGz07/T80YEuU=;
-        b=pbHWLuh1Xtu6uL38XxK4B+0fCiYd7UAwdMdtMKEw/UnHF+S5JWR9mR8jvJ3OUqvOzN
-         +XZS726FcasBZjgbGGkIgIKBUfRivinxaNyiqaIrikWJeI8r7gNxTlyZzuzuXox2+/FT
-         2AQjVJCSbxn2GGKD3hKBaOv7Ht925iNAwn62flLi3MhStzwJnVi2znE9gcVZyG2WPGAO
-         YEr1UUDXrWCr3PhBrJg5FQuMcvfnvMhNLYeBrdaqvzMYX98mauFd7Ld/p8IUN//xEpFn
-         FLz2S3oonXYn8tsBuPNLQuA28PQpkvrdFT/GnsmpriwdnuiApTQACfseTpOKCR5GIwDz
-         hFpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714434041; x=1715038841;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BJ+ZTMWPcJc+hIlvH7T2PbKtWet9tgeGz07/T80YEuU=;
-        b=Ll3+Lkxzsv+XUacfYCoW5Ze0446+OBPdYjIU6B4g7IMpZmrws71/a4z72POxTTpKI5
-         Wng6GloK6TgcK5lXefplZYzxhIHVKf2kfWQ9KSxSJwAJAvZVW3sx3ucZ33ONg2esysVB
-         KcG88EGdaW2aH5bhWhng8l6UsDmYsPz1oM3xPKFnXAoOrprZ//Ex4j9/H/LrCL8tRrc1
-         CEEduFxD8FZrWfUev/iKg34b9fbNT05W8gYVURcncAamZVY/1gyleOf0o4vONIw3IWw6
-         0vZAkKB7YdapjaWEOdglH4SB0v1cD857S8K3wVX7vUzkZS7+CLjzPGOT3YyJi9Xqlq5l
-         KpiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV6H/uV6AXT7/fR92mFqt/vKGyBqv31O9EfxJTh+CSNBJd96QOIXU6LkeaHFlxmSAs/F0rs54eYlIngvHyFVdHmSRJFQ41LcEQG
-X-Gm-Message-State: AOJu0YxwXTB0hTCfaT6w2VFMkztoKooDyPDpphoGtxoJD9FFKVOVziuu
-	j+wRH2y7pVYzRJO2asOI006NmZSEQtmc0xEQz/O2zttlQTnTptzmRG7L+NqTAns=
-X-Google-Smtp-Source: AGHT+IGUMUBHGEj5nThSng3xMh0/uoevSE7AVeKx5UlHjVLAZMEu4Nr0mRW++UlSgbku/YpyKEuPfw==
-X-Received: by 2002:a05:6870:618a:b0:23b:4854:820b with SMTP id a10-20020a056870618a00b0023b4854820bmr12720046oah.2.1714434041609;
-        Mon, 29 Apr 2024 16:40:41 -0700 (PDT)
-Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id hp22-20020a0568709a9600b0023b58aa20afsm2144508oab.25.2024.04.29.16.40.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 29 Apr 2024 16:40:41 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-To: Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Support Opensource <support.opensource@diasemi.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linux-input@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 7/7] Input: mpr121: Use devm_regulator_get_enable_read_voltage()
-Date: Mon, 29 Apr 2024 18:40:15 -0500
-Message-ID: <20240429-regulator-get-enable-get-votlage-v2-7-b1f11ab766c1@baylibre.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
-References: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB5D2BE5D;
+	Tue, 30 Apr 2024 01:36:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.14.79
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714440978; cv=fail; b=mT5GRMWQc+7AZn7w/Y5SSXy1LScFoo9WdJJXOLs3/cJUOGEDYErSO106D4F8nCSgFXyg/Tfvdzk9NU64PBQDHPGtgt677yByfoUR5SAoZcZln8kCFQZ6avzS1ySyLMep+VgFAcgnLE2JOgHBHrNLKBMo9TA9O7nj1r3fyW36g6I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714440978; c=relaxed/simple;
+	bh=XR9pqI1bG65Q12nLkxDJXVJgybkIZ6bnJHGEBlnN5Eo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=n/U2K9pXhKbfnvYJxoYw5v0rWdMPhMvwlxIHwvwhgf0xNunGYXs/p1E233DqZXFkfeTa97hMs3yavSNA2RTJK8tVSt9GoO9MeoOADIHoRWWypWo4IkfG1oS/QArmNU4AVVIASXcKkP/9SDqsqdbOLpvC4HUyCj2R9nxsD4IK35U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (1024-bit key) header.d=nxp.com header.i=@nxp.com header.b=Q0irHgAh; arc=fail smtp.client-ip=40.107.14.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IibH8TAGvSAQPoBV5vfTgJ2nf7QntLm+UNxhpCGaJg+SPezEd5EpLa8DURRivOiGQL/AEvh05hmG+06XUBcdmVGC9x5ZwbL28/wJON3pNnWOOfO2Md18472DTwMYLjbXT4Lla8EKn900gJwWATZscaCdJGDwPXNGL7MBdcASOQoZwHZBfLhPk263hNeYfkICheJFSMbVuIabom0Dcu81k1fxjfHmaHRQMW7y346aLwMWsI2p4TrFNEsqh0esQ3Jxihg8JptEwVSf94uhc8xVjM9rYkngZGUZpq/jH/8/yW1iL43r5HltonPc4Ae0HXKtOEtNQIi5MuVgVeb/VHSmjg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qs79PdesDVlnyzG+fPWzu4lya0lFKQvqb4THrCVAzgw=;
+ b=mL1hM6/ENmjJDEnYeWTcOwPJmhrFMi6W/PE4rv/OWQ9VkLc/6+qzAW+2qS/ZQ6P9unZgr2rBzv2PTmwmY1e73H2i8MGK97p8YbgvcljSbi1c8ATuSy2w4Ggn7qlnP3hXWsOdEriJ3TxQ0R0WCVz8CfD6nHTdBza7Laiua59RQYVVvNLXtPKbB7bmaqF9S9SW6AINebp1KVXkEZAqD52ctRTPEFJWCtmgx/Mzg1s4YKpoZgn1qx/qvKNkwqi0Sfmy8+W3xAgJ1KplwAl4Bs4gSA8fC8ThUMVEwQ/ZCiSwNZSuTZHAswNHWClp5XuZ4PJZ2MMoiSmbGHFrNQjpz85kfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qs79PdesDVlnyzG+fPWzu4lya0lFKQvqb4THrCVAzgw=;
+ b=Q0irHgAh0B8Kwohbxxhik2FEsvf8DBW7tNSq/ZNoDDh0HpkPveXrbMSHkGNJ9xmuyQEgizSatEIvwXHAdnyTqTBQfT6DPHQrTPWDgMYc2kkznhObtib/iie3xOCk1KvnrSHigjdLHkeeJQ1VhZgFgNue3iDCmkQTix2ltFQg1bc=
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com (2603:10a6:10:358::11)
+ by DB9PR04MB9233.eurprd04.prod.outlook.com (2603:10a6:10:361::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.34; Tue, 30 Apr
+ 2024 01:36:14 +0000
+Received: from DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d]) by DU0PR04MB9417.eurprd04.prod.outlook.com
+ ([fe80::d30b:44e7:e78e:662d%4]) with mapi id 15.20.7519.031; Tue, 30 Apr 2024
+ 01:36:14 +0000
+From: Peng Fan <peng.fan@nxp.com>
+To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+	Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>, Fabio Estevam
+	<festevam@gmail.com>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH 3/8] iio: adc: fsl-imx25-gcq: use 'time_left' variable
+ with wait_for_completion_interruptible_timeout()
+Thread-Topic: [PATCH 3/8] iio: adc: fsl-imx25-gcq: use 'time_left' variable
+ with wait_for_completion_interruptible_timeout()
+Thread-Index: AQHamiklrLoHwKkt802KEzt7tf8nCrGACTPw
+Date: Tue, 30 Apr 2024 01:36:14 +0000
+Message-ID:
+ <DU0PR04MB9417CE73856B1E1B1CC3D62C881A2@DU0PR04MB9417.eurprd04.prod.outlook.com>
+References: <20240429113313.68359-1-wsa+renesas@sang-engineering.com>
+ <20240429113313.68359-4-wsa+renesas@sang-engineering.com>
+In-Reply-To: <20240429113313.68359-4-wsa+renesas@sang-engineering.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: DU0PR04MB9417:EE_|DB9PR04MB9233:EE_
+x-ms-office365-filtering-correlation-id: 367b39d2-2fca-4488-e9c9-08dc68b5ec48
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230031|376005|366007|7416005|1800799015|38070700009;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?Bpho4sexQ2pL189nTSdEkXDCa5p3Xc+dZGvVrL2n15VDKRVVTK05xAeTuXEm?=
+ =?us-ascii?Q?tsEgc9frIraNSE/w7appeHugW0yA27oQF8eux1QFeS7yyljtgq2lp13tD5mp?=
+ =?us-ascii?Q?/hkvd25WnDMl77dlanyYwkokvp7LmhFuOONdaMvek1fMEJ4V7RkC/BjZoGOt?=
+ =?us-ascii?Q?SCX1pFtN1rjQ/q/hKKpV5i+GELN945Vgoh3Rafn8x7nO9+hnhM3sJvnl5omm?=
+ =?us-ascii?Q?GvgHVybHVUXkK9E9NJRAKdgj/HJJUSRi0tt1EKj5Bqj8kXHb1Wk8FWHTjVVm?=
+ =?us-ascii?Q?Q6xflbb7G9TlXYBEJRofzPLaHAyYcrl+Ol0uOWtPmMEY4pFEnpVVn8xSwafn?=
+ =?us-ascii?Q?QRqnalEXA8sxdch2iiVo8HjzgxECLk0Z/lTnaxJcyGvcx09pRFHYvq5cXxV1?=
+ =?us-ascii?Q?tTyZ4CR4VMLlH8fLVJ7yl6v8wksyNxzGk4504XVQE5EWB+0yX4A/fNFbhqIe?=
+ =?us-ascii?Q?0d8+ue4fJk/x3b+9xN/Csrnp9MQ2cx0IXgk1RAL37opoWBBRgrO42dL73hJU?=
+ =?us-ascii?Q?NUQnVbkVozjoyKz6VOsfaPybEygGkLz6QUqRfgkClNY+3iz6GYxnkyIm0B8Y?=
+ =?us-ascii?Q?X5Nhks57riVT+ejrTGVCKydeo7JiVxMh21Etuq5S0x5SGuvYaxTMYkbh6oSA?=
+ =?us-ascii?Q?w0x+mUsfe8oM5p1MAX7cApv/EqO5xaZ+MFwPB7bgI/A+IHaAJWyMQJCH3+AK?=
+ =?us-ascii?Q?Z4RQFvHjzTGecqusyT2+WQyew/nnhNL8zPBzyizwWyZGgVfPQGSOkzRNLOqd?=
+ =?us-ascii?Q?pjr+PDEkzuAraiiGorOefNyRcJhv+kos3VH9XOIA5aK+ehZRCz9idjytPbJ5?=
+ =?us-ascii?Q?97P/2xoCOAF9wHKPHUdyQk1t9Lrp2VAPRyGh7u2LQrdDF9G3AqhymY+7GG+B?=
+ =?us-ascii?Q?uMgO0I5y1/W6QhyZcdR2++6S9K8RnZ7KX3ZQkadoe17Td0X26Cohj4ihjzBd?=
+ =?us-ascii?Q?6wnMF4CiG5JKznnzxeNSv+kMkR8lMRZkjCl/aVRBNgvdg69UIxeUsbxcONIs?=
+ =?us-ascii?Q?9kUtquNMp8BjcVJMh1RBJCDO+RufVdWgzBK9oiFYF1RIBePRaEf8nvjB44Un?=
+ =?us-ascii?Q?zn+QK/eK2hbayY9r8R+GKRvojnQQXwtYHKZW4uRn+VTK+ulkFeS63wSZJasZ?=
+ =?us-ascii?Q?3LCfyUeY+clVwdgvzBlesbAn+TChpBAIZGDbaYvmsBG+ZPikfBveX/QkWNYL?=
+ =?us-ascii?Q?WssXFXG68Md3HUdUDcyeNAMily06J7bLd5uq694svosWkUrcF1j/VapIOtuL?=
+ =?us-ascii?Q?Lp4hOBNe8af52mmanLWDx6kOFOJONhrrAK6kcHbea8S6nud34PrjGB33zV5M?=
+ =?us-ascii?Q?BLzTHANu6K25JXWbUznOB/4esGHVgY6XTLRvbf6HrijiwA=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR04MB9417.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(7416005)(1800799015)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?/T5nGPRMwqBpc6TwtogKEVA3Z4nPwJu34327JD43VQpHjNhQ0gyvfE6Byxtt?=
+ =?us-ascii?Q?vj55cKRzLOiUL5w6c+P7KMPJoampOCdEGBx7fL9IJLGl4Zg39gVAbFFmm/9T?=
+ =?us-ascii?Q?vx1Rl8spamatxoAcI3mlru1fFD09Pw5XEZ+fxPOhk2SVOe2nZlT/EhvCh+kq?=
+ =?us-ascii?Q?KbFTsbyDJ6M/SHhuWRzqYpeYOlywFlnd/rPV00oE2GYew9W5nARxO+6r1kz0?=
+ =?us-ascii?Q?POyclJbe6xg6vi6PRHp6mxWdmHM5r52LvBg0x3rB2RmyRBuWCGNe+CZxApKQ?=
+ =?us-ascii?Q?i1pxC5HcDjtu3UyfH0ftXVYnLTmXOeaQK7FD/v/vBDUtpPd/sp51BYEEdIzA?=
+ =?us-ascii?Q?UoO+m69KwTGt853PVzbMDN+NLK1UfdhY5QDzS2Xdhfgh5/a/HrKBXXVgAaMA?=
+ =?us-ascii?Q?90w0JjDiazcoHuBOCkQfSrHnQNntZUlnkP0twt1aiEJ8Ix2gjKXSV+ySRqTq?=
+ =?us-ascii?Q?a56gi+ip2QzEx9spkz1B0ABjlcpQJt9zGp9xoeSczRC2VhpaaMW7O7lnr0rq?=
+ =?us-ascii?Q?9cTPA2vjgwQHMe4Hqfgx8xwtHTXNqKAFzVSH9K9A1+hdUfOOGSlslOlzMJ7w?=
+ =?us-ascii?Q?c5InWaKCplCJ58ZqXA2fvC1FBS/BQBTjbJtTQxdEUFeee2SP6vmR1zGpi0js?=
+ =?us-ascii?Q?nVy07SMM+VMQW/zNIqXV9mXokK4BKFADCn2CIZNuuyRpn/pRCa7Mlqmz+ptF?=
+ =?us-ascii?Q?fWeKP5KMwpPTGcq7m2xZ9kQRl/jTO7AzR3w3oGPsN9CcyKW+LOjJeLRQt+ba?=
+ =?us-ascii?Q?PezyYxt2NuwxlZNYxaPH945pC68BzqQMmtYAb/POT/6S3gmkx9OfbpNPP3W7?=
+ =?us-ascii?Q?5m6ZQ1Q//aMoSi1pEpAFRJugirIGDzUNc6vLv2PUWgPHW8A9Xf/Mncr2bdun?=
+ =?us-ascii?Q?4ig0f8z8dki62xcazuIOI2yHXsSU7gQq9qmgbDoF+VCv7cgq1y+qqePQrF2T?=
+ =?us-ascii?Q?qLmqA2/Ent+o5WsgG/Zh2OnOhXH8lt7F+DCG1OBMk6E6t9sG5Ipmz3VkltPM?=
+ =?us-ascii?Q?UfMzdTVwFMIKC/KcYyNwde6vCqsfSajoegRiBzf0WPZZ4Xp+mrwv6sYVQ+ST?=
+ =?us-ascii?Q?GJk8nvXJXp+uc95Qqi4VIytanJuDVkMlXc9y7P0BG2mKFkU2mnTDTTJcimRL?=
+ =?us-ascii?Q?27GtLAUeGl+kyxgBlBkXaYoFs6BwmX/0dP9rkqfiTCNaJEe4MZ6jfvfzh20o?=
+ =?us-ascii?Q?vfqrGj9Cjkx4pHgkP5gZLUd9LBzcgcT7ie1ccP0PpKzCBK0Zhe6Qkxx8fQ0D?=
+ =?us-ascii?Q?DZEHUpkoHpuVEYsqhELcoI1q2a5+hA7GxGc42tZjrneLg+VjI+tyvjL6lPm1?=
+ =?us-ascii?Q?Br1bF8+cNkeGvh/OQk3XiTXqM4yty/AV7Vz5QevdkNdCeBsjOKtF7m9+qDS6?=
+ =?us-ascii?Q?rxC+6Dkm1aRWifhTnBOO22dfQPAiB9oUZp5YS3/X09xyhGP72salKof1P609?=
+ =?us-ascii?Q?qFIhYWQBUQfMYmrWXcU5JkMAsBpT93DpmDdnS2J1DWFmcHoWNDMKDau+5pQB?=
+ =?us-ascii?Q?+oNQyr6kpnYHWuzJNcuLmqZWPk0ya5fHwnG/Qs8M6wf+TVONypEO/bmCl+Zk?=
+ =?us-ascii?Q?dh/tzkc/iWSGom58As4=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.12.4
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: DU0PR04MB9417.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 367b39d2-2fca-4488-e9c9-08dc68b5ec48
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Apr 2024 01:36:14.1808
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 0atN7URh+gY0P0KNITzAkv0yOpTVkglvgbndnj20RGB3GIBdGakkjPDInyggwFLAt+VNC8pomknsPtAE0MndPg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9233
 
-We can reduce boilerplate code by using
-devm_regulator_get_enable_read_voltage().
+> Subject: [PATCH 3/8] iio: adc: fsl-imx25-gcq: use 'time_left' variable wi=
+th
+> wait_for_completion_interruptible_timeout()
+>=20
+> There is a confusing pattern in the kernel to use a variable named 'timeo=
+ut' to
+> store the result of wait_for_completion_interruptible_timeout() causing
+> patterns like:
+>=20
+> 	timeout =3D wait_for_completion_interruptible_timeout(...)
+> 	if (!timeout) return -ETIMEDOUT;
+>=20
+> with all kinds of permutations. Use 'time_left' as a variable to make the=
+ code
+> self explaining.
+>=20
+> Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
-
-v2 changes:
-* renamed to devm_regulator_get_enable_read_voltage()
-* restored error message
----
- drivers/input/keyboard/mpr121_touchkey.c | 45 +++-----------------------------
- 1 file changed, 3 insertions(+), 42 deletions(-)
-
-diff --git a/drivers/input/keyboard/mpr121_touchkey.c b/drivers/input/keyboard/mpr121_touchkey.c
-index d434753afab1..0ea3ab9b8bbb 100644
---- a/drivers/input/keyboard/mpr121_touchkey.c
-+++ b/drivers/input/keyboard/mpr121_touchkey.c
-@@ -82,42 +82,6 @@ static const struct mpr121_init_register init_reg_table[] = {
- 	{ AUTO_CONFIG_CTRL_ADDR, 0x0b },
- };
- 
--static void mpr121_vdd_supply_disable(void *data)
--{
--	struct regulator *vdd_supply = data;
--
--	regulator_disable(vdd_supply);
--}
--
--static struct regulator *mpr121_vdd_supply_init(struct device *dev)
--{
--	struct regulator *vdd_supply;
--	int err;
--
--	vdd_supply = devm_regulator_get(dev, "vdd");
--	if (IS_ERR(vdd_supply)) {
--		dev_err(dev, "failed to get vdd regulator: %ld\n",
--			PTR_ERR(vdd_supply));
--		return vdd_supply;
--	}
--
--	err = regulator_enable(vdd_supply);
--	if (err) {
--		dev_err(dev, "failed to enable vdd regulator: %d\n", err);
--		return ERR_PTR(err);
--	}
--
--	err = devm_add_action_or_reset(dev, mpr121_vdd_supply_disable,
--				       vdd_supply);
--	if (err) {
--		dev_err(dev, "failed to add disable regulator action: %d\n",
--			err);
--		return ERR_PTR(err);
--	}
--
--	return vdd_supply;
--}
--
- static void mpr_touchkey_report(struct input_dev *dev)
- {
- 	struct mpr121_touchkey *mpr121 = input_get_drvdata(dev);
-@@ -233,7 +197,6 @@ static int mpr121_phys_init(struct mpr121_touchkey *mpr121,
- static int mpr_touchkey_probe(struct i2c_client *client)
- {
- 	struct device *dev = &client->dev;
--	struct regulator *vdd_supply;
- 	int vdd_uv;
- 	struct mpr121_touchkey *mpr121;
- 	struct input_dev *input_dev;
-@@ -241,11 +204,9 @@ static int mpr_touchkey_probe(struct i2c_client *client)
- 	int error;
- 	int i;
- 
--	vdd_supply = mpr121_vdd_supply_init(dev);
--	if (IS_ERR(vdd_supply))
--		return PTR_ERR(vdd_supply);
--
--	vdd_uv = regulator_get_voltage(vdd_supply);
-+	vdd_uv = devm_regulator_get_enable_read_voltage(dev, "vdd");
-+	if (vdd_uv < 0)
-+		return dev_err_probe(dev, vdd_uv, "failed to get vdd voltage\n");
- 
- 	mpr121 = devm_kzalloc(dev, sizeof(*mpr121), GFP_KERNEL);
- 	if (!mpr121)
-
--- 
-2.43.2
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+> ---
+>  drivers/iio/adc/fsl-imx25-gcq.c | 10 +++++-----
+>  1 file changed, 5 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/fsl-imx25-gcq.c b/drivers/iio/adc/fsl-imx25-=
+gcq.c
+> index 68c813de0605..dabc5303d644 100644
+> --- a/drivers/iio/adc/fsl-imx25-gcq.c
+> +++ b/drivers/iio/adc/fsl-imx25-gcq.c
+> @@ -107,7 +107,7 @@ static int mx25_gcq_get_raw_value(struct device
+> *dev,
+>  				  struct mx25_gcq_priv *priv,
+>  				  int *val)
+>  {
+> -	long timeout;
+> +	long time_left;
+>  	u32 data;
+>=20
+>  	/* Setup the configuration we want to use */ @@ -120,12 +120,12
+> @@ static int mx25_gcq_get_raw_value(struct device *dev,
+>  	regmap_update_bits(priv->regs, MX25_ADCQ_CR,
+> MX25_ADCQ_CR_FQS,
+>  			   MX25_ADCQ_CR_FQS);
+>=20
+> -	timeout =3D wait_for_completion_interruptible_timeout(
+> +	time_left =3D wait_for_completion_interruptible_timeout(
+>  		&priv->completed, MX25_GCQ_TIMEOUT);
+> -	if (timeout < 0) {
+> +	if (time_left < 0) {
+>  		dev_err(dev, "ADC wait for measurement failed\n");
+> -		return timeout;
+> -	} else if (timeout =3D=3D 0) {
+> +		return time_left;
+> +	} else if (time_left =3D=3D 0) {
+>  		dev_err(dev, "ADC timed out\n");
+>  		return -ETIMEDOUT;
+>  	}
+> --
+> 2.43.0
+>=20
 
 

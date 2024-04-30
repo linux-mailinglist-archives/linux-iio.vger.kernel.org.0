@@ -1,60 +1,63 @@
-Return-Path: <linux-iio+bounces-4701-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4702-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB34B8B7D8C
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 18:50:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E148B7E46
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 19:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B79F1F25057
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 16:50:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE013B20B84
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 17:15:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D26641C89;
-	Tue, 30 Apr 2024 16:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09B6417BB0D;
+	Tue, 30 Apr 2024 17:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GYw/+70G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bJMHgM0Q"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1602D3E478;
-	Tue, 30 Apr 2024 16:50:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7D917B4E1;
+	Tue, 30 Apr 2024 17:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714495838; cv=none; b=O+jDpQ3ZdoSZrmQDOnz/mkGDjCCOLH/XZPHfN4fzd/OuGtVphadR53/dwme8idrp6PaH3JZrszEiPCo+r2dQey/4Z/WT6uMgpmSaGIK/nrV9oONtLpXlRYYji8Tlx9b0XheHlyc2yrmcqLe6bmiTnFRDYAujB62RrOR90qrRyN4=
+	t=1714497340; cv=none; b=sOmm1psmO8EN2ZeA2ULpLT1WCOdgxsIMPeEDwirhANXbGl0WwJXYIyL7W0Qx1OWUvnHFUdaX29yoYSKygvWCA2aBqOYlKz1O1gzC1idvPb8DsWUL8xD/THFiF9mUvJksFbEmF7e4xM5BpPprQ/4+sYOyHmRb/dGTz2U7u+KQ7co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714495838; c=relaxed/simple;
-	bh=+8BHDhVWwVu3GS/P6257Ar2vN5PR5hR2kbbOEXpfh2U=;
+	s=arc-20240116; t=1714497340; c=relaxed/simple;
+	bh=LczTJ/3+u06tFbxHtG5qj/8oZxiYyIFvCajsFk4vFgs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Thb/Bc3PKN5aZ1YwRkOXHC0H7xVZpTMH38qc8oAZ2I1avwmUB1Li0OQsA6zdt375UcbKNQRnj6fEBMzxLztJ+WXQnxQWNYSg33QSbtG/arTU/MMSTIK45DGC/MJ3Bz97Ymsy810WhpD25BMdBnjdzEkEguL2uJLVqEtcF+IKsXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GYw/+70G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614C8C4AF19;
-	Tue, 30 Apr 2024 16:50:35 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pm3d8doeaBpEE1lJ5gQgi9L0vUG8as/OZZKt7v9s5OuC9UESrGVp4XFlKy3rcMbIjcFcEORa0vCZ5lpq/OSsOd9sk45cs9rGEOFyh3DkPNjSOqVFakoZran6eokw8dxrcy2pClLBoM5rlnS+JSRvpYAPp+zd/LG+tinBlKuDeyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bJMHgM0Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCC7C2BBFC;
+	Tue, 30 Apr 2024 17:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714495837;
-	bh=+8BHDhVWwVu3GS/P6257Ar2vN5PR5hR2kbbOEXpfh2U=;
+	s=k20201202; t=1714497340;
+	bh=LczTJ/3+u06tFbxHtG5qj/8oZxiYyIFvCajsFk4vFgs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GYw/+70GS/6au2WPmHmgN6Thwkz1jyh5nzE0aVBcHp5R8AGFkbDg/60lLzUON2yOr
-	 0AA7m/Ip0KSjiWokQcRrwufFC2GQiOyYI8peFJVct9i286zTth0Mx3Mj9cO6cYNz0y
-	 SsnJgtdb2oTF9hYObwXKidRNrvCby7x/CqBtrcDEy0JuLqL9XefxqiWRls+HVTudYd
-	 NCwaGXjTbF6CqXi0o++rYtH2vq+E4Q9L+3ZmetFrQsombmGf0Xw/J6tp2J7MTyt9MT
-	 dDdtGCrNSnpPOZ789+Ya2cdSdmR+c4ngEMCL9aSMWZq0RbZWWCB0a/0/avw3rGCUUt
-	 q+Zq1rc0nel8A==
-Date: Tue, 30 Apr 2024 17:50:33 +0100
+	b=bJMHgM0Q0yyZYiaxgiGeYgaz0/y19jSOAE5eh6VN/SWIMPHanu8Q042ONIs/1BNdv
+	 dYclRiMV/z5QXOknvSez2A2H3QL5LrXoXB4wBYoCJG0KEXrt4bZTkcEvXY5yvh+V2F
+	 L2RVs+XHEfeOC+PWV+sQR7gJmBNww97ZyItQhNWhn+/9/FYdB95NE/SEswt6l2nLlr
+	 em7Lspwnwa59wmhI0xVZTLSAdKS2MN3cKnORIWTDuL7bR4a6pNnnVxRZtouZMIXLjk
+	 RYDPWAJXB1sKhdgyiy5ia0gcJoVWoUX88eJKzlZcLItA9PAGsMaPSDh3NVy4Qf6Y2S
+	 dIwltWt7ZmN0g==
+Date: Tue, 30 Apr 2024 18:15:31 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Petar Stoykov <pd.pstoykov@gmail.com>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Angel Iglesias <ang.iglesiasg@gmail.com>,
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
-Message-ID: <20240430-unnamable-wrench-16c9ad780df1@spud>
-References: <CADFWO8GC6RP6A7H-Cq5UZHfBY3VJZTCqssdZet61hH031euhwQ@mail.gmail.com>
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	alexandru.tachici@analog.com, lars@metafoo.de, jic23@kernel.org,
+	robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org, lgirdwood@gmail.com, broonie@kernel.org,
+	andy@kernel.org, nuno.sa@analog.com, marcelo.schmitt@analog.com,
+	bigunclemax@gmail.com, dlechner@baylibre.com, okan.sahin@analog.com,
+	fr0st61te@gmail.com, alisa.roman@analog.com,
+	marcus.folkesson@gmail.com, schnelle@linux.ibm.com,
+	liambeguin@gmail.com
+Subject: Re: [PATCH v7 4/6] dt-bindings: iio: adc: Add single-channel property
+Message-ID: <20240430-perplexed-obedience-91e4bbc158e5@spud>
+References: <20240430162946.589423-1-alisa.roman@analog.com>
+ <20240430162946.589423-5-alisa.roman@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -62,105 +65,83 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="7vbJGUJ6hTxURdMU"
+	protocol="application/pgp-signature"; boundary="PDQmOlRp3irkveLm"
 Content-Disposition: inline
-In-Reply-To: <CADFWO8GC6RP6A7H-Cq5UZHfBY3VJZTCqssdZet61hH031euhwQ@mail.gmail.com>
+In-Reply-To: <20240430162946.589423-5-alisa.roman@analog.com>
 
 
---7vbJGUJ6hTxURdMU
+--PDQmOlRp3irkveLm
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 30, 2024 at 05:27:20PM +0200, Petar Stoykov wrote:
-> From 60f5cc7f65b07124f19428a713c3bc33b9e4a7a7 Mon Sep 17 00:00:00 2001
-> From: Petar Stoykov <pd.pstoykov@gmail.com>
-> Date: Mon, 15 Jan 2024 14:29:25 +0100
-> Subject: [PATCH 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
+On Tue, Apr 30, 2024 at 07:29:44PM +0300, Alisa-Dariana Roman wrote:
+> Devices that have both single-ended channels and differential channels
+> cause a bit of confusion when the channels are configured in the
+> devicetree.
 >=20
-> Sensirion SDP500 is a digital differential pressure sensor. It provides
-> a digital I2C output. Add devicetree bindings requiring the compatible
-> string and I2C slave address (reg).
+> Clarify difference between these two types of channels for such devices
+> by adding single-channel property alongside diff-channels. They should
+> be mutually exclusive.
+
+I think that this mutual exclusion and the requirement for reg in the
+absence of either property should be enforced by the binding, not
+described in a commit message or free-form text in the property
+description.
+
 >=20
-> Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
+> Devices that have only single-ended channels can still use reg property
+> to reference a channel like before.
+>=20
+> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 > ---
->  .../iio/pressure/sensirion,sdp500.yaml        | 39 +++++++++++++++++++
->  1 file changed, 39 insertions(+)
->  create mode 100644
-> Documentation/devicetree/bindings/iio/pressure/sensirion,sdp500.yaml
+>  Documentation/devicetree/bindings/iio/adc/adc.yaml | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/pressure/sensirion,sdp=
-500.yaml
-> b/Documentation/devicetree/bindings/iio/pressure/sensirion,sdp500.yaml
-> new file mode 100644
-> index 000000000000..3cdf17df7d52
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/pressure/sensirion,sdp500.yaml
-> @@ -0,0 +1,39 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/pressure/sdp500.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: sdp500/sdp510 pressure sensor with I2C bus interface
-> +
-> +maintainers:
-> +  - Petar Stoykov <pd.pstoykov@gmail.com>
-> +
-> +description: |
-> +  Pressure sensor from Sensirion with I2C bus interface.
-> +  There is no software difference between sdp500 and sdp510.
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adc.yaml b/Documen=
+tation/devicetree/bindings/iio/adc/adc.yaml
+> index 36775f8f71df..0c3eae580732 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adc.yaml
+> @@ -38,6 +38,14 @@ properties:
+>        The first value specifies the positive input pin, the second
+>        specifies the negative input pin.
+> =20
+> +  single-channel:
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    description:
 
-I see no mention of the sdp510 elsewhere in this patch though..
-If you're trying to add support for both, then add a compatible for the
-sdp510 that falls back to the sdp500.
+> +      When devices combine single
 
-> +
-> +properties:
-> +  compatible:
-> +    const: sensirion,sdp500
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +additionalProperties: false
-
-Other than the fact that a fallback compatible might be required here,
-this looks like a candidate for trivial-devices.yaml.
+s/single/single-ended/, no?
 
 Cheers,
 Conor.
 
+> and differential channels, allow the channel
+> +      for a single element to be specified, independent of reg (as for
+> +      differential channels). If this and diff-channels are not present =
+reg
+> +      shall be used instead.
 > +
-> +examples:
-> +  - |
-> +    i2c {
-> +      #address-cells =3D <1>;
-> +      #size-cells =3D <0>;
-> +      pressure@40 {
-> +        compatible =3D "sensirion,sdp500";
-> +        reg =3D <0x40>;
-> +        vdd-supply =3D <&foo>;
-> +      };
-> +    };
+>    settling-time-us:
+>      description:
+>        Time between enabling the channel and first stable readings.
 > --=20
-> 2.30.2
+> 2.34.1
+>=20
 
---7vbJGUJ6hTxURdMU
+--PDQmOlRp3irkveLm
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZjEhWQAKCRB4tDGHoIJi
-0iePAQCM8ZdEYabBqAZ3/N0J6SbfM2u1yiUsZg8ucnxWo5QYVAD/V4T5PyyBpItg
-Cao4KMUjPMkbCG/iloziUb8n6okN8w4=
-=tRMX
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZjEnMgAKCRB4tDGHoIJi
+0nmFAP0SFmFJ06QVr/ZUb8POUYIM+y3lJg9ACZUMhkbdpdaIbgEAlT+Fr0iOnvsi
+3Fopg90rdUWM/dPtiohMVjLK6+URqA0=
+=6E9G
 -----END PGP SIGNATURE-----
 
---7vbJGUJ6hTxURdMU--
+--PDQmOlRp3irkveLm--
 

@@ -1,218 +1,200 @@
-Return-Path: <linux-iio+bounces-4690-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4691-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B446A8B7CA5
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 18:19:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E03D8B7CE0
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 18:30:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 437F01F2480C
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 16:19:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AD19B21172
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 16:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA4C317556B;
-	Tue, 30 Apr 2024 16:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54800172BBF;
+	Tue, 30 Apr 2024 16:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="10DWIIV7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VJlZ6dXp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC8D176FAC
-	for <linux-iio@vger.kernel.org>; Tue, 30 Apr 2024 16:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A53B17B4F5;
+	Tue, 30 Apr 2024 16:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714493958; cv=none; b=C4GgVOSqxM+aQVytwtcajs6jnwEkssPgG3737yffYYn+7Euhtg40Icy4MtA+8lPFYotbnUIC+C8w1muAbLkNe7WFliVtrm9R/g2pkp9liVvNFZlyF/1PJbVdBQ3apVydqyRAsQOKeMt3/98mVCaKW3WK7kHf+OXMQykYP9ehw/0=
+	t=1714494600; cv=none; b=R9dEsjLRoFDeJ/w6LhmSQc4OQ701NR3JK+NcrcCKyAbp/eBYBAyeqvZaRTYqOupExfHSjP/EYkUJ7GErlfOnp3NP1BIxoXyJlCZAJUfQPhNbEcKuG3NIwroZaIGXpgzlwiXZb2nY00zQnb2cUtIqZH1/gFr3cofFu3ZvXzobzLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714493958; c=relaxed/simple;
-	bh=J44hCCyxD35NbqWW6nQLBqBSODmWNn0Dexkak4J/EvQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LW9Rh+7dRo4wDLq85b4WMssjitKVpO/i5ippqC828CA0JdvUm7pJmj0lkvk3J+0cWsExrlbFYwuXkPKDHeMlWP2/uMBL05kLDBfj/J9n4wIhoX9fzjJVx756Dfh/beiFSV42eZNiSw4hiaOQxi6WGQKOX9TwJyG1rnDuZ5vFZxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=10DWIIV7; arc=none smtp.client-ip=209.85.208.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2dae975d0dcso72279381fa.1
-        for <linux-iio@vger.kernel.org>; Tue, 30 Apr 2024 09:19:14 -0700 (PDT)
+	s=arc-20240116; t=1714494600; c=relaxed/simple;
+	bh=uFNfjZwNfsMbmzivDYpvkjkobl1t9QD8f//b+VnosG4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d2diEpo3XgJVQ2/U0jhVYjoqiWaOC2Sj89DmL4LBoOptBi58C4Xh/NdHcfNXQyeNvQ/ppYLkm42jaxyJbVk47QPfPhpmN3MyiO/b5LnxqViolf6bBfxm4I1hSNYlsChdTI4S/YBRmQ3u11iBZkoh4Ye5vaDpYJ71T0agBCtFv9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VJlZ6dXp; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-41ba1ba55ffso25411375e9.1;
+        Tue, 30 Apr 2024 09:29:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1714493953; x=1715098753; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EYdB/zYMgqlA7okFvLjIPPWUlhTGwRwh73eiOLj9MZw=;
-        b=10DWIIV7lFrlwECtQ+gLiDg8MMuhXsRtzC/FDf4WbC1nhsxE+rB3dP9gXWEoZx8ey3
-         CfBdGszghuUQBfBtByeHtFLh0ChHCA5/oFG3clQRcdGGqTNBPa0wVNJE9f6pbcXyU87O
-         AKzsaY9d13YfZ5RHT04c/OIeP1STbjgtD+ADg5iXQ23TmqWf2FW+nuo5Xm9kut0npnQb
-         SAJwnNxo26e3tcHPtO6Yttq74QxTJJHFqsadVTNACUXyzSgmOvpp+5+Wuw3sgLpIQSS3
-         BFF+j8tA7syaoOsC9LOJASeHrjzr7cfsvbrGGH+TDj9Q4N2olM3sr/G4bSy6Rm+Sas8W
-         P3xw==
+        d=gmail.com; s=20230601; t=1714494597; x=1715099397; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qe410Y7Pw3RLVaHlgFyU3e1PRJtNfNOnZTPvy+S7FYM=;
+        b=VJlZ6dXpz8v7RFPUey1UPAbECo+Cvb8n0sT3bKOq90OqP8CSxoGfF0PdQXLvLd4Md8
+         8B6AX1U75jPfY+UeW60+Ry0fQ5Jblt986yehh5r72KRl2YN3tpFCgwgtsQ8LOplNLZyi
+         qoVAIa2o/5MWJ6fQ4s6/6hsWbQvuMe0nfFdDRV2I8GRnRLZuCh49M5eMQafCmBkrx/E4
+         wQ2SP54Le73ofeU7vF2onqTnQJO1dEBmzd7UtJODT5oPn9OrfDHDi/uRFNEHRFLXZS/a
+         jTrLxb9uMW/a2CUHpf4010aDXiSaxGmF1H4zEwHW2Jg64xx4+xeM0ittTK1+1P6Z9cLn
+         PmJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714493953; x=1715098753;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EYdB/zYMgqlA7okFvLjIPPWUlhTGwRwh73eiOLj9MZw=;
-        b=BCFnA9ksARfVIG1ZeFoEJ4KPyX7ZBOM5oV+uKkZLSHw7n7YAHzqlnxx6qf+/40B6f5
-         ue6e5I9LDU03uYojrPM4nBHbjtfLatvtNroVkJEpMe7QHhZsgVvvL+/ZcpV68kN1GBhC
-         j9KyFYsBGfwBtzJLO+phKMqfynfbmeNv3WNK7QxmLVa4O/tBvYUyGBZayqfU/3gLAKNJ
-         J/t6XcrkeswuMukMGUthGFiB5Q2wvlJ67/UvXUaJA/3C5tW4Uyp6Smq1uz1oX7sNGdQ+
-         IpL3lQRgGzV6LAzDX+pggNidRX6xq+lMSAbKiASLuIlN7+U+PKk+Jhwr8f0it4bNGAP0
-         FjYA==
-X-Forwarded-Encrypted: i=1; AJvYcCUE8qNvyExxfaxyHB51ARC1RGQ5RSFyT+POcaCj6S1qBAbEMBkrSgnYwHPZgqd0s6WuTKN2caCySgcsYUS3vlXBE5l3ejkLCXfk
-X-Gm-Message-State: AOJu0YwfPkKtnk8nkn5gz2oKu4UvRTc+gd5ZDepY5+gFSnMZy/f5jJuY
-	q67YcRiuKbOvQECIelSmJfiqaeIQdjei6y9lQhxSVldaHza0xV2un991dhBAUkH7bZTjM9BmgfQ
-	D23nNgTOMiZgzutYKjzpiqCjzCB58xA7ZjLMhNg==
-X-Google-Smtp-Source: AGHT+IHNUEuRQYO/ery9q1WbMjDy+FPeaxsW7gh/vbOG22U6B5PZTmXy7tHPumx1KaMD3DrYzbtRncJOi4/QHYWE08I=
-X-Received: by 2002:a2e:3515:0:b0:2de:6f52:5c8d with SMTP id
- z21-20020a2e3515000000b002de6f525c8dmr73932ljz.21.1714493953250; Tue, 30 Apr
- 2024 09:19:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1714494597; x=1715099397;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qe410Y7Pw3RLVaHlgFyU3e1PRJtNfNOnZTPvy+S7FYM=;
+        b=XfD+phgmAegHcbHHXaB+xHM6SzbDNyhlrbZ20KGulwwe+JYZVcgp2HVh72RvmINrQK
+         3PKULS6PcCKnTAasUegFvy6POIC2FY0TH4Xk3FDjETBuJBPLWrMsiKwl6wH9+lLP4IkW
+         cUd6BkwzjUAB+yRYB1kQWIwIaMAqJrmL4ylCinZGBlAYJpAQOm9NxgVsHHJG4NAWanNa
+         CG/Lsk0hPKPA7Auf5llGttCYtMdHp9iQSz4sxle+dUOQOIvgGSt/gkm6AbP8wn9s6l+M
+         PXBvqjZbvxhdPCq/HKDI07f9VJfazyBIG4igFzgpPmc1zQesQywP1Ao7N9wdL9M34Qqo
+         6ftw==
+X-Forwarded-Encrypted: i=1; AJvYcCWUXDvVjz619aNYaYqD2kECC9LF2J2L1fUKmnRlUB4XjRISuisKo3r1orbm2pV/dFC0dBW7AuqIvP0fW3v4L0X6b0XHLQT6lJWaHSMLCivcjB5fb9u/Btyqe6I0/gPPLb21QJWj2+tfKs+tYAc5B3m5JDCrZXiS6eYiUZInT0y4k8Hvpg==
+X-Gm-Message-State: AOJu0Yx0t03nFS7vPWhUP0FJhXf3tLYJEOWcXvhIh8EZN/osymg3b7wv
+	72fdMpuPexdiUHIpWw0zBCgxmQTsXCid1z887+HJvedoocHIFiUb
+X-Google-Smtp-Source: AGHT+IF+1JSopzVdrR085zsb7AjrHP/1qo8VJhUCEuReCpMNFh9Co95SKbsN4Yd9Wxpe8oRj3cy5mg==
+X-Received: by 2002:a05:600c:4f91:b0:418:5ef3:4a04 with SMTP id n17-20020a05600c4f9100b004185ef34a04mr335696wmq.18.1714494596312;
+        Tue, 30 Apr 2024 09:29:56 -0700 (PDT)
+Received: from spiri.. ([2a02:2f08:a105:8300:da4d:6b2c:f166:22e6])
+        by smtp.gmail.com with ESMTPSA id h15-20020a05600c350f00b00418d68df226sm46505396wmq.0.2024.04.30.09.29.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Apr 2024 09:29:56 -0700 (PDT)
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
+To: michael.hennerich@analog.com,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: alexandru.tachici@analog.com,
+	lars@metafoo.de,
+	Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	robh@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	conor+dt@kernel.org,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	andy@kernel.org,
+	nuno.sa@analog.com,
+	marcelo.schmitt@analog.com,
+	bigunclemax@gmail.com,
+	dlechner@baylibre.com,
+	okan.sahin@analog.com,
+	fr0st61te@gmail.com,
+	alisa.roman@analog.com,
+	marcus.folkesson@gmail.com,
+	schnelle@linux.ibm.com,
+	liambeguin@gmail.com
+Subject: [PATCH v7 0/6] iio: adc: ad7192: Add AD7194 support
+Date: Tue, 30 Apr 2024 19:29:40 +0300
+Message-Id: <20240430162946.589423-1-alisa.roman@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
- <20240429-regulator-get-enable-get-votlage-v2-1-b1f11ab766c1@baylibre.com>
-In-Reply-To: <20240429-regulator-get-enable-get-votlage-v2-1-b1f11ab766c1@baylibre.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 30 Apr 2024 11:19:01 -0500
-Message-ID: <CAMknhBG2ySYNEvghnO63wE=x6W8jk0-T2oWZKeXApM_d_eeoCw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] regulator: devres: add API for reference voltage supplies
-To: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
-	Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>, 
-	Jonathan Cameron <jic23@kernel.org>, Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Support Opensource <support.opensource@diasemi.com>, 
-	Cosmin Tanislav <cosmin.tanislav@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Antoniu Miclaus <antoniu.miclaus@analog.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev, 
-	linux-input@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Apr 29, 2024 at 6:40=E2=80=AFPM David Lechner <dlechner@baylibre.co=
-m> wrote:
->
-> A common use case for regulators is to supply a reference voltage to an
-> analog input or output device. This adds a new devres API to get,
-> enable, and get the voltage in a single call. This allows eliminating
-> boilerplate code in drivers that use reference supplies in this way.
->
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
->
-> v2 changes:
-> * removed dev_err_probe() on error return
-> * dropped optional version of the function since there is no more
->   difference after dev_err_probe() is removed
-> * renamed function to devm_regulator_get_enable_read_voltage()
-> * added unwinding on error paths
-> ---
->  Documentation/driver-api/driver-model/devres.rst |  1 +
->  drivers/regulator/devres.c                       | 59 ++++++++++++++++++=
-++++++
->  include/linux/regulator/consumer.h               |  7 +++
->  3 files changed, 67 insertions(+)
->
-> diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documenta=
-tion/driver-api/driver-model/devres.rst
-> index 7be8b8dd5f00..18caebad7376 100644
-> --- a/Documentation/driver-api/driver-model/devres.rst
-> +++ b/Documentation/driver-api/driver-model/devres.rst
-> @@ -433,6 +433,7 @@ REGULATOR
->    devm_regulator_bulk_put()
->    devm_regulator_get()
->    devm_regulator_get_enable()
-> +  devm_regulator_get_enable_read_voltage()
->    devm_regulator_get_enable_optional()
->    devm_regulator_get_exclusive()
->    devm_regulator_get_optional()
-> diff --git a/drivers/regulator/devres.c b/drivers/regulator/devres.c
-> index 90bb0d178885..4f290b9b559b 100644
-> --- a/drivers/regulator/devres.c
-> +++ b/drivers/regulator/devres.c
-> @@ -145,6 +145,65 @@ struct regulator *devm_regulator_get_optional(struct=
- device *dev,
->  }
->  EXPORT_SYMBOL_GPL(devm_regulator_get_optional);
->
-> +/**
-> + * devm_regulator_get_enable_read_voltage - Resource managed regulator g=
-et and
-> + *                                          enable that returns the volt=
-age
-> + * @dev: device to supply
-> + * @id:  supply name or regulator ID.
-> + *
-> + * Get and enable regulator for duration of the device life-time.
-> + * regulator_disable() and regulator_put() are automatically called on d=
-river
-> + * detach. See regulator_get_optional(), regulator_enable(), and
-> + * regulator_get_voltage() for more information.
-> + *
-> + * This is a convenience function for supplies that provide a reference =
-voltage
-> + * where the consumer driver just needs to know the voltage and keep the
-> + * regulator enabled.
-> + *
-> + * In cases where the supply is not strictly required, callers can check=
- for
-> + * -ENODEV error and handle it accordingly.
-> + *
-> + * Returns: voltage in microvolts on success, or an error code on failur=
-e.
-> + */
-> +int devm_regulator_get_enable_read_voltage(struct device *dev, const cha=
-r *id)
-> +{
-> +       struct regulator *r;
-> +       int ret;
-> +
-> +       /*
-> +        * Since we need a real voltage, we use devm_regulator_get_option=
-al()
-> +        * rather than getting a dummy regulator with devm_regulator_get(=
-) and
-> +        * then letting regulator_get_voltage() fail with -EINVAL. This w=
-ay, the
-> +        * caller can handle the -ENODEV error code if needed instead of =
-the
-> +        * ambiguous -EINVAL.
-> +        */
-> +       r =3D devm_regulator_get_optional(dev, id);
-> +       if (IS_ERR(r))
-> +               return PTR_ERR(r);
-> +
-> +       ret =3D regulator_enable(r);
-> +       if (ret)
-> +               goto err_regulator_put;
-> +
-> +       ret =3D devm_add_action_or_reset(dev, regulator_action_disable, r=
-);
-> +       if (ret)
-> +               goto err_regulator_put;
-> +
-> +       ret =3D regulator_get_voltage(r);
-> +       if (ret < 0)
-> +               goto err_release_action;
-> +
-> +       return 0;
+Dear maintainers,
 
-Oof. Apparently I didn't test this as well as I should have after
-adding the unwinding. This obviously should return ret, not 0.
+Thank you all for the feedback!
 
-I did more extensive testing today, including faking error returns to
-test unwinding to make sure I didn't miss anything else.
+I am submitting the upgraded series of patches for the ad7192 driver.
 
-> +
-> +err_release_action:
-> +       devm_release_action(dev, regulator_action_disable, r);
-> +err_regulator_put:
-> +       devm_regulator_put(r);
-> +
-> +       return ret;
-> +}
-> +EXPORT_SYMBOL_GPL(devm_regulator_get_enable_read_voltage);
-> +
+Please consider applying in order.
+
+Thank you!
+
+v6 -> v7
+  - patch1: move mutex lock and unlock to protect whole switch statement
+  - patch3: use NANO from units.h
+  - patch3: add comment
+  - patch3: use dev_err_probe
+  - patch4: new patch to add single-channel property
+  - patch5: modify maximum number of channels to include single-ended channels
+  - patch5: add single-channel property to bindings for single-ended channels
+  - patch5: modify example to include single-channel property
+  - patch5: modify channel pattern to "^channel@[0-9a-f]+$"
+  - patch5: modify required properties for channel node
+  - patch6: add function to validate ain channel
+  - patch6: remove function to parse one channel
+  - patch6: single-ended channels are now also configured in the devicetree
+  - patch6: modified some names to reflect the changes
+
+v5 -> v6
+  - protect ad7192_update_filter_freq_avail with lock
+  - better bindings description for AINCOM
+  - the pseudo-differential channels are no longer configured as differential
+    when aincom supply is not present in devicetree, in this case the offset for
+    the channels is set to 0
+  - because of the above change, there is no longer a need for multiple channel
+    options
+  - correct channels regex in bindings
+  - no need to move chip_info anymore
+  - change names to ad7194_parse_channel/s
+  - add else statement to highlight parse_channels effect
+
+v4 -> v5
+  - add aincom supply as discussed previously
+    https://lore.kernel.org/all/CAMknhBF5mAsN1c-194Qwa5oKmqKzef2khXnqA1cSdKpWHKWp0w@mail.gmail.com/#t
+  - ad7194 differential channels are now dynamically configured in the
+    devicetree
+
+v3 -> v4
+  - drop device properties patch, changes already applied to tree
+  - change bindings and driver such that for AD7194 there are 16
+    differential channels, by default set to AINx - AINCOM, which can be
+    configured in devicetree however the user likes
+  - corrected mistake regarding positive and negative channel macros:
+    subtract 1 from the number corresponding to AIN input
+
+v2 -> v3
+  - add precursor patch to simply functions to only pass
+    ad7192_state
+  - add patch to replace custom attribute
+  - bindings patch: correct use of allOf and some minor changes to
+    the ad7194 example
+  - add ad7194 patch:
+    - use "ad7192 and similar"
+    - ad7194 no longer needs attribute group
+    - use callback function in chip_info to parse channels
+    - move struct ad7192_chip_info
+    - change position of parse functions
+  - drop clock bindings patch
+
+v1 -> v2
+  - new commit with missing documentation for properties
+  - add constraint for channels in binding
+  - correct pattern for channels
+  - correct commit message by adding "()" to functions
+  - use in_range
+  - use preferred structure in Kconfig
+
+Kind regards,
+
+Alisa-Dariana Roman (6):
+  iio: adc: ad7192: Use standard attribute
+  dt-bindings: iio: adc: ad7192: Add aincom supply
+  iio: adc: ad7192: Add aincom supply
+  dt-bindings: iio: adc: Add single-channel property
+  dt-bindings: iio: adc: ad7192: Add AD7194 support
+  iio: adc: ad7192: Add AD7194 support
+
+ .../devicetree/bindings/iio/adc/adc.yaml      |   8 +
+ .../bindings/iio/adc/adi,ad7192.yaml          |  95 +++++++
+ drivers/iio/adc/Kconfig                       |  11 +-
+ drivers/iio/adc/ad7192.c                      | 245 ++++++++++++++----
+ 4 files changed, 309 insertions(+), 50 deletions(-)
+
+-- 
+2.34.1
+
 

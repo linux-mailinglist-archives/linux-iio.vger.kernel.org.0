@@ -1,145 +1,161 @@
-Return-Path: <linux-iio+bounces-4675-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4676-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B13F8B75A1
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 14:24:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0999E8B7605
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 14:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36F6128406D
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 12:24:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A3ED1C221E0
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 12:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ABD713F430;
-	Tue, 30 Apr 2024 12:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537F5171093;
+	Tue, 30 Apr 2024 12:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d2Komikw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bv1MIeo5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECEC13D633;
-	Tue, 30 Apr 2024 12:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2417605D;
+	Tue, 30 Apr 2024 12:44:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714479836; cv=none; b=Io1E1i+1VNtJbAg+N+8P/Yq26MobyOI8MnIgx/dW6fFbyass4WdFCIzlggvpitUZ1EMVGyOiSV/ZqbmBN4YrXhGK6yvKweovbBW3UvIr/l5HqtW3asFlvculyKQrCgpyMuB2k+NqwxVmEw5dwQ8jqXjvaa0XA9AihJfQZCuK/Ko=
+	t=1714481075; cv=none; b=CBdL02DoIm0ZL58+JLn2dhL+zaL4sfZaml3Mn0bD4cM11Fay32yDUFI9dpg+XZaroHiHhDvu/6/YN9ZEY1qcYHkXXScs9Cdwm2wkKG4P4P239EoJUW34+/8dSrSNFtV/DD1AabP332y12F5BaebnqagIWYVtqUNLYbFnlqIAPk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714479836; c=relaxed/simple;
-	bh=WWLv3CHIm9s7TAl+zioxwnWBii/PyN3HMDQfYT3g4Zc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pxx2WNKM7EHOibs8+1ukAGTZWT0yoh5zD6qXAB6aQhP0KRooxWY04XAU4jOjGHUwTYKtkQRCSOAd3XajmEHoap+wGjDuFEnpTzsTFHJVQ9hH3pZNi0ciwWJc4qzD4oVDRVLiyskPQFDJINuyuBQJH2kbJRvFYzKIPEU2Pkbktsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d2Komikw; arc=none smtp.client-ip=209.85.208.169
+	s=arc-20240116; t=1714481075; c=relaxed/simple;
+	bh=/Yvt03kHdz4fltxWLtTL3vYA0LWtKZdULcGIpv78q48=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=VbVgpd7s61UsnoXBjmdFupH6+1x6aDUQzqjC12H05I6Bo37pd1Jaq6EQ/Smcyhi5rFILVFz5zc1P/WBGITSQqpBSYJ5qChqeMvSu0nPkxrprpzZgcEJRLbgLZ4r035T1B+N5UODwQneOzCNNLkXK+qB5dPvgXN6UE1ME50DtCls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bv1MIeo5; arc=none smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2dd6c160eaaso68524471fa.1;
-        Tue, 30 Apr 2024 05:23:54 -0700 (PDT)
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-51abd9fcbf6so9429076e87.1;
+        Tue, 30 Apr 2024 05:44:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714479833; x=1715084633; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=a3HAypglzqN6U0QsC7A4U1xuU1yi1lv7rpj/nALDr2w=;
-        b=d2Komikwmnz2m4qkDwihKKLLrLRq4RAzqBrGrI0VP3UUiXKyo7vyHqs78BinzA45k2
-         GNw/ACHP29q+1LgmpHSHYndN8VnEwqtuBTWiupnSiXAYonMD6qnShrFNvM6rBb4Rz4H5
-         QshDK2PnQLH8fsbPQKNY1v3sEbJW8CX1ZHhW5pnJOnTNh2MWvWZbs+6FBC8AM+oKnE+J
-         3ktNnzkuze+TqwBcX1pVmDt7PhTUNFsNU6AD7F8ertgD3mEJWQ2zOxzNGQspOEr1Lujq
-         Rdk+SerZla3U4s7thEICDSHThdbngshL1T1VFpdxjJFsIEoTzatMS9BjcHv+ZMSU32xG
-         q7hw==
+        d=gmail.com; s=20230601; t=1714481072; x=1715085872; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tTSdWqmsEMuSirKG9b5C6k9DmPC8k9s523s5s2x2S+s=;
+        b=Bv1MIeo550qRDFmtSY4FRVWEhwO8buxcn5XH+WQhuILBNtCRf8WRqAJVd3OZzlhV8H
+         dPKXqyeqUpj8xXIZtyL+4YP+IGwglBE4jnjRaYEzIFEAUlwwYgZMy2cEL9waKSotNPUn
+         BGirBbyFf73r4mges6eWfg9awB+AE3DT49I6zVxDOXf/gsQSgPieh5Rih357HXEeGani
+         yGiG/ivpF7GbRMEEDjC+Edwc8CJFJCSlEBGsqF4F4BHtNCFyrnKv27/3JnTxnuUjYhEi
+         vX1o1rGNHYM08TLuAg10kEbEV2jgDdTLhM5h8Ewv6FpaYWCoc2/ISlAOXCD8qBJjzY0f
+         sbXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714479833; x=1715084633;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a3HAypglzqN6U0QsC7A4U1xuU1yi1lv7rpj/nALDr2w=;
-        b=a2mKRNi45y0i3V8xZoykYbYoIxI3Ujq2E0DVkC0Aq1PXqGkqJmfaVH6t3zfjb17twg
-         I55Jk1ly40A0ONBnvGcK2ltUNh10gkomJ1Q2uW1ijDcmXYrx6HSQvm7FlFQhNCnfFgMi
-         P/3Cn45/Iq/F0FEKQk46kyzDDyRxirfOFRBB0RkMn7YKd6O62a3l+ORLJbMQmtBDOtdD
-         +LR5Vuu2kBKWyx65YD0u0QzGAy10ElvupRJsldQtl3Qsy6oKgXUosW9Lzw+CIHFtVMLj
-         9ugrkaW2x9QkgZVqZV/Ni916OBVVjD4F5teBUzDMbG2bwPtrQ6qU79wrvipuC6bY3jpb
-         awBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUMdFUZKBrTZZqFpIA2+8aDzrjfc3VNV75UosHdTVhY8daVU9/EGNFqe/ketH6D0B3ZA4VNi8O7QGkrNINuCiYk77FjOJK6XYC3YWoLz1UxA8m6lw7dWiHZcph8NxJWIYcb8onECsU0
-X-Gm-Message-State: AOJu0Yxhf7JVvXzUDRrYDHY59a4MQgOvOdv/POZOE1Q4NW2YbLXYIQ94
-	y0I3om1cE3xw5cPOJf/rugh8p1zcrfhz+LszMHpuRVBwISyp03gu3gdmIA==
-X-Google-Smtp-Source: AGHT+IHEVfzlX0uNTD10J6KfMRRtL5PFFP9TO8mxGuF4fj5hAI1IdFduDv9u/aUE0QgVJkosFQjAig==
-X-Received: by 2002:a2e:8348:0:b0:2de:d4df:54b8 with SMTP id l8-20020a2e8348000000b002ded4df54b8mr10750866ljh.7.1714479833111;
-        Tue, 30 Apr 2024 05:23:53 -0700 (PDT)
-Received: from debian ([93.184.186.109])
-        by smtp.gmail.com with ESMTPSA id h13-20020a05600c314d00b0041ac4aafd3dsm26535780wmo.12.2024.04.30.05.23.52
+        d=1e100.net; s=20230601; t=1714481072; x=1715085872;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tTSdWqmsEMuSirKG9b5C6k9DmPC8k9s523s5s2x2S+s=;
+        b=QvTMJuUi9u9GhuXvxdEO7lhf2qjttK6xPA/UJuwzu+M494fbzFRcwZ0+zp9KZB81OV
+         4CJ4IC/mj/QL2kjUtVBMyZOFPzpS6naSzCOOwnWiN49IRpcnomXzqcKQtNpxD3Tyf8zj
+         irCrVdfoiU4uVnQ40bAtnp3BgtYUFZ5zeVK5dpVGcBn/i+mjxfL1g3BDXEeFQqAdkv5h
+         JEQGkGkT+1ViC1U65SOAE5x33rXBg9KoWo9jg/KoGJM+Kp1zhDnxLY8s39LwQYlSbY6R
+         +en88TutC4oqNY8GaexiHLASchmfHlPHSCikc8nxLuKUJOPWle0ayJQpjUdNyhgU/Fs9
+         bibg==
+X-Forwarded-Encrypted: i=1; AJvYcCVIhZjWMtbqqW0p2P3xEQYwSSMEHxVPPNkDA5LeeU4rw8GM59vODWkYXVWCgc15slkHjMTdMd0S1+Y0v0oyzAd86ScURd96hnDTqnn4liEYwtaPmWbh7+YbxOClLUI//rdG0SwwwJwM
+X-Gm-Message-State: AOJu0YzryFrTxPYwcvNq9qx3oE3up/vNigH/9LpLBXDsQ2WhZcm2zeyt
+	XBta16newhjHuOvQLYIWAHG1ulR1j/NGwqhlLNnLoYFw3tmZ21fw
+X-Google-Smtp-Source: AGHT+IFUSz2MKXUvBgYxQ7TS54gzoecJ2/E53DIUXWfY1h6FHzk/cKCarGGGajSLxrJlcjLky3D7MQ==
+X-Received: by 2002:a19:3855:0:b0:51b:9254:91e7 with SMTP id d21-20020a193855000000b0051b925491e7mr9687250lfj.61.1714481071503;
+        Tue, 30 Apr 2024 05:44:31 -0700 (PDT)
+Received: from fedora ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id g29-20020a0565123b9d00b0051d807addd7sm924835lfv.60.2024.04.30.05.44.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Apr 2024 05:23:52 -0700 (PDT)
-Date: Tue, 30 Apr 2024 14:23:50 +0200
-From: Dimitri Fedrau <dima.fedrau@gmail.com>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Andrew Hepp <andrew.hepp@ahepp.dev>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/5] iio: temperature: mcp9600: Share scale by all
- channels
-Message-ID: <20240430122350.GB46332@debian>
-References: <20240430120535.46097-1-dima.fedrau@gmail.com>
- <20240430120535.46097-3-dima.fedrau@gmail.com>
- <20240430130934.00006d33@Huawei.com>
+        Tue, 30 Apr 2024 05:44:30 -0700 (PDT)
+Date: Tue, 30 Apr 2024 15:44:26 +0300
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+To: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>
+Cc: Matti Vaittinen <mazziesaccount@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Chenyuan Yang <chenyuan0y@gmail.com>
+Subject: [PATCH v2 0/2] Fix the iio-gts-helpers available times table sorting
+Message-ID: <cover.1714480171.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="NpeaS0ulSzfWY1q6"
+Content-Disposition: inline
+
+
+--NpeaS0ulSzfWY1q6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240430130934.00006d33@Huawei.com>
+Content-Transfer-Encoding: quoted-printable
 
-Am Tue, Apr 30, 2024 at 01:09:34PM +0100 schrieb Jonathan Cameron:
-> On Tue, 30 Apr 2024 14:05:32 +0200
-> Dimitri Fedrau <dima.fedrau@gmail.com> wrote:
-> 
-> > Move bit IIO_CHAN_INFO_SCALE from info_mask_separate to
-> > info_mask_shared_by_all since temperature format is the same for all
-> > channels.
-> > 
-> > Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-> 
-> Whilst this shouldn't be a problem for well behaved userspace,
-> it is an ABI change so as a general rule we don't 'fix' cases like
-> this once they have been in a kernel release.
-> 
-> We may be break someone's hand crafted scripts :(
->
-Ok, will remove the patch from the series.
+Fix the available times table sorting in iio-gts-helpers
 
-Best regards,
-Dimitri Fedrau
+This series contains a fix and test for the sorting of the available times =
+in
+IIO-gts helpers. Fix was originally developed and posted by Chenyuan Yang.
 
-> 
-> > ---
-> >  drivers/iio/temperature/mcp9600.c | 8 ++++----
-> >  1 file changed, 4 insertions(+), 4 deletions(-)
-> > 
-> > diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
-> > index e277edb4ae4b..74e0782fb073 100644
-> > --- a/drivers/iio/temperature/mcp9600.c
-> > +++ b/drivers/iio/temperature/mcp9600.c
-> > @@ -28,16 +28,16 @@ static const struct iio_chan_spec mcp9600_channels[] = {
-> >  		.address = MCP9600_HOT_JUNCTION,
-> >  		.channel2 = IIO_MOD_TEMP_OBJECT,
-> >  		.modified = 1,
-> > -		.info_mask_separate =
-> > -			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> > +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SCALE),
-> >  	},
-> >  	{
-> >  		.type = IIO_TEMP,
-> >  		.address = MCP9600_COLD_JUNCTION,
-> >  		.channel2 = IIO_MOD_TEMP_AMBIENT,
-> >  		.modified = 1,
-> > -		.info_mask_separate =
-> > -			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-> > +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SCALE),
-> >  	},
-> >  };
-> >  
-> 
+Revision history:
+	v1 =3D> v2:
+	  - Fix the sender for patch 1/2 (Sic!)
+	  - Fix Co-Developed-by tag (drop this from Chenyuan who
+	    is the original author)
+	  - Fix the From: tag as instructed in:
+	    https://www.kernel.org/doc/html/latest/process/submitting-patches.html
+
+---
+
+Chenyuan Yang (1):
+  iio: Fix the sorting functionality in iio_gts_build_avail_time_table
+
+Matti Vaittinen (1):
+  iio: test: gts: test available times and gains sorting
+
+
+Chenyuan Yang (1):
+  iio: Fix the sorting functionality in iio_gts_build_avail_time_table
+
+Matti Vaittinen (1):
+  iio: test: gts: test available times and gains sorting
+
+ drivers/iio/industrialio-gts-helper.c | 7 +++++--
+ drivers/iio/test/iio-test-gts.c       | 8 +++++---
+ 2 files changed, 10 insertions(+), 5 deletions(-)
+
+
+base-commit: 4cece764965020c22cff7665b18a012006359095
+--=20
+2.44.0
+
+
+--=20
+Matti Vaittinen, Linux device drivers
+ROHM Semiconductors, Finland SWDC
+Kiviharjunlenkki 1E
+90220 OULU
+FINLAND
+
+~~~ "I don't think so," said Rene Descartes. Just then he vanished ~~~
+Simon says - in Latin please.
+~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
+Thanks to Simon Glass for the translation =3D]=20
+
+--NpeaS0ulSzfWY1q6
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmYw55oACgkQeFA3/03a
+ocWF5ggAuByumeygBiPFzwl0SZ4N4Ej22D4G9diTtx7GbbXwccwmSGONRLEGB5PQ
+7mbHeoZRBP1d37K3/F+GZddZW6L0r7vENiHmVeSpJ4fA2R+ZTaU5DWlob4vwQmHL
+1onSQvhxkplJC+04Bsjg3L40S2lJtPsB7j+szaaJPqVMQrRXoJgAIawsmbqXq0Lv
+0zwRX91+hXuDRIRJo0AY6zR17cdnSA6FOxYZ7lZNYFIv/pMAg/AYMi0zrirWPGGc
+V/NpR6aUidgEe7txlJ5Zeh4EpxBkGomRc8jIbxy+fp1j1Bua8v9atW3VhjTp92i5
+ZifZvQ16KCqM0Z+KNAw2tel8986ecA==
+=j9P7
+-----END PGP SIGNATURE-----
+
+--NpeaS0ulSzfWY1q6--
 

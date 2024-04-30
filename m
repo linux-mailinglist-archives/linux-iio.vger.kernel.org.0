@@ -1,362 +1,307 @@
-Return-Path: <linux-iio+bounces-4697-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4698-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 723608B7CF3
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 18:31:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F278B7CFA
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 18:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2536C283373
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 16:31:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 113E4281563
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 16:32:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AD5E181B98;
-	Tue, 30 Apr 2024 16:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0825ADDBE;
+	Tue, 30 Apr 2024 16:31:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SGET+pKg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fdqyy9LN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B89E17F38D;
-	Tue, 30 Apr 2024 16:30:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F452B660;
+	Tue, 30 Apr 2024 16:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714494621; cv=none; b=uveqouILYWHU+UDvlG9Tfm1ZWogT6srao8xa+YuidG8tZcRhXEuTmKQWB0t5WubEA4DWaOV9xJi/m/ESD6WSb6DSczPQkDLjTuWSCxoBW35kT47SrXk7MVssxBB6XpVE5oLePm7PvnC5leWaf7XZGajgyY9QrF4Qes856rTBOMU=
+	t=1714494709; cv=none; b=Su21bLtsFjrooZLVyrMKSeyVkp67w3af0w3E+35ji4yxeaJtwUu2AE1J3s7k8NVGEkNFQqYLs32aJvbxzC6VNMd9kpR4hkIajFSNKqwcMpiit1ED9yASZGTjcpqlSkX9OvyKOtyvKq0ypOYEukSTTVqBcXwPrOPyC/4kt+PJRkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714494621; c=relaxed/simple;
-	bh=Fot0dcyZZMSS29uGds9STubq37gcg7XH5YpiRTjsTIc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dLnlSKt2ZR267JrmaFhbTlU5Aet7CsOSzpA30bWewvuP9kN/OnV3Q4PhbbkoidlN0LcRbesC3HQBsjsFnFuw9XHPnU77kXVaDr+DEp2lz0kvytYdedAvyIHXvqdP5WK8yviKQMKFP0+n8JEkOBK9nMV4N0kHZa5N3/EdtifeioU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SGET+pKg; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1714494709; c=relaxed/simple;
+	bh=Qlj+LZXf2VoaxgRG3XS+GJ3XCSH0Ydr5hRABBdqxBDM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ehk7eUxQRxyjPYG2apgcwn//u0tQGJk6dr1N8ber7ErP+VOgggt0IwGgdhlS5eJ7zMWVNylRUzkmZDN/rM9pPfZ8xbhpD1ELDZOVIAKRktVQnNT8Yx1eyk2q2MHMvel4Zxh011m43u3PRXoxR9tvV/iX3bIhUY/rIu5LUTC0PVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fdqyy9LN; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-41ba1ba55e8so32435735e9.1;
-        Tue, 30 Apr 2024 09:30:19 -0700 (PDT)
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2b27c660174so795895a91.1;
+        Tue, 30 Apr 2024 09:31:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714494618; x=1715099418; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=US8dCoGQJ/6TBinSDooKuIRRwHoj7weiS688LyQVfKU=;
-        b=SGET+pKgKIqcwJTtZIj4J2w7fOX/D6LQaesoN+CCWGGOyTaDgeGusBbf9PRlU/+1JM
-         Hi4/hZL09Wn38P3PSuh/UAWWK8B25woJczAdZYI7WwkuA3rbgVX/UgsoeqyITBCvE6PJ
-         vXZKslbYXFF2Yf8KwuBOK1B29hFwg13vEk8GjALovLBxcXgE/ZoWQblpILYs3s+jN0Jp
-         0v4OJJfUsEdmjICAvZXhaeVWGusKMaqQgo8VTaQ7SrJZNxI8gIjFNgZZIHqCjNsZIK7J
-         sNxWrWpx4MXCAhqSD6u8LLb6D2qfe+/5ft0GEXuNIzMCpR2X0gP7z1+DQfB4n/EMji/q
-         BXNQ==
+        d=gmail.com; s=20230601; t=1714494708; x=1715099508; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=WQN4KbcxjV5fEP83EPXO6Wtm42S0d0QxDy7zu6p3kS8=;
+        b=fdqyy9LN9AKQpvdgM3PrV1/ievn1P8+H4uFYNuafkkXMQr3y0jKXD27vJL34Ayv3tk
+         ZdxSca2EtR3tUhdnykSyK1xQJ/rTL2SeKJvvOV+rtuPMK1+1BWU6d7fToPTUuDPiGQkr
+         b7PiuEcsMnbDPWmxSHgJuNW+PTVW7go3vIhqvqYVilSr45OqbHPvOYfr8nftK91Vu6s1
+         aGUCnmlsygCw8w5WUd9BznW5FdpCtaYi9JnwMFxtBIDLbsegS3svL16GxMEzmOVQSjp6
+         vEDenLkS7wva8hyP15ZA5e+y17qI2nwF+H+I9rt3y6Knvzw8oXsAAnIXA+t2bVOb1Ys5
+         36IQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714494618; x=1715099418;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=US8dCoGQJ/6TBinSDooKuIRRwHoj7weiS688LyQVfKU=;
-        b=EHITaPLlNkAkHdjmRWook6K9XnPrHNBtzYrThMoNEvOmTrD5pdSAr1M2AjYBPAtQ26
-         wVLEeWs2XIjzoVIE+xjkuKWCj1Ak2Z12nRu3maB/bLOt2EPWnZ8JHKJz+894qRs7rIKZ
-         ByHVuZU8DlRqY9dWbRU59moXQ9RqwDhTTfdSpFwYIKoJkHyJdkwv83DEjMgxcg24ltZC
-         jcid8GNNyrNqVAbicefHnGOmg+FppRq9biS/fZnas+DsNGJCv+TWZXLfHUSEZarMnNHZ
-         OdzS2jnAa939FpIwnBLeBzzEdOaQztaXjV+c2xQRrGy0Ls5fZHAfHFBpaRQonV8/HfPa
-         RIRA==
-X-Forwarded-Encrypted: i=1; AJvYcCXekSi2CdWrKzFu8WwNiZDTGZzuy645NWR706lnL1eKAxXUq+q9fcpVQ6YQg94Kt6tI0Ucg1e0pSA7BN33rDxxBvADwkio6bhP6M9CnV9VBQOsnuoCmIYykMLEKEwI618+BHmJxroU/Ob8LkaJiEMyZG+L8rwFIiNFQwcRpmbfxTh6+sA==
-X-Gm-Message-State: AOJu0YxYdmPw/TND4ZcF8DlnGhSO2H/96vmvefJfEbvzNsfFiB8TpEUv
-	JJCsFDsRh96DdHEj2bJzH6hWpc6XWgUfAsayWfo6NxcuMujatvNe
-X-Google-Smtp-Source: AGHT+IE/zHCLaJwt/i8Z7kOFWFZ4biD8ksCGtm3L7lz0gx7kGbBEaHqAR51ngoplXh0b/P2meHcvMQ==
-X-Received: by 2002:a05:600c:4ed2:b0:41c:11b:b36e with SMTP id g18-20020a05600c4ed200b0041c011bb36emr34971wmq.16.1714494618236;
-        Tue, 30 Apr 2024 09:30:18 -0700 (PDT)
-Received: from spiri.. ([2a02:2f08:a105:8300:da4d:6b2c:f166:22e6])
-        by smtp.gmail.com with ESMTPSA id h15-20020a05600c350f00b00418d68df226sm46505396wmq.0.2024.04.30.09.30.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Apr 2024 09:30:17 -0700 (PDT)
-From: Alisa-Dariana Roman <alisadariana@gmail.com>
-X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
-To: michael.hennerich@analog.com,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: alexandru.tachici@analog.com,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org,
-	robh@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	andy@kernel.org,
-	nuno.sa@analog.com,
-	marcelo.schmitt@analog.com,
-	bigunclemax@gmail.com,
-	dlechner@baylibre.com,
-	okan.sahin@analog.com,
-	fr0st61te@gmail.com,
-	alisa.roman@analog.com,
-	marcus.folkesson@gmail.com,
-	schnelle@linux.ibm.com,
-	liambeguin@gmail.com
-Subject: [PATCH v7 6/6] iio: adc: ad7192: Add AD7194 support
-Date: Tue, 30 Apr 2024 19:29:46 +0300
-Message-Id: <20240430162946.589423-7-alisa.roman@analog.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240430162946.589423-1-alisa.roman@analog.com>
-References: <20240430162946.589423-1-alisa.roman@analog.com>
+        d=1e100.net; s=20230601; t=1714494708; x=1715099508;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WQN4KbcxjV5fEP83EPXO6Wtm42S0d0QxDy7zu6p3kS8=;
+        b=vV2kyDnSg5s5yHIa+nfiAp0nia968gMTBu/gojxYNrctZOUT4EUSdstrOt2MknJAJd
+         Hvcb7RG1RIf4UklcYjYhAb7COvC//LYiFu0KlyKtBI0rWeIp0BjpZYIWSI3a8MpvsGMp
+         mDEVUCfL8eYQrWrrFyMkIwgotCP3nf+PfOTjs1QuZW2Ei+8VkvyQOESPsiefXEef9zme
+         CrKoeGeltN2UH2cPMVzIWX8bUiPLP8EEszPbOFJVZ/D/cUVfnjFiDh6S8kZxEULYICU0
+         sAvdBOgLCcibNtVgO5DcitImPf8YnYTlOS0ZFHl20xhYSQ91v4X4Cm1mlSqzbBQXW0hk
+         iKWw==
+X-Forwarded-Encrypted: i=1; AJvYcCVVKapwC2K839zp8rmww88HSbIZTVLxpHui9gS0heFecwVUdL0eZnUyhqUfdDE0QJXo1DzwqOCyUC7svFX3tTVR8A0mP3ljtT9BTI7vN8miTJMRPAQfXmQUJ96GsSULiH6JwRPXuozYfsf4bl7yic2qa8iT5OBQbx+7r21YdFhPHnYO7i6AVOhmfqJz+pwR1sNY9ckOVMNVap15YkN/J7oHe0O1q4Z5ttHhRLjSOvta/UcCm/nJ+o25OSmsJg==
+X-Gm-Message-State: AOJu0YyTheXzIWobOfSF292EJ5tIakISQ9Gf/a/Ldb+DQu6D+5/OInS3
+	nXasHSLHugqD+Y/5dmcDPuhOClkYe4zDoIcXQYQzM0N+oyZVn3SQ
+X-Google-Smtp-Source: AGHT+IG0yCT0xYb1tKd+62Xy29JHRr1NLJOo6Huz8MNBkEhwOt6j9FCtyvd0drfG76Yj0Rkc017wXw==
+X-Received: by 2002:a17:90a:a582:b0:2a2:eb67:b20a with SMTP id b2-20020a17090aa58200b002a2eb67b20amr9431121pjq.42.1714494707489;
+        Tue, 30 Apr 2024 09:31:47 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id qb13-20020a17090b280d00b002b1581a0fccsm4902669pjb.44.2024.04.30.09.31.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Apr 2024 09:31:46 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <39248b1f-f8ef-413d-87ff-62404f1effb5@roeck-us.net>
+Date: Tue, 30 Apr 2024 09:31:44 -0700
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/7] hwmon: (adc128d818) Use
+ devm_regulator_get_enable_read_voltage()
+To: David Lechner <dlechner@baylibre.com>, Liam Girdwood
+ <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Jean Delvare <jdelvare@suse.com>, Jonathan Cameron <jic23@kernel.org>,
+ Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+ Support Opensource <support.opensource@diasemi.com>,
+ Cosmin Tanislav <cosmin.tanislav@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Antoniu Miclaus <antoniu.miclaus@analog.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-input@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
+ <20240429-regulator-get-enable-get-votlage-v2-2-b1f11ab766c1@baylibre.com>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240429-regulator-get-enable-get-votlage-v2-2-b1f11ab766c1@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Unlike the other AD719Xs, AD7194 has configurable channels. The user can
-dynamically configure them in the devicetree.
+On 4/29/24 16:40, David Lechner wrote:
+> We can reduce boilerplate code and eliminate the driver remove()
+> function by using devm_regulator_get_enable_read_voltage().
+> 
+> A new external_vref flag is added since we no longer have the handle
+> to the regulator to check if it is present.
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-Also modify config AD7192 description for better scaling.
+Nit below in case you resend, otherwise
 
-Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
----
- drivers/iio/adc/Kconfig  |  11 +++-
- drivers/iio/adc/ad7192.c | 129 +++++++++++++++++++++++++++++++++++++--
- 2 files changed, 133 insertions(+), 7 deletions(-)
+Acked-by: Guenter Roeck <linux@roeck-us.net>
 
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index 8db68b80b391..74fecc284f1a 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -88,12 +88,17 @@ config AD7173
- 	  called ad7173.
- 
- config AD7192
--	tristate "Analog Devices AD7190 AD7192 AD7193 AD7195 ADC driver"
-+	tristate "Analog Devices AD7192 and similar ADC driver"
- 	depends on SPI
- 	select AD_SIGMA_DELTA
- 	help
--	  Say yes here to build support for Analog Devices AD7190,
--	  AD7192, AD7193 or AD7195 SPI analog to digital converters (ADC).
-+	  Say yes here to build support for Analog Devices SPI analog to digital
-+	  converters (ADC):
-+	  - AD7190
-+	  - AD7192
-+	  - AD7193
-+	  - AD7194
-+	  - AD7195
- 	  If unsure, say N (but it's safe to say "Y").
- 
- 	  To compile this driver as a module, choose M here: the
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 3e797ff48086..0f6ecf953559 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-- * AD7190 AD7192 AD7193 AD7195 SPI ADC driver
-+ * AD7192 and similar SPI ADC driver
-  *
-  * Copyright 2011-2015 Analog Devices Inc.
-  */
-@@ -129,10 +129,21 @@
- #define AD7193_CH_AIN8		0x480 /* AIN7 - AINCOM */
- #define AD7193_CH_AINCOM	0x600 /* AINCOM - AINCOM */
- 
-+#define AD7194_CH_POS(x)	(((x) - 1) << 4)
-+#define AD7194_CH_NEG(x)	((x) - 1)
-+#define AD7194_CH(pos, neg) \
-+	(((neg) == 0 ? BIT(10) : AD7194_CH_NEG(neg)) | AD7194_CH_POS(pos))
-+#define AD7194_CH_TEMP		0x100 /* Temp sensor */
-+#define AD7194_CH_BASE_NR	2
-+#define AD7194_CH_AIN_START	1
-+#define AD7194_CH_AIN_NR	16
-+#define AD7194_CH_MAX_NR	272
-+
- /* ID Register Bit Designations (AD7192_REG_ID) */
- #define CHIPID_AD7190		0x4
- #define CHIPID_AD7192		0x0
- #define CHIPID_AD7193		0x2
-+#define CHIPID_AD7194		0x3
- #define CHIPID_AD7195		0x6
- #define AD7192_ID_MASK		GENMASK(3, 0)
- 
-@@ -170,6 +181,7 @@ enum {
- 	ID_AD7190,
- 	ID_AD7192,
- 	ID_AD7193,
-+	ID_AD7194,
- 	ID_AD7195,
- };
- 
-@@ -179,6 +191,7 @@ struct ad7192_chip_info {
- 	const struct iio_chan_spec	*channels;
- 	u8				num_channels;
- 	const struct iio_info		*info;
-+	int (*parse_channels)(struct iio_dev *indio_dev);
- };
- 
- struct ad7192_state {
-@@ -932,6 +945,15 @@ static const struct iio_info ad7192_info = {
- 	.update_scan_mode = ad7192_update_scan_mode,
- };
- 
-+static const struct iio_info ad7194_info = {
-+	.read_raw = ad7192_read_raw,
-+	.write_raw = ad7192_write_raw,
-+	.write_raw_get_fmt = ad7192_write_raw_get_fmt,
-+	.read_avail = ad7192_read_avail,
-+	.validate_trigger = ad_sd_validate_trigger,
-+	.update_scan_mode = ad7192_update_scan_mode,
-+};
-+
- static const struct iio_info ad7195_info = {
- 	.read_raw = ad7192_read_raw,
- 	.write_raw = ad7192_write_raw,
-@@ -1023,6 +1045,91 @@ static const struct iio_chan_spec ad7193_channels[] = {
- 	IIO_CHAN_SOFT_TIMESTAMP(14),
- };
- 
-+static int ad7194_validate_ain_channel(struct device *dev, u32 ain)
-+{
-+	if (!in_range(ain, AD7194_CH_AIN_START, AD7194_CH_AIN_NR))
-+		return dev_err_probe(dev, -EINVAL,
-+				     "Invalid AIN channel: %u\n", ain);
-+
-+	return 0;
-+}
-+
-+static int ad7194_parse_channels(struct iio_dev *indio_dev)
-+{
-+	struct device *dev = indio_dev->dev.parent;
-+	struct iio_chan_spec *ad7194_channels;
-+	struct fwnode_handle *child;
-+	struct iio_chan_spec ad7194_chan = AD7193_CHANNEL(0, 0, 0);
-+	struct iio_chan_spec ad7194_chan_diff = AD7193_DIFF_CHANNEL(0, 0, 0, 0);
-+	struct iio_chan_spec ad7194_chan_temp = AD719x_TEMP_CHANNEL(0, 0);
-+	struct iio_chan_spec ad7194_chan_timestamp = IIO_CHAN_SOFT_TIMESTAMP(0);
-+	unsigned int num_channels, index = 0;
-+	u32 ain[2];
-+	int ret;
-+
-+	num_channels = device_get_child_node_count(dev);
-+	if (num_channels > AD7194_CH_MAX_NR)
-+		return dev_err_probe(dev, -EINVAL,
-+				     "Too many channels: %u\n", num_channels);
-+
-+	num_channels += AD7194_CH_BASE_NR;
-+
-+	ad7194_channels = devm_kcalloc(dev, num_channels,
-+				       sizeof(*ad7194_channels), GFP_KERNEL);
-+	if (!ad7194_channels)
-+		return -ENOMEM;
-+
-+	indio_dev->channels = ad7194_channels;
-+	indio_dev->num_channels = num_channels;
-+
-+	device_for_each_child_node(dev, child) {
-+		ret = fwnode_property_read_u32_array(child, "diff-channels",
-+						     ain, ARRAY_SIZE(ain));
-+		if (ret == 0) {
-+			ret = ad7194_validate_ain_channel(dev, ain[0]);
-+			if (ret)
-+				return ret;
-+
-+			ret = ad7194_validate_ain_channel(dev, ain[1]);
-+			if (ret)
-+				return ret;
-+
-+			*ad7194_channels = ad7194_chan_diff;
-+			ad7194_channels->scan_index = index++;
-+			ad7194_channels->channel = ain[0];
-+			ad7194_channels->channel2 = ain[1];
-+			ad7194_channels->address = AD7194_CH(ain[0], ain[1]);
-+		} else {
-+			ret = fwnode_property_read_u32(child, "single-channel",
-+						       &ain[0]);
-+			if (ret) {
-+				fwnode_handle_put(child);
-+				return ret;
-+			}
-+
-+			ret = ad7194_validate_ain_channel(dev, ain[0]);
-+			if (ret)
-+				return ret;
-+
-+			*ad7194_channels = ad7194_chan;
-+			ad7194_channels->scan_index = index++;
-+			ad7194_channels->channel = ain[0];
-+			ad7194_channels->address = AD7194_CH(ain[0], 0);
-+		}
-+		ad7194_channels++;
-+	}
-+
-+	*ad7194_channels = ad7194_chan_temp;
-+	ad7194_channels->scan_index = index++;
-+	ad7194_channels->address = AD7194_CH_TEMP;
-+	ad7194_channels++;
-+
-+	*ad7194_channels = ad7194_chan_timestamp;
-+	ad7194_channels->scan_index = index;
-+
-+	return 0;
-+}
-+
- static const struct ad7192_chip_info ad7192_chip_info_tbl[] = {
- 	[ID_AD7190] = {
- 		.chip_id = CHIPID_AD7190,
-@@ -1045,6 +1152,12 @@ static const struct ad7192_chip_info ad7192_chip_info_tbl[] = {
- 		.num_channels = ARRAY_SIZE(ad7193_channels),
- 		.info = &ad7192_info,
- 	},
-+	[ID_AD7194] = {
-+		.chip_id = CHIPID_AD7194,
-+		.name = "ad7194",
-+		.info = &ad7194_info,
-+		.parse_channels = ad7194_parse_channels,
-+	},
- 	[ID_AD7195] = {
- 		.chip_id = CHIPID_AD7195,
- 		.name = "ad7195",
-@@ -1152,9 +1265,15 @@ static int ad7192_probe(struct spi_device *spi)
- 	st->chip_info = spi_get_device_match_data(spi);
- 	indio_dev->name = st->chip_info->name;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
--	indio_dev->channels = st->chip_info->channels;
--	indio_dev->num_channels = st->chip_info->num_channels;
- 	indio_dev->info = st->chip_info->info;
-+	if (st->chip_info->parse_channels) {
-+		ret = st->chip_info->parse_channels(indio_dev);
-+		if (ret)
-+			return ret;
-+	} else {
-+		indio_dev->channels = st->chip_info->channels;
-+		indio_dev->num_channels = st->chip_info->num_channels;
-+	}
- 
- 	ret = ad_sd_init(&st->sd, indio_dev, spi, &ad7192_sigma_delta_info);
- 	if (ret)
-@@ -1193,6 +1312,7 @@ static const struct of_device_id ad7192_of_match[] = {
- 	{ .compatible = "adi,ad7190", .data = &ad7192_chip_info_tbl[ID_AD7190] },
- 	{ .compatible = "adi,ad7192", .data = &ad7192_chip_info_tbl[ID_AD7192] },
- 	{ .compatible = "adi,ad7193", .data = &ad7192_chip_info_tbl[ID_AD7193] },
-+	{ .compatible = "adi,ad7194", .data = &ad7192_chip_info_tbl[ID_AD7194] },
- 	{ .compatible = "adi,ad7195", .data = &ad7192_chip_info_tbl[ID_AD7195] },
- 	{}
- };
-@@ -1202,6 +1322,7 @@ static const struct spi_device_id ad7192_ids[] = {
- 	{ "ad7190", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7190] },
- 	{ "ad7192", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7192] },
- 	{ "ad7193", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7193] },
-+	{ "ad7194", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7194] },
- 	{ "ad7195", (kernel_ulong_t)&ad7192_chip_info_tbl[ID_AD7195] },
- 	{}
- };
-@@ -1218,6 +1339,6 @@ static struct spi_driver ad7192_driver = {
- module_spi_driver(ad7192_driver);
- 
- MODULE_AUTHOR("Michael Hennerich <michael.hennerich@analog.com>");
--MODULE_DESCRIPTION("Analog Devices AD7190, AD7192, AD7193, AD7195 ADC");
-+MODULE_DESCRIPTION("Analog Devices AD7192 and similar ADC");
- MODULE_LICENSE("GPL v2");
- MODULE_IMPORT_NS(IIO_AD_SIGMA_DELTA);
--- 
-2.34.1
+> ---
+> 
+> v2 changes:
+> * rename to devm_regulator_get_enable_read_voltage()
+> * use vref instead of err for return value
+> * simplify last error check to return PTR_ERR directly
+> ---
+>   drivers/hwmon/adc128d818.c | 57 ++++++++++++++--------------------------------
+>   1 file changed, 17 insertions(+), 40 deletions(-)
+> 
+> diff --git a/drivers/hwmon/adc128d818.c b/drivers/hwmon/adc128d818.c
+> index 46e3c8c50765..2a35acb011eb 100644
+> --- a/drivers/hwmon/adc128d818.c
+> +++ b/drivers/hwmon/adc128d818.c
+> @@ -58,7 +58,6 @@ static const u8 num_inputs[] = { 7, 8, 4, 6 };
+>   
+>   struct adc128_data {
+>   	struct i2c_client *client;
+> -	struct regulator *regulator;
+>   	int vref;		/* Reference voltage in mV */
+>   	struct mutex update_lock;
+>   	u8 mode;		/* Operation mode */
+> @@ -389,7 +388,7 @@ static int adc128_detect(struct i2c_client *client, struct i2c_board_info *info)
+>   	return 0;
+>   }
+>   
+> -static int adc128_init_client(struct adc128_data *data)
+> +static int adc128_init_client(struct adc128_data *data, bool external_vref)
+>   {
+>   	struct i2c_client *client = data->client;
+>   	int err;
+> @@ -408,7 +407,7 @@ static int adc128_init_client(struct adc128_data *data)
+>   		regval |= data->mode << 1;
+>   
+>   	/* If external vref is selected, configure the chip to use it */
+> -	if (data->regulator)
+> +	if (external_vref)
+>   		regval |= 0x01;
+>   
+>   	/* Write advanced configuration register */
+> @@ -430,9 +429,9 @@ static int adc128_init_client(struct adc128_data *data)
+>   static int adc128_probe(struct i2c_client *client)
+>   {
+>   	struct device *dev = &client->dev;
+> -	struct regulator *regulator;
+>   	struct device *hwmon_dev;
+>   	struct adc128_data *data;
+> +	bool external_vref;
+>   	int err, vref;
+>   
+>   	data = devm_kzalloc(dev, sizeof(struct adc128_data), GFP_KERNEL);
+> @@ -440,20 +439,15 @@ static int adc128_probe(struct i2c_client *client)
+>   		return -ENOMEM;
+>   
+>   	/* vref is optional. If specified, is used as chip reference voltage */
+> -	regulator = devm_regulator_get_optional(dev, "vref");
+> -	if (!IS_ERR(regulator)) {
+> -		data->regulator = regulator;
+> -		err = regulator_enable(regulator);
+> -		if (err < 0)
+> -			return err;
+> -		vref = regulator_get_voltage(regulator);
+> -		if (vref < 0) {
+> -			err = vref;
+> -			goto error;
+> -		}
+> -		data->vref = DIV_ROUND_CLOSEST(vref, 1000);
+> -	} else {
+> +	vref = devm_regulator_get_enable_read_voltage(dev, "vref");
+> +	if (vref == -ENODEV) {
+> +		external_vref = false;
+>   		data->vref = 2560;	/* 2.56V, in mV */
+> +	} else if (vref < 0) {
+> +		return vref;
+> +	} else {
+> +		external_vref = true;
+> +		data->vref = DIV_ROUND_CLOSEST(vref, 1000);
+>   	}
+>   
+>   	/* Operation mode is optional. If unspecified, keep current mode */
+> @@ -461,13 +455,12 @@ static int adc128_probe(struct i2c_client *client)
+>   		if (data->mode > 3) {
+>   			dev_err(dev, "invalid operation mode %d\n",
+>   				data->mode);
+> -			err = -EINVAL;
+> -			goto error;
+> +			return -EINVAL;
+>   		}
+>   	} else {
+>   		err = i2c_smbus_read_byte_data(client, ADC128_REG_CONFIG_ADV);
+>   		if (err < 0)
+> -			goto error;
+> +			return err;
+>   		data->mode = (err >> 1) & ADC128_REG_MASK;
+>   	}
+>   
+> @@ -476,31 +469,16 @@ static int adc128_probe(struct i2c_client *client)
+>   	mutex_init(&data->update_lock);
+>   
+>   	/* Initialize the chip */
+> -	err = adc128_init_client(data);
+> +	err = adc128_init_client(data, external_vref);
+>   	if (err < 0)
+> -		goto error;
+> +		return err;
+>   
+>   	hwmon_dev = devm_hwmon_device_register_with_groups(dev, client->name,
+>   							   data, adc128_groups);
+> -	if (IS_ERR(hwmon_dev)) {
+> -		err = PTR_ERR(hwmon_dev);
+> -		goto error;
+> -	}
+> +	if (IS_ERR(hwmon_dev))
+> +		return PTR_ERR(hwmon_dev);
+>   
+>   	return 0;
+
+	return PTR_ERR_OR_ZERO(hwmon_dev);
+
+> -
+> -error:
+> -	if (data->regulator)
+> -		regulator_disable(data->regulator);
+> -	return err;
+> -}
+> -
+> -static void adc128_remove(struct i2c_client *client)
+> -{
+> -	struct adc128_data *data = i2c_get_clientdata(client);
+> -
+> -	if (data->regulator)
+> -		regulator_disable(data->regulator);
+>   }
+>   
+>   static const struct i2c_device_id adc128_id[] = {
+> @@ -522,7 +500,6 @@ static struct i2c_driver adc128_driver = {
+>   		.of_match_table = of_match_ptr(adc128_of_match),
+>   	},
+>   	.probe		= adc128_probe,
+> -	.remove		= adc128_remove,
+>   	.id_table	= adc128_id,
+>   	.detect		= adc128_detect,
+>   	.address_list	= normal_i2c,
+> 
 
 

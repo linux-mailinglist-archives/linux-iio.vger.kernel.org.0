@@ -1,76 +1,76 @@
-Return-Path: <linux-iio+bounces-4698-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4699-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F278B7CFA
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 18:32:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A3B8B7D26
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 18:36:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 113E4281563
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 16:32:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 206D1B26662
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 16:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0825ADDBE;
-	Tue, 30 Apr 2024 16:31:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3640181D1D;
+	Tue, 30 Apr 2024 16:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fdqyy9LN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d/5iAQ1a"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F452B660;
-	Tue, 30 Apr 2024 16:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B0A1537E4;
+	Tue, 30 Apr 2024 16:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714494709; cv=none; b=Su21bLtsFjrooZLVyrMKSeyVkp67w3af0w3E+35ji4yxeaJtwUu2AE1J3s7k8NVGEkNFQqYLs32aJvbxzC6VNMd9kpR4hkIajFSNKqwcMpiit1ED9yASZGTjcpqlSkX9OvyKOtyvKq0ypOYEukSTTVqBcXwPrOPyC/4kt+PJRkQ=
+	t=1714494846; cv=none; b=ocNkQadNMnvOkfLxWeEfyjVBJxG6O4WnyfuyWqrbnugqXjhAJoLk9D+n1kweI3QxgkHm9mU997lkafLewDSK+eXOQRg5Kxczzx2WlsllfoCSD1dSO3qP3cA4XS6JlgHjW4SLsazM/2HYZbdJS+DnnrX4+90ISMLs4abfmRQOs2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714494709; c=relaxed/simple;
-	bh=Qlj+LZXf2VoaxgRG3XS+GJ3XCSH0Ydr5hRABBdqxBDM=;
+	s=arc-20240116; t=1714494846; c=relaxed/simple;
+	bh=Nmts7SGpTnSBJShEKqMgy0d0lvZ16gTsppVGUwwJsn0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ehk7eUxQRxyjPYG2apgcwn//u0tQGJk6dr1N8ber7ErP+VOgggt0IwGgdhlS5eJ7zMWVNylRUzkmZDN/rM9pPfZ8xbhpD1ELDZOVIAKRktVQnNT8Yx1eyk2q2MHMvel4Zxh011m43u3PRXoxR9tvV/iX3bIhUY/rIu5LUTC0PVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fdqyy9LN; arc=none smtp.client-ip=209.85.216.46
+	 In-Reply-To:Content-Type; b=V/Mdu6VPXMACVpBbcAieYkp7jjrei3N7u+ZYW/e5DrKcJV5Rw6OoXlimYzvH0sZrayiyEAkdD5hjrgHbmHUPKEz1bq97pa5W7WOYbAvytpS8VlftIYDor+Qg6aT/sVLeAMbkfwLUk4OphDv+xMcaKPF5brWOal8sy99SZCWk/es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d/5iAQ1a; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2b27c660174so795895a91.1;
-        Tue, 30 Apr 2024 09:31:48 -0700 (PDT)
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6f0b9f943cbso4844393b3a.0;
+        Tue, 30 Apr 2024 09:34:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714494708; x=1715099508; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1714494844; x=1715099644; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=WQN4KbcxjV5fEP83EPXO6Wtm42S0d0QxDy7zu6p3kS8=;
-        b=fdqyy9LN9AKQpvdgM3PrV1/ievn1P8+H4uFYNuafkkXMQr3y0jKXD27vJL34Ayv3tk
-         ZdxSca2EtR3tUhdnykSyK1xQJ/rTL2SeKJvvOV+rtuPMK1+1BWU6d7fToPTUuDPiGQkr
-         b7PiuEcsMnbDPWmxSHgJuNW+PTVW7go3vIhqvqYVilSr45OqbHPvOYfr8nftK91Vu6s1
-         aGUCnmlsygCw8w5WUd9BznW5FdpCtaYi9JnwMFxtBIDLbsegS3svL16GxMEzmOVQSjp6
-         vEDenLkS7wva8hyP15ZA5e+y17qI2nwF+H+I9rt3y6Knvzw8oXsAAnIXA+t2bVOb1Ys5
-         36IQ==
+        bh=8yVh0LSF6AnP8AlfPOMnHNGqdMushJrhziYcF69ydXM=;
+        b=d/5iAQ1a3BaZ6klWiCUQAdCT9TZDQ2utu3265qtDm3iotKc6Scbey8EXj5RtA4R4//
+         bp9p/eRP5KYBKXf9M91aTjcVX/I7ctW3nVWB5CzWJvMUxTU4bpVjiZ4ezGr9mPP8sSWp
+         bGJPogJLBhr656fcB9koZV7dumpdsm2R4zYpxU9THtTTMtSHm45bG6pvhfC61BouOgt5
+         AG4yyd2t2aUQCVtH1ja4U8rpsncYg3Fw7+dhVGJECvu7bWLgEgT683kIQBVYIY359cvl
+         KXTJb2e3vNEYy0Nx8+M3x3lkeMWhqUfr0Hxy/Hisv1Jnp73rYRMRn3LKSoZfnAgP8OLQ
+         QgKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714494708; x=1715099508;
+        d=1e100.net; s=20230601; t=1714494844; x=1715099644;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WQN4KbcxjV5fEP83EPXO6Wtm42S0d0QxDy7zu6p3kS8=;
-        b=vV2kyDnSg5s5yHIa+nfiAp0nia968gMTBu/gojxYNrctZOUT4EUSdstrOt2MknJAJd
-         Hvcb7RG1RIf4UklcYjYhAb7COvC//LYiFu0KlyKtBI0rWeIp0BjpZYIWSI3a8MpvsGMp
-         mDEVUCfL8eYQrWrrFyMkIwgotCP3nf+PfOTjs1QuZW2Ei+8VkvyQOESPsiefXEef9zme
-         CrKoeGeltN2UH2cPMVzIWX8bUiPLP8EEszPbOFJVZ/D/cUVfnjFiDh6S8kZxEULYICU0
-         sAvdBOgLCcibNtVgO5DcitImPf8YnYTlOS0ZFHl20xhYSQ91v4X4Cm1mlSqzbBQXW0hk
-         iKWw==
-X-Forwarded-Encrypted: i=1; AJvYcCVVKapwC2K839zp8rmww88HSbIZTVLxpHui9gS0heFecwVUdL0eZnUyhqUfdDE0QJXo1DzwqOCyUC7svFX3tTVR8A0mP3ljtT9BTI7vN8miTJMRPAQfXmQUJ96GsSULiH6JwRPXuozYfsf4bl7yic2qa8iT5OBQbx+7r21YdFhPHnYO7i6AVOhmfqJz+pwR1sNY9ckOVMNVap15YkN/J7oHe0O1q4Z5ttHhRLjSOvta/UcCm/nJ+o25OSmsJg==
-X-Gm-Message-State: AOJu0YyTheXzIWobOfSF292EJ5tIakISQ9Gf/a/Ldb+DQu6D+5/OInS3
-	nXasHSLHugqD+Y/5dmcDPuhOClkYe4zDoIcXQYQzM0N+oyZVn3SQ
-X-Google-Smtp-Source: AGHT+IG0yCT0xYb1tKd+62Xy29JHRr1NLJOo6Huz8MNBkEhwOt6j9FCtyvd0drfG76Yj0Rkc017wXw==
-X-Received: by 2002:a17:90a:a582:b0:2a2:eb67:b20a with SMTP id b2-20020a17090aa58200b002a2eb67b20amr9431121pjq.42.1714494707489;
-        Tue, 30 Apr 2024 09:31:47 -0700 (PDT)
+        bh=8yVh0LSF6AnP8AlfPOMnHNGqdMushJrhziYcF69ydXM=;
+        b=bjTLlhLgkJrw6EvK3YNv5RLsnd0o5SMtMALRBHsmWe22jMzLv5iw9kS6MmUDmSqlx+
+         ZqzvmqlABAwwx+7KsXwfbbWRuEClMTfC/ZBaFnNRWrMTjwbF2FRNLDKze7k/DN3msJmr
+         bT1cCvPoZcqNuLo77MuShgcy+RpfQen2xy2h0PzjG5RWvMve7uqYo7r9wOY81pNclOkv
+         2Q7W2ZH5YxUZflwpx8PSdgRy/YUMPh6JvE9m79DQSLG0U1b9RtdM6zUl82v9n0ILM9Z6
+         jFJU/dd5rracCd/pWVxMGaXkvpBoq+FYm3ipOMHQHroRKWw7sp90jN2AMAmmPqHr9uz/
+         BMSw==
+X-Forwarded-Encrypted: i=1; AJvYcCWKrrDFzVZDiLZX94YJG5uLzMt0cDCv3TyyuAP87K8gmDaa7Qob02mlCaIyih6KatSLez/4X12dFkhrSfFGsfs9omdOi3Jgz+G7RdOAaBuA2zcph586Qwr9kC9kxH6kv2ILVanPn4TZjtJuz9IReu351LYfT+XjbXpiKnKWEdWLUZbwAA84BeCfkUQstSNDq1o4rLiXxiaw/MLrRXWvJp4iUuDm6C+afk+kt0VmcGUi4qTEIkmraWHhA8DJPQ==
+X-Gm-Message-State: AOJu0YxcZN9oweX88HvDKw3Nuhb+rkBDRooLhfL0PFOaZLOWpZ22Rt2E
+	fs87G7WfdZz267WS9ElLcBRhB8YOCfmcftN7NQGVsam9L1p9pQLS
+X-Google-Smtp-Source: AGHT+IHMlRdPUV+Vp+iaQO91MrJbNZoGRQBwlMcCasW3TWZCQdK7tEfZ21nXdx7uZqOu4pSGHzepsg==
+X-Received: by 2002:a05:6a21:33a8:b0:1ac:663f:9efd with SMTP id yy40-20020a056a2133a800b001ac663f9efdmr447542pzb.19.1714494844277;
+        Tue, 30 Apr 2024 09:34:04 -0700 (PDT)
 Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id qb13-20020a17090b280d00b002b1581a0fccsm4902669pjb.44.2024.04.30.09.31.45
+        by smtp.gmail.com with ESMTPSA id st5-20020a17090b1fc500b002b29ce888fcsm1447456pjb.53.2024.04.30.09.34.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Apr 2024 09:31:46 -0700 (PDT)
+        Tue, 30 Apr 2024 09:34:03 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <39248b1f-f8ef-413d-87ff-62404f1effb5@roeck-us.net>
-Date: Tue, 30 Apr 2024 09:31:44 -0700
+Message-ID: <453bb1ed-1fe5-4b2c-90a1-eb15a0086489@roeck-us.net>
+Date: Tue, 30 Apr 2024 09:34:01 -0700
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] hwmon: (adc128d818) Use
+Subject: Re: [PATCH v2 3/7] hwmon: (da9052) Use
  devm_regulator_get_enable_read_voltage()
 To: David Lechner <dlechner@baylibre.com>, Liam Girdwood
  <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
@@ -95,7 +95,7 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
  linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
  linux-input@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
 References: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
- <20240429-regulator-get-enable-get-votlage-v2-2-b1f11ab766c1@baylibre.com>
+ <20240429-regulator-get-enable-get-votlage-v2-3-b1f11ab766c1@baylibre.com>
 Content-Language: en-US
 From: Guenter Roeck <linux@roeck-us.net>
 Autocrypt: addr=linux@roeck-us.net; keydata=
@@ -141,167 +141,17 @@ Autocrypt: addr=linux@roeck-us.net; keydata=
  WkRwrSuCn7UG+qVWZeKEsFKFOkynOs3pVbcbq1pxbhk3TRWCGRU5JolI4ohy/7JV1TVbjiDI
  HP/aVnm6NC8of26P40Pg8EdAhajZnHHjA7FrJXsy3cyIGqvg9os4rNkUWmrCfLLsZDHD8FnU
  mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <20240429-regulator-get-enable-get-votlage-v2-2-b1f11ab766c1@baylibre.com>
+In-Reply-To: <20240429-regulator-get-enable-get-votlage-v2-3-b1f11ab766c1@baylibre.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 On 4/29/24 16:40, David Lechner wrote:
-> We can reduce boilerplate code and eliminate the driver remove()
-> function by using devm_regulator_get_enable_read_voltage().
-> 
-> A new external_vref flag is added since we no longer have the handle
-> to the regulator to check if it is present.
+> We can reduce boilerplate code by using
+> devm_regulator_get_enable_read_voltage().
 > 
 > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-Nit below in case you resend, otherwise
-
 Acked-by: Guenter Roeck <linux@roeck-us.net>
-
-> ---
-> 
-> v2 changes:
-> * rename to devm_regulator_get_enable_read_voltage()
-> * use vref instead of err for return value
-> * simplify last error check to return PTR_ERR directly
-> ---
->   drivers/hwmon/adc128d818.c | 57 ++++++++++++++--------------------------------
->   1 file changed, 17 insertions(+), 40 deletions(-)
-> 
-> diff --git a/drivers/hwmon/adc128d818.c b/drivers/hwmon/adc128d818.c
-> index 46e3c8c50765..2a35acb011eb 100644
-> --- a/drivers/hwmon/adc128d818.c
-> +++ b/drivers/hwmon/adc128d818.c
-> @@ -58,7 +58,6 @@ static const u8 num_inputs[] = { 7, 8, 4, 6 };
->   
->   struct adc128_data {
->   	struct i2c_client *client;
-> -	struct regulator *regulator;
->   	int vref;		/* Reference voltage in mV */
->   	struct mutex update_lock;
->   	u8 mode;		/* Operation mode */
-> @@ -389,7 +388,7 @@ static int adc128_detect(struct i2c_client *client, struct i2c_board_info *info)
->   	return 0;
->   }
->   
-> -static int adc128_init_client(struct adc128_data *data)
-> +static int adc128_init_client(struct adc128_data *data, bool external_vref)
->   {
->   	struct i2c_client *client = data->client;
->   	int err;
-> @@ -408,7 +407,7 @@ static int adc128_init_client(struct adc128_data *data)
->   		regval |= data->mode << 1;
->   
->   	/* If external vref is selected, configure the chip to use it */
-> -	if (data->regulator)
-> +	if (external_vref)
->   		regval |= 0x01;
->   
->   	/* Write advanced configuration register */
-> @@ -430,9 +429,9 @@ static int adc128_init_client(struct adc128_data *data)
->   static int adc128_probe(struct i2c_client *client)
->   {
->   	struct device *dev = &client->dev;
-> -	struct regulator *regulator;
->   	struct device *hwmon_dev;
->   	struct adc128_data *data;
-> +	bool external_vref;
->   	int err, vref;
->   
->   	data = devm_kzalloc(dev, sizeof(struct adc128_data), GFP_KERNEL);
-> @@ -440,20 +439,15 @@ static int adc128_probe(struct i2c_client *client)
->   		return -ENOMEM;
->   
->   	/* vref is optional. If specified, is used as chip reference voltage */
-> -	regulator = devm_regulator_get_optional(dev, "vref");
-> -	if (!IS_ERR(regulator)) {
-> -		data->regulator = regulator;
-> -		err = regulator_enable(regulator);
-> -		if (err < 0)
-> -			return err;
-> -		vref = regulator_get_voltage(regulator);
-> -		if (vref < 0) {
-> -			err = vref;
-> -			goto error;
-> -		}
-> -		data->vref = DIV_ROUND_CLOSEST(vref, 1000);
-> -	} else {
-> +	vref = devm_regulator_get_enable_read_voltage(dev, "vref");
-> +	if (vref == -ENODEV) {
-> +		external_vref = false;
->   		data->vref = 2560;	/* 2.56V, in mV */
-> +	} else if (vref < 0) {
-> +		return vref;
-> +	} else {
-> +		external_vref = true;
-> +		data->vref = DIV_ROUND_CLOSEST(vref, 1000);
->   	}
->   
->   	/* Operation mode is optional. If unspecified, keep current mode */
-> @@ -461,13 +455,12 @@ static int adc128_probe(struct i2c_client *client)
->   		if (data->mode > 3) {
->   			dev_err(dev, "invalid operation mode %d\n",
->   				data->mode);
-> -			err = -EINVAL;
-> -			goto error;
-> +			return -EINVAL;
->   		}
->   	} else {
->   		err = i2c_smbus_read_byte_data(client, ADC128_REG_CONFIG_ADV);
->   		if (err < 0)
-> -			goto error;
-> +			return err;
->   		data->mode = (err >> 1) & ADC128_REG_MASK;
->   	}
->   
-> @@ -476,31 +469,16 @@ static int adc128_probe(struct i2c_client *client)
->   	mutex_init(&data->update_lock);
->   
->   	/* Initialize the chip */
-> -	err = adc128_init_client(data);
-> +	err = adc128_init_client(data, external_vref);
->   	if (err < 0)
-> -		goto error;
-> +		return err;
->   
->   	hwmon_dev = devm_hwmon_device_register_with_groups(dev, client->name,
->   							   data, adc128_groups);
-> -	if (IS_ERR(hwmon_dev)) {
-> -		err = PTR_ERR(hwmon_dev);
-> -		goto error;
-> -	}
-> +	if (IS_ERR(hwmon_dev))
-> +		return PTR_ERR(hwmon_dev);
->   
->   	return 0;
-
-	return PTR_ERR_OR_ZERO(hwmon_dev);
-
-> -
-> -error:
-> -	if (data->regulator)
-> -		regulator_disable(data->regulator);
-> -	return err;
-> -}
-> -
-> -static void adc128_remove(struct i2c_client *client)
-> -{
-> -	struct adc128_data *data = i2c_get_clientdata(client);
-> -
-> -	if (data->regulator)
-> -		regulator_disable(data->regulator);
->   }
->   
->   static const struct i2c_device_id adc128_id[] = {
-> @@ -522,7 +500,6 @@ static struct i2c_driver adc128_driver = {
->   		.of_match_table = of_match_ptr(adc128_of_match),
->   	},
->   	.probe		= adc128_probe,
-> -	.remove		= adc128_remove,
->   	.id_table	= adc128_id,
->   	.detect		= adc128_detect,
->   	.address_list	= normal_i2c,
-> 
 
 

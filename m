@@ -1,114 +1,130 @@
-Return-Path: <linux-iio+bounces-4686-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4687-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D0B78B7B8C
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 17:29:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD5D08B7BD9
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 17:37:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0FBB1F224D5
-	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 15:29:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EB11288027
+	for <lists+linux-iio@lfdr.de>; Tue, 30 Apr 2024 15:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC83A17BB01;
-	Tue, 30 Apr 2024 15:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D038143749;
+	Tue, 30 Apr 2024 15:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K/Oq/jVM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RfER//q/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-io1-f67.google.com (mail-io1-f67.google.com [209.85.166.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1839117B4F1;
-	Tue, 30 Apr 2024 15:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945011527AF;
+	Tue, 30 Apr 2024 15:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714490862; cv=none; b=lfdJDxY7Vkq6oOBobSFk7q4kvD5EK0IHdFzIPLCkgRZjuP9iyoH0Ozpb1XXBVEVUh//E3m7dPnB0Q3pLfOk8xFRAigAQ2vb4mFsEjn/aq02CinJGcAlZQEBS9LQ5YOqq2y0O1nUF5MLafjNzM8FbePPQWvas4JnIg8fGoEnEgh4=
+	t=1714491442; cv=none; b=W04MOAsgir5ZIDR7+8OAdNJA91HO1rkpzPoqWEVxSImOrrtn30OdW8CMvhLB/F8fb2n9lpDYTAm9ozDwfNF7Wr6KyaF+9ArMJv1+iO7/EOCabGu3mhVg43DDU9KsqarQWO3geatTLqBAR0qdac8V2pPkddN/NZGai6V/mKl+XUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714490862; c=relaxed/simple;
-	bh=jWF+R6k2K8uFH2ZwLb7M5SwfeSLuAYQBwMI3KrqqS9o=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=QebiqatfXUIiuFAYm8anjWTEXJpSJKNrT3V93TK+T2gnaXEEZBkT9zENj+DN806Tx5BWo7acTnTJVefCKgB8TjDONK2uT/+FeeyOeZsbv9AXIH3HpDMfDRdTWEprBlXSiXU0giktt1arDFk6ZX7071yFxZmch4cGkds5yYvvxk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K/Oq/jVM; arc=none smtp.client-ip=209.85.166.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-io1-f67.google.com with SMTP id ca18e2360f4ac-7da04b08b82so161583239f.0;
-        Tue, 30 Apr 2024 08:27:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714490860; x=1715095660; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=S6EiQe0sO4zpsi2K9SK5LkhEBFfWw4caydHufI3cd9g=;
-        b=K/Oq/jVMUmhDzXuWEYpTr+AqNe0D4lhc6yJwQESDsSLH70cOD+D580khWgnG/MA8eu
-         TboDGuAZFay+ZVQQbLzi2sWcEt5zMBUvCpaEXJ+uly/kIEV7Pt1dQh2hL+upwfVS70jN
-         6cHwHM3gMRbYRFHhVYBvWNMxu623BCHhjmsQELXspXP6ALSokPFxbK4onpNhcANJArc1
-         61rf/j4eHVWCm2y6PY2zdMWvnUAz/oiKJ0vdnA2ui7Y2jypZFSsEN6R6i31CpcvCpwni
-         eVv6mHSCMTU3oOAAt98HC1hKtaZGdlbkfk5IXB7mLsKyPN41ePF1Ijn4Zar9kpxYEua5
-         eoOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714490860; x=1715095660;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=S6EiQe0sO4zpsi2K9SK5LkhEBFfWw4caydHufI3cd9g=;
-        b=qPd8hJGdtnWboYkP4sqMH3vyv1JjSm7xT7NRHfGGMwsHAANGHu8KO0Sq344K3NQxsj
-         62bKBkwB5EieKo/zP5c9mLB6iuXs5WseqNBxzJuHW4prF7FTs+n60BazaTd0R1lxsPG5
-         zFyvb3WnY1xOnwWUglzsKnimrgUv5FB9P7SagwP/QsiINdAgfI9wIlJ8WauVwsFruyAU
-         MHTb5YuK1BLwKzEUKf9OCpeir74bjaaam7ksCcdbed/UplmsaAbg0b3+iY27ZHUibB3a
-         E2pugyaRxE+sQbWt+Drkk0fXcwX2LKFDYYRWUpQE01aehCUB6SpzAFa9R20V+h2DO8TX
-         xwpw==
-X-Forwarded-Encrypted: i=1; AJvYcCUnAOLLzfoWRxBvlVWcZIvqKco2EVtAzKut3n2usxPuTYgSJ3+1R6l6nr0Xepr3Du19i2qDemVCsEzC/7mpYFf0RBDtWxUBnsqLHvF7iewmCPx5pFOYQIPSq0b6088rrgOmvd0P6qs45g==
-X-Gm-Message-State: AOJu0Yx1OrQMsmOMvAvghyPiVlXirEbdgWy0FKCiTTg83yF/xfST86JQ
-	d52KADQ0yqVtTf3wJhTjivUkxYxDrIE4tXLkbwfyUCXEplS7C3jaZsR45K5ybC0KfvMeWNfbusW
-	R0fnHVRXqM8ZkiKJaGuJ2pvBKE+e7fmzPRz4=
-X-Google-Smtp-Source: AGHT+IE0//FQwR5UIdVVFw2WGgKiJkdMJcXHNiF4QNIpntmkbmTTI+WUxzf9IYa+Nz70K6B3N/w9svoZP0aAL9JqlIM=
-X-Received: by 2002:a5e:924b:0:b0:7d5:dd91:4b47 with SMTP id
- z11-20020a5e924b000000b007d5dd914b47mr171678iop.7.1714490860191; Tue, 30 Apr
- 2024 08:27:40 -0700 (PDT)
+	s=arc-20240116; t=1714491442; c=relaxed/simple;
+	bh=e6pUJhjQW6nIxwf6P9VZRO76v+TpkWhCfGxiUDE2B0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EHDxba8cKFxrqNf1G4nk9OOT6Xm8u1L2KuXbRo6DuWeOL9IQ2BgphpHBzTNHvDnAyCDfzFOFCtA+R42K9NGwTvCXYriSYh+FS+DknIAKBnkE7BAwNVUH5uQAB/1Y6OG4Lqg/qcrxM2pwrIxh7zdyjng5tMjr+qrL+fFo/aAhbTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RfER//q/; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714491441; x=1746027441;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=e6pUJhjQW6nIxwf6P9VZRO76v+TpkWhCfGxiUDE2B0g=;
+  b=RfER//q/JVV2Br/gNtB6FfDyZbqKhzkqDy9CGsQDRsSSNbPDyIqD2s4m
+   /YU84PRmXCO2aCJRdhmPCEHcWqT95KduuI7s/K5JRAboQ7+H34hU1fzxU
+   TIKh5wYsA9/3JOzBXobTcmKjnPKXSbSao0yJL9LyRpe3RYOHQVK3imSFv
+   Kq8zTFsw1c2h5YaWsk8ZPlxljFDdnVUHnwyCBv+od0FU7o6mo/Vv6tEZQ
+   qSPD5Y5fNMF4K7K+32M/esH9J8TeWsSszXeQK6xAIfiq8dtYNrSidhU9z
+   uMyPAK/n+mT18Ih8aYzlxg65Y248xxsNAPxyV65J//OsuVsvaohTVO3Wy
+   Q==;
+X-CSE-ConnectionGUID: VK/tX2m3ROqkKszHPlpmGw==
+X-CSE-MsgGUID: fgwYYLZWSdayBjKfWt0OXA==
+X-IronPort-AV: E=McAfee;i="6600,9927,11060"; a="35591262"
+X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
+   d="scan'208";a="35591262"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 08:37:20 -0700
+X-CSE-ConnectionGUID: cY3uSIQgQAymBhD7ehXS2w==
+X-CSE-MsgGUID: X5dBi9jNReG7s0mpWyUYWA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,242,1708416000"; 
+   d="scan'208";a="57678464"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2024 08:37:17 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1s1pXe-00000002i84-3wjG;
+	Tue, 30 Apr 2024 18:37:14 +0300
+Date: Tue, 30 Apr 2024 18:37:14 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Petar Stoykov <pd.pstoykov@gmail.com>
+Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] Add support for Sensirion SDP500
+Message-ID: <ZjEQKqkWA66HtiD4@smile.fi.intel.com>
+References: <CADFWO8EZWkXeAMcURgGGEmzVjiSxFTVAbKpsb2Qmv66EZiTc+A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Petar Stoykov <pd.pstoykov@gmail.com>
-Date: Tue, 30 Apr 2024 17:27:27 +0200
-Message-ID: <CADFWO8Ghcmno8rgJ1WGyEvcjdrTEZr4_TXfhLjXQymzmR5FKPQ@mail.gmail.com>
-Subject: [PATCH v2 3/3] MAINTAINERS: Add Sensirion SDP500
-To: linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Rob Herring <robh+dt@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Angel Iglesias <ang.iglesiasg@gmail.com>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CADFWO8EZWkXeAMcURgGGEmzVjiSxFTVAbKpsb2Qmv66EZiTc+A@mail.gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From c4437fd0ea296c4c964b1fb924144ae24a2ce443 Mon Sep 17 00:00:00 2001
-From: Petar Stoykov <pd.pstoykov@gmail.com>
-Date: Mon, 15 Jan 2024 14:57:57 +0100
-Subject: [PATCH 3/3] MAINTAINERS: Add Sensirion SDP500
+On Tue, Apr 30, 2024 at 05:27:17PM +0200, Petar Stoykov wrote:
+> From c4437fd0ea296c4c964b1fb924144ae24a2ce443 Mon Sep 17 00:00:00 2001
+> From: Petar Stoykov <pd.pstoykov@gmail.com>
+> Date: Mon, 29 Apr 2024 16:41:30 +0200
+> Subject: [PATCH 0/3] Add support for Sensirion SDP500
+> 
+> This patch series
 
-Add myself as a maintainer for Sensirion SDP500 pressure sensor driver
+It's not. I mean from the email chaining perspective. Have you forgotten
+to add --thread to git format-patch?
 
-Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
----
- MAINTAINERS | 6 ++++++
- 1 file changed, 6 insertions(+)
+Also, what is that in above?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 40c754b4c39c..11e8f353dc9e 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19533,6 +19533,12 @@ S:    Maintained
- F:    Documentation/devicetree/bindings/iio/chemical/sensirion,scd4x.yaml
- F:    drivers/iio/chemical/scd4x.c
+> introduces support for Sensirion SDP500 in the IIO
+> subsystem. The series is split into three patches:
+> 
+> 1. The first patch adds the device tree bindings.
+> 2. The second patch implements the device driver.
+> 3. The third patch updates the MAINTAINERS file.
+> 
+> The driver is relatively simple. It provides a way to read the measured
+> differential pressure directly in Pa, as the device has a fixed scale
+> factor of 1/60. When an applications wants to read the pressure value,
+> 3 bytes are read from the device, 2 are data and 1 is CRC8. If the crc
+> check passes, the calculated pressure value is returned in Pa units.
+> 
+> The initialization of the device just starts the measurement process.
+> 
+> We have been using this device and driver in a product development for
+> almost a year now. There the pressure is read every 25ms and is used in a
+> control loop. We have not even seen crc errors. We are using the
+> "linux-imx" repository and not the mainline one but I see no risky kernel
+> functions in use so it should be fine here too.
+> 
+> All feedback is appreciated! Thank you for taking the time to review this.
 
-+SENSIRION SDP500 DIFFERENTIAL PRESSURE SENSOR DRIVER
-+M:    Petar Stoykov <pd.pstoykov@gmail.com>
-+S:    Maintained
-+F:    Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
-+F:    drivers/iio/pressure/sdp500.c
-+
- SENSIRION SGP40 GAS SENSOR DRIVER
- M:    Andreas Klinger <ak@it-klinger.de>
- S:    Maintained
 -- 
-2.30.2
+With Best Regards,
+Andy Shevchenko
+
+
 

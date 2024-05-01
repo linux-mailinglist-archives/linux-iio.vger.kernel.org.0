@@ -1,152 +1,121 @@
-Return-Path: <linux-iio+bounces-4734-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4735-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B19698B8C6F
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 17:06:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4ABB8B8E57
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 18:39:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2B0A1C219A9
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 15:06:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FD122813A1
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 16:39:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488BC12F390;
-	Wed,  1 May 2024 15:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF69DDA1;
+	Wed,  1 May 2024 16:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DZrR9QJ7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gBgqQCku"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806891F176;
-	Wed,  1 May 2024 15:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD5D8F6D;
+	Wed,  1 May 2024 16:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714575963; cv=none; b=IdijetVErK/HhUn/EozeBDwPTkpixWnV9QX2Jas8lsfyJjPXCTnhMIAWFhhlaiVaYjFSMMkXZ1BLtLKWwP+1Nw402vQHdN2pYz2afyqVWADurRFWHtz7h+V3xiVoNopH74NQVj73NVCNmTfSeGUv8M3s5VLgk4gPHyEBZcpd0X0=
+	t=1714581549; cv=none; b=eyDZisopgsXrslBioFTEfDVQQisXm6roHbAkas1sU5SEe0aV4E19ySJGWmnR0v4TbcdvHwz+kWkSDz+K3CXeuRM1DlqBq3wHHAmi9N4a99OFxUtDHNhzV95AStWklDFa0oK7j977mIR5/nKIkN727XCmDi02NEdXjfYALNFZM30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714575963; c=relaxed/simple;
-	bh=ZwcoVXh6+PU1Qu8+uoknJ6rPtJiNfbVuHlJ8BsHXYqA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tz6UJZP0YrnH5RIKI8OZsxIX3HuVNwK9s99S/NGKIeK+9T2l1eYsmfNUnKsV+Zd4ZGykTMC7KS1Ot65TGR00PS//xfzQUeGSM/sCf1PS/a9TQBdvH7lk8ndI2hVPatmSAeV+wuojM8JdArQoVTXRYEYkR10SCKgQxrKCUd7MzGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DZrR9QJ7; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2df83058d48so57894911fa.1;
-        Wed, 01 May 2024 08:06:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714575960; x=1715180760; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Fb5C+Oc43A6y8Mz0LyTdT4dWeHAlemsr8HHVEt5MmiU=;
-        b=DZrR9QJ7kn13Z+/kt5/Hny+CgW8udKSowgsKkI8vnlnFjWMtgoWCscLsMwQ20vJSz3
-         dTEXbHp/t9qmG29Vt5krBKlu7QCFHvZesdhGEL/KQfQtZhmWjxWsl/4Y+IIau1FWBXVv
-         CTyH3P4a4AN90gXUkncA1ruajt5leGLVxPH6ndNk/fW7P6OGi0FtIhwJYrgBZydi2Pvp
-         rE4+pJbKqeYogq59hp+i3mJZgwdXo9sgUepQHsWklCN8fgW8oA7oXqA4rSsDslImzy/4
-         ZhXlUCJWBU9QUJxYN+0N9/sIHnyyHqhnBa//YfES+eqneSE5UAp8NBPzs+gpALxtJufk
-         1pQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714575960; x=1715180760;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Fb5C+Oc43A6y8Mz0LyTdT4dWeHAlemsr8HHVEt5MmiU=;
-        b=ugYeE+x2viOkjJI0f7ZkG2e2DiwbI3AYzbMgZGeWvX2rU5sE2OVoiSY3GsRi5CVEMX
-         EMxxZmH9lbqhwepkmLAXe+wRIKF7TzkYVtwIJ0woskLOQwjTs2TmXZSOSuQhGlfk50jz
-         kPDbfRLJ0E/JZFC7EqFIAKqbloIF+H5/fubCjyLFPDNttVGiQuPwYBtftX4TVKMGyYTG
-         h3K3Hl6zSCD3+0sR8dgy/y3PQAOdHfcrHdWzuFkTCt9Vc2Tdj69gGqk6xm8cqQYP51a2
-         67+fY1BqWYh1DhsN7Qx/LrYG37cE0P1pXc6JV4QxR1mapaNwB2wFOL1CpPPIocH2Qe4R
-         7D/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXgrO1dGT09a9dE780OPk+vxubmty1ACJPO3Q3neF4sSxlFYkERsoMTerl0sjV2ZVNTRowcFFrcaFbJx8j4Xg7Wq0dyOH2S066I7Uta3nZOmYOTVHqngughxqoU1jO1BHsJ9aNBRGHn
-X-Gm-Message-State: AOJu0Ywk45MnKDNhrVxz/3qcNOy6JdNg4oG5MC6/KNHxYPdpArZtr3j3
-	BjjIhBqSslDl4ljrHgtr0BK6etRhI0h/3iv5zGiTP6Xn60uAydE4
-X-Google-Smtp-Source: AGHT+IEvmLsjyKIR3eHEAoH52jjjYcX0cNpyCFmb2VP3y0BOTdMQXrtbKIx9KoVxZ7ALexiwSMj5UA==
-X-Received: by 2002:a05:651c:1a07:b0:2df:6524:581a with SMTP id by7-20020a05651c1a0700b002df6524581amr2084004ljb.30.1714575959435;
-        Wed, 01 May 2024 08:05:59 -0700 (PDT)
-Received: from mfe-desktop.Sonatest.net (ipagstaticip-d73c7528-4de5-0861-800b-03d8b15e3869.sdsl.bell.ca. [174.94.156.236])
-        by smtp.googlemail.com with ESMTPSA id m17-20020a05600c3b1100b0041b4c293f75sm2493160wms.13.2024.05.01.08.05.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 May 2024 08:05:59 -0700 (PDT)
-From: marc.ferland@gmail.com
-X-Google-Original-From: marc.ferland@sonatest.com
-To: lars@metafoo.de
-Cc: Michael.Hennerich@analog.com,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Marc Ferland <marc.ferland@sonatest.com>
-Subject: [PATCH v2] iio: dac: ad5592r: fix temperature channel scaling value
-Date: Wed,  1 May 2024 11:05:54 -0400
-Message-Id: <20240501150554.1871390-1-marc.ferland@sonatest.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1714581549; c=relaxed/simple;
+	bh=k/GVusRHOyex5CyvjGxaO6gyf6xeCU6g2W+wW2wckwM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SnQRt92ckJUFhUczhj4drjjvoeaQaiNiPUuFh16JFvMCXgsH2C8FV8rU+yIVQAdCsPySUGfPgttG6fLeC/yX43hfK3WO04sFvB4/CqCxMi4F8OZHL5oaMALhOLjXcc7pl8kf+EYX/Z6Tv3pk1l3RShgsyncD14+guMGkrL5uV7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gBgqQCku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 305EFC4AF14;
+	Wed,  1 May 2024 16:39:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1714581548;
+	bh=k/GVusRHOyex5CyvjGxaO6gyf6xeCU6g2W+wW2wckwM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gBgqQCkuMQ4/OQ71Ase8a78abZi33+i2C/O015Xi+/9hau7DSWR4iT3ARSSNbz1Sk
+	 NX6VmtQv5iekEMK64mVICEsALTaBNAw+Q0mWgqf/XKhsiX70PCH3ix2AfYwpPyueuP
+	 OZFKhZeMC+Jnf/UalQwesiIWj2e5ksM4d7Muz1m0RmQMr3TD47QhoCKVYoNr2lZ/xH
+	 SlNV4MlC7Yze1wmxttwxcKHpuEIeiXg5l9DnFcRll8wdxxkEwsKgDIeJj28bc060DR
+	 CbXhSoTWMILzORQMkxHmASm5JnD81UPD8vWUsot2EWE8hSb2zUUqtcW7NDzrZF7L4t
+	 EET7hpybIoGsw==
+Date: Wed, 1 May 2024 17:39:04 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Petar Stoykov <pd.pstoykov@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Angel Iglesias <ang.iglesiasg@gmail.com>,
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 0/3] Add support for Sensirion SDP500
+Message-ID: <20240501-synthesis-repose-30563cffd41e@spud>
+References: <CADFWO8EZWkXeAMcURgGGEmzVjiSxFTVAbKpsb2Qmv66EZiTc+A@mail.gmail.com>
+ <ZjEQKqkWA66HtiD4@smile.fi.intel.com>
+ <20240430-booth-spinster-bf59f780f10a@spud>
+ <CADFWO8FzQ8FgD5a2jKECaMRX65_1Nd6vsgh43bXqsSz52xtZKw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="8YvzeVVYX/1w9PwP"
+Content-Disposition: inline
+In-Reply-To: <CADFWO8FzQ8FgD5a2jKECaMRX65_1Nd6vsgh43bXqsSz52xtZKw@mail.gmail.com>
 
-From: Marc Ferland <marc.ferland@sonatest.com>
 
-The scale value for the temperature channel is (assuming Vref=2.5 and
-the datasheet):
+--8YvzeVVYX/1w9PwP
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-    376.7897513
+On Wed, May 01, 2024 at 12:47:32PM +0200, Petar Stoykov wrote:
+> On Tue, Apr 30, 2024 at 6:46=E2=80=AFPM Conor Dooley <conor@kernel.org> w=
+rote:
+> >
+> > On Tue, Apr 30, 2024 at 06:37:14PM +0300, Andy Shevchenko wrote:
+> > > On Tue, Apr 30, 2024 at 05:27:17PM +0200, Petar Stoykov wrote:
+> > > > From c4437fd0ea296c4c964b1fb924144ae24a2ce443 Mon Sep 17 00:00:00 2=
+001
+> > > > From: Petar Stoykov <pd.pstoykov@gmail.com>
+> > > > Date: Mon, 29 Apr 2024 16:41:30 +0200
+> > > > Subject: [PATCH 0/3] Add support for Sensirion SDP500
+> > > >
+> > > > This patch series
+> > >
+> > > It's not. I mean from the email chaining perspective. Have you forgot=
+ten
+> > > to add --thread to git format-patch?
+> > >
+> > > Also, what is that in above?
+> >
+> > Looks more like patches pasted into gmail or w/e, rather than sent with
+> > git send-email.
+>=20
+> For stupid reasons I can't use git send-email. I thought I will manage wi=
+th
+> using gmail alone. The thing at the start is a mess-up of copy paste inde=
+ed.
 
-When calculating both val and val2 for the temperature scale we
-use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
-obtain:
+As Konstantin pointed out, the b4 web submission endpoint is ideal for
+this kind of scenario.
 
-  2500 * (3767897513/25) ==> 376789751300
+--8YvzeVVYX/1w9PwP
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Finally we divide with remainder by 10^9 to get:
+-----BEGIN PGP SIGNATURE-----
 
-    val = 376
-    val2 = 789751300
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZjJwJwAKCRB4tDGHoIJi
+0g9UAP9+bM+S+0AcCnYdrAuYhmDG77Pyf38FkKki3tanp2jX4gD+LsKR2E9LjHk0
+7dpTztDA6kRr+0D9uidJlnv1l3fgwAU=
+=NZ84
+-----END PGP SIGNATURE-----
 
-However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
-the scale type. So when converting the raw temperature value to the
-'processed' temperature value we will get (assuming raw=810,
-offset=-753):
-
-    processed = (raw + offset) * scale_val
-              = (810 + -753) * 376
-	      = 21432
-
-    processed += div((raw + offset) * scale_val2, 10^6)
-              += div((810 + -753) * 789751300, 10^6)
-	      += 45015
-    ==> 66447
-    ==> 66.4 Celcius
-
-instead of the expected 21.5 Celsius.
-
-Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
-IIO_VAL_INT_PLUS_NANO.
-
-Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
----
-Change in v2:
- - Improve commit message as suggested by Jonathan.
-
- drivers/iio/dac/ad5592r-base.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
-index 076bc9ecfb49..4763402dbcd6 100644
---- a/drivers/iio/dac/ad5592r-base.c
-+++ b/drivers/iio/dac/ad5592r-base.c
-@@ -415,7 +415,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
- 			s64 tmp = *val * (3767897513LL / 25LL);
- 			*val = div_s64_rem(tmp, 1000000000LL, val2);
- 
--			return IIO_VAL_INT_PLUS_MICRO;
-+			return IIO_VAL_INT_PLUS_NANO;
- 		}
- 
- 		mutex_lock(&st->lock);
-
-base-commit: 98369dccd2f8e16bf4c6621053af7aa4821dcf8e
--- 
-2.34.1
-
+--8YvzeVVYX/1w9PwP--
 

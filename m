@@ -1,547 +1,152 @@
-Return-Path: <linux-iio+bounces-4733-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4734-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF3D8B8C5B
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 16:58:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B19698B8C6F
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 17:06:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CA8C1F211DB
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 14:58:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2B0A1C219A9
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 15:06:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430BB130A76;
-	Wed,  1 May 2024 14:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488BC12F390;
+	Wed,  1 May 2024 15:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="GpHwOJ+8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DZrR9QJ7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B619013048E
-	for <linux-iio@vger.kernel.org>; Wed,  1 May 2024 14:56:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806891F176;
+	Wed,  1 May 2024 15:06:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714575364; cv=none; b=g4yMAsVUPCeHr46kWOfBx4MxIlchGVIH5qU6FAFvVwc7gCmAe5jxIzIv3lyvrXqYM6UdznuHfP341Ky0UccUxn3D8bF9clZnSeDexD31npN6GZFOTZNS1DKxaPTAf/P0k0948SFEatFt5V/1Ry/PM3Xk4YaxGu0pubnc2K0i2fw=
+	t=1714575963; cv=none; b=IdijetVErK/HhUn/EozeBDwPTkpixWnV9QX2Jas8lsfyJjPXCTnhMIAWFhhlaiVaYjFSMMkXZ1BLtLKWwP+1Nw402vQHdN2pYz2afyqVWADurRFWHtz7h+V3xiVoNopH74NQVj73NVCNmTfSeGUv8M3s5VLgk4gPHyEBZcpd0X0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714575364; c=relaxed/simple;
-	bh=fPiWODpLyIpk8mbW8S6s/JMkotwnMO8eXB66C821A4Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fmXXh4Yg+ccMNZXef8rcWDWglAZY6nxr51hKp9uc2hEZAKPs/8LsgEYb9p6RD+AWDAmTDUDofnD0q0UNRY4IUB3FsQ3ljdxmh52kjnfs99OpezXu1TVe2WQpOloFnkFWzZUMFtVHvKJ0l6ceVk9hzN0kSBGZvd74or3FP0ACCdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=GpHwOJ+8; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-41b79451145so41799795e9.3
-        for <linux-iio@vger.kernel.org>; Wed, 01 May 2024 07:56:01 -0700 (PDT)
+	s=arc-20240116; t=1714575963; c=relaxed/simple;
+	bh=ZwcoVXh6+PU1Qu8+uoknJ6rPtJiNfbVuHlJ8BsHXYqA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tz6UJZP0YrnH5RIKI8OZsxIX3HuVNwK9s99S/NGKIeK+9T2l1eYsmfNUnKsV+Zd4ZGykTMC7KS1Ot65TGR00PS//xfzQUeGSM/sCf1PS/a9TQBdvH7lk8ndI2hVPatmSAeV+wuojM8JdArQoVTXRYEYkR10SCKgQxrKCUd7MzGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DZrR9QJ7; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2df83058d48so57894911fa.1;
+        Wed, 01 May 2024 08:06:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1714575360; x=1715180160; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nQvEn6eTVpgZ7ge0YdIc6SxCVLT/jwgprRg33qL4bbM=;
-        b=GpHwOJ+8ic/QRgOaFULe4pEsyJRBTLRHzpL6+HJs/LuHH6LX6a39AupxOfj6HFlacS
-         meenSSYKKw6LCQzhwcmdYvKbMGvZAjWwLsartU9ndvsHxjoVaaaCFQ5kprmiDnP2qyWv
-         lXlJJFeiMSM4WsCZKL4/QqBbgKooTRat1Xximzm2VCSxEo/byGSxFDEJO3RKYtRxXylr
-         d5IVpzQcDSdYLOrzWvMkP/P/7jrfcktOg/8UsdUm8Q0/7q478KOEPp3pz0L0njXlKLXt
-         pkF9ksHPl3Q0DMspWaOzXMXhA2E30oy7AnhCnOkUj78y31PXKClW0TJLfMqjccYx+iRP
-         bG1Q==
+        d=gmail.com; s=20230601; t=1714575960; x=1715180760; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Fb5C+Oc43A6y8Mz0LyTdT4dWeHAlemsr8HHVEt5MmiU=;
+        b=DZrR9QJ7kn13Z+/kt5/Hny+CgW8udKSowgsKkI8vnlnFjWMtgoWCscLsMwQ20vJSz3
+         dTEXbHp/t9qmG29Vt5krBKlu7QCFHvZesdhGEL/KQfQtZhmWjxWsl/4Y+IIau1FWBXVv
+         CTyH3P4a4AN90gXUkncA1ruajt5leGLVxPH6ndNk/fW7P6OGi0FtIhwJYrgBZydi2Pvp
+         rE4+pJbKqeYogq59hp+i3mJZgwdXo9sgUepQHsWklCN8fgW8oA7oXqA4rSsDslImzy/4
+         ZhXlUCJWBU9QUJxYN+0N9/sIHnyyHqhnBa//YfES+eqneSE5UAp8NBPzs+gpALxtJufk
+         1pQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714575360; x=1715180160;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nQvEn6eTVpgZ7ge0YdIc6SxCVLT/jwgprRg33qL4bbM=;
-        b=SWzA/TIJZyBkRaFVTJw6r301RzFpFlAgkfH/5gdRsbkb7JqZ1lfDvnieTr3bFdkq2N
-         8cKZL4CMEQDQfAsYomnJOZZVYxBiUWK8UZsAaDEIZofrfiZp1BvmnL01CHUqUZhhxI3K
-         z3A3FJEIe9OD3Mg8RdKP85n4euwSsMEF01zFFCYJN49Mpu4L+2OXillPZ87qOgzaPIWp
-         1iS4vuTH9sELs/FJzSUATLDArz4oltd3X9V8fkAOrrgwb4PeMGV3+HkH6K6+7mPjiCkf
-         2tZLhj6C8oQQcqNNeikWK0ReOc6p9BYi6S7rPfeXaZcJRNB2efKeqBJTIUTPNVoMzJnB
-         hDKg==
-X-Forwarded-Encrypted: i=1; AJvYcCXqwlkOSVjfsUFSd3FCHXtLrOiHPi95pYAYQ3rP/yQicVCp9EAyy0fSiqLPJi8IffAnT4GL3MYapliY2W15LwMa0/TtSxpJpLto
-X-Gm-Message-State: AOJu0YxnWjh6ziBN0Ojv2o6Xx3/9c7IgTV4GzmqMgHWpLDbkRrsWtShx
-	rlQcw3zGI5K/K8EZyYWJ9AsVCOqgfB+8C2/hFEqxB/XirOjKDnZmaGD2JVtsMmw=
-X-Google-Smtp-Source: AGHT+IFPiOA5OgO2LcEiOeQ9z95Elxo3H/VFN/MqqHOCNEN/VLCkZAllpFjJjc9lb1KKraoJW4trZQ==
-X-Received: by 2002:a05:600c:3148:b0:416:536b:683a with SMTP id h8-20020a05600c314800b00416536b683amr1823734wmo.32.1714575360127;
-        Wed, 01 May 2024 07:56:00 -0700 (PDT)
-Received: from [192.168.1.61] ([2a02:842a:d52e:6101:6fd0:6c4:5d68:f0a5])
-        by smtp.gmail.com with ESMTPSA id o27-20020a05600c511b00b00418a386c17bsm2422999wms.12.2024.05.01.07.55.58
+        d=1e100.net; s=20230601; t=1714575960; x=1715180760;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Fb5C+Oc43A6y8Mz0LyTdT4dWeHAlemsr8HHVEt5MmiU=;
+        b=ugYeE+x2viOkjJI0f7ZkG2e2DiwbI3AYzbMgZGeWvX2rU5sE2OVoiSY3GsRi5CVEMX
+         EMxxZmH9lbqhwepkmLAXe+wRIKF7TzkYVtwIJ0woskLOQwjTs2TmXZSOSuQhGlfk50jz
+         kPDbfRLJ0E/JZFC7EqFIAKqbloIF+H5/fubCjyLFPDNttVGiQuPwYBtftX4TVKMGyYTG
+         h3K3Hl6zSCD3+0sR8dgy/y3PQAOdHfcrHdWzuFkTCt9Vc2Tdj69gGqk6xm8cqQYP51a2
+         67+fY1BqWYh1DhsN7Qx/LrYG37cE0P1pXc6JV4QxR1mapaNwB2wFOL1CpPPIocH2Qe4R
+         7D/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXgrO1dGT09a9dE780OPk+vxubmty1ACJPO3Q3neF4sSxlFYkERsoMTerl0sjV2ZVNTRowcFFrcaFbJx8j4Xg7Wq0dyOH2S066I7Uta3nZOmYOTVHqngughxqoU1jO1BHsJ9aNBRGHn
+X-Gm-Message-State: AOJu0Ywk45MnKDNhrVxz/3qcNOy6JdNg4oG5MC6/KNHxYPdpArZtr3j3
+	BjjIhBqSslDl4ljrHgtr0BK6etRhI0h/3iv5zGiTP6Xn60uAydE4
+X-Google-Smtp-Source: AGHT+IEvmLsjyKIR3eHEAoH52jjjYcX0cNpyCFmb2VP3y0BOTdMQXrtbKIx9KoVxZ7ALexiwSMj5UA==
+X-Received: by 2002:a05:651c:1a07:b0:2df:6524:581a with SMTP id by7-20020a05651c1a0700b002df6524581amr2084004ljb.30.1714575959435;
+        Wed, 01 May 2024 08:05:59 -0700 (PDT)
+Received: from mfe-desktop.Sonatest.net (ipagstaticip-d73c7528-4de5-0861-800b-03d8b15e3869.sdsl.bell.ca. [174.94.156.236])
+        by smtp.googlemail.com with ESMTPSA id m17-20020a05600c3b1100b0041b4c293f75sm2493160wms.13.2024.05.01.08.05.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 May 2024 07:55:59 -0700 (PDT)
-From: Julien Stephan <jstephan@baylibre.com>
-Date: Wed, 01 May 2024 16:55:43 +0200
-Subject: [PATCH RFC v6 10/10] iio: adc: ad7380: add support for resolution
- boost
+        Wed, 01 May 2024 08:05:59 -0700 (PDT)
+From: marc.ferland@gmail.com
+X-Google-Original-From: marc.ferland@sonatest.com
+To: lars@metafoo.de
+Cc: Michael.Hennerich@analog.com,
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Marc Ferland <marc.ferland@sonatest.com>
+Subject: [PATCH v2] iio: dac: ad5592r: fix temperature channel scaling value
+Date: Wed,  1 May 2024 11:05:54 -0400
+Message-Id: <20240501150554.1871390-1-marc.ferland@sonatest.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240501-adding-new-ad738x-driver-v6-10-3c0741154728@baylibre.com>
-References: <20240501-adding-new-ad738x-driver-v6-0-3c0741154728@baylibre.com>
-In-Reply-To: <20240501-adding-new-ad738x-driver-v6-0-3c0741154728@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
- Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
- Mark Brown <broonie@kernel.org>
-Cc: kernel test robot <lkp@intel.com>, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Julien Stephan <jstephan@baylibre.com>
-X-Mailer: b4 0.13.0
 
-ad738x chips are able to use an additional 2 bits of resolution when
-using oversampling. The 14-bits chips can have up to 16 bits of
-resolution and the 16-bits chips can have up to 18 bits of resolution.
+From: Marc Ferland <marc.ferland@sonatest.com>
 
-In order to dynamically allow to enable/disable the resolution boost
-feature, we have to set iio realbits/storagebits to the maximum per chips.
-This means that for iio, data will always be on the higher resolution
-available, and to cope with that we adjust the iio scale and iio offset
-depending on the resolution boost status.
+The scale value for the temperature channel is (assuming Vref=2.5 and
+the datasheet):
 
-The available scales can be displayed using the regular _scale_available
-attributes and can be set by writing the regular _scale attribute.
-The available scales depend on the oversampling status.
+    376.7897513
 
-Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+When calculating both val and val2 for the temperature scale we
+use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
+obtain:
 
+  2500 * (3767897513/25) ==> 376789751300
+
+Finally we divide with remainder by 10^9 to get:
+
+    val = 376
+    val2 = 789751300
+
+However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
+the scale type. So when converting the raw temperature value to the
+'processed' temperature value we will get (assuming raw=810,
+offset=-753):
+
+    processed = (raw + offset) * scale_val
+              = (810 + -753) * 376
+	      = 21432
+
+    processed += div((raw + offset) * scale_val2, 10^6)
+              += div((810 + -753) * 789751300, 10^6)
+	      += 45015
+    ==> 66447
+    ==> 66.4 Celcius
+
+instead of the expected 21.5 Celsius.
+
+Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
+IIO_VAL_INT_PLUS_NANO.
+
+Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
 ---
+Change in v2:
+ - Improve commit message as suggested by Jonathan.
 
-In order to support the resolution boost (additional 2 bits of resolution)
-we need to set realbits/storagebits to the maximum value i.e :
-  - realbits = 16 + 2 = 18, and storagebits = 32 for 16-bits chips
-  - realbits = 14 + 2 = 16, and storagebits = 16 for 14-bits chips
+ drivers/iio/dac/ad5592r-base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-For 14-bits chips this does not have a major impact, but this
-has the drawback of forcing 16-bits chip users to always use 32-bits
-words in buffers even if they are not using oversampling and resolution
-boost. Is there a better way of implementing this? For example
-implementing dynamic scan_type?
-
-Another issue is the location of the timestamps. I understood the need
-for ts to be consistent between chips, but right now I do not have a
-better solution.. I was thinking of maybe adding the timestamps at the
-beginning? That would imply to change the iio_chan_spec struct and maybe
-add a iio_push_to_buffers_with_timestamp_first() wrapper function? Is
-that an option?
-
-Any suggestion would be very much appreciated.
----
- drivers/iio/adc/ad7380.c | 226 ++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 194 insertions(+), 32 deletions(-)
-
-diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-index 7b021bb9cf87..e240098708e9 100644
---- a/drivers/iio/adc/ad7380.c
-+++ b/drivers/iio/adc/ad7380.c
-@@ -20,6 +20,7 @@
- #include <linux/err.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/units.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- #include <linux/slab.h>
-@@ -58,6 +59,8 @@
- #define AD7380_CONFIG1_CRC_R		BIT(4)
- #define AD7380_CONFIG1_ALERTEN		BIT(3)
- #define AD7380_CONFIG1_RES		BIT(2)
-+#define RESOLUTION_BOOST_DISABLE	0
-+#define RESOLUTION_BOOST_ENABLE		1
- #define AD7380_CONFIG1_REFSEL		BIT(1)
- #define AD7380_CONFIG1_PMODE		BIT(0)
+diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
+index 076bc9ecfb49..4763402dbcd6 100644
+--- a/drivers/iio/dac/ad5592r-base.c
++++ b/drivers/iio/dac/ad5592r-base.c
+@@ -415,7 +415,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+ 			s64 tmp = *val * (3767897513LL / 25LL);
+ 			*val = div_s64_rem(tmp, 1000000000LL, val2);
  
-@@ -86,6 +89,14 @@ struct ad7380_chip_info {
- 	const struct ad7380_timing_specs *timing_specs;
- };
- 
-+/*
-+ * realbits/storagebits cannot be dynamically changed, so in order to
-+ * support the resolution boost (additional 2  bits of resolution)
-+ * we need to set realbits/storagebits to the maximum value i.e :
-+ *   - realbits = 16 + 2 = 18, and storagebits = 32 for 16-bits chips
-+ *   - realbits = 14 + 2 = 16, and storagebits = 16 for 14-bits chips
-+ * We need to adjust the scale depending on resolution boost status
-+ */
- #define AD7380_CHANNEL(index, bits, diff) {			\
- 	.type = IIO_VOLTAGE,					\
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
-@@ -93,6 +104,7 @@ struct ad7380_chip_info {
- 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
- 		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
- 	.info_mask_shared_by_type_available =			\
-+		BIT(IIO_CHAN_INFO_SCALE) |			\
- 		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
- 	.indexed = 1,						\
- 	.differential = (diff),					\
-@@ -101,8 +113,8 @@ struct ad7380_chip_info {
- 	.scan_index = (index),					\
- 	.scan_type = {						\
- 		.sign = 's',					\
--		.realbits = (bits),				\
--		.storagebits = 16,				\
-+		.realbits = (bits) + 2,				\
-+		.storagebits = ((bits) + 2 > 16) ? 32 : 16,	\
- 		.endianness = IIO_CPU,				\
- 	},							\
- }
-@@ -259,6 +271,8 @@ struct ad7380_state {
- 	struct spi_device *spi;
- 	unsigned int oversampling_mode;
- 	unsigned int oversampling_ratio;
-+	unsigned int scales[2][2];
-+	bool resolution_boost_enable;
- 	struct regmap *regmap;
- 	unsigned int vref_mv;
- 	unsigned int vcm_mv[MAX_NUM_CHANNELS];
-@@ -270,7 +284,10 @@ struct ad7380_state {
- 	 * As MAX_NUM_CHANNELS is 4 the layout of the structure is the same for all parts
- 	 */
- 	struct {
--		u16 raw[MAX_NUM_CHANNELS];
-+		union {
-+			u16 u16[MAX_NUM_CHANNELS];
-+			u32 u32[MAX_NUM_CHANNELS];
-+		} raw;
- 
- 		s64 ts __aligned(8);
- 	} scan_data __aligned(IIO_DMA_MINALIGN);
-@@ -359,23 +376,67 @@ static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
- 	unreachable();
- }
- 
-+static int ad7380_prepare_spi_xfer(struct ad7380_state *st, struct spi_transfer *xfer)
-+{
-+	int bits_per_word;
-+
-+	memset(xfer, 0, sizeof(*xfer));
-+
-+	xfer->rx_buf = &st->scan_data.raw;
-+
-+	if (st->resolution_boost_enable == RESOLUTION_BOOST_ENABLE)
-+		bits_per_word = st->chip_info->channels[0].scan_type.realbits;
-+	else
-+		bits_per_word = st->chip_info->channels[0].scan_type.realbits - 2;
-+
-+	xfer->bits_per_word = bits_per_word;
-+
-+	xfer->len = (st->chip_info->num_channels - 1) * BITS_TO_BYTES(bits_per_word);
-+
-+	return bits_per_word;
-+}
-+
- static irqreturn_t ad7380_trigger_handler(int irq, void *p)
- {
- 	struct iio_poll_func *pf = p;
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct ad7380_state *st = iio_priv(indio_dev);
--	struct spi_transfer xfer = {
--		.bits_per_word = st->chip_info->channels[0].scan_type.realbits,
--		.len = (st->chip_info->num_channels - 1) *
--		       BITS_TO_BYTES(st->chip_info->channels->scan_type.storagebits),
--		.rx_buf = st->scan_data.raw,
--	};
--	int ret;
-+	struct spi_transfer xfer;
-+	int bits_per_word, realbits, i, ret;
-+
-+	realbits = st->chip_info->channels[0].scan_type.realbits;
-+	bits_per_word = ad7380_prepare_spi_xfer(st, &xfer);
- 
- 	ret = spi_sync_transfer(st->spi, &xfer, 1);
- 	if (ret)
- 		goto out;
- 
-+	/*
-+	 * If bits_per_word == realbits (resolution boost enabled), we don't
-+	 * need to manipulate the raw data, otherwise we may need to fix things
-+	 * up a bit to fit the scan_type specs
-+	 */
-+	if (bits_per_word < realbits) {
-+		if (realbits > 16 && bits_per_word <= 16) {
-+			/*
-+			 * Here realbits > 16 so storagebits is 32 and bits_per_word is <= 16
-+			 * so we need to sign extend u16 to u32 using reverse order to
-+			 * avoid writing over union data
-+			 */
-+			for (i = st->chip_info->num_channels - 2; i >= 0; i--)
-+				st->scan_data.raw.u32[i] = sign_extend32(st->scan_data.raw.u16[i],
-+									 bits_per_word - 1);
-+		} else if (bits_per_word < 16) {
-+			/*
-+			 * Here realbits <= 16 so storagebits is 16.
-+			 * We only need to sign extend only if bits_per_word is < 16
-+			 */
-+			for (i = 0; i < st->chip_info->num_channels - 1; i++)
-+				st->scan_data.raw.u16[i] = sign_extend32(st->scan_data.raw.u16[i],
-+									 bits_per_word - 1);
-+		}
-+	}
-+
- 	iio_push_to_buffers_with_timestamp(indio_dev, &st->scan_data,
- 					   pf->timestamp);
- 
-@@ -388,7 +449,7 @@ static irqreturn_t ad7380_trigger_handler(int irq, void *p)
- static int ad7380_read_direct(struct ad7380_state *st,
- 			      struct iio_chan_spec const *chan, int *val)
- {
--	struct spi_transfer xfers[] = {
-+	struct spi_transfer xfers[2] = {
- 		/* toggle CS (no data xfer) to trigger a conversion */
- 		{
- 			.speed_hz = AD7380_REG_WR_SPEED_HZ,
-@@ -403,16 +464,11 @@ static int ad7380_read_direct(struct ad7380_state *st,
- 				.unit = SPI_DELAY_UNIT_NSECS,
- 			},
- 		},
--		/* then read all channels */
-+		/* then read all channels, it will be filled by ad7380_prepare_spi_xfer */
- 		{
--			.speed_hz = AD7380_REG_WR_SPEED_HZ,
--			.bits_per_word = chan->scan_type.realbits,
--			.rx_buf = st->scan_data.raw,
--			.len = (st->chip_info->num_channels - 1) *
--			       ((chan->scan_type.storagebits > 16) ? 4 : 2),
- 		},
- 	};
--	int ret;
-+	int bits_per_word, ret;
- 
- 	/*
- 	 * In normal average oversampling we need to wait for multiple conversions to be done
-@@ -420,12 +476,18 @@ static int ad7380_read_direct(struct ad7380_state *st,
- 	if (st->oversampling_mode == OS_MODE_NORMAL_AVERAGE && st->oversampling_ratio > 1)
- 		xfers[0].delay.value = T_CONVERT_NS + 500 * st->oversampling_ratio;
- 
-+	bits_per_word = ad7380_prepare_spi_xfer(st, &xfers[1]);
-+
- 	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
- 	if (ret < 0)
- 		return ret;
- 
--	*val = sign_extend32(st->scan_data.raw[chan->scan_index],
--			     chan->scan_type.realbits - 1);
-+	if (bits_per_word > 16)
-+		*val = sign_extend32(st->scan_data.raw.u32[chan->scan_index],
-+				     bits_per_word - 1);
-+	else
-+		*val = sign_extend32(st->scan_data.raw.u16[chan->scan_index],
-+				     bits_per_word - 1);
- 
- 	return IIO_VAL_INT;
- }
-@@ -435,6 +497,12 @@ static int ad7380_read_raw(struct iio_dev *indio_dev,
- 			   int *val, int *val2, long info)
- {
- 	struct ad7380_state *st = iio_priv(indio_dev);
-+	int realbits;
-+
-+	if (st->resolution_boost_enable == RESOLUTION_BOOST_ENABLE)
-+		realbits = chan->scan_type.realbits;
-+	else
-+		realbits = chan->scan_type.realbits - 2;
- 
- 	switch (info) {
- 	case IIO_CHAN_INFO_RAW:
-@@ -443,22 +511,16 @@ static int ad7380_read_raw(struct iio_dev *indio_dev,
+-			return IIO_VAL_INT_PLUS_MICRO;
++			return IIO_VAL_INT_PLUS_NANO;
  		}
- 		unreachable();
- 	case IIO_CHAN_INFO_SCALE:
--		/*
--		 * According to the datasheet, the LSB size is:
--		 *    * (2 × VREF) / 2^N, for differential chips
--		 *    * VREF / 2^N, for pseudo-differential chips
--		 * where N is the ADC resolution (i.e realbits)
--		 */
--		*val = st->vref_mv;
--		*val2 = chan->scan_type.realbits - chan->differential;
-+		*val = st->scales[st->resolution_boost_enable][0];
-+		*val2 = st->scales[st->resolution_boost_enable][1];
  
--		return IIO_VAL_FRACTIONAL_LOG2;
-+		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_OFFSET:
- 		/*
- 		 * According to IIO ABI, offset is applied before scale,
- 		 * so offset is: vcm_mv / scale
- 		 */
--		*val = st->vcm_mv[chan->channel] * (1 << chan->scan_type.realbits)
-+		*val = st->vcm_mv[chan->channel] * (1 << realbits)
- 			/ st->vref_mv;
- 
- 		return IIO_VAL_INT;
-@@ -494,6 +556,24 @@ static int ad7380_read_avail(struct iio_dev *indio_dev,
- 		}
- 		*type = IIO_VAL_INT;
- 
-+		return IIO_AVAIL_LIST;
-+	case IIO_CHAN_INFO_SCALE:
-+		*vals = (const int *)st->scales[0];
-+		/*
-+		 * Values are stored into a 2D matrix.
-+		 * We have 2 available scales depending on the resolution boost status
-+		 * (enabled/disabled). Resolution boost can be enabled only when oversampling
-+		 * is enabled (i.e OSR > 1).
-+		 * So depending on the oversampling ratio we display only the currently
-+		 * available scales. First scale is for normal mode, second scale is for resolution
-+		 * boost enabled.
-+		 */
-+		if (st->oversampling_ratio > 1)
-+			*length = 4;
-+		else
-+			*length = 2;
-+		*type = IIO_VAL_INT_PLUS_MICRO;
-+
- 		return IIO_AVAIL_LIST;
- 	default:
- 		return -EINVAL;
-@@ -522,6 +602,25 @@ static inline int check_osr(const int *available_ratio, int size, int ratio)
- 	return -EINVAL;
- }
- 
-+static int ad7380_set_resolution_boost(struct iio_dev *indio_dev, bool enable)
-+{
-+	struct ad7380_state *st = iio_priv(indio_dev);
-+	int ret;
-+
-+	if (st->resolution_boost_enable == enable)
-+		return 0;
-+
-+	ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
-+				 AD7380_CONFIG1_RES,
-+				 FIELD_PREP(AD7380_CONFIG1_RES, enable));
-+
-+	if (ret)
-+		return ret;
-+
-+	st->resolution_boost_enable = enable;
-+	return 0;
-+}
-+
- static int ad7380_write_raw(struct iio_dev *indio_dev,
- 			    struct iio_chan_spec const *chan, int val,
- 			    int val2, long mask)
-@@ -559,6 +658,13 @@ static int ad7380_write_raw(struct iio_dev *indio_dev,
- 
- 			st->oversampling_ratio = val;
- 
-+			/*
-+			 * If oversampling is disabled (OSR == 1),
-+			 * we need to disable resolution boost
-+			 */
-+			if (st->oversampling_ratio == 1)
-+				ad7380_set_resolution_boost(indio_dev, RESOLUTION_BOOST_DISABLE);
-+
- 			/*
- 			 * Perform a soft reset.
- 			 * This will flush the oversampling block and FIFO but will
-@@ -570,6 +676,25 @@ static int ad7380_write_raw(struct iio_dev *indio_dev,
- 							    AD7380_CONFIG2_RESET_SOFT));
- 		}
- 		return 0;
-+	case IIO_CHAN_INFO_SCALE:
-+		if (val == st->scales[RESOLUTION_BOOST_DISABLE][0] &&
-+		    val2 == st->scales[RESOLUTION_BOOST_DISABLE][1]) {
-+			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+				return ad7380_set_resolution_boost(indio_dev,
-+								   RESOLUTION_BOOST_DISABLE);
-+			}
-+			unreachable();
-+		}
-+		if (st->oversampling_ratio > 1 &&
-+		    val == st->scales[RESOLUTION_BOOST_ENABLE][0] &&
-+		    val2 == st->scales[RESOLUTION_BOOST_ENABLE][1]) {
-+			iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-+				return ad7380_set_resolution_boost(indio_dev,
-+								   RESOLUTION_BOOST_ENABLE);
-+			}
-+			unreachable();
-+		}
-+		return -EINVAL;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -614,6 +739,8 @@ static ssize_t oversampling_mode_store(struct device *dev,
- 		 * Oversampling ratio depends on oversampling mode, to avoid
- 		 * misconfiguration when changing oversampling mode,
- 		 * disable oversampling by setting OSR to 0.
-+		 * Since we disable the oversampling, we also need to
-+		 * disable the resolution boost
- 		 */
- 		ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
- 					 AD7380_CONFIG1_OSR, FIELD_PREP(AD7380_CONFIG1_OSR, 0));
-@@ -622,6 +749,7 @@ static ssize_t oversampling_mode_store(struct device *dev,
- 			return ret;
- 
- 		st->oversampling_ratio = 1;
-+		ad7380_set_resolution_boost(indio_dev, RESOLUTION_BOOST_DISABLE);
- 
- 		/*
- 		 * Perform a soft reset.
-@@ -671,6 +799,36 @@ static const struct iio_info ad7380_info = {
- 	.debugfs_reg_access = &ad7380_debugfs_reg_access,
- };
- 
-+static void ad7380_init_available_scales(struct ad7380_state *st)
-+{
-+	s64 tmp;
-+	int value_micro, value_int, realbits, differential;
-+
-+	/*
-+	 * Resolution boost allow to enable 2 higher bits resolution
-+	 * when oversampling is enabled, so we can have only two
-+	 * scales depending on the resolution boost status.
-+	 */
-+	realbits = st->chip_info->channels[0].scan_type.realbits;
-+	differential = st->chip_info->channels[0].differential;
-+
-+	/*
-+	 * According to the datasheet, the LSB size is:
-+	 *    * (2 × VREF) / 2^N, for differential chips
-+	 *    * VREF / 2^N, for pseudo-differential chips
-+	 * where N is the ADC resolution (i.e realbits)
-+	 */
-+	tmp = (s64)st->vref_mv * MEGA >> (realbits - 2 - differential);
-+	value_int = div_s64_rem(tmp, MEGA, &value_micro);
-+	st->scales[RESOLUTION_BOOST_DISABLE][0] = value_int;
-+	st->scales[RESOLUTION_BOOST_DISABLE][1] = value_micro;
-+
-+	tmp = (s64)st->vref_mv * MEGA >> (realbits - differential);
-+	value_int = div_s64_rem(tmp, MEGA, &value_micro);
-+	st->scales[RESOLUTION_BOOST_ENABLE][0] = value_int;
-+	st->scales[RESOLUTION_BOOST_ENABLE][1] = value_micro;
-+}
-+
- static int ad7380_init(struct ad7380_state *st, struct regulator *vref)
- {
- 	int ret;
-@@ -691,12 +849,16 @@ static int ad7380_init(struct ad7380_state *st, struct regulator *vref)
- 	if (ret < 0)
- 		return ret;
- 
--	/* Disable oversampling by default.
--	 * This is the default value after reset,
-+	/* Disable oversampling and resolution boost by default.
-+	 * This are the default values after reset,
- 	 * so just initialize internal data
- 	 */
- 	st->oversampling_mode = OS_MODE_NORMAL_AVERAGE;
- 	st->oversampling_ratio = 1;
-+	st->resolution_boost_enable = RESOLUTION_BOOST_DISABLE;
-+
-+	/* initialize available scales */
-+	ad7380_init_available_scales(st);
- 
- 	/* SPI 1-wire mode */
- 	return regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
+ 		mutex_lock(&st->lock);
 
+base-commit: 98369dccd2f8e16bf4c6621053af7aa4821dcf8e
 -- 
-2.44.0
+2.34.1
 
 

@@ -1,145 +1,183 @@
-Return-Path: <linux-iio+bounces-4718-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4719-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C10A8B896B
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 13:48:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE9608B898A
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 14:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30348285D45
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 11:48:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26D11B215BA
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 12:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5F27F7CE;
-	Wed,  1 May 2024 11:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECFA883CB6;
+	Wed,  1 May 2024 12:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gRk8qU5n"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G67jfSpi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B5C60253;
-	Wed,  1 May 2024 11:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A23444C8C;
+	Wed,  1 May 2024 12:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714564118; cv=none; b=Da4gNOm04vzDkHQsq+s9o6Q+24A0JYEk9pcA/403UUgk6qlg0LMCE0sd+rxUvt1gnSLeFidiJx6wtN3hHNMGGijgxNPBw079MlS4Z2em5piyfu5EcXK7AJWPQq/KbF/jMTOGRs0MJH8IChEEYzREAux+1Pt67B0loJLqeQycKbk=
+	t=1714565186; cv=none; b=HfVvvdilIivstfOg48VnMAsUWiS2wz8jAgZajf1pkdLz/ty/5Xhq8eGM2y2rpK1Gas6pKufAVq1ykMRv/ORTC66y0dDovzNJ4brpl6pQlCY0t0KgHHCCjIwRabD7oVRaYhLix+JSwvgRSBEb88hwPEspA+YMV0HT7km2J9j8VbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714564118; c=relaxed/simple;
-	bh=6Ya7Rv8BuzUkqblZ4uH5Cr8VfDH163fZl6KXp5OnzUI=;
+	s=arc-20240116; t=1714565186; c=relaxed/simple;
+	bh=yfKRCC596ZJoJTk455c95xVYTWBIjoU2Cts08sys9E4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AEPPqtHFI8aQKnYoLUzYFCz8PsEo6Cb0kElDMG+aKyv32oLsJDx+6wU+ddoWIl4IGLTTwdTbORB5nWowB8Gv5/hm2R78Pi84L5ULx13l3iTCe/kljxid3WImTbJiVSgd0aNfQzVPizQht1Ls5Ft5pZ7xfea9XBbz+9J46CEprrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gRk8qU5n; arc=none smtp.client-ip=209.85.221.68
+	 To:Cc:Content-Type; b=MNZk9hBGsHOQuu55cHJw1fYwiL0f/OjB5toVUe24Himk9Oqf2sOGhIkwubznvsDf5RFxoJJXvqCrqMIaZREAdsa7xjBZm9fmtDxlOyQrQ14HDt18EcA0RFn+gDgSS2k/lDqwDIvcEvUN0FF1y0vInhwRTA2bCShUzauTt9VlruY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G67jfSpi; arc=none smtp.client-ip=209.85.208.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f68.google.com with SMTP id ffacd0b85a97d-34db9a38755so738026f8f.1;
-        Wed, 01 May 2024 04:48:36 -0700 (PDT)
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2df83058d48so55898001fa.1;
+        Wed, 01 May 2024 05:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714564115; x=1715168915; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1714565183; x=1715169983; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tPNlg3N+tpItgmZ3Kd/LLiIPFyrNbnMxBWM/z7K+b0A=;
-        b=gRk8qU5nzoutb7V4npkDTmWTpne7L7K7dM7dl16CRvESWzWdQPsLgLAWdVUD+hJzdi
-         VDoismkocjrnWcHZXZktduHyvybb7OlPOTztgaCaUyehR+qcdteShAxWV74/pZGu5pMp
-         I/gwidQt1mVunuWoss6G0huNDzbONVywfOyQY70RHM0GCeNgOrE/IuthgmlnpOgl+bdj
-         +iIjQhf6g7drPwpOoBB+AVRuU9zKEqWhQ7kt3jHHhGtIFe6Dcpxny+A8sAwO2KIVQXmI
-         /Fw0T3QSadvAbc/Bi+DBmNR10yduy2vGCt0tMrBgCqUSIQ5y0qU2Sjy+snbpg4eYoPef
-         In/g==
+        bh=oGv39vI1YGufSjKkaX0v2nDsiNj3uArz+WZ5k9USy6o=;
+        b=G67jfSpirhipC8IndYbO3BscA6awhbVUezLdr+56NXUm/2Yhmte9AyHd/ACn1FfeZf
+         lq3Rx+SDmJF5ilsHecRKam7gh+UcVoLi4NomhUTRuoK3rM+jdcb2qM0fYzbJriDvSHEP
+         /KmNAjrRtCkJE2VGGf2TeLD+75Yc2DuejzBLw6SLyx/lr/tagtZ8npNJx7AOKnh93ykF
+         pnX5b4ieBmXaepWIf0cMssOyfJrGbFNW0HHvmUvSqlKLQ3txbrgdmNgPjygQ2OGLGWYO
+         ptAIn8W7REVXePzYipxlScgF8ORerqMqJzd1997Z848IQtx1AVFsMuFZFGbq7m+CdyeY
+         N1QQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714564115; x=1715168915;
+        d=1e100.net; s=20230601; t=1714565183; x=1715169983;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tPNlg3N+tpItgmZ3Kd/LLiIPFyrNbnMxBWM/z7K+b0A=;
-        b=IN2oYjyevL5lQwRH5u7/OyukAQEBWeHAHHVxn4Jdi/HjGxrGj4OvvMwsyzPH3QUscI
-         LfP6YYMpUAORf8D2eUsPOXbHP0OPUSRbMMJdOd3pABRvmOqNRWmtPLrTolVrWqLCdhaN
-         ar+yvD/G34mtLyKKeJpm/a4eeFg78yhPwc5fxWsfmBjmvua/OXghKKxFOtMh2/Hijz3e
-         1S+LNK+YLGKy+9j2Dez8476fIdfukKVQzeyjzzQmRnVAO3+N+P0kg8X2UmVsuMkryVcs
-         KS0f/FH5qDXi9LqsQaxRS1klKtXlwjMIAFh6DdAlrduqZiqPzMJv5sxEU3+dZkFYP8+s
-         6j4A==
-X-Forwarded-Encrypted: i=1; AJvYcCW1DUOOgHa0oZiRXPo6Xa4G+HVqF6p+S6m4N9sLhyxFvyMbQhSTeN/dsoRqfoQmQAtGQni+Q5yezMgWidKWvfRUwayaij9Ogno0NKsw9CSg8Bk4QFZVsdAFpd2llDX+9wYGFfuaBGzOQQ==
-X-Gm-Message-State: AOJu0YxLH5XgB9Fnxtlw07LwbtAeNBuxQw+AuDbb8irTEU0c5ZBfzpXL
-	DEaMDIF4DdWqsfAySbecpblpVhr2ncO64XmgEbsvhishuJkWR1os16lvv3MscYJ7imE4sj5O3PN
-	71+0TZyDmUfepaWzm3HFz2A344wo=
-X-Google-Smtp-Source: AGHT+IFPhHJ8nW/Vce7eH7J1N/gsX5h6zfNOTtqvMU6c6oVQ1taBqOxhbd4Nk7sjoEMPR+PH7bglvxSMSHbgmw6dtUE=
-X-Received: by 2002:adf:e687:0:b0:33e:c528:c900 with SMTP id
- r7-20020adfe687000000b0033ec528c900mr2079683wrm.55.1714564114889; Wed, 01 May
- 2024 04:48:34 -0700 (PDT)
+        bh=oGv39vI1YGufSjKkaX0v2nDsiNj3uArz+WZ5k9USy6o=;
+        b=rckw5wdklvB9551T5GrISXgXLxq+NgVOZwY6jWI7a1/XD/OQ/3xbb0YmxSQ45M/jlu
+         /3DdrE1/8Gm/YKnZaazihGxBXsWlx96BkuJAkb6gNKp8jtrVbKUQBjfd+aYzBkuDCpOJ
+         QZRPyQA617Z1KK4ZKc6Dt6M6rvM1QuIqsE2jYHFqrZzRj2LcOId/0iHxsmVVQPN8k9UI
+         /ZXyR+YyT9kyVmKXv/B8jL4kNtKprAaU+j1bCVBlL5Iu5FGgZPuvC47ZtA1oVJHVb9Ok
+         Ppu0pKAjVw4qnCL16uoa8AnS25pOXa4jhN6wM7YzugjGlYhdytPmrlHARPrOYVFgtsSd
+         WcBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUBJG+sCyOfXTr+jxIKyOLQBx6n1G3jRDwgJlmdvniNBlHhDmUt4eVP4CvZtjAEXFPe+fbBfLPV+EExLAR5E1g8pxJ+K6JkNxGnOfXnzFhiQytfjBMWoaOY+2PccHJqnVkXo5amIIyIAw==
+X-Gm-Message-State: AOJu0YxyzQ3unJC6t0Xi3IumiHtjnN+LbFdynBZFaKwyySW2Ke08KGYh
+	0+MkSnNMr+nIMZsIK/Cz7AuzLOM2AJXXnsFxHeqH5wJEFY4i3wXxYm9JTnaQxwqa8kRNQ1Aog6U
+	2sTQ8gHaIB7nf8F6o4IqIAOyB0JY=
+X-Google-Smtp-Source: AGHT+IEfJCRSoroTQgkU2WwcJUPOmho1XbtPDD2rO/aHAM00ksuSJ57kwVcWo6PtZ9d4p/YE5s71TxwO3NuwteAa+vY=
+X-Received: by 2002:a2e:9a93:0:b0:2d8:71d4:4c62 with SMTP id
+ p19-20020a2e9a93000000b002d871d44c62mr1387590lji.49.1714565183001; Wed, 01
+ May 2024 05:06:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADFWO8EQUkGcbE=RXjxXbub2tZge9+ss=gB-Q6wngFAvwFygRg@mail.gmail.com>
- <ZjEQ8LBxftcr0Z0t@smile.fi.intel.com>
-In-Reply-To: <ZjEQ8LBxftcr0Z0t@smile.fi.intel.com>
+References: <CADFWO8GC6RP6A7H-Cq5UZHfBY3VJZTCqssdZet61hH031euhwQ@mail.gmail.com>
+ <20240430-unnamable-wrench-16c9ad780df1@spud>
+In-Reply-To: <20240430-unnamable-wrench-16c9ad780df1@spud>
 From: Petar Stoykov <pd.pstoykov@gmail.com>
-Date: Wed, 1 May 2024 13:48:24 +0200
-Message-ID: <CADFWO8HL_pwEQwYn0K9AkPV=HZyWN3NSOs8k4dRrB40w_1KdCw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] iio: pressure: Add driver for Sensirion SDP500
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Wed, 1 May 2024 14:06:12 +0200
+Message-ID: <CADFWO8FnMh3OSXO5c9YnafDEf8dxu7MHuH-J32H_Dgx4VSZ=Tw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
+To: Conor Dooley <conor@kernel.org>
 Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
 	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Rob Herring <robh+dt@kernel.org>, Angel Iglesias <ang.iglesiasg@gmail.com>, 
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
-	devicetree@vger.kernel.org
+	Rob Herring <robh+dt@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Angel Iglesias <ang.iglesiasg@gmail.com>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 30, 2024 at 5:40=E2=80=AFPM Andy Shevchenko
-<andriy.shevchenko@linux.intel.com> wrote:
+On Tue, Apr 30, 2024 at 6:50=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
+te:
 >
-> On Tue, Apr 30, 2024 at 05:27:24PM +0200, Petar Stoykov wrote:
-> > From 6ae7537517f551540121ca6fb3b99080b7580410 Mon Sep 17 00:00:00 2001
+> On Tue, Apr 30, 2024 at 05:27:20PM +0200, Petar Stoykov wrote:
+> > From 60f5cc7f65b07124f19428a713c3bc33b9e4a7a7 Mon Sep 17 00:00:00 2001
 > > From: Petar Stoykov <pd.pstoykov@gmail.com>
-> > Date: Mon, 15 Jan 2024 12:21:26 +0100
-> > Subject: [PATCH 2/3] iio: pressure: Add driver for Sensirion SDP500
+> > Date: Mon, 15 Jan 2024 14:29:25 +0100
+> > Subject: [PATCH 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
 > >
-> > Sensirion SDP500 is a digital differential pressure sensor. The sensor =
-is
-> > accessed over I2C.
+> > Sensirion SDP500 is a digital differential pressure sensor. It provides
+> > a digital I2C output. Add devicetree bindings requiring the compatible
+> > string and I2C slave address (reg).
+> >
+> > Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
+> > ---
+> >  .../iio/pressure/sensirion,sdp500.yaml        | 39 +++++++++++++++++++
+> >  1 file changed, 39 insertions(+)
+> >  create mode 100644
+> > Documentation/devicetree/bindings/iio/pressure/sensirion,sdp500.yaml
+> >
+> > diff --git a/Documentation/devicetree/bindings/iio/pressure/sensirion,s=
+dp500.yaml
+> > b/Documentation/devicetree/bindings/iio/pressure/sensirion,sdp500.yaml
+> > new file mode 100644
+> > index 000000000000..3cdf17df7d52
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/pressure/sensirion,sdp500.y=
+aml
+> > @@ -0,0 +1,39 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/pressure/sdp500.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: sdp500/sdp510 pressure sensor with I2C bus interface
+> > +
+> > +maintainers:
+> > +  - Petar Stoykov <pd.pstoykov@gmail.com>
+> > +
+> > +description: |
+> > +  Pressure sensor from Sensirion with I2C bus interface.
+> > +  There is no software difference between sdp500 and sdp510.
 >
-> Any Datasheet: tag can be added?
+> I see no mention of the sdp510 elsewhere in this patch though..
+> If you're trying to add support for both, then add a compatible for the
+> sdp510 that falls back to the sdp500.
 >
 
-Ok. I see some drivers also include the pdf link in the driver's code.
-I can do that as well.
+Fair point. Our focus is on the SDP500. SDP510 is the same software-wise so
+I just mention it but I agree that I should add it as compatible in the cod=
+e.
 
-> ...
+> > +
+> > +properties:
+> > +  compatible:
+> > +    const: sensirion,sdp500
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +
+> > +additionalProperties: false
 >
-> > +config SDP500
-> > +    tristate "Sensirion SDP500 differential pressure sensor I2C driver=
-"
-> > +    depends on I2C
-> > +    help
-> > +      Say Y here to build support for Sensirion SDP500 differential pr=
-essure
-> > +      sensor I2C driver.
-> > +      To compile this driver as a module, choose M here: the core modu=
-le
-> > +      will be called sdp500.
->
-> You patch is broken. Fix the way how you send patches.
->
-> ...
->
-> > +static int sdp500_start_measurement(struct sdp500_data *data, const
-> > struct iio_dev *indio_dev)
->
-> Here is more visible.
->
-> --
-> With Best Regards,
-> Andy Shevchenko
->
->
+> Other than the fact that a fallback compatible might be required here,
+> this looks like a candidate for trivial-devices.yaml.
 
-I finally figured it out. Gmail has a hard word-wrap at 80 characters per l=
-ine.
-At first I thought it was word-wrap on the receiving side but I was wrong.
-I will try to convince IT to change things so I can use b4 or git send e-ma=
-il.
-If that doesn't work then I guess my code will have shorter lines in next p=
-atch.
+This sounds like a more serious comment. We will definitely continue using
+this driver internally for now. But do you think it's still worth adding
+it as a separate driver instead of leaving it for "trivial-devices"?
+It has been a useful driver for us so we thought it is worth sharing.
+
+>
+> Cheers,
+> Conor.
+>
+> > +
+> > +examples:
+> > +  - |
+> > +    i2c {
+> > +      #address-cells =3D <1>;
+> > +      #size-cells =3D <0>;
+> > +      pressure@40 {
+> > +        compatible =3D "sensirion,sdp500";
+> > +        reg =3D <0x40>;
+> > +        vdd-supply =3D <&foo>;
+> > +      };
+> > +    };
+> > --
+> > 2.30.2
 

@@ -1,76 +1,75 @@
-Return-Path: <linux-iio+bounces-4730-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4731-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B770B8B8C52
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 16:57:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EEC88B8C53
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 16:57:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F4AA2837BC
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 14:57:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0458B23637
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 14:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88AA4130A5B;
-	Wed,  1 May 2024 14:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28711130A6A;
+	Wed,  1 May 2024 14:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VxX37z4q"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="PH+W5njQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC2A130492
-	for <linux-iio@vger.kernel.org>; Wed,  1 May 2024 14:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0B41304A1
+	for <linux-iio@vger.kernel.org>; Wed,  1 May 2024 14:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714575361; cv=none; b=BIm1nv0d3QndC6taxO6kMwlosG1vl5S+u3ezNna0ukZ78bRrUQ0D/go2El+oUfRMpws+seO9Swm81w4LGpOlZC9GD9KDNkGLik/I3scLDJVwKresusUN5ZsqufAideKM7RSaWXEOMf1EXhcIfSDQO9HpYKlYf9oLupDtOYnjKzw=
+	t=1714575361; cv=none; b=OSH/mYuxJhoOunkA6v6hLNm8KelSQXp6zsEEWWQT/XdnRNoMvBxLtPGY3GnkZLRVoy1cWLD/YDnaZrGKNgXnN55Xyt+czpShDBliw+d0hSgC8NygUiYkxYQhVsFaTgwo8ckGaigma1QYP9lPEnsC8mMtNsQe5RuMWZcGmPbQbMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1714575361; c=relaxed/simple;
-	bh=ZNQE99beBwoRSVRXgPiuYKEUKZPVmY+MpjIBueQJo5Q=;
+	bh=qpYpssS45nruTsiAVK4hIr/DfAzCuG8bb/CkuI//dIU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=L43eFkRvTZqs5HKHOlZIpa1I6QL7WpVrYC/YRljXS8yifU1I5hw6zkbh8aPKoRox4mTv5JzmqG0UcookzXY3yqRcj2wYAsm19HE7v+8BACcg9w8952k3s9wgthTgqlu9PzcUDMeB8UjTp6K5MOyiigwRDZHbY4rhpeIe1KO7dSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VxX37z4q; arc=none smtp.client-ip=209.85.208.169
+	 In-Reply-To:To:Cc; b=hDawL4NQI5I5ItGH1XW0NwoOFO6Q0Jyqp6aW/Y8h69uzm7Nvv7yQYcAQMwtgtCVsC7kgOFwWSfh4PSkmeaBwV+58Gs+8hMv4AsnyStcgP/W6L2tRbvsosLnG/WTmo6i6NGsagZS/OXZVpgg62jNML5/fW96QbGa1nOYxU3M5gLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=PH+W5njQ; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2dcc8d10d39so79953891fa.3
-        for <linux-iio@vger.kernel.org>; Wed, 01 May 2024 07:55:58 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-41b79450f8cso43698925e9.3
+        for <linux-iio@vger.kernel.org>; Wed, 01 May 2024 07:55:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1714575357; x=1715180157; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1714575358; x=1715180158; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2SUrAQZGAtrStLGSV72n9ZrFrH3z0Vq+Ea2QpVZsYzA=;
-        b=VxX37z4qwmlW0BReVaadVBfJJ0+OGctDYzNwUb/v5Yjo8yHQxYwE7VQFDbfFyHFrGL
-         FlfxGZVYibs6P5pVpOm09fh2nTC7uAZwzdodfGec4CR97iAQHgPCB/gW9N0IRileSOSS
-         WfpeVX6KhIlpdk8YHROcOmR9/JlKpRKz5uKTK2QsvBCh0F0gwXGHxZoAarksXj1HpP7q
-         9I+Igh2zEQR1+0HmLDOhNA3oDukZRX7UR8kjkmtJ0G8BI1bm5TlWOPrq2Rq0R5X5dPnN
-         px9ZC3lmD2+ik3kqgonjoDH0MJS4BKqpyRjAum5LHENxwGPMjOblqJGWQ2vdDW1pS8jb
-         96zw==
+        bh=IikJd/LplXd0GAQdyekbojR8JRFhxUeGGR+Ui18yUXw=;
+        b=PH+W5njQ+qduIHHTNik2dCCqKLDxCkqQYhfvagpK+2baB2vmBR85h3ZjuAg1N4cawV
+         83h+y3Y/48x1ShyzWC4qin/25cBked63oKulrHDmcLu/Qy/eADlZCiB+n6qnlCDIb+Zn
+         I5TIdjIBv4tTKc5YdiF3ToVS8QToHz/4YZh5deJ2iBzWOuvuXxsCsHzh34cQDjqa0ptZ
+         s25FIxXkBnMx2wFn111MMIRxBOfRvvmEdZEAyXVa0uY5LDx9ycq5NWLEmxz8uvfh1kcx
+         M34bRrCejopZdNb2wVLCwPYJ/7UZvYj09Q2vbyccLdQRQybnTUa2bdVTdZowfv1Oad8y
+         KGUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714575357; x=1715180157;
+        d=1e100.net; s=20230601; t=1714575358; x=1715180158;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2SUrAQZGAtrStLGSV72n9ZrFrH3z0Vq+Ea2QpVZsYzA=;
-        b=vDseRGZZc2TO2CkW2YSYxhU/MDiXOfjIk9gZD4YdvOOC+YsGiZAfFNcwPxkh98bQXE
-         Pcfsr0VICkDrXTkdi1gOISsUmAc7YqPGERGRuIB3+rqrInv+ebFLFqNpRA+fGEJxkYMl
-         vjCynm5izHtouy5RzvaZNGXjkf/NvDLTkOXB2UUko0rJjSG3CHCfZuojmmLhjwgcXso2
-         CDtZmYuu/kU5b5WvCd86BtHOwxTePdfktNpBCXrRHpObTXHcNKeAjBA5iW4vCfq0TtvD
-         gAkwHj+si8RNNLndRWUF3CSjfZpzWtveeivhsY5WlDp0GxG+Xq+g18wS8n41cWniUdjU
-         Z0Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCVljXycB5FcafVK3OO7nUQDGpFVm9RMRyq+YI7Iveg3ktD9XVoU48EDzjf8flX3++CQYwtzVZ5wTL8PyOmYbWrgOjO5UoVmj8px
-X-Gm-Message-State: AOJu0Ywu1Vt8GxoL6plkvN0lHYBAWb10yKLmVori2SyybmCYdaZDiF3O
-	xo7eYhrN3F+m37T+Vdo2mQO33Uu1j45a+UbrD4fFiO5u2yg5WXkbKfTlI9EW7MU=
-X-Google-Smtp-Source: AGHT+IEv9sPD9F1hPTXXzQtVy0YeCQSCcJgq28A1F/hSj8DUSPiVAnVdblnxCwk7HLdQcWPj9V/HWQ==
-X-Received: by 2002:a05:651c:2110:b0:2e1:b0e3:21f with SMTP id a16-20020a05651c211000b002e1b0e3021fmr183264ljq.40.1714575357402;
-        Wed, 01 May 2024 07:55:57 -0700 (PDT)
+        bh=IikJd/LplXd0GAQdyekbojR8JRFhxUeGGR+Ui18yUXw=;
+        b=cfnVXfnXNyWxw6Ji8e5eWBxj1/oBuij4rHnskKCcASdOTvGuexMUxAhD91BMRW6H6u
+         +4S+6hHG52FleLmd817zJZ67314f//KM3wUtPRsuoUQecP7lQbrwKw1ETxuiwbCGDIQo
+         KRpWZEfX9SjD1HS24sgLjbHaxK53YfFbzZsT4DPrISEBei3I6U2hsk6W+8kkL4vO6GOw
+         +QuIOXBQy58UwRQj/wlJpv62OFC0jJc3prhA6Xp5qszfvNc+Zjjn2G2lP9mvW0GQACA7
+         CMu3LPQWse5GqTjJmRnsmN3XjGw3FNm/UWJGI4cj/AMsav24lATRhnNZEEcmbcnIYqKW
+         2DWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWewlG0yJXsjoBGii+9PU/PP2l1H4gU/dlG14wqoAuopyLcQTpbBG3jnR+fJBfTYCJZZDbDZnCjCRYYlIA7UHSuH+oYPo2r8m0F
+X-Gm-Message-State: AOJu0Yx7GTJm+RIiPYA1EHGmYPQ/+UN870/25wsboVp+sJZqjT9t4zmz
+	o8Y4nqNx5ODODN/8hYUCOVN476um+hdpofTJ+taH02UDkX9jZuuQP94egEk/57E=
+X-Google-Smtp-Source: AGHT+IF4RI3DWH3O6s2iqU3cnNMEynbpVDI4WzhAtH0r6Hgxn6Ww74V8vUuYJ4goPrb2+hzQO9Uhhw==
+X-Received: by 2002:a05:600c:4751:b0:41b:4443:9e10 with SMTP id w17-20020a05600c475100b0041b44439e10mr1954285wmo.29.1714575358123;
+        Wed, 01 May 2024 07:55:58 -0700 (PDT)
 Received: from [192.168.1.61] ([2a02:842a:d52e:6101:6fd0:6c4:5d68:f0a5])
-        by smtp.gmail.com with ESMTPSA id o27-20020a05600c511b00b00418a386c17bsm2422999wms.12.2024.05.01.07.55.56
+        by smtp.gmail.com with ESMTPSA id o27-20020a05600c511b00b00418a386c17bsm2422999wms.12.2024.05.01.07.55.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Wed, 01 May 2024 07:55:57 -0700 (PDT)
 From: Julien Stephan <jstephan@baylibre.com>
-Date: Wed, 01 May 2024 16:55:40 +0200
-Subject: [PATCH RFC v6 07/10] iio: adc: ad7380: add support for ad738x-4 4
- channels variants
+Date: Wed, 01 May 2024 16:55:41 +0200
+Subject: [PATCH RFC v6 08/10] iio: adc: ad7380: add oversampling support
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -79,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240501-adding-new-ad738x-driver-v6-7-3c0741154728@baylibre.com>
+Message-Id: <20240501-adding-new-ad738x-driver-v6-8-3c0741154728@baylibre.com>
 References: <20240501-adding-new-ad738x-driver-v6-0-3c0741154728@baylibre.com>
 In-Reply-To: <20240501-adding-new-ad738x-driver-v6-0-3c0741154728@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -95,165 +94,190 @@ Cc: kernel test robot <lkp@intel.com>, linux-iio@vger.kernel.org,
  Julien Stephan <jstephan@baylibre.com>
 X-Mailer: b4 0.13.0
 
-Add support for ad7380/1/2/3-4 parts which are 4 channels
-variants from ad7380/1/2/3
+ad7380x(-4) parts are able to do oversampling to increase accuracy.
+They support 2 average modes: normal average and rolling overage.
+This commits focus on enabling normal average oversampling, which is the
+default one.
+
+Normal averaging involves taking a number of samples, adding them together,
+and dividing the result by the number of samples taken.
+This result is then output from the device. The sample data is cleared when
+the process completes. Because we need more samples to output a value,
+the data output rate decrease with the oversampling ratio.
 
 Signed-off-by: Julien Stephan <jstephan@baylibre.com>
 ---
- drivers/iio/adc/ad7380.c | 77 ++++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 75 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7380.c | 115 ++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 114 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-index 201006d878f1..020959759170 100644
+index 020959759170..1e3869f5e48c 100644
 --- a/drivers/iio/adc/ad7380.c
 +++ b/drivers/iio/adc/ad7380.c
-@@ -8,6 +8,9 @@
-  * Datasheets of supported parts:
-  * ad7380/1 : https://www.analog.com/media/en/technical-documentation/data-sheets/AD7380-7381.pdf
-  * ad7383/4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7383-7384.pdf
-+ * ad7380-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7380-4.pdf
-+ * ad7381-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7381-4.pdf
-+ * ad7383/4-4 : https://www.analog.com/media/en/technical-documentation/data-sheets/ad7383-4-ad7384-4.pdf
-  */
- 
- #include <linux/bitfield.h>
-@@ -29,7 +32,7 @@
- #include <linux/iio/trigger_consumer.h>
- #include <linux/iio/triggered_buffer.h>
- 
--#define MAX_NUM_CHANNELS		2
-+#define MAX_NUM_CHANNELS		4
- /* 2.5V internal reference voltage */
- #define AD7380_INTERNAL_REF_MV		2500
- 
-@@ -106,27 +109,53 @@ static const struct iio_chan_spec name[] = {		\
- 	IIO_CHAN_SOFT_TIMESTAMP(2),			\
- }
- 
-+#define DEFINE_AD7380_4_CHANNEL(name, bits, diff)	\
-+static const struct iio_chan_spec name[] = {		\
-+	AD7380_CHANNEL(0, bits, diff),			\
-+	AD7380_CHANNEL(1, bits, diff),			\
-+	AD7380_CHANNEL(2, bits, diff),			\
-+	AD7380_CHANNEL(3, bits, diff),			\
-+	IIO_CHAN_SOFT_TIMESTAMP(4),			\
-+}
-+
- /* fully differential */
- DEFINE_AD7380_2_CHANNEL(ad7380_channels, 16, 1);
- DEFINE_AD7380_2_CHANNEL(ad7381_channels, 14, 1);
-+DEFINE_AD7380_4_CHANNEL(ad7380_4_channels, 16, 1);
-+DEFINE_AD7380_4_CHANNEL(ad7381_4_channels, 14, 1);
- /* pseudo differential */
- DEFINE_AD7380_2_CHANNEL(ad7383_channels, 16, 0);
- DEFINE_AD7380_2_CHANNEL(ad7384_channels, 14, 0);
-+DEFINE_AD7380_4_CHANNEL(ad7383_4_channels, 16, 0);
-+DEFINE_AD7380_4_CHANNEL(ad7384_4_channels, 14, 0);
- 
- static const char * const ad7380_2_channel_vcm_supplies[] = {
- 	"aina", "ainb",
+@@ -88,7 +88,10 @@ struct ad7380_chip_info {
+ 	.type = IIO_VOLTAGE,					\
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |		\
+ 		((diff) ? 0 : BIT(IIO_CHAN_INFO_OFFSET)),	\
+-	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE),	\
++	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |	\
++		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
++	.info_mask_shared_by_type_available =			\
++		BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),		\
+ 	.indexed = 1,						\
+ 	.differential = (diff),					\
+ 	.channel = (diff) ? (2 * (index)) : (index),		\
+@@ -156,6 +159,16 @@ static const struct ad7380_timing_specs ad7380_4_timing = {
+ 	.t_csh_ns = 20,
  };
  
-+static const char * const ad7380_4_channel_vcm_supplies[] = {
-+	"aina", "ainb", "ainc", "aind",
-+};
-+
- /* Since this is simultaneous sampling, we don't allow individual channels. */
- static const unsigned long ad7380_2_channel_scan_masks[] = {
- 	GENMASK(1, 0),
- 	0
- };
- 
-+static const unsigned long ad7380_4_channel_scan_masks[] = {
-+	GENMASK(3, 0),
-+	0
-+};
-+
- static const struct ad7380_timing_specs ad7380_timing = {
- 	.t_csh_ns = 10,
- };
- 
-+static const struct ad7380_timing_specs ad7380_4_timing = {
-+	.t_csh_ns = 20,
++/*
++ * Available oversampling ratios. The indices correspond
++ * with the bit value expected by the chip.
++ * The available ratios depend on the averaging mode,
++ * only normal averaging is supported for now
++ */
++static const int ad7380_normal_average_oversampling_ratios[] = {
++	1, 2, 4, 8, 16, 32,
 +};
 +
  static const struct ad7380_chip_info ad7380_chip_info = {
  	.name = "ad7380",
  	.channels = ad7380_channels,
-@@ -163,6 +192,42 @@ static const struct ad7380_chip_info ad7384_chip_info = {
- 	.timing_specs = &ad7380_timing,
- };
- 
-+static const struct ad7380_chip_info ad7380_4_chip_info = {
-+	.name = "ad7380-4",
-+	.channels = ad7380_4_channels,
-+	.num_channels = ARRAY_SIZE(ad7380_4_channels),
-+	.available_scan_masks = ad7380_4_channel_scan_masks,
-+	.timing_specs = &ad7380_4_timing,
-+};
-+
-+static const struct ad7380_chip_info ad7381_4_chip_info = {
-+	.name = "ad7381-4",
-+	.channels = ad7381_4_channels,
-+	.num_channels = ARRAY_SIZE(ad7381_4_channels),
-+	.available_scan_masks = ad7380_4_channel_scan_masks,
-+	.timing_specs = &ad7380_4_timing,
-+};
-+
-+static const struct ad7380_chip_info ad7383_4_chip_info = {
-+	.name = "ad7383-4",
-+	.channels = ad7383_4_channels,
-+	.num_channels = ARRAY_SIZE(ad7383_4_channels),
-+	.vcm_supplies = ad7380_4_channel_vcm_supplies,
-+	.num_vcm_supplies = ARRAY_SIZE(ad7380_4_channel_vcm_supplies),
-+	.available_scan_masks = ad7380_4_channel_scan_masks,
-+	.timing_specs = &ad7380_4_timing,
-+};
-+
-+static const struct ad7380_chip_info ad7384_4_chip_info = {
-+	.name = "ad7384-4",
-+	.channels = ad7384_4_channels,
-+	.num_channels = ARRAY_SIZE(ad7384_4_channels),
-+	.vcm_supplies = ad7380_4_channel_vcm_supplies,
-+	.num_vcm_supplies = ARRAY_SIZE(ad7380_4_channel_vcm_supplies),
-+	.available_scan_masks = ad7380_4_channel_scan_masks,
-+	.timing_specs = &ad7380_4_timing,
-+};
-+
+@@ -231,6 +244,7 @@ static const struct ad7380_chip_info ad7384_4_chip_info = {
  struct ad7380_state {
  	const struct ad7380_chip_info *chip_info;
  	struct spi_device *spi;
-@@ -174,7 +239,7 @@ struct ad7380_state {
- 	 * transfer buffers to live in their own cache lines.
- 	 * Make the buffer large enough for MAX_NUM_CHANNELS 16-bit samples and one 64-bit
- 	 * aligned 64 bit timestamp.
--	 * As MAX_NUM_CHANNELS is 2 the layout of the structure is the same for all parts
-+	 * As MAX_NUM_CHANNELS is 4 the layout of the structure is the same for all parts
- 	 */
- 	struct {
- 		u16 raw[MAX_NUM_CHANNELS];
-@@ -517,6 +582,10 @@ static const struct of_device_id ad7380_of_match_table[] = {
- 	{ .compatible = "adi,ad7381", .data = &ad7381_chip_info },
- 	{ .compatible = "adi,ad7383", .data = &ad7383_chip_info },
- 	{ .compatible = "adi,ad7384", .data = &ad7384_chip_info },
-+	{ .compatible = "adi,ad7380-4", .data = &ad7380_4_chip_info },
-+	{ .compatible = "adi,ad7381-4", .data = &ad7381_4_chip_info },
-+	{ .compatible = "adi,ad7383-4", .data = &ad7383_4_chip_info },
-+	{ .compatible = "adi,ad7384-4", .data = &ad7384_4_chip_info },
- 	{ }
++	unsigned int oversampling_ratio;
+ 	struct regmap *regmap;
+ 	unsigned int vref_mv;
+ 	unsigned int vcm_mv[MAX_NUM_CHANNELS];
+@@ -386,6 +400,12 @@ static int ad7380_read_direct(struct ad7380_state *st,
+ 	};
+ 	int ret;
+ 
++	/*
++	 * In normal average oversampling we need to wait for multiple conversions to be done
++	 */
++	if (st->oversampling_ratio > 1)
++		xfers[0].delay.value = T_CONVERT_NS + 500 * st->oversampling_ratio;
++
+ 	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
+ 	if (ret < 0)
+ 		return ret;
+@@ -428,6 +448,91 @@ static int ad7380_read_raw(struct iio_dev *indio_dev,
+ 			/ st->vref_mv;
+ 
+ 		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		*val = st->oversampling_ratio;
++
++		return IIO_VAL_INT;
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad7380_read_avail(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     const int **vals, int *type, int *length,
++			     long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		*vals = ad7380_normal_average_oversampling_ratios;
++		*length = ARRAY_SIZE(ad7380_normal_average_oversampling_ratios);
++		*type = IIO_VAL_INT;
++
++		return IIO_AVAIL_LIST;
++	default:
++		return -EINVAL;
++	}
++}
++
++/**
++ * check_osr - Check the oversampling ratio
++ * @available_ratio: available ratios's array
++ * @size: size of the available_ratio array
++ * ratio: ratio to check
++ *
++ * Check if ratio is present in @available_ratio. Check for exact match.
++ * @available_ratio is an array of the available ratios (depending on the oversampling mode).
++ * The indices must correspond with the bit value expected by the chip.
++ */
++static inline int check_osr(const int *available_ratio, int size, int ratio)
++{
++	int i;
++
++	for (i = 0; i < size; i++) {
++		if (ratio == available_ratio[i])
++			return i;
++	}
++
++	return -EINVAL;
++}
++
++static int ad7380_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan, int val,
++			    int val2, long mask)
++{
++	struct ad7380_state *st = iio_priv(indio_dev);
++	int ret, osr;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
++		osr = check_osr(ad7380_normal_average_oversampling_ratios,
++				ARRAY_SIZE(ad7380_normal_average_oversampling_ratios),
++				val);
++
++		if (osr < 0)
++			return osr;
++
++		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++			ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
++						 AD7380_CONFIG1_OSR,
++						 FIELD_PREP(AD7380_CONFIG1_OSR, osr));
++
++			if (ret)
++				return ret;
++
++			st->oversampling_ratio = val;
++
++			/*
++			 * Perform a soft reset.
++			 * This will flush the oversampling block and FIFO but will
++			 * maintain the content of the configurable registers.
++			 */
++			ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
++						 AD7380_CONFIG2_RESET,
++						 FIELD_PREP(AD7380_CONFIG2_RESET,
++							    AD7380_CONFIG2_RESET_SOFT));
++		}
++		return 0;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -435,6 +540,8 @@ static int ad7380_read_raw(struct iio_dev *indio_dev,
+ 
+ static const struct iio_info ad7380_info = {
+ 	.read_raw = &ad7380_read_raw,
++	.read_avail = &ad7380_read_avail,
++	.write_raw = &ad7380_write_raw,
+ 	.debugfs_reg_access = &ad7380_debugfs_reg_access,
  };
  
-@@ -525,6 +594,10 @@ static const struct spi_device_id ad7380_id_table[] = {
- 	{ "ad7381", (kernel_ulong_t)&ad7381_chip_info },
- 	{ "ad7383", (kernel_ulong_t)&ad7383_chip_info },
- 	{ "ad7384", (kernel_ulong_t)&ad7384_chip_info },
-+	{ "ad7380-4", (kernel_ulong_t)&ad7380_4_chip_info },
-+	{ "ad7381-4", (kernel_ulong_t)&ad7381_4_chip_info },
-+	{ "ad7383-4", (kernel_ulong_t)&ad7383_4_chip_info },
-+	{ "ad7384-4", (kernel_ulong_t)&ad7384_4_chip_info },
- 	{ }
- };
- MODULE_DEVICE_TABLE(spi, ad7380_id_table);
+@@ -458,6 +565,12 @@ static int ad7380_init(struct ad7380_state *st, struct regulator *vref)
+ 	if (ret < 0)
+ 		return ret;
+ 
++	/* Disable oversampling by default.
++	 * This is the default value after reset,
++	 * so just initialize internal data
++	 */
++	st->oversampling_ratio = 1;
++
+ 	/* SPI 1-wire mode */
+ 	return regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG2,
+ 				  AD7380_CONFIG2_SDO,
 
 -- 
 2.44.0

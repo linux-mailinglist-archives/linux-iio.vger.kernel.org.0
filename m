@@ -1,121 +1,100 @@
-Return-Path: <linux-iio+bounces-4710-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4711-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA7FC8B8641
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 09:45:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4498B878B
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 11:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8581A2820C6
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 07:45:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F2551F21826
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 09:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D6A4D58A;
-	Wed,  1 May 2024 07:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD58051C5A;
+	Wed,  1 May 2024 09:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rxGT+4QD"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="dOB8pKST"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp.smtpout.orange.fr (smtp-25.smtpout.orange.fr [80.12.242.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF4C4AEF0
-	for <linux-iio@vger.kernel.org>; Wed,  1 May 2024 07:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39CE51C40;
+	Wed,  1 May 2024 09:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714549531; cv=none; b=ZfqkNkDgpFpBM+/E8SEIvh4+vN0gCiOF222s3BAWgjKt7U5J3JcWsMSaR4V0d3zzzyB+5g2BLODseL5tUNxcvxXChnzGMDprFJizKg/QF1O0yjofnC6kznGkbuAch5Nc1do8V4spS7OcVi6u5688sl6mC3F84mGA1TSzI6SUT7c=
+	t=1714555204; cv=none; b=oeBWt2gcfib0VKxiLVD/z5fPOz3gb0I00jsHmdTmu1J+UuZ7h3CMdaZ4WKkscXSEzrNXRbjCyS7EjmPJXJn0ZbNXhH/SnAHVWG7JRUDOTwrv4jJcf8Pq+ZX7TdgBbb2tpoIzYVX4U5NSRFce1Fw1/UIMYw88mtB+UKQajQfCvZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714549531; c=relaxed/simple;
-	bh=DqPG21dC3p9teEwV5kqyUbCAjND7//mFPaOPAD+78Eo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ii5bKp74zw5fAXYrZfRRlO8q45a2KTPMei1zsBuhMERAN6EwAJeUKpEqPYXxE4n+sLB0Up3epfWoZ0IX9ZGZB6uQtlj50oatKGboGx2ZFyKptlTY8sJzmn88nWHnjmo7iwGF2StsHZ0g37RRzVb+Z2E3IMmWBFLhNPuygcqkjnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rxGT+4QD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E2FEC113CC;
-	Wed,  1 May 2024 07:45:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714549530;
-	bh=DqPG21dC3p9teEwV5kqyUbCAjND7//mFPaOPAD+78Eo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rxGT+4QDg3pnJ2cLwnUW4d/mRNGZMnbtC900lrZX3OkYQFzrzymurdCeNkycAguXz
-	 Q9w1EVHyacu/0RPXmmKAHu745pU6tmP17OmaxSIZbt3biHxro0rfwuqY4UZWK1xPwY
-	 0bV0QCtC7uRr3p41kLGGaSq7g9dOy/Vxg2Au0EDxo/QhiPwCkF5a1h8wB9EPlUOLXI
-	 iTxnhtar2b9pY545uE2Z0vtnUJma3XSalr+3zMEhSbmAhHzyle0+T7WePMnQ7o31Rg
-	 Uii+1tqahXooq9cKM+uyakXxemkOi+NXr1ONxiFuYEqlXx1oglZ3Iu3I+vskHjF6xc
-	 VGGNbNz8y0UwQ==
-Date: Wed, 1 May 2024 08:45:19 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Lincoln Yuji <lincolnyuji@usp.br>
-Cc: Luiza Soezima <lbrsoezima@usp.br>, Sabrina Araujo
- <sabrinaaraujo@usp.br>, Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH v3] iio: adc: ti-ads1015: use
- device_for_each_child_node_scoped()
-Message-ID: <20240501084519.7fc7f982@jic23-huawei>
-In-Reply-To: <20240429132233.6266-1-lincolnyuji@usp.br>
-References: <20240429132233.6266-1-lincolnyuji@usp.br>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1714555204; c=relaxed/simple;
+	bh=toE93QySheBfyF02XRIVOBlqg4D+U5lZNaG+/pvnFcE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CwTjQji6ARcn/wPV4PVrSBbZHuucLt8FdtvoA2K2+cX+WVcZ80HVy/qSktUEW9L19syvet3tdNRvpovfp7RVOS0uYuqBrrepnuMSXwBcCyHsLlNP7fy6eTElOIPejh+FdfD643F/iXf7XffTAlz53yF31zgutCEw6EXKW4pxMp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=dOB8pKST; arc=none smtp.client-ip=80.12.242.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from localhost.localdomain ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id 267zszaB9n00P267zs1vYS; Wed, 01 May 2024 11:19:53 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1714555193;
+	bh=Xesjsh9zXqKwK5RBVsmOk430OrjLqZlImsK09mLqsu4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=dOB8pKSTbrotF/JpCqwczO3LP3h6y8xgMnF2uKE0pzcECqPQj5IwdndJXt/w5LZ1H
+	 XSQNK9ikSOPtQ4DQl5U4r81sDMmRa9VfjG+sebU9v9mEOUWe6DDxNxcwqWmkQZn3L0
+	 b2PNUhH+dSRTFCk1UmuDGDqt2mKnAeax91WFyWY401n0eq1LCrE4pS2fx/iXp3F497
+	 7g4LVM7Zqi2MvOnAnl5tXDAR7zJgWSbZewXPTdwlCGS4T7ObI1Zga+JqQAOILG1aPB
+	 fIwmgRaU6cVyF1vBviirJAXbUN2WN+JNlD0wqtBlk1o2PVUQrkZsPTI78zDWD29vsr
+	 9Vo85XBVMskGw==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 01 May 2024 11:19:53 +0200
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Rajat Khandelwal <rajat.khandelwal@linux.intel.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: temperature: max30208: Remove an unused field in struct max30208_data
+Date: Wed,  1 May 2024 11:19:41 +0200
+Message-ID: <73f9f540ecdc7c10e833e6fc782324ae7d34ba9c.1714555144.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 29 Apr 2024 10:22:33 -0300
-Lincoln Yuji <lincolnyuji@usp.br> wrote:
+In "struct max30208_data", the 'indio_dev' field is unused.
+Remove it.
 
-> This loop definition removes the need for manual releasing of the
-> fwnode_handle in early exit paths (here an error path) allow
-> simplification of the code and reducing the chance of future
-> modifications not releasing fwnode_handle correctly.
-> 
-> Co-developed-by: Luiza Soezima <lbrsoezima@usp.br>
-> Signed-off-by: Luiza Soezima <lbrsoezima@usp.br>
-> Co-developed-by: Sabrina Araujo <sabrinaaraujo@usp.br>
-> Signed-off-by: Sabrina Araujo <sabrinaaraujo@usp.br>
-> Signed-off-by: Lincoln Yuji <lincolnyuji@usp.br>
-> Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Meh. If I take this one I don't need to wait for review on the version
-everyone ignored :(
+Found with cppcheck, unusedStructMember.
 
-Applied.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only.
 
-> ---
->  drivers/iio/adc/ti-ads1015.c | 5 +----
->  1 file changed, 1 insertion(+), 4 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ti-ads1015.c b/drivers/iio/adc/ti-ads1015.c
-> index 6ae967e4d..d3363d02f 100644
-> --- a/drivers/iio/adc/ti-ads1015.c
-> +++ b/drivers/iio/adc/ti-ads1015.c
-> @@ -902,10 +902,9 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
->  	struct iio_dev *indio_dev = i2c_get_clientdata(client);
->  	struct ads1015_data *data = iio_priv(indio_dev);
->  	struct device *dev = &client->dev;
-> -	struct fwnode_handle *node;
->  	int i = -1;
->  
-> -	device_for_each_child_node(dev, node) {
-> +	device_for_each_child_node_scoped(dev, node) {
->  		u32 pval;
->  		unsigned int channel;
->  		unsigned int pga = ADS1015_DEFAULT_PGA;
-> @@ -927,7 +926,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
->  			pga = pval;
->  			if (pga > 5) {
->  				dev_err(dev, "invalid gain on %pfw\n", node);
-> -				fwnode_handle_put(node);
->  				return -EINVAL;
->  			}
->  		}
-> @@ -936,7 +934,6 @@ static int ads1015_client_get_channels_config(struct i2c_client *client)
->  			data_rate = pval;
->  			if (data_rate > 7) {
->  				dev_err(dev, "invalid data_rate on %pfw\n", node);
-> -				fwnode_handle_put(node);
->  				return -EINVAL;
->  			}
->  		}
+It was added in the initial commit 9ee95ae4cffd ("iio: temperature: Add
+driver support for Maxim MAX30208") but was never used.
+---
+ drivers/iio/temperature/max30208.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/drivers/iio/temperature/max30208.c b/drivers/iio/temperature/max30208.c
+index 48be03852cd8..720469f9dc36 100644
+--- a/drivers/iio/temperature/max30208.c
++++ b/drivers/iio/temperature/max30208.c
+@@ -34,7 +34,6 @@
+ 
+ struct max30208_data {
+ 	struct i2c_client *client;
+-	struct iio_dev *indio_dev;
+ 	struct mutex lock; /* Lock to prevent concurrent reads of temperature readings */
+ };
+ 
+-- 
+2.44.0
 
 

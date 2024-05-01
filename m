@@ -1,104 +1,75 @@
-Return-Path: <linux-iio+bounces-4720-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4721-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453F68B8ACE
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 14:55:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99C3A8B8ADE
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 15:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 746DD1C22653
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 12:55:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 399FA1F23065
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 13:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2EA1292FC;
-	Wed,  1 May 2024 12:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C02212D768;
+	Wed,  1 May 2024 13:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Vxryiura"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vjLf3jiP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-18.smtpout.orange.fr [80.12.242.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E862E152795;
-	Wed,  1 May 2024 12:55:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C535112D1E7;
+	Wed,  1 May 2024 13:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714568144; cv=none; b=jFIfFlc6Qs+MAUP+FpxA9yxui4u5joIg6YQxelPaRJf7WT5BRxxI2ZkrR7b3hH9LUMgkiFAfOWP08B+a8xkamFt/D/qSbzoECpUTo70Jwg42dNZhrz50H93SxsVM9Ta0qBtfrKWqELH97x6F2aR0e1WF14hppkeHuFjmZ4p+6qw=
+	t=1714568582; cv=none; b=kKPvFLg5c9gxFIZECqOrNUMlVq4GbP697n8AVWHNvFs4OP7vgPXmlC7+22lt59CTvTBWUpOsW2a0StT90r9DTZjGlh452+/D3O5mSvLCfbQqG9+pK7sk/oftBTbajitOsii8lZ0kPbIFG/+r4NiShmK4KeUlpcwbf12qE5Lu2fc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714568144; c=relaxed/simple;
-	bh=NBgYdcHUCJr2zggLECCR21wmsZRkdOrh4ygOHWbMBS0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KUZQ7vQj8v136Vj3TOuqqr0YaO7k8/7GbrZJ6OJnKttT3Pgh70aUUTHJ+VgQ13KACGdfVdmUcTfBqdanSLSxJ+yHHATZ8QqvFKft6ZMDRrPeW054cSlmCIHuszIjc04rOyv+80DVgoy2JK4uyWUEDBjrl7SLkaUR1vf+Mwokt+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Vxryiura; arc=none smtp.client-ip=80.12.242.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from localhost.localdomain ([86.243.17.157])
-	by smtp.orange.fr with ESMTPA
-	id 29Uesw7dCrs7M29Uesx1c2; Wed, 01 May 2024 14:55:37 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1714568137;
-	bh=ifjDig8VZYbrit5qHyl96IjDpPnIKF9bUdbgNbDrla4=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=VxryiuraRCb6MD5kJqlKoAh6UecY/ITM0dK/ouJipgfYDtNNymscBI9/JrgbOcrc/
-	 A+0pilTBHyd5yZQGss4dnIeUUgHl9D0yGaexL+HdwZqxQosX2oXjr3YHstLwZbuzjc
-	 aV3AbhP+lTRtuXapLuzxk+m3Z8zJFACx818ILEaCpRsSlfeaHrWoM3JRWL7B5LdZWW
-	 KA95KS3MXD9HhQ6iXC+0hrM91jZekryfeboH4OGOCZkIxxko8Xs2tZilNxz4c77hGn
-	 5hMXMn/QUQzhO7PFX3OUIG3pobi2VcHhwswRB0v3MA8jvJxA0MkzU3gInFOnPaK2o4
-	 ilwenAetXU6TQ==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 01 May 2024 14:55:37 +0200
-X-ME-IP: 86.243.17.157
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] iio: light: gp2ap020a00f: Remove some unused field in struct gp2ap020a00f_data
-Date: Wed,  1 May 2024 14:55:17 +0200
-Message-ID: <57e9f29c7062d1bb846064bf6dbd7a8385a855e7.1714568099.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1714568582; c=relaxed/simple;
+	bh=lzJp2NXHPzUCkDajnK19TMX5KLpwnWIpKybzM/55eLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qyTWFwx9RX5l5JyaNQQQdsgLf7HjIEGwes//7OGaTz1msvXTC3VPp+vToBGllO5J1YTWJTy48hZM0VCA9lSmrl1UHyoQDlEQcya8WbXJVZRtMS21/og7z0FqqaEVf8dXPus1A7SO581L5qkCS2evoyZfTvVXpMk0dzS/p/C6QXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vjLf3jiP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C4FC113CC;
+	Wed,  1 May 2024 13:03:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1714568582;
+	bh=lzJp2NXHPzUCkDajnK19TMX5KLpwnWIpKybzM/55eLU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vjLf3jiPEoJiudO8I5DfGewwqN/l/YekhAsFjQU0mC2A0RtH1rayns3ZvauXDJyJP
+	 s/725UJU9kuuODNrUbSsGD2I0v8wNc5sIUXS6PAPF/eUZOwie6PTU52fAUQEczJ8WH
+	 Ep9yLI0gutNNxTw4UX3NdlQ2k+UtYw7ZChtbkL24=
+Date: Wed, 1 May 2024 09:02:57 -0400
+From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+To: Petar Stoykov <pd.pstoykov@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Rob Herring <robh+dt@kernel.org>, Angel Iglesias <ang.iglesiasg@gmail.com>, 
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] iio: pressure: Add driver for Sensirion SDP500
+Message-ID: <20240501-grinning-rustling-limpet-b3b69a@lemur>
+References: <CADFWO8EQUkGcbE=RXjxXbub2tZge9+ss=gB-Q6wngFAvwFygRg@mail.gmail.com>
+ <ZjEQ8LBxftcr0Z0t@smile.fi.intel.com>
+ <CADFWO8HL_pwEQwYn0K9AkPV=HZyWN3NSOs8k4dRrB40w_1KdCw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CADFWO8HL_pwEQwYn0K9AkPV=HZyWN3NSOs8k4dRrB40w_1KdCw@mail.gmail.com>
 
-In "struct gp2ap020a00f_data", the 'pdata' field is unused.
+On Wed, May 01, 2024 at 01:48:24PM GMT, Petar Stoykov wrote:
+> I finally figured it out. Gmail has a hard word-wrap at 80 characters 
+> per line.  At first I thought it was word-wrap on the receiving side 
+> but I was wrong. I will try to convince IT to change things so I can 
+> use b4 or git send e-mail. If that doesn't work then I guess my code 
+> will have shorter lines in next patch.
 
-Moreover the "struct gp2ap020a00f_platform_data" is defined nowhere.
-Neither in this file, nor in a global .h file, so it is completely
-pointless.
+With b4, you can send via the web submission endpoint:
+https://b4.docs.kernel.org/en/stable-0.13.y/contributor/send.html
 
-So, remove it.
-
-Found with cppcheck, unusedStructMember.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
-
-It was added in the initial commit bf29fbeaa13d ("iio: gp2ap020a00f: Add a
-driver for the device") but was never used.
----
- drivers/iio/light/gp2ap020a00f.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/iio/light/gp2ap020a00f.c b/drivers/iio/light/gp2ap020a00f.c
-index 9f41724819b6..9a476697aa1f 100644
---- a/drivers/iio/light/gp2ap020a00f.c
-+++ b/drivers/iio/light/gp2ap020a00f.c
-@@ -237,7 +237,6 @@ enum gp2ap020a00f_thresh_val_id {
- };
- 
- struct gp2ap020a00f_data {
--	const struct gp2ap020a00f_platform_data *pdata;
- 	struct i2c_client *client;
- 	struct mutex lock;
- 	char *buffer;
--- 
-2.44.0
-
+-K
 

@@ -1,104 +1,145 @@
-Return-Path: <linux-iio+bounces-4717-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4718-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10BA78B8958
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 13:37:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C10A8B896B
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 13:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4D53285F0A
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 11:37:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30348285D45
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 11:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E7E7D414;
-	Wed,  1 May 2024 11:37:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5F27F7CE;
+	Wed,  1 May 2024 11:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="reAEfJUA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gRk8qU5n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-25.smtpout.orange.fr [80.12.242.25])
+Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E349D5A4CD;
-	Wed,  1 May 2024 11:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B5C60253;
+	Wed,  1 May 2024 11:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714563472; cv=none; b=jkvzcbW7Ad/mn7i3mmNz/HWjz4i0fDOjGlrAncKcHkJfPrGxv6AFUYV/boMzjl3FIu9ZyK/tIinrJ3sM/19XIf07OCSHVISbsQ/OJLvcOfMKoK9DZZzjUcNGt4zyRyqJ6zTyX9Gfb0zwxtHrntx0PXxuwJRMbhhwBjxQWbCYPNU=
+	t=1714564118; cv=none; b=Da4gNOm04vzDkHQsq+s9o6Q+24A0JYEk9pcA/403UUgk6qlg0LMCE0sd+rxUvt1gnSLeFidiJx6wtN3hHNMGGijgxNPBw079MlS4Z2em5piyfu5EcXK7AJWPQq/KbF/jMTOGRs0MJH8IChEEYzREAux+1Pt67B0loJLqeQycKbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714563472; c=relaxed/simple;
-	bh=5PygkcuyBUAwRIUORJnEko9R4njhlZJJ/lQkQ/6nwtk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AdrWu7JcpY6Q68MkxajX5drE63gmBkDHisJ5FM77R30UiHSf6HMw/haSpigAYhK3mkqBSL+ExQfVbeclEwS7yQiPSaCM06DgIVwK7QGOmfpz2n+UBbyIOUhia27P7QVcfVArfO4Du57fE+WxlGL9GLy5oTGAZS0dDTwA/Dw3k74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=reAEfJUA; arc=none smtp.client-ip=80.12.242.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from localhost.localdomain ([86.243.17.157])
-	by smtp.orange.fr with ESMTPA
-	id 288ws0LoSn00P288ws2F8X; Wed, 01 May 2024 13:28:59 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1714562939;
-	bh=UX/wu/RLILUA2125zmuAeWndUa2Tzy8BmAzyIuX2a+k=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=reAEfJUA8LXqgKp8cz7LdG6qlni18euoRbsIoCeDdhDwomJt9JhRMWIfRAivA067S
-	 JOXF9qQv0AYSPgvMbBsXt/Nq50WQ6O0bANCynxI2OwGt+GPjJuemJlxz8q/urhHNuD
-	 kWORNwkKZ1Yt8kvR7Yc+EJ7EEn9dKiTEA2i85c49gZi+P9BiDyVsKMwWOvSzknBupl
-	 GJBg+8DVvKnpLL47NgFXzH1MBxba3SulC+9UChmR3RoE3lkpLnPPJjU11bf843r8qQ
-	 DKL/pRtjD9U7nfr6F2QgIMn2tJCKx5fwNT4DuuaKiMnvIvpSg0LE0BW5yP7grub/Ws
-	 45ikphYXwxJ7Q==
-X-ME-Helo: localhost.localdomain
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Wed, 01 May 2024 13:28:59 +0200
-X-ME-IP: 86.243.17.157
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: Gerald Loacker <gerald.loacker@wolfvision.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	linux-iio@vger.kernel.org
-Subject: [PATCH] iio: tmag5273: Remove some unused field in struct tmag5273_data
-Date: Wed,  1 May 2024 13:28:50 +0200
-Message-ID: <7bd16d7fea12c64b6b3dc3cd32839cfce145bcf3.1714562912.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.44.0
+	s=arc-20240116; t=1714564118; c=relaxed/simple;
+	bh=6Ya7Rv8BuzUkqblZ4uH5Cr8VfDH163fZl6KXp5OnzUI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AEPPqtHFI8aQKnYoLUzYFCz8PsEo6Cb0kElDMG+aKyv32oLsJDx+6wU+ddoWIl4IGLTTwdTbORB5nWowB8Gv5/hm2R78Pi84L5ULx13l3iTCe/kljxid3WImTbJiVSgd0aNfQzVPizQht1Ls5Ft5pZ7xfea9XBbz+9J46CEprrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gRk8qU5n; arc=none smtp.client-ip=209.85.221.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f68.google.com with SMTP id ffacd0b85a97d-34db9a38755so738026f8f.1;
+        Wed, 01 May 2024 04:48:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714564115; x=1715168915; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tPNlg3N+tpItgmZ3Kd/LLiIPFyrNbnMxBWM/z7K+b0A=;
+        b=gRk8qU5nzoutb7V4npkDTmWTpne7L7K7dM7dl16CRvESWzWdQPsLgLAWdVUD+hJzdi
+         VDoismkocjrnWcHZXZktduHyvybb7OlPOTztgaCaUyehR+qcdteShAxWV74/pZGu5pMp
+         I/gwidQt1mVunuWoss6G0huNDzbONVywfOyQY70RHM0GCeNgOrE/IuthgmlnpOgl+bdj
+         +iIjQhf6g7drPwpOoBB+AVRuU9zKEqWhQ7kt3jHHhGtIFe6Dcpxny+A8sAwO2KIVQXmI
+         /Fw0T3QSadvAbc/Bi+DBmNR10yduy2vGCt0tMrBgCqUSIQ5y0qU2Sjy+snbpg4eYoPef
+         In/g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714564115; x=1715168915;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tPNlg3N+tpItgmZ3Kd/LLiIPFyrNbnMxBWM/z7K+b0A=;
+        b=IN2oYjyevL5lQwRH5u7/OyukAQEBWeHAHHVxn4Jdi/HjGxrGj4OvvMwsyzPH3QUscI
+         LfP6YYMpUAORf8D2eUsPOXbHP0OPUSRbMMJdOd3pABRvmOqNRWmtPLrTolVrWqLCdhaN
+         ar+yvD/G34mtLyKKeJpm/a4eeFg78yhPwc5fxWsfmBjmvua/OXghKKxFOtMh2/Hijz3e
+         1S+LNK+YLGKy+9j2Dez8476fIdfukKVQzeyjzzQmRnVAO3+N+P0kg8X2UmVsuMkryVcs
+         KS0f/FH5qDXi9LqsQaxRS1klKtXlwjMIAFh6DdAlrduqZiqPzMJv5sxEU3+dZkFYP8+s
+         6j4A==
+X-Forwarded-Encrypted: i=1; AJvYcCW1DUOOgHa0oZiRXPo6Xa4G+HVqF6p+S6m4N9sLhyxFvyMbQhSTeN/dsoRqfoQmQAtGQni+Q5yezMgWidKWvfRUwayaij9Ogno0NKsw9CSg8Bk4QFZVsdAFpd2llDX+9wYGFfuaBGzOQQ==
+X-Gm-Message-State: AOJu0YxLH5XgB9Fnxtlw07LwbtAeNBuxQw+AuDbb8irTEU0c5ZBfzpXL
+	DEaMDIF4DdWqsfAySbecpblpVhr2ncO64XmgEbsvhishuJkWR1os16lvv3MscYJ7imE4sj5O3PN
+	71+0TZyDmUfepaWzm3HFz2A344wo=
+X-Google-Smtp-Source: AGHT+IFPhHJ8nW/Vce7eH7J1N/gsX5h6zfNOTtqvMU6c6oVQ1taBqOxhbd4Nk7sjoEMPR+PH7bglvxSMSHbgmw6dtUE=
+X-Received: by 2002:adf:e687:0:b0:33e:c528:c900 with SMTP id
+ r7-20020adfe687000000b0033ec528c900mr2079683wrm.55.1714564114889; Wed, 01 May
+ 2024 04:48:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CADFWO8EQUkGcbE=RXjxXbub2tZge9+ss=gB-Q6wngFAvwFygRg@mail.gmail.com>
+ <ZjEQ8LBxftcr0Z0t@smile.fi.intel.com>
+In-Reply-To: <ZjEQ8LBxftcr0Z0t@smile.fi.intel.com>
+From: Petar Stoykov <pd.pstoykov@gmail.com>
+Date: Wed, 1 May 2024 13:48:24 +0200
+Message-ID: <CADFWO8HL_pwEQwYn0K9AkPV=HZyWN3NSOs8k4dRrB40w_1KdCw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/3] iio: pressure: Add driver for Sensirion SDP500
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Rob Herring <robh+dt@kernel.org>, Angel Iglesias <ang.iglesiasg@gmail.com>, 
+	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+	devicetree@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In "struct tmag5273_data", the 'scale' and 'vcc' fields are unused.
-Remove them.
+On Tue, Apr 30, 2024 at 5:40=E2=80=AFPM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+>
+> On Tue, Apr 30, 2024 at 05:27:24PM +0200, Petar Stoykov wrote:
+> > From 6ae7537517f551540121ca6fb3b99080b7580410 Mon Sep 17 00:00:00 2001
+> > From: Petar Stoykov <pd.pstoykov@gmail.com>
+> > Date: Mon, 15 Jan 2024 12:21:26 +0100
+> > Subject: [PATCH 2/3] iio: pressure: Add driver for Sensirion SDP500
+> >
+> > Sensirion SDP500 is a digital differential pressure sensor. The sensor =
+is
+> > accessed over I2C.
+>
+> Any Datasheet: tag can be added?
+>
 
-Found with cppcheck, unusedStructMember.
+Ok. I see some drivers also include the pdf link in the driver's code.
+I can do that as well.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-Compile tested only.
+> ...
+>
+> > +config SDP500
+> > +    tristate "Sensirion SDP500 differential pressure sensor I2C driver=
+"
+> > +    depends on I2C
+> > +    help
+> > +      Say Y here to build support for Sensirion SDP500 differential pr=
+essure
+> > +      sensor I2C driver.
+> > +      To compile this driver as a module, choose M here: the core modu=
+le
+> > +      will be called sdp500.
+>
+> You patch is broken. Fix the way how you send patches.
+>
+> ...
+>
+> > +static int sdp500_start_measurement(struct sdp500_data *data, const
+> > struct iio_dev *indio_dev)
+>
+> Here is more visible.
+>
+> --
+> With Best Regards,
+> Andy Shevchenko
+>
+>
 
-It was added in the initial commit 866a1389174b ("iio: magnetometer: add
-ti tmag5273 driver") but was never used.
----
- drivers/iio/magnetometer/tmag5273.c | 2 --
- 1 file changed, 2 deletions(-)
-
-diff --git a/drivers/iio/magnetometer/tmag5273.c b/drivers/iio/magnetometer/tmag5273.c
-index 218b1ce076c1..4187abe12784 100644
---- a/drivers/iio/magnetometer/tmag5273.c
-+++ b/drivers/iio/magnetometer/tmag5273.c
-@@ -118,11 +118,9 @@ struct tmag5273_data {
- 	unsigned int version;
- 	char name[16];
- 	unsigned int conv_avg;
--	unsigned int scale;
- 	enum tmag5273_scale_index scale_index;
- 	unsigned int angle_measurement;
- 	struct regmap *map;
--	struct regulator *vcc;
- 
- 	/*
- 	 * Locks the sensor for exclusive use during a measurement (which
--- 
-2.44.0
-
+I finally figured it out. Gmail has a hard word-wrap at 80 characters per l=
+ine.
+At first I thought it was word-wrap on the receiving side but I was wrong.
+I will try to convince IT to change things so I can use b4 or git send e-ma=
+il.
+If that doesn't work then I guess my code will have shorter lines in next p=
+atch.
 

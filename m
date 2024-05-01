@@ -1,113 +1,104 @@
-Return-Path: <linux-iio+bounces-4716-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4717-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41B448B88D6
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 12:58:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10BA78B8958
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 13:37:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EBD5B1F23460
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 10:58:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4D53285F0A
+	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 11:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C982655E6E;
-	Wed,  1 May 2024 10:58:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E7E7D414;
+	Wed,  1 May 2024 11:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D6rD372u"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="reAEfJUA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
+Received: from smtp.smtpout.orange.fr (smtp-25.smtpout.orange.fr [80.12.242.25])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2273633CD1;
-	Wed,  1 May 2024 10:58:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E349D5A4CD;
+	Wed,  1 May 2024 11:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714561104; cv=none; b=XMWOjnl7YN/rSg03HKGsGHNJHV1egGFxqI+avEkjwJg4b8qYGeMI+H/pFQoYnQ0q7IsGF+vpUREXe5paMpemWMITRBp4ECearBcBAfsMhGVLcr6qABjD06yqo1Ew3CkKDSWFmmYENqUXG++Rsb9ojA4KkLAGNLE4jUm0NckK6ks=
+	t=1714563472; cv=none; b=jkvzcbW7Ad/mn7i3mmNz/HWjz4i0fDOjGlrAncKcHkJfPrGxv6AFUYV/boMzjl3FIu9ZyK/tIinrJ3sM/19XIf07OCSHVISbsQ/OJLvcOfMKoK9DZZzjUcNGt4zyRyqJ6zTyX9Gfb0zwxtHrntx0PXxuwJRMbhhwBjxQWbCYPNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714561104; c=relaxed/simple;
-	bh=j/Xajgm4NK/lzgqgFTaDH7ZeBAQsVIQsUpgLf7xd+18=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CD/z5xlI0pFk19sDJiMMz/jiat45mB8ovNBt9IrZLWgua05dwFDW5SyuxiJWFxo/3omjVKY7QNF1AjvBKGz0Yr5cWwI6FQAAZj2gqdHDipHzgGT5EtsUAH766XHwh9vqOGj99TpGPdGUrw597DG+YOMfQStnvVbeo4l/tu7N4ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D6rD372u; arc=none smtp.client-ip=209.85.221.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-34d7b0dac54so383507f8f.0;
-        Wed, 01 May 2024 03:58:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714561101; x=1715165901; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j/Xajgm4NK/lzgqgFTaDH7ZeBAQsVIQsUpgLf7xd+18=;
-        b=D6rD372uAobSJnckyljWWc4bOJed71WAjo6tB5TaKkWcw8NcWr986Mk745bH15nD2T
-         R5NzIEkLToTr7jtjgVPa79T9OTHIg5kyHWE5S7u+4H229YLLQ2yE/FtQto82YRIQYDZR
-         JqpSpH7kg1zHh5oKITNx44XhDBW1cbWZ7JG6gh00ylXNBQ2+yk8Q/3qxdYTFX3yCeZTd
-         DO0nOJnHoIDhXpGqjO0k7Y3n/BCD4iA+k0l0jChBFpX2CsnN4Hze8VFguiUfdKTB7SVi
-         QEGQ3tsWda/GcUMlrV5g70Biq3rT9jvv6X0T2hOmuG+1PzwFQZCEj1E5uDufVU0pEwTq
-         bI9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714561101; x=1715165901;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j/Xajgm4NK/lzgqgFTaDH7ZeBAQsVIQsUpgLf7xd+18=;
-        b=fWWB+dh3xGN2ZRfmlESM4v6hl3+DQYT4ewdtlwO5dmjK171wkPHp0GFW4K4RuqpEQm
-         92M8UC8PS77rbv/BsaLEwjg2IcMnoJGoJy6hVXJNnx2itGDtYlZ/rvbDLb4enFlw6HyL
-         60QY9WLcWCbE9+WdQvWzE5iy6WAkQrIww9XnQdkQ7wAYRkCdf0YesiJ1+1nDAPC4G3SD
-         cmIsDrYyr2bE0zgPGss8I00mSrcmba8e4yTUGJjR60PSWXYCmOb/JDwwFwZToRSVIkDR
-         KHcbmPXQtQFVoEaL2M53bSFMpmsTmwxEsusXama4C8PKTEe7Gpc1Qy7lsaWUroWJWwMx
-         RTKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW0Yp1KEhu/OHfYzCIH8q9zSgbf/zVWeCcK8l31mIcfKxS7bKBj20EYD231W4+b3NZUNsENRaxfmXi/VkGmksscPVd6UiJ7WezUqic6bUFvaNoZmOSpHV3rFLj/OfCUSBqwbcG7Fkov6Q==
-X-Gm-Message-State: AOJu0YxMAlPcbZUO9MH8uI572Umgs3xsiJ96dxkJxh1owqzzLfsIu0Ff
-	Ipbj1cJzZscWuCYexN/KWijOWGiUwqNh3iyO1PenDXXc37/uQTOG2OJslBJLSdMkD7lpNUEQF9i
-	6eYjWo/HA0rP7N4FXcAxA/79852s=
-X-Google-Smtp-Source: AGHT+IHtZt1GnkElYxtQ+de9g9Z0CTksnHeTnCeTOMgHpQJQApOQPvfeWXhm9Dvmz8ahmZA+Re/IaJ8yF908J+rF3vY=
-X-Received: by 2002:adf:f44a:0:b0:34c:c53e:f2ca with SMTP id
- f10-20020adff44a000000b0034cc53ef2camr2046993wrp.14.1714561101245; Wed, 01
- May 2024 03:58:21 -0700 (PDT)
+	s=arc-20240116; t=1714563472; c=relaxed/simple;
+	bh=5PygkcuyBUAwRIUORJnEko9R4njhlZJJ/lQkQ/6nwtk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AdrWu7JcpY6Q68MkxajX5drE63gmBkDHisJ5FM77R30UiHSf6HMw/haSpigAYhK3mkqBSL+ExQfVbeclEwS7yQiPSaCM06DgIVwK7QGOmfpz2n+UBbyIOUhia27P7QVcfVArfO4Du57fE+WxlGL9GLy5oTGAZS0dDTwA/Dw3k74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=reAEfJUA; arc=none smtp.client-ip=80.12.242.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from localhost.localdomain ([86.243.17.157])
+	by smtp.orange.fr with ESMTPA
+	id 288ws0LoSn00P288ws2F8X; Wed, 01 May 2024 13:28:59 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1714562939;
+	bh=UX/wu/RLILUA2125zmuAeWndUa2Tzy8BmAzyIuX2a+k=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=reAEfJUA8LXqgKp8cz7LdG6qlni18euoRbsIoCeDdhDwomJt9JhRMWIfRAivA067S
+	 JOXF9qQv0AYSPgvMbBsXt/Nq50WQ6O0bANCynxI2OwGt+GPjJuemJlxz8q/urhHNuD
+	 kWORNwkKZ1Yt8kvR7Yc+EJ7EEn9dKiTEA2i85c49gZi+P9BiDyVsKMwWOvSzknBupl
+	 GJBg+8DVvKnpLL47NgFXzH1MBxba3SulC+9UChmR3RoE3lkpLnPPJjU11bf843r8qQ
+	 DKL/pRtjD9U7nfr6F2QgIMn2tJCKx5fwNT4DuuaKiMnvIvpSg0LE0BW5yP7grub/Ws
+	 45ikphYXwxJ7Q==
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 01 May 2024 13:28:59 +0200
+X-ME-IP: 86.243.17.157
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To: Gerald Loacker <gerald.loacker@wolfvision.net>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: linux-kernel@vger.kernel.org,
+	kernel-janitors@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: tmag5273: Remove some unused field in struct tmag5273_data
+Date: Wed,  1 May 2024 13:28:50 +0200
+Message-ID: <7bd16d7fea12c64b6b3dc3cd32839cfce145bcf3.1714562912.git.christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.44.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADFWO8EZWkXeAMcURgGGEmzVjiSxFTVAbKpsb2Qmv66EZiTc+A@mail.gmail.com>
- <eb9538fe-1d1a-40e0-a46f-3b4b5da3e8d7@linaro.org>
-In-Reply-To: <eb9538fe-1d1a-40e0-a46f-3b4b5da3e8d7@linaro.org>
-From: Petar Stoykov <pd.pstoykov@gmail.com>
-Date: Wed, 1 May 2024 12:58:10 +0200
-Message-ID: <CADFWO8Gz__4s2h6Led=oGAObjzkymc=vPsHzZ07HUFU_VCGfTw@mail.gmail.com>
-Subject: Re: [PATCH v2 0/3] Add support for Sensirion SDP500
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Rob Herring <robh+dt@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Angel Iglesias <ang.iglesiasg@gmail.com>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 1, 2024 at 11:45=E2=80=AFAM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 30/04/2024 17:27, Petar Stoykov wrote:
-> > functions in use so it should be fine here too.
-> >
-> > All feedback is appreciated! Thank you for taking the time to review th=
-is.
-> >
-> > v1->v2:
-> > Many fixes suggested by Jonathan Cameron and Krzysztof Kozlowsk.
->
-> No, be specific. What EXACTLY changed. This is way too generic.
-> Considering entire indentation is broken, I could assume you actually
-> did not implement feedback.
->
-> Best regards,
-> Krzysztof
->
+In "struct tmag5273_data", the 'scale' and 'vcc' fields are unused.
+Remove them.
 
-Hi Krzysztof, I'll include all changes in v3 then (or as a response here?).
-I just thought it was too much to list all changes.
-And about the indentation, can you elaborate please?
+Found with cppcheck, unusedStructMember.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+Compile tested only.
+
+It was added in the initial commit 866a1389174b ("iio: magnetometer: add
+ti tmag5273 driver") but was never used.
+---
+ drivers/iio/magnetometer/tmag5273.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/iio/magnetometer/tmag5273.c b/drivers/iio/magnetometer/tmag5273.c
+index 218b1ce076c1..4187abe12784 100644
+--- a/drivers/iio/magnetometer/tmag5273.c
++++ b/drivers/iio/magnetometer/tmag5273.c
+@@ -118,11 +118,9 @@ struct tmag5273_data {
+ 	unsigned int version;
+ 	char name[16];
+ 	unsigned int conv_avg;
+-	unsigned int scale;
+ 	enum tmag5273_scale_index scale_index;
+ 	unsigned int angle_measurement;
+ 	struct regmap *map;
+-	struct regulator *vcc;
+ 
+ 	/*
+ 	 * Locks the sensor for exclusive use during a measurement (which
+-- 
+2.44.0
+
 

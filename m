@@ -1,134 +1,136 @@
-Return-Path: <linux-iio+bounces-4759-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4760-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A4598B9D9E
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 17:37:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F6538B9DB1
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 17:44:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEA0A1F22BC1
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 15:37:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 906811C21E39
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 15:44:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6D8155303;
-	Thu,  2 May 2024 15:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE58A15574D;
+	Thu,  2 May 2024 15:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fo4d0fzN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l115D39k"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8218C15574D;
-	Thu,  2 May 2024 15:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EA315AD93
+	for <linux-iio@vger.kernel.org>; Thu,  2 May 2024 15:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714664247; cv=none; b=cBxvXNGAl/t6fXiofLmgFAK4sJ6RNHR3RM/CcuiNFv1XtDT8on5IieXGB5t6v/Okcjn3FcX40DhOwjuKLAsaLZzD3xsTETG7uitLlabapJLpvuiC7q3ZfYH2RxgBHVn0W+hlZ/yuBH2y2cTtYQvUA1gdFWpZ7E5dsTuAoNblqdE=
+	t=1714664684; cv=none; b=V+MHce5YS6nn9p+ldcjBvbG2puMR10S0P5fzx+v4P6eEd5es5uggYHGv2cepGJSzXgu4+3wLIwfWjx9nda3+bFjQ8XT2OtBVrgTF61OfdHS3HwaAlYldAp7D4Z8XbD7DyE7qnUk81zur7PpU1LaZ6FLisl9qA56jF5G0CGOHhcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714664247; c=relaxed/simple;
-	bh=j38UorVmR/AGSdNTHCstKIyo+0I5Y1p2zSzuxJtlmJ8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aWHneD2eLxg0/9ffKEu2/TUm4JlJ1fhsRRvP2jMiqNkIu503WSAnmp+dQiwHLBQoE3axUfE3ZpgEwh9qFXNqtnArO3yYNurV7l7cJPEAZSYvEQOpdGCuxupE6t7DeA+DypeCT6ggNRg2bk0RRsyIEtRvnilH6Cr3r/lfre2WT9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fo4d0fzN; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1714664246; x=1746200246;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=j38UorVmR/AGSdNTHCstKIyo+0I5Y1p2zSzuxJtlmJ8=;
-  b=Fo4d0fzNecH2EqhMu8FUUpP6n49EyqYnvGvYPgLV1Qe/M3ej94QTgK/m
-   shH3EnWMpHbxZnH4VQUxRwbUCwi/8Myi7y3NClE7ENDDcrpBXmDhiyd6F
-   Zu2J4lO6NCfQ565S8BTeyS+JlyN+IjIqNjQzwHi20B2dORQnJ1k0H39tj
-   rLMqJyL1ZXLXJ0SVWsZJGNONy28K8jsCvVCD31XyoviYAPtzmiLO5PxZ5
-   1B8BIBWuVEV2YwOmMNow5AgTzl29Qr7neue/SV8SX0LPjTdWzZUftLzYY
-   A5JpPVp4GhhW9vW7Gji2TTRhiLv6MzFn3fAjRMD/IBF2/g4si4yEreLqD
-   w==;
-X-CSE-ConnectionGUID: rME7CR6tQFuzSl67IhZFPQ==
-X-CSE-MsgGUID: ecH8zU9+QD+eqRHGvufOXg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11062"; a="10978268"
-X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
-   d="scan'208";a="10978268"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 08:37:23 -0700
-X-CSE-ConnectionGUID: rQ0mIaCQTiOvdIA7WfTaOg==
-X-CSE-MsgGUID: 8QDHy7o5TB+CjJnL4WNbZQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
-   d="scan'208";a="64596205"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 08:37:20 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.97)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1s2YUm-00000003MfF-3qvM;
-	Thu, 02 May 2024 18:37:16 +0300
-Date: Thu, 2 May 2024 18:37:16 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-Cc: nuno.sa@analog.com, Petr Mladek <pmladek@suse.com>,
-	Chris Down <chris@chrisdown.name>,
-	John Ogness <john.ogness@linutronix.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jyoti Bhayana <jbhayana@google.com>, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 1/4] dev_printk: add new dev_err_probe() helpers
-Message-ID: <ZjOzLJ69qjT5CVQU@smile.fi.intel.com>
-References: <20240423-dev-add_dev_errp_probe-v2-0-12f43c5d8b0d@analog.com>
- <20240423-dev-add_dev_errp_probe-v2-1-12f43c5d8b0d@analog.com>
- <ZifUSKFh2C4VG5QB@smile.fi.intel.com>
- <ZifXmhyIQASs9UYZ@smile.fi.intel.com>
- <d827817909756e4b65a3bb5753d0243e344109de.camel@gmail.com>
+	s=arc-20240116; t=1714664684; c=relaxed/simple;
+	bh=Ycut8WBmXd4oz5BvXZ2uaYW7WT/zFd8JciQTWmdtqds=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=i8eofCnMjy0PflpJkQL3eB3ojNq/ZltrKBcnT/UylonKVm0m62KJ6TCWQJ/EWRBG1BrPi+MGRGdwqDVM525HLFOGCafHCS2/jqFi3DiF6mZ00Qo7CCCTJ9D2aGLqWRwumFNzRc9tCTOaKGKHKGOsNNQEwC//ftS17wDgbBGKlCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l115D39k; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2e10b6e2bacso28187951fa.0
+        for <linux-iio@vger.kernel.org>; Thu, 02 May 2024 08:44:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714664681; x=1715269481; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=p1vhxMTit7g/3LA2MNfmNjcs7bMe6yu1YW7Rm1sk4Hs=;
+        b=l115D39kFen+XH/1n1oAF06TNRggn3lrBxBYPO+NY88NHNo2vvRINV6MGX/qfAJloG
+         dKtar87y89/SEoPQAyi4Y4V/w50n46MEyisZJvyByNnCFZ7djGlYzyKSyDAkirE6i4yt
+         BnUvyjyei2b2ENXAhzOLkTfZ1mt63AgsfnyaW9IEpENl7BmT6nJlXVYWAgV6RWKcqMv6
+         /t3ELsGYTd43CQeeohD2zBAo3zNTrbnRaFwVbEtsT7coifcoP3E4GprZukRUcR88kn59
+         7fbi2mlpP1dc1gqMZ04jjt5mJZC5K5DqJp3N0RMVXeFuq+f73nbuLcUu9841NuQ/Gklf
+         UTyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714664681; x=1715269481;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p1vhxMTit7g/3LA2MNfmNjcs7bMe6yu1YW7Rm1sk4Hs=;
+        b=qTmQzmfWoahktZJrqWOE6RFTvD2ZaObLq75qBNehoJ8GTzJlk7Qb34xMheZT5KJzFN
+         zl36kbMHrzN5+9IIx8tI9Ix66+VwC7Gvft3KoV7jYQr6obVSwhLBk2bV7M43QuYT/9en
+         U+afTH0gsCYjdoNauNnnamvp7uz1fM0fBqiUVrGxTwKSQUOkp5hKM9VUNBD99lFe2emP
+         wSt9ZL2dqBQLCBm6axm1FAyLMQ/6VEMCsXcqkeiUatjo577cZ0hFRokMDb3W9RGppIYP
+         uBHDaNo2xSe6vzlmGdPe8ISo4jWmxwmNctJsmB44afg2bYgZnT0DNQgFfbWYLjm4ULqq
+         KJFw==
+X-Forwarded-Encrypted: i=1; AJvYcCUl+28uWia43ch0YqHJCvi5qqI/eI1wv/Kh7bf+oOcqH0qvQI756xWn2p/xLmeZlXgCcF1ko+6DRmRcgKU/Z+sjcUWsRmnGTyUv
+X-Gm-Message-State: AOJu0Yz7k43vO1pOVj41RUI/mg74MSPn3fgqC+QedNA4NMx9ue0jksS5
+	n7l15ucV4iupsMhQ9jLF6RJztwuEL7n+jPJF2AgEBO0I0wmU1uJ/
+X-Google-Smtp-Source: AGHT+IE7qe3uusOLdeIONKuykdxY1tMd95wbHTqVqP9Rp+M/GZLHXzwULs7fJ+XqyyvN1Qa5gPs2YA==
+X-Received: by 2002:a2e:8858:0:b0:2dc:8baa:92b7 with SMTP id z24-20020a2e8858000000b002dc8baa92b7mr79363ljj.9.1714664678728;
+        Thu, 02 May 2024 08:44:38 -0700 (PDT)
+Received: from thinkpad-work.lan (228.red-83-37-7.dynamicip.rima-tde.net. [83.37.7.228])
+        by smtp.gmail.com with ESMTPSA id ay2-20020a05600c1e0200b00418948a5eb0sm6116155wmb.32.2024.05.02.08.44.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 May 2024 08:44:38 -0700 (PDT)
+Message-ID: <043f2be49df3c11152aaf32fc5467ed43fd59faa.camel@gmail.com>
+Subject: Re: [PATCH] iio: pressure: bmp280: Fix BMP580 temperature reading
+From: Angel Iglesias <ang.iglesiasg@gmail.com>
+To: Adam Rizkalla <ajarizzo@gmail.com>, linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>
+Date: Thu, 02 May 2024 17:44:37 +0200
+In-Reply-To: <Zin2udkXRD0+GrML@adam-asahi.lan>
+References: <Zin2udkXRD0+GrML@adam-asahi.lan>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.1 (by Flathub.org) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d827817909756e4b65a3bb5753d0243e344109de.camel@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, May 02, 2024 at 01:54:36PM +0200, Nuno Sá wrote:
-> On Tue, 2024-04-23 at 18:45 +0300, Andy Shevchenko wrote:
-> > On Tue, Apr 23, 2024 at 06:31:20PM +0300, Andy Shevchenko wrote:
-> > > On Tue, Apr 23, 2024 at 05:20:30PM +0200, Nuno Sa via B4 Relay wrote:
-> > > > From: Nuno Sa <nuno.sa@analog.com>
+On Thu, 2024-04-25 at 01:22 -0500, Adam Rizkalla wrote:
+> Fix overflow issue when storing BMP580 temperature reading and
+> properly preserve sign of 24-bit data.
+>=20
+> Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>
+> ---
+> =C2=A0drivers/iio/pressure/bmp280-core.c | 10 +++++-----
+> =C2=A01 file changed, 5 insertions(+), 5 deletions(-)
+>=20
+> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bm=
+p280-
+> core.c
+> index fe8734468ed3..e79c9715bb28 100644
+> --- a/drivers/iio/pressure/bmp280-core.c
+> +++ b/drivers/iio/pressure/bmp280-core.c
+> @@ -1393,12 +1393,12 @@ static int bmp580_read_temp(struct bmp280_data *d=
+ata,
+> int *val, int *val2)
+> =C2=A0
+> =C2=A0	/*
+> =C2=A0	 * Temperature is returned in Celsius degrees in fractional
+> -	 * form down 2^16. We rescale by x1000 to return milli Celsius
+> -	 * to respect IIO ABI.
+> +	 * form down 2^16. We rescale by x1000 to return millidegrees
+> +	 * Celsius to respect IIO ABI.
+> =C2=A0	 */
+> -	*val =3D raw_temp * 1000;
+> -	*val2 =3D 16;
+> -	return IIO_VAL_FRACTIONAL_LOG2;
+> +	raw_temp =3D sign_extend32(raw_temp, 23);
+> +	*val =3D ((s64)raw_temp * 1000) / (1 << 16);
+> +	return IIO_VAL_INT;
+> =C2=A0}
+> =C2=A0
+> =C2=A0static int bmp580_read_press(struct bmp280_data *data, int *val, in=
+t *val2)
 
-...
+Hi Adam,
 
-> > > > +#define dev_err_cast_probe(dev, ___err_ptr, fmt,
-> > > > ...)	({			\
-> > > > +	ERR_PTR(dev_err_probe(dev, PTR_ERR(___err_ptr), fmt,
-> > > > ##__VA_ARGS__));	\
-> > > > +})
-> > 
-> > After looking into the next patch I think this should be rewritten to use %pe,
-> > hence should be an exported function. Or dev_err_probe() should be split to
-> > a version that makes the difference between int and const void * (maybe using
-> > _Generic()).
-> 
-> I replied a bit in the other patch but I'm of the opinion that's likely just more
-> complicated than it needs to be (IMO). Why is the PTR_ERR(___err_ptr) that bad? If we
-> really want to have a version that takes pointer why not just:
-> 
-> #define dev_err_ptr_probe(dev, ___err, fmt, ...) \
-> 	dev_err_probe(dev, PTR_ERR(__err), fmt, ##__VA_ARGS__)
-> 
-> 
-> (yes, while _Generic() could be fun I'm trying to avoid it. In this case, I think
-> having explicit defines is more helpful)
+Great catch! Reading back the device's datasheet, it also says the raw pres=
+sure
+value it's a 24 bit signed integer, so we have the same problem on
+bmp580_read_press. Could you make a v2 version of this series including the
+pressure fix?
 
-It seems dev_err_probe() already uses %pe, so we are fine.
-
--- 
-With Best Regards,
-Andy Shevchenko
-
+Kind regards,
+Angel
 
 

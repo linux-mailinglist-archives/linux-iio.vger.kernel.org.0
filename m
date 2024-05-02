@@ -1,131 +1,116 @@
-Return-Path: <linux-iio+bounces-4753-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4754-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13EA58B9AF9
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 14:36:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7109C8B9B49
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 15:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B054B20B77
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 12:36:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A21531C21CD0
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 13:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4889953E27;
-	Thu,  2 May 2024 12:36:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B1181AC7;
+	Thu,  2 May 2024 13:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cYWdUe8W"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608851CAB8;
-	Thu,  2 May 2024 12:36:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D505FBF6
+	for <linux-iio@vger.kernel.org>; Thu,  2 May 2024 13:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714653397; cv=none; b=D6ZORrPioDufrOrPN1CXlYUcimFACB9YWvAmcXgRnN3r0wc8yr9INpM0r3RIdW1tXF8riQ6uwXQZzHfzjFSVT2v9yvWlsEFPaWySzNj0E7pB5uC+wktMpQVsXf7UhLoAvweARwkU70ndKT3+LZg0tsAsQW/SS20tAX/BwA13Yqg=
+	t=1714655121; cv=none; b=fN1CSZ/jLfG3PAafRKJ2MbH14KqTU2qEc4sx8gHDOd3YMbwkNr5jqke+ByFmzCzEd3jOMd2671pE5VRc9LtzGeaoVFdrKB888WZ83VjzxiVzLI3r9vAcB/LCk/K4jRbiXLugwoE2wk8oZJK4v9W64RcT+0sCanbb4bS4kP2En7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714653397; c=relaxed/simple;
-	bh=g8yoyySYQucAfTxisyM9kmbm4UKX0YvUAmEQNAgg6zM=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EyRBFkL4jktSz/ZO/imKMja0A+ixDCVSUifvwn6XfnBd5q3LHOMBY1QKVRkcpB2u2wKgb1b8f81/H94EnRPcUm0cyAx4ei5J0CNFoehIzsebBcQ9Mu7RxcRBRzaTWlCa1x/BAvm7ooGwJqt6Tg0I1Dzq96+eBOZoTcXwRuxYSdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VVYJQ3DXXz6GD3H;
-	Thu,  2 May 2024 20:33:42 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 2F6DE1408F9;
-	Thu,  2 May 2024 20:36:25 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 2 May
- 2024 13:36:24 +0100
-Date: Thu, 2 May 2024 13:36:23 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: =?ISO-8859-1?Q?Jo=E3o?= Paulo =?ISO-8859-1?Q?Gon=E7alves?=
-	<jpaulo.silvagoncalves@gmail.com>
-CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<joao.goncalves@toradex.com>, Peter Rosin <peda@axentia.se>
-Subject: Re: Supporting a Device with Switchable Current/Voltage Measurement
-Message-ID: <20240502133623.0000463e@Huawei.com>
-In-Reply-To: <20240501233853.32y4ev7jvas5ahdz@joaog-nb>
-References: <20240501233853.32y4ev7jvas5ahdz@joaog-nb>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1714655121; c=relaxed/simple;
+	bh=2EGrKQ7yQPKr6lvZQswU1D8cfTChbdI5mq9M0qfQA0w=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=t+8pjm4xWuAjUHU14dTT36Wq3LqzY6wGz1EiKsBr0x1PYTo7gI7v/1Fe3d7znAfg6KcAbT6EuEoJ9MfESkk+Mi4YDLTE5d2qchQRdFEQhPWThop8v0pNbktQLy/2L1oBFZXx4dOllqchUQeT+Vlm+xmkQx3D6qlUZkPjBARwKDY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cYWdUe8W; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a55ab922260so1055131666b.3
+        for <linux-iio@vger.kernel.org>; Thu, 02 May 2024 06:05:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714655119; x=1715259919; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2EGrKQ7yQPKr6lvZQswU1D8cfTChbdI5mq9M0qfQA0w=;
+        b=cYWdUe8Wm+/e+uwnag2Y1HDZVNoZC774GgV1DTBXnND2KSB4Bbisrkb23/445WbNbj
+         9XgYX1fy+S4TgXqdNWJ5MIM78XgEuwRbfATdO5cqkhfO8Le2eznQX9k2EdxnZhZwlaxB
+         /jHi5m0yT50bZZb51j9uohEw6phxlFLG9C7cE2Mr/78rzAjCCUEDyaRlPqJLMvoNwUjV
+         Pf4pbDqE7aVeqKM325eqLYUgBb8smL4wD+hPWWDqbCjP/QjQ5awjvxLEyMcqRay6iVzF
+         XEdyJ2WfZ5eWHYUk09cuO4QJ2USFbONCgbkVqnVlmXWdU69c5tNVQm046ncFwPyYCoTH
+         j1Jg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714655119; x=1715259919;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2EGrKQ7yQPKr6lvZQswU1D8cfTChbdI5mq9M0qfQA0w=;
+        b=spXbCZdabs7BxKBgiFxMmCvY834YK6yfy0Ah39xbcxyN/noqCxUZunvVsNdzb5625M
+         HP1YAH9NYNhsoS/hWXvcxEaZ7kGFnmT+Ce3xKou15FUtPxvofMt9FlhiMBKaNBX9g9M0
+         /yw71NPwZ7JAwdM9HgUVeU4ElMty2itRcYqdpiKtv9Xt3/ExEkDJt/g102wdynPZ9E7s
+         Stp4iN/dFirBPNAezkRr36PsjkEc837diUB1eFW63V3jOEnXZW2veMhE2bqzfDu5JyBj
+         zXsHxYgX/7W15HoJoMBrBJluXjH/4UygvfaPu1l1niS7tpcA0K2Id4hNy2q7QFclxcxc
+         Bu4g==
+X-Forwarded-Encrypted: i=1; AJvYcCU1VbJt8bkb+HQp1dpdWLX69aVzl0KGvGgGy2PFYHdGhT3K+x/pKmUYnHyQLiNQbjc8eviHsu53lbxwY3NxtTgJl28DXWsxYVtI
+X-Gm-Message-State: AOJu0YzQ3rDgNkNfhNFnjU+daOpMUyjWt428EHxq4OdVdKa6v4QkqAzI
+	fbdUboLTY7JhfMmcQEechCuS/gnjNhq5F183EUfUdKa90f2730eZU/qVeQI/
+X-Google-Smtp-Source: AGHT+IHAN1muw26lf6BKgOEHDO9lG2viA3TpucaioUEvhq9RdCJe4zZtS+BuBpo8mjsR1e1JyTMcOw==
+X-Received: by 2002:a17:906:3c4a:b0:a58:c696:9aab with SMTP id i10-20020a1709063c4a00b00a58c6969aabmr1477273ejg.15.1714655118501;
+        Thu, 02 May 2024 06:05:18 -0700 (PDT)
+Received: from localhost.localdomain ([2a04:ee41:82:7577:9b84:d286:909b:17d1])
+        by smtp.gmail.com with ESMTPSA id j1-20020a170906474100b00a55892e840bsm526846ejs.205.2024.05.02.06.05.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 May 2024 06:05:17 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: jic23@kernel.org
+Cc: ajarizzo@gmail.com,
+	ang.iglesiasg@gmail.com,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	Vasileios Amoiridis <vassilisamir@gmail.com>
+Subject: Replying to: [PATCH] iio: pressure: bmp280: Fix BMP580 temperature reading
+Date: Thu,  2 May 2024 15:05:15 +0200
+Message-Id: <20240502130515.140852-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240428144015.4f0e6681@jic23-huawei>
+References: <20240428144015.4f0e6681@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 8bit
 
-On Wed, 1 May 2024 20:38:53 -0300
-Jo=E3o Paulo Gon=E7alves <jpaulo.silvagoncalves@gmail.com> wrote:
+Hi guys!
 
-> Hello all,
->=20
-> We need to support a hardware that can measure current and voltage on
-> the same differential analog input, similar to a multimeter. The mode
-> of measurement is controlled by a GPIO switch and goes to different
-> ADC inputs depending on the mode. If the switch is enabled, a current
-> loop with a shunt is enabled for current measurement; otherwise, voltage
-> is measured. From the software point of view, we are considering using
-> the iio-rescale driver as a consumer of an ADC IIO parent device. One
-> of the problems is that we need to change the mode of measurement at
-> runtime, but we are trying to avoid using some userspace "hack". The
-> other is that for a minimal solution to enable the mode from boot, we
-> can use a gpio-hog and control it with overlays. However,
-> still would be better that this was done by the kernel. Do you know
-> or have some guidance on how to properly support this in the kernel?
->=20
-> For the in kernel gpio solution, this is a draft of DT we are thinking:
->=20
-> current-sense {
->       compatible =3D "current-sense-shunt";
->       io-channels =3D <&adc 0>;
->       gpio =3D <&main_gpio0 29 GPIO_ACTIVE_HIGH>;
->       shunt-resistor-micro-ohms =3D <3300000>;     =20
-> };
->=20
-> voltage-sense {
->         compatible =3D "voltage-divider";
->         io-channels =3D <&adc 1>;
->         gpio =3D <&main_gpio0 29 GPIO_ACTIVE_LOW>;
->         output-ohms =3D <22>;
->         full-ohms =3D <222>;
-> };
->=20
-> Regards,
-> Jo=E3o Paulo Gon=E7alves
->=20
-+CC Peter Rosin who wrote all the relevant parts you need I think.
->=20
+I am sending this e-mail as a reply to [1]
 
-Superficially sounds like you want a mixture of appropriate analog front en=
-ds
-and a Mux.  I haven't tried the combination but it should be possible to do
-something like this with=20
+I know I am not included in the mailing list, but since I am working on that
+driver currently [2] and I am also reading daily the iio mailing list I found
+your patch quite interesting and I wanted to test it.
 
-An IIO mux via this binding
-https://elixir.bootlin.com/linux/v6.9-rc6/source/Documentation/devicetree/b=
-indings/iio/multiplexer/io-channel-mux.yaml
-(that includes a gpio-mux example).
+I managed to generate a negative temperature for the sensor and as it looks like
+you are right. Before your patch, the return value was overflowing for negative
+temperatures. So, good job!
 
-Consumed in turn by a pair of AFE devices.
+I have one question though:
 
-Then you should be able to just read from which ever of the AFE device you =
-want.
-A sysfs read from
-/sys/bus/iio/devices/iio\:deviceA/in_voltage_raw
-will switch the mux to appropriate place then request the
-voltage from the iio-mux, which in turn requests it from the ADC IIO driver.
+1) The comment that includes the "milli Celsius" is also similar in the
+bmp380_read_temp() function so maybe you could change both. But since it is
+a fixes patch, is that necessary to be done in this commit?
 
-/sys/bus/iio/devices/iio\:deviceB/in_current_raw
-switches the mux the other way and otherwise the flow as above.
+[1]: https://lore.kernel.org/linux-iio/Zin2udkXRD0+GrML@adam-asahi.lan/
+[2]: https://lore.kernel.org/linux-iio/20240429190046.24252-1-vassilisamir@gmail.com/
 
-Jonathan
+P.S: I don't know how tags work, but if for the tested tag the testing that I
+did is enough, then here is my tag:
 
+Tested-By: Vasileios Amoiridis <vassilisamir@gmail.com>
 

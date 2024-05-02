@@ -1,197 +1,134 @@
-Return-Path: <linux-iio+bounces-4758-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4759-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82628B9D13
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 17:09:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4598B9D9E
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 17:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66AAD1F220EE
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 15:09:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEA0A1F22BC1
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 15:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 225101586D5;
-	Thu,  2 May 2024 15:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D6D8155303;
+	Thu,  2 May 2024 15:37:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Fo4d0fzN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B411EB37;
-	Thu,  2 May 2024 15:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8218C15574D;
+	Thu,  2 May 2024 15:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714662587; cv=none; b=uMawTX/QAWTE0tNjn2rb3d2u+7tfE7dnCe7quVpJA53HjzOcupzCUW/8R2ZXm4QymvJk+BL7GOmOb+/wsGDv354Uew5fuuX2ySSZlN6qTH2nvF8nj3Wi1Z8ZG6xPqzo8PVP2ssT+QgP0qE1WHT2M1E90Sb3k0ib6jrM8LUdjkIs=
+	t=1714664247; cv=none; b=cBxvXNGAl/t6fXiofLmgFAK4sJ6RNHR3RM/CcuiNFv1XtDT8on5IieXGB5t6v/Okcjn3FcX40DhOwjuKLAsaLZzD3xsTETG7uitLlabapJLpvuiC7q3ZfYH2RxgBHVn0W+hlZ/yuBH2y2cTtYQvUA1gdFWpZ7E5dsTuAoNblqdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714662587; c=relaxed/simple;
-	bh=APDCBbNTDHP0gxMNaAlwd0W5R4UUIyeqEqB4+Qh8MY0=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jRqQX2aTSivaQxusZe2vBGZJ2YS0V/ve3abK1bnMRYoY67H8E34GC48VpKaTtvSniIXgCXMkYtWpW3wXQcqpt6l4LEmVlBJIWKJHUMi7k7Q/wASbcsoop33S6X/GJnusv6WYwppwrr5xrPmjU23Gz51lDHmOhbPyu3nNvwo404w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VVcj92v0Jz6J6YS;
-	Thu,  2 May 2024 23:06:53 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id ADDE214065C;
-	Thu,  2 May 2024 23:09:40 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 2 May
- 2024 16:09:40 +0100
-Date: Thu, 2 May 2024 16:09:38 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Peter Rosin <peda@axentia.se>
-CC: =?ISO-8859-1?Q?Jo=E3o?= Paulo =?ISO-8859-1?Q?Gon=E7alves?=
-	<jpaulo.silvagoncalves@gmail.com>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <joao.goncalves@toradex.com>
-Subject: Re: Supporting a Device with Switchable Current/Voltage Measurement
-Message-ID: <20240502160938.00007691@Huawei.com>
-In-Reply-To: <ad190ae3-48d2-a5db-dd36-d52b1c4cf460@axentia.se>
-References: <20240501233853.32y4ev7jvas5ahdz@joaog-nb>
-	<20240502133623.0000463e@Huawei.com>
-	<44f47927-52aa-5248-6ae4-21028076fd51@axentia.se>
-	<ad190ae3-48d2-a5db-dd36-d52b1c4cf460@axentia.se>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1714664247; c=relaxed/simple;
+	bh=j38UorVmR/AGSdNTHCstKIyo+0I5Y1p2zSzuxJtlmJ8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aWHneD2eLxg0/9ffKEu2/TUm4JlJ1fhsRRvP2jMiqNkIu503WSAnmp+dQiwHLBQoE3axUfE3ZpgEwh9qFXNqtnArO3yYNurV7l7cJPEAZSYvEQOpdGCuxupE6t7DeA+DypeCT6ggNRg2bk0RRsyIEtRvnilH6Cr3r/lfre2WT9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Fo4d0fzN; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1714664246; x=1746200246;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=j38UorVmR/AGSdNTHCstKIyo+0I5Y1p2zSzuxJtlmJ8=;
+  b=Fo4d0fzNecH2EqhMu8FUUpP6n49EyqYnvGvYPgLV1Qe/M3ej94QTgK/m
+   shH3EnWMpHbxZnH4VQUxRwbUCwi/8Myi7y3NClE7ENDDcrpBXmDhiyd6F
+   Zu2J4lO6NCfQ565S8BTeyS+JlyN+IjIqNjQzwHi20B2dORQnJ1k0H39tj
+   rLMqJyL1ZXLXJ0SVWsZJGNONy28K8jsCvVCD31XyoviYAPtzmiLO5PxZ5
+   1B8BIBWuVEV2YwOmMNow5AgTzl29Qr7neue/SV8SX0LPjTdWzZUftLzYY
+   A5JpPVp4GhhW9vW7Gji2TTRhiLv6MzFn3fAjRMD/IBF2/g4si4yEreLqD
+   w==;
+X-CSE-ConnectionGUID: rME7CR6tQFuzSl67IhZFPQ==
+X-CSE-MsgGUID: ecH8zU9+QD+eqRHGvufOXg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11062"; a="10978268"
+X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
+   d="scan'208";a="10978268"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 08:37:23 -0700
+X-CSE-ConnectionGUID: rQ0mIaCQTiOvdIA7WfTaOg==
+X-CSE-MsgGUID: 8QDHy7o5TB+CjJnL4WNbZQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.07,247,1708416000"; 
+   d="scan'208";a="64596205"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 May 2024 08:37:20 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.97)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1s2YUm-00000003MfF-3qvM;
+	Thu, 02 May 2024 18:37:16 +0300
+Date: Thu, 2 May 2024 18:37:16 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: nuno.sa@analog.com, Petr Mladek <pmladek@suse.com>,
+	Chris Down <chris@chrisdown.name>,
+	John Ogness <john.ogness@linutronix.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Jyoti Bhayana <jbhayana@google.com>, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH v2 1/4] dev_printk: add new dev_err_probe() helpers
+Message-ID: <ZjOzLJ69qjT5CVQU@smile.fi.intel.com>
+References: <20240423-dev-add_dev_errp_probe-v2-0-12f43c5d8b0d@analog.com>
+ <20240423-dev-add_dev_errp_probe-v2-1-12f43c5d8b0d@analog.com>
+ <ZifUSKFh2C4VG5QB@smile.fi.intel.com>
+ <ZifXmhyIQASs9UYZ@smile.fi.intel.com>
+ <d827817909756e4b65a3bb5753d0243e344109de.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100003.china.huawei.com (7.191.160.210) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d827817909756e4b65a3bb5753d0243e344109de.camel@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Thu, 2 May 2024 16:05:45 +0200
-Peter Rosin <peda@axentia.se> wrote:
+On Thu, May 02, 2024 at 01:54:36PM +0200, Nuno Sá wrote:
+> On Tue, 2024-04-23 at 18:45 +0300, Andy Shevchenko wrote:
+> > On Tue, Apr 23, 2024 at 06:31:20PM +0300, Andy Shevchenko wrote:
+> > > On Tue, Apr 23, 2024 at 05:20:30PM +0200, Nuno Sa via B4 Relay wrote:
+> > > > From: Nuno Sa <nuno.sa@analog.com>
 
-> 2024-05-02 at 15:49, Peter Rosin wrote:
-> > Since you appear to need to change both the gpio pin and the io-channel, the
-> > mux isn't a perfect fit. The closest you can get with the current code is to
-> > create a gpio mux, I think. You would then use that mux twice to fan out both
-> > io-channels, but only expose the "left leg" on the first fan-out and only the
-> > "right leg" on the other. Something like this (untested, probably riddled with
-> > errors, use salt etc etc):
-> > 
-> > rcs: raw-current-sense {
-> > 	compatible = "current-sense-shunt";
-> > 	io-channels = <&adc 0>;
-> > 	io-channel-name = "raw-current";
-> > 	#io-channel-cells = <1>;
-> > 
-> > 	shunt-resistor-micro-ohms = <3300000>;
-> > };
-> > 
-> > rvs: raw-voltage-sense {
-> > 	compatible = "voltage-divider";
-> > 	io-channels = <&adc 1>;
-> > 	io-channel-name = "raw-voltage";
-> > 	#io-channel-cells = <1>;
-> > 
-> > 	output-ohms = <22>;
-> > 	full-ohms = <222>;
-> > };
-> > 
-> > mux: gpio-mux {
-> > 	compatible = "gpio-mux";
-> > 	#mux-control-cells = <0>;
-> > 
-> > 	gpios-mux = <&main_gpio0 29 GPIO_ACTIVE_HIGH>;
-> > };
-> > 
-> > current-sense {
-> > 	compatible = "io-channel-mux";
-> > 	io-channels = <&rcs 0>;
-> > 	io-channel-names = "parent";
-> > 
-> > 	mux-controls = <&mux>;
-> > 
-> > 	channels = "current", "";
-> > };
-> > 
-> > voltage-sense {
-> > 	compatible = "io-channel-mux";
-> > 	io-channels = <&rvs 0>;
-> > 	io-channel-names = "parent";
-> > 
-> > 	mux-controls = <&mux>;
-> > 
-> > 	channels = "", "voltage";
-> > };
-> > 
-> > What the mux solves is exclusion, so that the gpio pin is locked while
-> > measurement is made on either current-sense or voltage-sense.
-> > 
-> > However, the channels from the raw-{current,voltage}-sense nodes are exposed
-> > to user space, and it will be possible to make "raw" measurements without
-> > regard to how the gpio pin is set. That will of course not yield the desired
-> > results, but is also a user error and might not be a big problem?  
-> 
-> I just realized that it's also possible to do this "the other way around". Maybe
-> that makes more sense?
-Ah, I'd failed to realize that this is about routing a single wire
-through two different analog circuits that end on 'different' ADC inputs.
+...
 
-Pictures would help me out btw!  Everyone loves ascii art.
+> > > > +#define dev_err_cast_probe(dev, ___err_ptr, fmt,
+> > > > ...)	({			\
+> > > > +	ERR_PTR(dev_err_probe(dev, PTR_ERR(___err_ptr), fmt,
+> > > > ##__VA_ARGS__));	\
+> > > > +})
+> > 
+> > After looking into the next patch I think this should be rewritten to use %pe,
+> > hence should be an exported function. Or dev_err_probe() should be split to
+> > a version that makes the difference between int and const void * (maybe using
+> > _Generic()).
+> 
+> I replied a bit in the other patch but I'm of the opinion that's likely just more
+> complicated than it needs to be (IMO). Why is the PTR_ERR(___err_ptr) that bad? If we
+> really want to have a version that takes pointer why not just:
+> 
+> #define dev_err_ptr_probe(dev, ___err, fmt, ...) \
+> 	dev_err_probe(dev, PTR_ERR(__err), fmt, ##__VA_ARGS__)
+> 
+> 
+> (yes, while _Generic() could be fun I'm trying to avoid it. In this case, I think
+> having explicit defines is more helpful)
 
-Anyhow, I 'think' what you have here should work.
+It seems dev_err_probe() already uses %pe, so we are fine.
 
-Jonathan
+-- 
+With Best Regards,
+Andy Shevchenko
 
-> 
-> Cheers,
-> Peter
-> 
-> mux: gpio-mux {
-> 	compatible = "gpio-mux";
-> 	#mux-control-cells = <0>;
-> 
-> 	gpios-mux = <&main_gpio0 29 GPIO_ACTIVE_HIGH>;
-> };
-> 
-> rcs: raw-current-sense {
-> 	compatible = "io-channel-mux";
-> 	io-channels = <&adc 0>;
-> 	io-channel-names = "parent";
-> 	#io-channel-cells = <1>;
-> 
-> 	mux-controls = <&mux>;
-> 
-> 	channels = "raw-current", "";
-> };
-> 
-> rvs: raw-voltage-sense {
-> 	compatible = "io-channel-mux";
-> 	io-channels = <&adc 1>;
-> 	io-channel-names = "parent";
-> 	#io-channel-cells = <1>;
-> 
-> 	mux-controls = <&mux>;
-> 
-> 	channels = "", "raw-voltage";
-> };
-> 
-> current-sense {
-> 	compatible = "current-sense-shunt";
-> 	io-channels = <&rcs 0>;
-> 	io-channel-name = "current";
-> 
-> 	shunt-resistor-micro-ohms = <3300000>;
-> };
-> 
-> voltage-sense {
-> 	compatible = "voltage-divider";
-> 	io-channels = <&rvs 1>;
-> 	io-channel-name = "voltage";
-> 
-> 	output-ohms = <22>;
-> 	full-ohms = <222>;
-> };
-> 
-> Cheers,
-> Peter
 
 

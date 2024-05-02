@@ -1,122 +1,158 @@
-Return-Path: <linux-iio+bounces-4741-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4742-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8672B8B9269
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 01:39:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6185A8B92D4
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 02:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 33B5F282769
-	for <lists+linux-iio@lfdr.de>; Wed,  1 May 2024 23:39:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 926A21C213AA
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 00:31:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4A7168B0A;
-	Wed,  1 May 2024 23:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11FEC29A0;
+	Thu,  2 May 2024 00:31:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UJJU5NG8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VV9KSZOb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7786C42A96;
-	Wed,  1 May 2024 23:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ECD910FD;
+	Thu,  2 May 2024 00:31:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714606741; cv=none; b=Mm2YzPOm3s9roIKixHz4ir6nch9Km7QFmZV5l4GcDh8YjSQA7/wp8JZliUOiufcHEp8YV4c5tN44ZjEqTX93lKIFhbO9M0L3vxOGCI/aupyx+BrJ7/gEmj6h9QMjoJepvKezn9VVjsq+RHEtUj0l000L7QYT5nMJfnA9VUVq164=
+	t=1714609880; cv=none; b=bUIJh3JfIgyzOZkEcnlUFwg3eG+BNR9gO24Fbj778DHC/5FHqBGjc4tj+0KukMpE1pDBAubxmGGg5+fNnu1X8HhXXq4RrnRhiSjUMOhKIo0FV5D8j0VMNvQ+nDWgswzi50X5yZnTno6BSbp6m0lK+U6ZPUyospVQ2frOaDdsuks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714606741; c=relaxed/simple;
-	bh=sAWhs9jOyU3K4rULubdKQssmAH2mklmjkWpo7Fp5YOA=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=oiEgzkvSROjnd7r5r+qLtKp6r2XRM6UgDAkaDvMhu6jXQVtw50fgSzJgv5jo5o8mO3z4ejCtsag8cVscNLcBV4Oc6MjmDMgfiCFRwkZpDJSXm8C1DaIyd3d9vamr+KuuzMr6aOFENMPQsaU5yjJJ8bSNKpSFNbykmAvckToWAHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UJJU5NG8; arc=none smtp.client-ip=209.85.215.176
+	s=arc-20240116; t=1714609880; c=relaxed/simple;
+	bh=r5guuUapTlf22SguiPdjyMyXz2dFGop1OTiY6dzdnnc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=olW8h68UU4aFTzD1NJ+Kk0brJ9IC/KZ7H2gfJMJ/trHo/CHVBT8soj/k64nYr2B8Dn+0AYxhsWIIkmqIErLvdONhBO9p59fJsJePlFJrXUDtRKGMojjntXbjfQ06hDlUj/XFhw5fLmmRrHOVmAok+dV3h5ApD+Ll4bKS8cbez0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VV9KSZOb; arc=none smtp.client-ip=209.85.215.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-5f80aa2d4a3so6030070a12.0;
-        Wed, 01 May 2024 16:39:00 -0700 (PDT)
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-5d8b519e438so5778320a12.1;
+        Wed, 01 May 2024 17:31:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714606739; x=1715211539; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=75Xvc7zrlEfmkMI9nebj9FrvBmWWK0w54I8lGIIUNsQ=;
-        b=UJJU5NG8ZVIKWvJNojKuP+a3ZXBLOUVABvawytVl36BZF5w+YwoStdlYqZZbTXdLYx
-         ejzF37RFUctcQIzPoptR56Dx0k8e/Z6AQ8AxiHv7iwCOhUN9nauy9OvB7KqiNlD+vm5u
-         KVBAZgaHIxkv8UeZ/+lSV23VspCK8Ko5hnVoUwmkgBQ8QkdND8D7oMVq55Lq0lctGNyD
-         aw6+cjyYH+NFU+Dn0vZL56eTRroKviC/bR2bwMVHu61T/N/EBxRRBJe2Sd2HYjwwnMJ3
-         Kwy+DXNsoVVupzgDiQ1XJz9v1sqPKCBfdEgMDpzVoNYHmKeYqCfHAicfRVMJeRGxM39J
-         Zgzg==
+        d=gmail.com; s=20230601; t=1714609879; x=1715214679; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TkHPRtBrUJJCysLcWwPzSS/yq2+HScYUZyooywnW5Jg=;
+        b=VV9KSZObVF+20E7hiqHnZc4+6ix0j8nXb13prIYOxkRu+9HngkVl9ZFN4JFCVfrSx2
+         pJRbHlIcH3obqzF3rB/BPJ6kB9idB3lYINUU6svKM0kmvaWYak4Zuy1vK4WXiomvyoYe
+         gnQKQSadH19qMXdvxMn7ytsjir9S5IKJFRQn5mUHyH2OS9nRyzaiySZDrXg0ehXEUwnp
+         AypL/NCsAW30bGkAzeyb0/zcdg7Ei6ZS+/2ENct9qSPVsZGLG5J2WzUfks+OueF2tnUC
+         TJyrztqW+H3nhSc0gfE3ht7tcVKT7Iu5VbkQkkLB3f+RIh5mxCOTYAsbFDACi51367OR
+         hMsg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714606739; x=1715211539;
-        h=content-transfer-encoding:content-disposition:mime-version
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=75Xvc7zrlEfmkMI9nebj9FrvBmWWK0w54I8lGIIUNsQ=;
-        b=cCU0U4zd3RTLD2CFJGnYi2S6BvGVXvPGc2qRMpKDzBEBTLZcqWK/a8JqiyLs9wosVJ
-         yqz0cYRLN6fsJQv3FeukigJKecXYAExaKNasAxBlbHgjrWQ6Bzwu4iqGOm0lIaIZSMJI
-         2KmXTsSYjFhQkrFyidM8NRKHeC34c+/Iu8dWkx+TMxqDuqEwkNnhgoXd/mRgpK8Z63Oz
-         lglp/OSGsLk3QqT3jF5lZ4g78jgm9Ur/IBieiGzpxBswIkKUXedi/gi0pkkQQBaYhP+n
-         2eo1C8PvNJh1XkxH5yjZFmJJ7wkJKQLv3c268hdeIF44loIQ+BhcsasJid6BKWwuNBgQ
-         YvaA==
-X-Forwarded-Encrypted: i=1; AJvYcCWfQ1H5bjfxcfiT5XJ6ryiQddnxLXA2dn2wvbARCHKrg06df5W5y/0ZNAPES3E1VhmuoEeyYi4DyWyR8/IwVr30Q8UPhDBvWUvJgIME
-X-Gm-Message-State: AOJu0YxLt/7X2aJaHhakg1k7yPW43frd6V431Pbjh6B3nI17munwOJL2
-	kdbA//TSabppVA6MqYSFt84eIFrHeCqphjIyx4p5JzGI28mjoDAGB0ZiYA==
-X-Google-Smtp-Source: AGHT+IHgNxy49xxZrYAd4l6cvOp4qdcb4LbJ2Zz0Ly2t5SVNdkiQgxiZxYZtrJZGUqogxVpg3CuJ0w==
-X-Received: by 2002:a17:90a:d08:b0:2b2:7c42:bcd7 with SMTP id t8-20020a17090a0d0800b002b27c42bcd7mr4048748pja.21.1714606739395;
-        Wed, 01 May 2024 16:38:59 -0700 (PDT)
-Received: from joaog-nb ([189.78.25.116])
-        by smtp.gmail.com with ESMTPSA id ha24-20020a17090af3d800b002b1b1a3611dsm1889042pjb.43.2024.05.01.16.38.57
+        d=1e100.net; s=20230601; t=1714609879; x=1715214679;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TkHPRtBrUJJCysLcWwPzSS/yq2+HScYUZyooywnW5Jg=;
+        b=hOzuSMNvjxdV9FxwmRLd9ewCCQKUhkYfgellgSwbb/vy7+Y7TrCz11sDXprEHIg9Kw
+         fGk2/S8fx1O4Hx8Z+PgwLVzaJXu/fYdBN2j1cgVCa2HeMhRl0VKR9pG0dl1oChJ74OSv
+         rJboENZTxS/zfJMLfCeeAlmItX99EzqCoVBUJMJjGzrfm/vyFaRZQye64p1YE3Gm/DxX
+         Sx9WYqRHdhqtMEeg3XayAlITIRDrGWrlydC9bLvx+PnVtkKqGE/HOxMDM3kbS+2fbvUP
+         ao0sIXHZqLBPCNhuekTL2xzpaK75S0L9RmnECwrtKmJOqlpXzu3q++YFyJ4/FXGuQRNT
+         nD2w==
+X-Forwarded-Encrypted: i=1; AJvYcCXBACA4ycTqlmdv6+MfEGYOJGgFLal+Jx5ODxSly/HNVmkQYedD7gEbBEpsHTpwJChMOXK6xKw/jiyveQg5f7IibWy62UlCxPXLftQ9eoFIFhAhK4lE5nMytoVCQpM4fjqkECoKSBWoL1mv+5K44wdSNHM/yZcqiV6rtFUmqecIU0QJuw==
+X-Gm-Message-State: AOJu0YwP5J3NtkbqK92Iieqpvzz0Reg9JS4dpjjV6NaGIFiWL8ZNectl
+	Z/xecyXEctnB6PvwnSrZd4xMLkxu+v7MqPW14yL4kdaKics8RjEW
+X-Google-Smtp-Source: AGHT+IF1j7si6e6lSQ3Ch/Yrmtlf3PHR4AQfq3M22BfP/7pWj1QZGe3knTgMKJflvEFg2HDn8yQWeA==
+X-Received: by 2002:a05:6a20:da91:b0:1a9:499c:5778 with SMTP id iy17-20020a056a20da9100b001a9499c5778mr5473877pzb.35.1714609878559;
+        Wed, 01 May 2024 17:31:18 -0700 (PDT)
+Received: from archie.me ([103.124.138.155])
+        by smtp.gmail.com with ESMTPSA id j9-20020a056a00130900b006eae2d9298esm23149566pfu.194.2024.05.01.17.31.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 01 May 2024 16:38:58 -0700 (PDT)
-Date: Wed, 1 May 2024 20:38:53 -0300
-From: =?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>
-To: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: joao.goncalves@toradex.com
-Subject: Supporting a Device with Switchable Current/Voltage Measurement
-Message-ID: <20240501233853.32y4ev7jvas5ahdz@joaog-nb>
+        Wed, 01 May 2024 17:31:18 -0700 (PDT)
+Received: by archie.me (Postfix, from userid 1000)
+	id 1015118462B26; Thu, 02 May 2024 07:31:15 +0700 (WIB)
+Date: Thu, 2 May 2024 07:31:15 +0700
+From: Bagas Sanjaya <bagasdotme@gmail.com>
+To: =?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>,
+	Linux IIO <linux-iio@vger.kernel.org>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Devicetree <devicetree@vger.kernel.org>
+Cc: joao.goncalves@toradex.com, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Subject: Re: Supporting a Device with Switchable Current/Voltage Measurement
+Message-ID: <ZjLe0yIpMyPRl-eZ@archie.me>
+References: <20240501233853.32y4ev7jvas5ahdz@joaog-nb>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Ny+tNBgiqDHUpEAc"
+Content-Disposition: inline
+In-Reply-To: <20240501233853.32y4ev7jvas5ahdz@joaog-nb>
+
+
+--Ny+tNBgiqDHUpEAc
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-Hello all,
+[also Cc: IIO and devicetree maintainers]
 
-We need to support a hardware that can measure current and voltage on
-the same differential analog input, similar to a multimeter. The mode
-of measurement is controlled by a GPIO switch and goes to different
-ADC inputs depending on the mode. If the switch is enabled, a current
-loop with a shunt is enabled for current measurement; otherwise, voltage
-is measured. From the software point of view, we are considering using
-the iio-rescale driver as a consumer of an ADC IIO parent device. One
-of the problems is that we need to change the mode of measurement at
-runtime, but we are trying to avoid using some userspace "hack". The
-other is that for a minimal solution to enable the mode from boot, we
-can use a gpio-hog and control it with overlays. However,
-still would be better that this was done by the kernel. Do you know
-or have some guidance on how to properly support this in the kernel?
+On Wed, May 01, 2024 at 08:38:53PM -0300, Jo=C3=A3o Paulo Gon=C3=A7alves wr=
+ote:
+> Hello all,
+>=20
+> We need to support a hardware that can measure current and voltage on
+> the same differential analog input, similar to a multimeter. The mode
+> of measurement is controlled by a GPIO switch and goes to different
+> ADC inputs depending on the mode. If the switch is enabled, a current
+> loop with a shunt is enabled for current measurement; otherwise, voltage
+> is measured. From the software point of view, we are considering using
+> the iio-rescale driver as a consumer of an ADC IIO parent device. One
+> of the problems is that we need to change the mode of measurement at
+> runtime, but we are trying to avoid using some userspace "hack". The
+> other is that for a minimal solution to enable the mode from boot, we
+> can use a gpio-hog and control it with overlays. However,
+> still would be better that this was done by the kernel. Do you know
+> or have some guidance on how to properly support this in the kernel?
+>=20
+> For the in kernel gpio solution, this is a draft of DT we are thinking:
+>=20
+> current-sense {
+>       compatible =3D "current-sense-shunt";
+>       io-channels =3D <&adc 0>;
+>       gpio =3D <&main_gpio0 29 GPIO_ACTIVE_HIGH>;
+>       shunt-resistor-micro-ohms =3D <3300000>;     =20
+> };
+>=20
+> voltage-sense {
+>         compatible =3D "voltage-divider";
+>         io-channels =3D <&adc 1>;
+>         gpio =3D <&main_gpio0 29 GPIO_ACTIVE_LOW>;
+>         output-ohms =3D <22>;
+>         full-ohms =3D <222>;
+> };
 
-For the in kernel gpio solution, this is a draft of DT we are thinking:
+What are these ohms and where do you get them?
 
-current-sense {
-      compatible = "current-sense-shunt";
-      io-channels = <&adc 0>;
-      gpio = <&main_gpio0 29 GPIO_ACTIVE_HIGH>;
-      shunt-resistor-micro-ohms = <3300000>;      
-};
+Confused...
 
-voltage-sense {
-        compatible = "voltage-divider";
-        io-channels = <&adc 1>;
-        gpio = <&main_gpio0 29 GPIO_ACTIVE_LOW>;
-        output-ohms = <22>;
-        full-ohms = <222>;
-};
+--=20
+An old man doll... just what I always wanted! - Clara
 
-Regards,
-João Paulo Gonçalves
+--Ny+tNBgiqDHUpEAc
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZjLezgAKCRD2uYlJVVFO
+o6CeAP9IPnwNWxWf0YZYaEo359yiW9ly2wqsNbzLjUXfX/wg1gD+ORWdJ7Qqclw8
+zQtLjJ9ONRxPwJReDn9QJCTKGsHF8wE=
+=1AdD
+-----END PGP SIGNATURE-----
+
+--Ny+tNBgiqDHUpEAc--
 

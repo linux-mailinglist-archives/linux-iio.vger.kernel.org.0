@@ -1,69 +1,51 @@
-Return-Path: <linux-iio+bounces-4764-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4765-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C5E8BA0E8
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 21:14:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2505E8BA0EB
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 21:15:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A1C81C20E00
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 19:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D05E02832E3
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 19:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDACA179954;
-	Thu,  2 May 2024 19:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5029179202;
+	Thu,  2 May 2024 19:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Onw5PGyv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZTSn3jCd"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBD315FD0B;
-	Thu,  2 May 2024 19:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944DE15FD0B
+	for <linux-iio@vger.kernel.org>; Thu,  2 May 2024 19:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714677286; cv=none; b=Zp4bCxAv1be/W7kqC6aq1URE3V2AeDqVLjAioiMiDiCoog1k92uaotzxzp8ufkqso5B2ElPOahxc2CZWtpDDQfBnbLsijSjFEgm4ec5I7dHHPvCLaBuhqZ0UMrbeWZuat6FLFYu/I9bwyLvnz463Cp5v+wB1zbCk7d5wOIke/uk=
+	t=1714677318; cv=none; b=GzFvHZ0iqc1f3vrq7i8dHuAokayvTByRAYpTyR8//Rt5oojUvq7AolRc2UyoTRayXQARrY/EDKmx0MQkd2pPJJ5q3lGgdKhszLLR2P4nh1h5+0SGePX9k2Fc/I1o2EWCc/ls3U5IwEWmoFIdL3PkgIEvay8BGiV+TzR46sKX460=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714677286; c=relaxed/simple;
-	bh=BBlkb84hHXVG3Ve5x+ET9a7uN2YIwLDnxgmQ6QkN5ys=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=K4plhTOKuBOmm4tC9fdnVtLC2M/wrKuyZi5EJA7L65P943PrULEkSLGAvGTBBMqCAG6JMgxnkI8HXxUMlArD9d8yRds/ffW/rr4zePTeRvQfnu88HLcJeYLPilDRogeWck7n8reDb9khUpccZxUiCziPwjAOg/svQh+O4JTZ6Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Onw5PGyv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA05C113CC;
-	Thu,  2 May 2024 19:14:42 +0000 (UTC)
+	s=arc-20240116; t=1714677318; c=relaxed/simple;
+	bh=AzzrCMVyAqQ/IctZ5VCZ419BIdMYMY5axhI1M824WQg=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=ZFpU4tafbrI7H3Gcj7zZ5FluYigg37AvkhDtFQVtqMDuNByTHYvkthzFYDGKQ1AXlS7mdA+6QdqFNeAcUcERkSnYZfwBMp6vYnKdJi+hVPZqkdK0gHvioLbp7cRrTKVQrNlNHh6zfadX5iUdGU4yBIEsDiKcaDG6yE6A+iVp4W4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZTSn3jCd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60339C113CC;
+	Thu,  2 May 2024 19:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714677286;
-	bh=BBlkb84hHXVG3Ve5x+ET9a7uN2YIwLDnxgmQ6QkN5ys=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Onw5PGyvJgNNN6dD0D6icj1zLOV0ySF1y6PuCPIQIQBlgjwiHXzEcGkW2I8o1urj+
-	 +naEqlyP7dxBIPVw+06Nsl1E5cg5L8K6z1RI3wy3kl5QLS1hWwn+ZyLXP9CAj+Fhz1
-	 kI+lZI0RWz2W5wRGTpJoviUsiWnOd5U3w42jJo+HI1t2lNXyEZc67nkwlljPy4njwB
-	 yVyh9m9YsT+W3PjLulRGh1mBZ4NoYv8fOjQ2ririNZ2PVzeXvjYor2RJp3kobNN2qE
-	 o2Dtl3XuOCBLjzW49Uk4XNr2WQ37VKb1NwFgZN2MdesVsKdPpHp0JW9xA/JoMG2cfX
-	 p8mUczVQfFw5Q==
-Date: Thu, 2 May 2024 20:14:33 +0100
+	s=k20201202; t=1714677318;
+	bh=AzzrCMVyAqQ/IctZ5VCZ419BIdMYMY5axhI1M824WQg=;
+	h=Date:From:To:Subject:From;
+	b=ZTSn3jCd8qe8V958cKcVRXoud5IPHRpWG11qEFAGMf/eXMBkDpKT005WV+WyxH8Dg
+	 9aK94a8hr1kv9VW7wbdg+d3NIxrG4z+w2emO45gOqTwKckwOoio4cr2Qi2RVw4dFXN
+	 VJtu7JfFzLYbNNKNvGaGrGWSRK0zUTgvdGhrkNR6TYF9n9eyGxeo4F5+hWZoaxSfYy
+	 wPy375YRUcLBYttG5JDcXbwrnlD/EG4FWkai2xp9GdaTAi8BsGJ28+R4F7FVcW8nn0
+	 z98Ab8yK+hQhY/CWCeRBf5u+fLpJi4U2yRxOMT+IwcpfZs5waLYmpoQChOddSJdubX
+	 Xf4l5KeCZWr7w==
+Date: Thu, 2 May 2024 20:15:09 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: "Gradinariu, Ramona"  <Ramona.Gradinariu@analog.com>, Ramona Gradinariu
- <ramona.bolboaca13@gmail.com>, "linux-kernel@vger.kernel.org" 
- <linux-kernel@vger.kernel.org>, "linux-iio@vger.kernel.org" 
- <linux-iio@vger.kernel.org>, "linux-doc@vger.kernel.org" 
- <linux-doc@vger.kernel.org>, "devicetree@vger.kernel.org" 
- <devicetree@vger.kernel.org>, "corbet@lwn.net" <corbet@lwn.net>,
- "conor+dt@kernel.org"  <conor+dt@kernel.org>,
- "krzysztof.kozlowski+dt@linaro.org"  <krzysztof.kozlowski+dt@linaro.org>,
- "robh@kernel.org" <robh@kernel.org>, "Sa, Nuno" <Nuno.Sa@analog.com>
-Subject: Re: [PATCH 4/5] iio: adis16480: add support for adis16545/7
- families
-Message-ID: <20240502201408.216575e4@jic23-huawei>
-In-Reply-To: <0e13f8b643bb7afcc7c4f0d62741cf9fda66c1e0.camel@gmail.com>
-References: <20240423084210.191987-1-ramona.gradinariu@analog.com>
-	<20240423084210.191987-5-ramona.gradinariu@analog.com>
-	<20240428162555.3ddf31ea@jic23-huawei>
-	<e62f8df4b06abc371b1e9fe3232cb593e468d54c.camel@gmail.com>
-	<BL1PR03MB5992DEBF82C0DB7BDC5EA0FF971B2@BL1PR03MB5992.namprd03.prod.outlook.com>
-	<20240429204027.3e47074a@jic23-huawei>
-	<0e13f8b643bb7afcc7c4f0d62741cf9fda66c1e0.camel@gmail.com>
+To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] IIO: 2nd set of new device support, features and cleanup for
+ the 6.10 cycle
+Message-ID: <20240502201509.14ae8880@jic23-huawei>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,210 +53,208 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, 02 May 2024 13:31:55 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+The following changes since commit 84e79a7f63e8caeac0c1a0817408860875a9b23e:
 
-> On Mon, 2024-04-29 at 20:40 +0100, Jonathan Cameron wrote:
-> > On Mon, 29 Apr 2024 13:17:42 +0000
-> > "Gradinariu, Ramona" <Ramona.Gradinariu@analog.com> wrote:
-> >  =20
-> > > > -----Original Message-----
-> > > > From: Nuno S=C3=A1 <noname.nuno@gmail.com>
-> > > > Sent: Monday, April 29, 2024 10:59 AM
-> > > > To: Jonathan Cameron <jic23@kernel.org>; Ramona Gradinariu
-> > > > <ramona.bolboaca13@gmail.com>
-> > > > Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org; linux-
-> > > > doc@vger.kernel.org; devicetree@vger.kernel.org; corbet@lwn.net;
-> > > > conor+dt@kernel.org; krzysztof.kozlowski+dt@linaro.org; robh@kernel=
-.org;
-> > > > Gradinariu, Ramona <Ramona.Gradinariu@analog.com>; Sa, Nuno
-> > > > <Nuno.Sa@analog.com>
-> > > > Subject: Re: [PATCH 4/5] iio: adis16480: add support for adis16545/=
-7 families
-> > > >=20
-> > > > [External]
-> > > >=20
-> > > > On Sun, 2024-04-28 at 16:25 +0100, Jonathan Cameron wrote:=C2=A0  =
-=20
-> > > > > On Tue, 23 Apr 2024 11:42:09 +0300
-> > > > > Ramona Gradinariu <ramona.bolboaca13@gmail.com> wrote:
-> > > > > =C2=A0 =20
-> > > > > > The ADIS16545 and ADIS16547 are a complete inertial system that
-> > > > > > includes a triaxis gyroscope and a triaxis accelerometer.
-> > > > > > The serial peripheral interface (SPI) and register structure pr=
-ovide a
-> > > > > > simple interface for data collection and configuration control.
-> > > > > >=20
-> > > > > > These devices are similar to the ones already supported in the =
-driver,
-> > > > > > with changes in the scales, timings and the max spi speed in bu=
-rst
-> > > > > > mode.
-> > > > > > Also, they support delta angle and delta velocity readings in b=
-urst
-> > > > > > mode, for which support was added in the trigger handler.
-> > > > > >=20
-> > > > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>=C2=A0  =20
-> > > > >=20
-> > > > > What is Nuno's relationship to this patch?=C2=A0 You are author a=
-nd the sender
-> > > > > which is fine, but in that case you need to make Nuno's involveme=
-nt explicit.
-> > > > > Perhaps a Co-developed-by or similar is appropriate?
-> > > > > =C2=A0 =20
-> > > > > > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>=
-=C2=A0  =20
-> > > > > A few comments inline.=C2=A0 Biggest one is I'd like a clear stat=
-ement of why you
-> > > > > can't do a burst of one type, then a burst of other.=C2=A0 My gue=
-ss is that the
-> > > > > transition is very time consuming?=C2=A0 If so, that is fine, but=
- you should be
-> > > > > able
-> > > > > to let available_scan_masks handle the disjoint channel sets.=C2=
-=A0  =20
-> > > >=20
-> > > > Yeah, the burst message is a special spi transfer that brings you a=
-ll of the
-> > > > channels data at once but for the accel/gyro you need to explicitly=
- configure
-> > > > the chip to either give you the "normal vs "delta" readings. Re-con=
-figuring the
-> > > > chip and then do another burst would destroy performance I think. W=
-e could
-> > > > do
-> > > > the manual readings as we do in adis16475 for chips not supporting =
-burst32.
-> > > > But
-> > > > in the burst32 case those manual readings should be minimal while i=
-n here we
-> > > > could have to do 6 of them which could also be very time consuming.=
-..
-> > > >=20
-> > > > Now, why we don't use available_scan_masks is something I can't rea=
-lly
-> > > > remember
-> > > > but this implementation goes in line with what we have in the adis1=
-6475
-> > > > driver.
-> > > >=20
-> > > > - Nuno S=C3=A1
-> > > > =C2=A0  =20
-> > >=20
-> > > Thank you Nuno for all the additional explanations.
-> > > Regarding the use of available_scan_masks, the idea is to have any po=
-ssible
-> > > combination for accel, gyro, temp and timestamp channels or delta ang=
-le, delta=20
-> > > velocity, temp and=C2=A0 timestamp channels. There are a lot of combi=
-nations for=20
-> > > this and it does not seem like a good idea to write them all manually=
-. That is=20
-> > > why adis16480_update_scan_mode is used for checking the correct chann=
-els=20
-> > > selection. =20
-> >=20
-> > If you are using bursts, the data is getting read anyway - which is the=
- main
-> > cost here. The real question becomes what are you actually saving by su=
-pporting all
-> > the combinations of the the two subsets of channels in the pollfunc?
-> > Currently you have to pick the channels out and repack them, if pushing=
- them all
-> > looks to me like a mempcy and a single value being set (unconditionally=
-). =20
->=20
-> > Then it's a question of what the overhead of the channel demux in the c=
-ore is.
-> > What you pass out of the driver via iio_push_to_buffers*()
-> > is not what ends up in the buffer if you allow the IIO core to do data =
-demuxing
-> > for you - that is enabled by providing available_scan_masks.=C2=A0 At b=
-uffer
-> > start up the demux code computes a fairly optimal set of copies to repa=
-ck
-> > the incoming data to match with what channels the consumer (here probab=
-ly
-> > the kfifo on the way to userspace) is expecting.
-> >=20
-> > That demux adds a small overhead but it should be small as long
-> > as the channels wanted aren't pathological (i.e. every other one).
-> >=20
-> > Advantage is the driver ends up simpler and in the common case of turn
-> > on all the channels (why else did you buy a device with those measureme=
-nts
-> > if you didn't want them!) the demux is zerocopy so effectively free whi=
-ch
-> > is not going to be the case for the bitmap walk and element copy in the
-> > driver.
-> >  =20
->=20
-> Maybe my younger me was smarter but reading again the validation of the s=
-can mask
-> code (when available_scan_masks is available), I'm not sure why we're not=
- using them.
-> I think that having one mask with delta values + temperature and another =
-one with
-> normal + temperature would be enough for what we want in here. The code in
-> adis16480_update_scan_mode() could then be simpler I think.
->=20
-> Now, what I'm still not following is the straight memcpy(). I may be miss=
-ing
-> something but the demux code only appears to kick in when we have compoun=
-d masks
-> resulting of multiple buffers being enabled. So I'm not seeing how we can=
- get away
-> without picking the channels and place them correctly in the buffer passe=
-d to IIO?
+  Merge tag 'peci-next-6.10-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/iwi/linux into char-misc-next (2024-04-23 21:31:45 -0700)
 
-It runs whenever the enabled mask requested (the channels that are enabled)=
- is
-different from the active_scan_mask. It only sends channels in one
-direction if there is only one user but it only sends the ones enabled by t=
-hat consumer.
-It's called unconditionally from iio_enable_buffers()
+are available in the Git repository at:
 
-That iterates over all enabled buffers (often there is only 1)
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-for-6.10b
 
-and then checks if the active scan mask is the same as the one for this buf=
-fer.
-https://elixir.bootlin.com/linux/v6.9-rc6/source/drivers/iio/industrialio-b=
-uffer.c#L1006
+for you to fetch changes up to 9900e7a54764998ba3a22f06ec629f7b5fe0b422:
 
-The setup for whether to find a superset from available_scan_masks is here
-https://elixir.bootlin.com/linux/v6.9-rc6/source/drivers/iio/industrialio-b=
-uffer.c#L928
+  iio: temperature: mcp9600: Fix temperature reading for negative values (2024-05-01 08:38:24 +0100)
 
-Key is that if it happens to match, then we don't actually do anything in t=
-he demux.
-It just gets passed straight on through.  That does the fast path you menti=
-on below.
+----------------------------------------------------------------
+IIO: 2nd set of new device support, features and cleanup for 6.10
 
-> What we could do in the future (for a similar device) is to maybe have a =
-fastpath in
-> the handler. Something like:
->=20
-> if (bitmap_full(scan_mask, masklength)) {
-> 	memcpy(iio_buff, burst + data_off, size);
-> 	goto push_to_iio;
-> }
->=20
-> Right now we would always have to do some "manual" work as the temperatur=
-e scan index
-> does not match the position on the received burst data.
+The usual mixed bag from towards the end of the cycle.
 
-Agreed -that one is needed to shuffle the temperature to the right place.
+New devices support
+===================
 
+invensense,icm42600
+- Support the ICM-42686-P a high range device going up to 32g and 4000 dps
 
->=20
-> Some devices with the burst32 (which I think do not exist in this driver)=
- would also
-> make the plain memcpy() harder.
->=20
-> - Nuno S=C3=A1
->=20
+New features
+============
 
+adi,ad7944
+- Add support for chain mode in which many ADCs may be daisy chained and
+  read out via a single long read.
+adi,ad9467/backend library
+- Add bus tuning related interfaces.
+adi,axi-adc
+- Add control for the AXI clock - seems always enabled early in boot for other
+  reasons, but the driver should not rely on that..
+
+Cleanups and minor or late breaking fixes
+=========================================
+
+Micrsoft/ACPI mount matrix handling.
+- Replace several implementations of the Microsoft defined ROTM ACPI
+  method with a single one.
+multiple drivers
+- Don't call the result of wait_for_completion() timeout as it's
+  more accurate as time_left.
+adi,ad7266
+- Stop setting the iio_dev->masklength as it's done by the IIO core and
+  should not be set from drivers.
+adi,ad799x
+- Some checkpatch type fixes.
+adi,ad9839
+- Ensure compelte MU_CNT1 is written during lock phase.
+adi,axi-dac
+- Fix inverted parameter.
+adi,adis16475
+- Drop documentation of non existent sysfs files.
+avago,apds9306
+- Fix an off by one error that overly restricts the range of persistence
+  and adaptive thresholds that the driver accepts.
+freescale,mxs-lradc
+- Stop setting the iio_dev->masklength as it's done by the IIO core and
+  should not be set from drivers.
+invensense,timestamp library
+- Fix timestamp vs interupt alignment and aovid soms glitches that
+  occured when switching sampling frequency.
+microchip,mcp3564
+- Make use of device_for_each_child_node_scoped() to allow early release
+  without manual fwnode_handle_put().
+microchip,mcp9600
+- Allow for negative temperatures.
+microchip,pac1934
+- Avoid an out of bounds array index.
+richtek,rtq6056
+- Use iio_device_claim_direct_scoped() to automate lock release and simplify
+  the code.
+sensortek,stk3110
+- Drop a likely incorrect ACPI ID. No known users of this ID and it's
+  not a valid ACPI ID.
+ti,ads1015
+- Make use of device_for_each_child_node_scoped() to allow early release
+  without manual fwnode_handle_put().
+
+----------------------------------------------------------------
+Andy Shevchenko (1):
+      iio: light: stk3310: Drop most likely fake ACPI ID
+
+Dan Carpenter (1):
+      iio: dac: adi-axi: fix a mistake in axi_dac_ext_info_set()
+
+David Lechner (5):
+      iio: adc: ad7266: don't set masklength
+      iio: adc: mxs-lradc-adc: don't set masklength
+      iio: buffer: initialize masklength accumulator to 0
+      iio: adc: ad7944: add support for chain mode
+      docs: iio: ad7944: add documentation for chain mode
+
+Dimitri Fedrau (1):
+      iio: temperature: mcp9600: Fix temperature reading for negative values
+
+Gabriel Schwartz (1):
+      iio: adc: rtq6056: Use automated cleanup for mode handling in write_raw
+
+Gustavo Rodrigues (3):
+      iio: adc: ad799x: change 'unsigned' to 'unsigned int' declaration
+      iio: adc: ad799x: add blank line to avoid warning messages
+      iio: adc: ad799x: Prefer to use octal permission
+
+Hans de Goede (4):
+      iio: core: Add iio_read_acpi_mount_matrix() helper function
+      iio: accel: kxcjk-1013: Use new iio_read_acpi_mount_matrix() helper
+      iio: bmc150-accel-core: Use iio_read_acpi_mount_matrix() helper
+      iio: accel: mxc4005: Read orientation matrix from ACPI ROTM method
+
+Jean-Baptiste Maneyrol (4):
+      dt-bindings: iio: imu: add icm42686 inside inv_icm42600
+      iio: imu: inv_icm42600: add support of ICM-42686-P
+      iio: invensense: fix interrupt timestamp alignment
+      iio: invensense: fix timestamp glitches when switching frequency
+
+Jonathan Cameron (1):
+      iio: adc: mcp3564: Use device_for_each_child_node_scoped()
+
+Lincoln Yuji (1):
+      iio: adc: ti-ads1015: use device_for_each_child_node_scoped()
+
+Marius Cristea (1):
+      iio: adc: PAC1934: fix accessing out of bounds array index
+
+Nuno Sa (8):
+      dt-bindings: adc: axi-adc: add clocks property
+      iio: adc: axi-adc: make sure AXI clock is enabled
+      iio: backend: change docs padding
+      iio: backend: add API for interface tuning
+      iio: adc: adi-axi-adc: remove regmap max register
+      iio: adc: adi-axi-adc: support digital interface calibration
+      iio: adc: ad9467: support digital interface calibration
+      iio: dac: ad9739a: write complete MU_CNT1 register during lock
+
+Ramona Gradinariu (1):
+      docs: iio: adis16475: fix device files tables
+
+Subhajit Ghosh (1):
+      iio: light: apds9306: Fix input arguments to in_range()
+
+Wolfram Sang (8):
+      iio: adc: ad_sigma_delta: use 'time_left' variable with wait_for_completion_timeout()
+      iio: adc: exynos_adc: use 'time_left' variable with wait_for_completion_timeout()
+      iio: adc: fsl-imx25-gcq: use 'time_left' variable with wait_for_completion_interruptible_timeout()
+      iio: adc: intel_mrfld_adc: use 'time_left' variable with wait_for_completion_interruptible_timeout()
+      iio: adc: stm32-adc: use 'time_left' variable with wait_for_completion_interruptible_timeout()
+      iio: adc: stm32-dfsdm-adc: use 'time_left' variable with wait_for_completion_interruptible_timeout()
+      iio: adc: twl6030-gpadc: use 'time_left' variable with wait_for_completion_interruptible_timeout()
+      iio: pressure: zpa2326: use 'time_left' variable with wait_for_completion_interruptible_timeout()
+
+ .../devicetree/bindings/iio/adc/adi,axi-adc.yaml   |   5 +
+ .../bindings/iio/imu/invensense,icm42600.yaml      |   1 +
+ Documentation/iio/ad7944.rst                       |  30 +-
+ Documentation/iio/adis16475.rst                    |   8 +-
+ drivers/iio/Makefile                               |   1 +
+ drivers/iio/accel/bmc150-accel-core.c              |  44 +--
+ drivers/iio/accel/kxcjk-1013.c                     |  80 +----
+ drivers/iio/accel/mxc4005.c                        |  22 ++
+ drivers/iio/adc/ad7266.c                           |   1 -
+ drivers/iio/adc/ad7944.c                           | 186 +++++++++-
+ drivers/iio/adc/ad799x.c                           |   7 +-
+ drivers/iio/adc/ad9467.c                           | 374 ++++++++++++++++++---
+ drivers/iio/adc/ad_sigma_delta.c                   |   6 +-
+ drivers/iio/adc/adi-axi-adc.c                      | 127 ++++++-
+ drivers/iio/adc/exynos_adc.c                       |  16 +-
+ drivers/iio/adc/fsl-imx25-gcq.c                    |  10 +-
+ drivers/iio/adc/intel_mrfld_adc.c                  |  12 +-
+ drivers/iio/adc/mcp3564.c                          |  16 +-
+ drivers/iio/adc/mxs-lradc-adc.c                    |   1 -
+ drivers/iio/adc/pac1934.c                          |   9 +
+ drivers/iio/adc/rtq6056.c                          |  34 +-
+ drivers/iio/adc/stm32-adc.c                        |  10 +-
+ drivers/iio/adc/stm32-dfsdm-adc.c                  |  12 +-
+ drivers/iio/adc/ti-ads1015.c                       |   5 +-
+ drivers/iio/adc/twl6030-gpadc.c                    |   8 +-
+ .../iio/common/inv_sensors/inv_sensors_timestamp.c |  33 +-
+ drivers/iio/dac/ad9739a.c                          |   5 +-
+ drivers/iio/dac/adi-axi-dac.c                      |   6 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600.h        |  35 ++
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  |  75 +++--
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c |  23 +-
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   |  21 ++
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c   |  84 +++--
+ drivers/iio/imu/inv_icm42600/inv_icm42600_i2c.c    |   3 +
+ drivers/iio/imu/inv_icm42600/inv_icm42600_spi.c    |   3 +
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c         |   2 +-
+ drivers/iio/industrialio-acpi.c                    |  85 +++++
+ drivers/iio/industrialio-backend.c                 | 162 ++++++---
+ drivers/iio/industrialio-buffer.c                  |   2 +-
+ drivers/iio/light/apds9306.c                       |  12 +-
+ drivers/iio/light/stk3310.c                        |   1 -
+ drivers/iio/pressure/zpa2326.c                     |  10 +-
+ drivers/iio/temperature/mcp9600.c                  |   3 +-
+ include/linux/iio/backend.h                        |  74 ++--
+ include/linux/iio/common/inv_sensors_timestamp.h   |   3 +-
+ include/linux/iio/iio.h                            |  13 +
+ 46 files changed, 1276 insertions(+), 404 deletions(-)
+ create mode 100644 drivers/iio/industrialio-acpi.c
 

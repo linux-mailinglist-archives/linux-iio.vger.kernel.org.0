@@ -1,80 +1,81 @@
-Return-Path: <linux-iio+bounces-4755-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4756-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E238B9BE1
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 15:49:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE648B9C06
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 16:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7906B1F21513
-	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 13:49:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14B521F223D0
+	for <lists+linux-iio@lfdr.de>; Thu,  2 May 2024 14:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3B313C805;
-	Thu,  2 May 2024 13:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66CC813C689;
+	Thu,  2 May 2024 14:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=axentia.se header.i=@axentia.se header.b="ioMpRyCh"
+	dkim=pass (1024-bit key) header.d=axentia.se header.i=@axentia.se header.b="Jsq8U0BY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2119.outbound.protection.outlook.com [40.107.21.119])
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on2133.outbound.protection.outlook.com [40.107.21.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD49219F6;
-	Thu,  2 May 2024 13:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA28C8F3;
+	Thu,  2 May 2024 14:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.21.133
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714657756; cv=fail; b=qZaDe4PfzEYZYtz6gkGZ/MBSP/NBe64RDHBccV4Z00ZMtpUxZVkBxRBKz7LBZm5PEedyXRqey/v/DLoayXl2RD1qun1ANW5M8iqSeuWy9tCRLJrz4ZBUAw8e7eEOGnkRUTt+gysewuzWR3FkutdkgGyGwAF8ps68ieeXdNHaxYY=
+	t=1714658754; cv=fail; b=C1F/Sez/8refbkr+UF5iF+sXOzkNQLuPQPH07Vc98WA2va6xIaUeHqFslR+BjWPr/yVjeoXWDDe0wekMsMXgJeaGmUkfQWruSBXc6TVSxMCuA0Eyebgh4YrWtEzJFDSb0HJ5D6seNLdBm47OltmMeIXUb77qD3Qbxqe1K4Nmbdw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714657756; c=relaxed/simple;
-	bh=VBfI+ZrKdCZqrZwaz2/ctSQ1ZBvblnkckE+UBkzINwA=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=aqt5PgpaK4p42BWtaZvZarAK28Ot0px/+YPSwUnLZtGd2UMoh+Ir40h/0YVF4Znru6jTf5rHii/+46AUSdp+4JBg2p/FdKR9nN0zD4XiJ1pLDk6QhNXBy+2DR14jK2jCHcd38MVy8bYPkbpccj/+kMdIcKaXeamzocJegupIEa0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axentia.se; spf=pass smtp.mailfrom=axentia.se; dkim=pass (1024-bit key) header.d=axentia.se header.i=@axentia.se header.b=ioMpRyCh; arc=fail smtp.client-ip=40.107.21.119
+	s=arc-20240116; t=1714658754; c=relaxed/simple;
+	bh=OLGrxL5tULFPFhhTw/9mnVyu0/3FSNKDsW/gjfS3M78=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=W5dfXJG9k5zVDUVV/6lIRhzBtSaUMCXnEwxLQrJq8dtDP0qXpJA0Q5NlAavG7glWu0Nvb3ZxpiTdYLbBGGyxQyJzh/8o7QCBOpWCABh+iKiOaWgAtQzFUETyBxWWUnpIYB1xNxK3vB/IbwWFbqYQQLDx3F6JKeHWYkGxitcmebE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axentia.se; spf=pass smtp.mailfrom=axentia.se; dkim=pass (1024-bit key) header.d=axentia.se header.i=@axentia.se header.b=Jsq8U0BY; arc=fail smtp.client-ip=40.107.21.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=axentia.se
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=axentia.se
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=UI06LwXn/B3WPKj0XCc5FwAU7uFPBJqecAAzn9CJm19jFxJ/3YmKz+u8PMPlK5SqEqe52wahyZW1eVSKNELdVCL3tALqsI7Em6Td5uxIy+VamuN5Yn0znDx4/+oHmBaybybkL2WTjPnHkR/TeU6Iy5NLf6MdL/7EfrjKL1raRaUuk0eYJ4JA+/jWI162ePIKI9c4KABCMYtAP1wR1dF1fxEJnZmqWFu/qEHwnDe+RakVzD/dhjK5msQ/wMl+3Yh54Ho0v2iKev2vW+IcjqIyvaraa6/UWKmWqfId6HxG7FKPbExaxR3hWvo0omLgJOq8YBcI/aBXq+a3rERxfhvgGw==
+ b=FQ466sFloI+8TGQDW9ojjAYQuO9CvZqy7pl3/AF1anJ8v14H3pIl0u744Sj5rO3fKRIwMOZN7KENhlbF554TXpNlm2SRavfQS2sdlfFiSeCTJtrc9UQZhAH4Xk6iwMp12FVf30cOD/MRjUZJ3jAB3LY9LgXIBTGp8F8e7LmXhHrtgl4VqFO8C8iV5a8LCAtFU5OUFYu3h+tJuBj3oG08CLTrVTKJVbff/+FObdp8fXpNsdJa7/tXCQvzxeYRRufvjduGyR2DQmOAbefoys5RmI6h6utQXwOuZFAZASkEVxnIe4bkT15xaBaF2IFbUwivTbkZDqTlKbq+Ik33xc0U2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qpOlWxMMz+YIclQqiUd1Srk8t354R2lG7K+QccLIznE=;
- b=jc6SfXMYOBKf1m5jmEqGsytj3F1Gximf71tstLBd/dEU0MrxYfMz8aLr5oSTMvMDvPr43br0JqcbNIQVU/0DmB5K3C4zdpxSfDtTkuWrg8bUtIlqiX0r4hzchyDoRHKeQL9C+n6cI7u5UuscB3xdrcVK1TGKNGnP42BCIRLWGqH6U0tmxsJhFIJsOi+66XN8A3NwIxyPcUVs9aCPc3XNjcVKBKHCu4rrs34/u6+s0+MHjTStU98oj8QueWIOLafVyWtzDFyv6rtFBcBGlZvFPVZWfM66nTYB+bfpJI48k000VJzO/EibhtyklHmWk0lxqq2oEOhzt3cH/vu6PO5zhg==
+ bh=5SJX1IVbglWyql3WuI/bMMx/BcY2i4CbQGccG34kXLI=;
+ b=AXx521YRevlh4ef5fJoGp2GOvTLKA8mp4TxpYCFXQhG1tFtfdHqesNWjpygB2kImkE3fHVZ+LAILn+5UazGdOoHcEcrrJb3njsRf1RbF3cpmG3m54YJghuMJbQgxNbyKc6P7wfGgfs8W3eHEN2zWiPfuozHmwJDQs03cCHPAUpCTCb3zmC0dIONe4Krz8k03g/npgwH7yh6RMaOMIq7ZsW4OX2dTWxZyNGFjvl4eO5/wewjZnFIHAJala61SuiKuMP1VPqXY5Wmxi2U1fudjNYh8NHz05vGSa421seQIGYsTfNrju2CRbD7yIAkCQulmbxWjkak6XR+OV4HJwe9Ozg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=axentia.se; dmarc=pass action=none header.from=axentia.se;
  dkim=pass header.d=axentia.se; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=axentia.se;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qpOlWxMMz+YIclQqiUd1Srk8t354R2lG7K+QccLIznE=;
- b=ioMpRyChQk+aN8981eschhwxgJoN/twoVjedGQqUcTP53iXcSquxWUwdTQhFnPY8t7V5MyLVKH1BARj2pNU2iVRlmCdnybFWt1wap5r4QlUJxUKNYrnxFslqVuPsbL0RyNwQJoFYfNLQdp8l9/e0cennPR2fENOUxRS4wpIDgok=
+ bh=5SJX1IVbglWyql3WuI/bMMx/BcY2i4CbQGccG34kXLI=;
+ b=Jsq8U0BYSeR4zp2BdJDbUnPRWBGk/iExLdswHK4JBfvmLriMKKi9UNWQDTPxiRgICyr5TxacfhZYfFfPdjkjAZ492QPH9JXpksc9aa1wgr97G6Oc5428mgC5Gumxk+BBFj6dD9RAi8z0d45oJLlKRQPflMff6L8TDT0ITXtbLUc=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=axentia.se;
 Received: from DU0PR02MB8500.eurprd02.prod.outlook.com (2603:10a6:10:3e3::8)
- by GV2PR02MB8457.eurprd02.prod.outlook.com (2603:10a6:150:ab::12) with
+ by PAWPR02MB9125.eurprd02.prod.outlook.com (2603:10a6:102:33c::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7519.39; Thu, 2 May
- 2024 13:49:05 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.29; Thu, 2 May
+ 2024 14:05:47 +0000
 Received: from DU0PR02MB8500.eurprd02.prod.outlook.com
  ([fe80::aff4:cbc7:ff18:b827]) by DU0PR02MB8500.eurprd02.prod.outlook.com
  ([fe80::aff4:cbc7:ff18:b827%4]) with mapi id 15.20.7519.031; Thu, 2 May 2024
- 13:49:05 +0000
-Message-ID: <44f47927-52aa-5248-6ae4-21028076fd51@axentia.se>
-Date: Thu, 2 May 2024 15:49:03 +0200
+ 14:05:47 +0000
+Message-ID: <ad190ae3-48d2-a5db-dd36-d52b1c4cf460@axentia.se>
+Date: Thu, 2 May 2024 16:05:45 +0200
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
  Thunderbird/102.6.0
 Subject: Re: Supporting a Device with Switchable Current/Voltage Measurement
 Content-Language: sv-SE
+From: Peter Rosin <peda@axentia.se>
 To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
  =?UTF-8?Q?Jo=c3=a3o_Paulo_Gon=c3=a7alves?= <jpaulo.silvagoncalves@gmail.com>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  joao.goncalves@toradex.com
 References: <20240501233853.32y4ev7jvas5ahdz@joaog-nb>
  <20240502133623.0000463e@Huawei.com>
-From: Peter Rosin <peda@axentia.se>
-In-Reply-To: <20240502133623.0000463e@Huawei.com>
+ <44f47927-52aa-5248-6ae4-21028076fd51@axentia.se>
+In-Reply-To: <44f47927-52aa-5248-6ae4-21028076fd51@axentia.se>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: GVX0EPF0000ED98.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:144:1:0:3:0:1f) To DU0PR02MB8500.eurprd02.prod.outlook.com
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: MM0P280CA0089.SWEP280.PROD.OUTLOOK.COM
+ (2603:10a6:190:8::32) To DU0PR02MB8500.eurprd02.prod.outlook.com
  (2603:10a6:10:3e3::8)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -83,181 +84,160 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU0PR02MB8500:EE_|GV2PR02MB8457:EE_
-X-MS-Office365-Filtering-Correlation-Id: a9ed68ce-d6ef-442b-7091-08dc6aaea1e4
+X-MS-TrafficTypeDiagnostic: DU0PR02MB8500:EE_|PAWPR02MB9125:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1bb5629-625e-414f-cda5-08dc6ab0f733
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|376005|366007;
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|366007|376005;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?QkxCM3VELy9KWjBoSWJ1REhoT2Y0eEw1T0o1bkVuK09BaEEwdC9vd1RQOUty?=
- =?utf-8?B?a1VzUVlnUVpNbjltdWMrY3VXMlZjRkhWalRhcnMrRUhXWWNHdm9MVWNRZGhz?=
- =?utf-8?B?OXV0bTVsbkNLd3BSOFNZUXMxWmo0ZWIrUWxtK1JHNDBFYXNPa084elZTRWV5?=
- =?utf-8?B?R3dSNTJPTlJ6UjE2WGs1UVUxUUFWbWNjNmtwcXZ5azBMc29aT2FmQUR2V1l1?=
- =?utf-8?B?RjdwSDk5RHRXTldLN2kyanVSamtURFJqTEtCOWFzbUZNeU5XV0twUm9ONlkx?=
- =?utf-8?B?L09wakU3ZWtTV3JzQ2N6K2xCeDByc3ZIQi9hdmtab2JrUUtLS1JlTm5rYzU0?=
- =?utf-8?B?c1RPQVFETy9waUJscmRBaUhjdFpVK2NvUlhINjFtZXdVMmV3WGVyMWdCekdu?=
- =?utf-8?B?TUUzSjl0RFhnMm5naEJ2OG5XZDZkZ0J5bzBvWGpGOTBFMVE0NmdZaWhGdjNZ?=
- =?utf-8?B?NXdYZllzcHV4MnhPQXU0S1AwRzdLdktxS0hFcjhXU2pYOGNwTktYazNESG5i?=
- =?utf-8?B?Rzk1cW5VUnpUMmhvcjFYQnB2NHBscVM4ZWtuaFdzem14ZkxCUHlFOHMzV1dm?=
- =?utf-8?B?ZFlEVFg2R25RVlpqbnZHTThuenFXOUIvZUVweTJhdTU2UmM1a1pFdXVwcU1C?=
- =?utf-8?B?blB1QmxIemMxRHdNYmJmR0RJa2lQOCswM0gyY0J4U1pRSmttTkZSYW9Hbkl6?=
- =?utf-8?B?NTNvbmduT2htbDV1em9uRXJOdnRGUklJV2lGTG1UcHhlU0hKWkdFemk3eGNG?=
- =?utf-8?B?ZU5vVUI1MWhnVk5Sd21GL0d4Z2JndEhaMVA1dFlWZ0I5MVhqVmlRWXRUSDhs?=
- =?utf-8?B?a01ERVZYSXpuNzlrQW5QemhNWlVGc0tlQlE3RzJPZWh3Y3l1V1cyUXkrSUxJ?=
- =?utf-8?B?K1pZT0FpVG1ibmlTM1ZnYXpLNXpJT1JST0podFYrMUFmc2sya2NnUjBjVCtW?=
- =?utf-8?B?TDNYR3F2UTFFb0gveUxLbEZWckMvQi9UaGJkQ3NBM3Q0c2d5L0l4YStDRXo3?=
- =?utf-8?B?UWUrUXE5TUdmSmNJZGNkdytKYVpmM09IM1FucmExUGhTZFBudHAzc2ZCZWNE?=
- =?utf-8?B?ajB2Q3U2cGNZYWpFN1pmSms0TVJZMDBoRnN3em42c2tyRjhnVXVucGNqOW43?=
- =?utf-8?B?aFBVYSt4a3FPQXJZUlJqSWRQMkVQOGtISTBsWkJjQjBGOEUyUkwrZnJ3TGZ3?=
- =?utf-8?B?VHpnYlgvK08yUitoMlJSeGZnM2dLTVF4SU1XNnNyWE83ZkJFZmJkUUdpaHlt?=
- =?utf-8?B?RTFiQlpBT0RzOHdrcU9DTkpWbjl5Z1NIUFF6YS9JUDZYYVNpN2x2OGNRaXgy?=
- =?utf-8?B?SlphZGVsZkVPYXAvc3RLc0Z6ZCsxQmoxOTRPYlNoWXMrWFN0ODNPNEsrOUhP?=
- =?utf-8?B?S05xTU02WkdVTmNQb0Jja0I3Uy9SYjFsU0MwdVZVL2gxLzgvcWZRQ0FNNktt?=
- =?utf-8?B?M2hBMDJlWlpyaDdzdUNnV0NpRUZTc0dwb3dGUUp6eUt0Wnl3K3ExdE8weWhi?=
- =?utf-8?B?YXBXMUJneVRUNlYrR3dUT0FPOFF0MWZuZWVXaVVHVFZ3akRUN0lRaTE4UG94?=
- =?utf-8?B?UUNxSmVpejJqa1JGclF3VVplY250b1R2TVJHMzVQNDZqYzQzT1R1NXR1aDdw?=
- =?utf-8?B?TlJwWS90YTNHUjNwZTFSdXp2bTBGQnc9PQ==?=
+	=?utf-8?B?RnRRMUNtYmg3elhtbzRpSXpoUmRyU2xqejIzQWFPdVQ3ZUR6dmgybEt1L1hr?=
+ =?utf-8?B?WVRHSzZMRnBNL3d0dVo4V2tOQjBJNnRuY3dJYnJQbk8rK2pxUEhTSENheFdJ?=
+ =?utf-8?B?NGZ5Vmp2WmR4SHNGc3VSOWxZSnovSHhSUjhwRllvQW5BelV2dG1UTW9EekJi?=
+ =?utf-8?B?eVQ3OWxucXhGLzg4cXpESm44cHBCWGZidTFYSmNkUGd4K2o5WUt6Si96a2to?=
+ =?utf-8?B?Szg1c3JJMEZualdKazlZc3A3WUpSZGtQMC81a21mcENoTFZDbXJaR3h4SlBm?=
+ =?utf-8?B?MEN1Qm8zdmxIRkF6djVPVUEvLzl6ZThzYm1NWklMTE16VTY5dWpoYWg2WHpp?=
+ =?utf-8?B?YVFNOXN6Z01QQWt1RUhma1RpaFF3UGVnTUdtR05sa0tHbmR3dWFMSURkUVBS?=
+ =?utf-8?B?RkhtNElTOFNJY3h0M3JMS203UG9sVy82L2pIVkJDd2JEWDBZbElvVVY5dGRm?=
+ =?utf-8?B?RHEwOGRNL0hsYjNScTREYzZOeHhqUnNsNjFCRXQ1ei9VOGgwUm9WaVUwaDQ2?=
+ =?utf-8?B?ak5BYUI0bk5WajYwN0Rqa1VpQU01UEVtVDQ1ZjZQUEpRM1JNdlY2cVQ3S1ZP?=
+ =?utf-8?B?KzAyOFJGSG1GQklWcjJUNGQ3TjdDcUtjVW9CMGVPTHpUWllSbHVvMzhwSTU0?=
+ =?utf-8?B?eG4reCtjV1REWnRvbldTZGVHZ2JJTklMWmtsMDEvNFJmSmxMQWczTnR2SDVN?=
+ =?utf-8?B?a2M5aWdJYVkycmNjRzBveG9RRnZPNWpoZzhYNUJRd2QvVkdQdnhEM3J1azl6?=
+ =?utf-8?B?OFIrSDZJV2VZL3ViNnJlRWdNVml2WHk0RGY3dDFRZVJiSUwyNVlTVlYzV3NS?=
+ =?utf-8?B?ejdiZzFYV3hUdmpySVh4UkR1Tm9RalVoaVg3T0ZlZlcrNXBybUhxQ25ZNnRn?=
+ =?utf-8?B?M3JIWlZ1THI5dFY4RWt0dDdjQ2t5VGRqd3Q4bjNzeStqM0xuSjQwS0owUDNS?=
+ =?utf-8?B?ZU9qQXduZ1BBRFBGM2d3TGNxMHJJUzh0MDIwTi9vZ29HVmFXYUs0REtuUEJ5?=
+ =?utf-8?B?RnZ0TzVhNG91RlRnRExoUXVBVCtaWE9tdnRRTituQkF5M21PTlRTTThaenNU?=
+ =?utf-8?B?VTBJbUt5YzZoNFpHQnk1ZDNYZSt3cUxWRTR0QS9NcnpxQkpVNzI2MlcrbXZS?=
+ =?utf-8?B?a0tuMFZzL0p2b013OEhyakRpSmFzaFk5a1FoNk53bUpMRUEyOE9TdkJEby9N?=
+ =?utf-8?B?ZlF4Z0ZtYjN0RG1QellEaXFLZThYakJhQXdWL0VWWWJHTUZRSzlObDdOcm1t?=
+ =?utf-8?B?c0NuT1dwRzNkL0Rpay9WY0JlazVIRWRSWFhLVjlqVFBtWVcreHlka05Zd0dv?=
+ =?utf-8?B?VFQyVkxraHhJbUErV2wzaUZoempzQTB3ZjVhUlVoSlFmcjNrcG9UL2lPekM2?=
+ =?utf-8?B?MlIxZjZweFJ2YWJic0JJNXl2VVE2NGJIcGxpQUxFcUVvZC9iUVd2MmhaTVpU?=
+ =?utf-8?B?SmJXOGNqQzI5Mk43VVlKeUI1emdyNVN6anE4SzN3d3dLcVBnRWJScmdkVzY4?=
+ =?utf-8?B?ejcrcXkwOHZ4aTZMSW1rWS9Pd0dTMEh2c2sySXhUUTFxUHNqeGszdlVsZHFj?=
+ =?utf-8?B?Ym9xTjhtR2tTRUp4Wmw3Yzd5RU0wcGJHWjV1VmZSME1DdzB3Vk1xZ3dqRXc1?=
+ =?utf-8?B?T0hUbkxzQTdaaHJRMG05WkpYNW5TdEhvM0NOWHkxR3ZpZjNvUTNBT2JrdU9C?=
+ =?utf-8?B?MnNmRDRuZ0dLMGYyZ1RMQWx6NU1CTDlQQTVDblo3enZFU2pZcm8vdGJnPT0=?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR02MB8500.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR02MB8500.eurprd02.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(366007)(376005);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cUFkbzNhZVlmaXpLVUtrQVBQeVdiZFFqbGZlZlJuRFhTUTc1TnRJZTFSNU84?=
- =?utf-8?B?dnpUekZvazl1ZEZ5bndhdjNVSFE4UnU3U1hQZXA1SFJxcUwyV29rbmV1VmdZ?=
- =?utf-8?B?WHdBb3hySnllQXB0ZktyV3BOSFg4YzBwenJRTHJ4SG1NYnZvR0htOUpoNTQ4?=
- =?utf-8?B?dUpZbjJxbU5mSS94WnorcEFiRk9vWkR3dG1KNEtGV1kva2d3dW5LL2t5MUdF?=
- =?utf-8?B?UVNGTllUR0JOOVRPSHhNQlk2d0llb1pLKzNkMCtvYUdwT2l6RWVrS0JmNVpQ?=
- =?utf-8?B?QTRwc0tiMURWNlFkSGNlWGovUHA1dlBneWNkRXdzM3pBNVJ1Ymc2VHZZc3Rt?=
- =?utf-8?B?dVppR0pZbEE3bVBsbEluZTNOTmRPYTdaRDYwZTh3UktWQVlTN3Uvb2toSFlJ?=
- =?utf-8?B?eEhxemtsbVhOSyszbEt1dlJLdWVNQ3NRTE0vM1hQVW8xejBMTDB4RVpldHBM?=
- =?utf-8?B?ZmpyTW1VOTkybnBFNFdGQnZWTlB6ZzcwYW1GektJcjFJemxTbUQ4UkFpNmZZ?=
- =?utf-8?B?ejBOMTZNVUt3VjlsbXo3Yk9DWGwvNFJkQW5ZU3NIVGMxSnoySmVjZ3NOQzBY?=
- =?utf-8?B?cGt0aDdtTVJqNml3RDZrVFVTazFwV0lvbEtnMnNsTE5tbDZqUDN0REhhVUJw?=
- =?utf-8?B?N0cyWWRGYnRYRWhXTlluUVhRdWg1NTU5K2RyTmhRcmtBMFpIT2NYNUNUMzVH?=
- =?utf-8?B?Y2k3RGxmOGZKdk5lVk5qZEtpVU9FaVY4TWxqQ0RQUlZ1R3FoM1N4eWRnQ1JO?=
- =?utf-8?B?anVoT3cwWVBNc3VJWStHdlpPeHcxQ01Lc21sOFJsT2t2c2doMnNJbkROampw?=
- =?utf-8?B?bldISWhKdjdRUi9YQVRVYjVuKzRTekFpeDFkVzd3MFVEemZONXNKSzV3TWNJ?=
- =?utf-8?B?eUZDNWIrdDQ3c2JLUzl5TkZTR2liS3ladmFNRTVOa1Y2MUNYQjRJcEhjNzR6?=
- =?utf-8?B?K2hPQUNoNHp5ejFOVEgwdjhQcVlxNFFiRjVwSUwrU0E0WWVVd1BIYytPeUxh?=
- =?utf-8?B?aWxlc1lFME8vc2hPaHlmUXZHQm1kRnlkNlcvd1ZlTFI3Ulk1NUtoK093L2RN?=
- =?utf-8?B?dEdzMlova2pKQ0dVVS9IRkxpMGNQUGVrN0VUTEhqZ0VTMWF3REd5UVdhMkg1?=
- =?utf-8?B?ZVVpV0FhVDNoajhmTXVlYm8xVmVMN2hLWWZXczRlTmFPMjJoL0NERzF1WmJL?=
- =?utf-8?B?dDRWWHhXdlJFUDR5dExkNzkrZkkyWml5L3dZYXYvZGIwekllZnEzRkZ3aUF6?=
- =?utf-8?B?QkY5NC92NHY1NnR6RTFheVVGN2JBZ1dBbTlEK2MwKzQ4Wjk1bDI4cG96azRk?=
- =?utf-8?B?b1l4Y1J1ZytFdGhPNzZXK1ZzWGkycUo1REhWRnNOLzhYdXNaTy94UHVVQjZV?=
- =?utf-8?B?b2RYKzdmdmtORE9FTGhQclNyYy9hejhzeWlXQjE4RllkdTR3MEhNdHBJT0My?=
- =?utf-8?B?NGU4Uk1OME9tQUNqblVHcU5qQWo4dGZDeXVJcStsYkRLZkMrcC9URHdNZGtL?=
- =?utf-8?B?OVgrL0hDT09PN3NHdWtYai80Q2wwTU8yQU12Y3lKVTNBTUJaTHBONWZUUHlC?=
- =?utf-8?B?S3hNN3J6Wlh0UEQ5OUdzZVd2NzhGNjJBWCs4Z05wanJmVng1MitML3lwYVN4?=
- =?utf-8?B?UFFsd3NYOTJwTEVQUTRiS1JNNGwrVlk5RFFxOXpaV3krSVAyUkFIdnRUbVBn?=
- =?utf-8?B?WHpGckM3Sm4zSVQ5eStUR1dia2hScVJhd3Rqc2sxK2xnMGVUT05leGRaYXU2?=
- =?utf-8?B?S0szc2tlWUJObWM2YVFIdzZmSUxNWElVNXJKdnFScFUvSllPTVgxdmJEM3J4?=
- =?utf-8?B?Z3dzRE5HN090VWYwMjIvVFRsMFFHMnV6c0RVL294bHF2L0llN1dnUVM0bDdu?=
- =?utf-8?B?cWVTQVNlcjZGRjhBb3QwRUpYaXpHV3pDRHkxeFBmUDIxQ25XajdSNEQxR2hZ?=
- =?utf-8?B?anFDemxLVlRFL0VlVERLNVlnTFZ2RGpMUVM2QUo5QW42V2hrVm5HRGlWMHdw?=
- =?utf-8?B?SEVhUmN6ZXd0NTdtWFpWeDF1MlJoNU91VkNPeGJwRnZvcG1KeTZPWHhnZXlN?=
- =?utf-8?B?bGtmYW5MZTJtYkd1Z3JFdko4UVh2alh0bkhyY2NpbzBtV3ZjQlU0ZHlqREw1?=
- =?utf-8?Q?uyMLWKufk5S1RdGzmUVKnhinP?=
+	=?utf-8?B?VkdnZWRhMVljaTFNdWxnNTdnVDU3Rkg0cXN2b1hTcERYSnhOOWVBVTQ1NXVz?=
+ =?utf-8?B?bW1QcWM0Z0hVTEFDVVJ2ZW9ZS2daMG16cXUxMGcyRG8yVEZMZkVLSEptZWRU?=
+ =?utf-8?B?ZSs4bnRHbWlJREgxNk84WnFONGpJWnBmWVhCUHpRelljMTRuaVlITmswSjRW?=
+ =?utf-8?B?WGN0UWVrb0ZpQ0dHQ1o0M1BHT0wwNkR4ZkZuemQzV3p3MzJlNm9WWjJkOGJl?=
+ =?utf-8?B?Um1qMHlDeEhGeEI2QmxsY2MxeE96K2huNU5xTlNBdEI5R1B3SVBaT01jNXEr?=
+ =?utf-8?B?Y3J4MGs4QituRnBXMjlKOWlQcER0bVdLQU5aSWc0RXVDbHpWNXh3Lys5bGFt?=
+ =?utf-8?B?Qlh5bmhSQ0d5WDRhb2FFOHJ5YUoySEoyNDZjbXZuSXdFdC9PRVB0N3JRRlhR?=
+ =?utf-8?B?SmFwRVdiREJCTzJjWTNHR0RnbHZWdlVXUDJoYThZWVJ4WmpwVUZRUmx1eExS?=
+ =?utf-8?B?VGR3blhsVlNmbnVONHl4REdiaUdFVXZaN1hlLzgrY1A5NFA4aHpJd080UzZo?=
+ =?utf-8?B?UDFScG4yQWxnN1IwRTFSemkvWGV5a0ZqbnI4VFRaRTMxbzBrY1hEeEtPMjhk?=
+ =?utf-8?B?ZUNsNndwNHNvQXF3NWF2NXcvYit6bCtmbWRCcWtScFV6dkZaVEt1ZHpWWDZB?=
+ =?utf-8?B?RGFGWlR2d0UvMTcyWlZNRWJTZ1NiUTdPN3ZIV3hDQUJpcWF4SnUyRTJ3V2pW?=
+ =?utf-8?B?eVM2UCtmSENmUWkrSzlNNWVzTllCcGNHZ2J2cmY5aWlhM1FvQ1g3dmplTlUv?=
+ =?utf-8?B?c3JGSkI5L2Q5UXpoanM1b2hsMXZOMVBTblIvNTlhWEdLcWc4dEpaSTlXUGRv?=
+ =?utf-8?B?dzFLRzA4MndtUXFBZWozWWxnZHNvS1BLK3V3eThXbUNUczJ6ZXplMEFnUlZp?=
+ =?utf-8?B?UElhNTIyb3NyNmRwWFBhWDdZR244YVp6MlZndncwS3RSUnVxa3BtT09mT0dQ?=
+ =?utf-8?B?MWhWc3Z3TDdObVQvTnJRY200TldqZk53TWN6ZnlWeklUcytSNFVrNkw1d0pa?=
+ =?utf-8?B?Qmx5THVlSjZmb001cWhObHU3RXFOTXpQZG1GejhBUDltSm11cG1tTlpQTTRZ?=
+ =?utf-8?B?aXpPSjdKbEVjWXlpTlh1Q2JhZHFVWG50TENQWkM1bGRKVkpoQ2ZFY2FiR1B2?=
+ =?utf-8?B?VmJRRmdPbzBLT0NneENVMXM2YnBqOFFQK2tTdnZGSVE0djg3c0cxcld3QTBI?=
+ =?utf-8?B?K2NXMUFRdGp6Y2xBK2Q1OEtWNUJOK3E1NUpqNUVLa0YzUHpaMVdlc3hCMG9V?=
+ =?utf-8?B?eUhVKzdhRE8zaG1yWUN3YjV5L1YxQXA2eGk3SGhwZFdRSis4WkVnUW5YQUxy?=
+ =?utf-8?B?NHJvN3h6bVJMdUdhOTNtK2lWZnFrem9QelBFY3pnVkg5dE5na2U4NUJiVUZx?=
+ =?utf-8?B?TGxDS2E1dCs5OWZhSjFPRlo2YlVtYnF6L2ZJSGE2YTZBVGdETWhqeGQyL2pQ?=
+ =?utf-8?B?M0tKZEUxNkc0ZENRcEJiWEo3aHVEb21BYzhUUXFOaFdmUHJJeVZIUGdBR3kz?=
+ =?utf-8?B?SlZZbS9Rb0luU3RPdldXQlpjU1pwY0pKdTdRWVNaVmU1RE4wYzRYclRoSHJN?=
+ =?utf-8?B?Q2U3NWxpYkRVVU9wTHdoN25TNGNBbHFXS1k1Y0VTRWJIeFhUSzRMZlRtRFBU?=
+ =?utf-8?B?Y1gwTDA2bzBYQ0hka1REeHM0WGFSeTdMMGRNcWZTa3NoalQ4ajNDZTNPb3Bv?=
+ =?utf-8?B?R1d0VEpCWXpjM1Nzci8rWmQ4TGtreU56bnRVenQrUEtvcVBRTXhmOHdndkkw?=
+ =?utf-8?B?RDFHVjJuYW9pNXdUL3NUMFhwR2FzekNKTjJDcGgyVkFWRm9jSWlEWWgrUldi?=
+ =?utf-8?B?NDVjcFdnU042eVdvQ09hVGtDeVhiTEpVYVdMaE5Ubm5jS3hsUUxHVk9GQXli?=
+ =?utf-8?B?d1Nqdis2T0pjZHYyT2NzQlVpUTZaVkxFZUhMT0V4RGdTQTl1Y1dMSFI2SVlL?=
+ =?utf-8?B?L0dNbm9lVUFMdkhtZVY2dUtKVWFQdDRUN3lnS2dPVTV3TElvSlpxelpITGxH?=
+ =?utf-8?B?a1dza3crdVE2Y0sxTGJFOWVDVjBzekg5MEJTWGUxTk5NbHVqV2JaMkZpeHhI?=
+ =?utf-8?B?OXhTWXFpRWE0WElzL1RvY29JNjBZbCtyc2h5K05MRGd5c3p5bGhBeDkyRzFV?=
+ =?utf-8?Q?itv4RP+GQvSUz+Xd3krDHX6/n?=
 X-OriginatorOrg: axentia.se
-X-MS-Exchange-CrossTenant-Network-Message-Id: a9ed68ce-d6ef-442b-7091-08dc6aaea1e4
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1bb5629-625e-414f-cda5-08dc6ab0f733
 X-MS-Exchange-CrossTenant-AuthSource: DU0PR02MB8500.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2024 13:49:05.5321
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2024 14:05:47.5456
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4ee68585-03e1-4785-942a-df9c1871a234
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E8jE3M6SAaL/eZ+6jJJwLWB6FrB/Lyv1MKVPqPcZWi/DYBzWBW6p8xkZZALpkSgT
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR02MB8457
+X-MS-Exchange-CrossTenant-UserPrincipalName: vYeQ9mzftDHE5vx7xdfSs8q1/nz+7UCALNPNb4u6uL8Od8RVy/kJZTFqqc52JXuS
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR02MB9125
 
-Hi!
-
-2024-05-02 at 14:36, Jonathan Cameron wrote:
-> On Wed, 1 May 2024 20:38:53 -0300
-> João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com> wrote:
+2024-05-02 at 15:49, Peter Rosin wrote:
+> Since you appear to need to change both the gpio pin and the io-channel, the
+> mux isn't a perfect fit. The closest you can get with the current code is to
+> create a gpio mux, I think. You would then use that mux twice to fan out both
+> io-channels, but only expose the "left leg" on the first fan-out and only the
+> "right leg" on the other. Something like this (untested, probably riddled with
+> errors, use salt etc etc):
 > 
->> Hello all,
->>
->> We need to support a hardware that can measure current and voltage on
->> the same differential analog input, similar to a multimeter. The mode
->> of measurement is controlled by a GPIO switch and goes to different
->> ADC inputs depending on the mode. If the switch is enabled, a current
->> loop with a shunt is enabled for current measurement; otherwise, voltage
->> is measured. From the software point of view, we are considering using
->> the iio-rescale driver as a consumer of an ADC IIO parent device. One
->> of the problems is that we need to change the mode of measurement at
->> runtime, but we are trying to avoid using some userspace "hack". The
->> other is that for a minimal solution to enable the mode from boot, we
->> can use a gpio-hog and control it with overlays. However,
->> still would be better that this was done by the kernel. Do you know
->> or have some guidance on how to properly support this in the kernel?
->>
->> For the in kernel gpio solution, this is a draft of DT we are thinking:
->>
->> current-sense {
->>       compatible = "current-sense-shunt";
->>       io-channels = <&adc 0>;
->>       gpio = <&main_gpio0 29 GPIO_ACTIVE_HIGH>;
->>       shunt-resistor-micro-ohms = <3300000>;      
->> };
->>
->> voltage-sense {
->>         compatible = "voltage-divider";
->>         io-channels = <&adc 1>;
->>         gpio = <&main_gpio0 29 GPIO_ACTIVE_LOW>;
->>         output-ohms = <22>;
->>         full-ohms = <222>;
->> };
->>
->> Regards,
->> João Paulo Gonçalves
->>
-> +CC Peter Rosin who wrote all the relevant parts you need I think.
->>
+> rcs: raw-current-sense {
+> 	compatible = "current-sense-shunt";
+> 	io-channels = <&adc 0>;
+> 	io-channel-name = "raw-current";
+> 	#io-channel-cells = <1>;
 > 
-> Superficially sounds like you want a mixture of appropriate analog front ends
-> and a Mux.  I haven't tried the combination but it should be possible to do
-> something like this with 
+> 	shunt-resistor-micro-ohms = <3300000>;
+> };
 > 
-> An IIO mux via this binding
-> https://elixir.bootlin.com/linux/v6.9-rc6/source/Documentation/devicetree/bindings/iio/multiplexer/io-channel-mux.yaml
-> (that includes a gpio-mux example).
+> rvs: raw-voltage-sense {
+> 	compatible = "voltage-divider";
+> 	io-channels = <&adc 1>;
+> 	io-channel-name = "raw-voltage";
+> 	#io-channel-cells = <1>;
 > 
-> Consumed in turn by a pair of AFE devices.
+> 	output-ohms = <22>;
+> 	full-ohms = <222>;
+> };
 > 
-> Then you should be able to just read from which ever of the AFE device you want.
-> A sysfs read from
-> /sys/bus/iio/devices/iio\:deviceA/in_voltage_raw
-> will switch the mux to appropriate place then request the
-> voltage from the iio-mux, which in turn requests it from the ADC IIO driver.
+> mux: gpio-mux {
+> 	compatible = "gpio-mux";
+> 	#mux-control-cells = <0>;
 > 
-> /sys/bus/iio/devices/iio\:deviceB/in_current_raw
-> switches the mux the other way and otherwise the flow as above.
+> 	gpios-mux = <&main_gpio0 29 GPIO_ACTIVE_HIGH>;
+> };
+> 
+> current-sense {
+> 	compatible = "io-channel-mux";
+> 	io-channels = <&rcs 0>;
+> 	io-channel-names = "parent";
+> 
+> 	mux-controls = <&mux>;
+> 
+> 	channels = "current", "";
+> };
+> 
+> voltage-sense {
+> 	compatible = "io-channel-mux";
+> 	io-channels = <&rvs 0>;
+> 	io-channel-names = "parent";
+> 
+> 	mux-controls = <&mux>;
+> 
+> 	channels = "", "voltage";
+> };
+> 
+> What the mux solves is exclusion, so that the gpio pin is locked while
+> measurement is made on either current-sense or voltage-sense.
+> 
+> However, the channels from the raw-{current,voltage}-sense nodes are exposed
+> to user space, and it will be possible to make "raw" measurements without
+> regard to how the gpio pin is set. That will of course not yield the desired
+> results, but is also a user error and might not be a big problem?
 
-Since you appear to need to change both the gpio pin and the io-channel, the
-mux isn't a perfect fit. The closest you can get with the current code is to
-create a gpio mux, I think. You would then use that mux twice to fan out both
-io-channels, but only expose the "left leg" on the first fan-out and only the
-"right leg" on the other. Something like this (untested, probably riddled with
-errors, use salt etc etc):
+I just realized that it's also possible to do this "the other way around". Maybe
+that makes more sense?
 
-rcs: raw-current-sense {
-	compatible = "current-sense-shunt";
-	io-channels = <&adc 0>;
-	io-channel-name = "raw-current";
-	#io-channel-cells = <1>;
-
-	shunt-resistor-micro-ohms = <3300000>;
-};
-
-rvs: raw-voltage-sense {
-	compatible = "voltage-divider";
-	io-channels = <&adc 1>;
-	io-channel-name = "raw-voltage";
-	#io-channel-cells = <1>;
-
-	output-ohms = <22>;
-	full-ohms = <222>;
-};
+Cheers,
+Peter
 
 mux: gpio-mux {
 	compatible = "gpio-mux";
@@ -266,33 +246,44 @@ mux: gpio-mux {
 	gpios-mux = <&main_gpio0 29 GPIO_ACTIVE_HIGH>;
 };
 
-current-sense {
+rcs: raw-current-sense {
 	compatible = "io-channel-mux";
-	io-channels = <&rcs 0>;
+	io-channels = <&adc 0>;
 	io-channel-names = "parent";
+	#io-channel-cells = <1>;
 
 	mux-controls = <&mux>;
 
-	channels = "current", "";
+	channels = "raw-current", "";
+};
+
+rvs: raw-voltage-sense {
+	compatible = "io-channel-mux";
+	io-channels = <&adc 1>;
+	io-channel-names = "parent";
+	#io-channel-cells = <1>;
+
+	mux-controls = <&mux>;
+
+	channels = "", "raw-voltage";
+};
+
+current-sense {
+	compatible = "current-sense-shunt";
+	io-channels = <&rcs 0>;
+	io-channel-name = "current";
+
+	shunt-resistor-micro-ohms = <3300000>;
 };
 
 voltage-sense {
-	compatible = "io-channel-mux";
-	io-channels = <&rvs 0>;
-	io-channel-names = "parent";
+	compatible = "voltage-divider";
+	io-channels = <&rvs 1>;
+	io-channel-name = "voltage";
 
-	mux-controls = <&mux>;
-
-	channels = "", "voltage";
+	output-ohms = <22>;
+	full-ohms = <222>;
 };
-
-What the mux solves is exclusion, so that the gpio pin is locked while
-measurement is made on either current-sense or voltage-sense.
-
-However, the channels from the raw-{current,voltage}-sense nodes are exposed
-to user space, and it will be possible to make "raw" measurements without
-regard to how the gpio pin is set. That will of course not yield the desired
-results, but is also a user error and might not be a big problem?
 
 Cheers,
 Peter

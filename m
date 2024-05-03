@@ -1,346 +1,554 @@
-Return-Path: <linux-iio+bounces-4770-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4771-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C738BA6DB
-	for <lists+linux-iio@lfdr.de>; Fri,  3 May 2024 08:06:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28B88BA757
+	for <lists+linux-iio@lfdr.de>; Fri,  3 May 2024 09:04:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ABDF281F7F
-	for <lists+linux-iio@lfdr.de>; Fri,  3 May 2024 06:06:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F2831F21855
+	for <lists+linux-iio@lfdr.de>; Fri,  3 May 2024 07:04:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EDA139CFA;
-	Fri,  3 May 2024 06:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F401465AE;
+	Fri,  3 May 2024 07:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OL6b+I2x"
+	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="IbB68EE9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D21E1C6BD;
-	Fri,  3 May 2024 06:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714716354; cv=none; b=L3Us9d+vLrBF7G0jvJM313O14C0Rp/WMyLD2l7o305/xGN4LPUKJ2fxPHvySJJfcbKAKxlvT51qb1GigTM6lM/rtSnyEF5VHb8wOT1BiQ5e/D0TPwnsujkp0A3bxTxfI2uL7R7l9J1FnOowlbJSUAe/i4Qp5z4PtWn4X8KOD4Bg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714716354; c=relaxed/simple;
-	bh=IED0Mb4+EQ6v9Aq9vamv4bae3ZiGogC6cVMeVsbizCw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ikMqBu+3xbBYHTl2n9/LLOONZsq01AdaIWmrbtzftjf40jUoqT2r5fjktayZ7p08CFQmMx+7bfdSUc3U5Ds3jZfiMOfj2DgAdqKXZbLYDDVr9nhD+ochRKw5xMbvyBrxS40AHyAaL2HZPbCSWlfYLoJVNWrImRNk9rh+GiZkdPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OL6b+I2x; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-51ab4ee9df8so10817502e87.1;
-        Thu, 02 May 2024 23:05:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714716350; x=1715321150; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IED0Mb4+EQ6v9Aq9vamv4bae3ZiGogC6cVMeVsbizCw=;
-        b=OL6b+I2xT70fTDCzw0i3NThG/KT7tokIPnjyta9UxrA2tthAbSfULZFlLHPwjaP/1P
-         6rtMTVdjwK0e+qWZ3n2qNjIxrfwZlrLeTDouK36Q3XUEQIn+aICzP3A99Kt72/pdP5gT
-         vA6+o8e6wy64njNTOCr7tVjlrzWvswqfIlyWsEgUFRWfQSZstg9Tn750U20FdRkSf7Ka
-         UaZH4b/TSZMPHvgRAwGwbaOu+l2FE8qY4zoU7floDExBmooVk0gpPaYTgpldA0FNPmnS
-         +rvEM+NK+tjHsrplzJ1/+1inaZud02MdxRgn3qU6SCPfObSpKmUxgT1VhNmYDRe0N/kb
-         bEOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714716350; x=1715321150;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IED0Mb4+EQ6v9Aq9vamv4bae3ZiGogC6cVMeVsbizCw=;
-        b=lTuk1nYQeqP9bQde4aPOfDaYlRY3u/9kR2t76dfg03WZjHuGteIW1f/ITa1ajmFCho
-         Zli7S5smNzvqwpYV61DofkHyYXwVL5v+k+w2aIppFjCX8BpVgLFgs4dt9WF9MuNMSu5y
-         8R4aQhYoCnU7XtxokKEM59MO6Rw2N8T7ZG81o2GfLBGGlh+D84zg2TAzz6qGCQypiBOO
-         3Qs4m1InkrZaxWsQvsJ7aSNfSeOMZBoUxQYJZG0qMVkAwHcgd+SugNooEMiW2TInVl2E
-         KhkD+WwAP7Kd3xJka8nOG7cq0aTySphDNWD6qFDHAAqT66yC0t5FX5xiBPgfHZGH3Y4Z
-         L+XA==
-X-Forwarded-Encrypted: i=1; AJvYcCUqeGIQA4jSML3TMTF/3y48FxwaNswcGLBXH2F1fV4mgPcV/5aeUR2bjAOrkUxoPzvdUPr6CA2bWAb6qo7H09LWccx0+lEfHcAzHy16zGznBi5D4s8YRqO6gzsbl4ylfTGoPFylQHokn29249hB1FGhjRFQY31baWk3C/Lc9RXCPXCBWHfoz5I8DWcONd4xk4KMVNm/V+/RS+tAXQEy+w==
-X-Gm-Message-State: AOJu0Yyd+z2xh8nrC+UrJEBtiaCvQaGjDDGfcBSGMS3t6OWjBeBkcgv5
-	jtgvwMRP6l+3jOx1WGkVRRanfgVynipSqWow564EQZ1hGAB0Rfjo
-X-Google-Smtp-Source: AGHT+IFGWUGbdgJBUGuCHPkwxmdfd90qIxlR6Q7hcnO+AXxWFVafsV0BRCA3Ok7qBxY4X2kDGeheDA==
-X-Received: by 2002:a05:6512:715:b0:51f:315c:75e0 with SMTP id b21-20020a056512071500b0051f315c75e0mr894419lfs.44.1714716350101;
-        Thu, 02 May 2024 23:05:50 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id p22-20020a1709060e9600b00a5887833da8sm1328554ejf.81.2024.05.02.23.05.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 May 2024 23:05:49 -0700 (PDT)
-Message-ID: <0df8386e74cbdfaaaf35a4bc59326151b863ae4c.camel@gmail.com>
-Subject: Re: [PATCH 4/5] iio: adis16480: add support for adis16545/7 families
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: "Gradinariu, Ramona" <Ramona.Gradinariu@analog.com>, Ramona Gradinariu
-	 <ramona.bolboaca13@gmail.com>, "linux-kernel@vger.kernel.org"
-	 <linux-kernel@vger.kernel.org>, "linux-iio@vger.kernel.org"
-	 <linux-iio@vger.kernel.org>, "linux-doc@vger.kernel.org"
-	 <linux-doc@vger.kernel.org>, "devicetree@vger.kernel.org"
-	 <devicetree@vger.kernel.org>, "corbet@lwn.net" <corbet@lwn.net>, 
- "conor+dt@kernel.org"
-	 <conor+dt@kernel.org>, "krzysztof.kozlowski+dt@linaro.org"
-	 <krzysztof.kozlowski+dt@linaro.org>, "robh@kernel.org" <robh@kernel.org>, 
- "Sa, Nuno" <Nuno.Sa@analog.com>
-Date: Fri, 03 May 2024 08:09:29 +0200
-In-Reply-To: <20240502201408.216575e4@jic23-huawei>
-References: <20240423084210.191987-1-ramona.gradinariu@analog.com>
-	 <20240423084210.191987-5-ramona.gradinariu@analog.com>
-	 <20240428162555.3ddf31ea@jic23-huawei>
-	 <e62f8df4b06abc371b1e9fe3232cb593e468d54c.camel@gmail.com>
-	 <BL1PR03MB5992DEBF82C0DB7BDC5EA0FF971B2@BL1PR03MB5992.namprd03.prod.outlook.com>
-	 <20240429204027.3e47074a@jic23-huawei>
-	 <0e13f8b643bb7afcc7c4f0d62741cf9fda66c1e0.camel@gmail.com>
-	 <20240502201408.216575e4@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E15211465B0;
+	Fri,  3 May 2024 07:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1714719879; cv=fail; b=kbMINUxqlV6ddfSDGhOeoHvYRehpOPZuMlZTWPe3qP74A6jGn0S7ri9ULx7H1nFLHG6Z39jwpAb2/ioOEWfWrmB6d9SbOJRzvwNNCfRe0p/ZV5Y4qWdd4STu/iC88fbGn7UPH1PETzXfitNtUepouAW5FC2T/wnb7Hs5ZJY+PUo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1714719879; c=relaxed/simple;
+	bh=xNgAOyLFzvgkvyGU8fkPEfff0jg8KPOz91ihEpXU+3c=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=CXwhgsD5Ni6t7EFjq0NX5o4IRcWvHZpUhR/logHRTjL/gdOycxHE1AKM+1fZD4Rvov7Acm+kvMoKhcwLyvmf15xMM0s+eCKzJcvqYlq5JEO5uAMdcS+8Wy1amnbHWcp4IAaxrG2k5x5HZVHCI+WpT0Lvtk7Z8ylqIWq9uh+BNfM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=IbB68EE9; arc=fail smtp.client-ip=205.220.166.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
+Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
+	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4434Wc8Z002997;
+	Fri, 3 May 2024 07:04:20 GMT
+Received: from deu01-be0-obe.outbound.protection.outlook.com (mail-be0deu01lp2169.outbound.protection.outlook.com [104.47.7.169])
+	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3xrqr03jmf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 03 May 2024 07:04:20 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HgatdNpTVa4j8t2SugCrLG0+3ddr/kLyaRQOrDRU+uiCSC6td2yb2u/eS2RozWqxoBqDXe5YctmurXTnd1dETnPZrVjbn872VhMR8myU0MFsb6CTznu+D4LW3e8VpcDbPclQm6vZ6uBBVKtsM8VyLGxCVf8x0lJHa8DCITNPH+xjrVOYEJXw+cV/VeD1usA2CnRRfZRVOqEpSWafibpyjVygKY+Y3iNTsNlvwzPZh0X8aK9e4hz0St3pNm7UFhiN5dQo3mqUPAhxq4pfu1Y79iL8dwUy138NCjfnbpcqVTGeFZ5lL3YfiEMR8ldsTOGzELnJsO5SFseMH36ycoc+8A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xSqdbM8kxNy0W7b6U9k+RZirqU28DFEwjJChXP+Wt+Y=;
+ b=MLCmyNVzJBalvdHyr8/TY7hU9T7s5h/9lxu+ruh2UMi2us2SyLihfahpHTN0tEIn8kiHqx0OKGyp9Itu6bQKC0sPOf9ocuef7PC5NrdvosOjrYL88JWraHN5ICT1xscGaOqjnbZp+emNAT2WAGp8BFQHarE1jLjIsJkojTN/AHopl4u1TFDlmT9M4lFhhv4z0SjEUyCRyZKPzgdAw0EKWBTVA7F8dorLuFczHu08z6tsOeCof5HDvxWG1Nba+sJBGIm6SUW85YJ6y7H9lywJ53Bl0YMBODZL6bp4CJ10kDBpK3aEBRnT2j9TY9GRM35x9U3j3IwnsNS2f9n2hQnjVQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
+ header.d=tdk.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xSqdbM8kxNy0W7b6U9k+RZirqU28DFEwjJChXP+Wt+Y=;
+ b=IbB68EE94FuXe3FLVMyb7nVuLeri2ijCrutAQfngIdNEfCtUCAQGIcUFm6dREUk2UUirRrJ7AoW2Ke1zS8pJMgu99yO0TvVhbpSzS8HUiSup/1DJuE2hS6IN2Sm8NKBYpyPLTIUpx1Ipdrq5Z5Br3t2F/W7Pl9vbrlQ1PnzF0Vaju6+PuVQz4SMkDgpMrAtnrrk+lyBbEVm9eN1Lm2gp5XaLnLP3CHmeUAA2MVmZ5qZdaC4m3zWfLDqNiBziZStHlLX9Dv02lLKhMyzOifND+nbb8OfRn3mRIxFieDYqpIzuh4WkiVpgEr/OZ/gyhPonHAQZTV4PTMFKZROtd5Vr/A==
+Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
+ by BEZP281MB2357.DEUP281.PROD.OUTLOOK.COM (2603:10a6:b10:5d::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7544.32; Fri, 3 May
+ 2024 07:04:15 +0000
+Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::ed6d:53c2:7987:ea18]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::ed6d:53c2:7987:ea18%4]) with mapi id 15.20.7544.029; Fri, 3 May 2024
+ 07:04:15 +0000
+From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+        INV Git Commit
+	<INV.git-commit@tdk.com>
+CC: "lars@metafoo.de" <lars@metafoo.de>,
+        "linux-iio@vger.kernel.org"
+	<linux-iio@vger.kernel.org>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH] iio: invensense: fix timestamp glitches when switching
+ frequency
+Thread-Topic: [PATCH] iio: invensense: fix timestamp glitches when switching
+ frequency
+Thread-Index: AQHal774Jv/S3801zESb+l1qZEmMLbF9rFKAgARZC4CAAa2MlYABbPBu
+Date: Fri, 3 May 2024 07:04:14 +0000
+Message-ID: 
+ <FR3P281MB1757C8536898C39A30BEFD96CE1F2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References: <20240426094835.138389-1-inv.git-commit@tdk.com>
+	<20240428141349.116ad03c@jic23-huawei> <20240501083733.207c27a5@jic23-huawei>
+ <FR3P281MB175720998BDD67CC2A157A82CE182@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+In-Reply-To: 
+ <FR3P281MB175720998BDD67CC2A157A82CE182@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+Accept-Language: en-US, fr-FR
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: FR3P281MB1757:EE_|BEZP281MB2357:EE_
+x-ms-office365-filtering-correlation-id: 843d1f39-4f18-449c-4dab-08dc6b3f3e1b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230031|376005|1800799015|366007|38070700009;
+x-microsoft-antispam-message-info: 
+ =?iso-8859-1?Q?l8wdH06b4Z0B5n3Jr9iWDwjxkHD/d3Q/Rz9Hd8bvo6UYef/acD5SMy0omd?=
+ =?iso-8859-1?Q?Dwr4gNTWgFc0JZfLojV3ZMj1eNjPbZQFB3Ana9tNg1gJ0e2V88/DGOoXrk?=
+ =?iso-8859-1?Q?f4S247tL9+ZsfQADMhsWed3v/6aAQN1fYvf0r0iBIUMgPtOPsl1i7Nz5tC?=
+ =?iso-8859-1?Q?CIl1kKfszzaSJ1/3OIb2SR0BNkK57PW/VZNCLf130L4xjsZwcDdHjLsu2E?=
+ =?iso-8859-1?Q?c/r2FtUcbyStXpK+j36VqqdON3iG1jEHpQDp63OSfWytNxF1y5gsRMNH/K?=
+ =?iso-8859-1?Q?1DfxEl3dqtYSee6dfSrpQSDrdygMjpa1FqxgA5aEjMhnoC1V/rcmTG+Dtw?=
+ =?iso-8859-1?Q?iDwGIUWTVtKhRq7gEb5wBO0F39hsbP+meHohA0ooo3Mm2mPRnL0wNgZrvG?=
+ =?iso-8859-1?Q?DF6bfa7/+k5XYrQBP1GuZoFct2SA8o62W5VgDY1XQNW4AwbmYGld0e1u/7?=
+ =?iso-8859-1?Q?hrlnzASS1+kxiBKz21QMaHX3d/AzOuwU1T2S2I/DGhN1OV88gyh3BNzfPd?=
+ =?iso-8859-1?Q?vIcRZEZAcdM2YWg6UaQxYpHibDfon1dZSX1COz+RlXF2tTANzRLWOmMnF7?=
+ =?iso-8859-1?Q?ZwNvPYAX15an3Flm3dzDRGlQUShu4sqO1Ao6KZTtrqOhNFuVbfsCpMrVgV?=
+ =?iso-8859-1?Q?VaTT9Ok5HJD/OncKjpc29FN0slNkLiNzlU+OgHeGNHBwZgQAaJap5fyX72?=
+ =?iso-8859-1?Q?WpAhPBMdG80e9IHxatxCKpi7nMx1s/qHROILVIFciClfVkGbhhoZ5IYsKM?=
+ =?iso-8859-1?Q?VDg1QJoj2c0iDKSYC5tRuEkYkb5YtN29Cj9HI+SHOC9IEtz1UII9KnvD+V?=
+ =?iso-8859-1?Q?nYpapfT5a5BDfr0UTWuUasIZhwCSpJ2pPEVEfi1EdR6a8vwMspldj3vb7V?=
+ =?iso-8859-1?Q?R8vPHCYY11AH4Ve7xc7sqqQtGPDdHEk5uhIUV8Ii2xEYg//k3aCxlmHKpy?=
+ =?iso-8859-1?Q?HI3TiWcu6+F4oVzOVbJ8dfR9n/1KLLLgA88MIEsKXGZnhC/jIOKppfJK9+?=
+ =?iso-8859-1?Q?PmvCTTSiWV8fz+bvDUfEfjil2c6Uw7tJA+Fr+apNfVmSXS+12RqGE2HTPO?=
+ =?iso-8859-1?Q?8ikfbLsYNIuAGAP26JEpo/o/8PpDNHFgqBwSyb5MR+FyjyBHKck7CPDMpv?=
+ =?iso-8859-1?Q?BoxfUxOmMW/QSATXmtdHxfjQGbkLtNVUOc6YQzSGPqQFN/miBX4mtB28Ep?=
+ =?iso-8859-1?Q?JOvJsmdLGCYIv94vN4+Mylkt3fIbEoVBnThFQXM55SlP4CcDBJjmeYjELv?=
+ =?iso-8859-1?Q?2T66tuBCU7pQ0xz+c4pXxKSzgTCmaB2WC/+PyopzTmuYDpdVKhfgZcjeQC?=
+ =?iso-8859-1?Q?n8FERTid6aTciL1qiPzt0rhbC9WFiyeyx2FjCTRMAD5L8c4iMMtnXFuft/?=
+ =?iso-8859-1?Q?M3BtJ59yDzJezJxx0Aa3baIGSxtezdSg=3D=3D?=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(1800799015)(366007)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?iso-8859-1?Q?eQm0BeD2uEjkKR+mxrbU10KssLe10o/9aDzZCTxxCgyBnbX7SOoYYeikmh?=
+ =?iso-8859-1?Q?Rl3VVDHXS4UH0wkQrHaZeRftW4WCp925DrCis35x9ookCs+KN/Ml7BkQ6Z?=
+ =?iso-8859-1?Q?SrmylSwmryCPGqwMPgvqlZ4i+ip99fNsMNsehXxQB0CfSZWDX28QYQSUHE?=
+ =?iso-8859-1?Q?JBK4V/i2LDQ79jumm1KODLlmN5/McAvyGl2Y+fgpUKlwDRUYQ/Z83l35Vm?=
+ =?iso-8859-1?Q?ghIUcrxqOfYgMdZxv8//zqQaLInjp01uF5jG7buHlPBUneXVWOxjNuWCww?=
+ =?iso-8859-1?Q?b1UMH9MulRVbSFcXbyxYVXuofS3An3mT1qIMOHDG2R3ao29m7ho24J9W2g?=
+ =?iso-8859-1?Q?Be4L5eumohIeEFtGDOMsbFgQEgepLYHbxyWvCqUsD7XmMdyIvVmutu/9Nj?=
+ =?iso-8859-1?Q?QQfBtu16dQJt7No2oqdmx53qAoDjAi17bHw75KiWfhJCJwNDbvyuSElHEL?=
+ =?iso-8859-1?Q?PzF/QReIAJwZUeTdgKIthc+gUDkOOz5phscz+PoSNmHMumRq0kgjcLVeTG?=
+ =?iso-8859-1?Q?96xnRZgoTSWstjmpiE3sBzE3wIut77giic2PFhdogoBtPs4/rTemhpw5sY?=
+ =?iso-8859-1?Q?1PMcwFpMt+tDMNdchD41gcWloZADSoGxl9H9Yh/NwpoQQKds3Er5tASIH5?=
+ =?iso-8859-1?Q?8rWpNDXRgHUWMnmheIqpqTln6MIE4dmEabAz2ISK6jIQKTZI2Jv6fnVca2?=
+ =?iso-8859-1?Q?yiQs12+WYw3unscLbQtR0sBgkFGw2n54bJ9ESwWPBM9XvrXBcGS0dZUWzW?=
+ =?iso-8859-1?Q?Mg/4kmhU2Np+AYQEYtlvs7cBoOaPsX4MmNUOzFOzF8ldr5gFloRciwbk+M?=
+ =?iso-8859-1?Q?Lu7woPzi98dihBgNRS/3KNpPi1EdKzYLmQ9ZvwdahmKjgHPMz/jwPOSy8D?=
+ =?iso-8859-1?Q?kDgcl0iZNpMxC100JqppEarFRWFu7zSeIlf2r5P9itGapR1+pgrZyC3mah?=
+ =?iso-8859-1?Q?bg8u1B/qY/KhwhnYD3/9fLdwPtTjk3jHXxkMXTw4MfyloFeI10W8r4/egi?=
+ =?iso-8859-1?Q?cXw333W8LyeyY0BHL0Bi8ew2i2aoRA8OfDilOwOz6ZR+S2c0ubHndP9mwS?=
+ =?iso-8859-1?Q?qfN7mvqb69TglmloxlG96BIQ+s7WhMcDKV3Agt8+a9Z1j4+5kGv5fV3nrF?=
+ =?iso-8859-1?Q?DKxEOXvwCJ6wvgHipbySkVF+VTVPID1Xk+/J7N9yCLvQ5BB5HhKajy8A2p?=
+ =?iso-8859-1?Q?0JR8vNImKdlRDsXtWmkfYMBieOy7LBu45lwGqYMcZgPvTfcwuiwISpQvNp?=
+ =?iso-8859-1?Q?tNI6zRckXL2vrgLYk2vm9kBqy5GxE0d9c9OXuio429KQP7sIyazq6HJlvS?=
+ =?iso-8859-1?Q?D83aluAOAtFz0OF28zO9819ZBPdIER8QSJiCIOgXSe27FwdBocoU8DCNHV?=
+ =?iso-8859-1?Q?8b57SUVdtbWGCe33UyExw6Qm7/Dz+/u2rtnSx2VY/49DKhvywVYe1ujE6w?=
+ =?iso-8859-1?Q?bG3Bg0i/k7KRjvQbsq3tPPBnnnVl1ukIbmbekeaLqGqD58GGZfd12CGWh1?=
+ =?iso-8859-1?Q?kByPIm6oOvnfn4YF0TSuAoCcu7yG3KEMjioxLjEZsWJ1bFOoOdUvQqCWA3?=
+ =?iso-8859-1?Q?kBRGdrJeaMrEOVP0w3SZdMNNJaCUfPFXJlVmRRcSObkO2liAJ4gXMciogQ?=
+ =?iso-8859-1?Q?9R9DD0gSbRB9CxlSn6NsmPL72aiFaQg8iSghD/4b1hYqSqGxVBT8bb23mV?=
+ =?iso-8859-1?Q?sV6/xrek8ztZe0h8sk2zqe0rkIu3ldsNv0r8y548FOxTnSF30ne9W2j85D?=
+ =?iso-8859-1?Q?RutA=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-OriginatorOrg: tdk.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 843d1f39-4f18-449c-4dab-08dc6b3f3e1b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 03 May 2024 07:04:14.8264
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 9d+ybC7NkzLDxLOrp0JN+H7hnZzcKw/deAtQuG40d+TcboH37aV+yC/qBdi27gUXTDl18JNJFAqD656RtjDpCpIR5ShXXjZhoxC3yI/4i/0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BEZP281MB2357
+X-Proofpoint-ORIG-GUID: IMk2uoArExTtMmKn_biSpGMSBu0jPcVw
+X-Proofpoint-GUID: IMk2uoArExTtMmKn_biSpGMSBu0jPcVw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1011,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-03_03,2024-05-03_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 clxscore=1015 lowpriorityscore=0
+ impostorscore=0 suspectscore=0 mlxscore=0 malwarescore=0 spamscore=0
+ mlxlogscore=999 phishscore=0 priorityscore=1501 bulkscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2404010003
+ definitions=main-2405030049
 
-On Thu, 2024-05-02 at 20:14 +0100, Jonathan Cameron wrote:
-> On Thu, 02 May 2024 13:31:55 +0200
-> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
->=20
-> > On Mon, 2024-04-29 at 20:40 +0100, Jonathan Cameron wrote:
-> > > On Mon, 29 Apr 2024 13:17:42 +0000
-> > > "Gradinariu, Ramona" <Ramona.Gradinariu@analog.com> wrote:
-> > > =C2=A0=20
-> > > > > -----Original Message-----
-> > > > > From: Nuno S=C3=A1 <noname.nuno@gmail.com>
-> > > > > Sent: Monday, April 29, 2024 10:59 AM
-> > > > > To: Jonathan Cameron <jic23@kernel.org>; Ramona Gradinariu
-> > > > > <ramona.bolboaca13@gmail.com>
-> > > > > Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org; linu=
-x-
-> > > > > doc@vger.kernel.org; devicetree@vger.kernel.org; corbet@lwn.net;
-> > > > > conor+dt@kernel.org; krzysztof.kozlowski+dt@linaro.org;
-> > > > > robh@kernel.org;
-> > > > > Gradinariu, Ramona <Ramona.Gradinariu@analog.com>; Sa, Nuno
-> > > > > <Nuno.Sa@analog.com>
-> > > > > Subject: Re: [PATCH 4/5] iio: adis16480: add support for adis1654=
-5/7
-> > > > > families
-> > > > >=20
-> > > > > [External]
-> > > > >=20
-> > > > > On Sun, 2024-04-28 at 16:25 +0100, Jonathan Cameron wrote:=C2=A0=
-=C2=A0=C2=A0=20
-> > > > > > On Tue, 23 Apr 2024 11:42:09 +0300
-> > > > > > Ramona Gradinariu <ramona.bolboaca13@gmail.com> wrote:
-> > > > > > =C2=A0=C2=A0=20
-> > > > > > > The ADIS16545 and ADIS16547 are a complete inertial system th=
-at
-> > > > > > > includes a triaxis gyroscope and a triaxis accelerometer.
-> > > > > > > The serial peripheral interface (SPI) and register structure
-> > > > > > > provide a
-> > > > > > > simple interface for data collection and configuration contro=
-l.
-> > > > > > >=20
-> > > > > > > These devices are similar to the ones already supported in th=
-e
-> > > > > > > driver,
-> > > > > > > with changes in the scales, timings and the max spi speed in =
-burst
-> > > > > > > mode.
-> > > > > > > Also, they support delta angle and delta velocity readings in
-> > > > > > > burst
-> > > > > > > mode, for which support was added in the trigger handler.
-> > > > > > >=20
-> > > > > > > Signed-off-by: Nuno S=C3=A1 <nuno.sa@analog.com>=C2=A0=C2=A0=
-=C2=A0=20
-> > > > > >=20
-> > > > > > What is Nuno's relationship to this patch?=C2=A0 You are author=
- and the
-> > > > > > sender
-> > > > > > which is fine, but in that case you need to make Nuno's involve=
-ment
-> > > > > > explicit.
-> > > > > > Perhaps a Co-developed-by or similar is appropriate?
-> > > > > > =C2=A0=C2=A0=20
-> > > > > > > Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.co=
-m>=C2=A0=C2=A0=C2=A0
-> > > > > > A few comments inline.=C2=A0 Biggest one is I'd like a clear st=
-atement of
-> > > > > > why you
-> > > > > > can't do a burst of one type, then a burst of other.=C2=A0 My g=
-uess is
-> > > > > > that the
-> > > > > > transition is very time consuming?=C2=A0 If so, that is fine, b=
-ut you
-> > > > > > should be
-> > > > > > able
-> > > > > > to let available_scan_masks handle the disjoint channel sets.=
-=C2=A0=C2=A0=C2=A0=20
-> > > > >=20
-> > > > > Yeah, the burst message is a special spi transfer that brings you=
- all
-> > > > > of the
-> > > > > channels data at once but for the accel/gyro you need to explicit=
-ly
-> > > > > configure
-> > > > > the chip to either give you the "normal vs "delta" readings. Re-
-> > > > > configuring the
-> > > > > chip and then do another burst would destroy performance I think.=
- We
-> > > > > could
-> > > > > do
-> > > > > the manual readings as we do in adis16475 for chips not supportin=
-g
-> > > > > burst32.
-> > > > > But
-> > > > > in the burst32 case those manual readings should be minimal while=
- in
-> > > > > here we
-> > > > > could have to do 6 of them which could also be very time consumin=
-g...
-> > > > >=20
-> > > > > Now, why we don't use available_scan_masks is something I can't r=
-eally
-> > > > > remember
-> > > > > but this implementation goes in line with what we have in the
-> > > > > adis16475
-> > > > > driver.
-> > > > >=20
-> > > > > - Nuno S=C3=A1
-> > > > > =C2=A0=C2=A0=C2=A0=20
-> > > >=20
-> > > > Thank you Nuno for all the additional explanations.
-> > > > Regarding the use of available_scan_masks, the idea is to have any
-> > > > possible
-> > > > combination for accel, gyro, temp and timestamp channels or delta a=
-ngle,
-> > > > delta=20
-> > > > velocity, temp and=C2=A0 timestamp channels. There are a lot of com=
-binations
-> > > > for=20
-> > > > this and it does not seem like a good idea to write them all manual=
-ly.
-> > > > That is=20
-> > > > why adis16480_update_scan_mode is used for checking the correct cha=
-nnels
-> > > > selection.=C2=A0=20
-> > >=20
-> > > If you are using bursts, the data is getting read anyway - which is t=
-he
-> > > main
-> > > cost here. The real question becomes what are you actually saving by
-> > > supporting all
-> > > the combinations of the the two subsets of channels in the pollfunc?
-> > > Currently you have to pick the channels out and repack them, if pushi=
-ng
-> > > them all
-> > > looks to me like a mempcy and a single value being set (unconditional=
-ly).=C2=A0
-> >=20
-> > > Then it's a question of what the overhead of the channel demux in the=
- core
-> > > is.
-> > > What you pass out of the driver via iio_push_to_buffers*()
-> > > is not what ends up in the buffer if you allow the IIO core to do dat=
-a
-> > > demuxing
-> > > for you - that is enabled by providing available_scan_masks.=C2=A0 At=
- buffer
-> > > start up the demux code computes a fairly optimal set of copies to re=
-pack
-> > > the incoming data to match with what channels the consumer (here prob=
-ably
-> > > the kfifo on the way to userspace) is expecting.
-> > >=20
-> > > That demux adds a small overhead but it should be small as long
-> > > as the channels wanted aren't pathological (i.e. every other one).
-> > >=20
-> > > Advantage is the driver ends up simpler and in the common case of tur=
-n
-> > > on all the channels (why else did you buy a device with those measure=
-ments
-> > > if you didn't want them!) the demux is zerocopy so effectively free w=
-hich
-> > > is not going to be the case for the bitmap walk and element copy in t=
-he
-> > > driver.
-> > > =C2=A0=20
-> >=20
-> > Maybe my younger me was smarter but reading again the validation of the=
- scan
-> > mask
-> > code (when available_scan_masks is available), I'm not sure why we're n=
-ot
-> > using them.
-> > I think that having one mask with delta values + temperature and anothe=
-r one
-> > with
-> > normal + temperature would be enough for what we want in here. The code=
- in
-> > adis16480_update_scan_mode() could then be simpler I think.
-> >=20
-> > Now, what I'm still not following is the straight memcpy(). I may be mi=
-ssing
-> > something but the demux code only appears to kick in when we have compo=
-und
-> > masks
-> > resulting of multiple buffers being enabled. So I'm not seeing how we c=
-an
-> > get away
-> > without picking the channels and place them correctly in the buffer pas=
-sed
-> > to IIO?
->=20
-> It runs whenever the enabled mask requested (the channels that are enable=
-d) is
-> different from the active_scan_mask. It only sends channels in one
-> direction if there is only one user but it only sends the ones enabled by=
- that
-> consumer.
-> It's called unconditionally from iio_enable_buffers()
->=20
-> That iterates over all enabled buffers (often there is only 1)
->=20
-> and then checks if the active scan mask is the same as the one for this
-> buffer.
-> https://elixir.bootlin.com/linux/v6.9-rc6/source/drivers/iio/industrialio=
--buffer.c#L1006
->=20
-> The setup for whether to find a superset from available_scan_masks is her=
-e
-> https://elixir.bootlin.com/linux/v6.9-rc6/source/drivers/iio/industrialio=
--buffer.c#L928
->=20
-> Key is that if it happens to match, then we don't actually do anything in=
- the
-> demux.
-> It just gets passed straight on through.=C2=A0 That does the fast path yo=
-u mention
-> below.
-
-Ahh got it... May failure was not realizing that iio_scan_mask_match() retu=
-rns
-the available masks so I was assuming that the bitmap_equal() check would o=
-nly
-differ when multiple buffers are enabled.
-
-Oh well, I think then this should work... I'm not sure it will be more
-performant for the case where we don't enable all the channels because the =
-demux
-is a linked list which is far from being a performance friend (maybe we can=
- do
-some trials with something like xarray...). Still, for this to work the buf=
-fer
-we pass into IIO has to be bigger than it needs to be (so bigger memset())
-because, AFAIU, we will have to pass on all the scan elements and, as I sai=
-d,
-the burst data will either have delta or normal measurements (not both). I =
-guess
-the code will still look simpler so if there's no visible difference in
-performance I'm fine with the change. I guess Ramona can give it a try to s=
-ee
-how it looks like.
-
-- Nuno S=C3=A1
->=20
-
+Hello Jonathan,=0A=
+=0A=
+I see that this fix has now been pulled.=0A=
+=0A=
+Do I need to create a new fixes patch that fix this patch porting? inv_icm4=
+2600 is currently broken now inside the current IIO tree.=0A=
+=0A=
+Thanks for your help.=0A=
+=0A=
+Best regards,=0A=
+JB=0A=
+=0A=
+________________________________________=0A=
+From:=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>=0A=
+Sent:=A0Thursday, May 2, 2024 11:15=0A=
+To:=A0Jonathan Cameron <jic23@kernel.org>; INV Git Commit <INV.git-commit@t=
+dk.com>=0A=
+Cc:=A0lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.kernel.org <linux-i=
+io@vger.kernel.org>; stable@vger.kernel.org <stable@vger.kernel.org>=0A=
+Subject:=A0Re: [PATCH] iio: invensense: fix timestamp glitches when switchi=
+ng frequency=0A=
+=A0=0A=
+This Message Is From an External Sender=0A=
+This message came from outside your organization.=0A=
+=A0=0A=
+Hello Jonathan,=0A=
+=0A=
+beware that your porting of the patch "iio: invensense: fix timestamp glitc=
+hes..." is not correct inside togreg and testing branches.=0A=
+=0A=
+Inside file drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c, you must ke=
+ep the sensor_state structures declaration and use them to get the iio_priv=
+ structure.=0A=
+=0A=
+You need to keep the following declarations in inv_icm42600_buffer fifo_par=
+se and hwfifo_flush functions:=0A=
+struct inv_icm42600_sensor_state *gyro_st =3D iio_priv(st->indio_gyro);=0A=
+struct inv_icm42600_sensor_state *accel_st =3D iio_priv(st->indio_accel);=
+=0A=
+=0A=
+And you need to replace =0A=
+ts =3D iio_priv(st->indio_gyro) by ts =3D &gyro_st->ts;=0A=
+ts =3D iio_priv(st->indio_accel) by ts =3D &accel_st->ts;=0A=
+=0A=
+Correct diff should be something like:=0A=
+ =0A=
+@@ -512,20 +510,20 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm4260=
+0_state *st)=0A=
+                return 0;=0A=
+ =0A=
+        /* handle gyroscope timestamp and FIFO data parsing */=0A=
+-       ts =3D &gyro_st->ts;=0A=
+-       inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.to=
+tal,=0A=
+-                                       st->fifo.nb.gyro, st->timestamp.gyr=
+o);=0A=
+        if (st->fifo.nb.gyro > 0) {=0A=
++               ts =3D &gyro_st->ts;=0A=
++               inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro,=0A=
++                                               st->timestamp.gyro);=0A=
+                ret =3D inv_icm42600_gyro_parse_fifo(st->indio_gyro);=0A=
+                if (ret)=0A=
+                        return ret;=0A=
+        }=0A=
+ =0A=
+        /* handle accelerometer timestamp and FIFO data parsing */=0A=
+-       ts =3D &accel_st->ts;=0A=
+-       inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.to=
+tal,=0A=
+-                                       st->fifo.nb.accel, st->timestamp.ac=
+cel);=0A=
+        if (st->fifo.nb.accel > 0) {=0A=
++               ts =3D iio_priv(st->indio_accel);=0A=
++               inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel,=0A=
++                                               st->timestamp.accel);=0A=
+                ret =3D inv_icm42600_accel_parse_fifo(st->indio_accel);=0A=
+                if (ret)=0A=
+                        return ret;=0A=
+=0A=
+@@ -554,20 +550,16 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm42=
+600_state *st,=0A=
+                return 0;=0A=
+ =0A=
+        if (st->fifo.nb.gyro > 0) {=0A=
+-               ts =3D &gyro_st->ts;=0A=
+-               inv_sensors_timestamp_interrupt(ts, st->fifo.period,=0A=
+-                                               st->fifo.nb.total, st->fifo=
+.nb.gyro,=0A=
+-                                               gyro_ts);=0A=
++               ts =3D &gyro_st->ts;=0A=
++               inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro, gyro_=
+ts);=0A=
+                ret =3D inv_icm42600_gyro_parse_fifo(st->indio_gyro);=0A=
+                if (ret)=0A=
+                        return ret;=0A=
+        }=0A=
+ =0A=
+        if (st->fifo.nb.accel > 0) {=0A=
+-               ts =3D &accel_st->ts;=0A=
+-               inv_sensors_timestamp_interrupt(ts, st->fifo.period,=0A=
+-                                               st->fifo.nb.total, st->fifo=
+.nb.accel,=0A=
+-                                               accel_ts);=0A=
++               ts =3D &accel_st->ts;=0A=
++               inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel, acce=
+l_ts);=0A=
+                ret =3D inv_icm42600_accel_parse_fifo(st->indio_accel);=0A=
+                if (ret)=0A=
+                        return ret;=0A=
+=0A=
+=0A=
+Thanks for fixing this,=0A=
+JB=0A=
+=0A=
+________________________________________=0A=
+From:=A0Jonathan Cameron <jic23@kernel.org>=0A=
+Sent:=A0Wednesday, May 1, 2024 09:37=0A=
+To:=A0INV Git Commit <INV.git-commit@tdk.com>=0A=
+Cc:=A0lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.kernel.org <linux-i=
+io@vger.kernel.org>; stable@vger.kernel.org <stable@vger.kernel.org>; Jean-=
+Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>=0A=
+Subject:=A0Re: [PATCH] iio: invensense: fix timestamp glitches when switchi=
+ng frequency=0A=
+=A0=0A=
+This Message Is From an External Sender=0A=
+This message came from outside your organization.=0A=
+=A0=0A=
+On Sun, 28 Apr 2024 14:13:49 +0100=0A=
+Jonathan Cameron <jic23@kernel.org> wrote:=0A=
+=0A=
+> On Fri, 26 Apr 2024 09:48:35 +0000=0A=
+> inv.git-commit@tdk.com wrote:=0A=
+> =0A=
+> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=0A=
+> > =0A=
+> > When a sensor is running and there is a FIFO frequency change due to=0A=
+> > another sensor turned on/off, there are glitches on timestamp. Fix that=
+=0A=
+> > by using only interrupt timestamp when there is the corresponding senso=
+r=0A=
+> > data in the FIFO.=0A=
+> > =0A=
+> > Delete FIFO period handling and simplify internal functions.=0A=
+> > =0A=
+> > Update integration inside inv_mpu6050 and inv_icm42600 drivers.=0A=
+> > =0A=
+> > Fixes: 0ecc363ccea7 ("iio: make invensense timestamp module generic)=0A=
+> > CC: stable@vger.kernel.org=0A=
+> > Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com> =
+ =0A=
+> =0A=
+> Whilst I don't fully follow the logic here, the new code is simpler=0A=
+> and seems reasonable.  Getting my head around this will probably take=0A=
+> longer than it's worth :(=0A=
+> =0A=
+> Hence applied to the fixes-togreg branch of iio.git.=0A=
+This made a bit of a mess wrt to some new part additions that went in=0A=
+via the togreg tree.=0A=
+=0A=
+Given timing I'm going to pull the fixes on top of that tree so this=0A=
+will need a manual backport. Please take a look at iio.git togreg=0A=
+to check I didn't mess anything up.=0A=
+=0A=
+Jonathan=0A=
+=0A=
+> =0A=
+> Jonathan=0A=
+> =0A=
+> > ---=0A=
+> >  .../inv_sensors/inv_sensors_timestamp.c       | 24 +++++++++----------=
+=0A=
+> >  .../imu/inv_icm42600/inv_icm42600_buffer.c    | 20 +++++++---------=0A=
+> >  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  2 +-=0A=
+> >  .../linux/iio/common/inv_sensors_timestamp.h  |  3 +--=0A=
+> >  4 files changed, 21 insertions(+), 28 deletions(-)=0A=
+> > =0A=
+> > diff --git a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c b/d=
+rivers/iio/common/inv_sensors/inv_sensors_timestamp.c=0A=
+> > index 3b0f9598a7c7..5f3ba77da740 100644=0A=
+> > --- a/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c=0A=
+> > +++ b/drivers/iio/common/inv_sensors/inv_sensors_timestamp.c=0A=
+> > @@ -70,13 +70,13 @@ int inv_sensors_timestamp_update_odr(struct inv_sen=
+sors_timestamp *ts,=0A=
+> >  }=0A=
+> >  EXPORT_SYMBOL_NS_GPL(inv_sensors_timestamp_update_odr, IIO_INV_SENSORS=
+_TIMESTAMP);=0A=
+> > =0A=
+> > -static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint=
+32_t period, uint32_t mult)=0A=
+> > +static bool inv_validate_period(struct inv_sensors_timestamp *ts, uint=
+32_t period)=0A=
+> >  {=0A=
+> >  	uint32_t period_min, period_max;=0A=
+> > =0A=
+> >  	/* check that period is acceptable */=0A=
+> > -	period_min =3D ts->min_period * mult;=0A=
+> > -	period_max =3D ts->max_period * mult;=0A=
+> > +	period_min =3D ts->min_period * ts->mult;=0A=
+> > +	period_max =3D ts->max_period * ts->mult;=0A=
+> >  	if (period > period_min && period < period_max)=0A=
+> >  		return true;=0A=
+> >  	else=0A=
+> > @@ -84,15 +84,15 @@ static bool inv_validate_period(struct inv_sensors_=
+timestamp *ts, uint32_t perio=0A=
+> >  }=0A=
+> > =0A=
+> >  static bool inv_update_chip_period(struct inv_sensors_timestamp *ts,=
+=0A=
+> > -				    uint32_t mult, uint32_t period)=0A=
+> > +				   uint32_t period)=0A=
+> >  {=0A=
+> >  	uint32_t new_chip_period;=0A=
+> > =0A=
+> > -	if (!inv_validate_period(ts, period, mult))=0A=
+> > +	if (!inv_validate_period(ts, period))=0A=
+> >  		return false;=0A=
+> > =0A=
+> >  	/* update chip internal period estimation */=0A=
+> > -	new_chip_period =3D period / mult;=0A=
+> > +	new_chip_period =3D period / ts->mult;=0A=
+> >  	inv_update_acc(&ts->chip_period, new_chip_period);=0A=
+> >  	ts->period =3D ts->mult * ts->chip_period.val;=0A=
+> > =0A=
+> > @@ -120,16 +120,14 @@ static void inv_align_timestamp_it(struct inv_sen=
+sors_timestamp *ts)=0A=
+> >  }=0A=
+> > =0A=
+> >  void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,=
+=0A=
+> > -				      uint32_t fifo_period, size_t fifo_nb,=0A=
+> > -				      size_t sensor_nb, int64_t timestamp)=0A=
+> > +				     size_t sample_nb, int64_t timestamp)=0A=
+> >  {=0A=
+> >  	struct inv_sensors_timestamp_interval *it;=0A=
+> >  	int64_t delta, interval;=0A=
+> > -	const uint32_t fifo_mult =3D fifo_period / ts->chip.clock_period;=0A=
+> >  	uint32_t period;=0A=
+> >  	bool valid =3D false;=0A=
+> > =0A=
+> > -	if (fifo_nb =3D=3D 0)=0A=
+> > +	if (sample_nb =3D=3D 0)=0A=
+> >  		return;=0A=
+> > =0A=
+> >  	/* update interrupt timestamp and compute chip and sensor periods */=
+=0A=
+> > @@ -139,14 +137,14 @@ void inv_sensors_timestamp_interrupt(struct inv_s=
+ensors_timestamp *ts,=0A=
+> >  	delta =3D it->up - it->lo;=0A=
+> >  	if (it->lo !=3D 0) {=0A=
+> >  		/* compute period: delta time divided by number of samples */=0A=
+> > -		period =3D div_s64(delta, fifo_nb);=0A=
+> > -		valid =3D inv_update_chip_period(ts, fifo_mult, period);=0A=
+> > +		period =3D div_s64(delta, sample_nb);=0A=
+> > +		valid =3D inv_update_chip_period(ts, period);=0A=
+> >  	}=0A=
+> > =0A=
+> >  	/* no previous data, compute theoritical value from interrupt */=0A=
+> >  	if (ts->timestamp =3D=3D 0) {=0A=
+> >  		/* elapsed time: sensor period * sensor samples number */=0A=
+> > -		interval =3D (int64_t)ts->period * (int64_t)sensor_nb;=0A=
+> > +		interval =3D (int64_t)ts->period * (int64_t)sample_nb;=0A=
+> >  		ts->timestamp =3D it->up - interval;=0A=
+> >  		return;=0A=
+> >  	}=0A=
+> > diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drive=
+rs/iio/imu/inv_icm42600/inv_icm42600_buffer.c=0A=
+> > index b52f328fd26c..9cde9a9337ad 100644=0A=
+> > --- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c=0A=
+> > +++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c=0A=
+> > @@ -509,20 +509,20 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm=
+42600_state *st)=0A=
+> >  		return 0;=0A=
+> > =0A=
+> >  	/* handle gyroscope timestamp and FIFO data parsing */=0A=
+> > -	ts =3D iio_priv(st->indio_gyro);=0A=
+> > -	inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.tota=
+l,=0A=
+> > -					st->fifo.nb.gyro, st->timestamp.gyro);=0A=
+> >  	if (st->fifo.nb.gyro > 0) {=0A=
+> > +		ts =3D iio_priv(st->indio_gyro);=0A=
+> > +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro,=0A=
+> > +						st->timestamp.gyro);=0A=
+> >  		ret =3D inv_icm42600_gyro_parse_fifo(st->indio_gyro);=0A=
+> >  		if (ret)=0A=
+> >  			return ret;=0A=
+> >  	}=0A=
+> > =0A=
+> >  	/* handle accelerometer timestamp and FIFO data parsing */=0A=
+> > -	ts =3D iio_priv(st->indio_accel);=0A=
+> > -	inv_sensors_timestamp_interrupt(ts, st->fifo.period, st->fifo.nb.tota=
+l,=0A=
+> > -					st->fifo.nb.accel, st->timestamp.accel);=0A=
+> >  	if (st->fifo.nb.accel > 0) {=0A=
+> > +		ts =3D iio_priv(st->indio_accel);=0A=
+> > +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel,=0A=
+> > +						st->timestamp.accel);=0A=
+> >  		ret =3D inv_icm42600_accel_parse_fifo(st->indio_accel);=0A=
+> >  		if (ret)=0A=
+> >  			return ret;=0A=
+> > @@ -550,9 +550,7 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm=
+42600_state *st,=0A=
+> > =0A=
+> >  	if (st->fifo.nb.gyro > 0) {=0A=
+> >  		ts =3D iio_priv(st->indio_gyro);=0A=
+> > -		inv_sensors_timestamp_interrupt(ts, st->fifo.period,=0A=
+> > -						st->fifo.nb.total, st->fifo.nb.gyro,=0A=
+> > -						gyro_ts);=0A=
+> > +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro, gyro_ts);=0A=
+> >  		ret =3D inv_icm42600_gyro_parse_fifo(st->indio_gyro);=0A=
+> >  		if (ret)=0A=
+> >  			return ret;=0A=
+> > @@ -560,9 +558,7 @@ int inv_icm42600_buffer_hwfifo_flush(struct inv_icm=
+42600_state *st,=0A=
+> > =0A=
+> >  	if (st->fifo.nb.accel > 0) {=0A=
+> >  		ts =3D iio_priv(st->indio_accel);=0A=
+> > -		inv_sensors_timestamp_interrupt(ts, st->fifo.period,=0A=
+> > -						st->fifo.nb.total, st->fifo.nb.accel,=0A=
+> > -						accel_ts);=0A=
+> > +		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel, accel_ts);=0A=
+> >  		ret =3D inv_icm42600_accel_parse_fifo(st->indio_accel);=0A=
+> >  		if (ret)=0A=
+> >  			return ret;=0A=
+> > diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/i=
+mu/inv_mpu6050/inv_mpu_ring.c=0A=
+> > index 86465226f7e1..0dc0f22a5582 100644=0A=
+> > --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c=0A=
+> > +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c=0A=
+> > @@ -100,7 +100,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)=
+=0A=
+> >  		goto end_session;=0A=
+> >  	/* Each FIFO data contains all sensors, so same number for FIFO and s=
+ensor data */=0A=
+> >  	fifo_period =3D NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->c=
+hip_config.divider);=0A=
+> > -	inv_sensors_timestamp_interrupt(&st->timestamp, fifo_period, nb, nb, =
+pf->timestamp);=0A=
+> > +	inv_sensors_timestamp_interrupt(&st->timestamp, nb, pf->timestamp);=
+=0A=
+> >  	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, nb, 0);=
+=0A=
+> > =0A=
+> >  	/* clear internal data buffer for avoiding kernel data leak */=0A=
+> > diff --git a/include/linux/iio/common/inv_sensors_timestamp.h b/include=
+/linux/iio/common/inv_sensors_timestamp.h=0A=
+> > index a47d304d1ba7..8d506f1e9df2 100644=0A=
+> > --- a/include/linux/iio/common/inv_sensors_timestamp.h=0A=
+> > +++ b/include/linux/iio/common/inv_sensors_timestamp.h=0A=
+> > @@ -71,8 +71,7 @@ int inv_sensors_timestamp_update_odr(struct inv_senso=
+rs_timestamp *ts,=0A=
+> >  				     uint32_t period, bool fifo);=0A=
+> > =0A=
+> >  void inv_sensors_timestamp_interrupt(struct inv_sensors_timestamp *ts,=
+=0A=
+> > -				     uint32_t fifo_period, size_t fifo_nb,=0A=
+> > -				     size_t sensor_nb, int64_t timestamp);=0A=
+> > +				     size_t sample_nb, int64_t timestamp);=0A=
+> > =0A=
+> >  static inline int64_t inv_sensors_timestamp_pop(struct inv_sensors_tim=
+estamp *ts)=0A=
+> >  {=0A=
+> > --=0A=
+> > 2.34.1=0A=
+> >   =0A=
+> =0A=
+> =0A=
+=0A=
+=0A=
 

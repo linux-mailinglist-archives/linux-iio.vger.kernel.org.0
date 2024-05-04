@@ -1,57 +1,57 @@
-Return-Path: <linux-iio+bounces-4790-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4791-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7B138BBAC4
-	for <lists+linux-iio@lfdr.de>; Sat,  4 May 2024 13:31:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94DE68BBAC7
+	for <lists+linux-iio@lfdr.de>; Sat,  4 May 2024 13:34:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A80628239F
-	for <lists+linux-iio@lfdr.de>; Sat,  4 May 2024 11:31:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 253ED1F21F80
+	for <lists+linux-iio@lfdr.de>; Sat,  4 May 2024 11:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A1E41C6B9;
-	Sat,  4 May 2024 11:30:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDAAC1CA92;
+	Sat,  4 May 2024 11:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJfTJY5D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8BA+E1v"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3169010A16;
-	Sat,  4 May 2024 11:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD885221;
+	Sat,  4 May 2024 11:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714822259; cv=none; b=EQkVLcf0UFmbm0KVc7KSmylf9Z44+u+FtFAVcoO8tnEbdLtuF/GnhkdUMJf+kueisjEJ6NkffbS/gDRFLtLX4EGnNRKI4fKxOhFxyzLa1TB1ykHzRKYHVOJonok6VbMLRiJx9YsQWtRSe1RhStZyTLbn6X2tBX7kkxFEDN3b/xY=
+	t=1714822493; cv=none; b=IzQ12UQzNiFefbx5Au2F43SrnV+49rdagy0CFkKpXiRoN9e5oU5Gl1AhmTq4mawJWVBdNpK2XAQKAncG+P2NbI+ksBXHG+0iLj5kUnRKUZkAaByG+f8WO1bh27WDXkZmCVTmYmUS77n8qWM5WtkNtqVme4LMciqnT9lULZy4k1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714822259; c=relaxed/simple;
-	bh=7kGgyEpJQqnlCF0c6QEZp/weZu+M1IT6KMDBzJNA4x0=;
+	s=arc-20240116; t=1714822493; c=relaxed/simple;
+	bh=FlpsDRxldopXY85FL3/6FIZP+C4/Fxw8QNBA9w3ZcjI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eOhLCQlvmFEALFAtsWFV7SgKFjKpnGDEYv7C50xGQKa+8IR3aDZZcCDvdfX+r4lVrapPtlHhRTnccLOhY9m6EBoiMYqmVVwTorig2ewSYGh9BVm/NlD7Kxek1rdW34o/RAXGkC4Otl4KLmI9MHFLsuPhchjUlogycCBvVg2fPfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJfTJY5D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27396C072AA;
-	Sat,  4 May 2024 11:30:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aOBdK63CQxlUvosmdkAzN3R8foEa8X5m3jJc2fAQgBkEhd8kxMyM2D/eNQx+Wzzl6Q9x0CsuVsqcOHmOrw4JxMPsvwwPF/bDLJ209v8YcI7U1D/W4Vftax7FW/yopR26uDmUCVDj8A9tEAJyN5nwJSjrDEPmya1Gagnem/m/eO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8BA+E1v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA3B5C072AA;
+	Sat,  4 May 2024 11:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714822258;
-	bh=7kGgyEpJQqnlCF0c6QEZp/weZu+M1IT6KMDBzJNA4x0=;
+	s=k20201202; t=1714822493;
+	bh=FlpsDRxldopXY85FL3/6FIZP+C4/Fxw8QNBA9w3ZcjI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RJfTJY5DdpsJ3GwdM5x1robyywKgIgOQZkq7va9i8+7gXcsskCjSw0HBfQeQYGyyu
-	 OaRZjw23/lLsce5j7rSMq8gJOKjhrJA6qXvqJau1E5yFoGw57qLzoZyAxcV1B2oiBl
-	 U6DItxYzGwSPD4bdLOyVlWWVerZd8VRPiGIVGqln4DS2PQgtS0NFyxlR/PfsH0tdvY
-	 0Kl35EYjv9CArQub5m3LJoRuyuDKhUfIBNAxZm4PAE+Q9uLCeMhIONaEtd6/Mjv4fY
-	 8AAdP+2Et1l7rotwJYWWfzoLQH4GClpDJsSyMJMwm9oM0W7Ftlt3ll63HsBoRNDvt2
-	 +D0DrcaK9Vtgg==
-Date: Sat, 4 May 2024 12:30:47 +0100
+	b=i8BA+E1vl7PCtvBJQGo/owDI1B7RHj3T8ZoLo30DaWF4fJg/CBcFG4Xfendc8klxg
+	 VAYsXVZGQJV7bVdSZlBB2xGocrMZDS4muW1yKb/hmVgA4Q/lxk2jbk2x/B7h85pkXr
+	 EO4omqJdyQnUDg2GehIDR+TDmtl6EZTGvTGQqzz7ODQW6dSEJLjj10WsOufgYxf7Tx
+	 stpFDJMsnkHNAOnMPXmilJtUW7OARnQ/QhzM201ia4jLQ+s4vz+TVELSwlNTJiBTcP
+	 KmYcN74l/VQdINU0o7mRdawWj75CrLberqlOjZ7R1ppzx/bGTlN5Q+YoEwx+YEpgu+
+	 DDRYPu/AI80LA==
+Date: Sat, 4 May 2024 12:34:43 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Angelo Dureghello <adureghello@baylibre.com>
-Cc: lars@metafoo.de, Michael.Hennerich@analog.com, nuno.sa@analog.com,
- robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: dac: fix ad354xr output range
-Message-ID: <20240504123047.0b4299c5@jic23-huawei>
-In-Reply-To: <20240503185528.2043127-1-adureghello@baylibre.org>
-References: <20240503185528.2043127-1-adureghello@baylibre.org>
+To: Jorge Harrisonn <jorge.harrisonn@usp.br>
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, laisnuto@usp.br
+Subject: Re: [PATCH 1/2] iio: adc: ad7606: using claim_direct_scoped for
+ code simplification
+Message-ID: <20240504123443.46949690@jic23-huawei>
+In-Reply-To: <20240501215724.26655-2-jorge.harrisonn@usp.br>
+References: <20240501215724.26655-1-jorge.harrisonn@usp.br>
+	<20240501215724.26655-2-jorge.harrisonn@usp.br>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,39 +62,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri,  3 May 2024 20:55:28 +0200
-Angelo Dureghello <adureghello@baylibre.com> wrote:
+On Wed,  1 May 2024 18:57:23 -0300
+Jorge Harrisonn <jorge.harrisonn@usp.br> wrote:
 
-> From: Angelo Dureghello <adureghello@baylibre.com>
+> Using iio_device_claim_direct_scoped instead of calling `iio_device
+> _claim_direct_modeand later callingiio_device_release_direct_mode`
 > 
-> Fix output range, as per datasheet must be -2.5 to 7.5.
+> This should make code cleaner and error handling easier
 > 
-> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
+> Co-authored-by: Lais Nuto <laisnuto@usp.br>
+> Signed-off-by: Lais Nuto <laisnuto@usp.br>
+> Signed-off-by: Jorge Harrisonn <jorge.harrisonn@usp.br>
 > ---
-When resending to add people and lists to CC, say that somewhere, or just
-mark it as a v2 with the change being to increase the cc list.
+>  drivers/iio/adc/ad7606.c | 19 ++++++++-----------
+>  1 file changed, 8 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> index 1928d9ae5bcf..fa989e0d7e70 100644
+> --- a/drivers/iio/adc/ad7606.c
+> +++ b/drivers/iio/adc/ad7606.c
+> @@ -174,17 +174,14 @@ static int ad7606_read_raw(struct iio_dev *indio_dev,
+>  
+>  	switch (m) {
+>  	case IIO_CHAN_INFO_RAW:
+> -		ret = iio_device_claim_direct_mode(indio_dev);
+> -		if (ret)
+> -			return ret;
+> -
+> -		ret = ad7606_scan_direct(indio_dev, chan->address);
+> -		iio_device_release_direct_mode(indio_dev);
+> -
+> -		if (ret < 0)
+> -			return ret;
+> -		*val = (short)ret;
+> -		return IIO_VAL_INT;
+> +		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
+> +			ret = ad7606_scan_direct(indio_dev, chan->address);
+> +			if (ret < 0) 
 
-Otherwise tooling and maintainers can both get confused!
+There is a stray space on the line above after the )
 
-Patch looks fine to me.
+Make sure to run checkpatch.pl which should have caught this
+
+> +				return ret;
+> +			*val = (short) ret;
+
+Not really part of your patch so I'll leave it alone, but that cast seems rather
+pointless.
+
+Applied to the togreg branch of iio.git and pushed out as testing with the
+white space above fixed.   Note I'll be rebasing that tree after the
+merge window so until then this will only be visible on the testing
+branch.
+
+Thanks,
 
 Jonathan
 
->  Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> index 96340a05754c..8265d709094d 100644
-> --- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> @@ -139,7 +139,7 @@ allOf:
->                  Voltage output range of the channel as <minimum, maximum>
->                  Required connections:
->                    Rfb1x for: 0 to 2.5 V; 0 to 3V; 0 to 5 V;
-> -                  Rfb2x for: 0 to 10 V; 2.5 to 7.5V; -5 to 5 V;
-> +                  Rfb2x for: 0 to 10 V; -2.5 to 7.5V; -5 to 5 V;
->                oneOf:
->                  - items:
->                      - const: 0
+> +			return IIO_VAL_INT;
+> +		}
+> +		unreachable();
+>  	case IIO_CHAN_INFO_SCALE:
+>  		if (st->sw_mode_en)
+>  			ch = chan->address;
 
 

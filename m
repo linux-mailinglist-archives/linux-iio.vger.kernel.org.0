@@ -1,99 +1,122 @@
-Return-Path: <linux-iio+bounces-4794-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4795-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D0D28BBADB
-	for <lists+linux-iio@lfdr.de>; Sat,  4 May 2024 13:41:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBA1D8BBADE
+	for <lists+linux-iio@lfdr.de>; Sat,  4 May 2024 13:43:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C0F6281B15
-	for <lists+linux-iio@lfdr.de>; Sat,  4 May 2024 11:41:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98FFC2820DB
+	for <lists+linux-iio@lfdr.de>; Sat,  4 May 2024 11:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86B141CD2F;
-	Sat,  4 May 2024 11:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEA31CF8D;
+	Sat,  4 May 2024 11:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qySZHPI3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NR7BLtHD"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A51210A3D;
-	Sat,  4 May 2024 11:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B4317BD3;
+	Sat,  4 May 2024 11:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714822904; cv=none; b=dyxFYRAMjho/1GxH8mpRLmXUrC5NdtGTQBRpd/3p4EcDseJug34BIwSfw07HqHqCqN2FVuCG7fhx3LwB8pX30qfe6orVoN33YhvChylpkHII6wnLTAkT4h4/1EaboUSZ28VnYCe9fWJV/tJ7NtVg8vwiKQ3zpHwX+Mj1WQpRV8I=
+	t=1714822993; cv=none; b=G4gs4KcyMxRB6yNNZqr4/bLvTaWogvKRvke8jnGgZkips+rTXHicsVbb8t7yKbrEEx8gyXuREQjqmWs+JI+GP7zUxymVKuitZKC86FUrlFc4Sa/O6bELe7NtUjSIcmUB8euJ/KGTgTgNR9S/tljck9gO89fqvi+gNjmEfZkXV/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714822904; c=relaxed/simple;
-	bh=RbSToE/SPz2M6tN7QkqPPKcGZsMzIJzMKsTKU9zMKD4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WMoQ4eWdE96WWzyj9diiwLiUw3Y3UZ/lFvGAJzlQLUF/zI0gJEeMs3nVj56fm5hSbMMvFVzOAqWBICTuY27zG+75GYMFeKP29AHRDpT8mNHv5DbndnXb6PrBSzGV47r1Ex169JCXC8N6jZVwn49eFcLbT+H74M3nM+Et8BxN5Co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qySZHPI3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96AAC072AA;
-	Sat,  4 May 2024 11:41:40 +0000 (UTC)
+	s=arc-20240116; t=1714822993; c=relaxed/simple;
+	bh=ZpaL0qREN3AZpMXVPjpEg5JH0+icYF3Zv5rtr8Uc/0I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HveBdEVE5E+arGw4ovymWpuPTq5vMc1ILKQVfswRTAhYXzazQjShpNzOR9/nU4+Tv3952E6e28RlXY+KW5cWOlmaKiBxxBOom8wU0wgrpYfjlVKTg+CnvETvpLZMoe05H7lkduIaAYXmLxmJvfeHjuWkAdAZtKVT3GEd7DuevI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NR7BLtHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A476C072AA;
+	Sat,  4 May 2024 11:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714822903;
-	bh=RbSToE/SPz2M6tN7QkqPPKcGZsMzIJzMKsTKU9zMKD4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qySZHPI35YIJeqrOlhqMSJnYrI5Sh9csLXtqWrmnRZs2hy4rQD8wLZpCxME+TvYtc
-	 JToTa+nUgzJ5tyyOBxnvL/DxcWnfAhvbhhfqtTlInoOfEgPN8a1D9q1ot2CRuCGj6S
-	 rxG53f6djeuIEpPSvKJqCJiM3u/oBCblekjxTdYxZPw/EDbRYSkaVq5xjD+Es0Zv1+
-	 T531NRncUPiBLsDOVQ/3BOfPU8vUHXTUfZvIqz/bMNG+bPujjXNyvdhpfch+2972d+
-	 WO12OtA8V7ncdTqTkPydJPsEjHHzCFqyhkvyh4nLw5Ac8vE2vpWVXxpo0sH9nvwrgk
-	 wd0im14MIUTzA==
-Date: Sat, 4 May 2024 12:41:31 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Peter Rosin <peda@axentia.se>, Lars-Peter Clausen <lars@metafoo.de>,
- linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
- linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: multiplexer: Remove an unused field in struct mux
-Message-ID: <20240504124131.6c6e3e8e@jic23-huawei>
-In-Reply-To: <7bb04abdc2815caf090a6c9ecab2a51d837792a7.1714556499.git.christophe.jaillet@wanadoo.fr>
-References: <7bb04abdc2815caf090a6c9ecab2a51d837792a7.1714556499.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=k20201202; t=1714822993;
+	bh=ZpaL0qREN3AZpMXVPjpEg5JH0+icYF3Zv5rtr8Uc/0I=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=NR7BLtHDgl10h39rZetB6G3bxhZUiwV7cPOnfGqYZ0a+pu+GwoPb+UTcCjom55cfv
+	 1XyHsGTifdUwYRqmiD/zYllK4xgFaU90Vgcz4TS4PkiUvlZP4i9ybV+okTwil/NHti
+	 BfsTMrQbbj4GgjbYxVFhHRbmsJL4yWv/qnRYcWk7HgBe9oJZA1wGThK5QEncYGjonw
+	 GbL2+5XgECSp+YMMLXu0HSW1J3VWtJw5Kd6XDpqct0BiEcTFYbkk8ZLr3azuGKPLfs
+	 evSox6hxqOrCBiOnw1NSMFtuYqmA0aDdlYzI8dj7UvDZFf8Cc0LeiS+FxTEVGbgc+c
+	 UKc9zGwdyMNjw==
+Message-ID: <e750ac0c-0794-4c48-860b-1f9a1e751813@kernel.org>
+Date: Sat, 4 May 2024 13:43:07 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: iio: dac: fix ad354xr output range
+To: Angelo Dureghello <adureghello@baylibre.com>, lars@metafoo.de,
+ Michael.Hennerich@analog.com, nuno.sa@analog.com, jic23@kernel.org,
+ robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240503185528.2043127-1-adureghello@baylibre.org>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240503185528.2043127-1-adureghello@baylibre.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Wed,  1 May 2024 11:41:54 +0200
-Christophe JAILLET <christophe.jaillet@wanadoo.fr> wrote:
-
-> In "struct mux", the 'indio_dev' field is unused.
-> Remove it.
+On 03/05/2024 20:55, Angelo Dureghello wrote:
+> From: Angelo Dureghello <adureghello@baylibre.com>
 > 
-> Found with cppcheck, unusedStructMember.
+> Fix output range, as per datasheet must be -2.5 to 7.5.
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Applied,
-
-Thanks,
-
+> Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
 > ---
-> Compile tested only.
-> 
-> It was added in the initial commit 7ba9df54b091 ("iio: multiplexer: new iio
-> category and iio-mux driver") but was never used.
-> ---
->  drivers/iio/multiplexer/iio-mux.c | 1 -
->  1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/iio/multiplexer/iio-mux.c b/drivers/iio/multiplexer/iio-mux.c
-> index edd8c69f6d2e..2953403bef53 100644
-> --- a/drivers/iio/multiplexer/iio-mux.c
-> +++ b/drivers/iio/multiplexer/iio-mux.c
-> @@ -30,7 +30,6 @@ struct mux {
->  	int cached_state;
->  	struct mux_control *control;
->  	struct iio_channel *parent;
-> -	struct iio_dev *indio_dev;
->  	struct iio_chan_spec *chan;
->  	struct iio_chan_spec_ext_info *ext_info;
->  	struct mux_child *child;
+
+Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
+
+Best regards,
+Krzysztof
 
 

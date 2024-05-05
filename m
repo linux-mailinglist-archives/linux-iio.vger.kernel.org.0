@@ -1,60 +1,66 @@
-Return-Path: <linux-iio+bounces-4823-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4824-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46328BC345
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 21:35:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6D48BC356
+	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 21:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D703AB2119E
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 19:35:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B227B281C0A
+	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 19:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB566E605;
-	Sun,  5 May 2024 19:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D68B74427;
+	Sun,  5 May 2024 19:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dsTvxLrC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E4iEXlVw"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF76E54C;
-	Sun,  5 May 2024 19:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4766F06A;
+	Sun,  5 May 2024 19:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714937711; cv=none; b=hgTTMuz2czw4HpO13c+kLbkvHUH1Fyj+XWHnvheJPrws755fnge8iCuCha3AQJgdszoIxMwF8UcRfR8el8yIfTfZBBfoYpqoD3BVPrw8km1xIKOBd+MTsBeYXiQplWCQUuXDNEMA18tR+FWics3UUlGKDVh4ElzbUrWjo0u2Cjs=
+	t=1714938378; cv=none; b=qycwqr+u2IZYFJX2R0c6D+2wd7dICvVlqarPg/CtDW6tzof0rPUlmjbSvvBfaEtnQrutiTygff8R1sFXXOy3kekBzous67Mtl93IWLcumd/UGGo6r4vF30jWF9YMuCBVKivZvhVTPJ/R7k1t2EYlIiMQOjDsanJwECbQG3mQn+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714937711; c=relaxed/simple;
-	bh=VkxMDtsny24XcJVYTcFBblK3g3hI+2cPLXzaBz3PeGE=;
+	s=arc-20240116; t=1714938378; c=relaxed/simple;
+	bh=0xWVR+hZm1hbLhnVuDoCeCqqADDcUffOxV9wWM5nJTQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HiojWiuM0DhAAHBzu6TJXdTaALH3v0UfjQ0zBpzIrU5FnhDw83H20a/w4CO0j3iYeuW/zcSy3zZKkrxDrGJNgpRsWiZfqjZxtoYqkjqtsuxNVXGiemMUjWJawcKcy5WYetUlnTyqj+dTKGsN+KV7b77uMPV5I3Sx3w6xnbVB8K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dsTvxLrC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44587C113CC;
-	Sun,  5 May 2024 19:35:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FPC7gUBe4DuoBZwMtD4eBrpAIUrlUP8y+stme7myudLiJ1xTmS0B8ZBCsr9TNpmPVOV9uCDdcWi0SvtjzkUD2bCRxh8hC741Efa3r5kGIZ23nG32xi9nTdb2H7oLXqxBa+W98qmvLAW+wa85+U24bpqxmufLBeIx/bLDVb7sCNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E4iEXlVw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D52C116B1;
+	Sun,  5 May 2024 19:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714937709;
-	bh=VkxMDtsny24XcJVYTcFBblK3g3hI+2cPLXzaBz3PeGE=;
+	s=k20201202; t=1714938378;
+	bh=0xWVR+hZm1hbLhnVuDoCeCqqADDcUffOxV9wWM5nJTQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dsTvxLrCKnhUIzmfWZOGyRXiMXsggzwEaXK+xm+fXGCrvZ+MlTfjqpgZgw3O7a041
-	 fl48q+3ST+nwbK38xAELnKKr2CkTxL05jns8yHcIuX98f2d5qp6hDT8WavsK4OBQAf
-	 M3uhe9pjVCnhgMB8NPt5ahGyWYWh6Ll5yfLO4QbIijH4CFA2OnFlsV7IT9IBMcCZsr
-	 FH4RlpTUNhqwcoCgldx6gYflTKVWT65AdH8J2mwqEAC5pSxrZOPT4Rr2qPRebfHu3b
-	 q+T/9kA3ls5YV9qVkyfhGoaRLW7FCkEEcXyohcrBUXWMLyGD6r8R6MSUPBGddd62AE
-	 3Jpd4gQetL6xA==
-Date: Sun, 5 May 2024 20:34:56 +0100
+	b=E4iEXlVwv03Q1LXj60ldMa3YKet2nlH76YkVFc6V/+H3oTyRcrtr/hnRfT4zgZtUn
+	 PKfGNdrVT/CDB9d63NfQAMPH/ZARA8WyU5wSqWm9r1S1TyBPpBg1njo4jNvwEUf71A
+	 MUKNRGjwhWP4hxiM/x8/vRKT+FMhCH+61w1ktYgp6yZFAlKuABTmEeV52YNJC7Idn9
+	 Xdcp4dPyJchJ9EolLB5C0HK/RK9gsAS62/txGmeFN/dvX+4UWUFFX9gQ/fWRPOO1Kq
+	 yJxkRtbsWW5MN3cRYbzb1uFpYELxY+59/qO91D5lDlskT2dWReVNfK8ch7zd5gINQU
+	 SFdQT2E8h8fcg==
+Date: Sun, 5 May 2024 20:46:02 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
- ang.iglesiasg@gmail.com, mazziesaccount@gmail.com, ak@it-klinger.de,
- petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
- linus.walleij@linaro.org, semen.protsenko@linaro.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 10/10] iio: pressure: bmp280: Add triggered buffer
+To: Conor Dooley <conor@kernel.org>
+Cc: Alisa-Dariana Roman <alisadariana@gmail.com>,
+ michael.hennerich@analog.com, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ alexandru.tachici@analog.com, lars@metafoo.de, robh@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ lgirdwood@gmail.com, broonie@kernel.org, andy@kernel.org,
+ nuno.sa@analog.com, marcelo.schmitt@analog.com, bigunclemax@gmail.com,
+ dlechner@baylibre.com, okan.sahin@analog.com, fr0st61te@gmail.com,
+ alisa.roman@analog.com, marcus.folkesson@gmail.com, schnelle@linux.ibm.com,
+ liambeguin@gmail.com
+Subject: Re: [PATCH v7 5/6] dt-bindings: iio: adc: ad7192: Add AD7194
  support
-Message-ID: <20240505203456.0c4c0c90@jic23-huawei>
-In-Reply-To: <20240429190046.24252-11-vassilisamir@gmail.com>
-References: <20240429190046.24252-1-vassilisamir@gmail.com>
-	<20240429190046.24252-11-vassilisamir@gmail.com>
+Message-ID: <20240505204602.5d4cbfa0@jic23-huawei>
+In-Reply-To: <20240430-winnings-wrongness-32328ccfe3b5@spud>
+References: <20240430162946.589423-1-alisa.roman@analog.com>
+	<20240430162946.589423-6-alisa.roman@analog.com>
+	<20240430-winnings-wrongness-32328ccfe3b5@spud>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,64 +71,46 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 29 Apr 2024 21:00:46 +0200
-Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+On Tue, 30 Apr 2024 18:21:01 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-> BMP2xx, BME280, BMP3xx, and BMP5xx use continuous buffers for their
-> temperature, pressure and humidity readings. This facilitates the
-> use of burst/bulk reads in order to acquire data faster. The
-> approach is different from the one used in oneshot captures.
+> On Tue, Apr 30, 2024 at 07:29:45PM +0300, Alisa-Dariana Roman wrote:
+> > +      diff-channels:
+> > +        description:
+> > +          Both inputs can be connected to pins AIN1 to AIN16 by choosing the
+> > +          appropriate value from 1 to 16.
+> > +        items:
+> > +          minimum: 1
+> > +          maximum: 16
+> > +
+> > +      single-channel:
+> > +        description:
+> > +          Positive input can be connected to pins AIN1 to AIN16 by choosing the
+> > +          appropriate value from 1 to 16. Negative input is connected to AINCOM.
+> > +        items:
+> > +          minimum: 1
+> > +          maximum: 16  
 > 
-> BMP085 & BMP1xx devices use a completely different measurement
-> process that is well defined and is used in their buffer_handler().
-> 
-> Suggested-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Hi Vasileois,
+> Up to 16 differential channels and 16 single-ended channels, but only 16
+> pins? Would the number of differential channels not max out at 8?
 
-Just one question on this inline. (patches 8 and 9 look good to me)
+May not really be limited to 16 differential. Many chips use general purpose
+muxes on both sides so you can do all combinations. In practice that's normally
+pointless.
 
-For v6, only need to send the patches that I haven't already applied.
+A more useful case is to do all but one channel as positive inputs and the remaining
+channel as the negative for those 15 differential channels.
+This is effectively the same as doing pseudo differential channels, but
+on more flexible hardware.  This is in contrast to a device that only supports
+pseudo differential where there is a special pin for the negative
+(this device has that as well as full muxes on the other 16 lines).
 
-Thanks,
+Having said all that.  The ad7194 datasheet says 8 differential channels..
+I have no idea why though... Maybe something to do with the mux switching?
+Or maybe assumption is that if you want to do pseudo differential you'll use
+the pseudo differential mode rather than wasting hardware?
 
 Jonathan
 
->  
-> +static irqreturn_t bmp180_buffer_handler(int irq, void *p)
-> +{
-> +	struct iio_poll_func *pf = p;
-> +	struct iio_dev *indio_dev = pf->indio_dev;
-> +	struct bmp280_data *data = iio_priv(indio_dev);
-> +	int ret, chan_value;
-> +
-> +	guard(mutex)(&data->lock);
-> +
-> +	ret = bmp180_read_temp(data, &chan_value);
-> +	if (ret < 0)
-> +		return IRQ_HANDLED;
-> +
-> +	data->sensor_data[1] = chan_value;
-> +
-> +	ret = bmp180_read_press(data, &chan_value);
 
-So I 'think' that after all the refactoring you end up reading the temperature
-twice.  To avoid that you need to pull the read_temp() and read_press()
-function implementations here and only do the (currently duplicated) steps once.
-
-You seem to have done this for the other case, but missed the bmp180?
-Maybe I'm missing some reason it doesn't work for this one!
-
-> +	if (ret < 0)
-> +		return IRQ_HANDLED;
-> +
-> +	data->sensor_data[0] = chan_value;
-> +
-> +	iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
-> +					   iio_get_time_ns(indio_dev));
-> +
-> +	iio_trigger_notify_done(indio_dev->trig);
-> +
-> +	return IRQ_HANDLED;
-> +}
 

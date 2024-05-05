@@ -1,61 +1,60 @@
-Return-Path: <linux-iio+bounces-4822-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4823-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A8CB8BC336
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 21:22:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D46328BC345
+	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 21:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30BC61F213D5
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 19:22:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D703AB2119E
+	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 19:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242986D1BB;
-	Sun,  5 May 2024 19:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EB566E605;
+	Sun,  5 May 2024 19:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OWekGzmg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dsTvxLrC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2D646BFCC;
-	Sun,  5 May 2024 19:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFF76E54C;
+	Sun,  5 May 2024 19:35:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714936967; cv=none; b=jQ/SGPQ4PUuu9g0P61vPP9MBrdKiLytm+f3JQf6Xo+Z15baa3P6Pfpq8TNOEuuBkhycI/fEYRy1WsnisQLJaQkoJYmjXHbeoj7Ls4+ZHgO1rnboreUM4RCN4uv9GjOvZ7QPXCtkRWl8xRWOpkRAal019dLo//M1i+s2LYd4pqS0=
+	t=1714937711; cv=none; b=hgTTMuz2czw4HpO13c+kLbkvHUH1Fyj+XWHnvheJPrws755fnge8iCuCha3AQJgdszoIxMwF8UcRfR8el8yIfTfZBBfoYpqoD3BVPrw8km1xIKOBd+MTsBeYXiQplWCQUuXDNEMA18tR+FWics3UUlGKDVh4ElzbUrWjo0u2Cjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714936967; c=relaxed/simple;
-	bh=Lt8WVoUDyxHbAr6/NPiYItA14a9yJ6MV4bxPM/leayA=;
+	s=arc-20240116; t=1714937711; c=relaxed/simple;
+	bh=VkxMDtsny24XcJVYTcFBblK3g3hI+2cPLXzaBz3PeGE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DdzVc8uTS8yxfJH+Dn7+PPcfiwEMytAlldd7d/MKD7uN2n4BpTMf6ppzvEJblKM1H553qRkQf6WT/m9RVT4qKsi0BMHV53ndQ1XEd8xo+hJCj+O9tE2BndUZryFoIbnwffQ9DXMJ1p81duTk6a/JGUwxbfhtyjOPjfQfQ9i3sD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OWekGzmg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B83D6C113CC;
-	Sun,  5 May 2024 19:22:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HiojWiuM0DhAAHBzu6TJXdTaALH3v0UfjQ0zBpzIrU5FnhDw83H20a/w4CO0j3iYeuW/zcSy3zZKkrxDrGJNgpRsWiZfqjZxtoYqkjqtsuxNVXGiemMUjWJawcKcy5WYetUlnTyqj+dTKGsN+KV7b77uMPV5I3Sx3w6xnbVB8K0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dsTvxLrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44587C113CC;
+	Sun,  5 May 2024 19:35:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714936967;
-	bh=Lt8WVoUDyxHbAr6/NPiYItA14a9yJ6MV4bxPM/leayA=;
+	s=k20201202; t=1714937709;
+	bh=VkxMDtsny24XcJVYTcFBblK3g3hI+2cPLXzaBz3PeGE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OWekGzmg4cDCyeYscf357lm6Tj2eGXS6Kz6OZoIT1jGc6pK4PkQpnTilhPHAvjqro
-	 Mj+veFYDDLHHMG9zv9JFP7JhVWyPAwnz9RBuiNUqwR3goim9QXV1pgc15f/wpJOdoD
-	 f63bWecjJBftSfe7eBboTWWbaTcgdp9sZRoR9Yzta1D16nV8mrvH8jC0tYiadLim+7
-	 UMiy/ucTYT3qx/fcdGI3w6jDFWDMiv5MxqbDKkBfnVHCsNxs5gBxzIBS2SXrWlTCCW
-	 41Wm70UsP7V4/JEbRwiynB+f7Zt6Pu3QKVWkk+AhYb9liwnTr3TqnH9zwnpKXM3Lr/
-	 6eVSCM4ZLLyFQ==
-Date: Sun, 5 May 2024 20:22:34 +0100
+	b=dsTvxLrCKnhUIzmfWZOGyRXiMXsggzwEaXK+xm+fXGCrvZ+MlTfjqpgZgw3O7a041
+	 fl48q+3ST+nwbK38xAELnKKr2CkTxL05jns8yHcIuX98f2d5qp6hDT8WavsK4OBQAf
+	 M3uhe9pjVCnhgMB8NPt5ahGyWYWh6Ll5yfLO4QbIijH4CFA2OnFlsV7IT9IBMcCZsr
+	 FH4RlpTUNhqwcoCgldx6gYflTKVWT65AdH8J2mwqEAC5pSxrZOPT4Rr2qPRebfHu3b
+	 q+T/9kA3ls5YV9qVkyfhGoaRLW7FCkEEcXyohcrBUXWMLyGD6r8R6MSUPBGddd62AE
+	 3Jpd4gQetL6xA==
+Date: Sun, 5 May 2024 20:34:56 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
  ang.iglesiasg@gmail.com, mazziesaccount@gmail.com, ak@it-klinger.de,
  petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
  linus.walleij@linaro.org, semen.protsenko@linaro.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v5 07/10] iio: pressure: bmp280: Introduce new cleanup
- routines
-Message-ID: <20240505202234.33662b4d@jic23-huawei>
-In-Reply-To: <20240429190046.24252-8-vassilisamir@gmail.com>
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 10/10] iio: pressure: bmp280: Add triggered buffer
+ support
+Message-ID: <20240505203456.0c4c0c90@jic23-huawei>
+In-Reply-To: <20240429190046.24252-11-vassilisamir@gmail.com>
 References: <20240429190046.24252-1-vassilisamir@gmail.com>
-	<20240429190046.24252-8-vassilisamir@gmail.com>
+	<20240429190046.24252-11-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -66,14 +65,64 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 29 Apr 2024 21:00:43 +0200
+On Mon, 29 Apr 2024 21:00:46 +0200
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> Introduce new linux/cleanup.h with the guard(mutex) functionality
-> in the {read,write}_raw() functions.
+> BMP2xx, BME280, BMP3xx, and BMP5xx use continuous buffers for their
+> temperature, pressure and humidity readings. This facilitates the
+> use of burst/bulk reads in order to acquire data faster. The
+> approach is different from the one used in oneshot captures.
 > 
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Suggested-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> BMP085 & BMP1xx devices use a completely different measurement
+> process that is well defined and is used in their buffer_handler().
+> 
+> Suggested-by: Angel Iglesias <ang.iglesiasg@gmail.com>
 > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Looks good to me.
+Hi Vasileois,
+
+Just one question on this inline. (patches 8 and 9 look good to me)
+
+For v6, only need to send the patches that I haven't already applied.
+
+Thanks,
+
+Jonathan
+
+>  
+> +static irqreturn_t bmp180_buffer_handler(int irq, void *p)
+> +{
+> +	struct iio_poll_func *pf = p;
+> +	struct iio_dev *indio_dev = pf->indio_dev;
+> +	struct bmp280_data *data = iio_priv(indio_dev);
+> +	int ret, chan_value;
+> +
+> +	guard(mutex)(&data->lock);
+> +
+> +	ret = bmp180_read_temp(data, &chan_value);
+> +	if (ret < 0)
+> +		return IRQ_HANDLED;
+> +
+> +	data->sensor_data[1] = chan_value;
+> +
+> +	ret = bmp180_read_press(data, &chan_value);
+
+So I 'think' that after all the refactoring you end up reading the temperature
+twice.  To avoid that you need to pull the read_temp() and read_press()
+function implementations here and only do the (currently duplicated) steps once.
+
+You seem to have done this for the other case, but missed the bmp180?
+Maybe I'm missing some reason it doesn't work for this one!
+
+> +	if (ret < 0)
+> +		return IRQ_HANDLED;
+> +
+> +	data->sensor_data[0] = chan_value;
+> +
+> +	iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
+> +					   iio_get_time_ns(indio_dev));
+> +
+> +	iio_trigger_notify_done(indio_dev->trig);
+> +
+> +	return IRQ_HANDLED;
+> +}
 

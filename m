@@ -1,59 +1,58 @@
-Return-Path: <linux-iio+bounces-4812-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4813-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2ED48BC2C9
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 19:18:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441868BC2E1
+	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 19:47:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D2D58B20E77
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 17:18:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 653071C20B74
+	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 17:47:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FDF41C76;
-	Sun,  5 May 2024 17:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09E3C50297;
+	Sun,  5 May 2024 17:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BIZwSLk2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SQg3g+Tp"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC72722611;
-	Sun,  5 May 2024 17:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92F936AF5;
+	Sun,  5 May 2024 17:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714929522; cv=none; b=GUWoyq/lyPUfvaGUw/dIkYdeKTTqxs1vNbkgito4Dw8y5LIAUxcWANUfv0aGKYveb0HRrm63Gy83zgHoZDM9ni7knkUGMcMtmfeaMcEji7hn/sQ73jF0NzvmeHzsmWbkwkPiOjfj+zgs5RZuNSfXutZZTZtk9tkuPUYnKz0GB9I=
+	t=1714931228; cv=none; b=hjuXKhtcBdwFgttnJoOF4wBi11PIPs3znEd1pmtfNWBPdDZ2QfJ4+XeszSEAdCeqTZPobjAi+eG31h4CHku8I0WSiGlwR1hkGkU5ZeTtQlxCqJVzT/9CWMpGQ3s1W7RnC1rSI2zpPhYvRttOeCPbqaz7gjR+zm6K+YlLnLnx4TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714929522; c=relaxed/simple;
-	bh=siSKxyKMPfbUfgRJE2KkzJJ3nXpR2oCWZyv7uG3ylxU=;
+	s=arc-20240116; t=1714931228; c=relaxed/simple;
+	bh=lgGXd0jwUma2idY22GRkaZNyTPzjVvVloiGCuFF4b2o=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Aqre7I6VMT/zqXn3AQ2nW17fjoiwbWyRMpRpwSAMbKQEQHjSazXvUrG9Q/NjrXYhrG52axiTmp3205oNJW2eXqJZCyO9drNjgBX6VjhohFOtRDDwJDyn/OJr4oL3XMJh888qHTSosVkYLzYCUHMm3idjqKoxY5PR8zAge7e5r/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BIZwSLk2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E24C113CC;
-	Sun,  5 May 2024 17:18:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kiIm1FdeykZBSxbMoRC3OmXfuWGfNCC1SCCXYNIGEpeLsu/fzvMeZwmeggOGXHGgL95klEjmXRQSKPyAUuk4n3Nrjx6h2Y+eU76w5OLaz+VOBnyUo5HLl5gLzPGJt67cq5fpd0+6M/Yd8HtM+LCAVZBqx3fhK5cDtWN0+rMMJc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SQg3g+Tp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11AD2C113CC;
+	Sun,  5 May 2024 17:47:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714929520;
-	bh=siSKxyKMPfbUfgRJE2KkzJJ3nXpR2oCWZyv7uG3ylxU=;
+	s=k20201202; t=1714931228;
+	bh=lgGXd0jwUma2idY22GRkaZNyTPzjVvVloiGCuFF4b2o=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BIZwSLk2+l7Kte2EqnSMN++r12JqfbAK7kK2k1vw8+etkQWhYNGyEntJ1DA0pRRIq
-	 XNFvTGipBC1su9tm28Cn0YNv1kXyLOHv0Uri81gy+YYV97jLQk18EFxWvlH8M7F3WA
-	 /dgGitDAOXj8PlnOW+RxyumaDgp75Pxi6JNRR0la2OMhUZ0BjoUArRGqu8xY5CqPD+
-	 9pb20LdeLmS3gHoHtyiMvsRlUjlRQ0ukxnhhUCID21WQ7WiNVe+T5sYuG30TCeofBX
-	 OmHXEA3ZfE08A3MieEAsAh4AjtoB7zhJ3zz959fpFw54nODpWtVwgrcLx2lxtXbhNm
-	 pNKwGS66V+ctA==
-Date: Sun, 5 May 2024 18:18:29 +0100
+	b=SQg3g+Tp/N9rX8FDicZSCpjIRvkbVCwoZpuDkY0Yt2cyCZhqWKUuiBAgp37GColwG
+	 lSeQm++Gxckeh4y/xrUc0DcdIagI1VDsaAYmjzsoc/sAbDY82U5LJo9zYhrIXWcjkq
+	 Y6AhenlE5WnwscgModMv5GjogGNHk5o0Ml+sw/qLLlHTxHRuyy7Ga31S8PkhVxgY2Q
+	 ucG3Lq5ak9DaYJVsnh6eEXkriYHdR4U5pjaeRdeU70B0lLCv0bhlrmlYqAIncI5v71
+	 pPIqp7an6LgyaeL4LmMP9YIG3WmUSSGLB7NuICxFgLPhjJa4oWbmusG4BPBJYDIUzT
+	 7XJvArkiBelsQ==
+Date: Sun, 5 May 2024 18:47:00 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Petar Stoykov <pd.pstoykov@gmail.com>
-Cc: linux-iio@vger.kernel.org, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh+dt@kernel.org>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Angel Iglesias
- <ang.iglesiasg@gmail.com>, Conor Dooley <conor+dt@kernel.org>,
- linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] iio: pressure: Add driver for Sensirion SDP500
-Message-ID: <20240505181829.49864540@jic23-huawei>
-In-Reply-To: <CADFWO8EQUkGcbE=RXjxXbub2tZge9+ss=gB-Q6wngFAvwFygRg@mail.gmail.com>
-References: <CADFWO8EQUkGcbE=RXjxXbub2tZge9+ss=gB-Q6wngFAvwFygRg@mail.gmail.com>
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Andrew Hepp
+ <andrew.hepp@ahepp.dev>, Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5/5] iio: temperature: mcp9600: add threshold events
+ support
+Message-ID: <20240505184700.5c85b2ba@jic23-huawei>
+In-Reply-To: <20240430120535.46097-6-dima.fedrau@gmail.com>
+References: <20240430120535.46097-1-dima.fedrau@gmail.com>
+	<20240430120535.46097-6-dima.fedrau@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,244 +60,468 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 30 Apr 2024 17:27:24 +0200
-Petar Stoykov <pd.pstoykov@gmail.com> wrote:
+On Tue, 30 Apr 2024 14:05:35 +0200
+Dimitri Fedrau <dima.fedrau@gmail.com> wrote:
 
-> From 6ae7537517f551540121ca6fb3b99080b7580410 Mon Sep 17 00:00:00 2001
-> From: Petar Stoykov <pd.pstoykov@gmail.com>
-> Date: Mon, 15 Jan 2024 12:21:26 +0100
-> Subject: [PATCH 2/3] iio: pressure: Add driver for Sensirion SDP500
-> 
-> Sensirion SDP500 is a digital differential pressure sensor. The sensor is
-> accessed over I2C.
-> 
-> Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
-Hi Petar
-
-Ignoring the patch formatting which others have already given feedback on,
-a few minor comments inline.
-
-Also, I'd expect some regulator handling to turn the power on.
-Obviously on your particular board there may be nothing to do but good to
-have the support in place anyway and it will be harmless if the power
-is always on.
+> The device has four programmable temperature alert outputs which can be
+> used to monitor hot or cold-junction temperatures and detect falling and
+> rising temperatures. It supports up to 255 degree celsius programmable
+> hysteresis. Each alert can be individually configured by setting following
+> options in the associated alert configuration register:
+>   - monitor hot or cold junction temperature
+>   - monitor rising or falling temperature
+>   - set comparator or interrupt mode
+>   - set output polarity
+>   - enable alert
+>=20
+> This patch binds alert outputs to iio events:
+>   - alert1: hot junction, rising temperature
+>   - alert2: hot junction, falling temperature
+>   - alert3: cold junction, rising temperature
+>   - alert4: cold junction, falling temperature
+>=20
+> All outputs are set in comparator mode and polarity depends on interrupt
+> configuration.
+>=20
+> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> ---
+Various comments inline.
 
 Jonathan
 
->  st_pressure-$(CONFIG_IIO_BUFFER) += st_pressure_buffer.o
-> diff --git a/drivers/iio/pressure/sdp500.c b/drivers/iio/pressure/sdp500.c
-> new file mode 100644
-> index 000000000000..7efcc69e829c
-> --- /dev/null
-> +++ b/drivers/iio/pressure/sdp500.c
-> @@ -0,0 +1,144 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +#include <linux/i2c.h>
-> +#include <linux/crc8.h>
-> +#include <linux/iio/iio.h>
-> +#include <asm/unaligned.h>
-> +
-> +#define SDP500_CRC8_POLYNOMIAL  0x31   // x8 + x5 + x4 + 1 (normalized to 0x31)
-> +#define SDP500_READ_SIZE        3
-> +#define SDP500_CRC8_WORD_LENGTH 2
+>  drivers/iio/temperature/mcp9600.c | 358 +++++++++++++++++++++++++++++-
+>  1 file changed, 354 insertions(+), 4 deletions(-)
+>=20
+> diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/=
+mcp9600.c
+> index cb1c1c1c361d..f7e1b4e3253d 100644
+> --- a/drivers/iio/temperature/mcp9600.c
+> +++ b/drivers/iio/temperature/mcp9600.c
+> @@ -6,21 +6,80 @@
+>   * Author: <andrew.hepp@ahepp.dev>
+>   */
+> =20
+> +#include <linux/bitfield.h>
+> +#include <linux/bitops.h>
+>  #include <linux/err.h>
+>  #include <linux/i2c.h>
+>  #include <linux/init.h>
+> +#include <linux/math.h>
+> +#include <linux/minmax.h>
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> +#include <linux/mutex.h>
+> +#include <linux/units.h>
+> =20
+> +#include <linux/iio/events.h>
+>  #include <linux/iio/iio.h>
+> =20
+>  /* MCP9600 registers */
+> -#define MCP9600_HOT_JUNCTION 0x0
 
-As below. I'd establish these off the data the are the lengths of by using
-a structure definition.  That will be more obvious and less fragile than
-defines hiding up here.
+As below. Reformating in a precursor patch. I wouldn't necessarily bother
+though as aligning defines is usually more effort than it is worth over tim=
+e.
 
+> -#define MCP9600_COLD_JUNCTION 0x2
+> -#define MCP9600_DEVICE_ID 0x20
+> +#define MCP9600_HOT_JUNCTION		0x0
+> +#define MCP9600_COLD_JUNCTION		0x2
+> +#define MCP9600_STATUS			0x4
+> +#define MCP9600_STATUS_ALERT(x)		BIT(x)
+> +#define MCP9600_ALERT_CFG1		0x8
+> +#define MCP9600_ALERT_CFG(x)		(MCP9600_ALERT_CFG1 + (x - 1))
+> +#define MCP9600_ALERT_CFG_ENABLE	BIT(0)
+> +#define MCP9600_ALERT_CFG_ACTIVE_HIGH	BIT(2)
+> +#define MCP9600_ALERT_CFG_FALLING	BIT(3)
+> +#define MCP9600_ALERT_CFG_COLD_JUNCTION	BIT(4)
+> +#define MCP9600_ALERT_HYSTERESIS1	0xc
+> +#define MCP9600_ALERT_HYSTERESIS(x)	(MCP9600_ALERT_HYSTERESIS1 + (x - 1))
+> +#define MCP9600_ALERT_LIMIT1		0x10
+> +#define MCP9600_ALERT_LIMIT(x)		(MCP9600_ALERT_LIMIT1 + (x - 1))
+> +
+> +#define MCP9600_DEVICE_ID		0x20
+> =20
+>  /* MCP9600 device id value */
+> -#define MCP9600_DEVICE_ID_MCP9600 0x40
+> +#define MCP9600_DEVICE_ID_MCP9600	0x40
 
-> +#define SDP500_CRC8_INIT        0x00
+If you want to reformatting existing lines, do it in a precursor patch - not
+buried in here.
 
-I'd just use the number inline.  Can't see what the define is adding.
+> =20
+>  struct mcp9600_data {
+>  	struct i2c_client *client;
+> +	struct mutex lock[MCP9600_ALERT_COUNT];
 
-> +
-> +#define SDP500_SCALE_FACTOR 60
-> +
-> +#define SDP500_I2C_START_MEAS 0xF1
-> +
-> +struct sdp500_data {
-> +    struct device *dev;
-> +};
-> +
-> +DECLARE_CRC8_TABLE(sdp500_crc8_table);
-> +
-> +static int sdp500_start_measurement(struct sdp500_data *data, const
-> struct iio_dev *indio_dev)
+All locks need documentation.  What data is this protecting?
+
+> +	int irq[MCP9600_ALERT_COUNT];
+>  };
+> =20
+>  static int mcp9600_read(struct mcp9600_data *data,
+> @@ -83,10 +148,292 @@ static int mcp9600_read_raw(struct iio_dev *indio_d=
+ev,
+>  	}
+>  }
+> =20
+> +static int mcp9600_get_alert_index(int channel2, enum iio_event_directio=
+n dir)
 > +{
-> +    struct i2c_client *client = to_i2c_client(data->dev);
-> +
-> +    return i2c_smbus_write_byte(client, SDP500_I2C_START_MEAS);
-Doesn't seem worth a wrapper function. I would just put this code inline.
+> +	switch (channel2) {
+> +	case IIO_MOD_TEMP_OBJECT:
+> +		if (dir =3D=3D IIO_EV_DIR_RISING)
+> +			return MCP9600_ALERT1;
+> +		else
+> +			return MCP9600_ALERT2;
+> +	case IIO_MOD_TEMP_AMBIENT:
+> +		if (dir =3D=3D IIO_EV_DIR_RISING)
+> +			return MCP9600_ALERT3;
+> +		else
+> +			return MCP9600_ALERT4;
+> +	default:
+> +		return -EINVAL;
+> +	}
 > +}
 > +
-> +static const struct iio_chan_spec sdp500_channels[] = {
-> +    {
-> +        .type = IIO_PRESSURE,
-> +        .info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED),
-
-As below. It's a linear scale factor, so I would prefer _RAW and _SCALE
-to let userspace deal with the maths.
-
-> +    },
-> +};
-> +
-> +static int sdp500_read_raw(struct iio_dev *indio_dev,
-> +              struct iio_chan_spec const *chan,
-> +              int *val, int *val2, long mask)
+> +static int mcp9600_read_event_config(struct iio_dev *indio_dev,
+> +				     const struct iio_chan_spec *chan,
+> +				     enum iio_event_type type,
+> +				     enum iio_event_direction dir)
 > +{
-> +    int ret;
-> +    u8 rxbuf[SDP500_READ_SIZE];
-You could define this as a struct so all the data types are obvious.
-
-	struct {
-		__be16 data;
-		u8 crc;
-	} __packed rxbuf;
-The  __packed let's you use sizeof(rxbuf) for the transfer size.
-Beware though as IIRC that will mean data is not necessarily aligned
-so you'll still need the unaligned accessors.
-
-> +    u8 rec_crc, calculated_crc;
-> +    s16 dec_value;
-> +    struct sdp500_data *data = iio_priv(indio_dev);
-> +    struct i2c_client *client = to_i2c_client(data->dev);
+> +	struct mcp9600_data *data =3D iio_priv(indio_dev);
+> +	struct i2c_client *client =3D data->client;
+> +	int i, ret;
 > +
-> +    switch (mask) {
-> +    case IIO_CHAN_INFO_PROCESSED:
-> +        ret = i2c_master_recv(client, rxbuf, SDP500_READ_SIZE);
-> +        if (ret < 0) {
-> +            dev_err(indio_dev->dev.parent, "Failed to receive data");
-> +            return ret;
-> +        }
-> +        if (ret != SDP500_READ_SIZE) {
-> +            dev_err(indio_dev->dev.parent, "Data is received wrongly");
-
-I'd guess indio_dev->dev.parent == data->dev
-If so use data->dev as more compact and that's where you are getting the
-i2c_client from.
-
-> +            return -EIO;
-> +        }
+> +	i =3D mcp9600_get_alert_index(chan->channel2, dir);
+> +	if (i < 0)
+> +		return i;
 > +
-> +        rec_crc = rxbuf[2];
-> +        calculated_crc = crc8(sdp500_crc8_table, rxbuf,
-> SDP500_CRC8_WORD_LENGTH,
-
-I'd use the number 2 for length directly as it's useful to know this is the
-__be16 only, or sizeof(__be16)
-What is the point in rec_crc local variable?
-
-> +            SDP500_CRC8_INIT);
-> +        if (rec_crc != calculated_crc) {
-> +            dev_err(indio_dev->dev.parent, "calculated crc = 0x%.2X,
-> received 0x%.2X",
-> +                calculated_crc, rec_crc);
-> +            return -EIO;
-> +        }
+> +	ret =3D i2c_smbus_read_byte_data(client, MCP9600_ALERT_CFG(i + 1));
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +        dec_value = get_unaligned_be16(rxbuf);
-> +        dev_dbg(indio_dev->dev.parent, "dec value = %d", dec_value);
+> +	return (ret & MCP9600_ALERT_CFG_ENABLE);
 
-When you move to returning scale and _raw this print won't add anything so
-drop it.
+FIELD_GET() even if it happens to be bit(0) as then we don't have to go
+check that's the case.
 
-> +
-> +        *val = dec_value;
-> +        *val2 = SDP500_SCALE_FACTOR;
-For linear transforms like this it is normally better to provide separate
-raw and scale interfaces.
-
-Then if anyone does want to add buffered support in the future that is easier
-to do as it is much more compact + userspace has floating point which is always
-going to be better for division than we can do in kernel.
-
-> +        return IIO_VAL_FRACTIONAL;
-> +    default:
-> +        return -EINVAL;
-> +    }
 > +}
 > +
-> +static const struct iio_info sdp500_info = {
-> +    .read_raw = &sdp500_read_raw,
-> +};
-> +
-> +static int sdp500_probe(struct i2c_client *client)
+> +static int mcp9600_write_event_config(struct iio_dev *indio_dev,
+> +				      const struct iio_chan_spec *chan,
+> +				      enum iio_event_type type,
+> +				      enum iio_event_direction dir,
+> +				      int state)
 > +{
-> +    struct iio_dev *indio_dev;
-> +    struct sdp500_data *data;
-> +    struct device *dev = &client->dev;
-> +    int ret;
-> +    u8 rxbuf[SDP500_READ_SIZE];
+> +	struct mcp9600_data *data =3D iio_priv(indio_dev);
+> +	struct i2c_client *client =3D data->client;
+> +	int i, ret;
 > +
-> +    indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> +    if (!indio_dev)
-> +        return -ENOMEM;
+> +	i =3D mcp9600_get_alert_index(chan->channel2, dir);
+> +	if (i < 0)
+> +		return i;
 > +
-> +    /* has to be done before the first i2c communication */
-> +    crc8_populate_msb(sdp500_crc8_table, SDP500_CRC8_POLYNOMIAL);
+> +	ret =3D i2c_smbus_read_byte_data(client, MCP9600_ALERT_CFG(i + 1));
+> +	if (ret < 0)
+> +		return ret;
 > +
-> +    data = iio_priv(indio_dev);
-> +    data->dev = dev;
+> +	if (state)
+> +		ret |=3D MCP9600_ALERT_CFG_ENABLE;
+> +	else
+> +		ret &=3D ~MCP9600_ALERT_CFG_ENABLE;
 > +
-> +    indio_dev->name = "sdp500";
-> +    indio_dev->channels = sdp500_channels;
-> +    indio_dev->info = &sdp500_info;
-> +    indio_dev->modes = INDIO_DIRECT_MODE;
-> +    indio_dev->num_channels = ARRAY_SIZE(sdp500_channels);
-> +
-> +    ret = sdp500_start_measurement(data, indio_dev);
-> +    if (ret)
-> +        return dev_err_probe(dev, ret, "Failed to start measurement");
+> +	return i2c_smbus_write_byte_data(client, MCP9600_ALERT_CFG(i + 1), ret);
 
-Blank line here would help readability a tiny bit.
+A read modify write cycle like this normally needs some locking to ensure a=
+nother
+access didn't change the other bits in the register.
 
-> +    /* First measurement is not correct, read it out to get rid of it */
-> +    i2c_master_recv(client, rxbuf, SDP500_READ_SIZE);
-> +
-> +    ret = devm_iio_device_register(dev, indio_dev);
-> +    if (ret < 0)
-> +        return dev_err_probe(dev, ret, "Failed to register indio_dev");
 
-We rarely bother with error prints on failure to register as it is unlikely
-to fail because of something that happened at runtime and if it does, that
-is easy to track down.  So I'd drop this print.
-If you really want to keep it I don't mind that much.
-
-> +
-> +    return 0;
 > +}
 > +
-> +static const struct i2c_device_id sdp500_id[] = {
-> +    { "sdp500" },
-> +    { }
-> +};
-> +MODULE_DEVICE_TABLE(i2c, sdp500_id);
+> +static int mcp9600_read_thresh(struct iio_dev *indio_dev,
+> +			       const struct iio_chan_spec *chan,
+> +			       enum iio_event_type type,
+> +			       enum iio_event_direction dir,
+> +			       enum iio_event_info info, int *val, int *val2)
+> +{
+> +	struct mcp9600_data *data =3D iio_priv(indio_dev);
+> +	struct i2c_client *client =3D data->client;
+> +	s32 ret;
+> +	int i;
 > +
-> +static const struct of_device_id sdp500_of_match[] = {
-> +    { .compatible = "sensirion,sdp500" },
-> +    { }
-> +};
-> +MODULE_DEVICE_TABLE(of, sdp500_of_match);
+> +	i =3D mcp9600_get_alert_index(chan->channel2, dir);
+> +	if (i < 0)
+> +		return i;
 > +
-> +static struct i2c_driver sdp500_driver = {
-> +    .driver = {
-> +        .name    = "sensirion,sdp500",
-> +        .of_match_table = sdp500_of_match,
-> +    },
-> +    .probe       = sdp500_probe,
-> +    .id_table    = sdp500_id,
-I'd not bother with aligning = signs. It just tends to create noise
-as drivers evolve and people try to keep things aligned (resulting in realigning
-everything).
+> +	guard(mutex)(&data->lock[i]);
+> +	ret =3D i2c_smbus_read_word_swapped(client, MCP9600_ALERT_LIMIT(i + 1));
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/*
+> +	 * Temperature is stored in two=E2=80=99s complement format in bits(15:=
+2),
+> +	 * LSB is 0.25 degree celsius.
+> +	 */
+> +	*val =3D sign_extend32(ret, 15) >> 2;
+Use sign_extend32(FIELD_GET(...), 13)
+So which bits are extracted is obvious in the code.
 
-> +};
-> +module_i2c_driver(sdp500_driver);
+> +	*val2 =3D 4;
+> +	if (info =3D=3D IIO_EV_INFO_VALUE)
+> +		return IIO_VAL_FRACTIONAL;
 > +
-> +MODULE_AUTHOR("Thomas Sioutas <thomas.sioutas@prodrive-technologies.com>");
-> +MODULE_DESCRIPTION("Driver for Sensirion SDP500 differential pressure sensor");
-> +MODULE_LICENSE("GPL");
+> +	ret =3D i2c_smbus_read_byte_data(client, MCP9600_ALERT_HYSTERESIS(i + 1=
+));
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/*
+> +	 * Hysteresis is stored as offset which is not signed, therefore we have
+> +	 * to include directions when calculating the real hysteresis value.
+> +	 */
+> +	if (dir =3D=3D IIO_EV_DIR_RISING)
+> +		*val -=3D (*val2 * ret);
+> +	else
+> +		*val +=3D (*val2 * ret);
+
+I don't follow this maths.  Hysteresis is an unsigned offset.  Maybe some c=
+onfusion
+over the ABI? =20
+
+> +
+> +	return IIO_VAL_FRACTIONAL;
+> +}
+> +
+> +static int mcp9600_write_thresh(struct iio_dev *indio_dev,
+> +				const struct iio_chan_spec *chan,
+> +				enum iio_event_type type,
+> +				enum iio_event_direction dir,
+> +				enum iio_event_info info, int val, int val2)
+> +{
+> +	struct mcp9600_data *data =3D iio_priv(indio_dev);
+> +	struct i2c_client *client =3D data->client;
+> +	int s_val, s_thresh, i;
+> +	s16 thresh;
+> +	s32 ret;
+> +	u8 hyst;
+> +
+> +	/* Scale value to include decimal part into calculations */
+> +	s_val =3D (val < 0) ? ((val * (int)MICRO) - val2) :
+> +			    ((val * (int)MICRO) + val2);
+> +
+> +	/* Hot junction temperature range is from =E2=80=93200 to 1800 degree c=
+elsius */
+> +	if (chan->channel2 =3D=3D IIO_MOD_TEMP_OBJECT &&
+> +	   (s_val < (MCP9600_MIN_TEMP_HOT_JUNCTION * (int)MICRO) ||
+> +	    s_val > (MCP9600_MAX_TEMP_HOT_JUNCTION * (int)MICRO)))
+
+Why the casts?
+
+> +		return -EINVAL;
+> +
+> +	/* Cold junction temperature range is from =E2=80=9340 to 125 degree ce=
+lsius */
+> +	if (chan->channel2 =3D=3D IIO_MOD_TEMP_AMBIENT &&
+> +	   (s_val < (MCP9600_MIN_TEMP_COLD_JUNCTION * (int)MICRO) ||
+> +	    s_val > (MCP9600_MAX_TEMP_COLD_JUNCTION * (int)MICRO)))
+> +		return -EINVAL;
+> +
+> +	i =3D mcp9600_get_alert_index(chan->channel2, dir);
+> +	if (i < 0)
+> +		return i;
+> +
+> +	guard(mutex)(&data->lock[i]);
+> +	if (info =3D=3D IIO_EV_INFO_VALUE) {
+
+I would use a switch statement so it is obvious what each case is.
+
+> +		/*
+> +		 * Shift length 4 bits =3D 2(15:2) + 2(0.25 LSB), temperature is
+> +		 * stored in two=E2=80=99s complement format.
+> +		 */
+> +		thresh =3D (s16)(s_val / (int)(MICRO >> 4));
+> +		return i2c_smbus_write_word_swapped(client,
+> +						    MCP9600_ALERT_LIMIT(i + 1),
+> +						    thresh);
+> +	}
+> +
+> +	/* Read out threshold, hysteresis is stored as offset */
+> +	ret =3D i2c_smbus_read_word_swapped(client, MCP9600_ALERT_LIMIT(i + 1));
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	/* Shift length 4 bits =3D 2(15:2) + 2(0.25 LSB), see above. */
+> +	s_thresh =3D sign_extend32(ret, 15) * (int)(MICRO >> 4);
+> +
+> +	/*
+> +	 * Hysteresis is stored as offset, for rising temperatures, the
+> +	 * hysteresis range is below the alert limit where, as for falling
+> +	 * temperatures, the hysteresis range is above the alert limit.
+> +	 */
+> +	hyst =3D min(255, abs(s_thresh - s_val) / MICRO);
+> +
+> +	return i2c_smbus_write_byte_data(client,
+> +					 MCP9600_ALERT_HYSTERESIS(i + 1),
+> +					 hyst);
+> +}
+> +
+>  static const struct iio_info mcp9600_info =3D {
+>  	.read_raw =3D mcp9600_read_raw,
+> +	.read_event_config =3D mcp9600_read_event_config,
+> +	.write_event_config =3D mcp9600_write_event_config,
+> +	.read_event_value =3D mcp9600_read_thresh,
+> +	.write_event_value =3D mcp9600_write_thresh,
+>  };
+> =20
+> +static irqreturn_t mcp9600_alert_handler(int irq, void *private)
+> +{
+> +	struct iio_dev *indio_dev =3D private;
+> +	struct mcp9600_data *data =3D iio_priv(indio_dev);
+> +	enum iio_event_direction dir;
+> +	enum iio_modifier mod;
+> +	int i, ret;
+> +
+> +	for (i =3D 0; i < MCP9600_ALERT_COUNT; i++) {
+> +		if (data->irq[i] =3D=3D irq)
+
+This search for a match is a little messy. I'd be tempted
+to wrap the generic handler in a per instance interrupt handler
+(so have 4 functions) and thus move this matching to the place
+where they are registered, not the interrupt handler.
+
+There isn't a lot of shared code in here so you may be better
+off just having 4 separate interrupt handler implementations.
+
+> +			break;
+> +	}
+> +
+> +	if (i >=3D MCP9600_ALERT_COUNT)
+> +		return IRQ_NONE;
+> +
+> +	ret =3D i2c_smbus_read_byte_data(data->client, MCP9600_STATUS);
+> +	if (ret < 0)
+> +		return IRQ_HANDLED;
+> +
+> +	switch (ret & MCP9600_STATUS_ALERT(i)) {
+> +	case 0:
+> +		return IRQ_NONE;
+> +	case MCP9600_STATUS_ALERT(MCP9600_ALERT1):
+> +		mod =3D IIO_MOD_TEMP_OBJECT;
+> +		dir =3D IIO_EV_DIR_RISING;
+> +		break;
+> +	case MCP9600_STATUS_ALERT(MCP9600_ALERT2):
+> +		mod =3D IIO_MOD_TEMP_OBJECT;
+> +		dir =3D IIO_EV_DIR_FALLING;
+> +		break;
+> +	case MCP9600_STATUS_ALERT(MCP9600_ALERT3):
+> +		mod =3D IIO_MOD_TEMP_AMBIENT;
+> +		dir =3D IIO_EV_DIR_RISING;
+> +		break;
+> +	case MCP9600_STATUS_ALERT(MCP9600_ALERT4):
+> +		mod =3D IIO_MOD_TEMP_AMBIENT;
+> +		dir =3D IIO_EV_DIR_FALLING;
+> +		break;
+> +	default:
+> +		return IRQ_HANDLED;
+> +	}
+> +
+> +	iio_push_event(indio_dev,
+> +		       IIO_MOD_EVENT_CODE(IIO_TEMP, 0, mod,
+> +					  IIO_EV_TYPE_THRESH, dir),
+> +		       iio_get_time_ns(indio_dev));
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int mcp9600_probe_alerts(struct iio_dev *indio_dev)
+> +{
+> +	struct mcp9600_data *data =3D iio_priv(indio_dev);
+> +	struct i2c_client *client =3D data->client;
+> +	struct device *dev =3D &client->dev;
+> +	struct fwnode_handle *fwnode =3D dev_fwnode(dev);
+> +	unsigned int irq_type;
+> +	int ret, irq, i;
+> +	u8 val;
+> +
+> +	/*
+> +	 * alert1: hot junction, rising temperature
+> +	 * alert2: hot junction, falling temperature
+> +	 * alert3: cold junction, rising temperature
+> +	 * alert4: cold junction, falling temperature
+> +	 */
+> +	for (i =3D 0; i < MCP9600_ALERT_COUNT; i++) {
+> +		data->irq[i] =3D 0;
+
+All of data is zeroed already so this should not be needed.
+
+> +		mutex_init(&data->lock[i]);
+
+Why per interrupt locks?  Seems unlikely to be a big problem
+to share one.
+
+> +		irq =3D fwnode_irq_get_byname(fwnode, mcp9600_alert_name[i]);
+> +		if (irq <=3D 0)
+> +			continue;
+> +
+> +		val =3D 0;
+> +		irq_type =3D irq_get_trigger_type(irq);
+> +		if (irq_type =3D=3D IRQ_TYPE_EDGE_RISING)
+> +			val |=3D MCP9600_ALERT_CFG_ACTIVE_HIGH;
+> +
+> +		if (i =3D=3D MCP9600_ALERT2 || i =3D=3D MCP9600_ALERT4)
+> +			val |=3D MCP9600_ALERT_CFG_FALLING;
+> +
+> +		if (i =3D=3D MCP9600_ALERT3 || i =3D=3D MCP9600_ALERT4)
+> +			val |=3D MCP9600_ALERT_CFG_COLD_JUNCTION;
+> +
+> +		ret =3D i2c_smbus_write_byte_data(client,
+> +						MCP9600_ALERT_CFG(i + 1),
+> +						val);
+> +		if (ret < 0)
+> +			return ret;
+> +
+> +		ret =3D devm_request_threaded_irq(dev, irq, NULL,
+> +						mcp9600_alert_handler,
+> +						IRQF_ONESHOT, "mcp9600",
+> +						indio_dev);
+> +		if (ret)
+> +			return ret;
+> +
+> +		data->irq[i] =3D irq;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+>  static int mcp9600_probe(struct i2c_client *client)
+>  {
+>  	struct device *dev =3D &client->dev;
+> @@ -109,6 +456,8 @@ static int mcp9600_probe(struct i2c_client *client)
+>  	data =3D iio_priv(indio_dev);
+>  	data->client =3D client;
+> =20
+> +	mcp9600_probe_alerts(indio_dev);
+
+Why no error check?=20
+
+> +
+>  	indio_dev->info =3D &mcp9600_info;
+>  	indio_dev->name =3D "mcp9600";
+>  	indio_dev->modes =3D INDIO_DIRECT_MODE;
+> @@ -140,6 +489,7 @@ static struct i2c_driver mcp9600_driver =3D {
+>  };
+>  module_i2c_driver(mcp9600_driver);
+> =20
+> +MODULE_AUTHOR("Dimitri Fedrau <dima.fedrau@gmail.com>");
+>  MODULE_AUTHOR("Andrew Hepp <andrew.hepp@ahepp.dev>");
+>  MODULE_DESCRIPTION("Microchip MCP9600 thermocouple EMF converter driver"=
+);
+>  MODULE_LICENSE("GPL");
 
 

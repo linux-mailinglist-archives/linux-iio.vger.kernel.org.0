@@ -1,116 +1,175 @@
-Return-Path: <linux-iio+bounces-4824-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4825-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED6D48BC356
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 21:46:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04488BC4B0
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 01:08:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B227B281C0A
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 19:46:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 551F21F2165E
+	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 23:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D68B74427;
-	Sun,  5 May 2024 19:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71B6140367;
+	Sun,  5 May 2024 23:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E4iEXlVw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jt4PHsNP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB4766F06A;
-	Sun,  5 May 2024 19:46:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AD4374CB;
+	Sun,  5 May 2024 23:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714938378; cv=none; b=qycwqr+u2IZYFJX2R0c6D+2wd7dICvVlqarPg/CtDW6tzof0rPUlmjbSvvBfaEtnQrutiTygff8R1sFXXOy3kekBzous67Mtl93IWLcumd/UGGo6r4vF30jWF9YMuCBVKivZvhVTPJ/R7k1t2EYlIiMQOjDsanJwECbQG3mQn+k=
+	t=1714950497; cv=none; b=kbQsuzlPFhuuQmgL/+0+H6A+w4VjfxzYewIELF80G2ngqmMoIKf552ns4FFw29d9MxUZwV0jir9xinqRjkzub9jCTyECQ8G1DWdB6Jf3THWY3mgv6LKSSnYxZiHPwn8igmwN9ItYDBd9JeSSTHQ37newtrrbQV+SVhUnrCCQ2TQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714938378; c=relaxed/simple;
-	bh=0xWVR+hZm1hbLhnVuDoCeCqqADDcUffOxV9wWM5nJTQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FPC7gUBe4DuoBZwMtD4eBrpAIUrlUP8y+stme7myudLiJ1xTmS0B8ZBCsr9TNpmPVOV9uCDdcWi0SvtjzkUD2bCRxh8hC741Efa3r5kGIZ23nG32xi9nTdb2H7oLXqxBa+W98qmvLAW+wa85+U24bpqxmufLBeIx/bLDVb7sCNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E4iEXlVw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27D52C116B1;
-	Sun,  5 May 2024 19:46:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714938378;
-	bh=0xWVR+hZm1hbLhnVuDoCeCqqADDcUffOxV9wWM5nJTQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=E4iEXlVwv03Q1LXj60ldMa3YKet2nlH76YkVFc6V/+H3oTyRcrtr/hnRfT4zgZtUn
-	 PKfGNdrVT/CDB9d63NfQAMPH/ZARA8WyU5wSqWm9r1S1TyBPpBg1njo4jNvwEUf71A
-	 MUKNRGjwhWP4hxiM/x8/vRKT+FMhCH+61w1ktYgp6yZFAlKuABTmEeV52YNJC7Idn9
-	 Xdcp4dPyJchJ9EolLB5C0HK/RK9gsAS62/txGmeFN/dvX+4UWUFFX9gQ/fWRPOO1Kq
-	 yJxkRtbsWW5MN3cRYbzb1uFpYELxY+59/qO91D5lDlskT2dWReVNfK8ch7zd5gINQU
-	 SFdQT2E8h8fcg==
-Date: Sun, 5 May 2024 20:46:02 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Alisa-Dariana Roman <alisadariana@gmail.com>,
- michael.hennerich@analog.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- alexandru.tachici@analog.com, lars@metafoo.de, robh@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- lgirdwood@gmail.com, broonie@kernel.org, andy@kernel.org,
- nuno.sa@analog.com, marcelo.schmitt@analog.com, bigunclemax@gmail.com,
- dlechner@baylibre.com, okan.sahin@analog.com, fr0st61te@gmail.com,
- alisa.roman@analog.com, marcus.folkesson@gmail.com, schnelle@linux.ibm.com,
- liambeguin@gmail.com
-Subject: Re: [PATCH v7 5/6] dt-bindings: iio: adc: ad7192: Add AD7194
- support
-Message-ID: <20240505204602.5d4cbfa0@jic23-huawei>
-In-Reply-To: <20240430-winnings-wrongness-32328ccfe3b5@spud>
-References: <20240430162946.589423-1-alisa.roman@analog.com>
-	<20240430162946.589423-6-alisa.roman@analog.com>
-	<20240430-winnings-wrongness-32328ccfe3b5@spud>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1714950497; c=relaxed/simple;
+	bh=sO1bCtWtZNtX/y3txjwfHuSjDHCzKW6qrmiRBggkaHc=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ao/IMDdchMc2J8T/zFORjEyDTScxmcZ/ge1kgIscUKHebFTja06erE8RnmGl2zvcOcw0L7tKssAyEZqdgufgH3M6rlNwXJGHBvbAvRX5lneYh3iGWhG3LGnL+Oow0hY9Snf1KCDQsjWCof1bjeTAV9GxvHmeVnv9w14mj8q0Ssg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jt4PHsNP; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-572babec735so4654450a12.0;
+        Sun, 05 May 2024 16:08:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1714950494; x=1715555294; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tskK3STwMBeYl+RbxU4+ZeO0SLew6XfkR91Iyt3O2DQ=;
+        b=jt4PHsNPBjvyXGxcI36zkmFAluURyjQT+cf8/o8atcLfJ9YUowORTPxu4IBJXQiKAJ
+         rCSgtdyIJuvDEWt2SO8NB6jfAw+tgXHX/7LZ4S0RKLOHZq8kqRfq4eRyt/0WjP+B6Uhp
+         dSawqV4dCX7wMZQVn8+OeF8NTCJLp+4xPBpWf5QibF+BBFhpvTfDFqje7htkrmUF2UTA
+         RjrzL73tgBf7aKuD09e9i438kmxMQHJOkZZQaU5yjut88PPoEnUES87+O2i+M53IGgis
+         CDUbRVbvLa9omLqT3VQ2LMozN/4eGkNSPFtk7p6I/noz65GrEc0MlP4VMYzTUnZWm5PL
+         lJDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1714950494; x=1715555294;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tskK3STwMBeYl+RbxU4+ZeO0SLew6XfkR91Iyt3O2DQ=;
+        b=WOhCcZFlj/a6HAZNAzWkQnJfaZT/csWNPqLcByaTM0ZUJLkBVPQwwGF+bQlVx5o9Lg
+         g+cLrfo7PFj7+f4z4SZNAzoJmuWywhEbirxLQvEEU1l4I7rc9kcggv5C65urBbBRgeso
+         2nlNUqgEvzmep+Uvn1A4Yi7Whm2x56vNT+c0Mk2ZSGcSmJjIrbDxq9NgpvfgH2MmkPOF
+         eVKkArC6yJdPwOUY91p7PTMAlBkvgz4sDXPbHE8gsKmFN7k3sJ7FMRkvchZVIzO5MCz3
+         luVfb4TdgPY9rJrAJffvlzI81SCtcv7h5Iq0VqNancxP7WKyj6XKnArlH27xGum21aUp
+         QQZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWvkEwkkx5QKhtWPuWY2GiOTOGbAIynquq6LY3KzaP6o+wNM2I71j8P8F2f757yP3ke+j5skKWmK/4r+f8SKPFLzX5tT2vHtYKVJWV2G0GdATho+XH8akKeJ/nQ8KSiu6EX0LV3J+Uf
+X-Gm-Message-State: AOJu0Yw0m8Fzeq019ZWsta3MaGI8ZZs3AxpuXio1Dd3STOXANEOXbpKO
+	cRi6fLNENMLfSJ2FJ5SSOuTwuwVgp1wYgRMkj4iBMFEP3RYLJMwz46JhODk66YI=
+X-Google-Smtp-Source: AGHT+IHgRrQC8tDiAesdZ8UmjbR0R+Uqald3KXZGWxu3bOCU4iH8QjeLsUwa3tDDzCtXQ8r1AN+1aQ==
+X-Received: by 2002:a17:907:7d91:b0:a59:ccc3:544 with SMTP id oz17-20020a1709077d9100b00a59ccc30544mr1246280ejc.2.1714950493898;
+        Sun, 05 May 2024 16:08:13 -0700 (PDT)
+Received: from vamoiridPC ([2a04:ee41:82:7577:7a5f:ec16:256e:4660])
+        by smtp.gmail.com with ESMTPSA id er21-20020a056402449500b005726e5e8765sm4423133edb.3.2024.05.05.16.08.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 05 May 2024 16:08:13 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Mon, 6 May 2024 01:08:11 +0200
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
+	andriy.shevchenko@linux.intel.com, ang.iglesiasg@gmail.com,
+	mazziesaccount@gmail.com, ak@it-klinger.de,
+	petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
+	linus.walleij@linaro.org, semen.protsenko@linaro.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 05/10] iio: pressure: bmp280: Make return values
+ consistent
+Message-ID: <20240505230811.GA17986@vamoiridPC>
+References: <20240429190046.24252-1-vassilisamir@gmail.com>
+ <20240429190046.24252-6-vassilisamir@gmail.com>
+ <20240505200818.1e70c664@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240505200818.1e70c664@jic23-huawei>
 
-On Tue, 30 Apr 2024 18:21:01 +0100
-Conor Dooley <conor@kernel.org> wrote:
-
-> On Tue, Apr 30, 2024 at 07:29:45PM +0300, Alisa-Dariana Roman wrote:
-> > +      diff-channels:
-> > +        description:
-> > +          Both inputs can be connected to pins AIN1 to AIN16 by choosing the
-> > +          appropriate value from 1 to 16.
-> > +        items:
-> > +          minimum: 1
-> > +          maximum: 16
-> > +
-> > +      single-channel:
-> > +        description:
-> > +          Positive input can be connected to pins AIN1 to AIN16 by choosing the
-> > +          appropriate value from 1 to 16. Negative input is connected to AINCOM.
-> > +        items:
-> > +          minimum: 1
-> > +          maximum: 16  
+On Sun, May 05, 2024 at 08:08:18PM +0100, Jonathan Cameron wrote:
+> On Mon, 29 Apr 2024 21:00:41 +0200
+> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 > 
-> Up to 16 differential channels and 16 single-ended channels, but only 16
-> pins? Would the number of differential channels not max out at 8?
+> > Throughout the driver there are quite a few places were return
+> > values are treated as errors if they are negative or not-zero.
+> > This commit tries to make the return values of those functions
+> > consistent and treat them as errors in case there is a negative
+> > value since the vast majority of the functions are returning
+> > erorrs coming from regmap_*() functions.
+> 
+> The changes are fine, but that argument isn't correct.
+> regmap_*() functions never (that I can recall) return positive
+> values, so if (ret) would be valid for those and I'd have expected
+> the exact opposite outcome if you are looking at regmap*() return
+> values to make the decision.
+> 
+> The if (ret) pattern is sometimes used throughout because it
+> makes
+> 	return function()
+> 
+> consistent without needing to do
+> 
+> 	ret = function();
+> 	if (ret < 0)
+> 		return ret;
+> 
+> 	return 0;
+> 
+> That pattern isn't particularly common in this driver (there are few cases).
+> We also tend not to worry too much about that slight inconsistency though
+> in a few cases it has lead to compilers failing to detect that some paths
+> are not possible and reporting false warnings.
+> 
+> However, all arguments about which is 'better' aside, key is that consistency
+> (either choice) is better than a mix.  So I'm fine with ret < 0 on basis
+> it's the most common in this driver being your justification. Just don't
+> blame regmap*() return values!
+> 
 
-May not really be limited to 16 differential. Many chips use general purpose
-muxes on both sides so you can do all combinations. In practice that's normally
-pointless.
+Hi Jonathan!
 
-A more useful case is to do all but one channel as positive inputs and the remaining
-channel as the negative for those 15 differential channels.
-This is effectively the same as doing pseudo differential channels, but
-on more flexible hardware.  This is in contrast to a device that only supports
-pseudo differential where there is a special pin for the negative
-(this device has that as well as full muxes on the other 16 lines).
+Thank you once again for the valueable feedback!
 
-Having said all that.  The ad7194 datasheet says 8 differential channels..
-I have no idea why though... Maybe something to do with the mux switching?
-Or maybe assumption is that if you want to do pseudo differential you'll use
-the pseudo differential mode rather than wasting hardware?
+Of course, if (ret) would be valid for the return values of the regmap_*()
+functions. I was just trying to understand which of the 2 options is more
+widely used in other drivers and I tried to implement that. In general,
+the if (ret) is used 65 times while the if (ret < 0) only 20. So, in
+terms of noise, changing the if (ret < 0) to if (ret) will create less
+noise. I chose the if (ret < 0) because I saw other people using it
+and it felt better in my eyes. I could check if if (ret) applies
+everywhere and update it in the v6.
+ 
+> > 
+> > While at it, add error messages that were not implemented before.
+> > 
+> > Finally, remove any extra error checks that are dead code.
+> 
+> Ideally this would be broken up a little more as, whilst all error
+> code related, these aren't all the same thing.
+> 
+> I'd have preferred:
+> 1) Dead code removal.
+> 2) Message updates.
+> 3) Switch to consistent ret handling.
+> 
+> However it isn't that bad as a single patch, so just address the question
+> above and I think this will be fine as one patch.
+> 
 
-Jonathan
+Since from your comments in the next patches a v6 is for sure, I could split
+this as well!
 
+Cheers,
+Vasilis
 
+> > 
+> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> 
+> Jonathan
 

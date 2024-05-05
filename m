@@ -1,58 +1,60 @@
-Return-Path: <linux-iio+bounces-4809-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4810-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A01438BBFF9
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 12:04:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 615098BBFFF
+	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 12:15:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60F70281AA6
-	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 10:04:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08B211F214B6
+	for <lists+linux-iio@lfdr.de>; Sun,  5 May 2024 10:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF74779D2;
-	Sun,  5 May 2024 10:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA72779E4;
+	Sun,  5 May 2024 10:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lY1V24ma"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tek13VQM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C8D5680;
-	Sun,  5 May 2024 10:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744AC749C;
+	Sun,  5 May 2024 10:15:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714903465; cv=none; b=scw1unVYQK6j7Dl7t/h68p165Cua02usbtEplhckzyfue3iz4vu1VLFUIfgWwzObUdRYO7S2NHtYnqsXnbOnsBwoJTPhWkWzl0cQ6phx32GjSMbahZ9esP8xoN6koOdoRhhEYSdBvb/4zEqGVI4j4Ec7i9Ei+KACC+nVtjOl+hk=
+	t=1714904152; cv=none; b=OAJdQcLcYHYxDbrwfEJbArT7cKJ3g83P7crNOFiE3AG/ZM14vWPiGS75FuGhS7Npf4HxE5BxHc4F4T/SvxJDfJsO8xuzjpNggVo5r9kbeZn5yO62Dm8c9NyoHM6pauCB92eImlWP6eTz+bUx2ZaeCxzsy6uIx7heQ1EmXVuOqkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714903465; c=relaxed/simple;
-	bh=IyOAFf/MqC1uuBz8L2TYQ5f6j8MCCE42y+QHIJNMSUM=;
+	s=arc-20240116; t=1714904152; c=relaxed/simple;
+	bh=0XKn5KyE0UnxNmHj2HHee7Et02H9uYvYyVyAj3MOENs=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nBjEZerN/fogC5k6f2zFI/Hbe7hZau+ivj8eL/uv72jyuO7HvJZMIKZ25TpamC2Oovz8S0esXl+lsH5T7FxrmjnlZZ50rrjIjqrmdv9SaZot/2WigJTyU59qY2qfWu6g1XGPiEPXOmFPcG/jG73FzeLJKPWN2rn8G8FuvtprLuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lY1V24ma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246AAC113CC;
-	Sun,  5 May 2024 10:04:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IdTTyxfnj2sOH5HyKDQZvGqPg9YUrCv/AnIJlk/U0WbT5HshzUEGBNFyPckDXzmxdXy+9q6ITq3kVkPqL2h8yM2R5tqHcAP7QYcVECReh/5gYj5jBU2vqIOzfnECa3qJnng3I5mm6YDykAyrPvL1kfhCeW4u7V6DBku6mUFM5Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tek13VQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B7E4C113CC;
+	Sun,  5 May 2024 10:15:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714903465;
-	bh=IyOAFf/MqC1uuBz8L2TYQ5f6j8MCCE42y+QHIJNMSUM=;
+	s=k20201202; t=1714904152;
+	bh=0XKn5KyE0UnxNmHj2HHee7Et02H9uYvYyVyAj3MOENs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=lY1V24mafr923WZYtUTl0sJEolDj8eF91Mt0U5GG1lzxfcHC7/U+/ftFJJ7gh9JeQ
-	 gFPWSNjzV5FK1WRjk3dzLSyHghvXqSzLIcwfXlhKKmBqoekLb6eyBBhR4qP1rZIGJ0
-	 vMgt4lxTuVDOWCiuVn4R2QtjwIG2WWm5zJGiUF3y2zSSw8R4EyvLpspuOYdfRrnTAa
-	 2tA1omUpdg2f7HW3quyRk7cBsnUXJqkZeT0LskIkkAuKPEeN5ec5kpAe0a+QW/9QtA
-	 yQYSuoGHWMMCVhJSN+s7Fn8Ld49IfnX0lxwp6p4fzGttnHzequEnOhsj25MbPFMn/Y
-	 K8IaBlf3oPKaA==
-Date: Sun, 5 May 2024 11:04:12 +0100
+	b=tek13VQMUAkg9kg+Xdntk+1i6ZClzuyUP+btZLoaRVGzvDqBIdxhRAqtFXVZ7dZXK
+	 MnkPCA+bALied8kiwlZNEmN2KIcUOXL7gknSmuRE3/tvQKugUAHELbGpthsxU4drRm
+	 2Aq8iiSei0b2ONRIpAksfCmilAolxj0XruuwFWFrPPdKH2kF3siQm2EwsnrekPuXYN
+	 TdbYNVeYoXdbTblH9/CzLuMdOKRd8Bx7ul5JfTmHreqkuoimXjVrnazwE2FGkNMqIF
+	 l671OgXhlNmuCx+3gs9nL1wPuLFtJq77chFlZqNAyfNjlI3UUHTeYGAz/YrOzz8J4O
+	 y5VJq9sjDk7qQ==
+Date: Sun, 5 May 2024 11:15:41 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Angelo Dureghello <adureghello@baylibre.com>, lars@metafoo.de,
- Michael.Hennerich@analog.com, nuno.sa@analog.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: dac: fix ad354xr output range
-Message-ID: <20240505110412.0c17cd5e@jic23-huawei>
-In-Reply-To: <e750ac0c-0794-4c48-860b-1f9a1e751813@kernel.org>
-References: <20240503185528.2043127-1-adureghello@baylibre.org>
-	<e750ac0c-0794-4c48-860b-1f9a1e751813@kernel.org>
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Andrew Hepp <andrew.hepp@ahepp.dev>, Marcelo Schmitt
+ <marcelo.schmitt1@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] iio: temperature: mcp9600: set channel2 member
+Message-ID: <20240505111541.13b94920@jic23-huawei>
+In-Reply-To: <20240430122157.GA46332@debian>
+References: <20240430120535.46097-1-dima.fedrau@gmail.com>
+	<20240430120535.46097-2-dima.fedrau@gmail.com>
+	<20240430131102.00005e58@Huawei.com>
+	<20240430122157.GA46332@debian>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,29 +65,83 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 4 May 2024 13:43:07 +0200
-Krzysztof Kozlowski <krzk@kernel.org> wrote:
+On Tue, 30 Apr 2024 14:21:57 +0200
+Dimitri Fedrau <dima.fedrau@gmail.com> wrote:
 
-> On 03/05/2024 20:55, Angelo Dureghello wrote:
-> > From: Angelo Dureghello <adureghello@baylibre.com>
-> > 
-> > Fix output range, as per datasheet must be -2.5 to 7.5.
-> > 
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---  
+> Am Tue, Apr 30, 2024 at 01:11:02PM +0100 schrieb Jonathan Cameron:
+> > On Tue, 30 Apr 2024 14:05:31 +0200
+> > Dimitri Fedrau <dima.fedrau@gmail.com> wrote:
+> >   
+> > > Set channel2 member of channel 0 to IIO_MOD_TEMP_OBJECT and set modified
+> > > member to 1.  
+> > This an ABI change, so needs a strong argument + must be a fix 
+> > rather than an improvement.  So why does this need to change?
+> >  
+> Hi Jonathan,
 > 
-> Acked-by: Krzysztof Kozlowski <krzk@kernel.org>
-> 
-> Best regards,
-> Krzysztof
-> 
-I added a fixes tag to the commit that introduced this doc.
+> I don't know if it is an valid argument but when using tool "iio_info"
+> the temp_object wasn't displayed at all. After adding these two lines
+> the temp_object is displayed. Don't know if it is a problem with the
+> userspace tools.
 
-Applied to the fixes-togreg branch of iio.git.
+Just to check, it displayed not temperature channel for this?
 
-Thanks,
+If you could send the file listing of the appropriate
+/sys/bus/iio/devices/iio\:deviceX/ directory that would be great.
+
+It is possible the tools don't cope with a mixture of modified and unmodified
+channels (without index).  Whilst the ABI docs don't say you can't do this
+it is a rather obscure corner case.
+
+The maping from hotjunction to object isn't totally clear to me.
+Mind you neither is the mapping from cold junction to ambient (that one is
+a bit stronger as the datasheet tables assume
+Cold Junction Temperature == Ambient Temperature.
+
+Example of why I don't like this is object is no obvious if the hotjunction
+is in a gas or liquid.  The object defintion was I think added for infrared
+temperature sensors where you get nothing meaningful without an object to
+emit the infrared.
+
+An alternative would be to provide an index for both channels. Also an ABI
+change, but avoids the object / hot junction issue and I would assume works
+fine with iio_info.
 
 Jonathan
 
+
+
+> 
+> iio_info version: 0.25 (git tag:b6028fde)
+> Libiio version: 0.25 (git tag: b6028fd) backends: local xml ip usb serial
+> 
+> Besides that it eases distinction between the two channels in the last
+> patch, but I think this argument is not strong enough. :)
+> 
+> Best regards,
+> Dimitri
+> 
+> >   
+> > > 
+> > > Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> > > ---
+> > >  drivers/iio/temperature/mcp9600.c | 2 ++
+> > >  1 file changed, 2 insertions(+)
+> > > 
+> > > diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
+> > > index 7a3eef5d5e75..e277edb4ae4b 100644
+> > > --- a/drivers/iio/temperature/mcp9600.c
+> > > +++ b/drivers/iio/temperature/mcp9600.c
+> > > @@ -26,6 +26,8 @@ static const struct iio_chan_spec mcp9600_channels[] = {
+> > >  	{
+> > >  		.type = IIO_TEMP,
+> > >  		.address = MCP9600_HOT_JUNCTION,
+> > > +		.channel2 = IIO_MOD_TEMP_OBJECT,
+> > > +		.modified = 1,
+> > >  		.info_mask_separate =
+> > >  			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+> > >  	},  
+> >   
+> 
 
 

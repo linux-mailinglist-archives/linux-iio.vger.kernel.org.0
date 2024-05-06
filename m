@@ -1,117 +1,142 @@
-Return-Path: <linux-iio+bounces-4851-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4852-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EBA8BD0E8
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 16:59:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EBA98BD0FB
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 17:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84DB4B21695
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 14:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75AA1F21BB8
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 15:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F378153824;
-	Mon,  6 May 2024 14:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62900153BE3;
+	Mon,  6 May 2024 15:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qfEjx5Lu"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="av4sU+M2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E38B153583;
-	Mon,  6 May 2024 14:59:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC5F153583
+	for <linux-iio@vger.kernel.org>; Mon,  6 May 2024 15:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715007564; cv=none; b=g2051KvBELRE822nbQSEGPWdlXP7IELyRehbowa2mwZa8qdv4GFT+LT8Z/1+B89M8XLWig2/AzHyJCsX+PQ6MKLZ10hy+RUpsKyyLaLfQdt9G9HE4ykhJlwwfhxdRnRjJbp7gboq5hUmpbFwxcmZJmFQYcHcLyxfTWhXT8gdWzc=
+	t=1715007865; cv=none; b=BIW57chr+ww53mOp3PJzxwva53aUpkYBYo+aqivoCR6GCD9OdvG9UX3id2tGk/vOAJ0acFiWQp84AamiGx7dcTv8N6eKBrsxKmiXVBA57yd5anGIrQzC7qm4q5WSjpeH5Vzb2PWcvdr9qIru5ouFPwMRa1VykKGZkWbwaXn57CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715007564; c=relaxed/simple;
-	bh=mS7dSTeWCBi5ZyYS09A2fI9maoy49+AMSmPQlxoNqps=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=MQnoqd4eHBI5qsTIuhPp5LiJCu2h6PWCyMf5wO6Z2MgS+H1nJLSny9zKdIEQygzsNeWsnHVjLT6rx32mV3ZmGKKhmhHVMK2MkrYmoNiegEkxLLP5DSSMX9ZBw2JOFonSeDG7lqbxMul50NdQKys3Vd0WoKH+ucpgn4ZFHq3BoS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qfEjx5Lu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC200C4AF66;
-	Mon,  6 May 2024 14:59:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715007563;
-	bh=mS7dSTeWCBi5ZyYS09A2fI9maoy49+AMSmPQlxoNqps=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=qfEjx5LuL6bEffjRxJ3mTsH7wUbsTYK2zv/kCnb0FqyCADylG1X3h4GDctDp87LcN
-	 ho5M7DPB8GVZpQR+W7uuldtRJ1DsWnZaQ2GtECLFCPHuvwtnc3FUeEvH9OXTPIREVH
-	 qhViGMzOF/ROqN7qaUL5xixVYa3AdwK0kkPUBUUUOhtLljgYQyaG6ZcJuGc2kRckiS
-	 JZQIhA4sMuFK07RLGE6kiak3yPV0E1sh7T2zQvYOo5fTScibR6kqMh5ONj43akUL3a
-	 rg9NVNAl3QG/+5macYiqyI0D4Myn5Q4OBdNWjk6lzdU9C9iCQqq5S9q0lTFLSaLImq
-	 fE9uJ5u90f3RA==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Jean Delvare <jdelvare@suse.com>, 
- Guenter Roeck <linux@roeck-us.net>, Jonathan Cameron <jic23@kernel.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
- Support Opensource <support.opensource@diasemi.com>, 
- Cosmin Tanislav <cosmin.tanislav@analog.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Antoniu Miclaus <antoniu.miclaus@analog.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- linux-iio@vger.kernel.org, linux-staging@lists.linux.dev, 
- linux-input@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-In-Reply-To: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
-References: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
-Subject: Re: (subset) [PATCH v2 0/7] regulator: new API for voltage
- reference supplies
-Message-Id: <171500756002.1968386.17290951989557329800.b4-ty@kernel.org>
-Date: Mon, 06 May 2024 23:59:20 +0900
+	s=arc-20240116; t=1715007865; c=relaxed/simple;
+	bh=43qt58Cc+4V7oWJGTmVtsNFw1630vbmzXiVtgfxHZ9s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UtIXzb6glH1u/7kAtFDWZnCcD80oMnTDdlMyRt6FzMljkiXApxOWDnaH+fKbeGaWw5uLZ1FQ6x+z3wRCurU0As8/Kpd/LBTMVw5T/U7QCGW/SbV+49KaflH6DXuwtT0jV1VBHa7ZHdhhPQYyupP9iDD8DVkMzrIrOhM+f9IAFcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=av4sU+M2; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2e060d49f87so15838381fa.0
+        for <linux-iio@vger.kernel.org>; Mon, 06 May 2024 08:04:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715007861; x=1715612661; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BFec+QhZVtPI2j0gseBfhUAnbpkhg51VBLT9XPfNp7Y=;
+        b=av4sU+M2cwLP1+ctSZeFcJ24IEbNCcZhTbr6ujAlMcrSLsr8WSpVSIU+5jnpZE0ziD
+         e7Lkpsg2qMHkfKZYQ1dsCfgLEJw4K0i2qU6rJiCjT27S9aBuKT599LKQaVgcaWhtyEIL
+         bIHXCkfSPao2fLQ95+2LNfB9loFxEjf8teduUxcsVzIPxRhMOChJnXJHXb3W9AsQH6fy
+         LgQvSoGnAcFSSqv/jkdBPKzpZFhP8otH+yDK/KHAHveFgRWHoaDKYMtU41sJA1rTTxVm
+         fKnBbh43TVl0zG/GjFppT8JlRkfEnkjpn6p+Do+dyCORsLjmca9actAmQX6zcKzVs6Me
+         nqMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715007861; x=1715612661;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BFec+QhZVtPI2j0gseBfhUAnbpkhg51VBLT9XPfNp7Y=;
+        b=ve/NV3rELQHfZTfhYhiSDvTYVA/Fwt7DUDqkOpPt6XXvMR2TPUvuKTP4ORrjyfIJ9/
+         /A3gah6clRhBiCxOfAAC0CTjc5ZGsJLDf8F6wAOcxN3A0K5cU4ntjTpq+x5RLxdn0bA3
+         csTkSgFAUuTtc1RhUL4iI8knEHs74nEnk/sG9WF1bNkIO3D3SXzvfs8U0iW5oSxnDNxK
+         JfNoMRIqr9NdHswOB7Z++GprUTMO4svLvl+Xd0VhnHhqiMUmdCkH7xBZ54Cke11iMu1E
+         c41y8S4EFgr5Vbdef/vdV0CldPLVy1KcZ+htgw5GyZN4nvjYTiXKyncTqRp7qHLrGahU
+         046A==
+X-Forwarded-Encrypted: i=1; AJvYcCXGlaVlmlFvRzYJ408zXJM1q5lXi6sh2H7n6xxmemcOm+2pm+lzrHg4SiP8HVC6gsgUuhsPnWRydYORWil4/eR9UKkAHP3oGGs7
+X-Gm-Message-State: AOJu0YwNHJCowMe3G84AJPNTZuY2MoCqYZcJkDUwy3DqZrZtYn8lgvPb
+	/7TX3ehPkERpDy2fXJWhCkaQUPyFjv5KUPwCLrvK/KMvUWkVl0mFU2DOhIWV9Do1oN3A7Ofxb3t
+	hWYrN3hdzVzwpAHMcqgbtO582+D5/PMxbm086Tg==
+X-Google-Smtp-Source: AGHT+IE0vUSq8J6yKmSvaFFAdn6z7ifFbvsSoTCfxPZW/BeGP4Fa/21CucscczMKZdBQTPg58bCo90Wa29WlJdmyQeA=
+X-Received: by 2002:a2e:9a8b:0:b0:2e3:331e:e33d with SMTP id
+ p11-20020a2e9a8b000000b002e3331ee33dmr1247843lji.11.1715007861327; Mon, 06
+ May 2024 08:04:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev
+References: <20240501-adding-new-ad738x-driver-v6-0-3c0741154728@baylibre.com>
+ <20240501-adding-new-ad738x-driver-v6-9-3c0741154728@baylibre.com> <20240506151725.10cf025e@jic23-huawei>
+In-Reply-To: <20240506151725.10cf025e@jic23-huawei>
+From: David Lechner <dlechner@baylibre.com>
+Date: Mon, 6 May 2024 10:04:10 -0500
+Message-ID: <CAMknhBFx-KVPRbm1xmKeU8ZaA7qt_c0_6eiUT-5kqTWVAvf3hw@mail.gmail.com>
+Subject: Re: [PATCH RFC v6 09/10] iio: adc: ad7380: add support for rolling
+ average oversampling mode
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+	Mark Brown <broonie@kernel.org>, kernel test robot <lkp@intel.com>, linux-iio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 29 Apr 2024 18:40:08 -0500, David Lechner wrote:
-> In the IIO subsystem, we noticed a pattern in many drivers where we need
-> to get, enable and get the voltage of a supply that provides a reference
-> voltage. In these cases, we only need the voltage and not a handle to
-> the regulator. Another common pattern is for chips to have an internal
-> reference voltage that is used when an external reference is not
-> available. There are also a few drivers outside of IIO that do the same.
-> 
-> [...]
+On Mon, May 6, 2024 at 9:17=E2=80=AFAM Jonathan Cameron <jic23@kernel.org> =
+wrote:
+>
+> On Wed, 01 May 2024 16:55:42 +0200
+> Julien Stephan <jstephan@baylibre.com> wrote:
+>
+> > Adds support for rolling average oversampling mode.
+> >
+> > Rolling oversampling mode uses a first in, first out (FIFO) buffer of
+> > the most recent samples in the averaging calculation, allowing the ADC
+> > throughput rate and output data rate to stay the same, since we only ne=
+ed
+> > to take only one sample for each new conversion.
+> >
+> > The FIFO length is 8, thus the available oversampling ratios are 1, 2, =
+4, 8
+> > in this mode (vs 1,  2, 4, 8, 16, 32 for the normal average)
+>
+> Ah. I should have read on!
+>
+> >
+> > In order to be able to change the averaging mode, this commit also adds
+> > the new "oversampling_mode" and "oversampling_mode_available" custom
+> > attributes along with the according documentation file in
+> > Documentation/ABI/testing/sysfs-bus-iio-adc-ad7380 since no standard
+> > attributes correspond to this use case.
+>
+> This comes to the comment I stuck in the previous patch.
+>
+> To most people this is not a form of oversampling because the data rate
+> remains unchanged. It's a cheap low pass filter (boxcar) Google pointed m=
+e at:
+> https://dsp.stackexchange.com/questions/9966/what-is-the-cut-off-frequenc=
+y-of-a-moving-average-filter
+>
+> in_voltage_low_pass_3db_frequency would be the most appropriate standard
+> ABI for this if we do treat it as a low pass filter control.
+>
+> I'm not necessarily saying we don't want new ABI for this, but I would
+> like to consider the pros and cons of just using the 3db frequency.
+>
+> So would that work for this part or am I missing something?
+>
 
-Applied to
+I like the idea. But from the link, it looks like the 3dB frequency
+depends on the sampling frequency which is unknown (e.g. could come
+from hrtimer trigger).
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
-
-Thanks!
-
-[1/7] regulator: devres: add API for reference voltage supplies
-      commit: b250c20b64290808aa4b5cc6d68819a7ee28237f
-[2/7] hwmon: (adc128d818) Use devm_regulator_get_enable_read_voltage()
-      commit: cffb8d74bd4e9dd0653c7093c4a5164a72c52b1f
-[3/7] hwmon: (da9052) Use devm_regulator_get_enable_read_voltage()
-      commit: d72fd5228c9f2136a3143daf5c7822140211883a
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+Would it be reasonable to calculate the 3db frequency at the max
+sample rate that the chip allows and just use those numbers?
 

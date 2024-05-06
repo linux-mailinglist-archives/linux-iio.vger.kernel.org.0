@@ -1,63 +1,57 @@
-Return-Path: <linux-iio+bounces-4846-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4847-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E968BD054
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 16:30:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 812B78BD063
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 16:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BD0DB2698A
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 14:30:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21FB71F2148F
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 14:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A703B13D53A;
-	Mon,  6 May 2024 14:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F67D152500;
+	Mon,  6 May 2024 14:35:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qgSUMliR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bMQJ5wAC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BA9D13D8BE;
-	Mon,  6 May 2024 14:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1DF3613D;
+	Mon,  6 May 2024 14:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715005802; cv=none; b=Btp/O0Eowlnz7ZlzDIfp58C3aXUv5Kg3+q2R6bF8NAc6eFSWORmIOnqhBP5nv7Ff32vpbQV/TrISWhfbD4JQkUMr97dyUaCPhluBoXR8cXj68V3DdPTxYFs5N5DVsWUiFhT5AXQwnWv5cUeWo/CQ0S2yHWzb+ZzHiBsSmkj7who=
+	t=1715006140; cv=none; b=QCOyUuvz3Sh9iwGNpcIXSRhZBaVjB6JkwHDgeWYXWLJLrsU906MVvdLBH/jnBKyEpqSVKhwbNpyOmjd4zfHwfOStvAOdvXOTiJJ5Bgt8l5PR8xJdLwpYu5irUvkcs/s2P4muqUDOn8jc9XTLd1TVtFPSsLhCsPPjbVQABen1J9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715005802; c=relaxed/simple;
-	bh=xLyyQsgBKxOS7ju/Z1jQLkPWqUuski82jXjG4sGoz8w=;
+	s=arc-20240116; t=1715006140; c=relaxed/simple;
+	bh=Holytb9LI9/E5M3PKa+GSC5j9DzW8jErOK36mBSw64s=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A6bYYqT74IESSui24NrkTIGh5iCj/6PGQgPSsHt3+8FAef+oMP2UHm1B85NeP1HOhoRFDnOYEF9R/9Q7SqW61vzjAFV/yxgkouYe0VVdn9UBNQoaoaZVAxZQnIlZsrDgKf2ff84Eic4WqaQQcMffIhDuJKPb+jzMMlp8cZMKwgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qgSUMliR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43365C4AF63;
-	Mon,  6 May 2024 14:29:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X34eYmSmUxNvQApBQK/Fqi8tPtCQaC2VtOa7IzWtlcFoszLOSa/SOq8qhDmFBLBtwUxgqJxPYCgOuKbgmtU5oeA659y4gtr7PsbifzvUKd1w/n7w7NNK9Z+ZNj1PGx+znG+D+A0q8pfmGZG87f+ZuDz2kA36AUj+Xp9LK6Lg8Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bMQJ5wAC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 444E4C4AF63;
+	Mon,  6 May 2024 14:35:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715005801;
-	bh=xLyyQsgBKxOS7ju/Z1jQLkPWqUuski82jXjG4sGoz8w=;
+	s=k20201202; t=1715006139;
+	bh=Holytb9LI9/E5M3PKa+GSC5j9DzW8jErOK36mBSw64s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qgSUMliRi/qdlo42bY09VW5dKPEjBw9ldcpgEjzTwevJIj1dfq6O6e1EAFPa+pDrY
-	 FLzUrvwfX3bfROez3MCZBCDoVObk4hzZIIa9HsNMrT8oXLPr5YCmUnox0M87In/P+b
-	 0+dM+vPrwLdcsagU0+j71jO9yQJZ4H2xbmX6lv1AmuhtV38wZOWXuqT7+hPdajtaIq
-	 mLxkoxt2Eh58K6D0Hu7Krf8og2mK7jf7Ur1i7s+Kp2YjlQ98he9GVbRNvWamAubOYp
-	 IH9feVvYL0ZJQ320d01epzTNyiK6mDfO15IWg9oCKsv8Aom2/KqkYxez9K7/WDVxzz
-	 o9mvjAjlEMazg==
-Date: Mon, 6 May 2024 15:29:46 +0100
+	b=bMQJ5wACI3bbtA1T/pInSGitQPQIFJU1egDf/vV7R5rtCMbqW+OsEdO02dROIjB0J
+	 UiK5E/3bbvYReFq7MhwWDKdUjcQGA/iIr3VVXVyaAJs7tqAlMpPZJS6xK8GD1Y6+2e
+	 ZRZFxz2LJtuTUGUhJtdyb5XaEJfUQyWBv5dz9IIhjifkrtAHphhdJ2htgoMbWKy5hj
+	 YZRgHrLSi0Nm8KTSniRG3V66b7zvhrU5hy1AMeUHi8d9Cg1t3vvMJPuEBHqEWm3/fI
+	 nzf5jPDRBo4QShdBMuTdgK97S37GL3+iLtXIjpo5/dfl2yNITojKsxKbVz1y7tlH7T
+	 uHlugMzmPRr2g==
+Date: Mon, 6 May 2024 15:35:28 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Julien Stephan <jstephan@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, kernel test robot <lkp@intel.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC v6 10/10] iio: adc: ad7380: add support for
- resolution boost
-Message-ID: <20240506152946.74f1438c@jic23-huawei>
-In-Reply-To: <20240501-adding-new-ad738x-driver-v6-10-3c0741154728@baylibre.com>
-References: <20240501-adding-new-ad738x-driver-v6-0-3c0741154728@baylibre.com>
-	<20240501-adding-new-ad738x-driver-v6-10-3c0741154728@baylibre.com>
+To: marc.ferland@gmail.com
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Marc Ferland
+ <marc.ferland@sonatest.com>, Nuno Sa <nuno.sa@analog.com>
+Subject: Re: [PATCH v2] iio: dac: ad5592r: fix temperature channel scaling
+ value
+Message-ID: <20240506153528.148d9b18@jic23-huawei>
+In-Reply-To: <20240501150554.1871390-1-marc.ferland@sonatest.com>
+References: <20240501150554.1871390-1-marc.ferland@sonatest.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,156 +62,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 01 May 2024 16:55:43 +0200
-Julien Stephan <jstephan@baylibre.com> wrote:
+On Wed,  1 May 2024 11:05:54 -0400
+marc.ferland@gmail.com wrote:
 
-> ad738x chips are able to use an additional 2 bits of resolution when
-> using oversampling. The 14-bits chips can have up to 16 bits of
-> resolution and the 16-bits chips can have up to 18 bits of resolution.
+> From: Marc Ferland <marc.ferland@sonatest.com>
 > 
-> In order to dynamically allow to enable/disable the resolution boost
-> feature, we have to set iio realbits/storagebits to the maximum per chips.
-> This means that for iio, data will always be on the higher resolution
-> available, and to cope with that we adjust the iio scale and iio offset
-> depending on the resolution boost status.
+> The scale value for the temperature channel is (assuming Vref=2.5 and
+> the datasheet):
 > 
-> The available scales can be displayed using the regular _scale_available
-> attributes and can be set by writing the regular _scale attribute.
-> The available scales depend on the oversampling status.
+>     376.7897513
 > 
-> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> When calculating both val and val2 for the temperature scale we
+> use (3767897513/25) and multiply it by Vref (here I assume 2500mV) to
+> obtain:
 > 
+>   2500 * (3767897513/25) ==> 376789751300
+> 
+> Finally we divide with remainder by 10^9 to get:
+> 
+>     val = 376
+>     val2 = 789751300
+> 
+> However, we return IIO_VAL_INT_PLUS_MICRO (should have been NANO) as
+> the scale type. So when converting the raw temperature value to the
+> 'processed' temperature value we will get (assuming raw=810,
+> offset=-753):
+> 
+>     processed = (raw + offset) * scale_val
+>               = (810 + -753) * 376
+> 	      = 21432
+> 
+>     processed += div((raw + offset) * scale_val2, 10^6)
+>               += div((810 + -753) * 789751300, 10^6)
+> 	      += 45015
+>     ==> 66447
+>     ==> 66.4 Celcius  
+> 
+> instead of the expected 21.5 Celsius.
+> 
+> Fix this issue by changing IIO_VAL_INT_PLUS_MICRO to
+> IIO_VAL_INT_PLUS_NANO.
+> 
+> Signed-off-by: Marc Ferland <marc.ferland@sonatest.com>
++CC Nuno.
+
+Seems obviously correct to me so I'll apply it to the fixes-togreg
+branch of iio.git.  I've been wrong before though so ideally would like
+one of the ADI team to sanity check this.
+
+I'll add the fixes tag as well and mark it for stable. This goes all the
+way back.
+
+Fixes: 56ca9db862bf ("iio: dac: Add support for the AD5592R/AD5593R ADCs/DACs")
+
+
 > ---
+> Change in v2:
+>  - Improve commit message as suggested by Jonathan.
 > 
-> In order to support the resolution boost (additional 2 bits of resolution)
-> we need to set realbits/storagebits to the maximum value i.e :
->   - realbits = 16 + 2 = 18, and storagebits = 32 for 16-bits chips
->   - realbits = 14 + 2 = 16, and storagebits = 16 for 14-bits chips
+>  drivers/iio/dac/ad5592r-base.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> For 14-bits chips this does not have a major impact, but this
-> has the drawback of forcing 16-bits chip users to always use 32-bits
-> words in buffers even if they are not using oversampling and resolution
-> boost. Is there a better way of implementing this? For example
-> implementing dynamic scan_type?
-> 
-> Another issue is the location of the timestamps. I understood the need
-> for ts to be consistent between chips, but right now I do not have a
-> better solution.. I was thinking of maybe adding the timestamps at the
-> beginning? That would imply to change the iio_chan_spec struct and maybe
-> add a iio_push_to_buffers_with_timestamp_first() wrapper function? Is
-> that an option?
-
-Questions discussed in another branch of the thread.
-
-Jonathan
-
-> 
-> Any suggestion would be very much appreciated.
-> ---
->  drivers/iio/adc/ad7380.c | 226 ++++++++++++++++++++++++++++++++++++++++-------
->  1 file changed, 194 insertions(+), 32 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
-> index 7b021bb9cf87..e240098708e9 100644
-> --- a/drivers/iio/adc/ad7380.c
-> +++ b/drivers/iio/adc/ad7380.c
-> @@ -20,6 +20,7 @@
->  #include <linux/err.h>
->  #include <linux/kernel.h>
->  #include <linux/module.h>
-> +#include <linux/units.h>
->  #include <linux/regmap.h>
->  #include <linux/regulator/consumer.h>
->  #include <linux/slab.h>
-> @@ -58,6 +59,8 @@
->  #define AD7380_CONFIG1_CRC_R		BIT(4)
->  #define AD7380_CONFIG1_ALERTEN		BIT(3)
->  #define AD7380_CONFIG1_RES		BIT(2)
-> +#define RESOLUTION_BOOST_DISABLE	0
-> +#define RESOLUTION_BOOST_ENABLE		1
-If the field is defined, the values should be obvious.
-Also you used this as a boolean where simply passing in true
-or false would be less confusing.
-
->  #define AD7380_CONFIG1_REFSEL		BIT(1)
->  #define AD7380_CONFIG1_PMODE		BIT(0)
+> diff --git a/drivers/iio/dac/ad5592r-base.c b/drivers/iio/dac/ad5592r-base.c
+> index 076bc9ecfb49..4763402dbcd6 100644
+> --- a/drivers/iio/dac/ad5592r-base.c
+> +++ b/drivers/iio/dac/ad5592r-base.c
+> @@ -415,7 +415,7 @@ static int ad5592r_read_raw(struct iio_dev *iio_dev,
+>  			s64 tmp = *val * (3767897513LL / 25LL);
+>  			*val = div_s64_rem(tmp, 1000000000LL, val2);
 >  
-> @@ -86,6 +89,14 @@ struct ad7380_chip_info {
->  	const struct ad7380_timing_specs *timing_specs;
->  };
-
-> @@ -259,6 +271,8 @@ struct ad7380_state {
->  	struct spi_device *spi;
->  	unsigned int oversampling_mode;
->  	unsigned int oversampling_ratio;
-> +	unsigned int scales[2][2];
-> +	bool resolution_boost_enable;
->  	struct regmap *regmap;
->  	unsigned int vref_mv;
->  	unsigned int vcm_mv[MAX_NUM_CHANNELS];
-> @@ -270,7 +284,10 @@ struct ad7380_state {
->  	 * As MAX_NUM_CHANNELS is 4 the layout of the structure is the same for all parts
->  	 */
->  	struct {
-> -		u16 raw[MAX_NUM_CHANNELS];
-> +		union {
-> +			u16 u16[MAX_NUM_CHANNELS];
-> +			u32 u32[MAX_NUM_CHANNELS];
-> +		} raw;
+> -			return IIO_VAL_INT_PLUS_MICRO;
+> +			return IIO_VAL_INT_PLUS_NANO;
+>  		}
 >  
->  		s64 ts __aligned(8);
-
-As per earlier comments, roll this timestamp into the union as well
-because it will move around.
-
->  	} scan_data __aligned(IIO_DMA_MINALIGN);
-> @@ -359,23 +376,67 @@ static int ad7380_debugfs_reg_access(struct iio_dev *indio_dev, u32 reg,
->  	unreachable();
->  }
-
->  
-> +static int ad7380_set_resolution_boost(struct iio_dev *indio_dev, bool enable)
-You pass 1 or 0 in here rather than true or false which would make more sense.
-> +{
-> +	struct ad7380_state *st = iio_priv(indio_dev);
-> +	int ret;
-> +
-> +	if (st->resolution_boost_enable == enable)
-> +		return 0;
-> +
-> +	ret = regmap_update_bits(st->regmap, AD7380_REG_ADDR_CONFIG1,
-> +				 AD7380_CONFIG1_RES,
-> +				 FIELD_PREP(AD7380_CONFIG1_RES, enable));
-Mapping true / false to 1 / 0 whilst correct doesn't give particularly readable
-code. So useful to just have an
-	enable ? 1 : 0 
-in there to make the mapping more obvious.
-> +
-> +	if (ret)
-> +		return ret;
-> +
-> +	st->resolution_boost_enable = enable;
-
-Trivial: blank line here.
-
-> +	return 0;
-> +}
->
->  static int ad7380_init(struct ad7380_state *st, struct regulator *vref)
->  {
->  	int ret;
-> @@ -691,12 +849,16 @@ static int ad7380_init(struct ad7380_state *st, struct regulator *vref)
->  	if (ret < 0)
->  		return ret;
->  
-> -	/* Disable oversampling by default.
-> -	 * This is the default value after reset,
-> +	/* Disable oversampling and resolution boost by default.
-
-Follow through from earlier.  Wrong comment syntax + wrap lines nearer 80 chars.
-
-> +	 * This are the default values after reset,
->  	 * so just initialize internal data
->  	 */
+>  		mutex_lock(&st->lock);
+> 
+> base-commit: 98369dccd2f8e16bf4c6621053af7aa4821dcf8e
 
 

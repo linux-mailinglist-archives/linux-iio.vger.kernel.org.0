@@ -1,62 +1,59 @@
-Return-Path: <linux-iio+bounces-4837-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4838-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F0718BCE6F
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 14:50:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F5F8BCE89
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 14:54:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A45B26010
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 12:50:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 650F8B2804F
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 12:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C178443AAD;
-	Mon,  6 May 2024 12:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD3C6D1AE;
+	Mon,  6 May 2024 12:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q7CaRqUK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W1YJjOyR"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED2835280;
-	Mon,  6 May 2024 12:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2373C1DFED;
+	Mon,  6 May 2024 12:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714999822; cv=none; b=K1xZ4mP5EzOTqmwH3sK2GkHq+MhYMuMVQ7ViWmkqENODSYO2jxsBNUNkL45qt4zp/XW4YnL7re7NMrA5/g5ncRxJqj/bGZDTp+AVQJgxyCT/lrrtN5+D8HTM9Dhqk0H5d9c3+Bwu+/RyJ6u2YWvJkF5tgnqz1q8gKDe9xZHBlfI=
+	t=1715000048; cv=none; b=E99Z5NfnCXFd6J6FTRg6W8S0zpzQVXKuroXxIc05/VJ+RrLUo80Y0Rn46wXEtCDXHqtE3uOlrMT5oUTOT2DaILt5PDZ6RMB99/jylXLwCWrYNTJSx1sZ+FH3TgDqksAlhrN46IoL8G8M2g9B6Wpi+v1PGziVxvM4TqTuy00owF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714999822; c=relaxed/simple;
-	bh=gH5EX8v31IKKWG02ARJDY+jbpfB5szxfgpICF1R0z5Q=;
+	s=arc-20240116; t=1715000048; c=relaxed/simple;
+	bh=KUwwyNyJwPPdMeGqoeTUqqEDzql3cEq+MUynSJgDF6s=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LjvotH9ZGLoYgcvMtxw1tcxG2z/bcCaNU5iQIZTy27RgCyBw6LLAsSQoTOI6uzCUnLahxzFSKhlAEuerbtL6GAmmL2V78uItoTsdwVdNjKwE+BhA50xs9RRvQZGoN1QVFVRT+rPwKOSuUBjdeSw16ZHsi7ffgyG09hAHFXV2ihc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q7CaRqUK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A7AC116B1;
-	Mon,  6 May 2024 12:50:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f+Ky/R8Ev2gxFE5AIY/qabYKphvJsLmSh6FmYkvCZtvu/ZpQKC9OwN6mBSafYUGeZCjY46PU+6vQbi5HIfT5i/evMYE9/u6cq8B6q/v2lZP4mYKFaqHPLLYeXBUr/OEpHtikusqJB1yYBEvXmICyJIYP+MNpy2VFjrFUo24XU60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W1YJjOyR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C523C116B1;
+	Mon,  6 May 2024 12:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1714999822;
-	bh=gH5EX8v31IKKWG02ARJDY+jbpfB5szxfgpICF1R0z5Q=;
+	s=k20201202; t=1715000047;
+	bh=KUwwyNyJwPPdMeGqoeTUqqEDzql3cEq+MUynSJgDF6s=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=q7CaRqUKBWaHOY4aLBhLpE6y/nk6SLYueNsm6kBkRo2p6qCYnMN7dCgv//NERYNuD
-	 uB530fyyCqHx4j/yrSiIyp1R+DLpxQxCULrhGPJExIfNDoxDqo9tgEOIdREq/Tu03W
-	 gc+Ha5mt3z6PYmM1gA3PIktMa6pPhv/2xi0WRY+fzZjO2QQxnyY3jY2oohkrBEuiil
-	 dX3SQrEo9u03XKyFbWeGP//DbbrQ+TxNC8fDvqcm1hTkjLnPPGzwTuo1ii2IygeUPm
-	 OjCkSvOV2HA/EqFe8CVUQVQYA5T+dWa2nxNEtsM2sSAs9uID7IK692D/L8BYvKuR2L
-	 s1bS/Ti0li9Bg==
-Date: Mon, 6 May 2024 13:50:10 +0100
+	b=W1YJjOyRny1ZzwTH0HfI8uXikOQ9ax3ni+hVAM+atWu2yCpmAVVH/coidEJZo9qFu
+	 dYZrvsg39skRnjVYB9gyKb5W+w7odcw8WVAoL4IAQhzn11D055spDMDXjZxZbORyvQ
+	 Hr15TjvOvoU/CBHa/WUtUApJXDkSdo+/iDBIkgSswVNc3ftn4rGOfwxsn65i13+tp3
+	 PsT4faH3IUHGxKVbGLKx8UhzABzvi+oc7JKSis4c0x2vyXPng/5KEWpfRLCAGjaSqv
+	 +PggfKnIM3PT8vFRKGfLm/z7W+vmwSbuzjrtFjh4E1pCD/LrEJWmVHc/JcZeMRaG8S
+	 mbK/dy14+s9zg==
+Date: Mon, 6 May 2024 13:53:56 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
- ang.iglesiasg@gmail.com, mazziesaccount@gmail.com, ak@it-klinger.de,
- petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
- linus.walleij@linaro.org, semen.protsenko@linaro.org,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 10/10] iio: pressure: bmp280: Add triggered buffer
- support
-Message-ID: <20240506135010.5f7de250@jic23-huawei>
-In-Reply-To: <20240505235755.GC17986@vamoiridPC>
-References: <20240429190046.24252-1-vassilisamir@gmail.com>
-	<20240429190046.24252-11-vassilisamir@gmail.com>
-	<20240505203456.0c4c0c90@jic23-huawei>
-	<20240505235755.GC17986@vamoiridPC>
+To: Matti Vaittinen <mazziesaccount@gmail.com>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Chenyuan Yang <chenyuan0y@gmail.com>
+Subject: Re: [PATCH v2 0/2] Fix the iio-gts-helpers available times table
+ sorting
+Message-ID: <20240506135356.7babe20f@jic23-huawei>
+In-Reply-To: <11a16488-7f5f-4d53-a091-9cedcab76dc8@gmail.com>
+References: <cover.1714480171.git.mazziesaccount@gmail.com>
+	<20240505185027.18809bfd@jic23-huawei>
+	<11a16488-7f5f-4d53-a091-9cedcab76dc8@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,100 +64,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 6 May 2024 01:57:55 +0200
-Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+On Mon, 6 May 2024 08:09:27 +0300
+Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> On Sun, May 05, 2024 at 08:34:56PM +0100, Jonathan Cameron wrote:
-> > On Mon, 29 Apr 2024 21:00:46 +0200
-> > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> On 5/5/24 20:50, Jonathan Cameron wrote:
+> > On Tue, 30 Apr 2024 15:44:26 +0300
+> > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > >   
-> > > BMP2xx, BME280, BMP3xx, and BMP5xx use continuous buffers for their
-> > > temperature, pressure and humidity readings. This facilitates the
-> > > use of burst/bulk reads in order to acquire data faster. The
-> > > approach is different from the one used in oneshot captures.
-> > > 
-> > > BMP085 & BMP1xx devices use a completely different measurement
-> > > process that is well defined and is used in their buffer_handler().
-> > > 
-> > > Suggested-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>  
-> > Hi Vasileois,
+> >> Fix the available times table sorting in iio-gts-helpers
+> >>
+> >> This series contains a fix and test for the sorting of the available times in
+> >> IIO-gts helpers. Fix was originally developed and posted by Chenyuan Yang.
+> >>
+> >> Revision history:
+> >> 	v1 => v2:
+> >> 	  - Fix the sender for patch 1/2 (Sic!)
+> >> 	  - Fix Co-Developed-by tag (drop this from Chenyuan who
+> >> 	    is the original author)
+> >> 	  - Fix the From: tag as instructed in:
+> >> 	    https://www.kernel.org/doc/html/latest/process/submitting-patches.html  
 > > 
-> > Just one question on this inline. (patches 8 and 9 look good to me)
-> > 
-> > For v6, only need to send the patches that I haven't already applied.
-> > 
-> > Thanks,
-> > 
-> > Jonathan
-> >   
-> > >  
-> > > +static irqreturn_t bmp180_buffer_handler(int irq, void *p)
-> > > +{
-> > > +	struct iio_poll_func *pf = p;
-> > > +	struct iio_dev *indio_dev = pf->indio_dev;
-> > > +	struct bmp280_data *data = iio_priv(indio_dev);
-> > > +	int ret, chan_value;
-> > > +
-> > > +	guard(mutex)(&data->lock);
-> > > +
-> > > +	ret = bmp180_read_temp(data, &chan_value);
-> > > +	if (ret < 0)
-> > > +		return IRQ_HANDLED;
-> > > +
-> > > +	data->sensor_data[1] = chan_value;
-> > > +
-> > > +	ret = bmp180_read_press(data, &chan_value);  
-> > 
-> > So I 'think' that after all the refactoring you end up reading the temperature
-> > twice.  To avoid that you need to pull the read_temp() and read_press()
-> > function implementations here and only do the (currently duplicated) steps once.
-> > 
-> > You seem to have done this for the other case, but missed the bmp180?
-> > Maybe I'm missing some reason it doesn't work for this one!
-> >   
+> > Am I right in thinking this doesn't matter for existing drivers?  
 > 
-> Hi Jonathan!
+> I think this is right. Only couple of in-tree drivers are using these 
+> helpers for now, and all of them sorted the tables already in driver.
 > 
-> So, I didn't miss it. This is an old sensor and in order to get data out, the
-> procedure is much more constrained. As you can see in the datasheet [1] in page
-> 11 there is a well defined process on how to read the data out. It's not
-> possible to make a burst read here. Hence, the strange bmp180_measure() function
-> in order to wait for an EOC before reading the values. Indeed I am reading the
-> temperature 2 times which is not optimal but in order to read both of them I
-> would have to:
+> > As such not high priority for back porting?  
 > 
-> a) either get the temperature out of the bmp180_read_press() function
-> (which would ruin a bit consistency with the other bmpxxx_read_press() functions)
+> The bug is pretty nasty as it causes invalid memory accesses. Hence I'd 
+> like to see this landing in the longterm kernels. It seems to me the GTS 
+> helpers got merged in 6.4, so getting the fix backported to 6.6 might 
+> make sense.
 > 
-> b) make a bmp180_get_sensor_data() which would look like bmp180_get_press() but
-> also gives temperature (which won't look that good).
+> > I'll assume that and queue it up for 6.11. If someone shouts I can pull the fix
+> > forwards, but then we have the mess of chasing the testing in later.  
 > 
-> That's why I didn't touch it. If you think it makes more sense to do it, I can
-> follow one of the 2 approaches, whichever you think would make more sense.
+> I am sorry Jonathan but I'm not quite sure what you mean by "pulling fix 
+> forward", or what is the "mess of chasing the testing in later" :)
 
-Ok. As you say, old sensor so fine to not optimize it. If anyone else cares
-they can do it ;)
+Hmm. That was an odd choice of words :)  I just meant that I could send
+the fix in the first set of fixes after 6.10-rc1 rather than waiting for 6.11.
 
-Jonathan
+For now I'll leave it queued for 6.11 on the basis there are a lot of ways
+a driver writer can cause similar out of bounds accesses and they should
+notice it not working during testing.  So it 'should' not be a problem to
+not rush this in.
 
+J
 > 
-> Cheers,
-> Vasilis
+> > Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+> > to poke at it.  
 > 
-> [1]: https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf
+> Thanks! Appreciate your work as always!
 > 
-> > > +	if (ret < 0)
-> > > +		return IRQ_HANDLED;
-> > > +
-> > > +	data->sensor_data[0] = chan_value;
-> > > +
-> > > +	iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
-> > > +					   iio_get_time_ns(indio_dev));
-> > > +
-> > > +	iio_trigger_notify_done(indio_dev->trig);
-> > > +
-> > > +	return IRQ_HANDLED;
-> > > +}  
+> Yours,
+> 	-- Matti
+> 
 
 

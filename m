@@ -1,51 +1,51 @@
-Return-Path: <linux-iio+bounces-4849-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4850-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CD808BD0B9
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 16:50:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 410018BD0D3
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 16:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEBCE1C22C03
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 14:50:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2A861F217C7
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 14:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C9E15357D;
-	Mon,  6 May 2024 14:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02B3E13CFA5;
+	Mon,  6 May 2024 14:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OGjjNt75"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OfXIi3Mi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5263013E02D
-	for <linux-iio@vger.kernel.org>; Mon,  6 May 2024 14:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83938F66
+	for <linux-iio@vger.kernel.org>; Mon,  6 May 2024 14:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715007018; cv=none; b=ldghXWqpyzMP92z79E9Xo/0mzn55GZI6pfaeChkiCglyFzRj0PJd2uGw7pdoUvTuTtjfzeP63eEzkJ7wWMsoZC871yi+asIJp2waDGKJ7fvlnaH6KcR/uzJH9+4FP+wneam2XVowbccj+n+RkNm+Bc3zKrk9y5w1pjiRU/KA+CI=
+	t=1715007342; cv=none; b=rNpoG/YIzsgn8Ac0DE+N1jHSGGza/G0yO4+IKXNZACsiMnbR3udvtGMvu3lGXKEVJ0Z6+3u0WiC9Wri5fwQKITHe9TaQMA5sC3cMrw8DFn1b+tCelDF/vxqzQtKsw6OXRIXg6H2E+37W16qiOyGkxsSs5BzCl848PFp9XJVv2T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715007018; c=relaxed/simple;
-	bh=D4YBziGFKnwdzummpPGV7VJlJeLYRqipjFn1k5UdSf8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=gsOIW+sGkzsMQ5E1JZrp5aygdy9gUSEY1VpVK4TdrOu8FFuW+0700//ZrUv23sAHnjUKTX79XNUmIUgMiITZQ6HAJrYeDyI84xKqkPz9zRsp+bUr8bloYoX5A3A/IK94AX0jOD6c4h1u/hTmN9mv8purvCmkOpvdhmZiMtUHThw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OGjjNt75; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B3CF0C116B1;
-	Mon,  6 May 2024 14:50:17 +0000 (UTC)
+	s=arc-20240116; t=1715007342; c=relaxed/simple;
+	bh=DX/tIk+jsPa6PLF5rS+UWiW39PRyaqu9HQ3eVd1eKCc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WtEAfi5SObyBcysqfswVqJtQFJ2FcYgCBGWoyK6HJ3WY2MHabZI1E8vg02ZP1zs8UDGr0lpwlJZEIDMvgwe8vPrrYAN6mryymZwYgMmP6Q+B9VQtZBdp12vntCbVNqCgxjR6EPSlg+qqoCTITUF0ceO0vRTXiqvXoQha3cFDLaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OfXIi3Mi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 37722C116B1;
+	Mon,  6 May 2024 14:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715007017;
-	bh=D4YBziGFKnwdzummpPGV7VJlJeLYRqipjFn1k5UdSf8=;
+	s=k20201202; t=1715007342;
+	bh=DX/tIk+jsPa6PLF5rS+UWiW39PRyaqu9HQ3eVd1eKCc=;
 	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=OGjjNt75au28GMPd+nISODM2F9vXqlscDi3P2zdOVHH9WTeJLA7padb9lt9Xdb5j/
-	 f/gNoDKjxMZqEEaXW5zWxQa6frwJB8+iBg6ZH+nTxf7jcXBRcjCTfaoIfmcyZnlzqN
-	 GbPVI1VahdH2axVPeRS18SAB8xESsawEDQNlv6kgSXCOFcGJbTbH1YcaO93+06x2DX
-	 v4tv0aCblLFcVHQbpcY9snx/AD+NijkQXnwWXVGK7htp9q+HNctC9Zmm+YzuoK5Xrr
-	 ydeqa9QY7PM+Pn3PSF0QOPqFUxFkKIT8YYgKxrzlU1R/rZeMsQ5O1g7uYnYWYGm+Mb
-	 vwUc5FoEtdcfA==
+	b=OfXIi3MiHeTWn3S0TGmVvAL7ShYcc6TFgTL9ZRUPl8iUhbkA77fbutfBcP9N9Fl1A
+	 IU+gQldSCjBj4FMELxNtAay20DbZyKkdmCldxf0v6KIv1/t0Fy4uWv7XVG9K15MN2Y
+	 ZKVa/s9ZrvLUFUUuMGWgWD/al9IwFInBrmo86d3I4VC5Xk6SZ8X7wZ3E4E2eh/vCqK
+	 eUYAngbIXCPQMcK7h+BFMXfKcrmMATpbooM965F5xxASL+/OLO//97wsHCY3zI/K0b
+	 gewCCefpukNMZSWqD34PxIlwotq6+pfQ7zv3LdmkUF9Jza0WBZOcEgde5NN7Ei8JDg
+	 67nDJvE2/kTYw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id AC3EBC25B4F;
-	Mon,  6 May 2024 14:50:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 30002C10F16;
+	Mon,  6 May 2024 14:55:42 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Mon, 06 May 2024 16:50:14 +0200
-Subject: [PATCH] iio: adc: adi-axi-adc: make sure DRP is locked on enable
+Date: Mon, 06 May 2024 16:55:37 +0200
+Subject: [PATCH] iio: adc: ad9467: use DMA safe buffer for spi
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -54,20 +54,20 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240506-dev-axi-adc-drp-v1-1-8d6a856f909e@analog.com>
-X-B4-Tracking: v=1; b=H4sIACXuOGYC/x3MQQqAIBBA0avErBswK6OuEi3MmWo2FgohiHdPW
- r7F/xkiB+EIS5Mh8CtRbl/RtQ24y/qTUagatNKDGpVB4hdtErTkkMKDls1OM/XadBPU6gl8SPq
- P61bKB6XYMeVhAAAA
+Message-Id: <20240506-dev-ad9467-dma-v1-1-e5c31b464e8f@analog.com>
+X-B4-Tracking: v=1; b=H4sIAGjvOGYC/x3MTQqAIBBA4avErBtQM6WuEi2kGWsW/aAQgXT3p
+ OW3eK9A5iScYWwKJL4ly3lU6LaBZQvHyihUDUYZq3rlkPjGQIN1HmkP2GltI5Hxi45QoytxlOc
+ fTvP7fsxiP/hgAAAA
 To: linux-iio@vger.kernel.org
 Cc: Lars-Peter Clausen <lars@metafoo.de>, 
  Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+ Jonathan Cameron <jic23@kernel.org>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1715007016; l=2359;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1715007341; l=7669;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=Ou6OWiJZRzymhEsoJAN5Nc0NJCfxBqb9AS935zux47s=;
- b=EjuCIqKrBYcMCu1/Bgb2mPJh6HDKh/ZRkIffuQ9g0cHK6mV5izrEzdegamHNtYKGpVS+CeVcJ
- uVFhR5mP8cND4kC505agItOlG/FOmLQhWMrnxLlTggCmy5symnYoBza
+ bh=yjQ9Kl1CO2VbhiML81IVUgm28c6D981/Lxk8Db/pIek=;
+ b=qnSAAgMAnAPS5lkFzcc2IX6M8ZZvFlEJtAe2Uqv6bWp8Idqblkte1+MymrdLbxNBytaQArBAT
+ KuMHwbL1cwGBPoECCkVfFPSpF6XUwnmzfU3HFpGS0XH0xjoxB0nHS8e
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -77,73 +77,255 @@ Reply-To: nuno.sa@analog.com
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-We enabling the core, make sure DRP (Dynamic Reconfiguration Port)
-is locked. Most of the designs don't really use it but we still get the
-lock bit set. So let's do it all the time so the code is generic.
+Make sure we use a DMA safe buffer (IIO_DMA_MINALIGN) for all the spi
+transfers.
 
-While at it add proper mutex guards as we should not be able to disable
-the core in the middle of enabling it. Also reduce the timeout time to 1
-microsecond as it seems to be enough and goes in line with what we have
-on the similar DAC core (adi-axi-dac).
+Note that as we noe use a shared buffer, lock guards had to be added
+accordingly.
 
+Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/adc/adi-axi-adc.c | 17 ++++++++++++++++-
- 1 file changed, 16 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad9467.c | 87 ++++++++++++++++++++++++------------------------
+ 1 file changed, 44 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
-index 0cf0d81358fd5..782d8813bb43b 100644
---- a/drivers/iio/adc/adi-axi-adc.c
-+++ b/drivers/iio/adc/adi-axi-adc.c
-@@ -42,6 +42,9 @@
- #define ADI_AXI_ADC_REG_CTRL			0x0044
- #define    ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK	BIT(1)
+diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+index e85b763b9ffcb..368546b032891 100644
+--- a/drivers/iio/adc/ad9467.c
++++ b/drivers/iio/adc/ad9467.c
+@@ -141,55 +141,55 @@ struct ad9467_state {
+ 	struct gpio_desc		*pwrdown_gpio;
+ 	/* ensure consistent state obtained on multiple related accesses */
+ 	struct mutex			lock;
++	union {
++		u8 buf[3];
++		u8 tbuf[2];
++		u8 rbuf[1];
++	} __aligned(IIO_DMA_MINALIGN);
+ };
  
-+#define AXI_ADC_DRP_STATUS			0x0074
-+#define   AXI_ADC_DRP_LOCKED			BIT(17)
-+
- /* ADC Channel controls */
- 
- #define ADI_AXI_REG_CHAN_CTRL(c)		(0x0400 + (c) * 0x40)
-@@ -83,14 +86,25 @@ struct adi_axi_adc_state {
- static int axi_adc_enable(struct iio_backend *back)
+-static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
++static int ad9467_spi_read(struct ad9467_state *st, unsigned int reg)
  {
- 	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
-+	unsigned int __val;
+-	unsigned char tbuf[2], rbuf[1];
+ 	int ret;
+ 
+-	tbuf[0] = 0x80 | (reg >> 8);
+-	tbuf[1] = reg & 0xFF;
++	st->tbuf[0] = 0x80 | (reg >> 8);
++	st->tbuf[1] = reg & 0xFF;
+ 
+-	ret = spi_write_then_read(spi,
+-				  tbuf, ARRAY_SIZE(tbuf),
+-				  rbuf, ARRAY_SIZE(rbuf));
++	ret = spi_write_then_read(st->spi, st->tbuf, ARRAY_SIZE(st->tbuf),
++				  st->rbuf, ARRAY_SIZE(st->rbuf));
+ 
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return rbuf[0];
++	return st->rbuf[0];
+ }
+ 
+-static int ad9467_spi_write(struct spi_device *spi, unsigned int reg,
++static int ad9467_spi_write(struct ad9467_state *st, unsigned int reg,
+ 			    unsigned int val)
+ {
+-	unsigned char buf[3];
++	st->buf[0] = reg >> 8;
++	st->buf[1] = reg & 0xFF;
++	st->buf[2] = val;
+ 
+-	buf[0] = reg >> 8;
+-	buf[1] = reg & 0xFF;
+-	buf[2] = val;
+-
+-	return spi_write(spi, buf, ARRAY_SIZE(buf));
++	return spi_write(st->spi, st->buf, ARRAY_SIZE(st->buf));
+ }
+ 
+ static int ad9467_reg_access(struct iio_dev *indio_dev, unsigned int reg,
+ 			     unsigned int writeval, unsigned int *readval)
+ {
+ 	struct ad9467_state *st = iio_priv(indio_dev);
+-	struct spi_device *spi = st->spi;
  	int ret;
  
 +	guard(mutex)(&st->lock);
- 	ret = regmap_set_bits(st->regmap, ADI_AXI_REG_RSTN,
- 			      ADI_AXI_REG_RSTN_MMCM_RSTN);
+ 	if (!readval) {
+-		guard(mutex)(&st->lock);
+-		ret = ad9467_spi_write(spi, reg, writeval);
++		ret = ad9467_spi_write(st, reg, writeval);
+ 		if (ret)
+ 			return ret;
+-		return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
++		return ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
+ 					AN877_ADC_TRANSFER_SYNC);
+ 	}
+ 
+-	ret = ad9467_spi_read(spi, reg);
++	ret = ad9467_spi_read(st, reg);
+ 	if (ret < 0)
+ 		return ret;
+ 	*readval = ret;
+@@ -295,9 +295,11 @@ static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
+ 	unsigned int i, vref_val;
+ 	int ret;
+ 
+-	ret = ad9467_spi_read(st->spi, AN877_ADC_REG_VREF);
+-	if (ret < 0)
+-		return ret;
++	scoped_guard(mutex, &st->lock) {
++		ret = ad9467_spi_read(st, AN877_ADC_REG_VREF);
++		if (ret < 0)
++			return ret;
++	}
+ 
+ 	vref_val = ret & info->vref_mask;
+ 
+@@ -330,31 +332,31 @@ static int ad9467_set_scale(struct ad9467_state *st, int val, int val2)
+ 			continue;
+ 
+ 		guard(mutex)(&st->lock);
+-		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_VREF,
++		ret = ad9467_spi_write(st, AN877_ADC_REG_VREF,
+ 				       info->scale_table[i][1]);
+ 		if (ret < 0)
+ 			return ret;
+ 
+-		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++		return ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
+ 					AN877_ADC_TRANSFER_SYNC);
+ 	}
+ 
+ 	return -EINVAL;
+ }
+ 
+-static int ad9467_outputmode_set(struct spi_device *spi, unsigned int mode)
++static int ad9467_outputmode_set(struct ad9467_state *st, unsigned int mode)
+ {
+ 	int ret;
+ 
+-	ret = ad9467_spi_write(spi, AN877_ADC_REG_OUTPUT_MODE, mode);
++	ret = ad9467_spi_write(st, AN877_ADC_REG_OUTPUT_MODE, mode);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ad9467_spi_write(spi, AN877_ADC_REG_TRANSFER,
++	return ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
+ 				AN877_ADC_TRANSFER_SYNC);
+ }
+ 
+-static int ad9647_calibrate_prepare(const struct ad9467_state *st)
++static int ad9647_calibrate_prepare(struct ad9467_state *st)
+ {
+ 	struct iio_backend_data_fmt data = {
+ 		.enable = false,
+@@ -362,17 +364,17 @@ static int ad9647_calibrate_prepare(const struct ad9467_state *st)
+ 	unsigned int c;
+ 	int ret;
+ 
+-	ret = ad9467_spi_write(st->spi, AN877_ADC_REG_TEST_IO,
++	ret = ad9467_spi_write(st, AN877_ADC_REG_TEST_IO,
+ 			       AN877_ADC_TESTMODE_PN9_SEQ);
  	if (ret)
  		return ret;
  
--	fsleep(10000);
-+	/*
-+	 * Make sure the DRP (Dynamic Reconfiguration Port) is locked. Not all
-+	 * designs really use it but if they don't we still get the lock bit
-+	 * set. So let's do it all the time so the code is generic.
-+	 */
-+	ret = regmap_read_poll_timeout(st->regmap, AXI_ADC_DRP_STATUS, __val,
-+				       __val & AXI_ADC_DRP_LOCKED, 100, 1000);
-+	if (ret)
-+		return ret;
-+
- 	return regmap_set_bits(st->regmap, ADI_AXI_REG_RSTN,
- 			       ADI_AXI_REG_RSTN_RSTN | ADI_AXI_REG_RSTN_MMCM_RSTN);
+-	ret = ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++	ret = ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
+ 			       AN877_ADC_TRANSFER_SYNC);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = ad9467_outputmode_set(st->spi, st->info->default_output_mode);
++	ret = ad9467_outputmode_set(st, st->info->default_output_mode);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -390,7 +392,7 @@ static int ad9647_calibrate_prepare(const struct ad9467_state *st)
+ 	return iio_backend_chan_enable(st->back, 0);
  }
-@@ -99,6 +113,7 @@ static void axi_adc_disable(struct iio_backend *back)
+ 
+-static int ad9647_calibrate_polarity_set(const struct ad9467_state *st,
++static int ad9647_calibrate_polarity_set(struct ad9467_state *st,
+ 					 bool invert)
  {
- 	struct adi_axi_adc_state *st = iio_backend_get_priv(back);
+ 	enum iio_backend_sample_trigger trigger;
+@@ -401,7 +403,7 @@ static int ad9647_calibrate_polarity_set(const struct ad9467_state *st,
+ 		if (invert)
+ 			phase |= AN877_ADC_INVERT_DCO_CLK;
  
-+	guard(mutex)(&st->lock);
- 	regmap_write(st->regmap, ADI_AXI_REG_RSTN, 0);
+-		return ad9467_spi_write(st->spi, AN877_ADC_REG_OUTPUT_PHASE,
++		return ad9467_spi_write(st, AN877_ADC_REG_OUTPUT_PHASE,
+ 					phase);
+ 	}
+ 
+@@ -437,19 +439,18 @@ static unsigned int ad9467_find_optimal_point(const unsigned long *calib_map,
+ 	return cnt;
  }
  
+-static int ad9467_calibrate_apply(const struct ad9467_state *st,
+-				  unsigned int val)
++static int ad9467_calibrate_apply(struct ad9467_state *st, unsigned int val)
+ {
+ 	unsigned int lane;
+ 	int ret;
+ 
+ 	if (st->info->has_dco) {
+-		ret = ad9467_spi_write(st->spi, AN877_ADC_REG_OUTPUT_DELAY,
++		ret = ad9467_spi_write(st, AN877_ADC_REG_OUTPUT_DELAY,
+ 				       val);
+ 		if (ret)
+ 			return ret;
+ 
+-		return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++		return ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
+ 					AN877_ADC_TRANSFER_SYNC);
+ 	}
+ 
+@@ -462,7 +463,7 @@ static int ad9467_calibrate_apply(const struct ad9467_state *st,
+ 	return 0;
+ }
+ 
+-static int ad9647_calibrate_stop(const struct ad9467_state *st)
++static int ad9647_calibrate_stop(struct ad9467_state *st)
+ {
+ 	struct iio_backend_data_fmt data = {
+ 		.sign_extend = true,
+@@ -487,16 +488,16 @@ static int ad9647_calibrate_stop(const struct ad9467_state *st)
+ 	}
+ 
+ 	mode = st->info->default_output_mode | AN877_ADC_OUTPUT_MODE_TWOS_COMPLEMENT;
+-	ret = ad9467_outputmode_set(st->spi, mode);
++	ret = ad9467_outputmode_set(st, mode);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = ad9467_spi_write(st->spi, AN877_ADC_REG_TEST_IO,
++	ret = ad9467_spi_write(st, AN877_ADC_REG_TEST_IO,
+ 			       AN877_ADC_TESTMODE_OFF);
+ 	if (ret)
+ 		return ret;
+ 
+-	return ad9467_spi_write(st->spi, AN877_ADC_REG_TRANSFER,
++	return ad9467_spi_write(st, AN877_ADC_REG_TRANSFER,
+ 			       AN877_ADC_TRANSFER_SYNC);
+ }
+ 
+@@ -846,7 +847,7 @@ static int ad9467_probe(struct spi_device *spi)
+ 	if (ret)
+ 		return ret;
+ 
+-	id = ad9467_spi_read(spi, AN877_ADC_REG_CHIP_ID);
++	id = ad9467_spi_read(st, AN877_ADC_REG_CHIP_ID);
+ 	if (id != st->info->id) {
+ 		dev_err(&spi->dev, "Mismatch CHIP_ID, got 0x%X, expected 0x%X\n",
+ 			id, st->info->id);
 
 ---
 base-commit: 5e3c5871138da700796587aa5f096d39135f9d36
-change-id: 20240506-dev-axi-adc-drp-ae6bd9d32617
+change-id: 20240506-dev-ad9467-dma-3114fdd27c1f
 --
 
 Thanks!

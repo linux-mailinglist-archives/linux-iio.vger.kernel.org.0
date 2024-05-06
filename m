@@ -1,63 +1,65 @@
-Return-Path: <linux-iio+bounces-4844-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4845-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6E0C8BCFD9
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 16:17:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9D578BD011
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 16:23:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72ADB1F22467
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 14:17:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED2AA1C22545
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 14:23:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E6B13CFAD;
-	Mon,  6 May 2024 14:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6602813DB88;
+	Mon,  6 May 2024 14:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vdr3fCqq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCGhf7iC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C4781211;
-	Mon,  6 May 2024 14:17:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207FC13CF8F;
+	Mon,  6 May 2024 14:20:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715005057; cv=none; b=EFoq0w6AmUmrvssClcmnXOyYheJikeXsv834NJtg2R07U4xiEppiAYc02OV1v0pmyaKZeme0MuQESkxzFsvqWGHCF0kB7LXCHHYtp2BkMI/jugb1QpCcIkFikSsul0EJkOBwN8WLz5fGCn7UaaGswwxYP2Lpd+2c9DN9JnQV8I4=
+	t=1715005251; cv=none; b=j2M+joX0lSd3u5TYR7TaED90JEtEFwYEV5f+BgkPL6b45cKUYqBuIVqjFmYCzEPDSI/TSxwzfs34XpDDvS0TbqmRaW1DOY4noa5sCbkzs4q+QztTYA9z3G3l0XVd/KcPP6K1BN1oKcl0tqn1+swhGNdpl997mGjcSzoU77rGggY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715005057; c=relaxed/simple;
-	bh=UT5jdW+jA0vq5ow16r7/+j8BrvIMxmLSzYl2OnPgLWI=;
+	s=arc-20240116; t=1715005251; c=relaxed/simple;
+	bh=v35O4MOv00OkD5Eak0/TAE7hgCKO/FarPLabAISIafg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bIUjqIN4qByhFrbSotp4fyFgd9fjaxzBLNarRYyLjPBLmb+vQiqNQJvjPsu5cxBeYJhRcUj4tMZsYi6P+dIhpaCv3CoQ4tlIWhOgCLn51hETkPMK2+Wqo+SDuezw5iRUfSqbphMdqnOHFt7EJU1+pN4cd7SMv4NhHT1YEaGDpQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vdr3fCqq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555B6C116B1;
-	Mon,  6 May 2024 14:17:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z+tCc8Bkv1d5feRVJFfRvn7H/KVhz9KIK1l7Canu46q+bAyheD4TrrQujAQRq83FkTDN14H0G4aihqjMe2MMe0vzMEwSPif5ExfUnh8ejC4JqPO/CX30asNXVDPpVyrkBj1dufVvchaN8Fqt0RVefsK+i+hiQeGVPFPY5758+5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCGhf7iC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91D5C4AF66;
+	Mon,  6 May 2024 14:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715005057;
-	bh=UT5jdW+jA0vq5ow16r7/+j8BrvIMxmLSzYl2OnPgLWI=;
+	s=k20201202; t=1715005250;
+	bh=v35O4MOv00OkD5Eak0/TAE7hgCKO/FarPLabAISIafg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Vdr3fCqqIm0XrYDO7Hi/mGrr+H0sSZjGFu0Xr/Zfk7TzaFjKZUII1SY4yVsrnavOr
-	 sW06NjOvE0QWOZYkHs9dg8IxKqVUESLNLT73j3KrLYjfNOwzxnqoGADXDIjB6laeNR
-	 bRoaSSgF9RftStvkxRpFhtJcwckfi5uvlM4fu5j0pBQKwf55DNi9l35sMPs4vEG4Sz
-	 6/tl91ZVCYeQEZmC8CfH6gUjqWGJb4ndjuO6ZvlU6MPO6ICb9gkGOnN6SCRnrPXf+a
-	 SrDBT1OkHCeZiv6rYLvUcwDMYeZfErBWdHa2d1zLTPvo0ZNfJp/IeF9EZ5YDKyBpe5
-	 tqH5i6LCYFD+g==
-Date: Mon, 6 May 2024 15:17:25 +0100
+	b=CCGhf7iCvrvdO1ATf+Hxvn2NyWfeqH0aIGOcAknXZEOSrM8DVYC33/kmMwu3Bsrbb
+	 M41McHzwU9v75DbupsIzscvoHNrg8AZ31GjhSraOptdgRK1OjsQbqJ/5iDvgwqtQ6D
+	 m6SUsoS2S0tTJP/bFqMY2v+l4df54sD4OoGYJJ2EvK2OaUzL0Ufs0QcVGuQ7T5xXTJ
+	 JjJ/orAMCuHo1X1IgrzL3JmZRRqbvAqBMy53rXkWlPEe0oULCmuyvElgETpM+HTbqE
+	 CKQuStfTfjutV9VirdqFiIrE7X+F9JqviRCEmRlZ0wG7QU1HUAy9m7FeIAAQ/wvJS8
+	 3rexaZSozQ1nw==
+Date: Mon, 6 May 2024 15:20:39 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Julien Stephan <jstephan@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- David Lechner <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, kernel test robot <lkp@intel.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC v6 09/10] iio: adc: ad7380: add support for rolling
- average oversampling mode
-Message-ID: <20240506151725.10cf025e@jic23-huawei>
-In-Reply-To: <20240501-adding-new-ad738x-driver-v6-9-3c0741154728@baylibre.com>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Julien Stephan <jstephan@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, David Lechner
+ <dlechner@baylibre.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ kernel test robot <lkp@intel.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC v6 10/10] iio: adc: ad7380: add support for
+ resolution boost
+Message-ID: <20240506152022.58794348@jic23-huawei>
+In-Reply-To: <20240506144616.0b90664b@jic23-huawei>
 References: <20240501-adding-new-ad738x-driver-v6-0-3c0741154728@baylibre.com>
-	<20240501-adding-new-ad738x-driver-v6-9-3c0741154728@baylibre.com>
+	<20240501-adding-new-ad738x-driver-v6-10-3c0741154728@baylibre.com>
+	<a04d8015ea1606ce1eca86f7eaaa85a1c1b46d7a.camel@gmail.com>
+	<20240506144616.0b90664b@jic23-huawei>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,139 +67,114 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 01 May 2024 16:55:42 +0200
-Julien Stephan <jstephan@baylibre.com> wrote:
+On Mon, 6 May 2024 14:46:16 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Adds support for rolling average oversampling mode.
-> 
-> Rolling oversampling mode uses a first in, first out (FIFO) buffer of
-> the most recent samples in the averaging calculation, allowing the ADC
-> throughput rate and output data rate to stay the same, since we only need
-> to take only one sample for each new conversion.
-> 
-> The FIFO length is 8, thus the available oversampling ratios are 1, 2, 4, 8
-> in this mode (vs 1,  2, 4, 8, 16, 32 for the normal average)
+> On Mon, 06 May 2024 10:55:46 +0200
+> Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+>=20
+> > On Wed, 2024-05-01 at 16:55 +0200, Julien Stephan wrote: =20
+> > > ad738x chips are able to use an additional 2 bits of resolution when
+> > > using oversampling. The 14-bits chips can have up to 16 bits of
+> > > resolution and the 16-bits chips can have up to 18 bits of resolution.
+> > >=20
+> > > In order to dynamically allow to enable/disable the resolution boost
+> > > feature, we have to set iio realbits/storagebits to the maximum per c=
+hips.
+> > > This means that for iio, data will always be on the higher resolution
+> > > available, and to cope with that we adjust the iio scale and iio offs=
+et
+> > > depending on the resolution boost status.
+> > >=20
+> > > The available scales can be displayed using the regular _scale_availa=
+ble
+> > > attributes and can be set by writing the regular _scale attribute.
+> > > The available scales depend on the oversampling status.
+> > >=20
+> > > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+> > >=20
+> > > ---
+> > >=20
+> > > In order to support the resolution boost (additional 2 bits of resolu=
+tion)
+> > > we need to set realbits/storagebits to the maximum value i.e :
+> > > =C2=A0 - realbits =3D 16 + 2 =3D 18, and storagebits =3D 32 for 16-bi=
+ts chips
+> > > =C2=A0 - realbits =3D 14 + 2 =3D 16, and storagebits =3D 16 for 14-bi=
+ts chips
+> > >=20
+> > > For 14-bits chips this does not have a major impact, but this
+> > > has the drawback of forcing 16-bits chip users to always use 32-bits
+> > > words in buffers even if they are not using oversampling and resoluti=
+on
+> > > boost. Is there a better way of implementing this? For example
+> > > implementing dynamic scan_type?
+> > >    =20
+> >=20
+> > Yeah, I don't think it's that bad in this case. But maybe dynamic scan =
+types is
+> > something we may need at some point yes (or IOW that I would like to se=
+e supported
+> > :)). We do some ADCs (eg: ad4630) where we use questionably use FW prop=
+erties to set
+> > a specific operating mode exactly because we have a different data layo=
+ut (scan
+> > elements) depending on the mode. =20
+>=20
+> Yeah. Fixed scan modes were somewhat of a bad design decision a long time=
+ back.
+> However, the big advantage is that it got people to think hard about whet=
+her it is
+> worth supporting low precision modes. For slow devices it very rarely is =
+and
+> forcing people to make a decision and the advantage we never supported
+> low precision on those parts.
+>=20
+> Having said that there are good reasons for dynamic resolution changing
+> (the main one being the storage case you have here) so I'd be happy to
+> see some patches adding it. It might be easier than I've always thought
+> to bolt on.
+>=20
+> This and inkernel event consumers have been the two significant features
+> where I keep expecting it to happen, but every time people decide they re=
+ally
+> don't care enough to make them work :(
+>=20
+> >   =20
+> > > Another issue is the location of the timestamps. I understood the need
+> > > for ts to be consistent between chips, but right now I do not have a
+> > > better solution.. I was thinking of maybe adding the timestamps at the
+> > > beginning? That would imply to change the iio_chan_spec struct and ma=
+ybe
+> > > add a iio_push_to_buffers_with_timestamp_first() wrapper function? Is
+> > > that an option? =20
+>=20
+> You have lost me on this one.  Why does the timestamp need to be in a con=
+sistent
+> location?  We have lots of drivers where it moves about between different
+> chips they support, or indeed what channels are currently turned on.
+Maybe I now understand this?
+The concern is the structure used for the iio_push_to_buffers_with_timestam=
+p()
+That doesn't need to be a structure and if you look at drivers where it isn=
+'t
+the most common reason is because the timestamp needs to be able to move ar=
+ound.
 
-Ah. I should have read on!
-
-> 
-> In order to be able to change the averaging mode, this commit also adds
-> the new "oversampling_mode" and "oversampling_mode_available" custom
-> attributes along with the according documentation file in
-> Documentation/ABI/testing/sysfs-bus-iio-adc-ad7380 since no standard
-> attributes correspond to this use case.
-
-This comes to the comment I stuck in the previous patch.
-
-To most people this is not a form of oversampling because the data rate
-remains unchanged. It's a cheap low pass filter (boxcar) Google pointed me at:
-https://dsp.stackexchange.com/questions/9966/what-is-the-cut-off-frequency-of-a-moving-average-filter
-
-in_voltage_low_pass_3db_frequency would be the most appropriate standard
-ABI for this if we do treat it as a low pass filter control.
-
-I'm not necessarily saying we don't want new ABI for this, but I would
-like to consider the pros and cons of just using the 3db frequency.
-
-So would that work for this part or am I missing something?
-
-> 
-> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-> ---
->  Documentation/ABI/testing/sysfs-bus-iio-adc-ad7380 |  38 ++++++
->  MAINTAINERS                                        |   1 +
->  drivers/iio/adc/ad7380.c                           | 143 +++++++++++++++++++--
->  3 files changed, 174 insertions(+), 8 deletions(-)
-> 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7380 b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7380
-> new file mode 100644
-> index 000000000000..0a560ef3e32a
-> --- /dev/null
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad7380
-> @@ -0,0 +1,38 @@
-> +What: /sys/bus/iio/devices/iio:deviceX/oversampling_mode
-> +KernelVersion: 6.9
-> +Contact: Michael Hennerich <michael.hennerich@analog.com>
-> +Description:
-> +    Writing this attribute sets the oversampling average mode.
-> +    Reading it, shows the configured mode.
-> +    Available modes can be displayed using the oversampling_mode_available
-> +    attribute.
-> +    When writing this attribute to change the oversampling mode, this will
-> +    have the following side effects:
-Where possible, write ABI docs with the assumption we will generalize
-them in future. Annoyingly the documentation system doesn't allow for
-multiple descriptions. As such, additional information like this doesn't
-belong in the ABI docs.
-
-> +
-> +      - soft reset the ADC to flush the oversampling block and FIFO
-I think this was already picked up on in another review, but my inclination is
-make this something you can't change with the buffer enabled. The results
-will be rather unpredictable anyway and it will simplify the handling a little
-to just block that corner with a claim (or failure to claim) direct mode
-when setting this.
-
-> +
-> +      - the available oversampling ratios depend on the oversampling mode
-> +        configured so to avoid misconfiguration, changing the mode will disable
-> +        the oversampling by setting the ratio to 1.
-
-Better to get a close as possible.  If they've configured it to something we can't
-do then it's user error. If they have picked a value that is still possible then
-allowing that is a nice usability improvement.
-
-> +
-> +      - the list of available ratios (displayed by reading the
-> +        oversampling_ratio_available attribute) will be updated when changing
-> +        the oversampling mode.
-
-In general an ABI element is allowed to modify any other (because this sort of
-chaining is common.)  As such I don't think this needs to be in the ABI docs
-but would be a useful detail to add to a chip specific main document elsewhere.
-
-> +
-> +What: /sys/bus/iio/devices/iio:deviceX/oversampling_mode_available
-> +KernelVersion: 6.9
-> +Contact: Michael Hennerich <michael.hennerich@analog.com>
-> +Description:
-> +    Display the available oversampling average modes. The two available modes
-> +    are "normal" and "rolling" where "normal" average mode is the default one.
-> +
-> +      - normal averaging involves taking a number of samples, adding them
-> +        together, and dividing the result by the number of samples taken.
-> +        This result is then output from the device. The sample data is cleared
-> +        when the process completes. Because we need more samples to output a
-> +        value, the data output rate decrease with the oversampling ratio.
-> +
-> +      - rolling oversampling mode uses a first in, first out (FIFO) buffer of
-> +        the most recent samples in the averaging calculation, allowing the ADC
-> +        throughput rate and output data rate to stay the same, since we only need
-> +        to take only one sample for each new conversion.
-
-If we keep this, I wonder if "moving" or "rolling" is the more common term for this.
-
-
-> +
-> +static IIO_DEVICE_ATTR_RW(oversampling_mode, 0);
-> +static IIO_DEVICE_ATTR_RO(oversampling_mode_available, 0);
-> +
-> +static struct attribute *ad7380_attributes[] = {
-> +	&iio_dev_attr_oversampling_mode.dev_attr.attr,
-> +	&iio_dev_attr_oversampling_mode_available.dev_attr.attr,
-> +	NULL
-> +};
-> +
-> +static const struct attribute_group ad7380_attribute_group = {
-> +	.attrs = ad7380_attributes,
-> +};
-
-Bring the sysfs includes in here rather than in the original driver patch.
-
-Thanks,
+So do something similar here.
 
 Jonathan
+
+>=20
+> I haven't actually looked at the latest code yet, so maybe it will become
+> obvious!
+>=20
+> Jonathan
+>=20
+>=20
+>=20
+
 

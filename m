@@ -1,143 +1,140 @@
-Return-Path: <linux-iio+bounces-4829-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4830-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D06078BC6A3
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 07:09:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B3818BC7B8
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 08:43:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A30FB2126B
-	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 05:09:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 398DF1C210B8
+	for <lists+linux-iio@lfdr.de>; Mon,  6 May 2024 06:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 670EC4644C;
-	Mon,  6 May 2024 05:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7B745948;
+	Mon,  6 May 2024 06:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IdGW7tPw"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="Z4uuakRL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6DF1EB36;
-	Mon,  6 May 2024 05:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0163F9EC
+	for <linux-iio@vger.kernel.org>; Mon,  6 May 2024 06:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1714972172; cv=none; b=F9QiuLmkviE7E/YNkVwzzQ1z5DqrX1rgFnh6Kl0KKmqc3kMh9MOwNJLtmDVqX2v8/Tj6tyCfpIOEzTf3hLmrCR0bxRojHhpS6cYv9wHCJN+6piAJARt3CthZJsUPZwnrZp/SlgX8uNEP0Jkj+pyj8etkW+9FhVhyK6cK/5JjyJg=
+	t=1714977775; cv=none; b=OBU0SjFLg8H85IcNwxiw8WgHIrsqbZs78HHH8BK3qfURp1OjpeXWNXoU3EyHMyYKCgReo5hX6IG927oin66r4o4NrmxkWDvr3YURpAlC2ABB3Nfnu+jTR08ierILESafsrk7Aulf9GfDvz32yVAxvX9CVUO4+kx9lUj+JUxWvXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1714972172; c=relaxed/simple;
-	bh=kh3pjmcgspsFubSCvlFAC12TDbcdkdW7Az3JM3CWzdA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WnZA2aPBdiGoTIDX77k4l+ZQhGnG9pS6JWlapj/hSAN35FvFC7I5Are0v9aGIHgtH93MYP5zXx8jNiMbQ6vJSpSFvJHJ7HhdpY/KOsofUbtsBR2OOQwIYEvzQTa6ov/YduLf03bulJp/NgOUqQdP9MXkiAT4UZgrdQEj2DAe1OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IdGW7tPw; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-51f71e4970bso1677019e87.2;
-        Sun, 05 May 2024 22:09:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1714972169; x=1715576969; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=MWbsGZx/QEaTtUL6O25aBUxket2/6PHkfifn7NTPauM=;
-        b=IdGW7tPwet+7OydmoJHtuZxdw491ehg4aj7vHTNGZkU4JpaBIyBSL0oKbNeWjxiZAv
-         GJ1M541FJBnrPUhRG5nlIVEvlZIYG4IpZFdDd9AczeAvv1CgXINXPjxi1zW1M5fWJWz4
-         BPEiVQjhJCHdWfqdKSvCCXC1/ZM7K5Qb559NFMNxVGyAyyCUpXMsoor5n84aiu4qzAmA
-         fXDLbQmp2hEeslC2PlC1dV+oYFgEjrm3/DLe34tVhUAoW72FReiwYhP9/JBZZNNfFLZr
-         sZ6cKmUot405vFkTWUW/aMTEEHi6/CTdf6deIf2eTMZu4OgNFCrgMlQemykT2aTzFt0s
-         ta8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1714972169; x=1715576969;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MWbsGZx/QEaTtUL6O25aBUxket2/6PHkfifn7NTPauM=;
-        b=xRJ0MWqaBt+AsywvBTWSOXq5GNWuRqEDc1PsbzSWY/9EIPAl+XRPycJ5mfU+ad7EgI
-         T0K8aREmTJrd/dB156VPerG/wVCNbu/5pP5ongrFr8LW4uATCGIJwBXDUbUWzAHE74Dv
-         mNTJlXbc77HR8CvjkSWgmVY9bcdgrZJt7G3RuVICpXf3jhKk45YocgOzpycftZXUHIjA
-         1/eKWVdqkUNCrPqpdRd4xtksVkCex8wxjFg5E34FR1PBBkKCOmxm/++rttVMmeo9LOaT
-         FjYJsuBriCgWM1OH16BBF4LeD8xiXXE7cS5w49WJ6EA2MEpFXYRGEuIuOpVEZ+OSkQo7
-         Pcug==
-X-Forwarded-Encrypted: i=1; AJvYcCUI7Aw5uqK28hVM/kCELlUKDSln34j7QBWiZzxUOudSIYJ/wcsQBmT/zRJJEXC2oiSqOLaFBhZkL8AjyOCNNmuiPgzHQT9x7aVWwNOf50uzIVaVEWnKAHbsJGcENswXRtH90FzQS9ha
-X-Gm-Message-State: AOJu0Yxuv929l/LGLaXx+xJK/G793UsM6xU1ysGxi7elMHQXJKw5b0BZ
-	dDaQvT5B9MGPfUu2k+ncUTiqbz90EPi6xMEpsrhCDcjjd0uf6byR/+0yDg==
-X-Google-Smtp-Source: AGHT+IG9+a1dovRs7qfJ42AfWatHf2uhvZXQ0L4XjfoeXjgYymezBrdcCPX2MgRUpHEcNnuF4JB+CA==
-X-Received: by 2002:a05:6512:3f01:b0:518:bd38:1ed3 with SMTP id y1-20020a0565123f0100b00518bd381ed3mr9224288lfa.53.1714972168404;
-        Sun, 05 May 2024 22:09:28 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd? ([2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd])
-        by smtp.gmail.com with ESMTPSA id y22-20020a196416000000b0051723af85casm1503691lfb.238.2024.05.05.22.09.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 05 May 2024 22:09:27 -0700 (PDT)
-Message-ID: <11a16488-7f5f-4d53-a091-9cedcab76dc8@gmail.com>
-Date: Mon, 6 May 2024 08:09:27 +0300
+	s=arc-20240116; t=1714977775; c=relaxed/simple;
+	bh=nex5O26cUvAvL3ka+pH6k2XQgsIMPgOT9DOa+Q4eIYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kJSQZMtf88kgTXBTAr+WKbVmxeUg/tD+jNDMhtry2ytLNpN8iaf0hUXVIpO3IXeftjIEEnBkeGdXVuXO19GX4IWSQqhQ5eR+MOln2eNCEjBMF5JAXhyUGXblPY5TxgSGDk5sIdz1m0C8fkXxwpVZ3Dka0v9T2X36w8AciS/7LDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=Z4uuakRL; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=nex5
+	O26cUvAvL3ka+pH6k2XQgsIMPgOT9DOa+Q4eIYc=; b=Z4uuakRLyv7KSGYPTT7m
+	MuYfaHe1nqGM17oxgLVuu4q9ChLRtwKKQzYtzoIjPR//VBzkUsIejui5P+3G0X33
+	qhOlKEAmmX+NENH3rMa0iVuVC3fTAFWNIS3AlMMVn4N6FUA3uXJEjmSLVoww1dyv
+	amYnXNi+1INy/AX+1GoqwOQB6XcjJBDC0XIhpUmxgB+rOUrXMFIKSfSiGUw8fHrX
+	+Ko0GXbAAmb0Rk4wtumIpSjhSeXl731BeGtvqQbAAEZTnDYr6PeKiBHp61p18hhP
+	kCvt24ztwGey0itKcRQ8JBiQh5isGyrptcSO+4QNCvvQ/4L2mHHY3kxMDlF79agU
+	RQ==
+Received: (qmail 84243 invoked from network); 6 May 2024 08:42:49 +0200
+Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 6 May 2024 08:42:49 +0200
+X-UD-Smtp-Session: l3s3148p1@olqJYMMX5rMgAwDPXzrfAO1ieDVkyUqz
+Date: Mon, 6 May 2024 08:42:45 +0200
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Wolfram Sang <wsa@kernel.org>, 
+	Peter Rosin <peda@axentia.se>, Peter Korsgaard <peter.korsgaard@barco.com>, 
+	Michael Hennerich <michael.hennerich@analog.com>, Vadim Pasternak <vadimp@nvidia.com>, 
+	Michael Shych <michaelsh@nvidia.com>, Guenter Roeck <linux@roeck-us.net>, 
+	Linus Walleij <linus.walleij@linaro.org>, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Jacopo Mondi <jacopo+renesas@jmondi.org>, Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, "open list:AMD KFD" <dri-devel@lists.freedesktop.org>, 
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
+	linux-media@vger.kernel.org, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH] i2c: mux: Remove class argument from
+ i2c_mux_add_adapter()
+Message-ID: <vu3vfpw24hl6obm7smbgxja2xho4jebg5onehnio5av25vxut5@7oldfkfgrszo>
+Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Andrzej Hajda <andrzej.hajda@intel.com>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman <jonas@kwiboo.se>, 
+	Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, Wolfram Sang <wsa@kernel.org>, 
+	Peter Rosin <peda@axentia.se>, Peter Korsgaard <peter.korsgaard@barco.com>, 
+	Michael Hennerich <michael.hennerich@analog.com>, Vadim Pasternak <vadimp@nvidia.com>, 
+	Michael Shych <michaelsh@nvidia.com>, Guenter Roeck <linux@roeck-us.net>, 
+	Linus Walleij <linus.walleij@linaro.org>, Jonathan Cameron <jic23@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+	Jacopo Mondi <jacopo+renesas@jmondi.org>, Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>, 
+	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>, Rob Herring <robh@kernel.org>, 
+	Saravana Kannan <saravanak@google.com>, "open list:AMD KFD" <dri-devel@lists.freedesktop.org>, 
+	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>, 
+	linux-media@vger.kernel.org, "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+References: <17145dc5-e68e-4566-bedf-251bebe36ebb@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] Fix the iio-gts-helpers available times table
- sorting
-Content-Language: en-US, en-GB
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Chenyuan Yang <chenyuan0y@gmail.com>
-References: <cover.1714480171.git.mazziesaccount@gmail.com>
- <20240505185027.18809bfd@jic23-huawei>
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240505185027.18809bfd@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="cucy77nhppbompf7"
+Content-Disposition: inline
+In-Reply-To: <17145dc5-e68e-4566-bedf-251bebe36ebb@gmail.com>
 
-On 5/5/24 20:50, Jonathan Cameron wrote:
-> On Tue, 30 Apr 2024 15:44:26 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> Fix the available times table sorting in iio-gts-helpers
->>
->> This series contains a fix and test for the sorting of the available times in
->> IIO-gts helpers. Fix was originally developed and posted by Chenyuan Yang.
->>
->> Revision history:
->> 	v1 => v2:
->> 	  - Fix the sender for patch 1/2 (Sic!)
->> 	  - Fix Co-Developed-by tag (drop this from Chenyuan who
->> 	    is the original author)
->> 	  - Fix the From: tag as instructed in:
->> 	    https://www.kernel.org/doc/html/latest/process/submitting-patches.html
-> 
-> Am I right in thinking this doesn't matter for existing drivers?
 
-I think this is right. Only couple of in-tree drivers are using these 
-helpers for now, and all of them sorted the tables already in driver.
+--cucy77nhppbompf7
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> As such not high priority for back porting?
+On Thu, Apr 18, 2024 at 10:55:39PM +0200, Heiner Kallweit wrote:
+> 99a741aa7a2d ("i2c: mux: gpio: remove support for class-based device
+> instantiation") removed the last call to i2c_mux_add_adapter() with a
+> non-null class argument. Therefore the class argument can be removed.
+>=20
+> Note: Class-based device instantiation is a legacy mechanism which
+> shouldn't be used in new code, so we can rule out that this argument
+> may be needed again in the future.
+>=20
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
 
-The bug is pretty nasty as it causes invalid memory accesses. Hence I'd 
-like to see this landing in the longterm kernels. It seems to me the GTS 
-helpers got merged in 6.4, so getting the fix backported to 6.6 might 
-make sense.
+For the record, I will apply this patch once Andi sends me his pull
+request because there is a dependency in there.
 
-> I'll assume that and queue it up for 6.11. If someone shouts I can pull the fix
-> forwards, but then we have the mess of chasing the testing in later.
 
-I am sorry Jonathan but I'm not quite sure what you mean by "pulling fix 
-forward", or what is the "mess of chasing the testing in later" :)
+--cucy77nhppbompf7
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> Applied to the togreg branch of iio.git and pushed out as testing for 0-day
-> to poke at it.
+-----BEGIN PGP SIGNATURE-----
 
-Thanks! Appreciate your work as always!
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmY4e+UACgkQFA3kzBSg
+KbajMQ//Q/eB+kl4FeNpZjryYfjnQ7n7O6UoNwhSom4I8yNSwsKuW11uPlGO2Ykv
+5F/GZy+exfdQ03lNIncbhnFhn+qj4JdtIku4B0HblNyL4tsKdrauWA8FDb21YFgT
+HefvU0OcO1l+mMiPzltii0dvuXs2m3PH/5WCM+n6Sh8lBQUIemGiJrM0yG9OD9en
+6XgXkxzWrEKpAW+Yla5gFGDV5UmAAll4LnOM9rprGITyUzIFoADcl/TcDDFneYkS
+Z1YA/m4ehqKBXgUb8NcLS1yBOf2Eed5aXoHDMxxr03j1NqybJR0RXPLVW2YSwZYU
+R8cfUZcGlUDUlCYQDx9HWMHp4MOiWGGduqVJfiBZobN6pC/m2Os1JNBP0eSt8kNF
+zekrJRHyAGHqS0ehNCFczwERgVwFZ3f+8t0xsuXSTHEwbfjKfvIUTl46L9mvc62X
+ctdf641RagBedgTryHAThhO2SCDxjj9Z6SgUYipo5b8+voaf2yDf9n4dIXhkn1Li
+aU42xlq2DiL03xPumEY7GGUL89z8AnNygp8YlBHcMS+rAIAVn4McvHmj9fmBpkQf
+x10yvP1qUCgj9cq1C4zHT/gycf6tNG8wDutxWFKvHIUH0KPKYGaXRQ8O0+uy3VNy
+qqLtPqBcMyciJtbwDnjAlKNwbPMeWIDZe2qTyd56g7ZAmXrrhBg=
+=crMB
+-----END PGP SIGNATURE-----
 
-Yours,
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+--cucy77nhppbompf7--
 

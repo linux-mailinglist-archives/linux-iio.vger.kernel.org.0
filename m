@@ -1,117 +1,99 @@
-Return-Path: <linux-iio+bounces-4859-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4860-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C96F8BE6BC
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 16:59:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 083488BE777
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 17:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15681F2389B
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 14:59:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B71D3285CF0
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 15:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DCF1649C8;
-	Tue,  7 May 2024 14:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 722381635D5;
+	Tue,  7 May 2024 15:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MaVLuODM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dnJ2d+0Q"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E971A160880;
-	Tue,  7 May 2024 14:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C48014EC79;
+	Tue,  7 May 2024 15:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715093920; cv=none; b=Ay6zG/slMlJ0HtHftXw4emxz2S/cBVu/G8QHl5UlM7Xuret5tGu086fw08P93rovC66J0xDB19Qop4j7fdzRVaDVcVs68uKN0TnofsWaP9yIsDfYKM7y2atUCkgGTnJvMJceL5tGHbhxJ6/bH+lbU04UZLTsIDtyS5G8cjBCz+Y=
+	t=1715095959; cv=none; b=pShRA1iR+G1jbo5R1fGlVi1Krh+RiUbHrojqQoHyeRrryDfhJxXPuor+TCO0G6EGICHVbVSyZsUZjG8CcGmRSWKrtMynPiGUR2c2PCewp8zZj2x+eZxqbL7wJTqzzX6UlAdI4K1R56K2C1ObdkPAZw/LAQ3z7WfzRsM3Qhqwc1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715093920; c=relaxed/simple;
-	bh=gsF49rpRd7cEvtum0swJOWyyH0y73tl9jTA077FL6Qw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=WkZmWT1uKcz6joxxp9htqgUmwPr+stY5SPoe8fFrnyJnCiXE47p+C07Pd9PDfgisl1ivCoAQBPF/LHcrJnSasvFvgNsy9fLiTlt7zZJFd0purUCAjMUPOuVvVLZnZImmpKxojWt7p56dQ+VfwW2nSdLaeNgBI198sHFECBbdo7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MaVLuODM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CF7AC2BBFC;
-	Tue,  7 May 2024 14:58:34 +0000 (UTC)
+	s=arc-20240116; t=1715095959; c=relaxed/simple;
+	bh=Ou2zeBM3QxUvyYDfBrHE0Lbt7oXWCXliKJ4+o7Ci9to=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bsgx3CkUNWPLx5Dxq5dYwAjO8dDUqfH0R3obaAgY3/nmKtegOEaMRUG36LaZkWWgsB5RrUFzBGAY0NXFHihF6h3DoeMG54SvqnQB9rOLNRLOCmRfoanevNJae6XsIfcf6pIuUTa+KtyAwcJbEH/faEavCglm6Urp+Sbl86r+RLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dnJ2d+0Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF870C2BBFC;
+	Tue,  7 May 2024 15:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715093919;
-	bh=gsF49rpRd7cEvtum0swJOWyyH0y73tl9jTA077FL6Qw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=MaVLuODMusqKr76w3NGsb6FBrSHT41EgQOFGJkVyUczjEkAXPgQna4W8w7b/wwfFQ
-	 5oL3ksgUpOuMfg87rkeJsH1wB5H/3Zvk1NP2v0RhmIDoCKyFCLPgunfXC0geT926Bh
-	 Sr405Gd/YESltUsO0+eqj4KSFcOfGe9ekWaAI5u2ac2ddt6kkMKZoeYCQVq8c8S6ZT
-	 xJXqRYZPsHtVAn1W79kR7Jjdj6mV0fCnKv7tohHRHcvF48HMNllnYj970xF64gkrdc
-	 i4i2beZQGR+UOhz4HZ6VK4WeHht+CJZrao9TCcbYRE1Oa41Dat/gCzXRHB+Owtoree
-	 rsyRcFRfahf6A==
-From: Mark Brown <broonie@kernel.org>
-To: Liam Girdwood <lgirdwood@gmail.com>, Jean Delvare <jdelvare@suse.com>, 
- Guenter Roeck <linux@roeck-us.net>, Jonathan Cameron <jic23@kernel.org>, 
- Dmitry Torokhov <dmitry.torokhov@gmail.com>, 
- David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, 
- Support Opensource <support.opensource@diasemi.com>, 
- Cosmin Tanislav <cosmin.tanislav@analog.com>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Antoniu Miclaus <antoniu.miclaus@analog.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org, 
- linux-iio@vger.kernel.org, linux-staging@lists.linux.dev, 
- linux-input@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>
-In-Reply-To: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
-References: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
-Subject: Re: (subset) [PATCH v2 0/7] regulator: new API for voltage
- reference supplies
-Message-Id: <171509391425.1991000.13525667517853877249.b4-ty@kernel.org>
-Date: Tue, 07 May 2024 23:58:34 +0900
+	s=k20201202; t=1715095958;
+	bh=Ou2zeBM3QxUvyYDfBrHE0Lbt7oXWCXliKJ4+o7Ci9to=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dnJ2d+0Q5PTpw7KYJRs0p4OfwojxugEtKjGqEiVP+ZafwLPzBsp/kkR7pKhFV2vX0
+	 EVKe2uQhW2d7vPlarApQ6fAN5NDmDHnlQKorVNCpEJv5Gc/wy4EhCi7za0xMljzyMW
+	 rbYunMzgb6wJakhWt7ROf0nDey+vv9F7cRVp3XeLs0xSDe2duscxyGc4xxekE6pMA+
+	 utxaU66zgNIj4R+X7liz/JtdIsZM59iT3fz/rwx3DL0XhpEXt0cSI0g/pe05goS1Ot
+	 g3st1q6c8yTf7Ai/EJzVWWo7LGOvNCga26PkRoVdHYeekIEmKrcsAYq3QcdBuHuS2H
+	 ul3JyjppYvTDQ==
+Date: Tue, 7 May 2024 16:32:34 +0100
+From: Conor Dooley <conor@kernel.org>
+To: =?iso-8859-1?B?QmFybmFi4XMgQ3rpbeFu?= <trabarni@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+	Danila Tikhonov <danila@jiaxyga.com>
+Subject: Re: [PATCH v2 2/2] dt-bindings: iio: imu: bmi160: add bmi120
+Message-ID: <20240507-throwing-squealing-606f5d8ebd5b@spud>
+References: <20240504-bmi120-v2-0-3b3ce6e1c3c6@gmail.com>
+ <20240504-bmi120-v2-2-3b3ce6e1c3c6@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14-dev
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="zHUfXpDt/8/b/n3m"
+Content-Disposition: inline
+In-Reply-To: <20240504-bmi120-v2-2-3b3ce6e1c3c6@gmail.com>
 
-On Mon, 29 Apr 2024 18:40:08 -0500, David Lechner wrote:
-> In the IIO subsystem, we noticed a pattern in many drivers where we need
-> to get, enable and get the voltage of a supply that provides a reference
-> voltage. In these cases, we only need the voltage and not a handle to
-> the regulator. Another common pattern is for chips to have an internal
-> reference voltage that is used when an external reference is not
-> available. There are also a few drivers outside of IIO that do the same.
-> 
-> [...]
 
-Applied to
+--zHUfXpDt/8/b/n3m
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/regulator.git for-next
+On Sat, May 04, 2024 at 02:59:49PM +0200, Barnab=E1s Cz=E9m=E1n wrote:
+> From: Danila Tikhonov <danila@jiaxyga.com>
+>=20
+> Document bosch,bmi120 compatible.
+>=20
+> Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
+> Signed-off-by: Barnb=E1s Cz=E9m=E1n <trabarni@gmail.com>
 
-Thanks!
-
-[4/7] iio: addac: ad74115: Use devm_regulator_get_enable_read_voltage()
-      commit: 41b94bc6d96b9b046ef08114f057dcc6c52e28b6
-[5/7] iio: frequency: admv1013: Use devm_regulator_get_enable_read_voltage()
-      commit: 2f4bb1fa758abf4f5ee5a70ea7c2b1b8c8f7625d
-[6/7] staging: iio: impedance-analyzer: ad5933: Use devm_regulator_get_enable_read_voltage()
-      commit: 9fcf6ef3e10b9fc605d84802058c0f30517bbaa7
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
 
 Thanks,
-Mark
+Conor.
 
+--zHUfXpDt/8/b/n3m
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZjpJkgAKCRB4tDGHoIJi
+0jUqAP0bwMEV57V9wdleYT2GDt/j5RfTV6A931H8hMgz361SnQEAv05YU6fqSPgW
++dE5egZOrmdLdi8JDxwv9aNb3d/qoAE=
+=taDr
+-----END PGP SIGNATURE-----
+
+--zHUfXpDt/8/b/n3m--
 

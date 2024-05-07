@@ -1,117 +1,151 @@
-Return-Path: <linux-iio+bounces-4866-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4867-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9BBD8BEEC5
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 23:16:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 514838BEEF2
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 23:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A13D51F240B7
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 21:16:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FAF7B2230D
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 21:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6A973539;
-	Tue,  7 May 2024 21:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569E575818;
+	Tue,  7 May 2024 21:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hW4YYgwR"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tlppkD/7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886842746B;
-	Tue,  7 May 2024 21:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3D3745E4
+	for <linux-iio@vger.kernel.org>; Tue,  7 May 2024 21:43:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715116559; cv=none; b=DfcKB43KsGAYh2GpcnoTP1uXLl0liY+NgUOF6I/dze5MFm9ZjAgNBDVeRCiA13o9Z8hD1HhI7vTUAURMccIxij+s0Lnagx9yMYT1Udl3MZSas/M2gXdw65iz42c/ygLE8Wj1luLywHsKjAVhTg4QrX2CuEeJ9JHhkuUSpuMgyD4=
+	t=1715118214; cv=none; b=Yws946AFpXkKpdBe+lQk5/YZqVtdAyvzxSTmI/CV8en3fVfepP5VlKe65FjEoke6sKZlM5xr8s934E6j92rXJRMiUU6x7SrYnyqDBvvTr4dIOK5QFjcADmPJ3fMg7cQw7jUVvkthpkxMKqcOaHQflfaTj5Flu64wVLZesKiji/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715116559; c=relaxed/simple;
-	bh=goUkuLckbYtMinqNxuCVrvPMEnCgp7dtnW5xcRA5XCY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PHZdvjroxPTI4aZp/Xt+nvZTd2Sk/0H9vTuvFcsWoOtB1c5k/Q9AILXIQFUzQHKFevthlqNBYba+El/j0dSnzqsesZzxV0OjNRyRjMJCqae+me8PrJ1KGr6c3Y+KZRXKWFa6JGhH6HCgfMmu4QkFqlULi62KbG7SBLWaitYhSdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hW4YYgwR; arc=none smtp.client-ip=209.85.128.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-6181d032bf9so35382707b3.3;
-        Tue, 07 May 2024 14:15:57 -0700 (PDT)
+	s=arc-20240116; t=1715118214; c=relaxed/simple;
+	bh=mh2FEnFIN9JQ/UIdNq/amsZYL/uuVp0D7pjlXxLGvMo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jrcM3fMiT47XEZ4hODdrjUq+gxOB/M3RZy1e+Hk5ozG2ioQa6MM9yiD/+4rm4bFxGXM5OMDC7PR0d2PFC2L3RMfHQOYlHq/l8qcO/79lnCLmnRtRFz1H7APh2cBFvvOGd+CxRh2z5+4IcquN4o12u6YUJHY/0yaCeNPmenXfnTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tlppkD/7; arc=none smtp.client-ip=209.85.208.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2e3e1ad0b19so21946391fa.0
+        for <linux-iio@vger.kernel.org>; Tue, 07 May 2024 14:43:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715116556; x=1715721356; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mYeGMToteaskIs6sMPrkW/JKjEbgC3kWhMUNPICMUpk=;
-        b=hW4YYgwRIZ5ICwtN0PsY/dE7VDSGa5C46FAZQCZrjcuOFdiIUNV70rYS31wdJzTTRR
-         LGDUDvnOj1AlDNr18INE36Omcxfzh/0GuKrKE7SnzMnz8f9JJuz2Pc1Ky3Z3+vxXRGud
-         dHxs3u10wE87d0vKF2+63vFf/9dCNi2vWdKgQzy8HuWMCcsUWUILzzBYd7eWwknof3zw
-         WJcyCW6PCVs02szeK/bYtTab490bl/6wiGZ8sEecP/85ZYMyI11xzapV4cuVdIMdG/iW
-         wyoGrSQIdfVut1uxsF3/+Jb5R+MBtJEhQaAUoDYYvIliAl0xEOgfIiPfYwWJXWPoyPA2
-         p51A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715116556; x=1715721356;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715118209; x=1715723009; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mYeGMToteaskIs6sMPrkW/JKjEbgC3kWhMUNPICMUpk=;
-        b=YmKLOIlfCvhI4PU7GB0R9tG3DAaA1M/ZWP3+i7lKFcroF4CSdhL0/0rC8gM2WuevmI
-         QpRfSgrcQ+o3rCi3Bz37iCKKWIBXIS8DrygBa6yE4ib8xJ3WTPOZndw2KZ+Ss+nLjDMj
-         f1ayK2xeq75t6FKObMexn2WxedYbhr6PbPD/4xME0bwoRpel6ik+6XqOvqeXHhUaZkGP
-         VhXWkQCQA3yWQ9vyYrQiYmVMg+nipEhNUjR7YUkB+bnmmksfUyF6VMxLicRX5qGNJBkv
-         tZ6oKh8amsCzwoKwoBHj0DA0n3rMUC3rPKsvd3LG33jxzdsoFDAvoiwFntOky1sivM+g
-         trHg==
-X-Forwarded-Encrypted: i=1; AJvYcCX+VXSNQWR6vjfy3/2zkbVKUbfBfLh4b7HyuPFc/gDAFZDIp0lk8y2KfDSiVcyOmarO22CP8iklghBH8IDAlDzQinethtZxVuKdhLnWHgyTnlPf6ct0mEUDS7sSy0PgiGs6juP13jWodjGRSGDVHfoNBuITa7q0m8vxC+JFGyJyDCVnkbejGOLGecgthreNKdROcIB/8aawR5qz0Lvl9cERYL9oIzPLpQALC0rfQWGyRwrBC8kT3Z/6FPJtQA==
-X-Gm-Message-State: AOJu0YxwNVTzm6F5l4ZZ5yWBMMo6Z57o/mDQ+PTj8kU69EYQEGiIGZFT
-	uhUy8p6/cm7bjkPELOBXBIACt8ENzLJbasLFsfq+Q1Bk/IEhyKQb
-X-Google-Smtp-Source: AGHT+IGkf8neUX4Td3fdf5viAkv7QSY2fzH2N80z+lW4vEfVjVZop7l7kDw3wXLDKTTm9Ao1ryNEdw==
-X-Received: by 2002:a05:690c:3603:b0:61b:1718:7302 with SMTP id 00721157ae682-62086299e20mr10077027b3.31.1715116556362;
-        Tue, 07 May 2024 14:15:56 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:e3c:6631:2efa:fee2])
-        by smtp.gmail.com with ESMTPSA id u70-20020a0deb49000000b00618876dc75fsm2879497ywe.27.2024.05.07.14.15.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 May 2024 14:15:56 -0700 (PDT)
-Date: Tue, 7 May 2024 14:15:52 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Support Opensource <support.opensource@diasemi.com>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Antoniu Miclaus <antoniu.miclaus@analog.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-hwmon@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-staging@lists.linux.dev, linux-input@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v2 7/7] Input: mpr121: Use
- devm_regulator_get_enable_read_voltage()
-Message-ID: <ZjqaCHUc7PlbKDCK@google.com>
-References: <20240429-regulator-get-enable-get-votlage-v2-0-b1f11ab766c1@baylibre.com>
- <20240429-regulator-get-enable-get-votlage-v2-7-b1f11ab766c1@baylibre.com>
+        bh=NyAEj4trsf106C373mKnquVnwuGp8XMYAfGirP9Fmts=;
+        b=tlppkD/7mJRpV4xxgFqdN4UMSgnS2Ifm7ePqzyVq9GuCmWl8Y/zKtaP1+NWOlJz3o7
+         LThltT1IcftMxoFquESwKfuMwkJaV5iJZLe/vwoNlS54NXIcglypc/w4Zk7XFkEwElOG
+         pzWVmlOUzz/EQVttDe/uWvj+PMgNX/cpfiaW/H9/8qgXWIhHos23r6AYp/4C0V2bq8iO
+         8do3Jhht8IkG6SSouG94nL4GBtYQVvn63cbe3PkYsmowhvr5ITC+PiDRAwmZ2EjJARIC
+         RFazgr5xQuTuyf7gvHir6enzdylDQcKoETirggqhVFvM3eZh3Lbpj+Wy2NkpfMueL+Xd
+         /Gqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715118209; x=1715723009;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NyAEj4trsf106C373mKnquVnwuGp8XMYAfGirP9Fmts=;
+        b=qVcxtaf9RjCGwSRBcCq0DamAsgEG5Nj1gFtQp2svhifM5yu0nt7sUIvRFWwCXZwIAd
+         naI4N6uIVhIxDqcPOVWh76awHPUfDZ10tmk6IOb0JjfPbFwMhAHVpeHFZAZEb8tNw2uJ
+         vTbPPuUlsNTwPBi1K9ywMWU5Jq4s+kxD9zP2SVli1MIyaMcerCS/An3X+QrzbqZd2VFA
+         cTPTVUDxNBcUIX7zJ5jJxesuvl1jku1FP5SReyLdukmWcStHSyjX78BJkHF+xvBKv9Hm
+         2f0yYfr/lR5s2mRQD5NN+6JdukToDsPrYw1bVunX/iVh2D8Rsyr14mSYckXqiisP+2aZ
+         tZqA==
+X-Gm-Message-State: AOJu0Yx+mFP23K9M8BQnRTfhnYdtww9Ya/XnfieYxyr+FaYEMu2BBVnW
+	BXq3T/yfThNk9OuO+zLuC+aS94jqNwBQwMtCg3mA1QXUHpOlAUzGy0BkOt7PvuOnipgGeTu8Zjn
+	nKGYTkS2rNLUBz5nIhsPnnu9yRjDfduznV4MtFA==
+X-Google-Smtp-Source: AGHT+IFkTAeasJ7o/puO72sjy2GQ1su+mSjOHqpiHj0Xjj7kstnmpZh5piHYs40zLfMcP/mWwyF8g2epovPoK9zSR2A=
+X-Received: by 2002:a2e:82cf:0:b0:2e0:3f37:5af1 with SMTP id
+ 38308e7fff4ca-2e4475a1420mr3964731fa.33.1715118209451; Tue, 07 May 2024
+ 14:43:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240429-regulator-get-enable-get-votlage-v2-7-b1f11ab766c1@baylibre.com>
+References: <20240506-dev-ad9467-dma-v1-1-e5c31b464e8f@analog.com>
+In-Reply-To: <20240506-dev-ad9467-dma-v1-1-e5c31b464e8f@analog.com>
+From: David Lechner <dlechner@baylibre.com>
+Date: Tue, 7 May 2024 16:43:18 -0500
+Message-ID: <CAMknhBHf5f_z9iG89sfHOZ5F_q+Ho+zKDXA0M10U3BBMuSUh0w@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: ad9467: use DMA safe buffer for spi
+To: nuno.sa@analog.com
+Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 29, 2024 at 06:40:15PM -0500, David Lechner wrote:
-> We can reduce boilerplate code by using
-> devm_regulator_get_enable_read_voltage().
-> 
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+On Mon, May 6, 2024 at 9:55=E2=80=AFAM Nuno Sa via B4 Relay
+<devnull+nuno.sa.analog.com@kernel.org> wrote:
+>
+> From: Nuno Sa <nuno.sa@analog.com>
+>
+> Make sure we use a DMA safe buffer (IIO_DMA_MINALIGN) for all the spi
+> transfers.
+>
+> Note that as we noe use a shared buffer, lock guards had to be added
 
-Acked-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+s/noe/now
 
-Mark, maybe you will pick up this one as well?
+> accordingly.
+>
+> Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> ---
+>  drivers/iio/adc/ad9467.c | 87 ++++++++++++++++++++++++------------------=
+------
+>  1 file changed, 44 insertions(+), 43 deletions(-)
+>
+> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
+> index e85b763b9ffcb..368546b032891 100644
+> --- a/drivers/iio/adc/ad9467.c
+> +++ b/drivers/iio/adc/ad9467.c
+> @@ -141,55 +141,55 @@ struct ad9467_state {
+>         struct gpio_desc                *pwrdown_gpio;
+>         /* ensure consistent state obtained on multiple related accesses =
+*/
+>         struct mutex                    lock;
+> +       union {
+> +               u8 buf[3];
+> +               u8 tbuf[2];
+> +               u8 rbuf[1];
+> +       } __aligned(IIO_DMA_MINALIGN);
+>  };
+>
+> -static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
+> +static int ad9467_spi_read(struct ad9467_state *st, unsigned int reg)
+>  {
+> -       unsigned char tbuf[2], rbuf[1];
+>         int ret;
+>
+> -       tbuf[0] =3D 0x80 | (reg >> 8);
+> -       tbuf[1] =3D reg & 0xFF;
+> +       st->tbuf[0] =3D 0x80 | (reg >> 8);
+> +       st->tbuf[1] =3D reg & 0xFF;
+>
+> -       ret =3D spi_write_then_read(spi,
+> -                                 tbuf, ARRAY_SIZE(tbuf),
+> -                                 rbuf, ARRAY_SIZE(rbuf));
+> +       ret =3D spi_write_then_read(st->spi, st->tbuf, ARRAY_SIZE(st->tbu=
+f),
+> +                                 st->rbuf, ARRAY_SIZE(st->rbuf));
 
-Thanks.
+spi_write_then_read() copies the buffers, so technically we don't need
+to change this one.
 
--- 
-Dmitry
+>
+>         if (ret < 0)
+>                 return ret;
+>
+> -       return rbuf[0];
+> +       return st->rbuf[0];
+>  }
+>
 

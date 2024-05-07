@@ -1,151 +1,125 @@
-Return-Path: <linux-iio+bounces-4867-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4868-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 514838BEEF2
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 23:43:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5FA8BEF37
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 23:50:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FAF7B2230D
-	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 21:43:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA8711F25858
+	for <lists+linux-iio@lfdr.de>; Tue,  7 May 2024 21:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569E575818;
-	Tue,  7 May 2024 21:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A017914B97F;
+	Tue,  7 May 2024 21:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tlppkD/7"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="TUCl5EAO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3D3745E4
-	for <linux-iio@vger.kernel.org>; Tue,  7 May 2024 21:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B912018732F
+	for <linux-iio@vger.kernel.org>; Tue,  7 May 2024 21:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715118214; cv=none; b=Yws946AFpXkKpdBe+lQk5/YZqVtdAyvzxSTmI/CV8en3fVfepP5VlKe65FjEoke6sKZlM5xr8s934E6j92rXJRMiUU6x7SrYnyqDBvvTr4dIOK5QFjcADmPJ3fMg7cQw7jUVvkthpkxMKqcOaHQflfaTj5Flu64wVLZesKiji/Y=
+	t=1715118630; cv=none; b=SkAs5NBvEy43x21/JpIpTgI3+cUB53Uh6UOdR2HL5CVwfenTtsHH26Os2PQM7LZdPj2p1MChX+azvO042PN4edKcc5QUDD+y97+BKzGFTTXTL6G7WdNhbZ4XACKv2lExc+oYZh+BOD7WniYc2KMNtbY3voxMW91Cvop8pDGbwg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715118214; c=relaxed/simple;
-	bh=mh2FEnFIN9JQ/UIdNq/amsZYL/uuVp0D7pjlXxLGvMo=;
+	s=arc-20240116; t=1715118630; c=relaxed/simple;
+	bh=k/Fmvrw6ivn0OBCd4ejiX7EoMngluIBR++msmMA3UgA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jrcM3fMiT47XEZ4hODdrjUq+gxOB/M3RZy1e+Hk5ozG2ioQa6MM9yiD/+4rm4bFxGXM5OMDC7PR0d2PFC2L3RMfHQOYlHq/l8qcO/79lnCLmnRtRFz1H7APh2cBFvvOGd+CxRh2z5+4IcquN4o12u6YUJHY/0yaCeNPmenXfnTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tlppkD/7; arc=none smtp.client-ip=209.85.208.178
+	 To:Cc:Content-Type; b=bjVk3WDWL65lTtk/0iKshAq/YQvVLVgxEFwJXKR7Guw1PGL0oRYKqAtdC0CaUak+IP4Lti+qrcPITp4BR8n9tqeFqKzFt4UFRzgmtczVhNCFCSUPkyfW0y8qsPl5W+cRRyyG+CFWnl77i6Tdmw/6Bj1OD3BGXzI2O+PlrMcrBXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=TUCl5EAO; arc=none smtp.client-ip=209.85.208.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2e3e1ad0b19so21946391fa.0
-        for <linux-iio@vger.kernel.org>; Tue, 07 May 2024 14:43:31 -0700 (PDT)
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2e0a0cc5e83so43462471fa.1
+        for <linux-iio@vger.kernel.org>; Tue, 07 May 2024 14:50:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715118209; x=1715723009; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715118626; x=1715723426; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NyAEj4trsf106C373mKnquVnwuGp8XMYAfGirP9Fmts=;
-        b=tlppkD/7mJRpV4xxgFqdN4UMSgnS2Ifm7ePqzyVq9GuCmWl8Y/zKtaP1+NWOlJz3o7
-         LThltT1IcftMxoFquESwKfuMwkJaV5iJZLe/vwoNlS54NXIcglypc/w4Zk7XFkEwElOG
-         pzWVmlOUzz/EQVttDe/uWvj+PMgNX/cpfiaW/H9/8qgXWIhHos23r6AYp/4C0V2bq8iO
-         8do3Jhht8IkG6SSouG94nL4GBtYQVvn63cbe3PkYsmowhvr5ITC+PiDRAwmZ2EjJARIC
-         RFazgr5xQuTuyf7gvHir6enzdylDQcKoETirggqhVFvM3eZh3Lbpj+Wy2NkpfMueL+Xd
-         /Gqg==
+        bh=xMSxschXHdtUTx8EvCmPO+O38rQFayTg7ssUSx+D+vU=;
+        b=TUCl5EAOA026flaLvWULeudqE6jmmrk2DuI240pb123z1iEst0JvuadvTwTmGwUNwi
+         9alaNHBhswmf4qda5wvhg0Pok6KU/MHhDpcQGqivW/LxxQoxDASJE3xTMGMJ0TlXylGg
+         Tet4OZ/aarvbSALDIb/nw+2MIbIIhn/OEn4NOQk/P4mNFH4VD2rI6+JiUxSZcEkg53uT
+         BwIYKOLRJFF3bLJ7LGuIThQltLGm/Etm0ID0s6Up1CfPwdeGoCo9g+galzEvCPikLZQP
+         5z/to1e6bfF6TQ46x9E8m5F0enzgTxdZJEWePPiHDyTvenK8HtfotWkOcDOaM73jQ7Vo
+         4fDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715118209; x=1715723009;
+        d=1e100.net; s=20230601; t=1715118626; x=1715723426;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NyAEj4trsf106C373mKnquVnwuGp8XMYAfGirP9Fmts=;
-        b=qVcxtaf9RjCGwSRBcCq0DamAsgEG5Nj1gFtQp2svhifM5yu0nt7sUIvRFWwCXZwIAd
-         naI4N6uIVhIxDqcPOVWh76awHPUfDZ10tmk6IOb0JjfPbFwMhAHVpeHFZAZEb8tNw2uJ
-         vTbPPuUlsNTwPBi1K9ywMWU5Jq4s+kxD9zP2SVli1MIyaMcerCS/An3X+QrzbqZd2VFA
-         cTPTVUDxNBcUIX7zJ5jJxesuvl1jku1FP5SReyLdukmWcStHSyjX78BJkHF+xvBKv9Hm
-         2f0yYfr/lR5s2mRQD5NN+6JdukToDsPrYw1bVunX/iVh2D8Rsyr14mSYckXqiisP+2aZ
-         tZqA==
-X-Gm-Message-State: AOJu0Yx+mFP23K9M8BQnRTfhnYdtww9Ya/XnfieYxyr+FaYEMu2BBVnW
-	BXq3T/yfThNk9OuO+zLuC+aS94jqNwBQwMtCg3mA1QXUHpOlAUzGy0BkOt7PvuOnipgGeTu8Zjn
-	nKGYTkS2rNLUBz5nIhsPnnu9yRjDfduznV4MtFA==
-X-Google-Smtp-Source: AGHT+IFkTAeasJ7o/puO72sjy2GQ1su+mSjOHqpiHj0Xjj7kstnmpZh5piHYs40zLfMcP/mWwyF8g2epovPoK9zSR2A=
-X-Received: by 2002:a2e:82cf:0:b0:2e0:3f37:5af1 with SMTP id
- 38308e7fff4ca-2e4475a1420mr3964731fa.33.1715118209451; Tue, 07 May 2024
- 14:43:29 -0700 (PDT)
+        bh=xMSxschXHdtUTx8EvCmPO+O38rQFayTg7ssUSx+D+vU=;
+        b=nxl3th6KVWywNDSVPke+gb1lV+zC5S4B76LFY4EgvEUiXLmNLsDZ3mqdcIGLxC2YhR
+         ODla+3NzPHNgDhm0wFT9M+Obbpdktnuo5a2+S5Xo3suI5V7e49mQsZcRZKwmG62CT7IE
+         5G7hKlgeXfkQUSy/oadBeiw6+C7pClTFXvgCd4BCegVq8eBOBukolnQTcdjrsIAGy9RE
+         0XJgfvLyXx6yBeNlnKY0wwmLXCskq7D98Ja/T4MjHlxv4rUe4DP/18ECCTLmpKcobc0/
+         cRHPrN6y1BayJJ99R9hsrnbLmzLpI3tOpkD71CHAdViU4fV9wx5QlGThCh3yn5fHGQVl
+         u2pw==
+X-Gm-Message-State: AOJu0YxTxOwORx5H/LcWqGme+UiXGwjijKl5xRMCq6BZtOYOSCCph/5r
+	1h1xvI0r9MKCaDPfnUYLWxCdb9CWFXZ8H4klti8/7uoybOckAr+wZw4eQSx7ayw7C32I/1kNTDr
+	DTgcrBwNHo853CRcvBSShTitDAqhGtAXTtNpO3g==
+X-Google-Smtp-Source: AGHT+IGOwOa0d0TEXVk3OQ0aiggq5u7OssM5CfXnJQjrPePulttdxTPz0CvOkrZOYFR7V5SU4Dpl4Gqjs/hwvbnTs6E=
+X-Received: by 2002:a2e:924f:0:b0:2e2:b716:e67a with SMTP id
+ 38308e7fff4ca-2e447381ee0mr4092921fa.1.1715118625948; Tue, 07 May 2024
+ 14:50:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240506-dev-ad9467-dma-v1-1-e5c31b464e8f@analog.com>
-In-Reply-To: <20240506-dev-ad9467-dma-v1-1-e5c31b464e8f@analog.com>
+References: <20240506-dev-axi-adc-drp-v1-1-8d6a856f909e@analog.com>
+In-Reply-To: <20240506-dev-axi-adc-drp-v1-1-8d6a856f909e@analog.com>
 From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 7 May 2024 16:43:18 -0500
-Message-ID: <CAMknhBHf5f_z9iG89sfHOZ5F_q+Ho+zKDXA0M10U3BBMuSUh0w@mail.gmail.com>
-Subject: Re: [PATCH] iio: adc: ad9467: use DMA safe buffer for spi
+Date: Tue, 7 May 2024 16:50:15 -0500
+Message-ID: <CAMknhBFLtf5KKoVaMPm18=8wNW_zvLq-iFt2R-zwcHuFQ-LUBQ@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: adi-axi-adc: make sure DRP is locked on enable
 To: nuno.sa@analog.com
 Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
 	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 6, 2024 at 9:55=E2=80=AFAM Nuno Sa via B4 Relay
+On Mon, May 6, 2024 at 9:50=E2=80=AFAM Nuno Sa via B4 Relay
 <devnull+nuno.sa.analog.com@kernel.org> wrote:
 >
 > From: Nuno Sa <nuno.sa@analog.com>
 >
-> Make sure we use a DMA safe buffer (IIO_DMA_MINALIGN) for all the spi
-> transfers.
->
-> Note that as we noe use a shared buffer, lock guards had to be added
+> We enabling the core, make sure DRP (Dynamic Reconfiguration Port)
 
-s/noe/now
+s/We/When/
 
-> accordingly.
+> is locked. Most of the designs don't really use it but we still get the
+> lock bit set. So let's do it all the time so the code is generic.
 >
-> Fixes: ad6797120238 ("iio: adc: ad9467: add support AD9467 ADC")
+> While at it add proper mutex guards as we should not be able to disable
+> the core in the middle of enabling it. Also reduce the timeout time to 1
+> microsecond as it seems to be enough and goes in line with what we have
+> on the similar DAC core (adi-axi-dac).
+>
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
->  drivers/iio/adc/ad9467.c | 87 ++++++++++++++++++++++++------------------=
-------
->  1 file changed, 44 insertions(+), 43 deletions(-)
+>  drivers/iio/adc/adi-axi-adc.c | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
 >
-> diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-> index e85b763b9ffcb..368546b032891 100644
-> --- a/drivers/iio/adc/ad9467.c
-> +++ b/drivers/iio/adc/ad9467.c
-> @@ -141,55 +141,55 @@ struct ad9467_state {
->         struct gpio_desc                *pwrdown_gpio;
->         /* ensure consistent state obtained on multiple related accesses =
-*/
->         struct mutex                    lock;
-> +       union {
-> +               u8 buf[3];
-> +               u8 tbuf[2];
-> +               u8 rbuf[1];
-> +       } __aligned(IIO_DMA_MINALIGN);
->  };
+> diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.=
+c
+> index 0cf0d81358fd5..782d8813bb43b 100644
+> --- a/drivers/iio/adc/adi-axi-adc.c
+> +++ b/drivers/iio/adc/adi-axi-adc.c
+> @@ -42,6 +42,9 @@
+>  #define ADI_AXI_ADC_REG_CTRL                   0x0044
+>  #define    ADI_AXI_ADC_CTRL_DDR_EDGESEL_MASK   BIT(1)
 >
-> -static int ad9467_spi_read(struct spi_device *spi, unsigned int reg)
-> +static int ad9467_spi_read(struct ad9467_state *st, unsigned int reg)
->  {
-> -       unsigned char tbuf[2], rbuf[1];
->         int ret;
->
-> -       tbuf[0] =3D 0x80 | (reg >> 8);
-> -       tbuf[1] =3D reg & 0xFF;
-> +       st->tbuf[0] =3D 0x80 | (reg >> 8);
-> +       st->tbuf[1] =3D reg & 0xFF;
->
-> -       ret =3D spi_write_then_read(spi,
-> -                                 tbuf, ARRAY_SIZE(tbuf),
-> -                                 rbuf, ARRAY_SIZE(rbuf));
-> +       ret =3D spi_write_then_read(st->spi, st->tbuf, ARRAY_SIZE(st->tbu=
-f),
-> +                                 st->rbuf, ARRAY_SIZE(st->rbuf));
+> +#define AXI_ADC_DRP_STATUS                     0x0074
 
-spi_write_then_read() copies the buffers, so technically we don't need
-to change this one.
+call it AXI_ADC_REG_DRP_STATUS for consistency?
 
+> +#define   AXI_ADC_DRP_LOCKED                   BIT(17)
+> +
+>  /* ADC Channel controls */
 >
->         if (ret < 0)
->                 return ret;
->
-> -       return rbuf[0];
-> +       return st->rbuf[0];
->  }
->
+>  #define ADI_AXI_REG_CHAN_CTRL(c)               (0x0400 + (c) * 0x40)
 

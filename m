@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-4890-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4891-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A098C0209
-	for <lists+linux-iio@lfdr.de>; Wed,  8 May 2024 18:35:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8768C020B
+	for <lists+linux-iio@lfdr.de>; Wed,  8 May 2024 18:35:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7650C1F22ACE
-	for <lists+linux-iio@lfdr.de>; Wed,  8 May 2024 16:35:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5140C286A6A
+	for <lists+linux-iio@lfdr.de>; Wed,  8 May 2024 16:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 028791095C;
-	Wed,  8 May 2024 16:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4D21F93E;
+	Wed,  8 May 2024 16:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DvrpVPIc"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NUNrC1oc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012A5DDD8;
-	Wed,  8 May 2024 16:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15CACF9C3;
+	Wed,  8 May 2024 16:34:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715186083; cv=none; b=uzwZ3Z290o4bA6UHKKJGCLiu28zCK4fzkPid7xYA2qHOr87XJOcVclc8dKmnHLDveVV75VQKiZvR10Qml/230NduNda5u3o43SnHa4L+aVzvC6BcFzXaweQYPqIx+g6U6hn7wgCR2PCxlxNqDd2QOAgBip3qjWom7qLKCIixBhE=
+	t=1715186084; cv=none; b=CAqFHrbsewanvMNkhlIhRrLeNpM1ozc85WhqO9DM5eSseviXlNoJvnVBcH8Mc/BoxOUDzlLFTAMmCar318bR9+eU88xCafRnOJHSTJqTNYJ2ol43Rxse9Oat8reT1r8n6jg5Y5w820b93dn2L43eZUfPRe2gAetXj64UfVzgBc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715186083; c=relaxed/simple;
-	bh=9MYMqXE7bH1T1ZWrHlbUX2Eeezf08FVyd/SPBoYqvU0=;
+	s=arc-20240116; t=1715186084; c=relaxed/simple;
+	bh=uJCprQj0d/fuMxBVcO8FSqjPp6Mc3BIdkm9iL8OL/Co=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cDBcEaKhOd5S2C3rN/Estag3ijHLKYko4Kc2/59Nue1Eh2S2AbL+gJUgSYemkUVhHzqNSl9sMTI9hCfXGP2Vao/OLXlpycMnIiccL9uWJsZYHma0QuBh2E2C7vi8GTrNwh7WNBtCx6G+LT21eiDNTsMKiUpAz73q0vWf6eyB+7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DvrpVPIc; arc=none smtp.client-ip=209.85.218.51
+	 MIME-Version; b=DAud1WUn5hiuhcMfQxdZfTGo2jrI/tFlk3EO/zCtS6CoiZFEkvJw8i6/CqgQWXEO4LD6h0OwyobZO6CqrfyVsXv1NKHJrDSM0YybBH3V88JTNprPUKeyeRV76K+n0bQ+E8FqIAVSxhUCDBamckJjbY9k86a4MAYZSqsP6tNctW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NUNrC1oc; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a59a64db066so1180098466b.3;
-        Wed, 08 May 2024 09:34:41 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a59c04839caso1050689566b.2;
+        Wed, 08 May 2024 09:34:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715186080; x=1715790880; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1715186081; x=1715790881; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2YpNOHhYoasG7qZzRh+H/G0tZ+lEbMfm2wisJ2QOZuA=;
-        b=DvrpVPIcFfstPxwEmGhYSxucv8QvQM5Mv3luFNe5qDU2eM1Dbt6E6EAt5AdI3xve5N
-         eocqf74LyO5NlgGrVxpXX+Wqo07iQS08aiAvUJZ/NKb74cIDA6NBDsqTeOXv3Nxuhf47
-         TmgQRKiluBHeAqnCAvcCYOxqsW7Ff49o8VMAF1vW8fQRutMzBHWy5gZeBJ+8pwNm12+m
-         MxhhtDf/UkJKyp3vDJvyPANMdq59lEYxQzoqZqWP84kIz2EXJWdL8Msf9QI+RVYeW5ET
-         zVRiVv+w9H0ZWLOhpxRWyws8mCaTumsuUdRewq9A5EG3Fto/wZt4ws0BnBp7qi+xJeNL
-         uPOg==
+        bh=/ecoUdRdm8TJtWd4XvtflaMn/ctNEXLJheqvwj+nZBY=;
+        b=NUNrC1oc6Fhyz2ZOpRuZlajdKAaE8kRG9za3LoVKFFiTWkbQm0dnfkWdvqg9mNZ9L/
+         1YvW6JpJHh334AjSSyZBXuNkeE36ojt65XS9Uemo5giOa/ghrtJ3tDc1cybDefKBrma9
+         ChMuemJb98zRBTOat0zfsfeG/PV/jSBrq+5/UNDJGtRkSe3qMvD3uEJE7OBGO+LaOdNE
+         ROdY5GMRt6mFCI91LCRVGn/kIKWD32I36J1PcGUwtmtKUD03HettUXk8Jd9SdZzXQ9Z0
+         tDhpU59JTAXpCa54CEkmNZuMb5WZyjLsB/tuHLKYfArzmp2EKV/prj4/uVvGbtajFn2c
+         U2RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715186080; x=1715790880;
+        d=1e100.net; s=20230601; t=1715186081; x=1715790881;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2YpNOHhYoasG7qZzRh+H/G0tZ+lEbMfm2wisJ2QOZuA=;
-        b=fChfBS2WkKbU0ZNtzBc00zW+h2lgUAmHAPo9SwQdqPkEWvQXU20wwZqW+5m3NxdBit
-         FUdNWxxXN/IsxFMdQG7kBg8E86qMDOJ++lIRZ+qfjOG4GABddih98fk2ZyZGxQIELEJr
-         9Yb4xjA6YuCsLv9ulwpF5RkIi6OxYwjN19oOZ+1nmLpGKHI05IOLeY+2JVrsSmkVLm2f
-         yAKkYE6BE/jK633sLpF7OrwJmhjP21nwvpRHGqG8T9NTmbpjMTdeShDJkHHHz2KHMgJi
-         7BXtau3WNfqO8txs7wD3uWu+2aNPh7cK/DRmRiwqr4eI8eEAd6ciu63NDXN1DaefSLHz
-         BEDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUFyzXX170dLRFrUdgF90CgxJpnpIh7kvrI/PrOuGo0RtC06VVV8rmCs8JKZ6nnwuBuIAU0ZHYG9LR/1q6di0kxRB4q/GFhdw8ZpCmUnd0j7waN2dlOznAKkppRn/5viw/Y7JpiX/zH
-X-Gm-Message-State: AOJu0YxWHKhG+0k/oFDz4xUPs0O+mj870/NE8adzWCJNHO7mCc9vAM6Y
-	S3LBQAcbaTgA/IxWY7Pefr4GW2jL7ud7PLeNtxn4FenHo7HKPYsN
-X-Google-Smtp-Source: AGHT+IHt80zpxu2MrJJiSzKFgkzVDJnHxe91h/MLoaKeBIcnIu4bl5ykZljEKmWSjF15fORRe1Dwwg==
-X-Received: by 2002:a17:907:7084:b0:a59:c090:7786 with SMTP id a640c23a62f3a-a59fb94d9dfmr194818966b.25.1715186080023;
-        Wed, 08 May 2024 09:34:40 -0700 (PDT)
+        bh=/ecoUdRdm8TJtWd4XvtflaMn/ctNEXLJheqvwj+nZBY=;
+        b=o2pjGlWbKQJlftPmkeH8Gucwp439um1r8Su4fRaIb+EUp+tk+lbMW1YpDeNrHks7fC
+         l2Uhp8QkbBDNEZZRivV4eTHN8D0ROnKRI8noP18nIdGssYVmScdvPcFmdZ9knpy1G7kA
+         Olp+6o+bJy7udVd8CgYb4Mhx2bwcltKmV9VNOdg2YB7P9IOqOrv/4Z4NRmACeMeIHNOE
+         cnJTnupB84CP9mKuZ+D1wTz9QYowTPL6Z63EfunWyq1M91Mshh71S3odXv1H5amHIBBR
+         agT5uACmNSexfwcpidUzgy/ZQGkKfpCEhj45wP9ayDFU8z8byJrTKPmQh2bnrXZPleqd
+         QATg==
+X-Forwarded-Encrypted: i=1; AJvYcCWuE2/FCPXFKLgnl6VXrEJMeVHE7mR8jkCNAIIS600UeJ3Lq4L43TCxkyJp0V0VvpyJ/3etpcfOThkBmXc55ipH5Km23vdE5dU/wg5sKTbC8Du1cO67jeNwVhR7iHRSDhtRQWNGG4/6
+X-Gm-Message-State: AOJu0YxKOMMWh/yTW549QiqGQBOIZ2KMLuTPNBkG+QQZ4GbwvlnfY7i9
+	HM/JQLnmlEeLzYLyDVRGKviaxu0F42/pz17PCbdVoOCkDgCN/je4
+X-Google-Smtp-Source: AGHT+IGLMYujgyQZmi67nFa4QlF4q6RlTqeOMmTdSg597/YfzWYOorvj97XDx8tCGPoIZMKAtkecfA==
+X-Received: by 2002:a17:906:4549:b0:a59:bacc:b083 with SMTP id a640c23a62f3a-a59fb9b84f1mr199711166b.56.1715186081242;
+        Wed, 08 May 2024 09:34:41 -0700 (PDT)
 Received: from localhost.localdomain ([2a04:ee41:82:7577:a3c8:644e:cd04:560a])
-        by smtp.gmail.com with ESMTPSA id hb4-20020a170906b88400b00a5599f3a057sm7872843ejb.107.2024.05.08.09.34.39
+        by smtp.gmail.com with ESMTPSA id hb4-20020a170906b88400b00a5599f3a057sm7872843ejb.107.2024.05.08.09.34.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 08 May 2024 09:34:39 -0700 (PDT)
+        Wed, 08 May 2024 09:34:40 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org
 Cc: lars@metafoo.de,
@@ -82,9 +82,9 @@ Cc: lars@metafoo.de,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Vasileios Amoiridis <vassilisamir@gmail.com>
-Subject: [PATCH 3/9] iio: pressure: bmp280: Make error checks consistent
-Date: Wed,  8 May 2024 18:34:19 +0200
-Message-Id: <20240508163425.143831-4-vassilisamir@gmail.com>
+Subject: [PATCH 4/9] iio: pressure: bmp280: Use unsigned data types for raw sensor data
+Date: Wed,  8 May 2024 18:34:20 +0200
+Message-Id: <20240508163425.143831-5-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240508163425.143831-1-vassilisamir@gmail.com>
 References: <20240508163425.143831-1-vassilisamir@gmail.com>
@@ -96,192 +96,170 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The form 'if (ret)' is used in this driver in order to check
-for returned error values. There are also some places that
-'if (ret < 0)' is used but for no specific reason. Change
-them to 'if (ret)' to make the driver more consistent.
+The raw sensor data that have not been compensated yet cannot be
+signed values, so use unsigned ones. Also, compensated pressure
+values cannot be negative so use unsigned also there.
+
+Also, drop redundant cast of data->t_fine variable from s32 to s32.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/pressure/bmp280-core.c | 40 +++++++++++++++---------------
- 1 file changed, 20 insertions(+), 20 deletions(-)
+ drivers/iio/pressure/bmp280-core.c | 45 +++++++++++++++---------------
+ 1 file changed, 22 insertions(+), 23 deletions(-)
 
 diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index 0aa16fb135c1..f05ea754f53a 100644
+index f05ea754f53a..dd5c526dacbd 100644
 --- a/drivers/iio/pressure/bmp280-core.c
 +++ b/drivers/iio/pressure/bmp280-core.c
-@@ -184,7 +184,7 @@ static int bmp280_read_calib(struct bmp280_data *data)
- 	ret = regmap_bulk_read(data->regmap, BMP280_REG_COMP_TEMP_START,
- 			       data->bmp280_cal_buf,
- 			       sizeof(data->bmp280_cal_buf));
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(data->dev,
- 			"failed to read calibration parameters\n");
- 		return ret;
-@@ -222,7 +222,7 @@ static int bme280_read_calib(struct bmp280_data *data)
+@@ -289,13 +289,13 @@ static int bme280_read_calib(struct bmp280_data *data)
+  * Taken from BME280 datasheet, Section 4.2.3, "Compensation formula".
+  */
+ static u32 bme280_compensate_humidity(struct bmp280_data *data,
+-				      s32 adc_humidity)
++				      u16 adc_humidity)
+ {
+ 	struct bmp280_calib *calib = &data->calib.bmp280;
+ 	s32 var;
  
- 	/* Load shared calibration params with bmp280 first */
- 	ret = bmp280_read_calib(data);
--	if  (ret < 0)
-+	if (ret)
- 		return ret;
+-	var = ((s32)data->t_fine) - (s32)76800;
+-	var = ((((adc_humidity << 14) - (calib->H4 << 20) - (calib->H5 * var))
++	var = data->t_fine - (s32)76800;
++	var = (((((s32)adc_humidity << 14) - (calib->H4 << 20) - (calib->H5 * var))
+ 		+ (s32)16384) >> 15) * (((((((var * calib->H6) >> 10)
+ 		* (((var * (s32)calib->H3) >> 11) + (s32)32768)) >> 10)
+ 		+ (s32)2097152) * calib->H2 + 8192) >> 14);
+@@ -314,16 +314,16 @@ static u32 bme280_compensate_humidity(struct bmp280_data *data,
+  * Taken from datasheet, Section 3.11.3, "Compensation formula".
+  */
+ static s32 bmp280_compensate_temp(struct bmp280_data *data,
+-				  s32 adc_temp)
++				  u32 adc_temp)
+ {
+ 	struct bmp280_calib *calib = &data->calib.bmp280;
+ 	s32 var1, var2;
  
- 	/*
-@@ -234,7 +234,7 @@ static int bme280_read_calib(struct bmp280_data *data)
- 	 */
+-	var1 = (((adc_temp >> 3) - ((s32)calib->T1 << 1)) *
++	var1 = (((((s32)adc_temp) >> 3) - ((s32)calib->T1 << 1)) *
+ 		((s32)calib->T2)) >> 11;
+-	var2 = (((((adc_temp >> 4) - ((s32)calib->T1)) *
+-		  ((adc_temp >> 4) - ((s32)calib->T1))) >> 12) *
+-		((s32)calib->T3)) >> 14;
++	var2 = (((((((s32)adc_temp) >> 4) - ((s32)calib->T1)) *
++		  ((((s32)adc_temp >> 4) - ((s32)calib->T1))) >> 12) *
++		((s32)calib->T3))) >> 14;
+ 	data->t_fine = var1 + var2;
  
- 	ret = regmap_read(data->regmap, BME280_REG_COMP_H1, &tmp);
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(dev, "failed to read H1 comp value\n");
- 		return ret;
- 	}
-@@ -242,14 +242,14 @@ static int bme280_read_calib(struct bmp280_data *data)
+ 	return (data->t_fine * 5 + 128) >> 8;
+@@ -337,7 +337,7 @@ static s32 bmp280_compensate_temp(struct bmp280_data *data,
+  * Taken from datasheet, Section 3.11.3, "Compensation formula".
+  */
+ static u32 bmp280_compensate_press(struct bmp280_data *data,
+-				   s32 adc_press)
++				   u32 adc_press)
+ {
+ 	struct bmp280_calib *calib = &data->calib.bmp280;
+ 	s64 var1, var2, p;
+@@ -353,7 +353,7 @@ static u32 bmp280_compensate_press(struct bmp280_data *data,
+ 	if (var1 == 0)
+ 		return 0;
  
- 	ret = regmap_bulk_read(data->regmap, BME280_REG_COMP_H2,
- 			       &data->le16, sizeof(data->le16));
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(dev, "failed to read H2 comp value\n");
- 		return ret;
- 	}
- 	calib->H2 = sign_extend32(le16_to_cpu(data->le16), 15);
- 
- 	ret = regmap_read(data->regmap, BME280_REG_COMP_H3, &tmp);
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(dev, "failed to read H3 comp value\n");
- 		return ret;
- 	}
-@@ -257,7 +257,7 @@ static int bme280_read_calib(struct bmp280_data *data)
- 
- 	ret = regmap_bulk_read(data->regmap, BME280_REG_COMP_H4,
- 			       &data->be16, sizeof(data->be16));
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(dev, "failed to read H4 comp value\n");
- 		return ret;
- 	}
-@@ -266,14 +266,14 @@ static int bme280_read_calib(struct bmp280_data *data)
- 
- 	ret = regmap_bulk_read(data->regmap, BME280_REG_COMP_H5,
- 			       &data->le16, sizeof(data->le16));
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(dev, "failed to read H5 comp value\n");
- 		return ret;
- 	}
- 	calib->H5 = sign_extend32(FIELD_GET(BME280_COMP_H5_MASK, le16_to_cpu(data->le16)), 11);
- 
- 	ret = regmap_read(data->regmap, BME280_REG_COMP_H6, &tmp);
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(dev, "failed to read H6 comp value\n");
- 		return ret;
- 	}
-@@ -370,7 +370,7 @@ static int bmp280_read_temp(struct bmp280_data *data,
+-	p = ((((s64)1048576 - adc_press) << 31) - var2) * 3125;
++	p = ((((s64)1048576 - (s32)adc_press) << 31) - var2) * 3125;
+ 	p = div64_s64(p, var1);
+ 	var1 = (((s64)calib->P9) * (p >> 13) * (p >> 13)) >> 25;
+ 	var2 = ((s64)(calib->P8) * p) >> 19;
+@@ -365,7 +365,8 @@ static u32 bmp280_compensate_press(struct bmp280_data *data,
+ static int bmp280_read_temp(struct bmp280_data *data,
+ 			    int *val, int *val2)
+ {
+-	s32 adc_temp, comp_temp;
++	s32 comp_temp;
++	u32 adc_temp;
+ 	int ret;
  
  	ret = regmap_bulk_read(data->regmap, BMP280_REG_TEMP_MSB,
- 			       data->buf, sizeof(data->buf));
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(data->dev, "failed to read temperature\n");
- 		return ret;
- 	}
-@@ -404,12 +404,12 @@ static int bmp280_read_press(struct bmp280_data *data,
+@@ -398,8 +399,7 @@ static int bmp280_read_temp(struct bmp280_data *data,
+ static int bmp280_read_press(struct bmp280_data *data,
+ 			     int *val, int *val2)
+ {
+-	u32 comp_press;
+-	s32 adc_press;
++	u32 comp_press, adc_press;
+ 	int ret;
  
  	/* Read and compensate temperature so we get a reading of t_fine. */
- 	ret = bmp280_read_temp(data, NULL, NULL);
--	if (ret < 0)
-+	if (ret)
- 		return ret;
- 
- 	ret = regmap_bulk_read(data->regmap, BMP280_REG_PRESS_MSB,
- 			       data->buf, sizeof(data->buf));
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(data->dev, "failed to read pressure\n");
- 		return ret;
- 	}
-@@ -436,12 +436,12 @@ static int bme280_read_humid(struct bmp280_data *data, int *val, int *val2)
+@@ -431,7 +431,7 @@ static int bmp280_read_press(struct bmp280_data *data,
+ static int bme280_read_humid(struct bmp280_data *data, int *val, int *val2)
+ {
+ 	u32 comp_humidity;
+-	s32 adc_humidity;
++	u16 adc_humidity;
+ 	int ret;
  
  	/* Read and compensate temperature so we get a reading of t_fine. */
- 	ret = bmp280_read_temp(data, NULL, NULL);
--	if (ret < 0)
-+	if (ret)
- 		return ret;
+@@ -1030,8 +1030,7 @@ static int bmp380_read_temp(struct bmp280_data *data, int *val, int *val2)
  
- 	ret = regmap_bulk_read(data->regmap, BME280_REG_HUMIDITY_MSB,
- 			       &data->be16, sizeof(data->be16));
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(data->dev, "failed to read humidity\n");
- 		return ret;
- 	}
-@@ -775,7 +775,7 @@ static int bmp280_chip_config(struct bmp280_data *data)
- 				BMP280_OSRS_PRESS_MASK |
- 				BMP280_MODE_MASK,
- 				osrs | BMP280_MODE_NORMAL);
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(data->dev, "failed to write ctrl_meas register\n");
- 		return ret;
- 	}
-@@ -783,7 +783,7 @@ static int bmp280_chip_config(struct bmp280_data *data)
- 	ret = regmap_update_bits(data->regmap, BMP280_REG_CONFIG,
- 				 BMP280_FILTER_MASK,
- 				 BMP280_FILTER_4X);
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(data->dev, "failed to write config register\n");
- 		return ret;
- 	}
-@@ -839,7 +839,7 @@ static int bme280_chip_config(struct bmp280_data *data)
- 	 */
- 	ret = regmap_update_bits(data->regmap, BME280_REG_CTRL_HUMIDITY,
- 				 BME280_OSRS_HUMIDITY_MASK, osrs);
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(data->dev, "failed to set humidity oversampling");
- 		return ret;
- 	}
-@@ -1856,7 +1856,7 @@ static int bmp180_read_calib(struct bmp280_data *data)
+ static int bmp380_read_press(struct bmp280_data *data, int *val, int *val2)
+ {
+-	s32 comp_press;
+-	u32 adc_press;
++	u32 adc_press, comp_press;
+ 	int ret;
  
- 	ret = regmap_bulk_read(data->regmap, BMP180_REG_CALIB_START,
- 			       data->bmp180_cal_buf, sizeof(data->bmp180_cal_buf));
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(data->dev, "failed to read calibration parameters\n");
- 		return ret;
- 	}
-@@ -2177,7 +2177,7 @@ int bmp280_common_probe(struct device *dev,
- 	data->regmap = regmap;
+ 	/* Read and compensate for temperature so we get a reading of t_fine */
+@@ -1893,12 +1892,12 @@ static int bmp180_read_calib(struct bmp280_data *data)
+  *
+  * Taken from datasheet, Section 3.5, "Calculating pressure and temperature".
+  */
+-static s32 bmp180_compensate_temp(struct bmp280_data *data, s32 adc_temp)
++static s32 bmp180_compensate_temp(struct bmp280_data *data, u32 adc_temp)
+ {
+ 	struct bmp180_calib *calib = &data->calib.bmp180;
+ 	s32 x1, x2;
  
- 	ret = regmap_read(regmap, data->chip_info->id_reg, &chip_id);
--	if (ret < 0) {
-+	if (ret) {
- 		dev_err(data->dev, "failed to read chip id\n");
- 		return ret;
- 	}
-@@ -2200,7 +2200,7 @@ int bmp280_common_probe(struct device *dev,
- 	}
+-	x1 = ((adc_temp - calib->AC6) * calib->AC5) >> 15;
++	x1 = ((((s32)adc_temp) - calib->AC6) * calib->AC5) >> 15;
+ 	x2 = (calib->MC << 11) / (x1 + calib->MD);
+ 	data->t_fine = x1 + x2;
  
- 	ret = data->chip_info->chip_config(data);
--	if (ret < 0)
-+	if (ret)
- 		return ret;
+@@ -1907,7 +1906,8 @@ static s32 bmp180_compensate_temp(struct bmp280_data *data, s32 adc_temp)
  
- 	dev_set_drvdata(dev, indio_dev);
-@@ -2213,7 +2213,7 @@ int bmp280_common_probe(struct device *dev,
+ static int bmp180_read_temp(struct bmp280_data *data, int *val, int *val2)
+ {
+-	s32 adc_temp, comp_temp;
++	s32 comp_temp;
++	u32 adc_temp;
+ 	int ret;
  
- 	if (data->chip_info->read_calib) {
- 		ret = data->chip_info->read_calib(data);
--		if (ret < 0)
-+		if (ret)
- 			return dev_err_probe(data->dev, ret,
- 					     "failed to read calibration coefficients\n");
- 	}
+ 	ret = bmp180_read_adc_temp(data, &adc_temp);
+@@ -1957,7 +1957,7 @@ static int bmp180_read_adc_press(struct bmp280_data *data, int *val)
+  *
+  * Taken from datasheet, Section 3.5, "Calculating pressure and temperature".
+  */
+-static u32 bmp180_compensate_press(struct bmp280_data *data, s32 adc_press)
++static u32 bmp180_compensate_press(struct bmp280_data *data, u32 adc_press)
+ {
+ 	struct bmp180_calib *calib = &data->calib.bmp180;
+ 	s32 oss = data->oversampling_press;
+@@ -1974,7 +1974,7 @@ static u32 bmp180_compensate_press(struct bmp280_data *data, s32 adc_press)
+ 	x2 = (calib->B1 * ((b6 * b6) >> 12)) >> 16;
+ 	x3 = (x1 + x2 + 2) >> 2;
+ 	b4 = calib->AC4 * (u32)(x3 + 32768) >> 15;
+-	b7 = ((u32)adc_press - b3) * (50000 >> oss);
++	b7 = (adc_press - b3) * (50000 >> oss);
+ 	if (b7 < 0x80000000)
+ 		p = (b7 * 2) / b4;
+ 	else
+@@ -1989,8 +1989,7 @@ static u32 bmp180_compensate_press(struct bmp280_data *data, s32 adc_press)
+ 
+ static int bmp180_read_press(struct bmp280_data *data, int *val, int *val2)
+ {
+-	u32 comp_press;
+-	s32 adc_press;
++	u32 comp_press, adc_press;
+ 	int ret;
+ 
+ 	/* Read and compensate temperature so we get a reading of t_fine. */
 -- 
 2.25.1
 

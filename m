@@ -1,145 +1,208 @@
-Return-Path: <linux-iio+bounces-4972-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4973-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295DB8C3336
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 20:41:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D06BE8C333D
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 20:47:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D84B12820D2
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 18:41:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5317A1F21441
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 18:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D8071CA85;
-	Sat, 11 May 2024 18:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BB71CABF;
+	Sat, 11 May 2024 18:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="P5ifuh/R"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eB1FrXnt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173861B966
-	for <linux-iio@vger.kernel.org>; Sat, 11 May 2024 18:41:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6281BC58
+	for <linux-iio@vger.kernel.org>; Sat, 11 May 2024 18:47:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715452885; cv=none; b=JiSJ4nXThH7a93yLgpE3UkHln9S/tWW/DTwX5/VAWJk1xaJq/DtTuEFeE9F5+60UeWFm7ui5MmU0zfWUzgWLdrgHp7Ww1pzL2vEqyy08dMtNv/Y8DhSL3MXHFhX1Tw4sDnqkjt4kK3mCa5XkgCMDLuSBE6ItfJI9fBFTf4xS6eI=
+	t=1715453261; cv=none; b=VJSb1OAVO1yFTs3inJq0uWE09LUN5qqRN5qMj5OhJSiJDuVsp83XTFSXifuHMLXXOHrbUJHAvvb+EtI/C1/rmXsV3tdDqw/EDdME9h2GhkLnTQpLbacVO8UAS8Iv+Qo6jtI71aeTgug4FvBejnZnuQR6fxfeM//LRqEd8e1rx3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715452885; c=relaxed/simple;
-	bh=G7PBUQYX86PTVKHgYsiAhpQ9G51BoCbvNoBIlqfcN94=;
+	s=arc-20240116; t=1715453261; c=relaxed/simple;
+	bh=YVOdlFgTphP8iWkdNlurQhMrD26ZChBnbBkDzPU2aRQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ir8GSKxbXbqTspvSyhMCG7VJF9rxxQH85afiy3k3VYAroZ4yE8/Ps+gi/tsISlX0BEgt2fR4e990XofB8PokykoCfDFYDZDrxjNxFx6quzJ+Di+NoXiXtKqJ2803mNrkTlmi1uUv6yzcf2d2FRbtGxDFb6yxIji/8mbNkSVQHT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=P5ifuh/R; arc=none smtp.client-ip=209.85.208.176
+	 To:Cc:Content-Type; b=tArfKUfsNz6pf9hJnoxqxyX5MWwnAqHH/b9KX02L84vil/ZiSd+8NmPK5UWNpRnRpBzb2G8iC9TtsPqs5cYvQLt4twhq57/7QV2s0u7eyo7BrXkOI1q8LGglIhdm8xonPauTmkSFcq4+23ysrnDzVaI4KVvpqsXPcRfxoZ8IPkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eB1FrXnt; arc=none smtp.client-ip=209.85.208.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2e3e18c24c1so30545501fa.1
-        for <linux-iio@vger.kernel.org>; Sat, 11 May 2024 11:41:22 -0700 (PDT)
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2e2c70f0c97so36548711fa.0
+        for <linux-iio@vger.kernel.org>; Sat, 11 May 2024 11:47:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715452881; x=1716057681; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715453257; x=1716058057; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dBbqjiAUkd73PlK8VV9pGC4FnSlljTALl1NxrlDsjME=;
-        b=P5ifuh/RAGkkYb3MkvGj86DcdV0ZiW9sGPDI4AkDnWZ8S7a/ryJG71fMZy0QrhdTvB
-         pnaBzEDEBm/I9u3BmsSKJVN0S+yjBi+QJ+BSpP90K2qkSeEJzZmUj8o1++EFHdu06+PJ
-         NiWuRZ/cwO3EuZ0fpDrQeTrhCrIWzjX9xjKuE+XM4V23YG4HqFxhgidKrv+vWzaG20ks
-         42omJPctXufYTL3wL2pDOPZn3gdiD0/u7f+hgxV7C3aCODQPZP93Jr6gxzXgjl6qdLKj
-         RLD8939UDnCCzAUAbjzs1QYUmoNbwu8pbLhmRo3bn92qY9MLpvAw9nuM4f4B0/TJHVAW
-         ACiw==
+        bh=BuJ6CwAMNvaLdIW7Ij5QqE6r9837KCVxY1U3dFFJNyg=;
+        b=eB1FrXntt7AkMenK4PFJm4pXaF5r1aCXKaSCX5JwUGYlnJmtgF/kvQCgh12+GRQYxs
+         qKcGi1e/5UoFNKdpyEPHinAA2bpW8R4aSZksR3DmedxVtJ6mbDYjO2wvEZUTG6+V58rz
+         SLKVsQbdHBahcm+48cEISh9SRGl14/IcMl2KgkFpJ/DtLR9nVj8BVd4x2DjpOV60RxJH
+         F+r0zgVC6CujqiOqvvrTLSh0PsGbvRespqro2SzMrWw9xjGCYLaTWXM28caBxMmtiSaE
+         9dHAQhmKv7rH1c803ETD6QR1CizD+PdKhmKvRZgbXQ9ngaCcfu0PCvuIwscr07x5x5Mo
+         oHgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715452881; x=1716057681;
+        d=1e100.net; s=20230601; t=1715453257; x=1716058057;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dBbqjiAUkd73PlK8VV9pGC4FnSlljTALl1NxrlDsjME=;
-        b=eQRBHtodyTU4Xg/P88BlCt9fHp0dei3qMv44VM+VdgHVD4Ik2kf93HJFd7gDClZeNK
-         aVqeLHqHWEkyFEuLV0z1iL5zCbh3rm8UjZYSXxXNKchH8rIbmhIZMABdqa3Owicdv3UX
-         B7jZ4EA8om+rfXQX4G9Ocxd/gQ8pdQnSiozoUhVZzjL12CRXvgXI+RztGnZ25JiKzFzY
-         Besyd9ut90i/MVDIzgdNHhIHOWBJXskdb+61Zxa65yGQeYVLOkbpnIRAtClokb3mIEm2
-         viSiu6i6b7Ow9Hw8wGjxxIN1A2QW2fIPkJA3p53MSc5hCGYcIMBSkw9Btfh9FQ9sM6L/
-         jlUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmqCWjE3+o8vwxPW1dyWKrLciV2Ss45pL6WLJFppT08L9dTX+n/HqX8zaMp/XEgnf0UwmF8FUYcsCff1wyiduhCOkqDgNjZvVS
-X-Gm-Message-State: AOJu0Yxlh2gmGBcd705t/6tf6DKDaYDgQm13liTlL2nc+UVQXeQfjsuN
-	trHSdNdP88voJpoHQqK0ZiuIURpq3ExaAzItNckYwHJ00kmfYzBmMlq671aAixJt8kl65H4R1Pb
-	bWMBexURNHZtg06sCJc1viFt80x1Ef6qoITUJAsOu7oICd3zHkh0=
-X-Google-Smtp-Source: AGHT+IHk09J0epwNKiamnPnuOxBAoPSoJ+QFxlb6XhnzmVPVhZf+8cgD1rQnZtCrwvWEu7WxDbrLbDioToUvsHW2xSU=
-X-Received: by 2002:a2e:8896:0:b0:2e5:15d0:511c with SMTP id
- 38308e7fff4ca-2e52028da88mr37305651fa.40.1715452881036; Sat, 11 May 2024
- 11:41:21 -0700 (PDT)
+        bh=BuJ6CwAMNvaLdIW7Ij5QqE6r9837KCVxY1U3dFFJNyg=;
+        b=mBmA+2UVLZTK918PUQZy/MZheUMfY/2uMwHNlL8cgARl7NTfbk7NgK4DVX63Qtz9hV
+         kWFUTQgiqQIZYZFhvnQyxij/INql+s6Dge3Eh+T0/f2fVYGo64b18ma2DwcfKcEM8Ojd
+         7bj7ru/wT/sJF0MXk85E4p4zwIabNT1VnBQEjHrxL3P7ls80YMBb3qvS6Og1iuytsumG
+         K09qrOUB+FDvowfHl0QhLy1p3tTk7AjIE7bEI62x+wXuwYXvfOzC0+8T5EbJetu/zpj/
+         L2UckRcWI/QTRROacsZWUDuXYi0qcTCONVLutoh3E79y/IwEUL55UwHB2opa8ntYPF6o
+         9+zA==
+X-Forwarded-Encrypted: i=1; AJvYcCU1PA2F1O9VvQvElso8VhPeME4pIY8t0DqktrLWzPbOmIoYntHaOaiZs4PLGBz7R2lgGQAYaXICdindacjnNi//0FC9pZJA3gwL
+X-Gm-Message-State: AOJu0YxrVWpzT1F8IdZ6V4WJQcIAnyFI54VRHhowqcHJc0JpY6A1yAzt
+	U6GqkHQoi0yBWwuPRYWD5yp0tIFvb6CF3/1UneI6w+dP1wm5dwr9Uy2KRl53b7w1CbRH48gi4Xe
+	/52REAzkywp0Q0wjSXzTgH6OouYFVGJ/dE0TImQ==
+X-Google-Smtp-Source: AGHT+IGj8EW8cP9HdJkRuf6X8EYKSYb8VGuoFRypZ4xZxIbbcBdpQwwEMt4n9/cs066lBCUiOGPepJWdPvsEQNjXQss=
+X-Received: by 2002:a2e:8794:0:b0:2d8:34ec:54e6 with SMTP id
+ 38308e7fff4ca-2e5204ccd8fmr33387821fa.33.1715453257450; Sat, 11 May 2024
+ 11:47:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com>
- <20240510-dlech-mainline-spi-engine-offload-2-v2-8-8707a870c435@baylibre.com> <20240511175832.6c2f6517@jic23-huawei>
-In-Reply-To: <20240511175832.6c2f6517@jic23-huawei>
+References: <20240510064053.278257-1-Mariel.Tinaco@analog.com>
+ <20240510064053.278257-2-Mariel.Tinaco@analog.com> <CAMknhBFXk07HbP_pPg5wkW-9Ah2-66kGzZFvcvBNrbjfguHb4g@mail.gmail.com>
+ <20240511172500.718fe12d@jic23-huawei>
+In-Reply-To: <20240511172500.718fe12d@jic23-huawei>
 From: David Lechner <dlechner@baylibre.com>
-Date: Sat, 11 May 2024 13:41:09 -0500
-Message-ID: <CAMknhBGG9bYwzPw8woaR_YaVRW+wpT4W1KpHzG32nWj9Qi7fig@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 8/8] iio: adc: ad7944: add support for SPI offload
+Date: Sat, 11 May 2024 13:47:26 -0500
+Message-ID: <CAMknhBE9mJUXsKYVwHb=6d3tVk9DiODWjqtzv9q+zSer5XqrqQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: dac: add docs for ad8460
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	=?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, 
-	David Jander <david@protonic.nl>, Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
+Cc: Mariel Tinaco <Mariel.Tinaco@analog.com>, linux-iio@vger.kernel.org, 
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Marcelo Schmitt <marcelo.schmitt1@gmail.com>, 
+	Dimitri Fedrau <dima.fedrau@gmail.com>, Guenter Roeck <linux@roeck-us.net>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 11, 2024 at 11:58=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
+On Sat, May 11, 2024 at 11:25=E2=80=AFAM Jonathan Cameron <jic23@kernel.org=
 > wrote:
 >
-> On Fri, 10 May 2024 19:44:31 -0500
+> On Fri, 10 May 2024 12:28:19 -0500
 > David Lechner <dlechner@baylibre.com> wrote:
 >
-> > This adds support for SPI offload to the ad7944 driver. This allows
-> > reading data at the max sample rate of 2.5 MSPS.
+> > On Fri, May 10, 2024 at 1:42=E2=80=AFAM Mariel Tinaco <Mariel.Tinaco@an=
+alog.com> wrote:
+> > >
+> > > This adds the bindings documentation for the 14-bit
+> > > High Voltage, High Current, Waveform Generator
+> > > Digital-to-Analog converter.
+> > >
+> > > Signed-off-by: Mariel Tinaco <Mariel.Tinaco@analog.com>
+> > > ---
+> > >  .../bindings/iio/dac/adi,ad8460.yaml          | 67 +++++++++++++++++=
+++
+> > >  MAINTAINERS                                   |  7 ++
+> > >  2 files changed, 74 insertions(+)
+> > >  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad8=
+460.yaml
+> > >
+> > > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad8460.yam=
+l b/Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml
+> > > new file mode 100644
+> > > index 000000000..924f76209
+> > > --- /dev/null
+> > > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml
+> > > @@ -0,0 +1,67 @@
+> > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > +# Copyright 2024 Analog Devices Inc.
+> > > +%YAML 1.2
+> > > +---
+> > > +$id: http://devicetree.org/schemas/iio/dac/adi,ad8460.yaml#
+> > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > +
+> > > +title: Analog Devices AD8460 DAC
+> > > +
+> > > +maintainers:
+> > > +  - Mariel Tinaco <mariel.tinaco@analog.com>
+> > > +
+> > > +description: |
+> > > +  Analog Devices AD8460 110 V High Voltage, 1 A High Current,
+> > > +  Arbitrary Waveform Generator with Integrated 14-Bit High Speed DAC
+> > > +  https://www.analog.com/media/en/technical-documentation/data-sheet=
+s/ad8460.pdf
+> > > +
+> > > +properties:
+> > > +  compatible:
+> > > +    enum:
+> > > +      - adi,ad8460
+> > > +
+> > > +  reg:
+> > > +    maxItems: 1
+> > > +
+> > > +  spi-max-frequency:
+> > > +    maximum: 20000000
+> > > +
+> > > +  vref-supply:
 > >
-> > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > ---
+> > It would be nice to make the property name match the pin name since
+> > there is more than one reference voltage input.
 > >
-> > v2 changes:
+> > refio-1p2v-supply:
 > >
-> > In the previous version, there was a new separate driver for the PWM
-> > trigger and DMA hardware buffer. This was deemed too complex so they
-> > are moved into the ad7944 driver.
+> > > +    description: Drive voltage in the range of 1.2V maximum to as lo=
+w as
+> > > +      low as 0.12V through the REF_IO pin to adjust full scale outpu=
+t span
 > >
-> > It has also been reworked to accommodate for the changes described in
-> > the other patches.
+> > I don't seen anything in the datasheet named REF_IO. Is this a typo
+> > and it should be REFIO_1P2V?
 > >
-> > RFC: This isn't very polished yet, just FYI. A few things to sort out:
+> > > +
+> > > +  clocks:
+> > > +    description: The clock for the DAC. This is the sync clock
+> > > +
+> > > +  adi,rset-ohms:
+> > > +    description: Specify value of external resistor connected to FS_=
+ADJ pin
+> > > +      to establish internal HVDAC's reference current I_REF
+> > > +    minimum: 2000
+> > > +    maximum: 20000
+> > > +
 > >
-> > Rather than making the buffer either triggered buffer or hardware buffe=
-r,
-> > I'm considering allowing both, e.g. buffer0 will always be the triggere=
-d
-> > buffer and buffer1 will will be the hardware buffer if connected to a S=
-PI
-> > controller with offload support, otherwise buffer1 is absent. But since
-> > multiple buffers haven't been used much so far, more investigation is
-> > needed to see how that would work in practice. If we do that though, th=
-en
-> > we would always have the sampling_frequency attribute though even thoug=
-h
-> > it only applies to one buffer.
+> > I see lots more pins on the datasheet, many of which should be trivial
+> > to add bindings for (we prefer to have the bindings as complete as
+> > possible even if the driver doesn't implement everything). Potential
+> > candidates:
+> >
+> > sdn-reset-gpios: (active high)
+> > reset-gpios: (active low)
+> > sdn-io-gpios: (active high)
+> >
+> > hvcc-supply:
+> > hvee-supply:
+> > vcc-5v-supply:
+> > vref-5v-supply:
+> > dvdd-3p3v-supply:
+> > avdd-3p3v-supply:
+> >
+> > It also looks like there is a parallel interface for data, so I would
+> > expect to see an io-backends property that links to the PHY used for
+> > handling that.
+> >
+> Ultimately yes, but the parallel interface might require some decisions o=
+n
+> binding that are non obvious until it's actually implemented. So maybe
+> don't need that bit from the start.  The rest I agree should be here.
 >
-> Why would someone who has this nice IP in the path want the conventional
-> triggered buffer?  I'm not against the two buffer option, but I'd like to=
- know
-> the reasoning not to just provide the hardware buffer if this SPI offload
-> is available.
->
-> I can conjecture reasons but would like you to write them out for me :)
-> This feels like if someone has paid for the expensive hardware they proba=
-bly
-> only want the best performance.
 >
 
-For me, it was more of a question of if we need to keep the userspace
-interface consistent between both with or without offload support. But
-if you are happy with it this way where we have only one or the other,
-it is less work for me. :-)
+Since the driver patch uses a DMA channel that isn't documented here,
+I am assuming that the parallel interface is being used so we do need
+to consider it now. :-)
 

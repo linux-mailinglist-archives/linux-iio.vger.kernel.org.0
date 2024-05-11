@@ -1,72 +1,73 @@
-Return-Path: <linux-iio+bounces-4945-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4944-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D75718C2E1A
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 02:50:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BBFF8C2E16
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 02:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0609C1C21450
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 00:50:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D535B231B8
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 00:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB0413AD8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 217C619478;
 	Sat, 11 May 2024 00:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="I348MkFP"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bNd6Zxbz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f50.google.com (mail-oo1-f50.google.com [209.85.161.50])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25808C13
-	for <linux-iio@vger.kernel.org>; Sat, 11 May 2024 00:50:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 028D713AD8
+	for <linux-iio@vger.kernel.org>; Sat, 11 May 2024 00:50:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715388604; cv=none; b=iMteobUHBdZ737vxK9+7q+LBZev0uE/Lf+hKV6JTXtEHkbIR1FJfeB7t/8CzugvNbX2cbZzgg6ozyFdEJ/aaipvXM0wnlLL92/JEvg0C2aaIQ0QF8OsHcNSBqF6XTTPbxPZHjHD/S8xGqWCf0BSq45gpD6Nx2TcCVM7hyHDQpfw=
+	t=1715388603; cv=none; b=YKiBerU0g3gQtQZB0+Hubb5gjQMlFRwlo3QSnzqnYdh6+KWD326aMd3lWRtjngl/RbMOEIR5aCZ4qXeM7spnwrybJwTdoSta6cvUhVyKsCDPu5rZpYFNB/js/yoWc8vHIG0Et/JikyUPgUAjNARAfaWmr/VvW+EDs6QRnMY5iEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715388604; c=relaxed/simple;
-	bh=h8IEiY34+3Sx3CIFgaB3bbWMmMeu0qPkNGGmC8siC3M=;
+	s=arc-20240116; t=1715388603; c=relaxed/simple;
+	bh=7uQzDb4mHzMFAAji6LQjuiHftGdIMfQwB9bGqhKl+nI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NOtI50kvBcTC8yHvjsS4ScIf/5S6BnSpUEgQR4LgBV1P3y6KTus20I2RGib4kmcjusWKMFB6itobYUO8/f1SJTrSPy/5v+uNtgEZAcrsCbDOdz2kEzlW1CU32EFRAB5E2+Yl3zmeysUl71rVJC/C0IHzdEqLxUNwtHH+RKWydTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=I348MkFP; arc=none smtp.client-ip=209.85.161.50
+	 MIME-Version:Content-Type; b=J3mFZnJj7vAD46NbG34I9KhOgTG5QSnMA5mA9YpmMzdJIs+cjh8/IhRiszeV67Q6pQBrT8Cvv46zXQDN5XjimQJLdolXyT4ae4wcMlIUfczoDjyT+ims06tiQ9QaFFrccWKfxLvkxQckmks6dYep9BIVfvcL5BD2LPz32YeFNCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bNd6Zxbz; arc=none smtp.client-ip=209.85.210.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f50.google.com with SMTP id 006d021491bc7-5b283d2b1b4so721505eaf.0
-        for <linux-iio@vger.kernel.org>; Fri, 10 May 2024 17:50:00 -0700 (PDT)
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-6f0378cd80bso1668593a34.3
+        for <linux-iio@vger.kernel.org>; Fri, 10 May 2024 17:50:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715388600; x=1715993400; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715388601; x=1715993401; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=E9avosEdgbBSX3dha6GG6j80VLMTNNyJjLCB0lyPzg0=;
-        b=I348MkFPYgz4UGsp8pm08TTEs8rDAJdCzNDAolDrrHfWIlgJVdh/HqE5Th2DR/XD56
-         yOz9sTIbVefJpSwAh+cNmAWCtPcKrinC7lMUFFTk97BJBs8GMaeLNv1vpshthz+g0GjL
-         pbDNc0KC3COxrqUq4qyevIya45msb8rjpDVxCZBtGLAxyAaJyVtWBcm2jiNfkvX3c2oF
-         yV+w6cEOUoLNPnbynSeKOz6XOtHE30Sg0QV7WrwTnZZH9CeZyq0V2ut9VFYzpLlDE2y7
-         XYFpjlT6x2FZ6nL5nOPzDArQX4zzeWir3LwS9cH2zRw5BhFIBLdJyaeWRpoqguIOyg5j
-         Ys4g==
+        bh=S0IqckUIZjVVxXVOxgac6w2cx3AmMbKz+eZNoT7XiC4=;
+        b=bNd6ZxbzPbrbmMb4qJJayI2a4grnnbOaKAH2gCGjL1pXoNQBwuoAavz9txl4fEj7SI
+         ZPlGrry1vS1sZgPdOYOU42F9Yzg5axlUcgFxpSojzHnM2z2EDEMWev2scImSJT5C5fWn
+         Mz6XoupaAQFkxZBUl7pHqoctVwCdUip23ui5WXkv1BYNFS2gqa99pvqIKCoEBqIfyI8e
+         n915D+W51EGCSZ7n/9dR/Rh/b8WNa+JCRheQcJN62yRwLO77IyxBOxYJ0bKcwVXazKfI
+         6J6FxQLvdWpvqKWO3wyiwUT7O+iYpY3GchxLgPCzEXLS7bWKa7LM9s/WzxqthKLf9C+j
+         mJog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715388600; x=1715993400;
+        d=1e100.net; s=20230601; t=1715388601; x=1715993401;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=E9avosEdgbBSX3dha6GG6j80VLMTNNyJjLCB0lyPzg0=;
-        b=gi5I4GFXeKX/g5rhWlPGH6/Caqw4OjJmGSOwkJjsrqQU7OntU4n0joDNog0o5UFibF
-         W5Wex1yg+bjYkT2wp3vGUWRCufEnv0QyQRKtOiiAZzsQfAusL0eEDvLVmwtO25PLzNO4
-         Nz16bxLcqn8JgjZUHGshFlVjEhv3TXGeiGKyTZufHpeMydZ/Vm71oSpmSPmxn/SogBK1
-         YCXZejNbrRT+dRB1vWzqhF6FyfKiT7DVZIrQ4kwfI5cKVxR4PtX7aEiemZEPYD5YvmhT
-         4NNDkOW3QWpxRwY8zcpg8Yfrfm7sOaPvWTn+dcc+FvAKAgo0OksuwsK3HkFo9VIFiuDT
-         1xOA==
-X-Forwarded-Encrypted: i=1; AJvYcCXV5iim2IJEUE0sC019GkJa54iM5h/LCExX0QdH1Zm12G/Op0RLmJoxoM7dDzf7bp4eoJO15w8sZe8b7omxfVHV6EzkdaFPHyVf
-X-Gm-Message-State: AOJu0Yws1fLBX5xPdwJl32AlHAlmmuVuhivM9Vk5rcn+a02k0+TIn5/5
-	nGwEyez9FcTy3aOvRbnKJUh/elVnEQkZe7X34oWw00qR9MUfCRh4LMPoEV6tk3E=
-X-Google-Smtp-Source: AGHT+IHUqtShftifs93lP5ZXYqlRl7bulmdlCopbK5h5izie+OAx3wEuV9iUi7VdLK8osidQhFAkdw==
-X-Received: by 2002:a4a:904:0:b0:5b2:bc0:f38b with SMTP id 006d021491bc7-5b281956dc0mr4721017eaf.5.1715388600118;
-        Fri, 10 May 2024 17:50:00 -0700 (PDT)
+        bh=S0IqckUIZjVVxXVOxgac6w2cx3AmMbKz+eZNoT7XiC4=;
+        b=kgwYRQXsKS2ZKElffsMiOYRrOPS1WYBwrDKifwtF+nMk3mmLsI3MluwNg/3A8zwnRI
+         bdSGsSmL5rUDiJtwGLba4/L6ctSRn4u79Po5Cghp06j1ybYy8uovCcSSCLY5yGSaSa8Q
+         syyzQXpR4w2CJmc0VfTZDJNSfLO1EyaLk+mL6nj1BRzi4nTJWm+/VTsvK2FtiWV6InHQ
+         BBZhp+XA3owLfRxJ8htLV+AgLhUmDXvApJZ7+2eQjU4WLB292Sc+tnAngJ/wuT3ls/kt
+         hRfz+DdQN51CC6e6z/c3CwqXzj/6bDHVPV1HumnuCYmrFecnGD1m3u+0Pxc4TY3Yc4Lx
+         L13w==
+X-Forwarded-Encrypted: i=1; AJvYcCVkyTd57MliLNc3bjIkr1rR85lGlSEebCXMTuoEUIhKvIhEOP7RxMZ9UxtEu2FxHcFur3pvZEpXhAXfViHc1Bv6QCuelPy/bKTZ
+X-Gm-Message-State: AOJu0Yy0XpN9eB7PGgAatGgwNip2v6G1+aCTK16vDqaOaj7nf4yv8+6V
+	kRgzIvWhHhrzONIuyrBidkX+hpkfdWRVHRJSKwIFzzS7JfcAIzWHkKKh7dJTKTwrj1dQvsoA5ff
+	GOEY=
+X-Google-Smtp-Source: AGHT+IGUPIA9haCNiqxSQz+aWDhBBucJuDctWs45cFqSghUH6sJTwdF42Ovi6gpJML0oFTLvmhlgmA==
+X-Received: by 2002:a05:6830:205a:b0:6f0:6da5:34f9 with SMTP id 46e09a7af769-6f0e92c8b92mr4444723a34.23.1715388601088;
+        Fri, 10 May 2024 17:50:01 -0700 (PDT)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5b29015a3dbsm321132eaf.46.2024.05.10.17.49.59
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5b29015a3dbsm321132eaf.46.2024.05.10.17.50.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 May 2024 17:49:59 -0700 (PDT)
+        Fri, 10 May 2024 17:50:00 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
 To: Mark Brown <broonie@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
@@ -83,9 +84,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-iio@vger.kernel.org
-Subject: [PATCH RFC v2 4/8] spi: add offload xfer flags
-Date: Fri, 10 May 2024 19:44:27 -0500
-Message-ID: <20240510-dlech-mainline-spi-engine-offload-2-v2-4-8707a870c435@baylibre.com>
+Subject: [PATCH RFC v2 5/8] spi: dt-bindings: axi-spi-engine: document spi-offloads
+Date: Fri, 10 May 2024 19:44:28 -0500
+Message-ID: <20240510-dlech-mainline-spi-engine-offload-2-v2-5-8707a870c435@baylibre.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com>
 References: <20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com>
@@ -99,103 +100,49 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-Most configuration of SPI offloads is handles opaquely using the ID
-handle that is passed to the various offload functions. However, there
-are some offload features that need to be controller on a per transfer
-basis.
-
-This patch adds a flags field to the spi_transfer structure to allow
-specifying such features. The first feature to be added is the ability
-to stream data to/from a hardware sink/source rather than using a tx or
-rx buffer. Additional flags can be added in the future as needed.
-
-A flags field is also added to the controller struct for controllers to
-indicate which flags are supported. This allows for generic checking of
-offload capabilities during __spi_validate() so that each controller
-doesn't have to provide their own validation.
+The AXI SPI Engine has support for hardware offloading capabilities.
+There can be up to 32 offload instances per SPI controller, so the
+bindings limit the value accordingly.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
 
 v2 changes:
 
-This is also split out from "spi: add core support for controllers with
-offload capabilities".
+This is basically a new patch. It partially replaces "dt-bindings: iio:
+offload: add binding for PWM/DMA triggered buffer".
 
-In the previous version, we were using (void *)-1 as a sentinel value
-that could be assigned, e.g. to rx_buf. But this was naive since there
-is core code that would try to dereference this pointer. So instead,
-we've added a new flags field to the spi_transfer structure for this
-sort of thing. This also has the advantage of being able to be used in
-the future for other arbitrary features.
+The controller no longer has an offloads object node and the
+spi-offloads property is now a standard SPI peripheral property.
 ---
- drivers/spi/spi.c       | 10 ++++++++++
- include/linux/spi/spi.h | 10 ++++++++++
- 2 files changed, 20 insertions(+)
+ .../devicetree/bindings/spi/adi,axi-spi-engine.yaml        | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 9ad7b04c26a6..4d34ccf91fd4 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -4189,6 +4189,16 @@ static int __spi_validate(struct spi_device *spi, struct spi_message *message)
+diff --git a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
+index d48faa42d025..c0668aab8b2a 100644
+--- a/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
++++ b/Documentation/devicetree/bindings/spi/adi,axi-spi-engine.yaml
+@@ -41,6 +41,20 @@ properties:
+       - const: s_axi_aclk
+       - const: spi_clk
  
- 		if (_spi_xfer_word_delay_update(xfer, spi))
- 			return -EINVAL;
++patternProperties:
++  "^.*@[0-9a-f]+$":
++    type: object
++    $ref: spi-peripheral-props.yaml
++    additionalProperties: true
++    properties:
++      spi-offloads:
++        description:
++          An array of 1 or more offload instance numbers assigned to this
++          peripheral.
++        items:
++          minimum: 0
++          maximum: 31
 +
-+		/* make sure controller supports required offload features */
-+		if (xfer->offload_flags) {
-+			if (!message->offload)
-+				return -EINVAL;
-+
-+			if ((xfer->offload_flags & ctlr->offload_xfer_flags)
-+			    != xfer->offload_flags)
-+				return -EINVAL;
-+		}
- 	}
- 
- 	message->status = -EINPROGRESS;
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index ec8d875d31ff..42c39c17ba5a 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -501,6 +501,8 @@ extern struct spi_device *spi_new_ancillary_device(struct spi_device *spi, u8 ch
-  *	     This field is optional and should only be implemented if the
-  *	     controller has native support for memory like operations.
-  * @mem_caps: controller capabilities for the handling of memory operations.
-+ * @offload_xfer_flags: flags supported by this controller for offloading
-+ *	transfers. See struct spi_transfer for the list of flags.
-  * @offload_ops: operations for controllers with offload support.
-  * @unprepare_message: undo any work done by prepare_message().
-  * @slave_abort: abort the ongoing transfer request on an SPI slave controller
-@@ -751,6 +753,7 @@ struct spi_controller {
- 	const struct spi_controller_mem_caps *mem_caps;
- 
- 	/* Operations for controllers with offload support. */
-+	unsigned int offload_xfer_flags;
- 	const struct spi_controller_offload_ops *offload_ops;
- 
- 	/* GPIO chip select */
-@@ -991,6 +994,7 @@ struct spi_res {
-  * @transfer_list: transfers are sequenced through @spi_message.transfers
-  * @tx_sg: Scatterlist for transmit, currently not for client use
-  * @rx_sg: Scatterlist for receive, currently not for client use
-+ * @offload_flags: flags for xfers that use special hardware offload features
-  * @ptp_sts_word_pre: The word (subject to bits_per_word semantics) offset
-  *	within @tx_buf for which the SPI device is requesting that the time
-  *	snapshot for this transfer begins. Upon completing the SPI transfer,
-@@ -1107,6 +1111,12 @@ struct spi_transfer {
- 
- 	u32		effective_speed_hz;
- 
-+	unsigned int	offload_flags;
-+/* this is write xfer but TX uses external data stream rather than tx_buf */
-+#define SPI_OFFLOAD_XFER_TX_STREAM	BIT(0)
-+/* this is read xfer but RX uses external data stream rather than rx_buf */
-+#define SPI_OFFLOAD_XFER_RX_STREAM	BIT(1)
-+
- 	unsigned int	ptp_sts_word_pre;
- 	unsigned int	ptp_sts_word_post;
- 
+ required:
+   - compatible
+   - reg
 
 -- 
 2.43.2

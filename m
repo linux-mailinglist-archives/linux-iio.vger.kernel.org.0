@@ -1,67 +1,60 @@
-Return-Path: <linux-iio+bounces-4952-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4953-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022448C3104
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 13:47:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 544DE8C3108
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 13:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC781281AA4
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 11:47:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AC891F216DF
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 11:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF27954FB7;
-	Sat, 11 May 2024 11:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD2855C1A;
+	Sat, 11 May 2024 11:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmGcQl9y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O63uNW5h"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A7554F87;
-	Sat, 11 May 2024 11:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6837F54FB8;
+	Sat, 11 May 2024 11:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715428056; cv=none; b=K0ImvRHQz750N/HccCfQg47g5JGishLXH6bwXp5x//jOlAAsLlklkaEiehvScxlMeq6FDkt6xchKywRCswlDLNDrAAhHKtFf+2aDO3e6+EEBcwURT6Z+xoY2sZOTt4+2SkwMSWvr4hpLtO0bxeqh/bZbO+r6262G4B/u8hH1zVE=
+	t=1715428488; cv=none; b=tURIRSDfXpqfLPNI1njcUsjTxOajzRl+bHj2NWZz6keWCB7ykHoKRXjXYtxfiF3zWL3pM0qkDWtL4pqkS6TDDRUzthaJwjTFqunqoGxq1LhqTpsYdRn6tg1vUKhtFvlJ7eN2AgSo2dyFeErZ4H7J/rPwpp5jKxYRweA1gCU1F5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715428056; c=relaxed/simple;
-	bh=Ad33EoIdC/2d9QPw323EcuvUf08B04qp9JzIxhTJ6h8=;
+	s=arc-20240116; t=1715428488; c=relaxed/simple;
+	bh=BX2HA1FzgL9T4H4tH/EC2Gaq/JIJdDQvLFfl1ZYXuDw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BlB4xkQaSuIDN6Kd8PIlIEyeJh3sQ8zm4MNadd6AMgV6SeYeyn4FU2pKPFuYl0kxHJxIUSyolBjjDqdql9MKaytMxX9EKbSBRnVh13Brn13L8rtiMEFtc7Y1UIKN37VQTF3Zc4r6yyqiC9k6VqY4Q4l9O5+TYWlMMZEexrKNWoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmGcQl9y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DB9C2BBFC;
-	Sat, 11 May 2024 11:47:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rjBM0CTVudWYo+LZ5tQU2DC7YxrHv1VSDPbg39JMN1yemvRdOeHtKqnUv1peIYybNMGcr+env8KFS6uznnM+nOTybuXb0cdXe8+j1r2NtE8fwq3xBdV7nAlAqqNq2W/sj85sLxq49Y1/TJwmdjSSS8lv7/LtNKanHUQAWXhddns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O63uNW5h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56922C2BBFC;
+	Sat, 11 May 2024 11:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715428055;
-	bh=Ad33EoIdC/2d9QPw323EcuvUf08B04qp9JzIxhTJ6h8=;
+	s=k20201202; t=1715428487;
+	bh=BX2HA1FzgL9T4H4tH/EC2Gaq/JIJdDQvLFfl1ZYXuDw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RmGcQl9yUW5OTZ2Nb3GPyhm2BoQKtxe1zflzeyb+dtk2tV55rWIb9/e5yHPWT1Fuy
-	 kui8pAqAgXjJr+iwnn+LKQ2lCpZ7GUkEeBsVnVUtE+qXRWW1EMfFPdo65Bu9Km0KtD
-	 BIX8ZDWxc/0xKYhu+evm26zpgxZuJ+fq1QZY442OtNklLXqI16rPXzxWT0WsVoO/O3
-	 g3apNEv5fsSphGQwBavc4t0jZQebSjnw95aTbOIK8aY6ccZPRTIY4qwDPmyBe7dy5J
-	 udQP7OZVBXceG7J5VhBRjXnone/9rblLQiXGHRs3sbjJl/t1x/JSGNB6lp6t3ggGY9
-	 teVItshhMxmEQ==
-Date: Sat, 11 May 2024 12:47:21 +0100
+	b=O63uNW5hA0g8BvW47MGCqluTGcSE+h2hNfeNRTdWZTmuosaA+XSCvF8M3rnLqhFtC
+	 1pDWWK7tyEExxKfMbs00UvoqfIJy4C3M/RU6s8dECgMWt9D/ABVeTfAZS13d2xpmKU
+	 VLdaLglMSCCHLCRkAiBlLcUKsSdVSh3c/wR9O6e4dhwyFqHs+RWB1yBoOkLjBCWIUY
+	 9qBvRS/ZzyYXsWjS382vYEIEzNfIMF6vx/Cvwbf6D+kaZWxIucNQhen45M650xrIam
+	 XHECuj/o9XBDIzzdLUwBgudq9eLAyHfPBA7G6BBB9guJ4DapiGCs+WNUsktvSjA8sp
+	 IGEsFW4vtJXgA==
+Date: Sat, 11 May 2024 12:54:36 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Julien Stephan
- <jstephan@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
- <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- kernel test robot <lkp@intel.com>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC v6 09/10] iio: adc: ad7380: add support for rolling
- average oversampling mode
-Message-ID: <20240511124721.0d28bc11@jic23-huawei>
-In-Reply-To: <CAMknhBH=R2D4yu6Psnh+gv=OpCNAEwi8fpvMcJd0n9-SBfNWqg@mail.gmail.com>
-References: <20240501-adding-new-ad738x-driver-v6-0-3c0741154728@baylibre.com>
-	<20240501-adding-new-ad738x-driver-v6-9-3c0741154728@baylibre.com>
-	<20240506151725.10cf025e@jic23-huawei>
-	<CAMknhBFx-KVPRbm1xmKeU8ZaA7qt_c0_6eiUT-5kqTWVAvf3hw@mail.gmail.com>
-	<20240508122556.00005f71@Huawei.com>
-	<CAMknhBH=R2D4yu6Psnh+gv=OpCNAEwi8fpvMcJd0n9-SBfNWqg@mail.gmail.com>
+Cc: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <trabarni@gmail.com>, Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, Danila Tikhonov <danila@jiaxyga.com>
+Subject: Re: [PATCH v2 1/2] iio: imu: bmi160: add support for bmi120
+Message-ID: <20240511125436.520e3ff4@jic23-huawei>
+In-Reply-To: <CAMknhBFUOUy+TVi+baCN-FoLT8N=G4vOD5CgVgaKzvsu502CDQ@mail.gmail.com>
+References: <20240504-bmi120-v2-0-3b3ce6e1c3c6@gmail.com>
+	<20240504-bmi120-v2-1-3b3ce6e1c3c6@gmail.com>
+	<CAMknhBFUOUy+TVi+baCN-FoLT8N=G4vOD5CgVgaKzvsu502CDQ@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -72,135 +65,127 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 9 May 2024 17:01:14 -0500
+On Tue, 7 May 2024 17:05:18 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On Wed, May 8, 2024 at 6:26=E2=80=AFAM Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> wrote:
+> On Sat, May 4, 2024 at 8:01=E2=80=AFAM Barnab=C3=A1s Cz=C3=A9m=C3=A1n <tr=
+abarni@gmail.com> wrote:
 > >
-> > On Mon, 6 May 2024 10:04:10 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
-> > =20
-> > > On Mon, May 6, 2024 at 9:17=E2=80=AFAM Jonathan Cameron <jic23@kernel=
-.org> wrote: =20
-> > > >
-> > > > On Wed, 01 May 2024 16:55:42 +0200
-> > > > Julien Stephan <jstephan@baylibre.com> wrote:
-> > > > =20
-> > > > > Adds support for rolling average oversampling mode.
-> > > > >
-> > > > > Rolling oversampling mode uses a first in, first out (FIFO) buffe=
-r of
-> > > > > the most recent samples in the averaging calculation, allowing th=
-e ADC
-> > > > > throughput rate and output data rate to stay the same, since we o=
-nly need
-> > > > > to take only one sample for each new conversion.
-> > > > >
-> > > > > The FIFO length is 8, thus the available oversampling ratios are =
-1, 2, 4, 8
-> > > > > in this mode (vs 1,  2, 4, 8, 16, 32 for the normal average) =20
-> > > >
-> > > > Ah. I should have read on!
-> > > > =20
-> > > > >
-> > > > > In order to be able to change the averaging mode, this commit als=
-o adds
-> > > > > the new "oversampling_mode" and "oversampling_mode_available" cus=
-tom
-> > > > > attributes along with the according documentation file in
-> > > > > Documentation/ABI/testing/sysfs-bus-iio-adc-ad7380 since no stand=
-ard
-> > > > > attributes correspond to this use case. =20
-> > > >
-> > > > This comes to the comment I stuck in the previous patch.
-> > > >
-> > > > To most people this is not a form of oversampling because the data =
-rate
-> > > > remains unchanged. It's a cheap low pass filter (boxcar) Google poi=
-nted me at:
-> > > > https://dsp.stackexchange.com/questions/9966/what-is-the-cut-off-fr=
-equency-of-a-moving-average-filter
-> > > >
-> > > > in_voltage_low_pass_3db_frequency would be the most appropriate sta=
-ndard
-> > > > ABI for this if we do treat it as a low pass filter control.
-> > > >
-> > > > I'm not necessarily saying we don't want new ABI for this, but I wo=
-uld
-> > > > like to consider the pros and cons of just using the 3db frequency.
-> > > >
-> > > > So would that work for this part or am I missing something?
-> > > > =20
-> > >
-> > > I like the idea. But from the link, it looks like the 3dB frequency
-> > > depends on the sampling frequency which is unknown (e.g. could come
-> > > from hrtimer trigger).
-> > >
-> > > Would it be reasonable to calculate the 3db frequency at the max
-> > > sample rate that the chip allows and just use those numbers?
-> > > =20
-> > Ah. So looking at datasheet the normal average oversampling is
-> > self clocked, but this version is not.
+> > From: Danila Tikhonov <danila@jiaxyga.com>
 > >
-> > So, I'll ask the dumb question.  What is this feature for?
-> > We have to pump the SPI bus anyway why not just do the maths in
-> > userspace?  Oversampling is normally about data rate reduction
-> > with a bonus in precision obtained.
+> > Add support for bmi120 low power variant of bmi160.
 > >
-> > Jonathan
-> > =20
+> > Signed-off-by: Danila Tikhonov <danila@jiaxyga.com>
+> > Co-developed-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <trabarni@gmail.com>
+> > Signed-off-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <trabarni@gmail.com>
+> > ---
+> >  drivers/iio/imu/bmi160/bmi160_core.c | 26 ++++++++++++++++++++------
+> >  drivers/iio/imu/bmi160/bmi160_i2c.c  |  3 +++
+> >  drivers/iio/imu/bmi160/bmi160_spi.c  |  3 +++
+> >  3 files changed, 26 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/iio/imu/bmi160/bmi160_core.c b/drivers/iio/imu/bmi=
+160/bmi160_core.c
+> > index a77f1a8348ff..468aa80318fc 100644
+> > --- a/drivers/iio/imu/bmi160/bmi160_core.c
+> > +++ b/drivers/iio/imu/bmi160/bmi160_core.c
+> > @@ -26,6 +26,7 @@
+> >  #include "bmi160.h"
+> >
+> >  #define BMI160_REG_CHIP_ID     0x00
+> > +#define BMI120_CHIP_ID_VAL     0xD3
+> >  #define BMI160_CHIP_ID_VAL     0xD1
+> >
+> >  #define BMI160_REG_PMU_STATUS  0x03
+> > @@ -112,6 +113,11 @@
+> >         .ext_info =3D bmi160_ext_info,                            \
+> >  }
+> >
+> > +const u8 bmi_chip_ids[] =3D {
+> > +       BMI120_CHIP_ID_VAL,
+> > +       BMI160_CHIP_ID_VAL,
+> > +};
+> > +
+> >  /* scan indexes follow DATA register order */
+> >  enum bmi160_scan_axis {
+> >         BMI160_SCAN_EXT_MAGN_X =3D 0,
+> > @@ -704,6 +710,16 @@ static int bmi160_setup_irq(struct iio_dev *indio_=
+dev, int irq,
+> >         return bmi160_probe_trigger(indio_dev, irq, irq_type);
+> >  }
+> >
+> > +static int bmi160_check_chip_id(const u8 chip_id)
+> > +{
+> > +       for (int i =3D 0; i < ARRAY_SIZE(bmi_chip_ids); i++) {
+> > +               if (chip_id =3D=3D bmi_chip_ids[i])
+> > +                       return 0; =20
 >=20
-> I asked the apps engineers and the answer I got is that it a way to
-> enable oversampling while still maintaining a high sample rate.
-
-If I read it correctly (and based on how this is done on some other
-devices) it's exactly the same as not enabling this mode and in
-software adding up the last 8 readings (so software oversampling).
-Data rate is the same and arguably the larger spi transfers that
-might result from their solution are more expensive than doing the
-sum on the CPU.
-
-A long time back there was IIRC some discussion of implementing
-this sort of filtering as a pluggable component between an IIO
-device driver and the kfifo - idea being to reduce data being
-passed to userspace - there would be no point in doing
-this variant though as the data rate isn't reduced.  It would be
-easy to do as a buffer consumer IIO device that just does maths
-on incoming data before providing it's own kfifo, but no one
-ever implemented it.
-
+> It looks like this will match either chip to either ID. If we do this,
+> then why check the ID at all?
 >=20
-> Another thing to consider here is that we can only enable the extra
-> resolution bits if oversampling is enabled (normal or rolling mode).
-> The chip might not work right if we try to enable the extra bits
-> without oversampling enabled.
+> Another approach could be to put the chip ID as the match data in
+> bmi160_*_match, then you would get the right ID based on the
+> compatible string.
 
-I think the key question is where do those extra bits come from?=20
-If this is conventional oversampling then we just sum up the readings
-and divide by how many there are.
-(A1 + A2 + A3 + A4 + A5 + A6 + A7) / 8
-So sum plus shift right 3.  However you don't actually do the div 8
-you just change the scale to reflect that your new LSB is 1/8th of
-that before giving greater precision. This is giving 2 extra bits, so
-it's slightly worse than the 3 we'd get doing it in software (trade
-off to keep the SPI transfers smaller).  So they are either dropping the
-LSB or just possibly dithering it.
+It is useful as a sanity check to at least hint to the user that we either
+recognise the device or not.  It's annoyingly common for vendors
+to switch out a chip for one where the vendor driver reads the ID from the
+device and deals with completely incompatible parts. They do this without
+updating the firmware.
 
-So far I'm not seeing a strong reason to support this functionality.
+In one or two cases we've had to wrap multiple Linux drivers up to paper
+over this garbage. (It seems to be more common for ACPI tables, where
+we can push that as a platform quirk :)
 
+If we end up with this driver supporting slightly incompatible variants then
+adding that info to the ID table is useful because then, if we fail to match
+ID here (because someone is using a fallback compatible) we can pick the
+device that their firmware is claiming the replacement is backwards compati=
+ble
+with.
+
+For now, just warning here on no match and carrying on is the right
+approach.
+=20
 >=20
-> So my thinking is perhaps it is better to keep the rolling mode as
-> oversampling rather than trying to call it a low pass filter. As you
-> said, normal mode is about data rate reduction with bonus precision.
-> Rolling average oversampling mode then would then just be for the
-> bonus precision.
-
-True if there actually is any. I took another close read through
-the datasheet sections and the description aligns with my assumptions
-above.
-
-Jonathan
-
+> > +       }
+> > +
+> > +       return -ENODEV;
+> > +}
+> > +
+> >  static int bmi160_chip_init(struct bmi160_data *data, bool use_spi)
+> >  {
+> >         int ret;
+> > @@ -737,12 +753,10 @@ static int bmi160_chip_init(struct bmi160_data *d=
+ata, bool use_spi)
+> >                 dev_err(dev, "Error reading chip id\n");
+> >                 goto disable_regulator;
+> >         }
+> > -       if (val !=3D BMI160_CHIP_ID_VAL) {
+> > -               dev_err(dev, "Wrong chip id, got %x expected %x\n",
+> > -                       val, BMI160_CHIP_ID_VAL);
+> > -               ret =3D -ENODEV;
+> > -               goto disable_regulator;
+> > -       }
+> > +
+> > +       ret =3D bmi160_check_chip_id(val);
+> > +       if (ret)
+> > +               dev_warn(dev, "Chip id not found: %x\n", val); =20
+>=20
+> This changes the error with probe failure to a warning, but the commit
+> message doesn't explain why. We always want to know why changes were
+> made. :-)
+>=20
+> Should also probably be in a separate patch since changing the
+> behavior here is a separate change from adding support for a new chip.
+True, separate patch would be ideal as maybe someone will backport this cha=
+nge and
+not the rest.
+>=20
+> >
+> >         ret =3D bmi160_set_mode(data, BMI160_ACCEL, true);
+> >         if (ret) =20
+>=20
+> ...
 
 

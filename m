@@ -1,57 +1,60 @@
-Return-Path: <linux-iio+bounces-4957-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4958-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E2C8C3195
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 15:20:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF55E8C3198
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 15:23:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C8B81F2174B
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 13:20:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76DCC2821BB
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 13:23:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E3251005;
-	Sat, 11 May 2024 13:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A3251C44;
+	Sat, 11 May 2024 13:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g8BxQ1Ib"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXtmD/zk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FCC47A58
-	for <linux-iio@vger.kernel.org>; Sat, 11 May 2024 13:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5315D51034;
+	Sat, 11 May 2024 13:23:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715433617; cv=none; b=TR6+ViwKqaNT338fm5gSMgqkzcFRzmo3/vuqk2+cjztH1S6CGoETHFTyNNrOYdMOpWXGsY0v+0bsQKWEH+2fohDBlLNWCGeiL9Qfa2MMnvBypRL1/s4nSmYuc16JQJFGaAF4SE+BFQ1+/uwFw6ksOHphVl1svHEe202XpObtmvc=
+	t=1715433784; cv=none; b=bRSktxDUwBXUghLW5OruANTyHQ60GNyBbZS9lzXdTVXNYxahjLWtelZxsmZtiXTTW+1gNYIkqYxfZflb1cUACyIg2W3jVdxcm8cPSYFR+wnb8CRyuvSObYDFKlzlLLYERjDQIIUc/ZnP9rCtM7u7vvU47BgVN2NV92w0yC9X7lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715433617; c=relaxed/simple;
-	bh=KNyIk+8rZq+JNjFAaXmyGtUHLmbeSTz28burmqQIR5c=;
+	s=arc-20240116; t=1715433784; c=relaxed/simple;
+	bh=nMMGfSK4wOZIKca9fxpU6gUwCMQgGMZfXqeXKxACGhU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r9kwXABc+xW94/4fE1ilADhh/LUUSyklhmVODTbNlVch7YT6X6AV86kOyoeMi9QmH3RUgFl5mRvUPEwm/D4vg6jJleyIzViugm2oOgw4ef1VtBXe2QewPiWLViHNeiGdCmoVUYINwqHfc64ekh/GZgYEnlAh5WFyGOgZ/HW4cd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g8BxQ1Ib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5624CC32782;
-	Sat, 11 May 2024 13:20:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mhQP0Dur90OgQGl6k3rdKsFUezMGkKfgAi7a2bIXwQKmNxZ8mG85FU+xgxjwbfCdPAKOhJmXlkN7Yo06XAAVH257JHXycD/I9zbN8iCobA24IusZHjhi1v2ZJgjewxOD+nMsco6TU5TEIGnvhGNy3EMtCNUUIrRq9BVoOr9xlfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXtmD/zk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E783C2BBFC;
+	Sat, 11 May 2024 13:23:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715433617;
-	bh=KNyIk+8rZq+JNjFAaXmyGtUHLmbeSTz28burmqQIR5c=;
+	s=k20201202; t=1715433783;
+	bh=nMMGfSK4wOZIKca9fxpU6gUwCMQgGMZfXqeXKxACGhU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=g8BxQ1Ib85OP1G+gJWtXO44bh2I4cds3mMBM9ZTw41Q7z/VUeIg8E27rl4IePKddB
-	 em/MAsgXXecIV5qAApSPimfwV2x8U3FK6tiJP5/iidyHl0hek4jGJoZv+I24S+o+gw
-	 zdVcIsjvlKSRhXZRjwtfekJVAFj6O2L4bjrD6GEeXyJmWGwlcG9h21aa4JuDPj7yyl
-	 9bv/hTMAlatetiW8ThrdPsehVI7YP6RswbsynBLICSU9wCdru2OyL33GZuBwfISY+z
-	 yENgB9EuRytFCf3QFtphebAM14xHWuvNEFolKnG5UGpGgsWFopeb3ByPFBFhDGxWAC
-	 ifXGyXcqzmySA==
-Date: Sat, 11 May 2024 14:20:06 +0100
+	b=JXtmD/zkf7sWXZqSKrL10bz6muqF3rOATCIjQXqKOe3+n5W0Y2Bmymxb0s3s84Ou+
+	 X8aTx3RM8taxKbPO1Jt9nuLp7y9hKR+DyjexbQpt6eeueJJnROtK7QQx1CFuCk+F/y
+	 vtyv0YvQ07Po7fUPVQUkkQ0uNdAPBWR6GoUiDd4X+lzuRr0DYT6cygLHHMTudthDjg
+	 xIxkGeTE6zZgQyTnt8hyKpAT7p7NzSd/k+E3mND0BNteLVWIc0nr0b65DeMrE+DbN6
+	 LNvbeVt6YUKCgIKzxq5ktPyOrI/xJZh/HnvFdYYu0SN6bG8BQUz0XdtqUvPZ0QAwLI
+	 NZwZH4lgghmNQ==
+Date: Sat, 11 May 2024 14:22:52 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko
- <andy.shevchenko@gmail.com>, linux-iio@vger.kernel.org,
- kernel@pengutronix.de
-Subject: Re: [PATCH] iio: Drop explicit initialization of struct
- i2c_device_id::driver_data to 0
-Message-ID: <20240511142006.27facd74@jic23-huawei>
-In-Reply-To: <20240508072928.2135858-2-u.kleine-koenig@pengutronix.de>
-References: <20240508072928.2135858-2-u.kleine-koenig@pengutronix.de>
+To: kernel test robot <lkp@intel.com>
+Cc: Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, conor+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, robh@kernel.org, nuno.sa@analog.com,
+ oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 4/8] iio: imu: adis_buffer: Add buffer setup API with
+ buffer attributes
+Message-ID: <20240511142252.4c3b11f0@jic23-huawei>
+In-Reply-To: <202405110642.5PmTepVs-lkp@intel.com>
+References: <20240508131310.880479-5-ramona.bolboaca13@gmail.com>
+	<202405110642.5PmTepVs-lkp@intel.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,45 +62,56 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed,  8 May 2024 09:29:27 +0200
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
+On Sat, 11 May 2024 06:21:53 +0800
+kernel test robot <lkp@intel.com> wrote:
 
-> These drivers don't use the driver_data member of struct i2c_device_id,
-> so don't explicitly initialize this member.
->=20
-> This prepares putting driver_data in an anonymous union which requires
-> either no initialization or named designators. But it's also a nice
-> cleanup on its own.
->=20
-> While add it, also remove commas after the sentinel entries.
->=20
-> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
-> ---
-> Hello,
->=20
-> I didn't add all the individual maintainers to Cc and put the iio changes=
- in a
-> single patch. If you want I can split per driver (or per iio subdirectory=
-?),
-> just tell me if you prefer it that way.
-
-I don't mind a single patch as resolving any backporting issues around this
-should be easy.=20
-
-Whilst your changes for driver_data in struct i2c_device_id obviously don't
-need it, maybe it's worth similar patches to cleanup acpi_device_id and
-of_device_id tables with pointless 0 initialisation?
-
-Applied this with some conflicts in bmi160 resolved by hand.
-
-Applied to the togreg branch of iio.git but only pushed out for now as test=
-ing
-to let 0-day look at it. I'll rebase on 6.10-rc1 once available.
-
-Thanks,
+> Hi Ramona,
+> 
+> kernel test robot noticed the following build warnings:
+> 
+> [auto build test WARNING on jic23-iio/togreg]
+> [also build test WARNING on linus/master v6.9-rc7 next-20240510]
+> [If your patch is applied to the wrong git tree, kindly drop us a note.
+> And when submitting patch, we suggest to use '--base' as documented in
+> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+> url:    https://github.com/intel-lab-lkp/linux/commits/Ramona-Gradinariu/dt-bindings-iio-imu-Add-ADIS16501-compatibles/20240508-211559
+> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+> patch link:    https://lore.kernel.org/r/20240508131310.880479-5-ramona.bolboaca13%40gmail.com
+> patch subject: [PATCH v2 4/8] iio: imu: adis_buffer: Add buffer setup API with buffer attributes
+> config: m68k-allmodconfig (https://download.01.org/0day-ci/archive/20240511/202405110642.5PmTepVs-lkp@intel.com/config)
+> compiler: m68k-linux-gcc (GCC) 13.2.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240511/202405110642.5PmTepVs-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202405110642.5PmTepVs-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>    In file included from drivers/iio/imu/adis16400.c:24:
+> >> include/linux/iio/imu/adis.h:530:60: warning: 'struct iio_dev_attr' declared inside parameter list will not be visible outside of this definition or declaration  
+>      530 |                                               const struct iio_dev_attr **buffer_attrs);
+>          |                                                            ^~~~~~~~~~~~
+> 
+> 
+> vim +530 include/linux/iio/imu/adis.h
+> 
+>    524	
+>    525	int
+>    526	devm_adis_setup_buffer_and_trigger_with_attrs(struct adis *adis,
+>    527						      struct iio_dev *indio_dev,
+>    528						      irq_handler_t trigger_handler,
+>    529						      const struct iio_buffer_setup_ops *ops,
+>  > 530						      const struct iio_dev_attr **buffer_attrs);  
+>    531	
+> 
+Forwards declaration needed.   I don't think we'd want to include linux/iio/sysfs.h in here so
+struct iio_dev_attr; before this is the cleanest solution
 
 Jonathan
 

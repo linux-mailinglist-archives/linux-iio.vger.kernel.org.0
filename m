@@ -1,101 +1,105 @@
-Return-Path: <linux-iio+bounces-4956-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4957-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82CF8C3173
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 15:00:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8E2C8C3195
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 15:20:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2AD52821B5
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 13:00:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C8B81F2174B
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 13:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E215028F;
-	Sat, 11 May 2024 13:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E3251005;
+	Sat, 11 May 2024 13:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ge1Rk6gx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g8BxQ1Ib"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450EA50275;
-	Sat, 11 May 2024 13:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FCC47A58
+	for <linux-iio@vger.kernel.org>; Sat, 11 May 2024 13:20:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715432445; cv=none; b=hqH4FIS73QnZH0Z5313/TbGfdyrE7lquH2fF5XA2jV1SR08pjKFcDbPIjchlJgv8Dof+kU8p6au2YaBQ+uDEcXwAtvz+Z2wVZ6PwTZZFpIxD4DDzoREcKAgLH8AnzzyAG1OUxziVNbGWV7Rod18g/nb1UJQNPqcH4oWoRa6cAgE=
+	t=1715433617; cv=none; b=TR6+ViwKqaNT338fm5gSMgqkzcFRzmo3/vuqk2+cjztH1S6CGoETHFTyNNrOYdMOpWXGsY0v+0bsQKWEH+2fohDBlLNWCGeiL9Qfa2MMnvBypRL1/s4nSmYuc16JQJFGaAF4SE+BFQ1+/uwFw6ksOHphVl1svHEe202XpObtmvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715432445; c=relaxed/simple;
-	bh=zAazAJjTUB4nJ8VTdDibP5JqXkNudqdZe1Z87mZ41dc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bGUSPwfw6W1hNrBpKlEBjyCIkiQI5Yq5lgL4QqnUk6AA/q/x5arWsqwgRmzFQAHPz7gR2pWLEnc2JCx5dOaHxKdoZPJ9jkgMM7L/SZAFMVl+h7qGHHIfuHJ8if3GA+CiM1f954sHu1eLzxtQX+q5h7N2t1eKpv75vn4cNHNXDhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ge1Rk6gx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2365C2BBFC;
-	Sat, 11 May 2024 13:00:42 +0000 (UTC)
+	s=arc-20240116; t=1715433617; c=relaxed/simple;
+	bh=KNyIk+8rZq+JNjFAaXmyGtUHLmbeSTz28burmqQIR5c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=r9kwXABc+xW94/4fE1ilADhh/LUUSyklhmVODTbNlVch7YT6X6AV86kOyoeMi9QmH3RUgFl5mRvUPEwm/D4vg6jJleyIzViugm2oOgw4ef1VtBXe2QewPiWLViHNeiGdCmoVUYINwqHfc64ekh/GZgYEnlAh5WFyGOgZ/HW4cd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g8BxQ1Ib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5624CC32782;
+	Sat, 11 May 2024 13:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715432444;
-	bh=zAazAJjTUB4nJ8VTdDibP5JqXkNudqdZe1Z87mZ41dc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ge1Rk6gxYgyMuhybscP7lqf5ukMVRH4v0xTDy+cAel6X++5XOAVdXOFX4jojqvBU3
-	 AHt7DguVJ15+O7RY1pdC993CZSz7+kCJPxYDqwjo8vrxUufXD3a/gIApW95UWdspao
-	 FaarQQKQ0waILGk1WcWOV5UexiSqxe1JqAVTqoNJtjDplOrvHY8ZG/pT/x41V+Iups
-	 XSjp2Wd/D67V95neRAz3XSy8aaUr0LvtMplp2hxOATIExrC1El3qSJ0LXvD2CGJa2V
-	 6qb7piOf0yptflYE61JsQ4IdLu+EIvh0ppCzl5WVx1++HSHKJwbBuJ1hneSnTYImak
-	 +URxUyjgnldvw==
-Date: Sat, 11 May 2024 14:00:40 +0100
-From: Conor Dooley <conor@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: adi,axi-adc: tweak example node
- name
-Message-ID: <20240511-overeater-prodigy-7f41e66762ac@spud>
-References: <20240510-b4-iio-axi-adc-dt-binding-tweak-v1-1-a1f633c4602c@baylibre.com>
+	s=k20201202; t=1715433617;
+	bh=KNyIk+8rZq+JNjFAaXmyGtUHLmbeSTz28burmqQIR5c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=g8BxQ1Ib85OP1G+gJWtXO44bh2I4cds3mMBM9ZTw41Q7z/VUeIg8E27rl4IePKddB
+	 em/MAsgXXecIV5qAApSPimfwV2x8U3FK6tiJP5/iidyHl0hek4jGJoZv+I24S+o+gw
+	 zdVcIsjvlKSRhXZRjwtfekJVAFj6O2L4bjrD6GEeXyJmWGwlcG9h21aa4JuDPj7yyl
+	 9bv/hTMAlatetiW8ThrdPsehVI7YP6RswbsynBLICSU9wCdru2OyL33GZuBwfISY+z
+	 yENgB9EuRytFCf3QFtphebAM14xHWuvNEFolKnG5UGpGgsWFopeb3ByPFBFhDGxWAC
+	 ifXGyXcqzmySA==
+Date: Sat, 11 May 2024 14:20:06 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@pengutronix.de>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Andy Shevchenko
+ <andy.shevchenko@gmail.com>, linux-iio@vger.kernel.org,
+ kernel@pengutronix.de
+Subject: Re: [PATCH] iio: Drop explicit initialization of struct
+ i2c_device_id::driver_data to 0
+Message-ID: <20240511142006.27facd74@jic23-huawei>
+In-Reply-To: <20240508072928.2135858-2-u.kleine-koenig@pengutronix.de>
+References: <20240508072928.2135858-2-u.kleine-koenig@pengutronix.de>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="K5DPPS7jZq//yKtM"
-Content-Disposition: inline
-In-Reply-To: <20240510-b4-iio-axi-adc-dt-binding-tweak-v1-1-a1f633c4602c@baylibre.com>
-
-
---K5DPPS7jZq//yKtM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 10, 2024 at 04:04:38PM -0500, David Lechner wrote:
-> It is always recommended to use generic node names for devicetree nodes.
-> The documentation [1] of the AXI ADC IP core says "The most important
-> part of the core is the Receiver PHY module.", so using phy as the node
-> name seems appropriate.
+On Wed,  8 May 2024 09:29:27 +0200
+Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de> wrote:
+
+> These drivers don't use the driver_data member of struct i2c_device_id,
+> so don't explicitly initialize this member.
 >=20
-> [1]: https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+> This prepares putting driver_data in an anonymous union which requires
+> either no initialization or named designators. But it's also a nice
+> cleanup on its own.
 >=20
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> While add it, also remove commas after the sentinel entries.
+>=20
+> Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@pengutronix.de>
+> ---
+> Hello,
+>=20
+> I didn't add all the individual maintainers to Cc and put the iio changes=
+ in a
+> single patch. If you want I can split per driver (or per iio subdirectory=
+?),
+> just tell me if you prefer it that way.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+I don't mind a single patch as resolving any backporting issues around this
+should be easy.=20
 
-Cheers,
-Conor.
+Whilst your changes for driver_data in struct i2c_device_id obviously don't
+need it, maybe it's worth similar patches to cleanup acpi_device_id and
+of_device_id tables with pointless 0 initialisation?
 
---K5DPPS7jZq//yKtM
-Content-Type: application/pgp-signature; name="signature.asc"
+Applied this with some conflicts in bmi160 resolved by hand.
 
------BEGIN PGP SIGNATURE-----
+Applied to the togreg branch of iio.git but only pushed out for now as test=
+ing
+to let 0-day look at it. I'll rebase on 6.10-rc1 once available.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZj9r+AAKCRB4tDGHoIJi
-0tu4AP4mOt0IB8mX1CV52TlA22Otdc3QKwbIiJUCeguPFCRQHQEA434eC9bWN9p7
-0z5Eur/l+U7NFnSRm0hqZB239kmVjQY=
-=flVT
------END PGP SIGNATURE-----
+Thanks,
 
---K5DPPS7jZq//yKtM--
+Jonathan
+
+
 

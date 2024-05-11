@@ -1,69 +1,67 @@
-Return-Path: <linux-iio+bounces-4951-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4952-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F39208C30DC
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 13:30:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 022448C3104
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 13:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70B2E1F212EB
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 11:30:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC781281AA4
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 11:47:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C721754FB5;
-	Sat, 11 May 2024 11:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF27954FB7;
+	Sat, 11 May 2024 11:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z/q0COIZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmGcQl9y"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CFFB1E53A;
-	Sat, 11 May 2024 11:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A7554F87;
+	Sat, 11 May 2024 11:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715427011; cv=none; b=nCK2oYWGFuzogVROuPS4BQiB0XukcLJAlDx0E7jWhjsvENjfoR3YMHX5znjGCB6pvxy/oJqC0I5GLHjXfX42oZ5mSxCujMtgn6ceisFvfnu8WP5LF8wIzvau/t0A2J3jHr+4aUjWmgFSaQo1qF/SyHYr6vqFz59gbzAFKZBWso8=
+	t=1715428056; cv=none; b=K0ImvRHQz750N/HccCfQg47g5JGishLXH6bwXp5x//jOlAAsLlklkaEiehvScxlMeq6FDkt6xchKywRCswlDLNDrAAhHKtFf+2aDO3e6+EEBcwURT6Z+xoY2sZOTt4+2SkwMSWvr4hpLtO0bxeqh/bZbO+r6262G4B/u8hH1zVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715427011; c=relaxed/simple;
-	bh=VXOktNgtVb4YUN213DANq6eU0Sy8yRAxjtjpcgGCVtc=;
+	s=arc-20240116; t=1715428056; c=relaxed/simple;
+	bh=Ad33EoIdC/2d9QPw323EcuvUf08B04qp9JzIxhTJ6h8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pp2RFwX7I4PfY0qSBTp2rOE3wsP4vfbCRyn3TOE5lWBxqSTT63mlty6OrylOr6KnkIycj22EdIIA69PFJOnud33ZTmGToC0P3s+FNSLUgdBvlivFM+RgvxV/LxNheqQ4sxAZ/qXCLGOp62VKM8tQUTL5NFbxitzNQBMNbCprLAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z/q0COIZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FA7CC2BBFC;
-	Sat, 11 May 2024 11:30:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BlB4xkQaSuIDN6Kd8PIlIEyeJh3sQ8zm4MNadd6AMgV6SeYeyn4FU2pKPFuYl0kxHJxIUSyolBjjDqdql9MKaytMxX9EKbSBRnVh13Brn13L8rtiMEFtc7Y1UIKN37VQTF3Zc4r6yyqiC9k6VqY4Q4l9O5+TYWlMMZEexrKNWoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmGcQl9y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DB9C2BBFC;
+	Sat, 11 May 2024 11:47:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715427011;
-	bh=VXOktNgtVb4YUN213DANq6eU0Sy8yRAxjtjpcgGCVtc=;
+	s=k20201202; t=1715428055;
+	bh=Ad33EoIdC/2d9QPw323EcuvUf08B04qp9JzIxhTJ6h8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Z/q0COIZFr1qX4V+7On9qdm7Dj+szkW6nmCZVfRqSuj6rpK7w9nSQwQHhDzraH/TE
-	 6ZDMTgKZWq7MLnx/DAsoDxQ4SOt3CACCTpR8qbRMpapOtR0ugyci6njGghs5w5Wn3R
-	 XAJLX9ADTb+zKK89RAG/UEeGp4grrfGX5zHNwg4Z1l0if0Lq2f+Y4V4Qz1kDnQRMgF
-	 12M+LojxCKqOqJSFaeH5yRrv+EnliVQNL2I1cNsTlH1RVO9E4gM7mE5aIg1QhKb8jC
-	 sgLvsY+95nyLhF/OtYNOzUfYq3rTfGVgMBabkmgnVDdjQ2PDsWGAfCeQfrvbr+jTMr
-	 OriG0TAMb4kuA==
-Date: Sat, 11 May 2024 12:29:55 +0100
+	b=RmGcQl9yUW5OTZ2Nb3GPyhm2BoQKtxe1zflzeyb+dtk2tV55rWIb9/e5yHPWT1Fuy
+	 kui8pAqAgXjJr+iwnn+LKQ2lCpZ7GUkEeBsVnVUtE+qXRWW1EMfFPdo65Bu9Km0KtD
+	 BIX8ZDWxc/0xKYhu+evm26zpgxZuJ+fq1QZY442OtNklLXqI16rPXzxWT0WsVoO/O3
+	 g3apNEv5fsSphGQwBavc4t0jZQebSjnw95aTbOIK8aY6ccZPRTIY4qwDPmyBe7dy5J
+	 udQP7OZVBXceG7J5VhBRjXnone/9rblLQiXGHRs3sbjJl/t1x/JSGNB6lp6t3ggGY9
+	 teVItshhMxmEQ==
+Date: Sat, 11 May 2024 12:47:21 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, Alisa-Dariana Roman
- <alisadariana@gmail.com>, michael.hennerich@analog.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, alexandru.tachici@analog.com,
- lars@metafoo.de, robh@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, lgirdwood@gmail.com, broonie@kernel.org,
- andy@kernel.org, nuno.sa@analog.com, marcelo.schmitt@analog.com,
- bigunclemax@gmail.com, okan.sahin@analog.com, fr0st61te@gmail.com,
- alisa.roman@analog.com, marcus.folkesson@gmail.com, schnelle@linux.ibm.com,
- liambeguin@gmail.com
-Subject: Re: [PATCH v7 5/6] dt-bindings: iio: adc: ad7192: Add AD7194
- support
-Message-ID: <20240511122955.2372f56e@jic23-huawei>
-In-Reply-To: <20240510-figure-cotton-1edeb2b92bbd@spud>
-References: <20240430162946.589423-1-alisa.roman@analog.com>
-	<20240430162946.589423-6-alisa.roman@analog.com>
-	<20240430-winnings-wrongness-32328ccfe3b5@spud>
-	<73365049-670b-4068-a159-fbdd0539f5a9@gmail.com>
-	<d5b8b193-0694-4e65-9b0a-64fa689ed344@baylibre.com>
-	<20240510-figure-cotton-1edeb2b92bbd@spud>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, Julien Stephan
+ <jstephan@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ kernel test robot <lkp@intel.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC v6 09/10] iio: adc: ad7380: add support for rolling
+ average oversampling mode
+Message-ID: <20240511124721.0d28bc11@jic23-huawei>
+In-Reply-To: <CAMknhBH=R2D4yu6Psnh+gv=OpCNAEwi8fpvMcJd0n9-SBfNWqg@mail.gmail.com>
+References: <20240501-adding-new-ad738x-driver-v6-0-3c0741154728@baylibre.com>
+	<20240501-adding-new-ad738x-driver-v6-9-3c0741154728@baylibre.com>
+	<20240506151725.10cf025e@jic23-huawei>
+	<CAMknhBFx-KVPRbm1xmKeU8ZaA7qt_c0_6eiUT-5kqTWVAvf3hw@mail.gmail.com>
+	<20240508122556.00005f71@Huawei.com>
+	<CAMknhBH=R2D4yu6Psnh+gv=OpCNAEwi8fpvMcJd0n9-SBfNWqg@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -74,74 +72,135 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 10 May 2024 22:26:22 +0100
-Conor Dooley <conor@kernel.org> wrote:
+On Thu, 9 May 2024 17:01:14 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> On Fri, May 10, 2024 at 09:21:37AM -0500, David Lechner wrote:
-> > On 5/10/24 5:05 AM, Alisa-Dariana Roman wrote: =20
-> > > On 30.04.2024 20:21, Conor Dooley wrote: =20
-> > >> On Tue, Apr 30, 2024 at 07:29:45PM +0300, Alisa-Dariana Roman wrote:=
- =20
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 diff-channels:
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 description:
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Both inputs=
- can be connected to pins AIN1 to AIN16 by choosing the
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 appropriate=
- value from 1 to 16.
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 items:
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 minimum: 1
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 maximum: 16
-> > >>> +
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 single-channel:
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 description:
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Positive in=
-put can be connected to pins AIN1 to AIN16 by choosing the
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 appropriate=
- value from 1 to 16. Negative input is connected to AINCOM.
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 items:
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 minimum: 1
-> > >>> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 maximum: 16=
- =20
-> > >>
-> > >> Up to 16 differential channels and 16 single-ended channels, but onl=
-y 16
-> > >> pins? Would the number of differential channels not max out at 8? =20
-> > >=20
-> > > Hello, Conor! I really appreciate the feedback!
-> > >=20
-> > > The way I thought about it, the only thing constraining the number of=
- channels is the reg number (minimum: 0, maximum: 271). 272 channels cover =
-all possible combinations (16*16 differential and 16 single ended) and I th=
-ought there is no need for anything stricter. I added items: minimum:1 maxi=
-mum:16 to make sure the numbers are from 1 to 16, corresponding to AIN1-AIN=
-16.
-> > >=20
-> > > Please let me know what should be improved!
-> > >=20
-> > > Kind regards,
-> > > Alisa-Dariana Roman.
-> > >  =20
-> >=20
-> > Having looked at the datasheet for this and other similar chips, I agree
-> > that this reasoning makes sense. Some of the similar chips that have fi=
-xed
-> > channel assignments still have, e.g. a channel where + and - are both
-> > AIN2 (I assume for diagnostics). So I think it makes sense to allow for
-> > doing something similar here even if the most common use cases will
-> > probably have at most 16 channels defined in the .dts. =20
+> On Wed, May 8, 2024 at 6:26=E2=80=AFAM Jonathan Cameron
+> <Jonathan.Cameron@huawei.com> wrote:
+> >
+> > On Mon, 6 May 2024 10:04:10 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> > =20
+> > > On Mon, May 6, 2024 at 9:17=E2=80=AFAM Jonathan Cameron <jic23@kernel=
+.org> wrote: =20
+> > > >
+> > > > On Wed, 01 May 2024 16:55:42 +0200
+> > > > Julien Stephan <jstephan@baylibre.com> wrote:
+> > > > =20
+> > > > > Adds support for rolling average oversampling mode.
+> > > > >
+> > > > > Rolling oversampling mode uses a first in, first out (FIFO) buffe=
+r of
+> > > > > the most recent samples in the averaging calculation, allowing th=
+e ADC
+> > > > > throughput rate and output data rate to stay the same, since we o=
+nly need
+> > > > > to take only one sample for each new conversion.
+> > > > >
+> > > > > The FIFO length is 8, thus the available oversampling ratios are =
+1, 2, 4, 8
+> > > > > in this mode (vs 1,  2, 4, 8, 16, 32 for the normal average) =20
+> > > >
+> > > > Ah. I should have read on!
+> > > > =20
+> > > > >
+> > > > > In order to be able to change the averaging mode, this commit als=
+o adds
+> > > > > the new "oversampling_mode" and "oversampling_mode_available" cus=
+tom
+> > > > > attributes along with the according documentation file in
+> > > > > Documentation/ABI/testing/sysfs-bus-iio-adc-ad7380 since no stand=
+ard
+> > > > > attributes correspond to this use case. =20
+> > > >
+> > > > This comes to the comment I stuck in the previous patch.
+> > > >
+> > > > To most people this is not a form of oversampling because the data =
+rate
+> > > > remains unchanged. It's a cheap low pass filter (boxcar) Google poi=
+nted me at:
+> > > > https://dsp.stackexchange.com/questions/9966/what-is-the-cut-off-fr=
+equency-of-a-moving-average-filter
+> > > >
+> > > > in_voltage_low_pass_3db_frequency would be the most appropriate sta=
+ndard
+> > > > ABI for this if we do treat it as a low pass filter control.
+> > > >
+> > > > I'm not necessarily saying we don't want new ABI for this, but I wo=
+uld
+> > > > like to consider the pros and cons of just using the 3db frequency.
+> > > >
+> > > > So would that work for this part or am I missing something?
+> > > > =20
+> > >
+> > > I like the idea. But from the link, it looks like the 3dB frequency
+> > > depends on the sampling frequency which is unknown (e.g. could come
+> > > from hrtimer trigger).
+> > >
+> > > Would it be reasonable to calculate the 3db frequency at the max
+> > > sample rate that the chip allows and just use those numbers?
+> > > =20
+> > Ah. So looking at datasheet the normal average oversampling is
+> > self clocked, but this version is not.
+> >
+> > So, I'll ask the dumb question.  What is this feature for?
+> > We have to pump the SPI bus anyway why not just do the maths in
+> > userspace?  Oversampling is normally about data rate reduction
+> > with a bonus in precision obtained.
+> >
+> > Jonathan
+> > =20
 >=20
-> Actually, I think there were a bunch of whiffs on this one by either
-> misreading the property in question (me) or not realising that I had done
-> that and trying to explain what the possible combinations are.
-> Looking at it now, I dunno wtf I was smoking because there's no way that
-> this would be a functional binding if the min/max in the quote above
-> constraining the number of channels. I can hardly blame y'all for that
-> though, I am supposed to know how bindings work after all...
+> I asked the apps engineers and the answer I got is that it a way to
+> enable oversampling while still maintaining a high sample rate.
 
-Me too :(  I also failed to register this doesn't constrain
-channel counts at all.
+If I read it correctly (and based on how this is done on some other
+devices) it's exactly the same as not enabling this mode and in
+software adding up the last 8 readings (so software oversampling).
+Data rate is the same and arguably the larger spi transfers that
+might result from their solution are more expensive than doing the
+sum on the CPU.
 
-Anyhow, all's well that ends well!
+A long time back there was IIRC some discussion of implementing
+this sort of filtering as a pluggable component between an IIO
+device driver and the kfifo - idea being to reduce data being
+passed to userspace - there would be no point in doing
+this variant though as the data rate isn't reduced.  It would be
+easy to do as a buffer consumer IIO device that just does maths
+on incoming data before providing it's own kfifo, but no one
+ever implemented it.
 
-J
+>=20
+> Another thing to consider here is that we can only enable the extra
+> resolution bits if oversampling is enabled (normal or rolling mode).
+> The chip might not work right if we try to enable the extra bits
+> without oversampling enabled.
+
+I think the key question is where do those extra bits come from?=20
+If this is conventional oversampling then we just sum up the readings
+and divide by how many there are.
+(A1 + A2 + A3 + A4 + A5 + A6 + A7) / 8
+So sum plus shift right 3.  However you don't actually do the div 8
+you just change the scale to reflect that your new LSB is 1/8th of
+that before giving greater precision. This is giving 2 extra bits, so
+it's slightly worse than the 3 we'd get doing it in software (trade
+off to keep the SPI transfers smaller).  So they are either dropping the
+LSB or just possibly dithering it.
+
+So far I'm not seeing a strong reason to support this functionality.
+
+>=20
+> So my thinking is perhaps it is better to keep the rolling mode as
+> oversampling rather than trying to call it a low pass filter. As you
+> said, normal mode is about data rate reduction with bonus precision.
+> Rolling average oversampling mode then would then just be for the
+> bonus precision.
+
+True if there actually is any. I took another close read through
+the datasheet sections and the description aligns with my assumptions
+above.
+
+Jonathan
+
+
 

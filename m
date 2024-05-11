@@ -1,59 +1,62 @@
-Return-Path: <linux-iio+bounces-4965-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4966-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C84318C3262
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 18:06:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171658C3271
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 18:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC764282451
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 16:06:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C14601F21C39
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 16:22:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8F756B6B;
-	Sat, 11 May 2024 16:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368BA57307;
+	Sat, 11 May 2024 16:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nbJCldCR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pUia6/GJ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF3356B63;
-	Sat, 11 May 2024 16:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C0E56B7F;
+	Sat, 11 May 2024 16:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715443562; cv=none; b=NSMgg6f6IGV8T2zd7SAIETXs+Sy3re9yia0LPRHq+5B3xssYg4uXvuQvLwaAFUvXq4xB/UORN5LzdvXlFyYtimH3ZxY22mcUDtx98eYiKslZGKD0oLj2UJBzoVf8iDJtb1UfuXOQQ7YZ8IeLOVdHqB7aZMeBAMnkplm2rjrkF0E=
+	t=1715444529; cv=none; b=gwhRZYwCO+aLOD94Bqiv1+SevTRoEiGh3aKUcmBA0J8LDcdQJb1Fherjf3TeN1JyJfG7ESPZT0+PTkJOb6WJ9G0hQL7HWf9tX/I02mS1f4hfUPqkUN+KcoPAW9eVs3vSWRJHzzsDpeiZwNfcAnHfAZrX9Tcucuv75y58bxcqDtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715443562; c=relaxed/simple;
-	bh=/A2yW0GWCa0BY2qKORT6qVkFEJQCUjFJUdsF2eSvF5s=;
+	s=arc-20240116; t=1715444529; c=relaxed/simple;
+	bh=waGZCjYc4EYoDlFRXsZRE3LgBvKQnnMdiOCAiz2Or9o=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=myzkXI5C5qj5rXMsdGCT/FK+xX2/UJP4YTSOGCUJtnqME1pifgG8Sx1/rsfQF+hZwVJKgjLYDxuW7EfPZddIOIL0R0Jglr7VP/MEjYjsw8cbaWeBPYBS3/NjMpqkSGLUTbVWaIR6gRmClAV/hD1t6WyVKyokSZz8JI73KrydzYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nbJCldCR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A64D6C2BD11;
-	Sat, 11 May 2024 16:05:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mejdGM30sOG99Ug6TMlkY7SxEepquNmmuVNjynWMPCdijv/E2hw1t4rW6e+HlWwU/powyEWwV/cVeJ7XuS+k6YbTjKqIiAd3ykwM7ICOZ21AE1dB95op0E0UpzPh1M9owv9yim3ftiNfJukWxddf+2ke7+x/3dI6MyN0CxKTsMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pUia6/GJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E07C2BBFC;
+	Sat, 11 May 2024 16:22:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715443562;
-	bh=/A2yW0GWCa0BY2qKORT6qVkFEJQCUjFJUdsF2eSvF5s=;
+	s=k20201202; t=1715444528;
+	bh=waGZCjYc4EYoDlFRXsZRE3LgBvKQnnMdiOCAiz2Or9o=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nbJCldCRTNrcdTE/yiVppJZOg7XEMEoULI4ul6/3uawlMO4XTYl8qbp9PaqQO2K35
-	 W1cUYlebjibwpGMjATexf8hj9NRWlC0du+yDag2AkMIzL6KH96rHaEbGbk9+vk9//9
-	 0ZBqEAcYQzX4Pn56R/QtClOFIbxk6XwFvTbNhPiBcqsysibkiH8MAdD6AFmDfkBzqH
-	 rjAoTCCiLwUx7gbuCLleoYR5Ga+vPdlECqKwarTTN1NGwc129xPNlpd9w5QUC/F9an
-	 DOL2zxOKyplIdShljROtqAlVMe5ehDyMmZh1Evf4OycPktDi69uRySDXb/OK+mtkHJ
-	 C1SiebxGNVUfw==
-Date: Sat, 11 May 2024 17:05:50 +0100
+	b=pUia6/GJ/XPK9APwp4JYfbzEwt6LAl7RDFE9bwqBx4kaRYlMBJmpZGh0cErFE0whr
+	 wLOnsBUedJuhU2GH1arbv4VJdwvX6xIU8AgrrZ3iOjY1qyVgeFl0tmCaark/jNfnX9
+	 RLanF+02PGK9ZE1youvcLMirMEGHCMxqVs9MnKiNsDVyzY32ORJ98s7gNM5LdQefZB
+	 3V+RmGqPXgCzrTFB402Obtar39ONhwy7hSkuLnNHvyae9msA4p3d4NFA/gQFAYJlde
+	 XbuSCJOqYlq4Xn901LC9hT/8yPtR7s9gzYNroAPIFEOKVLsDoZuu8vZsYSZrT5eQwK
+	 DVVz57QgPFa5Q==
+Date: Sat, 11 May 2024 17:21:55 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Angelo Dureghello <adureghello@baylibre.com>, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, nuno.sa@analog.com,
- lars@metafoo.de, Michael.Hennerich@analog.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] dt-bindings: iio: dac: add ad35xxr single output
- variants
-Message-ID: <20240511170529.742e6e6f@jic23-huawei>
-In-Reply-To: <CAMknhBFUUCvxbuHz0pPKd-KBcG3zfXNr8wu=AnrZx0C495RKOQ@mail.gmail.com>
-References: <20240510141836.1624009-1-adureghello@baylibre.org>
-	<CAMknhBFUUCvxbuHz0pPKd-KBcG3zfXNr8wu=AnrZx0C495RKOQ@mail.gmail.com>
+Cc: Mariel Tinaco <Mariel.Tinaco@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Marcelo Schmitt
+ <marcelo.schmitt1@gmail.com>, Dimitri Fedrau <dima.fedrau@gmail.com>,
+ Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [PATCH 0/2] add AD8460 DAC driver
+Message-ID: <20240511172155.08bc0987@jic23-huawei>
+In-Reply-To: <CAMknhBHd2XCJH4rgYDq=vbCL5E_tM3FxFPWbNy9PvxLCJL4tcA@mail.gmail.com>
+References: <20240510064053.278257-1-Mariel.Tinaco@analog.com>
+	<CAMknhBHd2XCJH4rgYDq=vbCL5E_tM3FxFPWbNy9PvxLCJL4tcA@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,77 +67,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 10 May 2024 10:39:31 -0500
+On Fri, 10 May 2024 12:30:46 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
-> On Fri, May 10, 2024 at 9:19=E2=80=AFAM Angelo Dureghello
-> <adureghello@baylibre.com> wrote:
+> On Fri, May 10, 2024 at 1:42=E2=80=AFAM Mariel Tinaco <Mariel.Tinaco@anal=
+og.com> wrote:
 > >
-> > From: Angelo Dureghello <adureghello@baylibre.com>
+> > The AD8460 is a 14-bit, high power +-40V 1A, high-speed DAC,
+> > with dual digital input modes, programmable supply current and
+> > fault monitoring and protection settings for output current,
+> > output voltage and junction temperature.
 > >
-> > Add support for ad3541r and ad3551r single output variants.
+> > The fault monitoring and shutdown protection features were
+> > supported in the earlier versions of the IIO driver but was
+> > scrapped due to uncertainties if the functionalities belong to
+> > the IIO driver. However, it would be best to implement it for
+> > the device's quality of life. I'd like to know if it's better
+> > suited as a stand-alone HWMON driver.
+
+That probably doesn't make sense.  This reply btw is based on the
+text here. I haven't yet looked in detail at the datasheet.
+
+Some fault conditions are relatively easy to map to threshold events
+on an input channel.  The ones that are harder are things
+like short circuit detectors where it's hard to know what the
+actual threshold is.
+
+The other place we are limited is in multiple levels for the
+same thing.  So warning and fault levels. That stuff is handled
+much better by hwmon where these things are more common.
+The issue we have is that the event encoding is a bit tight
+but we could see if there is a way to add these.
+
 > >
-> > Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-> > ---
-> >  .../devicetree/bindings/iio/dac/adi,ad3552r.yaml       | 10 ++++++++--
-> >  1 file changed, 8 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml=
- b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> > index 8265d709094d..17442cdfbe27 100644
-> > --- a/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml
-> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad3552r.yaml =20
->=20
-> It would be nice to also add the datasheet links in the description.
->=20
-> > @@ -19,7 +19,9 @@ description: |
-> >  properties:
-> >    compatible:
-> >      enum:
-> > +      - adi,ad3541r
-> >        - adi,ad3542r
-> > +      - adi,ad3551r
-> >        - adi,ad3552r
-> >
-> >    reg:
-> > @@ -128,7 +130,9 @@ allOf:
-> >        properties:
-> >          compatible:
-> >            contains:
-> > -            const: adi,ad3542r
-> > +            enum:
-> > +              - adi,ad3541r
-> > +              - adi,ad3542r
-> >      then:
-> >        patternProperties:
-> >          "^channel@([0-1])$":
-> > @@ -158,7 +162,9 @@ allOf:
-> >        properties:
-> >          compatible:
-> >            contains:
-> > -            const: adi,ad3552r
-> > +            enum:
-> > +              - adi,ad3551r
-> > +              - adi,ad3552r
-> >      then:
-> >        patternProperties:
-> >          "^channel@([0-1])$":
-> > --
-> > 2.45.0.rc1
-> >
+> > The following are the configurable and readable parameters
+> > through SPI that could be implemented on the HWMON driver:
+> >   * An enable bit to arm/protect the device on overcurrent,
+> > overvoltage or overtemperature events. The device is shut down
+> > upon detection.
+
+We don't have a good way to handle restarting from shutdown, but
+perhaps we could use another action to signal that - maybe even
+going as far as saying that the driver should be reloaded.
+
+As for the thresholds, they sound like the map to IIO events
+reasonably well. =20
+
+> >   * A configurable range/threshold for voltage, current and
+> > temperature that raises alarm when exceeded while the device is
+> > armed.
+
+That maps fine to the IIO event threshold controls.
+
+> >   * Flags that can be polled to raise alarm upon detection of
+> > overcurrent, overvoltage or overtemperature events, and apply
+> > additional protective measures.
+The specific need to poll is awkward but you could do it easily
+enough in driver and use the IIO event stuff to signal any
+events detected.
+
+
+> >   * Programmable quiescent current (optional)
+Could probably figure out a suitable control for this, but I'm not
+entirely sure what it is :)
+
+> >   * Thermal monitoring is done by measuring voltage on TMP pin
+> > (unlikely to be included)
+
+If you did want to, the usual trick for these is to include
+an optional use as a consumer of an IIO provider which would be
+a separate ADC.=20
+
 > > =20
 >=20
-> Since these are single channel, it would not hurt to restrict the
-> `reg` property of of the `channel@` nodes to 1.
-Ah. I missed David's email because threading goes weird without a cover let=
-ter
-and hence duplicated his comment.
-Please add a cover letter with a brief description of the series to
-your v2.  Means we get a nice title in patchwork as well!
-
-Thanks,
+> Adding myself to the cc: here since I'm interested to see what
+> Jonathan (or anyone else) has to say about the fault monitoring.
 
 Jonathan
-=20
-
 

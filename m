@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-4966-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4967-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171658C3271
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 18:22:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A4F58C3274
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 18:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C14601F21C39
-	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 16:22:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFE6128231E
+	for <lists+linux-iio@lfdr.de>; Sat, 11 May 2024 16:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368BA57307;
-	Sat, 11 May 2024 16:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A5B56771;
+	Sat, 11 May 2024 16:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pUia6/GJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hVaDlUDq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C0E56B7F;
-	Sat, 11 May 2024 16:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7BB56772;
+	Sat, 11 May 2024 16:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715444529; cv=none; b=gwhRZYwCO+aLOD94Bqiv1+SevTRoEiGh3aKUcmBA0J8LDcdQJb1Fherjf3TeN1JyJfG7ESPZT0+PTkJOb6WJ9G0hQL7HWf9tX/I02mS1f4hfUPqkUN+KcoPAW9eVs3vSWRJHzzsDpeiZwNfcAnHfAZrX9Tcucuv75y58bxcqDtc=
+	t=1715444713; cv=none; b=EY/ku2VW+yzu0TbWoAUG5YqNBHlwGsAMVU3A+ZnEtBpIkscPwc5K8GMbNXK59zu1AaXTN8TMNcnI5Ygwv3FC4cXAQVnAEzdAVElCXjVPMdidYoApoj2PFAgBnkTaWzL1dvA7WBaDZP1y2fb8pgeZKXWMFfdIFq2mjyDBZRCnllM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715444529; c=relaxed/simple;
-	bh=waGZCjYc4EYoDlFRXsZRE3LgBvKQnnMdiOCAiz2Or9o=;
+	s=arc-20240116; t=1715444713; c=relaxed/simple;
+	bh=PoZ0hnBSYNcpGCRh+GVodXfFczNN0WpcaG9zsi291mc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mejdGM30sOG99Ug6TMlkY7SxEepquNmmuVNjynWMPCdijv/E2hw1t4rW6e+HlWwU/powyEWwV/cVeJ7XuS+k6YbTjKqIiAd3ykwM7ICOZ21AE1dB95op0E0UpzPh1M9owv9yim3ftiNfJukWxddf+2ke7+x/3dI6MyN0CxKTsMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pUia6/GJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E07C2BBFC;
-	Sat, 11 May 2024 16:22:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GoD+k0vvd4cte01Pi3RqdUCv/G6lD924UMQV+KWo+fnCrVC9jC9tfTscmOH9fmkpPGVtFQnUO2qnM/VyO40ptuIuu/Xc263Dw7e717FW9qlHk6HoQK4SGCSqvuJABk5xe0mOksGpb+mdADqt1F7DFIFU4Q6RFc/GLNxPmJqkmvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hVaDlUDq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54983C2BBFC;
+	Sat, 11 May 2024 16:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715444528;
-	bh=waGZCjYc4EYoDlFRXsZRE3LgBvKQnnMdiOCAiz2Or9o=;
+	s=k20201202; t=1715444713;
+	bh=PoZ0hnBSYNcpGCRh+GVodXfFczNN0WpcaG9zsi291mc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pUia6/GJ/XPK9APwp4JYfbzEwt6LAl7RDFE9bwqBx4kaRYlMBJmpZGh0cErFE0whr
-	 wLOnsBUedJuhU2GH1arbv4VJdwvX6xIU8AgrrZ3iOjY1qyVgeFl0tmCaark/jNfnX9
-	 RLanF+02PGK9ZE1youvcLMirMEGHCMxqVs9MnKiNsDVyzY32ORJ98s7gNM5LdQefZB
-	 3V+RmGqPXgCzrTFB402Obtar39ONhwy7hSkuLnNHvyae9msA4p3d4NFA/gQFAYJlde
-	 XbuSCJOqYlq4Xn901LC9hT/8yPtR7s9gzYNroAPIFEOKVLsDoZuu8vZsYSZrT5eQwK
-	 DVVz57QgPFa5Q==
-Date: Sat, 11 May 2024 17:21:55 +0100
+	b=hVaDlUDqc2PLNffxiiFiED2qvAcfwrRnzjaogkiTzB0ouPyGNV7WKfjn8LF4I9ztg
+	 tm/bGfuG0b8Za4M4lPvd8jBxONYQSw8fRR6uYx+Svm8CmnC6XheYri/vrYTspo36bO
+	 tpJZ9cVGAJ6yqN5sGd/2teB5uzej58WkRg7wmawphCKbO6jvO5Q/LRKOQslYFs+zWo
+	 1jX3wAkUFYWoaQ0avusDCF6PoJC6QnLFXux2PIzEwhZGnnzFCKPxDnhmQfv5GlKnRj
+	 QglqYE85+RcxcPu3s3DSg1FKt7lBiRFLpF21Zv+feN8abAjZ8AAPS0Czt34/KhCQCs
+	 20l0MsOyrr5zQ==
+Date: Sat, 11 May 2024 17:25:00 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Mariel Tinaco <Mariel.Tinaco@analog.com>, linux-iio@vger.kernel.org,
@@ -52,11 +52,12 @@ Cc: Mariel Tinaco <Mariel.Tinaco@analog.com>, linux-iio@vger.kernel.org,
  Hennerich <Michael.Hennerich@analog.com>, Marcelo Schmitt
  <marcelo.schmitt1@gmail.com>, Dimitri Fedrau <dima.fedrau@gmail.com>,
  Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 0/2] add AD8460 DAC driver
-Message-ID: <20240511172155.08bc0987@jic23-huawei>
-In-Reply-To: <CAMknhBHd2XCJH4rgYDq=vbCL5E_tM3FxFPWbNy9PvxLCJL4tcA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: dac: add docs for ad8460
+Message-ID: <20240511172500.718fe12d@jic23-huawei>
+In-Reply-To: <CAMknhBFXk07HbP_pPg5wkW-9Ah2-66kGzZFvcvBNrbjfguHb4g@mail.gmail.com>
 References: <20240510064053.278257-1-Mariel.Tinaco@analog.com>
-	<CAMknhBHd2XCJH4rgYDq=vbCL5E_tM3FxFPWbNy9PvxLCJL4tcA@mail.gmail.com>
+	<20240510064053.278257-2-Mariel.Tinaco@analog.com>
+	<CAMknhBFXk07HbP_pPg5wkW-9Ah2-66kGzZFvcvBNrbjfguHb4g@mail.gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -67,81 +68,162 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 10 May 2024 12:30:46 -0500
+On Fri, 10 May 2024 12:28:19 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
 > On Fri, May 10, 2024 at 1:42=E2=80=AFAM Mariel Tinaco <Mariel.Tinaco@anal=
 og.com> wrote:
 > >
-> > The AD8460 is a 14-bit, high power +-40V 1A, high-speed DAC,
-> > with dual digital input modes, programmable supply current and
-> > fault monitoring and protection settings for output current,
-> > output voltage and junction temperature.
+> > This adds the bindings documentation for the 14-bit
+> > High Voltage, High Current, Waveform Generator
+> > Digital-to-Analog converter.
 > >
-> > The fault monitoring and shutdown protection features were
-> > supported in the earlier versions of the IIO driver but was
-> > scrapped due to uncertainties if the functionalities belong to
-> > the IIO driver. However, it would be best to implement it for
-> > the device's quality of life. I'd like to know if it's better
-> > suited as a stand-alone HWMON driver.
-
-That probably doesn't make sense.  This reply btw is based on the
-text here. I haven't yet looked in detail at the datasheet.
-
-Some fault conditions are relatively easy to map to threshold events
-on an input channel.  The ones that are harder are things
-like short circuit detectors where it's hard to know what the
-actual threshold is.
-
-The other place we are limited is in multiple levels for the
-same thing.  So warning and fault levels. That stuff is handled
-much better by hwmon where these things are more common.
-The issue we have is that the event encoding is a bit tight
-but we could see if there is a way to add these.
-
+> > Signed-off-by: Mariel Tinaco <Mariel.Tinaco@analog.com>
+> > ---
+> >  .../bindings/iio/dac/adi,ad8460.yaml          | 67 +++++++++++++++++++
+> >  MAINTAINERS                                   |  7 ++
+> >  2 files changed, 74 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ad846=
+0.yaml
 > >
-> > The following are the configurable and readable parameters
-> > through SPI that could be implemented on the HWMON driver:
-> >   * An enable bit to arm/protect the device on overcurrent,
-> > overvoltage or overtemperature events. The device is shut down
-> > upon detection.
-
-We don't have a good way to handle restarting from shutdown, but
-perhaps we could use another action to signal that - maybe even
-going as far as saying that the driver should be reloaded.
-
-As for the thresholds, they sound like the map to IIO events
-reasonably well. =20
-
-> >   * A configurable range/threshold for voltage, current and
-> > temperature that raises alarm when exceeded while the device is
-> > armed.
-
-That maps fine to the IIO event threshold controls.
-
-> >   * Flags that can be polled to raise alarm upon detection of
-> > overcurrent, overvoltage or overtemperature events, and apply
-> > additional protective measures.
-The specific need to poll is awkward but you could do it easily
-enough in driver and use the IIO event stuff to signal any
-events detected.
-
-
-> >   * Programmable quiescent current (optional)
-Could probably figure out a suitable control for this, but I'm not
-entirely sure what it is :)
-
-> >   * Thermal monitoring is done by measuring voltage on TMP pin
-> > (unlikely to be included)
-
-If you did want to, the usual trick for these is to include
-an optional use as a consumer of an IIO provider which would be
-a separate ADC.=20
-
-> > =20
+> > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml =
+b/Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml
+> > new file mode 100644
+> > index 000000000..924f76209
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml
+> > @@ -0,0 +1,67 @@
+> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > +# Copyright 2024 Analog Devices Inc.
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/dac/adi,ad8460.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Analog Devices AD8460 DAC
+> > +
+> > +maintainers:
+> > +  - Mariel Tinaco <mariel.tinaco@analog.com>
+> > +
+> > +description: |
+> > +  Analog Devices AD8460 110 V High Voltage, 1 A High Current,
+> > +  Arbitrary Waveform Generator with Integrated 14-Bit High Speed DAC
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad8460.pdf
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - adi,ad8460
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  spi-max-frequency:
+> > +    maximum: 20000000
+> > +
+> > +  vref-supply: =20
 >=20
-> Adding myself to the cc: here since I'm interested to see what
-> Jonathan (or anyone else) has to say about the fault monitoring.
+> It would be nice to make the property name match the pin name since
+> there is more than one reference voltage input.
+>=20
+> refio-1p2v-supply:
+>=20
+> > +    description: Drive voltage in the range of 1.2V maximum to as low =
+as
+> > +      low as 0.12V through the REF_IO pin to adjust full scale output =
+span =20
+>=20
+> I don't seen anything in the datasheet named REF_IO. Is this a typo
+> and it should be REFIO_1P2V?
+>=20
+> > +
+> > +  clocks:
+> > +    description: The clock for the DAC. This is the sync clock
+> > +
+> > +  adi,rset-ohms:
+> > +    description: Specify value of external resistor connected to FS_AD=
+J pin
+> > +      to establish internal HVDAC's reference current I_REF
+> > +    minimum: 2000
+> > +    maximum: 20000
+> > + =20
+>=20
+> I see lots more pins on the datasheet, many of which should be trivial
+> to add bindings for (we prefer to have the bindings as complete as
+> possible even if the driver doesn't implement everything). Potential
+> candidates:
+>=20
+> sdn-reset-gpios: (active high)
+> reset-gpios: (active low)
+> sdn-io-gpios: (active high)
+>=20
+> hvcc-supply:
+> hvee-supply:
+> vcc-5v-supply:
+> vref-5v-supply:
+> dvdd-3p3v-supply:
+> avdd-3p3v-supply:
+>=20
+> It also looks like there is a parallel interface for data, so I would
+> expect to see an io-backends property that links to the PHY used for
+> handling that.
+>=20
+Ultimately yes, but the parallel interface might require some decisions on=
+=20
+binding that are non obvious until it's actually implemented. So maybe
+don't need that bit from the start.  The rest I agree should be here.
 
-Jonathan
+
+>=20
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - clocks
+> > +
+> > +allOf:
+> > +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +
+> > +    spi {
+> > +        dac@0 {
+> > +            compatible =3D "adi,ad8460";
+> > +            reg =3D <0>;
+> > +            spi-max-frequency =3D <8000000>;
+> > +            adi,rset-ohms =3D <2000>;
+> > +
+> > +            vref-supply =3D <&vrefio>;
+> > +            clocks =3D <&sync_ext_clk>;
+> > +        };
+> > +    };
+> > +
+> > +...
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index 758c202ec..dae93df2a 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -1234,6 +1234,13 @@ W:       https://ez.analog.com/linux-software-dr=
+ivers
+> >  F:     Documentation/devicetree/bindings/iio/adc/adi,ad7780.yaml
+> >  F:     drivers/iio/adc/ad7780.c
+> >
+> > +ANALOG DEVICES INC AD8460 DRIVER
+> > +M:     Mariel Tinaco <Mariel.Tinaco@analog.com>
+> > +L:     linux-iio@vger.kernel.org
+> > +S:     Supported
+> > +W:     https://ez.analog.com/linux-software-drivers
+> > +F:     Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml
+> > +
+> >  ANALOG DEVICES INC AD9739a DRIVER
+> >  M:     Nuno Sa <nuno.sa@analog.com>
+> >  M:     Dragos Bogdan <dragos.bogdan@analog.com>
+> > --
+> > 2.34.1
+> >
+> > =20
+
 

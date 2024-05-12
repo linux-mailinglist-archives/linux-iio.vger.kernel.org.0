@@ -1,89 +1,89 @@
-Return-Path: <linux-iio+bounces-4997-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4998-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 265D38C387A
-	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 23:06:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F888C391B
+	for <lists+linux-iio@lfdr.de>; Mon, 13 May 2024 01:05:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA3941F21F48
-	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 21:06:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4477A281555
+	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 23:05:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9319D5915C;
-	Sun, 12 May 2024 21:05:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC7FD58ABF;
+	Sun, 12 May 2024 23:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RIe+0v7Z"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hgdjSx9O"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1096558AC1;
-	Sun, 12 May 2024 21:05:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F3253E30;
+	Sun, 12 May 2024 23:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715547922; cv=none; b=k1s9g+7/H2Vv6ZmSEy/Pr8ZxwfGLUuG1xPsRZKb8ihe6TEkX7SEtENlmJ5wtouydOG/Ne5KeA2cmNhid6FP3vJazBgMplni2mpBQKaLmny01+ZNy2gx2m3LCr1znJ/yRStIBr2JnXWotOQyxAnujbD2n+fIF8lcOX+9yE1zeBto=
+	t=1715555133; cv=none; b=DkenzUlLexy7qXls7mHQVA6BK/lIW54sSJ+gjkF+ifab4ScrqMEdQnqjbvxNDKvXNYwGXfaS9bY4j1eg3cAGPm+tVAniywoAYkQijyFfgYgBjP92bcmwxleEjh4d3YDQy5cQ6WwDMRUszk0xC/uTru62Wn2ER98+VGLNidgiFPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715547922; c=relaxed/simple;
-	bh=SH9oRQMjdWisKJzgNmlM9HRFY+ONAsdZowm1gdmvCvM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K9CuiHb0kkcqKPxCMrfyYllp9h2e7adPlwtaJBoJxJfgcwKBgv18mtVLG+1WsB4oH+PB04tO9LVEHDzpJw4nrJHsIfCjDpsOJl8kqU8KIsc+9BH8vkgdBSDJkyGe6r8x0s46fkpTGZZjVYd8RWcTnDsEFdVAKrgudpGjc61PqBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RIe+0v7Z; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1715555133; c=relaxed/simple;
+	bh=3Tz69QkrUqo1aONgap+B/x+PuSq4v/ij4h9Va5JIDMo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=L5mCiTWjYlcyekgGCkIA1Kc3viRxNptV0FozkQQcSenwj7yE6GovoyoMnN3yPGRwTSRghAkYU1+zGYSmjJmCe5o/mFdtL2noHAQEsaTmwhhm3Z2EOGWwG1LiCRZxHofm/sFRbmZgVTj6WQvji2XTJYq0OANnMlTxwnyHwt7EXqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hgdjSx9O; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-6f472d550cbso2994943b3a.1;
-        Sun, 12 May 2024 14:05:20 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42017f8de7aso828735e9.1;
+        Sun, 12 May 2024 16:05:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715547920; x=1716152720; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MZxVl6V73Zt3zGRSEIH0bHVxMtSUe0uIzUK9Y3RzWb8=;
-        b=RIe+0v7Z/MH9HFxrLmXZGIbWF9MEqJ7j491itqXjtcv+zXYzTd+7AFrJw/+S8mbSD3
-         qqgIXcVjwI/SqDDQ4RBH6XaTfstfabS1rbEVc8rBHjKctIMiTMqC6HxAfVWgzxDK2DpA
-         a+1x7HDqqZ0SKO9YAw4kueonwKORvdxusbVcn/FjtSZR/6ZLdmXMOwgqjG9Tpj3eqDzj
-         7sZ3BclovB9DDHmcfN+VcZ4az3/MmXpTP1/X2YlvJxUX4R4/VspOV1A2Br5CPFZwhMms
-         oKbbWCAaFcJe6/YHdgzhb6QM8DefrfEUQs+ZxeZwFytvByP8p7zo3pHpD4FKlizZ0xaS
-         4tEg==
+        d=gmail.com; s=20230601; t=1715555130; x=1716159930; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CGTqy+N/1EzIcQlQ9Z56+2LbirXamvloxKpP5KP1LeE=;
+        b=hgdjSx9OpU9QFViklK69Hk9khMGkWUrA+UM3qAAuQ9JqebVPnVHESn5OO+clh3RuuN
+         I0l87W39w/TtxEibMtC4vBxMX0eMFhFymnX/v/GBFS0s8NLRkOOc/DZvWSnwMBV2Idp8
+         9hSspNsCiENrUXfB1WuaMFpEXaK1X00ApLL5MQIT0h8FC2YHv0o/uVbyVMFcN0c/3tgB
+         3mPf0uB70v88qvnhLste3Uc80WxiOGqHL2sPZK1FDKY+8givq7OunXr0bwIOtigGNqV7
+         MpdiQRtpd3KIL/YQFKEgLc5EUgNmw0EUoM2M2W7NjxDT9xILaat3CGmuYTqz9/mk0kU7
+         Ev5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715547920; x=1716152720;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MZxVl6V73Zt3zGRSEIH0bHVxMtSUe0uIzUK9Y3RzWb8=;
-        b=BS6f7MEEL4cy9pbjmraMXcqNXdXj3Pn/WWPfs7h5HucYyvzmkKGGb5oH2Oi2kEIRVr
-         DGaiHoorBEjC6I/Yep74Uqcc+4yIU8VNcW9Y26wC/UsOrXeLephFTvggs/DuVy/662gb
-         /UZT7cit1PjGrAg9i7JwpkAuQ0YJXAVpaQt6moegHyZBxBX/G5IHoHnT5M+W96UN+T7w
-         9iLxiWbxDbAR3f9ejpel5Uv2w9AL4yTjju+58rWj8QqN6g1ffWyODAYiTkyMWLONtcy7
-         woEWJQjf85j0AY9nWloFyB55IK0d5wjbijj5BvxUxmv65dubWobeuprIMLVy6tRKgyrZ
-         zfFA==
-X-Forwarded-Encrypted: i=1; AJvYcCVsDxPpopYqADzTFwezkEtlgAfRsotQcsAIJF4ko27Ir9JGDizlDrutyeyrzmzyt8JmYI6EglnGAsaZavReKJmsjNJ6uK+pAQQBM+npaYMYqlLwYsQ7ecWBw0LZeA/mngrHGguxQ0G575UrN9ohpqaWyT5vteae2Xhzf4/Ju4lwKRxkHA==
-X-Gm-Message-State: AOJu0Yyq+w8YO63W3R49JPgoKCvGO7EqMF3wzxcHcYBTzy9TyuZPH7kQ
-	3PGn3q3k6efingtnSbgHZv1zxhakZOFrfkB2+VNKrDj2cJdl0qfk
-X-Google-Smtp-Source: AGHT+IG5MvnYwIO6+AJazfOTBsF6M/uKIYOGmvv6fP7kAHEoITheedJ4UpwH2DZJX0Ai4cfEmr5S6Q==
-X-Received: by 2002:a05:6300:8085:b0:1af:cfe9:9221 with SMTP id adf61e73a8af0-1afde1c580fmr10890522637.54.1715547920408;
-        Sun, 12 May 2024 14:05:20 -0700 (PDT)
-Received: from localhost.localdomain ([189.101.162.253])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6340a447391sm6534865a12.3.2024.05.12.14.05.16
+        d=1e100.net; s=20230601; t=1715555130; x=1716159930;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CGTqy+N/1EzIcQlQ9Z56+2LbirXamvloxKpP5KP1LeE=;
+        b=kH4UEIQYC8s1+Cii2u+x+NoD6JJrRuafN+RP5HR1FG4RAQmP2P7DguKXodB8u122oT
+         UnhSRdMzxiPtqz9ucysEY2GIIq3b/8d59x060nt5l4ARqUUuZo0mpVx6GwW8GBv4o8vp
+         cUp/+tVV3CrVuC2An20t8ajZAmI4eZDVIYKQXEmwx4Rp0mikQt9yvKOwlawxQvSTiNLv
+         zdtU0uyBIOOrHhY1kRdEGh8+1eEMV7WjMR8aEQ3VCURfzzZV5rFF0DgllvZ30ha+M1gK
+         HmST53EPnW/DlC1yuS9VQPWW4h9kbnEQUzjPvROitXd/ccg3eSbAg/YSCewTQELFDUMl
+         +gVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUhXGsR+bPX3ExLRw0NlJPlfoKjdqV+inTDxs8CsULJLEKWICKPfRYjvAKaOm8UckarHRFYinVUKm70C8cVt2zpFvdahU5d04+UTbL7H7toiznA0cYlOctOZ/ZjNvICM4UzM1srBWVM
+X-Gm-Message-State: AOJu0YwlurPMda1R3J6dNwyqV9QbBKackmfEhiD5562FZ7JghNrY8+GA
+	uYDN6xOAId5qDXEb1bnqjXkqKVqvlMFmvOrN3coxQxeavuavL/YR
+X-Google-Smtp-Source: AGHT+IFwMyC1WUr6OUe/ZRNmfCzdEeOolRyN+wnGUX+2e5IM2nI5PS62Ra551vRRZRNmwf0K8xnaqQ==
+X-Received: by 2002:a05:600c:a41:b0:41d:7d76:ffd4 with SMTP id 5b1f17b1804b1-41feaa2f3e4mr53063235e9.8.1715555129871;
+        Sun, 12 May 2024 16:05:29 -0700 (PDT)
+Received: from localhost.localdomain ([2a04:ee41:82:7577:ce14:864c:436e:5c6d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-41fccee92bcsm136720935e9.36.2024.05.12.16.05.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 May 2024 14:05:20 -0700 (PDT)
-From: Gustavo Silva <gustavograzs@gmail.com>
-To: jic23@kernel.org
-Cc: robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	lars@metafoo.de,
-	christophe.jaillet@wanadoo.fr,
-	gerald.loacker@wolfvision.net,
-	devicetree@vger.kernel.org,
+        Sun, 12 May 2024 16:05:28 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de
+Cc: andriy.shevchenko@linux.intel.com,
+	ang.iglesiasg@gmail.com,
+	mazziesaccount@gmail.com,
+	ak@it-klinger.de,
+	petre.rodan@subdimension.ro,
+	phil@raspberrypi.com,
+	579lpy@gmail.com,
+	linus.walleij@linaro.org,
+	semen.protsenko@linaro.org,
 	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6/6] MAINTAINERS: Add ScioSense ENS160
-Date: Sun, 12 May 2024 18:04:42 -0300
-Message-ID: <20240512210444.30824-7-gustavograzs@gmail.com>
-X-Mailer: git-send-email 2.45.0
-In-Reply-To: <20240512210444.30824-1-gustavograzs@gmail.com>
-References: <20240512210444.30824-1-gustavograzs@gmail.com>
+	linux-kernel@vger.kernel.org,
+	Vasileios Amoiridis <vassilisamir@gmail.com>
+Subject: [PATCH v7 0/5] iio: pressure: bmp280: Add triggered buffer support and
+Date: Mon, 13 May 2024 01:05:19 +0200
+Message-Id: <20240512230524.53990-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -92,33 +92,65 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add myself as maintainer for ScioSense ENS160 multi-gas sensor driver.
+Based on testing branch of iio.git
 
-Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
----
- MAINTAINERS | 8 ++++++++
- 1 file changed, 8 insertions(+)
+IMPORTANT NOTE: There are already upstreamed fixes for this driver [1], [2] and
+there is an upcoming one [3]. They will probably conflict with the the last
+three commits PATCH [3-5/5]. The solution should be quite trivial with minor
+changes in these 3 patches. When it is deemed necessary I can resubmit the
+patches or help with resolving the issue:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 304429f9b..92a130c8c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19660,6 +19660,14 @@ F:	include/linux/wait.h
- F:	include/uapi/linux/sched.h
- F:	kernel/sched/
- 
-+SCIOSENSE ENS160 MULTI-GAS SENSOR DRIVER
-+M:	Gustavo Silva <gustavograzs@gmail.com>
-+S:	Maintained
-+F:	drivers/iio/chemical/ens160_core.c
-+F:	drivers/iio/chemical/ens160_i2c.c
-+F:	drivers/iio/chemical/ens160_spi.c
-+F:	drivers/iio/chemical/ens160.h
-+
- SCSI LIBSAS SUBSYSTEM
- R:	John Garry <john.g.garry@oracle.com>
- R:	Jason Yan <yanaijie@huawei.com>
+Changes in v7:
+
+PATCH [1/5]:
+	- PATCH [5/9] of previous version
+	- Moved comments to correct locations and dropped unnecessary casting.
+
+PATCH [2/5]:
+	- Used bmp580_nvmem_{read/write}_impl() functions for the read/write
+	  operations and bmp580_nvmem_{read/write}() for applying the power
+	  managent functions in order to keep correct order of mutex unlocking
+	  and power management with the guard(mutex).
+
+PATCH [4/5]:
+	- Used ARRAY_SIZE(bmpxxx_channels) for the .num_channels variable in the
+	  bmp280_chip_info struct in order to make code better and more
+	  maintainable
+
+PATCH [5/5]:
+	- Adjusted changes for the addition of ARRAY_SIZE(bmpxxx_channels) in
+	  the previous commit.
+
+[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=546a4f4b5f4d930ea57f5510e109acf08eca5e87
+[2]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5ca29ea4e4073b3caba750efe155b1bd4c597ca9
+[3]: https://lore.kernel.org/linux-iio/043f2be49df3c11152aaf32fc5467ed43fd59faa.camel@gmail.com/
+
+Previous versions:
+
+v6: https://lore.kernel.org/linux-iio/20240508165207.145554-1-vassilisamir@gmail.com/
+v5: https://lore.kernel.org/linux-iio/20240429190046.24252-1-vassilisamir@gmail.com/
+v4: https://lore.kernel.org/linux-iio/20240407172920.264282-1-vassilisamir@gmail.com/
+v3: https://lore.kernel.org/linux-iio/20240319002925.2121016-1-vassilisamir@gmail.com/
+v2: https://lore.kernel.org/linux-iio/20240313174007.1934983-1-vassilisamir@gmail.com/
+v1: https://lore.kernel.org/linux-iio/20240303165300.468011-1-vassilisamir@gmail.com/
+
+Vasileios Amoiridis (5):
+  iio: pressure: bmp280: Refactorize reading functions
+  iio: pressure: bmp280: Introduce new cleanup routines
+  iio: pressure: bmp280: Generalize read_{temp,press,humid}() functions
+  iio: pressure: bmp280: Add SCALE, RAW values in channels and
+    refactorize them
+  iio: pressure: bmp280: Add triggered buffer support
+
+ drivers/iio/pressure/Kconfig       |    2 +
+ drivers/iio/pressure/bmp280-core.c | 1057 ++++++++++++++++++++--------
+ drivers/iio/pressure/bmp280-spi.c  |    8 +-
+ drivers/iio/pressure/bmp280.h      |   34 +-
+ 4 files changed, 810 insertions(+), 291 deletions(-)
+
+
+base-commit: 34d3aa6a60c8e0d053e8df5ff4a2b211951f06a6
 -- 
-2.45.0
+2.25.1
 
 

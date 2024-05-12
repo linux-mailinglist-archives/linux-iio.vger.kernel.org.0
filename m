@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-4986-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4987-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594CD8C3683
-	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 14:29:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF688C3687
+	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 14:34:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6B141F2166E
-	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 12:29:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 041E3B218C1
+	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 12:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E35720B20;
-	Sun, 12 May 2024 12:29:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9A218641;
+	Sun, 12 May 2024 12:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nies3/Wt"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TAL2WAAq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4421E894;
-	Sun, 12 May 2024 12:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780ED9445;
+	Sun, 12 May 2024 12:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715516967; cv=none; b=PemTS6N3LIhydmalMievdH2FujyRHHk88sP0OFpu6Rubjbfmehi8g58ogET7itOdGE7SF8ppT/jOS7Ptwn0o+1xPZCKhFPwsO3mu+Uu/j/BSufNykwCgc0UkPEGSsHhsl+NcO6G1iApE1/rI87yu0iQTkFabP3YyG/1f57nhzGg=
+	t=1715517261; cv=none; b=A2MBOIw8ZW+rWndEdOUerHMdbU2pnfB6VkazV/0w1B/9FHUI8VIq28h+3KOQOUSP3uhEFKlNMiF3LZXiL2duLmMFSOS1FstRxsN/QaSyIqiIGp9YIDNIw41v+0wloSyVegkzMd6BLTZoayraqDNMyublZUv9twdBsteS+ng7U9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715516967; c=relaxed/simple;
-	bh=GqSzdtPdjPxrsbbL9DPSLfvweQpYlSvauhuw6B9v+yo=;
+	s=arc-20240116; t=1715517261; c=relaxed/simple;
+	bh=pPdbQD3pDbSWDMpUCx3V7YtjEDy9QOmEYjvZWgdceeA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ldyR+b3WXZ4VrxqVUM365ukmAu2UX+JLc3HQ1Jz2DVsq/WRiCfvFW3gCiJ/vNRtyfInCLOxjdNqeNCyp6JcgE8xMb4+cN0cIpGsdTMnoumllQ0zsiXqn1d7iFyAvZyi05TkAnbFdbmJfgbpVBEX/yBkaa06YSHKWQZZdaR2ztkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nies3/Wt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2501DC116B1;
-	Sun, 12 May 2024 12:29:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=d456EYUI33xUw228KjAgr+1F4N7DhhHLeiGgH40XaNCPr2gLEq0+Nwyg9txrBIGJgjtanBW30Md4klRPLl2LdlxKj4Zo6VCNM052YUHUg2q76FB6AqX6Y/+IOk0jvKUJ8Wjw+3KBP7swVf3stT0G4QpJjNi0o+JJJiY72eQOdB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TAL2WAAq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC05C116B1;
+	Sun, 12 May 2024 12:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715516967;
-	bh=GqSzdtPdjPxrsbbL9DPSLfvweQpYlSvauhuw6B9v+yo=;
+	s=k20201202; t=1715517260;
+	bh=pPdbQD3pDbSWDMpUCx3V7YtjEDy9QOmEYjvZWgdceeA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Nies3/Wtxm3SMcljBcGmy7hStjB9jUgBV6tu3ji/v/2PZNxhT37L/p9XPGkx/FWZF
-	 iXYHG4qYeYgvrb/RmE6nFO1g68luIS0f4zEZRSOSdpFmplQy/XOScfDJh2ZkE5G2tp
-	 V+a+hlOdoCWHygju9F+k5/0I0B9uhheHQJRN2Z1Po4/vizbuFpsSDipB06oJ6lATNz
-	 r7N7DV07ObnBf4ma6nDxxb2dFV2FeLLvDPnXGeGd0weEIwAHh94iakZ8490PEsIkhx
-	 NU6ifkgKGuzuUSI2sNM/lQQB1VACDoM3Pg1HuAh5S/+5CPA8XEJu2L6GZwsN/y+a4N
-	 2IVAmFGJsxQ0Q==
-Date: Sun, 12 May 2024 13:29:14 +0100
+	b=TAL2WAAqaUSd3SPNARXo89NeKVpGhXPRVTFlrOq98Mrnxqq+FK1aTB2b6ZTdhifws
+	 fAkPlxCk0Uv74ABRgF0uORvLo24pMh/CjfEVVDJ53l3o4ZnN7OI2mHdO2GlT5r/puj
+	 j26uRqfBQiDnb1ycykyiijJf+VnplaFGE2xclY8zjS8SA+E3PmFzrg2+P47u9G4Wif
+	 qGloNSMcCamG1cx1DggLIpa9CGSAMOiNG/cUEEbGb2jiJexZracErZ875xMTpBiJ/P
+	 1cgFZXmH4nHelBFt06tfEC81FYypFJUWku1tvnOCPwPIK2d2RsLMzoIvFEchbupRuA
+	 w0k6mgPFhtOLw==
+Date: Sun, 12 May 2024 13:34:09 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
@@ -49,12 +49,12 @@ Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
  petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
  linus.walleij@linaro.org, semen.protsenko@linaro.org,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 8/9] iio: pressure: bmp280: Add SCALE, RAW values in
- channels and refactorize them
-Message-ID: <20240512132914.34f2a571@jic23-huawei>
-In-Reply-To: <20240508165207.145554-9-vassilisamir@gmail.com>
+Subject: Re: [PATCH v6 9/9] iio: pressure: bmp280: Add triggered buffer
+ support
+Message-ID: <20240512133409.6fb350c4@jic23-huawei>
+In-Reply-To: <20240508165207.145554-10-vassilisamir@gmail.com>
 References: <20240508165207.145554-1-vassilisamir@gmail.com>
-	<20240508165207.145554-9-vassilisamir@gmail.com>
+	<20240508165207.145554-10-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,170 +65,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed,  8 May 2024 18:52:06 +0200
+On Wed,  8 May 2024 18:52:07 +0200
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> Add extra IIO_CHAN_INFO_SCALE and IIO_CHAN_INFO_RAW channels in order
-> to be able to calculate the processed value with standard userspace
-> IIO tools. Can be used for triggered buffers as well.
+> BMP2xx, BME280, BMP3xx, and BMP5xx use continuous buffers for their
+> temperature, pressure and humidity readings. This facilitates the
+> use of burst/bulk reads in order to acquire data faster. The
+> approach is different from the one used in oneshot captures.
 > 
-> Even though it is not a good design choice to have SCALE, RAW and
-> PROCESSED together, the PROCESSED channel is kept for ABI compatibility.
+> BMP085 & BMP1xx devices use a completely different measurement
+> process that is well defined and is used in their buffer_handler().
 > 
-> While at it, separate BMPxxx and BMExxx device channels since BME
-> supports also humidity measurements.
-> 
+> Suggested-by: Angel Iglesias <ang.iglesiasg@gmail.com>
 > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-num channels is now ARRAY_SIZE(xxx) for all of these rather than
-the previous trick of using the same array and different numbers of channels.
 
-As such I think you can just replace the 2, 3 with ARRAY_SIZE(bmp280_channels)
-and ARRAY_SIZE(bme280_channels) which will give more obviously correct
-and maintainable code.
+The switch to ARRAY_SIZE() for num channels will simplify this
+because all those values will not need to be manually updated to
+include the timestamp channel.
+
+Other than that, this patch and earlier ones I didn't comment on (6, 7)
+look good to me.
+
+Thanks,
 
 Jonathan
 
-
-> ---
->  drivers/iio/pressure/bmp280-core.c | 86 +++++++++++++++++++++++++++---
->  1 file changed, 78 insertions(+), 8 deletions(-)
-> 
 > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 70ce37370ac6..3f8144a0355b 100644
+> index 3f8144a0355b..95f56836fd86 100644
 > --- a/drivers/iio/pressure/bmp280-core.c
 > +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -137,17 +137,45 @@ enum {
->  static const struct iio_chan_spec bmp280_channels[] = {
->  	{
->  		.type = IIO_PRESSURE,
-> +		/* PROCESSED maintained for ABI backwards compatibility */
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +				      BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
->  	},
->  	{
->  		.type = IIO_TEMP,
-> +		/* PROCESSED maintained for ABI backwards compatibility */
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +				      BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
-> +				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> +	},
-> +};
-> +
-> +static const struct iio_chan_spec bme280_channels[] = {
-> +	{
-> +		.type = IIO_PRESSURE,
-> +		/* PROCESSED maintained for ABI backwards compatibility */
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +				      BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
-> +				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> +	},
-> +	{
-> +		.type = IIO_TEMP,
-> +		/* PROCESSED maintained for ABI backwards compatibility */
-> +		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +				      BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
->  	},
->  	{
->  		.type = IIO_HUMIDITYRELATIVE,
-> +		/* PROCESSED maintained for ABI backwards compatibility */
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +				      BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
->  	},
->  };
-> @@ -155,21 +183,20 @@ static const struct iio_chan_spec bmp280_channels[] = {
->  static const struct iio_chan_spec bmp380_channels[] = {
->  	{
->  		.type = IIO_PRESSURE,
-> +		/* PROCESSED maintained for ABI backwards compatibility */
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +				      BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
->  		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
->  					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
->  	},
->  	{
->  		.type = IIO_TEMP,
-> +		/* PROCESSED maintained for ABI backwards compatibility */
->  		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> -				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-> -		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
-> -					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-> -	},
-> -	{
-> -		.type = IIO_HUMIDITYRELATIVE,
-> -		.info_mask_separate = BIT(IIO_CHAN_INFO_PROCESSED) |
-> +				      BIT(IIO_CHAN_INFO_RAW) |
-> +				      BIT(IIO_CHAN_INFO_SCALE) |
->  				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
->  		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
->  					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-> @@ -537,6 +564,49 @@ static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
->  		default:
->  			return -EINVAL;
->  		}
-> +	case IIO_CHAN_INFO_RAW:
-> +		switch (chan->type) {
-> +		case IIO_HUMIDITYRELATIVE:
-> +			ret = data->chip_info->read_humid(data, &chan_value);
-> +			if (ret)
-> +				return ret;
-> +
-> +			*val = chan_value;
-> +			return IIO_VAL_INT;
-> +		case IIO_PRESSURE:
-> +			ret = data->chip_info->read_press(data, &chan_value);
-> +			if (ret)
-> +				return ret;
-> +
-> +			*val = chan_value;
-> +			return IIO_VAL_INT;
-> +		case IIO_TEMP:
-> +			ret = data->chip_info->read_temp(data, &chan_value);
-> +			if (ret)
-> +				return ret;
-> +
-> +			*val = chan_value;
-> +			return IIO_VAL_INT;
-> +		default:
-> +			return -EINVAL;
-> +		}
-> +	case IIO_CHAN_INFO_SCALE:
-> +		switch (chan->type) {
-> +		case IIO_HUMIDITYRELATIVE:
-> +			*val = data->chip_info->humid_coeffs[0];
-> +			*val2 = data->chip_info->humid_coeffs[1];
-> +			return data->chip_info->humid_coeffs_type;
-> +		case IIO_PRESSURE:
-> +			*val = data->chip_info->press_coeffs[0];
-> +			*val2 = data->chip_info->press_coeffs[1];
-> +			return data->chip_info->press_coeffs_type;
-> +		case IIO_TEMP:
-> +			*val = data->chip_info->temp_coeffs[0];
-> +			*val2 = data->chip_info->temp_coeffs[1];
-> +			return data->chip_info->temp_coeffs_type;
-> +		default:
-> +			return -EINVAL;
-> +		}
->  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
->  		switch (chan->type) {
->  		case IIO_HUMIDITYRELATIVE:
-> @@ -903,7 +973,7 @@ const struct bmp280_chip_info bme280_chip_info = {
->  	.num_chip_id = ARRAY_SIZE(bme280_chip_ids),
->  	.regmap_config = &bmp280_regmap_config,
->  	.start_up_time = 2000,
-> -	.channels = bmp280_channels,
-> +	.channels = bme280_channels,
->  	.num_channels = 3,
->  
->  	.oversampling_temp_avail = bmp280_oversampling_avail,
 
+>  static const int bmp180_oversampling_temp_avail[] = { 1 };
+>  static const int bmp180_oversampling_press_avail[] = { 1, 2, 4, 8 };
+>  static const u8 bmp180_chip_ids[] = { BMP180_CHIP_ID };
+> @@ -2191,7 +2464,8 @@ const struct bmp280_chip_info bmp180_chip_info = {
+>  	.regmap_config = &bmp180_regmap_config,
+>  	.start_up_time = 2000,
+>  	.channels = bmp280_channels,
+> -	.num_channels = 2,
+> +	.num_channels = 3,
+
+As comment on above, if this was ARRAY_SIZE(bmp280_channels) you wouldn't need
+to update it here.  Probably best to make that change as part of the previous
+patch.
+
+> +	.avail_scan_masks = bmp280_avail_scan_masks,
 

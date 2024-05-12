@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-4983-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4984-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25BFA8C3658
-	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 14:11:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F37F8C3662
+	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 14:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAC7E1F212A7
-	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 12:11:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704C21C208FB
+	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 12:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507F6208BC;
-	Sun, 12 May 2024 12:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D35E208BC;
+	Sun, 12 May 2024 12:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aYNC7Fq/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUEj2HC5"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C3BBF9F7;
-	Sun, 12 May 2024 12:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2E0210FB;
+	Sun, 12 May 2024 12:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715515894; cv=none; b=B+4FJpdGAMRzghVRYtHdSwTn5rNj9LQdyOt6qBBwcyrDovNMr/L8vuQUj/H+4uSGALrRf0aqMBTCL73HDsWL59sZWPpBr6FOVYuEA5VvcJGk9JAwEAcvOoWZAMWGPL17G+PjIpBmm+lrQtH/cvLisFjwSqpXdQRc0kYOA7Q7EZQ=
+	t=1715515997; cv=none; b=dSM+E21SI1GIh6Y3ifIT0oc58cV299eSLW2JfWBOiv7xnJ8KPxMXWghwps2chxzFcxpWfGOCJTFy1dX3ujiEjxt9u4b3yXlsZwbvM5Ki5opx+CUExrIFitYBlaLRTtKHH1HWk213qz/dHcQMSAT9G/LlaMAbcbhbVKGwohA0mZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715515894; c=relaxed/simple;
-	bh=u0MxQHi2aW59U0yVeUT6H8+tdanS6j5VOG+chvjIJ8g=;
+	s=arc-20240116; t=1715515997; c=relaxed/simple;
+	bh=9ecrq6ewkCPgWwI2dBv/kDtPnydKl5OIf4t6YTMMTPM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ATOBO7XHHm5w5cRpA3DTXTIo1gflZifQvjdoRcORv2hoOd+Y43u09pzS22ALlPr/SD1VLCSBKGpSn6kihj/4G8A9MBr7fNXnC3fqO3lhTSZaNO2Nkl7NRfKMm7K+mrDComVzqa5pKPHoHuXwOfI2W+kW0qK7vCFcJXwNUA9W/i8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aYNC7Fq/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E96C116B1;
-	Sun, 12 May 2024 12:11:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YVff1PS2uNZamgz+EvhwOzt3hiY+SuIPYsvN8VXWKseleD+hSBuo0437+DTEd5+IySO1N6ClKNH51R8wovNw7J7iJffbxt6v+gw6uATaKQ8oJdofU66O5Y5AoKtdJ/vprTxEuoI8NWRHj7R9NZczLXk0QDdEC2MO+xqHl7esRbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUEj2HC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C22CC116B1;
+	Sun, 12 May 2024 12:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715515893;
-	bh=u0MxQHi2aW59U0yVeUT6H8+tdanS6j5VOG+chvjIJ8g=;
+	s=k20201202; t=1715515997;
+	bh=9ecrq6ewkCPgWwI2dBv/kDtPnydKl5OIf4t6YTMMTPM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aYNC7Fq/rFRw6svjUNCmJIcWBvymenu01cpCMGq1PEIr2HzjRM7+VicVQMVib/ATn
-	 OwWGuaOpekSJUro9dInH9XkL3niCBVYU584YoMkQYOxCpIUM7BU+kebbVfmXgUGb6e
-	 YviRRSP/AwqzzQ5RcX3c7LZFfm1lmG6YJDKANnC8qQGdYCxlFM5gyFMhqNDLx4vrYq
-	 /owWq8/JpCH+eK232a8oa8wzVkqqbHPSndgTqqO5yGC5PQZFmfWTbNnsjaJpASMBpV
-	 YDPWJ8yCPBglBnmpbXxmf6fXulagZk8rs9bzssXT7tAlGh6GCBzWwyU6xdhKcSOptQ
-	 cmPpQL2RLm4eg==
-Date: Sun, 12 May 2024 13:11:20 +0100
+	b=fUEj2HC5irRdGCzhWGUvrZg3OEGI1RPbWs71u6DaREfu4RQV5BA8Mya5rwOg+spVy
+	 eGOccclJR+/DKa7PMLyh4qo8wqNI9M9JCegaBowmpsNjolGElBd5k3xvyXQ4ps7jHl
+	 4s8SRh88R8xU9ruKsEjrOd3vcBWdcJfLkByoTFehaXp2KGZMu+N60ARUdKrv9tNZ0L
+	 emTgh5t7fA+qrIrqY3zYmzAqSAqWKzQA5zO4FQmF0OoDdH8Pfn8gVN/E0gOQeOl/34
+	 qh+sE7eSeQmDfbjoDvUv/MYQg/EwlDGGxfo8aIACAi0WFp5xUHu59MbVxbLOib5OdM
+	 eAeqjiPcroipw==
+Date: Sun, 12 May 2024 13:13:04 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
@@ -49,12 +49,12 @@ Cc: lars@metafoo.de, andriy.shevchenko@linux.intel.com,
  petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
  linus.walleij@linaro.org, semen.protsenko@linaro.org,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 3/9] iio: pressure: bmp280: Make error checks
- consistent
-Message-ID: <20240512131120.28d0cc7a@jic23-huawei>
-In-Reply-To: <20240508165207.145554-4-vassilisamir@gmail.com>
+Subject: Re: [PATCH v6 4/9] iio: pressure: bmp280: Use unsigned data types
+ for raw sensor data
+Message-ID: <20240512131304.687de3b1@jic23-huawei>
+In-Reply-To: <20240508165207.145554-5-vassilisamir@gmail.com>
 References: <20240508165207.145554-1-vassilisamir@gmail.com>
-	<20240508165207.145554-4-vassilisamir@gmail.com>
+	<20240508165207.145554-5-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,16 +65,18 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed,  8 May 2024 18:52:01 +0200
+On Wed,  8 May 2024 18:52:02 +0200
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> The form 'if (ret)' is used in this driver in order to check
-> for returned error values. There are also some places that
-> 'if (ret < 0)' is used but for no specific reason. Change
-> them to 'if (ret)' to make the driver more consistent.
+> The raw sensor data that have not been compensated yet cannot be
+> signed values, so use unsigned ones. Also, compensated pressure
+> values cannot be negative so use unsigned also there.
+> 
+> Also, drop redundant cast of data->t_fine variable from s32 to s32.
 > 
 > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+Looks good to me.
+
 Applied.
 
-Thanks,
 

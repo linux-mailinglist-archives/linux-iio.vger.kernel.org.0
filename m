@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-4994-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-4995-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB3978C3871
-	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 23:05:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E0E8C3874
+	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 23:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6748E1F21EC0
-	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 21:05:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EE49281B34
+	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 21:06:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2164F5731F;
-	Sun, 12 May 2024 21:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9B65476B;
+	Sun, 12 May 2024 21:05:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I7RblVRb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kxumkIdy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE29535A8;
-	Sun, 12 May 2024 21:05:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A734957894;
+	Sun, 12 May 2024 21:05:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715547908; cv=none; b=D0aGxAwmCXMfxamrks5K43QnV0nBDT2UkL1TMmymeCDyodcflFNbT9uZeWJZ93S12oeNnEMc5wYj4mniOtaAu8W4jtDThTj8XjLQQIhE+16zKaWsmUuMxydc65Bi67PrIUDjFiJIxr7D5MJXkm1uJlAmq9OQ1g4i/CB9HIeAObY=
+	t=1715547913; cv=none; b=V3DhE8j1XEPMZynV0+nes28d3UkA1l854+9UwDAcGmbyQVHQbWShpkdBqXgXozEWpMwFYaSUJ+u16aR5YS8vm6e2HTraItUxquCSdG78w+BojhTs5WEh4RKrBlGpZAATa7ZBhcD3045wkaiCQcD1skUhesYqFrzFc+NkMjKaKrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715547908; c=relaxed/simple;
-	bh=kSkVCT7EdLVTKYXJtysBjB3fkXxJDOE82W+bUwZ79IE=;
+	s=arc-20240116; t=1715547913; c=relaxed/simple;
+	bh=EBDld87KvJAj/I0c18JBino3RiZQyH9BSREwpqgwERo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UJbVXhxU8MUUHgyxG+aBkGRSW5cA9ZlPJV2NeCPzZ0+NNHf12uWmhKjAYkvs22XszidtGMn2QyzSruZpqwW1WrxFPnRr9bH/b0ez+YQBFKaUaOl+6aP7VGd5LMouqbRy5DMUvkoesKnv6yBtSnvye3uf4mzKKYQnTt9N6h2VG+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I7RblVRb; arc=none smtp.client-ip=209.85.210.177
+	 MIME-Version; b=kln3vmZq+u0UZErTKxAnn2WKALsue3DB+49N2N5dlryKqlo8s9lypVQeSbN90rBSRv4srpQYv9MpQsChCVQRmwj0Okl8e1t1xvZTKDeJDa47f+XjkmaJDLidar+3U1Qp9+bYyB09WV1583/qlXTJYxYJ1VY6/v2GW8eGVRwtQaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kxumkIdy; arc=none smtp.client-ip=209.85.215.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6f449ea8e37so3186085b3a.3;
-        Sun, 12 May 2024 14:05:07 -0700 (PDT)
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-53fbf2c42bfso2792673a12.3;
+        Sun, 12 May 2024 14:05:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715547906; x=1716152706; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1715547911; x=1716152711; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QXNmcPYYZhWu8dfgwHkSNbCKCKZlU7WbCoJiDALHIBk=;
-        b=I7RblVRbOoEgbw/KA2moujX0nWOUrqWGi2dzAieFYoRPYTCtiDbROcQEbql5Mhzm+O
-         QMjoNaCq0MOkPXmmOe/c1q/N73vQ/76moQg0zS3c1gJ2JdbdzJWqD20Euf2ScvYzX7j0
-         MjkIje0gfFzISRP3SBZ291b2yKKA2BnqaTDrhO6mrmUVG2brAgG6FszYleDSSVB1FWcy
-         Ulg/21hdfelAVhseRkGs50geJJvJI/gCNGXlShkefGn9gdCur3KHzz41wt2FovG8uccU
-         814g5Pe94S5Gc4yNay7PukfwAGUKDMVkA/0mhCPaWXxuBGXoYd0fAnbhD7IPu2TiKZ9I
-         jzYg==
+        bh=Z87FZpuN5IR2DouSKJ56603NoDkQMEQxOqDBWOsG8W0=;
+        b=kxumkIdy43XwjEGNd1kBVYGRdOwNqBHQ7BKd9LBz+bW3ks+xO1kLeKqVeXIQpNaMz9
+         8CuC8mCf++mJLTQ8ebYFsiwcGphTzZ8BicDNgZnzFZ9mbUQdIGGXQZgHlvKcHo/KMoLr
+         fznNToOs6tLmcMUqC7rJ8lqVnqV1wHtTfxKWSPRE9bnKk+bAJ0IuvdvygtAPeBMR93ZM
+         06GKuRxXzygyWonljubUlXpb0YmQ3+EYjpoMhEOOOSrtClX0lxwFTIGxf2ME7iWDnnts
+         c2qZoSX5s1DND5cQh1bvUQNJavertA+7/0v5JVPDkNz0BiVESH7MUdqkqUrRkEq9vvV1
+         L2LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715547906; x=1716152706;
+        d=1e100.net; s=20230601; t=1715547911; x=1716152711;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=QXNmcPYYZhWu8dfgwHkSNbCKCKZlU7WbCoJiDALHIBk=;
-        b=E0/lc0W2Pe/irqJK/EkXOskFVvBgi3//4UHnDQj5WoSSpVqWK7EpHpnukCUmPE49mb
-         EcFdwU8u6WSfQLCMtHOYIflqp1kFtRTVFQv6u4kxniJxYwaN5D4WpsV0TazbX3bY8wlE
-         25bwGGvzAH9faQp8C4LvTPJdUfBy/AhCfF5+4d81MUIVjMBXbFoNY+5yG4Es7DQth6tJ
-         8ftFwbvMelSTqFM8NFdRhu+oGEM79dpsENBiwChdfe7yzJj193EJ/QC7THVC0jC4I7ew
-         DlL0t4pJD3e5EhZaS0gp7iC4SAbPmyVRlzqxPVARJjq+nt7+pSTfIRIOPheALlWKi41P
-         vMFw==
-X-Forwarded-Encrypted: i=1; AJvYcCU8/RFmchEFiwbRi8Se2v46U6A2Anu7e68lrG4feDAh5B5yvOpLMHdW+BihF+7AyYWasNPm55XBUmpaZkuXBmCyTNXjSRqbazK1oGMA/4917x+0evCqgOS7fGt7pz2kqgjezVkN+yMZ1OPlerD6/OFFGwzNX1n9xkBvT7OfnNDvkpoEmQ==
-X-Gm-Message-State: AOJu0YzR7a+xaeDr7kdXjqkauFslAnZ0Ug6R9SJ3IWjhxJ/A9M30On2T
-	nEJzD239udHy2RV7494V93CzXSG372zwPrdq1JEllWYytw6XSDTS
-X-Google-Smtp-Source: AGHT+IGzaD/0+5Qb3qAhJKM4iwNxi364QizOs80liqzRSfAHkvCZLGZ/L2ddZIkGxYYvaXg3b5g0HQ==
-X-Received: by 2002:a05:6a20:1008:b0:1af:abef:c620 with SMTP id adf61e73a8af0-1afde0ecc9bmr11838750637.35.1715547906414;
-        Sun, 12 May 2024 14:05:06 -0700 (PDT)
+        bh=Z87FZpuN5IR2DouSKJ56603NoDkQMEQxOqDBWOsG8W0=;
+        b=i6AbqGgJRUMIcrQBvNbBUjao5a2D58bUVHiEPWS7jsEg6xz/q4LuPtILM21NsqEj5s
+         eJvmVe0vc2NseSG/zD8cZ9tAoJNeP5JVMHxhYeuVc1+4HVJyyu6ILzd4aTY/DhN5jq9F
+         F0tCBpyVW/vfojcCY3NtOd/aTq2pRZMoAx1yI+rZIwfLTFkLvPV9E3db52VhT5RSPv4z
+         LdkHB0wASKoQRUx8us78oBgpWVK6BuAp1cI6xgUiZenJ0Z+Z5lWinQ5dNA7CvoKViGTE
+         ofrtE/bwG2XaBbxDXRBvBK4gW1E361yltXqIIry9XVOn30mEJGVu9uCgU4D3rMQJDUAZ
+         OhfA==
+X-Forwarded-Encrypted: i=1; AJvYcCWszkMaWYlQHcAyPtStoZlPXbbuyRH4ugB7fkaXO/pyNZO2C22UnmXNW8k2fc180CvfXF8boTgJNcRFXh4exU/4Vn/WCQiUqr3bdxpofLFzYYqEWemMTCjqwdyWZ97fgJ+McsBMEGdquWKQnsqB3Q5P4mNDEWI5+AAt8t/QmzNgkH+Ymw==
+X-Gm-Message-State: AOJu0Yzt/ys9MM3Ubg2m4mYQVGzXbP8Q8GIYNcnbPhi6JESKji4vlW26
+	Sw0csUnkta3IEdrasR3ZusiJykZ+PkdwWbI9mWE5MDo6pNdLiQAA
+X-Google-Smtp-Source: AGHT+IFymzebPmYz++SUsZXrJ38Qi9kGCc5OUSNjc+OAUrq9tWQEZjPgPmDO6q5lPPvMPdI+zaNxfQ==
+X-Received: by 2002:a05:6a21:9181:b0:1af:dba9:2ff8 with SMTP id adf61e73a8af0-1afde130cd6mr11757563637.37.1715547910991;
+        Sun, 12 May 2024 14:05:10 -0700 (PDT)
 Received: from localhost.localdomain ([189.101.162.253])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6340a447391sm6534865a12.3.2024.05.12.14.05.02
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6340a447391sm6534865a12.3.2024.05.12.14.05.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 May 2024 14:05:06 -0700 (PDT)
+        Sun, 12 May 2024 14:05:10 -0700 (PDT)
 From: Gustavo Silva <gustavograzs@gmail.com>
 To: jic23@kernel.org
 Cc: robh@kernel.org,
@@ -78,9 +78,9 @@ Cc: robh@kernel.org,
 	devicetree@vger.kernel.org,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 3/6] iio: chemical: add driver for ENS160 sensor
-Date: Sun, 12 May 2024 18:04:39 -0300
-Message-ID: <20240512210444.30824-4-gustavograzs@gmail.com>
+Subject: [PATCH 4/6] iio: chemical: ens160: add triggered buffer support
+Date: Sun, 12 May 2024 18:04:40 -0300
+Message-ID: <20240512210444.30824-5-gustavograzs@gmail.com>
 X-Mailer: git-send-email 2.45.0
 In-Reply-To: <20240512210444.30824-1-gustavograzs@gmail.com>
 References: <20240512210444.30824-1-gustavograzs@gmail.com>
@@ -92,468 +92,288 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ScioSense ENS160 is a digital metal oxide multi-gas sensor, designed
-for indoor air quality monitoring. The driver supports readings of
-CO2 and VOC, and can be accessed via both SPI and I2C.
+ENS160 supports a data ready interrupt. Use it in combination with
+triggered buffer for continuous data readings.
 
 Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
 ---
- drivers/iio/chemical/Kconfig       |  22 +++
- drivers/iio/chemical/Makefile      |   3 +
- drivers/iio/chemical/ens160.h      |   9 ++
- drivers/iio/chemical/ens160_core.c | 227 +++++++++++++++++++++++++++++
- drivers/iio/chemical/ens160_i2c.c  |  68 +++++++++
- drivers/iio/chemical/ens160_spi.c  |  69 +++++++++
- 6 files changed, 398 insertions(+)
- create mode 100644 drivers/iio/chemical/ens160.h
- create mode 100644 drivers/iio/chemical/ens160_core.c
- create mode 100644 drivers/iio/chemical/ens160_i2c.c
- create mode 100644 drivers/iio/chemical/ens160_spi.c
+ drivers/iio/chemical/ens160.h      |   2 +-
+ drivers/iio/chemical/ens160_core.c | 155 ++++++++++++++++++++++++++++-
+ drivers/iio/chemical/ens160_i2c.c  |   2 +-
+ drivers/iio/chemical/ens160_spi.c  |   2 +-
+ 4 files changed, 156 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/chemical/Kconfig b/drivers/iio/chemical/Kconfig
-index 02649ab81..e407afab8 100644
---- a/drivers/iio/chemical/Kconfig
-+++ b/drivers/iio/chemical/Kconfig
-@@ -76,6 +76,28 @@ config CCS811
- 	  Say Y here to build I2C interface support for the AMS
- 	  CCS811 VOC (Volatile Organic Compounds) sensor
- 
-+config ENS160
-+	tristate "ScioSense ENS160 sensor driver"
-+	depends on (I2C || SPI)
-+	select REGMAP
-+	select ENS160_I2C if I2C
-+	select ENS160_SPI if SPI
-+	help
-+	  Say yes here to build support for ScioSense ENS160 multi-gas sensor.
-+
-+	  This driver can also be built as a module. If so, the module for I2C
-+	  would be called ens160_i2c and ens160_spi for SPI support.
-+
-+config ENS160_I2C
-+	tristate
-+	depends on I2C && ENS160
-+	select REGMAP_I2C
-+
-+config ENS160_SPI
-+	tristate
-+	depends on SPI && ENS160
-+	select REGMAP_SPI
-+
- config IAQCORE
- 	tristate "AMS iAQ-Core VOC sensors"
- 	depends on I2C
-diff --git a/drivers/iio/chemical/Makefile b/drivers/iio/chemical/Makefile
-index 2f3dee8bb..4866db06b 100644
---- a/drivers/iio/chemical/Makefile
-+++ b/drivers/iio/chemical/Makefile
-@@ -11,6 +11,9 @@ obj-$(CONFIG_BME680) += bme680_core.o
- obj-$(CONFIG_BME680_I2C) += bme680_i2c.o
- obj-$(CONFIG_BME680_SPI) += bme680_spi.o
- obj-$(CONFIG_CCS811)		+= ccs811.o
-+obj-$(CONFIG_ENS160) += ens160_core.o
-+obj-$(CONFIG_ENS160_I2C) += ens160_i2c.o
-+obj-$(CONFIG_ENS160_SPI) += ens160_spi.o
- obj-$(CONFIG_IAQCORE)		+= ams-iaq-core.o
- obj-$(CONFIG_PMS7003) += pms7003.o
- obj-$(CONFIG_SCD30_CORE) += scd30_core.o
 diff --git a/drivers/iio/chemical/ens160.h b/drivers/iio/chemical/ens160.h
-new file mode 100644
-index 000000000..3fd079bc4
---- /dev/null
+index 3fd079bc4..a8a2f1263 100644
+--- a/drivers/iio/chemical/ens160.h
 +++ b/drivers/iio/chemical/ens160.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef ENS160_H_
-+#define ENS160_H_
-+
-+int ens160_core_probe(struct device *dev, struct regmap *regmap,
-+		      const char *name);
-+void ens160_core_remove(struct device *dev);
-+
-+#endif
+@@ -2,7 +2,7 @@
+ #ifndef ENS160_H_
+ #define ENS160_H_
+ 
+-int ens160_core_probe(struct device *dev, struct regmap *regmap,
++int ens160_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 		      const char *name);
+ void ens160_core_remove(struct device *dev);
+ 
 diff --git a/drivers/iio/chemical/ens160_core.c b/drivers/iio/chemical/ens160_core.c
-new file mode 100644
-index 000000000..25593420d
---- /dev/null
+index 25593420d..4b960ef00 100644
+--- a/drivers/iio/chemical/ens160_core.c
 +++ b/drivers/iio/chemical/ens160_core.c
-@@ -0,0 +1,227 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * ScioSense ENS160 multi-gas sensor driver
-+ *
-+ * Copyright (c) 2024 Gustavo Silva <gustavograzs@gmail.com>
-+ *
-+ * Data sheet:
-+ *  https://www.sciosense.com/wp-content/uploads/2023/12/ENS160-Datasheet.pdf
-+ *
-+ */
+@@ -11,6 +11,9 @@
+ 
+ #include <linux/bitfield.h>
+ #include <linux/iio/iio.h>
++#include <linux/iio/trigger.h>
++#include <linux/iio/trigger_consumer.h>
++#include <linux/iio/triggered_buffer.h>
+ #include <linux/module.h>
+ #include <linux/regmap.h>
+ 
+@@ -24,6 +27,11 @@
+ 
+ #define ENS160_REG_OPMODE	0x10
+ 
++#define ENS160_REG_CONFIG		0x11
++#define ENS160_REG_CONFIG_INTEN		BIT(0)
++#define ENS160_REG_CONFIG_INTDAT	BIT(1)
++#define ENS160_REG_CONFIG_INT_CFG	BIT(5)
 +
-+#include <linux/bitfield.h>
-+#include <linux/iio/iio.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+
-+#include "ens160.h"
-+
-+#define ENS160_PART_ID 0x160
-+
-+#define ENS160_BOOTING_TIME_MS 10U
-+
-+#define ENS160_REG_PART_ID	0x00
-+
-+#define ENS160_REG_OPMODE	0x10
-+
-+#define ENS160_REG_MODE_DEEP_SLEEP	0x00
-+#define ENS160_REG_MODE_IDLE		0x01
-+#define ENS160_REG_MODE_STANDARD	0x02
-+#define ENS160_REG_MODE_RESET		0xF0
-+
-+#define ENS160_REG_COMMAND		0x12
-+#define ENS160_REG_COMMAND_GET_APPVER	0x0E
-+#define ENS160_REG_COMMAND_CLRGPR	0xCC
-+
-+#define ENS160_REG_TEMP_IN		0x13
-+#define ENS160_REG_RH_IN		0x15
-+#define ENS160_REG_DEVICE_STATUS	0x20
-+#define ENS160_REG_DATA_TVOC		0x22
-+#define ENS160_REG_DATA_ECO2		0x24
-+#define ENS160_REG_DATA_T		0x30
-+#define ENS160_REG_DATA_RH		0x32
-+#define ENS160_REG_GPR_READ4		0x4C
-+
-+#define ENS160_STATUS_VALIDITY_FLAG	GENMASK(3, 2)
-+
-+#define ENS160_STATUS_NORMAL	0x00
-+
-+struct ens160_data {
-+	struct regmap *regmap;
-+};
-+
-+static const struct iio_chan_spec ens160_channels[] = {
-+	{
-+		.type = IIO_CONCENTRATION,
-+		.channel2 = IIO_MOD_VOC,
-+		.modified = 1,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE),
-+		.address = ENS160_REG_DATA_TVOC,
-+	},
-+	{
-+		.type = IIO_CONCENTRATION,
-+		.channel2 = IIO_MOD_CO2,
-+		.modified = 1,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-+				      BIT(IIO_CHAN_INFO_SCALE),
-+		.address = ENS160_REG_DATA_ECO2,
-+	},
-+};
-+
-+static int ens160_read_raw(struct iio_dev *indio_dev,
-+			   struct iio_chan_spec const *chan,
-+			   int *val, int *val2, long mask)
-+{
-+	struct ens160_data *data = iio_priv(indio_dev);
-+	__le16 buf;
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		ret = regmap_bulk_read(data->regmap, chan->address,
-+					&buf, sizeof(buf));
+ #define ENS160_REG_MODE_DEEP_SLEEP	0x00
+ #define ENS160_REG_MODE_IDLE		0x01
+ #define ENS160_REG_MODE_STANDARD	0x02
+@@ -48,6 +56,12 @@
+ 
+ struct ens160_data {
+ 	struct regmap *regmap;
++	struct mutex mutex;
++	struct {
++		u16 chans[2];
++		s64 timestamp __aligned(8);
++	} scan;
++	int irq;
+ };
+ 
+ static const struct iio_chan_spec ens160_channels[] = {
+@@ -58,6 +72,13 @@ static const struct iio_chan_spec ens160_channels[] = {
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE),
+ 		.address = ENS160_REG_DATA_TVOC,
++		.scan_index = 0,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 16,
++			.storagebits = 16,
++			.endianness = IIO_LE,
++		},
+ 	},
+ 	{
+ 		.type = IIO_CONCENTRATION,
+@@ -66,7 +87,15 @@ static const struct iio_chan_spec ens160_channels[] = {
+ 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+ 				      BIT(IIO_CHAN_INFO_SCALE),
+ 		.address = ENS160_REG_DATA_ECO2,
++		.scan_index = 1,
++		.scan_type = {
++			.sign = 'u',
++			.realbits = 16,
++			.storagebits = 16,
++			.endianness = IIO_LE,
++		},
+ 	},
++	IIO_CHAN_SOFT_TIMESTAMP(2),
+ };
+ 
+ static int ens160_read_raw(struct iio_dev *indio_dev,
+@@ -79,10 +108,19 @@ static int ens160_read_raw(struct iio_dev *indio_dev,
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
++		ret = iio_device_claim_direct_mode(indio_dev);
 +		if (ret)
 +			return ret;
-+		*val = le16_to_cpu(buf);
-+		return IIO_VAL_INT;
-+
-+	case IIO_CHAN_INFO_SCALE:
-+		switch (chan->channel2) {
-+		case IIO_MOD_CO2:
-+			/* The sensor reads CO2 data as ppm */
-+			*val = 0;
-+			*val2 = 100;
-+			return IIO_VAL_INT_PLUS_MICRO;
-+		case IIO_MOD_VOC:
-+			/* The sensor reads VOC data as ppb */
-+			*val = 0;
-+			*val2 = 100;
-+			return IIO_VAL_INT_PLUS_NANO;
++		mutex_lock(&data->mutex);
+ 		ret = regmap_bulk_read(data->regmap, chan->address,
+ 					&buf, sizeof(buf));
+-		if (ret)
++		if (ret) {
++			mutex_unlock(&data->mutex);
++			iio_device_release_direct_mode(indio_dev);
+ 			return ret;
 +		}
-+	}
++		mutex_unlock(&data->mutex);
++		iio_device_release_direct_mode(indio_dev);
+ 		*val = le16_to_cpu(buf);
+ 		return IIO_VAL_INT;
+ 
+@@ -182,7 +220,104 @@ static const struct iio_info ens160_info = {
+ 	.read_raw = ens160_read_raw,
+ };
+ 
+-int ens160_core_probe(struct device *dev, struct regmap *regmap,
++static irqreturn_t ens160_irq_handler(int irq, void *private)
++{
++	struct iio_dev *indio_dev = private;
 +
-+	return -EINVAL;
++	if (iio_buffer_enabled(indio_dev))
++		iio_trigger_poll(indio_dev->trig);
++
++	return IRQ_HANDLED;
 +}
 +
-+static int ens160_set_mode(struct ens160_data *data, u8 mode)
++static irqreturn_t ens160_trigger_handler(int irq, void *p)
 +{
-+	int ret;
-+
-+	ret = regmap_write(data->regmap, ENS160_REG_OPMODE, mode);
-+	if (ret)
-+		return ret;
-+
-+	msleep(ENS160_BOOTING_TIME_MS);
-+
-+	return 0;
-+}
-+
-+static int ens160_chip_init(struct ens160_data *data)
-+{
-+	struct device *dev = regmap_get_device(data->regmap);
-+	u8 fw_version[3];
-+	__le16 part_id;
-+	unsigned int status;
-+	int ret;
-+
-+	ret = ens160_set_mode(data, ENS160_REG_MODE_RESET);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_bulk_read(data->regmap, ENS160_REG_PART_ID, &part_id,
-+			       sizeof(part_id));
-+	if (ret)
-+		return ret;
-+
-+	if (le16_to_cpu(part_id) != ENS160_PART_ID)
-+		return -ENODEV;
-+
-+	ret = ens160_set_mode(data, ENS160_REG_MODE_IDLE);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(data->regmap, ENS160_REG_COMMAND,
-+			   ENS160_REG_COMMAND_CLRGPR);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(data->regmap, ENS160_REG_COMMAND,
-+			   ENS160_REG_COMMAND_GET_APPVER);
-+	if (ret)
-+		return ret;
-+
-+	msleep(ENS160_BOOTING_TIME_MS);
-+
-+	ret = regmap_bulk_read(data->regmap, ENS160_REG_GPR_READ4,
-+			       fw_version, sizeof(fw_version));
-+	if (ret)
-+		return ret;
-+
-+	msleep(ENS160_BOOTING_TIME_MS);
-+
-+	dev_info(dev, "firmware version: %u.%u.%u\n", fw_version[2],
-+		 fw_version[1], fw_version[0]);
-+
-+	ret = ens160_set_mode(data, ENS160_REG_MODE_STANDARD);
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_read(data->regmap, ENS160_REG_DEVICE_STATUS, &status);
-+	if (ret)
-+		return ret;
-+
-+	if (FIELD_GET(ENS160_STATUS_VALIDITY_FLAG, status)
-+	    != ENS160_STATUS_NORMAL)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static const struct iio_info ens160_info = {
-+	.read_raw = ens160_read_raw,
-+};
-+
-+int ens160_core_probe(struct device *dev, struct regmap *regmap,
-+		      const char *name)
-+{
-+	struct ens160_data *data;
-+	struct iio_dev *indio_dev;
-+	int ret;
-+
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-+	if (!indio_dev)
-+		return -ENOMEM;
-+
-+	data = iio_priv(indio_dev);
-+	dev_set_drvdata(dev, indio_dev);
-+	data->regmap = regmap;
-+
-+	indio_dev->name = name;
-+	indio_dev->info = &ens160_info;
-+	indio_dev->modes = INDIO_DIRECT_MODE;
-+	indio_dev->channels = ens160_channels;
-+	indio_dev->num_channels = ARRAY_SIZE(ens160_channels);
-+
-+	ret = ens160_chip_init(data);
-+	if (ret) {
-+		dev_err_probe(dev, ret, "chip initialization failed\n");
-+		return ret;
-+	}
-+
-+	return devm_iio_device_register(dev, indio_dev);
-+}
-+EXPORT_SYMBOL_NS(ens160_core_probe, IIO_ENS160);
-+
-+void ens160_core_remove(struct device *dev)
-+{
-+	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct iio_poll_func *pf = p;
++	struct iio_dev *indio_dev = pf->indio_dev;
 +	struct ens160_data *data = iio_priv(indio_dev);
++	__le16 val;
++	int ret, i, j = 0;
 +
-+	ens160_set_mode(data, ENS160_REG_MODE_IDLE);
++	mutex_lock(&data->mutex);
++
++	for_each_set_bit(i, indio_dev->active_scan_mask,
++			 indio_dev->masklength) {
++		ret = regmap_bulk_read(data->regmap,
++				       ENS160_REG_DATA_TVOC + 2 * i, &val, 2U);
++		if (ret)
++			goto err;
++
++		data->scan.chans[j++] = val;
++	}
++
++	iio_push_to_buffers_with_timestamp(indio_dev, &data->scan,
++					   pf->timestamp);
++err:
++	mutex_unlock(&data->mutex);
++	iio_trigger_notify_done(indio_dev->trig);
++
++	return IRQ_HANDLED;
 +}
-+EXPORT_SYMBOL_NS(ens160_core_remove, IIO_ENS160);
 +
-+MODULE_AUTHOR("Gustavo Silva <gustavograzs@gmail.com>");
-+MODULE_DESCRIPTION("ScioSense ENS160 driver");
-+MODULE_LICENSE("GPL v2");
++static int ens160_set_trigger_state(struct iio_trigger *trig, bool state)
++{
++	struct iio_dev *indio_dev = iio_trigger_get_drvdata(trig);
++	struct ens160_data *data = iio_priv(indio_dev);
++	unsigned int int_bits = ENS160_REG_CONFIG_INTEN |
++				ENS160_REG_CONFIG_INTDAT |
++				ENS160_REG_CONFIG_INT_CFG;
++	int ret;
++
++	if (state)
++		ret = regmap_set_bits(data->regmap, ENS160_REG_CONFIG,
++				      int_bits);
++	else
++		ret = regmap_clear_bits(data->regmap, ENS160_REG_CONFIG,
++					int_bits);
++
++	return ret;
++}
++
++static const struct iio_trigger_ops ens160_trigger_ops = {
++	.set_trigger_state = ens160_set_trigger_state,
++	.validate_device = iio_trigger_validate_own_device,
++};
++
++static int ens160_setup_trigger(struct iio_dev *indio_dev)
++{
++	struct ens160_data *data = iio_priv(indio_dev);
++	struct device *dev = indio_dev->dev.parent;
++	struct iio_trigger *trig;
++	int ret;
++
++	trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
++				      iio_device_id(indio_dev));
++	if (!trig)
++		return dev_err_probe(dev, -ENOMEM,
++				     "failed to allocate trigger\n");
++
++	trig->ops = &ens160_trigger_ops;
++	iio_trigger_set_drvdata(trig, indio_dev);
++
++	ret = devm_iio_trigger_register(dev, trig);
++	if (ret)
++		return ret;
++
++	indio_dev->trig = iio_trigger_get(trig);
++
++	ret = devm_request_threaded_irq(dev, data->irq,
++					ens160_irq_handler,
++					NULL,
++					IRQF_TRIGGER_FALLING | IRQF_ONESHOT,
++					indio_dev->name,
++					indio_dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to request irq\n");
++
++	return 0;
++}
++
++int ens160_core_probe(struct device *dev, struct regmap *regmap, int irq,
+ 		      const char *name)
+ {
+ 	struct ens160_data *data;
+@@ -196,6 +331,7 @@ int ens160_core_probe(struct device *dev, struct regmap *regmap,
+ 	data = iio_priv(indio_dev);
+ 	dev_set_drvdata(dev, indio_dev);
+ 	data->regmap = regmap;
++	data->irq = irq;
+ 
+ 	indio_dev->name = name;
+ 	indio_dev->info = &ens160_info;
+@@ -203,12 +339,27 @@ int ens160_core_probe(struct device *dev, struct regmap *regmap,
+ 	indio_dev->channels = ens160_channels;
+ 	indio_dev->num_channels = ARRAY_SIZE(ens160_channels);
+ 
++	if (data->irq > 0) {
++		ret = ens160_setup_trigger(indio_dev);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "failed to setup trigger\n");
++	}
++
+ 	ret = ens160_chip_init(data);
+ 	if (ret) {
+ 		dev_err_probe(dev, ret, "chip initialization failed\n");
+ 		return ret;
+ 	}
+ 
++	mutex_init(&data->mutex);
++
++	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
++					      iio_pollfunc_store_time,
++					      ens160_trigger_handler, NULL);
++	if (ret)
++		return ret;
++
+ 	return devm_iio_device_register(dev, indio_dev);
+ }
+ EXPORT_SYMBOL_NS(ens160_core_probe, IIO_ENS160);
 diff --git a/drivers/iio/chemical/ens160_i2c.c b/drivers/iio/chemical/ens160_i2c.c
-new file mode 100644
-index 000000000..ee2b44184
---- /dev/null
+index ee2b44184..28d4988c0 100644
+--- a/drivers/iio/chemical/ens160_i2c.c
 +++ b/drivers/iio/chemical/ens160_i2c.c
-@@ -0,0 +1,68 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * ScioSense ENS160 multi-gas sensor I2C driver
-+ *
-+ * Copyright (c) 2024 Gustavo Silva <gustavograzs@gmail.com>
-+ *
-+ * 7-Bit I2C slave address is:
-+ *	- 0x52 if ADDR pin LOW
-+ *	- 0x53 if ADDR pin HIGH
-+ */
-+
-+#include <linux/i2c.h>
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+
-+#include "ens160.h"
-+
-+static const struct regmap_config ens160_regmap_i2c_conf = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+};
-+
-+static int ens160_i2c_probe(struct i2c_client *client)
-+{
-+	struct regmap *regmap;
-+
-+	regmap = devm_regmap_init_i2c(client, &ens160_regmap_i2c_conf);
-+	if (IS_ERR(regmap)) {
-+		dev_err(&client->dev, "Failed to register i2c regmap %ld\n",
-+			PTR_ERR(regmap));
-+		return PTR_ERR(regmap);
-+	}
-+
-+	return ens160_core_probe(&client->dev, regmap, client->name);
-+}
-+
-+static void ens160_i2c_remove(struct i2c_client *client)
-+{
-+	ens160_core_remove(&client->dev);
-+}
-+
-+static const struct i2c_device_id ens160_i2c_id[] = {
-+	{ "ens160", 0 },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(i2c, ens160_i2c_id);
-+
-+static const struct of_device_id ens160_of_i2c_match[] = {
-+	{ .compatible = "sciosense,ens160" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, ens160_of_i2c_match);
-+
-+static struct i2c_driver ens160_i2c_driver = {
-+	.driver = {
-+		.name		= "ens160_i2c",
-+		.of_match_table	= ens160_of_i2c_match,
-+	},
-+	.probe = ens160_i2c_probe,
-+	.remove = ens160_i2c_remove,
-+	.id_table = ens160_i2c_id,
-+};
-+module_i2c_driver(ens160_i2c_driver);
-+
-+MODULE_AUTHOR("Gustavo Silva <gustavograzs@gmail.com>");
-+MODULE_DESCRIPTION("ScioSense ENS160 I2C driver");
-+MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(IIO_ENS160);
+@@ -31,7 +31,7 @@ static int ens160_i2c_probe(struct i2c_client *client)
+ 		return PTR_ERR(regmap);
+ 	}
+ 
+-	return ens160_core_probe(&client->dev, regmap, client->name);
++	return ens160_core_probe(&client->dev, regmap, client->irq, client->name);
+ }
+ 
+ static void ens160_i2c_remove(struct i2c_client *client)
 diff --git a/drivers/iio/chemical/ens160_spi.c b/drivers/iio/chemical/ens160_spi.c
-new file mode 100644
-index 000000000..effc4acee
---- /dev/null
+index effc4acee..568b9761d 100644
+--- a/drivers/iio/chemical/ens160_spi.c
 +++ b/drivers/iio/chemical/ens160_spi.c
-@@ -0,0 +1,69 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * ScioSense ENS160 multi-gas sensor SPI driver
-+ *
-+ * Copyright (c) 2024 Gustavo Silva <gustavograzs@gmail.com>
-+ */
-+
-+#include <linux/module.h>
-+#include <linux/regmap.h>
-+#include <linux/spi/spi.h>
-+
-+#include "ens160.h"
-+
-+#define ENS160_SPI_READ BIT(0)
-+
-+static const struct regmap_config ens160_regmap_spi_conf = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.reg_shift = -1,
-+	.read_flag_mask = ENS160_SPI_READ,
-+};
-+
-+static int ens160_spi_probe(struct spi_device *spi)
-+{
-+	struct regmap *regmap;
-+	const struct spi_device_id *id = spi_get_device_id(spi);
-+
-+	regmap = devm_regmap_init_spi(spi, &ens160_regmap_spi_conf);
-+	if (IS_ERR(regmap)) {
-+		dev_err(&spi->dev, "Failed to register spi regmap: %pe\n",
-+			regmap);
-+		return PTR_ERR(regmap);
-+	}
-+
-+	return ens160_core_probe(&spi->dev, regmap, id->name);
-+}
-+
-+static void ens160_spi_remove(struct spi_device *spi)
-+{
-+	ens160_core_remove(&spi->dev);
-+}
-+
-+static const struct of_device_id ens160_spi_of_match[] = {
-+	{ .compatible = "sciosense,ens160" },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, ens160_spi_of_match);
-+
-+static const struct spi_device_id ens160_spi_id[] = {
-+	{ "ens160", 0 },
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(spi, ens160_spi_id);
-+
-+static struct spi_driver ens160_spi_driver = {
-+	.driver = {
-+		.name	= "ens160_spi",
-+		.of_match_table = ens160_spi_of_match,
-+	},
-+	.probe		= ens160_spi_probe,
-+	.remove		= ens160_spi_remove,
-+	.id_table	= ens160_spi_id,
-+};
-+module_spi_driver(ens160_spi_driver);
-+
-+MODULE_AUTHOR("Gustavo Silva <gustavograzs@gmail.com>");
-+MODULE_DESCRIPTION("ScioSense ENS160 SPI driver");
-+MODULE_LICENSE("GPL v2");
-+MODULE_IMPORT_NS(IIO_ENS160);
+@@ -32,7 +32,7 @@ static int ens160_spi_probe(struct spi_device *spi)
+ 		return PTR_ERR(regmap);
+ 	}
+ 
+-	return ens160_core_probe(&spi->dev, regmap, id->name);
++	return ens160_core_probe(&spi->dev, regmap, spi->irq, id->name);
+ }
+ 
+ static void ens160_spi_remove(struct spi_device *spi)
 -- 
 2.45.0
 

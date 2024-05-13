@@ -1,168 +1,99 @@
-Return-Path: <linux-iio+bounces-5005-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5006-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B1D8C42F1
-	for <lists+linux-iio@lfdr.de>; Mon, 13 May 2024 16:14:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A29148C431A
+	for <lists+linux-iio@lfdr.de>; Mon, 13 May 2024 16:19:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C51A1C21691
-	for <lists+linux-iio@lfdr.de>; Mon, 13 May 2024 14:14:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D4D22825F7
+	for <lists+linux-iio@lfdr.de>; Mon, 13 May 2024 14:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86A25153836;
-	Mon, 13 May 2024 14:14:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6063B153BC0;
+	Mon, 13 May 2024 14:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="XJO9XN5Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jQbhfASj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.zeus03.de (www.zeus03.de [194.117.254.33])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4320153817
-	for <linux-iio@vger.kernel.org>; Mon, 13 May 2024 14:14:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18397152180;
+	Mon, 13 May 2024 14:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715609647; cv=none; b=S0v3emaPS2Zash2cEINSnQI8qi6qKq8jMmfNnOodJ9Y0snRdLUvJzWc97ULh0jRLnUZrrzZWbjQMKE7ZBdeLsvvUwg28RUsTBHMiMMK1bxGsJScWJ1MGjwAJcEEUxCmEhXTRtshfTrvU54TFKXH3dKQM//giw1hV0iVCE/ONFEU=
+	t=1715609948; cv=none; b=o8Uwt9VCVlEzIDlnkzqBvdSVJ1K6g5Rf/uSQ0flhGNgYAZ9M1IZ4P2ViY3sb3crJVeMhZgxWhmorh6lYA+DNfsrPnjpFQKHqqeW+g7D9YBYj2cePqZtE6zcgGDf5BgIn+EQECIUJb7H7/Kj2G0ioCowLubLDJD8u5d9e4kgDw28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715609647; c=relaxed/simple;
-	bh=jlJal8SYd2i17p2UBb9eq6fm30hJKgO/pZI9iWerNak=;
+	s=arc-20240116; t=1715609948; c=relaxed/simple;
+	bh=PD4GwX3Z6iq20lzOHlzaVgnrNqVXh7Lp5OI62HCHswU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NSboYG0tsRPgvrQHWNhbYkKUpCo8hcsgQz6jdpkdaDx9wjXLm6QdKVF9FCvRlMi0GW9SFaD6/hrw2Y7z5yhJeckIb7M8DGCsqTgWY8+8n5cBidR89YBZER6JLkMtOQFFOfb/gqMZY/eT7F2cFMGka1q1kyhSTLMRE9W2JQvYlVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=XJO9XN5Q; arc=none smtp.client-ip=194.117.254.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	sang-engineering.com; h=date:from:to:cc:subject:message-id
-	:references:mime-version:content-type:in-reply-to; s=k1; bh=jlJa
-	l8SYd2i17p2UBb9eq6fm30hJKgO/pZI9iWerNak=; b=XJO9XN5Q7CPiPUGC4vat
-	Lb8eZwOYw9kdc26MrFtTkkddag0HFeyIJ7qNTNsuz0+tt45Nd6puxrxtmLarm8xl
-	wlen9O8o8gtZQdvfnptxz0ngAZrpR+w2RVk//4X4HORXsj/+81kap2ns++XrNg0D
-	GyvZTHhI4kotws5rPjEXXn7qVSYh5loHD+pKWSifW2snnrD25lprGF6kF1Rz98ec
-	2Izw5FblLRz4e3w2RTlJFHiTHrrMeWYcG1E2OMmjNw1yGN9H1cCbYGq2BJegSQim
-	XmCFhMdKCVJEPNJ25Jaz0Kxs7rElzBYeNXysARUWQHT4LPGo2ucWb3+7XyjKoufW
-	cQ==
-Received: (qmail 2174713 invoked from network); 13 May 2024 16:14:01 +0200
-Received: by mail.zeus03.de with ESMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 13 May 2024 16:14:01 +0200
-X-UD-Smtp-Session: l3s3148p1@ino7f1YYqLZehhtP
-Date: Mon, 13 May 2024 16:14:00 +0200
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Peter Korsgaard <peter.korsgaard@barco.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=O5qUK5V6Jm5CKbr2qAk0VEVFPkp69KXy2ivDHFEAhrSfWhNMt9v6lQzMeJWtFXMQTib3F5vYbglqBAMqITY8ze7Zr78OI7cgGE5mi3E8JUDoqXfzMGbv0dtDfErnaWZBoLh7OA4rVj1R7LBWAzqOUNwDWho/TgeKNY+sFNx5fWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jQbhfASj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B27C4AF07;
+	Mon, 13 May 2024 14:19:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1715609947;
+	bh=PD4GwX3Z6iq20lzOHlzaVgnrNqVXh7Lp5OI62HCHswU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jQbhfASjvXHGTKOPtu1AmhG20WH02RT274WXbettv8w84cXwTK3rQJkJhKstTVkYq
+	 Kp5vyE2u6UhcE1o64Qo4nJLlwTOkBEmOqIWPR/ofPWCTXwqqfYPUevvIj/qid8TnAm
+	 GU1K7dX7dxfz6jauJpjAF/kvpab1CPjI04WIiUwuPYqb0mx2oxtYqratxHtpMuZLoA
+	 ZwfUoqFOFhiT3M9cSj5O84lNHuJZO3o/DoBAxf+1tt3BddnTtZ2btt6nEHYVNd7TNU
+	 IQPcesAJgDq5lPU2uzBhUc7uiXC7Bemjqlt8VEeFuo1hxLNnGPNUG9O4j4gxWRqmof
+	 7FhuGta9uPONg==
+Date: Mon, 13 May 2024 09:19:06 -0500
+From: Rob Herring <robh@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
 	Michael Hennerich <michael.hennerich@analog.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Michael Shych <michaelsh@nvidia.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Jacopo Mondi <jacopo+renesas@jmondi.org>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	"open list:AMD KFD" <dri-devel@lists.freedesktop.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	linux-media@vger.kernel.org,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Subject: Re: [PATCH] i2c: mux: Remove class argument from
- i2c_mux_add_adapter()
-Message-ID: <20240513141400.xgpy3euacuxj5i4b@ninjato>
-Mail-Followup-To: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Robert Foss <rfoss@kernel.org>,
-	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Wolfram Sang <wsa@kernel.org>, Peter Rosin <peda@axentia.se>,
-	Peter Korsgaard <peter.korsgaard@barco.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Vadim Pasternak <vadimp@nvidia.com>,
-	Michael Shych <michaelsh@nvidia.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Jacopo Mondi <jacopo+renesas@jmondi.org>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Niklas =?utf-8?Q?S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Rob Herring <robh@kernel.org>,
-	Saravana Kannan <saravanak@google.com>,
-	"open list:AMD KFD" <dri-devel@lists.freedesktop.org>,
-	"linux-i2c@vger.kernel.org" <linux-i2c@vger.kernel.org>,
-	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
-	linux-media@vger.kernel.org,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <17145dc5-e68e-4566-bedf-251bebe36ebb@gmail.com>
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: iio: adc: adi,axi-adc: tweak example node
+ name
+Message-ID: <20240513141906.GA2534611-robh@kernel.org>
+References: <20240510-b4-iio-axi-adc-dt-binding-tweak-v1-1-a1f633c4602c@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6wk7u7gqu25scqer"
-Content-Disposition: inline
-In-Reply-To: <17145dc5-e68e-4566-bedf-251bebe36ebb@gmail.com>
-
-
---6wk7u7gqu25scqer
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240510-b4-iio-axi-adc-dt-binding-tweak-v1-1-a1f633c4602c@baylibre.com>
 
-On Thu, Apr 18, 2024 at 10:55:39PM +0200, Heiner Kallweit wrote:
-> 99a741aa7a2d ("i2c: mux: gpio: remove support for class-based device
-> instantiation") removed the last call to i2c_mux_add_adapter() with a
-> non-null class argument. Therefore the class argument can be removed.
->=20
-> Note: Class-based device instantiation is a legacy mechanism which
-> shouldn't be used in new code, so we can rule out that this argument
-> may be needed again in the future.
->=20
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+On Fri, May 10, 2024 at 04:04:38PM -0500, David Lechner wrote:
+> It is always recommended to use generic node names for devicetree nodes.
+> The documentation [1] of the AXI ADC IP core says "The most important
+> part of the core is the Receiver PHY module.", so using phy as the node
+> name seems appropriate.
+> 
+> [1]: https://wiki.analog.com/resources/fpga/docs/axi_adc_ip
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>  Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> index e1f450b80db2..9cad4c439045 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,axi-adc.yaml
+> @@ -57,7 +57,7 @@ additionalProperties: false
+>  
+>  examples:
+>    - |
+> -    axi-adc@44a00000 {
+> +    phy@44a00000 {
 
-Applied to for-next (meaning for 6.10), thanks!
+phy should be used when there's #phy-cells which is not the case here. 
+'adc' is somewhat standard. Or maybe it should be tied to 
+#io-backend-cells.
 
+Until we have something defined as ti what it should be, we should just 
+leave node names alone.
 
---6wk7u7gqu25scqer
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmZCICgACgkQFA3kzBSg
-Kbbe8w//cwbm6f8+HGi4nQvOvL3JrgaLg4ZnhG9F8mVOVa0qOigbq9Xm63XB+Bwb
-eWOWzDsFfN5Pew2UN93LWZJ3hkdZE8swa5XePLn8N70E0nXGM6LtDdeWLp0Bcov6
-fhIHD7GumaCgsmE2Cb3Scl9W0RoGkd2SKhcglPZirYVHhzq+uxoESEf4+Xu4DuTS
-yUJymE20haysSkWQ0IU52CCl6O/ydL4TO8lhVFH2PtpMtsLfM4ABUHbFuYV9eObI
-I3kO4WDHRpw9YpBolhVL8gqolwYPvviv+ry9v7XuGmlZWCOty+gngCA42pvE5+Ns
-aenK/c5Q/eQ99qjZgbZr0Zg+NbsCyHW4/Ye+3AlkcwoGYXweaxEwssvpeODwoGLC
-Txjs1XzzE+c7OPPmjlLcLh0Hq9jKlqRzbFyF5834yLVb/Rqkx8eohrFDP5TSLlE2
-Lw1NoLgqYyXjX+OpU2ZWIl/rxM4EB1RAOgW2yaV5x+B+dAQwuKY7ilapSNNQQOGl
-bHKpuF462TB2eyrixx2Ns+IBT7CaCLYmxzV/QAW9VW9VPWSpjM5x8SiOSs/cE4zf
-w7FskHexCXqEMau+UCXP0htz+haZ2cZSdIVOYphXgNNzhRb/i0EQu9HMiDBBRZns
-gh4yy9eGV31++lc+iD8wFODnmjkbw+vDEvv980jTG7G2W7xqC+c=
-=dQwU
------END PGP SIGNATURE-----
-
---6wk7u7gqu25scqer--
+Rob
 

@@ -1,794 +1,271 @@
-Return-Path: <linux-iio+bounces-5003-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5004-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E210B8C3925
-	for <lists+linux-iio@lfdr.de>; Mon, 13 May 2024 01:06:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C6668C3EBD
+	for <lists+linux-iio@lfdr.de>; Mon, 13 May 2024 12:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADBA7B20B6A
-	for <lists+linux-iio@lfdr.de>; Sun, 12 May 2024 23:06:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97B3C1F21A4B
+	for <lists+linux-iio@lfdr.de>; Mon, 13 May 2024 10:20:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A648460ED3;
-	Sun, 12 May 2024 23:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24861149E10;
+	Mon, 13 May 2024 10:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S73Dx1cH"
+	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="CN5xrsc4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC95B5FB8B;
-	Sun, 12 May 2024 23:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715555140; cv=none; b=iCydD4KuNT1V5GJfUC39CV2Ea97prVpFof10uMfihDcK5qUsjpe1uc9Zy4rnzEWZSS5fHV18DDeyWDwwl/LMBeYTAeLLl1sHJuvHTxqfXzx9SUcXsns07cYNM7GjYohH7o9mth1UKs0sJwYoqQasFpZN4fl7tpjsJfhftU6cWcY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715555140; c=relaxed/simple;
-	bh=JxkgwVV2rRTWsDmFwnCiXh22ibPwLbicgJ/7HSbcQPo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EUlzNrG+sDrRvc+u0aBK8TKWkRRIjF639OB87ik+c9H3OgBAd+DkvoGdA61kYc+l+OR4tYQJFWJGb6K0JwTxNshp3Vm6rRvbZHK/D+Ae8KsJ2kMWPrZZATB9oRIhROGAvoUCBzmtfFdW1/i/ZQNuPz5ghHlld4FKnAFUuLRou/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S73Dx1cH; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-41c7ac71996so25564225e9.3;
-        Sun, 12 May 2024 16:05:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715555136; x=1716159936; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jaBdZrgEZ7XAdkpitRwhVY5ewXq7WPMeYDJsKViuPi0=;
-        b=S73Dx1cHnSNPoQHAyti26iVrWsvRR9XfdgldS4poWnwHHAyUrRo79J5BSn4LeoStel
-         W+KmFw7/jDIqy0u504zbvZ/qiCok1t+z5w0KM+ofm2pj+F39TyW0Yr6Yyi0mihW8HVXi
-         Z9/cE571pNdxVxOfxMJksH6GGJtBuEeo7cKhKGgHzAaaftKl9eMIosMAM99T3eD5kW3+
-         dms+R08ggzzsFyPWYqr6C7GxIDX9Z1fP52cbP4Xb5L1waC08avGGqEmrGsVZ27wcXDNQ
-         1hqRc4Bdd38+tB3gLKjMbG2JYS5pzyqYODf0EtAq5VY9WVDDdRTTk0cAKZ+4bB++nVhK
-         C39g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715555136; x=1716159936;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jaBdZrgEZ7XAdkpitRwhVY5ewXq7WPMeYDJsKViuPi0=;
-        b=N927V2jqGXprcf05eSKphXmG5QpuMDK93RgNv5loknOG4ZTrFjyBs2TQ3khOeXctrN
-         Rq+3o/KlsoMYeXrLmtp6u1Q9cNpQ+6jixSEu6jhO47N4orQcMLpCJDO5qy0qsSfwnLRM
-         L48vG6G60KDAqBMUDSDI2arrP8tNS8Q1il2YvsKwVqP+Es0N4X9t13QgJkQOVUFd3hcW
-         8rY2Y27CAhRmtzH7SEJ/w6OIQ8YGi8jRSVFQzs2gyPR1pMQwEdzXQUgUeblSfSG/or9M
-         EKwUiVy0HpGEFealfnymcV+inW6UkxJBc2IyrXgD5W4e6MXoDXBC8D2JSFhk+vK2vwCN
-         YP9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVsPgegwvLFCmsILdy+RC49oVuuDGWsLsiumW9i6JBhwVHuwxPlO1Qn10QyEzyD6bTY8Cgj27ZeSm4c+0Iijce7O5rRs/LvUBEFJLcyZNbQUpoB6vxu2lNgT25nfqW7fo7kkaNLvoqh
-X-Gm-Message-State: AOJu0YyqXvfJyPhV2v+zutPCVNV8qD3O53NrCv6Hov5XQIt9w5M30BLm
-	s+qn0mfRMPNJxp4I+kqamf2C7w4ZfbJkWzOjC/st7DBAeJRNCkIQ
-X-Google-Smtp-Source: AGHT+IEBgYBQXKs4+6hbwQTDUwJXK6JEQG6zF07jxY2xsJKZ+74orf0V8adFWuysBMbQ9JK6IlLxFA==
-X-Received: by 2002:a05:600c:ad3:b0:416:9ba0:8f17 with SMTP id 5b1f17b1804b1-41feab40c00mr54925865e9.22.1715555135949;
-        Sun, 12 May 2024 16:05:35 -0700 (PDT)
-Received: from localhost.localdomain ([2a04:ee41:82:7577:ce14:864c:436e:5c6d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-41fccee92bcsm136720935e9.36.2024.05.12.16.05.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 May 2024 16:05:35 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: jic23@kernel.org,
-	lars@metafoo.de
-Cc: andriy.shevchenko@linux.intel.com,
-	ang.iglesiasg@gmail.com,
-	mazziesaccount@gmail.com,
-	ak@it-klinger.de,
-	petre.rodan@subdimension.ro,
-	phil@raspberrypi.com,
-	579lpy@gmail.com,
-	linus.walleij@linaro.org,
-	semen.protsenko@linaro.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Vasileios Amoiridis <vassilisamir@gmail.com>
-Subject: [PATCH v7 5/5] iio: pressure: bmp280: Add triggered buffer support
-Date: Mon, 13 May 2024 01:05:24 +0200
-Message-Id: <20240512230524.53990-6-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240512230524.53990-1-vassilisamir@gmail.com>
-References: <20240512230524.53990-1-vassilisamir@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1631487EC
+	for <linux-iio@vger.kernel.org>; Mon, 13 May 2024 10:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1715595613; cv=fail; b=IAikmDYpZGI76H09HM6wN/2A2YDWYIEw3NVa7sQacx1Xnr4wHQHQvjlMD/hcOr5nE3x08u4SiJGwE1lHWow3iee4Ntk7/zSxrpPcF4j7L8hX00vy0oHEHePBgobin9YblGsHTvqoqPfYGEueVkb031nW82s/sAS7N7PcIy9VC5w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1715595613; c=relaxed/simple;
+	bh=nAVjm26dKreBvRNv0w2LD19wmpu0pDTgzwaWUu5ZFns=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=PjGw9Afbk+46NXTIOvPupBSgiBEu+SsJ5mzV8GKOHzW9PlbucLR+mGiX5WwrhYTvKo++N/S5BhlbnfQE25/CF9lDbIgne+hJvSHMqDXsaVVJvn88ndlxkjCa9OdMthpTnpZupgRAYUfBPgVAJdhdpQSdSKFXrc/n+Fn3yIfN2sA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=CN5xrsc4; arc=fail smtp.client-ip=205.220.166.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
+Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
+	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44D3fJ6Q017678;
+	Mon, 13 May 2024 09:18:40 GMT
+Received: from deu01-fr2-obe.outbound.protection.outlook.com (mail-fr2deu01lp2169.outbound.protection.outlook.com [104.47.11.169])
+	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3y3b66raya-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 13 May 2024 09:18:40 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=cPU3ym197e2CrD8IFHnPdM+qHzoN8kRsf8PC8UamUE4SB3UlgfDWlAP5m3wuWYxGIXdLMfeEMnzhHZI+vfoV4lnipxoXtIfwmXXH6/AwB0/43cSNbCJetYjmLdyEOAPUZaytxa1fIrLrzzqM2JBYXpxhHmFXvtRMpnFwVQ/VPjslYPeJIgk0gXPzQ9WNs+w6yjQSfq2yMTuw3m5ctJCHeEt154iDVEoLd+qrKhivH3RwNMWUJHG/rnRDklvIip7aEZZPjNVNZ+kT4/U6810PjK3dZJ+zbRsDFsCL1FNxuLaK2xuO2KBKEHnbMihfktrFbHa6DQwr9sKxVqdqO/XfaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=8STK5tWvRqOsBMibzdiGwQJDAQukunXbOz5toPszL98=;
+ b=ZsF1bndgAgO8X643kB0pAv3TK2BEk3XUEH5AEeyCsaspUIg4OhPfgqJGKEdsoVDUkuRMx1LJlGpFC8uzYbezwY2SnWjg+qBcuNHU6UnoATNKbSFc/6JL4hOcd0EfIafAvq5BTUSfVqVrJg7t/3Uge86g2um0CtSBBt5Kzib1gCXZGI0SjDzht/hTCOecPMNtZGEePir0XmIWeJJEoHZSy/kME9d7rhtMZdKCk4FRKNu0CqTabxNjurIyzBPtk94H5Hf4QGkjjdNsyevXtfZtuEV4+AdCl0eCKtOGPfQHJz8FKWQ+ipHN/hQhVZQkK9APhwVL2gCxS76WMmTJnI67Tw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
+ header.d=tdk.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8STK5tWvRqOsBMibzdiGwQJDAQukunXbOz5toPszL98=;
+ b=CN5xrsc4+2nnopKAkG/YITYGGjLN0bLEYcF/nFFDa88fJ1/sBUXsSyzNKOZUwvGpuPu8uktNXG8W/0E2Jznw/TEYJ/JA00mztW8hAX2keGf55dOkWv4gpTSko36p+U0/dQvHaq9jdW4TMxqy5+31efx+BX3HQqEVXUw1h8h7CR8yJI5J5m7/V+hDUKzhiVDvCZV+mgNCrU1D1jWqypCeFf8aHU62Z0hFv2B37AARdT8J4KZCoMOmzcbh+fAPtJlcpmA1rO2E3QziE91KqZRX0W+SJXwE/G3IXWh6QK9KEVlM3g4oUZKfNi2tXYyY5ohGCa9dJwipDgQPdJpUMjk24Q==
+Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
+ by FR0P281MB2878.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:4d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.22; Mon, 13 May
+ 2024 09:18:34 +0000
+Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::53a6:70d:823f:e9ac]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+ ([fe80::53a6:70d:823f:e9ac%4]) with mapi id 15.20.7587.021; Mon, 13 May 2024
+ 09:18:34 +0000
+From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
+To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+        INV Git Commit
+	<INV.git-commit@tdk.com>
+CC: "jic23@kernel.org" <jic23@kernel.org>,
+        "lars@metafoo.de"
+	<lars@metafoo.de>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH] iio: imu: inv_icm42600: add support of accel low-power
+ mode
+Thread-Topic: [PATCH] iio: imu: inv_icm42600: add support of accel low-power
+ mode
+Thread-Index: AQHaoGmx3kJNOgoKOESrYpcRCRIEpLGO5IcAgAXe//k=
+Date: Mon, 13 May 2024 09:18:34 +0000
+Message-ID: 
+ <FR3P281MB175734C16B7C8F430874A866CEE22@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+References: <20240507103056.291643-1-inv.git-commit@tdk.com>
+ <20240509141326.00000684@Huawei.com>
+In-Reply-To: <20240509141326.00000684@Huawei.com>
+Accept-Language: en-US, fr-FR
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: FR3P281MB1757:EE_|FR0P281MB2878:EE_
+x-ms-office365-filtering-correlation-id: 7b489a66-9465-4cbf-17da-08dc732da9f0
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: 
+ BCL:0;ARA:13230031|366007|376005|1800799015|38070700009|3613699003;
+x-microsoft-antispam-message-info: 
+ =?iso-8859-1?Q?zpH/BW8ABppTBw6QWd2olNbQI/ypaPB9pjRXLZFHAb+o9uUqedvSAJdmyM?=
+ =?iso-8859-1?Q?/xXtuQ0RFSLf/0ummjD3NItrZutcut5e5m/lVeQsH5fk9TfGsdH01+tbSD?=
+ =?iso-8859-1?Q?1IX/n83q/CxHTfUgYa87VliPbwcRMnj34M8x+O8UQ86eyARg1dTTmiY8x9?=
+ =?iso-8859-1?Q?7y+w2i4/zWVzQJI+txcNmY5iCBFSXfDPC29U3s1dV9/OCwwae3Lc/2XW4E?=
+ =?iso-8859-1?Q?KF/sVIrk8SW5k3+H8zKUJrg9TVQaCVzfSWqvBI6xcJy3AMbJc1nll374L/?=
+ =?iso-8859-1?Q?6bbgwVNbjEyfNJaCymON93osAgxZNPUhouL9nSrlXpKlqo/lGCXwTCF70a?=
+ =?iso-8859-1?Q?2WckaZdsn5MNxJli+UDWT+fQuOr/xGzLaIKakesf/KIt8XrZFKoHIPXCx/?=
+ =?iso-8859-1?Q?t6H+h/rqosRzfLIsYc1puwZbUvN+Po3yYmzhewatKDoYCu66Zi0PRQ6kGg?=
+ =?iso-8859-1?Q?YIBqcB20EBAkrnPlsN8PmSUrbr8b8cXDjUANZ4R+uV0MKM3CeVyqw+x3f4?=
+ =?iso-8859-1?Q?xvHLBTppgROhc3KmTwaJx1LQKdYQdfkcntPuDUOPPNYWJcvIgLYi9I4JQ5?=
+ =?iso-8859-1?Q?LoC3WczxBIqmZvbFaNcetOmL/cL9t4m3qLfCWcbSZ7DRbih14Y5F4fVZvN?=
+ =?iso-8859-1?Q?t1F5aC7ZA26PoNEIOtLDqlZ5UrL0WJvvKccEiVch4wzdTxu/MqrLjp3yP5?=
+ =?iso-8859-1?Q?9nWjx57vBFILzdkUhgUoFksBhGZTUh44AHsF/qewwmi14IxoRfF+FuUr5q?=
+ =?iso-8859-1?Q?ImUazI4scHpMevYPJUgcUfVcW5Jp5CCNzP3CA7RziRDMlrIVIn2QGmwTEY?=
+ =?iso-8859-1?Q?di0ERgUz/Ne2vtO6XMz79rsJjLORaCSUYwRaVRbMHsX1IeTHOo/VfuqkyG?=
+ =?iso-8859-1?Q?uoaUckzAsHIAcLfBbZYhD9lTiLz+j0fw9+mcuBYbx5I8d5pYcoheKLyINh?=
+ =?iso-8859-1?Q?AUuNdrFJp9SQBQzKVtZccFxLAz/1BK3MClrUB8KRtp0Fa1lSwncaUmhsAb?=
+ =?iso-8859-1?Q?tROKA5GaOt+3mX8LzL/JXwcf/TL1owygKsaCb/ab1jaGg6xVse5TJei0yy?=
+ =?iso-8859-1?Q?9ocPj+i1EKlE3oWku1HaqXLs3trlvZvXmKF0nC4HQzItixe7T/G5H4N8h1?=
+ =?iso-8859-1?Q?lN1LTekczGo+SgPRwE3aM002L7iWCR86vlri9+i7OkvbA4MJCtVF4afNzC?=
+ =?iso-8859-1?Q?xkhmF+KyR08orDPmaj0XtNR2yzSuq9fU6kXovWRN4/dXbIDqIaUMvfXhJG?=
+ =?iso-8859-1?Q?f047N2rpOsN2UUKzEel64atQloItt/M2pnW8onXTv6COrmirkkpFOYxRAK?=
+ =?iso-8859-1?Q?uPy1pYDqk9ose6hsR3ikVTEo9YiQ+rZx2PGZ83T7xt/YGU5QiIKyg/otN5?=
+ =?iso-8859-1?Q?qVkdWG/2RPCm822MD9hR5WH6yZ5zDgXBhotmMP9uVZGNoXbNfeOmQ=3D?=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366007)(376005)(1800799015)(38070700009)(3613699003);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?iso-8859-1?Q?25XKvWstveoa1d67k2fH8h2Q5G7oFkFiL4OW9RL1iOygypifEa/XM0XhkF?=
+ =?iso-8859-1?Q?0gdTyZhUsA3+PRIvGDSitX5/r9VXJg7fJUZSxeUBE83Bd3qksHOuZOHNob?=
+ =?iso-8859-1?Q?6fItm+YxAUZAZOps1II8F4mQIJis/GKHHAm6h1gQ7x56XggjJDyAIaHSMw?=
+ =?iso-8859-1?Q?VjF5idRM8a2kW9JefwY1zZMWzWVV5qwvbiqjLRp7wcCwqtVNblQtIzFOqN?=
+ =?iso-8859-1?Q?bH89xq10QgO9sEEA6P65tOXksXmjJ5vNnzNxuBrXIvY3Uv9AEBhX/PNOqF?=
+ =?iso-8859-1?Q?hoDApJhiRtMiXKoWgROa9IYcmfgVg/wu65xBB8JNlKQVZWOPoHcdScy8zc?=
+ =?iso-8859-1?Q?ftl5de5G69RvTa4ZbghQXuSHnzZ7gchB6yqhgJQrKJA0LQ0YZ/mUkRNy+O?=
+ =?iso-8859-1?Q?zKa2c03JBK6fmwb+qFEW64VBTymCS2cnouQEPqaYctTwRG0ERp7i/bRUWc?=
+ =?iso-8859-1?Q?a1JZa1IbNz1WplEqrJSMajzFnlRB4AZ5ndU0GvRVzg3JnSBozgFaT1WKPl?=
+ =?iso-8859-1?Q?zxepYL0BmcAzyOP/lbsxlPy6r+jwpss0evJEYHyb5DZborhxrhnUFWU8Zu?=
+ =?iso-8859-1?Q?yRKhmONaY63/WZOVBbQ89PAcVsVyAF7lwaKOWSvIYlIpDCJ3lwf/KxShp9?=
+ =?iso-8859-1?Q?ZLTvMuVJFX0lKc4cn92lyS/XWaFIfK6XbTtQRpl48FkCokSRtBU+ZtQka7?=
+ =?iso-8859-1?Q?Et75ptOfkZgZc0IQKBV7CjsDhnbd7YwrkYsP77UjGkbjJt0Zuhyf8hvqJ/?=
+ =?iso-8859-1?Q?APA7QAXlUHNq2pfSQYA9qjZ3Q2Wc18OIcJxShLxQUR3mV1d/+BBMI6a5NZ?=
+ =?iso-8859-1?Q?kyIkWi9Hp/Z9fzG84IPSCDHh+JaGi7YqadOCDAMIQmhmhkd1S5IwFMdjdf?=
+ =?iso-8859-1?Q?LwEAcU4K3z8FYnEStNanM8dIP2Z6rVjSPcss+UVPu7AOMCl+xh69pQPnlN?=
+ =?iso-8859-1?Q?U2v3XFRNS0CjMkC9rX3MaaxmdwDMVgaxImqCVx0PwBnvFqSF7v3pG6eMZ2?=
+ =?iso-8859-1?Q?NguHIBdE7lAgFSQRhWXdCI5wvv/BTeiLYkCqTHsb6vb8E61rS51kVPixQ0?=
+ =?iso-8859-1?Q?MfZ1UKxe2lcSF3sajOLzo5uEPoZLuFFM9m4cKKVvebIzKsDK0F9yb6RRcC?=
+ =?iso-8859-1?Q?hxNCmR+KGbfsYrzo8En7ZJZPxRJg9YDSchLStBvlTve6UHo6HISU8Jfcpz?=
+ =?iso-8859-1?Q?e+ieK5XU1KibySe8LFMcA3zWqbl2zGPNXNj790oHLqRMmE4weB7mgzmu4K?=
+ =?iso-8859-1?Q?LXRlyQkRdT+6PBJV6ggYXJK9v+C3q7XEYmzkmaeZ+jQQCcFmHNjBD7pVdY?=
+ =?iso-8859-1?Q?/du4DyJn5CU0A52EUIK0Ajp1hQKJuy/Qi1SP+gv5ne5KPGZAxgFxfh6Cio?=
+ =?iso-8859-1?Q?y2HiE9SpbLsHZ1+4xpn1MkkrV8aw1T7ytTlFvj0gyCvXXnuMkkL0DFoelB?=
+ =?iso-8859-1?Q?2+aKFerr+PIBk3sV7eF6i5nhmigElupDmy68qc84UqFzew688lixBhp771?=
+ =?iso-8859-1?Q?we0phYLYzTCyYtI68xz+7Z5oGR/aP6iFmm7wnh96La3xd2GZO3qbIXsbJ1?=
+ =?iso-8859-1?Q?tIKlEAZahdA1BFUDM7TpJKml9L3PmcCNnJXPoVBmEDnQVeVtlFWKglog9S?=
+ =?iso-8859-1?Q?UfOR7DucFBpMjAFoUowwlglS2t+OIIOEGYfWjONL02i9AwX6q4Dq+JIbJD?=
+ =?iso-8859-1?Q?eqbt9WHmHsi2zeuSF97Byu9oFAaKtV33QWNOSSOxayuhemxwMjbouVD5Yi?=
+ =?iso-8859-1?Q?kR4A=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: tdk.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7b489a66-9465-4cbf-17da-08dc732da9f0
+X-MS-Exchange-CrossTenant-originalarrivaltime: 13 May 2024 09:18:34.1197
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: d+t663/xpzFzIY4XS+ciIQs0yr3rjKgK1xQiKZ+U6eEDZLg++E1qnXaDsdhUzG72jNTuTN6sLbYsT98hbeKOBV72EKMMTCnNoDs7a+Y82yE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR0P281MB2878
+X-Proofpoint-ORIG-GUID: biwSSq6aD1ILV7L3lqz-v_skE89wKlJ8
+X-Proofpoint-GUID: biwSSq6aD1ILV7L3lqz-v_skE89wKlJ8
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.11.176.26
+ definitions=2024-05-13_06,2024-05-10_02,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 mlxscore=0
+ clxscore=1015 priorityscore=1501 bulkscore=0 malwarescore=0 spamscore=0
+ impostorscore=0 adultscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405010000
+ definitions=main-2405130057
 
-BMP2xx, BME280, BMP3xx, and BMP5xx use continuous buffers for their
-temperature, pressure and humidity readings. This facilitates the
-use of burst/bulk reads in order to acquire data faster. The
-approach is different from the one used in oneshot captures.
-
-BMP085 & BMP1xx devices use a completely different measurement
-process that is well defined and is used in their buffer_handler().
-
-Suggested-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
----
- drivers/iio/pressure/Kconfig       |   2 +
- drivers/iio/pressure/bmp280-core.c | 329 ++++++++++++++++++++++++++++-
- drivers/iio/pressure/bmp280-spi.c  |   8 +-
- drivers/iio/pressure/bmp280.h      |  21 +-
- 4 files changed, 343 insertions(+), 17 deletions(-)
-
-diff --git a/drivers/iio/pressure/Kconfig b/drivers/iio/pressure/Kconfig
-index 3ad38506028e..0b5406a3f85d 100644
---- a/drivers/iio/pressure/Kconfig
-+++ b/drivers/iio/pressure/Kconfig
-@@ -31,6 +31,8 @@ config BMP280
- 	select REGMAP
- 	select BMP280_I2C if (I2C)
- 	select BMP280_SPI if (SPI_MASTER)
-+	select IIO_BUFFER
-+	select IIO_TRIGGERED_BUFFER
- 	help
- 	  Say yes here to build support for Bosch Sensortec BMP180, BMP280, BMP380
- 	  and BMP580 pressure and temperature sensors. Also supports the BME280 with
-diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-index da24e95c62c3..42c019ed0cee 100644
---- a/drivers/iio/pressure/bmp280-core.c
-+++ b/drivers/iio/pressure/bmp280-core.c
-@@ -41,7 +41,10 @@
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- 
-+#include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
-+#include <linux/iio/trigger_consumer.h>
-+#include <linux/iio/triggered_buffer.h>
- 
- #include <asm/unaligned.h>
- 
-@@ -134,6 +137,12 @@ enum {
- 	BMP380_P11 = 20,
- };
- 
-+enum bmp280_scan {
-+	BMP280_PRESS,
-+	BMP280_TEMP,
-+	BME280_HUMID,
-+};
-+
- static const struct iio_chan_spec bmp280_channels[] = {
- 	{
- 		.type = IIO_PRESSURE,
-@@ -142,6 +151,13 @@ static const struct iio_chan_spec bmp280_channels[] = {
- 				      BIT(IIO_CHAN_INFO_RAW) |
- 				      BIT(IIO_CHAN_INFO_SCALE) |
- 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 32,
-+			.storagebits = 32,
-+			.endianness = IIO_CPU,
-+		},
- 	},
- 	{
- 		.type = IIO_TEMP,
-@@ -150,7 +166,15 @@ static const struct iio_chan_spec bmp280_channels[] = {
- 				      BIT(IIO_CHAN_INFO_RAW) |
- 				      BIT(IIO_CHAN_INFO_SCALE) |
- 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+		.scan_index = 1,
-+		.scan_type = {
-+			.sign = 's',
-+			.realbits = 32,
-+			.storagebits = 32,
-+			.endianness = IIO_CPU,
-+		},
- 	},
-+	IIO_CHAN_SOFT_TIMESTAMP(2),
- };
- 
- static const struct iio_chan_spec bme280_channels[] = {
-@@ -161,6 +185,13 @@ static const struct iio_chan_spec bme280_channels[] = {
- 				      BIT(IIO_CHAN_INFO_RAW) |
- 				      BIT(IIO_CHAN_INFO_SCALE) |
- 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 32,
-+			.storagebits = 32,
-+			.endianness = IIO_CPU,
-+		},
- 	},
- 	{
- 		.type = IIO_TEMP,
-@@ -169,6 +200,13 @@ static const struct iio_chan_spec bme280_channels[] = {
- 				      BIT(IIO_CHAN_INFO_RAW) |
- 				      BIT(IIO_CHAN_INFO_SCALE) |
- 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+		.scan_index = 1,
-+		.scan_type = {
-+			.sign = 's',
-+			.realbits = 32,
-+			.storagebits = 32,
-+			.endianness = IIO_CPU,
-+		},
- 	},
- 	{
- 		.type = IIO_HUMIDITYRELATIVE,
-@@ -177,7 +215,15 @@ static const struct iio_chan_spec bme280_channels[] = {
- 				      BIT(IIO_CHAN_INFO_RAW) |
- 				      BIT(IIO_CHAN_INFO_SCALE) |
- 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
-+		.scan_index = 2,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 32,
-+			.storagebits = 32,
-+			.endianness = IIO_CPU,
-+		},
- 	},
-+	IIO_CHAN_SOFT_TIMESTAMP(3),
- };
- 
- static const struct iio_chan_spec bmp380_channels[] = {
-@@ -190,6 +236,13 @@ static const struct iio_chan_spec bmp380_channels[] = {
- 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
- 		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-+		.scan_index = 0,
-+		.scan_type = {
-+			.sign = 'u',
-+			.realbits = 32,
-+			.storagebits = 32,
-+			.endianness = IIO_CPU,
-+		},
- 	},
- 	{
- 		.type = IIO_TEMP,
-@@ -200,7 +253,15 @@ static const struct iio_chan_spec bmp380_channels[] = {
- 				      BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO),
- 		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ) |
- 					   BIT(IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY),
-+		.scan_index = 1,
-+		.scan_type = {
-+			.sign = 's',
-+			.realbits = 32,
-+			.storagebits = 32,
-+			.endianness = IIO_CPU,
-+		},
- 	},
-+	IIO_CHAN_SOFT_TIMESTAMP(2),
- };
- 
- static int bmp280_read_calib(struct bmp280_data *data)
-@@ -316,7 +377,7 @@ static int bme280_read_humid_adc(struct bmp280_data *data, u16 *adc_humidity)
- 	int ret;
- 
- 	ret = regmap_bulk_read(data->regmap, BME280_REG_HUMIDITY_MSB,
--			       &data->be16, sizeof(data->be16));
-+			       &data->be16, BME280_NUM_HUMIDITY_BYTES);
- 	if (ret) {
- 		dev_err(data->dev, "failed to read humidity\n");
- 		return ret;
-@@ -362,7 +423,7 @@ static int bmp280_read_temp_adc(struct bmp280_data *data, u32 *adc_temp)
- 	int ret;
- 
- 	ret = regmap_bulk_read(data->regmap, BMP280_REG_TEMP_MSB,
--			       data->buf, sizeof(data->buf));
-+			       data->buf, BMP280_NUM_TEMP_BYTES);
- 	if (ret) {
- 		dev_err(data->dev, "failed to read temperature\n");
- 		return ret;
-@@ -423,7 +484,7 @@ static int bmp280_read_press_adc(struct bmp280_data *data, u32 *adc_press)
- 	int ret;
- 
- 	ret = regmap_bulk_read(data->regmap, BMP280_REG_PRESS_MSB,
--			       data->buf, sizeof(data->buf));
-+			       data->buf, BMP280_NUM_PRESS_BYTES);
- 	if (ret) {
- 		dev_err(data->dev, "failed to read pressure\n");
- 		return ret;
-@@ -874,6 +935,16 @@ static const struct iio_info bmp280_info = {
- 	.write_raw = &bmp280_write_raw,
- };
- 
-+static const unsigned long bmp280_avail_scan_masks[] = {
-+	BIT(BMP280_TEMP) | BIT(BMP280_PRESS),
-+	0
-+};
-+
-+static const unsigned long bme280_avail_scan_masks[] = {
-+	BIT(BME280_HUMID) | BIT(BMP280_TEMP) | BIT(BMP280_PRESS),
-+	0
-+};
-+
- static int bmp280_chip_config(struct bmp280_data *data)
- {
- 	u8 osrs = FIELD_PREP(BMP280_OSRS_TEMP_MASK, data->oversampling_temp + 1) |
-@@ -901,6 +972,74 @@ static int bmp280_chip_config(struct bmp280_data *data)
- 	return ret;
- }
- 
-+static irqreturn_t bmp280_buffer_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct bmp280_data *data = iio_priv(indio_dev);
-+	s32 adc_temp, adc_press, adc_humidity, t_fine;
-+	u8 sizeof_burst_read;
-+	int ret;
-+
-+	guard(mutex)(&data->lock);
-+
-+	/*
-+	 * If humidity channel is enabled it means that we are called for the
-+	 * BME280 humidity sensor.
-+	 */
-+	if (test_bit(BME280_HUMID, indio_dev->active_scan_mask))
-+		sizeof_burst_read = BME280_BURST_READ_BYTES;
-+	else
-+		sizeof_burst_read = BMP280_BURST_READ_BYTES;
-+
-+	/* Burst read data registers */
-+	ret = regmap_bulk_read(data->regmap, BMP280_REG_PRESS_MSB,
-+			       data->buf, sizeof_burst_read);
-+	if (ret) {
-+		dev_err(data->dev, "failed to burst read sensor data\n");
-+		goto out;
-+	}
-+
-+	/* Temperature calculations */
-+	adc_temp = FIELD_GET(BMP280_MEAS_TRIM_MASK, get_unaligned_be24(&data->buf[3]));
-+	if (adc_temp == BMP280_TEMP_SKIPPED) {
-+		dev_err(data->dev, "reading temperature skipped\n");
-+		goto out;
-+	}
-+
-+	data->sensor_data[1] = bmp280_compensate_temp(data, adc_temp);
-+
-+	/* Pressure calculations */
-+	adc_press = FIELD_GET(BMP280_MEAS_TRIM_MASK, get_unaligned_be24(&data->buf[0]));
-+	if (adc_press == BMP280_PRESS_SKIPPED) {
-+		dev_err(data->dev, "reading pressure skipped\n");
-+		goto out;
-+	}
-+
-+	t_fine = bmp280_calc_t_fine(data, adc_temp);
-+
-+	data->sensor_data[0] = bmp280_compensate_press(data, adc_press, t_fine);
-+
-+	/* Humidity calculations */
-+	if (test_bit(BME280_HUMID, indio_dev->active_scan_mask)) {
-+		adc_humidity = get_unaligned_be16(&data->buf[6]);
-+
-+		if (adc_humidity == BMP280_HUMIDITY_SKIPPED) {
-+			dev_err(data->dev, "reading humidity skipped\n");
-+			goto out;
-+		}
-+		data->sensor_data[2] = bme280_compensate_humidity(data, adc_humidity, t_fine);
-+	}
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
-+					   iio_get_time_ns(indio_dev));
-+
-+out:
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static const int bmp280_oversampling_avail[] = { 1, 2, 4, 8, 16 };
- static const u8 bmp280_chip_ids[] = { BMP280_CHIP_ID };
- static const int bmp280_temp_coeffs[] = { 10, 1 };
-@@ -914,6 +1053,7 @@ const struct bmp280_chip_info bmp280_chip_info = {
- 	.start_up_time = 2000,
- 	.channels = bmp280_channels,
- 	.num_channels = ARRAY_SIZE(bmp280_channels),
-+	.avail_scan_masks = bmp280_avail_scan_masks,
- 
- 	.oversampling_temp_avail = bmp280_oversampling_avail,
- 	.num_oversampling_temp_avail = ARRAY_SIZE(bmp280_oversampling_avail),
-@@ -942,6 +1082,8 @@ const struct bmp280_chip_info bmp280_chip_info = {
- 	.read_temp = bmp280_read_temp,
- 	.read_press = bmp280_read_press,
- 	.read_calib = bmp280_read_calib,
-+
-+	.buffer_handler = bmp280_buffer_handler,
- };
- EXPORT_SYMBOL_NS(bmp280_chip_info, IIO_BMP280);
- 
-@@ -975,6 +1117,7 @@ const struct bmp280_chip_info bme280_chip_info = {
- 	.start_up_time = 2000,
- 	.channels = bme280_channels,
- 	.num_channels = ARRAY_SIZE(bme280_channels),
-+	.avail_scan_masks = bme280_avail_scan_masks,
- 
- 	.oversampling_temp_avail = bmp280_oversampling_avail,
- 	.num_oversampling_temp_avail = ARRAY_SIZE(bmp280_oversampling_avail),
-@@ -1000,6 +1143,8 @@ const struct bmp280_chip_info bme280_chip_info = {
- 	.read_press = bmp280_read_press,
- 	.read_humid = bme280_read_humid,
- 	.read_calib = bme280_read_calib,
-+
-+	.buffer_handler = bmp280_buffer_handler,
- };
- EXPORT_SYMBOL_NS(bme280_chip_info, IIO_BMP280);
- 
-@@ -1054,7 +1199,7 @@ static int bmp380_read_temp_adc(struct bmp280_data *data, u32 *adc_temp)
- 	int ret;
- 
- 	ret = regmap_bulk_read(data->regmap, BMP380_REG_TEMP_XLSB,
--			       data->buf, sizeof(data->buf));
-+			       data->buf, BMP280_NUM_TEMP_BYTES);
- 	if (ret) {
- 		dev_err(data->dev, "failed to read temperature\n");
- 		return ret;
-@@ -1123,7 +1268,7 @@ static int bmp380_read_press_adc(struct bmp280_data *data, u32 *adc_press)
- 	int ret;
- 
- 	ret = regmap_bulk_read(data->regmap, BMP380_REG_PRESS_XLSB,
--			       data->buf, sizeof(data->buf));
-+			       data->buf, BMP280_NUM_PRESS_BYTES);
- 	if (ret) {
- 		dev_err(data->dev, "failed to read pressure\n");
- 		return ret;
-@@ -1384,6 +1529,53 @@ static int bmp380_chip_config(struct bmp280_data *data)
- 	return 0;
- }
- 
-+static irqreturn_t bmp380_buffer_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct bmp280_data *data = iio_priv(indio_dev);
-+	s32 adc_temp, adc_press, t_fine;
-+	int ret;
-+
-+	guard(mutex)(&data->lock);
-+
-+	/* Burst read data registers */
-+	ret = regmap_bulk_read(data->regmap, BMP380_REG_PRESS_XLSB,
-+			       data->buf, BMP280_BURST_READ_BYTES);
-+	if (ret) {
-+		dev_err(data->dev, "failed to burst read sensor data\n");
-+		goto out;
-+	}
-+
-+	/* Temperature calculations */
-+	adc_temp = get_unaligned_le24(&data->buf[3]);
-+	if (adc_temp == BMP380_TEMP_SKIPPED) {
-+		dev_err(data->dev, "reading temperature skipped\n");
-+		goto out;
-+	}
-+
-+	data->sensor_data[1] = bmp380_compensate_temp(data, adc_temp);
-+
-+	/* Pressure calculations */
-+	adc_press = get_unaligned_le24(&data->buf[0]);
-+	if (adc_press == BMP380_PRESS_SKIPPED) {
-+		dev_err(data->dev, "reading pressure skipped\n");
-+		goto out;
-+	}
-+
-+	t_fine = bmp380_calc_t_fine(data, adc_temp);
-+
-+	data->sensor_data[0] = bmp380_compensate_press(data, adc_press, t_fine);
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
-+					   iio_get_time_ns(indio_dev));
-+
-+out:
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static const int bmp380_oversampling_avail[] = { 1, 2, 4, 8, 16, 32 };
- static const int bmp380_iir_filter_coeffs_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128};
- static const u8 bmp380_chip_ids[] = { BMP380_CHIP_ID, BMP390_CHIP_ID };
-@@ -1398,6 +1590,7 @@ const struct bmp280_chip_info bmp380_chip_info = {
- 	.start_up_time = 2000,
- 	.channels = bmp380_channels,
- 	.num_channels = ARRAY_SIZE(bmp380_channels),
-+	.avail_scan_masks = bmp280_avail_scan_masks,
- 
- 	.oversampling_temp_avail = bmp380_oversampling_avail,
- 	.num_oversampling_temp_avail = ARRAY_SIZE(bmp380_oversampling_avail),
-@@ -1425,6 +1618,8 @@ const struct bmp280_chip_info bmp380_chip_info = {
- 	.read_press = bmp380_read_press,
- 	.read_calib = bmp380_read_calib,
- 	.preinit = bmp380_preinit,
-+
-+	.buffer_handler = bmp380_buffer_handler,
- };
- EXPORT_SYMBOL_NS(bmp380_chip_info, IIO_BMP280);
- 
-@@ -1544,8 +1739,8 @@ static int bmp580_read_temp(struct bmp280_data *data, s32 *raw_temp)
- {
- 	int ret;
- 
--	ret = regmap_bulk_read(data->regmap, BMP580_REG_TEMP_XLSB, data->buf,
--			       sizeof(data->buf));
-+	ret = regmap_bulk_read(data->regmap, BMP580_REG_TEMP_XLSB,
-+			       data->buf, BMP280_NUM_TEMP_BYTES);
- 	if (ret) {
- 		dev_err(data->dev, "failed to read temperature\n");
- 		return ret;
-@@ -1564,8 +1759,8 @@ static int bmp580_read_press(struct bmp280_data *data, u32 *raw_press)
- {
- 	int ret;
- 
--	ret = regmap_bulk_read(data->regmap, BMP580_REG_PRESS_XLSB, data->buf,
--			       sizeof(data->buf));
-+	ret = regmap_bulk_read(data->regmap, BMP580_REG_PRESS_XLSB,
-+			       data->buf, BMP280_NUM_PRESS_BYTES);
- 	if (ret) {
- 		dev_err(data->dev, "failed to read pressure\n");
- 		return ret;
-@@ -1910,6 +2105,51 @@ static int bmp580_chip_config(struct bmp280_data *data)
- 	return 0;
- }
- 
-+static irqreturn_t bmp580_buffer_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct bmp280_data *data = iio_priv(indio_dev);
-+	s32 adc_temp, adc_press;
-+	int ret;
-+
-+	guard(mutex)(&data->lock);
-+
-+	/* Burst read data registers */
-+	ret = regmap_bulk_read(data->regmap, BMP580_REG_TEMP_XLSB,
-+			       data->buf, BMP280_BURST_READ_BYTES);
-+	if (ret) {
-+		dev_err(data->dev, "failed to burst read sensor data\n");
-+		goto out;
-+	}
-+
-+	/* Temperature calculations */
-+	adc_temp = get_unaligned_le24(&data->buf[0]);
-+	if (adc_temp == BMP580_TEMP_SKIPPED) {
-+		dev_err(data->dev, "reading temperature skipped\n");
-+		goto out;
-+	}
-+
-+	data->sensor_data[1] = adc_temp;
-+
-+	/* Pressure calculations */
-+	adc_press = get_unaligned_le24(&data->buf[3]);
-+	if (adc_press == BMP380_PRESS_SKIPPED) {
-+		dev_err(data->dev, "reading pressure skipped\n");
-+		goto out;
-+	}
-+
-+	data->sensor_data[0] = adc_press;
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
-+					   iio_get_time_ns(indio_dev));
-+
-+out:
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static const int bmp580_oversampling_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
- static const u8 bmp580_chip_ids[] = { BMP580_CHIP_ID, BMP580_CHIP_ID_ALT };
- static const int bmp580_temp_coeffs[] = { 1000, 16 };
-@@ -1923,6 +2163,7 @@ const struct bmp280_chip_info bmp580_chip_info = {
- 	.start_up_time = 2000,
- 	.channels = bmp380_channels,
- 	.num_channels = ARRAY_SIZE(bmp380_channels),
-+	.avail_scan_masks = bmp280_avail_scan_masks,
- 
- 	.oversampling_temp_avail = bmp580_oversampling_avail,
- 	.num_oversampling_temp_avail = ARRAY_SIZE(bmp580_oversampling_avail),
-@@ -1949,6 +2190,8 @@ const struct bmp280_chip_info bmp580_chip_info = {
- 	.read_temp = bmp580_read_temp,
- 	.read_press = bmp580_read_press,
- 	.preinit = bmp580_preinit,
-+
-+	.buffer_handler = bmp580_buffer_handler,
- };
- EXPORT_SYMBOL_NS(bmp580_chip_info, IIO_BMP280);
- 
-@@ -2127,7 +2370,7 @@ static int bmp180_read_press_adc(struct bmp280_data *data, u32 *adc_press)
- 		return ret;
- 
- 	ret = regmap_bulk_read(data->regmap, BMP180_REG_OUT_MSB,
--			       data->buf, sizeof(data->buf));
-+			       data->buf, BMP280_NUM_PRESS_BYTES);
- 	if (ret) {
- 		dev_err(data->dev, "failed to read pressure\n");
- 		return ret;
-@@ -2198,6 +2441,36 @@ static int bmp180_chip_config(struct bmp280_data *data)
- 	return 0;
- }
- 
-+static irqreturn_t bmp180_buffer_handler(int irq, void *p)
-+{
-+	struct iio_poll_func *pf = p;
-+	struct iio_dev *indio_dev = pf->indio_dev;
-+	struct bmp280_data *data = iio_priv(indio_dev);
-+	int ret, chan_value;
-+
-+	guard(mutex)(&data->lock);
-+
-+	ret = bmp180_read_temp(data, &chan_value);
-+	if (ret)
-+		goto out;
-+
-+	data->sensor_data[1] = chan_value;
-+
-+	ret = bmp180_read_press(data, &chan_value);
-+	if (ret)
-+		goto out;
-+
-+	data->sensor_data[0] = chan_value;
-+
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->sensor_data,
-+					   iio_get_time_ns(indio_dev));
-+
-+out:
-+	iio_trigger_notify_done(indio_dev->trig);
-+
-+	return IRQ_HANDLED;
-+}
-+
- static const int bmp180_oversampling_temp_avail[] = { 1 };
- static const int bmp180_oversampling_press_avail[] = { 1, 2, 4, 8 };
- static const u8 bmp180_chip_ids[] = { BMP180_CHIP_ID };
-@@ -2212,6 +2485,7 @@ const struct bmp280_chip_info bmp180_chip_info = {
- 	.start_up_time = 2000,
- 	.channels = bmp280_channels,
- 	.num_channels = ARRAY_SIZE(bmp280_channels),
-+	.avail_scan_masks = bmp280_avail_scan_masks,
- 
- 	.oversampling_temp_avail = bmp180_oversampling_temp_avail,
- 	.num_oversampling_temp_avail =
-@@ -2232,6 +2506,8 @@ const struct bmp280_chip_info bmp180_chip_info = {
- 	.read_temp = bmp180_read_temp,
- 	.read_press = bmp180_read_press,
- 	.read_calib = bmp180_read_calib,
-+
-+	.buffer_handler = bmp180_buffer_handler,
- };
- EXPORT_SYMBOL_NS(bmp180_chip_info, IIO_BMP280);
- 
-@@ -2277,6 +2553,30 @@ static int bmp085_fetch_eoc_irq(struct device *dev,
- 	return 0;
- }
- 
-+static int bmp280_buffer_preenable(struct iio_dev *indio_dev)
-+{
-+	struct bmp280_data *data = iio_priv(indio_dev);
-+
-+	pm_runtime_get_sync(data->dev);
-+
-+	return 0;
-+}
-+
-+static int bmp280_buffer_postdisable(struct iio_dev *indio_dev)
-+{
-+	struct bmp280_data *data = iio_priv(indio_dev);
-+
-+	pm_runtime_mark_last_busy(data->dev);
-+	pm_runtime_put_autosuspend(data->dev);
-+
-+	return 0;
-+}
-+
-+const struct iio_buffer_setup_ops bmp280_buffer_setup_ops = {
-+	.preenable = bmp280_buffer_preenable,
-+	.postdisable = bmp280_buffer_postdisable,
-+};
-+
- static void bmp280_pm_disable(void *data)
- {
- 	struct device *dev = data;
-@@ -2323,6 +2623,7 @@ int bmp280_common_probe(struct device *dev,
- 	/* Apply initial values from chip info structure */
- 	indio_dev->channels = chip_info->channels;
- 	indio_dev->num_channels = chip_info->num_channels;
-+	indio_dev->available_scan_masks = chip_info->avail_scan_masks;
- 	data->oversampling_press = chip_info->oversampling_press_default;
- 	data->oversampling_humid = chip_info->oversampling_humid_default;
- 	data->oversampling_temp = chip_info->oversampling_temp_default;
-@@ -2408,6 +2709,14 @@ int bmp280_common_probe(struct device *dev,
- 					     "failed to read calibration coefficients\n");
- 	}
- 
-+	ret = devm_iio_triggered_buffer_setup(data->dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      data->chip_info->buffer_handler,
-+					      NULL);
-+	if (ret)
-+		return dev_err_probe(data->dev, ret,
-+				     "iio triggered buffer setup failed\n");
-+
- 	/*
- 	 * Attempt to grab an optional EOC IRQ - only the BMP085 has this
- 	 * however as it happens, the BMP085 shares the chip ID of BMP180
-diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
-index cabe9c66aa34..05c1df38f050 100644
---- a/drivers/iio/pressure/bmp280-spi.c
-+++ b/drivers/iio/pressure/bmp280-spi.c
-@@ -40,14 +40,10 @@ static int bmp380_regmap_spi_read(void *context, const void *reg,
- 				  size_t reg_size, void *val, size_t val_size)
- {
- 	struct spi_device *spi = to_spi_device(context);
--	u8 rx_buf[4];
-+	u8 rx_buf[BME280_BURST_READ_BYTES + 1];
- 	ssize_t status;
- 
--	/*
--	 * Maximum number of consecutive bytes read for a temperature or
--	 * pressure measurement is 3.
--	 */
--	if (val_size > 3)
-+	if (val_size > BME280_BURST_READ_BYTES)
- 		return -EINVAL;
- 
- 	/*
-diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
-index 69b74a238426..8d5a26e396f2 100644
---- a/drivers/iio/pressure/bmp280.h
-+++ b/drivers/iio/pressure/bmp280.h
-@@ -304,6 +304,16 @@
- #define BMP280_PRESS_SKIPPED		0x80000
- #define BMP280_HUMIDITY_SKIPPED		0x8000
- 
-+/* Number of bytes for each value */
-+#define BMP280_NUM_PRESS_BYTES		3
-+#define BMP280_NUM_TEMP_BYTES		3
-+#define BME280_NUM_HUMIDITY_BYTES	2
-+#define BMP280_BURST_READ_BYTES		(BMP280_NUM_PRESS_BYTES + \
-+					 BMP280_NUM_TEMP_BYTES)
-+#define BME280_BURST_READ_BYTES		(BMP280_NUM_PRESS_BYTES + \
-+					 BMP280_NUM_TEMP_BYTES + \
-+					 BME280_NUM_HUMIDITY_BYTES)
-+
- /* Core exported structs */
- 
- static const char *const bmp280_supply_names[] = {
-@@ -397,13 +407,19 @@ struct bmp280_data {
- 	 */
- 	int sampling_freq;
- 
-+	/*
-+	 * Data to push to userspace triggered buffer. Up to 3 channels and
-+	 * s64 timestamp, aligned.
-+	 */
-+	s32 sensor_data[6] __aligned(8);
-+
- 	/*
- 	 * DMA (thus cache coherency maintenance) may require the
- 	 * transfer buffers to live in their own cache lines.
- 	 */
- 	union {
- 		/* Sensor data buffer */
--		u8 buf[3];
-+		u8 buf[BME280_BURST_READ_BYTES];
- 		/* Calibration data buffers */
- 		__le16 bmp280_cal_buf[BMP280_CONTIGUOUS_CALIB_REGS / 2];
- 		__be16 bmp180_cal_buf[BMP180_REG_CALIB_COUNT / 2];
-@@ -424,6 +440,7 @@ struct bmp280_chip_info {
- 	const struct iio_chan_spec *channels;
- 	int num_channels;
- 	unsigned int start_up_time;
-+	const unsigned long *avail_scan_masks;
- 
- 	const int *oversampling_temp_avail;
- 	int num_oversampling_temp_avail;
-@@ -458,6 +475,8 @@ struct bmp280_chip_info {
- 	int (*read_humid)(struct bmp280_data *data, u32 *adc_humidity);
- 	int (*read_calib)(struct bmp280_data *data);
- 	int (*preinit)(struct bmp280_data *data);
-+
-+	irqreturn_t (*buffer_handler)(int irq, void *p);
- };
- 
- /* Chip infos for each variant */
--- 
-2.25.1
-
+Hello Jonathan,=0A=
+=0A=
+sorry for the patch malformation, I will send a V2 fixed.=0A=
+=0A=
+Our chips have usually 2 working modes called "low-noise" and "low-power".=
+=0A=
+=0A=
+"Low-noise" is the standard mode where the chip (ADC/MEMS) runs continuousl=
+y with high precision oscillator. Measures are the best with the less jitte=
+r (low noise), you can use the highest possible frequencies (> 500Hz), but =
+power consumption is high, and you cannot use the lowest frequencies (< 12.=
+5Hz).=0A=
+=0A=
+"Low-power" is duty cycling the chip, turning ADC and MEMS on only when mea=
+suring and then turns it off. Power consumption is then much lower (low pow=
+er), you can use the lowest frequencies (< 12.5Hz), but measures have more =
+jitter, and you cannot use the highest frequencies.=0A=
+=0A=
+Depending on the use case, you may prefer to have the "low-noise" mode with=
+ better measures and high frequencies, or the "low-power" mode with less po=
+wer consumption and low frequencies. The main point is the frequencies avai=
+lability depending on the power mode.=0A=
+=0A=
+We could have the driver switching automatically from low-noise to low-powe=
+r to support all possible frequencies, but we need to arbitrary choose the =
+mode for the common frequencies, and the configured hardware bias in bias r=
+egisters are not the same depending on the power mode. We prefer handling a=
+ll this from userspace, switching the mode when needed depending on the use=
+ case and dealing with the 2 sets of hardware bias depending on the modes.=
+=0A=
+=0A=
+I hope I am clear enough with my description.=0A=
+=0A=
+Thanks,=0A=
+JB=0A=
+=0A=
+=0A=
+=0A=
+________________________________________=0A=
+From:=A0Jonathan Cameron <Jonathan.Cameron@Huawei.com>=0A=
+Sent:=A0Thursday, May 9, 2024 15:13=0A=
+To:=A0INV Git Commit <INV.git-commit@tdk.com>=0A=
+Cc:=A0jic23@kernel.org <jic23@kernel.org>; lars@metafoo.de <lars@metafoo.de=
+>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; Jean-Baptiste Man=
+eyrol <Jean-Baptiste.Maneyrol@tdk.com>=0A=
+Subject:=A0Re: [PATCH] iio: imu: inv_icm42600: add support of accel low-pow=
+er mode=0A=
+=A0=0A=
+This Message Is From an External Sender=0A=
+This message came from outside your organization.=0A=
+=A0=0A=
+On Tue,  7 May 2024 10:30:56 +0000=0A=
+inv.git-commit@tdk.com wrote:=0A=
+=0A=
+> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=0A=
+> =0A=
+> Add channel attributes "power_mode" and "power_mode_available" for=0A=
+> setting accel power mode (low-noise or low-power).=0A=
+> =0A=
+> Differents ODRs and filter are possible depending on the power mode.=0A=
+> Thus make ODRs and filter dynamic and check values when applying.=0A=
+Hi Jean-Baptiste=0A=
+=0A=
+No Sign-off?=0A=
+=0A=
+We have never provided this sort of control because it's near=0A=
+impossible for user space to know what to do with it.=0A=
+=0A=
+Various attempts happened in the past to provide enough info=0A=
+to userspace, but didn't succeed because what low power means=0A=
+is incredibly chip dependent.  As a general rule everyone wants=0A=
+low power, but at 0 perf cost :)=0A=
+=0A=
+What are the results of low power mode? Normally it maps as=0A=
+something we can enable when some other set of states is set or=0A=
+automatically control based on how often the device is being accessed etc.=
+=0A=
+=0A=
+For example, what do we loose by choosing this mode for everything=0A=
+below 200Hz?=0A=
+=0A=
+I see there is some reference to 'low noise' - what does that actually=0A=
+mean for this device? Is it oversampling or running lower resolution on=0A=
+the ADCs?  If so those are the things to look at as ways to control=0A=
+this.  Choose lowest power to meet a given set of requirements.=0A=
+=0A=
+Jonathan=0A=
 

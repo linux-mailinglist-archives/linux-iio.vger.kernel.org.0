@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-5046-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5047-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C658C56AF
-	for <lists+linux-iio@lfdr.de>; Tue, 14 May 2024 15:13:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547BA8C56B2
+	for <lists+linux-iio@lfdr.de>; Tue, 14 May 2024 15:14:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66102280DD5
-	for <lists+linux-iio@lfdr.de>; Tue, 14 May 2024 13:13:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4DAFB20B96
+	for <lists+linux-iio@lfdr.de>; Tue, 14 May 2024 13:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A87C11448EA;
-	Tue, 14 May 2024 13:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38F04144303;
+	Tue, 14 May 2024 13:14:30 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C17F1448C5;
-	Tue, 14 May 2024 13:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC3355C36;
+	Tue, 14 May 2024 13:14:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715692394; cv=none; b=UaTSfZ/IErIX2oBY53Ih7lBLpxz07S5YW7ckOBbBJQKr6ee44SzC5VaUfSt3glUeb2ppa4487Y0siPpzm8wF5CUhvHCoqim1MzcvSrry4uSoBarW4r1QPS3BjkAlwhFjPMx+zPt+WOkieebLMm+x2px+MR9GPpFwvoqHiMrTpsg=
+	t=1715692470; cv=none; b=ZNylUndMi9k8NEVgmhnxHSY9mA98cWqar4/Lmt+oNQmjXSNOfxSXieGdZPJ6dX6xJw4q82EgqQQEx3enE6aV8aVgOuaSExxLU2058lvPQXFG+ye4mSaKR01JMnHZKlrOMre/AOllIva5SyLkaMBYZEQX0RvKbrTHeHE7pBDKI7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715692394; c=relaxed/simple;
-	bh=aOQguXPOeVpFjbc/NkW1mh5EX2xzWebjWEzQ1meSRbI=;
+	s=arc-20240116; t=1715692470; c=relaxed/simple;
+	bh=aBFCmY6j4ZdKlpS+bF126DoAG+Z5M38yFjHqoFqhRnM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sKDjWfIboVtedTdylwbuM7fZ1NfZZbHDj+/dlLxc71UcxdUb8qDLGwdAIG/8+ysxQFWfBTe++Sq080yWA+GqFdD8UYkwrghwbsjfVSQ7qrucXJD0yydDioCKMCmpoe76xhktrY9fVrIw+57Y3CmjOMHkhv5yIc72CRVl30ZOHhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=192.198.163.13
+	 Content-Type:Content-Disposition:In-Reply-To; b=oYBsWNq8KR2tW41lqHLnZrLimusLT6UgbugWtf/8DFUb1yCHDZVjoLxtaS699TO3NUKsmyrJFshgbR1x+oSk2FJ/3wL7Imm0aCx5aAKs18WrJhB3VDAsk5do4UM+Sz8oUeqEvprdgU/VxegLWFooo4j4oLwftTl9SaWMeKxRCyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: GzFFwDAXR0KYdikQCwll3w==
-X-CSE-MsgGUID: NywGtkIlR3q0TqStj14d9w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="14617243"
+X-CSE-ConnectionGUID: KqK7Dr9RQviC6yGtQfvwuw==
+X-CSE-MsgGUID: hAMhlfE+Q6W2b9yP8LcOzg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11073"; a="11795001"
 X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; 
-   d="scan'208";a="14617243"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2024 06:13:12 -0700
-X-CSE-ConnectionGUID: /kASNeFJRA2oVloL10ju9Q==
-X-CSE-MsgGUID: u0W3hKOZRLqfR96alajX+g==
+   d="scan'208";a="11795001"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2024 06:14:28 -0700
+X-CSE-ConnectionGUID: FjXU9ezWSISVotfcWt+PqQ==
+X-CSE-MsgGUID: IQn0NWX2RMqvARMjxO5DeQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,159,1712646000"; 
-   d="scan'208";a="61854598"
+   d="scan'208";a="31221097"
 Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2024 06:13:08 -0700
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2024 06:14:23 -0700
 Received: from andy by smile.fi.intel.com with local (Exim 4.97)
 	(envelope-from <andy@kernel.org>)
-	id 1s6rxp-00000007RCl-1243;
-	Tue, 14 May 2024 16:13:05 +0300
-Date: Tue, 14 May 2024 16:13:05 +0300
+	id 1s6rz1-00000007RDh-3p9c;
+	Tue, 14 May 2024 16:14:19 +0300
+Date: Tue, 14 May 2024 16:14:19 +0300
 From: Andy Shevchenko <andy@kernel.org>
 To: Alisa-Dariana Roman <alisadariana@gmail.com>
 Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org,
@@ -59,10 +59,9 @@ Cc: michael.hennerich@analog.com, linux-iio@vger.kernel.org,
 	dlechner@baylibre.com, okan.sahin@analog.com, fr0st61te@gmail.com,
 	alisa.roman@analog.com, marcus.folkesson@gmail.com,
 	schnelle@linux.ibm.com, liambeguin@gmail.com
-Subject: Re: [PATCH v8 3/6] iio: adc: ad7192: Add aincom supply
-Message-ID: <ZkNjYZew7Mko7iPX@smile.fi.intel.com>
+Subject: Re: [PATCH v8 0/6] iio: adc: ad7192: Add AD7194 support
+Message-ID: <ZkNjq8aaBeP89cNf@smile.fi.intel.com>
 References: <20240514120222.56488-1-alisa.roman@analog.com>
- <20240514120222.56488-4-alisa.roman@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -71,61 +70,20 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240514120222.56488-4-alisa.roman@analog.com>
+In-Reply-To: <20240514120222.56488-1-alisa.roman@analog.com>
 Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On Tue, May 14, 2024 at 03:02:19PM +0300, Alisa-Dariana Roman wrote:
-> AINCOM should actually be a supply. AINx inputs are referenced to AINCOM
-> in pseudo-differential operation mode. AINCOM voltage represents the
-> offset of corresponding channels.
+On Tue, May 14, 2024 at 03:02:16PM +0300, Alisa-Dariana Roman wrote:
+> Dear maintainers,
+> 
+> Thank you all for the feedback!
+> 
+> I am submitting the upgraded series of patches for the ad7192 driver.
+> 
+> Please consider applying in order.
 
-...
-
-Possible cleanup with the help of
-
-	struct device *dev = &spi->dev;
-
-
->  	struct ad7192_state *st;
->  	struct iio_dev *indio_dev;
-> +	struct regulator *aincom;
->  	int ret;
-
-...
-
-> +	aincom = devm_regulator_get_optional(&spi->dev, "aincom");
-
-	aincom = devm_regulator_get_optional(dev, "aincom");
-
-...
-
-> +			return dev_err_probe(&spi->dev, PTR_ERR(aincom),
-> +					     "Failed to get AINCOM supply\n");
-
-			return dev_err_probe(dev, PTR_ERR(aincom),
-					     "Failed to get AINCOM supply\n");
-
-...
-
-> +			return dev_err_probe(&spi->dev, ret,
-> +					     "Failed to enable specified AINCOM supply\n");
-
-			return dev_err_probe(dev, ret,
-					     "Failed to enable specified AINCOM supply\n");
-
-...
-
-> +		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, aincom);
-
-		ret = devm_add_action_or_reset(dev, ad7192_reg_disable, aincom);
-
-...
-
-> +			return dev_err_probe(&spi->dev, ret,
-> +					     "Device tree error, AINCOM voltage undefined\n");
-
-			return dev_err_probe(dev, ret,
-					     "Device tree error, AINCOM voltage undefined\n");
+Jonathan, LGTM, I have left a few non-critical comments, they may be fixed
+when applying or dropped (most of them), depending on your preference.
 
 -- 
 With Best Regards,

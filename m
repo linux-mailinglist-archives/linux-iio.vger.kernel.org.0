@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-5055-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5056-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D5738C627D
-	for <lists+linux-iio@lfdr.de>; Wed, 15 May 2024 10:06:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617F58C6282
+	for <lists+linux-iio@lfdr.de>; Wed, 15 May 2024 10:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8097B1F22781
-	for <lists+linux-iio@lfdr.de>; Wed, 15 May 2024 08:06:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B80D2820E9
+	for <lists+linux-iio@lfdr.de>; Wed, 15 May 2024 08:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A47548CCD;
-	Wed, 15 May 2024 08:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EC14AEF4;
+	Wed, 15 May 2024 08:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JRC3ZEEc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iQHLSgBZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E971DFE3;
-	Wed, 15 May 2024 08:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE64048CF2;
+	Wed, 15 May 2024 08:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715760380; cv=none; b=jVSX1kwwTKu5rMBTIELsJRsBRWvUtAwMRyCLjjWLFlS8BMNMjNP4f8JS87XttK8sMfbVlTIsdErmCUO0igC4ZxU/j7NLpByJuQnCeTOItruK/PdOFcGU47c6RPsQhDP3UFI5Nt7zqEK+6n76XZbkyU96fQkb7LW3HgPNAeTeo3Y=
+	t=1715760427; cv=none; b=B4YtYm2ELmtLWZMxRtz689Y/OJI4XEn2OznZh+EXKw3Pb/HQFly6VFTLMZyFaJ0W6p38sPRsqTDmjvorO6+TX0OYN+kJbnUv8Pampl+61d1T1sxa3hB9B4vrKzMBteaK9/zZp5dQcxCk8xBRgBsoE8RYAQ0Y+7cMl/7e6mF10Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715760380; c=relaxed/simple;
-	bh=MtNcYj+7KtNGif4wrUtp7tfwwHUg6OeRHWBVhbdrXcM=;
+	s=arc-20240116; t=1715760427; c=relaxed/simple;
+	bh=WNVyqa42/alA+Bn0BpZU+B2peWyI39m7/6hWHeDqloM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c3wSSHP77GymPXkAtte7XaT9mkvO+AdlwI5AzRIkjsxNr5yJKNkR6yRsIG3ZbIDu1qHQYbMm+9db8VLn2KXE7wNam4hLqcN3qTC0kv/1HyHdMldkdMPUhukn8LAIlcZzFt5yLH71WpznAP7xdHLWNsWC468cu/5edL5gAJ/ZR/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JRC3ZEEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8320BC116B1;
-	Wed, 15 May 2024 08:06:17 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=vEdha95inDVmApd1xyNFegro+W9Y1tPBuRigFMV8lnb2Q+ZgYv+x9naqxKNgfgRXBCcIDs9y7whEcxgrN/0Am8krMND48kwevT2UMNOeZopnj2cqi6Tg94qTjlIUTnM9Zq4ebCHzBILLkBAnK4HwP+BIAbAd1724cYrFy2Ifhjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iQHLSgBZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC11C32781;
+	Wed, 15 May 2024 08:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1715760379;
-	bh=MtNcYj+7KtNGif4wrUtp7tfwwHUg6OeRHWBVhbdrXcM=;
+	s=k20201202; t=1715760427;
+	bh=WNVyqa42/alA+Bn0BpZU+B2peWyI39m7/6hWHeDqloM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JRC3ZEEcfAXhurUSRo4h4h+A9fTN/GIUyJ1PF7huWOMeZ16DF6etSmHOIjL4OO8Ha
-	 MBnrsNZ7JEA6VXe29P2PiekdQFShjErxFN4frMciXU3UoxYxqBDmTwuF7PZc0EbR8i
-	 qKWq3whoFsDRvpGiLK3+RBu1mZ0VbVvUsbCsF0KWx3jTK565c9Ow3Jbkym5hgvcQ56
-	 WZjrsdkANqcHlZ5Lei1TGjNaVRfF+dAgHu7xwmBP5cOwTdp0Cl3vDET9pOsPbBFW+U
-	 zzUibWTvbGWHv9sWYKWf377bE+ZYXI8pqP13Z7AQIW7DRwd+NPYyTbNU06MMhaHBo8
-	 Gh8Tfk44AQgjQ==
-Message-ID: <29fa61c3-f7c7-4769-a5eb-75783086cb9f@kernel.org>
-Date: Wed, 15 May 2024 10:06:15 +0200
+	b=iQHLSgBZpjr61hrkhjVNESHcwwTTOl3FhgtmOKBKDRwR8koKIKIqisV5k/HRt1PR8
+	 n3hkcVt2N2UKVWMjY3xts04UD1p4ftU/wncoEHqtDYrw834lpzevN1GDpKOtM4tj2c
+	 Sxa6LQPSwBwZgLIYUkIxi3O670LzRAS6yILrzOasQZLPuxnoFGqkBa4ctZ9bfI8NWH
+	 +QQ2hJ/ATVaXkfZ/FqHqIf14dcJbf+wnL3wd5CNjwloEHw79nBt+8hfHkfP2J9JaBk
+	 LiOcwBjfFSPH/PfR2nE9Fe8jt5CFyb9nnszYGHRHt9udExTlO0TYw5LQSJmhX0VXoO
+	 p/DyZwRbR5rKQ==
+Message-ID: <5eb29310-04d1-442d-bcc6-968fcba2077e@kernel.org>
+Date: Wed, 15 May 2024 10:07:03 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,14 +50,15 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 2/2] dt-bindings:iio:proximity: Add hx9031as binding
+Subject: Re: [PATCH v1 1/2] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S
+ sensor driver
 To: Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org
 Cc: andy.shevchenko@gmail.com, lars@metafoo.de, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, nuno.a@analog.com, swboyd@chromium.org,
  u.kleine-koenig@pengutronix.de, yasin.lee.x@gmail.com
 References: <20240511170143.7ca6a410@jic23-huawei>
  <20240514202540.341103-1-yasin.lee.x@outlook.com>
- <SN7PR12MB81012845A114E1FE7C49DFC3A4E32@SN7PR12MB8101.namprd12.prod.outlook.com>
+ <SN7PR12MB810161203706CD288923AB1DA4E32@SN7PR12MB8101.namprd12.prod.outlook.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,134 +104,37 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <SN7PR12MB81012845A114E1FE7C49DFC3A4E32@SN7PR12MB8101.namprd12.prod.outlook.com>
+In-Reply-To: <SN7PR12MB810161203706CD288923AB1DA4E32@SN7PR12MB8101.namprd12.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 14/05/2024 22:25, Yasin Lee wrote:
 > From: Yasin Lee <yasin.lee.x@gmail.com>
 > 
-> A capacitive proximity sensor with 5 channels
+> A SAR sensor from NanjingTianyihexin Electronics Ltd.
+> 
+> The device has the following entry points:
+> 
+> Usual frequency:
+> - sampling_frequency
+> 
+> Instant reading of current values for different sensors:
+> - in_proximity0_raw
+> - in_proximity1_raw
+> - in_proximity2_raw
+> - in_proximity3_raw
+> - in_proximity4_raw
+> and associated events in events/
 > 
 > Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
-
-Do not attach (thread) your patchsets to some other threads (unrelated
-or older versions). This buries them deep in the mailbox and might
-interfere with applying entire sets.
-
-A nit, subject: drop second/last, redundant "bindings". The
-"dt-bindings" prefix is already stating that these are bindings.
-See also:
-https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
-
-Subject: missing spaces. See  `git log --oneline -- DIRECTORY_OR_FILE`
-on the directory your patch is touching.
-
-Please use scripts/get_maintainers.pl to get a list of necessary people
-and lists to CC. It might happen, that command when run on an older
-kernel, gives you outdated entries. Therefore please be sure you base
-your patches on recent Linux kernel.
-
-Tools like b4 or scripts/get_maintainer.pl provide you proper list of
-people, so fix your workflow. Tools might also fail if you work on some
-ancient tree (don't, instead use mainline), work on fork of kernel
-(don't, instead use mainline) or you ignore some maintainers (really
-don't). Just use b4 and everything should be fine, although remember
-about `b4 prep --auto-to-cc` if you added new patches to the patchset.
-
-You missed at least devicetree list (maybe more), so this won't be
-tested by automated tooling. Performing review on untested code might be
-a waste of time, thus I will skip this patch entirely till you follow
-the process allowing the patch to be tested.
-
-Please kindly resend and include all necessary To/Cc entries.
-
-Limited review follows.
-
 > ---
->  .../bindings/iio/proximity/tyhx,hx9031as.yaml | 60 +++++++++++++++++++
->  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
->  2 files changed, 62 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/proximity/tyhx,hx9031as.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9031as.yaml b/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9031as.yaml
-> new file mode 100644
-> index 000000000000..62a71c0c4d04
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9031as.yaml
-> @@ -0,0 +1,60 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/proximity/tyhx,hx9031as.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Tyhx's HX9031AS capacitive proximity sensor
-> +
-> +maintainers:
-> +  - Yasin Lee <yasin.lee.x@gmail.com>
-> +
-> +description: |
-> +  Tyhx's HX9031AS proximity sensor.
-> +
-> +allOf:
-> +  - $ref: /schemas/iio/iio.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    const: tyhx,hx9031as
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description:
-> +      Generated by device to announce preceding read request has finished
-> +      and data is available or that a close/far proximity event has happened.
-> +    maxItems: 1
-> +
-> +  vdd-supply:
-> +    description: Main power supply
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    #include <dt-bindings/interrupt-controller/irq.h>
-> +    i2c {
-> +      #address-cells = <1>;
-> +      #size-cells = <0>;
-> +      hx9031as@2a {
+>  .../ABI/testing/sysfs-bus-iio-hx9031as        |   11 +
+>  drivers/iio/proximity/Kconfig                 |   12 +
+>  drivers/iio/proximity/Makefile                |    1 +
+>  drivers/iio/proximity/hx9031as.c              | 1379 +++++++++++++++++
 
-Node names should be generic. See also an explanation and list of
-examples (not exhaustive) in DT specification:
-https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
-
-
-> +        compatible = "tyhx,hx9031as";
-> +        reg = <0x2a>;
-> +        interrupt-parent = <&pio>;
-> +        interrupts = <16 IRQ_TYPE_EDGE_FALLING 16 0>;
-> +        vdd-supply = <&pp3300_a>;
-> +        status = "okay";
-
-Drop
-
-> +      };
-> +    };
-> +
-> +
-> +
-> +
-> +
-> +
-
-Drop useless blank lines...
-
+That's like third patchset called v1. First was not even built...
+Version your patches properly, provide changelog.
 
 Best regards,
 Krzysztof

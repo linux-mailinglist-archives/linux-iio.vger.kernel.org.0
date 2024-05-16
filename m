@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-5069-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5070-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26C968C7A1A
-	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2024 18:09:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A14F8C7A26
+	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2024 18:15:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BDFFB23128
-	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2024 16:09:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4E751C2173C
+	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2024 16:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12ED14D71B;
-	Thu, 16 May 2024 16:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D4B14E2E8;
+	Thu, 16 May 2024 16:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bRICpor3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kzHJV/Sy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E65614D439;
-	Thu, 16 May 2024 16:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F60014E2C1;
+	Thu, 16 May 2024 16:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715875777; cv=none; b=GhF6jZNpQlJnWZxt8I/91/PUMX3XtLQPUr2zmvVxgm+/kVUWCRl6YHDuSkfjzn36ixl43nK+m5ELrKbrL0wT/5OQlJgDAZKUVQp42jPnbUeov+a+DA+sWXHXDyseFWDGa5VW/i09CsZkn0nNmFiJNs7SvHofG0EBIeQVi/9Cq3w=
+	t=1715876110; cv=none; b=J1gox7R7gavoSMPPPcCS/EeyHxfX6Pw2T2EdTNvXKRPWhpJBLWUNRV9FGmSPKhWNPxRkQ60HN3kP+OqyhLfTTGwuAz0N5P1HOz9SoGD9acOYEkY0HawJGptxCbdpSL403FsNaPCgBJsAX5l+jSWbOVhX2VhKA+5zZPd/PqOfk7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715875777; c=relaxed/simple;
-	bh=+glydexQE7fiHXjBOHgMNecwr0JDs2Rg9OOMZ/GodlQ=;
+	s=arc-20240116; t=1715876110; c=relaxed/simple;
+	bh=Mh0u9Y06mcntjSNlKFJ57KMfOKSfioL1lnQzZWm3pu0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VY8MfYQ7FyKBgmryzOQPg4ideLvoEGq9eDc9jA0nZF5IT6psB8KkzS2T60182Ett8/ThFQ3dif0hOsPCLXkdB41zNRRS+JIg/4Raec4gOnCayA58NLO/zHUGI2oNbMT0Qg1S/XxcNS0QO3vggZbYnGaJodKh4hc5MrdD6fKx9e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bRICpor3; arc=none smtp.client-ip=209.85.222.180
+	 In-Reply-To:Content-Type; b=czo2L/8Xv+c/sKfZUHLTBqkA/LgVWIxJHcjlTtTLuRYXyfNQ6Zt/fOX0JqdKIpWCAhfQV0be3MqlAv6y7XvN2NldMRFeDI6dbqjk7hy9ENKofjHmbuTU6HzH8rAHPMojRfphXnuhQtWyfGHlAH4zIhcAE6CC+fY6l0QG7y/w9TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kzHJV/Sy; arc=none smtp.client-ip=209.85.222.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-792b8bca915so794025985a.2;
-        Thu, 16 May 2024 09:09:35 -0700 (PDT)
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-792b8d98a56so745216185a.2;
+        Thu, 16 May 2024 09:15:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715875775; x=1716480575; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1715876108; x=1716480908; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=GPp5T1JPGHPpYJQbls80ItD5pnxytYOAxOPDKu3Bv/c=;
-        b=bRICpor3cpJ3FJj2D30/0Hf+22RgOKmYEvHntnigzy7jWedLPl0rqT/UePU/iXNNiA
-         sZTQjOxBxDm0+QpFuhRUl4YJWGqov01ch4qwBpFmODTUjcnI+brcpfsqHig10XRvPvaf
-         PDtETvdrdoaB2Re4bzPhv05Ze0rbXfTT3HJdh1J8gwwspFGDCaVlQtWi4NeeWlttYRAh
-         SBjKL68URWx5gHSsPVrmZ1hApj/u7h4KDTzum54f5BvAm5ERk/hRMTMGDYEEt1Xo4wA6
-         qGQARyXoDq1/thyN7qq0FnqS8lcaflvObtA8zOyUvq5fzeQFcOv3Nd2KRwjRAdzh6dcd
-         QqEQ==
+        bh=xe39QYa7TfsWXzNNingUD+O1lJhMRi830tLy3GV8ajM=;
+        b=kzHJV/SyfkKLyjkYNSKJkewDlss+EOzRlrH4RzYrg6Sq+kC21tiRG5517RRBHei6uD
+         dfOTKk5O5FPU+XH9jZjXlyiLgtrDf2A/Tsp689y8jKtvuIaE5nzxkfcwAmUyu7ZB/E5X
+         JrIwVpW4hfohPhtH7gzndjnMnmuQnQFD5qkGKvOny4kh0GfFU53CWm5HbJkTQrKyjgpX
+         znXhnc2Y40YYLpXbFIVfDMcs9sEfP886QjK60B9UA/IncyWuTlIWfRZCvLsdwWyyD62X
+         TJYI6gnyMNxMu8KZTJAAmcBiATXEzFroKho8wuTHCtUFIjz18G2IESzDgulYZhLFn7I9
+         C5eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715875775; x=1716480575;
+        d=1e100.net; s=20230601; t=1715876108; x=1716480908;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GPp5T1JPGHPpYJQbls80ItD5pnxytYOAxOPDKu3Bv/c=;
-        b=hMPFxdLXC3iJCIPvLUBF9G6cloiDU9z8G2nX79sk9/DC+gw1oUci9AZm+FVk3aS/34
-         SK5Dn2F152G4aikbtH1qcEUyphQXuwdn240E2Hqvda/cdjliiBLowGQTixHuN20QfvAX
-         yxe0tJy5R2i/WIDt0keG2zf6UKMrtfsNGaUSElenjtWxH3gZjhfjovXsZHbmisL8uwCu
-         bPuOVG8ovAysi/3Oe0QVtaNH+z9NWm878btpNJjlvz7Y+UvliyrQ0r1Pz7YOXm5OdVQi
-         EMMkEwxepAHCmODAUiHMYy5qIa+XhECWlJUNkXAO2MhAwYvoc443mIVmHEFmdvUAFpPA
-         3upQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXoCapotEBO20hgeMRv8zSgTq7/8Dlkov4yrFpWpw2t3kf2RpCFv++7jsLAH6QaolTZSAAJxOqfOu40OIk4VubpUVSOwo7kPuWm0j+Hf8STVSjaXtxPb3BAjNQuj4hzUiJdwFNVOaz01eunDkrVzQVvWec4MsCvY+smOb7DqvQLiX307A==
-X-Gm-Message-State: AOJu0YyeQk0s17CFTY3SHlQLm7TCd/9Cn5feobnNdVOs+qrLYw73Fu4V
-	mURAirdjJTgTqNjEZlI1fkSUarNOMY7ApK7P8asm6e9IGOYh2l5K
-X-Google-Smtp-Source: AGHT+IGgKcdKMp71u40k4XXjlJzPQGfIbERyni6tEZCb7uOwRuVKpWL3S37lr0djuEPl1YQGDkEi5A==
-X-Received: by 2002:a05:6214:5c42:b0:6a0:7cef:9883 with SMTP id 6a1803df08f44-6a168152c8emr231301216d6.14.1715875775019;
-        Thu, 16 May 2024 09:09:35 -0700 (PDT)
+        bh=xe39QYa7TfsWXzNNingUD+O1lJhMRi830tLy3GV8ajM=;
+        b=HgOZe37ZDdF2VhtS9EYdafDeW1V+qaeKjtMM47+ZIXU6uVZOqLIowCTiuWIOkAnPhE
+         aeUg+pQG/IkOm2YKzYysqB4knPNQfgdxhxlMVZ68GJkKAfJbvDq38zTYTxZpsnsw9/A+
+         NfhmwWZxc1IWnpcjbfu+q+QORoEr4G9LocQ8BfWKiqC2+tZI6sLyKnOkYztVjfUdbZUZ
+         1So0btKRqrXPXY15SQ0dqJDeDoYhNNvnfvQJV+2YmfLfVBJ8NzXDvjr6+4+ucgnJimMI
+         vq9Lmw9Sg0osiqXWywBnDs71LZwZoPejzeo7S4wV+cqUnLBOlDny5TAmEXTkkqQNBVgg
+         oZRw==
+X-Forwarded-Encrypted: i=1; AJvYcCX19f5a8QMNGS64Q5haW681a57spmxZy1VuETrdvAaA0g1au4cqeAHHhhG06UF+0lV0JPY3BHmTyaKTS0jJkCRCDDj68vKsyCqykbRWOT+SNB+NFHIWLx/+7CUtZamBPQguBNSgSSvoT8q7wcAhCLztXieSv1wk1g5ZPwE/rLQVbIXy3A==
+X-Gm-Message-State: AOJu0YwNTUtni9TR7cyGTai/XiCr625FSNPtyJ2vb9fvAG9nnGyi9Gv4
+	541+nsHjiOFfQGmcFB9sE5FntAOtFdPJREvU9hwx6YB+OPbHsF+q
+X-Google-Smtp-Source: AGHT+IFUuxxxvJDDRP5xjeDBCKJXwzIYIXtYwwHtRWhzgkosnjs7D4tlbQURdVVrLy5sbsofDmkh9Q==
+X-Received: by 2002:a37:e209:0:b0:790:9a32:651 with SMTP id af79cd13be357-792c75f47e3mr2216024685a.55.1715876108240;
+        Thu, 16 May 2024 09:15:08 -0700 (PDT)
 Received: from [192.168.0.137] ([188.24.105.36])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6a3e849f8e9sm1253326d6.33.2024.05.16.09.09.33
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-792bf315009sm816795585a.118.2024.05.16.09.15.06
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 16 May 2024 09:09:34 -0700 (PDT)
-Message-ID: <167516cf-303b-48a5-ab84-173cea8e82f2@gmail.com>
-Date: Thu, 16 May 2024 19:09:31 +0300
+        Thu, 16 May 2024 09:15:07 -0700 (PDT)
+Message-ID: <7705589b-d135-48c2-b4d2-866138a82918@gmail.com>
+Date: Thu, 16 May 2024 19:15:04 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,78 +76,37 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 6/9] iio: adc: ad7173: Add ad7173_device_info names
+Subject: Re: [PATCH v2 0/9] Add support for AD411x
 To: David Lechner <dlechner@baylibre.com>, dumitru.ceclan@analog.com
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
  Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
 References: <20240514-ad4111-v2-0-29be6a55efb5@analog.com>
- <20240514-ad4111-v2-6-29be6a55efb5@analog.com>
- <CAMknhBGrn+dSF=QJngUWaQ04tAwQf-9wmq0V2OgYS7sFKHroUA@mail.gmail.com>
+ <CAMknhBGUHB65FALiy4pC2kHs0hXuF-51uwL5CTXOVWaBh_QpDg@mail.gmail.com>
 Content-Language: en-US
 From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
-In-Reply-To: <CAMknhBGrn+dSF=QJngUWaQ04tAwQf-9wmq0V2OgYS7sFKHroUA@mail.gmail.com>
+In-Reply-To: <CAMknhBGUHB65FALiy4pC2kHs0hXuF-51uwL5CTXOVWaBh_QpDg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 16/05/2024 02:32, David Lechner wrote:
+On 16/05/2024 01:35, David Lechner wrote:
 > On Tue, May 14, 2024 at 2:23 AM Dumitru Ceclan via B4 Relay
 > <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
 >>
->> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
->>
->> Add missing names from the device info struct for 3 models to ensure
->> consistency with the rest of the models.
+>> This patch series adds support for the Analog Devices AD4111, AD4112,
+>>  AD4114, AD4115, AD4116 within the existing AD7173 driver.
 >>
 > 
-> This affects userspace, right? So probably needs a Fixes: to make sure
-> this gets into the 6.10 release?
-> 
-I don't think that it breaks userspace, just creates an additional file.
+> It looks like most of the patches in this series are cleanups and
+> fixes of the existing driver unrelated to adding AD411x. Perhaps it
+> would be better to split those out into a separate series so we can
+> focus on that first? Especially since several of them need to be sent
+> as fixes for the v6.10 kernel to avoid breaking usespace or bindings
+> in the next release.
 
-This creates the file "name" in the iio:deviceX directory that reads the
-string. I do not consider the Fixes: tag a necessity. I consider that it
-resolves inconsistencies in the _device_info struct. 
->> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
->> ---
->>  drivers/iio/adc/ad7173.c | 3 +++
->>  1 file changed, 3 insertions(+)
->>
->> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
->> index 1e9ba3070770..d965b66d4d5a 100644
->> --- a/drivers/iio/adc/ad7173.c
->> +++ b/drivers/iio/adc/ad7173.c
->> @@ -227,6 +227,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
->>                 .num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
->>         },
->>         [ID_AD7172_4] = {
->> +               .name = "ad7172-4",
->>                 .id = AD7172_4_ID,
->>                 .num_inputs = 9,
->>                 .num_channels = 8,
->> @@ -272,6 +273,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
->>                 .num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
->>         },
->>         [ID_AD7175_8] = {
->> +               .name = "ad7175-8",
->>                 .id = AD7175_8_ID,
->>                 .num_inputs = 17,
->>                 .num_channels = 16,
->> @@ -302,6 +304,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
->>                 .num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
->>         },
->>         [ID_AD7177_2] = {
->> +               .name = "ad7177-2",
->>                 .id = AD7177_ID,
->>                 .num_inputs = 5,
->>                 .num_channels = 4,
->>
->> --
->> 2.43.0
->>
->>
-
+Sure
 

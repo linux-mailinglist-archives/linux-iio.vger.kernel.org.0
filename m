@@ -1,114 +1,120 @@
-Return-Path: <linux-iio+bounces-5072-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5073-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A9458C7A9C
-	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2024 18:43:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7388C7DDD
+	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2024 22:58:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 164B3B22F4B
-	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2024 16:43:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0ADDDB21E41
+	for <lists+linux-iio@lfdr.de>; Thu, 16 May 2024 20:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB951DDDB;
-	Thu, 16 May 2024 16:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21517157E73;
+	Thu, 16 May 2024 20:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="z8YZXgUQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zb9xwuvp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7080E747F
-	for <linux-iio@vger.kernel.org>; Thu, 16 May 2024 16:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF3D156F2D;
+	Thu, 16 May 2024 20:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715877812; cv=none; b=BZJsR1kYb4Zmt/pKO+91TREhyRZMN2xgkAZg6+QJaSMQKUX4MGaXIuKqHtvMQ1PJqWqWmuQGDQ6p0UOfzQzFGCXojZJWGlDDOkbBUDA9ySHylVCBMeyQTgDGmQNi/OO70FL1+srdp3M2DrTSgn8t9EpTlAzfFJEYQpnnLnCCIi4=
+	t=1715893093; cv=none; b=jEYIhO9NiPdPCvsdLfXXl0MSMSzrqs16161TC+yDi3KOB5FUoV/Us7HuOMCFi8sgHX3AQzXa0YvotTrHXG7RN8PCPWIVSqVavdM+biMaRp7IlwHZeHi17Rl9/9sOLISjlF9+hZqVc31IHSXQjc6IdtMycwuT0EoPLAmOxb3ay9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715877812; c=relaxed/simple;
-	bh=V+xNFFnANtUhU5jsfhfbAvrlBuDPU5hdXCy13zJAH6c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iiKEfIN5D/P7XpuP74J9kvOl4IykoFMNU4IXDL/FN1QD6MjReC8AReoyw4MESauvOhwCfBBA6NSDm5ZD/OhQ0h4ciRxsILm4moJYg/RGEPVS5YEyEP7skFHYj05mNuOMFLpd5aInlkyzQh2zNzT8jnEoWTFCTGYV01/cTM/bYQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=z8YZXgUQ; arc=none smtp.client-ip=209.85.208.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2df848f9325so12368031fa.1
-        for <linux-iio@vger.kernel.org>; Thu, 16 May 2024 09:43:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1715877808; x=1716482608; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V+xNFFnANtUhU5jsfhfbAvrlBuDPU5hdXCy13zJAH6c=;
-        b=z8YZXgUQhE7bf0xHlKhmZVzncO5Taz8qk/jxie2nTBtbOfwHLYiaoJoflVQQf3Qi6K
-         hOsKgER7bjojBvsmF0qUecdvPne5nTk4LUkJ+gk62IT1fnl5Y2Yftd1MhfWTlhUOV9G1
-         kDnqVhUrqbqng0KmOERqzqQLzm0OcQ5wA0pL3ItYHUxYDqb9FJGrHy1qK9mtzm2s7gPk
-         5mEOLYs2xqCpJD1sAIqgPQxDVZWhJWAkzGI3xLrQMX6WVv3V99XyW9fJnhptj1guEoUK
-         xF/f7h8zDCEaxxcMdKabS/TemEV6NQnv7RuA/KLl2t3pz9G4d+i+zH3eyPeUbUOJAI2+
-         Wq9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715877808; x=1716482608;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=V+xNFFnANtUhU5jsfhfbAvrlBuDPU5hdXCy13zJAH6c=;
-        b=UpaApzoOjxBmMafRbJbau0EfrKyHDINehN7W0yN9f+QSd0flkO24xCM9l0FmqoEq1j
-         wypUX653271px9sM4qkHEuRuyXJaB9xrmu6NkHGpAQ3HkDD4nGy0wE6Hg3ue8BQ45qbZ
-         rLJGRffrOM5Ru6liRlJhGGCPXxYkPsE7vRRcuBSQStF+4qQQotByPHZc5qQ9/GIVJzSw
-         EnyBLYa1Jjq8pRxOxMF6dGg8GMx3sTtVyaaFQL0VF6iccJLtnXtpVXwqPIrPtRFpxyws
-         3FrzEz0Ts3y+k4GGdEUs0PJ0Pye388dA6xc3v9W544+CGcCDqgqQwooAPgf0LH3gDo8h
-         Upeg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjbJP0lC5nJT53ChBZUSIgKo86Qww/D4m3eW2QWzG18kiJY152MgnY3w6nM3fLM9p7Qx6RiESFQT69AXUfOaxJjItku0NebN0o
-X-Gm-Message-State: AOJu0YxlkTzPbE9SWXFFEITYDTPhWQcoHA8kicTkAlp+naL0TbpW5id4
-	IqDtur9VFh3IuFi/u1EmsZqLnGV760cHQPw3KEyja82cl8Gs2WhR1EBaFNZciutWuFcLdouz5AK
-	FpQ5Jp3ui17KTLsIsXig6r7qhvuBYju+p6TtZbg==
-X-Google-Smtp-Source: AGHT+IHGaVneos/R4eScRtYA47Mnik++EhKlRJLGsL79bpCk6oNHbmbT356vHf8dhAzygmD08rORGPQ7fAOEWajOT8Q=
-X-Received: by 2002:a2e:81d7:0:b0:2de:1457:9d27 with SMTP id
- 38308e7fff4ca-2e56ea3af94mr116091191fa.0.1715877808519; Thu, 16 May 2024
- 09:43:28 -0700 (PDT)
+	s=arc-20240116; t=1715893093; c=relaxed/simple;
+	bh=GgjtcSqmQYA23xjNtcHKpl6Tkpxfd4PdMb/OKYmoTcQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SO6m8ii53HEWMf3hVbgVfZ40B0f4CnBRfKitarLkgOJzJFQks3h6mDaeE9Ftk0aSjszUZJC7AJcjwQpebdZsv9Xf+n0EDROgPBhFBBWL70B4oocwsdQaQm1kJmKtRWEiPSxQAfIkLAePY8gCxsboajfTz7xEXAx8T1p8MU8u6gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zb9xwuvp; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1715893093; x=1747429093;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=GgjtcSqmQYA23xjNtcHKpl6Tkpxfd4PdMb/OKYmoTcQ=;
+  b=Zb9xwuvpHylA4j3VcCn0HcR7Mx1IjSq/RtswOa3lWAR9YlZsoxxyHAM7
+   V1geFrJ90WvnavxaoCjX+PgwaZD88AFWgLicAJ+U3D4qr0f13q3pgtzct
+   Jq69BxJTRKsFWjboAezEUYje3/Oljsw967+KCGa/3nGjINGAqUAyjY/W9
+   skJSQJor6CFl9ggXhAoYtAM6Trl5k+IIvwcIp1iEqw0sbUDGwCGbI+fV5
+   9gUYcCSlLtLce1UdNlXLcPlNRZX7R7zSvVc4mFXdf1EJH5pv9sJJRD6FT
+   FIttL5k8vWatERKN5oIA7xk1l+fzhKr/Mi/F3ojvBD5qZIMq6lWDuYsDT
+   g==;
+X-CSE-ConnectionGUID: QpKSK7CSSAGLlvOmpW1DtA==
+X-CSE-MsgGUID: Uif6/vGYRPW1vqKvXdD4Xg==
+X-IronPort-AV: E=McAfee;i="6600,9927,11074"; a="11890980"
+X-IronPort-AV: E=Sophos;i="6.08,165,1712646000"; 
+   d="scan'208";a="11890980"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2024 13:58:12 -0700
+X-CSE-ConnectionGUID: K/Z4Yk8xQfOSo9mRNlLAuA==
+X-CSE-MsgGUID: 48mx8Y62QhOtQ+OJhwlFmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,165,1712646000"; 
+   d="scan'208";a="31687976"
+Received: from lkp-server01.sh.intel.com (HELO f8b243fe6e68) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 16 May 2024 13:58:09 -0700
+Received: from kbuild by f8b243fe6e68 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s7iAw-000Emw-2e;
+	Thu, 16 May 2024 20:58:06 +0000
+Date: Fri, 17 May 2024 04:57:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, andy.shevchenko@gmail.com,
+	lars@metafoo.de, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nuno.a@analog.com,
+	swboyd@chromium.org, u.kleine-koenig@pengutronix.de,
+	yasin.lee.x@gmail.com, yasin.lee.x@outlook.com
+Subject: Re: [PATCH v1 1/2] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S
+ sensor driver
+Message-ID: <202405170416.dC1DFrGn-lkp@intel.com>
+References: <SN7PR12MB810161203706CD288923AB1DA4E32@SN7PR12MB8101.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240514-ad4111-v2-0-29be6a55efb5@analog.com> <20240514-ad4111-v2-6-29be6a55efb5@analog.com>
- <CAMknhBGrn+dSF=QJngUWaQ04tAwQf-9wmq0V2OgYS7sFKHroUA@mail.gmail.com> <167516cf-303b-48a5-ab84-173cea8e82f2@gmail.com>
-In-Reply-To: <167516cf-303b-48a5-ab84-173cea8e82f2@gmail.com>
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 16 May 2024 11:43:17 -0500
-Message-ID: <CAMknhBGGYztOsP74YEExG0OhAhMFtjh9Q=x3yAvSK=NQeL5e0w@mail.gmail.com>
-Subject: Re: [PATCH v2 6/9] iio: adc: ad7173: Add ad7173_device_info names
-To: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
-Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
-	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN7PR12MB810161203706CD288923AB1DA4E32@SN7PR12MB8101.namprd12.prod.outlook.com>
 
-On Thu, May 16, 2024 at 11:09=E2=80=AFAM Ceclan, Dumitru
-<mitrutzceclan@gmail.com> wrote:
->
-> On 16/05/2024 02:32, David Lechner wrote:
-> > On Tue, May 14, 2024 at 2:23=E2=80=AFAM Dumitru Ceclan via B4 Relay
-> > <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
-> >>
-> >> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
-> >>
-> >> Add missing names from the device info struct for 3 models to ensure
-> >> consistency with the rest of the models.
-> >>
-> >
-> > This affects userspace, right? So probably needs a Fixes: to make sure
-> > this gets into the 6.10 release?
-> >
-> I don't think that it breaks userspace, just creates an additional file.
->
-> This creates the file "name" in the iio:deviceX directory that reads the
-> string. I do not consider the Fixes: tag a necessity. I consider that it
-> resolves inconsistencies in the _device_info struct.
+Hi Yasin,
 
-Ah, OK. For some reason, I was thinking that it would default to the
-driver name if this was left out.
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on robh/for-next linus/master v6.9 next-20240516]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Yasin-Lee/dt-bindings-iio-proximity-Add-hx9031as-binding/20240515-083021
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/SN7PR12MB810161203706CD288923AB1DA4E32%40SN7PR12MB8101.namprd12.prod.outlook.com
+patch subject: [PATCH v1 1/2] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S sensor driver
+config: m68k-allyesconfig (https://download.01.org/0day-ci/archive/20240517/202405170416.dC1DFrGn-lkp@intel.com/config)
+compiler: m68k-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240517/202405170416.dC1DFrGn-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202405170416.dC1DFrGn-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   m68k-linux-ld: drivers/iio/proximity/hx9031as.o: in function `hx9031as_write_raw':
+>> hx9031as.c:(.text+0x316): undefined reference to `__udivdi3'
+   m68k-linux-ld: drivers/iio/proximity/hx9031as.o: in function `hx9031as_read_raw':
+   hx9031as.c:(.text+0x16da): undefined reference to `__udivdi3'
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

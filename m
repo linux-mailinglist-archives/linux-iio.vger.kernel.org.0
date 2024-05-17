@@ -1,103 +1,106 @@
-Return-Path: <linux-iio+bounces-5089-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5090-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0538C8734
-	for <lists+linux-iio@lfdr.de>; Fri, 17 May 2024 15:28:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB2A38C895B
+	for <lists+linux-iio@lfdr.de>; Fri, 17 May 2024 17:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EFD4B227A7
-	for <lists+linux-iio@lfdr.de>; Fri, 17 May 2024 13:28:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECBCE1C21CC7
+	for <lists+linux-iio@lfdr.de>; Fri, 17 May 2024 15:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F956548F2;
-	Fri, 17 May 2024 13:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23AD812D219;
+	Fri, 17 May 2024 15:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="WJjLJWEo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9F4941213;
-	Fri, 17 May 2024 13:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A4412D201;
+	Fri, 17 May 2024 15:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715952496; cv=none; b=nqig3ee6Gh1SVyoRv8RoORix6ym5A0KSWpt6/Bncq7x9zSqReJap3yYhYQRh7DjGALgL94SHsoChiXnKKbEunpnwepNZ2w+S0LBIYS9z4aAR0ddY9vJ7Z3Xd0EjYmXwDpXsLw9dtXFc/v7QmGXMU73DwEq7Hd4GD2mmGG6UW0aE=
+	t=1715959892; cv=none; b=SccCWLKoHj2DyQRkaFndJ9Q6slOOjFPU826+bgvH7cSrxnlRLglbYakwE8dnQVjAEuckHyQJ5FSQzHhgKHfNO+ktqKE+pMvOhf2j+jtLf64d2ZY64A2pVjypmONAFb/nA2zdXJNU10xiijt50A4zTrcEGgRZU6El6zm2d+VqfOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715952496; c=relaxed/simple;
-	bh=uwBwO3Fqyp5mCPqAOfpmhA3/Ak9Db7EdwQG7JCiMf4U=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IMXqXTvZtX3BKLlP3fXNCUaY4jrwpt276BOBtD4wiZfiBmK5gV9ITlNTLTVim2Hrng67gIH6Tx+9t1JPjMiLCIrhTIb0ebOOVxOK09lJBVi4hqY+7g3EUouGceCnJNBZxd1upFqMEYkZRpDJty8zvhZ0EZx0Uk8bOY+PG28MO0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VgnkL5RLlz6JB8B;
-	Fri, 17 May 2024 21:24:42 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 73AE51400D9;
-	Fri, 17 May 2024 21:28:08 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 17 May
- 2024 14:28:07 +0100
-Date: Fri, 17 May 2024 14:28:07 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Dimitri Fedrau <dima.fedrau@gmail.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	Andrew Hepp <andrew.hepp@ahepp.dev>, Marcelo Schmitt
-	<marcelo.schmitt1@gmail.com>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 0/2] Add threshold events support
-Message-ID: <20240517142807.00005b90@Huawei.com>
-In-Reply-To: <20240517081050.168698-1-dima.fedrau@gmail.com>
-References: <20240517081050.168698-1-dima.fedrau@gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1715959892; c=relaxed/simple;
+	bh=my1yI7WyUJlHky5ciUBO3WQJ1JZ37Sarb+33aKXJfSs=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=rqk4MMPOLD/JouX3pTRJt4h3rjuoRYDuvGd8lSFO/cd4/pZFxYEcUa6g93d71XsVyjYLdLYnGDmhhY+x+VikDI1l9vmsTAKq7nxwfovDr/6+jdWPW0d0p27PlANa0losaFgQPRiZiD9KU2S/nUlwbRGYLaIk1nnxqU0dbryiMBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=WJjLJWEo; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1715959862; x=1716564662; i=markus.elfring@web.de;
+	bh=my1yI7WyUJlHky5ciUBO3WQJ1JZ37Sarb+33aKXJfSs=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=WJjLJWEoutNXwVtnRjLJOLjtT2ZTn2LrmHMHqvAe5DWaXx2RiZe+Zpae/6Xo0Qip
+	 jvgUR1HgMSiFUVjqBD84+JC4U9bVgmjzHpFRy/Ep2TJT/cDLBNKVFHZxxX0Wwwfbn
+	 xoglMS0ELpDSgu88LHjmJC84k19TGodU57/pT7A6hWB8qqM1BnCBm3FWE0gqJ8yT8
+	 5rT0KO/NKp8carPVqKg/9pW8X76RyKQhMhS3GaVL6T4rhw5Q6exuocEWZLV/IF650
+	 TixdPVtqUZLYZZ5O3D3FeVQlarL0oNHaUw1BNO1fOj7TF5HaiqAPu3gIocwoYIHM/
+	 dGzDHL80GUAnev6lWQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.82.95]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1M9qhD-1sB0LY1tDR-0096Pm; Fri, 17
+ May 2024 17:31:01 +0200
+Message-ID: <d313e351-6697-4d4f-8950-2b784a2de9f0@web.de>
+Date: Fri, 17 May 2024 17:30:57 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+User-Agent: Mozilla Thunderbird
+To: Dimitri Fedrau <dima.fedrau@gmail.com>, linux-iio@vger.kernel.org,
+ kernel-janitors@vger.kernel.org
+Cc: LKML <linux-kernel@vger.kernel.org>, Andrew Hepp <andrew.hepp@ahepp.dev>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+References: <20240517081050.168698-2-dima.fedrau@gmail.com>
+Subject: Re: [PATCH v2 1/2] iio: temperature: mcp9600: Provide index for both
+ channels
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240517081050.168698-2-dima.fedrau@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:ElMMYmA2XlfZzpyqH5Dw55ie/6kAanw3hh9beo+i9gPpusngUxM
+ uC+0CWnSGidmtUXIeGz6B6Khq/IyB+0QGFYiEIMHKX0KbziFUyrn++Sf483bsgVu1ILwdIu
+ MEE7hsHyXjviSR3MfGNZMEXCOu/Bg0wlkC1Zx8n5eWdnkmGIovLzbMOhmo8jau2YMgXurrs
+ I4dEVpmqSu3VVx2A6dVPg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:fdmUXQ6Y9qE=;vVvbMdsKruheBqTfrwIDY27MbI3
+ KZKWTVWnqZMrFqWmJNIV6Xow8XnPgzJWsNizHWBJ9xUFwTmb3QJe2ypGUOQNfB2n5Rga67BID
+ NkKnMl1iuZhiIDNzq4S1dxnafRPri1wXkpqnlGisW+ztiBZScB+Qs4YLRqKAD1RGwB4efYvt3
+ tYAWqbAmb9YN638R1n2GDwGhvWWfs91wdgAjPywSmDSrQ/36b2pX33uweGwOh4BY8it6cZ8Po
+ h0+cAGdq1goQdyar8o6NUIG5qDah4A3OhkTCppH05PEKog2E9i585Ow693FxeOzt3ybg8aRIh
+ UcfzbVtjN7B/Xx45sf6jE+eZbvjSa9f1Hphld9EUZ6CjiX3+7RYSeFqfF2OS2ykyiu2iJllh4
+ mYDO8yisTTgjxP5tMSLIP2x1zWLRcztbm1rrjQ0rclUuvkRBcqfdGNTGlJadDPxAKy2vD7M6R
+ LnwRiKZ4A3hu0nZPLLSWnN0twIKItwSXGbNBhqAL2xh29OijoUvU/e0BTurjjKpOTkUXOUiUk
+ rXsp9tg5cxuHKZCg59Ii3ib4q1e65WMgsdLUObNie94Q+3ZlSHSx5BBq5pT+Fh9404u+PkpEo
+ MoCs1jxRWkHyL09HrSoK0+uFu+JD3bTQixH/zvQPxWn7VdKSKv6dBQzb2fNeZY3oDr5LtVPxv
+ dR684XoDFhone2wr+6+tkOyNPEJH0Y8PslhIzcjh9NLjZwIKLzhmZwEKx+2UHi4/loYyI+6u+
+ ePhMgia/hlB+3PxqFO7vRpC18I79UoAptLxfJoUidXNSmJ/YRyS3OjxhP9bJq9LD2l/zGoi1G
+ 9QAXpxuA6MRjTcw18RzwKafmbPtIkts/3wDZAvzYp6WZk=
 
-On Fri, 17 May 2024 10:10:48 +0200
-Dimitri Fedrau <dima.fedrau@gmail.com> wrote:
+I suggest to reconsider the distribution of email addresses over recipient=
+ lists
+once more.
 
-> Add patch for providing index for both channels and add patch for threshold
-> events support for the MCP9600 device.
 
-Always mention subsystem and device in the cover letter title!
+=E2=80=A6
+> We provide an index for =E2=80=A6
 
-iio: temperature mcp9600: Add threshold events support.
+Please improve the change description with an imperative wording.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.9#n94
 
-Makes it easier for people to judge if they want to read a thread or not.
-
-No need to resend for this though.
-> 
-> Changes in V2:
->   - Remove pretty printing patches from series
->   - Add patch for providing index for both channels(ABI change)!
->     Suggested by Jonathan, hope this okay.
->   - Remove formatting in a precursor patch
->   - Add lock documentation
->   - Add define MCP9600_TEMP_SCALE_NUM and use it instead of MICRO. MICRO is
->     type unsigned long which we have to cast to int when using
->     multiplication or division, because we are handling negative values.
->   - Use switch statement in mcp9600_write_thresh
->   - Replaced generic interrupt handler with four separate interrupt handler
->   - Use one lock instead of four
->   - Added error check for mcp9600_probe_alerts
->      
-> 
-> Dimitri Fedrau (2):
->   iio: temperature: mcp9600: Provide index for both channels
->   iio: temperature: mcp9600: add threshold events support
-> 
->  drivers/iio/temperature/mcp9600.c | 398 +++++++++++++++++++++++++++++-
->  1 file changed, 396 insertions(+), 2 deletions(-)
-> 
-
+Regards,
+Markus
 

@@ -1,119 +1,105 @@
-Return-Path: <linux-iio+bounces-5096-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5097-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69F4A8C9490
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 13:57:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A08068C9497
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 14:03:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1F1771F212BE
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 11:57:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 345E328141E
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 12:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14244595B;
-	Sun, 19 May 2024 11:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FCBD45000;
+	Sun, 19 May 2024 12:02:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bI7168XN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hawj10/X"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB442A1D2;
-	Sun, 19 May 2024 11:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C29E175AE;
+	Sun, 19 May 2024 12:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716119838; cv=none; b=jAQfK8KCXFkqOcUPh6lhd2d2c8H6nMCtN7ghqxIKlpW21ChzEOMMY7OXGHOFiP8cPLPzSqzno+mPXqnE3LLGPpkO2eXDV9YJR4JeKHuRjrM+/KDcig9j4m1Jw+FaJm0DT/1Q3hVBDxZjuuZ+NrS1k6fR/C5kbLpEkFnQA5yfDqc=
+	t=1716120174; cv=none; b=dFf2J1eTmXylgotfRDD0W7QX6vqsv/2yp/QvpDuODgqGyphOiZmu6e1Qs93jyiB45HlE3IQCw20CFURjcOTIcJhxyykJdH69nKMdzwcZIXm/2FnJrLDL5JJevISSBXehIok/C5a9R7L/vVLaCjhTpklw58ZvkaDC4FZTmhQK2dY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716119838; c=relaxed/simple;
-	bh=ey6MLEniB9vujaIVqdYKXqos4DwJBPLSPhtEc/aWhmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YUgEVnlvZIugOGttIUIz13eexz2xUlDrAfdK5zU1+gGz44dizOGesW/tpFBq9q6g57lmF+fYBFNpEJ197vSuF+r5MAWzUlgQwq0nlrxleSa/Oe16uCTahAyjHn0qZylO303ZOUQEqSMMLGMZIp3tR9Qs4FCtueUncFi3Kqnf1UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bI7168XN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07494C32781;
-	Sun, 19 May 2024 11:57:15 +0000 (UTC)
+	s=arc-20240116; t=1716120174; c=relaxed/simple;
+	bh=QEDQ8TVAXqlyhLNMWKZ5Zw3pAPKwxRatynyS3tTCohA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hCr5Sbq286ur3df7TI2pi3VrKOR9DwJ0FjWbg4A/GK6AODhJS+sw0BFHmv9It60WU4oPQVEVeySw0Q35/59pbawXz5m0PRsUxYw+uevZ2mMXKmxOpoVSpg3DkRzAIK+b+wIweQbHjGwH/zhs6M6qnlt+Idw5gZ9qZboBt+uH1MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hawj10/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 639DDC32781;
+	Sun, 19 May 2024 12:02:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716119838;
-	bh=ey6MLEniB9vujaIVqdYKXqos4DwJBPLSPhtEc/aWhmE=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=bI7168XNXTR0eADGSnmzaBncTN+GlvwjbX84A0TfzMGwDUVk5gTDus0x3TbB84JBG
-	 e2wPqGhePh4SM/PtDyP7NOMwbs4wsgMt3J2zlww0ESYW02/3teUD3I1sxECObSbQ2Y
-	 A+FkDkQdqKscd57KlUEfU40MhOntP5CwNQY6BIMjyj60PMs3vpG7O2tnzKRse8EiPv
-	 GdYYZACC08y/Ztdp3ffsBlwPTWO/7cDzmwbtgU6qNDPgGJdi2Nq0jzQXKkQLjWpbkj
-	 f9T9zH1XNl340wkgUmSLDzxei3V57FAgbL2lGl0DeGVZjLJaa3Iwrczbo+OmQizkfu
-	 9ErnLvbw3fR9Q==
-Date: Sun, 19 May 2024 12:57:05 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Arthur Becker <arthur.becker@sentec.com>, "robh@kernel.org"
- <robh@kernel.org>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+	s=k20201202; t=1716120173;
+	bh=QEDQ8TVAXqlyhLNMWKZ5Zw3pAPKwxRatynyS3tTCohA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Hawj10/Xob3iRht5nWc4C5tmP1LWiNlplQEbLss4z9IQ9OpdFzt1DZhCUC26CxJll
+	 1huFboAja1cHlksDjlgEcrqtVmLiV7+FuXZJ7v+wCFGwIA8c38IUIRY4ibaPCn6b36
+	 BO9hRbGz5Ldd/fZJtMZg2X3qlzA90veReCKJvxYoNC9xK2/eLU3AnXeLJg6LmVmwwR
+	 eashi/FpORGeYg1Obn41i+9oK9vw4noWJRFzPOFp+CmKMpB1vf+nl8jukAmgz5Ce/z
+	 Hfgd0HsoLsWz0xFIMeU1ADiTI0dWMH/FvxPLc3CUNI9gdKexJHlfAw9MhGYbmDCVIq
+	 Q8UqXvluwZBoA==
+Date: Sun, 19 May 2024 13:02:50 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Arthur Becker <arthur.becker@sentec.com>,
+	"robh@kernel.org" <robh@kernel.org>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
 Subject: Re: [PATCH] dt-bindings: iio: light: add veml6040 RGBW-LS bindings
-Message-ID: <20240519125705.49967e97@jic23-huawei>
-In-Reply-To: <20240513-repulsive-fiftieth-884b3805472f@spud>
+Message-ID: <20240519-irritable-richness-0a07286d289f@spud>
 References: <ZR1P278MB1117B205886E023F9F72A2E881E22@ZR1P278MB1117.CHEP278.PROD.OUTLOOK.COM>
-	<20240513-repulsive-fiftieth-884b3805472f@spud>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+ <20240513-repulsive-fiftieth-884b3805472f@spud>
+ <20240519125705.49967e97@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="ozr55vnr3ViejvHB"
+Content-Disposition: inline
+In-Reply-To: <20240519125705.49967e97@jic23-huawei>
 
-On Mon, 13 May 2024 17:26:12 +0100
-Conor Dooley <conor@kernel.org> wrote:
 
-> On Mon, May 13, 2024 at 02:35:44PM +0000, Arthur Becker wrote:
-> > This commit adds device tree bindings for the veml6040 RGBW Light Sensor
-> > 
-> > signed-off-by: Arthur Becker <arthur.becker@sentec.com>  
-> 
-> If you're writing a standalone binding for this and not putting it into
-> trivial-devices.yaml you should document the supply for this device.
+--ozr55vnr3ViejvHB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-It's a broken email thread. Driver is there, but soemthing has gone
-wrong with sending.
+On Sun, May 19, 2024 at 12:57:05PM +0100, Jonathan Cameron wrote:
+> On Mon, 13 May 2024 17:26:12 +0100
+> Conor Dooley <conor@kernel.org> wrote:
+>=20
+> > On Mon, May 13, 2024 at 02:35:44PM +0000, Arthur Becker wrote:
+> > > This commit adds device tree bindings for the veml6040 RGBW Light Sen=
+sor
+> > >=20
+> > > signed-off-by: Arthur Becker <arthur.becker@sentec.com> =20
+> >=20
+> > If you're writing a standalone binding for this and not putting it into
+> > trivial-devices.yaml you should document the supply for this device.
+>=20
+> It's a broken email thread. Driver is there, but soemthing has gone
+> wrong with sending.
 
-Arthur, if this is a company email setup thing, consider the b4 web portal
-method for v2.
+To be clear, the bit about "standalone" was compared to putting it in
+trivial-devices.yaml, not to do with the threading and it being a patch
+without a driver.
 
-Jonathan
+--ozr55vnr3ViejvHB
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> 
-> > ---
-> > 
-> >  .../bindings/iio/light/veml6040.yaml          | 43 +++++++++++++++++++
-> >  1 file changed, 43 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/light/veml6040.yaml
-> > 
-> > diff --git a/Documentation/devicetree/bindings/iio/light/veml6040.yaml b/Documentation/devicetree/bindings/iio/light/veml6040.yaml
-> > new file mode 100644
-> > index 000000000000..796c22f75575
-> > --- /dev/null
-> > +++ b/Documentation/devicetree/bindings/iio/light/veml6040.yaml  
-> 
-> Filename matching the compatible please.
-> 
-> > @@ -0,0 +1,43 @@
-> > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> > +%YAML 1.2
-> > +---
-> > +$id: http://devicetree.org/schemas/iio/light/veml6040.yaml#
-> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> > +
-> > +title: VEML6040 RGBW Light Sensor
-> > +
-> > +maintainers:
-> > +  - Arthur Becker <arthur.becker@sentec.com>
-> > +
-> > +description: |  
-> 
-> This | isn;t needed, you've got no formatting to preserve.
-> 
-> 
-> Cheers,
-> Conor.
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZknqagAKCRB4tDGHoIJi
+0vBjAP47K6pxApuYF8YvXKyyXY8f/ohMsK4Q7q1kmHslGRnHIgEA4qcOlXKUYfK1
+T+namC/PMik30yLiNIJak0PXtCxNzQU=
+=6zea
+-----END PGP SIGNATURE-----
+
+--ozr55vnr3ViejvHB--
 

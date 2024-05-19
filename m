@@ -1,63 +1,57 @@
-Return-Path: <linux-iio+bounces-5127-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5128-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8692C8C95BD
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 20:03:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FBE68C95D2
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 20:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A973E1C20AD6
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 18:03:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 743A9B20B6E
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 18:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB414AEFA;
-	Sun, 19 May 2024 18:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86FAC6D1A9;
+	Sun, 19 May 2024 18:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aPcl4mgx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZNUibvPN"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7576D50297;
-	Sun, 19 May 2024 18:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CBAB45038;
+	Sun, 19 May 2024 18:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716141799; cv=none; b=hFxTj+GQlK9fO4ZV7zvfX28V5zHLYUifQTIfpAn9mM8JtnjRDQskVe3isgituKJeS0gyKg7Fp6mk2wlXPSwueQkABJhJoQTrPN1PjdUAcH9RHTud3HwrVDXoDdPcUYFec+WPLaLk1N8saRaDCFqNnnROGpJecN3bSw38uG501/k=
+	t=1716143733; cv=none; b=uHLPaO+0U8QbxTq2KjiJNc96vHrgvM/6oBfznTXpgO3mNma2teY4Wm4yPA4e3B+sanr7HmEEYruiDblUUB7V13Tvs71HiWTcjkFMO1HbB9Xe/WquDppHqEMgFsrETlN48d3JB2w846KFHc+IOVXvQbnERkIoJcG9u0vOfd6T+nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716141799; c=relaxed/simple;
-	bh=5u6Kmcb4zUJUkge3R6Zf3jnoUhdhS8dKOk/lRvZwtr8=;
+	s=arc-20240116; t=1716143733; c=relaxed/simple;
+	bh=xgvz6Rb6QeU43Wv8Xo7zNgrt2yfkty3dnYcWaaVoGAk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DNyuNrxmHgkuaDJ1dkqrOkbF5Qnw4yLZJcztWMIfO0a6C+HamYX+oV+jIrfi6QkJXTw5GNoC7Xk+WpiizFhkU7081N24/xktKKbP84qIeHWFLEqocBxWnt7LB+kOh6F2ewlykIicagiZKJZyvVSmoip3Yc4Km+z82DOOl78wX/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aPcl4mgx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C96C32781;
-	Sun, 19 May 2024 18:03:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BaKIuBy3jb4woOGdxUOkBLtKMEWRPy3R+/6ERjvNzaHGyo6z3s/zhqS2z3ecNcqKrbD36Jp/SqCyIjiIObnVFKaghMzHV/fXy3V1RlsPDt266zqDKsW9gCBTuqtk5VnxfG1Mpcc7estZ+a7qUutVlEI03VfZFw2XswWUAgC6Z/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZNUibvPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B8D6C32781;
+	Sun, 19 May 2024 18:35:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716141799;
-	bh=5u6Kmcb4zUJUkge3R6Zf3jnoUhdhS8dKOk/lRvZwtr8=;
+	s=k20201202; t=1716143732;
+	bh=xgvz6Rb6QeU43Wv8Xo7zNgrt2yfkty3dnYcWaaVoGAk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aPcl4mgx9k+AqW33OPBHRdbwX1+oRl5B1JmVzba/Msx02oIK1/KfsvJIgsffkhHQI
-	 q7np+UrzlgrLu6rA0HljgzBFpNocYvWvmpaZR2DbP4RgD4zaTJ3OiCpT6bjkumGjrg
-	 bcq73b/erZQ3XXkTo9cxVb/QtHsi8+yeAh2WzaBdehQVtzbuvUDvy4h2tEi060nF9M
-	 X3QOH8kWW1Psp9Dgtgqcdp3BKnHmHHVGgcbfeTkLMy+CFb8uwZWTFgjnURj7kNR9Mk
-	 anQW58k56xU7FNUkiRWpyAroeJdkwrp2jDq1aDK653iAQf9+zlZaMXDT3J0DEQm8y+
-	 0VDFncskOrh6A==
-Date: Sun, 19 May 2024 19:03:04 +0100
+	b=ZNUibvPNTejhgOefLlI92K3IZ9Oty3afy85AfuMIbPSb5I2mVSByWuz60mQd6d2eQ
+	 wZDCbcehzlCZi7G1v4w/dJIG4y1Oe9EYrejG4ADqdYQx6hoM7V/6KncT4rpYPkurCk
+	 OxDUQTkW/UweB0fWtKdGEk+JgMcSuPMIZ27ujrwatGjpncaaGU+JcPKrRFMeq+xfMN
+	 LX6NCrI8TSx4HUgzH0zXPW4lNv8dmsxbyVU4FSC6mE52aEV2zjVvdiXmmeMdFona+l
+	 B3B7h7ooqXWzO6DQ+tFxY9sfdsj0qgznvWxnPnNvqcXkPJpk6LfNOngOml/XoOr74k
+	 KhE5tnMaCctyQ==
+Date: Sun, 19 May 2024 19:35:20 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andy@kernel.org>
-Cc: Alisa-Dariana Roman <alisadariana@gmail.com>,
- michael.hennerich@analog.com, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, lars@metafoo.de,
- robh@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- lgirdwood@gmail.com, broonie@kernel.org, nuno.sa@analog.com,
- marcelo.schmitt@analog.com, bigunclemax@gmail.com, dlechner@baylibre.com,
- okan.sahin@analog.com, fr0st61te@gmail.com, alisa.roman@analog.com,
- marcus.folkesson@gmail.com, schnelle@linux.ibm.com, liambeguin@gmail.com
-Subject: Re: [PATCH v8 6/6] iio: adc: ad7192: Add AD7194 support
-Message-ID: <20240519190304.4d93530a@jic23-huawei>
-In-Reply-To: <ZkNijKz0N7PPvmeU@smile.fi.intel.com>
-References: <20240514120222.56488-1-alisa.roman@analog.com>
-	<20240514120222.56488-7-alisa.roman@analog.com>
-	<ZkNijKz0N7PPvmeU@smile.fi.intel.com>
+To: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, conor+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, robh@kernel.org, nuno.sa@analog.com
+Subject: Re: [PATCH v3 7/9] iio: imu: adis_trigger: Allow level interrupts
+Message-ID: <20240519193520.23c3c77e@jic23-huawei>
+In-Reply-To: <20240517074750.87376-8-ramona.bolboaca13@gmail.com>
+References: <20240517074750.87376-1-ramona.bolboaca13@gmail.com>
+	<20240517074750.87376-8-ramona.bolboaca13@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,160 +62,94 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 14 May 2024 16:09:32 +0300
-Andy Shevchenko <andy@kernel.org> wrote:
+On Fri, 17 May 2024 10:47:48 +0300
+Ramona Gradinariu <ramona.bolboaca13@gmail.com> wrote:
 
-> On Tue, May 14, 2024 at 03:02:22PM +0300, Alisa-Dariana Roman wrote:
-> > Unlike the other AD719Xs, AD7194 has configurable channels. The user can
-> > dynamically configure them in the devicetree.
-> > 
-> > Add sigma_delta_info member to chip_info structure. Since AD7194 is the
-> > only chip that has no channel sequencer, num_slots should remain
-> > undefined.
-> > 
-> > Also modify config AD7192 description for better scaling.  
-> 
-> Some non-critical, mostly style related comments below.
-> 
-Tweaked a bit. And applied.  Please check the result in the testing branch
-of iio.git.
-> ...
-> 
-> This...
-> 
-> > +#define AD7194_CH(p)		(BIT(10) | AD7194_CH_POS(p))
-> > +				  /* 10th bit corresponds to CON18(Pseudo) */  
-> 
-> ...should be (you have broken indentation on the comment, btw):
-> 
-> /* 10th bit corresponds to CON18(Pseudo) */
-> #define AD7194_CH(p)		(BIT(10) | AD7194_CH_POS(p))
-> 
-> But no need to resend because of this, let's wait others to comment, and
-> if everything fine I think Jonathan can massage this when applying.
+> Currently, adis library allows configuration only for edge interrupts,
+> needed for data ready sampling.
+> This patch removes the restriction for level interrupts, which are
+> needed to handle FIFO watermark interrupts.
+> Furthermore, in case of level interrupts, devm_request_threaded_irq is
+> used for interrupt allocation, to avoid blocking the processor while
+> retrieving the FIFO samples.
 
-Fixed.
+If respinning for any other reason, I'd rewrap this as a single paragraph.
+
+This looks fine to me, but I'd like an Ack or RB from Nuno.
+Last time I poked an adis part predated the common adis library :(
 
 > 
-> ...
+> Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+> ---
+> changes in v3:
+>  - new patch
+>  drivers/iio/imu/adis_trigger.c | 39 ++++++++++++++++++----------------
+>  1 file changed, 21 insertions(+), 18 deletions(-)
 > 
-> > +#define AD7194_CH_TEMP		0x100 /* Temp sensor */  
-> 
-> Not sure that the comment has any value here.
-Dropped
+> diff --git a/drivers/iio/imu/adis_trigger.c b/drivers/iio/imu/adis_trigger.c
+> index f890bf842db8..becf1f558b4e 100644
+> --- a/drivers/iio/imu/adis_trigger.c
+> +++ b/drivers/iio/imu/adis_trigger.c
+> @@ -34,21 +34,16 @@ static int adis_validate_irq_flag(struct adis *adis)
+>  	if (adis->data->unmasked_drdy)
+>  		adis->irq_flag |= IRQF_NO_AUTOEN;
+>  	/*
+> -	 * Typically this devices have data ready either on the rising edge or
+> -	 * on the falling edge of the data ready pin. This checks enforces that
+> -	 * one of those is set in the drivers... It defaults to
+> -	 * IRQF_TRIGGER_RISING for backward compatibility with devices that
+> -	 * don't support changing the pin polarity.
+> +	 * Typically adis devices without fifo have data ready either on the
 
-> 
-> ...
-> 
-> > +static int ad7194_validate_ain_channel(struct device *dev, u32 ain)
-> > +{
-> > +	if (!in_range(ain, AD7194_CH_AIN_START, AD7194_CH_AIN_NR))
-> > +		return dev_err_probe(dev, -EINVAL,
-> > +				     "Invalid AIN channel: %u\n", ain);
-> > +
-> > +	return 0;  
-> 
-> While this uses traditional pattern, it might be better looking in a form of
-> 
-> 	if (in_range(ain, AD7194_CH_AIN_START, AD7194_CH_AIN_NR))
-> 		return 0;
-> 
-> 	return dev_err_probe(dev, -EINVAL, "Invalid AIN channel: %u\n", ain);
-> 
-> But at the same time I would rather expect this to be in the caller and here
-> to have a boolean function
-> 
-Moved it.
+FIFO maybe as it's an acronym.
 
-> static bool ad7194_is_ain_channel_valid(struct device *dev, u32 ain)
-> {
-> 	return in_range(ain, AD7194_CH_AIN_START, AD7194_CH_AIN_NR);
-> }
+> +	 * rising edge or on the falling edge of the data ready pin.
+> +	 * IMU devices with fifo support have the watermark pin level driven
+> +	 * either high or low when the fifo is filled with the desired number
+> +	 * of samples.
+> +	 * It defaults to IRQF_TRIGGER_RISING for backward compatibility with
+> +	 * devices that don't support changing the pin polarity.
+>  	 */
+> -	if (direction == IRQF_TRIGGER_NONE) {
+> +	if (direction == IRQF_TRIGGER_NONE)
+>  		adis->irq_flag |= IRQF_TRIGGER_RISING;
+> -		return 0;
+> -	} else if (direction != IRQF_TRIGGER_RISING &&
+> -		   direction != IRQF_TRIGGER_FALLING) {
+> -		dev_err(&adis->spi->dev, "Invalid IRQ mask: %08lx\n",
+> -			adis->irq_flag);
+> -		return -EINVAL;
+> -	}
 > 
-> > +}  
+>  	return 0;
+>  }
+> @@ -77,11 +72,19 @@ int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev)
+>  	if (ret)
+>  		return ret;
 > 
-> ...
+> -	ret = devm_request_irq(&adis->spi->dev, adis->spi->irq,
+> -			       &iio_trigger_generic_data_rdy_poll,
+> -			       adis->irq_flag,
+> -			       indio_dev->name,
+> -			       adis->trig);
+> +	if (adis->irq_flag & (IRQF_TRIGGER_HIGH | IRQF_TRIGGER_LOW))
+> +		ret = devm_request_threaded_irq(&adis->spi->dev, adis->spi->irq,
+> +						NULL,
+> +						&iio_trigger_generic_data_rdy_poll,
+> +						adis->irq_flag | IRQF_ONESHOT,
+> +						indio_dev->name,
+> +						adis->trig);
+> +	else
+> +		ret = devm_request_irq(&adis->spi->dev, adis->spi->irq,
+> +				       &iio_trigger_generic_data_rdy_poll,
+> +				       adis->irq_flag,
+> +				       indio_dev->name,
+> +				       adis->trig);
+>  	if (ret)
+>  		return ret;
 > 
-> > +		return dev_err_probe(dev, -EINVAL,
-> > +				     "Too many channels: %u\n", num_channels);  
-> 
-> 		return dev_err_probe(dev, -EINVAL, "Too many channels: %u\n", num_channels);
-> 
-> ?
-> 
-> Or with limit
-> 
-> 		return dev_err_probe(dev, -EINVAL, "Too many channels: %u\n",
-> 				     num_channels);
-> 
-> 
-This one.
-> ...
-> 
-> > +	ad7194_channels = devm_kcalloc(dev, num_channels,
-> > +				       sizeof(*ad7194_channels), GFP_KERNEL);  
-> 
-> 	ad7194_channels = devm_kcalloc(dev, num_channels, sizeof(*ad7194_channels), GFP_KERNEL);
-> 
-> ?
-> 
-> Or
-> 
-> 	ad7194_channels = devm_kcalloc(dev, num_channels, sizeof(*ad7194_channels),
-> 				       GFP_KERNEL);
-Nope. too long in either case.
-
-> 
-> ?
-> 
-> ...
-> 
-> > +	device_for_each_child_node_scoped(dev, child) {
-> > +		ret = fwnode_property_read_u32_array(child, "diff-channels",
-> > +						     ain, ARRAY_SIZE(ain));
-> > +		if (ret == 0) {  
-> 
-> And here I would rather go for the traditional pattern, i.e.
-> 
-> 		if (ret) {
-> 			...
-> 		} else {
-> 			...
-> 		}
-It's odd, as it's two good paths I've left this one alone.
-
-> 
-> > +			ret = ad7194_validate_ain_channel(dev, ain[0]);
-> > +			if (ret)
-> > +				return ret;
-> > +
-> > +			ret = ad7194_validate_ain_channel(dev, ain[1]);
-> > +			if (ret)
-> > +				return ret;
-> > +
-> > +			*ad7194_channels = ad7194_chan_diff;
-> > +			ad7194_channels->scan_index = index++;
-> > +			ad7194_channels->channel = ain[0];
-> > +			ad7194_channels->channel2 = ain[1];
-> > +			ad7194_channels->address = AD7194_DIFF_CH(ain[0], ain[1]);
-> > +		} else {
-> > +			ret = fwnode_property_read_u32(child, "single-channel",
-> > +						       &ain[0]);
-> > +			if (ret)
-> > +				return dev_err_probe(dev, ret,
-> > +						     "Missing channel property\n");
-> > +
-> > +			ret = ad7194_validate_ain_channel(dev, ain[0]);
-> > +			if (ret)
-> > +				return ret;
-> > +
-> > +			*ad7194_channels = ad7194_chan;
-> > +			ad7194_channels->scan_index = index++;
-> > +			ad7194_channels->channel = ain[0];
-> > +			ad7194_channels->address = AD7194_CH(ain[0]);
-> > +		}
-> > +		ad7194_channels++;
-> > +	}  
+> --
+> 2.34.1
 > 
 
 

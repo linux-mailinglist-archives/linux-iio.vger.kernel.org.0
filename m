@@ -1,58 +1,60 @@
-Return-Path: <linux-iio+bounces-5130-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5131-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216DA8C95F7
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 20:57:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 711288C95FB
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 21:01:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B15831F21274
-	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 18:57:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7834B20DD4
+	for <lists+linux-iio@lfdr.de>; Sun, 19 May 2024 19:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C816E6EB75;
-	Sun, 19 May 2024 18:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E626D1BD;
+	Sun, 19 May 2024 19:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AES6ZGlv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WkDpWN0u"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8C06E605;
-	Sun, 19 May 2024 18:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CCC2744A;
+	Sun, 19 May 2024 19:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716145040; cv=none; b=WVprURTffcKHkqhaQdv7uBlCbMHscsM7MnVaO5EKz7SzgKJNoC1uASSp30oUiYgHaHZCwWHjISIjauWrHP4YIO8y7i/e6zKJUwP7KQyzWGpjq/F4zBVxRlbVPaQxbxnPBoPBRvt/iCIqnb/thFx405y7ucEP1R0sqxXWB0gSP2A=
+	t=1716145266; cv=none; b=b4Q75WPdTsZRfoYKhVvdcVfEFTQUzBzOYveZ4SO2WEOhDgTzEAtzRd8HOCg0y4z3cjxhtdEdJCHujCu+PGn+vpsLJ1n31jXTENfJwqYAoAOQomeWXhqdw/NI02KY+yncQo4FD+PorbzD8mggv0IBhyh61KvdnfRDn3AcRuAtvGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716145040; c=relaxed/simple;
-	bh=I6nVrHOGANN67dUTbH0/caRelNajskVLBV6EupgLPkI=;
+	s=arc-20240116; t=1716145266; c=relaxed/simple;
+	bh=+NTM2AFV/JYg98I3O8bGHst8v5arhPNwUTtTa3tWfY8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pe/OSxcKZ+eAVX54t4YjvmljvuSADMg0nkYaJRt/Aw25DiI4Fc2TqtGPHLQ3psm0o27nD9F7va/oREi2luHt+PxlPuJB854tStCBuwSqvv+3nP09+5P6hPep5ILBN7Wr8R3AlSAxfNz5c+NWwhIVTq9rQaAECVKKPFV3cBVs2cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AES6ZGlv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3A6C32781;
-	Sun, 19 May 2024 18:57:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N1zH2OnY0CvzjNu2FLySF1AZrZIwcij95onOu57NZ6h2zwg5iSmIC4LSrGEG8V2PkznS8Xn9CW43jRDYVinDEjn6ogVLa6RTwdehTcMVsYzQeIPLW+0jkkQGSo/2KBdd2IGDwqMhxcQHvj1CYT2kgOt7KTmuqgawDv8V6PdbLJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WkDpWN0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FE31C32782;
+	Sun, 19 May 2024 19:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716145040;
-	bh=I6nVrHOGANN67dUTbH0/caRelNajskVLBV6EupgLPkI=;
+	s=k20201202; t=1716145265;
+	bh=+NTM2AFV/JYg98I3O8bGHst8v5arhPNwUTtTa3tWfY8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=AES6ZGlv7/z+pw7dXTJgSEYHzgam2vIdt87AygYXDbDoytoUHFq7Hu9yq/QPe7ot8
-	 XgCvYyIPvuTlCeGfviULyonfmMkk/NhNWRYv4Xo2D1uuStdrGLgpwqVd61jMr8CsTp
-	 v8lKTrCCvtzkqjT9Nm6e0vmDabJqm6Cm+jniX2ftSEXJ91xvAFvPpnU00VxXKRusPO
-	 cudjXQZdbsuOiajfnifqGJClEWvwP12Kwa9I4+IFF0fCcjShTcmnMCxHMz7xSp89pu
-	 lWSWmgo0xxPyGd/luOibJH2AxUK6fe+HUPbbu0J7RVptb1xpXjIU5iH72FuT/eSuAD
-	 5sJoMgU7fyDSg==
-Date: Sun, 19 May 2024 19:57:07 +0100
+	b=WkDpWN0u2reyaLj3i7CshFz8cj0YJiQy9QsrYy+2Bnpo2+dEgt7MpqqzQP0eTaUkb
+	 Mp6owEfPAyudlg7H1ZRkf47updK1krUdqPnCi9az+MQlm91f+lode/OI2uPxPZrsO0
+	 DdSIonO+cwtmfePzIp9F+qn2HEH1fIBWJoP+lEJA7nlWd/Ew4h0j2HOqNnOMKEiAHr
+	 BmCYjmMuxkiLbVscfhU3X0PD3e1Jj7JTqQqhy5QJ2cBR9+jcts372f8GH04IMgwgKd
+	 CdJjxL9pCEyTTcTP1UBJ9NqhYtQ/2ttH4BpfUL3NA+tcoWCaHoIb3/09ZPTzlItnSa
+	 LYd0efhomaxfA==
+Date: Sun, 19 May 2024 20:00:53 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, conor+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, robh@kernel.org, nuno.sa@analog.com
-Subject: Re: [PATCH v3 9/9] drivers: iio: imu: Add support for adis1657x
- family
-Message-ID: <20240519195707.71163f84@jic23-huawei>
-In-Reply-To: <20240517074750.87376-10-ramona.bolboaca13@gmail.com>
-References: <20240517074750.87376-1-ramona.bolboaca13@gmail.com>
-	<20240517074750.87376-10-ramona.bolboaca13@gmail.com>
+To: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Cc: Crt Mori <cmo@melexis.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ dan.carpenter@linaro.org, kernel-janitors@vger.kernel.org,
+ error27@gmail.com
+Subject: Re: [PATCH v2] iio: temperature: mlx90635: Fix ERR_PTR dereference
+ in mlx90635_probe()
+Message-ID: <20240519200053.3ad535ae@jic23-huawei>
+In-Reply-To: <b6f1d062-5f09-4d57-aa24-e8515c5cebcf@oracle.com>
+References: <20240513203427.3208696-1-harshit.m.mogalapalli@oracle.com>
+	<20240519132940.3714e57b@jic23-huawei>
+	<b6f1d062-5f09-4d57-aa24-e8515c5cebcf@oracle.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,99 +65,72 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 17 May 2024 10:47:50 +0300
-Ramona Gradinariu <ramona.bolboaca13@gmail.com> wrote:
+On Sun, 19 May 2024 19:06:55 +0530
+Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com> wrote:
 
-> Add support for ADIS1657X family devices in already exiting ADIS16475
-> driver.
+> Hi Jonathan,
 > 
-> Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-
-Whilst it's not necessarily vital to support, it I'm curious about
-what happens to the hardware timestamp? I thought we had one driver
-still doing hardware timestamps directly to the buffer, but I can't
-find it so I guess we now deal with alignment in the few devices with
-this support.  The st_lsm6dsx has this sort of combining of local
-and fifo timestamps for example.
-
-As it stands I think you push the same timestamp for all scans read
-from the fifo on a particular watermark interrupt?  That isn't
-ideal given we should definitely be able to do better than that.
-
-> +
-> +static const struct iio_dev_attr *adis16475_fifo_attributes[] = {
-> +	&iio_dev_attr_hwfifo_watermark_min.dev_attr.attr,
-> +	&iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
-> +	&iio_dev_attr_hwfifo_watermark.dev_attr.attr,
-> +	&iio_dev_attr_hwfifo_enabled.dev_attr.attr,
-The autobuilder caught this one.  Drop the dev_attr.attr.
-
-> +	NULL
-> +};
-> +
-
-> +
-> +static const struct iio_buffer_setup_ops adis16475_buffer_ops = {
-> +	.postenable = adis16475_buffer_postenable,
-> +	.postdisable = adis16475_buffer_postdisable,
-> +};
-> +
-> +static int adis16475_set_watermark(struct iio_dev *indio_dev, unsigned int val)
-> +{
-> +	struct adis16475 *st  = iio_priv(indio_dev);
-> +	int ret;
-> +	u16 wm_lvl;
-> +
-> +	adis_dev_lock(&st->adis);
-
-As a follow up perhaps consider defining magic to use guard() for these as there are
-enough users that will be simplified to make it worth the effort.	
-
-> +
-> +	val = min_t(unsigned int, val, ADIS16575_MAX_FIFO_WM);
-> +
-> +	wm_lvl = ADIS16575_WM_LVL(val - 1);
-> +	ret = __adis_update_bits(&st->adis, ADIS16475_REG_FIFO_CTRL, ADIS16575_WM_LVL_MASK, wm_lvl);
-> +	if (ret)
-> +		goto unlock;
-> +
-> +	st->fifo_watermark = val;
-> +
-> +unlock:
-> +	adis_dev_unlock(&st->adis);
-> +	return ret;
-> +}
-> +
-
-
-
-
-> @@ -1514,8 +1978,20 @@ static int adis16475_probe(struct spi_device *spi)
->  	if (ret)
->  		return ret;
+> On 19/05/24 17:59, Jonathan Cameron wrote:
+> > On Mon, 13 May 2024 13:34:27 -0700
+> > Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com> wrote:
+> >   
+> >> When devm_regmap_init_i2c() fails, regmap_ee could be error pointer,
+> >> instead of checking for IS_ERR(regmap_ee), regmap is checked which looks
+> >> like a copy paste error.
+> >>
+> >> Fixes: a1d1ba5e1c28 ("iio: temperature: mlx90635 MLX90635 IR Temperature sensor")
+> >> Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>  
+> > Please make sure to pick up tags given on earlier versions.  You dropped
+> > Crt's Reviewed-by without giving a reasons. I've put it back.
+> >   
 > 
-> -	ret = devm_adis_setup_buffer_and_trigger(&st->adis, indio_dev,
-> -						 adis16475_trigger_handler);
-> +	if (st->info->flags & ADIS16475_HAS_FIFO) {
-> +		ret = devm_adis_setup_buffer_and_trigger_with_attrs(&st->adis, indio_dev,
-> +								    adis16475_trigger_handler_with_fifo,
-> +								    &adis16475_buffer_ops,
-> +								    adis16475_fifo_attributes);
-> +		if (ret)
-> +			return ret;
-blank line here.
+> Sorry, I thought we should not add tags as v1-->v2: is for addressing 
+> the reviewers(Crt's) comments.
+> 
+> I will keep this in mind.
+It's a case of judging if they are likely to mind the changes.
+Here Crt had confirmed he was, so easy decision!
 
-> +		/* Update overflow behavior to always overwrite the oldest sample. */
-> +		ret = adis_update_bits(&st->adis, ADIS16475_REG_FIFO_CTRL,
-> +				       ADIS16575_OVERFLOW_MASK, (u16)ADIS16575_OVERWRITE_OLDEST);
-		if (ret) in here.
-> +	} else {
-> +		ret = devm_adis_setup_buffer_and_trigger(&st->adis, indio_dev,
-> +							 adis16475_trigger_handler);
-and if (ret) in here and drop the one that follows.
+If you drop a tag, just say why below the --- in the patch.
 
-otherwise we end up with odd code pattern of handling one case in this scope and not
-the other two.
 
-> +	}
+
+> 
+> Thanks,
+> Harshit
+> 
+> > Applied to the fixes-togreg branch of iio.git and marked for stable.
+> > I'll be rebasing that on rc1 once available. Until then it won't be visible.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> >   
+> >> ---
+> >> This is found using smatch, only compile tested.
+> >> v1->v2: Address Crt's comments.
+> >> ---
+> >>   drivers/iio/temperature/mlx90635.c | 6 +++---
+> >>   1 file changed, 3 insertions(+), 3 deletions(-)
+> >>
+> >> diff --git a/drivers/iio/temperature/mlx90635.c b/drivers/iio/temperature/mlx90635.c
+> >> index 1f5c962c1818..f7f88498ba0e 100644
+> >> --- a/drivers/iio/temperature/mlx90635.c
+> >> +++ b/drivers/iio/temperature/mlx90635.c
+> >> @@ -947,9 +947,9 @@ static int mlx90635_probe(struct i2c_client *client)
+> >>   				     "failed to allocate regmap\n");
+> >>   
+> >>   	regmap_ee = devm_regmap_init_i2c(client, &mlx90635_regmap_ee);
+> >> -	if (IS_ERR(regmap))
+> >> -		return dev_err_probe(&client->dev, PTR_ERR(regmap),
+> >> -				     "failed to allocate regmap\n");
+> >> +	if (IS_ERR(regmap_ee))
+> >> +		return dev_err_probe(&client->dev, PTR_ERR(regmap_ee),
+> >> +				     "failed to allocate EEPROM regmap\n");
+> >>   
+> >>   	mlx90635 = iio_priv(indio_dev);
+> >>   	i2c_set_clientdata(client, indio_dev);  
+> >   
+> 
+
 

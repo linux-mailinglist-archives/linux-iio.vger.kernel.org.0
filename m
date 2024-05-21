@@ -1,86 +1,92 @@
-Return-Path: <linux-iio+bounces-5148-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5149-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 279358CA845
-	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 08:58:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E84D8CA858
+	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 09:03:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6C782827C5
-	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 06:58:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0B7C1F215A2
+	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 07:03:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89CC47A7C;
-	Tue, 21 May 2024 06:58:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD394D5B0;
+	Tue, 21 May 2024 07:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d4Dl3Diw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RQxvh4Uf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 313EE4EB24;
-	Tue, 21 May 2024 06:58:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED41F482EE;
+	Tue, 21 May 2024 07:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716274694; cv=none; b=WaSCXrgyuFpz7wna0j7vRX2TbGkN18wS21Iyk4Ega81Sx+/aXYTfMvSNcjoY+qz5j3CsHMkaOR7r+jYCdALFSKFJjJ3lC5pwL+4+ZBbqd+7e5DA73yzs6mMZBA8gvn+ugcDXFzWsSotN0b9MpSQYbyKuPbd1h+AvgKm/iby1N60=
+	t=1716275014; cv=none; b=W01/DiQ3c+6inOA4VYa1BlPqtYc4m6UtGDPN9zZ1siZSCmtj2ISc6khN6J94tndJvNvF64UjLcRa7X6QKwweMFzCfGutnosEEemCMiP8KkiTmvuHWuXz+9k8VUMNLwytNQYp6u/rbHNHG1xKfCjn0BkPxBnUlwy175PyoXNFP8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716274694; c=relaxed/simple;
-	bh=S1L5vmGoC0m8fnlP6zf0XqLv3lg1zpGo7r8IcCTbE6U=;
+	s=arc-20240116; t=1716275014; c=relaxed/simple;
+	bh=W78xOUZOmKMQybBB10sYcYuLAnuxE6oCWILwuCswGSo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=RVEdWX6Ta7H9FC8H4tD6CNAN6ZiXL2FAVeL5KC6k3Gztj1XKj6/TRqEG7rICRhZerm7+T1gCvAhvsQSI976cLDrcTJPRANEEDJMVDi0aKZ10wQl3CAzlqxO0NEN+Wrilp7fM3V/mx/r7bjyJzmb60en3UMF5RTdFjO4PrOu5JDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d4Dl3Diw; arc=none smtp.client-ip=209.85.218.53
+	 Content-Type:MIME-Version; b=UpPFLhmcXNX5CBBKHGFphicQEUsqUntJnvKXo4Z+I/YN4oC2pNObXfjOr4R5siW7HjwpssYbtM8XsdfBnOXAnn4XvtYokb9k0JL6HSuGa7B+T/8VRSsii74OLbriP5LoO0RVkbjilp5XGe/2jaVS5nxNHftuDUp+mtJgKgLCNHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RQxvh4Uf; arc=none smtp.client-ip=209.85.208.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a59cf8140d0so658441666b.3;
-        Mon, 20 May 2024 23:58:12 -0700 (PDT)
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-56e1baf0380so8186708a12.3;
+        Tue, 21 May 2024 00:03:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716274691; x=1716879491; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716275011; x=1716879811; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=WUq+MD3cDlgv9ew/G/k6DDudnFMyeCNHou9Fxg3fOAI=;
-        b=d4Dl3DiwDjWZ/u8F9UecEp1RIwH9R7rzOC79wGr9fsiq8+QMIynU0sHsU6bjxFl8An
-         l3FzDX71kbbxdiIwOOQ1NIO7WJQb2MghqKE8+d9pRN/porWm0ZAv9Pu5ZAEjUkAYCdMk
-         fnAygq0faLRTtczoeY6ZxJze+BksfI65IxIdxGFx9wYxlpW82hxyWyCjepnNio+C5JQu
-         Bkazf+jAjXoZyCMjG9cEZIimv+iV+DIPHcEcT3QMcnBJYcP6es7OG/wz8cxAkBRfvOAP
-         vJIAzwc7VbvoHP6kxb3eZHXS+5VpaUiYNiXFe1CqSediYkWEh1KwhNBv6BKw9FXJnEn3
-         /PTw==
+        bh=W78xOUZOmKMQybBB10sYcYuLAnuxE6oCWILwuCswGSo=;
+        b=RQxvh4UfoDO7eMq2LNyiZRuqzq5rOu8vbcinWfo8n3yrx2iMlxX9V23OWgt764QeRH
+         HMCcXL2CfPWnOxPM9arKIr27CtYYIgAW/jpdrH02cf6QoGGz/h9zwnehpFi/e6Ef1uGf
+         kG7mvXBQQGEhnoBtHtltbiTDeryKf3NWcDaG6e+uLqssJ690S13j2gLRSZgbb4wtpOXc
+         NC1nUgbIa96eJ4nXt6INYo0mEe6i2p+4CpfzpqemookUZT5wgTufaMZlSHBX6FKz1mmc
+         gh2lIB5N+7hvXVfFr/zchRX8DSwQAjX0aA29K/ESHpeZ58MbZj6vsEt973UIdxYEKWtP
+         eilQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716274691; x=1716879491;
+        d=1e100.net; s=20230601; t=1716275011; x=1716879811;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=WUq+MD3cDlgv9ew/G/k6DDudnFMyeCNHou9Fxg3fOAI=;
-        b=OUbDMTj4WdX1sPfROUojgzs6m9SgtZ7cK3DzvjukzDkuIaGHxZGwTri4xeW2B6Xf/2
-         9oQWReJ1paaZDotA2W6EhH3Hu5v0azhb+N2BikWKS0ZPH5nKI4uvN7gOC1703DnJ4ZnC
-         xQqmcvVE6nSOiRM8lgaOSSAvqeqJ9VL5mZcrxrPiEG0nvlxfbSKhjJyCGe0Oq6DSR0eK
-         YUHHEn78ku8MfbC7ZN2c9NdgveBKmzAoFZd0J1CNaFbtcVgFFM4eUNVqGy4YmWySfBpE
-         2Syl/Dyf89O/salZchdesfueB5oT6ahdPm5DbWheFUwtHaju4xJWDU60ce4JjdtHS43T
-         Ds/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXqGmgpQ2KK7WguFpoLZB+yB6ZqXxj+ImJsgJIXyjDvvTaNpSjo2E7sly4AzEU7u7cu/7YkIN+v+pYopWBdGb72IdFuZHjolFH3ICmMrWxv6g+gNivyz84T72eC2kb2tmsaCIneBQ==
-X-Gm-Message-State: AOJu0YwkyoEKJt2LqH/eT3aoYO+duLK1qjKCKMmRqZ2NuxeX/Y9Ma3hQ
-	U8ACYgmEUX8aFmnTqRBqF+4oprk+ckew3s90Sx2L4l323GzpZrk8G9V0aFbhIj4=
-X-Google-Smtp-Source: AGHT+IGLsXZvaNr+YSms8SZ+29sSYLe8eRuQc58MenAVXVrTTR+c0UdLaIjSH88FAy3dKmfcfZAiEA==
-X-Received: by 2002:a17:906:3a8d:b0:a59:ad2b:ec95 with SMTP id a640c23a62f3a-a5a2d67e2c0mr1805961166b.67.1716274691247;
-        Mon, 20 May 2024 23:58:11 -0700 (PDT)
+        bh=W78xOUZOmKMQybBB10sYcYuLAnuxE6oCWILwuCswGSo=;
+        b=Ers/TdZ9aPdnQcaTypS3/ROM4u3NjIxRyPPy3/Q+xsSW/mNjhXWWt1afi5XOYshi7I
+         DwAbfcPGd3kXQK2f/EatTW/V8k2zZXY5sON3av7cgaz4RAwF09Z+tie0C7SOp43nr0WF
+         M5fmvlj2iFIwtIdI4wJbzrOlgpCn0fdJ4hiNrDug1U+WEEDUrEOyWZbJjWFaniZYgmFK
+         /wqWdqtCCKlDnRWPyLPAxcg8dlVftmHgIJnYM67dwzzxJrAoH0Y0C35SO4vuIvQNEYW4
+         beivepT7XhJVsWLNf/B3/ciD0ALRFNIUMGdU55k/Zz5WhSs2/+IJFLGMPb/EaOkYQ7dq
+         EloA==
+X-Forwarded-Encrypted: i=1; AJvYcCX0BT1ifd0/1WbY93cUC+J8BwnUD5TwdQTcoQ4Bxx2B5oreokPSTRXgg5Ftb9rc128KCWvXyCSRpPlVokfPuKZ0BtjushFeqlEvzbg7fPHQGLj0WXpy1DfGdsNKtZvHGCjeHy3pfarwFyLFArR3gSujMgaG1MnNH8B9XXmsYRhOIdEdYA==
+X-Gm-Message-State: AOJu0YzvAFcij+CngUjsy8VkZOOHSCWKjZq5qR6o+shKLsPsf72Ngkya
+	RnYa0w3aiMUO8GAsvDYUpm3o1+ZYnb9kRlpbi8obFIWRpAT+GX5c
+X-Google-Smtp-Source: AGHT+IHP3aBOXM8g4YEaHEojj+mC+t8FVqMFj9KRZf01Rot23J/TsU0IchRswJMfRX/eknS+ziFrTA==
+X-Received: by 2002:a05:6402:3488:b0:578:2677:7fd with SMTP id 4fb4d7f45d1cf-57826770eafmr30315a12.36.1716275011005;
+        Tue, 21 May 2024 00:03:31 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b177f0sm1561543466b.209.2024.05.20.23.58.10
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5733c323866sm16109624a12.87.2024.05.21.00.03.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 May 2024 23:58:10 -0700 (PDT)
-Message-ID: <1b93cc45944c7d1491184adafb55e0c99675ff32.camel@gmail.com>
-Subject: Re: [PATCH v3 9/9] drivers: iio: imu: Add support for adis1657x
- family
+        Tue, 21 May 2024 00:03:30 -0700 (PDT)
+Message-ID: <4d226c3a3662374dca766b2a8f9f3479a63ddc39.camel@gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: dac: add docs for ad8460
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, Ramona Gradinariu
-	 <ramona.bolboaca13@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, conor+dt@kernel.org, 
-	krzysztof.kozlowski+dt@linaro.org, robh@kernel.org, nuno.sa@analog.com
-Date: Tue, 21 May 2024 09:01:54 +0200
-In-Reply-To: <20240519195707.71163f84@jic23-huawei>
-References: <20240517074750.87376-1-ramona.bolboaca13@gmail.com>
-	 <20240517074750.87376-10-ramona.bolboaca13@gmail.com>
-	 <20240519195707.71163f84@jic23-huawei>
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>
+Cc: Mariel Tinaco <Mariel.Tinaco@analog.com>, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Marcelo Schmitt
+ <marcelo.schmitt1@gmail.com>,  Dimitri Fedrau <dima.fedrau@gmail.com>,
+ Guenter Roeck <linux@roeck-us.net>
+Date: Tue, 21 May 2024 09:07:14 +0200
+In-Reply-To: <CAMknhBE9mJUXsKYVwHb=6d3tVk9DiODWjqtzv9q+zSer5XqrqQ@mail.gmail.com>
+References: <20240510064053.278257-1-Mariel.Tinaco@analog.com>
+	 <20240510064053.278257-2-Mariel.Tinaco@analog.com>
+	 <CAMknhBFXk07HbP_pPg5wkW-9Ah2-66kGzZFvcvBNrbjfguHb4g@mail.gmail.com>
+	 <20240511172500.718fe12d@jic23-huawei>
+	 <CAMknhBE9mJUXsKYVwHb=6d3tVk9DiODWjqtzv9q+zSer5XqrqQ@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.1 
@@ -91,65 +97,142 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sun, 2024-05-19 at 19:57 +0100, Jonathan Cameron wrote:
-> On Fri, 17 May 2024 10:47:50 +0300
-> Ramona Gradinariu <ramona.bolboaca13@gmail.com> wrote:
->=20
-> > Add support for ADIS1657X family devices in already exiting ADIS16475
-> > driver.
+On Sat, 2024-05-11 at 13:47 -0500, David Lechner wrote:
+> On Sat, May 11, 2024 at 11:25=E2=80=AFAM Jonathan Cameron <jic23@kernel.o=
+rg> wrote:
 > >=20
-> > Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+> > On Fri, 10 May 2024 12:28:19 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >=20
+> > > On Fri, May 10, 2024 at 1:42=E2=80=AFAM Mariel Tinaco <Mariel.Tinaco@=
+analog.com>
+> > > wrote:
+> > > >=20
+> > > > This adds the bindings documentation for the 14-bit
+> > > > High Voltage, High Current, Waveform Generator
+> > > > Digital-to-Analog converter.
+> > > >=20
+> > > > Signed-off-by: Mariel Tinaco <Mariel.Tinaco@analog.com>
+> > > > ---
+> > > > =C2=A0.../bindings/iio/dac/adi,ad8460.yaml=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 67 +++++++++++++++++++
+> > > > =C2=A0MAINTAINERS=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0 |=C2=A0 7 ++
+> > > > =C2=A02 files changed, 74 insertions(+)
+> > > > =C2=A0create mode 100644
+> > > > Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml
+> > > >=20
+> > > > diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ad8460.y=
+aml
+> > > > b/Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml
+> > > > new file mode 100644
+> > > > index 000000000..924f76209
+> > > > --- /dev/null
+> > > > +++ b/Documentation/devicetree/bindings/iio/dac/adi,ad8460.yaml
+> > > > @@ -0,0 +1,67 @@
+> > > > +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> > > > +# Copyright 2024 Analog Devices Inc.
+> > > > +%YAML 1.2
+> > > > +---
+> > > > +$id: http://devicetree.org/schemas/iio/dac/adi,ad8460.yaml#
+> > > > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > > > +
+> > > > +title: Analog Devices AD8460 DAC
+> > > > +
+> > > > +maintainers:
+> > > > +=C2=A0 - Mariel Tinaco <mariel.tinaco@analog.com>
+> > > > +
+> > > > +description: |
+> > > > +=C2=A0 Analog Devices AD8460 110 V High Voltage, 1 A High Current,
+> > > > +=C2=A0 Arbitrary Waveform Generator with Integrated 14-Bit High Sp=
+eed DAC
+> > > > +=C2=A0
+> > > > https://www.analog.com/media/en/technical-documentation/data-sheets=
+/ad8460.pdf
+> > > > +
+> > > > +properties:
+> > > > +=C2=A0 compatible:
+> > > > +=C2=A0=C2=A0=C2=A0 enum:
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 - adi,ad8460
+> > > > +
+> > > > +=C2=A0 reg:
+> > > > +=C2=A0=C2=A0=C2=A0 maxItems: 1
+> > > > +
+> > > > +=C2=A0 spi-max-frequency:
+> > > > +=C2=A0=C2=A0=C2=A0 maximum: 20000000
+> > > > +
+> > > > +=C2=A0 vref-supply:
+> > >=20
+> > > It would be nice to make the property name match the pin name since
+> > > there is more than one reference voltage input.
+> > >=20
+> > > refio-1p2v-supply:
+> > >=20
+> > > > +=C2=A0=C2=A0=C2=A0 description: Drive voltage in the range of 1.2V=
+ maximum to as low
+> > > > as
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 low as 0.12V through the REF_IO pin=
+ to adjust full scale output
+> > > > span
+> > >=20
+> > > I don't seen anything in the datasheet named REF_IO. Is this a typo
+> > > and it should be REFIO_1P2V?
+> > >=20
+> > > > +
+> > > > +=C2=A0 clocks:
+> > > > +=C2=A0=C2=A0=C2=A0 description: The clock for the DAC. This is the=
+ sync clock
+> > > > +
+> > > > +=C2=A0 adi,rset-ohms:
+> > > > +=C2=A0=C2=A0=C2=A0 description: Specify value of external resistor=
+ connected to FS_ADJ
+> > > > pin
+> > > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 to establish internal HVDAC's refer=
+ence current I_REF
+> > > > +=C2=A0=C2=A0=C2=A0 minimum: 2000
+> > > > +=C2=A0=C2=A0=C2=A0 maximum: 20000
+> > > > +
+> > >=20
+> > > I see lots more pins on the datasheet, many of which should be trivia=
+l
+> > > to add bindings for (we prefer to have the bindings as complete as
+> > > possible even if the driver doesn't implement everything). Potential
+> > > candidates:
+> > >=20
+> > > sdn-reset-gpios: (active high)
+> > > reset-gpios: (active low)
+> > > sdn-io-gpios: (active high)
+> > >=20
+> > > hvcc-supply:
+> > > hvee-supply:
+> > > vcc-5v-supply:
+> > > vref-5v-supply:
+> > > dvdd-3p3v-supply:
+> > > avdd-3p3v-supply:
+> > >=20
+> > > It also looks like there is a parallel interface for data, so I would
+> > > expect to see an io-backends property that links to the PHY used for
+> > > handling that.
+> > >=20
+> > Ultimately yes, but the parallel interface might require some decisions=
+ on
+> > binding that are non obvious until it's actually implemented. So maybe
+> > don't need that bit from the start.=C2=A0 The rest I agree should be he=
+re.
+> >=20
+> >=20
 >=20
-> Whilst it's not necessarily vital to support, it I'm curious about
-> what happens to the hardware timestamp? I thought we had one driver
-> still doing hardware timestamps directly to the buffer, but I can't
-> find it so I guess we now deal with alignment in the few devices with
-> this support.=C2=A0 The st_lsm6dsx has this sort of combining of local
-> and fifo timestamps for example.
->=20
-> As it stands I think you push the same timestamp for all scans read
-> from the fifo on a particular watermark interrupt?=C2=A0 That isn't
-> ideal given we should definitely be able to do better than that.
->=20
-> > +
-> > +static const struct iio_dev_attr *adis16475_fifo_attributes[] =3D {
-> > +	&iio_dev_attr_hwfifo_watermark_min.dev_attr.attr,
-> > +	&iio_dev_attr_hwfifo_watermark_max.dev_attr.attr,
-> > +	&iio_dev_attr_hwfifo_watermark.dev_attr.attr,
-> > +	&iio_dev_attr_hwfifo_enabled.dev_attr.attr,
-> The autobuilder caught this one.=C2=A0 Drop the dev_attr.attr.
->=20
-> > +	NULL
-> > +};
-> > +
->=20
-> > +
-> > +static const struct iio_buffer_setup_ops adis16475_buffer_ops =3D {
-> > +	.postenable =3D adis16475_buffer_postenable,
-> > +	.postdisable =3D adis16475_buffer_postdisable,
-> > +};
-> > +
-> > +static int adis16475_set_watermark(struct iio_dev *indio_dev, unsigned=
- int
-> > val)
-> > +{
-> > +	struct adis16475 *st=C2=A0 =3D iio_priv(indio_dev);
-> > +	int ret;
-> > +	u16 wm_lvl;
-> > +
-> > +	adis_dev_lock(&st->adis);
->=20
-> As a follow up perhaps consider defining magic to use guard() for these a=
-s
-> there are
-> enough users that will be simplified to make it worth the effort.=09
->=20
+> Since the driver patch uses a DMA channel that isn't documented here,
+> I am assuming that the parallel interface is being used so we do need
+> to consider it now. :-)
 
-Already on my queue but if Ramona wants to step in, good. I already have pl=
-enty
-to do :)
+AFAIU, the way this is designed, the parallel interface is directly connect=
+ed to
+the DMA IP controller. So, at this point there's really no use for the DAC
+backend. We may have different designs in the future but no use case for no=
+w.
 
 - Nuno S=C3=A1
->=20
-
 

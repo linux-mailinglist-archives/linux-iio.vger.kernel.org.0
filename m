@@ -1,145 +1,154 @@
-Return-Path: <linux-iio+bounces-5157-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5158-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68718CADA5
-	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 13:51:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FE968CADA9
+	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 13:53:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75F79281C63
-	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 11:51:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3F421C22221
+	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 11:53:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D74F757EF;
-	Tue, 21 May 2024 11:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6080C74BE0;
+	Tue, 21 May 2024 11:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DViXGBwT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="evKcC3YT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8C66EB6E;
-	Tue, 21 May 2024 11:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8840047A74;
+	Tue, 21 May 2024 11:53:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716292264; cv=none; b=A/oQl/sqHv4JkZ3NQHANjJ3VLDeHucUAHJoL784hI40v7Xy/2VTFFe418wIqQTuAuDM2lk3PB9zaQdut/gxxB5DK83tF7Ft/egEpIZ2BdwpY+pw5qv7vdEdcGnXd0bDraM228dZ9nqoER+fwEAd/jJsQAi+5EE6zyzVuASgscnA=
+	t=1716292405; cv=none; b=QMTuXdbmEhpG6IZ2BX7mH+CUSjsROhedc48BOFO+wVHZltT1+2owwTjdQD/4o/sIp0nstPsBvoOjrvk2XqsQckyFcjJ2ouDAPQAJ4+WW9yb7TRQuElNknl7l0/h5MBY+yJSJlbMMXcGsjrF9DLSc07ylaWeBz6mHc8Zh+oOpRkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716292264; c=relaxed/simple;
-	bh=LW2SW54CS7kiFzJ+0X6xF+D2LW3LQDKnImBKOygd46E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qZviy8LzWUYjUvKNWEnjy0uUHZh2cHMnoalO/RyiGMkIt0CAf7LZB45z5/2+JYlV5bQ16XGCBBMITf4fhOM0r0MnGaEf1sVE7X9g9GsZ+hzrHRQ7htKAHuW8ZTBlaeH5sAbvUZwCePJAdfK3O8PngHG//RfbF0UXv4cFUlH0vo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DViXGBwT; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1716292262; x=1747828262;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LW2SW54CS7kiFzJ+0X6xF+D2LW3LQDKnImBKOygd46E=;
-  b=DViXGBwT9bwQ00LBzcz/lG23a7ILjpce/CGFqppRJ1GL/Jqz1oZlaoO7
-   PyQTyTQEnUKVh/mBsBAi+O29qLbaE9QowiZQCqAYaREdLmj9000vH/nzv
-   nSkQ5J1b40HVQZiOezut6wdvB166EX6ImymPpgpwzyBCKM19uA72egQMn
-   X8+pbGuKis1hd5DKZvw7pbA9RzlSbp20+N1D24n5OJSz6Atqq9DG+1kio
-   hI8//q/OpzcfYU+7fTJuCrwQhSqoXSUzRVAtxqck/PjIIfG8xGjAlY+ML
-   r5v7DH/qvjRo9ljXE4wT9WtDJ1OzGhJrqZ7QL/VFDYUM4/pmg+xxFBCXy
-   w==;
-X-CSE-ConnectionGUID: wxDvXtzhTNCV6eeQlSQyiA==
-X-CSE-MsgGUID: dIceliU+TJe66YidjMH20w==
-X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="15425136"
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; 
-   d="scan'208";a="15425136"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 04:51:01 -0700
-X-CSE-ConnectionGUID: wiMzQji1Rc+4RukGpTyyzA==
-X-CSE-MsgGUID: aJzOEdKUQN2RouCil4rAwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; 
-   d="scan'208";a="33489098"
-Received: from unknown (HELO 108735ec233b) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 21 May 2024 04:50:59 -0700
-Received: from kbuild by 108735ec233b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1s9O1A-0006K0-0X;
-	Tue, 21 May 2024 11:50:56 +0000
-Date: Tue, 21 May 2024 19:50:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, lars@metafoo.de, swboyd@chromium.org,
-	nuno.a@analog.com, andy.shevchenko@gmail.com,
-	u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, yasin.lee.x@gmail.com,
-	yasin.lee.x@outlook.com
-Subject: Re: [PATCH] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S sensor
- driver
-Message-ID: <202405211949.0oxrugaN-lkp@intel.com>
-References: <SN7PR12MB8101EDFA7F91A59761095A28A4E72@SN7PR12MB8101.namprd12.prod.outlook.com>
+	s=arc-20240116; t=1716292405; c=relaxed/simple;
+	bh=bgbL4qkqVJQCDQnzAo0jbcRu2jQl8c9c7m8V4LS1btE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=GzIpVgc72NugRVO3eIrhoXnI+zAjVi8L0xTvdYVl8YRXZKjAqlTfTuhxkw8oHPPixgX/LS1vQmrkqIb4i6zvyAgYa6JCc7705CBZjSbsRW9S06UhZROgTCoPPnNugBNwCL7y5EWgAVupvS2OlPM1G48naSIetWYOma4PYCv4lPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=evKcC3YT; arc=none smtp.client-ip=209.85.167.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-51f40b5e059so5316571e87.0;
+        Tue, 21 May 2024 04:53:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716292402; x=1716897202; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bgbL4qkqVJQCDQnzAo0jbcRu2jQl8c9c7m8V4LS1btE=;
+        b=evKcC3YT3e6hmG0mTrY/b08rmdDx+blHrFleFIXtUyy6Xzjz8qjrnlifG79srxu+OV
+         e8tepVEz3Gob24UJjRduGmsU+tB3QUcQwpPUEZGSaIbNvXWZUUadqkIqNxDYudvRr3QN
+         gdHGGzxXPZNU4jL6LdHDktifDmFyYp8AnNWIG7wGEJbQuuMpzG60y9rkoqbDwGj3u27l
+         c+NXJkG7i5O7fssuQyQU4i/h2ZgsrJV3DxUyIDAsF7m91wckMKZrDMx1sCPw5LPnpkYm
+         hNKxLJLZfTEoWwGdq89ck37uoRyAdwBTPj3/k4vJ0p13Kzj9GNGcTR7AwFxENLV/mlmf
+         2RWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716292402; x=1716897202;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bgbL4qkqVJQCDQnzAo0jbcRu2jQl8c9c7m8V4LS1btE=;
+        b=Huyb5cM31d+A6yEhWPd6uIJ2Lh17mgY8/fscOJ32omYUoYd6U/gg/BY+bqfu6wPI2U
+         a08UofU9xixhFU85kGztC+HG3EK6GnU6N5ZsQjof5zA/OXhtsDz2cg7Sr9LD9UauALR0
+         a/p/AGl9uiBRpdYxdqErnJeQXuYZFUIWm0Z7pKrua3vuXS+yKObQzCgpQvk820I4ZVLQ
+         yIH/OspvjUDyppJ1eGBmoW1VD+Uj2QISi9VO07z6x2d2kcuWsEvfq8+gJ0KXdFRokWaF
+         ZhaFsrPAS2yIMVmNv6PT5tju4uCaKXyKUCO7kC5zSTlsNn3dWhMPICdULAMtaXWvgD0O
+         HgVw==
+X-Forwarded-Encrypted: i=1; AJvYcCUlb7nlsLFRYaT2KY5AZoP4Fii+ja6k6vSRti8fYti3gmG63XEIHFr9yLrhNFWZrpIjW2GyxQVbdEvZZtVYJypGIRKzUvQoU0AKIrAQaq6vITRx3m6WeQ78gTf8spCMsIY7sLqeYVj7VdkRDrXsLxlyPEzLRBi5j8gnxdrp7n02FE7NDN4xEf8ra0MGR0AvWbwkcuLNiT2r7ETnfdUXcg==
+X-Gm-Message-State: AOJu0YwZ2ebEpV/JnO+6HzttBLqRKM2puX713KN8GBA0syMBJ/bHWL10
+	lQq9StqN5+Z9K8NYBsfzZ+HFMB4hShOzK8dJwxLCsoNiIjODDuo7
+X-Google-Smtp-Source: AGHT+IHvcCZyF+4F7NuebEMVZAlg5/2Fo32USFCmrjE0s61wGflmsUuW+CUAJ2Cuu2lxlU0PcU10WA==
+X-Received: by 2002:a05:6512:3c84:b0:523:a5b3:5e21 with SMTP id 2adb3069b0e04-523a5b35fe3mr13753664e87.8.1716292401392;
+        Tue, 21 May 2024 04:53:21 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5752c2e2f2dsm4201664a12.29.2024.05.21.04.53.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 May 2024 04:53:21 -0700 (PDT)
+Message-ID: <a35a8063dd3488093be9d1596268856fbcc02177.camel@gmail.com>
+Subject: Re: [PATCH RFC v2 2/8] spi: add basic support for SPI offloading
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
+ Jonathan Cameron
+	 <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno
+ =?ISO-8859-1?Q?S=E1?=
+	 <nuno.sa@analog.com>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Lars-Peter Clausen
+	 <lars@metafoo.de>, David Jander <david@protonic.nl>, Martin Sperl
+	 <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-iio@vger.kernel.org
+Date: Tue, 21 May 2024 13:57:03 +0200
+In-Reply-To: <20240510-dlech-mainline-spi-engine-offload-2-v2-2-8707a870c435@baylibre.com>
+References: 
+	<20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com>
+	 <20240510-dlech-mainline-spi-engine-offload-2-v2-2-8707a870c435@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.1 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN7PR12MB8101EDFA7F91A59761095A28A4E72@SN7PR12MB8101.namprd12.prod.outlook.com>
 
-Hi Yasin,
+On Fri, 2024-05-10 at 19:44 -0500, David Lechner wrote:
+> SPI offloading is a feature that allows the SPI controller to perform
+> complex transfers without CPU intervention. This is useful, e.g. for
+> high-speed data acquisition.
+>=20
+> This patch adds the basic infrastructure to support SPI offloading. It
+> introduces new callbacks that are to be implemented by controllers with
+> offload capabilities.
+>=20
+> On SPI device probe, the standard spi-offloads devicetree property is
+> parsed and passed to the controller driver to reserve the resources
+> requested by the peripheral via the map_channel() callback.
+>=20
+> The peripheral driver can then use spi_offload_prepare() to load a SPI
+> message into the offload hardware.
+>=20
+> If the controller supports it, this message can then be passed to the
+> SPI message queue as if it was a normal message. Future patches will
+> will also implement a way to use a hardware trigger to start the message
+> transfers rather than going through the message queue.
+>=20
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+>=20
+> v2 changes:
+>=20
+> This is a rework of "spi: add core support for controllers with offload
+> capabilities" from v1.
+>=20
+> The spi_offload_get() function that Nuno didn't like is gone. Instead,
+> there is now a mapping callback that uses the new generic devicetree
+> binding to request resources automatically when a SPI device is probed.
+>=20
 
-kernel test robot noticed the following build errors:
+Yeah, what I disliked the most was adding the platform devices from spi-eng=
+ine
+driver and then the complexity in the IIO trigger part of it.=C2=A0I also d=
+idn't like
+(as you said) for the peripheral to have to explicitly request an offload b=
+ut,
+IIRC, Mark was actually ok with the spi_offload_get/put() mechanism so let'=
+s see
+what he has to say. He's main point (I think) was for the controllers to ha=
+ve a
+way to know which offload instance is busy or not (but I guess controllers =
+can
+keep track of that as well with this approach and using the enable/disable
+callbacks or the prepare/unprepare).
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master v6.9 next-20240521]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+THB, I do like this approach (and it is what I had in mind) and it's simple
+enough while covering what we know about this feature atm.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yasin-Lee/iio-proximity-hx9031as-Add-TYHX-HX9031AS-HX9023S-sensor-driver/20240515-083021
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/SN7PR12MB8101EDFA7F91A59761095A28A4E72%40SN7PR12MB8101.namprd12.prod.outlook.com
-patch subject: [PATCH] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S sensor driver
-config: xtensa-randconfig-001-20240521 (https://download.01.org/0day-ci/archive/20240521/202405211949.0oxrugaN-lkp@intel.com/config)
-compiler: xtensa-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240521/202405211949.0oxrugaN-lkp@intel.com/reproduce)
+- Nuno S=C3=A1
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405211949.0oxrugaN-lkp@intel.com/
 
-All errors (new ones prefixed by >>):
-
-   `.exit.text' referenced in section `__jump_table' of fs/fuse/inode.o: defined in discarded section `.exit.text' of fs/fuse/inode.o
-   `.exit.text' referenced in section `__jump_table' of fs/fuse/inode.o: defined in discarded section `.exit.text' of fs/fuse/inode.o
-   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `__regmap_init_spi':
-   regmap-spi.c:(.text+0x17c): undefined reference to `spi_write_then_read'
-   xtensa-linux-ld: regmap-spi.c:(.text+0x1a2): undefined reference to `spi_write_then_read'
-   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `__devm_regmap_init_spi':
-   regmap-spi.c:(.text+0x2a0): undefined reference to `spi_sync'
-   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_async_alloc':
-   regmap-spi.c:(.text+0x372): undefined reference to `spi_sync'
-   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `spi_sync_transfer.constprop.0':
-   regmap-spi.c:(.text+0x3f4): undefined reference to `spi_async'
-   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_write':
-   regmap-spi.c:(.text+0x53e): undefined reference to `spi_async'
-   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_async_write':
-   regmap-spi.c:(.text+0x6eb): undefined reference to `spi_sync'
-   xtensa-linux-ld: drivers/iio/dac/ad9739a.o:(.init.literal+0x8): undefined reference to `__spi_register_driver'
-   xtensa-linux-ld: drivers/iio/dac/ad9739a.o: in function `ad9739a_driver_init':
-   ad9739a.c:(.init.text+0x1e): undefined reference to `__spi_register_driver'
-   xtensa-linux-ld: drivers/iio/proximity/hx9031as.o: in function `hx9031as_manual_offset_calibration_store':
-   hx9031as.c:(.text.unlikely+0x15e8): undefined reference to `__udivdi3'
->> xtensa-linux-ld: hx9031as.c:(.text.unlikely+0x167f): undefined reference to `__udivdi3'
-   xtensa-linux-ld: drivers/iio/proximity/hx9031as.o: in function `schedule_delayed_work.constprop.0.isra.0':
-   hx9031as.c:(.text.unlikely+0x18ca): undefined reference to `__udivdi3'
-
-Kconfig warnings: (for reference only)
-   WARNING: unmet direct dependencies detected for REGMAP_SPI
-   Depends on [n]: SPI [=n]
-   Selected by [y]:
-   - AD9739A [=y] && IIO [=y] && (SPI [=n] || COMPILE_TEST [=y])
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

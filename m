@@ -1,218 +1,190 @@
-Return-Path: <linux-iio+bounces-5146-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5147-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB9948CA08E
-	for <lists+linux-iio@lfdr.de>; Mon, 20 May 2024 18:12:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84FBC8CA634
+	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 04:34:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD1021C20ED7
-	for <lists+linux-iio@lfdr.de>; Mon, 20 May 2024 16:12:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D6B53B20FFB
+	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 02:34:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A941136E3D;
-	Mon, 20 May 2024 16:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE6ABA53;
+	Tue, 21 May 2024 02:33:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ahepp.dev header.i=@ahepp.dev header.b="R+0IK7Ws"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta150.mxroute.com (mail-108-mta150.mxroute.com [136.175.108.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45A80137740;
-	Mon, 20 May 2024 16:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 864D317C6D
+	for <linux-iio@vger.kernel.org>; Tue, 21 May 2024 02:33:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716221534; cv=none; b=IfLxqPDyIAcJUy4bVcF+wFakOHfKwAp0dP3i0HUnXbe2JJkOg0/EVNkqwbZkRBJTGEBTze90WyVwfOV4IeQqJtw9bqDJGOTUaZLbEiIlSxdNYrRJNaQV22uza9okL79xHr201yXf6EcHekWnUVaEkuOiuwmChQd/BrIILlxiz54=
+	t=1716258836; cv=none; b=GGAC+/eZ1TO46nOzKumJ3Q8va5XyWH/2NweWTTabu+2o52QEfBNzoSXBQKekOgARNTW/3RcGr8l077PiT7Pq08zqDgtff7iHQxJFuzf+ndf1pGiG3N9/UacvBg9IKQB8PNeTSieEuF64Txuj1gMmU+Ypfv7VafwYFX99fs3fUKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716221534; c=relaxed/simple;
-	bh=TGRn8nQiBIP7pFxI0vEU7EOZ9M0KlisQD3v6znpQzhQ=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fOy40CsjIpud/rj8bdkuUZ++QvB9fO7817hm2fjqvGxyaDSgrhWMckPPowAgaaWIKnbb+2as3BSm0jGyH1KbRFP59u4FR4plwf+oklBvhX/MKLIF2U8wwuhIdXeCrsPwR1jcmv4SLhovamL2Al/RHkwAVk3HZr/hp7WstvGNiEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VjjD12x13z6JBjm;
-	Tue, 21 May 2024 00:08:33 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 60B7F1400DD;
-	Tue, 21 May 2024 00:12:07 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 20 May
- 2024 17:12:06 +0100
-Date: Mon, 20 May 2024 17:12:05 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: David Lechner <dlechner@baylibre.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Michael Hennerich
-	<Michael.Hennerich@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
-	<nuno.sa@analog.com>, Julien Stephan <jstephan@baylibre.com>, Esteban Blanc
-	<eblanc@baylibre.com>, <linux-iio@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH RFC 3/4] iio: add support for multiple scan types per
- channel
-Message-ID: <20240520171205.000035b0@Huawei.com>
-In-Reply-To: <ebf18ed1-a82f-4c0a-9a63-2c428b5aee40@baylibre.com>
-References: <20240507-iio-add-support-for-multiple-scan-types-v1-0-95ac33ee51e9@baylibre.com>
-	<20240507-iio-add-support-for-multiple-scan-types-v1-3-95ac33ee51e9@baylibre.com>
-	<20240519201241.7c60abac@jic23-huawei>
-	<ebf18ed1-a82f-4c0a-9a63-2c428b5aee40@baylibre.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1716258836; c=relaxed/simple;
+	bh=zmXrS54sHl2ot3sb0GSDnnJCgcLWipCPzke2GVOr8Ds=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MXJbDS9DTf/X6+zNUqpR1USBhkO+Moorp6rhlTsUN4ptLY1c78H/c5oYd/WCSuZVxBAeIDRzRDisLA1AZ+s1TkeNZdZStoIO4OWOkqhd/ZyZpbYKJGR8qFjtllRZfjyd/IZeYoiyzKdLSZ4AwQiNmnu/WnXJRJWtkUtoKWVUZBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ahepp.dev; spf=pass smtp.mailfrom=ahepp.dev; dkim=fail (0-bit key) header.d=ahepp.dev header.i=@ahepp.dev header.b=R+0IK7Ws reason="key not found in DNS"; arc=none smtp.client-ip=136.175.108.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ahepp.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ahepp.dev
+Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta150.mxroute.com (ZoneMTA) with ESMTPSA id 18f98faac6c000efce.006
+ for <linux-iio@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Tue, 21 May 2024 02:28:36 +0000
+X-Zone-Loop: b3278291c8182f5a2e2e7283047ba864dab6f5a6a5af
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=ahepp.dev;
+	s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:
+	To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=iWaHaAPhmhUih0P5E+3/squCGgKZImlbCGWTxIoVtmU=; b=R+0IK7Wsi9kaNB0UenGOVgeVnd
+	IK7juYKmsAkINgqylrSS/Na05o+Xd39u5o7GOgXoZBzroVuJTtD8HBFfbbG1BZcOExfyZD2MKnL/X
+	VUKl8kDeTHmIPPrRMcMZcifw4f8PIFYUkcfwni54ycK05PqwrGKanJAtv4LO4bbinCMahMUs2TiC6
+	WM4PoV5JY9TM/TsV953t56wl6SDsaxS7j8wbwkMq4cjHXuY24YUspHL1YyIYipPkixxSUCkhykMMT
+	OLO8QxiNnA6l6gGhED2xo7TbqczUZdZRwmDX6Uk+XM0BMj+qTMeU2MGdPNsZU0tGjlsQYg9f3bXD8
+	Yi95XZzg==;
+Message-ID: <23efcf4c-b5b2-d245-931f-0420e61701fe@ahepp.dev>
+Date: Mon, 20 May 2024 22:28:10 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500001.china.huawei.com (7.191.163.213) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.9.0
+Subject: Re: [PATCH v2 1/2] iio: temperature: mcp9600: Provide index for both
+ channels
+Content-Language: en-US
+To: Jonathan Cameron <jic23@kernel.org>,
+ Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Marcelo Schmitt <marcelo.schmitt1@gmail.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, =?UTF-8?Q?Nuno_S=c3=a1?= <nuno.sa@analog.com>
+References: <20240517081050.168698-1-dima.fedrau@gmail.com>
+ <20240517081050.168698-2-dima.fedrau@gmail.com>
+ <20240519171438.08810789@jic23-huawei>
+From: Andrew Hepp <andrew.hepp@ahepp.dev>
+In-Reply-To: <20240519171438.08810789@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Authenticated-Id: andrew.hepp@ahepp.dev
 
-On Mon, 20 May 2024 08:51:52 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+Hi all,
 
-> On 5/19/24 2:12 PM, Jonathan Cameron wrote:
-> > On Tue,  7 May 2024 14:02:07 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
-> >   
-> >> This adds new fields to the iio_channel structure to support multiple
-> >> scan types per channel. This is useful for devices that support multiple
-> >> resolution modes or other modes that require different data formats of
-> >> the raw data.
-> >>
-> >> To make use of this, drivers can still use the old scan_type field for
-> >> the "default" scan type and use the new scan_type_ext field for any
-> >> additional scan types.  
-> > 
-> > Comment inline says that you should commit scan_type if scan_type_ext
-> > is provided.  That makes sense to me rather that a default no one reads.
-> > 
-> > The example that follows in patch 4 uses both the scan_type and
-> > the scan_type_ext which is even more confusing.
-> >   
-> >> And they must implement the new callback
-> >> get_current_scan_type() to return the current scan type based on the
-> >> current state of the device.
-> >>
-> >> The buffer code is the only code in the IIO core code that is using the
-> >> scan_type field. This patch updates the buffer code to use the new
-> >> iio_channel_validate_scan_type() function to ensure it is returning the
-> >> correct scan type for the current state of the device when reading the
-> >> sysfs attributes. The buffer validation code is also update to validate
-> >> any additional scan types that are set in the scan_type_ext field. Part
-> >> of that code is refactored to a new function to avoid duplication.
-> >>
-> >> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> >> ---  
-> >   
-> >> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> >> index 19de573a944a..66f0b4c68f53 100644
-> >> --- a/include/linux/iio/iio.h
-> >> +++ b/include/linux/iio/iio.h
-> >> @@ -205,6 +205,9 @@ struct iio_scan_type {
-> >>   * @scan_index:		Monotonic index to give ordering in scans when read
-> >>   *			from a buffer.
-> >>   * @scan_type:		struct describing the scan type
-> >> + * @ext_scan_type:	Used in rare cases where there is more than one scan
-> >> + *			format for a channel. When this is used, omit scan_type.  
-> > 
-> > Here is the disagreement with the patch description.
-> >   
-> >> + * @num_ext_scan_type:	Number of elements in ext_scan_type.
-> >>   * @info_mask_separate: What information is to be exported that is specific to
-> >>   *			this channel.
-> >>   * @info_mask_separate_available: What availability information is to be
-> >> @@ -256,6 +259,8 @@ struct iio_chan_spec {
-> >>  	unsigned long		address;
-> >>  	int			scan_index;
-> >>  	struct iio_scan_type scan_type;
-> >> +	const struct iio_scan_type *ext_scan_type;
-> >> +	unsigned int		num_ext_scan_type;  
-> > 
-> > Let's make it explicit that you can't do both.
-> > 
-> > 	union {
-> > 		struct iio_scan_type scan_type;
-> > 		struct {
-> > 			const struct iio_scan_type *ext_scan_type;
-> > 			unsigned int num_ext_scan_type;
-> > 		};
-> > 	};
-> > should work for that I think.
-> > 
-> > However this is I think only used for validation. If that's the case
-> > do we care about values not in use?  Can we move the validation to
-> > be runtime if the get_current_scan_type() callback is used.  
+I attempted to send this yesterday, but I guess I leaked some HTML into 
+the message and it was rejected from the lists. I am resending it now as 
+plain text. Apologies for any inconvenience or confusion.
+
+On 5/19/24 12:14 PM, Jonathan Cameron wrote:
+> On Fri, 17 May 2024 10:10:49 +0200
+> Dimitri Fedrau <dima.fedrau@gmail.com> wrote:
 > 
-> I like the suggestion of the union to use one or the other. But I'm not
-> sure I understand the comments about validation.
+>> The mapping from cold junction to ambient temperature is inaccurate. We
+>> provide an index for hot and cold junction temperatures.
+>>
+>> Suggested-by: Jonathan Cameron <jic23@kernel.org>
+>> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> Hi Dmitri,
 > 
-> If you are referring to iio_channel_validate_scan_type(), it only checks
-> for programmer error of realbits > storagebits, so it seems better to
-> keep it where it is to fail as early as possible.
+> I'm not sure you replied to the question in previous review of what
+> sysfs files exist for this device.  Whilst I am at least a little
+> open to changing the ABI, I'd like to fully understand what
+> is currently presented and why iio_info is having trouble with it.
+> 
+> I also want an ack from Andrew on this one given might break it existing
+> usage.
 
-That requires the possible scan masks to be listed here but there is
-nothing enforcing the callback returning one from here.  Maybe make it
-return an index instead?
+I’m not actively using the cold junction temperature reading, so I would 
+be happy to see any deficiencies in the ABI corrected.
 
 > 
-> > 
-> >   
-> >>  	long			info_mask_separate;
-> >>  	long			info_mask_separate_available;
-> >>  	long			info_mask_shared_by_type;
-> >> @@ -435,6 +440,9 @@ struct iio_trigger; /* forward declaration */
-> >>   *			for better event identification.
-> >>   * @validate_trigger:	function to validate the trigger when the
-> >>   *			current trigger gets changed.
-> >> + * @get_current_scan_type: must be implemented by drivers that use ext_scan_type
-> >> + *			in the channel spec to return the currently active scan
-> >> + *			type based on the current state of the device.
-> >>   * @update_scan_mode:	function to configure device and scan buffer when
-> >>   *			channels have changed
-> >>   * @debugfs_reg_access:	function to read or write register value of device
-> >> @@ -519,6 +527,9 @@ struct iio_info {
-> >>  
-> >>  	int (*validate_trigger)(struct iio_dev *indio_dev,
-> >>  				struct iio_trigger *trig);
-> >> +	const struct iio_scan_type *(*get_current_scan_type)(
-> >> +					const struct iio_dev *indio_dev,
-> >> +					const struct iio_chan_spec *chan);
-> >>  	int (*update_scan_mode)(struct iio_dev *indio_dev,
-> >>  				const unsigned long *scan_mask);
-> >>  	int (*debugfs_reg_access)(struct iio_dev *indio_dev,
-> >> @@ -804,6 +815,28 @@ static inline bool iio_read_acpi_mount_matrix(struct device *dev,
-> >>  }
-> >>  #endif
-> >>  
-> >> +/**
-> >> + * iio_get_current_scan_type - Get the current scan type for a channel
-> >> + * @indio_dev:	the IIO device to get the scan type for
-> >> + * @chan:	the channel to get the scan type for
-> >> + *
-> >> + * Most devices only have one scan type per channel and can just access it
-> >> + * directly without calling this function. Core IIO code and drivers that
-> >> + * implement ext_scan_type in the channel spec should use this function to
-> >> + * get the current scan type for a channel.
-> >> + *
-> >> + * Returns: the current scan type for the channel
-> >> + */
-> >> +static inline const struct iio_scan_type *iio_get_current_scan_type(
-> >> +					const struct iio_dev *indio_dev,
-> >> +					const struct iio_chan_spec *chan)
-> >> +{
-> >> +	if (indio_dev->info->get_current_scan_type)
-> >> +		return indio_dev->info->get_current_scan_type(indio_dev, chan);
-> >> +
-> >> +	return &chan->scan_type;
-> >> +}
-> >> +
-> >>  ssize_t iio_format_value(char *buf, unsigned int type, int size, int *vals);
-> >>  
-> >>  int iio_str_to_fixpoint(const char *str, int fract_mult, int *integer,
-> >>  
-> >   
-> 
-> 
+> The current interface is perhaps less than ideal, but I don't think it
+> is wrong as such. Whilst I wasn't particularly keen on the cold junction
+> == ambient I'm not sure moving to just indexed is an improvement.
+> Hence looking for input from Andrew. +CC Nuno as someone who is both
+> active in IIO and has written thermocouple front end drivers in
+> the past.
 
+The ABI docs state
+
+     The ambient and object modifiers distinguish between ambient 
+(reference) and distant temperatures for contactless measurements
+Reading more of the Linux Driver API docs, those say that .modified is 
+"used to indicate a physically unique characteristic of the channel”, 
+and that .indexed is "simply another instance”.
+
+I’m not sure whether measuring temperature at a different location meets 
+the bar of a “physically unique characteristic”. Maybe it does. But I 
+don’t think of the cold junction temperature as “simply another 
+instance”. Perhaps that’s a mistake on my behalf.
+
+Reviewing temperature drivers using IIO_MOD_TEMP_AMBIENT, they all seem 
+to be reporting die temperatures. Some are IR sensors, but there are a 
+couple other thermocouples like the MCP9600.
+
+Reviewing drivers using “.indexed”, one is an IR sensor and one is a 
+thermocouple. In both cases, the indexed channels seem to represent a 
+“full featured” channel. The IR sensor also reports 
+IIO_MOD_TEMP_AMBIENT, so they chose not to make it an additional index.
+
+It seems to me that using IIO_MOD_TEMP_AMBIENT is more in line with what 
+has been done in the past. But I may be misunderstanding something and I 
+am not opposed to using and index if it’s determined that is more correct.
+
+Thanks,
+Andrew
+
+> 
+> Jonathan
+> 
+> 
+>> ---
+>>   drivers/iio/temperature/mcp9600.c | 9 +++++++--
+>>   1 file changed, 7 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/iio/temperature/mcp9600.c b/drivers/iio/temperature/mcp9600.c
+>> index 46845804292b..22451d1d9e1f 100644
+>> --- a/drivers/iio/temperature/mcp9600.c
+>> +++ b/drivers/iio/temperature/mcp9600.c
+>> @@ -14,6 +14,9 @@
+>>   
+>>   #include <linux/iio/iio.h>
+>>   
+>> +#define MCP9600_CHAN_HOT_JUNCTION	0
+>> +#define MCP9600_CHAN_COLD_JUNCTION	1
+>> +
+>>   /* MCP9600 registers */
+>>   #define MCP9600_HOT_JUNCTION 0x0
+>>   #define MCP9600_COLD_JUNCTION 0x2
+>> @@ -25,17 +28,19 @@
+>>   static const struct iio_chan_spec mcp9600_channels[] = {
+>>   	{
+>>   		.type = IIO_TEMP,
+>> +		.channel = MCP9600_CHAN_HOT_JUNCTION,
+>>   		.address = MCP9600_HOT_JUNCTION,
+>>   		.info_mask_separate =
+>>   			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+>> +		.indexed = 1,
+>>   	},
+>>   	{
+>>   		.type = IIO_TEMP,
+>> +		.channel = MCP9600_CHAN_COLD_JUNCTION,
+>>   		.address = MCP9600_COLD_JUNCTION,
+>> -		.channel2 = IIO_MOD_TEMP_AMBIENT,
+>> -		.modified = 1,
+>>   		.info_mask_separate =
+>>   			BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE),
+>> +		.indexed = 1,
+>>   	},
+>>   };
+>>   
+> 
 

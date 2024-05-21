@@ -1,207 +1,145 @@
-Return-Path: <linux-iio+bounces-5156-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5157-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51AC18CACB8
-	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 12:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C68718CADA5
+	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 13:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07390284E3D
-	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 10:53:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75F79281C63
+	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 11:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E74C757EB;
-	Tue, 21 May 2024 10:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D74F757EF;
+	Tue, 21 May 2024 11:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aPatt4kt"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DViXGBwT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A30B745ED;
-	Tue, 21 May 2024 10:53:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8C66EB6E;
+	Tue, 21 May 2024 11:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716288784; cv=none; b=Tzl3pzVg1Dkx3l6NYA+rpOJEzEmfkw0ucVMuWx2FNKBZQyjY5tStbCCTWm7V3dlxhNYPuIYfGkr+Qpxok6T07YCDrMAV4bPfRvUU4ggBmN4oROmNcU2tBWhDo72ogRbgiV7SONNa1y4X5I/CQYgvehomkSmsCjnQ0fgWD5PceW4=
+	t=1716292264; cv=none; b=A/oQl/sqHv4JkZ3NQHANjJ3VLDeHucUAHJoL784hI40v7Xy/2VTFFe418wIqQTuAuDM2lk3PB9zaQdut/gxxB5DK83tF7Ft/egEpIZ2BdwpY+pw5qv7vdEdcGnXd0bDraM228dZ9nqoER+fwEAd/jJsQAi+5EE6zyzVuASgscnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716288784; c=relaxed/simple;
-	bh=tC+V9Y70X/Xnv05SewXsKRHGbavT2qz+t6q9U43RK5M=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bujyO28y3Y3EZs7Z5St+mg4Gzv1Zr5RN0Zb8yN21ZkKpmkzzoj6zWc+YCQROYl+/KTSnZjKww21E2Z3qFqrOyuA3BFysvPAeX5+sIPV9bB5BT8b30VfEGhlD1JSg4i+MQVJCQ8cg7C+eNlu4S+u/MMOGLpNEhEy51b0jvPPpq3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aPatt4kt; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-572baf393ddso11822464a12.1;
-        Tue, 21 May 2024 03:53:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716288780; x=1716893580; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vwKhGwCuZU7pPcy50QvgvS6xSY301hGuD+YpB8vSPTs=;
-        b=aPatt4kt7WlrUaKU9FbnuqZvXUOPCp+WMyX23eRN2lbccYjyz245/PK97GLkHVGif6
-         0SFQ7LbqG6eB+L3Cahli3x/+kJQi0/qME9rXxC4wHNA/Yniz5qM4rWXxZXObUuyF91yL
-         b9kMdyciJ30fa/FGY5esBMABEZBgjNbMRVT9uKsqVHmCk/8vpEnFtB9gNNqcSoYbN7wQ
-         RuIPMVp43yloWr9Jt/oSf2oOKNwHfFjvLNT8KbUfPaTUmTYSMoR5UzC1l7Ci/L/i6HU7
-         B5szHlFdOtW4rpIN4B2+qm4KhmwY8y5GzMu0+Zvniz69el191UzQL+Ukry2J/Orrc+ZV
-         90ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716288780; x=1716893580;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vwKhGwCuZU7pPcy50QvgvS6xSY301hGuD+YpB8vSPTs=;
-        b=sbRB5jVworfHBDhnoDtY874wGKINLRwjsQgjMq+3+R7Kx0Jeul9RTiShD7oNuTVi8t
-         u9C3VmsJTLuEJQZU4e3S4IQEyf5FYapJ1Ths5N3Wz2zUuYxfza+alLRVy6KqhNZ80QHH
-         m/Bsn1P24+AKgGSqOarBd8rzfJbffnaAsd7FAdYGhGC8QGknsUqT97SxsVLGI/J39rDT
-         4dTsM+AuTEbyTPAbbvgNgoCbhukFKNpZKlUPYCWeLepHgNpVkdLYZYluYzc4OOC65fgz
-         iOASvhwtWOMpr0690vmGL7fOywrw9XQG/pVNILkDwJUZ7//7BXO0+8W6UQda0UAqDkLJ
-         QCSQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXlxuG2Cr/430BPEyMYORJQrm3ARz+f13CEud9yVDDs+erhJ6z65OaQ1w60p/pBJrSOQGpftBuKXPZkgNK2UyJV/KxvH6YMF4O+TFkUqtNFDW3IW9hGqp7mES8YtZM8Hj7hftIR6FV26uiRbBkYKh/UHwKbdF8aI4vFey0/aW8khFB3EA==
-X-Gm-Message-State: AOJu0YxSoTeQeNOwL7HFnAO7JhjbB0A79qbX4VWKfaUqyDsF7Q3wV7TF
-	w+Ce37K3idVTc7Dkb4GB6LC5ZRdzpY/LDTiExRbQIEEdHLgujWkK
-X-Google-Smtp-Source: AGHT+IFXKW6WGKcUPz8FMtXQiXjIMyo4n6v5VoDQgWnYwcqGq3eB+PXBwd5+S/yU+NN4hq4P17B1Vg==
-X-Received: by 2002:a17:906:79ca:b0:a5a:5bc8:9fcf with SMTP id a640c23a62f3a-a5d5d98cec1mr749951466b.36.1716288780350;
-        Tue, 21 May 2024 03:53:00 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a17b01932sm1586399666b.168.2024.05.21.03.52.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 May 2024 03:53:00 -0700 (PDT)
-Message-ID: <cc53c6c282c070894d8c65fd78f47616d36ec75f.camel@gmail.com>
-Subject: Re: [PATCH v3 7/9] iio: imu: adis_trigger: Allow level interrupts
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Ramona Gradinariu <ramona.bolboaca13@gmail.com>, 
-	linux-kernel@vger.kernel.org, jic23@kernel.org, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, conor+dt@kernel.org, 
-	krzysztof.kozlowski+dt@linaro.org, robh@kernel.org, nuno.sa@analog.com
-Date: Tue, 21 May 2024 12:56:43 +0200
-In-Reply-To: <20240517074750.87376-8-ramona.bolboaca13@gmail.com>
-References: <20240517074750.87376-1-ramona.bolboaca13@gmail.com>
-	 <20240517074750.87376-8-ramona.bolboaca13@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1 
+	s=arc-20240116; t=1716292264; c=relaxed/simple;
+	bh=LW2SW54CS7kiFzJ+0X6xF+D2LW3LQDKnImBKOygd46E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qZviy8LzWUYjUvKNWEnjy0uUHZh2cHMnoalO/RyiGMkIt0CAf7LZB45z5/2+JYlV5bQ16XGCBBMITf4fhOM0r0MnGaEf1sVE7X9g9GsZ+hzrHRQ7htKAHuW8ZTBlaeH5sAbvUZwCePJAdfK3O8PngHG//RfbF0UXv4cFUlH0vo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DViXGBwT; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1716292262; x=1747828262;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=LW2SW54CS7kiFzJ+0X6xF+D2LW3LQDKnImBKOygd46E=;
+  b=DViXGBwT9bwQ00LBzcz/lG23a7ILjpce/CGFqppRJ1GL/Jqz1oZlaoO7
+   PyQTyTQEnUKVh/mBsBAi+O29qLbaE9QowiZQCqAYaREdLmj9000vH/nzv
+   nSkQ5J1b40HVQZiOezut6wdvB166EX6ImymPpgpwzyBCKM19uA72egQMn
+   X8+pbGuKis1hd5DKZvw7pbA9RzlSbp20+N1D24n5OJSz6Atqq9DG+1kio
+   hI8//q/OpzcfYU+7fTJuCrwQhSqoXSUzRVAtxqck/PjIIfG8xGjAlY+ML
+   r5v7DH/qvjRo9ljXE4wT9WtDJ1OzGhJrqZ7QL/VFDYUM4/pmg+xxFBCXy
+   w==;
+X-CSE-ConnectionGUID: wxDvXtzhTNCV6eeQlSQyiA==
+X-CSE-MsgGUID: dIceliU+TJe66YidjMH20w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11078"; a="15425136"
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; 
+   d="scan'208";a="15425136"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2024 04:51:01 -0700
+X-CSE-ConnectionGUID: wiMzQji1Rc+4RukGpTyyzA==
+X-CSE-MsgGUID: aJzOEdKUQN2RouCil4rAwg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,177,1712646000"; 
+   d="scan'208";a="33489098"
+Received: from unknown (HELO 108735ec233b) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 21 May 2024 04:50:59 -0700
+Received: from kbuild by 108735ec233b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1s9O1A-0006K0-0X;
+	Tue, 21 May 2024 11:50:56 +0000
+Date: Tue, 21 May 2024 19:50:22 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, lars@metafoo.de, swboyd@chromium.org,
+	nuno.a@analog.com, andy.shevchenko@gmail.com,
+	u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, yasin.lee.x@gmail.com,
+	yasin.lee.x@outlook.com
+Subject: Re: [PATCH] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S sensor
+ driver
+Message-ID: <202405211949.0oxrugaN-lkp@intel.com>
+References: <SN7PR12MB8101EDFA7F91A59761095A28A4E72@SN7PR12MB8101.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN7PR12MB8101EDFA7F91A59761095A28A4E72@SN7PR12MB8101.namprd12.prod.outlook.com>
 
-On Fri, 2024-05-17 at 10:47 +0300, Ramona Gradinariu wrote:
-> Currently, adis library allows configuration only for edge interrupts,
-> needed for data ready sampling.
-> This patch removes the restriction for level interrupts, which are
-> needed to handle FIFO watermark interrupts.
-> Furthermore, in case of level interrupts, devm_request_threaded_irq is
-> used for interrupt allocation, to avoid blocking the processor while
-> retrieving the FIFO samples.
+Hi Yasin,
 
-Technically this not totally accurate (though ends up being true) as we do =
-read
-the FIFO samples in a thread already. The part that runs on the top halve s=
-hould
-be:
+kernel test robot noticed the following build errors:
 
-iio_trigger_generic_data_rdy_poll() ->=C2=A0iio_trigger_poll() -> iio_pollf=
-unc_store_time()
+[auto build test ERROR on jic23-iio/togreg]
+[also build test ERROR on linus/master v6.9 next-20240521]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-and given the FIFO nature (as the interrupt keeps firing until FIFO_CNT dro=
-ps
-below the watermark), it seems this is enough for you to see some freezes.
+url:    https://github.com/intel-lab-lkp/linux/commits/Yasin-Lee/iio-proximity-hx9031as-Add-TYHX-HX9031AS-HX9023S-sensor-driver/20240515-083021
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/SN7PR12MB8101EDFA7F91A59761095A28A4E72%40SN7PR12MB8101.namprd12.prod.outlook.com
+patch subject: [PATCH] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S sensor driver
+config: xtensa-randconfig-001-20240521 (https://download.01.org/0day-ci/archive/20240521/202405211949.0oxrugaN-lkp@intel.com/config)
+compiler: xtensa-linux-gcc (GCC) 13.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240521/202405211949.0oxrugaN-lkp@intel.com/reproduce)
 
-Anyhow, I'd say the commit message should be a bit refactored. This also le=
-ads to
-another minor detail/question (see below)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202405211949.0oxrugaN-lkp@intel.com/
 
->=20
-> Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-> ---
-> changes in v3:
-> =C2=A0- new patch
-> =C2=A0drivers/iio/imu/adis_trigger.c | 39 ++++++++++++++++++-------------=
----
-> =C2=A01 file changed, 21 insertions(+), 18 deletions(-)
->=20
-> diff --git a/drivers/iio/imu/adis_trigger.c b/drivers/iio/imu/adis_trigge=
-r.c
-> index f890bf842db8..becf1f558b4e 100644
-> --- a/drivers/iio/imu/adis_trigger.c
-> +++ b/drivers/iio/imu/adis_trigger.c
-> @@ -34,21 +34,16 @@ static int adis_validate_irq_flag(struct adis *adis)
-> =C2=A0	if (adis->data->unmasked_drdy)
-> =C2=A0		adis->irq_flag |=3D IRQF_NO_AUTOEN;
-> =C2=A0	/*
-> -	 * Typically this devices have data ready either on the rising edge
-> or
-> -	 * on the falling edge of the data ready pin. This checks enforces
-> that
-> -	 * one of those is set in the drivers... It defaults to
-> -	 * IRQF_TRIGGER_RISING for backward compatibility with devices that
-> -	 * don't support changing the pin polarity.
-> +	 * Typically adis devices without fifo have data ready either on the
-> +	 * rising edge or on the falling edge of the data ready pin.
-> +	 * IMU devices with fifo support have the watermark pin level driven
-> +	 * either high or low when the fifo is filled with the desired number
-> +	 * of samples.
-> +	 * It defaults to IRQF_TRIGGER_RISING for backward compatibility with
-> +	 * devices that don't support changing the pin polarity.
-> =C2=A0	 */
-> -	if (direction =3D=3D IRQF_TRIGGER_NONE) {
-> +	if (direction =3D=3D IRQF_TRIGGER_NONE)
-> =C2=A0		adis->irq_flag |=3D IRQF_TRIGGER_RISING;
-> -		return 0;
-> -	} else if (direction !=3D IRQF_TRIGGER_RISING &&
-> -		=C2=A0=C2=A0 direction !=3D IRQF_TRIGGER_FALLING) {
-> -		dev_err(&adis->spi->dev, "Invalid IRQ mask: %08lx\n",
-> -			adis->irq_flag);
-> -		return -EINVAL;
-> -	}
+All errors (new ones prefixed by >>):
 
-I guess then we should rename the function as no actual validation is being
-done, right?
+   `.exit.text' referenced in section `__jump_table' of fs/fuse/inode.o: defined in discarded section `.exit.text' of fs/fuse/inode.o
+   `.exit.text' referenced in section `__jump_table' of fs/fuse/inode.o: defined in discarded section `.exit.text' of fs/fuse/inode.o
+   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `__regmap_init_spi':
+   regmap-spi.c:(.text+0x17c): undefined reference to `spi_write_then_read'
+   xtensa-linux-ld: regmap-spi.c:(.text+0x1a2): undefined reference to `spi_write_then_read'
+   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `__devm_regmap_init_spi':
+   regmap-spi.c:(.text+0x2a0): undefined reference to `spi_sync'
+   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_async_alloc':
+   regmap-spi.c:(.text+0x372): undefined reference to `spi_sync'
+   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `spi_sync_transfer.constprop.0':
+   regmap-spi.c:(.text+0x3f4): undefined reference to `spi_async'
+   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_write':
+   regmap-spi.c:(.text+0x53e): undefined reference to `spi_async'
+   xtensa-linux-ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_async_write':
+   regmap-spi.c:(.text+0x6eb): undefined reference to `spi_sync'
+   xtensa-linux-ld: drivers/iio/dac/ad9739a.o:(.init.literal+0x8): undefined reference to `__spi_register_driver'
+   xtensa-linux-ld: drivers/iio/dac/ad9739a.o: in function `ad9739a_driver_init':
+   ad9739a.c:(.init.text+0x1e): undefined reference to `__spi_register_driver'
+   xtensa-linux-ld: drivers/iio/proximity/hx9031as.o: in function `hx9031as_manual_offset_calibration_store':
+   hx9031as.c:(.text.unlikely+0x15e8): undefined reference to `__udivdi3'
+>> xtensa-linux-ld: hx9031as.c:(.text.unlikely+0x167f): undefined reference to `__udivdi3'
+   xtensa-linux-ld: drivers/iio/proximity/hx9031as.o: in function `schedule_delayed_work.constprop.0.isra.0':
+   hx9031as.c:(.text.unlikely+0x18ca): undefined reference to `__udivdi3'
 
->=20
-> =C2=A0	return 0;
-> =C2=A0}
-> @@ -77,11 +72,19 @@ int devm_adis_probe_trigger(struct adis *adis, struct
-> iio_dev *indio_dev)
-> =C2=A0	if (ret)
-> =C2=A0		return ret;
->=20
-> -	ret =3D devm_request_irq(&adis->spi->dev, adis->spi->irq,
-> -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 &iio_trigger_generic_data_rdy_po=
-ll,
-> -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 adis->irq_flag,
-> -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 indio_dev->name,
-> -			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 adis->trig);
-> +	if (adis->irq_flag & (IRQF_TRIGGER_HIGH | IRQF_TRIGGER_LOW))
-> +		ret =3D devm_request_threaded_irq(&adis->spi->dev, adis->spi-
-> >irq,
-> +						NULL,
-> +						&iio_trigger_generic_data_rdy
-> _poll,
-> +						adis->irq_flag |
-> IRQF_ONESHOT,
-> +						indio_dev->name,
-> +						adis->trig);
+Kconfig warnings: (for reference only)
+   WARNING: unmet direct dependencies detected for REGMAP_SPI
+   Depends on [n]: SPI [=n]
+   Selected by [y]:
+   - AD9739A [=y] && IIO [=y] && (SPI [=n] || COMPILE_TEST [=y])
 
-So, this is not really a big deal for me but I wonder if we should actually=
- tie
-this change to the device having FIFO support (so a boolean in the adis_dat=
-a
-struct)? It seems to me that's the real reason for the split... With the
-boolean, we could also constrain the IRQ level support for devices supporti=
-ng
-FIFOs. Anyhow, since this is the first supported device with a FIFO having =
-the
-boolean (while it makes sense to me) may add more overhead than needed to t=
-he
-series so I'm fine with this as-is.
-
-- Nuno S=C3=A1
->=20
-
-
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

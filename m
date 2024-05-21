@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-5150-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5152-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF84C8CAA3B
-	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 10:46:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1396F8CAA3C
+	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 10:46:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71674282775
-	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 08:46:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C15AA2825CE
+	for <lists+linux-iio@lfdr.de>; Tue, 21 May 2024 08:46:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2668F57C83;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B05057C8B;
 	Tue, 21 May 2024 08:46:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gl9UKDSu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ln6CGcZQ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D648651C5F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E9954762;
 	Tue, 21 May 2024 08:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716281186; cv=none; b=iPw8Rq9qR6yKDDGx+JYqDlIuKfraf7Qi1gWUe5ueGj78/Ug1ZAnuL95IZoQdrDyUATb5iB3EShPgH4mh7S6MNff07Jtx4KjsyFUFK+v3HDKIXIEvOJ9LYPKBMIPydll+RZNljVLDaA/k45I/nwesvGnNqF0vK2xktSHC/zmmkrg=
+	t=1716281187; cv=none; b=cssZ/JusrEpdhr13GbWkpYcFu1XJsDKTYcwK6XLLKBLR+rwkvVpdH96OEfNulPcdEDytnWzUsbS0lwkQ4J//Wl1msBQMw777oq/B02bk0RdPQgJd6so0ljQFLudwhDsQozyL3q9B5CKvk/demw+G6MIDKIvHHsBYhI+T2bb1LTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716281186; c=relaxed/simple;
-	bh=BscWCvxLlRzWKhpkBSkVww2bcZM3ZdgJi0FGOnKCD8A=;
+	s=arc-20240116; t=1716281187; c=relaxed/simple;
+	bh=Sg1hOu3VEG/1Zs7niRX5/Vpq317beg+1Hh4A8ALk38o=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VJEXIUtCebD40l3vlqFOHPvIUCtw+Cr9k2q/KGVg0sYNGTuMuVVgTFP2ZqvRhOGnxyD6uMasr9wiY+0R8/wvip9FTIN35Dn2pz+yzWoY8muqcECz04GXCLPTKoNkW7PZZViKFjNUMKLdmHLUXw2JDJxrNRPwuYTOQdPdv71RV3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gl9UKDSu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8AE1DC4AF0A;
+	 In-Reply-To:To:Cc; b=Il+ZI1rIk8rEZylS4BRBFSfRWzjkPBYyJJyqPh6T92K1zWGkL/U9xsFh/yTOpe5qHbowowEF3rW9GNkqI/IonBZJ5+KZ4LglI5NZGv3vfHfvsk/gck8LGbwhvR5tn10culmCT9JGUqj//oiT0bozJvED+5NT8YezmLf4btRNtAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ln6CGcZQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 96BB6C2BD11;
 	Tue, 21 May 2024 08:46:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1716281186;
-	bh=BscWCvxLlRzWKhpkBSkVww2bcZM3ZdgJi0FGOnKCD8A=;
+	bh=Sg1hOu3VEG/1Zs7niRX5/Vpq317beg+1Hh4A8ALk38o=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Gl9UKDSuUbNbk1EHE/G/re5tZyZFHHQOnU+CNKtr2OsEHeAiPcJB1vFMP11ndsCSG
-	 10q1BeEmWfs3wtu8LuApWcyjojuNILP8kMKhGjFdDyQd2cixGgKvmCWLSoaZEpA+v5
-	 H4JoKGzZdYTH4LP9jSiXfNQdzXU6IBWMJzD+STRa75P9MosfPJ+6ge+SiUqISPETak
-	 9iOoZbyiyBg5lIc20/AdR/CoNUzNmLIu9W6cvbK0P5pd0KTyFvmO8bN8WvoPxRVrYO
-	 O7XA0B4CAQhJaB2hA3Svv9lEE2yjTkKZ3natqDjhPelZRfTBqkWXLnKa5wHlJuQTin
-	 ouXrMV+paMz7Q==
+	b=ln6CGcZQzc1GKgQ4HlgoTu0kz0GaPTuTl+P5P4NdWM1lvTg4Tk3u7pP5oFqye1DzE
+	 h8rE02EMWFkO6LMD+AMCp++Mm8HhmRtD7T49uKnjkS+IyeTEpLD8CjS4Wbk/MorLV7
+	 Ap5b0hru2ivRrNteCdL8rD4lQn1TNyOTGVnFpTOggYJKYz613hE7gEVdsKzUxE1Lwx
+	 KCH9LYqycSorzYboVD5VssJ/9j2m0gVv9kT9I5YgpdJI5Gp1gZ5feJd6xHvwJhSBTW
+	 gCDTWH2MB0fVBzGsgGTwSmVLH9EaMFw8/42e08gvAPj1T1y3yMBHxvZswZmKJFbvLG
+	 hFi/lJ0VjKU2Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 77F3DC25B7C;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 85770C25B75;
 	Tue, 21 May 2024 08:46:26 +0000 (UTC)
 From: Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org>
-Date: Tue, 21 May 2024 11:45:39 +0300
-Subject: [PATCH 1/3] iio: adc: ad7173: fix buffers enablement for ad7176-2
+Date: Tue, 21 May 2024 11:45:40 +0300
+Subject: [PATCH 2/3] iio: adc: ad7173: Add ad7173_device_info names
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,20 +55,19 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240521-ad7173-fixes-v1-1-8161cc7f3ad1@analog.com>
+Message-Id: <20240521-ad7173-fixes-v1-2-8161cc7f3ad1@analog.com>
 References: <20240521-ad7173-fixes-v1-0-8161cc7f3ad1@analog.com>
 In-Reply-To: <20240521-ad7173-fixes-v1-0-8161cc7f3ad1@analog.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
  Jonathan Cameron <jic23@kernel.org>
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dumitru Ceclan <dumitru.ceclan@analog.com>, 
- David Lechner <dlechner@baylibre.com>
+ Dumitru Ceclan <dumitru.ceclan@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716281184; l=3513;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1716281184; l=1300;
  i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
- bh=YO3jbx93xkkdS8bNTk3Nk05937RhLKSs/ejH6uQRBSk=;
- b=vn0FOzEoFZlgkHd5VvxLngn8fwDPJNwb2rRvuSlT7Kde9aJoc36/DURSYOKZqEGPqivzPXee9
- UDVeDGtt+GSBlCPjvkLgEqKTuwekQkber9Y/aoBd0uXU2s/RhIu4XWV
+ bh=jyW8M3kG3uqXuCNPYLLJGiYuxqeZCfGKeCCNwqrSJqE=;
+ b=Qi+Gg8NzEB6txHrrc5xq9qpomyYuIB/fwhw5Ey4aBUrFryLQvyzR4wrPX4O/jhXotcFw9tZxk
+ QNBYVr0Lf4NDH4iaPJ95sy4DRlrIsbBiaKPIB6IPtPCKSJI6LYV/rxo
 X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
  pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
 X-Endpoint-Received: by B4 Relay for dumitru.ceclan@analog.com/20240313
@@ -78,102 +77,43 @@ Reply-To: dumitru.ceclan@analog.com
 
 From: Dumitru Ceclan <dumitru.ceclan@analog.com>
 
-AD7176-2 does not feature input buffers and marks corespondent register
-bits as read only. Enable buffers only on supported models.
+Add missing names from the device info struct for 3 models to ensure
+consistency with the rest of the models.
 
 Fixes: 8eb903272f75 ("iio: adc: ad7173: add AD7173 driver")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
 Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
 ---
- drivers/iio/adc/ad7173.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7173.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index f6d29abe1d04..850574437bda 100644
+index 850574437bda..58620be41ef5 100644
 --- a/drivers/iio/adc/ad7173.c
 +++ b/drivers/iio/adc/ad7173.c
-@@ -145,6 +145,7 @@ struct ad7173_device_info {
- 	unsigned int id;
- 	char *name;
- 	bool has_temp;
-+	bool has_input_buf;
- 	bool has_int_ref;
- 	bool has_ref2;
- 	u8 num_gpios;
-@@ -212,6 +213,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.num_configs = 4,
- 		.num_gpios = 2,
- 		.has_temp = true,
-+		.has_input_buf = true,
- 		.has_int_ref = true,
- 		.clock = 2 * HZ_PER_MHZ,
- 		.sinc5_data_rates = ad7173_sinc5_data_rates,
-@@ -224,6 +226,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.num_configs = 8,
- 		.num_gpios = 4,
- 		.has_temp = false,
-+		.has_input_buf = true,
- 		.has_ref2 = true,
- 		.clock = 2 * HZ_PER_MHZ,
- 		.sinc5_data_rates = ad7173_sinc5_data_rates,
-@@ -237,6 +240,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.num_configs = 8,
- 		.num_gpios = 4,
- 		.has_temp = true,
-+		.has_input_buf = true,
- 		.has_int_ref = true,
- 		.has_ref2 = true,
- 		.clock = 2 * HZ_PER_MHZ,
-@@ -251,6 +255,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.num_configs = 4,
- 		.num_gpios = 2,
- 		.has_temp = true,
-+		.has_input_buf = true,
- 		.has_int_ref = true,
- 		.clock = 16 * HZ_PER_MHZ,
- 		.sinc5_data_rates = ad7175_sinc5_data_rates,
-@@ -263,6 +268,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.num_configs = 8,
- 		.num_gpios = 4,
- 		.has_temp = true,
-+		.has_input_buf = true,
- 		.has_int_ref = true,
- 		.has_ref2 = true,
- 		.clock = 16 * HZ_PER_MHZ,
-@@ -277,6 +283,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.num_configs = 4,
- 		.num_gpios = 2,
- 		.has_temp = false,
-+		.has_input_buf = false,
- 		.has_int_ref = true,
- 		.clock = 16 * HZ_PER_MHZ,
- 		.sinc5_data_rates = ad7175_sinc5_data_rates,
-@@ -289,6 +296,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.num_configs = 4,
- 		.num_gpios = 2,
- 		.has_temp = true,
-+		.has_input_buf = true,
- 		.has_int_ref = true,
- 		.clock = 16 * HZ_PER_MHZ,
- 		.odr_start_value = AD7177_ODR_START_VALUE,
-@@ -932,7 +940,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 			AD7173_CH_ADDRESS(chan_arr[chan_index].channel,
- 					  chan_arr[chan_index].channel2);
- 		chan_st_priv->cfg.bipolar = false;
--		chan_st_priv->cfg.input_buf = true;
-+		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
- 		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
- 		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
- 
-@@ -989,7 +997,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
- 
- 		chan_st_priv->ain = AD7173_CH_ADDRESS(ain[0], ain[1]);
- 		chan_st_priv->chan_reg = chan_index;
--		chan_st_priv->cfg.input_buf = true;
-+		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
- 		chan_st_priv->cfg.odr = 0;
- 
- 		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
+@@ -220,6 +220,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
+ 		.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
+ 	},
+ 	[ID_AD7172_4] = {
++		.name = "ad7172-4",
+ 		.id = AD7172_4_ID,
+ 		.num_inputs = 9,
+ 		.num_channels = 8,
+@@ -262,6 +263,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
+ 		.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
+ 	},
+ 	[ID_AD7175_8] = {
++		.name = "ad7175-8",
+ 		.id = AD7175_8_ID,
+ 		.num_inputs = 17,
+ 		.num_channels = 16,
+@@ -290,6 +292,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
+ 		.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
+ 	},
+ 	[ID_AD7177_2] = {
++		.name = "ad7177-2",
+ 		.id = AD7177_ID,
+ 		.num_inputs = 5,
+ 		.num_channels = 4,
 
 -- 
 2.43.0

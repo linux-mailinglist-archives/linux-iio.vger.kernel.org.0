@@ -1,371 +1,604 @@
-Return-Path: <linux-iio+bounces-5188-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5189-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D684C8CC434
-	for <lists+linux-iio@lfdr.de>; Wed, 22 May 2024 17:36:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0678CC648
+	for <lists+linux-iio@lfdr.de>; Wed, 22 May 2024 20:25:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B1392832C9
-	for <lists+linux-iio@lfdr.de>; Wed, 22 May 2024 15:36:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 282D3B2153B
+	for <lists+linux-iio@lfdr.de>; Wed, 22 May 2024 18:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2E6753398;
-	Wed, 22 May 2024 15:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E356145B32;
+	Wed, 22 May 2024 18:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="SJsBo3qA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pzG3MJlu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4AD1171C
-	for <linux-iio@vger.kernel.org>; Wed, 22 May 2024 15:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716392188; cv=fail; b=cjED06YiaAgwbqlUfpPERA4ovLGuoCFsXv1VbX21yfbyLoYjLi2beHJVoC95qacoK5LIVwhbdDRkxX9GZV8tHgX2+0rFxMCUNDBCCMgFWbxbOqbeXPmKi0VBA7qlvC8H+1jxhiMzA8MbPq7/LXIw7WBoVy8fxkZ8YWYb4qEDxTM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716392188; c=relaxed/simple;
-	bh=7dVj4ESdnR0wMxFIoAet30kSsxtYuaIFFbVrFMT67pc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZezywmOKvuyvCeMDMJ7uMuRY6WcmDmFP8uRJluViXqqb7AFl+zlX+CNHrBunK0iyXNujYjOZPSGI3xQgdtXXQI+hMBva7/Q09U6oxNUkdBd3F4wQrFTxKkOAiPMfYv/tl/uKnbMtBFRWmChpjtKXWneljS0Q9hrq1wbmstvy1tE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=SJsBo3qA; arc=fail smtp.client-ip=205.220.166.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
-Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44LMK30b014929;
-	Wed, 22 May 2024 15:35:53 GMT
-Received: from deu01-fr2-obe.outbound.protection.outlook.com (mail-fr2deu01lp2169.outbound.protection.outlook.com [104.47.11.169])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3y6nbck2bw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 22 May 2024 15:35:52 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=W8MfwlsEqBwHI9AXxYBVPu/3oHqL993bfEpNnj7JqOggCS/S6NKjxRtLft3k6cSC17WlZzilT8UEB1+tJ9iwv3Lxvjbx1d2Ksj8AEKrMa+tpLeFJuqSMckaaHXhyXYcLFaxMKPWKmZLqm2XFp4N6A9uutcyyaLmKrytko5O5uF/XdkHlyRTL0pbOk1RrEbDdiOcvvlpnHKw783zsEwKqiy7HtH9ycwv8nrF7SLV9m6lLX8W1Lu3R1OeSGLcbZlRSfcMuSILXyCd5RWI23qufCG/BCciRoQmaxU+1eQ+hzjCw0segfXKuC6NPuQ857J/5C3F2/+2qxTH7lrH8igXmiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YfdygcwLrnw/MZOe4ZPWqVPTPJoQuWUsQMXwHVTdXX8=;
- b=Zon8ALZ5e5+Eb8R53zeieu0iQXSV3Tt7PRjyC0MxQuyMdXtER7LP5aplpWHPPEpNusmdHKD19okF6pNUfRGp0PkA2fkUqZUtwBeMV5kBSrPQDcK5Y7xjaG1h8mm7EfpToj9AThCP60MvIcSRf6x+KvhUXXoEepGkvuxD4Fw4RUzXXkpHIAY1ZfII2Wjx1CXQ+HVO/CvgF3gNHgfyj//d7pXzfGF6OudfBFjaMTHe6xBzcOQlxlaEQ/v+IC2JXZXAyvG8yMt3RxDxJ7y4HrnxHjMLS1VkSb0VPHAp5wxOMCLox7BzDHhIfd6bIjT08qjWZ3sSuXar+xOx0YfUkKg/SQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YfdygcwLrnw/MZOe4ZPWqVPTPJoQuWUsQMXwHVTdXX8=;
- b=SJsBo3qAe4TNwy67ZWjyK6NDLmtrOrDHWLeloyjdGYvZxNb7CIZQ7p0RShtInbMKoLgDIyJteCqvhkmKDtr53P/etYh30tE7LffaShjtSU1Qphga+quxo9TbytLZ2rd5QooiYovep4vQ47RLiZ4aSQsf0XncWTQd/wLE5CFLmLcCjs3Qkzb5Zx41NVnQzUFn3BILzybMTTOQY20jcOF3eLlbIDFKUWpaxJ/wihiODc48xWSWm2RIHUexj4iB5v4/giQroIJu9mkyYxXScRdCTdkMs/h6w3/fk9RkTS2VNCjjNWiYKyDoBCMWrygfmDHloZ0ynw5hELZanQTeWxxdHA==
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
- by FRYP281MB3033.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:6a::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.17; Wed, 22 May
- 2024 15:35:46 +0000
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::53a6:70d:823f:e9ac]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::53a6:70d:823f:e9ac%4]) with mapi id 15.20.7611.016; Wed, 22 May 2024
- 15:35:45 +0000
-From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-To: Jonathan Cameron <jic23@kernel.org>
-CC: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        INV Git Commit
-	<INV.git-commit@tdk.com>,
-        "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: imu: inv_icm42600: add support of accel low-power
- mode
-Thread-Topic: [PATCH] iio: imu: inv_icm42600: add support of accel low-power
- mode
-Thread-Index: AQHaoGmx3kJNOgoKOESrYpcRCRIEpLGO5IcAgAXe//mACcHPgIAE8SQI
-Date: Wed, 22 May 2024 15:35:45 +0000
-Message-ID: 
- <FR3P281MB17574BF058BCAC2CE087D154CEEB2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20240507103056.291643-1-inv.git-commit@tdk.com>
-	<20240509141326.00000684@Huawei.com>
-	<FR3P281MB175734C16B7C8F430874A866CEE22@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
- <20240519125253.6a548bc0@jic23-huawei>
-In-Reply-To: <20240519125253.6a548bc0@jic23-huawei>
-Accept-Language: en-US, fr-FR
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: FR3P281MB1757:EE_|FRYP281MB3033:EE_
-x-ms-office365-filtering-correlation-id: 53561636-6a30-46d2-f834-08dc7a74d91b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: 
- BCL:0;ARA:13230031|366007|1800799015|376005|3613699003|38070700009;
-x-microsoft-antispam-message-info: 
- =?iso-8859-1?Q?TmCuqoPIyodelWUoBYJuH4q/XvJVlVBWgo9E0aGd0ClQeoW4/Rm+4g+3EV?=
- =?iso-8859-1?Q?zQeALN6In+iva/UsjZ6vJxHY5vvyDgzUh3Ap7u1yLpS74FCgjAemj634AW?=
- =?iso-8859-1?Q?c5MuKc3wRB1Rf4Jeg/4PpnQfVSP793mEm3XgN4gQvmdRPxt3qafFrwPPQA?=
- =?iso-8859-1?Q?l5+dg3VF+EP3mLwM0AeJaWKx6dBoP3HELxy9GL5Neka+u7jm60syFwY5ZJ?=
- =?iso-8859-1?Q?YgPNtyyG+IOLb2Ypwan6vIVnCW3fwFEZ5PrlehXhaKrev3WnaE6QKxszXl?=
- =?iso-8859-1?Q?yKCVQT3GEzr9TY3o3Hq+jA+Wq+e+vpdts5/DmW5lapHGrDXRCeFL43ZP8R?=
- =?iso-8859-1?Q?rrNFXgaKwB3IV8VguWuvEv2fFfT3tOg4M1eIGZSSJP6YfZ2a/ie3dGoW25?=
- =?iso-8859-1?Q?yo9CwqmZ+JDJnTnow24CloiOE/rLcbP4dYFXEpGmDMrzvQPe3KrQD1kIz3?=
- =?iso-8859-1?Q?Kj4x1mK/vLGxYo8qpVLnJ2gwmvuQUYUJ8y4nGHVgt88zFcjfnqhVXDaANG?=
- =?iso-8859-1?Q?ZNaSLpdkltCvKmEYmReE/HPlRPOXfcNr8B7YvLlZApYuuDGFEGSG7EuUdS?=
- =?iso-8859-1?Q?2ALnnR1+72I/YQmNK1/N2b85p9pW3a2SCwIq6zvrSj7gmxqwkNf28uz40R?=
- =?iso-8859-1?Q?R0jKsHK4eY8yJt2o9dGB/BPpy4qymyJauqe0BEjlWGeFPRtqVzS8Pucoz3?=
- =?iso-8859-1?Q?4U93128kBdn3DJ46mDBqB8D+s60Eie7mKu7++QqjV0qY9Gx8Hu6Tbcyyle?=
- =?iso-8859-1?Q?autYaip0vrgvn/+E00UpyFldmTizK1KEClrv6libuCyWs+LTzigIFSaS6t?=
- =?iso-8859-1?Q?mHyY/X+Pq+MUeeIWWMXivVRuM9InjvVoghR8dEDxeGZHeum+/VoVDN/3aP?=
- =?iso-8859-1?Q?gZvAGK4/gSBd6KsDbsQ+sDakVbVZ5kbXd8d57WP7TSkpqIRYx5U2nHujxh?=
- =?iso-8859-1?Q?U+fhGpdQv34bs7x3zIpLEeO7hSS7explJA1c4+ZlHksWbQzstRM8shtmmg?=
- =?iso-8859-1?Q?Z7AcepfBZ9wsiYw5lwf5i+fITJFPZ2oD9zwxvuGfGhRErlKtg+ocftZMrs?=
- =?iso-8859-1?Q?CtQz2RPOhtMxTZ7FNxE3ayPRCQCbX1nDRU10PTUcVHMDhhd1JCOopgezgg?=
- =?iso-8859-1?Q?9eCUobh8p4QPbU2uVYnkIvqm7vVP7FCDCvl6/ffrmf6AuEcEBLXZKrt/pY?=
- =?iso-8859-1?Q?ExNFHXqVtjf3tKsQfYg5ydF4xnwixjw66WW4V5TuOvgbe5d91TRF0sXu+T?=
- =?iso-8859-1?Q?qGQ9PHMzCVVIS3YRYWLXdX6wpDAEXl0NHQs+dSX2tzp9L06vzsD8/ViSqs?=
- =?iso-8859-1?Q?91gTFAf9OAF/yD87qDRfomsh/VciA/YWCVWMO1plb0QOAskzb9o+2Bwht4?=
- =?iso-8859-1?Q?6SC5z0bRSAmLlBpbq/8ad+brn9NrZ7VeOEkt+EE0c4uD8J0loWIUE=3D?=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(3613699003)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?iso-8859-1?Q?ek2+YjowvzuRN0eN5HIjpVt4lGbzhAmOYuUHXy3Y7L3A2WOR8iWdcJDXix?=
- =?iso-8859-1?Q?1HKAAhvKnuM2ECb83f0Uocg0Zq1FodpAdVRbuSctFh6Qdb50hFxEixpkG0?=
- =?iso-8859-1?Q?CrmAaN/OWl/YyMD4akwU9rctWpiBcftZoJO8jscoAK+LLNwb9YpyvQcdiP?=
- =?iso-8859-1?Q?4GKCyp09OToQpPoMNuaTd1fZUcvd+E46lwqZx/NUzCRrisx708H0m4RQ/X?=
- =?iso-8859-1?Q?7HYWDKsm24GqMhjuHCNyDnyecjnzUESUrsnHdYhnm9fv3iB5/j/lou1s8z?=
- =?iso-8859-1?Q?nVTxU2D+Ex0aRuXuWkUfSRktP/Js/xYQ8fRl8o/j8VWgiy6Zd+VsHGe7M0?=
- =?iso-8859-1?Q?7vcxAlgaKy0r1WrCtL5DB5yNWbbHNIy/jgDoJhQzQ3l/DnD6n+IwBhjb8R?=
- =?iso-8859-1?Q?BRUE4YqR9Rgn4lTAglgKTCq1SEcmAVGDp9iERSWylmOKX6tPDdNxSjAiKK?=
- =?iso-8859-1?Q?DxUq0wKCfd7tivAA9nBqxqLi2FimBDPp2re0c2ZxSPgY+vX9CiStgO9u0O?=
- =?iso-8859-1?Q?cuA4rcI02hNmkXyFZFnD3fKmeBkcgwPqhCm22S2/nfhIAjC0CMpJTfojGm?=
- =?iso-8859-1?Q?12YdnxFFRv6jMn9uNHySCnm3MvexdDoEPmMTsasuHt15FfK8hHJ4jXg/i6?=
- =?iso-8859-1?Q?wy254oy20V+2n6VPuk9BmPxfvMrfi9xiJzRpWSDLH9u7BiK1RpynKiCLW6?=
- =?iso-8859-1?Q?VKWTrBIlIJPnM8+CJ6xbeyJ/po5EVNxvf0bFVBaPcTkXvZTtt886uRgv5b?=
- =?iso-8859-1?Q?I8ntY6aT6hCmh5CfacIPTbgGCtzQ9MF2rlmjlr04X2v6jhQ4EzLP5t/SEk?=
- =?iso-8859-1?Q?vC/tXyJWjx5qYdheecFsvC257PFQWotMLi7jQc2XA4nY6maoAUdK5pBm5q?=
- =?iso-8859-1?Q?imUYlaLA8ocq1DCOIcID53tAengUBGsX+WcNu8xo4/Uabb9nEdQ20bMqAX?=
- =?iso-8859-1?Q?G37hkEWPEy1hALc536bvbmeWUejyrmB0OJuWat7l8byZW0FjpdvvuQEb5S?=
- =?iso-8859-1?Q?KXVTC358aAxyLAexU9zcfc5qAGmyzs6v12O6Y20euteTosSjlKSpRupNFL?=
- =?iso-8859-1?Q?SFRSJ74bzZvlizYNz6f9/MtHMIdYJZLpy4yXxDKy5SrNOUvmxuVA+ntr5h?=
- =?iso-8859-1?Q?py6bDkZKfuMgT+UsiL6DvXB2Tjyi8/2DyVra5J1k7KgBhvAGKg1G4hxIu4?=
- =?iso-8859-1?Q?t3bA59UVS5xtQ9NA5TjECuzQBG1EcGcr6pff36Jw7ZUwEz1mecLIGg0Lh1?=
- =?iso-8859-1?Q?QkjIMUQ8Vqg0jHKfDngURWN3vCCUo/8Yof6/EMUAcOWdF7xolcyKaSdbbp?=
- =?iso-8859-1?Q?vlMwJiCW2EFH1lKzhyEfevlm4yR8Roc/YZxYEFWQNd05O/mw/HBhmycZSp?=
- =?iso-8859-1?Q?wQ5Ka6Gqx7chjonuuqklXg+Z+xXKAVwoKa3hFzzU1E5/1cNM0Oxk+FKdBs?=
- =?iso-8859-1?Q?4WBtnlrfvvjLyf9ZdfnyCoquM2my8ZNxQsBaBFCNltgKg2OTbEm14osZsJ?=
- =?iso-8859-1?Q?cxcSh0gE91cicj81gw515f9enZ5p+WaPrCNKbhT+tcfq4MpykKVEsAN/+7?=
- =?iso-8859-1?Q?MlbBaekKPxzue6anj/viK7QxyRaDH890PoAKB3gaEPyo1je1j77m6RPSkI?=
- =?iso-8859-1?Q?+DtI1xCUfF2cpMe/JNYd6RskilXgYmWn4GEfroMs7NwFawn+/5X+wb2V9w?=
- =?iso-8859-1?Q?32ruaL3Lz+EohQZoP2gdUmJYhvQhQkuanCj+GlDCw7ESKR/MD6DdUcqP8l?=
- =?iso-8859-1?Q?sMnQ=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A000D51E;
+	Wed, 22 May 2024 18:25:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716402303; cv=none; b=sClsAI0gWnnoqJf2Y9pTlBwjarBpVajQqjQHRQ2+/vNrByN+guWqo5jZ9TWwMLBBB/Si+pmlIkTkX0a1jRqqJDewb/GmUNRaPI0KUO+soWa7t8ddkY3ya5zaiTaKvst/Pgsva9J6WShnwdFioOIB1RPH+8/qeNmVWdueDdFvWcA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716402303; c=relaxed/simple;
+	bh=Shqy5OL7xRWo7Q5gC8OQsX+tNunueyzgF0SSparBp0o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R0NyPk7HDAqwY6nvijvirlnLO55RtSo56plPD32orRCi88lDUao8i1+q/bJo6Sn8uC7M0YA1gkemGEPxpTNIOFADXUMD50SL91+LYoDUPpRckAzYHZ5Hnlviy0Npb+Vbq8rFa8cdD88UZ69mjMf14RiM2JjmNFFhma28FuKNX2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pzG3MJlu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0CAC32781;
+	Wed, 22 May 2024 18:24:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716402302;
+	bh=Shqy5OL7xRWo7Q5gC8OQsX+tNunueyzgF0SSparBp0o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pzG3MJlu1g+Oi8vvIuR0OIJMKSOJCL/2AKuhReyNmzZxGuN9rvErd+BciVsuiyWjU
+	 kc84Q4pO9H2ayk+Qhr1JnQHTH/5uFKW+5nHZrRXAJ9mBJnQ7KCIJHiHAs2PuSra2DO
+	 petLyG6UfebGju6/SKI6l5DBcWgpAjUy+SY/Eb1VQYP5X03EsZANmZ9IZY+E6j1q7X
+	 qYQ/YFBhuJreRf7M6758HTbjyxhPzQPJUmkdEvSxUiMgQWonO4uCkN8u1ocUp9YhDU
+	 Mfuc5C9W0xXjqd/m/cMeoRjrYR6gqQkdnK7wftGKuzFLUbWc2MLJBsWnGovryFJtyK
+	 PGX4LfWdBZGbA==
+Date: Wed, 22 May 2024 19:24:57 +0100
+From: Conor Dooley <conor@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH RFC v2 1/8] spi: dt-bindings: spi-peripheral-props: add
+ spi-offloads property
+Message-ID: <20240522-gullible-ibuprofen-cf9111c25f6f@spud>
+References: <20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com>
+ <20240510-dlech-mainline-spi-engine-offload-2-v2-1-8707a870c435@baylibre.com>
+ <20240513-headsman-hacking-d51fcc811695@spud>
+ <CAMknhBE5XJzhdJ=PQUXiubw_CiCLcn1jihiscnQZUzDWMASPKw@mail.gmail.com>
+ <20240514-aspire-ascension-449556da3615@spud>
+ <CAMknhBFFpEGcMoLo5gsC11Syv+CwUM0mnq1yDMUzL1uutUtB+Q@mail.gmail.com>
+ <20240516-rudder-reburial-dcf300504c0a@spud>
+ <CAMknhBF_s0btus4yqPe-T=F3z7Asi9KkRGsGr7FHDFi=k4EQjw@mail.gmail.com>
+ <20240519-abreast-haziness-096a57ef57d3@spud>
+ <CAMknhBHvEse2FyDoBXR1PvymGpSGq8dotKfm+8XH+0+k+xKtQw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 53561636-6a30-46d2-f834-08dc7a74d91b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2024 15:35:45.6641
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ipjWo/EaF+mv/XM6j7hntO2LLfYq69OSTEXbAa9cl6MdVRR/Zjv1E9mVQHBiACFkQYr9cxStg8sAV4xL7S5665GyTq+ZkFSvQlhqx+ikzmU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FRYP281MB3033
-X-Proofpoint-GUID: Ydj8wJHX0nX_5B49F_dQscFcnRQNWONk
-X-Proofpoint-ORIG-GUID: Ydj8wJHX0nX_5B49F_dQscFcnRQNWONk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-22_08,2024-05-22_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 lowpriorityscore=0 malwarescore=0
- phishscore=0 adultscore=0 suspectscore=0 mlxlogscore=999 clxscore=1011
- mlxscore=0 priorityscore=1501 bulkscore=0 impostorscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405010000
- definitions=main-2405220105
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="tCE84TRCfzbvxkUd"
+Content-Disposition: inline
+In-Reply-To: <CAMknhBHvEse2FyDoBXR1PvymGpSGq8dotKfm+8XH+0+k+xKtQw@mail.gmail.com>
 
-Hello Jonathan,=0A=
-=0A=
-the hardware bias changes (inside calibbias exactly) is due to the noise di=
-fferences of the 2 modes, introducing a little change in offset (these come=
-s from the MEMS mechanical parts). This change cannot be anticipated sadly.=
-=0A=
-=0A=
-Most of the time, the low power mode is used for accelerometer, since most =
-used accelerometer features are motion monitoring in the background (pedome=
-ter, activity, ...). But high frequencies can be needed for very fast event=
- like tap our double taps on the device.=0A=
-=0A=
-We could default to low-power mode and switch to low-noise mode automatical=
-ly only for the high frequencies where it is mandatory. And we could add a =
-sysfs entry like low_noise_mode to enforce low-noise mode for lower frequen=
-cies supporting it.=0A=
-=0A=
-This way traditional userspace can ignore the power_mode setup and use all =
-frequencies. And only specialized userpsace components can set this low_noi=
-se_mode to have better noise values for specific use cases. For the hardwar=
-e bias issue, the high frequency use cases are usually not impacted by the =
-absolute offset, so it should not be a big issue.=0A=
-=0A=
-Is that OK for you?=0A=
-=0A=
-Thanks,=0A=
-JB=0A=
-=0A=
-________________________________________=0A=
-From:=A0Jonathan Cameron <jic23@kernel.org>=0A=
-Sent:=A0Sunday, May 19, 2024 13:52=0A=
-To:=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>=0A=
-Cc:=A0Jonathan Cameron <Jonathan.Cameron@Huawei.com>; INV Git Commit <INV.g=
-it-commit@tdk.com>; lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.kerne=
-l.org <linux-iio@vger.kernel.org>=0A=
-Subject:=A0Re: [PATCH] iio: imu: inv_icm42600: add support of accel low-pow=
-er mode=0A=
-=A0=0A=
-This Message Is From an External Sender=0A=
-This message came from outside your organization.=0A=
-=A0=0A=
-On Mon, 13 May 2024 09:18:34 +0000=0A=
-Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:=0A=
-=0A=
-> Hello Jonathan,=0A=
-> =0A=
-> sorry for the patch malformation, I will send a V2 fixed.=0A=
-> =0A=
-> Our chips have usually 2 working modes called "low-noise" and "low-power"=
-.=0A=
-> =0A=
-> "Low-noise" is the standard mode where the chip (ADC/MEMS) runs continuou=
-sly with high precision oscillator. Measures are the best with the less jit=
-ter (low noise), you can use the highest possible frequencies (> 500Hz), bu=
-t power consumption is high, and you cannot use the lowest frequencies (< 1=
-2.5Hz).=0A=
-> =0A=
-> "Low-power" is duty cycling the chip, turning ADC and MEMS on only when m=
-easuring and then turns it off. Power consumption is then much lower (low p=
-ower), you can use the lowest frequencies (< 12.5Hz), but measures have mor=
-e jitter, and you cannot use the highest frequencies.=0A=
-> =0A=
-> Depending on the use case, you may prefer to have the "low-noise" mode wi=
-th better measures and high frequencies, or the "low-power" mode with less =
-power consumption and low frequencies. The main point is the frequencies av=
-ailability depending on the power mode.=0A=
-> =0A=
-> We could have the driver switching automatically from low-noise to low-po=
-wer to support all possible frequencies, but we need to arbitrary choose th=
-e mode for the common frequencies, and the configured hardware bias in bias=
- registers are not the same depending on the power mode. We prefer handling=
- all this from userspace, switching the mode when needed depending on the u=
-se case and dealing with the 2 sets of hardware bias depending on the modes=
-.=0A=
-> =0A=
-> I hope I am clear enough with my description.=0A=
-> =0A=
-=0A=
-Whilst I understand the motivation, the problem with this is that most user=
-space=0A=
-software will have no idea what these controls do. It is very challenging =
-=0A=
-to provide enough discoverability to userspace because these modes tend to =
-have=0A=
-weird and wonderful side effects (e.g. the hardware bias here).=0A=
-=0A=
-So I'd very strongly suggest at least a 'default' option to figure it out f=
-rom the=0A=
-requested frequencies probably defaulting to low noise on the common freque=
-ncies=0A=
-- "when in doubt give the best possible data". =0A=
-=0A=
-With that in place, I'd be more likely to be persuaded of the need for a=0A=
-'tweak' bit of custom ABI that overrides this automatic parameter setting.=
-=0A=
-Thus things would work as well as possible for normal software, and advance=
-d=0A=
-software, by which I mean your userspace stack, would have access to a way=
-=0A=
-to bias the low power / low noise decision in the common frequencies.=0A=
-=0A=
-The sticky bit here is that hardware bias. I'm assuming that is what we=0A=
-are controlling via calibbias?  If so is there any sane way to relate the t=
-wo=0A=
-sets of bias values?=0A=
-Normally (I think) that stuff is about fixing variability in the analog=0A=
-signal part of the device, so I'd expect any change in value to be predicta=
-ble=0A=
-unless there is something odd going on with digital filtering perhaps?=0A=
-=0A=
-Finally I do wonder how often people use those mid frequencies where there =
-is=0A=
-a direct choice.  In broad terms the reason for low power is to do detectio=
-n=0A=
-of background stuff - screen rotation etc in which case they'd also pick lo=
-w=0A=
-frequency to save even more power. The low noise modes are for when the pre=
-cise=0A=
-data matters a lot more and those tend to also need at least moderately hig=
-h=0A=
-sampling rates because people are typically running some sensor fusion on t=
-op=0A=
-and accurate data but at low frequency is usually no good for that unless y=
-ou know=0A=
-something is mechanically filtering the motion (i.e it's fine on measuring =
-shaft=0A=
-rotation on something with lots of inertial, not so much human motion).=0A=
-=0A=
-Jonathan=0A=
-=0A=
-> Thanks,=0A=
-> JB=0A=
-> =0A=
-> =0A=
-> =0A=
-> ________________________________________=0A=
-> From:=A0Jonathan Cameron <Jonathan.Cameron@Huawei.com>=0A=
-> Sent:=A0Thursday, May 9, 2024 15:13=0A=
-> To:=A0INV Git Commit <INV.git-commit@tdk.com>=0A=
-> Cc:=A0jic23@kernel.org <jic23@kernel.org>; lars@metafoo.de <lars@metafoo.=
-de>; linux-iio@vger.kernel.org <linux-iio@vger.kernel.org>; Jean-Baptiste M=
-aneyrol <Jean-Baptiste.Maneyrol@tdk.com>=0A=
-> Subject:=A0Re: [PATCH] iio: imu: inv_icm42600: add support of accel low-p=
-ower mode=0A=
-> =A0=0A=
-> This Message Is From an External Sender=0A=
-> This message came from outside your organization.=0A=
-> =A0=0A=
-> On Tue,  7 May 2024 10:30:56 +0000=0A=
-> inv.git-commit@tdk.com wrote:=0A=
-> =0A=
-> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=0A=
-> > =0A=
-> > Add channel attributes "power_mode" and "power_mode_available" for=0A=
-> > setting accel power mode (low-noise or low-power).=0A=
-> > =0A=
-> > Differents ODRs and filter are possible depending on the power mode.=0A=
-> > Thus make ODRs and filter dynamic and check values when applying.  =0A=
-> Hi Jean-Baptiste=0A=
-> =0A=
-> No Sign-off?=0A=
-> =0A=
-> We have never provided this sort of control because it's near=0A=
-> impossible for user space to know what to do with it.=0A=
-> =0A=
-> Various attempts happened in the past to provide enough info=0A=
-> to userspace, but didn't succeed because what low power means=0A=
-> is incredibly chip dependent.  As a general rule everyone wants=0A=
-> low power, but at 0 perf cost :)=0A=
-> =0A=
-> What are the results of low power mode? Normally it maps as=0A=
-> something we can enable when some other set of states is set or=0A=
-> automatically control based on how often the device is being accessed etc=
-.=0A=
-> =0A=
-> For example, what do we loose by choosing this mode for everything=0A=
-> below 200Hz?=0A=
-> =0A=
-> I see there is some reference to 'low noise' - what does that actually=0A=
-> mean for this device? Is it oversampling or running lower resolution on=
-=0A=
-> the ADCs?  If so those are the things to look at as ways to control=0A=
-> this.  Choose lowest power to meet a given set of requirements.=0A=
-> =0A=
-> Jonathan=0A=
-=0A=
+
+--tCE84TRCfzbvxkUd
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Tue, May 21, 2024 at 09:54:39AM -0500, David Lechner wrote:
+> On Sun, May 19, 2024 at 7:53=E2=80=AFAM Conor Dooley <conor@kernel.org> w=
+rote:
+> >
+> > On Fri, May 17, 2024 at 11:51:58AM -0500, David Lechner wrote:
+> > > On Thu, May 16, 2024 at 4:32=E2=80=AFPM Conor Dooley <conor@kernel.or=
+g> wrote:
+> > > > On Tue, May 14, 2024 at 05:56:47PM -0500, David Lechner wrote:
+> >
+> > > > > Back to "something beyond the SPI controller":
+> > > > >
+> > > > > Here are some examples of how I envision this would work.
+> > > > >
+> > > > > Let's suppose we have a SPI controller that has some sort of offl=
+oad
+> > > > > capability with a configurable trigger source. The trigger can ei=
+ther
+> > > > > be an internal software trigger (i.e. writing a register of the S=
+PI
+> > > > > controller) or and external trigger (i.e. a input signal from a p=
+in on
+> > > > > the SoC). The SPI controller has a lookup table with 8 slots wher=
+e it
+> > > > > can store a series of SPI commands that can be played back by
+> > > > > asserting the trigger (this is what provides the "offloading").
+> > > > >
+> > > > > So this SPI controller would have #spi-offload-cells =3D <2>; whe=
+re the
+> > > > > first cell would be the index in the lookup table 0 to 7 and the
+> > > > > second cell would be the trigger source 0 for software or 1 for
+> > > > > hardware.
+> > > > >
+> > > > > Application 1: a network controller
+> > > > >
+> > > > > This could use two offloads, one for TX and one for RX. For TX, w=
+e use
+> > > > > the first slot with a software trigger because the data is coming=
+ from
+> > > > > Linux. For RX we use the second slot with a hardware trigger since
+> > > > > data is coming from the network controller (i.e. a data ready sig=
+nal
+> > > > > that would normally be wired to a gpio for interrupt but wired to=
+ the
+> > > > > SPI offload trigger input pin instead). So the peripheral bindings
+> > > > > would be:
+> > > > >
+> > > > > #define SOFTWARE_TRIGGER 0
+> > > > > #define HARDWARE_TRIGGER 1
+> > > > >
+> > > > > can@0 {
+> > > > >     ...
+> > > > >     spi-offloads =3D <0 SOFTWARE_TRIGGER>, <1 HARDWARE_TRIGGER>;
+> > > > >     /* maybe we need names too? */
+> > > > >     spi-offload-names =3D "tx", "rx";
+> > > > > };
+> > > > >
+> > > > > In this case, there is nothing extra beyond the SPI controller an=
+d the
+> > > > > network controller, so no extra bindings beyond this are needed.
+> > > > >
+> > > > > Application 2: an advanced ADC + FPGA
+> > > > >
+> > > > > This is basically the same as the ad7944 case seen already with o=
+ne
+> > > > > extra feature. In this case, the sample data also contains a CRC =
+byte
+> > > > > for error checking. So instead of SPI RX data going directly to D=
+MA,
+> > > > > the FPGA removes the CRC byte from the data stream an only the sa=
+mple
+> > > > > data goes to the DMA buffer. The CRC is checked and if bad, an
+> > > > > interrupt is asserted.
+> > > > >
+> > > > > Since this is an FPGA, most everything is hardwired rather than h=
+aving
+> > > > > any kind of mux selection so #spi-offload-cells =3D <1>; for this
+> > > > > controller.
+> > > > >
+> > > > > By adding spi-offloads to the peripheral node, it also extends the
+> > > > > peripheral binding to include the additional properties needed fo=
+r the
+> > > > > extra features provided by the FPGA. In other words, we are saying
+> > > > > this DT node now represents the ADC chip plus everything connecte=
+d to
+> > > > > the offload instance used by the ADC chip.
+> > > >
+> > > > It seems very strange to me that the dmas and the clock triggers are
+> > > > going into the spi device nodes. The description is
+> > > > | +  dmas:
+> > > > | +    maxItems: 1
+> > > > | +    description: RX DMA Channel for receiving a samples from the=
+ SPI offload.
+> > > > But as far as I can tell this device is in a package of its own and=
+ not
+> > > > some IP provided by Analog that an engine on the FPGA can actually =
+do
+> > > > DMA to, and the actual connection of the device is "just" SPI.
+> > > > The dmas and clock triggers etc appear to be resources belonging to=
+ the
+> > > > controller that can "assigned" to a particular spi device. If the a=
+dc
+> > > > gets disconnected from the system, the dmas and clock triggers are =
+still
+> > > > connected to the spi controller/offload engine, they don't end up n=
+/c,
+> > > > right? (Well maybe they would in the case of a fancy SPI device that
+> > > > provides it's own sampling clock or w/e, but then it'd be a clock
+> > > > provider of sorts). I'd be expecting the spi-offloads property to be
+> > > > responsible for selecting which of the various resources belonging =
+to
+> > > > the controller are to be used by a device.
+> > > > Maybe it overcomplicates the shit out of things and Rob or Mark are
+> > > > gonna start screaming at me but w/e, looking at it from the point of
+> > > > view of how the hardware is laid out (or at least how it is describ=
+ed
+> > > > in your FPGA case above) the dma/clock properties looks like they're
+> > > > misplaced. IOW, I don't think that adding the spi-offloads property
+> > > > should convert a node from representing an ADC in a qfn-20 or w/e
+> > > > to "the ADC chip plus everything connected to the offload instance
+> > > > used by the ADC chip".
+> > >
+> > > This is the same reasoning that led me to the binding proposed in v1.
+> > > Rob suggested that these extras (dmas/clocks) should just be
+> > > properties directly of the SPI controller.
+> >
+> > > But the issue I have with
+> > > that is that since this is an FPGA, these properties are not fixed.
+> >
+> > I don't think whether or not we're talking about an FPGA or an ASIC
+> > matters at all here to be honest. In my view the main thing that FPGA
+> > impact in terms of bindings is the number of properties required to
+> > represent the configurability of a particular IP. Sure, you're gonna
+> > have to change the dts around in a way you'll never have to with an
+> > ASIC, but the description of individual devices or relations between
+> > them doesn't change.
+> >
+> > > Maybe there are more clocks or no clocks or interrupts or something we
+> > > didn't think of yet.
+> >
+> > This could happen with a new generation of an ASIC and is not specific
+> > to an FPGA IP core. Even with FPGA IP, while there may be lots of
+> > different configuration parameters, they are known & limited - you can
+> > look at the IP's documentation (or failing that, the HDL) to figure out
+> > what the points of variability are. It's not particularly difficult to
+> > account for there being a configurable number of clocks or interrupts.
+> > For "something we didn't think of yet" to be a factor, someone has to
+> > think of it and add it to the IP core, and which point we can absolutely
+> > change the bindings and software to account for the revised IP.
+> >
+> > > So it doesn't really seem possible to write a
+> > > binding for the SPI controller node to cover all of these cases.
+> >
+> > I dunno, I don't think your concerns about numbers of clocks (or any
+> > other such property) are unique to this particular use-case.
+> >
+> > > These
+> > > extras are included in the FPGA bitstream only for a specific type of
+> > > peripheral, not for general use of the SPI controller with any type of
+> > > peripheral.
+> >
+> > I accept that, but what I was trying to get across was that you could
+> > configure the FPGA with a bitstream that contains these extra resources
+> > and then connect a peripheral device that does not make use of them at
+> > all.
+>=20
+> Sure, in this case the peripheral has no spi-offloads property and the
+> SPI controller acts as a typical SPI controller.
+>=20
+> > Or you could connect a range of different peripherals that do use
+> > them.
+>=20
+> OK, you've got me thinking about something I hadn't really thought about =
+yet.
+>=20
+> > Whether or not the resources are there and how they are connected
+> > in the FPGA bitstream is not a property of the device connected to the
+> > SPI controller, only whether or not you use them is.
+> >
+>=20
+> Even when those things are connected directly to a specific peripheral
+> device? Or not connected to the offload?
+>=20
+> Here is another potential ADC trigger case to consider.
+>=20
+> +-------------------------------+   +------------------+
+> |                               |   |                  |
+> |  SOC/FPGA                     |   |  ADC             |
+> |  +---------------------+      |   |                  |
+> |  | AXI SPI Engine      |      |   |                  |
+> |  |             SPI Bus =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D SPI Bus    =
+      |
+> |  |                     |      |   |                  |
+> |  |  +---------------+  |  < < < < < BUSY             |
+> |  |  | Offload 0     |  | v    |   |                  |
+> |  |  |               |  | v  > > > > CNV              |
+> |  |  |    TRIGGER IN < < <   ^ |   |                  |
+> |  |  +---------------+  |    ^ |   +------------------+
+> |  +---------------------+    ^ |
+> |  | AXI PWM             |    ^ |
+> |  |                 CH0 >  > ^ |
+> |  +---------------------+      |
+> |                               |
+> +-------------------------------+
+>=20
+> This time, the periodic trigger (PWM) is connected to the pin on the
+> ADC that triggers a sample conversion (CNV). The ADC has a BUSY output
+> that will go high at the start of the conversion and go low at the end
+> of the conversion. The BUSY output of the ADC is wired as the hardware
+> trigger input of the offload.
+>=20
+> In this case would we still consider the PWM as part of the SPI
+> controller/offload since it can only be used in conjunction with the
+> SPI offload? It isn't connected to it at all though.
+
+No, in this case the ADC is a PWM consumer and the offload engine is
+not. The ADC is a "trigger" provider and the SPI offload engine is a
+trigger consumer.
+
+> Another case could be a self-clocked ADC. Here, the ADC has it's own
+> periodic sample trigger on the chip and the RDY output goes high
+> whenever a sample is ready to read.
+>=20
+> +-------------------------------+   +------------------+
+> |                               |   |                  |
+> |  SOC/FPGA                     |   |  ADC             |
+> |  +---------------------+      |   |                  |
+> |  | AXI SPI Engine      |      |   |                  |
+> |  |             SPI Bus =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D SPI Bus    =
+      |
+> |  |                     |      |   |                  |
+> |  |  +---------------+  |  < < < < < RDY              |
+> |  |  | Offload 0     |  | v    |   |                  |
+> |  |  |               |  | v    |   |                  |
+> |  |  |    TRIGGER IN < < <     |   |                  |
+> |  |  +---------------+  |      |   +------------------+
+> |  +---------------------+      |
+> |                               |
+> +-------------------------------+
+>=20
+> If both of these are valid wiring configurations for the same ADC,
+> wouldn't it make more sense to describe this in the peripheral node
+> rather than having to query the controller to see how the peripheral
+> is wired up?
+
+In both of these cases, the offload works in the same way, it gets a
+trigger from the ADC and acts upon it. I would expect that in this case
+the ADC driver would look for an optional pwm property in the devicetree
+and if it is present configure the ADC to use that and if absent do then
+do whatever configuration is required for self clocking. I would expect
+that both cases would be handled identically by the SPI [offload] engine
+side of things, other than inverting the polarity of the trigger. (If I
+understand correctly, you want to trigger the offload engine on a
+falling edge of BUSY but a rising edge of RDY).
+
+
+> > In fact, looking at the documentation for the "spi engine" some more, I
+> > am even less convinced that the right place for describing the offload =
+is
+> > the peripheral as I (finally?) noticed that the registers for the offlo=
+ad
+> > engine are mapped directly into the "spi engine"'s memory map, rather t=
+han
+> > it being a entirely separate IP in the FPGA fabric.
+>=20
+> True, but we don't use these registers, e.g., to configure the
+> sampling frequency of a trigger (if it can even be done). That is done
+> in a completely separate IP block with it's own registers.
+
+Where is the binding for that IP block? I think describing that is
+pretty key. goto continuation;
+
+> > Further, what resources are available depends on what the SPI offload
+> > engine IP is. If my employer decides to start shipping some SPI offload
+> > IP in our catalogue that can work with ADI's ADCs, the set of offload
+> > related properties or their names may well differ.
+>=20
+> If all of these resources were fairly generic, like the periodic
+> trigger we've been discussing, then I could see the case for trying to
+> accommodate this the same way we do for other common features of SPI
+> controllers. But for cases like "Application 2" that I described
+> previously, these resources can get very specific to a peripheral
+> (like the example given of having a data processing unit that knows
+> about the exact data format and CRC algorithm used by a specific ADC).
+> These seems like too specific of a thing to say that a SPI controller
+> "supports".
+
+To remind myself, "Application 2" featured an offload engine designed
+specifically to work with a particular data format that would strip a
+CRC byte and check the validity of the data stream.
+
+I think you're right something like that is a stretch to say that that
+is a feature of the SPI controller - but I still don't believe that
+modelling it as part of the ADC is correct. I don't fully understand the
+io-backends and how they work yet, but the features you describe there
+seem like something that should/could be modelled as one, with its own
+node and compatible etc. Describing custom RTL stuff ain't always
+strightforward, but the stuff from Analog is versioned and documented
+etc so it shouldn't be quite that hard.
+
+continuation:
+If offload engines have their own register region in the memory map,
+their own resources (the RTL is gonna need at the very least a clock)
+and potentially also provide other services (like acting as an
+io-backend type device that pre-processes data) it doesn't sound like
+either the controller or peripheral nodes are the right place for these
+properties. And uh, spi-offloads gets a phandle once more...
+
+FWIW, I did read these examples but didn't feel it was worth commenting
+on them given the above. I'll comment on them if they stay "accurate".
+
+Cheers,
+Conor.
+
+> But, OK, let's go with the idea of putting everything related to the
+> offloads in the SPI controller node an see where it takes us...
+>=20
+> spi@1000 {
+>     compatible =3D "adi,axi-spi-engine";
+>     #spi-offload-cells =3D <1>;
+>     /* PWM is connected to offload hardware trigger. DMA for streaming sa=
+mple
+>      * data can only handle 16-bit words. IIO hardware buffer will be CPU-
+>      * endian because data is streamed one word at a time. */
+>     spi-offload-0-capabilities =3D "pwm-trigger", "16-bit-rx-dma";
+>=20
+>     /* pwm properties are only allowed because spi-offload-0-capabilities
+>      * contains "pwm-trigger" */
+>     pwms =3D <&pwm 0>;
+>     pwm-names =3D "offload-0-pwm-trigger";
+>=20
+>     /* dma properties are only allowed because spi-offload-0-capabilities
+>      * contains "16-bit-rx-dma" */
+>     dmas =3D <&dma 0>;
+>     dma-names =3D "offload-0-16-bit-rx";
+>=20
+>     ...
+>=20
+>     adc@0 {
+>         compatible =3D "adi,ad7944";
+>         spi-offloads =3D <0>;
+>         ...
+>     };
+> };
+>=20
+> spi@2000 {
+>     compatible =3D "not-adi,other-spi-engine";
+>     #spi-offload-cells =3D <1>;
+>     /* Clock is connected to offload hardware trigger. DMA for streaming =
+sample
+>      * data can only handle one byte at a time. IIO hardware buffer will =
+be big-
+>      * endian because data is streamed one byte at a time. */
+>     spi-offload-0-capabilities =3D "clock-trigger", "8-bit-rx-dma";
+>=20
+>     /* Clock properties are extended because spi-offload-0-capabilities c=
+ontains
+>      * "clock-trigger" and SPI controller itself has a clock */
+>     clocks =3D <&cpu_clock 0>, <&extra_clock 0>;
+>     clock-names =3D "sclk", "offload-0-pwm-trigger";
+>=20
+>     /* DMA properties are extended because spi-offload-0-capabilities con=
+tains
+>      * "8-bit-rx-dma". "tx" and "rx" are for non-offload use. */
+>     dmas =3D <&dma1 0>, <&dma1 1>, <&dma2 0>;
+>     dma-names =3D "tx", "rx", "offload-0-16-bit-rx";
+>=20
+>     ...
+>=20
+>     adc@0 {
+>         compatible =3D "adi,ad7944";
+>         spi-offloads =3D <0>;
+>         ...
+>     };
+> };
+>=20
+> spi@3000 {
+>     compatible =3D "adi,axi-spi-engine";
+>     #spi-offload-cells =3D <1>;
+>     /* Sample ready signal (~BSY) from ADC is connected to offload hardwa=
+re
+>      * trigger. DMA for streaming sample data can only handle 16-bit word=
+s. */
+>     spi-offload-0-capabilities =3D "sample-trigger", "16-bit-rx-dma";
+>=20
+>     /* Do we need a property to say that the sample trigger is connected =
+to
+>      * adc@0 so that if adc@1 tries to use it, it will fail? */
+>=20
+>     /* dma properties are only allowed because spi-offload-0-capabilities
+>      * contains "16-bit-rx-dma" */
+>     dmas =3D <&dma 0>;
+>     dma-names =3D "offload-0-16-bit-rx";
+>=20
+>     ...
+>=20
+>     adc@0 {
+>         compatible =3D "adi,ad7944";
+>         spi-offloads =3D <0>;
+>         ...
+>=20
+>         /* PWM connected to the conversion pin (CNV). This only makes sen=
+se
+>          * when offload is used with BSY signal, otherwise we would have =
+CNV
+>          * connected to SPI CS. */
+>         pwms =3D <&pwm 0>;
+>         pwm-names =3D "cnv";
+>     };
+> };
+>=20
+> spi@4000 {
+>     compatible =3D "adi,axi-spi-engine";
+>     #spi-offload-cells =3D <1>;
+>     /* Sample ready signal (~BSY) from ADC is connected to offload hardwa=
+re
+>      * trigger. DMA for streaming sample data can only handle 32-bit word=
+s.
+>      * This also has the CRC validation that strips off the CRC byte of t=
+he
+>      * raw data before passing the sample to DMA. */
+>     spi-offload-0-capabilities =3D "sample-trigger",
+>                                  "32-bit-rx-dma-with-ad4630-crc-check";
+>=20
+>     /* dma properties are only allowed because spi-offload-0-capabilities
+>      * contains "16-bit-rx-dma" */
+>     dmas =3D <&dma 0>;
+>     dma-names =3D "offload-0-16-bit-rx";
+>=20
+>     interrupt-parent =3D <&intc>;
+>     /* First interrupt is for the SPI controller (always present), second
+>      * interrupt is CRC error from the "32-bit-rx-dma-with-ad4630-crc-che=
+ck"
+>      * of offload 0. */
+>     interrupts =3D <0 56 IRQ_TYPE_LEVEL_HIGH>, <0 58 IRQ_TYPE_LEVEL_HIGH>;
+>     interrupt-names =3D "controller", "offload-0-crc-error";
+>=20
+>     ...
+>=20
+>     adc@0 {
+>         compatible =3D "adi,ad4630";
+>         spi-offloads =3D <0>;
+>         ...
+>=20
+>         /* PWM connected to the conversion pin (CNV). Without offload, we=
+ would
+>          * have cnv-gpios instead. */
+>         pwms =3D <&pwm 0>;
+>         pwm-names =3D "cnv";
+>     };
+> };
+>=20
+> So this is what I came up with of how things could look (combining
+> suggestions from Rob in v1 and Conor's suggestions here). I can see
+> how we can make this work. But the thing I don't like about it is that
+> the peripheral drivers still need to know all of the information about
+> the offload capabilities and need to interact with the
+> pwms/clocks/interrupts/dmas/etc. So this is just adding layers of
+> indirection where all of this stuff has to go through the SPI
+> controller driver.
+>=20
+>=20
+> >
+> > > Another idea I had was to perhaps use the recently added IIO backend
+> > > framework for the "extras". The idea there is that we are creating a
+> > > "composite" IIO device that consists of the ADC chip (frontend) plus
+> > > these extra hardware trigger and hardware buffer functions provided by
+> > > the FPGA (backend).
+> > >
+> > > offload_backend: adc0-backend {
+> > >     /* http://analogdevicesinc.github.io/hdl/projects/pulsar_adc/inde=
+x.html */
+> > >     compatible =3D "adi,pulsar-adc-offload";
+> > >     #io-backend-cells =3D <0>;
+> > >     dmas =3D <&dma 0>;
+> > >     dma-names =3D "rx";
+> > >     clocks =3D <&trigger_clock>;
+> > > };
+> > >
+> > > spi {
+> > >     ...
+> > >     adc@0 {
+> > >         ...
+> > >         spi-offloads =3D <0>;
+> > >         io-backends =3D <&offload_backend>;
+> > >     };
+> > > };
+> > >
+> > > While this could be a solution for IIO devices, this wouldn't solve
+> > > the issue in general though for SPI offloads used with non-IIO
+> > > peripherals.
+> >
+> > Yeah, I agree that using something specific to IIO isn't really a good
+> > solution.
+> >
+> > Cheers,
+> > Conor.
+> >
+> > > So I don't think it is the right thing to do here. But, I
+> > > think this idea of a "composite" device helps explain why we are
+> > > pushing for putting the "extras" with the peripheral node rather than
+> > > the controller node, at least for the specific case of the AXI SPI
+> > > Engine controller.
+> >
+
+--tCE84TRCfzbvxkUd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZk44eQAKCRB4tDGHoIJi
+0o/6AQD2xUt39/zHT+PM43Hq14OnATMnSe8y8hBwtSGw4K/hTQD+OWb3N3s7jthC
+UtQGPT6fqgYkqE77VC6HsMIqOOc8fQE=
+=FlGF
+-----END PGP SIGNATURE-----
+
+--tCE84TRCfzbvxkUd--
 

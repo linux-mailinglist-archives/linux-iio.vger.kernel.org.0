@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-5222-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5223-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF038CD6A7
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 17:06:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C905F8CD6B6
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 17:09:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1F861F21CC0
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 15:05:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85347283103
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 15:09:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 591FDB657;
-	Thu, 23 May 2024 15:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51CF2B657;
+	Thu, 23 May 2024 15:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="lin99rP/"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eFOjcelj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-ot1-f44.google.com (mail-ot1-f44.google.com [209.85.210.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB89B645
-	for <linux-iio@vger.kernel.org>; Thu, 23 May 2024 15:05:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931E7171A5
+	for <linux-iio@vger.kernel.org>; Thu, 23 May 2024 15:09:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716476755; cv=none; b=Xl84QMqJCxRbSC4LDaXkCV/XoGN3yISWn9MAMwAvPX72NqmFVSDo5pG4KlMzRd7KobSDa+smbAdqUWKKRXhP42mbaqfWaBb8RLs7NlHizh5MNkY1jR22bMMsMbnLvqeJVdA86gJCopDLFPdyv6zvButtGeK3WeNEtwMHbyCOKG8=
+	t=1716476949; cv=none; b=iMjLqKBcyd0TvVPeQMFhvZ6AAjCpGezCOmyeXdVKN1L1iU56tCss3K8asLfOzgruMAVwMuzntGzBBZvS0KLBbMBOfX8RVijo+X/NwJ6Gj0I5AsHR/aLMHfiGBNWwpZ72cyMtPOpSE/67eo6zZVll4/NNmmQYGitS/K+x5QTSGv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716476755; c=relaxed/simple;
-	bh=iFvjg3XwqgAd5mquwOsqr45UsDV9LIRXN1unBZnpmoc=;
+	s=arc-20240116; t=1716476949; c=relaxed/simple;
+	bh=Pl1mOlxsgsZjv5GC6ZJOtnNAWIIh4LnpWp+JPZyPZT0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jbiW3CXg+MS+M++qVjDfw4aeEwqHWAmla9nOVIkz36jGUlWSNzBz9X+4x6Jx/TRGnBhA2W6HkAno/BQv3aEsTk/5gS6c+TytkjxixxotDM/H+zOa9F5zFpXAKWu36lffOyn4O4CGUA0ytHf+sxXMxZFcyf81Jnkg5ynhgLqmnnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=lin99rP/; arc=none smtp.client-ip=209.85.222.169
+	 In-Reply-To:Content-Type; b=MQz11+WyL7cINa4REuXZKouCNh4NvVlA6RqFQ2dyWuugBHgrvAsCFhjAkFCKyrxwJc4xI+Q3pmJEWxEqjD7eGtXrkS3/9pyUXXCTGXZJ/8t+OlCNPn3+QRiG0AyfEJahqZ+ldRq0vUiAPbyvRhmUyE34nvfGKY3xMglCe+lbrU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eFOjcelj; arc=none smtp.client-ip=209.85.210.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7948b50225bso192459485a.3
-        for <linux-iio@vger.kernel.org>; Thu, 23 May 2024 08:05:53 -0700 (PDT)
+Received: by mail-ot1-f44.google.com with SMTP id 46e09a7af769-6f0ede03023so891854a34.0
+        for <linux-iio@vger.kernel.org>; Thu, 23 May 2024 08:09:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1716476752; x=1717081552; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1716476947; x=1717081747; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=4uSp7T4uhgPczizgXTB01VF3ORzzoQszdtOdi980zfE=;
-        b=lin99rP/0ByqQJCyO08MenEqr3FpNvBU8YPXeNNSNIOor0k5QEaWV1toMWwlWRevR7
-         MPmPrO7qWWi63Zeb2xqvTysTlKjogAWuC9xLVB0StesuwYCopBs4l+XHlajZO6rB477L
-         ZFtsxpJdZ8kUANeSf6JqkjnzW85jSBZjPoymxha8cA6tBtYHW6GtE/8Ppmg1MTlRUTTG
-         Fdu/0/v54iA9ztpqfV7JXiYUhzc1c0AfT6NoqbzZKtGsubckG2gOKltG2x9FYmpQQ1bt
-         IiQJ/aRMY938i19afEwanSQUF+BfTca+duig08mR8hI7b5x6UTS0/xrfcBLx40RRBtf6
-         SvlA==
+        bh=BhVj6FCoDzPR+MbDpoxutT96uTiXlHhWUxlVPMCsRV0=;
+        b=eFOjceljwceEv0kmvBOdTx/R57f2r4iBS/DwhCAR01X+PhwNv3JLh+QlZZBIy4NDy1
+         B4xgCjHQD/hLuZIzgRBDmSif5UBnA1T0m6XfC4slKzKG04tG4jY8XN/7Pn955nEhDsM7
+         R1S1ICYKJdYJ0AGCje+kdMcqUKnt9zkuSi82wLpHzBBneHS4sqDTBo1/wP3bj/Jchnth
+         wrY3vYy7zDRv/sKHzLQii57U7wIaZdlEKMK36RgzoiwuAGJMDL/Hh7sUEaNQ+eAY/bZZ
+         Jnsp1+Ij0GotdNz0KRGAW7ZRECWoR40HDOmSJexUQiiFpqJllYuxuAu/wUb+unIj16fZ
+         fe0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716476752; x=1717081552;
+        d=1e100.net; s=20230601; t=1716476947; x=1717081747;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4uSp7T4uhgPczizgXTB01VF3ORzzoQszdtOdi980zfE=;
-        b=KmULdrHHrgNVQabfIBZ9hw9oiv7vVm8ioZIfDoaxMwaIw5Yj9TYORPdCkgZBd1+iA9
-         Fu1PVg4e53Q06gL0w9tfN79tAqzbD0AdmjmzQU2nWljw7PG1mfessFeGZ08Pn9bREzdK
-         hYnywlmesPTXpFd+oUnTOGnGmFRbJ/l6oCa9BRsS6NFZgi/07FsBYCvxFn6/hIdf++p0
-         dwZl04YQ2fOZuVsSzEs6rGbsYDo5wOD6HkEofZwVLB/wV3rbibzSS4bZGsJ7+zik0jaN
-         Rd8tcEHwadYprdQ7LohS53x/oPCEZPj1jIfQ/26nGhy+9tNsgNtGtTjEy77Q0NMdKFx+
-         i8hg==
-X-Forwarded-Encrypted: i=1; AJvYcCXjYXjyfBg3gHwLbni/gdbwzcqJ3sImaWAZlxMv80AL6+6GvgwmA12kQGgh0cxUSu5UmgJxyb3zL5GS2kfrX5AsmVeAKzUQKysE
-X-Gm-Message-State: AOJu0YyFumuTiHSCPGMuvEUxooONYZebu3k3szDT/9W66QIvSlZPItkG
-	jJdewbaqFDi65qTZHODGHIe5FKTEsiF5a8Dwk8g6PJoNAbtX3uw7wLA1ITo/R+c=
-X-Google-Smtp-Source: AGHT+IFsJ0Oht2KlIbxxejxL7QWFjMQWA52PIkChCCprQ7JsH2aiXe/Gm3y4+GYbUmrclCuE5eihyw==
-X-Received: by 2002:a05:620a:5645:b0:794:8226:710c with SMTP id af79cd13be357-794994ced65mr523642085a.70.1716476752171;
-        Thu, 23 May 2024 08:05:52 -0700 (PDT)
+        bh=BhVj6FCoDzPR+MbDpoxutT96uTiXlHhWUxlVPMCsRV0=;
+        b=EFXFWHq1NgTCG05TtCvfPv11MyE+GUTjchOlpGyBJz0h1rwG9JxobXXVA6dCbzf1na
+         E9E9ONu7AwrGDTgQKtv9iAGHMcb5gi9RGjyoWdxr+NDNnx3odqtPtHdxuyhmcTnnVH+P
+         mTmPITMGQaOtphdkwfkDErg0YNpNDeb74Cn2Enww4Aqwj2CX+rYHngT6QZvIhNVsVkpF
+         i/VuTT6xlyInyDqzx76JSyehQobyUhIKDwoPz1jSP14B+BS72a/U4HtuiWmv/Ll/XYnP
+         6msFHtKRK/f+LNLSc84DIRc8jDhGJMdQ7HeO3DeGdi8rXwmzvP8l+HCWHRASeGbvoAju
+         MvsA==
+X-Forwarded-Encrypted: i=1; AJvYcCW50aYVgSMQiyzX9tSNIEoiVLlmu3QWk+5Dv81U82W/NOcpv/1uB5Y2pwDGM5zPo682ugMl8HXDCgCad8KVKkXu5NUxG53zrN8j
+X-Gm-Message-State: AOJu0YwjfAlsPyy9hLvEdgfP6kAqGmx0Lnt0fP/aVmPKKZng4AJSGXq8
+	w9ddGLZXNqi+VfnqQf0iy3XNtqT6gAdy27rt17mBJDAIk453ZXu/fSSkTHNVqYE=
+X-Google-Smtp-Source: AGHT+IGA5q7G27Y8PaMTdFJeCZappJ3k2ZJ4VmDgR6MSN90k5mJKReZ1wo483N2rA4PDO56q5kWqyA==
+X-Received: by 2002:a05:6830:2b10:b0:6f0:3d07:ef7e with SMTP id 46e09a7af769-6f7d4e11f56mr1417237a34.8.1716476946841;
+        Thu, 23 May 2024 08:09:06 -0700 (PDT)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-792bf1cd143sm1500017385a.0.2024.05.23.08.05.50
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6f0e7efd0c6sm5203398a34.1.2024.05.23.08.09.05
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 May 2024 08:05:51 -0700 (PDT)
-Message-ID: <6e929426-25fa-4e91-8790-0774d59b34e0@baylibre.com>
-Date: Thu, 23 May 2024 10:05:49 -0500
+        Thu, 23 May 2024 08:09:06 -0700 (PDT)
+Message-ID: <3fad2e61-c3e4-4bb1-bbea-101d5d0f91ee@baylibre.com>
+Date: Thu, 23 May 2024 10:09:05 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -99,116 +99,44 @@ References: <20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@bayl
  <20240519-abreast-haziness-096a57ef57d3@spud>
  <CAMknhBHvEse2FyDoBXR1PvymGpSGq8dotKfm+8XH+0+k+xKtQw@mail.gmail.com>
  <20240522-gullible-ibuprofen-cf9111c25f6f@spud>
- <5ad0b5782434eaf4cf565cffb0e4c14b7414ae38.camel@gmail.com>
+ <59df2cc3-5a62-45be-a0aa-5bbff13c2ae4@baylibre.com>
+ <35de37c08331a8384aa9ebde3a9be5fec6fc418e.camel@gmail.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <5ad0b5782434eaf4cf565cffb0e4c14b7414ae38.camel@gmail.com>
+In-Reply-To: <35de37c08331a8384aa9ebde3a9be5fec6fc418e.camel@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 5/23/24 7:15 AM, Nuno Sá wrote:
-> On Wed, 2024-05-22 at 19:24 +0100, Conor Dooley wrote:
->> On Tue, May 21, 2024 at 09:54:39AM -0500, David Lechner wrote:
->>> On Sun, May 19, 2024 at 7:53 AM Conor Dooley <conor@kernel.org> wrote:
->>>>
->>>> On Fri, May 17, 2024 at 11:51:58AM -0500, David Lechner wrote:
->>>>> On Thu, May 16, 2024 at 4:32 PM Conor Dooley <conor@kernel.org> wrote:
->>>>>> On Tue, May 14, 2024 at 05:56:47PM -0500, David Lechner wrote:
->>>>
-
-...
-
->> To remind myself, "Application 2" featured an offload engine designed
->> specifically to work with a particular data format that would strip a
->> CRC byte and check the validity of the data stream.
+On 5/23/24 9:57 AM, Nuno Sá wrote:
+> On Thu, 2024-05-23 at 09:28 -0500, David Lechner wrote:
+>> On 5/22/24 1:24 PM, Conor Dooley wrote:
+>>> On Tue, May 21, 2024 at 09:54:39AM -0500, David Lechner wrote:
+>>>> On Sun, May 19, 2024 at 7:53 AM Conor Dooley <conor@kernel.org> wrote:
+>>>>>
+>>>>> On Fri, May 17, 2024 at 11:51:58AM -0500, David Lechner wrote:
+>>>>>> On Thu, May 16, 2024 at 4:32 PM Conor Dooley <conor@kernel.org> wrote:
+>>>>>>> On Tue, May 14, 2024 at 05:56:47PM -0500, David Lechner wrote:
+>>>>>
 >>
 > 
-> I think the data manipulation is not really a property of the engine. Typically data
-> going out of the offload engine goes into another "data reorder" block that is pure
-> HW.
+> ...
 > 
->> I think you're right something like that is a stretch to say that that
->> is a feature of the SPI controller - but I still don't believe that
->> modelling it as part of the ADC is correct. I don't fully understand the
->> io-backends and how they work yet, but the features you describe there
->> seem like something that should/could be modelled as one, with its own
->> node and compatible etc. Describing custom RTL stuff ain't always
->> strightforward, but the stuff from Analog is versioned and documented
->> etc so it shouldn't be quite that hard.
+>>
+>> controller:
+>> #spi-offload-cells = <2>: /* 1st cell = offload instance
+>>                            * 2nd cell = trigger provider */
 >>
 > 
-> Putting this in io-backends is likely a stretch but one thing to add is that the
-> peripheral is always (I think) kind of the consumer of the resources. Taking the
-> trigger (PWM) as an example and even when it is directly connected with the offload
-> block, the peripheral still needs to know about it. Think of sampling frequency...
-> The period of the trigger signal is strictly connected with the sampling frequency of
-> the peripheral for example. So I see 2 things:
+> What about things like DMA? I'm mentioning it a lot because it's way more complex
+> having it on the controller (from a SW perspective). But from an HW point of view,
+> it's always very similar (if not the same) as your case A.
 > 
-> 1) Enabling/Disabling the trigger could be easily done from the peripheral even with
-> the resource in the spi engine. I think David already has some code in the series
-> that would make this trivial and so having the property in the spi controller brings
-> no added complexity.
-> 
-> 2) Controlling things like the trigger period/sample_rate. This could be harder to do
-> over SPI (or making it generic enough) so we would still need to have the same
-> property on the peripheral (even if not directly connected to it). I kind of agree
-> with David that having the property both in the peripheral and controller is a bit
-> weird.
-> 
-> And the DMA block is a complete different story. Sharing that data back with the
-> peripheral driver (in this case, the IIO subsystem) would be very interesting at the
-> very least. Note that the DMA block is not really something that is part of the
-> controller nor the offload block. It is an external block that gets the data coming
-> out of the offload engine (or the data reorder block). In IIO, we already have a DMA
-> buffer interface so users of the peripheral can get the data without any intervention
-> of the driver (on the data). We "just" enable buffering and then everything happens
-> on HW and userspace can start requesting data. If we are going to attach the DMA in
-> the controller, I have no idea how we can handle it. Moreover, the offload it's
-> really just a way of replaying the same spi transfer over and over and that happens
-> in HW so I'm not sure how we could "integrate" that with dmaengine.
-> 
-> But maybe I'm overlooking things... And thinking more in how this can be done in SW
-> rather than what makes sense from an HW perspective.
-> 
-> 
->> continuation:
->> If offload engines have their own register region in the memory map,
-> 
-> 
-> Don't think it has it's own register region... David?
 
-I think the question here was if the CRC checker IP block (or descrambler shown
-in the link below, or whatever) had registers in the offload/SPI controller
-to control that extra part or if they had their own dedicated registers. So far,
-these have been fixed-purpose, so have no registers at all. But I could see
-needing a register, e.g. for turning it on or off. In this case, I think it
-does become something like an io-backend. Or would we add this on/off switch
-to the AXI SPI Engine registers?
-
-Also, as shown in the link below, the extra bits share a clock domain with the
-AXI SPI Engine. So, yes, technically I suppose they could/should? be independent
-consumers of the same clock like Conor suggests below. It does seems kind of
-goofy if we have to write a driver just to turn on a clock that is already
-guaranteed to be on though.
-
-> 
->> their own resources (the RTL is gonna need at the very least a clock)
->> and potentially also provide other services (like acting as an
->> io-backend type device that pre-processes data) it doesn't sound like
->> either the controller or peripheral nodes are the right place for these
->> properties. And uh, spi-offloads gets a phandle once more...
->>
-> 
-> But then it would be valid for both peripheral and controller to reference that
-> phandle right (and get the resources of interest)?
-> 
-> FWIW, maybe look at the below usecase. It has some block diagrams that may be helpful
-> to you:
-> 
-> https://wiki.analog.com/resources/eval/user-guides/ad463x/hdl
-> 
-> - Nuno Sá
-> 
-> 
+If we had a setup where there was more than one place that, e.g. the
+RX stream from the offload could be piped, then I would add a 3rd
+cell to describe that. If the hardware is fixed and the RX stream
+always goes to a specific DMA channel, then it doesn't seem like we
+need to describe that in the SPI controller node because the hardware
+is fixed.
 
 

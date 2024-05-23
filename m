@@ -1,593 +1,217 @@
-Return-Path: <linux-iio+bounces-5218-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5219-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863558CD5BE
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 16:29:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 613348CD5C4
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 16:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 005541F2243B
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 14:29:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBB791F22109
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 14:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E4B14C5AF;
-	Thu, 23 May 2024 14:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0779314E2C2;
+	Thu, 23 May 2024 14:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hAU5Sw6H"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QcgUb3hm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5632414B96C;
-	Thu, 23 May 2024 14:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8DE14D29C
+	for <linux-iio@vger.kernel.org>; Thu, 23 May 2024 14:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716474536; cv=none; b=bIQmZzqiIZw5lV6mbPzaMqo4jFb0eoZbYdfN6Dn0q2Jaranf/bA8Grq+jaistssM+iFcio2GkF4CePHyVCUuUeisFY+SbZOvPC+rP+aAkmNMNmlumpbg/rO2g4FK/NWyQ81VkokPNnXiEYLfOp7l7sJTUTn5NskwtpWpL5eEgT8=
+	t=1716474539; cv=none; b=tJzazR2bsF4T2O6w29nEH7bD4yE8tgznlwMr3ZfTXH24E2wh18DxYfKJw0OcNmcMeaybqWacr3spvyQEHqxb6eOPngYu83wWP+qlFEzov1fXZ+ElKpRv+1m2SaayQKubA532OWIPlNlg7esugDuvqtuudgHcT+5Ife5dR5rxQ94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716474536; c=relaxed/simple;
-	bh=80dyIVrwBkD6NbBwNftwmI4FAqkJmpk1vCq/v8Mv7t4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lltRxOgLVWFJ1xH9usJEpyDRovjmMBzaQOcHZAAss1WZgU6hxAC8x2xZTsJ/XFn2JcedOqWkWHQy1qVNl7iOnpQpDWYewGRulSYHilQEhcDtab/SqZLJZiGl9sajZ2UFgIv4bFGKTsTc2I3yJ0Be/E+E+4YISFFlyaF1GsuzQn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hAU5Sw6H; arc=none smtp.client-ip=209.85.218.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a59ab4f60a6so1015727966b.0;
-        Thu, 23 May 2024 07:28:54 -0700 (PDT)
+	s=arc-20240116; t=1716474539; c=relaxed/simple;
+	bh=zaeMrFY2WEalSntOcIU1Zi30vA/q91IKHU5hWjxbg1U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Rd772WyiqvPdl7qhBkGD0aFX0ofK55MJjXHIYtpfLtayMLH8uoH9MfZFoDMzbMDH5R1N5US5iY/94zUNJDE6sNldJsvlMnWKhaKBok/H19QdwMcRgnKwv7M0yjt3wAZ7iBRsEwGtQ8Dsh0HSIas8In3Dxks8CMurjwINHBqyYc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QcgUb3hm; arc=none smtp.client-ip=209.85.210.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-6f12171523eso3449779a34.1
+        for <linux-iio@vger.kernel.org>; Thu, 23 May 2024 07:28:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716474533; x=1717079333; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Ol6w17Fw5JOgOw8lGzbAlNWPnVf/zsYk2EuKivYdh18=;
-        b=hAU5Sw6HsaTa3KqiX6qtazIbJZv7JoR4TXpiskSLZvdLvqhvjeQPzLrMKfBwIasMPb
-         nRfJtOWw4nk3OwnFiO2/Oyvrp1B2vQaMWK4CHt+gJNjgd/v+iNY8sUP+qvGgPAchFO8S
-         OzyjFlue5Iycu05ls/SxFyhuO85Z5Uz5iUvNpbAwkMBbfqtu2xmSDQuK7pX6S3bRsScR
-         QByfvGNIdkQ8PQxwTNDQ641gYTssscPWssvtjrGMyxACtAp0IN0vjzkJH5H2eZvvL7Zg
-         5u2oj+G87yg1RmR+mx3qqbYFtTvdwTvSV8eySIIpk744fG1i9VJqsqK6lrAOjL5ptXP5
-         dhKA==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1716474537; x=1717079337; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5rSMKPqlVmyB8QJzbwpvKr56z/Yxr4Zld0KaM7W8/ao=;
+        b=QcgUb3hmBdvwMxhND8tTznaGcqEcoC4y2gb7b46F7qSbQd/lcAGrMjt0xwhd9qhO5C
+         do3WRUz/yfXWRNxjc48tJdpjux27ckS6k3eRpKHvoiFPknWWxVjWKwXBYAaGOmQvqaAh
+         KlLu7xicKpEHbRWq2R5BNcGjaSSrKU+xbHaP269VVpTaGeXXKBNHATgs9Ua4xQWy2TRb
+         tYXsMjAX+dr8ngFa+ALCAUJYOw8Ho3LmpvQGps0HH/r/63OccxqwI4FHK5XGDZRwLE5s
+         9e8I1gKgAvwAuGEgFaEVQDNO5Z/lqwJjGOXnHuHcl9wGfVzCibGT5SXcxlY++JQUIq24
+         zhKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716474533; x=1717079333;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20230601; t=1716474537; x=1717079337;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ol6w17Fw5JOgOw8lGzbAlNWPnVf/zsYk2EuKivYdh18=;
-        b=oHK3Ml989FCLnW+bmY9TX5hoR6mj9C3+04NDEMLSxJyfFhw0e8P5dRVS6qGmLuUlB4
-         vp8xdOolWIADTG0ZXGjeKNAoYDiNrkFeSSb+zWxB+HNnQxrGmghKhMCjU/h7zb1H0SVL
-         hVsbzraThjeS5eK7B/eaCKQBVGP1M0toFVt53Ey+F1fpWLQLwuwsENg8DRR6XyJSbOeo
-         bWpUx78H9jgCxR4JYcCUYc4QckYqmDX/7lY7uaKx8/SBeXqVVae1NMPi5lErkiVc8ina
-         x8bnvMTka8n9YruNWZkWicWipnOROgV95FTy0tD4Uj9IlhKuZx2Z3oLFpu9pbqU3wRBE
-         M0uQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSQsPWmVN1gbvIsVZGOWdriOPKQjxCY9SocJWmIHvcSFfwmBmQOvD6tPPT062W54fiaJaZrzedJPTJ43nToTrHdonJ3iMF8dSlXXw1zZp7MS2Tp8mrPNf4JZPXVEfcg3cmVGcotqOX
-X-Gm-Message-State: AOJu0YyOgX+eVk3SETFXmSiJd4LLLOZejh2pe6rnl8MJ9n045kRtlNut
-	6tT3EYdfckx2JZirL7DKt0ZsdW7BrjBlFVjUIF5IyC8h6+X7iuYTGRv8Dw==
-X-Google-Smtp-Source: AGHT+IEc0YjvAOHqsqBKAvD1XVCkZU5IV7IoVPSa5kXx1MTF68Bxegz4750OfF+TAJ8ye6fqvkNYpQ==
-X-Received: by 2002:a17:906:b14f:b0:a5c:daf2:1cfb with SMTP id a640c23a62f3a-a6228206aa8mr458868766b.63.1716474532279;
-        Thu, 23 May 2024 07:28:52 -0700 (PDT)
-Received: from debian ([93.184.186.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a179c7f27sm1940676366b.127.2024.05.23.07.28.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 May 2024 07:28:51 -0700 (PDT)
-Date: Thu, 23 May 2024 16:28:49 +0200
-From: Dimitri Fedrau <dima.fedrau@gmail.com>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: humidity: hdc3020: fix hysteresis representation
-Message-ID: <20240523142849.GA558466@debian>
-References: <20240523114336.532428-1-dima.fedrau@gmail.com>
- <cef810ee-bb2c-4588-baec-7edfc74daeea@gmail.com>
+        bh=5rSMKPqlVmyB8QJzbwpvKr56z/Yxr4Zld0KaM7W8/ao=;
+        b=kctoD3LowxBQ9/aZvVYWSdDd4EE6EbdKBu3N8Pf69RlUzmOVcjV0PMAg2oeJJO9rdd
+         zJOsbGYKFm926dn9gqR9UJIOLdIxVycyo8QvlhgjxT2KyzHTfmzliUogZjMM3HkvQO11
+         PXVwhG298bSr4f5PCs+euYS6eC05qfV0OZsFJ4S+AQJD3Mf5n69jwtvRYx+klVcYw+Nn
+         +jRPC/WPMtZLoEYv8eziHtU+K+qarNApEwsC98OCfEDNQFRpHw5UPDueYRWdZ3/f81ii
+         r0IGRKJdTQr8fuHy5e6AQcjsTDZjSapZL0ikWC/+OO9IJRUjAqjbE5+LYSRre85vot7d
+         hjSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVDY3J7Gx611pbiqDfCv5pyEhWe6xZNtwN617l4XAYd0wU4+vHwJaCvavRYIHvgKAowU0Wn58hPfvkx1quBQGYIhdIyhIk5acOC
+X-Gm-Message-State: AOJu0YzWs+L7LDO9V4aqY28NvQaSxHODHZZkesKGtV3qpKX1H4+0l+pv
+	pPY4U8dnZHStkX2LI6w4/84tWECw2ghNqp1gmpBEohzxfC82ftRzZ/L+GaD78/4=
+X-Google-Smtp-Source: AGHT+IEmnlTOuI97MwBndYJ3jehFfvs/fsHkM0Y7ReJssf8Wlf+3CQIb09ick1EQmGSi0NWqMlZKdQ==
+X-Received: by 2002:a05:6871:330a:b0:24c:5e82:1b59 with SMTP id 586e51a60fabf-24c68bac5b1mr5650043fac.1.1716474536651;
+        Thu, 23 May 2024 07:28:56 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6f0f785b6eesm4586461a34.9.2024.05.23.07.28.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 May 2024 07:28:55 -0700 (PDT)
+Message-ID: <59df2cc3-5a62-45be-a0aa-5bbff13c2ae4@baylibre.com>
+Date: Thu, 23 May 2024 09:28:54 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 1/8] spi: dt-bindings: spi-peripheral-props: add
+ spi-offloads property
+To: Conor Dooley <conor@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>,
+ Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <20240510-dlech-mainline-spi-engine-offload-2-v2-0-8707a870c435@baylibre.com>
+ <20240510-dlech-mainline-spi-engine-offload-2-v2-1-8707a870c435@baylibre.com>
+ <20240513-headsman-hacking-d51fcc811695@spud>
+ <CAMknhBE5XJzhdJ=PQUXiubw_CiCLcn1jihiscnQZUzDWMASPKw@mail.gmail.com>
+ <20240514-aspire-ascension-449556da3615@spud>
+ <CAMknhBFFpEGcMoLo5gsC11Syv+CwUM0mnq1yDMUzL1uutUtB+Q@mail.gmail.com>
+ <20240516-rudder-reburial-dcf300504c0a@spud>
+ <CAMknhBF_s0btus4yqPe-T=F3z7Asi9KkRGsGr7FHDFi=k4EQjw@mail.gmail.com>
+ <20240519-abreast-haziness-096a57ef57d3@spud>
+ <CAMknhBHvEse2FyDoBXR1PvymGpSGq8dotKfm+8XH+0+k+xKtQw@mail.gmail.com>
+ <20240522-gullible-ibuprofen-cf9111c25f6f@spud>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20240522-gullible-ibuprofen-cf9111c25f6f@spud>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <cef810ee-bb2c-4588-baec-7edfc74daeea@gmail.com>
 
-Am Thu, May 23, 2024 at 04:12:37PM +0200 schrieb Javier Carrasco:
-> Hi Dimitri, a few comments inline.
-> 
-> On 23/05/2024 13:43, Dimitri Fedrau wrote:
-> > According to the ABI docs hysteresis values are represented as offsets to
-> > threshold values. Current implementation represents hysteresis values as
-> > absolute values which is wrong. Nevertheless the device stores them as
-> > absolute values and the datasheet refers to them as clear thresholds. Fix
-> > the reading and writing of hysteresis values by including thresholds into
-> > calculations.
-> > 
-> > Fixes: 3ad0e7e5f0cb ("iio: humidity: hdc3020: add threshold events support")
-> > Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-> > ---
-> > 
-> > Since absolute values are used on the device, the hysteresis values are
-> > influenced by setting thresholds. Is this behavior in line with the ABI docs ?
-> > It can be fixed by readjusting the threshold clear value whenever setting
-> > thresholds to have the same hysteresis value as before. See some example below:
-> > 
-> > # echo 25 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
-> > # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
-> > 24.727626459
-> > # echo 5 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
-> > # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
-> > 5.127031357
-> > # echo 35 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
-> > # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
-> > 15.381094071
-> > 
-> > Below are some corner cases tested by setting threshold and hysteresis values.
-> > To check that the threshold clear values are correct, registers are read out by
-> > using i2ctransfer and the corresponding temperature and relative humidity
-> > thresholds are calculated using the formulas in the datasheet.
-> > 
-> > # echo 125 > in_temp_thresh_rising_value
-> > # cat in_temp_thresh_rising_value
-> > 124.875638971
-> > 
-> > # echo 165 > in_temp_thresh_rising_hysteresis
-> > # cat in_temp_thresh_rising_hysteresis
-> > 164.748607614
-> > 
-> > # echo 100 > in_humidityrelative_thresh_rising_value
-> > # cat in_humidityrelative_thresh_rising_value
-> > 99.220263981
-> > 
-> > # echo 100 > in_humidityrelative_thresh_rising_hysteresis
-> > # cat in_humidityrelative_thresh_rising_hysteresis
-> > 99.220263981
-> > 
-> > threshold high, temperature = 124,875638972 C, humidity = 99.220263981
-> > # i2ctransfer -f -y 4 w2@0x44 0xe1 0x1f r3
-> > 0xff 0xf1 0xb3
-> > 
-> > threshold high clear, temperature = -39.872968643 C, humidity = 0
-> > # i2ctransfer -f -y 4 w2@0x44 0xe1 0x14 r3
-> > 0x00 0x0f 0xaf
-> > 
-> > 
-> > # echo -40 > in_temp_thresh_falling_value
-> > # cat in_temp_thresh_falling_value
-> > -39.872968642
-> > 
-> > # echo 165 > in_temp_thresh_falling_hysteresis
-> > # cat in_temp_thresh_falling_hysteresis
-> > 164.406805523
-> > 
-> > # echo 0 > in_humidityrelative_thresh_falling_value 
-> > # cat in_humidityrelative_thresh_falling_value
-> > 0.000000000
-> > 
-> > # echo 100 > in_humidityrelative_thresh_falling_hysteresis 
-> > # cat in_humidityrelative_thresh_falling_hysteresis
-> > 99.220263981
-> > 
-> > threshold low, temperature = -39.872968643 C, humidity = 0
-> > # i2ctransfer -f -y 4 w2@0x44 0xe1 0x02 r3
-> > 0x00 0x0f 0xaf
-> > 
-> > threshold low clear, temperature = 124,533836881 C, humidity = 99,220263981
-> > # i2ctransfer -f -y 4 w2@0x44 0xe1 0x09 r3
-> > 0xff 0xf0 0x82
-> > 
-> > ---
-> >  drivers/iio/humidity/hdc3020.c | 292 +++++++++++++++++++++++++--------
-> >  1 file changed, 221 insertions(+), 71 deletions(-)
-> > 
-> > diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
-> > index cdc4789213ba..d41713ff1deb 100644
-> > --- a/drivers/iio/humidity/hdc3020.c
-> > +++ b/drivers/iio/humidity/hdc3020.c
-> > @@ -19,6 +19,8 @@
-> >  #include <linux/i2c.h>
-> >  #include <linux/init.h>
-> >  #include <linux/interrupt.h>
-> > +#include <linux/math.h>
-> Is math.h not included in math64.h?
->
-It is. Will fix it.
+On 5/22/24 1:24 PM, Conor Dooley wrote:
+> On Tue, May 21, 2024 at 09:54:39AM -0500, David Lechner wrote:
+>> On Sun, May 19, 2024 at 7:53 AM Conor Dooley <conor@kernel.org> wrote:
+>>>
+>>> On Fri, May 17, 2024 at 11:51:58AM -0500, David Lechner wrote:
+>>>> On Thu, May 16, 2024 at 4:32 PM Conor Dooley <conor@kernel.org> wrote:
+>>>>> On Tue, May 14, 2024 at 05:56:47PM -0500, David Lechner wrote:
+>>>
 
-> > +#include <linux/math64.h>
-> >  #include <linux/module.h>
-> >  #include <linux/mutex.h>
-> >  #include <linux/pm.h>
-> > @@ -66,8 +68,10 @@
-> >  
-> >  #define HDC3020_CRC8_POLYNOMIAL		0x31
-> >  
-> > -#define HDC3020_MIN_TEMP		-40
-> > -#define HDC3020_MAX_TEMP		125
-> > +#define HDC3020_MIN_TEMP_MICRO		-39872968
-> > +#define HDC3020_MAX_TEMP_MICRO		124875639
-> > +#define HDC3020_MAX_TEMP_HYST_MICRO	164748607
-> > +#define HDC3020_MAX_HUM_MICRO		99220264
-> >  
-> >  struct hdc3020_data {
-> >  	struct i2c_client *client;
-> > @@ -368,6 +372,75 @@ static int hdc3020_write_raw(struct iio_dev *indio_dev,
-> >  	return -EINVAL;
-> >  }
-> >  
-> > +static int hdc3020_tresh_get_temp(u16 thresh)
-> > +{
-> > +	int temp;
-> > +
-> > +	/*
-> > +	 * Get the temperature threshold from 9 LSBs, shift them to get
-> > +	 * the truncated temperature threshold representation and
-> > +	 * calculate the threshold according to the formula in the
-> > +	 * datasheet. Result is degree celsius scaled by 65535.
-> > +	 */
-> > +	temp = FIELD_GET(HDC3020_THRESH_TEMP_MASK, thresh) <<
-> > +	       HDC3020_THRESH_TEMP_TRUNC_SHIFT;
-> > +
-> > +	return -2949075 + (175 * temp);
-> > +}
-> > +
-> > +static int hdc3020_tresh_get_hum(u16 thresh)
-> > +{
-> > +	int hum;
-> > +
-> > +	/*
-> > +	 * Get the humidity threshold from 7 MSBs, shift them to get the
-> > +	 * truncated humidity threshold representation and calculate the
-> > +	 * threshold according to the formula in the datasheet. Result is
-> > +	 * percent scaled by 65535.
-> > +	 */
-> > +	hum = FIELD_GET(HDC3020_THRESH_HUM_MASK, thresh) <<
-> > +	      HDC3020_THRESH_HUM_TRUNC_SHIFT;
-> > +
-> > +	return hum * 100;
-> > +}
-> > +
-> > +static u16 hdc3020_thresh_set_temp(int s_temp, u16 curr_thresh)
-> > +{
-> > +	u64 temp;
-> > +	u16 thresh;
-> > +
-> > +	/*
-> > +	 * Calculate temperature threshold, shift it down to get the
-> > +	 * truncated threshold representation in the 9LSBs while keeping
-> > +	 * the current humidity threshold in the 7 MSBs.
-> > +	 */
-> > +	temp = (u64)(s_temp + 45000000) * 65535ULL;
-> > +	temp = div_u64(temp, 1000000 * 175) >> HDC3020_THRESH_TEMP_TRUNC_SHIFT;
-> > +	thresh = FIELD_PREP(HDC3020_THRESH_TEMP_MASK, temp);
-> > +	thresh |= (FIELD_GET(HDC3020_THRESH_HUM_MASK, curr_thresh) <<
-> > +		  HDC3020_THRESH_HUM_TRUNC_SHIFT);
-> > +
-> > +	return thresh;
-> > +}
-> > +
-> > +static u16 hdc3020_thresh_set_hum(int s_hum, u16 curr_thresh)
-> > +{
-> > +	u64 hum;
-> > +	u16 thresh;
-> > +
-> > +	/*
-> > +	 * Calculate humidity threshold, shift it down and up to get the
-> > +	 * truncated threshold representation in the 7MSBs while keeping
-> > +	 * the current temperature threshold in the 9 LSBs.
-> > +	 */
-> > +	hum = (u64)(s_hum) * 65535ULL;
-> > +	hum = div_u64(hum, 1000000 * 100) >> HDC3020_THRESH_HUM_TRUNC_SHIFT;
-> > +	thresh = FIELD_PREP(HDC3020_THRESH_HUM_MASK, hum);
-> > +	thresh |= FIELD_GET(HDC3020_THRESH_TEMP_MASK, curr_thresh);
-> > +
-> > +	return thresh;
-> > +}
-> > +
-> >  static int hdc3020_write_thresh(struct iio_dev *indio_dev,
-> >  				const struct iio_chan_spec *chan,
-> >  				enum iio_event_type type,
-> > @@ -376,65 +449,130 @@ static int hdc3020_write_thresh(struct iio_dev *indio_dev,
-> >  				int val, int val2)
-> >  {
-> >  	struct hdc3020_data *data = iio_priv(indio_dev);
-> > +	u16 reg, reg_val, reg_thresh_rd, reg_clr_rd, reg_thresh_wr, reg_clr_wr;
-> > +	s64 s_thresh, s_hyst, s_clr;
-> > +	int s_val, ret;
-> >  	u8 buf[5];
-> > -	u64 tmp;
-> > -	u16 reg;
-> > -	int ret;
-> > -
-> > -	/* Supported temperature range is from –40 to 125 degree celsius */
-> > -	if (val < HDC3020_MIN_TEMP || val > HDC3020_MAX_TEMP)
-> > -		return -EINVAL;
-> >  
-> > -	/* Select threshold register */
-> > -	if (info == IIO_EV_INFO_VALUE) {
-> > -		if (dir == IIO_EV_DIR_RISING)
-> > -			reg = HDC3020_S_T_RH_THRESH_HIGH;
-> > -		else
-> > -			reg = HDC3020_S_T_RH_THRESH_LOW;
-> > +	/* Select threshold registers */
-> > +	if (dir == IIO_EV_DIR_RISING) {
-> > +		reg_thresh_rd = HDC3020_R_T_RH_THRESH_HIGH;
-> > +		reg_thresh_wr = HDC3020_S_T_RH_THRESH_HIGH;
-> 
-> Do we always need to set reg_clr_rd and reg_clr_wr? It seems that they
-> are only required for the IIO_EV_INFO_HYSTERESIS case, where the EV_DIR
-> is checked again Maybe we could even get rid of those auxiliary
-> variables, or have a single check for EV_DIR with the sign for the
-> operations.
->
-Yes, you are right.
+...
 
-> > +		reg_clr_rd = HDC3020_R_T_RH_THRESH_HIGH_CLR;
-> > +		reg_clr_wr = HDC3020_S_T_RH_THRESH_HIGH_CLR;
-> >  	} else {
-> > -		if (dir == IIO_EV_DIR_RISING)
-> > -			reg = HDC3020_S_T_RH_THRESH_HIGH_CLR;
-> > -		else
-> > -			reg = HDC3020_S_T_RH_THRESH_LOW_CLR;
-> > +		reg_thresh_rd = HDC3020_R_T_RH_THRESH_LOW;
-> > +		reg_thresh_wr = HDC3020_S_T_RH_THRESH_LOW;> +		reg_clr_rd = HDC3020_R_T_RH_THRESH_LOW_CLR;
-> > +		reg_clr_wr = HDC3020_S_T_RH_THRESH_LOW_CLR;
-> >  	}
-> >  
-> >  	guard(mutex)(&data->lock);
-> > -	ret = hdc3020_read_be16(data, reg);
-> > +	ret = hdc3020_read_be16(data, reg_thresh_rd);
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> > +	/* Scale value to include decimal part into calculations */
-> > +	s_val = (val < 0) ? (val * 1000000 - val2) : (val * 1000000 + val2);
-> > +
-> >  	switch (chan->type) {
-> >  	case IIO_TEMP:
-> > -		/*
-> > -		 * Calculate temperature threshold, shift it down to get the
-> > -		 * truncated threshold representation in the 9LSBs while keeping
-> > -		 * the current humidity threshold in the 7 MSBs.
-> > -		 */
-> > -		tmp = ((u64)(((val + 45) * MICRO) + val2)) * 65535ULL;
-> > -		tmp = div_u64(tmp, MICRO * 175);
-> > -		val = tmp >> HDC3020_THRESH_TEMP_TRUNC_SHIFT;
-> > -		val = FIELD_PREP(HDC3020_THRESH_TEMP_MASK, val);
-> > -		val |= (FIELD_GET(HDC3020_THRESH_HUM_MASK, ret) <<
-> > -			HDC3020_THRESH_HUM_TRUNC_SHIFT);
-> > +		switch (info) {
-> > +		case IIO_EV_INFO_VALUE:
+>> This time, the periodic trigger (PWM) is connected to the pin on the
+>> ADC that triggers a sample conversion (CNV). The ADC has a BUSY output
+>> that will go high at the start of the conversion and go low at the end
+>> of the conversion. The BUSY output of the ADC is wired as the hardware
+>> trigger input of the offload.
+>>
+>> In this case would we still consider the PWM as part of the SPI
+>> controller/offload since it can only be used in conjunction with the
+>> SPI offload? It isn't connected to it at all though.
 > 
-> The comment could be dropped. The range is obvious from the constants
-> and the values don't mach anymore now that you use MICRO.
->
-Yes.
-> > +			/* Range is from –40 to 125 degree celsius */
-> > +			s_val = max(s_val, HDC3020_MIN_TEMP_MICRO);
-> > +			s_val = min(s_val, HDC3020_MAX_TEMP_MICRO);
-> > +
-> > +			reg = reg_thresh_wr;
-> > +			reg_val = hdc3020_thresh_set_temp(s_val, ret);
-> > +			break;
-> > +		case IIO_EV_INFO_HYSTERESIS:
-> > +			/*
-> > +			 * Function hdc3020_tresh_get_temp returns temperature
-> > +			 * in degree celsius scaled by 65535. Scale by 1000000
-> > +			 * to be able to subtract scaled hysteresis value.
-> > +			 */
-> > +			s_thresh = (s64)hdc3020_tresh_get_temp(ret) * 1000000;
-> > +			/*
-> > +			 * Units of s_val are in micro degree celsius, scale by
-> > +			 * 65535 to get same units as s_thresh.
-> > +			 */
-> > +			s_val = min(abs(s_val), HDC3020_MAX_TEMP_HYST_MICRO);
-> > +			s_hyst = (s64)s_val * 65535;
-> > +			/*
-> > +			 * Include directions when calculation the clear value,
-> > +			 * since hysteresis is unsigned by definition and the
-> > +			 * clear value is an absolute value which is signed.
-> > +			 */
-> > +			if (dir == IIO_EV_DIR_RISING)
-> > +				s_clr = s_thresh - s_hyst;
-> > +			else
-> > +				s_clr = s_thresh + s_hyst;
-> > +
-> 
-> Nit: "Divide". You can avoid such typos by using checkpactch.pl with the
-> --codespell option.
-> 
-Thanks, didn't know that. Will use it for future patches.
+> No, in this case the ADC is a PWM consumer and the offload engine is
+> not. The ADC is a "trigger" provider and the SPI offload engine is a
+> trigger consumer.
 
-> > +			/* Devide by 65535 to get units of micro degree celsius */
-> > +			s_val = div_s64(s_clr, 65535);
-> > +			ret = hdc3020_read_be16(data, reg_clr_rd);
-> > +			if (ret < 0)
-> > +				return ret;
-> > +
-> > +			reg = reg_clr_wr;
-> > +			reg_val = hdc3020_thresh_set_temp(s_val, ret);
-> > +			break;
-> > +		default:
-> > +			return -EOPNOTSUPP;
-> > +		}
-> >  		break;
-> >  	case IIO_HUMIDITYRELATIVE:
-> > -		/*
-> > -		 * Calculate humidity threshold, shift it down and up to get the
-> > -		 * truncated threshold representation in the 7MSBs while keeping
-> > -		 * the current temperature threshold in the 9 LSBs.
-> > -		 */
-> > -		tmp = ((u64)((val * MICRO) + val2)) * 65535ULL;
-> > -		tmp = div_u64(tmp, MICRO * 100);
-> > -		val = tmp >> HDC3020_THRESH_HUM_TRUNC_SHIFT;
-> > -		val = FIELD_PREP(HDC3020_THRESH_HUM_MASK, val);
-> > -		val |= FIELD_GET(HDC3020_THRESH_TEMP_MASK, ret);
-> > +		switch (info) {
-> > +		case IIO_EV_INFO_VALUE:
-> 
-> The 100% value does not match the max val anymore. Could be dropped too.
-> 
-Ok.
+Makes sense.
 
-> > +			/* Range is from 0 to 100 percent */
-> > +			s_val = min(abs(s_val), HDC3020_MAX_HUM_MICRO);
-> > +
-> > +			reg = reg_thresh_wr;
-> > +			reg_val = hdc3020_thresh_set_hum(s_val, ret);
-> > +			break;
-> > +		case IIO_EV_INFO_HYSTERESIS:
-> > +			/*
-> > +			 * Function hdc3020_tresh_get_hum returns relative
-> > +			 * humidity in percent scaled by 65535. Scale by 1000000
-> > +			 * to be able to subtract scaled hysteresis value.
-> > +			 */
-> > +			s_thresh = (s64)hdc3020_tresh_get_hum(ret) * 1000000;
-> > +			/*
-> > +			 * Units of s_val are in micro percent, scale by 65535
-> > +			 * to get same units as s_thresh.
-> > +			 */
-> > +			s_val = min(abs(s_val), HDC3020_MAX_HUM_MICRO);
-> > +			s_hyst = (s64)s_val * 65535;
-> > +			/*
-> > +			 * Include directions when calculation the clear value,
-> > +			 * since hysteresis is unsigned by definition and the
-> > +			 * clear value is an absolute value which is signed.
-> > +			 */
-> > +			if (dir == IIO_EV_DIR_RISING)
-> > +				s_clr = s_thresh - s_hyst;
-> > +			else
-> > +				s_clr = s_thresh + s_hyst;
-> > +
-> 
-> Nit: "Divide".
->
-Ok.
+...
 
-> > +			/* Devide by 65535 to get units of micro degree percent */
-> > +			s_val = div_s64(s_clr, 65535);
-> > +			ret = hdc3020_read_be16(data, reg_clr_rd);
-> > +			if (ret < 0)
-> > +				return ret;
-> > +
-> > +			reg = reg_clr_wr;
-> > +			reg_val = hdc3020_thresh_set_hum(s_val, ret);
-> > +			break;
-> > +		default:
-> > +			return -EOPNOTSUPP;
-> > +		}
-> >  		break;
-> >  	default:
-> >  		return -EOPNOTSUPP;
-> >  	}
-> >  
-> >  	put_unaligned_be16(reg, buf);
-> > -	put_unaligned_be16(val, buf + 2);
-> > +	put_unaligned_be16(reg_val, buf + 2);
-> >  	buf[4] = crc8(hdc3020_crc8_table, buf + 2, 2, CRC8_INIT_VALUE);
-> 
-> Now that you are working on this function, maybe you could add the
-> missing empty line before the return to keep format consistency.
->
-Ok.
-> >  	return hdc3020_write_bytes(data, buf, 5);
-> >  }
-> > @@ -447,48 +585,60 @@ static int hdc3020_read_thresh(struct iio_dev *indio_dev,
-> >  			       int *val, int *val2)
-> >  {
-> >  	struct hdc3020_data *data = iio_priv(indio_dev);
-> > -	u16 reg;
-> > -	int ret;
-> > +	u16 reg_thresh, reg_clr;
-> > +	int thresh, clr, ret;
-> >  
-> > -	/* Select threshold register */
-> > -	if (info == IIO_EV_INFO_VALUE) {
-> > -		if (dir == IIO_EV_DIR_RISING)
-> > -			reg = HDC3020_R_T_RH_THRESH_HIGH;
-> > -		else
-> > -			reg = HDC3020_R_T_RH_THRESH_LOW;
-> > +	/* Select threshold registers */
-> > +	if (dir == IIO_EV_DIR_RISING) {
-> > +		reg_thresh = HDC3020_R_T_RH_THRESH_HIGH;
-> > +		reg_clr = HDC3020_R_T_RH_THRESH_HIGH_CLR;
-> >  	} else {
-> > -		if (dir == IIO_EV_DIR_RISING)
-> > -			reg = HDC3020_R_T_RH_THRESH_HIGH_CLR;
-> > -		else
-> > -			reg = HDC3020_R_T_RH_THRESH_LOW_CLR;
-> > +		reg_thresh = HDC3020_R_T_RH_THRESH_LOW;
-> > +		reg_clr = HDC3020_R_T_RH_THRESH_LOW_CLR;
-> >  	}
-> >  
-> >  	guard(mutex)(&data->lock);
-> > -	ret = hdc3020_read_be16(data, reg);
-> > +	ret = hdc3020_read_be16(data, reg_thresh);
-> >  	if (ret < 0)
-> >  		return ret;
-> >  
-> >  	switch (chan->type) {
-> >  	case IIO_TEMP:
-> > -		/*
-> > -		 * Get the temperature threshold from 9 LSBs, shift them to get
-> > -		 * the truncated temperature threshold representation and
-> > -		 * calculate the threshold according to the formula in the
-> > -		 * datasheet.
-> > -		 */
-> > -		*val = FIELD_GET(HDC3020_THRESH_TEMP_MASK, ret);
-> > -		*val = *val << HDC3020_THRESH_TEMP_TRUNC_SHIFT;
-> > -		*val = -2949075 + (175 * (*val));
-> > +		thresh = hdc3020_tresh_get_temp(ret);
-> > +		switch (info) {
-> > +		case IIO_EV_INFO_VALUE:
-> > +			*val = thresh;
-> > +			break;
-> > +		case IIO_EV_INFO_HYSTERESIS:
-> > +			ret = hdc3020_read_be16(data, reg_clr);
-> > +			if (ret < 0)
-> > +				return ret;
-> > +
-> > +			clr = hdc3020_tresh_get_temp(ret);
-> > +			*val = abs(thresh - clr);
-> > +			break;
-> > +		default:
-> > +			return -EOPNOTSUPP;
-> > +		}
-> >  		*val2 = 65535;
-> >  		return IIO_VAL_FRACTIONAL;
-> >  	case IIO_HUMIDITYRELATIVE:
-> > -		/*
-> > -		 * Get the humidity threshold from 7 MSBs, shift them to get the
-> > -		 * truncated humidity threshold representation and calculate the
-> > -		 * threshold according to the formula in the datasheet.
-> > -		 */
-> > -		*val = FIELD_GET(HDC3020_THRESH_HUM_MASK, ret);
-> > -		*val = (*val << HDC3020_THRESH_HUM_TRUNC_SHIFT) * 100;
-> > +		thresh = hdc3020_tresh_get_hum(ret);
-> > +		switch (info) {
-> > +		case IIO_EV_INFO_VALUE:
-> > +			*val = thresh;
-> > +			break;
-> > +		case IIO_EV_INFO_HYSTERESIS:
-> > +			ret = hdc3020_read_be16(data, reg_clr);
-> > +			if (ret < 0)
-> > +				return ret;
-> > +
-> > +			clr = hdc3020_tresh_get_hum(ret);
-> > +			*val = abs(thresh - clr);
-> > +			break;
-> > +		default:
-> > +			return -EOPNOTSUPP;
-> > +		}
-> >  		*val2 = 65535;
-> >  		return IIO_VAL_FRACTIONAL;
-> >  	default:
-> 
-> 
-> Thank you for your patch and best regards,
-> Javier Carrasco
 
-Hi Javier,
+> 
+>>> In fact, looking at the documentation for the "spi engine" some more, I
+>>> am even less convinced that the right place for describing the offload is
+>>> the peripheral as I (finally?) noticed that the registers for the offload
+>>> engine are mapped directly into the "spi engine"'s memory map, rather than
+>>> it being a entirely separate IP in the FPGA fabric.
+>>
+>> True, but we don't use these registers, e.g., to configure the
+>> sampling frequency of a trigger (if it can even be done). That is done
+>> in a completely separate IP block with it's own registers.
+> 
+> Where is the binding for that IP block? I think describing that is
+> pretty key. goto continuation;
 
-thanks for reviewing so quickly. Do you think I should correct the clear
-threshold values once I changed the threshold. I have an example
-provided where I set the threshold and hysteresis. After setting the
-threshold again the hysteresis value also changes.
+For the real-world case I used to test this series, it is an AXI PWMGEN
+[1] that is providing the trigger event source. It has a typical PWM
+provider binding with #pwm-cells [2].
 
-Dimitri
+Calling this a "trigger" provider to the SPI offload instance just like the
+case above where the ADC is directly connected as the offload trigger makes
+sense to me.
+
+What I was going for in this patch (slightly revised to use #cells) is that
+this trigger provider, whatever it is, is selected by one of the cells of
+#spi-offload-cells. It doesn't seem like there should be a special case for
+if the trigger provider is a clock or PWM where the SPI controller node
+becomes a consumer of the clock or PWM provider rather than just describing
+the trigger relationship.
+
+For example, supposing we had an FPGA/HDL that could handle all 3 wiring
+configurations we have discussed so far. A) PWM connected directly to SPI
+offload as trigger, B) PWM connected to CNV of ADC and BSY of ADC connected
+to SPI offload as trigger, C) self clocked ADC with RDY of ADC connected
+to SPI offload as trigger. So the DT would have:
+
+controller:
+#spi-offload-cells = <2>: /* 1st cell = offload instance
+                           * 2nd cell = trigger provider */
+
+peripheral (choose one based on actual wiring):
+spi-offloads = <0 0>; /* case A */
+spi-offloads = <0 1>; /* case B */
+spi-offloads = <0 2>; /* case C */
+
+
+As to what is the actual consumer of the PWM provider in each of these
+cases...
+
+* C is easy. There isn't a PWM provider since the ADC is self-clocked.
+* B, as discussed elsewhere is fairly straight forward. The ADC node is
+  the consumer since the PWM is connected directly to the ADC.
+* A is the one we need to figure out. I'm proposing that the PWM consumer
+  should be whatever kind of composite device node we come up with that
+  also solves the issue described below about where does the CRC checker
+  (or whatever) go. I think we are in agreement here at least on the point
+  that it doesn't belong in the SPI controller node?
+
+[1]: http://analogdevicesinc.github.io/hdl/library/axi_pwm_gen/index.html
+[2]: https://lore.kernel.org/linux-pwm/20240424125850.4189116-2-tgamblin@baylibre.com/
+
+
+
+> 
+> I think you're right something like that is a stretch to say that that
+> is a feature of the SPI controller - but I still don't believe that
+> modelling it as part of the ADC is correct. I don't fully understand the
+> io-backends and how they work yet, but the features you describe there
+> seem like something that should/could be modelled as one, with its own
+> node and compatible etc. Describing custom RTL stuff ain't always
+> strightforward, but the stuff from Analog is versioned and documented
+> etc so it shouldn't be quite that hard.
+> 
+> continuation:
+> If offload engines have their own register region in the memory map,
+> their own resources (the RTL is gonna need at the very least a clock)
+> and potentially also provide other services (like acting as an
+> io-backend type device that pre-processes data) it doesn't sound like
+> either the controller or peripheral nodes are the right place for these
+> properties. And uh, spi-offloads gets a phandle once more...
+> 
 

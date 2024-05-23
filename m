@@ -1,214 +1,571 @@
-Return-Path: <linux-iio+bounces-5216-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5217-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A8668CD50D
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 15:53:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5AB18CD56C
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 16:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8E541F236D0
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 13:53:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE8861C226D1
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 14:12:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296AF14A62D;
-	Thu, 23 May 2024 13:53:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6B314A627;
+	Thu, 23 May 2024 14:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="XqWHUAeN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P43pdXWg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436751D52D
-	for <linux-iio@vger.kernel.org>; Thu, 23 May 2024 13:53:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716472402; cv=fail; b=XQmPPhMNl6pHIKeiun/TprRSUUf0WcTbR4WEPqxSU9tQlVWjl+YMAyhrCnee6uG8WWnpKxluE88EOGSH7ZiACYbEBO0CMM4UiuYvg89jkSu0rD1H/qOfvRjbTczLoHSnKRorI6o8ciaII5zS+haCWZd2Ij2uS7HYtHDF/X4YIs0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716472402; c=relaxed/simple;
-	bh=77Oxg8PTDT2gOvP4k0Pb3+i7uyApH7niYSmJSTt1RzY=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=lt0Mo17rZ6Gv74mUE6UsHAoDA4WC1DqLqvMaamolHSVigjN7VH+/RSiTQicgVaaY7I8cTshQ0KqvyXGFEDcFh+lXBWQr1c11mmizl3CzvoOfBLalDniMcprWFOWdSSUSjyc0R6xKlonszehdxiiz0f//2iCLd3YpMKZcDjD9CzM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=XqWHUAeN; arc=fail smtp.client-ip=205.220.166.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
-Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44N4u0UO011629;
-	Thu, 23 May 2024 13:53:04 GMT
-Received: from jpn01-os0-obe.outbound.protection.outlook.com (mail-os0jpn01lp2105.outbound.protection.outlook.com [104.47.23.105])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3y9y75gede-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 May 2024 13:53:04 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=g+I8uioDLzNHatcu8G2BOa6b/sUhmAkzTMCax8ZJPNdEYMQ/kFHF9MZ6m/cs/4gRj3B/r9kGXvPp6kld8IWN+B+4hN//03c1xWJUBq0+1+QdppDB9nD5Sagrq2XDOPQJ9B1GnqrFnaZ3jfShHFjxjzI9DFQgGKqJWm2HhpswdEnDv5f6HzRm7v2yVL1H70wM3Mwoe4pUfHAAIMJjtbgi8ETsVTnrUQl7uuPjLk9xRbLYq/P0fR4sbbTGh41YPqDTWXM+D4UqKAzA66VO3l4PovaaH98sZsHzBktT2ZAW2iZMJpBawR8GS9KRBp0H+g88Vv+/GuqhFhNxEAXynKoocA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9JmjSoWTtJQrAAasudWj4jfO2XSeq64NlvyQ/TqhDMU=;
- b=VnOkZQN7OAZMtixTRXnyAzk+Ej/y5G7jF8G5KT3hzY1Bd1NBLOXHdKSej62lHUba2/ysbgA2qKkStYGFyGX5BYyf/omuKiuf8uMjhgd1LvGlYM1ljSDXMuP6kAnmRjtDui+5ie8zgnnVWX/litL0dAvpklMHMhDAFlnWGP9wMF8oFmPUDDUA7NsZ6WDDzRh+fC7PFjVDdtXECotvY3uRk6fSeXKjGwHFv02vi+dYi8kXNyg8c+YUJuBLCiFKWebd2hblV+l30sJZn7s1HwoL0UwKNRTqGgMPvZY2j8Rl8ecrIuvRiHGdjfFVAXl4enIXGxU6FXtyGlQYbM0PXJb8ew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9JmjSoWTtJQrAAasudWj4jfO2XSeq64NlvyQ/TqhDMU=;
- b=XqWHUAeNlLrvbPVa4n0Wmmwm/zXVYvg13VGGym/TASAW5LssXi/Vx9TJRcmuRQUrYlycg/WNC8latZ4g82+7hnm7gYSmMEM52NkBY6dbUZF6GtUUPNuX4L+21XbhFpH2ulgmp+HNWgULXckn0ZxmAFsE8gyVAfyep1lqiCQ/yKracMg6ZN9sTz6+Vn4xAWSf67bRc4rUESRgXal9swqrFg7sFFT/HC5mV2qJ58YuRSom9cLKmWcLP1OBIzyn1m5drmguR/BrTJB1NnGEp4JUqO+rw1WHiMW/Vk0jv9lVNPWFrKzL/dBTHyyOPwWB2sGUywSixLgAXWXksXqSZbgV2A==
-Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1a7::13)
- by TYCP286MB2608.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:243::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.20; Thu, 23 May
- 2024 13:53:00 +0000
-Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- ([fe80::9119:3ad4:c68d:9da2]) by OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- ([fe80::9119:3ad4:c68d:9da2%6]) with mapi id 15.20.7611.016; Thu, 23 May 2024
- 13:53:00 +0000
-From: inv.git-commit@tdk.com
-To: jic23@kernel.org
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: [PATCH] iio: imu: inv_mpu6050: stabilized timestamping in interrupt
-Date: Thu, 23 May 2024 13:52:45 +0000
-Message-Id: <20240523135245.552999-1-inv.git-commit@tdk.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ZR0P278CA0061.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:21::12) To OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:1a7::13)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7815613C68A;
+	Thu, 23 May 2024 14:12:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716473564; cv=none; b=EZc7GZtPx6RF/DtaCWL1AS6PwLfy2c9H0r0eDOr8oVYaYz45X0CYHxYqxohKEYtoTEdpllYmAS9/1x4HagmoqFtAq5pZcAsbAWQuUzrbICB25eUAJ7NONY6iVLiOEqRze/ZygDy0uK+zgerIbcg/3LqfDtNI5g4rpIq+0jODdt0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716473564; c=relaxed/simple;
+	bh=6tTYDKHEdYoyoxh+1tPZxVmAVirNorphgDO/IiOJMEY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k5OVqQwsBpwRFKMyw0nUjHFZEdiLL7M1zQQ/1WR3v7mgIfmhoXrMnilqVvjxCh5J/zrrEShV6n0wvwuBeimzZN9Imp3+Pzm1zEYB6h5jmad92JE/kFGYn+t6kH89jib5CQe6oYL6pTSRyDvUDhEahV0jcD6umBFhTeRT35UloQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P43pdXWg; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-420180b5922so24417075e9.2;
+        Thu, 23 May 2024 07:12:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716473561; x=1717078361; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LlAoqBuYwYuQ66rmuTC5qz69wRLRjUu+TCjcPA+38dY=;
+        b=P43pdXWgS8KNmPawLNL7mQFQ9asj+1A8K5clmi0TOCWvJav5SGopz1Z/kOnTucIy0p
+         BFAy0fFTeGDKhR/CDBI/XVhCohzSYIOLpfw+eUn6rQK6jB75FLIcP/AzgJV5J0V2JOBo
+         q/pghysiJQnAYNiSboRcjDKBVuTr6xTz/je6x2iajgN1W7nGafUJtj32wpwhYU22YE6j
+         csKbhMNI8Zwtiqx7r+cqBdv9T/lsHJkePgXc71dFcqt0F6myqoZa3LbbPjx67m9SbFnP
+         b6cSL+9oYciKTUQoQl0EUXwXnc/hTEJNDiLAW0WJl3S+bYdkqrf8Bo+lnel/TgAhKmrq
+         H4qg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716473561; x=1717078361;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LlAoqBuYwYuQ66rmuTC5qz69wRLRjUu+TCjcPA+38dY=;
+        b=MDs+/B8JqbJcViW/YeTPZVR5eKf4LadGmXpoAcdMjWTRTqJ3N8VT3e73n75GbJT5WD
+         RwJknZML5DbAooWC9cyBF7OKpwqmuRGjT2xv13absXRsT6nsubdu/aSq99z6Nwr28fI0
+         ZCGp7ckiEKMGz/Qkmdqk4dUTxUdUECCoPpN/kvPhr8GgiFLuOyLmiw4tzBzGalYDRjw/
+         /OoGz6UflcmBuvBUZJoTO8g+wWvHXxPPpD33sTWM//+UoTQYwCNYOK9BluNEc+skDk9h
+         wslMWZNuVF9kjEp7poDeGSLhhqIHMqs6J7Busj2zvrtpTBZPFI1qEoic25h6ZhDBIFfa
+         TFhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVV0LCuqGoTP4OhQIDe3AyHIjGHxMmGvKAuawWtu87tMuNoh96H2sMuliGRiRsqcyCtkdMZv7FbujJa30UQMRNegVMIMiGH9Z+1a1635yoVsf9zUlxVG9KKYKthHv3NmRBNnq+jpx9q
+X-Gm-Message-State: AOJu0Yyl9DiTHRq8xZRovUCEqd5TKYJrgqUHG0V+kOoQ5hNEGr4cj84U
+	XYg/i11uIdR967WGe/AHWuPN8tC4D9rYJ4RY8olp57DSJJDyyY0S
+X-Google-Smtp-Source: AGHT+IEoiYpcsAmX9AmEQ1v3NZzgTSocKUZ4hSRV7q3mC/AkTM+8nviNuzgi9dRsS8toGtclmMiiPA==
+X-Received: by 2002:a05:600c:3b82:b0:418:9dd2:fd04 with SMTP id 5b1f17b1804b1-420fd31456emr45116165e9.13.1716473560422;
+        Thu, 23 May 2024 07:12:40 -0700 (PDT)
+Received: from [192.168.0.31] (84-115-212-250.cable.dynamic.surfer.at. [84.115.212.250])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42100f1ad4bsm26468555e9.19.2024.05.23.07.12.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 23 May 2024 07:12:39 -0700 (PDT)
+Message-ID: <cef810ee-bb2c-4588-baec-7edfc74daeea@gmail.com>
+Date: Thu, 23 May 2024 16:12:37 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OSZP286MB1942:EE_|TYCP286MB2608:EE_
-X-MS-Office365-Filtering-Correlation-Id: 057255ca-64f4-4c6f-34ba-08dc7b2fa765
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230031|52116005|1800799015|376005|366007|38350700005|3613699003;
-X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?rzWQ0OjYr1E+83x8hjDsie8suPTUFoPg2Cs4B89oBqNDjfxIBPkZS0g4d/33?=
- =?us-ascii?Q?HYee7VrOJZtEpuADwcVSEoJLp2fdoqmKiYF4S179IPImKTJ5lc2T9hSnrp8c?=
- =?us-ascii?Q?GsYjgpcnOOwsgl724YhA2m6WbNZ5hQbycOsjTFVmnfKKrgms/EDhAcjuzn8m?=
- =?us-ascii?Q?h7JrAk748CkEAEjv0nGrhDho827FXCeUSliCR19S0nDS/RHImD3JydwsnIxA?=
- =?us-ascii?Q?B0mm6RFBYrbRwxX4bWS56dZcsGm/CaFvR0F4oDMDLBr9gpak8/tsCSRElC6P?=
- =?us-ascii?Q?BAfVU7tATeF4pNhN+opMyuprMuU6jQV+Lcgc0WMF5rSNVwPQmpQS79f7g1gc?=
- =?us-ascii?Q?F80pvd6QgP3/CSkmdi/0qb8HyegvocmiRYKoKPxsm/95fiEoXZVxaSBRK9Hi?=
- =?us-ascii?Q?FmykQjLjUZAQ8CcPUb70SD0iCVg1R/hgOSLGaMHRlbuEZnvK+urGNX5BMA4X?=
- =?us-ascii?Q?Q1swEOIzfye4ZP9emk5XVoqT8LWrp3oC42HPOP7zNNF2cLISoEzJ4pnEWUpw?=
- =?us-ascii?Q?1l57tKKqN2SVnlAVxbUsOtdPP1dgNwZuh5Usv0kv9MnSpjoYdWihBn4uGr0j?=
- =?us-ascii?Q?8J6vEf7Id+oDvuUjJGOhYm3+y37ZUqV2QFh3MuiXuHv/JSt6FNy9mrnV8ffO?=
- =?us-ascii?Q?mOt2CjD4UBjQ0aPbo7Pv2Yb7+PCZPyh76NqcU0YS5KfpNw2m4HhRn71rqpP6?=
- =?us-ascii?Q?Fryq3/9EoftTzD+w1m2J4uwTdmZalugYKLa10GyDwUn1eX+C6FcvFPGf77Ii?=
- =?us-ascii?Q?Zld3Nd/GZDrv3zHaiKte4jwUQCHiorfvbVxv7vBbJuftJqZ3faWowqYxpPRr?=
- =?us-ascii?Q?BL6Vh5q9QC1tv3taQ16uebQZktuDNafxlvcxU+mcypeqCtlsQmHk6RoXTWd9?=
- =?us-ascii?Q?gmZeizON/BeWZ/bF8xzN3nv8/Ib/pQTHK9GOHpOvqCLSimNNLZXvEP1+b2+x?=
- =?us-ascii?Q?uxIIR0AVwLK9nEkRmSmJSo+CEuym4D0avc/xY9qL0vEz6KLtJtXR6cbK4Wxn?=
- =?us-ascii?Q?DhBSjEpjwn0V1JZE7nxKxUEswSanjzA5sCd81+s6WD4psL2t7ALs0GzBlfJr?=
- =?us-ascii?Q?VFDJbpCNlfyJK7k9auxYNFAHW08ZeKSTEGq37VQdHcw+Txf7Z68z1ALJOUIy?=
- =?us-ascii?Q?ocQzxQepAui+OHoe6rt8j6yw7dpJhHtZt0C53FU/mvpDXTNvfn4Lp+sAtt0u?=
- =?us-ascii?Q?5YVL7M/UQY5Kdpj8EWl04BhXE+vZRzfWn/61WELznomn3LMmkJ63POFmH8x1?=
- =?us-ascii?Q?eBtmF5dsAUwb/IR3aQPc9eSq6cR2h8rrT45WKT7DD9IDE58Q4GNtVH4Xv2ZT?=
- =?us-ascii?Q?jel1fYvYBqK2FtBMWLfyMP1WiNESDDMzIIWQdjDKCZyuoGbWPjvHJqj2UTFs?=
- =?us-ascii?Q?9sFfja4=3D?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(52116005)(1800799015)(376005)(366007)(38350700005)(3613699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?6DbXo8TFxjDAsfoEnVAf/WTSsqBZswwfpJKTWnOqAyMxJtlgBAF4Zu1u0UwM?=
- =?us-ascii?Q?Lu8Z6zCv2UagCTVbKAIppS3sIgcO8y3V2985shV75NqlUki0XlyloIEGWW8J?=
- =?us-ascii?Q?k5MA0fKsPS6+6fwlJ547vjsNSmtIAKn9ZYGo2ItzGM7L7aQs6tvuOrLY3OS2?=
- =?us-ascii?Q?Ju96Wl310brEdv0Upaf2kiHQQ2qVNW8W8Sort/MYDnUcVaPM3RWxF7nEA6DH?=
- =?us-ascii?Q?A4P+TU/zUo5Nk1/ft6kRvhWGIU1+z6MfxtiklE8Y5kJwGQcQAnnmR1EWtKlI?=
- =?us-ascii?Q?JgUszr7C5ecL7932NivGXHkcLXbX2VDHX7cFDeAAP+YQ1ENBBkQM8H7MetFi?=
- =?us-ascii?Q?9qyJJxpBTaKH5GLNllBkvi/FCexv2Tho2dg9y4qEHCmNcXbVeZgmhYikGXH6?=
- =?us-ascii?Q?SI9MLSz85M9jO2zZjIZJ6WQl2q7nrz9OcFyeDgOKpaRCuB8x9zYRTTuDbLuW?=
- =?us-ascii?Q?yPaQQgB4/Pj+BzQvEXJSsJzPinTslq9sL/poaMohjFvA1CbJ+0rYCl8gKeDh?=
- =?us-ascii?Q?sB+EjX1B7WLXvgVLUNyiDof1/tEnLO/FPZv08kXL2Fbps6GbZsJR+HFLO3qP?=
- =?us-ascii?Q?j8L6PYOc4NxG+jXWUCxd0izrGnZd74pI2dEO0knffZqQIfOkp2lSETam8tIQ?=
- =?us-ascii?Q?jiy/HPoXiiMmXZEbr2ZeSfwTzLpxVEga5GOkxBjXigbrbm/SZ+7qpMUERQ3Y?=
- =?us-ascii?Q?ib+9Nccmatz1Wfc0ouotO6mi0R9lIJ4DwRYdAEa7+yHBRVeVLk95pQbThCHV?=
- =?us-ascii?Q?tQzCB2CQngFJa/dQFDUT4oYclf3cecP5amaz/9J/hHUGjFVLCgqgt7cOUyav?=
- =?us-ascii?Q?ZobyM54I03amybzcODeuwzYqZ2D8eJ9k9UrjHNpe7VH77diyvQ5YJwKskxc4?=
- =?us-ascii?Q?ctOvf5J1TJDwqJIFD9+sxFtiT8+jmPZrxDz3L2CoeHzcCuZz4PhpcaOSmoD/?=
- =?us-ascii?Q?0Uk6tX0MBtlIRkCmZRYhXCXhPJVWMih1Kmryi/XUf/EyjiPFLXwFOLbUgfL2?=
- =?us-ascii?Q?z1KaCk/EjiqI0p5IS4qwEvwVxkz+jz67qsr84FhaHyTAnRFCi4x+1sAmQfVQ?=
- =?us-ascii?Q?au7UJBaeRvtg34jyAUy6ZAZ5cdsx8EiI9YAUuH2Gi6kZlU0t7I7Z+9A4dlgI?=
- =?us-ascii?Q?nM3wnhBeFq9K1ZNDCyzDbqU6pdfzL5EWVcYpuAVQHbSVG3ExFhFwJLBYi8Pg?=
- =?us-ascii?Q?+WV8VQ6caDnkRgRG3QQ+Iz/YuHXAwwuXpBhziu+/Zhfr7BDXp46h5Kbv3WiN?=
- =?us-ascii?Q?a1uY6ExEAwIbY9ozPS89ecAKKqTxL/B9hwgkjbOx90l3+1IozcNCK9XTKfWl?=
- =?us-ascii?Q?U0/KHikvvnTkJjn7SqvYvR3IOTcVC/4CxQStxAec8hbnC09cpjVvDdJQVGrQ?=
- =?us-ascii?Q?apWE5N3Lmigb9tFbEjvhvAaupUor3yyDoMeDahGfvynnQWV2ZyeGP9SDknwC?=
- =?us-ascii?Q?ndt56Msr8Ew0Qr+ufed1VMJbsLfm5EHPEUMyYjW6QEkMrjxVQEFK3VJe7jcO?=
- =?us-ascii?Q?frE7pjri3l+6rMpld7y+ecNep5oCARZHNAbKPo+Y6M6sdr3fr1kSPtVV4PTs?=
- =?us-ascii?Q?iTZKbYuNjXPfyDRGwdSAIzBLaVbdDZOc+ZN/lNGA?=
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 057255ca-64f4-4c6f-34ba-08dc7b2fa765
-X-MS-Exchange-CrossTenant-AuthSource: OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 May 2024 13:52:58.5435
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NaFVaJHxubawVv0T4QmV4ZgqwwbtrhcC1CV/hVzv9tdLp7woCAKsURBopw9xAdof3RtJiRa+6LBNQRtk/6fYjw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYCP286MB2608
-X-Proofpoint-GUID: P8Sj4zZx_tt4IaZJ0252lG2Cft5e6Rpc
-X-Proofpoint-ORIG-GUID: P8Sj4zZx_tt4IaZJ0252lG2Cft5e6Rpc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-23_08,2024-05-23_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=882 clxscore=1015
- phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501 bulkscore=0
- adultscore=0 impostorscore=0 mlxscore=0 lowpriorityscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405010000
- definitions=main-2405230095
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: humidity: hdc3020: fix hysteresis representation
+To: Dimitri Fedrau <dima.fedrau@gmail.com>
+Cc: Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240523114336.532428-1-dima.fedrau@gmail.com>
+Content-Language: en-US, de-AT
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+In-Reply-To: <20240523114336.532428-1-dima.fedrau@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Hi Dimitri, a few comments inline.
 
-Use IRQ ONESHOT flag to ensure the timestamp is not updated in the
-hard handler during the thread handler. And use a fixed value of 1
-sample that correspond to this first timestamp.
+On 23/05/2024 13:43, Dimitri Fedrau wrote:
+> According to the ABI docs hysteresis values are represented as offsets to
+> threshold values. Current implementation represents hysteresis values as
+> absolute values which is wrong. Nevertheless the device stores them as
+> absolute values and the datasheet refers to them as clear thresholds. Fix
+> the reading and writing of hysteresis values by including thresholds into
+> calculations.
+> 
+> Fixes: 3ad0e7e5f0cb ("iio: humidity: hdc3020: add threshold events support")
+> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+> ---
+> 
+> Since absolute values are used on the device, the hysteresis values are
+> influenced by setting thresholds. Is this behavior in line with the ABI docs ?
+> It can be fixed by readjusting the threshold clear value whenever setting
+> thresholds to have the same hysteresis value as before. See some example below:
+> 
+> # echo 25 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
+> # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
+> 24.727626459
+> # echo 5 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
+> # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
+> 5.127031357
+> # echo 35 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
+> # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
+> 15.381094071
+> 
+> Below are some corner cases tested by setting threshold and hysteresis values.
+> To check that the threshold clear values are correct, registers are read out by
+> using i2ctransfer and the corresponding temperature and relative humidity
+> thresholds are calculated using the formulas in the datasheet.
+> 
+> # echo 125 > in_temp_thresh_rising_value
+> # cat in_temp_thresh_rising_value
+> 124.875638971
+> 
+> # echo 165 > in_temp_thresh_rising_hysteresis
+> # cat in_temp_thresh_rising_hysteresis
+> 164.748607614
+> 
+> # echo 100 > in_humidityrelative_thresh_rising_value
+> # cat in_humidityrelative_thresh_rising_value
+> 99.220263981
+> 
+> # echo 100 > in_humidityrelative_thresh_rising_hysteresis
+> # cat in_humidityrelative_thresh_rising_hysteresis
+> 99.220263981
+> 
+> threshold high, temperature = 124,875638972 C, humidity = 99.220263981
+> # i2ctransfer -f -y 4 w2@0x44 0xe1 0x1f r3
+> 0xff 0xf1 0xb3
+> 
+> threshold high clear, temperature = -39.872968643 C, humidity = 0
+> # i2ctransfer -f -y 4 w2@0x44 0xe1 0x14 r3
+> 0x00 0x0f 0xaf
+> 
+> 
+> # echo -40 > in_temp_thresh_falling_value
+> # cat in_temp_thresh_falling_value
+> -39.872968642
+> 
+> # echo 165 > in_temp_thresh_falling_hysteresis
+> # cat in_temp_thresh_falling_hysteresis
+> 164.406805523
+> 
+> # echo 0 > in_humidityrelative_thresh_falling_value 
+> # cat in_humidityrelative_thresh_falling_value
+> 0.000000000
+> 
+> # echo 100 > in_humidityrelative_thresh_falling_hysteresis 
+> # cat in_humidityrelative_thresh_falling_hysteresis
+> 99.220263981
+> 
+> threshold low, temperature = -39.872968643 C, humidity = 0
+> # i2ctransfer -f -y 4 w2@0x44 0xe1 0x02 r3
+> 0x00 0x0f 0xaf
+> 
+> threshold low clear, temperature = 124,533836881 C, humidity = 99,220263981
+> # i2ctransfer -f -y 4 w2@0x44 0xe1 0x09 r3
+> 0xff 0xf0 0x82
+> 
+> ---
+>  drivers/iio/humidity/hdc3020.c | 292 +++++++++++++++++++++++++--------
+>  1 file changed, 221 insertions(+), 71 deletions(-)
+> 
+> diff --git a/drivers/iio/humidity/hdc3020.c b/drivers/iio/humidity/hdc3020.c
+> index cdc4789213ba..d41713ff1deb 100644
+> --- a/drivers/iio/humidity/hdc3020.c
+> +++ b/drivers/iio/humidity/hdc3020.c
+> @@ -19,6 +19,8 @@
+>  #include <linux/i2c.h>
+>  #include <linux/init.h>
+>  #include <linux/interrupt.h>
+> +#include <linux/math.h>
+Is math.h not included in math64.h?
 
-This way we can ensure the timestamp is always corresponding to the
-value used by the timestamping mechanism. Otherwise, it is possible
-that between FIFO count read and FIFO processing the timestamp is
-overwritten in the hard handler.
+> +#include <linux/math64.h>
+>  #include <linux/module.h>
+>  #include <linux/mutex.h>
+>  #include <linux/pm.h>
+> @@ -66,8 +68,10 @@
+>  
+>  #define HDC3020_CRC8_POLYNOMIAL		0x31
+>  
+> -#define HDC3020_MIN_TEMP		-40
+> -#define HDC3020_MAX_TEMP		125
+> +#define HDC3020_MIN_TEMP_MICRO		-39872968
+> +#define HDC3020_MAX_TEMP_MICRO		124875639
+> +#define HDC3020_MAX_TEMP_HYST_MICRO	164748607
+> +#define HDC3020_MAX_HUM_MICRO		99220264
+>  
+>  struct hdc3020_data {
+>  	struct i2c_client *client;
+> @@ -368,6 +372,75 @@ static int hdc3020_write_raw(struct iio_dev *indio_dev,
+>  	return -EINVAL;
+>  }
+>  
+> +static int hdc3020_tresh_get_temp(u16 thresh)
+> +{
+> +	int temp;
+> +
+> +	/*
+> +	 * Get the temperature threshold from 9 LSBs, shift them to get
+> +	 * the truncated temperature threshold representation and
+> +	 * calculate the threshold according to the formula in the
+> +	 * datasheet. Result is degree celsius scaled by 65535.
+> +	 */
+> +	temp = FIELD_GET(HDC3020_THRESH_TEMP_MASK, thresh) <<
+> +	       HDC3020_THRESH_TEMP_TRUNC_SHIFT;
+> +
+> +	return -2949075 + (175 * temp);
+> +}
+> +
+> +static int hdc3020_tresh_get_hum(u16 thresh)
+> +{
+> +	int hum;
+> +
+> +	/*
+> +	 * Get the humidity threshold from 7 MSBs, shift them to get the
+> +	 * truncated humidity threshold representation and calculate the
+> +	 * threshold according to the formula in the datasheet. Result is
+> +	 * percent scaled by 65535.
+> +	 */
+> +	hum = FIELD_GET(HDC3020_THRESH_HUM_MASK, thresh) <<
+> +	      HDC3020_THRESH_HUM_TRUNC_SHIFT;
+> +
+> +	return hum * 100;
+> +}
+> +
+> +static u16 hdc3020_thresh_set_temp(int s_temp, u16 curr_thresh)
+> +{
+> +	u64 temp;
+> +	u16 thresh;
+> +
+> +	/*
+> +	 * Calculate temperature threshold, shift it down to get the
+> +	 * truncated threshold representation in the 9LSBs while keeping
+> +	 * the current humidity threshold in the 7 MSBs.
+> +	 */
+> +	temp = (u64)(s_temp + 45000000) * 65535ULL;
+> +	temp = div_u64(temp, 1000000 * 175) >> HDC3020_THRESH_TEMP_TRUNC_SHIFT;
+> +	thresh = FIELD_PREP(HDC3020_THRESH_TEMP_MASK, temp);
+> +	thresh |= (FIELD_GET(HDC3020_THRESH_HUM_MASK, curr_thresh) <<
+> +		  HDC3020_THRESH_HUM_TRUNC_SHIFT);
+> +
+> +	return thresh;
+> +}
+> +
+> +static u16 hdc3020_thresh_set_hum(int s_hum, u16 curr_thresh)
+> +{
+> +	u64 hum;
+> +	u16 thresh;
+> +
+> +	/*
+> +	 * Calculate humidity threshold, shift it down and up to get the
+> +	 * truncated threshold representation in the 7MSBs while keeping
+> +	 * the current temperature threshold in the 9 LSBs.
+> +	 */
+> +	hum = (u64)(s_hum) * 65535ULL;
+> +	hum = div_u64(hum, 1000000 * 100) >> HDC3020_THRESH_HUM_TRUNC_SHIFT;
+> +	thresh = FIELD_PREP(HDC3020_THRESH_HUM_MASK, hum);
+> +	thresh |= FIELD_GET(HDC3020_THRESH_TEMP_MASK, curr_thresh);
+> +
+> +	return thresh;
+> +}
+> +
+>  static int hdc3020_write_thresh(struct iio_dev *indio_dev,
+>  				const struct iio_chan_spec *chan,
+>  				enum iio_event_type type,
+> @@ -376,65 +449,130 @@ static int hdc3020_write_thresh(struct iio_dev *indio_dev,
+>  				int val, int val2)
+>  {
+>  	struct hdc3020_data *data = iio_priv(indio_dev);
+> +	u16 reg, reg_val, reg_thresh_rd, reg_clr_rd, reg_thresh_wr, reg_clr_wr;
+> +	s64 s_thresh, s_hyst, s_clr;
+> +	int s_val, ret;
+>  	u8 buf[5];
+> -	u64 tmp;
+> -	u16 reg;
+> -	int ret;
+> -
+> -	/* Supported temperature range is from –40 to 125 degree celsius */
+> -	if (val < HDC3020_MIN_TEMP || val > HDC3020_MAX_TEMP)
+> -		return -EINVAL;
+>  
+> -	/* Select threshold register */
+> -	if (info == IIO_EV_INFO_VALUE) {
+> -		if (dir == IIO_EV_DIR_RISING)
+> -			reg = HDC3020_S_T_RH_THRESH_HIGH;
+> -		else
+> -			reg = HDC3020_S_T_RH_THRESH_LOW;
+> +	/* Select threshold registers */
+> +	if (dir == IIO_EV_DIR_RISING) {
+> +		reg_thresh_rd = HDC3020_R_T_RH_THRESH_HIGH;
+> +		reg_thresh_wr = HDC3020_S_T_RH_THRESH_HIGH;
 
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
----
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 4 ++--
- drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
+Do we always need to set reg_clr_rd and reg_clr_wr? It seems that they
+are only required for the IIO_EV_INFO_HYSTERESIS case, where the EV_DIR
+is checked again Maybe we could even get rid of those auxiliary
+variables, or have a single check for EV_DIR with the sign for the
+operations.
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-index 0dc0f22a5582..3d3b27f28c9d 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-@@ -100,8 +100,8 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
- 		goto end_session;
- 	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
- 	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
--	inv_sensors_timestamp_interrupt(&st->timestamp, nb, pf->timestamp);
--	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, nb, 0);
-+	inv_sensors_timestamp_interrupt(&st->timestamp, 1, pf->timestamp);
-+	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, 1, 0);
- 
- 	/* clear internal data buffer for avoiding kernel data leak */
- 	memset(data, 0, sizeof(data));
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-index 1b603567ccc8..84273660ca2e 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
-@@ -300,6 +300,7 @@ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type)
- 	if (!st->trig)
- 		return -ENOMEM;
- 
-+	irq_type |= IRQF_ONESHOT;
- 	ret = devm_request_threaded_irq(&indio_dev->dev, st->irq,
- 					&inv_mpu6050_interrupt_timestamp,
- 					&inv_mpu6050_interrupt_handle,
--- 
-2.34.1
+> +		reg_clr_rd = HDC3020_R_T_RH_THRESH_HIGH_CLR;
+> +		reg_clr_wr = HDC3020_S_T_RH_THRESH_HIGH_CLR;
+>  	} else {
+> -		if (dir == IIO_EV_DIR_RISING)
+> -			reg = HDC3020_S_T_RH_THRESH_HIGH_CLR;
+> -		else
+> -			reg = HDC3020_S_T_RH_THRESH_LOW_CLR;
+> +		reg_thresh_rd = HDC3020_R_T_RH_THRESH_LOW;
+> +		reg_thresh_wr = HDC3020_S_T_RH_THRESH_LOW;> +		reg_clr_rd = HDC3020_R_T_RH_THRESH_LOW_CLR;
+> +		reg_clr_wr = HDC3020_S_T_RH_THRESH_LOW_CLR;
+>  	}
+>  
+>  	guard(mutex)(&data->lock);
+> -	ret = hdc3020_read_be16(data, reg);
+> +	ret = hdc3020_read_be16(data, reg_thresh_rd);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> +	/* Scale value to include decimal part into calculations */
+> +	s_val = (val < 0) ? (val * 1000000 - val2) : (val * 1000000 + val2);
+> +
+>  	switch (chan->type) {
+>  	case IIO_TEMP:
+> -		/*
+> -		 * Calculate temperature threshold, shift it down to get the
+> -		 * truncated threshold representation in the 9LSBs while keeping
+> -		 * the current humidity threshold in the 7 MSBs.
+> -		 */
+> -		tmp = ((u64)(((val + 45) * MICRO) + val2)) * 65535ULL;
+> -		tmp = div_u64(tmp, MICRO * 175);
+> -		val = tmp >> HDC3020_THRESH_TEMP_TRUNC_SHIFT;
+> -		val = FIELD_PREP(HDC3020_THRESH_TEMP_MASK, val);
+> -		val |= (FIELD_GET(HDC3020_THRESH_HUM_MASK, ret) <<
+> -			HDC3020_THRESH_HUM_TRUNC_SHIFT);
+> +		switch (info) {
+> +		case IIO_EV_INFO_VALUE:
 
+The comment could be dropped. The range is obvious from the constants
+and the values don't mach anymore now that you use MICRO.
+
+> +			/* Range is from –40 to 125 degree celsius */
+> +			s_val = max(s_val, HDC3020_MIN_TEMP_MICRO);
+> +			s_val = min(s_val, HDC3020_MAX_TEMP_MICRO);
+> +
+> +			reg = reg_thresh_wr;
+> +			reg_val = hdc3020_thresh_set_temp(s_val, ret);
+> +			break;
+> +		case IIO_EV_INFO_HYSTERESIS:
+> +			/*
+> +			 * Function hdc3020_tresh_get_temp returns temperature
+> +			 * in degree celsius scaled by 65535. Scale by 1000000
+> +			 * to be able to subtract scaled hysteresis value.
+> +			 */
+> +			s_thresh = (s64)hdc3020_tresh_get_temp(ret) * 1000000;
+> +			/*
+> +			 * Units of s_val are in micro degree celsius, scale by
+> +			 * 65535 to get same units as s_thresh.
+> +			 */
+> +			s_val = min(abs(s_val), HDC3020_MAX_TEMP_HYST_MICRO);
+> +			s_hyst = (s64)s_val * 65535;
+> +			/*
+> +			 * Include directions when calculation the clear value,
+> +			 * since hysteresis is unsigned by definition and the
+> +			 * clear value is an absolute value which is signed.
+> +			 */
+> +			if (dir == IIO_EV_DIR_RISING)
+> +				s_clr = s_thresh - s_hyst;
+> +			else
+> +				s_clr = s_thresh + s_hyst;
+> +
+
+Nit: "Divide". You can avoid such typos by using checkpactch.pl with the
+--codespell option.
+
+> +			/* Devide by 65535 to get units of micro degree celsius */
+> +			s_val = div_s64(s_clr, 65535);
+> +			ret = hdc3020_read_be16(data, reg_clr_rd);
+> +			if (ret < 0)
+> +				return ret;
+> +
+> +			reg = reg_clr_wr;
+> +			reg_val = hdc3020_thresh_set_temp(s_val, ret);
+> +			break;
+> +		default:
+> +			return -EOPNOTSUPP;
+> +		}
+>  		break;
+>  	case IIO_HUMIDITYRELATIVE:
+> -		/*
+> -		 * Calculate humidity threshold, shift it down and up to get the
+> -		 * truncated threshold representation in the 7MSBs while keeping
+> -		 * the current temperature threshold in the 9 LSBs.
+> -		 */
+> -		tmp = ((u64)((val * MICRO) + val2)) * 65535ULL;
+> -		tmp = div_u64(tmp, MICRO * 100);
+> -		val = tmp >> HDC3020_THRESH_HUM_TRUNC_SHIFT;
+> -		val = FIELD_PREP(HDC3020_THRESH_HUM_MASK, val);
+> -		val |= FIELD_GET(HDC3020_THRESH_TEMP_MASK, ret);
+> +		switch (info) {
+> +		case IIO_EV_INFO_VALUE:
+
+The 100% value does not match the max val anymore. Could be dropped too.
+
+> +			/* Range is from 0 to 100 percent */
+> +			s_val = min(abs(s_val), HDC3020_MAX_HUM_MICRO);
+> +
+> +			reg = reg_thresh_wr;
+> +			reg_val = hdc3020_thresh_set_hum(s_val, ret);
+> +			break;
+> +		case IIO_EV_INFO_HYSTERESIS:
+> +			/*
+> +			 * Function hdc3020_tresh_get_hum returns relative
+> +			 * humidity in percent scaled by 65535. Scale by 1000000
+> +			 * to be able to subtract scaled hysteresis value.
+> +			 */
+> +			s_thresh = (s64)hdc3020_tresh_get_hum(ret) * 1000000;
+> +			/*
+> +			 * Units of s_val are in micro percent, scale by 65535
+> +			 * to get same units as s_thresh.
+> +			 */
+> +			s_val = min(abs(s_val), HDC3020_MAX_HUM_MICRO);
+> +			s_hyst = (s64)s_val * 65535;
+> +			/*
+> +			 * Include directions when calculation the clear value,
+> +			 * since hysteresis is unsigned by definition and the
+> +			 * clear value is an absolute value which is signed.
+> +			 */
+> +			if (dir == IIO_EV_DIR_RISING)
+> +				s_clr = s_thresh - s_hyst;
+> +			else
+> +				s_clr = s_thresh + s_hyst;
+> +
+
+Nit: "Divide".
+
+> +			/* Devide by 65535 to get units of micro degree percent */
+> +			s_val = div_s64(s_clr, 65535);
+> +			ret = hdc3020_read_be16(data, reg_clr_rd);
+> +			if (ret < 0)
+> +				return ret;
+> +
+> +			reg = reg_clr_wr;
+> +			reg_val = hdc3020_thresh_set_hum(s_val, ret);
+> +			break;
+> +		default:
+> +			return -EOPNOTSUPP;
+> +		}
+>  		break;
+>  	default:
+>  		return -EOPNOTSUPP;
+>  	}
+>  
+>  	put_unaligned_be16(reg, buf);
+> -	put_unaligned_be16(val, buf + 2);
+> +	put_unaligned_be16(reg_val, buf + 2);
+>  	buf[4] = crc8(hdc3020_crc8_table, buf + 2, 2, CRC8_INIT_VALUE);
+
+Now that you are working on this function, maybe you could add the
+missing empty line before the return to keep format consistency.
+
+>  	return hdc3020_write_bytes(data, buf, 5);
+>  }
+> @@ -447,48 +585,60 @@ static int hdc3020_read_thresh(struct iio_dev *indio_dev,
+>  			       int *val, int *val2)
+>  {
+>  	struct hdc3020_data *data = iio_priv(indio_dev);
+> -	u16 reg;
+> -	int ret;
+> +	u16 reg_thresh, reg_clr;
+> +	int thresh, clr, ret;
+>  
+> -	/* Select threshold register */
+> -	if (info == IIO_EV_INFO_VALUE) {
+> -		if (dir == IIO_EV_DIR_RISING)
+> -			reg = HDC3020_R_T_RH_THRESH_HIGH;
+> -		else
+> -			reg = HDC3020_R_T_RH_THRESH_LOW;
+> +	/* Select threshold registers */
+> +	if (dir == IIO_EV_DIR_RISING) {
+> +		reg_thresh = HDC3020_R_T_RH_THRESH_HIGH;
+> +		reg_clr = HDC3020_R_T_RH_THRESH_HIGH_CLR;
+>  	} else {
+> -		if (dir == IIO_EV_DIR_RISING)
+> -			reg = HDC3020_R_T_RH_THRESH_HIGH_CLR;
+> -		else
+> -			reg = HDC3020_R_T_RH_THRESH_LOW_CLR;
+> +		reg_thresh = HDC3020_R_T_RH_THRESH_LOW;
+> +		reg_clr = HDC3020_R_T_RH_THRESH_LOW_CLR;
+>  	}
+>  
+>  	guard(mutex)(&data->lock);
+> -	ret = hdc3020_read_be16(data, reg);
+> +	ret = hdc3020_read_be16(data, reg_thresh);
+>  	if (ret < 0)
+>  		return ret;
+>  
+>  	switch (chan->type) {
+>  	case IIO_TEMP:
+> -		/*
+> -		 * Get the temperature threshold from 9 LSBs, shift them to get
+> -		 * the truncated temperature threshold representation and
+> -		 * calculate the threshold according to the formula in the
+> -		 * datasheet.
+> -		 */
+> -		*val = FIELD_GET(HDC3020_THRESH_TEMP_MASK, ret);
+> -		*val = *val << HDC3020_THRESH_TEMP_TRUNC_SHIFT;
+> -		*val = -2949075 + (175 * (*val));
+> +		thresh = hdc3020_tresh_get_temp(ret);
+> +		switch (info) {
+> +		case IIO_EV_INFO_VALUE:
+> +			*val = thresh;
+> +			break;
+> +		case IIO_EV_INFO_HYSTERESIS:
+> +			ret = hdc3020_read_be16(data, reg_clr);
+> +			if (ret < 0)
+> +				return ret;
+> +
+> +			clr = hdc3020_tresh_get_temp(ret);
+> +			*val = abs(thresh - clr);
+> +			break;
+> +		default:
+> +			return -EOPNOTSUPP;
+> +		}
+>  		*val2 = 65535;
+>  		return IIO_VAL_FRACTIONAL;
+>  	case IIO_HUMIDITYRELATIVE:
+> -		/*
+> -		 * Get the humidity threshold from 7 MSBs, shift them to get the
+> -		 * truncated humidity threshold representation and calculate the
+> -		 * threshold according to the formula in the datasheet.
+> -		 */
+> -		*val = FIELD_GET(HDC3020_THRESH_HUM_MASK, ret);
+> -		*val = (*val << HDC3020_THRESH_HUM_TRUNC_SHIFT) * 100;
+> +		thresh = hdc3020_tresh_get_hum(ret);
+> +		switch (info) {
+> +		case IIO_EV_INFO_VALUE:
+> +			*val = thresh;
+> +			break;
+> +		case IIO_EV_INFO_HYSTERESIS:
+> +			ret = hdc3020_read_be16(data, reg_clr);
+> +			if (ret < 0)
+> +				return ret;
+> +
+> +			clr = hdc3020_tresh_get_hum(ret);
+> +			*val = abs(thresh - clr);
+> +			break;
+> +		default:
+> +			return -EOPNOTSUPP;
+> +		}
+>  		*val2 = 65535;
+>  		return IIO_VAL_FRACTIONAL;
+>  	default:
+
+
+Thank you for your patch and best regards,
+Javier Carrasco
 

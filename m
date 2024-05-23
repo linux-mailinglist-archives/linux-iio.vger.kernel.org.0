@@ -1,125 +1,118 @@
-Return-Path: <linux-iio+bounces-5214-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5215-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B558CD27A
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 14:45:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A944A8CD280
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 14:46:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A58291C20C34
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 12:45:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 618C21F21501
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 12:46:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2BC14A4C5;
-	Thu, 23 May 2024 12:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD2014A088;
+	Thu, 23 May 2024 12:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a4aMC9y6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q2Fqc+qs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA32E2AD00;
-	Thu, 23 May 2024 12:45:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F19213BAC7;
+	Thu, 23 May 2024 12:45:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716468305; cv=none; b=EoklYVV+IabyDzBcUQg2GGJrSO3Hei6vTVb9foCqH6qNzdYl7ll4Q/IXryed2+MNv4xhGvfguX61WYMaa/29yIr4uKrl0v6wQi2u1tOrOryhGdJDCY0nEa/2DEV1/HKMYIOTAHLsmcSpdhIXiGLqIJBMLzVMQITLnDA3405T7hg=
+	t=1716468355; cv=none; b=OE+sRQsmvFLn0hOtKQ6+LPTi7uJkCQmSgCbXX4NDZm8S1NWeh8cp+UNwSpL8Uvd9rgo8u5O4BT9vWn0jwncatlFlO1tPDiZOAwZItwPh6CzwBJbOdADweLi9J4ORxogEFhD5wJooW/gGoZptaNSCD2fMx4ghusaBSb2C/QPLlxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716468305; c=relaxed/simple;
-	bh=q+Inqa6RiwJufQfw8Jn5LPYLy3oolTiQhCLr3UU3LHc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rrmhSwafGiUAts2fToBBCEEMyO5k/41k6HB5T0ZiXeMll/cRnX5E5yvs0qUTlBrLRam0q/oBBq37UT39WbpeMfeLUwvmo3nbkbKUXQ/0F8K1WjV6FjoAHjdA/cGFq2t69PmaELWXqF6ADxjgEYHE0FOSXCpG5akkOGK4MWJsnbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a4aMC9y6; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42011507a57so55519935e9.1;
-        Thu, 23 May 2024 05:45:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716468302; x=1717073102; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=q+Inqa6RiwJufQfw8Jn5LPYLy3oolTiQhCLr3UU3LHc=;
-        b=a4aMC9y6i6EA+fPaIXW69UUaSL/q8RE56AQD0P+zZRhWCNxPWwADXiTgH4nVF9kh3H
-         B21whQLNsKfeCHKdCtM6bi+kM2Brpu7kmE1qoydJm4QVb3EvXD+XHv9gIfvTq4NuE5Nh
-         DUK3IT1Bdks+5R32U3aZte9GlPAs2n8bZY0V9wzh+Ebps9a/wWPTbIFEHrRpnMJYX3HX
-         HGHqupKizF5yqb7u24PhK+wrljOKufRcN9+eyxnUo9bpzQtLPMPcEVA1XZQAJdXBzJ5L
-         1m7FBeCWPf4c4VSqcaeHsBpi9hrkDbYjUgA8x0AkUkBGc+25yGnycm4teZBIvLxUxb0N
-         79bA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716468302; x=1717073102;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q+Inqa6RiwJufQfw8Jn5LPYLy3oolTiQhCLr3UU3LHc=;
-        b=I3zOlQEDob1vaKBjujKgSs7G275oPJAw/ESlQT5cAcaSC7Hxg7i3d8ALH23ibp5kpV
-         FcssEsYiWazEZ2YvHPORUMVOX0ut/gFvHrIscQuQZHIZVD8AteG+cq3ZQDQ5/+53OMpq
-         IrgYnmrUE35q+DG0UgyxegY07taAigIrQadXd+OpFcLUbP9Onz5RkIUAynURcZH2WH7R
-         lTUvW84YQH2Aa3cVW3xmntdpgiILVq1mj2rI/js9ovfCfXd7MEHZuBpFKD3zKJXArUTW
-         f5BFNChjksMe4Wmr7qHDE6kIxXY7UdLX9+wpH6iKsKmfhnVXV+QwBan8UZLcvTPF+0DE
-         b3Hg==
-X-Forwarded-Encrypted: i=1; AJvYcCWb4CJbI0Ff8bAtTdpkrQBgWBiE2Xa0tLe96owMVvs5I6LrjaCf1vtJvn2MbeOdy5xdkSZHqmXyLL/zQis6mygWCoOX1RYORqnZscebXenjAeqQ44MhRXLVagmZ95NYeES8nEgy3MQBdO0I9NOqP+VTuZ3Tqs4wHfFB6jmR+3da3A7duQ==
-X-Gm-Message-State: AOJu0Yzop8OeQHTqC8LAJKi0kIpDNoBUB5ImvlRxINAaP58dlkqNMgRl
-	hMiPKE6gjeRRFKpLvjmc60UhvVygdoZX2C+3WJ3Jn/bsl8uQFMyU
-X-Google-Smtp-Source: AGHT+IGiIca8Tkg+zrizFLj3/kOBi8DDUuoFXIu7QhVkNMfllhT4WCwzOwze2LB2M2VawVuw4Jkhrg==
-X-Received: by 2002:a7b:c84c:0:b0:41b:a8e8:3ff6 with SMTP id 5b1f17b1804b1-420fd303b7fmr42913905e9.11.1716468301861;
-        Thu, 23 May 2024 05:45:01 -0700 (PDT)
-Received: from ?IPv6:2001:a61:35f9:9001:40df:88bb:5090:7ab6? ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42100f1f07bsm24556725e9.13.2024.05.23.05.45.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 May 2024 05:45:01 -0700 (PDT)
-Message-ID: <751faef385f81f8a2dd0dcc2acd2d4519bebebe5.camel@gmail.com>
-Subject: Re: [PATCH v2 0/6] minor fixes and improvements
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Angelo Dureghello <adureghello@baylibre.com>, jic23@kernel.org, 
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org
-Cc: nuno.sa@analog.com, lars@metafoo.de, Michael.Hennerich@analog.com, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Thu, 23 May 2024 14:45:01 +0200
-In-Reply-To: <20240522150141.1776196-1-adureghello@baylibre.org>
-References: <20240522150141.1776196-1-adureghello@baylibre.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
+	s=arc-20240116; t=1716468355; c=relaxed/simple;
+	bh=Dr5mko5as+cSEEbcfRg1MLGJNO6Fl6XswPL+RLiRfUc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Si5rThk++eNIXUGfVK5NYmQsg9Id5EQagWt/gc+T+pAuvuurZs/cpRnTi5ANxqPNdIsm/P67zQ7ELejX8zO/OVfso8lpTVcu5yOZ6mMM9yTLHrICOw2xYhh21t6+4TECqSXIUfQoyUuBbkdwEqLMmRnstgrcfSqYFU8jrNBsoyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q2Fqc+qs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4BEC2BD10;
+	Thu, 23 May 2024 12:45:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716468355;
+	bh=Dr5mko5as+cSEEbcfRg1MLGJNO6Fl6XswPL+RLiRfUc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Q2Fqc+qs8xlohHj9/B8DY0l86xciT9fBdiACVo3T2vBZpbizMUEK7yhlMtHNR5CpH
+	 G8PHTYwOB4p0hisDOJrwmpDBt/3II+1W3d4PYtjsWz6LdJx8ARAu2fKDIaA404PyZ0
+	 MuWMUE/GwPa50bonVa/bAgx50maWJYnfcRw9sR9jHXaOlQlUEU4/SmtIlltGezw+Pe
+	 gzkT2vAmok8sJEKEZz2ZsqPUhZOG0+vqI9mdYcVJUH4ZVA1mOlRthsYQETuf1dP5Pm
+	 OS1oyKDeWXZ3Si51tGPQ3iy6pIunlQQiLbUSt3xaV6SqZkySAM9RswuvyoouAQ4bg3
+	 1K/oc6GxzNMUw==
+Date: Thu, 23 May 2024 13:45:49 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: Conor Dooley <conor@kernel.org>, David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH RFC v2 1/8] spi: dt-bindings: spi-peripheral-props: add
+ spi-offloads property
+Message-ID: <c33b87f7-d094-4299-a48b-e977203dc8dc@sirena.org.uk>
+References: <20240513-headsman-hacking-d51fcc811695@spud>
+ <CAMknhBE5XJzhdJ=PQUXiubw_CiCLcn1jihiscnQZUzDWMASPKw@mail.gmail.com>
+ <20240514-aspire-ascension-449556da3615@spud>
+ <CAMknhBFFpEGcMoLo5gsC11Syv+CwUM0mnq1yDMUzL1uutUtB+Q@mail.gmail.com>
+ <20240516-rudder-reburial-dcf300504c0a@spud>
+ <CAMknhBF_s0btus4yqPe-T=F3z7Asi9KkRGsGr7FHDFi=k4EQjw@mail.gmail.com>
+ <20240519-abreast-haziness-096a57ef57d3@spud>
+ <CAMknhBHvEse2FyDoBXR1PvymGpSGq8dotKfm+8XH+0+k+xKtQw@mail.gmail.com>
+ <20240522-gullible-ibuprofen-cf9111c25f6f@spud>
+ <5ad0b5782434eaf4cf565cffb0e4c14b7414ae38.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dnVW22IE+zhCJevq"
+Content-Disposition: inline
+In-Reply-To: <5ad0b5782434eaf4cf565cffb0e4c14b7414ae38.camel@gmail.com>
+X-Cookie: You auto buy now.
 
-On Wed, 2024-05-22 at 17:01 +0200, Angelo Dureghello wrote:
-> From: Angelo Dureghello <adureghello@baylibre.com>
->=20
-> After testing this driver, add some minor fixes and improvements,
-> as adding single channel variants support (ad3541r, ad3551r), also as a
-> preparatory step to bigger future improvements related to fast-rate mode
-> for this DAC family.
->=20
-> Previous patches (v1, 3/3)
-> https://lore.kernel.org/linux-iio/20240510141836.1624009-1-adureghello@ba=
-ylibre.org
-> https://lore.kernel.org/linux-iio/20240510141836.1624009-2-adureghello@ba=
-ylibre.org/
-> https://lore.kernel.org/linux-iio/20240510141836.1624009-3-adureghello@ba=
-ylibre.org/
->=20
-> Angelo Dureghello (6):
-> =C2=A0 dt-bindings: iio: dac: fix ad3552r gain parameter names
-> =C2=A0 dt-bindings: iio: dac: add ad35xxr single output variants
-> =C2=A0 iio: dac: ad3552r: add model data structure
-> =C2=A0 iio: dac: ad3552r: add support for ad3541r and ad3551r
-> =C2=A0 iio: dac: ad3552r: change AD3552R_NUM_CH define name
-> =C2=A0 iio: dac: ad3552r: uniform structure names
->=20
-> =C2=A0.../bindings/iio/dac/adi,ad3552r.yaml=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0 |=C2=A0 43 ++++--
-> =C2=A0drivers/iio/dac/ad3552r.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 | 140 ++++++++++++------
-> =C2=A02 files changed, 128 insertions(+), 55 deletions(-)
->=20
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+--dnVW22IE+zhCJevq
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, May 23, 2024 at 02:15:35PM +0200, Nuno S=C3=A1 wrote:
+> On Wed, 2024-05-22 at 19:24 +0100, Conor Dooley wrote:
+> > On Tue, May 21, 2024 at 09:54:39AM -0500, David Lechner wrote:
+> > > On Sun, May 19, 2024 at 7:53=E2=80=AFAM Conor Dooley <conor@kernel.or=
+g> wrote:
+> > > >=20
+> > > > On Fri, May 17, 2024 at 11:51:58AM -0500, David Lechner wrote:
+
+Please delete unneeded context from mails when replying.  Doing this
+makes it much easier to find your reply in the message, helping ensure
+it won't be missed by people scrolling through the irrelevant quoted
+material.
+
+--dnVW22IE+zhCJevq
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZPOnwACgkQJNaLcl1U
+h9Bcrgf/YsNehmAOnw1qa+TJ7fsKV17/BbtOH4aEvi01QY+cmzcwWx2qiqVyKZoT
+wO5F+lXO14aar9+4jKHeNH2FtKDd24HZNncTZxDR7TKMgm7P2fjisIQwd7ZuxiED
+HNlTbRaGW6PeEs7goEG8zcgJ1jmETp4HpR7JqxlRsd9vWbii33er2/H1FUnVFMtU
+nCJ9Jm13i5EtnLLOmA77i7JwwmsGcgqaSGkKAavgP+rpxxnur24lscXfBjp86Qh+
+7+fWp/WJ50AYAjnrGKEvo+aRRIWMZB0AgN6X6aZoYn/Yq18v+jd4oEv8gZhDgCMA
+gqwBWmKLfvimnPbTvUCcYtqg9udJ4g==
+=R0tn
+-----END PGP SIGNATURE-----
+
+--dnVW22IE+zhCJevq--
 

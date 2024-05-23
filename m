@@ -1,141 +1,138 @@
-Return-Path: <linux-iio+bounces-5225-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5226-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F2F58CD78A
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 17:45:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F6FE8CD85B
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 18:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5EC9B20FCC
-	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 15:45:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3EEC281792
+	for <lists+linux-iio@lfdr.de>; Thu, 23 May 2024 16:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 541DBE54C;
-	Thu, 23 May 2024 15:45:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093D117BA6;
+	Thu, 23 May 2024 16:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TUJ4AOym"
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="ANBctlwB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64A0212E48;
-	Thu, 23 May 2024 15:45:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74441D304
+	for <linux-iio@vger.kernel.org>; Thu, 23 May 2024 16:24:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716479140; cv=none; b=djIxIoJvG6qrNvx5e0ARA1QQFPVHRJrnr7EjazuyTno6MbpH878tlrnnIqp9WM2zYF9FDvyPVwbpfdiHZDEJqWnLdCoJFCbs+MDAQ1IVl2L2txg1f8FZRgrJEuclnnYzcxpFPIsK1e+X6abRbGA2rsXYQ5fDEBMKqU1HTIpDyRE=
+	t=1716481498; cv=none; b=rAfez8u5v3FRR7Ck8Ry/ijE+I8aL3/EgxQT/Y5Og/u4ao6HIQU9YnmAKZLAJ5WYrVXKl03gtMYG7bu30hY29BRa6yDySwA63PS9Id1uCcu12iyJtxxUPrpu2fktw2dBpPoa5+hHIWU0tuA4sD83qGyPC/XdckMFEmEdAh0gMArc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716479140; c=relaxed/simple;
-	bh=mU+FNvS/AcdPTacPDvLEp1WhMI3Ky9tIAnHzccSAn9Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=L41HxztJqwWKei6lT5FfQOyOn3CTc39qRny85ELz2FG70cWxEC8HDGDNiPnOUNW1ffivSFI/CCR4VGmajFFgeI7jpbcMJTezFcGWj4WByiSafr5XYV2Isk6iwbjFUwp/bgm6RFPXRilrX8nj6UXXnrr67PDRdNzvQC69wNWxYKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TUJ4AOym; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52449b7aa2bso5319042e87.3;
-        Thu, 23 May 2024 08:45:38 -0700 (PDT)
+	s=arc-20240116; t=1716481498; c=relaxed/simple;
+	bh=pXbJRTfQ1CzIKPsL7RUD4jB0yNxcSbmOt1M/Bvwnk5g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UKhHKt99FIvRXELDlYAtPdYArkUaYh6wFSnZJMAU03EhB1aMfK/REYS3FdWxcAU5BNnr4W/CkTSlwR9zSi8MFIJzc+I3/p2e1CmRiZ2jSftKFrhfQ4WluwsAwXVh+TMyiwQeIke9exb63Zb0/aj0EpGDnt71FPHWnB0lGdjEc0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=ANBctlwB; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1ed96772f92so22759105ad.0
+        for <linux-iio@vger.kernel.org>; Thu, 23 May 2024 09:24:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716479136; x=1717083936; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=fTVgDid7IOYG8yxCQcsjVDpyySVUiCKA89ig1j3KlAo=;
-        b=TUJ4AOymjcK0dU2sXbNuWw4/mJ83sPBbnzlm1ZxuLNv08DGenx/+1u9yYc20EcVHkv
-         22XEEOqtMUSvwRhYnF4dG8g7Qj++ESRJuuIyGGXC+VS+OoTITgHz8zKR3YDQKnqv61Zm
-         2BXpjvDNTpcAM/HQOkuwioykpdOX6y2qgwmANqRIOX7FHkiTyLs/pg4QdivjdQbMR1PZ
-         XRt8FNK9RLWYpshmkeP8L9lMT/zjEyMEffi1BryVZMVT8tLe4FYFmKaabAbKSgiX7ARi
-         Xn2VUBMcBJdOGM5h0z+S2n3OQmcJ2aQ/OneDV87rQ8FrLL/kSJ4hSi8R890V5EaNw4BO
-         n7fw==
+        d=usp.br; s=usp-google; t=1716481496; x=1717086296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JCBvRx3fnLn1ZrsRPe6m4JFWe8xstyH3nTGxy6I9Sq8=;
+        b=ANBctlwBV4lMljlzyvFVGzhK6jNsGp6fiam1U8LcnbUf9IESqSmBy3KMNgR151qEmj
+         3DXafXMETLo/t/gDrx/YzD+m0UU7ey26rCUzqQapBYmi7iPoeUWt+kD0y8bMP6wzdWRF
+         Z+s0ApQ9fQo74BLYkzx9ongTAFsqka67F2RcpLTy1q0PQ6CJoT7o0pt7ImYueFXdOxXZ
+         F3WiQmsL06iv9etItcAs9D2epRFjYTiEhHNhTsVQCbd51Zd6nnsi67LcZfU+/DcW2FtN
+         dOuGtNvZkdnxyPKGuoiXD/1ZIJTNzoXXX303fFhTLriY0DBw5mUJTEBSRILmpSYTAS62
+         T68w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716479136; x=1717083936;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fTVgDid7IOYG8yxCQcsjVDpyySVUiCKA89ig1j3KlAo=;
-        b=h0miXgfOVrHEN7k9EW07Ir83yys0+EXxuJcBKKSLpHRucaNdoXO6OmtfeHElLizWpP
-         YG52HaoiqqfOw5uJYZ8dfyJk7sD1nA/aXqUVxQo/39z4Qp/I7P8r4fGq/p+V8HwPf+s2
-         UzjS/hTwbVyOFPTk2hCz3aNZnkzSEG/kzhEYocpQZSPzpOqFNu2hl8WO6WvJeFahVIAf
-         zo18D55T0g4IHz4Kpmq87RclNoK4smngMX7JcHkY/HqkTzXb1Ip/5eXfKD6tILkEfsMv
-         JInrgetwpKMFIav2KnPq/PqHBLcQafwVMwNDf+uix6qxN7gZT2JLua9pHyDVBs5ZETrC
-         FD6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUjNe8lN3mwTyzOYWLcVMeBkNN9p5isGYiuLnGbBV4iQTyxWi+huQWGYqyQQ2ivmrb1UpGmNAyZj36ia4vJ6vWdRahCO82O1c5/iOHKPdbfBNx20+J8JzpcCY5yHNhb3KT0bRrBEfw1
-X-Gm-Message-State: AOJu0Yz0DHhoenqFl8kUh11ldUWmKOas99rnhfHc/Hpo4dp+j+Eah1Ww
-	9KwBr0CMD10dAJKViHp0H5yDwd5J1VBUCsGcOdntXL2ppv+HfvWQ
-X-Google-Smtp-Source: AGHT+IEPgT+ia7w9g4KzcuYONIVbVvnuleepnPuPJ9aV5nLPi9AylMroBuiAtwaRIQ59hgFPcfwApw==
-X-Received: by 2002:ac2:5f9a:0:b0:51f:13e8:3729 with SMTP id 2adb3069b0e04-526bee937cfmr3420868e87.20.1716479136215;
-        Thu, 23 May 2024 08:45:36 -0700 (PDT)
-Received: from [192.168.0.31] (84-115-212-250.cable.dynamic.surfer.at. [84.115.212.250])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42100fad6ccsm28456445e9.32.2024.05.23.08.45.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 May 2024 08:45:35 -0700 (PDT)
-Message-ID: <17adc0d0-55c1-4608-a4c0-93f9911296f8@gmail.com>
-Date: Thu, 23 May 2024 17:45:34 +0200
+        d=1e100.net; s=20230601; t=1716481496; x=1717086296;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JCBvRx3fnLn1ZrsRPe6m4JFWe8xstyH3nTGxy6I9Sq8=;
+        b=oiP4ahhcMTZMHt7CEHykiOiJj0L9vJpxNdFegOxDhrMKDu4C0/LMHDon+8azzED3be
+         P3FsuaHtcf+IwkEmGs0Pj95DPof/7LOUDMw67DjuGGDjEs6cE8tnFqlSdyYB0xv7IYtW
+         7mBH04K/dGS/Lj4dkd8MAVCuF35D5zUTgFPGRgAHQOTeR/KfOzykq4WpTjVsq/bcnZL+
+         /HGAiYwzoFnN1Jl+lcnEAqKaZRzvNw0otfr7R7ksLiD5h3kl40lM2QuSko/+bVMC3dHb
+         sBH825vEXOVRtUq9jojeyy8OVljpJl9+nM2iUM2XwlrqmMD2pBu1GVtPhhO+ZWx4Uhrp
+         7pRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUmdk64qqgw9Blnnoo+vofcnfClEgKkf+fRdIyGfQJwxjTDX0ymNhV40qvBjJ6ANRvUYlE4ypy/QL10DkUmdizFxfRP03tshzHj
+X-Gm-Message-State: AOJu0YxJhGjwZbDoz3kFXQ1LKw53BfGwDqMqQHRj/q6shD1bWlV5o9zc
+	vo/qS8PeRRQrf4oIDfWXZxGADngLYqp9ndCzTRYnuQKeQqG1gN26zyHBbfifEEtJZrzUAzDVtrR
+	qyg==
+X-Google-Smtp-Source: AGHT+IGxMfJsLFioCIbVVhceNMxmdE2oNsYOEFi4xsI7d9vZwfkQO4CLd+RTgecbKwv7uUzdANr9/A==
+X-Received: by 2002:a17:902:e54f:b0:1f3:83d:ee82 with SMTP id d9443c01a7336-1f31c96913cmr73566185ad.25.1716481495734;
+        Thu, 23 May 2024 09:24:55 -0700 (PDT)
+Received: from viniciushfl-locked.semfio.usp.br ([143.107.45.1])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f09aa48b6fsm140587595ad.254.2024.05.23.09.24.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 May 2024 09:24:55 -0700 (PDT)
+From: =?UTF-8?q?Vin=C3=ADcius=20Lima?= <viniciusflima@usp.br>
+To: marius.cristea@microchip.com,
+	jic23@kernel.org
+Cc: =?UTF-8?q?Vin=C3=ADcius=20Henrique=20Ferraz=20Lima?= <viniciusflima@usp.br>,
+	Lucas Quaresma <lucasqml08@usp.br>,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: adc: mcp3564.c: Use device_for_each_child_node_scoped() to simplify error paths
+Date: Thu, 23 May 2024 13:24:35 -0300
+Message-ID: <20240523162437.3823-1-viniciusflima@usp.br>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: humidity: hdc3020: fix hysteresis representation
-To: Dimitri Fedrau <dima.fedrau@gmail.com>
-Cc: Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240523114336.532428-1-dima.fedrau@gmail.com>
- <cef810ee-bb2c-4588-baec-7edfc74daeea@gmail.com>
- <20240523142849.GA558466@debian>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <20240523142849.GA558466@debian>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 23/05/2024 16:28, Dimitri Fedrau wrote:
-> Am Thu, May 23, 2024 at 04:12:37PM +0200 schrieb Javier Carrasco:
->> Hi Dimitri, a few comments inline.
->>
->> On 23/05/2024 13:43, Dimitri Fedrau wrote:
->>> According to the ABI docs hysteresis values are represented as offsets to
->>> threshold values. Current implementation represents hysteresis values as
->>> absolute values which is wrong. Nevertheless the device stores them as
->>> absolute values and the datasheet refers to them as clear thresholds. Fix
->>> the reading and writing of hysteresis values by including thresholds into
->>> calculations.
->>>
->>> Fixes: 3ad0e7e5f0cb ("iio: humidity: hdc3020: add threshold events support")
->>> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
->>> ---
->>>
->>> Since absolute values are used on the device, the hysteresis values are
->>> influenced by setting thresholds. Is this behavior in line with the ABI docs ?
->>> It can be fixed by readjusting the threshold clear value whenever setting
->>> thresholds to have the same hysteresis value as before. See some example below:
->>>
->>> # echo 25 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
->>> # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
->>> 24.727626459
->>> # echo 5 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
->>> # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
->>> 5.127031357
->>> # echo 35 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
->>> # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
->>> 15.381094071
->>>
+From: Vinícius Henrique Ferraz Lima <viniciusflima@usp.br>
 
-> Hi Javier,
-> 
-> thanks for reviewing so quickly. Do you think I should correct the clear
-> threshold values once I changed the threshold. I have an example
-> provided where I set the threshold and hysteresis. After setting the
-> threshold again the hysteresis value also changes.
-> 
-> Dimitri
+Use another method to automatically release the handle on early exit,
+reducing leaks.
 
-I am not sure if I got that right. Did the rising hysteresis change its
-value automatically from ~5 to ~15 by just adding 10 to the threshold?
-If we are treating the hysteresis as an offset, then it should not
-change its value i.e. it should keep the configured value.
+Co-developed-by: Lucas Quaresma <lucasqml08@usp.br>
+Signed-off-by: Lucas Quaresma <lucasqml08@usp.br>
+Signed-off-by: Vinícius Lima <viniciusflima@usp.br>
+---
+ drivers/iio/adc/mcp3564.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-Best regards,
-Javier Carrasco
+diff --git a/drivers/iio/adc/mcp3564.c b/drivers/iio/adc/mcp3564.c
+index 311b613b6..52c864974 100644
+--- a/drivers/iio/adc/mcp3564.c
++++ b/drivers/iio/adc/mcp3564.c
+@@ -998,7 +998,6 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
+ 	struct mcp3564_state *adc = iio_priv(indio_dev);
+ 	struct device *dev = &adc->spi->dev;
+ 	struct iio_chan_spec *channels;
+-	struct fwnode_handle *child;
+ 	struct iio_chan_spec chanspec = mcp3564_channel_template;
+ 	struct iio_chan_spec temp_chanspec = mcp3564_temp_channel_template;
+ 	struct iio_chan_spec burnout_chanspec = mcp3564_burnout_channel_template;
+@@ -1025,7 +1024,7 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
+ 	if (!channels)
+ 		return dev_err_probe(dev, -ENOMEM, "Can't allocate memory\n");
+ 
+-	device_for_each_child_node(dev, child) {
++	device_for_each_child_node_scoped(dev, child) {
+ 		node_name = fwnode_get_name(child);
+ 
+ 		if (fwnode_property_present(child, "diff-channels")) {
+@@ -1041,13 +1040,11 @@ static int mcp3564_parse_fw_children(struct iio_dev *indio_dev)
+ 			inputs[1] = MCP3564_AGND;
+ 		}
+ 		if (ret) {
+-			fwnode_handle_put(child);
+ 			return ret;
+ 		}
+ 
+ 		if (inputs[0] > MCP3564_INTERNAL_VCM ||
+ 		    inputs[1] > MCP3564_INTERNAL_VCM) {
+-			fwnode_handle_put(child);
+ 			return dev_err_probe(&indio_dev->dev, -EINVAL,
+ 					     "Channel index > %d, for %s\n",
+ 					     MCP3564_INTERNAL_VCM + 1,
+-- 
+2.45.0
+
 

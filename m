@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-5253-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5254-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588A48CE2C3
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 11:01:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B75888CE2C4
+	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 11:01:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76C691C21A7D
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 09:01:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9DDB1C2127D
+	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 09:01:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7506F12AAD9;
-	Fri, 24 May 2024 09:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75DD912AAF4;
+	Fri, 24 May 2024 09:00:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UnK+yyQx"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VQVW1GXj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5027C129A83;
-	Fri, 24 May 2024 09:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C19612AAC3;
+	Fri, 24 May 2024 09:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716541246; cv=none; b=TaIGU9y2GCHpMmOPTHvBpD2H1619vW3c5SdTxf+7JD7LSByvHHJVITuSFEgqKG3BAcHLQb+aaKpxoZN1gbUhozdri22FHDMUVLLfIdfJ8UGsWqjJC0M/7ngorxh0NXkOsLycVZKT15WIC79w3ZOLYdvjsWL5XDyNrtF9QFy8ej8=
+	t=1716541247; cv=none; b=O15qUMXPoUpatKG4lUwLmedq6QUOEEEbcGeuwqQfo5qsu+HbLgGnqxuOrU3jvq5UQGbhuTu8fUCxyy5WbDBlhjBG3uzmKDsN7PhlToB+kza7qZ9wwjRyBDAUm1rfsbaxBR/kKcEGKONFejOJdq8tMhO6tYdDU80jg/x6pWZfbzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716541246; c=relaxed/simple;
-	bh=TCnAHbRn4gD/Ud2GfwsphOkrishFmJ62+Hu27T3td88=;
+	s=arc-20240116; t=1716541247; c=relaxed/simple;
+	bh=+ncD8XxCsjn1JO9JXYfQaG7MMFKhgUCIZY6bXS+Exs8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TLevDNMI4KODPosbVhxm1OrpCbaaoxSRD1SGT2YEHHIngSngoLjb+isqm5WibEHIPtd65kPoJbWhALwVfKiXuRyW0sP15UW4GjyBeB6fhG7gGMvDV7vZtkiVRp9dsA5g+ahdUCJg/M8pfNQp/2eEnxypzgL3/RG9dc+sRjBXyOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UnK+yyQx; arc=none smtp.client-ip=209.85.218.53
+	 MIME-Version; b=OeBQhrCW9xYEipP3oYa67M77T5zouOTX/rJffZpVp4qqvIuyonvVoeRckLAcFEg8+CjCIdB6FZ4+YEo8tjSJEj8roWzqqa73wWCuhJilcl1DXlZp9Xq4JdtZYJEBipob5pHBmeXgCyOTtJMb3OMWngkp1ZiHPW2qqgSr2efy10E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VQVW1GXj; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a5dcb5a0db4so774517866b.2;
-        Fri, 24 May 2024 02:00:43 -0700 (PDT)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a6265d3ccf7so63297866b.0;
+        Fri, 24 May 2024 02:00:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716541242; x=1717146042; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716541243; x=1717146043; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fHw+IPdlQq7fNHkszmR6n42dvUymFzPrIX7n+uhkZH0=;
-        b=UnK+yyQxMxekxZgbhxMiqzy3M/wuA4apyldFPVbnzbDpLrgHDs6q6XUgZ/XXuvFRAr
-         OyGZ4eWTbZI0BhjJb6EGgagaLcZ2MuGs/KkvEVbgLfcok68CIcT2i5p3RVAA8PEFt8lN
-         Wv+2JfRvmptSHmLH3W2fWbxh/WUAr4cNNOmwHs6tmgJkWsUrmLWH1M7uCZeZ+J+Geyjl
-         TCAd5ORfMAa8W6oW1C0mzDCTfZe1glS/yMXEolcQIh22K3iwq6F4eVODpZoUHykCWpSj
-         7+Z/IS9lzxJ7kJQ8GAyX2947A1oYlY1F0RKfDRuSHWiHzexVncIuL71lgIhGM2SWDsJ5
-         mCxA==
+        bh=wdIJTxDz373t92nzbtq5KxcQvr6iSpjtsZdj9sCY/Pc=;
+        b=VQVW1GXjI+CCSaBXl5yox/2B697jykeodJz2U5ZLUIOgomRhIXilUzZt1o1E7kcTBD
+         uzEfAcLVQIWnfgzCRNrvV45EBpqQ5W1G2eom99i5ei/k8PGWKrY5eXPtF4b9Fsg8f1e/
+         ObHkTmpmv0mc6TcpEwUE7qKU1KFNgeC2RZWZn5K4gYOjjxSLSAs4hKn3MFXCt3mA2ceh
+         y4yqauHfv9PHloudtMLHITx/VoR/a73Rw4+AoDQj5xlS9FpUtnLVUS28SP7oj91I2GLp
+         fyFh3RbI5WWozbL42Ll0V75pDpnPl1gstvvR5O072LhpK7CC5YyM20wWySze7yDrjW7e
+         qabg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716541242; x=1717146042;
+        d=1e100.net; s=20230601; t=1716541243; x=1717146043;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=fHw+IPdlQq7fNHkszmR6n42dvUymFzPrIX7n+uhkZH0=;
-        b=NKceY065Wy9cJYNGLZy0tufkNW523rzsSAvm1wYZYXnudEze5oKFEJ1FjIejmYhAck
-         uVxGQq0zTk9UzpbAn35W+Or28I4XjmJwVcVx5N0X3AqgbmnedrAdq2CQ9HmZ3gglILnH
-         g0sW9/svNZM4Yq0b/f4lGnNJio1spe85tpRqvYeIJJSQlmS9GzKMMMvkosRIMlu0vVY6
-         6m83V39fYgVPCiqs5LtNQtzJYItzga4q8es1zkuOWbcwgEc0ZjzXysEFywJf+v/j46Qf
-         nhODJCehTGSLAWlTvj1nIEuLzrhq2oulMen0iNIdHZDkjwKlanoYt0M2W9w7dfUs/q42
-         tgIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWZm5/42ECjm5kUfuLjJ/+kPJGBTo7tOZfaIstUk3NlaFbuOm73FAbld9xyo831L9wvJXILROSfu30Iebm65G2+7knO4FUBVlhnRfXZYUtqd0WzHZAWKxomleZYwczUzkzE6vA1aw==
-X-Gm-Message-State: AOJu0YzRlqN8MYkA2hWa8b1zOAPWnFqbF+AjpnbvoCVKeLGpqt9p8Aca
-	h7wJMR2H+JJJXRHV3XzqL43diHUBVX5qTtRpEWOo+Zk2Of1G0aFZrVv0bgM2gZo=
-X-Google-Smtp-Source: AGHT+IEHTmIh+BSxfbRjLNCh7HBSONrylKRIug4/do88u5Xfh/BapzupZ5j/kIYQZR63rEsKMYEayw==
-X-Received: by 2002:a17:906:e84:b0:a59:c9ad:bd28 with SMTP id a640c23a62f3a-a62641a5722mr102376066b.13.1716541241953;
-        Fri, 24 May 2024 02:00:41 -0700 (PDT)
+        bh=wdIJTxDz373t92nzbtq5KxcQvr6iSpjtsZdj9sCY/Pc=;
+        b=Alq7FkW/jV51LuaQN9RBqqiAKiygCn+E8VnM4vZ+rikQliJPyUjPMZvikTjeiLfQ9x
+         WMBRxCbZ20Xx51soznOUlIKsHJGY42H6nExQr8H39LjZPlOkHsrzk+sqN3FBjvbQuq2W
+         BEH/4rmp2LpIHplWBepYSMMOK0uzX/8S9J6qEBoUQ5NlFo9KRX6n5lE14ykUfFBzF8Tn
+         4/aItAiZ78tRUoHegCwz/V3pqPhrRjWrBXrk24o6DWn1w2kYRZf6PlyzgJpk8lbvkYdW
+         p1OfIhOmLh26Z4DujbniimKTUtpe/j6tmbeE2UeuicJ6ZppkUbmsqK8K2ECa+VPUXRG7
+         2raQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVuWnSstYBkOAyNLx6JsxxXgVqXGkFqPJyXDCpaOGc4e286vjIM0Vs0nKX0z6vCpBuLK5yQ0pk89ctvtAmlSlWNJbKEmNsIH/7h3LwhBlRHLtV1UfZMfL6D5EJMHbuVEswunfRWg==
+X-Gm-Message-State: AOJu0YzEgqR2lS/xTPOYAnLBOzHRSSdeVNs7SUFPnyau+SMfOgM6/ILk
+	ts5t4kSEOUbOtS1wMRrCMRQvQ7BLquliBxovvn8mGjRx8W0K3ZykMQImpjCuS4U=
+X-Google-Smtp-Source: AGHT+IFHyWK/uaWsLvv9poOVLUEhH/ZDCJS5IgtXsVyAJjzG84LoKo7VKlObsyZucZbuS6acTRUJPg==
+X-Received: by 2002:a17:906:13c4:b0:a59:c39b:6bc3 with SMTP id a640c23a62f3a-a6264f0e4d6mr109087666b.49.1716541243176;
+        Fri, 24 May 2024 02:00:43 -0700 (PDT)
 Received: from rbolboac.. ([2a02:2f0e:350b:4500:dac3:9bb:ed7a:184b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c93ae41sm97730466b.62.2024.05.24.02.00.40
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c93ae41sm97730466b.62.2024.05.24.02.00.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 May 2024 02:00:41 -0700 (PDT)
+        Fri, 24 May 2024 02:00:42 -0700 (PDT)
 From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 To: linux-kernel@vger.kernel.org,
 	jic23@kernel.org,
@@ -77,9 +77,9 @@ To: linux-kernel@vger.kernel.org,
 	robh@kernel.org,
 	nuno.sa@analog.com
 Cc: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-Subject: [PATCH v4 03/10] iio: imu: adis16475: Re-define ADIS16475_DATA
-Date: Fri, 24 May 2024 12:00:24 +0300
-Message-Id: <20240524090030.336427-4-ramona.bolboaca13@gmail.com>
+Subject: [PATCH v4 04/10] iio: imu: adis_buffer: Add buffer setup API with buffer attributes
+Date: Fri, 24 May 2024 12:00:25 +0300
+Message-Id: <20240524090030.336427-5-ramona.bolboaca13@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240524090030.336427-1-ramona.bolboaca13@gmail.com>
 References: <20240524090030.336427-1-ramona.bolboaca13@gmail.com>
@@ -91,309 +91,126 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Re-define ADIS16475_DATA such that it takes _burst_max_len and
-_burst_max_speed_hz as parameters.
+Add new API called devm_adis_setup_buffer_and_trigger_with_attrs() which
+also takes buffer attributes as a parameter.
+Rewrite devm_adis_setup_buffer_and_trigger() implementation such that it
+calls devm_adis_setup_buffer_and_trigger_with_attrs() with buffer
+attributes parameter NULL
 
 Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 ---
 no changes in v4
- drivers/iio/imu/adis16475.c | 136 +++++++++++++++++++++++-------------
- 1 file changed, 89 insertions(+), 47 deletions(-)
+ drivers/iio/imu/adis_buffer.c | 32 ++++++++++++++++++--------------
+ include/linux/iio/imu/adis.h  | 19 +++++++++++++++----
+ 2 files changed, 33 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-index 53872b716f4a..f9455ecb348c 100644
---- a/drivers/iio/imu/adis16475.c
-+++ b/drivers/iio/imu/adis16475.c
-@@ -690,32 +690,32 @@ static const char * const adis16475_status_error_msgs[] = {
- 	[ADIS16475_DIAG_STAT_CLK] = "Clock error",
- };
-
--#define ADIS16475_DATA(_prod_id, _timeouts)				\
--{									\
--	.msc_ctrl_reg = ADIS16475_REG_MSG_CTRL,				\
--	.glob_cmd_reg = ADIS16475_REG_GLOB_CMD,				\
--	.diag_stat_reg = ADIS16475_REG_DIAG_STAT,			\
--	.prod_id_reg = ADIS16475_REG_PROD_ID,				\
--	.prod_id = (_prod_id),						\
--	.self_test_mask = BIT(2),					\
--	.self_test_reg = ADIS16475_REG_GLOB_CMD,			\
--	.cs_change_delay = 16,						\
--	.read_delay = 5,						\
--	.write_delay = 5,						\
--	.status_error_msgs = adis16475_status_error_msgs,		\
--	.status_error_mask = BIT(ADIS16475_DIAG_STAT_DATA_PATH) |	\
--		BIT(ADIS16475_DIAG_STAT_FLASH_MEM) |			\
--		BIT(ADIS16475_DIAG_STAT_SPI) |				\
--		BIT(ADIS16475_DIAG_STAT_STANDBY) |			\
--		BIT(ADIS16475_DIAG_STAT_SENSOR) |			\
--		BIT(ADIS16475_DIAG_STAT_MEMORY) |			\
--		BIT(ADIS16475_DIAG_STAT_CLK),				\
--	.unmasked_drdy = true,						\
--	.timeouts = (_timeouts),					\
--	.burst_reg_cmd = ADIS16475_REG_GLOB_CMD,			\
--	.burst_len = ADIS16475_BURST_MAX_DATA,				\
--	.burst_max_len = ADIS16475_BURST32_MAX_DATA,			\
--	.burst_max_speed_hz = ADIS16475_BURST_MAX_SPEED			\
-+#define ADIS16475_DATA(_prod_id, _timeouts, _burst_max_len, _burst_max_speed_hz)	\
-+{											\
-+	.msc_ctrl_reg = ADIS16475_REG_MSG_CTRL,						\
-+	.glob_cmd_reg = ADIS16475_REG_GLOB_CMD,						\
-+	.diag_stat_reg = ADIS16475_REG_DIAG_STAT,					\
-+	.prod_id_reg = ADIS16475_REG_PROD_ID,						\
-+	.prod_id = (_prod_id),								\
-+	.self_test_mask = BIT(2),							\
-+	.self_test_reg = ADIS16475_REG_GLOB_CMD,					\
-+	.cs_change_delay = 16,								\
-+	.read_delay = 5,								\
-+	.write_delay = 5,								\
-+	.status_error_msgs = adis16475_status_error_msgs,				\
-+	.status_error_mask = BIT(ADIS16475_DIAG_STAT_DATA_PATH) |			\
-+		BIT(ADIS16475_DIAG_STAT_FLASH_MEM) |					\
-+		BIT(ADIS16475_DIAG_STAT_SPI) |						\
-+		BIT(ADIS16475_DIAG_STAT_STANDBY) |					\
-+		BIT(ADIS16475_DIAG_STAT_SENSOR) |					\
-+		BIT(ADIS16475_DIAG_STAT_MEMORY) |					\
-+		BIT(ADIS16475_DIAG_STAT_CLK),						\
-+	.unmasked_drdy = true,								\
-+	.timeouts = (_timeouts),							\
-+	.burst_reg_cmd = ADIS16475_REG_GLOB_CMD,					\
-+	.burst_len = ADIS16475_BURST_MAX_DATA,						\
-+	.burst_max_len = _burst_max_len,						\
-+	.burst_max_speed_hz = _burst_max_speed_hz					\
+diff --git a/drivers/iio/imu/adis_buffer.c b/drivers/iio/imu/adis_buffer.c
+index 928933027ae3..871b78b225e2 100644
+--- a/drivers/iio/imu/adis_buffer.c
++++ b/drivers/iio/imu/adis_buffer.c
+@@ -175,31 +175,36 @@ static void adis_buffer_cleanup(void *arg)
  }
 
- static const struct adis16475_sync adis16475_sync_mode[] = {
-@@ -753,7 +753,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.max_dec = 1999,
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
--		.adis_data = ADIS16475_DATA(16470, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16470, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16475_1] = {
- 		.name = "adis16475-1",
-@@ -770,7 +772,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.max_dec = 1999,
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
--		.adis_data = ADIS16475_DATA(16475, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16475, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16475_2] = {
- 		.name = "adis16475-2",
-@@ -787,7 +791,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.max_dec = 1999,
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
--		.adis_data = ADIS16475_DATA(16475, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16475, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16475_3] = {
- 		.name = "adis16475-3",
-@@ -804,7 +810,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.max_dec = 1999,
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
--		.adis_data = ADIS16475_DATA(16475, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16475, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16477_1] = {
- 		.name = "adis16477-1",
-@@ -822,7 +830,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16477, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16477, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16477_2] = {
- 		.name = "adis16477-2",
-@@ -840,7 +850,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16477, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16477, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16477_3] = {
- 		.name = "adis16477-3",
-@@ -858,7 +870,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16477, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16477, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16465_1] = {
- 		.name = "adis16465-1",
-@@ -875,7 +889,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.max_dec = 1999,
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
--		.adis_data = ADIS16475_DATA(16465, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16465, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16465_2] = {
- 		.name = "adis16465-2",
-@@ -892,7 +908,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.max_dec = 1999,
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
--		.adis_data = ADIS16475_DATA(16465, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16465, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16465_3] = {
- 		.name = "adis16465-3",
-@@ -909,7 +927,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.max_dec = 1999,
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
--		.adis_data = ADIS16475_DATA(16465, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16465, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16467_1] = {
- 		.name = "adis16467-1",
-@@ -926,7 +946,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.max_dec = 1999,
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
--		.adis_data = ADIS16475_DATA(16467, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16467, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16467_2] = {
- 		.name = "adis16467-2",
-@@ -943,7 +965,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.max_dec = 1999,
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
--		.adis_data = ADIS16475_DATA(16467, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16467, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16467_3] = {
- 		.name = "adis16467-3",
-@@ -960,7 +984,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.max_dec = 1999,
- 		.sync = adis16475_sync_mode,
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode),
--		.adis_data = ADIS16475_DATA(16467, &adis16475_timeouts),
-+		.adis_data = ADIS16475_DATA(16467, &adis16475_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16500] = {
- 		.name = "adis16500",
-@@ -979,7 +1005,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		/* pulse sync not supported */
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode) - 1,
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16500, &adis1650x_timeouts),
-+		.adis_data = ADIS16475_DATA(16500, &adis1650x_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16501] = {
- 		.name = "adis16501",
-@@ -998,7 +1026,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		/* pulse sync not supported */
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode) - 1,
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16501, &adis1650x_timeouts),
-+		.adis_data = ADIS16475_DATA(16501, &adis1650x_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16505_1] = {
- 		.name = "adis16505-1",
-@@ -1017,7 +1047,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		/* pulse sync not supported */
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode) - 1,
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16505, &adis1650x_timeouts),
-+		.adis_data = ADIS16475_DATA(16505, &adis1650x_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16505_2] = {
- 		.name = "adis16505-2",
-@@ -1036,7 +1068,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		/* pulse sync not supported */
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode) - 1,
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16505, &adis1650x_timeouts),
-+		.adis_data = ADIS16475_DATA(16505, &adis1650x_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16505_3] = {
- 		.name = "adis16505-3",
-@@ -1055,7 +1089,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		/* pulse sync not supported */
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode) - 1,
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16505, &adis1650x_timeouts),
-+		.adis_data = ADIS16475_DATA(16505, &adis1650x_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16507_1] = {
- 		.name = "adis16507-1",
-@@ -1074,7 +1110,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		/* pulse sync not supported */
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode) - 1,
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16507, &adis1650x_timeouts),
-+		.adis_data = ADIS16475_DATA(16507, &adis1650x_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16507_2] = {
- 		.name = "adis16507-2",
-@@ -1093,7 +1131,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		/* pulse sync not supported */
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode) - 1,
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16507, &adis1650x_timeouts),
-+		.adis_data = ADIS16475_DATA(16507, &adis1650x_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- 	[ADIS16507_3] = {
- 		.name = "adis16507-3",
-@@ -1112,7 +1152,9 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		/* pulse sync not supported */
- 		.num_sync = ARRAY_SIZE(adis16475_sync_mode) - 1,
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
--		.adis_data = ADIS16475_DATA(16507, &adis1650x_timeouts),
-+		.adis_data = ADIS16475_DATA(16507, &adis1650x_timeouts,
-+					    ADIS16475_BURST32_MAX_DATA,
-+					    ADIS16475_BURST_MAX_SPEED),
- 	},
- };
+ /**
+- * devm_adis_setup_buffer_and_trigger() - Sets up buffer and trigger for
+- *					  the managed adis device
++ * devm_adis_setup_buffer_and_trigger_with_attrs() - Sets up buffer and trigger
++ * for the managed adis device with buffer attributes.
+  * @adis: The adis device
+  * @indio_dev: The IIO device
+- * @trigger_handler: Optional trigger handler, may be NULL.
++ * @trigger_handler: Trigger handler: should handle the buffer readings.
++ * @ops: Optional buffer setup functions, may be NULL.
++ * @buffer_attrs: Extra buffer attributes.
+  *
+  * Returns 0 on success, a negative error code otherwise.
+  *
+- * This function sets up the buffer and trigger for a adis devices.  If
+- * 'trigger_handler' is NULL the default trigger handler will be used. The
+- * default trigger handler will simply read the registers assigned to the
+- * currently active channels.
++ * This function sets up the buffer (with buffer setup functions and extra
++ * buffer attributes) and trigger for a adis devices with buffer attributes.
+  */
+ int
+-devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *indio_dev,
+-				   irq_handler_t trigger_handler)
++devm_adis_setup_buffer_and_trigger_with_attrs(struct adis *adis, struct iio_dev *indio_dev,
++					      irq_handler_t trigger_handler,
++					      const struct iio_buffer_setup_ops *ops,
++					      const struct iio_dev_attr **buffer_attrs)
+ {
+ 	int ret;
 
+ 	if (!trigger_handler)
+ 		trigger_handler = adis_trigger_handler;
+
+-	ret = devm_iio_triggered_buffer_setup(&adis->spi->dev, indio_dev,
+-					      &iio_pollfunc_store_time,
+-					      trigger_handler, NULL);
++	ret = devm_iio_triggered_buffer_setup_ext(&adis->spi->dev, indio_dev,
++						  &iio_pollfunc_store_time,
++						  trigger_handler,
++						  IIO_BUFFER_DIRECTION_IN,
++						  ops,
++						  buffer_attrs);
+ 	if (ret)
+ 		return ret;
+
+@@ -212,5 +217,4 @@ devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *indio_dev,
+ 	return devm_add_action_or_reset(&adis->spi->dev, adis_buffer_cleanup,
+ 					adis);
+ }
+-EXPORT_SYMBOL_NS_GPL(devm_adis_setup_buffer_and_trigger, IIO_ADISLIB);
+-
++EXPORT_SYMBOL_NS_GPL(devm_adis_setup_buffer_and_trigger_with_attrs, IIO_ADISLIB);
+diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+index 8898966bc0f0..8dda3cfa5773 100644
+--- a/include/linux/iio/imu/adis.h
++++ b/include/linux/iio/imu/adis.h
+@@ -21,6 +21,7 @@
+ #define ADIS_REG_PAGE_ID 0x00
+
+ struct adis;
++struct iio_dev_attr;
+
+ /**
+  * struct adis_timeouts - ADIS chip variant timeouts
+@@ -515,11 +516,19 @@ int adis_single_conversion(struct iio_dev *indio_dev,
+ #define ADIS_ROT_CHAN(mod, addr, si, info_sep, info_all, bits) \
+ 	ADIS_MOD_CHAN(IIO_ROT, mod, addr, si, info_sep, info_all, bits)
+
++#define devm_adis_setup_buffer_and_trigger(adis, indio_dev, trigger_handler)	\
++	devm_adis_setup_buffer_and_trigger_with_attrs((adis), (indio_dev),	\
++						      (trigger_handler), NULL,	\
++						      NULL)
++
+ #ifdef CONFIG_IIO_ADIS_LIB_BUFFER
+
+ int
+-devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *indio_dev,
+-				   irq_handler_t trigger_handler);
++devm_adis_setup_buffer_and_trigger_with_attrs(struct adis *adis,
++					      struct iio_dev *indio_dev,
++					      irq_handler_t trigger_handler,
++					      const struct iio_buffer_setup_ops *ops,
++					      const struct iio_dev_attr **buffer_attrs);
+
+ int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev);
+
+@@ -529,8 +538,10 @@ int adis_update_scan_mode(struct iio_dev *indio_dev,
+ #else /* CONFIG_IIO_BUFFER */
+
+ static inline int
+-devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *indio_dev,
+-				   irq_handler_t trigger_handler)
++devm_adis_setup_buffer_and_trigger_with_attrs(struct adis *adis, struct iio_dev *indio_dev,
++					      irq_handler_t trigger_handler,
++					      const struct iio_buffer_setup_ops *ops,
++					      const struct iio_dev_attr **buffer_attrs)
+ {
+ 	return 0;
+ }
 --
 2.34.1
 

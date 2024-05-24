@@ -1,56 +1,56 @@
-Return-Path: <linux-iio+bounces-5278-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5279-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F1838CEB92
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 22:58:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65D298CEBAE
+	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 23:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35D4A28208F
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 20:58:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D231F1F21855
+	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 21:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C9B83A12;
-	Fri, 24 May 2024 20:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C0E84A53;
+	Fri, 24 May 2024 21:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b="c7iiMxL5"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b="A4I6/NjI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8EC7442A;
-	Fri, 24 May 2024 20:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8735C82D66;
+	Fri, 24 May 2024 21:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.142.107.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716584238; cv=none; b=Ke3GTL5hAglecUaiuyX+ZUrHFBErlBm9eUByQsnlY3WCmc4gB6gbx+B0JWwCYs5wVdmuVfgIjEYJ9VHLRi5LQEalGODZhTB2o+XznHnwDFnItbB9JZo85Dx3VvqHxS0L9S8QHuN6c8n/2IwthNXJM3pRySpy1rH1J8V61W2B7JU=
+	t=1716584874; cv=none; b=LcTZUEsDMfSSmyxx4etaf6FjNy99Zb7TQffGnaHVEEMTuAk7udIxz2vsRiKe2cpGCGbAyv13raw0Qgw8mWkvMWb5ArbIz1vRF2gO5Ea/WeseYudHWw/uGqvcpH071AGglss47uC1pEH3epxnUGnsElXH+4ZDPe9BrXZ06h7KriE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716584238; c=relaxed/simple;
-	bh=Y46nXxlcFgBHM6KViWljK/mrz7E2aT075oMJjZi2WQY=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=IFrsovovEZpa+esb/wLBQ7WzNDzazy6K3F1GEpCjCUZz3NVmEhq+wYTAu+0M40tYsBOoAt15QYUQaQDcxHcqizH6/+dFoz00HGyF+WLQLKtUJ/JSMVcLfaGh41b4s6Lx/TJAS0X1jzrg0BhU+uGDMPv3ELl/PYam9lS6JljMzmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com; spf=pass smtp.mailfrom=lechnology.com; dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b=c7iiMxL5; arc=none smtp.client-ip=98.142.107.122
+	s=arc-20240116; t=1716584874; c=relaxed/simple;
+	bh=I/V1e8uSu1kcFUaSd0Q3ZWxt7gpTYPMHL2j36HQ8KWc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WdPzOddPQ1p5H4gbhmOPAXMADXyeH9wqU3XN9eNUyOrPJ3jF6bnM9wFUGiLIQJGvkg8CbVH9nDirktjI3W/wWn+m8J6Qpt4REbX9RPoVzN7o/tAxy2v6n9smIK0kuqct0lrWa82Uwe3NL8nlPANJj3KIPNX/HJdn9pDh1U9PXTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com; spf=pass smtp.mailfrom=lechnology.com; dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b=A4I6/NjI; arc=none smtp.client-ip=98.142.107.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lechnology.com
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
 	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=t2DOCJNyKvOfcOpBuODL8F4YyXgFuY85iOz3SlWrWOg=; b=c7iiMxL55RaSq6FjgjofpJVK3J
-	ZqhA0nDpMj8SZvzTPrYxvac9owiaU9xPm7Q4Bu+HrVOkkmFo6xUPSTlhUMvXcNJ2mhH22pqj6y/jD
-	jtBamNqpPA1XbB86PvUY+ZIrSPWsSQECJb6pHFHR3weU9iwDQzlqhr9ZI7EOoH5B4/Lvx4/exiIka
-	2i5CPKXcbgwGeY0XeBOPLlxd5sT9suJxQGxb2RJ6xMVlx4++97XqtWH57Q6ygTtyUo0nJkiJikyi1
-	zf++IMt2P+lFttamkwDY/1hrAGYoXgNSx67EiJob0XkhgPC9leogG7JS9s+Ps6xAPoeQptP4Pwzy1
-	q3c3QdWQ==;
-Received: from ip98-183-112-25.ok.ok.cox.net ([98.183.112.25]:42048 helo=[192.168.0.142])
+	bh=0D2Sv5CE/+fg3seMEmeO4Y9uiGihaivH5sPIWqW7HB8=; b=A4I6/NjIWjsYSsxbjhspZS8hWl
+	X++c0UvNlW2zZElUV3PLdIlVnXFJvX3P8WWampEhWMF9gj1546ZXVoW3WKkXvU2rcyn+tXD5z172G
+	ROFu4DjsFbPOacshOiQsW5M2cexL3JjjJt+DFFEAtjOFWKClAZdEWM8l+Au0qEFFuNrMtl8JUVhSX
+	ZrybbGcDG8eeaiUS2S7jQsO7uIxjj268APD0gJ4laYs555Qdun97Q5LxDp4o5z4/HpVoL2YX2MptR
+	/cpSgwEVVM1l9qendzCTdD7CQYFRTPeDU3l1z9Hiy7cNyKCgLfep288cDJMv6lmBxk3UOsJadd0OH
+	44EzW6HA==;
+Received: from ip98-183-112-25.ok.ok.cox.net ([98.183.112.25]:51864 helo=[192.168.0.142])
 	by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
 	(Exim 4.96.2)
 	(envelope-from <david@lechnology.com>)
-	id 1sAc1o-0004Bn-1a;
-	Fri, 24 May 2024 16:57:13 -0400
-Message-ID: <e6a03921-532c-4aa7-92b6-812cd9a356d6@lechnology.com>
-Date: Fri, 24 May 2024 15:57:11 -0500
+	id 1sAcC5-0007vy-0I;
+	Fri, 24 May 2024 17:07:50 -0400
+Message-ID: <a459e5ba-d7c0-4b79-9ef6-f3937bba5f52@lechnology.com>
+Date: Fri, 24 May 2024 16:07:47 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -58,9 +58,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/8] dt-bindings: counter: Add new ti,am62-eqep
- compatible
-From: David Lechner <david@lechnology.com>
+Subject: Re: [PATCH v2 7/8] counter: ti-eqep: Allow eQEP driver to be built
+ for K3 devices
 To: Judith Mendez <jm@ti.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
  Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
@@ -70,9 +69,9 @@ Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
  Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>
 References: <20240523231516.545085-1-jm@ti.com>
- <20240523231516.545085-3-jm@ti.com>
- <2956d10b-d2cf-4019-adc8-d8053e435767@lechnology.com>
+ <20240523231516.545085-8-jm@ti.com>
 Content-Language: en-US
+From: David Lechner <david@lechnology.com>
 Autocrypt: addr=david@lechnology.com; keydata=
  xsFNBFFxkZ8BEADXzbnj9t8XSZYxKJGHdHqYgEBVzRElb3+f11qhDZKzVCMsn1+AN+PlHqC7
  VrCWLsWTSY7WsHB2fW3aXaoidtac5FYoX2IXAun1Sbv15NcBdapImkMv6zxhAyWz6LqPfdCp
@@ -115,7 +114,7 @@ Autocrypt: addr=david@lechnology.com; keydata=
  +M4GyTil33pnBXEZp29nh7ev4VJ96sVvnQFzls3motvG+pq/c37Ms1gYayeCzA2iCDuKx6Zk
  ybHg7IzNEduqZQ4bkaBpnEt+vwE3Gg5l4dAUFWAs9qY13nyBANQ282FNctziEHCUJZ/Map6T
  dzHWO6hU1HuvmlwcJSFCOey8yhkt386E6KfVYzrIhwTtabg+DLyMZK40Rop1VcU7Nx0M
-In-Reply-To: <2956d10b-d2cf-4019-adc8-d8053e435767@lechnology.com>
+In-Reply-To: <20240523231516.545085-8-jm@ti.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
@@ -129,108 +128,16 @@ X-Source:
 X-Source-Args: 
 X-Source-Dir: 
 
-On 5/24/24 3:50 PM, David Lechner wrote:
-> On 5/23/24 6:15 PM, Judith Mendez wrote:
->> Add new compatible ti,am62-eqep for TI K3 devices. If a device
->> uses this compatible, require power-domains property.
->>
->> Since there is only one functional and interface clock for eqep,
->> clock-names is not really required. The clock-name also changed
->> for TI K3 SoCs so make clock-names optional for the new compatible
->> since there is only one clock that is routed to the IP.
->>
->> While we are here, add an example using ti,am62-eqep compatible.
->>
->> Signed-off-by: Judith Mendez <jm@ti.com>
->> ---
->> Changes since v1:
->> - Fix eqep binding for new compatible, require
->>  power-domains for new compatible
->> ---
->>  .../devicetree/bindings/counter/ti-eqep.yaml  | 53 +++++++++++++++++--
->>  1 file changed, 48 insertions(+), 5 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.yaml b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->> index 85f1ff83afe72..c4bb0231f166a 100644
->> --- a/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->> @@ -11,7 +11,9 @@ maintainers:
->>  
->>  properties:
->>    compatible:
->> -    const: ti,am3352-eqep
->> +    enum:
->> +      - ti,am3352-eqep
->> +      - ti,am62-eqep
->>  
->>    reg:
->>      maxItems: 1
->> @@ -21,19 +23,43 @@ properties:
->>      maxItems: 1
->>  
->>    clocks:
->> -    description: The clock that determines the SYSCLKOUT rate for the eQEP
->> -      peripheral.
->> +    description: The functional and interface clock that determines the clock
->> +      rate for the eQEP peripheral.
->>      maxItems: 1
->>  
->>    clock-names:
->> -    const: sysclkout
->> +    enum:
->> +      - sysclkout
->> +      - fck
->> +
+On 5/23/24 6:15 PM, Judith Mendez wrote:
+> TI K3 SoC's support eQEP hardware, so add ARCH_K3 to the depends
+> so the TI eQEP driver can be built for K3 devices.
 > 
-> If we are making this optional for ti,am62-eqep, why add a new name?
-> 
-> Also, we could change the description to say that sysclockout is not a
-> great name but is required for backwards compatibility.
-> 
->> +  power-domains:
->> +    maxItems: 1
->> +
->> +allOf:
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            enum:
->> +              - ti,am3352-eqep
->> +    then:
->> +      required:
->> +        - clock-names
+> Signed-off-by: Judith Mendez <jm@ti.com>
+> ---
+> Changes since v1:
+> - No change
+> ---
 
-I just looked at the Linux driver for this and the clock name is
-not used in the driver. So we could probably just deprecate the
-clock-names property here and not make it required for
-ti,am3352-eqep (and not allowed for any new compatibles as
-suggested below).
-
-> 
-> What if we just add
-> 
->   else:
->     clock-names: false
-> 
-> since there is only one clock and not worry about the name?
-> 
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            enum:
->> +              - ti,am62-eqep
->> +    then:
->> +      required:
->> +        - power-domains
->>  
->>  required:
->>    - compatible
->>    - reg
->>    - interrupts
->>    - clocks
->> -  - clock-names
->>  
+Reviewed-by: David Lechner <david@lechnology.com>
 
 

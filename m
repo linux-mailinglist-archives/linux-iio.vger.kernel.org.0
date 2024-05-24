@@ -1,151 +1,115 @@
-Return-Path: <linux-iio+bounces-5249-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5250-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76EA8CE202
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 10:10:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3261A8CE2BA
+	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 11:00:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39AEF1F2282E
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 08:10:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C8A91C211B9
+	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 09:00:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EC701292E4;
-	Fri, 24 May 2024 08:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F3961292F8;
+	Fri, 24 May 2024 09:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ih6yKeUp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f8TFXnfQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABAD17578;
-	Fri, 24 May 2024 08:09:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 862891D54D;
+	Fri, 24 May 2024 09:00:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716538194; cv=none; b=oJyqApwQyuIQrorMdnxc4iryETqlvYjpgFZAx+Jcq/l+6AlIC6ZwWk5vWsGEMqmFwrXEpfI71LgFNMsljgiUqyUFIYG8JILCWlqe69sbVrZpT8ojIXXBHPc9OCD2j+4e1MPHYuKfpzYo3Fm5tKoyGb14hJjCmHtdLw3Kp7mmbgU=
+	t=1716541242; cv=none; b=cAJRhSisbJrX/oOBii5T2PXdJosDlJg28/AsT6sAU7Na/un76OmdpdQhXjBJMk3l3QbhxAnUirq+2bWqn6eRWafoDuuUAprVT/Y1ASuab35tm5n5YIdpC3JA1SMQi+oshI/tOhNKWxBYMt3btYwu2nz5jCUJbAVWJnxxQAQc1dI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716538194; c=relaxed/simple;
-	bh=IYoee1FMSOG0vcSBxpfqmaB1YmFYngFTvOE+LzRYYrs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lUXie78zLjqAwstWhq2g2wPo1Xp0L32AD5TbnLpQMTW8jBrokCwD1F9hFuZK60+v3EU/H/4Ne1LbwwQ8pDnCRZPUGcMqlXy8+zQ0QOWEtGj7gNvi4gTIjnMZqKf5DSDRQ9JzkT5vSyZdC6PV5dLTu4YOjIRcYqfx5nXaB7mUj3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ih6yKeUp; arc=none smtp.client-ip=209.85.218.47
+	s=arc-20240116; t=1716541242; c=relaxed/simple;
+	bh=Ndc1ZOTSc3HE60JBg1s0bP8GySv9wslKlje95u3jiOs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DG8AhllXehQQ0WltukHruatJx4ThexMpheY+PrYQZX8UXxCIJ9LGowLiBKcpAhwSw+K47tqjnhbBafejfhzN42focQPZrceuqeMnGsFy0kGlFE8KlKFXThLxKkn8mLRRnzHhm8Nq2Bz7jKpmbL6ZyfLpsk+wF4KC8YoJqx2+lYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f8TFXnfQ; arc=none smtp.client-ip=209.85.208.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a61b70394c0so627730366b.1;
-        Fri, 24 May 2024 01:09:52 -0700 (PDT)
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-57851788450so852138a12.2;
+        Fri, 24 May 2024 02:00:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716538191; x=1717142991; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4yIHQCHYwlijZ4SpXyonBPl2dHneQaT20En64+i282k=;
-        b=ih6yKeUpPupE+dey+V0DtDmEDYzmZdLlftyuS3m8NWnQmaSLFaJo3QgnUv0By6Anv/
-         bawpQq0Jvm1qlVmLFLcI2M374WU8z+Vl+erLS1KUbyCxe6EjSBIlsEwU/gFRwu5qSyce
-         HHgrU0ihvWsaYFRX8n46br4MzZU4TsbJ13QkfCtxiWpNtD/OvVBMkIR4VHyGybay62XL
-         g8oFE2s1wc6vNH6IIKHu7NDXR7rXt0wabZf10A+Dhm4/sP8b9N50YtCC2YegOA1wRw0x
-         8abKkBa5E7zNF5n0bCMhlXphJLc/F/qn+KkNK71p8A/h+CLDyZyff6nz5d8PHWp3s69L
-         hrcA==
+        d=gmail.com; s=20230601; t=1716541238; x=1717146038; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xAjoDwv+nuxA5R+xwHfwe17PEr8mDnmdJPuKHL0+yys=;
+        b=f8TFXnfQRKTl7ietflyhvJ87fdTvqgr3uiFxf0qONNXrafgY5it6bTwe1chdrGuiBj
+         lpSASd8efjciORQsjojY0PrCS7CQ2N65ASh0z1C8peoQ2bgVQ9JMO12JcqGIi/iweODX
+         AaAegqQ+rISXm0Wjg5hcatooSK163wVSH+mbctvt3oQtldB1VLh1c/eKww313Vt/GNa8
+         6NhvlPVYuCwBMO7brxU+pKpatMfOcx4mefCffOgaGFNWbgMLtZNhcFe7UQA1EcznFHi4
+         ujhUiK202b3b8RQcH23pMdm2O5f6OEz7v/2p2jAZJpuKQ/h3rL86kO8gWeDyuVY0jTX2
+         Pc5g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716538191; x=1717142991;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4yIHQCHYwlijZ4SpXyonBPl2dHneQaT20En64+i282k=;
-        b=lzcqOY6liDaUVodxGzh5PvG5j9Gzo5sMlkw60/gviDzecKMBACSnUWLOuRsRvMoJkm
-         4u77Poo+tYspqVAWq0XKy0l3qKLVy7RqoCfWPejvECXMivWLwkoxUumkBF1MLCm6Hm5O
-         5M1H4k38f5P4eth415Lv1a+7lHAca5SG7dka5qd4qT2fXmVWSENGJ5E+yjImLSz0R1uo
-         lXOaxGsbkOdIazlTXa3aO/VisqDMZFD5Gva8/lUyx1m2NIYxaMamXTcnZPx2OhH91G27
-         aRa7qpKtpVM8VrQgl1huWuuFAHQNbZyF3ufG+5hi5Lo1QrfhUXWzjYP86xOhh6P06QCU
-         Lcjg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9cV2F77/TOQ1jcuuDH4HBJSJbVrChghv5X3RELoVJOsXch5+U/Owqcqc2rzLe5s7zlq/61NJ78ilPYc27381Vxl4CEjBXEd1X3RJFraSY/6Z7K4qnrXSQjARt2PuVe1eCTyOCqjet
-X-Gm-Message-State: AOJu0YynA6ZJsdkGaUgszbDRvVAM5wafzPJuIJZmkUumt5WeA+MwQOyK
-	nv3SJAOMK68vPft4mtq0hOjNh2XepzqUiZ35GGXnXior6WRqEYFf
-X-Google-Smtp-Source: AGHT+IEgFSaePBsGjk079z7djjCvU1PWaX4waBvA+zagqtvTUKbIzVsiwpBD6ooLXwpMQBQhRUBVSw==
-X-Received: by 2002:a17:906:605:b0:a5a:8b64:df00 with SMTP id a640c23a62f3a-a62641dfde4mr93034666b.28.1716538191130;
-        Fri, 24 May 2024 01:09:51 -0700 (PDT)
-Received: from debian ([93.184.186.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c817b15sm91382266b.40.2024.05.24.01.09.49
+        d=1e100.net; s=20230601; t=1716541238; x=1717146038;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xAjoDwv+nuxA5R+xwHfwe17PEr8mDnmdJPuKHL0+yys=;
+        b=AmhEiydgUPKvi80S/EDbmqgWHHQQK88xZpMIKOGQss38rs/xxXdIRHrDZbzPo6wUL6
+         hZmQZday93LjVEgByNQ4Bvr+fzeQvFmGxXqQ/gwzCC3v0qUx57ox9TGrtWuAVjN6xD7k
+         uXsJeroItpuSJvzD1ggPsnciXtOFlft4ENTwxCzyji7RLHWdlG68BXbq45pi113wBT5t
+         43C3gXw/EaTiDFW/ZczAUNzksY5a/qoe71hNS8v/bMlWXSK28MX+ufCgYHbqdLgmYmC+
+         cqmELw4qsbJ13AZvncLqk3Cq4nAcZhHY9l66S7tIyLdxkTd4mJDFD1OlE4BCXGQGZc4E
+         b4wA==
+X-Forwarded-Encrypted: i=1; AJvYcCVxpz4odRTBez61HrksQJ419V+vt46E83vWCF5qnk4viSx9awM25SCNF4w6kDdYRyCi1XOmnwsd7P+J/SICoWkF/k1kJFu1lnQKl/85S+6WaepHBrhYUIetCW8hnzIUMV5HlhGZ/g==
+X-Gm-Message-State: AOJu0Yxks+o4IqSwHKPuMZNZSJ4I5m3eDhlNwXg8DBnrHrXS0pkLRWjQ
+	v5MgYNaVr8Ose4Zrt7nYskjrAPUM3pkkteCHf379eSvUDgJdNKXboCEMont2jWU=
+X-Google-Smtp-Source: AGHT+IFIHJ5yG0dlv43AcToWv7U3z1W6V+gd7KJL85LgZHIHN2D/RfHCRkuNzETZAikxYg2vWubBeQ==
+X-Received: by 2002:a17:906:478c:b0:a59:cdc9:6fdf with SMTP id a640c23a62f3a-a62641c4376mr115375866b.4.1716541238040;
+        Fri, 24 May 2024 02:00:38 -0700 (PDT)
+Received: from rbolboac.. ([2a02:2f0e:350b:4500:dac3:9bb:ed7a:184b])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c93ae41sm97730466b.62.2024.05.24.02.00.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 May 2024 01:09:50 -0700 (PDT)
-Date: Fri, 24 May 2024 10:09:48 +0200
-From: Dimitri Fedrau <dima.fedrau@gmail.com>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Li peiyu <579lpy@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: humidity: hdc3020: fix hysteresis representation
-Message-ID: <20240524080948.GA560140@debian>
-References: <20240523114336.532428-1-dima.fedrau@gmail.com>
- <cef810ee-bb2c-4588-baec-7edfc74daeea@gmail.com>
- <20240523142849.GA558466@debian>
- <17adc0d0-55c1-4608-a4c0-93f9911296f8@gmail.com>
+        Fri, 24 May 2024 02:00:37 -0700 (PDT)
+From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	conor+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org,
+	robh@kernel.org,
+	nuno.sa@analog.com
+Cc: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+Subject: [PATCH v4 00/10] adis16501 and adis1657x support
+Date: Fri, 24 May 2024 12:00:21 +0300
+Message-Id: <20240524090030.336427-1-ramona.bolboaca13@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <17adc0d0-55c1-4608-a4c0-93f9911296f8@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Am Thu, May 23, 2024 at 05:45:34PM +0200 schrieb Javier Carrasco:
-> On 23/05/2024 16:28, Dimitri Fedrau wrote:
-> > Am Thu, May 23, 2024 at 04:12:37PM +0200 schrieb Javier Carrasco:
-> >> Hi Dimitri, a few comments inline.
-> >>
-> >> On 23/05/2024 13:43, Dimitri Fedrau wrote:
-> >>> According to the ABI docs hysteresis values are represented as offsets to
-> >>> threshold values. Current implementation represents hysteresis values as
-> >>> absolute values which is wrong. Nevertheless the device stores them as
-> >>> absolute values and the datasheet refers to them as clear thresholds. Fix
-> >>> the reading and writing of hysteresis values by including thresholds into
-> >>> calculations.
-> >>>
-> >>> Fixes: 3ad0e7e5f0cb ("iio: humidity: hdc3020: add threshold events support")
-> >>> Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
-> >>> ---
-> >>>
-> >>> Since absolute values are used on the device, the hysteresis values are
-> >>> influenced by setting thresholds. Is this behavior in line with the ABI docs ?
-> >>> It can be fixed by readjusting the threshold clear value whenever setting
-> >>> thresholds to have the same hysteresis value as before. See some example below:
-> >>>
-> >>> # echo 25 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
-> >>> # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
-> >>> 24.727626459
-> >>> # echo 5 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
-> >>> # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
-> >>> 5.127031357
-> >>> # echo 35 > /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_value
-> >>> # cat /sys/bus/iio/devices/iio\:device0/events/in_temp_thresh_rising_hysteresis
-> >>> 15.381094071
-> >>>
-> 
-> > Hi Javier,
-> > 
-> > thanks for reviewing so quickly. Do you think I should correct the clear
-> > threshold values once I changed the threshold. I have an example
-> > provided where I set the threshold and hysteresis. After setting the
-> > threshold again the hysteresis value also changes.
-> > 
-> > Dimitri
-> 
-> I am not sure if I got that right. Did the rising hysteresis change its
-> value automatically from ~5 to ~15 by just adding 10 to the threshold?
-> If we are treating the hysteresis as an offset, then it should not
-> change its value i.e. it should keep the configured value.
->
-> Best regards,
-> Javier Carrasco
+Add adis16501 and adis1657x support in adis16475.
 
-You got it right and I also think that the hysteresis value should keep
-the configured value. The doc states that the hysteresis is represented
-as offset to the threshold, but I didn't find anything related to the
-changing hysteresis value. Propably because most devices implement the
-hysteresis value as offset !? Would change this behavior in the next
-version of the patch if Jonathan agrees.
+Ramona Gradinariu (10):
+  dt-bindings: iio: imu: Add ADIS16501 compatibles
+  drivers: iio: imu: Add support for ADIS16501
+  iio: imu: adis16475: Re-define ADIS16475_DATA
+  iio: imu: adis_buffer: Add buffer setup API with buffer attributes
+  iio: imu: adis16475: Create push single sample API
+  drivers: iio: imu: adis16475: generic computation for sample rate
+  iio: imu: adis_trigger: Allow level interrupts for FIFO readings
+  iio: imu: adis16475: Re-define ADIS16475_DATA
+  dt-bindings: iio: imu: Add ADIS1657X family devices compatibles
+  drivers: iio: imu: Add support for adis1657x family
 
-Thanks again for taking time to review.
+ .../bindings/iio/imu/adi,adis16475.yaml       |  31 +
+ drivers/iio/imu/Kconfig                       |   4 +-
+ drivers/iio/imu/adis16475.c                   | 810 +++++++++++++++---
+ drivers/iio/imu/adis_buffer.c                 |  32 +-
+ drivers/iio/imu/adis_trigger.c                |  37 +-
+ include/linux/iio/imu/adis.h                  |  20 +-
+ 6 files changed, 792 insertions(+), 142 deletions(-)
 
-Dimitri
+--
+2.34.1
+
 

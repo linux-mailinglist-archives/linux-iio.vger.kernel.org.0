@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-5283-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5284-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8FE8CEBD8
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 23:34:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93DEB8CEBE1
+	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 23:45:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E3B31C21BB3
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 21:34:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 235531F229C1
+	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 21:45:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7162B82487;
-	Fri, 24 May 2024 21:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA0884D0A;
+	Fri, 24 May 2024 21:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="ORvcqXpC"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jIf3eBBW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E41D7494;
-	Fri, 24 May 2024 21:34:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFC27494;
+	Fri, 24 May 2024 21:44:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716586454; cv=none; b=jhoEjFoiR4By0GaemcXdqZrkPjjeLGKhf/6E5FXHcbG1g5OC78Q5RiMcrN5Div50z36eKQDykCAcmnaHNlDN/Wvb4gVesZGyaxfgMDGo9aqaBnDw8JCRA/XPnKLXnWQQfENxSuYQWW3EFN9t3GPyMzUjv/Oudpwxb2E7/fUBzyU=
+	t=1716587100; cv=none; b=DIwCLUIrdZhIg2K7EQv24jVcubvbmA0R2sur9OYGzzFXx6ixgkwJWDZMJk8U5hld3PqrDwdNmMCNuor2gpVse0/btuqClvajL+UZrEzPdhRGxZ7WLG0eJVRcNUdQSS91usxNZbpJ1w2S58sw84IuMLc0K0U4FAZko9pfxSt2uMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716586454; c=relaxed/simple;
-	bh=l+VQrpFRNc7+TdUwO3FMDbaqqwUSEBvD/mZPzJ+2JV8=;
+	s=arc-20240116; t=1716587100; c=relaxed/simple;
+	bh=iIpi6Ch4M3B1vpV4Uv5PWmxbCILHTV+ZWD5Gc0J/Rto=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=DRklqPEQ5+dp4Nxrm52/uvLZIH/cTAQFL9lybgnVGzrrawFE9ejnaTPQNrDV86CQuhxb4YCbtatMzbleUNlXmM7IbFayuHJLYiVUslZNqp2hNXHJujerioJIM3L099WAO/DzkrDnUL+9X/qbxxTU+wrobtTQpaIOScV3T/BFX2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=ORvcqXpC; arc=none smtp.client-ip=198.47.23.248
+	 In-Reply-To:Content-Type; b=ValM/Gg63FEViL3wgMUXpnGNwDrAuEBty/yGeQ9p/zPkX34tQu0wApFGLXEoHiOg1OSaPH0SDE6JNLzSA1/iOzfSSB1IoFshqgIgNCOK2oXCiA1rKpC7SikjmHdPkz24dy42legJmhfNNPomPBhUnntCD53/xSv6Lhtc8zkPa9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jIf3eBBW; arc=none smtp.client-ip=198.47.23.249
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0035.itg.ti.com ([10.64.41.0])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44OLXLmI074714;
-	Fri, 24 May 2024 16:33:21 -0500
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44OLi5bL059590;
+	Fri, 24 May 2024 16:44:05 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1716586402;
-	bh=1kkNmkqxllZ3zCa7BVvoRScSljb1MlWuM7LHHhSw1Xo=;
+	s=ti-com-17Q1; t=1716587045;
+	bh=OaRZEYWqGOOnWQDxBFM0TF55WqnPavGwkPqJDH3YcFU=;
 	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=ORvcqXpCnRpXLs8AgRe+IDku0DcgdMt+cqa5I+Ry/5iCBisKRGBwmF7q/cGfCoK/h
-	 nNya9BU1FddHXSrPgIo3xbrteD0Z5V0rQdZy0R6SOhBpwLQtq8+34riI2WYo4e4sLS
-	 Pgz27vnfHijUzEiitpbCFavGPzYK1+p75xcicZp8=
-Received: from DFLE115.ent.ti.com (dfle115.ent.ti.com [10.64.6.36])
-	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44OLXLbZ038831
+	b=jIf3eBBWnuO7lLDlgALIa2nw+VR9R3vfrsjQYEHBydCz+RptAFUSUwF+s4W8mT1ew
+	 M7TcJm/HTYSet1a4USrkVpXSgjhr08+Q2+d5fx+aWpGsTY/f1Ei8wPkawG+hd9Scms
+	 +A8cb05YSkfpb3SULogvt1bXxpUW2NeR15zLkEWA=
+Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44OLi5e4015119
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 24 May 2024 16:33:21 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE115.ent.ti.com
- (10.64.6.36) with Microsoft SMTP Server (version=TLS1_2,
+	Fri, 24 May 2024 16:44:05 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 24
- May 2024 16:33:21 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ May 2024 16:44:05 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 24 May 2024 16:33:21 -0500
+ Frontend Transport; Fri, 24 May 2024 16:44:05 -0500
 Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44OLXLpT080430;
-	Fri, 24 May 2024 16:33:21 -0500
-Message-ID: <d0abda4f-2e8c-49ff-bdeb-63fb5e969e84@ti.com>
-Date: Fri, 24 May 2024 16:33:21 -0500
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44OLi5MB093108;
+	Fri, 24 May 2024 16:44:05 -0500
+Message-ID: <2339db0d-db21-4372-808d-8648500e971a@ti.com>
+Date: Fri, 24 May 2024 16:44:05 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -82,115 +82,128 @@ CC: <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
 References: <20240523231516.545085-1-jm@ti.com>
  <20240523231516.545085-3-jm@ti.com>
  <2956d10b-d2cf-4019-adc8-d8053e435767@lechnology.com>
+ <e6a03921-532c-4aa7-92b6-812cd9a356d6@lechnology.com>
 Content-Language: en-US
 From: Judith Mendez <jm@ti.com>
-In-Reply-To: <2956d10b-d2cf-4019-adc8-d8053e435767@lechnology.com>
+In-Reply-To: <e6a03921-532c-4aa7-92b6-812cd9a356d6@lechnology.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 5/24/24 3:50 PM, David Lechner wrote:
-> On 5/23/24 6:15 PM, Judith Mendez wrote:
->> Add new compatible ti,am62-eqep for TI K3 devices. If a device
->> uses this compatible, require power-domains property.
+On 5/24/24 3:57 PM, David Lechner wrote:
+> On 5/24/24 3:50 PM, David Lechner wrote:
+>> On 5/23/24 6:15 PM, Judith Mendez wrote:
+>>> Add new compatible ti,am62-eqep for TI K3 devices. If a device
+>>> uses this compatible, require power-domains property.
+>>>
+>>> Since there is only one functional and interface clock for eqep,
+>>> clock-names is not really required. The clock-name also changed
+>>> for TI K3 SoCs so make clock-names optional for the new compatible
+>>> since there is only one clock that is routed to the IP.
+>>>
+>>> While we are here, add an example using ti,am62-eqep compatible.
+>>>
+>>> Signed-off-by: Judith Mendez <jm@ti.com>
+>>> ---
+>>> Changes since v1:
+>>> - Fix eqep binding for new compatible, require
+>>>   power-domains for new compatible
+>>> ---
+>>>   .../devicetree/bindings/counter/ti-eqep.yaml  | 53 +++++++++++++++++--
+>>>   1 file changed, 48 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.yaml b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
+>>> index 85f1ff83afe72..c4bb0231f166a 100644
+>>> --- a/Documentation/devicetree/bindings/counter/ti-eqep.yaml
+>>> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
+>>> @@ -11,7 +11,9 @@ maintainers:
+>>>   
+>>>   properties:
+>>>     compatible:
+>>> -    const: ti,am3352-eqep
+>>> +    enum:
+>>> +      - ti,am3352-eqep
+>>> +      - ti,am62-eqep
+>>>   
+>>>     reg:
+>>>       maxItems: 1
+>>> @@ -21,19 +23,43 @@ properties:
+>>>       maxItems: 1
+>>>   
+>>>     clocks:
+>>> -    description: The clock that determines the SYSCLKOUT rate for the eQEP
+>>> -      peripheral.
+>>> +    description: The functional and interface clock that determines the clock
+>>> +      rate for the eQEP peripheral.
+>>>       maxItems: 1
+>>>   
+>>>     clock-names:
+>>> -    const: sysclkout
+>>> +    enum:
+>>> +      - sysclkout
+>>> +      - fck
+>>> +
 >>
->> Since there is only one functional and interface clock for eqep,
->> clock-names is not really required. The clock-name also changed
->> for TI K3 SoCs so make clock-names optional for the new compatible
->> since there is only one clock that is routed to the IP.
+>> If we are making this optional for ti,am62-eqep, why add a new name?
 >>
->> While we are here, add an example using ti,am62-eqep compatible.
+>> Also, we could change the description to say that sysclockout is not a
+>> great name but is required for backwards compatibility.
 >>
->> Signed-off-by: Judith Mendez <jm@ti.com>
->> ---
->> Changes since v1:
->> - Fix eqep binding for new compatible, require
->>   power-domains for new compatible
->> ---
->>   .../devicetree/bindings/counter/ti-eqep.yaml  | 53 +++++++++++++++++--
->>   1 file changed, 48 insertions(+), 5 deletions(-)
+>>> +  power-domains:
+>>> +    maxItems: 1
+>>> +
+>>> +allOf:
+>>> +  - if:
+>>> +      properties:
+>>> +        compatible:
+>>> +          contains:
+>>> +            enum:
+>>> +              - ti,am3352-eqep
+>>> +    then:
+>>> +      required:
+>>> +        - clock-names
+> 
+> I just looked at the Linux driver for this and the clock name is
+> not used in the driver. So we could probably just deprecate the
+> clock-names property here and not make it required for
+> ti,am3352-eqep (and not allowed for any new compatibles as
+> suggested below).
+
+We could do this, although I was under the impression that we should
+not drop DT properties just because the linux driver isn't using it,
+that is why I went with keeping clock-names around for am335x compatible
+and making it optional for am62x compatible.
+
+But if it is all the same, we could drop the the DT property.
+
+~ Judith
+
+> 
 >>
->> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.yaml b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->> index 85f1ff83afe72..c4bb0231f166a 100644
->> --- a/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->> @@ -11,7 +11,9 @@ maintainers:
->>   
->>   properties:
->>     compatible:
->> -    const: ti,am3352-eqep
->> +    enum:
->> +      - ti,am3352-eqep
->> +      - ti,am62-eqep
->>   
->>     reg:
->>       maxItems: 1
->> @@ -21,19 +23,43 @@ properties:
->>       maxItems: 1
->>   
->>     clocks:
->> -    description: The clock that determines the SYSCLKOUT rate for the eQEP
->> -      peripheral.
->> +    description: The functional and interface clock that determines the clock
->> +      rate for the eQEP peripheral.
->>       maxItems: 1
->>   
->>     clock-names:
->> -    const: sysclkout
->> +    enum:
->> +      - sysclkout
->> +      - fck
->> +
+>> What if we just add
+>>
+>>    else:
+>>      clock-names: false
+>>
+>> since there is only one clock and not worry about the name?
+>>
+>>> +  - if:
+>>> +      properties:
+>>> +        compatible:
+>>> +          contains:
+>>> +            enum:
+>>> +              - ti,am62-eqep
+>>> +    then:
+>>> +      required:
+>>> +        - power-domains
+>>>   
+>>>   required:
+>>>     - compatible
+>>>     - reg
+>>>     - interrupts
+>>>     - clocks
+>>> -  - clock-names
+>>>   
 > 
-> If we are making this optional for ti,am62-eqep, why add a new name?
-> 
-> Also, we could change the description to say that sysclockout is not a
-> great name but is required for backwards compatibility.
-
-This is fine with me. Will update for v3.
-
-> 
->> +  power-domains:
->> +    maxItems: 1
->> +
->> +allOf:
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            enum:
->> +              - ti,am3352-eqep
->> +    then:
->> +      required:
->> +        - clock-names
-> 
-> What if we just add
-> 
->    else:
->      clock-names: false
-> 
-> since there is only one clock and not worry about the name?
-
-
-Yes, can do, thanks.
-
-> 
->> +  - if:
->> +      properties:
->> +        compatible:
->> +          contains:
->> +            enum:
->> +              - ti,am62-eqep
->> +    then:
->> +      required:
->> +        - power-domains
->>   
->>   required:
->>     - compatible
->>     - reg
->>     - interrupts
->>     - clocks
->> -  - clock-names
->>   
 
 

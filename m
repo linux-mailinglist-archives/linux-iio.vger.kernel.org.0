@@ -1,209 +1,122 @@
-Return-Path: <linux-iio+bounces-5284-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5285-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93DEB8CEBE1
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 23:45:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82C98CEF32
+	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 16:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 235531F229C1
-	for <lists+linux-iio@lfdr.de>; Fri, 24 May 2024 21:45:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 17F992819BD
+	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 14:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CA0884D0A;
-	Fri, 24 May 2024 21:45:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A897E42AB1;
+	Sat, 25 May 2024 14:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jIf3eBBW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C8nbfQTH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFFC27494;
-	Fri, 24 May 2024 21:44:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06D01DFD6;
+	Sat, 25 May 2024 14:01:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716587100; cv=none; b=DIwCLUIrdZhIg2K7EQv24jVcubvbmA0R2sur9OYGzzFXx6ixgkwJWDZMJk8U5hld3PqrDwdNmMCNuor2gpVse0/btuqClvajL+UZrEzPdhRGxZ7WLG0eJVRcNUdQSS91usxNZbpJ1w2S58sw84IuMLc0K0U4FAZko9pfxSt2uMY=
+	t=1716645699; cv=none; b=bvivYMJQCsAKsWGfsemyct11drvg7goKprkF/YQAx94WwsFHgJR34WU6fvaw11OWrVyh8yZOhk6ARy9Jt3347R/LCF2yAbp5HkmHsGHfgLGbDV6YoNdyd9XUwqFyWbYhTIgiuH07OGM4y/9vLpBUFeOLJTddRpSdGOXBelqUXAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716587100; c=relaxed/simple;
-	bh=iIpi6Ch4M3B1vpV4Uv5PWmxbCILHTV+ZWD5Gc0J/Rto=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ValM/Gg63FEViL3wgMUXpnGNwDrAuEBty/yGeQ9p/zPkX34tQu0wApFGLXEoHiOg1OSaPH0SDE6JNLzSA1/iOzfSSB1IoFshqgIgNCOK2oXCiA1rKpC7SikjmHdPkz24dy42legJmhfNNPomPBhUnntCD53/xSv6Lhtc8zkPa9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jIf3eBBW; arc=none smtp.client-ip=198.47.23.249
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44OLi5bL059590;
-	Fri, 24 May 2024 16:44:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1716587045;
-	bh=OaRZEYWqGOOnWQDxBFM0TF55WqnPavGwkPqJDH3YcFU=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=jIf3eBBWnuO7lLDlgALIa2nw+VR9R3vfrsjQYEHBydCz+RptAFUSUwF+s4W8mT1ew
-	 M7TcJm/HTYSet1a4USrkVpXSgjhr08+Q2+d5fx+aWpGsTY/f1Ei8wPkawG+hd9Scms
-	 +A8cb05YSkfpb3SULogvt1bXxpUW2NeR15zLkEWA=
-Received: from DFLE109.ent.ti.com (dfle109.ent.ti.com [10.64.6.30])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44OLi5e4015119
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 24 May 2024 16:44:05 -0500
-Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 24
- May 2024 16:44:05 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE111.ent.ti.com
- (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 24 May 2024 16:44:05 -0500
-Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44OLi5MB093108;
-	Fri, 24 May 2024 16:44:05 -0500
-Message-ID: <2339db0d-db21-4372-808d-8648500e971a@ti.com>
-Date: Fri, 24 May 2024 16:44:05 -0500
+	s=arc-20240116; t=1716645699; c=relaxed/simple;
+	bh=jz9wkc1FMP4qp1PK1KagkY0E2zB1V5eh7JiuozjXfyE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FxfkGyOBpMVHNVIXQrumw8Q9tadJ96wwhaKJJqDo4LkzXL4SBCKoye4I32Br5QpCR73kB1MPFI7+xKI1MEfVoEh9suk+r6yel4PohJ6mNe7MlwOP58QMG3ZzHt+3pdYbgckzi6xFK+AmjYmNhrQqbcrl3V/4h8KeX5m9RKtgs5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C8nbfQTH; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2e724bc466fso83689801fa.3;
+        Sat, 25 May 2024 07:01:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716645696; x=1717250496; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qjIf/Nlt5hfmMgIm9+EKfmLkc5Lr9onDLEUZ7ihTSio=;
+        b=C8nbfQTHijM8OKftU2wzt+GSwbAbdNUaAXmg80F6gfOQYG5/odVM16o9+9uNF1xXg6
+         6bQMk02PrZPdS1M2eCNdO8lBSieM+4ehSNV1Rl/3NUhWIv6MMxOwV6cTht6ryqoJCTL1
+         8fuYEW7LlntNDNYovM4a3dYaRJfujLrXz3cAiR/MO2M5qnDbBwnSz58yt3gdo1HvF7KZ
+         yasdpEusroWdZhiWLXfePGwtJ6UiekL53eiA5puXN77E6cxX8lb14MjHjL8Rq7b41+vG
+         jO7comiCvYa4oWvqSwRqApRHYLXu4aCOnGwavvlf1EgpEZT9TNH0rni+cdElRVDdwPyB
+         uhAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716645696; x=1717250496;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qjIf/Nlt5hfmMgIm9+EKfmLkc5Lr9onDLEUZ7ihTSio=;
+        b=WUKIpQY6Z3QntlJK6wjFW2r7+yPMVIYQJ+bCYkBbqjNcwBuxYQ1pMuEELcj4OimVvf
+         FVLQxQMmicJRboSFFuxE39swTve94qoobULknLhcZ3Th5cvRT5gFX9do2D79/kFFcfIs
+         ZqDpfuG5dROBqFA74py00QzjCHyxeuhe1LtAXIRaPl4ojLsdKqb7B/XXqReziTx3Vb/S
+         UsgDDc923vz/smS9c62YoEz+XboG0hyC8563VSTYiNxWkT5Ol/jy3WkSb2QaVxAwZDak
+         91dWOcu80pTnMGLA4np98r8Fk4HLA7NxcoKENXLArNpt3gvaGXL5imgJcy0wPhO9JzYL
+         Xwmg==
+X-Forwarded-Encrypted: i=1; AJvYcCUgiRSgLA8fS4UCKwcQsjxwSFayNw6cUUqz8TFu45o8Phs5JDq7WB3slMO9WBtWRTOFLG2uvQl5BdsJO7nNqYvgiTVwDukF7R/jYRFFiIrK+oW6++s4digsXgowFjzjV8TelqZNqGxQ
+X-Gm-Message-State: AOJu0YxWmktJD/wL5Md6/TeFo3fMbFQjLVnmMDZ3ys/hwG0uUvEDVzoj
+	/Stkn34Bwg79bZ3NX548BunlmGBAGGHykMaOn9t3MZUnDtVfnTkWs8RkpswbcwpjU4P1EDgXRIh
+	NwiMqIi/S6Pi/yPvYgM5W2MxYT/Y=
+X-Google-Smtp-Source: AGHT+IHy4xNxaHBYuO/6Df4lWzmUbbVJPFJKbyrk49Ry6yefo2WEXYFOcDI9deIszyWdSb6CWPt6cebYXP2Gu8iRLSA=
+X-Received: by 2002:a05:6512:1051:b0:529:a66e:5b52 with SMTP id
+ 2adb3069b0e04-529a66e5bd3mr1852678e87.46.1716645695725; Sat, 25 May 2024
+ 07:01:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/8] dt-bindings: counter: Add new ti,am62-eqep
- compatible
-To: David Lechner <david@lechnology.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon
-	<will@kernel.org>,
-        William Breathitt Gray <william.gray@linaro.org>
-CC: <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        Nishanth Menon
-	<nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>
-References: <20240523231516.545085-1-jm@ti.com>
- <20240523231516.545085-3-jm@ti.com>
- <2956d10b-d2cf-4019-adc8-d8053e435767@lechnology.com>
- <e6a03921-532c-4aa7-92b6-812cd9a356d6@lechnology.com>
-Content-Language: en-US
-From: Judith Mendez <jm@ti.com>
-In-Reply-To: <e6a03921-532c-4aa7-92b6-812cd9a356d6@lechnology.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+References: <SN7PR12MB8101EDFA7F91A59761095A28A4E72@SN7PR12MB8101.namprd12.prod.outlook.com>
+ <59869d5f-3d97-48a2-8a96-127f7b46c0e8@moroto.mountain>
+In-Reply-To: <59869d5f-3d97-48a2-8a96-127f7b46c0e8@moroto.mountain>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Sat, 25 May 2024 17:00:59 +0300
+Message-ID: <CAHp75VcTxXsnKVR5EQYTNhokHeXrOxQPe9gAkWFRr0yZT1KTPA@mail.gmail.com>
+Subject: Re: [PATCH] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S sensor driver
+To: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: oe-kbuild@lists.linux.dev, Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org, 
+	lkp@intel.com, oe-kbuild-all@lists.linux.dev, lars@metafoo.de, 
+	swboyd@chromium.org, nuno.a@analog.com, u.kleine-koenig@pengutronix.de, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	yasin.lee.x@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/24/24 3:57 PM, David Lechner wrote:
-> On 5/24/24 3:50 PM, David Lechner wrote:
->> On 5/23/24 6:15 PM, Judith Mendez wrote:
->>> Add new compatible ti,am62-eqep for TI K3 devices. If a device
->>> uses this compatible, require power-domains property.
->>>
->>> Since there is only one functional and interface clock for eqep,
->>> clock-names is not really required. The clock-name also changed
->>> for TI K3 SoCs so make clock-names optional for the new compatible
->>> since there is only one clock that is routed to the IP.
->>>
->>> While we are here, add an example using ti,am62-eqep compatible.
->>>
->>> Signed-off-by: Judith Mendez <jm@ti.com>
->>> ---
->>> Changes since v1:
->>> - Fix eqep binding for new compatible, require
->>>   power-domains for new compatible
->>> ---
->>>   .../devicetree/bindings/counter/ti-eqep.yaml  | 53 +++++++++++++++++--
->>>   1 file changed, 48 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.yaml b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->>> index 85f1ff83afe72..c4bb0231f166a 100644
->>> --- a/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->>> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->>> @@ -11,7 +11,9 @@ maintainers:
->>>   
->>>   properties:
->>>     compatible:
->>> -    const: ti,am3352-eqep
->>> +    enum:
->>> +      - ti,am3352-eqep
->>> +      - ti,am62-eqep
->>>   
->>>     reg:
->>>       maxItems: 1
->>> @@ -21,19 +23,43 @@ properties:
->>>       maxItems: 1
->>>   
->>>     clocks:
->>> -    description: The clock that determines the SYSCLKOUT rate for the eQEP
->>> -      peripheral.
->>> +    description: The functional and interface clock that determines the clock
->>> +      rate for the eQEP peripheral.
->>>       maxItems: 1
->>>   
->>>     clock-names:
->>> -    const: sysclkout
->>> +    enum:
->>> +      - sysclkout
->>> +      - fck
->>> +
->>
->> If we are making this optional for ti,am62-eqep, why add a new name?
->>
->> Also, we could change the description to say that sysclockout is not a
->> great name but is required for backwards compatibility.
->>
->>> +  power-domains:
->>> +    maxItems: 1
->>> +
->>> +allOf:
->>> +  - if:
->>> +      properties:
->>> +        compatible:
->>> +          contains:
->>> +            enum:
->>> +              - ti,am3352-eqep
->>> +    then:
->>> +      required:
->>> +        - clock-names
-> 
-> I just looked at the Linux driver for this and the clock name is
-> not used in the driver. So we could probably just deprecate the
-> clock-names property here and not make it required for
-> ti,am3352-eqep (and not allowed for any new compatibles as
-> suggested below).
+On Thu, May 23, 2024 at 3:42=E2=80=AFPM Dan Carpenter <dan.carpenter@linaro=
+.org> wrote:
 
-We could do this, although I was under the impression that we should
-not drop DT properties just because the linux driver isn't using it,
-that is why I went with keeping clock-names around for am335x compatible
-and making it optional for am62x compatible.
 
-But if it is all the same, we could drop the the DT property.
+> 5e5a419c9407f6 Yasin Lee 2024-05-10  1110  static ssize_t hx9031as_raw_da=
+ta_show(struct file *file, char __user *user_buf, size_t count, loff_t *ppo=
+s)
+> 5e5a419c9407f6 Yasin Lee 2024-05-10  1111  {
+> 5e5a419c9407f6 Yasin Lee 2024-05-10  1112       char buf[BUF_SIZE] =3D {0=
+};
+> 5e5a419c9407f6 Yasin Lee 2024-05-10  1113       char *p =3D buf;
+> 5e5a419c9407f6 Yasin Lee 2024-05-10  1114       int ii =3D 0;
+> 5e5a419c9407f6 Yasin Lee 2024-05-10  1115
+> 5e5a419c9407f6 Yasin Lee 2024-05-10  1116       hx9031as_sample();
+> 5e5a419c9407f6 Yasin Lee 2024-05-10  1117       for (ii =3D 0; ii < HX903=
+1AS_CH_NUM; ii++) {
+> 5e5a419c9407f6 Yasin Lee 2024-05-10 @1118               p +=3D snprintf(p=
+, PAGE_SIZE, "ch[%d]: DIFF=3D%-8d, RAW=3D%-8d, OFFSET=3D%-8d, BL=3D%-8d, LP=
+=3D%-8d\n",
+>                                                                          =
+^^^^^^^^^
 
-~ Judith
 
-> 
->>
->> What if we just add
->>
->>    else:
->>      clock-names: false
->>
->> since there is only one clock and not worry about the name?
->>
->>> +  - if:
->>> +      properties:
->>> +        compatible:
->>> +          contains:
->>> +            enum:
->>> +              - ti,am62-eqep
->>> +    then:
->>> +      required:
->>> +        - power-domains
->>>   
->>>   required:
->>>     - compatible
->>>     - reg
->>>     - interrupts
->>>     - clocks
->>> -  - clock-names
->>>   
-> 
+> Also use scnprintf() instead of snprintf() unless you need to check the
+> results.
 
+This is incorrect advice. You should recommend sysfs_emit() /
+sysfs_emit_at() in this kind of case.
+
+--=20
+With Best Regards,
+Andy Shevchenko
 

@@ -1,61 +1,64 @@
-Return-Path: <linux-iio+bounces-5287-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5288-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10AE18CF001
-	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 18:07:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B574D8CF00C
+	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 18:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D9C4B2108F
-	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 16:07:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D549C1C20FB4
+	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 16:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B5C84FB3;
-	Sat, 25 May 2024 16:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 685E485942;
+	Sat, 25 May 2024 16:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ooGqySzl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTXP5P9V"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 322B81DFFC
-	for <linux-iio@vger.kernel.org>; Sat, 25 May 2024 16:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2165F39FE5;
+	Sat, 25 May 2024 16:14:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716653245; cv=none; b=Al29sssKOn/1Ye4ggeIjbVv47+4YqQ+gg+3Vh3tKqddoOIz3DZ9IvbCh9qZIyMzmzfQGAoqvlh14aTkRG4O190H/R2hHKABgPBfChI6ZG7EvYzJT5BvXruH9AZZxP7wG+MqnEIAIj+1dLjAggHZEW18bzooOm7yGMrG1y6mkxOY=
+	t=1716653662; cv=none; b=PeDBM+CEmEere4Q8c3qnsy/5LhSkre2sRS7jNJCHai9Ysa8/XpO2VYQmJBB8LR6ucJT20Hl6WbGyHuzsU96h9F8diDYRNvputGKRgIK/r0sE/BO29m/eV4RSNz6apakKyDHcHf+pjKjKNhf/0eP/wgW7mPJru/qSmL6ZYWwWqDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716653245; c=relaxed/simple;
-	bh=Qsk/qa/5fmiuCHqTpS2cPhuLlgGAJMLkK37HHspPWmY=;
+	s=arc-20240116; t=1716653662; c=relaxed/simple;
+	bh=ci3qNCWOEbPWD0A/YQ3B40wpXUPRTgAXrvngcy3/GEQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lGHy9TUTsAAKyschqxyJXww2KtIpvIUmtV2bIrtBTAvWVV9Y+qhjLLss9PZlQU9sXHo7LU8ENMvP3IdZNnBLNLiDKdTxWyUVHz7mNzZQWZyJoLCKBnrX6ZjPfGMhElevHLao6z1GPa5zo1mhfQ3V0hFZo8/icPypglsmM1k+Ox8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ooGqySzl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957A1C2BD11;
-	Sat, 25 May 2024 16:07:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tTB7+FJkMWpbN3+RlcH0lVpVogpI2Li5AJvZUFDpsYXeLQonZPtq6Z4hqD93fi6//byY2KAr7TBslj30RMIYrTNN0ALNNgizXxtdsfHlVT4EvzsCz/lAMjMj/5I0+fODzn/AUpMze3AKy7z8Lr/jmANOFJzmIKx7AYvmldBtMDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTXP5P9V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E0AC2BD11;
+	Sat, 25 May 2024 16:14:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716653244;
-	bh=Qsk/qa/5fmiuCHqTpS2cPhuLlgGAJMLkK37HHspPWmY=;
+	s=k20201202; t=1716653661;
+	bh=ci3qNCWOEbPWD0A/YQ3B40wpXUPRTgAXrvngcy3/GEQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ooGqySzl9UI+rn2DbVwQOCUo4s37XQ5c5AFjaiA++6BvmFNMuHkj1IJBNXf2OzH/A
-	 2szEMwkffOXCkTpSYaNW6i33dNx7UYN3red9uvycqtAQUa9/Hokorzp7/3YglS2E5c
-	 hN+BE0TaRHCJ7PjHcN7PQ2D4j3YPGfLh8WQ886UqLPk/30d09FwcCk+O6eIEEpmTz8
-	 1MxOHgvLRj+bFTRaakDZaS53QJ+Q+1m3oGoGmYPlybfT3KO7b33XyM731omXiM5h55
-	 l2ICvaYGVCUjyzhDS2uP8ETDG6NN/1vnpK2UGtOsluAU1TBVABe2qe2Y7z0FTPdHr7
-	 4DGZimbDVv8ew==
-Date: Sat, 25 May 2024 17:07:11 +0100
+	b=kTXP5P9VpjaWZdTIqoyUp6f+vHrO50Hs52sW1gXFIYwl8+7omYNEX1JspN7sQzwwy
+	 AivUusI9E+mnQ1UbhlFVKFa+wri7IyN5HyYQAJqA0HMJtzRTex9YzF/qqUsaoS7QFJ
+	 lcyzTIQZqi33WHPWRAvdPR94PlZGLaAlFyFZwB+9rIJMvrIRvZMDzFpPEy4TFHTXa7
+	 6f23jkYsbeGphmqW0DqZh5qZnQ3F9kFlUi3FVYQszVStyDMOTOeF69k3i/WdwcjmF8
+	 O1b+LvNStsMfz7AjfEGG5uQgnXCRDScvoZrMVpcbKwXEigVwsQLrMnwQNaDj7eTATA
+	 +NzlA/BLDF5Eg==
+Date: Sat, 25 May 2024 17:14:08 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, INV Git Commit
- <INV.git-commit@tdk.com>, "lars@metafoo.de" <lars@metafoo.de>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: imu: inv_icm42600: add support of accel low-power
- mode
-Message-ID: <20240525170711.30b32904@jic23-huawei>
-In-Reply-To: <FR3P281MB17574BF058BCAC2CE087D154CEEB2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20240507103056.291643-1-inv.git-commit@tdk.com>
-	<20240509141326.00000684@Huawei.com>
-	<FR3P281MB175734C16B7C8F430874A866CEE22@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-	<20240519125253.6a548bc0@jic23-huawei>
-	<FR3P281MB17574BF058BCAC2CE087D154CEEB2@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Julien Stephan <jstephan@baylibre.com>, Esteban Blanc
+ <eblanc@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC 3/4] iio: add support for multiple scan types per
+ channel
+Message-ID: <20240525171408.36bda583@jic23-huawei>
+In-Reply-To: <5cf036d5-1eb3-4f63-82f9-d01b79b7fe47@baylibre.com>
+References: <20240507-iio-add-support-for-multiple-scan-types-v1-0-95ac33ee51e9@baylibre.com>
+	<20240507-iio-add-support-for-multiple-scan-types-v1-3-95ac33ee51e9@baylibre.com>
+	<20240519201241.7c60abac@jic23-huawei>
+	<ebf18ed1-a82f-4c0a-9a63-2c428b5aee40@baylibre.com>
+	<20240520171205.000035b0@Huawei.com>
+	<5cf036d5-1eb3-4f63-82f9-d01b79b7fe47@baylibre.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,192 +66,117 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 22 May 2024 15:35:45 +0000
-Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+On Fri, 24 May 2024 10:56:55 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> Hello Jonathan,
->=20
-> the hardware bias changes (inside calibbias exactly) is due to the
-> noise differences of the 2 modes, introducing a little change in
-> offset (these comes from the MEMS mechanical parts). This change
-> cannot be anticipated sadly.
->=20
-> Most of the time, the low power mode is used for accelerometer, since
-> most used accelerometer features are motion monitoring in the
-> background (pedometer, activity, ...). But high frequencies can be
-> needed for very fast event like tap our double taps on the device.
->=20
-> We could default to low-power mode and switch to low-noise mode
-> automatically only for the high frequencies where it is mandatory.
-> And we could add a sysfs entry like low_noise_mode to enforce
-> low-noise mode for lower frequencies supporting it.
->=20
-> This way traditional userspace can ignore the power_mode setup and
-> use all frequencies. And only specialized userpsace components can
-> set this low_noise_mode to have better noise values for specific use
-> cases. For the hardware bias issue, the high frequency use cases are
-> usually not impacted by the absolute offset, so it should not be a
-> big issue.
->=20
-> Is that OK for you?
+> On 5/20/24 11:12 AM, Jonathan Cameron wrote:
+> > On Mon, 20 May 2024 08:51:52 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >   
+> >> On 5/19/24 2:12 PM, Jonathan Cameron wrote:  
+> >>> On Tue,  7 May 2024 14:02:07 -0500
+> >>> David Lechner <dlechner@baylibre.com> wrote:
+> >>>     
+> >>>> This adds new fields to the iio_channel structure to support multiple
+> >>>> scan types per channel. This is useful for devices that support multiple
+> >>>> resolution modes or other modes that require different data formats of
+> >>>> the raw data.
+> >>>>
+> >>>> To make use of this, drivers can still use the old scan_type field for
+> >>>> the "default" scan type and use the new scan_type_ext field for any
+> >>>> additional scan types.    
+> >>>
+> >>> Comment inline says that you should commit scan_type if scan_type_ext
+> >>> is provided.  That makes sense to me rather that a default no one reads.
+> >>>
+> >>> The example that follows in patch 4 uses both the scan_type and
+> >>> the scan_type_ext which is even more confusing.
+> >>>     
+> >>>> And they must implement the new callback
+> >>>> get_current_scan_type() to return the current scan type based on the
+> >>>> current state of the device.
+> >>>>
+> >>>> The buffer code is the only code in the IIO core code that is using the
+> >>>> scan_type field. This patch updates the buffer code to use the new
+> >>>> iio_channel_validate_scan_type() function to ensure it is returning the
+> >>>> correct scan type for the current state of the device when reading the
+> >>>> sysfs attributes. The buffer validation code is also update to validate
+> >>>> any additional scan types that are set in the scan_type_ext field. Part
+> >>>> of that code is refactored to a new function to avoid duplication.
+> >>>>
+> >>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> >>>> ---    
+> >>>     
+> >>>> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> >>>> index 19de573a944a..66f0b4c68f53 100644
+> >>>> --- a/include/linux/iio/iio.h
+> >>>> +++ b/include/linux/iio/iio.h
+> >>>> @@ -205,6 +205,9 @@ struct iio_scan_type {
+> >>>>   * @scan_index:		Monotonic index to give ordering in scans when read
+> >>>>   *			from a buffer.
+> >>>>   * @scan_type:		struct describing the scan type
+> >>>> + * @ext_scan_type:	Used in rare cases where there is more than one scan
+> >>>> + *			format for a channel. When this is used, omit scan_type.    
+> >>>
+> >>> Here is the disagreement with the patch description.
+> >>>     
+> >>>> + * @num_ext_scan_type:	Number of elements in ext_scan_type.
+> >>>>   * @info_mask_separate: What information is to be exported that is specific to
+> >>>>   *			this channel.
+> >>>>   * @info_mask_separate_available: What availability information is to be
+> >>>> @@ -256,6 +259,8 @@ struct iio_chan_spec {
+> >>>>  	unsigned long		address;
+> >>>>  	int			scan_index;
+> >>>>  	struct iio_scan_type scan_type;
+> >>>> +	const struct iio_scan_type *ext_scan_type;
+> >>>> +	unsigned int		num_ext_scan_type;    
+> >>>
+> >>> Let's make it explicit that you can't do both.
+> >>>
+> >>> 	union {
+> >>> 		struct iio_scan_type scan_type;
+> >>> 		struct {
+> >>> 			const struct iio_scan_type *ext_scan_type;
+> >>> 			unsigned int num_ext_scan_type;
+> >>> 		};
+> >>> 	};
+> >>> should work for that I think.
+> >>>
+> >>> However this is I think only used for validation. If that's the case
+> >>> do we care about values not in use?  Can we move the validation to
+> >>> be runtime if the get_current_scan_type() callback is used.    
+> >>
+> >> I like the suggestion of the union to use one or the other. But I'm not
+> >> sure I understand the comments about validation.
+> >>
+> >> If you are referring to iio_channel_validate_scan_type(), it only checks
+> >> for programmer error of realbits > storagebits, so it seems better to
+> >> keep it where it is to fail as early as possible.  
+> > 
+> > That requires the possible scan masks to be listed here but there is
+> > nothing enforcing the callback returning one from here.  Maybe make it
+> > return an index instead?
+> >   
+> 
+> Sorry, still not understanding what we are trying to catch here. Why
+> would the scan mask have any effect of checking if realbits > storagebits?
+Hmm. I seem to be failing to explain this!  Key is the complete lack of
+association between what is returned by the get_current_scan_type() callback
+and this ext_scan_type array.
 
-The part about defaulting to low power mode where possible on basis
-that's what is normally wanted makes sense.
+So either:
+1) Make it do so - easiest being to return an index into the array rather than
+   a possibly unrelated scan_type - that would guarantee the scan_type returned
+   by the callback was one that has been validated.
+or
+2) Drop validation at initial probe because you are validating something
+   that is irrelevant to what actually gets returned later. Validate
+   when the scan type is read back via get_current_scan_type()
 
-A low_noise_mode switch for special users is a reasonable compromise
-I think, but let's see if we get other replies on this or on a patch
-implementing the above.
-
-Jonathan
-
->=20
-> Thanks,
-> JB
->=20
-> ________________________________________
-> From:=C2=A0Jonathan Cameron <jic23@kernel.org>
-> Sent:=C2=A0Sunday, May 19, 2024 13:52
-> To:=C2=A0Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-> Cc:=C2=A0Jonathan Cameron <Jonathan.Cameron@Huawei.com>; INV Git Commit
-> <INV.git-commit@tdk.com>; lars@metafoo.de <lars@metafoo.de>;
-> linux-iio@vger.kernel.org <linux-iio@vger.kernel.org> Subject:=C2=A0Re:
-> [PATCH] iio: imu: inv_icm42600: add support of accel low-power mode
-> This Message Is From an External Sender This message came from
-> outside your organization.=20
-> On Mon, 13 May 2024 09:18:34 +0000
-> Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
->=20
-> > Hello Jonathan,
-> >=20
-> > sorry for the patch malformation, I will send a V2 fixed.
-> >=20
-> > Our chips have usually 2 working modes called "low-noise" and
-> > "low-power".
-> >=20
-> > "Low-noise" is the standard mode where the chip (ADC/MEMS) runs
-> > continuously with high precision oscillator. Measures are the best
-> > with the less jitter (low noise), you can use the highest possible
-> > frequencies (> 500Hz), but power consumption is high, and you
-> > cannot use the lowest frequencies (< 12.5Hz).
-> >=20
-> > "Low-power" is duty cycling the chip, turning ADC and MEMS on only
-> > when measuring and then turns it off. Power consumption is then
-> > much lower (low power), you can use the lowest frequencies (<
-> > 12.5Hz), but measures have more jitter, and you cannot use the
-> > highest frequencies.
-> >=20
-> > Depending on the use case, you may prefer to have the "low-noise"
-> > mode with better measures and high frequencies, or the "low-power"
-> > mode with less power consumption and low frequencies. The main
-> > point is the frequencies availability depending on the power mode.
-> >=20
-> > We could have the driver switching automatically from low-noise to
-> > low-power to support all possible frequencies, but we need to
-> > arbitrary choose the mode for the common frequencies, and the
-> > configured hardware bias in bias registers are not the same
-> > depending on the power mode. We prefer handling all this from
-> > userspace, switching the mode when needed depending on the use case
-> > and dealing with the 2 sets of hardware bias depending on the modes.
-> >=20
-> > I hope I am clear enough with my description.
-> >  =20
->=20
-> Whilst I understand the motivation, the problem with this is that
-> most userspace software will have no idea what these controls do. It
-> is very challenging to provide enough discoverability to userspace
-> because these modes tend to have weird and wonderful side effects
-> (e.g. the hardware bias here).
->=20
-> So I'd very strongly suggest at least a 'default' option to figure it
-> out from the requested frequencies probably defaulting to low noise
-> on the common frequencies
-> - "when in doubt give the best possible data".=20
->=20
-> With that in place, I'd be more likely to be persuaded of the need
-> for a 'tweak' bit of custom ABI that overrides this automatic
-> parameter setting. Thus things would work as well as possible for
-> normal software, and advanced software, by which I mean your
-> userspace stack, would have access to a way to bias the low power /
-> low noise decision in the common frequencies.
->=20
-> The sticky bit here is that hardware bias. I'm assuming that is what
-> we are controlling via calibbias?  If so is there any sane way to
-> relate the two sets of bias values?
-> Normally (I think) that stuff is about fixing variability in the
-> analog signal part of the device, so I'd expect any change in value
-> to be predictable unless there is something odd going on with digital
-> filtering perhaps?
->=20
-> Finally I do wonder how often people use those mid frequencies where
-> there is a direct choice.  In broad terms the reason for low power is
-> to do detection of background stuff - screen rotation etc in which
-> case they'd also pick low frequency to save even more power. The low
-> noise modes are for when the precise data matters a lot more and
-> those tend to also need at least moderately high sampling rates
-> because people are typically running some sensor fusion on top and
-> accurate data but at low frequency is usually no good for that unless
-> you know something is mechanically filtering the motion (i.e it's
-> fine on measuring shaft rotation on something with lots of inertial,
-> not so much human motion).
->=20
-> Jonathan
->=20
-> > Thanks,
-> > JB
-> >=20
-> >=20
-> >=20
-> > ________________________________________
-> > From:=C2=A0Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> > Sent:=C2=A0Thursday, May 9, 2024 15:13
-> > To:=C2=A0INV Git Commit <INV.git-commit@tdk.com>
-> > Cc:=C2=A0jic23@kernel.org <jic23@kernel.org>; lars@metafoo.de
-> > <lars@metafoo.de>; linux-iio@vger.kernel.org
-> > <linux-iio@vger.kernel.org>; Jean-Baptiste Maneyrol
-> > <Jean-Baptiste.Maneyrol@tdk.com> Subject:=C2=A0Re: [PATCH] iio: imu:
-> > inv_icm42600: add support of accel low-power mode This Message Is
-> > From an External Sender This message came from outside your
-> > organization. On Tue,  7 May 2024 10:30:56 +0000
-> > inv.git-commit@tdk.com wrote:
-> >  =20
-> > > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> > >=20
-> > > Add channel attributes "power_mode" and "power_mode_available" for
-> > > setting accel power mode (low-noise or low-power).
-> > >=20
-> > > Differents ODRs and filter are possible depending on the power
-> > > mode. Thus make ODRs and filter dynamic and check values when
-> > > applying.   =20
-> > Hi Jean-Baptiste
-> >=20
-> > No Sign-off?
-> >=20
-> > We have never provided this sort of control because it's near
-> > impossible for user space to know what to do with it.
-> >=20
-> > Various attempts happened in the past to provide enough info
-> > to userspace, but didn't succeed because what low power means
-> > is incredibly chip dependent.  As a general rule everyone wants
-> > low power, but at 0 perf cost :)
-> >=20
-> > What are the results of low power mode? Normally it maps as
-> > something we can enable when some other set of states is set or
-> > automatically control based on how often the device is being
-> > accessed etc.
-> >=20
-> > For example, what do we loose by choosing this mode for everything
-> > below 200Hz?
-> >=20
-> > I see there is some reference to 'low noise' - what does that
-> > actually mean for this device? Is it oversampling or running lower
-> > resolution on the ADCs?  If so those are the things to look at as
-> > ways to control this.  Choose lowest power to meet a given set of
-> > requirements.
-> >=20
-> > Jonathan =20
->=20
+I prefer option 1.
+> 
 
 

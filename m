@@ -1,59 +1,63 @@
-Return-Path: <linux-iio+bounces-5289-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5290-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CCDE8CF013
-	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 18:19:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A2D8CF01D
+	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 18:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9EFE01C20F39
-	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 16:19:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEBAC1C20E1A
+	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 16:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B93C68595A;
-	Sat, 25 May 2024 16:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7F308593B;
+	Sat, 25 May 2024 16:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="trIbj26K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="obBvJa60"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A9058ABC;
-	Sat, 25 May 2024 16:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6109473;
+	Sat, 25 May 2024 16:35:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716653976; cv=none; b=oB8gH1uuRqPCF46gPVKTEhv06AwIg5biDIEGDU2RtlLJeP2U5RxlkpI8l6Wn3PZtWOehx3ECwAgGDUZ+INOnmlo1yaHL3yTsxqfDZgSc2iG4qZP61/8WRcukVdxOw7tMizDdg7TRV3u02R4SOZEnjcnnJ5k1KNgrb9n8cm8mr9k=
+	t=1716654950; cv=none; b=ePWI/CREhpm91UM7BGZfqr71dBcAe07NuWnRd2jo8AF4Cx2uujyRkeOVkElPL3pVQG3xk4PmkDBv62X1NnrPz6aOzkLNLQuj0C/Uz3MxoiFOZUVp3UnCkeY2n8Yma9O+zK84AwJRt2coAub5QxYIyFavm5bRjb4gcBU723kRFJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716653976; c=relaxed/simple;
-	bh=DqBxfVMDTtQnFRu/56CssttbGbxLKTGzD2Ic2RIAcxY=;
+	s=arc-20240116; t=1716654950; c=relaxed/simple;
+	bh=Sqqz1FjK+oJdzV4g2FjKietB7+W/O0D+oOGIlfRmPMI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F5eDaiL/j5uKEoJlXvr8CkM7ChWkWvym8Q8Lx0J0yyhyw2jbLRP1ILyFJ9rAuL+o+JfWs2IqW7+Pxxnz0drzV40lsdUzDoa0dXYa0XhBNGygLiKHKy1KdaOnvrxOhxEc84YzAyvsSwclSxmmGu9QMfu9Sokk7uTq1sdyaFz2WpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=trIbj26K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EFAC2BD11;
-	Sat, 25 May 2024 16:19:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t5TJfiV24G5SayPjcUFjX3+URV4NLsWUgtVpOVH0DRrpp9ScnvXVrCZmrhXx7HcJA+XwYNDNSXvJSuVcqtKThFK8i6+tlg+BWoGCsvTyfmcFvITm7+5z0Y5plmIKWZYfitO6FFkVv5noH7eqmTllZTNY/ZGq5p00RNEFPpWhniY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=obBvJa60; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2200C2BD11;
+	Sat, 25 May 2024 16:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716653976;
-	bh=DqBxfVMDTtQnFRu/56CssttbGbxLKTGzD2Ic2RIAcxY=;
+	s=k20201202; t=1716654949;
+	bh=Sqqz1FjK+oJdzV4g2FjKietB7+W/O0D+oOGIlfRmPMI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=trIbj26KDRTFngfSwrAoTXCdJ8vQRM+Kj9EEgvwY3YAawrHomLA5pkmqwYeyKOSPn
-	 +kXPIjQ7F55odO6Pt8qUFOT2M0kQNyOOcEJkDkw0wWE/WJ19NqXsrVqfSJ7BDUgncA
-	 KwkZQtRB0jqv6wiym5uOsSh2RcTEL9OTnMTAJQGF+1LNbL2aXgcUiGSTk3YMcQFFPr
-	 T7QUKQxdpmjTvARY7KvRX/8cZ5akqL+OpFGdrDaCy5XfRpI0ZShoHQRx5oZQQnY7EW
-	 s0tuhHWl10ROPiBwk7oKkaD/innTmlG7GBvZgWnpZgkgO7IWDLXgohWnVzM/Wc60s7
-	 pbmAdTOKeG29g==
-Date: Sat, 25 May 2024 17:19:22 +0100
+	b=obBvJa60w7bIvZhP5zGUyHSOKm1zYl+fQcZpLIlXCimrlFMbS1hJfE/jBznPoMgzN
+	 gOpONnT4wZJ7Z8wOMexRxewOt2rSgM6VOjVMse7kkhujZ7EdaRjgCPRehpvy+eCNVe
+	 CmXL2RNiEbK5plhmTZfyVJ0UW2hPddmseEPsF3/4ZS0fnkNskMjaqKdtHKvLCrVM4i
+	 k8d+Vrc4jOt0cUk4dzSQZZc9TDzCGF3e85J8rn0ONdrwZfvWQ/nqp1YnqBHPBEmw0g
+	 jQPwCVTwRQmAbn0soiQUFIVCs+iaFYYLTHN9kRMWKBGbyJ6z9CH2oQiGkUp09WGEUi
+	 w5p/D6kJi7QSQ==
+Date: Sat, 25 May 2024 17:35:31 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: David Lechner <dlechner@baylibre.com>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Julien Stephan <jstephan@baylibre.com>, Esteban Blanc
- <eblanc@baylibre.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 0/4] iio: add support for multiple scan types
-Message-ID: <20240525171922.58974617@jic23-huawei>
-In-Reply-To: <e1277a004b5aef8e6b407089ac1e3df6ff6fee50.camel@gmail.com>
-References: <20240507-iio-add-support-for-multiple-scan-types-v1-0-95ac33ee51e9@baylibre.com>
-	<e1277a004b5aef8e6b407089ac1e3df6ff6fee50.camel@gmail.com>
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: andy@kernel.org, Jonathan.Cameron@huawei.com, alisa.roman@analog.com,
+ bigunclemax@gmail.com, broonie@kernel.org, conor+dt@kernel.org,
+ devicetree@vger.kernel.org, dlechner@baylibre.com, fr0st61te@gmail.com,
+ krzysztof.kozlowski+dt@linaro.org, lars@metafoo.de, lgirdwood@gmail.com,
+ liambeguin@gmail.com, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, marcelo.schmitt@analog.com,
+ marcus.folkesson@gmail.com, michael.hennerich@analog.com,
+ nuno.sa@analog.com, okan.sahin@analog.com, robh@kernel.org,
+ schnelle@linux.ibm.com
+Subject: Re: [PATCH] fix
+Message-ID: <20240525173515.02b38d7a@jic23-huawei>
+In-Reply-To: <20240522095023.35189-1-alisa.roman@analog.com>
+References: <ZktB5Ex5oQ2E45QR@smile.fi.intel.com>
+	<20240522095023.35189-1-alisa.roman@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,37 +65,58 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 21 May 2024 11:18:24 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
+On Wed, 22 May 2024 12:50:23 +0300
+Alisa-Dariana Roman <alisadariana@gmail.com> wrote:
 
-> On Tue, 2024-05-07 at 14:02 -0500, David Lechner wrote:
-> > Following up from this thread [1]...
-> >=20
-> > Unless I've overlooked something important, I think adding support for
-> > multiple scan types per channels should be rather trivial, at least in
-> > the kernel. Userspace tools will need to learn to re-read buffer _type
-> > attributes though. For example, it looks like libiio caches these value=
-s.
-> > I had to restart iiod to get a proper capture with the iio-oscilloscope
-> > after changing the scan type at runtime. =20
->=20
-> No for now but to add more future fun, we may consider in having something
-> similar as hwmon [1]. Hence, userspace could do things like poll(2) on the
-> specific file rather than having to read it over and over...
->=20
-> [1]: https://elixir.bootlin.com/linux/latest/source/drivers/hwmon/hwmon.c=
-#L649
-> - Nuno S=C3=A1
->=20
+> ---
+> 
+> Would this fix be alright, since writing something like if(!ret) may be
+> confusing?
+> 
+Looks fine to me. Squashed into original commit that I messed up.
 
-It would take a well reasoned usecase to convince me sysfs notifications
-are useful in cases where an explicit userspace action caused the value that
-would be read from another file to change immediately.
+Thanks for sorting this out.
 
 Jonathan
 
+> And regarding the comment, my bad, there is nothing wrong there.
+> 
+>  drivers/iio/adc/ad7192.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+> index 101afce49378..0789121236d6 100644
+> --- a/drivers/iio/adc/ad7192.c
+> +++ b/drivers/iio/adc/ad7192.c
+> @@ -1101,14 +1101,12 @@ static int ad7194_parse_channels(struct iio_dev *indio_dev)
+>  		ret = fwnode_property_read_u32_array(child, "diff-channels",
+>  						     ain, ARRAY_SIZE(ain));
+>  		if (ret == 0) {
+> -			ret = ad7194_validate_ain_channel(dev, ain[0]);
+> -			if (ret)
+> +			if (!ad7194_validate_ain_channel(dev, ain[0]))
+>  				return dev_err_probe(dev, -EINVAL,
+>  						     "Invalid AIN channel: %u\n",
+>  						     ain[0]);
+>  
+> -			ret = ad7194_validate_ain_channel(dev, ain[1]);
+> -			if (ret)
+> +			if (!ad7194_validate_ain_channel(dev, ain[1]))
+>  				return dev_err_probe(dev, -EINVAL,
+>  						     "Invalid AIN channel: %u\n",
+>  						     ain[1]);
+> @@ -1125,8 +1123,7 @@ static int ad7194_parse_channels(struct iio_dev *indio_dev)
+>  				return dev_err_probe(dev, ret,
+>  						     "Missing channel property\n");
+>  
+> -			ret = ad7194_validate_ain_channel(dev, ain[0]);
+> -			if (ret)
+> +			if (!ad7194_validate_ain_channel(dev, ain[0]))
+>  				return dev_err_probe(dev, -EINVAL,
+>  						     "Invalid AIN channel: %u\n",
+>  						     ain[0]);
 
 

@@ -1,165 +1,106 @@
-Return-Path: <linux-iio+bounces-5293-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5294-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C258CF039
-	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 18:49:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0DA18CF03B
+	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 18:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22C441C20FCA
-	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 16:49:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D23A71C20CA8
+	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 16:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78E4D8626A;
-	Sat, 25 May 2024 16:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA4B8626D;
+	Sat, 25 May 2024 16:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dNF0lNsd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tPQhskNU"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC7DF4FC;
-	Sat, 25 May 2024 16:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C133186266;
+	Sat, 25 May 2024 16:50:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716655786; cv=none; b=ADZjUI8WbmyklxyP3fgd80n4DLB6kou76K01GSo3BQcLixM+oBLv63gYlArbVK7yuxuFQ+DcOKsz3jI0YTtCURO+kRsWCuuGzGEKQAdv5DvrWbU4WT4wb4rc2nnmCMTeYRVItq/13zazJ+HK8ZvF66497Ch2HoT1O0DDasxGWxA=
+	t=1716655811; cv=none; b=e5Tfmii/yj2LSmBume2/LHk4q3KaiKh/EumlIgRC036gtH9PBRd90FQSykGHTh/MdcvjqR5P8B3jQiuvGNGMvWHxDZQ2A9ZYJPYF+tVu0+Je1uw8bz8snDhEiYGn+V3OUbRe0e3myy6v+vNwRpd33kQnr+faKEdGnx+8E46hNdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716655786; c=relaxed/simple;
-	bh=g+GXgokgnraVNmt3XZgsH3MhDJt6PYQpo8++yls+FPY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KSJeY3u+Z/BgbETpi8sbpwZBz1lzVCTmIfeqDgAtYOsHPPpgDfHgVx7FVeDghD29pKFICu1rpsceUHWbThdm9gnMeQVpl5K9m3fSQLA5GgiV/8vrsIl8/1dV730aURctehzDagmJWKHD6Mgm3x7q7qjr3xSh1kL/wLItYWJxlgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dNF0lNsd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79CC6C2BD11;
-	Sat, 25 May 2024 16:49:41 +0000 (UTC)
+	s=arc-20240116; t=1716655811; c=relaxed/simple;
+	bh=Po64BNOAPUavZBRJmgyfjlSNPwIFCHAhQsnCckyFKU4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=clL3eteyQKLnhHr5iyGdAamNXnvvU9mnZ3w51j4PssNEtw5n7X00WFfIS8mXDXqeMmpZMyWiLyxVIB5H7gYpCsshAiE/0h4p290kOJSKrRMwn7MZqrumZtNCrLbGo6pse5LVnCOuOwi6jHRRGd4N7jtQJuJGhlqr0CUPZzdyrWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tPQhskNU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6549AC2BD11;
+	Sat, 25 May 2024 16:50:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716655785;
-	bh=g+GXgokgnraVNmt3XZgsH3MhDJt6PYQpo8++yls+FPY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=dNF0lNsdI+Ta3HpHd/zBBT97KoC/Qqxoci7phyESv1VGXzw+2dV7vcH1IuoK/0Yyp
-	 LF9LvR4/YTlzY0iMuDeR6Oz+2fNdHoQTC4Y3x4El8bV0wK3LfDM42ImoKlOEQ1Qzqh
-	 N08ZbdzTx9xXhKN6Dfb1kmaoV1dViDQQ93+RpN+Xfy+ofVsFd9MoikyUC6l0AI9OsC
-	 d4GFSCJNdZ3NIa+4eCekK2rLrx/5aFlH4SaqwmvP6dew49xw0MaVIgoSsGeZbwuWq/
-	 EgsDG0js+6yZw2TgdWVEcq2tCWEt/7vhLVS09hAgMu2oio9neRJ9xo+39XvRFZaCvi
-	 RhbrSZpeDEQcg==
-Message-ID: <65019fa4-9e69-43b5-ac6c-c7607486cf69@kernel.org>
-Date: Sat, 25 May 2024 18:49:39 +0200
+	s=k20201202; t=1716655811;
+	bh=Po64BNOAPUavZBRJmgyfjlSNPwIFCHAhQsnCckyFKU4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=tPQhskNUKJCic0LwAzTxOQ+gLsCvqnMAKxFCkTnQq8HcM2CRaOijTnBxo7fO8blY0
+	 jHLpLgPCiygf4KWVkMEoNWhhUBj6Arale/X/bhKb484kjGQi/WklG37Zlv4wbV4W+5
+	 olnOF7wA4Q7jUof+mJihF57ZYLcXvaIetyo1SG4w/4sCq5yIx2gU7JjhlkvAD6hnZ8
+	 MjMGvHhS3NGfohGawlVEnyC00SZbR9nX2/oripYRtsUpsTjHmd5RKrUp5cWrzmyAia
+	 5pDkIghOBb1crqaCdlmCBRoEPLlv8OFKuW7amQDLVomP46pcEbiGH/ZFXFeF6mL5Ck
+	 XFODvBENXTqxQ==
+Date: Sat, 25 May 2024 17:50:00 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: =?UTF-8?B?QmFybmFiw6FzIEN6w6ltw6Fu?= <trabarni@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Add support for more stk3311 variant
+Message-ID: <20240525175000.7a448cf6@jic23-huawei>
+In-Reply-To: <20240521-stk3311-v1-0-07a4966b355a@gmail.com>
+References: <20240521-stk3311-v1-0-07a4966b355a@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] dt-bindings: iio: dac: Add adi,ltc2664.yaml
-To: "Paller, Kim Seer" <KimSeer.Paller@analog.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Dimitri Fedrau <dima.fedrau@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "Hennerich, Michael" <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
-References: <20240523031909.19427-1-kimseer.paller@analog.com>
- <20240523031909.19427-4-kimseer.paller@analog.com>
- <d1c3dd0c-9f24-4d0f-b15a-b727522a9662@kernel.org>
- <PH0PR03MB71411D6F23D918723B9A5DA7F9F52@PH0PR03MB7141.namprd03.prod.outlook.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <PH0PR03MB71411D6F23D918723B9A5DA7F9F52@PH0PR03MB7141.namprd03.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-On 24/05/2024 08:28, Paller, Kim Seer wrote:
-> 
->> -----Original Message-----
->> From: Krzysztof Kozlowski <krzk@kernel.org>
->> Sent: Thursday, May 23, 2024 2:40 PM
->> To: Paller, Kim Seer <KimSeer.Paller@analog.com>; linux-
->> kernel@vger.kernel.org; linux-iio@vger.kernel.org; devicetree@vger.kernel.org
->> Cc: Jonathan Cameron <jic23@kernel.org>; David Lechner
->> <dlechner@baylibre.com>; Lars-Peter Clausen <lars@metafoo.de>; Liam
->> Girdwood <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
->> Dimitri Fedrau <dima.fedrau@gmail.com>; Krzysztof Kozlowski
->> <krzk+dt@kernel.org>; Rob Herring <robh@kernel.org>; Conor Dooley
->> <conor+dt@kernel.org>; Hennerich, Michael
->> <Michael.Hennerich@analog.com>; Nuno Sá <noname.nuno@gmail.com>
->> Subject: Re: [PATCH v2 3/5] dt-bindings: iio: dac: Add adi,ltc2664.yaml
->>
->> [External]
->>
->> On 23/05/2024 05:19, Kim Seer Paller wrote:
->>> Add documentation for ltc2664.
->>>
->>
->>
->>> +
->>> +  ref-supply:
->>> +    description:
->>> +      Reference Input/Output. The voltage at the REF pin sets the full-scale
->>> +      range of all channels. If not provided the internal reference is used and
->>> +      also provided on the VREF pin.
->>> +
->>> +  clr-gpios:
->>> +    description:
->>> +      Active-low Asynchronous Clear Input. A logic low at this level-triggered
->>> +      input clears the part to the reset code and range determined by the
->>> +      hardwired option chosen using the MSPAN pins. The control registers are
->>> +      cleared to zero.
->>
->> So this is a reset gpio?
-> 
-> Yes, this is a reset gpio.
+On Tue, 21 May 2024 17:34:50 +0200
+Barnab=C3=A1s Cz=C3=A9m=C3=A1n <trabarni@gmail.com> wrote:
 
-Then call it that - reset-gpios (see gpio-consumer-common).
+> This patch series remove probe failing when a compatible variant's chip i=
+d is not
+> defined in the driver like stk3311-a and make chip id additions easier.
+> It adds stk3311-a and stk3311-s34 chip ids.
+>=20
+> I have tested stk3311-a in Xiaomi Redmi S2 (ysl) and Xiaom Redmi 5
+> (rosy),
+> it has 0x15 as chip id.
+>=20
+> stk3311-s34 chip id comes from this thread it should be compatible with
+> this driver:
+> https://lore.kernel.org/linux-iio/20200703194406.110855-1-megous@megous.c=
+om/
+>=20
+> Signed-off-by: Barnab=C3=A1s Cz=C3=A9m=C3=A1n <trabarni@gmail.com>
+Nice small and well presented series.  Thanks!
 
-Best regards,
-Krzysztof
+Applied to the togreg branch of iio.git.  Note I'll rebase that on rc1 in a=
+ day
+or two and it will initially just be pushed out a testing for 0-day to
+see if it can find anythign we missed.
+
+Thanks,
+
+Jonathan
+
+> ---
+> Barnab=C3=A1s Cz=C3=A9m=C3=A1n (3):
+>       iio: light: stk3310: relax failure to match id
+>       iio: light: stk3310: make chip id check expandable
+>       iio: light: stk3310: support more stk3311 variants
+>=20
+>  drivers/iio/light/stk3310.c | 31 ++++++++++++++++++++++++-------
+>  1 file changed, 24 insertions(+), 7 deletions(-)
+> ---
+> base-commit: 124cfbcd6d185d4f50be02d5f5afe61578916773
+> change-id: 20240521-stk3311-2ee6ddafb970
+>=20
+> Best regards,
 
 

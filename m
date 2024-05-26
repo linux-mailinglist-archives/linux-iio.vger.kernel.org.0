@@ -1,200 +1,276 @@
-Return-Path: <linux-iio+bounces-5308-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5309-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 065218CF2DD
-	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 10:43:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD768CF42C
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 14:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98B5C1F21205
-	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 08:43:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935091F217D9
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 12:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EF468BEE;
-	Sun, 26 May 2024 08:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AEFD266;
+	Sun, 26 May 2024 12:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="HBMmJm0O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKDr8sDO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC667AD51;
-	Sun, 26 May 2024 08:43:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80623C129;
+	Sun, 26 May 2024 12:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716713018; cv=none; b=vFGTceK8oIGsctIyYTpjMShg1v6lTUgAl5BwXegTS/cX1cbUC50NzaGWxqhOy3+G46CZRRBPLdo9EVPb1Dl/FWBVnD8VbCcCdOCp67NS/pemQ/EFeatEwfcl4dVXKIrkuAE7772iuSz4EtE4J1pHVc4QSV7ARUO2bMHMCW2eZbM=
+	t=1716725466; cv=none; b=vFwWpzRaZX/KlhQVRNuXwSBOzYIaUY/rjavu2wZVWi4fMmp2dVbiNlp9V4WafYO3tCu+5TWgIUBGecxwewsiPlII/Sq6KLsk5WL7KQhX1l+jrZET93saPV6CwFvd1JqzcrZVdC+tG5boHZoASDH5j11nwn/8q5Z7o98ci0mIhUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716713018; c=relaxed/simple;
-	bh=rqls52QsTwTEMqEaclSyHk4FQVIg+A9t4zcX9jS+Wkc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DxzC53Awe6jDiSLPPJUMBodhYQae0NGBqy78so++dWE8S1SlKBKMK8xql2i+UgyG/W1J5+uZ0VP1Rot8xImPDmBqAkFEQDkva6XKLguh+uNXocFJdssbOgEC7k5ALrdrGHngJXO+H9A9+4Gm8PHPlwjBW0NyHMuowWMF5UyNedQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=HBMmJm0O; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-X-Virus-Scanned: SPAM Filter at disroot.org
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1716712619; bh=rqls52QsTwTEMqEaclSyHk4FQVIg+A9t4zcX9jS+Wkc=;
-	h=From:To:Cc:Subject:Date;
-	b=HBMmJm0ODLLNIJN+VPFgjz6u+qJhZmF9pg3DCDhNVBveoT6Zz/N0dnW6DED5f60r5
-	 9QMGA6isdveZeEXbmsA91DPTPOPpP5hxOPqmMVqSXKQg0V0ItIkTmCf5U03wQjMfs6
-	 TjtAQTZLorRkX0w3SakLYm8QpOCeI/UMir/jiC45mr3cbYY6NaBc3HUVej698SeHJJ
-	 ZMJeT3WKJX1EuFRfJjdGVYJoIO5AId9y+kmkbfTlpEN9aaA6oJtX3KDO+f+1CQLPS9
-	 /wLt7hV4lgzDncvysm7kAaMI6nELJX1f8DW9HMkacUcIrP2tN+RN/snQ6vy2Ip3KXV
-	 QPxw8d71CSgcg==
-To: linux-iio@vger.kernel.org,
-	jic23@kernel.org,
-	denis.ciocca@st.com
-Cc: devicetree@vger.kernel.org,
-	linus.walleij@linaro.org,
-	robh+dt@kernel.org,
-	kauschluss@disroot.org
-Subject: [PATCH] iio: accel: st_accel: add LIS2DS12
-Date: Sun, 26 May 2024 14:03:02 +0530
-Message-ID: <20240526083302.87172-1-kauschluss@disroot.org>
+	s=arc-20240116; t=1716725466; c=relaxed/simple;
+	bh=yxbwdeN2PxOOqOT+5MlpJZncAZLYV0mSBdHIDQMdQYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=u0IiobFHvoCabloubo2HSDUWOjiYiekUow7qWj5Fcd6V1tna3i9Pr4rDYcrJEVFQ2fuuvHU5WAYuTIyhIZH5GPIB2rB5xc9cR3dwmZVgZmMJsMoCRA00i5oQYQSZ0R1Qbvp+tVm0gKwX+SBc7rA3VsGuPi8Hw51EpR6UuX08So0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKDr8sDO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE04C32782;
+	Sun, 26 May 2024 12:10:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716725466;
+	bh=yxbwdeN2PxOOqOT+5MlpJZncAZLYV0mSBdHIDQMdQYc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dKDr8sDOduDKwIX6vlohITrFLG+PK9X4u+UDxseik1BmHh9y4YT1xgaNuC1EZMMWj
+	 MbEHyO9bzJKJNMCdrxZHFj0O3dsIJ9XaeIrz0lXf/ftJBJMIbpQ43jo2o8hz0b7qd3
+	 lMb5QVrXHLx0NP8gj8er3hi9wz+aZLF6uq7zLGYJ8zyJTX5ZvZgPQo2fwiCURB/mDk
+	 FwFn96/7Fgwg4sgNZRWqfzJlyjOzlHJzWWMww7mfg6VSL/W2BS95lrz+ZdtRXt1+zP
+	 4rx072GpLSosfansU+u1ksfkNNXoUtrAgUUNQujLXECi7gn8brAVKw/KFfqPLRmG6L
+	 yO82VBWJpuhIQ==
+Date: Sun, 26 May 2024 13:10:18 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Julien Stephan <jstephan@baylibre.com>, Esteban Blanc
+ <eblanc@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC 3/4] iio: add support for multiple scan types per
+ channel
+Message-ID: <20240526131018.40c772d6@jic23-huawei>
+In-Reply-To: <003d0998-dd25-45ab-9bb1-feda2d0f91a3@baylibre.com>
+References: <20240507-iio-add-support-for-multiple-scan-types-v1-0-95ac33ee51e9@baylibre.com>
+	<20240507-iio-add-support-for-multiple-scan-types-v1-3-95ac33ee51e9@baylibre.com>
+	<20240519201241.7c60abac@jic23-huawei>
+	<ebf18ed1-a82f-4c0a-9a63-2c428b5aee40@baylibre.com>
+	<20240520171205.000035b0@Huawei.com>
+	<5cf036d5-1eb3-4f63-82f9-d01b79b7fe47@baylibre.com>
+	<20240525171408.36bda583@jic23-huawei>
+	<003d0998-dd25-45ab-9bb1-feda2d0f91a3@baylibre.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The LIS2DS12 accelerometer by STMicroelectronics is mostly compatible
-with the LIS2DE12 variant, except the WhoAmI value (0x43).
+On Sat, 25 May 2024 12:04:46 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-Define sensor settings for LIS2DS12, and add support in the I2C
-driver.
+> On 5/25/24 11:14 AM, Jonathan Cameron wrote:
+> > On Fri, 24 May 2024 10:56:55 -0500
+> > David Lechner <dlechner@baylibre.com> wrote:
+> >   
+> >> On 5/20/24 11:12 AM, Jonathan Cameron wrote:  
+> >>> On Mon, 20 May 2024 08:51:52 -0500
+> >>> David Lechner <dlechner@baylibre.com> wrote:
+> >>>     
+> >>>> On 5/19/24 2:12 PM, Jonathan Cameron wrote:    
+> >>>>> On Tue,  7 May 2024 14:02:07 -0500
+> >>>>> David Lechner <dlechner@baylibre.com> wrote:
+> >>>>>       
+> >>>>>> This adds new fields to the iio_channel structure to support multiple
+> >>>>>> scan types per channel. This is useful for devices that support multiple
+> >>>>>> resolution modes or other modes that require different data formats of
+> >>>>>> the raw data.
+> >>>>>>
+> >>>>>> To make use of this, drivers can still use the old scan_type field for
+> >>>>>> the "default" scan type and use the new scan_type_ext field for any
+> >>>>>> additional scan types.      
+> >>>>>
+> >>>>> Comment inline says that you should commit scan_type if scan_type_ext
+> >>>>> is provided.  That makes sense to me rather that a default no one reads.
+> >>>>>
+> >>>>> The example that follows in patch 4 uses both the scan_type and
+> >>>>> the scan_type_ext which is even more confusing.
+> >>>>>       
+> >>>>>> And they must implement the new callback
+> >>>>>> get_current_scan_type() to return the current scan type based on the
+> >>>>>> current state of the device.
+> >>>>>>
+> >>>>>> The buffer code is the only code in the IIO core code that is using the
+> >>>>>> scan_type field. This patch updates the buffer code to use the new
+> >>>>>> iio_channel_validate_scan_type() function to ensure it is returning the
+> >>>>>> correct scan type for the current state of the device when reading the
+> >>>>>> sysfs attributes. The buffer validation code is also update to validate
+> >>>>>> any additional scan types that are set in the scan_type_ext field. Part
+> >>>>>> of that code is refactored to a new function to avoid duplication.
+> >>>>>>
+> >>>>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> >>>>>> ---      
+> >>>>>       
+> >>>>>> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
+> >>>>>> index 19de573a944a..66f0b4c68f53 100644
+> >>>>>> --- a/include/linux/iio/iio.h
+> >>>>>> +++ b/include/linux/iio/iio.h
+> >>>>>> @@ -205,6 +205,9 @@ struct iio_scan_type {
+> >>>>>>   * @scan_index:		Monotonic index to give ordering in scans when read
+> >>>>>>   *			from a buffer.
+> >>>>>>   * @scan_type:		struct describing the scan type
+> >>>>>> + * @ext_scan_type:	Used in rare cases where there is more than one scan
+> >>>>>> + *			format for a channel. When this is used, omit scan_type.      
+> >>>>>
+> >>>>> Here is the disagreement with the patch description.
+> >>>>>       
+> >>>>>> + * @num_ext_scan_type:	Number of elements in ext_scan_type.
+> >>>>>>   * @info_mask_separate: What information is to be exported that is specific to
+> >>>>>>   *			this channel.
+> >>>>>>   * @info_mask_separate_available: What availability information is to be
+> >>>>>> @@ -256,6 +259,8 @@ struct iio_chan_spec {
+> >>>>>>  	unsigned long		address;
+> >>>>>>  	int			scan_index;
+> >>>>>>  	struct iio_scan_type scan_type;
+> >>>>>> +	const struct iio_scan_type *ext_scan_type;
+> >>>>>> +	unsigned int		num_ext_scan_type;      
+> >>>>>
+> >>>>> Let's make it explicit that you can't do both.
+> >>>>>
+> >>>>> 	union {
+> >>>>> 		struct iio_scan_type scan_type;
+> >>>>> 		struct {
+> >>>>> 			const struct iio_scan_type *ext_scan_type;
+> >>>>> 			unsigned int num_ext_scan_type;
+> >>>>> 		};
+> >>>>> 	};
+> >>>>> should work for that I think.
+> >>>>>
+> >>>>> However this is I think only used for validation. If that's the case
+> >>>>> do we care about values not in use?  Can we move the validation to
+> >>>>> be runtime if the get_current_scan_type() callback is used.      
+> >>>>
+> >>>> I like the suggestion of the union to use one or the other. But I'm not
+> >>>> sure I understand the comments about validation.
+> >>>>
+> >>>> If you are referring to iio_channel_validate_scan_type(), it only checks
+> >>>> for programmer error of realbits > storagebits, so it seems better to
+> >>>> keep it where it is to fail as early as possible.    
+> >>>
+> >>> That requires the possible scan masks to be listed here but there is
+> >>> nothing enforcing the callback returning one from here.  Maybe make it
+> >>> return an index instead?
+> >>>     
+> >>
+> >> Sorry, still not understanding what we are trying to catch here. Why
+> >> would the scan mask have any effect of checking if realbits > storagebits?  
+> > Hmm. I seem to be failing to explain this!    
+> 
+> Maybe we are talking about two different things but calling them the same thing?
 
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
----
- drivers/iio/accel/st_accel.h      |  1 +
- drivers/iio/accel/st_accel_core.c | 76 +++++++++++++++++++++++++++++++
- drivers/iio/accel/st_accel_i2c.c  |  5 ++
- 3 files changed, 82 insertions(+)
+I'm not sure.  Sounds like we both think our point is entirely obvious and clearly
+it isn't :(
 
-diff --git a/drivers/iio/accel/st_accel.h b/drivers/iio/accel/st_accel.h
-index e7525615712b..2659f536cef6 100644
---- a/drivers/iio/accel/st_accel.h
-+++ b/drivers/iio/accel/st_accel.h
-@@ -35,6 +35,7 @@
- #define LIS3DHH_ACCEL_DEV_NAME		"lis3dhh"
- #define LIS3DE_ACCEL_DEV_NAME		"lis3de"
- #define LIS2DE12_ACCEL_DEV_NAME		"lis2de12"
-+#define LIS2DS12_ACCEL_DEV_NAME		"lis2ds12"
- #define LIS2HH12_ACCEL_DEV_NAME		"lis2hh12"
- #define LIS302DL_ACCEL_DEV_NAME		"lis302dl"
- #define LSM303C_ACCEL_DEV_NAME		"lsm303c_accel"
-diff --git a/drivers/iio/accel/st_accel_core.c b/drivers/iio/accel/st_accel_core.c
-index d2104e14e255..8552faea1913 100644
---- a/drivers/iio/accel/st_accel_core.c
-+++ b/drivers/iio/accel/st_accel_core.c
-@@ -925,6 +925,82 @@ static const struct st_sensor_settings st_accel_sensors_settings[] = {
- 		.multi_read_bit = true,
- 		.bootime = 2,
- 	},
-+	{
-+		.wai = 0x43,
-+		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
-+		.sensors_supported = {
-+			[0] = LIS2DS12_ACCEL_DEV_NAME,
-+		},
-+		.ch = (struct iio_chan_spec *)st_accel_8bit_channels,
-+		.odr = {
-+			.addr = 0x20,
-+			.mask = 0xf0,
-+			.odr_avl = {
-+				{ .hz = 1, .value = 0x01, },
-+				{ .hz = 10, .value = 0x02, },
-+				{ .hz = 25, .value = 0x03, },
-+				{ .hz = 50, .value = 0x04, },
-+				{ .hz = 100, .value = 0x05, },
-+				{ .hz = 200, .value = 0x06, },
-+				{ .hz = 400, .value = 0x07, },
-+				{ .hz = 1620, .value = 0x08, },
-+				{ .hz = 5376, .value = 0x09, },
-+			},
-+		},
-+		.pw = {
-+			.addr = 0x20,
-+			.mask = 0xf0,
-+			.value_off = ST_SENSORS_DEFAULT_POWER_OFF_VALUE,
-+		},
-+		.enable_axis = {
-+			.addr = ST_SENSORS_DEFAULT_AXIS_ADDR,
-+			.mask = ST_SENSORS_DEFAULT_AXIS_MASK,
-+		},
-+		.fs = {
-+			.addr = 0x23,
-+			.mask = 0x30,
-+			.fs_avl = {
-+				[0] = {
-+					.num = ST_ACCEL_FS_AVL_2G,
-+					.value = 0x00,
-+					.gain = IIO_G_TO_M_S_2(15600),
-+				},
-+				[1] = {
-+					.num = ST_ACCEL_FS_AVL_4G,
-+					.value = 0x01,
-+					.gain = IIO_G_TO_M_S_2(31200),
-+				},
-+				[2] = {
-+					.num = ST_ACCEL_FS_AVL_8G,
-+					.value = 0x02,
-+					.gain = IIO_G_TO_M_S_2(62500),
-+				},
-+				[3] = {
-+					.num = ST_ACCEL_FS_AVL_16G,
-+					.value = 0x03,
-+					.gain = IIO_G_TO_M_S_2(187500),
-+				},
-+			},
-+		},
-+		.drdy_irq = {
-+			.int1 = {
-+				.addr = 0x22,
-+				.mask = 0x10,
-+			},
-+			.addr_ihl = 0x25,
-+			.mask_ihl = 0x02,
-+			.stat_drdy = {
-+				.addr = ST_SENSORS_DEFAULT_STAT_ADDR,
-+				.mask = 0x07,
-+			},
-+		},
-+		.sim = {
-+			.addr = 0x23,
-+			.value = BIT(0),
-+		},
-+		.multi_read_bit = true,
-+		.bootime = 2,
-+	},
- 	{
- 		.wai = 0x41,
- 		.wai_addr = ST_SENSORS_DEFAULT_WAI_ADDRESS,
-diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
-index fd3749871121..329a4d6fb2ec 100644
---- a/drivers/iio/accel/st_accel_i2c.c
-+++ b/drivers/iio/accel/st_accel_i2c.c
-@@ -102,6 +102,10 @@ static const struct of_device_id st_accel_of_match[] = {
- 		.compatible = "st,lis2de12",
- 		.data = LIS2DE12_ACCEL_DEV_NAME,
- 	},
-+	{
-+		.compatible = "st,lis2ds12",
-+		.data = LIS2DS12_ACCEL_DEV_NAME,
-+	},
- 	{
- 		.compatible = "st,lis2hh12",
- 		.data = LIS2HH12_ACCEL_DEV_NAME,
-@@ -154,6 +158,7 @@ static const struct i2c_device_id st_accel_id_table[] = {
- 	{ LIS2DW12_ACCEL_DEV_NAME },
- 	{ LIS3DE_ACCEL_DEV_NAME },
- 	{ LIS2DE12_ACCEL_DEV_NAME },
-+	{ LIS2DS12_ACCEL_DEV_NAME },
- 	{ LIS2HH12_ACCEL_DEV_NAME },
- 	{ LIS302DL_ACCEL_DEV_NAME },
- 	{ LSM303C_ACCEL_DEV_NAME },
--- 
-2.45.1
+> > Key is the complete lack of
+> > association between what is returned by the get_current_scan_type() callback
+> > and this ext_scan_type array.  
+> 
+> Why would the caller of get_current_scan_type() need to know that the
+> returned value is associated with ext_scan_type?
+
+Because you are validating ext_scan_type, not the return of get_current_scan_type().
+They may or may not include the same data - to make this a good interface, that isn't
+error prone, get_current_scan_type() must return one that has been validated - i.e.
+is in the ext_scan_type array.
+
+I've looked several times and maybe I'm just failing to spot what ensures the validation
+is sufficient.
+
+> 
+> > 
+> > So either:
+> > 1) Make it do so - easiest being to return an index into the array rather than
+> >    a possibly unrelated scan_type -  
+> 
+> Unrelated to what?
+
+Unrelated to anything the IIO core is currently aware of. You could have a list
+of types of cats that you've validated for feline characteristics
+and this callback returns a donkey.
+
+> 
+> > that would guarantee the scan_type returned
+> >    by the callback was one that has been validated.  
+> 
+> Since all scan types are const data and not changed after the iio device
+> is registered, the validation done at registration seems sufficient to
+> me (validation happens in __iio_buffer_alloc_sysfs_and_mask()). All scan
+> types are validated at this time, including all ext_scan_types. So all
+> are guaranteed to be validated already when the get_current_scan_type
+> callback is called.
+> 
+> What other validation would need to be done later?
+
+What makes get_current_scan_type() return a scan type that is in the ext_scan_type
+array?
+
+A possible implementation (which should not be possible!) is
+
+static const struct iio_scan_type scan_type_A = {
+	.sign = 's',
+	.realbits = 16,
+	.storagebits = 16,
+	.endianness = IIO_CPU,
+};
+
+static const struct iio_scan_type scan_type_B = {
+	.sign = 's',
+	.realbits = 18,
+	.storagebits = 16,
+	.endianness = IIO_CPU,
+};
+
+.ext_scan_type = &ad7380_scan_type_A,
+
+
+static const struct iio_scan_type *get_current_scan_type(
+		const struct iio_dev *indio_dev, struct iio_chan_spec const *chan)
+{
+	//some stuff to select
+
+	return scan_type_B; 
+}
+
+> 
+> > or
+> > 2) Drop validation at initial probe because you are validating something
+> >    that is irrelevant to what actually gets returned later. Validate>    when the scan type is read back via get_current_scan_type()  
+> 
+> The validation is just checking for programmer error, so it seems better
+> to catch that at probe where we are guaranteed to catch it for all scan
+> types. If the driver fails to probe, the programmer should notice this and
+> fix their mistake, but if we don't validate until later, the programmer
+> might not check every single configuration every time a change is made.
+
+I agreed - but today that isn't happening in the above example.
+You need to enforce that the scan_type returned is one that has been validated.
+
+Maybe I'm missing that validation occurring somewhere?
+
+Jonathan
+
+
+> 
+> > 
+> > I prefer option 1.  
+> >>  
+> >   
+> 
+> 
 
 

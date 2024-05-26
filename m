@@ -1,52 +1,51 @@
-Return-Path: <linux-iio+bounces-5317-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5318-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE3C28CF4C3
-	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 17:43:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B364E8CF4C7
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 17:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F55D1C2090F
-	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 15:43:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D71D61C206A7
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 15:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423F3179BC;
-	Sun, 26 May 2024 15:42:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2EB179BC;
+	Sun, 26 May 2024 15:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iFLlqHZj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LYox2exv"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FBB17C60;
-	Sun, 26 May 2024 15:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D377C171CC;
+	Sun, 26 May 2024 15:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716738176; cv=none; b=fefi37gOZRNi89+z1v+xk8H+CqW+25EZNoNmMksZde4i9k7IJsy+7N4Vj+92xpbRza3ovkoQajHwKtfZGJ67x7ZyDBLcBq/Qp5cvvE7YCejYAkokw+QigKTRCxpTHpaMFq4KtajqANH4BaTXCUHgBxANekh9yMgHC5Mna3lxmXU=
+	t=1716738345; cv=none; b=XY0/upiNmVoUzKssytanbSttCX9677r6xkKLSsUbNraUMWchZJOag+8bW5DObXG8bWh6UQZlIn4G2kS+FC/n3zBYOxPaBYtXo/jJJDenWhm18/LSKWSf0c65fpmEGbSNCYU1hdTGP5kJUGPfm5jryi7yxqRlLrX66CtJfQcwCSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716738176; c=relaxed/simple;
-	bh=w1hV+o9VMoEuHtxMcY5o2sdXb9ZgHMWgw7Zcrosmm9U=;
+	s=arc-20240116; t=1716738345; c=relaxed/simple;
+	bh=9yFVJ82e242IH9QBdMocDHZK6zErfeb2QrxlJvc4+fg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qsAnTTQwGmwuW221D4b/1+OXu9Y48XnE8aIABF/od00MItvq8pqfno+kxt/hTG7Wcxyan5us7LtxYQpOK8dn4ySbNKdTEXScZDwtvcKnH9BW/zTQJfyS1SJMfXeioava6J9ijm1yAysciOBe99NK/5mH8CeTveUd65jF0hr2P1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iFLlqHZj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43538C2BD10;
-	Sun, 26 May 2024 15:42:52 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=WAp8Fw7Q8XyVadBNBlKMdD6cw+zE8O2aPEDzeFRfJhHgqXa/iJV98YmMpOuNBzaPgCOS2D1+Flf1NV6xYUDpD/+AZE8eAD/6sOAFvZwqK+ipESzSSr9YewT1ClkWUC0fMu7oLpd35WG7nNV1hM3pPNIXuBnM5Pi8Jzi26HaP5Dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LYox2exv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6696AC2BD10;
+	Sun, 26 May 2024 15:45:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716738175;
-	bh=w1hV+o9VMoEuHtxMcY5o2sdXb9ZgHMWgw7Zcrosmm9U=;
+	s=k20201202; t=1716738344;
+	bh=9yFVJ82e242IH9QBdMocDHZK6zErfeb2QrxlJvc4+fg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iFLlqHZj5dP1+EsmPRPfJRKKlDubmvVR2+GtJtV/+s6tuToyvZpYHHvYnanLKRlLx
-	 JhwbPLXhz5pDWE8IYQjuPlhmqlhifCnTV46E7b6Sm2V/zXPfSzwmc3HOHYgBEO+bSy
-	 +XZWocMZp2z/Yu+byru68egErXTi02yfF53W2Gvk3s6hPjQgKRLs/RN1GNKR8r8HOg
-	 +FqMUrgk8d0s1VIqfFzx6z0e0mcVSuCDjHX89DGFPloL66xoFDIGBuQsIoZBmxRqGz
-	 fUqafOP9CpI/X3VGbKFKpA5pdxQqgR4rCznXzpMhgFbjc//+wEV2nILhxmXU+GnSt5
-	 45SXQ5WRfKKuw==
-Date: Sun, 26 May 2024 16:42:50 +0100
+	b=LYox2exv3GKpYl83K76KDfOGC8GHvq3APF42q1kgLtN3G/T44a421CX0gDjGUips0
+	 rV2hSgV+OEsMga852Z0C5/wVVAXjgU1jhSsTzfFO6lLFQY7iKKOmi3UDWqV3waLIWa
+	 lsufu6wB2Q2GkMIIGxN2UkB108IuIFgl0nlXvwYtck86oWZgi5P3I6xnSJWa1kqx4y
+	 OEvqSurzWj8PiNopZXafNvI6qz/aHsS0svXPqNbC1LJyd9ZuPjSGFG02N/8uhLns1O
+	 Vwamw9aduhCTyWmIE2+1oYuxTtBehNMRDjIKppM3TQ3SHY/rdc8OaKmuRs+9d6WBiK
+	 mU+2MG13ZRgzQ==
+Date: Sun, 26 May 2024 16:45:39 +0100
 From: Conor Dooley <conor@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
-Cc: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
@@ -58,8 +57,9 @@ Cc: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
 	linux-iio@vger.kernel.org
 Subject: Re: [PATCH RFC v2 1/8] spi: dt-bindings: spi-peripheral-props: add
  spi-offloads property
-Message-ID: <20240526-spotting-relapsing-ffb60b535c18@spud>
-References: <CAMknhBE5XJzhdJ=PQUXiubw_CiCLcn1jihiscnQZUzDWMASPKw@mail.gmail.com>
+Message-ID: <20240526-stylized-preaching-d0b15a95fe19@spud>
+References: <20240513-headsman-hacking-d51fcc811695@spud>
+ <CAMknhBE5XJzhdJ=PQUXiubw_CiCLcn1jihiscnQZUzDWMASPKw@mail.gmail.com>
  <20240514-aspire-ascension-449556da3615@spud>
  <CAMknhBFFpEGcMoLo5gsC11Syv+CwUM0mnq1yDMUzL1uutUtB+Q@mail.gmail.com>
  <20240516-rudder-reburial-dcf300504c0a@spud>
@@ -67,8 +67,7 @@ References: <CAMknhBE5XJzhdJ=PQUXiubw_CiCLcn1jihiscnQZUzDWMASPKw@mail.gmail.com>
  <20240519-abreast-haziness-096a57ef57d3@spud>
  <CAMknhBHvEse2FyDoBXR1PvymGpSGq8dotKfm+8XH+0+k+xKtQw@mail.gmail.com>
  <20240522-gullible-ibuprofen-cf9111c25f6f@spud>
- <5ad0b5782434eaf4cf565cffb0e4c14b7414ae38.camel@gmail.com>
- <6e929426-25fa-4e91-8790-0774d59b34e0@baylibre.com>
+ <59df2cc3-5a62-45be-a0aa-5bbff13c2ae4@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,166 +75,129 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="38StDdanHQmO3L2P"
+	protocol="application/pgp-signature"; boundary="QI9Azi51wmSyyaZK"
 Content-Disposition: inline
-In-Reply-To: <6e929426-25fa-4e91-8790-0774d59b34e0@baylibre.com>
+In-Reply-To: <59df2cc3-5a62-45be-a0aa-5bbff13c2ae4@baylibre.com>
 
 
---38StDdanHQmO3L2P
+--QI9Azi51wmSyyaZK
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 23, 2024 at 10:05:49AM -0500, David Lechner wrote:
-> On 5/23/24 7:15 AM, Nuno S=C3=A1 wrote:
-> > On Wed, 2024-05-22 at 19:24 +0100, Conor Dooley wrote:
-> >> On Tue, May 21, 2024 at 09:54:39AM -0500, David Lechner wrote:
-> >>> On Sun, May 19, 2024 at 7:53=E2=80=AFAM Conor Dooley <conor@kernel.or=
-g> wrote:
-> >>>>
-> >>>> On Fri, May 17, 2024 at 11:51:58AM -0500, David Lechner wrote:
-> >>>>> On Thu, May 16, 2024 at 4:32=E2=80=AFPM Conor Dooley <conor@kernel.=
-org> wrote:
-> >>>>>> On Tue, May 14, 2024 at 05:56:47PM -0500, David Lechner wrote:
-> >>>>
+On Thu, May 23, 2024 at 09:28:54AM -0500, David Lechner wrote:
+> On 5/22/24 1:24 PM, Conor Dooley wrote:
+> > On Tue, May 21, 2024 at 09:54:39AM -0500, David Lechner wrote:
+> >> On Sun, May 19, 2024 at 7:53=E2=80=AFAM Conor Dooley <conor@kernel.org=
+> wrote:
+> >>>
+> >>> On Fri, May 17, 2024 at 11:51:58AM -0500, David Lechner wrote:
+> >>>> On Thu, May 16, 2024 at 4:32=E2=80=AFPM Conor Dooley <conor@kernel.o=
+rg> wrote:
+> >>>>> On Tue, May 14, 2024 at 05:56:47PM -0500, David Lechner wrote:
+> >>>
 >=20
 > ...
 >=20
-> >> To remind myself, "Application 2" featured an offload engine designed
-> >> specifically to work with a particular data format that would strip a
-> >> CRC byte and check the validity of the data stream.
+> >> This time, the periodic trigger (PWM) is connected to the pin on the
+> >> ADC that triggers a sample conversion (CNV). The ADC has a BUSY output
+> >> that will go high at the start of the conversion and go low at the end
+> >> of the conversion. The BUSY output of the ADC is wired as the hardware
+> >> trigger input of the offload.
 > >>
+> >> In this case would we still consider the PWM as part of the SPI
+> >> controller/offload since it can only be used in conjunction with the
+> >> SPI offload? It isn't connected to it at all though.
 > >=20
-> > I think the data manipulation is not really a property of the engine. T=
-ypically data
-> > going out of the offload engine goes into another "data reorder" block =
-that is pure
-> > HW.
-> >=20
-> >> I think you're right something like that is a stretch to say that that
-> >> is a feature of the SPI controller - but I still don't believe that
-> >> modelling it as part of the ADC is correct. I don't fully understand t=
-he
-> >> io-backends and how they work yet, but the features you describe there
-> >> seem like something that should/could be modelled as one, with its own
-> >> node and compatible etc. Describing custom RTL stuff ain't always
-> >> strightforward, but the stuff from Analog is versioned and documented
-> >> etc so it shouldn't be quite that hard.
-> >>
-> >=20
-> > Putting this in io-backends is likely a stretch but one thing to add is=
- that the
-> > peripheral is always (I think) kind of the consumer of the resources. T=
-aking the
-> > trigger (PWM) as an example and even when it is directly connected with=
- the offload
-> > block, the peripheral still needs to know about it. Think of sampling f=
-requency...
-> > The period of the trigger signal is strictly connected with the samplin=
-g frequency of
-> > the peripheral for example. So I see 2 things:
-> >=20
-> > 1) Enabling/Disabling the trigger could be easily done from the periphe=
-ral even with
-> > the resource in the spi engine. I think David already has some code in =
-the series
-> > that would make this trivial and so having the property in the spi cont=
-roller brings
-> > no added complexity.
-> >=20
-> > 2) Controlling things like the trigger period/sample_rate. This could b=
-e harder to do
-> > over SPI (or making it generic enough) so we would still need to have t=
-he same
-> > property on the peripheral (even if not directly connected to it). I ki=
-nd of agree
-> > with David that having the property both in the peripheral and controll=
-er is a bit
-> > weird.
-> >=20
-> > And the DMA block is a complete different story. Sharing that data back=
- with the
-> > peripheral driver (in this case, the IIO subsystem) would be very inter=
-esting at the
-> > very least. Note that the DMA block is not really something that is par=
-t of the
-> > controller nor the offload block. It is an external block that gets the=
- data coming
-> > out of the offload engine (or the data reorder block). In IIO, we alrea=
-dy have a DMA
-> > buffer interface so users of the peripheral can get the data without an=
-y intervention
-> > of the driver (on the data). We "just" enable buffering and then everyt=
-hing happens
-> > on HW and userspace can start requesting data. If we are going to attac=
-h the DMA in
-> > the controller, I have no idea how we can handle it. Moreover, the offl=
-oad it's
-> > really just a way of replaying the same spi transfer over and over and =
-that happens
-> > in HW so I'm not sure how we could "integrate" that with dmaengine.
-> >=20
-> > But maybe I'm overlooking things... And thinking more in how this can b=
-e done in SW
-> > rather than what makes sense from an HW perspective.
-> >=20
-> >=20
-> >> continuation:
-> >> If offload engines have their own register region in the memory map,
-> >=20
-> >=20
-> > Don't think it has it's own register region... David?
+> > No, in this case the ADC is a PWM consumer and the offload engine is
+> > not. The ADC is a "trigger" provider and the SPI offload engine is a
+> > trigger consumer.
 >=20
-> I think the question here was if the CRC checker IP block (or descrambler=
- shown
-> in the link below, or whatever) had registers in the offload/SPI controll=
-er
-> to control that extra part or if they had their own dedicated registers.
+> Makes sense.
+>=20
+> ...
+>=20
+>=20
+> >=20
+> >>> In fact, looking at the documentation for the "spi engine" some more,=
+ I
+> >>> am even less convinced that the right place for describing the offloa=
+d is
+> >>> the peripheral as I (finally?) noticed that the registers for the off=
+load
+> >>> engine are mapped directly into the "spi engine"'s memory map, rather=
+ than
+> >>> it being a entirely separate IP in the FPGA fabric.
+> >>
+> >> True, but we don't use these registers, e.g., to configure the
+> >> sampling frequency of a trigger (if it can even be done). That is done
+> >> in a completely separate IP block with it's own registers.
+> >=20
+> > Where is the binding for that IP block? I think describing that is
+> > pretty key. goto continuation;
+>=20
+> For the real-world case I used to test this series, it is an AXI PWMGEN
+> [1] that is providing the trigger event source. It has a typical PWM
+> provider binding with #pwm-cells [2].
+>=20
+> Calling this a "trigger" provider to the SPI offload instance just like t=
+he
+> case above where the ADC is directly connected as the offload trigger mak=
+es
+> sense to me.
+>=20
+> What I was going for in this patch (slightly revised to use #cells) is th=
+at
+> this trigger provider, whatever it is, is selected by one of the cells of
+> #spi-offload-cells. It doesn't seem like there should be a special case f=
+or
+> if the trigger provider is a clock or PWM where the SPI controller node
+> becomes a consumer of the clock or PWM provider rather than just describi=
+ng
+> the trigger relationship.
+>=20
+> For example, supposing we had an FPGA/HDL that could handle all 3 wiring
+> configurations we have discussed so far. A) PWM connected directly to SPI
+> offload as trigger, B) PWM connected to CNV of ADC and BSY of ADC connect=
+ed
+> to SPI offload as trigger, C) self clocked ADC with RDY of ADC connected
+> to SPI offload as trigger. So the DT would have:
+>=20
+> controller:
+> #spi-offload-cells =3D <2>: /* 1st cell =3D offload instance
+>                            * 2nd cell =3D trigger provider */
+>=20
+> peripheral (choose one based on actual wiring):
+> spi-offloads =3D <0 0>; /* case A */
+> spi-offloads =3D <0 1>; /* case B */
+> spi-offloads =3D <0 2>; /* case C */
+>=20
+>=20
+> As to what is the actual consumer of the PWM provider in each of these
+> cases...
+>=20
+> * C is easy. There isn't a PWM provider since the ADC is self-clocked.
+> * B, as discussed elsewhere is fairly straight forward. The ADC node is
+>   the consumer since the PWM is connected directly to the ADC.
+> * A is the one we need to figure out. I'm proposing that the PWM consumer
+>   should be whatever kind of composite device node we come up with that
+>   also solves the issue described below about where does the CRC checker
+>   (or whatever) go. I think we are in agreement here at least on the point
+>   that it doesn't belong in the SPI controller node?
 
-I don't think there was a question here at all. I was simply stating
-that if the offload engine was not just a subordinate feature of the SPI
-controller, but also provided additional data processing features then
-treating the offload engine as a component of the SPI controller would
-not be accurate.
+To be clear, you're saying that we agree that the CRC checker doesnt
+belong in the SPI controller node, right?
 
-> So far,
-> these have been fixed-purpose, so have no registers at all. But I could s=
-ee
-> needing a register, e.g. for turning it on or off. In this case, I think =
-it
-> does become something like an io-backend. Or would we add this on/off swi=
-tch
-> to the AXI SPI Engine registers?
-
-Seems to be that the CRC checking is a separate piece of IP though, and
-so is not part of the offload engine at all, so my concern was
-misplaced. I think whether or not you have registers to control it, it
-should be represented in DT. How do you know it is there otherwise?
-
-> Also, as shown in the link below, the extra bits share a clock domain wit=
-h the
-> AXI SPI Engine. So, yes, technically I suppose they could/should? be inde=
-pendent
-> consumers of the same clock like Conor suggests below. It does seems kind=
- of
-> goofy if we have to write a driver just to turn on a clock that is already
-> guaranteed to be on though.
-
-You wouldn't necessarily need to write a driver for it, you could reach
-out and turn it on from the backend consumer for example. And, obviously
-there may be other ways that the FPGA design is configured where the
-clock is not shared with the SPI controller or the offload engine.
-
---38StDdanHQmO3L2P
+--QI9Azi51wmSyyaZK
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZlNYegAKCRB4tDGHoIJi
-0p//AP94S+X1TgXzvOP8jFQtnTOXCYT5iXNNaILC5azI/oPwmAEAhpLXc29r8igQ
-eiVFFU2qSsUCwA+W1hiajgJZLdKtDQA=
-=zON3
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZlNZIwAKCRB4tDGHoIJi
+0rcJAP4wlXLinDBuLMMunDenDCKzMAGTqwXYWCzQ/j3lCyGyoQD/VtLRpzJv9NSw
+f18ipYHVyeIm4uS0jnHQHIEOmj5gjAo=
+=AKAC
 -----END PGP SIGNATURE-----
 
---38StDdanHQmO3L2P--
+--QI9Azi51wmSyyaZK--
 

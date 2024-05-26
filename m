@@ -1,159 +1,241 @@
-Return-Path: <linux-iio+bounces-5316-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5317-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD968CF46E
-	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 15:53:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3C28CF4C3
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 17:43:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89D531F214C6
-	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 13:53:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F55D1C2090F
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 15:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1518E1095A;
-	Sun, 26 May 2024 13:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423F3179BC;
+	Sun, 26 May 2024 15:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="cxKGFPgG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iFLlqHZj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B3AE57F
-	for <linux-iio@vger.kernel.org>; Sun, 26 May 2024 13:53:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6FBB17C60;
+	Sun, 26 May 2024 15:42:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716731615; cv=none; b=QJPB046owpAjvQBK59H+7i4huFZo5WMghzFQhOwWh3WRBOkCkp1+bG2JIxtg6Hye4RnWZbGWvIGgn4KpdD6w/kjR2NG0ZMPpSKH1j0l6WJO1wmj99CkqPUYXTj2/n+tgfQs4i85k3rwJc3N4RB+yj6gfdmdhPkFTytxsZman68E=
+	t=1716738176; cv=none; b=fefi37gOZRNi89+z1v+xk8H+CqW+25EZNoNmMksZde4i9k7IJsy+7N4Vj+92xpbRza3ovkoQajHwKtfZGJ67x7ZyDBLcBq/Qp5cvvE7YCejYAkokw+QigKTRCxpTHpaMFq4KtajqANH4BaTXCUHgBxANekh9yMgHC5Mna3lxmXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716731615; c=relaxed/simple;
-	bh=4DUJdEjkxUJgbaVeUQ4R/vAmvDf9VaruCLYklc7L/oY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dBuFOdzqAqluH4U/mk/IZe/EgEjyGWMn933LFzUbCPuu4Orp1pUJcT34roWmpqLSM8+K5kD4V1R+XX28Ma+aXVJfulHQwXlq0zazknOGOGlzSI1id+jbFNEAtuffyzS6y/B8YgVu6/eceTxBlCkypxP5sUI+Cu6jJk+TXdg35CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=cxKGFPgG; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2e8a8ff4083so42429271fa.1
-        for <linux-iio@vger.kernel.org>; Sun, 26 May 2024 06:53:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1716731611; x=1717336411; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JQ+eNpUujXQv/I2aShP9JWthU8Vec/B5xvxOzvo8tV4=;
-        b=cxKGFPgGZ68mZSWsYvec53i7XZroE2awZLgXNTFhBzx1hDU6epJ1DWpwRGkvXGpJLh
-         Bp4XLvAD4dT3VM7ewDJbaF8Pu6u3hqNZWKHCdJf0xVUa91WFcXpc8lVuJoHtize50iAG
-         TMdOMgnQiJKyI0VDnqIN70/E33H4uUn7fMCwhu7pyBu/G0rho8lSTM6Wi8prGQK1Wk4X
-         eaCcKA2sKMuqtZ44tlifKj5coSOzR9+xpnXunH2+1tYHE+PAgj8kINSqHf8L4U/OwaxW
-         k6rYEJJ8IMx6xyQjkwbff9VOQ860L8R3yoD5w1yrW6NPWXLvboNfi1ZYNASEEqRZNV13
-         ++Qw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716731611; x=1717336411;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JQ+eNpUujXQv/I2aShP9JWthU8Vec/B5xvxOzvo8tV4=;
-        b=OZmTQXhXL8KPP9+i1QdyfupwJoKy7bjxIt9h2uxs5tShKJ3HN5PnDQWL5PxLnS9SKO
-         Xr1XlnaBfFRWEMvUxGwcBE2pofCVhxC5KGrIV1m9bYBxJjEqxehmG7034nnRpT8U+Tl1
-         Fc+KZKBte+c8qnDM/cMlR96YHvGjHnRnc5/GZrP2wJeKp9vxLTzGzozAG9ItmABbvbqE
-         hJyELJoEm2qdxt4f3rQej3s+kS7eGpdFUCF784nhQXvEekDeBiuuvhfr4KD7ixINAvg7
-         S0mHVbEFt9lsdUZK9W3WFxMJQl1lDSxjh5HL781KVTy42Ai+nNSrrjV2j4FpxbNRn9Rv
-         blMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTXRu3kpeFO2wHpyCbBKftZpwu1yqUawIEJ4ZBF5HT1u34jhdpeDfQlxFX5yBIaeE7idhKzT/9Y7CRBk5wn86HXdkLKRd8p/yK
-X-Gm-Message-State: AOJu0Yy1gkge+aF8OD0/+cKG4UELsUcjsNW5CX0uesua5ZrjYhb8Ulfg
-	824OSAwYvABzUTH5XcQnygo1CTJc6BAL7kQKEItnmZcxhgWJmZGrhZ9OrdGE8VqvODVl7mtkQo/
-	Pu+zSDUyO+SbK+43ISb398iTR2qv4Y8kckAiB9Q==
-X-Google-Smtp-Source: AGHT+IF+3IQbVc77xxtstsfMGHkyaHT/cjv5L3bC7b2v9W3j5znvEb5jOZ19F7ugtzBYR5T7s4xn9B427/FHrhZj/nc=
-X-Received: by 2002:a05:651c:383:b0:2e4:dd5c:933b with SMTP id
- 38308e7fff4ca-2e95a095ef4mr21960481fa.2.1716731610673; Sun, 26 May 2024
- 06:53:30 -0700 (PDT)
+	s=arc-20240116; t=1716738176; c=relaxed/simple;
+	bh=w1hV+o9VMoEuHtxMcY5o2sdXb9ZgHMWgw7Zcrosmm9U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qsAnTTQwGmwuW221D4b/1+OXu9Y48XnE8aIABF/od00MItvq8pqfno+kxt/hTG7Wcxyan5us7LtxYQpOK8dn4ySbNKdTEXScZDwtvcKnH9BW/zTQJfyS1SJMfXeioava6J9ijm1yAysciOBe99NK/5mH8CeTveUd65jF0hr2P1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iFLlqHZj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43538C2BD10;
+	Sun, 26 May 2024 15:42:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716738175;
+	bh=w1hV+o9VMoEuHtxMcY5o2sdXb9ZgHMWgw7Zcrosmm9U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=iFLlqHZj5dP1+EsmPRPfJRKKlDubmvVR2+GtJtV/+s6tuToyvZpYHHvYnanLKRlLx
+	 JhwbPLXhz5pDWE8IYQjuPlhmqlhifCnTV46E7b6Sm2V/zXPfSzwmc3HOHYgBEO+bSy
+	 +XZWocMZp2z/Yu+byru68egErXTi02yfF53W2Gvk3s6hPjQgKRLs/RN1GNKR8r8HOg
+	 +FqMUrgk8d0s1VIqfFzx6z0e0mcVSuCDjHX89DGFPloL66xoFDIGBuQsIoZBmxRqGz
+	 fUqafOP9CpI/X3VGbKFKpA5pdxQqgR4rCznXzpMhgFbjc//+wEV2nILhxmXU+GnSt5
+	 45SXQ5WRfKKuw==
+Date: Sun, 26 May 2024 16:42:50 +0100
+From: Conor Dooley <conor@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH RFC v2 1/8] spi: dt-bindings: spi-peripheral-props: add
+ spi-offloads property
+Message-ID: <20240526-spotting-relapsing-ffb60b535c18@spud>
+References: <CAMknhBE5XJzhdJ=PQUXiubw_CiCLcn1jihiscnQZUzDWMASPKw@mail.gmail.com>
+ <20240514-aspire-ascension-449556da3615@spud>
+ <CAMknhBFFpEGcMoLo5gsC11Syv+CwUM0mnq1yDMUzL1uutUtB+Q@mail.gmail.com>
+ <20240516-rudder-reburial-dcf300504c0a@spud>
+ <CAMknhBF_s0btus4yqPe-T=F3z7Asi9KkRGsGr7FHDFi=k4EQjw@mail.gmail.com>
+ <20240519-abreast-haziness-096a57ef57d3@spud>
+ <CAMknhBHvEse2FyDoBXR1PvymGpSGq8dotKfm+8XH+0+k+xKtQw@mail.gmail.com>
+ <20240522-gullible-ibuprofen-cf9111c25f6f@spud>
+ <5ad0b5782434eaf4cf565cffb0e4c14b7414ae38.camel@gmail.com>
+ <6e929426-25fa-4e91-8790-0774d59b34e0@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240507-iio-add-support-for-multiple-scan-types-v1-0-95ac33ee51e9@baylibre.com>
- <20240507-iio-add-support-for-multiple-scan-types-v1-3-95ac33ee51e9@baylibre.com>
- <20240519201241.7c60abac@jic23-huawei> <ebf18ed1-a82f-4c0a-9a63-2c428b5aee40@baylibre.com>
- <20240520171205.000035b0@Huawei.com> <5cf036d5-1eb3-4f63-82f9-d01b79b7fe47@baylibre.com>
- <20240525171408.36bda583@jic23-huawei> <003d0998-dd25-45ab-9bb1-feda2d0f91a3@baylibre.com>
- <20240526131018.40c772d6@jic23-huawei>
-In-Reply-To: <20240526131018.40c772d6@jic23-huawei>
-From: David Lechner <dlechner@baylibre.com>
-Date: Sun, 26 May 2024 08:53:19 -0500
-Message-ID: <CAMknhBGhk5VNG+L-HyT3=b2h38k0-dGwTfoWzxLTZfsKuidvtQ@mail.gmail.com>
-Subject: Re: [PATCH RFC 3/4] iio: add support for multiple scan types per channel
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
-	Julien Stephan <jstephan@baylibre.com>, Esteban Blanc <eblanc@baylibre.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="38StDdanHQmO3L2P"
+Content-Disposition: inline
+In-Reply-To: <6e929426-25fa-4e91-8790-0774d59b34e0@baylibre.com>
+
+
+--38StDdanHQmO3L2P
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, May 26, 2024 at 7:11=E2=80=AFAM Jonathan Cameron <jic23@kernel.org>=
- wrote:
->
-> On Sat, 25 May 2024 12:04:46 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
->
-> > On 5/25/24 11:14 AM, Jonathan Cameron wrote:
-> > > On Fri, 24 May 2024 10:56:55 -0500
-> > > David Lechner <dlechner@baylibre.com> wrote:
-> > >
-> > >> On 5/20/24 11:12 AM, Jonathan Cameron wrote:
-> > >>> On Mon, 20 May 2024 08:51:52 -0500
-> > >>> David Lechner <dlechner@baylibre.com> wrote:
-> > >>>
-> > >>>> On 5/19/24 2:12 PM, Jonathan Cameron wrote:
-> > >>>>> On Tue,  7 May 2024 14:02:07 -0500
-> > >>>>> David Lechner <dlechner@baylibre.com> wrote:
-> > >>>>>
+On Thu, May 23, 2024 at 10:05:49AM -0500, David Lechner wrote:
+> On 5/23/24 7:15 AM, Nuno S=C3=A1 wrote:
+> > On Wed, 2024-05-22 at 19:24 +0100, Conor Dooley wrote:
+> >> On Tue, May 21, 2024 at 09:54:39AM -0500, David Lechner wrote:
+> >>> On Sun, May 19, 2024 at 7:53=E2=80=AFAM Conor Dooley <conor@kernel.or=
+g> wrote:
+> >>>>
+> >>>> On Fri, May 17, 2024 at 11:51:58AM -0500, David Lechner wrote:
+> >>>>> On Thu, May 16, 2024 at 4:32=E2=80=AFPM Conor Dooley <conor@kernel.=
+org> wrote:
+> >>>>>> On Tue, May 14, 2024 at 05:56:47PM -0500, David Lechner wrote:
+> >>>>
+>=20
+> ...
+>=20
+> >> To remind myself, "Application 2" featured an offload engine designed
+> >> specifically to work with a particular data format that would strip a
+> >> CRC byte and check the validity of the data stream.
+> >>
+> >=20
+> > I think the data manipulation is not really a property of the engine. T=
+ypically data
+> > going out of the offload engine goes into another "data reorder" block =
+that is pure
+> > HW.
+> >=20
+> >> I think you're right something like that is a stretch to say that that
+> >> is a feature of the SPI controller - but I still don't believe that
+> >> modelling it as part of the ADC is correct. I don't fully understand t=
+he
+> >> io-backends and how they work yet, but the features you describe there
+> >> seem like something that should/could be modelled as one, with its own
+> >> node and compatible etc. Describing custom RTL stuff ain't always
+> >> strightforward, but the stuff from Analog is versioned and documented
+> >> etc so it shouldn't be quite that hard.
+> >>
+> >=20
+> > Putting this in io-backends is likely a stretch but one thing to add is=
+ that the
+> > peripheral is always (I think) kind of the consumer of the resources. T=
+aking the
+> > trigger (PWM) as an example and even when it is directly connected with=
+ the offload
+> > block, the peripheral still needs to know about it. Think of sampling f=
+requency...
+> > The period of the trigger signal is strictly connected with the samplin=
+g frequency of
+> > the peripheral for example. So I see 2 things:
+> >=20
+> > 1) Enabling/Disabling the trigger could be easily done from the periphe=
+ral even with
+> > the resource in the spi engine. I think David already has some code in =
+the series
+> > that would make this trivial and so having the property in the spi cont=
+roller brings
+> > no added complexity.
+> >=20
+> > 2) Controlling things like the trigger period/sample_rate. This could b=
+e harder to do
+> > over SPI (or making it generic enough) so we would still need to have t=
+he same
+> > property on the peripheral (even if not directly connected to it). I ki=
+nd of agree
+> > with David that having the property both in the peripheral and controll=
+er is a bit
+> > weird.
+> >=20
+> > And the DMA block is a complete different story. Sharing that data back=
+ with the
+> > peripheral driver (in this case, the IIO subsystem) would be very inter=
+esting at the
+> > very least. Note that the DMA block is not really something that is par=
+t of the
+> > controller nor the offload block. It is an external block that gets the=
+ data coming
+> > out of the offload engine (or the data reorder block). In IIO, we alrea=
+dy have a DMA
+> > buffer interface so users of the peripheral can get the data without an=
+y intervention
+> > of the driver (on the data). We "just" enable buffering and then everyt=
+hing happens
+> > on HW and userspace can start requesting data. If we are going to attac=
+h the DMA in
+> > the controller, I have no idea how we can handle it. Moreover, the offl=
+oad it's
+> > really just a way of replaying the same spi transfer over and over and =
+that happens
+> > in HW so I'm not sure how we could "integrate" that with dmaengine.
+> >=20
+> > But maybe I'm overlooking things... And thinking more in how this can b=
+e done in SW
+> > rather than what makes sense from an HW perspective.
+> >=20
+> >=20
+> >> continuation:
+> >> If offload engines have their own register region in the memory map,
+> >=20
+> >=20
+> > Don't think it has it's own register region... David?
+>=20
+> I think the question here was if the CRC checker IP block (or descrambler=
+ shown
+> in the link below, or whatever) had registers in the offload/SPI controll=
+er
+> to control that extra part or if they had their own dedicated registers.
 
-...
+I don't think there was a question here at all. I was simply stating
+that if the offload engine was not just a subordinate feature of the SPI
+controller, but also provided additional data processing features then
+treating the offload engine as a component of the SPI controller would
+not be accurate.
 
-> >
-> > Maybe we are talking about two different things but calling them the sa=
-me thing?
->
-> I'm not sure.  Sounds like we both think our point is entirely obvious an=
-d clearly
-> it isn't :(
->
-> > > Key is the complete lack of
-> > > association between what is returned by the get_current_scan_type() c=
-allback
-> > > and this ext_scan_type array.
-> >
-> > Why would the caller of get_current_scan_type() need to know that the
-> > returned value is associated with ext_scan_type?
->
-> Because you are validating ext_scan_type, not the return of get_current_s=
-can_type().
-> They may or may not include the same data - to make this a good interface=
-, that isn't
-> error prone, get_current_scan_type() must return one that has been valida=
-ted - i.e.
-> is in the ext_scan_type array.
->
-> I've looked several times and maybe I'm just failing to spot what ensures=
- the validation
-> is sufficient.
->
+> So far,
+> these have been fixed-purpose, so have no registers at all. But I could s=
+ee
+> needing a register, e.g. for turning it on or off. In this case, I think =
+it
+> does become something like an io-backend. Or would we add this on/off swi=
+tch
+> to the AXI SPI Engine registers?
 
-Ah, I finally get it now. I was having tunnel vision and it didn't
-even occur to me that someone might be tempted to return anything that
-wasn't a pointer to the ext_scan types array.
+Seems to be that the CRC checking is a separate piece of IP though, and
+so is not part of the offload engine at all, so my concern was
+misplaced. I think whether or not you have registers to control it, it
+should be represented in DT. How do you know it is there otherwise?
 
-> >
-> > >
-> > > So either:
-> > > 1) Make it do so - easiest being to return an index into the array ra=
-ther than
-> > >    a possibly unrelated scan_type -
-> >
+> Also, as shown in the link below, the extra bits share a clock domain wit=
+h the
+> AXI SPI Engine. So, yes, technically I suppose they could/should? be inde=
+pendent
+> consumers of the same clock like Conor suggests below. It does seems kind=
+ of
+> goofy if we have to write a driver just to turn on a clock that is already
+> guaranteed to be on though.
 
-This option 1) makes sense to me now.
+You wouldn't necessarily need to write a driver for it, you could reach
+out and turn it on from the backend consumer for example. And, obviously
+there may be other ways that the FPGA design is configured where the
+clock is not shared with the SPI controller or the offload engine.
 
-Do we also need to validate that the index returned is <
-num_ext_scan_types in iio_get_current_scan_type()?
+--38StDdanHQmO3L2P
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZlNYegAKCRB4tDGHoIJi
+0p//AP94S+X1TgXzvOP8jFQtnTOXCYT5iXNNaILC5azI/oPwmAEAhpLXc29r8igQ
+eiVFFU2qSsUCwA+W1hiajgJZLdKtDQA=
+=zON3
+-----END PGP SIGNATURE-----
+
+--38StDdanHQmO3L2P--
 

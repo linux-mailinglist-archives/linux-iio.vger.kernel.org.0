@@ -1,230 +1,278 @@
-Return-Path: <linux-iio+bounces-5305-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5306-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E00858CF092
-	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 19:49:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7E3D8CF252
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 02:30:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 963A828224B
-	for <lists+linux-iio@lfdr.de>; Sat, 25 May 2024 17:49:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A0FC281685
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 00:29:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A690126F2A;
-	Sat, 25 May 2024 17:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCC4C652;
+	Sun, 26 May 2024 00:29:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b="myOu/3SO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LZI9ZL8F"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9B6185934;
-	Sat, 25 May 2024 17:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.142.107.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B2C7E2;
+	Sun, 26 May 2024 00:29:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716659379; cv=none; b=K6xqPM7XBBCocsScrPa87yTCuR9a8dO7MU0mYNgTFHcpdhbbCW+wZSU7BCgeExyljihLU5QRWlsk8nS0BAxlPaySaTnLVvU9nHHNtEvICRAgMpZaDjkCvjSKRxuoS2ouAGx3FvsYgWAkPuzD3TH+IZ8cxcn0llXG9HNtamldmC0=
+	t=1716683393; cv=none; b=rFgqrbBHYULsSJ/pmdQkICyVbK2q16wyb3nQ6Mlh5HtyA21aO4h7/FVyGeGaIrQZJGqihi8hKG3BAqqLjMpqMGS28MYZPmPLDmemYMCrNqlzPGLdVkeAbacTaJR6VNrEAVeoLPiv19tA0SpliSzJm3eew2WjzQZpdQkPjFk+b3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716659379; c=relaxed/simple;
-	bh=RTlmd/o/bipWECdNpn03GqDf2Pj6GMMSx0MrlIDxkMg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qRwScgN2J6v/HSuH/hE6wexh3PLm+vcMiDs5mlAlRSrYOi3G0l9OQF0c8N2XVBwu3zidmHidtI6z2DY7aygNgs2skXVOh4RF2w+himRHqWo38hc3SMUVTC6YB8OtODE1ndUl+E2khyi71i3OBOBCTUnqQgq58/mo6c3po60FNhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com; spf=pass smtp.mailfrom=lechnology.com; dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b=myOu/3SO; arc=none smtp.client-ip=98.142.107.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lechnology.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=aboNR2B1zz5ySO8RWF0J/IIQS7AHGi1ebTyHSeYH+98=; b=myOu/3SOyXESqukrxqmYP8MeoH
-	hqGmTV0phTXHEOyHEjNbYxFMBupA8BQe3YPeBQXrYEjUgF2uDCpdCHPYhjBW6C2icjDMdR70cCd6D
-	Tu9zxwg0ADJb6epDCIa9/BIqCQht9mTeaqbrQVxfmzz8ZkNMYbxnYFNnyCMNpAOuZAsXTqrCvHkLM
-	w3vYXgVCBnLtqF4unioQZbD/fdiY1Bv0rmaJ77lgOsewxs9mcUs9CeMA+wW91OEGZCNAqZosGR8BX
-	oz8Afz/yCoYkqN99GEkkhTyUut/QC4j1VcKgJq1BKHWHFygNlWiWWCLxS+eU1vMhAlFNv2A0GSPQS
-	4N8TDWOQ==;
-Received: from ip98-183-112-25.ok.ok.cox.net ([98.183.112.25]:45978 helo=[192.168.0.142])
-	by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <david@lechnology.com>)
-	id 1sAvZz-000143-1I;
-	Sat, 25 May 2024 13:49:34 -0400
-Message-ID: <55a21233-918f-4cf4-800c-3e0eee0cd467@lechnology.com>
-Date: Sat, 25 May 2024 12:49:31 -0500
+	s=arc-20240116; t=1716683393; c=relaxed/simple;
+	bh=q1Jhkpl3iDvcAU4fBElGK4J5v4FGJ5LX4ANgAjn4C8s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p9IujbuHMxFuZ+SOo6UP0jVq9ZXoF4AyR6VUAan/ZOBOfc+uWFWX9yikie+IQK9RIX+zw8RkGkZF7U4+lVnImHgxFVCP8HPbM4YSfmGK+VVgcCXGIzl9Dn5Q+XCjTJB5JOhJy1BaD/qxjwgVUdtBE+QwG683Z0QkvPGJ6iIWg/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LZI9ZL8F; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-6f8e98784b3so1650169b3a.1;
+        Sat, 25 May 2024 17:29:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716683391; x=1717288191; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/+5YmaJeNF7VkilJwtRMH480JqWzFXOSu6W99rW8D4c=;
+        b=LZI9ZL8F1zQeZDG7U7FEoFNNwOaRSPSeAbAyuwnZ87rO/VL96wxCQo0tilo1+nw5jV
+         n1uZlQS1DxPy7HE2jQEb8GO4Ige+nsly5tAc1edEVaQCF3wotKxrafVfeeqz1JpncS7w
+         OCOPiYH7iY6FiONpVDgd2TyXML6iQHWitzjIMC339hqiyS1wgnTXlWG3RlDH1EG5kWw6
+         nT436AoTVec2b3NmRkA5Z8DX+OfgS5jRe21/Bh4b4qnZzz9NsMbP/WwkbTHnoybiF4AN
+         GQmQzs0iiGTYLIEYiNvJvmkq6uS+gDJVbJN4584+3dQf/SaT3vswtd409u9VRZFeVQuW
+         5+xA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716683391; x=1717288191;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/+5YmaJeNF7VkilJwtRMH480JqWzFXOSu6W99rW8D4c=;
+        b=uOfxhNuMynR/3FVtfQ1T0nXTS79aWGANwhaXglcBmkvwwsjbro8j0uHQWs3zPhsd3s
+         Jzam7vxWghLumjH761nVu0U5gJCApKP+N2tp1lWzsiFWo5+mjGoE9M4qTqIros0GB+MR
+         TjWEwXGrDBxBFSN23vTJAAGiehTODOvUhKc9+4ChdK06iC+NswqCzuf/2Xy/G7/aw3wd
+         70RaeUZd2m4gXCKjQPYaxDJ1yuVxtM1Rkk+I9IAKZc98FFsLTb/wMnyBpoZtbcnJAeqU
+         9/eAc4okouzBMu0oXMvJPbRl4wzxlheZwqAeibscGFOTrKHMiesd5ivoVCVs1E3KBwLZ
+         peZA==
+X-Forwarded-Encrypted: i=1; AJvYcCWreRrynOfujJnVlngSeXHQUv2C9fAIP1YBkgDuoZBh+410fjEcaKXa7rITacDBB4b8Ukt+nG2w6nkbX2llYZ5v0RWUucuCangSSenp5ZbqFo6xI+XEyhL1pHBKF5LrE/cdzXxO1LAeNr0Zauj6vezfdcvb5w0atJ+thT7Ht74A3Hv9MA==
+X-Gm-Message-State: AOJu0YzId354hvj/lL4KE7YTqvWWOyuB/qDmUrvGLKPf16DHLt/lNEFb
+	WCzvD+kKE0mFkamHnRS9Sk5WBNUs8XiOHuASMZ04ItdEt++mzP23
+X-Google-Smtp-Source: AGHT+IGUZjdlXPa7clpLDcvEVhq+KdFx2TGsH1Y7xC6ULI6j5cpmdRyve+7RmvGBNhWtnAjJ18gVIw==
+X-Received: by 2002:a05:6a00:2917:b0:6f8:c1b6:d06a with SMTP id d2e1a72fcca58-6f8f3d84ba1mr6078678b3a.29.1716683390933;
+        Sat, 25 May 2024 17:29:50 -0700 (PDT)
+Received: from archlinux ([189.101.162.253])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6822073f067sm3410868a12.5.2024.05.25.17.29.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 May 2024 17:29:50 -0700 (PDT)
+Date: Sat, 25 May 2024 21:29:42 -0300
+From: Gustavo Silva <gustavograzs@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
+	lars@metafoo.de, christophe.jaillet@wanadoo.fr, gerald.loacker@wolfvision.net, 
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/6] iio: chemical: add driver for ENS160 sensor
+Message-ID: <wsaoofbe3gvwyejkhkqv3xx4q36a6wupn2yr7ntyklzwxovxhs@s6s2fcy5yebg>
+References: <20240512210444.30824-1-gustavograzs@gmail.com>
+ <20240512210444.30824-4-gustavograzs@gmail.com>
+ <20240519150151.291a21dc@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/8] dt-bindings: counter: Add new ti,am62-eqep
- compatible
-To: Judith Mendez <jm@ti.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- William Breathitt Gray <william.gray@linaro.org>
-Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>
-References: <20240523231516.545085-1-jm@ti.com>
- <20240523231516.545085-3-jm@ti.com>
- <2956d10b-d2cf-4019-adc8-d8053e435767@lechnology.com>
- <e6a03921-532c-4aa7-92b6-812cd9a356d6@lechnology.com>
- <2339db0d-db21-4372-808d-8648500e971a@ti.com>
-Content-Language: en-US
-From: David Lechner <david@lechnology.com>
-Autocrypt: addr=david@lechnology.com; keydata=
- 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
-In-Reply-To: <2339db0d-db21-4372-808d-8648500e971a@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - vern.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240519150151.291a21dc@jic23-huawei>
 
-On 5/24/24 4:44 PM, Judith Mendez wrote:
-> On 5/24/24 3:57 PM, David Lechner wrote:
->> On 5/24/24 3:50 PM, David Lechner wrote:
->>> On 5/23/24 6:15 PM, Judith Mendez wrote:
->>>> Add new compatible ti,am62-eqep for TI K3 devices. If a device
->>>> uses this compatible, require power-domains property.
->>>>
->>>> Since there is only one functional and interface clock for eqep,
->>>> clock-names is not really required. The clock-name also changed
->>>> for TI K3 SoCs so make clock-names optional for the new compatible
->>>> since there is only one clock that is routed to the IP.
->>>>
->>>> While we are here, add an example using ti,am62-eqep compatible.
->>>>
->>>> Signed-off-by: Judith Mendez <jm@ti.com>
->>>> ---
->>>> Changes since v1:
->>>> - Fix eqep binding for new compatible, require
->>>>   power-domains for new compatible
->>>> ---
->>>>   .../devicetree/bindings/counter/ti-eqep.yaml  | 53 +++++++++++++++++--
->>>>   1 file changed, 48 insertions(+), 5 deletions(-)
->>>>
->>>> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.yaml b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->>>> index 85f1ff83afe72..c4bb0231f166a 100644
->>>> --- a/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->>>> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->>>> @@ -11,7 +11,9 @@ maintainers:
->>>>     properties:
->>>>     compatible:
->>>> -    const: ti,am3352-eqep
->>>> +    enum:
->>>> +      - ti,am3352-eqep
->>>> +      - ti,am62-eqep
->>>>       reg:
->>>>       maxItems: 1
->>>> @@ -21,19 +23,43 @@ properties:
->>>>       maxItems: 1
->>>>       clocks:
->>>> -    description: The clock that determines the SYSCLKOUT rate for the eQEP
->>>> -      peripheral.
->>>> +    description: The functional and interface clock that determines the clock
->>>> +      rate for the eQEP peripheral.
->>>>       maxItems: 1
->>>>       clock-names:
->>>> -    const: sysclkout
->>>> +    enum:
->>>> +      - sysclkout
->>>> +      - fck
->>>> +
->>>
->>> If we are making this optional for ti,am62-eqep, why add a new name?
->>>
->>> Also, we could change the description to say that sysclockout is not a
->>> great name but is required for backwards compatibility.
->>>
->>>> +  power-domains:
->>>> +    maxItems: 1
->>>> +
->>>> +allOf:
->>>> +  - if:
->>>> +      properties:
->>>> +        compatible:
->>>> +          contains:
->>>> +            enum:
->>>> +              - ti,am3352-eqep
->>>> +    then:
->>>> +      required:
->>>> +        - clock-names
->>
->> I just looked at the Linux driver for this and the clock name is
->> not used in the driver. So we could probably just deprecate the
->> clock-names property here and not make it required for
->> ti,am3352-eqep (and not allowed for any new compatibles as
->> suggested below).
-> 
-> We could do this, although I was under the impression that we should
-> not drop DT properties just because the linux driver isn't using it,
-> that is why I went with keeping clock-names around for am335x compatible
-> and making it optional for am62x compatible.
-> 
-> But if it is all the same, we could drop the the DT property.
-> 
-> ~ Judith
-> 
+Hi Jonathan,
 
-I wasn't suggesting to remove clock-names from the bindings, just
-deprecate that property in this binding and not use it with any
-new compatibles.
+Thank you for your review. I've got a few questions inline.
 
-In the AM62x technical reference manual, it looks like it calls
-the functional and interface clock FICLK rather than FCK. So
-I'm just suggesting maybe it just easier to not give it a name
-rather than try to get the right name? No name will work with
-any future SoCs as well. :-)
+On Sun, May 19, 2024 at 03:01:51PM GMT, Jonathan Cameron wrote:
+> On Sun, 12 May 2024 18:04:39 -0300
+> Gustavo Silva <gustavograzs@gmail.com> wrote:
+> 
+> > ScioSense ENS160 is a digital metal oxide multi-gas sensor, designed
+> > for indoor air quality monitoring. The driver supports readings of
+> > CO2 and VOC, and can be accessed via both SPI and I2C.
+> > 
+> > Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
+> 
+> > +
+> > +static int ens160_read_raw(struct iio_dev *indio_dev,
+> > +			   struct iio_chan_spec const *chan,
+> > +			   int *val, int *val2, long mask)
+> > +{
+> > +	struct ens160_data *data = iio_priv(indio_dev);
+> > +	__le16 buf;
+> > +	int ret;
+> > +
+> > +	switch (mask) {
+> > +	case IIO_CHAN_INFO_RAW:
+> > +		ret = regmap_bulk_read(data->regmap, chan->address,
+> > +					&buf, sizeof(buf));
+> 
+> As below, should use a DMA safe buffer.
+> 
+> > +static int ens160_chip_init(struct ens160_data *data)
+> > +{
+> > +	struct device *dev = regmap_get_device(data->regmap);
+> > +	u8 fw_version[3];
+> > +	__le16 part_id;
+> > +	unsigned int status;
+> > +	int ret;
+> > +
+> > +	ret = ens160_set_mode(data, ENS160_REG_MODE_RESET);
+> > +	if (ret)
+> > +		return ret;
+> 
+> No docs that I can see on what this means for access to registers etc.
+> Good to add a comment if you have info on this.
+> 
+Performing a reset at this point isn't strictly necessary. When we reach
+this point the chip should be in idle state because:
+
+a) it was just powered on
+
+b) the driver had been previously removed
+
+This is documented in the state diagram on page 24 of the datasheet.
+
+I'll remove this reset.
+
+> > +
+> > +	ret = regmap_bulk_read(data->regmap, ENS160_REG_PART_ID, &part_id,
+> > +			       sizeof(part_id));
+> 
+> Ah. So this is a fun corner case.  Currently regmap makes not guarantees
+> to always bounce buffer things (though last time I checked it actually did
+> do so - there are optimisations that may make sense where it will again
+> not do so).  So given we have an SPI bus involved, we should ensure that
+> only DMA safe buffers are used. These need to ensure that no other data
+> that might be changed concurrently with DMA is in the same IIO_DMA_MINALIGN
+> of aligned data (traditionally a cacheline but it gets more complex in some
+> systems and is less in others).  Upshot is that if you are are doing
+> bulk accesses you need to use a buffer that is either on the heap (kzalloc etc)
+> or carefully placed at the end of the iio_priv() structure marked
+> __align(IIO_DMA_MINALIGN). Lots of examples of that in tree.
+> If you are curious, wolfram did a good talk on the i2c equivalent of this
+> a few years back. 
+> https://www.youtube.com/watch?v=JDwaMClvV-s I think.
+>
+Interesting. Thank you for the detailed info.
+
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	if (le16_to_cpu(part_id) != ENS160_PART_ID)
+> > +		return -ENODEV;
+> > +
+> > +	ret = ens160_set_mode(data, ENS160_REG_MODE_IDLE);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = regmap_write(data->regmap, ENS160_REG_COMMAND,
+> > +			   ENS160_REG_COMMAND_CLRGPR);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	ret = regmap_write(data->regmap, ENS160_REG_COMMAND,
+> > +			   ENS160_REG_COMMAND_GET_APPVER);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	msleep(ENS160_BOOTING_TIME_MS);
+> 
+> Why here?  Not obviously associated with a boot command?
+> A comment might make this easier to follow.  I 'think' it is
+> because this next read is the first time it matters. If so that
+> isn't obvious.  Also, there is an existing sleep in the mode set,
+> so I'm not sure why we need another one.
+>
+The usage of booting time is not documented in the datasheet. From
+ScioSense's arduino driver the booting time is necessary after setting
+the operation mode. I performed some tests that confirm this.
+
+In this case in particular it is not necessary. Maybe I forgot to remove
+it after some testing.
+> > +
+> > +	ret = regmap_bulk_read(data->regmap, ENS160_REG_GPR_READ4,
+> > +			       fw_version, sizeof(fw_version));
+> 
+Does this bulk read also need to be made DMA safe? I'm guessing in this
+case it would be best to devm_kzalloc() a buffer of three bytes?
+
+> The first datasheet that google provided me has this 
+> GPR_READ0/GPR_READ1 and only 2 bytes. I hope they have maintained backwards
+> compatibility with that earlier doc!
+> 
+> When you do a separate DT binding in v2, make sure to include a link
+> to the datasheet you are using.  Also use a Datasheet: tag
+> in this patch to make it easy to find that.
+> I dug a little deeper and found the one on sciosense own website
+> - ah, you do have it in the comments.  Add to the commit message
+> and DT binding as well.
+> 
+> 
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	msleep(ENS160_BOOTING_TIME_MS);
+> Why again?
+Again, not needed. I'll remove it.
+
+> > +	data = iio_priv(indio_dev);
+> > +	dev_set_drvdata(dev, indio_dev);
+> 
+> After you've moved to devm_add_action_or_reset() for the unwind of
+> ens160_chip_init() you probably don't need to set the drvdata.
+> 
+I don't get it. Could you please elaborate on why it isn't needed to
+set drvdata after the change?
+
+> > +	data->regmap = regmap;
+> > +
+> > +	indio_dev->name = name;
+> > +	indio_dev->info = &ens160_info;
+> > +	indio_dev->modes = INDIO_DIRECT_MODE;
+> > +	indio_dev->channels = ens160_channels;
+> > +	indio_dev->num_channels = ARRAY_SIZE(ens160_channels);
+> > +
+> > +	ret = ens160_chip_init(data);
+> > +	if (ret) {
+> > +		dev_err_probe(dev, ret, "chip initialization failed\n");
+> > +		return ret;
+> 		return dev_err_probe();
+> 
+> > +	}
+> > +
+> > +	return devm_iio_device_register(dev, indio_dev);
+> > +}
+> > +EXPORT_SYMBOL_NS(ens160_core_probe, IIO_ENS160);
+> > +
+> > +void ens160_core_remove(struct device *dev)
+> > +{
+> > +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> > +	struct ens160_data *data = iio_priv(indio_dev);
+> > +
+> > +	ens160_set_mode(data, ENS160_REG_MODE_IDLE);
+> 
+> This looks to be mixing devm and manual cleanup.
+> My guess is this is the unwind for code in ens160_chip_init()
+> If so that unwind should definitely happen after we unregister
+> the userspace intefaces in the unwind of devm_iio_device_register().
+> Currently it happens before this.
+> 
+> This is an even stronger reason to use devm_add_action_or_reset()
+> for this than tidying up as mentioned below (note I tend to
+> review backwards through patches so my comments may make more
+> sense read that way around).
+>
+The intention was to transition the chip into idle mode upon driver
+removal, ensuring the sensor ceased data readings.
+I'll use devm_add_action_or_reset() as suggested.
 
 

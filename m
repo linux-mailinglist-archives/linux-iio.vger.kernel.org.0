@@ -1,66 +1,60 @@
-Return-Path: <linux-iio+bounces-5309-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5310-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD768CF42C
-	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 14:11:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A1568CF436
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 14:21:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 935091F217D9
-	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 12:11:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C949EB211AC
+	for <lists+linux-iio@lfdr.de>; Sun, 26 May 2024 12:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8AEFD266;
-	Sun, 26 May 2024 12:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63AF1DDB2;
+	Sun, 26 May 2024 12:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dKDr8sDO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cVmtEots"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80623C129;
-	Sun, 26 May 2024 12:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7D1B676;
+	Sun, 26 May 2024 12:21:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716725466; cv=none; b=vFwWpzRaZX/KlhQVRNuXwSBOzYIaUY/rjavu2wZVWi4fMmp2dVbiNlp9V4WafYO3tCu+5TWgIUBGecxwewsiPlII/Sq6KLsk5WL7KQhX1l+jrZET93saPV6CwFvd1JqzcrZVdC+tG5boHZoASDH5j11nwn/8q5Z7o98ci0mIhUw=
+	t=1716726072; cv=none; b=C+qUbz1bXW8uieSk6IKULsHYonhcppWHBweMmOb21rJ0eK0F7jbtH+zQnjJYfIssEDn1iniX6IRT8gJEn+J+fapNKd4UGQBHA2dQRiw03AQOm5Z9z++/XYpOiw1lYfTLf6XsL3SHi4OnEEd9pOx/aWOLdkQggyyLl9ASgeE8y6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716725466; c=relaxed/simple;
-	bh=yxbwdeN2PxOOqOT+5MlpJZncAZLYV0mSBdHIDQMdQYc=;
+	s=arc-20240116; t=1716726072; c=relaxed/simple;
+	bh=f1kHWS542LSTMfdmWktNiOaMXzRkAj1bsw6jPECvGyg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u0IiobFHvoCabloubo2HSDUWOjiYiekUow7qWj5Fcd6V1tna3i9Pr4rDYcrJEVFQ2fuuvHU5WAYuTIyhIZH5GPIB2rB5xc9cR3dwmZVgZmMJsMoCRA00i5oQYQSZ0R1Qbvp+tVm0gKwX+SBc7rA3VsGuPi8Hw51EpR6UuX08So0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dKDr8sDO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE04C32782;
-	Sun, 26 May 2024 12:10:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gnfzQt+lRwHR2WW9r7pZO7evC0xzpPIC6h1FD9Hesxf7WJy91vQVmig9naH/ouAhIPJqHTvhk4oisRwTAfEFwqge6l1iX9bOgRv2u1TWiveTQ5Y4zBJc0AcnPKGCGHgl/PaQII6MoEe9EGQc6u6exKcK8Z8LVG0RbLjY+6A7a/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cVmtEots; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91547C2BD10;
+	Sun, 26 May 2024 12:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716725466;
-	bh=yxbwdeN2PxOOqOT+5MlpJZncAZLYV0mSBdHIDQMdQYc=;
+	s=k20201202; t=1716726071;
+	bh=f1kHWS542LSTMfdmWktNiOaMXzRkAj1bsw6jPECvGyg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dKDr8sDOduDKwIX6vlohITrFLG+PK9X4u+UDxseik1BmHh9y4YT1xgaNuC1EZMMWj
-	 MbEHyO9bzJKJNMCdrxZHFj0O3dsIJ9XaeIrz0lXf/ftJBJMIbpQ43jo2o8hz0b7qd3
-	 lMb5QVrXHLx0NP8gj8er3hi9wz+aZLF6uq7zLGYJ8zyJTX5ZvZgPQo2fwiCURB/mDk
-	 FwFn96/7Fgwg4sgNZRWqfzJlyjOzlHJzWWMww7mfg6VSL/W2BS95lrz+ZdtRXt1+zP
-	 4rx072GpLSosfansU+u1ksfkNNXoUtrAgUUNQujLXECi7gn8brAVKw/KFfqPLRmG6L
-	 yO82VBWJpuhIQ==
-Date: Sun, 26 May 2024 13:10:18 +0100
+	b=cVmtEotsGjCe7Knku67qpVLkurVHkdp0+UAV1/yAg1a3bt+8qw/CwKEFEFqfD/wX2
+	 qRt4e7M+tu/Kd97zmNp1iZiCU86Z02895CsbAFlm4qLvI+6pLGYTfcgaz0lPaOUYTx
+	 EAmaNKrdlQi0H/JLJDLxz19BFzhxCjST1QY9zVH0qQ4Cre++oI5ULhHErkTQg3yDYK
+	 2n+gTJFxut/c/Z1Tjk4x23eSvCS51zZOgTIQmpIi36qFT0Cz2cVKf/acACOMloJgGg
+	 kknxXzUQPxFnaxUmEvNAbL0rYq26bukoAYX2bUrPgE3T4FbvxYvhmWdJsCJWYhPxwl
+	 3MhZp6lORJIVw==
+Date: Sun, 26 May 2024 13:20:25 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Julien Stephan <jstephan@baylibre.com>, Esteban Blanc
- <eblanc@baylibre.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC 3/4] iio: add support for multiple scan types per
- channel
-Message-ID: <20240526131018.40c772d6@jic23-huawei>
-In-Reply-To: <003d0998-dd25-45ab-9bb1-feda2d0f91a3@baylibre.com>
-References: <20240507-iio-add-support-for-multiple-scan-types-v1-0-95ac33ee51e9@baylibre.com>
-	<20240507-iio-add-support-for-multiple-scan-types-v1-3-95ac33ee51e9@baylibre.com>
-	<20240519201241.7c60abac@jic23-huawei>
-	<ebf18ed1-a82f-4c0a-9a63-2c428b5aee40@baylibre.com>
-	<20240520171205.000035b0@Huawei.com>
-	<5cf036d5-1eb3-4f63-82f9-d01b79b7fe47@baylibre.com>
-	<20240525171408.36bda583@jic23-huawei>
-	<003d0998-dd25-45ab-9bb1-feda2d0f91a3@baylibre.com>
+To: Gustavo Silva <gustavograzs@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ lars@metafoo.de, christophe.jaillet@wanadoo.fr,
+ gerald.loacker@wolfvision.net, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/6] iio: chemical: add driver for ENS160 sensor
+Message-ID: <20240526131927.1ab92e13@jic23-huawei>
+In-Reply-To: <wsaoofbe3gvwyejkhkqv3xx4q36a6wupn2yr7ntyklzwxovxhs@s6s2fcy5yebg>
+References: <20240512210444.30824-1-gustavograzs@gmail.com>
+	<20240512210444.30824-4-gustavograzs@gmail.com>
+	<20240519150151.291a21dc@jic23-huawei>
+	<wsaoofbe3gvwyejkhkqv3xx4q36a6wupn2yr7ntyklzwxovxhs@s6s2fcy5yebg>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,206 +65,179 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 25 May 2024 12:04:46 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Sat, 25 May 2024 21:29:42 -0300
+Gustavo Silva <gustavograzs@gmail.com> wrote:
 
-> On 5/25/24 11:14 AM, Jonathan Cameron wrote:
-> > On Fri, 24 May 2024 10:56:55 -0500
-> > David Lechner <dlechner@baylibre.com> wrote:
+> Hi Jonathan,
+> 
+> Thank you for your review. I've got a few questions inline.
+> 
+> On Sun, May 19, 2024 at 03:01:51PM GMT, Jonathan Cameron wrote:
+> > On Sun, 12 May 2024 18:04:39 -0300
+> > Gustavo Silva <gustavograzs@gmail.com> wrote:
 > >   
-> >> On 5/20/24 11:12 AM, Jonathan Cameron wrote:  
-> >>> On Mon, 20 May 2024 08:51:52 -0500
-> >>> David Lechner <dlechner@baylibre.com> wrote:
-> >>>     
-> >>>> On 5/19/24 2:12 PM, Jonathan Cameron wrote:    
-> >>>>> On Tue,  7 May 2024 14:02:07 -0500
-> >>>>> David Lechner <dlechner@baylibre.com> wrote:
-> >>>>>       
-> >>>>>> This adds new fields to the iio_channel structure to support multiple
-> >>>>>> scan types per channel. This is useful for devices that support multiple
-> >>>>>> resolution modes or other modes that require different data formats of
-> >>>>>> the raw data.
-> >>>>>>
-> >>>>>> To make use of this, drivers can still use the old scan_type field for
-> >>>>>> the "default" scan type and use the new scan_type_ext field for any
-> >>>>>> additional scan types.      
-> >>>>>
-> >>>>> Comment inline says that you should commit scan_type if scan_type_ext
-> >>>>> is provided.  That makes sense to me rather that a default no one reads.
-> >>>>>
-> >>>>> The example that follows in patch 4 uses both the scan_type and
-> >>>>> the scan_type_ext which is even more confusing.
-> >>>>>       
-> >>>>>> And they must implement the new callback
-> >>>>>> get_current_scan_type() to return the current scan type based on the
-> >>>>>> current state of the device.
-> >>>>>>
-> >>>>>> The buffer code is the only code in the IIO core code that is using the
-> >>>>>> scan_type field. This patch updates the buffer code to use the new
-> >>>>>> iio_channel_validate_scan_type() function to ensure it is returning the
-> >>>>>> correct scan type for the current state of the device when reading the
-> >>>>>> sysfs attributes. The buffer validation code is also update to validate
-> >>>>>> any additional scan types that are set in the scan_type_ext field. Part
-> >>>>>> of that code is refactored to a new function to avoid duplication.
-> >>>>>>
-> >>>>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> >>>>>> ---      
-> >>>>>       
-> >>>>>> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> >>>>>> index 19de573a944a..66f0b4c68f53 100644
-> >>>>>> --- a/include/linux/iio/iio.h
-> >>>>>> +++ b/include/linux/iio/iio.h
-> >>>>>> @@ -205,6 +205,9 @@ struct iio_scan_type {
-> >>>>>>   * @scan_index:		Monotonic index to give ordering in scans when read
-> >>>>>>   *			from a buffer.
-> >>>>>>   * @scan_type:		struct describing the scan type
-> >>>>>> + * @ext_scan_type:	Used in rare cases where there is more than one scan
-> >>>>>> + *			format for a channel. When this is used, omit scan_type.      
-> >>>>>
-> >>>>> Here is the disagreement with the patch description.
-> >>>>>       
-> >>>>>> + * @num_ext_scan_type:	Number of elements in ext_scan_type.
-> >>>>>>   * @info_mask_separate: What information is to be exported that is specific to
-> >>>>>>   *			this channel.
-> >>>>>>   * @info_mask_separate_available: What availability information is to be
-> >>>>>> @@ -256,6 +259,8 @@ struct iio_chan_spec {
-> >>>>>>  	unsigned long		address;
-> >>>>>>  	int			scan_index;
-> >>>>>>  	struct iio_scan_type scan_type;
-> >>>>>> +	const struct iio_scan_type *ext_scan_type;
-> >>>>>> +	unsigned int		num_ext_scan_type;      
-> >>>>>
-> >>>>> Let's make it explicit that you can't do both.
-> >>>>>
-> >>>>> 	union {
-> >>>>> 		struct iio_scan_type scan_type;
-> >>>>> 		struct {
-> >>>>> 			const struct iio_scan_type *ext_scan_type;
-> >>>>> 			unsigned int num_ext_scan_type;
-> >>>>> 		};
-> >>>>> 	};
-> >>>>> should work for that I think.
-> >>>>>
-> >>>>> However this is I think only used for validation. If that's the case
-> >>>>> do we care about values not in use?  Can we move the validation to
-> >>>>> be runtime if the get_current_scan_type() callback is used.      
-> >>>>
-> >>>> I like the suggestion of the union to use one or the other. But I'm not
-> >>>> sure I understand the comments about validation.
-> >>>>
-> >>>> If you are referring to iio_channel_validate_scan_type(), it only checks
-> >>>> for programmer error of realbits > storagebits, so it seems better to
-> >>>> keep it where it is to fail as early as possible.    
-> >>>
-> >>> That requires the possible scan masks to be listed here but there is
-> >>> nothing enforcing the callback returning one from here.  Maybe make it
-> >>> return an index instead?
-> >>>     
-> >>
-> >> Sorry, still not understanding what we are trying to catch here. Why
-> >> would the scan mask have any effect of checking if realbits > storagebits?  
-> > Hmm. I seem to be failing to explain this!    
-> 
-> Maybe we are talking about two different things but calling them the same thing?
-
-I'm not sure.  Sounds like we both think our point is entirely obvious and clearly
-it isn't :(
-
-> > Key is the complete lack of
-> > association between what is returned by the get_current_scan_type() callback
-> > and this ext_scan_type array.  
-> 
-> Why would the caller of get_current_scan_type() need to know that the
-> returned value is associated with ext_scan_type?
-
-Because you are validating ext_scan_type, not the return of get_current_scan_type().
-They may or may not include the same data - to make this a good interface, that isn't
-error prone, get_current_scan_type() must return one that has been validated - i.e.
-is in the ext_scan_type array.
-
-I've looked several times and maybe I'm just failing to spot what ensures the validation
-is sufficient.
-
-> 
+> > > ScioSense ENS160 is a digital metal oxide multi-gas sensor, designed
+> > > for indoor air quality monitoring. The driver supports readings of
+> > > CO2 and VOC, and can be accessed via both SPI and I2C.
+> > > 
+> > > Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>  
+> >   
+> > > +
+> > > +static int ens160_read_raw(struct iio_dev *indio_dev,
+> > > +			   struct iio_chan_spec const *chan,
+> > > +			   int *val, int *val2, long mask)
+> > > +{
+> > > +	struct ens160_data *data = iio_priv(indio_dev);
+> > > +	__le16 buf;
+> > > +	int ret;
+> > > +
+> > > +	switch (mask) {
+> > > +	case IIO_CHAN_INFO_RAW:
+> > > +		ret = regmap_bulk_read(data->regmap, chan->address,
+> > > +					&buf, sizeof(buf));  
 > > 
-> > So either:
-> > 1) Make it do so - easiest being to return an index into the array rather than
-> >    a possibly unrelated scan_type -  
+> > As below, should use a DMA safe buffer.
+> >   
+> > > +static int ens160_chip_init(struct ens160_data *data)
+> > > +{
+> > > +	struct device *dev = regmap_get_device(data->regmap);
+> > > +	u8 fw_version[3];
+> > > +	__le16 part_id;
+> > > +	unsigned int status;
+> > > +	int ret;
+> > > +
+> > > +	ret = ens160_set_mode(data, ENS160_REG_MODE_RESET);
+> > > +	if (ret)
+> > > +		return ret;  
+> > 
+> > No docs that I can see on what this means for access to registers etc.
+> > Good to add a comment if you have info on this.
+> >   
+> Performing a reset at this point isn't strictly necessary. When we reach
+> this point the chip should be in idle state because:
 > 
-> Unrelated to what?
+> a) it was just powered on
 
-Unrelated to anything the IIO core is currently aware of. You could have a list
-of types of cats that you've validated for feline characteristics
-and this callback returns a donkey.
-
+Maybe but we have no way of telling that
 > 
-> > that would guarantee the scan_type returned
-> >    by the callback was one that has been validated.  
+> b) the driver had been previously removed
+
+Maybe or maybe not - the device may have just done a soft reboot and switched
+operating system. We have no idea what the hardware state is.
+As such the reset is a good idea.
 > 
-> Since all scan types are const data and not changed after the iio device
-> is registered, the validation done at registration seems sufficient to
-> me (validation happens in __iio_buffer_alloc_sysfs_and_mask()). All scan
-> types are validated at this time, including all ext_scan_types. So all
-> are guaranteed to be validated already when the get_current_scan_type
-> callback is called.
+> This is documented in the state diagram on page 24 of the datasheet.
 > 
-> What other validation would need to be done later?
+> I'll remove this reset.
 
-What makes get_current_scan_type() return a scan type that is in the ext_scan_type
-array?
-
-A possible implementation (which should not be possible!) is
-
-static const struct iio_scan_type scan_type_A = {
-	.sign = 's',
-	.realbits = 16,
-	.storagebits = 16,
-	.endianness = IIO_CPU,
-};
-
-static const struct iio_scan_type scan_type_B = {
-	.sign = 's',
-	.realbits = 18,
-	.storagebits = 16,
-	.endianness = IIO_CPU,
-};
-
-.ext_scan_type = &ad7380_scan_type_A,
-
-
-static const struct iio_scan_type *get_current_scan_type(
-		const struct iio_dev *indio_dev, struct iio_chan_spec const *chan)
-{
-	//some stuff to select
-
-	return scan_type_B; 
-}
+Better to keep the reset and provide info on what it means wrt to accessing
+registers etc if possible. If there is no information then obviously not
+much you can add in the way of documentation!
 
 > 
-> > or
-> > 2) Drop validation at initial probe because you are validating something
-> >    that is irrelevant to what actually gets returned later. Validate>    when the scan type is read back via get_current_scan_type()  
+> > > +
+> > > +	ret = regmap_bulk_read(data->regmap, ENS160_REG_PART_ID, &part_id,
+> > > +			       sizeof(part_id));  
+> > 
+> > Ah. So this is a fun corner case.  Currently regmap makes not guarantees
+> > to always bounce buffer things (though last time I checked it actually did
+> > do so - there are optimisations that may make sense where it will again
+> > not do so).  So given we have an SPI bus involved, we should ensure that
+> > only DMA safe buffers are used. These need to ensure that no other data
+> > that might be changed concurrently with DMA is in the same IIO_DMA_MINALIGN
+> > of aligned data (traditionally a cacheline but it gets more complex in some
+> > systems and is less in others).  Upshot is that if you are are doing
+> > bulk accesses you need to use a buffer that is either on the heap (kzalloc etc)
+> > or carefully placed at the end of the iio_priv() structure marked
+> > __align(IIO_DMA_MINALIGN). Lots of examples of that in tree.
+> > If you are curious, wolfram did a good talk on the i2c equivalent of this
+> > a few years back. 
+> > https://www.youtube.com/watch?v=JDwaMClvV-s I think.
+> >  
+> Interesting. Thank you for the detailed info.
 > 
-> The validation is just checking for programmer error, so it seems better
-> to catch that at probe where we are guaranteed to catch it for all scan
-> types. If the driver fails to probe, the programmer should notice this and
-> fix their mistake, but if we don't validate until later, the programmer
-> might not check every single configuration every time a change is made.
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	if (le16_to_cpu(part_id) != ENS160_PART_ID)
+> > > +		return -ENODEV;
+> > > +
+> > > +	ret = ens160_set_mode(data, ENS160_REG_MODE_IDLE);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	ret = regmap_write(data->regmap, ENS160_REG_COMMAND,
+> > > +			   ENS160_REG_COMMAND_CLRGPR);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	ret = regmap_write(data->regmap, ENS160_REG_COMMAND,
+> > > +			   ENS160_REG_COMMAND_GET_APPVER);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	msleep(ENS160_BOOTING_TIME_MS);  
+> > 
+> > Why here?  Not obviously associated with a boot command?
+> > A comment might make this easier to follow.  I 'think' it is
+> > because this next read is the first time it matters. If so that
+> > isn't obvious.  Also, there is an existing sleep in the mode set,
+> > so I'm not sure why we need another one.
+> >  
+> The usage of booting time is not documented in the datasheet. From
+> ScioSense's arduino driver the booting time is necessary after setting
+> the operation mode. I performed some tests that confirm this.
+> 
+> In this case in particular it is not necessary. Maybe I forgot to remove
+> it after some testing.
+> > > +
+> > > +	ret = regmap_bulk_read(data->regmap, ENS160_REG_GPR_READ4,
+> > > +			       fw_version, sizeof(fw_version));  
+> >   
+> Does this bulk read also need to be made DMA safe? I'm guessing in this
+> case it would be best to devm_kzalloc() a buffer of three bytes?
+All bulk accesses need dma safe buffers.
+I would take the approach many IIO drivers do of not doing another allocation
+(which has overheads etc) but instead just add a suitable __aligned(IIO_DMA_MINALIGN)
+buffer to the iio_priv structure.  Note you normally only need to do mark
+the first one like that as we don't care if various different DMA buffers
+are in the same cacheline as the SPI controller should not cause DMA safety
+issues with itself.
 
-I agreed - but today that isn't happening in the above example.
-You need to enforce that the scan_type returned is one that has been validated.
+> 
+> > The first datasheet that google provided me has this 
+> > GPR_READ0/GPR_READ1 and only 2 bytes. I hope they have maintained backwards
+> > compatibility with that earlier doc!
+> > 
+> > When you do a separate DT binding in v2, make sure to include a link
+> > to the datasheet you are using.  Also use a Datasheet: tag
+> > in this patch to make it easy to find that.
+> > I dug a little deeper and found the one on sciosense own website
+> > - ah, you do have it in the comments.  Add to the commit message
+> > and DT binding as well.
+> > 
+> >   
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	msleep(ENS160_BOOTING_TIME_MS);  
+> > Why again?  
+> Again, not needed. I'll remove it.
+> 
+> > > +	data = iio_priv(indio_dev);
+> > > +	dev_set_drvdata(dev, indio_dev);  
+> > 
+> > After you've moved to devm_add_action_or_reset() for the unwind of
+> > ens160_chip_init() you probably don't need to set the drvdata.
+> >   
+> I don't get it. Could you please elaborate on why it isn't needed to
+> set drvdata after the change?
 
-Maybe I'm missing that validation occurring somewhere?
+No other users.  Only the remove() callback calls the matching get_drvdata()
+and that function won't exist once you've added device managed callbacks
+to handle everything it does.
 
 Jonathan
 
-
-> 
-> > 
-> > I prefer option 1.  
-> >>  
-> >   
-> 
-> 
 
 

@@ -1,104 +1,128 @@
-Return-Path: <linux-iio+bounces-5325-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5326-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1907A8CFC74
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 11:07:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B82AE8CFCAB
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 11:20:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C77A2280CEF
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 09:07:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 578A2B203E1
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 09:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60EB763EC;
-	Mon, 27 May 2024 09:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45129139D05;
+	Mon, 27 May 2024 09:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ysJ6HegL"
+	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="mIXKbnT9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A546381B1
-	for <linux-iio@vger.kernel.org>; Mon, 27 May 2024 09:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74B38BF0
+	for <linux-iio@vger.kernel.org>; Mon, 27 May 2024 09:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716800869; cv=none; b=BzO+SqZ2uIEub5tQTCM3K1Oid4tb3D6GCckHw/zEOBW36kdU0r9VJabx/9vjWjmpntf+yQA5gR3jcTMsL4DIaJv/2vnLhwwiJEV+0g57sIyvZG/nTXnoovKhg6fHoD5d3a2R41eFljZd9Rv8eDBsfaUnNasdO1/KCJn/AEAHO9I=
+	t=1716801635; cv=none; b=cCsJYNCZkFBuVFibQ1kppketkfLxvfAJ1051b9DuZhQH0rbSC2M2FV+4JOYzEvN0sfd/ILePfHCWeIYj23KC3F2Hei8eFEmUhPhKuCx05cTL3HnoYxSd92Z+bClsCnyLpslo5hxJ8ckj/MOm0YHsyambfiU8J1ByQ3KM9u8ZDUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716800869; c=relaxed/simple;
-	bh=a1Vl1rci3lVc+qkTZXlXSNM3HyM20lhqxxNM6JEBPyE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iOzfahxd5Y+ZsIu28+qdTDnsf0X6tXAeLkkuwuTF32BmRqlUoyn+51IAh2t6wjJobnZLR0zzBkByrO9jbhIWo1WIkD7btXY+Y20MztPnZMGIzsIPFPYODFp36xtGMP3WF8YPtP/8JcxeLt+zLex4ncg2k7CFD1irBBUbKMEEYRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ysJ6HegL; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5789733769dso2498811a12.1
-        for <linux-iio@vger.kernel.org>; Mon, 27 May 2024 02:07:47 -0700 (PDT)
+	s=arc-20240116; t=1716801635; c=relaxed/simple;
+	bh=OHN/IAzOwDQ3KJIFqz1W6xo25EiShF/8i4Enq++VJWI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nt9Cq6EueDyqa0LnUWFKFYneLO4Gii7fbNGnnSHn92vKDrQ8NevoJKAqfbo612DCYmLVvGe3C7uACy4AZTm99mKeGK6w4y2tX4d4SObgY7/zCz2j/bVRla5pN3xJeof/+ocDx6/X0JFoPUsZ1dcardBKiFmsVJWrNkHofRb8ZGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=mIXKbnT9; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1f4a6a54416so3253845ad.0
+        for <linux-iio@vger.kernel.org>; Mon, 27 May 2024 02:20:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1716800866; x=1717405666; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=a1Vl1rci3lVc+qkTZXlXSNM3HyM20lhqxxNM6JEBPyE=;
-        b=ysJ6HegL8pKKmKFmBkMvi0VDZxOQQs4Gn84uGEwBQFY7/Gi+jLFboS57C/Yhs1sMmB
-         yfXnrkGPbEFT83zO73VRqbAV0piMz04tR+TYPzutJqK/FZETG5jz4yLOg8ZJmg4Xm7bD
-         bTNqCZgNFeEM2nwBjexUqMcz9/s4rGNYsBlLDN85gQyGHIo4gK2FzRNlNjMUB72R870f
-         wVz2WHOYEHimKyHi76Kh4WvIjWM0BJDgN4OS093PBbW7HPVBLu9W1iuvxlaz23y0dgoS
-         Lza5YCGsAunOo0MmFKQTlgjvNM/oXyugItwaayV1l4Gu7xdYKSMkPSKgQPSp8n2zxn7g
-         iRig==
+        d=usp.br; s=usp-google; t=1716801631; x=1717406431; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cAawep2ohP6ztgwKK7QFf4ez0qZx5TLAK9XAOHJA5Zw=;
+        b=mIXKbnT9Sz4BxNzOKEqruOQKxH0mOP1jkO2BT/9jAwTOcNGo3YXeyQPLUnSAMSIJMl
+         1nQ7t7lljFfLznfMMmPFghdyGD5uAaqfdw81ztfHws6DjO+HFNnjBf9bNzDectsge8Cm
+         FqIvga+bz/VxKxibrAqqV3T8xxFrP05mKX7CZAP+neTKTpjH+LiH520Z1v3wLsp+mjlI
+         LHB9mVCue9DNKAij9I9b1h7rmxbTwIMbIijOgKLtKfm5CGjgwitXlylcUf9fHVxVov5P
+         txxEeVWOjAqqo405x9OXv2fIWtCeqd7evLazL6ZJZNcL59Oq0cXFLbX5z7KAaIxUj6JG
+         NJ/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716800866; x=1717405666;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a1Vl1rci3lVc+qkTZXlXSNM3HyM20lhqxxNM6JEBPyE=;
-        b=UtOaRjeovkTqUZx4+8vk1VAc5Z+3cpKCtYW4cWJl23FygRcqBDfRZdGZEkEK3qQwC6
-         c5mckxp4hc68U+T2TCnUai+U+JeLhmsFbj9CdGn7t+3A4a2czw/e59Lklw84PrVWo4Hq
-         NquAatFrqfxE/HTxQB1Y7k939l1b++MPVwR5SKtCchhx8PyxPCFoPCAql/g4x50GIStw
-         PzutCBLmr35hw/pwhP8XgnYrBSSRT8vyGw1jhbt7avjIlux9hybu8ClQcRxsYzOydvBS
-         c8ICVmvAcA5AJAJgBiAl/C8DmNAC4wY5axOg71enSaOgufbg2I+OUYBvVw73u2S2r2+f
-         pnkA==
-X-Forwarded-Encrypted: i=1; AJvYcCXCJyGyO/KoQyyiQyqGidHkPch2OaEjXnU+3P6fcoDVEpCJsGiyLb+ULTjUJZ9Q5zQKcpXkwS+DOHiyoW5n5BGuxj8qTq0IPCFb
-X-Gm-Message-State: AOJu0Ywsv0LM7MEwZzxvmdP+OVkEYdIYtziJtYEm0g9XbUfFEHMFjf3c
-	V+w/vN1xn7G1MiHPmadYlXPfFjqj36cRrL7EYu6rj/1Tc4HpDpfFPYZ11VXxB5s=
-X-Google-Smtp-Source: AGHT+IF7OcaPLruFbCjuG1bWRANJbFK+TLfQ4b7xj1bJIFQqh4jWRuxYVX51Rrq+jAKwgb46l39rYw==
-X-Received: by 2002:a17:906:2a89:b0:a59:c944:de4 with SMTP id a640c23a62f3a-a62616df6b5mr808475566b.2.1716800866283;
-        Mon, 27 May 2024 02:07:46 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a62de917c6bsm167617166b.194.2024.05.27.02.07.45
+        d=1e100.net; s=20230601; t=1716801631; x=1717406431;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=cAawep2ohP6ztgwKK7QFf4ez0qZx5TLAK9XAOHJA5Zw=;
+        b=RrGGOo7ZRFZ603fvlWCOAHdJtTj8ltWcxI0m/97Tqy9pFAmQ14lNHUuEzLPGeuxPIn
+         LCVWfssv0Xb3NbS7hW6zMzwpVIzN8LXAHA4kJDjvfsRHU/sqIswOYIQiBaGqF1fEQRQK
+         1QX1K4I2PkWT+ZoJFbLWqcAzANKzO2aE//TdovoR6V19OD9fM8Gt9AaHl/lUxBd4tEIj
+         eY0Aw4vT4YvndAekPtjxavrkjO21I75lBbaUQscZCQBBpRJrUGjwveFv6dSvp3oYFyj0
+         3RDuhedPcYqyIwoXJCP+Mi3ZvwXnrWGTgnJa4NwJ2NyC04fc4kd0065NRL9kAOI/ii9V
+         Ir4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVMplH9l7D+LOTtzHDirOwl5K9sNjl0Eqn3f0WvCiVNfpfpIIOjEgx+qBlobDQnGyi3Lb3IBeuXQKzb5ozWkKJ9zmUHQgm3wV3n
+X-Gm-Message-State: AOJu0Yyvbz8tLGcrwn64qzSt9NsVmZLsX6CYvlfXU784K566Efscufif
+	IBcKw+4V0ngrRMqCdlSmR6Va6EIoBg+1hJsqgg0e6PB4Qty1I81VhfuDfm9df8U=
+X-Google-Smtp-Source: AGHT+IEq88ydFy9TAOBH1E01Fp9p1g9n21J45BUISJwSAEKRIsD79kzH8P822omyL8QkEjaehrrstA==
+X-Received: by 2002:a17:902:ea03:b0:1f3:81c:c17 with SMTP id d9443c01a7336-1f4481f22cfmr128503305ad.23.1716801631067;
+        Mon, 27 May 2024 02:20:31 -0700 (PDT)
+Received: from fedora.. ([2804:14c:154:9a8d::1000])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f44c9d2a22sm56099015ad.293.2024.05.27.02.20.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 02:07:46 -0700 (PDT)
-Date: Mon, 27 May 2024 12:07:42 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Mauro Carvalho Chehab <mchehab+samsung@kernel.org>,
-	ye xingchen <ye.xingchen@zte.com.cn>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Cc: oe-kbuild@lists.linux.dev, Yasin Lee <yasin.lee.x@outlook.com>,
-	jic23@kernel.org, lkp@intel.com, oe-kbuild-all@lists.linux.dev,
-	lars@metafoo.de, swboyd@chromium.org, nuno.a@analog.com,
-	u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, yasin.lee.x@gmail.com
-Subject: Re: [PATCH] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S sensor
- driver
-Message-ID: <494eacc4-c406-4288-9f7f-85a69add7c6f@moroto.mountain>
-References: <SN7PR12MB8101EDFA7F91A59761095A28A4E72@SN7PR12MB8101.namprd12.prod.outlook.com>
- <59869d5f-3d97-48a2-8a96-127f7b46c0e8@moroto.mountain>
- <CAHp75VcTxXsnKVR5EQYTNhokHeXrOxQPe9gAkWFRr0yZT1KTPA@mail.gmail.com>
- <6f479ca6-cd6d-4a28-8afe-8b74c4d171d4@moroto.mountain>
- <16a63a13-4c98-4eea-82b7-68213bff61bc@moroto.mountain>
+        Mon, 27 May 2024 02:20:30 -0700 (PDT)
+From: Gustavo Ueti Fukunaga <gustavofukunaga@usp.br>
+To: jic23@kernel.org
+Cc: Gustavo Ueti Fukunaga <gustavofukunaga@usp.br>,
+	caiodantas@usp.br,
+	linux-iio@vger.kernel.org
+Subject: [PATCH] iio: adc: ti-adc161s626: make use of iio_device_claim_direct_scoped()
+Date: Mon, 27 May 2024 06:19:40 -0300
+Message-ID: <20240527091942.53616-1-gustavofukunaga@usp.br>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <16a63a13-4c98-4eea-82b7-68213bff61bc@moroto.mountain>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-I've looked through a large sample of other callers and they're okay.
-The bug seems to not be so prevalent as I feared.
+Make use of iio_device_claim_direct_scoped() to make error handling more
+natural and simplify code.
 
-regards,
-dan carpenter
+Co-developed-by: Caio Dantas Simão Ugêda <caiodantas@usp.br>
+Signed-off-by: Caio Dantas Simão Ugêda <caiodantas@usp.br>
+Signed-off-by: Gustavo Ueti Fukunaga <gustavofukunaga@usp.br>
+---
+ drivers/iio/adc/ti-adc161s626.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
+
+diff --git a/drivers/iio/adc/ti-adc161s626.c b/drivers/iio/adc/ti-adc161s626.c
+index b789891dc..f7c78d0dd 100644
+--- a/drivers/iio/adc/ti-adc161s626.c
++++ b/drivers/iio/adc/ti-adc161s626.c
+@@ -137,17 +137,13 @@ static int ti_adc_read_raw(struct iio_dev *indio_dev,
+ 
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_RAW:
+-		ret = iio_device_claim_direct_mode(indio_dev);
+-		if (ret)
+-			return ret;
+-
+-		ret = ti_adc_read_measurement(data, chan, val);
+-		iio_device_release_direct_mode(indio_dev);
+-
+-		if (ret)
+-			return ret;
+-
+-		return IIO_VAL_INT;
++		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
++			ret = ti_adc_read_measurement(data, chan, val);
++			if (ret)
++				return ret;
++			return IIO_VAL_INT;
++		}
++		unreachable();
+ 	case IIO_CHAN_INFO_SCALE:
+ 		ret = regulator_get_voltage(data->ref);
+ 		if (ret < 0)
+-- 
+2.45.1
 
 

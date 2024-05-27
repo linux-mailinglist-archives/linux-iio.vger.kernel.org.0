@@ -1,147 +1,122 @@
-Return-Path: <linux-iio+bounces-5321-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5322-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BC688CFAEB
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 10:05:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 106238CFB15
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 10:14:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319671F21DC4
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 08:05:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41FDF1C2030F
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 08:14:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6922C3C463;
-	Mon, 27 May 2024 08:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CFC3CF73;
+	Mon, 27 May 2024 08:14:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QWpcrwuB"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="K/2UJLHD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DBA3B1AB
-	for <linux-iio@vger.kernel.org>; Mon, 27 May 2024 08:05:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B5D3A1B6
+	for <linux-iio@vger.kernel.org>; Mon, 27 May 2024 08:14:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716797149; cv=none; b=b6homoBAJzmrI5Szoj8SZL3fxgQlSZiQCchTuP5AuWJQ2S1LPnYU7J9q+Hg9gLIhLCXXfJ7byGntMHFHMb1jKX5k/Cwy58tHDsB5xrKtbHE38PbNc9KTXJZmvPqsQfd+ejrx1xGLEfAJyA4XrASZ+lSiI0zv4FJyId+VRc/qQm4=
+	t=1716797663; cv=none; b=NObjp/Ldblt4J+jgT8tjOuPoGWDwqhcOK2o244ymIOfnOIVsWMBBVNjMGVciADL28zRjRAoko6aZELdrkLCka9yH+zLakWKls8aenHNHldZkH4F4S969VUBoaorCaQLqfxJUi4qItytf05AZUz6KUetky5xY1LcnetU4H8LtR9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716797149; c=relaxed/simple;
-	bh=0PSvznaULgAMyci1Cuzw0gj53Rvyogvjy4WMf8Yb64Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FYHCipBexDMCNP9A5hxffdsSPr4cuNd4nLAq0wes/gGbDnpMuvHlJACYZBEpsNhzm0PNOXQ3cGJAAUG7Ks9VNm2g+/EfuclpBdrEO6yETfZSMHbfWGvy/jtjTr7rHNtt2NI1CEpdr38KZhSC6S28r1w3iEayl6ZCFInx73uPjUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QWpcrwuB; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-420180b58c5so44359375e9.3
-        for <linux-iio@vger.kernel.org>; Mon, 27 May 2024 01:05:46 -0700 (PDT)
+	s=arc-20240116; t=1716797663; c=relaxed/simple;
+	bh=nwYaraCxggBDKnVnYzLQQW0XR3XO/+s4UMrvkMG2ZYI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gLCvDkE/cO2V/l1TqRVg7HnO98vDkV66dCPeMQkgTe+oByFYL5FAOeZqBkrbhHhmYZhr8RVWoT834/tgnXy2zGX/br9dfzZRmodXw6dy07vyiYNAMJ21g60QzoGo/xczlUUXiIMeyPljyn+EhJg4F0rfV/YriHjhM9zmM4J60ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=K/2UJLHD; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a6267639e86so331855766b.2
+        for <linux-iio@vger.kernel.org>; Mon, 27 May 2024 01:14:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1716797144; x=1717401944; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5BtQhzjdT5QYL2ZvPWoXdnXVCwFUxuBDZKoHrk+bMdg=;
-        b=QWpcrwuBowqCLGFx6vE6zilTO1GGaS9zAS0kXlx3hh4o8e6SmtCAgUAcsVivUqUoII
-         UTuM9M+jAyqP5LsI+7ZbvVxBGtdi9BMdbjhV7S80/uSVRzN1XsVe95A+39RFoIwLti/G
-         ckC8DD3QyU6uoOQy2IsFoDrFtWfQCk7ZIxkev6Mlcbe/1cCz7HW75EFldrCddWJYt5+h
-         PmLo0deSaBXv3y4G3gPYkm/vCqC7rrCD2sjAn9ppuz0tUU5npwJFEjNrO8lDWSww6raO
-         OS2LvTEM8dKlCqbccbQ5CnHKp/yUcAQHnu8kJHIlMr9Oi2YWlTqZANmFutNaTQHfNb7u
-         m5zw==
+        d=linaro.org; s=google; t=1716797661; x=1717402461; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2gOfFJLDZFM1NLZoeu2fRwYilxYpWgEWWcHQQR/WPKs=;
+        b=K/2UJLHDKW68eL9idw8EEEp8naRe7lSMEvpaCj6OZwGtuC561mk3rm0O5xGycLE+8Y
+         GCFq9BSSZ9mN5sjpL/wSz+4aPufi02V5CzFs2Hkh5dHcWKBcdljP+gOW0kLpF11HcE5Z
+         /xgaj11Nqsex5mL36G578m9+HwsrPs78Ejd33tp/H3jwMqtH2D0T0QApD4NqEX1QQHNI
+         z1V+ovtNmJq6yQ8/+O5VOqlGLTUXqUsvmCwfZfxD35Ft+qP3j0LacJR2Qc2AkEW/l0Qc
+         u2WxnpAb+T+izEzRRtB9i2//Y76sXce/+mlcVMxN13BbuSMj4EQCm4Y7jD0HNufmtctp
+         7QCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716797144; x=1717401944;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1716797661; x=1717402461;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5BtQhzjdT5QYL2ZvPWoXdnXVCwFUxuBDZKoHrk+bMdg=;
-        b=UMqAn2kfJuJEDdSCfrc5FG/9eFVdcxATa5fbxtjwdnuyy37gMb8YAg8YPwGKMW8rlB
-         x3vckATH8/vve6a7GS1lhFC2Opufv5BUBogRb/VMc2g5P7K1JrFRh8FiUbnQrUA1uuWG
-         +cBsr6FWE1dip+Y6VRZmh7XyriWUDtZhEDZAvfNfLx9QiJTHOqB7RMW9S15dDx20OXuO
-         Lnxe1W0foHGAZY5tkMwO8+zweqUmwGXzOLTKXWZsByvrMyM/jHccZMPVDUUC8bU5i/zp
-         XkX3fi3vJBLmhXjmh/6xuWLZHtDuwzxMWHeUd6rYXZmbp0Ez49xWzO/OEwCMS5vEqqI3
-         o/6A==
-X-Forwarded-Encrypted: i=1; AJvYcCV1BXhjBKcAwtGPSPEC+JgG9VxXdJd7Emf6MKEO745ox8VYuYO9CflJcQZmK5Cw1Ign/rZos5ioud8pF7hfwjc/eQR2fXlvN9IX
-X-Gm-Message-State: AOJu0YzKfzy759BSLt7TCSfx4zS+cTuMMOKrhTwa2VTQuxFKTAPpzaWS
-	IMAc88thsINbUe4J1ix4+zdPe0MsOB9639yb7BDgqzIHSiZgiLvjoQ4Ir6L2TsA=
-X-Google-Smtp-Source: AGHT+IFjTh3sALivWS8cyiG3P2VqGfa6WZ9uRwNWd0jWYgzVAeeUnrCZ0dIfl1hzkqKwPke1T7cB2w==
-X-Received: by 2002:a05:600c:56d6:b0:41f:f144:5623 with SMTP id 5b1f17b1804b1-421089cd2a7mr57708205e9.14.1716797144380;
-        Mon, 27 May 2024 01:05:44 -0700 (PDT)
-Received: from [192.168.0.2] (host-87-9-236-85.retail.telecomitalia.it. [87.9.236.85])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421089cc504sm100277335e9.40.2024.05.27.01.05.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 May 2024 01:05:43 -0700 (PDT)
-Message-ID: <fe9d08e4-fc47-461f-8715-98aed484535d@baylibre.com>
-Date: Mon, 27 May 2024 10:05:09 +0200
+        bh=2gOfFJLDZFM1NLZoeu2fRwYilxYpWgEWWcHQQR/WPKs=;
+        b=SMACr10FRDedk32PyrkJnE+jfuJ7WE3WaM4yx0GOCWa/buVXIeUYHDGeiubrfW2kp9
+         n0yMRozNJ8SKjh4PcRqu56IvLAdtSnWR+ehDDjs+k88FJuiFQIUmwq3buwnOD9w0+5sH
+         +2XsRqJFGPLdr4orS3Du9gfJ5vVyAekYbKmJxvJZa3PDzcW3rS15wfDVTqIUYIb3TO3I
+         6a74fgBnplOmkkSxUrhuPzbaABK1JAgyStTuqtyNZfLcHZJZa5qhiU0QGoc9pKM5w7SO
+         1hrp31CE3fF5UgAddHHe3VFugDZKZ1BAW7ORtBToKPaGurNNxHfmKKRIxbY94B61n1Tu
+         BADw==
+X-Forwarded-Encrypted: i=1; AJvYcCWclPqTSM5SEAydjnfx6Y76mT9cxoTJpc2j+C2eOcwNBbZjx9aPLPQBmGG1NQYPK+Fxtix5SloIFdSiYKsYpiGZ6ge7hQXZgrI0
+X-Gm-Message-State: AOJu0YxOSbR3TGhCPQqcGCaHOVmqhPSrj0CbMqnyv5V44lOunWszt+Zy
+	/U64RXoKgim06W90LjUY6RnKThhICsHW6GOZcBJPusJE6aERV7AxWPMqXOOoYuY=
+X-Google-Smtp-Source: AGHT+IHYnL+hf/PaVRs5w2cBRVnHz4XxYlxeikqwWQlJyhXrjPG34g7ILif/Bx2s4uuxLU41DeUKtQ==
+X-Received: by 2002:a17:906:7f15:b0:a62:e9c:f621 with SMTP id a640c23a62f3a-a6265148c46mr601649666b.58.1716797660675;
+        Mon, 27 May 2024 01:14:20 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626cc8dcbdsm472629966b.175.2024.05.27.01.14.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 May 2024 01:14:20 -0700 (PDT)
+Date: Mon, 27 May 2024 11:14:16 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: oe-kbuild@lists.linux.dev, Yasin Lee <yasin.lee.x@outlook.com>,
+	jic23@kernel.org, lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	lars@metafoo.de, swboyd@chromium.org, nuno.a@analog.com,
+	u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, yasin.lee.x@gmail.com
+Subject: Re: [PATCH] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S sensor
+ driver
+Message-ID: <6f479ca6-cd6d-4a28-8afe-8b74c4d171d4@moroto.mountain>
+References: <SN7PR12MB8101EDFA7F91A59761095A28A4E72@SN7PR12MB8101.namprd12.prod.outlook.com>
+ <59869d5f-3d97-48a2-8a96-127f7b46c0e8@moroto.mountain>
+ <CAHp75VcTxXsnKVR5EQYTNhokHeXrOxQPe9gAkWFRr0yZT1KTPA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/6] minor fixes and improvements
-To: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <noname.nuno@gmail.com>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
- nuno.sa@analog.com, lars@metafoo.de, Michael.Hennerich@analog.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240522150141.1776196-1-adureghello@baylibre.org>
- <751faef385f81f8a2dd0dcc2acd2d4519bebebe5.camel@gmail.com>
- <20240525180631.13446abc@jic23-huawei>
-Content-Language: en-US
-From: Angelo Dureghello <adureghello@baylibre.com>
-In-Reply-To: <20240525180631.13446abc@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHp75VcTxXsnKVR5EQYTNhokHeXrOxQPe9gAkWFRr0yZT1KTPA@mail.gmail.com>
 
-Hi,
+On Sat, May 25, 2024 at 05:00:59PM +0300, Andy Shevchenko wrote:
+> On Thu, May 23, 2024 at 3:42 PM Dan Carpenter <dan.carpenter@linaro.org> wrote:
+> 
+> 
+> > 5e5a419c9407f6 Yasin Lee 2024-05-10  1110  static ssize_t hx9031as_raw_data_show(struct file *file, char __user *user_buf, size_t count, loff_t *ppos)
+> > 5e5a419c9407f6 Yasin Lee 2024-05-10  1111  {
+> > 5e5a419c9407f6 Yasin Lee 2024-05-10  1112       char buf[BUF_SIZE] = {0};
+> > 5e5a419c9407f6 Yasin Lee 2024-05-10  1113       char *p = buf;
+> > 5e5a419c9407f6 Yasin Lee 2024-05-10  1114       int ii = 0;
+> > 5e5a419c9407f6 Yasin Lee 2024-05-10  1115
+> > 5e5a419c9407f6 Yasin Lee 2024-05-10  1116       hx9031as_sample();
+> > 5e5a419c9407f6 Yasin Lee 2024-05-10  1117       for (ii = 0; ii < HX9031AS_CH_NUM; ii++) {
+> > 5e5a419c9407f6 Yasin Lee 2024-05-10 @1118               p += snprintf(p, PAGE_SIZE, "ch[%d]: DIFF=%-8d, RAW=%-8d, OFFSET=%-8d, BL=%-8d, LP=%-8d\n",
+> >                                                                          ^^^^^^^^^
+> 
+> 
+> > Also use scnprintf() instead of snprintf() unless you need to check the
+> > results.
+> 
+> This is incorrect advice. You should recommend sysfs_emit() /
+> sysfs_emit_at() in this kind of case.
 
-On 25/05/24 7:06 PM, Jonathan Cameron wrote:
-> On Thu, 23 May 2024 14:45:01 +0200
-> Nuno Sá <noname.nuno@gmail.com> wrote:
->
->> On Wed, 2024-05-22 at 17:01 +0200, Angelo Dureghello wrote:
->>> From: Angelo Dureghello <adureghello@baylibre.com>
->>>
->>> After testing this driver, add some minor fixes and improvements,
->>> as adding single channel variants support (ad3541r, ad3551r), also as a
->>> preparatory step to bigger future improvements related to fast-rate mode
->>> for this DAC family.
->>>
->>> Previous patches (v1, 3/3)
->>> https://lore.kernel.org/linux-iio/20240510141836.1624009-1-adureghello@baylibre.org
->>> https://lore.kernel.org/linux-iio/20240510141836.1624009-2-adureghello@baylibre.org/
->>> https://lore.kernel.org/linux-iio/20240510141836.1624009-3-adureghello@baylibre.org/
->>>
->>> Angelo Dureghello (6):
->>>    dt-bindings: iio: dac: fix ad3552r gain parameter names
->>>    dt-bindings: iio: dac: add ad35xxr single output variants
->>>    iio: dac: ad3552r: add model data structure
->>>    iio: dac: ad3552r: add support for ad3541r and ad3551r
->>>    iio: dac: ad3552r: change AD3552R_NUM_CH define name
->>>    iio: dac: ad3552r: uniform structure names
->>>
->>>   .../bindings/iio/dac/adi,ad3552r.yaml         |  43 ++++--
->>>   drivers/iio/dac/ad3552r.c                     | 140 ++++++++++++------
->>>   2 files changed, 128 insertions(+), 55 deletions(-)
->>>    
->> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
->>
-> This series crossed with a series using
-> device_for_each_child_node_scoped()
->
-> I've rebased on top of that. Was moderately straightforwards but
-> given last week I messed a similar change up completely please
-> check the testing branch of iio.git!
->
-> The mess was all it the patch adding model_data
+No, this is not sysfs code.  It's debugfs.  The API is completely
+different.
 
-Thanks for this, sure, will check.
-
-
-> Thanks,
->
-> Jonathan
-
-Regards,
-angelo
-
+regards,
+dan carpenter
 

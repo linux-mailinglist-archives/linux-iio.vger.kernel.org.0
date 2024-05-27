@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-5332-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5333-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 527FC8D04F7
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 16:59:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D24568D04F9
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 16:59:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E76528C3D5
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 14:59:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8051F21A19
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 14:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4D017556E;
-	Mon, 27 May 2024 14:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081A6176FBD;
+	Mon, 27 May 2024 14:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lL2C8H2p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AM2I+4yu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23826174EDE;
-	Mon, 27 May 2024 14:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B59175549;
+	Mon, 27 May 2024 14:26:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819993; cv=none; b=C87db/cQgNayl1bqfMA6SpIkU2PoW1hmr1yYD+93sxpccUn8t9nrHKtOTpWsoVkwZ+2pL776o4hbO7/dR/OmJIlrWPqWBveVT9D8/+cbmH/KGSlc6g6Arny6lvGRfFKfwOhhjprvmKU0cl+Wd2jdJYKHv2LuDynjjrbAEOpWFNE=
+	t=1716819994; cv=none; b=gnW3fns8ItnmW95KopZdRqfEWf86g0eK1257E5bPLnj+KQdZPjGUmKVliLixmgFYrAqotZWvvi0PzTB+jjeH/Dg31pFhKrJ+xczsWoOG6ePGb85MyKIhyBc+vymMMHEtz6fxSkwrfe3dxB61oM99tC2DqAVW9SheLWWlpvME25w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819993; c=relaxed/simple;
-	bh=BH2CoSHmpvFu18FCQ6+njmK8cCe9ldOZLR73CUTyLk4=;
+	s=arc-20240116; t=1716819994; c=relaxed/simple;
+	bh=yh+TasERANMix+jpMiSplpGWjBHeYhWj8AW2OgwJrV0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RxL+bmNCuShEh4NRWR66j5QKWHK1KodXdqu70Wb5dDOEKaLqIBL9ww3EpNEpAoK219ZlSNlpOfRQfB2xUdAkRqYlB3k6GQ71ZadqMO1qkKG69OmPvuqDl0Rs/CYILNvSPw+3vHXNQWR+J9uvwJmGxzMIgnqZsIdOuHxoogBqxXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lL2C8H2p; arc=none smtp.client-ip=209.85.221.44
+	 MIME-Version; b=WOxnEHiirpjieYGKwMIH++jIFIlYq0zxcX7nI4PvXYrP21j91F02UVfjvTmznq4k1/N806B6WqrtbsEyKR8rgKldrQywbmOrQ7JJP6xJUe0PLX6b5db+ZDFW9xrCZgmmr37nuKnYBebnl6VN/Cuc3c1wnFbrQh9mUDv5Pl09cbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AM2I+4yu; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-351d309bbecso8400844f8f.2;
-        Mon, 27 May 2024 07:26:31 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-420180b5898so79655695e9.2;
+        Mon, 27 May 2024 07:26:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716819990; x=1717424790; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716819991; x=1717424791; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=wPGHhK1Cp+7Ofc0LuMsph5CLZwGhIdmtihVxp6Eh99g=;
-        b=lL2C8H2p3iZVRdf98VdLvV/zWm2z8QWrRhc1ins60C3R6wYIVF7rsBuhp7ArBR+YIE
-         aRyJM20skXMVPsjwXGM8IhU19h59xirFw3L59ZH96HpPh6vnWGKO7Au+0jwizmGeB7sq
-         35JC65SV5PzRYFBNGzzBKuPa774PXJUNQWDozAdP30ulYTO5nXjapI40ugeGy8z8S2t6
-         Ixib+y6vFR2TtOGutCW6jUeRBkQV4vvG8bGnsQ3GtFKQum7x0Gf7/kWW32y0uhbny2/M
-         frYiKE+CByp2MoCmawyP9VthQdF9Z3nbeP6GJtw4Z8gfeSwclGQuFLaWF+SsryJx3r7h
-         Ddcg==
+        bh=RIjddxmJKzBwWGsefndtkFyAnes9Qkvcjr4RnjfZePM=;
+        b=AM2I+4yu9gYZ4CeNFJqGEMhTihoTVSCg1xfUZdgwXnvjf9wb1qUp3eKlaIboondUWN
+         b1lcbduBtFIprSEigEeahn5xNpYvGmkK2I1kXksT93dXOTc/OLkYqqURaaEmgLRWv4zi
+         ILlZnHE3SzHwsgg1zfyymMEThvjc9kHtgHeLgC9U+mGsJtWPhG7qt6934a33g6idZsGv
+         Fo0bwjhMPDwGHPI2MK/GGjZdETm7o9968n7CDxrROo63bt5gB8s1aMzbRQmzhgXRJhKR
+         N+C73uQd9TfdnK2Qup/7C8vNxfA+uMZRK+rpWLNXP+WX33PwJ6BC5AN+5QGr3wGqXVlE
+         ZReg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716819990; x=1717424790;
+        d=1e100.net; s=20230601; t=1716819991; x=1717424791;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wPGHhK1Cp+7Ofc0LuMsph5CLZwGhIdmtihVxp6Eh99g=;
-        b=xLv/JYMbKgBpkVDTD0WBZQfKZz/M5sDxNZ4Xokw4LQOTjGZxF9xI5kwwhDIIgts4JG
-         qg7P6KnMKwRvOzhJG5vF33Nw/is6VuWOjOMrn8GHJWKjgutPhj1TLR8BG0Rj7WU5CFm3
-         CRh+/h4XfzwB+ynv4seuYhmkv3ztQXyv20+pqRklUJACJ7w431d6G8FlVaZ7C0MPsndx
-         seC0UuYs8OdRBYEKWy3PjUNHkg52x3hKKwtYJz8qS/AHZ2U4tpWwCg92N+WB6bDKfEGY
-         3iAPvEjerYpK8ZwXY1mW15I7eU13r0hFpo8nVesrmmUuQPkPUEstrYYuWPaXyIh6xanI
-         7nCA==
-X-Forwarded-Encrypted: i=1; AJvYcCWM0IAwkcwVmxtPMIl0sJb+bpIQn6UFujGSnhv5id+0VvGn94rjiPsL4ot8eZbbyYESbcdvcSRr4sAs9qt6bKh0a8bmU2DW9YmZqB83ZcaLktcpv0vB2p5Rxw/NLpTiy5Xlrte4Vw==
-X-Gm-Message-State: AOJu0Yy17wUFoexXbkVfGBmATJ+qKvNaiLTR5nr1jPzOiISa/ldgcXxx
-	ihWdi/f0p5NKBNc8/5yp2JeGdniOFurTN00Hjc7wyvtQNrLUxoiLoeZD/bXBHZ0=
-X-Google-Smtp-Source: AGHT+IGy7U00w22RJXbDrlSf3tHgjES9cbfc6XxZ1yagDC9k33LRU54rZ76tM5XaG0t/Iy1D/aN7/A==
-X-Received: by 2002:adf:e64c:0:b0:354:de8e:b66b with SMTP id ffacd0b85a97d-3552fe02b74mr8239274f8f.52.1716819990228;
-        Mon, 27 May 2024 07:26:30 -0700 (PDT)
+        bh=RIjddxmJKzBwWGsefndtkFyAnes9Qkvcjr4RnjfZePM=;
+        b=ayuMjX24hsyLhyp1NQEl93pwoFUb0az188Y/tISTve3+GFhYHKoNzu3ISoxa9pGkIg
+         onot0iRoUnJwzEVqYThv65n5BiV5QYWNVEJPu3gll9s3QLDJKIRtRYQUpwWkBG6qV0a4
+         ofX53Zwp1LeIZmM6NlZbJSitniqgxGu50XW+IavIqYullXXu2WUqqUmO6LzMxcOZJwCT
+         nO0eEhvNhNgf9jggSwjhS5gKN+3D42lDAdfX0vfA48/W94vHO0I9K2GcvgU3eWevAbvR
+         D8ORvfATtw6lHO3+UJZAs/XwaeS4ZO639hBN1b8JXFr1Tl7pbSnmdSw64x0ERRMCLDg6
+         PO0w==
+X-Forwarded-Encrypted: i=1; AJvYcCVE3OKFybwwMP746ULukg451SmDb2DrlcjXCdnWKReuilUNrjQb5N6MyloHq5IYGCLTxB78eT+5V97HE22J5TelIVk9ZIxNPvL7frocqV9awxdEsr4ePjhbeTJ6OL+XKy2ZJdrnew==
+X-Gm-Message-State: AOJu0YzXt4PQeKsCzsx5jZn3WTT33kG4u3Y0atwrOPUBOWz0IvK501xX
+	1OI+ThvViDgLLnpZ509LsKiXCakG1Mxt+L6UwCi3O5DEWC42ujjSLxD0ftnoi9Q=
+X-Google-Smtp-Source: AGHT+IFdN7ZzYBSrQIaG1yeKUiwdpLje5ykW/ZJOly9c74eRPSzKiYz8urudK1fCTmBi1GCruxtYcA==
+X-Received: by 2002:a05:600c:1c02:b0:418:e88b:92c3 with SMTP id 5b1f17b1804b1-421089ccf5amr68780655e9.2.1716819991355;
+        Mon, 27 May 2024 07:26:31 -0700 (PDT)
 Received: from rbolboac.. ([2a02:2f0e:350b:4500:9c9:f6ef:e79b:45ce])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421089ae976sm110537875e9.38.2024.05.27.07.26.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421089ae976sm110537875e9.38.2024.05.27.07.26.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 07:26:29 -0700 (PDT)
+        Mon, 27 May 2024 07:26:30 -0700 (PDT)
 From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 To: linux-kernel@vger.kernel.org,
 	jic23@kernel.org,
@@ -77,9 +77,9 @@ To: linux-kernel@vger.kernel.org,
 	robh@kernel.org,
 	nuno.sa@analog.com
 Cc: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-Subject: [PATCH v5 5/9] drivers: iio: imu: adis16475: generic computation for sample rate
-Date: Mon, 27 May 2024 17:26:14 +0300
-Message-Id: <20240527142618.275897-6-ramona.bolboaca13@gmail.com>
+Subject: [PATCH v5 6/9] iio: imu: adis_trigger: Allow level interrupts for FIFO readings
+Date: Mon, 27 May 2024 17:26:15 +0300
+Message-Id: <20240527142618.275897-7-ramona.bolboaca13@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240527142618.275897-1-ramona.bolboaca13@gmail.com>
 References: <20240527142618.275897-1-ramona.bolboaca13@gmail.com>
@@ -91,103 +91,95 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Currently adis16475 supports a sample rate between 1900 and 2100 Hz.
-This patch changes the setting of sample rate from hardcoded values to
-a generic computation based on the internal clock frequency.
-This is a preparatory patch for adding support for adis1657x family
-devices which allow sample rates between 3900 and 4100 Hz.
+Currently, adis library allows configuration only for edge interrupts,
+needed for data ready sampling.
+This patch removes the restriction for level interrupts for devices
+which have FIFO support.
+Furthermore, in case of devices which have FIFO support,
+devm_request_threaded_irq is used for interrupt allocation, to avoid
+flooding the processor with the FIFO watermark level interrupt, which
+is active until enough data has been read from the FIFO.
 
 Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 ---
 no changes in v5
- drivers/iio/imu/adis16475.c | 39 +++++++++++++++++++++----------------
- 1 file changed, 22 insertions(+), 17 deletions(-)
+ drivers/iio/imu/adis_trigger.c | 37 ++++++++++++++++++++++++----------
+ include/linux/iio/imu/adis.h   |  1 +
+ 2 files changed, 27 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-index 64c8bdaba4c5..b1def85b6f90 100644
---- a/drivers/iio/imu/adis16475.c
-+++ b/drivers/iio/imu/adis16475.c
-@@ -310,6 +310,9 @@ static int adis16475_set_freq(struct adis16475 *st, const u32 freq)
- 	u16 dec;
- 	int ret;
- 	u32 sample_rate = st->clk_freq;
-+	/* The optimal sample rate for the supported IMUs is between int_clk - 100 and int_clk + 100. */
-+	u32 max_sample_rate =  st->info->int_clk * 1000 + 100000;
-+	u32 min_sample_rate =  st->info->int_clk * 1000 - 100000;
-
- 	if (!freq)
- 		return -EINVAL;
-@@ -317,8 +320,9 @@ static int adis16475_set_freq(struct adis16475 *st, const u32 freq)
- 	adis_dev_lock(&st->adis);
+diff --git a/drivers/iio/imu/adis_trigger.c b/drivers/iio/imu/adis_trigger.c
+index f890bf842db8..a8740b043cfe 100644
+--- a/drivers/iio/imu/adis_trigger.c
++++ b/drivers/iio/imu/adis_trigger.c
+@@ -34,17 +34,24 @@ static int adis_validate_irq_flag(struct adis *adis)
+ 	if (adis->data->unmasked_drdy)
+ 		adis->irq_flag |= IRQF_NO_AUTOEN;
  	/*
- 	 * When using sync scaled mode, the input clock needs to be scaled so that we have
--	 * an IMU sample rate between (optimally) 1900 and 2100. After this, we can use the
--	 * decimation filter to lower the sampling rate in order to get what the user wants.
-+	 * an IMU sample rate between (optimally) int_clk - 100 and int_clk + 100.
-+	 * After this, we can use the decimation filter to lower the sampling rate in order
-+	 * to get what the user wants.
- 	 * Optimally, the user sample rate is a multiple of both the IMU sample rate and
- 	 * the input clock. Hence, calculating the sync_scale dynamically gives us better
- 	 * chances of achieving a perfect/integer value for DEC_RATE. The math here is:
-@@ -336,23 +340,24 @@ static int adis16475_set_freq(struct adis16475 *st, const u32 freq)
- 		 * solution. In this case, we get the highest multiple of the input clock
- 		 * lower than the IMU max sample rate.
- 		 */
--		if (scaled_rate > 2100000)
--			scaled_rate = 2100000 / st->clk_freq * st->clk_freq;
-+		if (scaled_rate > max_sample_rate)
-+			scaled_rate = max_sample_rate / st->clk_freq * st->clk_freq;
- 		else
--			scaled_rate = 2100000 / scaled_rate * scaled_rate;
-+			scaled_rate = max_sample_rate / scaled_rate * scaled_rate;
+-	 * Typically this devices have data ready either on the rising edge or
+-	 * on the falling edge of the data ready pin. This checks enforces that
+-	 * one of those is set in the drivers... It defaults to
+-	 * IRQF_TRIGGER_RISING for backward compatibility with devices that
+-	 * don't support changing the pin polarity.
++	 * Typically adis devices without FIFO have data ready either on the
++	 * rising edge or on the falling edge of the data ready pin.
++	 * IMU devices with FIFO support have the watermark pin level driven
++	 * either high or low when the FIFO is filled with the desired number
++	 * of samples.
++	 * It defaults to IRQF_TRIGGER_RISING for backward compatibility with
++	 * devices that don't support changing the pin polarity.
+ 	 */
+ 	if (direction == IRQF_TRIGGER_NONE) {
+ 		adis->irq_flag |= IRQF_TRIGGER_RISING;
+ 		return 0;
+ 	} else if (direction != IRQF_TRIGGER_RISING &&
+-		   direction != IRQF_TRIGGER_FALLING) {
++		   direction != IRQF_TRIGGER_FALLING && !adis->data->has_fifo) {
++		dev_err(&adis->spi->dev, "Invalid IRQ mask: %08lx\n",
++			adis->irq_flag);
++		return -EINVAL;
++	} else if (direction != IRQF_TRIGGER_HIGH &&
++		   direction != IRQF_TRIGGER_LOW && adis->data->has_fifo) {
+ 		dev_err(&adis->spi->dev, "Invalid IRQ mask: %08lx\n",
+ 			adis->irq_flag);
+ 		return -EINVAL;
+@@ -77,11 +84,19 @@ int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev)
+ 	if (ret)
+ 		return ret;
 
- 		/*
- 		 * This is not an hard requirement but it's not advised to run the IMU
--		 * with a sample rate lower than 1900Hz due to possible undersampling
--		 * issues. However, there are users that might really want to take the risk.
--		 * Hence, we provide a module parameter for them. If set, we allow sample
--		 * rates lower than 1.9KHz. By default, we won't allow this and we just roundup
--		 * the rate to the next multiple of the input clock bigger than 1.9KHz. This
--		 * is done like this as in some cases (when DEC_RATE is 0) might give
--		 * us the closest value to the one desired by the user...
-+		 * with a sample rate lower than internal clock frequency, due to possible
-+		 * undersampling issues. However, there are users that might really want
-+		 * to take the risk. Hence, we provide a module parameter for them. If set,
-+		 * we allow sample rates lower than internal clock frequency.
-+		 * By default, we won't allow this and we just roundup the rate to the next
-+		 *  multiple of the input clock. This is done like this as in some cases
-+		 * (when DEC_RATE is 0) might give us the closest value to the one desired
-+		 * by the user...
- 		 */
--		if (scaled_rate < 1900000 && !low_rate_allow)
--			scaled_rate = roundup(1900000, st->clk_freq);
-+		if (scaled_rate < min_sample_rate && !low_rate_allow)
-+			scaled_rate = roundup(min_sample_rate, st->clk_freq);
+-	ret = devm_request_irq(&adis->spi->dev, adis->spi->irq,
+-			       &iio_trigger_generic_data_rdy_poll,
+-			       adis->irq_flag,
+-			       indio_dev->name,
+-			       adis->trig);
++	if (adis->data->has_fifo)
++		ret = devm_request_threaded_irq(&adis->spi->dev, adis->spi->irq,
++						NULL,
++						&iio_trigger_generic_data_rdy_poll,
++						adis->irq_flag | IRQF_ONESHOT,
++						indio_dev->name,
++						adis->trig);
++	else
++		ret = devm_request_irq(&adis->spi->dev, adis->spi->irq,
++				       &iio_trigger_generic_data_rdy_poll,
++				       adis->irq_flag,
++				       indio_dev->name,
++				       adis->trig);
+ 	if (ret)
+ 		return ret;
 
- 		sync_scale = scaled_rate / st->clk_freq;
- 		ret = __adis_write_reg_16(&st->adis, ADIS16475_REG_UP_SCALE, sync_scale);
-@@ -1317,6 +1322,7 @@ static int adis16475_config_sync_mode(struct adis16475 *st)
- 	struct device *dev = &st->adis.spi->dev;
- 	const struct adis16475_sync *sync;
- 	u32 sync_mode;
-+	u16 max_sample_rate = st->info->int_clk + 100;
+diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+index 0fe3a2f63033..4bb0a53cf7ea 100644
+--- a/include/linux/iio/imu/adis.h
++++ b/include/linux/iio/imu/adis.h
+@@ -85,6 +85,7 @@ struct adis_data {
+ 	bool unmasked_drdy;
 
- 	/* default to internal clk */
- 	st->clk_freq = st->info->int_clk * 1000;
-@@ -1356,10 +1362,9 @@ static int adis16475_config_sync_mode(struct adis16475 *st)
- 			/*
- 			 * In sync scaled mode, the IMU sample rate is the clk_freq * sync_scale.
- 			 * Hence, default the IMU sample rate to the highest multiple of the input
--			 * clock lower than the IMU max sample rate. The optimal range is
--			 * 1900-2100 sps...
-+			 * clock lower than the IMU max sample rate.
- 			 */
--			up_scale = 2100 / st->clk_freq;
-+			up_scale = max_sample_rate / st->clk_freq;
+ 	bool has_paging;
++	bool has_fifo;
 
- 			ret = __adis_write_reg_16(&st->adis,
- 						  ADIS16475_REG_UP_SCALE,
+ 	unsigned int burst_reg_cmd;
+ 	unsigned int burst_len;
 --
 2.34.1
 

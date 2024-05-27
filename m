@@ -1,263 +1,216 @@
-Return-Path: <linux-iio+bounces-5337-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5338-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603758D0533
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 17:04:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C203B8D05BF
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 17:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A8951C212D5
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 15:04:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EEE128B107
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 15:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52EDB16D9BD;
-	Mon, 27 May 2024 14:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B50016C6AA;
+	Mon, 27 May 2024 15:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="UwT77Ymn"
+	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="Ww5kxE1l"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966D5179665
-	for <linux-iio@vger.kernel.org>; Mon, 27 May 2024 14:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140A815EFD8;
+	Mon, 27 May 2024 15:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716820799; cv=fail; b=An6kIJc007JMrEC59yKdpOnXxLwhRAxdHmeFqgMcdz3hxVXj2fijEfGyCkMo2nxR5bLKd/hCH1e+xkjzYoLLaWAfxn3Sj+c5P5lQkYNf1ioMKnRg/S1yudqlQCFaHsGEtHpiwgRXuZJTnOCbEA/JDWdrEfsqgQ8gckX3A+Cgg8s=
+	t=1716822149; cv=fail; b=T/A0iP66kQie7QfhU8RgDeDMVVCAVK8Wir+cxVlMnMbk3CeYcDQFmBhjpL1KEGex298V6NVn0qbseIhFaRj7jrHTO8XyEo6s+EUVZdhWRn2IIMkrrAuY45cmjTFw9DOyDX10iuLDxHSOVy0JlJZ08aYxIeDSS/GEhbeQ8IWG7Jc=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716820799; c=relaxed/simple;
-	bh=SdMv3dVoiV84J7cpsYDQmxpK+vzxLyrdsHVsBrJIBns=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Xwqd05XacR4mVF1+o16x5Fzlp4fZA7vcA2E6KUrGhjeCju67zD1SuO577g+JygGADdlM9w9IWDAlGAEbZ+s9Tb+/G4l1iAxrnfRktqogEofYR9nLKU/KjHUbP+RfbDtyua8SH+nXUaoDL4AU/f2r8ovKN07orP7/YKzg5vxax7Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=UwT77Ymn; arc=fail smtp.client-ip=205.220.166.134
+	s=arc-20240116; t=1716822149; c=relaxed/simple;
+	bh=zlTlZbf0iZjuBqsgDJdA5vCdYJpo95T0NsrRnMFG8HQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=raQD1ziyJHj1uLRfQCf3A8dAnFhZU/IsMIPzvcVfiDggSgSFmZ3Za8LhCgsGa4p/0mAs6x4Jqw94StmAnYOkCi5swLQ9cfieR1qBLLDmlW6rKPkywV230T5GjST96gnXryJjEnnm6ETeIHH8gv9k1cqF57usFoOIVCUKTnG4fPg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=Ww5kxE1l; arc=fail smtp.client-ip=205.220.166.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
 Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44REK7vx014588;
-	Mon, 27 May 2024 14:39:29 GMT
-Received: from deu01-fr2-obe.outbound.protection.outlook.com (mail-fr2deu01lp2169.outbound.protection.outlook.com [104.47.11.169])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3yba4x99ff-1
+	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44QNMW3x007277;
+	Mon, 27 May 2024 15:02:12 GMT
+Received: from jpn01-tyc-obe.outbound.protection.outlook.com (mail-tycjpn01lp2168.outbound.protection.outlook.com [104.47.23.168])
+	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3yba4x99sw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 May 2024 14:39:28 +0000 (GMT)
+	Mon, 27 May 2024 15:02:12 +0000 (GMT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=eEL7i/JHVsvRDowIYI+MFX5lleNIjalXWxIz0By2UTopFtI0AUZ1tkILyXI7zZE8incKT1KB8kF2yFXxypnb+SOeOsDM9Nfi1E3lrcBqosy40HuINvQnkF9HEl9BQroqJdsXDxcpTQNpKpPtlwWKji81SQR1F+qVKQH78qoui2jOwVW0KmptQCR3Gb8TZMaO+wBXXsI87ZV2Si+hLdQncbyZuRPo8DuwmqkdO5AwRte51ASiftnrWQLII2g19YKQuXVvimtWRhOB6JpAapQriTH4dwbpi5bN1zJfVkJVrx99qCHyYjrGedSvoF+b5RDqNcxDZz5fzpV0tbOjAIEJ/Q==
+ b=C1SLTpFcOwrl+4Qr5vuhqWS3jfxaGdsK9tLdnMDUDFYpqLLrpSZcFIMwdoT9ewpu6VMR5Wgi0uO5x4bRKY/YE8aajEP8w0qxUw6Gq5VNz3Q4ufPbxwCmUBBSdiAwDsQQPXZD4atJyw8ygEjZUaz33Lli/cqIs4jY/LHrlAWgE51paAygRF0wQ8HcLEzHqfcJ3QObaofX7PMrYv40NJi4sZ4sWfW+LV0XxZdVmOTyoUAOPXwrUDG3aYuCy3vGCGMq/5AOOAVY8DvtbQc61TQ1YqUxwr+hZvQlOm/ioIuTaV4bLbwYEQ0vmS72l7U28mq0oJ9x0odB1cgqzCg1BPzyTw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NIISJHKly0+Af8UU/jkQeOWNgl0rFwIXmUmKW5nraGM=;
- b=BZSKPFy9qGEaSTZjmC9md5Ph+7E8wlocEPHdkROMuuTIIYZ3yX0bAMZmdPuWFxn1fzLuJOmZ8z40BlWb4DFKm4t5+zc7OeZLRsRuZCKE2Nl/UmVW9gI7I7V7lMIoC+7dmiqe+GN+rgM/r5OWPC6MB+6govruMZs9BfYMlEL9o+XhxoAxv4885QBVY0n9jTj4wobnsttnkZxHl+ewFs54gnoI9xenRT5m0X6Z6nc6LJU0fV0R33RFgqda/sKfDHn7anrILT83iOxA41O18ozfmBgRkH2+BHh3NKaqjq1e08IHOkqmLA0xP7HD5rv2Q8J1IgsYdPbokERVzr7E6kPYvw==
+ bh=42e7G267tqwkuOjm6oo5JP6grr4fjDcXK0iP0IKDuIk=;
+ b=Vy5n9II/B+CoRIb9ZgfT7Dso9NLh8yGGhgpOoEhCW8U58PN1fq1+BMz54d8nBYNK0mYb/I4yCl7hjjHngbbeHEC8lhEiFCwAeRALdQSP6eC/tN7AVpRQf9G8x2Z2XKdjrxxOmgw7q7FybL8in6pOvPKsKEcni2sHTn/eiVQpuqrCDVaWXtbulr33rJegTe26+QhjFIlMJDxona5m68yny0ght0Ey0SKdG4NnlFMbZn6R0zwekw0MGcocQHlfnXRz0E2OaSVmr0vFEbVtn8KPopuzJFukUDT5UVcCml5cN4gSYChqes5dtjUt/2a2YtsTMu6c5IF7VASwCe0lUh18DA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
  header.d=tdk.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NIISJHKly0+Af8UU/jkQeOWNgl0rFwIXmUmKW5nraGM=;
- b=UwT77YmneinNyHm8vCb7Us0bn1SsJBnPEtq9EhPQqbgmav46NgYh5Ad9N35KFSzUODCcDUkt4oYrUTgZQwYqZLYaA6E1/6Gz2XbeF62SevB2IKQUeEOYIw9NhvVLrSTyYcvjMdgrj708Myjp/wNRtL4+ZGLvgd7fX0L4/KJOy6HTgKBO1bsjgZbjek7H9eDppi7bjV0jwxGpgNFg6ANKdyz/0y4KsELZd96KNWyqGIT2WJ/5brVfoQJq/rJnl4bXEmFR2SeyPEMpmqdPGnMAG+WRQw+98fS77sxUq6n36tr1ZmO73CvhkwXm6pqf7sQSc2pNbPvJoxd2+tLkAXHbmQ==
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:7c::11)
- by FR3P281MB2297.DEUP281.PROD.OUTLOOK.COM (2603:10a6:d10:35::7) with
+ bh=42e7G267tqwkuOjm6oo5JP6grr4fjDcXK0iP0IKDuIk=;
+ b=Ww5kxE1lz49Sj1BH+qTG2NlIICst1oOjvy+asaIrrVhu7qBnLKRn1MS73Pbv3GOIwMSv4bkWCcg/oohVtD10UQNd0hFFWcrlp9yHIYkjjFTKmvSuZbNhHK4JJ/ocrHDNSPvzZSSiOZedA1U5b9TrL7EKDvWlUYO0iVLk+kNrkFPUEDIe9Cuil9PDox35kA1P2cu7+JiWga7W4K0dp8lnZvLwZ5KQQH/+H+W/WhjXLiY4NkcG8hG1AWUano1prGwBbjDWyU3zLxiZE/aRwSlzppdHkLEGt1ARB56L8ryXJB+FDNrEG4kLR3izUjeFp0UeA/rnNVeNk7U0eu+lV1Vheg==
+Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1a7::13)
+ by OSZP286MB1680.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1b9::14) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.16; Mon, 27 May
- 2024 14:39:23 +0000
-Received: from FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::53a6:70d:823f:e9ac]) by FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
- ([fe80::53a6:70d:823f:e9ac%4]) with mapi id 15.20.7633.001; Mon, 27 May 2024
- 14:39:23 +0000
-From: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-        INV Git Commit
-	<INV.git-commit@tdk.com>
-CC: "lars@metafoo.de" <lars@metafoo.de>,
-        "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>
-Subject: Re: [PATCH] iio: imu: inv_mpu6050: stabilized timestamping in
- interrupt
-Thread-Topic: [PATCH] iio: imu: inv_mpu6050: stabilized timestamping in
- interrupt
-Thread-Index: AQHarRiLPrxln6yPhUeHHlOK3IQu67GoNhOAgAL2xZg=
-Date: Mon, 27 May 2024 14:39:23 +0000
-Message-ID: 
- <FR3P281MB1757975E9DDC2814AA8BD80ECEF02@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20240523135245.552999-1-inv.git-commit@tdk.com>
- <20240525182235.52c47260@jic23-huawei>
-In-Reply-To: <20240525182235.52c47260@jic23-huawei>
-Accept-Language: en-US, fr-FR
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: FR3P281MB1757:EE_|FR3P281MB2297:EE_
-x-ms-office365-filtering-correlation-id: bf9d1a63-fd5d-4f9a-341d-08dc7e5acd5c
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: 
- BCL:0;ARA:13230031|376005|366007|1800799015|3613699003|38070700009;
-x-microsoft-antispam-message-info: 
- =?iso-8859-1?Q?iT/NOcqnHfs4xUkbg1MAFL3G0eZfrj2DMh3ffK6mJgYkvfuj7Drx8Nv2Zs?=
- =?iso-8859-1?Q?nRv6ojP/FEBuIUpb7l4tUchon4w+wIPcQ6H2932DWFY25kBJTFaNZcE40W?=
- =?iso-8859-1?Q?/i8Hx+SM0pl0mmVwk77LAq8kUW02K7iim3VUBHKNkpbcrSSF2h5+oRF+Ha?=
- =?iso-8859-1?Q?MhFej/vqrFSEwKbSCaEfrB9zGFJ1umlThTGaJqzP3NxZOFifJdg3GsDoo9?=
- =?iso-8859-1?Q?SLS7cnLmpssGc6gmMJddOkwdFynpCUJlMLCxH2IyDsUIEAjJUJ6/5LjrHL?=
- =?iso-8859-1?Q?nRl7nibNBPN2354eP+htDJcjNaOcu8/LIVXTOsLbG25s0Qg42zwDwRGfOq?=
- =?iso-8859-1?Q?rnHFB7lgn6/AnCsAc1Md49OCoUHFeYCTh9gV/T9EFk7j0xVEd57Tzc7p6J?=
- =?iso-8859-1?Q?dbZ5tHQ7ezKRQ6usUHpP9c0NgKlW7f8njKlQnRdvxv/brIRvXy3FfitLW0?=
- =?iso-8859-1?Q?IxxgJXiUMvQqcPQgOPblbJKIfCVOAEYviu0jgKe9guAX04UickvOwUPa0j?=
- =?iso-8859-1?Q?bJHftjz5y+8pXmga1E9tbVEfaKLs21XXY8CDhEmho5WxeiyL/ZR7TZLev5?=
- =?iso-8859-1?Q?nnt22bm5BBDAzsFxTsWHyjwEQ+X5dbj9gABNauJPSAPEERdidgdoJyImbQ?=
- =?iso-8859-1?Q?7ZC4h0bWDe+jVTrciUAOjj1KtohsiE0UrA617+Gy3CKELibLVu83SVvxAs?=
- =?iso-8859-1?Q?F77Und3F5DU6ErrsxIIUnivtahAiQ5eD1WEOnoDthKQAdb1FKFzD8yYaNo?=
- =?iso-8859-1?Q?JW1OvHOrlfEjxMp63HhL/y5gqVJPOpsFl1YN7HIswJMC4lPOW0jHDoW/cz?=
- =?iso-8859-1?Q?DWTQ+d0a5LFPM2rSYeVnCm6b8doa7Rt5pJ5DhxWXAta7OnksZKZ3iIwwMm?=
- =?iso-8859-1?Q?jk/SML1qn125kwV7PkyYp5bTXiH+xiUj2gyLF8Ko3qQYt9xuVJvMswdtqd?=
- =?iso-8859-1?Q?WRsrHxwERfOgyGpTsgVkmuYw+mdhdzjYrna7qRkpEGrWcPV046SdZDSYj/?=
- =?iso-8859-1?Q?pH0x8olhQeescS1ctFN5m9Lklp0nZ9BWpyhAR3A41mzBJHnrGptkTFzvpA?=
- =?iso-8859-1?Q?oe1puJgz/SBXuxZPQ4iCDa9Xfgia8myiTcbRxWNujtfQs/Em0GWPS0+F/Y?=
- =?iso-8859-1?Q?+yEG0S4bZm4g/eEhpz5+ZYcs1o/FV/yQ9C28p7zx81CD3SROHjn9mQhWAN?=
- =?iso-8859-1?Q?8rj39IFsATezBn//rzmG/8OCoSD1SWJln9HKr036PzNGBiDW3Pywn1olaN?=
- =?iso-8859-1?Q?pvQOfa7SKJQzDqSHAJuIxmuuU+TUvf6Ngw9fo8F4CcmwDL6vs2dXHDr3rB?=
- =?iso-8859-1?Q?eDbz3TXErVpd3NeJTvM7hTGXs3a9Skm5H/s1UabvgZmoehBRWdJFJWKlTY?=
- =?iso-8859-1?Q?OwM576oB2/gM99SVCYo4Ix0owy+OKo+xxkZw5SVJAI855PFsXI/UM=3D?=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(1800799015)(3613699003)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?iso-8859-1?Q?ur3HDv8u7tMLDa2kMtnsCGfmlvKplsqSQUMUSnAkj7/2hvs2R1RDXKnCS9?=
- =?iso-8859-1?Q?uOCBgKeur/Y6zrV3ZzqHXOmTvaxO492k0rDjOLB9/nr/CIMd8whB4rHFxN?=
- =?iso-8859-1?Q?MWeUO6yiq+G5tH3hm1weWzJTTpKI5yBJFKhBTqaxY5DrzopAQR1pa6Q+2t?=
- =?iso-8859-1?Q?i0VNFk6wYSzJ0xQaRJFC3MsPt7QCB+/5iGd+B8f84hPNh6OfsivdNo366Q?=
- =?iso-8859-1?Q?a7M4LqdXwnnChOy8PpNhiG2sw5wr733OLpYmg72/sNBFCiwGneIukr6jyQ?=
- =?iso-8859-1?Q?CoMAWIzoVetGNklfvjVIWeAx1IB2uXeGwhqQUsv0WZGwWKaxj+ht0pit26?=
- =?iso-8859-1?Q?4+CaPnY5feOs6kF8VgaRoWBnByulLrZEC2lOJUoycbi9Qq1LMd6RuPQrb0?=
- =?iso-8859-1?Q?B1QIR4sxb52SYDsrh96ixcwwK6FIGWXjTNlL8scsvMYFN2Rgt1YfQBN3X0?=
- =?iso-8859-1?Q?fMWe62qwDt+iejUcCud1gMnmyMQ8gS2SQc+jTF0Ni/oRqDqjnwmP8wlMOI?=
- =?iso-8859-1?Q?Mt005wOO+50Aw58e5j1OSNboEzOhMkP8d+VXCESjVbbmSI9XE2n7OU2Pfw?=
- =?iso-8859-1?Q?PfwnZvbODIvPycVy3qM4QkqWw124xTL1FYYn7w53NazwutTHOfEpXOtF6+?=
- =?iso-8859-1?Q?oMEBkMfCmCizFeOi4ZPH4PQexlnNeGE0Dwsrsh23LhJJg/b0I9HAsdMCpo?=
- =?iso-8859-1?Q?Q2U6PEr38wlG+224KJ0xg24qPZzjhmZXI/MXxK+LYuB2MHCXgKyFT+Q7Vp?=
- =?iso-8859-1?Q?d79Xi+zFyWWZWMKplXA7l0w4LWNKINzwOm1l66cxR679PoglNB3RinmK29?=
- =?iso-8859-1?Q?SPu2xzy8M7lgDBjOxVO8J1d+BCHmHhyGMTpBZXbBwiaVyL0JibjGZRb0uS?=
- =?iso-8859-1?Q?fOxpz5d1rDjcf2W7FgP/iLCdZYfcf9G0Glv/HMbBMFIF2b2yZKS79uB5kp?=
- =?iso-8859-1?Q?HA4FgsXLHDxoRf0XXY2TanRCAZ+w9RXaltjTVjiZf80lMBKVsvV6frlK0t?=
- =?iso-8859-1?Q?lKWzKdyN84RdRptjdV+R1zi1Se0wGLIHMjMYWw/dQ4cYSPEw4V8qAAsuhG?=
- =?iso-8859-1?Q?jhr6JQgxCuDQe4Ue2+8atOij2h/oVqsnsvd3eaTIk72gnjLN8Z02tvsz1B?=
- =?iso-8859-1?Q?kSBTeDWBfOTuBBs4G0i9yfUu/OFjW4R9xJ2WtLu1bwYpo3o0zM72cRfN+Y?=
- =?iso-8859-1?Q?7w7ss/RkgbPnmbEa9hOJbgyS/yq/NxfV3yV6aNQoHrUVkbcBINDxx4G3cM?=
- =?iso-8859-1?Q?NjhWWJRHKS1sPcUYJy88ohGxh5gMf4DysMCX7G2Nlanf81XlNrK2PvYxjM?=
- =?iso-8859-1?Q?7MX4dP+mw1Wcn2FBvHyE441dZ6SxSlKEM6QYiW1kgtYC8IkP/i08HbSssM?=
- =?iso-8859-1?Q?JQeWFw4fWEW5ZK9tNLor7YnuOERelsPDMDRJKsehIdGGLVOyebBTLlmrYz?=
- =?iso-8859-1?Q?Mtx4kktMNlqEJBG1WxTqKws1fdrSyggsVGI6ar21OfGJ8IVpqN6Gp/4Z5s?=
- =?iso-8859-1?Q?5xWDDgsa4uHFoxr0qYQ88uvZc8iYAqIeGrhkg1Q9m6MGvpBMdrBXpmWtPf?=
- =?iso-8859-1?Q?wTK8CsX8jihsTFNg2D6VSLq3B0SPIdslGhBXpzew57ApEdzRKuXnWevj4b?=
- =?iso-8859-1?Q?LytqnwM94Xwzs/8sKV9N7RPO7doMz7G6FURT1czNuqPVGVij+hmkbbAx/s?=
- =?iso-8859-1?Q?JOAJIEwfyaIpTFlQzb9nJmsYcspknGXJYMSfl54/DU0WgWljO1stB8qLxe?=
- =?iso-8859-1?Q?1tbg=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.30; Mon, 27 May
+ 2024 15:02:07 +0000
+Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::9119:3ad4:c68d:9da2]) by OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
+ ([fe80::9119:3ad4:c68d:9da2%6]) with mapi id 15.20.7611.030; Mon, 27 May 2024
+ 15:02:05 +0000
+From: inv.git-commit@tdk.com
+To: jic23@kernel.org
+Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
+        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Subject: [PATCH v2] iio: imu: inv_mpu6050: stabilized timestamping in interrupt
+Date: Mon, 27 May 2024 15:01:17 +0000
+Message-Id: <20240527150117.608792-1-inv.git-commit@tdk.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MI1P293CA0021.ITAP293.PROD.OUTLOOK.COM
+ (2603:10a6:290:3::14) To OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
+ (2603:1096:604:1a7::13)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OSZP286MB1942:EE_|OSZP286MB1680:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5b84b7b8-f0dd-49d6-b5df-08dc7e5df85d
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: 
+	BCL:0;ARA:13230031|366007|52116005|1800799015|376005|38350700005|3613699003;
+X-Microsoft-Antispam-Message-Info: 
+	=?us-ascii?Q?k6Vr9DGJQA//xVkBBjBokijrt2SLVtMI6OldYCatcSq85QMdOC5WtYjVTekT?=
+ =?us-ascii?Q?uFhLSYCQIzg5ILqJYoLM/9wB54e+OKlb/z4/lKlodNVBLxQVCGh+9uVsDVIY?=
+ =?us-ascii?Q?JG93ZGwo0T2uDNsB7jsmHLFejMsezD/P4iDNpiJ5t38f6NSKh9aFkQots/hp?=
+ =?us-ascii?Q?c2GlD4WmathmbAfL95JHWN9FokFiHlLurOegv42SHOyEHatfIgrvSKEqO7Ul?=
+ =?us-ascii?Q?WAF5DEr7yAgQAhmzJ/36tr1kvNE5DPP0zFI/dhQmwOPaAD7RcFRw1Xq39OTU?=
+ =?us-ascii?Q?K/LHY6FQ8KYKhyuO2m0W/b0Le2eJ8BkQ+bEbzeOil3bnCIlbSEpHFKUwaxAc?=
+ =?us-ascii?Q?6/JkPwpS6vHNol8BcgEX1/EK7J5RGp20KtsWv4BaV7thohatFrrDHQD/k7HC?=
+ =?us-ascii?Q?+bgeveoRuwpFQTFryZhnH+dGUO2//3MgQL2Y7tKPpcaTPQYNZFU3MIEKoaD4?=
+ =?us-ascii?Q?z1DXcm/oX3Pot1FMn7JWM1s/gh4uUlkCJxCPErBaCXjrUQsO7yvAQEQF2Pvu?=
+ =?us-ascii?Q?ldYVnRRgIscampx0f3qwZCia+J9Zs+jGAtXPPmC4dp81TK+/lLLBiamvw1sK?=
+ =?us-ascii?Q?6hT++EyuwoC8jppLHJPU8/BPf1AJ0jX793O5EhigDxLZy8Lz9XKIWja/MnJt?=
+ =?us-ascii?Q?yT2UbumN7aKmnkCDhLQ8VTWo0vyC2hgmmBCTLGsW3lNgNX/ZN7qDsnWT4rz4?=
+ =?us-ascii?Q?W7RYwoPZxzd5bKJzfV4G1jmIDwoFv/vE5FbD6kJecJn8EUpkoIkC2WxVJWyZ?=
+ =?us-ascii?Q?2UsA2Qe7fuze0dTEUc60JWeyiIsaOm89nG1PbQ1s5bKPvzMKTHH3uHQ/IUYm?=
+ =?us-ascii?Q?z4mX6j6a5SL+fjjEPsbLL2Sl+gbN3K8kkL5EVRKOqMCUcWa1nuWlnT1AIv2M?=
+ =?us-ascii?Q?iKAnMC6QnCPQHEb1cGGvH5oV0VgVFAoajKxhu53KoJW4xZQpA5HExjqLq3AS?=
+ =?us-ascii?Q?9o8fKK0+KABbFAGfwNl+ZNZKPdbQS16gZFTFpRxQE3tdEalhBN+IP07crQQ/?=
+ =?us-ascii?Q?YTKZjnrzbId/IFjdX94VDilfpSE4651kw0s28QS4V/bYPzx5WDvsz1SX50a5?=
+ =?us-ascii?Q?pCzmbSixD8boClQj0zYXvbSxg1SXKNuWXZffTQsDaVChMYRwlJ3vdjz4VW0V?=
+ =?us-ascii?Q?B2Y3aRhlDhQeGnZ6oNUfYEzwZAeHveFjGx/IKM7ogZtM4sim67WBAjcFBAvC?=
+ =?us-ascii?Q?0DEsmVeEEUgOcF903e5yh4Dk8DArBKtRz7Mllys3z5C7uyAkIdvjfneka1sH?=
+ =?us-ascii?Q?DxzeGuG/f+H9twQYr5ykbRqoXkRJslIgxBhRly+z7VYPewnqtdazbpzBEeHV?=
+ =?us-ascii?Q?2SVHIgaeaO2NszgUTnwPbOoHtwvFKiWKBLtF+PhYdeLibX9LBw/WoGItastC?=
+ =?us-ascii?Q?gsGqvyc=3D?=
+X-Forefront-Antispam-Report: 
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366007)(52116005)(1800799015)(376005)(38350700005)(3613699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 
+	=?us-ascii?Q?VR7lfG0pySFX9qbrhS2fkNK99Mo7dZA5PEjH1UBcTijq/ay36aOq5gK/1Rab?=
+ =?us-ascii?Q?b1QLkLY+ETgwFA4RpbQq5/76WI764y/6dc5QnZTAB1PFeWc8cTWX2UtnGDMz?=
+ =?us-ascii?Q?oPm1m+56aaP4HLt36wHqxUSLB8CeOm9wIZjdS9iv5B7ECq1fDl9xKVITEMRX?=
+ =?us-ascii?Q?elLNrB6/1K1hN0zyvSIFLSc3axHh/yISCSnxE4QBz/9dDNYudHVcNAVIuPYv?=
+ =?us-ascii?Q?6HW/YqxscATAWcTLG6i9qYiKJw68KL9idLeMl7OLx7MDkpYZPJNW0j6Dt/9r?=
+ =?us-ascii?Q?TgTlZG6ygyMHqD1g4ZXFVhPW/LbiuBx9hVtkus4JKhCVo97prAaXQXf20xtM?=
+ =?us-ascii?Q?SLu0DzFKy+mOAzFguMqgHAIvI8EnDaO/GTs0gx7AdDJYbyMPSeP9YLYdy1Mo?=
+ =?us-ascii?Q?F28rvG/XS32pgfmL6DyjpkCFBWP3BmTIywYMiccYzXoWRl6U5VHYz3AUSl1I?=
+ =?us-ascii?Q?yQtuC1sYqNoXqnpz4HZ8gwwRn8Aqjh2HuGrQ+6OWP5roO4KGWMVxMne64VFO?=
+ =?us-ascii?Q?8gxBa/h+featV6RRN2DVn0pHhEOFmbzCUnnDFo45iA190pf0y9EX231AybeW?=
+ =?us-ascii?Q?TgdDa58Z9cUsit8R0chHh3b/8OhBVtbXWOtPmA3NLskbSOmG5OnXa4XtQYyl?=
+ =?us-ascii?Q?Ngvy2LSsgqstGLe0o2fIOdbEmc8rfFrXYjkVMEYkHAPnbJeylH+U0YKxHQ62?=
+ =?us-ascii?Q?1EV1YzDYJt+hTShZIbcr4/rYN3Y4aCSlC2l1oxX++fe/L64V/4dHQD3t+QfI?=
+ =?us-ascii?Q?Bv0PfaRcGn/E70/8bqd27vU+YaUrejxvmzBCsYdf7wyHT/j2Tk5jqs3JvMn4?=
+ =?us-ascii?Q?q4eEbw2Doc6FrVbp18lTMjftoZyGQ3wCLqFsmUgQPkSxeRpJ3oGy3H1x3vSN?=
+ =?us-ascii?Q?Ivoc3BXXC2fzltLN1aUojpLLGFX2t/f8ouIVrTy/irFgDxCGEXWR6vNtio+k?=
+ =?us-ascii?Q?GPhJUitu2eFGPbNVNm2p3emn3sKG7PQJxBgXMH3TyxsMiqNKNr5MI0G7J/Mn?=
+ =?us-ascii?Q?gP1BaFpUmPRRZ7vJvbvnOEfIEOITJt8NruTAbj1ukFrxemiDFI+YMcV1fck/?=
+ =?us-ascii?Q?JXwwDCiS+MBoFXkAbOuwSpZpno5jT/GK0l7EhdTfgIO8No9iZGTler9WbkQw?=
+ =?us-ascii?Q?FyNXRtIOIreDDkaTvG732YH6vhitFX5NkAw9O05hNM1uBNIeT32pl7ywYY5N?=
+ =?us-ascii?Q?C/M0d0LmdzPFguZLPpm5v1+x+CPzisLubQ+EBeRoohWz0XSs8+Pn4fXNfvv5?=
+ =?us-ascii?Q?vJLuLHHIw9MUUZo0CdzYdPBs+7KMZp//yOVAmPmC9l4kMwGHSePowtrUs2Y8?=
+ =?us-ascii?Q?7tnpvb0FVYPHn13xvXw6Xn0fw7i081t+pChFFTAHkPAlieRzgVPr1s+Vsvje?=
+ =?us-ascii?Q?fXHQGbzA/hnQMF4J/7QDpqNes6vj8nmodEvNan4BZFatgMiy6Lm5ihGtKnQq?=
+ =?us-ascii?Q?bNPKAW9pztSql5P35X3cKnQfYIAjtoMRwzkyQSN5PYUc8wEzS2yv5x1QT+31?=
+ =?us-ascii?Q?IK2Wd5W8aIAJcsfmc3Wx/GwY65nqhfv09uZilU+6v+xJVywU5WsreWJVchps?=
+ =?us-ascii?Q?63gwvqSZBhEV+vjB3u+/N0NY9z8aryQB1xMtHyuG?=
 X-OriginatorOrg: tdk.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5b84b7b8-f0dd-49d6-b5df-08dc7e5df85d
+X-MS-Exchange-CrossTenant-AuthSource: OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: bf9d1a63-fd5d-4f9a-341d-08dc7e5acd5c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 May 2024 14:39:23.7020
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2024 15:02:04.9883
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: cQMqyMTufLpka4z6ytZWII2NVh96uhvLrzHDoW0VYzueK7QGnu+PPvbIG2eJIzol+FRD7MHZjcIdmiazyxxCLf5NgbNBXlSKvK3lmj5dxEw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: FR3P281MB2297
-X-Proofpoint-ORIG-GUID: 2ZwZib0mrz33cTsJLsaKzPhJ5QvBlAcp
-X-Proofpoint-GUID: 2ZwZib0mrz33cTsJLsaKzPhJ5QvBlAcp
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 7e452255-946f-4f17-800a-a0fb6835dc6c
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: emBZJnzj4ybaoIKR6ii8r8pweLSC3o34SMIvPjl6XHfGx9iTzrBypVNYd0YOKlJ4emuKS1eK+VhbJvswO582GQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: OSZP286MB1680
+X-Proofpoint-ORIG-GUID: Z7dg9PPRjlRERzt6RcbpjzMKYfbZOyul
+X-Proofpoint-GUID: Z7dg9PPRjlRERzt6RcbpjzMKYfbZOyul
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-27_04,2024-05-24_01,2024-05-17_01
+ definitions=2024-05-27_04,2024-05-27_01,2024-05-17_01
 X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501
+ mlxlogscore=834 adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501
  mlxscore=0 impostorscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
- definitions=main-2405270120
+ definitions=main-2405270123
 
-Hi Jonathan,=0A=
-=0A=
-I wasn't expecting first to do a Fixes tag, but you're right it would be be=
-tter to backport this fix and it is quite small.=0A=
-=0A=
-I will send a V2 with the appropriate Fixes tag.=0A=
-=0A=
-Thanks,=0A=
-JB=0A=
-=0A=
-________________________________________=0A=
-From:=A0Jonathan Cameron <jic23@kernel.org>=0A=
-Sent:=A0Saturday, May 25, 2024 19:22=0A=
-To:=A0INV Git Commit <INV.git-commit@tdk.com>=0A=
-Cc:=A0lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.kernel.org <linux-i=
-io@vger.kernel.org>; Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com=
->=0A=
-Subject:=A0Re: [PATCH] iio: imu: inv_mpu6050: stabilized timestamping in in=
-terrupt=0A=
-=A0=0A=
-This Message Is From an External Sender=0A=
-This message came from outside your organization.=0A=
-=A0=0A=
-On Thu, 23 May 2024 13:52:45 +0000=0A=
-inv.git-commit@tdk.com wrote:=0A=
-=0A=
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=0A=
-> =0A=
-> Use IRQ ONESHOT flag to ensure the timestamp is not updated in the=0A=
-> hard handler during the thread handler. And use a fixed value of 1=0A=
-> sample that correspond to this first timestamp.=0A=
-> =0A=
-> This way we can ensure the timestamp is always corresponding to the=0A=
-> value used by the timestamping mechanism. Otherwise, it is possible=0A=
-> that between FIFO count read and FIFO processing the timestamp is=0A=
-> overwritten in the hard handler.=0A=
-> =0A=
-> Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>=0A=
-Fixes tag appropriate?=0A=
-=0A=
-Otherwise LGTM=0A=
-> ---=0A=
->  drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 4 ++--=0A=
->  drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 1 +=0A=
->  2 files changed, 3 insertions(+), 2 deletions(-)=0A=
-> =0A=
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu=
-/inv_mpu6050/inv_mpu_ring.c=0A=
-> index 0dc0f22a5582..3d3b27f28c9d 100644=0A=
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c=0A=
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c=0A=
-> @@ -100,8 +100,8 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)=
-=0A=
->  		goto end_session;=0A=
->  	/* Each FIFO data contains all sensors, so same number for FIFO and sen=
-sor data */=0A=
->  	fifo_period =3D NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chi=
-p_config.divider);=0A=
-> -	inv_sensors_timestamp_interrupt(&st->timestamp, nb, pf->timestamp);=0A=
-> -	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, nb, 0);=0A=
-> +	inv_sensors_timestamp_interrupt(&st->timestamp, 1, pf->timestamp);=0A=
-> +	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, 1, 0);=0A=
->  =0A=
->  	/* clear internal data buffer for avoiding kernel data leak */=0A=
->  	memset(data, 0, sizeof(data));=0A=
-> diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/=
-imu/inv_mpu6050/inv_mpu_trigger.c=0A=
-> index 1b603567ccc8..84273660ca2e 100644=0A=
-> --- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c=0A=
-> +++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c=0A=
-> @@ -300,6 +300,7 @@ int inv_mpu6050_probe_trigger(struct iio_dev *indio_d=
-ev, int irq_type)=0A=
->  	if (!st->trig)=0A=
->  		return -ENOMEM;=0A=
->  =0A=
-> +	irq_type |=3D IRQF_ONESHOT;=0A=
->  	ret =3D devm_request_threaded_irq(&indio_dev->dev, st->irq,=0A=
->  					&inv_mpu6050_interrupt_timestamp,=0A=
->  					&inv_mpu6050_interrupt_handle,=0A=
-=0A=
+From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+
+Use IRQ ONESHOT flag to ensure the timestamp is not updated in the
+hard handler during the thread handler. And use a fixed value of 1
+sample that correspond to this first timestamp.
+
+This way we can ensure the timestamp is always corresponding to the
+value used by the timestamping mechanism. Otherwise, it is possible
+that between FIFO count read and FIFO processing the timestamp is
+overwritten in the hard handler.
+
+Fixes: 111e1abd0045 ("iio: imu: inv_mpu6050: use the common inv_sensors timestamp module")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    | 4 ++--
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+index 0dc0f22a5582..3d3b27f28c9d 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
+@@ -100,8 +100,8 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
+ 		goto end_session;
+ 	/* Each FIFO data contains all sensors, so same number for FIFO and sensor data */
+ 	fifo_period = NSEC_PER_SEC / INV_MPU6050_DIVIDER_TO_FIFO_RATE(st->chip_config.divider);
+-	inv_sensors_timestamp_interrupt(&st->timestamp, nb, pf->timestamp);
+-	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, nb, 0);
++	inv_sensors_timestamp_interrupt(&st->timestamp, 1, pf->timestamp);
++	inv_sensors_timestamp_apply_odr(&st->timestamp, fifo_period, 1, 0);
+ 
+ 	/* clear internal data buffer for avoiding kernel data leak */
+ 	memset(data, 0, sizeof(data));
+diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+index 1b603567ccc8..84273660ca2e 100644
+--- a/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
++++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c
+@@ -300,6 +300,7 @@ int inv_mpu6050_probe_trigger(struct iio_dev *indio_dev, int irq_type)
+ 	if (!st->trig)
+ 		return -ENOMEM;
+ 
++	irq_type |= IRQF_ONESHOT;
+ 	ret = devm_request_threaded_irq(&indio_dev->dev, st->irq,
+ 					&inv_mpu6050_interrupt_timestamp,
+ 					&inv_mpu6050_interrupt_handle,
+-- 
+2.34.1
+
 

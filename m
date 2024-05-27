@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-5368-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5369-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5E098D09F5
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 20:39:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B3E8D09F7
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 20:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 862311F22790
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 18:39:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DB641F21DD5
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 18:39:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFCA4161330;
-	Mon, 27 May 2024 18:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9753116192F;
+	Mon, 27 May 2024 18:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AuTLqu2B"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TPRqEMio"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A36160796;
-	Mon, 27 May 2024 18:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B66981607BA;
+	Mon, 27 May 2024 18:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716835101; cv=none; b=tI3m582Pok1yJ59bqxHWHAsa/eBmtD7XTGZAJpwzChaIpTspX6Cttt0D/tYIYpGWS/9GJw9PDa7Wy7QGwz5uPqrDR6QDwI281hkXPdplDmvUBVDos1bPDzS5mdoUTr+i+hHOpFytqSo1wZS3J6sy67If7lj8Wb1d/WOapJMylFM=
+	t=1716835102; cv=none; b=c3i5eA0JVrqxz65RN1PszsM1rQk0OxJXiw4MRvgNSREgQVa5HvpMMMBLgGDxzWNLP6k2w2wZWRUOB1rFbEYai3Zvkkktu3Nl54qqnubsO7QWdl5c9RJ8WtFCZaut0a/b4P9UOkaRhsksLzOG8TYOPEQRp6xtkMosFy8rSJTjQOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716835101; c=relaxed/simple;
-	bh=wg8PkYq2vv17rsR/l8nMQ5doyUXlPzOS6Z0DMcQ8DJg=;
+	s=arc-20240116; t=1716835102; c=relaxed/simple;
+	bh=8h3ZRg9jE+wXkQFtxydH/IDDDXBcwvRNSAmtK1noof4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=s09nb2FZOrGL5v0m9sfoO5vLH3UGTyk2suPoXAWml8uUwwBXsY4fTjXdweQzhabom0lgHWCGss4Pgtm23frdI0Niuh5m7DzS32PL/EU0Hya0CL9GtNyD9dXPFka2UFhV+Mg2yadrY9R5V45SytfbIkJObAcosHTOHsDvCniG8uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AuTLqu2B; arc=none smtp.client-ip=209.85.167.50
+	 MIME-Version; b=FGyMCMx3GhYqRpJ/+MUVOMXo7sbExZ6gZvRXZQ7H3FCMXp1GwTAFN+Pdn3IYTh9VEKLh540/4htrhk4Dwq40r89dStgTqwzK+Ihfbghgfizf7dFeJrB06VJuITR0trWBHhJqG5ARcpnWcrmiocCDVBT8sPx4iymz5cANofKXmYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TPRqEMio; arc=none smtp.client-ip=209.85.167.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5295a66e775so82931e87.0;
-        Mon, 27 May 2024 11:38:19 -0700 (PDT)
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-529aa4e988aso61865e87.0;
+        Mon, 27 May 2024 11:38:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716835098; x=1717439898; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716835099; x=1717439899; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FcTV1qQ2q91YjgXekUdE0FTmBFj0P4pw7uvqhX9sQ4E=;
-        b=AuTLqu2BP6wbzz5SpIAyLzp0cuPkBLDQ3Yuq/3a4Dsom3A70h0N5GVBcorxsEvZ1nY
-         eCVYbxNePmABadNrBHXqKYeFJSILKcNNwxOxndnMg1a3E/G0TqWBqWRV1G75YvsvTeWK
-         sJCOLl0O3DB7gUYIQ8HND0iyUNa951mRAA4GVqhHfPgJk7/FyVJCdV/PfLatWjxguAlS
-         lYhCZjiHPyq61uR2i5ob2UorzqQrrosgTkH1nOz0ZjpZXMSUYfGlIzdLjWcO/ccnJHa9
-         ni+j7biTDlxtagiZTe+kECX75bZvQhC2zYnmGFclCkfEPfudOn0MmY/VdRIVKq61epuG
-         JELg==
+        bh=QPmAz60TWZ3wSMtgFHp8/duTRSijFC9UjSGJVty6+0o=;
+        b=TPRqEMiofPzbGgXvwPJoevQxKMZIa66JOGxmgCKRixPC4kZYzWHELwU7RsRoixTXXA
+         wlRfqlCA2ppbJVYQaxr26KFkKzKEbQucJMqfEK0tVspRWUQHhpihdKYK66E9nkFobTRk
+         pvJnql/puEweU08zjIJjdBSa48z0ZMv06dsO6NAVtWnhZDfPDjkOQe8sg7+g8T4T8Ehp
+         DZPNfk5bQ/yvD3mQaS9uPJn0/SFGl5HckCIAzGTplxjTDFxlTvmi03hLlo0UZKyZNN7W
+         e6fG2oENNXzYT3zMc59HKlPAh8MhA/c9EKVUjcN6fD/SkvwEvmymP7iy9DR7ENJJVh7s
+         GcHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716835098; x=1717439898;
+        d=1e100.net; s=20230601; t=1716835099; x=1717439899;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FcTV1qQ2q91YjgXekUdE0FTmBFj0P4pw7uvqhX9sQ4E=;
-        b=UwNOrtgJX9A/qykinaV2w6GZyWT3oYSHX+F6WjvBQ3EnyhpMyU/Id4kqd3uGcnz20a
-         +2XtI/UBDJsh+b5geH9TYCjjWFZyuQPjM2wUyuExB756H7RKUj+jpKVAz6w7mIqNVIr+
-         VByH7xa4KKAipKk/YtKRb3pAByPSKCFepwRrtlzjkKWYC0kHXQaxP31TYzjbR54nfTSB
-         k0nZPMyhgGt9v0HAHB0SY5X71gKXi/6DLsPF18ncnUkgBXnEdbmVlU0rpdEg4opYDqy+
-         LqElAshd8uw5iZfLBm3HhueuiIiBiZk60hLJ841MFLHKs/swHHXs1541b+p24QzGGokX
-         MiRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcM3VlmEb0rJHY9XxkP1QG+wzDRcwrA/Pc8QJupW6mO4WocuMN+NDqPn1AkD0EzHOBiMw94eIy4cYUpdVlmCGtGcwmS790SyAFbO6x6BXdB2OP6ycwtEhhEh6EYgcrbClHtzxWqLig
-X-Gm-Message-State: AOJu0Ywv6FBd5PCuLD0U6DR98Eg3wHBM18cVt5568QIA3FfsKQvyIkld
-	aM2aTdOZuOD+Os+hdCJFjc3VOUTlvl1E+E/SJatkDNz6t0KQYs5w
-X-Google-Smtp-Source: AGHT+IGvXJrQ2FmzU+IvnS0r1WXIa/25Zr1inRriKMA8HqVVPGoFHmihzoODuY80fATEpZXWCBQLnw==
-X-Received: by 2002:a05:6512:3c6:b0:523:8723:32de with SMTP id 2adb3069b0e04-52966f8f472mr8776908e87.53.1716835098035;
+        bh=QPmAz60TWZ3wSMtgFHp8/duTRSijFC9UjSGJVty6+0o=;
+        b=DLdHqe8MMBp7r/QRQqL4zxEQzKjFAxPrY7x2GBBTDf+Cxf2x5AcplT6PEgauUl4YyH
+         uLZMmDnf2naWhAsz3QBvAv18BE23B1InWVptVQRlgUcPkp9Sg/Xial1AfpUw5TGGwT1T
+         qz0ID1nYVL6JRrk4i2UyUmaVRhBi45ZEdRleJrpKwbYqXvVUKVV2MY1djIlUdvLf/ghz
+         0oOCbkuv2ogW/x3vSNowgoLGM0kCVDWhtD78ljkr16L32NQMsr6bwDOmIzII9NtLSuo5
+         bNAF45jXr5/OZsYXvtY8AHZC1R3rp36tN1exEJ5STohQom+yMpHHIFneO9Ox9gFEx7/G
+         BV6w==
+X-Forwarded-Encrypted: i=1; AJvYcCUuLQJ+kBWzZLnQUOP1nXmjBAX88tyBrTd9TClG1TZSZUXDI0tn1m24HMvA0rJ+Bd8l44Rk9/9WJE1ns4zpWLy2RAWhD8tus8KnlkVhUyGAtko8Usl15WNE/P+HqFHN2FgU4B09/y/9
+X-Gm-Message-State: AOJu0YyHx0lJxKD1qJMkiqbofqLW1HRZ4BLgyZ797KJAmIBX/5iIXG+C
+	m6flBlLNW21It+RH1aSQigjr3LwxCk/Uy6R/Sfj63g9pUFHQsnX8
+X-Google-Smtp-Source: AGHT+IE6dWkVBZU8rST46PJ+hOEJ+EjGd8INABvR+NoEKiyuqatG5TvDevFHfouDDk077DqIkN/Qgw==
+X-Received: by 2002:ac2:5ec6:0:b0:51e:147d:bd2d with SMTP id 2adb3069b0e04-52964eac421mr5664708e87.39.1716835098789;
         Mon, 27 May 2024 11:38:18 -0700 (PDT)
 Received: from localhost.localdomain ([2a04:ee41:82:7577:4b45:3774:6be0:a177])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626cc52398sm513825266b.105.2024.05.27.11.38.17
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626cc52398sm513825266b.105.2024.05.27.11.38.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 11:38:17 -0700 (PDT)
+        Mon, 27 May 2024 11:38:18 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org,
 	lars@metafoo.de
@@ -74,9 +74,9 @@ Cc: himanshujha199640@gmail.com,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Vasileios Amoiridis <vassilisamir@gmail.com>
-Subject: [PATCH v1 05/17] iio: chemical: bme680: Fix type in define
-Date: Mon, 27 May 2024 20:37:53 +0200
-Message-Id: <20240527183805.311501-6-vassilisamir@gmail.com>
+Subject: [PATCH v1 06/17] iio: chemical: bme680: Add mutexes to guard read/write to device
+Date: Mon, 27 May 2024 20:37:54 +0200
+Message-Id: <20240527183805.311501-7-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240527183805.311501-1-vassilisamir@gmail.com>
 References: <20240527183805.311501-1-vassilisamir@gmail.com>
@@ -88,41 +88,67 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix a define typo that instead of BME680_... it is
-saying BM6880_...
+Add mutexes in the {read/write}_raw() functions of the device to
+guard the read/write of data from/to the device. This is necessary
+because for any operation other than temperature, multiple reads
+need to take place from the device. Even though regmap has a locking
+by itself, it won't protect us from multiple applications trying to
+read at the same time temperature and pressure since the pressure
+reading includes an internal temperature reading and there is nothing
+to ensure that this temperature+pressure reading will happen
+sequentially without any other operation interfering in the meantime.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/chemical/bme680.h      | 2 +-
- drivers/iio/chemical/bme680_core.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/chemical/bme680_core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
-index 4edc5d21cb9f..3133d624270a 100644
---- a/drivers/iio/chemical/bme680.h
-+++ b/drivers/iio/chemical/bme680.h
-@@ -12,7 +12,7 @@
- 
- #define BME680_REG_TEMP_MSB			0x22
- #define BME680_REG_PRESS_MSB			0x1F
--#define BM6880_REG_HUMIDITY_MSB			0x25
-+#define BME680_REG_HUMIDITY_MSB			0x25
- #define BME680_REG_GAS_MSB			0x2A
- #define BME680_REG_GAS_R_LSB			0x2B
- #define   BME680_GAS_STAB_BIT			BIT(4)
 diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index dd2cd11b6dd3..8b42c4716412 100644
+index 8b42c4716412..2ef3fc7effc6 100644
 --- a/drivers/iio/chemical/bme680_core.c
 +++ b/drivers/iio/chemical/bme680_core.c
-@@ -719,7 +719,7 @@ static int bme680_read_humid(struct bme680_data *data,
- 	if (ret < 0)
- 		return ret;
+@@ -10,6 +10,7 @@
+  */
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
++#include <linux/cleanup.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+@@ -52,6 +53,7 @@ struct bme680_calib {
+ struct bme680_data {
+ 	struct regmap *regmap;
+ 	struct bme680_calib bme680;
++	struct mutex lock;
+ 	u8 oversampling_temp;
+ 	u8 oversampling_press;
+ 	u8 oversampling_humid;
+@@ -806,6 +808,8 @@ static int bme680_read_raw(struct iio_dev *indio_dev,
+ {
+ 	struct bme680_data *data = iio_priv(indio_dev);
  
--	ret = regmap_bulk_read(data->regmap, BM6880_REG_HUMIDITY_MSB,
-+	ret = regmap_bulk_read(data->regmap, BME680_REG_HUMIDITY_MSB,
- 			       &tmp, sizeof(tmp));
- 	if (ret < 0) {
- 		dev_err(dev, "failed to read humidity\n");
++	guard(mutex)(&data->lock);
++
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		switch (chan->type) {
+@@ -850,6 +854,8 @@ static int bme680_write_raw(struct iio_dev *indio_dev,
+ {
+ 	struct bme680_data *data = iio_priv(indio_dev);
+ 
++	guard(mutex)(&data->lock);
++
+ 	if (val2 != 0)
+ 		return -EINVAL;
+ 
+@@ -946,6 +952,7 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+ 		name = bme680_match_acpi_device(dev);
+ 
+ 	data = iio_priv(indio_dev);
++	mutex_init(&data->lock);
+ 	dev_set_drvdata(dev, indio_dev);
+ 	data->regmap = regmap;
+ 	indio_dev->name = name;
 -- 
 2.25.1
 

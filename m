@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-5329-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5330-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848A78D04EE
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 16:58:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D5238D04F1
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 16:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 917D51C21716
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 14:58:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30D761C21527
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 14:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181D017333B;
-	Mon, 27 May 2024 14:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF18C174ED1;
+	Mon, 27 May 2024 14:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Vzh25/BI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z3gXwsC2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F61172BCB;
-	Mon, 27 May 2024 14:26:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293E717333E;
+	Mon, 27 May 2024 14:26:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716819989; cv=none; b=proyMpDWT1jtWkg6f6RHE7+a+6dWaHBD6VZJJnf/3fFxBQQdhHOfTb/YcSJQ9mpQxZN2IWTKe+0fXaBVpdFClv3+zJK2VIoNqGdb6juZf+E0wfHEHz8LGUGLWQuhMVx2LYAU/WIz2AI9XFgAgeVJ2VI/WA8lzdn3kHBb3gVRLfQ=
+	t=1716819991; cv=none; b=AVEbmmeu41KzYsU2IPYGIORKfoaLp5qC7YeTeDbFnLn3evAOE1ckAe02dd+olymNsujX+5R6cMfdEr3w3bxoovSsQewMdjME7gkQjenx1Ilrm7JtLL/2Cb6wWV1U+KhYcb2ad/o05/rXaUy/SRJfv/nlfn0N9acV2za9DOFdA5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716819989; c=relaxed/simple;
-	bh=ZlwyzcB9bhnoWgMAnmPiA5mWO6l8sdiIHNU8T7/gj/Q=;
+	s=arc-20240116; t=1716819991; c=relaxed/simple;
+	bh=RMPXJYEwFOZroUgmkuxwKqtKKgiemJd22bvUxZqSvWY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Sl8mUQpwp9VYoaGNsPdpNKQMBERu6W1VdF1R1Mf6kgr45QfzEgAGOMepFMRzqLC3M1H5QbEaM4fVqgPJMoSU+ntMg3qgBqdnQTJ7HGBMPWqaHFoUuj93m1TU3mFQkgTBHe4fZrnHIdLYSrajuGP+rFuxoIY90QzlyvZDwUuGehk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Vzh25/BI; arc=none smtp.client-ip=209.85.128.46
+	 MIME-Version; b=ntlGuYZ6Xqp2h9RzpGU9b5aCwKBXv8+GA2iKVD1HYW8egZcSc8YZV5uzkfw1DUsBIiOeUTr7dFiOvOha3RBxZ7dbp8ZgiDsPqwtfqOApqCApNzvReQH8HJk3SvXlGzAmC80BAKSfQNtYOTyAGplzPHeoC/KwQ9ScKOUrYuGuiQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z3gXwsC2; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-420180b5898so79655055e9.2;
-        Mon, 27 May 2024 07:26:27 -0700 (PDT)
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2e96f298fbdso23707271fa.1;
+        Mon, 27 May 2024 07:26:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716819986; x=1717424786; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716819987; x=1717424787; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=VKBL1jiOA3aAvx3p5BJnVQjWdh8f3DgBew9fnCKqXL8=;
-        b=Vzh25/BIFyn2lZ4PXuVm/zGT5wccjVl/510w/p4KHdcacMogpXqXfZRoFW2DolFIph
-         9GpxvidDufdyalUBACbSc7vK6JGIwLoIjBgSg0vDtZs/X1q8rzD2t2cmkGZJ6QaEP1j7
-         9HjstpuR6E7RrwJ0FP4lXNvMnSqJkYN+nXatfwN+FOEeKjbiqbA0R/jpQUhLVxa90gc9
-         do8M+R3Ry/Kd27S8DQa9Ood4ejUmo3KGeHAWSYFHayHMfBHKePXzXUBRtl5tW07WGE3f
-         WxfhLaOiMkFPqd3pDrut/upSrQ22jGlc9d2EnNl9swarTaNFZez3Eu4NFBKcNIHwwfth
-         QKLQ==
+        bh=mKDi0ODpalwh7XFfa3z0kEIRqjnKQETIGu0AgUCOPmo=;
+        b=Z3gXwsC2/prMXEsD464jCP4mZAv37X2Q39uH8KIloMEfvVO7ShwiZ4YvjLyJoSywPm
+         C7oBxXJ+C558Cu2lmze+uB4mH0ssV9TbT2RrTttnZ9HNZjqvZakfQ9zuJTF/5nvDf/Rn
+         PFn31sMArqV32sfO9n0nGcahvKuR2+yAknOY1b8py4pxdfbkvnbZuXzuboPgZh2VLEGc
+         yUkBI2h/cijiP9zmA2Al6pit/o5BfKFpud2VFcj37eexEKv3QqBLOn0a+LQWWUxzvbyS
+         pvtvjsnWVoGwB5eQn/BOQ/necU7fQlsf4Jy6fh/YZdTpisgzIELFua2P3fBUhcPe+bsH
+         EoHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716819986; x=1717424786;
+        d=1e100.net; s=20230601; t=1716819987; x=1717424787;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VKBL1jiOA3aAvx3p5BJnVQjWdh8f3DgBew9fnCKqXL8=;
-        b=SSgIurd+OenVC7xMo44fg4Kawf8K/UG0SliN44sSbCdB/FQGIXnVdb2MUMbhGlRrhe
-         zSRv552rgtHVjobQL89AV07MRuhMPNtZ0SlcZ1GQ7IbguT3D7oHgrVMrsSodjtCuxIdr
-         7V7oylq5jKN6mpgVs4x8LGSb6aaPzwt5Dx0jmHofhdlUSTVQXuSF9f5hI9NpLSL+Q1j+
-         30GWNOMMlWkJKU9kaZZ16wYXDc3/WnR2bmF8kyEOzEfk+gdEowyLcT4kzzcoQ/gRdQDu
-         TLfn2ggiaiNND0dWevlBatfT7F8nEDMaD8dqpLZfVzSef855yPnqABwM0ymPrfTmyTdI
-         S+DQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXe3DnOHr6P3ltIEPqpUDwNn82PtYBnGp4WMKc5G+DIteR1X2u7OcnZCS96EqRtrhw/5qY6qvHPPDUaei34MtcRg/gcJmZ0hkR5XyxqPyCSGowfJA4I+EwJg3LRIJR2T6cZA7XMAQ==
-X-Gm-Message-State: AOJu0YxVoIkHmnmvT+4KWgw0HERjZz8nG7vP6gtAGl+R8mdZHOD1Abin
-	xqYVvmuWN5EertRF9X+CdPhM5VSGVv9NQQusLXbUTLXEULIuqXMp/5G+G56lZcg=
-X-Google-Smtp-Source: AGHT+IEguuVdebVfpck8C35Hn8CwCqD7T4/qy4SYJbXVJ9FF85rfzfzNGZmNXwhlBeK/Oe1Yi37TYg==
-X-Received: by 2002:a7b:cb19:0:b0:418:6138:6777 with SMTP id 5b1f17b1804b1-42108a00005mr84052045e9.31.1716819985959;
-        Mon, 27 May 2024 07:26:25 -0700 (PDT)
+        bh=mKDi0ODpalwh7XFfa3z0kEIRqjnKQETIGu0AgUCOPmo=;
+        b=SKAYpkYf5lMCXjB8FDXaCtEosiZIdf6OS57sTnFK2VBKWP0f5UWvCFaMijHcy1MHEu
+         Y09afhhg1R26NL5Fk4pmC/8Cu5QH5TxrSn0IhEt/vxSgTJ0atTBtr8mNb/q9wXVtzayh
+         lZYw1fNxOCNAeNvMcvREpoSlyuC/Rdhkz37eZMvZNZ/CqB4Bl64n7Bf+gY1RL1xvNdwD
+         /a5nZ7fxIU+95TSd1cMmBVn76hTLKgEmTzh2RCYh1fpp4/rZxG1g+Ye69C6yfFUCldJf
+         B7HajSECrXLGfKwqPM+IhwUV8b2YacKPS2G+chskb1/Sa/N1Ke1ZLcN2SZo2zMmvhZJ9
+         p0kg==
+X-Forwarded-Encrypted: i=1; AJvYcCV3Fv9knysFDaPKjwSdPWZEAM+xEfu6dXaCKlbazuoHdpQCh1LDASvdMxQOIUpbNpCBx/laaxmjJB6PcP77jcKmO2c3ikIguPWlvraB53mACfMWNepAPSUZ1teDS52EBhnHfdreUw==
+X-Gm-Message-State: AOJu0YzDl1+ySKH/paY5UNE+rWUVbQF9mzCKtbpiZu9YmjRXB09hE3u5
+	RjHnJI5r6Ne5qSNiRACjnvhn54H/Z9Gg+x7RAZQjMjNPKEe5qi0QyVzXDM3in2o=
+X-Google-Smtp-Source: AGHT+IERT67ezaWwD+jVSrKGh3jzVEvnAAmbHcjAERdxJl6xF+uiKlcoE5xSiJNPR7jFbUU6gGVEMw==
+X-Received: by 2002:a2e:2a45:0:b0:2e9:820b:c38d with SMTP id 38308e7fff4ca-2e9820bc6ffmr6699461fa.36.1716819987269;
+        Mon, 27 May 2024 07:26:27 -0700 (PDT)
 Received: from rbolboac.. ([2a02:2f0e:350b:4500:9c9:f6ef:e79b:45ce])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421089ae976sm110537875e9.38.2024.05.27.07.26.25
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421089ae976sm110537875e9.38.2024.05.27.07.26.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 May 2024 07:26:25 -0700 (PDT)
+        Mon, 27 May 2024 07:26:26 -0700 (PDT)
 From: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 To: linux-kernel@vger.kernel.org,
 	jic23@kernel.org,
@@ -77,9 +77,9 @@ To: linux-kernel@vger.kernel.org,
 	robh@kernel.org,
 	nuno.sa@analog.com
 Cc: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-Subject: [PATCH v5 2/9] drivers: iio: imu: Add support for ADIS16501
-Date: Mon, 27 May 2024 17:26:11 +0300
-Message-Id: <20240527142618.275897-3-ramona.bolboaca13@gmail.com>
+Subject: [PATCH v5 3/9] iio: imu: adis_buffer: Add buffer setup API with buffer attributes
+Date: Mon, 27 May 2024 17:26:12 +0300
+Message-Id: <20240527142618.275897-4-ramona.bolboaca13@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240527142618.275897-1-ramona.bolboaca13@gmail.com>
 References: <20240527142618.275897-1-ramona.bolboaca13@gmail.com>
@@ -91,87 +91,129 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add support for ADIS16501 device in already existing ADIS16475
-driver.
+Add new API called devm_adis_setup_buffer_and_trigger_with_attrs() which
+also takes buffer attributes as a parameter.
+Rewrite devm_adis_setup_buffer_and_trigger() implementation such that it
+calls devm_adis_setup_buffer_and_trigger_with_attrs() with buffer
+attributes parameter NULL
 
 Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 Signed-off-by: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
 ---
-no changes in v5
- drivers/iio/imu/Kconfig     |  4 ++--
- drivers/iio/imu/adis16475.c | 23 +++++++++++++++++++++++
- 2 files changed, 25 insertions(+), 2 deletions(-)
+changes in v5:
+ - added line break after adis in devm_adis_setup_buffer_and_trigger_with_attrs
+ drivers/iio/imu/adis_buffer.c | 32 ++++++++++++++++++--------------
+ include/linux/iio/imu/adis.h  | 20 ++++++++++++++++----
+ 2 files changed, 34 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/iio/imu/Kconfig b/drivers/iio/imu/Kconfig
-index 52a155ff3250..782fb80e44c2 100644
---- a/drivers/iio/imu/Kconfig
-+++ b/drivers/iio/imu/Kconfig
-@@ -36,8 +36,8 @@ config ADIS16475
- 	select IIO_ADIS_LIB_BUFFER if IIO_BUFFER
- 	help
- 	  Say yes here to build support for Analog Devices ADIS16470, ADIS16475,
--	  ADIS16477, ADIS16465, ADIS16467, ADIS16500, ADIS16505, ADIS16507 inertial
--	  sensors.
-+	  ADIS16477, ADIS16465, ADIS16467, ADIS16500, ADIS16501, ADIS16505,
-+	  ADIS16507 inertial sensors.
+diff --git a/drivers/iio/imu/adis_buffer.c b/drivers/iio/imu/adis_buffer.c
+index 928933027ae3..871b78b225e2 100644
+--- a/drivers/iio/imu/adis_buffer.c
++++ b/drivers/iio/imu/adis_buffer.c
+@@ -175,31 +175,36 @@ static void adis_buffer_cleanup(void *arg)
+ }
 
- 	  To compile this driver as a module, choose M here: the module will be
- 	  called adis16475.
-diff --git a/drivers/iio/imu/adis16475.c b/drivers/iio/imu/adis16475.c
-index 01f55cc902fa..53872b716f4a 100644
---- a/drivers/iio/imu/adis16475.c
-+++ b/drivers/iio/imu/adis16475.c
-@@ -661,6 +661,7 @@ enum adis16475_variant {
- 	ADIS16467_2,
- 	ADIS16467_3,
- 	ADIS16500,
-+	ADIS16501,
- 	ADIS16505_1,
- 	ADIS16505_2,
- 	ADIS16505_3,
-@@ -980,6 +981,25 @@ static const struct adis16475_chip_info adis16475_chip_info[] = {
- 		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
- 		.adis_data = ADIS16475_DATA(16500, &adis1650x_timeouts),
- 	},
-+	[ADIS16501] = {
-+		.name = "adis16501",
-+		.num_channels = ARRAY_SIZE(adis16477_channels),
-+		.channels = adis16477_channels,
-+		.gyro_max_val = 1,
-+		.gyro_max_scale = IIO_RAD_TO_DEGREE(40 << 16),
-+		.accel_max_val = 1,
-+		.accel_max_scale = IIO_M_S_2_TO_G(800 << 16),
-+		.temp_scale = 100,
-+		.deltang_max_val = IIO_DEGREE_TO_RAD(720),
-+		.deltvel_max_val = 125,
-+		.int_clk = 2000,
-+		.max_dec = 1999,
-+		.sync = adis16475_sync_mode,
-+		/* pulse sync not supported */
-+		.num_sync = ARRAY_SIZE(adis16475_sync_mode) - 1,
-+		.flags = ADIS16475_HAS_BURST32 | ADIS16475_HAS_BURST_DELTA_DATA,
-+		.adis_data = ADIS16475_DATA(16501, &adis1650x_timeouts),
-+	},
- 	[ADIS16505_1] = {
- 		.name = "adis16505-1",
- 		.num_channels = ARRAY_SIZE(adis16477_channels),
-@@ -1482,6 +1502,8 @@ static const struct of_device_id adis16475_of_match[] = {
- 		.data = &adis16475_chip_info[ADIS16467_3] },
- 	{ .compatible = "adi,adis16500",
- 		.data = &adis16475_chip_info[ADIS16500] },
-+	{ .compatible = "adi,adis16501",
-+		.data = &adis16475_chip_info[ADIS16501] },
- 	{ .compatible = "adi,adis16505-1",
- 		.data = &adis16475_chip_info[ADIS16505_1] },
- 	{ .compatible = "adi,adis16505-2",
-@@ -1513,6 +1535,7 @@ static const struct spi_device_id adis16475_ids[] = {
- 	{ "adis16467-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_2] },
- 	{ "adis16467-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16467_3] },
- 	{ "adis16500", (kernel_ulong_t)&adis16475_chip_info[ADIS16500] },
-+	{ "adis16501", (kernel_ulong_t)&adis16475_chip_info[ADIS16501] },
- 	{ "adis16505-1", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_1] },
- 	{ "adis16505-2", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_2] },
- 	{ "adis16505-3", (kernel_ulong_t)&adis16475_chip_info[ADIS16505_3] },
+ /**
+- * devm_adis_setup_buffer_and_trigger() - Sets up buffer and trigger for
+- *					  the managed adis device
++ * devm_adis_setup_buffer_and_trigger_with_attrs() - Sets up buffer and trigger
++ * for the managed adis device with buffer attributes.
+  * @adis: The adis device
+  * @indio_dev: The IIO device
+- * @trigger_handler: Optional trigger handler, may be NULL.
++ * @trigger_handler: Trigger handler: should handle the buffer readings.
++ * @ops: Optional buffer setup functions, may be NULL.
++ * @buffer_attrs: Extra buffer attributes.
+  *
+  * Returns 0 on success, a negative error code otherwise.
+  *
+- * This function sets up the buffer and trigger for a adis devices.  If
+- * 'trigger_handler' is NULL the default trigger handler will be used. The
+- * default trigger handler will simply read the registers assigned to the
+- * currently active channels.
++ * This function sets up the buffer (with buffer setup functions and extra
++ * buffer attributes) and trigger for a adis devices with buffer attributes.
+  */
+ int
+-devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *indio_dev,
+-				   irq_handler_t trigger_handler)
++devm_adis_setup_buffer_and_trigger_with_attrs(struct adis *adis, struct iio_dev *indio_dev,
++					      irq_handler_t trigger_handler,
++					      const struct iio_buffer_setup_ops *ops,
++					      const struct iio_dev_attr **buffer_attrs)
+ {
+ 	int ret;
+
+ 	if (!trigger_handler)
+ 		trigger_handler = adis_trigger_handler;
+
+-	ret = devm_iio_triggered_buffer_setup(&adis->spi->dev, indio_dev,
+-					      &iio_pollfunc_store_time,
+-					      trigger_handler, NULL);
++	ret = devm_iio_triggered_buffer_setup_ext(&adis->spi->dev, indio_dev,
++						  &iio_pollfunc_store_time,
++						  trigger_handler,
++						  IIO_BUFFER_DIRECTION_IN,
++						  ops,
++						  buffer_attrs);
+ 	if (ret)
+ 		return ret;
+
+@@ -212,5 +217,4 @@ devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *indio_dev,
+ 	return devm_add_action_or_reset(&adis->spi->dev, adis_buffer_cleanup,
+ 					adis);
+ }
+-EXPORT_SYMBOL_NS_GPL(devm_adis_setup_buffer_and_trigger, IIO_ADISLIB);
+-
++EXPORT_SYMBOL_NS_GPL(devm_adis_setup_buffer_and_trigger_with_attrs, IIO_ADISLIB);
+diff --git a/include/linux/iio/imu/adis.h b/include/linux/iio/imu/adis.h
+index 8898966bc0f0..0fe3a2f63033 100644
+--- a/include/linux/iio/imu/adis.h
++++ b/include/linux/iio/imu/adis.h
+@@ -21,6 +21,7 @@
+ #define ADIS_REG_PAGE_ID 0x00
+
+ struct adis;
++struct iio_dev_attr;
+
+ /**
+  * struct adis_timeouts - ADIS chip variant timeouts
+@@ -515,11 +516,19 @@ int adis_single_conversion(struct iio_dev *indio_dev,
+ #define ADIS_ROT_CHAN(mod, addr, si, info_sep, info_all, bits) \
+ 	ADIS_MOD_CHAN(IIO_ROT, mod, addr, si, info_sep, info_all, bits)
+
++#define devm_adis_setup_buffer_and_trigger(adis, indio_dev, trigger_handler)	\
++	devm_adis_setup_buffer_and_trigger_with_attrs((adis), (indio_dev),	\
++						      (trigger_handler), NULL,	\
++						      NULL)
++
+ #ifdef CONFIG_IIO_ADIS_LIB_BUFFER
+
+ int
+-devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *indio_dev,
+-				   irq_handler_t trigger_handler);
++devm_adis_setup_buffer_and_trigger_with_attrs(struct adis *adis,
++					      struct iio_dev *indio_dev,
++					      irq_handler_t trigger_handler,
++					      const struct iio_buffer_setup_ops *ops,
++					      const struct iio_dev_attr **buffer_attrs);
+
+ int devm_adis_probe_trigger(struct adis *adis, struct iio_dev *indio_dev);
+
+@@ -529,8 +538,11 @@ int adis_update_scan_mode(struct iio_dev *indio_dev,
+ #else /* CONFIG_IIO_BUFFER */
+
+ static inline int
+-devm_adis_setup_buffer_and_trigger(struct adis *adis, struct iio_dev *indio_dev,
+-				   irq_handler_t trigger_handler)
++devm_adis_setup_buffer_and_trigger_with_attrs(struct adis *adis,
++					      struct iio_dev *indio_dev,
++					      irq_handler_t trigger_handler,
++					      const struct iio_buffer_setup_ops *ops,
++					      const struct iio_dev_attr **buffer_attrs)
+ {
+ 	return 0;
+ }
 --
 2.34.1
 

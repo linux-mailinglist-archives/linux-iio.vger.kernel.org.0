@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-5343-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5346-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3176C8D05F6
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 17:23:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 700C18D05F9
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 17:23:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 60A5E1C22457
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 15:23:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C82E1C224E3
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 15:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C35F973441;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E558573452;
 	Mon, 27 May 2024 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VK2K3EMr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pqq0Oumi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FA2C61FEC;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A22761FEF;
 	Mon, 27 May 2024 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716823216; cv=none; b=kjv1K0Kywt2StB6Kb7ir9DDNarsOq9npCrCloVA8OFjiuSmT0UmazWrVDm+fCTIEZMSUYtwUhiEhnykoQmy8GNBdpipmX3Kxtqj8lpbCPCcDCmNutUbuuei8x/+AmwzYjpF7YIip8Af55gHouG/8pdeK8+KPrYA3CZ0C2fzxax0=
+	t=1716823216; cv=none; b=rsieb8pJ4S5kg08GtKMLUSCCU73P7vNEdyNM5YlM7Fdos9UNp+eds7XIjokil+a4tP8DmyQFiX1xibADbib3Ky8c/AoFsDzCf8fGacRDl3ji7VzcuxIr//4F9EQVfSaqu6/poTDHDJn4OdJyCMDNXEyBabT1Jkqwhq6WteDmHRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1716823216; c=relaxed/simple;
-	bh=C5v4/fLzS6Bdo8dJf1AM1vOKlChKS52Cq8X9QRh1u/I=;
+	bh=jDeJ/2LLIq3QhO9uL4NshnL3jZave7YV0UkfwYZ8P+4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uJRw1W/2M2sMXOSMiStT+zd3lZWF7Vg+IuaAzo/MnjdcUQLfzgYUhTmlHPTjcsrb/9PFzVG818X+j2P5bqBzCbRUzKwCr6iiM0C443Wi04kcf0ffI6Vv2MLu8yTXMxrNOSctGJ2js69cL4+D5yXVVUofv8dv3i+v3Ep5ll4Ud9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VK2K3EMr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2ED53C2BBFC;
+	 In-Reply-To:To:Cc; b=BQnAYXZirpmir5I/yUgUiK9RyVbMoWlaUFXhAxgzx7qSDJlekWOK7WC3c2lSRnHb0qEdUMSCjw71QmFp0WNtkyZ5kquZLN8613aGqXl1Q2CQxBIWWU9Ub+Q1ZdPOd14t1mKKUDYxJz8X70hcD6t98stpQX6ZCIgxZ8+jIOeqEyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pqq0Oumi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 462A8C4AF0A;
 	Mon, 27 May 2024 15:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1716823216;
-	bh=C5v4/fLzS6Bdo8dJf1AM1vOKlChKS52Cq8X9QRh1u/I=;
+	bh=jDeJ/2LLIq3QhO9uL4NshnL3jZave7YV0UkfwYZ8P+4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=VK2K3EMrrl+8hpWnw4uKT46HNiMQ1ySQVE2IHpTFWofQm8RyoAGZeBvri7yCQvjrY
-	 xFvwbjFCd6qjHvYJ0P6/DIZew/oqwwvXaIZX5gpvuB6+sZjIW5h6AUsB9pg5FrnkQ4
-	 9/T/3WSN4DmcvZKYNJMypAVVMqpdEItmRMofBM3kpWyAjuNSmZBgqhJSnOEH1MFSD4
-	 Cf8Xfwx29TxX9i9qNaYqfEQyXwLZmRIN1JY2Mjx9OXNJ4iz8v+6ia8IxtaAwwQMVX9
-	 xPSMG2kn8wrqsRKC73JYkHWIr0K0mrC9mNw6c59+EnZASI/4JBN7AGnBDXM3ZuDKNI
-	 GkhaJ9XPGX3+g==
+	b=Pqq0Oumig8hpKuTe8LztOoZThZFNmcmVKansidyAQaTmV6OFEDnyifjM0bmoz0NR+
+	 bZzYYfAyQx5Nxbfl/JTbpUuKrg9atfViMf+JLqO2x2YO4J0Tif1M+Uv8ob5746g8Ra
+	 VlRVMWuVyT9tsZBvLCwLrDh0HdtRRrIdQF6/krcJS9omio7WYyLs6/n1Sg7xs3V+KL
+	 ABZ1IAzISDJ5VGT0C4EDgxak4Rnxl4L9v5KQnihO+WNqJGdQPtBo4gzKyh6WZ3lelX
+	 PSps+VHTj6lgYk2+/IButh+YwzgJ9cP2QOKLaQ/fymbYTCeORwtD2U8UY8DZzp3aTc
+	 gSNzGeia3qIvA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 28FC1C25B7E;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 36C59C25B74;
 	Mon, 27 May 2024 15:20:16 +0000 (UTC)
 From: Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org>
-Date: Mon, 27 May 2024 18:19:51 +0300
-Subject: [PATCH v2 3/5] iio: adc: ad7173: Remove index from temp channel
+Date: Mon, 27 May 2024 18:19:52 +0300
+Subject: [PATCH v2 4/5] iio: adc: ad7173: Clear append status bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240527-ad7173-fixes-v2-3-8501b66adb1f@analog.com>
+Message-Id: <20240527-ad7173-fixes-v2-4-8501b66adb1f@analog.com>
 References: <20240527-ad7173-fixes-v2-0-8501b66adb1f@analog.com>
 In-Reply-To: <20240527-ad7173-fixes-v2-0-8501b66adb1f@analog.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -63,11 +63,11 @@ To: Lars-Peter Clausen <lars@metafoo.de>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Dumitru Ceclan <dumitru.ceclan@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716823214; l=851;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1716823214; l=1000;
  i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
- bh=qHzAb3Lr8QOhPoRlBg0Itkn9NRPMWDsCz2unbRqp8RE=;
- b=m3a5lXaIuY0O7Uj3Tmt/3OKUjtu4tmQPul5KaV3j+ZXB5YLLGDyRzOt0+Hz39iI2piR38CwkH
- 56VwciTgcX7CemA0yuFV8O/swPwe8NrwzwFH0E5Hlq2nImv2OiCWoYD
+ bh=3Lih309+QmE+/CCcvFgIQ2n+1Fi+3MwieGtcQTnVs2U=;
+ b=rkyQI3J/iTkzHVDAvv+RknEc66IoqXsONEJQUo/RgjWt3qq4jKv58P3m3YfQV59D6IFlE7VkS
+ bDsxFrLnNTIB2LxSDoRYNkIPMOJhJvsnLYesmESFEr458lsW9Q+Qozp
 X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
  pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
 X-Endpoint-Received: by B4 Relay for dumitru.ceclan@analog.com/20240313
@@ -77,28 +77,29 @@ Reply-To: dumitru.ceclan@analog.com
 
 From: Dumitru Ceclan <dumitru.ceclan@analog.com>
 
-Temperature channel is unique per device, index is not needed.
-This is breaking userspace: Include fixes tag to be released within the
-same rc cycle.
+The previous value of the append status bit was not cleared before
+setting the new value. This caused the bit to remain set after enabling
+buffered mode for multiple channels and not permit further buffered
+reads from a single channel after the fact.
 
 Fixes: 8eb903272f75 ("iio: adc: ad7173: add AD7173 driver")
 Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
 ---
- drivers/iio/adc/ad7173.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/iio/adc/ad7173.c | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 58620be41ef5..eb512878c30e 100644
+index eb512878c30e..e66a137a76be 100644
 --- a/drivers/iio/adc/ad7173.c
 +++ b/drivers/iio/adc/ad7173.c
-@@ -815,7 +815,6 @@ static const struct iio_chan_spec ad7173_channel_template = {
+@@ -543,6 +543,7 @@ static int ad7173_append_status(struct ad_sigma_delta *sd, bool append)
+ 	unsigned int interface_mode = st->interface_mode;
+ 	int ret;
  
- static const struct iio_chan_spec ad7173_temp_iio_channel_template = {
- 	.type = IIO_TEMP,
--	.indexed = 1,
- 	.channel = AD7173_AIN_TEMP_POS,
- 	.channel2 = AD7173_AIN_TEMP_NEG,
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
++	interface_mode &= ~AD7173_INTERFACE_DATA_STAT;
+ 	interface_mode |= AD7173_INTERFACE_DATA_STAT_EN(append);
+ 	ret = ad_sd_write_reg(&st->sd, AD7173_REG_INTERFACE_MODE, 2, interface_mode);
+ 	if (ret)
 
 -- 
 2.43.0

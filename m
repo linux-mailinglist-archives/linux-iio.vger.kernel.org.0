@@ -1,131 +1,110 @@
-Return-Path: <linux-iio+bounces-5353-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5354-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F1AB8D08AB
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 18:32:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B16A8D08D0
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 18:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D3B21F23FAA
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 16:32:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D5851C2183B
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 16:37:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBAC67344E;
-	Mon, 27 May 2024 16:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE28773460;
+	Mon, 27 May 2024 16:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mOpA+paO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TdAlFkuE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8322761FD0;
-	Mon, 27 May 2024 16:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879B917E8E3;
+	Mon, 27 May 2024 16:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716827518; cv=none; b=aBN/FmwNP+xczc2aCMDi9CYHtWoYmrc1Oo33uHcinAQbf1F5Esd76gA03qDQGClVNK4+BNrC2rP7qz1N5MTN3UTx5/h+T930BiTJfvP4+kJ2hvPN9dQAhMkzMwFpUMU3zv9YJxgP/JRllAM4fE/pAD5iQS+b21YTn+mFWfKfnhE=
+	t=1716827846; cv=none; b=Skyk3T6elAZztvbrKWpCo1QXVYaRTMsyzJEEZiJ1We+WPuRb9W+EjXU81+wo/TD+PU0Gg7ixT3bsNgtmUw5ODh58uvbQHP/ydbqW+8fvFzPl0yjMNDtj4+sB1hnZljXbhcQeps2jmY6+Amwid2dlCyQwVV88WOMw0Z8ubUwLvyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716827518; c=relaxed/simple;
-	bh=qq+K3zC4sWDPFdYv3oIG6Xmyzeyk8vN3IfD+Xy75TaE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pIHgMxDXIJSKNqFIHO7CZQ1KEkfo4Y+99LCcJGgYx7Kokg5d76blGYj/6y49KvpTD+v/EEzj3Ve04jWBbzZQq/qQK8oKjw6yP18B5HjyeKM/HghJuC/CrWjbpCajP/yIvynqdjdwnw95ec9QChv0gVw/dp5VdiJfHvydw4mXih4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mOpA+paO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F175C2BBFC;
-	Mon, 27 May 2024 16:31:54 +0000 (UTC)
+	s=arc-20240116; t=1716827846; c=relaxed/simple;
+	bh=09vNHjWI7xZll07lwlGlHMkbk/dDA5bQd3OY0FlL8dQ=;
+	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
+	 Message-Id:Subject; b=Gukt+XaG6FIfVVtcULhp5SHqCqXWxdDttTr9BhlO53QJzhZydLZHWqGohfA2VHvdNAWS55Mo9SkwFPuxjE9mXiyqOCqukrCOXtpRU+j+QVvtn+PbH0N4vSy4XDUkZfVa4DqtzTP6MJZKU1XagLmOxkMdHWsoCkaw7/PQDIStGZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TdAlFkuE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31259C32781;
+	Mon, 27 May 2024 16:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716827518;
-	bh=qq+K3zC4sWDPFdYv3oIG6Xmyzeyk8vN3IfD+Xy75TaE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mOpA+paOmCqzyYVFWYVrwI70R8cA7OcU+meWcn5OGTCQyenKwe+iWSk5Yo+mjUxIE
-	 yd5Xkvq3IjmRVoYzLnzsTjDxV3IMEEfRlXkIQC6s/XOCncWK3P8MEGuHJR4Y9RSEM9
-	 4C03CT9OVSjbkYCFxUiEdTKhZwX1UuY6aDYgSOW+VWqA3hm7s3OWn89rPSD9gC1QOX
-	 OlgvuS+QZtV4J7q8VcPWtfCCwp2hFLMR3W8ENsK7u155vJojVI4/FEWd4hwPC+3lWZ
-	 Px+cecMeoKHfTxQcjqGNFM1arsvfcpJpCQx1XXS7Wl8DjgUXU2y4Ht/2lEXpq0QdE+
-	 XhQI5g4cMTtbw==
-Message-ID: <e47de936-8cb4-4cef-a346-74835767e203@kernel.org>
-Date: Mon, 27 May 2024 18:31:53 +0200
+	s=k20201202; t=1716827844;
+	bh=09vNHjWI7xZll07lwlGlHMkbk/dDA5bQd3OY0FlL8dQ=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=TdAlFkuEs0ZPY3kb0w1T+tVNcDH2H0n/HLp+Hk0LPrWJoJ1NouhCK6xgMl/5EHQ2d
+	 rN/25tAEZbJgtTTPa2RdZCGedly/uf7mwRYQSLi5fJuYxRIgvxDuiNHROeUy136f07
+	 MXDrasFwvAay/e3A5KrnvDkv5v+soGk9WLP5kcjQL5rv8QMDkt6UM7Qqly5FLiNstc
+	 MBeMt3tWxjk8CsmZtBov3gA9+sCEXCXQqiTdQtBZ2InmXmWk0StKWm1cemfDqMTOWk
+	 5frOeSI/CKM6rr5p8nPQgsjr2N6pvgyLa/cHT9pjNA7x9YHpf1hkBGoAaUkVnr9UxS
+	 lJabOjceLyZAw==
+Date: Mon, 27 May 2024 11:37:23 -0500
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] dt-bindings: iio: light: add VEML6040 RGBW-LS
- bindings
-To: arthur.becker@sentec.com, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
+ Jonathan Cameron <jic23@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-kernel@vger.kernel.org, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Francesco Dolcini <francesco.dolcini@toradex.com>, 
+ =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, 
  devicetree@vger.kernel.org
-References: <20240527-veml6040-v3-0-6f3bbfd42960@sentec.com>
- <20240527-veml6040-v3-2-6f3bbfd42960@sentec.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240527-veml6040-v3-2-6f3bbfd42960@sentec.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20240527154050.24975-2-francesco@dolcini.it>
+References: <20240527154050.24975-1-francesco@dolcini.it>
+ <20240527154050.24975-2-francesco@dolcini.it>
+Message-Id: <171682784307.1866394.1200692340690360713.robh@kernel.org>
+Subject: Re: [PATCH v1 1/2] dt-bindings: iio: adc: add ti,ads1119
 
-On 27/05/2024 17:12, Arthur Becker via B4 Relay wrote:
-> From: Arthur Becker <arthur.becker@sentec.com>
+
+On Mon, 27 May 2024 17:40:49 +0200, Francesco Dolcini wrote:
+> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
 > 
-> Device tree bindings for the vishay VEML6040 RGBW light sensor iio
-> driver
+> Add devicetree bindings for Texas Instruments ADS1119 16-bit ADC
+> with I2C interface.
 > 
-> Signed-off-by: Arthur Becker <arthur.becker@sentec.com>
+> Datasheet: https://www.ti.com/lit/gpn/ads1119
+> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 > ---
-> V1 -> V3: Addressed review comments (v1 of the dt-bindings was sent
-> along with v2 of the driver but not in a set)
+>  .../bindings/iio/adc/ti,ads1119.yaml          | 122 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 129 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml
+> 
 
-It's basically the same as veml6075, so should be put there...
+My bot found errors running 'make dt_binding_check' on your patch:
 
-Eh,
+yamllint warnings/errors:
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml: ^channel@([0-6])$: Missing additionalProperties/unevaluatedProperties constraint
 
-Best regards,
-Krzysztof
+doc reference errors (make refcheckdocs):
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240527154050.24975-2-francesco@dolcini.it
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
 

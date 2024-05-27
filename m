@@ -1,157 +1,103 @@
-Return-Path: <linux-iio+bounces-5347-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5348-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A9A08D05FB
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 17:23:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E158D0667
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 17:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 004EE1F227D5
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 15:23:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 907A328535F
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 15:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28B7B73465;
-	Mon, 27 May 2024 15:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D195161FC5;
+	Mon, 27 May 2024 15:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHYJIEpH"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="nWl5P62X"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CB461FF8;
-	Mon, 27 May 2024 15:20:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809521E4A9;
+	Mon, 27 May 2024 15:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716823216; cv=none; b=cAeEDnhIyaOqoHRcp1eb5NUtk6mlkhYcsbHIe+KfcESECVcKQ3HjTngNix6MbmBWBLwQFdwebMiFdEnp+3EHa1fPNv6VZgYa+Q2MsNovree1MiUmJ/kMesuw4QSy0LASOmj0sVR4WDrwPrvTjP3kT1E7vF2TxlCPLYlaMM1Cac0=
+	t=1716824482; cv=none; b=S1f4UCvgI/1O2Ku7ADBLp6BTnKDOSXMJkYtz4xJNavMFnDNaEMHi6lFWCc06atIu3Z21sN7YwHBuhg+XRL7wjit/UQQrd9y0xwn/i1gQ9uY20d8WY7gzldX/EY1bJuGxCrY60yZeGP+LgCCMgb/T4GZaNLpLSMBlJj3lOOGqXoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716823216; c=relaxed/simple;
-	bh=mZR6WGjhBRIUp1DvjTSkTj6PBfk83HjEYD3dZJuI26A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tW2Tt7cUkIC7K4BcG/USjoag/YO8+ssuvLMjwAh+Iflr9eH+BkLX8jro047tS0HM7AUc8lTc+4B6xFyXH0OMTdk9DUtpNv4O2sn2H31eHmuEDBBtSVkFOpPtHuhGxaKqgd5ZUxe4+crJDBSrv/B9x8Ca43Cpfc5SdYvxSUul8n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHYJIEpH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 506EEC4AF0D;
-	Mon, 27 May 2024 15:20:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716823216;
-	bh=mZR6WGjhBRIUp1DvjTSkTj6PBfk83HjEYD3dZJuI26A=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EHYJIEpHL9/OS7TpqIGL2FxGYrTF2vS0D3WQ3bxVTERqeuTY2gbLocbZp1y8ZBKOn
-	 vYdi22cSzu6QTBe5IlKJFeKisgrdWGUBNkXuWublMwSeBh4uo3J3p5R1hAbPeo4QX9
-	 7QZJMTUuST7FXcnnn6Y2JX8Pr/0JJf7zQFtM3IxBKbaxZ44D/uR4y7CkXtWCOuFWsm
-	 MjSMk3Q+5GRGuFRraOODpmnEhm+vFDb2dRlCNpG0WwH//rRBqlfsjCd01HI6ob/dEi
-	 NKS4orJzbrufTybXcN5XljFdD22BmMDN4H+OWj4iz7pQkV+gZ+rJaREVjsea3Ez4Ka
-	 7tHVDek/OXwkA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4361FC27C44;
-	Mon, 27 May 2024 15:20:16 +0000 (UTC)
-From: Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org>
-Date: Mon, 27 May 2024 18:19:53 +0300
-Subject: [PATCH v2 5/5] iio: adc: ad7173: Fix sampling frequency setting
+	s=arc-20240116; t=1716824482; c=relaxed/simple;
+	bh=xi95REYMNGRInm8QTlaIsBRCKucC1a/x692ZYbFHYpE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=pDO1e210jsMt5pyNPIxfg86Ctl1qT1lAGEijT8aHoTHip7KufcVYG0dEhsRhbHIHLMpFLGjHgP9m0FdXbftQSEbdezsSZfPmW4eTwbXGH138EigvZTWy4Sw4mQxOUdUBPclSi/qt+LSHOnsJX1SyF/3lrUhyO3R1ouMeMGxt8O8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=nWl5P62X; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 208A11FC11;
+	Mon, 27 May 2024 17:41:09 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1716824469;
+	bh=/qL7ds6TPTDOqwgOF3TOtIR58e7jrv/FMc1WXB1AASw=; h=From:To:Subject;
+	b=nWl5P62XYKZ31HZHg54sxMgn8LeQnJnSyt33QM/wcS5uSHtYz/vubyXf+am5QLug4
+	 6uo6QURAWDJw0D0lmGq4i+jLvj5CuqtegZLEXowwhcKYrsEUlbIz1KQc2OB8U05F0O
+	 K+EQHEelgo5CRr7AgSJG5+7w/EMdgu00rGYDY4zl6aEXZMvn/kG/I1G9PW7Sw3dwTs
+	 UDtiqv2CASd5+USSMZa1mAlD2nfJ8lErXp25u+oGiN6EJtmyo5xasnhlB6iObCVW7Z
+	 sDv00s6DQjl7GTah7Tq+wgD/eSuGVHQNaioMs9oR9aMxuHnqHGmYxEMPDC9ouqmPVh
+	 wPB19Y94EGRqA==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Francesco Dolcini <francesco@dolcini.it>,
+	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Cc: Francesco Dolcini <francesco.dolcini@toradex.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v1 0/2] iio: adc: ti-ads1119: Add driver
+Date: Mon, 27 May 2024 17:40:48 +0200
+Message-Id: <20240527154050.24975-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240527-ad7173-fixes-v2-5-8501b66adb1f@analog.com>
-References: <20240527-ad7173-fixes-v2-0-8501b66adb1f@analog.com>
-In-Reply-To: <20240527-ad7173-fixes-v2-0-8501b66adb1f@analog.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Dumitru Ceclan <dumitru.ceclan@analog.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716823214; l=2927;
- i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
- bh=dDdO/qAAabV229bpLivTobOOzjAvKF9w+JcEWlTFL1A=;
- b=Zw+lJaM6gZoTMI1/Op0Dk7w4FE9AeHkL1i4oQWUL3o5t+R9U1ne7LfEQH4kpwYJexmE2EyO0A
- EPwv+MDC4d5B1cRV7azZWwQgG9JO+LVQadmgeChUvsbiJPvi+bv604o
-X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
- pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
-X-Endpoint-Received: by B4 Relay for dumitru.ceclan@analog.com/20240313
- with auth_id=140
-X-Original-From: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Reply-To: dumitru.ceclan@analog.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+From: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-This patch fixes two issues regarding the sampling frequency setting:
--The attribute was set as per device, not per channel. As such, when
- setting the sampling frequency, the configuration was always done for
- the slot 0, and the correct configuration was applied on the next
- channel configuration call by the LRU mechanism.
--The LRU implementation does not take into account external settings of
- the slot registers. When setting the sampling frequency directly to a
- slot register in write_raw(), there is no guarantee that other channels
- were not also using that slot and now incorrectly retain their config
- as live.
+The ADS1119 is a precision, 16-bit, analog-to-digital converter (ADC)
+that features two differential or four single-ended inputs through a
+flexible input multiplexer (MUX), rail-to-rail input
+buffers, a programmable gain stage, a voltage reference, and an
+oscillator.
 
-Set the sampling frequency attribute as separate in the channel templates.
-Do not set the sampling directly to the slot register in write_raw(),
-just mark the config as not live and let the LRU mechanism handle it.
-As the reg variable is no longer used, remove it.
+Apart from normal single conversion, the driver also supports
+continuous conversion mode using a triggered buffer. However, in this
+mode only one channel can be scanned at a time, and it only uses the data
+ready interrupt as a trigger. This is because the device channels are
+multiplexed, and using its own data ready interrupt as a trigger guarantees
+the signal sampling frequency.
 
-Fixes: 8eb903272f75 ("iio: adc: ad7173: add AD7173 driver")
-Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
----
- drivers/iio/adc/ad7173.c | 18 +++++-------------
- 1 file changed, 5 insertions(+), 13 deletions(-)
+João Paulo Gonçalves (2):
+  dt-bindings: iio: adc: add ti,ads1119
+  iio: adc: ti-ads1119: Add driver
 
-diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index e66a137a76be..ebacdacf64b9 100644
---- a/drivers/iio/adc/ad7173.c
-+++ b/drivers/iio/adc/ad7173.c
-@@ -717,7 +717,7 @@ static int ad7173_write_raw(struct iio_dev *indio_dev,
- {
- 	struct ad7173_state *st = iio_priv(indio_dev);
- 	struct ad7173_channel_config *cfg;
--	unsigned int freq, i, reg;
-+	unsigned int freq, i;
- 	int ret;
- 
- 	ret = iio_device_claim_direct_mode(indio_dev);
-@@ -733,16 +733,7 @@ static int ad7173_write_raw(struct iio_dev *indio_dev,
- 
- 		cfg = &st->channels[chan->address].cfg;
- 		cfg->odr = i;
--
--		if (!cfg->live)
--			break;
--
--		ret = ad_sd_read_reg(&st->sd, AD7173_REG_FILTER(cfg->cfg_slot), 2, &reg);
--		if (ret)
--			break;
--		reg &= ~AD7173_FILTER_ODR0_MASK;
--		reg |= FIELD_PREP(AD7173_FILTER_ODR0_MASK, i);
--		ret = ad_sd_write_reg(&st->sd, AD7173_REG_FILTER(cfg->cfg_slot), 2, reg);
-+		cfg->live = false;
- 		break;
- 
- 	default:
-@@ -804,7 +795,7 @@ static const struct iio_chan_spec ad7173_channel_template = {
- 	.type = IIO_VOLTAGE,
- 	.indexed = 1,
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
--		BIT(IIO_CHAN_INFO_SCALE),
-+		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 	.scan_type = {
- 		.sign = 'u',
-@@ -819,7 +810,8 @@ static const struct iio_chan_spec ad7173_temp_iio_channel_template = {
- 	.channel = AD7173_AIN_TEMP_POS,
- 	.channel2 = AD7173_AIN_TEMP_NEG,
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
--		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET),
-+		BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET) |
-+		BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),
- 	.scan_type = {
- 		.sign = 'u',
+ .../bindings/iio/adc/ti,ads1119.yaml          | 122 +++
+ MAINTAINERS                                   |   8 +
+ drivers/iio/adc/Kconfig                       |  13 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/ti-ads1119.c                  | 815 ++++++++++++++++++
+ 5 files changed, 959 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml
+ create mode 100644 drivers/iio/adc/ti-ads1119.c
 
 -- 
-2.43.0
-
+2.39.2
 
 

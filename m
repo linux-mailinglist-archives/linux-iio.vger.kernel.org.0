@@ -1,53 +1,52 @@
-Return-Path: <linux-iio+bounces-5341-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5345-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E048D05E3
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 17:21:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D858D0600
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 17:24:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66BE928BD48
-	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 15:21:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40C6C296822
+	for <lists+linux-iio@lfdr.de>; Mon, 27 May 2024 15:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071AB15EFD3;
-	Mon, 27 May 2024 15:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25567344D;
+	Mon, 27 May 2024 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r5sLHUNo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OI9AzbLH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD36115A874;
-	Mon, 27 May 2024 15:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8112A61FEE;
+	Mon, 27 May 2024 15:20:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716822730; cv=none; b=JqmTyxapiMbuGJBSiv7rgrozu0QyISv6kHiYucEEbRS+kFkQCiaUCdRU8QUsLAsj6B+D9uHApAzaQisIm/ZMWW4043A5etwXmHz4RIKiuddlrlZdRy4TsdUV8qDSjZ4r+Ylo3Ug8dD/zi0LyxXqj2TYM1NYKu8/zNpYi5aPZQDI=
+	t=1716823216; cv=none; b=TYqW+ncpX16EG6Ryv3SgYyIpniaM4BYyY4Xm9akGockBj+jv0sx6t4zBUgv+APWtzluNXmqeWUEyWYOf2lou3JLS88FMqwVSMmSZQjTp+I64My59jjyxV0daWM78P+0Gn+V/TMO4ZLPBrkwZg0Hiy6Dg7FjdNmzu/soVD5/Bgnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716822730; c=relaxed/simple;
-	bh=GC9XwJrAOyXHE+HoaYDJfgAuuuYZrjvZbTpFwyHEE3g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=s8N/ut7L4oDT8fFVzQpcRKEaCOHVnOdVKlzb4+2m1vjaykrITyp3RkBx3YqALOxG/szo84qECmG15vCKDSClMejeRUpr3LB6uyBPToMw/VBd0mIV4jgm1rieV6fLlNc6p1w188gmKQBcYPx8+QiYRKMsIKk/a9C3ZGFMPjpHXzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r5sLHUNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4E821C32789;
-	Mon, 27 May 2024 15:12:10 +0000 (UTC)
+	s=arc-20240116; t=1716823216; c=relaxed/simple;
+	bh=j8i6rPIxaLoMN9Ud6/vTWt11Mmg5pOxCMWSuFPY9J38=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EWW4udpIHQFGsa6aXDfiYkd+fQF1BVtrhNDZckw4XTGFwSWfujDhTjAj4yTczB1V5vmzPWgwYRwbACTee6f+W4vQWqLRa3A1cSPQV+Y6HSOqvVaiG+Dbazroi8NXYkUw1zFVK3dhk9zQOq8S2DEr+X19EYeVGVoCMB6sYu1Iirw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OI9AzbLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0A6C9C32781;
+	Mon, 27 May 2024 15:20:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716822730;
-	bh=GC9XwJrAOyXHE+HoaYDJfgAuuuYZrjvZbTpFwyHEE3g=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=r5sLHUNo2y0BWPiPJp+UKv7TZYhiWWQUaWa3UY1uMsYIIt0XQDRUVN05nirFTKcKi
-	 AGooTeABUWelhtPGEsg6ZlWJDvp4wF+QaqKeOq6eCV0ykun99OBFsQaL5fiHVhac5B
-	 bQe8JbfWFhJvtcgMjr20pgZ53VW6vPl/g7DtatoYprAii/PMFqbaP/NbstPidqWDUL
-	 7iBe9qDiw+l5T4nsTqNo64Ssa9c1+IxyOEuMm5f4Rbmcdk5J8PAfYCW3XKs2ZQVaba
-	 Mr5c+VcAlHoK0gh1zW2Ysq60xM0yT4BoBaJSKf90Fd8TLHDT1IJkBvh3O1rOc15E7l
-	 XYRDicSnFiN+A==
+	s=k20201202; t=1716823216;
+	bh=j8i6rPIxaLoMN9Ud6/vTWt11Mmg5pOxCMWSuFPY9J38=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=OI9AzbLHmX4oqKXw11MSq10BmFcoG0YCfXdeCAbUOzAL56T3aMsMn54h/qVQzwocw
+	 Khi/7CBWeExNsGn7v13ePDo26yEregCkdm+RD16mOLRKWo7ukDpprL8QmCwfCWRLKM
+	 VgeaCEkDBEAzdtAzaXCUP/+eKbl7H9cH6I/Rdr235bSQfcwSVpso8l7IbfsMGLgMaI
+	 9th7OCuBgoBWjJz6cmKv32aitZwU0zSB1SoP4T+x7f2WQclwpyHJlKoYBHFjmIcQBc
+	 U1UqwT9/WddwO7polPsc2efx/s4RQMg0EGCaRfze3KGQOUqFDa5OcRp5H9YsVJeBSw
+	 JCcMEryJfLuhg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3BA47C27C42;
-	Mon, 27 May 2024 15:12:10 +0000 (UTC)
-From: Arthur Becker via B4 Relay <devnull+arthur.becker.sentec.com@kernel.org>
-Date: Mon, 27 May 2024 17:12:09 +0200
-Subject: [PATCH v3 2/2] dt-bindings: iio: light: add VEML6040 RGBW-LS
- bindings
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E9D7BC25B74;
+	Mon, 27 May 2024 15:20:15 +0000 (UTC)
+From: Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org>
+Subject: [PATCH v2 0/5] AD7173 fixes
+Date: Mon, 27 May 2024 18:19:48 +0300
+Message-Id: <20240527-ad7173-fixes-v2-0-8501b66adb1f@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,94 +55,62 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240527-veml6040-v3-2-6f3bbfd42960@sentec.com>
-References: <20240527-veml6040-v3-0-6f3bbfd42960@sentec.com>
-In-Reply-To: <20240527-veml6040-v3-0-6f3bbfd42960@sentec.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, Arthur Becker <arthur.becker@sentec.com>
+X-B4-Tracking: v=1; b=H4sIAJSkVGYC/3WMyw7CIBBFf6WZtRhm+sC46n+YLggMLYmCAUM0D
+ f8udu/y3JtzdsicPGe4djskLj77GBrQqQOz6bCy8LYxkKRBjoRCW4WqF86/OYuBiUctJ2RH0JR
+ n4uNoxm1pvPn8iulz1Av+1j+hgkKKC05ojHK9tjjroO9xPZv4gKXW+gVY93PUqQAAAA==
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Dumitru Ceclan <dumitru.ceclan@analog.com>, 
+ David Lechner <dlechner@baylibre.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1716822728; l=1571;
- i=arthur.becker@sentec.com; s=20240521; h=from:subject:message-id;
- bh=u0p4w65fUlznIRwbLv+oCbf01W5aOcq+erfwbBRKE9w=;
- b=zCjYc68+a0u7/fUR6r+IMPoQXLqxz9nMLelPqjfSZeibSwRIsayNYpLVecj3SxZ04uGnDNdds
- xHdNaM8x2ouCb9AywBmXkiBFbEgqbcvrUAYlYgiCst0uUGksoXqr+92
-X-Developer-Key: i=arthur.becker@sentec.com; a=ed25519;
- pk=1GLsDBF6GZKt9oNFsvdnAB6sHyKKrSISlwM3AyWbx/k=
-X-Endpoint-Received: by B4 Relay for arthur.becker@sentec.com/20240521 with
- auth_id=163
-X-Original-From: Arthur Becker <arthur.becker@sentec.com>
-Reply-To: arthur.becker@sentec.com
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1716823214; l=1276;
+ i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
+ bh=j8i6rPIxaLoMN9Ud6/vTWt11Mmg5pOxCMWSuFPY9J38=;
+ b=UGbJxCz+LFACCSr4m4Uwl7rRZDZP+jxcQuRug+EDFL82OqyOBz2zwLTWD7ZBLoIFb4Gh2BvQf
+ 3E9AWCdCqKgDVvetqcrRUBLITbjYwV3WpN8WnbP7pFa5No3vdGurBMl
+X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
+ pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
+X-Endpoint-Received: by B4 Relay for dumitru.ceclan@analog.com/20240313
+ with auth_id=140
+X-Original-From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Reply-To: dumitru.ceclan@analog.com
 
-From: Arthur Becker <arthur.becker@sentec.com>
+This patch series adds fixes for ad7173 driver that were originally
+sent along AD411x series. To ensure that they are included in this
+current rc cycle they are sent in a separate series with the Fixes tag.
 
-Device tree bindings for the vishay VEML6040 RGBW light sensor iio
-driver
-
-Signed-off-by: Arthur Becker <arthur.becker@sentec.com>
+Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
 ---
-V1 -> V3: Addressed review comments (v1 of the dt-bindings was sent
-along with v2 of the driver but not in a set)
+Changes in v2:
+iio: adc: ad7173: Fix sampling frequency setting
+-Patch created
+iio: adc: ad7173: Clear append status bit
+-Patch created
+iio: adc: ad7173: Remove index from temp channel
+iio: adc: ad7173: Add ad7173_device_info names
+iio: adc: ad7173: fix buffers enablement for ad7176-2
+-No changes
+
+- Link to v1: https://lore.kernel.org/r/20240521-ad7173-fixes-v1-0-8161cc7f3ad1@analog.com
+
 ---
- .../bindings/iio/light/vishay,veml6040.yaml        | 44 ++++++++++++++++++++++
- 1 file changed, 44 insertions(+)
+Dumitru Ceclan (5):
+      iio: adc: ad7173: fix buffers enablement for ad7176-2
+      iio: adc: ad7173: Add ad7173_device_info names
+      iio: adc: ad7173: Remove index from temp channel
+      iio: adc: ad7173: Clear append status bit
+      iio: adc: ad7173: Fix sampling frequency setting
 
-diff --git a/Documentation/devicetree/bindings/iio/light/vishay,veml6040.yaml b/Documentation/devicetree/bindings/iio/light/vishay,veml6040.yaml
-new file mode 100644
-index 000000000000..101c2cc6506e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/light/vishay,veml6040.yaml
-@@ -0,0 +1,44 @@
-+# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/light/vishay,veml6040.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: VEML6040 RGBW Light Sensor
-+
-+maintainers:
-+  - Arthur Becker <arthur.becker@sentec.com>
-+
-+description:
-+  Datasheet at https://www.vishay.com/docs/84276/veml6040.pdf
-+
-+properties:
-+  compatible:
-+    const: vishay,veml6040
-+
-+  reg:
-+    enum:
-+      - 0x10
-+
-+  vdd-supply: true
-+
-+required:
-+  - compatible
-+  - reg
-+  - vdd-supply
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    i2c {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        light-sensor@10 {
-+            compatible = "vishay,veml6040";
-+            reg = <0x10>;
-+            vdd-supply = <&vdd_reg>;
-+        };
-+    };
-+...
+ drivers/iio/adc/ad7173.c | 35 +++++++++++++++++++----------------
+ 1 file changed, 19 insertions(+), 16 deletions(-)
+---
+base-commit: 5ab61121a34759eb2418977f0b3589b7edc57776
+change-id: 20240521-ad7173-fixes-4e2e5a061ef2
 
+Best regards,
 -- 
-2.34.1
+Dumitru Ceclan <dumitru.ceclan@analog.com>
 
 
 

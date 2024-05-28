@@ -1,120 +1,100 @@
-Return-Path: <linux-iio+bounces-5385-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5386-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 556DC8D1817
-	for <lists+linux-iio@lfdr.de>; Tue, 28 May 2024 12:05:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E294C8D1ACC
+	for <lists+linux-iio@lfdr.de>; Tue, 28 May 2024 14:13:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1060B2894F4
-	for <lists+linux-iio@lfdr.de>; Tue, 28 May 2024 10:05:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F076284B85
+	for <lists+linux-iio@lfdr.de>; Tue, 28 May 2024 12:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D8BD16130D;
-	Tue, 28 May 2024 10:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E1116D4CC;
+	Tue, 28 May 2024 12:13:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DQf+4rVB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E97351021;
-	Tue, 28 May 2024 10:05:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78FA16D4C8;
+	Tue, 28 May 2024 12:13:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716890718; cv=none; b=V6ycOkaLECMCWN271GL4R1xiIZ1tZXceMLUk4tC8WMQ5V4YE2Knq/abSa+7M6j2dznfGoAXSEc6rbd2IxfHCqpdPjl7adPdHUr0ypIQ8iE9wnWvce+VKE9G2F1Xx/rgPd1ZhW9qHvvptlnfUz2DdcErDi7JDDxI1MHfvDn9iFZs=
+	t=1716898390; cv=none; b=P1QJ3VGi5rsCsrzdwvbW/ZpsHWj8TvMT/vBhCrw6azWps2GNkFILgeu+IJJivda331wz9wunvLfwXdVVjrcyMkwP2P6XCTSvNVhPyV+w/ZgtLzn6IHB8HO6CcPrTSwlyuSNdnjjn9HONc5Kc/fUNqdJwCS3WsFWX2kmpiIqmxlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716890718; c=relaxed/simple;
-	bh=SRcYTZBLE8y2e1/1r9ygLjdIMLPRef74Z1w77qnd6aw=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tpBiS3vq9Dd6+xfPVbUejZy20bsZ0MP7zRlUCgE8AuEnxO4ydkx6ezGUh23roXJ/t+2Ww918wXTKhOVyj4m6SoevJtoGul7MHFHEP8ukqTnn0r4jazUvL5c+8KbK6meBIa3G5etJAQyiLGx3i8aAPERFs1OJKiaQuSUxgoVqafM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.231])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VpSly22V1z6K9F5;
-	Tue, 28 May 2024 18:04:14 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5022D140B63;
-	Tue, 28 May 2024 18:05:13 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 28 May
- 2024 11:05:12 +0100
-Date: Tue, 28 May 2024 11:05:11 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Arthur Becker <arthur.becker@sentec.com>
-CC: Krzysztof Kozlowski <krzk@kernel.org>, Jonathan Cameron
-	<jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob Herring
-	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
-	<conor+dt@kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>
-Subject: Re: [EXTERNAL]Re: [PATCH v3 2/2] dt-bindings: iio: light: add
- VEML6040 RGBW-LS bindings
-Message-ID: <20240528110511.00006fe5@Huawei.com>
-In-Reply-To: <ZR1P278MB111779FE0C84DB465C54EEFF81F12@ZR1P278MB1117.CHEP278.PROD.OUTLOOK.COM>
-References: <20240527-veml6040-v3-0-6f3bbfd42960@sentec.com>
-	<20240527-veml6040-v3-2-6f3bbfd42960@sentec.com>
-	<e47de936-8cb4-4cef-a346-74835767e203@kernel.org>
-	<ZR1P278MB111779FE0C84DB465C54EEFF81F12@ZR1P278MB1117.CHEP278.PROD.OUTLOOK.COM>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1716898390; c=relaxed/simple;
+	bh=rzsvd6VD1/owQGZsk5QhfmqulEVL1FBeAwPMuDez2po=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pf5NfrlX8CWmJAcYUSbZlOQHLVet2LDr1zn6NqVHVO1VSOjxqUxNc5wQ2YCEwdT5OpWxvT/lW8b02pTEPZiMjDNw8l/ltpQ+/KO2uG0TpamtFqaIPKZtBXMWtJKFJQIcX1B7MGnHyejygepyLSkIDgtlJD22fj2xCF8agde7wkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DQf+4rVB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B86DC3277B;
+	Tue, 28 May 2024 12:13:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716898390;
+	bh=rzsvd6VD1/owQGZsk5QhfmqulEVL1FBeAwPMuDez2po=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DQf+4rVBPll8AM8kJkFhAKRuprdBNvYgQGlMlzR5NRXs+UKn1rKVGNsbzxDTQU6bu
+	 ejgvsFCmE6hSG+l+Fp88v7WqQIOPvdOUdCcMHKRJ48akBkb7bUxFSW7YziWtOPlH+v
+	 V6Q74zsQEFe7DRdHPXUUFafaB1kqNBvwA+2cDQT7VWZT5IRFXPRk7l8Sx8zaEdgfML
+	 ykqvhjRK+KHyFe3+UQ7vloertTwWOaG0OD1uJRQ1GTdZSZXX0SGWoSpYQTVr45MLX5
+	 TXml6U4FxpUgSHe8GWRsO3fSn/R3QFOnBirg+Z3tdc/OQekLZMdRY3OR5eHgvWmUQz
+	 TtJoqVbeQ5uTw==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Dragos Bogdan <dragos.bogdan@analog.com>,
+	Anshul Dalal <anshulusr@gmail.com>,
+	Andrea Collamati <andrea.collamati@gmail.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: dac: ad9739a: drop COMPILE_TEST option
+Date: Tue, 28 May 2024 14:12:58 +0200
+Message-Id: <20240528121304.3695252-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Transfer-Encoding: 8bit
 
-On Tue, 28 May 2024 07:23:03 +0000
-Arthur Becker <arthur.becker@sentec.com> wrote:
+From: Arnd Bergmann <arnd@arndb.de>
 
-> Thanks for the Review!
-> Right, I wasn't sure if and how to add the veml6040 to the veml6075 dt-binding file.
-> I'll modify that the next time I make adjustments to the driver.
+Build testing without SPI results in a warning:
 
-It's absolutely fine to have shared bindings even if the
-drivers (because of different register interface etc) are completely
-separate.  It's a good way to keep bindings aligned between
-similar devices.
+WARNING: unmet direct dependencies detected for REGMAP_SPI
+  Depends on [n]: SPI [=n]
+  Selected by [m]:
+  - AD9739A [=m] && IIO [=m] && (SPI [=n] || COMPILE_TEST [=y])
 
-Jonathan
+There is no need for this particular COMPILE_TEST option, as allmodconfig
+and randconfig testing can just assume that SPI is enabled separately.
 
-> 
-> Kind regards,
-> Arthur
-> 
-> ________________________________________
-> From: Krzysztof Kozlowski <krzk@kernel.org>
-> Sent: 27 May 2024 18:31
-> To: Arthur Becker; Jonathan Cameron; Lars-Peter Clausen; Rob Herring; Krzysztof Kozlowski; Conor Dooley
-> Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org; devicetree@vger.kernel.org
-> Subject: [EXTERNAL]Re: [PATCH v3 2/2] dt-bindings: iio: light: add VEML6040 RGBW-LS bindings
-> 
-> On 27/05/2024 17:12, Arthur Becker via B4 Relay wrote:
-> > From: Arthur Becker <arthur.becker@sentec.com>
-> >
-> > Device tree bindings for the vishay VEML6040 RGBW light sensor iio
-> > driver
-> >
-> > Signed-off-by: Arthur Becker <arthur.becker@sentec.com>
-> > ---
-> > V1 -> V3: Addressed review comments (v1 of the dt-bindings was sent
-> > along with v2 of the driver but not in a set)  
-> 
-> It's basically the same as veml6075, so should be put there...
-> 
-> Eh,
-> 
-> Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
-> Best regards,
-> Krzysztof
-> 
-> 
+Drop it to avoid the warning.
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/iio/dac/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+index 3c2bf620f00f..ee0d9798d8b4 100644
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -133,7 +133,7 @@ config AD5624R_SPI
+ 
+ config AD9739A
+ 	tristate "Analog Devices AD9739A RF DAC spi driver"
+-	depends on SPI || COMPILE_TEST
++	depends on SPI
+ 	select REGMAP_SPI
+ 	select IIO_BACKEND
+ 	help
+-- 
+2.39.2
 
 

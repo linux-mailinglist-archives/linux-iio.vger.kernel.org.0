@@ -1,256 +1,234 @@
-Return-Path: <linux-iio+bounces-5387-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5389-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92A438D1AE6
-	for <lists+linux-iio@lfdr.de>; Tue, 28 May 2024 14:16:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE1248D1E63
+	for <lists+linux-iio@lfdr.de>; Tue, 28 May 2024 16:20:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00931B28F6F
-	for <lists+linux-iio@lfdr.de>; Tue, 28 May 2024 12:16:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C4131C23154
+	for <lists+linux-iio@lfdr.de>; Tue, 28 May 2024 14:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B17516A39B;
-	Tue, 28 May 2024 12:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58E1A16F900;
+	Tue, 28 May 2024 14:20:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nksUEUMP"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BbDzZe5Z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D1579F5;
-	Tue, 28 May 2024 12:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3095416F829
+	for <linux-iio@vger.kernel.org>; Tue, 28 May 2024 14:20:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716898574; cv=none; b=jeE6joWyelsNRi23WButBlfWv0s4IAoQ7S9lePgPkT1rUES/jDaPsjMZ4/NG0Ii7vaSX0khNrVrCuydCPTQAbHTOPH4VuDZLDC2/FMw07yEVDDfNzzpeX2e7Yaigo3S4gXeuN4S7iZDCYvHgewvrALBO0RMfSkXUV7o9+Diz76I=
+	t=1716906042; cv=none; b=shMZqXslVa/B1LZRsBsoa5D+dWL64XiIsY1US3JJPOmVJPwq2S2sH3/ieSivb8tPfZoS3yLSuRGv4fLYcduinY84NHvXlrgLXVtD2ADdo/g+tGAxwwU2CcOadvH2as9t6WJUfdxHfQnLVcn/v+AZOiJsde+FqQF536BvfA/LYzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716898574; c=relaxed/simple;
-	bh=xc7oB8+JNVYn2H/8b3L4JLm5sU+ZMJ8Os7l30OqOt9k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Timgvi+B8Kzrl2IL7Fzf8iYOAQgI2OGO362GuPlNhKXYqpdaksK3jFpc7YxuLmg1N0sKOXUEsrdShAcTALs/09+LyMhwEhUpYOaFuNxj91ObryyGoBMl7b5QQk+i1fP54hr8NAjGi2fXSRFN4MXmZW74DhvJ8fEv3uF33rX2grg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nksUEUMP; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4202cea9a2fso5074985e9.3;
-        Tue, 28 May 2024 05:16:11 -0700 (PDT)
+	s=arc-20240116; t=1716906042; c=relaxed/simple;
+	bh=gk7NHdXOoOeTuJGZ9jKJwuWhY5+mWOQJr9Na9Basnbs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=o17oqL/k7AODO+k2yrStaOS45vTqwjZHAhuqHKpHtL3y70WZEYlCBY4cG1Ptg1HG/YiNr7HcEa1yvnkIGOaoqBVOfhPbSLoiYYa9cSUl1QSC5j2YjI8cnDgYO0ncZ27PSprcBZ7crUV7ULrz9enKfd09tf2Tgqu1Q+KTQngsBZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BbDzZe5Z; arc=none smtp.client-ip=209.85.221.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-35bf77ba8fbso264634f8f.2
+        for <linux-iio@vger.kernel.org>; Tue, 28 May 2024 07:20:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716898570; x=1717503370; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lzpx7qm7SQW9ian0oyolO7FxfSEu7trQ6emgQAOQl2A=;
-        b=nksUEUMPQRJeKd9EIz6s6RTtWh37aZnzZXeHO9j1Sh0SIMiI6jGI7gsBtLNA9krkPE
-         /A8a7Y0FgwwIsxBzkbWd9ARco4U82XjMnr5eJ35xVL5ofAHJe5SZmaHYKr13HRk732t2
-         fOl7uCG7t+j2mO7kY93RkY1glHOlsFXGw5VIe/+MaVGFkjE35NGkuzRD4/9tDTkFFdKq
-         AE/a6cxwqHLEmIc+zV67BpvTba9kAlLTd1XusDqO/XbxNlqabWrt/T0CYgCKfMHTnS5E
-         Ce6CAMiJgzg1ftwh8Aj3+/yL4v+D4nxUcKOz/1rnYpMi4h9XO2s3h3hy5E7w9ifLLo1+
-         YaNw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1716906037; x=1717510837; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HDS2GchM/PEgnuAUR9pIjZfZOk1XHpFRPkADGX4AV1Q=;
+        b=BbDzZe5Zcr9V84tUmtkjGOwRvgwqPfSgcG1EOVS4F2Xhj7+LXcr5IZu9Jtp2hK0jWJ
+         UOuWAtu4+vRoicPYKiBos5A2IYN1GFSE5+2SZeMA+AFoqwVmm5PA2s8Hi4szIKTvx9it
+         JMfWdaY3QqChxgN+43kll/3FqEPLJPCRvpQIJ/Ay/wDITAaRzsH6rXKovgno8X3SpTWk
+         +GYIZEANpIon6c7gL5Hzvv1o5A+gtcyTy/3ZH7wCautxzezcWoEYXoY35wU1XlhDcRoe
+         kVyUnf3yT2yA6PRoE3NTiBPDjQ1vHnP3i1u0LyiM2xGLiKcVaV9RgNk03rhQtM1KUmCU
+         Eziw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716898570; x=1717503370;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lzpx7qm7SQW9ian0oyolO7FxfSEu7trQ6emgQAOQl2A=;
-        b=YXCIeaa4XkMzeFKdq7iD7CZybZKtsSNwTnN9hraEv94wKWqjKAutSk3O70s9FDNMqe
-         uBjDqIVVqn7ho2i5594Q+1wPrYxHeOvce1x4f6yaa8TZ+C2Q3XQzIt3PXfg1XXyZ77sg
-         8PuEAI+lQFmEZhGc877NyhaT3tDcRG5gvOyEazfk4/FgkuEWXmPdyiAafpJLeXBIJXPI
-         Rbcob8oZqSW2Pric0FlU8m7hYb0hy6RIPmsUiWV3QIm3H/QePzXGcMLjOOZ79AJw/Gat
-         nEZHUxz1SEs5Qr+bKPmrSrUMaCbJBjahTpmIhs/FkQAQPMkyatynp3Xia0iBBo7MzPI9
-         qsaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUYoeJki5HUgRs4fLLEP8VHupUzy9DKXtqvP6O+g2vgzFJLujJu8xeblF0k8uyblxGA389PMvKk1ldJ4zQXt4vwknsOXbeKNeY6baRn0Sf/PsC2CDUSDE2xbb+nTj5oWMlwSusqEQw3xB8L93OeiSY3t0IEGkQjwlFYqBJH1t+JWVZGbg==
-X-Gm-Message-State: AOJu0YwLzJbLBNtvDUkT4ZZjczC4CqRJ0U37qB9XuLh8x+F7UHoZ9gy2
-	hgMSP2oLlg6BFSsn1OZOWb0RWFKeN/QAJACt1MUv9rBPoZHj5/I5
-X-Google-Smtp-Source: AGHT+IGCFhpIsDbHj3JBdSP6LwjptF6Kk35JPoYp9dYAhg8YPwtQ/pgxIX+pjNU6EeVkgsyESoU5hg==
-X-Received: by 2002:a05:600c:4f0f:b0:41b:de8d:dcd7 with SMTP id 5b1f17b1804b1-421089ffc4emr84324085e9.20.1716898570126;
-        Tue, 28 May 2024 05:16:10 -0700 (PDT)
-Received: from [192.168.0.137] ([188.24.75.156])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-420fd37c1d2sm189939445e9.1.2024.05.28.05.16.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 May 2024 05:16:09 -0700 (PDT)
-Message-ID: <d87ae6ef-090d-4e47-bde4-4d08fd445ac1@gmail.com>
-Date: Tue, 28 May 2024 15:16:07 +0300
+        d=1e100.net; s=20230601; t=1716906037; x=1717510837;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HDS2GchM/PEgnuAUR9pIjZfZOk1XHpFRPkADGX4AV1Q=;
+        b=pT8w3Lkbu4B3B9ddxBItoD7ojdtQspNlExwQhDpTOLgvpALIE6eLj22E6pyKTe3pyS
+         iZQU1Vrqy7U6y4rz9rU1sOW+jSmQc0PH3glCJnxm/8zXA9472mdmET2D5h4zxGAsKeTl
+         vfV6nxg2EA6udcax3j3Nq4ioJFS1Z79m0rQP9fqAjiv7kAPza2iRg1gXn1ZpUIjCzsaU
+         QPGuRl0Vs2U45oNZAzUuSXRSpsU29GH+u71Chq5Ef86lr5A/tU5tDW/OUT1G3CQIedkA
+         DWkSXoImprQyeWT12u4vLpqMei72oIboS+UnZ1tNkcSF/WzltNmxRtCezPwGBJUmbyR0
+         zS8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUyFJEfauodJbWq4ExtaQ2ofxkc1fJdEW4wLjI+ojvMyQJZarPOKyMKcGTZawxANZheQiKbiDDNNrOKnWk7lC8ZwA2Imfh5wuUa
+X-Gm-Message-State: AOJu0YxWNXsEQhA+y8u0UUSfwrXLq3rb3BInSSpf4+mYNILM1MxmHPlz
+	o2xfBW+bJo4jb80MaH9LKWZZ5aAKaMuvZn/XyB9ZxiPwnJ4DOceAy2B7AZNKU0Y=
+X-Google-Smtp-Source: AGHT+IFJNXj6vjqo92nrqygLL93P7kLGEaXHWhFhTVSX7MvfyNiIbt9B1awJPSQA0Jp8pppZC5298Q==
+X-Received: by 2002:a5d:4751:0:b0:358:1a9a:e19c with SMTP id ffacd0b85a97d-3581a9ae6c3mr5940571f8f.68.1716906037293;
+        Tue, 28 May 2024 07:20:37 -0700 (PDT)
+Received: from [192.168.1.63] ([2a02:842a:d52e:6101:6fd0:6c4:5d68:f0a5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35579d7db5esm11999275f8f.15.2024.05.28.07.20.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 May 2024 07:20:37 -0700 (PDT)
+From: Julien Stephan <jstephan@baylibre.com>
+Subject: [PATCH v7 0/7] iio: adc: add new ad7380 driver
+Date: Tue, 28 May 2024 16:20:27 +0200
+Message-Id: <20240528-adding-new-ad738x-driver-v7-0-4cd70a4c12c8@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/6] dt-bindings: adc: ad7173: add support for ad411x
-To: Conor Dooley <conor@kernel.org>, dumitru.ceclan@analog.com
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240527-ad4111-v3-0-7e9eddbbd3eb@analog.com>
- <20240527-ad4111-v3-1-7e9eddbbd3eb@analog.com>
- <20240527-arguably-said-361184ad848e@spud>
-Content-Language: en-US
-From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
-In-Reply-To: <20240527-arguably-said-361184ad848e@spud>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIACvoVWYC/33OQQrCMBAF0KuUrI0kTdJUV95DXDTJtB3QVBKJL
+ aV3Ny2IIOhu/od5MzOJEBAiORYzCZAw4uBz0LuC2L7xHVB0OZOSlZIJzmnjHPqOenjmUYt6pC5
+ ggkBVezBK5s5qSfL6PUCL40afLzn3GB9DmLZLSa3tGz38RpOijFrQrmVMWjDiZJrpiibA3g43s
+ rqp+liK/XkwVdkSlmnJuZK6rL+sZVle3yB3rQ8BAAA=
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ David Lechner <dlechner@baylibre.com>, Jonathan Cameron <jic23@kernel.org>, 
+ Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, 
+ Mark Brown <broonie@kernel.org>
+Cc: kernel test robot <lkp@intel.com>, linux-iio@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Julien Stephan <jstephan@baylibre.com>, 
+ Conor Dooley <conor.dooley@microchip.com>, 
+ Stefan Popa <stefan.popa@analog.com>
+X-Mailer: b4 0.13.0
 
-On 27/05/2024 20:48, Conor Dooley wrote:
-> On Mon, May 27, 2024 at 08:02:34PM +0300, Dumitru Ceclan via B4 Relay wrote:
->> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
->>
->> Add support for: AD4111, AD4112, AD4114, AD4115, AD4116.
->>
->> AD411x family ADCs support a VCOM pin, dedicated for single-ended usage.
->> AD4111/AD4112 support current channels, usage is implemented by
->>  specifying channel reg values bigger than 15.
->>
->> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
->> ---
->>  .../devicetree/bindings/iio/adc/adi,ad7173.yaml    | 122 ++++++++++++++++++++-
->>  1 file changed, 120 insertions(+), 2 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
->> index ea6cfcd0aff4..5b1af382dad3 100644
->> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
->> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
->> @@ -19,7 +19,18 @@ description: |
->>    primarily for measurement of signals close to DC but also delivers
->>    outstanding performance with input bandwidths out to ~10kHz.
->>  
->> +  Analog Devices AD411x ADC's:
->> +  The AD411X family encompasses a series of low power, low noise, 24-bit,
->> +  sigma-delta analog-to-digital converters that offer a versatile range of
->> +  specifications. They integrate an analog front end suitable for processing
->> +  fully differential/single-ended and bipolar voltage inputs.
->> +
->>    Datasheets for supported chips:
->> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4111.pdf
->> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4112.pdf
->> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4114.pdf
->> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4115.pdf
->> +    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4116.pdf
->>      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
->>      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-4.pdf
->>      https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
->> @@ -31,6 +42,11 @@ description: |
->>  properties:
->>    compatible:
->>      enum:
->> +      - adi,ad4111
->> +      - adi,ad4112
->> +      - adi,ad4114
->> +      - adi,ad4115
->> +      - adi,ad4116
->>        - adi,ad7172-2
->>        - adi,ad7172-4
->>        - adi,ad7173-8
->> @@ -129,10 +145,36 @@ patternProperties:
->>          maximum: 15
->>  
->>        diff-channels:
->> +        description: |
->> +          For using current channels specify select the current inputs
->> +           and enable the adi,current-channel property.
->> +
->> +          Family AD411x supports a dedicated VINCOM voltage input.
->> +          To select it set the second channel to 16.
->> +            (VIN2, VINCOM) -> diff-channels = <2 16>
->> +
->> +          There are special values that can be selected besides the voltage
->> +          analog inputs:
->> +            21: REF+
->> +            22: REF−
->> +          Supported only by AD7172-2, AD7172-4, AD7175-2, AD7175-8, AD7177-2:
->> +            19: ((AVDD1 − AVSS)/5)+
->> +            20: ((AVDD1 − AVSS)/5)−
->> +
->>          items:
->>            minimum: 0
->>            maximum: 31
->>  
->> +      single-channel:
->> +        description: |
->> +          Models AD4111 and AD4112 support single-ended current channels.
->> +          To select the desired current input, specify the desired input pair:
->> +            (IIN2+, IIN2−) -> single-channel = <2>
->> +
->> +        items:
->> +          minimum: 1
->> +          maximum: 16
->> +
->>        adi,reference-select:
->>          description: |
->>            Select the reference source to use when converting on
->> @@ -154,9 +196,26 @@ patternProperties:
->>            - avdd
->>          default: refout-avss
->>  
->> +      adi,current-channel:
->> +        description: |
->> +          Signal that the selected inputs are current channels.
->> +          Only available on AD4111 and AD4112.
->> +        type: boolean
->> +
->> +      adi,channel-type:
->> +        description:
->> +          Used to differentiate between different channel types as the device
->> +           register configurations are the same for all usage types.
->> +          Both pseudo-differential and single-ended channels will use the
->> +           single-ended specifier.
->> +        $ref: /schemas/types.yaml#/definitions/string
->> +        enum:
->> +          - single-ended
->> +          - differential
->> +        default: differential
-> 
-> I dunno if my brain just ain't workin' right today, or if this is not
-> sufficiently explained, but why is this property needed? You've got
-> diff-channels and single-channels already, why can you not infer the
-> information you need from them? What should software do with this
-> information?
-> Additionally, "pseudo-differential" is not explained in this binding.
-> In previous thread we arrived to the conclusion single-ended and
-pseudo-differential channels should be marked with the flag
-"differential=false" in the IIO channel struct. This cannot
-really be inferred as any input pair could be used in that
-manner and the only difference would be in external wiring. 
+Taking over this series with David Lechner's approval, to add some
+fixes, proper handling of pseudo differential parts and
+some extra commits to add support for 4-channel compatible parts.
 
-Single-channels cannot be used to define such a channel as
-two voltage inputs need to be selected. Also, we are already
-using single-channel to define the current channels.
+Here is David's cover letter:
 
-As for explaining the pseudo-differential, should it be explained?
-A voltage channel within the context of these families is actually
-differential(as there are always two inputs selected).
-The single-ended and pseudo-diff use case is actually wiring up a
-constant voltage to the selected negative input.
+This series is adding a new driver for the Analog Devices Inc. AD7380,
+AD7381, AD7383, and AD7384 ADCs. These chips are part of a family of
+simultaneous sampling SAR ADCs.
 
-I did not consider that this should be described, as there is no
-need for an attribute to describe it.
+To keep things simple, the initial driver implementation only supports
+the 2/4-channel differential chips listed above. There are also 4-channel
+single-ended chips in the family that can be added later.
 
-> Also, what does "the device register configurations are the same for
-> all uses types" mean? The description here implies that you'd be reading
-> the registers to determine the configuration, but as far as I understand
-> it's the job of drivers to actually configure devices.
-> The only way I could interpret this that makes sense to me is that you're
-> trying to say that the device doesn't have registers that allow you to
-> do runtime configuration detection - but that's the norm and I would not
-> call it out here.
+Furthermore, the driver is just implementing basic support for capturing
+data. Additional features like interrupts, CRC, etc. can be added later.
 
-No, I meant that the same register configuration will be set for
-both fully differential and single-ended. 
+This work is being done by BayLibre and on behalf of Analog Devices Inc.
+hence the maintainers are @analog.com.
 
-The user will set diff-channels = <0, 1>, bipolar(or not) and
-then they can wire whatever to those pins: 
-- a differential signal
-- AVSS to 1 and a single-ended signal to 0
-- AVSS+offset to 1 and a single-ended signal to 0
-	(which is called pseudo-differential in some datasheets)
+Changes in v7:
+- Removing oversampling support and resolution boost from this series. 
+  They will be submitted along with David's series about multiple scan
+  types [1], thus removing the RFC tag.
 
-All these cases will look the same in terms of configuration
+ [1]: https://lore.kernel.org/all/20240524-iio-add-support-for-multiple-scan-types-v2-0-a6c328fdfab7@baylibre.com/
 
-> 
-> Thanks,
-> Conor.
+- Link to v6: https://lore.kernel.org/r/20240501-adding-new-ad738x-driver-v6-0-3c0741154728@baylibre.com
+
+Changes in v6:
+- Added a comment for math in IIO_CHAN_INFO_OFFSET
+- Added a comment for raw buffer
+- use iio_device_claim_direct_scoped instead of iio_device_claim_direct_mode
+
+Adding the following commits on top of v5:
+- add oversampling support
+- add resolution boost support
+
+- Link to v5: https://lore.kernel.org/r/20240319-adding-new-ad738x-driver-v5-0-ce7df004ceb3@baylibre.com
+
+Changes in v5:
+- make ad7380_regmap_config static
+  Reported-by: kernel test robot <lkp@intel.com>
+  Closes: https://lore.kernel.org/oe-kbuild-all/202401280629.5kknB57C-lkp@intel.com/
+- don't use bool in FIELD_PREP
+  Reported-by: kernel test robot <lkp@intel.com>
+  Closes: https://lore.kernel.org/oe-kbuild-all/202401280629.5kknB57C-lkp@intel.com/
+- fix rx/tx buffer for regmap access
+- add datasheet links of supported parts
+- move reading reference voltage to probe function
+- removed DIFFERENTIAL from a few macro names
+
+Adding the following commits on top of the v4
+- add supplies for pseudo-differential chips
+- prepare driver to add more compatible parts
+- add support for 4-channel compatible parts
+
+- Link to v4: https://lore.kernel.org/all/20240110-ad7380-mainline-v4-0-93a1d96b50fa@baylibre.com
+
+Changes in v4:
+- Dropped SPI bindings patch.
+- Removed `spi-rx-bus-channels` from the adi,ad7380 bindings.
+- Link to v3: https://lore.kernel.org/r/20231215-ad7380-mainline-v3-0-7a11ebf642b9@baylibre.com
+
+Changes in v3:
+- dt-bindings:
+    - Picked up Conor's Reviewed-By on the adi,ad7380 bindings
+- driver:
+    - Removed extra indent in DEFINE_AD7380_DIFFERENTIAL_2_CHANNEL macro
+    - Removed scan mask that included timestamp channel
+    - Removed parent device assignment
+    - Picked up Nuno's Reviewed-by
+- Link to v2: https://lore.kernel.org/r/20231213-ad7380-mainline-v2-0-cd32150d84a3@baylibre.com
+
+Changes in v2:
+- dt-bindings:
+    - Added new patch with generic spi-rx-bus-channels property
+    - Added maxItems to reg property
+    - Replaced adi,sdo-mode property with spi-rx-bus-channels
+    - Made spi-rx-bus-channels property optional with default value of 1
+      (this made the if: check more complex)
+    - Changed example to use gpio for interrupt
+- driver:
+    - Fixed CONFIG_AD7380 in Makefile
+    - rx_buf = st->scan_data.raw instead of rx_buf = &st->scan_data
+    - Moved iio_push_to_buffers_with_timestamp() outside of if statement
+    - Removed extra blank lines
+    - Renamed regulator disable function
+    - Dropped checking of adi,sdo-mode property (regardless of the actual
+      wiring, we can always use 1-wire mode)
+    - Added available_scan_masks
+    - Added check for missing driver match data
+- Link to v1: https://lore.kernel.org/r/20231208-ad7380-mainline-v1-0-2b33fe2f44ae@baylibre.com
+
+To: Lars-Peter Clausen <lars@metafoo.de>
+To: Michael Hennerich <Michael.Hennerich@analog.com>
+To: Nuno Sá <nuno.sa@analog.com>
+To: David Lechner <dlechner@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Liam Girdwood <lgirdwood@gmail.com>
+To: Mark Brown <broonie@kernel.org>
+Cc: linux-iio@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+---
+David Lechner (4):
+      dt-bindings: iio: adc: Add binding for AD7380 ADCs
+      iio: adc: ad7380: new driver for AD7380 ADCs
+      dt-bindings: iio: adc: ad7380: add pseudo-differential parts
+      iio: adc: ad7380: add support for pseudo-differential parts
+
+Julien Stephan (3):
+      iio: adc: ad7380: prepare for parts with more channels
+      dt-bindings: iio: adc: ad7380: add support for ad738x-4 4 channels variants
+      iio: adc: ad7380: add support for ad738x-4 4 channels variants
+
+ .../devicetree/bindings/iio/adc/adi,ad7380.yaml    | 148 +++++
+ MAINTAINERS                                        |  10 +
+ drivers/iio/adc/Kconfig                            |  16 +
+ drivers/iio/adc/Makefile                           |   1 +
+ drivers/iio/adc/ad7380.c                           | 612 +++++++++++++++++++++
+ 5 files changed, 787 insertions(+)
+---
+base-commit: 9900e7a54764998ba3a22f06ec629f7b5fe0b422
+change-id: 20240311-adding-new-ad738x-driver-5f9b54ad7c74
+
+Best regards,
+-- 
+Julien Stephan <jstephan@baylibre.com>
 
 

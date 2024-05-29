@@ -1,85 +1,84 @@
-Return-Path: <linux-iio+bounces-5423-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5424-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A63C8D2DFB
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 09:18:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 310D18D2E02
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 09:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1D61C225EB
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 07:18:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6CB21F250BD
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 07:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00811667E5;
-	Wed, 29 May 2024 07:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C371167D81;
+	Wed, 29 May 2024 07:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aOy2cQG5"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mGl1MK5P"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E9D15B99A
-	for <linux-iio@vger.kernel.org>; Wed, 29 May 2024 07:18:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AF9916729A;
+	Wed, 29 May 2024 07:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716967096; cv=none; b=Zr5yTwkIk/tK1mI3OM6HXcxCWYMd8GKRaXUHHvQ1Iec3M42kp/KP8PQVDBRHqp63VLCb+OcgzN0mDWP70OcU3Fu7E6O6/oJQB6tIp64XLAXvXRYSIY9etsV73/gtj4K+JGz1kkj2El2ivMutYRQePtuP2LYgZM1UCYKOwlDoGsk=
+	t=1716967247; cv=none; b=G2T2AezmQJASi+Q+uPQvwq8+ZP4BQOPjdZZpWtNXTwKR0HpVN5T2Ogm6FJ7gM8YgxmOZjWwuEmqRnuiQYK6k2g03r+NIyK+wz5wScuDG4f5Ld6yxhS1/2zu5qkFmnDNn0TdCZFdB2TOG5YLj1uKZG4eLj5O0zCGeA35UZK26MIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716967096; c=relaxed/simple;
-	bh=fxAtXfk0qi43EVKznqK5x5RQWOFbzlN4V2TtoN5CZaw=;
+	s=arc-20240116; t=1716967247; c=relaxed/simple;
+	bh=FS8crls/uRvtCmHET4e0Zbibu3jmMutDi9nHUxyq8Ko=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sw75g9i6iIeIEPxFjIDeI+kue1QNuhXtoZqHzBNepiftx/NWL5HMd9gf3CRMSa3UDeebCz38avHC9t4wzL1M9ddEjxT75Rjoe0na7NNyAW2/VmXmM59F+B2RpwnAaHn+pUueK2IGSvVXYyxm88lygHfdTUeTjoGpNKDqXyWO+ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aOy2cQG5; arc=none smtp.client-ip=209.85.218.45
+	 Content-Type:MIME-Version; b=rMFJxJe8nu7hFe+DOWgS4v8B5Np3iZf03Ufuubg27shF4oDG17BrDvSHsgc8PMHY6fAEpogJV1YgslF0BcMODjcn+tWWGX2EzHeaI89FDqAcDliPycaPEIi/+bQJ4zc7ZU9qKR2uXr038PbfBMSthTxDqs55ymCu4SWuTh32mAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mGl1MK5P; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a626777f74eso203912866b.3
-        for <linux-iio@vger.kernel.org>; Wed, 29 May 2024 00:18:14 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a59cc765c29so91006566b.3;
+        Wed, 29 May 2024 00:20:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716967093; x=1717571893; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716967244; x=1717572044; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=fxAtXfk0qi43EVKznqK5x5RQWOFbzlN4V2TtoN5CZaw=;
-        b=aOy2cQG5+7WDp/b/MW1JoqndoDvRTXFklykAf1ylc3sKXm7ZT/FQn675XWlC8MBtJ7
-         86yExqbMeSN+tLB9dhOxKdw1wjyNSOeKzRjsDqteEcpxUnprc3F7hEhM3C0BoSOii7k3
-         AcPO5jOLasYisIyayA28R9Cdjtn5mRXvIrHZdlpJC562pkWTjXHsaULaUsO1OAW7jQJ9
-         KFj4zf5UWv0TfQvasdMWFsojhgEv1jTINLk81qk99EHyyDjGhGcDhqaICiFPasLdkgbo
-         DmYLLUA83s3jeZNGokT1M3VFsFnB6VWO0gFPLfmddnAdyM8t3s0VMu+PHBEGZITefTU0
-         jtRg==
+        bh=FS8crls/uRvtCmHET4e0Zbibu3jmMutDi9nHUxyq8Ko=;
+        b=mGl1MK5PB9yxaMei/Ll9F4GG74dQTqg4uk0KFoIpe+1DiANGdyfgjwPwnQ1VrBtjvA
+         iTy5w+589pkMR9tSRhjNTWAjihMjj6MgMAS/JhFjdrpjnX6PaxU7x7A82d1vRiN9FL2p
+         NaUELssAWB36WBdMoG7AJopO83KE6TuyPrSF5gPLtv7hgBwKurOeZ7le/kfI1hurNXqk
+         HOSrjM5qh4JqP4LW708Tc/4ha7SmUC+8GBUSNEyro0Cdda7nd8BxnIe+7SBTXrh9gKvu
+         rAn91n6d0iVtKfbJf9QrttoFg9FSHlOn6ZT9/YjWPoUvOWTe7GkXEtphxitDXi+IXzzb
+         AC1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716967093; x=1717571893;
+        d=1e100.net; s=20230601; t=1716967244; x=1717572044;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=fxAtXfk0qi43EVKznqK5x5RQWOFbzlN4V2TtoN5CZaw=;
-        b=K3StJhUNijCysguQbq9LL8BY0mU6Y5yqjKsb+u+jDz0udYCPom8rtZTnNhTHTlzgHX
-         NE2n9lJVRjh98kKOYppcNrDbhVpReaPJ8AgrVWEr37sD9MyB2zveuK1GWHbiD+s5lwx6
-         gbkYpz6k1qNfAGF9Ajr2N6ucQpMU+aDKOaOhVzPcMdVPe/7kgklyKS/EEnEtAR8NDBAz
-         aqO3EgGiRZUnF2dkX6hSrbRZZgHKmjK95ZSOZ2Dut3O3MdjTU+5jD2wdvvOng5SIUSwv
-         v+JXXSlZH1dP3a3Wt3eVxKLprosb4R3sDGmK+cWVSe1tpv2iss+gXiBcHX1KnJ9TFmLd
-         xUBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVm9EoLE4qMpMdU9q0b/xkswwwiQasBXy9rag4vXylo+0PTcXbQvNWn+yzNxmlT0YwFb/dZYLM1SURqqEWEFtDImqh5UgfbS5dE
-X-Gm-Message-State: AOJu0Yy/rtP+6JsYn9e8T+fGamc+FOjqJ2Kd9peZUJkDiY/COECMDsZg
-	eFOmB3Wdv5P61ePOhYmdyiBxJtiWOGD7tOy6+2bvPbQGH0UtSo5M
-X-Google-Smtp-Source: AGHT+IEXmkEbDD64TUPNbfrw8tGNnU+rVHjc8Hr24XCO8xrQ9qIl6TGUHrOEdrp8W1jabNd/onpx8A==
-X-Received: by 2002:a17:906:2ada:b0:a59:c941:e5e5 with SMTP id a640c23a62f3a-a62646d5a8amr1363598166b.45.1716967092694;
-        Wed, 29 May 2024 00:18:12 -0700 (PDT)
+        bh=FS8crls/uRvtCmHET4e0Zbibu3jmMutDi9nHUxyq8Ko=;
+        b=gyV9aH8bCNUvqZgHxKbMekzEJUoyyaMRZhEajlzF2aMtjd6qRRdkqZ9vLkIjL/0xSD
+         rlFtK7upFeHO9oAhTQ6GVilwZg6O+TxH3GK2wZStHqzb0TjuPe/Kf19SDtt3plY4u9K6
+         YstplRatetqiB/rtPjIlG4+OmmvdrBLLVRHWL3Qz1+RSsamrvuOKFijQh4YWQdryklie
+         DCLUcOc7lh9vxmaJzNX3qNrxdd9UxBELzwCgufLSUuJ5x3c6LaY9jNbKLJo/Dpom7BNk
+         S5yihHbOjbNytotdslpUW+3opdTUYcPih3UYuT7efsPHWWPHgZ7T1wFrTHe4PLTfXHuF
+         Py+w==
+X-Forwarded-Encrypted: i=1; AJvYcCUjZPZPWvjAt7TxIdIcIEErTxsQccaXU4rmdaB7YW0JFJGDgtGMDiqy2y57v/LLpLfuyMtTJByFKEr+aS/sFmdFOZQ8l8dCNdNGVdyNpDfYHbzULrZ57n/z6YEjaiAYPwC7SlafTGeu
+X-Gm-Message-State: AOJu0Yy4HJlhwU0kgKQrUTJdE5dq0OAhPXXXEAq73NeP684ePSY1QI0h
+	SIQqFMKvMy/wEkAk61ywWbIXwPd6h3CP50LE1qxkoGjVL4OXF5pq8Gaqa14P
+X-Google-Smtp-Source: AGHT+IHE8nNMtwdZez7c1TxoHN97A2pPecKCtvKJTIJ3XDC1TUQPAXrlbgt/62L7zmsHk4y8P0jqug==
+X-Received: by 2002:a17:907:9491:b0:a62:e3b2:6676 with SMTP id a640c23a62f3a-a62e3b267a8mr707809066b.73.1716967243324;
+        Wed, 29 May 2024 00:20:43 -0700 (PDT)
 Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a652baa786dsm20856166b.124.2024.05.29.00.18.12
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626cda46e1sm685467966b.196.2024.05.29.00.20.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 00:18:12 -0700 (PDT)
-Message-ID: <56bbd0b7b2618d803a38b1638dc2820599086f56.camel@gmail.com>
-Subject: Re: [PATCH v2] iio: adc: adi-axi-adc: make sure DRP is locked on
- enable
+        Wed, 29 May 2024 00:20:43 -0700 (PDT)
+Message-ID: <539a815398a3c991c1bc1a53967fbcba282dfe3b.camel@gmail.com>
+Subject: Re: [PATCH] iio: dac: ad9739a: drop COMPILE_TEST option
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa via B4 Relay
-	 <devnull+nuno.sa.analog.com@kernel.org>
-Cc: nuno.sa@analog.com, linux-iio@vger.kernel.org, Lars-Peter Clausen
-	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, David
- Lechner <dlechner@baylibre.com>
-Date: Wed, 29 May 2024 09:18:11 +0200
-In-Reply-To: <20240525175418.7b537296@jic23-huawei>
-References: <20240522-dev-axi-adc-drp-v2-1-b63c9790a48a@analog.com>
-	 <20240525175418.7b537296@jic23-huawei>
+To: Arnd Bergmann <arnd@kernel.org>, Jonathan Cameron <jic23@kernel.org>
+Cc: Arnd Bergmann <arnd@arndb.de>, Lars-Peter Clausen <lars@metafoo.de>, 
+ Nuno Sa <nuno.sa@analog.com>, Dragos Bogdan <dragos.bogdan@analog.com>,
+ Anshul Dalal <anshulusr@gmail.com>, Andrea Collamati
+ <andrea.collamati@gmail.com>,  linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Date: Wed, 29 May 2024 09:20:42 +0200
+In-Reply-To: <20240528121304.3695252-1-arnd@kernel.org>
+References: <20240528121304.3695252-1-arnd@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
@@ -90,31 +89,29 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sat, 2024-05-25 at 17:54 +0100, Jonathan Cameron wrote:
-> On Wed, 22 May 2024 15:14:56 +0200
-> Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org> wrote:
+On Tue, 2024-05-28 at 14:12 +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 >=20
-> > From: Nuno Sa <nuno.sa@analog.com>
-> >=20
-> > When enabling the core, make sure DRP (Dynamic Reconfiguration Port)
-> > is locked. Most of the designs don't really use it but we still get the
-> > lock bit set. So let's do it all the time so the code is generic.
-> >=20
-> > While at it add proper mutex guards as we should not be able to disable
-> > the core in the middle of enabling it. Also reduce the timeout time to =
-1
-> > microsecond as it seems to be enough and goes in line with what we have
-> > on the similar DAC core (adi-axi-dac).
-> >=20
-> > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-> Sounds like a fix, so fixes tag?
+> Build testing without SPI results in a warning:
 >=20
+> WARNING: unmet direct dependencies detected for REGMAP_SPI
+> =C2=A0 Depends on [n]: SPI [=3Dn]
+> =C2=A0 Selected by [m]:
+> =C2=A0 - AD9739A [=3Dm] && IIO [=3Dm] && (SPI [=3Dn] || COMPILE_TEST [=3D=
+y])
+>=20
+> There is no need for this particular COMPILE_TEST option, as allmodconfig
+> and randconfig testing can just assume that SPI is enabled separately.
+>=20
+> Drop it to avoid the warning.
+>=20
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
 
-Can add one even though we do not need to rush any backport as the current =
-user we
-have for this is not doing anything crazy :).
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-Anyways, I'll then split the fix into a separate patch so it's more clear.
+Only for my understanding. When does COMPILE_TEST makes sense to add?
 
 - Nuno S=C3=A1
+
 

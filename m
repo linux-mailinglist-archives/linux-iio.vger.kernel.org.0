@@ -1,206 +1,139 @@
-Return-Path: <linux-iio+bounces-5461-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5462-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF638D3BBB
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 18:04:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14F1F8D3C63
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 18:28:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 324311F2632C
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 16:04:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDF9C1F217FE
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 16:28:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A563181D19;
-	Wed, 29 May 2024 16:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8235918410F;
+	Wed, 29 May 2024 16:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WRm21IPB"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="guea9sdN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f174.google.com (mail-lj1-f174.google.com [209.85.208.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6367139588;
-	Wed, 29 May 2024 16:04:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F941836E0
+	for <linux-iio@vger.kernel.org>; Wed, 29 May 2024 16:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716998666; cv=none; b=LgUpIjKm+P+cs1dOcp5nu9GsU554Phw5S7QorWQ3MaeSNR0KfK6W5wtdBwvRuWGgmw3vmL5/Fw8f1rYob1Tm7NUqwe8TFj3s6vN9hWHlloc/u450325mq0ux8OdOMrQmZWMFpfE6XyVkeKwCl0k7BWnI6ChPEaBgHwhMqtwEO84=
+	t=1717000093; cv=none; b=Lb47gFXUYj7IJlno5fBD+L7WKWWzCdeYF+PwVzpH5iZSe+5CD9cReAbjcUu4kLHSn+hXTcPr0VCli/OMIxNo0jq1UVTKIMMbIcNVnel3q+0vZ5ubNW34zAlr3qCi2LpJ7FmZC66amvKY7Of3Imraq9rhZfMdsZAjzTYM67ZHBd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716998666; c=relaxed/simple;
-	bh=DWKbl03/nXco70baKk+AHssQc5Q/D3vG7XftkkCmshk=;
+	s=arc-20240116; t=1717000093; c=relaxed/simple;
+	bh=vNJiDOu1HJQcTh2QoH0ZF6EeoU/vMa/maD5ym7acze8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PjhP5r3vwBUFqVeIPsBD1e4lyvxyQAOscokcnHh8mN0GhmVcf5VDzNu/+TieZtBKZdnB2rxNIJTrVol7hZ2IvkFOsWq4wIg2fbTSF+IeG6S5Ik2SKqO5bpGoCyABFMb45EmlUXgRt8jCnlZvcdUXOuMYgDq/NbO+AIFZy+wiSI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WRm21IPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AE1C113CC;
-	Wed, 29 May 2024 16:04:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716998666;
-	bh=DWKbl03/nXco70baKk+AHssQc5Q/D3vG7XftkkCmshk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WRm21IPBmyqMapQh1CCFxQSxVoieejoEDj+RAl/vnlmcFMnXq8XWmNsMgR1Ki4N1M
-	 bL3Oyh3kjXr9tdyh2YTqkEUlLgLB56bEEh1nEeTgk+wNxxvivvCKUqc4vOjwJnTYFk
-	 tnsvy8dsaHrv9s5Pqn2SOb2Ipc5frnK9ORnmmKQEGExLlSRwUZH7U6G679vUNQ2P4P
-	 vilpJCEwTGsr8LfOoTS41m03bQtE33isFsLLCjhGCN2cjnqNGn/bNaHeOvw8baQ3Pm
-	 URjRZlPf7kV3G1retDhorzNl9tlVCcE0tsLCEN0+fR03ZGryT/miYM4b1HSQgx7XHf
-	 plyE080/zz/OA==
-Date: Wed, 29 May 2024 17:04:22 +0100
-From: Conor Dooley <conor@kernel.org>
-To: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
-Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	David Lechner <dlechner@baylibre.com>, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] dt-bindings: adc: ad7173: add support for ad411x
-Message-ID: <20240529-slit-verse-0fb06f3556fb@spud>
-References: <20240527-ad4111-v3-0-7e9eddbbd3eb@analog.com>
- <20240527-ad4111-v3-1-7e9eddbbd3eb@analog.com>
- <20240527-arguably-said-361184ad848e@spud>
- <d87ae6ef-090d-4e47-bde4-4d08fd445ac1@gmail.com>
- <20240528-filtrate-cloning-b9152322a3da@spud>
- <a1c75105-6447-4b67-b7d2-326ad9b19b82@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=f+YbD7pu8xZx8e5c/6DpZJStKxJaBkQE4jj6LJNvNz1XUotI+lSauW4pUOehDlRpgunx0UCsv/ZqvptwflO+sPS6r7ma5mkDUNrjtdGpu4BP6+SkcVHfmvaoHQGTcumuglVfZLJf3WF3KG+4abiM8Sfp1yMVFj2ZNf/X05DfUfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=guea9sdN; arc=none smtp.client-ip=209.85.208.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2e95a1d5ee2so8305331fa.0
+        for <linux-iio@vger.kernel.org>; Wed, 29 May 2024 09:28:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1717000090; x=1717604890; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NEJH+7+vj6ruF1GbLbgob2BE38yHKh8JHlHGL8KdovU=;
+        b=guea9sdNPBp2+nH2CwK0kuAmxX84BW8S6340QSc4xEFZnpdR+AIISSsoZP3ilcwh/8
+         W1Xs1+bN2zkeAWzlAWBZa48MpUlC9TYXxOk18PuiMcKYZvQKUrOj6j9KYEZfeFrYViNa
+         oPJttLcbj7UefRTjWchYzSCyRHf2gkbzKeVynXLB/iaDD8t0X9CYQvMdQTL+bHzALPEK
+         /CzRBu3CvK2gEse5Xd8XPrqDTncDxNfe++Sk5bLHdLjSfiEEIHSp+M203xdoFzrlRN2m
+         e/AliR3tZKSAGbAosEVBJD6bTi+I6S1ba4ZMUWADTzpxbVm2lax7G9wEX7pYXj5hThCK
+         /bjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717000090; x=1717604890;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NEJH+7+vj6ruF1GbLbgob2BE38yHKh8JHlHGL8KdovU=;
+        b=A1pKdVaoqxyjdE5QDhw+mJL9/73Gv0fnrLs08a7lAGnPe64D9cX4kYhYcV8YbfVSIq
+         AZ9gpAX+2Ka3N9QJv8H3gFpaXje89juX3avnY0EWgPhkYJt+Npz+UG17onNl9CYV14tR
+         AOc3sJ2q7A9/+5kUJlBTp0F51xFj724jMn3N0zOyPKRz6/DDokezXKcNgFUonuFBvzK/
+         9jjZKx4EVgS+sbREGk1PMS9ejwb+9DX/spHnqUfUqM6lX0qHxEUZKIJHN5JCffWJASPS
+         h5v0XmJkIxuPD9dRkXik7J+DocbPjynfH9xRw9iPWWb6w5Qh85a0wokZ8+lh0MfOYENj
+         uCJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWkHnWp6ZB8Wxr6NFIoOzqY1fnEzZuJEla6s5Pv9eUdIFGkTnm9RdlsIM82iGfQ8S2p1w6LEjn4TK57LC2lZlHOdtZrIntGWxJ2
+X-Gm-Message-State: AOJu0YwuTVZsX/N3jPfqv3lVPUNRNiBaWQUl5UdEafTS7WDveZ4rla3K
+	LJ7vEZK/yEb10noXHd2yl/hZz0pRycAV6vXP/a+he/W+Ri0IS3RegO5sdNJPZg8=
+X-Google-Smtp-Source: AGHT+IFmYVGVDhXJ/UgzgklvENZdHrtaQJwa288W1cA8geS62OGiVwASpA0S4D47EdPq0VKN1MsXJw==
+X-Received: by 2002:a2e:9d91:0:b0:2e9:821a:82fb with SMTP id 38308e7fff4ca-2e9821a837cmr55797371fa.6.1717000087636;
+        Wed, 29 May 2024 09:28:07 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c93a828sm735495666b.83.2024.05.29.09.28.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 May 2024 09:28:07 -0700 (PDT)
+Date: Wed, 29 May 2024 19:28:02 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: "Dr. David Alan Gilbert" <linux@treblig.org>
+Cc: lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+	linux-iio@vger.kernel.org, linux-staging@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] staging: iio: adt7316: remove unused struct
+ 'adt7316_limit_regs'
+Message-ID: <c0bcb7b5-3155-445f-94ff-4020fe05109d@moroto.mountain>
+References: <20240528233008.191403-1-linux@treblig.org>
+ <d9a3c974-8a13-43f8-a0d1-0e55f6e1f3ef@moroto.mountain>
+ <ZldRVBPi4utAfRd8@gallifrey>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="1fQrEwqMuWGtDjnv"
-Content-Disposition: inline
-In-Reply-To: <a1c75105-6447-4b67-b7d2-326ad9b19b82@gmail.com>
-
-
---1fQrEwqMuWGtDjnv
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <ZldRVBPi4utAfRd8@gallifrey>
 
-On Wed, May 29, 2024 at 04:38:53PM +0300, Ceclan, Dumitru wrote:
-> On 28/05/2024 20:52, Conor Dooley wrote:
-> > On Tue, May 28, 2024 at 03:16:07PM +0300, Ceclan, Dumitru wrote:
-> >> On 27/05/2024 20:48, Conor Dooley wrote:
-> >>> On Mon, May 27, 2024 at 08:02:34PM +0300, Dumitru Ceclan via B4 Relay=
- wrote:
-> >>>> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
-> >>>> +      adi,channel-type:
-> >>>> +        description:
-> >>>> +          Used to differentiate between different channel types as =
-the device
-> >>>> +           register configurations are the same for all usage types.
-> >>>> +          Both pseudo-differential and single-ended channels will u=
-se the
-> >>>> +           single-ended specifier.
-> >>>> +        $ref: /schemas/types.yaml#/definitions/string
-> >>>> +        enum:
-> >>>> +          - single-ended
-> >>>> +          - differential
-> >>>> +        default: differential
-> >>>
-> >>> I dunno if my brain just ain't workin' right today, or if this is not
-> >>> sufficiently explained, but why is this property needed? You've got
-> >>> diff-channels and single-channels already, why can you not infer the
-> >>> information you need from them? What should software do with this
-> >>> information?
-> >>> Additionally, "pseudo-differential" is not explained in this binding.
-> >>
-> >> In previous thread we arrived to the conclusion single-ended and
-> >> pseudo-differential channels should be marked with the flag
-> >> "differential=3Dfalse" in the IIO channel struct. This cannot
-> >> really be inferred as any input pair could be used in that
-> >> manner and the only difference would be in external wiring.
-> >>
-> >> Single-channels cannot be used to define such a channel as
-> >> two voltage inputs need to be selected. Also, we are already
-> >> using single-channel to define the current channels.
-> >=20
-> > If I understand correctly, the property could be simplified to a flag
-> > then, since it's only the pseudo differential mode that you cannot be
-> > sure of?
-> > You know when you're single-ended based on single-channel, so the
-> > additional info you need is only in the pseudo-differential case.
-> >=20
-> Yes, it could just be a boolean flag. The only thing I have against
-> that is the awkwardness of having both diff-channels and
-> differential=3Dfalse within a channel definition.
+On Wed, May 29, 2024 at 04:01:24PM +0000, Dr. David Alan Gilbert wrote:
+> * Dan Carpenter (dan.carpenter@linaro.org) wrote:
+> > On Wed, May 29, 2024 at 12:30:08AM +0100, linux@treblig.org wrote:
+> > > From: "Dr. David Alan Gilbert" <linux@treblig.org>
+> > > 
+> > > 'adt7316_limit_regs' has never been used since the original
+> > > commit 35f6b6b86ede ("staging: iio: new ADT7316/7/8 and ADT7516/7/9
+> > > driver").
+> > > 
+> > > The comment above it is a copy-and-paste from a different struct.
+> > > 
+> > > Remove both the struct and the comment.
+> > > 
+> > > Signed-off-by: Dr. David Alan Gilbert <linux@treblig.org>
+> > > ---
+> > >  drivers/staging/iio/addac/adt7316.c | 8 --------
+> > >  1 file changed, 8 deletions(-)
+> > > 
+> > > diff --git a/drivers/staging/iio/addac/adt7316.c b/drivers/staging/iio/addac/adt7316.c
+> > > index 79467f056a05..23d036d2802c 100644
+> > > --- a/drivers/staging/iio/addac/adt7316.c
+> > > +++ b/drivers/staging/iio/addac/adt7316.c
+> > > @@ -209,14 +209,6 @@ struct adt7316_chip_info {
+> > >  #define ADT7316_TEMP_AIN_INT_MASK	\
+> > >  	(ADT7316_TEMP_INT_MASK)
+> > >  
+> > > -/*
+> > > - * struct adt7316_chip_info - chip specific information
+> > > - */
+> > > -
+> > > -struct adt7316_limit_regs {
+> > > -	u16	data_high;
+> > > -	u16	data_low;
+> > > -};
+> > >  
+> > 
+> > Could you delete the blank line as well?  Otherwise we have two blank
+> > lines in a row and checkpatch will complain.
+> 
+> Sure, v2 sent.
+> (checkpatch didn't moan at me with or without).
 
-What I was suggesting was more like "adi,pseudo-differential" (you don't
-need to set the =3Dfalse or w/e, flag properties work based on present/not
-present). I think that would avoid the awkwardness?
+Thanks.  You'd need to apply the patch and re-run checkpatch.pl with the
+-f option.  It's not something that's obvious.
 
-> >> As for explaining the pseudo-differential, should it be explained?
-> >> A voltage channel within the context of these families is actually
-> >> differential(as there are always two inputs selected).
-> >> The single-ended and pseudo-diff use case is actually wiring up a
-> >> constant voltage to the selected negative input.
-> >>
-> >> I did not consider that this should be described, as there is no
-> >> need for an attribute to describe it.
-> >=20
-> > I dunno, adding an explanation of it in the text for the channel type
-> > seems trivial to do. "Both pseudo-differential mode (where the
-> > one of differential inputs is connected to a constant voltage) and
-> > single-ended channels will..."
-> >
-> >>> Also, what does "the device register configurations are the same for
-> >>> all uses types" mean? The description here implies that you'd be read=
-ing
-> >>> the registers to determine the configuration, but as far as I underst=
-and
-> >>> it's the job of drivers to actually configure devices.
-> >>> The only way I could interpret this that makes sense to me is that yo=
-u're
-> >>> trying to say that the device doesn't have registers that allow you to
-> >>> do runtime configuration detection - but that's the norm and I would =
-not
-> >>> call it out here.
-> >>
-> >> No, I meant that the same register configuration will be set for
-> >> both fully differential and single-ended.=20
-> >>
-> >> The user will set diff-channels =3D <0, 1>, bipolar(or not) and
-> >> then they can wire whatever to those pins:=20
-> >> - a differential signal
-> >> - AVSS to 1 and a single-ended signal to 0
-> >> - AVSS+offset to 1 and a single-ended signal to 0
-> >> 	(which is called pseudo-differential in some datasheets)
-> >>
-> >> All these cases will look the same in terms of configuration
-> >=20
-> > In that case, I'd just remove this sentence from the description then.
-> > How you configure the registers to use the device doesn't really have
-> > anything to do with describing the configuration of the hardware.
-> > Given it isn't related to configuration detection at runtime, what
-> > you've got written here just makes it seem like the property is
-> > redundant because the register settings do not change.
-> >
-> > Instead, use the description to talk about when the property should be
-> > used and what software should use it to determine, e.g. "Software can
-> > use vendor,channel-type to determine whether or not the measured voltage
-> > is absolute or relative". I pulled that outta my ass, it might not
-> > be what you're actually doing, but I figure you just want to know if
-> > you're measuring from the origin or either side of it.
+regards,
+dan carpenter
 
-> >It's more to the "software can this property to correctly mark the chann=
-el
-
-Your quoting is scuffed here, I didn't write this!
-
-> as differential or not". Hope this is acceptable. But got it, thanks.
-
-As long as you've got a description that tells the OS what the property
-actually represents, I'm happy.
-
---1fQrEwqMuWGtDjnv
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZldSBQAKCRB4tDGHoIJi
-0h+hAP9HgtxHzbYOpeOdlInP38k8mCjUNQ1jOet2R9xFvyi7KgD/awfrNzpr6Grq
-gw8D1Luo3VGZOSo+/h2GPMl/zY/iNgQ=
-=GSs9
------END PGP SIGNATURE-----
-
---1fQrEwqMuWGtDjnv--
 

@@ -1,307 +1,166 @@
-Return-Path: <linux-iio+bounces-5446-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5447-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911AA8D38DD
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 16:13:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B71A8D394B
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 16:32:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B44BAB2711E
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 14:13:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08CA01F260A8
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 14:32:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE61E14A4CE;
-	Wed, 29 May 2024 14:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67FB7159594;
+	Wed, 29 May 2024 14:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xUIgsqKA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E045154FAE;
-	Wed, 29 May 2024 14:12:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1C23159205
+	for <linux-iio@vger.kernel.org>; Wed, 29 May 2024 14:32:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716991931; cv=none; b=OpR0rgFl6jeUHL5+6aIQHCHLQXifpW5BA6NrZ2sDUuCW0JQo3qENRfa3Svucq8+32MTQBQ88DnINQuy3zTrr1swpJi2S0+JgHI5GqUXRMvmQ0fFfU2YsHXrMrypepYFA+mb7W1gDw4a5NVF2cEZ/o/4kQdutDE1254EoPn4zSeQ=
+	t=1716993169; cv=none; b=phoAe1dr2putjW6fnXf+84AE/A/oNYfl/e0TLQnkVwYJx/1jKmnUdEX3yqxh0xJffpLA2LXhfz6/WhuXrLaN7RKfKbrkLT+1/YkaR84SF/F0YcmPn80N3ag4a5LzjtVT8FFA4SpQ/92SBpLsBZyDpp+Up79XuuPxP4FVrU7y0jE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716991931; c=relaxed/simple;
-	bh=+scz4t99HrNfb43TGDs/Gk5/fHNulxEOPZbWLGxOB1k=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=otgL9jRvOESCNyHjNtZm+J5t8WLAoojdxsYTjAcRtPJuJwCaso8ca7xO3c2CA4ot+VIPUAVJjN7pZC7jSO/GbVpHIiRJow//VHeFHXXWk3HUG1h1wlSqiEIfI0qdH0/htMqJVinZYBUjpGzHLoE38Rv9mEfBBNomw0dIqrhmK64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.216])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4VqBBK2sS0z6K9F7;
-	Wed, 29 May 2024 22:11:05 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 29D78140A78;
-	Wed, 29 May 2024 22:12:06 +0800 (CST)
-Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Wed, 29 May
- 2024 15:12:05 +0100
-Date: Wed, 29 May 2024 15:12:04 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Julien Stephan <jstephan@baylibre.com>
-CC: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
-	<linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Nuno Sa
-	<nuno.sa@analog.com>
-Subject: Re: [PATCH v2] driver: iio: add missing checks on iio_info's
- callback access
-Message-ID: <20240529151204.00001293@Huawei.com>
-In-Reply-To: <CAEHHSvZFfV9mMjnGprqfU-NyCFCdkTLCmfy8K6Ey83-Yg_wA6A@mail.gmail.com>
-References: <20240529-iio-core-fix-segfault-v2-1-7b5a5fa6853f@baylibre.com>
-	<20240529130458.000049e6@Huawei.com>
-	<CAEHHSvZFfV9mMjnGprqfU-NyCFCdkTLCmfy8K6Ey83-Yg_wA6A@mail.gmail.com>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1716993169; c=relaxed/simple;
+	bh=li4ZbxG2F4FGjel82rPqgESS9j5jdY8puT5M++X2kzs=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=QTxU4v/b+hFveBXvLiZCunqjRx4ONNJzUeSOjuOgDg8HZJRnwcm21CQdTVICEDHOtSocf9VU1ORdppiKqejzbUeq2dmChx6Ktos6RpR3PIMY8xN4azsKLfPAKOV5iPcm7IsiqZ2wcO2+MfqVddoXIF8PkBKdf9wo2NGlWc6Y4dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xUIgsqKA; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a6265d3ba8fso202948166b.0
+        for <linux-iio@vger.kernel.org>; Wed, 29 May 2024 07:32:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1716993165; x=1717597965; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GL+ZXu8YsVg8veqNeDMZZjWT6LtrFbHYU/tEpop01gE=;
+        b=xUIgsqKA4gwS6IlCcqRCDws750HblDaRb5uS1D8m4Uv2bLD3NYQhVeIxMpg+l9IWeK
+         3dl3aaL0AS+1HrSJGPmeOMyzUrhawEwmg8OIvB2PgpqNta+QanLTQmtfZLD0PbUN/hzd
+         1nmT7xcbk9PthQ5vqGcU2H1gVdxkc6P+oVdQa8SVyJkBF2uda+1+iC0bQ5PUdVRXEgm3
+         X+g7lySFmZuQJvKZf62r+rARCDo2ppCkNbZMgmvxjLVP/lv/Rpb6WW3jQZSCBRdo0hVE
+         pV3HU6TnMt06ZCMYHEdwUZNiR2adMD1p75eEeORrcQBp4OnXu8YlFPOei2vvegtd9sNV
+         LeLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716993165; x=1717597965;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GL+ZXu8YsVg8veqNeDMZZjWT6LtrFbHYU/tEpop01gE=;
+        b=Rx1Ab1ckQ+gbDC1NhwQX+vUGS+wCcfJTIVFM0B/iGK04af974ilNpQiB2yH7Il6wVl
+         q0RIcfAuboHvQz8gj1J3j9ZL1s57RxuQxxGdkdrQhzEqNHs+myhk+Sgc2r5GX3JasUBR
+         HBpprn3O+e31OV4S7/5D3Znd40ghybybZ2R4EA985HKWUGbxcbF61b9/9kgcexHgw792
+         pJGL3EuKPn0gh6R23oGLREPQx+vc+rqdCm4l+M1dwA5U7NQG52WxAiGqSruudk+Yli4E
+         tq2VU30Okr2FVOkiDM7r21aCq3z7rBllBRjAbdslZtHP52sCYphzFNQFiOyWpTXGsgj7
+         qlzg==
+X-Forwarded-Encrypted: i=1; AJvYcCUZGHI1g5YOhzRt1ZLpPHYE1CGV8QrbhozPRXGwQJY0ihNRLutFV0KvtTdqMItm0qVvIvyCNfaVv/mvM5UTrYsUiWSi0KB2VyJU
+X-Gm-Message-State: AOJu0YyfUntItsk9JGe5XWEJidkUCGt7qg1U2+fSQC+SCPtiVw2R2YFg
+	mfyO7AmpQkWgt51KMiLwTDY37OEFmiC36bdtjaXuHEF/UJz0z5yl4KejxzO4fRc=
+X-Google-Smtp-Source: AGHT+IFHKZcI8vnShZhzgKqN73KpOv8IjqZ877BnV4ShkqFBb+Deu4xUihuipUqnmdso1P98gLeYAA==
+X-Received: by 2002:a17:906:dff9:b0:a5a:5bd3:9f0 with SMTP id a640c23a62f3a-a62641df7b1mr987106666b.24.1716993164975;
+        Wed, 29 May 2024 07:32:44 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626cc4f465sm717035366b.120.2024.05.29.07.32.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 May 2024 07:32:44 -0700 (PDT)
+Date: Wed, 29 May 2024 17:32:40 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: oe-kbuild@lists.linux.dev,
+	Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
+	linux-kernel@vger.kernel.org, jic23@kernel.org,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+	robh@kernel.org, nuno.sa@analog.com
+Cc: lkp@intel.com, oe-kbuild-all@lists.linux.dev,
+	Ramona Gradinariu <ramona.bolboaca13@gmail.com>
+Subject: Re: [PATCH v5 9/9] drivers: iio: imu: Add support for adis1657x
+ family
+Message-ID: <ff870fa7-436c-4ab1-9e8b-a5efcdd28c29@moroto.mountain>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240527142618.275897-10-ramona.bolboaca13@gmail.com>
 
-On Wed, 29 May 2024 15:10:42 +0200
-Julien Stephan <jstephan@baylibre.com> wrote:
+Hi Ramona,
 
-> Le mer. 29 mai 2024 =E0 14:05, Jonathan Cameron
-> <Jonathan.Cameron@huawei.com> a =E9crit :
-> >
-> > On Wed, 29 May 2024 13:55:52 +0200
-> > Julien Stephan <jstephan@baylibre.com> wrote:
-> > =20
-> > > Some callbacks from iio_info structure are accessed without any check=
-, so
-> > > if a driver doesn't implement them trying to access the corresponding
-> > > sysfs entries produce a kernel oops such as:
-> > >
-> > > [ 2203.527791] Unable to handle kernel NULL pointer dereference at vi=
-rtual address 00000000 when execute
-> > > [...]
-> > > [ 2203.783416] Call trace:
-> > > [ 2203.783429]  iio_read_channel_info_avail from dev_attr_show+0x18/0=
-x48
-> > > [ 2203.789807]  dev_attr_show from sysfs_kf_seq_show+0x90/0x120
-> > > [ 2203.794181]  sysfs_kf_seq_show from seq_read_iter+0xd0/0x4e4
-> > > [ 2203.798555]  seq_read_iter from vfs_read+0x238/0x2a0
-> > > [ 2203.802236]  vfs_read from ksys_read+0xa4/0xd4
-> > > [ 2203.805385]  ksys_read from ret_fast_syscall+0x0/0x54
-> > > [ 2203.809135] Exception stack(0xe0badfa8 to 0xe0badff0)
-> > > [ 2203.812880] dfa0:                   00000003 b6f10f80 00000003 b6e=
-ab000 00020000 00000000
-> > > [ 2203.819746] dfc0: 00000003 b6f10f80 7ff00000 00000003 00000003 000=
-00000 00020000 00000000
-> > > [ 2203.826619] dfe0: b6e1bc88 bed80958 b6e1bc94 b6e1bcb0
-> > > [ 2203.830363] Code: bad PC value
-> > > [ 2203.832695] ---[ end trace 0000000000000000 ]---
-> > >
-> > > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> > > Signed-off-by: Julien Stephan <jstephan@baylibre.com> =20
-> >
-> > How bad would a registration time check look?
-> > I'd rather catch this early than have drivers with missing hooks
-> > that we don't notice because no one pokes the file. =20
->=20
-> Hi Jonathan,
->=20
-> Do you mean something like that (as it is done for ext_info for example) :
->=20
-> ret =3D __iio_add_chan_devattr(iio_chan_info_postfix[i],
->                  chan,
-> -                &iio_read_channel_info,
-> -                &iio_write_channel_info,
-> +                indio_dev->info->read_raw ?
-> +                    &iio_read_channel_info : NULL,
+kernel test robot noticed the following build warnings:
 
-Doesn't work because of the read_raw_multi callback, but otherwise
-this does improve our permissions handling a little at least.
-It 'might' be considered an ABI change though :(
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> +                indio_dev->info->write_raw ?
-> +                    &iio_write_channel_info : NULL,
->                  i,
->                  shared_by,
->                  &indio_dev->dev,
->                  NULL,
->                  &iio_dev_opaque->channel_attr_list);
->=20
-> Or do you want to check even before and do not create the  sysfs
-> entry if there is no callback registered by the driver?
+url:    https://github.com/intel-lab-lkp/linux/commits/Ramona-Gradinariu/dt-bindings-iio-imu-Add-ADIS16501-compatibles/20240527-230203
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/20240527142618.275897-10-ramona.bolboaca13%40gmail.com
+patch subject: [PATCH v5 9/9] drivers: iio: imu: Add support for adis1657x family
+config: x86_64-randconfig-161-20240528 (https://download.01.org/0day-ci/archive/20240528/202405281539.EXGy0dhk-lkp@intel.com/config)
+compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
 
-I was thinking a much more stupid option of a missing read_raw
-and read_raw_multi + anything in the info_masks pretty much
-indicates a bug.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+| Closes: https://lore.kernel.org/r/202405281539.EXGy0dhk-lkp@intel.com/
 
-I don't think we have any 'write only' attributes
+smatch warnings:
+drivers/iio/imu/adis16475.c:1608 adis16475_push_single_sample() warn: missing error code? 'ret'
 
-Similar for read_event_config, though write_event_config is
-trickier as we 'might' one day have a device where the events
-are all fixed value and always on (so read only).
+vim +/ret +1608 drivers/iio/imu/adis16475.c
 
-Perhaps what you have here is the simplest option as the exact
-rules for what callbacks are provided area bit messy so checking
-at use is fine.
+c49e2871e50119 Ramona Gradinariu 2024-05-27  1577  static int adis16475_push_single_sample(struct iio_poll_func *pf)
+fff7352bf7a3ce Nuno Sá           2020-04-13  1578  {
+fff7352bf7a3ce Nuno Sá           2020-04-13  1579  	struct iio_dev *indio_dev = pf->indio_dev;
+fff7352bf7a3ce Nuno Sá           2020-04-13  1580  	struct adis16475 *st = iio_priv(indio_dev);
+fff7352bf7a3ce Nuno Sá           2020-04-13  1581  	struct adis *adis = &st->adis;
+8f6bc87d67c030 Ramona Bolboaca   2023-08-08  1582  	int ret, bit, buff_offset = 0, i = 0;
+fff7352bf7a3ce Nuno Sá           2020-04-13  1583  	__be16 *buffer;
+fff7352bf7a3ce Nuno Sá           2020-04-13  1584  	u16 crc;
+fff7352bf7a3ce Nuno Sá           2020-04-13  1585  	bool valid;
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1586  	u8 crc_offset = 9;
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1587  	u16 burst_size = ADIS16475_BURST_MAX_DATA;
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1588  	u16 start_idx = (st->info->flags & ADIS16475_HAS_TIMESTAMP32) ? 2 : 0;
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1589  
+fff7352bf7a3ce Nuno Sá           2020-04-13  1590  	/* offset until the first element after gyro and accel */
+fff7352bf7a3ce Nuno Sá           2020-04-13  1591  	const u8 offset = st->burst32 ? 13 : 7;
+fff7352bf7a3ce Nuno Sá           2020-04-13  1592  
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1593  	if (st->burst32) {
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1594  		crc_offset = (st->info->flags & ADIS16475_HAS_TIMESTAMP32) ? 16 : 15;
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1595  		burst_size = adis->data->burst_max_len;
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1596  	}
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1597  
+fff7352bf7a3ce Nuno Sá           2020-04-13  1598  	ret = spi_sync(adis->spi, &adis->msg);
+fff7352bf7a3ce Nuno Sá           2020-04-13  1599  	if (ret)
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1600  		return ret;
+fff7352bf7a3ce Nuno Sá           2020-04-13  1601  
+fff7352bf7a3ce Nuno Sá           2020-04-13  1602  	buffer = adis->buffer;
+fff7352bf7a3ce Nuno Sá           2020-04-13  1603  
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1604  	crc = be16_to_cpu(buffer[crc_offset]);
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1605  	valid = adis16475_validate_crc(adis->buffer, crc, burst_size, start_idx);
+fff7352bf7a3ce Nuno Sá           2020-04-13  1606  	if (!valid) {
+fff7352bf7a3ce Nuno Sá           2020-04-13  1607  		dev_err(&adis->spi->dev, "Invalid crc\n");
+7f174ee4adeb12 Ramona Gradinariu 2024-05-27 @1608  		return ret;
+                                                                ^^^^^^^^^^
+return -EINVAL
 
-However I'd like to see some scattered use of local variables like
-in inkern.c
-struct iio_info *info =3D chan->indio_dev->info;
-to reduce the long lines.
+fff7352bf7a3ce Nuno Sá           2020-04-13  1609  	}
+fff7352bf7a3ce Nuno Sá           2020-04-13  1610  
+fff7352bf7a3ce Nuno Sá           2020-04-13  1611  	for_each_set_bit(bit, indio_dev->active_scan_mask,
+fff7352bf7a3ce Nuno Sá           2020-04-13  1612  			 indio_dev->masklength) {
+fff7352bf7a3ce Nuno Sá           2020-04-13  1613  		/*
+fff7352bf7a3ce Nuno Sá           2020-04-13  1614  		 * When burst mode is used, system flags is the first data
+fff7352bf7a3ce Nuno Sá           2020-04-13  1615  		 * channel in the sequence, but the scan index is 7.
+fff7352bf7a3ce Nuno Sá           2020-04-13  1616  		 */
 
-
->=20
-> Julien
->=20
-> >
-> > The inkern ones are good though.
-> >
-> > Jonathan
-> > =20
-> > > ---
-> > > Changes in v2:
-> > > - crop dmesg log to show only pertinent info and reduce commit message
-> > > - Link to v1: https://lore.kernel.org/r/20240529-iio-core-fix-segfaul=
-t-v1-1-7ff1ba881d38@baylibre.com
-> > > ---
-> > >  drivers/iio/industrialio-core.c  |  7 ++++++-
-> > >  drivers/iio/industrialio-event.c |  9 +++++++++
-> > >  drivers/iio/inkern.c             | 16 +++++++++++-----
-> > >  3 files changed, 26 insertions(+), 6 deletions(-)
-> > >
-> > > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrial=
-io-core.c
-> > > index fa7cc051b4c4..2f185b386949 100644
-> > > --- a/drivers/iio/industrialio-core.c
-> > > +++ b/drivers/iio/industrialio-core.c
-> > > @@ -758,9 +758,11 @@ static ssize_t iio_read_channel_info(struct devi=
-ce *dev,
-> > >                                                       INDIO_MAX_RAW_E=
-LEMENTS,
-> > >                                                       vals, &val_len,
-> > >                                                       this_attr->addr=
-ess);
-> > > -     else
-> > > +     else if (indio_dev->info->read_raw)
-> > >               ret =3D indio_dev->info->read_raw(indio_dev, this_attr-=
->c,
-> > >                                   &vals[0], &vals[1], this_attr->addr=
-ess);
-> > > +     else
-> > > +             return -EINVAL;
-> > >
-> > >       if (ret < 0)
-> > >               return ret;
-> > > @@ -842,6 +844,9 @@ static ssize_t iio_read_channel_info_avail(struct=
- device *dev,
-> > >       int length;
-> > >       int type;
-> > >
-> > > +     if (!indio_dev->info->read_avail)
-> > > +             return -EINVAL;
-> > > +
-> > >       ret =3D indio_dev->info->read_avail(indio_dev, this_attr->c,
-> > >                                         &vals, &type, &length,
-> > >                                         this_attr->address);
-> > > diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industria=
-lio-event.c
-> > > index 910c1f14abd5..a64f8fbac597 100644
-> > > --- a/drivers/iio/industrialio-event.c
-> > > +++ b/drivers/iio/industrialio-event.c
-> > > @@ -285,6 +285,9 @@ static ssize_t iio_ev_state_store(struct device *=
-dev,
-> > >       if (ret < 0)
-> > >               return ret;
-> > >
-> > > +     if (!indio_dev->info->write_event_config)
-> > > +             return -EINVAL;
-> > > +
-> > >       ret =3D indio_dev->info->write_event_config(indio_dev,
-> > >               this_attr->c, iio_ev_attr_type(this_attr),
-> > >               iio_ev_attr_dir(this_attr), val);
-> > > @@ -300,6 +303,9 @@ static ssize_t iio_ev_state_show(struct device *d=
-ev,
-> > >       struct iio_dev_attr *this_attr =3D to_iio_dev_attr(attr);
-> > >       int val;
-> > >
-> > > +     if (!indio_dev->info->read_event_config)
-> > > +             return -EINVAL;
-> > > +
-> > >       val =3D indio_dev->info->read_event_config(indio_dev,
-> > >               this_attr->c, iio_ev_attr_type(this_attr),
-> > >               iio_ev_attr_dir(this_attr));
-> > > @@ -318,6 +324,9 @@ static ssize_t iio_ev_value_show(struct device *d=
-ev,
-> > >       int val, val2, val_arr[2];
-> > >       int ret;
-> > >
-> > > +     if (!indio_dev->info->read_event_value)
-> > > +             return -EINVAL;
-> > > +
-> > >       ret =3D indio_dev->info->read_event_value(indio_dev,
-> > >               this_attr->c, iio_ev_attr_type(this_attr),
-> > >               iio_ev_attr_dir(this_attr), iio_ev_attr_info(this_attr),
-> > > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> > > index 52d773261828..74f87f6ac390 100644
-> > > --- a/drivers/iio/inkern.c
-> > > +++ b/drivers/iio/inkern.c
-> > > @@ -560,9 +560,11 @@ static int iio_channel_read(struct iio_channel *=
-chan, int *val, int *val2,
-> > >                                       vals, &val_len, info);
-> > >               *val =3D vals[0];
-> > >               *val2 =3D vals[1];
-> > > -     } else {
-> > > +     } else if (chan->indio_dev->info->read_raw) {
-> > >               ret =3D chan->indio_dev->info->read_raw(chan->indio_dev,
-> > >                                       chan->channel, val, val2, info);
-> > > +     } else {
-> > > +             return -EINVAL;
-> > >       }
-> > >
-> > >       return ret;
-> > > @@ -753,8 +755,10 @@ static int iio_channel_read_avail(struct iio_cha=
-nnel *chan,
-> > >       if (!iio_channel_has_available(chan->channel, info))
-> > >               return -EINVAL;
-> > >
-> > > -     return chan->indio_dev->info->read_avail(chan->indio_dev, chan-=
->channel,
-> > > -                                              vals, type, length, in=
-fo);
-> > > +     if (chan->indio_dev->info->read_avail)
-> > > +             return chan->indio_dev->info->read_avail(chan->indio_de=
-v, chan->channel,
-> > > +                                                      vals, type, le=
-ngth, info);
-> > > +     return -EINVAL;
-> > >  }
-> > >
-> > >  int iio_read_avail_channel_attribute(struct iio_channel *chan,
-> > > @@ -917,8 +921,10 @@ EXPORT_SYMBOL_GPL(iio_get_channel_type);
-> > >  static int iio_channel_write(struct iio_channel *chan, int val, int =
-val2,
-> > >                            enum iio_chan_info_enum info)
-> > >  {
-> > > -     return chan->indio_dev->info->write_raw(chan->indio_dev,
-> > > -                                             chan->channel, val, val=
-2, info);
-> > > +     if (chan->indio_dev->info->write_raw)
-> > > +             return chan->indio_dev->info->write_raw(chan->indio_dev,
-> > > +                                                     chan->channel, =
-val, val2, info);
-> > > +     return -EINVAL;
-> > >  }
-> > >
-> > >  int iio_write_channel_attribute(struct iio_channel *chan, int val, i=
-nt val2,
-> > >
-> > > ---
-> > > base-commit: 409b6d632f5078f3ae1018b6e43c32f2e12f6736
-> > > change-id: 20240528-iio-core-fix-segfault-aa74be7eee4a
-> > >
-> > > Best regards, =20
-> > =20
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
 

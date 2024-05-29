@@ -1,182 +1,295 @@
-Return-Path: <linux-iio+bounces-5442-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5443-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA0098D36B2
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 14:49:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4928D3730
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 15:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F9D1F28639
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 12:49:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03AF12877E2
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 13:11:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85FD23FEC;
-	Wed, 29 May 2024 12:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA8412B77;
+	Wed, 29 May 2024 13:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="URZmtme1"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wrNHQVYu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B18DADDA6;
-	Wed, 29 May 2024 12:49:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BB1E542
+	for <linux-iio@vger.kernel.org>; Wed, 29 May 2024 13:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716986956; cv=none; b=V/lZ17FZcu5vlvge5RYtDdUwrIvW3hsySNriSu9aEIlvR9v+cVxKTehlyQr01HlN8SsmQ5RL3pMcA9jUq8wG4By3Vhkd5+Yzz0Ooa2xJzsZOmeAnge59hOmIP6TXHHE8KzQ0xc8H0i8kWIExypGxy+J7oOPVAZQx96DUuPJ7XoU=
+	t=1716988259; cv=none; b=sNB0K1ofjhY92FK2/lU/ZwhJhAW92xhnozoFSpiyrA5Eeo9KRxNXjRWYvs8NT+yNbTFD3tXAjf6nUobpVAdzAqS4Vz1m0LvaduJWmLEAWh9Pwitz1Y4IZfCqL5nSBILrYwGlPoQMRMBE3ft2UlasJrITyVE1vrpqL5Nxfwsz0R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716986956; c=relaxed/simple;
-	bh=DcKxVZZV+EgA4m/SNpu5gXfJDOpxyV8oN+5zhuZvvR4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ua+q1OCfzmsORxAAxy3nfR3abIvBGCCVtq150gkJRMqiOVBpX01+vU9NAWzbbXBT0iF43yXzLkZd2Amy/E9+gFyk/XRgDB+3xUNT53+FFt2rmbKA5l1nFKqe6mgMdhaR+5q86UKuJk3Yc7gsEVRAcDHyHLwdeWeDxz09L/JhYlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=URZmtme1; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a6519c6ec7bso73724166b.1;
-        Wed, 29 May 2024 05:49:14 -0700 (PDT)
+	s=arc-20240116; t=1716988259; c=relaxed/simple;
+	bh=27tuP5wl143oePuzHxzCglDI6RFchxnmMb1lpfU7CoE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=HNn6BoanKlSXzmEDnfKEiqeXTPN9ltV8us3QAhyroQ+4xKTkoERw3bi7eKYZhGFuz8+miXwTUC8l3yHhsLSXpp5JsBxNIg8sDs2w0pnF5kLrJuheSNno4DWnGW/zBL07AxlLMZZwgSg/Ajw4v+ZkUlDAPzR/9XKhFqhVM9Jf38c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wrNHQVYu; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a635a74e0deso161198166b.0
+        for <linux-iio@vger.kernel.org>; Wed, 29 May 2024 06:10:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716986953; x=1717591753; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hxm5RCkT6Z8eOTgdAgsYs+Y3bbauIPRrHzupKWf9eIw=;
-        b=URZmtme1Zos//ogIf7XYzHXfOjFqfAxBOeMW4kvd8txWHzuA5g1lGxKvQ6TFJYSFps
-         K2IZEpqcE+CYqz5HeKKXHd1+KPO6XJKk+kRKN3eDYulaKHumxdJo/zq5HcSatRYM4FEd
-         1asPYGZh+vnsVodMtOOsIwCrCZbc7E6tGj9pX4ntDJdf/bcNXjyaR6DgngTnT4/HqSLd
-         F05+loohR63YRXvIcqViRAa2+Dr+pCGU8EyS+p/niSuYgGI3Pkf2PwJrjhD/B6sxB5Ls
-         DA32wKF9y+jxt0DTetbnOa1lE7YhmYSQoF86tc/qvSNe32EOXE4UjVt52fEIZpCuhMgt
-         SQjQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1716988254; x=1717593054; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=azRDT6gpTMZiud8t7xJbr3kGPCFGLs0Glt2PXkWkLkE=;
+        b=wrNHQVYu4LB4eygkJBVjb90ryHlDJ3O8BJs6maUhaA4/kgeZEL9zqvCKrFaFvbZgK1
+         yDhB8shkMDCdRWN3Jqhd4KLoYE9TvrFTOCl8k3ZKaTPpu1QHMiLM83ekEs/QqEz25NKh
+         0thSDh+h82RYblJAwoCKKtdS28Kc8iT5wSJS63+8x8hoQ0R1qBDZJ27noc2Qu3ptZ6T+
+         I+YLs2opESyRECfUbMBCvTKGTjp7PoQE78UA3ctDMIwKXaKxGVfCFlFajlAkMzWORjYr
+         uxYIZFkO3TbvUVsWR6ecYc2npPODoqyTjsi7Wna9w0/IqHBmauo0f9Jzwapnc8RSMYoC
+         ER3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716986953; x=1717591753;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=hxm5RCkT6Z8eOTgdAgsYs+Y3bbauIPRrHzupKWf9eIw=;
-        b=BOhmv/pIeGs+JKP4kxCqpMQaevir11fT04LTZvShC9SRdX/hy7OpYy+vRfgEf7+VHR
-         OnLuN46YUKVOsn3i+0OEdDscr9JVm2Q9cJ0nygVH6/s3DecmbJrAzZMVXsHgYBvmMcao
-         0fFAWgPadLgWpZ9sZQBuj+mcrKBTl/3hnAiy+fQKhcuYzSKXIPrCGA/zh7oGlicONka6
-         pX5UW/rMfK8IA1W2L+h7itOVATxS3nKidFUXpKFsiI8K5NvTs5jS7JdgpBpbz2fG8cZT
-         9Y/IuUrdjnmrVCzdJfcQVpa+5NGn+y9B6jSgE7tUbZwjg+VqBGUsmjo/qC4KondUUVTR
-         SRWA==
-X-Forwarded-Encrypted: i=1; AJvYcCUnupsFz8DBCspPkHd9ZN/ziOtgNbM3Ov1bCAGhUwaCdngZBd1sotvxhwNMTL3Tn1+oStQuvdbXAeEoJgvY/szQmEbRqXMD/jxMdDg5X6EpbphY3IYXC2XGbbwoz0EXTkn6zTakn4nnXZVxIiKGhiKjyWUsyQOl7I8i/QvAGjp/XK+mVg==
-X-Gm-Message-State: AOJu0YyXxu8G4KzlyTNJpmZPKfdFsymn6dSkvX+35REtsFjr9Efy0gt+
-	/D9aG6MPYfrzMq/ZHvUUgsLlle7ZgaCenht0Bvtq7xLuyi3VHhAi
-X-Google-Smtp-Source: AGHT+IHFwpbqkz/8c/KOKh2nJyonvUdwIFcztAvT82b2LrqXwJx/RqdJ2bmL5xtZSfqETojujYeOyw==
-X-Received: by 2002:a17:906:6a24:b0:a63:3e99:6565 with SMTP id a640c23a62f3a-a633e996aacmr661119566b.23.1716986952948;
-        Wed, 29 May 2024 05:49:12 -0700 (PDT)
-Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626c987cf8sm716081666b.94.2024.05.29.05.49.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 05:49:12 -0700 (PDT)
-Message-ID: <4b704b553282c0689dfef714c49ba97a33198898.camel@gmail.com>
-Subject: Re: [PATCH v3 3/6] iio: adc: ad7173: refactor ain and vref selection
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: dumitru.ceclan@analog.com
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- David Lechner <dlechner@baylibre.com>,  linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org, Dumitru Ceclan
- <mitrutzceclan@gmail.com>
-Date: Wed, 29 May 2024 14:49:12 +0200
-In-Reply-To: <71452f6882efe6a181d477914488617d28a38e2f.camel@gmail.com>
-References: <20240527-ad4111-v3-0-7e9eddbbd3eb@analog.com>
-	 <20240527-ad4111-v3-3-7e9eddbbd3eb@analog.com>
-	 <71452f6882efe6a181d477914488617d28a38e2f.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
+        d=1e100.net; s=20230601; t=1716988254; x=1717593054;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=azRDT6gpTMZiud8t7xJbr3kGPCFGLs0Glt2PXkWkLkE=;
+        b=Af5UOBwR0dqcR7teWT33DAPjA4s990Tc4JvniZdd7IEl5HSYv1OYUoxSu3osb6/WdK
+         B1dM1AS8zFj8rh3pSEQF1PL+RPeZAq8PPT1VwigwzOZkUgP/oPRuxRBgO5LBspd2m6Sa
+         jvVBc+IXXcJOy7SY1DRZ1n5O/kf+J2DEUHbHu7NHsxWW5jcxkJvqw/JwhXjmOV4us6Hg
+         J+iey6XpLrs3AvDIyphdxInhqYLPOe6b4wSyk12LU3nqbwEbx6dMgP178fruEaOs1jLX
+         CUkwT5cycvIIkkWJNg1b0TiKe9pzStvxajT386WgrrHKahEadGL7JH7V1BQuBh2Vlc6U
+         EmyQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXGu2Xm0UaJ1s2stRFf7WTVTzwHYsxRk0xoS4KYUKtONvZInh/q2ZXEOp1Pjeuke75vWfem+LHVCr8JByejIpo1vGa4gH6Oso9M
+X-Gm-Message-State: AOJu0YyX47rwDR0BDDHbeJHO7WgM1VT/of+gKpASm3SIAkVcRjqU2Orn
+	i1j9Wm/e17UAbE/lCfmN4SYN4ohpkPJ+5y5w2WmCCC+WQ/Btw32hFmqmYf8lzVBMZj6cMnUhLh6
+	AQ2FeYYNanANgAeeptoslHdSHrqJjKKssukcetQ==
+X-Google-Smtp-Source: AGHT+IHA7ognnhG0bvxa1m4QF32kWlCkzx0bjiSWoLlCWaUy6x0QDo83C7OTeOAS/73vId94RFnpGWM0RP/6IJZ1XVE=
+X-Received: by 2002:a17:906:f0d1:b0:a62:80f4:9ef2 with SMTP id
+ a640c23a62f3a-a6280f4a19emr916098366b.71.1716988254571; Wed, 29 May 2024
+ 06:10:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240529-iio-core-fix-segfault-v2-1-7b5a5fa6853f@baylibre.com> <20240529130458.000049e6@Huawei.com>
+In-Reply-To: <20240529130458.000049e6@Huawei.com>
+From: Julien Stephan <jstephan@baylibre.com>
+Date: Wed, 29 May 2024 15:10:42 +0200
+Message-ID: <CAEHHSvZFfV9mMjnGprqfU-NyCFCdkTLCmfy8K6Ey83-Yg_wA6A@mail.gmail.com>
+Subject: Re: [PATCH v2] driver: iio: add missing checks on iio_info's callback access
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2024-05-29 at 14:27 +0200, Nuno S=C3=A1 wrote:
-> On Mon, 2024-05-27 at 20:02 +0300, Dumitru Ceclan via B4 Relay wrote:
-> > From: Dumitru Ceclan <dumitru.ceclan@analog.com>
-> >=20
-> > Move validation of analog inputs and reference voltage selection to
-> > separate functions to reduce the size of the channel config parsing
-> > function and improve readability.
-> >=20
-> > Reviewed-by: David Lechner <dlechner@baylibre.com>
-> > Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Le mer. 29 mai 2024 =C3=A0 14:05, Jonathan Cameron
+<Jonathan.Cameron@huawei.com> a =C3=A9crit :
+>
+> On Wed, 29 May 2024 13:55:52 +0200
+> Julien Stephan <jstephan@baylibre.com> wrote:
+>
+> > Some callbacks from iio_info structure are accessed without any check, =
+so
+> > if a driver doesn't implement them trying to access the corresponding
+> > sysfs entries produce a kernel oops such as:
+> >
+> > [ 2203.527791] Unable to handle kernel NULL pointer dereference at virt=
+ual address 00000000 when execute
+> > [...]
+> > [ 2203.783416] Call trace:
+> > [ 2203.783429]  iio_read_channel_info_avail from dev_attr_show+0x18/0x4=
+8
+> > [ 2203.789807]  dev_attr_show from sysfs_kf_seq_show+0x90/0x120
+> > [ 2203.794181]  sysfs_kf_seq_show from seq_read_iter+0xd0/0x4e4
+> > [ 2203.798555]  seq_read_iter from vfs_read+0x238/0x2a0
+> > [ 2203.802236]  vfs_read from ksys_read+0xa4/0xd4
+> > [ 2203.805385]  ksys_read from ret_fast_syscall+0x0/0x54
+> > [ 2203.809135] Exception stack(0xe0badfa8 to 0xe0badff0)
+> > [ 2203.812880] dfa0:                   00000003 b6f10f80 00000003 b6eab=
+000 00020000 00000000
+> > [ 2203.819746] dfc0: 00000003 b6f10f80 7ff00000 00000003 00000003 00000=
+000 00020000 00000000
+> > [ 2203.826619] dfe0: b6e1bc88 bed80958 b6e1bc94 b6e1bcb0
+> > [ 2203.830363] Code: bad PC value
+> > [ 2203.832695] ---[ end trace 0000000000000000 ]---
+> >
+> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > Signed-off-by: Julien Stephan <jstephan@baylibre.com>
+>
+> How bad would a registration time check look?
+> I'd rather catch this early than have drivers with missing hooks
+> that we don't notice because no one pokes the file.
+
+Hi Jonathan,
+
+Do you mean something like that (as it is done for ext_info for example) :
+
+ret =3D __iio_add_chan_devattr(iio_chan_info_postfix[i],
+                 chan,
+-                &iio_read_channel_info,
+-                &iio_write_channel_info,
++                indio_dev->info->read_raw ?
++                    &iio_read_channel_info : NULL,
++                indio_dev->info->write_raw ?
++                    &iio_write_channel_info : NULL,
+                 i,
+                 shared_by,
+                 &indio_dev->dev,
+                 NULL,
+                 &iio_dev_opaque->channel_attr_list);
+
+Or do you want to check even before and do not create the  sysfs
+entry if there is no callback registered by the driver?
+
+Julien
+
+>
+> The inkern ones are good though.
+>
+> Jonathan
+>
 > > ---
-> > =C2=A0drivers/iio/adc/ad7173.c | 62 ++++++++++++++++++++++++++++++++++-=
--------------
-> > =C2=A01 file changed, 44 insertions(+), 18 deletions(-)
-> >=20
-> > diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-> > index 9e507e2c66f0..8a53821c8e58 100644
-> > --- a/drivers/iio/adc/ad7173.c
-> > +++ b/drivers/iio/adc/ad7173.c
-> > @@ -906,6 +906,44 @@ static int ad7173_register_clk_provider(struct iio=
-_dev
-> > *indio_dev)
-> > =C2=A0					=C2=A0=C2=A0 &st->int_clk_hw);
-> > =C2=A0}
-> > =C2=A0
-> > +static int ad7173_validate_voltage_ain_inputs(struct ad7173_state *st,
-> > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int ain[2])
-
-Pass the pointer and size of it... Also, it should be made 'const'
-
-> > +{
-> > +	struct device *dev =3D &st->sd.spi->dev;
+> > Changes in v2:
+> > - crop dmesg log to show only pertinent info and reduce commit message
+> > - Link to v1: https://lore.kernel.org/r/20240529-iio-core-fix-segfault-=
+v1-1-7ff1ba881d38@baylibre.com
+> > ---
+> >  drivers/iio/industrialio-core.c  |  7 ++++++-
+> >  drivers/iio/industrialio-event.c |  9 +++++++++
+> >  drivers/iio/inkern.c             | 16 +++++++++++-----
+> >  3 files changed, 26 insertions(+), 6 deletions(-)
+> >
+> > diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio=
+-core.c
+> > index fa7cc051b4c4..2f185b386949 100644
+> > --- a/drivers/iio/industrialio-core.c
+> > +++ b/drivers/iio/industrialio-core.c
+> > @@ -758,9 +758,11 @@ static ssize_t iio_read_channel_info(struct device=
+ *dev,
+> >                                                       INDIO_MAX_RAW_ELE=
+MENTS,
+> >                                                       vals, &val_len,
+> >                                                       this_attr->addres=
+s);
+> > -     else
+> > +     else if (indio_dev->info->read_raw)
+> >               ret =3D indio_dev->info->read_raw(indio_dev, this_attr->c=
+,
+> >                                   &vals[0], &vals[1], this_attr->addres=
+s);
+> > +     else
+> > +             return -EINVAL;
+> >
+> >       if (ret < 0)
+> >               return ret;
+> > @@ -842,6 +844,9 @@ static ssize_t iio_read_channel_info_avail(struct d=
+evice *dev,
+> >       int length;
+> >       int type;
+> >
+> > +     if (!indio_dev->info->read_avail)
+> > +             return -EINVAL;
 > > +
-> > +	for (int i =3D 0; i < 2; i++) {
-
-Use the size in here... At the very least, ARRAY_SIZE() if you keep it like=
- this.
-
-> > +		if (ain[i] < st->info->num_inputs)
-> > +			continue;
+> >       ret =3D indio_dev->info->read_avail(indio_dev, this_attr->c,
+> >                                         &vals, &type, &length,
+> >                                         this_attr->address);
+> > diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industriali=
+o-event.c
+> > index 910c1f14abd5..a64f8fbac597 100644
+> > --- a/drivers/iio/industrialio-event.c
+> > +++ b/drivers/iio/industrialio-event.c
+> > @@ -285,6 +285,9 @@ static ssize_t iio_ev_state_store(struct device *de=
+v,
+> >       if (ret < 0)
+> >               return ret;
+> >
+> > +     if (!indio_dev->info->write_event_config)
+> > +             return -EINVAL;
 > > +
-> > +		return dev_err_probe(dev, -EINVAL,
-> > +			"Input pin number out of range for pair (%d %d).\n",
-> > +			ain[0], ain[1]);
-> > +	}
+> >       ret =3D indio_dev->info->write_event_config(indio_dev,
+> >               this_attr->c, iio_ev_attr_type(this_attr),
+> >               iio_ev_attr_dir(this_attr), val);
+> > @@ -300,6 +303,9 @@ static ssize_t iio_ev_state_show(struct device *dev=
+,
+> >       struct iio_dev_attr *this_attr =3D to_iio_dev_attr(attr);
+> >       int val;
+> >
+> > +     if (!indio_dev->info->read_event_config)
+> > +             return -EINVAL;
 > > +
-> > +	return 0;
-> > +}
+> >       val =3D indio_dev->info->read_event_config(indio_dev,
+> >               this_attr->c, iio_ev_attr_type(this_attr),
+> >               iio_ev_attr_dir(this_attr));
+> > @@ -318,6 +324,9 @@ static ssize_t iio_ev_value_show(struct device *dev=
+,
+> >       int val, val2, val_arr[2];
+> >       int ret;
+> >
+> > +     if (!indio_dev->info->read_event_value)
+> > +             return -EINVAL;
 > > +
-> > +static int ad7173_validate_reference(struct ad7173_state *st, int ref_=
-sel)
-> > +{
-> > +	struct device *dev =3D &st->sd.spi->dev;
-> > +	int ret;
-> > +
-> > +	if (ref_sel =3D=3D AD7173_SETUP_REF_SEL_INT_REF && !st->info->has_int=
-_ref)
-> > +		return dev_err_probe(dev, -EINVAL,
-> > +			"Internal reference is not available on current
-> > model.\n");
-> > +
-> > +	if (ref_sel =3D=3D AD7173_SETUP_REF_SEL_EXT_REF2 && !st->info->has_re=
-f2)
-> > +		return dev_err_probe(dev, -EINVAL,
-> > +			"External reference 2 is not available on current
-> > model.\n");
-> > +
-> > +	ret =3D ad7173_get_ref_voltage_milli(st, ref_sel);
-> > +	if (ret < 0)
-> > +		return dev_err_probe(dev, ret, "Cannot use reference %u\n",
-> > +				=C2=A0=C2=A0=C2=A0=C2=A0 ref_sel);
-> > +
-> > +	return 0;
->=20
-> If you need a v4, I would just 'return ad7173_get_ref_voltage_milli(...)'=
-. Any
-> error
-> log needed should be done inside ad7173_get_ref_voltage_milli(). Anyways:
->=20
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
->=20
-
-In fact, no tag :). Just realized the above in another patch..
-
-- Nuno S=C3=A1
-
+> >       ret =3D indio_dev->info->read_event_value(indio_dev,
+> >               this_attr->c, iio_ev_attr_type(this_attr),
+> >               iio_ev_attr_dir(this_attr), iio_ev_attr_info(this_attr),
+> > diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
+> > index 52d773261828..74f87f6ac390 100644
+> > --- a/drivers/iio/inkern.c
+> > +++ b/drivers/iio/inkern.c
+> > @@ -560,9 +560,11 @@ static int iio_channel_read(struct iio_channel *ch=
+an, int *val, int *val2,
+> >                                       vals, &val_len, info);
+> >               *val =3D vals[0];
+> >               *val2 =3D vals[1];
+> > -     } else {
+> > +     } else if (chan->indio_dev->info->read_raw) {
+> >               ret =3D chan->indio_dev->info->read_raw(chan->indio_dev,
+> >                                       chan->channel, val, val2, info);
+> > +     } else {
+> > +             return -EINVAL;
+> >       }
+> >
+> >       return ret;
+> > @@ -753,8 +755,10 @@ static int iio_channel_read_avail(struct iio_chann=
+el *chan,
+> >       if (!iio_channel_has_available(chan->channel, info))
+> >               return -EINVAL;
+> >
+> > -     return chan->indio_dev->info->read_avail(chan->indio_dev, chan->c=
+hannel,
+> > -                                              vals, type, length, info=
+);
+> > +     if (chan->indio_dev->info->read_avail)
+> > +             return chan->indio_dev->info->read_avail(chan->indio_dev,=
+ chan->channel,
+> > +                                                      vals, type, leng=
+th, info);
+> > +     return -EINVAL;
+> >  }
+> >
+> >  int iio_read_avail_channel_attribute(struct iio_channel *chan,
+> > @@ -917,8 +921,10 @@ EXPORT_SYMBOL_GPL(iio_get_channel_type);
+> >  static int iio_channel_write(struct iio_channel *chan, int val, int va=
+l2,
+> >                            enum iio_chan_info_enum info)
+> >  {
+> > -     return chan->indio_dev->info->write_raw(chan->indio_dev,
+> > -                                             chan->channel, val, val2,=
+ info);
+> > +     if (chan->indio_dev->info->write_raw)
+> > +             return chan->indio_dev->info->write_raw(chan->indio_dev,
+> > +                                                     chan->channel, va=
+l, val2, info);
+> > +     return -EINVAL;
+> >  }
+> >
+> >  int iio_write_channel_attribute(struct iio_channel *chan, int val, int=
+ val2,
+> >
+> > ---
+> > base-commit: 409b6d632f5078f3ae1018b6e43c32f2e12f6736
+> > change-id: 20240528-iio-core-fix-segfault-aa74be7eee4a
+> >
+> > Best regards,
+>
 

@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-5439-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5440-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D148D365D
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 14:27:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB2328D3667
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 14:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 637C61C21C84
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 12:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2202C1F233C8
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 12:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA54181300;
-	Wed, 29 May 2024 12:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2AA181332;
+	Wed, 29 May 2024 12:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ihyA1DZj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dPaETowN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CF13B295;
-	Wed, 29 May 2024 12:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D3B180A9F;
+	Wed, 29 May 2024 12:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716985670; cv=none; b=lxTQyuGhtJBoEVDCQrzq/f7GhePUia8N2L4nPbN6nZcLL+43oBMjxzQvGox5Q0P9d3xsGGXJZxV9/LAiq9cxGV5MqcXH9upS3YndUyqLGFaLJhzXYQIvq+EpBymMKqnSHl2IacZ8apEza1ced4FkZ9PJBUN5zbVeGRgad9tvIfA=
+	t=1716985762; cv=none; b=jL/HEl1EcI+Xh0DX9ht32a0l3g9+BM0TSBaF2YvsOH/ZTxHbwcQ+pCXTHLvDZH3TvcGLIJOYl1ntoHhH+oqwQuqu5j5Im7MAiBCJ5/ORK024VGXfy1HokBG6ViwZacJhue9L0/q7tSiP7BgeBWf578v05bmAFMjiqNht1FYNvp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716985670; c=relaxed/simple;
-	bh=2Tq8KNkDSL/r4RYS7ksyDoh99l2whRhNO3fn6pVmCAQ=;
+	s=arc-20240116; t=1716985762; c=relaxed/simple;
+	bh=HRqavWZ3zR2Tc6Bkv7cWD2VuSHXu9dJmhx0/DgQVzyg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sQ2q60A9NnAKZieaL+2oYebvXGgN00MdPKSMcx3WV7RSyxs2qqSbfI+v1IhgAOYVArSTFuMBldcxkNm1iih7KMd2tKpAjv8zx9q7rSmvteqE1EMTrVHUSERxdQT4RQGd9W7HJBequtHQb66RDK3Zbxsy0J/SqYbxduCE26PTrbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ihyA1DZj; arc=none smtp.client-ip=209.85.167.48
+	 Content-Type:MIME-Version; b=KCaubsIJSas+X0y1+VKqR8q6xNks3HuWhTVqk7RDw5avarvMNs/SL0yNUPnz2EXtxj2tBFUU/EvPqEyCe5YlFOc1WT9OJCQ0fm6Fz4VET/aBNmboY+zsOIG1MUJS635SdB4/sVTpR7FFIuPu+UmPvMlOxXGvrxIPfaKNPNvh62Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dPaETowN; arc=none smtp.client-ip=209.85.218.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52b79447c58so279521e87.1;
-        Wed, 29 May 2024 05:27:48 -0700 (PDT)
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a59a609dd3fso159407966b.0;
+        Wed, 29 May 2024 05:29:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716985667; x=1717590467; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716985759; x=1717590559; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=PeimGJvmfer6fOyUvMTNsas+IdsraV9cPm9aE+JTB+A=;
-        b=ihyA1DZjmiY8u0Z8wxmTedmb71VFYXaRbp0Opvaxhs+LQVlf+JI62qx2Z0qT7GA0bY
-         FJx7Y8HexdFx0Ia6dlkJupaWIdmOVQpJIkdVaGcRo9Gb6W42hc1N+2sSM7lWi+EuwCdX
-         Oak8kd80VTtDYMwFxtM/Oun8Rw+CGeJBJ5HjLP/B4K4b7riVkAh28MeN5BkYV6AarJ/J
-         C5UkdNjEdY7mPKuoLcIRhTuo69k7rmn6IQXAKH5yLQ7F6eDJjjvxsUjsgXu1VmzYcVQl
-         XvzBZ8dVeCMpazyOgbacN28DTv3zPHJ0UDcilj67LHc4B5RIrgfpJF6vwHGKnlxZd3IX
-         3rmw==
+        bh=axvBrTvxidCklr547uTso4Zf62YA6/gKt7fukdGTu0w=;
+        b=dPaETowNenmnmXPK8ZrhVlpxY7Mx6L5ViM0XrcZG6nWMy6qOYCEsLd5T+E78hqVQJ3
+         VEvOQ0LnB6aHrpTiNTeRvNTTjPoXnZxOkkgAn06djJcx83oYTvvLllACpagS53AiW8lQ
+         0Beh3rXRQLJ0LuHrC7N2OmLX1iLbCo3FqaeiY7MmnOWHUlnieTjWpkcVMIDHWHIrIqkb
+         vBIN8i6g1Q8juKlWKF0Gh1pNnmnB/8CLRjsYrREBHKs3xP/KwCCJTGxnfdAe2jsudBXa
+         zA/4RZA37+tVDRaEKQHkHzBpmyI1Ymx9ZHqtxTJ2KEdXNUPkCVlQyU7liQZ5y80WT23y
+         c8tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716985667; x=1717590467;
+        d=1e100.net; s=20230601; t=1716985759; x=1717590559;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=PeimGJvmfer6fOyUvMTNsas+IdsraV9cPm9aE+JTB+A=;
-        b=qMIJsQbDRg5GphlCfum/E9bqH3iW5T2a+sqF8Nmcp1TTNM7gG45YDmvpd328LpP3AL
-         RPPt1ryH2OKLvruOzonFZl92X7QnF7tlK8T/rCr3sGBacreeyCJCwD5cIzvfwhxQ/WZT
-         B2zvdK3zENUKJuXJtro79GPuIRwlWOYPpgfb8Z71SEPpSthw5YJq383/d9srT7Hqv2CU
-         BtTefOwNLgbl0uUbhCwIz0gOroUMoAYCzlw8DUiALStXQbmmA7yeC1jd3JFQYUmGvbL0
-         I3MusgNO/JCcgE70f1oBOT69Qztfp2MeDRR1sKPQsB6s+0QFVSqQUYCWUuE/3OWjx4a1
-         mfMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXUG2q9WTE6iUYmpXooI1SIyTAFgbv4RJVCzRYQVMG/KbqFxbF6IPrPMWzID4hULnd1vT7C7DfhbdB/K7/eHnJ/gcWHe1YyeRFYWJvEkUUpefoQtuQl8ulyaD5KEHIzD0ADf+6z5g2LF9lNPEFwhJCIaM3pIU/uLKvgoyJXTyA00LTLUw==
-X-Gm-Message-State: AOJu0YwAPqFAQ3fN+ccMr72A3qvPG+rZvba3U56iuohj8VPf/3LbdFLu
-	JcJuuSXu4jwdbn/i8UdznP+hQlPFaAtlP7P8KSfnNOW0glRuj/fL
-X-Google-Smtp-Source: AGHT+IG/SxXQZnV+jg9CyYE9LKyyC/PcXXF3petb+D2XGxuU27/7/M6yyQWFvHsbEy9LLJX4I3CKQg==
-X-Received: by 2002:ac2:4c08:0:b0:521:7846:69d3 with SMTP id 2adb3069b0e04-5296736bb7bmr11593905e87.55.1716985666782;
-        Wed, 29 May 2024 05:27:46 -0700 (PDT)
+        bh=axvBrTvxidCklr547uTso4Zf62YA6/gKt7fukdGTu0w=;
+        b=vhPDgOlHr9Ndry+mwjOSxey5WALTP3/ZNYJ/Etz70DuQRjcT2Ib1ci5C1Zj4rqIiHE
+         Qrno2362DNN7WHJfXZ5TDMCZWViZhMB74E6jHIOaOTMcqZ/nxhB+a2/rJ1BkFMHqfYLK
+         +xmxfKEA+5/1tYM1DjV2AZNApL/jMjVrBVB0WC01Har6z2g5K8B0OY3y/qaGxh/eq6Dr
+         MbUoHVSJ5iLKbxbF3xVtUX3oBb/d5o6FcF/xctAqOlLEU5I0/8s605jK4HlKLekw3dXT
+         Hqd7o13fJR6Yjj69y550Q07Q4gX6FFkji9xXE2Z72bluHfqFDG7NrmAIg11URFf+LkH1
+         Eruw==
+X-Forwarded-Encrypted: i=1; AJvYcCWM2Dr21h8Ehv5UOIQz1uQlgqJLciPGn7qrXVBvO2RaBh3+A3HDeo4zGY+PuWzJbSVmAAwMd78LV1DZyI2I7FldJKwREC0unZOVxlstHzIS5bNZ4HqjPWTfFRR4TvrdU+AQBCju86z2xvE56FUcv6wBTSpSwt/CwBDZ64/7KfM7VRB0lQ==
+X-Gm-Message-State: AOJu0YyllcgoJfXYPvbBbBWOFYS5MDIOslWoM+Xbk7EKsX+wX7kpHjqi
+	s/ktDG2fuBQjikiNH5sYubBimLHeqyqqYlgBDn47MNlb6x6TsT5SgEHbFSLIlFc=
+X-Google-Smtp-Source: AGHT+IEK3ELEy563spSH/XtJFJXgn/U+wUokN3QmoQc7/u2j4B2B4og7zug0R53Ga0bAk+PyiptfLw==
+X-Received: by 2002:a17:907:39c:b0:a65:b36d:d6bb with SMTP id a640c23a62f3a-a65b36ddae2mr50888966b.32.1716985759259;
+        Wed, 29 May 2024 05:29:19 -0700 (PDT)
 Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626cc4f969sm708931866b.101.2024.05.29.05.27.46
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a62bee266a1sm492778766b.159.2024.05.29.05.29.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 05:27:46 -0700 (PDT)
-Message-ID: <71452f6882efe6a181d477914488617d28a38e2f.camel@gmail.com>
-Subject: Re: [PATCH v3 3/6] iio: adc: ad7173: refactor ain and vref selection
+        Wed, 29 May 2024 05:29:19 -0700 (PDT)
+Message-ID: <3b2a1ce579251726a56bdad25bfdfe75bae91c2e.camel@gmail.com>
+Subject: Re: [PATCH v3 4/6] iio: adc: ad7173: add support for special inputs
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: dumitru.ceclan@analog.com
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
@@ -78,10 +78,10 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
  David Lechner <dlechner@baylibre.com>,  linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org, Dumitru Ceclan
  <mitrutzceclan@gmail.com>
-Date: Wed, 29 May 2024 14:27:46 +0200
-In-Reply-To: <20240527-ad4111-v3-3-7e9eddbbd3eb@analog.com>
+Date: Wed, 29 May 2024 14:29:18 +0200
+In-Reply-To: <20240527-ad4111-v3-4-7e9eddbbd3eb@analog.com>
 References: <20240527-ad4111-v3-0-7e9eddbbd3eb@analog.com>
-	 <20240527-ad4111-v3-3-7e9eddbbd3eb@analog.com>
+	 <20240527-ad4111-v3-4-7e9eddbbd3eb@analog.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
@@ -95,76 +95,122 @@ MIME-Version: 1.0
 On Mon, 2024-05-27 at 20:02 +0300, Dumitru Ceclan via B4 Relay wrote:
 > From: Dumitru Ceclan <dumitru.ceclan@analog.com>
 >=20
-> Move validation of analog inputs and reference voltage selection to
-> separate functions to reduce the size of the channel config parsing
-> function and improve readability.
+> =C2=A0Add support for selecting REF+ and REF- inputs on all models.
+> =C2=A0Add support for selecting ((AVDD1 =E2=88=92 AVSS)/5) inputs
+> =C2=A0 on supported models.
 >=20
-> Reviewed-by: David Lechner <dlechner@baylibre.com>
 > Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
 > ---
-> =C2=A0drivers/iio/adc/ad7173.c | 62 ++++++++++++++++++++++++++++++++++---=
------------
-> =C2=A01 file changed, 44 insertions(+), 18 deletions(-)
->=20
-> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-> index 9e507e2c66f0..8a53821c8e58 100644
-> --- a/drivers/iio/adc/ad7173.c
-> +++ b/drivers/iio/adc/ad7173.c
-> @@ -906,6 +906,44 @@ static int ad7173_register_clk_provider(struct iio_d=
-ev
-> *indio_dev)
-> =C2=A0					=C2=A0=C2=A0 &st->int_clk_hw);
-> =C2=A0}
-> =C2=A0
-> +static int ad7173_validate_voltage_ain_inputs(struct ad7173_state *st,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int ain[2])
-> +{
-> +	struct device *dev =3D &st->sd.spi->dev;
-> +
-> +	for (int i =3D 0; i < 2; i++) {
-> +		if (ain[i] < st->info->num_inputs)
-> +			continue;
-> +
-> +		return dev_err_probe(dev, -EINVAL,
-> +			"Input pin number out of range for pair (%d %d).\n",
-> +			ain[0], ain[1]);
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int ad7173_validate_reference(struct ad7173_state *st, int ref_se=
-l)
-> +{
-> +	struct device *dev =3D &st->sd.spi->dev;
-> +	int ret;
-> +
-> +	if (ref_sel =3D=3D AD7173_SETUP_REF_SEL_INT_REF && !st->info->has_int_r=
-ef)
-> +		return dev_err_probe(dev, -EINVAL,
-> +			"Internal reference is not available on current
-> model.\n");
-> +
-> +	if (ref_sel =3D=3D AD7173_SETUP_REF_SEL_EXT_REF2 && !st->info->has_ref2=
-)
-> +		return dev_err_probe(dev, -EINVAL,
-> +			"External reference 2 is not available on current
-> model.\n");
-> +
-> +	ret =3D ad7173_get_ref_voltage_milli(st, ref_sel);
-> +	if (ret < 0)
-> +		return dev_err_probe(dev, ret, "Cannot use reference %u\n",
-> +				=C2=A0=C2=A0=C2=A0=C2=A0 ref_sel);
-> +
-> +	return 0;
-
-If you need a v4, I would just 'return ad7173_get_ref_voltage_milli(...)'. =
-Any error
-log needed should be done inside ad7173_get_ref_voltage_milli(). Anyways:
 
 Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-- Nuno S=C3=A1
-
+> =C2=A0drivers/iio/adc/ad7173.c | 21 +++++++++++++++++++++
+> =C2=A01 file changed, 21 insertions(+)
+>=20
+> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+> index 8a53821c8e58..106a50dbabd4 100644
+> --- a/drivers/iio/adc/ad7173.c
+> +++ b/drivers/iio/adc/ad7173.c
+> @@ -65,6 +65,10 @@
+> =C2=A0	 FIELD_PREP(AD7173_CH_SETUP_AINNEG_MASK, neg))
+> =C2=A0#define AD7173_AIN_TEMP_POS	17
+> =C2=A0#define AD7173_AIN_TEMP_NEG	18
+> +#define AD7173_AIN_COM_IN_POS	19
+> +#define AD7173_AIN_COM_IN_NEG	20
+> +#define AD7173_AIN_REF_POS	21
+> +#define AD7173_AIN_REF_NEG	22
+> =C2=A0
+> =C2=A0#define AD7172_2_ID			0x00d0
+> =C2=A0#define AD7175_ID			0x0cd0
+> @@ -145,6 +149,8 @@ struct ad7173_device_info {
+> =C2=A0	unsigned int id;
+> =C2=A0	char *name;
+> =C2=A0	bool has_temp;
+> +	/* ((AVDD1 =E2=88=92 AVSS)/5) */
+> +	bool has_common_input;
+> =C2=A0	bool has_input_buf;
+> =C2=A0	bool has_int_ref;
+> =C2=A0	bool has_ref2;
+> @@ -215,6 +221,7 @@ static const struct ad7173_device_info ad7173_device_=
+info[] =3D {
+> =C2=A0		.has_temp =3D true,
+> =C2=A0		.has_input_buf =3D true,
+> =C2=A0		.has_int_ref =3D true,
+> +		.has_common_input =3D true,
+> =C2=A0		.clock =3D 2 * HZ_PER_MHZ,
+> =C2=A0		.sinc5_data_rates =3D ad7173_sinc5_data_rates,
+> =C2=A0		.num_sinc5_data_rates =3D ARRAY_SIZE(ad7173_sinc5_data_rates),
+> @@ -229,6 +236,7 @@ static const struct ad7173_device_info ad7173_device_=
+info[] =3D {
+> =C2=A0		.has_temp =3D false,
+> =C2=A0		.has_input_buf =3D true,
+> =C2=A0		.has_ref2 =3D true,
+> +		.has_common_input =3D true,
+> =C2=A0		.clock =3D 2 * HZ_PER_MHZ,
+> =C2=A0		.sinc5_data_rates =3D ad7173_sinc5_data_rates,
+> =C2=A0		.num_sinc5_data_rates =3D ARRAY_SIZE(ad7173_sinc5_data_rates),
+> @@ -244,6 +252,7 @@ static const struct ad7173_device_info ad7173_device_=
+info[] =3D {
+> =C2=A0		.has_input_buf =3D true,
+> =C2=A0		.has_int_ref =3D true,
+> =C2=A0		.has_ref2 =3D true,
+> +		.has_common_input =3D false,
+> =C2=A0		.clock =3D 2 * HZ_PER_MHZ,
+> =C2=A0		.sinc5_data_rates =3D ad7173_sinc5_data_rates,
+> =C2=A0		.num_sinc5_data_rates =3D ARRAY_SIZE(ad7173_sinc5_data_rates),
+> @@ -258,6 +267,7 @@ static const struct ad7173_device_info ad7173_device_=
+info[] =3D {
+> =C2=A0		.has_temp =3D true,
+> =C2=A0		.has_input_buf =3D true,
+> =C2=A0		.has_int_ref =3D true,
+> +		.has_common_input =3D true,
+> =C2=A0		.clock =3D 16 * HZ_PER_MHZ,
+> =C2=A0		.sinc5_data_rates =3D ad7175_sinc5_data_rates,
+> =C2=A0		.num_sinc5_data_rates =3D ARRAY_SIZE(ad7175_sinc5_data_rates),
+> @@ -273,6 +283,7 @@ static const struct ad7173_device_info ad7173_device_=
+info[] =3D {
+> =C2=A0		.has_input_buf =3D true,
+> =C2=A0		.has_int_ref =3D true,
+> =C2=A0		.has_ref2 =3D true,
+> +		.has_common_input =3D true,
+> =C2=A0		.clock =3D 16 * HZ_PER_MHZ,
+> =C2=A0		.sinc5_data_rates =3D ad7175_sinc5_data_rates,
+> =C2=A0		.num_sinc5_data_rates =3D ARRAY_SIZE(ad7175_sinc5_data_rates),
+> @@ -287,6 +298,7 @@ static const struct ad7173_device_info ad7173_device_=
+info[] =3D {
+> =C2=A0		.has_temp =3D false,
+> =C2=A0		.has_input_buf =3D false,
+> =C2=A0		.has_int_ref =3D true,
+> +		.has_common_input =3D false,
+> =C2=A0		.clock =3D 16 * HZ_PER_MHZ,
+> =C2=A0		.sinc5_data_rates =3D ad7175_sinc5_data_rates,
+> =C2=A0		.num_sinc5_data_rates =3D ARRAY_SIZE(ad7175_sinc5_data_rates),
+> @@ -301,6 +313,7 @@ static const struct ad7173_device_info ad7173_device_=
+info[] =3D {
+> =C2=A0		.has_temp =3D true,
+> =C2=A0		.has_input_buf =3D true,
+> =C2=A0		.has_int_ref =3D true,
+> +		.has_common_input =3D true,
+> =C2=A0		.clock =3D 16 * HZ_PER_MHZ,
+> =C2=A0		.odr_start_value =3D AD7177_ODR_START_VALUE,
+> =C2=A0		.sinc5_data_rates =3D ad7175_sinc5_data_rates,
+> @@ -915,6 +928,14 @@ static int ad7173_validate_voltage_ain_inputs(struct
+> ad7173_state *st,
+> =C2=A0		if (ain[i] < st->info->num_inputs)
+> =C2=A0			continue;
+> =C2=A0
+> +		if (ain[i] =3D=3D AD7173_AIN_REF_POS || ain[i] =3D=3D AD7173_AIN_REF_N=
+EG)
+> +			continue;
+> +
+> +		if ((ain[i] =3D=3D AD7173_AIN_COM_IN_POS ||
+> +		=C2=A0=C2=A0=C2=A0=C2=A0 ain[i] =3D=3D AD7173_AIN_COM_IN_NEG) &&
+> +		=C2=A0=C2=A0=C2=A0 st->info->has_common_input)
+> +			continue;
+> +
+> =C2=A0		return dev_err_probe(dev, -EINVAL,
+> =C2=A0			"Input pin number out of range for pair (%d %d).\n",
+> =C2=A0			ain[0], ain[1]);
+>=20
 
 

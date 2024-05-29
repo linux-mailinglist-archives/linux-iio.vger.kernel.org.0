@@ -1,148 +1,134 @@
-Return-Path: <linux-iio+bounces-5425-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5426-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 632418D2E0C
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 09:24:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBBC8D2E3C
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 09:30:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B821F2526A
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 07:24:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 328F7B2147F
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 07:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21383167260;
-	Wed, 29 May 2024 07:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F69516728D;
+	Wed, 29 May 2024 07:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="h4x4CSEt";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="RUzHnTTF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PW5bATMa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from fout4-smtp.messagingengine.com (fout4-smtp.messagingengine.com [103.168.172.147])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F482209D;
-	Wed, 29 May 2024 07:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC35167264;
+	Wed, 29 May 2024 07:29:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716967451; cv=none; b=iVp1ELe8rTYyPoytBLyp60DsUTwJdBlWeKy5GURkKvDDHSyuptlJNeSCUNJUHbaj5kPZ2/iFGwJFs1gANk6tCQZOAcHNTsTmY0Cj/QZin0rZFgyBZRMcM0mfNwECuiUAXnGALtj8zvpL2kh4c5CDb675QrxcgLrOUOZYgTuc+iU=
+	t=1716967799; cv=none; b=MU8ms8rJM7alRzzGm1Qc8kFUbnZom/yS529DvsHC4piIATrruW88RC7vAxY9rjZQaCotC9DSV8VYyFv2IxmN9OZhNbexX3N/ixS+u1TmE1OLY4eJhVjU0iSStCWLLV/whoOzAnrWejyRdHzhaoPZZTL3DxjHmex61h6rvlBogtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716967451; c=relaxed/simple;
-	bh=BiLRi+Tm9dHBabsoQiYKbpEETDYvhOr2pvI35tWBrHI=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=Tn+uZ45PeTFpstoQHp8fueEpdW7dg1xEFdTrtMe4fxSuDEYDvYINl5AyET4kyTCStKk7jQEry2feIDwscFY/pV83KbCIZ16pkemHudk9fwkc5LnG+UygtaojMkfnw86Olhgx1ANNsnxbCjgDLF26Fxdp7vOsuhGTzbz6NtjGTbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=h4x4CSEt; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=RUzHnTTF; arc=none smtp.client-ip=103.168.172.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 4CDF413800A9;
-	Wed, 29 May 2024 03:24:09 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 29 May 2024 03:24:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1716967449;
-	 x=1717053849; bh=Gf0qo7ee/AEBpbdOcGj06T/gtZe+ynU8fDYYUQNiucM=; b=
-	h4x4CSEtTHwuht1dS/NJgvp65UnTU41dpZW4e9sLOU8xqutZITW+d+RxXo76OzuD
-	ChMjh0GFEzyVlosguBditusdEipRU71hIsyXVbYmbR5niPhsdD7QRRm8Po1tlQFJ
-	ErZkhR4dY/uWkL2ONPkARrIeRdhTO9FCSA6jXog8sby4JvuPNVcTKZ9Yelxdlzgv
-	Vd+HZYCj0bSF/I6NiZZd0yIYZgl/yAdY5+lhH24UDDwqsw38hfrXt2bi4EAZttSJ
-	IcfJAJ08vi4FObI4fjbV/wlfiJ4GFN7U+NY2x7ZDdVMZSfI6k9Y/OvQ6wi0IWnjF
-	mX55VNS3jPEHpQ3HaDZBqw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1716967449; x=
-	1717053849; bh=Gf0qo7ee/AEBpbdOcGj06T/gtZe+ynU8fDYYUQNiucM=; b=R
-	UzHnTTFdk3oWiRf9YxJEMrpM7NmWEpEQorOLXKOP1+MH0EFg0AuZDM0INP2I+YIi
-	kexZXQfu7rXWFpV8hclGsy+CKG/aelT8BYNhCzwfHM1U3qsdDQPIJIciUtt+nMMx
-	4wDKDoiGZXrnGyDGauzW8JY87iqccW5jGVOz4n3D8NFg0pnCUkY2UqL449iAobdk
-	Zw1sfgqDnkczVnrA3UHPcLwfFz7lsm07e13nH+64Hg8tvXZe7i5tF8OpRjK5M0ME
-	RJAtNvB5rezU8QOnUCSw7F3q8SnXp94tH+NKlB1tU7lzLbX3rybW6OxinYszTv4M
-	0SRvUcfW/ZIr+TLsMW9cw==
-X-ME-Sender: <xms:GNhWZupp2ySFefzGEQi7Mz223B4lYgMtQlReU1C0bNUS3uTMRVuL3g>
-    <xme:GNhWZspwQqoKL1ODI5vwLP08p_iyEllD159sdd1i2xewrmuuIhNDbgDTG8Yz24f-0
-    2qNR7qdDdBLQMzpepg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdektddgudegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtgfesthhqredtreerjeenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeegfeejhedvledvffeijeeijeeivddvhfeliedvleevheejleetgedukedt
-    gfejveenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:GNhWZjPaN01USRLJH2GN7MSCqQXRMmKwYxGm14gM5E7wN8KPPmUBIA>
-    <xmx:GNhWZt4lubTFMPwxPAMw8etb0OR-hH_d2FqnII8OceZrtfaOjQ-4dA>
-    <xmx:GNhWZt5XxvPjGFegJQ7C-RbtbJa1yYcO8JXSqupTxotoaKgijXbC2w>
-    <xmx:GNhWZth58wPWGgCPthdDvIGW8LtY-ku1wHr3BTabRMQMgagCPt7-XQ>
-    <xmx:GdhWZiF6-9rsoR2QapE_JSgmTlxz0pnmbAdcwpp2rXbZkymtvM_k2ex1>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id D889BB6008D; Wed, 29 May 2024 03:24:08 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-491-g033e30d24-fm-20240520.001-g033e30d2
+	s=arc-20240116; t=1716967799; c=relaxed/simple;
+	bh=CplIVoFx4HHmnWx+apjTEl9q7VdG/g4VH4E3n+XU4ek=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SFvxza8Hf4htnTp7ntxzR5vPCeQP0laWQoHKEa7PTeDwwUoEun9cZAkaOPu5k8OpGixnoc7nFvz3iM3Cn1+BNMQdtRngX6DcrYzp2Q84Rx12cyvuwa4RrUZxZS4a9ZLXFCDr21Lru/TTHEgABNgVq2/+i8raEeBUjiBIMw9AkzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PW5bATMa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C73DC2BD10;
+	Wed, 29 May 2024 07:29:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716967798;
+	bh=CplIVoFx4HHmnWx+apjTEl9q7VdG/g4VH4E3n+XU4ek=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=PW5bATMajdYAPy3OkkMnj+ynE2yOFlDDaiOUF3PpkH7okeCp3Rk9e5jWJ5rO9IjrG
+	 dSlZ0gpznAFCg3Oc94QF7npAME0J02SYwAYPiuj/olpgbP8qG8XRLriIHLyhMeTzXt
+	 veEl0H61hsU1Bh7AessZAHrIO/JAlOWop96l7peHVLIvqrtp3Cp12rj5hszpTnfZTy
+	 T7AdzwLnVEpHx79iW+yiFZpA9mh72FNZYFBPpPI8VcFZ1/Z3w7P0sJu6u9gikhma73
+	 Y82C/2E2l79pnTqepj9CuOg8ZYPeEBnr6Kuph5NY+RZnJImfi8vgXNNz0l7ty4IjcK
+	 UK/Ef9vCsIT7Q==
+Message-ID: <8e27c8da-d856-4fab-bb12-3af07e13838e@kernel.org>
+Date: Wed, 29 May 2024 09:29:54 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <81ec1d1a-d8de-47e4-a5d4-eeaaf1e806a2@app.fastmail.com>
-In-Reply-To: <539a815398a3c991c1bc1a53967fbcba282dfe3b.camel@gmail.com>
-References: <20240528121304.3695252-1-arnd@kernel.org>
- <539a815398a3c991c1bc1a53967fbcba282dfe3b.camel@gmail.com>
-Date: Wed, 29 May 2024 09:23:11 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- "Arnd Bergmann" <arnd@kernel.org>, "Jonathan Cameron" <jic23@kernel.org>
-Cc: "Lars-Peter Clausen" <lars@metafoo.de>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- "Dragos Bogdan" <dragos.bogdan@analog.com>,
- "Anshul Dalal" <anshulusr@gmail.com>,
- "Andrea Collamati" <andrea.collamati@gmail.com>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] iio: dac: ad9739a: drop COMPILE_TEST option
-Content-Type: text/plain;charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/6] dt-bindings: vendor-prefixes: add ScioSense
+To: Gustavo Silva <gustavograzs@gmail.com>, jic23@kernel.org
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ lars@metafoo.de, christophe.jaillet@wanadoo.fr, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240529001504.33648-1-gustavograzs@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240529001504.33648-1-gustavograzs@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 29, 2024, at 09:20, Nuno S=C3=A1 wrote:
-> On Tue, 2024-05-28 at 14:12 +0200, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->>=20
->> Build testing without SPI results in a warning:
->>=20
->> WARNING: unmet direct dependencies detected for REGMAP_SPI
->> =C2=A0 Depends on [n]: SPI [=3Dn]
->> =C2=A0 Selected by [m]:
->> =C2=A0 - AD9739A [=3Dm] && IIO [=3Dm] && (SPI [=3Dn] || COMPILE_TEST =
-[=3Dy])
->>=20
->> There is no need for this particular COMPILE_TEST option, as allmodco=
-nfig
->> and randconfig testing can just assume that SPI is enabled separately.
->>=20
->> Drop it to avoid the warning.
->>=20
->> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->> ---
->
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
->
-> Only for my understanding. When does COMPILE_TEST makes sense to add?
+On 29/05/2024 02:14, Gustavo Silva wrote:
+> Add vendor prefix for ScioSense B.V.
+> https://www.sciosense.com/
+> 
+> Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
+> ---
 
-The most common use is to enable building a driver
-that is platform specific on x86 allmodconfig
-or on randconfig, e.g.
+This is a friendly reminder during the review process.
 
-config LPC18XX_DAC
-        tristate "NXP LPC18xx DAC driver"
-        depends on ARCH_LPC18XX || COMPILE_TEST
-        depends on HAS_IOMEM
+It looks like you received a tag and forgot to add it.
 
-Since ARCH_LPC18XX is only visible on arch/arm, the
-driver would never be build tested on anything else
-without the ||COMPILE_TEST.
+If you do not know the process, here is a short explanation:
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions, under or above your Signed-off-by tag. Tag is "received", when
+provided in a message replied to you on the mailing list. Tools like b4
+can help here. However, there's no need to repost patches *only* to add
+the tags. The upstream maintainer will do that for tags received on the
+version they apply.
 
-      Arnd
+https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+
+If a tag was not added on purpose, please state why and what changed.
+
+Best regards,
+Krzysztof
+
 

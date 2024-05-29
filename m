@@ -1,277 +1,237 @@
-Return-Path: <linux-iio+bounces-5457-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5460-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E56D18D3B56
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 17:48:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A38F8D3BA6
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 18:02:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5503286792
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 15:48:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8B2BB27266
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 16:02:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6BF181BB8;
-	Wed, 29 May 2024 15:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74F7184138;
+	Wed, 29 May 2024 16:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b="onbaliBk"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="yS3TiWC8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00549402.pphosted.com (mx0a-00549402.pphosted.com [205.220.166.134])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BF4374D4;
-	Wed, 29 May 2024 15:48:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.134
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716997685; cv=fail; b=qIdTJexXlkraCZ+ITYFdoAZTSAQ01zBA4hKxzqyq2Z65nBOUbtN1c/UH2SIJwWtw/pHrxhniJiNVbRrfgm3RSdWFRXgrmLRgQwfmnjcFhHZjRTQ6uvRDz9sPWKfH+pkD8PtQzTHtlUf/xh5hKFeZ8zKBkwiljT2qPGyLBkHZ4D0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716997685; c=relaxed/simple;
-	bh=+b+hzqM+0yJAxzKkaENCysYRIFFpIeFuJCLh2y4RuMI=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=rCkwee7av5PrQAjtf55c0HXA14VUXpSnap7rFMo9m+yAXD9waBqh16ZRsyGTJJxsi0K9kVNpvbTSSTXXEz//1d8TsGQmaXwcVAHSyNIMIsxos8/GJDNofbZGUPpVKUqVQrmjmJNOmHShBMXa9rYtDF2TNfg8Ze1qbCqQl64uwAQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com; spf=pass smtp.mailfrom=tdk.com; dkim=pass (2048-bit key) header.d=tdk.com header.i=@tdk.com header.b=onbaliBk; arc=fail smtp.client-ip=205.220.166.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tdk.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tdk.com
-Received: from pps.filterd (m0233778.ppops.net [127.0.0.1])
-	by mx0b-00549402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44SLn5eA000678;
-	Wed, 29 May 2024 15:47:36 GMT
-Received: from tyvp286cu001.outbound.protection.outlook.com (mail-japaneastazlp17010000.outbound.protection.outlook.com [40.93.73.0])
-	by mx0b-00549402.pphosted.com (PPS) with ESMTPS id 3yba4xb55h-1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E33331836EF;
+	Wed, 29 May 2024 16:01:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716998496; cv=none; b=TVO0UwhFeh4juFniLZTUi6+MPKFLDQUHdlI3j4RFiapXB2waFsqys25HIyS0koCPVMYFv7Kyhk3h1gmUdgLgoFodrkddtSfOT0FK9DLCyogkzWZiofVf2FLk/7swsEkrncEavguWaKigbw7WyUV4VrxUGv2X8aqK9OfYfl1plVg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716998496; c=relaxed/simple;
+	bh=eZ5GVaGIQa005WoB8AKmDURWmwScw3watWUx4myIdZA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qZVlh5gIsNH/+Pft0q0zEalb7/LL73z7tqKjnKKow86xaIG+/PC7uMGBuU2gIFQH4o0DV9mgwEHGVMeUnctSLHOcS6pMTOFlaSjlURvuEKqUvPCH/0qmk9C9gW9D2y4Hm5CnyfIAkUYx4IvkL6bbhGIAcewsRxN41RerpXUy8Uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=yS3TiWC8; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44TEUbn1029547;
+	Wed, 29 May 2024 12:01:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=DlQ54r1DZlxmCkjgOJYKS3DxLfX
+	8GXbbjNWGFcTHLTQ=; b=yS3TiWC8Jvk5aTSySeyBgvbJzYtj1r8hBOAJp5O28yo
+	LWBoCTo1CQ1OK2X9yTQ53GppPVoIUdR5t668WKs3wVSghBGJJRRGSei9wRxkuFtm
+	k1B2ud94Qg69DbhPVllrdw5xzIOuHyLQAEu7PLqFU6acmbvze45FDhlppfs7Qp5d
+	15KxL9KXJb25ijCsjfrGkQcZPbiQxAYyO/V/844uKTgyG6HPBlCnaL5LIGR5DScL
+	ehuEr9G9zp8seO4RX8Id0X2+zzv6JzTLcBS/83IFypW1Xbaq+nmwfxOErqzZENWB
+	foeSXZZnhf4cPKQ0DNWJ2yaTNpdSNLH5XegQow7K+hw==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3ye66jgc2c-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 15:47:35 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=npTfYmCux7JByd7dYMFyK9/GiaeJiASOd8XjJ5cISzRrf+oCHFtd2NYWeIpTcpKLZXM4xMKFnGYPnS9yvDycqEjiYAPtr5FMs0D5yawC2TPqVwYC8tL/oPfhypkbvqNlELKdx//Vw/cYjXJ6hlhk/ggItOpr0q64Bz9Ud600IBKjQ1VPOf+F2E6ta7bC7jdjl6d/MgvuwREVheg5b9EBoNh+GrrZv9eUwmbggZfUMXnnkewLD3OuxrhhzNDeOtiPE8u3aE5Z6ri78P9sTDPWU+pn4LDngfSPEI9gBCqqZH+hCwLCkx5mmG8PVzVhfG+wflbigNs4I7ARXof+vPufOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3zPHyFA7lH6pg4pOkAQ7tfZKK0p0sxbrxNBMVOyq35I=;
- b=jsVHh2CgyfZn7RpKylKJsqJNMFHe4LwNFWHvR/HdkPB+WTF8Y88/QJS3Ny8PPrSHvkfMu7OoGuDYwdnEr48u6EEN/90CJ2hhZeOlCsi3yq9WAs4+l5BVlAkRoEKqNqTtkZO/rM+s60yYcH3jvFaYjO4CDJDN2nrKG3MqxEPQkfcFFG97zrKwqpqThNXKuoCTEOpoyQBI5DIotM8yiYFq7J9wBczG53geaDZdHkZQrZMZywZG3fLadfj5OWx0I/fX1s3E95VXW33VyNBRmKFXXOk1LBZZVupJqf+1is+yF9rLdBEftSSLTEcd/4qjqLxKO+Czy9HmcBqR+7CbHBIs9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=tdk.com; dmarc=pass action=none header.from=tdk.com; dkim=pass
- header.d=tdk.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tdk.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3zPHyFA7lH6pg4pOkAQ7tfZKK0p0sxbrxNBMVOyq35I=;
- b=onbaliBkKVteFH4v9yGCAgWZRh4VeOm4d3xSoHfb5iJ0dp9jZg7cu9RwNy8L/y6d5n/ezzfKDrhFT+MazZlmpzQUhtQnKDvCVoWxTlCDjl/0w6gHgHTAm1x1GwzbHhFYUO0Z/0MlCTyyp4BXST91Sw6tzsowlNnVpekTo/ZZcYYULXxCMjS03sLT4Nx77h/mBpiMIILG7DcvpyIJVDZnZoFf31tNAJpuyP4d09a+EQy8HvbUi5QMSh4yN+/A8x5y2LZiqBAuleFYT/Id8AwYvu8R2ayQydct9hLIiv3OYsedDkChcAH/asYkpZUG3TZNpeUHFFr86rrr9M+xiPXAkQ==
-Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM (2603:1096:604:1a7::13)
- by TYWP286MB2617.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:23c::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.19; Wed, 29 May
- 2024 15:47:30 +0000
-Received: from OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- ([fe80::ff9:b41:1fa8:f60b]) by OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- ([fe80::ff9:b41:1fa8:f60b%3]) with mapi id 15.20.7633.017; Wed, 29 May 2024
- 15:47:30 +0000
-From: inv.git-commit@tdk.com
-To: jic23@kernel.org
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, stable@vger.kernel.org,
-        Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Subject: [PATCH] iio: imu: inv_icm42600: stabilized timestamp in interrupt
-Date: Wed, 29 May 2024 15:47:17 +0000
-Message-Id: <20240529154717.651863-1-inv.git-commit@tdk.com>
-X-Mailer: git-send-email 2.25.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MI2P293CA0009.ITAP293.PROD.OUTLOOK.COM
- (2603:10a6:290:45::6) To OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:604:1a7::13)
+	Wed, 29 May 2024 12:01:19 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 44TG1ILV028467
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 29 May 2024 12:01:18 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 29 May
+ 2024 12:01:17 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 29 May 2024 12:01:17 -0400
+Received: from HYB-hYN1yfF7zRm.ad.analog.com ([10.32.223.167])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 44TG14tY011783;
+	Wed, 29 May 2024 12:01:06 -0400
+From: ranechita <ramona.nechita@analog.com>
+To: <linux-iio@vger.kernel.org>
+CC: ranechita <ramona.nechita@analog.com>,
+        Jonathan Cameron
+	<jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof
+ Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH v2] dt-bindings: iio: adc: add a7779 doc
+Date: Wed, 29 May 2024 19:00:52 +0300
+Message-ID: <20240529160057.6327-1-ramona.nechita@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: OSZP286MB1942:EE_|TYWP286MB2617:EE_
-X-MS-Office365-Filtering-Correlation-Id: 083d14ea-4060-4d7d-7cfb-08dc7ff6a5e0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: 
-	BCL:0;ARA:13230031|52116005|376005|1800799015|366007|38350700005|3613699003;
-X-Microsoft-Antispam-Message-Info: 
-	=?us-ascii?Q?t0Lwh3F2PdxCNmejLcyHo6klRW77WSOauyutf93/V3we4GFSNZ/HyKNpGIeb?=
- =?us-ascii?Q?ObO5riuFk+4IpQEItXXnvcK/kUuhDDbqxin1Tui+zq6Q+57TR4wVzS5R9IVJ?=
- =?us-ascii?Q?s2nYnBrdFOa7TLHLOX4IZ+iZ68VTk81dMRssEpe2gp7WEankdxpJ8xialpVX?=
- =?us-ascii?Q?d0hWSx22SJ82wCaUrjnGyvg44fWebKpnoFOdAGemrT69Zv02L2gDTt0Yasuk?=
- =?us-ascii?Q?AJIbHUpvIyfapNIHZoHG5vC9OC6g0wHXtucYRCx/Z67VIrJ8qn/0q4sBh1x2?=
- =?us-ascii?Q?YIjQrJUFPpJTk0r1SMTr6FZc0Mk7UHmFKZdwf0FpRv/AWLuUPvdhDYUdxp13?=
- =?us-ascii?Q?QLfidYW4t3pfM/NIm/f+9RcxxyqG1RkpRAb76zITDjkacu7B2mUpfnpk0PSt?=
- =?us-ascii?Q?8fQp24YtqMcHmfrO9JEFlnqgPQlIeRtTj7bX6MlKE6/JtCTHDvcJdJ8cg8xI?=
- =?us-ascii?Q?lWKew50C8ak/M6Ln8FxeXCNClRTdw9V2vejJG/IgMWGOiNV7mOjRGRJXLHhY?=
- =?us-ascii?Q?SuM43RjzCpt1EzS6hSXyysHZuXd50FMbQOgyIXoNc5KdWh4kjJC/CTcoXdwm?=
- =?us-ascii?Q?2VN8b/FQQZSK12OWURYs2di5qEPTErjhrO673XbATKhSIJ44FxvoXCYa67eq?=
- =?us-ascii?Q?KQnS79dCeymaVlfAzUZXsGPi46PC+qLqD5mog3a4c1r2fZ6SNZpP9RENvEOK?=
- =?us-ascii?Q?FX+2N+9PdIqwbkEp24rGg76bq6uaMRwooEvzvlbh/j57gd+boVBb7LhySPC0?=
- =?us-ascii?Q?5igzc8T2pAfMhFAxUjItcUrUxYw2WVFtlZ+euvn/BSqTTxyEI3L95S+CIyok?=
- =?us-ascii?Q?TbJUnEyBMOQxIG+0ndQoFfISP6+ZO248mjNKlTLdz3boBMyjFGqaHjTh1sGo?=
- =?us-ascii?Q?MPSijymuenHXA7Xw8Lr8hmFY28pqgSHLVTTy9bq227K2obT0W2xWyrhX+lQb?=
- =?us-ascii?Q?pKDm/L9wobUgGb9keU9iAX3itZy5XVfRmCXQ6z4GHVNvC3xYMr0et5qfaILN?=
- =?us-ascii?Q?5ZUyu55UDPwgil9brghNli2+Gaqis2iedb1aG0ild4DlYm180OywO8/6yj6/?=
- =?us-ascii?Q?NCnMS8d6a7qJz3KVhTBguqvdvKsIG+4XScJcC3FItp9aMlEqAcKg7pSA6ddD?=
- =?us-ascii?Q?3nAuo3nvBRhzmCnlVIvv2yNIm98nX+3XUJOgbcdfHS11QfzBPqDhA/1kmiRs?=
- =?us-ascii?Q?wXIF7sueg5Az43IDeN6W8FUdVWNNh9wR0dkCHPCNExn34CFwqX8kdprF01Es?=
- =?us-ascii?Q?NyJhKBwBiYagmlMkgKn7bdXyevzaAxl4DNh+mqe44xHrEztk1LeczOFCmfHC?=
- =?us-ascii?Q?f/LDeByxbxMSik09wJduChd7igO0MHSc2449b62Wp1154O+zMq5wETuRTtbE?=
- =?us-ascii?Q?Zknn2S4=3D?=
-X-Forefront-Antispam-Report: 
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(52116005)(376005)(1800799015)(366007)(38350700005)(3613699003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: 
-	=?us-ascii?Q?qvojH9VHX69nwbq2ZaQIlRqkbhw2BI2AQeeJNw7Z24atS4x9T0zOzQei9DJL?=
- =?us-ascii?Q?W9b9shUMtkMamUKPBuTQ3H0TEr9jtZLXqKQe3Mb857m0G+oxjrjzq7EA6A3C?=
- =?us-ascii?Q?DTsIOndPzGRYOsy/lkeb5WzWWYeJV17QvT1V1VyO8q225D9b9nHoXd2YfbOI?=
- =?us-ascii?Q?KMZmP/65UgRDnlJrcnzeHfjAeQSHw+bk5Fkvs3NfE9e2jr5zg0USZBIqqRh0?=
- =?us-ascii?Q?DPUIaHk9HLeCZ9NnyROdv0nEARhbRkmJKhRGSn7Areb2i0hCfeS7/eMjDmG7?=
- =?us-ascii?Q?D0tOulsq0Oh7NDE92rBuxfuZdL+nqumRwS6d2V+IoHfFS717INdvZ1/TiIo+?=
- =?us-ascii?Q?dcMddIIgTHuZYMwD9wHs7KqhqMNnheb8IZxFZPxwjHme1E9fG9eZsbSgN974?=
- =?us-ascii?Q?fodL8ulODW7p9a39TifQzXT48DPCKxqIUiosr0SA6osD6l+EWvCOfFY20Ydu?=
- =?us-ascii?Q?A6tVDCUgpIdQtf/qo5DVkWlVFwXAIc4/SEjqzTvYx9bX6d7E+490YXVKFb1P?=
- =?us-ascii?Q?Io9teSGz+QnqgaT+1poFaD2AV52fk5mvpgYmaKMx3TTxQyUbZArcJAqsgmFp?=
- =?us-ascii?Q?kVIo6qPTIySdOpVz2i6T1t1h2srwWOWSaK7tz9fjeExF3pmbiFahHSv7c6LK?=
- =?us-ascii?Q?7iuYdQkxf2cK++2S566xCOyFKFup2Owt5mmwJXWEbfC8VKnz4Y/rpP1Uuq3D?=
- =?us-ascii?Q?HvgtA2M/KCJDucIw3gijN2oOoCcHVipgCYXaiFu9Gw5eeXRzejctjrw4+7M3?=
- =?us-ascii?Q?ReFVWJptX3/siOiavbhOsfBs6OGiaLlq7UwvQznfdf8L2eeFbhEtOFpS0vrU?=
- =?us-ascii?Q?g9XVcEjQnxd1crzxQ6BHSMZnQMdBLe/vc/4o/P849HBX4pCzIaBE/nIyzSwY?=
- =?us-ascii?Q?x8LzEc4H0sUFx0pHmdeCSWeZ1JgACHrRp33esaDZH8ZFZOajE7I5nyicSKLW?=
- =?us-ascii?Q?1l1AOWgVhvjEvqjkCHE+Xy0l9jz4xozkhSWfilexJL/ofquZWNEQC9FlJSU8?=
- =?us-ascii?Q?ZO6TlB6nGJm3hpW0WVed8UJYLJcYfriVQyBKTsBJ8NdAFv00NUWylfgChDhd?=
- =?us-ascii?Q?5xLKgos9kBw3hiPGn8IHZ8b0PvfPMsbQNX0ml5OLLxIHGYF/2JfDKd/8PbpZ?=
- =?us-ascii?Q?Q6VmmGw4YhaBJ3XHvC0CuMmaQ2AzEAL+CrGjhupzkHRdG1PUngczgvgYcFzC?=
- =?us-ascii?Q?RtCdzObdK8PhUQvyV5hlJBCZZpjRuGM3StcEqNzcGjSWREvIqw3Tmxcv3hae?=
- =?us-ascii?Q?1hmQPyMNchJijc+TnQbbQFGk2O+gvu4fRqmS0LTFuHE7Oj8rl5YspWNNeTKV?=
- =?us-ascii?Q?GN8yu7nOov4v0RvN9rQ+KJ/mDgko0goov+NQwkP3rO14BcaKGC4Br4WxO7SW?=
- =?us-ascii?Q?eoKh4IU9V0kx2A4hX68wk13ZDHmO9EHZZmV9EcCgzwndLaB4u62i0h4TsDVh?=
- =?us-ascii?Q?ko8gszJspYhCZD60DMYCQyIWDoDI1j2ITEpJT/L+CGepjSzC+LDH4Namhf+D?=
- =?us-ascii?Q?+aONmFP7FTc+gKPKCdrV7Ulv68cM4VpE3Akl+SqJdQSBu3ahXApAc/eydtaB?=
- =?us-ascii?Q?j9ooDUQgaV3qLzFWIQSzInuNZt5uQ06aHNjWnIRm?=
-X-OriginatorOrg: tdk.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 083d14ea-4060-4d7d-7cfb-08dc7ff6a5e0
-X-MS-Exchange-CrossTenant-AuthSource: OSZP286MB1942.JPNP286.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 May 2024 15:47:30.7117
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7e452255-946f-4f17-800a-a0fb6835dc6c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +Lnkn6Ey/ifeky3pQWaNBKsAjsNWF927fI43uGrauwvAkfjGt8tpnW9/KtcoF3VB3Czw+GkBmPEqsAfCQEWBRQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWP286MB2617
-X-Proofpoint-ORIG-GUID: 3-5ou2S1ji2_WlGjwGbQ159tXgtTSSuI
-X-Proofpoint-GUID: 3-5ou2S1ji2_WlGjwGbQ159tXgtTSSuI
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: SWpqXr40D1YI1E6Xyg87ToKtnuyz5EVL
+X-Proofpoint-ORIG-GUID: SWpqXr40D1YI1E6Xyg87ToKtnuyz5EVL
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-29_12,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 adultscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- mlxscore=0 impostorscore=0 spamscore=0 clxscore=1015 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
- definitions=main-2405290109
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ priorityscore=1501 malwarescore=0 mlxlogscore=999 mlxscore=0 clxscore=1015
+ bulkscore=0 adultscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405290110
 
-From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Add dt bindings for adc ad7779.
 
-Use IRQ_ONESHOT flag to ensure the timestamp is not updated in the
-hard handler during the thread handler. And compute and use the
-effective watermark value that correspond to this first timestamp.
-
-This way we can ensure the timestamp is always corresponding to the
-value used by the timestamping mechanism. Otherwise, it is possible
-that between FIFO count read and FIFO processing the timestamp is
-overwritten in the hard handler.
-
-Fixes: ec74ae9fd37c ("iio: imu: inv_icm42600: add accurate timestamping")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Signed-off-by: ranechita <ramona.nechita@analog.com>
 ---
- .../imu/inv_icm42600/inv_icm42600_buffer.c    | 19 +++++++++++++++++--
- .../imu/inv_icm42600/inv_icm42600_buffer.h    |  2 ++
- .../iio/imu/inv_icm42600/inv_icm42600_core.c  |  1 +
- 3 files changed, 20 insertions(+), 2 deletions(-)
+ .../ABI/testing/sysfs-bus-iio-adc-ad777x      | 23 +++++
+ .../bindings/iio/adc/adi,ad7779.yaml          | 89 +++++++++++++++++++
+ 2 files changed, 112 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
 
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-index 63b85ec88c13..a8cf74c84c3c 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c
-@@ -222,10 +222,15 @@ int inv_icm42600_buffer_update_watermark(struct inv_icm42600_state *st)
- 	latency_accel = period_accel * wm_accel;
- 
- 	/* 0 value for watermark means that the sensor is turned off */
-+	if (wm_gyro == 0 && wm_accel == 0)
-+		return 0;
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
+new file mode 100644
+index 000000000000..0a57fda598e6
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
+@@ -0,0 +1,23 @@
++What:		/sys/bus/iio/devices/iio:deviceX/filter_type_available
++KernelVersion:  6.1
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Reading returns a list with the possible filter modes. Only supported by
++		AD7771.
 +
- 	if (latency_gyro == 0) {
- 		watermark = wm_accel;
-+		st->fifo.watermark.eff_accel = wm_accel;
- 	} else if (latency_accel == 0) {
- 		watermark = wm_gyro;
-+		st->fifo.watermark.eff_gyro = wm_gyro;
- 	} else {
- 		/* compute the smallest latency that is a multiple of both */
- 		if (latency_gyro <= latency_accel)
-@@ -241,6 +246,13 @@ int inv_icm42600_buffer_update_watermark(struct inv_icm42600_state *st)
- 		watermark = latency / period;
- 		if (watermark < 1)
- 			watermark = 1;
-+		/* update effective watermark */
-+		st->fifo.watermark.eff_gyro = latency / period_gyro;
-+		if (st->fifo.watermark.eff_gyro < 1)
-+			st->fifo.watermark.eff_gyro = 1;
-+		st->fifo.watermark.eff_accel = latency / period_accel;
-+		if (st->fifo.watermark.eff_accel < 1)
-+			st->fifo.watermark.eff_accel = 1;
- 	}
- 
- 	/* compute watermark value in bytes */
-@@ -514,7 +526,7 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
- 	/* handle gyroscope timestamp and FIFO data parsing */
- 	if (st->fifo.nb.gyro > 0) {
- 		ts = &gyro_st->ts;
--		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.gyro,
-+		inv_sensors_timestamp_interrupt(ts, st->fifo.watermark.eff_gyro,
- 						st->timestamp.gyro);
- 		ret = inv_icm42600_gyro_parse_fifo(st->indio_gyro);
- 		if (ret)
-@@ -524,7 +536,7 @@ int inv_icm42600_buffer_fifo_parse(struct inv_icm42600_state *st)
- 	/* handle accelerometer timestamp and FIFO data parsing */
- 	if (st->fifo.nb.accel > 0) {
- 		ts = &accel_st->ts;
--		inv_sensors_timestamp_interrupt(ts, st->fifo.nb.accel,
-+		inv_sensors_timestamp_interrupt(ts, st->fifo.watermark.eff_accel,
- 						st->timestamp.accel);
- 		ret = inv_icm42600_accel_parse_fifo(st->indio_accel);
- 		if (ret)
-@@ -577,6 +589,9 @@ int inv_icm42600_buffer_init(struct inv_icm42600_state *st)
- 	unsigned int val;
- 	int ret;
- 
-+	st->fifo.watermark.eff_gyro = 1;
-+	st->fifo.watermark.eff_accel = 1;
++		  * "sinc3"	- The digital sinc3 filter implements three main notches, one at
++				the maximum ODR (128 kHz or 32 kHz, depending on the
++				power mode) and another two at the ODR frequency selected to
++				stop noise aliasing into the pass band.
 +
- 	/*
- 	 * Default FIFO configuration (bits 7 to 5)
- 	 * - use invalid value
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
-index 8b85ee333bf8..f6c85daf42b0 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h
-@@ -32,6 +32,8 @@ struct inv_icm42600_fifo {
- 	struct {
- 		unsigned int gyro;
- 		unsigned int accel;
-+		unsigned int eff_gyro;
-+		unsigned int eff_accel;
- 	} watermark;
- 	size_t count;
- 	struct {
-diff --git a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-index 96116a68ab29..62fdae530334 100644
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_core.c
-@@ -537,6 +537,7 @@ static int inv_icm42600_irq_init(struct inv_icm42600_state *st, int irq,
- 	if (ret)
- 		return ret;
- 
-+	irq_type |= IRQF_ONESHOT;
- 	return devm_request_threaded_irq(dev, irq, inv_icm42600_irq_timestamp,
- 					 inv_icm42600_irq_handler, irq_type,
- 					 "inv_icm42600", st);
++		  * "sinc5"	- The sinc5 filter implements five notches, one at
++				the maximum ODR (128 kHz or 32 kHz, depending on the
++				power mode) and another four at the ODR frequency
++				selected to stop noise aliasing into the pass band.
++
++What:		/sys/bus/iio/devices/iio:deviceX/filter_type
++KernelVersion:  6.1
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Set the filter mode of the differential channel. The current sampling_frequency
++		is set according to the filter range. Only supported by AD7771.
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+new file mode 100644
+index 000000000000..190070ed80b5
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+@@ -0,0 +1,89 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7779.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AD777X family 8-Channel, 24-Bit, Simultaneous Sampling ADCs
++
++maintainers:
++  - Ramona Nechita <ramona.nechita@analog.com>
++
++description: |
++  The AD777X family consist of 8-channel, simultaneous sampling analog-to-
++  digital converter (ADC). Eight full Σ-Δ ADCs are on-chip. The
++  AD7771 provides an ultralow input current to allow direct sensor
++  connection. Each input channel has a programmable gain stage
++  allowing gains of 1, 2, 4, and 8 to map lower amplitude sensor
++  outputs into the full-scale ADC input range, maximizing the
++  dynamic range of the signal chain.
++
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7770.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7771.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7779.pdf
++
++$ref: /schemas/spi/spi-peripheral-props.yaml#
++
++properties:
++  compatible:
++    enum:
++      - adi,ad7770
++      - adi,ad7771
++      - adi,ad7779
++
++  reg:
++    maxItems: 1
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  spi-max-frequency: true
++
++  clocks:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  vref-supply:
++    description:
++      ADC reference voltage supply
++
++  start-gpios:
++    description:
++      Pin that controls start synchronization pulse.
++    maxItems: 1
++
++  reset-gpios:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - clocks
++  - clock-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++          compatible = "adi,ad7779";
++          reg = <0>;
++          spi-max-frequency = <20000000>;
++          vref-supply = <&vref>;
++          start-gpios = <&gpio0 87 GPIO_ACTIVE_LOW>;
++          reset-gpios = <&gpio0 93 GPIO_ACTIVE_LOW>;
++          clocks = <&adc_clk>;
++          clock-names = "adc-clk";
++        };
++    };
++...
 -- 
-2.34.1
+2.43.0
 
 

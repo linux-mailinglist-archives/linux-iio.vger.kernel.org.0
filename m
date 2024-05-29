@@ -1,140 +1,176 @@
-Return-Path: <linux-iio+bounces-5428-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5429-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C888D30CF
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 10:18:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A8178D30E9
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 10:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDEFB1C25B7B
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 08:18:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 107641F2873D
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 08:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EECA181BBE;
-	Wed, 29 May 2024 08:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50ABF16B758;
+	Wed, 29 May 2024 08:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MDgymBkU"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="SxmSPn+O"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962B016938C;
-	Wed, 29 May 2024 08:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACD716A367;
+	Wed, 29 May 2024 08:13:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716970173; cv=none; b=D5Y/TPQ6s+uNzIX2YaYOlw/qHeoxQ6FPM+PoddITd8zRwCR+firggaZrm1F0xmeC/VPo5EiNaAQaoX9JESyAKUWIOmE8XR5vPFymva7N7F0xK0g7IdIJFQ8QNT96R6mWeWDZtz+X3Tx5ywJ+vZutaH+nMqwoHJ/oI59qGr2BTHc=
+	t=1716970425; cv=none; b=LMd60XGeErCd2qYYYKYle1+M+wlbviz15a2VooqP1Id8GtEfeSKQAD3ltAdq8cl1UCZNwVQ31fc1tthtTXHTDetWPeil+nrMDWtwsGb3CPdFj9o1gs0K3il2Tz/YFFBnZ5hz4Qj+xtbeRQuqQpy+aX35sydJEYBle6/lnRVEYbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716970173; c=relaxed/simple;
-	bh=i8tU8Ic/k4UuZKzBZDNg1YpkDmhPR4yS0jCvgdiGZq4=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iIMgBMcGMj/0+TyDzT9CUp1ARej+EW1JIeQj/3u73mtgikh+oS7DVzVXIDPnIqMNGOuQA2W/eRfZuEKEnOc2F/vulxa94O3uzi4v+nnpShdKxPZ08ekdeCT0gQZe/IPTQ5aTj8GO5dE731b6kaRCA4thJosEKU9ygMBkEhShDU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MDgymBkU; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-57857e0f465so2223257a12.1;
-        Wed, 29 May 2024 01:09:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716970169; x=1717574969; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=i8tU8Ic/k4UuZKzBZDNg1YpkDmhPR4yS0jCvgdiGZq4=;
-        b=MDgymBkUgKtSqi+yQH3Bxo7SNFhIAzlHIlPzgyvkfXUCGB/yFGsqJ6Cq7EEvBcNlSl
-         zhxgDDhLkzLnDveeRUnq0sY2QxepV755pIeBnnas1xONFELQPLEJverJN+E9ukdf6m85
-         au1bGK9zKRRwflnSu2xuvWnbGPPJgTJF0fqKs/i1WfLo55LVt80Z55ulOevQAUF3WsAc
-         2QkxuLwwqDKvFe6wPaXgIABFLs95gz23uw4HCSKmeNXIc2D0r7Wn1K/QmL+QrL4QL1J5
-         zX3jU2UVNNF+3tD3jtDJ2u6cDbJZez/xH0AraJhMwCXS4p0jABbjZvimAC+oWi+Lm+44
-         qLAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716970169; x=1717574969;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=i8tU8Ic/k4UuZKzBZDNg1YpkDmhPR4yS0jCvgdiGZq4=;
-        b=YSs8tONvqN+7xXIiozjhTm+sRwpeTgIzyEtZlcMfzHkMeLqUaoaJDiL+yeRshFnlJP
-         8tEjXlkCteliDiJgFURaSDVkKeSGLtqIXO58ZoShikuXITY/faC8qcI41P7kWR3gPisS
-         vylFAsOX60+9GjzUV+HKnzzlysifARxWbZe133BYZ6HAF8KMKFXp5PhvdVe4B/wccGF4
-         UZvsAT+kxwsCgmjeAChOFeKM6k1I5moS6BwCbHqBnp1k6nUSB4VVsOs4FF7ttABdQU8d
-         OLDvv42LDjcfqRAlBxuCW3Yn/NGZVx5WdRmM36vl+TrRyqhGocaUM+Un2mBRqyYNOhI7
-         PCLA==
-X-Forwarded-Encrypted: i=1; AJvYcCXzMYxZ8TXzKKhCsXwZwBd63GMnVV+lZLbP0vp0PbQrIvd6Cj8ojMWDYi8dUSVXYpIJsxBswZmvsCO99E0o7DpHug6zCP1KJlzM3G31OrGC3aWcQscFGP9b3d46vz5KOwSEndSIx8N0
-X-Gm-Message-State: AOJu0YzK3rhl+6cN982zFwYJs1JD9mTNbFodudgvfHuzgiXkoR70vD1V
-	pR//8AZ6eTWA31JijEDsw62DZNnQjbupSU2pUQvlWFUXXyOhKZx+
-X-Google-Smtp-Source: AGHT+IEq6l34HhXrnlWLRvGM2v0fq27OL/+bpjCQdVA04/gtddmggIC7N+1G0ngNMVw4U02/TUo3ZA==
-X-Received: by 2002:a50:d7cc:0:b0:578:33f1:dafb with SMTP id 4fb4d7f45d1cf-578518ec3e4mr9976662a12.4.1716970168941;
-        Wed, 29 May 2024 01:09:28 -0700 (PDT)
-Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-579ced17435sm4346473a12.53.2024.05.29.01.09.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 01:09:28 -0700 (PDT)
-Message-ID: <73d7ba0e54a93696aa2c8cab3e6599038bddf533.camel@gmail.com>
-Subject: Re: [PATCH] iio: dac: ad9739a: drop COMPILE_TEST option
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Arnd Bergmann <arnd@arndb.de>, Arnd Bergmann <arnd@kernel.org>, Jonathan
- Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Nuno =?ISO-8859-1?Q?S=E1?=
- <nuno.sa@analog.com>, Dragos Bogdan <dragos.bogdan@analog.com>, Anshul
- Dalal <anshulusr@gmail.com>, Andrea Collamati <andrea.collamati@gmail.com>,
-  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 29 May 2024 10:09:28 +0200
-In-Reply-To: <81ec1d1a-d8de-47e4-a5d4-eeaaf1e806a2@app.fastmail.com>
-References: <20240528121304.3695252-1-arnd@kernel.org>
-	 <539a815398a3c991c1bc1a53967fbcba282dfe3b.camel@gmail.com>
-	 <81ec1d1a-d8de-47e4-a5d4-eeaaf1e806a2@app.fastmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
+	s=arc-20240116; t=1716970425; c=relaxed/simple;
+	bh=72XwbfWX0JNfftZ8PPXFHNsSZEHdXiNIRoGnHXe6D44=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R9U4yjF0NIDqRVtOFOaq9b1+5twmxF2aT+VtWlx2o43K6PtlcoK34PXGI4cLc+QyKDojNr5gT2WDSyEKfOH4hTpbnbeapj61dnf/3BIJLr7dtkY27eBq/qmh81ZW4YefaULEkKLpPJcT8K4EW1f6vz0AVlKkHNPetuA5aRdw818=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=SxmSPn+O; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1716970422; x=1748506422;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=72XwbfWX0JNfftZ8PPXFHNsSZEHdXiNIRoGnHXe6D44=;
+  b=SxmSPn+O8tOjGwG8kwe/2/REZa1dwij+e1jxSmZeB/nZ09XTr7la4gsN
+   DnEbdakaqO+2pxOTJeY8aOnvEGD8fL/asW/S9NqyijW39vXo0RLq/VYGO
+   r50I1lTfPgOKK6o1ee5vjkkHp0jzoSiKjMTIgV3IchwADJw6UdZmLEjhK
+   lwfz2neYEkB6NNj9OChzNgOcB7xcqK7GMwn6B5KSiNyw5QU9aj9Iw6fKr
+   XDJTmTF6fVat+dIaMNJE8ORiO5uVHQOxdR4SDXG7G77a2pl0aX++GJNJC
+   DRbvdCgZpLQ9G/lr1/YXAfwmjxsC+NSAVL29AzIFTsurAWSlHAu71fxK0
+   Q==;
+X-CSE-ConnectionGUID: 93YC8SPlT/GvXrqhb2YOdA==
+X-CSE-MsgGUID: txZTcmdLTX6G4a1LPMLe5A==
+X-IronPort-AV: E=Sophos;i="6.08,197,1712646000"; 
+   d="asc'?scan'208";a="194082660"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 29 May 2024 01:13:41 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.35; Wed, 29 May 2024 01:13:28 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex02.mchp-main.com (10.10.85.144)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
+ Transport; Wed, 29 May 2024 01:13:25 -0700
+Date: Wed, 29 May 2024 09:33:10 +0100
+From: Conor Dooley <conor.dooley@microchip.com>
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+CC: Conor Dooley <conor@kernel.org>, David Lechner <dlechner@baylibre.com>,
+	Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Nuno =?iso-8859-1?Q?S=E1?=
+	<nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>,
+	Martin Sperl <kernel@martin.sperl.org>, <linux-spi@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-iio@vger.kernel.org>
+Subject: Re: [PATCH RFC v2 1/8] spi: dt-bindings: spi-peripheral-props: add
+ spi-offloads property
+Message-ID: <20240529-quicksand-pulp-9926fc45a294@wendy>
+References: <20240514-aspire-ascension-449556da3615@spud>
+ <CAMknhBFFpEGcMoLo5gsC11Syv+CwUM0mnq1yDMUzL1uutUtB+Q@mail.gmail.com>
+ <20240516-rudder-reburial-dcf300504c0a@spud>
+ <CAMknhBF_s0btus4yqPe-T=F3z7Asi9KkRGsGr7FHDFi=k4EQjw@mail.gmail.com>
+ <20240519-abreast-haziness-096a57ef57d3@spud>
+ <CAMknhBHvEse2FyDoBXR1PvymGpSGq8dotKfm+8XH+0+k+xKtQw@mail.gmail.com>
+ <20240522-gullible-ibuprofen-cf9111c25f6f@spud>
+ <5ad0b5782434eaf4cf565cffb0e4c14b7414ae38.camel@gmail.com>
+ <20240526-peculiar-panama-badda4f02336@spud>
+ <10991373cb9603803df63d8236c475807f6dde68.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="rbQyeM2lc/f5W732"
+Content-Disposition: inline
+In-Reply-To: <10991373cb9603803df63d8236c475807f6dde68.camel@gmail.com>
 
-On Wed, 2024-05-29 at 09:23 +0200, Arnd Bergmann wrote:
-> On Wed, May 29, 2024, at 09:20, Nuno S=C3=A1 wrote:
-> > On Tue, 2024-05-28 at 14:12 +0200, Arnd Bergmann wrote:
-> > > From: Arnd Bergmann <arnd@arndb.de>
-> > >=20
-> > > Build testing without SPI results in a warning:
-> > >=20
-> > > WARNING: unmet direct dependencies detected for REGMAP_SPI
-> > > =C2=A0 Depends on [n]: SPI [=3Dn]
-> > > =C2=A0 Selected by [m]:
-> > > =C2=A0 - AD9739A [=3Dm] && IIO [=3Dm] && (SPI [=3Dn] || COMPILE_TEST =
-[=3Dy])
-> > >=20
-> > > There is no need for this particular COMPILE_TEST option, as allmodco=
-nfig
-> > > and randconfig testing can just assume that SPI is enabled separately=
-.
-> > >=20
-> > > Drop it to avoid the warning.
-> > >=20
-> > > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> > > ---
+--rbQyeM2lc/f5W732
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Wed, May 29, 2024 at 10:07:37AM +0200, Nuno S=E1 wrote:
+> On Sun, 2024-05-26 at 18:35 +0100, Conor Dooley wrote:
+> > On Thu, May 23, 2024 at 02:15:35PM +0200, Nuno S=E1 wrote:
+> > > On Wed, 2024-05-22 at 19:24 +0100, Conor Dooley wrote:
 > >=20
-> > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> > > >=20
+> > > > To remind myself, "Application 2" featured an offload engine design=
+ed
+> > > > specifically to work with a particular data format that would strip=
+ a
+> > > > CRC byte and check the validity of the data stream.
+> > > >=20
+> > >=20
+> > > I think the data manipulation is not really a property of the engine.=
+ Typically
+> > > data
+> > > going out of the offload engine goes into another "data reorder" bloc=
+k that is
+> > > pure
+> > > HW.
+> > >=20
+> > > > I think you're right something like that is a stretch to say that t=
+hat
+> > > > is a feature of the SPI controller - but I still don't believe that
+> > > > modelling it as part of the ADC is correct. I don't fully understan=
+d the
+> > > > io-backends and how they work yet, but the features you describe th=
+ere
+> > > > seem like something that should/could be modelled as one, with its =
+own
+> > > > node and compatible etc. Describing custom RTL stuff ain't always
+> > > > strightforward, but the stuff from Analog is versioned and document=
+ed
+> > > > etc so it shouldn't be quite that hard.
+> > > >=20
+> > >=20
+> > > Putting this in io-backends is likely a stretch but one thing to add =
+is that the
+> > > peripheral is always (I think) kind of the consumer of the resources.
 > >=20
-> > Only for my understanding. When does COMPILE_TEST makes sense to add?
+> > Could you explain you think why making some additional processing done =
+to
+> > the data an io-backend is a stretch? Where else can this RTL be
+> > represented? hint: it's not part of the ADC, just like how if you have
+> > some custom RTL that does video processing that is not part of the
+> > camera!
 >=20
-> The most common use is to enable building a driver
-> that is platform specific on x86 allmodconfig
-> or on randconfig, e.g.
->=20
-> config LPC18XX_DAC
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tristate "NXP LPC18xx DAC driv=
-er"
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on ARCH_LPC18XX || COM=
-PILE_TEST
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on HAS_IOMEM
->=20
-> Since ARCH_LPC18XX is only visible on arch/arm, the
-> driver would never be build tested on anything else
-> without the ||COMPILE_TEST.
+> Maybe we are speaking about two different things... I do agree with the v=
+ideo
+> processing example you gave but for this case I'm not sure there#s any da=
+ta
+> manipulation involved. i mean, there is but nothing controlled by SW at t=
+his point.
+> Or maybe there's already a future usecase that I'm not aware about (maybe=
+ the CRC
+> stuff David mentioned).
 
-Makes sense... Thanks!
+Yes, this was about the CRC or other additional processing - the quoted
+text should really make this clear.
 
-- Nuno S=C3=A1
+--rbQyeM2lc/f5W732
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZlboQQAKCRB4tDGHoIJi
+0kz3AP0Tzr065+W35OM/7KhesmbmeL+xHVzJPcC/rRlOigC+FAEA4EI9ewuesuPF
+gSK62N0YxbrnLdbpWvhRMnxNLjRDlAs=
+=Vc5B
+-----END PGP SIGNATURE-----
+
+--rbQyeM2lc/f5W732--
 

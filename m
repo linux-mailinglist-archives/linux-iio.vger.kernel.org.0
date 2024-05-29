@@ -1,388 +1,1123 @@
-Return-Path: <linux-iio+bounces-5450-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5451-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DFE98D3A33
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 17:02:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0ACD8D3A44
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 17:04:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C29141F2886C
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 15:01:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56F3C282FC3
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 15:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE77E17F368;
-	Wed, 29 May 2024 15:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC5517BB14;
+	Wed, 29 May 2024 15:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="PzzwPbDK"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="WFyVz7xo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0b-00128a01.pphosted.com [148.163.139.77])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB34F17B4FD;
-	Wed, 29 May 2024 15:01:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.139.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716994902; cv=fail; b=IhAiGJgRbY0F3NRHUBSwVC/C0AEx7MrP5fW82dNVdAFkewurkIg8nRWLI6W0bDgIG8Ps7kwyirzvCaBL50KB9XvV2s2KdNp6tJZk2sl4OVAmZSBhq4d+oG3sduE6sJAxMSBe7+d0EEpt56l47bg9IhBpdTXD2jxWnnl5XOs520Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716994902; c=relaxed/simple;
-	bh=l43uUy4lL38jQUgiK8lFhom1JOd4nl4XBj266kG+Geo=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=EYEXb9uAnHCaGjBhnG7ltBgRT3XHANGyx7FKb25H8geV63tzhXxaJ9x8b392o1TMO8m0U9Tl80yYZezxhEU/9k9JPLL1Rqlrjyk3aoTqyBlu88gKUk9zoBZOvzLpYF9lDPfPMBPafr12ayQg2UmBzulGqNV2HXFdAUYP6DTTeHA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=PzzwPbDK; arc=fail smtp.client-ip=148.163.139.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EB7157A43;
+	Wed, 29 May 2024 15:04:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716995073; cv=none; b=NDZKHVbgrJsqrL0jO160qxc2OOYZnpnch6UNs5NtuXi7cmwYkfVMkS5ON1dszpRef+TM72W0PfPAFv5HM31+7muk9HhHj2/7hPYTMrcvjhvdFTsWc+MlsPvJ+Y4JJ74Zhsi2i9ML+riNt8LW77GaTelJ+MHt8V/tqZ7yiaR5XIc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716995073; c=relaxed/simple;
+	bh=AyHuCGfPJOUP1fLJOfHWT7F8ZQrpAMK9KYfxKwdLq8g=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eKh9Lk17ssNAA2iDbbZprqRpscNS4NjYFePYzvhfd4kdR3G5KzQQY6C6DUNDnqiZHmnBVuUuxjSwCX1d09JNFJ4U/cUsQzMY4Sk2JKdl9z0CJJxO+3eP+bJZuviVlZgo5Pe96vawuLwS/oC3ejNOzy+YQMe6dlhRGJEvbb0XjTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=WFyVz7xo; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167091.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44TCdOZF016234;
-	Wed, 29 May 2024 11:01:10 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44TC4TCm021425;
+	Wed, 29 May 2024 11:04:04 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=QvuYJ
-	ETYxxPkzEiecl8CG8W0Rp2CA/Ajkyy46sphypM=; b=PzzwPbDKBSDLqS6ucmuPO
-	do8VeIqyrGhNsAoEnJGM5Beg+Rk/oJQkGq/C6zTJx+JlqWsXsx/y/vNIUNGTzz0I
-	0n+a5k+TY7PoPBuy0xVVtL6aD/+DndL32wiKKZzMweRhDPI+4Z0rMOA1tJ3WVfvh
-	KDdRLzlewlMSwQV9KIHv/36dsJV8n0Av1TECpkrZ8cEhEMY8IjCmjs/ia4w8awKV
-	Hlp1c1ky2uD85VY20Yi2jqOc7rlDMcL5xwMvDSO6n6guMssAAvRCEggxj3dWLrqY
-	eWDT4hJuEO5llpvRLOHHKEa6WaV59KZwnsGo4Pq/WZbWlJACLw4efszzZEKeWI0Y
-	Q==
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2048.outbound.protection.outlook.com [104.47.66.48])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3ybvu24bck-1
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=SAvd1hkmUnfjHIfHiWInW+kfuUR
+	3Gdle0GlOGtgMu4I=; b=WFyVz7xoWrcJqJKNKDwZvwS8GJEIosDyR+lhPWBu9jL
+	kgn7iroz4sZx3bPOut+ss8DdEqGCrZlH98U4tbK7NTTo6nrtiHnTMyIY6lbzXjGX
+	jdQPTmM9zZwFUIXzKSHG5H30UElGroxGIQygV2hXylJ26ngbhH5cwYdO7F/6cA1u
+	ZOxuIFU+atWIEVBqMFyT6yYgyxXA42mSgHI+p+ryCM7lomQYqsmzgn1Ampw6qhhd
+	HnO0Kyi/CB9iGVzUyjQLpN2YJjaJY7CQ8JdqaJ/L0FUzlvQ4AGGhvV1PAJyJ1MHG
+	1VDMnecWwWEJW9RcWNzTkpynkFiG6ML9lHrPAp1KHFw==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ybcw2fcnb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 May 2024 11:01:09 -0400 (EDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=FQhQ1Xu760O0skcUIGycZJIKeThKWRrhFsIqZXnplchTQFFdGaU0qZbB1ai4Gwkhne3vBvhTLlYMZ+jdn1yegND+QiD1xxLQ/jYKdA09Z+lsDQYU8A1T/TPJshLApnuZG2d6ue76uTOtdz3KcbDOD5i9ZibbXRYq61/uK+LeYi/JslXYpbBLoFfFc+Qeb8SfCEfxojR+XuUlPsNgMFRFcYIGID79rAjMjDniTtYYPT6L+nx2KYc9mXG3lhXfGXKfWnx4t2Qv/UiEmOjJjd9eKsFQXwHaltThUmQaqp9+0DlBNcY1jXa8EYs1GjYCwqsEkS4yS/AgePa5OFgKQNFQMw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QvuYJETYxxPkzEiecl8CG8W0Rp2CA/Ajkyy46sphypM=;
- b=cuz2264Xmdxhws3bFxJmJfLiVP+O1Vd3XMlQFmOWYIFT0kfSIB71P7zCmZFfk2qk1E8l3rkihjo8BJbON2kGosusAkd3pZrw8lJn0xZsAGWMBwpuaKgT5y//e99csyYTdAAWggYo4k+GXnWRLmoxV2blWao178aW06HQ9LnEOe1t1aK9SkWSYdlSwWAWarvlKDLe3UMz204zMfV7omhWuLtnEdPjnGktFfE2TnQJ9wMPUzPmSUBSfHUgjzefI1/W5XnxC6F0/eT7hLaWf6yhgnrpdjZqTY/A5OnVpzvsvKWCXXw6GieTncz1QbFUPnMX6PP19i22els2IKF8qGwwow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-Received: from SN6PR03MB4320.namprd03.prod.outlook.com (2603:10b6:805:fd::16)
- by SN7PR03MB7086.namprd03.prod.outlook.com (2603:10b6:806:354::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.27; Wed, 29 May
- 2024 15:01:06 +0000
-Received: from SN6PR03MB4320.namprd03.prod.outlook.com
- ([fe80::90b:c25c:720f:7b7f]) by SN6PR03MB4320.namprd03.prod.outlook.com
- ([fe80::90b:c25c:720f:7b7f%4]) with mapi id 15.20.7611.025; Wed, 29 May 2024
- 15:01:06 +0000
-From: "Nechita, Ramona" <Ramona.Nechita@analog.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-CC: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	Wed, 29 May 2024 11:04:03 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 44TF42lC023383
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 29 May 2024 11:04:02 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 29 May 2024 11:04:00 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Wed, 29 May 2024 11:04:00 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 29 May 2024 11:04:00 -0400
+Received: from HYB-hYN1yfF7zRm.ad.analog.com ([10.32.223.167])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 44TF3cD6009108;
+	Wed, 29 May 2024 11:03:41 -0400
+From: ranechita <ramona.nechita@analog.com>
+To: <linux-iio@vger.kernel.org>
+CC: ranechita <ramona.nechita@analog.com>,
         Jonathan Cameron
 	<jic23@kernel.org>,
         Lars-Peter Clausen <lars@metafoo.de>,
-        "Hennerich,
- Michael" <Michael.Hennerich@analog.com>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        "Sa, Nuno" <Nuno.Sa@analog.com>,
-        Marius
- Cristea <marius.cristea@microchip.com>,
-        "Schmitt, Marcelo"
-	<Marcelo.Schmitt@analog.com>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        "Mark
+ Brown" <broonie@kernel.org>,
+        Andy Shevchenko
+	<andriy.shevchenko@linux.intel.com>,
+        Nuno Sa <nuno.sa@analog.com>,
+        "Marcelo
+ Schmitt" <marcelo.schmitt@analog.com>,
+        Marius Cristea
+	<marius.cristea@microchip.com>,
         Maksim Kiselev <bigunclemax@gmail.com>,
-        Ivan
- Mikhaylov <fr0st61te@gmail.com>,
-        Marcus Folkesson
-	<marcus.folkesson@gmail.com>,
-        Liam Beguin <liambeguin@gmail.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] drivers: iio: adc: add support for ad777x family
-Thread-Topic: [PATCH] drivers: iio: adc: add support for ad777x family
-Thread-Index: AQHarD+43ERipWM1gkKh9ZW8mJCjp7GjTUqAgAsEBnA=
-Date: Wed, 29 May 2024 15:01:06 +0000
-Message-ID: 
- <SN6PR03MB432071701D6A19C3B4C0C33FF3F22@SN6PR03MB4320.namprd03.prod.outlook.com>
-References: <20240522120005.18197-1-ramona.nechita@analog.com>
- <Zk3-qxCb0zfR440Q@smile.fi.intel.com>
-In-Reply-To: <Zk3-qxCb0zfR440Q@smile.fi.intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-rorf: true
-x-dg-ref: 
- =?us-ascii?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNccm5lY2hpdGFc?=
- =?us-ascii?Q?YXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZiODRi?=
- =?us-ascii?Q?YTI5ZTM1Ylxtc2dzXG1zZy00NDk4ZTRjZS0xZGNjLTExZWYtYmIwYy0wMGUw?=
- =?us-ascii?Q?MjIzZWY3NGRcYW1lLXRlc3RcNDQ5OGU0ZDAtMWRjYy0xMWVmLWJiMGMtMDBl?=
- =?us-ascii?Q?MDIyM2VmNzRkYm9keS50eHQiIHN6PSI3NTk2IiB0PSIxMzM2MTQ2ODQ2NDM2?=
- =?us-ascii?Q?OTk3OTQiIGg9ImcrRFdKVUV1K1RNZkk0TFB1K2hjb0tzVDdHST0iIGlkPSIi?=
- =?us-ascii?Q?IGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk5DZ1VBQUVvQ0FB?=
- =?us-ascii?Q?QlNyUFlHMmJIYUFTcmVyREdPVEU5V0t0NnNNWTVNVDFZREFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFFQUFRQUJBQUFBM0xoU2ZnQUFBQUFBQUFBQUFBQUFBSjRBQUFCaEFHUUFh?=
- =?us-ascii?Q?UUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QUc4QWFnQmxBR01BZEFCekFG?=
- =?us-ascii?Q?OEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFhUUIwQUdrQWRnQmxBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUVBQUFBQUFBQUFBZ0FBQUFBQW5nQUFBR0VBWkFCcEFGOEFjd0JsQUdNQWRR?=
- =?us-ascii?Q?QnlBR1VBWHdCd0FISUFid0JxQUdVQVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURF?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FB?=
- =?us-ascii?Q?QUFBQUNlQUFBQVlRQmtBR2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dC?=
- =?us-ascii?Q?dkFHb0FaUUJqQUhRQWN3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?us-ascii?Q?QUFBQUFBQUFBQUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21l?=
- =?us-ascii?Q?dGE+?=
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR03MB4320:EE_|SN7PR03MB7086:EE_
-x-ms-office365-filtering-correlation-id: c8f38b10-4293-4ba3-43df-08dc7ff02abd
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: 
- BCL:0;ARA:13230031|366007|7416005|376005|1800799015|38070700009;
-x-microsoft-antispam-message-info: 
- =?us-ascii?Q?jyVhrVj2EdDBpdxW7QbhJ/t4jOL6dQAQENCJqWT65R5Yp1XtG6bXN/cyaJL3?=
- =?us-ascii?Q?nSG6PEO9klvApm3eDWKZYSE0NjWdjwUyn/YyDSkntKgx6fyMervJPV862CoU?=
- =?us-ascii?Q?/nQGpwwUZDYuugFE7x7ilRLNYorvmUWddBtXcL2uz5kK0JUkPzO9vs4YZNjB?=
- =?us-ascii?Q?B/mEGUzBfI23jTpPVAlb4HQInF0RyPbSP85KP70O52aV4gMo+cOR6fnEWjhH?=
- =?us-ascii?Q?Ase1YSCPaut+aNVaqGuU8IKkMJZiIMAmJR9j2LUBlLFJwqsJRkwT099WUpfa?=
- =?us-ascii?Q?T5WuOAQ5Kg1WhaszBjdX1yDiAZxyAD72hWYMRnoOI4WikLK70Bz3BNBVQ1N6?=
- =?us-ascii?Q?oL4H3z7SHia/sR2YcgL7Y3BaeJa3L3dav+pHXZzjqBsw6HFw9AVqgUpcsX+5?=
- =?us-ascii?Q?ydbdU6J58CbWekV7arSbprzWx8g5i+HrlkUcHL8lFanvIDkMkUnzwqM4b1/j?=
- =?us-ascii?Q?KCustb6nGOIpZhNGA+FqiOFEsKowgMKfQaqKRul5ngmrBYFyF0hRQGRSSUIG?=
- =?us-ascii?Q?YAFoD38MmF6CperD20rbRttObWMn1bOtFMAscA0ET5qu1n+faakc6f+C44ZW?=
- =?us-ascii?Q?B3C/x+FaohMgLD8W1azQde1ggFwpwhLIE0AnooPhzn1F+v1yXRhOnLGG0EZ/?=
- =?us-ascii?Q?ZyPFXGupEa5dn5t+j+RfLV83PbXZEvVgChkGWLMSop3xNhlO50y8m5yS4+RL?=
- =?us-ascii?Q?eKiQPvNAtW/AKagza7giSXpZvk/LYiQKJkcKNmBd5jTJUqzunCiIQeO9W9fW?=
- =?us-ascii?Q?S4ASQ6H60xOZs1r1sVAPPVyMYnnou4PCWaTmRmvEknBUNg2v/kVdXK/LnD21?=
- =?us-ascii?Q?oBq5uozM6iNZ1ykgxGiwkCw/+LDM2stbY2uOakaaDFFClBItCrIKFYYv2abE?=
- =?us-ascii?Q?dbGPruAnPyH2Cm2lStDq2Dnw5B98LrvJ+MfuYWUQDrFVpZ9CgRc4jMWBpIWh?=
- =?us-ascii?Q?PuZ40b74yf8xOUMAF2F4MOO2u9jGbE94fhbwQO6rLbJSwRu0WKxzEspRodHL?=
- =?us-ascii?Q?QFTBRDqVPam8KKZqEOlQVrxGPN5kVPOLFKZpTElEa2iXc62teoxqTK3PRrde?=
- =?us-ascii?Q?JyfX7JIwORbdvo3MHwlLMahElGI6tpmtDnnKS+ymmm9v4dV7BEsOlobhqAAN?=
- =?us-ascii?Q?V7LPaEEdx/XyP3Q4L8IG4SQWYgTMSQ98lZiQRr6VgvKNvWURrMTAwOQ4ADGI?=
- =?us-ascii?Q?vikQ5TGlvTzElrlXbj9gqjb7oQ0O/TS3Rz3Xv/CO/Jgz4IGSecCJ07a8Aa/e?=
- =?us-ascii?Q?3aVUPNLSE4Q3565kVCRjpSc8fjz0bmEKINdWqyrxkFIJBY4LzOU7uURT0Hpm?=
- =?us-ascii?Q?2xxoPPXpbE05yRMnQfc8TbWWw1PIxzcyoIgm/F3FT1mUKg=3D=3D?=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN6PR03MB4320.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(366007)(7416005)(376005)(1800799015)(38070700009);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?us-ascii?Q?gV1CUSwNN6z3xLCbQJxC2WkqWTxhCBvcMAjpKf3Ht5dFj4XcF/u4mUW+2ZRH?=
- =?us-ascii?Q?qUlAjbT6RRkMTqs46HapZOr9c75oudqyQCxEmzc4JimCGxYAmMbCv7vt7lPb?=
- =?us-ascii?Q?zONxym+cdZXy2PBozjzWbhYKpS9Ch0Q2j1MHTQgOHV5A3OK87lOIzyuUquhf?=
- =?us-ascii?Q?uCrXkQkC+OJ23Z0kFxepAB0I7yt8IHnY+FBlpwNjaHfDvJYgESLmWuoPV+7s?=
- =?us-ascii?Q?71+KCRBqXpFy2UnQjN/Uj4nzy8kYPBtt7aKaLtB2Lf270qALZhRMvjA3RzPa?=
- =?us-ascii?Q?Y/MJ18wR3QC0pnv15y3EkXvtRpg7apBuzbDB4RfAj9CX01L/0OGKGfd/Usdw?=
- =?us-ascii?Q?qECEbmKPxYS+UnuEo1F7UbGCopG/BPOKE/bK4QpOg956RiqNXuCM+qA+9pge?=
- =?us-ascii?Q?jOycPyg13Dd4GmqSYj84Ag88raqz2i2BIxHGZ5ARhSysHVn0nCpw/Nt1VD9O?=
- =?us-ascii?Q?Vh051nr42zSA4mbiF46BWhHBo7megxSZDmkVDitwcxWMHJV3uL2DZVO2iBNT?=
- =?us-ascii?Q?VV7ljaOIHgfE22arP9/L9ptiikL3pxQJo45mw6dfFz9oGLNxuU4MXmH2RTa9?=
- =?us-ascii?Q?MWFTpL9emwt5pvbxVFAlazZQIFOUqXggM4IrvCsdQcV0bbkCJvsbDgSaTD6V?=
- =?us-ascii?Q?qKefULvKkKLJZWqtUYmryOK3NV8QaFvFsf+ykn2vDmZ7B8IwYBzEWnRN0nQP?=
- =?us-ascii?Q?OmGTvqO3Usar23OwlRDmUGbAGJmX8s1Q/DbHURS+CK1T2JoaDi2lZsvYCLe/?=
- =?us-ascii?Q?7q64h5kMTy90QNr94x3oZzzZ5+k7SXjMUDSgJ49LuAhqDoT5c7kZ9kosurRG?=
- =?us-ascii?Q?FF9h1h4fA+lv58YK1dQMPP/QTkafDhkZCwrskIRIUTkNcA6q33XHzKsl2Kj5?=
- =?us-ascii?Q?SQFoLpKMOiTOWr2QOk5FNV6jskiOCdElkeuu07FIRes0NbMO/7sQN4XkeaYq?=
- =?us-ascii?Q?sCQC+D7HMfw/25rgpLOBul+yP0ADx58mBbN02tBZNraZtnwkY/WsfgtYSYSe?=
- =?us-ascii?Q?L7kwcTyXoUZrB3+T7n/kz5yD5xS4NBc0n03tW4JeHZv6dVvpR1uNcW4g+8wl?=
- =?us-ascii?Q?lMNsgLyLvo/cbGkvIgbQE3iVpykuQ089DxWGAlP83gGphd2yQfuK/eKbLrJi?=
- =?us-ascii?Q?fwJquj2VAwgXYf2uLdkUNJHF2l7LE5wxNUEdJxgoqAe5dgsfpsSXzoZihGmx?=
- =?us-ascii?Q?JgJw+MrjbcLmoQVCu68hg7ImZNTbmKtNshpl5eqvJ4Rp3Ugzn+fJyNDLzFZ8?=
- =?us-ascii?Q?M3dEfzHMoQjXr5jta4psci7C+x+4RX1XKkTfzXEqoABE+HbCZGSDo6PXHeWd?=
- =?us-ascii?Q?cEI76Mp1F2OAbym9fdLkAUhqYRkDtR3A0Bw/CE2boeGmNp7DRMTazdrn81bq?=
- =?us-ascii?Q?RBhY2XA6KketlTAw5r6JEolArsn1YBIHGqTwROIaf+4WUaeIZTB5yNp7+SXh?=
- =?us-ascii?Q?ytZZ7m4lzovje1LT7dvKIuj0RAPwnvNgMFtJzhcs0cqCWwI8vQA77omrfA2b?=
- =?us-ascii?Q?rEHswhz5H7Btvg/kyx9jt3dFY7/kLaA+Odyx+FE7TtCXQ3yvd1NESoL0C2/k?=
- =?us-ascii?Q?irVybltmNmMlvMxC8AF8PZrK0Hk+/eIJcvy0Agf3?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        Marcus Folkesson <marcus.folkesson@gmail.com>,
+        Okan Sahin
+	<okan.sahin@analog.com>,
+        Mike Looijmans <mike.looijmans@topic.nl>,
+        "Liam
+ Beguin" <liambeguin@gmail.com>,
+        Ivan Mikhaylov <fr0st61te@gmail.com>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2] drivers: iio: adc: add support for ad777x family
+Date: Wed, 29 May 2024 18:03:09 +0300
+Message-ID: <20240529150322.28018-1-ramona.nechita@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR03MB4320.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c8f38b10-4293-4ba3-43df-08dc7ff02abd
-X-MS-Exchange-CrossTenant-originalarrivaltime: 29 May 2024 15:01:06.5176
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: pA1eQwo0jno8HbPd8ZkpZknhQO72t/mpr2ywYeLtOQvlzQYUeJjvhqKjOjxu8tTV8NKrCbeRkMq61X4AJzx4YyUMfQwzakczntRx2Q77OV4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR03MB7086
-X-Proofpoint-GUID: 2OwRLKIVvF017WC59Bnsj78Dj_JpLaSE
-X-Proofpoint-ORIG-GUID: 2OwRLKIVvF017WC59Bnsj78Dj_JpLaSE
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: MMTPZK4UZj7DYr3MX-vr9zUaWfYQX39x
+X-Proofpoint-GUID: MMTPZK4UZj7DYr3MX-vr9zUaWfYQX39x
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
  definitions=2024-05-29_11,2024-05-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- phishscore=0 mlxscore=0 mlxlogscore=999 adultscore=0 spamscore=0
- clxscore=1015 suspectscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2405170001 definitions=main-2405290103
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ suspectscore=0 mlxlogscore=999 bulkscore=0 phishscore=0 lowpriorityscore=0
+ spamscore=0 clxscore=1011 mlxscore=0 impostorscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2405290104
 
-Hello,=20
+Added support for ad7770,ad7771,ad7779 ADCs. The
+data is streamed only on the spi-mode, without
+using the data lines.
 
-Thank you for the review. I implemented most of your comments, excepting so=
-me things that were slightly unclear to me or I had a different explanation=
-. I left a couple of comments below, and I will send a new patch in a separ=
-ate email.
+Signed-off-by: ranechita <ramona.nechita@analog.com>
+---
+ drivers/iio/adc/Kconfig  |  11 +
+ drivers/iio/adc/Makefile |   1 +
+ drivers/iio/adc/ad7779.c | 951 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 963 insertions(+)
+ create mode 100644 drivers/iio/adc/ad7779.c
 
->On Wed, May 22, 2024 at 02:59:53PM +0300, ranechita wrote:
->> Added support for ad7770,ad7771,ad7779 ADCs. The data is streamed only=20
->> on the spi-mode, without using the data lines.
->
->> ---
->
->Please, explain here, in the comment area, why any existing driver can not=
- be reused (extended) for these ADCs.
->
->...
->
->> +#include <linux/gpio.h>
->
->This header must not be in the new code.
->
->...
->
->> +#define AD777X_SINC3_MAXFREQ			16000
->> +#define AD777X_SINC5_MAXFREQ			128000
->
->HZ_PER_KHZ ? You will need units.h.
->
->...
->
->> +#define DEC3					1000
->> +#define DEC6					1000000
->
->NIH some of units.h constants. Use them.
->
->...
->
->
->> +	/*
->> +	 * DMA (thus cache coherency maintenance) requires the
->> +	 * transfer buffers to live in their own cache lines.
->> +	 */
->> +	u8			reg_rx_buf[3] ____cacheline_aligned;
->> +	u8			reg_tx_buf[3];
->
->> +	u8			spidata_rx[32];
->> +	u8			spidata_tx[32];
->
->These will not be cache aligned. Is it a problem?
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index 0d9282fa67f5..3e42cbc365d7 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -206,6 +206,17 @@ config AD7768_1
+ 	  To compile this driver as a module, choose M here: the module will be
+ 	  called ad7768-1.
+ 
++config AD7779
++	tristate "Analog Devices AD7779 ADC driver"
++	depends on SPI
++	select IIO_BUFFER
++	help
++	  Say yes here to build support for Analog Devices AD7779 SPI
++	  analog to digital converter (ADC)
++
++	  To compile this driver as a module, choose M here: the module will be
++	  called ad7779.
++
+ config AD7780
+ 	tristate "Analog Devices AD7780 and similar ADCs driver"
+ 	depends on SPI
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index b3c434722364..e25997e926bb 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -24,6 +24,7 @@ obj-$(CONFIG_AD7606_IFACE_SPI) += ad7606_spi.o
+ obj-$(CONFIG_AD7606) += ad7606.o
+ obj-$(CONFIG_AD7766) += ad7766.o
+ obj-$(CONFIG_AD7768_1) += ad7768-1.o
++obj-$(CONFIG_AD7779) += ad7779.o
+ obj-$(CONFIG_AD7780) += ad7780.o
+ obj-$(CONFIG_AD7791) += ad7791.o
+ obj-$(CONFIG_AD7793) += ad7793.o
+diff --git a/drivers/iio/adc/ad7779.c b/drivers/iio/adc/ad7779.c
+new file mode 100644
+index 000000000000..089e352e2d40
+--- /dev/null
++++ b/drivers/iio/adc/ad7779.c
+@@ -0,0 +1,951 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * AD777X ADC
++ *
++ * Copyright 2023 Analog Devices Inc.
++ */
++
++#include <linux/bitfield.h>
++#include <linux/bitmap.h>
++#include <linux/clk.h>
++#include <linux/crc8.h>
++#include <linux/delay.h>
++#include <linux/err.h>
++#include <linux/gpio/consumer.h>
++#include <linux/interrupt.h>
++#include <linux/irq.h>
++#include <linux/module.h>
++#include <linux/regulator/consumer.h>
++#include <linux/spi/spi.h>
++#include <linux/string.h>
++#include <linux/units.h>
++
++#include <linux/iio/iio.h>
++#include <linux/iio/buffer.h>
++#include <linux/iio/kfifo_buf.h>
++#include <linux/iio/sysfs.h>
++
++#define AD777X_SPI_READ_CMD			BIT(7)
++
++#define AD777X_DISABLE_SD			BIT(7)
++
++#define AD777X_REG_CH_DISABLE			0x08
++#define AD777X_REG_CH_SYNC_OFFSET(ch)		(0x09 + (ch))
++#define AD777X_REG_CH_CONFIG(ch)		(0x00 + (ch))
++#define AD777X_REG_GENERAL_USER_CONFIG_1	0x11
++#define AD777X_REG_GENERAL_USER_CONFIG_2	0x12
++#define AD777X_REG_GENERAL_USER_CONFIG_3	0x13
++#define AD777X_REG_DOUT_FORMAT			0x14
++#define AD777X_REG_ADC_MUX_CONFIG		0x15
++#define AD777X_REG_GPIO_CONFIG			0x17
++#define AD777X_REG_BUFFER_CONFIG_1		0x19
++#define AD777X_REG_GLOBAL_MUX_CONFIG		0x16
++#define AD777X_REG_BUFFER_CONFIG_2		0x1A
++#define AD777X_REG_GPIO_DATA			0x18
++#define AD777X_REG_CH_OFFSET_UPPER_BYTE(ch)	(0x1C + (ch) * 6)
++#define AD777X_REG_CH_OFFSET_LOWER_BYTE(ch)	(0x1E + (ch) * 6)
++#define AD777X_REG_CH_GAIN_UPPER_BYTE(ch)	(0x1F + (ch) * 6)
++#define AD777X_REG_CH_OFFSET_MID_BYTE(ch)	(0x1D + (ch) * 6)
++#define AD777X_REG_CH_GAIN_MID_BYTE(ch)		(0x20 + (ch) * 6)
++#define AD777X_REG_CH_ERR_REG(ch)		(0x4C + (ch))
++#define AD777X_REG_CH0_1_SAT_ERR		0x54
++#define AD777X_REG_CH_GAIN_LOWER_BYTE(ch)	(0x21 + (ch) * 6)
++#define AD777X_REG_CH2_3_SAT_ERR		0x55
++#define AD777X_REG_CH4_5_SAT_ERR		0x56
++#define AD777X_REG_CH6_7_SAT_ERR		0x57
++#define AD777X_REG_CHX_ERR_REG_EN		0x58
++#define AD777X_REG_GEN_ERR_REG_1		0x59
++#define AD777X_REG_GEN_ERR_REG_1_EN		0x5A
++#define AD777X_REG_GEN_ERR_REG_2		0x5B
++#define AD777X_REG_GEN_ERR_REG_2_EN		0x5C
++#define AD777X_REG_STATUS_REG_1			0x5D
++#define AD777X_REG_STATUS_REG_2			0x5E
++#define AD777X_REG_STATUS_REG_3			0x5F
++#define AD777X_REG_SRC_N_MSB			0x60
++#define AD777X_REG_SRC_N_LSB			0x61
++#define AD777X_REG_SRC_IF_MSB			0x62
++#define AD777X_REG_SRC_IF_LSB			0x63
++#define AD777X_REG_SRC_UPDATE			0x64
++
++#define AD777X_FILTER_MSK			BIT(6)
++#define AD777X_MOD_POWERMODE_MSK		BIT(6)
++#define AD777X_MOD_PDB_REFOUT_MSK		BIT(4)
++#define AD777X_MOD_SPI_EN_MSK			BIT(4)
++
++/* AD777X_REG_DOUT_FORMAT */
++#define AD777X_DOUT_FORMAT_MSK			GENMASK(7, 6)
++#define AD777X_DOUT_HEADER_FORMAT		BIT(5)
++#define AD777X_DCLK_CLK_DIV_MSK			GENMASK(3, 1)
++
++#define AD777X_REFMUX_CTRL_MSK			GENMASK(7, 6)
++#define AD777X_SPI_CRC_EN_MSK			BIT(0)
++
++#define AD777X_MAXCLK_LOWPOWER			4096000
++#define AD777X_NUM_CHANNELS			8
++#define AD777X_RESET_BUF_SIZE			8
++
++#define AD777X_LOWPOWER_DIV			512
++#define AD777X_HIGHPOWER_DIV			2048
++
++#define AD777X_SINC3_MAXFREQ			(16 * HZ_PER_KHZ)
++#define AD777X_SINC5_MAXFREQ			(128 * HZ_PER_KHZ)
++
++#define AD777X_DEFAULT_SAMPLING_FREQ		(8 * HZ_PER_KHZ)
++#define AD777X_DEFAULT_SAMPLING_2LINE		(4 * HZ_PER_KHZ)
++#define AD777X_DEFAULT_SAMPLING_1LINE		(2 * HZ_PER_KHZ)
++
++#define AD777X_SPIMODE_MAX_SAMP_FREQ		(16 * HZ_PER_KHZ)
++
++#define GAIN_REL				0x555555
++#define AD777X_FREQ_MSB_MSK			GENMASK(15, 8)
++#define AD777X_FREQ_LSB_MSK			GENMASK(7, 0)
++#define AD777X_UPPER				GENMASK(23, 16)
++#define AD777X_MID				GENMASK(15, 8)
++#define AD777X_LOWER				GENMASK(7, 0)
++
++#define AD777X_REG_READ_MSK		GENMASK(6, 0)
++
++#define AD777X_CRC8_POLY			0x07
++DECLARE_CRC8_TABLE(ad777x_crc8_table);
++
++enum ad777x_filter {
++	AD777X_SINC3,
++	AD777X_SINC5,
++};
++
++enum ad777x_variant {
++	ad7770,
++	ad7771,
++	ad7779,
++};
++
++enum ad777x_power_mode {
++	AD777X_LOW_POWER,
++	AD777X_HIGH_POWER,
++};
++
++struct ad777x_chip_info {
++	const char *name;
++	struct iio_chan_spec const *channels;
++};
++
++struct ad777x_state {
++	struct spi_device		*spi;
++	const struct ad777x_chip_info	*chip_info;
++	struct clk			*mclk;
++	struct regulator		*vref;
++	unsigned int			sampling_freq;
++	enum ad777x_power_mode		power_mode;
++	enum ad777x_filter		filter_enabled;
++	unsigned int			active_ch;
++	unsigned int			spidata_mode;
++	unsigned int			crc_enabled;
++
++	/*
++	 * DMA (thus cache coherency maintenance) requires the
++	 * transfer buffers to live in their own cache lines.
++	 */
++	u8			reg_rx_buf[3] ____cacheline_aligned;
++	u8			reg_tx_buf[3];
++	__be32			spidata_rx[8];
++	__be32			spidata_tx[8];
++	u8			reset_buf[8];
++};
++
++static const char * const ad777x_filter_type[] = {
++	[AD777X_SINC3] = "sinc3_filter",
++	[AD777X_SINC5] = "sinc5_filter",
++};
++
++static int ad777x_spi_read(struct ad777x_state *st, u8 reg, u8 *rbuf)
++{
++	int ret;
++	int length = 2;
++	u8 crc_buf[2];
++	u8 exp_crc = 0;
++	struct spi_transfer reg_read_tr[] = {
++		{
++			.tx_buf = st->reg_tx_buf,
++			.rx_buf = st->reg_rx_buf,
++		},
++	};
++
++	if (st->crc_enabled)
++		length = 3;
++	reg_read_tr[0].len = length;
++
++	st->reg_tx_buf[0] = AD777X_SPI_READ_CMD | (reg & 0x7F);
++	st->reg_tx_buf[1] = 0;
++	st->reg_tx_buf[2] = crc8(ad777x_crc8_table, st->reg_tx_buf, 2, 0);
++
++	ret = spi_sync_transfer(st->spi, reg_read_tr, ARRAY_SIZE(reg_read_tr));
++	if (ret)
++		return ret;
++
++	crc_buf[0] = AD777X_SPI_READ_CMD | FIELD_GET(AD777X_REG_READ_MSK, reg);
++	crc_buf[1] = st->reg_rx_buf[1];
++	exp_crc = crc8(ad777x_crc8_table, crc_buf, 2, 0);
++	if (st->crc_enabled && exp_crc != st->reg_rx_buf[2]) {
++		dev_err(&st->spi->dev, "Bad CRC %x, expected %x",
++			st->reg_rx_buf[2], exp_crc);
++		return -EINVAL;
++	}
++	*rbuf = st->reg_rx_buf[1];
++
++	return 0;
++}
++
++static int ad777x_spi_write(struct ad777x_state *st, u8 reg, u8 val)
++{
++	int length = 2;
++	struct spi_transfer reg_write_tr[] = {
++		{
++			.tx_buf = st->reg_tx_buf,
++		},
++	};
++
++	if (st->crc_enabled)
++		length = 3;
++	reg_write_tr[0].len = length;
++
++	st->reg_tx_buf[0] = reg & 0x7F;
++	st->reg_tx_buf[1] = val;
++	st->reg_tx_buf[2] = crc8(ad777x_crc8_table, st->reg_tx_buf, 2, 0);
++
++	return spi_sync_transfer(st->spi, reg_write_tr, ARRAY_SIZE(reg_write_tr));
++}
++
++static int ad777x_spi_write_mask(struct ad777x_state *st, u8 reg, u8 mask,
++				 u8 val)
++{
++	int ret;
++	u8 regval, data;
++
++	ret = ad777x_spi_read(st, reg, &data);
++	if (ret)
++		return ret;
++
++	regval = data;
++	regval &= ~mask;
++	regval |= val;
++
++	if (regval == data)
++		return 0;
++
++	return ad777x_spi_write(st, reg, regval);
++
++}
++
++static int ad777x_reg_access(struct iio_dev *indio_dev,
++			     unsigned int reg,
++			     unsigned int writeval,
++			     unsigned int *readval)
++{
++	struct ad777x_state *st = iio_priv(indio_dev);
++
++	if (readval)
++		return ad777x_spi_read(st, reg, (u8 *)readval);
++
++	return ad777x_spi_write(st, reg, writeval);
++}
++
++static int ad777x_set_sampling_frequency(struct ad777x_state *st,
++					 unsigned int sampling_freq)
++{
++	int ret;
++	unsigned int dec;
++	unsigned int div;
++	unsigned int decimal;
++	int temp;
++	unsigned int kfreq;
++	u8 msb, lsb;
++
++	if (st->filter_enabled == AD777X_SINC3 &&
++	    sampling_freq > AD777X_SINC3_MAXFREQ)
++		return -EINVAL;
++
++	if (st->filter_enabled == AD777X_SINC5 &&
++		sampling_freq > AD777X_SINC5_MAXFREQ)
++		return -EINVAL;
++
++	if (st->spidata_mode == 1 &&
++	    sampling_freq > AD777X_SPIMODE_MAX_SAMP_FREQ)
++		return -EINVAL;
++
++	if (st->power_mode == AD777X_LOW_POWER)
++		div = AD777X_LOWPOWER_DIV;
++	else
++		div = AD777X_HIGHPOWER_DIV;
++
++	kfreq = sampling_freq / KILO;
++	dec = div / kfreq;
++
++	lsb = FIELD_GET(AD777X_FREQ_LSB_MSK, dec);
++	msb = FIELD_GET(AD777X_FREQ_MSB_MSK, dec);
++
++	ret = ad777x_spi_write(st, AD777X_REG_SRC_N_LSB, lsb);
++	if (ret)
++		return ret;
++	ret = ad777x_spi_write(st, AD777X_REG_SRC_N_MSB, msb);
++	if (ret)
++		return ret;
++
++	if (div % kfreq) {
++		temp = (div * KILO) / kfreq;
++		decimal = ((temp -  dec * KILO) << 16) / KILO;
++		lsb = FIELD_GET(AD777X_FREQ_LSB_MSK, decimal);
++		msb = FIELD_GET(AD777X_FREQ_MSB_MSK, decimal);
++
++		ret = ad777x_spi_write(st, AD777X_REG_SRC_IF_LSB, lsb);
++		if (ret)
++			return ret;
++		ret = ad777x_spi_write(st, AD777X_REG_SRC_IF_MSB, msb);
++		if (ret)
++			return ret;
++	} else {
++		ret = ad777x_spi_write(st, AD777X_REG_SRC_IF_LSB, 0x0);
++		if (ret)
++			return ret;
++		ret = ad777x_spi_write(st, AD777X_REG_SRC_IF_MSB, 0x0);
++		if (ret)
++			return ret;
++	}
++	ret = ad777x_spi_write(st, AD777X_REG_SRC_UPDATE, 0x1);
++	if (ret)
++		return ret;
++	fsleep(15);
++	ret = ad777x_spi_write(st, AD777X_REG_SRC_UPDATE, 0x0);
++	if (ret)
++		return ret;
++	fsleep(15);
++
++	st->sampling_freq = sampling_freq;
++
++	return 0;
++}
++
++static int ad777x_get_filter(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan)
++{
++	struct ad777x_state *st = iio_priv(indio_dev);
++	u8 temp;
++	int ret;
++
++	ret = ad777x_spi_read(st, AD777X_REG_GENERAL_USER_CONFIG_2, &temp);
++	if (ret)
++		return ret;
++
++	return FIELD_GET(AD777X_FILTER_MSK, temp);
++}
++
++static int ad777x_set_filter(struct iio_dev *indio_dev,
++			     struct iio_chan_spec const *chan,
++			     unsigned int mode)
++{
++	struct ad777x_state *st = iio_priv(indio_dev);
++	int ret;
++
++	ret = ad777x_spi_write_mask(st,
++				    AD777X_REG_GENERAL_USER_CONFIG_2,
++				    AD777X_FILTER_MSK,
++				    FIELD_PREP(AD777X_FILTER_MSK, mode));
++	if (ret < 0)
++		return ret;
++
++	ret = ad777x_set_sampling_frequency(st, st->sampling_freq);
++	if (ret < 0)
++		return ret;
++
++	st->filter_enabled = mode;
++
++	return 0;
++}
++
++static int ad777x_get_calibscale(struct ad777x_state *st, int channel)
++{
++	int ret;
++	u8 low, mid, high;
++
++	ret = ad777x_spi_read(st, AD777X_REG_CH_GAIN_LOWER_BYTE(channel), &low);
++	if (ret)
++		return ret;
++	ret = ad777x_spi_read(st, AD777X_REG_CH_GAIN_MID_BYTE(channel), &mid);
++	if (ret)
++		return ret;
++	ret = ad777x_spi_read(st, AD777X_REG_CH_GAIN_UPPER_BYTE(channel), &high);
++	if (ret)
++		return ret;
++
++	return FIELD_PREP(AD777X_UPPER, high) | FIELD_PREP(AD777X_MID, mid) |
++	       FIELD_PREP(AD777X_LOWER, low);
++}
++
++static int ad777x_set_calibscale(struct ad777x_state *st, int channel, int val)
++{
++	int ret;
++	u8 msb, mid, lsb;
++	unsigned int gain;
++	unsigned long long tmp;
++
++	tmp = val * 5592405LL;
++	gain = DIV_ROUND_CLOSEST_ULL(tmp, MEGA);
++	msb = FIELD_GET(AD777X_UPPER, gain);
++	mid = FIELD_GET(AD777X_MID, gain);
++	lsb = FIELD_GET(AD777X_LOWER, gain);
++	ret = ad777x_spi_write(st,
++			       AD777X_REG_CH_GAIN_UPPER_BYTE(channel),
++			       msb);
++	if (ret)
++		return ret;
++	ret = ad777x_spi_write(st,
++			       AD777X_REG_CH_GAIN_MID_BYTE(channel),
++			       mid);
++	if (ret)
++		return ret;
++	return ad777x_spi_write(st,
++				AD777X_REG_CH_GAIN_LOWER_BYTE(channel),
++				lsb);
++}
++
++static int ad777x_get_calibbias(struct ad777x_state *st, int channel)
++{
++	int ret;
++	u8 low, mid, high;
++
++	ret = ad777x_spi_read(st, AD777X_REG_CH_OFFSET_LOWER_BYTE(channel),
++			      &low);
++	if (ret)
++		return ret;
++	ret = ad777x_spi_read(st, AD777X_REG_CH_OFFSET_MID_BYTE(channel), &mid);
++	if (ret)
++		return ret;
++	ret = ad777x_spi_read(st,
++			      AD777X_REG_CH_OFFSET_UPPER_BYTE(channel),
++			      &high);
++	if (ret)
++		return ret;
++
++	return FIELD_PREP(AD777X_UPPER, high) | FIELD_PREP(AD777X_MID, mid) |
++	       FIELD_PREP(AD777X_LOWER, low);
++}
++
++static int ad777x_set_calibbias(struct ad777x_state *st, int channel, int val)
++{
++	int ret;
++	u8 msb, mid, lsb;
++
++	msb = FIELD_GET(AD777X_UPPER, val);
++	mid = FIELD_GET(AD777X_MID, val);
++	lsb = FIELD_GET(AD777X_LOWER, val);
++	ret = ad777x_spi_write(st,
++			       AD777X_REG_CH_OFFSET_UPPER_BYTE(channel),
++			       msb);
++	if (ret)
++		return ret;
++	ret = ad777x_spi_write(st,
++			       AD777X_REG_CH_OFFSET_MID_BYTE(channel),
++			       mid);
++	if (ret)
++		return ret;
++	return ad777x_spi_write(st,
++				AD777X_REG_CH_OFFSET_LOWER_BYTE(channel),
++				lsb);
++}
++
++static int ad777x_read_raw(struct iio_dev *indio_dev,
++			   struct iio_chan_spec const *chan,
++			   int *val,
++			   int *val2,
++			   long mask)
++{
++	struct ad777x_state *st = iio_priv(indio_dev);
++	int ret;
++
++	ret = iio_device_claim_direct_mode(indio_dev);
++	if (ret)
++		return ret;
++
++	switch (mask) {
++	case IIO_CHAN_INFO_CALIBSCALE:
++		*val = ad777x_get_calibscale(st, chan->channel);
++		iio_device_release_direct_mode(indio_dev);
++		if (ret)
++			return ret;
++		*val2 = GAIN_REL;
++		return IIO_VAL_FRACTIONAL;
++	case IIO_CHAN_INFO_CALIBBIAS:
++		*val = ad777x_get_calibbias(st, chan->channel);
++		iio_device_release_direct_mode(indio_dev);
++		if (ret)
++			return ret;
++		return IIO_VAL_INT;
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		*val = st->sampling_freq;
++		iio_device_release_direct_mode(indio_dev);
++		if (ret)
++			return ret;
++		return IIO_VAL_INT;
++	}
++
++	iio_device_release_direct_mode(indio_dev);
++
++	return -EINVAL;
++}
++
++static int ad777x_write_raw(struct iio_dev *indio_dev,
++			    struct iio_chan_spec const *chan,
++			    int val,
++			    int val2,
++			    long mask)
++{
++	struct ad777x_state *st = iio_priv(indio_dev);
++
++	switch (mask) {
++	case IIO_CHAN_INFO_CALIBSCALE:
++		return ad777x_set_calibscale(st, chan->channel, val2);
++	case IIO_CHAN_INFO_CALIBBIAS:
++		return ad777x_set_calibbias(st, chan->channel, val);
++	case IIO_CHAN_INFO_SAMP_FREQ:
++		return ad777x_set_sampling_frequency(st, val);
++	default:
++		return -EINVAL;
++	}
++}
++
++static int ad777x_update_scan_mode(struct iio_dev *indio_dev,
++				   const unsigned long *scan_mask)
++{
++	struct ad777x_state *st = iio_priv(indio_dev);
++
++	bitmap_copy((unsigned long *)&st->active_ch, scan_mask, AD777X_NUM_CHANNELS);
++
++	return 0;
++}
++
++static int ad777x_buffer_postenable(struct iio_dev *indio_dev)
++{
++	int ret;
++	struct ad777x_state *st = iio_priv(indio_dev);
++
++	ret = ad777x_spi_write_mask(st,
++				    AD777X_REG_GENERAL_USER_CONFIG_3,
++				    AD777X_MOD_SPI_EN_MSK,
++				    FIELD_PREP(AD777X_MOD_SPI_EN_MSK, 1));
++	if (ret)
++		return ret;
++	enable_irq(st->spi->irq);
++
++	return 0;
++}
++
++static int ad777x_buffer_predisable(struct iio_dev *indio_dev)
++{
++	int ret;
++	struct ad777x_state *st = iio_priv(indio_dev);
++
++	disable_irq_nosync(st->spi->irq);
++	ret = ad777x_spi_write(st,
++			       AD777X_REG_GENERAL_USER_CONFIG_3,
++			       AD777X_DISABLE_SD);
++	return ret;
++}
++
++static irqreturn_t ad777x_irq_handler(int irq, void *data)
++{
++	struct iio_dev *indio_dev = data;
++	struct ad777x_state *st = iio_priv(indio_dev);
++	int ret;
++	__be32 tmp[8];
++	int i;
++	int k = 0;
++
++	struct spi_transfer sd_readback_tr[] = {
++		{
++			.rx_buf = st->spidata_rx,
++			.tx_buf = st->spidata_tx,
++			.len = 32,
++		}
++	};
++
++	if (iio_buffer_enabled(indio_dev)) {
++		st->spidata_tx[0] = AD777X_SPI_READ_CMD;
++		ret = spi_sync_transfer(st->spi, sd_readback_tr,
++					ARRAY_SIZE(sd_readback_tr));
++		if (ret) {
++			dev_err(&st->spi->dev,
++				"spi transfer error in irq handler");
++			return IRQ_HANDLED;
++		}
++		for (i = 0; i < AD777X_NUM_CHANNELS; i++) {
++			if (st->active_ch & BIT(i))
++				tmp[k++] = __be32_to_cpu(st->spidata_rx[i]);
++		}
++		iio_push_to_buffers(indio_dev, &tmp[0]);
++	}
++
++	return IRQ_HANDLED;
++}
++
++static int ad777x_reset(struct iio_dev *indio_dev, struct gpio_desc *reset_gpio)
++{
++	struct ad777x_state *st = iio_priv(indio_dev);
++	int ret;
++	struct spi_transfer reg_read_tr[] = {
++		{
++			.tx_buf = st->reset_buf,
++			.len = 8,
++		},
++	};
++
++	memset(st->reset_buf, 0xff, sizeof(st->reset_buf));
++
++	if (reset_gpio) {
++		gpiod_set_value(reset_gpio, 1);
++		fsleep(230);
++		return 0;
++	}
++
++	ret = spi_sync_transfer(st->spi, reg_read_tr,
++				ARRAY_SIZE(reg_read_tr));
++	if (ret)
++		return ret;
++
++	fsleep(230);
++
++	return 0;
++}
++
++static const struct iio_info ad777x_info = {
++	.read_raw = ad777x_read_raw,
++	.write_raw = ad777x_write_raw,
++	.debugfs_reg_access = &ad777x_reg_access,
++	.update_scan_mode = &ad777x_update_scan_mode,
++};
++
++static const struct iio_enum ad777x_filter_enum = {
++	.items = ad777x_filter_type,
++	.num_items = ARRAY_SIZE(ad777x_filter_type),
++	.get = ad777x_get_filter,
++	.set = ad777x_set_filter,
++};
++
++static const struct iio_chan_spec_ext_info ad777x_ext_filter[] = {
++	IIO_ENUM("filter_type", IIO_SHARED_BY_ALL, &ad777x_filter_enum),
++	IIO_ENUM_AVAILABLE("filter_type", IIO_SHARED_BY_ALL,
++				  &ad777x_filter_enum),
++	{ }
++};
++
++#define AD777x_CHAN_S(index, _ext_info)					       \
++	{								       \
++		.type = IIO_VOLTAGE,					       \
++		.info_mask_separate = BIT(IIO_CHAN_INFO_CALIBSCALE)  |	       \
++				      BIT(IIO_CHAN_INFO_CALIBBIAS),	       \
++		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SAMP_FREQ),       \
++		.address = (index),					       \
++		.indexed = 1,						       \
++		.channel = (index),					       \
++		.scan_index = (index),					       \
++		.ext_info = (_ext_info),				       \
++		.scan_type = {						       \
++			.sign = 's',					       \
++			.realbits = 24,					       \
++			.storagebits = 32,				       \
++		},							       \
++	}
++
++#define AD777x_CHAN_NO_FILTER_S(index)					       \
++	AD777x_CHAN_S(index, NULL)
++
++#define AD777x_CHAN_FILTER_S(index)					       \
++	AD777x_CHAN_S(index, ad777x_ext_filter)
++
++static const struct iio_chan_spec ad777x_channels[] = {
++	AD777x_CHAN_NO_FILTER_S(0),
++	AD777x_CHAN_NO_FILTER_S(1),
++	AD777x_CHAN_NO_FILTER_S(2),
++	AD777x_CHAN_NO_FILTER_S(3),
++	AD777x_CHAN_NO_FILTER_S(4),
++	AD777x_CHAN_NO_FILTER_S(5),
++	AD777x_CHAN_NO_FILTER_S(6),
++	AD777x_CHAN_NO_FILTER_S(7),
++};
++
++static const struct iio_chan_spec ad777x_channels_filter[] = {
++	AD777x_CHAN_FILTER_S(0),
++	AD777x_CHAN_FILTER_S(1),
++	AD777x_CHAN_FILTER_S(2),
++	AD777x_CHAN_FILTER_S(3),
++	AD777x_CHAN_FILTER_S(4),
++	AD777x_CHAN_FILTER_S(5),
++	AD777x_CHAN_FILTER_S(6),
++	AD777x_CHAN_FILTER_S(7),
++};
++
++const struct iio_buffer_setup_ops ad777x_buffer_setup_ops = {
++	.postenable = ad777x_buffer_postenable,
++	.predisable = ad777x_buffer_predisable,
++};
++
++static void ad777x_clk_disable(void *data)
++{
++	clk_disable_unprepare(data);
++}
++
++static void ad777x_reg_disable(void *data)
++{
++	regulator_disable(data);
++}
++
++static int ad777x_register(struct ad777x_state *st, struct iio_dev *indio_dev)
++{
++	int ret;
++	struct device *dev = &st->spi->dev;
++
++	indio_dev->name = st->chip_info->name;
++	indio_dev->info = &ad777x_info;
++	indio_dev->modes = INDIO_DIRECT_MODE;
++	indio_dev->channels = st->chip_info->channels;
++	indio_dev->num_channels = ARRAY_SIZE(ad777x_channels);
++
++	ret = devm_request_threaded_irq(dev, st->spi->irq, NULL,
++					ad777x_irq_handler, IRQF_ONESHOT,
++					indio_dev->name, indio_dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "request irq %d failed\n",
++				     st->spi->irq);
++
++	ret = devm_iio_kfifo_buffer_setup_ext(dev, indio_dev,
++					      &ad777x_buffer_setup_ops,
++					      NULL);
++	if (ret)
++		return dev_err_probe(dev, ret,
++				     "setup buffer failed\n");
++
++	ret = ad777x_spi_write_mask(st, AD777X_REG_DOUT_FORMAT,
++				    AD777X_DCLK_CLK_DIV_MSK,
++				    FIELD_PREP(AD777X_DCLK_CLK_DIV_MSK, 7));
++	if (ret)
++		return ret;
++	st->spidata_mode = 1;
++
++	disable_irq_nosync(st->spi->irq);
++
++	return devm_iio_device_register(&st->spi->dev, indio_dev);
++}
++
++static int ad777x_powerup(struct ad777x_state *st, struct gpio_desc *start_gpio)
++{
++	int ret;
++
++	ret = ad777x_spi_write_mask(st, AD777X_REG_GENERAL_USER_CONFIG_1,
++				    AD777X_MOD_POWERMODE_MSK,
++				    FIELD_PREP(AD777X_MOD_POWERMODE_MSK, 1));
++	if (ret)
++		return ret;
++	ret = ad777x_spi_write_mask(st, AD777X_REG_GENERAL_USER_CONFIG_1,
++				    AD777X_MOD_PDB_REFOUT_MSK,
++				    FIELD_PREP(AD777X_MOD_PDB_REFOUT_MSK, 1));
++	if (ret)
++		return ret;
++	ret = ad777x_spi_write_mask(st, AD777X_REG_DOUT_FORMAT,
++				    AD777X_DCLK_CLK_DIV_MSK,
++				    FIELD_PREP(AD777X_DCLK_CLK_DIV_MSK, 1));
++	if (ret)
++		return ret;
++	ret = ad777x_spi_write_mask(st, AD777X_REG_ADC_MUX_CONFIG,
++				    AD777X_REFMUX_CTRL_MSK,
++				    FIELD_PREP(AD777X_REFMUX_CTRL_MSK, 1));
++	if (ret)
++		return ret;
++	ret = ad777x_spi_write_mask(st, AD777X_REG_GEN_ERR_REG_1_EN,
++				    AD777X_SPI_CRC_EN_MSK,
++				    FIELD_PREP(AD777X_SPI_CRC_EN_MSK, 1));
++	if (ret)
++		return ret;
++
++	st->power_mode = AD777X_HIGH_POWER;
++	st->crc_enabled = true;
++	ret = ad777x_set_sampling_frequency(st, AD777X_DEFAULT_SAMPLING_FREQ);
++	if (ret)
++		return ret;
++
++	gpiod_set_value(start_gpio, 0);
++	fsleep(15);
++	gpiod_set_value(start_gpio, 1);
++	fsleep(15);
++	gpiod_set_value(start_gpio, 0);
++	fsleep(15);
++
++	return 0;
++}
++
++static int ad777x_probe(struct spi_device *spi)
++{
++	struct iio_dev *indio_dev;
++	struct ad777x_state *st;
++	struct gpio_desc *reset_gpio;
++	struct gpio_desc *start_gpio;
++	int ret;
++
++	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
++	if (!indio_dev)
++		return -ENOMEM;
++
++	st = iio_priv(indio_dev);
++
++	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
++	if (IS_ERR(st->vref))
++		return PTR_ERR(st->vref);
++
++	ret = regulator_enable(st->vref);
++	if (ret)
++		return ret;
++
++	ret = devm_add_action_or_reset(&spi->dev, ad777x_reg_disable,
++				       st->vref);
++	if (ret)
++		return ret;
++
++	st->mclk = devm_clk_get(&spi->dev, "mclk");
++	if (IS_ERR(st->mclk))
++		return PTR_ERR(st->mclk);
++
++	ret = clk_prepare_enable(st->mclk);
++	if (ret < 0)
++		return ret;
++
++	ret = devm_add_action_or_reset(&spi->dev, ad777x_clk_disable,
++				       st->mclk);
++	if (ret)
++		return ret;
++
++	reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_LOW);
++	if (IS_ERR(reset_gpio))
++		return PTR_ERR(reset_gpio);
++
++	start_gpio = devm_gpiod_get(&spi->dev, "start", GPIOD_OUT_HIGH);
++	if (IS_ERR(start_gpio))
++		return PTR_ERR(start_gpio);
++
++	crc8_populate_msb(ad777x_crc8_table, AD777X_CRC8_POLY);
++	st->spi = spi;
++
++	st->chip_info = spi_get_device_match_data(spi);
++	if (!st->chip_info)
++		return -ENODEV;
++
++	ret = ad777x_reset(indio_dev, start_gpio);
++	if (ret)
++		return ret;
++
++	ad777x_powerup(st, start_gpio);
++	if (ret)
++		return ret;
++
++	if (spi->irq)
++		ret = ad777x_register(st, indio_dev);
++
++	return ret;
++}
++
++static int __maybe_unused ad777x_suspend(struct device *dev)
++{
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct ad777x_state *st = iio_priv(indio_dev);
++	int ret;
++
++	ret = ad777x_spi_write_mask(st, AD777X_REG_GENERAL_USER_CONFIG_1,
++				    AD777X_MOD_POWERMODE_MSK,
++				    FIELD_PREP(AD777X_MOD_POWERMODE_MSK,
++					       AD777X_LOW_POWER));
++	if (ret)
++		return ret;
++
++	st->power_mode = AD777X_LOW_POWER;
++	return 0;
++}
++
++static int __maybe_unused ad777x_resume(struct device *dev)
++{
++	struct iio_dev *indio_dev = dev_get_drvdata(dev);
++	struct ad777x_state *st = iio_priv(indio_dev);
++	int ret;
++
++	ret = ad777x_spi_write_mask(st, AD777X_REG_GENERAL_USER_CONFIG_1,
++				    AD777X_MOD_POWERMODE_MSK,
++				    FIELD_PREP(AD777X_MOD_POWERMODE_MSK,
++					       AD777X_HIGH_POWER));
++	if (ret)
++		return ret;
++
++	st->power_mode = AD777X_HIGH_POWER;
++
++	return 0;
++}
++
++static DEFINE_SIMPLE_DEV_PM_OPS(ad777x_pm_ops, ad777x_suspend, ad777x_resume);
++
++static const struct ad777x_chip_info ad7770_chip_info = {
++	.name = "ad7770",
++	.channels = ad777x_channels,
++};
++
++static const struct ad777x_chip_info ad7771_chip_info = {
++	.name = "ad7771",
++	.channels = ad777x_channels_filter,
++};
++
++static const struct ad777x_chip_info ad7779_chip_info = {
++	.name = "ad7779",
++	.channels = ad777x_channels,
++};
++
++static const struct spi_device_id ad777x_id[] = {
++	{
++		.name = "ad7770",
++		.driver_data = (__kernel_ulong_t)&ad7770_chip_info
++	},
++	{
++		.name = "ad7771",
++		.driver_data = (__kernel_ulong_t)&ad7771_chip_info
++	},
++	{
++		.name = "ad7779",
++		.driver_data = (__kernel_ulong_t)&ad7779_chip_info
++	},
++	{ }
++};
++MODULE_DEVICE_TABLE(spi, ad777x_id);
++
++static const struct of_device_id ad777x_of_table[] = {
++	{
++		.compatible = "adi,ad7770",
++		.data = &ad7770_chip_info,
++	},
++	{
++		.compatible = "adi,ad7771",
++		.data = &ad7771_chip_info,
++	},
++	{
++		.compatible = "adi,ad7779",
++		.data = &ad7779_chip_info,
++	},
++	{ }
++};
++MODULE_DEVICE_TABLE(of, ad777x_of_table);
++
++static struct spi_driver ad777x_driver = {
++	.driver = {
++		.name = "ad777x",
++		.pm = pm_sleep_ptr(&ad777x_pm_ops),
++		.of_match_table = ad777x_of_table,
++	},
++	.probe = ad777x_probe,
++	.id_table = ad777x_id,
++};
++module_spi_driver(ad777x_driver);
++
++MODULE_AUTHOR("Ramona Alexandra Nechita <ramona.nechita@analog.com>");
++MODULE_DESCRIPTION("Analog Devices AD777X ADC");
++MODULE_LICENSE("GPL");
+-- 
+2.43.0
 
-No, it should be fine without the alignment.
-
-> ------
->
->> +{
->> +	int ret;
->> +	u8 regval, data;
->> +
->> +	ret =3D ad777x_spi_read(st, reg, &data);
->> +	if (ret)
->> +		return ret;
->> +
->> +	regval =3D data;
->> +	regval &=3D ~mask;
->> +	regval |=3D val;
->> +
->> +	if (regval !=3D data) {
->> +		ret =3D ad777x_spi_write(st, reg, regval);
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	return 0;
->
->This all can be written as
->
->	if (regval !=3D data)
->		return ad777x_spi_write(st, reg, regval);
->
->	return 0;
->
->...or...
->
->	if (regval =3D=3D data)
->		return 0;
->
->	return ad777x_spi_write(st, reg, regval);
->
->(I prefer the latter as it shows better the flow)
->
->> +}
->
->No mutex no nothing for RMW op like this?
->
->Btw, can't you use regmap for IO?
-
-Unfortunately, I don't think regmap could be used, because of the crc and t=
-he fact that data is shifted out on the SPI SDO line in the interrupt. I co=
-nsider perhaps adding regmap to the mix might complicate things a bit.=20
-
->
->...
->
->> +	if (st->filter_enabled =3D=3D AD777X_SINC3 &&
->> +	    sampling_freq > AD777X_SINC3_MAXFREQ) {
->> +		return -EINVAL;
->> +	} else if (st->filter_enabled =3D=3D AD777X_SINC5 &&
->
->Redundant 'else'
->
->> +		   sampling_freq > AD777X_SINC5_MAXFREQ) {
->
->Broken indentation.
->
->> +		return -EINVAL;
->> +	}
->
->Unneeded {}.
->
->...
->
->> +	ret =3D ad777x_spi_write(st, AD777X_REG_SRC_N_LSB, lsb);
->> +	if (ret)
->> +		return ret;
->> +	ret =3D ad777x_spi_write(st, AD777X_REG_SRC_N_MSB, msb);
->> +	if (ret)
->> +		return ret;
->
->Can you use 16-bit writes?
->Same Q to all similar LSB/MSB write groups.
-
-I cannot do 16-bit writes due to how the spi functions on the chip and beca=
-use the registers for MSB/LSB are at different addresses.
-
->--------
->> +static void ad777x_clk_disable(void *data) {
->> +	clk_disable_unprepare(data);
->> +}
->
->See below.
->
->...
->
->> +	st->mclk =3D devm_clk_get(&spi->dev, "mclk");
->> +	if (IS_ERR(st->mclk))
->> +		return PTR_ERR(st->mclk);
->> +
->> +	ret =3D clk_prepare_enable(st->mclk);
->> +	if (ret < 0)
->> +		return ret;
->
->> +	ret =3D devm_add_action_or_reset(&spi->dev,
->> +				       ad777x_clk_disable,
->> +				       st->mclk);
->> +	if (ret)
->> +		return ret;
->
->So, what's wrong with the _enabled() API?
-
-Sorry, I am not sure what you mean here by _enabled() API, is there a diffe=
-rent mechanism that can be used for this type of operations?
-
-Best Regards,
-Ramona=20
 

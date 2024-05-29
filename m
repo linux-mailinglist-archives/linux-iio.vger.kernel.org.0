@@ -1,63 +1,74 @@
-Return-Path: <linux-iio+bounces-5468-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5469-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B878D3EA2
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 20:56:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235668D3F65
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 22:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E04CF286F88
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 18:56:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9BCBEB23CB8
+	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 20:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE761C2312;
-	Wed, 29 May 2024 18:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DA841C68A5;
+	Wed, 29 May 2024 20:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="nWmzA2l1"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vsD9LL6w"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD131C0DEE;
-	Wed, 29 May 2024 18:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592D026AD3
+	for <linux-iio@vger.kernel.org>; Wed, 29 May 2024 20:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717008934; cv=none; b=U+XXSOK3eb8EnLV0BF+kEoDH1RjoqSsyBRkpW4gNAeEYYJKczMfi6Ra/iTX1lD534zPI4k6w7h+PwUT7QqmGG11Y0PX5frISrMWRqLi8cv8br8X+7zvQfB++evMf19LjhV+V8UMK7JaProfdpJvqK+/mI5HBzd/UxRGpHThcPrM=
+	t=1717013459; cv=none; b=oHAiZHxTlOWk3iPfuRtMc3pJoGPE8P6yG8TEqpIho3jXC+ninXUBotgh8l2wYgzY6ax7vFkGnpSXmNjP44iiG2BuKKZSEJTD/Oe/8e9DZB6GIQjYeWFEM4eSBVjHTSSZje45QtrBP8Q0NqTlWZGiCNvltj6gIhnbsPUdQWjxGcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717008934; c=relaxed/simple;
-	bh=U4Rsy2pPhz/359g6Rk4fJeQdhXCIaeRtqzSU/shOa0Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=pWUCb7za2ys2xQb8HhCxCZKOw0yEl+YPX1LnSrhQAaAejeeLqiC80L8qyibFzI0Pghyv6T0E+vv5OfSYBBdR/Y0+fygG5IDSuz5lj9Nk8xnFX7hUfHqTX2059qzP2UIDfnBr6r5bMz4hfHoJ8Hh7iPJhUvf/+FPJRuvvjrtqw+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=nWmzA2l1; arc=none smtp.client-ip=198.47.23.248
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from fllv0034.itg.ti.com ([10.64.40.246])
-	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 44TIsZuq101155;
-	Wed, 29 May 2024 13:54:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1717008875;
-	bh=9EEbQ1P0bS7o94PZeSQIGVykCCKi5H729feXlk6MNGI=;
-	h=Date:Subject:To:CC:References:From:In-Reply-To;
-	b=nWmzA2l1edBES7eoreuhEJ0nVh+lzRPIJrE9aeQ63a4Ero/cIcjJ2rtRZaU/0MBAy
-	 41HrlIVyqkzB30zAqQ2Znee1eYUuKh0Dn/L8Lgrij/5BZGoCZahHzs7UrmjOubVPUd
-	 5YULvNhERV0fBGYaMADcCoJMa/vj3gx1i3WMYa6M=
-Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
-	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 44TIsY3j019806
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 29 May 2024 13:54:34 -0500
-Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Wed, 29
- May 2024 13:54:34 -0500
-Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE109.ent.ti.com
- (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Wed, 29 May 2024 13:54:34 -0500
-Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 44TIsYDc007851;
-	Wed, 29 May 2024 13:54:34 -0500
-Message-ID: <10c57c70-5e12-4baf-b986-d060858949ce@ti.com>
-Date: Wed, 29 May 2024 13:54:34 -0500
+	s=arc-20240116; t=1717013459; c=relaxed/simple;
+	bh=kpcn+QOnwWEzSfW85gYAjfNf8fGDoXkU1jRCaRgNYt0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OrUnMbkO0NhnkZ3MaELSI0ddr+dZqgsJTlgcgALUmNEnS2v3WwnfmzWOc+rYSjPNtL1fe8+KwV/eu0OIX07SZBpxV4UKVRDS35VeRWqfOnrNT0F+DfkZVkizEWUrW4rMsc2vHOT87+JaSx+nL0M0Qha/EZwKMh6/8UEVu0OONis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vsD9LL6w; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-24fd457934cso86819fac.0
+        for <linux-iio@vger.kernel.org>; Wed, 29 May 2024 13:10:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1717013456; x=1717618256; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tjYkuHkNOY3bgPD0+CsRJ2GEoRi/ONsuGgeICdxCOBk=;
+        b=vsD9LL6w+HTkzgVgE9HetugTx52wwTjY1EDiz9eq+XmGHrAtZOS0Qm+5+bKgLKEA4i
+         1rfRnAcnfIAt+pi45D9ovab1Uoms0lKZDjAmmi9eTpwAy0xk2bkLqQ76FKH6/5Kyi2Rh
+         xqzKJ+shmzrFHQaUNwUCGN/lbHLP+3E98TjPoKa4T3uLimoBw2ZBPdQVID3+JZnqbGi+
+         hbE5B5pTQkQI1FkDxa0Pad1Y5m8WYGW+QVZPkNtz1qJLgzII//HmcYO8nL3FJNYEVSyF
+         sUfBIfSgoQrvO+tXTfMmyiHIMDDDBOFlbic+/aCENCrrP1yz4XBHESf7uIsANzP40S9d
+         U8Dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717013456; x=1717618256;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tjYkuHkNOY3bgPD0+CsRJ2GEoRi/ONsuGgeICdxCOBk=;
+        b=MAj6/i04aPk+TB+oJG/U67zh5EDChItgh0zsxU1lXnaw928YBGEv1zNt2lk+W4f4nv
+         MnZ8yCXBxJFNaLLqlRtwERYare/ojjOuLt+hB7rwY+gPEucY8PNgMZVWj/b2upAPwr23
+         D+onOzC30AwClfnHQ0bBnhmvF88zDGqozNV9xrhE9cL4Lsq4toBfI87GAD0exD0hDHX6
+         2hl9FM66yopyWHaM3vMc630sw7pPuYE8EzDpIh52DoUO5WYjIoU97wesD2qEtmtBNJ5D
+         l/A13b03TYna5rzFbTjug8jKF5SQ8h7Sw8fm+kpkqyZ/iZVUFmhbdMgp+FWnyAPtDV5g
+         ZsIg==
+X-Forwarded-Encrypted: i=1; AJvYcCXSRsaelowKzc96YDJm7qnd1+4WsOpuI2rWyR1d0ISKiV+nu72xOzKpSRu6qI3C8PDzItxrdSQPmCGw8pXdGSZdor7k8I6kLi3u
+X-Gm-Message-State: AOJu0YyDq+7kjLqHceyEivL0Q+RxiYXcPrwnec2wqbIpMVkqozFITLPr
+	TZ9OxeUzbxEUrGjsDg+pRwALgzXBiYuNL8sNpCO9kTNKu/yMlqDgkdbiAZz2Mp0=
+X-Google-Smtp-Source: AGHT+IFH8/T9XBQmiGDQHI8SFmypg2pzDpUqADwsxpji3Rk+N9mBC/ih9ud3O5fHlzHOlQZlMyxw8w==
+X-Received: by 2002:a05:6871:58a:b0:24f:c5cb:cff4 with SMTP id 586e51a60fabf-25060bf998fmr326828fac.31.1717013456353;
+        Wed, 29 May 2024 13:10:56 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-24cb97fd837sm2993475fac.42.2024.05.29.13.10.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 May 2024 13:10:55 -0700 (PDT)
+Message-ID: <baa286ca-3388-4604-9bc3-233c1fc77c42@baylibre.com>
+Date: Wed, 29 May 2024 15:10:54 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -65,138 +76,46 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/8] dt-bindings: counter: Add new ti,am62-eqep
- compatible
-To: David Lechner <david@lechnology.com>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley
-	<conor+dt@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon
-	<will@kernel.org>,
-        William Breathitt Gray <william.gray@linaro.org>
-CC: <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        Nishanth Menon
-	<nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>
-References: <20240523231516.545085-1-jm@ti.com>
- <20240523231516.545085-3-jm@ti.com>
- <2956d10b-d2cf-4019-adc8-d8053e435767@lechnology.com>
- <e6a03921-532c-4aa7-92b6-812cd9a356d6@lechnology.com>
- <2339db0d-db21-4372-808d-8648500e971a@ti.com>
- <55a21233-918f-4cf4-800c-3e0eee0cd467@lechnology.com>
+Subject: Re: [PATCH RFC v2 1/8] spi: dt-bindings: spi-peripheral-props: add
+ spi-offloads property
+To: Conor Dooley <conor@kernel.org>
+Cc: Mark Brown <broonie@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, David Jander <david@protonic.nl>,
+ Martin Sperl <kernel@martin.sperl.org>, linux-spi@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <20240513-headsman-hacking-d51fcc811695@spud>
+ <CAMknhBE5XJzhdJ=PQUXiubw_CiCLcn1jihiscnQZUzDWMASPKw@mail.gmail.com>
+ <20240514-aspire-ascension-449556da3615@spud>
+ <CAMknhBFFpEGcMoLo5gsC11Syv+CwUM0mnq1yDMUzL1uutUtB+Q@mail.gmail.com>
+ <20240516-rudder-reburial-dcf300504c0a@spud>
+ <CAMknhBF_s0btus4yqPe-T=F3z7Asi9KkRGsGr7FHDFi=k4EQjw@mail.gmail.com>
+ <20240519-abreast-haziness-096a57ef57d3@spud>
+ <CAMknhBHvEse2FyDoBXR1PvymGpSGq8dotKfm+8XH+0+k+xKtQw@mail.gmail.com>
+ <20240522-gullible-ibuprofen-cf9111c25f6f@spud>
+ <59df2cc3-5a62-45be-a0aa-5bbff13c2ae4@baylibre.com>
+ <20240526-stylized-preaching-d0b15a95fe19@spud>
 Content-Language: en-US
-From: Judith Mendez <jm@ti.com>
-In-Reply-To: <55a21233-918f-4cf4-800c-3e0eee0cd467@lechnology.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <20240526-stylized-preaching-d0b15a95fe19@spud>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi David,
+On 5/26/24 10:45 AM, Conor Dooley wrote:
+> On Thu, May 23, 2024 at 09:28:54AM -0500, David Lechner wrote:
 
-On 5/25/24 12:49 PM, David Lechner wrote:
-> On 5/24/24 4:44 PM, Judith Mendez wrote:
->> On 5/24/24 3:57 PM, David Lechner wrote:
->>> On 5/24/24 3:50 PM, David Lechner wrote:
->>>> On 5/23/24 6:15 PM, Judith Mendez wrote:
->>>>> Add new compatible ti,am62-eqep for TI K3 devices. If a device
->>>>> uses this compatible, require power-domains property.
->>>>>
->>>>> Since there is only one functional and interface clock for eqep,
->>>>> clock-names is not really required. The clock-name also changed
->>>>> for TI K3 SoCs so make clock-names optional for the new compatible
->>>>> since there is only one clock that is routed to the IP.
->>>>>
->>>>> While we are here, add an example using ti,am62-eqep compatible.
->>>>>
->>>>> Signed-off-by: Judith Mendez <jm@ti.com>
->>>>> ---
->>>>> Changes since v1:
->>>>> - Fix eqep binding for new compatible, require
->>>>>    power-domains for new compatible
->>>>> ---
->>>>>    .../devicetree/bindings/counter/ti-eqep.yaml  | 53 +++++++++++++++++--
->>>>>    1 file changed, 48 insertions(+), 5 deletions(-)
->>>>>
->>>>> diff --git a/Documentation/devicetree/bindings/counter/ti-eqep.yaml b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->>>>> index 85f1ff83afe72..c4bb0231f166a 100644
->>>>> --- a/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->>>>> +++ b/Documentation/devicetree/bindings/counter/ti-eqep.yaml
->>>>> @@ -11,7 +11,9 @@ maintainers:
->>>>>      properties:
->>>>>      compatible:
->>>>> -    const: ti,am3352-eqep
->>>>> +    enum:
->>>>> +      - ti,am3352-eqep
->>>>> +      - ti,am62-eqep
->>>>>        reg:
->>>>>        maxItems: 1
->>>>> @@ -21,19 +23,43 @@ properties:
->>>>>        maxItems: 1
->>>>>        clocks:
->>>>> -    description: The clock that determines the SYSCLKOUT rate for the eQEP
->>>>> -      peripheral.
->>>>> +    description: The functional and interface clock that determines the clock
->>>>> +      rate for the eQEP peripheral.
->>>>>        maxItems: 1
->>>>>        clock-names:
->>>>> -    const: sysclkout
->>>>> +    enum:
->>>>> +      - sysclkout
->>>>> +      - fck
->>>>> +
->>>>
->>>> If we are making this optional for ti,am62-eqep, why add a new name?
->>>>
->>>> Also, we could change the description to say that sysclockout is not a
->>>> great name but is required for backwards compatibility.
->>>>
->>>>> +  power-domains:
->>>>> +    maxItems: 1
->>>>> +
->>>>> +allOf:
->>>>> +  - if:
->>>>> +      properties:
->>>>> +        compatible:
->>>>> +          contains:
->>>>> +            enum:
->>>>> +              - ti,am3352-eqep
->>>>> +    then:
->>>>> +      required:
->>>>> +        - clock-names
->>>
->>> I just looked at the Linux driver for this and the clock name is
->>> not used in the driver. So we could probably just deprecate the
->>> clock-names property here and not make it required for
->>> ti,am3352-eqep (and not allowed for any new compatibles as
->>> suggested below).
->>
->> We could do this, although I was under the impression that we should
->> not drop DT properties just because the linux driver isn't using it,
->> that is why I went with keeping clock-names around for am335x compatible
->> and making it optional for am62x compatible.
->>
->> But if it is all the same, we could drop the the DT property.
->>
->> ~ Judith
->>
+
+>> * A is the one we need to figure out. I'm proposing that the PWM consumer
+>>   should be whatever kind of composite device node we come up with that
+>>   also solves the issue described below about where does the CRC checker
+>>   (or whatever) go. I think we are in agreement here at least on the point
+>>   that it doesn't belong in the SPI controller node?
 > 
-> I wasn't suggesting to remove clock-names from the bindings, just
-> deprecate that property in this binding and not use it with any
-> new compatibles.
-> 
-> In the AM62x technical reference manual, it looks like it calls
-> the functional and interface clock FICLK rather than FCK. So
-> I'm just suggesting maybe it just easier to not give it a name
-> rather than try to get the right name? No name will work with
-> any future SoCs as well. :-)
+> To be clear, you're saying that we agree that the CRC checker doesnt
+> belong in the SPI controller node, right?
 
-Understood, so I will make clock-names optional for ti,am3352-eqep
-compatible and not allowed for ti,am62-eqep compatible.
-
-Thanks for your feedback (:
-
-~ Judith
-> 
-
+Yes. 
 

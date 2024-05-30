@@ -1,87 +1,79 @@
-Return-Path: <linux-iio+bounces-5474-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5475-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 550478D4220
-	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 01:49:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B05938D42AE
+	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 03:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8916B247E0
-	for <lists+linux-iio@lfdr.de>; Wed, 29 May 2024 23:49:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D37A21C214C4
+	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 01:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94791CB329;
-	Wed, 29 May 2024 23:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BBAEE56C;
+	Thu, 30 May 2024 01:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Rn7DAx3f"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TSVYgwBJ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7DCA28E8;
-	Wed, 29 May 2024 23:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80748F4E2;
+	Thu, 30 May 2024 01:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717026564; cv=none; b=PFUAvu8gXKbMCakJPChw3HHifZ/nhwVAVzMuXzEbTTd93MuCSG3QAyetASgEBlYKTyKAfCMG8ApAse6r6pZpO86YTnfTCCBfWz+4WvhCpnub/M9/IsFILQEoEt/fmRKhWop+rLoydvVhnm8eduBy2xByXZJgxd5/2QHBdhbBjm4=
+	t=1717031266; cv=none; b=u/yPymtufU7qjx7GAvh1dOuvFtVLzByfCR4JbxvootHhl/tCdODL/Jqo9L+qrhJYK492qX64UGxLJk1uNknXFjTuTNTThIi6kv7NEOZF/p7pFKeAoyh8ls6I42+rJZvCehbR6mOt+2rDfF10vYsmrXYlI0sTVmfDF/rS0c87vUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717026564; c=relaxed/simple;
-	bh=x2aVOwUD3F9tCvVgme9sF7aWoHzcwEI3aj/2Y2l1upM=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BLpzz6Cj5/Sl46zdUEwAguoGt9QBVSd88T5DfMWlYfrIl+Pr+NxIBvTyNVnTqnrOHaTV5ZLtdv9C7RgmYPlQSzlgkzZVlxq+n3IBjmSEWbbZ7zqWAFkThPgQTTkE8Pbf2+u9jD/Q3HQcH7vg6I2m2GJZcyhsTTA41GHs8lZ5R30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Rn7DAx3f; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2e95a74d51fso3772541fa.2;
-        Wed, 29 May 2024 16:49:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717026561; x=1717631361; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=y9nBHoXpEdG0AwZuUWf4ewl7uV+b4KkibHlTOCLBb8Y=;
-        b=Rn7DAx3f38K81pOx6+SdvZ9OA3rwXnm/wlsult2XwXbRJllrGprTfWlTcHOJutqW0c
-         ejQm0Cm8zXzapkZQDHFb27do7/tXwOKunzvvuOaqv7iTSBdO7OsCUHBz02+URfYe5d75
-         gOphzswL8AxZ3bOCImHwYnpjCcENNTGDYrodmpvbrtZtMdOzIp99YYgd0o5b4RNvc5NR
-         QrVSzVdk+liVXLrh5GPNHpCT7CzQVDJX9nN7FmCUZkDvYf/JYF9zoR88jUFO99MzCsp0
-         srIgMvUyu0YStScAS65ioYOhm2C6ntb3SFTJe7dvaLWiOfv5O6e9kZNtpZKjtB5NJ/Av
-         K8mQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717026561; x=1717631361;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y9nBHoXpEdG0AwZuUWf4ewl7uV+b4KkibHlTOCLBb8Y=;
-        b=O/O30ZF9tcg2A0g+SPlBoFJDBKqgLit5Zq+51sFqqVUbGQEI2dMXAMXPTPTuXeJoN1
-         o9R6edMyWTRBYPy+p4BvPYxmffwnYj/0OR7qZgef93mj0C10l9CzV0HKHdwrydtCXqB9
-         gpHbEJKSNYhrhs4mcnrLcI4pRQcGJ+7Ck6Z7t7S/kGI+TJEIjtapOthmKQJQGSJ/E1ay
-         9J3/YzyMFU94wa3Qxq6UFVO7j1CgSB+mN6+yw/ss+pp8XqThVqDFHcuezTNYzzIjywa2
-         RRrKlHF+Mrs2TmIjLtquDRdJQTArY3VSm0JZBTEc6ZHS6wHqYibm+mrnmhnQgCWUt9wv
-         AonQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW9JwEKySUtaFhRSCu6MMNlP+3NRX1APiyt097HYjtB3OjEoq0aPY1mrhVW5SKPSHFFxkO59DikI569dOsf1+E32IJ+iGsqqnZUJ7IB4jLo91jeHUeX6Wo4eBuuHG0CWoMadsHD77Ha
-X-Gm-Message-State: AOJu0YxlsH+MW/M8EG8PgWueH+VVDE4mfntWIal7MTq4/CaiTTuQQPOm
-	yHRJbIDqtrn7YQNhdKkEBFqghZT9wTUw5RmQTtudDly03qRb6K/o
-X-Google-Smtp-Source: AGHT+IGQ1wfQ4nVqG0431DiYzj8HZ20GJ5tVZcDweACQcFZqqA3fYviibe14czDSUTvr3UzP4D87MQ==
-X-Received: by 2002:a19:c20b:0:b0:523:772c:2c1c with SMTP id 2adb3069b0e04-52b7d43a692mr408706e87.38.1717026560656;
-        Wed, 29 May 2024 16:49:20 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:b667:478c:868b:5803])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a626cda6cdcsm757739366b.209.2024.05.29.16.49.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 16:49:20 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Thu, 30 May 2024 01:49:17 +0200
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
-	andriy.shevchenko@linux.intel.com, ang.iglesiasg@gmail.com,
-	mazziesaccount@gmail.com, ak@it-klinger.de,
-	petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
-	linus.walleij@linaro.org, semen.protsenko@linaro.org,
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 5/5] iio: pressure: bmp280: Add triggered buffer
- support
-Message-ID: <20240529234917.GA83937@vamoiridPC>
-References: <20240512230524.53990-1-vassilisamir@gmail.com>
- <20240512230524.53990-6-vassilisamir@gmail.com>
- <20240529211228.2d7fbd93@jic23-huawei>
+	s=arc-20240116; t=1717031266; c=relaxed/simple;
+	bh=DJmoYBOGcoVNLMBEvrCcota/ugc5wL4TTlwryI1YZpw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AWSsgpM99Cx4z6VAbv/0F9YEy++RWe6waFN9IXKbGCk+4lpAnPsaDRSbLWIyRNX86NUrTJpWEPBHYCHxVQ1VSYC+nzGAhd+YQP+ONPA1/fdryZvC1rAzS+NcpO9PyMqJ7PHgInUq19AMGzLdf6fR6Y3lEkjNv+d0irUExx13QU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TSVYgwBJ; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1717031265; x=1748567265;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=DJmoYBOGcoVNLMBEvrCcota/ugc5wL4TTlwryI1YZpw=;
+  b=TSVYgwBJfeyV2mVxCQUv1TRizFDQ6s2ZR2GyIWW0nfMy8EmkEoTatF4o
+   rqYu4GEY9yHq6oNfOcLNZ8ikfME9BUc76IHEn7WIVaoJtRAVWja/kyC6r
+   5Wd3LFG2g9yxWCSVNBKYhXJsGVo5rDDm09KgqftOboK3MA+DqJK7fyTG5
+   Oz94Y1353L5sMA0iiHF4cywZ2+k85BnESki9+mUkORTeU+TOiK2Q6U7Xi
+   3pd8ST7VGcOU1QgzKri/x2Jg5emngTsfxKrzjMXGcvbLJ94OxccBMWFZV
+   3dcIb3ho85vyUp4uY/jPq7eQP8GF2bwQA+ugurBgli3apGSNgxJY2yS3b
+   g==;
+X-CSE-ConnectionGUID: KSHZLvxrSoue6FU+CIxsjA==
+X-CSE-MsgGUID: 5gnSS4LaTEeVnARUqXbd7w==
+X-IronPort-AV: E=McAfee;i="6600,9927,11087"; a="24894762"
+X-IronPort-AV: E=Sophos;i="6.08,199,1712646000"; 
+   d="scan'208";a="24894762"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 May 2024 18:07:41 -0700
+X-CSE-ConnectionGUID: cvEuSgAhSLKkjZZE3aipcw==
+X-CSE-MsgGUID: vg6zkNkiQB+cW9xJ4m4Yyg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,199,1712646000"; 
+   d="scan'208";a="73089446"
+Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
+  by orviesa001.jf.intel.com with ESMTP; 29 May 2024 18:07:39 -0700
+Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sCUGV-000EOl-34;
+	Thu, 30 May 2024 01:07:35 +0000
+Date: Thu, 30 May 2024 09:06:52 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, andy.shevchenko@gmail.com,
+	lars@metafoo.de, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, nuno.a@analog.com,
+	swboyd@chromium.org, u.kleine-koenig@pengutronix.de,
+	yasin.lee.x@gmail.com, yasin.lee.x@outlook.com
+Subject: Re: [PATCH v3 2/2] iio:proximity:hx9023s: Add TYHX HX9023S sensor
+ driver
+Message-ID: <202405300812.jv99FywV-lkp@intel.com>
+References: <SN7PR12MB81019AB7F38806097F2C8A34A4F22@SN7PR12MB8101.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,39 +82,62 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240529211228.2d7fbd93@jic23-huawei>
+In-Reply-To: <SN7PR12MB81019AB7F38806097F2C8A34A4F22@SN7PR12MB8101.namprd12.prod.outlook.com>
 
-On Wed, May 29, 2024 at 09:12:28PM +0100, Jonathan Cameron wrote:
-> On Mon, 13 May 2024 01:05:24 +0200
-> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> 
-> > BMP2xx, BME280, BMP3xx, and BMP5xx use continuous buffers for their
-> > temperature, pressure and humidity readings. This facilitates the
-> > use of burst/bulk reads in order to acquire data faster. The
-> > approach is different from the one used in oneshot captures.
-> > 
-> > BMP085 & BMP1xx devices use a completely different measurement
-> > process that is well defined and is used in their buffer_handler().
-> > 
-> > Suggested-by: Angel Iglesias <ang.iglesiasg@gmail.com>
-> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> > ---
-> 
-> > +
-> > +const struct iio_buffer_setup_ops bmp280_buffer_setup_ops = {
-> 0-day noted that this isn't actually used.
-> I'll add it to the buffer setup where it's currently passed as null.
+Hi Yasin,
 
-Hi Jonathan,
+kernel test robot noticed the following build warnings:
 
-Yes, 0-day informed me, but I was not sure what to do so I was waiting
-to see if you would see it during the weekend. Thanks for taking care
-of it.
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on robh/for-next linus/master v6.10-rc1 next-20240529]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Cheers,
-Vasilis
-> > +	.preenable = bmp280_buffer_preenable,
-> > +	.postdisable = bmp280_buffer_postdisable,
-> > +};
-> > +
+url:    https://github.com/intel-lab-lkp/linux/commits/Yasin-Lee/iio-proximity-hx9023s-Add-TYHX-HX9023S-sensor-driver/20240529-170307
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/SN7PR12MB81019AB7F38806097F2C8A34A4F22%40SN7PR12MB8101.namprd12.prod.outlook.com
+patch subject: [PATCH v3 2/2] iio:proximity:hx9023s: Add TYHX HX9023S sensor driver
+config: x86_64-randconfig-r113-20240530 (https://download.01.org/0day-ci/archive/20240530/202405300812.jv99FywV-lkp@intel.com/config)
+compiler: gcc-12 (Ubuntu 12.3.0-9ubuntu2) 12.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240530/202405300812.jv99FywV-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202405300812.jv99FywV-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/iio/proximity/hx9023s.c:1242:44: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be16 @@     got int @@
+   drivers/iio/proximity/hx9023s.c:1242:44: sparse:     expected restricted __be16
+   drivers/iio/proximity/hx9023s.c:1242:44: sparse:     got int
+
+vim +1242 drivers/iio/proximity/hx9023s.c
+
+  1228	
+  1229	static irqreturn_t hx9023s_trigger_handler(int irq, void *private)
+  1230	{
+  1231		struct iio_poll_func *pf = private;
+  1232		struct iio_dev *indio_dev = pf->indio_dev;
+  1233		struct hx9023s_data *data = iio_priv(indio_dev);
+  1234		int bit;
+  1235		int i = 0;
+  1236	
+  1237		guard(mutex)(&data->mutex);
+  1238		hx9023s_sample(data);
+  1239		hx9023s_get_prox_state(data);
+  1240	
+  1241		for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->masklength)
+> 1242			data->buffer.channels[i++] = data->diff[indio_dev->channels[bit].channel];
+  1243	
+  1244		iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer, pf->timestamp);
+  1245	
+  1246		iio_trigger_notify_done(indio_dev->trig);
+  1247		return IRQ_HANDLED;
+  1248	}
+  1249	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

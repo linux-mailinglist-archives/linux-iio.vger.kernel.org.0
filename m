@@ -1,88 +1,90 @@
-Return-Path: <linux-iio+bounces-5476-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5477-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E6178D4568
-	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 08:17:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B378D456D
+	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 08:20:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386C91F22C6F
-	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 06:17:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D2A31F231F3
+	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 06:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 742A6155326;
-	Thu, 30 May 2024 06:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48190155345;
+	Thu, 30 May 2024 06:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eeRdja3p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W1i+QwSG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939F51552EC;
-	Thu, 30 May 2024 06:17:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B082143897;
+	Thu, 30 May 2024 06:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717049872; cv=none; b=Uyu2h4E/KnHFOxBmTLOA4yBzL/mSX2OX0A/dZ+1TTjheg9mYCh2yasPG7GNHPLKMcJ6u72wWvvpmbYRTIbxOw3zBqXVPatqd7qTszf9WCxR+37ENBEV9g9Am+d1JTDf2vxoStP4K97lJdHIp5JcTpClRBMw+zl0RildN5KI4qOw=
+	t=1717050002; cv=none; b=eDZ4DvARdvHf/bzw3OCakK82Qvc0yS2UgmKWLEXe0Z1oJhxKq4SZag8I2TQcAMUJZySFYZFMeXGijUaW84Xwu+eEM84uA9mI9nGippnecR+qhX0ncoreWO50vWv6ulWArvHjMLg+ta738N2dtg29mkb0aX8ok//EiQb5Em9vuAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717049872; c=relaxed/simple;
-	bh=mdgAiKbstfN1gUB5L/EsCiO3AyOoRXRVi2nIvdixAow=;
+	s=arc-20240116; t=1717050002; c=relaxed/simple;
+	bh=Fe2d2A4z7f9CwxyiKX6pKntbe4v643xdTxApAlhvcfg=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aFcL3PrphYPOGYLjBDty6dB8rLnvW4Z1AF1qSzSEItYuaLf/KYeBpd7LppARYG0QYRd46luLHaXGymd9ZFjzOdkL2qztBY3KGhNWAQD/Ttrn4KjzG3XD58+YpZ93C+jPMFZH4c8H74yx5dvia6e85brnCewLFcc+MHwgJNgPzk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eeRdja3p; arc=none smtp.client-ip=209.85.221.53
+	 Content-Type:MIME-Version; b=BwMSevkHR/QfUjCQtwp+sREzJJQ3Zj3YJBU5d4mu37v+/jNScWCauKtw8i0wOkQzC1ppKSiGMNjxuOS8FVOttA8H7IbPuOSXE4HV2SCmSEsIMoIZmQnMJdIVE5G6el6I2WGkLV5uAv1AX5MDdKc+l1F2HbKSu2QpVAX4/OcmMzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W1i+QwSG; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-35dc0472b7eso500415f8f.2;
-        Wed, 29 May 2024 23:17:50 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-420180b59b7so6505745e9.0;
+        Wed, 29 May 2024 23:20:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717049869; x=1717654669; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717049999; x=1717654799; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=WSdHxLbmp97ia1G10K4CxsZgTHCb548EU1TzMRh6otw=;
-        b=eeRdja3prnSVoisVedZOOgZkPV9l9OgWbRrXGAyHVKS4Cnln19f6U5Lu4NtIN58lCI
-         VgWIo8gmAtYlhy6q6WQFRmytTl4H2W6a+LG672Y+Ui681A67i7eKCr86sjlw0PWolr6o
-         Xc7VyrH1M90r/elFypoJLIZ+gGFwRIv1nNVuSAUaVd+M4LUazMMK5jzsJlao5jMGWmHY
-         u6h05di0Sb0JAs6T2LvAaG3R2+iK0jKS8N+rb+7ZaMOicXJu9NaBCzUDmN/pIpBGybMy
-         BQScjDlrq1En1sw0V7KL9P7a0ygxkc8smQa6HrA/05inq4xw9Jg7WY5GW+6umE4s0S1w
-         P71A==
+        bh=nGB5azc1AWOxeIywWywVSQOrQTdtCakw86KhzarLqxg=;
+        b=W1i+QwSGN0HgnNPZ8BxXcjVbdsKkyGXSRk5CNxB6fJWc4XjmzPyQalJHonpeLGG9lm
+         S1ubpsJQ2lm5zdMnxqyUoWi248yYJcYu4ndLBVwA/aNDya5IPcU0mwKNROgJwHPMBfrq
+         rU5SpI/3iePD5pbvk3zew+sk+ZGCASs5g47FG8tLx+ysYd/0pnnD7/KSSkw+ZuObsDRN
+         HAVbaotSr0NDd/7EYMceq23dRTIBG0hQUI1b/ykL9M9DBVcWwEJJ2166YoQMe23/lxIj
+         2SHAVVW3OLluSzpYiY1YIYEEoip5VKHDHQG0Mzc/8aQmx4vGdStKlP6qPQv2Ug4kBiyH
+         rwwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717049869; x=1717654669;
+        d=1e100.net; s=20230601; t=1717049999; x=1717654799;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=WSdHxLbmp97ia1G10K4CxsZgTHCb548EU1TzMRh6otw=;
-        b=QKrHQI+b/B9Eq/XJsxYpVoH6fruJdq+DUnuvBXsSDELmQZsJbuOOzbbl1VHOPbXJnw
-         man98p4oNZKye2+N460izNwTGM5IJ56mVWnxdztBlYandnSoaHbl2Q0VIXlHa+zunNot
-         CHMhz8yTC5+xBD9LtEcAJvm2kYypdU8z37HENOC06Vh+N7dICNStEIxXfyUTV8qTwZy5
-         ws6bxhkYyDCHSgH2UBoD5RXPWtBy8Trj5uTNg3eClx3xIS1EF0ljNtapRtVssMV+Pc0c
-         D9rpIvo44/VnutEaKx3sXCEXZzvcnhP0VuI1uDZBWDwgiwrVTDchE8xpg3Rzg/U2NrE+
-         sNeA==
-X-Forwarded-Encrypted: i=1; AJvYcCX9xKd52CAgvJbDRbOZ5daXrkMcISy3F2t5a1JI/dhhBfMwICCpW8IgWtoGiXG2uJDFYe+mfExJHVYphSUD8bDzvZJ3XexfkuGBtPC7Tkxazgf02n+WPSsGpWgLg8DOcpeQJE+UpNRlUCgeJ9dU7JJwR6RsvXhlTtAiEQIRQ2ZB2phb4g==
-X-Gm-Message-State: AOJu0Yz4L+mSS/926RybyPWYa1XtsrGk4WhLU68/EffKTXWnZ44XQIAz
-	mwcAVeqz43V6qyGYadD/a0D4Q3NrP46BsCnTxBlKRFDcGLgJzdhd
-X-Google-Smtp-Source: AGHT+IEkvn6YatjYVdSD+3mc2CY6smDx1erwxzGTzsxu2qJeg0ghrQ208yqof63hV9b736/V0cIgdA==
-X-Received: by 2002:a05:6000:106:b0:354:f8a9:345 with SMTP id ffacd0b85a97d-35dc00845ebmr636222f8f.14.1717049868617;
-        Wed, 29 May 2024 23:17:48 -0700 (PDT)
+        bh=nGB5azc1AWOxeIywWywVSQOrQTdtCakw86KhzarLqxg=;
+        b=esc35zJmbiM1Y7n/2/MOktQjDghGmCi8fKVnd+Uau+MjC2bTKc8Xm4wDsFBI7G4GbO
+         CMEcDIp67wskhO8ut2rn4DGNsjNxI6Zrr+swFdwu84kpq5MvV6TPMGNcZP2iqmQ5A1er
+         K9fOzstzel19JhlTIngD4C34qF5PI7qPXOGlJyQs6J/MvDXTGQecyT63QCaS9TAFqAeL
+         XB2/Al2SdCnsNl3Io0NlAVNawhnVfS9oI75EQ0Al+smhKcFBsGe0mq7Wi4tk2mccQ6OM
+         zYKng9ATOimSKEGziyceI3yELXjUMFDsj8FLpBp1tG+BQU+N9vWJuhBps7A8lYl+5iEK
+         7zFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXdQ7a5Xbx7kmBBSyyY2EpivHfKUj/Cm7J8iqKCX85ZAY+5zg5iE+A9h55z1Q3vacXYDVURwQ1O/PeM+P+yreOwzNH4mTgaQacU97oGU2VEVK2jtKr4KHWu5ghvNu3vnfaHumyvVfES18RomxYsol8qzql9HtNE05gUlufByziCheDRhA==
+X-Gm-Message-State: AOJu0Yw7i5pNT4/ialbdZh0MdkY/gezW3iF+l7XC9c6yYyyjLMZyvFG+
+	IIyGo+M7tC2LhlQIKj8hZQ/5PGgAuuEb1MOmxijqtlzWdI0VDHOx
+X-Google-Smtp-Source: AGHT+IFW3nvkrOa35PELOhsa1ZftPs5NlzMr19sLq7fYtR5foc5ARSf15qJmvaqrDZWxv8XH5puPbg==
+X-Received: by 2002:a05:6000:364:b0:34c:9a04:466f with SMTP id ffacd0b85a97d-35dc00be96cmr710514f8f.50.1717049998317;
+        Wed, 29 May 2024 23:19:58 -0700 (PDT)
 Received: from ?IPv6:2001:a61:35f9:9001:40df:88bb:5090:7ab6? ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3557a08a88esm16397009f8f.41.2024.05.29.23.17.47
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35b1d7a496asm6704409f8f.87.2024.05.29.23.19.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 23:17:48 -0700 (PDT)
-Message-ID: <3dc83aa5c1d138ef70dd64ba4154acb52b65a8a3.camel@gmail.com>
-Subject: Re: [PATCH v3 6/6] iio: adc: ad7173: Reduce device info struct size
+        Wed, 29 May 2024 23:19:58 -0700 (PDT)
+Message-ID: <d3c2496deb6a1764d06a63592b416d30d43fcc47.camel@gmail.com>
+Subject: Re: [PATCH v3 5/6] iio: adc: ad7173: Add support for AD411x devices
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, dumitru.ceclan@analog.com
+To: David Lechner <dlechner@baylibre.com>, "Ceclan, Dumitru"
+	 <mitrutzceclan@gmail.com>, dumitru.ceclan@analog.com
 Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
  <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Rob
  Herring <robh@kernel.org>, Krzysztof Kozlowski
  <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Dumitru Ceclan <mitrutzceclan@gmail.com>
-Date: Thu, 30 May 2024 08:17:47 +0200
-In-Reply-To: <ec2ac6fb-0f08-4e8c-8907-83bd8f0976c8@baylibre.com>
+ linux-kernel@vger.kernel.org
+Date: Thu, 30 May 2024 08:19:57 +0200
+In-Reply-To: <30192c2a-5275-41ac-bc20-aa5f436846a3@baylibre.com>
 References: <20240527-ad4111-v3-0-7e9eddbbd3eb@analog.com>
-	 <20240527-ad4111-v3-6-7e9eddbbd3eb@analog.com>
-	 <2f26b72970be841279ca00c1b5eb91dcfffabdea.camel@gmail.com>
-	 <ec2ac6fb-0f08-4e8c-8907-83bd8f0976c8@baylibre.com>
+	 <20240527-ad4111-v3-5-7e9eddbbd3eb@analog.com>
+	 <6f18184de4a37993baedc15b44ecf0a6834a24d1.camel@gmail.com>
+	 <917bc1d9-fbdc-4ca2-a156-813b57c8201e@gmail.com>
+	 <30192c2a-5275-41ac-bc20-aa5f436846a3@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
@@ -93,66 +95,55 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Wed, 2024-05-29 at 15:32 -0500, David Lechner wrote:
-> On 5/29/24 7:23 AM, Nuno S=C3=A1 wrote:
-> > On Mon, 2024-05-27 at 20:02 +0300, Dumitru Ceclan via B4 Relay wrote:
-> > > From: Dumitru Ceclan <dumitru.ceclan@analog.com>
-> > >=20
-> > > Reduce the size used by the device info struct by packing the bool
-> > > =C2=A0fields within the same byte. This reduces the struct size from =
-52 bytes
-> > > =C2=A0to 44 bytes.
-> > >=20
-> > > Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-> > > ---
-> > > =C2=A0drivers/iio/adc/ad7173.c | 16 ++++++++--------
-> > > =C2=A01 file changed, 8 insertions(+), 8 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-> > > index 328685ce25e0..e8357a21d513 100644
-> > > --- a/drivers/iio/adc/ad7173.c
-> > > +++ b/drivers/iio/adc/ad7173.c
-> > > @@ -179,15 +179,15 @@ struct ad7173_device_info {
-> > > =C2=A0	unsigned int clock;
-> > > =C2=A0	unsigned int id;
-> > > =C2=A0	char *name;
-> > > -	bool has_current_inputs;
-> > > -	bool has_vcom_input;
-> > > -	bool has_temp;
-> > > +	bool has_current_inputs		:1;
-> > > +	bool has_vcom_input		:1;
-> > > +	bool has_temp			:1;
-> > > =C2=A0	/* ((AVDD1 =E2=88=92 AVSS)/5) */
-> > > -	bool has_common_input;
-> > > -	bool has_input_buf;
-> > > -	bool has_int_ref;
-> > > -	bool has_ref2;
-> > > -	bool higher_gpio_bits;
-> > > +	bool has_common_input		:1;
-> > > +	bool has_input_buf		:1;
-> > > +	bool has_int_ref		:1;
-> > > +	bool has_ref2			:1;
-> > > +	bool higher_gpio_bits		:1;
-> > > =C2=A0	u8 num_gpios;
-> > > =C2=A0};
-> > > =C2=A0
-> > >=20
+On Wed, 2024-05-29 at 15:59 -0500, David Lechner wrote:
+> On 5/29/24 9:03 AM, Ceclan, Dumitru wrote:
+> > On 29/05/2024 15:46, Nuno S=C3=A1 wrote:
+> > > On Mon, 2024-05-27 at 20:02 +0300, Dumitru Ceclan via B4 Relay wrote:
+> > > > From: Dumitru Ceclan <dumitru.ceclan@analog.com>
 > >=20
-> > This is really a very micro optimization... I would drop it tbh but no =
-strong
-> > feelings about it.
+> > ...
 > >=20
-> > - Nuno S=C3=A1
+> > > > =C2=A0static const struct ad7173_device_info ad7173_device_info[] =
+=3D {
+> > > > +	[ID_AD4111] =3D {
+> > > > +		.name =3D "ad4111",
+> > > > +		.id =3D AD7173_AD4111_AD4112_AD4114_ID,
+> > > > +		.num_voltage_inputs_with_divider =3D 8,
+> > > > +		.num_channels =3D 16,
+> > > > +		.num_configs =3D 8,
+> > > > +		.num_voltage_inputs =3D 8,
+> > > > +		.num_gpios =3D 2,
+> > > > +		.higher_gpio_bits =3D true,
+> > > > +		.has_temp =3D true,
+> > > > +		.has_vcom_input =3D true,
+> > > > +		.has_input_buf =3D true,
+> > > > +		.has_current_inputs =3D true,
+> > > > +		.has_int_ref =3D true,
+> > > > +		.clock =3D 2 * HZ_PER_MHZ,
+> > > > +		.sinc5_data_rates =3D ad7173_sinc5_data_rates,
+> > > > +		.num_sinc5_data_rates =3D ARRAY_SIZE(ad7173_sinc5_data_rates),
+> > > > +	},
+> > >=20
+> > > At some point it would be nice to drop the ad7173_device_info array..=
+.
+> > >=20
+> > What are good alternatives to this?
 >=20
-> This only considers RAM size and not code size too. At least on ARM arch
-> every time we read or write to one of these fields, the code is now
-> implicitly `((field & 0x1) >> bits)` so two extra assembly instructions
-> for each read and write. This could be bigger than the size saved in
-> the structs.
+> Drivers like ad7091r8 have individual static struct ad7091r_init_info
+> instead of putting them all in an array. I like doing it that
+> way because it makes less code to read compared to having the
+> array.
 >=20
+> It would let us get rid of enum ad7173_ids, have one level less
+> indent on each static const struct ad7173_device_info and=20
+>=20
+> { .compatible =3D "adi,ad7172-2", .data =3D &ad7173_device_info },
+>=20
+> would now fit on one line since we no longer need the array
+> index.
 >=20
 
-very good point...
+Exactly... But up to you to do it now or defer it to a later patch.
 
 - Nuno S=C3=A1
 

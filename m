@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-5509-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5508-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF35B8D4EDE
-	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 17:15:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D75C38D4EDC
+	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 17:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 446761F25DE1
-	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 15:15:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FCA71F25C44
+	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 15:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4623C182D2A;
-	Thu, 30 May 2024 15:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE9B182D18;
+	Thu, 30 May 2024 15:14:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bY+E8qT+"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="MG+qVzYY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
+Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B03C17F50D
-	for <linux-iio@vger.kernel.org>; Thu, 30 May 2024 15:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE4917F503
+	for <linux-iio@vger.kernel.org>; Thu, 30 May 2024 15:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717082075; cv=none; b=owcSF9IT+7bQku6vyNcSKwzgKo6if2p3igpHKmJmDpYb2sKtZfXbIixOhkeEwqOQ0PEKHKTHYPdmVCwaJIRTGhsPhWzR3KCizC6kbVCLSmvQ8hqMpCkY9e0iF7ry5o9RzbHko7mJ2xGRNL+07G2yrcL8Wwg1wx3+uZPno5Kd3fA=
+	t=1717082074; cv=none; b=AuXm9Mb5Cmuw6Wk1JC1Rh7m8xXBuiOlMTpZXvioGgJdodt7CHcEnUMwTOljFS3wtWhA6dOho/R0qVHrIa6TTTZwsXgcqFW4Q2llgJ8YUo8QYrOZ78w+LTsODQ5nS8xYxJAPpxdjEy5paNh0gUj8VekJu9WsCJ0xMjK238ODned8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717082075; c=relaxed/simple;
-	bh=D6UyROuZwAs3IFuLEy0yyT2LzcvHAh4TBhmxLHlH9HA=;
+	s=arc-20240116; t=1717082074; c=relaxed/simple;
+	bh=Xoa77mLrBZvVx2uEYxjsfkSdZpI7/EICencdXSVB99M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LlWjgu3yxU6CpGyklW5TlpiwH7a0FfxCSz2hl0cNwCOUKMEEcFsGhzLw8i9itC+qhLTAtTvdMwxKKp5WgGDYsb+TCwcT6iIOtL+qzYAAOQthOR6WrvGz6RLduwOmV3mVwE05fySuZ4PLFONkSpW0Wx/NT2D1iSzIGsoHmAEwu30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bY+E8qT+; arc=none smtp.client-ip=209.85.210.52
+	 MIME-Version:Content-Type; b=AITT79+JtX+8c9es1scPc5qsi7ZbKZoCkSOXK+J/GABSoNfVzUSPHzAWVLPo3nyYbSxz5ISdfM44HQt8Jsfoq6/Ll8XMZxsdNGMLVQJYS6nVobYd9aQ6aXxHJvD1rIU89d+r/K7/7dIKF+Ip93ZFHtZHLw0ZiN6GTpLT6MLR+sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=MG+qVzYY; arc=none smtp.client-ip=209.85.167.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-6f8e5115cfbso632547a34.0
-        for <linux-iio@vger.kernel.org>; Thu, 30 May 2024 08:14:31 -0700 (PDT)
+Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3d1b33e9ac6so509882b6e.1
+        for <linux-iio@vger.kernel.org>; Thu, 30 May 2024 08:14:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1717082071; x=1717686871; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1717082072; x=1717686872; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ARkP3gEjLJuFmKmn7+LYv5VdtcnLNuF1mAXkD5YuF4Y=;
-        b=bY+E8qT+ryhrTgcpIrK2qTufRWdUL2t/fv/k9QD5jq5c4qsOUe2PcoIryi0tSyqaWL
-         3NKJzro3MRtrEujaLacfP6OP9+LK9q6y8EqC3dzJ1DLUoSafpWjYELDn5enilNVJ+2ff
-         vjd1f2QnOY+f2pLx7SL9nQ8Kc99r9wgCqVMhz2q4Sc9Hupb3+QxhL2lsTGyGa1FADUol
-         7sc3lP/+zP9uv2fBa3ms2HZa0BJ8p8FnOz8FYiziE6I0z72MN2y+bK6d/Hoew/6qptuF
-         +hFKv8opPZAaWXvWkVNmNLxjXYazW5o7xR7NUSf8DUcNTu7Fi6pBdcsyL2wjgePmyuTL
-         7a7g==
+        bh=6/68b/SzzuRQNI8g1rtkBQU2w+J/r1CLstX409XeBLE=;
+        b=MG+qVzYYuGx6G7CBzoctIegCW9hgw2hIxGIQjuqpKWsAPGOwQW9NH5XvYkCu4qG+Wf
+         pc4yduUIq5RgKQ2eo3Z+QeDDt6yVBNiAEn/8o1eL6ORMIseOXDxiXP43/y2DUkoF4bM2
+         EXfMCgnkhFRyhivOLTpfwVvXhagbkJqCTUbJ4FHvBmKJAou7eRPek32SZBC9MCqtSayV
+         ki5uvyS0HqZrX1yGiQTD5kWr/JJZGNhnl/HWC8vRtwLmHi4jStnwkFyOR2+uBOoiiOlF
+         qFoGEzwLKo32wSO/OnFaf6COZC757Z/8U66lJfVKLL2DPMdS20hsg3uG8xJmkvK0rKb7
+         TRCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717082071; x=1717686871;
+        d=1e100.net; s=20230601; t=1717082072; x=1717686872;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ARkP3gEjLJuFmKmn7+LYv5VdtcnLNuF1mAXkD5YuF4Y=;
-        b=RCf5ZNCajp/8ws8MnhLOiUlKqXR1O1ONIZtl8Fhd2CeJvY8V2psM+LMtwg9oSs112c
-         guE9kQguFdqLl4hMqt4FD2swjmJI7NPg2Fis/h82x8tc6qCUFGWXIithBeEJ2Lo21Iyw
-         4VZP/Nq23cSheAsyDyjwdKEy32AJxhZ8gRXlLo3vap1ns8swpO6ba38e2QLh+33TDLmp
-         5yl76qlc0k6P1krHH3yv2EuuYwk0aeupwjI+g0AzEijgmT2vLtrzHinEc4/ULCRktzP9
-         i1ahdyT9JwLYXkGhYJVuNg/UDU/a4JrUl9ErPEJKJ4d7Xmnw+ZwAzEF2GeJDGCI86U1X
-         8sDw==
-X-Forwarded-Encrypted: i=1; AJvYcCWXZOThYbu9I3+7DYxmhvaUG8rJM/NqKsKdKlH1VngnsLtZwwTngCxVRRYPgeKvVYLNYzDQ4gd6kVcbqGhSPUrFAyKugwCUaiYf
-X-Gm-Message-State: AOJu0Yw0eIHGH56OoDvxZdONzp1pfAitTXU0V5YhaqnvmV9tg0cXAD4H
-	MMwJo9RF1sS77g9LSoR1Te9JJlyywefWaqUVpbjHKhQhI4+nbTh5Wl1H8fwSMb4=
-X-Google-Smtp-Source: AGHT+IH9DRwESXdM4dQ809LwnSFT5ogp09S5MU08X8hkaC+tPLhprQerdIbzSMHC3HwkZOfEGoWpJA==
-X-Received: by 2002:a9d:7f11:0:b0:6f5:a8a5:be6a with SMTP id 46e09a7af769-6f90aeccf55mr2717045a34.22.1717082070956;
-        Thu, 30 May 2024 08:14:30 -0700 (PDT)
+        bh=6/68b/SzzuRQNI8g1rtkBQU2w+J/r1CLstX409XeBLE=;
+        b=dlQbjkwWb3UdHZrDkUleFDws+cKUl99xdEJFjlTh5FrqMO2lfN6bCt6cj47qUufn3j
+         kOeKERiuANVHcV+XpaWhUZvia1FoXJ0wPecdMMOgLSbqfLIrvxJkzI7+MutwBjfM00T9
+         xrUvl0+x57BmJtyzp/QF8F2udSO475y9fzdfOEOX+gecD2G9rqDILgQ8ttYVrlnrzekP
+         +2IQVGTzChhGEPNkFgyjg2++RljxKOCKTWed00IDPKmDhbrkk7zeksb6y57MHtsebpmf
+         KTYBDlFkoyptXpyNPljGATdK0KrCUOXlDeF70asB00cJqA1+OZNDAaiih5yZHxVlhBId
+         3+IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVMvyNEKcNP/RDC5zV7dxxihzsshQuX/RFBrS4hM9aMuEvaIgFHG6dZSfeMxoQ4P5ng7y9HZwEK4ROKQ8BG3JQuOhDrZEfETD/z
+X-Gm-Message-State: AOJu0Yx5Ju3WN88cESrqI4WIhHW4FieHqxheozIRcKvtbLKdZN9E5lm0
+	SJvRwuTNydg3K3Pzrd29F9skKBVIyxzy6Dro4jlBclHGyiNCtE0b3bV3h7fQIBQ=
+X-Google-Smtp-Source: AGHT+IHL6d3EZT2jTd7bfKSK4pIy4e6GYOcsZNBh9G51hqhfnpXKdBnKgN9f0yHfcfUpHGZbi+jj2g==
+X-Received: by 2002:a05:6808:2013:b0:3d1:e059:feb2 with SMTP id 5614622812f47-3d1e05a02d2mr388238b6e.20.1717082071844;
+        Thu, 30 May 2024 08:14:31 -0700 (PDT)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6f8d0de6314sm2803425a34.41.2024.05.30.08.14.30
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6f8d0de6314sm2803425a34.41.2024.05.30.08.14.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 May 2024 08:14:30 -0700 (PDT)
+        Thu, 30 May 2024 08:14:31 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -76,9 +76,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	Esteban Blanc <eblanc@baylibre.com>,
 	linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/5] iio: add support for multiple scan types per channel
-Date: Thu, 30 May 2024 10:14:10 -0500
-Message-ID: <20240530-iio-add-support-for-multiple-scan-types-v3-3-cbc4acea2cfa@baylibre.com>
+Subject: [PATCH v3 4/5] iio: adc: ad7380: use spi_optimize_message()
+Date: Thu, 30 May 2024 10:14:11 -0500
+Message-ID: <20240530-iio-add-support-for-multiple-scan-types-v3-4-cbc4acea2cfa@baylibre.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240530-iio-add-support-for-multiple-scan-types-v3-0-cbc4acea2cfa@baylibre.com>
 References: <20240530-iio-add-support-for-multiple-scan-types-v3-0-cbc4acea2cfa@baylibre.com>
@@ -92,341 +92,142 @@ Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
-This adds new fields to the iio_channel structure to support multiple
-scan types per channel. This is useful for devices that support multiple
-resolution modes or other modes that require different data formats of
-the raw data.
+This changes the AD7380 to use spi_optimize_message() to optimize
+buffered reads.
 
-To make use of this, drivers need to implement the new callback
-get_current_scan_type() to resolve the scan type for a given channel
-based on the current state of the driver. There is a new scan_type_ext
-field in the iio_channel structure that should be used to store the
-scan types for any channel that has more than one. There is also a new
-flag has_ext_scan_type that acts as a type discriminator for the
-scan_type/ext_scan_type union. A union is used so that we don't grow
-the size of the iio_channel structure and also makes it clear that
-scan_type and ext_scan_type are mutually exclusive.
+This changes both direct reads and buffered reads to use the same
+spi_message. This has some (welcome) side effects. The first is that
+in buffered reads, the timestamp will now correspond to the same sample
+rather than the previous sample. The second is that direct reads now
+use the same SPI bus speed as buffered reads.
 
-The buffer code is the only code in the IIO core code that is using the
-scan_type field. This patch updates the buffer code to use the new
-iio_channel_validate_scan_type() function to ensure it is returning the
-correct scan type for the current state of the device when reading the
-sysfs attributes. The buffer validation code is also update to validate
-any additional scan types that are set in the scan_type_ext field. Part
-of that code is refactored to a new function to avoid duplication.
-
-Some userspace tools may need to be updated to re-read the scan type
-after writing any other attribute. During testing, we noticed that we
-had to restart iiod to get it to re-read the scan type after enabling
-oversampling on the ad7380 driver.
+This reduces CPU usage of the IRQ thread from around 25% to around 20%
+when sampling at 10 kHz on a ZedBoard.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
-
 v3 changes:
-* change return type of get_current_scan_type callback to int
-* add error checks since iio_get_current_scan_type() can can now return
-  an error
+* New patch for this series
+* A similar patch was sent at [1].
 
-v2 changes:
-* use union for scan_type and ext_scan_type/num_ext_scan_types
-* add has_ext_scan_type flag for type discrimination
-* add extra validation check for get_current_scan_type when
-  has_ext_scan_type is set
+[1]: https://lore.kernel.org/linux-iio/20240219-mainline-spi-precook-message-v2-5-4a762c6701b9@baylibre.com/
 ---
- drivers/iio/industrialio-buffer.c | 101 ++++++++++++++++++++++++++++++--------
- include/linux/iio/iio.h           |  55 ++++++++++++++++++++-
- 2 files changed, 133 insertions(+), 23 deletions(-)
+ drivers/iio/adc/ad7380.c | 70 ++++++++++++++++++++++++++----------------------
+ 1 file changed, 38 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/iio/industrialio-buffer.c b/drivers/iio/industrialio-buffer.c
-index 08103a9e77f7..0138b21b244f 100644
---- a/drivers/iio/industrialio-buffer.c
-+++ b/drivers/iio/industrialio-buffer.c
-@@ -365,9 +365,16 @@ static ssize_t iio_show_fixed_type(struct device *dev,
- 				   struct device_attribute *attr,
- 				   char *buf)
- {
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
--	const struct iio_scan_type *scan_type = &this_attr->c->scan_type;
--	u8 type = scan_type->endianness;
-+	const struct iio_scan_type *scan_type;
-+	u8 type;
-+
-+	scan_type = iio_get_current_scan_type(indio_dev, this_attr->c);
-+	if (IS_ERR(scan_type))
-+		return PTR_ERR(scan_type);
-+
-+	type = scan_type->endianness;
+diff --git a/drivers/iio/adc/ad7380.c b/drivers/iio/adc/ad7380.c
+index 6b0b1b0be363..006496807de9 100644
+--- a/drivers/iio/adc/ad7380.c
++++ b/drivers/iio/adc/ad7380.c
+@@ -232,6 +232,9 @@ struct ad7380_state {
+ 	struct regmap *regmap;
+ 	unsigned int vref_mv;
+ 	unsigned int vcm_mv[MAX_NUM_CHANNELS];
++	/* xfers, message an buffer for reading sample data */
++	struct spi_transfer xfer[2];
++	struct spi_message msg;
+ 	/*
+ 	 * DMA (thus cache coherency maintenance) requires the
+ 	 * transfer buffers to live in their own cache lines.
+@@ -331,15 +334,9 @@ static irqreturn_t ad7380_trigger_handler(int irq, void *p)
+ 	struct iio_poll_func *pf = p;
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct ad7380_state *st = iio_priv(indio_dev);
+-	struct spi_transfer xfer = {
+-		.bits_per_word = st->chip_info->channels[0].scan_type.realbits,
+-		.len = (st->chip_info->num_channels - 1) *
+-		       BITS_TO_BYTES(st->chip_info->channels->scan_type.storagebits),
+-		.rx_buf = st->scan_data.raw,
+-	};
+ 	int ret;
  
- 	if (type == IIO_CPU) {
- #ifdef __LITTLE_ENDIAN
-@@ -691,15 +698,18 @@ static ssize_t enable_show(struct device *dev, struct device_attribute *attr,
- 	return sysfs_emit(buf, "%d\n", iio_buffer_is_active(buffer));
+-	ret = spi_sync_transfer(st->spi, &xfer, 1);
++	ret = spi_sync(st->spi, &st->msg);
+ 	if (ret)
+ 		goto out;
+ 
+@@ -355,33 +352,9 @@ static irqreturn_t ad7380_trigger_handler(int irq, void *p)
+ static int ad7380_read_direct(struct ad7380_state *st,
+ 			      struct iio_chan_spec const *chan, int *val)
+ {
+-	struct spi_transfer xfers[] = {
+-		/* toggle CS (no data xfer) to trigger a conversion */
+-		{
+-			.speed_hz = AD7380_REG_WR_SPEED_HZ,
+-			.bits_per_word = chan->scan_type.realbits,
+-			.delay = {
+-				.value = T_CONVERT_NS,
+-				.unit = SPI_DELAY_UNIT_NSECS,
+-			},
+-			.cs_change = 1,
+-			.cs_change_delay = {
+-				.value = st->chip_info->timing_specs->t_csh_ns,
+-				.unit = SPI_DELAY_UNIT_NSECS,
+-			},
+-		},
+-		/* then read all channels */
+-		{
+-			.speed_hz = AD7380_REG_WR_SPEED_HZ,
+-			.bits_per_word = chan->scan_type.realbits,
+-			.rx_buf = st->scan_data.raw,
+-			.len = (st->chip_info->num_channels - 1) *
+-			       ((chan->scan_type.storagebits > 16) ? 4 : 2),
+-		},
+-	};
+ 	int ret;
+ 
+-	ret = spi_sync_transfer(st->spi, xfers, ARRAY_SIZE(xfers));
++	ret = spi_sync(st->spi, &st->msg);
+ 	if (ret < 0)
+ 		return ret;
+ 
+@@ -464,6 +437,11 @@ static void ad7380_regulator_disable(void *p)
+ 	regulator_disable(p);
  }
  
--static unsigned int iio_storage_bytes_for_si(struct iio_dev *indio_dev,
--					     unsigned int scan_index)
-+static int iio_storage_bytes_for_si(struct iio_dev *indio_dev,
-+				    unsigned int scan_index)
- {
- 	const struct iio_chan_spec *ch;
- 	const struct iio_scan_type *scan_type;
- 	unsigned int bytes;
- 
- 	ch = iio_find_channel_from_si(indio_dev, scan_index);
--	scan_type = &ch->scan_type;
-+	scan_type = iio_get_current_scan_type(indio_dev, ch);
-+	if (IS_ERR(scan_type))
-+		return PTR_ERR(scan_type);
-+
- 	bytes = scan_type->storagebits / 8;
- 
- 	if (scan_type->repeat > 1)
-@@ -708,7 +718,7 @@ static unsigned int iio_storage_bytes_for_si(struct iio_dev *indio_dev,
- 	return bytes;
- }
- 
--static unsigned int iio_storage_bytes_for_timestamp(struct iio_dev *indio_dev)
-+static int iio_storage_bytes_for_timestamp(struct iio_dev *indio_dev)
- {
- 	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
- 
-@@ -726,6 +736,9 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
- 	for_each_set_bit(i, mask,
- 			 indio_dev->masklength) {
- 		length = iio_storage_bytes_for_si(indio_dev, i);
-+		if (length < 0)
-+			return length;
-+
- 		bytes = ALIGN(bytes, length);
- 		bytes += length;
- 		largest = max(largest, length);
-@@ -733,6 +746,9 @@ static int iio_compute_scan_bytes(struct iio_dev *indio_dev,
- 
- 	if (timestamp) {
- 		length = iio_storage_bytes_for_timestamp(indio_dev);
-+		if (length < 0)
-+			return length;
-+
- 		bytes = ALIGN(bytes, length);
- 		bytes += length;
- 		largest = max(largest, length);
-@@ -1012,14 +1028,22 @@ static int iio_buffer_update_demux(struct iio_dev *indio_dev,
- 				       indio_dev->masklength,
- 				       in_ind + 1);
- 		while (in_ind != out_ind) {
--			length = iio_storage_bytes_for_si(indio_dev, in_ind);
-+			ret = iio_storage_bytes_for_si(indio_dev, in_ind);
-+			if (ret < 0)
-+				goto error_clear_mux_table;
-+
-+			length = ret;
- 			/* Make sure we are aligned */
- 			in_loc = roundup(in_loc, length) + length;
- 			in_ind = find_next_bit(indio_dev->active_scan_mask,
- 					       indio_dev->masklength,
- 					       in_ind + 1);
- 		}
--		length = iio_storage_bytes_for_si(indio_dev, in_ind);
-+		ret = iio_storage_bytes_for_si(indio_dev, in_ind);
-+		if (ret < 0)
-+			goto error_clear_mux_table;
-+
-+		length = ret;
- 		out_loc = roundup(out_loc, length);
- 		in_loc = roundup(in_loc, length);
- 		ret = iio_buffer_add_demux(buffer, &p, in_loc, out_loc, length);
-@@ -1030,7 +1054,11 @@ static int iio_buffer_update_demux(struct iio_dev *indio_dev,
- 	}
- 	/* Relies on scan_timestamp being last */
- 	if (buffer->scan_timestamp) {
--		length = iio_storage_bytes_for_timestamp(indio_dev);
-+		ret = iio_storage_bytes_for_timestamp(indio_dev);
-+		if (ret < 0)
-+			goto error_clear_mux_table;
-+
-+		length = ret;
- 		out_loc = roundup(out_loc, length);
- 		in_loc = roundup(in_loc, length);
- 		ret = iio_buffer_add_demux(buffer, &p, in_loc, out_loc, length);
-@@ -1597,6 +1625,22 @@ static long iio_device_buffer_ioctl(struct iio_dev *indio_dev, struct file *filp
- 	}
- }
- 
-+static int iio_channel_validate_scan_type(struct device *dev, int ch,
-+					  const struct iio_scan_type *scan_type)
++static void ad7380_unoptimize_msg(void *msg)
 +{
-+	/* Verify that sample bits fit into storage */
-+	if (scan_type->storagebits < scan_type->realbits + scan_type->shift) {
-+		dev_err(dev,
-+			"Channel %d storagebits (%d) < shifted realbits (%d + %d)\n",
-+			ch, scan_type->storagebits,
-+			scan_type->realbits,
-+			scan_type->shift);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
++	spi_unoptimize_message(msg);
 +}
 +
- static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
- 					     struct iio_dev *indio_dev,
- 					     int index)
-@@ -1626,18 +1670,33 @@ static int __iio_buffer_alloc_sysfs_and_mask(struct iio_buffer *buffer,
- 			if (channels[i].scan_index < 0)
- 				continue;
+ static int ad7380_probe(struct spi_device *spi)
+ {
+ 	struct iio_dev *indio_dev;
+@@ -552,6 +530,34 @@ static int ad7380_probe(struct spi_device *spi)
+ 		return dev_err_probe(&spi->dev, PTR_ERR(st->regmap),
+ 				     "failed to allocate register map\n");
  
--			scan_type = &channels[i].scan_type;
--
--			/* Verify that sample bits fit into storage */
--			if (scan_type->storagebits <
--			    scan_type->realbits + scan_type->shift) {
--				dev_err(&indio_dev->dev,
--					"Channel %d storagebits (%d) < shifted realbits (%d + %d)\n",
--					i, scan_type->storagebits,
--					scan_type->realbits,
--					scan_type->shift);
--				ret = -EINVAL;
--				goto error_cleanup_dynamic;
-+			if (channels[i].has_ext_scan_type) {
-+				int j;
++	/*
++	 * Setting up a low latency read for getting sample data. Used for both
++	 * direct read an triggered buffer.
++	 */
 +
-+				/*
-+				 * get_current_scan_type is required when using
-+				 * extended scan types.
-+				 */
-+				if (!indio_dev->info->get_current_scan_type) {
-+					ret = -EINVAL;
-+					goto error_cleanup_dynamic;
-+				}
++	/* toggle CS (no data xfer) to trigger a conversion */
++	st->xfer[0].delay.value = T_CONVERT_NS;
++	st->xfer[0].delay.unit = SPI_DELAY_UNIT_NSECS;
++	st->xfer[0].cs_change = 1;
++	st->xfer[0].cs_change_delay.value = st->chip_info->timing_specs->t_csh_ns;
++	st->xfer[0].cs_change_delay.unit = SPI_DELAY_UNIT_NSECS;
 +
-+				for (j = 0; j < channels[i].num_ext_scan_type; j++) {
-+					scan_type = &channels[i].ext_scan_type[j];
++	/* then do a second xfer to read the data */
++	st->xfer[1].bits_per_word = st->chip_info->channels[0].scan_type.realbits;
++	st->xfer[1].rx_buf = st->scan_data.raw;
++	st->xfer[1].len = BITS_TO_BYTES(st->chip_info->channels[0].scan_type.storagebits)
++				* (st->chip_info->num_channels - 1);
 +
-+					ret = iio_channel_validate_scan_type(
-+						&indio_dev->dev, i, scan_type);
-+					if (ret)
-+						goto error_cleanup_dynamic;
-+				}
-+			} else {
-+				scan_type = &channels[i].scan_type;
++	spi_message_init_with_transfers(&st->msg, st->xfer, ARRAY_SIZE(st->xfer));
 +
-+				ret = iio_channel_validate_scan_type(
-+						&indio_dev->dev, i, scan_type);
-+				if (ret)
-+					goto error_cleanup_dynamic;
- 			}
- 
- 			ret = iio_buffer_add_channel_sysfs(indio_dev, buffer,
-diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-index 19de573a944a..894309294182 100644
---- a/include/linux/iio/iio.h
-+++ b/include/linux/iio/iio.h
-@@ -204,7 +204,13 @@ struct iio_scan_type {
-  * @address:		Driver specific identifier.
-  * @scan_index:		Monotonic index to give ordering in scans when read
-  *			from a buffer.
-- * @scan_type:		struct describing the scan type
-+ * @scan_type:		struct describing the scan type - mutually exclusive
-+ *			with ext_scan_type.
-+ * @ext_scan_type:	Used in rare cases where there is more than one scan
-+ *			format for a channel. When this is used, the flag
-+ *			has_ext_scan_type must be set and the driver must
-+ *			implement get_current_scan_type in struct iio_info.
-+ * @num_ext_scan_type:	Number of elements in ext_scan_type.
-  * @info_mask_separate: What information is to be exported that is specific to
-  *			this channel.
-  * @info_mask_separate_available: What availability information is to be
-@@ -248,6 +254,7 @@ struct iio_scan_type {
-  *			attributes but not for event codes.
-  * @output:		Channel is output.
-  * @differential:	Channel is differential.
-+ * @has_ext_scan_type:	True if ext_scan_type is used instead of scan_type.
-  */
- struct iio_chan_spec {
- 	enum iio_chan_type	type;
-@@ -255,7 +262,13 @@ struct iio_chan_spec {
- 	int			channel2;
- 	unsigned long		address;
- 	int			scan_index;
--	struct iio_scan_type scan_type;
-+	union {
-+		struct iio_scan_type scan_type;
-+		struct {
-+			const struct iio_scan_type *ext_scan_type;
-+			unsigned int num_ext_scan_type;
-+		};
-+	};
- 	long			info_mask_separate;
- 	long			info_mask_separate_available;
- 	long			info_mask_shared_by_type;
-@@ -273,6 +286,7 @@ struct iio_chan_spec {
- 	unsigned		indexed:1;
- 	unsigned		output:1;
- 	unsigned		differential:1;
-+	unsigned		has_ext_scan_type:1;
- };
- 
- 
-@@ -435,6 +449,9 @@ struct iio_trigger; /* forward declaration */
-  *			for better event identification.
-  * @validate_trigger:	function to validate the trigger when the
-  *			current trigger gets changed.
-+ * @get_current_scan_type: must be implemented by drivers that use ext_scan_type
-+ *			in the channel spec to return the index of the currently
-+ *			active ext_scan type for a channel.
-  * @update_scan_mode:	function to configure device and scan buffer when
-  *			channels have changed
-  * @debugfs_reg_access:	function to read or write register value of device
-@@ -519,6 +536,8 @@ struct iio_info {
- 
- 	int (*validate_trigger)(struct iio_dev *indio_dev,
- 				struct iio_trigger *trig);
-+	int (*get_current_scan_type)(const struct iio_dev *indio_dev,
-+				     const struct iio_chan_spec *chan);
- 	int (*update_scan_mode)(struct iio_dev *indio_dev,
- 				const unsigned long *scan_mask);
- 	int (*debugfs_reg_access)(struct iio_dev *indio_dev,
-@@ -804,6 +823,38 @@ static inline bool iio_read_acpi_mount_matrix(struct device *dev,
- }
- #endif
- 
-+/**
-+ * iio_get_current_scan_type - Get the current scan type for a channel
-+ * @indio_dev:	the IIO device to get the scan type for
-+ * @chan:	the channel to get the scan type for
-+ *
-+ * Most devices only have one scan type per channel and can just access it
-+ * directly without calling this function. Core IIO code and drivers that
-+ * implement ext_scan_type in the channel spec should use this function to
-+ * get the current scan type for a channel.
-+ *
-+ * Returns: the current scan type for the channel or error.
-+ */
-+static inline const struct iio_scan_type
-+*iio_get_current_scan_type(const struct iio_dev *indio_dev,
-+			   const struct iio_chan_spec *chan)
-+{
-+	int ret;
++	ret = spi_optimize_message(st->spi, &st->msg);
++	if (ret)
++		return ret;
 +
-+	if (chan->has_ext_scan_type) {
-+		ret = indio_dev->info->get_current_scan_type(indio_dev, chan);
-+		if (ret < 0)
-+			return ERR_PTR(ret);
++	ret = devm_add_action_or_reset(&spi->dev, ad7380_unoptimize_msg, &st->msg);
++	if (ret)
++		return ret;
 +
-+		if (ret >= chan->num_ext_scan_type)
-+			return ERR_PTR(-EINVAL);
-+
-+		return &chan->ext_scan_type[ret];
-+	}
-+
-+	return &chan->scan_type;
-+}
-+
- ssize_t iio_format_value(char *buf, unsigned int type, int size, int *vals);
- 
- int iio_str_to_fixpoint(const char *str, int fract_mult, int *integer,
+ 	indio_dev->channels = st->chip_info->channels;
+ 	indio_dev->num_channels = st->chip_info->num_channels;
+ 	indio_dev->name = st->chip_info->name;
 
 -- 
 2.45.1

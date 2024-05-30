@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-5497-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5496-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23C598D4B46
-	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 14:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D05B58D4B45
+	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 14:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5559F1C22C79
-	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 12:08:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ECDF1C234E0
+	for <lists+linux-iio@lfdr.de>; Thu, 30 May 2024 12:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DF61822F8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD9361822EE;
 	Thu, 30 May 2024 12:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k25+vziB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="An3Upmex"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99740176183;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996F71586C8;
 	Thu, 30 May 2024 12:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717070883; cv=none; b=V7KEdwZ+EN1Ls4VLhMAscC2WcYKJRqS45di9xDkX9uWa1l6kpz8DlibdMIJA1VzsXBEqGDxo5lYlw5RoVw2Mvkb2y/bmPa5wCIuir7WrrBIBKxYz0JMdI8rVICF99Z06w96ruCzso6xLDiAof+o7NeAQK+0F5if1e+7rD0FTpUA=
+	t=1717070883; cv=none; b=VaBiGP0QrT8hK8MZbKlvKKpSQ0YzccVJpa3L6Ss+ut5IBmMlxpc1Pr6d0wz/dtZm24z43Y4P2z1pyJ9d4t4JJpzxWSf74DnuBzqUtIMkmvk/mdP3CpFbePgBL6+/T+fe/A3RhiHCOMDUzkumm1Mo9wvUqjFN/akWTEfB1VnfGmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717070883; c=relaxed/simple;
-	bh=Sg1hOu3VEG/1Zs7niRX5/Vpq317beg+1Hh4A8ALk38o=;
+	bh=C5v4/fLzS6Bdo8dJf1AM1vOKlChKS52Cq8X9QRh1u/I=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PQRiZciEBpNK7Z4WXpR9qM+43ems5zOdB6nYXw1r/OV58GtRYrLE0oiloiyIEmcpGOYKTSKJAXWeZ/wYbKPe/hY26Q9rlIPCgtBmvCpipfiXLSqBHsnBtS8AvN7AatImVBdFtzSbmSkLLrztcE/3kkQifqj9c59FKP6VqA+Im6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k25+vziB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 45F29C32789;
+	 In-Reply-To:To:Cc; b=Pvl+522L4lZ7VzuRUzD0BJ+lUudEVwcEdux2b4g/j4Ctojz3mkidAi8kudjRxp6IwSSuTfHhGAmYd/wPFpbam15Tu9hoei/9VBWhRjM0lPcwQ2hi1TWOzumgmQlFiXJi6geUqGBUGoPX07VrkrDrGOL8k5F/DzDKtwOBTYMOK84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=An3Upmex; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 50D1DC32786;
 	Thu, 30 May 2024 12:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1717070883;
-	bh=Sg1hOu3VEG/1Zs7niRX5/Vpq317beg+1Hh4A8ALk38o=;
+	bh=C5v4/fLzS6Bdo8dJf1AM1vOKlChKS52Cq8X9QRh1u/I=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=k25+vziBpoiI26hc8mqD/ADcr/eGRoNYx6hWJfWcjoE9D3xKEcY8SJQ/ewtrxohut
-	 gVMxMOfhTyuHc1v0LEdzHOSrSs3b94TAzDrjxo//paOUa0pUdaMEyGLwvCJc21eXP2
-	 92hnCnFVMr8Ut7sYqGYAXuDE3wYcrCOhuAMDlWo7cze1o9XHBk5KdpoU2s1lqrhV5K
-	 hJtnlZdWR3IkW5AtOYStBiu+Glsb2ybo576FSafupPjzrv/WFaXYG5JWYrQ4PPaXn2
-	 4cXm419xQHi5hrO09CmNasng4UzNmNYz9505LmLmPRGxUycWdVf6nHfZ29MTrvh1+d
-	 kZqxJnPqW97nA==
+	b=An3UpmexAyQUMe/fqa/Pj1UpvI6rhIzmThA7emAxMtOeRHYbttqBMQjdZxPxB66al
+	 HdpHe/MSYpna8Q5MDbvUGFlv4KITyYO1z2gsR9cbmWZnfRJk68a0oxSazsVO3N1GYL
+	 iSPBYZQCxaDga1FT6J5B0Dp3y9mCZZ10s+gnJLat729Q65COw+fUKSlAw6GI2lisFm
+	 XSnzHl+RYRIG+zs+8a2xk/xYH/9YoQRQ/5WY+JLQSTQVRB73OLBwSk1snK6UW9lxAE
+	 GvOjQqvqHm+u5TmZiiux9+998hLiYN51ENA/uOAYsIbNVVnmmaJJqS5JpyKozMR183
+	 M9ILUvjAOEzvA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 35F22C27C4F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4304FC27C43;
 	Thu, 30 May 2024 12:08:03 +0000 (UTC)
 From: Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org>
-Date: Thu, 30 May 2024 15:07:50 +0300
-Subject: [PATCH v3 2/5] iio: adc: ad7173: Add ad7173_device_info names
+Date: Thu, 30 May 2024 15:07:51 +0300
+Subject: [PATCH v3 3/5] iio: adc: ad7173: Remove index from temp channel
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240530-ad7173-fixes-v3-2-b85f33079e18@analog.com>
+Message-Id: <20240530-ad7173-fixes-v3-3-b85f33079e18@analog.com>
 References: <20240530-ad7173-fixes-v3-0-b85f33079e18@analog.com>
 In-Reply-To: <20240530-ad7173-fixes-v3-0-b85f33079e18@analog.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -64,11 +64,11 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  Dumitru Ceclan <mitrutzceclan@gmail.com>, 
  Dumitru Ceclan <dumitru.ceclan@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1717070881; l=1300;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1717070881; l=851;
  i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
- bh=jyW8M3kG3uqXuCNPYLLJGiYuxqeZCfGKeCCNwqrSJqE=;
- b=4ER/UoEn/wZkI/mak5zAphUNqZ5UqOLKaguF+1NemNuXpdxwqAYvU7JqWghs5G4GC1++u9dYk
- QcklpdWm3gDCBALYdzKaYyoU2WcJ5jcZdZ03thUV592FTTXKtZ/1XUo
+ bh=qHzAb3Lr8QOhPoRlBg0Itkn9NRPMWDsCz2unbRqp8RE=;
+ b=/16b4nMtXcLOu4ow4Fo36AISvbGQFYNZfcH6Ew8bLJc677ALZIM/4O0JxSjII5wclXnV8aT2m
+ nWG7G+MZxNRCAuXDy3y7k7xXZJy0ST3XJcydCTvt7PkOv1o7cfGWCwC
 X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
  pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
 X-Endpoint-Received: by B4 Relay for dumitru.ceclan@analog.com/20240313
@@ -78,43 +78,28 @@ Reply-To: dumitru.ceclan@analog.com
 
 From: Dumitru Ceclan <dumitru.ceclan@analog.com>
 
-Add missing names from the device info struct for 3 models to ensure
-consistency with the rest of the models.
+Temperature channel is unique per device, index is not needed.
+This is breaking userspace: Include fixes tag to be released within the
+same rc cycle.
 
 Fixes: 8eb903272f75 ("iio: adc: ad7173: add AD7173 driver")
 Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
 ---
- drivers/iio/adc/ad7173.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/adc/ad7173.c | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
-index 850574437bda..58620be41ef5 100644
+index 58620be41ef5..eb512878c30e 100644
 --- a/drivers/iio/adc/ad7173.c
 +++ b/drivers/iio/adc/ad7173.c
-@@ -220,6 +220,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.num_sinc5_data_rates = ARRAY_SIZE(ad7173_sinc5_data_rates),
- 	},
- 	[ID_AD7172_4] = {
-+		.name = "ad7172-4",
- 		.id = AD7172_4_ID,
- 		.num_inputs = 9,
- 		.num_channels = 8,
-@@ -262,6 +263,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
- 	},
- 	[ID_AD7175_8] = {
-+		.name = "ad7175-8",
- 		.id = AD7175_8_ID,
- 		.num_inputs = 17,
- 		.num_channels = 16,
-@@ -290,6 +292,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
- 		.num_sinc5_data_rates = ARRAY_SIZE(ad7175_sinc5_data_rates),
- 	},
- 	[ID_AD7177_2] = {
-+		.name = "ad7177-2",
- 		.id = AD7177_ID,
- 		.num_inputs = 5,
- 		.num_channels = 4,
+@@ -815,7 +815,6 @@ static const struct iio_chan_spec ad7173_channel_template = {
+ 
+ static const struct iio_chan_spec ad7173_temp_iio_channel_template = {
+ 	.type = IIO_TEMP,
+-	.indexed = 1,
+ 	.channel = AD7173_AIN_TEMP_POS,
+ 	.channel2 = AD7173_AIN_TEMP_NEG,
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
 
 -- 
 2.43.0

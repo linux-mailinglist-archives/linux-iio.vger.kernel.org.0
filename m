@@ -1,121 +1,133 @@
-Return-Path: <linux-iio+bounces-5520-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5521-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DCF8D59FC
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 07:48:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E9CE8D5B41
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 09:10:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 132C91C23C5C
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 05:48:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD5B61C23DC4
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 07:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D4077A702;
-	Fri, 31 May 2024 05:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0832D81211;
+	Fri, 31 May 2024 07:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IQNSC2r1"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jf/uIU73"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE6A1CD3C;
-	Fri, 31 May 2024 05:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E14F1103;
+	Fri, 31 May 2024 07:10:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717134524; cv=none; b=osBfqUJT4/xERAgM/7kysF61jVuKEq25CNeHfrNXSiuYQuNxH0GISxf/LfjhTqyLHCmrE780TM2FfJ9pTHTsdVAzHspVWzhFxDrYEAn+IWzggEBpvmBHCx1BmCpAuqfDCdQCKKhVt+lngo4K7DjthPo+MzyKWdQ7f27hsGSNYCc=
+	t=1717139447; cv=none; b=gux89YuX/DGyhgyOG9mh+7WL2sX3LG8otbg+bxaQd9kN6665tXQgxmT7rUyoczR85CoO4SYAYIWmaMzP+7D8SGXFtxL2v3cxWu5LQWYA9qRP1L4jyojoP/tacukF7fryq8hCEfD6U9le66Ze1Op3fFAadeD8pRW5XOoLZYlrrvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717134524; c=relaxed/simple;
-	bh=GSYHW0e477rQxa1VvjbRStBZ0wEwBEhVvmhQZuAfotk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O8Jp6Jh1h4qaji6OSNJEhkHPBp801gQBELGQC2X64DdEGvYsxVSiuGW+uXOXNaH1ENk1LK2eFhO/hNI0mzZARqLrS6PPUFlDRSxR+u5QgaGS1HCYr07IjxwdsQWnB/oAvzquzrGF587hw03I8BP+/tj02b0NTGzFN67DIut6pgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IQNSC2r1; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717134521; x=1748670521;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=GSYHW0e477rQxa1VvjbRStBZ0wEwBEhVvmhQZuAfotk=;
-  b=IQNSC2r1xlzaa5QDMWuZ5Clrs21Iq8Q1vBoZe/vi0ytxEgUM9lENtMjK
-   14X+mpcwRoKLrQZtOCwb3/NvuBtPmia1/Fqc17VS02/cNV4vnKyonC2kh
-   f1BEkYphY+wE1dxeBBFAsgwR+vpkHc9CA2qlwYYJ534zD0QGMi0rwfcci
-   nUoWNZkxLpttVd3BIW52lIs9VPJpsX7R1zYyxy6fbfdvTvceQNf1zycWx
-   z/p28SfT7zNskyJXMWamSC9bdY4InoJWvO4utx5xg/SYKqflzrVRKAyGO
-   L129Ayn/eK5f1zrChKMG8IUN5urvqPq+DFz8l24L0m4L8vRibExwYLYq4
-   A==;
-X-CSE-ConnectionGUID: cQ0WW6EQTieRyrUJLzR+bA==
-X-CSE-MsgGUID: 8UWllD1oSGC8hEltWY0MQg==
-X-IronPort-AV: E=McAfee;i="6600,9927,11088"; a="16611012"
-X-IronPort-AV: E=Sophos;i="6.08,203,1712646000"; 
-   d="scan'208";a="16611012"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 May 2024 22:48:41 -0700
-X-CSE-ConnectionGUID: E0KUiHj2TOur9Gq8noPTCA==
-X-CSE-MsgGUID: s2wJYRV4QdOIqWYzlRSpkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,203,1712646000"; 
-   d="scan'208";a="36092149"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 30 May 2024 22:48:38 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sCv7z-000Gah-1c;
-	Fri, 31 May 2024 05:48:35 +0000
-Date: Fri, 31 May 2024 13:48:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, lars@metafoo.de, swboyd@chromium.org,
-	nuno.a@analog.com, andy.shevchenko@gmail.com,
-	u.kleine-koenig@pengutronix.de, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, yasin.lee.x@gmail.com,
-	yasin.lee.x@outlook.com
-Subject: Re: [PATCH] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S sensor
- driver
-Message-ID: <202405311323.ITmSo5vY-lkp@intel.com>
-References: <SN7PR12MB8101EDFA7F91A59761095A28A4E72@SN7PR12MB8101.namprd12.prod.outlook.com>
+	s=arc-20240116; t=1717139447; c=relaxed/simple;
+	bh=xnYHvMY/VTUJQpNxXLQRjtHgfqwpbPpAJyNpCSPfo4M=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=b7BDStq3dRRizVtaULLnrhqi5ABsMe52+leIyOMGTEViizS9j57Cckn+ax3NGyIXsf2xRGn1k0yjd+PtzMJglMG/hwd4gw/9DcWJYDgE7cR8a81F+T0c22P8nenGAdDmtvky52k2fbn2YAOFu4ncOVHi26lUgqmL+Je+UQVILl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jf/uIU73; arc=none smtp.client-ip=209.85.218.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a621cb07d8fso176921866b.2;
+        Fri, 31 May 2024 00:10:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717139444; x=1717744244; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RPVtW4WD9DDygIanrUK44ByDkBngRzp2yu/M+5s0FQY=;
+        b=jf/uIU73XW3agHvnh7nMpebG02PobO+MR3TY4LYv1GVv0X3ctRRyWyUfi1l2GcB7cc
+         IpKtkj1uX1pRRiJ69esISO0U9VJSQxVHxwnccVyHvr+tr+BnJzhH7VKoHPKX9N04V45X
+         Mqll6QmxwSo8tSeLRkkKwPZawW1h6KY++4lZaVWVDnWoeigHOXia+kUD0kttcboEEdv2
+         FICHXWNI30g1oAJ39CjBdR9YGGPUse7aEacBZ5EmvWgzsbjd4PtnD+HAzT8F/Pmh8Egx
+         zsRFniHKehO/PafBZjuxWOjQey0yH7tPg4V87QHXzUtrF2thWEq3zctMT75XVbsuhY2E
+         M7JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717139444; x=1717744244;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RPVtW4WD9DDygIanrUK44ByDkBngRzp2yu/M+5s0FQY=;
+        b=YGWRjtx/gbkDViSFM5fQ4ziQ2yHFFM9jq3s+8tfMZ11Qz+o9jh68/z+Ilu+zNcTxvI
+         wCL4X9XrZgDotumo0ffskWyz+BvaPBGiTHHLaE8SnbOBYF95/mfTEU7ijUw0GZe3cwBC
+         7wglTz04svcBJclU9y6iDb0K3xtdnIRlTmwMQk2cXWnKM4SVog0MQCDEdTghdNdpmH17
+         uvf/kPpIuLUu5qkhpzrm579IhX/dhUw54BpM9pJ/qz0eQ5wmvPMags7Xn25KJqXZFJNC
+         4zWNby+U39Rd5TesQd8k0Jy3IFBgE/WIf8KMVfL6HFGfrbnMzHkFEIeChfxvLWeY1mdY
+         AFCg==
+X-Forwarded-Encrypted: i=1; AJvYcCX88n2bBvfO0ErZmTsQXl3eqyMcEjFO+fSRJy1NmpvMo4i6H2D9iQfUN5ss06Gk3/PXpvePymN/LOuIo/GruYCp+3olBAm3SREgcVrw7QCanu0aJFdlPIKbrGkJchQsbaxNJzBB0Fft8NEaWxzxywwh30kTFgJsdH4hfEUNUbhTnbdXIQ==
+X-Gm-Message-State: AOJu0YxCc3VI8XT+UwrHdXrKlZlKh3u2e3eeGlQgeFT/4E/Ef4j3HXpI
+	Ksgy1pwt3JfFLlSHyBfKbtpeZPpwlxvHvlNOzlyQPoMFOvsVeBqu
+X-Google-Smtp-Source: AGHT+IEtAP+6SRyTm8Mw4bvv45VqtX8Hk/sPp93MfTus1eE2vZ2fnZAl2MXuOHIdtdXWZTYw4qis7w==
+X-Received: by 2002:a17:906:1d42:b0:a65:4268:dfca with SMTP id a640c23a62f3a-a6822636771mr66549866b.65.1717139444107;
+        Fri, 31 May 2024 00:10:44 -0700 (PDT)
+Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a67e6f03867sm55697666b.27.2024.05.31.00.10.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 May 2024 00:10:43 -0700 (PDT)
+Message-ID: <5e263d5ce90d6ad187adb7d4a007ce2e79095829.camel@gmail.com>
+Subject: Re: [PATCH v3 3/6] iio: adc: ad7173: refactor ain and vref selection
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>, dumitru.ceclan@analog.com
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
+ David Lechner <dlechner@baylibre.com>,  linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org
+Date: Fri, 31 May 2024 09:10:43 +0200
+In-Reply-To: <d2f4e6da-75b1-4450-b295-45772dfb3f33@gmail.com>
+References: <20240527-ad4111-v3-0-7e9eddbbd3eb@analog.com>
+	 <20240527-ad4111-v3-3-7e9eddbbd3eb@analog.com>
+	 <71452f6882efe6a181d477914488617d28a38e2f.camel@gmail.com>
+	 <4b704b553282c0689dfef714c49ba97a33198898.camel@gmail.com>
+	 <d2f4e6da-75b1-4450-b295-45772dfb3f33@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SN7PR12MB8101EDFA7F91A59761095A28A4E72@SN7PR12MB8101.namprd12.prod.outlook.com>
 
-Hi Yasin,
+On Thu, 2024-05-30 at 17:45 +0300, Ceclan, Dumitru wrote:
+> On 29/05/2024 15:49, Nuno S=C3=A1 wrote:
+> > On Wed, 2024-05-29 at 14:27 +0200, Nuno S=C3=A1 wrote:
+> > > On Mon, 2024-05-27 at 20:02 +0300, Dumitru Ceclan via B4 Relay wrote:
+> > > > From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+>=20
+> ...
+>=20
+> > > > +static int ad7173_validate_voltage_ain_inputs(struct ad7173_state =
+*st,
+> > > > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int ain[2])
+> >=20
+> > Pass the pointer and size of it... Also, it should be made 'const'
+> >=20
+>=20
+> I'm learning here: what is the purpose of passing the size of it?
+> This is a specific case where the size will always be 2
+>=20
 
-kernel test robot noticed the following build errors:
+Basically readability... Yes, in this case it will be a stretch to assume w=
+e'll ever
+have anything bigger than 2 (so the scalability argument is not so applicab=
+le) so I'm
+ok if you don't pass the size. It's just I really dislike (as a practice) t=
+o have
+raw/magic numbers in the code. In here, it won't be that bad as by the cont=
+ext, one
+can easily understand the meaning of 2. Nevertheless, I would, still, at th=
+e very
+least consider to either use a #define or a better name for the iterator (a=
+nything
+more meaningful than 'i' so that it looks more understandable than 'i < 2')
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on linus/master v6.10-rc1 next-20240529]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+- Nuno S=C3=A1=20
+>=20
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yasin-Lee/iio-proximity-hx9031as-Add-TYHX-HX9031AS-HX9023S-sensor-driver/20240529-170200
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/SN7PR12MB8101EDFA7F91A59761095A28A4E72%40SN7PR12MB8101.namprd12.prod.outlook.com
-patch subject: [PATCH] iio:proximity:hx9031as: Add TYHX HX9031AS/HX9023S sensor driver
-config: arm-randconfig-r132-20240531 (https://download.01.org/0day-ci/archive/20240531/202405311323.ITmSo5vY-lkp@intel.com/config)
-compiler: clang version 19.0.0git (https://github.com/llvm/llvm-project bafda89a0944d947fc4b3b5663185e07a397ac30)
-reproduce: (https://download.01.org/0day-ci/archive/20240531/202405311323.ITmSo5vY-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202405311323.ITmSo5vY-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> ld.lld: error: undefined symbol: __aeabi_uldivmod
-   >>> referenced by hx9031as.c
-   >>>               drivers/iio/proximity/hx9031as.o:(hx9031as_write_raw) in archive vmlinux.a
-   >>> did you mean: __aeabi_uidivmod
-   >>> defined in: arch/arm/lib/lib.a(lib1funcs.o)
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

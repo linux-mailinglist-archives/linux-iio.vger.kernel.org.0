@@ -1,203 +1,126 @@
-Return-Path: <linux-iio+bounces-5568-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5569-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87E68D6B78
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 23:21:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 663FB8D6C5F
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Jun 2024 00:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36F741F223CC
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 21:21:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97C641C2325C
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 22:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C436C12F5B6;
-	Fri, 31 May 2024 21:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAD580032;
+	Fri, 31 May 2024 22:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dmRLypdA"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k9vDvH85"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034768248C
-	for <linux-iio@vger.kernel.org>; Fri, 31 May 2024 21:19:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270EA380;
+	Fri, 31 May 2024 22:22:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717190390; cv=none; b=Lxv4z7x9YXZ4zdO62MidXJqgyKm+x9wrHFXviNwxLY70vCgA/VggZX5GDcAIPRB2t1kLsgVrmhHphKoSW/MXENJ9+r5m9rBkRI+54j/O2e2KWXvZKkDDCRsCUCuUjUagAMyKrtItW+QnPH/s5gHGZoaU42vrf50xKF/7hw3Cwl8=
+	t=1717194132; cv=none; b=hyb/4H8xbm3HN4l5l5cd3MpjnXGDZ3eOP1x/Rq03evjq0vxkFb9a5mPiWn7Ljtu+iBoZlOzIIOLcoC4xut1mTFY4UOgqYWurSnYx9+eKALKFAXF/ppcsx8oc6K/GTVljq2K7+1wPazJNvJtFjB6N4/YNSY0fCSKZcEo0y4CoIs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717190390; c=relaxed/simple;
-	bh=cTiNyK1ys4ahQNaXNuf6ikv8kxy/TxXonMWyDgt/QB8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uMLAJE57TaVtW0LUae8TaBIFzyuUzSUk01QX9wlRdBuysTc4+3xA6bAA+9mWgMmYwY63i39wVRxfO+MsAZjCgVv5ZUDQDXQ4BHVJCIFc+YakYF0DM0S4LIwgE13Mo6Cvm8kRAYmrXQrzbOM61856Jc8TKLrSO9B2kqlukmslN9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dmRLypdA; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6f12ff2da3fso1374739a34.3
-        for <linux-iio@vger.kernel.org>; Fri, 31 May 2024 14:19:48 -0700 (PDT)
+	s=arc-20240116; t=1717194132; c=relaxed/simple;
+	bh=8aasfJYMSp7Rca3V+snQkwV21X6/KhsdEbYfIRJapRY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CX4jrjkPU+z12AzksBID/v0aeifZ4yZka6W+L6EWUHJ5UGLb0pS4XuUUcvK8c3I0pdob7ltZpD8m267/g8d+QVYMpKXyjFBGkcEefdZytBhut6Xx0hDG7KBV2RwTMzQLeMd2DqRuf/N8KQlC1w2P8ZyiYEoSHEz1Gg+pMYuvQ/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k9vDvH85; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7022cabdc0aso1950217b3a.1;
+        Fri, 31 May 2024 15:22:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1717190388; x=1717795188; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qx10f6FDnpDWXmsP3ksz4V0Ywa+gZQfSKGlvjoHLNnA=;
-        b=dmRLypdA+V/mDE1CFkoDEtGHeMt499zJ6SlLgJG0P78ZREWzY9dU959JQEQiclukIn
-         T7Jhv0v8qUKab9EpxpdlUQj0VfCjGXcQBYTvhKNcx3d5vtpZHoPpwgA6jSie8s64ryFk
-         7l6tZfqA+s/FmedYqerBP/elAd5oQ2y2FacPlPCkZMOwvKT/iL1Uf7zYxscxBHaKLdiT
-         +YEPrDT7EpkLiu0O5QP38Xi/sZnHZYbsqQ5eMSnPet/7KblQz8nphDEGWIRAl4Vdl/7h
-         owBlz0z5EKmjUp9JbwCUIJxCz6Kext8AXb0/ocnj7VCyS7g6hnHoG6R/kIf+Wm99iZjm
-         N7hA==
+        d=gmail.com; s=20230601; t=1717194130; x=1717798930; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1AgJOdQzaSF+x48xZPHcAex543/+XUv+ldPOnodDgaw=;
+        b=k9vDvH85Qd63mMOrJllfS3gTTq/6UNcxyh5mizvlMZCsfYT1GAQkFZOXR1Xcf+G4Vd
+         4m1RrZ+Bi/7YcratdILT2xL61N3NcsWJZdtxwjGlnpOjX4WFdRePYCcoIYz08K4gJCO2
+         XCStNONf8MtK6XwpVFoL0niBynQCu90Rwou8iCeBAGiNEyL7Dp2aTdWt6t3tJtlLZxTm
+         fT1LlaWPgyTHT2x2PeQ1lALsDfaSrC4eMNBbwSLGex7ke0vh4fJaksQXAB52GFpD5bx0
+         JWtASpsWdxdAWXkHenFR/09s9drCsXuen+aprAQ/GPvgWRzLImpx5xm7dD7fTjIs68Ri
+         XkFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717190388; x=1717795188;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qx10f6FDnpDWXmsP3ksz4V0Ywa+gZQfSKGlvjoHLNnA=;
-        b=NjSwxwGkHfBkxZYgEqkHsyYK0CW4e4had//p3V7H4tLy+0iljDEprwRG1GwlZ0fgLA
-         wyskMpZBZrfEI4JEjp853plIYQ/50+VXtNmk9LDC6pxa1b4wKGMQU6MU7VZvZTSHUiwR
-         u88uJa5jzEVrGcYsvjZhVN7D87XdJIXSigQUVkqwE5HwKG/aab8PG+fb5iLp37SNzfAC
-         yT8mO65evHa2W83mjPP9tzdvmG9BG/kL3jvRP7woaxhUDUsQ59WTVG9vzgtPZ2We46On
-         SjfEaVFCim0Cmy+fiYDWOhLYnu4FOMkb4cOtF43FnIslu3YqA+FteRiyWEWLaFnjaHZc
-         xJJg==
-X-Forwarded-Encrypted: i=1; AJvYcCUwrUSHv1mJamSQnJzoNDjNYXtGHH32N5oltMfGu1mIB1PU4w9an58gpu+GdgF788Qbyye+fGbpbcHD9QYOdZsSPTqz96z5Hmsa
-X-Gm-Message-State: AOJu0YwjElPHKxHXe6wOGQXsHDsupc/sd7qMIGg+yKea/Zv5tXL/Z0dp
-	s3m1DIJDBkPBsEJNBcElEJ/UyO2nV4G5+4ggIsLpjnmncm1MTAJZ07xpj53nGH0=
-X-Google-Smtp-Source: AGHT+IHecu+MAUNmrjh2sKi9JnDPh/FwFOg+MlU6Ki9NaEl1LqgtU9wELvhFrSYdVexLapJxPEZI9Q==
-X-Received: by 2002:a05:6830:151:b0:6f0:5cd9:d5de with SMTP id 46e09a7af769-6f911f3fe26mr3085558a34.18.1717190388071;
-        Fri, 31 May 2024 14:19:48 -0700 (PDT)
-Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6f91054f6c5sm470176a34.38.2024.05.31.14.19.47
+        d=1e100.net; s=20230601; t=1717194130; x=1717798930;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1AgJOdQzaSF+x48xZPHcAex543/+XUv+ldPOnodDgaw=;
+        b=F11xRWnrB4vNHvbuIFPROiC2FIgNTI4gDbeNcnCK8UOR/aAokOtvGTEvoExEmrbHFa
+         W3psy+WJhh/v03Liz/l/tgOhHdXAzMGXFSc0BbmyWMFxBnVVujBetS4bJiD8LzDuPh5h
+         EvVJBsotwcyfv5oqXtAmFsXc1n0rutxILdtjcj7FKVKsk18X/IsIbpL7MySi33ooaGqx
+         DiJqEGXU86Rqq6Ka3zbjz27DX6NSpPTFsjUL4Lkv+lWDIsDH9FtiESN0paq+YUIE/m4J
+         BjU96JR9uq4ggkmW03zfORpA3aId2IBHSTu/aKFE/x17uzEx2u2UpZAvcX02D/p+0JEh
+         B13A==
+X-Forwarded-Encrypted: i=1; AJvYcCUPVJJjS5tYIaFQFC77VhE4L7zkcuA8izvc/Ka/IK18k2Nfn/HirPZrgyBlJKZENPHTgZSnAfCMfaaOW8xvggMwDW9WWFOAq/6pJT0xLGNVmJBT5WU+sqloa85/zAm0+CB3nhQKgKK+tFQJoOUbQXKEUhDN8z7lb3wrVPLLOt+vY7nspQ==
+X-Gm-Message-State: AOJu0YxFZ7gXK+Pv1Lh1cfDmGeszLXY7tO7ih34/XI+kqUW2krK3fuuh
+	g4Iz5DEj56ZUTclQ1O3yLSzKsfwdjFa3uVdTT3baJRtvFjr2bbJdo1nl73gKCP4=
+X-Google-Smtp-Source: AGHT+IGONFMeWhM6DGloHHRuKEmzh8MdNpvj9MZ2WZCIpzVApBH6H+bkiHK1nnz7IgrFO2mwTWMvmg==
+X-Received: by 2002:a05:6a21:3a4a:b0:1af:86e4:bc99 with SMTP id adf61e73a8af0-1b26f12ce72mr4643339637.10.1717194130200;
+        Fri, 31 May 2024 15:22:10 -0700 (PDT)
+Received: from archlinux ([189.101.162.253])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70242b2c438sm1834252b3a.202.2024.05.31.15.22.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 May 2024 14:19:47 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Mark Brown <broonie@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] iio: adc: ad7944: use devm_regulator_get_enable_read_voltage
-Date: Fri, 31 May 2024 16:19:36 -0500
-Message-ID: <20240531-iio-adc-ref-supply-refactor-v1-5-4b313c0615ad@baylibre.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240531-iio-adc-ref-supply-refactor-v1-0-4b313c0615ad@baylibre.com>
-References: <20240531-iio-adc-ref-supply-refactor-v1-0-4b313c0615ad@baylibre.com>
+        Fri, 31 May 2024 15:22:09 -0700 (PDT)
+Date: Fri, 31 May 2024 19:22:02 -0300
+From: Gustavo Silva <gustavograzs@gmail.com>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: jic23@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, lars@metafoo.de, christophe.jaillet@wanadoo.fr, 
+	devicetree@vger.kernel.org, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] dt-bindings: vendor-prefixes: add ScioSense
+Message-ID: <kluu6wchcz47duw5kdamlhacvms3bielepees7gjx5hhoqz4dh@bktawzj73nan>
+References: <20240529001504.33648-1-gustavograzs@gmail.com>
+ <8e27c8da-d856-4fab-bb12-3af07e13838e@kernel.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.12.4
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8e27c8da-d856-4fab-bb12-3af07e13838e@kernel.org>
 
-This makes use of the new devm_regulator_get_enable_read_voltage()
-function to reduce boilerplate code.
+On Wed, May 29, 2024 at 09:29:54AM GMT, Krzysztof Kozlowski wrote:
+> On 29/05/2024 02:14, Gustavo Silva wrote:
+> > Add vendor prefix for ScioSense B.V.
+> > https://www.sciosense.com/
+> > 
+> > Signed-off-by: Gustavo Silva <gustavograzs@gmail.com>
+> > ---
+> 
+> This is a friendly reminder during the review process.
+> 
+> It looks like you received a tag and forgot to add it.
+> 
+> If you do not know the process, here is a short explanation:
+> Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+> versions, under or above your Signed-off-by tag. Tag is "received", when
+> provided in a message replied to you on the mailing list. Tools like b4
+> can help here. However, there's no need to repost patches *only* to add
+> the tags. The upstream maintainer will do that for tags received on the
+> version they apply.
+> 
+> https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+> 
+> If a tag was not added on purpose, please state why and what changed.
+> 
+> Best regards,
+> Krzysztof
+> 
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
- drivers/iio/adc/ad7944.c | 62 +++++++++++++++---------------------------------
- 1 file changed, 19 insertions(+), 43 deletions(-)
+Hi Krzysztof,
 
-diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
-index e2cb64cef476..42bbcb904778 100644
---- a/drivers/iio/adc/ad7944.c
-+++ b/drivers/iio/adc/ad7944.c
-@@ -464,23 +464,16 @@ static const char * const ad7944_power_supplies[] = {
- 	"avdd",	"dvdd",	"bvdd", "vio"
- };
- 
--static void ad7944_ref_disable(void *ref)
--{
--	regulator_disable(ref);
--}
--
- static int ad7944_probe(struct spi_device *spi)
- {
- 	const struct ad7944_chip_info *chip_info;
- 	struct device *dev = &spi->dev;
- 	struct iio_dev *indio_dev;
- 	struct ad7944_adc *adc;
--	bool have_refin = false;
--	struct regulator *ref;
- 	struct iio_chan_spec *chain_chan;
- 	unsigned long *chain_scan_masks;
- 	u32 n_chain_dev;
--	int ret;
-+	int ret, ref_mv, refin_mv;
- 
- 	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
- 	if (!indio_dev)
-@@ -531,47 +524,30 @@ static int ad7944_probe(struct spi_device *spi)
- 	 * - external reference: REF is connected, REFIN is not connected
- 	 */
- 
--	ref = devm_regulator_get_optional(dev, "ref");
--	if (IS_ERR(ref)) {
--		if (PTR_ERR(ref) != -ENODEV)
--			return dev_err_probe(dev, PTR_ERR(ref),
--					     "failed to get REF supply\n");
--
--		ref = NULL;
--	}
-+	ret = devm_regulator_get_enable_read_voltage(dev, "ref");
-+	if (ret == -ENODEV)
-+		ref_mv = 0;
-+	else if (ret < 0)
-+		return dev_err_probe(dev, ret, "failed to get REF voltage\n");
-+	else
-+		ref_mv = ret / 1000;
- 
--	ret = devm_regulator_get_enable_optional(dev, "refin");
--	if (ret == 0)
--		have_refin = true;
--	else if (ret != -ENODEV)
--		return dev_err_probe(dev, ret,
--				     "failed to get and enable REFIN supply\n");
-+	ret = devm_regulator_get_enable_read_voltage(dev, "refin");
-+	if (ret == -ENODEV)
-+		refin_mv = 0;
-+	else if (ret < 0)
-+		return dev_err_probe(dev, ret, "failed to get REFIN voltage\n");
-+	else
-+		refin_mv = ret / 1000;
- 
--	if (have_refin && ref)
-+	if (ref_mv && refin_mv)
- 		return dev_err_probe(dev, -EINVAL,
- 				     "cannot have both refin and ref supplies\n");
- 
--	if (ref) {
--		ret = regulator_enable(ref);
--		if (ret)
--			return dev_err_probe(dev, ret,
--					     "failed to enable REF supply\n");
--
--		ret = devm_add_action_or_reset(dev, ad7944_ref_disable, ref);
--		if (ret)
--			return ret;
--
--		ret = regulator_get_voltage(ref);
--		if (ret < 0)
--			return dev_err_probe(dev, ret,
--					     "failed to get REF voltage\n");
--
--		/* external reference */
--		adc->ref_mv = ret / 1000;
--	} else {
--		/* internal reference */
-+	if (ref_mv)
-+		adc->ref_mv = ref_mv;
-+	else
- 		adc->ref_mv = AD7944_INTERNAL_REF_MV;
--	}
- 
- 	adc->cnv = devm_gpiod_get_optional(dev, "cnv", GPIOD_OUT_LOW);
- 	if (IS_ERR(adc->cnv))
+Sorry, I totally forgot to add the tag. If we need a new version of
+this patch series, I'll make sure to add it.
 
--- 
-2.45.1
+Also, thank you for mentioning b4, I'll definitely give it a try.
 
+Best regards,
+Gustavo
 

@@ -1,243 +1,166 @@
-Return-Path: <linux-iio+bounces-5538-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5539-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 192F48D632B
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 15:37:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 166A78D6474
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 16:25:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66B1DB29E8C
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 13:37:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C00AB281CE2
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 14:25:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16E3C15B116;
-	Fri, 31 May 2024 13:36:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06EC733080;
+	Fri, 31 May 2024 14:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="Mkk6SPnS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mqcl8k90"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4815A15B0EB;
-	Fri, 31 May 2024 13:36:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35CE91D52B;
+	Fri, 31 May 2024 14:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717162615; cv=none; b=knzD2l3ocORizMFONLE9MWNgx8D+KqXnwRhAouhhrAxfp8uO7AS83ocSZ6LjoGNyXl1S1A5J5mZu7HsLxbEtkODYnYUQJscfSJI+3HHS07QWecjEPP7Z32h6/kYsT0TCwx4nxdJZNk+EpzamonUMQO8LV2eTvO3XzAQNsCjbVtw=
+	t=1717165487; cv=none; b=KUwem7q+t3b1R+X1jF2IrJS5Bi+hU1k/fN8lI+dKfOR6z29YZva/P5Vi2N23Gd1fzW+LZCW9C9w5nTLneOxSqqL56uoNd2+eXbJ/VAD+4JXnBUnCBzhOytR41upRwc6J6qgCk6i1KVn+vhrmMC9aG2uxkIrO39s+cS8BfAPaUxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717162615; c=relaxed/simple;
-	bh=EN3yAsbmjnvvPDgNC90DZ+p+kvaIL34JaNYFOwcvgsQ=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OhEG+0C7u4oY78GPe8sUh3x4sdwtQSsar6cbC8GwFUkoAX4cRDDXMy+vpam5/Zp7Rv+ES4xVl4gVYAni0WMuRl0HzXquYeb7nx6E1hy8qiuq6PVxIm+FrjDGVIBY8yBp7pJuZtdt/CCqlEz36JgsZrX+kgUEA3vuaenftAJdu9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=Mkk6SPnS; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44V7mcnW031851;
-	Fri, 31 May 2024 09:36:41 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=t8hvn
-	nR4gL7szMpPoyw0DjEfOAOY0g/eXoIWy/G7HoQ=; b=Mkk6SPnSa0pkBMLuDkn3j
-	Xge5Vyd0BpOTIJLAcImSoGW9Ob+uJ/SykkA+Jc/VuY4kAwWLfXR5Iz2ew0GFUVZO
-	NfqeX4vJPA7nkwP6Yua/kxzjy9QXW5mewRWzJKD8OWkfRNApBFR0WAGEdkfiH9Co
-	dHSZa5nGWYjUZec73vr4xkfGedn+/fBKD7mMIbwo6ebI2+HLfUib7wMmWaceZLSs
-	by0uXKSY2FqfyniiOcgkNrsLYdI1/BGHstOhoI5/ojHowRA4p5TgnsTUU6/XP2wW
-	c4QuHNHVLanKiXhUEoOc6AqM65uHIGo78MO5i1pqXLun2zKihYlAN3bco+PtsM8T
-	Q==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3yeddx7fcu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 31 May 2024 09:36:41 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 44VDadmK064045
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 31 May 2024 09:36:39 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 31 May 2024 09:36:38 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Fri, 31 May 2024 09:36:38 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 31 May 2024 09:36:37 -0400
-Received: from HYB-hYN1yfF7zRm.ad.analog.com (HYB-hYN1yfF7zRm.ad.analog.com [10.48.65.147])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 44VDaF87020041;
-	Fri, 31 May 2024 09:36:29 -0400
-From: Ramona Alexandra Nechita <ramona.nechita@analog.com>
-To: <linux-iio@vger.kernel.org>
-CC: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-        Jonathan Cameron
-	<jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich
-	<Michael.Hennerich@analog.com>,
-        Rob Herring <robh@kernel.org>,
-        "Krzysztof
- Kozlowski" <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <devicetree@vger.kernel.org>
-Subject: [PATCH v3 1/1] dt-bindings: iio: adc: add a7779 doc
-Date: Fri, 31 May 2024 16:35:52 +0300
-Message-ID: <20240531133604.1380-2-ramona.nechita@analog.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240531133604.1380-1-ramona.nechita@analog.com>
-References: <20240531133604.1380-1-ramona.nechita@analog.com>
+	s=arc-20240116; t=1717165487; c=relaxed/simple;
+	bh=Kyls1XarLL3j7W8QAWP8PzjJaN3EmNERJNTYyvB59V4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aFLtZ0iw2rj6OmsF8MrKu+9edDQqXVjsrpn+WKrbxJfDhrjXYUawaSnYRUKyv7QnJOots4dNCxKQQABGWWwGozDiLAt15cCbiDqMRj74e/9C4PzlPjUxRsS9T9/bswbhnRxatnk6qlPTGfz1FCBx4DnKeLyyLlE1VlqNEvxyptw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mqcl8k90; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4202c1d19d5so19757935e9.2;
+        Fri, 31 May 2024 07:24:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717165484; x=1717770284; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=tvugHJuLmQUc6cOC5U1VQIb36XNwdMjbA+t0EJil/IA=;
+        b=mqcl8k906p68dEl6FuQ8Fk69c3lhfn09lD6nhVrFtxvPmtEFvmoWR3Nawb4pAUnc+e
+         QJz19YBB9Kl2NuubAfQiC1cdH84u9VANUMHG/mKPyAkr/5zYpOQuBAqF29PZrjpBHSO/
+         Dvsr5o9DdxyIEFOqj7TMNjPrWIJRYbKeVBNwU6DrsXxEWoIZfQBia8FHE2OUpI2Q6Pq9
+         UfGZCBOZxjxU9Qch3AiyKPqjdwCY2MQQgUAqX6lSB8/b3w6tKplj1OPngxa5IyxccaiY
+         7isr3obduzWi+2vhtGXn1Aze//XVjC71Y60L/9fU43w8z58DmJILveG4RbnSxFcZ3N4A
+         4aww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717165484; x=1717770284;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=tvugHJuLmQUc6cOC5U1VQIb36XNwdMjbA+t0EJil/IA=;
+        b=t269mzO0mXfQ1CpkfUYUqbCuJKVnZTvFAVR+UUAAXtzI/VmKeXIDoFln5xHm/Hjy39
+         nT4doX/OAzlX0mamUowmPPrfT1SFF9EvaOienI+KYj8E5ogldCCJuQNEZ717ZgNL5SMj
+         pX0mzHtpe6EpqpvxNeWvl8lsL0Qwt8iyAtnlGWwcMArHovHFCHZ9LV06A2ruaZWjo2I5
+         FG/vTUigapXorhUJJVv2RtCYbzgwiMgR4brqyY4WjwGUUnz5wSkvBTeiKd7AOL4knrfF
+         Vej35zf2d8sG8FWtlakOGKn7E6wYxYE8AUcl5Bo59i8Orjs8yf2w6JQbFxx5vtbCpi2I
+         EP9w==
+X-Forwarded-Encrypted: i=1; AJvYcCWxXvAaMpnF7j77E3OhJVRBKm/0rw9/T3Wl2GYdpvl4MSwx8PmXK7T51lQ9GmFeIIA5ERu23iD8iJZ058r54XajPsquZWM7hgW0SqU1Zy8Xvw8PNzIhq7g42Ey0Ag/MoAaWHlJRln7i
+X-Gm-Message-State: AOJu0YwY65xiP0/971ugod0mlWY51jR5iAwSdO4g8THT4yGW3co+goew
+	JwoDy7ANYLiTLLfvUdkAQKq9AUdufJZqKU21m48TX3yHHni2ES5d
+X-Google-Smtp-Source: AGHT+IGTYpztiA7U0O7D+ZJjrvnzu789lGae56lcoOL7cIRtDV3rFkXO1yh0FXSOa6ct61AKz8rl5w==
+X-Received: by 2002:a05:600c:45cb:b0:41f:fca0:8c04 with SMTP id 5b1f17b1804b1-4212e04998fmr16361265e9.11.1717165484201;
+        Fri, 31 May 2024 07:24:44 -0700 (PDT)
+Received: from eichest-laptop.toradex.int ([2a02:168:af72:0:d7a5:3a0c:813f:54e])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421292205ccsm48136685e9.4.2024.05.31.07.24.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 May 2024 07:24:43 -0700 (PDT)
+From: Stefan Eichenberger <eichest@gmail.com>
+To: o.rempel@pengutronix.de,
+	kernel@pengutronix.de,
+	andi.shyti@kernel.org,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	festevam@gmail.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	nuno.sa@analog.com,
+	andriy.shevchenko@linux.intel.com,
+	u.kleine-koenig@pengutronix.de,
+	marcelo.schmitt@analog.com,
+	gnstark@salutedevices.com,
+	francesco.dolcini@toradex.com
+Cc: linux-i2c@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	eichest@gmail.com,
+	Stefan Eichenberger <stefan.eichenberger@toradex.com>
+Subject: [RFC PATCH] i2c: imx: avoid rescheduling when waiting for bus not busy
+Date: Fri, 31 May 2024 16:24:37 +0200
+Message-Id: <20240531142437.74831-1-eichest@gmail.com>
+X-Mailer: git-send-email 2.40.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: YVfwnGtMJP2R0bTZK6A60fAs0R7U31Ir
-X-Proofpoint-ORIG-GUID: YVfwnGtMJP2R0bTZK6A60fAs0R7U31Ir
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
- definitions=2024-05-31_08,2024-05-30_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 suspectscore=0
- clxscore=1015 mlxlogscore=999 priorityscore=1501 adultscore=0 bulkscore=0
- phishscore=0 spamscore=0 malwarescore=0 lowpriorityscore=0 impostorscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
- definitions=main-2405310100
 
-Add dt bindings for adc ad7779.
+From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 
-Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
+On our i.MX8M Mini based module we have an ADS1015 I2C ADC connected to
+the I2C bus. The ADS1015 I2C ADC will timeout after 25ms when the I2C
+bus is idle. The imx i2c driver will call schedule when waiting for the
+bus to become idle after switching to master mode. When the i2c
+controller switches to master mode it pulls SCL and SDA low, if the
+ADS1015 I2C ADC sees this for more than 25 ms without seeing SCL
+clocking, it will timeout and ignore all signals until the next start
+condition occurs (SCL and SDA low). This can occur when the system load
+is high and schedule returns after more than 25 ms.
+
+This rfc tries to solve the problem by using a udelay for the first 10
+ms before calling schedule. This reduces the chance that we will
+reschedule. However, it is still theoretically possible for the problem
+to occur. To properly solve the problem, we would also need to disable
+interrupts during the transfer.
+
+After some internal discussion, we see three possible solutions:
+1. Use udelay as shown in this rfc and also disable the interrupts
+   during the transfer. This would solve the problem but disable the
+   interrupts. Also, we would have to re-enable the interrupts if the
+   timeout is longer than 1ms (TBD).
+2. We use a retry mechanism in the ti-ads1015 driver. When we see a
+   timeout, we try again.
+3. We use the suggested solution and accept that there is an edge case
+   where the timeout can happen.
+
+There may be a better way to do this, which is why this is an RFC.
+
+Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
 ---
- .../ABI/testing/sysfs-bus-iio-adc-ad777x      | 23 +++++
- .../bindings/iio/adc/adi,ad7779.yaml          | 87 +++++++++++++++++++
- 2 files changed, 110 insertions(+)
- create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+ drivers/i2c/busses/i2c-imx.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
-new file mode 100644
-index 000000000000..0a57fda598e6
---- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
-@@ -0,0 +1,23 @@
-+What:		/sys/bus/iio/devices/iio:deviceX/filter_type_available
-+KernelVersion:  6.1
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Reading returns a list with the possible filter modes. Only supported by
-+		AD7771.
-+
-+		  * "sinc3"	- The digital sinc3 filter implements three main notches, one at
-+				the maximum ODR (128 kHz or 32 kHz, depending on the
-+				power mode) and another two at the ODR frequency selected to
-+				stop noise aliasing into the pass band.
-+
-+		  * "sinc5"	- The sinc5 filter implements five notches, one at
-+				the maximum ODR (128 kHz or 32 kHz, depending on the
-+				power mode) and another four at the ODR frequency
-+				selected to stop noise aliasing into the pass band.
-+
-+What:		/sys/bus/iio/devices/iio:deviceX/filter_type
-+KernelVersion:  6.1
-+Contact:	linux-iio@vger.kernel.org
-+Description:
-+		Set the filter mode of the differential channel. The current sampling_frequency
-+		is set according to the filter range. Only supported by AD7771.
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
-new file mode 100644
-index 000000000000..632e9ec0ab44
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
-@@ -0,0 +1,87 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad7779.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices AD777X family 8-Channel, 24-Bit, Simultaneous Sampling ADCs
-+
-+maintainers:
-+  - Ramona Nechita <ramona.nechita@analog.com>
-+
-+description: |
-+  The AD777X family consist of 8-channel, simultaneous sampling analog-to-
-+  digital converter (ADC). Eight full Σ-Δ ADCs are on-chip. The
-+  AD7771 provides an ultralow input current to allow direct sensor
-+  connection. Each input channel has a programmable gain stage
-+  allowing gains of 1, 2, 4, and 8 to map lower amplitude sensor
-+  outputs into the full-scale ADC input range, maximizing the
-+  dynamic range of the signal chain.
-+
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7770.pdf
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7771.pdf
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7779.pdf
-+
-+$ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad7770
-+      - adi,ad7771
-+      - adi,ad7779
-+
-+  reg:
-+    maxItems: 1
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  spi-max-frequency: true
-+
-+  clocks:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  vref-supply:
-+    description:
-+      ADC reference voltage supply
-+
-+  start-gpios:
-+    description:
-+      Pin that controls start synchronization pulse.
-+    maxItems: 1
-+
-+  reset-gpios:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    spi {
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        adc@0 {
-+          compatible = "adi,ad7779";
-+          reg = <0>;
-+          spi-max-frequency = <20000000>;
-+          vref-supply = <&vref>;
-+          start-gpios = <&gpio0 87 GPIO_ACTIVE_LOW>;
-+          reset-gpios = <&gpio0 93 GPIO_ACTIVE_LOW>;
-+          clocks = <&adc_clk>;
-+        };
-+    };
-+...
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index 3842e527116b7..179f8367490a5 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -503,10 +503,18 @@ static int i2c_imx_bus_busy(struct imx_i2c_struct *i2c_imx, int for_busy, bool a
+ 				"<%s> I2C bus is busy\n", __func__);
+ 			return -ETIMEDOUT;
+ 		}
+-		if (atomic)
++		if (atomic) {
+ 			udelay(100);
+-		else
+-			schedule();
++		} else {
++			/*
++			 * Avoid rescheduling in the first 10 ms to avoid
++			 * timeouts for SMBus like devices
++			 */
++			if (time_before(jiffies, orig_jiffies + msecs_to_jiffies(10)))
++				udelay(10);
++			else
++				schedule();
++		}
+ 	}
+ 
+ 	return 0;
 -- 
-2.43.0
+2.40.1
 
 

@@ -1,87 +1,112 @@
-Return-Path: <linux-iio+bounces-5544-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5550-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF4158D679F
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 19:05:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB348D67EE
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 19:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F11EF1C25018
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 17:05:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D65291C2289C
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 17:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09ECA1761B8;
-	Fri, 31 May 2024 17:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0664B176ABA;
+	Fri, 31 May 2024 17:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uyHzAlGy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xsi4w0Rx"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B8716F904;
-	Fri, 31 May 2024 17:05:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9CB17622F;
+	Fri, 31 May 2024 17:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717175142; cv=none; b=GLNJZp8uOqSWXDaf6DJfWl3gQfkOUGHCd0DZMaTfqZnCsO1qn63RuP5mSn/ygOM7Cv8V2YLPLZStOLIcsxGBYP2eUfOAHzaGKluMU0Nj5PqS6SW6Qb3oJO4/DrFG1Dy0EXsd2y9tBY9ey4GqoDYEuZbqaT4s+r4peHIl1YsRff8=
+	t=1717175672; cv=none; b=doAvGIscFLCPZEeVdearw7p/tDjbOyRHvqNddfywj7TQgLytZnqGV8GuvbhXxk1ofQoy9yJFi7ktzsDT1AN24hixWObYDmpqShiqmQfNP67YSR+GY8OhcuPH4QkavQvxx7RleNw1lSPyLGjaqyhxFUAq8j8XCyjxer75fQKSwew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717175142; c=relaxed/simple;
-	bh=ojVyu4m/QK0eLUTVMQOzVZ1/YGKhIT0HpeVHhtnOmKk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=U6BQM2fHUBKlJACxIJJAy2L3Vsbxt02V7Jh9o1xEgGuKaHxYq0Xw7NOYEYMtDeuDr8L/P7jaQnyRqHkb9JNwOI3/DnQcmzqwSJvsb3CqO0SJzMfIhz+UnKbvE5S7J13KA2UkeZ2eNUANW4oBX10iLKepfMDAbpDPpHRrCjCGLYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uyHzAlGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D71CC116B1;
-	Fri, 31 May 2024 17:05:38 +0000 (UTC)
+	s=arc-20240116; t=1717175672; c=relaxed/simple;
+	bh=9P1Ir8WKg26GeXuuS3odKkZE/Pc+6MTvdlKOntSYO8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UyKgHX4b/3NaTNA2hg87eXYzpGbPVsIK2I9+nJ4ejiY403XmMD9zCGrwuRHvAFNGAQHmfzP5xZqJzN3Ro+F8yQ1xhfLcNEHvfmcELWMlD/yJvkLXglbo7/2CCzZf0WjiM2I/ESSmGcovWIN5BOwhfhldmOL2ttnNio+cBqqOaPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xsi4w0Rx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D873C116B1;
+	Fri, 31 May 2024 17:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717175142;
-	bh=ojVyu4m/QK0eLUTVMQOzVZ1/YGKhIT0HpeVHhtnOmKk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=uyHzAlGy36mwd/hrJc4dAsxeyBUw+RfUNcOonw/PUWHZC7fON26bUJr9jG6PxPs+8
-	 +b64s2p3Kwp9LC40cykPj7lOOCNJk1a2AehDFiAUhwIEKcvoR3vFxaUBZMl79z5OPz
-	 FPJou03ZjeF5uFpYjrob/v2hj5gkmunLcAdogQvs4YPnYOr2qU1UYI674FY5fYEtkT
-	 bV6Iz9TBwQ6kGqqt2y+KSnIDKZ3O0Rl8R6hRSNb1kBzoIX5s9FQlSLhw1KvIrlTk5T
-	 n/ehnIOHOAjzlO1mWH2UnkRDSHieko8+XRtALn6kFf6EAbQWNq0BgUCKU55pJfp1KT
-	 NUoC3k6sQFn+w==
+	s=k20201202; t=1717175671;
+	bh=9P1Ir8WKg26GeXuuS3odKkZE/Pc+6MTvdlKOntSYO8Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Xsi4w0RxX7lrXL3U7qqbWnh+5LB55a7IfV+I3Gvuu4PB/+KEspQ+OX0nwWmekuzRs
+	 aX2DYTMu1Iyqww/1bspWawfbEYnu42cYAoPOscFjmcts+CcpYEndq4COQlDVvH5I3d
+	 BFkjjRv0FF2W8icBNcGgPIGoaNol1cfmTLk9ji/lbCtAaU9nINEk/8u5BucDTyPOTN
+	 /MQzE5iLWTyd2IYND5uRqgNinQ1jGWJPtv9lN3ohKzJhmuVNXRM+YBnMgZrUmNoXce
+	 TSFus5h3yNcWvyJVrfxgBwKq6oHnwHg2HRDvqIsfU/TK8mhP7pW+511i+q52DhpyYC
+	 M6dwbSnnfdCWQ==
+Date: Fri, 31 May 2024 18:14:25 +0100
 From: Lee Jones <lee@kernel.org>
-To: jic23@kernel.org, 
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org, 
- andy@kernel.org, nuno.sa@analog.com, bigunclemax@gmail.com, 
- dlechner@baylibre.com, marius.cristea@microchip.com, 
- marcelo.schmitt@analog.com, fr0st61te@gmail.com, mitrutzceclan@gmail.com, 
- mike.looijmans@topic.nl, marcus.folkesson@gmail.com, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, kernel@collabora.com
-In-Reply-To: <20240530093410.112716-4-angelogioacchino.delregno@collabora.com>
-References: <20240530093410.112716-1-angelogioacchino.delregno@collabora.com>
- <20240530093410.112716-4-angelogioacchino.delregno@collabora.com>
-Subject: Re: (subset) [PATCH v1 3/4] mfd: mt6397-core: Add support for
- AUXADCs on MT6357/58/59 PMICs
-Message-Id: <171717513800.1210753.10558574294552850707.b4-ty@kernel.org>
-Date: Fri, 31 May 2024 18:05:38 +0100
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, johan@kernel.org
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-leds@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Pavel Machek <pavel@ucw.cz>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
+	Jingoo Han <jingoohan1@gmail.com>, Helge Deller <deller@gmx.de>,
+	Johan Hovold <jhovold@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: Re: [PATCH v1 0/4] lm3533: Remove the outdated drivers
+Message-ID: <20240531171425.GE1204315@google.com>
+References: <20240531170844.1595468-1-andriy.shevchenko@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.12.4
+In-Reply-To: <20240531170844.1595468-1-andriy.shevchenko@linux.intel.com>
 
-On Thu, 30 May 2024 11:34:09 +0200, AngeloGioacchino Del Regno wrote:
-> Add the relevant AUXADC driver entries to the MFD cells of the
-> MT6357, MT6358, MT6359 PMICs to support their Auxiliary ADCs.
+Making sure Johan is aware of this with his new address.
+
+On Fri, 31 May 2024, Andy Shevchenko wrote:
+
+> Driver is quite outdated from the Linux kernel internal APIs
+> perspective. In particular GPIO code is using legacy calls,
+> that started being replaced by a new API ca. 2014, i.e. ten
+> years ago.
 > 
+> Suggested-by: Linus Walleij <linus.walleij@linaro.org>
+> 
+> Andy Shevchenko (4):
+>   backlight: lm3533_bl: Remove the driver
+>   iio: light: lm3533-als: Remove the driver
+>   leds: lm3533: Remove the driver
+>   mfd: lm3533: Remove the driver
+> 
+>  drivers/iio/light/Kconfig           |  17 -
+>  drivers/iio/light/Makefile          |   1 -
+>  drivers/iio/light/lm3533-als.c      | 922 ----------------------------
+>  drivers/leds/Kconfig                |  13 -
+>  drivers/leds/Makefile               |   1 -
+>  drivers/leds/leds-lm3533.c          | 755 -----------------------
+>  drivers/mfd/lm3533-core.c           | 645 -------------------
+>  drivers/video/backlight/Kconfig     |  11 -
+>  drivers/video/backlight/Makefile    |   1 -
+>  drivers/video/backlight/lm3533_bl.c | 399 ------------
+>  include/linux/mfd/lm3533.h          | 100 ---
+>  11 files changed, 2865 deletions(-)
+>  delete mode 100644 drivers/iio/light/lm3533-als.c
+>  delete mode 100644 drivers/leds/leds-lm3533.c
+>  delete mode 100644 drivers/mfd/lm3533-core.c
+>  delete mode 100644 drivers/video/backlight/lm3533_bl.c
+>  delete mode 100644 include/linux/mfd/lm3533.h
+> 
+> -- 
+> 2.43.0.rc1.1336.g36b5255a03ac
 > 
 
-Applied, thanks!
-
-[3/4] mfd: mt6397-core: Add support for AUXADCs on MT6357/58/59 PMICs
-      commit: fa9d9f4b5588003a955193fe9ff009687541f3e7
-
---
+-- 
 Lee Jones [李琼斯]
-
 

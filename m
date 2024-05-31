@@ -1,237 +1,134 @@
-Return-Path: <linux-iio+bounces-5523-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5524-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E70308D5BA3
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 09:39:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 622EB8D5BC1
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 09:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E0D21C20EF2
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 07:39:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4B67B26DC0
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 07:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B6174065;
-	Fri, 31 May 2024 07:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 521B47640E;
+	Fri, 31 May 2024 07:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GTe+xDqN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hotfMnXH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C053A74050;
-	Fri, 31 May 2024 07:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A0A7187575;
+	Fri, 31 May 2024 07:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717141163; cv=none; b=mX1i4R4l+MKkN3wR0E49TnNCjAYjVmh/K1PYzp3wXH6EmElDriFIprmX5uN3oypvZRwVDa0YhAgBJJ3S0sHjhxEe6t3rokupZ3vbsN+DclygLzSrEJGl5lQrZUUFPveqwl+u4J4AzkohVjGUTg04LxyYfCBjrlEpWHxoYT6upd8=
+	t=1717141531; cv=none; b=h6d1DtWUxdzCBfENB8zryvr2a8SAkObOUu1gQxdtdj5HlAg2VnKi3che0qyfIjgSdVX2hB7vdCfyvtETaYoJ4F1Bb7JzwEqwqLf9FfQWqzeHsohzR0YutMC5hWAkGQo/W79rg5Ub5AKmEhmbyjtMck/f4mD0AMRlcFbosxM2fvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717141163; c=relaxed/simple;
-	bh=9ftpAWAlMTy7FmybzWVyWQRDjCSXgA1sqhlGCsYFDak=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VxZ7uuUKJJphlsnws4qoAud1gFCczvvslw9uicJY/SqtBNPX+78dMMpqkowSDes3c81ruwft1PoI4jy33ceCKHCQtOpHXoVaVYvEbJYILOqg16Or29HCSSEaeklrXsQj5g5g7QHGfsdpMri9+rvmWVtzximdJrnHx4C0K9wJkM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GTe+xDqN; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-57a1fe63947so1209984a12.1;
-        Fri, 31 May 2024 00:39:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717141160; x=1717745960; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9ftpAWAlMTy7FmybzWVyWQRDjCSXgA1sqhlGCsYFDak=;
-        b=GTe+xDqNTCsi8xXxtZyzPRdA7q0Fyp1ICpitl95cq5ybf07p1q8GIsVXxzMvtT+tpC
-         xxgzsva2mFu7X/tN2DRbAx9vuOUJe2b+rQdHRfmJevNUQQtiJwoORMcMZX5U2fSj0Pb6
-         mqlY8EVbMTif4ODxLTQnzpIuGyAzUbblv5GRunnNR4R4EoD76t9An973SGSGO+f1aT1y
-         OfXOSbM+huQd8fE0gPKK4Uqhxd62t27Jck0JtmKKR9+NglaP1otZv2SajzDEuvtUEcAj
-         TMBCmfnEco0f039rxCoKvv/iVnGTBaobvZptZx84Io9vb8UMkzR8d0hnUwuMT30eLSNM
-         juRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717141160; x=1717745960;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9ftpAWAlMTy7FmybzWVyWQRDjCSXgA1sqhlGCsYFDak=;
-        b=W0+s77If+LEq4di5tO5xsbWW22QaVGBcSgZJTOFlE8qQ3IV3y90wTtgG7VDL39dNrB
-         gf3pNylnW+P3UTFq4iIJD7Qt/rdKDkYshQizahHLa5Pr8K8K0X0tfS+NT2o6RHczDrT2
-         nSZ5voV5fLPirTt5Sy1PRnD/34nzsFYheSQaNU4pj6VNLah3YfU29W84D6VdKxRpNmlW
-         NItNHqFi0iEYSCi/Q6ZlO15CV2YjryFnYcrMk9qVSVKZVBEP86/y3/a8ArBwRbLpwdo0
-         2+ntH1zg9rKT5I19n0oZpq6k49o+U8wV3ybBP7DSvRoN1MxP+T4k+9HaKtMrCKNcTlHR
-         Ctmg==
-X-Forwarded-Encrypted: i=1; AJvYcCUg9s0ifzUekEVKIadivVSTSN4Cg2U3f9ntrjJh/sTYcGKX2IB3wEqHrgixtjC80d18DF+t1UmcJBIlW5XbIPbP/CYkO3PQEw0DWPlOztoeTyiQkhw+BfgAh0pMT3eBoX8UIzyNY9cgb0ldqP3jAY1d0xb0YoWPuzBMEhTvi2K2Fs36ZSNMAdyVBB7vHEV8ija/36JGF9z+hoCJwt85iQ==
-X-Gm-Message-State: AOJu0YxyT5RqiV+SZYdRJ5JRg86hVgN0LFMHy504ENS0UdESHZmRm/EW
-	Ml3VwM0mFpYljpV0tZ2EJNsscsBBGjB3OKAR9FhCGGEwBcs4hnQ5
-X-Google-Smtp-Source: AGHT+IGLxp3DxPs7x0jik+0BC2ZE83//E8Wag3AEG/kSyyrOuaEMEHJXdDOM/AMaD0q/36eXFLyohQ==
-X-Received: by 2002:a17:906:4752:b0:a59:9a68:7327 with SMTP id a640c23a62f3a-a68219826b3mr76219866b.54.1717141159821;
-        Fri, 31 May 2024 00:39:19 -0700 (PDT)
-Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a67e78db9b9sm57636966b.97.2024.05.31.00.39.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 May 2024 00:39:19 -0700 (PDT)
-Message-ID: <d8d95f957f465148f0ddb6eae87159a2394cf2e9.camel@gmail.com>
-Subject: Re: [PATCH RFC v2 1/8] spi: dt-bindings: spi-peripheral-props: add
- spi-offloads property
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Conor Dooley <conor@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
- Jonathan Cameron
-	 <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nuno
- =?ISO-8859-1?Q?S=E1?=
-	 <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>, 
- Lars-Peter Clausen
-	 <lars@metafoo.de>, David Jander <david@protonic.nl>, Martin Sperl
-	 <kernel@martin.sperl.org>, linux-spi@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-iio@vger.kernel.org
-Date: Fri, 31 May 2024 09:39:19 +0200
-In-Reply-To: <20240530-petunia-genre-2731493dbd0f@spud>
-References: <20240514-aspire-ascension-449556da3615@spud>
-	 <CAMknhBFFpEGcMoLo5gsC11Syv+CwUM0mnq1yDMUzL1uutUtB+Q@mail.gmail.com>
-	 <20240516-rudder-reburial-dcf300504c0a@spud>
-	 <CAMknhBF_s0btus4yqPe-T=F3z7Asi9KkRGsGr7FHDFi=k4EQjw@mail.gmail.com>
-	 <20240519-abreast-haziness-096a57ef57d3@spud>
-	 <CAMknhBHvEse2FyDoBXR1PvymGpSGq8dotKfm+8XH+0+k+xKtQw@mail.gmail.com>
-	 <20240522-gullible-ibuprofen-cf9111c25f6f@spud>
-	 <5ad0b5782434eaf4cf565cffb0e4c14b7414ae38.camel@gmail.com>
-	 <20240526-peculiar-panama-badda4f02336@spud>
-	 <10991373cb9603803df63d8236c475807f6dde68.camel@gmail.com>
-	 <20240530-petunia-genre-2731493dbd0f@spud>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
+	s=arc-20240116; t=1717141531; c=relaxed/simple;
+	bh=EgdK4bok6szl35MRPgHKpDvmJh8QUS4WWV/ex7U86Cs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=opXMvSqFNYBunFyp8TOpCFRNvzdB4bSiQpwQ6fHPYVSAl3U5BxN7R1FhWEzDQQ+zhrM2peiykxIwXTYgjIk8u3phWpzTBPTGZuVVbqhLMhYjNNv25w6EAP9ee2725mfpMfi/xNoQlUg/WNHIXAL095f+3U9IqIrzULeeGmD3TJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hotfMnXH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F9B9C4AF07;
+	Fri, 31 May 2024 07:45:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717141530;
+	bh=EgdK4bok6szl35MRPgHKpDvmJh8QUS4WWV/ex7U86Cs=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=hotfMnXHhYIP53RIBlMiA3J5FPM48+yFv1GwR5KLIP3zZCHhzOpI+WugtZADTjctf
+	 2qziLoHymomufVllY/2fPljngjLwGIGOVNRA1hE+m4qjPtbiwnu/KWJF90lfQ+DETi
+	 tcHwrs54+XvOSSQhaKhf8Mfk/O4ayQkCN75c7uE65bYRxj+XQ34w4ON4hAsDbR3KnL
+	 fujMcuiE/GE1CM/cBeeiYVQoB86rszfPaWV7GQQUkiMDZqc1iDl8qeHh+DR8jvLCuz
+	 uFAFZDCMwESY9vXqfyEYgq3SCG95ipfBmuZuaJKPka/SjwmQV3kfs2rclmjn7yu69j
+	 MFnjEz5cAQnag==
+Message-ID: <ef601549-47a2-49cd-9c9c-1ea35ac7c1ee@kernel.org>
+Date: Fri, 31 May 2024 09:45:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] dt-bindings: iio: adc: add a7779 doc
+To: "Nechita, Ramona" <Ramona.Nechita@analog.com>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+References: <20240522120208.18575-1-ramona.nechita@analog.com>
+ <efb07835-8894-43d0-9fe1-14cb865db135@kernel.org>
+ <SN6PR03MB4320A1D0DDCFBEED28319815F3F22@SN6PR03MB4320.namprd03.prod.outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <SN6PR03MB4320A1D0DDCFBEED28319815F3F22@SN6PR03MB4320.namprd03.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, 2024-05-30 at 20:18 +0100, Conor Dooley wrote:
-> On Wed, May 29, 2024 at 10:07:37AM +0200, Nuno S=C3=A1 wrote:
-> > On Sun, 2024-05-26 at 18:35 +0100, Conor Dooley wrote:
-> > > On Thu, May 23, 2024 at 02:15:35PM +0200, Nuno S=C3=A1 wrote:
-> > > > On Wed, 2024-05-22 at 19:24 +0100, Conor Dooley wrote:
->=20
-> > > > Taking the
-> > > > trigger (PWM) as an example and even when it is directly connected =
-with the
-> > > > offload
-> > > > block, the peripheral still needs to know about it. Think of sampli=
-ng
-> > > > frequency...
-> > > > The period of the trigger signal is strictly connected with the sam=
-pling
-> > > > frequency of
-> > > > the peripheral for example. So I see 2 things:
-> > > >=20
-> > > > 1) Enabling/Disabling the trigger could be easily done from the per=
-ipheral
-> > > > even
-> > > > with
-> > > > the resource in the spi engine. I think David already has some code=
- in the
-> > > > series
-> > > > that would make this trivial and so having the property in the spi =
-controller
-> > > > brings
-> > > > no added complexity.
-> > > >=20
-> > > > 2) Controlling things like the trigger period/sample_rate. This cou=
-ld be
-> > > > harder
-> > > > to do
-> > > > over SPI (or making it generic enough) so we would still need to ha=
-ve the
-> > > > same
-> > > > property on the peripheral (even if not directly connected to it). =
-I kind of
-> > > > agree
-> > > > with David that having the property both in the peripheral and cont=
-roller is
-> > > > a
-> > > > bit
-> > > > weird.
-> > >=20
-> > > Can you explain what you mean by "same property on the peripheral"? I
-> > > would expect a peripheral to state its trigger period (just like how =
-it
-> > > states the max frequency) and for the trigger period not to appear in
-> > > the controller.
-> > >=20
-> >=20
-> > Just have the same 'pwms' property on both the controller and periphera=
-l...
->=20
-> Yeah, no... Opinion unchanged since my last message.
->=20
+On 29/05/2024 17:25, Nechita, Ramona wrote:
+> Hello,
+> 
+> Thank you for your review. I will send a v2 shortly, I just have a minor misunderstanding below. I will send a v2 shortly without the clock-names.
+> 
+>> On 22/05/2024 14:01, ranechita wrote:
+>>> Add dt bindings for adc ad7779.
+>>>
+>>> Signed-off-by: ranechita <ramona.nechita@analog.com>
+>>
+>> Are you sure that's the name or identity you want to use? Looks like misconfigured git...
+> 
+> Do you mean the email sign-off? Or just the name?  That is my git username and I have used it for other patches/purposes, but I might update in the future with the full name.
 
-...
+"Might"? OK, so this is not a known identity case, then please use full
+name *now*. For all entries. Don't post your usernames to mailing list.
 
-> >=20
->=20
-> If only we had another user... I suppose you lads are the market leader
-> in these kinds of devices. If I did happen to know if Microchip was
-> working on anything similar (which I don't, I work on FPGAs not these
-> kinds of devices) I couldn't even tell you. I suppose I could ask around
-> and see. Do you know if TI is doing anything along these lines?
->=20
+Best regards,
+Krzysztof
 
-Unfortunately, no idea.
-
-> > > Part of me says "sure, hook the DMAs up to the devices, as that's wha=
-t
-> > > happens for other IIO devices" but at the same time I recognise that =
-the
-> > > DMA isn't actually hooked up like that and the other IIO devices I se=
-e
-> > > like that are all actually on the SoC, rather than connected over SPI=
-.
-> >=20
-> > Yeah, I know... But note (but again, only for ADI designs) that the DMA=
- role is
-> > solely for carrying the peripheral data. It is done like this so everyt=
-hing works
-> > in
-> > HW and there's no need for SW to deal with the samples at all. I mean, =
-only the
-> > userspace app touches the samples.
-> >=20
-> > TBH, the DMA is the bit that worries me the most as it may be overly co=
-mplex to
-> > share
-> > buffers (using dma-buf or something else) from the spi controller back =
-to
-> > consumers
-> > of it (IIO in this case). And I mean sharing in a way that there's no n=
-eed to
-> > touch
-> > the buffers.
->=20
-> <snip>
->=20
-> > Maybe having an offload dedicated API (through spi) to get/share a DMA =
-handle
-> > would
-> > be acceptable. Then we could add support to "import" it in the IIO core=
-. Then it
-> > would be up to the controller to accept or not to share the handle (in =
-some cases
-> > the
-> > controller could really want to have the control of the DMA transfers).
->=20
-> Yeah, that is about what I was thinking. I wasn't expecting the spi code
-> to grow handing for dmabuf or anything like that, just a way for the
-> offload consumer to say "yo, can you tell me what dma buffer I can
-> use?". Unless (until?) there's some controller that wants to manage it,
-> I think that'd be sufficient?
-
-Yeah, I could see some kind of submit_request() API with some kind of compl=
-etion
-handler for this. But on the IIO side the DMA code is not that straight (ev=
-en getting
-more complex with dma-buf's) so I can't really tell how the whole thing wou=
-ld look
-like. But may be something to look at.
-
-- Nuno S=C3=A1=20
 

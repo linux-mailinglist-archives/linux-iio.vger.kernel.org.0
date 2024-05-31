@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-5531-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5532-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 926BF8D5E99
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 11:40:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8999A8D5E9B
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 11:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C93D7B25880
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 09:40:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3791C285576
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 09:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462F2135A58;
-	Fri, 31 May 2024 09:40:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B6F5135A58;
+	Fri, 31 May 2024 09:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rlk9ar9G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GfJNHFn8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39FC824BB;
-	Fri, 31 May 2024 09:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5352C19E;
+	Fri, 31 May 2024 09:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717148429; cv=none; b=CG2Wlvezad9riSZd3TAEicJmRgzg6Zmp9Yu7vrQ748OC2uSSzVsoQBDyYL+um2LLoJVwQ6eOfxx2qWNpeWZuWh0H95dDtl4OiL5WlnJoTaIXdlZPUQPkLyXueOlN4RR5uDIdr6Y7rPd2RznX4QsvOaNr5vO1950URP45ZL14P/8=
+	t=1717148482; cv=none; b=lmjB63ijeKjHO4tSZt5Q4dEath/Scok10/F8f9fGIHuOhQsnzPNBu30swVkw4+VwQUp9SlbqbhLMZR1eMMSaHkZx5nzR2jxkxxKAEpwLXSv9NBYhNJ0mD+aDaDQPYf78LI4DrDI+J/nrE4SatIzy3QtqRJRFw7Bb6mzWzFZEeUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717148429; c=relaxed/simple;
-	bh=C1xGBFxZrF3ndxNqhB82wXaa5bw19hVZ0utVSXOQYsk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lA0M/ZP7/yiGKQms7W0BzQl4sePwp79+6GoLpwPzjrLcKsZ/+hC9bL1thz/2mYO/cHs95qfpcZrdWUCkSzdI4TX9HNGNpOHwN7UKgO2KL1/SbBhuH1cYw3KIh0ytukoSN9cH5wHQst30vpMEtMdUowgeCm+52A7+KUexzWxc8ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rlk9ar9G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44C2AC116B1;
-	Fri, 31 May 2024 09:40:24 +0000 (UTC)
+	s=arc-20240116; t=1717148482; c=relaxed/simple;
+	bh=Q9SPW1JUV/6SbY/X8q6gkZ0tGTmR9khzAwr42DUxo1Q=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=aiEZOmWSEmsrGBpz0iuU2pM+dnZlrbyI0xfpIkK8lPkuxjetVsu4Pu8oY2+ampZsW1zrhNP3aetCVoo9QlTVXqSp6snfljOmhu9q/HDgS7p4KvyCS/EZRaXgysUUqvFf3ndoWyxNh5h4hndkX+v1WVWYInk1NaBVO12I2geyCpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GfJNHFn8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B519C116B1;
+	Fri, 31 May 2024 09:41:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717148428;
-	bh=C1xGBFxZrF3ndxNqhB82wXaa5bw19hVZ0utVSXOQYsk=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Rlk9ar9GwHVtmBcXRVC5fnsHQq+Xoy/ya4PBy1zx/obM2ZDoBFdMPFQVqAp7yhDUN
-	 PEW54cWAX5PEJgnnrt7gzUy8y6fIGfFyTmt+C6J+0oxCfpLgIwF30m2io8d2xVDI/0
-	 dWysm4oyrLcy1U/LVvEmlwDYkdkvi3sJo77YZJXMUmO9oPEXFGAMVl+Cb0TdFSKOG6
-	 o0loWnIdNN5yJP7+t6xc64FsMvTJ6SS5i0TcZ8JIux4przq2v+UYyrNuo7E8ZXrSmW
-	 ftls7wJ5zm1jqxvAxlfx8EKqjGrlR5pAy3fsDquyhC9flwKhh4mpzUOrIn7UXzoK/I
-	 naGfnF/knzgaA==
-Message-ID: <8dcd8432-4abd-4b55-8e7f-1020229ca56d@kernel.org>
-Date: Fri, 31 May 2024 11:40:23 +0200
+	s=k20201202; t=1717148481;
+	bh=Q9SPW1JUV/6SbY/X8q6gkZ0tGTmR9khzAwr42DUxo1Q=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=GfJNHFn81nLfSMS7HyRxrRrKCa3YFalKInSUckUph704MCzdH8ycDwdfS9Mq5wCj0
+	 UI4GujXhtT3YKaACIrrs11IpM06wA8iC71SJEQ0gC+YpvHvcC8xTjkk36A3Ly5OBDD
+	 IrAxXUo3bIaLa4YFExF+wMgYDjELpMpofhy76ieOGhFXgMj9XMREHe5WuRQfr1CH70
+	 QNuF2CChP/LSyaSuKgpNwQDJoSMnfZotavbwRyCRulozdWJOhqgIT1YRahRrbRP6LG
+	 AiGEZnfnizoU8DwCe8vEOUUgWiFsbjHtrz0Yy37R+gr8ILfTfrPnEPph5ok4/8onB+
+	 +9PqV7y+Xq7+g==
+Message-ID: <f9537934-fd6a-41a5-a250-3855da33e629@kernel.org>
+Date: Fri, 31 May 2024 11:41:17 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -51,18 +51,15 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v2] dt-bindings: iio: adc: add a7779 doc
-To: "Nechita, Ramona" <Ramona.Nechita@analog.com>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, "Hennerich, Michael" <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
-References: <20240530075914.28080-1-ramona.nechita@analog.com>
- <21b8fc7a-f915-40a1-aa40-c8f91f158b1c@kernel.org>
- <SN6PR03MB4320402A5CF07EEB35ECE6F1F3FC2@SN6PR03MB4320.namprd03.prod.outlook.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
+To: ranechita <ramona.nechita@analog.com>, linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20240531092704.21255-1-ramona.nechita@analog.com>
+ <0c2bb24e-f0c9-4edd-bd5e-2bf1dfb0de22@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -107,17 +104,24 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <SN6PR03MB4320402A5CF07EEB35ECE6F1F3FC2@SN6PR03MB4320.namprd03.prod.outlook.com>
+In-Reply-To: <0c2bb24e-f0c9-4edd-bd5e-2bf1dfb0de22@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 31/05/2024 11:27, Nechita, Ramona wrote:
-> Hello,
+On 31/05/2024 11:39, Krzysztof Kozlowski wrote:
+> On 31/05/2024 11:26, ranechita wrote:
+>> Add dt bindings for adc ad7779.
+>>
+>> Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
 > 
-> I sent the v2 with the clock-names removed, before receiving your email reiterating the name change. I am re-sending the v2 in a few moments with the correct sign-off.
+> 1. Again v2? Nothing improved? No changelog? You are sending the same
+> over and over and expect different feedback?
+> 
 
-v2? I already have a v2 in my mailbox, so you are sending the same over
-and over.
+If this was not clear:
+
+Provide proper changelog (as explained by submitting patches) and
+version your work correctly. 3 times v2 does not make any sense.
 
 Best regards,
 Krzysztof

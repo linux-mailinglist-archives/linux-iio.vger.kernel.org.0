@@ -1,143 +1,185 @@
-Return-Path: <linux-iio+bounces-5542-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5543-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3D88D64EB
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 16:54:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9628D65AB
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 17:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B378E1C24E26
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 14:54:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA1E228BCBC
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 15:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425CB57323;
-	Fri, 31 May 2024 14:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E736E155CA1;
+	Fri, 31 May 2024 15:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OK7s6oD6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mRub1NTE"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06681CF9B;
-	Fri, 31 May 2024 14:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3EA77118;
+	Fri, 31 May 2024 15:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717167242; cv=none; b=ciOILIKeQJJttFzILm1XSxlNuL4jeljSwo8bGjRrOLFhRRdtX6kLDIVI2MyVJ+evqe2amN/WSftL6U6ShiR9zkVvy0FAo6+SICNwnNQrvxeP0upp5duQd2Gd0f1+DfAbkOVfkh4aJx9IUCLTsuLAEKbohIhb94V83fa0huxBwBc=
+	t=1717169118; cv=none; b=hZrbFuhjJRv24rd+lJN0UYaLnU2BEN2bWroClkb8afEWaqrXIhV5+MeXGzECuRjErZvc1KD7vH4CxAAFELLLzMqiyDXu95ibbNFoUeEju/52G2LZ4lTsYpM3Npg88WQIZLBDqHKVygF26A2ZxyON02Z3IIP263Wh2sQAxLT1evQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717167242; c=relaxed/simple;
-	bh=5fZlWsVChO9de455++itdnUm8abWuXufPQEk6Jo6n/E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pXpCFwVMCT7B5NK4K7nHM1J1GBaUaVKzFOcIvpO+Jza18t8TK8LtEGjdGfnaKi/bid2kC2TgyCkOEL9+nDvrzkCZmHr6tZKWf/y5Ly1T2008NfBkQVsikJhuyow0YMYOB4Y3HDb9ncehLQKcgeS2Vd6C0uJ80J2mFWaCSEMl7pA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OK7s6oD6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598BBC116B1;
-	Fri, 31 May 2024 14:53:59 +0000 (UTC)
+	s=arc-20240116; t=1717169118; c=relaxed/simple;
+	bh=4G6i+MqRsVd1u+U7jECgsxdbxRmfHnk2OKaw20DmgQE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g2gieO9TkenE6UY5NkV8BmzUDFfVF12leGZlbJIU2rHbRiFCCByRsEpAlTxPhIjF+JF3fAm6G4kGBBgKfw9L7SBH0c5KGs2li0ZtpzVNJ64n7s/xp6B/DAwKxT+GzTEp/cBwaP8JyL7x0hxKzAc4F1+q9lWfmRRewHutUbTHsnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mRub1NTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DFCC32789;
+	Fri, 31 May 2024 15:25:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717167241;
-	bh=5fZlWsVChO9de455++itdnUm8abWuXufPQEk6Jo6n/E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OK7s6oD6igiliCnbwcsOXieG8i+nZDOb34iAd6aa/7aOJE1dG2CaCV4q3nm2/HJiW
-	 o/M9R2Z4WwpZ+L3GKI7kc9fGgc/xxKr1lfgSnRv65NxIBI/lZRL5BR6bMjo5ppVgpu
-	 36hy1uyR1IEPJSHisdZOc0NNIJh37O51lUWdohFJD9M8/cCGu4U+vK7UuXgjGzpoll
-	 kPX3cJKif0vDuDlcSmw/X4PgHanxvVKg5Lacewt8c9kN8AEzNRl4+Fe9on3VjpWQKa
-	 wkDg5RQiQtDARHpFZ0o+iYetorZOItoglxwZOaNwUlNKFl2/ro5l8Tp7WhyffLtFjE
-	 pGc696/46GO+g==
-Date: Fri, 31 May 2024 15:53:57 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Ramona Alexandra Nechita <ramona.nechita@analog.com>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] dt-bindings: iio: adc: add a7779 doc
-Message-ID: <20240531-relocate-sassy-fd31e418845b@spud>
-References: <20240531133604.1380-1-ramona.nechita@analog.com>
- <20240531133604.1380-2-ramona.nechita@analog.com>
- <20240531-dairy-king-5a4e6c09b670@spud>
+	s=k20201202; t=1717169118;
+	bh=4G6i+MqRsVd1u+U7jECgsxdbxRmfHnk2OKaw20DmgQE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=mRub1NTEexeIKD+YW40l67qrKqF3dduVb4iUog4M4DuaILgl+EgJ/kIIMwrmnwX+7
+	 Ty5TmKhOHywqwV5d3aiTaYGd+E4TPkzZMdp+xP3UstJ5u37lrUbmUgPrBGwtI6Lp+p
+	 gY5CboHqGQq1XZ4KHdiEzPM6Wy8pVPZ//UB2bJgsy5HPSs0LQW4AyUQk0cO9eCD2I4
+	 AlpzGrFsmaeH0eB+XwLsfpdk5JRsOY/31MefO0ICWBE6SPz7qJQiz2ARYpQIbhZ//Z
+	 In5hs3VOdkMFEbox1zRNfrc4a2+vaiYgfsEA0aJpcGX3xUd58rcCvjBmaSr1VXEwhS
+	 XUmN9PvA/+EcA==
+Message-ID: <278ed1f7-7f98-412a-abef-840592e016d4@kernel.org>
+Date: Fri, 31 May 2024 17:25:13 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="3hx+xfsV8K1ufwsd"
-Content-Disposition: inline
-In-Reply-To: <20240531-dairy-king-5a4e6c09b670@spud>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] dt-bindings: iio: adc: add a7779 doc
+To: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+ linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+References: <20240531133604.1380-1-ramona.nechita@analog.com>
+ <20240531133604.1380-2-ramona.nechita@analog.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240531133604.1380-2-ramona.nechita@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 31/05/2024 15:35, Ramona Alexandra Nechita wrote:
+> Add dt bindings for adc ad7779.
+> 
+> Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
+> ---
+>  .../ABI/testing/sysfs-bus-iio-adc-ad777x      | 23 +++++
+>  .../bindings/iio/adc/adi,ad7779.yaml          | 87 +++++++++++++++++++
+>  2 files changed, 110 insertions(+)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
 
---3hx+xfsV8K1ufwsd
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Why is this sent separately troubles us all... I saw many patches from
+analog.com, so maybe there is a person who will help you, in case you do
+not want to read submitting patches?
 
-On Fri, May 31, 2024 at 03:51:56PM +0100, Conor Dooley wrote:
-> On Fri, May 31, 2024 at 04:35:52PM +0300, Ramona Alexandra Nechita wrote:
-> > Add dt bindings for adc ad7779.
-> >=20
-> > Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
-> > ---
-> >  .../ABI/testing/sysfs-bus-iio-adc-ad777x      | 23 +++++
-> >  .../bindings/iio/adc/adi,ad7779.yaml          | 87 +++++++++++++++++++
-> >  2 files changed, 110 insertions(+)
-> >  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad777=
-9.yaml
-> >=20
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x b/Docum=
-entation/ABI/testing/sysfs-bus-iio-adc-ad777x
-> > new file mode 100644
-> > index 000000000000..0a57fda598e6
-> > --- /dev/null
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
-> > @@ -0,0 +1,23 @@
-> > +What:		/sys/bus/iio/devices/iio:deviceX/filter_type_available
-> > +KernelVersion:  6.1
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		Reading returns a list with the possible filter modes. Only supporte=
-d by
-> > +		AD7771.
-> > +
-> > +		  * "sinc3"	- The digital sinc3 filter implements three main notches=
-, one at
-> > +				the maximum ODR (128 kHz or 32 kHz, depending on the
-> > +				power mode) and another two at the ODR frequency selected to
-> > +				stop noise aliasing into the pass band.
-> > +
-> > +		  * "sinc5"	- The sinc5 filter implements five notches, one at
-> > +				the maximum ODR (128 kHz or 32 kHz, depending on the
-> > +				power mode) and another four at the ODR frequency
-> > +				selected to stop noise aliasing into the pass band.
-> > +
-> > +What:		/sys/bus/iio/devices/iio:deviceX/filter_type
-> > +KernelVersion:  6.1
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		Set the filter mode of the differential channel. The current samplin=
-g_frequency
-> > +		is set according to the filter range. Only supported by AD7771.
->=20
-> This patch is really confusing to me. Why is there a file documenting
-> the sysfs interface for a driver that isn't in the tree? Shouldn't this
-> patch be part of a series that adds the driver? I suggest you speak to
-> Nuno or another collogue about how to submit a series.
+...
 
-Colleague*, auto accepting vim's first spelling suggestion strikes again
-:)
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  '#address-cells':
+> +    const: 1
+> +
+> +  '#size-cells':
+> +    const: 0
+> +
+> +  spi-max-frequency: true
 
---3hx+xfsV8K1ufwsd
-Content-Type: application/pgp-signature; name="signature.asc"
+Drop
 
------BEGIN PGP SIGNATURE-----
+> +
+> +  clocks:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  vref-supply:
+> +    description:
+> +      ADC reference voltage supply
+> +
+> +  start-gpios:
+> +    description:
+> +      Pin that controls start synchronization pulse.
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - clocks
+> +
+> +unevaluatedProperties: false
+> +
+> +examples:
+> +  - |
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    spi {
+> +        #address-cells = <1>;
+> +        #size-cells = <0>;
+> +
+> +        adc@0 {
+> +          compatible = "adi,ad7779";
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZlnkhQAKCRB4tDGHoIJi
-0nXXAP966lZ8z3VVf9rnxuQw1i1VXpZKPKxSQiG466XA5dsYqAD+I8LN4L4lVZig
-X0B+rTyY5jhEO206qTbesfcpsvoivQ4=
-=D6pP
------END PGP SIGNATURE-----
+Messed indentation. Keep same for entire example, e.g.
+Use 4 spaces for example indentation.
 
---3hx+xfsV8K1ufwsd--
+Best regards,
+Krzysztof
+
 

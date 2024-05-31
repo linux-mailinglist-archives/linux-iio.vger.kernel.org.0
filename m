@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-5525-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5526-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA998D5C0F
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 09:51:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3A78D5C11
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 09:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EA5A1C25398
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 07:51:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA88CB211D1
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 07:52:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3005A76026;
-	Fri, 31 May 2024 07:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68F67407A;
+	Fri, 31 May 2024 07:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QFF53dU7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AoCJ1Brs"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E131A7441F;
-	Fri, 31 May 2024 07:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF922E657;
+	Fri, 31 May 2024 07:52:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717141873; cv=none; b=qXgbPyEAcvrrM8KTdpL7fzGZKzQufk4JULqhh7wnRpD0NtN6nf6I2Ov57t2C7WYulzxIWeY2rj2bVHoV7Xzp3uLVYE3/VGcvR2RKQuEudjL9DMND/dN/HUgZYu30rgzD9xU2hzbvslsH5O3pe/fB3/ZpyYhIuRa+TIh/N0g+Lrs=
+	t=1717141935; cv=none; b=sMgLqrkhk37Stpf+0U6/dxdbqI/mDteYbN06hzJpp49PhRiime8eSnckrDcyGQ0bL+hRJkqHJsXgMy7Z1kvOHFTSyheH6NqGcW23jLF94RxB9FZQnxOlCB/+gE40flWEk0yYfhNuh8Dh4mJDBLaTc6lPQhYPqC4i/KEUlZTUDr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717141873; c=relaxed/simple;
-	bh=3k+nU3L1YqPCwbb85ex0G7eD62e7os8x74xfiGN/VdM=;
+	s=arc-20240116; t=1717141935; c=relaxed/simple;
+	bh=O1S1Ov4MRnFXjO8Y0vnpAflwQOUnXd64U06J2oV8P9M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Mpc/p8D/TXhB70+igo7BaPmY1c42f1yxxtdbCmHdrnfn3geX9xiZ28ZINUCIGSOJqMGURbmw48f/ab8mk+0RB6N17W5Xqc8+mz05pDpYqjat1ocZ/Tte99I0S0sX85acQ6MwPjy4ZbZJNiN7nfl5KK2BpiQCHc7NBNv9vw4Vscw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QFF53dU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFED3C116B1;
-	Fri, 31 May 2024 07:51:09 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=ukYfR7qUiYUTfA+r0axh9jFaGL3lCcynq0n80y3m06bZOvnYu2anChU2041OUQQFvyMuiZnUVfVJu0xZrprgG7WpHun9xkKGMscSlXChgRsr5lAIn2ISeOMq8gn6gxW2SsGvfNlS3aw/YbxTKn0j6YaqGc/84S7D9LzMCl/SYEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AoCJ1Brs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E280C116B1;
+	Fri, 31 May 2024 07:52:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717141872;
-	bh=3k+nU3L1YqPCwbb85ex0G7eD62e7os8x74xfiGN/VdM=;
+	s=k20201202; t=1717141935;
+	bh=O1S1Ov4MRnFXjO8Y0vnpAflwQOUnXd64U06J2oV8P9M=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QFF53dU77KiP3gdPfFGrhhYz9HxppSPWOsjrEQT7oQjRxXtAmKdMHGBCBp9vX0Oul
-	 rU0094neyZk8ROmmvjP+27CSiiVc0eyNe0Z1JZ3zHJBmMibA5cvWOEQMJCIQnT44qo
-	 8Bet/beFh0VpO03P+iNMvsN8jasJh6W7cRe3exh+yQxYT08gZr1ye8SbHbj5Rt7MFX
-	 b1L2dU+dIpvJbuzLBhZIw21ZRmCScHHDtPFcxMiKs8iOFeZ+Xj8DtUhkIQqJFwLkvK
-	 NFXFaiF9vFO/7Z2KpYwKt6oiRwZhSvzhvzqUb2m6E/9DxfT4IsCSM8Jbb5h/jI3Rdv
-	 wwngtkbJ79HlQ==
-Message-ID: <3bb43d00-1d76-4b8d-9236-30d7dcccbcc5@kernel.org>
-Date: Fri, 31 May 2024 09:51:07 +0200
+	b=AoCJ1Brs5SalTPI/+gTE9gHxggu0hvhn2L1J3YFpYK2/zMYr+J3kfIDdSCHUgquGj
+	 WNNRm0wdbm0Xhrt/yAYI0YjuYpzh/okBoRhTPmg4F/GsZI6zIiNzWE4dB9Y3VlGtRl
+	 w7Xw3wUnycCr7vp5Ibb9TdleDTBOXDanAPyfww8h4/ATjGdtN+AEtECVtPCLGL6fMd
+	 HmfNGibg+VyG8yzTELn7MZh2Tv/1J7/MqTUOIVjwbkZA/i9iPnh6ddJ+TXi6OMOFir
+	 ufFO752FE7iMrbmXLQL6FMffEOF62v35+/xxFrY93wzIYSrq3piIXZpXSInN9kkMqL
+	 u3e20Uezbi1JQ==
+Message-ID: <f907c2a9-94c0-493b-971b-c627244528ed@kernel.org>
+Date: Fri, 31 May 2024 09:52:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,14 +50,14 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] dt-bindings:iio:proximity: Add hx9023s binding
+Subject: Re: [PATCH v3 0/2]
+ iio-proximity-hx9023s-Add-TYHX-HX9023S-sensor-driver
 To: Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org
 Cc: andy.shevchenko@gmail.com, lars@metafoo.de, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, nuno.a@analog.com, swboyd@chromium.org,
  u.kleine-koenig@pengutronix.de, yasin.lee.x@gmail.com
 References: <20240519162438.17af0ff8@jic23-huawei>
- <20240529045749.530039-1-yasin.lee.x@outlook.com>
- <SN7PR12MB8101FD306CBFC84DDF3D2466A4F22@SN7PR12MB8101.namprd12.prod.outlook.com>
+ <SN7PR12MB81019093E9E5D29BEC4B821FA4F22@SN7PR12MB8101.namprd12.prod.outlook.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -103,19 +103,28 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <SN7PR12MB8101FD306CBFC84DDF3D2466A4F22@SN7PR12MB8101.namprd12.prod.outlook.com>
+In-Reply-To: <SN7PR12MB81019093E9E5D29BEC4B821FA4F22@SN7PR12MB8101.namprd12.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 29/05/2024 06:57, Yasin Lee wrote:
 > From: Yasin Lee <yasin.lee.x@gmail.com>
 > 
-> A capacitive proximity sensor
-> 
+> v3:
+>  - Renamed the files to keep the file names consistent with the chip name.
+>  - Removed custom bit operation macro definitions.
+>  - Deleted redundant documentation that duplicated the Standard ABI.
+>  - Deleted unused header files.
+>  - Deleted unused register definitions.
+>  - Changed parts of the code related to circuit design to be configurable through DTS.
+>  - Removed unnecessary print statements.
+>  - Fixed the error in hx9031as_write_event_val.
+>  - Removed unnecessary threshold settings in the probe.
+>  - Replaced enable_irq(data->client->irq) with interrupt enable register operations.
+>  - Fixed style issues.
 
-Nothing improved.
-
-You ignored all previous comments.
+Please do not ignore comments but respond to them. Go back to 15th of
+May and acknowledge all of them. You repeated every single issue...
 
 Best regards,
 Krzysztof

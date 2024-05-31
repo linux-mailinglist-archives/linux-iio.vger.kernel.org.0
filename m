@@ -1,122 +1,239 @@
-Return-Path: <linux-iio+bounces-5527-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5529-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E96128D5D7F
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 11:04:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5334B8D5E44
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 11:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A57BB286776
-	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 09:04:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2656B23071
+	for <lists+linux-iio@lfdr.de>; Fri, 31 May 2024 09:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2067155750;
-	Fri, 31 May 2024 09:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC51881219;
+	Fri, 31 May 2024 09:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JxhA6qI2"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="uPrMofPP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9886E14532D;
-	Fri, 31 May 2024 09:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14ADE2032D;
+	Fri, 31 May 2024 09:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717146235; cv=none; b=Q3QqsY7gdQC2eM9jiFdUlNBHQg+3hY1+1vcWZuMU1xSIsLg+iVP0jxySdD+wlvrAnKE1WBbBX+BiK6jwKHr84uFwZI5RmTXlR6NfHLTOrkiwxGlR0vyOM1+7H1AYl2NfWfLxe58f4bGVBXfUHI5uECJMIO9QLn1SthBj1G3YegQ=
+	t=1717147774; cv=none; b=FY2l94n2R8qi+KTnqFEMUuBsXhSQ0/AmzjiFKLn61LOCrGC0My9MAgRCZWfjq7qPf+AH6fTwqbXBewwdzsf3o924ZY3FrSlBb1DT/HdXZq/A0cMclbmPJsfMSbJtb74m8qm8Pq71Qu4nak5ZTCWm4pgJlvJWIi9uO42764GynM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717146235; c=relaxed/simple;
-	bh=7oDijFUHb/SzuGN0T03N+niG7QYaHVhZCXHr291ui9c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WxJ0/l6RnEzJ2SIItKni9rmppLOYIfbSGYzYQDxM5R6T/dH5TFXuL3liBdvKOLUbxsJFSQPNvAj6RTuvN4YW+zjXlPVh6a+4/xdIydMqEnzUBDDQiu5ry3+X+jlA6fIgyUIGEYp54NB4V2shNJszmbZshvHnaQ0GYF3j4b9EBfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JxhA6qI2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A38C116B1;
-	Fri, 31 May 2024 09:03:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717146235;
-	bh=7oDijFUHb/SzuGN0T03N+niG7QYaHVhZCXHr291ui9c=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JxhA6qI2GZ3wBeoAQOs8MgBZI7+U0CZf+n8MyebURts/gIfiq2v8vLCrsH//Ahj1f
-	 1j3i6qm35dyRDDVqhSHxhf0mPBfg3mFsR0pJ0UQ//tx4KO38Wl62rvmEHCdek5XSIR
-	 jvspU4FEzRouBxtIC9UM9m/6LSe+EOMGUXG487OSuJGL8GeMIdEQKHSFLqoV338kjG
-	 YF44WSTV3BMRLP4bWia4Gjhp1Kp27YhSCjYdKKNfwe2vLLB7xPHL/XK835HIn5gEi0
-	 m+0N0XkXch+KqtU1zv5TVHnbM4K7KYzs6MqCB6h6H6vYbcOprQvgBQJauQiwUyLKv0
-	 16QsHrspytJ2Q==
-Message-ID: <21b8fc7a-f915-40a1-aa40-c8f91f158b1c@kernel.org>
-Date: Fri, 31 May 2024 11:03:50 +0200
+	s=arc-20240116; t=1717147774; c=relaxed/simple;
+	bh=EN3yAsbmjnvvPDgNC90DZ+p+kvaIL34JaNYFOwcvgsQ=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UIumBWxO3mGzMaDQDuG+5u3REmC09Lemj+gI7FGb1VJZWXnlBg141SdEU/XtDS7PN7JGWnYzhjNYRST/wawM7IkTcjRy6TEf4A+GspP+ii9EIGUT+CKl9pTu86uTVLeAWCKadyiyZPK43cPGyrhfjh3MO35iCLqFq/h+44qMblc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=uPrMofPP; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 44V8p9aQ013187;
+	Fri, 31 May 2024 05:29:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=t8hvnnR4gL7szMpPoyw0DjEfOAO
+	Y0g/eXoIWy/G7HoQ=; b=uPrMofPPSilPfE8UMTu7ixypwlZ5OzY8OMzWMfs5Q0Q
+	mUO/wtwIJ6HPa5qKKj5uuvQmokvFpKKTpK65JZ1uAqgEqFNyxu0J/eMfCbZm1UC4
+	t48ArHNnw6npwW6ZL3uYGGymB8syQ1QxM3lp4dsqWsdMBvxfSAv9mNQ553M27nYf
+	Uz5h+2lIiGpabuyIGvRp5Ej0z/ATQVH5DhNEBHPScal+OKc2ZLVgQXl4rxUafLJ5
+	EU43PGhoroqSvs8YDH69KC+DrTTujU9SLfFcQWjQl5JyjkT2JaEz3Rw8Xj00hiIT
+	YXmP4ItwYKIDcOylQpNUIIUy63yy5jdxr8zVJUx770A==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3yf60qh6rb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 May 2024 05:29:19 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 44V9THKn046249
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 31 May 2024 05:29:17 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 31 May 2024 05:29:16 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Fri, 31 May 2024 05:29:16 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 31 May 2024 05:29:16 -0400
+Received: from HYB-hYN1yfF7zRm.ad.analog.com (HYB-hYN1yfF7zRm.ad.analog.com [10.48.65.147])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 44V9T4nm001182;
+	Fri, 31 May 2024 05:29:06 -0400
+From: ranechita <ramona.nechita@analog.com>
+To: <linux-iio@vger.kernel.org>
+CC: ranechita <ramona.nechita@analog.com>,
+        Jonathan Cameron
+	<jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Rob Herring <robh@kernel.org>,
+        "Krzysztof
+ Kozlowski" <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH v2] dt-bindings: iio: adc: add a7779 doc
+Date: Fri, 31 May 2024 12:26:59 +0300
+Message-ID: <20240531092704.21255-1-ramona.nechita@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] dt-bindings: iio: adc: add a7779 doc
-To: ranechita <ramona.nechita@analog.com>, linux-iio@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20240530075914.28080-1-ramona.nechita@analog.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
- cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
- JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
- gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
- J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
- NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
- BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
- vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
- Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
- TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
- S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
- FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
- QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
- gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
- /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
- iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
- VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
- 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
- xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
- eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
- AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
- MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
- Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
- MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
- OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
- GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
- 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
- YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
- 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
- BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
- JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
- 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
- YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
- Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
- ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
- vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
- oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
- lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
- t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
- uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
- 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
- 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240530075914.28080-1-ramona.nechita@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: WIHj57tDlcTo0k9EgzQtG_-quuHgbV61
+X-Proofpoint-GUID: WIHj57tDlcTo0k9EgzQtG_-quuHgbV61
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-05-31_05,2024-05-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999
+ mlxscore=0 priorityscore=1501 bulkscore=0 adultscore=0 phishscore=0
+ clxscore=1015 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2405310068
 
-On 30/05/2024 09:59, ranechita wrote:
-> Add dt bindings for adc ad7779.
-> 
-> Signed-off-by: ranechita <ramona.nechita@analog.com>
+Add dt bindings for adc ad7779.
 
-Same v2? Nothing improved?
+Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
+---
+ .../ABI/testing/sysfs-bus-iio-adc-ad777x      | 23 +++++
+ .../bindings/iio/adc/adi,ad7779.yaml          | 87 +++++++++++++++++++
+ 2 files changed, 110 insertions(+)
+ create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
 
-Name used is still not full name, as I asked.
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
+new file mode 100644
+index 000000000000..0a57fda598e6
+--- /dev/null
++++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-ad777x
+@@ -0,0 +1,23 @@
++What:		/sys/bus/iio/devices/iio:deviceX/filter_type_available
++KernelVersion:  6.1
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Reading returns a list with the possible filter modes. Only supported by
++		AD7771.
++
++		  * "sinc3"	- The digital sinc3 filter implements three main notches, one at
++				the maximum ODR (128 kHz or 32 kHz, depending on the
++				power mode) and another two at the ODR frequency selected to
++				stop noise aliasing into the pass band.
++
++		  * "sinc5"	- The sinc5 filter implements five notches, one at
++				the maximum ODR (128 kHz or 32 kHz, depending on the
++				power mode) and another four at the ODR frequency
++				selected to stop noise aliasing into the pass band.
++
++What:		/sys/bus/iio/devices/iio:deviceX/filter_type
++KernelVersion:  6.1
++Contact:	linux-iio@vger.kernel.org
++Description:
++		Set the filter mode of the differential channel. The current sampling_frequency
++		is set according to the filter range. Only supported by AD7771.
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+new file mode 100644
+index 000000000000..632e9ec0ab44
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+@@ -0,0 +1,87 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad7779.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AD777X family 8-Channel, 24-Bit, Simultaneous Sampling ADCs
++
++maintainers:
++  - Ramona Nechita <ramona.nechita@analog.com>
++
++description: |
++  The AD777X family consist of 8-channel, simultaneous sampling analog-to-
++  digital converter (ADC). Eight full Σ-Δ ADCs are on-chip. The
++  AD7771 provides an ultralow input current to allow direct sensor
++  connection. Each input channel has a programmable gain stage
++  allowing gains of 1, 2, 4, and 8 to map lower amplitude sensor
++  outputs into the full-scale ADC input range, maximizing the
++  dynamic range of the signal chain.
++
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7770.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7771.pdf
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7779.pdf
++
++$ref: /schemas/spi/spi-peripheral-props.yaml#
++
++properties:
++  compatible:
++    enum:
++      - adi,ad7770
++      - adi,ad7771
++      - adi,ad7779
++
++  reg:
++    maxItems: 1
++
++  '#address-cells':
++    const: 1
++
++  '#size-cells':
++    const: 0
++
++  spi-max-frequency: true
++
++  clocks:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++  vref-supply:
++    description:
++      ADC reference voltage supply
++
++  start-gpios:
++    description:
++      Pin that controls start synchronization pulse.
++    maxItems: 1
++
++  reset-gpios:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - clocks
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++          compatible = "adi,ad7779";
++          reg = <0>;
++          spi-max-frequency = <20000000>;
++          vref-supply = <&vref>;
++          start-gpios = <&gpio0 87 GPIO_ACTIVE_LOW>;
++          reset-gpios = <&gpio0 93 GPIO_ACTIVE_LOW>;
++          clocks = <&adc_clk>;
++        };
++    };
++...
+-- 
+2.43.0
 
 

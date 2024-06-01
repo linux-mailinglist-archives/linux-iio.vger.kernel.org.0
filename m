@@ -1,66 +1,65 @@
-Return-Path: <linux-iio+bounces-5582-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5583-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 396AF8D718D
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Jun 2024 20:40:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A0B68D718F
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Jun 2024 20:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B46AAB21421
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Jun 2024 18:40:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC2AA1F219B8
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Jun 2024 18:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 904EE154BF7;
-	Sat,  1 Jun 2024 18:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15750154C02;
+	Sat,  1 Jun 2024 18:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ATN9Qb1Q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXDjSkhh"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40040208D4;
-	Sat,  1 Jun 2024 18:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDAAB208D4;
+	Sat,  1 Jun 2024 18:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717267243; cv=none; b=lpz4RvXWOoH/Wt7yJ535EbaqNIJOWcZJl0IJcPegLCiYaFg0glF0gtnAJvw4O5xx6j9ET15krEbSiduTIWAGNY6Has3S6yTJAP2xcyMaTI9Fyw0HPVPZ5IBTFk+3hppoG4hE/XPV5bSOm/EBC6gmNCUeOkSC/KLGfB7VsJrXneE=
+	t=1717267423; cv=none; b=PiM46p48dOKY9l+kTqHPhj7rftp3KfhdUR4Lxs+gQVta27fY+2rmFWuXXQr3O/Al2h+IRyfVQkN5AqhBX0Mbfw+AbQ+omXiFN4yMXyuWq9dN1f4Iza5aEeGK+EY8J0eu5VkAQDE1nk3ycpe7V83kunujc2hjUEsVDt6wEYjPIsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717267243; c=relaxed/simple;
-	bh=LR/c8x+xXZigA1KgG3xrmw32mIIHb4FKtgh/evN9SM4=;
+	s=arc-20240116; t=1717267423; c=relaxed/simple;
+	bh=JHPacm35K7W1WC34s5PGuycHj5car7YNlXfVgVtqLWI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jjqp9/c4s/ZxmRJr2kio7Nawf8idtXnWhG9Z06u5iofXcHIpqYAh8gl6CStTqCKVDF1BH/vAZLjYImNj03ahlc5fyQrT2tzdtiibKdZtHkeKNnsh5DQha0XGDs0QVzvTQ48pkL9S5EvvE8sKr6DXAxeexmVz3C4BGbeoGITGzjQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ATN9Qb1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4473C116B1;
-	Sat,  1 Jun 2024 18:40:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FuTtRs/uWuUlmkaNbt0IpRGmUEU8pg/O+kkgCJ+/Q0i98RZKRyo2s6RfSuhJaHmZhwcaaVF5yLDjyx4Y+xX3neXmlzd1hjQ2TzSmb+btzOgiIO5Mmo+58Ue3t+ODctpotpY99OOcrFE1lqeiZoxHzXGbPwMCMutKzPzl2q0z11o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXDjSkhh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6370C116B1;
+	Sat,  1 Jun 2024 18:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717267242;
-	bh=LR/c8x+xXZigA1KgG3xrmw32mIIHb4FKtgh/evN9SM4=;
+	s=k20201202; t=1717267423;
+	bh=JHPacm35K7W1WC34s5PGuycHj5car7YNlXfVgVtqLWI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ATN9Qb1Q/SYgGwtk3wP8kvB3/y8+DRjJA8v1hmyRJ/eLdP0QxQAB44DsMT+mu4Xzk
-	 SHv3yJCzIkg7gk1LztXMe6qxxJziJsG7ZviTNApc1uDS7cKus6+D3R/uCKE8ASoCIF
-	 3HWi4TON/z3r08sHdJsH2uW15L2Yx4tjx7zeXsz187l4hfH4RkA0/t0oxfO2PPB3m0
-	 VnhrkcTlCq2i2TvcWLQkiZQ/aqbnXRfAaJWrV6mnt7UioOUBNEjK8gH7US+EOoXMBu
-	 4btudvWHnlBYOtsTs8R7ILHaXf1H0yWWY8+hNP8B1cSYF4KvuD2+Rw2VH09OgEkJet
-	 osMYhweOv4pQg==
-Date: Sat, 1 Jun 2024 19:40:27 +0100
+	b=ZXDjSkhhrfTQplr5y5P3NSNhZQZ3bgDSWwRVT8/2HrxYTFFK4a53RFpnPl2B77Kv1
+	 B/7QyD6C3XzGKP+aXeSClpPD7w7ocyQuBspjedtDX9KALxXAxGF1U/Bx7owqsCo1FZ
+	 FXZRxUJEtfv91mC9NwSaVnczYPK6j7oDgAz06V70/mhNIpbkwvWhtFsDDbhmtlPVTS
+	 nYqHR7+haHmUAHEQsuRKC9ABgQQOj9Y3ZuDT9CsjRLSVeXTee05zjmR3hAflpSF/+a
+	 coZZh2AkfuunDZOKGil87gQMWMAO/VZmAME5mIRsEPIBune3m25U6mYIrXBELWF8tE
+	 CTtxbO4dOiyvA==
+Date: Sat, 1 Jun 2024 19:43:28 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>, dumitru.ceclan@analog.com,
- Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
+Cc: David Lechner <dlechner@baylibre.com>, "Ceclan, Dumitru" 
+ <mitrutzceclan@gmail.com>, dumitru.ceclan@analog.com, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/6] iio: adc: ad7173: refactor ain and vref
- selection
-Message-ID: <20240601194027.67c97d76@jic23-huawei>
-In-Reply-To: <5e263d5ce90d6ad187adb7d4a007ce2e79095829.camel@gmail.com>
+Subject: Re: [PATCH v3 5/6] iio: adc: ad7173: Add support for AD411x devices
+Message-ID: <20240601194328.6c28f743@jic23-huawei>
+In-Reply-To: <d3c2496deb6a1764d06a63592b416d30d43fcc47.camel@gmail.com>
 References: <20240527-ad4111-v3-0-7e9eddbbd3eb@analog.com>
-	<20240527-ad4111-v3-3-7e9eddbbd3eb@analog.com>
-	<71452f6882efe6a181d477914488617d28a38e2f.camel@gmail.com>
-	<4b704b553282c0689dfef714c49ba97a33198898.camel@gmail.com>
-	<d2f4e6da-75b1-4450-b295-45772dfb3f33@gmail.com>
-	<5e263d5ce90d6ad187adb7d4a007ce2e79095829.camel@gmail.com>
+	<20240527-ad4111-v3-5-7e9eddbbd3eb@analog.com>
+	<6f18184de4a37993baedc15b44ecf0a6834a24d1.camel@gmail.com>
+	<917bc1d9-fbdc-4ca2-a156-813b57c8201e@gmail.com>
+	<30192c2a-5275-41ac-bc20-aa5f436846a3@baylibre.com>
+	<d3c2496deb6a1764d06a63592b416d30d43fcc47.camel@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -71,61 +70,69 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 31 May 2024 09:10:43 +0200
+On Thu, 30 May 2024 08:19:57 +0200
 Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> On Thu, 2024-05-30 at 17:45 +0300, Ceclan, Dumitru wrote:
-> > On 29/05/2024 15:49, Nuno S=C3=A1 wrote: =20
-> > > On Wed, 2024-05-29 at 14:27 +0200, Nuno S=C3=A1 wrote: =20
+> On Wed, 2024-05-29 at 15:59 -0500, David Lechner wrote:
+> > On 5/29/24 9:03 AM, Ceclan, Dumitru wrote: =20
+> > > On 29/05/2024 15:46, Nuno S=C3=A1 wrote: =20
 > > > > On Mon, 2024-05-27 at 20:02 +0300, Dumitru Ceclan via B4 Relay wrot=
 e: =20
 > > > > > From: Dumitru Ceclan <dumitru.ceclan@analog.com> =20
-> >=20
-> > ...
-> >  =20
-> > > > > +static int ad7173_validate_voltage_ain_inputs(struct ad7173_stat=
-e *st,
-> > > > > +					=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int ain[2]) =20
 > > >=20
-> > > Pass the pointer and size of it... Also, it should be made 'const'
+> > > ...
 > > >  =20
+> > > > > =C2=A0static const struct ad7173_device_info ad7173_device_info[]=
+ =3D {
+> > > > > +	[ID_AD4111] =3D {
+> > > > > +		.name =3D "ad4111",
+> > > > > +		.id =3D AD7173_AD4111_AD4112_AD4114_ID,
+> > > > > +		.num_voltage_inputs_with_divider =3D 8,
+> > > > > +		.num_channels =3D 16,
+> > > > > +		.num_configs =3D 8,
+> > > > > +		.num_voltage_inputs =3D 8,
+> > > > > +		.num_gpios =3D 2,
+> > > > > +		.higher_gpio_bits =3D true,
+> > > > > +		.has_temp =3D true,
+> > > > > +		.has_vcom_input =3D true,
+> > > > > +		.has_input_buf =3D true,
+> > > > > +		.has_current_inputs =3D true,
+> > > > > +		.has_int_ref =3D true,
+> > > > > +		.clock =3D 2 * HZ_PER_MHZ,
+> > > > > +		.sinc5_data_rates =3D ad7173_sinc5_data_rates,
+> > > > > +		.num_sinc5_data_rates =3D ARRAY_SIZE(ad7173_sinc5_data_rates),
+> > > > > +	}, =20
+> > > >=20
+> > > > At some point it would be nice to drop the ad7173_device_info array=
+...
+> > > >  =20
+> > > What are good alternatives to this? =20
 > >=20
-> > I'm learning here: what is the purpose of passing the size of it?
-> > This is a specific case where the size will always be 2
+> > Drivers like ad7091r8 have individual static struct ad7091r_init_info
+> > instead of putting them all in an array. I like doing it that
+> > way because it makes less code to read compared to having the
+> > array.
+> >=20
+> > It would let us get rid of enum ad7173_ids, have one level less
+> > indent on each static const struct ad7173_device_info and=20
+> >=20
+> > { .compatible =3D "adi,ad7172-2", .data =3D &ad7173_device_info },
+> >=20
+> > would now fit on one line since we no longer need the array
+> > index.
 > >  =20
 >=20
-> Basically readability... Yes, in this case it will be a stretch to assume=
- we'll ever
-> have anything bigger than 2 (so the scalability argument is not so applic=
-able) so I'm
-> ok if you don't pass the size. It's just I really dislike (as a practice)=
- to have
-> raw/magic numbers in the code. In here, it won't be that bad as by the co=
-ntext, one
-> can easily understand the meaning of 2. Nevertheless, I would, still, at =
-the very
-> least consider to either use a #define or a better name for the iterator =
-(anything
-> more meaningful than 'i' so that it looks more understandable than 'i < 2=
-')
+> Exactly... But up to you to do it now or defer it to a later patch.
 >=20
+Agreed - the array pattern for this is not a good idea as it
+also encourages people to assign meaning to the enum values leaving
+stuff expressed as code that should be a flag or value inside these
+device_info structures.
 
-I'm late to the game, but I'd just split it into two parameters.
-Code is shorter as well.
+Some of those where mistakes of a younger me ;(
 
-static int ad7173_validate_voltage_ain_inputs(struct ad7173_state *st,
-					      unsigned int ain0, unsigned int ain1)
-{
-	if (ain0 >=3D st->info->num_inputs ||
-	    ain1 >=3D st->info->num_inputs)
-		return dev_err_probe(&st->sd.spi->dev, -EINVAL,
-				     "Input pin number out of range for pair (%d %d).\n",
-				     ain0, ain1);
-	return 0;
-}
+Jonathan
 
-> - Nuno S=C3=A1=20
-> >  =20
->=20
+> - Nuno S=C3=A1
 
 

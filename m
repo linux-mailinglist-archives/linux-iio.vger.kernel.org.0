@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-5574-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5575-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4CCE8D6FCE
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Jun 2024 14:48:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A745E8D6FD9
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Jun 2024 15:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74DFD283420
-	for <lists+linux-iio@lfdr.de>; Sat,  1 Jun 2024 12:48:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5043E1F21E68
+	for <lists+linux-iio@lfdr.de>; Sat,  1 Jun 2024 13:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FFFF14F9E8;
-	Sat,  1 Jun 2024 12:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4539C150999;
+	Sat,  1 Jun 2024 13:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cQ+11BBU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s5h+ccwz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECC01E481;
-	Sat,  1 Jun 2024 12:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025507EF;
+	Sat,  1 Jun 2024 13:01:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717246122; cv=none; b=hGAKAQ6TwhMUTYvHuIkOqUzcgZNkzwTMFPoHK4VVGwjhX9oXmqe0acglG2jMUpdn3VdWiDRsFvPNM5QhsHJwb5miNMVLdp6MHdZ4DrYXk/Nr8b4ZNyGsOIHPcR03hfJk4W+kyq6CtAjEeZ1gQoNDzHhnq5TTZgJDJ28APAMyNNU=
+	t=1717246912; cv=none; b=uIc01p69cZS5TuPZc/GTT0ZPtUmVWPjKKyKKEZxXb8DERJdD9h5zvBA1OfjZwdcWMRAvLkGoi9TLuRW4NqbNGM6QcW/RCx4ERZYl8CyU7zwv53FpP01iFZSIb611DFzrfjGulYJGQ1yBqAlSSQDUifkiHj2idyRhX8qz9LKjT7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717246122; c=relaxed/simple;
-	bh=58IkfghORK5mSRBwh6TqDVlxAwNbReUZkA6ELrjjxEk=;
+	s=arc-20240116; t=1717246912; c=relaxed/simple;
+	bh=/ZL+QsOgXoSDRVVKHsuowmlYl090GokdsLFAjZvNNIk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iArdpE5FjerbfdAix/XqahS0/WE+2IVc2CoddiNvjwBP7sghhrjJKCJpsCdiqmzNxdr3MZ/sHP6F36XLf0sPzhJbxadrLRRREmrFvZji4YaX6LbynOjsJ/YmLOX8WSzvldDiBpPrXFOiyLA0Z9Udg221GKtavffNyuegDLVCUwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cQ+11BBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0E9C116B1;
-	Sat,  1 Jun 2024 12:48:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qB2bSJVNke6NdYJchciBea3yss9CY+F2XCQqO7PMC6oF7XB0lTBTDVSkoHebC6T7xVQT578ZYipDZgVjV/rExVdoekY0XDqB1wdHZJvA6kvUEjDkfVHmc32VhJUw1+OdiCLfVoGTXSRZALxvOhXli4+X0kfjYnkhb0QQ/x7UN/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s5h+ccwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1961C116B1;
+	Sat,  1 Jun 2024 13:01:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717246122;
-	bh=58IkfghORK5mSRBwh6TqDVlxAwNbReUZkA6ELrjjxEk=;
+	s=k20201202; t=1717246911;
+	bh=/ZL+QsOgXoSDRVVKHsuowmlYl090GokdsLFAjZvNNIk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cQ+11BBUPvwmjob7lUfleGd12aVQaOp1yVjb4P5Ju63kYEAepNaVEhlWmPrBGlYTz
-	 uJuNfz4U2KzJeoyJCwRkHNY+cNKJlvJ27sWD74jZgsMx/UBrrvSr7uUKWXc3IX5L4d
-	 Zz8dpybH4awUuPE93MmyE7PbBo7s4bPJg9QfVJtPUa/6hdPaD+1cNJ2Pu7R7zi5Ckx
-	 a33GpcFK4ytEY585Y7lLYKsGZutEhIaJy+BEfhmB7Bww9aPUxy7B6xdcERGyyZ2JR7
-	 ZDxRgXZ9ArgpBQ1VxlvrhHLQGrHGdf0RVrYxMuNySpwgHwqtnaYLI9vcrRtdFgejC5
-	 8Zjf0D0JqRlvA==
-Date: Sat, 1 Jun 2024 13:48:28 +0100
+	b=s5h+ccwzI6CjGc9XT9WWo6HYlT03YhlaYlB4VNPmkCgQafIDAeF7nNJ3i8beK2tfl
+	 JZ5yl7G2Vfych/aStegTquvQ/PQOyj9l/WqiSkCIgPyIEqkE6yEh9odKihZ6UDBmyb
+	 5bn73AxJlaMfxmjw7hXPrbiodBNBGq7ReywKFCOjts1DbYuK/qMd6H3dX94WXuK33+
+	 M4H/OMpaLycwBQ43jyN/cm4RPf7JV93cAgmFBhAGZOajL9Ua0HzcY8uW30u2CgModN
+	 SLBzjHXC62WnDRsOy1F2eqJkI4kxmKQUkE3Jw50eFza8KbCo7XJqfE+FFrlN+XFJ/9
+	 t7d3jcPQnMLoA==
+Date: Sat, 1 Jun 2024 14:01:39 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: David Lechner <dlechner@baylibre.com>
 Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Nuno =?UTF-8?B?U8Oh?=
  <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
  Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/5] iio: adc: ad7192: use
+Subject: Re: [PATCH 5/5] iio: adc: ad7944: use
  devm_regulator_get_enable_read_voltage
-Message-ID: <20240601134828.68c3acba@jic23-huawei>
-In-Reply-To: <20240531-iio-adc-ref-supply-refactor-v1-1-4b313c0615ad@baylibre.com>
+Message-ID: <20240601140139.3166dcaf@jic23-huawei>
+In-Reply-To: <20240531-iio-adc-ref-supply-refactor-v1-5-4b313c0615ad@baylibre.com>
 References: <20240531-iio-adc-ref-supply-refactor-v1-0-4b313c0615ad@baylibre.com>
-	<20240531-iio-adc-ref-supply-refactor-v1-1-4b313c0615ad@baylibre.com>
+	<20240531-iio-adc-ref-supply-refactor-v1-5-4b313c0615ad@baylibre.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,175 +64,122 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 31 May 2024 16:19:32 -0500
+On Fri, 31 May 2024 16:19:36 -0500
 David Lechner <dlechner@baylibre.com> wrote:
 
 > This makes use of the new devm_regulator_get_enable_read_voltage()
 > function to reduce boilerplate code.
 > 
-> Error messages have changed slightly since there are now fewer places
-> where we print an error. The rest of the logic of selecting which
-> supply to use as the reference voltage remains the same.
-> 
-> Also 1000 is replaced by MILLI in a few places for consistency.
-> 
 > Signed-off-by: David Lechner <dlechner@baylibre.com>
-Ouch diff didn't like this one much and it is a bit hard to read.
+A possible corner case inline.
 
-One case where I think this has an unintended side effect.
-See below.
-
+Patches 2-4 lgtm.
 > ---
->  drivers/iio/adc/ad7192.c | 98 +++++++++++++++++-------------------------------
->  1 file changed, 35 insertions(+), 63 deletions(-)
+>  drivers/iio/adc/ad7944.c | 62 +++++++++++++++---------------------------------
+>  1 file changed, 19 insertions(+), 43 deletions(-)
 > 
-> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index 0789121236d6..e08bf066b3f6 100644
-> --- a/drivers/iio/adc/ad7192.c
-> +++ b/drivers/iio/adc/ad7192.c
-> @@ -200,8 +200,6 @@ struct ad7192_chip_info {
->  
->  struct ad7192_state {
->  	const struct ad7192_chip_info	*chip_info;
-> -	struct regulator		*avdd;
-> -	struct regulator		*vref;
->  	struct clk			*mclk;
->  	u16				int_vref_mv;
->  	u32				aincom_mv;
-> @@ -1189,17 +1187,11 @@ static const struct ad7192_chip_info ad7192_chip_info_tbl[] = {
->  	},
+> diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
+> index e2cb64cef476..42bbcb904778 100644
+> --- a/drivers/iio/adc/ad7944.c
+> +++ b/drivers/iio/adc/ad7944.c
+> @@ -464,23 +464,16 @@ static const char * const ad7944_power_supplies[] = {
+>  	"avdd",	"dvdd",	"bvdd", "vio"
 >  };
 >  
-> -static void ad7192_reg_disable(void *reg)
+> -static void ad7944_ref_disable(void *ref)
 > -{
-> -	regulator_disable(reg);
+> -	regulator_disable(ref);
 > -}
 > -
->  static int ad7192_probe(struct spi_device *spi)
+>  static int ad7944_probe(struct spi_device *spi)
 >  {
->  	struct ad7192_state *st;
+>  	const struct ad7944_chip_info *chip_info;
+>  	struct device *dev = &spi->dev;
 >  	struct iio_dev *indio_dev;
-> -	struct regulator *aincom;
+>  	struct ad7944_adc *adc;
+> -	bool have_refin = false;
+> -	struct regulator *ref;
+>  	struct iio_chan_spec *chain_chan;
+>  	unsigned long *chain_scan_masks;
+>  	u32 n_chain_dev;
 > -	int ret;
-> +	int ret, avdd_mv;
+> +	int ret, ref_mv, refin_mv;
 >  
->  	if (!spi->irq) {
->  		dev_err(&spi->dev, "no IRQ?\n");
-> @@ -1219,74 +1211,54 @@ static int ad7192_probe(struct spi_device *spi)
->  	 * Newer firmware should provide a zero volt fixed supply if wired to
->  	 * ground.
+>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
+>  	if (!indio_dev)
+> @@ -531,47 +524,30 @@ static int ad7944_probe(struct spi_device *spi)
+>  	 * - external reference: REF is connected, REFIN is not connected
 >  	 */
-> -	aincom = devm_regulator_get_optional(&spi->dev, "aincom");
-> -	if (IS_ERR(aincom)) {
-> -		if (PTR_ERR(aincom) != -ENODEV)
-> -			return dev_err_probe(&spi->dev, PTR_ERR(aincom),
-> -					     "Failed to get AINCOM supply\n");
-> -
-> +	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "aincom");
-> +	if (ret == -ENODEV)
->  		st->aincom_mv = 0;
-> -	} else {
-> -		ret = regulator_enable(aincom);
-> -		if (ret)
-> -			return dev_err_probe(&spi->dev, ret,
-> -					     "Failed to enable specified AINCOM supply\n");
-> +	else if (ret < 0)
-> +		return dev_err_probe(&spi->dev, ret, "Failed to get AINCOM voltage\n");
-> +	else
-> +		st->aincom_mv = ret / MILLI;
 >  
-> -		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, aincom);
-> +	/* AVDD can optionally be used as reference voltage */
-> +	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "avdd");
-> +	if (ret == -EINVAL) {
-> +		/*
-> +		 * We get -EINVAL if avdd is a supply with unknown voltage. We
-> +		 * still need to enable it since it is also a power supply.
-> +		 */
-> +		ret = devm_regulator_get_enable(&spi->dev, "avdd");
-
-What happens if the entry simply isn't there in the DT.
-Previously I think the regulator framework would supply a stub whereas
-the devm_regulator_get_enable_read_voltage() returns -ENODEV so isn't
-caught by the handling and I think it should be.
-
->  		if (ret)
-> -			return ret;
+> -	ref = devm_regulator_get_optional(dev, "ref");
+> -	if (IS_ERR(ref)) {
+> -		if (PTR_ERR(ref) != -ENODEV)
+> -			return dev_err_probe(dev, PTR_ERR(ref),
+> -					     "failed to get REF supply\n");
 > -
-> -		ret = regulator_get_voltage(aincom);
-> -		if (ret < 0)
->  			return dev_err_probe(&spi->dev, ret,
-> -					     "Device tree error, AINCOM voltage undefined\n");
-> -		st->aincom_mv = ret / MILLI;
+> -		ref = NULL;
 > -	}
-> +					     "Failed to enable AVDD supply\n");
+> +	ret = devm_regulator_get_enable_read_voltage(dev, "ref");
+> +	if (ret == -ENODEV)
+> +		ref_mv = 0;
+> +	else if (ret < 0)
+> +		return dev_err_probe(dev, ret, "failed to get REF voltage\n");
+> +	else
+> +		ref_mv = ret / 1000;
 >  
-> -	st->avdd = devm_regulator_get(&spi->dev, "avdd");
-> -	if (IS_ERR(st->avdd))
-> -		return PTR_ERR(st->avdd);
+> -	ret = devm_regulator_get_enable_optional(dev, "refin");
+> -	if (ret == 0)
+> -		have_refin = true;
+> -	else if (ret != -ENODEV)
+> -		return dev_err_probe(dev, ret,
+> -				     "failed to get and enable REFIN supply\n");
+> +	ret = devm_regulator_get_enable_read_voltage(dev, "refin");
+> +	if (ret == -ENODEV)
+> +		refin_mv = 0;
+> +	else if (ret < 0)
+> +		return dev_err_probe(dev, ret, "failed to get REFIN voltage\n");
+> +	else
+> +		refin_mv = ret / 1000;
+How does refin_mv get used?  Previously we never queried it's voltage (I assume
+because it supplies an internal reference?
+
+Are there any regulators that are real enough to enable but for which a voltage
+can't be queried?  I think fixed regulators with gpio control are in this
+category...
+
+>  
+> -	if (have_refin && ref)
+> +	if (ref_mv && refin_mv)
+>  		return dev_err_probe(dev, -EINVAL,
+>  				     "cannot have both refin and ref supplies\n");
+>  
+> -	if (ref) {
+> -		ret = regulator_enable(ref);
+> -		if (ret)
+> -			return dev_err_probe(dev, ret,
+> -					     "failed to enable REF supply\n");
 > -
-> -	ret = regulator_enable(st->avdd);
-> -	if (ret) {
-> -		dev_err(&spi->dev, "Failed to enable specified AVdd supply\n");
-> -		return ret;
-> +		avdd_mv = 0;
-> +	} else if (ret < 0) {
-> +		return dev_err_probe(&spi->dev, ret, "Failed to get AVDD voltage\n");
-> +	} else {
-> +		avdd_mv = ret / MILLI;
->  	}
->  
-> -	ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->avdd);
-> -	if (ret)
-> -		return ret;
->  
->  	ret = devm_regulator_get_enable(&spi->dev, "dvdd");
->  	if (ret)
->  		return dev_err_probe(&spi->dev, ret, "Failed to enable specified DVdd supply\n");
->  
-> -	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
-> -	if (IS_ERR(st->vref)) {
-> -		if (PTR_ERR(st->vref) != -ENODEV)
-> -			return PTR_ERR(st->vref);
-> -
-> -		ret = regulator_get_voltage(st->avdd);
-> -		if (ret < 0)
-> -			return dev_err_probe(&spi->dev, ret,
-> -					     "Device tree error, AVdd voltage undefined\n");
-> +	/*
-> +	 * This is either REFIN1 or REFIN2 depending on adi,refin2-pins-enable.
-> +	 * If this supply is not present, fall back to AVDD as reference.
-> +	 */
-> +	ret = devm_regulator_get_enable_read_voltage(&spi->dev, "vref");
-> +	if (ret == -ENODEV) {
-> +		if (avdd_mv == 0)
-> +			return dev_err_probe(&spi->dev, -ENODEV,
-> +					     "No reference voltage available\n");
-> +
-> +		st->int_vref_mv = avdd_mv;
-> +	} else if (ret < 0) {
-> +		return ret;
->  	} else {
-> -		ret = regulator_enable(st->vref);
-> -		if (ret) {
-> -			dev_err(&spi->dev, "Failed to enable specified Vref supply\n");
-> -			return ret;
-> -		}
-> -
-> -		ret = devm_add_action_or_reset(&spi->dev, ad7192_reg_disable, st->vref);
+> -		ret = devm_add_action_or_reset(dev, ad7944_ref_disable, ref);
 > -		if (ret)
 > -			return ret;
 > -
-> -		ret = regulator_get_voltage(st->vref);
+> -		ret = regulator_get_voltage(ref);
 > -		if (ret < 0)
-> -			return dev_err_probe(&spi->dev, ret,
-> -					     "Device tree error, Vref voltage undefined\n");
-> +		st->int_vref_mv = ret / MILLI;
->  	}
-> -	st->int_vref_mv = ret / 1000;
+> -			return dev_err_probe(dev, ret,
+> -					     "failed to get REF voltage\n");
+> -
+> -		/* external reference */
+> -		adc->ref_mv = ret / 1000;
+> -	} else {
+> -		/* internal reference */
+> +	if (ref_mv)
+> +		adc->ref_mv = ref_mv;
+> +	else
+>  		adc->ref_mv = AD7944_INTERNAL_REF_MV;
+> -	}
 >  
->  	st->chip_info = spi_get_device_match_data(spi);
->  	indio_dev->name = st->chip_info->name;
+>  	adc->cnv = devm_gpiod_get_optional(dev, "cnv", GPIOD_OUT_LOW);
+>  	if (IS_ERR(adc->cnv))
 > 
 
 

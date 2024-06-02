@@ -1,83 +1,84 @@
-Return-Path: <linux-iio+bounces-5653-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5654-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A77E8D779E
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 21:40:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092D28D77AA
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 21:53:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 128151C20898
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 19:40:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D3A31F21540
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 19:53:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3856F301;
-	Sun,  2 Jun 2024 19:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37757745EF;
+	Sun,  2 Jun 2024 19:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W0jctvoX"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ACFuN8xF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6003262B6;
-	Sun,  2 Jun 2024 19:40:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6985B74418;
+	Sun,  2 Jun 2024 19:53:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717357248; cv=none; b=qLqOc9i1zOyrZt9NhE0eUPna1dxT6umwUFTrVS2HGMEn49N6rNujdnzWByPVJAEQDXUkEtqiD3ysyvt9Be+Webjhh70Nw1Y+TOebV9Z4KD7xYXaOWiTot8NEXPeDDbhPiap6rmFCyhrR8gPUiF3WUyPgBQPmAJK3kyhFriW29kk=
+	t=1717358003; cv=none; b=iGfgY0EABkXbmUjG/6oB8LcDNL7MFNYIx2xRtTDo410kIO+2F310yC/351ctxcPdzRrIAdlpa7ZG8TURlcvBA9YQdsPyXAM7SbHnTybCwYCm5dY28oyiTY2uFQpK1SFBlAdPsmR5yQAOMNPq2f3Fek9MwK8JmMiVOiaNdHnXKqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717357248; c=relaxed/simple;
-	bh=B2VgIlsViZs57tj2fSDvldLthYxPZ8KkrbbuQ7SvQ9U=;
+	s=arc-20240116; t=1717358003; c=relaxed/simple;
+	bh=CYY5A6G/VL2aE4c33pLR5Q4/47P7mhJn6prtJvanTdQ=;
 	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZxwfbLjs4g7rA7Jf2nIDlrOJkdHQg7g6JZSF3VS4ogFCZoPSB6WGZurwfhqNv5L4dQIUqnhIuX4D8L4ucEUelr9nlSpphyWfvBFRzUYAecOCn4z+jVh/+ye6DItU4UkTCQ4DN9SFdxeSd1Kq2t8Msn0/Gqdky7xF5eKdA9IBjqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W0jctvoX; arc=none smtp.client-ip=209.85.167.48
+	 Content-Type:Content-Disposition:In-Reply-To; b=k8vdg0BHXYE82vST+u2vMS5YbQHQoeqDLV/hgC2H7wgWm39UG8YKyJ8cpBOJw/IKinIFiECjM64PZ8r7lywFUw5RbLaEYOnBwc3jt86hx6iNBzZAbVCMH67/zizqgrDfV3c4uWkTSeDH/lXbzcVYw2cDB9bZNRCigMTJnDRfWnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ACFuN8xF; arc=none smtp.client-ip=209.85.208.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52b936c958dso1342105e87.0;
-        Sun, 02 Jun 2024 12:40:46 -0700 (PDT)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-57a4ea8058bso1176122a12.1;
+        Sun, 02 Jun 2024 12:53:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717357245; x=1717962045; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717357999; x=1717962799; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YZQ5jW+8VG+i6oC3GccbqmhN/bn0o76pBkEl22tOlts=;
-        b=W0jctvoXGKnv4UxHhEUSIxPrA+EbDtG8QDTTInryfyxt6sv82pMoJcGzjobr1mWEyB
-         AQI3a3tNHVQy8viR0fgUpXkSfG22BBNAbdjeYQ+sxe93uRLs9PJ2VixiR1irtzGkRMLe
-         t8NdRoMIrwXNWVptK3gDXNXM9nLN7Fjs7SPOXVFI4Vx9150beBlyUQp3vADPm6FDjhMZ
-         yJ+WwNnNSk6fS0AxLM7FWVMGKJsjLtiKj3ohMkIIBZxS66bcAMH3Awxq+PHz2RzIWaDG
-         CNo/VTuuXxbOF9Y9z681no1XJVmdR8B2d+VFw5RTvXzLBEmztpRSK3VPbNw363iCvhTx
-         Uq9Q==
+        bh=zywBRIwHMJzG8+KsIh69OEutro3/6BBZ2kza9TwS0IE=;
+        b=ACFuN8xF0Lqo7bxqO13+qNUPvvTIMXRz2DuCyT9y7CHiDR9jIsmL4mNVpaWaj0fN6S
+         O/parfTlPNxlZFSnWNBIgFk2mya6VesuxpxUeaosQ7U0vNDeHdXQi/aYoo5/aRAHupJl
+         dkZSdMmArAuGZ/4UEYp3DsGZ76uQhZ7qd5DCsMHXzj7w8QCuvoRoE6x+a02cwmIBJGsW
+         tQvfUu/caVkFPHDJAQOinkT3d23lM12VKDT2qFA21iYo525Nte3Ah6GmNDQ4e4mx5Tsn
+         ZwDufO1TDnDxZQnC/q+ana8RsZvgwmTlk6isIBFdjivcRzcu7cFPP57nwkr20WLKrByg
+         MvxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717357245; x=1717962045;
+        d=1e100.net; s=20230601; t=1717357999; x=1717962799;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YZQ5jW+8VG+i6oC3GccbqmhN/bn0o76pBkEl22tOlts=;
-        b=SmxFMDy318MLJ1mg47/axNY5R9fOSlal+NECbA5M25bTVamxhNtnkjFrGf4+MXvUE4
-         dmKiEZ4CrudE3bPb+x8Fu7mslyLALF5Z5TzBsLHhJCWU9LYggKATfiijALJKVk2ZPUGr
-         jLtRyWyxKGjjxSvMcwI0YDhfJAYBWE2XlN0Np/Y8y8lny7LISiBcC/8yiimUpXJIwTa+
-         X3+3xzaH9Wxz5P/LED3BSWVQEzdXPLCPDIrIT3UAXju7T2Ou2DO/g9ESneuwfTCMVoDQ
-         m/vNO/ODMbfO1Udyb8mpFpbzIL/2OL3iIBo2GdXawZV9O32XvyVA0cZlHVGtMNg1BG3x
-         pDcg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPDSJapERKiByGz+9IsoKMGo3/kWkyvU0YMBEX1G6w7SeHJ3GdKDzfoXfAyk5JZ5wbRxeLJIfJACPWqaWTdGFklnMcC9TPo2cnZUXPAKhutb6f5HiDDO+fb15fUWQs5KxU+ovtvsjo
-X-Gm-Message-State: AOJu0YzkevBDWj9wTritdRziAGkz1tHl0wJM5Ai2/BC69FP+05IJJhsr
-	w/Wfey+YpNp7s6UUSIrrr/eu04gP2tkxhGHJ+9dczR+fzaOzcNdfSe0QFg==
-X-Google-Smtp-Source: AGHT+IElXkeLv81Nw6DWcSG9OurBo8XlxP703RRwvH95i36c4ia2xxVDsJ13/Jp2bO9oCS7cvXKVcg==
-X-Received: by 2002:ac2:47e4:0:b0:529:b717:2a14 with SMTP id 2adb3069b0e04-52b8955c254mr4509420e87.14.1717357244639;
-        Sun, 02 Jun 2024 12:40:44 -0700 (PDT)
+        bh=zywBRIwHMJzG8+KsIh69OEutro3/6BBZ2kza9TwS0IE=;
+        b=mF5NUK214AxgPns9Dtci10pc2L5KabvK5C6J8IN8+oCOQt+ShpXUC1On5XK6caUofE
+         p3hevnBvI7xFIj4Mdf3rWRIbbcqvRbMBGQ7uT0EJDh43BPQX+WLJrLF2nJ9Y7FlHVC6A
+         rNQKtI/NHu7gb4rq28uCqX9XdTvLnJQC6bw0YHMGYM0yYnaMYU83IAC/mPpVpQi7QmAe
+         CiWOcSRn+fuRXukMT/oF5Gz3hBuM1MjHFVNwM8eNwhK6NBfnaCS787iWrC4mUNfWpDmm
+         uGMJnoEY1m0C0ZSMODlIpMEAke9nIv8q9v0UAyt+hrajgZXu6D1RiGW/tcJ8dAs2R1lz
+         +bZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVDx3OMr+QXTnyx5lPv8Z812CzbTL3GSRp5i49Cei+du9VeX05EZ8kM2JPWBYPauz8GmNIgpNzwLV2hHrMGpnpYP6c0HQr3xEjVUkg5oCzhmIWRi+5YHSTM8wl1FdlkkbM6Dv23Oc3k
+X-Gm-Message-State: AOJu0YyL2MZkJSGeEDZgQnwaRybGDsh9Sp/hrqfk5nARXCPzw/lIrS6x
+	u4DAjD2m0t+L2XPGRUa/TXAvMvmNN0C8CJ/v960zUvixma2FuR6u
+X-Google-Smtp-Source: AGHT+IHbDlzUD3w+gowcZ+M0aHXNmsSVRDhE2nSzStxg/VMqtj/sJw15jeedIMZ//DrBOP9ILTdVjw==
+X-Received: by 2002:a50:ab03:0:b0:572:4702:2227 with SMTP id 4fb4d7f45d1cf-57a36450a5bmr4741579a12.35.1717357999483;
+        Sun, 02 Jun 2024 12:53:19 -0700 (PDT)
 Received: from vamoiridPC ([2a04:ee41:82:7577:add1:b1ad:7182:3e90])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a68cbb64834sm193225866b.1.2024.06.02.12.40.43
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57a5ef86458sm922814a12.78.2024.06.02.12.53.18
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Jun 2024 12:40:44 -0700 (PDT)
+        Sun, 02 Jun 2024 12:53:19 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Sun, 2 Jun 2024 21:40:42 +0200
+Date: Sun, 2 Jun 2024 21:53:17 +0200
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
 	himanshujha199640@gmail.com, linux-iio@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 14/17] iio: chemical: bme680: Modify startup procedure
-Message-ID: <20240602194042.GF387181@vamoiridPC>
+Subject: Re: [PATCH v1 17/17] iio: chemical: bme680: Refactorize reading
+ functions
+Message-ID: <20240602195317.GG387181@vamoiridPC>
 References: <20240527183805.311501-1-vassilisamir@gmail.com>
- <20240527183805.311501-15-vassilisamir@gmail.com>
- <20240602140123.3dd1b793@jic23-huawei>
+ <20240527183805.311501-18-vassilisamir@gmail.com>
+ <20240602140405.7d6a71d0@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -86,144 +87,53 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240602140123.3dd1b793@jic23-huawei>
+In-Reply-To: <20240602140405.7d6a71d0@jic23-huawei>
 
-On Sun, Jun 02, 2024 at 02:01:23PM +0100, Jonathan Cameron wrote:
-> On Mon, 27 May 2024 20:38:02 +0200
+On Sun, Jun 02, 2024 at 02:04:05PM +0100, Jonathan Cameron wrote:
+> On Mon, 27 May 2024 20:38:05 +0200
 > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 > 
-> > Modify the startup procedure to reflect the procedure of
-> > the Bosch BME68x Sensor API. The initial readings and
-> > configuration of the sensor need to happen in the
-> > following order:
+> > The reading of the pressure and humidity value, requires an update
+> > of the t_fine variable which happens by reading the temperature
+> > value.
 > > 
-> > 1) Read calibration data [1,2]
-> > 2) Chip general configuration [3]
-> > 3) Gas configuration [4]
+> > So the bme680_read_{press/humid}() functions of the above sensors
+> > are internally calling the equivalent bme680_read_temp() function
+> > in order to update the t_fine value. By just looking at the code
+> > this relation is a bit hidden and is not easy to understand why
+> > those channels are not independent.
 > > 
-> > After the chip configuration it is necessary to ensure that
-> > the sensor is in sleeping mode, in order to apply the gas
-> > configuration settings [5].
+> > This commit tries to clear these thing a bit by splitting the
+> > bme680_{read/compensate}_{temp/press/humid}() to the following:
 > > 
-> > Also, after the soft reset, it is advised to wait for 5ms [6].
+> > i. bme680_read_{temp/press/humid}_adc(): read the raw value from
+> > the sensor.
 > > 
-> > [1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L162
-> > [2]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/examples/forced_mode/forced_mode.c#L44
-> > [3]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/examples/forced_mode/forced_mode.c#L53
-> > [4]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/examples/forced_mode/forced_mode.c#L60
-> > [5]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L640
-> > [6]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L294
+> > ii. bme680_calc_t_fine(): calculate the t_fine variable.
+> > 
+> > iii. bme680_get_t_fine(): get the t_fine variable.
+> > 
+> > iv. bme680_compensate_{temp/press/humid}(): compensate the adc
+> > values and return the calculated value.
+> > 
+> > v. bme680_read_{temp/press/humid}(): combine calls of the
+> > aforementioned functions to return the requested value.
+> > 
 > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> > ---
-> >  drivers/iio/chemical/bme680.h      |  2 ++
-> >  drivers/iio/chemical/bme680_core.c | 27 ++++++++++++++++++---------
-> >  2 files changed, 20 insertions(+), 9 deletions(-)
-> > 
-> > diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
-> > index 17ea59253923..3be2f76a5bfb 100644
-> > --- a/drivers/iio/chemical/bme680.h
-> > +++ b/drivers/iio/chemical/bme680.h
-> > @@ -61,6 +61,8 @@
-> >  
-> >  #define BME680_MEAS_TRIM_MASK			GENMASK(24, 4)
-> >  
-> > +#define BME680_STARTUP_TIME_US			5000
-> > +
-> >  /* Calibration Parameters */
-> >  #define BME680_T2_LSB_REG	0x8A
-> >  #define BME680_H2_MSB_REG	0xE1
-> > diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-> > index b055eeee8f1c..afaa43ec3241 100644
-> > --- a/drivers/iio/chemical/bme680_core.c
-> > +++ b/drivers/iio/chemical/bme680_core.c
-> > @@ -505,10 +505,12 @@ static int bme680_chip_config(struct bme680_data *data)
-> >  	ret = regmap_write_bits(data->regmap, BME680_REG_CTRL_MEAS,
-> >  				BME680_OSRS_TEMP_MASK | BME680_OSRS_PRESS_MASK,
-> >  				osrs);
-> > -	if (ret < 0)
-> > +	if (ret < 0) {
-> >  		dev_err(dev, "failed to write ctrl_meas register\n");
-> > +		return ret;
-> > +	}
-> >  
-> > -	return ret;
-> > +	return 0;
-> >  }
+> This and patches I didn't comment on (1-3, 6-9, 12, 15-17)
+> all look good to me. 
 > 
-> I think this is an unrelated change so if you want to do this - different patch.
+> Thanks,
 > 
+> Jonathan
 
-Well, it is not completely unrelated. This function is only doing regmap_reads() 
-and after every regmap in case of error it returns in the if statement that exists
-after the regmap_read(). In the last check though, instead of exiting inside the if
-statement it just sends a dev_err() message, exits the if() and then exits from
-the last return. Functionality is the same, it is just not consistent. But I could
-split it in 2 commits, no problem!
+Hi Jonathan,
 
-> >  
-> >  static int bme680_gas_config(struct bme680_data *data)
-> > @@ -517,6 +519,11 @@ static int bme680_gas_config(struct bme680_data *data)
-> >  	int ret;
-> >  	u8 heatr_res, heatr_dur;
-> >  
-> > +	/* Go to sleep */
-> > +	ret = bme680_set_mode(data, false);
-> > +	if (ret < 0)
-> > +		return ret;
-> > +
-> >  	heatr_res = bme680_calc_heater_res(data, data->heater_temp);
-> >  
-> >  	/* set target heater temperature */
-> > @@ -847,6 +854,8 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
-> >  		return ret;
-> >  	}
-> >  
-> > +	usleep_range(BME680_STARTUP_TIME_US, BME680_STARTUP_TIME_US + 1000);
-> > +
-> >  	ret = regmap_read(regmap, BME680_REG_CHIP_ID, &data->check);
-> >  	if (ret < 0) {
-> >  		dev_err(dev, "Error reading chip ID\n");
-> > @@ -859,22 +868,22 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
-> >  		return -ENODEV;
-> >  	}
-> >  
-> > -	ret = bme680_chip_config(data);
-> > +	ret = bme680_read_calib(data, &data->bme680);
-> >  	if (ret < 0) {
-> > -		dev_err(dev, "failed to set chip_config data\n");
-> > +		dev_err(dev,
-> > +			"failed to read calibration coefficients at probe\n");
-> >  		return ret;
-> 
-> Maybe you have it in a later patch (it definitely wants to be a different patch from
-> this one as different issue), but feels like a bunch of places where
-> dev_err_probe() would be good.
-> 
-
-Well, since they are in the probe function I guess I could also change those to
-dev_err_probe() in a separate commit.
+Thank you very much for the quick and thorough review, it is
+always extremely helpful. I will check a bit more on the
+alignment thing internally in the I2C and SPI busses and I
+will wait for your answer as well.
 
 Cheers,
 Vasilis
-
-> >  	}
-> >  
-> > -	ret = bme680_gas_config(data);
-> > +	ret = bme680_chip_config(data);
-> >  	if (ret < 0) {
-> > -		dev_err(dev, "failed to set gas config data\n");
-> > +		dev_err(dev, "failed to set chip_config data\n");
-> >  		return ret;
-> >  	}
-> >  
-> > -	ret = bme680_read_calib(data, &data->bme680);
-> > +	ret = bme680_gas_config(data);
-> >  	if (ret < 0) {
-> > -		dev_err(dev,
-> > -			"failed to read calibration coefficients at probe\n");
-> > +		dev_err(dev, "failed to set gas config data\n");
-> >  		return ret;
-> >  	}
-> >  
-> 
 

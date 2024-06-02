@@ -1,55 +1,67 @@
-Return-Path: <linux-iio+bounces-5627-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5628-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0678D7594
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 15:09:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E89FA8D759F
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 15:13:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CE141C20A0D
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 13:09:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E5E81F226A2
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 13:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB453B290;
-	Sun,  2 Jun 2024 13:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2163B290;
+	Sun,  2 Jun 2024 13:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FKVNc7ZT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g24qRkMf"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F31F710795
-	for <linux-iio@vger.kernel.org>; Sun,  2 Jun 2024 13:09:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8689A10795;
+	Sun,  2 Jun 2024 13:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717333792; cv=none; b=BwfZL5ztAW9w+ocgd7lC7vkyeuoRnIwF8eh+UiHGVlttK0bK/tptSAumia4QOyZxiUypYocHgzCMTMt+4lWQL5T7bx3CB+znAEJWeU3GeN0MB/vup5UksHymoTYHHhFnQfGLbMIAc1rz2pUCSr+0qvWJIlULqiqtTcudqK/m/MQ=
+	t=1717334030; cv=none; b=D748Fl1sVzohPj0y/Dar8Kt7/KyZCwqee39r0/X5hglT3ncZ8EbKeOyIM5uCdF1pRFng/8TKyAvdD5X2NNuQD9KqFkVPKck7CqLBJ5ZPSDO8cGfo9LDWdYx/x5zJgQQNXQD8Gbp6Dg6+RfQVg7wTmJ2EflXIVGIqzjroXWunG98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717333792; c=relaxed/simple;
-	bh=DEunoZQBJ8yC3YMZm9/UhJ6uKsGdwcLVKdSFeuN7ql0=;
+	s=arc-20240116; t=1717334030; c=relaxed/simple;
+	bh=lZGeyfIPOcjTH+eN+euPWWYIihGXtb+GDNdOkqg2EXQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rjnRh6b3FJ+Pa0vWWqVXVgrMTQ9pSs4B5DgLYpvvl5m/kf0NiGcnLaWlrR/1tHkJBH1eS9rN2trjQI/AefT7OjeBudLD/xpomTKkmdIC+JwrcDwKeQ2R2VHj8GDagKzAQMbvk4aw1PfL1tYGwvCU/ASSnQ9ij1JthahBxPDFQek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FKVNc7ZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A18C2BBFC;
-	Sun,  2 Jun 2024 13:09:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AFT7SHDioAnybZkQnu5PtAVHs/BKw61HOnsD5pvf1GVHVyJVKT16vOMBbbzk8gZhBPDuNDBwvrGSA83PQnXn7cokXmf9Ry3qbeyUBUmoNG3tO+qTAzqeUNF+vVQWOLWCkjBDAtBvqCND1FSUy1VuUxTNLtLSGV4zLQhhTCfEXj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g24qRkMf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE45AC2BBFC;
+	Sun,  2 Jun 2024 13:13:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717333791;
-	bh=DEunoZQBJ8yC3YMZm9/UhJ6uKsGdwcLVKdSFeuN7ql0=;
+	s=k20201202; t=1717334030;
+	bh=lZGeyfIPOcjTH+eN+euPWWYIihGXtb+GDNdOkqg2EXQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=FKVNc7ZTpTQO+MzwwYtW42CihF9Bemzw4V/TBKkAX1ikoQ2jvjTYCQnEnP+XvbD8+
-	 X8wO03uPqXBTyRYHpdxp/eTj9lYtndoUp81eparWkH8siqLpW2taoneu4Kvop8QA8B
-	 pXK5EFHGQ2APoaDPmnuhSv/3T6b1Knbxck5y4PQ9soaiBXMG4dSulhJnEa4bq+YvYi
-	 4ysb4dXtbj0jIvxY7/SMuituBUoBXwed5rsmG2AMoOXoaWtigoMc24yPO564sTGwuD
-	 gR0Di7VbWalWx3LMKoGHIIyly5amWK9FqLL+i1gta7yPVuiYyuBszXZF3RStIef2ZU
-	 WAZNRSkcDqKkg==
-Date: Sun, 2 Jun 2024 14:09:40 +0100
+	b=g24qRkMfvxfxMbwvpocfJeZJ3m2p22KR4S5JWCRhx54IFZi/YFI5I6nI3wFa6UeyA
+	 UY3cX9/dGZ12CP8zfrdIpchQPDnbFvZ6szdmC27seB1daT/iYPFqsA9InEwcazuett
+	 WceTjhe7wUMCI3NDOEscBLkmTdRfxf25sL7otMDfrdWbcRkIqHCai85EAtgQYftKjO
+	 HECyd+VUhpWf/efcJv+7LY999dJqdPTM/bcjF6su0aii/s3KxGVXLKhtQc0MyfYjXn
+	 sIHX5dQxO0XkCW2TiZkpc/bucaTWajsF68/NJmcuKR8lNFhVgUO0XezNkKLIJnuNhB
+	 SmMAS2djsvz6A==
+Date: Sun, 2 Jun 2024 14:13:36 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Gustavo Ueti Fukunaga <gustavofukunaga@usp.br>
-Cc: caiodantas@usp.br, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: adc: ti-adc161s626: make use of
- iio_device_claim_direct_scoped()
-Message-ID: <20240602140940.7dc4fe94@jic23-huawei>
-In-Reply-To: <20240527091942.53616-1-gustavofukunaga@usp.br>
-References: <20240527091942.53616-1-gustavofukunaga@usp.br>
+To: "Paller, Kim Seer" <KimSeer.Paller@analog.com>
+Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>, David Lechner
+ <dlechner@baylibre.com>, Lars-Peter Clausen <lars@metafoo.de>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, Dimitri
+ Fedrau <dima.fedrau@gmail.com>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+ "Hennerich, Michael" <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <noname.nuno@gmail.com>
+Subject: Re: [PATCH v2 5/5] iio: dac: ltc2664: Add driver for LTC2664 and
+ LTC2672
+Message-ID: <20240602141336.202a8194@jic23-huawei>
+In-Reply-To: <PH0PR03MB71413F8B4F8CF840E4AA6879F9F12@PH0PR03MB7141.namprd03.prod.outlook.com>
+References: <20240523031909.19427-1-kimseer.paller@analog.com>
+	<20240523031909.19427-6-kimseer.paller@analog.com>
+	<20240523180210.00006b84@Huawei.com>
+	<PH0PR03MB71413F8B4F8CF840E4AA6879F9F12@PH0PR03MB7141.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,56 +72,159 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 27 May 2024 06:19:40 -0300
-Gustavo Ueti Fukunaga <gustavofukunaga@usp.br> wrote:
+On Tue, 28 May 2024 05:53:11 +0000
+"Paller, Kim Seer" <KimSeer.Paller@analog.com> wrote:
 
-> Make use of iio_device_claim_direct_scoped() to make error handling more
-> natural and simplify code.
+> > -----Original Message-----
+> > From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+> > Sent: Friday, May 24, 2024 1:02 AM
+> > To: Paller, Kim Seer <KimSeer.Paller@analog.com>
+> > Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org;
+> > devicetree@vger.kernel.org; Jonathan Cameron <jic23@kernel.org>; David
+> > Lechner <dlechner@baylibre.com>; Lars-Peter Clausen <lars@metafoo.de>;
+> > Liam Girdwood <lgirdwood@gmail.com>; Mark Brown <broonie@kernel.org>;
+> > Dimitri Fedrau <dima.fedrau@gmail.com>; Krzysztof Kozlowski
+> > <krzk+dt@kernel.org>; Rob Herring <robh@kernel.org>; Conor Dooley
+> > <conor+dt@kernel.org>; Hennerich, Michael
+> > <Michael.Hennerich@analog.com>; Nuno S=C3=A1 <noname.nuno@gmail.com>
+> > Subject: Re: [PATCH v2 5/5] iio: dac: ltc2664: Add driver for LTC2664 a=
+nd
+> > LTC2672
+> >=20
+> > [External]
+> >=20
+> > On Thu, 23 May 2024 11:19:09 +0800
+> > Kim Seer Paller <kimseer.paller@analog.com> wrote:
+> >  =20
+> > > LTC2664 4 channel, 16 bit Voltage Output SoftSpan DAC
+> > > LTC2672 5 channel, 16 bit Current Output Softspan DAC
+> > >
+> > > Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
+> > > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> > > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com> =20
+> > Hi Kim,
+> >=20
+> > A few minor things inline,
+> >=20
+> > Jonathan
+> >  =20
+> > > diff --git a/drivers/iio/dac/ltc2664.c b/drivers/iio/dac/ltc2664.c
+> > > new file mode 100644
+> > > index 000000000000..488b841e6c66
+> > > --- /dev/null
+> > > +++ b/drivers/iio/dac/ltc2664.c
+> > > @@ -0,0 +1,802 @@ =20
+> >=20
+> >  =20
+> > > +static int ltc2664_set_span(const struct ltc2664_state *st, int min,=
+ int max,
+> > > +			    int chan)
+> > > +{
+> > > +	const struct ltc2664_chip_info *chip_info =3D st->chip_info;
+> > > +	const int (*span_helper)[2] =3D chip_info->span_helper;
+> > > +	int span, ret;
+> > > +
+> > > +	st->iio_channels[chan].type =3D chip_info->measurement_type;
+> > > +
+> > > +	for (span =3D 0; span < chip_info->num_span; span++) {
+> > > +		if (min =3D=3D span_helper[span][0] && max =3D=3D =20
+> > span_helper[span][1]) =20
+> > > +			break;
+> > > +	} =20
+> >=20
+> > Sanity check for no match?
+> >  =20
+> > > +
+> > > +	ret =3D regmap_write(st->regmap, LTC2664_CMD_SPAN_N(chan),
+> > > +			   (chip_info->id =3D=3D LTC2672) ? span + 1 : span);
+> > > +	if (ret)
+> > > +		return ret;
+> > > +
+> > > +	return span;
+> > > +}
+> > > +
+> > > +static int ltc2664_channel_config(struct ltc2664_state *st)
+> > > +{
+> > > +	const struct ltc2664_chip_info *chip_info =3D st->chip_info;
+> > > +	struct device *dev =3D &st->spi->dev;
+> > > +	u32 reg, tmp[2], mspan;
+> > > +	int ret, span;
+> > > +
+> > > +	mspan =3D LTC2664_MSPAN_SOFTSPAN;
+> > > +	ret =3D device_property_read_u32(dev, "adi,manual-span-operation- =
+=20
+> > config", =20
+> > > +				       &mspan);
+> > > +	if (!ret) {
+> > > +		if (!chip_info->manual_span_support)
+> > > +			return dev_err_probe(dev, -EINVAL,
+> > > +			       "adi,manual-span-operation-config not =20
+> > supported\n"); =20
+> > > +
+> > > +		if (mspan > ARRAY_SIZE(ltc2664_mspan_lut))
+> > > +			return dev_err_probe(dev, -EINVAL,
+> > > +			       "adi,manual-span-operation-config not in =20
+> > range\n"); =20
+> > > +	}
+> > > +
+> > > +	st->rfsadj =3D 20000;
+> > > +	ret =3D device_property_read_u32(dev, "adi,rfsadj-ohms", &st->rfsad=
+j);
+> > > +	if (!ret) {
+> > > +		if (!chip_info->rfsadj_support)
+> > > +			return dev_err_probe(dev, -EINVAL,
+> > > +					     "adi,rfsadj-ohms not supported\n");
+> > > +
+> > > +		if (st->rfsadj < 19000 || st->rfsadj > 41000)
+> > > +			return dev_err_probe(dev, -EINVAL,
+> > > +					     "adi,rfsadj-ohms not in range\n");
+> > > +	}
+> > > +
+> > > +	device_for_each_child_node_scoped(dev, child) {
+> > > +		struct ltc2664_chan *chan;
+> > > +
+> > > +		ret =3D fwnode_property_read_u32(child, "reg", &reg);
+> > > +		if (ret)
+> > > +			return dev_err_probe(dev, ret,
+> > > +					     "Failed to get reg property\n");
+> > > +
+> > > +		if (reg >=3D chip_info->num_channels)
+> > > +			return dev_err_probe(dev, -EINVAL,
+> > > +					     "reg bigger than: %d\n",
+> > > +					     chip_info->num_channels);
+> > > +
+> > > +		chan =3D &st->channels[reg];
+> > > +
+> > > +		if (fwnode_property_read_bool(child, "adi,toggle-mode")) {
+> > > +			chan->toggle_chan =3D true;
+> > > +			/* assume sw toggle ABI */
+> > > +			st->iio_channels[reg].ext_info =3D =20
+> > ltc2664_toggle_sym_ext_info;
+> >=20
+> > chan->ext_info =3D ... =20
 >=20
-> Co-developed-by: Caio Dantas Sim=C3=A3o Ug=C3=AAda <caiodantas@usp.br>
-> Signed-off-by: Caio Dantas Sim=C3=A3o Ug=C3=AAda <caiodantas@usp.br>
-> Signed-off-by: Gustavo Ueti Fukunaga <gustavofukunaga@usp.br>
-Applied to the togreg branch of iio.git and initially pushed out as testing
-for 0-day to poke at it and see what we missed.
+> Hi Jonathan,=20
+>=20
+> I noticed that the struct ltc2664_chan does not currently have an ext_inf=
+o field.
+> Based on your comment, I'm considering adding this field to the structure=
+ yet=20
+> I'd like to understand how this would interact with the iio_chan_spec. I'=
+d see this
+> by adding 'st->iio_channels[reg].ext_info =3D chan->ext_info' after that.=
+ Is that right
+> approach? I'd appreciate more details on how you picture this. Thanks
+Ah.  Was a misread on my part.  I confused channels and iio_channels.
+Ignore that comment.
 
-Thanks,
+Sorry for the waste of time!
 
 Jonathan
 
-> ---
->  drivers/iio/adc/ti-adc161s626.c | 18 +++++++-----------
->  1 file changed, 7 insertions(+), 11 deletions(-)
 >=20
-> diff --git a/drivers/iio/adc/ti-adc161s626.c b/drivers/iio/adc/ti-adc161s=
-626.c
-> index b789891dc..f7c78d0dd 100644
-> --- a/drivers/iio/adc/ti-adc161s626.c
-> +++ b/drivers/iio/adc/ti-adc161s626.c
-> @@ -137,17 +137,13 @@ static int ti_adc_read_raw(struct iio_dev *indio_de=
-v,
-> =20
->  	switch (mask) {
->  	case IIO_CHAN_INFO_RAW:
-> -		ret =3D iio_device_claim_direct_mode(indio_dev);
-> -		if (ret)
-> -			return ret;
-> -
-> -		ret =3D ti_adc_read_measurement(data, chan, val);
-> -		iio_device_release_direct_mode(indio_dev);
-> -
-> -		if (ret)
-> -			return ret;
-> -
-> -		return IIO_VAL_INT;
-> +		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
-> +			ret =3D ti_adc_read_measurement(data, chan, val);
-> +			if (ret)
-> +				return ret;
-> +			return IIO_VAL_INT;
-> +		}
-> +		unreachable();
->  	case IIO_CHAN_INFO_SCALE:
->  		ret =3D regulator_get_voltage(data->ref);
->  		if (ret < 0)
+> Kim
+>=20
+>=20
+>=20
 
 

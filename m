@@ -1,56 +1,59 @@
-Return-Path: <linux-iio+bounces-5612-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5613-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0548D7546
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 14:17:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F4958D7549
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 14:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FE4B1C21045
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 12:17:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4244B21166
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 12:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEFB383A0;
-	Sun,  2 Jun 2024 12:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 255FE38DF2;
+	Sun,  2 Jun 2024 12:19:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fFnTgWkM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/RTfCN3"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2F7D51A;
-	Sun,  2 Jun 2024 12:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7767D51A;
+	Sun,  2 Jun 2024 12:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717330670; cv=none; b=YekazV2PITBujLo0w96VtyU/o4ZkiJS63YDYgenL61uHNKZNErdAJv3TThLs+Iw8HmbHtoFwodD+zAE+VCgQWub82dg3stVX1mLgrmODxWPhbtNPdlrXPYdol7c1ri1+133Zv705sQ8lwS8vkCWu8tlZp2NeHspiU5tpiUZH95U=
+	t=1717330790; cv=none; b=Fxu5Rdx0e9KcJpH1A42nqMy+MxLlkNaLeIrfn0Wskd6lsSBK/iBw9We5cV0VsrU3QKfNedtX3paDeUbpkjWng91YMVMZ5OIa0aRBU2yMDFN0txAlyV2Uhbp730W9q/g/VFWp5dT/nqPRWimlSOUVRHhiMLVBE8P8JCr2o8MR8T8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717330670; c=relaxed/simple;
-	bh=HY0My0DLUIeHYUqQsufaZdJw8FEAp9y6Gwj+krEY0Co=;
+	s=arc-20240116; t=1717330790; c=relaxed/simple;
+	bh=CUhHVzSvHrMIHdf8m8dpOjAAiCLEufP7fCHnzeP4xzE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cMox2a7Pi4K0800dAdSAJbjQvOIwCBUhIzm07613s50Xch5Ke1jkQoDlEQl9gd+57t5IJMyINwdMEB2LR5uzldv4gUKzuOBtyo4useUCPp0P0Fw6PRzH3VmNpZr3YbnKGxqXLDjH6N9ZsSaMqNtHQZrAaSSMwdM+aOIdSBSxgI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fFnTgWkM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C9C3C2BBFC;
-	Sun,  2 Jun 2024 12:17:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YHkE8+Kd1D5lbJqSrPtLqqMAOdGdA410bzfBMqjBpYIykoaDPfRCzMM7EpGQjkhfUOrT9l7SkQ61dYogxFe7xnIwvDsoduP7r6ckzKpEMb0ibZIbQx9k8Vj4mIFMhze1grjvW+O1alMWqz2QwGI44O3qdz9Ic3d5xFW8LMMlb48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/RTfCN3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50C7C2BBFC;
+	Sun,  2 Jun 2024 12:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717330670;
-	bh=HY0My0DLUIeHYUqQsufaZdJw8FEAp9y6Gwj+krEY0Co=;
+	s=k20201202; t=1717330790;
+	bh=CUhHVzSvHrMIHdf8m8dpOjAAiCLEufP7fCHnzeP4xzE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fFnTgWkMZ8Rki5dLxLA7o+VNqqYip4VhSaL74olZ/yJ85/OAS+nT+4FTqXllcS+Iw
-	 GnXrm2SiVEZAU3R82qUhz0+AMUXfNIhxAQpknfwvGe7pQ1/UXgyDuBk/TymQDLqbWJ
-	 +5nB0CI05neBbc/5zb685UpvR4J1ndBIeSD2OSp1ANeltA/tZQRf8okVXkjPgr7PYs
-	 IdVjbe9jskEz1W64vZDryV2hd26C0KbmxA+YwokUJsqwv2c6A7qToeaF+ubBFYNhzE
-	 yDT5oEq9VXpS0aAqUoo/yrlPWlpG2p5AXqJ0Bgr55yeTnHdXpKBdFzqEldSuRK+1cx
-	 GRADcY5QSBonA==
-Date: Sun, 2 Jun 2024 13:17:38 +0100
+	b=Y/RTfCN3gxv4zBPrBOVXl2NVmi10I9lbK3lqHAQuJ9xZn5LEqsKh8HhqrLOohAat4
+	 njr3SlQLW8N2vQPxKcYWDUelMIRtHHgykhYHO/y4VufIqAMwjaWHtgdyXFcqx20vnK
+	 muoa1kmdbpIrwbrhFw2AdUUAvGIxRlECOeVQq/J8HXDte05BI//6kUd50ClMbjeJhF
+	 CIwTmw3lcv5DhHQC6jHf6HoJcx/YpI6J1vLcCh/9xzaDGZK01KFDtos8L4b57Dvqfm
+	 UOt6YbXySrGk6/PN+LmXeeqS75SXNzpll2IxLd/KsNUGzCF72C6gIXF5hCOVC2vG9r
+	 KC/RGNNe5XF7g==
+Date: Sun, 2 Jun 2024 13:19:39 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Julien Stephan <jstephan@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Nuno Sa <nuno.sa@analog.com>
-Subject: Re: [PATCH v3] driver: iio: add missing checks on iio_info's
- callback access
-Message-ID: <20240602131738.4ad85e85@jic23-huawei>
-In-Reply-To: <20240530-iio-core-fix-segfault-v3-1-8b7cd2a03773@baylibre.com>
-References: <20240530-iio-core-fix-segfault-v3-1-8b7cd2a03773@baylibre.com>
+To: Dumitru Ceclan via B4 Relay
+ <devnull+dumitru.ceclan.analog.com@kernel.org>
+Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Dumitru Ceclan
+ <mitrutzceclan@gmail.com>, David Lechner <dlechner@baylibre.com>
+Subject: Re: [PATCH v3 1/5] iio: adc: ad7173: fix buffers enablement for
+ ad7176-2
+Message-ID: <20240602131939.69e47965@jic23-huawei>
+In-Reply-To: <20240530-ad7173-fixes-v3-1-b85f33079e18@analog.com>
+References: <20240530-ad7173-fixes-v3-0-b85f33079e18@analog.com>
+	<20240530-ad7173-fixes-v3-1-b85f33079e18@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,186 +64,111 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 30 May 2024 11:22:46 +0200
-Julien Stephan <jstephan@baylibre.com> wrote:
+On Thu, 30 May 2024 15:07:49 +0300
+Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
 
-> Some callbacks from iio_info structure are accessed without any check, so
-> if a driver doesn't implement them trying to access the corresponding
-> sysfs entries produce a kernel oops such as:
+> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
 > 
-> [ 2203.527791] Unable to handle kernel NULL pointer dereference at virtual address 00000000 when execute
-> [...]
-> [ 2203.783416] Call trace:
-> [ 2203.783429]  iio_read_channel_info_avail from dev_attr_show+0x18/0x48
-> [ 2203.789807]  dev_attr_show from sysfs_kf_seq_show+0x90/0x120
-> [ 2203.794181]  sysfs_kf_seq_show from seq_read_iter+0xd0/0x4e4
-> [ 2203.798555]  seq_read_iter from vfs_read+0x238/0x2a0
-> [ 2203.802236]  vfs_read from ksys_read+0xa4/0xd4
-> [ 2203.805385]  ksys_read from ret_fast_syscall+0x0/0x54
-> [ 2203.809135] Exception stack(0xe0badfa8 to 0xe0badff0)
-> [ 2203.812880] dfa0:                   00000003 b6f10f80 00000003 b6eab000 00020000 00000000
-> [ 2203.819746] dfc0: 00000003 b6f10f80 7ff00000 00000003 00000003 00000000 00020000 00000000
-> [ 2203.826619] dfe0: b6e1bc88 bed80958 b6e1bc94 b6e1bcb0
-> [ 2203.830363] Code: bad PC value
-> [ 2203.832695] ---[ end trace 0000000000000000 ]---
+> AD7176-2 does not feature input buffers and marks corespondent register
+> bits as read only. Enable buffers only on supported models.
 > 
-> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-> Signed-off-by: Julien Stephan <jstephan@baylibre.com>
-Dropped v2 and picked this one up.  Oops.
+> Fixes: 8eb903272f75 ("iio: adc: ad7173: add AD7173 driver")
+> Reviewed-by: David Lechner <dlechner@baylibre.com>
+> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+I already picked up v2 of patches 1-3 Must have crossed with this.
 
 Jonathan
 
 > ---
-> Changes in v3:
-> - Use local variable in inkern.c to reduce long lines
-> - Pick up Nuno reviewed-by tag
-> - Link to v2: https://lore.kernel.org/r/20240529-iio-core-fix-segfault-v2-1-7b5a5fa6853f@baylibre.com
+>  drivers/iio/adc/ad7173.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
 > 
-> Changes in v2:
-> - crop dmesg log to show only pertinent info and reduce commit message
-> - Link to v1: https://lore.kernel.org/r/20240529-iio-core-fix-segfault-v1-1-7ff1ba881d38@baylibre.com
-> ---
->  drivers/iio/industrialio-core.c  |  7 ++++++-
->  drivers/iio/industrialio-event.c |  9 +++++++++
->  drivers/iio/inkern.c             | 32 ++++++++++++++++++++++----------
->  3 files changed, 37 insertions(+), 11 deletions(-)
+> diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+> index f6d29abe1d04..850574437bda 100644
+> --- a/drivers/iio/adc/ad7173.c
+> +++ b/drivers/iio/adc/ad7173.c
+> @@ -145,6 +145,7 @@ struct ad7173_device_info {
+>  	unsigned int id;
+>  	char *name;
+>  	bool has_temp;
+> +	bool has_input_buf;
+>  	bool has_int_ref;
+>  	bool has_ref2;
+>  	u8 num_gpios;
+> @@ -212,6 +213,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
+>  		.num_configs = 4,
+>  		.num_gpios = 2,
+>  		.has_temp = true,
+> +		.has_input_buf = true,
+>  		.has_int_ref = true,
+>  		.clock = 2 * HZ_PER_MHZ,
+>  		.sinc5_data_rates = ad7173_sinc5_data_rates,
+> @@ -224,6 +226,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
+>  		.num_configs = 8,
+>  		.num_gpios = 4,
+>  		.has_temp = false,
+> +		.has_input_buf = true,
+>  		.has_ref2 = true,
+>  		.clock = 2 * HZ_PER_MHZ,
+>  		.sinc5_data_rates = ad7173_sinc5_data_rates,
+> @@ -237,6 +240,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
+>  		.num_configs = 8,
+>  		.num_gpios = 4,
+>  		.has_temp = true,
+> +		.has_input_buf = true,
+>  		.has_int_ref = true,
+>  		.has_ref2 = true,
+>  		.clock = 2 * HZ_PER_MHZ,
+> @@ -251,6 +255,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
+>  		.num_configs = 4,
+>  		.num_gpios = 2,
+>  		.has_temp = true,
+> +		.has_input_buf = true,
+>  		.has_int_ref = true,
+>  		.clock = 16 * HZ_PER_MHZ,
+>  		.sinc5_data_rates = ad7175_sinc5_data_rates,
+> @@ -263,6 +268,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
+>  		.num_configs = 8,
+>  		.num_gpios = 4,
+>  		.has_temp = true,
+> +		.has_input_buf = true,
+>  		.has_int_ref = true,
+>  		.has_ref2 = true,
+>  		.clock = 16 * HZ_PER_MHZ,
+> @@ -277,6 +283,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
+>  		.num_configs = 4,
+>  		.num_gpios = 2,
+>  		.has_temp = false,
+> +		.has_input_buf = false,
+>  		.has_int_ref = true,
+>  		.clock = 16 * HZ_PER_MHZ,
+>  		.sinc5_data_rates = ad7175_sinc5_data_rates,
+> @@ -289,6 +296,7 @@ static const struct ad7173_device_info ad7173_device_info[] = {
+>  		.num_configs = 4,
+>  		.num_gpios = 2,
+>  		.has_temp = true,
+> +		.has_input_buf = true,
+>  		.has_int_ref = true,
+>  		.clock = 16 * HZ_PER_MHZ,
+>  		.odr_start_value = AD7177_ODR_START_VALUE,
+> @@ -932,7 +940,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+>  			AD7173_CH_ADDRESS(chan_arr[chan_index].channel,
+>  					  chan_arr[chan_index].channel2);
+>  		chan_st_priv->cfg.bipolar = false;
+> -		chan_st_priv->cfg.input_buf = true;
+> +		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+>  		chan_st_priv->cfg.ref_sel = AD7173_SETUP_REF_SEL_INT_REF;
+>  		st->adc_mode |= AD7173_ADC_MODE_REF_EN;
+>  
+> @@ -989,7 +997,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+>  
+>  		chan_st_priv->ain = AD7173_CH_ADDRESS(ain[0], ain[1]);
+>  		chan_st_priv->chan_reg = chan_index;
+> -		chan_st_priv->cfg.input_buf = true;
+> +		chan_st_priv->cfg.input_buf = st->info->has_input_buf;
+>  		chan_st_priv->cfg.odr = 0;
+>  
+>  		chan_st_priv->cfg.bipolar = fwnode_property_read_bool(child, "bipolar");
 > 
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index fa7cc051b4c4..2f185b386949 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -758,9 +758,11 @@ static ssize_t iio_read_channel_info(struct device *dev,
->  							INDIO_MAX_RAW_ELEMENTS,
->  							vals, &val_len,
->  							this_attr->address);
-> -	else
-> +	else if (indio_dev->info->read_raw)
->  		ret = indio_dev->info->read_raw(indio_dev, this_attr->c,
->  				    &vals[0], &vals[1], this_attr->address);
-> +	else
-> +		return -EINVAL;
->  
->  	if (ret < 0)
->  		return ret;
-> @@ -842,6 +844,9 @@ static ssize_t iio_read_channel_info_avail(struct device *dev,
->  	int length;
->  	int type;
->  
-> +	if (!indio_dev->info->read_avail)
-> +		return -EINVAL;
-> +
->  	ret = indio_dev->info->read_avail(indio_dev, this_attr->c,
->  					  &vals, &type, &length,
->  					  this_attr->address);
-> diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
-> index 910c1f14abd5..a64f8fbac597 100644
-> --- a/drivers/iio/industrialio-event.c
-> +++ b/drivers/iio/industrialio-event.c
-> @@ -285,6 +285,9 @@ static ssize_t iio_ev_state_store(struct device *dev,
->  	if (ret < 0)
->  		return ret;
->  
-> +	if (!indio_dev->info->write_event_config)
-> +		return -EINVAL;
-> +
->  	ret = indio_dev->info->write_event_config(indio_dev,
->  		this_attr->c, iio_ev_attr_type(this_attr),
->  		iio_ev_attr_dir(this_attr), val);
-> @@ -300,6 +303,9 @@ static ssize_t iio_ev_state_show(struct device *dev,
->  	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
->  	int val;
->  
-> +	if (!indio_dev->info->read_event_config)
-> +		return -EINVAL;
-> +
->  	val = indio_dev->info->read_event_config(indio_dev,
->  		this_attr->c, iio_ev_attr_type(this_attr),
->  		iio_ev_attr_dir(this_attr));
-> @@ -318,6 +324,9 @@ static ssize_t iio_ev_value_show(struct device *dev,
->  	int val, val2, val_arr[2];
->  	int ret;
->  
-> +	if (!indio_dev->info->read_event_value)
-> +		return -EINVAL;
-> +
->  	ret = indio_dev->info->read_event_value(indio_dev,
->  		this_attr->c, iio_ev_attr_type(this_attr),
->  		iio_ev_attr_dir(this_attr), iio_ev_attr_info(this_attr),
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index 52d773261828..77cf1f22df31 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -543,6 +543,7 @@ EXPORT_SYMBOL_GPL(devm_iio_channel_get_all);
->  static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
->  			    enum iio_chan_info_enum info)
->  {
-> +	const struct iio_info *iio_info = chan->indio_dev->info;
->  	int unused;
->  	int vals[INDIO_MAX_RAW_ELEMENTS];
->  	int ret;
-> @@ -554,15 +555,18 @@ static int iio_channel_read(struct iio_channel *chan, int *val, int *val2,
->  	if (!iio_channel_has_info(chan->channel, info))
->  		return -EINVAL;
->  
-> -	if (chan->indio_dev->info->read_raw_multi) {
-> -		ret = chan->indio_dev->info->read_raw_multi(chan->indio_dev,
-> -					chan->channel, INDIO_MAX_RAW_ELEMENTS,
-> -					vals, &val_len, info);
-> +	if (iio_info->read_raw_multi) {
-> +		ret = iio_info->read_raw_multi(chan->indio_dev,
-> +					       chan->channel,
-> +					       INDIO_MAX_RAW_ELEMENTS,
-> +					       vals, &val_len, info);
->  		*val = vals[0];
->  		*val2 = vals[1];
-> +	} else if (iio_info->read_raw) {
-> +		ret = iio_info->read_raw(chan->indio_dev,
-> +					 chan->channel, val, val2, info);
->  	} else {
-> -		ret = chan->indio_dev->info->read_raw(chan->indio_dev,
-> -					chan->channel, val, val2, info);
-> +		return -EINVAL;
->  	}
->  
->  	return ret;
-> @@ -750,11 +754,15 @@ static int iio_channel_read_avail(struct iio_channel *chan,
->  				  const int **vals, int *type, int *length,
->  				  enum iio_chan_info_enum info)
->  {
-> +	const struct iio_info *iio_info = chan->indio_dev->info;
-> +
->  	if (!iio_channel_has_available(chan->channel, info))
->  		return -EINVAL;
->  
-> -	return chan->indio_dev->info->read_avail(chan->indio_dev, chan->channel,
-> -						 vals, type, length, info);
-> +	if (iio_info->read_avail)
-> +		return iio_info->read_avail(chan->indio_dev, chan->channel,
-> +					    vals, type, length, info);
-> +	return -EINVAL;
->  }
->  
->  int iio_read_avail_channel_attribute(struct iio_channel *chan,
-> @@ -917,8 +925,12 @@ EXPORT_SYMBOL_GPL(iio_get_channel_type);
->  static int iio_channel_write(struct iio_channel *chan, int val, int val2,
->  			     enum iio_chan_info_enum info)
->  {
-> -	return chan->indio_dev->info->write_raw(chan->indio_dev,
-> -						chan->channel, val, val2, info);
-> +	const struct iio_info *iio_info = chan->indio_dev->info;
-> +
-> +	if (iio_info->write_raw)
-> +		return iio_info->write_raw(chan->indio_dev,
-> +					   chan->channel, val, val2, info);
-> +	return -EINVAL;
->  }
->  
->  int iio_write_channel_attribute(struct iio_channel *chan, int val, int val2,
-> 
-> ---
-> base-commit: 409b6d632f5078f3ae1018b6e43c32f2e12f6736
-> change-id: 20240528-iio-core-fix-segfault-aa74be7eee4a
-> 
-> Best regards,
 
 

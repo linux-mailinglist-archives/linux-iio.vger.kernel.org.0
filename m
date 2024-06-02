@@ -1,64 +1,63 @@
-Return-Path: <linux-iio+bounces-5601-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5602-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C79F98D74B8
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 12:12:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15E7F8D74C8
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 12:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D1712822B2
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 10:12:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3261D1C20BFD
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 10:53:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B5752E3E9;
-	Sun,  2 Jun 2024 10:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCE736AF5;
+	Sun,  2 Jun 2024 10:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7Y8XVga"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nECyuJAr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59C62570;
-	Sun,  2 Jun 2024 10:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9780B10A3D;
+	Sun,  2 Jun 2024 10:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717323118; cv=none; b=uD5kiJeBblEwah7ifFfeUc1WUDRSLQBFuX8k7nc+0MxYEPN1HwBAazvl44iK+zWBnKiffNwirZhlxMXe5iQB1NnNsFDXLlgoR/xZJlzNhaSF5M4omPxIi0eOxOn9W9ItU7oNZvOf4dV3zaTGL4DPnk5pfU4lLYSNeJlDrqF2boY=
+	t=1717325615; cv=none; b=KFfoU8SdrXNZUvFqU/cinLQle4wYdnGcr5ScKGteShOrpXoL9Yad9/3XrxBW9cWoOQE17mHPWOMOUuXQGsugRNRJwTlxZNK7PzCBHZ2GEJTIJaxJYEA02MtMxOvPvGrV/GdMillvhFSz0uwmk7PoK0Ivzz9+BDD0MXxx4QCfTQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717323118; c=relaxed/simple;
-	bh=3C7h2gGaFwe/lVnaZ1oOKP+loUwkQ1i5bmocw8U6KR0=;
+	s=arc-20240116; t=1717325615; c=relaxed/simple;
+	bh=bW6JY1oiafd6UKkp+Ffqz2g75+KR0i3bRctrCicrxHM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J0B42gJn+04T2lNAzz9PlrIb3GNC5UHt3CflofbqXe8Z4MwIIDIsvbI9/RJFkrLKjFDYNX/flRa+cS6Jao3nCQkMBccMUJCZGkmC3gZr48HNBQToaN78uGmmzDjhQmkvjbTLLc84J+6nLrttEwa6tA1G68uad6DHLp3jAhOkPvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7Y8XVga; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E38C2BBFC;
-	Sun,  2 Jun 2024 10:11:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KAiqbpqgcrXpJuRFkvJq+9lC/3mWpMoNeDRUkqWQWKZB5I970z9DWyj6krYLZBURuEsWc6c+bU0EZDg+NC731sKDEsCGRiABnFzIj9c60ohsN7gY/LvOS9UpgeMV07Obw+eqEINAPd2CFZnOsGwK/9F6SKUZywpQ5vf8LyuSBxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nECyuJAr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26251C2BBFC;
+	Sun,  2 Jun 2024 10:53:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717323117;
-	bh=3C7h2gGaFwe/lVnaZ1oOKP+loUwkQ1i5bmocw8U6KR0=;
+	s=k20201202; t=1717325615;
+	bh=bW6JY1oiafd6UKkp+Ffqz2g75+KR0i3bRctrCicrxHM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=k7Y8XVga2N1e+qxSmRn0mJ6rc+yQU9KpxnoGFrRMFQOfwJKtAbHTuZqTpLTVISkGh
-	 Jd/o6KGTanomCgomYtQQdUgNjxMcieir4fevBaEEZfC+J9IUAob7eX3QhkP0iTRZdT
-	 3CehY8wgphgp8idLu1rTcwvrnkbJA/iFc17pkbqpnZuqaxdV3erzjV6nVJbUuxZild
-	 v4bvu7eLChn8xncNQi+x51BZqAcxSWHEM02Ik1FyCkwpnOlM5iZjL4zxm32TDTWEgB
-	 1a0FDEp2A7sJDpnKCkKjcEK2YLa7BZScrtMI31CRh0rci5O4QNoEuOoxH4ZOAWnzUH
-	 wKG40uKVFbCQw==
-Date: Sun, 2 Jun 2024 11:11:41 +0100
+	b=nECyuJArQKz38GmyAo4CWVsBxbGS8nWyxPRaqb8bviUu+NNc1bR3MbCZX+1wfUx/a
+	 cwHH1hFteIO9AeLvzF/Qhg+J6iS6BD5cQf5hHvU6qLWgF9i3YKlkDOuakpDc+m3vPv
+	 EYq0A6rWm/3dORwpVgQts8HT1e4eFANqXnw4reTk3382ixZ11pYRdC9dSLwHehPUeq
+	 wQAreAl4VwYhjq02nfnh041B79uDc0Bh3Y2whHyJdiaT2cJYQ5rBQ5PuUrJ93beke/
+	 UGFnJPeDstcnS0KgnMAk2jHkB749T0wOaT9oHryR8+6j/EjFI1mUI7F2L+TCZIC3Hf
+	 N5poq4OepPB/w==
+Date: Sun, 2 Jun 2024 11:53:19 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
- conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org,
- andy@kernel.org, nuno.sa@analog.com, bigunclemax@gmail.com,
- dlechner@baylibre.com, marius.cristea@microchip.com,
- marcelo.schmitt@analog.com, fr0st61te@gmail.com, mitrutzceclan@gmail.com,
- mike.looijmans@topic.nl, marcus.folkesson@gmail.com,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, kernel@collabora.com
-Subject: Re: [PATCH v1 2/4] iio: adc: Add support for MediaTek MT6357/8/9
- Auxiliary ADC
-Message-ID: <20240602111141.0058f39e@jic23-huawei>
-In-Reply-To: <20240530093410.112716-3-angelogioacchino.delregno@collabora.com>
-References: <20240530093410.112716-1-angelogioacchino.delregno@collabora.com>
-	<20240530093410.112716-3-angelogioacchino.delregno@collabora.com>
+To: ranechita <ramona.nechita@analog.com>
+Cc: <linux-iio@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>, Liam Girdwood
+ <lgirdwood@gmail.com>, "Mark Brown" <broonie@kernel.org>, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Nuno Sa <nuno.sa@analog.com>, "Marcelo
+ Schmitt" <marcelo.schmitt@analog.com>, Marius Cristea
+ <marius.cristea@microchip.com>, Maksim Kiselev <bigunclemax@gmail.com>,
+ Marcus Folkesson <marcus.folkesson@gmail.com>, Okan Sahin
+ <okan.sahin@analog.com>, Mike Looijmans <mike.looijmans@topic.nl>, "Liam
+ Beguin" <liambeguin@gmail.com>, Ivan Mikhaylov <fr0st61te@gmail.com>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] drivers: iio: adc: add support for ad777x family
+Message-ID: <20240602115319.686a2a80@jic23-huawei>
+In-Reply-To: <20240529150322.28018-1-ramona.nechita@analog.com>
+References: <20240529150322.28018-1-ramona.nechita@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,346 +68,790 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 30 May 2024 11:34:08 +0200
-AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> wrote:
+On Wed, 29 May 2024 18:03:09 +0300
+ranechita <ramona.nechita@analog.com> wrote:
 
-> Add a driver to support reading the Auxiliary ADC IP found in the
-> MediaTek MT6357, MT6358 and MT6359 Power Management ICs.
+> Added support for ad7770,ad7771,ad7779 ADCs. The
+> data is streamed only on the spi-mode, without
+> using the data lines.
 > 
-> This driver provides multiple ADC channels for system monitoring,
-> such as battery voltage, PMIC temperature, PMIC-internal voltage
-> regulators temperature, and others.
-> 
-> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> Signed-off-by: ranechita <ramona.nechita@analog.com>
+Others have commented on need to sort your patch submissions out.
+Make sure that's fixed for next version.  1 series with driver
+and bindings, fixed sign off etc.
 
-I'll leave you to answer the 'why a new driver' in response to Andy's review
-and just assume it makes sense whilst reviewing this.
 
-What are IMP channels?
-
-A few additional comments inline.
-
-Thanks,
+Various comments inline.
 
 Jonathan
 
-> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-> index edb32ce2af02..da7d4452b1e0 100644
-> --- a/drivers/iio/adc/Makefile
-> +++ b/drivers/iio/adc/Makefile
-> @@ -79,6 +79,7 @@ obj-$(CONFIG_MCP320X) += mcp320x.o
->  obj-$(CONFIG_MCP3422) += mcp3422.o
->  obj-$(CONFIG_MCP3564) += mcp3564.o
->  obj-$(CONFIG_MCP3911) += mcp3911.o
-> +obj-$(CONFIG_MEDIATEK_MT6359_AUXADC) += mt6359-auxadc.o
->  obj-$(CONFIG_MEDIATEK_MT6360_ADC) += mt6360-adc.o
->  obj-$(CONFIG_MEDIATEK_MT6370_ADC) += mt6370-adc.o
->  obj-$(CONFIG_MEDIATEK_MT6577_AUXADC) += mt6577_auxadc.o
-> diff --git a/drivers/iio/adc/mt6359-auxadc.c b/drivers/iio/adc/mt6359-auxadc.c
+> ---
+>  drivers/iio/adc/Kconfig  |  11 +
+>  drivers/iio/adc/Makefile |   1 +
+>  drivers/iio/adc/ad7779.c | 951 +++++++++++++++++++++++++++++++++++++++
+>  3 files changed, 963 insertions(+)
+>  create mode 100644 drivers/iio/adc/ad7779.c
+> 
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index 0d9282fa67f5..3e42cbc365d7 100644
+> --- a/drivers/iio/adc/Kconfig
+> +++ b/drivers/iio/adc/Kconfig
+> @@ -206,6 +206,17 @@ config AD7768_1
+>  	  To compile this driver as a module, choose M here: the module will be
+>  	  called ad7768-1.
+>  
+> +config AD7779
+> +	tristate "Analog Devices AD7779 ADC driver"
+> +	depends on SPI
+> +	select IIO_BUFFER
+> +	help
+> +	  Say yes here to build support for Analog Devices AD7779 SPI
+In help text list all supported parts so that people can grep for them.
+
+> +	  analog to digital converter (ADC)
+It's not just an SPI converter. Seems to have a 4 wide serial interface
+for directly clocking out the data as well. Might be worth mentioning that
+even if the driver doesn't yet support it.
+
+> +
+> +	  To compile this driver as a module, choose M here: the module will be
+> +	  called ad7779.
+> +
+
+> diff --git a/drivers/iio/adc/ad7779.c b/drivers/iio/adc/ad7779.c
 > new file mode 100644
-> index 000000000000..0481bd3f0144
+> index 000000000000..089e352e2d40
 > --- /dev/null
-> +++ b/drivers/iio/adc/mt6359-auxadc.c
-> @@ -0,0 +1,598 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
+> +++ b/drivers/iio/adc/ad7779.c
+> @@ -0,0 +1,951 @@
+> +// SPDX-License-Identifier: GPL-2.0+
 > +/*
-> + * MediaTek MT6359 PMIC AUXADC IIO driver
+> + * AD777X ADC
 > + *
-> + * Copyright (c) 2021 MediaTek Inc.
-> + * Copyright (c) 2024 Collabora Ltd
-> + * Author: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-> + */
+> + * Copyright 2023 Analog Devices Inc.
+
+Probably worth updating given how much this is changing!
+
+
+> +#define AD777X_CRC8_POLY			0x07
+> +DECLARE_CRC8_TABLE(ad777x_crc8_table);
 > +
-> +#include <linux/delay.h>
-> +#include <linux/kernel.h>
-> +#include <linux/module.h>
-> +#include <linux/of.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regmap.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/mfd/mt6397/core.h>
-> +
-> +#include <dt-bindings/iio/adc/mediatek,mt6357-auxadc.h>
-> +#include <dt-bindings/iio/adc/mediatek,mt6358-auxadc.h>
-> +#include <dt-bindings/iio/adc/mediatek,mt6359-auxadc.h>
-
-So I 'guess' these headers are dt-bindings because you want
-to consume them from other drivers?  That's fine, but if so please
-add info on that to the DT binding patch.
-
-> +/**
-> + * struct mt6359_auxadc - Main driver structure
-> + * @dev:           Device pointer
-> + * @regmap:        Regmap from SoC PMIC Wrapper
-> + * @pdata:         PMIC specific platform data
-> + * @lock:          Mutex lock for AUXADC reads
-
-Expand on this mutex comment.  What is it protecting?
-I think it's about ensuring they are serialized to ensure configuration
-is not changed during the read sequence.
-
-> + * @timed_out:     Signals whether the last read timed out
-> + */
-> +struct mt6359_auxadc {
-> +	struct device *dev;
-> +	struct regmap *regmap;
-> +	const struct mtk_pmic_auxadc_pdata *pdata;
-> +	struct mutex lock;
-> +	bool timed_out;
+> +enum ad777x_filter {
+Don't use wild cards for defines. Just name it after a suitable specific
+part number. Wild cards go wrong far too often.
+> +	AD777X_SINC3,
+> +	AD777X_SINC5,
 > +};
 > +
-
-> +/**
-> + * struct mtk_pmic_auxadc_pdata - PMIC specific platform data
-
-I'm not sure this is conventionally what we think of as platform
-data.  This is chip specific stuff. Platform data tends to be
-more about how things are wired up etc.  A common term for this
-stuff is chip_info.
-
-> + * @channels:       IIO specification of ADC channels
-> + * @num_channels:   Number of ADC channels
-> + * @desc:           PMIC AUXADC channel data
-> + * @regs:           List of PMIC specific registers
-> + * @sec_unlock_key: Security unlock key for HK_TOP writes
-> + * @imp_adc_num:    ADC channel for IMP readings
-> + * @read_imp:       Callback to read PMIC IMP channels
-> + */
-> +struct mtk_pmic_auxadc_pdata {
-> +	const struct iio_chan_spec *channels;
-> +	int num_channels;
-> +	const struct mtk_pmic_auxadc_chan *desc;
-> +	const u16 *regs;
-> +	u16 sec_unlock_key;
-> +	u8 imp_adc_num;
-> +	int (*read_imp)(struct mt6359_auxadc *adc_dev, int *vbat, int *ibat);
+> +enum ad777x_variant {
+> +	ad7770,
+> +	ad7771,
+> +	ad7779,
 > +};
 > +
-
-> +
-> +static const struct mtk_pmic_auxadc_chan mt6359_auxadc_ch_desc[] = {
-> +	MTK_PMIC_ADC_CHAN(BATADC, PMIC_AUXADC_RQST0, 0, 128, 7, 2),
-> +	MTK_PMIC_ADC_CHAN(BAT_TEMP, PMIC_AUXADC_RQST0, 3, 8, 5, 2),
-> +	MTK_PMIC_ADC_CHAN(CHIP_TEMP, PMIC_AUXADC_RQST0, 4, 8, 1, 1),
-> +	MTK_PMIC_ADC_CHAN(ACCDET, PMIC_AUXADC_RQST0, 5, 8, 1, 1),
-> +	MTK_PMIC_ADC_CHAN(VDCXO, PMIC_AUXADC_RQST0, 6, 8, 3, 2),
-> +	MTK_PMIC_ADC_CHAN(TSX_TEMP, PMIC_AUXADC_RQST0, 7, 128, 1, 1),
-> +	MTK_PMIC_ADC_CHAN(HPOFS_CAL, PMIC_AUXADC_RQST0, 9, 256, 1, 1),
-> +	MTK_PMIC_ADC_CHAN(DCXO_TEMP, PMIC_AUXADC_RQST0, 10, 16, 1, 1),
-> +	MTK_PMIC_ADC_CHAN(VBIF, PMIC_AUXADC_RQST0, 11, 8, 5, 2),
-> +	MTK_PMIC_ADC_CHAN(VCORE_TEMP, PMIC_AUXADC_RQST1, 8, 8, 1, 1),
-> +	MTK_PMIC_ADC_CHAN(VPROC_TEMP, PMIC_AUXADC_RQST1, 9, 8, 1, 1),
-> +	MTK_PMIC_ADC_CHAN(VGPU_TEMP, PMIC_AUXADC_RQST1, 10, 8, 1, 1),
-> +
-> +	/* IMP channels */
-What are these? Expand IMP perhaps!
-
-> +	MTK_PMIC_ADC_CHAN(VBAT, 0, 0, 128, 7, 2),
-> +	MTK_PMIC_ADC_CHAN(IBAT, 0, 0, 128, 7, 2),
+> +enum ad777x_power_mode {
+> +	AD777X_LOW_POWER,
+> +	AD777X_HIGH_POWER,
 > +};
+> +
+> +struct ad777x_chip_info {
+> +	const char *name;
+> +	struct iio_chan_spec const *channels;
+> +};
+> +
+> +struct ad777x_state {
 
+Choose a supported part and name after that. Wild cards go
+wrong far too often because manufacturers love to put incompatible
+and sometimes completely unrelated parts numbers between those used
+for other devices.
 
-> +static int mt6359_read_imp(struct mt6359_auxadc *adc_dev, int *vbat, int *ibat)
+> +	struct spi_device		*spi;
+> +	const struct ad777x_chip_info	*chip_info;
+> +	struct clk			*mclk;
+> +	struct regulator		*vref;
+> +	unsigned int			sampling_freq;
+> +	enum ad777x_power_mode		power_mode;
+> +	enum ad777x_filter		filter_enabled;
+> +	unsigned int			active_ch;
+> +	unsigned int			spidata_mode;
+> +	unsigned int			crc_enabled;
+> +
+> +	/*
+> +	 * DMA (thus cache coherency maintenance) requires the
+> +	 * transfer buffers to live in their own cache lines.
+> +	 */
+> +	u8			reg_rx_buf[3] ____cacheline_aligned;
+
+Comment is correct, but that alignment isn't.   Unfortunately
+____cacheline_aligned is (on a few platforms) not sufficient as
+it is the l1 cacheline size and DMA is done from last level cache
+which has a larger cacheline.
+
+use __aligned(IIO_DMA_MINALIGN) which handles this corner case.
+
+> +	u8			reg_tx_buf[3];
+> +	__be32			spidata_rx[8];
+> +	__be32			spidata_tx[8];
+> +	u8			reset_buf[8];
+> +};
+> +
+> +static const char * const ad777x_filter_type[] = {
+> +	[AD777X_SINC3] = "sinc3_filter",
+> +	[AD777X_SINC5] = "sinc5_filter",
+> +};
+> +
+> +static int ad777x_spi_read(struct ad777x_state *st, u8 reg, u8 *rbuf)
 > +{
-> +	const struct mtk_pmic_auxadc_pdata *pdata = adc_dev->pdata;
-> +	struct regmap *regmap = adc_dev->regmap;
-> +	int val_v, val_i, ret;
-> +	u32 val;
+> +	int ret;
+> +	int length = 2;
+> +	u8 crc_buf[2];
+> +	u8 exp_crc = 0;
+> +	struct spi_transfer reg_read_tr[] = {
+> +		{
+> +			.tx_buf = st->reg_tx_buf,
+> +			.rx_buf = st->reg_rx_buf,
+> +		},
+> +	};
 > +
-> +	/* Start conversion */
-> +	regmap_write(regmap, pdata->regs[PMIC_AUXADC_IMP0], MT6359_IMP0_CONV_EN);
-> +	ret = regmap_read_poll_timeout(regmap, pdata->regs[PMIC_AUXADC_IMP1],
-> +				       val, !!(val & MT6359_IMP1_IRQ_RDY),
-
-The condition is just as true or false without the !! so drop those.
-
-> +				       IMP_POLL_DELAY_US, AUXADC_TIMEOUT_US);
+> +	if (st->crc_enabled)
+> +		length = 3;
+> +	reg_read_tr[0].len = length;
 > +
-> +	/* Stop conversion regardless of the result */
-> +	regmap_write(regmap, pdata->regs[PMIC_AUXADC_IMP0], 0);
+> +	st->reg_tx_buf[0] = AD777X_SPI_READ_CMD | (reg & 0x7F);
+> +	st->reg_tx_buf[1] = 0;
+> +	st->reg_tx_buf[2] = crc8(ad777x_crc8_table, st->reg_tx_buf, 2, 0);
+> +
+> +	ret = spi_sync_transfer(st->spi, reg_read_tr, ARRAY_SIZE(reg_read_tr));
 > +	if (ret)
 > +		return ret;
 > +
-> +	/* If it succeeded, wait for the registers to be populated */
-> +	usleep_range(IMP_STOP_DELAY_US, IMP_STOP_DELAY_US + 50);
-> +
-> +	ret = regmap_read(regmap, pdata->regs[PMIC_AUXADC_IMP3], &val_v);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = regmap_read(regmap, pdata->regs[PMIC_FGADC_R_CON0], &val_i);
-> +	if (ret)
-> +		return ret;
-
-Why read them both if only one is wanted?  Do you need to read the data
-for some reason - i.e. to allow for fresh reads or clear some status bit
-or similar?  If so add a comment.  Otherwise easy to do
-
-	if (vbat) {
-		int val_v;
-		ret = regmap_read(regmap, pdata->regs[PMIC_AUXADC_IMP3], &val_v);
-		if (ret)
-			return ret;
-		*vbat = val_v;
-	}
-etc
-
-
-> +
-> +	*vbat = val_v;
-> +	*ibat = val_i;
+> +	crc_buf[0] = AD777X_SPI_READ_CMD | FIELD_GET(AD777X_REG_READ_MSK, reg);
+> +	crc_buf[1] = st->reg_rx_buf[1];
+> +	exp_crc = crc8(ad777x_crc8_table, crc_buf, 2, 0);
+> +	if (st->crc_enabled && exp_crc != st->reg_rx_buf[2]) {
+> +		dev_err(&st->spi->dev, "Bad CRC %x, expected %x",
+> +			st->reg_rx_buf[2], exp_crc);
+> +		return -EINVAL;
+> +	}
+> +	*rbuf = st->reg_rx_buf[1];
 > +
 > +	return 0;
 > +}
 > +
-> +static const struct mtk_pmic_auxadc_pdata mt6357_pdata = {
-> +	.channels = mt6357_auxadc_channels,
-> +	.num_channels = ARRAY_SIZE(mt6357_auxadc_channels),
-> +	.desc = mt6357_auxadc_ch_desc,
-> +	.regs = mt6357_auxadc_regs,
-> +	.imp_adc_num = MT6357_IMP_ADC_NUM,
-> +	.read_imp = mt6358_read_imp,
-> +};
+> +static int ad777x_spi_write(struct ad777x_state *st, u8 reg, u8 val)
+> +{
+> +	int length = 2;
+> +	struct spi_transfer reg_write_tr[] = {
+> +		{
+> +			.tx_buf = st->reg_tx_buf,
+> +		},
+> +	};
 > +
-> +static const struct mtk_pmic_auxadc_pdata mt6358_pdata = {
-> +	.channels = mt6358_auxadc_channels,
-> +	.num_channels = ARRAY_SIZE(mt6358_auxadc_channels),
-> +	.desc = mt6358_auxadc_ch_desc,
-> +	.regs = mt6358_auxadc_regs,
-> +	.imp_adc_num = MT6358_IMP_ADC_NUM,
-> +	.read_imp = mt6358_read_imp,
-> +};
+> +	if (st->crc_enabled)
+> +		length = 3;
+> +	reg_write_tr[0].len = length;
 > +
-> +static const struct mtk_pmic_auxadc_pdata mt6359_pdata = {
-> +	.channels = mt6359_auxadc_channels,
-> +	.num_channels = ARRAY_SIZE(mt6359_auxadc_channels),
-> +	.desc = mt6359_auxadc_ch_desc,
-> +	.regs = mt6359_auxadc_regs,
-> +	.sec_unlock_key = 0x6359,
-> +	.read_imp = mt6359_read_imp,
-> +};
->
+> +	st->reg_tx_buf[0] = reg & 0x7F;
+> +	st->reg_tx_buf[1] = val;
+> +	st->reg_tx_buf[2] = crc8(ad777x_crc8_table, st->reg_tx_buf, 2, 0);
+
+only fill that in if crc_enabled is set. 
 
 > +
-> +static int mt6359_auxadc_read_label(struct iio_dev *indio_dev,
-> +				    const struct iio_chan_spec *chan, char *label)
-> +{
-> +	return sysfs_emit(label, "%s\n", chan->datasheet_name);
+> +	return spi_sync_transfer(st->spi, reg_write_tr, ARRAY_SIZE(reg_write_tr));
 > +}
 > +
-> +static int mt6359_auxadc_read_raw(struct iio_dev *indio_dev,
-> +				  const struct iio_chan_spec *chan,
-> +				  int *val, int *val2, long mask)
+> +static int ad777x_spi_write_mask(struct ad777x_state *st, u8 reg, u8 mask,
+> +				 u8 val)
 > +{
-> +	struct mt6359_auxadc *adc_dev = iio_priv(indio_dev);
-> +	const struct mtk_pmic_auxadc_pdata *pdata = adc_dev->pdata;
-> +	const struct mtk_pmic_auxadc_chan *desc = &pdata->desc[chan->scan_index];
+> +	int ret;
+> +	u8 regval, data;
+> +
+> +	ret = ad777x_spi_read(st, reg, &data);
+
+When I see this sort of helper, it's usually a good sign that the author
+should consider a custom regmap. I'm not 100% sure it is a good fit here
+but it seems likely looking at this section of code.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	regval = data;
+> +	regval &= ~mask;
+> +	regval |= val;
+> +
+> +	if (regval == data)
+> +		return 0;
+> +
+> +	return ad777x_spi_write(st, reg, regval);
+> +
+> +}
+
+> +static int ad777x_set_sampling_frequency(struct ad777x_state *st,
+> +					 unsigned int sampling_freq)
+> +{
+> +	int ret;
+> +	unsigned int dec;
+> +	unsigned int div;
+> +	unsigned int decimal;
+> +	int temp;
+> +	unsigned int kfreq;
+> +	u8 msb, lsb;
+> +
+> +	if (st->filter_enabled == AD777X_SINC3 &&
+> +	    sampling_freq > AD777X_SINC3_MAXFREQ)
+> +		return -EINVAL;
+> +
+> +	if (st->filter_enabled == AD777X_SINC5 &&
+> +		sampling_freq > AD777X_SINC5_MAXFREQ)
+
+Align after ( as done on the one above.
+
+> +		return -EINVAL;
+> +
+> +	if (st->spidata_mode == 1 &&
+> +	    sampling_freq > AD777X_SPIMODE_MAX_SAMP_FREQ)
+> +		return -EINVAL;
+> +
+> +	if (st->power_mode == AD777X_LOW_POWER)
+> +		div = AD777X_LOWPOWER_DIV;
+> +	else
+> +		div = AD777X_HIGHPOWER_DIV;
+> +
+> +	kfreq = sampling_freq / KILO;
+> +	dec = div / kfreq;
+> +
+> +	lsb = FIELD_GET(AD777X_FREQ_LSB_MSK, dec);
+> +	msb = FIELD_GET(AD777X_FREQ_MSB_MSK, dec);
+
+These local variables don't add much. Just use the
+FIELD_GET() calls in appropriate places.
+
+> +
+> +	ret = ad777x_spi_write(st, AD777X_REG_SRC_N_LSB, lsb);
+> +	if (ret)
+> +		return ret;
+> +	ret = ad777x_spi_write(st, AD777X_REG_SRC_N_MSB, msb);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (div % kfreq) {
+> +		temp = (div * KILO) / kfreq;
+> +		decimal = ((temp -  dec * KILO) << 16) / KILO;
+> +		lsb = FIELD_GET(AD777X_FREQ_LSB_MSK, decimal);
+> +		msb = FIELD_GET(AD777X_FREQ_MSB_MSK, decimal);
+> +
+> +		ret = ad777x_spi_write(st, AD777X_REG_SRC_IF_LSB, lsb);
+> +		if (ret)
+> +			return ret;
+> +		ret = ad777x_spi_write(st, AD777X_REG_SRC_IF_MSB, msb);
+> +		if (ret)
+> +			return ret;
+> +	} else {
+> +		ret = ad777x_spi_write(st, AD777X_REG_SRC_IF_LSB, 0x0);
+> +		if (ret)
+> +			return ret;
+> +		ret = ad777x_spi_write(st, AD777X_REG_SRC_IF_MSB, 0x0);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +	ret = ad777x_spi_write(st, AD777X_REG_SRC_UPDATE, 0x1);
+> +	if (ret)
+> +		return ret;
+> +	fsleep(15);
+> +	ret = ad777x_spi_write(st, AD777X_REG_SRC_UPDATE, 0x0);
+> +	if (ret)
+> +		return ret;
+> +	fsleep(15);
+> +
+> +	st->sampling_freq = sampling_freq;
+> +
+> +	return 0;
+> +}
+
+...
+
+
+> +static int ad777x_set_calibscale(struct ad777x_state *st, int channel, int val)
+> +{
+> +	int ret;
+> +	u8 msb, mid, lsb;
+> +	unsigned int gain;
+> +	unsigned long long tmp;
+> +
+> +	tmp = val * 5592405LL;
+> +	gain = DIV_ROUND_CLOSEST_ULL(tmp, MEGA);
+> +	msb = FIELD_GET(AD777X_UPPER, gain);
+> +	mid = FIELD_GET(AD777X_MID, gain);
+> +	lsb = FIELD_GET(AD777X_LOWER, gain);
+> +	ret = ad777x_spi_write(st,
+> +			       AD777X_REG_CH_GAIN_UPPER_BYTE(channel),
+> +			       msb);
+> +	if (ret)
+> +		return ret;
+> +	ret = ad777x_spi_write(st,
+> +			       AD777X_REG_CH_GAIN_MID_BYTE(channel),
+> +			       mid);
+> +	if (ret)
+> +		return ret;
+> +	return ad777x_spi_write(st,
+> +				AD777X_REG_CH_GAIN_LOWER_BYTE(channel),
+> +				lsb);
+I assume these regisers are next to each other. If so I think Andy suggested
+creating your own bulk read /write.  That would be a good cleanup.
+
+> +}
+> +
+> +static int ad777x_get_calibbias(struct ad777x_state *st, int channel)
+> +{
+> +	int ret;
+> +	u8 low, mid, high;
+> +
+> +	ret = ad777x_spi_read(st, AD777X_REG_CH_OFFSET_LOWER_BYTE(channel),
+> +			      &low);
+> +	if (ret)
+> +		return ret;
+> +	ret = ad777x_spi_read(st, AD777X_REG_CH_OFFSET_MID_BYTE(channel), &mid);
+> +	if (ret)
+> +		return ret;
+> +	ret = ad777x_spi_read(st,
+> +			      AD777X_REG_CH_OFFSET_UPPER_BYTE(channel),
+> +			      &high);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return FIELD_PREP(AD777X_UPPER, high) | FIELD_PREP(AD777X_MID, mid) |
+> +	       FIELD_PREP(AD777X_LOWER, low);
+
+get them directly into different bytes of a byte array then use a
+get_unaligned_be24() call here to build this.
+
+> +}
+> +
+> +static int ad777x_set_calibbias(struct ad777x_state *st, int channel, int val)
+> +{
+> +	int ret;
+> +	u8 msb, mid, lsb;
+> +
+> +	msb = FIELD_GET(AD777X_UPPER, val);
+> +	mid = FIELD_GET(AD777X_MID, val);
+> +	lsb = FIELD_GET(AD777X_LOWER, val);
+> +	ret = ad777x_spi_write(st,
+> +			       AD777X_REG_CH_OFFSET_UPPER_BYTE(channel),
+> +			       msb);
+
+Put the FIELD_GET() inline.  Doing as above doesn't h elp mcuh.
+
+> +	if (ret)
+> +		return ret;
+As below blank lines in appropriate locations to separate the blocks of code.
+
+
+> +	ret = ad777x_spi_write(st,
+> +			       AD777X_REG_CH_OFFSET_MID_BYTE(channel),
+> +			       mid);
+> +	if (ret)
+> +		return ret;
+> +	return ad777x_spi_write(st,
+> +				AD777X_REG_CH_OFFSET_LOWER_BYTE(channel),
+> +				lsb);
+> +}
+> +
+> +static int ad777x_read_raw(struct iio_dev *indio_dev,
+> +			   struct iio_chan_spec const *chan,
+> +			   int *val,
+> +			   int *val2,
+> +			   long mask)
+> +{
+> +	struct ad777x_state *st = iio_priv(indio_dev);
 > +	int ret;
 > +
-> +	if (mask == IIO_CHAN_INFO_SCALE) {
-> +		*val = desc->r_numerator * AUXADC_VOLT_FULL;
+> +	ret = iio_device_claim_direct_mode(indio_dev);
+
+Use the scoped version to simplify this quite a bit.
+
+
+> +	if (ret)
+> +		return ret;
 > +
-> +		if (desc->r_denominator > 1) {
-> +			*val2 = desc->r_denominator;
-> +			return IIO_VAL_FRACTIONAL;
-> +		}
-> +
+> +	switch (mask) {
+> +	case IIO_CHAN_INFO_CALIBSCALE:
+> +		*val = ad777x_get_calibscale(st, chan->channel);
+> +		iio_device_release_direct_mode(indio_dev);
+> +		if (ret)
+ret isn't set by anyone...
+
+> +			return ret;
+> +		*val2 = GAIN_REL;
+> +		return IIO_VAL_FRACTIONAL;
+> +	case IIO_CHAN_INFO_CALIBBIAS:
+> +		*val = ad777x_get_calibbias(st, chan->channel);
+> +		iio_device_release_direct_mode(indio_dev);
+> +		if (ret)
+as above.
+> +			return ret;
+> +		return IIO_VAL_INT;
+> +	case IIO_CHAN_INFO_SAMP_FREQ:
+> +		*val = st->sampling_freq;
+> +		iio_device_release_direct_mode(indio_dev);
+> +		if (ret)
+and here.
+> +			return ret;
 > +		return IIO_VAL_INT;
 > +	}
 > +
-> +	mutex_lock(&adc_dev->lock);
+> +	iio_device_release_direct_mode(indio_dev);
 > +
-> +	switch (chan->scan_index) {
-> +	case PMIC_AUXADC_CHAN_IBAT:
-> +		ret = adc_dev->pdata->read_imp(adc_dev, val2, val);
-
-This is very odd. Why reverse the parameters between the IBAT and VBAT
-channels?  I suspect you want to throw away a parameter. That's fine but
-don't use val2 for it. Either make that function handle NULL pointers
-or add a local int temp or similar for this purpose.
-
-> +		break;
-> +	case PMIC_AUXADC_CHAN_VBAT:
-> +		ret = adc_dev->pdata->read_imp(adc_dev, val, val2);
-> +		break;
-> +	default:
-> +		ret = mt6359_auxadc_read_adc(adc_dev, chan, val);
-> +		break;
-> +	}
-> +
-> +	mutex_unlock(&adc_dev->lock);
-> +
-> +	if (ret) {
-> +		/*
-> +		 * If we get more than one timeout, it's possible that the
-> +		 * AUXADC is stuck: perform a full reset to recover it.
-> +		 */
-> +		if (ret == -ETIMEDOUT) {
-> +			if (adc_dev->timed_out) {
-> +				dev_warn(adc_dev->dev, "Resetting stuck ADC!\r\n");
-> +				mt6359_auxadc_reset(adc_dev);
-> +			}
-> +			adc_dev->timed_out = true;
-> +		}
-> +		return ret;
-> +	}
-> +	adc_dev->timed_out = false;
-> +
-> +	return IIO_VAL_INT;
+> +	return -EINVAL;
 > +}
 > +
-> +static const struct iio_info mt6359_auxadc_info = {
-> +	.read_label = mt6359_auxadc_read_label,
-> +	.read_raw = mt6359_auxadc_read_raw,
-> +};
+
 > +
-> +static int mt6359_auxadc_probe(struct platform_device *pdev)
+> +static int ad777x_update_scan_mode(struct iio_dev *indio_dev,
+> +				   const unsigned long *scan_mask)
 > +{
-> +	struct device *mt6397_mfd_dev = pdev->dev.parent;
-> +	struct mt6359_auxadc *adc_dev;
-> +	struct iio_dev *indio_dev;
-> +	struct regmap *regmap;
-> +	int ret;
+> +	struct ad777x_state *st = iio_priv(indio_dev);
 > +
-> +	/* Regmap is from SoC PMIC Wrapper, parent of the mt6397 MFD */
-> +	regmap = dev_get_regmap(mt6397_mfd_dev->parent, NULL);
-> +	if (!regmap)
-> +		return dev_err_probe(&pdev->dev, -ENODEV, "Failed to get regmap\n");
-> +
-> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc_dev));
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	adc_dev = iio_priv(indio_dev);
-> +	adc_dev->regmap = regmap;
-> +	adc_dev->dev = &pdev->dev;
-> +
-> +	adc_dev->pdata = device_get_match_data(&pdev->dev);
-> +	if (!adc_dev->pdata)
-> +		return -EINVAL;
-> +
-> +	mutex_init(&adc_dev->lock);
-> +
-> +	mt6359_auxadc_reset(adc_dev);
-> +
-> +	indio_dev->dev.parent = &pdev->dev;
-No need to set that, the IIO core does it for you in
-devm_iio_device_alloc()
-> +	indio_dev->name = dev_name(&pdev->dev);
+> +	bitmap_copy((unsigned long *)&st->active_ch, scan_mask, AD777X_NUM_CHANNELS);
 
-This tends to be fragile at best.  The name should be the part number, best
-way to reliably get that is either to query a whoami type register if there
-is one or put it in your pdata.
+Why have your own local tracking?  Just use the active_scan_mask directly.
+Then this function can go away.
 
-> +	indio_dev->info = &mt6359_auxadc_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	indio_dev->channels = adc_dev->pdata->channels;
-> +	indio_dev->num_channels = adc_dev->pdata->num_channels;
-> +
-> +	ret = devm_iio_device_register(&pdev->dev, indio_dev);
-> +	if (ret < 0)
-> +		return dev_err_probe(&pdev->dev, ret, "failed to register iio device\n");
 > +
 > +	return 0;
 > +}
+
+> +
+> +static int ad777x_buffer_predisable(struct iio_dev *indio_dev)
+> +{
+> +	int ret;
+> +	struct ad777x_state *st = iio_priv(indio_dev);
+> +
+> +	disable_irq_nosync(st->spi->irq);
+
+I suspect to close the race of you thinking you are in buffered mode when
+you aren't that the nosync variant isn't the right choice here.
+
+> +	ret = ad777x_spi_write(st,
+> +			       AD777X_REG_GENERAL_USER_CONFIG_3,
+> +			       AD777X_DISABLE_SD);
+> +	return ret;
+
+return ad777x ..
+
+> +}
+> +
+> +static irqreturn_t ad777x_irq_handler(int irq, void *data)
+> +{
+> +	struct iio_dev *indio_dev = data;
+> +	struct ad777x_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +	__be32 tmp[8];
+> +	int i;
+> +	int k = 0;
+> +
+> +	struct spi_transfer sd_readback_tr[] = {
+> +		{
+> +			.rx_buf = st->spidata_rx,
+> +			.tx_buf = st->spidata_tx,
+> +			.len = 32,
+> +		}
+> +	};
+> +
+> +	if (iio_buffer_enabled(indio_dev)) {
+
+How do we get here without that being true?  Add a comment given if we did I'd
+expect to see an alternative set of things to do in here. Also invert condition
+to reduce indent.
+
+	if (!iio_buffer_enabled(indio_dev))
+		return IRQ_HANDLED;
+
+	st->...
+
+> +		st->spidata_tx[0] = AD777X_SPI_READ_CMD;
+> +		ret = spi_sync_transfer(st->spi, sd_readback_tr,
+> +					ARRAY_SIZE(sd_readback_tr));
+> +		if (ret) {
+> +			dev_err(&st->spi->dev,
+> +				"spi transfer error in irq handler");
+> +			return IRQ_HANDLED;
+> +		}
+> +		for (i = 0; i < AD777X_NUM_CHANNELS; i++) {
+> +			if (st->active_ch & BIT(i))
+> +				tmp[k++] = __be32_to_cpu(st->spidata_rx[i]);
+Why?  We generally leave data reordering to userspace. Just report as a be32
+channel if that's what it is.
+
+> +		}
+> +		iio_push_to_buffers(indio_dev, &tmp[0]);
+
+Not obvious why you can't provide a timestamp given this is in the interrupt
+handler for that capture completing (no fifo or similar to make that complex).
+You will need to expand tmp though to allow for the timestamp to be inserted.
+
+> +	}
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
+> +static int ad777x_reset(struct iio_dev *indio_dev, struct gpio_desc *reset_gpio)
+> +{
+> +	struct ad777x_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +	struct spi_transfer reg_read_tr[] = {
+> +		{
+> +			.tx_buf = st->reset_buf,
+> +			.len = 8,
+> +		},
+> +	};
+> +
+> +	memset(st->reset_buf, 0xff, sizeof(st->reset_buf));
+> +
+> +	if (reset_gpio) {
+> +		gpiod_set_value(reset_gpio, 1);
+> +		fsleep(230);
+> +		return 0;
+> +	}
+> +
+> +	ret = spi_sync_transfer(st->spi, reg_read_tr,
+> +				ARRAY_SIZE(reg_read_tr));
+> +	if (ret)
+> +		return ret;
+> +
+> +	fsleep(230);
+
+Add a spec reference for these sleep times.
+
+> +
+> +	return 0;
+> +}
+
+
+> +static int ad777x_register(struct ad777x_state *st, struct iio_dev *indio_dev)
+> +{
+
+There is no obvious reason to break this out from probe. Just put the
+code inline.  There may be reasons to break out some parts like the
+irq setup, but currently the break doesn't help with readability.
+
+> +	int ret;
+> +	struct device *dev = &st->spi->dev;
+> +
+> +	indio_dev->name = st->chip_info->name;
+> +	indio_dev->info = &ad777x_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->channels = st->chip_info->channels;
+> +	indio_dev->num_channels = ARRAY_SIZE(ad777x_channels);
+> +
+> +	ret = devm_request_threaded_irq(dev, st->spi->irq, NULL,
+> +					ad777x_irq_handler, IRQF_ONESHOT,
+> +					indio_dev->name, indio_dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "request irq %d failed\n",
+> +				     st->spi->irq);
+> +
+> +	ret = devm_iio_kfifo_buffer_setup_ext(dev, indio_dev,
+> +					      &ad777x_buffer_setup_ops,
+> +					      NULL);
+Does this device have a fifo or similar reason for directly managing
+the buffer rather than providing a trigger?
+So far I'm not seeing any code to indicate the need for not using
+the more common approach of a data ready trigger and a pollfunc
+etc to actually grab the data.
+
+
+> +	if (ret)
+> +		return dev_err_probe(dev, ret,
+> +				     "setup buffer failed\n");
+> +
+> +	ret = ad777x_spi_write_mask(st, AD777X_REG_DOUT_FORMAT,
+> +				    AD777X_DCLK_CLK_DIV_MSK,
+> +				    FIELD_PREP(AD777X_DCLK_CLK_DIV_MSK, 7));
+> +	if (ret)
+> +		return ret;
+> +	st->spidata_mode = 1;
+Always seems to be set when it might be queried. As such feels like a feature
+you haven't implemented yet?  If so don't have the code here.
+> +
+> +	disable_irq_nosync(st->spi->irq);
+
+Look at IRQF_NO_AUTOEN rather than turning it on then off again.
+> +
+> +	return devm_iio_device_register(&st->spi->dev, indio_dev);
+> +}
+> +
+> +static int ad777x_powerup(struct ad777x_state *st, struct gpio_desc *start_gpio)
+> +{
+> +	int ret;
+> +
+> +	ret = ad777x_spi_write_mask(st, AD777X_REG_GENERAL_USER_CONFIG_1,
+> +				    AD777X_MOD_POWERMODE_MSK,
+> +				    FIELD_PREP(AD777X_MOD_POWERMODE_MSK, 1));
+> +	if (ret)
+> +		return ret;
+
+blank line here.
+
+> +	ret = ad777x_spi_write_mask(st, AD777X_REG_GENERAL_USER_CONFIG_1,
+> +				    AD777X_MOD_PDB_REFOUT_MSK,
+> +				    FIELD_PREP(AD777X_MOD_PDB_REFOUT_MSK, 1));
+> +	if (ret)
+> +		return ret;
+
+and here etc.  Basically separate every call + error handler block.
+That helps readability a little.
+
+> +	ret = ad777x_spi_write_mask(st, AD777X_REG_DOUT_FORMAT,
+> +				    AD777X_DCLK_CLK_DIV_MSK,
+> +				    FIELD_PREP(AD777X_DCLK_CLK_DIV_MSK, 1));
+> +	if (ret)
+> +		return ret;
+> +	ret = ad777x_spi_write_mask(st, AD777X_REG_ADC_MUX_CONFIG,
+> +				    AD777X_REFMUX_CTRL_MSK,
+> +				    FIELD_PREP(AD777X_REFMUX_CTRL_MSK, 1));
+> +	if (ret)
+> +		return ret;
+> +	ret = ad777x_spi_write_mask(st, AD777X_REG_GEN_ERR_REG_1_EN,
+> +				    AD777X_SPI_CRC_EN_MSK,
+> +				    FIELD_PREP(AD777X_SPI_CRC_EN_MSK, 1));
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->power_mode = AD777X_HIGH_POWER;
+> +	st->crc_enabled = true;
+I'd be tempted to enable crc earlier and open code the spi write for that
+instead of using helpers.  That way you can assume it is always on and
+simplify the code.
+
+No one ever wants to disable CRC on a chip that has it. It's rare enough
+that people only fit such chips if they want that feature.
+
+If there are reasons it can't be done earlier such as need to be
+in particular power states or similar add a comment
+
+> +	ret = ad777x_set_sampling_frequency(st, AD777X_DEFAULT_SAMPLING_FREQ);
+> +	if (ret)
+> +		return ret;
+> +
+> +	gpiod_set_value(start_gpio, 0);
+> +	fsleep(15);
+> +	gpiod_set_value(start_gpio, 1);
+> +	fsleep(15);
+> +	gpiod_set_value(start_gpio, 0);
+> +	fsleep(15);
+> +
+> +	return 0;
+> +}
+> +
+> +static int ad777x_probe(struct spi_device *spi)
+> +{
+> +	struct iio_dev *indio_dev;
+> +	struct ad777x_state *st;
+> +	struct gpio_desc *reset_gpio;
+> +	struct gpio_desc *start_gpio;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(&spi->dev, sizeof(*st));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	st = iio_priv(indio_dev);
+> +
+> +	st->vref = devm_regulator_get_optional(&spi->dev, "vref");
+> +	if (IS_ERR(st->vref))
+> +		return PTR_ERR(st->vref);
+> +
+> +	ret = regulator_enable(st->vref);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = devm_add_action_or_reset(&spi->dev, ad777x_reg_disable,
+> +				       st->vref);
+> +	if (ret)
+> +		return ret;
+I'm surprised not to see the voltage on vref being queried.  I would think
+the new
+	devm_regulator_get_enable_read_voltage()
+may be appropriate.
+
+Why is it optional?  That can make sense if there is an internal
+regulator but you aren't doing appropriate handling for that.
+
+
+> +
+> +	st->mclk = devm_clk_get(&spi->dev, "mclk");
+> +	if (IS_ERR(st->mclk))
+> +		return PTR_ERR(st->mclk);
+> +
+> +	ret = clk_prepare_enable(st->mclk);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	ret = devm_add_action_or_reset(&spi->dev, ad777x_clk_disable,
+> +				       st->mclk);
+> +	if (ret)
+> +		return ret;
+As Andy pointed out, there are helpers for these sequences of code.
+
+> +
+> +	reset_gpio = devm_gpiod_get_optional(&spi->dev, "reset", GPIOD_OUT_LOW);
+> +	if (IS_ERR(reset_gpio))
+> +		return PTR_ERR(reset_gpio);
+> +
+> +	start_gpio = devm_gpiod_get(&spi->dev, "start", GPIOD_OUT_HIGH);
+> +	if (IS_ERR(start_gpio))
+> +		return PTR_ERR(start_gpio);
+> +
+> +	crc8_populate_msb(ad777x_crc8_table, AD777X_CRC8_POLY);
+> +	st->spi = spi;
+> +
+> +	st->chip_info = spi_get_device_match_data(spi);
+> +	if (!st->chip_info)
+> +		return -ENODEV;
+> +
+> +	ret = ad777x_reset(indio_dev, start_gpio);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ad777x_powerup(st, start_gpio);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (spi->irq)
+
+Why?  If the device is only registered if the irq is present then
+check that earlier and error out earlier.
+
+Right now I think that a missing irq means the driver probe succeeds
+but no user interfaces are provided. That doesn't make much sense.
+
+> +		ret = ad777x_register(st, indio_dev);
+> +
+> +	return ret;
+> +}
+> +
+> +static int __maybe_unused ad777x_suspend(struct device *dev)
+> +{
+> +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+> +	struct ad777x_state *st = iio_priv(indio_dev);
+> +	int ret;
+> +
+> +	ret = ad777x_spi_write_mask(st, AD777X_REG_GENERAL_USER_CONFIG_1,
+> +				    AD777X_MOD_POWERMODE_MSK,
+> +				    FIELD_PREP(AD777X_MOD_POWERMODE_MSK,
+> +					       AD777X_LOW_POWER));
+> +	if (ret)
+> +		return ret;
+> +
+> +	st->power_mode = AD777X_LOW_POWER;
+
+This is never queried - so don't store this info until you
+add code that needs to know the current state and for some reason
+can't just read it from the register.
+
+> +	return 0;
+> +}
+> +
 

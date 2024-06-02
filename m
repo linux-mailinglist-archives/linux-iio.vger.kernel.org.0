@@ -1,280 +1,159 @@
-Return-Path: <linux-iio+bounces-5646-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5647-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5556A8D7714
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 18:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF5E8D774A
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 19:24:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BABD28116F
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 16:08:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A66792815E4
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 17:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BBED4C634;
-	Sun,  2 Jun 2024 16:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0BD4D5A5;
+	Sun,  2 Jun 2024 17:24:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jacFGZFw"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="HMRx2tXQ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-vi1eur04olkn2087.outbound.protection.outlook.com [40.92.75.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B893BB4D;
-	Sun,  2 Jun 2024 16:08:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717344523; cv=none; b=SvLffcr0exvrC3K33IRA7HUDLmItODZjgpuC2L5TeW7rqgrjDWPCWrUV7mAN4//gx9jlSqSqC+W+wXHo1uGzSjO8HHbmJXfb6Wk8eAixvdgF8PYgvkqeTbfO8fIvS4rnhTN9dg6HiopaBAo53+s7KrCIgh4Nv5nyAu9rspFWU+A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717344523; c=relaxed/simple;
-	bh=0Y7dMVcRYVdZ5srU7zS2dyX2lFZDqcHAZbsTyEjY7VI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AtbG2LV8M8XZQcHlEpjRl1n/3p7nCONvfn5LAesTolVinxwuRU0Xjz5pePlDvIL/GSVFW57uUA95aY3ilcRT2fW4ZNjBgKAKkyDiOIOiEODHsuqfSlU/CoIjrwzzOAZM5bzsp2uqFUsUF8fm1PhwpTdHInnoKcX7/olj5ZMNrvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jacFGZFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49822C2BBFC;
-	Sun,  2 Jun 2024 16:08:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717344522;
-	bh=0Y7dMVcRYVdZ5srU7zS2dyX2lFZDqcHAZbsTyEjY7VI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jacFGZFwn2H6Q6zVC8vx6oScb0ruyuax5SH74pNSV3ezHz7mQHy1r+3Ly8EpeKjW2
-	 CYdVzohbZ1VVpmzTEY3ikE3qkVOHjhwATKOK70lOjo7l8BhMlGNDjvTnwpvHdorGY8
-	 KvlgBne77aGel10SxyeNn8bnw7Wknn2u5RG3BGNjhKQRkDQ9Kym0ay5twDFLYU51CB
-	 DydeRGeH9UZvbtoOpW5MKLfJd1YjRwzeIzIJgl0BF/kCfR5+/EFEs3ZhxonhNoyP1V
-	 z5Qb4eExr9F2LPrGLsRAQpex4B00aQMxnLceM3/2BdGQGSoPxVvx058Y4oFaj+r1h9
-	 nP7OBP4fNaKiw==
-Date: Sun, 2 Jun 2024 17:08:30 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Denis Benato <benato.denis96@gmail.com>
-Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>, Lars-Peter Clausen
- <lars@metafoo.de>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jagath Jog J <jagathjog1996@gmail.com>, Uwe =?UTF-8?B?S2xlaW5lLUvDtm5p?=
- =?UTF-8?B?Zw==?= <u.kleine-koenig@pengutronix.de>, "Luke D . Jones"
- <luke@ljones.dev>, Jonathan LoBue <jlobue10@gmail.com>
-Subject: Re: iio: iio-trig-hrtimer bug on suspend/resume when used with
- bmi160 and bmi323
-Message-ID: <20240602170830.34d73c96@jic23-huawei>
-In-Reply-To: <c11328ef-b61e-489f-9016-e342c749c000@gmail.com>
-References: <31d7f7aa-e834-4fd0-a66a-e0ff528425dc@gmail.com>
-	<20240113174351.47a20239@jic23-huawei>
-	<053a5c27-68fd-41b1-8b40-783dfb83d488@gmail.com>
-	<20240115093703.00001f64@Huawei.com>
-	<c11328ef-b61e-489f-9016-e342c749c000@gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C225A0E0;
+	Sun,  2 Jun 2024 17:24:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.75.87
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717349056; cv=fail; b=JjtJlSS0bSX2DRAngyfDEE+1dN/qKbwj0IbIUHd5/nachhl9kigyHeuHjMcfjqUpdC65wJQ8653oTMmsq/UkL/s043QjmezVC5bYfk3PKV5TNscqrxrCpCL+mieMbcQgUbLF/AAfNSFA/Q+bN7E1onWxkHaSP1G8GQuplbU7l+U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717349056; c=relaxed/simple;
+	bh=o1UyOYCbORytrrgw+p8KenbRmSZKV8PI+EnUyM217bI=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=HObMmEPxkc+sRDPJDB8a6yUDjtHA42PmBfI+itvuDy1EnilEbB/cxpn8TqsslgL4g43brfzcA3nVMh5c6/KbvPUb2MmsGrMU1RSi8dLvHshkfch/4LxQW0G1pKD6QgaSIbI4tGKNN86AVgpW1n2qcfBs6itKFCZEmA85YXo3Oug=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=HMRx2tXQ; arc=fail smtp.client-ip=40.92.75.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PRFd6ycxgQ3DPxU5ZoE/Hc9dekubzHDEGx4tyssuFxX8W4iKnt6UiEX1OV+a7DLOsm0hoDyrYeiDBTw7M4qKERURRd/ASvN1z8xGkhMkegtTlZ/qcDhZxtFQdQURd1tpJzzLRxtwsZ+U7mFXbZvEGt2OR9QFx2VI16F8Hegb9O2KGUfNI/wkcdMqGlxqf98Dbd1UGhNPlYQ7JGhF14sXL8//FOgmwgW5/ZDwgTF+EsugAmyvkfjzqMVyqMaAPkLc6eFtSpfgmToDJ/TFuM0coBwXMBbT7roJ7mVBpptNoZD3TxK3PHSTSjQdf634aLVDVnzwXK0L8qBCwUMWzfHIOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WoOXGdJnDbcyQzy1mLNWBguXK972w4ufsNfdQLdD+rA=;
+ b=kYayAneapvVqAbTwMTej3E7FA4R25fdkCArtq5kMLte2B/fooOmawEa0mKuVesDEqq0ZWEnFlBlUYFUinrHtPbgGWgzqn/YQOLUf7H6cWF33OtQ9oQnFwttom5EUDw4PKh+Go77gWd4sPuh7f2z3Hi1NucOVEwPmYOCklpRJFF1wRpsCpetMpgJmAMtz9tT6LXdKwyZBo2g6Yq2un50jQZXsTUStk2w3dsyTWARX6/UMc9ef5+TlKepo1rsyGuUtVqZ417jmiCoc+HQOkLq428gqkVKvphNaKb1kBsxSD2k1CGQxPNZr+40qI4AvinMvCl42eBOKnPWa8GBOmVw3Xg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WoOXGdJnDbcyQzy1mLNWBguXK972w4ufsNfdQLdD+rA=;
+ b=HMRx2tXQXdjPO/WBEWenM4Xa70B2LT16nG5Wg2fiHjVkArbf1N0YGM5hB/YI8oBot0nwTMipYq53aQk6z/+iXPLP7v3uGoHAqWcjQZcA6U71F55Ns1dClXv0O+ItWHWZM6+DGqyMbXeqjy3RH/3InuvEfxtN1UFJQRah93VsMxL5L2NN132dPwyZznKmw/FYFV8uGfAJVkb0N2ka0nubyiupx4/NVe15/ZpTGxQM+K/2sk0B0CFTm47rKoTa89/m/V5FFWo/HRXoD6uDR+qKPxbQDoCD8phaAFqjKrYjjuPNcmopdEc4Mdhpz1FhGmqe5xwlMfD8uX0tNzjKJlqOww==
+Received: from AS8PR02MB7237.eurprd02.prod.outlook.com (2603:10a6:20b:3f1::10)
+ by AS8PR02MB6872.eurprd02.prod.outlook.com (2603:10a6:20b:255::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.35; Sun, 2 Jun
+ 2024 17:24:11 +0000
+Received: from AS8PR02MB7237.eurprd02.prod.outlook.com
+ ([fe80::409b:1407:979b:f658]) by AS8PR02MB7237.eurprd02.prod.outlook.com
+ ([fe80::409b:1407:979b:f658%5]) with mapi id 15.20.7633.021; Sun, 2 Jun 2024
+ 17:24:11 +0000
+From: Erick Archer <erick.archer@outlook.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Kees Cook <keescook@chromium.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Justin Stitt <justinstitt@google.com>
+Cc: Erick Archer <erick.archer@outlook.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: [PATCH] iio: event: use sizeof(*pointer) instead of sizeof(type)
+Date: Sun,  2 Jun 2024 19:23:54 +0200
+Message-ID:
+ <AS8PR02MB7237D024459C314CECE72EAF8BFE2@AS8PR02MB7237.eurprd02.prod.outlook.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [2Gh4QwnW7K3cdB+Q6ceNdfyHrZSWlBVY]
+X-ClientProxiedBy: MA3P292CA0013.ESPP292.PROD.OUTLOOK.COM
+ (2603:10a6:250:2c::6) To AS8PR02MB7237.eurprd02.prod.outlook.com
+ (2603:10a6:20b:3f1::10)
+X-Microsoft-Original-Message-ID:
+ <20240602172354.11432-1-erick.archer@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR02MB7237:EE_|AS8PR02MB6872:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9b2c5dce-4729-4664-c0e0-08dc8328d145
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199019|440099019|3412199016|1710799017;
+X-Microsoft-Antispam-Message-Info:
+	QW3BewbwJ4MoffCr2GE6IwAs3JPUkE3mkb29ErF7bo7r07oIk8ObBQXB8Kl9b1JX/T6mK32lyCJ0CvkIHgUW14XE6hfnaJyTsRMPaz/NxH9k3RhiW22gCKNC6fl/V1im0OkFQMerGbipjSUFZ/cTDuBFOfHOva+InvCG39FM7Y9NGmsFMZXYUSd8PJTSNBiOslwQ6A675YmHwpKLJNGLQbibE9nUb+oid21oBRb42cVSlMFO0e+jE5x5L8W79jvshwv66GOudHGVG/NiLpP36EHGuvMV/0Y9sklXgwlbmoADEQaupZbOVcNR7w1kMd8BtK/7uU8V6sJbjhBSynToBo9vufX0Q9ZFtt5Knt1i60yFe55299+P4P0p5kWb3jkeVWfNUifuO5c/JzpLWF2PtCTXXsSadlpRxFcEiWd+PoGAWoN2guuopd3TUGA3tIi34U9kkN0+dQ5FYwbbONK9iRsy5DUUqQr0i2wyTpptRoKKB/qBsx7vLXnuosyUZOigfcm3SY+SARfAF/x+aAJcZ8k0MQBS8iLvLRwWnPgVM4/dKhKQOnkFaowGPta3SGlVjCLv9GmvTQ/QQrVOUScyn4FMnTQhyDwVFTSThzueeXjwWH4XYjgRWF8dtAnunB4/
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?lmP4tPeBufkcPwQbDDRp0c0JA103gT4nz8oqBdt9MjGDoiCVLfK3XMgcqT4a?=
+ =?us-ascii?Q?l2kk+7gQwel8qVTFfHDnXccu2De8sJJvuN0jYV7iyHzeux84Y0uU6mlUfFll?=
+ =?us-ascii?Q?gActYym/ox5ukSNJ5UInNmA4fwM5iCE31Vdc0dXYxcKVfvi80ZYCbBvISHgU?=
+ =?us-ascii?Q?UZom079v+PPt+dXZMXFuMb4Ey1/lYVrItgZnlbwbQiKcKK7D9/wlqkBaaoKR?=
+ =?us-ascii?Q?0HIvVjO7XqP97dfKn46ssXiXtVJYi234JmDbivtsB44XghpOwAD4Qe6P8vGT?=
+ =?us-ascii?Q?AJUhwuXckFrsOk1TH5KmyS3StEPuW+5V9g3QDhss5VrPYnVekDLeB2624whd?=
+ =?us-ascii?Q?fu1HXW8CWItHl6jn8ca9VrtzToa9njNWwMouuaYKBeALvl/zaVELTmFmPex6?=
+ =?us-ascii?Q?qLq4mYmbUjYTZvgQnUFDc+joxmsL/m8ax1QanCOGRQs/dRL/PNQfGD0Nt1ge?=
+ =?us-ascii?Q?Ob3EaThln0K5INag8PLKnvUfLulIUH008qPhQ/eFOeatjrEy02/eZ/e1z1wx?=
+ =?us-ascii?Q?qEDCZX7FTNNn3dTQBrNyBn9ANVnhUnLyizVEfhR8o75R4te/aI0kkQLLfuEg?=
+ =?us-ascii?Q?6P1lF6yGJaWh4CLcB3QTtoTK8ARyDdP8x/s8eWLJvpgOBB5cyyLAeehb9Wjy?=
+ =?us-ascii?Q?04VQ1vxQDJF+QmTZw1scdV+qibMuuS1r/U3ojARQ74UY9Tf26YB7A56UI4gq?=
+ =?us-ascii?Q?kUgzW2OvVl2Y3zUJ2T4nCPmViGzs4OL2Frr6jKDasYFhFgTx/s6nDnmegIkn?=
+ =?us-ascii?Q?J2cLzvXoAKQcnWnTvr6CCtqf18XGJhW8seyN+TZjgvfRfdr+sYkf5g/P9ra2?=
+ =?us-ascii?Q?0izPjGQu7qMHNae0BEXmZ/cs0QsQNyUdpxpYecEa9gUQxA19j+rudaEBfl/q?=
+ =?us-ascii?Q?uCh6JCy/NU1hrrEAH8RQ436fr39Uf/Q0DyZ5e37g0Ofd4fPK1YecC81K3Xh2?=
+ =?us-ascii?Q?MWGPmxJ9w0MdM+Ns2zf9Clj4K8pTWC+tVJAso37VtNzCTfw3+aRVz5CL3qZK?=
+ =?us-ascii?Q?IGgUGcZzSedbTV7t8nr19aGf8xKBcGtp+dga3wr/xori28WNXK1aIOH9B8I0?=
+ =?us-ascii?Q?PnlcrG4t/1E6qfWwRWzcbMVGm7eL5lXiltn1DyShVXuW8RThRrngJZjqVDD4?=
+ =?us-ascii?Q?rk1EUzfoP2A55J/Apvye//58jFQJTAUfH8ne9Q0MguunS4grjHoFvOS2iD6n?=
+ =?us-ascii?Q?K2aegIdYdcwGhmLImFlRnk1bq3/6pyJA8dYgs55vXf7uPNEcAKJZjy3x0dwH?=
+ =?us-ascii?Q?zVbUH52KmmB/KV8d80Dt?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9b2c5dce-4729-4664-c0e0-08dc8328d145
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR02MB7237.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Jun 2024 17:24:11.4895
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR02MB6872
 
-On Thu, 30 May 2024 16:07:22 +0200
-Denis Benato <benato.denis96@gmail.com> wrote:
+It is preferred to use sizeof(*pointer) instead of sizeof(type)
+due to the type of the variable can change and one needs not
+change the former (unlike the latter). At the same time refactor
+the NULL comparison.
 
-> On 1/15/24 10:37, Jonathan Cameron wrote:
-> > On Sun, 14 Jan 2024 21:04:12 +0100
-> > Denis Benato <benato.denis96@gmail.com> wrote:
-> >   
-> >> On 1/13/24 18:46, Jonathan Cameron wrote:  
-> >>> On Wed, 10 Jan 2024 23:35:01 +0100
-> >>> Denis Benato <benato.denis96@gmail.com> wrote:
-> >>>     
-> >>>> Hello,
-> >>>>
-> >>>> With this mail I am submitting bug report that is probably related to
-> >>>> iio-trig-hrtimer but there is also the possibility for it to be
-> >>>> specific to bmi160 and bmi323.
-> >>>>
-> >>>> The described problem have been reproduced on my handheld PC (Asus
-> >>>> RC71L) and in another handheld PC with two different gyroscope
-> >>>> drivers: bmi323 (backported by me on v6.7, on RC71L) and bmi160.
-> >>>>
-> >>>> My target hardware (RC71L that yeld to this discovery) has a bmi323
-> >>>> chip that does not have any interrupt pins reaching the CPU, yet I
-> >>>> need to fetch periodically data from said device, therefore I used
-> >>>> iio-trig-hrtimer: created a trigger, set the device and trigger
-> >>>> sampling frequencies, bound the trigger to the device and enabled
-> >>>> buffer: data is being read and available over /dev/iio:device0.
-> >>>>
-> >>>> While in this state if I suspend my handheld I receive (from dmesg)
-> >>>> the warning reported below and at resume data is not coming out of
-> >>>> the iio device and the hrtimer appears to not be working. If I create
-> >>>> a new trigger and bind the new trigger to said iio device and
-> >>>> re-enable buffer data does come out of /dev/iio:device0 once more,
-> >>>> until the next sleep.
-> >>>>
-> >>>> Since this is important to me I have taken the time to look at both
-> >>>> drivers and iio-trig-hrtimer and I have identified three possible
-> >>>> reasons:
-> >>>>
-> >>>> 1) iio-trig-hrtimer won't work after suspend regardless of how it is
-> >>>> used (this is what I believe is the cause)    
-> >>> me too.    
-> >> who and how should investigate this issue? Would putting a kprintf in the hrtimer callback be enough to check?  
-> > The warning you have pretty much points at this being the problem, but sure
-> > you could add a print there to be absolutely sure.
-> >   
-> >>
-> >>
-> >> Just to make sure I understood correctly: is this a separate issue from the warning I receive or are those linked?  
-> > 
-> > I think it's all one issue.  
-> Hello,
-> 
-> Sorry for the delay, I was able to find some time just recently.
-> 
-> Sadly I don't think anymore this is just one issue:
-> 
-> I have setup a proof of concept that at suspend sets a boolean to true and at resume sets the same boolean to false, and on trigger_handler returns IRQ_NONE if the device is sleeping (everything guarded by an additional mutex) and it solved the warning: no more regmap access are being performed after the device is put to sleep, but unfortunately the acquisition does not automatically resume after waking up the device.
-> 
-> How shall we proceed?
+This patch has no effect on runtime behavior.
 
-It's been a while (and a busy day of reviewing) so I'm struggling
-a bit with the best away forwards.
+Signed-off-by: Erick Archer <erick.archer@outlook.com>
+---
+ drivers/iio/industrialio-event.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-A hackyish approach might be to mask the interrupt at device side
-(fake interrupt used as part of the tree from a trigger to a pollfunc).
-A tidy wrapped up version of this might be the best route forwards
-though it won't currently stop the hrtimer merrily poking interrupts
-at no one
-
-As a hack, could you try having your suspend call disable_irq() on
-the irq found in iio_dev->poll_func->irq and reenable it in resume?
-That might be sufficient.
-
-Check poll_func goes somewhere first though and that irq is > 0
-I think that will call iio_trig_subirq_mask() which should block
-any further interrupts until it's unmasked again.
-
-We'll need to ensure this doesn't race with pollfunc going away though
-which will make it more complex, but the above test should tell us
-if there is a fairly smooth path to making this work.
-
-I'll try and find time to do some testing myself, but it won't be
-for a few weeks :(
-
-Thanks,
-
-Jonathan
-
-
-> >   
-> >>>     
-> >>>> 2) iio-trig-hrtimer is stopped by the -ESHTDOWN returned by the
-> >>>> function printing "Transfer while suspended", however that stack
-> >>>> trace does not include function calls related to iio-trig-hrtimer and
-> >>>> this seems less plausible 3) bmi160 and bmi323 appears to be similar
-> >>>> and maybe are sharing a common bug with suspend (this is also why I
-> >>>> have maintainers of those drivers in the recipient list)
-> >>>>
-> >>>> Thanks for your time, patience and understanding,    
-> >>>
-> >>> Hi Denis,
-> >>>
-> >>> I suspect this is the legacy of the platform I used to test the hrtimer
-> >>> and similar triggers on never had working suspend and resume (we ripped
-> >>> support for that board out of the kernel a while back now...)
-> >>> Hence those paths were never tested by me and others may not have cared
-> >>> about this particular case.
-> >>>
-> >>> Anyhow, so I think what is going on is fairly simple.
-> >>>
-> >>> There is no way for a driver to indicate to a trigger provided by a separate
-> >>> module / hardware device that it should stop triggering data capture.
-> >>> The driver in question doesn't block data capture when suspended, which
-> >>> would be easy enough to add but doesn't feel like the right solution.
-> >>>
-> >>> So my initial thought is that we should add suspend and resume callbacks to
-> >>> iio_trigger_ops and call them manually from iio device drivers in their
-> >>> suspend and resume callbacks.  These would simply pause whatever the
-> >>> trigger source was so that no attempts are made to trigger the use of
-> >>> the device when it is suspended.
-> >>>
-> >>> It gets a little messy though as triggers can be shared between
-> >>> multiple devices so we'd need to reference count suspend and resume
-> >>> for the trigger to make sure we only resume once all consumers of
-> >>> the trigger have said they are ready to cope with triggers again.
-> >>>
-> >>> As mentioned, the alternative would be to block the triggers at ingress
-> >>> to the bmi323 and bmi160 drivers.  There may be a helpful pm flag that could
-> >>> be used but if not, then setting an is_suspended flag under the data->mutex
-> >>> to avoid races. and reading it in the trigger_handler to decide whether
-> >>> to talk to the device should work.    
-> >> I was thinking of doing this too, but I don't know if adding a mutex to frequently invoked functions is going to introduce some timing problems and so I was waiting for some comments on that matter. If nothing bad is expected I can surely try it.  
-> >>>
-> >>> I'd kind of like the generic solution of actually letting the trigger
-> >>> know, but not sure how much work it would turn out to be.  Either way there
-> >>> are a lot of drivers to fix this problem in as in theory most triggers can
-> >>> be used with most drivers that support buffered data capture.
-> >>> There may also be fun corners where a hardware trigger from one IIO
-> >>> device A is being used by another B and the suspend timing is such that B
-> >>> finishing with the trigger results in A taking an action (in the try_reenable
-> >>> callback) that could result in bus traffic.
-> >>> That one is going to be much more fiddly to handle than the simpler case
-> >>> you have run into.    
-> >> Since more and more handheld PCs are coming and provided many vendors such as
-> >> asus tends to improve what they did built on previous generations I think a
-> >> general solution would be desirable.
-> >>
-> >> Plus there are handheld PCs that does not yet have a driver (bmi270) or are
-> >> using an existing one and it would be very difficult to fix it in every of
-> >> them as of now, in the future I fear it will become almost impossible or 
-> >> extremely time consuming as market expands.  
-> > 
-> > Both solutions require specific calls to be added to every driver that might
-> > encounter this - so most drivers that support triggers other than the ones
-> > they supply.
-> >   
-> >>>
-> >>> Thanks for the detailed bug report btw.   To get it fixed a few
-> >>> questions:
-> >>> 1) Are you happy to test proposed fixes?
-> >>> 2) Do you want to have a go at fixing it yourself? (I'd suggest trying
-> >>>    the fix in the bmi323 driver first rather than looking at the other 
-> >>>    solution)
-> >>>    If we eventually implement the more general version, then a bmi323
-> >>>    additional protection against this problem would not be a problem.
-> >>>
-> >>> Clearly I'd like the answers to be yes to both questions, but up to you!
-> >>>
-> >>> Jonathan
-> >>>
-> >>>     
-> >> Hello Jonathan and thank you kindly for you answer,
-> >>
-> >> I am very interested in the iio ecosystem as in those aforementioned
-> >> handheld PCs the gyroscope plays the role as a mouse so it's a pretty
-> >> important input device.
-> >>
-> >> I am writing to lkml not just as a single developer, but as part of a
-> >>  larger community in this matter: this means we will be able to test
-> >> any solution and in more than just one hardware.
-> >>
-> >> To answers your questions:
-> >> 1) yes, we all will be very happy to
-> >> 2) as I am very busy right now I might be unable to do that immediately,
-> >> but I will surely do it if one general solution cannot be found or is impractical.
-> >>
-> >> As of my limited knowledge the number of drivers now existing that are affected
-> >> are 2, and the number of drivers that will be affected, once the driver is
-> >> written, will be at least 3.  
-> > 
-> > The problem appears to be general unfortunately.
-> > 
-> > I'll have to see if I can fire up something where I can actually test solutions
-> > and I'm afraid I also don't have a lot of time at the moment.
-> > Perhaps I can find time in the next few weeks to hack together a prototype
-> > for one of the drivers you can test.
-> > 
-> > Jonathan
-> >   
-> >>
-> >> Thank you very much for your answer,
-> >> Denis
-> >>  
-> >   
-> 
-> Thank you for you time and patience,
-> Denis
+diff --git a/drivers/iio/industrialio-event.c b/drivers/iio/industrialio-event.c
+index 910c1f14abd5..b99bfeff7d37 100644
+--- a/drivers/iio/industrialio-event.c
++++ b/drivers/iio/industrialio-event.c
+@@ -572,8 +572,8 @@ int iio_device_register_eventset(struct iio_dev *indio_dev)
+ 	      iio_check_for_dynamic_events(indio_dev)))
+ 		return 0;
+ 
+-	ev_int = kzalloc(sizeof(struct iio_event_interface), GFP_KERNEL);
+-	if (ev_int == NULL)
++	ev_int = kzalloc(sizeof(*ev_int), GFP_KERNEL);
++	if (!ev_int)
+ 		return -ENOMEM;
+ 
+ 	iio_dev_opaque->event_interface = ev_int;
+-- 
+2.25.1
 
 

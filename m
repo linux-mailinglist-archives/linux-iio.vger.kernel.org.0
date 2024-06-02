@@ -1,60 +1,59 @@
-Return-Path: <linux-iio+bounces-5605-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5606-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B1678D74E0
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 13:11:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D991A8D74E5
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 13:16:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF92B1C20BDC
-	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 11:11:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1714F1C20FE7
+	for <lists+linux-iio@lfdr.de>; Sun,  2 Jun 2024 11:16:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B2D381DF;
-	Sun,  2 Jun 2024 11:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C798538DF2;
+	Sun,  2 Jun 2024 11:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jDFyT22j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PFNfHbjs"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89C72628D;
-	Sun,  2 Jun 2024 11:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789A02C694;
+	Sun,  2 Jun 2024 11:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717326666; cv=none; b=idZZh7wkxQgZfNNalQeW9Rfubel9RQ+87bLCy+cTd06hACT1HKqE0xVUPRvRhlC/o88ZodaUkIotUTe3VbuFigm/TI6rRd6uRksFOnjfbg6sEzgf5fb+tHRQgWoA0V4drrxQlueATvD2StriDCV51H5UVQYxFL9P3kmXtqThlL4=
+	t=1717326990; cv=none; b=qvCjRC3EszkWFpGW6iWDWvjl4DBOwvoKt/PHIFAWtcjAIJyDbMNGZRuVCYz8Kt5c5jHn8ao4O2bly1zC23tP9GyHubE87TBODJHKH9K2pvJ/88u5t9jTSvRBjWYZ7llRwi95Ti93KH8nO9fK4QHsPXWksk4MoMhgTa1d2PQQGrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717326666; c=relaxed/simple;
-	bh=/f1+buvY2wKNB3Djb3Xp6A4nNR8eZ/0oK02yL2xOeWU=;
+	s=arc-20240116; t=1717326990; c=relaxed/simple;
+	bh=W9+6j3CJY2BQ6wjRbyfAkyac0heJKolaFZ45NLSp48I=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GUZDPLaiJUu5B7Jwc87gqzFr0PpfNbJR0mqTQdQvYj9pf0iv3hZmBJt/zWalin7Q9nVUSSzpJbI9tkgQitBs8eOXRVEPpUMtrXlBNWGtkhfC92i49atKtiTb0/bdGHwRC+aw97m2nBdiLc124HaDzdckrAZitd/I3yAGiKKXzAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jDFyT22j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA938C2BBFC;
-	Sun,  2 Jun 2024 11:11:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KFquE1t/10e/zOxHaQX3MKiwlcFfS6/O3+8KefKDMZYoL/N6Bzq/4YV2pxQy03/6Nf5+avPYeRc5QaFtH11wLRzV33dMVdEwGw5590Ja/LrmKI1mJaPRjzlj1K+Pxo1HMM1vFWyirhRjDmtqtZosneTFzdQ8uUmflvwshJjuN/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PFNfHbjs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05315C32789;
+	Sun,  2 Jun 2024 11:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717326666;
-	bh=/f1+buvY2wKNB3Djb3Xp6A4nNR8eZ/0oK02yL2xOeWU=;
+	s=k20201202; t=1717326990;
+	bh=W9+6j3CJY2BQ6wjRbyfAkyac0heJKolaFZ45NLSp48I=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jDFyT22jbQ67clyrNrxdbhD7xaOliiWs4+SseiiLSu6Nr0PNS27VBY119EkzGc9TE
-	 7Rei21olEOO6ncvQygef1eiqCLm2Fb18+625aQnIwYgXSWQUCTOuMoOhfN2QhOVOS6
-	 M9wUOiqohMZ4mUpAja96KeI/BN0hfeit+8H7kiMvjZ0qqcGhXf3V0rzjWmhrdtsgw3
-	 bQrFZ3QcGwVDeG4F8HGxSCFfOrcUUmMkKWk8pWVtOL6XJlcrgYKJfoR0tkAzUo0bhy
-	 bBG08jKYHe0X4eFuxSClGILiZTQtGNmidUROA5tU2cGl1tM1Bm96Q3oE00TRgSevJS
-	 HpzPw7jIlw/Yw==
-Date: Sun, 2 Jun 2024 12:10:51 +0100
+	b=PFNfHbjsHFUCNzXGNt1XfZoonWjAv9Id5B3Nkx9wUZLz0XuCzHcFBxUddhZ9dq87b
+	 4bvCT7NEHitULcRvZA4YMMriOrFW44daFYaeAssxQesM4IZpusQyg4L8E5fLq3GQMX
+	 I86FX0Q9u4W56+GnhrXEHc6V10qqaqG6A7/g28WmD+nt2gIbh1EjTKeh0kvIOgY/gS
+	 LzUethw6b65FFf//s01gugnxKZLczMNezIIoRsUG30u0yZ/U0ws5Tyus/1XUgSk7vv
+	 zmiFSsWgUoDZx/Ua0M2E5ju9WhOugM54I/HkMStTQjlAwvRjTS3u5+WX0fFZpZ+x9T
+	 2xWzkwjJzLRCQ==
+Date: Sun, 2 Jun 2024 12:16:16 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: oe-kbuild@lists.linux.dev, Ramona Gradinariu
- <ramona.bolboaca13@gmail.com>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, conor+dt@kernel.org,
- krzysztof.kozlowski+dt@linaro.org, robh@kernel.org, nuno.sa@analog.com,
- lkp@intel.com, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v5 9/9] drivers: iio: imu: Add support for adis1657x
- family
-Message-ID: <20240602121051.2f322667@jic23-huawei>
-In-Reply-To: <ff870fa7-436c-4ab1-9e8b-a5efcdd28c29@moroto.mountain>
-References: <20240527142618.275897-10-ramona.bolboaca13@gmail.com>
-	<ff870fa7-436c-4ab1-9e8b-a5efcdd28c29@moroto.mountain>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Ramona Gradinariu <ramona.bolboaca13@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-doc@vger.kernel.org, devicetree@vger.kernel.org, corbet@lwn.net,
+ conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, robh@kernel.org,
+ Ramona Gradinariu <ramona.gradinariu@analog.com>
+Subject: Re: [PATCH v2 0/6] Add support for adis16545/47
+Message-ID: <20240602121616.035d2775@jic23-huawei>
+In-Reply-To: <5b002e3b9df0da1a81b248a4e4dcb82464a61cf6.camel@gmail.com>
+References: <20240528142409.239187-1-ramona.gradinariu@analog.com>
+	<5b002e3b9df0da1a81b248a4e4dcb82464a61cf6.camel@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -65,109 +64,58 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 29 May 2024 17:32:40 +0300
-Dan Carpenter <dan.carpenter@linaro.org> wrote:
+On Wed, 29 May 2024 10:40:01 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> Hi Ramona,
+> On Tue, 2024-05-28 at 17:24 +0300, Ramona Gradinariu wrote:
+> > Add support for delta angle and delta velocity channels in adis16480 dr=
+iver.
+> > Add support for ADIS16545/47 devices in already existing adis16480 driv=
+er.
+> > Add documentation for adis16480 driver.
+> >=20
+> > Ramona Gradinariu (6):
+> > =C2=A0 iio: adis16480: make the burst_max_speed configurable
+> > =C2=A0 iio: imu: adis16480.c: Add delta angle and delta velocity channe=
+ls
+> > =C2=A0 dt-bindings: iio: imu: Add ADIS16545/47 compatibles
+> > =C2=A0 iio: adis16480: add support for adis16545/7 families
+> > =C2=A0 docs: iio: add documentation for interfacing tools
+> > =C2=A0 docs: iio: add documentation for adis16480 driver
+> >=20
+> > =C2=A0.../bindings/iio/imu/adi,adis16480.yaml=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 |=C2=A0=C2=A0 6 +
+> > =C2=A0Documentation/iio/adis16475.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 23 +-
+> > =C2=A0Documentation/iio/adis16480.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 445 ++++++++++++++++++
+> > =C2=A0Documentation/iio/iio_tools.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 27 ++
+> > =C2=A0Documentation/iio/index.rst=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=
+=C2=A0=C2=A0 2 +
+> > =C2=A0drivers/iio/imu/adis16480.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | =
+393 ++++++++++++++--
+> > =C2=A06 files changed, 825 insertions(+), 71 deletions(-)
+> > =C2=A0create mode 100644 Documentation/iio/adis16480.rst
+> > =C2=A0create mode 100644 Documentation/iio/iio_tools.rst
+> >=20
+> > --
+> > 2.34.1
+> >  =20
 >=20
-> kernel test robot noticed the following build warnings:
->=20
-> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->=20
-> url:    https://github.com/intel-lab-lkp/linux/commits/Ramona-Gradinariu/=
-dt-bindings-iio-imu-Add-ADIS16501-compatibles/20240527-230203
-> base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tog=
-reg
-> patch link:    https://lore.kernel.org/r/20240527142618.275897-10-ramona.=
-bolboaca13%40gmail.com
-> patch subject: [PATCH v5 9/9] drivers: iio: imu: Add support for adis1657=
-x family
-> config: x86_64-randconfig-161-20240528 (https://download.01.org/0day-ci/a=
-rchive/20240528/202405281539.EXGy0dhk-lkp@intel.com/config)
-> compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
->=20
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-> | Closes: https://lore.kernel.org/r/202405281539.EXGy0dhk-lkp@intel.com/
->=20
-> smatch warnings:
-> drivers/iio/imu/adis16475.c:1608 adis16475_push_single_sample() warn: mis=
-sing error code? 'ret'
->=20
-> vim +/ret +1608 drivers/iio/imu/adis16475.c
->=20
-> c49e2871e50119 Ramona Gradinariu 2024-05-27  1577  static int adis16475_p=
-ush_single_sample(struct iio_poll_func *pf)
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1578  {
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1579  	struct iio_dev *=
-indio_dev =3D pf->indio_dev;
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1580  	struct adis16475=
- *st =3D iio_priv(indio_dev);
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1581  	struct adis *adi=
-s =3D &st->adis;
-> 8f6bc87d67c030 Ramona Bolboaca   2023-08-08  1582  	int ret, bit, buff_of=
-fset =3D 0, i =3D 0;
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1583  	__be16 *buffer;
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1584  	u16 crc;
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1585  	bool valid;
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1586  	u8 crc_offset =3D 9;
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1587  	u16 burst_size =3D AD=
-IS16475_BURST_MAX_DATA;
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1588  	u16 start_idx =3D (st=
-->info->flags & ADIS16475_HAS_TIMESTAMP32) ? 2 : 0;
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1589 =20
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1590  	/* offset until =
-the first element after gyro and accel */
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1591  	const u8 offset =
-=3D st->burst32 ? 13 : 7;
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1592 =20
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1593  	if (st->burst32) {
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1594  		crc_offset =3D (st->=
-info->flags & ADIS16475_HAS_TIMESTAMP32) ? 16 : 15;
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1595  		burst_size =3D adis-=
->data->burst_max_len;
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1596  	}
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1597 =20
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1598  	ret =3D spi_sync=
-(adis->spi, &adis->msg);
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1599  	if (ret)
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1600  		return ret;
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1601 =20
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1602  	buffer =3D adis-=
->buffer;
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1603 =20
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1604  	crc =3D be16_to_cpu(b=
-uffer[crc_offset]);
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27  1605  	valid =3D adis16475_v=
-alidate_crc(adis->buffer, crc, burst_size, start_idx);
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1606  	if (!valid) {
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1607  		dev_err(&adis->=
-spi->dev, "Invalid crc\n");
-> 7f174ee4adeb12 Ramona Gradinariu 2024-05-27 @1608  		return ret;
->                                                                 ^^^^^^^^^^
-> return -EINVAL
-I've gone with this as the fix whilst applying the patch
+> LGTM
+Me too.
+Applied to the togreg branch of iio.git and pushed out as testing for 0-day
+to poke at it and see if it can find anything we missed.
 
 Thanks,
 
 Jonathan
 
 >=20
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1609  	}
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1610 =20
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1611  	for_each_set_bit=
-(bit, indio_dev->active_scan_mask,
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1612  			 indio_dev->ma=
-sklength) {
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1613  		/*
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1614  		 * When burst m=
-ode is used, system flags is the first data
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1615  		 * channel in t=
-he sequence, but the scan index is 7.
-> fff7352bf7a3ce Nuno S=C3=A1           2020-04-13  1616  		 */
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 >=20
 
 

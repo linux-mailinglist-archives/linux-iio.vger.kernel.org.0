@@ -1,144 +1,129 @@
-Return-Path: <linux-iio+bounces-5672-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5673-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 547188D7FE7
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 12:26:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E7098D8128
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 13:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E518E289FDF
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 10:26:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDD59285291
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 11:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953B682496;
-	Mon,  3 Jun 2024 10:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F2184A37;
+	Mon,  3 Jun 2024 11:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LFvGCRP9"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="YhRxCeTX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B567D3E8;
-	Mon,  3 Jun 2024 10:25:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932951366;
+	Mon,  3 Jun 2024 11:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717410360; cv=none; b=YFKCvph50PuEikglAqHOf2vj0yxX2XLCFKsot6d6ivqn6x9d25epO3cD975L5N1SE3SRWSfz9WOrVAa4xxiSWJ074zX94WUipbnzFwhD4fP759k+dszqoakBzBnS2nLpkGwFTSIjRv7HiFcgUnCzetqWJ032lrh8nWUWKNRx5Ss=
+	t=1717413999; cv=none; b=TLOYF1bx2ny0Oe5bqqksIDekm3dVCkk5+2JUsDUdtpx1PxT1WTNjQXKhaQHKfT8hh6DxuVNN35P3qrU961LJ3fjcm8jALKXHM2WRTGiBrBgPsfoA+wlhXdD1o7Y270wspeIG3G0wSAVFeCsz2HdTPt4uIAiFWyqOUmvI/pJdPzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717410360; c=relaxed/simple;
-	bh=YPDnODl9PcFzR13QsOhcvaSdZfLpPP4ia6ug9ukKWwk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=agOLkn88qJrbiqnHqwyqVnXT7DHS8bqiqre91hANfimOmfAxEA8btu0QetQwNXj0gcVCPIehIiV8IJWHg7TMlUBYMEPPimBvBdyvjarQ1aEmLUb94btpCQywGdBZeGBIQ0ovZrpi4PWD/spoeyAjXWOHAlYhGGftfOr+5YifxTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LFvGCRP9; arc=none smtp.client-ip=209.85.208.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2e73441edf7so46022301fa.1;
-        Mon, 03 Jun 2024 03:25:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717410357; x=1718015157; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YPDnODl9PcFzR13QsOhcvaSdZfLpPP4ia6ug9ukKWwk=;
-        b=LFvGCRP9GgS0LPDu9rUohYwS3fiGv5Zz2y8ESaCExPzYQw1iNzRMMwp94/xqr6QwaN
-         6RTwG7kqIa0wlbFQ7QApaaG7QIlb+Aw0zS1xipm+dV4O3izalrecN4meV3jHYhxCC8U3
-         ghKLs2L4lPA+Su4o9zyL1vjgcJlyisPnMfdkGlkontVPtiXnbIGReFV/WTuVlXF3NQaF
-         a0nJaMEHpdCCxAvY/I/cNxFM6AooroqSFu9aZxoxMi58sHcWfajR8pXPTvB2G3GUuNlC
-         /eBOsVMmdd2bfOwzr9Y3btmj2BPIT3rO5xuNUIUuN0PyXIjqaOYu10pNEGUa7r4dC7Un
-         mS+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717410357; x=1718015157;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YPDnODl9PcFzR13QsOhcvaSdZfLpPP4ia6ug9ukKWwk=;
-        b=sq7s0RWutIprCiwB2hoXq4P+MSSbo1sBoAcCYRGTgOKFKfY0Wk6M/Qz9yIgXpTTdSt
-         kcdrosoCDpHas9EyJ71vIDNPlBHbHZyKL6SDvJannc84QlickDC/lF9yzDmyKNUdDYMh
-         CjKgzl7/YDKWQmikxTAwSQorkXem1ZGMQ0U7xHBJYfF9L/FHa4Opvhqq0s5Uea2lF85R
-         OEtujpLC7R9qro7UfzMC3V88ykb3hCS//Sio0lstPfwrimMjoYa+xQ7eT/g/Iq89Oj6y
-         jMx2+yejieqhMmpo18is7U3JmqX0NcQfqACFNydrZJw5o38apSae5MEwPB9bbY4jwAcX
-         BlSw==
-X-Forwarded-Encrypted: i=1; AJvYcCWMDFNb909KDKgnX5PrJIVst2o4+RINIjWDmGQW6FFy8iZNOWResn2XQFQHRqvQ5b24Q4MrLSwtuFxa+takrn0g/3xW9Ydp6n8f8g30Rix8GJL+i/pADumN+r5nWI2QsSs7irXnDRm5
-X-Gm-Message-State: AOJu0Yw+jKm2NvCZoEspG+dJlf9sijiYt3dB/r+7krK7OTITDiisPQKW
-	j00zUJy/1e6PaEiSW5MTAKYY9YoNCG569LA5cx3guOtX81RLNejZ
-X-Google-Smtp-Source: AGHT+IFoYCPQcW7U08SKO8zdKSSmkBYwIdHuHbk1AW5ruboNFfp/attGeJ9EPFVoBvokLFFq6UlC1Q==
-X-Received: by 2002:a2e:b8c8:0:b0:2e9:5011:f6b1 with SMTP id 38308e7fff4ca-2ea951a9d69mr71259451fa.42.1717410356686;
-        Mon, 03 Jun 2024 03:25:56 -0700 (PDT)
-Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421292205ccsm134767175e9.4.2024.06.03.03.25.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jun 2024 03:25:56 -0700 (PDT)
-Message-ID: <11841924e4e1db49001a2fe52f5985f3c044c184.camel@gmail.com>
-Subject: Re: [PATCH v3 0/5] iio: add support for multiple scan types
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, David Lechner
- <dlechner@baylibre.com>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>, Nuno
- =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, Julien Stephan
- <jstephan@baylibre.com>, Esteban Blanc <eblanc@baylibre.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Mon, 03 Jun 2024 12:25:55 +0200
-In-Reply-To: <20240602102517.438b51b8@jic23-huawei>
-References: 
-	<20240530-iio-add-support-for-multiple-scan-types-v3-0-cbc4acea2cfa@baylibre.com>
-	 <20240602102517.438b51b8@jic23-huawei>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
+	s=arc-20240116; t=1717413999; c=relaxed/simple;
+	bh=yQ7fypybzApS/cOYqt1xlvSO/3cM8I7g79GaiHEnIXI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=t1bxsHCwwAOY4vSRPrLgoTWPGiWszUtNHBzOU+6g6rnMUdxkeg5Bb0WJMkuTwoU+80BdAE81og2ftY2dLeUzSeMUlJ2AVn0+f9xxO+YVvIwHLwJllylRjKR3Hs/XIPH+Uld6kMPen7puP7SWfAt0Tch8zCX/KEulk/CiTun2C6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=YhRxCeTX; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 453B4kL2030793;
+	Mon, 3 Jun 2024 07:26:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=305PIoeDZBKW31ZTmKrX3C01abw
+	WiTP++uAgrOnAlV4=; b=YhRxCeTXKYRsSXNMHhQp0fv29H07b8W0T6+nt5Jze4I
+	RHm+k+QrGg6Gg2Cvb32GtrB15r/IUG+GQiGX2m1EyurPW+REhL4VqtAJq8/34pxd
+	YhQd33BEAo1+h8TVoiv7jxr9m8jgX2bSKHdRxnX1ACE0OJZyf7buDtMaU0hrCB5l
+	6CRirbqmcCmuwPETgopnuhYoZX1ngU9jQ1fKogE8dvnJ4QjmGywP6reGSfk8vrXH
+	JBiU7lwr7bVWzUQtq+4U7/Spr/aUaJ77z7h0H5wzhYkH7EmgCfjUlM72jwiH4Pjd
+	wYlmByOXtHpzR0cq3VDgtmOPdxYdSDK8TUHvmQND0Xg==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3yg0j1dsxc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Jun 2024 07:26:16 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 453BQF7w032176
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 3 Jun 2024 07:26:15 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 3 Jun 2024 07:26:14 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 3 Jun 2024 07:26:14 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Mon, 3 Jun 2024 07:26:14 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.151])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 453BQ1V4004841;
+	Mon, 3 Jun 2024 07:26:04 -0400
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Jonathan Cameron <jic23@kernel.org>, "Rob
+ Herring" <robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        "Conor
+ Dooley" <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Subject: [PATCH 1/2] bindings: frequency: adf4350: add clk provider
+Date: Mon, 3 Jun 2024 14:24:43 +0300
+Message-ID: <20240603112447.23308-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-ORIG-GUID: KVTDNUNdGU6x6IrGhnDp45iCRZU64GFG
+X-Proofpoint-GUID: KVTDNUNdGU6x6IrGhnDp45iCRZU64GFG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.650,FMLib:17.12.28.16
+ definitions=2024-06-03_07,2024-05-30_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 bulkscore=0 spamscore=0 clxscore=1011 mlxlogscore=999
+ phishscore=0 malwarescore=0 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2405170001 definitions=main-2406030095
 
-On Sun, 2024-06-02 at 10:25 +0100, Jonathan Cameron wrote:
-> On Thu, 30 May 2024 10:14:07 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
->=20
-> > Up to now, the IIO subsystem has only supported a single scan type per
-> > channel. This scan type determines the binary format of the data in the
-> > buffer when doing buffered reads.
-> >=20
-> > For simple devices, there is only one scan type and all is well. But
-> > for more complex devices, there may be multiple scan types. For example=
-,
-> > ADCs with a resolution boost feature that adds more bits to the raw
-> > sample data. Traditionally, for slow devices, we've just always used th=
-e
-> > highest resolution mode, but for high performance ADCs, this may not be
-> > always practical. Manipulating data after every read can hurt performan=
-ce
-> > and in the case of hardware buffers, it may not be possible to change t=
-he
-> > format of the data in the buffer at all. There are also ADCs where
-> > enabling the higher resolution can only be done if oversampling is also
-> > enabled which may not be desireable.
-> >=20
-> > To allow for more flexibility, we would like to add support for multipl=
-e
-> > scan types per channel.
-> >=20
-> > To avoid having to touch every driver, we implemented this in a way tha=
-t
-> > preserves the existing scan_type field. See the "iio: add support for
-> > multiple scan types per channel" the details. The first couple of patch=
-es
-> > are just preparation for this.
-> >=20
-> > [1]:
-> > https://lore.kernel.org/linux-iio/CAMknhBHOXaff__QyU-wFSNNENvs23vDX5n_d=
-dH-Dw3s6-sQ9sg@mail.gmail.com/
->=20
-> Nice series. Applied to the togreg branch of iio.git and pushed out as
-> testing for 0-day to poke at it.
->=20
-> Obviously this v3 hasn't been on list that long, but there is still time
-> as I doubt I'll push out a non rebasing tree for a week or so.
-> This week is looking too busy!
+Update dt-bindings for clock provider support within adf4350 driver.
 
-If there's still time, feel free to add my tag:
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+ .../devicetree/bindings/iio/frequency/adi,adf4350.yaml      | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-
+diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml
+index 43cbf27114c7..d1d1311332f8 100644
+--- a/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml
++++ b/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml
+@@ -28,6 +28,12 @@ properties:
+   clock-names:
+     const: clkin
+ 
++  '#clock-cells':
++    const: 0
++
++  clock-output-names:
++    maxItems: 1
++
+   gpios:
+     maxItems: 1
+     description: Lock detect GPIO.
+-- 
+2.45.1
 
 

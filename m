@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-5663-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5664-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A3708D7C1B
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 09:03:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3C608D7C24
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 09:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 369F72838B5
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 07:03:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 527531F22ADD
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 07:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7363839850;
-	Mon,  3 Jun 2024 07:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C4F3B781;
+	Mon,  3 Jun 2024 07:05:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YY7v0o7p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kjlhzEy2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297FB3F8F7;
-	Mon,  3 Jun 2024 07:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD6C38DF9;
+	Mon,  3 Jun 2024 07:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717398184; cv=none; b=HAqNWHTcQLRTD2qdYUybhXODqXO+7edjLCnvvfdfKYqKGmMvkSrgE2Pu/BNeN56/wAGaYbjxbVzoo9A6AvXp+47csZenMIlp5UeCuqyOuPKgpvMf0M/BtWsmDEJlaWl3Bk8GHqF9hn8JSncbr8pRi8uZOmG5zAHT7zOPqEiIzPc=
+	t=1717398339; cv=none; b=un9BlvtlSSNMJD4sr0sIb1oY2I68mxrEX0ZFJW70dw5MoO3lHiZRFA0Y6T3UVaQGOBBxUCwFfKOuwMM581urK9OGhDKO5sHNJ+O3LqFQwnRbzY4VKMixKeMD3jJS2C3GSEQmU8L7GEN+iO7D+fYOBx9oU51c5v662M6Q5ErofoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717398184; c=relaxed/simple;
-	bh=pDG/zPvSsthUFIuk7WPPcVG/XqN7D5cdktO31r1fgKw=;
+	s=arc-20240116; t=1717398339; c=relaxed/simple;
+	bh=iEAI7EAOa8V9rXHW4IFLiYoHk0nKOQ5XtNrKqi88ENc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N1+VAePWVAk/EG4q9AixSK7hLRW0kuZnYnO7TLuarvkkM/yHCy3arLjF0uNRjiCVRM48f9oMiG9l3Wt9lG3UByhiUtZsaXMuLmo4jqvyEN0LGLhgwKukuNDeoZPxFyGyvINNN/6KEKauh/Hs/Ua7tI3rBZo1tztmGE8Hp+N5Oro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YY7v0o7p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5129DC2BD10;
-	Mon,  3 Jun 2024 07:03:00 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=nHuTcfxVuOHtT81cXYAEptv7QlSEnCL9Hzxamd2wH5XpdRIEqvs3RGt/PeE3a/WHVAkyOk64Yj5nHzdWDEHFhNFbLveU0cNKPofRT2SUaXoubFTxX4PYHw9o8gklF7ELI05LN1CHsfCmxlK9ZZvflWwuJoRKUaYPYTvGgpIDfhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kjlhzEy2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B30AC32786;
+	Mon,  3 Jun 2024 07:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717398183;
-	bh=pDG/zPvSsthUFIuk7WPPcVG/XqN7D5cdktO31r1fgKw=;
+	s=k20201202; t=1717398339;
+	bh=iEAI7EAOa8V9rXHW4IFLiYoHk0nKOQ5XtNrKqi88ENc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YY7v0o7pW6GEseW8RE2YsHJXKMzSHhMSgxcOlldMUhhQu5hyRXE5xgx6PommmyrRe
-	 /8NX7dnz/k9elGlB3w0yiIbfnmmFDF+7uP3znW7vwQKsyrgR8nARqUNPIn8fZaiZli
-	 tK0DkG8LfLvVa4qy9NIazTGvqPxDwfMS6aVDXT6260B7f9WcNoBNhNnA9xZhJt5/rF
-	 aUIlPwRQWnfSJkOMQ9c2IF5SNSR9yUw1DCSMul7JZQqYt7R+FYlKD5HwSGr0tkgd9O
-	 FYuvR45VSogNLBSV+8Bts2bX3LsKUJKsrE6/kP7b7xCsfhUY5pAPXUoWCfTAFsldVy
-	 RyV2Tbc8rdB3A==
-Message-ID: <5d3a5e35-4a01-48f0-a078-42b564cae2e4@kernel.org>
-Date: Mon, 3 Jun 2024 09:02:58 +0200
+	b=kjlhzEy27tQhEZu9+eswQoQB/8MrY4iN9QJiA2eVtR2hk4EVZoi3hinpRjQvaLGhT
+	 EI+d1Cd6as1djXjr9r9fpZP83oo/z3SOSrNVDOB1HFXaiQXl8JsbvO77uDvjDm1lPN
+	 OXOR78UKg8qrK4/rboX+uN1ZIY7q4Nv9cBotOnmWf2nOn9J4S5U4OvVwWnfYXi7K1g
+	 6ml4ghWAxewK8VmG+7aTT33ZB8/qF/Sx8cNrejOogA2608vt3JcTj4AuXHVlbvjvIF
+	 BSikejjirYGhfCMe0Av4OtMGSSVixdx9FGc2tKEQy7xCiwrNm7I8AzdlYfI23/089d
+	 qfHwqF91o+/4A==
+Message-ID: <ef7aab23-5fd8-4f97-be3b-cbf70bd44428@kernel.org>
+Date: Mon, 3 Jun 2024 09:05:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/5] dt-bindings: iio: dac: Add adi,ltc2664.yaml
+Subject: Re: [PATCH v3 4/5] dt-bindings: iio: dac: Add adi,ltc2672.yaml
 To: Kim Seer Paller <kimseer.paller@analog.com>,
  linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org
@@ -63,7 +63,7 @@ Cc: Jonathan Cameron <jic23@kernel.org>, David Lechner
  Michael Hennerich <michael.hennerich@analog.com>,
  =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
 References: <20240603012200.16589-1-kimseer.paller@analog.com>
- <20240603012200.16589-4-kimseer.paller@analog.com>
+ <20240603012200.16589-5-kimseer.paller@analog.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -109,18 +109,30 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240603012200.16589-4-kimseer.paller@analog.com>
+In-Reply-To: <20240603012200.16589-5-kimseer.paller@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 03/06/2024 03:21, Kim Seer Paller wrote:
-> Add documentation for ltc2664.
+> Add documentation for ltc2672.
 > 
+> Reported-by: Rob Herring (Arm) <robh@kernel.org>
+
+??? There was no bug report telling you the binding is missing. Drop.
+
+> Closes: https://lore.kernel.org/all/171643825573.1037396.2749703571529285460.robh@kernel.org/
+
+Drop
+
 > Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
 > Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
 > Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 > ---
+>  .../bindings/iio/dac/adi,ltc2672.yaml         | 158 ++++++++++++++++++
+>  MAINTAINERS                                   |   1 +
+>  2 files changed, 159 insertions(+)
 
+With these two fixes:
 
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 

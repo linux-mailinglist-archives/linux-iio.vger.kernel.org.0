@@ -1,152 +1,291 @@
-Return-Path: <linux-iio+bounces-5667-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5668-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0908D7CA9
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 09:43:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66F008D7D3B
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 10:24:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E432E281122
-	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 07:43:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E57B81F20B59
+	for <lists+linux-iio@lfdr.de>; Mon,  3 Jun 2024 08:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6EB4487BF;
-	Mon,  3 Jun 2024 07:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6986657CAB;
+	Mon,  3 Jun 2024 08:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d5CisiQy"
+	dkim=pass (1024-bit key) header.d=sentec.com header.i=@sentec.com header.b="KcfsE2Jo";
+	dkim=pass (1024-bit key) header.d=sentec.com header.i=@sentec.com header.b="KcfsE2Jo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ZR1P278CU001.outbound.protection.outlook.com (mail-switzerlandnorthazon11022018.outbound.protection.outlook.com [52.101.186.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54C647A4C;
-	Mon,  3 Jun 2024 07:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717400623; cv=none; b=OHPnB0Bn3CdZsnp7hz9bBJ4HuS20B9Ctp43vVmDmadb4LgTIUWcgWiW/5encBgi1klPj4to3FBgSd79XMy38S5hh7IWVOAi2sI62QgDBFESGtEscEU2G+9fepiYvDuwUyXHVXb2X8/0JGXlGoUbULypnR3CrdCwEgGBA0lRVhTA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717400623; c=relaxed/simple;
-	bh=m1D/sHfPfHRZFlkY+CEB8mS07gtrCM2m0LDbYaEiwPU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=X7hoZzSJNgkWzLOHLw5PdbgfY1OZ7LYzoF1ZDMTQZQDkwb3LpgTwRTNFmEFl03v/eutuk6nDFWmgjyy44i1wCBX+JGw5OfzPjFOn+0tWz5m6lR92f51ij1UDbX3wY6g3RPrzjhKPnEpgtLq2E4o/oHt12rAA5SI0/zeyLneBPNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d5CisiQy; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-35dc9cef36dso3226587f8f.3;
-        Mon, 03 Jun 2024 00:43:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717400619; x=1718005419; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9+3KpBVqTTJeo965A1KR/YlsEUxQQiOfIdsh4+kRbIs=;
-        b=d5CisiQyz5aEuNDdgQYZxzAdrMN7b+Je01hVu17jqWlO/zqC8yKbzff4ySJc4Rb1B/
-         BFlUHb7i3bB97TWz3QhDnvA1cvvOWHZBiH/xHeLbojpBW3p+CE2CqDjz1JL0G+H4cjgk
-         77HpLgi2EgUrtCyjf3pfFKPysmpCTlnv0pP8zApuVTr5Z6yLeeLra5KsvbQpT5oVJ4If
-         s2GyacdrzUGFMtoAETThS/ml1hK1QXK5I4H5Bf9VNtWUfq85rrinXAerjKDh7JW0Posz
-         x5cYR3y9bzVDkhcjtk4abC01CTApxnFNMGZleUPMLDoW2e1xRwTYJFGU6cm3tJuO34+n
-         pwuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717400619; x=1718005419;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9+3KpBVqTTJeo965A1KR/YlsEUxQQiOfIdsh4+kRbIs=;
-        b=UXKWbyVHZVB2uY+KH+qkkTn21Yg0o/lf8SDbIt1E583e+5z+a2taDDA3q5YWeHSJMB
-         DRv3M38U1ep/vanSZQTV+ODNHV+Rwf/A3lZsITSvRl33wtwW2n44uHVaff74A+sgtZ6F
-         sDsNr3egT46I1IbG/EDqmyCo0A/IlFw3amovbBrPswmmLRatyGQUJ1shfi/L4f9paihK
-         fy+YyCqbEuip4u4iGD2DLVJn8TM3BPEWxTtkqTvT8dWpN4ojTc6KNU4J2aYF2roU0K0L
-         OU0gg4gkYZ8hNdSx5JZwDQrahf7WkPy53CxuksHpXqpYnlvDLHBqriITqfDjobs3QZz0
-         vNWw==
-X-Forwarded-Encrypted: i=1; AJvYcCVN+EXTg9sUZWcvgRizGPiGQGoT44Cx5OZnbs+ebUIRCzjimlJHwi6QlKlVPHB8VXGA2Y0uNbeSJa6pnhp2u2CIbLuFnr+leG/ByNxL6MPRHbHZ1EnnAnpv87aFwBrs6l9CL/1SyWpvLaK8lf22W9yYFjOTDjvipt09OD7pxMh1VNQc
-X-Gm-Message-State: AOJu0YzIzujgGJkOHZ8QUVOsUDn30D3UK6sYrPZsR+zTnyff3I5bzoCh
-	PuW/hVAn/jlbgH8Head7rPqEp+4KT38rcR25Fcho7gN7CpBzr+7f
-X-Google-Smtp-Source: AGHT+IEanqGnQyE0VRVI9jQex6bQ4+XQs3Oue5+MhhMZ/CjI0wOwj0rSpqUdBr/gjbzmQgzPke+uJA==
-X-Received: by 2002:a05:6000:1944:b0:34c:cca6:3d18 with SMTP id ffacd0b85a97d-35e0f333b6emr5523593f8f.68.1717400619152;
-        Mon, 03 Jun 2024 00:43:39 -0700 (PDT)
-Received: from eichest-laptop ([2a02:168:af72:0:2b03:375:843f:be9d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35dd062ea66sm7981749f8f.78.2024.06.03.00.43.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jun 2024 00:43:37 -0700 (PDT)
-Date: Mon, 3 Jun 2024 09:43:35 +0200
-From: Stefan Eichenberger <eichest@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
-	u.kleine-koenig@pengutronix.de, marcelo.schmitt@analog.com,
-	gnstark@salutedevices.com, francesco.dolcini@toradex.com,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [RFC PATCH] i2c: imx: avoid rescheduling when waiting for bus
- not busy
-Message-ID: <Zl10J9H+8k0KXAPR@eichest-laptop>
-References: <20240531142437.74831-1-eichest@gmail.com>
- <Zlnidi62gEWwdQ3U@smile.fi.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAFC24AEF5;
+	Mon,  3 Jun 2024 08:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.186.18
+ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717403046; cv=fail; b=BKuawem1BJshFPCAEn3HtXBGBwbuxSj6Nxt5d9AkohGkkn5cOMP+5wPPLsW1x4XzKD0Wn/stY9rHgAh9JUXpXszspVG2EFrrar3inQOsPgjVOKuIpQV+Yhi8JuiP0C76TuIynBLs48FSXblBhy02Z+PiryCZjcUx9piUv3imlzo=
+ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717403046; c=relaxed/simple;
+	bh=mMrqv49Fg3X7QqV75jwQlyxqdna+IZ0v4GpcJVQiULs=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=d7RXa+whD79IspfkOf0vEjk/nMdkZL6N7zhV+4BD2+g/YiznxkMyekfqs89+ni6SHcWbGAXqNcLZcGvI4OPFWfjYTXU07f9kLFzOF70AVXcBVeUC0HTjoLWtwuXV5anVbKis4+gIptRYJOrgFgkWIb/nPmSF2ErWrUes6dKmnRY=
+ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sentec.com; spf=pass smtp.mailfrom=sentec.com; dkim=pass (1024-bit key) header.d=sentec.com header.i=@sentec.com header.b=KcfsE2Jo; dkim=pass (1024-bit key) header.d=sentec.com header.i=@sentec.com header.b=KcfsE2Jo; arc=fail smtp.client-ip=52.101.186.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sentec.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sentec.com
+ARC-Seal: i=2; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=pass;
+ b=EbZqFXYl/36OaM+y1REEzPA9z7mKT9Rxv/Y34UBWsrsbn39ciXURABU8Ksp+l0/fB7nzCnhX4/ZRbRqoBKDahSLbcZhEbLZetCv8kEpssZsu0nFtTlPKPjrRv8P8aQD+319FRXcpG997P5JJZH+Vko3uLzn6s515Y+BHfDxzBNnGBi53O9GLFXo6T5v68o8y3Az4Cpp/MarfQSnkGul4T95oOgZkwARXTqMqpP15KSHVHgM7yTtq25EMrSLAjnxAULesbWVVYSdGv0Aad+L6eUjyPN4lZHJKu47LSXqCvAh8AhRQZbsO12NgfYlQWbjY+7/hpbwRmBK9NAOUlx2s8w==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mMrqv49Fg3X7QqV75jwQlyxqdna+IZ0v4GpcJVQiULs=;
+ b=AQbAgiJZm3YxZ4SBEG2RjKSbvJpc0/JyNOLuDTbvGeNijd6n08MrYVXFy8vyWA//4OrhsURzgU0hkBGL0RGw9uXXGmFCED7/r6RMlqVFv+xlNXhsWmR9eH5XtWTGE725uqnbg6H0xR2xFW8euuWkhARQgcAGsoRTtw18bWzBqLdeso56HYL26t2sJjRkW85vf5wdOI0FqvaM9c9OVQGl4+gHR6P5CIckI/gmr8ZEA1XhNs1yiI09R+pN1EZuHj8wU4Q++kIib/R9bt7TkWGSRE0agxryHnFZmaKhrpM6+pb8njyJd+6Lz/oBTRP6DocGsb6rUmER1PFRHNmogcFIDg==
+ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
+ 52.138.216.130) smtp.rcpttodomain=kernel.org smtp.mailfrom=sentec.com;
+ dmarc=pass (p=none sp=none pct=100) action=none header.from=sentec.com;
+ dkim=pass (signature was verified) header.d=sentec.com; arc=pass (0 oda=1
+ ltdi=1 spf=[1,1,smtp.mailfrom=sentec.com] dkim=[1,1,header.d=sentec.com]
+ dmarc=[1,1,header.from=sentec.com])
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sentec.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mMrqv49Fg3X7QqV75jwQlyxqdna+IZ0v4GpcJVQiULs=;
+ b=KcfsE2JoOT4m+JywyLkbai+/YGtdky85knSOlNGJ1P0VqUReDS6Epll4JCy0f+tcGxDsSfrhZS9DJbkLylsu82bKcC9rcANwOQ6IfFICUrW1RBk4Whd7ki9JceJIiqcqLyoRAjT73f7cahWhZT1BP5gORCdUxbZVUjEYAw93L6k=
+Received: from AM5PR1001CA0033.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:206:2::46)
+ by GV0P278MB1433.CHEP278.PROD.OUTLOOK.COM (2603:10a6:710:6b::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.26; Mon, 3 Jun
+ 2024 08:24:00 +0000
+Received: from AMS1EPF0000004B.eurprd04.prod.outlook.com
+ (2603:10a6:206:2:cafe::5f) by AM5PR1001CA0033.outlook.office365.com
+ (2603:10a6:206:2::46) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.22 via Frontend
+ Transport; Mon, 3 Jun 2024 08:24:00 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 52.138.216.130)
+ smtp.mailfrom=sentec.com; dkim=pass (signature was verified)
+ header.d=sentec.com;dmarc=pass action=none header.from=sentec.com;
+Received-SPF: Pass (protection.outlook.com: domain of sentec.com designates
+ 52.138.216.130 as permitted sender) receiver=protection.outlook.com;
+ client-ip=52.138.216.130; helo=eu22-emailsignatures-cloud.codetwo.com; pr=C
+Received: from eu22-emailsignatures-cloud.codetwo.com (52.138.216.130) by
+ AMS1EPF0000004B.mail.protection.outlook.com (10.167.16.136) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7633.15 via Frontend Transport; Mon, 3 Jun 2024 08:23:59 +0000
+Received: from ZRAP278CU002.outbound.protection.outlook.com (40.93.85.1) by eu22-emailsignatures-cloud.codetwo.com with CodeTwo SMTP Server (TLS12) via SMTP; Mon, 03 Jun 2024 08:23:58 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=HQugNkwrSZRL97hAX14Io/AqzztBN9NF0w17Doa+xyI2ikCnQPTZmsx2yHgQBRB/zEX/4DpYqG2z93Jp7Nj7bjpamNhh6b2OgdJ5noEPf6qxdE0OytuEF5yyLGGlwj1kVbb300bTV7I0eZSLqyg9OoVigRx2qBjOUwiWdBcbRVzIwLFeCM7SmICPeWsfyKdeM4jFiU942hWmq2jGQaQpD9GBiihp2am2L30ytIkSic5eKqBdyQjx79gtPXUQLczc0KQK530zIlUAv215XGI1OWOk87VMnly1V0IuiE74ULkmTJFrTerRl0oYUbbUcDlm34ahRvYZTlTT83h0fKgznA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mMrqv49Fg3X7QqV75jwQlyxqdna+IZ0v4GpcJVQiULs=;
+ b=BAvatZ8mYffr3FmKXXOVamVmWmWBPjU051iotORuqfTMla4m02hmxVn+YosutRPCQuyAk0hSJDNBrayhSQ57ro6VgdUDD/HXe+DBUVxhwHQO4PjYfeDMkOonmUZn0byTiDpGvLsVM6SA8VDpeNr+14OPMsqxrIVIv17dQbcNzxwzKI6OEDt2hyH+VvLpU1zJP6/ulViEeltWvKPc6DgF9XS0bEoQ1qpPHu3vKjR+VlTYeFRF1PJaJVteZlYrQdSKu6VxMosIDgGzNJMSTdKrupniQaiOR3SrtkB4t27VCqdh5K5agvJZPTzqcAu0c4YksoQ1POEmJ87kusbpjPh/KA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=sentec.com; dmarc=pass action=none header.from=sentec.com;
+ dkim=pass header.d=sentec.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sentec.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mMrqv49Fg3X7QqV75jwQlyxqdna+IZ0v4GpcJVQiULs=;
+ b=KcfsE2JoOT4m+JywyLkbai+/YGtdky85knSOlNGJ1P0VqUReDS6Epll4JCy0f+tcGxDsSfrhZS9DJbkLylsu82bKcC9rcANwOQ6IfFICUrW1RBk4Whd7ki9JceJIiqcqLyoRAjT73f7cahWhZT1BP5gORCdUxbZVUjEYAw93L6k=
+Received: from ZR1P278MB1117.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:58::13)
+ by ZR1P278MB1412.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:9a::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.23; Mon, 3 Jun
+ 2024 08:23:55 +0000
+Received: from ZR1P278MB1117.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::44a0:22a7:f760:f8f]) by ZR1P278MB1117.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::44a0:22a7:f760:f8f%6]) with mapi id 15.20.7633.021; Mon, 3 Jun 2024
+ 08:23:55 +0000
+From: Arthur Becker <arthur.becker@sentec.com>
+To: Jonathan Cameron <jic23@kernel.org>
+CC: Krzysztof Kozlowski <krzk@kernel.org>, Lars-Peter Clausen
+	<lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>
+Subject: Re: [PATCH v3 2/2] dt-bindings: iio: light: add VEML6040 RGBW-LS
+ bindings
+Thread-Topic: [PATCH v3 2/2] dt-bindings: iio: light: add VEML6040 RGBW-LS
+ bindings
+Thread-Index: AQHatY9fGWtECmtpkkWZNgQDKGlpvQ==
+Date: Mon, 3 Jun 2024 08:23:55 +0000
+Message-ID: <ZR1P278MB1117EE8AFDD8891EE6459CEC81FF2@ZR1P278MB1117.CHEP278.PROD.OUTLOOK.COM>
+References: <20240527-veml6040-v3-0-6f3bbfd42960@sentec.com>
+	<20240527-veml6040-v3-2-6f3bbfd42960@sentec.com>
+	<e47de936-8cb4-4cef-a346-74835767e203@kernel.org>
+	<ZR1P278MB111779FE0C84DB465C54EEFF81F12@ZR1P278MB1117.CHEP278.PROD.OUTLOOK.COM>
+ <20240602141617.533558c4@jic23-huawei>
+In-Reply-To: <20240602141617.533558c4@jic23-huawei>
+Accept-Language: en-GB, de-DE, en-US
+Content-Language: en-GB
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+Authentication-Results-Original: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=sentec.com;
+x-ms-traffictypediagnostic:
+	ZR1P278MB1117:EE_|ZR1P278MB1412:EE_|AMS1EPF0000004B:EE_|GV0P278MB1433:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7bdb50d6-ad05-45ae-3734-08dc83a684e3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam-Untrusted:
+ BCL:0;ARA:13230031|366007|1800799015|376005|38070700009;
+X-Microsoft-Antispam-Message-Info-Original:
+ =?iso-8859-1?Q?ojfcTNL/ETXZrSClK1jaPEDbdzu1aEGXCMKrp3Jb3DSWjny6xTvFVd6jyp?=
+ =?iso-8859-1?Q?0BTSI5lHuwVjADn4KTdEOmW8YBb0qU/PfRn+NDhq5M9HrDZDU4sIYZf/+9?=
+ =?iso-8859-1?Q?3TiTBDa6AgvleZ3td5myKTS1UbzNwqObqQ4l8SnBflKd2sMgxkIMJIyEZA?=
+ =?iso-8859-1?Q?GAL6ff0vwL1xBvuNq9IcYidNlqxdV4hpW6uDzijPnMaKskBmRMBYqBkwxr?=
+ =?iso-8859-1?Q?vE6e+HtMYyjTowN6oSKbXNWBZhnBk7x8V2ox+fcDIOxMH7U1WCbc2Nvw6o?=
+ =?iso-8859-1?Q?HlQWDKk7Y/IpjVSPnCUtlMa48ZLqyQbrab9jWxZyL1P9avInxz/TlwyFMJ?=
+ =?iso-8859-1?Q?5RzIlpNHNg2vPPN5RvldTGiHfA9P+iUHNKT5SOpLfHd/9ZuRwJpHE3F68/?=
+ =?iso-8859-1?Q?XAM7zRSvUYDX5oK4QzA8ha9XUL0zzFrMWxKIC52eEvIPLDXroOMC2zBpyu?=
+ =?iso-8859-1?Q?UQMPC6mQ4yyc67vysYiF2HfNagzBSJdOLweS7ZEJPWlkykkyLHC6vqB1hq?=
+ =?iso-8859-1?Q?J9LzWB3uWW60w9HsqSMcPZMWKcIlHPdYnMIeEnh+vlOO2nRCBE0h9YjysF?=
+ =?iso-8859-1?Q?hFJLzTlC86sOn925mVFBSbNAoTips5RgkinEb2sv3bN46AwIFTZvCc2Zzr?=
+ =?iso-8859-1?Q?rboXIFQAeurMifjqlyyGSCmEvOYgWiWOOBQoTHXxL/VjAsuCeUh9PYTKvt?=
+ =?iso-8859-1?Q?lWS3NIHmV7SdmLcu2bBOke6HaI707oNYYHfO8ctmP81B8xQ2sz36mEiTBl?=
+ =?iso-8859-1?Q?/Ee+j5NE+vWZudnuLtqNVTfmndlbHWXhi4NoGgHZ4OqbKYM4qLt2vV82g4?=
+ =?iso-8859-1?Q?v63Z30nn9B5DIbTu88vKX2VOp4aeRVYsT4NGc/L02I3xb2SRPJYEVqCzY+?=
+ =?iso-8859-1?Q?aal0kAQ8KNcM6i4NV/A83G7zZ3paeYP8FlSdPpVohJ6v33UeY8zHsp08pD?=
+ =?iso-8859-1?Q?zTxz7sqVrJm/mjXeXXXvcFJQIaRKssrrTrnS7Aaq0ktQwjQbjAaPwnScjI?=
+ =?iso-8859-1?Q?VY25p7l+d2H7/pX+Lhf/W53T8s+7CfU354nI9mF3miDCg7ASH3gi4p0TYR?=
+ =?iso-8859-1?Q?63HLpIEvE7FNRkMJYyNq4T33v0yGs0EgLVlQ7J6kkJqZ5XgVNjzATZB2qV?=
+ =?iso-8859-1?Q?3z7oDER+cNpZv+kxdHpIURumrRiIl8GjblJKz5r4fg8zf6Jcdkzjm+6Nyg?=
+ =?iso-8859-1?Q?npwUb33jCbAXd7X5fYAplZLgTVgOVxMd0QlaagL7Pw1ss6fEMSUcccDQqj?=
+ =?iso-8859-1?Q?RwVBTUysk2xtrEFXj0T98jrtWM9mvTaIm/bitZ7hlSJ0vSKHASmV+jvhq1?=
+ =?iso-8859-1?Q?em6EtjNeYNN9rFFUjZ2xLpqvFg63Ln9TA3+EEdK29OykF7wyaf7jckwtvB?=
+ =?iso-8859-1?Q?oTcCrxH/+iQeMZUtjgHnO4ZEbeZ4bPmA=3D=3D?=
+X-Forefront-Antispam-Report-Untrusted:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZR1P278MB1117.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(366007)(1800799015)(376005)(38070700009);DIR:OUT;SFP:1102;
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zlnidi62gEWwdQ3U@smile.fi.intel.com>
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR1P278MB1412
+X-CodeTwo-MessageID: ae5a84c6-b5fc-4a1d-989a-0d91855123ab.20240603082358@eu22-emailsignatures-cloud.codetwo.com
+X-CodeTwoProcessed: true
+X-EOPAttributedMessage: 0
+X-MS-Exchange-Transport-CrossTenantHeadersStripped:
+ AMS1EPF0000004B.eurprd04.prod.outlook.com
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id-Prvs:
+	a6922ae0-1d98-4128-7b74-08dc83a68266
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|1800799015|82310400017|35042699013|36860700004|376005;
+X-Microsoft-Antispam-Message-Info:
+	=?iso-8859-1?Q?q8a/6Qy03qpEk/hI9tFPQvNPHCtWNoJhMbs85wTbDENwKcD9n1iyKhBNmt?=
+ =?iso-8859-1?Q?H/jzOIJbA40VG/B2ugixd+LZmpTLCeHcAgBh4K+Y/CtUsB9mGJ0x7yv+tQ?=
+ =?iso-8859-1?Q?GCk7fO0HRIOyIKgurO4vDVxum8eH+MErTgt+xdNWpo9ZogGaMK0NZ2LnYW?=
+ =?iso-8859-1?Q?17B6j9g6btpCufcJ+MPN5zBO49w/bLK+T4MxxS28DC/aaLzV09uEoYzewd?=
+ =?iso-8859-1?Q?YaVWmcU152gzSXR4eGPrPVrLzcZu3HjENNIhA7tyw6Clc6LeaMRlBKIH1D?=
+ =?iso-8859-1?Q?UlkAf9KlRVxjonTKAe+4lv6QFzRZ+Gc/hMRq4uR7ODXeWM3c68OzTKnlSt?=
+ =?iso-8859-1?Q?OWrcLblgnFhz2xaZ5TBn1uBQM4gM6rN2Kwtr93iawE+wjupQGZmWxPAEYD?=
+ =?iso-8859-1?Q?QquvbeaQFD8h3q7+LteUy145vRnAqfC3H06/j5vrSwFDH6ROIG6yZV3UYh?=
+ =?iso-8859-1?Q?1h+C4wjab+5bUVPXnQ9Yiab1b/ljgtJfjr4WTxg6to2+jIRCUfoiS33iXm?=
+ =?iso-8859-1?Q?j67MQiLqKsq+YjD8xTzYvqj1HR+f0/55XEA+magtQz5e/PkJmN2w4ujf/M?=
+ =?iso-8859-1?Q?MjkWsBGhJ6IM8WM88KEVFEwoT8KNQPMu2wC/oGoD57Hvp84v949aA4Et2l?=
+ =?iso-8859-1?Q?f3IpmDj2+9XW0XdsrraqG2LHbGofm0ZPBGZGl2AvpKnox9ZLNbLRAiWPNu?=
+ =?iso-8859-1?Q?wkombBNK8wrsXq0B90/QtsEF6l5xtTROY47hnb9KCGzec1AepN8bWvqJP8?=
+ =?iso-8859-1?Q?YCm2Bv0ZWqp2XM18Ovny7mjAW5mBNZwfKTgxqSuDG6zGByAnaOuZtqChWF?=
+ =?iso-8859-1?Q?7onWcktb/Bla6BYUYRXU28Vgg5vkoF6hrd6tZ4AHVJnmzD9b5J56o5rYRJ?=
+ =?iso-8859-1?Q?ZuLX0t5BBxF99JPKLreNy2lrNvXQx6jtzH4bZgqivIwmZRHhLIWnu3VxiH?=
+ =?iso-8859-1?Q?62INUhBPLqhnrPkcjpWdcw3uwKHVjW0ee22Zll5782GLmyRjj/tE/XV/XY?=
+ =?iso-8859-1?Q?Ly4TewBajtI61JcmAOTHDAsh3CKFKH0FoMDKefRhrT+g6vQq5Jt1w7xgUG?=
+ =?iso-8859-1?Q?vLcWedsmLCYhtMzjcGfoj/mkQKU8QYvl1n/8zIWfhybHQE/CA8Wqos+fNU?=
+ =?iso-8859-1?Q?ps8bHjCqhyYR1j8H2MFmUhRWLOAK2MlcfEv0uOpmQHqrocUNuVqFa6MjTR?=
+ =?iso-8859-1?Q?5mqPvHsZW5D+XfZODYBATyVwakPayRq1PZ3ADmFP0Ja+vK9gs5IzamafgH?=
+ =?iso-8859-1?Q?Sx+eG0fZeAE+NTn/A8dYOuwk/mea9izBguCyvCs7bpwxzJ029tGNXvgOW+?=
+ =?iso-8859-1?Q?YvfyzqgUnrkVx3ufc8vB1+aU7Z8iONtBhosrhWborXO2P/2Be2q+GntJ6d?=
+ =?iso-8859-1?Q?VfadrM/TueyehdGUlKRmbHypne458sCY7mVc0ZQC3pgb/BXd7mWJI=3D?=
+X-Forefront-Antispam-Report:
+	CIP:52.138.216.130;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eu22-emailsignatures-cloud.codetwo.com;PTR:eu22-emailsignatures-cloud.codetwo.com;CAT:NONE;SFS:(13230031)(1800799015)(82310400017)(35042699013)(36860700004)(376005);DIR:OUT;SFP:1102;
+X-OriginatorOrg: sentec.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jun 2024 08:23:59.3935
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7bdb50d6-ad05-45ae-3734-08dc83a684e3
+X-MS-Exchange-CrossTenant-Id: 0cfe5cb4-0f5d-4077-ac2f-a1a82ad165a3
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0cfe5cb4-0f5d-4077-ac2f-a1a82ad165a3;Ip=[52.138.216.130];Helo=[eu22-emailsignatures-cloud.codetwo.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AMS1EPF0000004B.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV0P278MB1433
 
-On Fri, May 31, 2024 at 05:45:10PM +0300, Andy Shevchenko wrote:
-> On Fri, May 31, 2024 at 04:24:37PM +0200, Stefan Eichenberger wrote:
-> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > 
-> > On our i.MX8M Mini based module we have an ADS1015 I2C ADC connected to
-> > the I2C bus. The ADS1015 I2C ADC will timeout after 25ms when the I2C
-> > bus is idle. The imx i2c driver will call schedule when waiting for the
-> > bus to become idle after switching to master mode. When the i2c
-> > controller switches to master mode it pulls SCL and SDA low, if the
-> > ADS1015 I2C ADC sees this for more than 25 ms without seeing SCL
-> > clocking, it will timeout and ignore all signals until the next start
-> > condition occurs (SCL and SDA low). This can occur when the system load
-> > is high and schedule returns after more than 25 ms.
-> > 
-> > This rfc tries to solve the problem by using a udelay for the first 10
-> > ms before calling schedule. This reduces the chance that we will
-> > reschedule. However, it is still theoretically possible for the problem
-> > to occur. To properly solve the problem, we would also need to disable
-> > interrupts during the transfer.
-> > 
-> > After some internal discussion, we see three possible solutions:
-> > 1. Use udelay as shown in this rfc and also disable the interrupts
-> >    during the transfer. This would solve the problem but disable the
-> >    interrupts. Also, we would have to re-enable the interrupts if the
-> >    timeout is longer than 1ms (TBD).
-> > 2. We use a retry mechanism in the ti-ads1015 driver. When we see a
-> >    timeout, we try again.
-> > 3. We use the suggested solution and accept that there is an edge case
-> >    where the timeout can happen.
-> > 
-> > There may be a better way to do this, which is why this is an RFC.
-> 
-> ...
-> 
-> > +			/*
-> > +			 * Avoid rescheduling in the first 10 ms to avoid
-> > +			 * timeouts for SMBus like devices
-> > +			 */
-> > +			if (time_before(jiffies, orig_jiffies + msecs_to_jiffies(10)))
-> > +				udelay(10);
-> > +			else
-> > +				schedule();
-> 
-> Isn't there cond_resched() or so for such things?
-> More info here: 494e46d08d35 ("airo: Replace in_atomic() usage.")
-
-The problem would be that I have to disable preemption during the
-transfer, then cond_resched would do nothing if I understand it
-correctly. However, an I2C transfer @100kHz for 3 bytes takes at least
-240us + overhead (e.g. waiting for the bus idle) which might end in a
-close to ms ranage. This is what concerns me.
-
-Regards,
-Stefan
-
-
+From: Jonathan Cameron <jic23@kernel.org>=0A=
+Sent: 02 June 2024 15:16=0A=
+To: Arthur Becker=0A=
+Cc: Krzysztof Kozlowski; Lars-Peter Clausen; Rob Herring; Krzysztof Kozlows=
+ki; Conor Dooley; linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org; =
+devicetree@vger.kernel.org=0A=
+Subject: Re: [EXTERNAL]Re: [PATCH v3 2/2] dt-bindings: iio: light: add VEML=
+6040 RGBW-LS bindings=0A=
+=0A=
+> On Tue, 28 May 2024 07:23:03 +0000=0A=
+> Arthur Becker <arthur.becker@sentec.com> wrote:=0A=
+> =0A=
+> > Thanks for the Review!=0A=
+> > Right, I wasn't sure if and how to add the veml6040 to the veml6075 dt-=
+binding file.=0A=
+> > I'll modify that the next time I make adjustments to the driver.=0A=
+>=0A=
+> Hi Arthur,=0A=
+>=0A=
+> If I read the above correctly you are hoping this merges as it stands and=
+=0A=
+> we come back later. If we are going to combine them long term,=0A=
+> I'd rather we avoided the churn and had a combined DT binding from the st=
+art.=0A=
+=0A=
+Hi Jonathan,=0A=
+=0A=
+I could have phrased that better, what I meant was that I was waiting for t=
+he next=0A=
+feedback on the driver to make the adjustments all at once.=0A=
+I'll get to it shortly!=0A=
+=0A=
+Kind Regards,=0A=
+Arthur=0A=
+=0A=
+>=0A=
+> Jonathan=0A=
+>=0A=
+> >=0A=
+> > Kind regards,=0A=
+> > Arthur=0A=
+> >=0A=
+> > ________________________________________=0A=
+> > From: Krzysztof Kozlowski <krzk@kernel.org>=0A=
+> > Sent: 27 May 2024 18:31=0A=
+> > To: Arthur Becker; Jonathan Cameron; Lars-Peter Clausen; Rob Herring; K=
+rzysztof Kozlowski; Conor Dooley=0A=
+> > Cc: linux-kernel@vger.kernel.org; linux-iio@vger.kernel.org; devicetree=
+@vger.kernel.org=0A=
+> > Subject: [EXTERNAL]Re: [PATCH v3 2/2] dt-bindings: iio: light: add VEML=
+6040 RGBW-LS bindings=0A=
+> >=0A=
+> > On 27/05/2024 17:12, Arthur Becker via B4 Relay wrote:=0A=
+> > > From: Arthur Becker <arthur.becker@sentec.com>=0A=
+> > >=0A=
+> > > Device tree bindings for the vishay VEML6040 RGBW light sensor iio=0A=
+> > > driver=0A=
+> > >=0A=
+> > > Signed-off-by: Arthur Becker <arthur.becker@sentec.com>=0A=
+> > > ---=0A=
+> > > V1 -> V3: Addressed review comments (v1 of the dt-bindings was sent=
+=0A=
+> > > along with v2 of the driver but not in a set)=0A=
+> >=0A=
+> > It's basically the same as veml6075, so should be put there...=0A=
+> >=0A=
+> > Eh,=0A=
+> >=0A=
+> > Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>=0A=
+> >=0A=
+> > Best regards,=0A=
+> > Krzysztof=0A=
+> >=0A=
 

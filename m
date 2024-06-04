@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-5741-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5742-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF368FAF19
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 11:43:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C3DA8FAFF1
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 12:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDEA4B218F3
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 09:43:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DD592816BD
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 10:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A24AA1448EB;
-	Tue,  4 Jun 2024 09:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EA21448F1;
+	Tue,  4 Jun 2024 10:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="k409xpkt"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ajzzr07W"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D03F1448E5;
-	Tue,  4 Jun 2024 09:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C96C38B;
+	Tue,  4 Jun 2024 10:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717494132; cv=none; b=IzyDOhwArxmPak21HdwnKOvrq4ta4f+6bgq7e+XKI6iAczh2fB7vcZ/DrZLYP2eQNH0jdEv4k84zhz5PFVI6pjBuJyfpQR/nbUAHqQ7nLFxDNgJSkztD8DnVo5/KrpVUIAg2j64X2O8GIWi5+L4jW21oZaDNMXj6V6nZ44ZjBgI=
+	t=1717497490; cv=none; b=lvI//GQ/c0GUc3O3JRt71ZTBxfoq3/befymTGp0k1RRqiOg0fhEpP9WibpXSGFKruV4rG1laMOCFzbLGy1lsGdD56CR2nDvZDbaFxTq7XNzNqjB7hGGS/i1U0TJDTs+o9MjjLCgu2gqy6MUbIDQxj7MRw74C+WlVI7Ro5MN6JSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717494132; c=relaxed/simple;
-	bh=SqIardiCnNZB+FsCyhAvMpjScc/tQVHsUr+TaVIvUsI=;
+	s=arc-20240116; t=1717497490; c=relaxed/simple;
+	bh=83qgTD6GQKD17zryJJer2RaJbdNVFmS+NMwIUzNFP2U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mc6Oao45uoaQ9RaQfdE8VAUMapsUgnxcyvAIEZUWPePR4s7VBe/Hi7BBfwHqAN3hiE34rsv2vYon3ew4W4iGzVWm/51UagnEnIIp8l5KlrcH1aVWdr9MSIClpFGgydHIySVYjpw5udIwqnaJEdToNzIglShvW19+ZLncYtfTjc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=k409xpkt; arc=none smtp.client-ip=46.235.227.194
+	 In-Reply-To:Content-Type; b=RPEPGzohB/QDAlY4Ykknf1FzUMDCHnASRJT2jsC6LCd3V0R5Wm3h2qQrIR+fl0p7cuuVK/QZJl8iQmrM/3kAcZ2fCZpYaGm8l2pemZxQNn1DUSJ2+7rBMWtLU1ICT0ktqRIvE8AfevykpNU4Qe8NG0C/Q+YeSMaC37OL/0QJ1G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ajzzr07W; arc=none smtp.client-ip=46.235.227.194
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1717494127;
-	bh=SqIardiCnNZB+FsCyhAvMpjScc/tQVHsUr+TaVIvUsI=;
+	s=mail; t=1717497486;
+	bh=83qgTD6GQKD17zryJJer2RaJbdNVFmS+NMwIUzNFP2U=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=k409xpktYNQSM5q/McE44TRg6t5fhI5Q2Y85Ah9xhfVTEOEojgPwOt0kI2Qx2wkw5
-	 mEOEh/7wrfq13p2t1o5RUwUBFSCu1Gmcawy1+4q+E19o/dUzlCatWIAKe7kWd8zDfQ
-	 SNq85Emc5f8d9StgPH1chqcAQaSRjUsWBPKFccvVGa9WUu8JK8Cy+AaAVskC0YNlsB
-	 z/iQuvfqJzQgS6X5WFSSvN0wI6mUW73KKOxZWRkppcnDMyAzoy8fJlY5d8JIggXk0j
-	 V1Zzu2I7djkfDMCG2RNImk1Z2yO7jZo1qzpNzLy0yYR+cB35aC6uRBmz+sja03/+gV
-	 8KOcjHbj9agog==
+	b=ajzzr07WHRA3SgHRuBDCGrgT90Benyyh2fvI3m5ZL1ML0Ytj8ma90RiDPSTJtxBGC
+	 z614fqAVpWsLRylzPGu0BKDiOJ8IVxxF94KDPE7b16HP8VBJzeZq6oWf4NBpZdxDck
+	 BHCnZjYTl5RSR8HgSSqpmLUlJtTlzUDi5532SvlyJpT7lcdNUaZfZUtF7jyqD58O4P
+	 U5DgXMKmsMvhTvoGiOBz3jQ1RuWK+AwEz/1jguOV+f+Qrxh1oFSan5MXKdu0qEAUZh
+	 99huVFDrNcTGrfvlY8YVotC/qdBtYL5lGMUukd6jdOQxkv5ruYz8yJYtYsmT5NmGv5
+	 BRHqt/Cc1vAMA==
 Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: kholk11)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C3B4D37813E1;
-	Tue,  4 Jun 2024 09:42:05 +0000 (UTC)
-Message-ID: <60e55919-2a8c-4d83-89a1-6e4ae156d34d@collabora.com>
-Date: Tue, 4 Jun 2024 11:42:05 +0200
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id C690937821DC;
+	Tue,  4 Jun 2024 10:38:04 +0000 (UTC)
+Message-ID: <84f1c58c-0a5d-4131-a16b-b76bf28862ee@collabora.com>
+Date: Tue, 4 Jun 2024 12:38:04 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -59,8 +59,8 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 2/4] iio: adc: Add support for MediaTek MT6357/8/9
  Auxiliary ADC
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
  conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org,
  andy@kernel.org, nuno.sa@analog.com, bigunclemax@gmail.com,
  dlechner@baylibre.com, marius.cristea@microchip.com,
@@ -71,445 +71,367 @@ Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
  linux-mediatek@lists.infradead.org, kernel@collabora.com
 References: <20240530093410.112716-1-angelogioacchino.delregno@collabora.com>
  <20240530093410.112716-3-angelogioacchino.delregno@collabora.com>
- <20240602111141.0058f39e@jic23-huawei>
+ <CAHp75Vexddt1xUGogRDZA9pM1pFp2=ZtCQnCfXePahSCb+oKpg@mail.gmail.com>
 From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Content-Language: en-US
-In-Reply-To: <20240602111141.0058f39e@jic23-huawei>
+In-Reply-To: <CAHp75Vexddt1xUGogRDZA9pM1pFp2=ZtCQnCfXePahSCb+oKpg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-Il 02/06/24 12:11, Jonathan Cameron ha scritto:
-> On Thu, 30 May 2024 11:34:08 +0200
-> AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> wrote:
-> 
+Il 30/05/24 15:34, Andy Shevchenko ha scritto:
+> On Thu, May 30, 2024 at 12:34 PM AngeloGioacchino Del Regno
+> <angelogioacchino.delregno@collabora.com> wrote:
+>>
 >> Add a driver to support reading the Auxiliary ADC IP found in the
 >> MediaTek MT6357, MT6358 and MT6359 Power Management ICs.
 >>
 >> This driver provides multiple ADC channels for system monitoring,
 >> such as battery voltage, PMIC temperature, PMIC-internal voltage
 >> regulators temperature, and others.
->>
->> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 > 
-> I'll leave you to answer the 'why a new driver' in response to Andy's review
-> and just assume it makes sense whilst reviewing this.
+>> ---
 > 
-
-Simply, the Auxiliary ADC IP in the MT635x PMIC series is different, and handled
-differently from the others that are supported by other drivers, other than having
-a different register layout.
-
-Adding this to any other driver, such as mt6577_auxadc (a SoC - not PMIC - auxadc
-IP driver!), would be like having two different drivers in one and wouldn't make
-any sense :-)
-
-> What are IMP channels?
+> Here is no explanation on how this is differ to any of the three
+> existing drivers? I.o.w. why do we need a brand new one?
 > 
 
-Honestly? Well, it's called like that. I don't have any clear description of that
-and not even datasheets are unrolling the meaning of "IMP". So.. I don't know.
+Not a SoC AUXADC but a PMIC AUXADC, different register layout and different
+handling for configuration, reset, and reading.
 
-What I know is what I wrote in the driver, and this is:
-* IMP has IBAT and VBAT ADCs
-* It needs different handling from the other ADCs, as shown.
+So okay I'm adding a nicer text of what I just wrote to the commit description.
 
-...and nothing else :-(
-
-> A few additional comments inline.
+> ...
 > 
-> Thanks,
+> + bits.h
 > 
-> Jonathan
-> 
->> diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
->> index edb32ce2af02..da7d4452b1e0 100644
->> --- a/drivers/iio/adc/Makefile
->> +++ b/drivers/iio/adc/Makefile
->> @@ -79,6 +79,7 @@ obj-$(CONFIG_MCP320X) += mcp320x.o
->>   obj-$(CONFIG_MCP3422) += mcp3422.o
->>   obj-$(CONFIG_MCP3564) += mcp3564.o
->>   obj-$(CONFIG_MCP3911) += mcp3911.o
->> +obj-$(CONFIG_MEDIATEK_MT6359_AUXADC) += mt6359-auxadc.o
->>   obj-$(CONFIG_MEDIATEK_MT6360_ADC) += mt6360-adc.o
->>   obj-$(CONFIG_MEDIATEK_MT6370_ADC) += mt6370-adc.o
->>   obj-$(CONFIG_MEDIATEK_MT6577_AUXADC) += mt6577_auxadc.o
->> diff --git a/drivers/iio/adc/mt6359-auxadc.c b/drivers/iio/adc/mt6359-auxadc.c
->> new file mode 100644
->> index 000000000000..0481bd3f0144
->> --- /dev/null
->> +++ b/drivers/iio/adc/mt6359-auxadc.c
->> @@ -0,0 +1,598 @@
->> +// SPDX-License-Identifier: GPL-2.0-only
->> +/*
->> + * MediaTek MT6359 PMIC AUXADC IIO driver
->> + *
->> + * Copyright (c) 2021 MediaTek Inc.
->> + * Copyright (c) 2024 Collabora Ltd
->> + * Author: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
->> + */
->> +
 >> +#include <linux/delay.h>
+> 
 >> +#include <linux/kernel.h>
+> 
+> Why?
+> 
+
+Because I forgot to cleanup the headers :-\
+
+> + mod_devicetable.h
 >> +#include <linux/module.h>
+> 
 >> +#include <linux/of.h>
+> 
+> Why?
+> 
+
+Same reason :')
+
+...And yes that should be linux/property.h instead, for device_get_match_data().
+
 >> +#include <linux/platform_device.h>
 >> +#include <linux/regmap.h>
+> 
+> + types.h
+> 
+> + blank line
+> 
 >> +#include <linux/iio/iio.h>
+> 
+> + Blank line
+> 
 >> +#include <linux/mfd/mt6397/core.h>
->> +
->> +#include <dt-bindings/iio/adc/mediatek,mt6357-auxadc.h>
->> +#include <dt-bindings/iio/adc/mediatek,mt6358-auxadc.h>
->> +#include <dt-bindings/iio/adc/mediatek,mt6359-auxadc.h>
 > 
-> So I 'guess' these headers are dt-bindings because you want
-> to consume them from other drivers?  That's fine, but if so please
-> add info on that to the DT binding patch.
+> ...
+> 
+>> +#define PMIC_RG_RESET_VAL              (BIT(0) | BIT(3))
+> 
+> In this form it requires a comment explaining each mentioned bit.
 > 
 
-...consume from devicetrees. And the purpose of including those headers is to
-index the channels as per the bindings, of course.
-That was a *very* light explanation, but I really don't think that I have to
-expand at all...
+I don't have an explanation for this, I know it's two different bits from some
+reveng, but the downstream driver declares that simply as 0x9.
 
+Should I just "mask" this as 0x9 instead?
+
+>> +#define PMIC_AUXADC_ADCx(x)            ((x) << 1)
+> 
+> Seems like a useless macro, it occupies much more space than in-place shift.
+> 
+
+Well that was done to enhance human readability, but okay I will just use an
+in-place shift.
+
+> ...
+> 
+>> +#define MT6358_IMP0_CLEAR              (BIT(14) | BIT(7))
+> 
+> As per above.
+> 
+
+Same, I don't have any explanation for that.
+
+If you prefer, I can define this as 0x4080, but honestly I prefer keeping
+it as-is since I am sure it's not a magic number but really two bits to flip
+in a register.
+
+> ...
+> 
 >> +/**
->> + * struct mt6359_auxadc - Main driver structure
->> + * @dev:           Device pointer
->> + * @regmap:        Regmap from SoC PMIC Wrapper
->> + * @pdata:         PMIC specific platform data
->> + * @lock:          Mutex lock for AUXADC reads
-> 
-> Expand on this mutex comment.  What is it protecting?
-> I think it's about ensuring they are serialized to ensure configuration
-> is not changed during the read sequence.
-> 
-
-Yes, exactly that.
-
-"Mutex to serialize AUXADC reading vs configuration"
-Looks good? :-)
-
->> + * @timed_out:     Signals whether the last read timed out
+>> + * struct mtk_pmic_auxadc_chan - PMIC AUXADC channel data
+>> + * @req_idx:       Request register number
+>> + * @req_mask:      Bitmask to activate a channel
+>> + * @num_samples:   Number of AUXADC samples for averaging
+>> + * @r_numerator:   Resistance ratio numerator
+>> + * @r_denominator: Resistance ratio denominator
 >> + */
->> +struct mt6359_auxadc {
->> +	struct device *dev;
->> +	struct regmap *regmap;
->> +	const struct mtk_pmic_auxadc_pdata *pdata;
->> +	struct mutex lock;
->> +	bool timed_out;
+>> +struct mtk_pmic_auxadc_chan {
+>> +       u8 req_idx;
+>> +       u16 req_mask;
+>> +       u16 num_samples;
+> 
+>> +       u8 r_numerator;
+>> +       u8 r_denominator;
+> 
+> Can you add struct u8_fract to the math.h and use it? I will Ack/R the
+> respective patch.
+> 
+
+Yeah, I did that exactly because u8_fract wasn't there and I didn't want
+to waste more bits, but since you just asked for it... well, I'm happier :-)
+
 >> +};
->> +
 > 
->> +/**
->> + * struct mtk_pmic_auxadc_pdata - PMIC specific platform data
+> ...
 > 
-> I'm not sure this is conventionally what we think of as platform
-> data.  This is chip specific stuff. Platform data tends to be
-> more about how things are wired up etc.  A common term for this
-> stuff is chip_info.
-> 
-
-Alright, I can do...
-
-/**
-  * struct mtk_pmic_auxadc_info - PMIC specific chip info
-......
-struct mtk_pmic_auxadc_info {
-	members;
-}
-
-
-struct mtk_pmic_auxadc_info *cinfo = adc_dev->chip_info;
-
-"cinfo" because otherwise it's going to impact code readability later on
-
->> + * @channels:       IIO specification of ADC channels
->> + * @num_channels:   Number of ADC channels
->> + * @desc:           PMIC AUXADC channel data
->> + * @regs:           List of PMIC specific registers
->> + * @sec_unlock_key: Security unlock key for HK_TOP writes
->> + * @imp_adc_num:    ADC channel for IMP readings
->> + * @read_imp:       Callback to read PMIC IMP channels
->> + */
 >> +struct mtk_pmic_auxadc_pdata {
->> +	const struct iio_chan_spec *channels;
->> +	int num_channels;
->> +	const struct mtk_pmic_auxadc_chan *desc;
->> +	const u16 *regs;
->> +	u16 sec_unlock_key;
->> +	u8 imp_adc_num;
->> +	int (*read_imp)(struct mt6359_auxadc *adc_dev, int *vbat, int *ibat);
->> +};
->> +
+>> +       const struct iio_chan_spec *channels;
+>> +       int num_channels;
 > 
->> +
->> +static const struct mtk_pmic_auxadc_chan mt6359_auxadc_ch_desc[] = {
->> +	MTK_PMIC_ADC_CHAN(BATADC, PMIC_AUXADC_RQST0, 0, 128, 7, 2),
->> +	MTK_PMIC_ADC_CHAN(BAT_TEMP, PMIC_AUXADC_RQST0, 3, 8, 5, 2),
->> +	MTK_PMIC_ADC_CHAN(CHIP_TEMP, PMIC_AUXADC_RQST0, 4, 8, 1, 1),
->> +	MTK_PMIC_ADC_CHAN(ACCDET, PMIC_AUXADC_RQST0, 5, 8, 1, 1),
->> +	MTK_PMIC_ADC_CHAN(VDCXO, PMIC_AUXADC_RQST0, 6, 8, 3, 2),
->> +	MTK_PMIC_ADC_CHAN(TSX_TEMP, PMIC_AUXADC_RQST0, 7, 128, 1, 1),
->> +	MTK_PMIC_ADC_CHAN(HPOFS_CAL, PMIC_AUXADC_RQST0, 9, 256, 1, 1),
->> +	MTK_PMIC_ADC_CHAN(DCXO_TEMP, PMIC_AUXADC_RQST0, 10, 16, 1, 1),
->> +	MTK_PMIC_ADC_CHAN(VBIF, PMIC_AUXADC_RQST0, 11, 8, 5, 2),
->> +	MTK_PMIC_ADC_CHAN(VCORE_TEMP, PMIC_AUXADC_RQST1, 8, 8, 1, 1),
->> +	MTK_PMIC_ADC_CHAN(VPROC_TEMP, PMIC_AUXADC_RQST1, 9, 8, 1, 1),
->> +	MTK_PMIC_ADC_CHAN(VGPU_TEMP, PMIC_AUXADC_RQST1, 10, 8, 1, 1),
->> +
->> +	/* IMP channels */
-> What are these? Expand IMP perhaps!
+> Why signed?
 > 
 
-Yeah, well.. it's... "imp"... can't do anything about that, sorry. :-(
+Yeah, that doesn't make any sense, that's going to be u8.
 
->> +	MTK_PMIC_ADC_CHAN(VBAT, 0, 0, 128, 7, 2),
->> +	MTK_PMIC_ADC_CHAN(IBAT, 0, 0, 128, 7, 2),
+>> +       const struct mtk_pmic_auxadc_chan *desc;
+>> +       const u16 *regs;
+>> +       u16 sec_unlock_key;
+>> +       u8 imp_adc_num;
+>> +       int (*read_imp)(struct mt6359_auxadc *adc_dev, int *vbat, int *ibat);
 >> +};
 > 
+> ...
 > 
->> +static int mt6359_read_imp(struct mt6359_auxadc *adc_dev, int *vbat, int *ibat)
->> +{
->> +	const struct mtk_pmic_auxadc_pdata *pdata = adc_dev->pdata;
->> +	struct regmap *regmap = adc_dev->regmap;
->> +	int val_v, val_i, ret;
->> +	u32 val;
->> +
->> +	/* Start conversion */
->> +	regmap_write(regmap, pdata->regs[PMIC_AUXADC_IMP0], MT6359_IMP0_CONV_EN);
->> +	ret = regmap_read_poll_timeout(regmap, pdata->regs[PMIC_AUXADC_IMP1],
->> +				       val, !!(val & MT6359_IMP1_IRQ_RDY),
+>> +static const u16 mt6357_auxadc_regs[] = {
+>> +       [PMIC_HK_TOP_RST_CON0]  = 0xf90,
 > 
-> The condition is just as true or false without the !! so drop those.
+> Can we use the fixed-width values so all of them will look nice and
+> easy to parse?
 > 
 
-Heh yes, I forgot to clean that up before sending, thanks for catching that!
+We obviously can, let's do that.
 
->> +				       IMP_POLL_DELAY_US, AUXADC_TIMEOUT_US);
->> +
->> +	/* Stop conversion regardless of the result */
->> +	regmap_write(regmap, pdata->regs[PMIC_AUXADC_IMP0], 0);
->> +	if (ret)
->> +		return ret;
->> +
->> +	/* If it succeeded, wait for the registers to be populated */
->> +	usleep_range(IMP_STOP_DELAY_US, IMP_STOP_DELAY_US + 50);
->> +
->> +	ret = regmap_read(regmap, pdata->regs[PMIC_AUXADC_IMP3], &val_v);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret = regmap_read(regmap, pdata->regs[PMIC_FGADC_R_CON0], &val_i);
->> +	if (ret)
->> +		return ret;
-> 
-> Why read them both if only one is wanted?  Do you need to read the data
-> for some reason - i.e. to allow for fresh reads or clear some status bit
-> or similar?  If so add a comment.  Otherwise easy to do
-> 
-
-Yeah, the state machine inside of the AUXADC IP starts the conversion, takes as
-many samples as you allow it to take, then stores an average of those in those
-registers that I'm reading here.
-
-Reading the registers resets the state machine, so the next time you start it
-you won't start averaging current reads versus old ones...
-
-> 	if (vbat) {
-> 		int val_v;
-> 		ret = regmap_read(regmap, pdata->regs[PMIC_AUXADC_IMP3], &val_v);
-> 		if (ret)
-> 			return ret;
-> 		*vbat = val_v;
-> 	}
-> etc
-> 
-> 
->> +
->> +	*vbat = val_v;
->> +	*ibat = val_i;
->> +
->> +	return 0;
->> +}
->> +
->> +static const struct mtk_pmic_auxadc_pdata mt6357_pdata = {
->> +	.channels = mt6357_auxadc_channels,
->> +	.num_channels = ARRAY_SIZE(mt6357_auxadc_channels),
->> +	.desc = mt6357_auxadc_ch_desc,
->> +	.regs = mt6357_auxadc_regs,
->> +	.imp_adc_num = MT6357_IMP_ADC_NUM,
->> +	.read_imp = mt6358_read_imp,
+>> +       [PMIC_AUXADC_DCM_CON]   = 0x122e,
+>> +       [PMIC_AUXADC_ADC0]      = 0x1088,
+>> +       [PMIC_AUXADC_IMP0]      = 0x119c,
+>> +       [PMIC_AUXADC_IMP1]      = 0x119e,
+>> +       [PMIC_AUXADC_RQST0]     = 0x110e,
+>> +       [PMIC_AUXADC_RQST1]     = 0x1114,
 >> +};
->> +
->> +static const struct mtk_pmic_auxadc_pdata mt6358_pdata = {
->> +	.channels = mt6358_auxadc_channels,
->> +	.num_channels = ARRAY_SIZE(mt6358_auxadc_channels),
->> +	.desc = mt6358_auxadc_ch_desc,
->> +	.regs = mt6358_auxadc_regs,
->> +	.imp_adc_num = MT6358_IMP_ADC_NUM,
->> +	.read_imp = mt6358_read_imp,
->> +};
->> +
->> +static const struct mtk_pmic_auxadc_pdata mt6359_pdata = {
->> +	.channels = mt6359_auxadc_channels,
->> +	.num_channels = ARRAY_SIZE(mt6359_auxadc_channels),
->> +	.desc = mt6359_auxadc_ch_desc,
->> +	.regs = mt6359_auxadc_regs,
->> +	.sec_unlock_key = 0x6359,
->> +	.read_imp = mt6359_read_imp,
->> +};
->>
 > 
->> +
->> +static int mt6359_auxadc_read_label(struct iio_dev *indio_dev,
->> +				    const struct iio_chan_spec *chan, char *label)
->> +{
->> +	return sysfs_emit(label, "%s\n", chan->datasheet_name);
->> +}
->> +
->> +static int mt6359_auxadc_read_raw(struct iio_dev *indio_dev,
->> +				  const struct iio_chan_spec *chan,
->> +				  int *val, int *val2, long mask)
->> +{
->> +	struct mt6359_auxadc *adc_dev = iio_priv(indio_dev);
->> +	const struct mtk_pmic_auxadc_pdata *pdata = adc_dev->pdata;
->> +	const struct mtk_pmic_auxadc_chan *desc = &pdata->desc[chan->scan_index];
->> +	int ret;
->> +
->> +	if (mask == IIO_CHAN_INFO_SCALE) {
->> +		*val = desc->r_numerator * AUXADC_VOLT_FULL;
->> +
->> +		if (desc->r_denominator > 1) {
->> +			*val2 = desc->r_denominator;
->> +			return IIO_VAL_FRACTIONAL;
->> +		}
->> +
->> +		return IIO_VAL_INT;
->> +	}
->> +
->> +	mutex_lock(&adc_dev->lock);
->> +
->> +	switch (chan->scan_index) {
->> +	case PMIC_AUXADC_CHAN_IBAT:
->> +		ret = adc_dev->pdata->read_imp(adc_dev, val2, val);
+> ...
 > 
-> This is very odd. Why reverse the parameters between the IBAT and VBAT
-> channels?  I suspect you want to throw away a parameter. That's fine but
-> don't use val2 for it. Either make that function handle NULL pointers
-> or add a local int temp or similar for this purpose.
+>> +static const u16 mt6358_auxadc_regs[] = {
 > 
-
-I honestly prefer to have a simple variable swap instead of adding handling
-for NULL pointers, even though it's just a "if NULL don't use me".
-
-But okay, I also understand why you don't want me to use val2 as a "waste bin"...
-
-I will add NULL pointer handling in the read_imp callback, as that's the shortest
-and lightest option that I have here.
-
-	case PMIC_AUXADC_CHAN_IBAT:
-		ret = adc_dev->pdata->read_imp(adc_dev, NULL, val);
-		break;
-	case PMIC_AUXADC_CHAN_VBAT:
-		ret = adc_dev->pdata->read_imp(adc_dev, val, NULL);
-		break;
-
-read_imp
-{
-	....
-
-	if (vbat)
-		*vbat = val_v;
-	if (ibat)
-		*ibat = val_i;
-
-	return 0;
-}
-
->> +		break;
->> +	case PMIC_AUXADC_CHAN_VBAT:
->> +		ret = adc_dev->pdata->read_imp(adc_dev, val, val2);
->> +		break;
->> +	default:
->> +		ret = mt6359_auxadc_read_adc(adc_dev, chan, val);
->> +		break;
->> +	}
->> +
->> +	mutex_unlock(&adc_dev->lock);
->> +
->> +	if (ret) {
->> +		/*
->> +		 * If we get more than one timeout, it's possible that the
->> +		 * AUXADC is stuck: perform a full reset to recover it.
->> +		 */
->> +		if (ret == -ETIMEDOUT) {
->> +			if (adc_dev->timed_out) {
->> +				dev_warn(adc_dev->dev, "Resetting stuck ADC!\r\n");
->> +				mt6359_auxadc_reset(adc_dev);
->> +			}
->> +			adc_dev->timed_out = true;
->> +		}
->> +		return ret;
->> +	}
->> +	adc_dev->timed_out = false;
->> +
->> +	return IIO_VAL_INT;
->> +}
->> +
->> +static const struct iio_info mt6359_auxadc_info = {
->> +	.read_label = mt6359_auxadc_read_label,
->> +	.read_raw = mt6359_auxadc_read_raw,
+> Ditto.
+> 
+>> +       [PMIC_HK_TOP_RST_CON0]  = 0xf90,
+>> +       [PMIC_AUXADC_DCM_CON]   = 0x1260,
+>> +       [PMIC_AUXADC_ADC0]      = 0x1088,
+>> +       [PMIC_AUXADC_IMP0]      = 0x1208,
+>> +       [PMIC_AUXADC_IMP1]      = 0x120a,
+>> +       [PMIC_AUXADC_RQST0]     = 0x1108,
+>> +       [PMIC_AUXADC_RQST1]     = 0x110a,
 >> +};
+> 
+> ...
+> 
+>> +static const u16 mt6359_auxadc_regs[] = {
+> 
+> Ditto.
+> 
+>> +       [PMIC_FGADC_R_CON0]     = 0xd88,
+>> +       [PMIC_HK_TOP_WKEY]      = 0xfb4,
+>> +       [PMIC_HK_TOP_RST_CON0]  = 0xf90,
+>> +       [PMIC_AUXADC_RQST0]     = 0x1108,
+>> +       [PMIC_AUXADC_RQST1]     = 0x110a,
+>> +       [PMIC_AUXADC_ADC0]      = 0x1088,
+>> +       [PMIC_AUXADC_IMP0]      = 0x1208,
+>> +       [PMIC_AUXADC_IMP1]      = 0x120a,
+>> +       [PMIC_AUXADC_IMP3]      = 0x120e,
+>> +};
+> 
+> ...
+> 
+>> +       ret = regmap_read_poll_timeout(adc_dev->regmap, pdata->regs[PMIC_AUXADC_IMP0],
+>> +                                      val, !!(val & MT6358_IMP0_IRQ_RDY),
+>> +                                      IMP_POLL_DELAY_US, AUXADC_TIMEOUT_US);
+>> +       if (ret) {
+>> +               mt6358_stop_imp_conv(adc_dev);
+> 
+>> +               return ret;
+>> +       }
 >> +
+>> +       return 0;
+> 
+>    if (ret)
+>      foo()
+> 
+>    return ret;
+> 
+> 
+> ...
+> 
+>> +       int val_v, ret;
+> 
+> Why is val_v signed?
+> 
+> ...
+> 
+>> +       int val_v, val_i, ret;
+> 
+> Ditto for all val_*.
+> 
+
+Yup, changed to u32.
+
+> ...
+> 
+>> +       /* If it succeeded, wait for the registers to be populated */
+>> +       usleep_range(IMP_STOP_DELAY_US, IMP_STOP_DELAY_US + 50);
+> 
+> fsleep() ?
+> 
+
+Okay
+
+> ...
+> 
+>> +       /* Assert ADC reset */
+>> +       regmap_set_bits(regmap, pdata->regs[PMIC_HK_TOP_RST_CON0], PMIC_RG_RESET_VAL);
+> 
+> No required delay in between?
+> 
+
+No, as strange as it may look, there is no delay required in between: this is
+because the register R/W is behind the PMIC Wrapper as much as all of the other
+MediaTek PMIC (sub)devices, so, missing delays was intentional here, yes.
+
+>> +       /* De-assert ADC reset */
+>> +       regmap_clear_bits(regmap, pdata->regs[PMIC_HK_TOP_RST_CON0], PMIC_RG_RESET_VAL);
+> 
+> ...
+> 
+>> +       /* Wait until all samples are averaged */
+>> +       usleep_range(desc->num_samples * AUXADC_AVG_TIME_US,
+>> +                    (desc->num_samples + 1) * AUXADC_AVG_TIME_US);
+> 
+> fsleep()
+> 
+> ...
+> 
+>> +       ret = regmap_read_poll_timeout(regmap,
+>> +                                      (pdata->regs[PMIC_AUXADC_ADC0] +
+>> +                                       PMIC_AUXADC_ADCx(chan->address)),
+> 
+> Drop unneeded parentheses and possibly make it one line.
+> 
+>> +                                      val, (val & PMIC_AUXADC_RDY_BIT),
+> 
+> Unneeded parentheses.
+> 
+
+Yeah, forgot those there during cleanup, whoops!
+
+>> +                                      AUXADC_POLL_DELAY_US, AUXADC_TIMEOUT_US);
+>> +       if (ret)
+>> +               return ret;
+> 
+> ...
+> 
+>> +       mutex_lock(&adc_dev->lock);
+> 
+> Why not use cleanup.h?
+> 
+
+I want to unlock the mutex immediately right after executing read_imp() or
+mt6359_auxadc_read_adc(), and I don't want the reset to be done while a mutex
+is being held, as that makes no sense for this driver.
+
+Besides, I find the macros in cleanup.h to be cryptic - in my opinion, they
+require better documentation as, for example, I don't understand when the
+guard(mutex)(my_mutex) is supposed to acquire the lock and when it's supposed
+to release it.
+
+
+> ...
+> 
 >> +static int mt6359_auxadc_probe(struct platform_device *pdev)
 >> +{
->> +	struct device *mt6397_mfd_dev = pdev->dev.parent;
->> +	struct mt6359_auxadc *adc_dev;
->> +	struct iio_dev *indio_dev;
->> +	struct regmap *regmap;
->> +	int ret;
->> +
->> +	/* Regmap is from SoC PMIC Wrapper, parent of the mt6397 MFD */
->> +	regmap = dev_get_regmap(mt6397_mfd_dev->parent, NULL);
->> +	if (!regmap)
->> +		return dev_err_probe(&pdev->dev, -ENODEV, "Failed to get regmap\n");
->> +
->> +	indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc_dev));
->> +	if (!indio_dev)
->> +		return -ENOMEM;
->> +
->> +	adc_dev = iio_priv(indio_dev);
->> +	adc_dev->regmap = regmap;
->> +	adc_dev->dev = &pdev->dev;
->> +
->> +	adc_dev->pdata = device_get_match_data(&pdev->dev);
->> +	if (!adc_dev->pdata)
->> +		return -EINVAL;
->> +
->> +	mutex_init(&adc_dev->lock);
->> +
->> +	mt6359_auxadc_reset(adc_dev);
->> +
->> +	indio_dev->dev.parent = &pdev->dev;
-> No need to set that, the IIO core does it for you in
-> devm_iio_device_alloc()
-
-Ah, cool, thank you!
-
->> +	indio_dev->name = dev_name(&pdev->dev);
 > 
-> This tends to be fragile at best.  The name should be the part number, best
-> way to reliably get that is either to query a whoami type register if there
-> is one or put it in your pdata.
+>    struct device *dev = &pdev->dev;
+
+Yeah without that it simply looked more "beautiful" to read, but okay, added.
+
+> 
+>> +       struct device *mt6397_mfd_dev = pdev->dev.parent;
+> 
+>    ... = dev->parent;
+> 
+>> +       struct mt6359_auxadc *adc_dev;
+>> +       struct iio_dev *indio_dev;
+>> +       struct regmap *regmap;
+>> +       int ret;
+>> +
+>> +       /* Regmap is from SoC PMIC Wrapper, parent of the mt6397 MFD */
+>> +       regmap = dev_get_regmap(mt6397_mfd_dev->parent, NULL);
+>> +       if (!regmap)
+>> +               return dev_err_probe(&pdev->dev, -ENODEV, "Failed to get regmap\n");
+>> +
+>> +       indio_dev = devm_iio_device_alloc(&pdev->dev, sizeof(*adc_dev));
+>> +       if (!indio_dev)
+>> +               return -ENOMEM;
+>> +
+>> +       adc_dev = iio_priv(indio_dev);
+>> +       adc_dev->regmap = regmap;
+>> +       adc_dev->dev = &pdev->dev;
+>> +
+>> +       adc_dev->pdata = device_get_match_data(&pdev->dev);
+>> +       if (!adc_dev->pdata)
+>> +               return -EINVAL;
+>> +
+>> +       mutex_init(&adc_dev->lock);
+>> +
+>> +       mt6359_auxadc_reset(adc_dev);
+>> +
+>> +       indio_dev->dev.parent = &pdev->dev;
+>> +       indio_dev->name = dev_name(&pdev->dev);
+>> +       indio_dev->info = &mt6359_auxadc_info;
+>> +       indio_dev->modes = INDIO_DIRECT_MODE;
+>> +       indio_dev->channels = adc_dev->pdata->channels;
+>> +       indio_dev->num_channels = adc_dev->pdata->num_channels;
+>> +
+>> +       ret = devm_iio_device_register(&pdev->dev, indio_dev);
+>> +       if (ret < 0)
+> 
+> Why  ' < 0' ?
 > 
 
-Okay. I don't want to deal with unknown revision IDs and such, as the auxadc
-IP is always the same between all of them and I don't have a clear list of
-numbers here, so I'll just throw in the MT6357 MT6358 MT6359 names in the
-chip_info and call it a day :-)
+Uuuuuh.. well... I have no idea why this "< 0" is in there, I must have gremlins
+living inside my keyboard, secretly inserting those checks when I'm not looking.
 
-Thanks for the review btw!
+Must definitely be that.
 
-Cheers,
+Jokes apart, thanks for the review!
+...a v2 will come asap, along with the math.h change :-)
+
+Cheers!
 Angelo
 
 

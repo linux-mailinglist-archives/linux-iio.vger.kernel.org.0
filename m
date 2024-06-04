@@ -1,48 +1,55 @@
-Return-Path: <linux-iio+bounces-5731-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5732-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 388A28FADD3
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 10:45:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E13C8FAE24
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 10:56:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E651C282019
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 08:45:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEA001F27AC1
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 08:56:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6681142E83;
-	Tue,  4 Jun 2024 08:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA492142E76;
+	Tue,  4 Jun 2024 08:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AMhwWNEM"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="P6ElIW8W"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DEA2142900;
-	Tue,  4 Jun 2024 08:45:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6D9BA39;
+	Tue,  4 Jun 2024 08:55:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717490705; cv=none; b=FmjWPuqqKzmpSGsXR3xvjolNr2tKWXHf0U4PC1OS2dyJWR9Cg+q+zVuXwI/nIZjI0IIBOvpP6XZ0GZQoBywidbYC9IwO5iuGalNLYotWp5ncLWMznlql4+TK+xgtV6XQcYlha3wA5FeODqsKi6bXWMQT6h1gxlD/Hp23+b6U+P8=
+	t=1717491361; cv=none; b=ByDQrZ5cpswgPcQZX9BeDLYYbwE20A/GOHKHUL1fbJ4QPSHt9Bwz1+lm8byMx0zduS9gRKF6jJqqSx+qaT74i9CjGB162l+IHQ3ZUMmgVrSutA15A4wfIpyuKH6XBT1WPImIshh91BoLCtzLEq6aw4SChhnTGtYHXRZq5iUCB8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717490705; c=relaxed/simple;
-	bh=qoaQB7rxX8vYM9zT6xg/g3VNAy1PUU7qn2yUm7JbNTE=;
+	s=arc-20240116; t=1717491361; c=relaxed/simple;
+	bh=r2ck1rsuVVphLHKbN3/pA2NZ4RAXxpCpbkmrsFDVE5g=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eKKItqRZdovc7YcbqexDwH/2dbSfQtj6rQmirobyNdGXBRwIXnbbJCo64BTFluSKOWFrGQ0rvjcDm3cRU8++nht96HCYcsaBCRPGawH0kqResKT7L2PyPmrUeyEc3AF3r5I8TfntlJYf5ES3+iA3cTARPccmR+eC2aUlTK3mDw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AMhwWNEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A60D0C2BBFC;
-	Tue,  4 Jun 2024 08:45:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717490705;
-	bh=qoaQB7rxX8vYM9zT6xg/g3VNAy1PUU7qn2yUm7JbNTE=;
+	 In-Reply-To:Content-Type; b=fVIIwYeQDQsA7Zn/C9//TNDhJv9WGwadMFKuytqT0H4CAOC/5fqmcgdnKGmkIwbyKJMLEyioJxGuxadkq/Pp8zSpHF5PLj7JxLPU3n0pV5X5kU66OlqajLlnMDc4Bauv95r1e/e23Syz2DeDFNJiELoDw+O4yNBmtdXQmzg1JLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=P6ElIW8W; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1717491357;
+	bh=r2ck1rsuVVphLHKbN3/pA2NZ4RAXxpCpbkmrsFDVE5g=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AMhwWNEMwZ6o8RteW/0pjAl5ylovbgWc7MgM/FFZjl6A10V0kSCtOEK8HzgcgYI/a
-	 a3Bgbevo1QnH6WjtZaM6KvHA30SjE0lTue3Qy91JB5tAAZKNnYM72iV0Hnuqfuaqr7
-	 /+lJ56FXUmmZ1uaS4gFhBUIJXv5xTBo6FAlMpxVFD2eicBLd1mebf7xa2jlVk3tHgQ
-	 gKAyEG1FfjsOdJ0H5tMIVjoMiDfRNB09vlgYaAo5jbeszkpktrEkX9MjD6Om64Tz8M
-	 BDMnNs1m0OYHtBmPHAP41eMCUUsCBnbeBKOt8j19Y7Y+FpbWOFJbMo00ysg9P43Aex
-	 HgbKbPqUPKBCA==
-Message-ID: <e740deb8-e412-4913-9a79-59ad8e117d53@kernel.org>
-Date: Tue, 4 Jun 2024 10:45:00 +0200
+	b=P6ElIW8WPmTOX0jW3jw2xp/rjwSPQt4ZKDODVDJxlOKrsa4qdnBeSkQ2YUJJUJc4Q
+	 JOvi6t5r10Qk7hXsnAJ1mDPbLEmcaURAqo3UZtkbjyh+e15CMYEBwnbGBeP0aUV6on
+	 Fd1uYD0AqcgMEFnIiF+N/iJ0ImD9NUBavw7BlmwETppxrBgJV6bS4k6WgIXWwhQ8Dv
+	 EpZxNOEYZ/1ieAe5X6W+UUt6Oi5cogBZ0lzLfnhuQKjxt//IJ+UIIQWNwZfyVa6Xs5
+	 S8GuDrSqNIj3LG0bTJczaRuL+mma50nfQ/hyannt2+xuOuTdLr1BXVhN+qCrBroLv7
+	 ynLjRJ8EjbugQ==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 6DAB737820A7;
+	Tue,  4 Jun 2024 08:55:56 +0000 (UTC)
+Message-ID: <dc46258b-caf9-46a7-84b4-2f229d48b8f7@collabora.com>
+Date: Tue, 4 Jun 2024 10:55:55 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,83 +57,138 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] dt-bindings: iio: light: add VEML6040 RGBW-LS
- bindings
-To: arthur.becker@sentec.com, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20240604-veml6040-v4-0-5a4d59597874@sentec.com>
- <20240604-veml6040-v4-2-5a4d59597874@sentec.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH v1 1/4] dt-bindings: iio: adc: Add MediaTek MT6359 PMIC
+ AUXADC
+To: Krzysztof Kozlowski <krzk@kernel.org>, jic23@kernel.org
+Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org,
+ andy@kernel.org, nuno.sa@analog.com, bigunclemax@gmail.com,
+ dlechner@baylibre.com, marius.cristea@microchip.com,
+ marcelo.schmitt@analog.com, fr0st61te@gmail.com, mitrutzceclan@gmail.com,
+ mike.looijmans@topic.nl, marcus.folkesson@gmail.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, kernel@collabora.com
+References: <20240530093410.112716-1-angelogioacchino.delregno@collabora.com>
+ <20240530093410.112716-2-angelogioacchino.delregno@collabora.com>
+ <c2b97c8e-177e-4169-b001-ab0e3303734f@kernel.org>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240604-veml6040-v4-2-5a4d59597874@sentec.com>
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <c2b97c8e-177e-4169-b001-ab0e3303734f@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 04/06/2024 10:01, Arthur Becker via B4 Relay wrote:
-> From: Arthur Becker <arthur.becker@sentec.com>
+Il 01/06/24 17:32, Krzysztof Kozlowski ha scritto:
+> On 30/05/2024 11:34, AngeloGioacchino Del Regno wrote:
+>> Add a new binding for the MT6350 Series (MT6357/8/9) PMIC AUXADC,
+>> providing various ADC channels for both internal temperatures and
+>> voltages, audio accessory detection (hp/mic/hp+mic and buttons,
+>> usually on a 3.5mm jack) other than some basic battery statistics
+>> on boards where the battery is managed by this PMIC.
+>>
+>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>> ---
+>>   .../iio/adc/mediatek,mt6359-auxadc.yaml       | 43 +++++++++++++++++++
+>>   .../iio/adc/mediatek,mt6357-auxadc.h          | 21 +++++++++
+>>   .../iio/adc/mediatek,mt6358-auxadc.h          | 22 ++++++++++
+>>   .../iio/adc/mediatek,mt6359-auxadc.h          | 22 ++++++++++
+>>   4 files changed, 108 insertions(+)
+>>   create mode 100644 Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml
+>>   create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6357-auxadc.h
+>>   create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6358-auxadc.h
+>>   create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6359-auxadc.h
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml
+>> new file mode 100644
+>> index 000000000000..dd6c331905cf
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml
+>> @@ -0,0 +1,43 @@
+>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/adc/mediatek,mt6359-auxadc.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: MediaTek MT6350 series PMIC AUXADC
+>> +
+>> +maintainers:
+>> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>> +
+>> +description:
+>> +  The Auxiliary Analog/Digital Converter (AUXADC) is an ADC found
+>> +  in some MediaTek PMICs, performing various PMIC related measurements
+>> +  such as battery and PMIC internal voltage regulators temperatures,
+>> +  accessory detection resistance (usually, for a 3.5mm audio jack)
+>> +  other than voltages for various PMIC internal components.
+>> +
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - mediatek,mt6357-auxadc
+>> +      - mediatek,mt6358-auxadc
+>> +      - mediatek,mt6359-auxadc
+>> +
+>> +  "#io-channel-cells":
+>> +    const: 1
+>> +
+>> +additionalProperties: false
 > 
-> Device tree bindings for the vishay VEML6040 RGBW light sensor iio
-> driver
+> If there is going to be a re-spin, please move this below required: block.
 > 
-> Signed-off-by: Arthur Becker <arthur.becker@sentec.com>
-> ---
 
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Yep, will do. Fixed up for v2.
 
-If there is any resend:
-A nit, subject: drop second/last, redundant "bindings". The
-"dt-bindings" prefix is already stating that these are bindings.
-See also:
-https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+>> +
+>> +required:
+>> +  - compatible
+>> +  - "#io-channel-cells"
+>> +
+>> +examples:
+>> +  - |
+>> +    pmic {
+>> +        pmic_adc: adc {
+>> +            compatible = "mediatek,mt6359-auxadc";
+>> +            #io-channel-cells = <1>;
+>> +        };
+> 
+> This suggests that you should grow (make complete) the parent PMIC example.
 
-Best regards,
-Krzysztof
+Uhm, should I instead add that to bindings/mfd/mediatek,mt6357.yaml and avoid
+growing the parent example?
+
+   adc:
+     type: object
+     $ref: /schemas/iio/adc/mediatek,mt6359-auxadc.yaml
+     unevaluatedProperties: false
+
+> 
+> Actually having this as a separate node is not really needed. Why it
+> cannot be just part of the MFD/parent node?
+> 
+
+(glossary: PWRAP = PMIC [SPI] WRAPper)
+
+The top node is the PWRAP, an IP that is (mostly) used to dispatch commands to
+the PMIC, but the AUXADC is not integrated into the PWRAP, but into the PMIC.
+
+Declaring the AUXADC as a PWRAP child would therefore be an incorrect description
+of the hardware.
+
+P.S.: not necessary, but to "complete the circle" ... note that the PWRAP can be
+       skipped on some SoCs/firmwares/configurations, even though afaik that's only
+       mostly for debugging purposes, it's not granted that you have pwrap between
+       SoC and PMIC on all SoCs/fws/confs, even though, all of the boards that are
+       supported upstream do have it and do require it.
+
+Cheers,
+Angelo
+
+> 
+> Best regards,
+> Krzysztof
+> 
+
+
 
 

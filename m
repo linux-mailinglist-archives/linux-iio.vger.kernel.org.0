@@ -1,54 +1,50 @@
-Return-Path: <linux-iio+bounces-5779-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5780-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E846C8FBC04
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 21:01:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 653898FBC0A
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 21:04:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68D2AB21C77
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 19:01:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75E3281165
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 19:04:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80D0714A633;
-	Tue,  4 Jun 2024 19:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943CB14A62F;
+	Tue,  4 Jun 2024 19:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fvaw5Idf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqhfKdKX"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41ACC1474D8
-	for <linux-iio@vger.kernel.org>; Tue,  4 Jun 2024 19:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539761494CA
+	for <linux-iio@vger.kernel.org>; Tue,  4 Jun 2024 19:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717527680; cv=none; b=C4Ok5obYYo38Eb/MHOfXg/dr+ioS2CL10g0oUaI+kg9SckOl4rdFDekIDY5VY2qeEHRX3GkT6gxWM/6vSQKnAdWYizn1bOswsjE+nXQprfpFmELJXzJ19+EYWfXmpHESnodlioDRTvTfxkJe9Z7ZL/yayhPMmBP+JfwLEUXPIrU=
+	t=1717527871; cv=none; b=qdgLWNj3/RxxyhpCD4uR6o23DiEgudE29tOKie4qrxQb4wyIRgEfVb2FUeA2ytlevSif1/If953xcCyPwiAmN6nTVk3i/Ipay8N/J/JX/g9TUTordsi/WqZj7MXOpkjcbsa5R4B+VgDu2SpCL7HbqV9qYQkQ6PUS++OLYkh0PTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717527680; c=relaxed/simple;
-	bh=lK9xMMSJ5zSRRo/ybgQaKrbf/8Iqc7juMtDeuGEfUYQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UoR2wHbRbL58G2ItWifghLlnSp24xEN6HiCTWjtd6RdBe2zKbBih/s2kBpBhwTgZSGtZGdXo5aoj+PodVDfm2PwdUkQH9erzSQAOTqs9UTIAoN1YtfTi4MGXCLtFN1qS3j08rmKw8k5iCQLjJiB1TLZvLa2VSOSlNBZX60FZ4dY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fvaw5Idf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB19C2BBFC;
-	Tue,  4 Jun 2024 19:01:17 +0000 (UTC)
+	s=arc-20240116; t=1717527871; c=relaxed/simple;
+	bh=C9kEb1TPI4R3mK1DcQwaYPt6mmoh48mhQb1l08tizi0=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=iBQMlCE8yEUGJqNG/9uMyoVuQ+hAadwFoIy9smQ8OxygAiMmR7cSkG/nnb1Us+8eU2rWwzbc3ZBknY1zeob4XWI5HKkMYLH0cWi+t364u9jYyjMJEmin7fTdEN9KORfKsvWG1rsbtPVw54C7LGb6VA43BmOGhRrYK54Njz3z44Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqhfKdKX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3641C2BBFC;
+	Tue,  4 Jun 2024 19:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717527679;
-	bh=lK9xMMSJ5zSRRo/ybgQaKrbf/8Iqc7juMtDeuGEfUYQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Fvaw5IdfyTMxDkXYWHygiDOCrmQycgbhcl2cD/fwugS8NneVCDzKJCaESGaeiLs6I
-	 8Pl81+Lb9YwmW4it7dVmP1ms9qVneKU/ocY8HnDTA8VZEP/v5Tye+5kVWDenPWB9sC
-	 Cj4U4Je3jVN+zXgVKm0ih0EZJZTSQ3R1ZRIQ/nBx2zWJKIRWyf7dkGMF9OPwm8WaUb
-	 1c3P69PMa470c8nS1espcOj2K00/+ucjhTSKj/sC3u3KciJMSZQrJnicPLnJP7shqx
-	 /4Idd/5a3QJiVhOd83ECCDgcVMB0k3MSLGXrfkya3lCnN6ceS8eS57ULz2XWetEIl8
-	 6aryUYodxIbig==
-Date: Tue, 4 Jun 2024 20:01:07 +0100
+	s=k20201202; t=1717527871;
+	bh=C9kEb1TPI4R3mK1DcQwaYPt6mmoh48mhQb1l08tizi0=;
+	h=Date:From:To:Subject:From;
+	b=iqhfKdKXAT0ILu08sgCjyDlcGZrgguwj3aktXBEC1DCtQr4kg5f+xkkjH76B97N82
+	 tdPJB+EjTBZYvc89zKcGhWZaKmA/37IRb9doNM9kCC89tL/CdFVx8I30Lg/quAlJpx
+	 RL8dcVSsuNsD5s3YqGdAxxaYl+ngJUqY9kilF+QPV7rP7PsjrtMZ/eKVnFXts+Gxdd
+	 9qJ4wenAkWmguYXN5zyI+i+b+N2c+SZIm5FRztkgtWKLjY8gGjsB3xsahsi4pfInN0
+	 7Q/TefhzfdNV+uMrdhvKAVfxfK3YJAwqq03Gc2x3Ro/6NQjp9z4fGRLTknPoOsc4Fr
+	 xjIqsIVj6LRMw==
+Date: Tue, 4 Jun 2024 20:04:21 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Adam Rizkalla <ajarizzo@gmail.com>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: pressure: bmp280: fix bmp580 temp read
-Message-ID: <20240604200107.7f68dbf4@jic23-huawei>
-In-Reply-To: <20240602201200.30418-1-ajarizzo@gmail.com>
-References: <20240602201200.30418-1-ajarizzo@gmail.com>
+To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL]
+Message-ID: <20240604200421.2d084308@jic23-huawei>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,76 +55,109 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sun,  2 Jun 2024 15:12:01 -0500
-Adam Rizkalla <ajarizzo@gmail.com> wrote:
+The following changes since commit 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0:
 
-> Fix overflow when storing bmp580 temperature reading and preserve sign.
-> 
-> This patch re-applies the fix in [1] after the merge conflict resolution
-> mentioned in [2].
-> 
-> [1] https://lore.kernel.org/all/Zin2udkXRD0+GrML@adam-asahi.lan/
-> [2] https://lore.kernel.org/linux-kernel/20240531140621.264f0848@canb.auug.org.au/
-> 
-> Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>
+  Linux 6.10-rc1 (2024-05-26 15:20:12 -0700)
 
-Thanks! I was just about to email about this fix currently being lost in
-linux-next.
+are available in the Git repository at:
 
-Rather than dance around this, I'm going to pull the later part of Vasielios'
-series off the togreg tree for now then reapply later once I have the fix
-in my upstream.
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.10a
 
-It's a shame that we need to do the maths in driver to keep within range.
-Maybe we can be cheeky and avoid doing the division?
-I believe the IIO core formatting code should be fine with that as it
-already casts up to 64 bits to do the maths.
+for you to fetch changes up to 78f0dfa64cbd05f381849377a32e0a2f1afe9215:
 
-(s64)*raw_temp * 250);
+  iio: inkern: fix channel read regression (2024-06-03 20:29:31 +0100)
 
-bmp580_temp_coeffs = {1, 18}
+----------------------------------------------------------------
+1st set of IIO fixes for the 6.10 cycle.
 
-Anyhow, I've dropped (for now) the following patches from my togreg tree
-  iio: pressure: bmp280: Generalize read_{temp,press,humid}() functions
-  iio: pressure: bmp280: Add SCALE, RAW values in channels and refactorize them
-  iio: pressure: bmp280: Add triggered buffer support
+The usual mixed bag of old and new driver bugs plus one core issue that
+highlighted we have some documentation issues that we need to fix
+as a follow up action.
 
-Jonathan
+core in kernel interface
+- Wrong return value documentation didn't help with an error in
+  a cleanup. Result is that thermal is failing to read the temperature.
 
-> ---
->  drivers/iio/pressure/bmp280-core.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> index 95c88b0e1c49..3a003843c79c 100644
-> --- a/drivers/iio/pressure/bmp280-core.c
-> +++ b/drivers/iio/pressure/bmp280-core.c
-> @@ -1752,6 +1752,8 @@ static int bmp580_read_temp(struct bmp280_data *data, s32 *raw_temp)
->  		dev_err(data->dev, "reading temperature skipped\n");
->  		return -EIO;
->  	}
-> +	*raw_temp = sign_extend32(*raw_temp, 23);
-> +	*raw_temp = ((s64)*raw_temp * 1000) / (1 << 16);
->  
->  	return 0;
->  }
-> @@ -2154,7 +2156,7 @@ static irqreturn_t bmp580_buffer_handler(int irq, void *p)
->  
->  static const int bmp580_oversampling_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
->  static const u8 bmp580_chip_ids[] = { BMP580_CHIP_ID, BMP580_CHIP_ID_ALT };
-> -static const int bmp580_temp_coeffs[] = { 1000, 16 };
-> +static const int bmp580_temp_coeffs[] = { 1, 0 };
->  static const int bmp580_press_coeffs[] = { 1, 64000};
->  
->  const struct bmp280_chip_info bmp580_chip_info = {
-> @@ -2184,7 +2186,7 @@ const struct bmp280_chip_info bmp580_chip_info = {
->  	.iir_filter_coeff_default = 2,
->  
->  	.temp_coeffs = bmp580_temp_coeffs,
-> -	.temp_coeffs_type = IIO_VAL_FRACTIONAL_LOG2,
-> +	.temp_coeffs_type = IIO_VAL_INT,
->  	.press_coeffs = bmp580_press_coeffs,
->  	.press_coeffs_type = IIO_VAL_FRACTIONAL,
->  
+adi,ad3552r
+- Fix DT binding output range sign error.
+adi,ad5592r
+- Wrong scaling on temperature channel.
+adi,ad7173
+- Driver assumed all supported devices had input buffers. Make sure not to
+  enable them on the ad7176-2 which doesn't.
+- Add some missing device names for recently added models.
+- Drop an unneeded zero index on the single temperature channel.
+- Clear buffered capture specific control bit when returning to on
+  demand sampling which otherwise no longer works.
+- Make sampling frequency per channel rather than just setting it for the
+  first channel.
+adi,ad9467
+- Capital S for sign of channel whereas ABI is lowercase.
+bosch,bmi323
+- Make sure to release the trigger even on error paths in the trigger
+  handler as otherwise there is no path to recover.
+bosch,bmp280
+- Avoid an overflow in calculating the temperature.
+invensense,timestamp helper
+- Fix case where ODR is being switched to the existing ODR an update that
+  never finishes.
+- Fix an issue with the timestamp being updated whilst still handling
+  previous interrupt (icm42600 and mpu6050)
+invensense,icm42600
+- Don't update the watermark parameters twice.
+melexis,mlx90635
+- Fix variable returned as error code.
 
+----------------------------------------------------------------
+Adam Rizkalla (1):
+      iio: pressure: bmp280: Fix BMP580 temperature reading
+
+Angelo Dureghello (1):
+      dt-bindings: iio: dac: fix ad354xr output range
+
+David Lechner (1):
+      iio: adc: ad9467: fix scan type sign
+
+Dumitru Ceclan (5):
+      iio: adc: ad7173: fix buffers enablement for ad7176-2
+      iio: adc: ad7173: Add ad7173_device_info names
+      iio: adc: ad7173: Remove index from temp channel
+      iio: adc: ad7173: Clear append status bit
+      iio: adc: ad7173: Fix sampling frequency setting
+
+Harshit Mogalapalli (1):
+      iio: temperature: mlx90635: Fix ERR_PTR dereference in mlx90635_probe()
+
+Jean-Baptiste Maneyrol (4):
+      iio: invensense: fix odr switching to same value
+      iio: imu: inv_icm42600: stabilized timestamp in interrupt
+      iio: imu: inv_icm42600: delete unneeded update watermark call
+      iio: imu: inv_mpu6050: stabilized timestamping in interrupt
+
+Johan Hovold (1):
+      iio: inkern: fix channel read regression
+
+Marc Ferland (1):
+      iio: dac: ad5592r: fix temperature channel scaling value
+
+Vasileios Amoiridis (1):
+      iio: imu: bmi323: Fix trigger notification in case of error
+
+ .../devicetree/bindings/iio/dac/adi,ad3552r.yaml   |  2 +-
+ drivers/iio/adc/ad7173.c                           | 37 +++++++++++-----------
+ drivers/iio/adc/ad9467.c                           |  4 +--
+ .../iio/common/inv_sensors/inv_sensors_timestamp.c |  6 +++-
+ drivers/iio/dac/ad5592r-base.c                     |  2 +-
+ drivers/iio/imu/bmi323/bmi323_core.c               |  5 +--
+ drivers/iio/imu/inv_icm42600/inv_icm42600_accel.c  |  4 ---
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.c | 19 +++++++++--
+ drivers/iio/imu/inv_icm42600/inv_icm42600_buffer.h |  2 ++
+ drivers/iio/imu/inv_icm42600/inv_icm42600_core.c   |  1 +
+ drivers/iio/imu/inv_icm42600/inv_icm42600_gyro.c   |  4 ---
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c         |  4 +--
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c      |  1 +
+ drivers/iio/inkern.c                               |  2 +-
+ drivers/iio/pressure/bmp280-core.c                 | 10 +++---
+ drivers/iio/temperature/mlx90635.c                 |  6 ++--
+ 16 files changed, 63 insertions(+), 46 deletions(-)
 

@@ -1,70 +1,70 @@
-Return-Path: <linux-iio+bounces-5744-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5745-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5388FB09F
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 12:55:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD848FB0B4
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 13:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8442F282272
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 10:55:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F13282375
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 11:05:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0463814532F;
-	Tue,  4 Jun 2024 10:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BD7144D3B;
+	Tue,  4 Jun 2024 11:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WyBW3uB9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jnbMkOk7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A118144D2E;
-	Tue,  4 Jun 2024 10:55:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F4F4A07;
+	Tue,  4 Jun 2024 11:05:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717498545; cv=none; b=iho8uNE7lq151a7S4CCj/UEcp9BbTcTdWo29H4Rxg9rut+WzfQ+XuNbXoVF8JWUNQd/SmYlV/wV2a3PQz5ePAYBhQlU7kvaD1XRexCp9tweqJb3ipnU0RP3dQXeDfERLasib7EviKBlt86uZ+w3SREgJ5Ok2G+tyGiJQPGhjft0=
+	t=1717499143; cv=none; b=buLRckyZj2TZeurHYHOCcBr0h6FY9ceR78FW2esKZwVGpTFFUk5ZR+f6ZS2Sr72N9ullqJeGKvozl19sGMXXAsb8rRzHOhGuBYHVgXEiD6mZWR3KiSGHwxBeXHkTveuxfPb71YVwOtrAn9U8Z79HF6l4zGkcoumIHJt0uIq8N3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717498545; c=relaxed/simple;
-	bh=+qlsn2D0Bl9bAT/zCHb1kX2iWwIp82kUn+lzQwccsqA=;
+	s=arc-20240116; t=1717499143; c=relaxed/simple;
+	bh=TY7XvU4SbXdxEdswCoVLHuqEj9CxfdQLBwmuALZPUxA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JK2CP7J54jwkxmwx0FedgJVz9Pz1+PUe7fuyrTGJF568BQ8Ne+1wseYh0p/mls3JaSrPhm62U3tEXy5IQinqbJMuOP/o+QyvI7Rt4dD36Go3n9oKan5GnFZPUWmEpKySiY4VGx2c76Ax56+KNff/f5ffNXRwnVphNyZ9K1uslUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WyBW3uB9; arc=none smtp.client-ip=209.85.208.50
+	 To:Cc:Content-Type; b=HzIY+oXAB9DZTo26MrRFq1r1jGItqGxHQTkTPtRC0DDUr2uNi8apbwYCZZLAefNkxaIQzMLFFgRvtTat3eA8u0Apo+gYmwxnoxgHMA8mgcorOyKbeydBsPZilSLzVHAKKBiJJe38lnaYcSoRo+V5FOXT+B2ccwXSiDXA0765QfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jnbMkOk7; arc=none smtp.client-ip=209.85.167.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-57a85cc2d96so457742a12.2;
-        Tue, 04 Jun 2024 03:55:43 -0700 (PDT)
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52b98fb5c32so3052228e87.1;
+        Tue, 04 Jun 2024 04:05:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717498542; x=1718103342; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717499140; x=1718103940; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=IDj6XyLMkdypUs5XebPk9O6Y/tAg4OP0rl7m8sDWpro=;
-        b=WyBW3uB9G4oeSv/fUK4tP/WdFdoXUnj9zlnLu154/k7HfFWdVJJX1zo5h3JQfcbeec
-         n+AgfiWL4KCvqtapKYLp7jfr+tpdsinH8TSNjcx7apuNU3kyC/xHs6ubvOeJunzRGel+
-         nuw8+Q0O4kEwdm/47+X7Agg1ImEyHEgYQDHwXLSxsVCJFqcY9xogRqfNwVhWG0u0SpMN
-         DYQiQs1Bhu+2IrbyJGLpcOXQRmOfICPu7bSpBJdUP0ihSqFsBSKBMk9Vd1qzjFO7OvzQ
-         JKKlrNm7WMqcRwM7hiWSjaC81Qq/GBv3hW7Exptsotk+Y6D/HYfwQnwK9vRqTeFbo40c
-         Ka4g==
+        bh=pjJNON3xbO+Yh03gyOu9rx6tlrOQ/KcMrKYC4qdTMT4=;
+        b=jnbMkOk7tUVVy8fW44JZSGZea3OUJCuffIqYc1j/lGfLowPTnPJsmTvgzHd/kh5emR
+         fgUu0JFObDkAZ6PapU2t48Ac07rna4vRODWpvCx8yxX+bEIfGEHdEYusTlaWDVkkKnfD
+         rklotBjrth/1VS1Sib0AkjAbZtswr7zBxEvENCRUoYPYc1Wl4TTmgm9Ix2ne2UFCKU69
+         1++jE/3SYSHXBVZQjr0jv3D4R4BO1+3XqPhiryBL2N1hd+YC21NKLBofOYQHgOmKCZkv
+         tGHXkMoDwv+VAq/NxH/KVzn/a0JewAQpKUVdsJy9cwc22SPx7B61/SCE7jU/rCm7qEos
+         qisA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717498542; x=1718103342;
+        d=1e100.net; s=20230601; t=1717499140; x=1718103940;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IDj6XyLMkdypUs5XebPk9O6Y/tAg4OP0rl7m8sDWpro=;
-        b=BBdRo4tBoVPNA8TehchHXyzq5h6Lj2Pw4GH+WUAeeSX+aSuGI/q5/+PRPynMY61xPF
-         8sTN0R4k8wNDovG2c11doYNFRH3gFinU+OyDie+yQYFYpEJ7/W/IGlGyuGc4w/Q8JPJv
-         pQFYdO/DctM/FKX2xCAEUDPG/rkGEctfKBDgJZkYgSXxhg2S4RxCE2LgtLatePhTPIXW
-         9VSzqtR7omib2AOKVDsGnGIwdgpEIu1yl4OslKKFM60YgUy5Z8PaCRS++jwCZ0nbzOn/
-         HIAfkVgyeNjp3xh7n3pkkZ3XmPSK7mJPe+zOT1/vPdj57pcS1eGlEXLnoklcgGH8OOeK
-         Yu0w==
-X-Forwarded-Encrypted: i=1; AJvYcCUeN4jZIVM0cM1Hywq8kegPrqxs5CMDwiiBln8M+FL1uwF3yTVBO8rC7qWaYrRMAFW9GKCHuROkEk1ooNVD0754B+FGZ+U+AMbxycpXRSE8q8OGkZkOoZnDmQB7VrRs1rngDp9WJ97xGE5AOhvvH4gd4ZaH2+WtLZ3bF5zZMQn8FzLWXg==
-X-Gm-Message-State: AOJu0YxPxpgBpUUOTVhQi02DgusyJp0ksbvymiTzsATGhpuzWlXHQwgm
-	Ew6O1zHMilmIubIR7KG2vOnN0pvjDXfyh6O0nXoe9pNK/KY8WV9LBOXO9x1OEnLGdIrgpAslTeI
-	9sRmDfq3nqNNzDUyCICRaALZsxhc=
-X-Google-Smtp-Source: AGHT+IFmZt6Y9UJZxMqsQKH1greIZFtT4Z7hrqbjSEJ/dY7Mmt/YlBYihOWjiM0e7kzDgcBKFTWWMMLnuGmhwMU9t2Q=
-X-Received: by 2002:a17:906:6acd:b0:a65:26dc:3c25 with SMTP id
- a640c23a62f3a-a6821b71ea0mr796196266b.54.1717498542174; Tue, 04 Jun 2024
- 03:55:42 -0700 (PDT)
+        bh=pjJNON3xbO+Yh03gyOu9rx6tlrOQ/KcMrKYC4qdTMT4=;
+        b=IAa1wb6uOg5MpfMekEv8zNVfwCuX+o+Kso+GfvpvLWDvz9v1fheomwA+xEiHp+ua4B
+         Bda3H3lk8liKv6gl838wAV58aH8qXoRYjoHNDvpuQ8vRdIlCnocyvTbZTgVQAcxu5GI2
+         TPazZ/nx/+HMLY11dakKFMqgex3LZWXt8VfabK2Zn9l53mElGcfOIBsVVTudb2cVaiYr
+         remiIvYHU6jpb835iXbWiJdA/aiwXsTe1feZktTcb3J+6Tvnf4nZseQBbk1zY68RGtDy
+         HsZR0Z0/VKvd5ZiZY2/803PtzsivJpayEvJoBL89yHiI5vyZ4AF2mGobgPZILqB2Bc9u
+         z0Xw==
+X-Forwarded-Encrypted: i=1; AJvYcCXWvXedEk/eskLraoXJRRMC6sLfE2VgfRLSOIV2QlXtg9W86PGa8/ZO/AMRUA+yXWNYq8fkQzWeQgUist6T7mQhIQPJ7lhP60MpHNYSagEs8PI+Y5sXsTY8qJ08AmhYApLXCUiMDG7jxga0Cvi3EcGcov7Ckb2z4UzwwNSBRDd0qT1s3w==
+X-Gm-Message-State: AOJu0YwY2xLTmNuvFrz2VO01t956I+KTD/3dNwCgCmzxEy9tPMJ0irch
+	OIRHKY83JoUvUGxU5CP0HnwJmvlIuXCkaRrzzRuS2xstxZgAr2n00en0oW8zaByUXP+wpIK6lOz
+	s/1VlHEWfPc5Z869oB1+opl6s+L8=
+X-Google-Smtp-Source: AGHT+IGKVX7EW81SfP255Jyii0GXmIvdQOfcnZjcozuN3AC14wMPa/o28MFGzPREGwZRW/+wCvISJRXveGKYPM4NcEU=
+X-Received: by 2002:ac2:5de5:0:b0:52b:9955:43b3 with SMTP id
+ 2adb3069b0e04-52b99554482mr4801820e87.60.1717499140011; Tue, 04 Jun 2024
+ 04:05:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -73,15 +73,15 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240530093410.112716-1-angelogioacchino.delregno@collabora.com>
  <20240530093410.112716-3-angelogioacchino.delregno@collabora.com>
- <20240602111141.0058f39e@jic23-huawei> <60e55919-2a8c-4d83-89a1-6e4ae156d34d@collabora.com>
-In-Reply-To: <60e55919-2a8c-4d83-89a1-6e4ae156d34d@collabora.com>
+ <CAHp75Vexddt1xUGogRDZA9pM1pFp2=ZtCQnCfXePahSCb+oKpg@mail.gmail.com> <84f1c58c-0a5d-4131-a16b-b76bf28862ee@collabora.com>
+In-Reply-To: <84f1c58c-0a5d-4131-a16b-b76bf28862ee@collabora.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 4 Jun 2024 13:55:05 +0300
-Message-ID: <CAHp75Vf5a8VVyOXQRt9P1QnM6GHZ3rLuvnBF63H_83QBHOTJ9w@mail.gmail.com>
+Date: Tue, 4 Jun 2024 14:05:03 +0300
+Message-ID: <CAHp75VcwnjrsAY1qF68MpBWV-NLFSxTP_PDL+ER==KNdBAFFTA@mail.gmail.com>
 Subject: Re: [PATCH v1 2/4] iio: adc: Add support for MediaTek MT6357/8/9
  Auxiliary ADC
 To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
 	conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org, andy@kernel.org, 
 	nuno.sa@analog.com, bigunclemax@gmail.com, dlechner@baylibre.com, 
 	marius.cristea@microchip.com, marcelo.schmitt@analog.com, fr0st61te@gmail.com, 
@@ -92,36 +92,101 @@ Cc: Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de, robh@kernel.org, krzk+
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 4, 2024 at 12:42=E2=80=AFPM AngeloGioacchino Del Regno
+On Tue, Jun 4, 2024 at 1:38=E2=80=AFPM AngeloGioacchino Del Regno
 <angelogioacchino.delregno@collabora.com> wrote:
-> Il 02/06/24 12:11, Jonathan Cameron ha scritto:
-> > On Thu, 30 May 2024 11:34:08 +0200
-> > AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> wr=
-ote:
+> Il 30/05/24 15:34, Andy Shevchenko ha scritto:
+> > On Thu, May 30, 2024 at 12:34=E2=80=AFPM AngeloGioacchino Del Regno
+> > <angelogioacchino.delregno@collabora.com> wrote:
 
 ...
 
-> > What are IMP channels?
+> >> +#define PMIC_RG_RESET_VAL              (BIT(0) | BIT(3))
+> >
+> > In this form it requires a comment explaining each mentioned bit.
 >
-> Honestly? Well, it's called like that. I don't have any clear description=
- of that
-> and not even datasheets are unrolling the meaning of "IMP". So.. I don't =
-know.
+> I don't have an explanation for this, I know it's two different bits from=
+ some
+> reveng, but the downstream driver declares that simply as 0x9.
 >
-> What I know is what I wrote in the driver, and this is:
-> * IMP has IBAT and VBAT ADCs
-> * It needs different handling from the other ADCs, as shown.
->
-> ...and nothing else :-(
+> Should I just "mask" this as 0x9 instead?
 
-I could speculate with confidence that this means IMPedance (since it's ADC=
-).
+In this case for all of the questionable forms, please add a oneline
+comment suggesting that "these are different bits without known
+purpose of each." or something like that.
 
-From MTK6329  datasheet:
-"The hardware also includes necessary modes to allow for simultaneous
-current and voltage measurement
-which can be utilized to estimate the battery impedance."
-And googling in vendor trees also suggests the same.
+...
+
+> >> +#define MT6358_IMP0_CLEAR              (BIT(14) | BIT(7))
+> >
+> > As per above.
+> >
+>
+> Same, I don't have any explanation for that.
+>
+> If you prefer, I can define this as 0x4080, but honestly I prefer keeping
+> it as-is since I am sure it's not a magic number but really two bits to f=
+lip
+> in a register.
+
+As per above.
+
+...
+
+> >> +       u8 r_numerator;
+> >> +       u8 r_denominator;
+> >
+> > Can you add struct u8_fract to the math.h and use it? I will Ack/R the
+> > respective patch.
+>
+> Yeah, I did that exactly because u8_fract wasn't there and I didn't want
+> to waste more bits, but since you just asked for it... well, I'm happier =
+:-)
+
+Note, it's enough to have my Rb tag and route that change via IIO
+tree. We have done similar way for other changes in math.h (or aline)
+in the past.
+
+...
+
+> >> +       /* Assert ADC reset */
+> >> +       regmap_set_bits(regmap, pdata->regs[PMIC_HK_TOP_RST_CON0], PMI=
+C_RG_RESET_VAL);
+> >
+> > No required delay in between?
+>
+> No, as strange as it may look, there is no delay required in between: thi=
+s is
+> because the register R/W is behind the PMIC Wrapper as much as all of the=
+ other
+> MediaTek PMIC (sub)devices, so, missing delays was intentional here, yes.
+
+Maybe a comment?
+
+...
+
+> >> +       mutex_lock(&adc_dev->lock);
+> >
+> > Why not use cleanup.h?
+>
+> I want to unlock the mutex immediately right after executing read_imp() o=
+r
+> mt6359_auxadc_read_adc(), and I don't want the reset to be done while a m=
+utex
+> is being held, as that makes no sense for this driver.
+
+That's why we have scoped_guard(). Exactly for such cases.
+
+> Besides, I find the macros in cleanup.h to be cryptic - in my opinion, th=
+ey
+> require better documentation as, for example, I don't understand when the
+> guard(mutex)(my_mutex) is supposed to acquire the lock and when it's supp=
+osed
+> to release it.
+
+They are cryptic due to limitations in C language. But for the end
+user it doesn't matter. The behaviour is well understandable and makes
+code cleaner and less prone for errors such as missing unlocks. So,
+please use cleanup.h.
 
 --=20
 With Best Regards,

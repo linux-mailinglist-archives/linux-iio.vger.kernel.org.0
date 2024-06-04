@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-5763-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5764-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C45F8FB440
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 15:47:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8916C8FB483
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 15:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8D442826B3
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 13:47:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 91C911C21335
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 13:53:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3738F45;
-	Tue,  4 Jun 2024 13:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05D45C2D6;
+	Tue,  4 Jun 2024 13:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UvGS5+Oo"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nuQjgphW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-oi1-f179.google.com (mail-oi1-f179.google.com [209.85.167.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED8415AE0;
-	Tue,  4 Jun 2024 13:47:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532201756A
+	for <linux-iio@vger.kernel.org>; Tue,  4 Jun 2024 13:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717508852; cv=none; b=dF1QWysgazPxyjaRFjBCJFBJV5of7ILGCIU7mB73Uq05Bz9jKVTwe8BGboP2oekmLQZIu7Oy17qmS7oPukk66T1dogwh49uDLb1ULfYSKvS2l9Sl84QnWYpZMTH8th26TJ0Ac1ulQdfxekasD8LZNAxpWgpV1Q6enenajNAnhZc=
+	t=1717509212; cv=none; b=a7UcDqagIasqnkTYS5lqaqGpIePRhe532qNnS7NWtNrblnZNwnIUGM9DaQ8dXxOPj6T83bQZlCTvrj2h4lddxEaUnsnbC978hhcxyOzY813fZ13mK51J1Kt5z4pexlKXupuvJXpT8wB1+QEJpGrtTMfa3GLljlTIexD98L+9Sbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717508852; c=relaxed/simple;
-	bh=nUWHcu9w0M56FpQUkxmy4z9v4pO1ADXybuG/gsBk3vE=;
+	s=arc-20240116; t=1717509212; c=relaxed/simple;
+	bh=gFUgebDb5VYKmgGJcA+bR03BhrJUABzxe9spIthuEmw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uW3y48ziqH4qeiGr64G1xpDdZ395/sR2dljn4/qz1eK2qceHUKOfnjiYVyOjSzqmvoywK1EdGWVwMrCIPY8FmW91juMiUg29fs8KbEmdRtQoXJWHggaewoYWG6dqgWTb/Rusdbd67iqAvoAChc2tE3kxOwj/0h2r2m/SEJNe6IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UvGS5+Oo; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a68c8b90c85so360270766b.2;
-        Tue, 04 Jun 2024 06:47:30 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=G8MLgLn3oVSHM+R/eJ8cSDCAJhxOPEURRJKxbh3VLnV4hFAoUgSu41RLCL9qIKjtmuw9GR0rJdlg+ssW5mlROylnqvso7WEjTwn1i/xErBKQxKlUyjYwD/uJk7hiVgKaIpX4hT7c/YbqqDDXYnlBOroCY5Jko67xCQg1/QzI6Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nuQjgphW; arc=none smtp.client-ip=209.85.167.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f179.google.com with SMTP id 5614622812f47-3d1fe4f5bf5so360776b6e.2
+        for <linux-iio@vger.kernel.org>; Tue, 04 Jun 2024 06:53:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717508849; x=1718113649; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1717509209; x=1718114009; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=RuPhePm0WTllrF3I6lI44urnOc5vgeZut0thAGNsi+E=;
-        b=UvGS5+OoCDlzDZepQpi/mTfpSM96/1dt1MwYMynD3ObKzCYGL1OLGBEXETNyJEG4l3
-         q5plMuHRSuXOFxALPhB8has00CdpkYO8H8fRZvswbVkI/aDfW0IaZQv/L3UhXBgm/L9N
-         NbSXzjv90tYPZXuX9H/2IYbQ3CfxwRRbrNnaLRUWC4TUadwj28jPfxSoDFOYiQdpljib
-         25Y4xMdwON/eQ1n6cQiBHwFRacUFH9W00svm/VRQ+8LvDlWRoTKBQ4X4rFnXYVZvHtSa
-         4eA+qXOjXZtukOYLIClpv73pDgT9kQx54ck+kdnruLClNDo6ZooUSRSg6WJkcXIiIUxd
-         0lXA==
+        bh=M9m7RGcNy10jf3LS7vaCF+a097Y5g0qFUSmM+Ax/JkE=;
+        b=nuQjgphWoExI1tLStofh3rLss0MWhP4sq+QpIKzpb43tmRelrPDiH3TGGkTwe3N7vI
+         8lZymLuZqIO/NRhiIA5dEgQl5vsI1LG9UHnxLDn6N8pzXOb2a4VjWeUfWJu2UqN/qnTz
+         zYuj3kK9GH68nIu5eupnWLkipxKRakBJbfWHOpg2gguuMIqmu3JbQDpxy8pLplSuoO5G
+         hn+vURCMGo8BjM/FF0emUySMJ8TrdvamkFqfqSV8evzEbJbOi6R+d4cdZLtP0OzILNi0
+         dJ3qx3j1AAW7ZrhOFs08vJsAqGsKd64RGbv1c4N3iA+UWXe6I1j1QWIOdu4p0sGZ6Dyu
+         G5gQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717508849; x=1718113649;
+        d=1e100.net; s=20230601; t=1717509209; x=1718114009;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RuPhePm0WTllrF3I6lI44urnOc5vgeZut0thAGNsi+E=;
-        b=Vbv7f40Y9pRN0hfRYNI3lvAtpgx2nO3Pu3oLPZ9sAt1RP3MZy5PiyxsTRkdVqCcx/1
-         fCQTeIBAJLxAeCV5/h/fJATrpyYUXGGQ0/CZ9nSJU7ZadUYe4tTgtl5w9zAvVCBQaUtt
-         Sao/NqPL6egkIZlLVaYufWObnK2eu0+V6mTBM0m3b/RVoygMtBKx8fsYHE2CM4uLEey+
-         0BwlXWo1jOkJZRu/3N7tpnYW1IF04iwXZ2oQ0IumEHAQRplpGdKRLTi3t4i/TL1Clrpe
-         1aCYJqdWwDASJDDUDgWXrnsZH/66VsjLQ0vknKzqK8lZ20bCoR1MCh1b/rVl81gCTPex
-         V4Ow==
-X-Forwarded-Encrypted: i=1; AJvYcCVRhxmOQ3b5TqurG1LROqUBD70eyhdn78comtlR1+0W3b2a+wH9kr9Mbhg9JwB5VJlJkC6BmMugvp6Qqr967v1hdBuhwOi8mnFUm1iHOlEzuiaIvfG7xFr87Sw59RzkgTkj4UFi+Q==
-X-Gm-Message-State: AOJu0Yw4sQD02agvk794/lgoBqZbwHfprTgXYQ2rgWlBQ+yZSEZ7UGmj
-	OdAdJc36akIDmgHHX4/T1L63dnUB5hAnXyisv3wWOK8RuqmK752jHb+0Y+Le
-X-Google-Smtp-Source: AGHT+IH8q7cGkQrbC5vNQ33lLByeITer2W51d+2mhsA+h/q38zQ8nqs6xdyhyowoBcvrh7lbxBnxZA==
-X-Received: by 2002:a17:907:7787:b0:a69:edd:332c with SMTP id a640c23a62f3a-a690edd367emr379963266b.47.1717508848871;
-        Tue, 04 Jun 2024 06:47:28 -0700 (PDT)
-Received: from [192.168.0.31] (84-115-213-103.cable.dynamic.surfer.at. [84.115.213.103])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a68f8840bd9sm358715466b.20.2024.06.04.06.47.27
+        bh=M9m7RGcNy10jf3LS7vaCF+a097Y5g0qFUSmM+Ax/JkE=;
+        b=S7g04Pp60lDyD+P+5yA/XUi3Fcuu/2gN84f26fT0Z6GM5b7YHP7EPSeJA9qTTer0wZ
+         plLRl0c0bCVgN1oJeHWp4jKYqof2ApAKD0AgHZk9QeIOHJhDkKCh2eJtyD1jMgKHAtcr
+         jqBPNkITjPFr12m6kii8nYn3b7t3Vpc/uLYzJm+xFBtYVetym6PXqRlJP6PdLWYXqPyO
+         +ignCKibpHHS5drMaoHsybmBlkOv4hB/xNn7tt8OXKm0fBU4iNt2ipaC5sWCAARrsw+P
+         9mah0JlUOzJjCTsyP80m/eD68oeYeq4RPaMUp8+zSBsCgbROlsQaPYh+aRb+3SagIfvg
+         4Sog==
+X-Forwarded-Encrypted: i=1; AJvYcCV6tsiIZvNqA5QeEaA2Zbvi3FcWlIk9Di+WJgQbn6LcfZjnUJWhkAglBmABEAdgP5mUDFZS+TxeyItww+8O3nfQxGgIN16Rnk6y
+X-Gm-Message-State: AOJu0Ywdv2y7VsigngYDHkZ6PzOfvkDWrddETRJ1+YI3oUa73raeA0Qp
+	qPZti1WZoS5wMJl1u51Y5Szf4Fb6DXCjyBCmai2UIQTsB5Fa+YUM2wa46syR/EM=
+X-Google-Smtp-Source: AGHT+IHTAZY24CraXjVxRhUtf8jwfwk7RRTu4xeRW3mXD9sedZ80A6G/fHKzb1Qidb0io/0H9gwPpA==
+X-Received: by 2002:a05:6808:188a:b0:3d2:83:341c with SMTP id 5614622812f47-3d200833ba1mr1256915b6e.51.1717509209271;
+        Tue, 04 Jun 2024 06:53:29 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3d1e1a464fdsm1811689b6e.46.2024.06.04.06.53.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Jun 2024 06:47:28 -0700 (PDT)
-Message-ID: <7446cf8b-cadb-4f4d-9870-51bcda46a831@gmail.com>
-Date: Tue, 4 Jun 2024 15:47:26 +0200
+        Tue, 04 Jun 2024 06:53:28 -0700 (PDT)
+Message-ID: <3dadacf8-1349-483d-b264-dcb41d2cc3fc@baylibre.com>
+Date: Tue, 4 Jun 2024 08:53:27 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,74 +76,77 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] MAINTAINERS: Add maintainer for ROHM BH1745
-To: Matti Vaittinen <mazziesaccount@gmail.com>,
- Mudit Sharma <muditsharma.info@gmail.com>, ivan.orlov0322@gmail.com,
- jic23@kernel.org, lars@metafoo.de, krzk+dt@kernel.org, conor+dt@kernel.org,
- robh@kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20240603162122.165943-1-muditsharma.info@gmail.com>
- <20240603162122.165943-3-muditsharma.info@gmail.com>
- <a628db76-a48a-4492-a3cc-f93c0f67ad04@gmail.com>
- <961fa617-a76b-4b79-956b-795a55fec959@gmail.com>
- <f241957f-6f4b-424c-9ea2-d7eb564daa4e@gmail.com>
- <17b23723-d0d0-4744-9828-cef316cf3fb7@gmail.com>
-Content-Language: en-US, de-AT
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-In-Reply-To: <17b23723-d0d0-4744-9828-cef316cf3fb7@gmail.com>
+Subject: Re: [PATCH v3 4/5] dt-bindings: iio: dac: Add adi,ltc2672.yaml
+To: Krzysztof Kozlowski <krzk@kernel.org>,
+ Kim Seer Paller <kimseer.paller@analog.com>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Dimitri Fedrau <dima.fedrau@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Michael Hennerich <michael.hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+References: <20240603012200.16589-1-kimseer.paller@analog.com>
+ <20240603012200.16589-5-kimseer.paller@analog.com>
+ <2942a938-19b9-4642-8ed0-8e17e4825bc5@baylibre.com>
+ <c4651a18-316b-42e0-a67b-673fedb05b5a@kernel.org>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <c4651a18-316b-42e0-a67b-673fedb05b5a@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 04/06/2024 15:38, Matti Vaittinen wrote:
-> On 6/4/24 15:53, Javier Carrasco wrote:
->> On 04/06/2024 12:44, Mudit Sharma wrote:
->>> On 03/06/2024 23:37, Javier Carrasco wrote:
->>>> On 03/06/2024 18:21, Mudit Sharma wrote:
->>>>> Add myself as maintainer for ROHM BH1745 colour sensor driver.
->>>>>
->>>>
->>>> is there any special reason to have a separate patch for this? The
->>>> addition to MAINTANERS for new drives is usually included in the patch
->>>> that provides the driver itself.
+On 6/4/24 1:47 AM, Krzysztof Kozlowski wrote:
+> On 03/06/2024 21:59, David Lechner wrote:
+>> On 6/2/24 8:21 PM, Kim Seer Paller wrote:
+>>> Add documentation for ltc2672.
 >>>
->>> Adding this in a separate commit was just a pattern I notices with some
->>> other drivers, for instance 3b4e0e9.
+>>> Reported-by: Rob Herring (Arm) <robh@kernel.org>
+>>> Closes: https://lore.kernel.org/all/171643825573.1037396.2749703571529285460.robh@kernel.org/
+>>> Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
+>>> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+>>> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+>>> ---
+>>>  .../bindings/iio/dac/adi,ltc2672.yaml         | 158 ++++++++++++++++++
+>>>  MAINTAINERS                                   |   1 +
+>>>  2 files changed, 159 insertions(+)
+>>>  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
 >>>
->>> If necessary and/or considered good practice, I can squash this in the
->>> patch that brings in the driver.
+>>> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
+>>> new file mode 100644
+>>> index 000000000000..d143a9db7010
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
+>>> @@ -0,0 +1,158 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/iio/dac/adi,ltc2672.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: Analog Devices LTC2672 DAC
+>>> +
+>>> +maintainers:
+>>> +  - Michael Hennerich <michael.hennerich@analog.com>
+>>> +  - Kim Seer Paller <kimseer.paller@analog.com>
+>>> +
+>>> +description: |
+>>> +  Analog Devices LTC2672 5 channel, 16 bit, 300mA DAC
+>>> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc2672.pdf
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    enum:
+>>> +      - adi,ltc2672
 >>
->> Although there might be some cases where it was added separately, it is
->> much more common that it is added to the patch that provides the driver.
->> Some perfectionists even include the entry in the dt-bindings patch, and
->> then add the link to the driver code in the driver patch. I believe that
->> a simple squash would be ok, though.
+>> The linked datasheet describes 12-bit and 16-bit versions, so should we have
+>> two compatibles here? adi,ltc2672-12, adi,ltc2672-16
 > 
-> I believe there is a notable case where having MAINTAINERS updates as a
-> separate patch makes sense. When one creates drivers for a device which
-> touches multiple subsystems, typically a set of MFD drivers. This is
-> usually done as a set of subsystem specific patches, each adding
-> subsystem specific file(s). In this case adding MAINTAINER info
-> separately for each sub-driver will create unnecessary churn in the
-> MAINTAINERS file - which I believe is already now a major source of
-> merge conflicts. I am not sure of this is a reason to have MAINTAINERS
-> updates in own patch though.
-> 
-> Furthermore, I've been instructed by Rob (AFAIR) to omit the dt-binding
-> files from the MAINTAINERS because the maintainer information is already
-> contained in the bindings itself.
-> 
-> Yours,
->     -- Matti
+> Is their programming model different?
 > 
 
-Good point, in that case it would make more sense. But this driver only
-apllies to iio, and there won't be such conflicts. But thank you for
-that clarification.
+I replied to myself already with the answer. After looking at it more it
+does not appear that is the case.
 
-By the way, I think you have some issue with your email configuration
-(no line wrapping).
-
-Best regards,
-Javier Carrasco
 

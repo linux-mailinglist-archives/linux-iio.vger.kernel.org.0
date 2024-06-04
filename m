@@ -1,137 +1,191 @@
-Return-Path: <linux-iio+bounces-5747-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5748-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16AE08FB0FA
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 13:21:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4508FB185
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 13:56:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFFF91F232FB
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 11:21:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E14B31F23827
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 11:56:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6651459F7;
-	Tue,  4 Jun 2024 11:21:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F77145B0C;
+	Tue,  4 Jun 2024 11:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KX2Kh/Tc"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="ULsmnPiS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FA0144D3A;
-	Tue,  4 Jun 2024 11:21:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EC1144D21;
+	Tue,  4 Jun 2024 11:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717500086; cv=none; b=agCebmFVZqVVykjZdBjHdoECnJHF00+WYjGfmHdwOS0MppyeRbR4HDyJZRyqsdOUkA+RVAMoCevxbU5nFsVsxn7mrgNyTu9G4f1RR6v0mb4HmfMwggq4686ZVS/MLFKEAiKOp0Wudepe61BtYVN+lvckYYIAGyS46sWxwr2htOU=
+	t=1717502181; cv=none; b=lzoKUDr+Rl3PSZjqUZKbu9GlGN0a0fibh4Mg+5Y+3JjsqaCEqRT8LFCtwvTYqRZMaGPb4z93v6efmxjSwDqWt/OwRZsBLapz2WfNEs0E2Feb2WiUgPA6ymMx3kKq7+f75HXpvTFVp7GPfE4IvJ77y/f6TQy7c6POYZosdWSGQpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717500086; c=relaxed/simple;
-	bh=rHoXvNrwjIP2WzxwsgTovVhjxeyV5A1kiJuhbsHCv/o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=a1vAiwF9S7zFjF8o5K4pf9xX/qFYY1yyDzmxihp5lqPbWLU2g4V60fF9Lx4Hh9RQNtroG12ZfbI+Da5Kx7ai3xvEeam+/o2noQuDkTGhsjUUQpxjk8QaBcl82q+TCD0Aa7x/WlZCDFuixKCKrTNHYkXauQO+YracHB2Pz8IYogM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KX2Kh/Tc; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a68c5524086so88086666b.3;
-        Tue, 04 Jun 2024 04:21:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717500082; x=1718104882; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZLLl70Z79LCpLtPtJ575VgA7J6GLp1vLgjnBpq24JHU=;
-        b=KX2Kh/TcqIYTT0S94fuRq7vNc8qBfmLedz6GFvNo6H3wIBVKpQA3rZnSTcDy1r/SBH
-         S3PHT87kUtAMDQLq+4v67spLdPLwYui8+mKXAiAO8IwwC3Uh5Vzodub0/ClZrFphSrzC
-         BR8jbOqdLvPFrcZK3Yi8oqVC3C2xWiFvQWbjX703S3xSvnzsB65dV8m2+sDFywLuxpmI
-         wUYh6sSYnQ+66LVoydaplw+Q35Q213XqsgdH5ReJ34ZtsxkelcFIUJzkYviL2z/E4wgx
-         QBBCV7thTcqGpwvL3gEcQOa7P1qEj6OYK9Sc8I9g1dAXbyB3fL7Ws50lDyF41tOAa7Ib
-         0YdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717500082; x=1718104882;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZLLl70Z79LCpLtPtJ575VgA7J6GLp1vLgjnBpq24JHU=;
-        b=Wu+5ec/RPqvWTDkXP9nWvDTqumbyQB+7vekrZLs65TDIa0WmBiRZIX7jICE1cVFouC
-         TbC6BgpWX/RMuPOVcTAFzji7vcPyvAv1OGrQnUnlYraoZGcy6eRrY1/IMlgaQxpG0usB
-         Q/jOhyww6FiOpayZSXUMleaTe9tJXMbtvRo0Z+clVV2hPHTTPN74Ut257qVc7KzgnQ/v
-         Vgl/0n8IBkzLoZeK0yOcLCUES1mE4ppEn4Lg8YaGXcKqi92t53Q5TjSCDmjl/JskanQI
-         LHF1QgR0Esse3RaQHaCY9rOxvJTRngW8V4BT33KdYx5tutDATHAlBB7ywO0WN6VC1OGG
-         xUYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXyzfJyFiBS8WWNDYpqOArdLS7EE73XaUsXpZ85S4xnBhKUH2C6cfqHD/xdc5cF3644r0DrBZ8YIrC1+x24sEzasRlrMXGl1X/diAMGjvd5ty/0NzgGuEMZvf6HIGdMai6kgcTOGtnE+CIWwZ6rpkinyqeZTTNpA5urgpnNcm/GfvM5ZQ==
-X-Gm-Message-State: AOJu0Yz4zNoGIstfiIkAFWKlzhU5q8TIKsIOEHsVsSo0n+mzFJDXMqLk
-	RCGlaDl+VO+SUbhFv0gcYJjpGSLFWhlgYQWM76NtroYkh53qFXbsoMMdvcCInvsUfmZdtB5TQoY
-	4X0AorklfAM2flXC7s5Aa5k6amds=
-X-Google-Smtp-Source: AGHT+IGC27OT+Zq/I/Lv8Mjaw8iKiBSCJHrirdp6dMLOxtJiM85gRnwSXrr6BrqJ3fjj0DmaEcJRImuGGlsGaqRBY/g=
-X-Received: by 2002:a17:907:6d02:b0:a68:ed0b:8924 with SMTP id
- a640c23a62f3a-a68ed0b89b4mr502547266b.16.1717500082083; Tue, 04 Jun 2024
- 04:21:22 -0700 (PDT)
+	s=arc-20240116; t=1717502181; c=relaxed/simple;
+	bh=wgiLKeETLd0enQWH2R7xL/1nILeAJ3O6Rgd7nuj4+BI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Faskletr8DKsT8IP3vucvrPvuiDuNsdDM2loF2lq4Z5fDpEDrITd2S9ePcASKr51s+ZzWGRaX3k8KZTn50+sBfXyyPBBci4uohn07RgN/AgsUbkEieZWIeqn1O8X6gQ+nrEmtVzxrkNvjXPt8MXBJFKg6o8ODLZ/BoHyb0QhwZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=ULsmnPiS; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1717502178;
+	bh=wgiLKeETLd0enQWH2R7xL/1nILeAJ3O6Rgd7nuj4+BI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ULsmnPiSoYyXJ+dreCG1S9Uh9XC6wgkriFKuneivrqZm1oO4OK/FQOV9mT9D8AlZQ
+	 Hl+LPPCtXnfR00e9arEtjkzOPWIcR6eebL2BdcRcoJxx7xlPO5aFPz95XkkGxNt1Dc
+	 bPYpUWsZpAo01MVitiME5195vCXALwi1bmO5y8x9jd/AiCPEU79ZXWB+OoSTc/GyZ8
+	 z8PQGxMXu1gu2xPko+0XUERgsGQqaezi5dDjf+5d6H3W9PY4dGr7mvCg7XX+bymO9r
+	 XgWiiTsH99lSbljAqt1VU62klL3FuUhABsilJ8kNRYKZcrtwv24T3aIlu38yCN8Gcu
+	 tDw4mg6ZgT1MQ==
+Received: from [100.113.186.2] (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: kholk11)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 9FE1B3782199;
+	Tue,  4 Jun 2024 11:56:16 +0000 (UTC)
+Message-ID: <3e741571-9086-4f26-a158-d86a4cdcc349@collabora.com>
+Date: Tue, 4 Jun 2024 13:56:15 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240530093410.112716-1-angelogioacchino.delregno@collabora.com>
- <20240530093410.112716-3-angelogioacchino.delregno@collabora.com>
- <20240602111141.0058f39e@jic23-huawei> <60e55919-2a8c-4d83-89a1-6e4ae156d34d@collabora.com>
- <CAHp75Vf5a8VVyOXQRt9P1QnM6GHZ3rLuvnBF63H_83QBHOTJ9w@mail.gmail.com>
-In-Reply-To: <CAHp75Vf5a8VVyOXQRt9P1QnM6GHZ3rLuvnBF63H_83QBHOTJ9w@mail.gmail.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 4 Jun 2024 14:20:44 +0300
-Message-ID: <CAHp75VdJRCnxEQDXsEi3yRcPvX9-JLUVkbm_Fd6YFnrHWYb1VQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v1 2/4] iio: adc: Add support for MediaTek MT6357/8/9
  Auxiliary ADC
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org, andy@kernel.org, 
-	nuno.sa@analog.com, bigunclemax@gmail.com, dlechner@baylibre.com, 
-	marius.cristea@microchip.com, marcelo.schmitt@analog.com, fr0st61te@gmail.com, 
-	mitrutzceclan@gmail.com, mike.looijmans@topic.nl, marcus.folkesson@gmail.com, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, kernel@collabora.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org,
+ andy@kernel.org, nuno.sa@analog.com, bigunclemax@gmail.com,
+ dlechner@baylibre.com, marius.cristea@microchip.com,
+ marcelo.schmitt@analog.com, fr0st61te@gmail.com, mitrutzceclan@gmail.com,
+ mike.looijmans@topic.nl, marcus.folkesson@gmail.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, kernel@collabora.com
+References: <20240530093410.112716-1-angelogioacchino.delregno@collabora.com>
+ <20240530093410.112716-3-angelogioacchino.delregno@collabora.com>
+ <CAHp75Vexddt1xUGogRDZA9pM1pFp2=ZtCQnCfXePahSCb+oKpg@mail.gmail.com>
+ <84f1c58c-0a5d-4131-a16b-b76bf28862ee@collabora.com>
+ <CAHp75VcwnjrsAY1qF68MpBWV-NLFSxTP_PDL+ER==KNdBAFFTA@mail.gmail.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Content-Language: en-US
+In-Reply-To: <CAHp75VcwnjrsAY1qF68MpBWV-NLFSxTP_PDL+ER==KNdBAFFTA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jun 4, 2024 at 1:55=E2=80=AFPM Andy Shevchenko
-<andy.shevchenko@gmail.com> wrote:
-> On Tue, Jun 4, 2024 at 12:42=E2=80=AFPM AngeloGioacchino Del Regno
+Il 04/06/24 13:05, Andy Shevchenko ha scritto:
+> On Tue, Jun 4, 2024 at 1:38 PM AngeloGioacchino Del Regno
 > <angelogioacchino.delregno@collabora.com> wrote:
-> > Il 02/06/24 12:11, Jonathan Cameron ha scritto:
-> > > On Thu, 30 May 2024 11:34:08 +0200
-> > > AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> =
-wrote:
+>> Il 30/05/24 15:34, Andy Shevchenko ha scritto:
+>>> On Thu, May 30, 2024 at 12:34 PM AngeloGioacchino Del Regno
+>>> <angelogioacchino.delregno@collabora.com> wrote:
+> 
+> ...
+> 
+>>>> +#define PMIC_RG_RESET_VAL              (BIT(0) | BIT(3))
+>>>
+>>> In this form it requires a comment explaining each mentioned bit.
+>>
+>> I don't have an explanation for this, I know it's two different bits from some
+>> reveng, but the downstream driver declares that simply as 0x9.
+>>
+>> Should I just "mask" this as 0x9 instead?
+> 
+> In this case for all of the questionable forms, please add a oneline
+> comment suggesting that "these are different bits without known
+> purpose of each." or something like that.
+> 
 
-...
+Perfect. Comment added.
 
-> > > What are IMP channels?
-> >
-> > Honestly? Well, it's called like that. I don't have any clear descripti=
-on of that
-> > and not even datasheets are unrolling the meaning of "IMP". So.. I don'=
-t know.
-> >
-> > What I know is what I wrote in the driver, and this is:
-> > * IMP has IBAT and VBAT ADCs
-> > * It needs different handling from the other ADCs, as shown.
-> >
-> > ...and nothing else :-(
->
-> I could speculate with confidence that this means IMPedance (since it's A=
-DC).
->
-> From MTK6329  datasheet:
+> ...
+> 
+>>>> +#define MT6358_IMP0_CLEAR              (BIT(14) | BIT(7))
+>>>
+>>> As per above.
+>>>
+>>
+>> Same, I don't have any explanation for that.
+>>
+>> If you prefer, I can define this as 0x4080, but honestly I prefer keeping
+>> it as-is since I am sure it's not a magic number but really two bits to flip
+>> in a register.
+> 
+> As per above.
+> 
+> ...
+> 
+>>>> +       u8 r_numerator;
+>>>> +       u8 r_denominator;
+>>>
+>>> Can you add struct u8_fract to the math.h and use it? I will Ack/R the
+>>> respective patch.
+>>
+>> Yeah, I did that exactly because u8_fract wasn't there and I didn't want
+>> to waste more bits, but since you just asked for it... well, I'm happier :-)
+> 
+> Note, it's enough to have my Rb tag and route that change via IIO
+> tree. We have done similar way for other changes in math.h (or aline)
+> in the past.
+> 
 
-The datasheet for MTK6359 I found on
-https://ebin.pub/qdownload/mt6359-pmic-datasheet-15nbsped.html
-also has the same wording in "3.2.7 Fuel Gauge".
+Sure.
 
-> "The hardware also includes necessary modes to allow for simultaneous
-> current and voltage measurement
-> which can be utilized to estimate the battery impedance."
-> And googling vendor trees also suggests the same.
+> ...
+> 
+>>>> +       /* Assert ADC reset */
+>>>> +       regmap_set_bits(regmap, pdata->regs[PMIC_HK_TOP_RST_CON0], PMIC_RG_RESET_VAL);
+>>>
+>>> No required delay in between?
+>>
+>> No, as strange as it may look, there is no delay required in between: this is
+>> because the register R/W is behind the PMIC Wrapper as much as all of the other
+>> MediaTek PMIC (sub)devices, so, missing delays was intentional here, yes.
+> 
+> Maybe a comment?
+> 
 
---=20
-With Best Regards,
-Andy Shevchenko
+Done :-)
+
+/* De-assert ADC reset. No wait required, as pwrap takes care of that for us. */
+
+> ...
+> 
+>>>> +       mutex_lock(&adc_dev->lock);
+>>>
+>>> Why not use cleanup.h?
+>>
+>> I want to unlock the mutex immediately right after executing read_imp() or
+>> mt6359_auxadc_read_adc(), and I don't want the reset to be done while a mutex
+>> is being held, as that makes no sense for this driver.
+> 
+> That's why we have scoped_guard(). Exactly for such cases.
+> 
+
+Thanks for the hint, looking at other usages that was straightforward.
+
+>> Besides, I find the macros in cleanup.h to be cryptic - in my opinion, they
+>> require better documentation as, for example, I don't understand when the
+>> guard(mutex)(my_mutex) is supposed to acquire the lock and when it's supposed
+>> to release it.
+> 
+> They are cryptic due to limitations in C language. But for the end
+> user it doesn't matter. The behaviour is well understandable and makes
+> code cleaner and less prone for errors such as missing unlocks. So,
+> please use cleanup.h.
+> 
+
+Indeed, but my point was that the documentation can (and probably should)
+be improved.
+
+
+Cheers,
+Angelo
 

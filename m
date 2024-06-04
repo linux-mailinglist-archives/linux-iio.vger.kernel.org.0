@@ -1,50 +1,50 @@
-Return-Path: <linux-iio+bounces-5780-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5781-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 653898FBC0A
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 21:04:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 161D08FBC11
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 21:06:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D75E3281165
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 19:04:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C809E283CAF
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 19:06:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943CB14A62F;
-	Tue,  4 Jun 2024 19:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07D6714AD0E;
+	Tue,  4 Jun 2024 19:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqhfKdKX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IUOV71Ok"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539761494CA
-	for <linux-iio@vger.kernel.org>; Tue,  4 Jun 2024 19:04:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1751494CA
+	for <linux-iio@vger.kernel.org>; Tue,  4 Jun 2024 19:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717527871; cv=none; b=qdgLWNj3/RxxyhpCD4uR6o23DiEgudE29tOKie4qrxQb4wyIRgEfVb2FUeA2ytlevSif1/If953xcCyPwiAmN6nTVk3i/Ipay8N/J/JX/g9TUTordsi/WqZj7MXOpkjcbsa5R4B+VgDu2SpCL7HbqV9qYQkQ6PUS++OLYkh0PTM=
+	t=1717528003; cv=none; b=JY0OjrUJK0ZK8yTtZ1TXD8Gix5saUG/AJhjztK+P7w0T4+NrL1+8l6TPjLCP8miO+az82lf3oqacSmRdWHY1KLSduINNXozcK8HNDiPuYO4jEfl01EkP4e9UujwN9VmxIEQ4DmXTfbvtiznG8ScT6eM/VNI1Sc3auSKW/vLOrx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717527871; c=relaxed/simple;
+	s=arc-20240116; t=1717528003; c=relaxed/simple;
 	bh=C9kEb1TPI4R3mK1DcQwaYPt6mmoh48mhQb1l08tizi0=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=iBQMlCE8yEUGJqNG/9uMyoVuQ+hAadwFoIy9smQ8OxygAiMmR7cSkG/nnb1Us+8eU2rWwzbc3ZBknY1zeob4XWI5HKkMYLH0cWi+t364u9jYyjMJEmin7fTdEN9KORfKsvWG1rsbtPVw54C7LGb6VA43BmOGhRrYK54Njz3z44Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqhfKdKX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3641C2BBFC;
-	Tue,  4 Jun 2024 19:04:29 +0000 (UTC)
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=EZZWhWGHHVAMPp1e16M67n1C4VskOTtNOlQVmigbdWXUcBuG7cDWRDF9Yk+zhp/cjDkn5UM6Y6ehnX4LUbm4Yo5iXhFcuFm9un78zF6bErrvLgpPQXD2Z0blVjZ2fPrjsioVdIIawUxj21HIQ+mGvM0TzL7cMPr0cAb17j01c+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IUOV71Ok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3941C2BBFC;
+	Tue,  4 Jun 2024 19:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717527871;
+	s=k20201202; t=1717528003;
 	bh=C9kEb1TPI4R3mK1DcQwaYPt6mmoh48mhQb1l08tizi0=;
 	h=Date:From:To:Subject:From;
-	b=iqhfKdKXAT0ILu08sgCjyDlcGZrgguwj3aktXBEC1DCtQr4kg5f+xkkjH76B97N82
-	 tdPJB+EjTBZYvc89zKcGhWZaKmA/37IRb9doNM9kCC89tL/CdFVx8I30Lg/quAlJpx
-	 RL8dcVSsuNsD5s3YqGdAxxaYl+ngJUqY9kilF+QPV7rP7PsjrtMZ/eKVnFXts+Gxdd
-	 9qJ4wenAkWmguYXN5zyI+i+b+N2c+SZIm5FRztkgtWKLjY8gGjsB3xsahsi4pfInN0
-	 7Q/TefhzfdNV+uMrdhvKAVfxfK3YJAwqq03Gc2x3Ro/6NQjp9z4fGRLTknPoOsc4Fr
-	 xjIqsIVj6LRMw==
-Date: Tue, 4 Jun 2024 20:04:21 +0100
+	b=IUOV71OkidJlK7cQ9J9BQ8WCbtJpOFiCONcRVnWTNC0vFMr04sJajeHVPmo/W6EFy
+	 fEixfm0TM3uFXsRID3vwHfLSkrkJ2BJgoCCJk/NGBr9xk/LSK/uLh8SNuX7ViJjHct
+	 k599DQMhDzhq/qrXszTzIInbwsk6akPVeTy/NiFmZFBBfKOL7CBMvmSTWD9/QbEotP
+	 1H2MrY2yUx43ZejAbuV1HHdaYf1jb4NdnI8ZDIBvaZY0LJZmJSoNh2rkzziSUATGtc
+	 vSLa+nFs1042Hcoe31VEqwW3IK79dS01sLusNP+1Bnzwh0mfGqib7RLs7KWKF2Fa30
+	 2qIzGQDjrzFZA==
+Date: Tue, 4 Jun 2024 20:06:32 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL]
-Message-ID: <20240604200421.2d084308@jic23-huawei>
+Subject: [PULL] IIO: First round fixes for IIO in the 6.10 cycle
+Message-ID: <20240604200632.6af3f262@jic23-huawei>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org

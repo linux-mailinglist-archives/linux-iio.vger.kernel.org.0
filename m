@@ -1,82 +1,83 @@
-Return-Path: <linux-iio+bounces-5758-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5759-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17CAE8FB35E
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 15:19:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DCC18FB395
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 15:23:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 492941C20C8E
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 13:19:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 151E128772A
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 13:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2989214658D;
-	Tue,  4 Jun 2024 13:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CD8C143755;
+	Tue,  4 Jun 2024 13:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e/+oPtOa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NWemrCxh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DFD143894;
-	Tue,  4 Jun 2024 13:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A489146587;
+	Tue,  4 Jun 2024 13:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717507164; cv=none; b=pgKr7ts/ihQT1mRWLYCdv8VTa0+kyI62PtybOKTGwS4VRhStna0+ojhnUECFqMnrVK5Za7XMYEFh5MDjcPRme9HLrYgitJL1ZNnxEsURp/RVzulfVnL03HlQwI7e2ija6Sf8ZgrDFhAKLgyolrHz74booM1uKynhHWVwfCx0oHk=
+	t=1717507404; cv=none; b=Fw8gTbhMl2yKmTlCuDRwdOrZf7ZKRpvPG9LKy2ieHhSN2cIose/7AtUyIIFce4vvGzzLkm1vrWc96HhB8q/sHA1ZqpiDRY83aDPJTkkWx6fp1vJbPHwgplKc2jonWh/iMuWm1HlbuSrh+jzxPw11H7yOrMEm6+WsJtY2zm2GSXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717507164; c=relaxed/simple;
-	bh=YJVMvwv8yrvbQTt6Dpj5ooLvEPn9RhqjCuP8saFqK3k=;
+	s=arc-20240116; t=1717507404; c=relaxed/simple;
+	bh=D4HtLoTVU3H+eyUhPZTSVo5LCusxKwB+BLH0C2Ip7jQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rsqTdT6blt9M4fjwbLwlwMBFNbaG7zorhz4165nUImB2LYr7hoyqiXMygEAT3c4h58UhN2/UcJo5HNmhMSN56GHGRLdxVAyRty0nUzmny+wJHQ3SCXQBoQZh1La16zNP15wPEnBFx60qxLo2QoGAzF7YIXn9F94SStjhT9hHmU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e/+oPtOa; arc=none smtp.client-ip=209.85.218.51
+	 To:Cc:Content-Type; b=kuIT9a21E9Z+Xp8xvjm35Vx1UtPuwhJQtmTKhvZeRj9nTUZL6cIG21iD6qMa/Y0c/MgNY5TVD6ShAzo0Cpl+9MYg3L/DxU+8ULSrO7VkzICC2P79b3eDygfHA+rC5UAhLGaLYQ1kprRIQDYAFMz6u4I0W/LkAaEpxXMlXFXL7OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NWemrCxh; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a63359aaacaso724800166b.1;
-        Tue, 04 Jun 2024 06:19:23 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a63359aaaa6so721905066b.2;
+        Tue, 04 Jun 2024 06:23:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717507162; x=1718111962; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717507401; x=1718112201; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YJVMvwv8yrvbQTt6Dpj5ooLvEPn9RhqjCuP8saFqK3k=;
-        b=e/+oPtOaXQuov5rdz6D9kWR08s4lYjkQRAyXSWKHY/hN6c9F4nuuAPSoAkSg4AoJx3
-         xzVkgbGiP+4u18nUL3cwM95g+NNxeltm8lsYu7RVmGkqdLpTPBBCHwnTE+9V2L38Lt7j
-         a3MHcGVTnlo11AcZL9Ku5CY6mQ33QJsRCVF1ytlAflFMNtWkpR0zqA9zVY3UbfJKH/KI
-         jg+GEx0k+mx/W0V6DYNUiYHCiQpokhmP1EXrTUu+1D118iUcMzknjmc3x/W+sBYGLA+h
-         y53HskVEBRE6VWT0L5zI/fsn69EEtWpPOPJ2/t8rAt7UwXPnxsuN9NiFu7ApaaCWB8N5
-         2tJA==
+        bh=D4HtLoTVU3H+eyUhPZTSVo5LCusxKwB+BLH0C2Ip7jQ=;
+        b=NWemrCxhYCNnMM0EfqVJkc1B3z0I8MWk4l1Lnbcnmr0g/SOhyQliL029/rGzzNypPy
+         sXBXjOgUDISzsplbcfFH6OMxdVwnEvXhJW4l9RYDndx8+zZgZTzepga+yE+yug9wLsTk
+         JvWZhSsyPAn+1LyfSiqfZJHCfvt+1jRHwFk0Dq7sHu/aNF0ZgNBnqcwM4MwQl+kHmUSF
+         yeQmI7CZTdLGm6mi4WTt1ryYS8WgPa7AWEeKWpjP+DjPpECijBkDdFFxYwk07wt9sBd8
+         Ez2d4wzW1OSaqYUmjIKnsmT4l4HeP2yhqU4ZuEF4SjXjwJRBLrQJ7EACazkEcM7ml/bo
+         H7ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717507162; x=1718111962;
+        d=1e100.net; s=20230601; t=1717507401; x=1718112201;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YJVMvwv8yrvbQTt6Dpj5ooLvEPn9RhqjCuP8saFqK3k=;
-        b=avwTE7IRt1XmroK2GCTK13N0E9uCqiEUiyRiuAtAE7DHeaTDQQ/rp4SNy5TmoTd01c
-         Emd2whQNhNRxehLEAtTCxOwNnAb4jMQsa69FbtwUusZyjAlxiRAWxCCZG2aIeRIzlsk+
-         TGR2y5AvC32Gkyh7sefqlTPniW4quwG4Q6sNTkC1Yv/JczIRZW0rbL5qwFbpffJcl+3K
-         pw2528KLyp9MIOtDM+jxWLn5e6zV9Ztu+0zX09lQTRPICQxPmKJuWfQU8BKq+xiG33n0
-         bKK9VJ4XdmvdVj/mYYpN//rJtI8WPMNrVZo+TGRxiU1KRsphvRou8wwJGhhHG9VT1kfx
-         4izg==
-X-Forwarded-Encrypted: i=1; AJvYcCXi9mWqdUffGyw60STaCIN5NxmgWO7y5x+Udxj7KXCr9Iz5tDTc+IUd0EiEzy37t1gWgr40qF4I2AFcURzf3vB1iCR/1ZuNUL29onCu3eFXwmOSyboZGFRlOFvnww5dF4mqI+moBEvT0INyp2GwfwIZLKpxl8f2vJxUCOH7lQcwCjk6Jg==
-X-Gm-Message-State: AOJu0YxnAgsC0zCxEQjgdsL8DHVQjOVZmgD6hkeh9rY44BoRsX61SQUD
-	eqByl5q0oDzhTJA43eShPobBoTZElLZXSYTQe3VvAHwi2R1yM3FjgYUxn87UqCz0GDhvzw/9pHw
-	u0wVZp0HBaxPe0WA+fgOAsxaObYg=
-X-Google-Smtp-Source: AGHT+IHDbpSFR8VgGbrUMxndBUIdfujfvQsl0DAQdoYXCdvQ0K5qPJ6brxy9idGG/uw3HyLxGrGZcT0HjfDhQ1mq2G4=
-X-Received: by 2002:a17:906:d794:b0:a68:eca8:2d3e with SMTP id
- a640c23a62f3a-a68eca82ef6mr449184766b.12.1717507161399; Tue, 04 Jun 2024
- 06:19:21 -0700 (PDT)
+        bh=D4HtLoTVU3H+eyUhPZTSVo5LCusxKwB+BLH0C2Ip7jQ=;
+        b=JPnl3Y7N96XOPTwLNrznsJJgOQIsNTnQiYOuYkSjT/L/eD/TT8ei6OdYyWTy9jtu6V
+         4tJYTokLMgTl4MGgErMsaTnM7P1LjCDG/WeHWa8NuImSO9KOoqtGJTQQfXJP3c2EAnae
+         c1y8bqnHTXZZn6vsdqWmSNThxV0wYS+lPN1ubE81rYMEIZ9Quu4gP4GP5lQ6H1752IOR
+         /Q4/SzB374HTMjvD9HiJOkVrr5cxtKuXtusdWRt7AEN3UpHcEv7sdU1HS5vZgnyRUpJ+
+         6346IGYQnpz4ckTswJzlpsClFQk92X2WMs/1ZbiGTNfBayVopL6Q7w8DYHM4a1E7yqqG
+         26Uw==
+X-Forwarded-Encrypted: i=1; AJvYcCV2Fg0UG4qU009TIbWRySmei6MepRpNdclOODPOaxGjLRIz4DyRHyrp3g1toSpI+NHZfoAeM2dE/aB2vHF2GJt3+GGIjKXAqsNd4nYzuks7c7VCuCSGoF/3Yg2xN2ggDdTmJqrlvXIlggkngUaKmLTp7JyrHtUFbzaEZItLCFUqjx+wwQ==
+X-Gm-Message-State: AOJu0YyMZOfN4jfY7w3HnsAgrmdEf/xX7NA+Zwvr10tXzqS/g324Eo+T
+	aYDBaMFWsNi/08x20gqrwpbIMijV/G30hVPsLzvzk89XLe1uvtBKj7ARkSWzgL6A++ics9Vee2o
+	A0oqUMS1xh6iFL+SKs6KBEjYwUnU=
+X-Google-Smtp-Source: AGHT+IE5s5ADNfYnbPI8bDw/CpMfi1LzejGDjcTFcbYzZnvQgliM5/TmXHdkT9xdHYahqyYsZ6pgxgeQxvDpCe8I2qg=
+X-Received: by 2002:a17:906:2b51:b0:a68:cc6f:cb5a with SMTP id
+ a640c23a62f3a-a68cc6fcc2emr493202266b.68.1717507400768; Tue, 04 Jun 2024
+ 06:23:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240604123008.327424-1-angelogioacchino.delregno@collabora.com> <20240604123008.327424-4-angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20240604123008.327424-4-angelogioacchino.delregno@collabora.com>
+References: <20240604123008.327424-1-angelogioacchino.delregno@collabora.com> <20240604123008.327424-5-angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20240604123008.327424-5-angelogioacchino.delregno@collabora.com>
 From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 4 Jun 2024 16:18:43 +0300
-Message-ID: <CAHp75VdtfsSA7quU3Eo0=Yv=J_yXVo5_+_WgxGFJ5M_MLbf7NA@mail.gmail.com>
-Subject: Re: [PATCH v2 3/5] math.h: Add unsigned 8 bits fractional numbers type
+Date: Tue, 4 Jun 2024 16:22:44 +0300
+Message-ID: <CAHp75Ve8qPLu+gS8o5Q5A20j_+AP_UVkOzdKqcnhUawA_sW+VA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/5] iio: adc: Add support for MediaTek MT6357/8/9
+ Auxiliary ADC
 To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
 	conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org, andy@kernel.org, 
@@ -92,12 +93,21 @@ Content-Transfer-Encoding: quoted-printable
 On Tue, Jun 4, 2024 at 3:30=E2=80=AFPM AngeloGioacchino Del Regno
 <angelogioacchino.delregno@collabora.com> wrote:
 >
-> Some users may be requiring only rather small numbers as both
-> numerator and denominator: add signed and unsigned 8 bits
-> structs {s8,u8}_fract.
+> Add a driver to support reading the Auxiliary ADC IP found in the
+> MediaTek MT6357, MT6358 and MT6359 Power Management ICs, featuring
+> a different register layout, configurationm reset and ADC reading
 
+configuration
+
+> sequence from the other already supported MediaTek SoC or PMIC
+> (aux)ADC HW.
+>
+> This driver provides multiple ADC channels for system monitoring,
+> such as battery voltage, PMIC temperature, PMIC-internal voltage
+> regulators temperature, and others.
+
+Seems all my concerns were addressed, so
 Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Thank you!
 
 --=20
 With Best Regards,

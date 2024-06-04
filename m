@@ -1,194 +1,188 @@
-Return-Path: <linux-iio+bounces-5745-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5746-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BD848FB0B4
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 13:05:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E07F8FB0F0
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 13:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03F13282375
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 11:05:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0001828325C
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 11:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BD7144D3B;
-	Tue,  4 Jun 2024 11:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05328145343;
+	Tue,  4 Jun 2024 11:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jnbMkOk7"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EH28Si+x"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F4F4A07;
-	Tue,  4 Jun 2024 11:05:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E4C144D37;
+	Tue,  4 Jun 2024 11:19:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717499143; cv=none; b=buLRckyZj2TZeurHYHOCcBr0h6FY9ceR78FW2esKZwVGpTFFUk5ZR+f6ZS2Sr72N9ullqJeGKvozl19sGMXXAsb8rRzHOhGuBYHVgXEiD6mZWR3KiSGHwxBeXHkTveuxfPb71YVwOtrAn9U8Z79HF6l4zGkcoumIHJt0uIq8N3w=
+	t=1717499974; cv=none; b=cAMcYXWG/UkieHMDQbJ2XeIOa1wcg8i+6ooGC7O/uqDqZfFXByWOZsv5QgZlD3fcocbHZ6U6vUdzsXXI4kmZ+eIm6Yv0zsZm4z+BTUvuF425dEKSLoYqvm1xD7XpdLp1gcOfj5JPG+GRxxD1SZW3UTMVd0EJ9kLpFvCBHuX7+Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717499143; c=relaxed/simple;
-	bh=TY7XvU4SbXdxEdswCoVLHuqEj9CxfdQLBwmuALZPUxA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HzIY+oXAB9DZTo26MrRFq1r1jGItqGxHQTkTPtRC0DDUr2uNi8apbwYCZZLAefNkxaIQzMLFFgRvtTat3eA8u0Apo+gYmwxnoxgHMA8mgcorOyKbeydBsPZilSLzVHAKKBiJJe38lnaYcSoRo+V5FOXT+B2ccwXSiDXA0765QfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jnbMkOk7; arc=none smtp.client-ip=209.85.167.44
+	s=arc-20240116; t=1717499974; c=relaxed/simple;
+	bh=/KTVQPgKkw5N5Iv462MWTjnxIl996lxgMwYk1UvUCgg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=SAi1H/sgbfMEKAn/+4EJDdIRv0z/ruwQYN4LP9rPgeTjZBg0+aq7mZwJbDQeOAlkLycRY9BpXEbVQ4FBkTpjto5fSA0Mhbib81za7HbWBEMIqs4k43OV883MZj94HNBSkYUxbYvSodJin2vITwqpSHH0WmSHWkxks7DClFONbb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EH28Si+x; arc=none smtp.client-ip=209.85.208.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52b98fb5c32so3052228e87.1;
-        Tue, 04 Jun 2024 04:05:41 -0700 (PDT)
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-57a2f032007so5474238a12.0;
+        Tue, 04 Jun 2024 04:19:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717499140; x=1718103940; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pjJNON3xbO+Yh03gyOu9rx6tlrOQ/KcMrKYC4qdTMT4=;
-        b=jnbMkOk7tUVVy8fW44JZSGZea3OUJCuffIqYc1j/lGfLowPTnPJsmTvgzHd/kh5emR
-         fgUu0JFObDkAZ6PapU2t48Ac07rna4vRODWpvCx8yxX+bEIfGEHdEYusTlaWDVkkKnfD
-         rklotBjrth/1VS1Sib0AkjAbZtswr7zBxEvENCRUoYPYc1Wl4TTmgm9Ix2ne2UFCKU69
-         1++jE/3SYSHXBVZQjr0jv3D4R4BO1+3XqPhiryBL2N1hd+YC21NKLBofOYQHgOmKCZkv
-         tGHXkMoDwv+VAq/NxH/KVzn/a0JewAQpKUVdsJy9cwc22SPx7B61/SCE7jU/rCm7qEos
-         qisA==
+        d=gmail.com; s=20230601; t=1717499971; x=1718104771; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GMBnX2bSlEM3fPXFPmVFP0tWhkdmltN6LnHeM92l7k0=;
+        b=EH28Si+xLrhtWTRRgMsQ/UlWR/OuWPDcCnqTaDnX+tvZtLR8/WcGB8qIAUIFkaoA+f
+         pEIkbK52YueNPovs5k96gbmH8kYrJ4AfUk6qEn83BfA1oW9zrpBc4tCOo4sVdR3pneLh
+         Pv1IllV6AhksDGRB7WysNaiLQxIz/EGV/52J6JhNawwGTOG0ynb9hMbYA16o0jof0Q/G
+         mD+cpKLmkTCmj6/c4AMerE+mL5yfFwM3aS3f5qwUS50hnECm2YBkHRAymCduHmTW92am
+         MRSmLqX3ewZAC83333e6pJlDw7UUhmrxyPx8ejRMJnUDVGkYfVm08mpm3o27BHd3IStD
+         DZZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717499140; x=1718103940;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pjJNON3xbO+Yh03gyOu9rx6tlrOQ/KcMrKYC4qdTMT4=;
-        b=IAa1wb6uOg5MpfMekEv8zNVfwCuX+o+Kso+GfvpvLWDvz9v1fheomwA+xEiHp+ua4B
-         Bda3H3lk8liKv6gl838wAV58aH8qXoRYjoHNDvpuQ8vRdIlCnocyvTbZTgVQAcxu5GI2
-         TPazZ/nx/+HMLY11dakKFMqgex3LZWXt8VfabK2Zn9l53mElGcfOIBsVVTudb2cVaiYr
-         remiIvYHU6jpb835iXbWiJdA/aiwXsTe1feZktTcb3J+6Tvnf4nZseQBbk1zY68RGtDy
-         HsZR0Z0/VKvd5ZiZY2/803PtzsivJpayEvJoBL89yHiI5vyZ4AF2mGobgPZILqB2Bc9u
-         z0Xw==
-X-Forwarded-Encrypted: i=1; AJvYcCXWvXedEk/eskLraoXJRRMC6sLfE2VgfRLSOIV2QlXtg9W86PGa8/ZO/AMRUA+yXWNYq8fkQzWeQgUist6T7mQhIQPJ7lhP60MpHNYSagEs8PI+Y5sXsTY8qJ08AmhYApLXCUiMDG7jxga0Cvi3EcGcov7Ckb2z4UzwwNSBRDd0qT1s3w==
-X-Gm-Message-State: AOJu0YwY2xLTmNuvFrz2VO01t956I+KTD/3dNwCgCmzxEy9tPMJ0irch
-	OIRHKY83JoUvUGxU5CP0HnwJmvlIuXCkaRrzzRuS2xstxZgAr2n00en0oW8zaByUXP+wpIK6lOz
-	s/1VlHEWfPc5Z869oB1+opl6s+L8=
-X-Google-Smtp-Source: AGHT+IGKVX7EW81SfP255Jyii0GXmIvdQOfcnZjcozuN3AC14wMPa/o28MFGzPREGwZRW/+wCvISJRXveGKYPM4NcEU=
-X-Received: by 2002:ac2:5de5:0:b0:52b:9955:43b3 with SMTP id
- 2adb3069b0e04-52b99554482mr4801820e87.60.1717499140011; Tue, 04 Jun 2024
- 04:05:40 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717499971; x=1718104771;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GMBnX2bSlEM3fPXFPmVFP0tWhkdmltN6LnHeM92l7k0=;
+        b=CAK3BQTmgx23qJJ3SD8w+50FUyCtBQmKMEt/Dsga8EN0xq8kgnLq8tZf0yyxhpABzW
+         bxyxsQUN/Hu7BuNOYzfDnX2ikLRBHAwc33c6oi/u5DitsaEpesYEAB1DXa8YBVzq+zvC
+         KygaPyNhuDC7LMmh2s78Jf9Ix7NaAS1fR+hCgqxEpcyB2Fw3QH/f6IC4iD0Z/vhstH6i
+         LQts6VAKygAknOZfMISjQbn0P3cZSVXd8SZVgUkCX2U1mybgmkaBF7LkhRBMRbi9sf5o
+         DH8QtfPFe++0mjFSzcFXjGvd70msfd2OASIkwYUnWzF0EOCfH3siCViWk7s6PS1GVvx8
+         rGJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUYzb8rRNRlC8zK5BtMQ70+OTigii5+O2/Xqn25Ok/rkw0lpFwSM4+qOalBT2yA/DaJNskHncaeYGbT/bEj1v21Z76KvT6GfHro94KRhPVbmvahKcKxrbfuLB8JP88eISn63YwokICd
+X-Gm-Message-State: AOJu0YweQXygOnRJhpoZrNKnMxauTSOGHnkfOsjtLdAk1eLkKHgVzmv/
+	uRnB8m1FPn3TCBRhQ5uNt8aoZd3tlG1YnfNVCp3ssQqLjX3G0Bjb
+X-Google-Smtp-Source: AGHT+IGN7N3s5/m2W/MNUly37tDVpE6w//s47AmPSal2wwJvZgWdITbWDdFPH8XvV45XGZyaphWGYw==
+X-Received: by 2002:a05:6402:2313:b0:56e:743:d4d9 with SMTP id 4fb4d7f45d1cf-57a364acf15mr6032155a12.42.1717499971218;
+        Tue, 04 Jun 2024 04:19:31 -0700 (PDT)
+Received: from ?IPv6:2001:a61:35f9:9001:40df:88bb:5090:7ab6? ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57a31bb841fsm7307365a12.34.2024.06.04.04.19.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Jun 2024 04:19:31 -0700 (PDT)
+Message-ID: <edb66fe8c2722e600179b1f9a0d81242d84582a0.camel@gmail.com>
+Subject: Re: [PATCH 2/5] iio: adc: ad7266: use
+ devm_regulator_get_enable_read_voltage
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
+ <jic23@kernel.org>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Nuno =?ISO-8859-1?Q?S=E1?=
+ <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-iio@vger.kernel.org,  linux-kernel@vger.kernel.org
+Date: Tue, 04 Jun 2024 13:19:30 +0200
+In-Reply-To: <20240531-iio-adc-ref-supply-refactor-v1-2-4b313c0615ad@baylibre.com>
+References: 
+	<20240531-iio-adc-ref-supply-refactor-v1-0-4b313c0615ad@baylibre.com>
+	 <20240531-iio-adc-ref-supply-refactor-v1-2-4b313c0615ad@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.1 (3.52.1-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240530093410.112716-1-angelogioacchino.delregno@collabora.com>
- <20240530093410.112716-3-angelogioacchino.delregno@collabora.com>
- <CAHp75Vexddt1xUGogRDZA9pM1pFp2=ZtCQnCfXePahSCb+oKpg@mail.gmail.com> <84f1c58c-0a5d-4131-a16b-b76bf28862ee@collabora.com>
-In-Reply-To: <84f1c58c-0a5d-4131-a16b-b76bf28862ee@collabora.com>
-From: Andy Shevchenko <andy.shevchenko@gmail.com>
-Date: Tue, 4 Jun 2024 14:05:03 +0300
-Message-ID: <CAHp75VcwnjrsAY1qF68MpBWV-NLFSxTP_PDL+ER==KNdBAFFTA@mail.gmail.com>
-Subject: Re: [PATCH v1 2/4] iio: adc: Add support for MediaTek MT6357/8/9
- Auxiliary ADC
-To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: jic23@kernel.org, lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org, andy@kernel.org, 
-	nuno.sa@analog.com, bigunclemax@gmail.com, dlechner@baylibre.com, 
-	marius.cristea@microchip.com, marcelo.schmitt@analog.com, fr0st61te@gmail.com, 
-	mitrutzceclan@gmail.com, mike.looijmans@topic.nl, marcus.folkesson@gmail.com, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-mediatek@lists.infradead.org, kernel@collabora.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 4, 2024 at 1:38=E2=80=AFPM AngeloGioacchino Del Regno
-<angelogioacchino.delregno@collabora.com> wrote:
-> Il 30/05/24 15:34, Andy Shevchenko ha scritto:
-> > On Thu, May 30, 2024 at 12:34=E2=80=AFPM AngeloGioacchino Del Regno
-> > <angelogioacchino.delregno@collabora.com> wrote:
+On Fri, 2024-05-31 at 16:19 -0500, David Lechner wrote:
+> This makes use of the new devm_regulator_get_enable_read_voltage()
+> function to reduce boilerplate code.
+>=20
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> ---
+> =C2=A0drivers/iio/adc/ad7266.c | 37 ++++++++++---------------------------
+> =C2=A01 file changed, 10 insertions(+), 27 deletions(-)
+>=20
+> diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
+> index 353a97f9c086..026db1bedc0a 100644
+> --- a/drivers/iio/adc/ad7266.c
+> +++ b/drivers/iio/adc/ad7266.c
+> @@ -25,7 +25,6 @@
+> =C2=A0
+> =C2=A0struct ad7266_state {
+> =C2=A0	struct spi_device	*spi;
+> -	struct regulator	*reg;
+> =C2=A0	unsigned long		vref_mv;
+> =C2=A0
+> =C2=A0	struct spi_transfer	single_xfer[3];
+> @@ -377,11 +376,6 @@ static const char * const ad7266_gpio_labels[] =3D {
+> =C2=A0	"ad0", "ad1", "ad2",
+> =C2=A0};
+> =C2=A0
+> -static void ad7266_reg_disable(void *reg)
+> -{
+> -	regulator_disable(reg);
+> -}
+> -
+> =C2=A0static int ad7266_probe(struct spi_device *spi)
+> =C2=A0{
+> =C2=A0	struct ad7266_platform_data *pdata =3D spi->dev.platform_data;
+> @@ -396,28 +390,17 @@ static int ad7266_probe(struct spi_device *spi)
+> =C2=A0
+> =C2=A0	st =3D iio_priv(indio_dev);
+> =C2=A0
+> -	st->reg =3D devm_regulator_get_optional(&spi->dev, "vref");
+> -	if (!IS_ERR(st->reg)) {
+> -		ret =3D regulator_enable(st->reg);
+> -		if (ret)
+> -			return ret;
+> -
+> -		ret =3D devm_add_action_or_reset(&spi->dev, ad7266_reg_disable, st-
+> >reg);
+> -		if (ret)
+> -			return ret;
+> -
+> -		ret =3D regulator_get_voltage(st->reg);
+> -		if (ret < 0)
+> -			return ret;
+> -
+> -		st->vref_mv =3D ret / 1000;
+> -	} else {
+> -		/* Any other error indicates that the regulator does exist */
+> -		if (PTR_ERR(st->reg) !=3D -ENODEV)
+> -			return PTR_ERR(st->reg);
+> -		/* Use internal reference */
+> +	/*
+> +	 * Use external reference from vref if present, otherwise use 2.5V
+> +	 * internal reference.
+> +	 */
 
-...
+Not sure the comment brings any added value. The code is fairly self explan=
+atory
+IMO...
 
-> >> +#define PMIC_RG_RESET_VAL              (BIT(0) | BIT(3))
-> >
-> > In this form it requires a comment explaining each mentioned bit.
->
-> I don't have an explanation for this, I know it's two different bits from=
- some
-> reveng, but the downstream driver declares that simply as 0x9.
->
-> Should I just "mask" this as 0x9 instead?
+> +	ret =3D devm_regulator_get_enable_read_voltage(&spi->dev, "vref");
+> +	if (ret =3D=3D -ENODEV)
+> =C2=A0		st->vref_mv =3D 2500;
+> -	}
+> +	else if (ret < 0)
+> +		return ret;
+> +	else
 
-In this case for all of the questionable forms, please add a oneline
-comment suggesting that "these are different bits without known
-purpose of each." or something like that.
+I think it would be better (as that is the typical pattern) to first check =
+for
+errors. Also the 'return' in the middle of the else if () is a bit weird to=
+ me...
+Maybe something like this?
 
-...
+if (ret < 0 && ret !=3D -ENODEV)
+	return ret;
+if (ret =3D=3D -ENODEV)
+	st->vref_mv =3D 2500;
+else
+	st->vref_mv =3D ret / 1000;
 
-> >> +#define MT6358_IMP0_CLEAR              (BIT(14) | BIT(7))
-> >
-> > As per above.
-> >
->
-> Same, I don't have any explanation for that.
->
-> If you prefer, I can define this as 0x4080, but honestly I prefer keeping
-> it as-is since I am sure it's not a magic number but really two bits to f=
-lip
-> in a register.
+or even replacing the if() else by
+st->vref_mv =3D ret =3D=3D -ENODEV ? 2500 : ret / 1000;
 
-As per above.
+- Nuno S=C3=A1
 
-...
-
-> >> +       u8 r_numerator;
-> >> +       u8 r_denominator;
-> >
-> > Can you add struct u8_fract to the math.h and use it? I will Ack/R the
-> > respective patch.
->
-> Yeah, I did that exactly because u8_fract wasn't there and I didn't want
-> to waste more bits, but since you just asked for it... well, I'm happier =
-:-)
-
-Note, it's enough to have my Rb tag and route that change via IIO
-tree. We have done similar way for other changes in math.h (or aline)
-in the past.
-
-...
-
-> >> +       /* Assert ADC reset */
-> >> +       regmap_set_bits(regmap, pdata->regs[PMIC_HK_TOP_RST_CON0], PMI=
-C_RG_RESET_VAL);
-> >
-> > No required delay in between?
->
-> No, as strange as it may look, there is no delay required in between: thi=
-s is
-> because the register R/W is behind the PMIC Wrapper as much as all of the=
- other
-> MediaTek PMIC (sub)devices, so, missing delays was intentional here, yes.
-
-Maybe a comment?
-
-...
-
-> >> +       mutex_lock(&adc_dev->lock);
-> >
-> > Why not use cleanup.h?
->
-> I want to unlock the mutex immediately right after executing read_imp() o=
-r
-> mt6359_auxadc_read_adc(), and I don't want the reset to be done while a m=
-utex
-> is being held, as that makes no sense for this driver.
-
-That's why we have scoped_guard(). Exactly for such cases.
-
-> Besides, I find the macros in cleanup.h to be cryptic - in my opinion, th=
-ey
-> require better documentation as, for example, I don't understand when the
-> guard(mutex)(my_mutex) is supposed to acquire the lock and when it's supp=
-osed
-> to release it.
-
-They are cryptic due to limitations in C language. But for the end
-user it doesn't matter. The behaviour is well understandable and makes
-code cleaner and less prone for errors such as missing unlocks. So,
-please use cleanup.h.
-
---=20
-With Best Regards,
-Andy Shevchenko
 

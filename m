@@ -1,145 +1,233 @@
-Return-Path: <linux-iio+bounces-5739-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5740-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0917E8FAEA6
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 11:23:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 538BD8FAEFD
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 11:38:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39F731C20C1C
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 09:23:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2B261F21C8F
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 09:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED705143888;
-	Tue,  4 Jun 2024 09:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2151983CB2;
+	Tue,  4 Jun 2024 09:38:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a7U7PNS4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vPDst1bo"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E07BB14375F;
-	Tue,  4 Jun 2024 09:23:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA11815E97;
+	Tue,  4 Jun 2024 09:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717493027; cv=none; b=JzvAf794aak0X+O6S/XHvBX37gK00LJFrCk99CPbqSiX54mW2RoCAJ7VJnFyhaGNlQnhvKzemJ06HzWGldXkWviYMJl0/B56YyDP8mFq0+g7duXbCrNt20pqQdNeKX/ZwF2dEhlG6GGCti11IMyHKXTEb7d2E678SyEb7gvg76o=
+	t=1717493926; cv=none; b=p3YW+UppOOVmwq0m4o2uJ6G1nFDCM4L1/gKuWkFgZIc3o+El52PmrgDouGL5gzXzWDMqJOMK96AHbpycv3BGoDO71zlh3H3j+C0TlFSwmOpFoUZXSLMjlZaXveXjZzAu8F0ThS8ZGSXpTRQRRC8CmLzdiHW32bs0MljsHhwkKGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717493027; c=relaxed/simple;
-	bh=0IbfNLKc2fhB1rZQPt8kaw8xS3yUglfykrxml/F/h1Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fe5C0xrrFHnb6MZ4brj3jDtzwB1azG170SNCCgLdSE0zLHqMyYQirar0lzWyuiiaoswmTJgsNr6lJpIyl1Vy/wqNI8cuYzj/XqSkxz0+Pgx7alef2owcNRC2PNaVMZQmiZ+Ik1IYLMFcDOsMm8p8j2ssUXkKttD33aL5d3QW4yQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a7U7PNS4; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1717493025; x=1749029025;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0IbfNLKc2fhB1rZQPt8kaw8xS3yUglfykrxml/F/h1Y=;
-  b=a7U7PNS4fo2Q8ReSiiRVj43P4KBw5x0gQNOLG85t7Zg+YD4i2AaBCx3f
-   GZOr731zmUltqROgM8Vzq9X4ear0eXF53OX1V433pqbwWBzMa05NvIFz8
-   nUcUVZtTUbrpGfplvmX3KQFvsw8qzKqlGIAW4Stkp8tUfwb60FJ1GgR12
-   BiabM/4ukW49wVBbvabDDyn3nui+FJyVQhxmuZU3/JO3bgrgu/fXnLMI2
-   HptAmIsGb40fs3FFQtug9Yd7kd++bqJH9swZ2L3yD2wXyzTrABgI0bR8y
-   2LlwV3iX38Ai1Vr5tb+b81hFB3sAsIdP9imYRu7ibHNpu+9gd6RWXCaiS
-   g==;
-X-CSE-ConnectionGUID: oSqAupphQPO0eIY+lfCVjQ==
-X-CSE-MsgGUID: 90OAzwsYRcaVAPZR+Up0cA==
-X-IronPort-AV: E=McAfee;i="6600,9927,11092"; a="14218171"
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; 
-   d="scan'208";a="14218171"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jun 2024 02:23:44 -0700
-X-CSE-ConnectionGUID: VVvUL15DRC+K7N8LVcOeJw==
-X-CSE-MsgGUID: aPqZVL8ETXKSpnpl7alWbg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,213,1712646000"; 
-   d="scan'208";a="37262347"
-Received: from unknown (HELO 0610945e7d16) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 04 Jun 2024 02:23:40 -0700
-Received: from kbuild by 0610945e7d16 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sEQOI-000Mzn-2L;
-	Tue, 04 Jun 2024 09:23:38 +0000
-Date: Tue, 4 Jun 2024 17:23:14 +0800
-From: kernel test robot <lkp@intel.com>
-To: Christian Hewitt <christianshewitt@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/2] iio: adc: meson: add support for the GXLX SoC
-Message-ID: <202406041738.6Dy1cRih-lkp@intel.com>
-References: <20240604055431.3313961-2-christianshewitt@gmail.com>
+	s=arc-20240116; t=1717493926; c=relaxed/simple;
+	bh=8WSz0b/gsOg+WRLIH5jMyiwfhs13pbW3PQyc8W3rioM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mji7JjrpsvQ1Xtb0+Xtyc/4dAF2FYXlDZpmAR+FyGYfWrfArvxryyl2RbM+j4Fmcsxz1dDeTbu5vmY2jrylH7hsN4SUQ16lvA2498cZ1UNSTSMYnPCp4BQnRsRhyaruMbyPvHbRx0doE7sbapE7hDg2pQ/qXlEYoRiLFbR3dKes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vPDst1bo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72BABC2BBFC;
+	Tue,  4 Jun 2024 09:38:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717493925;
+	bh=8WSz0b/gsOg+WRLIH5jMyiwfhs13pbW3PQyc8W3rioM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=vPDst1booHkhgF8rUuSBd1IQeGWuK8zmNyaqa+quCrD8vu++Ai9pq1xY7ztk9IRnS
+	 JLXlNMj3kP03AHb403qaZPx4DaTmch9u6Tdx5vHW0xRMDoJgE82LlUc/xQzWZlDA/H
+	 3eruCWGJ+TGD0l16d6UcNUmNXn6x8avPacd4DJNIbgraE/h6I7r/f9ndaOwFeMRTQG
+	 X+irrUA/ENq19mm911hBDSgfa2dm3TQU/HKmcRyvIPAmslwl1jkM9bZCQuWjib8OGT
+	 XUvpgzAT99QSGKIqQ6TVXspX6J26qRxc6b9pbmzjjwT6uanU7uFp8X4T1C5oOdGlUY
+	 2emmyGyY/eJiA==
+Message-ID: <0d7d9f61-2590-4c72-9498-dc6540b571d5@kernel.org>
+Date: Tue, 4 Jun 2024 11:38:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240604055431.3313961-2-christianshewitt@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/4] dt-bindings: iio: adc: Add MediaTek MT6359 PMIC
+ AUXADC
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+ jic23@kernel.org
+Cc: lars@metafoo.de, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org,
+ andy@kernel.org, nuno.sa@analog.com, bigunclemax@gmail.com,
+ dlechner@baylibre.com, marius.cristea@microchip.com,
+ marcelo.schmitt@analog.com, fr0st61te@gmail.com, mitrutzceclan@gmail.com,
+ mike.looijmans@topic.nl, marcus.folkesson@gmail.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, kernel@collabora.com
+References: <20240530093410.112716-1-angelogioacchino.delregno@collabora.com>
+ <20240530093410.112716-2-angelogioacchino.delregno@collabora.com>
+ <c2b97c8e-177e-4169-b001-ab0e3303734f@kernel.org>
+ <dc46258b-caf9-46a7-84b4-2f229d48b8f7@collabora.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <dc46258b-caf9-46a7-84b4-2f229d48b8f7@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Christian,
+On 04/06/2024 10:55, AngeloGioacchino Del Regno wrote:
+> Il 01/06/24 17:32, Krzysztof Kozlowski ha scritto:
+>> On 30/05/2024 11:34, AngeloGioacchino Del Regno wrote:
+>>> Add a new binding for the MT6350 Series (MT6357/8/9) PMIC AUXADC,
+>>> providing various ADC channels for both internal temperatures and
+>>> voltages, audio accessory detection (hp/mic/hp+mic and buttons,
+>>> usually on a 3.5mm jack) other than some basic battery statistics
+>>> on boards where the battery is managed by this PMIC.
+>>>
+>>> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>>> ---
+>>>   .../iio/adc/mediatek,mt6359-auxadc.yaml       | 43 +++++++++++++++++++
+>>>   .../iio/adc/mediatek,mt6357-auxadc.h          | 21 +++++++++
+>>>   .../iio/adc/mediatek,mt6358-auxadc.h          | 22 ++++++++++
+>>>   .../iio/adc/mediatek,mt6359-auxadc.h          | 22 ++++++++++
+>>>   4 files changed, 108 insertions(+)
+>>>   create mode 100644 Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml
+>>>   create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6357-auxadc.h
+>>>   create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6358-auxadc.h
+>>>   create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6359-auxadc.h
+>>>
+>>> diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml
+>>> new file mode 100644
+>>> index 000000000000..dd6c331905cf
+>>> --- /dev/null
+>>> +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml
+>>> @@ -0,0 +1,43 @@
+>>> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+>>> +%YAML 1.2
+>>> +---
+>>> +$id: http://devicetree.org/schemas/iio/adc/mediatek,mt6359-auxadc.yaml#
+>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>>> +
+>>> +title: MediaTek MT6350 series PMIC AUXADC
+>>> +
+>>> +maintainers:
+>>> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+>>> +
+>>> +description:
+>>> +  The Auxiliary Analog/Digital Converter (AUXADC) is an ADC found
+>>> +  in some MediaTek PMICs, performing various PMIC related measurements
+>>> +  such as battery and PMIC internal voltage regulators temperatures,
+>>> +  accessory detection resistance (usually, for a 3.5mm audio jack)
+>>> +  other than voltages for various PMIC internal components.
+>>> +
+>>> +properties:
+>>> +  compatible:
+>>> +    enum:
+>>> +      - mediatek,mt6357-auxadc
+>>> +      - mediatek,mt6358-auxadc
+>>> +      - mediatek,mt6359-auxadc
+>>> +
+>>> +  "#io-channel-cells":
+>>> +    const: 1
+>>> +
+>>> +additionalProperties: false
+>>
+>> If there is going to be a re-spin, please move this below required: block.
+>>
+> 
+> Yep, will do. Fixed up for v2.
+> 
+>>> +
+>>> +required:
+>>> +  - compatible
+>>> +  - "#io-channel-cells"
+>>> +
+>>> +examples:
+>>> +  - |
+>>> +    pmic {
+>>> +        pmic_adc: adc {
+>>> +            compatible = "mediatek,mt6359-auxadc";
+>>> +            #io-channel-cells = <1>;
+>>> +        };
+>>
+>> This suggests that you should grow (make complete) the parent PMIC example.
+> 
+> Uhm, should I instead add that to bindings/mfd/mediatek,mt6357.yaml and avoid
+> growing the parent example?
 
-kernel test robot noticed the following build errors:
+No. You should avoid this example and grow the parent example. Not avoid
+parent example...
 
-[auto build test ERROR on jic23-iio/togreg]
-[also build test ERROR on robh/for-next linus/master v6.10-rc2 next-20240604]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+> 
+>    adc:
+>      type: object
+>      $ref: /schemas/iio/adc/mediatek,mt6359-auxadc.yaml
+>      unevaluatedProperties: false
+> 
+>>
+>> Actually having this as a separate node is not really needed. Why it
+>> cannot be just part of the MFD/parent node?
+>>
+> 
+> (glossary: PWRAP = PMIC [SPI] WRAPper)
+> 
+> The top node is the PWRAP, an IP that is (mostly) used to dispatch commands to
+> the PMIC, but the AUXADC is not integrated into the PWRAP, but into the PMIC.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Christian-Hewitt/iio-adc-meson-add-support-for-the-GXLX-SoC/20240604-135606
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/20240604055431.3313961-2-christianshewitt%40gmail.com
-patch subject: [PATCH 2/2] iio: adc: meson: add support for the GXLX SoC
-config: arm64-defconfig (https://download.01.org/0day-ci/archive/20240604/202406041738.6Dy1cRih-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240604/202406041738.6Dy1cRih-lkp@intel.com/reproduce)
+Eh? mediatek,mt6357.yaml says it is a PMIC...
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406041738.6Dy1cRih-lkp@intel.com/
+> 
+> Declaring the AUXADC as a PWRAP child would therefore be an incorrect description
+> of the hardware.
+> 
+> P.S.: not necessary, but to "complete the circle" ... note that the PWRAP can be
+>        skipped on some SoCs/firmwares/configurations, even though afaik that's only
+>        mostly for debugging purposes, it's not granted that you have pwrap between
+>        SoC and PMIC on all SoCs/fws/confs, even though, all of the boards that are
+>        supported upstream do have it and do require it.
 
-All errors (new ones prefixed by >>):
+Best regards,
+Krzysztof
 
->> drivers/iio/adc/meson_saradc.c:1262:10: error: 'const struct meson_sar_adc_param' has no member named 'vref_voltage'; did you mean 'vref_volatge'?
-    1262 |         .vref_voltage = VREF_VOLTAGE_1V8,
-         |          ^~~~~~~~~~~~
-         |          vref_volatge
->> drivers/iio/adc/meson_saradc.c:1262:25: error: 'VREF_VOLTAGE_1V8' undeclared here (not in a function)
-    1262 |         .vref_voltage = VREF_VOLTAGE_1V8,
-         |                         ^~~~~~~~~~~~~~~~
-
-
-vim +1262 drivers/iio/adc/meson_saradc.c
-
-  1255	
-  1256	static const struct meson_sar_adc_param meson_sar_adc_gxlx_param = {
-  1257		.has_bl30_integration = true,
-  1258		.clock_rate = 1200000,
-  1259		.regmap_config = &meson_sar_adc_regmap_config_gxbb,
-  1260		.resolution = 12,
-  1261		.disable_ring_counter = 1,
-> 1262		.vref_voltage = VREF_VOLTAGE_1V8,
-  1263		.cmv_select = true,
-  1264		.mpll_clock_bits = true,
-  1265	};
-  1266	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 

@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-5726-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5727-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 313C88FAB2E
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 08:47:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC578FAB31
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 08:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CF6A1C23A94
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 06:47:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46FF71F254CE
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 06:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1E813DDD1;
-	Tue,  4 Jun 2024 06:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A6C13D639;
+	Tue,  4 Jun 2024 06:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqyaBIJa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l+89om5o"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7567137C40;
-	Tue,  4 Jun 2024 06:47:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8641EB27;
+	Tue,  4 Jun 2024 06:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717483637; cv=none; b=u/9mKO7gGQojCr/wiVpA2g5kiW0sEwnGesnohhYgyA/Q24v+au+Q2FthpSR+HIdTgLvMMGPnpmnV2rPn1TtZY3HeC7sIkshsGo/jQfFMq23j+RnmhjftuQy9TQIHk5x3uVFtZ8BpqyGvmoXKmpgg6cPYjfUZrmPt2dValc6Qh3Y=
+	t=1717483678; cv=none; b=koBwn+3mAsUIRcqXiJ8AO8ZcR9sZBYskqRueedRJt/8B7PgTv4HwMxc5qZd2PH6QY6rzFOKF6LrW8zbJeVZcBqfyo3YgSBh8TFLPzFhB7g0IekYQCmE+MZapM/Aj+yPCQX3PNFK8FppbARZlxGz+uuHN9uL1go3Xu4zkm1UTIRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717483637; c=relaxed/simple;
-	bh=X9ZK+SAfznHqHkrZTVhT4CHqaxJgtAX0ujnpnuvhm2Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=jfzRAupVdH/7o8cCdHl5K/XfjvoDVZLV5KmQrldEkdoDN5KSDgBLgD6Hlp3HrAOJD2qovHMcohRNhh9bXgdCMFysmdNMLD60JlkvOi4IUoflMe9WlTI0LlUuNS8e8zkuCIXUN1nOs0aBKsgBYorAweHh8jtdNnLBWYm9xhTmiiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqyaBIJa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D845AC2BBFC;
-	Tue,  4 Jun 2024 06:47:12 +0000 (UTC)
+	s=arc-20240116; t=1717483678; c=relaxed/simple;
+	bh=uIPygomYm0DY0O7nBPio+VmPX9sGfx6Xe1aUI6RthGM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o/CAWnuxO5i5M9b44pUGGMAy8l/n8+uJifHKrhDMGiCiVv8pII3gEpp3yizqT/LTBd61wWMKZtAr1WjEZbyQzO/l+SPBQl8h5zzPJxrpaiprutaLYmjSZbNNN1j/Rpi7pXYnRDCwiNtzwx6XYM7727j6i6dzua3jK1EJNoYlPL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l+89om5o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D98C2BBFC;
+	Tue,  4 Jun 2024 06:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717483636;
-	bh=X9ZK+SAfznHqHkrZTVhT4CHqaxJgtAX0ujnpnuvhm2Q=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=fqyaBIJadUKtFIS4cW8piBJyw8EkFACaa6upSngIs2whVUB7hAwe95pF8hUeA+WLe
-	 eqL4fkMeAMzPJd2KXb4gl0a4J5uvHMJKR8itb2RFvgFVScRGMqzsZpmn/5l01zeeTl
-	 gXcASo5ZeDq4WSxebIfcIbagM6PXCSei6v8zh9lcZmmi0hEpLzEhmMaYJO7CathBFn
-	 jnUktelT1TIRUkWfoUxK87b2TvTO3RrIQAJWDNL+VPUXS2YTgzyAQ59IOYSs98xIQL
-	 NFZY22HX90syxyq6jQntPalHUGcARY+T7A165zJYiDpIScSdqc5lKIEWZr/giZ6qmN
-	 yn+nIuUdRXX7A==
-Message-ID: <4b29304b-cc1a-419e-8c22-22c3a68f2479@kernel.org>
-Date: Tue, 4 Jun 2024 08:47:10 +0200
+	s=k20201202; t=1717483678;
+	bh=uIPygomYm0DY0O7nBPio+VmPX9sGfx6Xe1aUI6RthGM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=l+89om5oc2QsWo1rjcmO9gf5d4Alm3lYVtDlF9G93VenB8ryL3JOfeVCe4dJkmrCJ
+	 uLNvLPWjcVORWqvf/vzKZ+R89Uxy73CYZHlorC9KV18U6ZMv2RGxcnqU0F39+629Nk
+	 ZNi3ZP6cfGGaaHz9CdRuFynMKTENr1xFItFLriglC7lvcS3h7XOlQnDRVqTV3nxOgZ
+	 wSMM96rSfPrvrzKlItELkXk+d008YEu3+wOIcT6WPxB3jNZB7cObijkJ1yqEMwnd5A
+	 Jg2Z9Ht/kd7xjIuI86mDwMzQQpP8HDSlDye385F2iaIRBw8T5L70GgrQyIdxLvsNHK
+	 jY6wkYDu2+y5g==
+Message-ID: <c4651a18-316b-42e0-a67b-673fedb05b5a@kernel.org>
+Date: Tue, 4 Jun 2024 08:47:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,19 +50,20 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: amlogic,meson-saradc: add GXLX
- SoC compatible
-To: Christian Hewitt <christianshewitt@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+Subject: Re: [PATCH v3 4/5] dt-bindings: iio: dac: Add adi,ltc2672.yaml
+To: David Lechner <dlechner@baylibre.com>,
+ Kim Seer Paller <kimseer.paller@analog.com>, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Dimitri Fedrau <dima.fedrau@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
  Conor Dooley <conor+dt@kernel.org>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-kernel@vger.kernel.org
-References: <20240604055431.3313961-1-christianshewitt@gmail.com>
+ Michael Hennerich <michael.hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+References: <20240603012200.16589-1-kimseer.paller@analog.com>
+ <20240603012200.16589-5-kimseer.paller@analog.com>
+ <2942a938-19b9-4642-8ed0-8e17e4825bc5@baylibre.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -108,21 +109,56 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240604055431.3313961-1-christianshewitt@gmail.com>
+In-Reply-To: <2942a938-19b9-4642-8ed0-8e17e4825bc5@baylibre.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 04/06/2024 07:54, Christian Hewitt wrote:
-> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+On 03/06/2024 21:59, David Lechner wrote:
+> On 6/2/24 8:21 PM, Kim Seer Paller wrote:
+>> Add documentation for ltc2672.
+>>
+>> Reported-by: Rob Herring (Arm) <robh@kernel.org>
+>> Closes: https://lore.kernel.org/all/171643825573.1037396.2749703571529285460.robh@kernel.org/
+>> Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
+>> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+>> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
+>> ---
+>>  .../bindings/iio/dac/adi,ltc2672.yaml         | 158 ++++++++++++++++++
+>>  MAINTAINERS                                   |   1 +
+>>  2 files changed, 159 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
+>> new file mode 100644
+>> index 000000000000..d143a9db7010
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
+>> @@ -0,0 +1,158 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/dac/adi,ltc2672.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Analog Devices LTC2672 DAC
+>> +
+>> +maintainers:
+>> +  - Michael Hennerich <michael.hennerich@analog.com>
+>> +  - Kim Seer Paller <kimseer.paller@analog.com>
+>> +
+>> +description: |
+>> +  Analog Devices LTC2672 5 channel, 16 bit, 300mA DAC
+>> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc2672.pdf
+>> +
+>> +properties:
+>> +  compatible:
+>> +    enum:
+>> +      - adi,ltc2672
 > 
-> Add support for the GXLX SoC. GXLX is very similar to GXL but has three
-> additional bits in MESON_SAR_ADC_REG12 for the three MPLL clocks.
-> 
-> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
-> ---
+> The linked datasheet describes 12-bit and 16-bit versions, so should we have
+> two compatibles here? adi,ltc2672-12, adi,ltc2672-16
 
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Is their programming model different?
 
 Best regards,
 Krzysztof

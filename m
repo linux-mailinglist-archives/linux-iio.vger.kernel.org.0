@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-5725-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5726-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033738FAAED
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 08:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 313C88FAB2E
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 08:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26EA71C20CB6
-	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 06:35:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5CF6A1C23A94
+	for <lists+linux-iio@lfdr.de>; Tue,  4 Jun 2024 06:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41DA137C38;
-	Tue,  4 Jun 2024 06:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A1E813DDD1;
+	Tue,  4 Jun 2024 06:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wth16BHn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fqyaBIJa"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98BD12E1F9;
-	Tue,  4 Jun 2024 06:35:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7567137C40;
+	Tue,  4 Jun 2024 06:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717482936; cv=none; b=SuQQHg+dj01d/jxU+XeX1dSoj0fRdYT3VHmi8L1ZmZqan/EyZbmgnXC0Nc/brKoNvlPrL9B+VuEUWIvf5Oy6jIsbXZE85v4QRlEPh/JnpdHhTMcxo6L7kAQnPSPtSWQM3Raw99UD4U2cC1WF0AjXnkKxD7g1WM1v3rFCXfhIVfY=
+	t=1717483637; cv=none; b=u/9mKO7gGQojCr/wiVpA2g5kiW0sEwnGesnohhYgyA/Q24v+au+Q2FthpSR+HIdTgLvMMGPnpmnV2rPn1TtZY3HeC7sIkshsGo/jQfFMq23j+RnmhjftuQy9TQIHk5x3uVFtZ8BpqyGvmoXKmpgg6cPYjfUZrmPt2dValc6Qh3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717482936; c=relaxed/simple;
-	bh=4mz5iAOV+34JDbO/bFwUJsRQzVRwf47cDbZOhGBLBng=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F2OVpl6Xo7wcMwuZvNh3NB09FMs+QbUs1wn3bseeY6GDDm73sQ38zyLGW7jD/bC8sYy6GrMsNTV3/AZfEFnnc3YMX5NzeWXbp0VA8pgL2BoJNhP+Mxsxe5ImCf/agUIyxVZRnaZrEz3dAu/0cXn8PgXSVvSep4FxTgXRLkEdDfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wth16BHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2B8C2BBFC;
-	Tue,  4 Jun 2024 06:35:33 +0000 (UTC)
+	s=arc-20240116; t=1717483637; c=relaxed/simple;
+	bh=X9ZK+SAfznHqHkrZTVhT4CHqaxJgtAX0ujnpnuvhm2Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=jfzRAupVdH/7o8cCdHl5K/XfjvoDVZLV5KmQrldEkdoDN5KSDgBLgD6Hlp3HrAOJD2qovHMcohRNhh9bXgdCMFysmdNMLD60JlkvOi4IUoflMe9WlTI0LlUuNS8e8zkuCIXUN1nOs0aBKsgBYorAweHh8jtdNnLBWYm9xhTmiiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fqyaBIJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D845AC2BBFC;
+	Tue,  4 Jun 2024 06:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717482936;
-	bh=4mz5iAOV+34JDbO/bFwUJsRQzVRwf47cDbZOhGBLBng=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Wth16BHnJySpYio/axO0nZhY0KbRNfJtjuWwpB6hklPtoMJWBJhwfYy5nN75qUwj7
-	 CmcWHwAjytUbP8eOtjsDdlnkg55MaoW0/BJyVpBpOUOhAbjerX4RPU6ef5aBdJ6H8e
-	 t7qKrntC2dP1lpVIeZbYMX/d4Pv1c4QFs5RDv5zPfxElS5kXCg6wH4DJgRGpw0KPJv
-	 qxJbrwj0wRkoc5JU5y735qxpGyX1mHg2wPE9xxssT8jg1OGA99HphUh1cOh+YSIdSh
-	 AxKp9WCK9z3m5pyk6GIuS8+ov3PTD15zg5H0RjZIHnG6YtE4Z39jWQLMVO1h8cEidE
-	 y2FyO3Hw7C1DQ==
-Message-ID: <39ac899e-7983-4287-986b-6e4e606ff545@kernel.org>
-Date: Tue, 4 Jun 2024 08:35:32 +0200
+	s=k20201202; t=1717483636;
+	bh=X9ZK+SAfznHqHkrZTVhT4CHqaxJgtAX0ujnpnuvhm2Q=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=fqyaBIJadUKtFIS4cW8piBJyw8EkFACaa6upSngIs2whVUB7hAwe95pF8hUeA+WLe
+	 eqL4fkMeAMzPJd2KXb4gl0a4J5uvHMJKR8itb2RFvgFVScRGMqzsZpmn/5l01zeeTl
+	 gXcASo5ZeDq4WSxebIfcIbagM6PXCSei6v8zh9lcZmmi0hEpLzEhmMaYJO7CathBFn
+	 jnUktelT1TIRUkWfoUxK87b2TvTO3RrIQAJWDNL+VPUXS2YTgzyAQ59IOYSs98xIQL
+	 NFZY22HX90syxyq6jQntPalHUGcARY+T7A165zJYiDpIScSdqc5lKIEWZr/giZ6qmN
+	 yn+nIuUdRXX7A==
+Message-ID: <4b29304b-cc1a-419e-8c22-22c3a68f2479@kernel.org>
+Date: Tue, 4 Jun 2024 08:47:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,13 +50,19 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: iio: light: ROHM BH1745
-To: Mudit Sharma <muditsharma.info@gmail.com>, ivan.orlov0322@gmail.com,
- jic23@kernel.org, lars@metafoo.de, krzk+dt@kernel.org, conor+dt@kernel.org,
- robh@kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-References: <20240603162122.165943-1-muditsharma.info@gmail.com>
+Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: amlogic,meson-saradc: add GXLX
+ SoC compatible
+To: Christian Hewitt <christianshewitt@gmail.com>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20240604055431.3313961-1-christianshewitt@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -102,90 +108,21 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240603162122.165943-1-muditsharma.info@gmail.com>
+In-Reply-To: <20240604055431.3313961-1-christianshewitt@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 03/06/2024 18:21, Mudit Sharma wrote:
-> Add ROHM BH1745 - 4 channel I2C colour sensor's dt-bindings.
+On 04/06/2024 07:54, Christian Hewitt wrote:
+> From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 > 
-> Signed-off-by: Mudit Sharma <muditsharma.info@gmail.com>
+> Add support for the GXLX SoC. GXLX is very similar to GXL but has three
+> additional bits in MESON_SAR_ADC_REG12 for the three MPLL clocks.
+> 
+> Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
 > ---
-> v1->v2:
-> - Fix yaml issue: Make `maintainers` a list
 
-Judging by driver there will be v3, so few nits.
-
-> 
->  .../bindings/iio/light/rohm,bh1745.yaml       | 49 +++++++++++++++++++
->  1 file changed, 49 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml b/Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml
-> new file mode 100644
-> index 000000000000..ac5c4d160513
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml
-> @@ -0,0 +1,49 @@
-> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/light/rohm,bh1745.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: ROHM BH1745 colour sensor
-> +
-> +maintainers:
-> +  - Mudit Sharma <muditsharma.info@gmail.com>
-> +
-> +description: |
-
-Do not need '|' unless you need to preserve formatting.
-
-> +  BH1745 is an I2C colour sensor with red, green, blue and clear
-> +  channels. It has a programmable active low interrupt pin.
-> +  Interrupt occurs when the signal from the selected interrupt
-> +  source channel crosses set interrupt threshold high/low level.
-> +
-> +properties:
-> +  compatible:
-> +    const: rohm,bh1745
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +additionalProperties: false
-
-Please put this after required: block.
-
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +
-
-
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-
-
----
-
-This is an automated instruction, just in case, because many review tags
-are being ignored. If you know the process, you can skip it (please do
-not feel offended by me posting it here - no bad intentions intended).
-If you do not know the process, here is a short explanation:
-
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new
-versions, under or above your Signed-off-by tag. Tag is "received", when
-provided in a message replied to you on the mailing list. Tools like b4
-can help here. However, there's no need to repost patches *only* to add
-the tags. The upstream maintainer will do that for tags received on the
-version they apply.
-
-https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof

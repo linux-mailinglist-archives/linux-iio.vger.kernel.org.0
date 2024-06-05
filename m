@@ -1,182 +1,141 @@
-Return-Path: <linux-iio+bounces-5820-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5821-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B5DC8FC7CA
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 11:30:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFF828FC80F
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 11:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82B2F282BF3
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 09:30:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DA151F225B3
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 09:40:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F9A18FC76;
-	Wed,  5 Jun 2024 09:30:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF08219007B;
+	Wed,  5 Jun 2024 09:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QO2Hhg8y"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="s/jZCjkL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F9F257B;
-	Wed,  5 Jun 2024 09:30:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DFB19006E
+	for <linux-iio@vger.kernel.org>; Wed,  5 Jun 2024 09:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717579814; cv=none; b=ihuAk49HSCm7RVfjpsHmVUSRDMrz2wxGOHaZadYQN2Ej3EWsnk3IWSb7Id+vslIlE5U/9eZmd0lI+/jNNOwPJRrrlTXTiUnmILgBoqghtvqTHV9cvznSbRCDhdrBoGnfmBnxg6kwAa70lUaaK6ENiqmkplUTLUPjin+yBT457XE=
+	t=1717580233; cv=none; b=opMNkMFS3QQUKo3hn8loXFfzi7FAn06d0PU67hNxb1kFmTdiTRjR8mhCSvIAZXH34UlnrXNKfrmW7LignPGeCNjE/hPC+n5v+m/auvjSMtCiVOycpDKE8iye9SV4M+q7u0LeQ+H+IowsndsNQ6n+Hl4bwsykjHssSkGNzZ4tLvE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717579814; c=relaxed/simple;
-	bh=ZWvr410IHWWuYNKsLYoYrO07ijJE2egibpZ67QmYtTc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=krs7oVkZ4Rq3yLIUDLeokZ9XMxq8P0LvcMaH+aP9nNbl2EHccbEFf9ejR4xBoZpdKUqBOTHEKmbuI29sfByyK74zRvoLLogsg1Nu2K0ExRJ35GX/8OpFPwnX8zhsh+ihDDR4xlU1oef23e+JMFn8DnKC5raqssqXujnorSAtBKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QO2Hhg8y; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a6266ffdba8so203349166b.1;
-        Wed, 05 Jun 2024 02:30:12 -0700 (PDT)
+	s=arc-20240116; t=1717580233; c=relaxed/simple;
+	bh=oi2WvBkcuibAfXOROdiAwxHovEGXU0w54vU+XEWreVY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=qwkQ8GnMv1C/uqLxs833Rxejj1I9SDg0uCfRW2i1kqpVwhvfsMhlfORvYIA2JovCBIeJlAywjoFNc06jSjG8isHdusXRb1IEGu6e1Vtrf7YnupKQ8u1GmRYVT4wkOraHL/PxJcxdzR82JC3RMimuYFLdr49sT/fCBNcEgPkGmW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=s/jZCjkL; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4214f803606so14403595e9.0
+        for <linux-iio@vger.kernel.org>; Wed, 05 Jun 2024 02:37:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717579811; x=1718184611; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cV7zf1J5GVnNvj6COOcqVNCjZ7NVt5RFiRgF7yuHnLw=;
-        b=QO2Hhg8yJyKpMsyqyKsHAsEW6nt3Fv6C7gOmfqIk9wo67V4WHdeddR1yIRxyVGymKh
-         KomdKfI9AAAf88YhnL6+MZKgvI2C67ESvMuSrMp3mWmhz1AX4lYruCMZe6BO2nSM6tC4
-         UntleTKxsMwAff4u4Xhc65VK6+3sDBGWEGmvMq/GbkRjaYRAU+0IBg1XcizmD3o4sugj
-         jCT0Z95n0G5chVSdk/lisYe6v5prdMPYPX7oJXqoPqMC5cGHaoAVX3fT3q7k73LDznKh
-         D5HtaxDhpsex2wqmgWET1brb2AU4qfr9auiMDagh8AAFDahVeWfV67Eh1LBwcuqiGvEA
-         AKzw==
+        d=linaro.org; s=google; t=1717580230; x=1718185030; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LSZI+79Ozf+tLjEjjKM/vl02OsbKzTxtYkNCBqG2m2s=;
+        b=s/jZCjkLvjppfLVmWxBbvPvDbbCeP7nj2Uv3zFcpRXEg3crW/ZUsi/OC3WEV6l0iNO
+         8dNqn7SASjwiLEoBt5IQzymgz+YYvg+Y0j/d4Bn7buuB3/eUIAMuNc58t04ooRQTxybE
+         UFhOzYIg5wpEmpQTB7goav+A0uSZaXzsfIt+/oifyacwIHAqy+fnJriwTl4zDm21e3go
+         /hVe1k/kNtqkqkgnWAKbh/4fF5BiMTHWgp9RNJBNDAhgcwOaMt+JO9I4cFOvZvQiYMch
+         qFr8SP4MdDKAUyh6RYk4pqLDE10ozi/XFfphpcRHedNN02pjEfazSpDPkaaIcJdU4SV8
+         mHzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717579811; x=1718184611;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cV7zf1J5GVnNvj6COOcqVNCjZ7NVt5RFiRgF7yuHnLw=;
-        b=mvE9kRtFNNNnq90J8Pd4+B/8Sf8ra9L8CaviG5jHiOKme0tx0NqHLj++wShSTn6KPQ
-         hJ8ESF6+t5DUbQ9hU3ZY8LT8OIB93SrJxZbZMPBcp3ak1OFsunMcnyXX/cU6DD3BnNPL
-         ijjPpX3xJdfyTAspoSkGawPpBmNsrMm9GKPqyhzcnAPj27UUlUrOQ2LI6+wZTcTm9t52
-         LuREbiqoWFGSZJ3Z6RwnBAAqW4OeyfCNTtVnUaay9FYsaP87d4Scu+hSUgr9egYE85L/
-         6I8/NMBThf/gQSZ/tWhzrelcxkR+qYj+V5CR1LRUIzufj2ndYueidYzh565RZncWVMe5
-         yQiA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+Z0KE7AHcF/rMnFbGKfTvXjQItrYQcSnPt2Q4QVRqkvFB/ANV5aBUmG917HRZAUNEhfCKXu+dw5gYiqOHHDBhmcpLcRONUVmKC7R4Z6Mn7DMrONva0BjlVIOhTIwr4NCGmHfQjDBW
-X-Gm-Message-State: AOJu0YwnfP3XAfaaNAcS0W+0DqcRKcdcaNFkr9BWg4e+MGSgZ2JXn5jD
-	8YDdwzqXq/SJdJJ72khcWCQ33R38o/NMwnTmn4nNDNMQnvbCCBoG
-X-Google-Smtp-Source: AGHT+IFKIjzxbZK6itJudm8hiuq5NtiQaTOtj73xdFoRpvF9XLCXllH0gTRohuA0C8uI4HqbKUV/pw==
-X-Received: by 2002:a17:906:1c11:b0:a66:e009:eb53 with SMTP id a640c23a62f3a-a699f34d9c8mr131390866b.13.1717579810959;
-        Wed, 05 Jun 2024 02:30:10 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6922c59fc1sm347149766b.175.2024.06.05.02.30.10
+        d=1e100.net; s=20230601; t=1717580230; x=1718185030;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LSZI+79Ozf+tLjEjjKM/vl02OsbKzTxtYkNCBqG2m2s=;
+        b=lKc3wBOijimaXh6vEodcMvzfhi8MtcIrQ7O4lc5kfFAEwVDeorHYcMcZsRbxcWiKX8
+         yIx6y71jED27CqMPKYPex1nsSI/DZUojmXxM8B+xd1kkyk/Ner1yBbf7WmmWeYn9Z9E3
+         vhXbcyY4XVG5L9befPioaiTMk62P78DsXCcYL30W/Ptqp8C/QcZlexV5NuiAZWrMxXMa
+         CXDPuxxwzv06OTwOTHzz5c4PhI5eSh/qHh6U3gGTXokEtHi+pR7GIRSAQmdTQH0fjnlw
+         XZa50Gdz79xYELY4aedEi2iS6JBamx+hMW/M/m2fI9kIVFymeRxwOrZoQZid2T8hr1Kd
+         tQGw==
+X-Gm-Message-State: AOJu0YzYAMRbh54D/PUbl3+A/iYjFUmg1w5744mEU5dRRftKxZ+SGW2Y
+	4jwSUWq2SqbqmkJVEV1hy1sqfSBx5bDIc1/nSNyYQFMlOa+bsBpu5r6JXI1sQZQ=
+X-Google-Smtp-Source: AGHT+IGAjFy2U1Sr+dNT5Lezmn24SCXAPKGBu2lzxTmKU5abNAvO1losuUJ7PfnTYXCgDx0HUW4r9A==
+X-Received: by 2002:a05:600c:46d3:b0:421:2adb:dd5d with SMTP id 5b1f17b1804b1-421562c7fa6mr15583975e9.8.1717580230396;
+        Wed, 05 Jun 2024 02:37:10 -0700 (PDT)
+Received: from arrakeen.starnux.net ([2a01:e0a:982:cbb0:52eb:f6ff:feb3:451a])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421581016c6sm14510245e9.3.2024.06.05.02.37.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jun 2024 02:30:10 -0700 (PDT)
-Message-ID: <aac3acb3f02642fd9aa0ec922f7b02bb9f32435a.camel@gmail.com>
-Subject: Re: [PATCH 2/5] iio: adc: ad7266: use
- devm_regulator_get_enable_read_voltage
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: David Lechner <dlechner@baylibre.com>, Jonathan Cameron
- <jic23@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Nuno =?ISO-8859-1?Q?S=E1?=
- <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- linux-iio@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Wed, 05 Jun 2024 11:33:57 +0200
-In-Reply-To: <57a60f5c-a989-4187-ab4f-1f6a15578578@baylibre.com>
-References: 
-	<20240531-iio-adc-ref-supply-refactor-v1-0-4b313c0615ad@baylibre.com>
-	 <20240531-iio-adc-ref-supply-refactor-v1-2-4b313c0615ad@baylibre.com>
-	 <edb66fe8c2722e600179b1f9a0d81242d84582a0.camel@gmail.com>
-	 <57a60f5c-a989-4187-ab4f-1f6a15578578@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 
+        Wed, 05 Jun 2024 02:37:10 -0700 (PDT)
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Date: Wed, 05 Jun 2024 11:37:08 +0200
+Subject: [PATCH] dt-bindings: iio: adc: amlogic,meson-saradc: add optional
+ power-domains
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240605-topic-amlogic-upstream-bindings-fixes-power-domains-sardac-v1-1-40a8de6baa59@linaro.org>
+X-B4-Tracking: v=1; b=H4sIAMMxYGYC/x2NSQrDMAxFrxK0rsA1daerlCzUWHEF9YCUDhBy9
+ 5quHg8e/69grMIG12EF5beY1NJlvxtgelBJjBK7g3f+4I4u4FKbTEj5WVPnq9miTBnvUqKUZDj
+ Llw1b/bBirJmkGBpppAndfIne84lDOEM/aMr/uu/fxm37AUJHyVSMAAAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Kevin Hilman <khilman@baylibre.com>, 
+ Jerome Brunet <jbrunet@baylibre.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, Neil Armstrong <neil.armstrong@linaro.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1007;
+ i=neil.armstrong@linaro.org; h=from:subject:message-id;
+ bh=oi2WvBkcuibAfXOROdiAwxHovEGXU0w54vU+XEWreVY=;
+ b=owEBbQKS/ZANAwAKAXfc29rIyEnRAcsmYgBmYDHFLxSezg6MSIqYHnt3c+yfTVn70mG8pfNZ2oUF
+ kJzSJT6JAjMEAAEKAB0WIQQ9U8YmyFYF/h30LIt33NvayMhJ0QUCZmAxxQAKCRB33NvayMhJ0bRND/
+ 9VWdftl4+ZipFhnGlqNjNwYhnqAPXR3Z0dbtvuMA7h/YrhUWK7oCzAcQM/xI+XK/HfPi9D1TKdstU3
+ KL2F2FexCIHybxIBX76TWWAdT7C/hN8/Y9zXPj80wZLln4S2POzcAjiRRQ89IjZB3C+8LVDApKR/uC
+ fozYKf3ofRX8YJXg5yojKqoBcB2wH2JOysdHma+e6i1JlQs6GSa7SS6iBwyZhFena7sh+hqTu+N3NV
+ ezXtvolX/8fA5N7H4u0q2se2jxPsxqo4jc5awmDyLlcO86DSh2q8rK5E+fqB6I+hN4Jta2oj5WQ6fO
+ WrIU1IzJXu9q84bFBPfeOIRXOaRI4UT/D7oC3NysuOYVNKHFinu6hshbdTcyQMsrICWcodXvAia8zp
+ rfrdHW+tgck335MYJ7X3uTJXztALrOhB48enyC/8pk/eTzV+VyIJ3vf4pMm1CUToJEihZET5y/qshi
+ 7OWOZHGeOQSt7HQusRVZTAkmHx7tktOa0IPSKZd6essrqWBLamjpSD6D7BN/RJegC040YlSBV4Hc4C
+ 2/lrsFupoKccNtpaMrOb8djrXYpMF62TNkmRA5cCP/uUg51FfU9tZVl0IzeLwi14VwKLBkwFJLHg0j
+ i8AcF8M73dcI7L/LbXTxXYzGYrLXDueA0365BDHWLs3FGCdHKCVkuyqzZvow==
+X-Developer-Key: i=neil.armstrong@linaro.org; a=openpgp;
+ fpr=89EC3D058446217450F22848169AB7B1A4CFF8AE
 
-On Tue, 2024-06-04 at 09:10 -0500, David Lechner wrote:
-> On 6/4/24 6:19 AM, Nuno S=C3=A1 wrote:
-> > On Fri, 2024-05-31 at 16:19 -0500, David Lechner wrote:
-> > > This makes use of the new devm_regulator_get_enable_read_voltage()
-> > > function to reduce boilerplate code.
-> > >=20
-> > > Signed-off-by: David Lechner <dlechner@baylibre.com>
-> > > ---
-> > > =C2=A0drivers/iio/adc/ad7266.c | 37 ++++++++++-----------------------=
-----
-> > > =C2=A01 file changed, 10 insertions(+), 27 deletions(-)
-> > >=20
-> > > diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-> > > index 353a97f9c086..026db1bedc0a 100644
-> > > --- a/drivers/iio/adc/ad7266.c
-> > > +++ b/drivers/iio/adc/ad7266.c
-> > > @@ -25,7 +25,6 @@
-> > > =C2=A0
-> > > =C2=A0struct ad7266_state {
-> > > =C2=A0	struct spi_device	*spi;
-> > > -	struct regulator	*reg;
-> > > =C2=A0	unsigned long		vref_mv;
-> > > =C2=A0
-> > > =C2=A0	struct spi_transfer	single_xfer[3];
-> > > @@ -377,11 +376,6 @@ static const char * const ad7266_gpio_labels[] =
-=3D {
-> > > =C2=A0	"ad0", "ad1", "ad2",
-> > > =C2=A0};
-> > > =C2=A0
-> > > -static void ad7266_reg_disable(void *reg)
-> > > -{
-> > > -	regulator_disable(reg);
-> > > -}
-> > > -
-> > > =C2=A0static int ad7266_probe(struct spi_device *spi)
-> > > =C2=A0{
-> > > =C2=A0	struct ad7266_platform_data *pdata =3D spi->dev.platform_data;
-> > > @@ -396,28 +390,17 @@ static int ad7266_probe(struct spi_device *spi)
-> > > =C2=A0
-> > > =C2=A0	st =3D iio_priv(indio_dev);
-> > > =C2=A0
-> > > -	st->reg =3D devm_regulator_get_optional(&spi->dev, "vref");
-> > > -	if (!IS_ERR(st->reg)) {
-> > > -		ret =3D regulator_enable(st->reg);
-> > > -		if (ret)
-> > > -			return ret;
-> > > -
-> > > -		ret =3D devm_add_action_or_reset(&spi->dev,
-> > > ad7266_reg_disable, st-
-> > > > reg);
-> > > -		if (ret)
-> > > -			return ret;
-> > > -
-> > > -		ret =3D regulator_get_voltage(st->reg);
-> > > -		if (ret < 0)
-> > > -			return ret;
-> > > -
-> > > -		st->vref_mv =3D ret / 1000;
-> > > -	} else {
-> > > -		/* Any other error indicates that the regulator does
-> > > exist */
-> > > -		if (PTR_ERR(st->reg) !=3D -ENODEV)
-> > > -			return PTR_ERR(st->reg);
-> > > -		/* Use internal reference */
-> > > +	/*
-> > > +	 * Use external reference from vref if present, otherwise use
-> > > 2.5V
-> > > +	 * internal reference.
-> > > +	 */
-> >=20
-> > Not sure the comment brings any added value. The code is fairly self
-> > explanatory
-> > IMO...
->=20
-> Well, you do this every day. :-)
+On newer SoCs, the SAR ADC hardware can require a power-domain to operate,
+add it as optional.
 
-I guess... still not an excuse :)
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+---
+ Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
->=20
-> For someone who never wrote an IIO driver, it could be helpful.
+diff --git a/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
+index 7e8328e9ce13..f748f3a60b35 100644
+--- a/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/amlogic,meson-saradc.yaml
+@@ -66,6 +66,9 @@ properties:
+   nvmem-cell-names:
+     const: temperature_calib
+ 
++  power-domains:
++    maxItems: 1
++
+ allOf:
+   - if:
+       properties:
 
-Still dunno but no strong feelings anyways...
+---
+base-commit: c3f38fa61af77b49866b006939479069cd451173
+change-id: 20240605-topic-amlogic-upstream-bindings-fixes-power-domains-sardac-0f9d22e7e558
 
-- Nuno S=C3=A1
+Best regards,
+-- 
+Neil Armstrong <neil.armstrong@linaro.org>
 
 

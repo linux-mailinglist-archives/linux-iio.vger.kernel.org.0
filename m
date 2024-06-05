@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-5817-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5818-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE0B58FC7B1
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 11:24:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D41828FC7BE
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 11:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DE761C21144
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 09:24:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ECFFA1C23461
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 09:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 711D7190046;
-	Wed,  5 Jun 2024 09:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DDBD18FC62;
+	Wed,  5 Jun 2024 09:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BGVgWQRw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fPSSQDl5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A784190042;
-	Wed,  5 Jun 2024 09:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619D5200CD;
+	Wed,  5 Jun 2024 09:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717579347; cv=none; b=PXOfXimfQNqQxmGYg1gYF4hVE8WSRuWgAzlE+T9ORMUECOi1CiR16zJ4X3b9Zq1+LCg8PU7W7vyZn++toz/pyvEEFyr3hZlT0+Pj5s6fo67/3acfwf+KC+2gJXbdomit8XRbZJ62S0yxu+MuARCMiHN+YejK4FbqrbAJI6lMICQ=
+	t=1717579613; cv=none; b=cWaJ4qhkaHEP9VWM7c3Va+KhjprwgFUbJTOcOIL0Dc2Cy1g5JQoKJ7dU+lhpGrUCp/fYJQ0uU8W5c+K9+gMZZWmICqEdU78n4stNuvEqbHhvItOV3P/KBTP5oGujI5N5hRbQ+pHJsUdn9r9L3qMqIEBkv1MhNYc3+duJUoxcKmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717579347; c=relaxed/simple;
-	bh=7s6t1Mnf8SbzZuVJD1mxOTK+vEECHY45ZPjTcNlLR8o=;
+	s=arc-20240116; t=1717579613; c=relaxed/simple;
+	bh=Y7dorVYxePR9VWygFujvcqMnB0Us5J/pvoyDgyJ/vhQ=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ASsX+7zbAiYxm9rZc7tflTk7odvria6ElkwL7hEyNC3QYHVnm2xfoQmZw4ZBCSeGmgdTjsY5/Ep9KI4COp2iqMDhnWg8FJVx9iZVeZpbZXMam9Pk2hlanY2C2zv2N067p8MK/NtcJNRpLXtdd4/SyT9DB/HdimqRzKJ86++sySg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BGVgWQRw; arc=none smtp.client-ip=209.85.167.43
+	 Content-Type:MIME-Version; b=gps3AOWJWNdOj56ndAbjsyQyNcu0nv5JxrDbOuayWefHLRFZ4ANLgqjH/Ha0RdODFHheYxR33dENIv42B2z++x3dCMSso6aPi9Gf1v37BherzCxdvlAw8026tFhvkZEtHcUlU4IqCYMlEL38XQwBq5g2jtGjzIFJMedfV65P31E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fPSSQDl5; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52b94ad88cbso5593343e87.0;
-        Wed, 05 Jun 2024 02:22:25 -0700 (PDT)
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42139c66027so19066805e9.3;
+        Wed, 05 Jun 2024 02:26:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717579344; x=1718184144; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717579610; x=1718184410; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=twGgOCLKhNQgk0EX+r3D2ZUgLeCpTZK046ZKeffQQRs=;
-        b=BGVgWQRw3EoUxdzEC80/jZeuLQnIi+FwwTbW3Rk6G0Zngb3/KhkYjJuTI4BDNvONP5
-         SA/5o9QmQRgGffcbJykkXS5TW2CTLrcEVYsIQc02YpWUm+rcuucZXH5J68xZZnWuuMCn
-         zNPCxe77RmvBTChypbbJB0HKN8bVs58lRHV7S7e7inE0UmYebL7q1uruJFxXtxfdQEc9
-         pDcP6lcG/6UNo0xjCSR26fdA2euMX5lmpPxnJVoUaqeOTCA65HHkIEav6+UHQ2z+26ox
-         +6MWdCvfHUiQRQG/kx57Z4J/KtoKiNpx1p34gvbR8TqEfGHjR3jTrVISGi28OzWMPexD
-         tRdw==
+        bh=1UmSXewXk4xoFkR0JLkcRp552PFqHFEUhSIEEN2KqQc=;
+        b=fPSSQDl5gHxGN6DQi99Som9P/HOASwgUOkZeE1bJJ1RRVAtqtpycintEu8UXXOA/8e
+         pGXK4BNJlXcHUno7jwBJxCKF5QXOdcUpjlQMVC3FwziRbfLEIHwFKYmjnxUCx5eca59s
+         8cxA09RQnEGB1aUMxrzYjX2DiSNI6JjnBIn/55NIArTvtjG0WPoPNUU3sYWpjbr7V3le
+         tFVguuLc+bQ4tRaXSSpOd+39drjLEGz7Fqh5Hj3V3ZNQN6jgkGiXe2SuM2PUJgDqaTSv
+         wr14iV4uIR98zEIEy47Fwa17i2cv6p7AOs9/MMpARKzlndWEfNs5oSZzALDCZZ/7j3xa
+         nreA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717579344; x=1718184144;
+        d=1e100.net; s=20230601; t=1717579610; x=1718184410;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=twGgOCLKhNQgk0EX+r3D2ZUgLeCpTZK046ZKeffQQRs=;
-        b=L3qZxxQb6ZTAMCJIqY8kAB3Gpuz+m4v2xsCrDb0zbhDs+koJVmYMZWkwoToIXCHiSE
-         poJ8YM9fD9lW6mUeqnYJ0XtiLvpPljYJtMFxCDWe57xBZRjT0O7oFsk5O4trjNgDGcSX
-         CcEyDvCh1QylOg22K3V02Cq6aLYJtqFoeFvRYaRPwzmhdtbt+RkJeshRyflGX/yGWSMq
-         8FSX/eSH4FMgv73N/G2rDR0DXKGlq9+z4fb5lUZZ+BBqBdJj55Soq7lmlwqhbr4MsSGY
-         ISOVg6kvIxV2lG1YjcG//cXKYFm43v8IKypLzyGswWdG6aAYIrkc/ZACXS41kMBuxLzA
-         46XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVg/6pGRP3yQyNABnN9CVvyLGg1zOi38KcdhzEa/GYo9WEbsgk2iRSXggfejN//ow3KpUNAQT9KkGFzI6vnzXcp2WLZVvYo9qhrBPa7wV4jkzelqQEtGmxe8+q/BbRBbNA23OTMqhlTPUZ8fX7p6szXraf3Q7Su0ntPJr/Aw2kCBj+0ZA==
-X-Gm-Message-State: AOJu0YxfsaJzhfcZOc4XtVaxE4rnpAEgNReUv3qEwDsFpHSAFAphAH6d
-	nW7Gd3zn1/Nvv6mPPL/cn4S45kHh3aKwUu1YcEX08NVXDGq9kZbJ
-X-Google-Smtp-Source: AGHT+IEOSN3eOE6QTScDMEugLdJr/Qsk0h/HBGjFFfNTZIUO5vTuVaWsW0uqFg0hkRGfKw62h3H/WQ==
-X-Received: by 2002:a05:6512:3194:b0:52b:9964:9dae with SMTP id 2adb3069b0e04-52bab50b1abmr1657988e87.57.1717579343365;
-        Wed, 05 Jun 2024 02:22:23 -0700 (PDT)
+        bh=1UmSXewXk4xoFkR0JLkcRp552PFqHFEUhSIEEN2KqQc=;
+        b=t8BYVZUBGKIqSViUaX0GEBYuiAh1LSN8/4AF1c1xPrLKKOwqNiS4Z2Az/YDoADXtBv
+         7ZN17y0X6CmNwbVMPw/srvddi9EM3SQPAXJNyT2N3e4a21CGXLkSeNrDxKoIwsuQuHSg
+         uyw0oNfBH4kaJNHtd/UqlpZwtauIOr9aYRgHhAthVzCJmAO2FLBpjTy0fxudCrphYmcA
+         ncqjOzM/H3tY3MlRAvMQruna72o2MivdFYErb6QM4sx8XDzuU0kbiJ3E1ob9my1TX2Di
+         P8E6uyOGGXw5DjAe5aQrPTIHMMndUD4TchsfEJsaJHsacrvr43XSVcSTnBIjGN6joEFR
+         vyRg==
+X-Forwarded-Encrypted: i=1; AJvYcCUrFdjIWOS72wmrT/UAVNX5bg3r7BdVXoOMal2f5YDgoq37Zjd0My9ickDx2RrEAHObREtW35qpv5Rc9LGfHyRsy2BmUMmwYi+N8DfMKgPaHHiLaJD5CiunM4y2v715NWjzOiotkA6Hsv7JaV5nmJ9PDFCxTq0BYDEPcez5BMPfyc/3KQ==
+X-Gm-Message-State: AOJu0YyDlN6c6UhnJFnamGbQpnFBbrpwO3HkRJ+3wWXD3PQWQR/7gryD
+	F5EgqfTKRk3KiPjFj0PbeHcoIX+nwcBnwH6c5JgqIryKcBwwusxV
+X-Google-Smtp-Source: AGHT+IFH3qEuzhvOzWCxD89pSr5V0K6ubhue4nZnUzWyz+9pwcFpeOSdH2c41hWlgEUOrw3l/ZQVoQ==
+X-Received: by 2002:a05:600c:4ed2:b0:421:565b:e71c with SMTP id 5b1f17b1804b1-421565be9ecmr14133675e9.14.1717579609319;
+        Wed, 05 Jun 2024 02:26:49 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a685b935b5csm709003866b.206.2024.06.05.02.22.22
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-421581490c2sm13780065e9.37.2024.06.05.02.26.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jun 2024 02:22:23 -0700 (PDT)
-Message-ID: <996a88c057dd2b6b4d960fbe9f8e35bd69270e86.camel@gmail.com>
-Subject: Re: [PATCH v3 3/6] spi: spi-gpio: Add support for MOSI idle state
- configuration
+        Wed, 05 Jun 2024 02:26:49 -0700 (PDT)
+Message-ID: <0c0d1b2030960cdc2840d84645538fe3a9c8b9a6.camel@gmail.com>
+Subject: Re: [PATCH v3 2/6] spi: bitbang: Implement support for MOSI idle
+ state configuration
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org, 
  lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
@@ -77,10 +77,10 @@ To: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org,
   nuno.sa@analog.com, dlechner@baylibre.com, marcelo.schmitt1@gmail.com
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
 	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 05 Jun 2024 11:26:09 +0200
-In-Reply-To: <8dcce41a69a89cb8ace2587ca7ddb1c665f2d1cb.1717539384.git.marcelo.schmitt@analog.com>
+Date: Wed, 05 Jun 2024 11:30:35 +0200
+In-Reply-To: <811a2771d93c16b48fb37286e648a03171c8d2bc.1717539384.git.marcelo.schmitt@analog.com>
 References: <cover.1717539384.git.marcelo.schmitt@analog.com>
-	 <8dcce41a69a89cb8ace2587ca7ddb1c665f2d1cb.1717539384.git.marcelo.schmitt@analog.com>
+	 <811a2771d93c16b48fb37286e648a03171c8d2bc.1717539384.git.marcelo.schmitt@analog.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.2 
@@ -92,58 +92,85 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Tue, 2024-06-04 at 19:42 -0300, Marcelo Schmitt wrote:
-> Implement MOSI idle low and MOSI idle high to better support peripherals
-> that request specific MOSI behavior.
+> Some SPI peripherals may require strict MOSI line state when the controll=
+er
+> is not clocking out data.
+> Implement support for MOSI idle state configuration (low or high) by
+> setting the data output line level on controller setup and after transfer=
+s.
+> Bitbang operations now call controller specific set_mosi_idle() call back
+> to set MOSI to its idle state.
+> The MOSI line is kept at its idle state if no tx buffer is provided.
 >=20
 > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 > ---
 
+Some minor nit below in case a re-spin is needed. Anyways,
+
 Acked-by: Nuno Sa <nuno.sa@analog.com>
 
-> =C2=A0drivers/spi/spi-gpio.c | 12 +++++++++++-
-> =C2=A01 file changed, 11 insertions(+), 1 deletion(-)
+> =C2=A0drivers/spi/spi-bitbang.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 24 =
+++++++++++++++++++++++++
+> =C2=A0include/linux/spi/spi_bitbang.h |=C2=A0 1 +
+> =C2=A02 files changed, 25 insertions(+)
 >=20
-> diff --git a/drivers/spi/spi-gpio.c b/drivers/spi/spi-gpio.c
-> index 909cce109bba..d3b8c99f0cb4 100644
-> --- a/drivers/spi/spi-gpio.c
-> +++ b/drivers/spi/spi-gpio.c
-> @@ -236,6 +236,14 @@ static void spi_gpio_chipselect(struct spi_device *s=
-pi,
-> int is_active)
+> diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
+> index ca5cc67555c5..3dee085d3570 100644
+> --- a/drivers/spi/spi-bitbang.c
+> +++ b/drivers/spi/spi-bitbang.c
+> @@ -63,21 +63,28 @@ static unsigned bitbang_txrx_8(
+> =C2=A0	unsigned flags
+> =C2=A0)
+> =C2=A0{
+> +	struct spi_bitbang	*bitbang;
+> =C2=A0	unsigned		bits =3D t->bits_per_word;
+> =C2=A0	unsigned		count =3D t->len;
+> =C2=A0	const u8		*tx =3D t->tx_buf;
+> =C2=A0	u8			*rx =3D t->rx_buf;
+> =C2=A0
+> +	bitbang =3D spi_controller_get_devdata(spi->controller);
+> =C2=A0	while (likely(count > 0)) {
+> =C2=A0		u8		word =3D 0;
+> =C2=A0
+> =C2=A0		if (tx)
+> =C2=A0			word =3D *tx++;
+> +		else
+> +			word =3D (spi->mode & SPI_MOSI_IDLE_HIGH) ? 0xFF : 0;
+
+no need for ()
+
+> =C2=A0		word =3D txrx_word(spi, ns, word, bits, flags);
+> =C2=A0		if (rx)
+> =C2=A0			*rx++ =3D word;
+> =C2=A0		count -=3D 1;
 > =C2=A0	}
+> +	if (bitbang->set_mosi_idle)
+> +		bitbang->set_mosi_idle(spi);
+> +
+> =C2=A0	return t->len - count;
 > =C2=A0}
 > =C2=A0
-> +static void spi_gpio_set_mosi_idle(struct spi_device *spi)
-> +{
-> +	struct spi_gpio *spi_gpio =3D spi_to_spi_gpio(spi);
-> +
-> +	gpiod_set_value_cansleep(spi_gpio->mosi,
-> +				 !!(spi->mode & SPI_MOSI_IDLE_HIGH));
-> +}
-> +
-> =C2=A0static int spi_gpio_setup(struct spi_device *spi)
+> @@ -92,21 +99,28 @@ static unsigned bitbang_txrx_16(
+> =C2=A0	unsigned flags
+> =C2=A0)
 > =C2=A0{
-> =C2=A0	struct gpio_desc	*cs;
-> @@ -411,7 +419,8 @@ static int spi_gpio_probe(struct platform_device *pde=
-v)
+> +	struct spi_bitbang	*bitbang;
+> =C2=A0	unsigned		bits =3D t->bits_per_word;
+> =C2=A0	unsigned		count =3D t->len;
+> =C2=A0	const u16		*tx =3D t->tx_buf;
+> =C2=A0	u16			*rx =3D t->rx_buf;
 > =C2=A0
-> =C2=A0	host->bits_per_word_mask =3D SPI_BPW_RANGE_MASK(1, 32);
-> =C2=A0	host->mode_bits =3D SPI_3WIRE | SPI_3WIRE_HIZ | SPI_CPHA | SPI_CPO=
-L |
-> -			=C2=A0=C2=A0=C2=A0 SPI_CS_HIGH | SPI_LSB_FIRST;
-> +			=C2=A0 SPI_CS_HIGH | SPI_LSB_FIRST | SPI_MOSI_IDLE_LOW |
-> +			=C2=A0 SPI_MOSI_IDLE_HIGH;
-> =C2=A0	if (!spi_gpio->mosi) {
-> =C2=A0		/* HW configuration without MOSI pin
-> =C2=A0		 *
-> @@ -436,6 +445,7 @@ static int spi_gpio_probe(struct platform_device *pde=
-v)
-> =C2=A0	host->flags |=3D SPI_CONTROLLER_GPIO_SS;
-> =C2=A0	bb->chipselect =3D spi_gpio_chipselect;
-> =C2=A0	bb->set_line_direction =3D spi_gpio_set_direction;
-> +	bb->set_mosi_idle =3D spi_gpio_set_mosi_idle;
+> +	bitbang =3D spi_controller_get_devdata(spi->controller);
+> =C2=A0	while (likely(count > 1)) {
+> =C2=A0		u16		word =3D 0;
 > =C2=A0
-> =C2=A0	if (host->flags & SPI_CONTROLLER_NO_TX) {
-> =C2=A0		bb->txrx_word[SPI_MODE_0] =3D spi_gpio_spec_txrx_word_mode0;
+> =C2=A0		if (tx)
+> =C2=A0			word =3D *tx++;
+> +		else
+> +			word =3D (spi->mode & SPI_MOSI_IDLE_HIGH) ? 0xFFFF : 0;
 
+ditto (and for the txrx8 function)
+
+
+- Nuno S=C3=A1
 

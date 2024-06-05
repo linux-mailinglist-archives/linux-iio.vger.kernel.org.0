@@ -1,70 +1,70 @@
-Return-Path: <linux-iio+bounces-5850-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5851-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5D48FD4BF
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 20:01:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D3B8FD4C4
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 20:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27A191F233F3
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 18:01:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2273286ED8
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 18:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B46C15F31D;
-	Wed,  5 Jun 2024 18:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A7314EC5B;
+	Wed,  5 Jun 2024 18:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yNqgUmHy"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U52V+hRs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE4B154BEA
-	for <linux-iio@vger.kernel.org>; Wed,  5 Jun 2024 18:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8C715FA74
+	for <linux-iio@vger.kernel.org>; Wed,  5 Jun 2024 18:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717610417; cv=none; b=RXCSqd60wL3UUlAJ/WPlt8/aGsqNyzKuRXJBkG68cpJVuIs1ZFiJU58NxNsR4lRNCQCymTsPt8Ih5CwTaUFTxLdk5Xa4z+QAyxFTzryAP7Za0S9rWKo3woDwCwRqerXspXFQywzXSNCx1ubwwRhH+0Qk59JWU4g8ytldO74OLDI=
+	t=1717610421; cv=none; b=LiBJzwrWjqkKKnTKKRj8YtnH7PwBUosFxa6ryFEivobffpAAcxHDplmk4T0X0S8MK/m4cnpNRe2Qz1WD0fiubTrWMY7l6U8kbWzth6NrQ2usiN2iX26QoktixjjIdmGY8tHj4Bkk6BXkTLUx4Bu2qOZI8eaCCjGVMrqPc2CrG+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717610417; c=relaxed/simple;
-	bh=fPdJt4Gydxsb6XLYSRdNJ8hD/W3THq9fKXubquLZs6s=;
+	s=arc-20240116; t=1717610421; c=relaxed/simple;
+	bh=DtpDZyHe3eugG9lKYAyC1ondYmKEiXhRbdfT84tszLE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=jKGQfwuKstF6nOyfKc/OLGnbQTM3ndCxoQWi0svbr53AAo3DfL295eF9+ZzUWhm/feiONHwgA2CinJObGwHmF4hlQyZmji0swzxPta65hM6V5DmZ9Zug81WSgwxmpRAjzTHw/YXYeAWcKEcrzX1C/eOm0WK9igNz18lSSDnTKOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joychakr.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yNqgUmHy; arc=none smtp.client-ip=209.85.128.202
+	 To:Cc:Content-Type; b=rUQlNx2v2HsY6NnkOeMRuWz6PMQuqLkka2w9WKrkRBR2HBqcdh7ICFEBgAFORE9TZy7H89VD4rgbJ/5Cusx5fAH2c3aGXX3wFl13WNcCEs65mpo5A2RpcZmw+4zWIk0VWCcO718XIwVT+AxeJBblAZTZTYP4h5e/064FKQYyFAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joychakr.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U52V+hRs; arc=none smtp.client-ip=209.85.219.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joychakr.bounces.google.com
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-62a0eb1c809so264857b3.2
-        for <linux-iio@vger.kernel.org>; Wed, 05 Jun 2024 11:00:14 -0700 (PDT)
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-df78ea30f83so1550765276.1
+        for <linux-iio@vger.kernel.org>; Wed, 05 Jun 2024 11:00:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717610414; x=1718215214; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1717610418; x=1718215218; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=qvmsbFq1f0xb8qTUeLHIrwaOpt4YNpx3HYdX4+QrPhA=;
-        b=yNqgUmHy2UkDE3heRRb8oMaXmLeLXyM1i27wFJS/QU6flgxbWEI6TZ7da1x1XjqPQO
-         VlQ19oRwmx0Yd/blYB/OvER0B5Y/49RGI6us/PAl60yjXA5+o8wOy5hEfj5ZadolRbK+
-         XWIHPanx9sQPLs2/5sl8VyvI7v9OkxWCYCvKJqd4BWY60BaRMym9Ck/ROACMI/JPScoo
-         WSekErhgKeJiiUPjrxf3KdbGf6pBiF0a1bGCPfBXHONpv8wSDHUMAThTTzKivKWkB3ub
-         bbsqHW9iPJwiorjZWv1Xw6UL52JrjCEQWpvC3xexXC3j6MNOu7OViZQDgdh4MDbEtTMU
-         WmCQ==
+        bh=AwIs39A3C8kh3vVRuRyRYkps3QbjGarBaeH82L3DU0g=;
+        b=U52V+hRsiJQjSRnjvYDtZ8nO3ttKXkTxiHrLjNmADwfjQ8plad8HEMYMkkxmvtoFIs
+         QEZHHMmsbHs8oE4DsgfG7xV73VdpniuxJWGD1uX+sexyHuIPqMEjjQbpiFRleB333mzK
+         cskQ8g8ioMRy6iE5yXCZP8fi72tXA3aLXSn2e//1mmOhKE3l2iZpjrsErUj6Nw8rXBT/
+         Ls5L9CJrzLx+rKGRzdTKorUXDwYGdNhd3A3/5vELUbwt6as3QITS3EdKaGbEVRNWJanK
+         trjloEE6aIqij88o+jESh2lYoT7HqoWLxLTSIiCFGrQSEuGXKrYAGwKb/WUU8YLm9SV8
+         ouoQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717610414; x=1718215214;
+        d=1e100.net; s=20230601; t=1717610418; x=1718215218;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qvmsbFq1f0xb8qTUeLHIrwaOpt4YNpx3HYdX4+QrPhA=;
-        b=W5+ysbi1G0RyVpa1Pk4JkdnaBU+mLXmFQgh/6yMyLl5rv32ox3UZH+CVRSZp4pxiSw
-         4A8Ugb5Kw3yiKgZ+BpKvNvHu3eHuQ6uQNNQHYmOtfz4qNmLlemSATj/Cz7qe+BFf96aZ
-         kPzoCouHGAjHc+6J6GqlRJCAUIHysk1E8DYe1rkfTelJdyCgqp+eEcqY4eJjatbo4d/S
-         pfdTDIxI0NqyQeWOwMdDKelTrHcK1nYzDN9p0eYZsxTm2R0F1cN3xTD2F8JEW1xTSI0s
-         r6DvZvvL1oZsrB0SlZul+BH7IFb94uCXaz9iADhufHdqhQ0ZbMLMatqFJPwsctw7XUpu
-         Gbbg==
-X-Forwarded-Encrypted: i=1; AJvYcCVHRLWx7uhwZz8mmFUODrVuH+ArnVTsxr5LU1riddohr6lMc/ahdDM4jiyHalWjrUwsbV4AsIwMINvQaFhmrngjlx5IkPMYrscN
-X-Gm-Message-State: AOJu0Yw9fT86cJXkbrEsf8BnqWaUEsd/mXVR8PtTd9XrP2H693poQN8+
-	Ii5cgPofTj/+w4AyaoHTcl2oEJZjLxkEYJfzrviPC5TcpG8LlziAyQdEp+wigNoxMKTNQCgBwsZ
-	8KuKdLA7cqA==
-X-Google-Smtp-Source: AGHT+IHixjuOYQ1InGCAjmo87JHH7BxdpNaY95UBwdRBHB8eZTSP6/tJXCeai8kdlzm5GsjEUY/q6O3hk54taA==
+        bh=AwIs39A3C8kh3vVRuRyRYkps3QbjGarBaeH82L3DU0g=;
+        b=Vskcsp/vE50B/EJOqpgTr66BsjgPGtiXX1rfG+xLdB7cZPo+dsYjRLm3AMy8rCTe6T
+         MpHptQ6XDVB8a0zQY1oxg5tmKuwIa3HV6UBXRMUi4WZdpP3L25LsURajZaGR2sFrJsV2
+         q00aMCVqh+eOHrbJmjMAJ9D3Y13l8m7bni1rdP+5qs/rchWxGE6DQOkXvd1PPXwuETYJ
+         /lCe+aDzce8nUEV8julhzbg02MdSsMH0/KKeWYOvryz4w5jjhzgaKBkZT50DgAdGOP1y
+         9vNc2iIb7MDFbaBebsmQwNU+rb33oFRlrCUVQD9BS7T99JNJUOS3kFUta75SOr074dqy
+         mHNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXsncbk5tEuXvNsmpHP1FEu2x6u9nZUborMQww20RIHSSddPN19lghGltTDH/Cbd4aGoMPBK3nVE7oGFMxSSttSf51hcstxTP4B
+X-Gm-Message-State: AOJu0YwtawVwNIGEt5ZKlkVlCM307JKamst3iPP4wkmKxc+K2kB6d5HR
+	XkJmryFOmDiEQZcEdrjeLB/HTH9IyR9eW3mLiKZYlk7eA/KrpPMLiKtt/Di4ihLzECNMzyO+Hr4
+	aZyqH3hQttA==
+X-Google-Smtp-Source: AGHT+IF67RE9Tjmuj/kq/k/X6dA78e699FHOj3MI1LHmpXg9uh50LZwtSgAXRWUPUOYrgrIfYkhy+wDlS5BIsw==
 X-Received: from joychakr.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:6ea])
- (user=joychakr job=sendgmr) by 2002:a05:690c:6688:b0:622:cd7d:fec4 with SMTP
- id 00721157ae682-62cbb5e6bc6mr8437267b3.9.1717610413829; Wed, 05 Jun 2024
- 11:00:13 -0700 (PDT)
-Date: Wed,  5 Jun 2024 17:59:47 +0000
+ (user=joychakr job=sendgmr) by 2002:a25:9004:0:b0:de5:a44c:25af with SMTP id
+ 3f1490d57ef6-dfadec0b255mr68711276.5.1717610418012; Wed, 05 Jun 2024 11:00:18
+ -0700 (PDT)
+Date: Wed,  5 Jun 2024 17:59:48 +0000
 In-Reply-To: <20240605175953.2613260-1-joychakr@google.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -74,8 +74,8 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240605175953.2613260-1-joychakr@google.com>
 X-Mailer: git-send-email 2.45.1.467.gbab1589fc0-goog
-Message-ID: <20240605175953.2613260-4-joychakr@google.com>
-Subject: [PATCH v1 03/17] media: i2c: video-i2c: Change nvmem reg_read/write
+Message-ID: <20240605175953.2613260-5-joychakr@google.com>
+Subject: [PATCH v1 04/17] iio: pressure: bmp280: Change nvmem reg_read/write
  return type
 From: Joy Chakraborty <joychakr@google.com>
 To: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>, 
@@ -99,32 +99,54 @@ Change nvmem read/write function definition return type to ssize_t.
 
 Signed-off-by: Joy Chakraborty <joychakr@google.com>
 ---
- drivers/media/i2c/video-i2c.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/iio/pressure/bmp280-core.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/media/i2c/video-i2c.c b/drivers/media/i2c/video-i2c.c
-index 56dbe07a1c99..2bfc221b5104 100644
---- a/drivers/media/i2c/video-i2c.c
-+++ b/drivers/media/i2c/video-i2c.c
-@@ -151,12 +151,15 @@ struct video_i2c_chip {
- 	int (*hwmon_init)(struct video_i2c_data *data);
- };
+diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+index 09f53d987c7d..8d5aeabfa297 100644
+--- a/drivers/iio/pressure/bmp280-core.c
++++ b/drivers/iio/pressure/bmp280-core.c
+@@ -1465,10 +1465,11 @@ static const int bmp580_odr_table[][2] = {
  
--static int mlx90640_nvram_read(void *priv, unsigned int offset, void *val,
+ static const int bmp580_nvmem_addrs[] = { 0x20, 0x21, 0x22 };
+ 
+-static int bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
 -			     size_t bytes)
-+static ssize_t mlx90640_nvram_read(void *priv, unsigned int offset, void *val,
-+				   size_t bytes)
++static ssize_t bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
++				 size_t bytes)
  {
- 	struct video_i2c_data *data = priv;
-+	int ret;
-+
-+	ret = regmap_bulk_read(data->regmap, MLX90640_EEPROM_START_ADDR + offset, val, bytes);
+ 	struct bmp280_data *data = priv;
++	size_t bytes_read = bytes;
+ 	u16 *dst = val;
+ 	int ret, addr;
  
--	return regmap_bulk_read(data->regmap, MLX90640_EEPROM_START_ADDR + offset, val, bytes);
-+	return ret < 0 ? ret : bytes;
+@@ -1518,13 +1519,14 @@ static int bmp580_nvmem_read(void *priv, unsigned int offset, void *val,
+ 	mutex_unlock(&data->lock);
+ 	pm_runtime_mark_last_busy(data->dev);
+ 	pm_runtime_put_autosuspend(data->dev);
+-	return ret;
++	return ret < 0 ? ret : bytes_read;
  }
  
- static struct nvmem_config mlx90640_nvram_config = {
+-static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
+-			      size_t bytes)
++static ssize_t bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
++				  size_t bytes)
+ {
+ 	struct bmp280_data *data = priv;
++	size_t bytes_written = bytes;
+ 	u16 *buf = val;
+ 	int ret, addr;
+ 
+@@ -1582,7 +1584,7 @@ static int bmp580_nvmem_write(void *priv, unsigned int offset, void *val,
+ 	mutex_unlock(&data->lock);
+ 	pm_runtime_mark_last_busy(data->dev);
+ 	pm_runtime_put_autosuspend(data->dev);
+-	return ret;
++	return ret < 0 ? ret : bytes_written;
+ }
+ 
+ static int bmp580_preinit(struct bmp280_data *data)
 -- 
 2.45.1.467.gbab1589fc0-goog
 

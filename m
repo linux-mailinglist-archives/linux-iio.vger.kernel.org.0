@@ -1,132 +1,118 @@
-Return-Path: <linux-iio+bounces-5804-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5805-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 570018FC430
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 09:10:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C42F8FC4E5
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 09:46:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13C2428A20B
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 07:10:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03B582823C3
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 07:46:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1511B18C331;
-	Wed,  5 Jun 2024 07:10:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E4B718C35C;
+	Wed,  5 Jun 2024 07:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MKdxgNQi"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SNWivKN6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF9660263;
-	Wed,  5 Jun 2024 07:10:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5168618C33A;
+	Wed,  5 Jun 2024 07:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717571450; cv=none; b=ESJbKs5wTiDS0R7CNCy8U2fwzvbuOq73V+kiBIfRoJMabt58QGuhQYs/YFjNf1wrVQ3ui+r/HBnCSTEIDxCGqyeqatHde4JsUg0ylDvq3lyllQ8E1f0Ozp7OL63RKABWy5nfEN22ZLrkBCtgARji6QSiQaZrrs4gcCaH54mvAbY=
+	t=1717573588; cv=none; b=AqIjzb+0OjahKih+nJyJnXrBJsXBT4CFnWyNE2o+Ui1oEK2wMYg2HxjbFAxV8uPxhFzLrW8Ao8BkUb1GBDc9y8HFVR32AMCEIEZBJ9JrKKc19PFKFeesQCuXSNVmpj1OpfeeN9t0hsPMp4fBZLTE0jvbELtn3QMxv/1vBqk4VMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717571450; c=relaxed/simple;
-	bh=Cys+VR21HFwMU+hFWbogOsAR/iljYS/prKcGZpy+JHk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=dpXnErg3I3wyRlPYuk3SxixJrfkt+VurrMfTiHBEWcLVATGHLKV3GLKWprcGiJ60JyPNTsQOsyanFUW6v9wWCJYgqMDFu1FERnEYzMy1TXwQ8TEEckp7t/Q4m4IKZWP0lBA+zKxp0dGZeUS41uUheiF6DdRrVdyWBZB0zrO5Xg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MKdxgNQi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC15FC32781;
-	Wed,  5 Jun 2024 07:10:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717571449;
-	bh=Cys+VR21HFwMU+hFWbogOsAR/iljYS/prKcGZpy+JHk=;
-	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=MKdxgNQi/AkanOQYSm+0WQCqoHfI24zU8v6BLU4aIgAmnypM94US9zKmVis1UfVUt
-	 4vaGlvWkAZEb31eUS/6jvV1/AuST23Mbf8kvzke+MexWS7KvQrk0gPpT5tbbUBaB58
-	 vE1mcQrsg2OsKVL5j75K/+ZRNWR11pBvZknluYznreCiP27yxUFrwGvhYn2+wedww5
-	 LhXFng8laDgbneEL3vKLn4P6iZvPUf/ewfWGqfuJMsPPpyaDch7f5WWcAcyX+IQvlo
-	 JFit2pFHoK3sj3NLUlU9aVvaCl7RfhBSLWih0i8gtv3+W+rO2+oJE6fRnvLdXMo4SD
-	 PB8FR9sJHqYJA==
-Message-ID: <63ef25dd-3cbd-4de7-bde4-87456ef2e9c5@kernel.org>
-Date: Wed, 5 Jun 2024 09:10:44 +0200
+	s=arc-20240116; t=1717573588; c=relaxed/simple;
+	bh=Wu8ixq/vrHERKUg8DBnJ3ob8md7NOPJWklrzwYNjQqI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=udRlsy7IsjJ+JEtHYt/l6xZS4GInY4Ab8RgEWRgscIWmVZIyi6UuyijgSXn6AYLF41vbX+cjlzN7MLrBTVEcZ8u949YfGzQmfjbiPJFzV04fvY5eqghN8ZaODYyUZsY+Avh34XFfREOT9dOD1jhw0IjFcX6zEMrNvrROwtBCUnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SNWivKN6; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-572c65cea55so1180026a12.0;
+        Wed, 05 Jun 2024 00:46:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717573586; x=1718178386; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=n84dpS87cJhgimQJRE4boDvZ08eYSNIcFdCIL4Yrgo8=;
+        b=SNWivKN6Q1szPZMYzh+YY2mXUiHfBg4W1w6CueB5pPOrGv/KVadShl56vyI3V65jec
+         cwPOGAI4yycvzdSF9j1d7azj5YI7RLIMZxOB+O8ncJs3gRqAdOGAxnJLq1C3lY7Hq614
+         /8BbxFIQRq1xkIiK3gI9blDVdjnQwJ3MJzwVgWdvnOHW2B97xk9wvwXAnYzQldOhTQhn
+         iI/O0VRc9jLMN2ZMB3H6Qd6peFNRHZmYGjtRHZTrTDYbeIJN4WFI0lZCN7NcjXJ/8AoW
+         gsM15TRHVXy7M2M4bmMxSVMzzQb/K33UAx8KAtKDIAJ3korjkpW5sNzkS8O4cB2G+jxf
+         Ty3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717573586; x=1718178386;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=n84dpS87cJhgimQJRE4boDvZ08eYSNIcFdCIL4Yrgo8=;
+        b=cp7N6wOzK8hcAufZVj1J7jlukrP1RlGbsFFXwrclNQYEuHVKEcIQXl2NisS6bJWQJ7
+         NNJ8wxIxHGsDIGxZycnIlsTLd25zkU91iUOJrY19Jy/G+JTOsUdBMH2Lre7gX19lMwRA
+         zzbVxFjBkr5xrwscfAiTS9BA8i1dNAeaBMHIVn/pkRp27xoHF40QmN6Gdh+dyA+qE1kS
+         aB/I5CCfhVYvgqNk0PisJS+rDlQXlitiLdmql/s6hQRq7P+eHnt5rpwyWYnP1FYY1/DO
+         JE3pumX+va9auwK/WPMDSfAfQ6yg+cfirVAkX9c1DkKCaHTmYWXdVKS6opkfaYYo5imp
+         wNCw==
+X-Forwarded-Encrypted: i=1; AJvYcCXJMBefHTXtlWkoty2EMLrLJt2CkYI1U8xYE2wEXAYRsHSQp07AcjvqxdL9u54lfMTld4yhNOhfgtEHzy3zWFW6iZ1F2/n5+p94am7s6jacdAnynjDesYuaIzCBCVDR6TrIvrWEcwJrtOJHlQShislig2xhxZwqG+U6cGB+2NhLmhdXXA==
+X-Gm-Message-State: AOJu0Yx1qnOU3Sf1TFV7CH94jsY2IlPdsaeLt1XLhG6mxM1wbvKr1MFq
+	2Gyy9E+/ZvjhpeKpucv0FyQdQcbz/9Otm8xMdzOxHcKFy28lPJbWoKlitQ==
+X-Google-Smtp-Source: AGHT+IEeO1g6nOVR506mmH5Ir1DQWtyOye1Qx1NI3m8u20MbrVq1EjAMOxa7BSjI1LalUsuSgkahtA==
+X-Received: by 2002:a50:d59a:0:b0:579:c5df:af84 with SMTP id 4fb4d7f45d1cf-57a8bca01a0mr1629125a12.15.1717573585312;
+        Wed, 05 Jun 2024 00:46:25 -0700 (PDT)
+Received: from spiri.. ([2a02:2f08:a10a:2300:8e59:f160:bdc8:6311])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57a31be5a15sm8903429a12.57.2024.06.05.00.46.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jun 2024 00:46:25 -0700 (PDT)
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
+To: Alisa-Dariana Roman <alisa.roman@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Alexandru Tachici <alexandru.tachici@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 0/3] iio: adc: ad7192: Update
+Date: Wed,  5 Jun 2024 10:45:47 +0300
+Message-Id: <20240605074547.612704-1-alisa.roman@analog.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] drivers: iio: frequency: adf4350: add clk provider
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240603112447.23308-1-antoniu.miclaus@analog.com>
- <20240603112447.23308-2-antoniu.miclaus@analog.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240603112447.23308-2-antoniu.miclaus@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 03/06/2024 13:24, Antoniu Miclaus wrote:
-> Add clk provider feature for the adf4350.
-> 
-> Even though the driver was sent as an IIO driver in most cases the
-> device is actually seen as a clock provider.
-> 
-> This patch aims to cover actual usecases requested by users in order to
-> completely control the output frequencies from userspace.
-> 
+Dear maintainers,
 
-Please do not use subject prefixes from your downstream tree, but use
-upstream convention. This applies to multiple of Analog submissions, so
-I would prefer if you create internal guideline and check it internally
-before posting.
+I am submitting a series of improvements for the ad7192 driver.
 
-There is basically never a "drivers" prefix.
+Please consider applying in order.
 
-Best regards,
-Krzysztof
+Thank you!
+
+King regards,
+Alisa-Dariana Roman (3):
+  iio: adc: ad7192: Clean up dev
+  dt-bindings: iio: adc: ad7192: Fix clock config
+  iio: adc: ad7192: Fix clock config
+
+ .../bindings/iio/adc/adi,ad7192.yaml          |  19 +-
+ drivers/iio/adc/ad7192.c                      | 194 +++++++++++++-----
+ 2 files changed, 150 insertions(+), 63 deletions(-)
+
+-- 
+2.34.1
 
 

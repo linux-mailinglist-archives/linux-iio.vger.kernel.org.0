@@ -1,189 +1,123 @@
-Return-Path: <linux-iio+bounces-5840-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5841-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87DE58FD3B9
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 19:14:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 350AA8FD3CF
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 19:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 106931F25588
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 17:14:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0B1DB2118D
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 17:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D37618FC87;
-	Wed,  5 Jun 2024 17:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C560B138493;
+	Wed,  5 Jun 2024 17:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NsWaI9Tg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTPv9JMp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9022575A;
-	Wed,  5 Jun 2024 17:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 494762770E;
+	Wed,  5 Jun 2024 17:20:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717607679; cv=none; b=q+o4axCIML9sV88JVM1i0MISo6xY4yqIMSUgGFEUFZvaQ2uVtE4fiUrc+OYBG1R7Q+UiWnEPWGI8ROqTZ+pYb3z5uFxBZh3QnPkPI+QQeMXbeSxTJEDWP6I+S/pibBKCcQ0lwTvctl8XWsQ909ns+Shy2VRd+SRlEZwcmL0TVDs=
+	t=1717608056; cv=none; b=j//9Bh7x39CjojNMawrxYGV2NKQCToG1DI2Kc+MtbiBqchzBu3cTJggoE9Q9DifVhL8+lSjF6EuoLWvajVTVj2AKLTZyud192JC9SsNgqegA4yjyUj6e4bUkrUepTHUVrNbtnV+ItVE95Ote13qWFV1NIEHtU5tgK67QlFz6DlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717607679; c=relaxed/simple;
-	bh=xbm4/YzVfLN2iM3EWSGBH8ZyZKLCsErFhi94mPM6aO8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oAWzQxuMcVdXNonRdPzWGo73HcYKkFSNYHsmwkJ/tXLGifkCxn/J49IHpR5Ba0guybj1P9HWQqo8tvZBREaODxSw0dxSB6622r6poLfXPa4EQoP6JYmFDiuf1I3KIib+2Z0BcXm6OGVQ1vLw5lpbpkS+wjWR1XkWcSOYy92SpNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NsWaI9Tg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D064BC2BD11;
-	Wed,  5 Jun 2024 17:14:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717607678;
-	bh=xbm4/YzVfLN2iM3EWSGBH8ZyZKLCsErFhi94mPM6aO8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NsWaI9Tg+jOffHs91J+u2B0joNQl6OXwv4w6dRHJdO1zqKQXlCcKEGrZbLlUaH+fH
-	 1lFOr+TUc7pFkAgO+aeDkVnzgFeYEeVKff2WgRGsngzlcp6qJ8aBmheGq+ZFaBw8Vr
-	 UXwKPYDyi598g130CPm3f9mcJG22IWpG8ETia+25TSLb7ESKViFTz6AhNQANzvSrU8
-	 TrwWkmonq1jlBQjyknDqleyd7X2FpjG7TwVU0SKICryTWaiyJPGECYnOGREBkFqjEj
-	 y5QBKpXKcV+6Mf0Ky6Z/jKZsP0CwZT0nJrn+lBKPFMx0SIhABjE4V0VFc4ocIxfAv0
-	 UHkuq2LyJDc5g==
-Date: Wed, 5 Jun 2024 18:14:33 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Cc: broonie@kernel.org, lars@metafoo.de, Michael.Hennerich@analog.com,
-	jic23@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	nuno.sa@analog.com, dlechner@baylibre.com,
-	marcelo.schmitt1@gmail.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 5/6] dt-bindings: iio: adc: Add AD4000
-Message-ID: <20240605-tables-pectin-66d4d4dd12b5@spud>
-References: <cover.1717539384.git.marcelo.schmitt@analog.com>
- <b8a211e09c17f5a9f0a6aa6e11d6375ff398c918.1717539384.git.marcelo.schmitt@analog.com>
+	s=arc-20240116; t=1717608056; c=relaxed/simple;
+	bh=NOnqln06S+MFv80mqKTSNLI3wJ74vF+Bg3os30TxL/k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cwRozkESmHiteelrTgb6ifHTNQmjs8rcjuSRcz0RTV+2QBxuVK9HIKKh8HYdP8Z20GPVaYh7y4SZrG26d1kcx7jrf9WrxjzijQYuZ+5+ykrmL/JclMitJ4o2Hbl1HZGTnMt3BQuCG9+W+dNNYScVPWh2QUorKX5JIh3pf4x5RqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTPv9JMp; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5ba18126a3bso1104eaf.1;
+        Wed, 05 Jun 2024 10:20:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717608054; x=1718212854; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4IEr/gSqoWImb//qZWKO/ZZ3zZM5bGTPdO0tMABh1EM=;
+        b=JTPv9JMptuO99TPS2iJPTiIxNxUzon7RTqvaolI9MIQtiwIOfO5OPTQF8neYx84t3h
+         SeuhSluHS4OwQrC58McelSH2pCXTNypLnfXlg2OZAqfSdl1182etM2v1luuFF4xi7Gop
+         gi9b3u42kQCuW4+ruqQrIw4s3pvLKFaaU3x5bukX16GZMIpJ6uALNjtIh7j1tqe6+kVJ
+         WeholdG+/tiSSZZeJ4A11SIxL+tJTuHCrvS/YHUQ3UxS50NV5GLN7pU1H2po4/z1hxNh
+         wahXW6oxH+dTLRtyjyKS2ijpzLLuT1zxEH6g1mFGXAxpUSQcXmS86oFt7zGzBAqVA8yu
+         dcEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717608054; x=1718212854;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4IEr/gSqoWImb//qZWKO/ZZ3zZM5bGTPdO0tMABh1EM=;
+        b=egRqI3bf6UUWswQYkH4kswgJ6bnsTmMVzgLA/leddAL7ejGmBgUYMvasrC20DTXJoT
+         vExU5ok6nUA6cbJKJexysKY5cp+afI09wkpEKUYQ7rcdIg7/mWeEurboFpNwDEi7DvB4
+         isVX6cQsY6JH027A5kJvCzu241P5YrAfrvjIJRp1GMt4FmfD0ns7oA3Wt9XHWN19oL6T
+         +ZVW1NZoc0MdEHYMrj9SyjnVF5anr6tLUMLQomnWU0pTUn1VoCoY8MdrM7VtFyLhjLC0
+         umszWnvrFwu1hJTuiPzkDmjzovvnIwEtB6TQ69auasdtOtEJeNm8FnZlzold8x8SSNo9
+         Bq5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWxWoyXnl9O5mr072J9bQro3RMh77Jmd9dqhveeKOrXKipnFNo4A3h+5OakbkqKxiFQf+gdkfFILjQ+wwB6DjrPAYLVuHCtkxGBlLk8OuDvB7ba+OmOSpx8qhn2BWkfqsDETq9sjg==
+X-Gm-Message-State: AOJu0YwqRr6y0ZWypDZ7ctlxTspYCTOMMkkNXxMGphVtYM5J4yQP6BWw
+	JBJhQudkIF1kxg3vRcT5vSBx5zaxcSrjlvvkwAUFJFinvSdg+8+a
+X-Google-Smtp-Source: AGHT+IGcFeJqYdOy5bu1wSd8nRMa9fxc9uZpmjYp/qUhUyDXktoAoWMya44tJdchDX2USHtsbeQNCw==
+X-Received: by 2002:a05:6820:161e:b0:5b9:89d9:c5ef with SMTP id 006d021491bc7-5ba91323287mr207128eaf.0.1717608054271;
+        Wed, 05 Jun 2024 10:20:54 -0700 (PDT)
+Received: from localhost.localdomain ([75.28.21.198])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5ba72cb44f4sm586124eaf.40.2024.06.05.10.20.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Jun 2024 10:20:53 -0700 (PDT)
+From: Chris Morgan <macroalpha82@gmail.com>
+To: linux-sunxi@lists.linux.dev
+Cc: linux-clk@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	p.zabel@pengutronix.de,
+	sboyd@kernel.org,
+	mturquette@baylibre.com,
+	samuel@sholland.org,
+	jernej.skrabec@gmail.com,
+	wens@csie.org,
+	conor+dt@kernel.org,
+	krzk+dt@kernel.org,
+	robh@kernel.org,
+	Chris Morgan <macromorgan@hotmail.com>
+Subject: [PATCH V2 0/4] Add GPADC for Allwinner H616
+Date: Wed,  5 Jun 2024 12:20:45 -0500
+Message-Id: <20240605172049.231108-1-macroalpha82@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="DJx7WiAB+sjuOmGe"
-Content-Disposition: inline
-In-Reply-To: <b8a211e09c17f5a9f0a6aa6e11d6375ff398c918.1717539384.git.marcelo.schmitt@analog.com>
+Content-Transfer-Encoding: 8bit
 
+From: Chris Morgan <macromorgan@hotmail.com>
 
---DJx7WiAB+sjuOmGe
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Add support for the general purpose analog-to-digital converter (GPADC)
+for the Allwinner H616 SoC to support the ADC joysticks as found on the
+Anbernic RG35XX-H.
 
-On Tue, Jun 04, 2024 at 07:43:53PM -0300, Marcelo Schmitt wrote:
-> Add device tree documentation for AD4000 series of ADC devices.
->=20
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
-heets/ad4000-4004-4008.pdf
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
-heets/ad4001-4005.pdf
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
-heets/ad4002-4006-4010.pdf
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
-heets/ad4003-4007-4011.pdf
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
-heets/ad4020-4021-4022.pdf
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
-heets/adaq4001.pdf
-> Datasheet: https://www.analog.com/media/en/technical-documentation/data-s=
-heets/adaq4003.pdf
->=20
-> Suggested-by: David Lechner <dlechner@baylibre.com>
+Changes since V1:
+ - Split dt-binding include additions to a separate patch.
+ - Removed patch adding compatible string as it was already upstreamed.
+ - Added patch to add the adc-joystick function to the RG35XX-H.
 
-A suggested-by on a binding? That's unusual...
+Chris Morgan (4):
+  dt-bindings: clock: sun50i-h616-ccu: Add GPADC clocks
+  clk: sunxi-ng: h616: Add clock/reset for GPADC
+  arm64: dts: allwinner: h616: Add GPADC device node
+  arm64: dts: allwinner: anbernic-rg35xx-h: Add ADC joysticks
 
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
-> Even though didn't pick all suggestions to the dt-bindings, I did pick mo=
-st them
-> so kept David's Suggested-by tag.
->=20
->  .../bindings/iio/adc/adi,ad4000.yaml          | 207 ++++++++++++++++++
->  MAINTAINERS                                   |   7 +
->  2 files changed, 214 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad4000.=
-yaml
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
-> new file mode 100644
-> index 000000000000..7470d386906b
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4000.yaml
-> @@ -0,0 +1,207 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad4000.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Analog Devices AD4000 and similar Analog to Digital Converters
-> +
-> +maintainers:
-> +  - Marcelo Schmitt <marcelo.schmitt@analog.com>
-> +
-> +description: |
-> +  Analog Devices AD4000 family of Analog to Digital Converters with SPI =
-support.
-> +  Specifications can be found at:
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-ad4000-4004-4008.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-ad4001-4005.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-ad4002-4006-4010.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-ad4003-4007-4011.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-ad4020-4021-4022.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-adaq4001.pdf
-> +    https://www.analog.com/media/en/technical-documentation/data-sheets/=
-adaq4003.pdf
-> +
-> +$ref: /schemas/spi/spi-peripheral-props.yaml#
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - adi,ad4000
-> +      - adi,ad4001
-> +      - adi,ad4002
-> +      - adi,ad4003
-> +      - adi,ad4004
-> +      - adi,ad4005
-> +      - adi,ad4006
-> +      - adi,ad4007
-> +      - adi,ad4008
-> +      - adi,ad4010
-> +      - adi,ad4011
-> +      - adi,ad4020
-> +      - adi,ad4021
-> +      - adi,ad4022
-> +      - adi,adaq4001
-> +      - adi,adaq4003
+ .../arm64/boot/dts/allwinner/sun50i-h616.dtsi | 11 +++
+ .../sun50i-h700-anbernic-rg35xx-h.dts         | 79 +++++++++++++++++++
+ drivers/clk/sunxi-ng/ccu-sun50i-h616.c        |  5 ++
+ drivers/clk/sunxi-ng/ccu-sun50i-h616.h        |  2 +-
+ include/dt-bindings/clock/sun50i-h616-ccu.h   |  1 +
+ include/dt-bindings/reset/sun50i-h616-ccu.h   |  1 +
+ 6 files changed, 98 insertions(+), 1 deletion(-)
 
-Are all these actually incompatible? I'd like a note in the commit
-message as to why that's the case. A quick look at the driver showed
-that the differences in the driver between the ad402{0,1,2} are limited
-to the "dev_name". Same went for some other devices, like the
-ad40{02,06,10}.
+-- 
+2.34.1
 
-Thanks,
-Conor.
-
---DJx7WiAB+sjuOmGe
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZmCc+QAKCRB4tDGHoIJi
-0tYLAQClUT+CgwIyyshiteGnaNVLzxkrRS6CHgEq3C9VUci5MgD7BctHVCI69sVX
-ZXRyV7r4lmR290oWiMA3qh627lefdAA=
-=FtyO
------END PGP SIGNATURE-----
-
---DJx7WiAB+sjuOmGe--
 

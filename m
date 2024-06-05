@@ -1,74 +1,48 @@
-Return-Path: <linux-iio+bounces-5802-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5803-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C598FC3FA
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 08:54:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8384E8FC42B
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 09:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 729D8285AA5
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 06:54:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D154B29BE7
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 07:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0A418C344;
-	Wed,  5 Jun 2024 06:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C818B18C343;
+	Wed,  5 Jun 2024 07:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="coLt6arf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bYx9BYaY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14B0019046E;
-	Wed,  5 Jun 2024 06:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB02DDA5;
+	Wed,  5 Jun 2024 07:09:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717570478; cv=none; b=BAMGxlc0/c4eDjWWhglIbb2OODWXZN8+g5qHKZzayxkCf0fdd9X10UBTMPm5KfUDGJrjhIblLs03V4GhYc+XBwDaibZKBQWHyKN9QJrY7L8cQeHiHJKd5nuDZ8sfMSkwa2UXQEY0eBxKWOR1YwzO7s2NaPo5gotuwNZaAlHh6aI=
+	t=1717571374; cv=none; b=dVP+WMG9xGdTmq9ZwYjEZv7JUqOIZRvWlRlK4vlozLYQuaax6eFjw84lXuiPQ0CbCLqg2v1vfEXsSKOwOORHQ5LaHwXYWpJPwhV8HoDiiBpDcjiP/YegFO9B7L4ibuPKHRqlvbYf1buScoeQ2+jh2ryVZJq0nfzxkG6CuxUKjD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717570478; c=relaxed/simple;
-	bh=MMAbmLj+mJvb9CsqcjBb49/Y/hX2GCJmekXXMYUgIvo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AqSbtZw3tS7vB9AXM4xD5I6EonrNcZDOsjb60nbjIboWZ2ZTXUtvZv32d8eeLa+/YD9vl5ty4yhLzCVhfyMAWyl3mP8TSj4Wh1Gxxdb7v3am6Wqb24iqBavqXOjzOrj/DJy+OsgxTOE2UIeZxb0oRX7jD+agiFcG1x+xLAhivzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=coLt6arf; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-43fecdecd32so9728921cf.1;
-        Tue, 04 Jun 2024 23:54:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717570476; x=1718175276; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pDWOB7EBv5B2WKho7wJPzVpyx/+ujpqfMRZlXIkWYkE=;
-        b=coLt6arfVVwgJVR17B/WXbHcurRTVB8G5d3X4JIIQl/DB1HzfUQM9BG2+toSwLTeI8
-         CwudSwMTfw8tm0kV3+cJXOZ28fQIL2q3J8eGvVVvYyaQz0VwstXA4uuPwiIkGMrvarSm
-         ++0kOx9M6x3SJ7QNHK1qfR+FQEfQoF8t9UZ8E17VAUIBcpyqwXRXVgVcQw+T2ZNe41aj
-         SLzV4FO0MHgWIPxBd861dEsr3tIzew3eQSBikJWe8p0xPpnc5fMywLAdpKQa08HAR6ha
-         dp+0YmFis+F7dEU2NHwR9dE4Q4pH8JskrJ0CKNCY6aafNhyflNrBx/wfCdkNiuor1tT3
-         cr7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717570476; x=1718175276;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pDWOB7EBv5B2WKho7wJPzVpyx/+ujpqfMRZlXIkWYkE=;
-        b=BQqk2GMDFO2kIAT/B59RR9hto1ZJ/ktS67f/sWeEHhh6TfVBVKaZ5+BaTxENkkFbQA
-         D0nhQXkk9uWmGC+rvU7hrPt7cRw8BlHEMFjfdev/o5eRBO98f1lAkRzlD3zTyFhwGsfI
-         kl/QoZxRIIA7TxTZpVYd3CiuSCw6AvT7cZovyy/Kw1s855lms8MEEP5IykOKtM/aaZcL
-         q2pKhsh8CCHTCURbEPldxIRk0BbMFbGU7JM99LJSC2IJBrdVnF7NapA2zF7rynAaHSVS
-         27Pg0UwMQd35WF+AWqtfzspLiPRk8Cna2jWA6FsItNFIPuy0OVeR3BJ836fODJJ7g2A2
-         x8FQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUfL4c3tqaglcylsEOYZna3/e1H4BofndaL6bGU7IkjTC0neMA74Rwmqzl3bIldrurR4MSROdKL+be6Ov2or0r465iyHXoqeOKGZdKAot+z94RKGfYLBt8ZZjZCzCAJ9Mg+GZFA2lYeWmj0vcg3dShaoJWecFZ4IEIzCu21+AZJLYYfBQ==
-X-Gm-Message-State: AOJu0YxPANxa9byM+kqCDtRtnHfEJaXWM+EnV1s0YTayHCA/2YVHSaas
-	A7Pr7WUtywNPoK0yIiacC9O8msyZEpcMBK05lCkfrwaNHm0AZXkE
-X-Google-Smtp-Source: AGHT+IFGv0q5OpSFQouNN2F7eL9OTgKRrrso+8qxuwnp9407a1Xvutj4kmMWUjWKrYDieoDXl1VxSA==
-X-Received: by 2002:a05:622a:1aa1:b0:43a:d386:f8eb with SMTP id d75a77b69052e-4402b598409mr18241661cf.22.1717570475629;
-        Tue, 04 Jun 2024 23:54:35 -0700 (PDT)
-Received: from [10.76.84.176] ([5.2.194.157])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-43ff23c2520sm56574731cf.32.2024.06.04.23.54.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Jun 2024 23:54:35 -0700 (PDT)
-Message-ID: <0f0c0b92-af0d-4e68-9880-bacfd53d726f@gmail.com>
-Date: Wed, 5 Jun 2024 09:54:31 +0300
+	s=arc-20240116; t=1717571374; c=relaxed/simple;
+	bh=SNDirZqATVsUGanO3P2ywQBX58F+YFtMIs3ojLNXbn8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=KZ+qttktFgB8tkN3yWzxbh8it+soaAIg2dNIPfjWLJozuA5HQs3yGfliIfbdIose/OauYo49cbH8cP1JgVUZo0etrN2StAdbI9e9CQ1kzRAv/41BAyg4HrqG0lqNmWIDlF2kcc5xZnkEHt43Vsw78oyb+yAHaZFSdvIcdRWyp5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bYx9BYaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F61FC32781;
+	Wed,  5 Jun 2024 07:09:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717571374;
+	bh=SNDirZqATVsUGanO3P2ywQBX58F+YFtMIs3ojLNXbn8=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=bYx9BYaYcFOr13bfV7QQPqBPHAzNF0+RtBQs6YTXrVBZcsk5kMB89LcY5gWEUUHLH
+	 vxd0ZXCY6g/NP7uwr4cPAyohe+/0UN035FBjumA9UftNk3gBLu8oKsv+IVYZEd60BP
+	 v+F4wItPToL/GFUzoc9jh5N8g+l5wJ5ZjHSAamhlYtgbdnBnVckljwiN143ycA0k9v
+	 qHQez/cq9h7kQRbiTiLH6AqqBfoq1mCIszv27zs+qHhnB5Ps3jP1MtR+7hlC0+nCik
+	 b/tYvAV/6FycCm8XYePHjHY0sGBFthh5q5WHVInmOHUsxfuMsN+NIyuVYa27ODAiIZ
+	 8G7T90wL3/qBw==
+Message-ID: <a239f1ea-4412-4100-9831-e1792b959830@kernel.org>
+Date: Wed, 5 Jun 2024 09:09:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,75 +50,84 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/6] dt-bindings: adc: ad7173: add support for ad411x
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Dumitru Ceclan via B4 Relay
- <devnull+dumitru.ceclan.analog.com@kernel.org>, dumitru.ceclan@analog.com,
+Subject: Re: [PATCH 1/2] bindings: frequency: adf4350: add clk provider
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
  Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
- Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240531-ad4111-v4-0-64607301c057@analog.com>
- <20240531-ad4111-v4-1-64607301c057@analog.com>
- <20240601193512.0e17992b@jic23-huawei>
- <efa10caa-5e78-4f3f-8cca-c61d7a01e6fd@gmail.com>
- <20240603210014.6258134d@jic23-huawei>
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240603112447.23308-1-antoniu.miclaus@analog.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
-From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
-In-Reply-To: <20240603210014.6258134d@jic23-huawei>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240603112447.23308-1-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 03/06/2024 23:00, Jonathan Cameron wrote:
-> On Mon, 3 Jun 2024 12:46:10 +0300
-> "Ceclan, Dumitru" <mitrutzceclan@gmail.com> wrote:
-> 
->> On 01/06/2024 21:35, Jonathan Cameron wrote:
->>> On Fri, 31 May 2024 22:42:27 +0300
->>> Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
->>>   
->>>> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
+On 03/06/2024 13:24, Antoniu Miclaus wrote:
+> Update dt-bindings for clock provider support within adf4350 driver.
 
-...
+Please use subject prefixes matching the subsystem. You can get them for
+example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+your patch is touching. For bindings, the preferred subjects are
+explained here:
+https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
+Hint: it is not bindings
 
->>>> +          Supported only by AD7172-2, AD7172-4, AD7175-2, AD7175-8, AD7177-2:
->>>> +            19: ((AVDD1 − AVSS)/5)+
->>>> +            20: ((AVDD1 − AVSS)/5)−  
->>>
->>> That's what it says on the datasheet (so fine to copy that here) but I'm curious, what does
->>> that mean in practice?  How can we have negative and postive signals of the difference
->>> between two power supply voltages where I'm fairly sure AVDD1 always greater than AVSS.
->>>  
->>
->> I have not tested that as I do not have a model that supports this wired up.
->> If I had to guess they are the same signal but one should be connected to the
->> positive input, one to the negative input...but I could be wrong.
+Commit msg: explain the hardware, not drivers.
+
 > 
-> If they are, then as far as I we are concerned is this one channel with two
-> representations depending on whether it is 1st or 2nd in the list?
-> Can we use one number and hide that detail in the driver?
-> 
-> Seems odd though if that is the case.
-> 
-> I guess if we find out later this is the case we can tighten the binding to
-> enforce the right one instead of squashing them to one value, but that
-> is a bit ugly.  Any chance of digging out the info?  If not we can go ahead
-> but ideally answering things like this make a our life easier in the long run.
-> 
-> Jonathan
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+>  .../devicetree/bindings/iio/frequency/adi,adf4350.yaml      | 6 ++++++
+>  1 file changed, 6 insertions(+)
 > 
 
-"(Avdd1/Avss)/5+ as positive input and (Avdd/Avss)/5- as negative
-  this is used for monitoring power supplies, the inputs must be selected in pair"
-Perhaps it's an internal voltage divider...? I dunno
-
-So it seems like this cannot be used as a common mode voltage input.
-I'll restrict the driver to only allow these inputs paired together
-and rename the define for these selections.
-
-
+Best regards,
+Krzysztof
 
 

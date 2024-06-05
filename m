@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-5803-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5804-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8384E8FC42B
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 09:10:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 570018FC430
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 09:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D154B29BE7
-	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 07:10:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13C2428A20B
+	for <lists+linux-iio@lfdr.de>; Wed,  5 Jun 2024 07:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C818B18C343;
-	Wed,  5 Jun 2024 07:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1511B18C331;
+	Wed,  5 Jun 2024 07:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bYx9BYaY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MKdxgNQi"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB02DDA5;
-	Wed,  5 Jun 2024 07:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF9660263;
+	Wed,  5 Jun 2024 07:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717571374; cv=none; b=dVP+WMG9xGdTmq9ZwYjEZv7JUqOIZRvWlRlK4vlozLYQuaax6eFjw84lXuiPQ0CbCLqg2v1vfEXsSKOwOORHQ5LaHwXYWpJPwhV8HoDiiBpDcjiP/YegFO9B7L4ibuPKHRqlvbYf1buScoeQ2+jh2ryVZJq0nfzxkG6CuxUKjD0=
+	t=1717571450; cv=none; b=ESJbKs5wTiDS0R7CNCy8U2fwzvbuOq73V+kiBIfRoJMabt58QGuhQYs/YFjNf1wrVQ3ui+r/HBnCSTEIDxCGqyeqatHde4JsUg0ylDvq3lyllQ8E1f0Ozp7OL63RKABWy5nfEN22ZLrkBCtgARji6QSiQaZrrs4gcCaH54mvAbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717571374; c=relaxed/simple;
-	bh=SNDirZqATVsUGanO3P2ywQBX58F+YFtMIs3ojLNXbn8=;
+	s=arc-20240116; t=1717571450; c=relaxed/simple;
+	bh=Cys+VR21HFwMU+hFWbogOsAR/iljYS/prKcGZpy+JHk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=KZ+qttktFgB8tkN3yWzxbh8it+soaAIg2dNIPfjWLJozuA5HQs3yGfliIfbdIose/OauYo49cbH8cP1JgVUZo0etrN2StAdbI9e9CQ1kzRAv/41BAyg4HrqG0lqNmWIDlF2kcc5xZnkEHt43Vsw78oyb+yAHaZFSdvIcdRWyp5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bYx9BYaY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F61FC32781;
-	Wed,  5 Jun 2024 07:09:30 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=dpXnErg3I3wyRlPYuk3SxixJrfkt+VurrMfTiHBEWcLVATGHLKV3GLKWprcGiJ60JyPNTsQOsyanFUW6v9wWCJYgqMDFu1FERnEYzMy1TXwQ8TEEckp7t/Q4m4IKZWP0lBA+zKxp0dGZeUS41uUheiF6DdRrVdyWBZB0zrO5Xg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MKdxgNQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC15FC32781;
+	Wed,  5 Jun 2024 07:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717571374;
-	bh=SNDirZqATVsUGanO3P2ywQBX58F+YFtMIs3ojLNXbn8=;
+	s=k20201202; t=1717571449;
+	bh=Cys+VR21HFwMU+hFWbogOsAR/iljYS/prKcGZpy+JHk=;
 	h=Date:Subject:To:References:From:In-Reply-To:From;
-	b=bYx9BYaYcFOr13bfV7QQPqBPHAzNF0+RtBQs6YTXrVBZcsk5kMB89LcY5gWEUUHLH
-	 vxd0ZXCY6g/NP7uwr4cPAyohe+/0UN035FBjumA9UftNk3gBLu8oKsv+IVYZEd60BP
-	 v+F4wItPToL/GFUzoc9jh5N8g+l5wJ5ZjHSAamhlYtgbdnBnVckljwiN143ycA0k9v
-	 qHQez/cq9h7kQRbiTiLH6AqqBfoq1mCIszv27zs+qHhnB5Ps3jP1MtR+7hlC0+nCik
-	 b/tYvAV/6FycCm8XYePHjHY0sGBFthh5q5WHVInmOHUsxfuMsN+NIyuVYa27ODAiIZ
-	 8G7T90wL3/qBw==
-Message-ID: <a239f1ea-4412-4100-9831-e1792b959830@kernel.org>
-Date: Wed, 5 Jun 2024 09:09:29 +0200
+	b=MKdxgNQi/AkanOQYSm+0WQCqoHfI24zU8v6BLU4aIgAmnypM94US9zKmVis1UfVUt
+	 4vaGlvWkAZEb31eUS/6jvV1/AuST23Mbf8kvzke+MexWS7KvQrk0gPpT5tbbUBaB58
+	 vE1mcQrsg2OsKVL5j75K/+ZRNWR11pBvZknluYznreCiP27yxUFrwGvhYn2+wedww5
+	 LhXFng8laDgbneEL3vKLn4P6iZvPUf/ewfWGqfuJMsPPpyaDch7f5WWcAcyX+IQvlo
+	 JFit2pFHoK3sj3NLUlU9aVvaCl7RfhBSLWih0i8gtv3+W+rO2+oJE6fRnvLdXMo4SD
+	 PB8FR9sJHqYJA==
+Message-ID: <63ef25dd-3cbd-4de7-bde4-87456ef2e9c5@kernel.org>
+Date: Wed, 5 Jun 2024 09:10:44 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] bindings: frequency: adf4350: add clk provider
+Subject: Re: [PATCH 2/2] drivers: iio: frequency: adf4350: add clk provider
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
  Lars-Peter Clausen <lars@metafoo.de>,
  Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -59,6 +59,7 @@ To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
  <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20240603112447.23308-1-antoniu.miclaus@analog.com>
+ <20240603112447.23308-2-antoniu.miclaus@analog.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -104,28 +105,26 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240603112447.23308-1-antoniu.miclaus@analog.com>
+In-Reply-To: <20240603112447.23308-2-antoniu.miclaus@analog.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 03/06/2024 13:24, Antoniu Miclaus wrote:
-> Update dt-bindings for clock provider support within adf4350 driver.
-
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
-Hint: it is not bindings
-
-Commit msg: explain the hardware, not drivers.
-
+> Add clk provider feature for the adf4350.
 > 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
->  .../devicetree/bindings/iio/frequency/adi,adf4350.yaml      | 6 ++++++
->  1 file changed, 6 insertions(+)
+> Even though the driver was sent as an IIO driver in most cases the
+> device is actually seen as a clock provider.
 > 
+> This patch aims to cover actual usecases requested by users in order to
+> completely control the output frequencies from userspace.
+> 
+
+Please do not use subject prefixes from your downstream tree, but use
+upstream convention. This applies to multiple of Analog submissions, so
+I would prefer if you create internal guideline and check it internally
+before posting.
+
+There is basically never a "drivers" prefix.
 
 Best regards,
 Krzysztof

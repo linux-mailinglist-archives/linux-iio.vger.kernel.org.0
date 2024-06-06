@@ -1,113 +1,181 @@
-Return-Path: <linux-iio+bounces-5933-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5934-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A9598FF357
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 19:08:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95DEB8FF3D0
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 19:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C06EE1C2543A
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 17:08:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAFD11C26372
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 17:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB241990B2;
-	Thu,  6 Jun 2024 17:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8211990D2;
+	Thu,  6 Jun 2024 17:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zp7pk3MU"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YjgG7Vov"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84146197A65;
-	Thu,  6 Jun 2024 17:07:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BDD15253E;
+	Thu,  6 Jun 2024 17:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717693667; cv=none; b=hY4sewrq8hDQARiWEvvGowvu5511NHvUy6FxH3fspeEfPQYvh1mT/5ccYkRwx4mm0F+gYmRjfSqBFdDcNPrY04ywaQKAvYVitxBglQfrs8/YTqIH6xaTWfISB6uSrvov637nLvizw7SvUYW37/PAGs92fNvYO8hrZOxIqs8yjt8=
+	t=1717695179; cv=none; b=uSrg/wd4/MolU5TGC3kyMEBmXjAEJ0r6/RO6aDf89WemRPnqTSJJ8Y5sFLc5fPGCRfmLJflkHealzbbp2bRHiELTCIZw3BC02GMMZybGIdLw4CDvLMZzXWM47nI9KrsHl4JSN/T17L0dQ6FCw3pYUFvx04E+l9EY8efEv/uzOyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717693667; c=relaxed/simple;
-	bh=83n/I+Eo4TLS4nRX1lMoo9h2rB6lMc8Pv/wLW87Nshc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UXfeNf45tCNiC2cwHsmkFFdWLJGRiaHeQYYVG5+nrCsTs7V6b1qB3fOoRywMohbIu34rVjnuNg+IF6IW4CjJjpo/JderXkkKZsvcPMFv3dbMP1QhE1xq/tadyEOppMyHVJAoQnj1aPRTlJYTdJ9TQuzAp5dHjXs0yTNgCTspR3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zp7pk3MU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F39E3C2BD10;
-	Thu,  6 Jun 2024 17:07:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717693667;
-	bh=83n/I+Eo4TLS4nRX1lMoo9h2rB6lMc8Pv/wLW87Nshc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zp7pk3MUh+E2K0vp5ptItAd8LTTqBxprf//wmBnqu75SaXYdtgTJlOakiR6/0igyy
-	 yloOv3Tb8Ay8SU6PMEqH0SLd3Zurg70oUfcTuyyFZsCjvo3IxCPqj3DNlkv7VoUbfy
-	 xjSlVDwY2LJPY3tZZxxCaMXmV07BytxbxXh+6h+8Hp4pZUaBaB0rdbQKBKqTT2AKQQ
-	 ZPDx9wfNz14+rRg+t02ETbtGTvrjm4VetczCjdCpXbLBsqRvkZZls/OxxDzggbaLeC
-	 f7pIpWcuZwTkV5fYB6L/srIYJyfJr6wrkewfWoxd+NsofaW5f8wWiy7LbbQC6dtVh/
-	 3GJHL30JnmT7w==
-Date: Thu, 6 Jun 2024 18:07:42 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: =?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	=?iso-8859-1?Q?Jo=E3o_Paulo_Gon=E7alves?= <joao.goncalves@toradex.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add ti,ads1119
-Message-ID: <20240606-popular-cornflake-9995abdc7763@spud>
-References: <20240606163529.87528-1-francesco@dolcini.it>
- <20240606163529.87528-2-francesco@dolcini.it>
+	s=arc-20240116; t=1717695179; c=relaxed/simple;
+	bh=tvNSjOg8mx3j+RpQ0huRviLFFC0DGjMakF1YpHzl9p4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hDVzI9hsV9VIW3WwO61FpEk1Dyn6/o9dFv9hRYYZyJMT4wzben+HEm0gw9J6VX2P8X87oyCPB5daqwxpVh7D05vhSFUd2kFw3jc37IMCooy2Zy1YtfHkhIyfpyb/1W/2sESL6Z3Uavdn2np+Q339vw5tBlv9J7EJ0mcqbk3jquM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YjgG7Vov; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=6C3828TkhUBt3LMHxNw+f5eKbQSK74nm3cDfcfA+ESQ=; b=YjgG7Vov4whzGWtff+CpF/oKgO
+	S3i5UR/b7npg7U4tVrxl3/D4ZmVvyFwLuag78KKpUhLwsakb4RRuKd+b+fvTmuvICnqfNxp6Mmwb+
+	m8qm8ei8eE7zOW7hJpzGnDF/99H35cAwMFrDaHJ8pWLHqwo3ULZoC6aVMUzDzpK3UgH+tt+fio3q+
+	rfntirFQ7pDVbXz+c05AEXWBLgme0hSzKmAmCpLaKc9pxe2XJgMaZm/2lF17eM9JfIjJOewvm84eV
+	cloM0LYjQ5T2r2CcHxsslcAhPDYArfm4Kf+iQ9Ddu3DECTWahfCAv33BCBI6HW4F9kNSNrdMmQtEE
+	ZTzE5uxg==;
+Received: from [50.53.4.147] (helo=[192.168.254.15])
+	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sFGyq-0000000Alrg-33v6;
+	Thu, 06 Jun 2024 17:32:52 +0000
+Message-ID: <5052adab-5b5e-4ac2-902c-bb373c00bbbb@infradead.org>
+Date: Thu, 6 Jun 2024 10:32:51 -0700
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="MlNTfdf3jY1WyMxn"
-Content-Disposition: inline
-In-Reply-To: <20240606163529.87528-2-francesco@dolcini.it>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 6/6] Documentation: iio: Document high-speed DMABUF
+ based API
+To: Paul Cercueil <paul@crapouillou.net>, Jonathan Cameron
+ <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Vinod Koul <vkoul@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Nuno Sa <nuno.sa@analog.com>,
+ linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org
+References: <20240605110845.86740-1-paul@crapouillou.net>
+ <20240605110845.86740-7-paul@crapouillou.net>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20240605110845.86740-7-paul@crapouillou.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+Hi,
 
---MlNTfdf3jY1WyMxn
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Jun 06, 2024 at 06:35:28PM +0200, Francesco Dolcini wrote:
-> From: Jo=E3o Paulo Gon=E7alves <joao.goncalves@toradex.com>
->=20
-> Add devicetree bindings for Texas Instruments ADS1119 16-bit ADC
-> with I2C interface.
->=20
-> Datasheet: https://www.ti.com/lit/gpn/ads1119
-> Signed-off-by: Jo=E3o Paulo Gon=E7alves <joao.goncalves@toradex.com>
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+On 6/5/24 4:08 AM, Paul Cercueil wrote:
+> Document the new DMABUF based API.
+> 
+> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> 
 > ---
-> v2:
->  - add diff-channels and single-channel
->  - add XOR check to make diff/single channel property required=20
->  - add interrupts, reset-gpios and vref-supply to the example=20
->  - fix missing additionalProperties/unevaluatedProperties warning in chan=
-nels
->  - remove ti,gain and ti,datarate as they aren't fixed hw properties
->  - remove unnecessary |=20
+> v2: - Explicitly state that the new interface is optional and is
+>       not implemented by all drivers.
+>     - The IOCTLs can now only be called on the buffer FD returned by
+>       IIO_BUFFER_GET_FD_IOCTL.
+>     - Move the page up a bit in the index since it is core stuff and not
+>       driver-specific.
+> 
+> v3: Update the documentation to reflect the new API.
+> 
+> v5: Use description lists for the documentation of the three new IOCTLs
+>     instead of abusing subsections.
+> 
+> v8: Renamed dmabuf_api.rst -> iio_dmabuf_api.rst, and updated index.rst
+>     whose format changed in iio/togreg.
+> ---
+>  Documentation/iio/iio_dmabuf_api.rst | 54 ++++++++++++++++++++++++++++
+>  Documentation/iio/index.rst          |  1 +
+>  2 files changed, 55 insertions(+)
+>  create mode 100644 Documentation/iio/iio_dmabuf_api.rst
+> 
+> diff --git a/Documentation/iio/iio_dmabuf_api.rst b/Documentation/iio/iio_dmabuf_api.rst
+> new file mode 100644
+> index 000000000000..1cd6cd51a582
+> --- /dev/null
+> +++ b/Documentation/iio/iio_dmabuf_api.rst
+> @@ -0,0 +1,54 @@
+> +.. SPDX-License-Identifier: GPL-2.0
+> +
+> +===================================
+> +High-speed DMABUF interface for IIO
+> +===================================
+> +
+> +1. Overview
+> +===========
+> +
+> +The Industrial I/O subsystem supports access to buffers through a
+> +file-based interface, with read() and write() access calls through the
+> +IIO device's dev node.
+> +
+> +It additionally supports a DMABUF based interface, where the userspace
+> +can attach DMABUF objects (externally created) to a IIO buffer, and
 
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+I would say/write:                                to an IIO buffer,
 
-Thanks,
-Conor.
+> +subsequently use them for data transfers.
+> +
+> +A userspace application can then use this interface to share DMABUF
+> +objects between several interfaces, allowing it to transfer data in a
+> +zero-copy fashion, for instance between IIO and the USB stack.
+> +
+> +The userspace application can also memory-map the DMABUF objects, and
+> +access the sample data directly. The advantage of doing this vs. the
+> +read() interface is that it avoids an extra copy of the data between the
+> +kernel and userspace. This is particularly useful for high-speed devices
+> +which produce several megabytes or even gigabytes of data per second.
+> +It does however increase the userspace-kernelspace synchronization
+> +overhead, as the DMA_BUF_SYNC_START and DMA_BUF_SYNC_END IOCTLs have to
+> +be used for data integrity.
+> +
+> +2. User API
+> +===========
+> +
+> +As part of this interface, three new IOCTLs have been added. These three
+> +IOCTLs have to be performed on the IIO buffer's file descriptor,
+> +obtained using the IIO_BUFFER_GET_FD_IOCTL() ioctl.
+> +
+> +  ``IIO_BUFFER_DMABUF_ATTACH_IOCTL(int)``
 
---MlNTfdf3jY1WyMxn
-Content-Type: application/pgp-signature; name="signature.asc"
+                                     (int fd)
+?
 
------BEGIN PGP SIGNATURE-----
+> +    Attach the DMABUF object, identified by its file descriptor, to the
+> +    IIO buffer. Returns zero on success, and a negative errno value on
+> +    error.
+> +
+> +  ``IIO_BUFFER_DMABUF_DETACH_IOCTL(int)``
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZmHs3gAKCRB4tDGHoIJi
-0ge+AQDSD9FzXJl3Ozm3C5LKszHGqGVdbLyh8RrnWpHB3DFZWwD+Kyrt9dfKVg1r
-LzUBrCsz5O8x0LHgxTyA3tjFJZe4MwU=
-=iHiO
------END PGP SIGNATURE-----
+ditto.
 
---MlNTfdf3jY1WyMxn--
+> +    Detach the given DMABUF object, identified by its file descriptor,
+> +    from the IIO buffer. Returns zero on success, and a negative errno
+> +    value on error.
+> +
+> +    Note that closing the IIO buffer's file descriptor will
+> +    automatically detach all previously attached DMABUF objects.
+> +
+> +  ``IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *iio_dmabuf)``
+> +    Enqueue a previously attached DMABUF object to the buffer queue.
+> +    Enqueued DMABUFs will be read from (if output buffer) or written to
+> +    (if input buffer) as long as the buffer is enabled.
+
+thanks.
+-- 
+#Randy
+https://people.kernel.org/tglx/notes-about-netiquette
+https://subspace.kernel.org/etiquette.html
 

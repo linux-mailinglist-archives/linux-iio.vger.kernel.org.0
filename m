@@ -1,106 +1,161 @@
-Return-Path: <linux-iio+bounces-5880-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5881-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25358FDF3D
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 09:01:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 456FE8FDF6A
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 09:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABA571C21647
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 07:01:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADF6B1F26F69
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 07:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F7D7346A;
-	Thu,  6 Jun 2024 07:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D05213C3D7;
+	Thu,  6 Jun 2024 07:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="ipXs7rL4"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="fMxCHhGx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFBC1759F;
-	Thu,  6 Jun 2024 07:01:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D8933F7;
+	Thu,  6 Jun 2024 07:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717657282; cv=none; b=Qg/sO9GLz7U3aGCfspphrrL8FzGpJhg/ENzX/vH0sQ9RJZ98O6K0tAzUl2x0XedXOcqTkpCw20IuFv+KR9JwmxtRAoXVaFofw/cRGUMewxuxvQ70dRXdjLxSF7OfUaegkVZINyqJgLvqS7JZUY/9PHTpAoIBlU9SrD/eKg6eip4=
+	t=1717658401; cv=none; b=m8YcKpHBWzGsxpvfhlDZR2ij0DdBxrNejVD75arRj9B1Phcq/hTvlonIwobZPoRGd6CVFe23YNsCFY4d91ey6fQm4KNJtiAa+2yKeVbqdktoBB1t44MnbeDwJEt19JFVdtWGkKIlV6mFSvJ0XqRHOGeBwzsl+yHDn84lQ7sUlKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717657282; c=relaxed/simple;
-	bh=8Hy+HCwbH5J4IOPU5GWj17/lZaRma3rg/Kxm8Kd/tBw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e38OiDEmaw6PRMDx35mmMn898XKuPLrkrZmAmiTbD/2YW36bbs8+Pl+MmMTZO/XzKvvoWPWQXwq/ZqaS5/nNu5BNUR6BPKvTCmfOYfXQ3fLr4D98mJ/Bq/Ir4ida4j04eOQMFn7rKb2TAuj+1KSId39Myh7I7Q8k9O9V7d4UJmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=ipXs7rL4; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID; bh=tQej+T9pnqq3P5SIWfflEa+IdT6ZnzjAMSpJZ+7Tq5A=; b=ipXs7r
-	L4HMp2TA3YX1inqNshlY524Wop3grBqEwkCt5gFtINEimxTFVgD5zmu9hTLjjObCPcmfA0nruo/VZ
-	rWTd+pJ8i4ZDNFJLEllm6z0s/VHjmXQoUhty5hVEnl6/P5S/2vedlrOQmDzGP99eTeR9WJ82qN08r
-	fL3ZzyVHTd1goTYyQI7ZpR+6vyv+bohRuCXIFYuxXUGbMmpJrsduyvoVeP7fBuZJ6Bq7vqutMUysk
-	mnf0zifPN2Vpnrmdo2XKgL7yi3jBi7dGTVJMjJph//i27uVhl9tEz7933aHQkQ4oe8vGhHAzMTGla
-	wXuQfyEyyF8IEmlCFw/V0fvn1m5g==;
-Received: from sslproxy07.your-server.de ([78.47.199.104])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sean@geanix.com>)
-	id 1sF77a-0007WA-RG; Thu, 06 Jun 2024 09:01:11 +0200
-Received: from [185.17.218.86] (helo=Seans-MBP.geanix.com)
-	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sean@geanix.com>)
-	id 1sF77X-000N8S-0t;
-	Thu, 06 Jun 2024 09:01:10 +0200
-Date: Thu, 6 Jun 2024 09:01:10 +0200
-From: Sean Nyekjaer <sean@geanix.com>
-To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: accel: fxls8962af: select IIO_BUFFER & IIO_KFIFO_BUF
-Message-ID: <sdlebaxls5al3hzbhzeqnt6j3iijgobkxtljzpkn6how6cgywq@ipane3aqqdzv>
-References: <20240605203810.2908980-2-alexander.sverdlin@siemens.com>
+	s=arc-20240116; t=1717658401; c=relaxed/simple;
+	bh=SYrjY4Gp1M1NLQKedqeAA9+ZY9LrnReRiJyhW9OGRa0=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=B3Ho9kb+PPH00eBTgjNhJx2J51BZcgk2fkA2Si9n1M/7c0mslyrBx7UaiRznf+fvcG5eKgu5+yz1hdOmyF+bSnnBtgC8JJUOXyTw6NKcLn/+Tbh8YmjbqHG72i528it1+qeH01p14k4OtPla//SZKrIiKne+o2B4rEY2PYW3ylo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=fMxCHhGx; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4566Gbnh015061;
+	Thu, 6 Jun 2024 03:19:15 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=2lCZFL6Cth30wP2B5LlKy738IQh
+	CEfTtOXwwIgO7iNA=; b=fMxCHhGxftHkun7ZWSgpJcW48VW1b1HzPf9ng2grRCv
+	exldI6/C8uZrkh0IK7IHUh9Eb66Fgf6tkZ03fvpv1w/U1q7fla0L0LkVcHyZV6Cz
+	jXhZodN8pVgtEQsLC+gYRzHTZlobwV+y7sb8cDOMJkPCyvIDfNHegnsHlCpV+8cx
+	awK8GXRqXVc+Bw88uFavRKkOkp4/zOf6y4Dc2RE7W1d5kim1Zke5zCV1KesokAi5
+	YCYTqpvbmKZdRvKScWL6FauAsOuyHvATYSqGW5ze4QUeGHLpMQDRotf1JMjKTDjs
+	yRt1llXoCO9bdoJhjXvNgp5TtLidaMNIcgzOB8ka4VA==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3yj0hvgrfg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Jun 2024 03:19:15 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 4567JEo5046146
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 6 Jun 2024 03:19:14 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 6 Jun 2024 03:19:13 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Thu, 6 Jun 2024 03:19:13 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Thu, 6 Jun 2024 03:19:13 -0400
+Received: from [127.0.0.1] ([10.44.3.54])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4567ItBb025782;
+	Thu, 6 Jun 2024 03:18:57 -0400
+From: Nuno Sa <nuno.sa@analog.com>
+Subject: [PATCH v3 0/4] dev_printk: add dev_errp_probe() helper
+Date: Thu, 6 Jun 2024 09:22:36 +0200
+Message-ID: <20240606-dev-add_dev_errp_probe-v3-0-51bb229edd79@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240605203810.2908980-2-alexander.sverdlin@siemens.com>
-X-Authenticated-Sender: sean@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27297/Wed Jun  5 10:30:56 2024)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIALxjYWYC/4WNQQrCMBREr1L+2kiaVFtdeQ8pIU1+24Am4UeCU
+ nJ3Yy8gsxjewMxskJAcJrg2GxBml1zwFeShAbNqvyBztjIILjpexSxmpq1V1RUSRRUpTMjOF+x
+ PojNi4BJqORLO7r0P38fKq0uvQJ/9J7e/9O9kbhlnth1Q4tSjkfNNe/0Iy9GEJ4yllC/AkIkZv
+ QAAAA==
+To: Petr Mladek <pmladek@suse.com>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Olivier Moysan
+	<olivier.moysan@foss.st.com>,
+        Jyoti Bhayana <jbhayana@google.com>,
+        "Andy
+ Shevchenko" <andriy.shevchenko@linux.intel.com>,
+        Chris Down
+	<chris@chrisdown.name>,
+        John Ogness <john.ogness@linutronix.de>,
+        "Greg
+ Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        Andi Shyti
+	<andi.shyti@kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1717658563; l=1389;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=SYrjY4Gp1M1NLQKedqeAA9+ZY9LrnReRiJyhW9OGRa0=;
+ b=FSAMnMH2L6+ARtptEg1KMkHGE6YENDXoY08t+huSBG6YoLdSzTiY7kSZY8cgVdH9/oXWJML1S
+ GXkSvumjeugAp0oC5crkAML0QkEyzxQaYL+5mLCvJxRUvIodcgkwwYJ
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: VuwNacJqQTpU5oyX6cqwzddlsOGvMx3O
+X-Proofpoint-ORIG-GUID: VuwNacJqQTpU5oyX6cqwzddlsOGvMx3O
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-06_01,2024-06-06_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1011 mlxscore=0 spamscore=0 adultscore=0
+ bulkscore=0 phishscore=0 priorityscore=1501 malwarescore=0 mlxlogscore=839
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406060052
 
-On Wed, Jun 05, 2024 at 10:38:06PM UTC, A. Sverdlin wrote:
-> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-> 
-> Provide missing symbols to the module:
-> ERROR: modpost: iio_push_to_buffers [drivers/iio/accel/fxls8962af-core.ko] undefined!
-> ERROR: modpost: devm_iio_kfifo_buffer_setup_ext [drivers/iio/accel/fxls8962af-core.ko] undefined!
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 79e3a5bdd9ef ("iio: accel: fxls8962af: add hw buffered sampling")
-> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Sean Nyekjaer <sean@geanix.com>
-> ---
->  drivers/iio/accel/Kconfig | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/iio/accel/Kconfig b/drivers/iio/accel/Kconfig
-> index c2da5066e9a7b..80b57d3ee3a72 100644
-> --- a/drivers/iio/accel/Kconfig
-> +++ b/drivers/iio/accel/Kconfig
-> @@ -330,6 +330,8 @@ config DMARD10
->  config FXLS8962AF
->  	tristate
->  	depends on I2C || !I2C # cannot be built-in for modular I2C
-> +	select IIO_BUFFER
-> +	select IIO_KFIFO_BUF
->  
->  config FXLS8962AF_I2C
->  	tristate "NXP FXLS8962AF/FXLS8964AF Accelerometer I2C Driver"
-> -- 
-> 2.45.2
-> 
+Main changes in v3 are Andy feedback on v2. Still note that I'm not
+adding a new variant for dev_err_* that takes an error pointer and return
+an int. I prefer to defer that if we really want such a variant.
+Anyways, here it goes v3 log:
+
+v1:
+ * https://lore.kernel.org/all/20240404-dev-add_dev_errp_probe-v1-0-d18e3eb7ec3f@analog.com/
+
+v2:
+ * https://lore.kernel.org/all/20240423-dev-add_dev_errp_probe-v2-0-12f43c5d8b0d@analog.com/ 
+
+v3:
+ * Patch 1:
+   - Removed parenthesis around macros;
+
+ * Patch 2:
+   - Removed local struct device *dev helper;
+   - Added missing \n to printk().
+
+ * Patch 4:
+   - Make sure to not double error code printing;
+   - Added missing new line.
+
+---
+Nuno Sa (4):
+      dev_printk: add new dev_err_probe() helpers
+      iio: temperature: ltc2983: convert to dev_err_probe()
+      iio: backend: make use of dev_err_cast_probe()
+      iio: common: scmi_iio: convert to dev_err_probe()
+
+ drivers/iio/common/scmi_sensors/scmi_iio.c |  45 +++--
+ drivers/iio/industrialio-backend.c         |   8 +-
+ drivers/iio/temperature/ltc2983.c          | 260 +++++++++++++----------------
+ include/linux/dev_printk.h                 |   8 +
+ 4 files changed, 143 insertions(+), 178 deletions(-)
+---
+base-commit: 234cb065ad82915ff8d06ce01e01c3e640b674d2
+change-id: 20240404-dev-add_dev_errp_probe-69e7524c2803
+--
+
+Thanks!
+- Nuno Sá
+
 

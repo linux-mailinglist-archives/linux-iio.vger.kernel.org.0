@@ -1,212 +1,141 @@
-Return-Path: <linux-iio+bounces-5884-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5886-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552318FDF70
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 09:20:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 541BF8FE019
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 09:42:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6C57288273
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 07:20:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B8951F22B8B
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 07:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067C913CA93;
-	Thu,  6 Jun 2024 07:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA3DC13C3F9;
+	Thu,  6 Jun 2024 07:42:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="yLsVVva4"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NL++cvwa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C2913C69E;
-	Thu,  6 Jun 2024 07:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F05D813AA5E
+	for <linux-iio@vger.kernel.org>; Thu,  6 Jun 2024 07:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717658403; cv=none; b=B9c4L4WcjpG2YllTNT0JvesLK0ynsYJn9wf/r4IXhnqVDwicYb21T+Knt7gedx0piwlBoiOGOfoXJE6oKGmwYErk2fA2+iCe/6P53Gb0poGGr+p6oJbwr8FAvrqtECmF+T6fvfZaXNJVOSnwmCERhCAOlkjlcL0fAOrRBtU0M8M=
+	t=1717659764; cv=none; b=kgcPkzrC27woe17kbqpzyywaPUPV1nrhvgtTl4S3C4Y7dDqOttjohWhfpSHRbglNtkgxtYQn4VryAlDJTkNSqcqsVE4IMYKh5GGJqvcZijN1UR6/KIhEvtzp6fqG7vC3AZhSP6TA7uiPQhzwnydvbxU7E2S5ixed8CcE9uh8oyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717658403; c=relaxed/simple;
-	bh=YXnPEPH8ieRcmPyM7mS3/B2YUJTTpMxdJgXtPcLuUks=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=ZvO3Ka8asPH3jFHD76J+4vdZQS+WKi5iX+IqcN4jUu95V5Ekp+SlIDTk1QPqk8OZhRNp6+3dbraLUbZ1nf4HFIpMbS7lN7gaChMq80d7iSqQrJ+OSttdubCXuoHYQLzFcXKaz7baLlZqQ320FrfiQl0CcQK5ZNsF+eusE+dJABk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=yLsVVva4; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4565FnWE018314;
-	Thu, 6 Jun 2024 03:19:22 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=WVleC
-	QOVAlljpbV37rYWncfuwAgWZ0Mp5j58RmXiLnQ=; b=yLsVVva4z17zJ5EGI9RSd
-	mCsHRtTf/SOi3x0Axg9QMH5w3u8Tazmht7lQa4iey1bcBGf7gD+1G2aUYc8N44mr
-	aEiCEyF+9oBO3OUM/3Jbu9n9STKp+btc8EzJFk14D34mmuqvmq/gODk7GASWKTp6
-	idCsVHEYIfha/j1d8cO/bKUxTRGVso32MW5+UZNMXVJLWQqCTbnoJiqr0HQ9jfEF
-	kRuDaDoG0uwS/J4cQ9NtgSmWF51ZstE84V6dXvKs4vjfx4T2xfDHtbOrwExUDt0U
-	MreKD7XIsK5EEtVPf3VyXU/+9e1RsL5LUf7GWEhhMJ1tIvh5lAwIcD4bfJ/IwvT8
-	w==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3yjuesjmhn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Jun 2024 03:19:21 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4567JKWi030136
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 6 Jun 2024 03:19:20 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Thu, 6 Jun 2024
- 03:19:19 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 6 Jun 2024 03:19:19 -0400
-Received: from [127.0.0.1] ([10.44.3.54])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4567ItBf025782;
-	Thu, 6 Jun 2024 03:19:16 -0400
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Thu, 6 Jun 2024 09:22:40 +0200
-Subject: [PATCH v3 4/4] iio: common: scmi_iio: convert to dev_err_probe()
+	s=arc-20240116; t=1717659764; c=relaxed/simple;
+	bh=7OaWmqVFqUj8UiBMIFYvyTDVYpCRKRaVDuAaqAod2/I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r4EfKDHV0Ya++hO6Y8vo5nzM9cOFhIyXXi9CbO0uzyv0LaNXHvOHZw1a6Mn/jXYbvkWR6TRaTvhb81xcC2mCqXGbIGDT4JKx46BYWwAOdMlnyYPJUZzXQhTttVNyv+H2bSo+PIvD6y1AKlJzrWvrsyZA1UY9XI391feusIngltw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NL++cvwa; arc=none smtp.client-ip=209.85.218.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a68a9a4e9a6so63021966b.3
+        for <linux-iio@vger.kernel.org>; Thu, 06 Jun 2024 00:42:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1717659760; x=1718264560; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7hn7A2vtREo0E7HfSwjkC9hqptsOSWf7nUvmnuVDMQY=;
+        b=NL++cvwa1YzNLaO02KuHXfdUWI0iBeBifsmyZyDIb5uMpknUdYDOeT/BDI/fB1OqHk
+         +7gCI0acVsZJ9rqdfi0zaMODPSc2iNqRCIIzabLp1tuBymzYzAtsSw1iGNJhqh8NyJ/4
+         bfRhWy9o8GJlE3fdPgPV+MIOX2Zas3+n6dR2PFZyU7rJMR6cFy0R0pMq+kF7E/jGpRD5
+         dXGJ+GxjzoVPjGZ3tiwUrB4gUVnyjnHucGul9epeD37Bp6ZiZqmXwZ1hXIrXEdNVrXJF
+         ilEl3P0UI+XCbpU9AbkrYXIGfV5G0BBv+rrjrB1As9IXmF71GnivuRMlHZ8mIiUgEiHw
+         uAJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717659760; x=1718264560;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7hn7A2vtREo0E7HfSwjkC9hqptsOSWf7nUvmnuVDMQY=;
+        b=dKLNzp4kCfkDxiY0Wq4hMOA+4HSzAdXa8tBFGj+TEwCDqVQDMGGbbMYh2nlM6oHZD9
+         yNTHFiy9wDVP1HAPiteDaW1v7pnW9TzV9vjyEnGwEZUnd7Ll9377upLkkJvXXXeW466k
+         WlwHtBWZuht/eQxUNhtKDd+y4dcpaot0lUjZLoqrHMuz955CPd8LGCBqh5jRY8YuUoOM
+         7q5kCiyCpyNF5sf0VzwTK3+gnzRxDwq6+Vbvnb7XUGbJcKwZSnisGrsfe1CEeoI8olQZ
+         THx2f1549VowxLL1234WA8VshSQw5YWpTGbWEPiyuamZjd33wNn2AZiE/2jCWAEsW+Kg
+         4tZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVvraG4jfgcDisausN752vD4fFcPg8RmbwmgXoy1m0hBK1yWu8eHZqmOsAhyHMgopGLtGKvM5FYfHTnJ0AVoWP0T+KBXCnLbnVG
+X-Gm-Message-State: AOJu0Yw8Gb43yAC5ggzBxDrEccXAKNuK4RKTGT1QXa/bavXedPr8j0qn
+	BN39lgx5jLKHWJi53jjSVqhzAOByvgEsPwDi9uRsyW+dVbfl5Uhb71am2rtMViE=
+X-Google-Smtp-Source: AGHT+IG9fb84ekx6f8HaBtotI1FnubBAZuTJ3dgM/XdsdCeyuhCLEIFdUbolQkfIb3FKjJXzmIhddQ==
+X-Received: by 2002:a17:907:900e:b0:a68:fe79:9499 with SMTP id a640c23a62f3a-a699f88b67cmr343464966b.40.1717659760015;
+        Thu, 06 Jun 2024 00:42:40 -0700 (PDT)
+Received: from localhost ([102.222.70.76])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c806ebc43sm57149266b.141.2024.06.06.00.42.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jun 2024 00:42:39 -0700 (PDT)
+Date: Thu, 6 Jun 2024 10:42:35 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Joy Chakraborty <joychakr@google.com>
+Cc: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Jerome Brunet <jbrunet@baylibre.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-mtd@lists.infradead.org, linux-rtc@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-amlogic@lists.infradead.org, linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org, linux-usb@vger.kernel.org,
+	manugautam@google.com
+Subject: Re: [PATCH v1 01/17] hwmon: pmbus: adm1266: Change nvmem
+ reg_read/write return type
+Message-ID: <08ff07f4-034d-4342-89da-d83044871ab1@moroto.mountain>
+References: <20240605175953.2613260-1-joychakr@google.com>
+ <20240605175953.2613260-2-joychakr@google.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240606-dev-add_dev_errp_probe-v3-4-51bb229edd79@analog.com>
-References: <20240606-dev-add_dev_errp_probe-v3-0-51bb229edd79@analog.com>
-In-Reply-To: <20240606-dev-add_dev_errp_probe-v3-0-51bb229edd79@analog.com>
-To: Petr Mladek <pmladek@suse.com>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Olivier Moysan
-	<olivier.moysan@foss.st.com>,
-        Jyoti Bhayana <jbhayana@google.com>,
-        Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Chris Down
-	<chris@chrisdown.name>,
-        John Ogness <john.ogness@linutronix.de>,
-        Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andi Shyti
-	<andi.shyti@kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1717658563; l=3377;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=YXnPEPH8ieRcmPyM7mS3/B2YUJTTpMxdJgXtPcLuUks=;
- b=stco9/XLXZE9WC7wCzxzxKe6E85oXjPNZpEg8noNUXbbYAIPVkmRY3ssLnD31C9BLFwynPtyn
- tlsRNdQ+64CD0kqzkuE/i2grg6jPbgLfplrgiB46o5B7n4izDoFX734
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: CNxQgtAmEsAbPKCMbSgLDr3rUAyOnwzK
-X-Proofpoint-GUID: CNxQgtAmEsAbPKCMbSgLDr3rUAyOnwzK
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-06_01,2024-06-06_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 bulkscore=0 impostorscore=0 malwarescore=0 mlxscore=0
- clxscore=1015 priorityscore=1501 phishscore=0 mlxlogscore=999 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406060052
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240605175953.2613260-2-joychakr@google.com>
 
-Make use of dev_err_probe() and dev_err_ptr_probe() to simplify error paths
-during probe.
+On Wed, Jun 05, 2024 at 05:59:45PM +0000, Joy Chakraborty wrote:
+> Change nvmem read/write function definition return type to ssize_t.
+> 
+> Signed-off-by: Joy Chakraborty <joychakr@google.com>
+> ---
+>  drivers/hwmon/pmbus/adm1266.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/hwmon/pmbus/adm1266.c b/drivers/hwmon/pmbus/adm1266.c
+> index 2c4d94cc8729..7eaab5a7b04c 100644
+> --- a/drivers/hwmon/pmbus/adm1266.c
+> +++ b/drivers/hwmon/pmbus/adm1266.c
+> @@ -375,7 +375,7 @@ static int adm1266_nvmem_read_blackbox(struct adm1266_data *data, u8 *read_buff)
+>  	return 0;
+>  }
+>  
+> -static int adm1266_nvmem_read(void *priv, unsigned int offset, void *val, size_t bytes)
+> +static ssize_t adm1266_nvmem_read(void *priv, unsigned int offset, void *val, size_t bytes)
+>  {
+>  	struct adm1266_data *data = priv;
+>  	int ret;
+> @@ -395,7 +395,7 @@ static int adm1266_nvmem_read(void *priv, unsigned int offset, void *val, size_t
+>  
+>  	memcpy(val, data->dev_mem + offset, bytes);
+>  
+> -	return 0;
+> +	return bytes;
+>  }
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/common/scmi_sensors/scmi_iio.c | 45 +++++++++++++-----------------
- 1 file changed, 19 insertions(+), 26 deletions(-)
+This breaks the build so it's not allowed.  The way to do it is to:
+1) add a new pointer which takes a ssize_t
+2) convert everything to the new pointer
+3) Rename the new pointer to the old name
 
-diff --git a/drivers/iio/common/scmi_sensors/scmi_iio.c b/drivers/iio/common/scmi_sensors/scmi_iio.c
-index 0c2caf3570db..7190eaede7fb 100644
---- a/drivers/iio/common/scmi_sensors/scmi_iio.c
-+++ b/drivers/iio/common/scmi_sensors/scmi_iio.c
-@@ -626,12 +626,10 @@ scmi_alloc_iiodev(struct scmi_device *sdev,
- 				SCMI_PROTOCOL_SENSOR, SCMI_EVENT_SENSOR_UPDATE,
- 				&sensor->sensor_info->id,
- 				&sensor->sensor_update_nb);
--	if (ret) {
--		dev_err(&iiodev->dev,
--			"Error in registering sensor update notifier for sensor %s err %d",
--			sensor->sensor_info->name, ret);
--		return ERR_PTR(ret);
--	}
-+	if (ret)
-+		return dev_err_ptr_probe(&iiodev->dev, ret,
-+					 "Error in registering sensor update notifier for sensor %s\n",
-+					 sensor->sensor_info->name);
- 
- 	scmi_iio_set_timestamp_channel(&iio_channels[i], i);
- 	iiodev->channels = iio_channels;
-@@ -653,10 +651,9 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
- 		return -ENODEV;
- 
- 	sensor_ops = handle->devm_protocol_get(sdev, SCMI_PROTOCOL_SENSOR, &ph);
--	if (IS_ERR(sensor_ops)) {
--		dev_err(dev, "SCMI device has no sensor interface\n");
--		return PTR_ERR(sensor_ops);
--	}
-+	if (IS_ERR(sensor_ops))
-+		return dev_err_probe(dev, PTR_ERR(sensor_ops),
-+				     "SCMI device has no sensor interface\n");
- 
- 	nr_sensors = sensor_ops->count_get(ph);
- 	if (!nr_sensors) {
-@@ -667,8 +664,8 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
- 	for (i = 0; i < nr_sensors; i++) {
- 		sensor_info = sensor_ops->info_get(ph, i);
- 		if (!sensor_info) {
--			dev_err(dev, "SCMI sensor %d has missing info\n", i);
--			return -EINVAL;
-+			return dev_err_probe(dev, -EINVAL,
-+					     "SCMI sensor %d has missing info\n", i);
- 		}
- 
- 		/* This driver only supports 3-axis accel and gyro, skipping other sensors */
-@@ -683,29 +680,25 @@ static int scmi_iio_dev_probe(struct scmi_device *sdev)
- 		scmi_iio_dev = scmi_alloc_iiodev(sdev, sensor_ops, ph,
- 						 sensor_info);
- 		if (IS_ERR(scmi_iio_dev)) {
--			dev_err(dev,
--				"failed to allocate IIO device for sensor %s: %ld\n",
--				sensor_info->name, PTR_ERR(scmi_iio_dev));
--			return PTR_ERR(scmi_iio_dev);
-+			return dev_err_probe(dev, PTR_ERR(scmi_iio_dev),
-+					     "failed to allocate IIO device for sensor %s\n",
-+					     sensor_info->name);
- 		}
- 
- 		err = devm_iio_kfifo_buffer_setup(&scmi_iio_dev->dev,
- 						  scmi_iio_dev,
- 						  &scmi_iio_buffer_ops);
- 		if (err < 0) {
--			dev_err(dev,
--				"IIO buffer setup error at sensor %s: %d\n",
--				sensor_info->name, err);
--			return err;
-+			return dev_err_probe(dev, err,
-+					     "IIO buffer setup error at sensor %s\n",
-+					     sensor_info->name);
- 		}
- 
- 		err = devm_iio_device_register(dev, scmi_iio_dev);
--		if (err) {
--			dev_err(dev,
--				"IIO device registration failed at sensor %s: %d\n",
--				sensor_info->name, err);
--			return err;
--		}
-+		if (err)
-+			return dev_err_probe(dev, err,
-+					     "IIO device registration failed at sensor %s\n",
-+					     sensor_info->name);
- 	}
- 	return err;
- }
-
--- 
-2.45.2
+regards,
+dan carpenter
 
 

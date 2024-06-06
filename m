@@ -1,154 +1,164 @@
-Return-Path: <linux-iio+bounces-5897-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5898-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C3E8FE664
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 14:23:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EC518FE6C2
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 14:46:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CAC2286400
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 12:23:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A028F1F288F6
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 12:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2243195815;
-	Thu,  6 Jun 2024 12:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDE0195B0B;
+	Thu,  6 Jun 2024 12:46:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dtpaQgp0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HIRuFson"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E9013B28A;
-	Thu,  6 Jun 2024 12:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE31D180A64;
+	Thu,  6 Jun 2024 12:46:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717676600; cv=none; b=Cg5m18R6bchPiOLB3a+xcET6kbeFoGIf17RRPaWF9Tv4g88NXSOQ2IYSk7z17anvfSnRFwZwnG3xHkuz8hv5Jaj2JdxJ2PTT2HFm0gNLqYMBYaTtJhtRWMuTbofgP8UCkCWs2J8HzmD5XM73XArQgdrWcaor5dQREl7TffYCQb8=
+	t=1717677966; cv=none; b=HCnoOgrWDcPhcttenGCt7+1fmhY5+1+oteTHsL/8+VrzMvesXVOe9qbPBZHGj6YpXhzCD4NdpSFl3H5vTn/Z3bjWaUoOy7IL+QhAQX3shRYQQylMLbeNRzWsQlw7Yi5BsjIyyO8sjSCtlPVxFl5BwlbphfwM7X39I9s66DaVe8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717676600; c=relaxed/simple;
-	bh=8pn8/jGprupn5WDXqc5TOyZpP+OyIaCyvmTNaUMSJkk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GzZBk2dvKkcEJ+U8Z4kDwKTkQGKhIcENatDCxMs0v4Zf3aW1G2VhBWSljn4RXFn00JdSS8nQo7Y6tjn+A+KEoMW4feW/+nETzIasvh/ey31O421ofUifpx6XkO4B3Asy7pHSrsQqzxhsLVDazvCk5dSGngyMwlWFwbuYdLsjcPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dtpaQgp0; arc=none smtp.client-ip=209.85.128.43
+	s=arc-20240116; t=1717677966; c=relaxed/simple;
+	bh=LX9gBGZTmqvYK9lvvIrBA+wReXBRVnBbIh+Cizc1lB8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Be7CT5qVzpq96LFu13van0YPf8Gs4Cv71UwXgIxFWMe+ZjpFJRifkJJ8VR7fvOAd1YGUV2W7FiMIPlnhdczlN2FBSV5U22Qx2ZABROnA9+/SRKxS/v3dTDfuNpHTRfcURcd7C/lf2GyLX8YfZlnT5osIn5+T5S3j6Jn9LrE7w84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HIRuFson; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4215ac379fdso8948175e9.3;
-        Thu, 06 Jun 2024 05:23:18 -0700 (PDT)
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-35dcd34a69bso940620f8f.3;
+        Thu, 06 Jun 2024 05:46:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717676597; x=1718281397; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gzXR/OvjO7v9S+Oeo5jOyL/ZCpVVTFjEqhMz5dsHPGw=;
-        b=dtpaQgp0UciRolzV1KM2VxMXAFFX8wE2i2slZNaUDlnIkoM78U+ejmw3fLuzNQgIBN
-         cdyiWtmM83l9tbyqtacn6SvT9pJPZmQq59on/6rZ+IfeRX1j4sdkKsVVPfvhY1nSHopN
-         1XyqkiNIoG8XQ1aguLmyEYpWyBDdsNLnIWHqgH323FrUjDApYzudlYIQPkP47vUb4/LS
-         UE0QoA/6lL8F3QzFir88AWCQIu71B+GDLpKwI273sfVf12QHtQiMQbFybMoVZ5385xdr
-         AfJwmmknbTq8g7/f00RSaMZm1EZ+b1I+svbToiBI4ubYJhL1/fu5WToFU5br8Cur1MUc
-         YaoA==
+        d=gmail.com; s=20230601; t=1717677963; x=1718282763; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/o+5PqHM76hdZNIjNBK+OLFY8Q56XJEGqjBe5klhOLY=;
+        b=HIRuFsonnVclTpKYlab43SL0qx+6Xoa3dsyB0SUBgXxcH6f0YYWTFjEp7uw1WaSdSh
+         8pMRt014Lc1HQlgSerdliQsOFGfONwsLE4xTjUjVxS4bXTAXJL6SzbZYB6pNYiOUG+FD
+         gjHiGZk0P+QnNZ2a9yFzczygWQLVWlGyD754uPdhZWKYOLAcl4LriMZIvTqi9aRP1GF3
+         4Q+W/mEDGwS5mZUkBNfqxHSc53DArfh4Sc+3q3R8REJAms2cdtGiv98CcHrEbKBt2QWP
+         91T3OsTeIKzesQi3G+0y+uuUGPgKj4OSbfGD6OUubVbn6YZsBRIqtdUmvnKjilSz8Pxs
+         gARw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717676597; x=1718281397;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gzXR/OvjO7v9S+Oeo5jOyL/ZCpVVTFjEqhMz5dsHPGw=;
-        b=tRUEfbTszKnJEdTLL84EBAtpYxBVo3R/kijitS/0QEGA8iJAreZuPjyhAkTKixIRYw
-         s5IWlKNczaISwE68KLJmXU3SfKDJwPHEHjb6yPjhukbbyCDLdmVCcm3ADLEVBZB07mpX
-         3tGOta+0eY4HgZrWMRx3tw4Eq9DlEpKiopNDD2z6RIHp26HN81AMIfesnpk7lZMt2yYt
-         qq0GRf6vnN21HAIL+ZHLmWIQXuaPEWkQphQtMXRp5peeQuQD0dHKBa5EdTUGF7XuqOr5
-         uw7Ofk7eUNz0bu6UZBQCM2AD2m3IdrcxBsFyxOOyDMTKHhcObJdJ9KUrGgx9Nh98himt
-         vIfg==
-X-Forwarded-Encrypted: i=1; AJvYcCXWrvwRHgBQFjZ642/mNw1sCL/Pj/gHhQ8JrAmRUT5g1fGzBl64Tt0h3vYPQP8NDgX/Tu3L1NyupRVgEPjtH0VihRXMut2ED/OvKJ0cqL9YwEm9AqU0s1Nh0cO/p7EjJgVxfNiob05R
-X-Gm-Message-State: AOJu0YylfPMXnJYX9vFG+wHGuUiK9/p767Wt/wco8qzvhkfUHozsKDZ3
-	y/AJHGsqaY4aF68KTIAFawpxkUXPkRnEEvTVyG38IPtsoHdeqOGz
-X-Google-Smtp-Source: AGHT+IFCSu0IrRiUf8/+5xHet83VVekm6q2A38YBSMKLcaH1ziPPUdgKF32p6MjIheC5Oubb9L/2Hg==
-X-Received: by 2002:a05:600c:4f0f:b0:421:2a43:6518 with SMTP id 5b1f17b1804b1-4215634cc35mr40922135e9.33.1717676596946;
-        Thu, 06 Jun 2024 05:23:16 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:994e:fbde:478:1ce1? (p200300f6ef1cc500994efbde04781ce1.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:994e:fbde:478:1ce1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215c2cd18asm20066655e9.39.2024.06.06.05.23.16
+        d=1e100.net; s=20230601; t=1717677963; x=1718282763;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/o+5PqHM76hdZNIjNBK+OLFY8Q56XJEGqjBe5klhOLY=;
+        b=QkQFJ58/71npGMsL/PLHlAH+qXMbxIz07zckl2tfzlC6UCR3EHvaeXdQJE5tlW+L+N
+         56Pewdb5Xn/4HPwVzYNQtpYn82/wV9yqjc4eSTCVvjA6evEGlTji4NcafUeT1KUyniwL
+         YVV/IXKPAs5+zh6DWD2HFI+n8ruylz4J4U7JCD49zIGH3K5XpPV1Ks5mbChZMlIet5VF
+         QGmMZHOroPrgLko3W1REtGExq8lmaEM0qd0YEJ6kXS6wcofylH5ypELElDzBYujykffi
+         rSmjgnP9DdyRNIE3oQ/2ENB6/5dw+k2qUc5PNSDzT+GcY4XSMbeHuEi0PFb4n8kOwH62
+         rVUw==
+X-Forwarded-Encrypted: i=1; AJvYcCWvYUi2Ep9yhJg03M4V8PH5/DrYYs7134e/IGTqAjdb62fEKCRB6SnSXWPCVEbv8EyaH7/62qpBbGjli56F7dQAL3eJeLm5oX8zdkda3tQagr44w/iW3NNOVWTXguioyIjj19IMi2yz5z+/e9zXjBlxG2DjyimijZ3FuMtuOnMWKpMV8Q==
+X-Gm-Message-State: AOJu0YyYQPBBWjUlMsCmtMP/w6HVMczvwdgk5BLj/C4xR0WppVSQauQG
+	H5AOP8xZf7E1cWOytVqh/dXS0p4sG3TsM5RuFOIQ906NvuKYstL/
+X-Google-Smtp-Source: AGHT+IH8eZT87Qw0hHz5zhT5Oc19rcHYLUvlCZfX0lIdybcHZ3pzdEJNG4NfB7EVCkd/wUVZzCJm3A==
+X-Received: by 2002:adf:f411:0:b0:35e:1214:8657 with SMTP id ffacd0b85a97d-35e8ef7f1afmr3930353f8f.56.1717677962779;
+        Thu, 06 Jun 2024 05:46:02 -0700 (PDT)
+Received: from localhost.localdomain ([167.98.27.226])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35ef5d4cbb4sm1480316f8f.44.2024.06.06.05.46.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 05:23:16 -0700 (PDT)
-Message-ID: <da57a64e4f5cdda7ee6b794c448995eee648c436.camel@gmail.com>
-Subject: Re: [PATCH v3 2/4] iio: temperature: ltc2983: convert to
- dev_err_probe()
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Nuno Sa
-	 <nuno.sa@analog.com>
-Cc: Petr Mladek <pmladek@suse.com>, Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Olivier Moysan
- <olivier.moysan@foss.st.com>, Jyoti Bhayana <jbhayana@google.com>, Chris
- Down <chris@chrisdown.name>, John Ogness <john.ogness@linutronix.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>,  Andi Shyti
- <andi.shyti@kernel.org>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-Date: Thu, 06 Jun 2024 14:27:03 +0200
-In-Reply-To: <ZmGMwwglUlS6_NI_@smile.fi.intel.com>
-References: <20240606-dev-add_dev_errp_probe-v3-0-51bb229edd79@analog.com>
-	 <20240606-dev-add_dev_errp_probe-v3-2-51bb229edd79@analog.com>
-	 <ZmGMwwglUlS6_NI_@smile.fi.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 
+        Thu, 06 Jun 2024 05:46:02 -0700 (PDT)
+From: Mudit Sharma <muditsharma.info@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	robh@kernel.org
+Cc: ivan.orlov0322@gmail.com,
+	javier.carrasco.cruz@gmail.com,
+	Mudit Sharma <muditsharma.info@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v3 1/2] dt-bindings: iio: light: ROHM BH1745
+Date: Thu,  6 Jun 2024 13:45:29 +0100
+Message-ID: <20240606124539.60757-1-muditsharma.info@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2024-06-06 at 13:17 +0300, Andy Shevchenko wrote:
-> On Thu, Jun 06, 2024 at 09:22:38AM +0200, Nuno Sa wrote:
-> > Use dev_err_probe() (and variants) in the probe() path. While at it, ma=
-de
-> > some simple improvements:
-> > =C2=A0* Explicitly included the err.h and errno.h headers;
-> > =C2=A0* Removed some unnecessary line breaks;
-> > =C2=A0* Removed a redundant 'else';
-> > =C2=A0* Added some missing \n to prink.
->=20
-> ...
->=20
-> > -		if (ret) {
-> > +		if (ret)
-> > =C2=A0			/*
-> > =C2=A0			 * This would be catched later but we can just
-> > return
-> > =C2=A0			 * the error right away.
-> > =C2=A0			 */
-> > -			dev_err(&st->spi->dev, "Property reg must be
-> > given\n");
-> > -			return ERR_PTR(ret);
-> > -		}
-> > +			return dev_err_ptr_probe(&st->spi->dev, ret,
-> > +						 "Property reg must be
-> > given\n");
->=20
-> Even if it becomes a one line of code, it's still a multiline branch, due=
- to
-> comment. I think {} is better to be there. What does checkpatch say about
-> this?
+Add ROHM BH1745 - 4 channel I2C colour sensor's dt-bindings.
 
-Checkpatch is fine about it...
+Signed-off-by: Mudit Sharma <muditsharma.info@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+v2->v3:
+- Move 'additionalProperties' after 'required' block
+- Remove block style indicator '|' from description
 
->=20
->=20
-> ...
->=20
-> > +			return dev_err_ptr_probe(&st->spi->dev, -EINVAL,
->=20
-> You can make all these lines shorter by using
->=20
-> 	struct device *dev =3D &st->spi->dev; // or analogue
->=20
-> at the top of the function.
->=20
+ .../bindings/iio/light/rohm,bh1745.yaml       | 49 +++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml
 
-Well, I had that in v2 (making the whole driver coherent with the local str=
-uct
-device helper but you kind of "complained" for a precursor patch (on a
-devm_kzalloc() call). So basically I deferred that change for a follow up p=
-atch.
+diff --git a/Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml b/Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml
+new file mode 100644
+index 000000000000..d5338a0af6b3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml
+@@ -0,0 +1,49 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/rohm,bh1745.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ROHM BH1745 colour sensor
++
++maintainers:
++  - Mudit Sharma <muditsharma.info@gmail.com>
++
++description:
++  BH1745 is an I2C colour sensor with red, green, blue and clear
++  channels. It has a programmable active low interrupt pin.
++  Interrupt occurs when the signal from the selected interrupt
++  source channel crosses set interrupt threshold high/low level.
++
++properties:
++  compatible:
++    const: rohm,bh1745
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        colour-sensor@38 {
++            compatible = "rohm,bh1745";
++            reg = <0x38>;
++            interrupt-parent = <&gpio>;
++            interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
++        };
++    };
++
++...
+-- 
+2.43.0
 
-- Nuno S=C3=A1
-
->=20
 

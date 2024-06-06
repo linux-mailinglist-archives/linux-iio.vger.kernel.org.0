@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-5952-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5957-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF688FF6B9
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 23:26:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3BC8FF6C1
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 23:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19FD42855F8
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 21:26:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51DE7286D2F
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 21:27:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564F619AD88;
-	Thu,  6 Jun 2024 21:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB2319D072;
+	Thu,  6 Jun 2024 21:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AcR6tosv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nbefpSuB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E97319AA76;
-	Thu,  6 Jun 2024 21:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2FF19AD5F;
+	Thu,  6 Jun 2024 21:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717709044; cv=none; b=H10OhSSngirxfCXpxh20PUsfM0bM73rqMgDEjlHCNHE0Hwb+JRZbCj7feibplwGC/ZCRlu3CqfZy/nHRTzEA7bKKPtxpWyGzhWodZA6U4WJlHcO0CbwpJZyK1vXLzIijSJxJgyvsoDiT1e3VigbfN+oalYb/+0qALaY1KjYtvKg=
+	t=1717709049; cv=none; b=aZ3LPyqcF5woys6tbxpJFNnnLcQ36FM7VBy5RMEDO3R32G3Qa38uSoy0nhE9GAjjmbBmio++9/ISNTMfgm5EGo6/WhVGDaw3VMk0v5RrrWdH28nonUbTTT5VGNYfFqmiOxkY2C7x/PhZ12ds+a3wPFQgM0dYqDNP9H/86zivu30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717709044; c=relaxed/simple;
-	bh=XRjEdmjbl3tze6WqILeOK/Eq4Lz2TZ780ENtcA87L6M=;
+	s=arc-20240116; t=1717709049; c=relaxed/simple;
+	bh=CSMmb3T0fKDhA6MFNEPevOEvIzmO0a2jl7kzoeqyjXw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=axssteXlNry8rRvDCfXRSFq+kksnSu73ae8uPJhWiMtopMg62apfvmIsA5w1Kn6uQQ3tSgB5dBUGb0OGNJociCf/Dygp3fD5hY5qs2bjM5kB5SOgPKMJHyGmKaTSYRV9gtDa/NAF0e+LqwYZ5q7gtXJ7Dq6+kNgv0CyAyhqIrsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AcR6tosv; arc=none smtp.client-ip=209.85.208.53
+	 MIME-Version; b=mv//QljKqGhEquPlP/j0fOv4IXO6z7gqijrlSegHXbcPS0yt4z7LSVxp/AJQdPJN58gsGBwbAX4h5B1vOOZwejkL3AtrsHTxn47XPI8Mg0I3WCwrKYthpbdRDStghAnAjM7K16NhHE2cell2bXzIq9dxK++PhFE+QBJA9zq4EKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nbefpSuB; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-57a30b3a6cbso1838686a12.1;
-        Thu, 06 Jun 2024 14:24:02 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a62ef52e837so190895966b.3;
+        Thu, 06 Jun 2024 14:24:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717709041; x=1718313841; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717709042; x=1718313842; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CkKE8KGpoBxtr96EwcylIF0dTKX3Ea9TXgIZr2Hk6I4=;
-        b=AcR6tosv2uowIZiN79OgZqE/DlIg8xTLsLFxFnnPKL6R1M+YPvXmCSPPYxKh22LAdM
-         U9tulh1F2GcYod17kbC6UCFk60e4MFrLUMAnhFqhmRqr0DB2rx0XH++oxBiglFMqyXTu
-         A8D2KS8KaMnnAuP2yLkb2Fv9e/9VSWyXiaMOUijvRI1NOXe8Qwe8Pg446KNzd50Zaoc7
-         7skGWkY0AbLv9q1/Ymg+uWb4PwwLM7rlb9EPI5Pn2mbBICv6D562o6yv8L5ktPSeMOhM
-         SXSpMTUYyhKzchmvM10cVhhoJ+h9ocdYpvIPCWWlepEmsBofrFAlcoL6j/TnI9plsYte
-         nZRQ==
+        bh=hzTbYlq74oj4OjHFQuy8JjHg0rPUKiRwywLTZbcw5Ko=;
+        b=nbefpSuBoqIKaf0CWmkiEH+l0W1216XUgGnZNhkW0xET9qCp/xtO31uoZMe6fKbxSu
+         A38uF7s4VWkZnCIqaB+0GXJ5Y7kKUAG6PHG9G8cBVOjErG7hTui5ZM2DStm9rraMgKjR
+         NZ55h//qsNMcHfFFY2HibuCArjhKqROYjTT/reCQiI+ribyv02tsClmZaME7Ppr6waVY
+         1/A2obSKt/poBoEYQkAxvThCgQmwCJbB7bx2KKgTtIX88pocuXu1so/K5CV7FxvYg7qC
+         VQWRPJWfUb/26sqE9wfXi+2LXzSsH7KQDu0P5WvBBwND71Jk6TWZYsSD5ttHKWdOAZmZ
+         6qhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717709041; x=1718313841;
+        d=1e100.net; s=20230601; t=1717709042; x=1718313842;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CkKE8KGpoBxtr96EwcylIF0dTKX3Ea9TXgIZr2Hk6I4=;
-        b=jIGp6FNc13Mkau1yWnu7pFCqvetcjDCGYwaBRKsD9tisK19/gf3Jdld5zBQW3PtuVu
-         99tfK7+4Pc9DBqIwTuoivZtulLCY9J6ilYI6Cy0Z4A9V77HIwfSuucCQPIqmAgbtaw3I
-         pE/EoUtJSB0TzeaWZyrTHaezZn556VwkcPPsf6W96A4irdQDbjrVISDIJeWVh9oVfSuC
-         /WgeTMFzJsOwiciwB9B5eUvqHkpYneGFQfArGs4BVwC8WRGvdyShcxX6IlR0SmVuDd56
-         dFohNKfcUn0NJMlyGPFEugZXgjjnwB46eVsrhtHtVMosBfqcJoWQgx4AE7f//YAwSfgA
-         KLYg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRjA1tg4NmRw60VKdsMP1UYSjNDktiMU2d2xof1du/mq8h6pUzay4Y4cx/P3O6IgKgvBtEtYBkxVZXlpaCb4KZmvi3JEwcV6zfdWf8WipwcT7JQJo8KSGCLj8gJs6NlDY0IBd3Lbw2
-X-Gm-Message-State: AOJu0YzePHmq4QIm1LW9Mz3ruVjfuezDiQlD/Pf8SweQIp3tusFlW9os
-	ptkFVtlFxneIkkpEnrwBrGs2fUV2EtT4fTRhl12Nh6GHi7dFPZjo
-X-Google-Smtp-Source: AGHT+IH6yk6WxvT6aFN/dXKSVGI9afrPiiB7CvqU4TJYrzJdlt7UvHLyk+iiMH95jh+qTP76LxkFkQ==
-X-Received: by 2002:a17:906:22d0:b0:a68:ed0b:8924 with SMTP id a640c23a62f3a-a6cd560fab8mr45684566b.16.1717709040805;
-        Thu, 06 Jun 2024 14:24:00 -0700 (PDT)
+        bh=hzTbYlq74oj4OjHFQuy8JjHg0rPUKiRwywLTZbcw5Ko=;
+        b=oDW46lGPcY4wNWrdl6pJw68PRH7e9nwQW1Jt3c51ctVr5LPrK7bcSQJBJfs8zXkJoM
+         40+Hn5xGhRTRbxIObEav286Jm3mZrH4hBXysKXD5y/Ehjwv1lm4Gt+8caTXfYnRXNAx8
+         mhN3IjLvYO/Jlv8K5rVKBh8S3t16OJFplQIISyfdCLczcAUApW6bMICDBkbct9kzb616
+         l7MLdGEs0lfhPwCaPGLs3QeFrE5hwI56LKUPjgV7GDmdW+tymiilI4YXHBQL92RTU/fz
+         M87NllY53zJ5aKjzPh8m5D1xCSuLuiU8/D1evtFtyiFZ/7++yo4+s2oFdm9CPTgO83LV
+         RTOw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDgMiZgJP5Puet1mr8H/bcJfMLLXL/9Efp90+WGRtMusXYmehKWtF5JLxH58JlGTed/0tVwI667fMTrTFXSNe602qZCEpa1cYNr1a5uB3gVttSyqBLLld0LGHvai0227fCfHSYM3xU
+X-Gm-Message-State: AOJu0YzNNilgGdEPuHBg/iZSon56NNm4R4vpdiGVBy+VoHnzKCnO2vuN
+	bQliRYioThzABPwJBBCgd1j8gilSx6QzIk5HEPCsf//wBk4mDTHaEf9NTpm+gaQ=
+X-Google-Smtp-Source: AGHT+IE8xe4OBvlY4TYeSQhFK7N8gYwFryZIvAEO/SzEyRG9zPrcx9kx1VBK9QNnNhHE5fSuNVgDcg==
+X-Received: by 2002:a17:907:7295:b0:a69:1122:7c51 with SMTP id a640c23a62f3a-a6cdc0e7a1fmr64739766b.75.1717709041696;
+        Thu, 06 Jun 2024 14:24:01 -0700 (PDT)
 Received: from localhost.localdomain ([2a04:ee41:82:7577:28a0:434b:ab8b:94ca])
         by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c8058272bsm146690566b.18.2024.06.06.14.24.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 14:24:00 -0700 (PDT)
+        Thu, 06 Jun 2024 14:24:01 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org
 Cc: dpfrey@gmail.com,
@@ -76,9 +76,9 @@ Cc: dpfrey@gmail.com,
 	linux-kernel@vger.kernel.org,
 	mike.looijmans@topic.nl,
 	vassilisamir@gmail.com
-Subject: [PATCH v2 07/19] iio: chemical: bme680: Drop unnecessary casts and correct adc data types
-Date: Thu,  6 Jun 2024 23:22:59 +0200
-Message-Id: <20240606212313.207550-8-vassilisamir@gmail.com>
+Subject: [PATCH v2 08/19] iio: chemical: bme680: Remove remaining ACPI-only stuff
+Date: Thu,  6 Jun 2024 23:23:00 +0200
+Message-Id: <20240606212313.207550-9-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240606212313.207550-1-vassilisamir@gmail.com>
 References: <20240606212313.207550-1-vassilisamir@gmail.com>
@@ -90,76 +90,58 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Delete any redundant casts in the code and use unsigned integers for
-the raw adc values.
+The ACPI ID table was removed with the following 2 commits:
+Commit b73d21dccf68 ("iio: bme680_i2c: Remove acpi_device_id table")
+Commit f0e4057e97c1 ("iio: bme680_spi: Remove acpi_device_id table")
+
+Remove the remaining ACPI related stuff to this driver since they are
+not directly used.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/chemical/bme680_core.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/iio/chemical/bme680_core.c | 15 ---------------
+ 1 file changed, 15 deletions(-)
 
 diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index 92359032254a..acca2e516157 100644
+index acca2e516157..1956b456141d 100644
 --- a/drivers/iio/chemical/bme680_core.c
 +++ b/drivers/iio/chemical/bme680_core.c
-@@ -335,7 +335,7 @@ static int bme680_read_calib(struct bme680_data *data,
-  * output value of "3233" represents 32.33 DegC.
+@@ -8,7 +8,6 @@
+  * Datasheet:
+  * https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST-BME680-DS001-00.pdf
   */
- static s16 bme680_compensate_temp(struct bme680_data *data,
--				  s32 adc_temp)
-+				  u32 adc_temp)
+-#include <linux/acpi.h>
+ #include <linux/bitfield.h>
+ #include <linux/cleanup.h>
+ #include <linux/delay.h>
+@@ -927,17 +926,6 @@ static const struct iio_info bme680_info = {
+ 	.attrs = &bme680_attribute_group,
+ };
+ 
+-static const char *bme680_match_acpi_device(struct device *dev)
+-{
+-	const struct acpi_device_id *id;
+-
+-	id = acpi_match_device(dev->driver->acpi_match_table, dev);
+-	if (!id)
+-		return NULL;
+-
+-	return dev_name(dev);
+-}
+-
+ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+ 		      const char *name)
  {
- 	struct bme680_calib *calib = &data->bme680;
- 	s64 var1, var2, var3;
-@@ -345,7 +345,7 @@ static s16 bme680_compensate_temp(struct bme680_data *data,
- 	if (!calib->par_t2)
- 		bme680_read_calib(data, calib);
+@@ -969,9 +957,6 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+ 	if (!indio_dev)
+ 		return -ENOMEM;
  
--	var1 = (adc_temp >> 3) - ((s32)calib->par_t1 << 1);
-+	var1 = ((s32)adc_temp >> 3) - ((s32)calib->par_t1 << 1);
- 	var2 = (var1 * calib->par_t2) >> 11;
- 	var3 = ((var1 >> 1) * (var1 >> 1)) >> 12;
- 	var3 = (var3 * ((s32)calib->par_t3 << 4)) >> 14;
-@@ -410,9 +410,9 @@ static u32 bme680_compensate_humid(struct bme680_data *data,
- 	s32 var1, var2, var3, var4, var5, var6, temp_scaled, calc_hum;
- 
- 	temp_scaled = (data->t_fine * 5 + 128) >> 8;
--	var1 = (adc_humid - ((s32) ((s32) calib->par_h1 * 16))) -
--		(((temp_scaled * (s32) calib->par_h3) / 100) >> 1);
--	var2 = ((s32) calib->par_h2 *
-+	var1 = (adc_humid - (((s32)calib->par_h1 * 16))) -
-+		(((temp_scaled * calib->par_h3) / 100) >> 1);
-+	var2 = (calib->par_h2 *
- 		(((temp_scaled * calib->par_h4) / 100) +
- 		 (((temp_scaled * ((temp_scaled * calib->par_h5) / 100))
- 		   >> 6) / 100) + (1 << 14))) >> 10;
-@@ -654,7 +654,7 @@ static int bme680_read_temp(struct bme680_data *data, int *val)
- 	struct device *dev = regmap_get_device(data->regmap);
- 	int ret;
- 	__be32 tmp = 0;
--	s32 adc_temp;
-+	u32 adc_temp;
- 	s16 comp_temp;
- 
- 	/* set forced mode to trigger measurement */
-@@ -700,7 +700,7 @@ static int bme680_read_press(struct bme680_data *data,
- 	struct device *dev = regmap_get_device(data->regmap);
- 	int ret;
- 	__be32 tmp = 0;
--	s32 adc_press;
-+	u32 adc_press;
- 
- 	/* Read and compensate temperature to get a reading of t_fine */
- 	ret = bme680_read_temp(data, NULL);
-@@ -732,7 +732,7 @@ static int bme680_read_humid(struct bme680_data *data,
- 	struct device *dev = regmap_get_device(data->regmap);
- 	int ret;
- 	__be16 tmp = 0;
--	s32 adc_humidity;
-+	u16 adc_humidity;
- 	u32 comp_humidity;
- 
- 	/* Read and compensate temperature to get a reading of t_fine */
+-	if (!name && ACPI_HANDLE(dev))
+-		name = bme680_match_acpi_device(dev);
+-
+ 	data = iio_priv(indio_dev);
+ 	mutex_init(&data->lock);
+ 	dev_set_drvdata(dev, indio_dev);
 -- 
 2.25.1
 

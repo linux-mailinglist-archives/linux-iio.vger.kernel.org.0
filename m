@@ -1,167 +1,142 @@
-Return-Path: <linux-iio+bounces-5892-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5893-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25F898FE3DA
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 12:11:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51A388FE3E6
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 12:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 806841F22764
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 10:11:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0139828880D
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 10:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0440190664;
-	Thu,  6 Jun 2024 10:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC78B190678;
+	Thu,  6 Jun 2024 10:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="D2q20lej"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="frbu8+QT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2ED4190051
-	for <linux-iio@vger.kernel.org>; Thu,  6 Jun 2024 10:11:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CBB1850AC;
+	Thu,  6 Jun 2024 10:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717668667; cv=none; b=RBWZJv3q/ozpKbQ5fBa8K8aCCXn1VKRIC4K7OYZFayuux238UhokrR1mGd58PwSiRVSd6pqIQT6P/cpKZKfc2GA2PY+naQeEVL1zI5qI8NkCYvmFWqB2eAF/ecq3NOKu81taS4aFo/ms5nZh7jfdJA+qNx5upALCpBNT5L/f+Cs=
+	t=1717668742; cv=none; b=lpDl1qVoQ653HTiq8YlFY9mepcSSyyVMGwkr0KGtOWL+om2pb48m75Hl4pi5KraWI8VjYwY3Ujp08InoBvq6RZWvITXguHFSNfXuKbNgTm+Rr/mAnejSuQDSIP9elBd9QYIg7sDnVgMSM8kcdok9/Ky5qMjQBgFX/xK3DA6tke0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717668667; c=relaxed/simple;
-	bh=b7Zwm8tYyK4TmWiUeSfOZCpOhR0FISw4INShYVYJW7I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bfvua+xpJlInGyt3YCVTjA7m3fZSNKo09Sob5+fpJCA/nv83YsYeyt8I+xoMcvJduq8UtWk8L8sNxUy/DglFxRxjC+iBPrqj0wsNjm8bI8rQ+nufpl4UkMEL+KS2WBNTI+x0KGqSMMtTD0LHPRY+iCZvCY47uOCxjeeCWt68DoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=D2q20lej; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6c7ae658d0so95591466b.0
-        for <linux-iio@vger.kernel.org>; Thu, 06 Jun 2024 03:11:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717668664; x=1718273464; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aSSVkWNzaMpCFwtFKNictH+j9mKED2uTD+OcWRnyLEc=;
-        b=D2q20lej//O4Ig5uQBbj9vAnyH0T1qieMUsxo6PmrX64iwhnr0TxxAl1NcBfCT24rZ
-         A67yuBK8wJTcqRNkVpbzgegQtcsvhntr3Vqv1dwUskU+8wyp3AqL1kjy3MI80NEu6Aw7
-         u4l8F/nNctlaZGkxTPkHOmttdevvYP04dEZ59bOXzjVQoOEuyzucY+gEm0KbVXq7zv0/
-         Tc3PQHAFfyK84O7HixMMsImZuzFQ4jgRV3lqsxjxnZ0JeZr2MeEn+1SM2CKAW5FopqAV
-         /BqNkrxPLNZAVPt9BmZi4HRB5HIEKXlWm4g6YP0jIDqLSM/cGaczjuZsf+W3PAr2JaQ/
-         4EmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717668664; x=1718273464;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aSSVkWNzaMpCFwtFKNictH+j9mKED2uTD+OcWRnyLEc=;
-        b=JrnNiT4GW5wbDIyCK8htthDUhGwjCpiV3YcWqF7LMqT28BEnG+0HD0aiLiogIGzG6U
-         emAsWwFLfJr/uSsbBBr3gahCIaelADQtThscpRzHAXNeqAdcesR0b47t/J+0fSKnEkwD
-         X6hDq++KY47tHkrRJ+mm1QP4NFSHnVHpm/A/szSrQ9XPuxKlBauolFbxvG3MjN7Nkw0d
-         Ol80gP3120FYlUbs4JQ+k6XwX8p3jHuNWgvut60Sl02SRAq4nqmZUDnF8wXjQgsFlxnI
-         gjhdJwCv1ADZRSK1CxTPRwj4Hh+SP/hZhh9kx+uNd9Qi3blioIC9tiTFa2ncJKEtTW/M
-         rvlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWjhveDDDpck/ClrxxoQ+hcBMhv67WxHk4tmkpembydILnDKvxZxZmOF/2Xk57CmFVawUNMy1Y19dCp+k79OtkRuy4iyEX8SuW6
-X-Gm-Message-State: AOJu0YzqS6hpCKOFwFRxvHRyNKEL1EgH84pyS3iZoCwf6D+1tsidqren
-	ijwtdWb8trioTqeG6dv4h93RybV6W4Ise+uUEDMQskNhKg/Ch9yBq7plB8BpEOg=
-X-Google-Smtp-Source: AGHT+IHgvRJe1RUkX2wfx8nHAOigl0CQ6MgWP7QQ3TJu55eCj7i7cFlbxalhn3Ifzf+AU3sxSjybWA==
-X-Received: by 2002:a17:906:3544:b0:a6c:71d2:3311 with SMTP id a640c23a62f3a-a6c71d23352mr224386166b.65.1717668664006;
-        Thu, 06 Jun 2024 03:11:04 -0700 (PDT)
-Received: from localhost ([102.222.70.76])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c84aa8351sm49462166b.142.2024.06.06.03.11.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 03:11:03 -0700 (PDT)
-Date: Thu, 6 Jun 2024 13:10:58 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Joy Chakraborty <joychakr@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-mtd@lists.infradead.org, linux-rtc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-sunxi@lists.linux.dev,
-	linux-tegra@vger.kernel.org, linux-usb@vger.kernel.org,
-	manugautam@google.com
-Subject: Re: [PATCH v1 07/17] misc: eeprom: at25: Change nvmem reg_read/write
- return type
-Message-ID: <2b979aa4-3a63-4010-9670-294ce7624e18@moroto.mountain>
-References: <20240605175953.2613260-1-joychakr@google.com>
- <20240605175953.2613260-8-joychakr@google.com>
- <f98a1d8f-e936-4798-8447-c642e8fe11d5@moroto.mountain>
- <CAOSNQF0Qj2CnRDWAGM8Y1wyEdgWP04RDJx1TKO-Ge4nUH=qxoQ@mail.gmail.com>
+	s=arc-20240116; t=1717668742; c=relaxed/simple;
+	bh=xYXzgWNy4Rs2pnGAqHq93NhuNe+fr/mIyHdGMXdlv2I=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=UFC63fO3uhQzRFW5r2qGpzWfb4faUptS1TmNuOP4cRDpJ+YOV53wwktUAUUJwS6LJg/ZnAlNDLhV2ru5B4a3MSx31KAwR7rnbzg0rSMKolQPDN8k+eKCM36ywJbhv20JMPJWlSLZw1Bd7Z/dCxNDyufOGEuPB2w1HTvxtEDqla8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=frbu8+QT; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+Received: from localhost (localhost [127.0.0.1])
+	by disroot.org (Postfix) with ESMTP id B2252450B3;
+	Thu,  6 Jun 2024 12:12:12 +0200 (CEST)
+X-Virus-Scanned: SPAM Filter at disroot.org
+Received: from layka.disroot.org ([127.0.0.1])
+	by localhost (disroot.org [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id dti8yqdd9amy; Thu,  6 Jun 2024 12:12:11 +0200 (CEST)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAOSNQF0Qj2CnRDWAGM8Y1wyEdgWP04RDJx1TKO-Ge4nUH=qxoQ@mail.gmail.com>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1717668731; bh=xYXzgWNy4Rs2pnGAqHq93NhuNe+fr/mIyHdGMXdlv2I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=frbu8+QTEOzDycjOzFRIeaEaMrFhtqv6gmw3BKHeGXNXfezD0KEXr3FwUzYpwB1ZY
+	 n6+SdD72mQtmXX132cAbSFfSk/errG23epm2fn8Qa5u1knanbPVlfeseSfnH11WOCv
+	 w3HcFqPz8lVxZTXUm1M60lyNgfCk0OUaSqDvRPym6CtYsjJkdg52udaRoqDz1oxBM2
+	 XTeiPvRvbkMukwmdtL4crY/sCsMjwT7CbqASgGankNm/KrejqszgRM+Rwc7+HcdV1l
+	 0MGnqbiO/+YobohREUBZDX4KRPm7LLjb1ItRaCWffvQqWocNq9EoC0/ri+r2pUZxhh
+	 fHHDTa7B1ehxg==
+Date: Thu, 06 Jun 2024 10:12:11 +0000
+From: kauschluss <kauschluss@disroot.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Conor Dooley <conor@kernel.org>, linux-iio@vger.kernel.org,
+ denis.ciocca@st.com, devicetree@vger.kernel.org, linus.walleij@linaro.org,
+ robh+dt@kernel.org, kauschluss@disroot.org
+Subject: Re: [PATCH v3] iio: accel: st_accel: add LIS2DS12
+In-Reply-To: <20240602095459.4a2cdc54@jic23-huawei>
+References: <20240601192914.141906-1-kauschluss@disroot.org>
+ <20240601-spouse-hurler-e7b93ac26f86@spud>
+ <20240602095459.4a2cdc54@jic23-huawei>
+Message-ID: <4ed8ba956aee82bf7ccde2af1012bae2@disroot.org>
+X-Sender: kauschluss@disroot.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 06, 2024 at 03:12:03PM +0530, Joy Chakraborty wrote:
-> > These functions are used internally and exported to the user through
-> > sysfs via bin_attr_nvmem_read/write().  For internal users partial reads
-> > should be treated as failure.  What are we supposed to do with a partial
-> > read?  I don't think anyone has asked for partial reads to be supported
-> > from sysfs either except Greg was wondering about it while reading the
-> > code.
-> >
-> > Currently, a lot of drivers return -EINVAL for partial read/writes but
-> > some return success.  It is a bit messy.  But this patchset doesn't
-> > really improve anything.  In at24_read() we check if it's going to be a
-> > partial read and return -EINVAL.  Below we report a partial read as a
-> > full read.  It's just a more complicated way of doing exactly what we
-> > were doing before.
+On 2024-06-02 08:54, Jonathan Cameron wrote:
+> On Sat, 1 Jun 2024 20:49:25 +0100
+> Conor Dooley <conor@kernel.org> wrote:
 > 
-> Currently what drivers return is up to their interpretation of int
-> return type, there are a few drivers which also return the number of
-> bytes written/read already like
-> drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_otpe2p.c .
-
-Returning non-zero is a bug.  It won't break bin_attr_nvmem_read/write()
-but it will break other places like nvmem_access_with_keepouts(),
-__nvmem_cell_read() and nvmem_cell_prepare_write_buffer() where all
-non-zero returns from nvmem_reg_read() are treated as an error.
-
-> The objective of the patch was to handle partial reads and errors at
-> the nvmem core and instead of leaving it up to each nvmem provider by
-> providing a better return value to nvmem providers.
+>> On Sun, Jun 02, 2024 at 12:56:41AM +0530, Kaustabh Chakraborty wrote:
+>> > diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
+>> > index fd3749871121..329a4d6fb2ec 100644
+>> > --- a/drivers/iio/accel/st_accel_i2c.c
+>> > +++ b/drivers/iio/accel/st_accel_i2c.c
+>> > @@ -102,6 +102,10 @@ static const struct of_device_id st_accel_of_match[] = {
+>> >  		.compatible = "st,lis2de12",
+>> >  		.data = LIS2DE12_ACCEL_DEV_NAME,
+>> >  	},
+>> > +	{
+>> > +		.compatible = "st,lis2ds12",
+>> > +		.data = LIS2DS12_ACCEL_DEV_NAME,
+>> > +	},
+>> >  	{
+>> >  		.compatible = "st,lis2hh12",
+>> >  		.data = LIS2HH12_ACCEL_DEV_NAME,
+>> 
+>> > diff --git a/drivers/iio/accel/st_accel_spi.c b/drivers/iio/accel/st_accel_spi.c
+>> > index f72a24f45322..825adab37105 100644
+>> > --- a/drivers/iio/accel/st_accel_spi.c
+>> > +++ b/drivers/iio/accel/st_accel_spi.c
+>> > @@ -64,6 +64,10 @@ static const struct of_device_id st_accel_of_match[] = {
+>> >  		.compatible = "st,lis2dh12-accel",
+>> >  		.data = LIS2DH12_ACCEL_DEV_NAME,
+>> >  	},
+>> > +	{
+>> > +		.compatible = "st,lis2ds12",
+>> > +		.data = LIS2DS12_ACCEL_DEV_NAME,
+>> > +	},
+>> >  	{
+>> >  		.compatible = "st,lis3l02dq",
+>> >  		.data = LIS3L02DQ_ACCEL_DEV_NAME,
+>> 
+>> Any new compatibles need to be documented in st,st-sensors.yaml
 > 
-> Regarding drivers/misc/eeprom/at25.c which you pointed below, that is
-> a problem in my code change. I missed that count was modified later on
-> and should initialize bytes_written to the new value of count, will
-> fix that when I come up with the new patch.
+> At the moment the st_sensors core is doing hard matching against whoami values
+> which isn't good.  That should ideally be fixed and the binding for this
+> device should use a fallback compatible if the statement about compatibility
+> is accurate.
+
+I apologize for not wording the description accurately. By "compatibility",
+I mean that the sensor settings of LIS2DE12 (such as the gain values) seem
+to be well-suited for LIS2DS12, as per my experimentation. Both devices are
+manufactured by ST and have no correlation regarding compatibility whatsoever.
+In that case, a fallback compatible isn't required, right?
+
+I'll make sure to rewrite the description more accurately in v4.
+ 
+> It may just be a case of relaxing the check in st_sensors_verify_id()
+> to printing a warning not an error message and not returning an error code
+> (reserving error returns in that function for bus error etc.
+
+I agree, if you want I may send a patch for that after I'm done with this
+one.
+
+> That doesn't need to be in this patch though.  Just have the fallback
+> stuff in the binding and for now we can rely on matching the more
+> precise compatible.
 > 
-> I agree that it does not improve anything for a lot of nvmem providers
-> for example the ones which call into other reg_map_read/write apis
-> which do not return the number of bytes read/written but it does help
-> us do better error handling at the nvmem core layer for nvmem
-> providers who can return the valid number of bytes read/written.
-
-If we're going to support partial writes, then it needs to be done all
-the way.  We need to audit functions like at24_read() and remove the
--EINVAL lines.
-
-   440          if (off + count > at24->byte_len)
-   441                  return -EINVAL;
-
-It should be:
-
-	if (off + count > at24->byte_len)
-		count = at24->byte_len - off;
-
-Some drivers handle writing zero bytes as -EINVAL and some return 0.
-Those changes could be done before we change the API.
-
-You updated nvmem_access_with_keepouts() to handle negative returns but
-not zero returns so it could lead to a forever loop.
-
-regards,
-dan carpenter
-
+> Jonathan
+> 
+> 
+>> 
+>> Thanks,
+>> Conor.
+>> 
 

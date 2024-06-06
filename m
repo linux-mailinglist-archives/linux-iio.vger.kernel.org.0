@@ -1,112 +1,168 @@
-Return-Path: <linux-iio+bounces-5926-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5927-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 525428FF264
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 18:24:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0BA28FF27F
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 18:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 310921C26487
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 16:24:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C4A21F26FE1
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 16:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66550197A99;
-	Thu,  6 Jun 2024 16:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AEF719755C;
+	Thu,  6 Jun 2024 16:30:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gjRM0ku0"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TtGuUN19"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2D9190484;
-	Thu,  6 Jun 2024 16:21:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F8917BC9;
+	Thu,  6 Jun 2024 16:30:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717690883; cv=none; b=D8ZOdB9ss6baT8w4ad/uarCGoExN75+0tDR6QkqxLbLu5KGzhc9hfs2MfVlNYle59a5I4AqO7gJ0QI3sxUh3v6pAOtFTp7dPOsL0s2KyfmRtUTPQyAn1ijKE9nXMzZPQHNPkBtvEUFJrnPGJDbKerrorIlH6Y2Jtf8m0M71Golg=
+	t=1717691420; cv=none; b=eUvknEsESBzDthEUVvRsgUqj11PmfuZjBVezvTKNb7Pg9+gZ9yiXPRKAGON5jJSEjpiEVF3rWbnonqsI+3mAnGoa308nUsdijrKapZ1WgiaYNWJr2h1WExW8KT7KJBzcZ1G3EAOeLHO66bHl3Emla7EhN8wl8KhJ4Z1hfeThsPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717690883; c=relaxed/simple;
-	bh=+cmAf72y5POah1NpyyIb4Lau7qS9oZS21wkpmv9qEio=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XqxR4Fxm+8TRVLcdrbuFPjyaWQK4Tq7HcRVRchOCyq+L4NvSr+GKeqj7aFyb2OkuOSqWzPEtciPkXSeZY9KkU8FrJqeS3Td5dO6ZBaQk+DphlBhEgKlknDP+ZG4ktA3EpG3R64poldXeiHZVl3LvISxMKOBcSruOsmJZwYZJUMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gjRM0ku0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0329C2BD10;
-	Thu,  6 Jun 2024 16:21:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717690882;
-	bh=+cmAf72y5POah1NpyyIb4Lau7qS9oZS21wkpmv9qEio=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gjRM0ku0J4KTQzi8bnmdF4nh3fgQBiRVmMiPam9o3ejint+L4c0q7ununjAgk8Lym
-	 qFfM7+zacqjN82o6SRXDkw/ZTwta9T0HkrrAWuHNNECd5Wv+UXC8IU0KwA3/0wjn2/
-	 jJjeAxMsf7L9YkouHseADh/t4ErYOXXXoJdl6fiFc5F4VYuvoytGkNv8gAHyskB10L
-	 mwZVzNO+zbEGaYKmOi7LLs2ocQscSJl2H28zFsraATh6Vc0cEcmo/Dp9Elr3nEaUIY
-	 RjiK99djJws1H8/p9p7aqcXZLWizgRe9qEINeoJuZWOZrLDx5n9NOK0NMCDUi/NmPZ
-	 hcz2vOBmZOCjg==
-Date: Thu, 6 Jun 2024 17:21:17 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: iio: adc: amlogic,meson-saradc: add
- optional power-domains
-Message-ID: <20240606-clothing-deceit-910ad6aebe1e@spud>
-References: <20240605-topic-amlogic-upstream-bindings-fixes-power-domains-sardac-v1-1-40a8de6baa59@linaro.org>
- <20240605-abdomen-starch-4fd4d7ead431@spud>
- <1a82eeb8-bb95-4fad-acce-798ba0cda170@linaro.org>
+	s=arc-20240116; t=1717691420; c=relaxed/simple;
+	bh=lPAkVjXgLxFt5LPmzKwEMlabNfBjX6NWCwqF+0qLZvk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RlAaXnU7Q58VEbPO0iNwnCRnDEyVlWIPTHiTvwQSwRm098b6q+gUxbnjkehYSqjMVeiNbg45csBPYxjYmCThkl1OfbjURnG8/lR/m60FXi1gjZlN8dCQ0ZY39cIL/6hVQAk6QwIPSlNPddxfHPIAfsNpttUVSjDTKN16CCWHVPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TtGuUN19; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4210aa012e5so13241705e9.0;
+        Thu, 06 Jun 2024 09:30:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717691418; x=1718296218; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1dqZNbQSETUuCOGmVNmSSKbXWwcQfdigyBoaPoEicrs=;
+        b=TtGuUN19w8mMp1fGfSBkzor+sumOvnHAfSxVG640fj4/UO0uACD290KzI8XnQw+Bl8
+         7y/19qlKKOuY6Mr1F0Dc8G0usXcy4eE5hGFpHQthMN1cFp4fzqJWTUutkmOUzlalhBRy
+         oyMkEeIR3w+GUkRpPjvsVZ8M78ah8X8A0b7Xmo42YYojQFjDnRz86Qaa9DOTzpi+OhRv
+         r6gXT2apRh2CsqPdO55JCC53c9TASDHUBhaVAdTzOXNQbStEFjJSX3TPbMkpEBajqufU
+         TdRfJdoxHgG/Aw6TD9Mt5CfrkuLfzXdUeRynCkjbYzTBsJ449Ige8USDMd7FHhBLzis6
+         LDIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717691418; x=1718296218;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1dqZNbQSETUuCOGmVNmSSKbXWwcQfdigyBoaPoEicrs=;
+        b=ijH2xHbgYNG75VSZidTEaeMZ0VHOKJIfReb1cvab6Eb4iMlTUhAJO6IcgEsqTfijdM
+         z+mxzGxfNdbs9Yv0fAa+SiMYKCUgEjnLjLwpbDQVPKOgX9GrTgPAacbb3NzNPNIMTdmG
+         vSNgEK/iGDmO0xSBgSuUQOXgc/sIVzNM+I/LKJcO3fSnE7gRdV6kJGq1jqWnxCf83Mdg
+         IrOsxOE0c41BWG0/kH7FOQ/6WV5qv737jYwINGp301J3Zr8DPMA4Wspc0n96Ctb/OwJs
+         J8eC7kpP96LFfS8r7/i3DMHT5lKwkF94YxqQkmZTIkWr8ZYY/CYf/N0a/zvONHoiffJ2
+         /uNg==
+X-Forwarded-Encrypted: i=1; AJvYcCX5Z/alAbX5VqJRYxn/ZqYST/WTJpuEvvaRjLRjFQwCzHZIadacVWqRG7QjzqETSItiU2tGkzJYQl04u4XI3J6qVa1ocU1/1lFP2yNlr/ofR0WoRXhmgA/thuYlrDhVyxcde7a2CzzXggfj5HNrSPase6g3p8refnc/FlD9Sktf5wQzdw==
+X-Gm-Message-State: AOJu0YxhdUZVpnYUVVaFenZ7h5bK3C5JHBLakZM3pLS01TimjljcYGKh
+	WT7G/VGkCR8tFSmO4ovkgILF0eVgH6vECyo3FPxE36PpmIWbNBLu
+X-Google-Smtp-Source: AGHT+IF21gop+b6k0JGHvqQYWZPu6iKxpWuDjEOjifn3fDeBBgYpbJeMFUreivkoDhv2hYUwDRCxRw==
+X-Received: by 2002:a5d:65c6:0:b0:354:f622:fc5b with SMTP id ffacd0b85a97d-35efed2cb79mr99952f8f.23.1717691417331;
+        Thu, 06 Jun 2024 09:30:17 -0700 (PDT)
+Received: from localhost.localdomain ([167.98.27.226])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35ef5d29a85sm1978307f8f.10.2024.06.06.09.30.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jun 2024 09:30:16 -0700 (PDT)
+From: Mudit Sharma <muditsharma.info@gmail.com>
+To: jic23@kernel.org,
+	lars@metafoo.de,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	robh@kernel.org
+Cc: ivan.orlov0322@gmail.com,
+	javier.carrasco.cruz@gmail.com,
+	Mudit Sharma <muditsharma.info@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH v4 1/2] dt-bindings: iio: light: ROHM BH1745
+Date: Thu,  6 Jun 2024 17:29:41 +0100
+Message-ID: <20240606162948.83903-1-muditsharma.info@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="a9tWOetrfT4l+L95"
-Content-Disposition: inline
-In-Reply-To: <1a82eeb8-bb95-4fad-acce-798ba0cda170@linaro.org>
+Content-Transfer-Encoding: 8bit
 
+Add ROHM BH1745 - 4 channel I2C colour sensor's dt-bindings.
 
---a9tWOetrfT4l+L95
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Mudit Sharma <muditsharma.info@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+v3->v4:
+- No changes
+v2->v3:
+- Move 'additionalProperties' after 'required' block
+- Remove block style indicator '|' from description
+v1->v2:
+- Fix yaml issue: Make `maintainers` a list
 
-On Thu, Jun 06, 2024 at 09:54:22AM +0200, Neil Armstrong wrote:
-> On 05/06/2024 18:58, Conor Dooley wrote:
-> > On Wed, Jun 05, 2024 at 11:37:08AM +0200, Neil Armstrong wrote:
-> > > On newer SoCs, the SAR ADC hardware can require a power-domain to ope=
-rate,
-> > > add it as optional.
-> >=20
-> > What about the older socs that don't have power domains, the property is
-> > now usable there?
->=20
-> Old SoCs doesn't necessarily have an associated power domain, or was hand=
-led
-> by firmware, does it harm if we make it optional for older ones as well ?
+ .../bindings/iio/light/rohm,bh1745.yaml       | 49 +++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml
 
-I mean, really all of these devices have a power domain, even if the DT
-doesn't describe one as it's hardly gonna work without power, so the
-commit message just seems odd to me. I don't care enough to ask for a
-new commit message though.
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+diff --git a/Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml b/Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml
+new file mode 100644
+index 000000000000..d5338a0af6b3
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/light/rohm,bh1745.yaml
+@@ -0,0 +1,49 @@
++# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/light/rohm,bh1745.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: ROHM BH1745 colour sensor
++
++maintainers:
++  - Mudit Sharma <muditsharma.info@gmail.com>
++
++description:
++  BH1745 is an I2C colour sensor with red, green, blue and clear
++  channels. It has a programmable active low interrupt pin.
++  Interrupt occurs when the signal from the selected interrupt
++  source channel crosses set interrupt threshold high/low level.
++
++properties:
++  compatible:
++    const: rohm,bh1745
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++
++additionalProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    i2c {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        colour-sensor@38 {
++            compatible = "rohm,bh1745";
++            reg = <0x38>;
++            interrupt-parent = <&gpio>;
++            interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
++        };
++    };
++
++...
+-- 
+2.43.0
 
---a9tWOetrfT4l+L95
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZmHh/QAKCRB4tDGHoIJi
-0hMxAQDME6Isi1Om+F82DIFxdun87ci2FJHShbHxkeQrVZuWVQD/Qbui0InQz1Yk
-zESnI+lhIsrcHkaUvZVxuHm8MfgsDwU=
-=EZ+g
------END PGP SIGNATURE-----
-
---a9tWOetrfT4l+L95--
 

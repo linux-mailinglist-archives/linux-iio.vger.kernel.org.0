@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-5959-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5960-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C898FF6C6
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 23:27:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB3F8FF6C9
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 23:28:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F020E1F22361
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 21:27:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12A00280F77
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 21:28:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CC119DF64;
-	Thu,  6 Jun 2024 21:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4840A19B595;
+	Thu,  6 Jun 2024 21:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d10i3E95"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bj/gpXI3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1D1B19D074;
-	Thu,  6 Jun 2024 21:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256E419DF4C;
+	Thu,  6 Jun 2024 21:24:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717709051; cv=none; b=DHqGkmx8hlvdFYGmjxTe5h+UO+lVus+Nu0I2R6xd2xnFvbcZk5LA5knJsXz/GXUwgbtl/mhqRcYs0Qf4KSN/xJdsrrNCF8346SGQDsUr9kCrvOmrqmpDooWudcQaZSc+AAZOeHQh0KqD78t5Z2m3dXutNFDtL7sKikfYFlBhNYM=
+	t=1717709053; cv=none; b=qo2h/7rhgfy/+ldQ61bopGzDwxRlwD5FuUcrytRNB8gV1/dUKXbgARMvCunYhaGFt9z99ql9DcjAKioFTJ74RRxP6U7RjjgCQonJQDmHuieeiVfo7LgQjmFwyicplQfMCvy69U69nBygvEITes0MKfhUpZBIToNQ4yJKAzmwfTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717709051; c=relaxed/simple;
-	bh=oaQTGyxGPjbqBajXp7jjrspFVvNhAFfu/BujcL7Qe4o=;
+	s=arc-20240116; t=1717709053; c=relaxed/simple;
+	bh=td7HH4arkiNuNGtODy8qhObxEuS32q+gi5snH3/4s0g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qKUMw3ahcDQZY1cRdIklbsca/d2dYDM9Kn4+tfyIXbsNzGPKqqmAgO7ZBSgWDeuGOs0wZi751pjSGszj+ya1sQ/E/B5DuRHtlOK1pYnUbYigv5HCqph8Ah0vn3T4qTAIuxoxP0kF5iatjWTHS79C1SQCdwmYYM45VEF0BHDdS3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d10i3E95; arc=none smtp.client-ip=209.85.208.46
+	 MIME-Version; b=Zldm+9wND8Xk6kiqLGZTzdFMpH1GokNlEHciqmjzEoMR+hn4D9X99L3IEC3ySsVXx1C9yPN+d3Fu3rF7L4u+VOT97G5dpV4JnqjIMQKyEuLqz5klz91IKnFiXzjwPe77Xgu/ZTk+KAQ6msa3fA31dpM7L3tu5Dgr3hLnkx6j3uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bj/gpXI3; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-57a2406f951so1754069a12.1;
-        Thu, 06 Jun 2024 14:24:09 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a692130eb19so157702466b.2;
+        Thu, 06 Jun 2024 14:24:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717709048; x=1718313848; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717709049; x=1718313849; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8EaOsOaYf/7LcQ86mO6uOU7J8W4GCc5BrEGKCRrUVKM=;
-        b=d10i3E95VO8a/U4chFTW6daoDxDSyji3lXWXAKXZEQ4xiZQ5qEosCvWyrT8f/SkQbm
-         Rpe7pN8j52wC3ONGsgMYUgETA+DdejivEBG7x/LnpXScgDenYU1UH0XHW4MQf3TjiX/B
-         r4nXSI0FQtIUeQm6780Jk4p4y46C90TcO7jF/fRsvGKABK2fF7A+N4Sm3yJ36EECkKnJ
-         EB/JXnhOhkY05cuOEyP4qXzE3ryfFM3cH8BXb6hIDaCLZTh30ifjTMTugtAeLOl6F7BP
-         l4tn4KDpqrNzXiJ850E2oqJ4XsTEBGSEJO05A9relMicEw22CQL6j/WxhGPGR+Yyrnqs
-         dH0A==
+        bh=q3hJmKI5Mi8gc5sO4N5FOjXE0iLeocLoY1TsF7XbV0o=;
+        b=bj/gpXI3b7Exq53cnZcm0A/Kv5d37xiH8V1AHnkYEGCcU0Is2A+Ti2N0cLO5MYGy89
+         Val+fcVkP+3KtWQcTTu8I2FF5hK1ODdOk0eyHd+W2iqbOFzyq+J2SF4E4EJXBHYGgX6J
+         DAdZ1s8iAmfImu6kbr1/oxmi56F8WFZca2xpOIOH3VjdsTccgBQIknyu8bcR5Q0QdiFm
+         mFQ84IGOoobxw2O1UWUmex9quUZPkLOlmlccCsBmsANPXPjkzNHpWZscJN5PTWLjPdGH
+         vkuiiEQT+j5BPtMZm/DVw97eLdmTPzD5eqhC58X3Zbysbp4wOE44kivSe+7M+ll5qjeK
+         8gfQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717709048; x=1718313848;
+        d=1e100.net; s=20230601; t=1717709049; x=1718313849;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8EaOsOaYf/7LcQ86mO6uOU7J8W4GCc5BrEGKCRrUVKM=;
-        b=Yeji6Z8dkZ0Dsd2Vsw4DqeMH351+Of1jkgut+gezLw3v/Dlo8OKZbQZylYVwcXLlaN
-         7bmQ2u9Pr44xq+P0YfR9Br883STIVaCCxtUi1mPd2DZ+njtuFeBG0gU86yXG9RuvMxrw
-         fuhRdinKxgXbHs2znF4mwFH18xWzICRAUOLVvLFLpRaKPwJZSqTFRfLmQO1NLrVSTdSR
-         NVHP2K8Z2PQYrsFr2Q6xYEueSygQ0Z7U4uo4BcSoSpTm8y90KDlMDDiSZ+Q4PF18iDlu
-         qCk9rNDVCMgVAF1Nq0UrMTjETG8WbXk5KTnbGVyURT8s5g7G9vREyr0HdSInnRGszgan
-         Vf/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVjoEmEdZDDh7M6JgN5HpzGpLKAkpnIBSjMRUjGBZCVwVYKGk+FaAcSxSxjP4sNPxCm+x3mIHfY+Gxl9CJfkxVm0NlBtSWmpES0tT9rQx9VtpfyO6tmDwFVDshgEXwGC74+7oyhlefe
-X-Gm-Message-State: AOJu0YwHqV+B87PWIY1LZeU9bSQDorjpNmic3Z/gW+I3OjGUTrMcvb38
-	w/hTzj4h/WiHueJwvOAhVG7v82zAck9IY7eLS2wuxhlCyceES40f
-X-Google-Smtp-Source: AGHT+IG8CkUP8ZDUMID8nseOMa8nG2vnELSrSZA8EUwcjtynf6vvmEMraQFKrzek2F8MzpPHmRH/BQ==
-X-Received: by 2002:a17:906:1157:b0:a68:f8b9:ffa3 with SMTP id a640c23a62f3a-a6cd7891afbmr53168266b.46.1717709048165;
-        Thu, 06 Jun 2024 14:24:08 -0700 (PDT)
+        bh=q3hJmKI5Mi8gc5sO4N5FOjXE0iLeocLoY1TsF7XbV0o=;
+        b=w+p9DNdfIZqqdj2eMSmLUEdlwFefvDAvdRnCmbPE8xXR5kl515s0MPizXI/+xtetbN
+         1hm0HhZFPpAjYlWJ2hpI8NRXp7dLJPkNIsvaUQAYIvOjDMSBq5LSI3nnprjxgMrj7o/3
+         yEsARxfooA/fi3X73rm7M0iFJSJPpR8w9R9CPv1Hg6H9dj+PFHjNayMgOnfHKac3XAfT
+         SfYjBRsKydgnt39U7F0+NbA1WLsGFI8avX/R9fsod87KujFgQXb0gCzlyCD4Tf67hHqq
+         cDVFcu4GXJJpbNjUn2oTamWQbztj+gaMnRL/i4AUPYmTOaIrsosrSvlbtvSIkzfg4UXD
+         M/mw==
+X-Forwarded-Encrypted: i=1; AJvYcCXbGU32RWSkCKg6bjGbMJBrhpufP9TFkKKfmO9cs+UtAKToblTriIGX0q1oZEG981573DgsUYxySRx5OzF2fX36QSlJT01Gd0+OFLkYiAt6c5QTMgX+aDxvgbkwVT8Ix5/jGgBxkx/l
+X-Gm-Message-State: AOJu0YxFyAvNlLEVU+iN71wxYhwBauOvmOyVwWmsp1kTNkDLpBf1m6Dp
+	iBv29giaHyewlaxpf9hSTVijZytkzpe/RN5zYRt+Suk6GeFv7eJj
+X-Google-Smtp-Source: AGHT+IGMC7b+ed17+ufi8m262KcvXwMaHCkD31Iyh2kWDxojKu9uFLR0459KklsxdTqhEHLnTVJqGA==
+X-Received: by 2002:a17:906:c9cb:b0:a68:f77f:41e6 with SMTP id a640c23a62f3a-a6cdbfec30fmr45269666b.73.1717709049426;
+        Thu, 06 Jun 2024 14:24:09 -0700 (PDT)
 Received: from localhost.localdomain ([2a04:ee41:82:7577:28a0:434b:ab8b:94ca])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c8058272bsm146690566b.18.2024.06.06.14.24.07
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c8058272bsm146690566b.18.2024.06.06.14.24.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 14:24:07 -0700 (PDT)
+        Thu, 06 Jun 2024 14:24:08 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org
 Cc: dpfrey@gmail.com,
@@ -76,9 +76,9 @@ Cc: dpfrey@gmail.com,
 	linux-kernel@vger.kernel.org,
 	mike.looijmans@topic.nl,
 	vassilisamir@gmail.com
-Subject: [PATCH v2 13/19] iio: chemical: bme680: Add read buffers in read/write buffer union
-Date: Thu,  6 Jun 2024 23:23:06 +0200
-Message-Id: <20240606212313.207550-15-vassilisamir@gmail.com>
+Subject: [PATCH v2 13/19] iio: chemical: bme680: Add read buffers in union
+Date: Thu,  6 Jun 2024 23:23:07 +0200
+Message-Id: <20240606212313.207550-16-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240606212313.207550-1-vassilisamir@gmail.com>
 References: <20240606212313.207550-1-vassilisamir@gmail.com>
@@ -98,8 +98,8 @@ being read from the device and don't use magic numbers.
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
  drivers/iio/chemical/bme680.h      |  7 +++++
- drivers/iio/chemical/bme680_core.c | 45 +++++++++++++++---------------
- 2 files changed, 29 insertions(+), 23 deletions(-)
+ drivers/iio/chemical/bme680_core.c | 47 +++++++++++++++---------------
+ 2 files changed, 30 insertions(+), 24 deletions(-)
 
 diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
 index 8d0f53c05d7d..7d0ff294725a 100644
@@ -120,10 +120,10 @@ index 8d0f53c05d7d..7d0ff294725a 100644
  #define BME680_T2_LSB_REG	0x8A
  #define BME680_H2_MSB_REG	0xE1
 diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index 9d33952e5d01..3c33c21b5d6a 100644
+index b13797f7d873..3c33c21b5d6a 100644
 --- a/drivers/iio/chemical/bme680_core.c
 +++ b/drivers/iio/chemical/bme680_core.c
-@@ -111,6 +111,9 @@ struct bme680_data {
+@@ -111,10 +111,13 @@ struct bme680_data {
  	s32 t_fine;
  
  	union {
@@ -133,6 +133,11 @@ index 9d33952e5d01..3c33c21b5d6a 100644
  		u8 bme680_cal_buf_1[BME680_CALIB_RANGE_1_LEN];
  		u8 bme680_cal_buf_2[BME680_CALIB_RANGE_2_LEN];
  		u8 bme680_cal_buf_3[BME680_CALIB_RANGE_3_LEN];
+-	}; 
++	};
+ };
+ 
+ static const struct regmap_range bme680_volatile_ranges[] = {
 @@ -449,7 +452,6 @@ static u8 bme680_oversampling_to_reg(u8 val)
  static int bme680_wait_for_eoc(struct bme680_data *data)
  {

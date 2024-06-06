@@ -1,181 +1,213 @@
-Return-Path: <linux-iio+bounces-5934-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5935-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95DEB8FF3D0
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 19:33:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 941C88FF557
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 21:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAFD11C26372
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 17:33:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06EC81F26F94
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 19:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA8211990D2;
-	Thu,  6 Jun 2024 17:32:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF044087C;
+	Thu,  6 Jun 2024 19:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YjgG7Vov"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t5Wp4aDV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BDD15253E;
-	Thu,  6 Jun 2024 17:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE196A33A;
+	Thu,  6 Jun 2024 19:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717695179; cv=none; b=uSrg/wd4/MolU5TGC3kyMEBmXjAEJ0r6/RO6aDf89WemRPnqTSJJ8Y5sFLc5fPGCRfmLJflkHealzbbp2bRHiELTCIZw3BC02GMMZybGIdLw4CDvLMZzXWM47nI9KrsHl4JSN/T17L0dQ6FCw3pYUFvx04E+l9EY8efEv/uzOyI=
+	t=1717702569; cv=none; b=UXSf6fgGkJGb1ipndVviImDZhGjbRuAO/h/eP0HVdAIz9lGVhN30g6oJ/khzaSU6Es6UfdCMuUnxDst6lYFEAMb+XL1W3LO5ffSncsHIiCcK2pp3g9Me6Z9RBBxbjhZ98yVNh6TCFQXEE0Gc3IFGBB0uumMvne5E20FnKgq2FHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717695179; c=relaxed/simple;
-	bh=tvNSjOg8mx3j+RpQ0huRviLFFC0DGjMakF1YpHzl9p4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hDVzI9hsV9VIW3WwO61FpEk1Dyn6/o9dFv9hRYYZyJMT4wzben+HEm0gw9J6VX2P8X87oyCPB5daqwxpVh7D05vhSFUd2kFw3jc37IMCooy2Zy1YtfHkhIyfpyb/1W/2sESL6Z3Uavdn2np+Q339vw5tBlv9J7EJ0mcqbk3jquM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YjgG7Vov; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=6C3828TkhUBt3LMHxNw+f5eKbQSK74nm3cDfcfA+ESQ=; b=YjgG7Vov4whzGWtff+CpF/oKgO
-	S3i5UR/b7npg7U4tVrxl3/D4ZmVvyFwLuag78KKpUhLwsakb4RRuKd+b+fvTmuvICnqfNxp6Mmwb+
-	m8qm8ei8eE7zOW7hJpzGnDF/99H35cAwMFrDaHJ8pWLHqwo3ULZoC6aVMUzDzpK3UgH+tt+fio3q+
-	rfntirFQ7pDVbXz+c05AEXWBLgme0hSzKmAmCpLaKc9pxe2XJgMaZm/2lF17eM9JfIjJOewvm84eV
-	cloM0LYjQ5T2r2CcHxsslcAhPDYArfm4Kf+iQ9Ddu3DECTWahfCAv33BCBI6HW4F9kNSNrdMmQtEE
-	ZTzE5uxg==;
-Received: from [50.53.4.147] (helo=[192.168.254.15])
-	by bombadil.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sFGyq-0000000Alrg-33v6;
-	Thu, 06 Jun 2024 17:32:52 +0000
-Message-ID: <5052adab-5b5e-4ac2-902c-bb373c00bbbb@infradead.org>
-Date: Thu, 6 Jun 2024 10:32:51 -0700
+	s=arc-20240116; t=1717702569; c=relaxed/simple;
+	bh=lv7c8HiJJOW7q/l0CDVhRhitLvBX6XdJyjW9NlIOMEU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IAWmrN/XtI5AEslP4HL5Z/Ruk5MIS510i5xEUYZTXmH9yEhROFjNLzVB4utLXVsXQBFeIo0eYzWQeo6g+vcbm7AGj6eiSEeLUtC2wI5N3xyF1zGNpSo2bxjMWjIm+Z/stx/5ank9PaV8flljqMU6I2U2yzhMNzaNMr0wXCtSBts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t5Wp4aDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28DCC2BD10;
+	Thu,  6 Jun 2024 19:36:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717702569;
+	bh=lv7c8HiJJOW7q/l0CDVhRhitLvBX6XdJyjW9NlIOMEU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=t5Wp4aDV2bFdpIJKS9F0WevnJzM+TYkdmdOG0wOOctJq00nNPgGu1VD4MjC6QcGFh
+	 7ZnceV/KC0thZe9gI3BaKofsdLd309mVEbKacJfCr8+b1lIRwNqlCW1WTLbXLGZ9nu
+	 73DV2K0IPkRjN3/ISGuC2Q5oH6r6cJU/DiBQJylStD0a6gW2So23HshrSQWzt5XHC2
+	 2Zn/DJwvqfh2HHYvVchloQF6/6Lz416a0UdThMswgPDpM1go+gFfWnxjTuyfS5lim4
+	 sxCIxNvXLYX7RKuSkn97y36qTSufeCDJLEodT9kVmf0T9+TVY7gbrYXE2S33eV1JpC
+	 XNG1JLYbanaSQ==
+Date: Thu, 6 Jun 2024 20:36:03 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: lars@metafoo.de, himanshujha199640@gmail.com, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH v1 11/17] iio: chemical: bme680: Use bulk reads for
+ calibration data
+Message-ID: <20240606203603.18e9a17b@jic23-huawei>
+In-Reply-To: <20240603203003.GA444780@vamoiridPC>
+References: <20240527183805.311501-1-vassilisamir@gmail.com>
+	<20240527183805.311501-12-vassilisamir@gmail.com>
+	<20240602135726.2f10fd2b@jic23-huawei>
+	<20240602193023.GD387181@vamoiridPC>
+	<20240603202537.4b40c80a@jic23-huawei>
+	<20240603203003.GA444780@vamoiridPC>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 6/6] Documentation: iio: Document high-speed DMABUF
- based API
-To: Paul Cercueil <paul@crapouillou.net>, Jonathan Cameron
- <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Vinod Koul <vkoul@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Nuno Sa <nuno.sa@analog.com>,
- linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org
-References: <20240605110845.86740-1-paul@crapouillou.net>
- <20240605110845.86740-7-paul@crapouillou.net>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20240605110845.86740-7-paul@crapouillou.net>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-Hi,
+On Mon, 3 Jun 2024 22:30:03 +0200
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-On 6/5/24 4:08 AM, Paul Cercueil wrote:
-> Document the new DMABUF based API.
+> On Mon, Jun 03, 2024 at 08:25:37PM +0100, Jonathan Cameron wrote:
+> > On Sun, 2 Jun 2024 21:30:23 +0200
+> > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> >   
+> > > On Sun, Jun 02, 2024 at 01:57:26PM +0100, Jonathan Cameron wrote:  
+> > > > On Mon, 27 May 2024 20:37:59 +0200
+> > > > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> > > >     
+> > > > > Calibration data are located in contiguous-ish registers
+> > > > > inside the chip. For that reason we can use bulk reads as is
+> > > > > done as well in the BME68x Sensor API [1].
+> > > > > 
+> > > > > The arrays that are used for reading the data out of the sensor
+> > > > > are located inside DMA safe buffer.    
+> > > > 
+> > > > See below. I think in this case that isn't necessary.
+> > > > However it's a quirk of how the custom regmap works. Whilst
+> > > > we can't rely on regmap core spi implementations continuing to
+> > > > bounce buffer, we can rely on one local to our particular driver.
+> > > >     
+> > > 
+> > > What about the I2C implementation though? I watched recently a video
+> > > from Wolfram Sang [1] and as far as I understood, the buffers are not
+> > > provided by the I2C API, but you have to provide them. In any case, I
+> > > should maybe check both SPI and I2C reads to understand the internals.
+> > > 
+> > > [1]: https://www.youtube.com/watch?v=JDwaMClvV-s
+> > >   
+> > 
+> > I'm not sure Wolfram got far with his desire for generally avoiding the
+> > bounce buffers for i2c.  I think it's strictly opt in only so don't opt in
+> > unless your code is safe for it and regmap never will by default as too
+> > many drivers will be subtly broken.
+> >   
 > 
-> Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> The things that I found about DMA "safety" in I2C are [1] and [2] so I think
+> that the IIO_DMA_MINALIGN should remain because in the future, in case it's
+> needed for triggered buffers to do buffer reads from the volatile registers
+> of the device, then it might be a problem for I2C. 
 > 
-> ---
-> v2: - Explicitly state that the new interface is optional and is
->       not implemented by all drivers.
->     - The IOCTLs can now only be called on the buffer FD returned by
->       IIO_BUFFER_GET_FD_IOCTL.
->     - Move the page up a bit in the index since it is core stuff and not
->       driver-specific.
+> [1]: https://elixir.bootlin.com/linux/latest/source/drivers/i2c/i2c-core-base.c#L2627
+> [2]: https://elixir.bootlin.com/linux/latest/source/include/linux/i2c.h#L92
 > 
-> v3: Update the documentation to reflect the new API.
-> 
-> v5: Use description lists for the documentation of the three new IOCTLs
->     instead of abusing subsections.
-> 
-> v8: Renamed dmabuf_api.rst -> iio_dmabuf_api.rst, and updated index.rst
->     whose format changed in iio/togreg.
-> ---
->  Documentation/iio/iio_dmabuf_api.rst | 54 ++++++++++++++++++++++++++++
->  Documentation/iio/index.rst          |  1 +
->  2 files changed, 55 insertions(+)
->  create mode 100644 Documentation/iio/iio_dmabuf_api.rst
-> 
-> diff --git a/Documentation/iio/iio_dmabuf_api.rst b/Documentation/iio/iio_dmabuf_api.rst
-> new file mode 100644
-> index 000000000000..1cd6cd51a582
-> --- /dev/null
-> +++ b/Documentation/iio/iio_dmabuf_api.rst
-> @@ -0,0 +1,54 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +===================================
-> +High-speed DMABUF interface for IIO
-> +===================================
-> +
-> +1. Overview
-> +===========
-> +
-> +The Industrial I/O subsystem supports access to buffers through a
-> +file-based interface, with read() and write() access calls through the
-> +IIO device's dev node.
-> +
-> +It additionally supports a DMABUF based interface, where the userspace
-> +can attach DMABUF objects (externally created) to a IIO buffer, and
 
-I would say/write:                                to an IIO buffer,
+Those will remain opt in for a very long time if not for ever.
 
-> +subsequently use them for data transfers.
-> +
-> +A userspace application can then use this interface to share DMABUF
-> +objects between several interfaces, allowing it to transfer data in a
-> +zero-copy fashion, for instance between IIO and the USB stack.
-> +
-> +The userspace application can also memory-map the DMABUF objects, and
-> +access the sample data directly. The advantage of doing this vs. the
-> +read() interface is that it avoids an extra copy of the data between the
-> +kernel and userspace. This is particularly useful for high-speed devices
-> +which produce several megabytes or even gigabytes of data per second.
-> +It does however increase the userspace-kernelspace synchronization
-> +overhead, as the DMA_BUF_SYNC_START and DMA_BUF_SYNC_END IOCTLs have to
-> +be used for data integrity.
-> +
-> +2. User API
-> +===========
-> +
-> +As part of this interface, three new IOCTLs have been added. These three
-> +IOCTLs have to be performed on the IIO buffer's file descriptor,
-> +obtained using the IIO_BUFFER_GET_FD_IOCTL() ioctl.
-> +
-> +  ``IIO_BUFFER_DMABUF_ATTACH_IOCTL(int)``
+I suspect they will actually go away as a result of Catalin's 
+https://lore.kernel.org/linux-arm-kernel/20230612153201.554742-15-catalin.marinas@arm.com/
+which bounces small or unaligned buffers and will apply to an annoying number of
+IIO buffers even though they are actually safe because it's a heuristic
+on the size part.
 
-                                     (int fd)
-?
+Today only a few architectures that do non coherent DMA use it though.
+Will take the others opting in to the point where the config variable
+goes away before we can stop this dance.
 
-> +    Attach the DMABUF object, identified by its file descriptor, to the
-> +    IIO buffer. Returns zero on success, and a negative errno value on
-> +    error.
-> +
-> +  ``IIO_BUFFER_DMABUF_DETACH_IOCTL(int)``
+I don't know if anyone has yet looked at the impact on performance of that
+change on the many drivers that have to work whether that is in place
+or not and do small dma mappings.  Maybe we need to teach bus drivers
+when they need to map padding around an actually safe buffer that
+doesn't look like it.
 
-ditto.
+Jonathan
 
-> +    Detach the given DMABUF object, identified by its file descriptor,
-> +    from the IIO buffer. Returns zero on success, and a negative errno
-> +    value on error.
-> +
-> +    Note that closing the IIO buffer's file descriptor will
-> +    automatically detach all previously attached DMABUF objects.
-> +
-> +  ``IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *iio_dmabuf)``
-> +    Enqueue a previously attached DMABUF object to the buffer queue.
-> +    Enqueued DMABUFs will be read from (if output buffer) or written to
-> +    (if input buffer) as long as the buffer is enabled.
 
-thanks.
--- 
-#Randy
-https://people.kernel.org/tglx/notes-about-netiquette
-https://subspace.kernel.org/etiquette.html
+> >   
+> > > > > 
+> > > > > [1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L1769
+> > > > > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>    
+> > > > 
+> > > >     
+> > > > > diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
+> > > > > index 681f271f9b06..ed4cdb4d64af 100644
+> > > > > --- a/drivers/iio/chemical/bme680_core.c
+> > > > > +++ b/drivers/iio/chemical/bme680_core.c    
+> > > >     
+> > > > > +
+> > > > >  struct bme680_calib {
+> > > > >  	u16 par_t1;
+> > > > >  	s16 par_t2;
+> > > > > @@ -64,6 +109,16 @@ struct bme680_data {
+> > > > >  	 * and humidity compensation calculations.
+> > > > >  	 */
+> > > > >  	s32 t_fine;
+> > > > > +
+> > > > > +	/*
+> > > > > +	 * DMA (thus cache coherency maintenance) may require the
+> > > > > +	 * transfer buffers to live in their own cache lines.
+> > > > > +	 */
+> > > > > +	union {
+> > > > > +		u8 bme680_cal_buf_1[BME680_CALIB_RANGE_1_LEN];
+> > > > > +		u8 bme680_cal_buf_2[BME680_CALIB_RANGE_2_LEN];
+> > > > > +		u8 bme680_cal_buf_3[BME680_CALIB_RANGE_3_LEN];
+> > > > > +	} __aligned(IIO_DMA_MINALIGN);    
+> > > > Ah! I should have read ahead.  I don't think you need this alignment forcing
+> > > > because bme680_regmap_spi_read uses spi_write_then_read() which always
+> > > > bounces the data.
+> > > >     
+> > > 
+> > > Same comment. What about I2C?
+> > >   
+> > > > >  };
+> > > > >  
+> > > > >  static const struct regmap_range bme680_volatile_ranges[] = {
+> > > > > @@ -112,217 +167,73 @@ static int bme680_read_calib(struct bme680_data *data,
+> > > > >  			     struct bme680_calib *calib)
+> > > > >  {    
+> > > > 
+> > > >     
+> > > > > +	calib->par_h3 = data->bme680_cal_buf_2[H3];
+> > > > > +	calib->par_h4 = data->bme680_cal_buf_2[H4];
+> > > > > +	calib->par_h5 = data->bme680_cal_buf_2[H5];
+> > > > > +	calib->par_h6 = data->bme680_cal_buf_2[H6];
+> > > > > +	calib->par_h7 = data->bme680_cal_buf_2[H7];
+> > > > > +	calib->par_t1 = get_unaligned_le16(&data->bme680_cal_buf_2[T1_LSB]);
+> > > > > +	calib->par_gh2 = get_unaligned_le16(&data->bme680_cal_buf_2[GH2_LSB]);
+> > > > > +	calib->par_gh1 = data->bme680_cal_buf_2[GH1];
+> > > > > +	calib->par_gh3 = data->bme680_cal_buf_2[GH3];
+> > > > >  
+> > > > > -	ret = regmap_read(data->regmap, BME680_H7_REG, &tmp);
+> > > > > +	ret = regmap_bulk_read(data->regmap, BME680_REG_RES_HEAT_VAL,
+> > > > > +			       &data->bme680_cal_buf_3[0],    
+> > > > This one is always debated, but personally I'd prefer
+> > > > 				data->bme680_cal_buf_3,
+> > > >     
+> > > 
+> > > For me it's the same, I could change it to what you proposed, no problem!
+> > > 
+> > > Cheers,
+> > > Vasilis
+> > >   
+> > > > for cases like this. Up to you though.    
+> > > > > +			       sizeof(data->bme680_cal_buf_3));
+> > > > >  	if (ret < 0) {
+> > > > > -		dev_err(dev, "failed to read BME680_H7_REG\n");
+> > > > > +		dev_err(dev, "failed to read 3rd set of calib data;\n");
+> > > > >  		return ret;
+> > > > >  	}    
+> > > >     
+> >   
+
 

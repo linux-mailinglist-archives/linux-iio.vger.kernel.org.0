@@ -1,154 +1,147 @@
-Return-Path: <linux-iio+bounces-5939-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5940-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C42A98FF587
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 21:56:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 990F38FF58C
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 21:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A12151C2592B
-	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 19:56:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00591B24666
+	for <lists+linux-iio@lfdr.de>; Thu,  6 Jun 2024 19:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6D471749;
-	Thu,  6 Jun 2024 19:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA7B71750;
+	Thu,  6 Jun 2024 19:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PEQnIDyW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kxw0PvxZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EFCD4C618;
-	Thu,  6 Jun 2024 19:56:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83CD44361;
+	Thu,  6 Jun 2024 19:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717703801; cv=none; b=uHfEZS+AlDhJV8yw65zWkl0hPMaBwhUVSF6ElqybmrYgIV7n6QZm5LCBU/fYrFAkagXWxavHnuVrpkBqc961uPAgl79baw+55x2Efx82bYPKLuYy5Kcb7pcz4m46oDdj76G9sgV9fnWbGNJdfsvAAFEyf22DyCWzHatT1OkDtWA=
+	t=1717703904; cv=none; b=CruEIK6MtrbLnZHUoV0YwlXhZFUf3EQxmFwzA80qSHu0/1InyC0GaZIBQpa0cA2tnenUwPS1qEyVGcubC66PMv/fHwyENwvCsZ2GBsv3nz5o8DIgR27DrpmpixiW10Mg3Rgt9w3dsuEYkxYZkJjMCsfq3ZF+k5HdldU4jhaDwsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717703801; c=relaxed/simple;
-	bh=Qurdt8ueT0yPwWNrPmEHkTDIsNDf38jckmh+NndaPUQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XEPLYiK+08H8rUNpcQgKHxmneNONpmSDN0cC3nGQNBw8ITbppgOCKsDscCY1nJW92qf+VLfPcTCIVXcAriCFhyVm9/LNTGyQe+Ea1NNaAyA52DwcDXuKLZl/nQbfT5VtpC8sOXml98LiJS7u2Z6tn9oyZFNUsqy+ObohVwUNvaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PEQnIDyW; arc=none smtp.client-ip=209.85.214.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1f47f07aceaso12858025ad.0;
-        Thu, 06 Jun 2024 12:56:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717703799; x=1718308599; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AdytDqtRYVnzm7SE/5i1mvkB4M1tizM3b9ra2VRKybw=;
-        b=PEQnIDyWQ1bcgfyhlnRBR2UcYfrKFVwvb00c6xeGdCZtmN0SYbDXeAB2O9IkHsTFEW
-         0dO9tgA+lBfH2x1a+bwjvcj1OVF6mxNUgD+Y94OtMOrJkpQh/yaT1Aa1AF3smXfG8urT
-         GT2Qjs4c5wetpJ7f+fOgBWOEB7Joj//DzQqn2gKjY3HQbylVkkET8lx8QQ35b6D3k9fi
-         4qRKfTK2PYmHkI3f7xpfSTC+keMKKsH9u9rC38hWgP7+G8dlc4hfKIadhEy/4WxR5HeH
-         X0wSulG43pZ7hKoKiZxBHz+hZ6DhLLLsqO1QKVn52EeSTGMcY+zgL/A5h4Q5+ZbuKd49
-         vQMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717703799; x=1718308599;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AdytDqtRYVnzm7SE/5i1mvkB4M1tizM3b9ra2VRKybw=;
-        b=IXY1sdOJRMs1Rwk2PwnmeJpZWsayaT16tGgpvhX/29/jWu3IcDYmmTwLHjYhEy5LWh
-         XIe+1Cz8jpfvUlTfluCsnO9Z9mvIaYJBr1cV46hZEOniLxH7MuX9JN/m5LZzX/+w9Oy/
-         6NVHz2J0RJT8NpbiZp6qAOhOEUZ+8CweH8MzqLg5jTe92Z2XH+H9STCcYyHs4GahIU8+
-         a73zXtjEPL7aILEdsIjCIv3aQF4xYzSPzJf0aUwsA6YN5FxMsIF0PgA9xTCy+h7e/6cM
-         XpNswr+xCsBbYlC9KFywSbSoKMgSnEXpfY848tTTDRVZWlkxK+QtotszkHM6+3Pmy7IW
-         TcYA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTB/PZbLCFlwGAkYBd7L9/Ti7Ygq1bD48v/fw1ANOB3dltCb58TYF0lhBsWLshntVXNnxhyCwsAb6HclDkZO7phdXaTuYaxrpafi6NImZxEVkrKCue9ZjSi8InRkc/2o5LowGT3lw7vvNdnSCNC1M9YCPbjQ4QfFNJDLJEj+FGuTolSzY9QyxZdz9RFI/jGhZELMcRUeu6EmCe6YhzIg==
-X-Gm-Message-State: AOJu0YzzUdvextnZiTqSSk+ImXXLKhDufK3V/g2OhuYdKsw/G24I+QgQ
-	iL7jrKW6X7ShFHU1mDAsEwdw1K7ZwRqIw8bFq0dwp2Y7AGA4xJVCzNw+fkwK
-X-Google-Smtp-Source: AGHT+IEAUSBFeu+UyER5srYHIDsL4ueH8psy5WbTbQUcX4H2C3ae5yNkubqlnwrL6NHxRtJi8gXRuw==
-X-Received: by 2002:a17:902:e84d:b0:1f6:8466:e4d7 with SMTP id d9443c01a7336-1f6d03c0d9bmr7664275ad.51.1717703799114;
-        Thu, 06 Jun 2024 12:56:39 -0700 (PDT)
-Received: from localhost ([2804:30c:167a:4100:8407:a7e5:9b87:8081])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd76075bsm19243465ad.40.2024.06.06.12.56.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 12:56:38 -0700 (PDT)
-Date: Thu, 6 Jun 2024 16:57:52 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de,
-	Michael.Hennerich@analog.com, jic23@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	nuno.sa@analog.com, dlechner@baylibre.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] spi: Add SPI mode bit for MOSI idle state
- configuration
-Message-ID: <ZmIUwHhjAUzZnfW5@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1717539384.git.marcelo.schmitt@analog.com>
- <e1d5d57f7a7481c84f64a764f9898122e278739b.1717539384.git.marcelo.schmitt@analog.com>
- <0a716b10-0ae0-425f-919a-ea5d8b7975b6@sirena.org.uk>
+	s=arc-20240116; t=1717703904; c=relaxed/simple;
+	bh=Ew+uJIHo1tIv3V3cIwq+PSc8g98kQVzDQiK0ACMNhjc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=epQGY8xmgH0SrCHbt39puAh7E+0feOkLwhwUygreDAREHFy2ij2h6kUzZwGgk/is7UaVKn49zqCOB7vJ5jmlevpWe5Ac2eJPmOM8GTevnjYI7yqDJhgSPauyQEzx7HRlpVBIjhx9rjuAseDz+B3W3e2mhXmn6JHFysrfjFmzQ/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kxw0PvxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B09AC2BD10;
+	Thu,  6 Jun 2024 19:58:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717703903;
+	bh=Ew+uJIHo1tIv3V3cIwq+PSc8g98kQVzDQiK0ACMNhjc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Kxw0PvxZlvq15FdUzivZMcou6nAZV13taDbuK/NcPoGENpZmvccKY9eOC1Trn7u+d
+	 8KmYAxQ/4bKhzl/LMlp+kPI6D3uOAu1jMM99XckQ6/hp7r/qPIwNKTpoCyD6cdQXKj
+	 5p94n0MwBhXTpu7HX0kRqMOWqx3SE98CfaonMv3PEFbtqHwAhwFM67WH8hsZ7mZGdw
+	 li2/G/wYPqzoZEppGcvUCH2hwJ/MvYjC9iCUq3PnDZYTDOMw22KF8QNpNQF9ujOf+Y
+	 UFVhgxDIqQtqv7I8mpJrBLFli0ULUwsm0K6NmiodGfbPWOb1PqPB+DRyL7G3U09xuB
+	 R8Rg64G1sreSw==
+Date: Thu, 6 Jun 2024 20:58:13 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
+Cc: Dumitru Ceclan via B4 Relay
+ <devnull+dumitru.ceclan.analog.com@kernel.org>, dumitru.ceclan@analog.com,
+ Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/6] dt-bindings: adc: ad7173: add support for ad411x
+Message-ID: <20240606205813.65b342c4@jic23-huawei>
+In-Reply-To: <0f0c0b92-af0d-4e68-9880-bacfd53d726f@gmail.com>
+References: <20240531-ad4111-v4-0-64607301c057@analog.com>
+	<20240531-ad4111-v4-1-64607301c057@analog.com>
+	<20240601193512.0e17992b@jic23-huawei>
+	<efa10caa-5e78-4f3f-8cca-c61d7a01e6fd@gmail.com>
+	<20240603210014.6258134d@jic23-huawei>
+	<0f0c0b92-af0d-4e68-9880-bacfd53d726f@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0a716b10-0ae0-425f-919a-ea5d8b7975b6@sirena.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Wed, 5 Jun 2024 09:54:31 +0300
+"Ceclan, Dumitru" <mitrutzceclan@gmail.com> wrote:
 
-On 06/05, Mark Brown wrote:
-> On Tue, Jun 04, 2024 at 07:41:47PM -0300, Marcelo Schmitt wrote:
-> 
-> > The behavior of an SPI controller data output line (SDO or MOSI or COPI
-> > (Controller Output Peripheral Input) for disambiguation) is not specified
-> > when the controller is not clocking out data on SCLK edges. However, there
-> > exist SPI peripherals that require specific COPI line state when data is
-> > not being clocked out of the controller.
-> 
-> This is an optimisation for accelerating devices that need a specific
-> value, really if these devices need a value they should send it.
+> On 03/06/2024 23:00, Jonathan Cameron wrote:
+> > On Mon, 3 Jun 2024 12:46:10 +0300
+> > "Ceclan, Dumitru" <mitrutzceclan@gmail.com> wrote:
+> >  =20
+> >> On 01/06/2024 21:35, Jonathan Cameron wrote: =20
+> >>> On Fri, 31 May 2024 22:42:27 +0300
+> >>> Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel=
+.org> wrote:
+> >>>    =20
+> >>>> From: Dumitru Ceclan <dumitru.ceclan@analog.com> =20
+>=20
+> ...
+>=20
+> >>>> +          Supported only by AD7172-2, AD7172-4, AD7175-2, AD7175-8,=
+ AD7177-2:
+> >>>> +            19: ((AVDD1 =E2=88=92 AVSS)/5)+
+> >>>> +            20: ((AVDD1 =E2=88=92 AVSS)/5)=E2=88=92   =20
+> >>>
+> >>> That's what it says on the datasheet (so fine to copy that here) but =
+I'm curious, what does
+> >>> that mean in practice?  How can we have negative and postive signals =
+of the difference
+> >>> between two power supply voltages where I'm fairly sure AVDD1 always =
+greater than AVSS.
+> >>>   =20
+> >>
+> >> I have not tested that as I do not have a model that supports this wir=
+ed up.
+> >> If I had to guess they are the same signal but one should be connected=
+ to the
+> >> positive input, one to the negative input...but I could be wrong. =20
+> >=20
+> > If they are, then as far as I we are concerned is this one channel with=
+ two
+> > representations depending on whether it is 1st or 2nd in the list?
+> > Can we use one number and hide that detail in the driver?
+> >=20
+> > Seems odd though if that is the case.
+> >=20
+> > I guess if we find out later this is the case we can tighten the bindin=
+g to
+> > enforce the right one instead of squashing them to one value, but that
+> > is a bit ugly.  Any chance of digging out the info?  If not we can go a=
+head
+> > but ideally answering things like this make a our life easier in the lo=
+ng run.
+> >=20
+> > Jonathan
+> >  =20
+>=20
+> "(Avdd1/Avss)/5+ as positive input and (Avdd/Avss)/5- as negative
+>   this is used for monitoring power supplies, the inputs must be selected=
+ in pair"
+> Perhaps it's an internal voltage divider...? I dunno
+>=20
+> So it seems like this cannot be used as a common mode voltage input.
+> I'll restrict the driver to only allow these inputs paired together
+> and rename the define for these selections.
+Most mysterious :)  I'd be interested to know what value it reads
+back if you ever get the part.
 
-I see it more like an extension of SPI controller functionality.
-Though I guess it might also be used for optimization if tx is known to be
-always 0s or always 1s for a device.
+Ah well, great to have gotten that extra detail even if it leaves
+more questions!
 
-> 
-> >  #define SPI_MOSI_IDLE_LOW	_BITUL(17)	/* leave mosi line low when idle */
-> > +#define SPI_MOSI_IDLE_HIGH	_BITUL(18)	/* leave mosi line high when idle */
-> 
-> Realistically we'll have a large set of drivers that are expecting the
-> line to be held low so I'm not sure we need that option.  I would also
-Yes, I also think most SPI devices, if ever requiring anything, would
-expect the MOSI line to be low. But this patchset is about the exception to that. :)
+Jonathan
 
-> expect to have an implementation of these options in the core which
-> supplies buffers with the relevant data for use with controllers that
-> don't have the feature (similar to how _MUST_TX and _MUST_RX are done).
-> Even without that we'd need feature detection so that drivers that try
-> to use this aren't just buggy when used with a controller that doesn't
-> implement it, but once you're detecting you may as well just make things
-> work.
+>=20
+>=20
+>=20
 
-As far as I searched, the definitions for SPI protocol usually don't specify any
-behavior for the MOSI line when the controller is not clocking out data.
-So, I think SPI controllers that are not capable of implementing any type
-of MOSI idle configuration are anyway compliant to what is usual SPI.
-For those that can implement such feature, I thought peripherals could request
-it by setting SPI mode bits.
-If the controller can provide MOSI idle state configuration, then the controller
-sets itself to act according to what peripheral asked.
-If MOSI idle configuration is not supported, then we just move on and let
-peripheral driver adapt to what is supported?
-Guess we can't blame an SPI controller for it not supporting something that is
-not specified in usual SPI protocols.
-
-But yeah, it's not that evident what this patch set is all about and why this is
-wanted so I made a wiki page to explain the reasoning for this set.
-https://wiki.analog.com/software/linux/docs/spi/spi_copi_idle?rev=1717699755
-Hopefully the figures with timing diagrams and transfer captures there will 
-provide quicker understanding of this rather than I try to explain it with
-only text.
-
-If you still think we need feature detection for MOSI idle capability just let
-me know, I'll implement what be needed.
-
-Thanks,
-Marcelo
 

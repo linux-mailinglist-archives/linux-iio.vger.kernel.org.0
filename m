@@ -1,147 +1,126 @@
-Return-Path: <linux-iio+bounces-6024-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6031-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF30B900A2B
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 18:18:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35BED900A5A
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 18:29:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9F071C216EB
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 16:18:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C72F51F22200
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 16:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00EC19A2A8;
-	Fri,  7 Jun 2024 16:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B08719B599;
+	Fri,  7 Jun 2024 16:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="R4U5rZz5"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="VNIx7AMT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA596D1B9;
-	Fri,  7 Jun 2024 16:18:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB7119AD46;
+	Fri,  7 Jun 2024 16:28:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717777099; cv=none; b=YlTVQd+H3XrQro0low24h+9xF1A7o9Nx4k3j6bytwh77uV+xyGqis/17cGzgbuvnFbSScFZUlw2zFM8aXkT1SIlfhxZQ56ObwkI3rqcCzHwdRpoi+vdQ3uBUSiK/ui+uZqQYeAAApAbbx0oBXbhiM6xv5kv86FMcvOEoufKUwAE=
+	t=1717777737; cv=none; b=IOu/JGTMMQUe1PHuoELxqkcDD+G5tXPp+9alzbrzBvOZySAeLiTdqFIcEWBcR2yR2yNOWkP4VKnyohGNxRo1N3Ssclkim7KqcEs+Gu8XPysrQNzW56F9Y7k2LwHfh/kKoPekVKK7OyOYrHqMiajsqFajuTqmCf9UXpGJfWN8E28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717777099; c=relaxed/simple;
-	bh=62rTEi5JGTfNytOFoVt4sTFxXodoPen0JmPPMiO6/W8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=kxPkQREgeGFafdT/9wGQ5Q8ezXGzJ1vDbp+CDkhUpfx78+6jDrggztEsiV8cIPjSyQi25EkdsZCmgrwtrW8fkFM3p6bgi5NQL8BEoSmCCLiTMbvk8TtDrIZ3XCM4wXHr/4SdILvn8uEcuPwv5ZtgGAvodQWuAPjgz5bkO/lDSX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=R4U5rZz5; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 457DcGqu031633;
-	Fri, 7 Jun 2024 16:17:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=qcppdkim1; bh=AOfebpdrL/lq80KY6gYHFI
-	wPkcYngdV1lGgArMf6bMY=; b=R4U5rZz5miea+u0T0gJgDWYjqSxRdEEkV4E9eZ
-	xqrTERd1fx649Lk1DLaI1Z94hJSpBGlmvNb2Enu8u0zpp617JLR06p6YuBAUxLtT
-	1ART9FQMj2KzeStj0MqcWFtLyR4JZHJcR5k6amQaSKRHkMH4TSxqRInbQDzwGucc
-	OqWze0CeZBDN43cks8pFK+58ZCEF/51XPrW3eMFqaGe78Nj0z/PMoFpSBZGgT4HK
-	0bBAyepk61ARl0y/cGZUosDbMhvyCJxXbkOFpf8VTRoT4TFgjS7METiSlkMk3QIS
-	y0Oj+rQlySjp/vTjV1VACW/ceBHOpBWgyoMAPU1GeqseBpXA==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yk8tcc493-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Jun 2024 16:17:55 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 457GHs2v012396
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 7 Jun 2024 16:17:54 GMT
-Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 7 Jun 2024
- 09:17:53 -0700
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
-Date: Fri, 7 Jun 2024 09:17:52 -0700
-Subject: [PATCH] iio: add missing MODULE_DESCRIPTION() macros
+	s=arc-20240116; t=1717777737; c=relaxed/simple;
+	bh=9r1L8vpxZoxo2+rCjavv5ZRVk3uQ698rdzteAhQsQXc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oN7qR4Ue/SlYb/SWB1uvUdL3k0LPNOsjhaKM0AjTQMTtPLqzXuqLKG0560nhtRYj7I7ZXGs+lVmSK+Z6fIYWHVD4jcAiL1ZB7/PkmhyewJ6dfBbcxrGmcF+YsxAtdLXXcsV27waC7IekoixANh1XZ6aZnW6uHmj7bkZkQq1040M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=VNIx7AMT; arc=none smtp.client-ip=198.47.23.249
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 457GRuu2075995;
+	Fri, 7 Jun 2024 11:27:56 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1717777676;
+	bh=kno6ACLOq8Y9n1TpA0E35jfWU5eoBQgLbX+JqdbSDCA=;
+	h=From:To:CC:Subject:Date;
+	b=VNIx7AMT27XFAmnO7PMzAreOl+ioVwJzyQFCwWNDxzudb/PxOgbew0YBI2SaTp9dw
+	 xzazxmENrODeARNwb/Umgy+YOVUr0l83DP8VF80yFxbYEX1I02DfHkwHTwVJrqymBa
+	 T1dYjYxYngEdywuIxHUEBgdm45hjMpP+eIv7E4P4=
+Received: from DFLE110.ent.ti.com (dfle110.ent.ti.com [10.64.6.31])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 457GRuxj016585
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 7 Jun 2024 11:27:56 -0500
+Received: from DFLE110.ent.ti.com (10.64.6.31) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 7
+ Jun 2024 11:27:56 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE110.ent.ti.com
+ (10.64.6.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 7 Jun 2024 11:27:55 -0500
+Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 457GRt1g068019;
+	Fri, 7 Jun 2024 11:27:55 -0500
+From: Judith Mendez <jm@ti.com>
+To: Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        William Breathitt Gray <william.gray@linaro.org>
+CC: David Lechner <david@lechnology.com>,
+        <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        Nishanth Menon
+	<nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH v3 0/8] Enable eQEP DT support for Sitara K3 platforms
+Date: Fri, 7 Jun 2024 11:27:47 -0500
+Message-ID: <20240607162755.366144-1-jm@ti.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240607-md-drivers-iic-v1-1-9f9db6246083@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAK8yY2YC/x3MwQqDMAyA4VeRnBeoRRzuVYaHtI0zMDtJpgjiu
- 1s9fof/38FYhQ1e1Q7Kq5j8ckH9qCCOlD+MkorBO9+41j1xSphUVlZDkYiRQuMddZ2vWyjRrDz
- Idg/ffXEgYwxKOY7X5it52XAi+7PCcZz7T12QfwAAAA==
-To: Paul Cercueil <paul@crapouillou.net>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Anand Ashok Dumbre
-	<anand.ashok.dumbre@xilinx.com>,
-        Michal Simek <michal.simek@amd.com>
-CC: <linux-mips@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-        <kernel-janitors@vger.kernel.org>,
-        Jeff Johnson <quic_jjohnson@quicinc.com>
-X-Mailer: b4 0.13.0
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: _z9vmYdy_Nn8E46Sf6JPtW5yxZ0HYiZQ
-X-Proofpoint-GUID: _z9vmYdy_Nn8E46Sf6JPtW5yxZ0HYiZQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-07_09,2024-06-06_02,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
- clxscore=1011 malwarescore=0 suspectscore=0 phishscore=0 impostorscore=0
- mlxlogscore=912 priorityscore=1501 spamscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
- definitions=main-2406070118
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-make allmodconfig && make W=1 C=1 reports:
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/adc/ingenic-adc.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/adc/xilinx-ams.o
-WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/buffer/kfifo_buf.o
+This patch series adds eQEP DT nodes for K3 Sitara devices:
+- AM62x
+- AM62ax
+- AM62px
+- AM64x
 
-Add the missing invocations of the MODULE_DESCRIPTION() macro.
+The series also allows the eQEP driver to be built for K3
+architecture.
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
----
- drivers/iio/adc/ingenic-adc.c  | 1 +
- drivers/iio/adc/xilinx-ams.c   | 1 +
- drivers/iio/buffer/kfifo_buf.c | 1 +
- 3 files changed, 3 insertions(+)
+Changes since v2:
+- Drop patch 8/8 ("Enable TI eQEP Driver")
+- Enable eQEP0 in k3-am64 SK board
+- Make clock-name optional for ti,am3352-eqep compatible
+ and do not allow for ti,am62-eqep compatible
 
-diff --git a/drivers/iio/adc/ingenic-adc.c b/drivers/iio/adc/ingenic-adc.c
-index a7325dbbb99a..af70ca760797 100644
---- a/drivers/iio/adc/ingenic-adc.c
-+++ b/drivers/iio/adc/ingenic-adc.c
-@@ -920,4 +920,5 @@ static struct platform_driver ingenic_adc_driver = {
- 	.probe = ingenic_adc_probe,
- };
- module_platform_driver(ingenic_adc_driver);
-+MODULE_DESCRIPTION("ADC driver for the Ingenic JZ47xx SoCs");
- MODULE_LICENSE("GPL v2");
-diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
-index f0b71a1220e0..ee45475c495b 100644
---- a/drivers/iio/adc/xilinx-ams.c
-+++ b/drivers/iio/adc/xilinx-ams.c
-@@ -1430,5 +1430,6 @@ static struct platform_driver ams_driver = {
- };
- module_platform_driver(ams_driver);
- 
-+MODULE_DESCRIPTION("Xilinx AMS driver");
- MODULE_LICENSE("GPL v2");
- MODULE_AUTHOR("Xilinx, Inc.");
-diff --git a/drivers/iio/buffer/kfifo_buf.c b/drivers/iio/buffer/kfifo_buf.c
-index 05b285f0eb22..38034c8bcc04 100644
---- a/drivers/iio/buffer/kfifo_buf.c
-+++ b/drivers/iio/buffer/kfifo_buf.c
-@@ -287,4 +287,5 @@ int devm_iio_kfifo_buffer_setup_ext(struct device *dev,
- }
- EXPORT_SYMBOL_GPL(devm_iio_kfifo_buffer_setup_ext);
- 
-+MODULE_DESCRIPTION("Industrial I/O buffering based on kfifo");
- MODULE_LICENSE("GPL");
+Link to v2: https://lore.kernel.org/linux-devicetree/20240523231516.545085-1-jm@ti.com/
+Link to v1: https://lore.kernel.org/linux-devicetree/20240418221417.1592787-1-jm@ti.com/
 
----
-base-commit: 19ca0d8a433ff37018f9429f7e7739e9f3d3d2b4
-change-id: 20240607-md-drivers-iic-cab420a99216
+Judith Mendez (8):
+  dt-bindings: counter: Add new ti,am62-eqep compatible
+  counter/ti-eqep: Add new ti-am62-eqep compatible
+  arm64: dts: ti: k3-am62-main: Add eQEP nodes
+  arm64: dts: ti: k3-am62a-main: Add eQEP nodes
+  arm64: dts: ti: k3-am62p-main: Add eQEP nodes
+  arm64: dts: ti: k3-am64-main: Add eQEP nodes
+  arm64: dts: ti: k3-am64x-sk: Enable eQEP
+  counter: ti-eqep: Allow eQEP driver to be built for K3 devices
+
+ .../devicetree/bindings/counter/ti-eqep.yaml  | 44 ++++++++++++++++---
+ arch/arm64/boot/dts/ti/k3-am62-main.dtsi      | 27 ++++++++++++
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi     | 27 ++++++++++++
+ arch/arm64/boot/dts/ti/k3-am62p-main.dtsi     | 27 ++++++++++++
+ arch/arm64/boot/dts/ti/k3-am64-main.dtsi      | 27 ++++++++++++
+ arch/arm64/boot/dts/ti/k3-am642-sk.dts        | 18 ++++++++
+ drivers/counter/Kconfig                       |  2 +-
+ drivers/counter/ti-eqep.c                     |  1 +
+ 8 files changed, 167 insertions(+), 6 deletions(-)
+
+-- 
+2.45.1
 
 

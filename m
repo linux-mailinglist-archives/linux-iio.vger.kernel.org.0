@@ -1,52 +1,52 @@
-Return-Path: <linux-iio+bounces-6011-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6012-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2029007D0
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 16:57:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CDF29007D1
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 16:57:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A11028115D
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 14:57:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BBCD11F21C4B
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 14:57:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C0419FA89;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE3C119FA94;
 	Fri,  7 Jun 2024 14:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVQh/KfG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="meKX77Yo"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843C319AD4E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CA01990D8;
 	Fri,  7 Jun 2024 14:53:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717771989; cv=none; b=kdnbM7k3RuZXNl7iprpysSE000k6BtS6toryqRwCQlU43PLBfNF0RvFUIWV+hu9eNHmBmSQiI/DNnaCS+aFMGC9TJIsS95+69wcmh2ivXm451tUs//ruB5ubUIAOUQJIiObroAegRyZQwJbM3/MjuuKX1LPagCXrM0aItd287gU=
+	t=1717771989; cv=none; b=BLfKoA0JC8MTMFwuKz2KQsrznC+wBABCM57InY/unG3jCyOoGPbSMpx9uja8gG44HajGC/cg049zsvwO4jkD1oLpoq5jGLWK8U+4Qi0L0yrKD59eeOyivqYIr9vK0WqE337tWw9GTfReYYhtl10IYg65zINsJHfrgeO0CEL+7RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1717771989; c=relaxed/simple;
-	bh=xcuxBrlSws3J8lQ6OqB/YCoAxggGql0QiFdu4jtoQoA=;
+	bh=jF1hYS+Xw8/uu5A6FAN+qO2D3BAQBvvCsaYhMGqhiTo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=btah4ejKShJ9SXYGtP4IiCrsXEpq/NBw8luPVU7KtC1v7ZlgqD/zVDaqrVea52HqYKKiAsjCbnFQcZDmlwU9S4XQYF6FrkEN0OHUhtW0ko3zPu5pNE+KWKEdTBHmJjtsELb+FrNT0xOfgx20A9iioJi2haPcrk0pA9LfTds/ckA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVQh/KfG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 2E5AFC3277B;
+	 In-Reply-To:To:Cc; b=KQc5njWEkzPrAQq47sSU5ZKy6A4XF52/A4+g9Z1VXCf5YwSQSLShYvK8MZ4yO3oXNRZdtQq2k/ShUDVRG08bt16AdjEnjDNnlJdM9tQZ0xJ6AWrnqlg4NA8IDQk4q4woRm/hHEZiYeXoBQ2SXQm0TjBQ7umJr3QWuVGvNOP/RL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=meKX77Yo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 39FF0C4AF0E;
 	Fri,  7 Jun 2024 14:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1717771989;
-	bh=xcuxBrlSws3J8lQ6OqB/YCoAxggGql0QiFdu4jtoQoA=;
+	bh=jF1hYS+Xw8/uu5A6FAN+qO2D3BAQBvvCsaYhMGqhiTo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=EVQh/KfG+lUF8UCGi+EGW+0sX/Gn3cDdr8Ig/fTtdQmr+pu5nSQsdcxBBN3xJUYsI
-	 sGUpjDF/Dbbr+virNcchVvuCRVzq7hY4nWNPGfN6pmLer/ATJwLTOHwXq981UcRNEo
-	 cA+3caq8TsoanvwkvONPhDhwBWltKvDnbqAIfxfBECC9jISB9DsB6OawbT4QVXrhJ8
-	 C16AzB3t1WkKkZbrXCSGX/Umn58HMc1cMBXGncYyew0LtlihTiPo1ZtHZt/i6c3aqe
-	 LwmHu02EHljBbsybQ9huNEKFPGKO4MZ2l2CUVyxEnZ90DkOneEVMtJnOxoSaLvdrLA
-	 9YuOJo7D9dFVA==
+	b=meKX77Yoa5B0qj4CD824ZHcUc82aH3pnjlPxdtFhAjn5uRPNP/82wY01RskFarjqj
+	 3tLfqkpMrj2k6ownHWmmdeaSWjvQ3F78UUPZ7eG9Ud2OhBIIT7Xq8VcEhyjsesi5z/
+	 aytcwAmf7MqeNfKpJuvxMH64aQIJFZvSs/MjkVWa8kTN9fWcWVA9VUTN2jDuTpn0bx
+	 ySfiSeBAekiXed3M6gG9YIjPe0XLDJVYIY2GGTbgRcnuU7Zt6UK8pQuw5JuoCtEdy4
+	 0WFTRyEnAFE4DCdEvtbNGtMFD6A1X2UKxEI6Q+kpIvQFnEyLqyUEoJPQfu4nNq4R0h
+	 ydK56I+qV2rZA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AD0FC27C6F;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 307FCC27C5F;
 	Fri,  7 Jun 2024 14:53:09 +0000 (UTC)
 From: Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org>
-Date: Fri, 07 Jun 2024 17:53:08 +0300
-Subject: [PATCH v7 2/9] dt-bindings: adc: ad7173: add support for ad411x
+Date: Fri, 07 Jun 2024 17:53:09 +0300
+Subject: [PATCH v7 3/9] iio: adc: ad_sigma_delta: add disable_one callback
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -54,8 +54,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240607-ad4111-v7-2-97e3855900a0@analog.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240607-ad4111-v7-3-97e3855900a0@analog.com>
 References: <20240607-ad4111-v7-0-97e3855900a0@analog.com>
 In-Reply-To: <20240607-ad4111-v7-0-97e3855900a0@analog.com>
 To: Ceclan Dumitru <dumitru.ceclan@analog.com>
@@ -66,13 +66,13 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
  Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>, 
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
  linux-kernel@vger.kernel.org, Dumitru Ceclan <mitrutzceclan@gmail.com>, 
- Conor Dooley <conor.dooley@microchip.com>
+ Nuno Sa <nuno.sa@analog.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1717771987; l=8825;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1717771987; l=5816;
  i=dumitru.ceclan@analog.com; s=20240313; h=from:subject:message-id;
- bh=p0G0qMDrHbK+iwW+sUbPCXvkkGSNrw1aRc71eyBZ1K4=;
- b=QFowa7dDbRnk6QIu7dzMTsBbtU3hnjiE+vwXXjNAr4UrpPGlUyH7SFUjPRY/c+Ua5OkuBw21b
- PJ9uosuS7vnCAhskIRivODdi+aNwNd1dwWldQvTjf9+Rac+O8E0jqiM
+ bh=L9cR6TgpFTXo/pEkA7l2c0LKsp4wR/2/7ocp+j3+FrY=;
+ b=H9GHO1Hr46Dze1nAGn2DyeyGmAqoN00NlZ3/JmlIsmn+4giLZLDguUMnopNta0JLuKhlyKXxA
+ /h6lPWiX8oPD4DElT/01u9r3bW92TC/jVLXWQH1C20bfFVNHNGrWfDT
 X-Developer-Key: i=dumitru.ceclan@analog.com; a=ed25519;
  pk=HdqMlVyrcazwoiai7oN6ghU+Bj1pusGUFRl30jhS7Bo=
 X-Endpoint-Received: by B4 Relay for dumitru.ceclan@analog.com/20240313
@@ -82,287 +82,154 @@ Reply-To: dumitru.ceclan@analog.com
 
 From: Dumitru Ceclan <dumitru.ceclan@analog.com>
 
-Add support for: AD4111, AD4112, AD4114, AD4115, AD4116.
+Sigma delta ADCs with a sequencer need to disable the previously enabled
+channel when reading using ad_sigma_delta_single_conversion(). This was
+done manually in drivers for devices with sequencers.
 
-AD411x family ADCs support a VCOM pin. The purpose of this pin is to
-offer a dedicated common-mode voltage input for single-ended channels.
-This pin is specified as supporting a differential channel with VIN10 on
-model AD4116.
+This patch implements handling of single channel disabling after a
+single conversion.
 
-AD4111/AD4112 support current channels. Support is implemented using
-single-channel and "adi,current-channel".
-
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
 ---
- .../devicetree/bindings/iio/adc/adi,ad7173.yaml    | 194 ++++++++++++++++++++-
- 1 file changed, 192 insertions(+), 2 deletions(-)
+ drivers/iio/adc/ad7124.c               | 14 ++++++++------
+ drivers/iio/adc/ad7173.c               | 11 ++++++-----
+ drivers/iio/adc/ad_sigma_delta.c       |  6 ++++++
+ include/linux/iio/adc/ad_sigma_delta.h | 14 ++++++++++++++
+ 4 files changed, 34 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-index ea6cfcd0aff4..17c5d39cc2c1 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7173.yaml
-@@ -19,7 +19,18 @@ description: |
-   primarily for measurement of signals close to DC but also delivers
-   outstanding performance with input bandwidths out to ~10kHz.
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index e7b1d517d3de..3beed78496c5 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -555,10 +555,18 @@ static int ad7124_disable_all(struct ad_sigma_delta *sd)
+ 	return 0;
+ }
  
-+  Analog Devices AD411x ADC's:
-+  The AD411X family encompasses a series of low power, low noise, 24-bit,
-+  sigma-delta analog-to-digital converters that offer a versatile range of
-+  specifications. They integrate an analog front end suitable for processing
-+  fully differential/single-ended and bipolar voltage inputs.
++static int ad7124_disable_one(struct ad_sigma_delta *sd, unsigned int chan)
++{
++	struct ad7124_state *st = container_of(sd, struct ad7124_state, sd);
 +
-   Datasheets for supported chips:
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4111.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4112.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4114.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4115.pdf
-+    https://www.analog.com/media/en/technical-documentation/data-sheets/AD4116.pdf
-     https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-2.pdf
-     https://www.analog.com/media/en/technical-documentation/data-sheets/AD7172-4.pdf
-     https://www.analog.com/media/en/technical-documentation/data-sheets/AD7173-8.pdf
-@@ -31,6 +42,11 @@ description: |
- properties:
-   compatible:
-     enum:
-+      - adi,ad4111
-+      - adi,ad4112
-+      - adi,ad4114
-+      - adi,ad4115
-+      - adi,ad4116
-       - adi,ad7172-2
-       - adi,ad7172-4
-       - adi,ad7173-8
-@@ -129,10 +145,56 @@ patternProperties:
-         maximum: 15
++	return ad7124_spi_write_mask(st, AD7124_CHANNEL(chan), AD7124_CHANNEL_EN_MSK, 0, 2);
++}
++
+ static const struct ad_sigma_delta_info ad7124_sigma_delta_info = {
+ 	.set_channel = ad7124_set_channel,
+ 	.append_status = ad7124_append_status,
+ 	.disable_all = ad7124_disable_all,
++	.disable_one = ad7124_disable_one,
+ 	.set_mode = ad7124_set_mode,
+ 	.has_registers = true,
+ 	.addr_shift = 0,
+@@ -582,12 +590,6 @@ static int ad7124_read_raw(struct iio_dev *indio_dev,
+ 		if (ret < 0)
+ 			return ret;
  
-       diff-channels:
-+        description: |
-+          This property is used for defining the inputs of a differential
-+          voltage channel. The first value is the positive input and the second
-+          value is the negative input of the channel.
-+
-+          Family AD411x supports a dedicated VINCOM voltage input.
-+          To select it set the second channel to 16.
-+            (VIN2, VINCOM) -> diff-channels = <2 16>
-+
-+          There are special values that can be selected besides the voltage
-+          analog inputs:
-+            21: REF+
-+            22: REF−
-+
-+          Supported only by AD7172-2, AD7172-4, AD7175-2, AD7175-8, AD7177-2,
-+          must be paired together and can be used to monitor the power supply
-+          of the ADC:
-+            19: ((AVDD1 − AVSS)/5)+
-+            20: ((AVDD1 − AVSS)/5)−
-+
-         items:
-           minimum: 0
-           maximum: 31
+-		/* After the conversion is performed, disable the channel */
+-		ret = ad_sd_write_reg(&st->sd, AD7124_CHANNEL(chan->address), 2,
+-				      st->channels[chan->address].ain | AD7124_CHANNEL_EN(0));
+-		if (ret < 0)
+-			return ret;
+-
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		mutex_lock(&st->cfgs_lock);
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index 638e2468efbf..f3088e8b4b8b 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -569,10 +569,16 @@ static int ad7173_disable_all(struct ad_sigma_delta *sd)
+ 	return 0;
+ }
  
-+      single-channel:
-+        description: |
-+          This property is used for defining a current channel or the positive
-+          input of a voltage channel (single-ended or pseudo-differential).
++static int ad7173_disable_one(struct ad_sigma_delta *sd, unsigned int chan)
++{
++	return ad_sd_write_reg(sd, AD7173_REG_CH(chan), 2, 0);
++}
 +
-+          Models AD4111 and AD4112 support current channels.
-+            Example: (IIN2+, IIN2−) -> single-channel = <2>
-+          To correctly configure a current channel set the "adi,current-channel"
-+          property to true.
-+
-+          To configure a single-ended/pseudo-differential channel set the
-+          "common-mode-channel" property to the desired negative voltage input.
-+
-+          When used as a voltage channel, special inputs are valid as well.
-+        minimum: 0
-+        maximum: 31
-+
-+      common-mode-channel:
-+        description:
-+          This property is used for defining the negative input of a
-+          single-ended or pseudo-differential voltage channel.
-+
-+          Special inputs are valid as well.
-+        minimum: 0
-+        maximum: 31
-+
-       adi,reference-select:
-         description: |
-           Select the reference source to use when converting on
-@@ -154,9 +216,31 @@ patternProperties:
-           - avdd
-         default: refout-avss
+ static struct ad_sigma_delta_info ad7173_sigma_delta_info = {
+ 	.set_channel = ad7173_set_channel,
+ 	.append_status = ad7173_append_status,
+ 	.disable_all = ad7173_disable_all,
++	.disable_one = ad7173_disable_one,
+ 	.set_mode = ad7173_set_mode,
+ 	.has_registers = true,
+ 	.addr_shift = 0,
+@@ -668,11 +674,6 @@ static int ad7173_read_raw(struct iio_dev *indio_dev,
+ 		if (ret < 0)
+ 			return ret;
  
-+      adi,current-channel:
-+        $ref: /schemas/types.yaml#/definitions/flag
-+        description: |
-+          Signal that the selected inputs are current channels.
-+          Only available on AD4111 and AD4112.
-+
-     required:
-       - reg
--      - diff-channels
-+
-+    allOf:
-+      - oneOf:
-+          - required: [single-channel]
-+            properties:
-+              diff-channels: false
-+          - required: [diff-channels]
-+            properties:
-+              single-channel: false
-+              adi,current-channel: false
-+              common-mode-channel: false
-+
-+      - if:
-+          required: [common-mode-channel]
-+        then:
-+          properties:
-+            adi,current-channel: false
+-		/* disable channel after single conversion */
+-		ret = ad_sd_write_reg(&st->sd, AD7173_REG_CH(chan->address), 2, 0);
+-		if (ret < 0)
+-			return ret;
+-
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		if (chan->type == IIO_TEMP) {
+diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_delta.c
+index 97a05f325df7..ec34b3d1336f 100644
+--- a/drivers/iio/adc/ad_sigma_delta.c
++++ b/drivers/iio/adc/ad_sigma_delta.c
+@@ -321,6 +321,7 @@ int ad_sigma_delta_single_conversion(struct iio_dev *indio_dev,
  
- required:
-   - compatible
-@@ -166,7 +250,6 @@ allOf:
-   - $ref: /schemas/spi/spi-peripheral-props.yaml#
+ 	sigma_delta->keep_cs_asserted = false;
+ 	ad_sigma_delta_set_mode(sigma_delta, AD_SD_MODE_IDLE);
++	ad_sigma_delta_disable_one(sigma_delta, chan->address);
+ 	sigma_delta->bus_locked = false;
+ 	spi_bus_unlock(sigma_delta->spi->controller);
+ 	iio_device_release_direct_mode(indio_dev);
+@@ -671,6 +672,11 @@ int ad_sd_init(struct ad_sigma_delta *sigma_delta, struct iio_dev *indio_dev,
+ 			dev_err(&spi->dev, "ad_sigma_delta_info lacks disable_all().\n");
+ 			return -EINVAL;
+ 		}
++
++		if (!info->disable_one) {
++			dev_err(&spi->dev, "ad_sigma_delta_info lacks disable_one().\n");
++			return -EINVAL;
++		}
+ 	}
  
-   # Only ad7172-4, ad7173-8 and ad7175-8 support vref2
--  # Other models have [0-3] channel registers
-   - if:
-       properties:
-         compatible:
-@@ -187,6 +270,37 @@ allOf:
-                 - vref
-                 - refout-avss
-                 - avdd
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad4114
-+              - adi,ad4115
-+              - adi,ad4116
-+              - adi,ad7173-8
-+              - adi,ad7175-8
-+    then:
-+      patternProperties:
-+        "^channel@[0-9a-f]$":
-+          properties:
-+            reg:
-+              maximum: 15
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad7172-2
-+              - adi,ad7175-2
-+              - adi,ad7176-2
-+              - adi,ad7177-2
-+    then:
-+      patternProperties:
-+        "^channel@[0-9a-f]$":
-+          properties:
-             reg:
-               maximum: 3
+ 	if (info->irq_line)
+diff --git a/include/linux/iio/adc/ad_sigma_delta.h b/include/linux/iio/adc/ad_sigma_delta.h
+index 383614ebd760..f8c1d2505940 100644
+--- a/include/linux/iio/adc/ad_sigma_delta.h
++++ b/include/linux/iio/adc/ad_sigma_delta.h
+@@ -37,6 +37,10 @@ struct iio_dev;
+  * @append_status: Will be called to enable status append at the end of the sample, may be NULL.
+  * @set_mode: Will be called to select the current mode, may be NULL.
+  * @disable_all: Will be called to disable all channels, may be NULL.
++ * @disable_one: Will be called to disable a single channel after
++ *		ad_sigma_delta_single_conversion(), may be NULL.
++ *		Usage of this callback expects iio_chan_spec.address to contain
++ *		the value required for the driver to identify the channel.
+  * @postprocess_sample: Is called for each sampled data word, can be used to
+  *		modify or drop the sample data, it, may be NULL.
+  * @has_registers: true if the device has writable and readable registers, false
+@@ -55,6 +59,7 @@ struct ad_sigma_delta_info {
+ 	int (*append_status)(struct ad_sigma_delta *, bool append);
+ 	int (*set_mode)(struct ad_sigma_delta *, enum ad_sigma_delta_mode mode);
+ 	int (*disable_all)(struct ad_sigma_delta *);
++	int (*disable_one)(struct ad_sigma_delta *, unsigned int chan);
+ 	int (*postprocess_sample)(struct ad_sigma_delta *, unsigned int raw_sample);
+ 	bool has_registers;
+ 	unsigned int addr_shift;
+@@ -140,6 +145,15 @@ static inline int ad_sigma_delta_disable_all(struct ad_sigma_delta *sd)
+ 	return 0;
+ }
  
-@@ -210,6 +324,34 @@ allOf:
-           required:
-             - adi,reference-select
- 
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - adi,ad4111
-+              - adi,ad4112
-+              - adi,ad4114
-+              - adi,ad4115
-+              - adi,ad4116
-+    then:
-+      properties:
-+        avdd2-supply: false
++static inline int ad_sigma_delta_disable_one(struct ad_sigma_delta *sd,
++					     unsigned int chan)
++{
++	if (sd->info->disable_one)
++		return sd->info->disable_one(sd, chan);
 +
-+  - if:
-+      properties:
-+        compatible:
-+          not:
-+            contains:
-+              enum:
-+                - adi,ad4111
-+                - adi,ad4112
-+    then:
-+      patternProperties:
-+        "^channel@[0-9a-f]$":
-+          properties:
-+            adi,current-channel: false
++	return 0;
++}
 +
-   - if:
-       anyOf:
-         - required: [clock-names]
-@@ -221,6 +363,7 @@ allOf:
- unevaluatedProperties: false
- 
- examples:
-+  # Example AD7173-8 with external reference connected to REF+/REF-:
-   - |
-     #include <dt-bindings/gpio/gpio.h>
-     #include <dt-bindings/interrupt-controller/irq.h>
-@@ -277,3 +420,50 @@ examples:
-         };
-       };
-     };
-+
-+  # Example AD4111 with current channel and single-ended channel:
-+  - |
-+    #include <dt-bindings/gpio/gpio.h>
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+       adc@0 {
-+        compatible = "adi,ad4111";
-+        reg = <0>;
-+
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+
-+        interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
-+        interrupt-names = "rdy";
-+        interrupt-parent = <&gpio>;
-+        spi-max-frequency = <5000000>;
-+        gpio-controller;
-+        #gpio-cells = <2>;
-+        #clock-cells = <0>;
-+
-+        channel@0 {
-+          reg = <0>;
-+          bipolar;
-+          diff-channels = <4 5>;
-+        };
-+
-+        // Single ended channel VIN2/VINCOM
-+        channel@1 {
-+          reg = <1>;
-+          bipolar;
-+          single-channel = <2>;
-+          common-mode-channel = <16>;
-+        };
-+
-+        // Current channel IN2+/IN2-
-+        channel@2 {
-+          reg = <2>;
-+          single-channel = <2>;
-+          adi,current-channel;
-+        };
-+      };
-+    };
+ static inline int ad_sigma_delta_set_mode(struct ad_sigma_delta *sd,
+ 	unsigned int mode)
+ {
 
 -- 
 2.43.0

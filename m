@@ -1,135 +1,139 @@
-Return-Path: <linux-iio+bounces-6019-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6020-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D50D39007EE
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 17:00:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 678E8900856
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 17:13:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C02511C226EC
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 15:00:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 187AE1F23E2D
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 15:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A90919AD65;
-	Fri,  7 Jun 2024 14:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47A97197548;
+	Fri,  7 Jun 2024 15:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gi/nYlLG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QkCWOoNt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185DC13F42E;
-	Fri,  7 Jun 2024 14:54:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7261F25740;
+	Fri,  7 Jun 2024 15:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717772082; cv=none; b=eCbGZsFGUFRYaTx91ts7/iMyhwnKVRvhB0P7fEV2GQrehqHNrCSfESouWSxuUSxyREWn04RT8QIX/Fjl2gKTGfJ95zZ1UVgep88N7+aPF6TtJyZUvD99ARzy4MSN5EAH8PTz9giNAwt92wRmUcLrLzjFePPRlc1bUnTlXndxSlg=
+	t=1717773176; cv=none; b=VzBFBIPi8gcmMWreVFlQ1PwfhAxagXGACXvmFGETBkxmJTw6ZckZx5vOa9bOMeNoRD5nRw4F5asAXVB2mtIo0m1BsU0IOpdq2PIxYVWW/SxmynEYTFRCOl/z2wi6DgCg2W3y6pxvQYDBvZk+mHjqc6GczDJGjEwsNZO2UzAJ95I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717772082; c=relaxed/simple;
-	bh=CZcl72jk+H5d+pdkzXrnP74ykSCs4Y3XU71rhlOx8Ao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BY5IMZ9GYdLXTku/DXbq2Rf8nx/TJJobAWGzi1Bo5JrrogSm6QZUKS5TImbtWXq0xsNrBXWBdqzCFElnH5bHyBrJRblstgBtNAkJA7U6U2wFFzwNaytQEsDNfLgCmIb+GH+FGhzSRw+6lQPcEapAJNiecjJ6s4XpSiY4/ZjCta8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gi/nYlLG; arc=none smtp.client-ip=209.85.216.48
+	s=arc-20240116; t=1717773176; c=relaxed/simple;
+	bh=RRbnxR6kVfJ9fmXvviuMCAtU+DY4kjQrDHnTVVNV/ck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:Cc:
+	 In-Reply-To:Content-Type; b=jjE6uacyBKc9MdMoRYQiyXan9iihFrjmT8VLr2gj8INxabOwpcsI4ylHmmlaSf+i29JpWzVMA2NOsTuLOTXL4Qgm6BgB0qIVqcZ/Qqqo+Y8yRxhf8U85a9Sq4XA0DUhflv/H5WXM1KhIZw2XTCz1hkxJmUwWsmGJE+IiTYcKufg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QkCWOoNt; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2c254d9bdd6so1985198a91.3;
-        Fri, 07 Jun 2024 07:54:40 -0700 (PDT)
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-42163fed884so11577605e9.1;
+        Fri, 07 Jun 2024 08:12:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717772080; x=1718376880; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=20d7DnsPxSqRDB6xbG1JOI4i8wQkep+sp53p+ESLoEs=;
-        b=Gi/nYlLGqjoUh9huenrysz9ZYBNaxHXXrJi+PTRQA0m++lWdC2yArebLU4hdw3Sc9w
-         DX2O409vMQre/3v+0wLBIC80WqJLxYegFahkypYdy8ZSWnR9tFsMAt87DsctXysbB6yj
-         Mn8xDhlZXkEtTwfdt09urPYcxd1ja0EJuKayPJgilXU0xJbrvX1tjcRth+GCPav1jzUb
-         C/FLneco1opLPnMhtZVVFGnkfMr49laX9RgyPnmh2LHZYsVE4sGvEw+3ZMpsN4GDEia1
-         gd68WJb3ZgTICDAqZ+Sa+nGd6G5/ToR8nWoa4gxUoQNKCBxWWRYdORzaeOJcxprOZPwW
-         P5Cg==
+        d=gmail.com; s=20230601; t=1717773173; x=1718377973; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:cc:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DYxh+g5f5O4azupPwLnK1YGn9F+3wPD8Hs0+Ru70dLI=;
+        b=QkCWOoNtM+1tVCUnsg6jZGdyx3Z2SBedJPyGWErpNfLws+CaJfcYGbeJ5nzNLlSov1
+         roXii2D4NAGhezDVmqupNqlgkooj1+ATf8r0AgjD5MWlTRoGWtjr00IQ8siw+cwWj1Tm
+         v+Ay9MixsrS2mb1vT9YgoOlTraxj4ZtyTfiUPZQ8026yhraDmWQGnzASoxKlzbKer2gL
+         6T7zhEx9tNYW5u0goNhrMVE8UH8wuGRKa1t0TmKgNRO6RoNONOm7SWGOc3LqxoBoYQBr
+         LisiwWyOElcehc0VOzxTjmhh4fWRAEZ9wdhe/k1h5lLPRxQzpzL1hyFC8S0RrJ4POEWk
+         Mo6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717772080; x=1718376880;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=20d7DnsPxSqRDB6xbG1JOI4i8wQkep+sp53p+ESLoEs=;
-        b=pe9TGRrWcbqVbRnNREUIeSuNzQycvTGm8n4pwM/zlHWqmwmaAlz1OMjow3IONE8ngq
-         MVe9/nTmharANExndFTTEHkDah0SoHJ/LNn8Dl+5WX4FRYz3HDbMeGaqX9yCkSFqjfUA
-         3dgzXbXEeT0r5xwb+yIdPsSrP4q6YzY7opRIQ0bby0t7o2ykcWt1BgPPLpErMPvxgEkT
-         bphEOP1AJ8oJZ6+3RKiFB/3Y8gLz7Ujj6GDjO0z3z+TE0UTjLdE2iWz152y/ZYmsIyz/
-         MjqoIb/DHnej8/96aKSokBdcbFOVEF9c00eF0WLFtHKJwVQIPdEHWJbinGpPRRpQILT8
-         1C7A==
-X-Forwarded-Encrypted: i=1; AJvYcCWIeEdShe6ERFNZZpFZ8CZ0JT/c6jiTw95p2unhsM9XZbvD+w6ocl6BdGb5M1oEHeP9RY10u+JtqS63Y+DOqcxGxxEUB2UTv8SMuM58pEhVHKxFW3hRtJIjWiswIT1PK8WJhOz+Yme2k1mxyts4bDrrp8CI6IAaBo0dp87xFB+Vqdi6uUg73L0I5Ex78GqIFegLtVAhLY1fWi8NLuFOog==
-X-Gm-Message-State: AOJu0YzClimwcxTevvck0axCsbAwr6Z6LYK8FPlNQO2pyDpcZvTSzsL3
-	15BtjA2BHVR0SUxF9gMFafa/uhq1QK1NbyDt+gWJC2dPFjxdlNW1
-X-Google-Smtp-Source: AGHT+IGp/9b43tVOiKmoFWW8PL5/JRBReddz9gHhTxuxj6eTU6ExPjxoziORzoVoZQ/D3/H3ePLolw==
-X-Received: by 2002:a17:90a:f0d6:b0:2c2:7dd6:97b with SMTP id 98e67ed59e1d1-2c2bcaf8895mr2620032a91.16.1717772080131;
-        Fri, 07 Jun 2024 07:54:40 -0700 (PDT)
-Received: from localhost ([2804:30c:167a:4100:8407:a7e5:9b87:8081])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c29c20d79fsm3685395a91.4.2024.06.07.07.54.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 07:54:39 -0700 (PDT)
-Date: Fri, 7 Jun 2024 11:55:51 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de,
-	Michael.Hennerich@analog.com, jic23@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	nuno.sa@analog.com, dlechner@baylibre.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/6] spi: Add SPI mode bit for MOSI idle state
- configuration
-Message-ID: <ZmMfd5KvNaao-miE@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1717539384.git.marcelo.schmitt@analog.com>
- <e1d5d57f7a7481c84f64a764f9898122e278739b.1717539384.git.marcelo.schmitt@analog.com>
- <0a716b10-0ae0-425f-919a-ea5d8b7975b6@sirena.org.uk>
- <ZmIUwHhjAUzZnfW5@debian-BULLSEYE-live-builder-AMD64>
- <ZmMQCDCZxyGwqodL@finisterre.sirena.org.uk>
+        d=1e100.net; s=20230601; t=1717773173; x=1718377973;
+        h=content-transfer-encoding:in-reply-to:cc:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DYxh+g5f5O4azupPwLnK1YGn9F+3wPD8Hs0+Ru70dLI=;
+        b=gCqpa6NEotshKJ+B8UkY2QAEvYOepD709YuvaN6kwrfTN+fPzaQpnnnLEtQ4ot99qz
+         EoWnXAYYw1Bsybnl36s1h5jaSENVXv9DTzT8/tsd6nzQj/deg9qAxzcAYenCmgeO+rHP
+         7bIp++4Q1drQJUO0imCdjobuvFAGcTmEcaZmbYl2SeMaWQSZrOeAlmdlAxY5VNUkVTnV
+         jm1jvI0nAESANtbzbkFms79Hx2Aub/WSRMEharrBGSnF9BZUGGnumYqI9NYn4MeF/ttS
+         PDZ6SeX3yH/qDZYcaFSw3Sy+MMeUbTpEMO2RvlIxYeE1h8G8hX8owRN8tajXNFmU3xjM
+         qFuA==
+X-Forwarded-Encrypted: i=1; AJvYcCUst1POenQIMW6OoDnNIXOtJ2anrDInHmeqvrskVYrwvOQi9TpBKXp8S3abyytH2BjTrZFP5cHdRdQmKW5aXP7EZ3n7vl0A3aaUFG3L0xEXYYEMAmTJf8tV0w7oJhuMNJZnXanc4UIYZ1KqBVps29avDeAzspVDIexkuFGM6Mu7rwtF9KJGQlAYqisiZ+zdQGSoyWyKeKS6KmgYM2hr
+X-Gm-Message-State: AOJu0YyG/235pH0W1kOV+bXO3jQs8vgX2iAcSNDrYi5goLJv8EgiT0Mw
+	KfjE5Q6WNInYx80ayE6DTecMc7j9VckCEfXw2l+77I/hy/i6aRA=
+X-Google-Smtp-Source: AGHT+IFLp2nndxaMppnuETVfMi7bIa8z06pB2kDGICrguP3x31uN5dp+Y1PVLgrZrVZPJppD++VRYw==
+X-Received: by 2002:a05:600c:3542:b0:421:494c:9e92 with SMTP id 5b1f17b1804b1-421649f4f8amr23759575e9.14.1717773172505;
+        Fri, 07 Jun 2024 08:12:52 -0700 (PDT)
+Received: from ?IPV6:2a02:810b:f40:4600:7a2c:14dd:f1d8:f717? ([2a02:810b:f40:4600:7a2c:14dd:f1d8:f717])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4214bf59f60sm102292345e9.1.2024.06.07.08.12.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Jun 2024 08:12:52 -0700 (PDT)
+Message-ID: <1535049f-1e4c-446b-8070-6f51877b2649@gmail.com>
+Date: Fri, 7 Jun 2024 17:12:51 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZmMQCDCZxyGwqodL@finisterre.sirena.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 0/13] Add support for AXP192 PMIC
+To: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>
+References: <20221016234335.904212-1-aidanmacdonald.0x0@gmail.com>
+Content-Language: en-US
+From: Alex Bee <knaerzche@gmail.com>
+Cc: jic23@kernel.org, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
+ wens@csie.org, ee.jones@linaro.org, sre@kernel.org, lgirdwood@gmail.com,
+ broonie@kernel.org, lars@metafoo.de, andy.shevchenko@gmail.com,
+ linus.walleij@linaro.org, brgl@bgdev.pl, michael@walle.cc,
+ samuel@sholland.org, linux-iio@vger.kernel.org, linux-pm@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20221016234335.904212-1-aidanmacdonald.0x0@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 06/07, Mark Brown wrote:
-> On Thu, Jun 06, 2024 at 04:57:52PM -0300, Marcelo Schmitt wrote:
-> 
-> > As far as I searched, the definitions for SPI protocol usually don't specify any
-> > behavior for the MOSI line when the controller is not clocking out data.
-> > So, I think SPI controllers that are not capable of implementing any type
-> > of MOSI idle configuration are anyway compliant to what is usual SPI.
-> > For those that can implement such feature, I thought peripherals could request
-> > it by setting SPI mode bits.
-> 
-> The issue here is the one that Richard highlighted with it not being
-> clear exactly what the intended behaviour is.
-> 
-> > But yeah, it's not that evident what this patch set is all about and why this is
-> > wanted so I made a wiki page to explain the reasoning for this set.
-> > https://wiki.analog.com/software/linux/docs/spi/spi_copi_idle?rev=1717699755
-> > Hopefully the figures with timing diagrams and transfer captures there will 
-> > provide quicker understanding of this rather than I try to explain it with
-> > only text.
-> 
-> It needs to be apparent to someone looking at the kernel what the code
-> is intended to do.
+Hi Aidan,
 
-Ack
+Am 17.10.22 um 01:43 schrieb Aidan MacDonald:
+> This series adds support for the AXP192 PMIC to the AXP20x MFD driver
+> framework, including support for regulators, ADCs, and AC/USB/battery
+> power supplies.
+>
+> v6 is a resend of v5 from July -- the patches haven't changed at all
+> but I've rebased them on the latest git master branch.
+I'm not entirely sure if I've found the latest version of the patches - at
+least b4 didn't find a newer. It looks a lot like only mfd and usb-power
+patches have been applied for some reason. Are you planing to resend the
+other ones?
 
-> 
-> > If you still think we need feature detection for MOSI idle capability just let
-> > me know, I'll implement what be needed.
-> 
-> If the devices actually require this mode then we can't just randomly
-> ignore them when they request it.
+Regards,
+Alex
 
-Ok. Yes, when connected in that datasheet "3-wire" mode the MOSI idle high
-feature is pretty much required otherwise users won't be able to sample the ADC.
-Will document the behavior for the MOSI idle feature and make spi_setup() fail
-with better message if the controller can't support a device requesting it.
-
-Thanks,
-Marcelo
+> Aidan MacDonald (13):
+>    dt-bindings: mfd: add bindings for AXP192 MFD device
+>    dt-bindings: iio: adc: axp209: Add AXP192 compatible
+>    dt-bindings: power: supply: axp20x: Add AXP192 compatible
+>    dt-bindings: power: axp20x-battery: Add AXP192 compatible
+>    mfd: axp20x: Add support for AXP192
+>    regulator: axp20x: Add support for AXP192
+>    iio: adc: axp20x_adc: Minor code cleanups
+>    iio: adc: axp20x_adc: Replace adc_en2 flag with adc_en2_mask field
+>    iio: adc: axp20x_adc: Add support for AXP192
+>    power: supply: axp20x_usb_power: Add support for AXP192
+>    power: axp20x_battery: Add constant charge current table
+>    power: axp20x_battery: Support battery status without fuel gauge
+>    power: axp20x_battery: Add support for AXP192
+>
+>   .../bindings/iio/adc/x-powers,axp209-adc.yaml |  18 +
+>   .../bindings/mfd/x-powers,axp152.yaml         |   1 +
+>   .../x-powers,axp20x-battery-power-supply.yaml |   1 +
+>   .../x-powers,axp20x-usb-power-supply.yaml     |   1 +
+>   drivers/iio/adc/axp20x_adc.c                  | 356 ++++++++++++++++--
+>   drivers/mfd/axp20x-i2c.c                      |   2 +
+>   drivers/mfd/axp20x.c                          | 141 +++++++
+>   drivers/power/supply/axp20x_battery.c         | 142 ++++++-
+>   drivers/power/supply/axp20x_usb_power.c       |  84 ++++-
+>   drivers/regulator/axp20x-regulator.c          | 100 ++++-
+>   include/linux/mfd/axp20x.h                    |  84 +++++
+>   11 files changed, 856 insertions(+), 74 deletions(-)
+>
 

@@ -1,314 +1,147 @@
-Return-Path: <linux-iio+bounces-6023-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6024-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F9E900A17
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 18:12:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF30B900A2B
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 18:18:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5969F1C23452
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 16:12:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9F071C216EB
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 16:18:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA70F199EB3;
-	Fri,  7 Jun 2024 16:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00EC19A2A8;
+	Fri,  7 Jun 2024 16:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HalwvGgD"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="R4U5rZz5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2F7154444;
-	Fri,  7 Jun 2024 16:12:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DA596D1B9;
+	Fri,  7 Jun 2024 16:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717776752; cv=none; b=rzlOgsAfkKl4wupAd7N8Qh+TxqDtCLktEEncjemlVdjENcXPejuaP9aUI3B3RSw9JwnASyGh0GhTbPjAOAmH6qvEL+uvXhyGs9zDegXNl02p5rg94ydEvtcb0+dApwEWUIxGgx/5lH1izEViRgDLlV/JtW7IeeO/8a6c0+Kj6iY=
+	t=1717777099; cv=none; b=YlTVQd+H3XrQro0low24h+9xF1A7o9Nx4k3j6bytwh77uV+xyGqis/17cGzgbuvnFbSScFZUlw2zFM8aXkT1SIlfhxZQ56ObwkI3rqcCzHwdRpoi+vdQ3uBUSiK/ui+uZqQYeAAApAbbx0oBXbhiM6xv5kv86FMcvOEoufKUwAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717776752; c=relaxed/simple;
-	bh=btXPYBeWunPMzdwZzv3tIblVtyr25Ls9mguktJUPpDs=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NoArK7U2FtbHs7kLgwb3a4h7V43MdabJO2nwJJKRM7PeGR0rg52w8L9qYHf6O1ZuZkK/ftLmPcWLKIInfzzobFy3uOSL+4Y0X7C1HP4RTgmrTEygPMm7yHB8mj/o4easIVErTmOCEDX3Ha3YDBqcYJjvUsgDI/i0/+2wXOSFfmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HalwvGgD; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-35dc0472b7eso2029172f8f.2;
-        Fri, 07 Jun 2024 09:12:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717776749; x=1718381549; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YsoTRmnRrcL8D+5ar12zWQ+piDt2PSv6klA9B6ko12w=;
-        b=HalwvGgD1+Px6FcFcuuSUvuoNWQ2jtITtrif4OB6HjChp4mW04W8w2x9v08yY0lReb
-         7susEWVZw7u40s6SIvSMIOI8FJsayu/8qqcOZ9/GFqqxIvl1auYw46wd9HMkEhZCRRr/
-         f4TopX5n4bb9RWwXZFsRNWtO0xSou1mY6/Eo/9FpKI8H7Zb07t+1Fp5WYKgnohl6dsgH
-         7BnyehqW48Uqp3tGvjs7rKEJLJEAh1C/3XUsvubEdtZrouwQA9CUcw/20kAYl1Qovfi7
-         tqY5CnKs2wUOe4nj+1kjcMBrSaTrMIW09JCwAeUDzn6VF3ZIlXvJQsbBZO9GpANdwr0X
-         AggQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717776749; x=1718381549;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YsoTRmnRrcL8D+5ar12zWQ+piDt2PSv6klA9B6ko12w=;
-        b=px6V0t+4t0xmybcZf9FeRknCktr/eJhiOQ7WP4xuVhzotJpD3CqoR6v1Bz2wWDP+bf
-         tjqaHzQI1YI+JmivcCRjvMP0P9HzUdU+ipUMODAd9wk3cwFsn6ctXOB15pQrfkno3WaP
-         lefCU0imz07rDFPlDnoVCoz31kcoMPzN/iU/tv6MdnqZe0APwE2uyUquSC51vGqC551n
-         HoVCtepjN4ucH+yTdMv2U1yDPKfp9WCazNwdOBiH+cjop7HGpzmswIlf2Ftgh/Cmy+By
-         K1f55kvmHAnIkxHOUEYe3FYb/gBSGjOUE4XA0FfmjcfFYNN0MHFdYsfU4ZZ4WPyel1Dc
-         4ivw==
-X-Forwarded-Encrypted: i=1; AJvYcCViB/nhzwJHrDJnJ3dMzSXGvVf7l8jgupvvVdPhPKZNxmHHc7gvIRynzmvQhFpuh6v4Y1tYBHz2jcnyovTXW2jt7nmEWJEKWnGxFyRyCAL1qYbwcWdvjpNNraTSHiltVnBx6p6IGj9k
-X-Gm-Message-State: AOJu0YweRHr/ISAdO2X/6DhNH8uiDZWNc0y8VoeLRdi/SngTs7K5Jsg5
-	H5hMnqHbwi8ewyHGF/qwsteGFkOPMk8jixG5BD33DIW0H/EDSvhw
-X-Google-Smtp-Source: AGHT+IEMMHicXui8m5YMG9hEFYt2Te/24BrOcooGkBGIm/DPSPR8/Narb2bxa42tfDHl/gA81noZdg==
-X-Received: by 2002:a05:6000:1e87:b0:354:cf3b:5791 with SMTP id ffacd0b85a97d-35efee90c4cmr2010131f8f.70.1717776748799;
-        Fri, 07 Jun 2024 09:12:28 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:aa2c:a157:bad:9dae])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f08b280d0sm1472406f8f.86.2024.06.07.09.12.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 09:12:28 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Fri, 7 Jun 2024 18:12:26 +0200
-To: Vasileios Amoiridis <vassilisamir@gmail.com>
-Cc: jic23@kernel.org, dpfrey@gmail.com, himanshujha199640@gmail.com,
-	lars@metafoo.de, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, mike.looijmans@topic.nl
-Subject: Re: [PATCH v2 13/19] iio: chemical: bme680: Add read buffers in union
-Message-ID: <20240607161226.GB258325@vamoiridPC>
-References: <20240606212313.207550-1-vassilisamir@gmail.com>
- <20240606212313.207550-16-vassilisamir@gmail.com>
+	s=arc-20240116; t=1717777099; c=relaxed/simple;
+	bh=62rTEi5JGTfNytOFoVt4sTFxXodoPen0JmPPMiO6/W8=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:To:CC; b=kxPkQREgeGFafdT/9wGQ5Q8ezXGzJ1vDbp+CDkhUpfx78+6jDrggztEsiV8cIPjSyQi25EkdsZCmgrwtrW8fkFM3p6bgi5NQL8BEoSmCCLiTMbvk8TtDrIZ3XCM4wXHr/4SdILvn8uEcuPwv5ZtgGAvodQWuAPjgz5bkO/lDSX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=R4U5rZz5; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 457DcGqu031633;
+	Fri, 7 Jun 2024 16:17:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=AOfebpdrL/lq80KY6gYHFI
+	wPkcYngdV1lGgArMf6bMY=; b=R4U5rZz5miea+u0T0gJgDWYjqSxRdEEkV4E9eZ
+	xqrTERd1fx649Lk1DLaI1Z94hJSpBGlmvNb2Enu8u0zpp617JLR06p6YuBAUxLtT
+	1ART9FQMj2KzeStj0MqcWFtLyR4JZHJcR5k6amQaSKRHkMH4TSxqRInbQDzwGucc
+	OqWze0CeZBDN43cks8pFK+58ZCEF/51XPrW3eMFqaGe78Nj0z/PMoFpSBZGgT4HK
+	0bBAyepk61ARl0y/cGZUosDbMhvyCJxXbkOFpf8VTRoT4TFgjS7METiSlkMk3QIS
+	y0Oj+rQlySjp/vTjV1VACW/ceBHOpBWgyoMAPU1GeqseBpXA==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3yk8tcc493-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Jun 2024 16:17:55 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 457GHs2v012396
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 7 Jun 2024 16:17:54 GMT
+Received: from [169.254.0.1] (10.49.16.6) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Fri, 7 Jun 2024
+ 09:17:53 -0700
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
+Date: Fri, 7 Jun 2024 09:17:52 -0700
+Subject: [PATCH] iio: add missing MODULE_DESCRIPTION() macros
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240606212313.207550-16-vassilisamir@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20240607-md-drivers-iic-v1-1-9f9db6246083@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAK8yY2YC/x3MwQqDMAyA4VeRnBeoRRzuVYaHtI0zMDtJpgjiu
+ 1s9fof/38FYhQ1e1Q7Kq5j8ckH9qCCOlD+MkorBO9+41j1xSphUVlZDkYiRQuMddZ2vWyjRrDz
+ Idg/ffXEgYwxKOY7X5it52XAi+7PCcZz7T12QfwAAAA==
+To: Paul Cercueil <paul@crapouillou.net>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Anand Ashok Dumbre
+	<anand.ashok.dumbre@xilinx.com>,
+        Michal Simek <michal.simek@amd.com>
+CC: <linux-mips@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <kernel-janitors@vger.kernel.org>,
+        Jeff Johnson <quic_jjohnson@quicinc.com>
+X-Mailer: b4 0.13.0
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: _z9vmYdy_Nn8E46Sf6JPtW5yxZ0HYiZQ
+X-Proofpoint-GUID: _z9vmYdy_Nn8E46Sf6JPtW5yxZ0HYiZQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-07_09,2024-06-06_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 lowpriorityscore=0
+ clxscore=1011 malwarescore=0 suspectscore=0 phishscore=0 impostorscore=0
+ mlxlogscore=912 priorityscore=1501 spamscore=0 adultscore=0 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406070118
 
-On Thu, Jun 06, 2024 at 11:23:07PM +0200, Vasileios Amoiridis wrote:
-> Move the buffers that are used in order to read data from the
-> device in the union which handles all the device read/write
-> buffers. Also create defines for the number of bytes that are
-> being read from the device and don't use magic numbers.
-> 
+make allmodconfig && make W=1 C=1 reports:
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/adc/ingenic-adc.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/adc/xilinx-ams.o
+WARNING: modpost: missing MODULE_DESCRIPTION() in drivers/iio/buffer/kfifo_buf.o
 
-Also this shouldn't have been here for the same reason. Ah, should
-have been more careful...
+Add the missing invocations of the MODULE_DESCRIPTION() macro.
 
-The rest are fine though, so let me know and I submit a v3 with any
-new potential changes.
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+---
+ drivers/iio/adc/ingenic-adc.c  | 1 +
+ drivers/iio/adc/xilinx-ams.c   | 1 +
+ drivers/iio/buffer/kfifo_buf.c | 1 +
+ 3 files changed, 3 insertions(+)
 
-Vasilis
+diff --git a/drivers/iio/adc/ingenic-adc.c b/drivers/iio/adc/ingenic-adc.c
+index a7325dbbb99a..af70ca760797 100644
+--- a/drivers/iio/adc/ingenic-adc.c
++++ b/drivers/iio/adc/ingenic-adc.c
+@@ -920,4 +920,5 @@ static struct platform_driver ingenic_adc_driver = {
+ 	.probe = ingenic_adc_probe,
+ };
+ module_platform_driver(ingenic_adc_driver);
++MODULE_DESCRIPTION("ADC driver for the Ingenic JZ47xx SoCs");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/iio/adc/xilinx-ams.c b/drivers/iio/adc/xilinx-ams.c
+index f0b71a1220e0..ee45475c495b 100644
+--- a/drivers/iio/adc/xilinx-ams.c
++++ b/drivers/iio/adc/xilinx-ams.c
+@@ -1430,5 +1430,6 @@ static struct platform_driver ams_driver = {
+ };
+ module_platform_driver(ams_driver);
+ 
++MODULE_DESCRIPTION("Xilinx AMS driver");
+ MODULE_LICENSE("GPL v2");
+ MODULE_AUTHOR("Xilinx, Inc.");
+diff --git a/drivers/iio/buffer/kfifo_buf.c b/drivers/iio/buffer/kfifo_buf.c
+index 05b285f0eb22..38034c8bcc04 100644
+--- a/drivers/iio/buffer/kfifo_buf.c
++++ b/drivers/iio/buffer/kfifo_buf.c
+@@ -287,4 +287,5 @@ int devm_iio_kfifo_buffer_setup_ext(struct device *dev,
+ }
+ EXPORT_SYMBOL_GPL(devm_iio_kfifo_buffer_setup_ext);
+ 
++MODULE_DESCRIPTION("Industrial I/O buffering based on kfifo");
+ MODULE_LICENSE("GPL");
 
-> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-> ---
->  drivers/iio/chemical/bme680.h      |  7 +++++
->  drivers/iio/chemical/bme680_core.c | 47 +++++++++++++++---------------
->  2 files changed, 30 insertions(+), 24 deletions(-)
-> 
-> diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
-> index 8d0f53c05d7d..7d0ff294725a 100644
-> --- a/drivers/iio/chemical/bme680.h
-> +++ b/drivers/iio/chemical/bme680.h
-> @@ -56,6 +56,13 @@
->  #define   BME680_GAS_MEAS_BIT			BIT(6)
->  #define   BME680_MEAS_BIT			BIT(5)
->  
-> +#define BME680_TEMP_NUM_BYTES			3
-> +#define BME680_PRESS_NUM_BYTES			3
-> +#define BME680_HUMID_NUM_BYTES			2
-> +#define BME680_GAS_NUM_BYTES			2
-> +
-> +#define BME680_MEAS_TRIM_MASK			GENMASK(24, 4)
-> +
->  /* Calibration Parameters */
->  #define BME680_T2_LSB_REG	0x8A
->  #define BME680_H2_MSB_REG	0xE1
-> diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-> index b13797f7d873..3c33c21b5d6a 100644
-> --- a/drivers/iio/chemical/bme680_core.c
-> +++ b/drivers/iio/chemical/bme680_core.c
-> @@ -111,10 +111,13 @@ struct bme680_data {
->  	s32 t_fine;
->  
->  	union {
-> +		u8 buf[3];
-> +		unsigned int check;
-> +		__be16 be16;
->  		u8 bme680_cal_buf_1[BME680_CALIB_RANGE_1_LEN];
->  		u8 bme680_cal_buf_2[BME680_CALIB_RANGE_2_LEN];
->  		u8 bme680_cal_buf_3[BME680_CALIB_RANGE_3_LEN];
-> -	}; 
-> +	};
->  };
->  
->  static const struct regmap_range bme680_volatile_ranges[] = {
-> @@ -449,7 +452,6 @@ static u8 bme680_oversampling_to_reg(u8 val)
->  static int bme680_wait_for_eoc(struct bme680_data *data)
->  {
->  	struct device *dev = regmap_get_device(data->regmap);
-> -	unsigned int check;
->  	int ret;
->  	/*
->  	 * (Sum of oversampling ratios * time per oversampling) +
-> @@ -462,16 +464,16 @@ static int bme680_wait_for_eoc(struct bme680_data *data)
->  
->  	usleep_range(wait_eoc_us, wait_eoc_us + 100);
->  
-> -	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
-> +	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &data->check);
->  	if (ret) {
->  		dev_err(dev, "failed to read measurement status register.\n");
->  		return ret;
->  	}
-> -	if (check & BME680_MEAS_BIT) {
-> +	if (data->check & BME680_MEAS_BIT) {
->  		dev_err(dev, "Device measurement cycle incomplete.\n");
->  		return -EBUSY;
->  	}
-> -	if (!(check & BME680_NEW_DATA_BIT)) {
-> +	if (!(data->check & BME680_NEW_DATA_BIT)) {
->  		dev_err(dev, "No new data available from the device.\n");
->  		return -ENODATA;
->  	}
-> @@ -560,7 +562,6 @@ static int bme680_read_temp(struct bme680_data *data, int *val)
->  {
->  	struct device *dev = regmap_get_device(data->regmap);
->  	int ret;
-> -	__be32 tmp = 0;
->  	u32 adc_temp;
->  	s16 comp_temp;
->  
-> @@ -574,13 +575,14 @@ static int bme680_read_temp(struct bme680_data *data, int *val)
->  		return ret;
->  
->  	ret = regmap_bulk_read(data->regmap, BME680_REG_TEMP_MSB,
-> -			       &tmp, 3);
-> +			       data->buf, BME680_TEMP_NUM_BYTES);
->  	if (ret < 0) {
->  		dev_err(dev, "failed to read temperature\n");
->  		return ret;
->  	}
->  
-> -	adc_temp = be32_to_cpu(tmp) >> 12;
-> +	adc_temp = FIELD_GET(BME680_MEAS_TRIM_MASK,
-> +			     get_unaligned_be24(data->buf));
->  	if (adc_temp == BME680_MEAS_SKIPPED) {
->  		/* reading was skipped */
->  		dev_err(dev, "reading temperature skipped\n");
-> @@ -606,7 +608,6 @@ static int bme680_read_press(struct bme680_data *data,
->  {
->  	struct device *dev = regmap_get_device(data->regmap);
->  	int ret;
-> -	__be32 tmp = 0;
->  	u32 adc_press;
->  
->  	/* Read and compensate temperature to get a reading of t_fine */
-> @@ -615,13 +616,14 @@ static int bme680_read_press(struct bme680_data *data,
->  		return ret;
->  
->  	ret = regmap_bulk_read(data->regmap, BME680_REG_PRESS_MSB,
-> -			       &tmp, 3);
-> +			       data->buf, BME680_PRESS_NUM_BYTES);
->  	if (ret < 0) {
->  		dev_err(dev, "failed to read pressure\n");
->  		return ret;
->  	}
->  
-> -	adc_press = be32_to_cpu(tmp) >> 12;
-> +	adc_press = FIELD_GET(BME680_MEAS_TRIM_MASK,
-> +			      get_unaligned_be24(data->buf));
->  	if (adc_press == BME680_MEAS_SKIPPED) {
->  		/* reading was skipped */
->  		dev_err(dev, "reading pressure skipped\n");
-> @@ -638,7 +640,6 @@ static int bme680_read_humid(struct bme680_data *data,
->  {
->  	struct device *dev = regmap_get_device(data->regmap);
->  	int ret;
-> -	__be16 tmp = 0;
->  	u16 adc_humidity;
->  	u32 comp_humidity;
->  
-> @@ -648,13 +649,13 @@ static int bme680_read_humid(struct bme680_data *data,
->  		return ret;
->  
->  	ret = regmap_bulk_read(data->regmap, BME680_REG_HUMIDITY_MSB,
-> -			       &tmp, sizeof(tmp));
-> +			       &data->be16, BME680_HUMID_NUM_BYTES);
->  	if (ret < 0) {
->  		dev_err(dev, "failed to read humidity\n");
->  		return ret;
->  	}
->  
-> -	adc_humidity = be16_to_cpu(tmp);
-> +	adc_humidity = be16_to_cpu(data->be16);
->  	if (adc_humidity == BME680_MEAS_SKIPPED) {
->  		/* reading was skipped */
->  		dev_err(dev, "reading humidity skipped\n");
-> @@ -672,8 +673,6 @@ static int bme680_read_gas(struct bme680_data *data,
->  {
->  	struct device *dev = regmap_get_device(data->regmap);
->  	int ret;
-> -	__be16 tmp = 0;
-> -	unsigned int check;
->  	u16 adc_gas_res, gas_regs_val;
->  	u8 gas_range;
->  
-> @@ -693,19 +692,20 @@ static int bme680_read_gas(struct bme680_data *data,
->  	if (ret)
->  		return ret;
->  
-> -	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
-> -	if (check & BME680_GAS_MEAS_BIT) {
-> +	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &data->check);
-> +	if (data->check & BME680_GAS_MEAS_BIT) {
->  		dev_err(dev, "gas measurement incomplete\n");
->  		return -EBUSY;
->  	}
->  
->  	ret = regmap_bulk_read(data->regmap, BME680_REG_GAS_MSB,
-> -			       &tmp, sizeof(tmp));
-> +			       &data->be16, BME680_GAS_NUM_BYTES);
->  	if (ret < 0) {
->  		dev_err(dev, "failed to read gas resistance\n");
->  		return ret;
->  	}
-> -	gas_regs_val = be16_to_cpu(tmp);
-> +
-> +	gas_regs_val = be16_to_cpu(data->be16);
->  	adc_gas_res = FIELD_GET(BME680_ADC_GAS_RES, gas_regs_val);
->  
->  	/*
-> @@ -834,7 +834,6 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
->  {
->  	struct iio_dev *indio_dev;
->  	struct bme680_data *data;
-> -	unsigned int val;
->  	int ret;
->  
->  	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
-> @@ -865,15 +864,15 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
->  		return ret;
->  	}
->  
-> -	ret = regmap_read(regmap, BME680_REG_CHIP_ID, &val);
-> +	ret = regmap_read(regmap, BME680_REG_CHIP_ID, &data->check);
->  	if (ret < 0) {
->  		dev_err(dev, "Error reading chip ID\n");
->  		return ret;
->  	}
->  
-> -	if (val != BME680_CHIP_ID_VAL) {
-> +	if (data->check != BME680_CHIP_ID_VAL) {
->  		dev_err(dev, "Wrong chip ID, got %x expected %x\n",
-> -			val, BME680_CHIP_ID_VAL);
-> +			data->check, BME680_CHIP_ID_VAL);
->  		return -ENODEV;
->  	}
->  
-> -- 
-> 2.25.1
-> 
+---
+base-commit: 19ca0d8a433ff37018f9429f7e7739e9f3d3d2b4
+change-id: 20240607-md-drivers-iic-cab420a99216
+
 

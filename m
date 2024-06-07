@@ -1,129 +1,170 @@
-Return-Path: <linux-iio+bounces-5970-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5971-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72C188FFCD3
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 09:12:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E38FB8FFD16
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 09:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F030A1F2BEBC
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 07:12:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 535721F213E5
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 07:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F7D153578;
-	Fri,  7 Jun 2024 07:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B46A15442F;
+	Fri,  7 Jun 2024 07:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NX9q9tJ6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CQ+G+hwu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5396D14285;
-	Fri,  7 Jun 2024 07:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39CAA19D89B;
+	Fri,  7 Jun 2024 07:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717744330; cv=none; b=lls9I3mimF0M4eUTsxFwuZbocHdsPiekXlQ2+a/zstsaAfP1yMU8Gv49tsRKL755XTvLAqpSc26ylU9LgpjCWAD6UBynhWEclGtqz61UEjtSFjgaEY4Bf9ciheS6erde8xYk29hiX+BnwYalF/4t/NFhSvFB0cUZpYwa7woo/sE=
+	t=1717745381; cv=none; b=ZwdgsyPdIT0y/WQsKcFUpMcVrisp6ilvIkL0UGEiR9PXo6usp228hXpMXsfT21NQ+RPmoJ5HBuCKosdhuSmD+RJn0Vq1LYjBu7zL6bEIXm+SZYwde6XqhBzzr/EGxWh6GSzg37SvzYxv3Fivgbp4SBK7KiJBGUTL9SIBtJYca/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717744330; c=relaxed/simple;
-	bh=bEmjUK6qoSrvk12pQiUVl21AfkI/9k/FBQYmQj9gOKk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VRMKLYG0u/T62P3BPwW7ywRKya6xnnX8IkYTzxTNcgCmv02iuk1Kb5gxt3zgl+HP5PWQi9yahh3GqeYpoYezugQCBbxIMcyVCPcssO7XtHuks9iyHXprIYxfuy0Fv5NPGuHWfwX6PbOxu5FGqfDMx6q+/t0BundH6GKETKPwLeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NX9q9tJ6; arc=none smtp.client-ip=209.85.208.41
+	s=arc-20240116; t=1717745381; c=relaxed/simple;
+	bh=weMbjAVuFoMzFfr3Po8iOhGCl5HlwO1kTE9xRh9mM/E=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kd8M4h5BDm3L8j5/+Xvq/TltoG+DSuPfAmEYeDMfkVQ2vWBmdGNFzcDcEkInhNMACeB2fHxq6165i/Q510nLkkNipFN3KaSMS29Ehy7fkXzrhIVY1EnQCT19XCNzo1nIWp7Q6DGHRIQNiRksPwDdVo7ywe2mLkG0fXXsHSJmeXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CQ+G+hwu; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-57a68b0a229so1989791a12.3;
-        Fri, 07 Jun 2024 00:12:09 -0700 (PDT)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-57864327f6eso1880743a12.1;
+        Fri, 07 Jun 2024 00:29:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717744328; x=1718349128; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=bEmjUK6qoSrvk12pQiUVl21AfkI/9k/FBQYmQj9gOKk=;
-        b=NX9q9tJ6nVMZ/RbaOsM5CjM6sVcNPy+t7dligKVtKUti1XDDAF54743xVX2ljq25hP
-         PVHLt34Fe2RZ522l+u/tyB7Q7ETlP62dsh9cm2XL2VUZiPu+p6hvgVoOd/5g+NeyPtCK
-         XHMIn3N7CdB/aaskJtaPF7Al57CJp/rc9ZlK33a7gN0jNXElk8AGf/gK6WFIavoB6RQd
-         V0PnzuYbNiSddcLuYOd8072LUYEZQj/oELBMECAUj7DtOdF33LvaVCJJS4iGMB3f/1U+
-         XJ4OU0Rceg4yxY8B35JDZBp8sen8KWb0/SR3byB9fJ0M/x0hSQvhMWzKIybFxpZv2H69
-         2odA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717744328; x=1718349128;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=gmail.com; s=20230601; t=1717745378; x=1718350178; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=bEmjUK6qoSrvk12pQiUVl21AfkI/9k/FBQYmQj9gOKk=;
-        b=cH0vLLWeTfYWrm5vmXuOmhRRBvj2Y9fx/q/QhaVbeg0hXZDjrbYmnJ++lvPfRTvkcY
-         QzjsAuBBy6zK58C8+SabX/sIuJxR5CMeLV80sv++a1bCRkr+gmYlv9InyY4DV3vx/4q7
-         y8+p0GazN+FcrnRPTz5kygu7zTxcEWrBmFGBsjLoJ/dwJZD3ZqLqH6u9dPmRsG6M6phb
-         usNbcaEZy2Wj9hWpsu+grAqUCC2saiz3EUSX+Nv/0Zi42mBKLs1G7gD8jQnJaJK1A3vK
-         rqNRSqN+3g0xLFA+RS9srtEDKZYEMxtxE+2qkgCb6kjV1+/D8THzzsP73Vt9KmN0S9YD
-         JeNA==
-X-Forwarded-Encrypted: i=1; AJvYcCVnYOdh4SflE9GwzTFSD3Uzrcwo7obiuLDr4LJvqiJ8edesW24qE3ZoXbGznq49Fc4pro/FhXt3HrXnux2XisUbrQL5ZWHkoJzVrgSA62hzDhzLosv3yLA6sBCzSIBG8JFKdaEhh/a542TPrNLZrHSjMbWsFdov1AC7QpCXwqCrEVaHkqM7NJhbH6JIgjX+MH7+IxC5mx/ph3q0CrF+Ww==
-X-Gm-Message-State: AOJu0Yy7CIYtBChzL0ZjPZ+MghHxtefbvChn89YSU+HAlbbpWOVgPAh4
-	66i+Ti/mTl5YdoKFIob4oC+sF4qO9i6I0Iw1HdSMUC7UADiJqUxY
-X-Google-Smtp-Source: AGHT+IHzEiccoGREhale3WSaW0vqNTLmxOuBlaWs7896ljD5D4Lg+XMwSiOTVQB3KMA1zv4B8K09Ig==
-X-Received: by 2002:a17:907:7295:b0:a6c:70b9:15f9 with SMTP id a640c23a62f3a-a6cdbd0d06emr132728666b.68.1717744327399;
-        Fri, 07 Jun 2024 00:12:07 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c8070e9b1sm199654966b.165.2024.06.07.00.12.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 00:12:07 -0700 (PDT)
-Message-ID: <04b1296ff98a0accbf962a4a4bafc2e85a9869ae.camel@gmail.com>
-Subject: Re: [PATCH v3 4/6] spi: spi-axi-spi-engine: Add support for MOSI
- idle configuration
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, David Lechner
-	 <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org, 
- lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-  nuno.sa@analog.com, linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-  linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 07 Jun 2024 09:15:54 +0200
-In-Reply-To: <ZmIqxS-xUVMNH_lJ@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1717539384.git.marcelo.schmitt@analog.com>
-	 <a6b00e84325bbe44919cc49509e837f2555367d0.1717539384.git.marcelo.schmitt@analog.com>
-	 <ed4fe3de-726b-4eba-a12a-d2f7b1da26d1@baylibre.com>
-	 <0e18b3aa83a62103b0f06ee516193c03f80abae9.camel@gmail.com>
-	 <f8ce5dc8-ed68-4f04-af3a-187bf0e4a3b3@baylibre.com>
-	 <ZmIqxS-xUVMNH_lJ@debian-BULLSEYE-live-builder-AMD64>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 
+        bh=i+bAYHtIw7hxjN1lHvR/lj9vmLxgOwdTTQ4DZlhtZa8=;
+        b=CQ+G+hwuFr9kj8wPTFR2UMapC+L9SYh55B7GxxcvqiGkZAK2mkVn/VKeclA60aRRmC
+         Pdq42375V1z4Xd3GZ7hiC4W9G81orbu9AHUcBrEJzPVuuDZ95kH/EsGZV4ee+JCY7l1q
+         WlRR4K40sLODZ+V4rtNA7ArhUsyCd4UwoSWCiWUFL4RxbRgjX6WG2YeMPPRYbalDcGdx
+         mK5S72WT3+EQxhnKR2OEOJP0qTZ4FvBU8wtG/e54CooWCo4I3PJsfQg57itv2dVEdPh0
+         UQWSqukVn3wgyHiJG5ZcmN16urM4Q26GXLQUOu8yKe3HX0UAg3cilG38AXNkL2tPSHx8
+         SXpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717745378; x=1718350178;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=i+bAYHtIw7hxjN1lHvR/lj9vmLxgOwdTTQ4DZlhtZa8=;
+        b=J6ChZlPBWEdIQMVvnjIYyAkTcyn6hoqP1QFY1oFEQfAkyCPScCDa4knbQ6AogzaFgw
+         uFobe/c+0xMykCjvoWFY10X6yn3/2jqXaSm3Hq5kb8QOU3auiEL70UebFCT9v6bLlEpa
+         CFFajyoaW/cI2/DJTDlisanD+sLNvaBrv5ERfNYQbZtDxnwBusR6MVXKptMo4JEbUvTQ
+         oWLnKVR99BrsIW5nfgS3Xedf29Uc+W6Uikpn3qOO1lfnH6vgbtW+Bia79KOndeWLCihL
+         gywSr2Eo9F/OUAjYOB747GVnevrB+OLz1KtW90XoKQ+004FUm+7Y/8dA7I2ji1/s8mN5
+         e55w==
+X-Forwarded-Encrypted: i=1; AJvYcCXlJhvzo1jFCXxmclXEM1OuepCMjzYJNS/4kr/pxcRLxZlN7adxCLMdT7cVZfnYMx0sPdZmXDapoAtwFmr5h8G3ttEJafCHjHmcX/Yf6x9VFpufwsyuylcppO7xR2Sql7M7NpcMJBuva0wz/xK2mdFYng9NVEnko1YoZ0qdbf045b6c+A==
+X-Gm-Message-State: AOJu0Yw4RkC2RE22ZFHkrAq4Gb8PwhzpnUCvPWoCeshatTvveyUqqaDm
+	K1tBnqOmWgu3NPnvJVtSPvsKTCgnJNA4TWqbNm+9yEUNBmnIOHQU
+X-Google-Smtp-Source: AGHT+IGj9GVj1bzF6WZinGCaDqFfjWPTnkAOfM5Lrw3tDB+/eO+m8Klx0LNd/lyxzbqfwxRcV2x7Sw==
+X-Received: by 2002:aa7:c443:0:b0:57c:5ed0:ca65 with SMTP id 4fb4d7f45d1cf-57c5ed0ccd0mr346811a12.21.1717745377909;
+        Fri, 07 Jun 2024 00:29:37 -0700 (PDT)
+Received: from [192.168.0.220] ([83.103.132.21])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57aae13faccsm2315697a12.54.2024.06.07.00.29.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Jun 2024 00:29:37 -0700 (PDT)
+Message-ID: <29dfa7b1-8bf9-4996-b331-5de25bcbaa8c@gmail.com>
+Date: Fri, 7 Jun 2024 10:29:24 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/6] dt-bindings: adc: ad7173: add support for ad411x
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Dumitru Ceclan via B4 Relay
+ <devnull+dumitru.ceclan.analog.com@kernel.org>, dumitru.ceclan@analog.com,
+ Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240531-ad4111-v4-0-64607301c057@analog.com>
+ <20240531-ad4111-v4-1-64607301c057@analog.com>
+ <20240601193512.0e17992b@jic23-huawei>
+ <efa10caa-5e78-4f3f-8cca-c61d7a01e6fd@gmail.com>
+ <20240603210014.6258134d@jic23-huawei>
+ <0f0c0b92-af0d-4e68-9880-bacfd53d726f@gmail.com>
+ <20240606205813.65b342c4@jic23-huawei>
+Content-Language: en-US
+From: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
+In-Reply-To: <20240606205813.65b342c4@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2024-06-06 at 18:31 -0300, Marcelo Schmitt wrote:
+On 06/06/2024 22:58, Jonathan Cameron wrote:
+> On Wed, 5 Jun 2024 09:54:31 +0300
+> "Ceclan, Dumitru" <mitrutzceclan@gmail.com> wrote:
+> 
+>> On 03/06/2024 23:00, Jonathan Cameron wrote:
+>>> On Mon, 3 Jun 2024 12:46:10 +0300
+>>> "Ceclan, Dumitru" <mitrutzceclan@gmail.com> wrote:
+>>>   
+>>>> On 01/06/2024 21:35, Jonathan Cameron wrote:  
+>>>>> On Fri, 31 May 2024 22:42:27 +0300
+>>>>> Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
+>>>>>     
+>>>>>> From: Dumitru Ceclan <dumitru.ceclan@analog.com>  
+>>
+>> ...
+>>
+>>>>>> +          Supported only by AD7172-2, AD7172-4, AD7175-2, AD7175-8, AD7177-2:
+>>>>>> +            19: ((AVDD1 − AVSS)/5)+
+>>>>>> +            20: ((AVDD1 − AVSS)/5)−    
+>>>>>
+>>>>> That's what it says on the datasheet (so fine to copy that here) but I'm curious, what does
+>>>>> that mean in practice?  How can we have negative and postive signals of the difference
+>>>>> between two power supply voltages where I'm fairly sure AVDD1 always greater than AVSS.
+>>>>>    
+>>>>
+>>>> I have not tested that as I do not have a model that supports this wired up.
+>>>> If I had to guess they are the same signal but one should be connected to the
+>>>> positive input, one to the negative input...but I could be wrong.  
+>>>
+>>> If they are, then as far as I we are concerned is this one channel with two
+>>> representations depending on whether it is 1st or 2nd in the list?
+>>> Can we use one number and hide that detail in the driver?
+>>>
+>>> Seems odd though if that is the case.
+>>>
+>>> I guess if we find out later this is the case we can tighten the binding to
+>>> enforce the right one instead of squashing them to one value, but that
+>>> is a bit ugly.  Any chance of digging out the info?  If not we can go ahead
+>>> but ideally answering things like this make a our life easier in the long run.
+>>>
+>>> Jonathan
+>>>   
+>>
+>> "(Avdd1/Avss)/5+ as positive input and (Avdd/Avss)/5- as negative
+>>   this is used for monitoring power supplies, the inputs must be selected in pair"
+>> Perhaps it's an internal voltage divider...? I dunno
+>>
+>> So it seems like this cannot be used as a common mode voltage input.
+>> I'll restrict the driver to only allow these inputs paired together
+>> and rename the define for these selections.
+> Most mysterious :)  I'd be interested to know what value it reads
+> back if you ever get the part.
+>
 
-...
+My best guess now is that the reason for /5 is so that you can measure
+the AVDD AVSS difference using the internal 2.5V reference.
+So for AVDD 5V, AVSS 0V using the internal ref it would read 1V
 
->=20
->=20
->=20
-> When is a driver version check needed?
-> Yes, older versions of SPI-Engine won't support this, but the patch set s=
-hould
-> cause no regression. Even if loading the current ad4000 driver with
-> older SPI-Engine HDL and driver, the ADC driver would get a warn (or erro=
-r?)
-> and do what's possible without MOSI idle feature (probably only be able t=
-o do
-> reg access) or fail probing.
->=20
-
-Maybe I'm missing something but with the patchset we unconditionally set
-SPI_MOSI_IDLE_HIGH. So if we load an hdl which does not support it things w=
-ill
-apparently be ok but it won't actually work, right? If I'm right we should =
-have
-a bit in a RO config_register telling us that the feature is being supporte=
-d or
-not. That way we only set the mode bit if we do support it...
-
-- Nuno S=C3=A1
+I'll let you know if I test this
+ 
+> Ah well, great to have gotten that extra detail even if it leaves
+> more questions!
+> 
+> Jonathan
+> 
 
 
 

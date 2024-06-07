@@ -1,127 +1,307 @@
-Return-Path: <linux-iio+bounces-6021-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6022-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21411900944
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 17:37:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28277900A12
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 18:11:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB2901F23035
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 15:37:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3D00282958
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 16:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1A71991B9;
-	Fri,  7 Jun 2024 15:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC63199E90;
+	Fri,  7 Jun 2024 16:11:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="juK0y2aV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FLb38dIa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EBEF194A7E
-	for <linux-iio@vger.kernel.org>; Fri,  7 Jun 2024 15:36:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2167C188CA1;
+	Fri,  7 Jun 2024 16:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717774620; cv=none; b=mukEmcF46/GlOU3EfaxN4OOKqBqoihMTYcmtrcPS7iQS7hNidBFQWGjzBAvjjLrt8dIv6ezDc68Ub6Bw16mp+0vs51fcXnZQQOHDfHf9fxP9lA/sLYmZBxgYtUG/xxXAs4SAqrQ1a9BwJnremuwzgCXHPwrN/rLpghs+zVaKDgw=
+	t=1717776667; cv=none; b=P8Bh1A6OkwpT6ssKOvexHAb7Yb4dngTBDN3eT8ftT0y+EAfA5yJRnT/q+gYNtSiGtBzp2RFNAEEpjmxl22G+93V1j7DzQtVN81BtObuUAd8XfSxMxUotoK/bcMP/JXnDodXiS7A93NWc3S//vPqoac+xFMlaVSkAMPhF0Ur9eMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717774620; c=relaxed/simple;
-	bh=njFwS84yyP3Xwr02JnamX7Dhu6AzJdZO+TJ88+ClOI0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wp7CyNpwBrqGbJOarxoliUG8MZxXqSpg2h655/4kHfcl1hx+CRhaMh48QGWnkgBUUBlPUUWHCLpW16nmkhIBSRoly/CI5Tw1jLXr+aD2Bu5sFro7lHXASFxocdvwgZ6A1W0a+bDIFHjaFTfbIOrYSB+0hadwxYjtQubCSDMGQ6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=juK0y2aV; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4215afa33b7so20736545e9.2
-        for <linux-iio@vger.kernel.org>; Fri, 07 Jun 2024 08:36:58 -0700 (PDT)
+	s=arc-20240116; t=1717776667; c=relaxed/simple;
+	bh=rU0N5rMF8e7bDYLErsSLG7V6n23L4t9d4TJanFMNhbE=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NbxZ/xesJT3hKzRuqc9HVzzLq7UzUCIzpYrFMNxf64xkJFWlsRbS8pj+13XtdiR33SY5H0k4kH6d1OBHiqpmeYgjImuodRmMniVmm9X5S6SQUzCxPFJKxbUGty7VmVhisWPDirIGtO2q7MHmdJTWuW4sACY70mgLxswcoTn3tn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FLb38dIa; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4217926991fso1897595e9.3;
+        Fri, 07 Jun 2024 09:11:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717774617; x=1718379417; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4WFHGyOf2WCg/AHCXQoRe0OOLDlNcvfZjAFHn1msRSw=;
-        b=juK0y2aV4TYboAh8nEXjMFk5fN3uC3FwvkzbSNZxHs6DWC3/Q+8c7UQRkyGOGg0GbQ
-         1DN58wUt79ajkREwHVoLA4TCG38OF5JSoywS9PmoYSjra8jY1jLLFq5MCIuxJYnpgZPX
-         6lTfweu+Crph9x5sCOcF+AwY4TgZFdyzgT7Mp3JEmbseYqmNz9HURCFLyVYhZ9FGdCbm
-         6ISPzY+0I2OfOHfXuOTmn0dGWCDcp+DaKcZR6jxWYDugYn1epGEbvCW1mkz8XJiIcYpH
-         u0ZE7wPmp/bTjc6xjt1S9dhsXb2/OFfG27ReP+LcejxTkFg0TA0x2EhDrVgnSTj+KuGo
-         Hl5w==
+        d=gmail.com; s=20230601; t=1717776664; x=1718381464; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=D5bdc+pfGoWpEU9poKk35GL0B8Njtn2Bkx1uKgiELHA=;
+        b=FLb38dIalsoInIVU1CXvHu6LaUPQQbxhW3KkBp1fhCvR8bb989GNjGtIdA9PFsqImr
+         iF+OGrwUKRFxXjbJbaMthrLA9jQh2cn7M3sRajxCGE1OQNUZ7ZX3s2wbTeB4ezPEsHCA
+         9b1StoWOeP4XMso1/gf9mll6MSrg1VHgLj50fhOLYQk5LH2Pb7Z+jI+3tLrGbUZA6sos
+         tAy5Nv+dpXIpI/oCLqDOfxLnWXPaN7PIOamH1Yf9UkMmQIOUT29tO5a5qnkJq9kU6Dre
+         M1jxmJLXT9Nv1M8cQ82s/seESyLbPgeZXPAT6TcUPyXmxNTXRYAR5SHqLhxQMdgKrX8s
+         +0Rw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717774617; x=1718379417;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4WFHGyOf2WCg/AHCXQoRe0OOLDlNcvfZjAFHn1msRSw=;
-        b=pyfAo0iiQR+/qIrMetN+GdCruJAX55BAe0W14ZQ07FVAWYcT2zevTXHEOgKtY3+2zZ
-         HTwScfvZDJ06UX5kWUQ4tLKRiacgED8zpprdgtPNNz0Dutxs/B5YW2HsWzcbLVcBpCcy
-         WmsRM0uR5/8VW5WQJZwV6ZAvrRFCjcWh34ZfCIGcdk23BSj3jQUZodFlwBzIbF0ZlB+N
-         QARMHkf+3iE7GxiQXFU6II3U0vt6vwiYOHT+2kYiUtOWN2dilHpNcJc9DiKucS/v8GLc
-         qVeQq3J4VevTC93se0EZFtP+plGcThSNEGJ61BPJww3bLmSf1BuERhZkpnYTpCATJa/I
-         HkNA==
-X-Forwarded-Encrypted: i=1; AJvYcCV4GxIns0zSndAXuZMBFrWIJKZxswN0UOaY52/NnLd0/iDI947NfGAFjx6Hwle7J9nTV564/4AnM3q6qMBclPyshNZMoxucDRBJ
-X-Gm-Message-State: AOJu0Yx+lpGEc6ADvhZmZ47guZTQlRNpByhD14DksabHIVfgeR8qWwF9
-	Vq7QK8m0OneZToWuVvCdu+dFlQ0II0lwcCobn1Py2O559VnyWgutbXyt6ZfBEHA=
-X-Google-Smtp-Source: AGHT+IEDldfKJ9oi/vJP0wgtmawveExjpCYHaZ1+MQjCvlUC+KOjWN7/r5DIQyvHKU1HK5ctc+JgNw==
-X-Received: by 2002:a05:600c:444b:b0:420:29a8:ff5e with SMTP id 5b1f17b1804b1-42164a0c1c9mr25925175e9.19.1717774617356;
-        Fri, 07 Jun 2024 08:36:57 -0700 (PDT)
-Received: from [192.168.1.195] ([5.133.47.210])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4215f89aacfsm48862905e9.42.2024.06.07.08.36.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 07 Jun 2024 08:36:56 -0700 (PDT)
-Message-ID: <7cc32596-8af0-43ff-91fd-59264d0a29ac@linaro.org>
-Date: Fri, 7 Jun 2024 16:36:55 +0100
+        d=1e100.net; s=20230601; t=1717776664; x=1718381464;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D5bdc+pfGoWpEU9poKk35GL0B8Njtn2Bkx1uKgiELHA=;
+        b=l+uJ48tuJwtJLY/hjQjxLX/QGCjQU0FJCcyCTXwxNPRpoZ/icrXimCtl6fdnjE8xHl
+         1WUE2DP89qJmp3lpQjSLtV5ECIteLHEHWCi6B4MxhH4aCxQHLwKuMKsu1t9Hi/utFLOh
+         2nY52jU83iKeVIhOx2El5+DvgSiKqk9QPXLhc59pc0rrk1V9cktRCsF+wQWVOojcsKgO
+         htfeV11gjlZmP+FhBbxWtpnhLJp23A7WwtWjT0cjLInYFOSmqQV+phTMi94al3p3rjH2
+         YMXtOJrucVkMfKAeZFBl3EA86/1Ng1lugWfFo/AUinAmtbR0Fe6zrLHdO/wLugH1aGWJ
+         duww==
+X-Forwarded-Encrypted: i=1; AJvYcCXTXB/R8HrQ/fvyAE7GjtWFdprFGc4mgKqQuqjl+o8OyMBg/qlWQACE/qciAaYyemQV/t9tQsBlk8wsW6SE62fhnGumu4Ya91vyHmjzwnpOH82O9Vx4qN728q76KpUNMMiJBpnceqm9
+X-Gm-Message-State: AOJu0YyqYoc5ZxsGQ8hY+HWaTI2tGD3x0hp/3QYh18+MQkXdMKtyKKqY
+	/8Hd6yeDgHxSS/faN4VwxmlLJpcp/brxRi9FX87sGY+c7uiLSbt/
+X-Google-Smtp-Source: AGHT+IFo60xb52XcFSA3ErA6fEHCAfI5uL+rS8k24CxxqZdGNOqetnFSyYzlTIES8xDWUJVoYjz7ow==
+X-Received: by 2002:a05:600c:511c:b0:41c:3e1:9db9 with SMTP id 5b1f17b1804b1-42164a20d89mr20905815e9.27.1717776664071;
+        Fri, 07 Jun 2024 09:11:04 -0700 (PDT)
+Received: from vamoiridPC ([2a04:ee41:82:7577:aa2c:a157:bad:9dae])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215c19e674sm57598235e9.6.2024.06.07.09.11.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jun 2024 09:11:03 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Fri, 7 Jun 2024 18:11:01 +0200
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: jic23@kernel.org, dpfrey@gmail.com, himanshujha199640@gmail.com,
+	lars@metafoo.de, linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, mike.looijmans@topic.nl
+Subject: Re: [PATCH v2 13/19] iio: chemical: bme680: Add read buffers in DMA
+ safe region
+Message-ID: <20240607161101.GA258325@vamoiridPC>
+References: <20240606212313.207550-1-vassilisamir@gmail.com>
+ <20240606212313.207550-14-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 07/17] misc: eeprom: at25: Change nvmem reg_read/write
- return type
-To: Dan Carpenter <dan.carpenter@linaro.org>,
- Joy Chakraborty <joychakr@google.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Lars-Peter Clausen <lars@metafoo.de>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Bingbu Cao <bingbu.cao@intel.com>, Zhihao Cheng <chengzhihao1@huawei.com>,
- Jerome Brunet <jbrunet@baylibre.com>,
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
- linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-mtd@lists.infradead.org, linux-rtc@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org,
- linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org,
- linux-usb@vger.kernel.org, manugautam@google.com
-References: <20240605175953.2613260-1-joychakr@google.com>
- <20240605175953.2613260-8-joychakr@google.com>
- <f98a1d8f-e936-4798-8447-c642e8fe11d5@moroto.mountain>
-Content-Language: en-US
-From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-In-Reply-To: <f98a1d8f-e936-4798-8447-c642e8fe11d5@moroto.mountain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240606212313.207550-14-vassilisamir@gmail.com>
 
-
-
-On 06/06/2024 09:41, Dan Carpenter wrote:
-> So the original bug was that rmem_read() is returning positive values
-> on success instead of zero[1].  That started a discussion about partial
-> reads which resulted in changing the API to support partial reads[2].
-> That patchset broke the build.  This patchset is trying to fix the
-> build breakage.
+On Thu, Jun 06, 2024 at 11:23:05PM +0200, Vasileios Amoiridis wrote:
+> Move the buffers that are used in order to read data from the
+> device in a DMA-safe region. Also create defines for the number
+> of bytes that are being read from the device and don't use
+> magic numbers.
 > 
-> [1]https://lore.kernel.org/all/20240206042408.224138-1-joychakr@google.com/
-> [2]https://lore.kernel.org/all/20240510082929.3792559-2-joychakr@google.com/
+
+Well this commit shouldn't have been here, I changed the title and
+forgot to delete it from the folder...
+
+Vasilis
+
+> Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> ---
+>  drivers/iio/chemical/bme680.h      |  7 +++++
+>  drivers/iio/chemical/bme680_core.c | 45 +++++++++++++++---------------
+>  2 files changed, 29 insertions(+), 23 deletions(-)
 > 
-> The bug in rmem_read() is still not fixed.  That needs to be fixed as
-> a stand alone patch.  We can discuss re-writing the API separately.
-I agree with Dan, Lets fix the rmem_read and start working on the API 
-rework in parallel.
-
-Am happy to pick the [1].
-
-
---srini
+> diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
+> index 8d0f53c05d7d..7d0ff294725a 100644
+> --- a/drivers/iio/chemical/bme680.h
+> +++ b/drivers/iio/chemical/bme680.h
+> @@ -56,6 +56,13 @@
+>  #define   BME680_GAS_MEAS_BIT			BIT(6)
+>  #define   BME680_MEAS_BIT			BIT(5)
+>  
+> +#define BME680_TEMP_NUM_BYTES			3
+> +#define BME680_PRESS_NUM_BYTES			3
+> +#define BME680_HUMID_NUM_BYTES			2
+> +#define BME680_GAS_NUM_BYTES			2
+> +
+> +#define BME680_MEAS_TRIM_MASK			GENMASK(24, 4)
+> +
+>  /* Calibration Parameters */
+>  #define BME680_T2_LSB_REG	0x8A
+>  #define BME680_H2_MSB_REG	0xE1
+> diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
+> index 538696ac4205..99259d0cf13d 100644
+> --- a/drivers/iio/chemical/bme680_core.c
+> +++ b/drivers/iio/chemical/bme680_core.c
+> @@ -115,6 +115,9 @@ struct bme680_data {
+>  	 * transfer buffers to live in their own cache lines.
+>  	 */
+>  	union {
+> +		u8 buf[3];
+> +		unsigned int check;
+> +		__be16 be16;
+>  		u8 bme680_cal_buf_1[BME680_CALIB_RANGE_1_LEN];
+>  		u8 bme680_cal_buf_2[BME680_CALIB_RANGE_2_LEN];
+>  		u8 bme680_cal_buf_3[BME680_CALIB_RANGE_3_LEN];
+> @@ -453,7 +456,6 @@ static u8 bme680_oversampling_to_reg(u8 val)
+>  static int bme680_wait_for_eoc(struct bme680_data *data)
+>  {
+>  	struct device *dev = regmap_get_device(data->regmap);
+> -	unsigned int check;
+>  	int ret;
+>  	/*
+>  	 * (Sum of oversampling ratios * time per oversampling) +
+> @@ -466,16 +468,16 @@ static int bme680_wait_for_eoc(struct bme680_data *data)
+>  
+>  	usleep_range(wait_eoc_us, wait_eoc_us + 100);
+>  
+> -	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
+> +	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &data->check);
+>  	if (ret) {
+>  		dev_err(dev, "failed to read measurement status register.\n");
+>  		return ret;
+>  	}
+> -	if (check & BME680_MEAS_BIT) {
+> +	if (data->check & BME680_MEAS_BIT) {
+>  		dev_err(dev, "Device measurement cycle incomplete.\n");
+>  		return -EBUSY;
+>  	}
+> -	if (!(check & BME680_NEW_DATA_BIT)) {
+> +	if (!(data->check & BME680_NEW_DATA_BIT)) {
+>  		dev_err(dev, "No new data available from the device.\n");
+>  		return -ENODATA;
+>  	}
+> @@ -564,7 +566,6 @@ static int bme680_read_temp(struct bme680_data *data, int *val)
+>  {
+>  	struct device *dev = regmap_get_device(data->regmap);
+>  	int ret;
+> -	__be32 tmp = 0;
+>  	u32 adc_temp;
+>  	s16 comp_temp;
+>  
+> @@ -578,13 +579,14 @@ static int bme680_read_temp(struct bme680_data *data, int *val)
+>  		return ret;
+>  
+>  	ret = regmap_bulk_read(data->regmap, BME680_REG_TEMP_MSB,
+> -			       &tmp, 3);
+> +			       data->buf, BME680_TEMP_NUM_BYTES);
+>  	if (ret < 0) {
+>  		dev_err(dev, "failed to read temperature\n");
+>  		return ret;
+>  	}
+>  
+> -	adc_temp = be32_to_cpu(tmp) >> 12;
+> +	adc_temp = FIELD_GET(BME680_MEAS_TRIM_MASK,
+> +			     get_unaligned_be24(data->buf));
+>  	if (adc_temp == BME680_MEAS_SKIPPED) {
+>  		/* reading was skipped */
+>  		dev_err(dev, "reading temperature skipped\n");
+> @@ -610,7 +612,6 @@ static int bme680_read_press(struct bme680_data *data,
+>  {
+>  	struct device *dev = regmap_get_device(data->regmap);
+>  	int ret;
+> -	__be32 tmp = 0;
+>  	u32 adc_press;
+>  
+>  	/* Read and compensate temperature to get a reading of t_fine */
+> @@ -619,13 +620,14 @@ static int bme680_read_press(struct bme680_data *data,
+>  		return ret;
+>  
+>  	ret = regmap_bulk_read(data->regmap, BME680_REG_PRESS_MSB,
+> -			       &tmp, 3);
+> +			       data->buf, BME680_PRESS_NUM_BYTES);
+>  	if (ret < 0) {
+>  		dev_err(dev, "failed to read pressure\n");
+>  		return ret;
+>  	}
+>  
+> -	adc_press = be32_to_cpu(tmp) >> 12;
+> +	adc_press = FIELD_GET(BME680_MEAS_TRIM_MASK,
+> +			      get_unaligned_be24(data->buf));
+>  	if (adc_press == BME680_MEAS_SKIPPED) {
+>  		/* reading was skipped */
+>  		dev_err(dev, "reading pressure skipped\n");
+> @@ -642,7 +644,6 @@ static int bme680_read_humid(struct bme680_data *data,
+>  {
+>  	struct device *dev = regmap_get_device(data->regmap);
+>  	int ret;
+> -	__be16 tmp = 0;
+>  	u16 adc_humidity;
+>  	u32 comp_humidity;
+>  
+> @@ -652,13 +653,13 @@ static int bme680_read_humid(struct bme680_data *data,
+>  		return ret;
+>  
+>  	ret = regmap_bulk_read(data->regmap, BME680_REG_HUMIDITY_MSB,
+> -			       &tmp, sizeof(tmp));
+> +			       &data->be16, BME680_HUMID_NUM_BYTES);
+>  	if (ret < 0) {
+>  		dev_err(dev, "failed to read humidity\n");
+>  		return ret;
+>  	}
+>  
+> -	adc_humidity = be16_to_cpu(tmp);
+> +	adc_humidity = be16_to_cpu(data->be16);
+>  	if (adc_humidity == BME680_MEAS_SKIPPED) {
+>  		/* reading was skipped */
+>  		dev_err(dev, "reading humidity skipped\n");
+> @@ -676,8 +677,6 @@ static int bme680_read_gas(struct bme680_data *data,
+>  {
+>  	struct device *dev = regmap_get_device(data->regmap);
+>  	int ret;
+> -	__be16 tmp = 0;
+> -	unsigned int check;
+>  	u16 adc_gas_res, gas_regs_val;
+>  	u8 gas_range;
+>  
+> @@ -697,19 +696,20 @@ static int bme680_read_gas(struct bme680_data *data,
+>  	if (ret)
+>  		return ret;
+>  
+> -	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &check);
+> -	if (check & BME680_GAS_MEAS_BIT) {
+> +	ret = regmap_read(data->regmap, BME680_REG_MEAS_STAT_0, &data->check);
+> +	if (data->check & BME680_GAS_MEAS_BIT) {
+>  		dev_err(dev, "gas measurement incomplete\n");
+>  		return -EBUSY;
+>  	}
+>  
+>  	ret = regmap_bulk_read(data->regmap, BME680_REG_GAS_MSB,
+> -			       &tmp, sizeof(tmp));
+> +			       &data->be16, BME680_GAS_NUM_BYTES);
+>  	if (ret < 0) {
+>  		dev_err(dev, "failed to read gas resistance\n");
+>  		return ret;
+>  	}
+> -	gas_regs_val = be16_to_cpu(tmp);
+> +
+> +	gas_regs_val = be16_to_cpu(data->be16);
+>  	adc_gas_res = FIELD_GET(BME680_ADC_GAS_RES, gas_regs_val);
+>  
+>  	/*
+> @@ -838,7 +838,6 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+>  {
+>  	struct iio_dev *indio_dev;
+>  	struct bme680_data *data;
+> -	unsigned int val;
+>  	int ret;
+>  
+>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
+> @@ -869,15 +868,15 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+>  		return ret;
+>  	}
+>  
+> -	ret = regmap_read(regmap, BME680_REG_CHIP_ID, &val);
+> +	ret = regmap_read(regmap, BME680_REG_CHIP_ID, &data->check);
+>  	if (ret < 0) {
+>  		dev_err(dev, "Error reading chip ID\n");
+>  		return ret;
+>  	}
+>  
+> -	if (val != BME680_CHIP_ID_VAL) {
+> +	if (data->check != BME680_CHIP_ID_VAL) {
+>  		dev_err(dev, "Wrong chip ID, got %x expected %x\n",
+> -			val, BME680_CHIP_ID_VAL);
+> +			data->check, BME680_CHIP_ID_VAL);
+>  		return -ENODEV;
+>  	}
+>  
+> -- 
+> 2.25.1
+> 
 

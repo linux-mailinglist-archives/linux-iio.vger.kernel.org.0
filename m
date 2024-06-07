@@ -1,285 +1,162 @@
-Return-Path: <linux-iio+bounces-5996-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5997-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D3FB900195
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 13:04:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77BCC90026F
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 13:42:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8FF77288851
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 11:04:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7763F1C2253C
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 11:42:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 947F8187325;
-	Fri,  7 Jun 2024 11:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A614618735F;
+	Fri,  7 Jun 2024 11:42:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZJ+pqRWn"
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="XQQSrQpr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11olkn2059.outbound.protection.outlook.com [40.92.20.59])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94852186E38;
-	Fri,  7 Jun 2024 11:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717758287; cv=none; b=dbxAo+YBEgNRV1ekjEe3gVawvZ2jjLMsG26iifco3Rpze3Blk2/hhsViKCskYsNXiSTFAMJw0pWis7KMhu2bFfq39z+jH9qx71Sc3M/eWrB9ccaaO0zGI+otPBGkv+PuGSjukSGPrTeDf3qdguGk7NG5XHI8r6d0s2NWxwM83qk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717758287; c=relaxed/simple;
-	bh=3er2UeL8tEF40SAf9XsBp6jxeZiD80h1vL0uTLtytzc=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bABltLiKOItCqZyNeySK8b7I69e2FpzapxS7SBPjCsbvRUOgECPduQv3aCAT7kTc/hlXTNYh/V4wP7cfJ6IW8RsZCYHoTtp+ScAS4yv0Dz00QlNaH9mhJJeLGl3uNXv6aQQYq0D/yGTrcU3Y/mRcZinR8UwxuGw+zslj3+DMlAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZJ+pqRWn; arc=none smtp.client-ip=209.85.218.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a68b41ef3f6so207202366b.1;
-        Fri, 07 Jun 2024 04:04:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717758284; x=1718363084; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wjekk4TvEWDeInc8ylyVqE1ont2pRDjuWBGD45pTYzI=;
-        b=ZJ+pqRWnTz7LRiWnBHT2EMg/Nv9HyMF9kWrimEbvR44yWbAJ4vB4cP4K1ULpXkxRe9
-         OKgr/LaeHq49n3VCZmLg0iocd8Ur7lW4sg2ayVKPcVdjAAZlbl6fyjjyGXhc4jsKVA8m
-         YoKmc1oZK3YdGfSBnxf4dgAba523Yv3Kasf5cZ08keEzYoA+6AbEhYnlmnWjb0/7b1hL
-         53pwUf//rudAz8yWTCOVqBOzk87QoU3eJcWVnyMkyfw6udCU1RiUq0nV18TU8VtTpNif
-         9uFGqWPv6G3/Covhnz2LwQ9Wu3mSW+vs1byzK101Bx/gTLzLS2QK50AsvvAWkFiS/AJE
-         8Q5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717758284; x=1718363084;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=wjekk4TvEWDeInc8ylyVqE1ont2pRDjuWBGD45pTYzI=;
-        b=Eu88JB114EmOQ19ffES7RdVV7KUs4p2D8ybIz4tikAg3OrYB7RTt47+IEx0QRXOWB6
-         A0Hui/iMfFY13LILLvfkZuZoe9nUpelFXCpRuNn9qwMjzrHktXQYVHjTC1tEnS9bWZMe
-         JZ6kJYsZkWvWr1Du9RzA4vI6PjU6deHDv/MRusxXNGWaRNoQc1sVXXzHdgUJDhsSQsiR
-         TPm4rV6JFVNFCjyO303v/MuLDa1pMbjcGX7b14/RWBEKw5HSEa8DcK426AnauhrzReQ1
-         qlVMPhPiqo1SUffZRZjPLZW5BI+4WbNeZ6821YgqCg/r4RqAKXzMMmdQttQnheD3kpY9
-         a9gw==
-X-Forwarded-Encrypted: i=1; AJvYcCUsYOdrySu46DtYrWHbBLjFEwZe5u9tIEhiWJCt38NyNF01jvHehu8IdIHUqVajrFNf48NpVlN5x2Zupp2eWYTq2PLq/9wblAacM0shfGDPWNzuKcGkKY7lEXK38pXJGomNGQFuIAttH+EeRkmGrv2C5+3i+KWhNXq7nF5kJcv34YFcaA==
-X-Gm-Message-State: AOJu0Yya9r9jiMOJI4Oc6MwwRtVrrz+5g5P5i0JGuP032vtL1pGUyygQ
-	f//DGpKnXB88cEcq+3hcISTiFMM3FyKfAmQqbXJpQF9OLlvYyaKy
-X-Google-Smtp-Source: AGHT+IELglwxS8UZfVGPN3EYGDazK4fEP5qmfTU0F9nfCyELDi09M+UbPTprQSsjyAXJddb+EyHx7g==
-X-Received: by 2002:a17:906:48c7:b0:a6a:44d9:7d15 with SMTP id a640c23a62f3a-a6cdb203f7amr140038466b.58.1717758283780;
-        Fri, 07 Jun 2024 04:04:43 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c805cc280sm230758066b.72.2024.06.07.04.04.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 04:04:43 -0700 (PDT)
-Message-ID: <751abd157213736e376ca43ef1082362a4ca1149.camel@gmail.com>
-Subject: Re: [PATCH v2 2/2] iio: frequency: adf4350: add clk provider
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>, Lars-Peter Clausen
-	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron
-	 <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Date: Fri, 07 Jun 2024 13:08:30 +0200
-In-Reply-To: <20240607095806.3299-2-antoniu.miclaus@analog.com>
-References: <20240607095806.3299-1-antoniu.miclaus@analog.com>
-	 <20240607095806.3299-2-antoniu.miclaus@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A811F170830;
+	Fri,  7 Jun 2024 11:42:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.20.59
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717760523; cv=fail; b=T1F6lbeKeZKoZhfv6mQCrd29Al/MWP02bHP5K/Z9zTW6zuLNtU6qnI+OeQIeKRmoS3bYLzuaq2uii5cANJpDbSQsWYxOwfz1xmYzy6r40D0qT7q/GmvkiIjdF3BhexFMNjar+tqMIJNAhU2DhGknbzpvKxqGq2SbQ1ygZTpptn8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717760523; c=relaxed/simple;
+	bh=PdC3D22jORJ3L5xWH2J3IfuUrt69cgf+Hb7ihp0xs5U=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=j9cqqiJTfIHBybCln67DdchlLTnHtq32/3V9xfm4VkhWLXfkDJ1el0UANcuhoARokh9heugXr3ZqJfSrGCrJqL7gafRK8erqR3zfy5XfFeAsJh0qwNsCxzjBqvhioYy1ZDXfZCD5JNcOnrcnHiqZqfw83B8gJ2kRW/JmtFKRbSk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=XQQSrQpr; arc=fail smtp.client-ip=40.92.20.59
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=ZD9lr4mLmFwulBLMsmv+ZGFyiznqgnb5zsdz8QZkpwmpodDWb59KHYe6KlHxJX2m8A5qsmkYhzllJR3e2tt1nKRdz9BqyzI6BWS1HXmcCjpo7W0NjkSeDq15ZP2mX9FbUCkQSMMgqTWw2epmpRg9z4fE7j9QNtsIrW0YR3YDpj/JCxa7E8A9NI+CzDS6JADS9c3CsjlELBEWlVOtGP3SvpqcZJyOREPujlenvRvc3Z0JFa7hVDtWzoU2KmMYtHoLjnBeGP98gNU6JAHXbn7ElPkNLTy8AK6jkWA2mxsWEBCwx/hM4DQu4Tb1CuXBze9POmwjvyRaDczsCvkTlPuZgQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=02xwAbFbaeb3QuFhxOIGvHTmvnhfH9bKR6Lhn0ulgRk=;
+ b=GJ/7jCrYDsN7fDLi09fhVOe08cSKyZpzj5rNsxh65HLngfnZ37Lp/93NaCXHnVpzUJ/w6jHniPo86090kId4yEV4/7C67fn2AdlfzvC7CFLaelxmyH48R8dPOAmVYSeN14HVN3bjl77KNs6ptV5R6jBqTlw2GmHxUR9eQUHzlVEZEyaG67MD3KArpyB0mjX4n3HEpoLyiIrC1ZjgLC1PosERyrE+aYx8WcdqdV951icoOHSXuuQz9paIN+PmITcpLAUMZz3V4hgqAnwLiPqBcgrIqgeIBJJ33ZZa09HfVSDMRwkwlXUTEASd86LfgD/qHouR6yx/NYh4z83+DVeXLA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=02xwAbFbaeb3QuFhxOIGvHTmvnhfH9bKR6Lhn0ulgRk=;
+ b=XQQSrQpruF8DwVobkWozn3GZdsf9oXVDbpmczBWSss83+u3gS3IGc7Se6QXOq6z7InCoJsD60q8pFqL0lNx/QLO47ACepi9hPYUQMnWuB7amgIen/++T5ZdLY1iBmCuHyt3Lc99fCenzkKJ9xLiWE86m5sB+q/viwrqR0+sW+RGKgVUDvKKXg/mt1uCCqhYWmHG3DkGTntRlp6fnWRLT6320agev+Dx0rLAdN12XCVJr6fTRihEHoGRiNiLcKKPTGyCQGnryY/Dsqk+JxNVhYSXl8aJX7R/RXySQBSdje13QArlLVGYvOGD2af80r3kPXTZ0hqB6duwpKfTf66L7RQ==
+Received: from SN7PR12MB8101.namprd12.prod.outlook.com (2603:10b6:806:321::7)
+ by CY5PR12MB6034.namprd12.prod.outlook.com (2603:10b6:930:2e::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.27; Fri, 7 Jun
+ 2024 11:41:59 +0000
+Received: from SN7PR12MB8101.namprd12.prod.outlook.com
+ ([fe80::fdb:e120:f99c:c899]) by SN7PR12MB8101.namprd12.prod.outlook.com
+ ([fe80::fdb:e120:f99c:c899%5]) with mapi id 15.20.7611.016; Fri, 7 Jun 2024
+ 11:41:59 +0000
+From: Yasin Lee <yasin.lee.x@outlook.com>
+To: jic23@kernel.org
+Cc: andy.shevchenko@gmail.com,
+	lars@metafoo.de,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	nuno.a@analog.com,
+	swboyd@chromium.org,
+	u.kleine-koenig@pengutronix.de,
+	yasin.lee.x@gmail.com,
+	yasin.lee.x@outlook.com
+Subject: [PATCH v4 0/2] iio:proximity:hx9023s: Add TYHX HX9023S sensor driver
+Date: Fri,  7 Jun 2024 19:41:36 +0800
+Message-ID:
+ <SN7PR12MB8101204CE811B8E88A2464CCA4FB2@SN7PR12MB8101.namprd12.prod.outlook.com>
+X-Mailer: git-send-email 2.25.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [obcYyx83dirNGFa/FlDLZzdq5ssN8gQ6hWfbCd+xQRyq+NJ2L+8bEScUJ8QVNWe4]
+X-ClientProxiedBy: SG2PR01CA0144.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:8f::24) To SN7PR12MB8101.namprd12.prod.outlook.com
+ (2603:10b6:806:321::7)
+X-Microsoft-Original-Message-ID:
+ <20240607114138.390272-1-yasin.lee.x@outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8101:EE_|CY5PR12MB6034:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6b27c581-fdad-438e-8c1c-08dc86e6d71d
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199019|1602099003|440099019|3412199016|1710799017;
+X-Microsoft-Antispam-Message-Info:
+	cGUHdiQnTHuEdK5NphTuBS2FUJrgaiu4vUQBUzgou8Xw2VVSaor5rDLIh75KIfUek/FQKPiXe06OnL+6oZ5aVMjtohS4y8TfFfM5s6BCj6y1yrAk3da/3sRvgwk70kDgpjQV9DyfRh71hDTJZrqhP2cD4Epz8eu1HGjJMgBIMwRn9pZMHBVPVrtsJK/cAhGEjoAgxqHuhhBN7Q+Nl2XKsl/ZrRD7eOjNQAAfuVLioH2mCnC0ZAjJCClqlj3DXziC1Yn32eigl5mgLPX7VmLkhppHyfXYCyLEZRlB5E97KuIaFks+6sr3yeTl4XftIQ/ii00nzT8fbyUI9fUgjQA17ufYdxgNDRqgJB4fyz6OLFA+9kw5ZFUnUmgpXleXfkXghc0gItzLxt4w3bI3N5l8nJmWcufjKWzau+yYFI2UEOV/cN+nlrwMDeiNK1YOPe66OKlkAKaz3Em/+TWHoZEEBU8hMzqsMp+TsH8sOhpTpDySiqVhHCtndnZJCO/ml7Bq1xV23S1E7JPuFsLO8rF+mGjnnvDzw37gdn2oDmjD5R7y0R5hVFjTSQvOp4bfniq1nfefgMAIroiJH/j9nEuaGjQEDEeMarS/RC5duIe6Eqndkk+uhqFrfGSCbdAAczRW780YejF75i/bYZ+X4mowtqAO/kTzkOMjybePtSz8E3v1oZ2cMGJJunCN1tHCwiq5A/WfDAQz1J0cCymYQFCXtCyWu0XRtuhu7OSwIxHNIAp4B9udFrdDlQ1ytlTMGM/8
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?27CAP1DP7yEbjfpF7qniqrD4hyWuPArlqxwe4pOEePC+eURbBII/IPbDJxCt?=
+ =?us-ascii?Q?t1hgrHE+06of06O7/KRjYNRS+iGBAoFYxA1HbjBI56ky0CVG+hAINohXVAeL?=
+ =?us-ascii?Q?16fp2IGhWKGqUBDWCZDFoKdePlnjudCBH+55g2p3v0l67Y0FE7GDg/SItSmI?=
+ =?us-ascii?Q?hdh8PxS9MBWyyJj8VVmAQGA1eg7kY+SivxLzzjgLsIgGi3zxCGWIkfVCQg5p?=
+ =?us-ascii?Q?ydwX+cn0iNmeuL0MwbIVKV/VL2taLKH4yBvakgqPWqaPqElT1xZwBPY5C7qw?=
+ =?us-ascii?Q?kmdsM4Bd0bfMdBOj5pARCbTnNfblzybP2OytpHh3k8HeyWU2AOa56/maH+hB?=
+ =?us-ascii?Q?3dotgi2NbrfE4yo1BRPDX1EMguGNNlE/giXNClwcOWg7zlR4lm28EQOEdB7R?=
+ =?us-ascii?Q?N+JhdE/tOtKxNonTru37OzuuvUgn//2Hkgk+xR/znWJhyppGGYd5/Y4eslJL?=
+ =?us-ascii?Q?BGbV+dmBG5pol60JbKMyplU7PqJaIt4xlv5l2RZVKzpIZaUhKgpY8GiJWpRk?=
+ =?us-ascii?Q?2B5timS9qgj5TtePIXUFJqPzndz+iP3xDsZdYnVafbL6nNPacUBbvlzi+lrg?=
+ =?us-ascii?Q?6Xi9+wq0bVG3UiJ8nm/tPEMDw0F42dPYsVlHJ7rRcd3tCMvinx80EQESIPDi?=
+ =?us-ascii?Q?O01Q9NsucQjlmTwHYCNHV5DNibrVJk8H8nVnpJ1WWW3q57WUk6PFXUI2+63o?=
+ =?us-ascii?Q?KFb0zSRQR6NtoZEwpVp8j9uKCZkGwQKYY/Nq97VzIRf/KWK5rZU5CweQ7akJ?=
+ =?us-ascii?Q?HBifCH5lrqb3i0KGEcqP4t/bV6lk7H/dQ2cjYzlX5Ol3Vnxf4/wjwrT4Z5ZI?=
+ =?us-ascii?Q?ON1gDk9gf394f1kUqmKp4PbHpakA/tT+vHxDt5mZ6NpvkQqBA40iliiROPQ8?=
+ =?us-ascii?Q?sTXOYJPoymjPIE98mp3LaxHhgtycSsHaRyFDgQRBFxA4WRwAHWagC6DwKhN2?=
+ =?us-ascii?Q?7XA8+7Jh1I43Wh113z7J8fh6EpM/x7pOaG0RuGcerrfWA2GqMsOe/xYHdthD?=
+ =?us-ascii?Q?P02ggq9+qNr6fw9SwetfcEzUbuGqu6V6JyzgYzXKY+63rzB/yXLSYp1HOF/V?=
+ =?us-ascii?Q?Ryg29KzUbzrEpqN5GWgcHvdsaEgS9faKA7iOtZaOzUJL00LHH8GuoVLXWOjh?=
+ =?us-ascii?Q?tbfyW2RQ0QIe9bYe2IvtkhbWUH/vmIiVLNgJdw04MG5KvTZ3fM57VHOyeh67?=
+ =?us-ascii?Q?RWmXjqpty+viaAT8FfvJf28F1Tm/br+ZMajyNEWhwwHo6bsAwMnjf9dH31JD?=
+ =?us-ascii?Q?2czA2L0nsHLKVtGFG58SGMf03UoeIb3A8F3RDRvwMeJdOqQib0cFsFw6b4yC?=
+ =?us-ascii?Q?rkigC7OB0usmtPwE0SNXdz8k?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6b27c581-fdad-438e-8c1c-08dc86e6d71d
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8101.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Jun 2024 11:41:59.4387
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6034
 
-On Fri, 2024-06-07 at 12:57 +0300, Antoniu Miclaus wrote:
-> Add clk provider feature for the adf4350.
->=20
-> Even though the driver was sent as an IIO driver in most cases the
-> device is actually seen as a clock provider.
->=20
-> This patch aims to cover actual usecases requested by users in order to
-> completely control the output frequencies from userspace.
->=20
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
-> changes in v2:
-> =C2=A0- rework commit title
-> =C2=A0drivers/iio/frequency/adf4350.c | 129 +++++++++++++++++++++++++++++=
-+++
-> =C2=A01 file changed, 129 insertions(+)
->=20
-> diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4=
-350.c
-> index 4abf80f75ef5..1eb8bce71fe1 100644
-> --- a/drivers/iio/frequency/adf4350.c
-> +++ b/drivers/iio/frequency/adf4350.c
-> @@ -19,6 +19,7 @@
-> =C2=A0#include <linux/gpio/consumer.h>
-> =C2=A0#include <asm/div64.h>
-> =C2=A0#include <linux/clk.h>
-> +#include <linux/clk-provider.h>
-> =C2=A0
-> =C2=A0#include <linux/iio/iio.h>
-> =C2=A0#include <linux/iio/sysfs.h>
-> @@ -31,11 +32,21 @@ enum {
-> =C2=A0	ADF4350_PWRDOWN,
-> =C2=A0};
-> =C2=A0
-> +struct adf4350_output {
-> +	struct clk_hw hw;
-> +	struct iio_dev *indio_dev;
-> +};
-> +
-> +#define to_output(_hw) container_of(_hw, struct adf4350_output, hw)
-> +
-> =C2=A0struct adf4350_state {
-> =C2=A0	struct spi_device		*spi;
-> =C2=A0	struct gpio_desc		*lock_detect_gpiod;
-> =C2=A0	struct adf4350_platform_data	*pdata;
-> =C2=A0	struct clk			*clk;
-> +	struct clk			*clkout;
-> +	const char			*clk_out_name;
-> +	struct adf4350_output		output;
-> =C2=A0	unsigned long			clkin;
-> =C2=A0	unsigned long			chspc; /* Channel Spacing */
-> =C2=A0	unsigned long			fpfd; /* Phase Frequency Detector */
-> @@ -264,6 +275,10 @@ static ssize_t adf4350_write(struct iio_dev *indio_d=
-ev,
-> =C2=A0	mutex_lock(&st->lock);
-> =C2=A0	switch ((u32)private) {
-> =C2=A0	case ADF4350_FREQ:
-> +		if (st->clkout) {
-> +			ret =3D clk_set_rate(st->clkout, readin);
-> +			break;
-> +		}
-> =C2=A0		ret =3D adf4350_set_freq(st, readin);
-> =C2=A0		break;
-> =C2=A0	case ADF4350_FREQ_REFIN:
-> @@ -381,6 +396,115 @@ static const struct iio_info adf4350_info =3D {
-> =C2=A0	.debugfs_reg_access =3D &adf4350_reg_access,
-> =C2=A0};
-> =C2=A0
-> +static void adf4350_clk_del_provider(void *data)
-> +{
-> +	struct adf4350_state *st =3D data;
-> +
-> +	of_clk_del_provider(st->spi->dev.of_node);
-> +}
-> +
-> +static unsigned long adf4350_clk_recalc_rate(struct clk_hw *hw,
-> +					=C2=A0=C2=A0=C2=A0=C2=A0 unsigned long parent_rate)
-> +{
-> +	struct iio_dev *indio_dev =3D to_output(hw)->indio_dev;
-> +	struct adf4350_state *st =3D iio_priv(indio_dev);
-> +	unsigned long long tmp;
-> +
-> +	tmp =3D (u64)(st->r0_int * st->r1_mod + st->r0_fract) * st->fpfd;
-> +	do_div(tmp, st->r1_mod * (1 << st->r4_rf_div_sel));
-> +
-> +	return tmp;
-> +}
-> +
-> +static int adf4350_clk_set_rate(struct clk_hw *hw,
-> +				unsigned long rate,
-> +				unsigned long parent_rate)
-> +{
-> +	struct iio_dev *indio_dev =3D to_output(hw)->indio_dev;
-> +	struct adf4350_state *st =3D iio_priv(indio_dev);
-> +
-> +	if (parent_rate =3D=3D 0 || parent_rate > ADF4350_MAX_FREQ_REFIN)
-> +		return -EINVAL;
-> +
-> +	st->clkin =3D parent_rate;
-> +
-> +	return adf4350_set_freq(st, rate);
-> +}
-> +
-> +static int adf4350_clk_prepare(struct clk_hw *hw)
-> +{
-> +	struct iio_dev *indio_dev =3D to_output(hw)->indio_dev;
-> +	struct adf4350_state *st =3D iio_priv(indio_dev);
-> +
-> +	st->regs[ADF4350_REG2] &=3D ~ADF4350_REG2_POWER_DOWN_EN;
-> +
-> +	return adf4350_sync_config(st);
-> +}
-> +
-> +static void adf4350_clk_unprepare(struct clk_hw *hw)
-> +{
-> +	struct iio_dev *indio_dev =3D to_output(hw)->indio_dev;
-> +	struct adf4350_state *st =3D iio_priv(indio_dev);
-> +
-> +	st->regs[ADF4350_REG2] |=3D ADF4350_REG2_POWER_DOWN_EN;
-> +
-> +	adf4350_sync_config(st);
-> +}
-> +
-> +static int adf4350_clk_is_enabled(struct clk_hw *hw)
-> +{
-> +	struct iio_dev *indio_dev =3D to_output(hw)->indio_dev;
-> +	struct adf4350_state *st =3D iio_priv(indio_dev);
-> +
-> +	return (st->regs[ADF4350_REG2] & ADF4350_REG2_POWER_DOWN_EN);
-> +}
-> +
-> +static const struct clk_ops adf4350_clk_ops =3D {
-> +	.recalc_rate =3D adf4350_clk_recalc_rate,
-> +	.set_rate =3D adf4350_clk_set_rate,
-> +	.prepare =3D adf4350_clk_prepare,
-> +	.unprepare =3D adf4350_clk_unprepare,
-> +	.is_enabled =3D adf4350_clk_is_enabled,
-> +};
-> +
-> +static int adf4350_clk_register(struct adf4350_state *st)
-> +{
-> +	struct spi_device *spi =3D st->spi;
-> +	struct clk_init_data init;
-> +	struct clk *clk;
-> +	const char *parent_name;
-> +	int ret;
-> +
-> +	if (!device_property_present(&spi->dev, "#clock-cells"))
-> +		return 0;
-> +
-> +	init.name =3D devm_kasprintf(&spi->dev, GFP_KERNEL, "%s-clk",
-> +				=C2=A0=C2=A0 fwnode_get_name(dev_fwnode(&spi->dev)));
-> +	device_property_read_string(&spi->dev, "clock-output-names",
-> +				=C2=A0=C2=A0=C2=A0 &init.name);
-> +
-> +	parent_name =3D of_clk_get_parent_name(spi->dev.of_node, 0);
-> +	if (!parent_name)
-> +		return -EINVAL;
-> +
-> +	init.ops =3D &adf4350_clk_ops;
-> +	init.parent_names =3D &parent_name;
-> +	init.num_parents =3D 1;
-> +
-> +	st->output.hw.init =3D &init;
-> +	clk =3D devm_clk_register(&spi->dev, &st->output.hw);
-> +	if (IS_ERR(clk))
-> +		return PTR_ERR(clk);
-> +
-> +	ret =3D of_clk_add_provider(spi->dev.of_node, of_clk_src_simple_get,
-> clk);
-> +	if (ret)
-> +		return ret;
-> +
+From: Yasin Lee <yasin.lee.x@gmail.com>
 
-I totally agree this chip should be a clock provider (maybe it should even =
-in
-drivers/clk from the beginning) but there's one thing that comes to my mind=
-.
-Should we still expose the IIO userspace interface in case we register it a=
-s a
-clock provider?
+v4:
+- Removed hardware-irrelevant properties from dt-bindings, retaining only channel configuration
+  related `channel-positive` and `channel-negative`. Grouped by channel. 
+  Retained `channel-in-use` as it is hardware-related.
+- Removed redundant register definitions.
+- Reorganized `struct hx9023s_data`, extracting channel-related attributes 
+  into a new `struct hx9023s_ch_data`.
+- Optimized bit operation related code.
+- Replaced `of_` versions with generic firmware parsing functions.
+- Fixed other issues mentioned in the email feedback.
 
-Sure, we do have clk notifiers in the kernel but I still think it's a sensi=
-ble
-question :)
+Link: https://lore.kernel.org/linux-iio/20240602152638.2c674930@jic23-huawei/
 
-I suspect we have another "outliers" in drivers/iio/frequency :)
+Yasin Lee (2):
+  dt-bindings:iio:proximity: Add hx9023s binding
+  iio:proximity:hx9023s: Add TYHX HX9023S sensor driver
 
-- Nuno S=C3=A1=20
+ .../bindings/iio/proximity/tyhx,hx9023s.yaml  |  103 ++
+ .../devicetree/bindings/vendor-prefixes.yaml  |    2 +
+ drivers/iio/proximity/Kconfig                 |   14 +
+ drivers/iio/proximity/Makefile                |    1 +
+ drivers/iio/proximity/hx9023s.c               | 1162 +++++++++++++++++
+ 5 files changed, 1282 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml
+ create mode 100644 drivers/iio/proximity/hx9023s.c
 
+-- 
+2.25.1
 
 

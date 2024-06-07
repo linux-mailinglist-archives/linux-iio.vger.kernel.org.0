@@ -1,310 +1,139 @@
-Return-Path: <linux-iio+bounces-5995-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-5994-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0223B90011A
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 12:41:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01D0890010B
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 12:38:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57892B23D8A
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 10:41:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BFFF1C22BB6
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 10:37:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9065C15DBCA;
-	Fri,  7 Jun 2024 10:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B78A15DBAD;
+	Fri,  7 Jun 2024 10:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YLsL13wL"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a0CZUZWG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8C5815D5C4;
-	Fri,  7 Jun 2024 10:40:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D432815D5A5;
+	Fri,  7 Jun 2024 10:37:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717756853; cv=none; b=P/BfR6xs7dqxXAj/RnGmlFbnLv9LcgEzvrNDg0rdusyWkVcgnSSvNYLbr3835jE6f3mOb8Z9tF6XrFsRtBNtpgQ4MjaRUC06hNilo2qDoiib3NkxR5pZvU9/kkI4cFjF8NztEUfWHRHZNTLAyWnvxqT7JbohHNreBJL1EZcAsvA=
+	t=1717756673; cv=none; b=cof1jt5+W7UJRdEepWXWLCh31XEmiMGNRJ6suwZv/To/7Hl4w+bg7NTEVpY2J9eFrreobRoTA6KvArLqe5oln3Yo6fUhZtVFBDcyJS2g2vSm+t36NtSQ99Rn/q97epvu6XVMaA3we10Z2jeZWVej/k7/3c+3ga7xPWHAHlm4eRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717756853; c=relaxed/simple;
-	bh=UynYF8JW/N9DYyJC+f4j3JHrpHyBb40KUm2kws6VKh0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ddonD1kYKqRl5CjhNgcMRppIp3kW1MA4jVEkl0It9ZFpb2wX/kt5X4nTpjUGt41odnCGbObWi8/zij4Sc0oKaCIhVn3/DMCLZQH4LGFEi833Z+zzFeAAeMghKpbYUsF0Q9vdGsLOHlLv2fo15s790skwMIeUwfgpuK3TMGVBMdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YLsL13wL; arc=none smtp.client-ip=209.85.221.54
+	s=arc-20240116; t=1717756673; c=relaxed/simple;
+	bh=AI2ieUO/6av7s9ZXod25pYy+JFppaxhrF6e/NoXP2Ws=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dPmfCWV4xXh+19qE4JdY5R/byvRxWIu2FkJYBCtZHAKPpKofpYEu0WqAV/HKsoZriJOtFg3pdCtjYyRQCoOyIK7+K9IxupVzGNXpCyW3VcFLIEf53HzZ8Al5uenyXW5BCqf8j/nWv7A7njcxL+CD+fUF++yTabOAKBKaPLXXrAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a0CZUZWG; arc=none smtp.client-ip=209.85.218.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-35e4aaa0f33so1986578f8f.0;
-        Fri, 07 Jun 2024 03:40:51 -0700 (PDT)
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a68ee841138so252765166b.1;
+        Fri, 07 Jun 2024 03:37:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717756850; x=1718361650; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Kz+LCmEdD3MpY9rq5ZseyIHOMygig8X78a8YfUFrEaM=;
-        b=YLsL13wLv5d31hrh3JkWo2MEqXaoGr8v4Z/OzgRACeGqkZwxR9wlv+rCoroFFJqt/K
-         ipAR0zSm4K8BIe0ZsoCiydr+qn6wXqWXNiIbHhpLGfEPzx8EYKo57/2S/QkS8uJpZWza
-         M9SFqsKaqEB5N8SrieRfc+tLa6YLzrXcdQWgu2kY1fWok22Hk38xDenlko9GadUAAwGq
-         gHKmbzLDs+2rcAoqttTUyMzuBzxpaaxIc7bu9QHLOUZWdvLVXnjhCJQCGD8imogqozgD
-         bUQ5s5i9U4dc8tI4Rb/1SbSZku+pHlWAVurONRnNUxkUQfUZDOLQEvaW4x7+WKhajKhR
-         RyGA==
+        d=gmail.com; s=20230601; t=1717756670; x=1718361470; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=cYd5bpwy4meymqvJV+NAOZHVbo2MmJICLvFAiNGTisQ=;
+        b=a0CZUZWGNsUHaTmqBd5ASKEct25BJ4H59gXABj3EK8s0gtBsbiNwKlRlKYyd+FrPTv
+         JtWrCSB3uGIW1lqnpsbr7ksX9WWqmYBRKaqDMHrBU+O4j4bekeU6x1cmaZ/hnOGM3pTE
+         jk8k7fHGswNI7/obxkriZbKpK2hr6NjrT5Vu60sMryXJt0Pc341G1GEl2/PE8EFHw4sX
+         kvGOJSFEcJLdGQaDo575QIQp0aYGyIQvaNrEtwub+0BVFPH0Fni0xWhG3htiCDwv0mma
+         kU1RkCSp8+IcICfk4Xo0+t9605UrnJAsOn3/UUrBvAo/i5qxQFJDk63j6EtrkRWf4hmi
+         yjcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717756850; x=1718361650;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Kz+LCmEdD3MpY9rq5ZseyIHOMygig8X78a8YfUFrEaM=;
-        b=wq7FPbET/ImaidHclVbW9JIaJ308TbjZzPurmMv3z6RtlD2UKxtt05qgpKQHstThOw
-         hr6QFIeT7KjWFlsoeT2Z48smdawhcHdTOJFhfkQI2DlvSZog1LeYtRxiLkqWEbRx0TnC
-         wmavpb03BmDhlerbVHkh+VUES8WooU5uVcbrx8CJrG2wllT5X8WNuRy4QG+ENeLhemBn
-         i3AVImhEEEnmBT+BGVWf3x+SVAj2b73n4PUqfG8vslY9pqC0Adorrgex48+9OKHHhEUZ
-         aPGlzgYvFh7JyxdHlpGQYzwDznxTpVZF7+nUogSEToVOPQJp/V0LYuvI07Fd6y5r8+YT
-         S6JA==
-X-Forwarded-Encrypted: i=1; AJvYcCVrmh/ZgSSG7fwVhw6rlNBTvrnyowYVvEwa8bAvkVKMjSU1rke+dr2ODhyqgrAP5lQc07422uRpeF70oTeOTWSs7dLt7s54ZoQz
-X-Gm-Message-State: AOJu0YzYrQbpeKceUf6Xiy827M+aJoQDtl22JxApusAIodsIVrIGdEG+
-	Pek1FfALaZw06/yfANP6kxFAgGgwhcMIqBFFWd7z65zXERZzLQ/p
-X-Google-Smtp-Source: AGHT+IFWrSsV98lABxtAWuYUuhaUhOEgnia9rghGWKGQ3beuppFQ0JQ+p1ULcJ5bOdLbp2II/lu7CQ==
-X-Received: by 2002:a05:6000:45:b0:35e:7d21:cad2 with SMTP id ffacd0b85a97d-35efed5a649mr1974916f8f.30.1717756849835;
-        Fri, 07 Jun 2024 03:40:49 -0700 (PDT)
-Received: from localhost.localdomain ([78.210.52.100])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35ef5d297a4sm3731717f8f.9.2024.06.07.03.40.48
+        d=1e100.net; s=20230601; t=1717756670; x=1718361470;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=cYd5bpwy4meymqvJV+NAOZHVbo2MmJICLvFAiNGTisQ=;
+        b=BsZs00YfXRUwvr53JmSVIF7J/rX7n7mvVJVe8++4wrNdQpC0o+COrU6TPND+aP1oYX
+         xF6vdZm6S9dNdjn2dwac8L90Y/A4iesmNpWJClrIHlO0H8XP7AuzW4zZt9ZGHS3HoGsE
+         33W+9WMRP7SLw3JADv6MmOQufdb5GI8yvMI7i4EQORwCjvHIFoqPYW7pVSCsWTkQYb5t
+         zp8FSGYHeS9doX4UgDmwONW7RApJZ/Qn9+Dup4OvgbBH646TPHkIV0YlDg63Yfa3ytzN
+         Smk80BKejKFqwuHXYYXEQHjqAL8/zMMe9NgQDd6LQpAdVQKRw2s8T/MVM94uhK9RF+Y7
+         Y4EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+XZDstqwbB1umnhGhTAqwQ/SElrxNobpeX42PhsdWkRhalzqEDBN18FzWjmMJqPUb/FMmqx8meJ0iPbl/8clN7FYd+A0oOF4892ft+HakthMyLeBRhbI+x1mB2wBpu09Sud8uHClp
+X-Gm-Message-State: AOJu0YzYo56jVyTwizHe2Y919b/bEO5S37wWb3j9DYQyTArqiRuM7uFq
+	bPHYRJ4MlvljcAj61aNagCng1aXHEb73B8aKs9C4mJbv2sXgJ6Z+
+X-Google-Smtp-Source: AGHT+IEot8u6Kx2dBaaFTnk43HtFN61gLaNoiPmigTk6/4aDOSDBPYQkxaKir0bIj5Yf+9nCU8EZUQ==
+X-Received: by 2002:a17:906:e2c7:b0:a66:7666:fc62 with SMTP id a640c23a62f3a-a6cd6664187mr148202666b.22.1717756669944;
+        Fri, 07 Jun 2024 03:37:49 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6c80728867sm226290366b.192.2024.06.07.03.37.49
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 03:40:49 -0700 (PDT)
-From: Antoni Pokusinski <apokusinski01@gmail.com>
-X-Google-Original-From: Antoni Pokusinski <apokusinski@o2.pl>
-To: jic23@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	apokusinski@o2.pl
-Subject: [PATCH v2] iio: humidity: si7020: add heater support
-Date: Fri,  7 Jun 2024 12:39:45 +0200
-Message-Id: <20240607103944.11730-1-apokusinski@o2.pl>
-X-Mailer: git-send-email 2.25.1
+        Fri, 07 Jun 2024 03:37:49 -0700 (PDT)
+Message-ID: <3f1a6ccf23cb901473bd490b1ca7330db51a1313.camel@gmail.com>
+Subject: Re: [PATCH v3 2/4] iio: temperature: ltc2983: convert to
+ dev_err_probe()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Nuno Sa <nuno.sa@analog.com>, Petr Mladek <pmladek@suse.com>, Jonathan
+ Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Olivier
+ Moysan <olivier.moysan@foss.st.com>, Jyoti Bhayana <jbhayana@google.com>,
+ Chris Down <chris@chrisdown.name>, John Ogness <john.ogness@linutronix.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Andi Shyti
+ <andi.shyti@kernel.org>, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org
+Date: Fri, 07 Jun 2024 12:41:37 +0200
+In-Reply-To: <ZmHD63_tvC75To8r@smile.fi.intel.com>
+References: <20240606-dev-add_dev_errp_probe-v3-0-51bb229edd79@analog.com>
+	 <20240606-dev-add_dev_errp_probe-v3-2-51bb229edd79@analog.com>
+	 <ZmGMwwglUlS6_NI_@smile.fi.intel.com>
+	 <da57a64e4f5cdda7ee6b794c448995eee648c436.camel@gmail.com>
+	 <ZmHD63_tvC75To8r@smile.fi.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-This patch adds support for the integrated on-chip heater that is present
-on all the devices supported by this driver (si7020, si7021, si7013, th6).
-In order to configure the heater, the driver interacts with the following
-device registers:
-* User Register - the 2nd bit of this register is a "Heater Enable bit"
-  (0 means that the heater is off, 1 means that it's on).
-* Heater Register - this register is present only on the si70xx devices
-  and controls the current flowing through the heater. The 4 lower bits
-  of this register can be assigned values from 0x0 to 0xF.
+On Thu, 2024-06-06 at 17:12 +0300, Andy Shevchenko wrote:
+> On Thu, Jun 06, 2024 at 02:27:03PM +0200, Nuno S=C3=A1 wrote:
+> > On Thu, 2024-06-06 at 13:17 +0300, Andy Shevchenko wrote:
+> > > On Thu, Jun 06, 2024 at 09:22:38AM +0200, Nuno Sa wrote:
+>=20
+> ...
+>=20
+> > > > +			return dev_err_ptr_probe(&st->spi->dev, -
+> > > > EINVAL,
+> > >=20
+> > > You can make all these lines shorter by using
+> > >=20
+> > > 	struct device *dev =3D &st->spi->dev; // or analogue
+> > >=20
+> > > at the top of the function.
+> > >=20
+> >=20
+> > Well, I had that in v2 (making the whole driver coherent with the local
+> > struct
+> > device helper but you kind of "complained" for a precursor patch (on a
+> > devm_kzalloc() call). So basically I deferred that change for a follow =
+up
+> > patch.
+>=20
+> Hmm... I don't remember the story behind this, but probably it's good to =
+have
+> this done one (precursor) or the other way (follow up). Just check how ma=
+ny
+> changes will be done, whichever diff is shorter, choose that one.
+>=20
 
-Signed-off-by: Antoni Pokusinski <apokusinski@o2.pl>
+Well that has not much to do with the current series. I would prefer to hav=
+e a
+follow up when we're done with the current changes. Right now I would reall=
+y
+prefer to focus on the new dev_err_* APIs and see if anything else is neede=
+d for
+this to be acceptable.
 
---
-Changes since v1:
-* macros: remove unnecessary comments
-* macros: add more meaningful names
-* `struct si7020_data`: add comment explaining the mutex
-* `si7020_update_reg()`: change the control flow to more standard
-* use `scoped_guard()` instead of `mutex_lock() <...> mutex_unlock()`
-* `si7020_probe()`: add comment for User Register default value
-* minor format fixes
-
----
- drivers/iio/humidity/si7020.c | 137 +++++++++++++++++++++++++++++++++-
- 1 file changed, 133 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/iio/humidity/si7020.c b/drivers/iio/humidity/si7020.c
-index fb1006649328..1215fab7b1a5 100644
---- a/drivers/iio/humidity/si7020.c
-+++ b/drivers/iio/humidity/si7020.c
-@@ -23,6 +23,7 @@
- #include <linux/mod_devicetable.h>
- #include <linux/slab.h>
- #include <linux/sysfs.h>
-+#include <linux/stat.h>
- 
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -33,17 +34,38 @@
- #define SI7020CMD_TEMP_HOLD	0xE3
- /* Software Reset */
- #define SI7020CMD_RESET		0xFE
-+#define SI7020CMD_USR_WRITE	0xE6
-+/* "Heater Enabled" bit in the User Register */
-+#define SI7020_USR_HEATER_EN	BIT(2)
-+#define SI7020CMD_HEATER_WRITE	0x51
-+/* Heater current configuration bits */
-+#define SI7020_HEATER_VAL	GENMASK(3, 0)
-+
-+struct si7020_data {
-+	struct i2c_client *client;
-+	/* Lock for cached register values */
-+	struct mutex lock;
-+	u8 user_reg;
-+	u8 heater_reg;
-+};
-+
-+static const int si7020_heater_vals[] = { 0, 1, 0xF };
- 
- static int si7020_read_raw(struct iio_dev *indio_dev,
- 			   struct iio_chan_spec const *chan, int *val,
- 			   int *val2, long mask)
- {
--	struct i2c_client **client = iio_priv(indio_dev);
-+	struct si7020_data *data = iio_priv(indio_dev);
- 	int ret;
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_RAW:
--		ret = i2c_smbus_read_word_swapped(*client,
-+		if (chan->type == IIO_CURRENT) {
-+			*val = data->heater_reg;
-+			return IIO_VAL_INT;
-+		}
-+
-+		ret = i2c_smbus_read_word_swapped(data->client,
- 						  chan->type == IIO_TEMP ?
- 						  SI7020CMD_TEMP_HOLD :
- 						  SI7020CMD_RH_HOLD);
-@@ -96,17 +118,118 @@ static const struct iio_chan_spec si7020_channels[] = {
- 		.type = IIO_TEMP,
- 		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
- 			BIT(IIO_CHAN_INFO_SCALE) | BIT(IIO_CHAN_INFO_OFFSET),
-+	},
-+	{
-+		.type = IIO_CURRENT,
-+		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),
-+		.info_mask_separate_available = BIT(IIO_CHAN_INFO_RAW),
-+		.extend_name = "heater",
-+	}
-+};
-+
-+static int si7020_update_reg(struct si7020_data *data,
-+				u8 *reg, u8 cmd, u8 mask, u8 val)
-+{
-+	u8 new = (*reg & ~mask) | val;
-+	int ret;
-+
-+	ret = i2c_smbus_write_byte_data(data->client, cmd, new);
-+	if (ret)
-+		return ret;
-+
-+	*reg = new;
-+
-+	return 0;
-+}
-+
-+static int si7020_write_raw(struct iio_dev *indio_dev,
-+			     struct iio_chan_spec const *chan,
-+			     int val, int val2, long mask)
-+{
-+	struct si7020_data *data = iio_priv(indio_dev);
-+	int ret;
-+
-+	switch (mask) {
-+	case IIO_CHAN_INFO_RAW:
-+		if (chan->type != IIO_CURRENT || val2 != 0 ||
-+			val < si7020_heater_vals[0] || val > si7020_heater_vals[2])
-+			return -EINVAL;
-+
-+		scoped_guard(mutex, &data->lock)
-+			ret = si7020_update_reg(data, &data->heater_reg,
-+					SI7020CMD_HEATER_WRITE, SI7020_HEATER_VAL, val);
-+		return ret;
-+	default:
-+		return -EINVAL;
- 	}
-+}
-+
-+static int si7020_read_available(struct iio_dev *indio_dev,
-+				  struct iio_chan_spec const *chan,
-+				  const int **vals,
-+				  int *type, int *length, long mask)
-+{
-+	if (mask != IIO_CHAN_INFO_RAW || chan->type != IIO_CURRENT)
-+		return -EINVAL;
-+
-+	*vals = si7020_heater_vals;
-+	*type = IIO_VAL_INT;
-+
-+	return IIO_AVAIL_RANGE;
-+}
-+
-+static ssize_t si7020_show_heater_en(struct device *dev,
-+				 struct device_attribute *attr, char *buf)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct si7020_data *data = iio_priv(indio_dev);
-+
-+	return sysfs_emit(buf, "%d\n", !!(data->user_reg & SI7020_USR_HEATER_EN));
-+}
-+
-+static ssize_t si7020_store_heater_en(struct device *dev,
-+				  struct device_attribute *attr,
-+				  const char *buf, size_t len)
-+{
-+	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-+	struct si7020_data *data = iio_priv(indio_dev);
-+	int ret;
-+	bool val;
-+
-+	ret = kstrtobool(buf, &val);
-+	if (ret)
-+		return ret;
-+
-+	scoped_guard(mutex, &data->lock)
-+		ret = si7020_update_reg(data, &data->user_reg, SI7020CMD_USR_WRITE,
-+				SI7020_USR_HEATER_EN, val ? SI7020_USR_HEATER_EN : 0);
-+
-+	return ret < 0 ? ret : len;
-+}
-+
-+static IIO_DEVICE_ATTR(heater_enable, 0644,
-+		       si7020_show_heater_en, si7020_store_heater_en, 0);
-+
-+static struct attribute *si7020_attributes[] = {
-+	&iio_dev_attr_heater_enable.dev_attr.attr,
-+	NULL
-+};
-+
-+static const struct attribute_group si7020_attribute_group = {
-+	.attrs = si7020_attributes,
- };
- 
- static const struct iio_info si7020_info = {
- 	.read_raw = si7020_read_raw,
-+	.write_raw = si7020_write_raw,
-+	.read_avail = si7020_read_available,
-+	.attrs = &si7020_attribute_group,
- };
- 
- static int si7020_probe(struct i2c_client *client)
- {
- 	struct iio_dev *indio_dev;
--	struct i2c_client **data;
-+	struct si7020_data *data;
- 	int ret;
- 
- 	if (!i2c_check_functionality(client->adapter,
-@@ -126,7 +249,9 @@ static int si7020_probe(struct i2c_client *client)
- 		return -ENOMEM;
- 
- 	data = iio_priv(indio_dev);
--	*data = client;
-+	i2c_set_clientdata(client, indio_dev);
-+	data->client = client;
-+	mutex_init(&data->lock);
- 
- 	indio_dev->name = dev_name(&client->dev);
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-@@ -134,6 +259,10 @@ static int si7020_probe(struct i2c_client *client)
- 	indio_dev->channels = si7020_channels;
- 	indio_dev->num_channels = ARRAY_SIZE(si7020_channels);
- 
-+	/* All the "reserved" bits in the User Register are 1s by default */
-+	data->user_reg = 0x3A;
-+	data->heater_reg = 0x0;
-+
- 	return devm_iio_device_register(&client->dev, indio_dev);
- }
- 
--- 
-2.25.1
-
+- Nuno S=C3=A1
 

@@ -1,60 +1,60 @@
-Return-Path: <linux-iio+bounces-6033-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6026-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F43F900A60
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 18:30:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF9CB900A4F
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 18:29:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5493E1F239F9
-	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 16:30:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E8D71F22782
+	for <lists+linux-iio@lfdr.de>; Fri,  7 Jun 2024 16:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EB0619D061;
-	Fri,  7 Jun 2024 16:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9353319AD84;
+	Fri,  7 Jun 2024 16:28:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="BTytCPAk"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="wCji74A8"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from lelv0142.ext.ti.com (lelv0142.ext.ti.com [198.47.23.249])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA39219ADB5;
-	Fri,  7 Jun 2024 16:28:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A0319AA43;
+	Fri,  7 Jun 2024 16:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.249
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717777738; cv=none; b=VprMjvaVyrD5Nvwof0P6eYe9QU3EgY0qNTvdzrDY2PNyFALhDs7OZ/x3axlqpR8wRTP9EYzeCUgy5TzyjeEMQA6ICobjN0fPiAOF/OP04ScHHhVgVAFDfHn2kkAJEt1KTdbR2T0MiaNRQbp44xEZ3W4eKK3g5FLGvRb4ytgfOhM=
+	t=1717777736; cv=none; b=VVUbpr95kCMTU+js6Ig4/HsNMo+TscWV1uAsmxWEII850ONWweB+GN46ANrnb0NNnEq2A+Jm4mFej11dUKOSqQ9N/wREscj69CdUGmEcFZkk4sBYTfU5/gVpUo6Hec0M5UGsfxVyMMDngs8WZFwtG34DS13wSj7Aa1JqlZSPp9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717777738; c=relaxed/simple;
-	bh=3fNO7fR9QHWxcUIzj+apTvOCR5kSi8Czm2ADMw+DNgY=;
+	s=arc-20240116; t=1717777736; c=relaxed/simple;
+	bh=e4xsNXR4aHH3g6X+txeZJmzYbuKxtsIVX51XJHns80w=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LGWkcIhYoU1GWiYBt4Dlm3l7wVtUCEoUR7UKSqUjnc7d/75FzI29EPeES8J617bk1PPL0wrZuUiDhuG72T++FPbbJPt0YneQM/CSGtmo4OniZWK+N/D/vAJG3erkHTMYOsC8ZrQ/lIB1CgP8HW/cgnUm4wBFccOErJEPAvCYsU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=BTytCPAk; arc=none smtp.client-ip=198.47.23.249
+	 MIME-Version:Content-Type; b=eOJoW/3FRGgj4kTQO7w845rSc9XlXz0vZJaEV0mghWQqVvQ/MshbyFy7evkEsa+lvLXxKpzNgG4rOoS2RCTUkWXCDv+erAgMX7SPqdOSzzjsrkibYT5fR71y3NPrPYZo2UnM4zLp5jZrxundXs1OTFBgB5HSmiLtiCZtBFD8wrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=wCji74A8; arc=none smtp.client-ip=198.47.23.249
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 457GRu0s075999;
+Received: from lelv0266.itg.ti.com ([10.180.67.225])
+	by lelv0142.ext.ti.com (8.15.2/8.15.2) with ESMTP id 457GRuGB076001;
 	Fri, 7 Jun 2024 11:27:56 -0500
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
 	s=ti-com-17Q1; t=1717777676;
-	bh=EKBWuR1UaHdFxu+o/O4nrcmHpVme6R+uRpKI29qLw6E=;
+	bh=TQlEO9JyMzOGTNPEo9rGMr5dxmRC3ta0Lj34G6EI/Xo=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References;
-	b=BTytCPAkr/JJnzsE2jzEgUkQze76/oKV57V7sWxIQrxMpe/k2mWu/I/CXU48aGD4y
-	 1n8eRxUhZkOcpS5Wcb9lspjUgVmZn9QfoqnONpLKtiQ1Ghybs14IVfDOAqWGTJ2ZiS
-	 My9pWjD3VJ7ZKj092cjekUNbEvqFUWLFCjU1PPxs=
-Received: from DLEE115.ent.ti.com (dlee115.ent.ti.com [157.170.170.26])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 457GRuZJ016629
+	b=wCji74A8GW1R1nRJF86gYl2IQVN6ttxh/5RC3WcbBJvB2G+C/YmkpNIk+oJByYghc
+	 d5nv2QXu++juG8dgR48Tn4cnh6/k/aFCE95gXrVkzsmujPP28/NRJ5pH7hOoMbsMD0
+	 OCFw0IGtGEnbDw+czLtUSQCaYMhb9WTsuMWXMAmg=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+	by lelv0266.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 457GRuD3096174
 	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
 	Fri, 7 Jun 2024 11:27:56 -0500
-Received: from DLEE104.ent.ti.com (157.170.170.34) by DLEE115.ent.ti.com
- (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+Received: from DFLE109.ent.ti.com (10.64.6.30) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 7
- Jun 2024 11:27:56 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE104.ent.ti.com
- (157.170.170.34) with Microsoft SMTP Server (version=TLS1_2,
+ Jun 2024 11:27:55 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE109.ent.ti.com
+ (10.64.6.30) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
  Frontend Transport; Fri, 7 Jun 2024 11:27:56 -0500
 Received: from judy-hp.dhcp.ti.com (judy-hp.dhcp.ti.com [128.247.81.105])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 457GRt1j068019;
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 457GRt1k068019;
 	Fri, 7 Jun 2024 11:27:56 -0500
 From: Judith Mendez <jm@ti.com>
 To: Rob Herring <robh@kernel.org>,
@@ -69,9 +69,9 @@ CC: David Lechner <david@lechnology.com>,
         <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         Nishanth Menon
 	<nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>
-Subject: [PATCH v3 3/8] arm64: dts: ti: k3-am62-main: Add eQEP nodes
-Date: Fri, 7 Jun 2024 11:27:50 -0500
-Message-ID: <20240607162755.366144-4-jm@ti.com>
+Subject: [PATCH v3 4/8] arm64: dts: ti: k3-am62a-main: Add eQEP nodes
+Date: Fri, 7 Jun 2024 11:27:51 -0500
+Message-ID: <20240607162755.366144-5-jm@ti.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240607162755.366144-1-jm@ti.com>
 References: <20240607162755.366144-1-jm@ti.com>
@@ -85,21 +85,21 @@ Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-Add eQEP device tree nodes 0-2 for AM625 SoC.
+Add eQEP device tree nodes 0-2 for AM62A7 SoC.
 
 Signed-off-by: Judith Mendez <jm@ti.com>
 ---
 Changes since v2:
 - No change
 ---
- arch/arm64/boot/dts/ti/k3-am62-main.dtsi | 27 ++++++++++++++++++++++++
+ arch/arm64/boot/dts/ti/k3-am62a-main.dtsi | 27 +++++++++++++++++++++++
  1 file changed, 27 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-index 448a59dc53a77..525997456adaa 100644
---- a/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am62-main.dtsi
-@@ -846,6 +846,33 @@ ecap2: pwm@23120000 {
+diff --git a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+index bf9c2d9c6439a..6c32c0c0d8dcc 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am62a-main.dtsi
+@@ -909,6 +909,33 @@ ecap2: pwm@23120000 {
  		status = "disabled";
  	};
  
@@ -130,9 +130,9 @@ index 448a59dc53a77..525997456adaa 100644
 +		status = "disabled";
 +	};
 +
- 	main_mcan0: can@20701000 {
- 		compatible = "bosch,m_can";
- 		reg = <0x00 0x20701000 0x00 0x200>,
+ 	mcasp0: audio-controller@2b00000 {
+ 		compatible = "ti,am33xx-mcasp-audio";
+ 		reg = <0x00 0x02b00000 0x00 0x2000>,
 -- 
 2.45.1
 

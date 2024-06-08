@@ -1,55 +1,63 @@
-Return-Path: <linux-iio+bounces-6056-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6057-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB63890121C
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 16:41:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C544C90122D
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 16:58:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 042CB1C20D57
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 14:41:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C6DA1F21CDA
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 14:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE03374D9;
-	Sat,  8 Jun 2024 14:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2A0159209;
+	Sat,  8 Jun 2024 14:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRbhxFFl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VfyOzotg"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A008B487A7
-	for <linux-iio@vger.kernel.org>; Sat,  8 Jun 2024 14:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4FB22557A;
+	Sat,  8 Jun 2024 14:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717857672; cv=none; b=DyEaCbGqB/6//2c8a1MzF/9CVoyrjVeL9AY9IcgLE9lVONMPoIFIx8cZplQx44VQDqfr+k78CHl5hfepWKBaKLY46FzrloI50+to5WGjCx8bSGpg7u8/Az8mV8LPxTHvaYnU+YsrD478jG7QhxCugYTw2QOZmFy2lM01KQ3+s58=
+	t=1717858676; cv=none; b=NdVxXyLMeAW3lSNC2FF3TdfIrCL5Z2YPToDeYKkSdPrO86xIIJjYKzx9XnTmnaXDwdJ8IzQ+5gXXo/MMh4Ao7xusV7GOHk1QZCM5WBZ75I4u7FmEyE25mA3557jhckne3hRePs5/nwkpzBfCD900jHU1MVImCqKcdabBsXlXCy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717857672; c=relaxed/simple;
-	bh=WLlMzizYiiZqeMkdiyJh/LLyTAkqxWS0jtzMlFV30d8=;
+	s=arc-20240116; t=1717858676; c=relaxed/simple;
+	bh=frMwjzfh+7i2E8OKbq8u5BCqItbvZYQf9PPxBKISSoA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=stH5zzMl6eBLCqfN2y2+EUY8vZogdjJDBn8eY7ZLT7WgBf5X+xiuQrE/NWi6AocWbikfjkOOPALPthAIcq/0ag0C3aTVNX1jSXkfGOAsQJ5GVcXz15dYhsKO7OrzpUbQEN/kJljfOKsM0l8T5uVVgFQZNtFly/MCRLHz1Camwe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRbhxFFl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C2F6C2BD11;
-	Sat,  8 Jun 2024 14:41:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oH4HhlXFHH3Q2oVIJxaGnMQhVjFs3yUeNHLlfZJZ1wN1rLQtNhdiV89BilX2QXH8kqahFzzxHi8wM095U8uau7eRQIG733BFcQs9XpW6luIveAIWampUjueuXbtuPBdyFcr30bL5XvHgDRCSZaDQsKnUTyh+lXH9uE8/LViuZiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VfyOzotg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54A6CC2BD11;
+	Sat,  8 Jun 2024 14:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717857672;
-	bh=WLlMzizYiiZqeMkdiyJh/LLyTAkqxWS0jtzMlFV30d8=;
+	s=k20201202; t=1717858676;
+	bh=frMwjzfh+7i2E8OKbq8u5BCqItbvZYQf9PPxBKISSoA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YRbhxFFlfotmBlok5SaXgFDbs2rksotddL8ZNJp9QcS1y0JJ5zM8WMbIzdA2dgVhP
-	 BGk7NxAkv6iYhQS9LsltR1EAtQ3sms89fS0j+fnS5mkGgW9rm4WNGg/HplCtLj/mHA
-	 OoAzAV6hDYwIxV/TPElP33iAZa/IKPgvDZ99W+a/4CkhVeRL51fseY7yP8nLCBA7f1
-	 +e0rrfdDUAqKI7I/fg09V6Q3PfnUBph87MMpZzBJ3EocLqJ8nD1rsxLi/77CQlT/ae
-	 +tWA49+bdGVrxNOTKkt+qVbOzUQ5GOP8ddyNiKZjc/2QBzohiGC4IpFpxJNC0Vf9Ju
-	 gPYy6EBJ4508w==
-Date: Sat, 8 Jun 2024 15:41:06 +0100
+	b=VfyOzotgw/ND6GpJDzDvEnmhf3q8s6Jo3/iH2sp5IIvS9AlGa1eBmsD3yPfBbOWCt
+	 quYTbRd4E0ut09BrSQMor9itFmROzjXuu6HhIg93MaicDtMvBD1MurLpjfLy/tQRbY
+	 UgBn2GBTiFdMn3HW9coQ2eoI06DC+08dc5Fl7FHi7qZWNieSHAxG5zvDv2xBjc8Iza
+	 3wZDyAle1xbF+f6psxkRC3fLoECkvCs0dKMe+tw05Wpxl/xVDgxf86VQsN5oVbuIqw
+	 MPlOKHF3XlFDk5wFe2ocujcxgMGmbonsfEBYjbLEHeWN42Im4k1qz0u3MxsT6LoJ5c
+	 q6aQYbDol8SUg==
+Date: Sat, 8 Jun 2024 15:57:46 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Fernando Yang <hagisf@usp.br>
-Cc: linux-iio@vger.kernel.org, Michael.Hennerich@analog.com, lars@metafoo.de
-Subject: Re: [PATCH v2 1/3] iio: adc: ad7266: Fix variable checking bug
-Message-ID: <20240608154106.0b0739fa@jic23-huawei>
-In-Reply-To: <20240603180757.8560-1-hagisf@usp.br>
-References: <20240508155435.183850-1-hagisf@usp.br>
-	<20240603180757.8560-1-hagisf@usp.br>
+To: Kim Seer Paller <kimseer.paller@analog.com>
+Cc: <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, David Lechner <dlechner@baylibre.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Dimitri Fedrau <dima.fedrau@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Michael Hennerich"
+ <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <noname.nuno@gmail.com>, "kernel test robot" <lkp@intel.com>
+Subject: Re: [PATCH v3 5/5] iio: dac: ltc2664: Add driver for LTC2664 and
+ LTC2672
+Message-ID: <20240608155746.06bddfdc@jic23-huawei>
+In-Reply-To: <20240603012200.16589-6-kimseer.paller@analog.com>
+References: <20240603012200.16589-1-kimseer.paller@analog.com>
+	<20240603012200.16589-6-kimseer.paller@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,41 +68,151 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  3 Jun 2024 15:07:54 -0300
-Fernando Yang <hagisf@usp.br> wrote:
+On Mon, 3 Jun 2024 09:22:00 +0800
+Kim Seer Paller <kimseer.paller@analog.com> wrote:
 
-> The ret variable was not checked after iio_device_release_direct_mode(),
-> which could possibly cause errors
+> LTC2664 4 channel, 16 bit Voltage Output SoftSpan DAC
+> LTC2672 5 channel, 16 bit Current Output Softspan DAC
 > 
-> Signed-off-by: Fernando Yang <hagisf@usp.br>
-For future reference, in IIO at least (and 'most' of the rest of the kernel)
-don't send a patch set in reply to a previous one.
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202405241141.kYcxrSem-lkp@intel.com/
+> Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
+> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 
-I can't remember who once gave a good explanation of why, but key to
-limited time management when reviewing kernel patches is we start with
-latest info and maybe never get back to the beginning.
+A few minor things from me to add to the more detailed comments from Nuno and David.
 
-Given everyone uses threading email clients, your email is a lot of
-pages up from where I'd start if I wasn't aiming to clear the whole IIO
-backlog this weekend...
-
-
-> ---
->  drivers/iio/adc/ad7266.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-> index 353a97f9c..13ea8a107 100644
-> --- a/drivers/iio/adc/ad7266.c
-> +++ b/drivers/iio/adc/ad7266.c
-> @@ -157,6 +157,8 @@ static int ad7266_read_raw(struct iio_dev *indio_dev,
->  		ret = ad7266_read_single(st, val, chan->address);
->  		iio_device_release_direct_mode(indio_dev);
->  
-> +		if (ret < 0)
+> +static int ltc2664_dac_code_write(struct ltc2664_state *st, u32 chan, u32 input,
+> +				  u16 code)
+> +{
+> +	struct ltc2664_chan *c = &st->channels[chan];
+> +	int ret, reg;
+> +
+> +	guard(mutex)(&st->lock);
+> +	/* select the correct input register to write to */
+> +	if (c->toggle_chan) {
+> +		ret = regmap_write(st->regmap, LTC2664_CMD_TOGGLE_SEL,
+> +				   input << chan);
+> +		if (ret)
 > +			return ret;
->  		*val = (*val >> 2) & 0xfff;
->  		if (chan->scan_type.sign == 's')
->  			*val = sign_extend32(*val,
+> +	}
+> +	/*
+> +	 * If in toggle mode the dac should be updated by an
+> +	 * external signal (or sw toggle) and not here.
+> +	 */
+> +	if (st->toggle_sel & BIT(chan))
+> +		reg = LTC2664_CMD_WRITE_N(chan);
+> +	else
+> +		reg = LTC2664_CMD_WRITE_N_UPDATE_N(chan);
+> +
+> +	ret = regmap_write(st->regmap, reg, code);
+> +	if (ret)
+> +		return ret;
+> +
+> +	c->raw[input] = code;
+> +
+> +	if (c->toggle_chan) {
+> +		ret = regmap_write(st->regmap, LTC2664_CMD_TOGGLE_SEL,
+> +				   st->toggle_sel);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return ret;
+
+return 0; you won't get here otherwise, and making that explicit
+gives more readable code.
+
+> +}
+> +
+> +static int ltc2664_dac_code_read(struct ltc2664_state *st, u32 chan, u32 input,
+> +				 u32 *code)
+> +{
+> +	guard(mutex)(&st->lock);
+> +	*code = st->channels[chan].raw[input];
+> +
+> +	return 0;
+> +}
+> +
+> +static const int ltc2664_raw_range[] = {0, 1, U16_MAX};
+{ 0, 1, U16_MAX };
+preferred (extra spaces)
+
+
+> +
+> +static const struct ltc2664_chip_info ltc2664_chip = {
+> +	.id = LTC2664,
+> +	.name = "ltc2664",
+> +	.scale_get = ltc2664_scale_get,
+> +	.offset_get = ltc2664_offset_get,
+> +	.measurement_type = IIO_VOLTAGE,
+> +	.num_channels = ARRAY_SIZE(ltc2664_channels),
+> +	.iio_chan = ltc2664_channels,
+> +	.span_helper = ltc2664_span_helper,
+> +	.num_span = ARRAY_SIZE(ltc2664_span_helper),
+> +	.internal_vref = 2500,
+> +	.manual_span_support = true,
+> +	.rfsadj_support = false,
+> +};
+> +
+> +static const struct ltc2664_chip_info ltc2672_chip = {
+> +	.id = LTC2672,
+
+As below.  Seeing an id in here made me wonder what was going on given
+we don't have a whoami register on these.  Please remove it as that
+model of handling chip specific stuff always bites us in complexity
+and lack of flexibility as we expand the parts supported by a driver.
+
+> +	.name = "ltc2672",
+> +	.scale_get = ltc2672_scale_get,
+> +	.offset_get = ltc2672_offset_get,
+> +	.measurement_type = IIO_CURRENT,
+> +	.num_channels = ARRAY_SIZE(ltc2672_channels),
+> +	.iio_chan = ltc2672_channels,
+> +	.span_helper = ltc2672_span_helper,
+> +	.num_span = ARRAY_SIZE(ltc2672_span_helper),
+> +	.internal_vref = 1250,
+> +	.manual_span_support = false,
+> +	.rfsadj_support = true,
+> +};
+> +
+> +static int ltc2664_set_span(const struct ltc2664_state *st, int min, int max,
+> +			    int chan)
+> +{
+> +	const struct ltc2664_chip_info *chip_info = st->chip_info;
+> +	const int (*span_helper)[2] = chip_info->span_helper;
+> +	int span, ret;
+> +
+> +	st->iio_channels[chan].type = chip_info->measurement_type;
+> +
+> +	for (span = 0; span < chip_info->num_span; span++) {
+> +		if (min == span_helper[span][0] && max == span_helper[span][1])
+> +			break;
+> +	}
+> +
+> +	if (span == chip_info->num_span)
+> +		return -EINVAL;
+> +
+> +	ret = regmap_write(st->regmap, LTC2664_CMD_SPAN_N(chan),
+> +			   (chip_info->id == LTC2672) ? span + 1 : span);
+Make this specific data, not id based.
+
+The reasoning of there being a magic value (offmode) as 0 is a bit obscure
+so maybe a callback is best plan.
+
+Or... put a 0,0 entry in span_helper[] and check for that + ignore it or
+error out if anyone tries to use it.
+
+Drop that id in the chip_info structure as well as having it there
+will make people not consider if their 'code' should be 'data' in future
+cases similar to this.
+
+> +	if (ret)
+> +		return ret;
+> +
+> +	return span;
+> +}
+> +
+
 
 

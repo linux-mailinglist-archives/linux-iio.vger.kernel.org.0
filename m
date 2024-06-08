@@ -1,136 +1,131 @@
-Return-Path: <linux-iio+bounces-6044-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6045-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24352900FAE
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 07:28:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BD69011A7
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 15:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E66B1C20B6B
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 05:28:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEE40282911
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 13:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BA0017625B;
-	Sat,  8 Jun 2024 05:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33A1917921D;
+	Sat,  8 Jun 2024 13:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZuRpCv7l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="civ589GA"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE8B610C
-	for <linux-iio@vger.kernel.org>; Sat,  8 Jun 2024 05:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAC113A8D8;
+	Sat,  8 Jun 2024 13:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717824479; cv=none; b=sfaKiAbN65uOi/9dPaIBvPdL24CeRz0scZae0VujIsaiCmnshNhACT1jU61H7M+/vPVM9gQvIK1Bqb/velK0Xzc1SUc2QWWskhNKs3hnK8v6jw5NopUkQLaPmEEmX9iSuIzaNbxBn4Z5xZznZiaWZ77k/7n7nlVPfVRcwuC0SgY=
+	t=1717852724; cv=none; b=psl8Jmix7WerlxXwKqovOs3Nx5xK6MdzpXkYPhp6GqPiCo1mwS946WtnvRlwJD3jpJGJxF6DkzAfiTeVvq1A206Yj0MP/Di8MXoUp5ub2wbTA5NfGXrOUHLMw4y8rKZugj/foRev/3lb0ZEwOlmOFWwaGmIFRuYWoQxj/v3g9K0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717824479; c=relaxed/simple;
-	bh=9AwqcM0OxS8cPtNMvlYP62u3carHEGr7SyDrZvCtbEs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xas20NVVp12ZSu8T+ySc4JwYzhtBhw/7RB5c/AnpquTvK6r542YFjpxMNEuNmNJ57nM8Uz5FtXy2CrWuUkve1CaOq6LKApBDlZ0p+LC1HC/mNg0bX7YHy02jH4FOEFHGtOTeGmsZd0f0v3CBTC2Jx9CntUAyfk5gvHogasTI5Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZuRpCv7l; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-6e7e23b42c3so154125a12.1
-        for <linux-iio@vger.kernel.org>; Fri, 07 Jun 2024 22:27:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717824477; x=1718429277; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hYLY/SM4qmTVYW8DlOTsPvEcySzQSLZ+Ut4vN8TFHos=;
-        b=ZuRpCv7lHorRNqulpHqkLYEeVbM/S4yBDh0evlH/4MLYX9a+Gh4fiWURko1hb6ImCO
-         klCRwLdPFT7YPlkn15ua4rK+S7l2ftcQIL+qT6joj0LB5r3DMet5UBCZ2rl+XH9dTVxx
-         Cxz/nFyIGlOeMBuPg507uCI6m6jYwN/SemRh1cIscVb16aqShh6cs83KOcgIYZ8uwdRW
-         ePCU1uGtZxIRUN5KVebwT4xzv9ESfLTMuquBa8uiY4xYAI4pF6lewtKD0eAYZ5LWvZ50
-         3GRMT8cxnTXxMqyzWTeMx1u7oNvmy7BDdmVAH50ZUdDQ+4KwKZUUqSnHaa734V0mMNwe
-         DhLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717824477; x=1718429277;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hYLY/SM4qmTVYW8DlOTsPvEcySzQSLZ+Ut4vN8TFHos=;
-        b=hab4juWn+cdDRoCggekHfDFPU8UIwQbqN/rikEcz7HdmFQWUqaixUJND8obBKOIwGH
-         pPMfq+8S4hvYF5LijitWBq9p0+NG5uvxqdM/5JaZxTvkX52pgMTbtxpdEd4zY7lCqX5v
-         7uSeI/VQSKGKQ9q0um/B4beejrTk39oNXK8Wm1Rj3nlDcO9r/C4RK803jn7StQnMUwjP
-         Sbu6CVt+QEej4gqHzl/AhVqJrwcRQet67u+auUFQ6jWEWbl08Y0a4B7QgrUfgqNBRmY7
-         E9Hl6/ZNHVz2LCA+BhKxNX/h+lNjqHvjdDLtlRSw9EF4tEHlrFW38eH6cuIeCZQmrGaG
-         Co8g==
-X-Gm-Message-State: AOJu0YzAronHTYWPGAvyTsWbClYv8PZ7jJiRhlxiGd8p5FRxI60JktpS
-	YVs6nlS3T3GWSAsg/dsWDID7LhBHk8pVdkutmc4nmNMq2UNrh/ml
-X-Google-Smtp-Source: AGHT+IEdcxf0w9GcCw4k/xcoRv+msPJm6dg91axPNyv3IuumHFdxtXqAjPOW1Z4uNRWIRitZ8nrgGA==
-X-Received: by 2002:a05:6a20:918f:b0:1af:cf63:3742 with SMTP id adf61e73a8af0-1b2f9cb14e6mr4774837637.42.1717824476782;
-        Fri, 07 Jun 2024 22:27:56 -0700 (PDT)
-Received: from localhost ([2804:30c:96b:f700:cc1d:c0ae:96c9:c934])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6f298102bsm3601215ad.73.2024.06.07.22.27.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 22:27:56 -0700 (PDT)
-Date: Sat, 8 Jun 2024 02:29:08 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Fernando Yang <hagisf@usp.br>
-Cc: linux-iio@vger.kernel.org, Michael.Hennerich@analog.com,
-	jic23@kernel.org, lars@metafoo.de
-Subject: Re: [PATCH v2 3/3] iio: adc: ad7266: Fix codestyle error
-Message-ID: <ZmPsJH8k9ta100Ss@debian-BULLSEYE-live-builder-AMD64>
-References: <20240508155435.183850-1-hagisf@usp.br>
- <20240603180757.8560-1-hagisf@usp.br>
- <20240603180757.8560-3-hagisf@usp.br>
+	s=arc-20240116; t=1717852724; c=relaxed/simple;
+	bh=VDWy8tEmwwlhgYITkqlIVnQZivo0hojpfbF+2pgX82U=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TM9xojxHltJ+B8jrTs9SvpsOZocEBnzV6T/wXrIdmo9Rae9JIlb7yFe2ka9Is9KgVYob1sy7WLvuHfd0uDjXRCjDpSffpR+lw7bCP5LwlY1b/+7qWRMZYOB+HVsWqUACLkHVi4FAccDQkP6HsjSYM37jCDTqbSRWfbwDcj6Ha8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=civ589GA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF4BC2BD11;
+	Sat,  8 Jun 2024 13:18:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717852723;
+	bh=VDWy8tEmwwlhgYITkqlIVnQZivo0hojpfbF+2pgX82U=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=civ589GA+0Ootf3amW/5FXeaUyXJsP8+k/5nmtYjgTqYwVQX+K4M8KMhKuE3Bcpdg
+	 sR8X4ukVOo4UplbDc+74zjyGVlOJe678fSuZCedlefpEQ+T5YhOy/gdQEat4TXXVcw
+	 C4HVKTbSOad1B+WKJqvJ4hm4gmMt1a8vkfPxlhmb2LbLU6Hdhac99Q6dRb0rnSaB8C
+	 wXJuwr4KP5XJXurBSIqoo9nJgMz1jXFs6B76JdFhvfMhrETMl/DqZaTGMY2PSDWp8U
+	 cKfsyBjCkXsUBLVkJ34+Wnp4rCQw1nLSkMimdo9JTSP9nmvmcDS1jyHet6GFn07jpM
+	 RxL1xqoTSuNbQ==
+Date: Sat, 8 Jun 2024 14:18:32 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Alex Bee <knaerzche@gmail.com>
+Cc: Aidan MacDonald <aidanmacdonald.0x0@gmail.com>, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, wens@csie.org, ee.jones@linaro.org,
+ sre@kernel.org, lgirdwood@gmail.com, broonie@kernel.org, lars@metafoo.de,
+ andy.shevchenko@gmail.com, linus.walleij@linaro.org, brgl@bgdev.pl,
+ michael@walle.cc, samuel@sholland.org, linux-iio@vger.kernel.org,
+ linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 0/13] Add support for AXP192 PMIC
+Message-ID: <20240608141832.7fdc9eb8@jic23-huawei>
+In-Reply-To: <1535049f-1e4c-446b-8070-6f51877b2649@gmail.com>
+References: <20221016234335.904212-1-aidanmacdonald.0x0@gmail.com>
+	<1535049f-1e4c-446b-8070-6f51877b2649@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240603180757.8560-3-hagisf@usp.br>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Looks good.
-One minor neat being the last change won't be needed after patch 2 is updated.
+On Fri, 7 Jun 2024 17:12:51 +0200
+Alex Bee <knaerzche@gmail.com> wrote:
 
-Also, I think it will help visualize the patch series if a cover letter is added.
-If running format-patch, the --cover-letter should help with it. e.g.
-git format-patch -v3 --thread=shallow --cover-letter --to="..." --cc="..." -3
+> Hi Aidan,
+> 
+> Am 17.10.22 um 01:43 schrieb Aidan MacDonald:
+> > This series adds support for the AXP192 PMIC to the AXP20x MFD driver
+> > framework, including support for regulators, ADCs, and AC/USB/battery
+> > power supplies.
+> >
+> > v6 is a resend of v5 from July -- the patches haven't changed at all
+> > but I've rebased them on the latest git master branch.  
+> I'm not entirely sure if I've found the latest version of the patches - at
+> least b4 didn't find a newer. It looks a lot like only mfd and usb-power
+> patches have been applied for some reason. Are you planing to resend the
+> other ones?
 
-On 06/03, Fernando Yang wrote:
-> Fix some codestyle errors indicated by checkpatch.pl
+This was delayed originally by a dependency on a header in mfd and that is
+obviously resolved now.  I think everyone was expecting a resend
+of the series or for Lee to pick up the dependent ones and so we all
+stopped tracking it.
+
+Anyhow, I had the two IIO cleanups already, but I've now picked up
+the 3rd patch (where the dependency was) as well.
+
+Thanks,
+
+Jonathan
+
 > 
-> Signed-off-by: Fernando Yang <hagisf@usp.br>
-> ---
->  drivers/iio/adc/ad7266.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Regards,
+> Alex
 > 
-> diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-> index 356c2fe07..5a2f1bb27 100644
-> --- a/drivers/iio/adc/ad7266.c
-> +++ b/drivers/iio/adc/ad7266.c
-> @@ -63,12 +63,14 @@ static int ad7266_powerdown(struct ad7266_state *st)
->  static int ad7266_preenable(struct iio_dev *indio_dev)
->  {
->  	struct ad7266_state *st = iio_priv(indio_dev);
-> +
->  	return ad7266_wakeup(st);
->  }
->  
->  static int ad7266_postdisable(struct iio_dev *indio_dev)
->  {
->  	struct ad7266_state *st = iio_priv(indio_dev);
-> +
->  	return ad7266_powerdown(st);
->  }
->  
-> @@ -153,7 +155,7 @@ static int ad7266_read_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_RAW:
->  		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
->  			ret = ad7266_read_single(st, val, chan->address);
-This is not needed as comment on patch 2.
-> -			
-> +
->  			if (ret < 0)
->  				return ret;
->  			*val = (*val >> 2) & 0xfff;
-> -- 
-> 2.34.1
-> 
-> 
+> > Aidan MacDonald (13):
+> >    dt-bindings: mfd: add bindings for AXP192 MFD device
+> >    dt-bindings: iio: adc: axp209: Add AXP192 compatible
+> >    dt-bindings: power: supply: axp20x: Add AXP192 compatible
+> >    dt-bindings: power: axp20x-battery: Add AXP192 compatible
+> >    mfd: axp20x: Add support for AXP192
+> >    regulator: axp20x: Add support for AXP192
+> >    iio: adc: axp20x_adc: Minor code cleanups
+> >    iio: adc: axp20x_adc: Replace adc_en2 flag with adc_en2_mask field
+> >    iio: adc: axp20x_adc: Add support for AXP192
+> >    power: supply: axp20x_usb_power: Add support for AXP192
+> >    power: axp20x_battery: Add constant charge current table
+> >    power: axp20x_battery: Support battery status without fuel gauge
+> >    power: axp20x_battery: Add support for AXP192
+> >
+> >   .../bindings/iio/adc/x-powers,axp209-adc.yaml |  18 +
+> >   .../bindings/mfd/x-powers,axp152.yaml         |   1 +
+> >   .../x-powers,axp20x-battery-power-supply.yaml |   1 +
+> >   .../x-powers,axp20x-usb-power-supply.yaml     |   1 +
+> >   drivers/iio/adc/axp20x_adc.c                  | 356 ++++++++++++++++--
+> >   drivers/mfd/axp20x-i2c.c                      |   2 +
+> >   drivers/mfd/axp20x.c                          | 141 +++++++
+> >   drivers/power/supply/axp20x_battery.c         | 142 ++++++-
+> >   drivers/power/supply/axp20x_usb_power.c       |  84 ++++-
+> >   drivers/regulator/axp20x-regulator.c          | 100 ++++-
+> >   include/linux/mfd/axp20x.h                    |  84 +++++
+> >   11 files changed, 856 insertions(+), 74 deletions(-)
+> >  
+
 

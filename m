@@ -1,65 +1,62 @@
-Return-Path: <linux-iio+bounces-6054-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6055-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5DB1901208
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 16:32:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1690D90121A
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 16:41:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C20F28288B
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 14:32:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 360021C20E10
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 14:41:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3FB17836A;
-	Sat,  8 Jun 2024 14:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BD24317B;
+	Sat,  8 Jun 2024 14:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LVxr6HeC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MgUEZpTu"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD2B1FBB;
-	Sat,  8 Jun 2024 14:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5386911718;
+	Sat,  8 Jun 2024 14:41:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717857158; cv=none; b=C1b+WN+vsSHIR1YKYSg1PR+H+Kl2b7edWSIzy7bGiSTc2dWwejgeNlBJ9HwE8+7vJrTrM+YyHn3xDtXSF9E7thcK2jENq9Es4+xwVUS0lO8GWy/Si3YEXkuk1IjOdKAzwOd13CCBV6G0P58ta2kkJ53OXR8kjW3Ass6q5TLpuZw=
+	t=1717857663; cv=none; b=PSYSPsSxh9LL5rkb+qJYp6iWrMunP0pM2FJHn9JyBrCxNzBtioqjv797eKxVpXLuLUZgqh2Wdl/kk4dWWBQTmna0cPwvHWnehkPSvwygopvSkA/NTbXMnpY5UvJZKAGEJ/w5iYTCixXw2Uh5EwdILJlLZdMp7uqjh5J9DVCeLJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717857158; c=relaxed/simple;
-	bh=zGEPcDt853zwTvT5c/vkd82U97Wq4qbke8w4K0IQ1oU=;
+	s=arc-20240116; t=1717857663; c=relaxed/simple;
+	bh=50S6Lswn1r44hRlmB2kSl8+Im7fYL4RZp/xxNiPMJhI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nNXu5WHwCgyQzwbMS/VqspYU9kRV5IkP7LBqljC4dn3Y8RKLp8VNCb8+ZK2kPmCmtDUW+vRn6fJPDsc25h0DLhZV02TkRICO0RToVBigFpA1Iipdrvr1FC5+gHraALk82av/eBF+hmpYXJro51UocuM+vixkUatjP1/PEzyKvFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LVxr6HeC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91FB9C2BD11;
-	Sat,  8 Jun 2024 14:32:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dBp7jdN1vW8bhTCez5Do092ztPruwLU7reTp4Zu6yCMVH0u72bfjz7g+IcjDdRZlOtwNiZa+XSgx5a2f1QJrduNks6n0Myth9ly3xq6ChFa+OfQqj6oj2pDEawvGYzSF/QakyJaZPm+rZ9444WZmO2u+ZNml8/gzOOSp8EnIZV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MgUEZpTu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B3AC2BD11;
+	Sat,  8 Jun 2024 14:40:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717857158;
-	bh=zGEPcDt853zwTvT5c/vkd82U97Wq4qbke8w4K0IQ1oU=;
+	s=k20201202; t=1717857663;
+	bh=50S6Lswn1r44hRlmB2kSl8+Im7fYL4RZp/xxNiPMJhI=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=LVxr6HeCpiXGfDae+9YHPzHKV4zTBtFO+V66iRYJuTFltZ/q52Xsuo4CsH6ZXqb4Q
-	 NnOTW6mGV6ix5FBND9wB3pxhJd0VRNbAtHDLMrMsj1p5BV3QX0F6l6eelp0RtOs5QZ
-	 pNevnq6SG2FIOZL50RQYMnsEZNTiOUTRYUfIcM5L/tvwIOhvdWPeb5k8kxuByp/ksr
-	 1NLtI9rqxb+3NlYPkVBFtM2chX5LxJvucRPKQrtF6agpjGVL5QbAR+ybBY2AKCb0eX
-	 bngCHOu8SEkAKs5BwqqWoi1mQrez8+gjucTxGz4GzE+OwT2Y9qf6A8kekrddQI0wOQ
-	 ohkiBTM1LBMuA==
-Date: Sat, 8 Jun 2024 15:32:31 +0100
+	b=MgUEZpTuPd524grhZFpsVtXgC+CsvaHZO1Nh54y4V8xKCyxFBqFwZ+z8cj664VE3D
+	 3uJGOy7ZMaSVeY63B0RdiTOOIPqMn9cPxXuDXI9i5dLqQeVi0BUXfhO/RrbrEf/B3M
+	 VayBF9g1W1/hkVWK6mYWqJVe34A5qnLd4bJ7heYLPEToWYh6pQqej3DB8fzPp/AaDp
+	 uLXmoEnWxE/5UZRI17zXirVvFdn1hz1H4B+gSMgbhuDyN2Xugg3zbbjSPYgMrymdo6
+	 ejfJuM2m4JphLcskOt7tUmtAHRcy91ko2ANWQlK26P98DPEW1EMiN2X2eurIlU+j9l
+	 uyRCYPe5O+0GA==
+Date: Sat, 8 Jun 2024 15:40:53 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Krzysztof Kozlowski <krzk@kernel.org>, Kim Seer Paller
- <kimseer.paller@analog.com>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>, Mark Brown
- <broonie@kernel.org>, Dimitri Fedrau <dima.fedrau@gmail.com>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>,
- Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Subject: Re: [PATCH v3 4/5] dt-bindings: iio: dac: Add adi,ltc2672.yaml
-Message-ID: <20240608153231.02f839fd@jic23-huawei>
-In-Reply-To: <3dadacf8-1349-483d-b264-dcb41d2cc3fc@baylibre.com>
+To: Kim Seer Paller <kimseer.paller@analog.com>
+Cc: <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, David Lechner <dlechner@baylibre.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Dimitri Fedrau <dima.fedrau@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, "Rob Herring" <robh@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, "Michael Hennerich"
+ <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <noname.nuno@gmail.com>
+Subject: Re: [PATCH v3 1/5] iio: ABI: Generalize ABI documentation for DAC
+Message-ID: <20240608154053.1cf1097e@jic23-huawei>
+In-Reply-To: <20240603012200.16589-2-kimseer.paller@analog.com>
 References: <20240603012200.16589-1-kimseer.paller@analog.com>
-	<20240603012200.16589-5-kimseer.paller@analog.com>
-	<2942a938-19b9-4642-8ed0-8e17e4825bc5@baylibre.com>
-	<c4651a18-316b-42e0-a67b-673fedb05b5a@kernel.org>
-	<3dadacf8-1349-483d-b264-dcb41d2cc3fc@baylibre.com>
+	<20240603012200.16589-2-kimseer.paller@analog.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -70,88 +67,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 4 Jun 2024 08:53:27 -0500
-David Lechner <dlechner@baylibre.com> wrote:
+On Mon, 3 Jun 2024 09:21:56 +0800
+Kim Seer Paller <kimseer.paller@analog.com> wrote:
 
-> On 6/4/24 1:47 AM, Krzysztof Kozlowski wrote:
-> > On 03/06/2024 21:59, David Lechner wrote:  
-> >> On 6/2/24 8:21 PM, Kim Seer Paller wrote:  
-> >>> Add documentation for ltc2672.
-> >>>
-> >>> Reported-by: Rob Herring (Arm) <robh@kernel.org>
-> >>> Closes: https://lore.kernel.org/all/171643825573.1037396.2749703571529285460.robh@kernel.org/
-> >>> Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
-> >>> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
-> >>> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
-> >>> ---
-> >>>  .../bindings/iio/dac/adi,ltc2672.yaml         | 158 ++++++++++++++++++
-> >>>  MAINTAINERS                                   |   1 +
-> >>>  2 files changed, 159 insertions(+)
-> >>>  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
-> >>>
-> >>> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
-> >>> new file mode 100644
-> >>> index 000000000000..d143a9db7010
-> >>> --- /dev/null
-> >>> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
-> >>> @@ -0,0 +1,158 @@
-> >>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> >>> +%YAML 1.2
-> >>> +---
-> >>> +$id: http://devicetree.org/schemas/iio/dac/adi,ltc2672.yaml#
-> >>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> >>> +
-> >>> +title: Analog Devices LTC2672 DAC
-> >>> +
-> >>> +maintainers:
-> >>> +  - Michael Hennerich <michael.hennerich@analog.com>
-> >>> +  - Kim Seer Paller <kimseer.paller@analog.com>
-> >>> +
-> >>> +description: |
-> >>> +  Analog Devices LTC2672 5 channel, 16 bit, 300mA DAC
-> >>> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc2672.pdf
-> >>> +
-> >>> +properties:
-> >>> +  compatible:
-> >>> +    enum:
-> >>> +      - adi,ltc2672  
-> >>
-> >> The linked datasheet describes 12-bit and 16-bit versions, so should we have
-> >> two compatibles here? adi,ltc2672-12, adi,ltc2672-16  
-> > 
-> > Is their programming model different?
-> >   
+> Introduces a more generalized ABI documentation for DAC. Instead of
+> having separate ABI files for each DAC, we now have a single ABI file
+> that covers the common sysfs interface for all DAC.
 > 
-> I replied to myself already with the answer. After looking at it more it
-> does not appear that is the case.
-> 
+> Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
+> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 
-For a DAC, this is an interesting question.  The wrong impressions of
-precision might be a problem if someone is trying to tune the value.
+A few comments inline.
 
-Say they set it to +15 and look at some other sensor for the affect.
-They expect to see something but get no change at all.  They might
-assume the circuit is broken.
-
-So I think yes the programming model is different and that should
-be discoverable (ideally from hardware, but if not from the compatible)
-To take an extreme example of extending the logic of these being
-the 'same' from a programming model point of view, would we consider
-a regulator that did 0 and 3V only different from one that did 0V,
-1V, 2V, 3V just because the second bit in the register was ignored?
-I think in that case we'd consider them to have an obviously different
-programming model.
-
-We have a few cases where we do paper over similar differences in
-resolution, but within one part with different settings rather than
-between devices (so that's a driver limitation, not a DT thing).
-
-So I might be persuaded no one cares, but in my view the programming
-model is different in a significant way.
+I wondered if it made sense to combine voltage and current entries of each type
+in single block, but I think the docs would become too complicated with lots
+of wild cards etc.  Hence I think the duplication is fine.
 
 Jonathan
 
+> ---
+>  Documentation/ABI/testing/sysfs-bus-iio-dac   | 61 +++++++++++++++++++
+>  .../ABI/testing/sysfs-bus-iio-dac-ltc2688     | 31 ----------
+>  2 files changed, 61 insertions(+), 31 deletions(-)
+>  create mode 100644 Documentation/ABI/testing/sysfs-bus-iio-dac
+> 
+> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-dac b/Documentation/ABI/testing/sysfs-bus-iio-dac
+> new file mode 100644
+> index 000000000000..36d316bb75f6
+> --- /dev/null
+> +++ b/Documentation/ABI/testing/sysfs-bus-iio-dac
+> @@ -0,0 +1,61 @@
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_currentY_toggle_en
+> +KernelVersion:	5.18
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +       		Toggle enable. Write 1 to enable toggle or 0 to disable it. This
+Tab vs space issue - see below.
 
+> +		is useful when one wants to change the DAC output codes. The way
+> +		it should be done is:
+> +
+> +        	- disable toggle operation;
+> +        	- change out_currentY_rawN, where N is the integer value of the symbol;
+> +        	- enable toggle operation.
+Same question as below on whether this is accurate - Maybe it just needs to mention
+this scheme needs to be used for autonomous toggling (out of software control).
+It works for software toggling but may be overkill!
 
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_currentY_rawN
+> +KernelVersion:	5.18
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		This attribute has the same meaning as out_currentY_raw. It is
+> +		specific to toggle enabled channels and refers to the DAC output
+> +		code in INPUT_N (_rawN), where N is the integer value of the symbol.
+> +		The same scale and offset as in out_currentY_raw applies.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_currentY_symbol
+> +KernelVersion:	5.18
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +		Performs a SW switch to a predefined output symbol. This attribute
+> +		is specific to toggle enabled channels and allows switching between
+> +		multiple predefined symbols. Each symbol corresponds to a different
+> +		output, denoted as out_currentY_rawN, where N is the integer value
+> +		of the symbol. Writing an integer value N will select out_currentY_rawN.
+> +
+> +What:		/sys/bus/iio/devices/iio:deviceX/out_voltageY_toggle_en
+> +KernelVersion:	5.18
+> +Contact:	linux-iio@vger.kernel.org
+> +Description:
+> +       		Toggle enable. Write 1 to enable toggle or 0 to disable it. This
 
+Mix of spacing and tabs is inconsistent. Hence the odd indent in this reply version.
+
+> +		is useful when one wants to change the DAC output codes. The way
+> +		it should be done is:
+
+Hmm. Is this true?  If we are doing autonomous toggling on a clock or similar than agreed.
+If we are using the out_current_symbol software control it would be common to switch
+to A, modify B, switch to B, modify A etc.
+
+I think our interface has probably evolved and so this might need an update.
+
+> +
+> +        	- disable toggle operation;
+> +        	- change out_voltageY_rawN, where N is the integer value of the symbol;
+> +        	- enable toggle operation.
 

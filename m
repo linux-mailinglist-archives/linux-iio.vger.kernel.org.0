@@ -1,59 +1,62 @@
-Return-Path: <linux-iio+bounces-6059-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6060-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22ACD901240
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 17:15:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7CA90124A
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 17:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 302A51C209C7
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 15:15:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73943B2187C
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 15:20:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A008E17967A;
-	Sat,  8 Jun 2024 15:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EDB91791F2;
+	Sat,  8 Jun 2024 15:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Es2cKYpq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CuR0clWC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59797178CE7;
-	Sat,  8 Jun 2024 15:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044701FBB;
+	Sat,  8 Jun 2024 15:20:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717859723; cv=none; b=CkfRyb/iMzc+TVJvFk0vt8ZnoiYqNl8dbuNHJ2Q/QHEqNsIkoGTvZSyIy3rp20SjViriwl52WqmHdCwweMWtrRqVOdNPZul3ldORKlDIlPqPvlTuHPGMMivrSz9OBMLek+Nkz8rXGafAqY1ZMdzIOGpPk/34yw9bbwA7rIHwpqM=
+	t=1717860044; cv=none; b=EMvCIYWAAgl6sl0uBG8abv2fI+Y/8KAXNDXXCSYNXXuXhjXv8PIhEQ5qFDjf/ytNNegP/fsKG0tLg7GPWcjdatQK9L2azXrdryzWg4W5O3eoukG/8TBFWRpx/TUwcyntqcH6Yw/Ivd0TxYcpTc5zUxOj4hoURqEwCalkH2vaeYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717859723; c=relaxed/simple;
-	bh=Dq79I902q9exPmiSAnvDmzqMgzP5nRk6iLkzhlmkOFg=;
+	s=arc-20240116; t=1717860044; c=relaxed/simple;
+	bh=SBrOG5vtgHcP9Ql3D1Fkja1dS+krqo3w5B2YITbmwFE=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fqk0RaAkqT9oglsv5LRp2CmgoDu6xoJ34BLmQcVPH3fapKbmtYla61pOEf83wpUnovjFyhhhSbHXb8+vQrgne+2KmdB7AWC6hevNdXmgt3g6XHZodgD8HMq73iecIWQkFnuSxg6I5xRSCtXoXE/v3NEb1VHDy91jLwR14J/6JXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Es2cKYpq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B12C32786;
-	Sat,  8 Jun 2024 15:15:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gCR2XNP/jXV0JBec/U8x47MBQCB/v4b39DRqK2CsC3rdNOGJZhMxQi7f9klndU+DseJnNJBxo1K7rEyI3YuLSAvpU+oSa2xzzfROdMwbY6Sg1UT55bFKlh5DnHYTPb6Cl/WCsisTUodJmiS4iYeu95f38cUWjmfkCzu94RWk6X8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CuR0clWC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E62DAC2BD11;
+	Sat,  8 Jun 2024 15:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717859723;
-	bh=Dq79I902q9exPmiSAnvDmzqMgzP5nRk6iLkzhlmkOFg=;
+	s=k20201202; t=1717860043;
+	bh=SBrOG5vtgHcP9Ql3D1Fkja1dS+krqo3w5B2YITbmwFE=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Es2cKYpq2PNqJQlPsjYFxNwVcQeGwUSZe/4hO+sFhsngrWlYIkusqI0xCPFIzM52/
-	 jBiDBKA1zr4T9qEBGbzoMvX892Td82lY3PK7SbElKwf5fRgw5qy6siLnG0GojOXSbr
-	 kpb26pGpp/VzlXguN96AUIoPZTS7wcugByHFbPytNfVJyKXl+fjkvHFS/5HxU/YiAW
-	 71hkIn5ObSkY5MTVzMFk1XtLFRjfbt3DjFcE7Y068U4jJOCZtB/yw30weQ5gkda9j6
-	 HCpOMLJ6EtPANdFqqVb4VcKtcuTdygt+tKy75KuP2NdEsh2rLwrWfNkH0V8wjEuGXS
-	 H25Y+kUxpFy2w==
-Date: Sat, 8 Jun 2024 16:15:15 +0100
+	b=CuR0clWCH/pu1MIadrb9SDLdxVu8abrLH02ZEcpbh3z+zU8iGdvCZxXWDAWm4os60
+	 sjEAuaQxZZdZP5sNG6shs8cAv7JOwo6pKItN6YYBFeWETejGLAW9oBKqoAG9IfTxmw
+	 vEBBBw4e4raMkXyWnHDHL9Of1WdCa8qroaFGPghwnQllB2QFMLjOZS3f0Er3rOae5B
+	 KP//JGz+LaiM8tOnChOzMOej6wi2n5byFwoPagGtGb2XtCPBWH0un1dcsecR5CTnJ9
+	 f4cUnRLwc/9kcj7ir6jV4hgU1XTSQKDGgeCebP15rVRRq6C/5/f84C2s6z6c643dkI
+	 CCLka07fOPcXQ==
+Date: Sat, 8 Jun 2024 16:20:35 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, "Rob Herring" <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>,
- <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 2/2] iio: frequency: adf4350: add clk provider
-Message-ID: <20240608161515.0d63a803@jic23-huawei>
-In-Reply-To: <20240607095806.3299-2-antoniu.miclaus@analog.com>
-References: <20240607095806.3299-1-antoniu.miclaus@analog.com>
-	<20240607095806.3299-2-antoniu.miclaus@analog.com>
+To: Mudit Sharma <muditsharma.info@gmail.com>
+Cc: Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+ ivan.orlov0322@gmail.com, lars@metafoo.de, krzk+dt@kernel.org,
+ conor+dt@kernel.org, robh@kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] iio: light: ROHM BH1745 colour sensor
+Message-ID: <20240608162035.6965cad5@jic23-huawei>
+In-Reply-To: <14ac1188-a018-4ebb-bf64-7818fab9ab7b@gmail.com>
+References: <20240603162122.165943-1-muditsharma.info@gmail.com>
+	<20240603162122.165943-2-muditsharma.info@gmail.com>
+	<39710806-3151-4b57-9af4-c0b4a4d21c28@gmail.com>
+	<c0732554-0742-444b-910d-55052e2c0f92@gmail.com>
+	<5c4800f4-3345-415b-b4e0-0099f1d22770@gmail.com>
+	<14ac1188-a018-4ebb-bf64-7818fab9ab7b@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,101 +67,62 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 7 Jun 2024 12:57:53 +0300
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> Add clk provider feature for the adf4350.
+> >>>
+> >>> Nit: black line before return (it applies to several functions in this
+> >>> driver, but again, not in all of them).  
+> >>
+> >> Hi Javier,
+> >>
+> >> Thank you for the review on this.
+> >>
+> >> Can you please point me to resource/section of code style guide for
+> >> reference which talks about new line before 'return'.
+> >>
+> >> Best regards,
+> >> Mudit Sharma
+> >>
+> >>
+> >>  
+> > 
+> > AFAIK that is not written in stone, but many common practices are not
+> > documented anywhere (e.g. names of error/ret variables). They just copy
+> > what the majority of the code in that subsystem does. There is indeed a
+> > tendency to add a blank line before the last (unconditional, not
+> > labeled) return, but I am sure that some code does not follow that.
+> > 
+> > Having said that, I don't have a strong opinion (it was a nitpick) on
+> > that, but what I would definitely recommend you is following **some**
+> > pattern. There are some functions where you added a blank line, and some
+> > others (the majority, I think), where you didn't. Given that this is new
+> > code, uniformity would be appreciated.
+> > 
+> > Unless an IIO maintainer (I am NOT one) says otherwise, I would find
+> > both approaches (blank/no line) reasonable, even though I like the blank
+> > line in that particular case :)
+> > 
+> > Best regards,
+> > Javier Carrasco  
 > 
-> Even though the driver was sent as an IIO driver in most cases the
-> device is actually seen as a clock provider.
+> Thanks for the explanation here.
 > 
-> This patch aims to cover actual usecases requested by users in order to
-> completely control the output frequencies from userspace.
+> I agree with having a consistent pattern and will make the necessary 
+> changes to v3.
 > 
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-> ---
-> changes in v2:
->  - rework commit title
->  drivers/iio/frequency/adf4350.c | 129 ++++++++++++++++++++++++++++++++
->  1 file changed, 129 insertions(+)
+> Best regards,
+> Mudit Sharma
 > 
-> diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
-> index 4abf80f75ef5..1eb8bce71fe1 100644
-> --- a/drivers/iio/frequency/adf4350.c
-> +++ b/drivers/iio/frequency/adf4350.c
-> @@ -19,6 +19,7 @@
->  #include <linux/gpio/consumer.h>
->  #include <asm/div64.h>
->  #include <linux/clk.h>
-> +#include <linux/clk-provider.h>
->  
->  #include <linux/iio/iio.h>
->  #include <linux/iio/sysfs.h>
-> @@ -31,11 +32,21 @@ enum {
->  	ADF4350_PWRDOWN,
->  };
->  
-> +struct adf4350_output {
-I can't see why this is needed.  Looks to me like you only ever
-go from hw here to the state. Use container_of to do that.
-> +	struct clk_hw hw;
-> +	struct iio_dev *indio_dev;
+I'm feeling grumpy today and you are the unlucky ones, given it's
+been a day of much scrolling.
 
-I wouldn't expect this clk_hw path to need the generic iio structure.
-I think you only did this to make the lookup of adf4350_state possible?
-If so, as above, container_of() is your friend.
+Crop your replies to just the relevant context as I've done here.
 
-> +};
-> +
-> +#define to_output(_hw) container_of(_hw, struct adf4350_output, hw)
-> +
->  struct adf4350_state {
->  	struct spi_device		*spi;
->  	struct gpio_desc		*lock_detect_gpiod;
->  	struct adf4350_platform_data	*pdata;
->  	struct clk			*clk;
-> +	struct clk			*clkout;
-> +	const char			*clk_out_name;
-> +	struct adf4350_output		output;
->  	unsigned long			clkin;
->  	unsigned long			chspc; /* Channel Spacing */
->  	unsigned long			fpfd; /* Phase Frequency Detector */
-> @@ -264,6 +275,10 @@ static ssize_t adf4350_write(struct iio_dev *indio_dev,
->  	mutex_lock(&st->lock);
->  	switch ((u32)private) {
->  	case ADF4350_FREQ:
-> +		if (st->clkout) {
-> +			ret = clk_set_rate(st->clkout, readin);
-> +			break;
-> +		}
->  		ret = adf4350_set_freq(st, readin);
->  		break;
->  	case ADF4350_FREQ_REFIN:
-> @@ -381,6 +396,115 @@ static const struct iio_info adf4350_info = {
->  	.debugfs_reg_access = &adf4350_reg_access,
->  };
->  
-> +static void adf4350_clk_del_provider(void *data)
-> +{
-> +	struct adf4350_state *st = data;
-> +
-> +	of_clk_del_provider(st->spi->dev.of_node);
-> +}
-> +
-> +static unsigned long adf4350_clk_recalc_rate(struct clk_hw *hw,
-> +					     unsigned long parent_rate)
-> +{
-> +	struct iio_dev *indio_dev = to_output(hw)->indio_dev;
+Yes, I prefer the blank line in most cases. However as noted the more
+important factor is local consistency.  Aim here is to make your code
+as easy to review as possible - having it all look the same is a good
+way to help that.
 
-You have the output in the state, so use container_of() to get to the
-containing structure.
+Jonathan
+ 
 
-> +	struct adf4350_state *st = iio_priv(indio_dev);
-> +	unsigned long long tmp;
-> +
-> +	tmp = (u64)(st->r0_int * st->r1_mod + st->r0_fract) * st->fpfd;
-> +	do_div(tmp, st->r1_mod * (1 << st->r4_rf_div_sel));
-> +
-> +	return tmp;
-> +}
 

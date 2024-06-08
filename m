@@ -1,131 +1,138 @@
-Return-Path: <linux-iio+bounces-6048-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6050-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0429011BD
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 15:44:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47ADE9011CA
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 15:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 613261F21FE6
-	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 13:44:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514AB1C211A5
+	for <lists+linux-iio@lfdr.de>; Sat,  8 Jun 2024 13:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D33E1179972;
-	Sat,  8 Jun 2024 13:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68DEF17B402;
+	Sat,  8 Jun 2024 13:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sx6IPojJ"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b="a3brHnvc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vern.gendns.com (vern.gendns.com [98.142.107.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B7BE57D;
-	Sat,  8 Jun 2024 13:44:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0A5149DED;
+	Sat,  8 Jun 2024 13:58:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.142.107.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717854288; cv=none; b=RrVzRX9STSKTKICGkmNF+C4sMjLcPXiLzdN0hAiCa0DWnrh1+V8NdXguYS4vreRw8gRGrUgPxvzgiar20pG7suFksbwWKbDcAEKr/JA33CDNo2VrnOTAHN/EVlZc/ZbiKdbVfMl3G/deYgKV4NFGri43ndgJzZXN+YYoZ/4lpOY=
+	t=1717855131; cv=none; b=UxWde+gVkUrP5PYznSAiMPGrA9pkf1/ctvkfku1cyuKAe2wd6xynmATUZ4DySytQ77KmDF2JzlnNFzOtld9IVVIui/aM5FUe65d+xv2NPHImcy11iy5fU5JXxAi9h+eROHMQWdqsouatr85vYNMT+nmfN9iDNxa8+A9WWfWbZRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717854288; c=relaxed/simple;
-	bh=u+65EOg95RMG8+T/dZJMqWa8Q0VgKMhpOjWei+5HBZQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ku7CSO/jUKTGYxJpON+vQD7DccbKUjG7EDw8k8AvWHCrO0XED2SXr85Hv0/ajtJt212IRXBg8don6ZCY7CvH3ee2m99uU+9jG5AfkjtetvigvWm3oKR7WJ5eTU7JfFHuAMDhhTO6pZOwUamBDCqgzrMnI3O86bZnFRh1DoL+dEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sx6IPojJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19676C2BD11;
-	Sat,  8 Jun 2024 13:44:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717854288;
-	bh=u+65EOg95RMG8+T/dZJMqWa8Q0VgKMhpOjWei+5HBZQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sx6IPojJWoJf8REA79Y8x1+xWnkbHpYIiF3LkPEX5kOfst/F5URLZKKN1qo3gjDLN
-	 hf7ckuKOVZ70M5a8WOcFsbzVaTLXAhYkmqjjq8isnEoMoC8UaO+jq/lw0fn7TjIY3x
-	 oJlsMLf8dBNyUcjuK9HyNguTSgSCJBRCn9aDekvUfbTSialsSQEcBwEu4QtS4YTlqV
-	 /YaZPIKzchX4rjIVWGMqEtw0eVb7mUYM2Fs9dkRyCqW+bM2+fOnfQYZnqLCn8qhrar
-	 aHdAxoGLpQmOqa/DQb/vTm9vZQPi7BPcLkvpU42Gu0zy4kOlh3uX6RiVx5NmXBbANA
-	 qbu4ZlIWe7yOA==
-Date: Sat, 8 Jun 2024 14:44:39 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Ramona Gradinariu <ramona.bolboaca13@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-doc@vger.kernel.org, devicetree@vger.kernel.org, corbet@lwn.net,
- conor+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, robh@kernel.org,
- Ramona Gradinariu <ramona.gradinariu@analog.com>
-Subject: Re: [PATCH v2 6/6] docs: iio: add documentation for adis16480
- driver
-Message-ID: <20240608144439.06889236@jic23-huawei>
-In-Reply-To: <20240528142409.239187-7-ramona.gradinariu@analog.com>
-References: <20240528142409.239187-1-ramona.gradinariu@analog.com>
-	<20240528142409.239187-7-ramona.gradinariu@analog.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1717855131; c=relaxed/simple;
+	bh=atuIaMlN3pdZfwn4VkPXK6hRAFX1XKSt58+EsDAQ8W8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iGZ6NS9o+0Ynsw4dXPTEKzchHtsYFVGqRO3V1/yRU+DyWdukvEhbqqysZMhWqvUncjRsqy8P0D+tK8NEBfYBNK6ZdTyv+J8WqnMdXgQn6BNmFAraySeZpXOXjjGScCY7J5McukkojO/MZEdHWi6D97+6YkDpC19C6Ony6wHvkhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com; spf=pass smtp.mailfrom=lechnology.com; dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b=a3brHnvc; arc=none smtp.client-ip=98.142.107.122
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lechnology.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=atuIaMlN3pdZfwn4VkPXK6hRAFX1XKSt58+EsDAQ8W8=; b=a3brHnvcKcEVNd1tXDq/AzNVN1
+	FsPt4psGyvki3UHvIDwpNtjhGcwMnVutLRVpMW2bGuVtXPKloOA5bMGN1QugUxhzaqpnrTgxLWt4D
+	PxNrDkt3QmKuICVjHjzd0WUlywv9zlBy78EchJToRbK+By59EvwYzyVtcHVsYOuCSoCSxe5jwfZja
+	AHJ+WywOOl1kN+H1R5fFIRfx5H1Af7BsmleGEgdUFx/U9qcoXhLFEiXKFLyv0Rab6MBI5voP9+Oc/
+	cNWmg9K5mI3x1AowUWWMeTXhqwko1u53v2EFma1cFn8F44uGunxSOiI61uSbnJdNpxYqT54ag4KR8
+	R0sfDdfQ==;
+Received: from ip98-183-112-25.ok.ok.cox.net ([98.183.112.25]:59500 helo=[192.168.0.142])
+	by vern.gendns.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <david@lechnology.com>)
+	id 1sFweK-0003Lm-0q;
+	Sat, 08 Jun 2024 09:58:45 -0400
+Message-ID: <5a053d6d-69d2-4d09-9a69-77fe73416484@lechnology.com>
+Date: Sat, 8 Jun 2024 08:58:39 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/8] Enable eQEP DT support for Sitara K3 platforms
+To: Judith Mendez <jm@ti.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ William Breathitt Gray <william.gray@linaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>
+References: <20240607162755.366144-1-jm@ti.com>
+Content-Language: en-US
+From: David Lechner <david@lechnology.com>
+Autocrypt: addr=david@lechnology.com; keydata=
+ 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
+In-Reply-To: <20240607162755.366144-1-jm@ti.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - vern.gendns.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - lechnology.com
+X-Get-Message-Sender-Via: vern.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
+X-Authenticated-Sender: vern.gendns.com: davidmain@lechnology.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-On Tue, 28 May 2024 17:24:09 +0300
-Ramona Gradinariu <ramona.bolboaca13@gmail.com> wrote:
+On 6/7/24 11:27 AM, Judith Mendez wrote:
+> This patch series adds eQEP DT nodes for K3 Sitara devices:
 
-> Add documentation for adis16480 driver which describes the driver
-> device files and shows how the user may use the ABI for various
-> scenarios (configuration, measurement, etc.).
-> 
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+FYI, it looks like you still have William's old not working email address
+so he might not be seeing this to pick it up.
 
-> +Obtain buffered data:
-> +
-> +.. code-block:: bash
-> +
-> +        root:/sys/bus/iio/devices/iio:device0> hexdump -C /dev/iio\:device0
-> +        ...
-> +        00006aa0  09 62 00 00 ff ff fc a4  00 00 01 69 00 03 3c 08  |.b.........i..<.|
-> +        00006ab0  09 61 00 00 00 00 02 96  00 00 02 8f 00 03 37 50  |.a............7P|
-> +        00006ac0  09 61 00 00 00 00 12 3d  00 00 0b 89 00 03 2c 0b  |.a.....=......,.|
-> +        00006ad0  09 61 00 00 00 00 1e dc  00 00 16 dd 00 03 25 bf  |.a............%.|
-> +        00006ae0  09 61 00 00 00 00 1e e3  00 00 1b bf 00 03 27 0b  |.a............'.|
-> +        00006af0  09 61 00 00 00 00 15 50  00 00 19 44 00 03 30 fd  |.a.....P...D..0.|
-> +        00006b00  09 61 00 00 00 00 09 0e  00 00 14 41 00 03 3d 7f  |.a.........A..=.|
-> +        00006b10  09 61 00 00 ff ff ff f0  00 00 0e bc 00 03 48 d0  |.a............H.|
-> +        00006b20  09 63 00 00 00 00 00 9f  00 00 0f 37 00 03 4c fe  |.c.........7..L.|
-> +        00006b30  09 64 00 00 00 00 0b f6  00 00 18 92 00 03 43 22  |.d............C"|
-> +        00006b40  09 64 00 00 00 00 18 df  00 00 22 33 00 03 33 ab  |.d........"3..3.|
-> +        00006b50  09 63 00 00 00 00 1e 81  00 00 26 be 00 03 29 60  |.c........&...)`|
-> +        00006b60  09 63 00 00 00 00 1b 13  00 00 22 2f 00 03 23 91  |.c........"/..#.|
-> +        ...
-This is tripping up the docs builds on 0-day.
-I'm not going to figure out why, so for now I've just made this an unformatted text block
-via :: and an indent.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/MAINTAINERS?id=c90663596e7c97363d8855c635f39500ed2f0030
 
-Documentation/iio/adis16480.rst:419: WARNING: Lexing literal_block 'root:/sys/bus/iio/devices/iio:device0> hexdump -C /dev/iio\\:device0\n...\n00006aa0  09 62 00 00 ff ff fc a4  00 00 01 69 00 03 3c 08  |.b.........i..<.|\n00006ab0  09 61 00 00 00 00 02 96  00 00 02 8f 00 03 37 50  |.a............7P|\n00006ac0  09 61 00 00 00 00 12 3d  00 00 0b 89 00 03 2c 0b  |.a.....=......,.|\n00006ad0  09 61 00 00 00 00 1e dc  00 00 16 dd 00 03 25 bf  |.a............%.|\n00006ae0  09 61 00 00 00 00 1e e3  00 00 1b bf 00 03 27 0b  |.a............\'.|\n00006af0  09 61 00 00 00 00 15 50  00 00 19 44 00 03 30 fd  |.a.....P...D..0.|\n00006b00  09 61 00 00 00 00 09 0e  00 00 14 41 00 03 3d 7f  |.a.........A..=.|\n00006b10  09 61 00 00 ff ff ff f0  00 00 0e bc 00 03 48 d0  |.a............H.|\n00006b20  09 63 00 00 00 00 00 9f  00 00 0f 37 00 03 4c fe  |.c.........7..L.|\n00006b30  09 64 00 00 00 00 0b f6  00 00 18 92 00 03 43 22  |.d............C"|\n00006b40  09 64 00 00 00 00 18 df  00 00 22 33 00 03 3
- 3 ab  |.d........"3..3.|\n00006b50  09 63 00 00 00 00 1e 81  00 00 26 be 00 03 29 60  |.c........&...)`|\n00006b60  09 63 00 00 00 00 1b 13  00 00 22 2f 00 03 23 91  |.c........"/..#.|\n...' as "bash" resulted in an error at token: "'". Retrying in relaxed mode.
-
-Introduced by commit
-
-  d6de8052f4a0 ("docs: iio: add documentation for adis16480 driver")
-
-> +
-> +See ``Documentation/iio/iio_devbuf.rst`` for more information about how buffered
-> +data is structured.
-> +
-> +4. IIO Interfacing Tools
-> +========================
-> +
-> +See ``Documentation/iio/iio_tools.rst`` for the description of the available IIO
-> +interfacing tools.
-> diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-> index 66fa69102e3a..4c13bfa2865c 100644
-> --- a/Documentation/iio/index.rst
-> +++ b/Documentation/iio/index.rst
-> @@ -19,5 +19,6 @@ Industrial I/O Kernel Drivers
-> 
->     ad7944
->     adis16475
-> +   adis16480
->     bno055
->     ep93xx_adc
-> --
-> 2.34.1
-> 
 
 

@@ -1,101 +1,102 @@
-Return-Path: <linux-iio+bounces-6111-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6112-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D715901757
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 20:05:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3DA901810
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 22:06:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D52101F211A9
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 18:05:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51A3728153A
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 20:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C7D482D0;
-	Sun,  9 Jun 2024 18:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7DD54B5CD;
+	Sun,  9 Jun 2024 20:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hmZU2N9W"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1a6zNhyc"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1464E63C7;
-	Sun,  9 Jun 2024 18:05:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8161DA4C
+	for <linux-iio@vger.kernel.org>; Sun,  9 Jun 2024 20:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717956349; cv=none; b=eTckUQC9NzV5Mulo5J9AFchDXuPAm4LSJS4OAxoKi5LnJuAnaYZ7vkvpD9b7eQgMuDiFI4Qox4CMI2AQYadAByq11dARntLjc1Dm6QRAXxijc9nN4/bs/dMY9nOI/ryP7O5ye8wcwXC3y7F8iN2SUxMSjRolEUcgrM7wHMCt+6M=
+	t=1717963586; cv=none; b=hyPLnld0NTOwofLo7fQ/ZuD0sG1ubqSFiqZ0OaTVBUcUmFgw42w8m+RV080ipu3lEMpzTv4TziESnJ5fAjoBqLwACfx0d+SLMN1zdyQv0deidPfHEgW0cDlNtDYCwxrDFFnkDFZE5hUw0XsUf8Z3JGEfpj10EbAG9iPP3ko7esg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717956349; c=relaxed/simple;
-	bh=7fdJx1+lP8/j+XLW/PaQm/1rXuLy8qetAlJzAMA6k3A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ayGosPKLDioHrkMywKg41eQPxMj6viZlbaF8DIDUm6ut1eghIjADP5nhDbpgxcEacOG9MKVjY96nufD5E03yZLiCjmwL9/U5fzVLZzLIhR8kxqE+yjLY8w1Wi7bBY5j+djvNB7pMOKqpUB+cxhuHr8LIdDInCvAHVzvmtd2DrU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hmZU2N9W; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-701b0b0be38so3521783b3a.0;
-        Sun, 09 Jun 2024 11:05:47 -0700 (PDT)
+	s=arc-20240116; t=1717963586; c=relaxed/simple;
+	bh=dV0HafcF6PMMuqh10cvuAZ5X5KeoDQVswsNpvA2TdBk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=clTWPLeK1UQ4ccLUtZBx1Qg2MhJkYd+qrZ20/HZZtgEOs+vZDC+m/BGdZNaYVvq7sUMJsuqNNhUrdYvET0MXa4Am0qIbZ7b5HZ/mBGKY1fqxDCzGvYl4djiCguTqtkhjFz8NUmcPECd7vmB3vPZQ0g8Y3+L7Hcy/yDGEju+WNkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1a6zNhyc; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5b970e90ab8so2308349eaf.3
+        for <linux-iio@vger.kernel.org>; Sun, 09 Jun 2024 13:06:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717956347; x=1718561147; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=IANG2WFqu0P+9CPWFfIfVa8HF99uBjdVoBx9tFnaoiM=;
-        b=hmZU2N9Wmjksb51S1IfgIThIZaAzQwsw7aEJxMtFZuBxFiraw+LjPXrMDH30kjqSx1
-         0CxazOS/AvL8vS4o3XIu5qrQt2buCmyCDQs4fES5iwAKOPOdnnsG5d9dB1tMJqsHaUJZ
-         CaxrTaR8Xwiw5QXi+zdgaln62unCmjC4u0uRNiUnWEkZyzrVMeutdmyfFu4o8jG6UZoT
-         dw+iBEmV63jZ0tQ487+sNv6GQKfSbhzLxiNuS1qJ7dcj1d3o5cjHHq4bRuiyCJnXZn0J
-         Xj1RXjYU9HKEGYNH9KYF3ZBtYoxkeKJLBw4YSZm5wukr9siT1UBuLII2iS8KffBm0aXh
-         SgqQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1717963583; x=1718568383; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bCgjLGIvHnJpxhOHdQz2TYeCVliZVrQ6mIgWxXIdyLs=;
+        b=1a6zNhycUCk4Pm+crqSjzPj6QkekJqLEAe8Y0hZyr+uSVtw7bozT22Ki5S5Oh5bDtr
+         0vsHEczt6RqNFysHDTtMVT61xVIEtuiJYwpwwPxl6/ZdCVUE32kDY9ffo1gN1WHcVwOv
+         r3JHfvAkU6TNghhEkytO6L7dib93Saw3eiSnBeAA7OBjhEo6P0FhcDcWPmY97Xp8Abpb
+         I0uPQi7VP+oNBzsqttsGoFJROOrDdpCSgAc0n2mJwhBS0ub27g6w5NWP59+Il/zXLoRj
+         gnOxBaTYw+npvRP+ZvgfpyeCn120hJxzva7SBd0yblpnT/M3O6y0f4kzGp5hivUCQ0Um
+         fZ4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717956347; x=1718561147;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IANG2WFqu0P+9CPWFfIfVa8HF99uBjdVoBx9tFnaoiM=;
-        b=FojfzxYok+nNiKEVmy1kf4y0USnSjH6E/p5l1R9iwP9YO5LTXoHYTNWQDShyL2PTC9
-         ojfwP4z7Klw+eLfjTMulI6WsYXO7buYIYR3cvVdY5CWMGRs1RxFs56J5YPj8MQqmPCMo
-         wDMdCmt8ob7YhOGA3v/5AliI/4Yw74TSRTraKBuWX4hBKq8DxLyCJ7bAqsz9kezNiXbh
-         1tc8lAmy/tcSl46frZbtRHREXICA2iSeiOKt/2Rh3yw9THzSIZGbARALANOd+xZos7BS
-         ol1g9KIXJSKm4meDqyLOaZq6xVVNKcVid2igYmOc+dTI0WQItByCeOfQEHT13doVoFX4
-         D5EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVAb85Iedsdd94t0lsLNBNIhDdUH6aN36XvFX4ZRzx5vxtYjVBS83jKSbZUHIBM1oaZ9PlRrsCiyDk42E6kdrqzLF15WvVdinx8EKRglNg1Dfk2//wfDjhJsyRZGEwUjvQH1uAZqOGimWAHeUVCg6NcgcnKEzdhM/rybGZQzRnyK2TlHg==
-X-Gm-Message-State: AOJu0Yxl+zIIJfDec5XcKmyjO6k6auOZx3WQtSFp2vPqticXPH/aKRVo
-	s6eN5uWpLcsic+IODoQ2Pai6oG0t9xCIbe7O3E6g3vYI5hFxaQg0
-X-Google-Smtp-Source: AGHT+IFd9wbAaBYz16lGAusX0aIPhJpbi5xdvpCGI35zgbY09//watj1ORR0uxVygR0fHo4Mzjq5fQ==
-X-Received: by 2002:a05:6a20:9185:b0:1b6:d9fa:8be with SMTP id adf61e73a8af0-1b6d9fa0af6mr1834751637.40.1717956347100;
-        Sun, 09 Jun 2024 11:05:47 -0700 (PDT)
-Received: from archlinux ([189.101.166.155])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70426c9f2bfsm2496536b3a.219.2024.06.09.11.05.42
+        d=1e100.net; s=20230601; t=1717963583; x=1718568383;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bCgjLGIvHnJpxhOHdQz2TYeCVliZVrQ6mIgWxXIdyLs=;
+        b=SCFqN4dFr9Gd+1q82X+0y7kOW9jxeVdlZFXmMsDMUHvkPfaNtBLN7i3urAtz7k0yNk
+         ZfjC7dkiCJ0prWPBvIbrX6hPEGOsV3d7cFZKeadssbYZrABeXuwekDOepVOJEf6PnIFx
+         QoessFHwvkyU9c5/t6R8KJIHqzySxK81Clj5/OLMg9n1CW8cTd6UgHxOkcY7goUCEj+A
+         eMiN+P5OSFE/7fG2nfOP0IlHnI60RDQHrx+A5vr+n7oXMUwmCnJGHBzxs7mliA9T8wW4
+         r0wkPydIgJhlobUHdZrM8uw7xMWD6bXDvwCDA3306rMZPaEk1mabBPlZ9i0Qu6HGrAx9
+         +Ybw==
+X-Forwarded-Encrypted: i=1; AJvYcCXcCYMfX+yy5Zs4PixCuXsTkNOpW/aLpnoOi+5sE3d/Hf3lwlx9gZBQimDxzsqUp4X4gt+eqxoVTcINnJiooX3e2TRVegw90aGA
+X-Gm-Message-State: AOJu0YyxbuwpzeC4StuDnYWCRRcdxpZF51lFOA6IyzzPN/bcQSMGc+9+
+	t0zYjcvKPGu532rvaWKgu4rvTnCX7POt7kpuDRnFyXdpinANv7swMvyIUX6Xf5DJ5uUseQVocnZ
+	4
+X-Google-Smtp-Source: AGHT+IGUcR9xqr3+AxBdyVQ8ar8tP10gwQFPrDJQGF+erJK+HZxWPREAfdHRAmFKf7QcyMjOjK3RfA==
+X-Received: by 2002:a4a:dc95:0:b0:5ba:bb77:bf51 with SMTP id 006d021491bc7-5babb77c5dfmr6153154eaf.2.1717963582922;
+        Sun, 09 Jun 2024 13:06:22 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5ba977e121bsm1413278eaf.28.2024.06.09.13.06.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Jun 2024 11:05:46 -0700 (PDT)
-Date: Sun, 9 Jun 2024 15:05:38 -0300
-From: Gustavo Silva <gustavograzs@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	lars@metafoo.de, christophe.jaillet@wanadoo.fr, devicetree@vger.kernel.org, 
-	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 0/6] Add driver for ENS160 sensor
-Message-ID: <g3x3hltujhcb5qs7klppikdvy2baej3lff2fucmx7efmvgg7wj@slcuwwb776kt>
-References: <20240604225747.7212-1-gustavograzs@gmail.com>
- <20240609103655.29a1b53d@jic23-huawei>
+        Sun, 09 Jun 2024 13:06:22 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+To: William Breathitt Gray <wbg@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Judith Mendez <jm@ti.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] counter: ti-eqep: small cleanups
+Date: Sun,  9 Jun 2024 15:06:14 -0500
+Message-ID: <20240609-ti-eqep-cleanup-v1-0-9d67939c763a@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240609103655.29a1b53d@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jun 09, 2024 at 10:36:55AM GMT, Jonathan Cameron wrote:
-> Series applied with minor tweaks as called out for individual patches.
-> 
-> Applied to the togreg branch of iio.git and pushed out initially as
-> testing for 0-day to see if it can find anything we missed.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
+Judith got me looking at this driver again, so I noticed a few small
+things that could be cleaned up.
 
-Thank you!
+---
+David Lechner (2):
+      counter: ti-eqep: remove unused struct member
+      counter: ti-eqep: remove counter_priv() wrapper
+
+ drivers/counter/ti-eqep.c | 24 +++++++++---------------
+ 1 file changed, 9 insertions(+), 15 deletions(-)
+---
+base-commit: bb3f1c5fc434b0b177449f7f73ea9b112b397dd1
+change-id: 20240609-ti-eqep-cleanup-254e6ba1e386
 

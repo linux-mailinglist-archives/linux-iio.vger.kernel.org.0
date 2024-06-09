@@ -1,70 +1,72 @@
-Return-Path: <linux-iio+bounces-6118-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6119-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E11539018A2
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 01:38:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BDA99018A4
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 01:38:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D4401F21184
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 23:38:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A72DB20C96
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 23:38:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B467F4DA10;
-	Sun,  9 Jun 2024 23:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A1D55886;
+	Sun,  9 Jun 2024 23:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KytWlnDM"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FdJHhy5q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBAF4179AE;
-	Sun,  9 Jun 2024 23:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C0045BEF;
+	Sun,  9 Jun 2024 23:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717976313; cv=none; b=PUYft6UjVgzx6MHvI3lSSe5spr3TF7sr2+u6xyZB3EK5XTL8UcPRnSwZTxOGMl+ViPCmoFHYvTphR7sE8oBZeYx/LOeCHGtzeE2BRiGnmghACGzUpWSNZBFfF5YKy1Ii5sEjwtUGyDo7JM/gRa0ziRU/PS5xsW/RXRiCfGaN9MA=
+	t=1717976314; cv=none; b=C6haL08SYP5l5gK+pJk2wALgh6bzSGB7GavGb3Wav4qSMZurVwylYzVPBUKwq81EA4Qr5Mxm+QK/2uypRivTU4sMVvRHI5tg2pDipbVVj7nnfGX67tT+kymMm3J0YB4Y4DZDXalbwMc/a71Zr5roiuPsRT7ZCuI5cIAqngTsNac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717976313; c=relaxed/simple;
-	bh=WQu9K2ue5eeyp0u/2COx1PCNb014zEKrmMT+Lhhs9BU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=tRkWMrrK3vo50wqshxSBBoC2j/kWcmX0nxfRoRCXqlEG913UwDMW3ZcCLaW9zca3TYtjXpWkkgP+kNLib5F5nzMAw9MQQzwLHdlPi1kgo0E8diLI0Iy366DTKwy09RrZ0zk4gbNDP4UHgNW3/BIv0tr0p5PVt8NLHNzk/YaaBwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KytWlnDM; arc=none smtp.client-ip=209.85.208.54
+	s=arc-20240116; t=1717976314; c=relaxed/simple;
+	bh=/HIExraWSYrCMoCk7nOoIvhEXeD3HpJ2VyeOWxhE7ww=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=HlJ3NL92ADVbihr12xchdLOR+UiRYxYRYOMsUcjhqnj/p2uOYykkciPxH2Lq4yAMKmUdL4OkIxSqaz9PtSe33E5PFE9WmE4fU+xulQaTK8h034claPL5/5mCI4+mJsf+MPaIHXr7kYmKHJRk0fW4o8cRWMObZwdMo+RUyNabkwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FdJHhy5q; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-57c76497cefso965228a12.1;
-        Sun, 09 Jun 2024 16:38:31 -0700 (PDT)
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a6ef8bf500dso174193466b.0;
+        Sun, 09 Jun 2024 16:38:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717976310; x=1718581110; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=02MNU9GYhtO+IwacgDb9GmG63HRnt1F+VZqY4FJZbpg=;
-        b=KytWlnDMTi0KiK0ZdcvXrHcaU/ZPCTmwi8LKnQjAWjOWa2XTsT4W4D7MNx7tncTgZA
-         wVVS0/TfanRm8iZG1zL0QeGyFjHFaxUMuLqB2gK3nHht9Q3Cp44rwf16JCgFTEs1FdRS
-         c0zeLBzpSZKMD6s0D6DCOlV5a/mW5i9GAf73gY0BbUplty42hiT+fdS75nOwGwtYfyyd
-         +2yRvuVhq/GJQwblrot8zEqxPXRc0Pjk7TpIhbqwH/YZmOoAchU+vUtW7cQhGPKT19Jz
-         NcQa15+HM93J9l6k4oRXZbApYB3vtpwsrqjKIFApGrHnH2cxdN6daJZIaW6lUIjhn0qD
-         ur9g==
+        d=gmail.com; s=20230601; t=1717976311; x=1718581111; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qriIk15uECH849+rrPmyWW+JdSulOHZnSzKJ2HLoQPc=;
+        b=FdJHhy5qZz0dYz9CeDIv94IZ1PwKHU8v6U0j6aMRWhZYDRLc/zk2l0hyZyk3BnlzGR
+         2i6numns0GStILgXJisp6kLBSnDM8LbxIOS+7MKB5sX3lFF1i1mw9G7xt0MQrX4hJ1/Q
+         Mci33uNwcwG9ABTo3538A1SUqSsvylDb+/hREv5dvcfeDMxQ+vYPAiGX9cmUm0J1lGHW
+         PDWIOqo855cnu4qYl4Vcx3rsPyh1iki+iEeXLAWwxDBzDszWC1UHba6YrITXsv8FA7Xv
+         D8pnR127+gojB6hlpMH7y6pmUwl6sWLLgRXd6MnyP6WMlx2C9oqnWFIz90+1B/aCFhic
+         4fRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717976310; x=1718581110;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=02MNU9GYhtO+IwacgDb9GmG63HRnt1F+VZqY4FJZbpg=;
-        b=ZPBQ+9KOw+16Bc6JWlBZlY4ynUSDPN0cGG0WlR1N5dYKbau+Gdr/79aZmOx57SKg9J
-         iDxsQT8PtesZnzaO61H2f0be7PsLQca56Og69inoGSCgu646Fo8Z1o7OhitwRWH+wZtt
-         uQe9A85EgqciJGlfQjlzuTMgEvUn8pHMtk5ze255/LdoLt5oF3+oWC1u6zdryi8IKSjH
-         xzKS0xXQzyTsqmBVZ1e2uQEh5hyLKP4uy395hygdL/PuomHEq4db4Mc0CWX2eKFURRlM
-         83Y9pmpOVfq4CHuzIey0MYLWgm/2gXpI4UEutRKs2xIeI7OkUKhmha5dZyWs/fhZ9WxQ
-         t55w==
-X-Forwarded-Encrypted: i=1; AJvYcCUljDMBdPTNmFk6grM526GTwDczdzbtxdE0tLVeXjoqPLY0aiWGoZayOdlbTtEPopzlkd1H6AjQrsDy8G9qOXzwtnJGFoLS9O5ck88X4lg+FhX5t3AziY3pz4yZb2pLU7x1ejtKyA2g
-X-Gm-Message-State: AOJu0YzFiDigufK5nGWdGEoPUKraYCjKoIPsoRxK2ARYrKQZHtSlWbZD
-	H1UyrfZdxQYWibdZoDFdFm1qkmtjiw+Hg8cUoh6TYsHQvVSgZtpB
-X-Google-Smtp-Source: AGHT+IF3roP40+TYpz5PRfIoispVy2DR35Z1i5AUefec1eXO8p0db4vS3R5nnFHOZf9MZF6lGSro/A==
-X-Received: by 2002:a17:906:478c:b0:a68:e58b:2c35 with SMTP id a640c23a62f3a-a6cd6660cbemr696404666b.31.1717976309923;
-        Sun, 09 Jun 2024 16:38:29 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717976311; x=1718581111;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qriIk15uECH849+rrPmyWW+JdSulOHZnSzKJ2HLoQPc=;
+        b=lBZPFLJoWwsLsAOazsm9BAhOIP5vtx6oHsThPIQhiwwxdwAcbEJtLegqHNypuhqfOn
+         2/b2AsOcZ7efYPZsERS3jWbEEAYcz6urNVM7oFZLJgjjKoCY7e4tE6YNmPj+EjNjA3By
+         A2xQtryXtWHfqHYggVTs75B20BJdgBpUwLYbbRSChVg+yCpRVhseWfqlM1+oeOINVyQQ
+         N2fCZf/1wqqo/1I0rW3uUmjVcwZEurBBU5rE/sF9out22Y1aBgqmQYplaxZRzd/BE5pK
+         usMJXZRY9WyClk7eCwb36JOnQBOCRu+rCUHCeeG8gTrJBY1x0zQneTDrf9bQ2nKuIfZm
+         zV1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVRSosD+QhwEHeGCYAQSYY3/F+dBvmmGhqDWeYHe/cUM60Uj4cDJoX7V1ozshK0WXgs1Y9ndSwWkJRDJlmII2raPgDh0u/DsFoGgkvKz5CtnQW5JfewflTcLqF9x9aI5qlR/OvB2jur
+X-Gm-Message-State: AOJu0YwIrY6hfM2oD10JXXBDEnS6R8ocNPWaEsGF3F3M3uv+tq7MaVan
+	YPCDzhZgxSTO7aB1Cgkc6W/u3oYrtC9DO+lSjUQgtdd5EMeTzI/i
+X-Google-Smtp-Source: AGHT+IERaB+Z/GAMpTRXxjz7QRhf2zYbS0Dm69EmyxWnI5cCUibMrTiOGvazxyNdYkcPuas2JmXErA==
+X-Received: by 2002:a17:906:2c16:b0:a68:a800:5f7e with SMTP id a640c23a62f3a-a6cd561f12cmr526136166b.10.1717976311357;
+        Sun, 09 Jun 2024 16:38:31 -0700 (PDT)
 Received: from localhost.localdomain ([2a04:ee41:82:7577:635a:738f:880f:9ea5])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f20bb1abesm46063366b.172.2024.06.09.16.38.29
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f20bb1abesm46063366b.172.2024.06.09.16.38.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Jun 2024 16:38:29 -0700 (PDT)
+        Sun, 09 Jun 2024 16:38:30 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org
 Cc: dpfrey@gmail.com,
@@ -74,10 +76,12 @@ Cc: dpfrey@gmail.com,
 	linux-kernel@vger.kernel.org,
 	mike.looijmans@topic.nl,
 	vassilisamir@gmail.com
-Subject: [PATCH v3 00/15] iio: chemical: bme680: Driver cleanup
-Date: Mon, 10 Jun 2024 01:38:11 +0200
-Message-Id: <20240609233826.330516-1-vassilisamir@gmail.com>
+Subject: [PATCH v3 01/15] iio: chemical: bme680: Fix read/write ops to device by adding mutexes
+Date: Mon, 10 Jun 2024 01:38:12 +0200
+Message-Id: <20240609233826.330516-2-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240609233826.330516-1-vassilisamir@gmail.com>
+References: <20240609233826.330516-1-vassilisamir@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -86,98 +90,68 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Based on fixes-togreg as the 4 first commits are already applied
+Add mutexes in the {read/write}_raw() functions of the device to guard the
+read/write of data from/to the device. This is necessary because for any
+operation other than temperature, multiple reads need to take place from
+the device. Even though regmap has a locking by itself, it won't protect us
+from multiple applications trying to read at the same time temperature and
+pressure since the pressure reading includes an internal temperature
+reading and there is nothing to ensure that this temperature+pressure
+reading will happen sequentially without any other operation interfering
+in the meantime.
 
-Patch 1/15: Added comment for explanation of what mutex is used for
+Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+---
+ drivers/iio/chemical/bme680_core.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-Patch 2/15: Removed fixes tag
-
-Patch 3-15/15: Reworded the commit messages to come close to convention
-	       of 75 chars per line.
-
-v2: https://lore.kernel.org/linux-iio/20240606212313.207550-1-vassilisamir@gmail.com/
-
-Patch 4/19:
-	- Combined the bme680_conversion_time_us() and bme680_wait_for_eoc()
-	  into one function.
-	- Added better comment for the calculation.
-	- Added checks in the bme680_wait_for_eoc() function.
-
-Patch 5/19:
-	- Fixed typo in commit message.
-
-Patch 6/19:
-	- Added a fixes tag since without the mutexes, read operations can be
-	  broken.
-
-Patch 10/19:
-	- Converted shifting operation to FIELD_GET()
-
-Patch 11/19:
-	- Changed convention from &data->bufer[0] to data->buffer.
-	- Removed IIO_DMA_MINALIGN as it is not needed anymore.
-
-Patch 13/19:
-	- Removed IIO_DMA_MINALIGN
-
-Patch 14/19:
-	- Splitted from Patch v1 14/19
-
-Patch 15/19:
-	- Splitted from Patch v1 14/19
-
-Patch 16/19: **NEW**
-	- Use dev_err_probe() where applicable.
-
-v1: https://lore.kernel.org/linux-iio/20240527183805.311501-1-vassilisamir@gmail.com/
-
-This started as a series to add support for buffers and the new
-BME688 but it ended up being just a cleaning series. These might
-be quite some patches for such a thing but I feel that they are
-are well split, in order to allow for better review.
-
-The patches are mostly small changes but essential for the correct use
-of the driver. The first patches looked like fixes that should be
-marked for the stable. Patches [11,17/17] might be a bit bigger but 11/17
-is quite straightforward and 17/17 is basically a duplication of a
-very similar commit coming from the BMP280 driver [1].
-
-In general, the datasheet [2] of the driver is not very descriptive,
-and it redirects the user to the BME68x Sensor API [3]. All the things
-that were identified from the BME68x Sensor API have been marked with
-links to the original locations of the GitHub code. If this is too much
-and we don't want this type of information on the commit message, please
-let me know and I will fix it.
-
-[1]: https://lore.kernel.org/linux-iio/20240512230524.53990-1-vassilisamir@gmail.com/T/#mc6f814e9a4f8c2b39015909d174c7013b3648b9b
-[2]: https://www.bosch-sensortec.com/media/boschsensortec/downloads/datasheets/bst-bme680-ds001.pdf
-[3]: https://github.com/boschsensortec/BME68x_SensorAPI/tree/master
-
-
-Vasileios Amoiridis (15):
-  iio: chemical: bme680: Fix read/write ops to device by adding mutexes
-  iio: chemical: bme680: Fix typo in define
-  iio: chemical: bme680: Drop unnecessary casts and correct adc data
-    types
-  iio: chemical: bme680: Remove remaining ACPI-only stuff
-  iio: chemical: bme680: Sort headers alphabetically
-  iio: chemical: bme680: Remove duplicate register read
-  iio: chemical: bme680: Use bulk reads for calibration data
-  iio: chemical: bme680: Allocate IIO device before chip initialization
-  iio: chemical: bme680: Add read buffers in read/write buffer union
-  iio: chemical: bme680: Make error checks consistent
-  iio: chemical: bme680: Modify startup procedure
-  iio: chemical: bme680: Move probe errors to dev_err_probe()
-  iio: chemical: bme680: Remove redundant gas configuration
-  iio: chemical: bme680: Move forced mode setup in ->read_raw()
-  iio: chemical: bme680: Refactorize reading functions
-
- drivers/iio/chemical/bme680.h      |  41 +-
- drivers/iio/chemical/bme680_core.c | 631 +++++++++++++----------------
- 2 files changed, 291 insertions(+), 381 deletions(-)
-
-
-base-commit: 4241665e6ea063a9c1d734de790121a71db763fc
+diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
+index 500f56834b01..a6bf689833da 100644
+--- a/drivers/iio/chemical/bme680_core.c
++++ b/drivers/iio/chemical/bme680_core.c
+@@ -10,6 +10,7 @@
+  */
+ #include <linux/acpi.h>
+ #include <linux/bitfield.h>
++#include <linux/cleanup.h>
+ #include <linux/delay.h>
+ #include <linux/device.h>
+ #include <linux/module.h>
+@@ -52,6 +53,7 @@ struct bme680_calib {
+ struct bme680_data {
+ 	struct regmap *regmap;
+ 	struct bme680_calib bme680;
++	struct mutex lock; /* Protect multiple serial R/W ops to device. */
+ 	u8 oversampling_temp;
+ 	u8 oversampling_press;
+ 	u8 oversampling_humid;
+@@ -827,6 +829,8 @@ static int bme680_read_raw(struct iio_dev *indio_dev,
+ {
+ 	struct bme680_data *data = iio_priv(indio_dev);
+ 
++	guard(mutex)(&data->lock);
++
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_PROCESSED:
+ 		switch (chan->type) {
+@@ -871,6 +875,8 @@ static int bme680_write_raw(struct iio_dev *indio_dev,
+ {
+ 	struct bme680_data *data = iio_priv(indio_dev);
+ 
++	guard(mutex)(&data->lock);
++
+ 	if (val2 != 0)
+ 		return -EINVAL;
+ 
+@@ -967,6 +973,7 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+ 		name = bme680_match_acpi_device(dev);
+ 
+ 	data = iio_priv(indio_dev);
++	mutex_init(&data->lock);
+ 	dev_set_drvdata(dev, indio_dev);
+ 	data->regmap = regmap;
+ 	indio_dev->name = name;
 -- 
 2.25.1
 

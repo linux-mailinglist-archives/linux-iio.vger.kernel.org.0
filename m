@@ -1,56 +1,62 @@
-Return-Path: <linux-iio+bounces-6098-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6099-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B107090157F
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 12:10:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CB8901588
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 12:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C38928128E
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 10:10:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CAE1B2114E
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 10:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BDAC208D7;
-	Sun,  9 Jun 2024 10:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E242020DD2;
+	Sun,  9 Jun 2024 10:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoTDP9Ps"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I3h9CX1G"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C83F208A0
-	for <linux-iio@vger.kernel.org>; Sun,  9 Jun 2024 10:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABEA22619;
+	Sun,  9 Jun 2024 10:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717927804; cv=none; b=rnCPn5k+p3p94DdwIQ9BXapf09tko9gkngroovWGzxNwtie9vtxsqIQSBjCu3SI2q4yZDNDD+Xi5EbMEcP8SslN1sLaT1GmeCtlE+nmWxHFdpumsiSZooPf3fAmy56i0xL6UBwOIjcvPYDVOFvf/cLt/HkQmBb3tZCLpH5P/7Nc=
+	t=1717928318; cv=none; b=QObW4J2AoOutSQ7kp2ZkmRkHXizHgwbtsAe1ODzXzu7cHEIn71xbhgBuA0F4rRDKtb02T2c8FO2n5x+JcMnKhXMO4DIM+HQzjn9URgHEktg04wqfWF699qpqtQ3nKR81BAvaN0MWGplhHQSXh6LHQwkpFgZ69ZsEHiHgNOFKlfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717927804; c=relaxed/simple;
-	bh=aaZ+OM3jHgDzoDYfXmAcIia1TP4mZhk/E4HNsZ8rw4g=;
+	s=arc-20240116; t=1717928318; c=relaxed/simple;
+	bh=fy4wqIGP/0XPQnNOrnmxbqYJ84UFY/vN3hZc+RbEo2E=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HRfWy+hOU9PQ9VQM8wqJ1akXMVYStUIXfHUJwVSigewM7mcIUG9HmIGOB6pC/KxMees90ipqInbwIE0PolQ3zYl0j1SS0QncDR/BZVmIapVRTQyKfswkP0R1SyYQFeK31G97kXjB6lCgnu5ZpTN/Hxm8QT+ogrCOt88K7Joo35E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoTDP9Ps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D31C2BD10;
-	Sun,  9 Jun 2024 10:09:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DFuOiIfev8tlNApnZkrRzqAE9dKHaMnY7YuNn6uQUcFf7wOvSrPwbA4Xx1pjHR0vjDvDrw9k/G531gL8BjFmp/QXofolGY40uKUBUQcbZ8/ov/GxrSntUrzQQ8xjItCxjJVDzmkD1eS8GTAQUHNPBlzK/dOk0hd05UAeFZBz5g4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I3h9CX1G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CBCC2BD10;
+	Sun,  9 Jun 2024 10:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717927803;
-	bh=aaZ+OM3jHgDzoDYfXmAcIia1TP4mZhk/E4HNsZ8rw4g=;
+	s=k20201202; t=1717928318;
+	bh=fy4wqIGP/0XPQnNOrnmxbqYJ84UFY/vN3hZc+RbEo2E=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SoTDP9PsvUG8nQtSk1sXUwguafvy1VLO+6tmlkQpin1fMCQEVvLv6M2yvTRKKFnGR
-	 Pat8DQ12R0HRkdnzI1h1Jk3oFc3TUich0EK9X2L91kxf48w54cisfA6kWNNY8CEF8b
-	 2H/O7OXbBQbdjbTyJswA/IFyD5LCx+8v67bUbY/4UPgQ5Xfu1eTESl39PdKF6LTn6H
-	 vk+zSJJAdEbU1d3lEdsX1ChUvOdc5HV2Ar1KochFFpiwSSvDLkLY4j+8nDBTXqKSI7
-	 wfPNY0rk9gzjS3ICgjWTJTw3mtSOM0GYr9VzpIi4ks3kxCQJafHoRb6t5W9S8oGj9V
-	 HVss8wHeqGiEQ==
-Date: Sun, 9 Jun 2024 11:09:30 +0100
+	b=I3h9CX1GPHvxMGFCT0woGd59deltw5THyyUnHqHwwGn357o/S5lO/m6ft/Vj4HuvZ
+	 m4iRydXXf1Z8tbGu5ME+nkSY5kF5xhJC8P2lQGIhXUouDYbgeSwmwlltuCsoR8dr7i
+	 Pm7Sir7aOVVQCxu5eb44zTDuo6oJH8TY1XhNhbS/RurFdDWXrHcaZVuwN10MOXNVsc
+	 S4PeMybJwU0qCTxFajs4o26hADH7gfxraZtdLyEJfk7Ubnv9tp8q3+Ha6td0PPRN7L
+	 JDbhCcJyAeYIrxNr9AqQp5q2unefpATxjA1iDewKmuJLc1pyhv6ivtw7N+BGNTSTlE
+	 v18AETj417kjA==
+Date: Sun, 9 Jun 2024 11:17:40 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: inv.git-commit@tdk.com
-Cc: lars@metafoo.de, linux-iio@vger.kernel.org, Jean-Baptiste Maneyrol
- <jean-baptiste.maneyrol@tdk.com>
-Subject: Re: [PATCH v4 0/2] iio: imu: inv_icm42600: add support of accel low
- power
-Message-ID: <20240609110930.2f40d3d3@jic23-huawei>
-In-Reply-To: <20240605195949.766677-1-inv.git-commit@tdk.com>
-References: <20240605195949.766677-1-inv.git-commit@tdk.com>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
+ <jpaulo.silvagoncalves@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, =?UTF-8?B?Sm/Do28=?= Paulo
+ =?UTF-8?B?R29uw6dhbHZlcw==?= <joao.goncalves@toradex.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Francesco Dolcini
+ <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v2 1/2] dt-bindings: iio: adc: add ti,ads1119
+Message-ID: <20240609111740.1c61ce07@jic23-huawei>
+In-Reply-To: <20240606163529.87528-2-francesco@dolcini.it>
+References: <20240606163529.87528-1-francesco@dolcini.it>
+	<20240606163529.87528-2-francesco@dolcini.it>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -58,47 +64,241 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed,  5 Jun 2024 19:59:47 +0000
-inv.git-commit@tdk.com wrote:
+On Thu,  6 Jun 2024 18:35:28 +0200
+Francesco Dolcini <francesco@dolcini.it> wrote:
 
-> From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> 
-> Add accel low power support, enabling use of lower ODR below 12.5Hz.
-> 
-> Add new sysfs API for controlling the power mode and enforce power mode used
-> when using an ODR that supports only 1 mode (ODR < 12.5Hz or ODR > 500Hz).
-Applied to the togreg branch of iio.git and pushed out as testing for 0-day to
-poke at it.
+> From: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
+>=20
+> Add devicetree bindings for Texas Instruments ADS1119 16-bit ADC
+> with I2C interface.
+>=20
+> Datasheet: https://www.ti.com/lit/gpn/ads1119
+> Signed-off-by: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
+> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 
-Thanks,
+I missed it on previous version but you only have description in here
+for vref and few devices power them selves from something called vref!
+
+The binding should describe the other power supplies as well and mark
+them as required.
+
+We've left these out too many times in the past and ended up having
+a patch very soon after adding them. Better to have them from the start.
+Driver should just use devm_regulator_get_enabled() to turn them on and
+register them to be turned off on driver removal, and ignore them
+after that.  If anyone has controlled supplies and wants to do more
+sophisticated handling they can add it later.
+
+Note that even though the dt-binding will list them as required, if
+a particular DTS doesn't provide them the regulator framework will
+give a dummy uncontrolled regulator to represent the assumption that
+the power is always there.  We still document them as required in
+the dt-binding though as other OS may not be so clever.
+
+Only needs minimal entries though - see inline
 
 Jonathan
 
-> 
-> Changelog
-> 
-> V2:
-> - fix patch missing Signed-off tag
-> 
-> V3:
-> - make all ODRs available and switch power mode automatically for ODR supporting
->   only 1 mode.
->  
-> V4:
-> - prevent power mode setting when the ODR is not supported
-> - return the actual power mode when sensor is on, otherwise the requested one.
-> - add sysfs ABI documentation
-> 
-> Jean-Baptiste Maneyrol (1):
->   iio: imu: inv_icm42600: add support of accel low-power mode
-> 
->  drivers/iio/imu/inv_icm42600/inv_icm42600.h   |   4 +
->  .../iio/imu/inv_icm42600/inv_icm42600_accel.c | 124 +++++++++++++++++-
->  .../iio/imu/inv_icm42600/inv_icm42600_core.c  |  27 ++++
->  3 files changed, 151 insertions(+), 4 deletions(-)
-> 
+> ---
+> v2:
+>  - add diff-channels and single-channel
+>  - add XOR check to make diff/single channel property required=20
+>  - add interrupts, reset-gpios and vref-supply to the example=20
+>  - fix missing additionalProperties/unevaluatedProperties warning in chan=
+nels
+>  - remove ti,gain and ti,datarate as they aren't fixed hw properties
+>  - remove unnecessary |=20
+> ---
+>  .../bindings/iio/adc/ti,ads1119.yaml          | 148 ++++++++++++++++++
+>  MAINTAINERS                                   |   7 +
+>  2 files changed, 155 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1119.=
+yaml
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml b/=
+Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml
+> new file mode 100644
+> index 000000000000..cbf0d4ef3a11
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml
+> @@ -0,0 +1,148 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/iio/adc/ti,ads1119.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Texas Instruments ADS1119 ADC
+> +
+> +maintainers:
+> +  - Jo=C3=A3o Paulo Gon=C3=A7alves <jpaulo.silvagoncalves@gmail.com>
+> +
+> +description:
+> +  The TI ADS1119 is a precision 16-bit ADC over I2C that offers single-e=
+nded and
+> +  differential measurements using a multiplexed input. It features a pro=
+grammable
+> +  gain, a programmable sample rate, an internal oscillator and voltage r=
+eference,
+> +  and a 50/60Hz rejection filter.
+> +
+> +properties:
+> +  compatible:
+> +    const: ti,ads1119
+> +
+> +  reg:
+> +    maxItems: 1
+> +
+> +  interrupts:
+> +    maxItems: 1
+> +
+> +  reset-gpios:
+> +    maxItems: 1
+> +
+avdd-supply: true
+dvdd-supply: true
+
+> +  vref-supply:
+> +    description:
+> +      ADC external reference voltage (VREF).
+> +
+> +  "#address-cells":
+> +    const: 1
+> +
+> +  "#size-cells":
+> +    const: 0
+> +
+> +  "#io-channel-cells":
+> +    const: 1
+> +
+> +required:
+> +  - compatible
+> +  - reg
+> +  - "#address-cells"
+> +  - "#size-cells"
+    - avdd-supply
+    - dvdd-supply
+
+> +
+> +patternProperties:
+> +  "^channel@([0-6])$":
+> +    $ref: adc.yaml
+> +    type: object
+> +    properties:
+> +      reg:
+> +        minimum: 0
+> +        maximum: 6
+> +
+> +      diff-channels:
+> +        description:
+> +          Differential input channels AIN0-AIN1, AIN2-AIN3 and AIN1-AIN2.
+> +        oneOf:
+> +          - items:
+> +              - const: 0
+> +              - const: 1
+> +          - items:
+> +              - const: 2
+> +              - const: 3
+> +          - items:
+> +              - const: 1
+> +              - const: 2
+> +
+> +      single-channel:
+> +        description:
+> +          Single-ended input channels AIN0, AIN1, AIN2 and AIN3.
+> +        minimum: 0
+> +        maximum: 3
+> +
+> +    oneOf:
+> +      - required:
+> +          - diff-channels
+> +      - required:
+> +          - single-channel
+> +
+> +    required:
+> +      - reg
+> +
+> +    unevaluatedProperties: false
+> +
+> +additionalProperties: false
+> +
+> +examples:
+> +  - |
+> +
+> +    #include <dt-bindings/gpio/gpio.h>
+> +    #include <dt-bindings/interrupt-controller/irq.h>
+> +
+> +    i2c {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +
+> +        adc@40 {
+> +            compatible =3D "ti,ads1119";
+> +            reg =3D <0x40>;
+> +            interrupt-parent =3D <&gpio1>;
+> +            interrupts =3D <25 IRQ_TYPE_EDGE_FALLING>;
+> +            reset-gpios =3D <&gpio1 10 GPIO_ACTIVE_LOW>;
+> +            vref-supply =3D <&reg_vref_ads1119>;
+> +            #address-cells =3D <1>;
+> +            #size-cells =3D <0>;
+> +            #io-channel-cells =3D <1>;
+> +
+> +            channel@0 {
+> +                reg =3D <0>;
+> +                single-channel =3D <0>;
+> +            };
+> +
+> +            channel@1 {
+> +                reg =3D <1>;
+> +                diff-channels =3D <0 1>;
+> +            };
+> +
+> +            channel@2 {
+> +                reg =3D <2>;
+> +                single-channel =3D <3>;
+> +            };
+> +
+> +            channel@3 {
+> +                reg =3D <3>;
+> +                single-channel =3D <1>;
+> +            };
+> +
+> +            channel@4 {
+> +                reg =3D <4>;
+> +                single-channel =3D <2>;
+> +            };
+> +
+> +            channel@5 {
+> +                reg =3D <5>;
+> +                diff-channels =3D <1 2>;
+> +            };
+> +
+> +            channel@6 {
+> +                reg =3D <6>;
+> +                diff-channels =3D <2 3>;
+> +            };
+> +        };
+> +    };
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index d6c90161c7bf..f1b2c4b815e2 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -22380,6 +22380,13 @@ M:	Robert Richter <rric@kernel.org>
+>  S:	Odd Fixes
+>  F:	drivers/gpio/gpio-thunderx.c
+> =20
+> +TI ADS1119 ADC DRIVER
+> +M:	Francesco Dolcini <francesco@dolcini.it>
+> +M:	Jo=C3=A3o Paulo Gon=C3=A7alves <jpaulo.silvagoncalves@gmail.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml
+> +
+>  TI ADS7924 ADC DRIVER
+>  M:	Hugo Villeneuve <hvilleneuve@dimonoff.com>
+>  L:	linux-iio@vger.kernel.org
 
 

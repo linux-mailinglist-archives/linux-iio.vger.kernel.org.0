@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-6120-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6121-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AC89018A6
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 01:38:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 731CF9018A8
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 01:39:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00E121F20ED2
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 23:38:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC116B20CF2
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 23:39:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22FF15644E;
-	Sun,  9 Jun 2024 23:38:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E476612EB;
+	Sun,  9 Jun 2024 23:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="llb0y+j3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dsmjDCgz"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3205466B;
-	Sun,  9 Jun 2024 23:38:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF3055897;
+	Sun,  9 Jun 2024 23:38:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717976315; cv=none; b=LkGoQMYD7w47bDmU+lgH8No9KGTym6OIH37RoSLuTECDlYfCASgtPDQlnEP/PV6o9AsKb0HKeqyPiHnLmf6feU6ax4rqqv6lknZsSeu+7ucpeWQP/TTO+f+Jh5gJOA9d6Wbav4jgl354JAsOLI15R0hfpBWqXZaIT276LsGDbLE=
+	t=1717976316; cv=none; b=EZhkWMIaSAKk2SvkgXOqZ2mPm2wQbzt3aFT/ocsNeaMCi6nEmKhFKiywsoXH2woZhxfMTLOjprzaI4INFCHFASIGhay7Q8SN5ldPHpP9LKA8O/yiiuFUi5IzcJ98aXlU+mSEabpbd6/XninHFJNFEPOow4lpW0E0a1Fh+wuknr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717976315; c=relaxed/simple;
-	bh=WZezGHBW7lNuyA2BtM03KIaX98EoYUexUTzkAk/OvKs=;
+	s=arc-20240116; t=1717976316; c=relaxed/simple;
+	bh=1pI+RskQLYcBfoBZQPErDhhZ4If3D3khsanqjKzqRIk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aMOzu8v1KXwo7W4np/Q8dnvSGzNYY8Kq4zkhJiXuDvNZKtxjPxmf8vRhfEdqOqp8BLlUUm0rg0QZuwylhzj81hzOvSACiHlo0YKQlUH3mLv8Al9rZXphwRreux0SB2R9nzU75be9ckYXfykQJQTVgdo0DkBRl1qZWFkbfabq7xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=llb0y+j3; arc=none smtp.client-ip=209.85.218.51
+	 MIME-Version; b=HSx1fyXwX/b7gilACAgSv1gxzosLtIzhiUY5gbJRgO45xgBeO5Y+B71TMsRxf8g6Wh7H8hFWFaBoR/uTFhDaLYr08YWUGSL7tbM3QO3qAKz0JYrRHYGuHEbzEo4xK0yy3/kfyVZEWbMShv/4lby2m4yVkVi3nyKL50S6Olcb91k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dsmjDCgz; arc=none smtp.client-ip=209.85.218.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-a6f176c5c10so68238966b.2;
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a6265d3ba8fso387154166b.0;
         Sun, 09 Jun 2024 16:38:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1717976313; x=1718581113; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/p69KGwneGFw5Zvl1/Wy4CEQETIxZiMeX9Wp/4PkCyA=;
-        b=llb0y+j3kGpe7ROwc84Peo2H2wFDO1AX8mylfsPq3NnTzQlI0bnU6DoKY6Xj22Q9Vo
-         JZK/0PhLCxvTbfAYj2wuPXFPZvbT2TyavcbGjqtuyJBH0WP8tKiHcdVjpOWy9ncJE5tD
-         kccwAL2Z3xMRiGXt/SfK6uW3VV0UAy4/DDSmPVT6aMRFWgcmVlmNm3JKwU88WBB6eBLT
-         2fd+s7NjkKJ5x2/YbTonsSOak3h/LAscT0SObcm93A4DyDs+F8YJsaSFoW0sGV6zF52C
-         baHZea+G+gjy3/csgiXT+xAAJGrctNa1Um3EIKle3FI9Xohm0aVmsTERUd4mSogdARU9
-         OBOg==
+        bh=UmGe6IgaisQ6yWQUR4FLY7pJHbk0UKhP5AWLH74fYp0=;
+        b=dsmjDCgzjwv6Jmcgif+udcZyIXTI1wXApTTFr5cZsfxJrsX7RgILkMtpxSRMoDLehJ
+         8Q10NHkfbTHd3MLOmYHy6W4bqG8dnuY+Nde3QmFnypFRiZOOJ5tJ7nRu6UvboT2mu+Oe
+         NSdMoXEqBZJ2aW+cf1YgFiPRh+yCIqcrRqcSSQKbtx1Td1uya7+J3182pDcno5AflMc4
+         hFn9HTLdrcMFaA0a370DXwCaJv0MWIRN0GzwU/XbamEKUvojfghIw7dQIvkxpXM+bF4R
+         fNEwp/YCz3BZVGX/QgzBAQ7/JgQG94xP/dgOcjp0uOTcBT9nE4cQSHoJa3vrTc7kCdc+
+         sQHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1717976313; x=1718581113;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/p69KGwneGFw5Zvl1/Wy4CEQETIxZiMeX9Wp/4PkCyA=;
-        b=OafRr1G4CVSHKkP8O75KPJU2M85LVlHw4XTy/+9rUDqCdaHbmGnn5Oh8a0ZvR4um/+
-         NGJ5iW/anZN+FR6YFztOIVyLnw5ZWpd8o77J8c7YE0V7xIiCm1ynYMvkro+EwSD42+EV
-         sd/fUqKspBl4oyA4G03VMtuYVdCgrvPWCyR1S2QcO5b7hA+WnDFtSyq9w1X+vlhEbxxI
-         lhvXeTs82LVUsh6jsK2FAj3aqHY3aHGllk1NumI58ikP4NSsxou8A2VbZ02nAjslAdsf
-         ZRKFfwAmg4xcXLZKHjpIIQn4C/Wna8h5DsMpOG/SgTtr+iiH0qUV9GWJ5L6aPVfcyWS6
-         dzWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUa/lnz1aaCFVKsUZeexycAj47tk1Zy5YvyBvnijIdfTyIXFQrLOY9qRx09kKO0wZjieIUOpQK2KO2V5ewbrNF1w3clTL3J4nH3s1Tkdhp0mBvbkZNij2b786dgis4AxFZC6PVqPTF5
-X-Gm-Message-State: AOJu0YzsDGscmGn0V+/nQ05wR/tmZ/g0RvsrNI8i2YULeSEwqhPZSp1U
-	ZhmM2Y2bc2K0gfhWppsmMvWWI+sgSDeRgaQqIYi9+wPey2I/Iq+V
-X-Google-Smtp-Source: AGHT+IGnu3PtZMC6ERAafp1iP7LLpTPSlOyVK9X8ODeRZsSyRx07Tg2xlc7JinZqiXl4ANCiHcXt5w==
-X-Received: by 2002:a17:906:6bd5:b0:a6f:1244:29f1 with SMTP id a640c23a62f3a-a6f1244480emr168827266b.55.1717976312564;
-        Sun, 09 Jun 2024 16:38:32 -0700 (PDT)
+        bh=UmGe6IgaisQ6yWQUR4FLY7pJHbk0UKhP5AWLH74fYp0=;
+        b=iqN+7xzGdkQuUb+AS12rBNpo0KcyEAu1IUSVF4pCME2f+B+zK4LrKRGKoYFK6w1XB3
+         5I/kR8qNUP0La/DS6CkY9FhV49dJMBwI2JIY64rnlHvXgPPgeNEVFTw9oYdIcBsmdzx5
+         0STG2Y9NK445SEtDnxUpFNqeJkAFyxoiQ/BqGZos4dQBYdTLb61i2CvUEb22b5H9U/eH
+         auTZqQJwJ7KSplYcZ3rYa+FsUTdz9KoGqJ03DZlYP9uXOSnZzQMY1QajutIJSXrDzXO9
+         TbvldOeEbaqxzmjKBASrQ2pqzwSYjNsY9P9hHS/6zHTBK60VqQaH/Bx2gM99sN+dkTx7
+         wC9A==
+X-Forwarded-Encrypted: i=1; AJvYcCUbIJn33V3xeO3pi46MRZopqdJ4asbqNOKzZN+YFAs0KTywsxRAPQ9T9yt5YXxW9o5R2Hz0hHvd7g8cb8byjyxXlbtjU9lZ5gjla61w/gTsYArbHQDG2q61xL7eUFWzCw9+LfMCPlH9
+X-Gm-Message-State: AOJu0Yz8cJmpAilOGry7HI3jbtrwD9S9y0QC2LHqXD3+qtFpBy5USPY7
+	/+yShOj2Od8L755hbAGXBOAMw8W23XV31uYhBIp2egHlJStwBjdN
+X-Google-Smtp-Source: AGHT+IEO8c9kuDxYfO+kLN5cE7CdYnL2Lshd1/TpbN4uKYjiE4UXKqPgWt/IEBexslWnZvaW2oL7pA==
+X-Received: by 2002:a17:906:fd85:b0:a5c:fc25:2730 with SMTP id a640c23a62f3a-a6cd560faa1mr633129166b.4.1717976313579;
+        Sun, 09 Jun 2024 16:38:33 -0700 (PDT)
 Received: from localhost.localdomain ([2a04:ee41:82:7577:635a:738f:880f:9ea5])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f20bb1abesm46063366b.172.2024.06.09.16.38.31
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f20bb1abesm46063366b.172.2024.06.09.16.38.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Jun 2024 16:38:31 -0700 (PDT)
+        Sun, 09 Jun 2024 16:38:33 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
 To: jic23@kernel.org
 Cc: dpfrey@gmail.com,
@@ -76,9 +76,9 @@ Cc: dpfrey@gmail.com,
 	linux-kernel@vger.kernel.org,
 	mike.looijmans@topic.nl,
 	vassilisamir@gmail.com
-Subject: [PATCH v3 02/15] iio: chemical: bme680: Fix typo in define
-Date: Mon, 10 Jun 2024 01:38:13 +0200
-Message-Id: <20240609233826.330516-3-vassilisamir@gmail.com>
+Subject: [PATCH v3 03/15] iio: chemical: bme680: Drop unnecessary casts and correct adc data types
+Date: Mon, 10 Jun 2024 01:38:14 +0200
+Message-Id: <20240609233826.330516-4-vassilisamir@gmail.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240609233826.330516-1-vassilisamir@gmail.com>
 References: <20240609233826.330516-1-vassilisamir@gmail.com>
@@ -90,40 +90,76 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix a define typo that instead of BME680_... it is saying BM6880_...
+Delete any redundant casts in the code and use unsigned integers for the
+raw adc values.
 
 Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
 ---
- drivers/iio/chemical/bme680.h      | 2 +-
- drivers/iio/chemical/bme680_core.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/chemical/bme680_core.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
-index f959252a4fe6..c51bf2bdf504 100644
---- a/drivers/iio/chemical/bme680.h
-+++ b/drivers/iio/chemical/bme680.h
-@@ -12,7 +12,7 @@
- 
- #define BME680_REG_TEMP_MSB			0x22
- #define BME680_REG_PRESS_MSB			0x1F
--#define BM6880_REG_HUMIDITY_MSB			0x25
-+#define BME680_REG_HUMIDITY_MSB			0x25
- #define BME680_REG_GAS_MSB			0x2A
- #define BME680_REG_GAS_R_LSB			0x2B
- #define   BME680_GAS_STAB_BIT			BIT(4)
 diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
-index a6bf689833da..c1a9ead1397e 100644
+index c1a9ead1397e..577237d4c9f3 100644
 --- a/drivers/iio/chemical/bme680_core.c
 +++ b/drivers/iio/chemical/bme680_core.c
-@@ -740,7 +740,7 @@ static int bme680_read_humid(struct bme680_data *data,
- 	if (ret < 0)
- 		return ret;
+@@ -335,7 +335,7 @@ static int bme680_read_calib(struct bme680_data *data,
+  * output value of "3233" represents 32.33 DegC.
+  */
+ static s16 bme680_compensate_temp(struct bme680_data *data,
+-				  s32 adc_temp)
++				  u32 adc_temp)
+ {
+ 	struct bme680_calib *calib = &data->bme680;
+ 	s64 var1, var2, var3;
+@@ -345,7 +345,7 @@ static s16 bme680_compensate_temp(struct bme680_data *data,
+ 	if (!calib->par_t2)
+ 		bme680_read_calib(data, calib);
  
--	ret = regmap_bulk_read(data->regmap, BM6880_REG_HUMIDITY_MSB,
-+	ret = regmap_bulk_read(data->regmap, BME680_REG_HUMIDITY_MSB,
- 			       &tmp, sizeof(tmp));
- 	if (ret < 0) {
- 		dev_err(dev, "failed to read humidity\n");
+-	var1 = (adc_temp >> 3) - ((s32)calib->par_t1 << 1);
++	var1 = ((s32)adc_temp >> 3) - ((s32)calib->par_t1 << 1);
+ 	var2 = (var1 * calib->par_t2) >> 11;
+ 	var3 = ((var1 >> 1) * (var1 >> 1)) >> 12;
+ 	var3 = (var3 * ((s32)calib->par_t3 << 4)) >> 14;
+@@ -410,9 +410,9 @@ static u32 bme680_compensate_humid(struct bme680_data *data,
+ 	s32 var1, var2, var3, var4, var5, var6, temp_scaled, calc_hum;
+ 
+ 	temp_scaled = (data->t_fine * 5 + 128) >> 8;
+-	var1 = (adc_humid - ((s32) ((s32) calib->par_h1 * 16))) -
+-		(((temp_scaled * (s32) calib->par_h3) / 100) >> 1);
+-	var2 = ((s32) calib->par_h2 *
++	var1 = (adc_humid - (((s32)calib->par_h1 * 16))) -
++		(((temp_scaled * calib->par_h3) / 100) >> 1);
++	var2 = (calib->par_h2 *
+ 		(((temp_scaled * calib->par_h4) / 100) +
+ 		 (((temp_scaled * ((temp_scaled * calib->par_h5) / 100))
+ 		   >> 6) / 100) + (1 << 14))) >> 10;
+@@ -654,7 +654,7 @@ static int bme680_read_temp(struct bme680_data *data, int *val)
+ 	struct device *dev = regmap_get_device(data->regmap);
+ 	int ret;
+ 	__be32 tmp = 0;
+-	s32 adc_temp;
++	u32 adc_temp;
+ 	s16 comp_temp;
+ 
+ 	/* set forced mode to trigger measurement */
+@@ -700,7 +700,7 @@ static int bme680_read_press(struct bme680_data *data,
+ 	struct device *dev = regmap_get_device(data->regmap);
+ 	int ret;
+ 	__be32 tmp = 0;
+-	s32 adc_press;
++	u32 adc_press;
+ 
+ 	/* Read and compensate temperature to get a reading of t_fine */
+ 	ret = bme680_read_temp(data, NULL);
+@@ -732,7 +732,7 @@ static int bme680_read_humid(struct bme680_data *data,
+ 	struct device *dev = regmap_get_device(data->regmap);
+ 	int ret;
+ 	__be16 tmp = 0;
+-	s32 adc_humidity;
++	u16 adc_humidity;
+ 	u32 comp_humidity;
+ 
+ 	/* Read and compensate temperature to get a reading of t_fine */
 -- 
 2.25.1
 

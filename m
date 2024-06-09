@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-6106-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6107-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4405E9015D3
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 13:04:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ABBB9015DB
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 13:08:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7734B20AC0
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 11:04:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D5401C20F3E
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 11:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED95A26ADD;
-	Sun,  9 Jun 2024 11:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE8E28DCC;
+	Sun,  9 Jun 2024 11:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EsyFl8Hu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NCtOHd8Z"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9483E47E;
-	Sun,  9 Jun 2024 11:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07E182E62D;
+	Sun,  9 Jun 2024 11:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717931036; cv=none; b=P6aSMWU+qHVyvDv2PtwI3cU9SyHVoggi9FonmRXYyDOfL91R5BTHTE+fqGbOe2msF+x1wotn0b/2LEHItns7g+D4ZMP/Zro+xfn3r7W3FCr99A/Y6oF+stZwhV521J9NL3SXqRyNADdd0Eor5vC8qJnXGXN6unjG39/Yf2rd9Ho=
+	t=1717931311; cv=none; b=KFaGRDYnF9uqv9Vlr8cvPqcy3Xa0zOUAVo7qv3KJVhXBWUmR4hIy3NjbBUbHy1Yjr0Q0TrhAhQvcj/32/FspNQM+6WhxgOhx+JwA0I57oAopptpgmNWbJKdCRFYSDDaRHOHqgUWfUYkYxAfkgXr6zpoH1WvooLl8Fyaim/HaeDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717931036; c=relaxed/simple;
-	bh=/gQ4V+QthXnYDKIfhkUCXxBGPmP4SuV90qZ+VPFImC4=;
+	s=arc-20240116; t=1717931311; c=relaxed/simple;
+	bh=3rrM6UaKFBrayBCDs0tBpYq461KVYa0w5TQdSkCmIvg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d1SW1wOL9dxMkIY1AuxV3x7stE6yhGdWHWRfh7baCbMdpX3BARkCby36Ilu6eaxKRqtomq1R78lLkxmiRGWO6E3IaKp+KW1rDVig4Svgu070GwlbLKGUkXibxXBDnIDvdhk1kQdSx5D+etOPSaK58W1bbrsq8obyGfCz9WvkaoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EsyFl8Hu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F555C2BD10;
-	Sun,  9 Jun 2024 11:03:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IjbB0RR+GDgzKm4hOQd546PY93IkGhG3fx7DWElzd+a1EiU0Lkn1oXLkYLr4PeZr0l9Xn86sZxDiP3gZXg6I4VlH7UXW0WOK/c9rc23XdumtL87C3Esnhcsx2JAUi6y+/JxyVTfb2h0lr7G8++hl6KIjTezLykFGi8GHoxOKBvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NCtOHd8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80923C2BD10;
+	Sun,  9 Jun 2024 11:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717931036;
-	bh=/gQ4V+QthXnYDKIfhkUCXxBGPmP4SuV90qZ+VPFImC4=;
+	s=k20201202; t=1717931310;
+	bh=3rrM6UaKFBrayBCDs0tBpYq461KVYa0w5TQdSkCmIvg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=EsyFl8HujZq7TAVA23h6YA+p61I6oPYxLzCfRaERTJ0Bx0hVhIzgIihOfzhQDJkmz
-	 sVLa/tDWRqNwG7xTUB+50H7dFaoVTNKXbBT6JmOM37fHGUTlVOF/8YrzoSLX54eFkE
-	 YdqS8fxX9fY4P4LiKc1hMyrLnom8P+pJVywAfH0w2xQcz/R5DRFCdbsbYzgQ534xA8
-	 Wa97ZiCbPAjWP8EIPU9kXd3MOGixYMImoXwhE5ptlDAAqcsopLg9NO64EqhEcPrNPF
-	 UkNNJ/5FTwD7m/RbIOiK+aYTC0Ebf8ABQUJZ5r+78HB6+x8+HtF4JkGV8T7xSFaR52
-	 xh8JUK1DtKyjw==
-Date: Sun, 9 Jun 2024 12:03:23 +0100
+	b=NCtOHd8ZhSlQ/CBIfuHGytpP01xdEMjbTjGMO9Zeq8vcygBfiBXxdxU+KgIf1598O
+	 ObPqjVUGZOqE0JJTD/RUafcMm+MVCEe5QRXIIwJnZDkVd+WV8Z4MInu8yuDe66wEaU
+	 DFyhe+2mkja+fPjL9zGCvbYMxuV52JHeejPQoJYYu9rx+Nn4dJrEIa9GjMpmZvsgkW
+	 HLlirzsm9/3z+/Dr881mIRCJ2YOyBXnSOOxZ9b/CR7l3GQDrwmtG5VDOa0ariTkscp
+	 pFw2olRvz6Zquh+6AqI8MoxK/zZS9CiEi5tldnDBxITIJlPr9S7j5mmI6q26F0nInS
+	 Mz4ZWjUbm1RZQ==
+Date: Sun, 9 Jun 2024 12:07:56 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Vasileios Amoiridis <vassilisamir@gmail.com>
 Cc: dpfrey@gmail.com, himanshujha199640@gmail.com, lars@metafoo.de,
  linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  mike.looijmans@topic.nl
-Subject: Re: [PATCH v2 04/19] iio: chemical: bme680: Fix sensor data read
- operation
-Message-ID: <20240609120323.5af232f9@jic23-huawei>
-In-Reply-To: <20240606212313.207550-5-vassilisamir@gmail.com>
+Subject: Re: [PATCH v2 15/19] iio: chemical: bme680: Modify startup
+ procedure
+Message-ID: <20240609120756.14c1eda1@jic23-huawei>
+In-Reply-To: <20240606212313.207550-18-vassilisamir@gmail.com>
 References: <20240606212313.207550-1-vassilisamir@gmail.com>
-	<20240606212313.207550-5-vassilisamir@gmail.com>
+	<20240606212313.207550-18-vassilisamir@gmail.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,39 +63,110 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu,  6 Jun 2024 23:22:56 +0200
+On Thu,  6 Jun 2024 23:23:09 +0200
 Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-> A read operation is happening as follows:
+> Modify the startup procedure to reflect the procedure of
+> the Bosch BME68x Sensor API. The initial readings and
+> configuration of the sensor need to happen in the
+> following order:
 > 
-> a) Set sensor to forced mode
-> b) Sensor measures values and update data registers and sleeps again
-> c) Read data registers
+> 1) Read calibration data [1,2]
+> 2) Chip general configuration [3]
+> 3) Gas configuration [4]
 > 
-> In the current implementation the read operation happens immediately
-> after the sensor is set to forced mode so the sensor does not have
-> the time to update properly the registers. This leads to the following
-> 2 problems:
+> After the chip configuration it is necessary to ensure that
+> the sensor is in sleeping mode, in order to apply the gas
+> configuration settings [5].
 > 
-> 1) The first ever value which is read by the register is always wrong
-> 2) Every read operation, puts the register into forced mode and reads
-> the data that were calculated in the previous conversion.
+
+Trivial but oddly short line wrapping. Target 75ish chars for commit messages
+
+> Also, after the soft reset, it is advised to wait for 5ms [6].
 > 
-> This behaviour was tested in 2 ways:
-> 
-> 1) The internal meas_status_0 register was read before and after every
-> read operation in order to verify that the data were ready even before
-> the register was set to forced mode and also to check that after the
-> forced mode was set the new data were not yet ready.
-> 
-> 2) Physically changing the temperature and measuring the temperature
-> 
-> This commit adds the waiting time in between the set of the forced mode
-> and the read of the data. The function is taken from the Bosch BME68x
-> Sensor API [1].
-> 
-> [1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L490
-> Fixes: 1b3bd8592780 ("iio: chemical: Add support for Bosch BME680 sensor")
+> [1]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L162
+> [2]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/examples/forced_mode/forced_mode.c#L44
+> [3]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/examples/forced_mode/forced_mode.c#L53
+> [4]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/examples/forced_mode/forced_mode.c#L60
+> [5]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L640
+> [6]: https://github.com/boschsensortec/BME68x_SensorAPI/blob/v4.4.8/bme68x.c#L294
+Either make these Link tags or add a blank line here.
+
+I'd prefer link tags with # [1] etc after them for the cross references.
+
 > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
-Applied and marked for stable.
+> ---
+>  drivers/iio/chemical/bme680.h      |  2 ++
+>  drivers/iio/chemical/bme680_core.c | 21 ++++++++++++++-------
+>  2 files changed, 16 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/iio/chemical/bme680.h b/drivers/iio/chemical/bme680.h
+> index 7d0ff294725a..b2c547ac8d34 100644
+> --- a/drivers/iio/chemical/bme680.h
+> +++ b/drivers/iio/chemical/bme680.h
+> @@ -63,6 +63,8 @@
+>  
+>  #define BME680_MEAS_TRIM_MASK			GENMASK(24, 4)
+>  
+> +#define BME680_STARTUP_TIME_US			5000
+> +
+>  /* Calibration Parameters */
+>  #define BME680_T2_LSB_REG	0x8A
+>  #define BME680_H2_MSB_REG	0xE1
+> diff --git a/drivers/iio/chemical/bme680_core.c b/drivers/iio/chemical/bme680_core.c
+> index 25d128e1ddcf..e354eaa34d59 100644
+> --- a/drivers/iio/chemical/bme680_core.c
+> +++ b/drivers/iio/chemical/bme680_core.c
+> @@ -531,6 +531,11 @@ static int bme680_gas_config(struct bme680_data *data)
+>  	int ret;
+>  	u8 heatr_res, heatr_dur;
+>  
+> +	/* Go to sleep */
+> +	ret = bme680_set_mode(data, false);
+> +	if (ret < 0)
+> +		return ret;
+> +
+>  	heatr_res = bme680_calc_heater_res(data, data->heater_temp);
+>  
+>  	/* set target heater temperature */
+> @@ -866,6 +871,8 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+>  		return ret;
+>  	}
+>  
+> +	usleep_range(BME680_STARTUP_TIME_US, BME680_STARTUP_TIME_US + 1000);
+> +
+>  	ret = regmap_read(regmap, BME680_REG_CHIP_ID, &data->check);
+>  	if (ret < 0) {
+>  		dev_err(dev, "Error reading chip ID\n");
+> @@ -878,22 +885,22 @@ int bme680_core_probe(struct device *dev, struct regmap *regmap,
+>  		return -ENODEV;
+>  	}
+>  
+> -	ret = bme680_chip_config(data);
+> +	ret = bme680_read_calib(data, &data->bme680);
+>  	if (ret < 0) {
+> -		dev_err(dev, "failed to set chip_config data\n");
+> +		dev_err(dev,
+> +			"failed to read calibration coefficients at probe\n");
+>  		return ret;
+>  	}
+>  
+> -	ret = bme680_gas_config(data);
+> +	ret = bme680_chip_config(data);
+>  	if (ret < 0) {
+> -		dev_err(dev, "failed to set gas config data\n");
+> +		dev_err(dev, "failed to set chip_config data\n");
+>  		return ret;
+>  	}
+>  
+> -	ret = bme680_read_calib(data, &data->bme680);
+> +	ret = bme680_gas_config(data);
+>  	if (ret < 0) {
+> -		dev_err(dev,
+> -			"failed to read calibration coefficients at probe\n");
+> +		dev_err(dev, "failed to set gas config data\n");
+>  		return ret;
+>  	}
+>  
+
 

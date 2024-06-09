@@ -1,376 +1,113 @@
-Return-Path: <linux-iio+bounces-6086-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6087-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A984901426
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 03:46:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F37890144C
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 05:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89E311C210F4
-	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 01:46:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84D6B28218F
+	for <lists+linux-iio@lfdr.de>; Sun,  9 Jun 2024 03:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A65211C;
-	Sun,  9 Jun 2024 01:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MNHKizQI"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9556139;
+	Sun,  9 Jun 2024 03:09:35 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38959A50;
-	Sun,  9 Jun 2024 01:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FA64C79
+	for <linux-iio@vger.kernel.org>; Sun,  9 Jun 2024 03:09:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717897572; cv=none; b=NZ+KsAz4e6yZOZR+cqHgn25/ihraA+ao7PJ6xTryB4yP3S0KQnYVmh9gVzDd8Wqp43iUQRZSv3Hbi9DQGtFn2nn4nJsax3j8uF63qcjRGD3yjUFJ1QBKi14QeSaeIt9AzC3/mvUG0344z78WTf+vWDdZB0+RUlC8Wc9rrmi+Qm4=
+	t=1717902575; cv=none; b=aNgEeV0C+Gw73XHO/qEt1dgioQga7ghqX+Vfe3KUOe4vTxAMoHV5VKrsaPnEyq9GEkBHcSiTl67NUqb1HYwa6Zczwg9+94kjWEFLCscapWjgUBmx7I0FQIMLoReKU63Txyajw8RNAmsMAgqn2wUq8dWSaO6t27vNmIsd1Vhba4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717897572; c=relaxed/simple;
-	bh=BUizwHboxuxcleUnUCR+t2dw2CuBTZbJlj9gWNg+fUI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZMHXA1ynEFr8RNie6H7S4thklbPPaWapZDYJZAoqADpdqLB4JBKeJ9ngpJflvhlE0n2wOLjdnSwPSPS2g9YWh929LUTdwCYukyup2JEp33oqKyZzUpcKMOtQdAhWZUqavEYURdxBFLmtrD3+sAbJdWBiTKCnxeAX4uyQbl5bRnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MNHKizQI; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1717902575; c=relaxed/simple;
+	bh=idOdOi73qqy719T96GB2wb7ccduHCYGHON1JLMhJ5nc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=meX5fGZKKR+sTica6hQQdHOowNgVfgwIU339Nk8lePHaXVLtI41WOUpmlGg19ZTPl9LSRTebMNYlhiICV3hnQyDw8FrUGK8SPvNk4qGBtN2iVr3nEnPzTTJGMmloUVcr+GXhhNf6wP/V50A1Z+8E4pS7um9P3dIwteDdSdYmAPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kylinos.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a6f09b457fdso68008566b.2;
-        Sat, 08 Jun 2024 18:46:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717897568; x=1718502368; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aL5QKfbJomR/lfT5TT4CeaT2r2asv/9g90ZXJUVUqys=;
-        b=MNHKizQIOQC4DowOjwdww68O+Rkln//SUPxmomHXpmtGpUOQq02EoG1HRPlb3ja2M3
-         jVdySDUPFsQM8muyvl/Qn/qJTXCCRvBwIUi2j4XPa/8HooZ7HSGGaiHKEkAq4E72VZqk
-         8r7YawmUQjTeahi5ipmDM3/28wwTnUO9M2oc813uUVJwRhx70jZOgoWXSsDCM97N+pQZ
-         2zPIUcsUnwKYpTW4MhukzYvpzc7irgNS/L2l8/3p+myhYx7IRvUi0Z4G8vgsxFjaSwkK
-         CEELMS/Lj46kt3sAQ5rsK9KU3k24l8ZUwa3tN0t6EASp8Hr/4Mzr6TR0Z+A1n5KVw3YD
-         JsLA==
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-2548a00c19eso827374fac.3
+        for <linux-iio@vger.kernel.org>; Sat, 08 Jun 2024 20:09:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717897568; x=1718502368;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aL5QKfbJomR/lfT5TT4CeaT2r2asv/9g90ZXJUVUqys=;
-        b=IoKh/pdNeB1ZoKtINSy8ZREgoLuIVt0NXjQa25sCfLcQadC8zeGNFgfmdlHaUXoAPw
-         cTKv8W4KeRwl7PKt4kJ2gENYHCrDsDXIWwgjKWmYnVayxeaUI6a4rxSoccUxLfaFDmzR
-         wTjKWD6LKrBJpWPRGY3D4j0L4tZOgIi3OE5Qrx7UXiiz2+el4LjKXqxGZWe37Lt0SRXw
-         Z9OPNjTVyhSPAnsY1elVBeeGhM9M2FPsuQ6wVUj6rZlBVvPQPfVaQ1c0WsDM8Wq06jZp
-         4fcAnVGFp2mh+H6T8vMGSXpCoHFrsuJ1c1kuUe9Wv9Xi84aVZHRg8A8k36m32/1hguV7
-         0oSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWMGKg1uBV3OhIIWFvg/TWugD34lZqUKJ4wErqm/n7M8oKAtj1istV7q63/IW97l2VXMs5taTcqFqO4k0YtWcGXWECW6NZC/JidKJRfZMwwzvWNUubzMlj0kdreIKYHGlfTYeqbOmLb
-X-Gm-Message-State: AOJu0Yyr4BnevjjhEXR3+Q2uiC/pohSAMn69YXzLM3KiSSrxkRSB87vh
-	mowkQLk1Bu4Fk1pBV0HraC3qTVIeTTi+0no9Nj2MIDn8usilNz0o
-X-Google-Smtp-Source: AGHT+IEk+hO5bDgXgynTuTbw0pNr3PfdIjE5iQiqs+DwLgC0R5yyFrCw3HO93qEhW2o5ush2XOrbhg==
-X-Received: by 2002:a17:906:26d8:b0:a68:f43f:6f31 with SMTP id a640c23a62f3a-a6cdc0e40e4mr374228366b.64.1717897568153;
-        Sat, 08 Jun 2024 18:46:08 -0700 (PDT)
-Received: from [192.168.1.99] ([151.62.106.193])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f10d1c044sm87326466b.163.2024.06.08.18.46.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Jun 2024 18:46:07 -0700 (PDT)
-Message-ID: <b1436a4e-f873-4a99-b380-f602ac54335b@gmail.com>
-Date: Sun, 9 Jun 2024 03:46:05 +0200
+        d=1e100.net; s=20230601; t=1717902572; x=1718507372;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lmZ4dzc4NrQqvIlz6FsEQaW/bTW0g6StKvhfPvvX8ZA=;
+        b=fi8e6V8juIzCJBSegCmw0NNS4arIdyRBLPVRlWZJl7LzmBpyGXbdaXz5VwIObri9Pt
+         Rz4PRdeFPMq77zSJynpytGS37wgCnPCqxrnC4NtoZsWNUNWk4j58qZZUpEFPjgdfMqzH
+         gSOLFGkT1mB5SHrevhesHtO/xAW8u3FjUCv3Y0SRDEApHn55rEF9P2n7agqqicZp7prZ
+         HgdH/LBLv0rFh3RQRON8cV70E+IoGxXhMFj6szDObda3zTe8AI3Lx4e5GXwHajImaM8+
+         +09Do/S6vkVvttBjIxHJoZvFNxaEbQURq6k7qZhQetVzZ8NKA2TZ0ICCVVQe37UYM2nE
+         wkew==
+X-Gm-Message-State: AOJu0YzOuplYeveYTv7Qu/leCGv14R0+hcn4esQcfvRS4yoqkclvMoXD
+	Lwk+FfvkIezd7SYarx460nT4KVY2JVda7fOP9IIBPEFI49WiBdwtcT4hx6SqE2Y=
+X-Google-Smtp-Source: AGHT+IGqY917suwVnfqPObr+mOmneqLgLtvisxwZl1vMtRK6y8YYAwnkcz4ypwdNewV/gExA0kluGg==
+X-Received: by 2002:a05:6870:9a1b:b0:23a:982b:dd7d with SMTP id 586e51a60fabf-25464b78d0cmr7152062fac.2.1717902571242;
+        Sat, 08 Jun 2024 20:09:31 -0700 (PDT)
+Received: from localhost.localdomain (144.34.241.68.16clouds.com. [144.34.241.68])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7043180d0e5sm778608b3a.99.2024.06.08.20.09.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Jun 2024 20:09:30 -0700 (PDT)
+From: Ke Sun <sunke@kylinos.cn>
+To: Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Anshul Dalal <anshulusr@gmail.com>,
+	Dragos Bogdan <dragos.bogdan@analog.com>,
+	Andrea Collamati <andrea.collamati@gmail.com>
+Cc: linux-iio@vger.kernel.org,
+	Ke Sun <sunke@kylinos.cn>,
+	k2ci <kernel-bot@kylinos.cn>,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH] iio: dac: fix ad9739a random config compile error
+Date: Sun,  9 Jun 2024 11:08:47 +0800
+Message-Id: <20240609030847.2869455-1-sunke@kylinos.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: iio: iio-trig-hrtimer bug on suspend/resume when used with bmi160
- and bmi323
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jagath Jog J <jagathjog1996@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- "Luke D . Jones" <luke@ljones.dev>, Jonathan LoBue <jlobue10@gmail.com>
-References: <31d7f7aa-e834-4fd0-a66a-e0ff528425dc@gmail.com>
- <20240113174351.47a20239@jic23-huawei>
- <053a5c27-68fd-41b1-8b40-783dfb83d488@gmail.com>
- <20240115093703.00001f64@Huawei.com>
- <c11328ef-b61e-489f-9016-e342c749c000@gmail.com>
- <20240602170830.34d73c96@jic23-huawei>
- <e255e232-f7f0-4ded-a749-27ed5ccfcd7b@gmail.com>
- <20240608145839.1c5bd665@jic23-huawei>
-Content-Language: en-US
-From: Denis Benato <benato.denis96@gmail.com>
-In-Reply-To: <20240608145839.1c5bd665@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 6/8/24 15:58, Jonathan Cameron wrote:
-> On Sat, 8 Jun 2024 03:25:13 +0200
-> Denis Benato <benato.denis96@gmail.com> wrote:
-> 
->> On 6/2/24 18:08, Jonathan Cameron wrote:
->>> On Thu, 30 May 2024 16:07:22 +0200
->>> Denis Benato <benato.denis96@gmail.com> wrote:
->>>   
->>>> On 1/15/24 10:37, Jonathan Cameron wrote:  
->>>>> On Sun, 14 Jan 2024 21:04:12 +0100
->>>>> Denis Benato <benato.denis96@gmail.com> wrote:
->>>>>     
->>>>>> On 1/13/24 18:46, Jonathan Cameron wrote:    
->>>>>>> On Wed, 10 Jan 2024 23:35:01 +0100
->>>>>>> Denis Benato <benato.denis96@gmail.com> wrote:
->>>>>>>       
->>>>>>>> Hello,
->>>>>>>>
->>>>>>>> With this mail I am submitting bug report that is probably related to
->>>>>>>> iio-trig-hrtimer but there is also the possibility for it to be
->>>>>>>> specific to bmi160 and bmi323.
->>>>>>>>
->>>>>>>> The described problem have been reproduced on my handheld PC (Asus
->>>>>>>> RC71L) and in another handheld PC with two different gyroscope
->>>>>>>> drivers: bmi323 (backported by me on v6.7, on RC71L) and bmi160.
->>>>>>>>
->>>>>>>> My target hardware (RC71L that yeld to this discovery) has a bmi323
->>>>>>>> chip that does not have any interrupt pins reaching the CPU, yet I
->>>>>>>> need to fetch periodically data from said device, therefore I used
->>>>>>>> iio-trig-hrtimer: created a trigger, set the device and trigger
->>>>>>>> sampling frequencies, bound the trigger to the device and enabled
->>>>>>>> buffer: data is being read and available over /dev/iio:device0.
->>>>>>>>
->>>>>>>> While in this state if I suspend my handheld I receive (from dmesg)
->>>>>>>> the warning reported below and at resume data is not coming out of
->>>>>>>> the iio device and the hrtimer appears to not be working. If I create
->>>>>>>> a new trigger and bind the new trigger to said iio device and
->>>>>>>> re-enable buffer data does come out of /dev/iio:device0 once more,
->>>>>>>> until the next sleep.
->>>>>>>>
->>>>>>>> Since this is important to me I have taken the time to look at both
->>>>>>>> drivers and iio-trig-hrtimer and I have identified three possible
->>>>>>>> reasons:
->>>>>>>>
->>>>>>>> 1) iio-trig-hrtimer won't work after suspend regardless of how it is
->>>>>>>> used (this is what I believe is the cause)      
->>>>>>> me too.      
->>>>>> who and how should investigate this issue? Would putting a kprintf in the hrtimer callback be enough to check?    
->>>>> The warning you have pretty much points at this being the problem, but sure
->>>>> you could add a print there to be absolutely sure.
->>>>>     
->>>>>>
->>>>>>
->>>>>> Just to make sure I understood correctly: is this a separate issue from the warning I receive or are those linked?    
->>>>>
->>>>> I think it's all one issue.    
->>>> Hello,
->>>>
->>>> Sorry for the delay, I was able to find some time just recently.
->>>>
->>>> Sadly I don't think anymore this is just one issue:
->>>>
->>>> I have setup a proof of concept that at suspend sets a boolean to true and at resume sets the same boolean to false, and on trigger_handler returns IRQ_NONE if the device is sleeping (everything guarded by an additional mutex) and it solved the warning: no more regmap access are being performed after the device is put to sleep, but unfortunately the acquisition does not automatically resume after waking up the device.
->>>>
->>>> How shall we proceed?  
->>>
->>> It's been a while (and a busy day of reviewing) so I'm struggling
->>> a bit with the best away forwardHello,  
->>
->> Don't worry about it, I don't have much time available either. That stuff is as precious as gold! Thank you kindly for your time!
->>>
->>> A hackyish approach might be to mask the interrupt at device side
->>> (fake interrupt used as part of the tree from a trigger to a pollfunc).
->>> A tidy wrapped up version of this might be the best route forwards
->>> though it won't currently stop the hrtimer merrily poking interrupts
->>> at no oneI am sorry but I am not sure I understood this correctly: do you mean having something "in-between" iio-trig-hrtimer and the target iio device and use that to selectively poll the device? 
->>>
->>> As a hack, could you try having your suspend call disable_irq() on
->>> the irq found in iio_dev->poll_func->irq and reenable it in resume?
->>> That might be sufficient.  
->> I used disable_irq and enable_irq as suggested and it works perfectly: I tested it four times and all four times (in a row) data flow resumed after s2idle-suspending the device.
->>
-> 
-> Excellent.
-Hello,
+WARNING: unmet direct dependencies detected for REGMAP_SPI
+  Depends on [n]: SPI [=n]
+  Selected by [m]:
+  - AD9739A [=m] && IIO [=m] && (SPI [=n] || COMPILE_TEST [=y])
+...
+ERROR: modpost: "spi_write_then_read" [drivers/base/regmap/regmap-spi.ko] undefined!
+ERROR: modpost: "spi_async" [drivers/base/regmap/regmap-spi.ko] undefined!
+ERROR: modpost: "spi_sync" [drivers/base/regmap/regmap-spi.ko] undefined!
+ERROR: modpost: "__spi_register_driver" [drivers/iio/dac/ad9739a.ko] undefined!
 
-> 
->> I can do more testing, but this is already looking very good and I'm happy (I don't have knowledge about iio internals so I am unable to tell if what I did will introduce some race conditions).
-> 
-> On that note we definitely shouldn't directly mess with the IIO internals
-> as that implementation has changed in the past and might change again (though
-> it's been stable for over 10 years, so probably not ;). Hence we should
-> wrap this up in something like iio_suspend_triggering()/ iio_resume_triggering() 
-> which will then be called from the suspend and resume callbacks of
-> drivers that need to ensure no accesses once suspended.
-> 
-I totally agree. I can try to draft something if you are ok with it. I have never done something like this to the kernel so guidance is very welcome.
+Fixes: e77603d5468b ("iio: dac: support the ad9739a RF DAC")
+Reported-by: k2ci <kernel-bot@kylinos.cn>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202404250156.2PQRWmex-lkp@intel.com/
 
->>
->> As a reference I leave here the github link to the branch I have been experimenting with: https://github.com/NeroReflex/linux/commits/bmi323-pollfunc/ (Please don't mind that proof-of-concept code being copied and partially commented from bmc150-accel).
->>
->> No errors are printed out and combining that info with the fact it's now working it can only means pollfunc and irq are both non-NULL and non-zero at both suspend and resume.
-> 
-> That's true in the case you care about, but if we were putting in place general infrastructure
-> it will get a little more 'interesting'.
-> 
-Understood, thanks.
+Signed-off-by: Ke Sun <sunke@kylinos.cn>
+---
+ drivers/iio/dac/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> For example if currently if the trigger has never been set for a device
-> pollfunc->irq == 0, but we don't actually clear that value when we
-> detach the trigger (previously it was never used after that detach so
-> it's value was irrelevant.
-> 
-> So at minimum we need to fix that by resetting the irq value to 0 in
-> iio_trigger_detach_poll_func(), and add the checks so that if there
-> is no trigger we don't try to disable the irq.
-> 
-this will also minimize code path divergence for use-cases not affected: I like this.
-
-> I'm nervous that it might be possible to suspend whilst also setting
-> the trigger and hence we need locking. We can probably use the core
-> state lock (iio_dev->mlock) for that but we'd need care as that's
-> already taken in some of these paths.
-> 
-I'm nervous too, but using the same mutex that is used to set a trigger seems like the right thing to do.
-
->>>
->>> Check poll_func goes somewhere first though and that irq is > 0
->>> I think that will call iio_trig_subirq_mask() which should block
->>> any further interrupts until it's unmasked again.
->>>
->>> We'll need to ensure this doesn't race with pollfunc going away though
->>> which will make it more complex, but the above test should tell us
->>> if there is a fairly smooth path to making this work.
->>>
->>> I'll try and find time to do some testing myself, but it won't be
->>> for a few weeks :(
->>>
->>> Thanks,
->>>
->>> Jonathan  
->> Thank you again for your guidance,
-> 
-> No problem.
-> 
-> Jonathan
-> 
-Best regards,
-Denis
-
->> Denis Benato
->>>
->>>   
->>>>>     
->>>>>>>       
->>>>>>>> 2) iio-trig-hrtimer is stopped by the -ESHTDOWN returned by the
->>>>>>>> function printing "Transfer while suspended", however that stack
->>>>>>>> trace does not include function calls related to iio-trig-hrtimer and
->>>>>>>> this seems less plausible 3) bmi160 and bmi323 appears to be similar
->>>>>>>> and maybe are sharing a common bug with suspend (this is also why I
->>>>>>>> have maintainers of those drivers in the recipient list)
->>>>>>>>
->>>>>>>> Thanks for your time, patience and understanding,      
->>>>>>>
->>>>>>> Hi Denis,
->>>>>>>
->>>>>>> I suspect this is the legacy of the platform I used to test the hrtimer
->>>>>>> and similar triggers on never had working suspend and resume (we ripped
->>>>>>> support for that board out of the kernel a while back now...)
->>>>>>> Hence those paths were never tested by me and others may not have cared
->>>>>>> about this particular case.
->>>>>>>
->>>>>>> Anyhow, so I think what is going on is fairly simple.
->>>>>>>
->>>>>>> There is no way for a driver to indicate to a trigger provided by a separate
->>>>>>> module / hardware device that it should stop triggering data capture.
->>>>>>> The driver in question doesn't block data capture when suspended, which
->>>>>>> would be easy enough to add but doesn't feel like the right solution.
->>>>>>>
->>>>>>> So my initial thought is that we should add suspend and resume callbacks to
->>>>>>> iio_trigger_ops and call them manually from iio device drivers in their
->>>>>>> suspend and resume callbacks.  These would simply pause whatever the
->>>>>>> trigger source was so that no attempts are made to trigger the use of
->>>>>>> the device when it is suspended.
->>>>>>>
->>>>>>> It gets a little messy though as triggers can be shared between
->>>>>>> multiple devices so we'd need to reference count suspend and resume
->>>>>>> for the trigger to make sure we only resume once all consumers of
->>>>>>> the trigger have said they are ready to cope with triggers again.
->>>>>>>
->>>>>>> As mentioned, the alternative would be to block the triggers at ingress
->>>>>>> to the bmi323 and bmi160 drivers.  There may be a helpful pm flag that could
->>>>>>> be used but if not, then setting an is_suspended flag under the data->mutex
->>>>>>> to avoid races. and reading it in the trigger_handler to decide whether
->>>>>>> to talk to the device should work.      
->>>>>> I was thinking of doing this too, but I don't know if adding a mutex to frequently invoked functions is going to introduce some timing problems and so I was waiting for some comments on that matter. If nothing bad is expected I can surely try it.    
->>>>>>>
->>>>>>> I'd kind of like the generic solution of actually letting the trigger
->>>>>>> know, but not sure how much work it would turn out to be.  Either way there
->>>>>>> are a lot of drivers to fix this problem in as in theory most triggers can
->>>>>>> be used with most drivers that support buffered data capture.
->>>>>>> There may also be fun corners where a hardware trigger from one IIO
->>>>>>> device A is being used by another B and the suspend timing is such that B
->>>>>>> finishing with the trigger results in A taking an action (in the try_reenable
->>>>>>> callback) that could result in bus traffic.
->>>>>>> That one is going to be much more fiddly to handle than the simpler case
->>>>>>> you have run into.      
->>>>>> Since more and more handheld PCs are coming and provided many vendors such as
->>>>>> asus tends to improve what they did built on previous generations I think a
->>>>>> general solution would be desirable.
->>>>>>
->>>>>> Plus there are handheld PCs that does not yet have a driver (bmi270) or are
->>>>>> using an existing one and it would be very difficult to fix it in every of
->>>>>> them as of now, in the future I fear it will become almost impossible or 
->>>>>> extremely time consuming as market expands.    
->>>>>
->>>>> Both solutions require specific calls to be added to every driver that might
->>>>> encounter this - so most drivers that support triggers other than the ones
->>>>> they supply.
->>>>>     
->>>>>>>
->>>>>>> Thanks for the detailed bug report btw.   To get it fixed a few
->>>>>>> questions:
->>>>>>> 1) Are you happy to test proposed fixes?
->>>>>>> 2) Do you want to have a go at fixing it yourself? (I'd suggest trying
->>>>>>>    the fix in the bmi323 driver first rather than looking at the other 
->>>>>>>    solution)
->>>>>>>    If we eventually implement the more general version, then a bmi323
->>>>>>>    additional protection against this problem would not be a problem.
->>>>>>>
->>>>>>> Clearly I'd like the answers to be yes to both questions, but up to you!
->>>>>>>
->>>>>>> Jonathan
->>>>>>>
->>>>>>>       
->>>>>> Hello Jonathan and thank you kindly for you answer,
->>>>>>
->>>>>> I am very interested in the iio ecosystem as in those aforementioned
->>>>>> handheld PCs the gyroscope plays the role as a mouse so it's a pretty
->>>>>> important input device.
->>>>>>
->>>>>> I am writing to lkml not just as a single developer, but as part of a
->>>>>>  larger community in this matter: this means we will be able to test
->>>>>> any solution and in more than just one hardware.
->>>>>>
->>>>>> To answers your questions:
->>>>>> 1) yes, we all will be very happy to
->>>>>> 2) as I am very busy right now I might be unable to do that immediately,
->>>>>> but I will surely do it if one general solution cannot be found or is impractical.
->>>>>>
->>>>>> As of my limited knowledge the number of drivers now existing that are affected
->>>>>> are 2, and the number of drivers that will be affected, once the driver is
->>>>>> written, will be at least 3.    
->>>>>
->>>>> The problem appears to be general unfortunately.
->>>>>
->>>>> I'll have to see if I can fire up something where I can actually test solutions
->>>>> and I'm afraid I also don't have a lot of time at the moment.
->>>>> Perhaps I can find time in the next few weeks to hack together a prototype
->>>>> for one of the drivers you can test.
->>>>>
->>>>> Jonathan
->>>>>     
->>>>>>
->>>>>> Thank you very much for your answer,
->>>>>> Denis
->>>>>>    
->>>>>     
->>>>
->>>> Thank you for you time and patience,
->>>> Denis  
->>>   
->>
-> 
+diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+index 3c2bf620f00f..ee0d9798d8b4 100644
+--- a/drivers/iio/dac/Kconfig
++++ b/drivers/iio/dac/Kconfig
+@@ -133,7 +133,7 @@ config AD5624R_SPI
+ 
+ config AD9739A
+ 	tristate "Analog Devices AD9739A RF DAC spi driver"
+-	depends on SPI || COMPILE_TEST
++	depends on SPI
+ 	select REGMAP_SPI
+ 	select IIO_BACKEND
+ 	help
+-- 
+2.34.1
 
 

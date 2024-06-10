@@ -1,173 +1,99 @@
-Return-Path: <linux-iio+bounces-6168-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6169-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C64790263E
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 18:03:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 753AB902AE1
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 23:50:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 44E811F21881
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 16:03:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FA251C213DD
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 21:50:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B77B713E3F2;
-	Mon, 10 Jun 2024 16:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F099112F397;
+	Mon, 10 Jun 2024 21:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="cY7rvHzp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RcAE+08L"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B34B1DFF7;
-	Mon, 10 Jun 2024 16:02:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A016AB6;
+	Mon, 10 Jun 2024 21:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718035373; cv=none; b=rBJZCqkHp+IGMVgOG21i1troXsKDAHD4NaCmdeiu5J5UWSAgfhu3PPzbngFvmxnupW28byhHWddtgqzkC5moTWG0GOwG/iyZZyzml2pHij2h06jLHGi0R5LDVu7wp9BHJD58yW6LYtRwvD9cy0DZ094H11nlCUU/6vkk2b33hfU=
+	t=1718056195; cv=none; b=fXRrd/3p41jn4R7H4/0Me2Jp6BMv2v9ui3Ler5nsPXBBUSMUZWzyQUBIJn9M54eTQa2uuUxEFsCXu7/tOn3q+Pm4byoi8jiVNK7slAO+JR5ndnd9mLuKNHhlLRMooQfK6ZW2iL+28I1xK1/a08LOSBjjomDyhJeKkd3BOg6WMQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718035373; c=relaxed/simple;
-	bh=Gcz7fOwlXUqLJ4zlLKeiHljHg40e3aKdlbVyk5EEDGs=;
-	h=MIME-Version:Date:From:To:Cc:Subject:Message-ID:Content-Type; b=sRD/Zmf/gv6a9PE2bVHXctVhLET2XMbWc/urS91Guxwfi7zWmTD5uFwMN8y6O6a7BcLZy7ZFTg1XOgnHavXagKYzP97bLwMiDMJW07VhEVMLmDA4t91vgubZ5AbCphZasuOp4ogbN/qByK7olz77oAHKqOMyQMTBRK1QZ5wDR8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=cY7rvHzp; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-X-Virus-Scanned: SPAM Filter at disroot.org
+	s=arc-20240116; t=1718056195; c=relaxed/simple;
+	bh=iqoeqU7qrd7+cqZSSIW9HJHlvFu1ZrsTtWb1zfe2NEE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xr+XcsC1NFbRRAfCRz76tqALs0h/eefcxFb687X/RL7BPPgokM25OCW/hJveF3o6aSZkbH7SI2KNE3ORDeT/wDcWi7D2eXIYpx9KfNsuT7W3XmVU5FjS7+LU/J8lWeuBavnrp3065NW8dNcGD7aYm9cbAEnTqWb+pLsxVNXjtxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RcAE+08L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 071A9C2BBFC;
+	Mon, 10 Jun 2024 21:49:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718056195;
+	bh=iqoeqU7qrd7+cqZSSIW9HJHlvFu1ZrsTtWb1zfe2NEE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RcAE+08LJLvIeH1O5c/0fRi76GuNfP6Cuyb7ml4RWOzjFj8R1PrjnmA/XhR8Nmvn6
+	 n/jcXxhQly2HiTRB6BYiW+O5sYjqTQmaMtr7U5MUqxNb+++EtY4f4nWiCFPCZ8azAI
+	 6cJbGMov8EFNNT+TACSr4w6D4M35B4dH8yrm1n/HK0cFCzH2WvAdR2z8qU750YLIFV
+	 0oOQpMpf80gU6OOIpqKVGkNihXM3FddFKoMZqSIoX3feVs/wiK2xOjfERX9uvLAljU
+	 ieJzoFNUWpQgLx27C+0HIfz4GXHW0Bkio5izHEc0pkrdrt6Yd8TMfEySCeFDwPhhIj
+	 SLFZJAX9flCsw==
+Date: Mon, 10 Jun 2024 15:49:53 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Josua Mayer <josua@solid-run.com>
+Cc: Rob Herring <robh+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+	linux-iio@vger.kernel.org,
+	Richard Cochran <richardcochran@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Yazan Shhady <yazan.shhady@solid-run.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>,
+	linux-phy@lists.infradead.org,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Lars-Peter Clausen <lars@metafoo.de>, netdev@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>, Daniel Baluta <daniel.baluta@nxp.com>,
+	linux-kernel@vger.kernel.org,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Konstantin Porotchkin <kostap@marvell.com>,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH v6 4/7] dt-bindings: phy: armada-cp110-utmi: add optional
+ swap-dx-lanes property
+Message-ID: <171805619146.3132064.3390412132436424626.robh@kernel.org>
+References: <20240602-cn9130-som-v6-0-89393e86d4c7@solid-run.com>
+ <20240602-cn9130-som-v6-4-89393e86d4c7@solid-run.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1718035360; bh=Gcz7fOwlXUqLJ4zlLKeiHljHg40e3aKdlbVyk5EEDGs=;
-	h=Date:From:To:Cc:Subject;
-	b=cY7rvHzpRMXwsmhsJSGll6SdR8r8rWnLcNK/KByWC0cvkOBNqbbEWdKBXCMi6eXmz
-	 58WCDt/qRq3MjLCflUMzZ04axAo4s47gDgd61ql0YXNsCR8D5PKepW37m9o+F4LHwk
-	 bE9FCknKjlm8i/r9YDhc9ROcfatNYcgr5YjEQHQMTMVjjdss6UPoJT6O044T329ed4
-	 AzvAQj/WljTusirMKa1s1HwgQfzDUjh32v55kBdpY2fCTQnv5+I7da8/oRqLB8po8G
-	 WZQTyby+TuqOhvd/OFbiAQBN/gsLALg8lv0QTnRBqAFjDy5voM7AmSgfTVom+8/n2C
-	 WZIZYFgKWbS+Q==
-Date: Mon, 10 Jun 2024 16:02:40 +0000
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Conor Dooley <conor@kernel.org>, linux-iio@vger.kernel.org,
- denis.ciocca@st.com, devicetree@vger.kernel.org, linus.walleij@linaro.org,
- robh+dt@kernel.org
-Subject: Re: [PATCH v3] iio: accel: st_accel: add LIS2DS12
-Message-ID: <db376ece42e4eee823212ca3700f3d57@disroot.org>
-X-Sender: kauschluss@disroot.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240602-cn9130-som-v6-4-89393e86d4c7@solid-run.com>
 
-On 2024-06-06 20:05, Jonathan Cameron wrote:
-> On Thu, 06 Jun 2024 10:12:11 +0000
-> kauschluss <kauschluss@disroot.org> wrote:
-> 
->> On 2024-06-02 08:54, Jonathan Cameron wrote:
->> > On Sat, 1 Jun 2024 20:49:25 +0100
->> > Conor Dooley <conor@kernel.org> wrote:
->> >
->> >> On Sun, Jun 02, 2024 at 12:56:41AM +0530, Kaustabh Chakraborty wrote:
->> >> > diff --git a/drivers/iio/accel/st_accel_i2c.c b/drivers/iio/accel/st_accel_i2c.c
->> >> > index fd3749871121..329a4d6fb2ec 100644
->> >> > --- a/drivers/iio/accel/st_accel_i2c.c
->> >> > +++ b/drivers/iio/accel/st_accel_i2c.c
->> >> > @@ -102,6 +102,10 @@ static const struct of_device_id st_accel_of_match[] = {
->> >> >  		.compatible = "st,lis2de12",
->> >> >  		.data = LIS2DE12_ACCEL_DEV_NAME,
->> >> >  	},
->> >> > +	{
->> >> > +		.compatible = "st,lis2ds12",
->> >> > +		.data = LIS2DS12_ACCEL_DEV_NAME,
->> >> > +	},
->> >> >  	{
->> >> >  		.compatible = "st,lis2hh12",
->> >> >  		.data = LIS2HH12_ACCEL_DEV_NAME,
->> >>
->> >> > diff --git a/drivers/iio/accel/st_accel_spi.c b/drivers/iio/accel/st_accel_spi.c
->> >> > index f72a24f45322..825adab37105 100644
->> >> > --- a/drivers/iio/accel/st_accel_spi.c
->> >> > +++ b/drivers/iio/accel/st_accel_spi.c
->> >> > @@ -64,6 +64,10 @@ static const struct of_device_id st_accel_of_match[] = {
->> >> >  		.compatible = "st,lis2dh12-accel",
->> >> >  		.data = LIS2DH12_ACCEL_DEV_NAME,
->> >> >  	},
->> >> > +	{
->> >> > +		.compatible = "st,lis2ds12",
->> >> > +		.data = LIS2DS12_ACCEL_DEV_NAME,
->> >> > +	},
->> >> >  	{
->> >> >  		.compatible = "st,lis3l02dq",
->> >> >  		.data = LIS3L02DQ_ACCEL_DEV_NAME,
->> >>
->> >> Any new compatibles need to be documented in st,st-sensors.yaml
->> >
->> > At the moment the st_sensors core is doing hard matching against whoami values
->> > which isn't good.  That should ideally be fixed and the binding for this
->> > device should use a fallback compatible if the statement about compatibility
->> > is accurate.
->> 
->> I apologize for not wording the description accurately. By 
->> "compatibility",
->> I mean that the sensor settings of LIS2DE12 (such as the gain values) 
->> seem
->> to be well-suited for LIS2DS12, as per my experimentation. Both 
->> devices are
->> manufactured by ST and have no correlation regarding compatibility 
->> whatsoever.
->> In that case, a fallback compatible isn't required, right?
-> 
-> If only the Who Am I value prevents it working if you give the 
-> compatible
-> as lisde12 then even though ST rarely if ever identifies it in 
-> datasheets, they are
-> software compatible.  In that case we should allow for a fallback 
-> compatible.
-> + fix the driver not to fail on the whoami mismatch.
-> Note we don't care if they have totally different packages as long as
-> the driver doesn't need to know that.  If they have different numbers
-> of interrupts though or power supplies, then they aren't compatible and
-> we shouldn't provide a fallback.
-> 
-> Roughly speaking you have to compare datahsheet sections for pins (not 
-> which
-> but what) and register maps.
 
-I've thoroughly checked the registers, and indeed, a lot of registers 
-addresses
-and other settings are different. Although the sensor settings of 
-LIS2DE12
-"work", they are technically incorrect.
-
-I've fixed it, and will send it with v4 in a day or two.
-
-Thank you!
-
-> That applies even if the current driver will fail to probe (for now)
->> 
->> I'll make sure to rewrite the description more accurately in v4.
->> 
->> > It may just be a case of relaxing the check in st_sensors_verify_id()
->> > to printing a warning not an error message and not returning an error code
->> > (reserving error returns in that function for bus error etc.
->> 
->> I agree, if you want I may send a patch for that after I'm done with 
->> this
->> one.
-> Thanks,
+On Sun, 02 Jun 2024 17:49:39 +0200, Josua Mayer wrote:
+> Armada CP110 UTMI supports swapping D+ and D- signals.
+> usb251xb.yaml already describes a suitable device-tree property for the
+> same purpose but as child usb controller node.
 > 
-> Jonathan
+> Add optional swap-dx-lanes device-tree property to armada cp110 utmi phy
+> with same semantics as usb251xb:
+> The property lists all ports that swap D+ and D-, unlisted ports are
+> considered correct.
 > 
->> 
->> > That doesn't need to be in this patch though.  Just have the fallback
->> > stuff in the binding and for now we can rely on matching the more
->> > precise compatible.
->> >
->> > Jonathan
->> >
->> >
->> >>
->> >> Thanks,
->> >> Conor.
->> >>
+> Signed-off-by: Josua Mayer <josua@solid-run.com>
+> ---
+>  .../devicetree/bindings/phy/marvell,armada-cp110-utmi-phy.yaml      | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
 

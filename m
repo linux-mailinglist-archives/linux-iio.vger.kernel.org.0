@@ -1,389 +1,308 @@
-Return-Path: <linux-iio+bounces-6141-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6142-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A6B1901DA2
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 11:01:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBFA4901DBE
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 11:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7BC71F23C9F
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 09:01:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CBE7285D75
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 09:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC547F7F7;
-	Mon, 10 Jun 2024 08:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA8974C14;
+	Mon, 10 Jun 2024 09:00:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FQcpCe0K"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="KvpNhpWY"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f68.google.com (mail-wr1-f68.google.com [209.85.221.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB1CF76F1B;
-	Mon, 10 Jun 2024 08:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.68
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718009930; cv=none; b=J/lgpTv8RbeOaBqyzbyCCEspMgTKFiZw/mSpNgmMbnGHLhO3rg5XUMoJuyF8ivuTELEFS+965MdacfipXu9E9bvuJK+/9kzQZwd6XXfOVllrv/2kudu4RS/adcmdJVMJ6bBpsOaoF9PPZodMKgkavHcNdy/DxavYdRb9Bcw7prs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718009930; c=relaxed/simple;
-	bh=zG9Nk1i9CpO30iwDpBCYAJoPe2JWUw3aG89GN5vsBvQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nkVWbJdYCkAHpYrNo3Sm1s45JVWm4k6h0xnPvYGRvq9nOMdun0mj9N9LvciRzj864gSclHdokkItdzDM/x9IhxSaefCAOt1FdEKcSQ5TJEuACmE3Eu4X5OSiDMw3XwE2Qj7xsiNdI7LlEEKSLwUfyLjRpZb+PbbXnMCwEehMVQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FQcpCe0K; arc=none smtp.client-ip=209.85.221.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f68.google.com with SMTP id ffacd0b85a97d-35dc1d8867eso3230888f8f.0;
-        Mon, 10 Jun 2024 01:58:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718009927; x=1718614727; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qOAtN7oXCzbDYC+AN7vSfI2DUaJdROI9p4SpPCnLXBM=;
-        b=FQcpCe0KLELg9A4nD2R3T85VjMwnJgAQSQ3tCtn7Qot177qYE/2tI0VFdr7ASlSWs0
-         d8ukYNfCyS9ceR8suRg4EDprNGVzpg2sOdd3c0Wqd821+QRgmCN1/WOnMo8udoBow77X
-         zw/IPIq/v+hbwKaRG0BONi7RTDa6vC+oxKrEdhq66kSQKzrvwCLwhur7eXTrr8GxEefE
-         UmUTAA6VwUBUeixqZL8rxuCcVF6p1qc98Bx2KvGaAEVk7xCUrPh18PZXPDEmAIwjrXZP
-         +3TKI91jS4LjcVDCxfffgeJqvSXk2ri8KdpNsnXvcDetTyT2oSu7QK3jaqG9GK7dRtb7
-         itzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718009927; x=1718614727;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qOAtN7oXCzbDYC+AN7vSfI2DUaJdROI9p4SpPCnLXBM=;
-        b=nN/yCDvzSohP5tG/4HsbmYOT4+1HBpVrIz8+EVpIjh8NP6b9YTtKk3ohxcYiBTDFj6
-         bqocGC+cOf5XyBO1VBoe63ajFA4wisF9J31sdc3LufynM6AghO9JdKhh4sCFBFhT1Qv4
-         Mo1w03U38slAXdrwDoU1UhAP/pIa5VdC30HQw5lXmgZqlIAAL4AF3GPTC73x+hI0BXvM
-         UcUCpRKUPmg7IODovzqFk9Ys3uvNciRaRLsddUEH4yqrJru9uqRISZLQHcdspzojq89B
-         mOG46sUXJRkaPUNhdyNJQ/omjJOJypdmDZpYtmrIRTFNSRnEjeRCnoOjRlvJTetPFbqa
-         GbMw==
-X-Forwarded-Encrypted: i=1; AJvYcCVjEaBxrcMdIuTIrfNl97VSlP3FI0InXY1nos45DIAtKHZiJofjIbqaH1eVw1umHuXVUfDWO0djOaHmzpbUeqq7CwNql8qcPrQD3u78Svfi40ZLLLyZ7wJ8Ez30MtQfq7A0Kijb/CcShA==
-X-Gm-Message-State: AOJu0Yxpv0sHHoJgG6Nsm9J85+dMf7Tv+Wwvh9NnN2zVlmWNhYsJnYfi
-	feUx05eavy8tXN/KvpJifNBvCjhj8Q6dZXgDCDOR+CJlSjMtCcOu97dotY1ost4HG3ZCaNyMUvX
-	X84OVml6OBR7gbxPNvPMS8x7aTeU=
-X-Google-Smtp-Source: AGHT+IFPU6+LOf8PgX7KOs5qPDS8vsX5Vv8RXv8XleCs5E5DIcHCc8fIioa/JjHQYg24T8SZZtlR3JvXWMYc84EnZ4U=
-X-Received: by 2002:adf:b1dc:0:b0:35d:bd46:960a with SMTP id
- ffacd0b85a97d-35efed4e09emr7157345f8f.23.1718009926938; Mon, 10 Jun 2024
- 01:58:46 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E03558A0;
+	Mon, 10 Jun 2024 09:00:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718010053; cv=fail; b=I9o5sy1Tq2WHS1xa7gsjBPIcHJPpo7EIlHd73aRydWsy7FI5L5H1aQwoSlQZj80oES/wsCBmLTrYRWtZZLZUDYMtDNx7A7m542WihIXLZ6paW7J61Y3UpYDkaZq44gZLOuaxyvmn14ZHoTP9NuyZ/CiHacqi0fbZJn6QrJwgSRY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718010053; c=relaxed/simple;
+	bh=SgwmLaVrdkpfUrik7ln9QF9x9VTvSKdt849UyvN/A5g=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ef8N9bFdBvbjQYqdm62vqSaQBr/UjbygOXMUm5TXdrtirHLDICamh0AQ5lJa4ePClZY9Nx3u2GPGB1VUPm+eJQvm5w3YO/5sr9t4CL2tWuSsIaExojAVDRZCI+xouIPeMJrSVsuAD4M7WTh/yofj015YPTtzBEffjVTdfcM9nik=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=KvpNhpWY; arc=fail smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45A7rIpD001670;
+	Mon, 10 Jun 2024 05:00:30 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=SgwmL
+	aVrdkpfUrik7ln9QF9x9VTvSKdt849UyvN/A5g=; b=KvpNhpWYDoPFxacNMqXyi
+	6I/pL4KX9DXWSCSv8m/KkjMNqLi1YIOnPzZIhUbKOlJH/jXQ2Pe8mq0EbjGWnJYQ
+	nH2+F2xb8cAG+U+6Uc5D0v2XFbmbx50obNat0q3Zk+t6Z6UwKQ18IRbR71lP24Rr
+	eYDPgKVknRvWZvpuLBq4ETQG/1/gg3yINBCgKX7f6cFSocGd0X8e7k/7qcejEPn1
+	Dcjv/SLI6WUff9Bhg4qfkZhDEKO6XHIMQluUKbRqahxfe0o7O9YEVHOub1Kor9Vx
+	BIj425pOGcl6bDuXqS2adlOOuEFwUb5bByidKYLnnOo5P1V2HGLyisVvJzdUa5y+
+	A==
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2041.outbound.protection.outlook.com [104.47.66.41])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ymh52ntxb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 10 Jun 2024 05:00:30 -0400 (EDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=VdgTy7Sj7un8cH6hg6NQ02qmbb0mm54ocFz47EuINs0LoY8tZRlTKiEIAT+9AiuSrHScfmec1CBdtWq7//bgy0fuBGEZDCV2Lny96kKbPRvKnrIsgK8vjZNFF0suNA+E2tWBv28QZriLfr7CNwMk/k1cdaCH2+ubhN7Xg3B6Zcs7KcTSEOsWkjhPNTJSVsi/KLdXK9Z1UexpELKDRye2GSjIU4/6QQ69fwK2hFLx6KlEzm54tRctVL2kkvHfrH1BeO9aoO3GhxEjeT4Hmsi28o3SH+Rkc3YTUgew3IVu0wfYlegv4737MOSB0VbZjN+M50A0LQ9SC2ytNq+KYlXvwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SgwmLaVrdkpfUrik7ln9QF9x9VTvSKdt849UyvN/A5g=;
+ b=fTXjcEhoLFmbN1XMB51NOXFG9aUbQRWkpBJSh66b7sv2j23xPW8sFr21r55FF/WzZAl5vCBVew6rUnPXGPkG3TRDDWyyCvGVm93IoQbQ+XbT/z3unN0LI25lg6JKynBTYFnFpmLjuQmpKJJXJ4v7G7fgoEdwU5yJzd+jnMowhi/4R1AOOeawe2LyPDrr4APkmKWmB5NcQyp+CV+4TJG/Vo2aoS0L1V1umgxLm5yit6C7daEcQI9a1jNtr5wDYdx/3ZPQC4slqi6skkVPt/wdz304oB/HR/MwvleGnWf5Y8HLc19UfLfhrOCv3hDkmEx1hd78pYdbXKuMgaJMkWFMFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
+ dkim=pass header.d=analog.com; arc=none
+Received: from PH0PR03MB6512.namprd03.prod.outlook.com (2603:10b6:510:be::5)
+ by SJ0PR03MB6963.namprd03.prod.outlook.com (2603:10b6:a03:431::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.36; Mon, 10 Jun
+ 2024 09:00:28 +0000
+Received: from PH0PR03MB6512.namprd03.prod.outlook.com
+ ([fe80::c8b5:7953:eec1:cb28]) by PH0PR03MB6512.namprd03.prod.outlook.com
+ ([fe80::c8b5:7953:eec1:cb28%5]) with mapi id 15.20.7633.036; Mon, 10 Jun 2024
+ 09:00:28 +0000
+From: "Hennerich, Michael" <Michael.Hennerich@analog.com>
+To: Jonathan Cameron <jic23@kernel.org>,
+        =?utf-8?B?TnVubyBTw6E=?=
+	<noname.nuno@gmail.com>
+CC: "Miclaus, Antoniu" <Antoniu.Miclaus@analog.com>,
+        Lars-Peter Clausen
+	<lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+        "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 2/2] iio: frequency: adf4350: add clk provider
+Thread-Topic: [PATCH v2 2/2] iio: frequency: adf4350: add clk provider
+Thread-Index: AQHauMFHWY74hPwHdkaxp7CfkH/VPbG8JIsAgAHVbQCAAp0ioA==
+Date: Mon, 10 Jun 2024 09:00:28 +0000
+Message-ID: 
+ <PH0PR03MB65124D46BCFF1833DADBA0E78EC62@PH0PR03MB6512.namprd03.prod.outlook.com>
+References: <20240607095806.3299-1-antoniu.miclaus@analog.com>
+	<20240607095806.3299-2-antoniu.miclaus@analog.com>
+	<751abd157213736e376ca43ef1082362a4ca1149.camel@gmail.com>
+ <20240608160838.16a2a04f@jic23-huawei>
+In-Reply-To: <20240608160838.16a2a04f@jic23-huawei>
+Accept-Language: en-US, de-DE
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-dg-ref: 
+ =?utf-8?B?UEcxbGRHRStQR0YwSUc1dFBTSmliMlI1TG5SNGRDSWdjRDBpWXpwY2RYTmxj?=
+ =?utf-8?B?bk5jYldobGJtNWxjbWxjWVhCd1pHRjBZVnh5YjJGdGFXNW5YREE1WkRnME9X?=
+ =?utf-8?B?STJMVE15WkRNdE5HRTBNQzA0TldWbExUWmlPRFJpWVRJNVpUTTFZbHh0YzJk?=
+ =?utf-8?B?elhHMXpaeTFsT0dRd1pERmlOeTB5TnpBM0xURXhaV1l0WWpobE5TMWlZMll4?=
+ =?utf-8?B?TnpGak5EYzJNVGxjWVcxbExYUmxjM1JjWlRoa01HUXhZamd0TWpjd055MHhN?=
+ =?utf-8?B?V1ZtTFdJNFpUVXRZbU5tTVRjeFl6UTNOakU1WW05a2VTNTBlSFFpSUhONlBT?=
+ =?utf-8?B?STNOamc0SWlCMFBTSXhNek0yTWpRNE16WTBNRGd5T0RnNE1qY2lJR2c5SW5W?=
+ =?utf-8?B?R05GUlJWRk5KTDFCaWRXdEVhMFZKY2tGRWRIUTJWbmRqY3owaUlHbGtQU0lp?=
+ =?utf-8?B?SUdKc1BTSXdJaUJpYnowaU1TSWdZMms5SW1OQlFVRkJSVkpJVlRGU1UxSlZS?=
+ =?utf-8?B?azVEWjFWQlFVVnZRMEZCUVRkS2EyMXlSa3gyWVVGVFRuRlVRVXBhYVVkdGJF?=
+ =?utf-8?B?a3ljRTFCYkcxSllXRlZSRUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRklRVUZCUVVSaFFWRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGRlFVRlJRVUpCUVVGQk0weG9VMlpuUVVGQlFVRkJRVUZCUVVGQlFVRkJT?=
+ =?utf-8?B?alJCUVVGQ2FFRkhVVUZoVVVKbVFVaE5RVnBSUW1wQlNGVkJZMmRDYkVGR09F?=
+ =?utf-8?B?RmpRVUo1UVVjNFFXRm5RbXhCUjAxQlpFRkNla0ZHT0VGYVowSm9RVWQzUVdO?=
+ =?utf-8?B?M1FteEJSamhCV21kQ2RrRklUVUZoVVVJd1FVZHJRV1JuUW14QlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVWQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlowRkJRVUZCUVc1blFVRkJSMFZCV2tGQ2NFRkdPRUZqZDBKc1FVZE5RV1JS?=
+ =?utf-8?B?UW5sQlIxVkJXSGRDZDBGSVNVRmlkMEp4UVVkVlFWbDNRakJCU0UxQldIZENN?=
+ =?utf-8?B?RUZIYTBGYVVVSjVRVVJGUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRlJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRMEZCUVVGQlFVTmxRVUZCUVZsUlFtdEJSMnRCV0hkQ2Vr?=
+ =?utf-8?B?RkhWVUZaZDBJeFFVaEpRVnBSUW1aQlNFRkJZMmRDZGtGSGIwRmFVVUpxUVVo?=
+ =?utf-8?B?UlFXTjNRbVpCU0ZGQllWRkNiRUZJU1VGTlowRkJRVUZCUVVGQlFVRkJRVUZC?=
+ =?utf-8?B?UVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJR?=
+ =?utf-8?B?VUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFV?=
+ =?utf-8?B?RkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVGQlFVRkJRVUZCUVVG?=
+ =?utf-8?B?QlFVRkJRVUZDUVVGQlFVRkJRVUZCUVVsQlFVRkJRVUZCUFQwaUx6NDhMMjFs?=
+ =?utf-8?Q?dGE+?=
+x-dg-rorf: true
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PH0PR03MB6512:EE_|SJ0PR03MB6963:EE_
+x-ms-office365-filtering-correlation-id: 56181aae-a0e8-4980-bf41-08dc892bc63c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230031|1800799015|376005|366007|38070700009;
+x-microsoft-antispam-message-info: 
+ =?utf-8?B?NU0vOHNKS3FvWkE4aWxHOHZWWmVJU25SMkp5eC9sZ0NkM2VHdGxhL3RvYWV1?=
+ =?utf-8?B?dy9IRVcvNndLNWwvQy9QeGhaQTdSVmw0YjM2UmVpTytad2hicE9oUVNJWHZp?=
+ =?utf-8?B?a01lMzJDSWlZZjNRRHQyLys5ajlIaUs2QUR3a2xBanZPQ3BVTkcwRmdranVT?=
+ =?utf-8?B?b3hveDFSMEswRjYvSmJJSTNOT1RETHJSdDhDR1NiT3BkWTJ4NkdwSmhONmFD?=
+ =?utf-8?B?ay9OMlhSYTVaQkUwN3BHb0JCalBJN0RzaTc2RGg5WUM5R3lHWDJ5WE54RGps?=
+ =?utf-8?B?ekJwbVp2RmhXTTV4bWQya3puSmZPWGw1NGNQWjFLY1JId1kxUHVtcjgvWWZS?=
+ =?utf-8?B?T1dYb3AzeHFWM3J6QklaNko5SjVXWmRZbHlzdHpRakhKTWhkbm84SjRwcDJk?=
+ =?utf-8?B?bXkwYmphNTh0MUR3NjdjUUNySnVucEo3SjJ2c0VYMTJMMWVzcFcvV2Q0NkVT?=
+ =?utf-8?B?a0M5aEs2dDUreW01THZ0blFMYlh5eEJKUzU1WGpzS1R4S2xBZnhSbVVGRU1o?=
+ =?utf-8?B?TUs2cjZlb1Q4Y21OUW5nbmFIcksyN0tVcVg0TStPbmppaVBsVWtyWm9Pb3pY?=
+ =?utf-8?B?Mk9qcEp1aW9jY0dOSEdBQWlOZzhrdnNXQzRoa05reG1KZVhOZEtqcTNGL2RW?=
+ =?utf-8?B?aW9PaUgvOHVmS3ZVemhnU1BVeDRiZHlJTmwxMk9xVXBkemlsQzUvSUNsWkVl?=
+ =?utf-8?B?dFdnMGR4VktWcmJ1aXZNM2RFakprZ1RHSG96VzRzVDVBY0FEeGRmSWo3NEhm?=
+ =?utf-8?B?T0dERHlkT0EvTUdNaGdXSTRIVCtlRXdLZ0xodFlKQkVsL2xaQmpqUVhWY3ps?=
+ =?utf-8?B?YXJaTTlSN2ROVlRzVUJkUUl0bk5iNGhtd0FDcjFCa1o0eURYY0JaMkN2ZElt?=
+ =?utf-8?B?TFdCaHlsUG1ocGVBcWVtRmlCUTBnU3pLNVcvR0RvS0JUM2RwSFErTCszWCtG?=
+ =?utf-8?B?SUJDQjh3Y1NjK0RMd2FVQkI3S09MbTcyalpLUXY5ckV4L2pwdHlWb24zbXZq?=
+ =?utf-8?B?dFZDc09OMEtsZCtpbVJpa0tWZ2xLL1BiYnM5MGRWV1E3UTFTQVJvR2FvQUIr?=
+ =?utf-8?B?eTVCZjlGR1Bzemt3N29nTHdhbHJMVC9SUmI0UklQQ2pUc3pBU2k3TitscG9s?=
+ =?utf-8?B?dnRwckFOQkNJM29FekJHOTJrbngvSXJFRGhnQ1MyS3BSRFJ2ZDRkcjhlVlBT?=
+ =?utf-8?B?UEtWaG0zc2k0bTg2ckJFWnZkd0hZRi9GNVA2TzVTMzQ3QzljMFpCVkNvaVMx?=
+ =?utf-8?B?WmhIZk15UUFueXAyZXRGeWN0SlBwc09veG45RmJjR2l4UWFIakVHN2diZHRi?=
+ =?utf-8?B?Qm1nVzFnd2FHa2FoOWxjQzV2Mzl0S3doTHNWVlg5elJFM1pPdFJ2bjFuR3Qv?=
+ =?utf-8?B?ZTdmaVRUVlQ5YTB1TGVDQVRVZHc0djVVQVg0M09MdVhiZGRVVmllWVdWQlow?=
+ =?utf-8?B?WWlxYzVEamJJaGRrYnQ5TGh1RjBSYUN3czdhdWNwdi9adGNpMlMwVFVNNEVC?=
+ =?utf-8?B?d1ltVkVsRmxFT2ZtejJlTSs3QzlFdGNUcnFvY29wdE5CWDVxRHNUZFZPZUZQ?=
+ =?utf-8?B?N2ZCS3ZNRHNqNXN6Sy8zUTJGTlQxYnFtV3Vxd3ZzcGVaWHROb1FPelJpVGpR?=
+ =?utf-8?B?d1FTNE9DRUcwdEN5ZkJNckFSSjVmdDJvODFoKytURVJwS3hETXBQSWVsaVlM?=
+ =?utf-8?B?amxzQzFrYVkvWXgxRC9wNG9RdjhrZnNPWTFra09rRHpodk1BZmdrMkdxU1hY?=
+ =?utf-8?B?b09qVjVldEJLcFBTcGIwS2drcG9KK0xFZUlHWGJPY2I2aEZQQ1liQ3puT3NJ?=
+ =?utf-8?Q?lbs7AzUBtxwqJC6z8CDdXZwg17CsEDODM2RIk=3D?=
+x-forefront-antispam-report: 
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB6512.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(376005)(366007)(38070700009);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: 
+ =?utf-8?B?YVRvdndqMmUyM0ZvRUpxU05UMG5adDJFQW8zcnFOS09Xa3N4MStBZXVEVkhM?=
+ =?utf-8?B?THJhaXNrZCtRWHU1OU9HSzVPdXNuR3l3QnVkcGdIc290TDhaZjUrZTNyNDNB?=
+ =?utf-8?B?NmhzZ2RkOWF2Q1kyZTJKUzdGemxlMUE4UWlFLzc4aFd4R1kwbGJ2VXAxTTN4?=
+ =?utf-8?B?VVkwTEVaSG0xQkt3YnVzbGcwc01mTmR6c3NmWUlmOXRRaFJ6OTUxZHBDRW9C?=
+ =?utf-8?B?MTFYOHV6eHdGa0lWeE5yS1RLU3ZEM0p6d3BIbGZRMzArdTBRVXEvTC9RSTZN?=
+ =?utf-8?B?MWZLdk5NOE8vVjFndkRBbFJYSmRYZEU1MGY0SGc1blJybXpFWVBPcjVSNFNz?=
+ =?utf-8?B?RVNiR1NUbE5YaENEV2xVOEpyOVFFaUtWUHlqbWNtNjJ2ZWxXTjQ0TUc0VVpP?=
+ =?utf-8?B?ZDlLeUY5NEo4M1RQRTVqZXByblVJVGhrMFg3VWdxeFk0SkNPZStKa3RxTlhQ?=
+ =?utf-8?B?U1VxdHMrR1F5VVFEVnd0L0RuUVJObHNHMnhieU1GRXNsSlNHSEFWWmUrSnFp?=
+ =?utf-8?B?YTZVMy9kTXlLbzZ5N2RzMnRjb2IzVFU4SFBxVmQxL1hXazZnekdJaGFsZlh1?=
+ =?utf-8?B?L0xvcWVnaE1jeXcyNjNiWThTNTJxY3VtOUlHSEFEV1FybDFGYzlJN1phdlNl?=
+ =?utf-8?B?cHZTb2ZoV2hQV0poOXV6b0Q4S0lENDYwb1hrUDV5NGN0ZGpYNStnWWdidFZo?=
+ =?utf-8?B?dkFZKzhPdDN3VGpVb2s5cURaSTJ4K0Z0UGpRdWJ1Y0lUSFByUzg4Ykp2R0pR?=
+ =?utf-8?B?WElhK0F5TE9VVnlsWG4yTmlZaGJXUitPV0ZVRTJXRnBHVFV1cXVKVy9nTWZN?=
+ =?utf-8?B?VVJpSGtLd3pqUWFScXFKNjlFZjBZVG4veFE5S0dqVDJLMUZKT01vMmFtRHdI?=
+ =?utf-8?B?SDByL0trakIwVDZqbzlSakQraFd6QW1WdENqcFVOR2hxekYwcThyc1hzMFhT?=
+ =?utf-8?B?U0hObXZZbGhHenZhdjNXcmlKZjFlb01qa3BPYm9zYitINTFMMURTb1VRV1Rh?=
+ =?utf-8?B?dDlFMU1OcUs1NVBkME5NZzNJR2xRYmdFU1M3OGFYRVpya1RlMS9mMVkxM0N6?=
+ =?utf-8?B?TVB2WlRzOThZd3Y0NTYyaGdveDg2OURnTnVDdWJHYnZ5YTNiNHcxL0ZmTGt6?=
+ =?utf-8?B?bkNvcEg5a2oxbk5JOERCV0NMVGcySjBiaTBSQlFlS2FQbTdyODhOTHNrVVFG?=
+ =?utf-8?B?SHBDajcrQUlNeDZER3hWN0VyQUlLc1llYUpvK2lwVGN3MG43OWVVTklURHJI?=
+ =?utf-8?B?dDM3bGtTWHFGbWhpR2F5YThZcmZIRHorZ2h5NitjZW8xTjRPcGYzQTR2Y01l?=
+ =?utf-8?B?WnphRGpLcmk5NjlLNFVjSFpodWJEWFlKdEh0ZmRkTzlBVGRTaGhrWUFBYy9y?=
+ =?utf-8?B?V212KzVmQ0dzN1crcXdnMFU2ZDR5eVl1QnZPUkpTUnlRRjNZOU5qNlBZV3Jh?=
+ =?utf-8?B?TEdpb1Z1L3Q0RkxhL1c5RlRidkFIZFdPK1Y4L1FoaXVqRnFPSTUrNk9ZQk5v?=
+ =?utf-8?B?MXY0ZDlGMVQzOHd4bHlXU3lhMWhnd1JBSWQ0U0J5emlHMUFQdzhHMTRDb3Jm?=
+ =?utf-8?B?YmozSVVSNUNQckdxdTE3NUdZcDFmbDlJeWw0RHZQelVORHlKb3ZzOFFiOFE0?=
+ =?utf-8?B?L0Q5UGR1NWdRWmVVeFIzMXI1MFhGZWRkanJzcStSY2J5NTJiNWRjNWx3OVhE?=
+ =?utf-8?B?MUhJOEpFSXhpQzNVRUVmTWFmajZsUDB4M0YwTDM5U0JmVkJKYTl1czkzZ3Z2?=
+ =?utf-8?B?VDc5Y1ZYb1dVdVFoZm5BNnFYTVBrRmRHUGZTd05lamhESjRDYkgxWHgxa1Fu?=
+ =?utf-8?B?SUVMdTJoWjJQQnlrVHA3ZDc3a09idDFmZmZsUG4wR01sWGE4cm8vZGtsSEFR?=
+ =?utf-8?B?L0pIYjZXWCtUa1NGckt4QVovaHo0dDdlTlF4VnNrYUFOZUZpaFFFQXY0Smdr?=
+ =?utf-8?B?bkJYS3FtNnJDWUtRN2ZTbXJCeHFxVEZpTVhmMTVFNWdaR1JMWUIyU3VOc2N3?=
+ =?utf-8?B?VHI2R0JQOXd1NWN2SVNDUll2L3BUVG5ac1pWRWVkK0p5di9kMW9uemNKTXZT?=
+ =?utf-8?B?SjJ4L1FVMlRxUHBWcG11MFd6NlNLY2ZZeHh1Ym1oNzRHWi9SSWNTSzNJd0Vn?=
+ =?utf-8?B?VmhBdkdCSTBMajdTM0NpU0VRTXZWR1VKV0VhQ3EyY3F0RUxIMW84dk1IU2lD?=
+ =?utf-8?B?YWc9PQ==?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CADFWO8EQUkGcbE=RXjxXbub2tZge9+ss=gB-Q6wngFAvwFygRg@mail.gmail.com>
- <20240505181829.49864540@jic23-huawei>
-In-Reply-To: <20240505181829.49864540@jic23-huawei>
-From: Petar Stoykov <pd.pstoykov@gmail.com>
-Date: Mon, 10 Jun 2024 10:58:35 +0200
-Message-ID: <CADFWO8FGqD5GyrRtvFptjMdYBhfFFwOzgZ1XnVVEPeY3E8CZPg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/3] iio: pressure: Add driver for Sensirion SDP500
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Lars-Peter Clausen <lars@metafoo.de>, 
-	Rob Herring <robh+dt@kernel.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
-	Angel Iglesias <ang.iglesiasg@gmail.com>, Conor Dooley <conor+dt@kernel.org>, 
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: analog.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB6512.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 56181aae-a0e8-4980-bf41-08dc892bc63c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Jun 2024 09:00:28.1970
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: H5l3KwBKiCQyZn7KUYCHOP5BSq6ynTEZ2hApMqlBK4pWKMIFLkvAPheH4zP3oPrPJAXRlwJvTgXVO5xKEBvMLkS3s+CUkDTpABU9fGsjBOA=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR03MB6963
+X-Proofpoint-ORIG-GUID: ITdhe2pCqfKH1iYACyVk0teaBl9I3BLj
+X-Proofpoint-GUID: ITdhe2pCqfKH1iYACyVk0teaBl9I3BLj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-10_02,2024-06-06_02,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ suspectscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0 bulkscore=0
+ spamscore=0 lowpriorityscore=0 impostorscore=0 clxscore=1011 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
+ definitions=main-2406100068
 
-On Sun, May 5, 2024 at 7:18=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
-wrote:
->
-> On Tue, 30 Apr 2024 17:27:24 +0200
-> Petar Stoykov <pd.pstoykov@gmail.com> wrote:
->
-> > From 6ae7537517f551540121ca6fb3b99080b7580410 Mon Sep 17 00:00:00 2001
-> > From: Petar Stoykov <pd.pstoykov@gmail.com>
-> > Date: Mon, 15 Jan 2024 12:21:26 +0100
-> > Subject: [PATCH 2/3] iio: pressure: Add driver for Sensirion SDP500
-> >
-> > Sensirion SDP500 is a digital differential pressure sensor. The sensor =
-is
-> > accessed over I2C.
-> >
-> > Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
-> Hi Petar
->
-> Ignoring the patch formatting which others have already given feedback on=
-,
-> a few minor comments inline.
->
-> Also, I'd expect some regulator handling to turn the power on.
-> Obviously on your particular board there may be nothing to do but good to
-> have the support in place anyway and it will be harmless if the power
-> is always on.
->
-> Jonathan
->
-Hi Jonathan,
-
-Thank you for looking past the formatting!
-
-I wrongly assumed the power regulator would be handled automatically :)
-I see examples of how to do it in other pressure drivers now.
-
-> >  st_pressure-$(CONFIG_IIO_BUFFER) +=3D st_pressure_buffer.o
-> > diff --git a/drivers/iio/pressure/sdp500.c b/drivers/iio/pressure/sdp50=
-0.c
-> > new file mode 100644
-> > index 000000000000..7efcc69e829c
-> > --- /dev/null
-> > +++ b/drivers/iio/pressure/sdp500.c
-> > @@ -0,0 +1,144 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +#include <linux/i2c.h>
-> > +#include <linux/crc8.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <asm/unaligned.h>
-> > +
-> > +#define SDP500_CRC8_POLYNOMIAL  0x31   // x8 + x5 + x4 + 1 (normalized=
- to 0x31)
-> > +#define SDP500_READ_SIZE        3
-> > +#define SDP500_CRC8_WORD_LENGTH 2
->
-> As below. I'd establish these off the data the are the lengths of by usin=
-g
-> a structure definition.  That will be more obvious and less fragile than
-> defines hiding up here.
->
->
-> > +#define SDP500_CRC8_INIT        0x00
->
-> I'd just use the number inline.  Can't see what the define is adding.
-
-I've been taught to avoid magic numbers as much as possible.
-Giving it a define directly explains what the number is, even if it's used =
-once.
-But I'll follow the community (in this case, you) for this.
-
->
-> > +
-> > +#define SDP500_SCALE_FACTOR 60
-> > +
-> > +#define SDP500_I2C_START_MEAS 0xF1
-> > +
-> > +struct sdp500_data {
-> > +    struct device *dev;
-> > +};
-> > +
-> > +DECLARE_CRC8_TABLE(sdp500_crc8_table);
-> > +
-> > +static int sdp500_start_measurement(struct sdp500_data *data, const
-> > struct iio_dev *indio_dev)
-> > +{
-> > +    struct i2c_client *client =3D to_i2c_client(data->dev);
-> > +
-> > +    return i2c_smbus_write_byte(client, SDP500_I2C_START_MEAS);
-> Doesn't seem worth a wrapper function. I would just put this code inline.
-> > +}
-> > +
-> > +static const struct iio_chan_spec sdp500_channels[] =3D {
-> > +    {
-> > +        .type =3D IIO_PRESSURE,
-> > +        .info_mask_separate =3D BIT(IIO_CHAN_INFO_PROCESSED),
->
-> As below. It's a linear scale factor, so I would prefer _RAW and _SCALE
-> to let userspace deal with the maths.
-
-I saw your other e-mail with further explanation and I begrudgingly agree.
-I would much prefer if the "SDP500_SCALE_FACTOR" return code is not
-accepted for the "IIO_CHAN_INFO_PROCESSED" case. And I also saw
-other drivers do the same as me which gave me confidence it was the right
-thing to do.
-But, again, it makes sense to avoid this so I'll change it as suggested.
-
->
-> > +    },
-> > +};
-> > +
-> > +static int sdp500_read_raw(struct iio_dev *indio_dev,
-> > +              struct iio_chan_spec const *chan,
-> > +              int *val, int *val2, long mask)
-> > +{
-> > +    int ret;
-> > +    u8 rxbuf[SDP500_READ_SIZE];
-> You could define this as a struct so all the data types are obvious.
->
->         struct {
->                 __be16 data;
->                 u8 crc;
->         } __packed rxbuf;
-> The  __packed let's you use sizeof(rxbuf) for the transfer size.
-> Beware though as IIRC that will mean data is not necessarily aligned
-> so you'll still need the unaligned accessors.
->
-
-I know, but I prefer to receive data in simple arrays and then deal with it=
-.
-
-> > +    u8 rec_crc, calculated_crc;
-> > +    s16 dec_value;
-> > +    struct sdp500_data *data =3D iio_priv(indio_dev);
-> > +    struct i2c_client *client =3D to_i2c_client(data->dev);
-> > +
-> > +    switch (mask) {
-> > +    case IIO_CHAN_INFO_PROCESSED:
-> > +        ret =3D i2c_master_recv(client, rxbuf, SDP500_READ_SIZE);
-> > +        if (ret < 0) {
-> > +            dev_err(indio_dev->dev.parent, "Failed to receive data");
-> > +            return ret;
-> > +        }
-> > +        if (ret !=3D SDP500_READ_SIZE) {
-> > +            dev_err(indio_dev->dev.parent, "Data is received wrongly")=
-;
->
-> I'd guess indio_dev->dev.parent =3D=3D data->dev
-> If so use data->dev as more compact and that's where you are getting the
-> i2c_client from.
->
-
-Makes sense.
-
-> > +            return -EIO;
-> > +        }
-> > +
-> > +        rec_crc =3D rxbuf[2];
-> > +        calculated_crc =3D crc8(sdp500_crc8_table, rxbuf,
-> > SDP500_CRC8_WORD_LENGTH,
->
-> I'd use the number 2 for length directly as it's useful to know this is t=
-he
-> __be16 only, or sizeof(__be16)
-> What is the point in rec_crc local variable?
-
-Ok, I will use sizeof(rxbuff) - 1 instead of the define.
-The rec_crc is again for readability, like the SDP500_CRC8_INIT define.
-I will change it to "received_crc" which is clearer though.
-
->
-> > +            SDP500_CRC8_INIT);
-> > +        if (rec_crc !=3D calculated_crc) {
-> > +            dev_err(indio_dev->dev.parent, "calculated crc =3D 0x%.2X,
-> > received 0x%.2X",
-> > +                calculated_crc, rec_crc);
-> > +            return -EIO;
-> > +        }
-> > +
-> > +        dec_value =3D get_unaligned_be16(rxbuf);
-> > +        dev_dbg(indio_dev->dev.parent, "dec value =3D %d", dec_value);
->
-> When you move to returning scale and _raw this print won't add anything s=
-o
-> drop it.
->
-> > +
-> > +        *val =3D dec_value;
-> > +        *val2 =3D SDP500_SCALE_FACTOR;
-> For linear transforms like this it is normally better to provide separate
-> raw and scale interfaces.
->
-> Then if anyone does want to add buffered support in the future that is ea=
-sier
-> to do as it is much more compact + userspace has floating point which is =
-always
-> going to be better for division than we can do in kernel.
->
-> > +        return IIO_VAL_FRACTIONAL;
-> > +    default:
-> > +        return -EINVAL;
-> > +    }
-> > +}
-> > +
-> > +static const struct iio_info sdp500_info =3D {
-> > +    .read_raw =3D &sdp500_read_raw,
-> > +};
-> > +
-> > +static int sdp500_probe(struct i2c_client *client)
-> > +{
-> > +    struct iio_dev *indio_dev;
-> > +    struct sdp500_data *data;
-> > +    struct device *dev =3D &client->dev;
-> > +    int ret;
-> > +    u8 rxbuf[SDP500_READ_SIZE];
-> > +
-> > +    indio_dev =3D devm_iio_device_alloc(dev, sizeof(*data));
-> > +    if (!indio_dev)
-> > +        return -ENOMEM;
-> > +
-> > +    /* has to be done before the first i2c communication */
-> > +    crc8_populate_msb(sdp500_crc8_table, SDP500_CRC8_POLYNOMIAL);
-> > +
-> > +    data =3D iio_priv(indio_dev);
-> > +    data->dev =3D dev;
-> > +
-> > +    indio_dev->name =3D "sdp500";
-> > +    indio_dev->channels =3D sdp500_channels;
-> > +    indio_dev->info =3D &sdp500_info;
-> > +    indio_dev->modes =3D INDIO_DIRECT_MODE;
-> > +    indio_dev->num_channels =3D ARRAY_SIZE(sdp500_channels);
-> > +
-> > +    ret =3D sdp500_start_measurement(data, indio_dev);
-> > +    if (ret)
-> > +        return dev_err_probe(dev, ret, "Failed to start measurement");
->
-> Blank line here would help readability a tiny bit.
->
-> > +    /* First measurement is not correct, read it out to get rid of it =
-*/
-> > +    i2c_master_recv(client, rxbuf, SDP500_READ_SIZE);
-> > +
-> > +    ret =3D devm_iio_device_register(dev, indio_dev);
-> > +    if (ret < 0)
-> > +        return dev_err_probe(dev, ret, "Failed to register indio_dev")=
-;
->
-> We rarely bother with error prints on failure to register as it is unlike=
-ly
-> to fail because of something that happened at runtime and if it does, tha=
-t
-> is easy to track down.  So I'd drop this print.
-> If you really want to keep it I don't mind that much.
->
-> > +
-> > +    return 0;
-> > +}
-> > +
-> > +static const struct i2c_device_id sdp500_id[] =3D {
-> > +    { "sdp500" },
-> > +    { }
-> > +};
-> > +MODULE_DEVICE_TABLE(i2c, sdp500_id);
-> > +
-> > +static const struct of_device_id sdp500_of_match[] =3D {
-> > +    { .compatible =3D "sensirion,sdp500" },
-> > +    { }
-> > +};
-> > +MODULE_DEVICE_TABLE(of, sdp500_of_match);
-> > +
-> > +static struct i2c_driver sdp500_driver =3D {
-> > +    .driver =3D {
-> > +        .name    =3D "sensirion,sdp500",
-> > +        .of_match_table =3D sdp500_of_match,
-> > +    },
-> > +    .probe       =3D sdp500_probe,
-> > +    .id_table    =3D sdp500_id,
-> I'd not bother with aligning =3D signs. It just tends to create noise
-> as drivers evolve and people try to keep things aligned (resulting in rea=
-ligning
-> everything).
->
-
-Good point. It does also bothers me when commits are muddied by
-realigning things.
-
-> > +};
-> > +module_i2c_driver(sdp500_driver);
-> > +
-> > +MODULE_AUTHOR("Thomas Sioutas <thomas.sioutas@prodrive-technologies.co=
-m>");
-> > +MODULE_DESCRIPTION("Driver for Sensirion SDP500 differential pressure =
-sensor");
-> > +MODULE_LICENSE("GPL");
->
-
-I will test the driver with the suggested changes as soon as I get the
-hardware again
-and I will try using the b4 tool with "web submission endpoint". Thanks aga=
-in!
+DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogSm9uYXRoYW4gQ2FtZXJv
+biA8amljMjNAa2VybmVsLm9yZz4NCj4gU2VudDogU2F0dXJkYXksIEp1bmUgOCwgMjAyNCA1OjA5
+IFBNDQo+IFRvOiBOdW5vIFPDoSA8bm9uYW1lLm51bm9AZ21haWwuY29tPg0KPiBDYzogTWljbGF1
+cywgQW50b25pdSA8QW50b25pdS5NaWNsYXVzQGFuYWxvZy5jb20+OyBMYXJzLVBldGVyIENsYXVz
+ZW4NCj4gPGxhcnNAbWV0YWZvby5kZT47IEhlbm5lcmljaCwgTWljaGFlbCA8TWljaGFlbC5IZW5u
+ZXJpY2hAYW5hbG9nLmNvbT47DQo+IFJvYiBIZXJyaW5nIDxyb2JoQGtlcm5lbC5vcmc+OyBLcnp5
+c3p0b2YgS296bG93c2tpIDxrcnprK2R0QGtlcm5lbC5vcmc+Ow0KPiBDb25vciBEb29sZXkgPGNv
+bm9yK2R0QGtlcm5lbC5vcmc+OyBsaW51eC1paW9Admdlci5rZXJuZWwub3JnOw0KPiBkZXZpY2V0
+cmVlQHZnZXIua2VybmVsLm9yZzsgbGludXgta2VybmVsQHZnZXIua2VybmVsLm9yZw0KPiBTdWJq
+ZWN0OiBSZTogW1BBVENIIHYyIDIvMl0gaWlvOiBmcmVxdWVuY3k6IGFkZjQzNTA6IGFkZCBjbGsg
+cHJvdmlkZXINCj4gDQo+IFtFeHRlcm5hbF0NCj4gDQo+IA0KPiA+ID4gK3N0YXRpYyBpbnQgYWRm
+NDM1MF9jbGtfcmVnaXN0ZXIoc3RydWN0IGFkZjQzNTBfc3RhdGUgKnN0KSB7DQo+ID4gPiArCXN0
+cnVjdCBzcGlfZGV2aWNlICpzcGkgPSBzdC0+c3BpOw0KPiA+ID4gKwlzdHJ1Y3QgY2xrX2luaXRf
+ZGF0YSBpbml0Ow0KPiA+ID4gKwlzdHJ1Y3QgY2xrICpjbGs7DQo+ID4gPiArCWNvbnN0IGNoYXIg
+KnBhcmVudF9uYW1lOw0KPiA+ID4gKwlpbnQgcmV0Ow0KPiA+ID4gKw0KPiA+ID4gKwlpZiAoIWRl
+dmljZV9wcm9wZXJ0eV9wcmVzZW50KCZzcGktPmRldiwgIiNjbG9jay1jZWxscyIpKQ0KPiA+ID4g
+KwkJcmV0dXJuIDA7DQo+ID4gPiArDQo+ID4gPiArCWluaXQubmFtZSA9IGRldm1fa2FzcHJpbnRm
+KCZzcGktPmRldiwgR0ZQX0tFUk5FTCwgIiVzLWNsayIsDQo+ID4gPiArCQkJCcKgwqAgZndub2Rl
+X2dldF9uYW1lKGRldl9md25vZGUoJnNwaS0NCj4gPmRldikpKTsNCj4gPiA+ICsJZGV2aWNlX3By
+b3BlcnR5X3JlYWRfc3RyaW5nKCZzcGktPmRldiwgImNsb2NrLW91dHB1dC1uYW1lcyIsDQo+ID4g
+PiArCQkJCcKgwqDCoCAmaW5pdC5uYW1lKTsNCj4gPiA+ICsNCj4gPiA+ICsJcGFyZW50X25hbWUg
+PSBvZl9jbGtfZ2V0X3BhcmVudF9uYW1lKHNwaS0+ZGV2Lm9mX25vZGUsIDApOw0KPiA+ID4gKwlp
+ZiAoIXBhcmVudF9uYW1lKQ0KPiA+ID4gKwkJcmV0dXJuIC1FSU5WQUw7DQo+ID4gPiArDQo+ID4g
+PiArCWluaXQub3BzID0gJmFkZjQzNTBfY2xrX29wczsNCj4gPiA+ICsJaW5pdC5wYXJlbnRfbmFt
+ZXMgPSAmcGFyZW50X25hbWU7DQo+ID4gPiArCWluaXQubnVtX3BhcmVudHMgPSAxOw0KPiA+ID4g
+Kw0KPiA+ID4gKwlzdC0+b3V0cHV0Lmh3LmluaXQgPSAmaW5pdDsNCj4gPiA+ICsJY2xrID0gZGV2
+bV9jbGtfcmVnaXN0ZXIoJnNwaS0+ZGV2LCAmc3QtPm91dHB1dC5odyk7DQo+ID4gPiArCWlmIChJ
+U19FUlIoY2xrKSkNCj4gPiA+ICsJCXJldHVybiBQVFJfRVJSKGNsayk7DQo+ID4gPiArDQo+ID4g
+PiArCXJldCA9IG9mX2Nsa19hZGRfcHJvdmlkZXIoc3BpLT5kZXYub2Zfbm9kZSwgb2ZfY2xrX3Ny
+Y19zaW1wbGVfZ2V0LA0KPiA+ID4gY2xrKTsNCj4gPiA+ICsJaWYgKHJldCkNCj4gPiA+ICsJCXJl
+dHVybiByZXQ7DQo+ID4gPiArDQo+ID4NCj4gPiBJIHRvdGFsbHkgYWdyZWUgdGhpcyBjaGlwIHNo
+b3VsZCBiZSBhIGNsb2NrIHByb3ZpZGVyIChtYXliZSBpdCBzaG91bGQNCj4gPiBldmVuIGluIGRy
+aXZlcnMvY2xrIGZyb20gdGhlIGJlZ2lubmluZykgYnV0IHRoZXJlJ3Mgb25lIHRoaW5nIHRoYXQg
+Y29tZXMgdG8NCj4gbXkgbWluZC4NCj4gPiBTaG91bGQgd2Ugc3RpbGwgZXhwb3NlIHRoZSBJSU8g
+dXNlcnNwYWNlIGludGVyZmFjZSBpbiBjYXNlIHdlIHJlZ2lzdGVyDQo+ID4gaXQgYXMgYSBjbG9j
+ayBwcm92aWRlcj8NCj4gDQo+IFRoYXQncyBhIHJlYXNvbmFibGUgc3VnZ2VzdGlvbi4gIElmIGl0
+J3Mgd2lyZWQgdXAgYXMgYSBjbG9jayB3ZSBwcm9iYWJseSBkb24ndA0KPiB3YW50IHRvIHByb3Zp
+ZGUgdXNlcnNwYWNlIGNvbnRyb2xzIHZpYSBJSU8uDQo+IA0KPiA+DQo+ID4gU3VyZSwgd2UgZG8g
+aGF2ZSBjbGsgbm90aWZpZXJzIGluIHRoZSBrZXJuZWwgYnV0IEkgc3RpbGwgdGhpbmsgaXQncyBh
+DQo+ID4gc2Vuc2libGUgcXVlc3Rpb24gOikNCj4gPg0KPiA+IEkgc3VzcGVjdCB3ZSBoYXZlIGFu
+b3RoZXIgIm91dGxpZXJzIiBpbiBkcml2ZXJzL2lpby9mcmVxdWVuY3kgOikNCj4gDQo+IFdlIGFs
+bCBsb3ZlIHRoZSBibHVycnkgYm91bmRhcmllcyBpbiB0aGUga2VybmVsLiBJSVJDIHdoZW4gdGhl
+c2Ugd2VyZQ0KPiBvcmdpbmFsbHkgcHJvcG9zZWQsIHRoZSBJSU8gdGhpbmcgd2FzIG1vc3RseSBh
+Ym91dCBob3cgdGhleSB3ZXJlIGJlaW5nDQo+IHVzZWQgaW4gU29mdHdhcmUgRGVmaW5lZCBSYWRp
+b3Mgd2hlcmUgdGhlIHdlcmUgcGFydCBvZiB0aGUgbW9kdWxhdG9yDQo+IGNpcmN1aXRzLg0KPiBJ
+IGNhbid0IHJlbWVtYmVyIHRoZSBleGFjdCByZWFzb25pbmcgdGhvdWdoLg0KPiANCj4gQXMgdG8g
+dGhlIHJpZ2h0IGFuc3dlciBmb3IgdGhlc2UgdG9kYXksIEkgZG9uJ3QgaGF2ZSBzdHJvbmcgZmVl
+bGluZ3Mgb24gaXQgYW5kDQo+IGFsbW9zdCBhbGwgdGhlc2UgcGFydHMgYXJlIEFESSBvbmVzLg0K
+PiANCj4gTWljaGFlbCwgdGhpcyBpcyBvbmUgb2YgeW91cnMsIHNvIHdoYXQgZG8geW91IHRoaW5r
+Pw0KDQpXZWxsLCBJIHRoaW5rIHRoZSBzaXR1YXRpb24gaGFzbid0IGNoYW5nZWQgbXVjaC4NClRo
+ZXJlIGFyZSB1c2VycyB3aGljaCB3YW50IHRvIGNvbnRyb2wgdGhlIExPIGZyZXF1ZW5jeSB1c2lu
+ZyBhIHVzZXIgc3BhY2UgQVBJLg0KQW5kIGp1c3QgbGlrZSB5b3UgcmVtZW1iZXJlZCwgYXMgYW4g
+SUYgZm9yIGFuIGV4dGVybmFsIG1peGVyLCBldGMuDQpWZXJ5IHNpbWlsYXIgdG8gYSBiZW5jaCB0
+b3Agc2lnbmFsIGdlbmVyYXRvci4NCkFuZCB0aGVyZSBpcyBubyB1c2VyIHNwYWNlIEFQSSBmb3Ig
+Q0NGLiBTbyBJSU8gcHJvdmlkZXMgdGhpcyBBUEkuDQpPbiB0aGUgb3RoZXIgc2lkZSB0aGVyZSBh
+cmUgdXNlcnMgd2hvIHdhbnQgdG8gdXNlIHN1Y2ggc3ludGhlc2l6ZXJzIGFzIHJlZ3VsYXINCklu
+IGtlcm5lbCBjbG9jayBwcm92aWRlcnMsIHRvbw0KDQpXZSBjb3VsZCBhZGQgYSBnZW5lcmljIEND
+RiB0byBJSU8gcHJveHkvYnJpZGdlLCBob3dldmVyIHRoZXNlDQpkZXZpY2VzIHdoaWNoIHNpdCBp
+biBJSU8gYWxzbyBoYXZlIGFkZGl0aW9uYWwgZnVuY3Rpb25hbGl0eSB3aGljaCBpc24ndCBhYnN0
+cmFjdGVkIGluIHRoZSBDQ0YuDQoNCkl0IHNvdW5kcyBzZW5zaWJsZSB0aGF0IHdoZW4gcmVnaXN0
+ZXJpbmcgYSBjbG9jayBwcm92aWRlciwgd3JpdGluZyBJSU9fQUxUVk9MVEFHRSByYXcgc2hvdWxk
+IHJldHVybiBFQlVTWS4NCkFsc28sIHdoZW4gaXQncyBhIENDRiBjbG9jayBjb25zdW1lciBzZXR0
+aW5nIHRoZSByZWZpbl9mcmVxdWVuY3kgc2hvdWxkIHJldHVybiBlcnJvci4NCiANCi1NaWNoYWVs
+DQoNCj4gDQo+IE9uIHRoYXQgbm90ZSwgZ2l2ZW4gdGhpcyBpcyBiYXNpY2FsbHkgcmVnaXN0ZXJp
+bmcgYXMgYSBjbG9jay5JJ2QgZXhwZWN0IHRvIHNlZQ0KPiBzb21lIGNsayByZWxhdGVkICtDQw0K
+PiANCj4gSm9uYXRoYW4NCj4gDQo+ID4NCj4gPiAtIE51bm8gU8OhDQo+ID4NCj4gPg0KDQo=
 

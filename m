@@ -1,178 +1,126 @@
-Return-Path: <linux-iio+bounces-6147-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6148-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB866902221
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 14:56:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1007D9022A6
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 15:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BD11281CAF
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 12:56:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06A451C215AE
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 13:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4496A8120D;
-	Mon, 10 Jun 2024 12:56:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CD482498;
+	Mon, 10 Jun 2024 13:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YEkQgnft"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NFhCXJB6"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676CC7FBA1;
-	Mon, 10 Jun 2024 12:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C252774048;
+	Mon, 10 Jun 2024 13:26:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718024203; cv=none; b=LwN4B1xYmzpu+oZt/UC35W8T7VKcUPFI/nHjPpO3t18krvgAdJfmFtw0f2dIdbyvDF32mMAwMd4bH3wkR+hvLVCX56aFes490r3RwmtaKpQhCOLcpgLRA22rJUfUjsXDcFchUlCaRRrXhpobIcKs87cQ7DM/RyqcFoihkKv8bDM=
+	t=1718025999; cv=none; b=fQNED1skjbJgaLweMHZFM6pRMGFHw2JqNjWHPf0iL900yqcG5mItZFcqP0mt3AYX6zAi/PrH+YwRd2YT+OgKqsiZPEq1qoL6xVh4Hbs6rPiYdftznjIpArG84Hd+OK2MDq8gP+3kJBJnQhbU+5m83GHUAOIOA3H0jzLvkLOIIfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718024203; c=relaxed/simple;
-	bh=2xYY/lQ1+aSL2j5RQQW3O4t0aAxsC6agFkFzSR1LvTI=;
+	s=arc-20240116; t=1718025999; c=relaxed/simple;
+	bh=H3dWE4h7KzfXVCEa/Qled2dPPQ8hF5yac7cYUe5gnqo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FuTVrmrf+B3WIPpN1Kgv1X0CKE3ewnqAxOphBdJUR19lwcqqiYnonvBleRhCHKStAWMBHAyTuDmtAZEcMCjJgPa4JsemOW2mcjH5CeFrqs4/G5RDRQHErOKwvWZnH49NyavIA6QDf/N18uqUNrjwQAbjBE9QDQhD31ziOgycYH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YEkQgnft; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718024202; x=1749560202;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2xYY/lQ1+aSL2j5RQQW3O4t0aAxsC6agFkFzSR1LvTI=;
-  b=YEkQgnft+x9dTys5ujSYLNUdNDeNDBCKrkVZtNa8PWyTqX/e0wIG6HzX
-   n7X1UBDi6b5JN4uydocnSEaBDrzcQFtkOVQAiZ8VAA1xD6aeAlOBgeEJd
-   mGTOCXQVv8TNvdxxYS8FUt88UZwavQe1qO9CFOOPGzKeFoHnbJgs6pJh4
-   smX9DGSFVeEDCA/HyQbIgG7JO3Y/hEptFW/tFS6KDcVHA22Oalu1AQnj5
-   sFaJjomyjWmX3vDQ2+sZuDPvA4obw/32iQb6MKjjEVmmmecfTaCWAJ/1j
-   XhCUisCIQNB1AOgQPznzB0Y5Ccqu1JZ1BOWwERy05BBF1BOthJf3YzBGM
-   w==;
-X-CSE-ConnectionGUID: 6Zjs/YNgSNOxp8SItcYbyQ==
-X-CSE-MsgGUID: M5w7oE5zRbm7d5RLgTi9yw==
-X-IronPort-AV: E=McAfee;i="6600,9927,11099"; a="14517439"
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; 
-   d="scan'208";a="14517439"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2024 05:56:41 -0700
-X-CSE-ConnectionGUID: nZFaa1IzS7CZXv2Fm7+Zkg==
-X-CSE-MsgGUID: zQt3uDrvSmiPQhaLSra/dg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,227,1712646000"; 
-   d="scan'208";a="38971919"
-Received: from lkp-server01.sh.intel.com (HELO 8967fbab76b3) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 10 Jun 2024 05:56:39 -0700
-Received: from kbuild by 8967fbab76b3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sGeZg-00029B-2M;
-	Mon, 10 Jun 2024 12:56:36 +0000
-Date: Mon, 10 Jun 2024 20:55:51 +0800
-From: kernel test robot <lkp@intel.com>
-To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
-	Matti Vaittinen <mazziesaccount@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] iio: bu27034: Add a read only HWARDWAREGAIN
-Message-ID: <202406102012.s3Qrfbm7-lkp@intel.com>
-References: <5e88c7b7b0389c6c011f15e05e065791f7561cf5.1718013518.git.mazziesaccount@gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=jX0mvBcclIZKg084m2EqZfc8HTsyumSGxUke5J6zISUEciRH4aElVSPobs0o+38Q9swryeLHprzeYUTF4LByAHgvX0/ld0rNjzp1hMmgQlY6a3Aj5/CK+u6Cxp708jBUiKwewRh7ba0JtpEYCgv34to3HUbEYdc7miz9GG1mGvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NFhCXJB6; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7041f4553ccso2256060b3a.1;
+        Mon, 10 Jun 2024 06:26:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718025997; x=1718630797; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4w4mgyCvqp0tpBFX3kdwj+Vb/Ib5BUa62dRD/0jFXbQ=;
+        b=NFhCXJB6uAClvhgXfAFP1O2ZnG4aJEbYR+mCqYMzbE29GYs7LsHCmt0uzN2JVDsf4K
+         anVFsB0XE0Jz1XE5tsjDlM5K0dH3NMhrJrL0AQPVDqi6auvIXQ3Urgu5pQC0yaDJBRkn
+         YL/BJUafSXcMv/UTxiELcOsWzWqyusknJyFs8eftQtDdIHXD5rpNSsoaayWzHAs3KA50
+         mygKMWI1MGRjFkhOGzoC3hLwhlP3hXf/hG9VOnimZKPDdhzrRajpjryXbIAB9vk+IHwP
+         +cpK0bviKW/1FKKTZEQMSKjkb0dpf5MGh1FryzeYhhzER1CmSp/QUUuT8dwxpW7q7c/e
+         qaog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718025997; x=1718630797;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4w4mgyCvqp0tpBFX3kdwj+Vb/Ib5BUa62dRD/0jFXbQ=;
+        b=aeSi+JNy2ajRJVCBp920rGcUfnt6si3d9i/0R2BseoZLfkOJ4MWbhZBAVJ2mmo1J00
+         DvIQv+BaAm4+CUQHbns8QgbnuEE5nl1zduw1sxKZ3jAIqT6CJrJ7MwGvn3olxHCBig0D
+         zHhh/goXaa3x2tELJ3sc7ZAM119MCwZH2WLZmghGwSNZ/eWo6K//LtLkULk22HPMP78I
+         KaRQoKa7AGr9pRU3M0TVykGoSqirOhbewMERLX4HcVdiYpHWKPWgpEaQZkIkqulKvywl
+         5aEESxCHnzY8YLmC4V1UdTdP9H/pQ1/Iete7OuPw/EqRQG+3dYwXsxC3fj5T5j5j8b5l
+         KI2w==
+X-Forwarded-Encrypted: i=1; AJvYcCVNEKE0Q+nuOU3bApbMML4eOFX9HDgVHnIvemsoW/8Jae2G3DxHrroGRGh+V4FVn7Arf8qExJepA1z+PizfnWnnqZ9/ewlSQJAw+xkRxoq5YYT1LjyGYsiLoDUrzw+eV+tS+NzLPUEJ
+X-Gm-Message-State: AOJu0YzRYjmvWZ5QTtsCpE5BIopIaB3Ty+a41LvdlJDxn7Kz3hFmEsQl
+	pGeXSSahMu1XzfnrMECABOiFHLft9c5prVP1zni/RP97+ZnagMwV
+X-Google-Smtp-Source: AGHT+IEYn0/Tj6kneNfxJv00f11r932nKku8RxAmGBKO9j89FxY6C2EL5jQg7ZmnPY/tdYL/uZAuiA==
+X-Received: by 2002:a05:6a21:789c:b0:1b5:fde3:a603 with SMTP id adf61e73a8af0-1b5fde3a727mr6025573637.20.1718025996777;
+        Mon, 10 Jun 2024 06:26:36 -0700 (PDT)
+Received: from joaog-nb (201-13-139-53.dial-up.telesp.net.br. [201.13.139.53])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70432004423sm2842682b3a.150.2024.06.10.06.26.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jun 2024 06:26:36 -0700 (PDT)
+Date: Mon, 10 Jun 2024 10:26:29 -0300
+From: =?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Francesco Dolcini <francesco@dolcini.it>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	=?utf-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: Re: [PATCH v2 2/2] iio: adc: ti-ads1119: Add driver
+Message-ID: <20240610132629.xjj32vzrekpl356w@joaog-nb>
+References: <20240606163529.87528-1-francesco@dolcini.it>
+ <20240606163529.87528-3-francesco@dolcini.it>
+ <20240609115234.20e08840@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <5e88c7b7b0389c6c011f15e05e065791f7561cf5.1718013518.git.mazziesaccount@gmail.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240609115234.20e08840@jic23-huawei>
 
-Hi Matti,
+Hi Jonathan,
 
-kernel test robot noticed the following build warnings:
+Thanks for the review!
 
-[auto build test WARNING on 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0]
+> > +
+> > +static int ads1119_validate_gain(struct ads1119_state *st, int scale, int uscale)
+> > +{
+> > +	int gain = 1000000 / ((scale * 1000000) + uscale);
+> > +
+> > +	switch (gain) {
+> > +	case 1:
+> > +	case 4:
+> > +		return gain;
+> Odd to calculate it if we don't need it
+> 		return MICRO / (scale * MICRO + uscale);
+> use constants as it's easy to drop a 0 in these without anyone noticing.
+>
+> > +	default:
+> > +		return -EINVAL;
+> > +	}
+> > +}
+> > +
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Matti-Vaittinen/bu27034-ROHM-BU27034NUC-to-BU27034ANUC/20240610-180426
-base:   1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
-patch link:    https://lore.kernel.org/r/5e88c7b7b0389c6c011f15e05e065791f7561cf5.1718013518.git.mazziesaccount%40gmail.com
-patch subject: [PATCH 2/2] iio: bu27034: Add a read only HWARDWAREGAIN
-config: i386-buildonly-randconfig-002-20240610 (https://download.01.org/0day-ci/archive/20240610/202406102012.s3Qrfbm7-lkp@intel.com/config)
-compiler: gcc-13 (Ubuntu 13.2.0-4ubuntu3) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240610/202406102012.s3Qrfbm7-lkp@intel.com/reproduce)
+Just a minor. I do use the calculated value on write_raw() by storing it as the
+new channel gain and would still need to validate it as scale/uscale comes from
+userspace. Maybe I can just remove the validate_gain function and do the check
+directly on write_raw(). What do you think?
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406102012.s3Qrfbm7-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from include/linux/device.h:15,
-                    from drivers/iio/light/rohm-bu27034.c:10:
-   drivers/iio/light/rohm-bu27034.c: In function 'bu27034_write_raw_get_fmt':
->> include/linux/dev_printk.h:138:20: warning: this statement may fall through [-Wimplicit-fallthrough=]
-     137 |         ({                                                              \
-         |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     138 |                 if (0)                                                  \
-         |                 ~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     139 |                         _dev_printk(level, dev, fmt, ##__VA_ARGS__);    \
-         |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     140 |         })
-         |         ~~          
-   include/linux/dev_printk.h:171:9: note: in expansion of macro 'dev_no_printk'
-     171 |         dev_no_printk(KERN_DEBUG, dev, dev_fmt(fmt), ##__VA_ARGS__)
-         |         ^~~~~~~~~~~~~
-   drivers/iio/light/rohm-bu27034.c:1055:17: note: in expansion of macro 'dev_dbg'
-    1055 |                 dev_dbg(data->dev,
-         |                 ^~~~~~~
-   drivers/iio/light/rohm-bu27034.c:1057:9: note: here
-    1057 |         default:
-         |         ^~~~~~~
-
-
-vim +138 include/linux/dev_printk.h
-
-af628aae8640c2 Greg Kroah-Hartman 2019-12-09   99  
-ad7d61f159db73 Chris Down         2021-06-15  100  /*
-ad7d61f159db73 Chris Down         2021-06-15  101   * Need to take variadic arguments even though we don't use them, as dev_fmt()
-ad7d61f159db73 Chris Down         2021-06-15  102   * may only just have been expanded and may result in multiple arguments.
-ad7d61f159db73 Chris Down         2021-06-15  103   */
-ad7d61f159db73 Chris Down         2021-06-15  104  #define dev_printk_index_emit(level, fmt, ...) \
-ad7d61f159db73 Chris Down         2021-06-15  105  	printk_index_subsys_emit("%s %s: ", level, fmt)
-ad7d61f159db73 Chris Down         2021-06-15  106  
-ad7d61f159db73 Chris Down         2021-06-15  107  #define dev_printk_index_wrap(_p_func, level, dev, fmt, ...)		\
-ad7d61f159db73 Chris Down         2021-06-15  108  	({								\
-ad7d61f159db73 Chris Down         2021-06-15  109  		dev_printk_index_emit(level, fmt);			\
-ad7d61f159db73 Chris Down         2021-06-15  110  		_p_func(dev, fmt, ##__VA_ARGS__);			\
-ad7d61f159db73 Chris Down         2021-06-15  111  	})
-ad7d61f159db73 Chris Down         2021-06-15  112  
-ad7d61f159db73 Chris Down         2021-06-15  113  /*
-ad7d61f159db73 Chris Down         2021-06-15  114   * Some callsites directly call dev_printk rather than going through the
-ad7d61f159db73 Chris Down         2021-06-15  115   * dev_<level> infrastructure, so we need to emit here as well as inside those
-ad7d61f159db73 Chris Down         2021-06-15  116   * level-specific macros. Only one index entry will be produced, either way,
-ad7d61f159db73 Chris Down         2021-06-15  117   * since dev_printk's `fmt` isn't known at compile time if going through the
-ad7d61f159db73 Chris Down         2021-06-15  118   * dev_<level> macros.
-ad7d61f159db73 Chris Down         2021-06-15  119   *
-ad7d61f159db73 Chris Down         2021-06-15  120   * dev_fmt() isn't called for dev_printk when used directly, as it's used by
-ad7d61f159db73 Chris Down         2021-06-15  121   * the dev_<level> macros internally which already have dev_fmt() processed.
-ad7d61f159db73 Chris Down         2021-06-15  122   *
-ad7d61f159db73 Chris Down         2021-06-15  123   * We also can't use dev_printk_index_wrap directly, because we have a separate
-ad7d61f159db73 Chris Down         2021-06-15  124   * level to process.
-ad7d61f159db73 Chris Down         2021-06-15  125   */
-ad7d61f159db73 Chris Down         2021-06-15  126  #define dev_printk(level, dev, fmt, ...)				\
-ad7d61f159db73 Chris Down         2021-06-15  127  	({								\
-ad7d61f159db73 Chris Down         2021-06-15  128  		dev_printk_index_emit(level, fmt);			\
-ad7d61f159db73 Chris Down         2021-06-15  129  		_dev_printk(level, dev, fmt, ##__VA_ARGS__);		\
-ad7d61f159db73 Chris Down         2021-06-15  130  	})
-ad7d61f159db73 Chris Down         2021-06-15  131  
-c26ec799042a38 Geert Uytterhoeven 2024-02-28  132  /*
-c26ec799042a38 Geert Uytterhoeven 2024-02-28  133   * Dummy dev_printk for disabled debugging statements to use whilst maintaining
-c26ec799042a38 Geert Uytterhoeven 2024-02-28  134   * gcc's format checking.
-c26ec799042a38 Geert Uytterhoeven 2024-02-28  135   */
-c26ec799042a38 Geert Uytterhoeven 2024-02-28  136  #define dev_no_printk(level, dev, fmt, ...)				\
-c26ec799042a38 Geert Uytterhoeven 2024-02-28  137  	({								\
-c26ec799042a38 Geert Uytterhoeven 2024-02-28 @138  		if (0)							\
-c26ec799042a38 Geert Uytterhoeven 2024-02-28  139  			_dev_printk(level, dev, fmt, ##__VA_ARGS__);	\
-c26ec799042a38 Geert Uytterhoeven 2024-02-28  140  	})
-c26ec799042a38 Geert Uytterhoeven 2024-02-28  141  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Regards,
+João Paulo Gonçalves
 

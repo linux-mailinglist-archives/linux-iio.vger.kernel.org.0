@@ -1,123 +1,141 @@
-Return-Path: <linux-iio+bounces-6138-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6139-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0678A901BDD
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 09:24:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2FCF901BF2
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 09:35:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9552EB20EEC
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 07:24:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80EAF283430
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 07:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71874225CE;
-	Mon, 10 Jun 2024 07:24:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D09C224CC;
+	Mon, 10 Jun 2024 07:35:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BtQVAgUl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZCKzm/+Y"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F991879;
-	Mon, 10 Jun 2024 07:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5559E63C7;
+	Mon, 10 Jun 2024 07:35:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718004256; cv=none; b=MnLZcHVPN4t6QPTj6cQYBgli70b8L62Ps9b/j6eUZAN42An1/Wo3VQEaWVUVx81P202pNK6GiLe+aDFQIkJMIKQ+ovgCPT4wVdRLNQl+IBnLf4xtoizLG8ggc5Xb7Z7bN5PmJ1dR00RYqvn3wkQ40Ib7IL84cVPZ7K8lXNa/lbY=
+	t=1718004948; cv=none; b=EHxn8LcgVUVnVJQ1rpMowhfYB6mJdrVTwDJYcBiSLLtVq24812EZjruLG8Kjk3tXXVp2o2/QGmhdt4aOreVoPcZuUlt/VMIEtSf3e6dq09mu3GYW+TctkBkW2jqEpGz/NXd4Yi/7qSH1ZTMTu7mIqRyo3fa+E9JW7tEbE+PZjv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718004256; c=relaxed/simple;
-	bh=XtV6J/C3mIYUKJcRToCoRtSjZ3qY6JritvP2gPzIkEA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=dmpideH5XDKGPcgujv9lEB+L66EBrjHhdeJOGq2qBcg+JbXXIF4rI0T7Fv5MBQgX6K38PwkqvTaA/4Ddbz1Bqet7u9jHV7xzYwv+pA6ZxQV5ssTwiC31fPJbX1YTyZ1ksSHORaRPdgDkoGgrjps1yaXv1FfMmsiNqR0sKXx89aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BtQVAgUl; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-57c778b5742so1015200a12.2;
-        Mon, 10 Jun 2024 00:24:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718004253; x=1718609053; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XtV6J/C3mIYUKJcRToCoRtSjZ3qY6JritvP2gPzIkEA=;
-        b=BtQVAgUl1/JjVcmB1/BtxuriFcNXA3qSocEFZfhizybDJuxddxjbdxOeomdPQm6JrB
-         7B+L+0ynqMcA9863ol8a5DW3JzbSNI1jxHlxmas16mrISLrXCZcWoGLYfzBSSNlahm7w
-         mtZq5oIyKMhXBP86YsdsdZg9AFBPJdyr6gQGu+Kpn1agSeNbdZVK8vsGI6SScD7Pbaba
-         mz0OEZ3nty3A9vbKlcOLTNs6AdsUhCcC5a3jZ3SY7N1JVWr1wFsXPzaETLX4LklH7tBb
-         rbQrTXyiFmJiO5oIFChmr31OlBdhag0evlgKIM8o8rXfq1BnvqMiQcbkJM5oSrFl3BOH
-         BH+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718004253; x=1718609053;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XtV6J/C3mIYUKJcRToCoRtSjZ3qY6JritvP2gPzIkEA=;
-        b=rhocM5FWP3qao6mDzI5UNDKOUs2ynu9ALAfrgI5dhp8Csm5u50xPaoCEobBBrtkQsh
-         lTqMxVUYVO9IJbQIIZoa+Qm7vFimg0O65E6Oqet3SFRKGDRLALdGkQXjtqVeAE6kU42V
-         X+1fdicnNH3RhMuiItRC40zBCH0fREZm3D5CdYlmiZ8J3KggTeZbI9VLb7h1ioTylcUx
-         Uj7ckNMq0fjpMb4F+9DfJNgOZ2HjA3JZmSH3xVH2tLNhnBOCviLlMkNMdi+HZiyu4oae
-         FP7CgXXXAPBxveSOUCuyzjN9vEIZQoHqcDQb7Fq1W5vyQgVDTpp5FccdgSS2GUTbiVT5
-         D5Bg==
-X-Forwarded-Encrypted: i=1; AJvYcCV9JUTwdc+3O9be1yYgX9o8j/aRz22j/503hCf9b42dJ5G/wkwIritpclqf24BcVC5NrZ0AXd37/irnjM+zwjgZ/dinGm17GXci6BDEmcsmB22jVNxBJUfqEb/Iw4g5Ps98eD9v4KWh5rzRiKde940vJQQxuMKX1ZBf+Rjd+3pOcjiujQ==
-X-Gm-Message-State: AOJu0Yzt9vT8FU0n0K15N4pkqhFp2/7yoFUlIdxHWENSFoRULbDGOSeN
-	Ts5bEWCi5Fyddpi+fo+yLZA51l/m0MZpY+T890LjZdVLAh7k4d1f
-X-Google-Smtp-Source: AGHT+IFNULR5iskJcWTenAl84kcjQZ9t99Alkh3XL1fQkK0jffBxjeNagzKGw89BtWcwSVw3S1StFQ==
-X-Received: by 2002:a50:96d2:0:b0:57c:8027:534d with SMTP id 4fb4d7f45d1cf-57c802753e7mr1297420a12.27.1718004251571;
-        Mon, 10 Jun 2024 00:24:11 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57aae103483sm7024525a12.43.2024.06.10.00.24.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Jun 2024 00:24:11 -0700 (PDT)
-Message-ID: <59d603b930d5943a89618dff23156fa318252fc4.camel@gmail.com>
-Subject: Re: [PATCH v7 9/9] iio: adc: ad7173: Add support for AD411x devices
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: dumitru.ceclan@analog.com
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski
- <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>,
- David Lechner <dlechner@baylibre.com>,  linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org,  linux-kernel@vger.kernel.org, Dumitru Ceclan
- <mitrutzceclan@gmail.com>
-Date: Mon, 10 Jun 2024 09:27:59 +0200
-In-Reply-To: <20240607-ad4111-v7-9-97e3855900a0@analog.com>
-References: <20240607-ad4111-v7-0-97e3855900a0@analog.com>
-	 <20240607-ad4111-v7-9-97e3855900a0@analog.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 
+	s=arc-20240116; t=1718004948; c=relaxed/simple;
+	bh=f6xNCJInzwwc6J3blEhD9YRdX/urTk6EYS9v+XsIGYw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=b6zH0qPxHyZC5+LsnnVg5YZZbHB8SkpiZJqeEmXz1Mp0CLrRdfRj9TXuhogHRBpNLUdkJhogQtDuOzsi1qgRyV6eE3WSQekAqEEomfCKki3AmUISP/lRJGG97a+sdk5yAo/+nAoqzkDXu/k1Lv2/dUx06ZThP/cun93L4UEEt3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCKzm/+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C74C2BBFC;
+	Mon, 10 Jun 2024 07:35:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718004947;
+	bh=f6xNCJInzwwc6J3blEhD9YRdX/urTk6EYS9v+XsIGYw=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZCKzm/+YE5tqBCK0O0TzEQcGC3ztan10KMmMDgeXTCX5EtLQ7uXkNe2m5Hu+TNnOv
+	 hdUmSsuuKCzGph/5MRRZCkzvtb2i+VC0VruIuZPyQ5oEULSK+rrkXr4Vey5mXIat1i
+	 1Ilfl0pmhnHzESkMu3JRor7OLzNkkQ9bOExaE5IBelRRq73LRNS057sm5LAvwF/S2g
+	 XjGSoQkCqHflcbhkzC1q+foKR9SNL9HfzY2vdvBwxT75PEuBDbonbb1W618G45nUWl
+	 qxLXltf1XEKUjRlg/MGNjn9uSYco1fHgQpUPVK0wWdnW6HmIy3m7yY/hWanMTj3Xzl
+	 iPRKVq2bo+6XQ==
+Message-ID: <f8afafff-1fc5-416f-aca0-b284a02a6e37@kernel.org>
+Date: Mon, 10 Jun 2024 09:35:41 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/2] dt-bindings:iio:proximity: Add hx9023s binding
+To: Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org
+Cc: andy.shevchenko@gmail.com, lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nuno.a@analog.com, swboyd@chromium.org,
+ u.kleine-koenig@pengutronix.de, yasin.lee.x@gmail.com
+References: <20240607114138.390272-1-yasin.lee.x@outlook.com>
+ <SN7PR12MB810129D8180B1C9593A8E078A4FB2@SN7PR12MB8101.namprd12.prod.outlook.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <SN7PR12MB810129D8180B1C9593A8E078A4FB2@SN7PR12MB8101.namprd12.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 2024-06-07 at 17:53 +0300, Dumitru Ceclan via B4 Relay wrote:
-> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
->=20
-> Add support for AD4111/AD4112/AD4114/AD4115/AD4116.
->=20
-> The AD411X family encompasses a series of low power, low noise, 24-bit,
-> sigma-delta analog-to-digital converters that offer a versatile range of
-> specifications.
->=20
-> This family of ADCs integrates an analog front end suitable for processin=
-g
-> both fully differential and single-ended, bipolar voltage inputs
-> addressing a wide array of industrial and instrumentation requirements.
->=20
-> - All ADCs have inputs with a precision voltage divider with a division
-> =C2=A0 ratio of 10.
-> - AD4116 has 5 low level inputs without a voltage divider.
-> - AD4111 and AD4112 support current inputs (0 mA to 20 mA) using a 50ohm
-> =C2=A0 shunt resistor.
->=20
-> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-> ---
+On 07/06/2024 13:41, Yasin Lee wrote:
+> From: Yasin Lee <yasin.lee.x@gmail.com>
+> 
+> A capacitive proximity sensor
+> 
+> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
 
-LGTM,
+Not much improved. You still ignored feedback. Please respond to each
+feedback and acknowledge it.
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Please use scripts/get_maintainers.pl to get a list of necessary people
+and lists to CC. It might happen, that command when run on an older
+kernel, gives you outdated entries. Therefore please be sure you base
+your patches on recent Linux kernel.
 
+Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+people, so fix your workflow. Tools might also fail if you work on some
+ancient tree (don't, instead use mainline), work on fork of kernel
+(don't, instead use mainline) or you ignore some maintainers (really
+don't). Just use b4 and everything should be fine, although remember
+about `b4 prep --auto-to-cc` if you added new patches to the patchset.
+
+You missed at least devicetree list (maybe more), so this won't be
+tested by automated tooling. Performing review on untested code might be
+a waste of time, thus I will skip this patch entirely till you follow
+the process allowing the patch to be tested.
+
+Please kindly resend and include all necessary To/Cc entries.
+
+Best regards,
+Krzysztof
 
 

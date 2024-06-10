@@ -1,74 +1,63 @@
-Return-Path: <linux-iio+bounces-6150-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6151-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AECC59022CA
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 15:41:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F14DD90231E
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 15:53:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A64F2855E6
-	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 13:41:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED7841C222C2
+	for <lists+linux-iio@lfdr.de>; Mon, 10 Jun 2024 13:53:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34134824BC;
-	Mon, 10 Jun 2024 13:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005C7157E74;
+	Mon, 10 Jun 2024 13:44:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XNFnJczH"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Z7NC400z"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC92B74048
-	for <linux-iio@vger.kernel.org>; Mon, 10 Jun 2024 13:40:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0A04157A49;
+	Mon, 10 Jun 2024 13:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718026861; cv=none; b=NB7TYReYnmnQf11zn7rXifH67dYA3dpirH8qMBgb9WsUvgzmn8kvz1nJ2nvgaHP6rqlU7vQ24PQIVsvkK9lFu5RVfmYofu01skelQ/vW6ZBWkXpijxV7qHvetWYAvmcbuBThY9lxJCxpog189ps7sBGEzj8DG1o1Z9nRV9u0vj4=
+	t=1718027055; cv=none; b=qp88rAj7KRZEI3yj0WMJLiwtnWqpTH0jcFWf4bxcrYqB1RNi186adkbaJNNGhgkTbd+Kd2zKXfb/npBWlunL4F+Xluo/WokZqmKjYEE+ml+fqlTIi5a2UcpF51TjKNtDzzhrOrPWaob4P62Do8l5O4iN8fwMrVwkKaiGnvJ8Tl0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718026861; c=relaxed/simple;
-	bh=IHIUW+O5SruheAsKXKeG18KB+xoYjtu8WU6lClaG8FQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gBirEb0Wm6wBNVpHmg4qEZSyorj8MPW2LOda5snBp5Zc85Hi7+u7fO5Gd+OHbA0MAyigH9uOla+toh6kJURMQN0eriZuAxSe1YlEcQqGbStTDhDgOwqG2OoEWpgfF/xJBXWOmL4bCc+RLA1WelOZOsj8spY5ulud94TRKmEmWLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XNFnJczH; arc=none smtp.client-ip=209.85.160.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-250c0555a63so2154495fac.1
-        for <linux-iio@vger.kernel.org>; Mon, 10 Jun 2024 06:40:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718026858; x=1718631658; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=xDG2nxV8ZPl1b2CwR6DrsnQRSq1ctUVW1/oMRxru1WE=;
-        b=XNFnJczH39p79SDaOOFwm5ejocyi2jZsJZHWPJ2Mo1cilAEhCuZ+GfPda5/45O5cxL
-         +vVBNzZ3tUCKIASqrdowmJ9LhAYlHDzvLfuDC7oYtK1Z7cLEILHXCagZ2rQhUER264+N
-         P0rEHsYiLGUETZUVFTfUVDpTCOQBoCp4YeZTGY25PpOUm/klNyA9+yMnr2+kfR6yB7QT
-         Yken7LjsqxjamG6N1FhsAQJ0KsfAgolaKee6YlOOAVuNUIS3iG2qtFCN/v7zkR3P791m
-         7sNHhGBSacJw1X2xbGQbMV8cgdomKwRbiATnFtqxB0BlM2d7vjIBBw0e6nPBqxSqs9mq
-         AWSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718026858; x=1718631658;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xDG2nxV8ZPl1b2CwR6DrsnQRSq1ctUVW1/oMRxru1WE=;
-        b=P13hvR+W/UiFDgNaVMtIjVz1h43CSO4WSRTeK9wSIbrC0YmoL2RbH6+Wb3gFT3FlkB
-         Alsrc7ssmsiV5+awwPgN6wD5o44j5qM2YaxQVTlErLDOA5fU/fo1sWgzAvZODLF13+m3
-         pcra6gIBhplGMW287j2vvXMWgHla8qHT/5BynjdjeHN97feWGDDdx/+k9YEYA3jW+6lu
-         xutPVH06NUpT97Ga9iJWLseKbj/ePnxlEm6RxPlXVYz5ACMvruPKCHi+AbaABlH6uOZC
-         alIYzcyKU0JXTZ3o4lxUy8T07fxrcsXy1LKjimYGXZIqNpQuJkej6bBY0MYIWCWJ2dbK
-         9tmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZPIWPP21UFzMe8dWOu3VF4IDEDb+zfyyWXx06TzVgXJ6n409Ab7vfbFr3jTp9emWoM1FjUhwMspHAj7CTbZYV7yua4EypDIQx
-X-Gm-Message-State: AOJu0Yw/Unho0zlvaHV/mlyt8563d+V7uygpxQ8WFcKwqI2HvI+icWx5
-	BI71LMmcDNcQ0b75z4hyJWJoVGyM2V51kI3CfG/uJKBU83fnqE1LzsruiJ6R39g=
-X-Google-Smtp-Source: AGHT+IFYTklYQEGqN5Rpab7SF59DyTOKjZknIHz49GqfApCvhPO/U+G5aBhz8l4Aqt4IgLOznMG/Kg==
-X-Received: by 2002:a05:6871:608:b0:254:ca65:1ed3 with SMTP id 586e51a60fabf-254ca6536efmr2782598fac.2.1718026857755;
-        Mon, 10 Jun 2024 06:40:57 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-254d7f33351sm259822fac.46.2024.06.10.06.40.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jun 2024 06:40:57 -0700 (PDT)
-Message-ID: <adc6cba9-2e79-475f-9c24-039fe9d3345d@baylibre.com>
-Date: Mon, 10 Jun 2024 08:40:56 -0500
+	s=arc-20240116; t=1718027055; c=relaxed/simple;
+	bh=6whD5BlfPkc/QXVawZYc6zaMAcHZDXkfeq80yqWQhFI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=EDtvC97M9ijiwUMvPqzrgzf0m4KBBeCzcsVHjZv8cTeCbcyR0mdlO24aDIA9wDtue0hEz8SdI1LTB9cG5/hhheWjp4pbDgNGbOq5gJQhwLzjOW+uTa2m10EhKkIRso/COqcLWzWIJ3fdJzK8FjaWs6olW9K714KzpMYvK4zd3eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Z7NC400z; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 45ADi9xj027827;
+	Mon, 10 Jun 2024 08:44:09 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1718027049;
+	bh=vXTNQpYiFCEGscRvW5gsaNUTZPm4hZbQ7RlNRX5SwOg=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=Z7NC400zQSneRRg3jYzLhE0gmiJObRspKLkJWwL++nI8k/PI1g/+c/gGpYkDkRaMz
+	 Wchxe/byMX/ktu2fvO+bzsnlj33JnQRGuBTPMc5wotjoDlB7iRz6x0aThj0HH5jZei
+	 4vApvXwmgO+iPhI0fXhu4rYLp4LLBGdzHnEMkyFM=
+Received: from DLEE105.ent.ti.com (dlee105.ent.ti.com [157.170.170.35])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 45ADi97k030826
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 10 Jun 2024 08:44:09 -0500
+Received: from DLEE105.ent.ti.com (157.170.170.35) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 10
+ Jun 2024 08:44:08 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE105.ent.ti.com
+ (157.170.170.35) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Mon, 10 Jun 2024 08:44:08 -0500
+Received: from [128.247.81.105] (judy-hp.dhcp.ti.com [128.247.81.105])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 45ADi8T7018764;
+	Mon, 10 Jun 2024 08:44:08 -0500
+Message-ID: <c08d2d51-e2e1-4b68-a4fb-ebf3a919c1b8@ti.com>
+Date: Mon, 10 Jun 2024 08:44:08 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,95 +65,73 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 0/9] Add support for AD411x
-To: dumitru.ceclan@analog.com
-Cc: Lars-Peter Clausen <lars@metafoo.de>,
- Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
- Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Conor Dooley <conor.dooley@microchip.com>, Nuno Sa <nuno.sa@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20240607-ad4111-v7-0-97e3855900a0@analog.com>
+Subject: Re: [PATCH] counter: ti-eqep: enable clock at probe
+To: David Lechner <dlechner@baylibre.com>,
+        William Breathitt Gray
+	<wbg@kernel.org>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20240609-ti-eqep-enable-clock-v1-1-1e9e7626467e@baylibre.com>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20240607-ad4111-v7-0-97e3855900a0@analog.com>
-Content-Type: text/plain; charset=UTF-8
+From: Judith Mendez <jm@ti.com>
+In-Reply-To: <20240609-ti-eqep-enable-clock-v1-1-1e9e7626467e@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-On 6/7/24 9:53 AM, Dumitru Ceclan via B4 Relay wrote:
-> This patch series adds support for the Analog Devices AD4111, AD4112,
->  AD4114, AD4115, AD4116 within the existing AD7173 driver.
+Hi David,
+
+On 6/9/24 3:27 PM, David Lechner wrote:
+> The TI eQEP clock is both a functional and interface clock. Since it is
+> required for the device to function, we should be enabling it at probe.
 > 
->   The AD411X family encompasses a series of low power, low noise, 24-bit,
-> sigma-delta analog-to-digital converters that offer a versatile range of
-> specifications. They integrate an analog front end suitable for processing
-> fully differential/single-ended and bipolar voltage inputs.
+> Up to now, we've just been lucky that the clock was enabled by something
+> else on the system already.
 > 
-> Particularities of the models:
-> - All ADCs have inputs with a precision voltage divider with a division
-> ratio of 10.
-> - AD4116 has 5 low level inputs without a voltage divider.
-> - AD4111 and AD4112 support current inputs (0 mA to 20 mA) using a 50ohm
-> shunt resistor.
-> 
-> Discussions from this patch series have concluded with:
-> -Datasheets mention single-ended and pseudo differential capabilities by
->  the means of connecting the negative input of a differential pair (IN-)
->  to a constant voltage supply and letting the positive input fluctuate.
->  This is not a special operating mode, it is a capability of the
->  differential channels to also measure such signals.
-> 
-> -Single-ended and pseudo differential do not need any specific
->  configuration and cannot be differentiated from differential usage by
->  the driver side =>
-> 	offer adi,channel-type attribute to flag the usage of the channel
-> 
-> -VINCOM is described as a dedicated pin for single-ended channels but as
->  seen in AD4116, it is a normal input connected to the cross-point
->  multiplexer (VIN10, VINCOM (single-ended or differential pair)).
->  This does not mean full functionality in any configuration:
->  AD4111:"If any two voltage inputs are paired in a configuration other
->  than what is described in this data sheet, the accuracy of the device
->  cannot be guaranteed".
-> 
-> -ADCIN15 input pin from AD4116 is specified as the dedicated pin for
->  pseudo-differential but from the datasheet it results that this pin is
->  also able to measure single-ended and fully differential channels
->  ("ADCIN11, ADCIN15. (pseudo differential or differential pair)";
->   "An example is to connect the ADCIN15 pin externally to the AVSS
->    pin in a single-ended configuration")
-> 
->  As such, detecting the type of usage of a channel is not possible and
-> will be the responsibility of the user to specify.
->  If the user has connected a non 0V (in regards to AVSS) supply to
-> the negative input pin of a channel in a pseudo differential
-> configuration, the offset of the measurement from AVSS will not be known
-> from the driver and will need to be measured by other means.
-> 
-> Datasheets:
-> https://www.analog.com/media/en/technical-documentation/data-sheets/AD4111.pdf
-> https://www.analog.com/media/en/technical-documentation/data-sheets/AD4112.pdf
-> https://www.analog.com/media/en/technical-documentation/data-sheets/AD4114.pdf
-> https://www.analog.com/media/en/technical-documentation/data-sheets/AD4115.pdf
-> https://www.analog.com/media/en/technical-documentation/data-sheets/AD4116.pdf
-> 
-> This series depends on patches:
-> (iio: adc: ad7173: Use device_for_each_child_node_scoped() to simplify error paths.)
-> https://lore.kernel.org/all/20240330190849.1321065-6-jic23@kernel.org
-> (dt-bindings: iio: adc: Add single-channel property)
-> https://lore.kernel.org/linux-iio/20240514120222.56488-5-alisa.roman@analog.com/
-> 
-> And patch series:
-> (AD7173 fixes)
-> https://lore.kernel.org/all/20240521-ad7173-fixes-v1-0-8161cc7f3ad1@analog.com/
-> 
-> Signed-off-by: Dumitru Ceclan <mitrutzceclan@gmail.com>
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
 > ---
+>   drivers/counter/ti-eqep.c | 6 ++++++
+>   1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/counter/ti-eqep.c b/drivers/counter/ti-eqep.c
+> index 072b11fd6b32..825ae22c3ebc 100644
+> --- a/drivers/counter/ti-eqep.c
+> +++ b/drivers/counter/ti-eqep.c
+> @@ -6,6 +6,7 @@
+>    */
+>   
+>   #include <linux/bitops.h>
+> +#include <linux/clk.h>
+>   #include <linux/counter.h>
+>   #include <linux/kernel.h>
+>   #include <linux/mod_devicetable.h>
+> @@ -376,6 +377,7 @@ static int ti_eqep_probe(struct platform_device *pdev)
+>   	struct counter_device *counter;
+>   	struct ti_eqep_cnt *priv;
+>   	void __iomem *base;
+> +	struct clk *clk;
+>   	int err;
+>   
+>   	counter = devm_counter_alloc(dev, sizeof(*priv));
+> @@ -415,6 +417,10 @@ static int ti_eqep_probe(struct platform_device *pdev)
+>   	pm_runtime_enable(dev);
+>   	pm_runtime_get_sync(dev);
+>   
+> +	clk = devm_clk_get_enabled(dev, NULL);
+> +	if (IS_ERR(clk))
 
-Reviewed-by: David Lechner <dlechner@baylibre.com>
+I think it would be nice to have print here in case the we fail to get
+the clock.
 
+~ Judith
+
+> +		return dev_err_probe(dev, PTR_ERR(clk), "failed to enable clock\n");
+> +
+>   	err = counter_add(counter);
+>   	if (err < 0) {
+>   		pm_runtime_put_sync(dev);
+> 
+> ---
+> base-commit: bb3f1c5fc434b0b177449f7f73ea9b112b397dd1
+> change-id: 20240609-ti-eqep-enable-clock-91697095ca81
 
 

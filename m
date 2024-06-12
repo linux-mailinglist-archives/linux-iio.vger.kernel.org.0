@@ -1,277 +1,209 @@
-Return-Path: <linux-iio+bounces-6185-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6186-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F09C3904B53
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 08:07:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D804904DB1
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 10:10:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6567228421D
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 06:07:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC4521F2155A
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 08:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0EC413C682;
-	Wed, 12 Jun 2024 06:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8232E16D4D3;
+	Wed, 12 Jun 2024 08:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m/KRC5yP"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="CX073G+2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34C9137760;
-	Wed, 12 Jun 2024 06:07:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A20CB16C843
+	for <linux-iio@vger.kernel.org>; Wed, 12 Jun 2024 08:09:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718172427; cv=none; b=j6Z9bcTrv11eQlh+RDTuPo/z7uDv+NWqUOwvzfvi/y90jLRWiWCCh3spUBevI16DbvaB2ZT5rgYj98//m1IZ8q+gOnR324+HdwFyuDOCHtuhza5IhbmkLbnH5Bp9xwqZ85qSDyECWETLmnhoI16dlmq6qw+rbPpOU/GfoXm80gU=
+	t=1718179763; cv=none; b=h3T2+/oy5sXbje1dT27SyLLUAamTnEkMJHvKMEuZKJj3u0Kv6B2jvyznljrWuk4jGxPCjavGrE3i4Jy/8WrtWsgzfkm2I1gDQ2+qIaNA5MwGwX+peFHrdzEqVPQdccPz/vMKMLaueycnSWcH9BUbByrWgC4e2Ju0bkTTufcL4f0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718172427; c=relaxed/simple;
-	bh=V+VtcDKehDg+XGeapL2ycNNuuLj1XBVLl3z15ff2BMM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bdOweSHxKXCc2fzWPXoXqJQf1OyYJFgDdCoz59FXsS9qc+IHdLTbzqYIrdoVRNuumdCl+Aj2gSwJyzXRKdPcCT9xkG8UNHTTX07QNzptTc8RV6lP0FmRRxKgpGfGHcr8gHeb44ApapDGogDgq6AdX/KSrXN0IhNiksps9vniHXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m/KRC5yP; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-52c815e8e9eso3839698e87.0;
-        Tue, 11 Jun 2024 23:07:05 -0700 (PDT)
+	s=arc-20240116; t=1718179763; c=relaxed/simple;
+	bh=8sIAZSlf4WuNaF1daREKewN6nBaPdnh2z9v++bC1Sxg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=asHGJ26VZqpxD6aT8vyk0HcyIjJoINzsSeRaMXSkQgzMPoMQougN/GIKrAxzUtX+rtSMdMC5xikf/CxM02MG8c4AN6h0iFcC8/8yyUFJYyPz6YARLfTFDOffeqzKW1V5tta3RluP3D4D71u6XfKIzteWPRMFVSLMHZDZ3ZDqq/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=CX073G+2; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a62ef52e837so806740166b.3
+        for <linux-iio@vger.kernel.org>; Wed, 12 Jun 2024 01:09:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718172424; x=1718777224; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=G+MuZO7Xor+xkcjHeUgTwAiU3h8NYp0iOQXXGvr4MDM=;
-        b=m/KRC5yP33zqzlJJeUZEI40HJBTVklsYb7lZVSSccEm8LOKvOYNnjF+4oPGUlHWa4g
-         FQ29M/fLySUxU7PcKzlsiqKTBpa5eWNPc3F1OYsNf9DIMG+a8ZzDHm62SW743wg5Bxek
-         vJo77KtnMY37FbITOWRdd0wZWWD7UZMaqnxBwMEYyCn8Zk2JdrEUMIxZkkN6fOuWeWaD
-         BE7XoYHR0a7070veXs+DZrkJJlsOaR2DXxnQZBHEIJesSvJnp+e68ooogFwzIBuD3cwI
-         ZVUFyvDwd556eq0k+bpAacCeLbUUG4MdneODl3JvrNDQ4+ABVAsne2sQhtCsL60oU3aS
-         UUPw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718179758; x=1718784558; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RKb/vtoIHaAuT7eS6tdIIVHB4rHiCLnX6z8pJYSRJNs=;
+        b=CX073G+2J4UrWr0g5jkZCykyavT78RLczvO3pdB12x4v/McT4EoyEo47UQawEISB5j
+         E+Nvo0mjwJW2YOGeYTL7X9wQwh2cDbcnyCjMKJtpoWGtF6bD3jc1HpqQD6FGvKmEaV/o
+         1f44AmHNGQ5YlFOMjQyPzedQeCDR+GdRM065VRVB3S+54BY8n6b7XQLb2Lc/PVevEm5u
+         dFTnwxCLhn/hFmYBb40raW/JPpxnC9DOrZGQ6MnnEVWiUDzBkORZPSO0hDH88qyMx5ml
+         T3VPmOBdnyhMBDtvozmJDZdMq2/nUkrwZx6o8IhBxhEXwiabyY3GFvH7O2cLeef7x3sj
+         i3ew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718172424; x=1718777224;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G+MuZO7Xor+xkcjHeUgTwAiU3h8NYp0iOQXXGvr4MDM=;
-        b=CtDHCCtkIadLPV685yb0MBZGsLIFED31Bqt8kREVq2CFPNXZh/f2Pks8/vaOPpUSYV
-         KxoVi6CwmpQe+4rrLotQJ12f0KYPnX1QCx4U4Ssvy5UGTVxir5f5PRuKn5Eq0RyBOgU9
-         Fdy84tUDk3xUilhJPf4w1hZVPrTrKHEFjDZT0eD5T+U3VIzQk78Xp+I5ETO9RmM7kfC2
-         wjYvMQxfFM5v2uYvsLr16E7l5vSq/3zc75tA0irl6cYK4bE4xcyJdtL9RZ8mlzrcg/ki
-         iEbla4mXPc0EmoBSM9hSKCFVPrvg++P7T03HKDJYUe69IdpnoMKsMm0C1MT1bLv5vqJE
-         EQQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVGrw4EHYattsMUtfTdH7rXjONQOVdQJ/JKnoTdlloajuxD++nHX70cx0mzCXudOgD0IvrtST5Z8xXfv4bFauEaZwX+yQY7XOmi7Vniv1d5bT1UDinYhyRAnscg7Wdc6rbP0XoCoTO12tMZ+r3ghH+TpRBQV9bz0Lzbc3h1NFPVpEKt+A==
-X-Gm-Message-State: AOJu0YzYunD0Yzt4b0T3RBB/K/1tmSA8oJy7VV8t8SfWQSApuCrAR3WW
-	/ugVac4/KA4hErsWxL8FztqyAhkN4aDatZqZLvu/OIeww0/aGhNL
-X-Google-Smtp-Source: AGHT+IH681YlFGeuqiX78zzXEw57ln5oqtxrcjvcxxRLHyWBpNRp9Piq4PLI9snx3C29hUPSeQFXeQ==
-X-Received: by 2002:a05:6512:401c:b0:52c:910b:9c87 with SMTP id 2adb3069b0e04-52c9a3df0f2mr497275e87.36.1718172423352;
-        Tue, 11 Jun 2024 23:07:03 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd? ([2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52c9690f0fbsm364943e87.56.2024.06.11.23.07.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 11 Jun 2024 23:07:02 -0700 (PDT)
-Message-ID: <c9c0d585-617d-4181-afa2-c5743848f5c9@gmail.com>
-Date: Wed, 12 Jun 2024 09:07:01 +0300
+        d=1e100.net; s=20230601; t=1718179758; x=1718784558;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RKb/vtoIHaAuT7eS6tdIIVHB4rHiCLnX6z8pJYSRJNs=;
+        b=a5EzLFNkkFjtCndAzTImAH+6LluAkOwVKEv4DW5rGhmAratxPpOYTUNu7keQEqLcts
+         GKrkDstNc06Qr1FCKKIARNAirhT98HP90AIKOSCruYeoFsbcX8MYE5oo7OidLvdTacDB
+         +M+GY3s24cUQgzeLZuwh1q2sgSgWg8QtkQiGuPfWXH2Wm458iBkCMPyM6AOrQXYgfFZo
+         lndqGCWKiIRNszQBpO26WlLWuAZeQrW2uSXdEhQ4yiOUy1/qkrUFIyXu5dliIhqbZyJD
+         aeWopRHlDv+isDHTdlQTb+F/1VygO9yvJuo17SBuAkU9TTIZD1OXsTK9YRQtASXi+9rX
+         ruJA==
+X-Forwarded-Encrypted: i=1; AJvYcCULkXmOqarR8N19AAPyiGOcNI0wroid/TS1uypy7SKpqyb9md4DXr5lRGgnuwWn3lPWOat9UH2gJSJjZvvg4I/E76tKU26+w5JB
+X-Gm-Message-State: AOJu0YzMt96H0Hu9OsTlZIXS9dZIm+asWpGb+n3vs1cGlEjh+B+VHxXk
+	U9QybJL76Wm/WwZBlSCQP959MM2hHLmFwK81qTi3OIgQdsJ/9N1YRqNHh1z39Uk=
+X-Google-Smtp-Source: AGHT+IEyUqS7xeGpS62654NQBM20ZnTsaBaQtVWFbZpKweR38cT7xpNYg2DKAqfcljsV5Jo8GYnSxQ==
+X-Received: by 2002:a17:906:3c47:b0:a6f:1c38:3370 with SMTP id a640c23a62f3a-a6f47fad6b3mr75793666b.36.1718179757867;
+        Wed, 12 Jun 2024 01:09:17 -0700 (PDT)
+Received: from localhost (p509153eb.dip0.t-ipconnect.de. [80.145.83.235])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f16427842sm439552466b.100.2024.06.12.01.09.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Jun 2024 01:09:16 -0700 (PDT)
+Date: Wed, 12 Jun 2024 10:09:15 +0200
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
+To: Trevor Gamblin <tgamblin@baylibre.com>
+Cc: Lucas Stankus <lucas.p.stankus@gmail.com>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+	Jonathan Cameron <jic23@kernel.org>, Dmitry Rokosov <ddrokosov@sberdevices.ru>, 
+	Cosmin Tanislav <cosmin.tanislav@analog.com>, Chen-Yu Tsai <wens@csie.org>, 
+	Hans de Goede <hdegoede@redhat.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Saravanan Sekar <sravanhome@gmail.com>, 
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
+	Crt Mori <cmo@melexis.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
+Subject: Re: [RESEND][PATCH] iio: simplify with regmap_set_bits(),
+ regmap_clear_bits()
+Message-ID: <6grkkioyfqvjy37ztevbs7lbkhc4yfvvomwk7jx5qjmrsdihir@mlluicav2cvs>
+References: <20240611165214.4091591-1-tgamblin@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] iio: light: ROHM BH1745 colour sensor
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
- Mudit Sharma <muditsharma.info@gmail.com>, lars@metafoo.de,
- krzk+dt@kernel.org, conor+dt@kernel.org, robh@kernel.org,
- ivan.orlov0322@gmail.com, javier.carrasco.cruz@gmail.com,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org,
- "Haikola, Heikki" <Heikki.Haikola@fi.rohmeurope.com>,
- "Mutanen, Mikko" <Mikko.Mutanen@fi.rohmeurope.com>
-References: <20240606162948.83903-1-muditsharma.info@gmail.com>
- <20240606162948.83903-2-muditsharma.info@gmail.com>
- <20240608172227.17996c75@jic23-huawei>
- <CANhJrGM9czj0RL3OLCgRHEKc2QOjG9P0AZTrZxvYUk65TCpHRg@mail.gmail.com>
- <20240611181407.00003f61@Huawei.com>
-Content-Language: en-US, en-GB
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240611181407.00003f61@Huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="kp4epuvmx3jkqhoq"
+Content-Disposition: inline
+In-Reply-To: <20240611165214.4091591-1-tgamblin@baylibre.com>
 
-On 6/11/24 20:14, Jonathan Cameron wrote:
-> On Mon, 10 Jun 2024 08:58:44 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
-> 
->> la 8. kesäk. 2024 klo 19.22 Jonathan Cameron (jic23@kernel.org) kirjoitti:
->>>
->>> On Thu,  6 Jun 2024 17:29:42 +0100
->>> Mudit Sharma <muditsharma.info@gmail.com> wrote:
->>>   
->>>> Add support for BH1745, which is an I2C colour sensor with red, green,
->>>> blue and clear channels. It has a programmable active low interrupt
->>>> pin. Interrupt occurs when the signal from the selected interrupt
->>>> source channel crosses set interrupt threshold high or low level.
->>>>
->>>> This driver includes device attributes to configure the following:
->>>> - Interrupt pin latch: The interrupt pin can be configured to
->>>>    be latched (until interrupt register (0x60) is read or initialized)
->>>>    or update after each measurement.
->>>> - Interrupt source: The colour channel that will cause the interrupt
->>>>    when channel will cross the set threshold high or low level.
->>>>
->>>> This driver also includes device attributes to present valid
->>>> configuration options/values for:
->>>> - Integration time
->>>> - Interrupt colour source
->>>> - Hardware gain
->>>>   
->>
->>>> +
->>>> +#define BH1745_CHANNEL(_colour, _si, _addr)                                   \
->>>> +     {                                                                     \
->>>> +             .type = IIO_INTENSITY, .modified = 1,                         \
->>>> +             .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),                 \
->>>> +             .info_mask_shared_by_type = BIT(IIO_CHAN_INFO_HARDWAREGAIN) | \
->>>
->>> Provide _SCALE instead of HARDWAREGAIN
->>> As it's an intensity channel (and units are tricky for color sensors given
->>> frequency dependence etc) all you need to do is ensure that if you halve
->>> the _scale and measure the same light source, the computed
->>> _RAW * _SCALE value remains constant.
->>
->> ...Which is likely to cause also the integration time setting to
->> impact the SCALE.
->>
->> You may or may not want to see the GTS-helpers
->> (drivers/iio/industrialio-gts-helper.c) - which have their own tricky
->> corners. I think Jonathan once suggested to me to keep the
->> HARDWAREGAIN as a read-only attribute to ease seeing what is going on.
->> For the last couple of days I've been reworking the BU27034 driver to
->> work with the new sensor variant - and I can definitely see the value
->> of the read-only HARDWAREGAIN when we have per channel gain settings +
->> integration time setting which all contribute to the scale...
-> 
-> I'm wondering if that was good advice, but it's definitely better
-> than letting userspace control the gain and integration time separately
 
-I woke up last night at 03.14 AM thinking of this :rolleyes:
+--kp4epuvmx3jkqhoq
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> as there is no sensible way to know how to control that beyond -
+Hi Trevor,
 
-I agree and disagree :)
-I agree that it is simpler to just change the scale when readings get 
-saturated - or when more accuracy is needed. Hence, implementing the 
-scale change as is done now makes very much sense.
+On Tue, Jun 11, 2024 at 12:52:06PM -0400, Trevor Gamblin wrote:
+> Simplify the way regmap is accessed in iio drivers.
+>=20
+> Instead of using regmap_update_bits() and passing the mask twice, use
+> regmap_set_bits().
+>=20
+> Instead of using regmap_update_bits() and passing val =3D 0, use
+> regmap_clear_bits().
+>=20
+> Suggested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+> ---
+> CC list got suppressed on first submission, so resending. Sorry about
+> that.
+>=20
+>  drivers/iio/accel/adxl313_core.c              |   4 +-
+>  drivers/iio/accel/adxl313_spi.c               |   4 +-
+>  drivers/iio/accel/fxls8962af-core.c           |  18 ++--
+>  drivers/iio/accel/kxsd9.c                     |   6 +-
+>  drivers/iio/accel/msa311.c                    |   6 +-
+>  drivers/iio/adc/ad4130.c                      |   4 +-
+>  drivers/iio/adc/axp20x_adc.c                  |   5 +-
+>  drivers/iio/adc/axp288_adc.c                  |   4 +-
+>  drivers/iio/adc/bcm_iproc_adc.c               |   8 +-
+>  drivers/iio/adc/berlin2-adc.c                 |  24 ++---
+>  drivers/iio/adc/cpcap-adc.c                   |  44 +++-----
+>  drivers/iio/adc/fsl-imx25-gcq.c               |  16 ++-
+>  drivers/iio/adc/ina2xx-adc.c                  |   3 +-
+>  drivers/iio/adc/intel_mrfld_adc.c             |   4 +-
+>  drivers/iio/adc/meson_saradc.c                | 101 ++++++++----------
+>  drivers/iio/adc/mp2629_adc.c                  |  19 ++--
+>  drivers/iio/adc/qcom-spmi-rradc.c             |  50 +++++----
+>  drivers/iio/adc/rn5t618-adc.c                 |   5 +-
+>  drivers/iio/adc/sc27xx_adc.c                  |  41 ++++---
+>  drivers/iio/adc/stm32-dfsdm-adc.c             |  29 +++--
+>  drivers/iio/dac/ltc2688.c                     |   5 +-
+>  drivers/iio/dac/stm32-dac-core.c              |   5 +-
+>  drivers/iio/gyro/bmg160_core.c                |   4 +-
+>  drivers/iio/gyro/mpu3050-core.c               |  33 +++---
+>  drivers/iio/health/afe4403.c                  |   9 +-
+>  drivers/iio/health/afe4404.c                  |   9 +-
+>  drivers/iio/health/max30100.c                 |   5 +-
+>  drivers/iio/health/max30102.c                 |   5 +-
+>  .../imu/inv_icm42600/inv_icm42600_buffer.c    |  14 ++-
+>  .../iio/imu/inv_icm42600/inv_icm42600_core.c  |   9 +-
+>  .../iio/imu/inv_icm42600/inv_icm42600_i2c.c   |   4 +-
+>  .../iio/imu/inv_icm42600/inv_icm42600_spi.c   |   4 +-
+>  drivers/iio/light/adux1020.c                  |  13 ++-
+>  drivers/iio/light/iqs621-als.c                |   4 +-
+>  drivers/iio/light/isl29018.c                  |   6 +-
+>  drivers/iio/light/st_uvis25_core.c            |   4 +-
+>  drivers/iio/light/veml6030.c                  |   4 +-
+>  drivers/iio/magnetometer/ak8974.c             |  11 +-
+>  drivers/iio/magnetometer/mmc35240.c           |   8 +-
+>  drivers/iio/pressure/bmp280-core.c            |   4 +-
+>  drivers/iio/proximity/sx9324.c                |   5 +-
+>  drivers/iio/proximity/sx9360.c                |   5 +-
+>  drivers/iio/proximity/sx9500.c                |  12 +--
+>  drivers/iio/proximity/sx_common.c             |   9 +-
+>  drivers/iio/temperature/mlx90632.c            |   4 +-
+>  drivers/iio/trigger/stm32-timer-trigger.c     |  34 +++---
+>  46 files changed, 273 insertions(+), 351 deletions(-)
 
-However, I can imagine that sometimes the measurement time plays a role 
-- and people would like to have more fine grained control over things. 
-In that case, if driver only allows changing things via the scale, then 
-the driver is probably doing autonomous choices regarding the 
-integration time - which may not be optimal for all cases (*citation 
-needed).
+I found five more drivers below drivers/iio that could benefit from such
+a conversion:
 
-As you may remember, I implemented the ROHM RGB and ALS sensors (the 
-BU270xx series) so that the integration time can be set as well as the 
-gain. These sensors (at least the BU27034, don't remember all the dirty 
-details of the RGB sensors) had per-channel gain and a global 
-integration time settings. Hence, the scale can be set separately for 
-each channel. I invented a restriction that setting the per-channel 
-scale tried to maintain the integration time and change the gain - but 
-if it was not possible, the scale change changes also the integration 
-time in order to yield the desired scale.
+ drivers/iio/adc/ad7173.c                      |  2 +-
+ drivers/iio/adc/ti-ads1298.c                  | 13 ++++++-------
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c    |  4 ++--
+ drivers/iio/imu/inv_mpu6050/inv_mpu_trigger.c |  8 ++++----
+ drivers/iio/light/veml6075.c                  |  4 ++--
+ 5 files changed, 15 insertions(+), 16 deletions(-)
 
-Problem was that the integration time was a global setting, and changing 
-it for one channel results scale change also on the other channel(s).
+But even without addressing these:
 
-To mitigate such side-effects I implemented logic that the scale change 
-for other channels (caused by the integration time change) is 
-compensated by changing the gain for these unrelated channels. Eg, if 
-scale change for channel #1 required doubling the integration time - 
-which effectively doubled the "gain contributed by integration time" 
-also for the channel #2 and #3 - then the HARDWAREGAIN for the unrelated 
-channels #2 and #3 is halved in order to keep their scale unchanged. Great.
+Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
 
-Except that this is not always possible. The HWGAIN for these unrelated 
-channels may have been already set to the other extreme, and further 
-reducing/increasing is not possible. Or, there may be unsupported 
-multipliers (gaps) in the gain range, so that setting the hardwaregain 
-to required value is not possible.
+Thanks for picking up my suggestion,
+Uwe
 
-Here I just decided to return an error to caller and disallow such scale 
-change.
+--kp4epuvmx3jkqhoq
+Content-Type: application/pgp-signature; name="signature.asc"
 
-This is very much annoying solution but I ran out of good ideas. Adding 
-more logic to the driver to work around this felt like asking for a 
-nose-bleed. I was sure I ended up adding a bug or two, and resulting 
-code that was so hairy I could never look at it again :) We can call 
-that as an unmaintainable mess.
+-----BEGIN PGP SIGNATURE-----
 
-Still, what makes this even more annoying is that it might be possible 
-to support the requested scale by selecting yet another integration 
-time. Eg, imagine a situation where we have 2 channels. Both channels 
-support gains
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmZpV6cACgkQj4D7WH0S
+/k5HtQf/VeZ8OLgNz7dXrFmR7AQ9UOUpW7yE/aNJ/0jp+/7SKFUid8kLelq2CIon
+ZVEOQoxGVhsBhSmzwJGvZf6cOMAu4nWRuACbap5soHOv/ycOA3QIKizvIGt1TEEh
+0/VqnqKzkXb9oxxMVSpN3tbFXRuYlvx7+jpdDVoguOBsVI5jeZb+AXseQscpy/nt
+qD1t26pVyaJH3/Rhp0912HRYo6zsvpSCWJ/IssmngcMCXSnCjNUYK8mWeQX+QG47
+rd6Yx/Q79PT6dB778e1LYvrOx5QTfFUe1NjjNJP+SjJH8mHE8CRBLdBXAVQJGfMf
+tXTZy24yn6DSipC1sqLciFOAvQns1A==
+=/peH
+-----END PGP SIGNATURE-----
 
-1x, 2x, 8x, 16x, 32x. 4x is not supported.
-
-Let's further say we have integration times 50mS 100mS, 200mS, 400mS - 
-causing "effective gains" 1x, 2x, 4x and, 8x
-
-Now, say channel #1 is using gain 2x, channel #2 is using 8x. 
-Integration time is set to 400mS.
-
-Assume the user would like to double the scale for channel #2. This 
-means the "total gain" should be halved. The HWGAIN can't be halved 
-because 8x => 4x is not supported, so driver decides to drop the 
-integration time from 400mS to 200mS instead. That'd do the trick.
-
-Then the driver goes to check if the channel #1 can maintain the scale 
-with this integration time. Gain caused by integration time is now 
-halved so HWGAIN for channel #1 should be doubled to mitigate the 
-effect. Well, the new gain for channel #1 should now go from 2x => 4x - 
-which is not supported, and the driver returns error and rejects the change.
-
-Still, the hardware could be set-up to use integration time 50mS 
-(dropping the gain for channels from 8x => 1x eg. 8 times smaller), and 
-channel #2 HWGAIN go from 8x => 2x (4 times smaller) thus doubling the 
-scale. The channel #1 wants to maintain scale, so HWGAIN for channel #1 
-should go 8 times greater, from 2x => 16x which is possible.
-
-To make this even more annoying - the available_scales lists the 'halved 
-scale' for the channel #1 as supported because there is a way to achieve 
-it. So, the user can't really easily figure out what went wrong. Having 
-the read-only HARDWAREGAIN and knowing the gains sensor's channels 
-support would give a hint - but this is far from obvious. listing the 
-supported hardwaregains might make things a bit better - but using the 
-standard "available" entry in sysfs might make user to assume setting 
-the hardwaregain is possible.
-
-We may invent a new entry to list the supported hardwaregains - and I 
-believe adding the logic to find supported gain-timing combinations is 
-then easier (and less error-prone) in user-land applications than it is 
-in driver - but I am wondering if it actually would be better just allow 
-setting both the hardwaregain and integration time individually for 
-those applications which may care... Well, I am probably just missing 
-some culprit supporting setting the hardwaregain causes.
-
-I believe there are many use-cases where it would work if we just 
-allowed the channel #1 scale to change as a side-effect of changing 
-channel #1 scale. Still, I am very reluctant to do this as there could 
-be different type of data coming from these channels, and different 
-consumers for this data. Allowing another application to unintentionally 
-change the data for other app would in my opinion be very nasty.
-
-The problem is not exactly urgent though and I am not working on an 
-application suffering from it. But it managed to interrupt my glymphatic 
-system while it was cleaning-up my brains last night. I will use it as 
-an excuse if you find any errors from this babbling :)
-
-Yours
-	-- Matti
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
-
+--kp4epuvmx3jkqhoq--
 

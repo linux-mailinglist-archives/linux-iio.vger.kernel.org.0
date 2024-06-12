@@ -1,90 +1,125 @@
-Return-Path: <linux-iio+bounces-6187-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6188-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EFAA904E24
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 10:28:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BED4904E33
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 10:34:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F18352881BC
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 08:28:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E7931F281E6
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 08:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 493F516C852;
-	Wed, 12 Jun 2024 08:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E67167D98;
+	Wed, 12 Jun 2024 08:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b="GBuFBZew"
+	dkim=pass (2048-bit key) header.d=melexis.com header.i=@melexis.com header.b="RXtpudb5"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from www530.your-server.de (www530.your-server.de [188.40.30.78])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f44.google.com (mail-oo1-f44.google.com [209.85.161.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EBBA16C6AF
-	for <linux-iio@vger.kernel.org>; Wed, 12 Jun 2024 08:28:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.40.30.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EBFA16C86D
+	for <linux-iio@vger.kernel.org>; Wed, 12 Jun 2024 08:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718180913; cv=none; b=pRWyj1L3b2yZ2bbKAdUOjwXpsKtKioAC83LjZM4LtzICdSACvLOmNkQl6KYUMBvjKb1XyCcQdrdx9s5kPNQbHJ9sWWg3FGAeCtDh7BUE9eAXknz4hxVeEXqbP/DIq0k7w3Xejkj63Uh/CYUsvWyzSP5Z7K0+Mh5pf4jfWVuykzc=
+	t=1718181260; cv=none; b=te5mSDIqNsNupodS3oSKbJHfkFDaIlLH7Nt2fbZBou6R8qLtjqP0VqmwUmUINyMK94K62vPl3yxyNKQAH3EPMzyU6pLVORUGVAL62Z+TFGAxRM7mOF8+0UudB18Wz4z+SrX7kNBm1O6+WPW2rB4nOkHp53c/YQ6JQ6NEzzTLB9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718180913; c=relaxed/simple;
-	bh=wqGfPq096rEmemBBkOminRw+GODXRpj40ayCnZziQOU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=tDzDcx/UIBrxQdHdZm0EbG7DFGzWEnJ85JUvfft4EM571j/2C/LveKcTm+RZwYUYto6T5EJWP2LjVTStHrEihhdp2PUNfjkjXET7Afmx4xvf6UL5lRIhoduWet52Osg3CXwvG3ckqTNqQXwP5W879J1frYzLYXZailFxEEMd0kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com; spf=pass smtp.mailfrom=geanix.com; dkim=pass (2048-bit key) header.d=geanix.com header.i=@geanix.com header.b=GBuFBZew; arc=none smtp.client-ip=188.40.30.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=geanix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=geanix.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=geanix.com;
-	s=default2211; h=Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date
-	:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References; bh=wqGfPq096rEmemBBkOminRw+GODXRpj40ayCnZziQOU=; b=GB
-	uFBZewE4QI6OYoN/D/HSywt50ybo76+ZWPB98mDqY2By2CQuW8zi7FWYj47jCSklIoWBmaYv++Qhf
-	nNa8Nu8kAWFAYru6k+1HfK5QjLi+VNfCaaWljO1tDaJOsut7msyFqFNToKyssQDYhX2t/dOfApNVL
-	q6XN5pG8008Ft/z1SUc2wzwyCwBH6KD54kitDr8ajTCjDU3IMvSKZJdTHL1XAvTmOA4XRJ9DK3DKv
-	1Af31mrzCJvhCDf2wjUe/VWhaqVBmDEBFpbdI/EWSy31UAafpjSvI/vGstNItTts7W1TUY8QNJqGZ
-	wLo9lBTDKzfjifQG+g4oj7qO3HzqhwEA==;
-Received: from sslproxy03.your-server.de ([88.198.220.132])
-	by www530.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sean@geanix.com>)
-	id 1sHJLE-0004Ii-JM; Wed, 12 Jun 2024 10:28:21 +0200
-Received: from [185.17.218.86] (helo=Seans-MacBook-Pro.local)
-	by sslproxy03.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <sean@geanix.com>)
-	id 1sHJLA-000D9Q-1h;
-	Wed, 12 Jun 2024 10:28:20 +0200
-Date: Wed, 12 Jun 2024 10:28:20 +0200
-From: Sean Nyekjaer <sean@geanix.com>
-To: Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
-	inv.git-commit@tdk.com
-Cc: Jonathan Cameron <jic23@kernel.org>, linux-iio@vger.kernel.org
-Subject: inv_icm42600: icm42670
-Message-ID: <7s6uxp3luxdenurhh5kcgsrokiawtrlzn2krqphotoeuir5xol@yqhbztxiv6by>
+	s=arc-20240116; t=1718181260; c=relaxed/simple;
+	bh=GRlEpNQ1vOAfspdoLRmjbH1WiL/9+2xtBIbJoKzaPig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iWlGlRYqR/CKtx/rqBwiNkd9zaPWIFsTckmpLMjXQnvOPlRJLWYCx/qZOptKqEvpKMoDcsHji0zAATTXmvQ2PUMoHbY++UCu7xz8GovMMTQjz6gtkeiDvMX/ykKilRfylVupNr7X33IU7xd80eS56x7JZhY1YHHpJfmpPhan6zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=melexis.com; spf=pass smtp.mailfrom=melexis.com; dkim=pass (2048-bit key) header.d=melexis.com header.i=@melexis.com header.b=RXtpudb5; arc=none smtp.client-ip=209.85.161.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=melexis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=melexis.com
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-5bb36de2171so421526eaf.2
+        for <linux-iio@vger.kernel.org>; Wed, 12 Jun 2024 01:34:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=melexis.com; s=google; t=1718181258; x=1718786058; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GRlEpNQ1vOAfspdoLRmjbH1WiL/9+2xtBIbJoKzaPig=;
+        b=RXtpudb5gcux6vLZNizkC1Gi0nVRGEOvoDc844hMyv3Q++DWuwEnhSH8BbSE52Sz75
+         Toz9zvItgfCkXXy30UuJGo/+t0lTs856wbTi+0d0YuoQtnO6+JL9zPF8hTUIGHulpuG7
+         j9XO1cFnaFTCkSzETrlEGvRuEtBHJi8s+tTjAmvwpqP/oqOvYrXN2/gTauCcuq6Jd2QA
+         Y5y3fUFikO9ii/vR/8cZwvoWf3God26upWWTcsmfya2moEWHmneKBp35Jxp18QazRueE
+         or8KRbvnKoLdTtQ9KLxMb+C0wvRsXz2HjBtlTnLNvT5I7vQl20DOsy5kACXuv84mE5vE
+         cZtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718181258; x=1718786058;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GRlEpNQ1vOAfspdoLRmjbH1WiL/9+2xtBIbJoKzaPig=;
+        b=OcZG3K6rlBmu9HXUTi6PGE5Uy8O3joOAk5jXtmgHq+7gQ0WlQCAZ+8aF27d1BTxib7
+         bkgJk6JMZYZQnnJfCwiMSG7+97S7aviKJCSke/y5bPM2OakfmWYvnfqEepS8YRB//Q8R
+         avUCfD/zzLrtRoq3XSuH23WFoTMQbXZ7+y82fW9znoRpy4EIlt2oo70OQF6/sRB2mdhq
+         ZTqIZ8Yj3roLADs6BYWra+2z329sUg/DJzIn+mc9b80fI1Vq/cOpWRGrJtkz/yA25fgr
+         xC67hFgdaPE++wk9r1GKj9o5L5W4fL5zkOuz/suNfiRntVmg5HkspXUmpyKN68IN1VF0
+         WPwQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVlcE7aUGDvPxO48a2zzdPVVFVkqraGVHaKrASnhNuGiMeveZXclpCu5wEJmUMCFr9R+2iJLL/gZjngTl3O/e+j1AUKNlqPE/si
+X-Gm-Message-State: AOJu0YyeP3wnmfJxv4xX+KQXOSbUrOI/JVMUQs1NVb35jVC0R4hJuyLO
+	v92h6kzKKN8NYhshdUk5TbB7DhZFM7MQQAUhZPmaWFBf4wrt1o9uI24XCDjW++GtPoLFGH7Pr4e
+	4eQ5WoMkhed2C3R8wUywoTRqHXPVu58sJ+U+d
+X-Google-Smtp-Source: AGHT+IF2c1FL0fqOMuwGFXItue1Pz8K0VY5CQ9QXgEnYWVlMd7GYFa+wcDzIz9YylVcb2zSif5XgvNLrC8xGpqwxyEQ=
+X-Received: by 2002:a05:6870:b625:b0:250:7973:8092 with SMTP id
+ 586e51a60fabf-25514ef5f86mr1113389fac.56.1718181257361; Wed, 12 Jun 2024
+ 01:34:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-X-Authenticated-Sender: sean@geanix.com
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27303/Tue Jun 11 10:26:09 2024)
+References: <20240611165214.4091591-1-tgamblin@baylibre.com>
+In-Reply-To: <20240611165214.4091591-1-tgamblin@baylibre.com>
+From: Crt Mori <cmo@melexis.com>
+Date: Wed, 12 Jun 2024 10:33:40 +0200
+Message-ID: <CAKv63usQDFuz9s06GNTq=3fzYm-OVPAxgxwxTNEw6zw2rYxyig@mail.gmail.com>
+Subject: Re: [RESEND][PATCH] iio: simplify with regmap_set_bits(), regmap_clear_bits()
+To: Trevor Gamblin <tgamblin@baylibre.com>
+Cc: Lucas Stankus <lucas.p.stankus@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>, 
+	Michael Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Dmitry Rokosov <ddrokosov@sberdevices.ru>, Cosmin Tanislav <cosmin.tanislav@analog.com>, 
+	Chen-Yu Tsai <wens@csie.org>, Hans de Goede <hdegoede@redhat.com>, Ray Jui <rjui@broadcom.com>, 
+	Scott Branden <sbranden@broadcom.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Shawn Guo <shawnguo@kernel.org>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Fabio Estevam <festevam@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Saravanan Sekar <sravanhome@gmail.com>, 
+	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	Chunyan Zhang <zhang.lyra@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, =?UTF-8?B?TnVubyBTw6E=?= <nuno.sa@analog.com>, 
+	Linus Walleij <linus.walleij@linaro.org>, 
+	Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@baylibre.com>, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, 
+	linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi all,
+For mlx90632 part
+Acked-by: Crt Mori <cmo@melexis.com>
 
-I got a custom board with the TDK icm42670 fitted. We thought is was a
-simple ID add, but I was somewhat wrong.
-Many registers are on different addresses and so on.
+Thanks for the update.
 
-I have done some work in the st_lsm6dsx, that includes many different
-imu devices from the same family.
-But the driver is kinda hard to read because of that.
-
-So is it better to do a new driver called icm42670 or should we do the
-same style as the st_lsm6dsx?
-
-@TDK
-Do you have done some work for the icm42670?
-
-/Sean
+On Tue, 11 Jun 2024 at 18:52, Trevor Gamblin <tgamblin@baylibre.com> wrote:
+>
+> Simplify the way regmap is accessed in iio drivers.
+>
+> Instead of using regmap_update_bits() and passing the mask twice, use
+> regmap_set_bits().
+>
+> Instead of using regmap_update_bits() and passing val =3D 0, use
+> regmap_clear_bits().
+>
+> Suggested-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+> ---
+> CC list got suppressed on first submission, so resending. Sorry about
+> that.
+>
 

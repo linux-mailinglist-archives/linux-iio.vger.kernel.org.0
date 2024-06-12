@@ -1,133 +1,173 @@
-Return-Path: <linux-iio+bounces-6215-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6216-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0019058E7
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 18:37:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FCE79058E3
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 18:36:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4950B24378
-	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 16:30:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 483E41C21705
+	for <lists+linux-iio@lfdr.de>; Wed, 12 Jun 2024 16:36:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F7818130D;
-	Wed, 12 Jun 2024 16:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCD4181330;
+	Wed, 12 Jun 2024 16:36:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Igv5DP48"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Y4km6yrm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD3C12F365;
-	Wed, 12 Jun 2024 16:30:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A361016E882
+	for <linux-iio@vger.kernel.org>; Wed, 12 Jun 2024 16:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718209841; cv=none; b=DkMmmb5GsUqkxS/yVDGUmkiTTu6z75YimrihyOxXF+/gdOEVv37y2YyTWz8gD5hLL8XKjwtq/ypi8gVOgzvgO4b4c9ZWxj4bzw5Njow5RM4To89FbcYszJRxx3elkYJIviri+GGHr5JkzYDNVVq9oO8ippgGlG9C3OtPwaTQf20=
+	t=1718210178; cv=none; b=GYq2n4QO3os77ymNZt+joMG9sG95co9dzBkr4h0jb37adKCdKSvu9DNJ/+B6JNqS+Q7ywIR5GrVR/pjUl07MVhLUmYcZGIF73HBy7FuEdINCeNGVjPS4sPL8TPjlvmfauWauCxluUTR8rzb2xEEBiGn5X/fS0HBZTyEA+Oa+cZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718209841; c=relaxed/simple;
-	bh=MuDkD4Y5Xr/E5kiJGSuSZCUhZSy7wFH47LvJyu+n4XU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C8QKSRwPRxQY/DOivdV7aYIjTqANDHB6uHvwUwhgjH36Wl1SOp7OIE/eqPKB79A9d78i0BIZg/VVSWFcre7eEiwtB14Yoa/h09l6c9pqBpXdMad1etmZOUM/3KA2Ut1tA6LZQFkjN4k6usrP2z103U93qMV3uVXkxjqKbZqbEOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Igv5DP48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2034C116B1;
-	Wed, 12 Jun 2024 16:30:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718209841;
-	bh=MuDkD4Y5Xr/E5kiJGSuSZCUhZSy7wFH47LvJyu+n4XU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Igv5DP48E7gNgtaishMOuW/uxRb2oa2oF1jJSIBsCB94WOPVICkT7NUItrvQSDu0a
-	 ppA/Xf5jRb7QXNe5semzQH/6wef5jzHca7S1Myl10h4d2hrdevl0t3uZebUc0K07bQ
-	 pcrTcyFxVebMSGwUNnEiZostHhIRgXH5blHo3QrXuABbK499JO9GNiICuitw6q+v4h
-	 pR0J4Bi1mnn5UHOeQEsNwU82r+3NCQrZWO75rl+h37W3oML3a4Nsh9xFZiISpNTmL4
-	 z0qwT0OD9XrgnDfFC2iBZC5W5dapwtv/sN1hOtw4e4n5Q3K0ct0IZEf6LP5IQnO0pm
-	 FWduKDqn58PGQ==
-Date: Wed, 12 Jun 2024 17:30:36 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Alisa-Dariana Roman <alisadariana@gmail.com>
-Cc: Alisa-Dariana Roman <alisa.roman@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexandru Tachici <alexandru.tachici@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: ad7192: Fix clock config
-Message-ID: <20240612-daylong-unnamable-c6f3aa60c8e3@spud>
-References: <20240612141637.175709-1-alisa.roman@analog.com>
- <20240612141637.175709-2-alisa.roman@analog.com>
+	s=arc-20240116; t=1718210178; c=relaxed/simple;
+	bh=7vprfaAy+/aNUKk+kDbOiywSxFojlqtspogVZkl4nTQ=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=eF0WNcaRs/Fwhndr0AZpEg4KhC7AJMlqbM3+dlxKOUgW6OWUGWSR1+veDzvcWKDyTi3NorYvMz0n9Tl6nbTgK6OuSp9QfLwhO5N9OYeLCPxnpEKcKc/nR2J4QitE8A7hGZUetrfZ36wWuWxjQCdVEMjYu+7xIv8kAHBCN1GRObA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Y4km6yrm; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2ebed33cbaeso26335021fa.1
+        for <linux-iio@vger.kernel.org>; Wed, 12 Jun 2024 09:36:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718210174; x=1718814974; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=bKTobHHeGnkatIF6+SqsXuu/2VlIYkxSM06piFfY/sw=;
+        b=Y4km6yrmH/MOurMmg3go4xS8PXGyFim7If77UWqmv+aFiusPGxRCkifzgL/147CHMC
+         7KdSX262IniwTscqpqc2pTC7K+XgxGAlfvxAi99HQwyW8Z6vfPy74IbtYwvKf//aGYVd
+         C7ygq5Jnqntsoacjr+EQGfCBDC/BYyMXhIB31X3ylMJTYL5vql0ZTX7lAMV6WnMczljk
+         dwS+ZQ4hLNL3n8DYj7JJIQcuS08EN0W77kmqHPVuuitLqBjxOEO/H7vwDmHzaUpKrJyq
+         Ort45qLZqoJ/pqUeL2/PzncC5gQGCburC4dlbxcNlURgmF6MhO6hbyxqljsZeUb0fwSZ
+         Qr2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718210174; x=1718814974;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bKTobHHeGnkatIF6+SqsXuu/2VlIYkxSM06piFfY/sw=;
+        b=RMQS+EyHrELI8eCIsDC28K6uMICA/6fnZvo1BDiP343nQtEbu44zaqBS70jluibqk8
+         HvkBaBU/vShUkUx/NsWQROwueW1RQrOiycLF1fcYd4po0bhudU/DjdjBtD87hpsQRSw2
+         g96KZ53Q8vDZHm1182LJchm7N778o1Y8waGjvTC9pFy27+ZV+4Je+omJVJxHeHpB1VLf
+         ea1lLpYMJUybisyNWIuPqILFYXxxAaAa19Zj13zW58J0Uuw4GeGHmmfMTlNFH1KredCr
+         iqiaBQx27FC421V0B6OQ83CEdx/HVK4v2tLyKXU9uEauCOrr+yKuydwaN/R0GEwTMSB9
+         MkVA==
+X-Forwarded-Encrypted: i=1; AJvYcCXkkLHJexqWavRGcK+VW5CzLX7m8UiDHokeL3zY1xVCoIbP45if1y/6FkbIzd0B1zv7b0DZ1z6wDz+JVKn4c0tjVcnzD40UUR3k
+X-Gm-Message-State: AOJu0YyjTJghCpp/BxG1v9myB/zN+WNg/5V33RxnCX5UQKjCZpTaHZxt
+	pjGubTBfwpllgQ2dsGqAmYdXr4JIDW72TZWqIOtRGqzjKU/2RbEkgtY+TTD8D+w=
+X-Google-Smtp-Source: AGHT+IFY910HY6EtcZZHlDUUywnpSePswjY4naCvy8H+e+Wer3wMJAZi0qBD5yz5ZV+/y/ANvtFMKQ==
+X-Received: by 2002:a2e:87c5:0:b0:2e9:881b:5f02 with SMTP id 38308e7fff4ca-2ebfca6145fmr13444141fa.53.1718210173634;
+        Wed, 12 Jun 2024 09:36:13 -0700 (PDT)
+Received: from [192.168.0.2] (host-79-40-233-231.business.telecomitalia.it. [79.40.233.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42286eefa07sm32159465e9.8.2024.06.12.09.36.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 Jun 2024 09:36:13 -0700 (PDT)
+Message-ID: <9e21de1f-d0b1-4a00-a73d-9f35d8cedf1b@baylibre.com>
+Date: Wed, 12 Jun 2024 18:35:32 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="jKTczYEpqqA+Uas4"
-Content-Disposition: inline
-In-Reply-To: <20240612141637.175709-2-alisa.roman@analog.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/6] minor fixes and improvements
+From: Angelo Dureghello <adureghello@baylibre.com>
+To: Jonathan Cameron <jic23@kernel.org>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <noname.nuno@gmail.com>
+Cc: robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+ nuno.sa@analog.com, lars@metafoo.de, Michael.Hennerich@analog.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240522150141.1776196-1-adureghello@baylibre.org>
+ <751faef385f81f8a2dd0dcc2acd2d4519bebebe5.camel@gmail.com>
+ <20240525180631.13446abc@jic23-huawei>
+ <826c3185-74ca-423c-96f2-4fd4cf2481cb@baylibre.com>
+Content-Language: en-US
+In-Reply-To: <826c3185-74ca-423c-96f2-4fd4cf2481cb@baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Hi Jonathan, Nuno,
+
+just to be sure, is there something else needed from my side
+for this patch-set ?
 
 
---jKTczYEpqqA+Uas4
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks,
+regards,
+angelo
 
-On Wed, Jun 12, 2024 at 05:16:36PM +0300, Alisa-Dariana Roman wrote:
-> There are actually 4 configuration modes of clock source for AD719X
-> devices. Either a crystal can be attached externally between MCLK1 and
-> MCLK2 pins, or an external CMOS-compatible clock can drive the MCLK2
-> pin. The other 2 modes make use of the 4.92MHz internal clock.
->=20
-> The presence of an external clock is optional, not required. When
-> absent, internal clock of the device is used.
->=20
-> Fixes: f7356e47032c ("dt-bindings: iio: adc: ad7192: Add binding document=
-ation for AD7192")
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad7192.yaml    | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> index a03da9489ed9..3ae2f860d24c 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> @@ -39,11 +39,15 @@ properties:
-> =20
->    clocks:
->      maxItems: 1
-> -    description: phandle to the master clock (mclk)
-> +    description: |
-> +      Optionally, either a crystal can be attached externally between MC=
-LK1 and
-> +      MCLK2 pins, or an external CMOS-compatible clock can drive the MCL=
-K2
-> +      pin. If absent, internal 4.92MHz clock is used.
-> =20
->    clock-names:
-> -    items:
-> -      - const: mclk
-> +    enum:
-> +      - xtal
-> +      - mclk
+On 28/05/24 9:16 PM, Angelo Dureghello wrote:
+> Hi Jonathan,
+>
+> On 25/05/24 7:06 PM, Jonathan Cameron wrote:
+>> On Thu, 23 May 2024 14:45:01 +0200
+>> Nuno Sá <noname.nuno@gmail.com> wrote:
+>>
+>>> On Wed, 2024-05-22 at 17:01 +0200, Angelo Dureghello wrote:
+>>>> From: Angelo Dureghello <adureghello@baylibre.com>
+>>>>
+>>>> After testing this driver, add some minor fixes and improvements,
+>>>> as adding single channel variants support (ad3541r, ad3551r), also 
+>>>> as a
+>>>> preparatory step to bigger future improvements related to fast-rate 
+>>>> mode
+>>>> for this DAC family.
+>>>>
+>>>> Previous patches (v1, 3/3)
+>>>> https://lore.kernel.org/linux-iio/20240510141836.1624009-1-adureghello@baylibre.org 
+>>>>
+>>>> https://lore.kernel.org/linux-iio/20240510141836.1624009-2-adureghello@baylibre.org/ 
+>>>>
+>>>> https://lore.kernel.org/linux-iio/20240510141836.1624009-3-adureghello@baylibre.org/ 
+>>>>
+>>>>
+>>>> Angelo Dureghello (6):
+>>>>    dt-bindings: iio: dac: fix ad3552r gain parameter names
+>>>>    dt-bindings: iio: dac: add ad35xxr single output variants
+>>>>    iio: dac: ad3552r: add model data structure
+>>>>    iio: dac: ad3552r: add support for ad3541r and ad3551r
+>>>>    iio: dac: ad3552r: change AD3552R_NUM_CH define name
+>>>>    iio: dac: ad3552r: uniform structure names
+>>>>
+>>>>   .../bindings/iio/dac/adi,ad3552r.yaml         |  43 ++++--
+>>>>   drivers/iio/dac/ad3552r.c                     | 140 
+>>>> ++++++++++++------
+>>>>   2 files changed, 128 insertions(+), 55 deletions(-)
+>>> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+>>>
+>> This series crossed with a series using
+>> device_for_each_child_node_scoped()
+>>
+>> I've rebased on top of that. Was moderately straightforwards but
+>> given last week I messed a similar change up completely please
+>> check the testing branch of iio.git!
+>>
+>> The mess was all it the patch adding model_data
+>
+> i tested the driver from the iio testing beranch,
+> it works as expected.
+>
+>> Thanks,
+>>
+>> Jonathan
+>
+> Thanks,
+>
+> Regards,
+> angelo
+>
+>
+-- 
+  ,,,      Angelo Dureghello
+:: :.     BayLibre -runtime team- Developer
+:`___:
+  `____:
 
-Nothing in this commit message explains why "mclk" is not a suitable
-name for either of the two configurations.
-
---jKTczYEpqqA+Uas4
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZmnNLAAKCRB4tDGHoIJi
-0oivAP9ktMVN6kGzDFf2XPHRXYTqo7uhIEZosOdgNo/1+GdS/AD/XfF4SgDkYQ3j
-fXy1FbHzAmmbzVEl0pVGOUJBRPv9XA4=
-=SUxL
------END PGP SIGNATURE-----
-
---jKTczYEpqqA+Uas4--
 

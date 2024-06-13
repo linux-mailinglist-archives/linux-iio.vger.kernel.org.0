@@ -1,58 +1,63 @@
-Return-Path: <linux-iio+bounces-6253-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6254-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D299907B36
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 20:23:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CA66907B5E
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 20:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B0872846F9
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 18:23:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91AE1F22982
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 18:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5B114C5B0;
-	Thu, 13 Jun 2024 18:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29BD14D431;
+	Thu, 13 Jun 2024 18:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiIxKIHG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifu5bx+2"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F167C14B942
-	for <linux-iio@vger.kernel.org>; Thu, 13 Jun 2024 18:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB10714B075;
+	Thu, 13 Jun 2024 18:31:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718302986; cv=none; b=kvNKV7FuxFsKEZUa7JDSjN51TF+WwUk5kEpssZtJXukEEuinqLsvVdj9j2dGiPkSFRc3/1P8kqAY7u39ESI8e0EpycetrsmOSDrLFq/T4mxiGoQTcZxZ6WQcVXRVJpFg0GiVdOppjK5Kc3ULBBSQNAUgahJtyCA4tufvgsGedA8=
+	t=1718303465; cv=none; b=WgVZKN+ODBW5W9JGpgq6m17qgk25Y5Bxhx7RNF+8GodAylhofACGEXx8fsM5qpdR5CdcaTaLUa0AV03PwpmNWIWpoNf91gw1RWKV4X2maLWKTn8r3y4/Q2DQxAX/suGr0Giy7EUkOQ6sKF7bK4EsUM7GR9tPB3tykyw3x3zH2n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718302986; c=relaxed/simple;
-	bh=7T/n5LmxO802CJzucJ5CSf0SOPCvLweSNJWmGv911Us=;
+	s=arc-20240116; t=1718303465; c=relaxed/simple;
+	bh=SbD+xFGqIOxNc3/m8vp1hOh4RjDlhrkQYNrPi7kWyJA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ae29vBG0kILymHyGJtcgEmXzHHdyFaThiH9zsBOPK63HsL1g/2r028IRoL8COrYUMrt5mfnO5rvVvJiDeedL3RX18Jz+9fRrLG5OAXOoImUKofE160BBfBSakLS5uYc0kuP5askg86ZdaxULVDOlEi8lr0MiXIqcyD20j56xNiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiIxKIHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9267BC2BBFC;
-	Thu, 13 Jun 2024 18:23:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hMDts+3kebQP8kVu309Tk7dzk8v3g7+5ReVIaAX96MaKXzXieKaEvy2Vltr0+LFUZLbuUsWjpj4CLqHDvZoQFo8Z8+p2zWVuTx1Vaf5q2Y6myCiPKNI8TmgZ+SrRKDz5b0LQ6veEtys+3GR2UGCJ1GhxfaBT071L69KXbguCjqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifu5bx+2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484B3C4AF60;
+	Thu, 13 Jun 2024 18:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718302985;
-	bh=7T/n5LmxO802CJzucJ5CSf0SOPCvLweSNJWmGv911Us=;
+	s=k20201202; t=1718303465;
+	bh=SbD+xFGqIOxNc3/m8vp1hOh4RjDlhrkQYNrPi7kWyJA=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CiIxKIHG/mokz0aD51biZtvAE6tMwK9Mi6s1amymhzYUUh033YJrcNWKFVT1RbXTu
-	 8Zs8CYxxtGUkZeUao8iZMEBLfWxOnPleNDTC8ZEroSIV31on4XG5lC+diccfR2H0bi
-	 dsEs94BJlPpRnAaXC5K+3Nv0CKB14ZDPCPubc8lTWrq0scqZgD+aJiRwNJX87M8kiH
-	 PV82iBunaAKFpWW+cbCPy0QrxZANrqGjhJYLVCP3tcoLUNAf+n9TOs8oQVhxiKxE1j
-	 EI3ioOOKfCx5OwF9OtOrryJl4I6quCUPmSZJvFMcSRQhsNjcqgAxJcAwogTtF7CqNG
-	 VONZlCnRTyk8Q==
-Date: Thu, 13 Jun 2024 19:22:57 +0100
+	b=ifu5bx+2566LUFmGEIG7+laLHwP4lqzAAHCKfJ+Nvt0gRMTC34O7Pv90k0CH+qR6s
+	 i4cF+ykdxk7YeR0P9ZL5S73xkw51DTWtY1L6BvScZah2q8Gu9cs64C2TAUDzEW+75y
+	 NhCzRDwha+vkLfIOjO2nePO2KzHw+RWrh+PEwbu8HJKmbj/SCguU8bezXaaJdYJNrv
+	 VROnYaTbW0w7fjQH7lwuTAlYUsdaG3sEN7SCHEmPNnlDwzZ74NfI0zEJ9Es6K/Ro6r
+	 Z+S1Svzdrv9yPHk2LYIPSh42LVOmUuWQKo3ZZ9WwgW50LAbkDaNg52EukfSu4Su0EM
+	 Xnhb3H5PBZOpQ==
+Date: Thu, 13 Jun 2024 19:30:56 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com>
-Cc: INV Git Commit <INV.git-commit@tdk.com>, "lars@metafoo.de"
- <lars@metafoo.de>, "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH v4 0/2] iio: imu: inv_icm42600: add support of accel low
- power
-Message-ID: <20240613192257.1c7c2f55@jic23-huawei>
-In-Reply-To: <FR3P281MB17573989B841EE3886CD2580CEC02@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
-References: <20240605195949.766677-1-inv.git-commit@tdk.com>
-	<20240609110930.2f40d3d3@jic23-huawei>
-	<FR3P281MB17573989B841EE3886CD2580CEC02@FR3P281MB1757.DEUP281.PROD.OUTLOOK.COM>
+To: Dumitru Ceclan via B4 Relay
+ <devnull+dumitru.ceclan.analog.com@kernel.org>
+Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
+ <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Dumitru Ceclan <mitrutzceclan@gmail.com>,
+ Conor Dooley <conor.dooley@microchip.com>, Nuno Sa <nuno.sa@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH v7 0/9] Add support for AD411x
+Message-ID: <20240613193056.3fa3804c@jic23-huawei>
+In-Reply-To: <20240608173720.29ee4aee@jic23-huawei>
+References: <20240607-ad4111-v7-0-97e3855900a0@analog.com>
+	<20240608173720.29ee4aee@jic23-huawei>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,82 +65,37 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 12 Jun 2024 12:28:50 +0000
-Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@tdk.com> wrote:
+On Sat, 8 Jun 2024 17:37:20 +0100
+Jonathan Cameron <jic23@kernel.org> wrote:
 
-> Hi Jonathan,
->=20
-> I'm sorry I am not able to find this patch in togreg branch currently.
->=20
-> Am I not looking at the correct place or there is a problem somewhere?
-As so often happens I was being dozy at end of a reviewing session
-and failed to push out.
-Done now.
-
->=20
+> On Fri, 07 Jun 2024 17:53:06 +0300
+> Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
+> 
+> > This patch series adds support for the Analog Devices AD4111, AD4112,
+> >  AD4114, AD4115, AD4116 within the existing AD7173 driver.  
+> 
+> Looks good to me.  However given you had lots of good review and
+> it was a Friday afternoon posting, I'm not going to pick it up until
+> Nuno and David have had a day or two to take a look if they want to
+> (and hopefully add a few more tags! :)
+> 
+> If I seem to have lost it (rarely happens now I use patchwork to track
+> things) feel free to give me a poke.
+> 
 > Thanks,
-> JB
->=20
-> ________________________________________
-> From:=C2=A0Jonathan Cameron <jic23@kernel.org>
-> Sent:=C2=A0Sunday, June 9, 2024 12:09
-> To:=C2=A0INV Git Commit <INV.git-commit@tdk.com>
-> Cc:=C2=A0lars@metafoo.de <lars@metafoo.de>; linux-iio@vger.kernel.org <li=
-nux-iio@vger.kernel.org>; Jean-Baptiste Maneyrol <Jean-Baptiste.Maneyrol@td=
-k.com>
-> Subject:=C2=A0Re: [PATCH v4 0/2] iio: imu: inv_icm42600: add support of a=
-ccel low power
-> =C2=A0
-> This Message Is From an External Sender
-> This message came from outside your organization.
-> =C2=A0
-> On Wed,  5 Jun 2024 19:59:47 +0000
-> inv.git-commit@tdk.com wrote:
->=20
-> > From: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-> >=20
-> > Add accel low power support, enabling use of lower ODR below 12.5Hz.
-> >=20
-> > Add new sysfs API for controlling the power mode and enforce power mode=
- used
-> > when using an ODR that supports only 1 mode (ODR < 12.5Hz or ODR > 500H=
-z). =20
-> Applied to the togreg branch of iio.git and pushed out as testing for 0-d=
-ay to
-> poke at it.
->=20
-> Thanks,
->=20
+Ah - I forgot we have a dependency on a fix that went the quick path.
+As a result I'll have to hold this until after a 1st pull request.
+
+Whilst the merge resolution is trivial i need to do a pull anyway
+to resolve a more complex one.  Hence let's take the easy but
+slightly slower path for this as well.
+
+Jonathan
+> 
 > Jonathan
->=20
-> >=20
-> > Changelog
-> >=20
-> > V2:
-> > - fix patch missing Signed-off tag
-> >=20
-> > V3:
-> > - make all ODRs available and switch power mode automatically for ODR s=
-upporting
-> >   only 1 mode.
-> > =20
-> > V4:
-> > - prevent power mode setting when the ODR is not supported
-> > - return the actual power mode when sensor is on, otherwise the request=
-ed one.
-> > - add sysfs ABI documentation
-> >=20
-> > Jean-Baptiste Maneyrol (1):
-> >   iio: imu: inv_icm42600: add support of accel low-power mode
-> >=20
-> >  drivers/iio/imu/inv_icm42600/inv_icm42600.h   |   4 +
-> >  .../iio/imu/inv_icm42600/inv_icm42600_accel.c | 124 +++++++++++++++++-
-> >  .../iio/imu/inv_icm42600/inv_icm42600_core.c  |  27 ++++
-> >  3 files changed, 151 insertions(+), 4 deletions(-)
-> >  =20
->=20
+> 
 
 

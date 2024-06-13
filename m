@@ -1,101 +1,137 @@
-Return-Path: <linux-iio+bounces-6254-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6255-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA66907B5E
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 20:31:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5538F907CDA
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 21:43:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91AE1F22982
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 18:31:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4F38B26C66
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 19:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F29BD14D431;
-	Thu, 13 Jun 2024 18:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A59A14D2B7;
+	Thu, 13 Jun 2024 19:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifu5bx+2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p3HiMHlO"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB10714B075;
-	Thu, 13 Jun 2024 18:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3817814C583;
+	Thu, 13 Jun 2024 19:43:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718303465; cv=none; b=WgVZKN+ODBW5W9JGpgq6m17qgk25Y5Bxhx7RNF+8GodAylhofACGEXx8fsM5qpdR5CdcaTaLUa0AV03PwpmNWIWpoNf91gw1RWKV4X2maLWKTn8r3y4/Q2DQxAX/suGr0Giy7EUkOQ6sKF7bK4EsUM7GR9tPB3tykyw3x3zH2n8=
+	t=1718307806; cv=none; b=L8PfqO7Jw8WWJj2ComnHeIRbn0Hp7POQLjgXWbLUU37ibyxsdpA1hJG/1PHQg2gHo74qZOFLzCIjZftOy2fRty+wkhj3jdd07DXV09hZFXF/7mUQntw7V/XODn2obNXhH1iWdvTSTrvRGkL6aT6NUGCVtldobns6Vsy6L6+Zx84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718303465; c=relaxed/simple;
-	bh=SbD+xFGqIOxNc3/m8vp1hOh4RjDlhrkQYNrPi7kWyJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hMDts+3kebQP8kVu309Tk7dzk8v3g7+5ReVIaAX96MaKXzXieKaEvy2Vltr0+LFUZLbuUsWjpj4CLqHDvZoQFo8Z8+p2zWVuTx1Vaf5q2Y6myCiPKNI8TmgZ+SrRKDz5b0LQ6veEtys+3GR2UGCJ1GhxfaBT071L69KXbguCjqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifu5bx+2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 484B3C4AF60;
-	Thu, 13 Jun 2024 18:30:59 +0000 (UTC)
+	s=arc-20240116; t=1718307806; c=relaxed/simple;
+	bh=3qzuHXwUXJC4kkCUpeSCcm2xbDApMYoDwGK0LWJk20E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l8J/T4BPSt1CzvAk3J8YXMT3AkyL5qT25VjLJh932eiC6JRXbYd8/7BXbeYo6Y2yIKh8afnVTTvwnefzPIavUU627fc9wWBLCpyPb6Cb2nu82Cbqb6YYjq8Hw5GGkwIVrlrRRnN1MphxslwWA3aw0NF9Oi+1a1mEmkS9klkSmGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p3HiMHlO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF99C2BBFC;
+	Thu, 13 Jun 2024 19:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718303465;
-	bh=SbD+xFGqIOxNc3/m8vp1hOh4RjDlhrkQYNrPi7kWyJA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ifu5bx+2566LUFmGEIG7+laLHwP4lqzAAHCKfJ+Nvt0gRMTC34O7Pv90k0CH+qR6s
-	 i4cF+ykdxk7YeR0P9ZL5S73xkw51DTWtY1L6BvScZah2q8Gu9cs64C2TAUDzEW+75y
-	 NhCzRDwha+vkLfIOjO2nePO2KzHw+RWrh+PEwbu8HJKmbj/SCguU8bezXaaJdYJNrv
-	 VROnYaTbW0w7fjQH7lwuTAlYUsdaG3sEN7SCHEmPNnlDwzZ74NfI0zEJ9Es6K/Ro6r
-	 Z+S1Svzdrv9yPHk2LYIPSh42LVOmUuWQKo3ZZ9WwgW50LAbkDaNg52EukfSu4Su0EM
-	 Xnhb3H5PBZOpQ==
-Date: Thu, 13 Jun 2024 19:30:56 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Dumitru Ceclan via B4 Relay
- <devnull+dumitru.ceclan.analog.com@kernel.org>
-Cc: dumitru.ceclan@analog.com, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley
- <conor+dt@kernel.org>, David Lechner <dlechner@baylibre.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Dumitru Ceclan <mitrutzceclan@gmail.com>,
- Conor Dooley <conor.dooley@microchip.com>, Nuno Sa <nuno.sa@analog.com>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH v7 0/9] Add support for AD411x
-Message-ID: <20240613193056.3fa3804c@jic23-huawei>
-In-Reply-To: <20240608173720.29ee4aee@jic23-huawei>
-References: <20240607-ad4111-v7-0-97e3855900a0@analog.com>
-	<20240608173720.29ee4aee@jic23-huawei>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=k20201202; t=1718307805;
+	bh=3qzuHXwUXJC4kkCUpeSCcm2xbDApMYoDwGK0LWJk20E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=p3HiMHlOXnYU2dP9n7a5VV3QwL33dfCFvq8F5qed1A0yQ0wCsuNDwTPHTPsnluh1b
+	 pYKFSG5MTvUuqHvib2wAw+VOgRO398l/34dMk0SzbPAGmxN5K/qmeIBldxvoIeuz6t
+	 AQU+rZBFAuksis+xsm/9mOu+NZSFd6Nxfwb2dHFT9mK448l4f79UlMn8bjKVJS0i27
+	 6dfqM18+vgpUmfsh1MxuvPB9t7lLNNEp0CrKlxpiE1SpDG9fUblOmD74AS2e3gdwxX
+	 ieI7j3MWHhUUB+QdUal6Vc6vTtDEeuze30Z71qF7ZzeD2bUVYiBGyDwdRKwLmCZNit
+	 yx1NZK8jbAJUA==
+Date: Thu, 13 Jun 2024 13:43:24 -0600
+From: Rob Herring <robh@kernel.org>
+To: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH 1/3] dt-bindings: iio: adc: add AD4695 and similar ADCs
+Message-ID: <20240613194324.GA2352022-robh@kernel.org>
+References: <20240612-iio-adc-ad4695-v1-0-6a4ed251fc86@baylibre.com>
+ <20240612-iio-adc-ad4695-v1-1-6a4ed251fc86@baylibre.com>
+ <94448c2c-e7b2-4191-858c-529b254994f1@kernel.org>
+ <f765ef30-a777-4dfc-8f93-0f15b46f91ae@baylibre.com>
+ <e09fecf4-bde2-4feb-8312-22c530c6a960@kernel.org>
+ <b6b52b1e-847b-44ca-87f9-095a78164771@baylibre.com>
+ <5f0776ba5163578453e26352763ff1b4687bcf87.camel@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5f0776ba5163578453e26352763ff1b4687bcf87.camel@gmail.com>
 
-On Sat, 8 Jun 2024 17:37:20 +0100
-Jonathan Cameron <jic23@kernel.org> wrote:
+On Thu, Jun 13, 2024 at 05:11:48PM +0200, Nuno Sá wrote:
+> On Thu, 2024-06-13 at 09:39 -0500, David Lechner wrote:
+> > On 6/13/24 9:18 AM, Krzysztof Kozlowski wrote:
+> > > On 13/06/2024 15:57, David Lechner wrote:
+> > > > 
+> > > > > 
+> > > > > > +          - const: adi,ad4695
+> > > > > > +      - items:
+> > > > > > +          - const: adi,ad4697-wlcsp
+> > > > > > +          - const: adi,ad4697
+> > > > > > +      # same chips with higher max sample rate
+> > > > 
+> > > > I suppose one could make the argument that the programming model is
+> > > > the same on these too, but the maximum sampling frequency does seem
+> > > > like an important bit of information so that you don't try to set
+> > > > the conversion trigger rate too high.
+> > > > 
+> > > 
+> > > which property is that? I don't see differences in the driver, so I
+> > > don't get how these wlcsp compatibles allow you to control value of
+> > > conversion trigger.
+> > 
+> > This comment is unrelated to the package type (WLCSP or LFCSP).
+> > 
+> > What I mean is that e.g. AD4695 and AD4696 are virtually identical
+> > other than the maximum allowable sample rate (500 kSPS or 1 MSPS).
+> > 
+> > So my thinking was that it would make sense to have:
+> > 
+> > 	compatible = "ad4695";
+> > 
+> > for the lower sample rate chip and
+> > 
+> > 	compatible = "ad4696", "ad4695";
+> > 
+> > for the higher sample rate chip since ad4696 can do everything
+> > that ad4695 does plus a bit more.
+> > 
+> 
+> IMO, that would make sense yes. If the higher sample rate chip fallsback, it will
+> still work but not at full speed. The other way around is the one that we can't allow
+> naturally.
+> 
+> But possibly dumb question now... since both devices will be supported at the same
+> time, do we actually care about having the fallback compatible? My understanding of
+> the fallback story is that we may load a DTS in an older kernel where chip A is
+> supported but chip B is not and it is ok for chip B to fallback to chip A. Since
+> these devices will be supported at the same time, do we need to care? Unless out of
+> tree stuff enters the equation?
 
-> On Fri, 07 Jun 2024 17:53:06 +0300
-> Dumitru Ceclan via B4 Relay <devnull+dumitru.ceclan.analog.com@kernel.org> wrote:
-> 
-> > This patch series adds support for the Analog Devices AD4111, AD4112,
-> >  AD4114, AD4115, AD4116 within the existing AD7173 driver.  
-> 
-> Looks good to me.  However given you had lots of good review and
-> it was a Friday afternoon posting, I'm not going to pick it up until
-> Nuno and David have had a day or two to take a look if they want to
-> (and hopefully add a few more tags! :)
-> 
-> If I seem to have lost it (rarely happens now I use patchwork to track
-> things) feel free to give me a poke.
-> 
-> Thanks,
-Ah - I forgot we have a dependency on a fix that went the quick path.
-As a result I'll have to hold this until after a 1st pull request.
+Yeah, it doesn't really matter much in that case.
 
-Whilst the merge resolution is trivial i need to do a pull anyway
-to resolve a more complex one.  Hence let's take the easy but
-slightly slower path for this as well.
+> Or is there another usecase that I'm not aware about (or maybe it just makes sense to
+> document properly...)?
 
-Jonathan
-> 
-> Jonathan
-> 
+Somewhat I guess. Perhaps if there's a 3rd chip with higher rate, then 
+it will be more obvious what to do and we don't have to have this 
+discussion again for it. :)
 
+Rob
 

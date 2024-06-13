@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-6247-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6248-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 965E7907879
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 18:42:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1038907883
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 18:43:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FB5A1F2371B
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 16:42:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 529101F228C4
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 16:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5317C149C4B;
-	Thu, 13 Jun 2024 16:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5654B149C61;
+	Thu, 13 Jun 2024 16:43:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kamjskX+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MeCNc+eZ"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013DE1494C2;
-	Thu, 13 Jun 2024 16:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B11C149C4E;
+	Thu, 13 Jun 2024 16:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718296919; cv=none; b=luflvezkm7IyY4yohq/SlTXOHQHpjeybyGyPIOWmQlwav1GSoT+g+nGbVUvP/YvDjiEWsbWbAQ7HR8deg11Wgf9oLtZurIHWJgYvoJWAjTCCwAqsThGbIorGIK1fZUhTbZ0ge5U/GsNOLyCi/luI7ZxzWpj6dshkgHaKIWxOguA=
+	t=1718296989; cv=none; b=Aa4F5daOqbO7VrbOrwT7ifkEb4sU+ovS5QMdF7CoZXJzYCAM+8B361l4MEa5qrh5DnHJ8cuw+OHk3pfl3SgR+GRpdU6Q+knMFgOht/Ig38v90S23W702kZgLjzLvwHHHXsf0CP91aDNGyzuWwqQSAXh98GQWaoowwRiVukMOvFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718296919; c=relaxed/simple;
-	bh=vsXFKBT+cSrkgehHrImlatR7bWrZFbEWVqJGyHEVB8g=;
+	s=arc-20240116; t=1718296989; c=relaxed/simple;
+	bh=5N86/34S9SsY993i4OkYsoiBIKBqPyqnwe4IRziKYTs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NI6ahHgD5e3QmkE6/6BxGzRWooGxUiJ7oPp1FRJyeeecMNYkySoh6oKYwGcMtURjZljV6xl/0ModwxiH0esp0y40+NaJmNqNQBiHKxtSs87idlorio6JCNx28anMiw+RbxDlGEA7XUj6w/vHXA2UT7zc5MfFXRDWl72CdqZjbi8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kamjskX+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F41B8C32786;
-	Thu, 13 Jun 2024 16:41:54 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=fxfRBSMaclnoUV6hKAbaVBRl4l0p5i6ZXd+P3X8z+DKFDRJmnDGFP+8b1XGDfIH+attj1hirgIkAWDYagJRmiWCpv0KfpV58pXbVz37Chw/pqiBwax6IF11xJuAu1rbWlz9IyM3dXzvx3OsCrCgb9uok6kQsb3GtfQqh7GMjYTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MeCNc+eZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67BFC32786;
+	Thu, 13 Jun 2024 16:43:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718296918;
-	bh=vsXFKBT+cSrkgehHrImlatR7bWrZFbEWVqJGyHEVB8g=;
+	s=k20201202; t=1718296988;
+	bh=5N86/34S9SsY993i4OkYsoiBIKBqPyqnwe4IRziKYTs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kamjskX+1DHnEM5Qq8CuMsKFatQSlkozsBYZC9ATYruNzKLVszlk+scp82PsvBcCb
-	 P+UdGu/2EtHqz0I/nJ4wtUwJT5ywO/vPfpDzP5X+gZEbjQfsFmQF3B8C+1q7z9GhmE
-	 gKodOoGMIEHLjmk+fyBqucpN/I3oYLbV8LiCvfgtgqhjDIhyS6hpcK0z3eAQ+qypqr
-	 ZwdvYxFSheCWa/ZYq5WxtwLYtNRvqQe7MMO0vVNIQikg8ZpC1X5vikLlqWCbkiYAAn
-	 B7798lI3ncnzys9kxPNaK4VP43FBIVbbR46FrG0d69snNIRC3JvU+OhSH3zh2bHFEb
-	 xP+fFuyuSz6Fw==
-Date: Thu, 13 Jun 2024 17:41:52 +0100
+	b=MeCNc+eZYG9ORTjLRsHrCVE8nxJrUu5YEgZ+GmPJIdJL17zuVlPmMEw5NRZ+Hee2u
+	 iyEdpY+bLyH0yoWJj2S0bdZgMpCshE/5SQC78dHWgtcNGWqNVqzCSDVxzufAmc95Up
+	 J92LVZmVkSXO5sy1DSlArRFK2tRL2FDVBwXeJr2tpe/f5lwCLGm2Z16WL3Vy/UQCMp
+	 M/EJYLLqfSi9Qgr4gB6qQtHEckyPmNMcvn4wMBNCyKHWZX4Mtjd0o3rhpx35Y/PC+K
+	 hekuJ2Ab5ob1sqFUtPxx+i2bm14JZPbOzQRXav2bdG/XtZGV37bgqnUy/nPCWJx3AD
+	 6KBcbZ0PteVKA==
+Date: Thu, 13 Jun 2024 17:43:03 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Alisa-Dariana Roman <alisadariana@gmail.com>
 Cc: Alisa-Dariana Roman <alisa.roman@analog.com>,
@@ -56,10 +56,10 @@ Cc: Alisa-Dariana Roman <alisa.roman@analog.com>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4 2/5] dt-bindings: iio: adc: ad7192: Update clock config
-Message-ID: <20240613-vineyard-doing-87ada1b7a8ed@spud>
+Subject: Re: [PATCH v4 4/5] dt-bindings: iio: adc: ad7192: Add clock provider
+Message-ID: <20240613-porthole-hedging-6655d32072a8@spud>
 References: <20240613114001.270233-1-alisa.roman@analog.com>
- <20240613114001.270233-3-alisa.roman@analog.com>
+ <20240613114001.270233-5-alisa.roman@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,98 +67,63 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="m9XQa0OBbOvIhW8/"
+	protocol="application/pgp-signature"; boundary="ZG98mhyg/OXpjdLh"
 Content-Disposition: inline
-In-Reply-To: <20240613114001.270233-3-alisa.roman@analog.com>
+In-Reply-To: <20240613114001.270233-5-alisa.roman@analog.com>
 
 
---m9XQa0OBbOvIhW8/
+--ZG98mhyg/OXpjdLh
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 13, 2024 at 02:39:58PM +0300, Alisa-Dariana Roman wrote:
-> There are actually 4 configuration modes of clock source for AD719X
-> devices. Either a crystal can be attached externally between MCLK1 and
-> MCLK2 pins, or an external CMOS-compatible clock can drive the MCLK2
-> pin. The other 2 modes make use of the 4.92MHz internal clock.
->=20
-> Add clock name xtal alongside mclk. When an external crystal is
-> attached, xtal should be chosen. When an external clock is used, mclk
-> should be chosen.
-
-This is still missing an explanation of why a new name is needed.
-Hint: do you need to change register settings to use one versus the
-other?
-
->=20
-> The presence of an external clock source is optional, not required. When
-> absent, internal clock is used. Modify required property accordingly and
-> modify second example to showcase this.
+On Thu, Jun 13, 2024 at 02:40:00PM +0300, Alisa-Dariana Roman wrote:
+> Internal clock of AD719X devices can be made available on MCLK2 pin. Add
+> clock provider to support this functionality.
 >=20
 > Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 > ---
->  .../devicetree/bindings/iio/adc/adi,ad7192.yaml    | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+>  .../devicetree/bindings/iio/adc/adi,ad7192.yaml       | 11 ++++++++++-
+>  1 file changed, 10 insertions(+), 1 deletion(-)
 >=20
 > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/=
 Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> index a03da9489ed9..3ae2f860d24c 100644
+> index 3ae2f860d24c..1434d89c2880 100644
 > --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
 > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> @@ -39,11 +39,15 @@ properties:
-> =20
->    clocks:
->      maxItems: 1
-> -    description: phandle to the master clock (mclk)
-> +    description: |
-> +      Optionally, either a crystal can be attached externally between MC=
+> @@ -42,13 +42,20 @@ properties:
+>      description: |
+>        Optionally, either a crystal can be attached externally between MC=
 LK1 and
-> +      MCLK2 pins, or an external CMOS-compatible clock can drive the MCL=
+>        MCLK2 pins, or an external CMOS-compatible clock can drive the MCL=
 K2
-> +      pin. If absent, internal 4.92MHz clock is used.
+> -      pin. If absent, internal 4.92MHz clock is used.
+> +      pin. If absent, internal 4.92MHz clock is used, which can be made
+> +      available on MCLK2 pin.
 > =20
 >    clock-names:
-> -    items:
-> -      - const: mclk
-> +    enum:
-> +      - xtal
-> +      - mclk
+>      enum:
+>        - xtal
+>        - mclk
 > =20
->    interrupts:
->      maxItems: 1
-> @@ -135,8 +139,6 @@ patternProperties:
->  required:
->    - compatible
->    - reg
-> -  - clocks
-> -  - clock-names
->    - interrupts
->    - dvdd-supply
->    - avdd-supply
-> @@ -202,8 +204,6 @@ examples:
->              spi-max-frequency =3D <1000000>;
->              spi-cpol;
->              spi-cpha;
-> -            clocks =3D <&ad7192_mclk>;
-> -            clock-names =3D "mclk";
->              interrupts =3D <25 0x2>;
->              interrupt-parent =3D <&gpio>;
->              aincom-supply =3D <&aincom>;
-> --=20
-> 2.34.1
->=20
+> +  "#clock-cells":
+> +    const: 0
+> +
+> +  clock-output-names:
+> +    maxItems: 1
 
---m9XQa0OBbOvIhW8/
+Why do you need an output name when you have exactly one clock?
+
+--ZG98mhyg/OXpjdLh
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZmshUAAKCRB4tDGHoIJi
-0j40AQC/5ubIJbIF44JX0Xp18MLiKZANhOQVvlyxU5cJNPT6FwD/clq35TXv6JWP
-NmWCp4wPP5eoWvB4SVNvRsbXOAGxAgs=
-=/uC6
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZmshlwAKCRB4tDGHoIJi
+0rN5AQDwx3OuFGaIq92gAW9SP4SawMqQkqEvdf2NqApMoU8puQD9E/24Paa8Ot5p
+Yw14vSKM8xuL+pvJgvu9QbMx9HMcywE=
+=1M/8
 -----END PGP SIGNATURE-----
 
---m9XQa0OBbOvIhW8/--
+--ZG98mhyg/OXpjdLh--
 

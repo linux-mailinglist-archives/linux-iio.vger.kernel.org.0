@@ -1,86 +1,79 @@
-Return-Path: <linux-iio+bounces-6245-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6246-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 413D8907745
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 17:45:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C81907861
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 18:34:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C28B928E3E9
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 15:45:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1818284246
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 16:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE75158A11;
-	Thu, 13 Jun 2024 15:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D1A1448ED;
+	Thu, 13 Jun 2024 16:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b="Hxl9q5jU"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eFs0LCY7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5CE157481
-	for <linux-iio@vger.kernel.org>; Thu, 13 Jun 2024 15:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F033D130A79
+	for <linux-iio@vger.kernel.org>; Thu, 13 Jun 2024 16:34:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718293224; cv=none; b=P8WWZYB9M9M+WuEgwZczUP/Kq7j5Fi08e+e/slVytDMcIU7anU2YRzd/0bxk688XDuSIZHXlCK+YFsBh/VIUfEF0lbrH/BoXdGjV0e5X2OSYIebeWi9BS3RA7xQ7cRTwQiKpgQ9DPibaZ4jCtVqDJwEQ/kZVRfkQUxcSBPLKOYE=
+	t=1718296452; cv=none; b=p2NbT1LUIiOgGwEexegAGlKgBWbJoZ9jfag5yGu3dfmN45KaIwCHhJrQtf7TBsZN5hg1fMy5rQHgLYGO20+Dy0vU92XXbboC8Z4yFGUDatwe+7vee/yunOg0xgndeLQD3mpkxWQR0FqqaxnbKNG+kNfek5wDs4HQFQUM8vnC/MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718293224; c=relaxed/simple;
-	bh=luTdfy6sKpLBoXjaLPwr0uG5veHniFZLbNHB+TAySsU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gpEVS6OYsMjoKW05zB9YivfkJqAmSkOi3meI/0gofbCQ261vcF9aJsB0hMVqc2+NdFUxrxlhGI39ZqzHiFHZV5w3bj0siA8jdOkyBYPhW1+w7TwMfBX0KqeiX40PiuwlnJ/zuBCM+SXwE22P/xtRX9qgmjSkTt/pbmfYOGhs5xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br; spf=pass smtp.mailfrom=usp.br; dkim=pass (2048-bit key) header.d=usp.br header.i=@usp.br header.b=Hxl9q5jU; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=usp.br
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=usp.br
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-1f7274a453bso11048645ad.2
-        for <linux-iio@vger.kernel.org>; Thu, 13 Jun 2024 08:40:22 -0700 (PDT)
+	s=arc-20240116; t=1718296452; c=relaxed/simple;
+	bh=TH6yUbejSw9+JlXPysbovmJBDZzKEu7WvN4dTHb6Tok=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rL4sDjnfAZKSZtc3CuR43EdJP/bfw0bbaGxPX0oedrKYE2dTS/cRR2m2eP02ggt0GCbaeaFc+VwK1a+Qu0MhuWDLXKicKn1Qgxfeo5q5zJ+yRYZ1+FUYS5vVjQ7YPpc/TmMqMUgRxDLZgkRnvOhmYUqrh2/lnoc1xLjEd+AFeeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eFs0LCY7; arc=none smtp.client-ip=209.85.160.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4411fc45fbcso6445111cf.3
+        for <linux-iio@vger.kernel.org>; Thu, 13 Jun 2024 09:34:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=usp.br; s=usp-google; t=1718293221; x=1718898021; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7QnxyApbFpsfeddwm7SZRHJYhBcPxd4u6Vyq+8HPgcs=;
-        b=Hxl9q5jUnTZ88Btv3enxD4p9Q9zIcloHJOPGjK1S+8kABgLWpT/trON2eTva/XTGgh
-         QYNEOjEjrMdWaUi8UyAPo7W/IAQfKEhe/xI5AA0RB0KFQaMiCq98CBXnBm4oG0//bGT/
-         lFY0YkjdTQumHArgsWgGbwEvMqp9gkMJdlVM9wABagjA55E1CT0DOQ1V/l4PP7WexUgQ
-         KPKJllkm3R/EtfqbAnAn1DRKDlfM+ZAA90ag2r3u8UM0yOisd+EH/OxjwW0NiBcUY8fc
-         w+gAYcXA7ZJjfMsyQhvJ4m0wWWBsQ1OfoKRo9kVYj3Ku3hKLiS7qQYMHx+aw11Gq2wN3
-         +dWQ==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718296449; x=1718901249; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jnTqeJui//cZvCx8TIdIEgkp7fczgV1PTRw+9hdKvO0=;
+        b=eFs0LCY79hUWbCNK0mgWjc9pyxmcrLfetrN1J7mIB4gERGy/kIxSHeOirM+Zpc0Tpi
+         aE8ORly9Mmv9ZYiJzUigNJYFpTlszXyI+xrteHtw+85jvbFUDWEReYijkuGIVOaRWqse
+         q1veWdS4UXOgC43WbbRSc015IbkbbBZBpoAEAAQq9Gj3t4+1C3qRcIHoXan6zIn6qyV5
+         hErl5Qzdc8JOcFDM2xUfrrslhQSAoIvJFFx/jzyidItPhY8iDpFX2qYVh/2pFH47lufz
+         vakSG7x8kjM8LXQXBc5WDc3bYLqzwRoRm4QNxUfZQ10D85VkekA8FXkrGZuuiD0bEwCJ
+         H1Pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718293221; x=1718898021;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7QnxyApbFpsfeddwm7SZRHJYhBcPxd4u6Vyq+8HPgcs=;
-        b=dQXwslS4ncjrLJVEhp51Ez+e3c0ETItQmehl7ALpQJ55Th4vXqyAKcyXBNuF9p7Yaz
-         VbmR95DOK5+SJSHRJpHLyR+KVcV71jzsdJvZoC7pq3AcbchkQ8ld4b6b5LUsFdtKysC0
-         M7pjIswO8GaBujHgx6SszyKJY3MmkxKmzcHuVrbkkt/naOnbXFIWcEnKaQkMWVnu39ro
-         MwiDCxpYwpNulYgL7HrdY4/+IGS/szaEFqTOGxmMwcRTBgtX9MduXWAAbaY1ZI1/+dk1
-         tV3ieuBCuo28q58r3aD8LHdC0sx7HngFgKIzRTmofx3ChaZ7ARBhdkdcIgk0CEo92zJz
-         enoA==
-X-Gm-Message-State: AOJu0YwLrJCAWzM8HeyXWltVxwC9zMQUi0G57TrS3tfPUCUkQhtpvzp4
-	L0ir3F6U3s7VIVGtEtYj7NQKvclw2D98+eOp+hY2fmjK7b0txnnoux27bDYR2HNUD2k5tOP0GpK
-	f08DpCg==
-X-Google-Smtp-Source: AGHT+IFr8ScroXppMtVTmGOaP6xmMJ+P7AsudyUCgjWvGLn9KnczJTqyHGmsMiv5Ct71f+ag83pAow==
-X-Received: by 2002:a17:903:41c7:b0:1f7:2849:184c with SMTP id d9443c01a7336-1f8625c64d4mr548535ad.6.1718293220954;
-        Thu, 13 Jun 2024 08:40:20 -0700 (PDT)
-Received: from hagisf.semfio.usp.br ([143.107.45.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855e55d7dsm15372295ad.14.2024.06.13.08.40.18
+        d=1e100.net; s=20230601; t=1718296449; x=1718901249;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jnTqeJui//cZvCx8TIdIEgkp7fczgV1PTRw+9hdKvO0=;
+        b=pHR2MqSJvVbSh2dT6MdEDUauoRwN9ekfEleos48cc7p+9/asGrW2MVakMjcAu22ula
+         UJCPK9qaf5m7MPp54ElMCghN53rWHuPM6DMa/NuP7FJNPjaoELPRAkZjXwXp4U0qEOBR
+         e0sgyiNhnL0LeAl+7p3jqCLMbnZqbhghT9t5cSOLagWsuZ33C2xeZd+Xj06oNKlWzpKI
+         A0M2uJgwttCflLohroddDV9syxErj7/6xclPDNSOaDVaqbPfAkvaoi/fkb0Mm8UCGCa7
+         p16R21iyKYXV7Te465jUK9/tstdKn21h5X7m29afS5e2eSRdbAUvrL+qUm4sVFwVzljt
+         1RWA==
+X-Gm-Message-State: AOJu0Yy5Wq04A8/bDuw6xAwY5LC8/k/hKt/W73DT2NwnqEowUDRS4Abn
+	puWIB3YGPdbhyVO6ZHMLgIi7pLw5r5mNLWl7zKqoMi+8uJQ1K5xitVyLR7UqIzQ=
+X-Google-Smtp-Source: AGHT+IHuqdhXoaTBFdtn9ov3LvddNezgc3CiIjKhWKx8XUQamhaY/ID6htUbUnQzSxu8vYpFzCveXA==
+X-Received: by 2002:a05:622a:4cb:b0:440:5275:d435 with SMTP id d75a77b69052e-442168ad9e8mr1673321cf.30.1718296448835;
+        Thu, 13 Jun 2024 09:34:08 -0700 (PDT)
+Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4420f96efbbsm5884171cf.54.2024.06.13.09.34.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jun 2024 08:40:20 -0700 (PDT)
-From: Fernando Yang <hagisf@usp.br>
-To: linux-iio@vger.kernel.org
-Cc: Fernando Yang <hagisf@usp.br>,
-	Lars-Peter Clausen <lars@metafoo.de>,
+        Thu, 13 Jun 2024 09:34:08 -0700 (PDT)
+From: Trevor Gamblin <tgamblin@baylibre.com>
+To: Lars-Peter Clausen <lars@metafoo.de>,
 	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Eduardo Figueredo <eduardofp@usp.br>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Subject: [PATCH v3 3/3] iio: adc: ad7266: Fix codestyle error
-Date: Thu, 13 Jun 2024 12:39:20 -0300
-Message-Id: <20240613153920.14647-4-hagisf@usp.br>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240613153920.14647-1-hagisf@usp.br>
-References: <20240613153920.14647-1-hagisf@usp.br>
+	Jonathan Cameron <jic23@kernel.org>
+Cc: linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: adc: adi-axi-adc: improve probe() error messaging
+Date: Thu, 13 Jun 2024 12:34:06 -0400
+Message-ID: <20240613163407.2147884-1-tgamblin@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -89,42 +82,63 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix some codestyle errors indicated by checkpatch.pl
+The current error handling for calls such as devm_clk_get_enabled() in
+the adi-axi-adc probe() function means that, if a property such as
+'clocks' (for example) is not present in the devicetree when booting a
+kernel with the driver enabled, the resulting error message will be
+vague, e.g.:
 
-Signed-off-by: Fernando Yang <hagisf@usp.br>
+|adi_axi_adc 44a00000.backend: probe with driver adi_axi_adc failed with error -2
+
+Change the devm_clk_get_enabled(), devm_regmap_init_mmio(), and
+devm_iio_backend_register() checks to use dev_err_probe() with some
+context for easier debugging.
+
+After the fix:
+
+|adi_axi_adc 44a00000.backend: error -ENOENT: failed to get clock
+|adi_axi_adc 44a00000.backend: probe with driver adi_axi_adc failed with error -2
+
+Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/adc/ad7266.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/adc/adi-axi-adc.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-index 356c2fe07..5a2f1bb27 100644
---- a/drivers/iio/adc/ad7266.c
-+++ b/drivers/iio/adc/ad7266.c
-@@ -63,12 +63,14 @@ static int ad7266_powerdown(struct ad7266_state *st)
- static int ad7266_preenable(struct iio_dev *indio_dev)
- {
- 	struct ad7266_state *st = iio_priv(indio_dev);
-+
- 	return ad7266_wakeup(st);
- }
+diff --git a/drivers/iio/adc/adi-axi-adc.c b/drivers/iio/adc/adi-axi-adc.c
+index 0cf0d81358fd..99998c2769d5 100644
+--- a/drivers/iio/adc/adi-axi-adc.c
++++ b/drivers/iio/adc/adi-axi-adc.c
+@@ -292,7 +292,8 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+ 	st->regmap = devm_regmap_init_mmio(&pdev->dev, base,
+ 					   &axi_adc_regmap_config);
+ 	if (IS_ERR(st->regmap))
+-		return PTR_ERR(st->regmap);
++		return dev_err_probe(&pdev->dev, PTR_ERR(st->regmap),
++				     "failed to init register map\n");
  
- static int ad7266_postdisable(struct iio_dev *indio_dev)
- {
- 	struct ad7266_state *st = iio_priv(indio_dev);
-+
- 	return ad7266_powerdown(st);
- }
+ 	expected_ver = device_get_match_data(&pdev->dev);
+ 	if (!expected_ver)
+@@ -300,7 +301,8 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
  
-@@ -153,7 +155,7 @@ static int ad7266_read_raw(struct iio_dev *indio_dev,
- 	case IIO_CHAN_INFO_RAW:
- 		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
- 			ret = ad7266_read_single(st, val, chan->address);
--			
-+
- 			if (ret < 0)
- 				return ret;
- 			*val = (*val >> 2) & 0xfff;
+ 	clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
++		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
++				     "failed to get clock\n");
+ 
+ 	/*
+ 	 * Force disable the core. Up to the frontend to enable us. And we can
+@@ -328,7 +330,8 @@ static int adi_axi_adc_probe(struct platform_device *pdev)
+ 
+ 	ret = devm_iio_backend_register(&pdev->dev, &adi_axi_adc_generic, st);
+ 	if (ret)
+-		return ret;
++		return dev_err_probe(&pdev->dev, ret,
++				     "failed to register iio backend\n");
+ 
+ 	dev_info(&pdev->dev, "AXI ADC IP core (%d.%.2d.%c) probed\n",
+ 		 ADI_AXI_PCORE_VER_MAJOR(ver),
 -- 
-2.34.1
+2.45.2
 
 

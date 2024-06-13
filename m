@@ -1,129 +1,161 @@
-Return-Path: <linux-iio+bounces-6248-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6249-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1038907883
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 18:43:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1B99078F2
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 18:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 529101F228C4
-	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 16:43:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED13DB2366E
+	for <lists+linux-iio@lfdr.de>; Thu, 13 Jun 2024 16:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5654B149C61;
-	Thu, 13 Jun 2024 16:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MeCNc+eZ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD301149C54;
+	Thu, 13 Jun 2024 16:58:34 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B11C149C4E;
-	Thu, 13 Jun 2024 16:43:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6EC626AF0;
+	Thu, 13 Jun 2024 16:58:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718296989; cv=none; b=Aa4F5daOqbO7VrbOrwT7ifkEb4sU+ovS5QMdF7CoZXJzYCAM+8B361l4MEa5qrh5DnHJ8cuw+OHk3pfl3SgR+GRpdU6Q+knMFgOht/Ig38v90S23W702kZgLjzLvwHHHXsf0CP91aDNGyzuWwqQSAXh98GQWaoowwRiVukMOvFc=
+	t=1718297914; cv=none; b=GNXadvduh0xD/5NlahLmrRcbS7mCmhIQYo3/4LsxKBSIDxHzuiubturCl3TdOX6M58Q8phEhiIDLWwib6P1jxKk8J2QGQmk+4lvJd9RoUw5u8Klaw1zoHpW1w+vNxHVpNgO7mIZhK6/VPODwKcN3NR455k1pJROyts0LjcQnrcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718296989; c=relaxed/simple;
-	bh=5N86/34S9SsY993i4OkYsoiBIKBqPyqnwe4IRziKYTs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fxfRBSMaclnoUV6hKAbaVBRl4l0p5i6ZXd+P3X8z+DKFDRJmnDGFP+8b1XGDfIH+attj1hirgIkAWDYagJRmiWCpv0KfpV58pXbVz37Chw/pqiBwax6IF11xJuAu1rbWlz9IyM3dXzvx3OsCrCgb9uok6kQsb3GtfQqh7GMjYTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MeCNc+eZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67BFC32786;
-	Thu, 13 Jun 2024 16:43:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718296988;
-	bh=5N86/34S9SsY993i4OkYsoiBIKBqPyqnwe4IRziKYTs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MeCNc+eZYG9ORTjLRsHrCVE8nxJrUu5YEgZ+GmPJIdJL17zuVlPmMEw5NRZ+Hee2u
-	 iyEdpY+bLyH0yoWJj2S0bdZgMpCshE/5SQC78dHWgtcNGWqNVqzCSDVxzufAmc95Up
-	 J92LVZmVkSXO5sy1DSlArRFK2tRL2FDVBwXeJr2tpe/f5lwCLGm2Z16WL3Vy/UQCMp
-	 M/EJYLLqfSi9Qgr4gB6qQtHEckyPmNMcvn4wMBNCyKHWZX4Mtjd0o3rhpx35Y/PC+K
-	 hekuJ2Ab5ob1sqFUtPxx+i2bm14JZPbOzQRXav2bdG/XtZGV37bgqnUy/nPCWJx3AD
-	 6KBcbZ0PteVKA==
-Date: Thu, 13 Jun 2024 17:43:03 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Alisa-Dariana Roman <alisadariana@gmail.com>
-Cc: Alisa-Dariana Roman <alisa.roman@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Alexandru Tachici <alexandru.tachici@analog.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH v4 4/5] dt-bindings: iio: adc: ad7192: Add clock provider
-Message-ID: <20240613-porthole-hedging-6655d32072a8@spud>
-References: <20240613114001.270233-1-alisa.roman@analog.com>
- <20240613114001.270233-5-alisa.roman@analog.com>
+	s=arc-20240116; t=1718297914; c=relaxed/simple;
+	bh=bT3sz1RanAtOG0QsxHVOiCO2oCWoAEMKDaJyL0+iMDY=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hxgYcGpErSmBzclRHqSmIJgi7C4XZBSHjckdGQzbxoPP+JLm/0InC+d3Ilr2Js0TElj9d0noEaDbHn/h3zJbMaJS8YRJ9OAy2e/HukR3w3AfOcScOsf2caZp4TTJkA/aTJ8C7uKMFefdKXh8ZvNWiCiJZWty/qP/Ly5JqAme/P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W0TBV4jHqz6K6Wl;
+	Fri, 14 Jun 2024 00:58:26 +0800 (CST)
+Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9DA3F140A70;
+	Fri, 14 Jun 2024 00:58:28 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 13 Jun
+ 2024 17:58:28 +0100
+Date: Thu, 13 Jun 2024 17:58:26 +0100
+From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To: Angelo Dureghello <adureghello@baylibre.com>
+CC: Jonathan Cameron <jic23@kernel.org>, Nuno =?ISO-8859-1?Q?S=E1?=
+	<noname.nuno@gmail.com>, <robh@kernel.org>, <krzk+dt@kernel.org>,
+	<conor+dt@kernel.org>, <nuno.sa@analog.com>, <lars@metafoo.de>,
+	<Michael.Hennerich@analog.com>, <linux-iio@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/6] minor fixes and improvements
+Message-ID: <20240613175826.000040e7@Huawei.com>
+In-Reply-To: <9e21de1f-d0b1-4a00-a73d-9f35d8cedf1b@baylibre.com>
+References: <20240522150141.1776196-1-adureghello@baylibre.org>
+	<751faef385f81f8a2dd0dcc2acd2d4519bebebe5.camel@gmail.com>
+	<20240525180631.13446abc@jic23-huawei>
+	<826c3185-74ca-423c-96f2-4fd4cf2481cb@baylibre.com>
+	<9e21de1f-d0b1-4a00-a73d-9f35d8cedf1b@baylibre.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ZG98mhyg/OXpjdLh"
-Content-Disposition: inline
-In-Reply-To: <20240613114001.270233-5-alisa.roman@analog.com>
-
-
---ZG98mhyg/OXpjdLh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="ISO-8859-1"
 Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
 
-On Thu, Jun 13, 2024 at 02:40:00PM +0300, Alisa-Dariana Roman wrote:
-> Internal clock of AD719X devices can be made available on MCLK2 pin. Add
-> clock provider to support this functionality.
+On Wed, 12 Jun 2024 18:35:32 +0200
+Angelo Dureghello <adureghello@baylibre.com> wrote:
+
+> Hi Jonathan, Nuno,
 >=20
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad7192.yaml       | 11 ++++++++++-
->  1 file changed, 10 insertions(+), 1 deletion(-)
+> just to be sure, is there something else needed from my side
+> for this patch-set ?
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> index 3ae2f860d24c..1434d89c2880 100644
-> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-> @@ -42,13 +42,20 @@ properties:
->      description: |
->        Optionally, either a crystal can be attached externally between MC=
-LK1 and
->        MCLK2 pins, or an external CMOS-compatible clock can drive the MCL=
-K2
-> -      pin. If absent, internal 4.92MHz clock is used.
-> +      pin. If absent, internal 4.92MHz clock is used, which can be made
-> +      available on MCLK2 pin.
-> =20
->    clock-names:
->      enum:
->        - xtal
->        - mclk
-> =20
-> +  "#clock-cells":
-> +    const: 0
-> +
-> +  clock-output-names:
-> +    maxItems: 1
 
-Why do you need an output name when you have exactly one clock?
+All good now.  It's queued up and so just a case of me sending a pull reque=
+st
+to Greg KH. If he takes that it'll then be in char-misc and Greg will then =
+send
+pull request to Linus when the merge window opens.
 
---ZG98mhyg/OXpjdLh
-Content-Type: application/pgp-signature; name="signature.asc"
+Jonathan
 
------BEGIN PGP SIGNATURE-----
+>=20
+> Thanks,
+> regards,
+> angelo
+>=20
+> On 28/05/24 9:16 PM, Angelo Dureghello wrote:
+> > Hi Jonathan,
+> >
+> > On 25/05/24 7:06 PM, Jonathan Cameron wrote: =20
+> >> On Thu, 23 May 2024 14:45:01 +0200
+> >> Nuno S=E1 <noname.nuno@gmail.com> wrote:
+> >> =20
+> >>> On Wed, 2024-05-22 at 17:01 +0200, Angelo Dureghello wrote: =20
+> >>>> From: Angelo Dureghello <adureghello@baylibre.com>
+> >>>>
+> >>>> After testing this driver, add some minor fixes and improvements,
+> >>>> as adding single channel variants support (ad3541r, ad3551r), also=20
+> >>>> as a
+> >>>> preparatory step to bigger future improvements related to fast-rate=
+=20
+> >>>> mode
+> >>>> for this DAC family.
+> >>>>
+> >>>> Previous patches (v1, 3/3)
+> >>>> https://lore.kernel.org/linux-iio/20240510141836.1624009-1-adureghel=
+lo@baylibre.org=20
+> >>>>
+> >>>> https://lore.kernel.org/linux-iio/20240510141836.1624009-2-adureghel=
+lo@baylibre.org/=20
+> >>>>
+> >>>> https://lore.kernel.org/linux-iio/20240510141836.1624009-3-adureghel=
+lo@baylibre.org/=20
+> >>>>
+> >>>>
+> >>>> Angelo Dureghello (6):
+> >>>> =A0=A0 dt-bindings: iio: dac: fix ad3552r gain parameter names
+> >>>> =A0=A0 dt-bindings: iio: dac: add ad35xxr single output variants
+> >>>> =A0=A0 iio: dac: ad3552r: add model data structure
+> >>>> =A0=A0 iio: dac: ad3552r: add support for ad3541r and ad3551r
+> >>>> =A0=A0 iio: dac: ad3552r: change AD3552R_NUM_CH define name
+> >>>> =A0=A0 iio: dac: ad3552r: uniform structure names
+> >>>>
+> >>>> =A0=A0.../bindings/iio/dac/adi,ad3552r.yaml=A0=A0=A0=A0=A0=A0=A0=A0 =
+|=A0 43 ++++--
+> >>>> =A0=A0drivers/iio/dac/ad3552r.c=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0 | 140=20
+> >>>> ++++++++++++------
+> >>>> =A0=A02 files changed, 128 insertions(+), 55 deletions(-) =20
+> >>> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> >>> =20
+> >> This series crossed with a series using
+> >> device_for_each_child_node_scoped()
+> >>
+> >> I've rebased on top of that. Was moderately straightforwards but
+> >> given last week I messed a similar change up completely please
+> >> check the testing branch of iio.git!
+> >>
+> >> The mess was all it the patch adding model_data =20
+> >
+> > i tested the driver from the iio testing beranch,
+> > it works as expected.
+> > =20
+> >> Thanks,
+> >>
+> >> Jonathan =20
+> >
+> > Thanks,
+> >
+> > Regards,
+> > angelo
+> >
+> > =20
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZmshlwAKCRB4tDGHoIJi
-0rN5AQDwx3OuFGaIq92gAW9SP4SawMqQkqEvdf2NqApMoU8puQD9E/24Paa8Ot5p
-Yw14vSKM8xuL+pvJgvu9QbMx9HMcywE=
-=1M/8
------END PGP SIGNATURE-----
-
---ZG98mhyg/OXpjdLh--
 

@@ -1,124 +1,138 @@
-Return-Path: <linux-iio+bounces-6262-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6263-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEB490871D
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2024 11:11:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 101EA908773
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2024 11:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B927528370A
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2024 09:11:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28C541C2440F
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2024 09:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FC513CF9E;
-	Fri, 14 Jun 2024 09:11:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E898A18C335;
+	Fri, 14 Jun 2024 09:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J1Cwqw2F"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uVyVB1Q1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0535FBB7;
-	Fri, 14 Jun 2024 09:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F612481D0;
+	Fri, 14 Jun 2024 09:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718356299; cv=none; b=C/qaxBuauEiXdi+nLakEuPJZGt3w6CttV3vt/tXquvi0PCj158S4jxK8AYBOP8ifrkov88Am9bXGC9HTNO0DgmWhka4vG59YElf34r4TKdM3XgILwduYKqjcTJTZDUxCi/RRM/a75UMX+8kPVlXSwpK+qThpKYk/NxXply/6SjY=
+	t=1718357489; cv=none; b=hAHFsTl4fPz6fMqo9QzLurGzp3dbnjbQGUBN/t377qOdnzorBSl1IcX++JVnCPG1eoBU7thXKb5AtyAef74jpzsHDG5+Il6slISxNp40I3BXLJ8SwprQhEH+M9+SLLKatGTnT76XovAbENNDkVFVTBImU0D6R0NhViXkUi0N+oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718356299; c=relaxed/simple;
-	bh=SuqvfsAxCA+jgecy6hs7ZPJ0qUifTMDLbWii6etDTFM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gD68q/9htGiobJe4YfSjRd+z0peq50cnpTVoSMkyuwEMOVBDVhh4vW3PYq5LE5br0GGn6IeG2RvTF2fVENV5/fdw2zXf+F91narc6YF6MvIU0MLnQFjDfFyOEd6ihv7T0luNeeTD5/zzjNnpD40hEOVrot/LO8DtMVspFCY/hQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J1Cwqw2F; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-57a44c2ce80so2207926a12.0;
-        Fri, 14 Jun 2024 02:11:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718356296; x=1718961096; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SuqvfsAxCA+jgecy6hs7ZPJ0qUifTMDLbWii6etDTFM=;
-        b=J1Cwqw2FT2zUz7FSWuX7Jc6hkXZ33FDXELnFn1Qbk6D9Opo6e152L5mQjB5ffdlv43
-         QcIMlRPgXafcJBpbrCe1UQlbNURtBgCG7XZpYdUABWLuB8y9/zClsTTRVPPQY7Nm3qE8
-         5In2utA7IBfrnWovaa8lne6e0KgFaMS/3w6Qe9sSvBRxObeBAlQkSOGRDLhvTMD7Bm4o
-         Phdk7K31mWpHHB9YKrakPZnGBDCs4pjSCmmF9mW884bVpLVIdWCy4sJdQsRnNlPRg0wY
-         1I9KNwdpvYP+H1B5kbT4XFC1Jwc0aH+EgJBlU/mQUbyRm/jQcg85U5ogOSXZyVTWCx4A
-         CI8g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718356296; x=1718961096;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SuqvfsAxCA+jgecy6hs7ZPJ0qUifTMDLbWii6etDTFM=;
-        b=KFqCaISs8VmIzOEp12i638HtRnkJ1x11D87jIJOYvhQW3Jh1F6Za604I3Dwf2ry2oa
-         30XkIUheSg1djGsM3qXeW+Q6KRifeYKYnOqtVQb+33dFZb1npGfp4E4kLk+/B98MHO6K
-         bGqbxirORW35CTs98MuUiVIgdIRK55kUuOCLWQUqgGpCNMXOerEWN4j1/18kbb1QZSNc
-         JDcwBky1uyl/NgaFHA6a7RLaqSdANASZVzMHCWCUGgh8ymRepYdlz85WQ3svXFiIr0Q4
-         X6Cw8naxGQQ4ubnFFHXz8o+WTtO6d9Nz6+iamuQz3FhgSGci+K5+8A33K5yFPIcbvlK0
-         y+/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU/sfLsalK/iPalc4z6dG8RrgUeJJDGzV2oDJ7SXHufTDgi3OcyGgJFVf3H+2CQCSEUisoXJS8aFSDcmojmaSjXF/IpMmP1oTsNPwGB
-X-Gm-Message-State: AOJu0Yx16hnMn7Cpgqa4JJVNo8H4/aFLH8vFK/UbhJmAe60yvht1mmqm
-	mSzRFiTFCfsoPYrtBylQiB78fFBMnOGwvnodlxDTG/1MBJrYW/UC
-X-Google-Smtp-Source: AGHT+IG0dQ/ng3WdSEMuHGqHcyEyLmiH5xiBYtyTepKaEAALDdWn+bmZCaGWYG56V2lXDtIySyq7SQ==
-X-Received: by 2002:a17:906:b28a:b0:a6f:11c9:f349 with SMTP id a640c23a62f3a-a6f60d29731mr153670166b.23.1718356295500;
-        Fri, 14 Jun 2024 02:11:35 -0700 (PDT)
-Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56ecdcfbsm162508066b.109.2024.06.14.02.11.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jun 2024 02:11:35 -0700 (PDT)
-Message-ID: <57d4659a5abb63d7c085865059b9d71c40371edd.camel@gmail.com>
-Subject: Re: [PATCH] iio: adc: adi-axi-adc: improve probe() error messaging
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Trevor Gamblin <tgamblin@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>,  Michael Hennerich <Michael.Hennerich@analog.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Fri, 14 Jun 2024 11:11:34 +0200
-In-Reply-To: <20240613163407.2147884-1-tgamblin@baylibre.com>
-References: <20240613163407.2147884-1-tgamblin@baylibre.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
+	s=arc-20240116; t=1718357489; c=relaxed/simple;
+	bh=GHeElqe8VrB34C9wBIcEMogZsFo2aeiU/M3nJbLyXxQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZlY2xXgyIB57lT8UPM2WeMWWBeVKM6YPU98caTEM6R8+o5caOX7lC9WmynxMkj9Ch3tzeAUDzgVdnnI6bXjuAgQDPjjBa7uL50KYU5vV7gu7pHM9JsNPgiPmUkUrHB1Oguyx3D1MssLvES7qU5C0J4m3V3UQt0UbN1/HieXYcDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uVyVB1Q1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27173C2BD10;
+	Fri, 14 Jun 2024 09:31:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718357489;
+	bh=GHeElqe8VrB34C9wBIcEMogZsFo2aeiU/M3nJbLyXxQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uVyVB1Q13OgHfxDgorVlgcTtPWWke8R6tnuozRHFZqo8a9Jwd3zF/iajHtabIgDSN
+	 fJUC450HjXueTqfpKmdaFk4pP+C4KBHDWlioCDY9YSYiGfcFB+zVJlUQ32lyPuIv8e
+	 76fCrocYx59ivwY2AKivgZ4sRrf5zE1DDrhTAmqu8BcWI9cyHo7+iaQoit+LazNjKb
+	 YMF/Poqeivz7CbcPm3E7T3vqy2luQaTwMisOR5oM6ltsy6SOO8arAfb5zwxClBDPii
+	 skZhlEj4yjnBBPfaXF/cEw445MAyEu3lmkliENODUC/MChs81QWnQdksjcSBDoYOww
+	 w7id1AERN7VGA==
+Date: Fri, 14 Jun 2024 10:31:24 +0100
+From: Lee Jones <lee@kernel.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	William Breathitt Gray <wbg@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-iio@vger.kernel.org, linux-pwm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 3/4] mfd: stm32-timers: Drop TIM_DIER_CC_IE(x) in favour
+ of TIM_DIER_CCxIE(x)
+Message-ID: <20240614093124.GD3029315@google.com>
+References: <cover.1718352022.git.u.kleine-koenig@baylibre.com>
+ <0735860960b1b38570bffa5b0de81a97f6e3230e.1718352022.git.u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <0735860960b1b38570bffa5b0de81a97f6e3230e.1718352022.git.u.kleine-koenig@baylibre.com>
 
-On Thu, 2024-06-13 at 12:34 -0400, Trevor Gamblin wrote:
-> The current error handling for calls such as devm_clk_get_enabled() in
-> the adi-axi-adc probe() function means that, if a property such as
-> 'clocks' (for example) is not present in the devicetree when booting a
-> kernel with the driver enabled, the resulting error message will be
-> vague, e.g.:
->=20
-> > adi_axi_adc 44a00000.backend: probe with driver adi_axi_adc failed with=
- error -2
->=20
-> Change the devm_clk_get_enabled(), devm_regmap_init_mmio(), and
-> devm_iio_backend_register() checks to use dev_err_probe() with some
-> context for easier debugging.
->=20
-> After the fix:
->=20
-> > adi_axi_adc 44a00000.backend: error -ENOENT: failed to get clock
-> > adi_axi_adc 44a00000.backend: probe with driver adi_axi_adc failed with=
- error -2
->=20
-> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+On Fri, 14 Jun 2024, Uwe Kleine-König wrote:
+
+> These two defines have the same purpose and this change doesn't
+> introduce any differences in drivers/counter/stm32-timer-cnt.o.
+> 
+> The only difference between the two is that
+> 
+> 	TIM_DIER_CC_IE(1) == TIM_DIER_CC2IE
+> 
+> while
+> 
+> 	TIM_DIER_CCxIE(1) == TIM_DIER_CC1IE
+> 
+> . That makes it necessary to have an explicit "+ 1" in the user code,
+> but IMHO this is a good thing as this is the code locatation that
+> "knows" that for software channel 1 you have to use TIM_DIER_CC2IE
+> (because software guys start counting at 0, while the relevant hardware
+> designer started at 1).
+> 
+> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 > ---
+>  drivers/counter/stm32-timer-cnt.c | 4 ++--
 
-Somehow feel that in these cases the error log should come from the functio=
-ns we're
-calling but bah... likely not going happen/change:
+The subject should be renamed.
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+>  include/linux/mfd/stm32-timers.h  | 1 -
+>  2 files changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/counter/stm32-timer-cnt.c b/drivers/counter/stm32-timer-cnt.c
+> index 0664ef969f79..186e73d6ccb4 100644
+> --- a/drivers/counter/stm32-timer-cnt.c
+> +++ b/drivers/counter/stm32-timer-cnt.c
+> @@ -465,7 +465,7 @@ static int stm32_count_events_configure(struct counter_device *counter)
+>  			ret = stm32_count_capture_configure(counter, event_node->channel, true);
+>  			if (ret)
+>  				return ret;
+> -			dier |= TIM_DIER_CC_IE(event_node->channel);
+> +			dier |= TIM_DIER_CCxIE(event_node->channel + 1);
+>  			break;
+>  		default:
+>  			/* should never reach this path */
+> @@ -478,7 +478,7 @@ static int stm32_count_events_configure(struct counter_device *counter)
+>  
+>  	/* check for disabled capture events */
+>  	for (i = 0 ; i < priv->nchannels; i++) {
+> -		if (!(dier & TIM_DIER_CC_IE(i))) {
+> +		if (!(dier & TIM_DIER_CCxIE(i + 1))) {
+>  			ret = stm32_count_capture_configure(counter, i, false);
+>  			if (ret)
+>  				return ret;
+> diff --git a/include/linux/mfd/stm32-timers.h b/include/linux/mfd/stm32-timers.h
+> index 92b45a559656..f09ba598c97a 100644
+> --- a/include/linux/mfd/stm32-timers.h
+> +++ b/include/linux/mfd/stm32-timers.h
+> @@ -47,7 +47,6 @@
+>  #define TIM_DIER_CC2IE		TIM_DIER_CCxIE(2)			/* CC2 Interrupt Enable				*/
+>  #define TIM_DIER_CC3IE		TIM_DIER_CCxIE(3)			/* CC3 Interrupt Enable				*/
+>  #define TIM_DIER_CC4IE		TIM_DIER_CCxIE(4)			/* CC4 Interrupt Enable				*/
+> -#define TIM_DIER_CC_IE(x)	BIT((x) + 1)				/* CC1, CC2, CC3, CC4 interrupt enable		*/
+>  #define TIM_DIER_UDE		BIT(8)					/* Update DMA request Enable			*/
+>  #define TIM_DIER_CCxDE(x)	BIT(9 + ((x) - 1))			/* CCx DMA request Enable (x ∈ {1, .. 4})	*/
+>  #define TIM_DIER_CC1DE		TIM_DIER_CCxDE(1)			/* CC1 DMA request Enable			*/
+> -- 
+> 2.43.0
+> 
 
-(As a suggestion, you may do similar work in the axi-dac driver)
-
-- Nuno S=C3=A1
-
-
+-- 
+Lee Jones [李琼斯]
 

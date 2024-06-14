@@ -1,177 +1,174 @@
-Return-Path: <linux-iio+bounces-6275-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6276-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917DF908EA9
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2024 17:26:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7AE908E9F
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2024 17:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0D62FB2EEE7
-	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2024 15:20:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4FFA1F21498
+	for <lists+linux-iio@lfdr.de>; Fri, 14 Jun 2024 15:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8090715FCE9;
-	Fri, 14 Jun 2024 15:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E597E17FADB;
+	Fri, 14 Jun 2024 15:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Tgq7yRJs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S9M/a33n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E82C15FCE7
-	for <linux-iio@vger.kernel.org>; Fri, 14 Jun 2024 15:19:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB4F171082;
+	Fri, 14 Jun 2024 15:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718378387; cv=none; b=TE9fAI3E/LVTFMtPwhu6a6ZmuCizTtyuoHHf5umJ/GYvKXwFmm5MoovWD++mKqmEArOMgWDF7WjEzVe1J6JEtzLA7xeJeRvMgO+SbTH0fmecydt1xKzVwDe+9x7/DyjBGI1IJqWBqmOLoUrhrFfk9NeV0ocpfVyfUXhCKlDZFWg=
+	t=1718378621; cv=none; b=c0Kvw69hJT3944ltd0LBR/Fw6MNAimCTYCrZCocIjazQByUl6J4rjk3iNeCuwo5fQ67wx40jjzPrARM4Kk3zz08irZJGaRJ6MY/RPS63OzoFLf+Iqj+IVi2DhWsK1R3QWd1RATtzcpz/aYwExyCP4ACAYdkxkIJwpSjevtCOF3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718378387; c=relaxed/simple;
-	bh=87BvkSs+ygZRPSAr5u8PQe27OoMFmlNRGMl2XHFRvZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lMRRZgv4YE2u4thw89PcQoz99SxEsqdT5/s+Xv0+20WM4/rpYauid+zq6vM8XN/w1z6cbcbS2X+y4UbIF1CIOtHzKHKh/OJ6sQ2oQKq+SJjjkITXwC6Mec36lurGgSFE3lVjJo24JOIJjKkyW97kjgESCI3j+5ZR1AJcOylGnnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Tgq7yRJs; arc=none smtp.client-ip=209.85.167.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-3d2220a11a8so1309633b6e.0
-        for <linux-iio@vger.kernel.org>; Fri, 14 Jun 2024 08:19:45 -0700 (PDT)
+	s=arc-20240116; t=1718378621; c=relaxed/simple;
+	bh=rE3BnVtzjXG1HQP7KK8YhqFpU0yRwgn4LRCh3pJlmjQ=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=r6kw4fobGjd1ac0J1MLwoJcLtlUP5lkJ8SARJp8597xPlPQ3+ke0k+4KPYspxgFf1YQkZAB3LFgQtyxTJfpBmxADAgcjt6It9v0JYXPc1chnBGwKd7CswsVNOOCJ5leeNY0WYHZUFWfnKTF5qa8UUvbZCpA2Hau+1/uOstOPuxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S9M/a33n; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-57a31d63b6bso3083897a12.0;
+        Fri, 14 Jun 2024 08:23:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718378384; x=1718983184; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5FR+hiQXGSlrheXhrw7JSUh0i260ebEnk3xX8ftIKEk=;
-        b=Tgq7yRJsWAu14Bp8NDol5G0wh3QjxMhyjWt2SfgpNQhFSw4QJsxSF38c211CfNb7Zp
-         ZIsL0A4ftVzlvlHrHf2o095CiZZR9liZJW8AQ5CaqxVWb9HtDuTFL5171ASp7TZdJvFU
-         fR1zvArfTm5A2PJEQtoOKFYArlX/r5vGz2DSGdz+ODcWaXOURsL4tBIE1W75FwshdiOr
-         Fm2VeXrbmbFusUyB1NzpjjME0ctMCbONMZosbpvXZ+LxLftnItMCq+ocmAeKSCrLObLz
-         dv9jNn4Y/ObJ33/CQ3JwJPtIeAJkQQfmG2Os0bx6wZdpK9KYw0RX7EkndAT+oozT0oSk
-         k4Bw==
+        d=gmail.com; s=20230601; t=1718378618; x=1718983418; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=h9OdnYF4UyN/cVgcAYpH96GtKoeiuqLKBw2Oa4MGr/I=;
+        b=S9M/a33nOlLwcomjzWg0IpGtxXhBPLtnzQPGGq40swiGATlKFrlHF0Xb1/1DgcgHC/
+         MyCZ48nKHTSsHrk1YhwuZ51chRc9xWxWpTtDsa+9D/zLb4eDul99ESC24mPhTfwfH0UR
+         dT7R95g1pzINdEMKmaKNG+RGwr/G3ORUNSO8LyYdHonXlodhuvHLvKPl8gPgiY/TkR5E
+         ZPKRu+Id1pzjbLDgknOYUA4usWcTk5CNyq1Ft0O384XsV6CjoLRgnW9Ugx66Vv84z54E
+         J12rmV87X8Gdr9H3+eUn5lw+hrz2NsXgn2pjAqBqm9xH7w+UFLBUG/ZgvqC7wOU60SCc
+         4kVg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718378384; x=1718983184;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5FR+hiQXGSlrheXhrw7JSUh0i260ebEnk3xX8ftIKEk=;
-        b=RsWnnX4vqARVIGmCFGPr93KtUiCY2tymF5ol3cLMHEvg8LnZP3AWRZYGZfgiwcoTKi
-         gRfT5JBfjonrnuQToms7DfgXJpWLYsLixSkqcZWV4Wfg9qym9v5MaU7utM1lYn2m/H16
-         JLkwgAUrrs0AKMfmoiBxCPoMc3xmMIjqT3msNyG38vFvgULXb5CLLL31kiNyoe+FlQQY
-         hYFZQiAhErbN9dZ6iMbl+kEkgovFwfmGRLIDX84EjSz8PoE3g/iXkfBOQjpMeMXT13Wp
-         oDAad7ZF18y1l7lrY5bW2gsbHMd6mOTDlqB7vQWPJ0Ev22rYT/oBdJ9MnVBkaXbRqcwO
-         LmhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUFdQHs7+o+AZAb8Vc2nrNidLiqWX8+antF5BXMfA9aRYmXSqUXWKmyS7qtCKSXZKX7d3rRJSk8cEGHn5pBcTg8tFWGiOVgrR5b
-X-Gm-Message-State: AOJu0YwhDkem3FVVbJY9wXNf4r4oOi5z2T5xj1B73uQ38a9a8cvZKFDd
-	s7KBMUnrwfjjaAmdKEVm8U3tJyKLXVsXclpvewnU7da/wWnAARZiEfSwxrPn/AE=
-X-Google-Smtp-Source: AGHT+IEAqvqHfFDA+A3uFeBB8KWxkDw9vqnQ60TPDGHKsueaFYx9tY9DwpwzFQc4VT0/2eObv6TjgQ==
-X-Received: by 2002:a05:6808:3081:b0:3d2:22c6:59d1 with SMTP id 5614622812f47-3d24e90b611mr2985106b6e.34.1718378384537;
-        Fri, 14 Jun 2024 08:19:44 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3d2476e31cbsm558174b6e.50.2024.06.14.08.19.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 14 Jun 2024 08:19:44 -0700 (PDT)
-Message-ID: <1f02200d-e38f-47f1-a6dd-def7225e5426@baylibre.com>
-Date: Fri, 14 Jun 2024 10:19:43 -0500
+        d=1e100.net; s=20230601; t=1718378618; x=1718983418;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=h9OdnYF4UyN/cVgcAYpH96GtKoeiuqLKBw2Oa4MGr/I=;
+        b=rNgGeij0P+3xfhO5hzM5Ui75mzlcvz1FDH4C789LVXMsClhJrp3QchWXC9EjX/8zcL
+         bGogIhXCWw9TYI0rouPb4PD1BOuXqjNTD+wwbAMjuHqZpFqnXy5IVV7UzUtAJGDGg9Ym
+         Oum8fbBBSbSgG0wXafzpkm+AG5H67oM6qZUE3VAFa0+KSghf91B9ECOiBaYCIVjXnfcw
+         8MaOT9NBy8zmX37XDDK49IeWKus8YdkBQvoQfC5LuMJGbdEfDSXRA/jAEHrukFgYS3H2
+         Hgb+1eoQIhb8PpVcYioTfuZ5RmQs7FSQJxyj2RG2M9kpZH+PyMRJnkfld0SHiNyzAAM7
+         OJ2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXoGBHwHYgWbdxprFWsu2E1YoBxDFr2oeOHrsOyR9yZ3n58d0fbGDAC2hbEHh00HaJ2IJMr8VmXHkcfHqsvhJ91Ar6Ha0Fp5l94EsLsU01aNrpEgldykc7AnQrfBABMpgE1sBgkR9/xE+cbxr/fLBxjCVuVraMwTHEKJIQbo35SoCsZgw==
+X-Gm-Message-State: AOJu0YwqILHcCVdOPQqXb0p0I92OPBslrwSVSmX2VB7IDYh5nFnghZ15
+	9r6cHizIvrPLO8Bt3cDnWIzjZnv0AVHFwHMn5LkKXy32f9tx43YQ
+X-Google-Smtp-Source: AGHT+IEjPDg40yfrzw//2lH7maNSEzK9o2sIQhEYuRNrAZF+ikJvot6sYR/NC4ZQqOamvU0MomxEXw==
+X-Received: by 2002:a50:ab15:0:b0:57a:31eb:83da with SMTP id 4fb4d7f45d1cf-57cbd69c3b5mr2654930a12.30.1718378618109;
+        Fri, 14 Jun 2024 08:23:38 -0700 (PDT)
+Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb72da708sm2408125a12.37.2024.06.14.08.23.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jun 2024 08:23:37 -0700 (PDT)
+Message-ID: <4e7e3080857b5822011734776de7456787dda546.camel@gmail.com>
+Subject: Re: [PATCH v4 2/2] iio: frequency: adf4350: add clk provider
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>, Lars-Peter Clausen
+	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron
+	 <jic23@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	 <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Fri, 14 Jun 2024 17:23:37 +0200
+In-Reply-To: <20240612130232.7692-2-antoniu.miclaus@analog.com>
+References: <20240612130232.7692-1-antoniu.miclaus@analog.com>
+	 <20240612130232.7692-2-antoniu.miclaus@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/5] iio: adc: ad7944: use
- devm_regulator_get_enable_read_voltage
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
- Jonathan Cameron <jic23@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
- <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
- Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240612-iio-adc-ref-supply-refactor-v2-0-fa622e7354e9@baylibre.com>
- <20240612-iio-adc-ref-supply-refactor-v2-5-fa622e7354e9@baylibre.com>
- <6f607e60a781f74b3cde2405c8c6659d0e304c96.camel@gmail.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <6f607e60a781f74b3cde2405c8c6659d0e304c96.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-On 6/14/24 10:16 AM, Nuno Sá wrote:
-> On Wed, 2024-06-12 at 16:03 -0500, David Lechner wrote:
->> This makes use of the new devm_regulator_get_enable_read_voltage()
->> function to reduce boilerplate code.
->>
->> Signed-off-by: David Lechner <dlechner@baylibre.com>
->> ---
->>
->> v2 changes:
->> - don't read voltage from refin regulator
->> - avoid else in return value checks
->> ---
->>  drivers/iio/adc/ad7944.c | 54 +++++++++++-------------------------------------
->>  1 file changed, 12 insertions(+), 42 deletions(-)
->>
->> diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
->> index e2cb64cef476..f8bf03feba07 100644
->> --- a/drivers/iio/adc/ad7944.c
->> +++ b/drivers/iio/adc/ad7944.c
->> @@ -464,23 +464,17 @@ static const char * const ad7944_power_supplies[] = {
->>  	"avdd",	"dvdd",	"bvdd", "vio"
->>  };
->>  
->> -static void ad7944_ref_disable(void *ref)
->> -{
->> -	regulator_disable(ref);
->> -}
->> -
->>  static int ad7944_probe(struct spi_device *spi)
->>  {
->>  	const struct ad7944_chip_info *chip_info;
->>  	struct device *dev = &spi->dev;
->>  	struct iio_dev *indio_dev;
->>  	struct ad7944_adc *adc;
->> -	bool have_refin = false;
->> -	struct regulator *ref;
->> +	bool have_refin;
->>  	struct iio_chan_spec *chain_chan;
->>  	unsigned long *chain_scan_masks;
->>  	u32 n_chain_dev;
->> -	int ret;
->> +	int ret, ref_mv;
->>  
->>  	indio_dev = devm_iio_device_alloc(dev, sizeof(*adc));
->>  	if (!indio_dev)
->> @@ -531,47 +525,23 @@ static int ad7944_probe(struct spi_device *spi)
->>  	 * - external reference: REF is connected, REFIN is not connected
->>  	 */
->>  
->> -	ref = devm_regulator_get_optional(dev, "ref");
->> -	if (IS_ERR(ref)) {
->> -		if (PTR_ERR(ref) != -ENODEV)
->> -			return dev_err_probe(dev, PTR_ERR(ref),
->> -					     "failed to get REF supply\n");
->> +	ret = devm_regulator_get_enable_read_voltage(dev, "ref");
->> +	if (ret < 0 && ret != -ENODEV)
->> +		return dev_err_probe(dev, ret, "failed to get REF voltage\n");
->>  
->> -		ref = NULL;
->> -	}
->> +	ref_mv = ret == -ENODEV ? 0 : ret / 1000;
->>  
->>  	ret = devm_regulator_get_enable_optional(dev, "refin");
->> -	if (ret == 0)
->> -		have_refin = true;
->> -	else if (ret != -ENODEV)
->> -		return dev_err_probe(dev, ret,
->> -				     "failed to get and enable REFIN supply\n");
->> +	if (ret < 0 && ret == -ENODEV)
->> +		return dev_err_probe(dev, ret, "failed to get REFIN voltage\n");
->> +
-> 
-> ret != -ENODEV right?
+On Wed, 2024-06-12 at 16:02 +0300, Antoniu Miclaus wrote:
+> Add clk provider feature for the adf4350.
+>=20
+> Even though the driver was sent as an IIO driver in most cases the
+> device is actually seen as a clock provider.
+>=20
+> This patch aims to cover actual usecases requested by users in order to
+> completely control the output frequencies from userspace.
+>=20
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+> ---
+> changes in v4:
+> =C2=A0- rename macro to `to_adf4350_state`
+> =C2=A0- do not expose ADF4350_FREQ and ADF4350_FREQ_REFIN if driver is us=
+ed as clk
+> =C2=A0=C2=A0 provider.
+> =C2=A0- initialize flags with CLK_SET_RATE_PARENT
+> =C2=A0drivers/iio/frequency/adf4350.c | 134 +++++++++++++++++++++++++++++=
+++-
+> =C2=A01 file changed, 133 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4=
+350.c
+> index 4abf80f75ef5..8309ddfca9af 100644
+> --- a/drivers/iio/frequency/adf4350.c
+> +++ b/drivers/iio/frequency/adf4350.c
+> @@ -19,6 +19,7 @@
+> =C2=A0#include <linux/gpio/consumer.h>
+> =C2=A0#include <asm/div64.h>
+> =C2=A0#include <linux/clk.h>
+> +#include <linux/clk-provider.h>
+> =C2=A0
+> =C2=A0#include <linux/iio/iio.h>
+> =C2=A0#include <linux/iio/sysfs.h>
+> @@ -36,6 +37,9 @@ struct adf4350_state {
+> =C2=A0	struct gpio_desc		*lock_detect_gpiod;
+> =C2=A0	struct adf4350_platform_data	*pdata;
+> =C2=A0	struct clk			*clk;
+> +	struct clk			*clkout;
+> +	const char			*clk_out_name;
+> +	struct clk_hw			hw;
+> =C2=A0	unsigned long			clkin;
+> =C2=A0	unsigned long			chspc; /* Channel Spacing */
+> =C2=A0	unsigned long			fpfd; /* Phase Frequency Detector */
+> @@ -61,6 +65,8 @@ struct adf4350_state {
+> =C2=A0	__be32				val __aligned(IIO_DMA_MINALIGN);
+> =C2=A0};
+> =C2=A0
+> +#define to_adf4350_state(_hw) container_of(_hw, struct adf4350_state, hw=
+)
+> +
+> =C2=A0static struct adf4350_platform_data default_pdata =3D {
+> =C2=A0	.channel_spacing =3D 10000,
+> =C2=A0	.r2_user_settings =3D ADF4350_REG2_PD_POLARITY_POS |
+> @@ -370,6 +376,12 @@ static const struct iio_chan_spec_ext_info adf4350_e=
+xt_info[]
+> =3D {
+> =C2=A0	{ },
+> =C2=A0};
+> =C2=A0
+> +static const struct iio_chan_spec_ext_info adf4350_clk_ext_info[] =3D {
+> +	_ADF4350_EXT_INFO("frequency_resolution", ADF4350_FREQ_RESOLUTION),
+> +	_ADF4350_EXT_INFO("powerdown", ADF4350_PWRDOWN),
+> +	{ },
 
-oof, yeah messed that one too
+Do we really need powerdown? Dunno :). I would expect one of unprepare/disa=
+ble to
+take care of that. Moreover, imagine userspace powers down the device while=
+ an in
+kernel consumer was using it? Not cool right ehhe?
 
-> 
-> - Nuno Sá
-> 
-> 
+Even the frequency_resolution is arguable as that is also a DT property but=
+ to keep
+consistency why not? That one I can live with...
+
+Also note that you're still not including the clock maintainers in the loop=
+.
+
+- Nuno S=C3=A1
 
 

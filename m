@@ -1,183 +1,126 @@
-Return-Path: <linux-iio+bounces-6280-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6281-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EAF69096B0
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 10:03:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81491909730
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 11:11:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E092FB21B10
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 08:03:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DAA41F22DC1
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 09:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0F1A18638;
-	Sat, 15 Jun 2024 08:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86B51CF96;
+	Sat, 15 Jun 2024 09:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jX5LQ8Ae"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BK5urrMq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E4318052
-	for <linux-iio@vger.kernel.org>; Sat, 15 Jun 2024 08:03:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979B917557
+	for <linux-iio@vger.kernel.org>; Sat, 15 Jun 2024 09:11:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718438594; cv=none; b=eiD4FIecYbdiE+XT/yuUdRmhgFCTF5bvclI3gypBFoCWxpl4//Bo6aBtKa5BbVvmFtA4LaI7nb6vFpH3gUTZxeMWGGFtsdsZOg3phtMaR0Yl3PhsJbuhM1jKQtJv3cV/hk7PpK9w2dYlg+p+26exoO/TtmE+hfqOGxyaLdRtNb0=
+	t=1718442689; cv=none; b=j85o2l40Uyz40hrImqYpCDrD0y6A3rv17EXUVGEYkStdQ1AjdBgLfqlmCthbmHHlYtRn2SMj+831rjqGzOuHHvieIxb/mJnJWFJYAEeG/F6wYpMYJUQsafM7PJLnV06r/Y2lyj0yf4K259ADgaiHP7ViLl4AZHY7U4ctYxBaUBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718438594; c=relaxed/simple;
-	bh=zh8wFqlkhu1LOYUvNSAdvMQzn9efxj16Mc5cp9NZux4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nUAdJt/1kVSGzzoMEA9KOulv4J/D02l3Y+fpayxd8DDw0hatViEn6EQZC6mLiwF1abfOOS1Kp7Qg3rfIzpUH7bVWVi24SAKMeYOMrqO5fy6xgy6bPYXzbZJGOtP71L6unFrqAHbUj+PmsGJxsbxkBQHDDwtURJaE6LLoJ/N7bxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jX5LQ8Ae; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-57c61165af6so3561504a12.2
-        for <linux-iio@vger.kernel.org>; Sat, 15 Jun 2024 01:03:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718438591; x=1719043391; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=zOGB4ty0lN3NCNyIJ260rYDoej6YMyuL1DkilGLprq4=;
-        b=jX5LQ8AeBhA4W+2km7luY6Sixj9wKzjIEvWeYfkepTIGjA9eeGDqxR+WCuwszdcB8o
-         l/DCIvsqFa6WDwW1BFUqMXbzQrahZscIJ3YsdtQNDH/OMRRWZ2H8NUOJlySbDeKjg446
-         AQsxcgloWLZK9qtp+wyUrzAhOTTZnRIZgOYvB6PhfYUDLKj0NkLLi7e9s6J6cUhq1O9G
-         wYs7lG5MR9GgonV41hd/b4i4yVmYuWN6+a53cDy/tEvWj2J3n9IFVjzwCgPPgcGW1S3G
-         ooEnl4w+V22zwywAoWXhtZUzI4HuWcGzTyghygRxfaYvK6vm/lhilvwTVuB2iVYxeCtL
-         nINg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718438591; x=1719043391;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zOGB4ty0lN3NCNyIJ260rYDoej6YMyuL1DkilGLprq4=;
-        b=CrBSEB5HHiTsCtxMIs17Frj/3ATVNBII8MH2dVEPxrsruBQ6ylV6jUcG+szPAawu5c
-         ScrwWoAETrcFljsnfwyS3MbSc7LtysiawLu2PkkCoj16L3u78j6YUUBh9Ib5x512rW3d
-         tsBuJHgVMl4vJm4nmAC0PE/chDDSSoOL8ngvMd3rCmLxALtSS2SZl+m68WdipTrfZOOp
-         ZP/pM0DwFILBcBP0bbZVdzHHOj3ImJowTJWg7bECxBmh3L5D3T2Qq7h/gqQ/66ixnIZl
-         5UFPvzZuE1D6UNCDgQm0RqvvCYpeUuCdnjWs9YJS5oNKTeZKLojxhiFPQDR6qS4DGjEG
-         qTeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVqrswo0WVABI6D/K+uvoccvQkAVmpGiefM8JQF9jy+AkHTggw1lkwMqCdQTO4uJs2rBvaqS6uNYsBYj2lUwJqMFDjGgbeZzRMS
-X-Gm-Message-State: AOJu0YzXlvhriZEp8CreRUL8zN/Q0Ffnwa3pG1p2uns6r9DHthRMK2bk
-	lJVjbVILz+2m8UaZcD+Na5RcJj87Qgc4hdJoxs0379X/5Ih1omC+r95fOiutUu0=
-X-Google-Smtp-Source: AGHT+IGcUqmW23OJOLctm0PilyvalwSahHFmwbkA/ty941zZUuGnFSGlIjdG0pmdv62CKNXHzx2K1Q==
-X-Received: by 2002:a50:a456:0:b0:57c:73fc:a8d7 with SMTP id 4fb4d7f45d1cf-57cbd69dd0dmr2882939a12.14.1718438591096;
-        Sat, 15 Jun 2024 01:03:11 -0700 (PDT)
-Received: from [192.168.0.18] ([78.10.206.163])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb72daa67sm3310438a12.38.2024.06.15.01.03.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 15 Jun 2024 01:03:10 -0700 (PDT)
-Message-ID: <54dcddce-bd31-4e04-8fa3-ecca9b0162f8@linaro.org>
-Date: Sat, 15 Jun 2024 10:03:08 +0200
+	s=arc-20240116; t=1718442689; c=relaxed/simple;
+	bh=JOtn82JVhYyogaG/hKA8tjghGawmzPaETB7l33Xm0ZA=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=LNFKTtc3SyMJxkUoxxX+xNpHk9NHEtcPNxI1DGnJwxDJUyKTzhje9HVePY+CgoyzrzBZaUic3AaVTkSAEy1RST67dBThHputSIQhxOqwJXohIwdhh6G/fgmE9FW/KEdybMAH1EEKk+d/wOE5ApMnRVbaz1KwbQN8HgtmmFQoPCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BK5urrMq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D2BC116B1;
+	Sat, 15 Jun 2024 09:11:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718442689;
+	bh=JOtn82JVhYyogaG/hKA8tjghGawmzPaETB7l33Xm0ZA=;
+	h=Date:From:To:Subject:From;
+	b=BK5urrMqfYL7ydTWGilziWu977MUXm6mFDs4dhUSKQF+wCLTWrGFPCOMpla16vfAi
+	 KFN9dj3uF5cfdTVMG2eL4XqdgJznTujLPtaTyFnLP/N6ToqVW+G5u1nb/UiL09xRed
+	 vveM/Hi2JsR2ajVAJznT2eqglaNYQ46+8SCbCb9V0j9P5Xa5yc8NbRv6/o6/hUTUIp
+	 VPpBNrZtCTNR3Ccan1EqhDZep+bzcTS1c9GO/GRnbahaXAz8H6AtB11RpUKuC3A0nz
+	 LfjUqKrQNzz9moiKHcae9vwfGG7LxEdVJqmvz8NpANIOYGMNMndDVOAVDPdU3E5OPO
+	 AcVYO7toMi9fg==
+Date: Sat, 15 Jun 2024 10:11:21 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
+Subject: [PULL] IIO: 2nd set of fixes for the 6.10 cycle.
+Message-ID: <20240615101121.09118fed@jic23-huawei>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dt-bindings: drop stale Anson Huang from maintainers
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>,
- Pengutronix Kernel Team <kernel@pengutronix.de>,
- Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
- Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>,
- devicetree@vger.kernel.org, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
- linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
- linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
- linux-pm@vger.kernel.org, linux-watchdog@vger.kernel.org
-References: <20240614095927.88762-1-krzysztof.kozlowski@linaro.org>
- <20240614170123.00002e0f@Huawei.com>
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Content-Language: en-US
-Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
- 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
- D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <20240614170123.00002e0f@Huawei.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 14/06/2024 18:01, Jonathan Cameron wrote:
-> On Fri, 14 Jun 2024 11:59:27 +0200
-> Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
-> 
->> Emails to Anson Huang bounce:
->>
->>   Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access denied.
->>
->> Add IMX platform maintainers for bindings which would become orphaned.
-> That doesn't make much sense for the magnetometer which has nothing to do with
-> imx.
-> 
-> Make that one my problem under my jic23@kernel.org address.
-> 
-> Thanks,
-> 
-> Jonathan
-> 
-> 
->>
->> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> 
->> diff --git a/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml b/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
->> index 6b54d32323fc..467002a5da43 100644
->> --- a/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
->> +++ b/Documentation/devicetree/bindings/iio/magnetometer/fsl,mag3110.yaml
->> @@ -7,7 +7,9 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
-> 
-> Not sure the new maintainers make sense here.
-> 
-> Flip it to me if no one else volunteers.
+The following changes since commit 8f40af31971ce012c0a4b13444900aed3f708edf:
 
-Indeed, too much automation. I'll do that for v2.
+  Merge tag 'iio-fixes-for-6.10a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into char-misc-linus (2024-06-07 21:05:39 +0200)
 
-Best regards,
-Krzysztof
+are available in the Git repository at:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.10b
+
+for you to fetch changes up to 4241665e6ea063a9c1d734de790121a71db763fc:
+
+  iio: chemical: bme680: Fix sensor data read operation (2024-06-09 12:02:34 +0100)
+
+----------------------------------------------------------------
+IIO: 2nd set of fixes for 6.10
+
+The usual mixed bag of new stuff and long term issues that have surfaced
+as a particular driver gets more adoption.
+
+adi,ad7266
+- Add missing error check that could lead to bad data being reported.
+adi,ad9739a
+- Fix Kconfig to not allow COMPILE_TEST to override lack SPI support.
+bosch,bme680
+- Fix units for pressure value (off by factor of 10)
+- Fix sign on a calibration variable read back from the device
+- Avoid integer overflow in compensation functions.
+- Fix an issue with read sequence that leads to stale data and bad first
+  reading.
+freescale,fxls8962af
+- Kconfig dependency fixes.
+ti,hdc3020
+- Fix representation of hysteresis to match ABI by being an offset from
+  the current event threshold, not an absolute value.
+xilinx,ams
+- Don't include the ams_ctrl_channels in a computed mask.  This driver is
+  making an unusual use of scan_mask (it doesn't support buffers) and that
+  lead to an overflow.
+
+----------------------------------------------------------------
+Alexander Sverdlin (1):
+      iio: accel: fxls8962af: select IIO_BUFFER & IIO_KFIFO_BUF
+
+Dimitri Fedrau (1):
+      iio: humidity: hdc3020: fix hysteresis representation
+
+Fernando Yang (1):
+      iio: adc: ad7266: Fix variable checking bug
+
+Ke Sun (1):
+      iio: dac: fix ad9739a random config compile error
+
+Sean Anderson (1):
+      iio: xilinx-ams: Don't include ams_ctrl_channels in scan_mask
+
+Vasileios Amoiridis (4):
+      iio: chemical: bme680: Fix pressure value output
+      iio: chemical: bme680: Fix calibration data variable
+      iio: chemical: bme680: Fix overflows in compensate() functions
+      iio: chemical: bme680: Fix sensor data read operation
+
+ drivers/iio/accel/Kconfig          |   2 +
+ drivers/iio/adc/ad7266.c           |   2 +
+ drivers/iio/adc/xilinx-ams.c       |   8 +-
+ drivers/iio/chemical/bme680.h      |   2 +
+ drivers/iio/chemical/bme680_core.c |  62 ++++++-
+ drivers/iio/dac/Kconfig            |   2 +-
+ drivers/iio/humidity/hdc3020.c     | 325 ++++++++++++++++++++++++++++---------
+ 7 files changed, 316 insertions(+), 87 deletions(-)
 

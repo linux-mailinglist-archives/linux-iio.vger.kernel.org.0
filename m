@@ -1,57 +1,62 @@
-Return-Path: <linux-iio+bounces-6288-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6289-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0E859097CC
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 12:56:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9F9C9097D1
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 12:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ACAAB21328
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 10:56:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70FD21F22171
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 10:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3775D22097;
-	Sat, 15 Jun 2024 10:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE54439AE7;
+	Sat, 15 Jun 2024 10:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HTaWOIK5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UDPsCn8C"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89B4376E1
-	for <linux-iio@vger.kernel.org>; Sat, 15 Jun 2024 10:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A03710A1E;
+	Sat, 15 Jun 2024 10:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718449002; cv=none; b=Nc9o3BxCUdltuMIrFNpm3mW/6OJk02Yd4M1MkRdP/zUDWGTQlVokMXxBi1j9YQsw8VACz0+WkBfu8bvElFVcAHh1NOKTomyOC1GOhwNQeFZbrBAsYRog0crOnZkdsSi4Sc09bWTE5Ds1jbmGy74X7lGS93sEqC8GGj+VlLkAZwY=
+	t=1718449130; cv=none; b=RRnHez94QbRZL+0uVmUrKYB9+gpznqM0uTPnWF/3PhHir8eo/4KEc4d0O+TDovVAMNNiLSyR5EbHwgFfJ0MzrMNuF8GFhBPfHw9hSDXS+00gSDrPisC2XMvCsPO7GyTtJ/KunXWtlgynz6b7tCnBBXwuv0adZfO2dxs90b/RGrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718449002; c=relaxed/simple;
-	bh=zbogLXU3+aniDekEtFgebioqjN4DObtwjI1oANgbe68=;
+	s=arc-20240116; t=1718449130; c=relaxed/simple;
+	bh=6gLpOjQTe62mKE/6lFyVmrZFRTz5mT/LwMFTyqJjxDw=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KnFnRRk5skpFlTQngMkwBQ7YSqtrmYdZ3kOXWcbtwzqhXFiia+314lQg0ZXRLrVsL7pkaWxm6o8KGul8XIN0/i7yStu+wyPiawC5fKPvoe87P0QydwgEjCV3t1mmlXaE/QuSv4Mbgk88gwn9MgQDRASij2r+nprzfIRx2EqU17E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HTaWOIK5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D93AC116B1;
-	Sat, 15 Jun 2024 10:56:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cWCwXFkcziYqdM1j3VlLW6Z98qP+bRH5vD7RG25NgLLxeHf8R/b1mzSnFFP2j0l+jCtdsQ6+a1/8B09In6qL8FKyEjYBIKgTYUuPpqTC2vRLAVNLgRT+1+Ut/bj3LMYfTTPnvlZqtsDOK2Gox30y3Y4cwVgfSLHey3AzLuB4IUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UDPsCn8C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1181CC116B1;
+	Sat, 15 Jun 2024 10:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718449001;
-	bh=zbogLXU3+aniDekEtFgebioqjN4DObtwjI1oANgbe68=;
+	s=k20201202; t=1718449130;
+	bh=6gLpOjQTe62mKE/6lFyVmrZFRTz5mT/LwMFTyqJjxDw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HTaWOIK5PdxW/FfI9gPIXYfTCSIKz9akKB/72S6qaruVJtrUiH1zTMJq9LANqxEV8
-	 nJbdRD50HwIU7pZo4J8Pn7E8DvCQRelMm1RQJ7sp/25pmlDfcmo/+yU906ULta9sF2
-	 AVW+meY1ahH7rGv7SAUBarmhqibrDtln709z1qfbty7umqqEBs+RhtkmJzlkELvNGc
-	 yBu2IBm8Vtj+bIlDzD6cppv20Mlq0DoXQ750LKSR9JaVV0mNZD0vs6i0l0xHHGl7js
-	 4y3mlRjFIW7ncsj71SUL61xFtuVPWtJoYE1zUAD3lGfXd7g+4wJ2hK8ca1jUSPj5rY
-	 4A9o6dxyiW11Q==
-Date: Sat, 15 Jun 2024 11:56:34 +0100
+	b=UDPsCn8CNj6WXoNHv3DVPYIvXUrSNuzDO52kPNUSfKi7y/b0bTYvfRsJWUo/RJKyn
+	 PTD7YdhjRcM/QZkqd3Azi6yyAGyntVzOLhyduG66bAUpsp4ok+sILM7ebAmX4JmlWb
+	 F/BYhPcLOR+ZdGaSQQQjZbGJdJje+mB3LSXVrXh5205Uj6YSitInNFtaBM0GeyGX+C
+	 9hBBqRWqvtnQp3J8hlbjDKeFpYjxZptge4XyHS2caFFHjxnqCgVba7iMpBde6Ej5WC
+	 pHCKK62wrFsla+ki38eJyiCJmAh25lpLqZlfgPVizNY2fr06DyPtfoHBmAMsa/7Zel
+	 1B6Dlve0vjh7A==
+Date: Sat, 15 Jun 2024 11:58:40 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Fernando Yang <hagisf@usp.br>
-Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Eduardo Figueredo
- <eduardofp@usp.br>, Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Subject: Re: [PATCH v3 3/3] iio: adc: ad7266: Fix codestyle error
-Message-ID: <20240615115634.2f106c13@jic23-huawei>
-In-Reply-To: <20240613153920.14647-4-hagisf@usp.br>
-References: <20240613153920.14647-1-hagisf@usp.br>
-	<20240613153920.14647-4-hagisf@usp.br>
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: Alisa-Dariana Roman <alisa.roman@analog.com>, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, Michael Hennerich
+ <michael.hennerich@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Alexandru Tachici
+ <alexandru.tachici@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark
+ Brown <broonie@kernel.org>
+Subject: Re: [PATCH v4 1/5] iio: adc: ad7192: Clean up dev
+Message-ID: <20240615115840.6b2ae684@jic23-huawei>
+In-Reply-To: <20240613114001.270233-2-alisa.roman@analog.com>
+References: <20240613114001.270233-1-alisa.roman@analog.com>
+	<20240613114001.270233-2-alisa.roman@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,46 +67,16 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 13 Jun 2024 12:39:20 -0300
-Fernando Yang <hagisf@usp.br> wrote:
+On Thu, 13 Jun 2024 14:39:57 +0300
+Alisa-Dariana Roman <alisadariana@gmail.com> wrote:
 
-> Fix some codestyle errors indicated by checkpatch.pl
+> Clean up by using a local variable struct device *dev. Also use
+> dev_err_probe where possible.
 > 
-> Signed-off-by: Fernando Yang <hagisf@usp.br>
-> ---
->  drivers/iio/adc/ad7266.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/ad7266.c b/drivers/iio/adc/ad7266.c
-> index 356c2fe07..5a2f1bb27 100644
-> --- a/drivers/iio/adc/ad7266.c
-> +++ b/drivers/iio/adc/ad7266.c
-> @@ -63,12 +63,14 @@ static int ad7266_powerdown(struct ad7266_state *st)
->  static int ad7266_preenable(struct iio_dev *indio_dev)
->  {
->  	struct ad7266_state *st = iio_priv(indio_dev);
-> +
->  	return ad7266_wakeup(st);
->  }
->  
->  static int ad7266_postdisable(struct iio_dev *indio_dev)
->  {
->  	struct ad7266_state *st = iio_priv(indio_dev);
-> +
->  	return ad7266_powerdown(st);
->  }
->  
-> @@ -153,7 +155,7 @@ static int ad7266_read_raw(struct iio_dev *indio_dev,
->  	case IIO_CHAN_INFO_RAW:
->  		iio_device_claim_direct_scoped(return -EBUSY, indio_dev) {
->  			ret = ad7266_read_single(st, val, chan->address);
-> -			
-> +
-This is fixing and error from your previous patch.  Fix it there so this
-is never needed!
+> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
+Applied to the togreg branch of iio.git and pushed out as testing
 
->  			if (ret < 0)
->  				return ret;
->  			*val = (*val >> 2) & 0xfff;
+Thanks,
 
+Jonathan
 

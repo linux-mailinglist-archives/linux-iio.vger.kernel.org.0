@@ -1,126 +1,103 @@
-Return-Path: <linux-iio+bounces-6281-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6282-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81491909730
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 11:11:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFC990977A
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 11:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DAA41F22DC1
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 09:11:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4D821C20E21
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 09:47:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86B51CF96;
-	Sat, 15 Jun 2024 09:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58D4A2110E;
+	Sat, 15 Jun 2024 09:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BK5urrMq"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="FfU28HE/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979B917557
-	for <linux-iio@vger.kernel.org>; Sat, 15 Jun 2024 09:11:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C71310A11;
+	Sat, 15 Jun 2024 09:47:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718442689; cv=none; b=j85o2l40Uyz40hrImqYpCDrD0y6A3rv17EXUVGEYkStdQ1AjdBgLfqlmCthbmHHlYtRn2SMj+831rjqGzOuHHvieIxb/mJnJWFJYAEeG/F6wYpMYJUQsafM7PJLnV06r/Y2lyj0yf4K259ADgaiHP7ViLl4AZHY7U4ctYxBaUBw=
+	t=1718444833; cv=none; b=BLCnw0DX2H7v52FiOE25esjpVJuPdejHgBYxB1sOa4qQ2GTfVMKBRMkCIHMTJANO2M5C8/3wqK28BatR1+07KoNPlFs5SIdJocvMNdhsyqJvlLaCbJg5QECh6y3iWAZQ+rNhXj19DxYFLPWaeGsEy7SyW03P07uIiV9ItFJAdNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718442689; c=relaxed/simple;
-	bh=JOtn82JVhYyogaG/hKA8tjghGawmzPaETB7l33Xm0ZA=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type; b=LNFKTtc3SyMJxkUoxxX+xNpHk9NHEtcPNxI1DGnJwxDJUyKTzhje9HVePY+CgoyzrzBZaUic3AaVTkSAEy1RST67dBThHputSIQhxOqwJXohIwdhh6G/fgmE9FW/KEdybMAH1EEKk+d/wOE5ApMnRVbaz1KwbQN8HgtmmFQoPCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BK5urrMq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D2BC116B1;
-	Sat, 15 Jun 2024 09:11:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718442689;
-	bh=JOtn82JVhYyogaG/hKA8tjghGawmzPaETB7l33Xm0ZA=;
-	h=Date:From:To:Subject:From;
-	b=BK5urrMqfYL7ydTWGilziWu977MUXm6mFDs4dhUSKQF+wCLTWrGFPCOMpla16vfAi
-	 KFN9dj3uF5cfdTVMG2eL4XqdgJznTujLPtaTyFnLP/N6ToqVW+G5u1nb/UiL09xRed
-	 vveM/Hi2JsR2ajVAJznT2eqglaNYQ46+8SCbCb9V0j9P5Xa5yc8NbRv6/o6/hUTUIp
-	 VPpBNrZtCTNR3Ccan1EqhDZep+bzcTS1c9GO/GRnbahaXAz8H6AtB11RpUKuC3A0nz
-	 LfjUqKrQNzz9moiKHcae9vwfGG7LxEdVJqmvz8NpANIOYGMNMndDVOAVDPdU3E5OPO
-	 AcVYO7toMi9fg==
-Date: Sat, 15 Jun 2024 10:11:21 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: gregkh@linuxfoundation.org, linux-iio@vger.kernel.org
-Subject: [PULL] IIO: 2nd set of fixes for the 6.10 cycle.
-Message-ID: <20240615101121.09118fed@jic23-huawei>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1718444833; c=relaxed/simple;
+	bh=viOTgnhH9sLs8uink14M8hv2p6dbnzZafeKqWltRrHU=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=dZ1K8AW1+V/N9j1nRmMbhqLMSqQJcolUVpp+TrWhdE36U5pIQJgG0L1km4YSBq3xFLHowXBirFr+OKjMpR7gbKdwKX+1oge+1kzbzo0H+WYTp8qhOxV5N6VI5EM2G/+3iNBTh0fN/pDEeTEuxwT3h59rmoLYkN55kBqFr1456wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=FfU28HE/; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+X-Virus-Scanned: SPAM Filter at disroot.org
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1718444820; bh=viOTgnhH9sLs8uink14M8hv2p6dbnzZafeKqWltRrHU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=FfU28HE/Ap/9qJfDWU1wKYeYYafRzKHKriVj3rAo1od0YPA6NOIZZqgbTd2qmT/6N
+	 fOAt2yS9wGrH81olKJI3az6moiaKBTHmyR6oo4rIq+rF34I+ItXed18DrYPHSHU2bk
+	 E4M4QxIn1rCvtb+BEIZaMPofbTNQUmTJqtFUgnQbQyvo2e7XEXmog/R+RGORlZusxe
+	 +Co/sXlvU0daj0rKtlNT8kUDiZfk+nv+UjaB3GHTELaRYsFdgU0hPAjmfU3DDyZKjE
+	 /gVbjpMLt/qdRPht7vbNT3tJSJR3Y4JyVAmB9QjV8qh0uMzbf4OZHkunkntGJ3KqGK
+	 U3WEN3AJM99CQ==
+Date: Sat, 15 Jun 2024 09:46:59 +0000
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: linux-iio@vger.kernel.org, jic23@kernel.org, denis.ciocca@st.com,
+ devicetree@vger.kernel.org, linus.walleij@linaro.org, robh+dt@kernel.org,
+ kauschluss@disroot.org
+Subject: Re: [PATCH v4 2/2] dt-bindings: iio: st-sensors: add LIS2DS12
+ accelerometer
+In-Reply-To: <20240611-reassign-eliminate-b05e4a302cfb@spud>
+References: <20240611160821.13941-1-kauschluss@disroot.org>
+ <20240611160821.13941-2-kauschluss@disroot.org>
+ <20240611-reassign-eliminate-b05e4a302cfb@spud>
+Message-ID: <56ab50d7c542356b7e377023b84a6018@disroot.org>
+X-Sender: kauschluss@disroot.org
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-The following changes since commit 8f40af31971ce012c0a4b13444900aed3f708edf:
+On 2024-06-11 18:17, Conor Dooley wrote:
+> On Tue, Jun 11, 2024 at 09:35:53PM +0530, Kaustabh Chakraborty wrote:
+>> Add compatible for LIS2DS12 accelerometer by STMicroelectronics.
+> 
+> I can see that! Your commit message should mention why this device
+> is not compatible with existing variants.
 
-  Merge tag 'iio-fixes-for-6.10a' of https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio into char-misc-linus (2024-06-07 21:05:39 +0200)
+Sure, is adding the WhoAmI value enough? Or do I also have to
+explain the different registers and sensor settings.
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git tags/iio-fixes-for-6.10b
-
-for you to fetch changes up to 4241665e6ea063a9c1d734de790121a71db763fc:
-
-  iio: chemical: bme680: Fix sensor data read operation (2024-06-09 12:02:34 +0100)
-
-----------------------------------------------------------------
-IIO: 2nd set of fixes for 6.10
-
-The usual mixed bag of new stuff and long term issues that have surfaced
-as a particular driver gets more adoption.
-
-adi,ad7266
-- Add missing error check that could lead to bad data being reported.
-adi,ad9739a
-- Fix Kconfig to not allow COMPILE_TEST to override lack SPI support.
-bosch,bme680
-- Fix units for pressure value (off by factor of 10)
-- Fix sign on a calibration variable read back from the device
-- Avoid integer overflow in compensation functions.
-- Fix an issue with read sequence that leads to stale data and bad first
-  reading.
-freescale,fxls8962af
-- Kconfig dependency fixes.
-ti,hdc3020
-- Fix representation of hysteresis to match ABI by being an offset from
-  the current event threshold, not an absolute value.
-xilinx,ams
-- Don't include the ams_ctrl_channels in a computed mask.  This driver is
-  making an unusual use of scan_mask (it doesn't support buffers) and that
-  lead to an overflow.
-
-----------------------------------------------------------------
-Alexander Sverdlin (1):
-      iio: accel: fxls8962af: select IIO_BUFFER & IIO_KFIFO_BUF
-
-Dimitri Fedrau (1):
-      iio: humidity: hdc3020: fix hysteresis representation
-
-Fernando Yang (1):
-      iio: adc: ad7266: Fix variable checking bug
-
-Ke Sun (1):
-      iio: dac: fix ad9739a random config compile error
-
-Sean Anderson (1):
-      iio: xilinx-ams: Don't include ams_ctrl_channels in scan_mask
-
-Vasileios Amoiridis (4):
-      iio: chemical: bme680: Fix pressure value output
-      iio: chemical: bme680: Fix calibration data variable
-      iio: chemical: bme680: Fix overflows in compensate() functions
-      iio: chemical: bme680: Fix sensor data read operation
-
- drivers/iio/accel/Kconfig          |   2 +
- drivers/iio/adc/ad7266.c           |   2 +
- drivers/iio/adc/xilinx-ams.c       |   8 +-
- drivers/iio/chemical/bme680.h      |   2 +
- drivers/iio/chemical/bme680_core.c |  62 ++++++-
- drivers/iio/dac/Kconfig            |   2 +-
- drivers/iio/humidity/hdc3020.c     | 325 ++++++++++++++++++++++++++++---------
- 7 files changed, 316 insertions(+), 87 deletions(-)
+> 
+> Thanks,
+> Conor.
+> 
+>> 
+>> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+>> ---
+>>  Documentation/devicetree/bindings/iio/st,st-sensors.yaml | 1 +
+>>  1 file changed, 1 insertion(+)
+>> 
+>> diff --git a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+>> index fff7e3d83a02..71c1ee33a393 100644
+>> --- a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
+>> @@ -26,6 +26,7 @@ properties:
+>>            - st,lis2dw12
+>>            - st,lis2hh12
+>>            - st,lis2dh12-accel
+>> +          - st,lis2ds12
+>>            - st,lis302dl
+>>            - st,lis331dl-accel
+>>            - st,lis331dlh-accel
+>> -- 
+>> 2.45.1
+>> 
+>>
 

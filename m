@@ -1,103 +1,77 @@
-Return-Path: <linux-iio+bounces-6293-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6294-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F38C90981E
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 14:11:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A461909820
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 14:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4EA92837E8
-	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 12:11:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 689DEB214B4
+	for <lists+linux-iio@lfdr.de>; Sat, 15 Jun 2024 12:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 472B744C87;
-	Sat, 15 Jun 2024 12:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C0E944C87;
+	Sat, 15 Jun 2024 12:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qiCOtB+B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKsIdi8x"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A634A3D;
-	Sat, 15 Jun 2024 12:11:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A0574A3D;
+	Sat, 15 Jun 2024 12:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718453469; cv=none; b=V9gOJnTQZlXUKUcoEhFNJSzIXfKrSOD/u+CAEur4bJmXXCgULuQSYxIggQagnwY457Yn4MaOre2VFGyHHpKPH2hkEARoK9fBxewJGJUXLvL4OkWQhgfnxUrzaEV+jCN7pfS8+QUNlK2x6IGof2effLwpNugtnp6s3S5KieF2WjY=
+	t=1718453559; cv=none; b=sjCcqvqrhzXCexV7P8lqzSObc2TD5Xb8l4cjxmKlS9DLyd8u940NSK7ZKmUvDzmEc/rvuPn922DosTAek2KavqhNqfj/NusksAfRaTjyo/54XKwR3t3F8JDY6C4f3sn521PTQU/zOPXjz2SVSzkREB7isBYfNAdcJfakd/ZC/6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718453469; c=relaxed/simple;
-	bh=YH+odpFULabpJU7aqXqApLDVXyYv+Y2IFr46RtpYOIA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IxWWJBoNtlGQeCCk6O2YmFYbVdgK6+NjJNxKAqXfjKvTstTXSqhpsKrN5YXpKMJHFBW6oOJQSrcdGhQj47JeczoCG/ahdBmF2ELsEYMCOW0K1QE+AV4K0dsW+PpEqX3wRQPJ6VQcf6MtXPm2LSUoIvMyqS6sHK+G8QLHCXRnH1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qiCOtB+B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10161C116B1;
-	Sat, 15 Jun 2024 12:11:06 +0000 (UTC)
+	s=arc-20240116; t=1718453559; c=relaxed/simple;
+	bh=kYHcFOpclZmgp3DRDAGdyvE22AM/3tmX1cHzf6GcUV8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V0LSj0wdTkxMxEZMF0C0g6GWH6fYHFq/NXl/W+2GrjLcVbJ2/47CQEWkheGLXTaLiQcQqeJcxZOcR8f/mb1ARbwMLP4M3/SlBhk1RUS6q2nJ/jwo+V9fKB5iKzni0R/RRRbZ3Of9vEFE0LtPXNGDKfxTM0weQb6L7sSF2hhQrv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKsIdi8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1569AC116B1;
+	Sat, 15 Jun 2024 12:12:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718453468;
-	bh=YH+odpFULabpJU7aqXqApLDVXyYv+Y2IFr46RtpYOIA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qiCOtB+Bg0I1YxN2iSUhJ9GpEwAdmGE0lzrAFyKiYsjoSCp4AUb/HPrBvlwRnpdj2
-	 UqdsOMCtPbUrn6mXLG9daRt59zp5KKMQnjMLTAQ4UW8Ny5i1L2Aed8kiKKCIL+ajO/
-	 oVc6GgL6SEYqEkGZ+YBnXKHERWAF9WImvTpmgwGloOWpuJwnvXFJ3U5a1pi3UPzT0T
-	 3Pzfa3bjIe3OHbRCYFX1qG27/moAYnnay9HbQE7PvzrPo3LvDFI+aOemw8FkcVcUXP
-	 lN7eg4YpApeCr4p/5gQPVVwJuMk1oWeYn67nf1wRJGnr4D98Z1IkX9NbANrNjoqYHv
-	 ANco+4CIxkYdA==
-Date: Sat, 15 Jun 2024 13:11:04 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Kaustabh Chakraborty <kauschluss@disroot.org>
-Cc: linux-iio@vger.kernel.org, jic23@kernel.org, denis.ciocca@st.com,
-	devicetree@vger.kernel.org, linus.walleij@linaro.org,
-	robh+dt@kernel.org
-Subject: Re: [PATCH v4 2/2] dt-bindings: iio: st-sensors: add LIS2DS12
- accelerometer
-Message-ID: <20240615-urgent-mammogram-3eb5ca127239@spud>
-References: <20240611160821.13941-1-kauschluss@disroot.org>
- <20240611160821.13941-2-kauschluss@disroot.org>
- <20240611-reassign-eliminate-b05e4a302cfb@spud>
- <56ab50d7c542356b7e377023b84a6018@disroot.org>
+	s=k20201202; t=1718453558;
+	bh=kYHcFOpclZmgp3DRDAGdyvE22AM/3tmX1cHzf6GcUV8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=OKsIdi8x4DAVWpfg5kw/pI625KdNMc+dMwN89TFmekREbNjNLPisXWpNNfC9VP2zq
+	 qiKmmSlgyRu6/Z6uS4k8ECUYK73cL3KOLBJ76wOryRTHgSY1vBMMYjCM2cPU5sc0ZD
+	 itlzqIBSFjGw0UqOwkuqmlbTKC1z9hc/3XsvTNMWIkvCP/ZGNJJvFL4M1HStylRsh4
+	 1GJ8j9piBEGQU4UmJSFStt5b6/CwQA3UKBn5l2RVqdWfUWGwXv1HasWywy3iDO0x85
+	 3yHD/3V1FSradcdpgcFxkszwr0pa49rQEiSNxcdiAqoxXu3RQgSTeBTcnzmpUWuy70
+	 3KR4KTjFBvy8g==
+Date: Sat, 15 Jun 2024 13:12:30 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] iio: adc: ad7266: use
+ devm_regulator_get_enable_read_voltage
+Message-ID: <20240615131230.67fd1b6d@jic23-huawei>
+In-Reply-To: <20240612-iio-adc-ref-supply-refactor-v2-2-fa622e7354e9@baylibre.com>
+References: <20240612-iio-adc-ref-supply-refactor-v2-0-fa622e7354e9@baylibre.com>
+	<20240612-iio-adc-ref-supply-refactor-v2-2-fa622e7354e9@baylibre.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="Gb03HWEHd/0r06Zb"
-Content-Disposition: inline
-In-Reply-To: <56ab50d7c542356b7e377023b84a6018@disroot.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Wed, 12 Jun 2024 16:03:06 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
---Gb03HWEHd/0r06Zb
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Sat, Jun 15, 2024 at 09:46:59AM +0000, Kaustabh Chakraborty wrote:
-> On 2024-06-11 18:17, Conor Dooley wrote:
-> > On Tue, Jun 11, 2024 at 09:35:53PM +0530, Kaustabh Chakraborty wrote:
-> >> Add compatible for LIS2DS12 accelerometer by STMicroelectronics.
-> >=20
-> > I can see that! Your commit message should mention why this device
-> > is not compatible with existing variants.
->=20
-> Sure, is adding the WhoAmI value enough? Or do I also have to
-> explain the different registers and sensor settings.
-
-The whoami isn't sufficient, but if there's registers that behave
-differently etc, please mention those.
+> This makes use of the new devm_regulator_get_enable_read_voltage()
+> function to reduce boilerplate code.
+> 
+> Signed-off-by: David Lechner <dlechner@baylibre.com>
+Applied.
 
 Thanks,
-Conor.
-
---Gb03HWEHd/0r06Zb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZm2E2AAKCRB4tDGHoIJi
-0tMOAQDmSwRtYBwPeSLPrnX/LWpQKFNlmA0/jUyZF/ydJEiH/AD+LWBIX0Iot+C/
-7dqyjMvJJtg2LAfjEKkRFMB2r7qbOwg=
-=BQzc
------END PGP SIGNATURE-----
-
---Gb03HWEHd/0r06Zb--
 

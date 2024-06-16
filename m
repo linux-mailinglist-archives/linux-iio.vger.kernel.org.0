@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-6320-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6321-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E80E909C54
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 09:45:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41EC3909C56
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 09:47:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08AA4281F4C
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 07:45:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4225E1C20A45
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 07:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0AB16D9D4;
-	Sun, 16 Jun 2024 07:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A59F17B41E;
+	Sun, 16 Jun 2024 07:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tRvniFiC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aThcDw+q"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA3413AD03;
-	Sun, 16 Jun 2024 07:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1487B16D32D;
+	Sun, 16 Jun 2024 07:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718523938; cv=none; b=ePxOsqmUpo2JVytjPbITh2ElapxCjn2rehMoerZmX3ujDL6vRHneZXq4TK8xuvY/nqfANqlhYhfujum+RLldb+tUyTXK7imw+zCanN/6hKIosqDbUX6KxBKNXH6tGjOOaC036TQ7Wuh81mY9npTKBk+wYOG93EvcIYhPYCddUbI=
+	t=1718524041; cv=none; b=eV09mC959SINZJpBJZ9qOsKZYt1dvDw/HPCiNnrKIW/+q5isUAQC3xbtu8I1AtHnuaxKQTb0qkmQT3M4i1uLQpgG6HbQn+xEX4jk70IEFM+5CDDbjpFZ83PZH9IOBKfsxGCGSw81rr2kk/NeE83wRkL1CKAI2b+6v7pD5pCof0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718523938; c=relaxed/simple;
-	bh=DnOMJmcQJH2U7A1Tuby86ak/rxPa9VuPMbNah9hV0Hs=;
+	s=arc-20240116; t=1718524041; c=relaxed/simple;
+	bh=7batiA/eT9TlJ61yp8gwhpv8o2ZrBq6dRG6VImrvxsE=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=mP5pwwsjU6KGuSEg0h2s9LDUuQP/RUclOhaitLXYKPMeWORNV0/Sr0RulvLNoFp3+nKwXK/nhGhNhPMYrp2YiL5ElEaLpgXimefcIxfpvnVCGkkIFn4Pqi0s6C0sHk/YY+jN4a78mFUIKxvjOGcUtA/GN4KuFQkFQKxEnbE+iTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tRvniFiC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC931C2BBFC;
-	Sun, 16 Jun 2024 07:45:34 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=LFr/GsafMDlrHWiK3KfrncxDtsqGY0zgIoonvlGS+qxDlc+JXDgX9zPKzroKQ737lF2tI9uVv090aUMNa5FYVNPcseeF8ZdKNtSnlRwNpytzZcJLSUn6xsSJ1joj4qbIMqhcJwPOylNfnKOPIwFeAC0/eAhH5EXjVU1b0cn62Kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aThcDw+q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B60DC2BBFC;
+	Sun, 16 Jun 2024 07:47:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718523937;
-	bh=DnOMJmcQJH2U7A1Tuby86ak/rxPa9VuPMbNah9hV0Hs=;
+	s=k20201202; t=1718524040;
+	bh=7batiA/eT9TlJ61yp8gwhpv8o2ZrBq6dRG6VImrvxsE=;
 	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=tRvniFiCZ138CiUmuMuK/vCIn1dB8ckZcHIcc8rWXe1aiYSiNstH1PReVJgb0MFzc
-	 frXRIZgj8bo6YoAX+J8w52MFEjvhOy+ycFvZ7li9H3NrGR/hnRpQp4ZDA8okElY+1c
-	 aRcQYZB5F5xuvM/PgfBi14VYYQWYehWMxxyfbWnOLAymr4tMoFHMz7wD5eYYrpN2SW
-	 uEQ0p//Df71I/lVIYQUwplFW3PGhF+PVE0xVAB7UxJrG/syqP6+o0VFp+a3cZjK6BT
-	 hUKqmmWKlj1kugJHXBbRpoRC+M2ruKfdyEvIs3a3rZt/hEkYv9RKOlkEm04mFuAfEs
-	 2xqAQ1E9q6gjA==
-Message-ID: <a585d179-d401-4a38-8c6b-f02f3d880d8c@kernel.org>
-Date: Sun, 16 Jun 2024 09:45:33 +0200
+	b=aThcDw+qUsLKIqqTfN64AlUckdqC7YYGsIfSMQd6iDZJwPLtBGw+U659fYybu/oX5
+	 UrhH7DkDvgHfTcnBXvSCM1J1nArKVUynh7U8WP9bpqMoG2XOcMCK+hPQxkWDIQb5iT
+	 WemIPIn+0WF594n3UNxLjJ1x79ff3C7Lv5hgUvH0s7It5AjrX7jvi4WaeCY8Dp/iqZ
+	 rw/27JFm9amfhw7um7HxuHYSohqBS1l2Ic/TJ8q7KTH5/39KZinvcla9a7IOBz8UwG
+	 /SY9/zIaQmTeCU9RZxB2CEZWBG9qWZFmlQUhJ8IiP+fNnX8SQQ3iNda4ogSWkS5UK7
+	 7Uv9ye4MG129g==
+Message-ID: <18b7ea5a-ea10-47b6-9d86-9dcec50e5f9e@kernel.org>
+Date: Sun, 16 Jun 2024 09:47:16 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,16 +50,16 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2]
- iio-proximity-hx9023s-Add-TYHX-HX9023S-sensor-driver
+Subject: Re: [PATCH v1 2/2] dt-bindings:iio:proximity: Add hx9031as binding
 From: Krzysztof Kozlowski <krzk@kernel.org>
 To: Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org
 Cc: andy.shevchenko@gmail.com, lars@metafoo.de, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, nuno.a@analog.com, swboyd@chromium.org,
  u.kleine-koenig@pengutronix.de, yasin.lee.x@gmail.com
-References: <20240519162438.17af0ff8@jic23-huawei>
- <SN7PR12MB81019093E9E5D29BEC4B821FA4F22@SN7PR12MB8101.namprd12.prod.outlook.com>
- <f907c2a9-94c0-493b-971b-c627244528ed@kernel.org>
+References: <20240511170143.7ca6a410@jic23-huawei>
+ <20240514202540.341103-1-yasin.lee.x@outlook.com>
+ <SN7PR12MB81012845A114E1FE7C49DFC3A4E32@SN7PR12MB8101.namprd12.prod.outlook.com>
+ <29fa61c3-f7c7-4769-a5eb-75783086cb9f@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -104,31 +104,157 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <f907c2a9-94c0-493b-971b-c627244528ed@kernel.org>
+In-Reply-To: <29fa61c3-f7c7-4769-a5eb-75783086cb9f@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 31/05/2024 09:52, Krzysztof Kozlowski wrote:
-> On 29/05/2024 06:57, Yasin Lee wrote:
+On 15/05/2024 10:06, Krzysztof Kozlowski wrote:
+> On 14/05/2024 22:25, Yasin Lee wrote:
 >> From: Yasin Lee <yasin.lee.x@gmail.com>
 >>
->> v3:
->>  - Renamed the files to keep the file names consistent with the chip name.
->>  - Removed custom bit operation macro definitions.
->>  - Deleted redundant documentation that duplicated the Standard ABI.
->>  - Deleted unused header files.
->>  - Deleted unused register definitions.
->>  - Changed parts of the code related to circuit design to be configurable through DTS.
->>  - Removed unnecessary print statements.
->>  - Fixed the error in hx9031as_write_event_val.
->>  - Removed unnecessary threshold settings in the probe.
->>  - Replaced enable_irq(data->client->irq) with interrupt enable register operations.
->>  - Fixed style issues.
+>> A capacitive proximity sensor with 5 channels
+>>
+>> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
 > 
-> Please do not ignore comments but respond to them. Go back to 15th of
-> May and acknowledge all of them. You repeated every single issue...
+> Do not attach (thread) your patchsets to some other threads (unrelated
+> or older versions). This buries them deep in the mailbox and might
+> interfere with applying entire sets.
 
-Where did you responded to this?
+Did you implement this?
+
+> 
+> A nit, subject: drop second/last, redundant "bindings". The
+> "dt-bindings" prefix is already stating that these are bindings.
+> See also:
+> https://elixir.bootlin.com/linux/v6.7-rc8/source/Documentation/devicetree/bindings/submitting-patches.rst#L18
+
+Did you implement this?
+
+> 
+> Subject: missing spaces. See  `git log --oneline -- DIRECTORY_OR_FILE`
+> on the directory your patch is touching.
+
+Did you implement this?
+
+
+> 
+> Please use scripts/get_maintainers.pl to get a list of necessary people
+> and lists to CC. It might happen, that command when run on an older
+> kernel, gives you outdated entries. Therefore please be sure you base
+> your patches on recent Linux kernel.
+> 
+> Tools like b4 or scripts/get_maintainer.pl provide you proper list of
+> people, so fix your workflow. Tools might also fail if you work on some
+> ancient tree (don't, instead use mainline), work on fork of kernel
+> (don't, instead use mainline) or you ignore some maintainers (really
+> don't). Just use b4 and everything should be fine, although remember
+> about `b4 prep --auto-to-cc` if you added new patches to the patchset.
+> 
+> You missed at least devicetree list (maybe more), so this won't be
+> tested by automated tooling. Performing review on untested code might be
+> a waste of time, thus I will skip this patch entirely till you follow
+> the process allowing the patch to be tested.
+> 
+> Please kindly resend and include all necessary To/Cc entries.
+
+Did you implement this?
+
+
+> 
+> Limited review follows.
+> 
+>> ---
+>>  .../bindings/iio/proximity/tyhx,hx9031as.yaml | 60 +++++++++++++++++++
+>>  .../devicetree/bindings/vendor-prefixes.yaml  |  2 +
+>>  2 files changed, 62 insertions(+)
+>>  create mode 100644 Documentation/devicetree/bindings/iio/proximity/tyhx,hx9031as.yaml
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9031as.yaml b/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9031as.yaml
+>> new file mode 100644
+>> index 000000000000..62a71c0c4d04
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9031as.yaml
+>> @@ -0,0 +1,60 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/proximity/tyhx,hx9031as.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Tyhx's HX9031AS capacitive proximity sensor
+>> +
+>> +maintainers:
+>> +  - Yasin Lee <yasin.lee.x@gmail.com>
+>> +
+>> +description: |
+>> +  Tyhx's HX9031AS proximity sensor.
+>> +
+>> +allOf:
+>> +  - $ref: /schemas/iio/iio.yaml#
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: tyhx,hx9031as
+>> +
+>> +  reg:
+>> +    maxItems: 1
+>> +
+>> +  interrupts:
+>> +    description:
+>> +      Generated by device to announce preceding read request has finished
+>> +      and data is available or that a close/far proximity event has happened.
+>> +    maxItems: 1
+>> +
+>> +  vdd-supply:
+>> +    description: Main power supply
+>> +
+>> +required:
+>> +  - compatible
+>> +  - reg
+>> +
+>> +unevaluatedProperties: false
+>> +
+>> +examples:
+>> +  - |
+>> +    #include <dt-bindings/interrupt-controller/irq.h>
+>> +    i2c {
+>> +      #address-cells = <1>;
+>> +      #size-cells = <0>;
+>> +      hx9031as@2a {
+> 
+> Node names should be generic. See also an explanation and list of
+> examples (not exhaustive) in DT specification:
+> https://devicetree-specification.readthedocs.io/en/latest/chapter2-devicetree-basics.html#generic-names-recommendation
+
+Did you implement this?
+
+> 
+> 
+>> +        compatible = "tyhx,hx9031as";
+>> +        reg = <0x2a>;
+>> +        interrupt-parent = <&pio>;
+>> +        interrupts = <16 IRQ_TYPE_EDGE_FALLING 16 0>;
+>> +        vdd-supply = <&pp3300_a>;
+>> +        status = "okay";
+> 
+> Drop
+
+Did you implement this?
+
+> 
+>> +      };
+>> +    };
+>> +
+>> +
+>> +
+>> +
+>> +
+>> +
+> 
+> Drop useless blank lines...
+
+Did you implement this?
+
 
 Best regards,
 Krzysztof

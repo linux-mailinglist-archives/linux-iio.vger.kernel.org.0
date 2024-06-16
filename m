@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-6319-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6320-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEC96909C52
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 09:43:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E80E909C54
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 09:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D41E21C20A94
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 07:43:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08AA4281F4C
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 07:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80794181BAD;
-	Sun, 16 Jun 2024 07:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0AB16D9D4;
+	Sun, 16 Jun 2024 07:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isZhxQVr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tRvniFiC"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36587181335;
-	Sun, 16 Jun 2024 07:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CA3413AD03;
+	Sun, 16 Jun 2024 07:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718523800; cv=none; b=iL4XmvthWU4VNQdlr6Za2mxfIWIFCh7Vvlq9ugVab/g+Ccczy2aEkUL7GCsX3CwBZQYKQKsW6QXi4sR8ObaMBQrqlY4zKQFdg4bj/noU8SwpBllLt8DGAeKt9K3m0N8r2aDawrN3Kp2NfuJ4C3h5f6PT0KfTru5Fc1AxHCla1ls=
+	t=1718523938; cv=none; b=ePxOsqmUpo2JVytjPbITh2ElapxCjn2rehMoerZmX3ujDL6vRHneZXq4TK8xuvY/nqfANqlhYhfujum+RLldb+tUyTXK7imw+zCanN/6hKIosqDbUX6KxBKNXH6tGjOOaC036TQ7Wuh81mY9npTKBk+wYOG93EvcIYhPYCddUbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718523800; c=relaxed/simple;
-	bh=z4lJ4L3WOkCqvuK3KW8LMQ+fQdx+zoGxSJyyOWoE/kg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SJ+aIbNwZkVpFG58ltrsoJvqAzwCozmW3N+4GU98Vb3qtU80Vk6GwPRtwSJefYAu+KFAOVL7rgn93utBHQvfqq953W1If7AaArB5fzK5zjeLOEn7JaO51sf3q+Ue4040nKvppw/qAoiFRchXNWvLC0cFacczOWd0tW6U7J+Fs6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isZhxQVr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41864C2BBFC;
-	Sun, 16 Jun 2024 07:43:17 +0000 (UTC)
+	s=arc-20240116; t=1718523938; c=relaxed/simple;
+	bh=DnOMJmcQJH2U7A1Tuby86ak/rxPa9VuPMbNah9hV0Hs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=mP5pwwsjU6KGuSEg0h2s9LDUuQP/RUclOhaitLXYKPMeWORNV0/Sr0RulvLNoFp3+nKwXK/nhGhNhPMYrp2YiL5ElEaLpgXimefcIxfpvnVCGkkIFn4Pqi0s6C0sHk/YY+jN4a78mFUIKxvjOGcUtA/GN4KuFQkFQKxEnbE+iTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tRvniFiC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC931C2BBFC;
+	Sun, 16 Jun 2024 07:45:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718523799;
-	bh=z4lJ4L3WOkCqvuK3KW8LMQ+fQdx+zoGxSJyyOWoE/kg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=isZhxQVrUpUhh9eoYji3qLMkcNuIvV9gkXG7XHTWhWwHuzEPoRAPxT009wBmJWj1u
-	 basO0Z/vPiPKCjCjIXcwz1r9UoYGHQA9vhfir+TR52QjRG/tk/gKC2WC1GasX0az17
-	 bLA5m/dAi0B1vCt33xTtzP7xo81sYmgTcQ0+N51W13bXpAQiU/Irj+xOvXFOGqWEGc
-	 4601EYxRqz0r4WQX/GK8i8PeTXXeaBXib4vg30zBB2mll5IHPw/gskr/N8YMgTAtsO
-	 1CWegG1w3yusHuxkzUNBaG0H4ETXAe/Z1ueHxxqL/dKtj4yz5avPFpkM7sR+nwpPM7
-	 VjuckknW+spaQ==
-Message-ID: <13e586c7-26f6-4190-8219-404a2637905d@kernel.org>
-Date: Sun, 16 Jun 2024 09:43:15 +0200
+	s=k20201202; t=1718523937;
+	bh=DnOMJmcQJH2U7A1Tuby86ak/rxPa9VuPMbNah9hV0Hs=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
+	b=tRvniFiCZ138CiUmuMuK/vCIn1dB8ckZcHIcc8rWXe1aiYSiNstH1PReVJgb0MFzc
+	 frXRIZgj8bo6YoAX+J8w52MFEjvhOy+ycFvZ7li9H3NrGR/hnRpQp4ZDA8okElY+1c
+	 aRcQYZB5F5xuvM/PgfBi14VYYQWYehWMxxyfbWnOLAymr4tMoFHMz7wD5eYYrpN2SW
+	 uEQ0p//Df71I/lVIYQUwplFW3PGhF+PVE0xVAB7UxJrG/syqP6+o0VFp+a3cZjK6BT
+	 hUKqmmWKlj1kugJHXBbRpoRC+M2ruKfdyEvIs3a3rZt/hEkYv9RKOlkEm04mFuAfEs
+	 2xqAQ1E9q6gjA==
+Message-ID: <a585d179-d401-4a38-8c6b-f02f3d880d8c@kernel.org>
+Date: Sun, 16 Jun 2024 09:45:33 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,16 +50,16 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 1/3] dt-bindings:iio:proximity:new vendor prefix: tyhx
-To: Yasin Lee <yasin.lee.x@outlook.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Yasin Lee <yasin.lee.x@gmail.com>
-References: <20240616-add-tyhx-hx9023s-sensor-driver-v5-0-ebaf280bbf0e@outlook.com>
- <SN7PR12MB81017D645B48DABB297A62DDA4CC2@SN7PR12MB8101.namprd12.prod.outlook.com>
+Subject: Re: [PATCH v3 0/2]
+ iio-proximity-hx9023s-Add-TYHX-HX9023S-sensor-driver
 From: Krzysztof Kozlowski <krzk@kernel.org>
+To: Yasin Lee <yasin.lee.x@outlook.com>, jic23@kernel.org
+Cc: andy.shevchenko@gmail.com, lars@metafoo.de, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, nuno.a@analog.com, swboyd@chromium.org,
+ u.kleine-koenig@pengutronix.de, yasin.lee.x@gmail.com
+References: <20240519162438.17af0ff8@jic23-huawei>
+ <SN7PR12MB81019093E9E5D29BEC4B821FA4F22@SN7PR12MB8101.namprd12.prod.outlook.com>
+ <f907c2a9-94c0-493b-971b-c627244528ed@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
  xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
@@ -104,20 +104,31 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <SN7PR12MB81017D645B48DABB297A62DDA4CC2@SN7PR12MB8101.namprd12.prod.outlook.com>
+In-Reply-To: <f907c2a9-94c0-493b-971b-c627244528ed@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 16/06/2024 09:36, Yasin Lee wrote:
-> From: Yasin Lee <yasin.lee.x@gmail.com>
+On 31/05/2024 09:52, Krzysztof Kozlowski wrote:
+> On 29/05/2024 06:57, Yasin Lee wrote:
+>> From: Yasin Lee <yasin.lee.x@gmail.com>
+>>
+>> v3:
+>>  - Renamed the files to keep the file names consistent with the chip name.
+>>  - Removed custom bit operation macro definitions.
+>>  - Deleted redundant documentation that duplicated the Standard ABI.
+>>  - Deleted unused header files.
+>>  - Deleted unused register definitions.
+>>  - Changed parts of the code related to circuit design to be configurable through DTS.
+>>  - Removed unnecessary print statements.
+>>  - Fixed the error in hx9031as_write_event_val.
+>>  - Removed unnecessary threshold settings in the probe.
+>>  - Replaced enable_irq(data->client->irq) with interrupt enable register operations.
+>>  - Fixed style issues.
 > 
-> Add NanjingTianyihexin Electronics Ltd.
+> Please do not ignore comments but respond to them. Go back to 15th of
+> May and acknowledge all of them. You repeated every single issue...
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
+Where did you responded to this?
 
 Best regards,
 Krzysztof

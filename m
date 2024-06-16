@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-6318-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6319-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435F2909C4F
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 09:43:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEC96909C52
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 09:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB94DB21347
-	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 07:43:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D41E21C20A94
+	for <lists+linux-iio@lfdr.de>; Sun, 16 Jun 2024 07:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3998181330;
-	Sun, 16 Jun 2024 07:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80794181BAD;
+	Sun, 16 Jun 2024 07:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z7TTPGb8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isZhxQVr"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADD916C45F;
-	Sun, 16 Jun 2024 07:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36587181335;
+	Sun, 16 Jun 2024 07:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718523782; cv=none; b=Lqq7HigFqMvH8iS/ewUyQ2VnsuOiMauXQ8loUH1+kBd616P5BT82eaqa+PYOJxRueuc1aAcvd1g3ZmG8Du/r1nBCheaqtkp8qIzFaFlumgnhsa4Ovs43FuHPfToMaof0H/eO0maqqyRXHMP2wtvhLWBz6v1KdxVpGR2Exw81V9c=
+	t=1718523800; cv=none; b=iL4XmvthWU4VNQdlr6Za2mxfIWIFCh7Vvlq9ugVab/g+Ccczy2aEkUL7GCsX3CwBZQYKQKsW6QXi4sR8ObaMBQrqlY4zKQFdg4bj/noU8SwpBllLt8DGAeKt9K3m0N8r2aDawrN3Kp2NfuJ4C3h5f6PT0KfTru5Fc1AxHCla1ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718523782; c=relaxed/simple;
-	bh=UAMESqFI2zBGXsYlTra5YPsi4j0S1Kcs0G6kGPFAidk=;
+	s=arc-20240116; t=1718523800; c=relaxed/simple;
+	bh=z4lJ4L3WOkCqvuK3KW8LMQ+fQdx+zoGxSJyyOWoE/kg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nyhboF49To3hDs0ZXKFMVXG77YzbnS4ZosLLT0tHDQjrKG8lUMOlYC/imXML6zHd9tZFPlerNu/AvFqlJZMvAghx5W73STLcLDboMRGru9ks+Kf+YyQCVmeLNJYDfkHMbhmLtbAmnV613Lwh+6yN2PKVHair3FKZLRRAUtvblCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z7TTPGb8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779CEC2BBFC;
-	Sun, 16 Jun 2024 07:42:59 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=SJ+aIbNwZkVpFG58ltrsoJvqAzwCozmW3N+4GU98Vb3qtU80Vk6GwPRtwSJefYAu+KFAOVL7rgn93utBHQvfqq953W1If7AaArB5fzK5zjeLOEn7JaO51sf3q+Ue4040nKvppw/qAoiFRchXNWvLC0cFacczOWd0tW6U7J+Fs6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isZhxQVr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41864C2BBFC;
+	Sun, 16 Jun 2024 07:43:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718523782;
-	bh=UAMESqFI2zBGXsYlTra5YPsi4j0S1Kcs0G6kGPFAidk=;
+	s=k20201202; t=1718523799;
+	bh=z4lJ4L3WOkCqvuK3KW8LMQ+fQdx+zoGxSJyyOWoE/kg=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Z7TTPGb8e3Jt0wHFx1mbmb/W7ksv2Q6+cmwWHW1J02kZ4n1nsms81Lyo38ABf40zc
-	 uNSNGH8niArobkVCp4t1QsMONciJq1LWmVzqdN21+k0F2dXzpCxkRHgUhbQZDy6Yj7
-	 5Q3hirOih+nxHd9rNQgNMzT3Vq0+FxhYoSwgy/ItAl5pMoTO9stV4U8QhqMwkU/1NB
-	 2Zxlin4lETG+xO7Ps1GLlsCzkqzEGPqdYZCQp4nR1s6/CdHAkOClJqM4p241BgO9/Z
-	 /1qEq0MsSnH912KDQSgrCU/M6dBs+YVl4A7sN/BhhO7Lm5qCQw5rrOM9IoHiBNJ8xR
-	 95hT8ujri93Ow==
-Message-ID: <2146cc14-dd70-4f49-9667-1564fc6a37dc@kernel.org>
-Date: Sun, 16 Jun 2024 09:42:57 +0200
+	b=isZhxQVrUpUhh9eoYji3qLMkcNuIvV9gkXG7XHTWhWwHuzEPoRAPxT009wBmJWj1u
+	 basO0Z/vPiPKCjCjIXcwz1r9UoYGHQA9vhfir+TR52QjRG/tk/gKC2WC1GasX0az17
+	 bLA5m/dAi0B1vCt33xTtzP7xo81sYmgTcQ0+N51W13bXpAQiU/Irj+xOvXFOGqWEGc
+	 4601EYxRqz0r4WQX/GK8i8PeTXXeaBXib4vg30zBB2mll5IHPw/gskr/N8YMgTAtsO
+	 1CWegG1w3yusHuxkzUNBaG0H4ETXAe/Z1ueHxxqL/dKtj4yz5avPFpkM7sR+nwpPM7
+	 VjuckknW+spaQ==
+Message-ID: <13e586c7-26f6-4190-8219-404a2637905d@kernel.org>
+Date: Sun, 16 Jun 2024 09:43:15 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/3] dt-bindings:iio:proximity: Add hx9023s binding
+Subject: Re: [PATCH v5 1/3] dt-bindings:iio:proximity:new vendor prefix: tyhx
 To: Yasin Lee <yasin.lee.x@outlook.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
@@ -58,7 +58,7 @@ To: Yasin Lee <yasin.lee.x@outlook.com>, Rob Herring <robh@kernel.org>,
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-iio@vger.kernel.org, Yasin Lee <yasin.lee.x@gmail.com>
 References: <20240616-add-tyhx-hx9023s-sensor-driver-v5-0-ebaf280bbf0e@outlook.com>
- <SN7PR12MB810142C58543160AB45D07B3A4CC2@SN7PR12MB8101.namprd12.prod.outlook.com>
+ <SN7PR12MB81017D645B48DABB297A62DDA4CC2@SN7PR12MB8101.namprd12.prod.outlook.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -104,24 +104,20 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <SN7PR12MB810142C58543160AB45D07B3A4CC2@SN7PR12MB8101.namprd12.prod.outlook.com>
+In-Reply-To: <SN7PR12MB81017D645B48DABB297A62DDA4CC2@SN7PR12MB8101.namprd12.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 16/06/2024 09:36, Yasin Lee wrote:
 > From: Yasin Lee <yasin.lee.x@gmail.com>
 > 
-> A capacitive proximity sensor
+> Add NanjingTianyihexin Electronics Ltd.
 
-Not much improved. No changelog, no responses to previous comments.
-
-I already asked TWICE. So this is third time. Respond to each comment
-and acknowledge that you are going to implement it.
-
-Then write full changelog in patch changelog (so under ---) or in cover
-letter (not present here) saying what changed.
-
-NAK, because you keep ignoring same comments given over and over.
+Please use subject prefixes matching the subsystem. You can get them for
+example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
+your patch is touching. For bindings, the preferred subjects are
+explained here:
+https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
 
 Best regards,
 Krzysztof

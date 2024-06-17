@@ -1,70 +1,72 @@
-Return-Path: <linux-iio+bounces-6432-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6433-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D65890BD3F
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 00:06:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D52790BD41
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 00:06:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A33E81C20D39
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 22:06:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E477284193
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 22:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954F51991BA;
-	Mon, 17 Jun 2024 22:06:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043187492;
+	Mon, 17 Jun 2024 22:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jeXignhI"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="esK0aLvb"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f49.google.com (mail-oa1-f49.google.com [209.85.160.49])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F38797492;
-	Mon, 17 Jun 2024 22:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDF919146C;
+	Mon, 17 Jun 2024 22:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718661963; cv=none; b=LF/PLNSSChYzCGBoYkL6KFP1+ND7DnEK51WlDSuohBT5MlPlDBxVFUthetHmDDUls6k4ZioIsSunRi2izy7Vk5dKmzAA93gkmzj0QXN/yRaLAn/mQF2XGNeSbvq/K63aiWE6CTDuaSDaDz4mCoFQ4P0m+w4hUqdsAMT3qEra9Qc=
+	t=1718661963; cv=none; b=cG9LCoX5lQVhL7+ty/jdg9MX16PO2HU5JaS/K8SySFlK2V5ymfGjah825bol5g7xhFoZRm21Sk5Tsn40iudgWJ1YZffp7ArAUgTHZVivq3u6ONlXoc24a1gx4rBaqUsGjmn2iWKdcc4w0yn0X7EQLUDdUPGvyC+87/CkA8D9Vtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1718661963; c=relaxed/simple;
-	bh=/hWPDOnmI2yUJYDl5gQyCSpT+WA3huxuW9NK3NL7qIU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G07agkY9YrrqI9s5jVayZZkH7t4qNy7Vd8+X69QoV8Vxw34aTIZ4E2Gonk/nlQK68vYDvSfg9IrPBWMJAYpW5Giwevh8H2u/gPQjthgZGDAOq95NkLo4YkZzLMJlubjS8K2eOZJ3fgyWeg4lMVilXw8WBc69KP4dxtnmUIPqcfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jeXignhI; arc=none smtp.client-ip=209.85.160.49
+	bh=vSX80ON8QT7Jk17w76m3OpTB/4ybhhptsr9QuMGNPIQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=i5NvWgVDXuN/F1Uf4aez4S/FOqNlNegEHRBlia09f1+GVpFc584vXM8GZdrWUm5NhuMiIPES8FgFro8JFsEXFPmuzjvN/t78EXrWsQ8QB118mtgU3hSbu3SkB+sbp4toJptESsn19kcDjGWUKy8ELHbB9F7I3TKsV41VLjL4HVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=esK0aLvb; arc=none smtp.client-ip=209.85.210.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oa1-f49.google.com with SMTP id 586e51a60fabf-250ca14422aso2670408fac.0;
-        Mon, 17 Jun 2024 15:06:01 -0700 (PDT)
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6f8ffe1b65dso2273167a34.0;
+        Mon, 17 Jun 2024 15:06:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20230601; t=1718661961; x=1719266761; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=r/Su6zOhJKHHuZVcMf95zxNGwUW/D3aqWfw+kVjdFyg=;
-        b=jeXignhI5iwKigMsJ0zWKjYKfdGVi5EU0fTlYToCpGD7GCv++CceVg+feHT/jdb/Wc
-         9/o3uAdvDkpwc8fD8mFqA42H1GI81oCK8LqVf5SuZPydFPzwK44CEu6g7+r+OXfSakif
-         6FUbv9C2w7vW2QTcwfglzSnuh3dA5FRSdVqJulGBRaeusPzOn5tGgq6WMgaZ6CiIgA/C
-         JPqQkESZlck+JA6G9JRA9cTSx7RRDb9sBZqgRJD30Qjt7qT2v6qstT5XtZL8M2mErTJk
-         bUUKq8BLf2mTx2dw5wvSs1kUKB7ae5wB2gnEZl/UcWAZPD+cM84IOEU5Oc6BOaM/LdNa
-         vQ7A==
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=72c1oCxCl3E9fFtbjzZp2Yxwgd19L9zndmRoUlwxJeE=;
+        b=esK0aLvbuvK0zuFQZuEuW1E9S84iI2NcFLc3bZOmZcv/WSggutgqq7Xi/eHdizfZvR
+         4Q/2KpcnPgdDQjk7ysqyOGz5VOEAjgvOlwf3fkTOM66OFKS8aQarUKozD8AuF3uJq/01
+         ZzQC00ttXRySQjqycntGwtbEhX1OScUzG1FfHVCqd1yfuPdVV9gAzwDIZebRg+bC8Mev
+         TNwP2rctfat+C5Lzs7013G27/PaF8TDPECIqCrYOTbET4R/KptLpzX8nnWU5tG43MKzE
+         MhyKnopBBwafyHUF/TbXwHAV5a9i92gVd3hVvcwy+9NrTsSVs+YzUjFDUoGo+qeaAu7O
+         eNdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1718661961; x=1719266761;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r/Su6zOhJKHHuZVcMf95zxNGwUW/D3aqWfw+kVjdFyg=;
-        b=nHxXRYRPHs6TF7Cpe74Bqh7zHR0Z430dgRG1GVxOYJKrHCjd5stFLT2hQBdg/133ap
-         9O/t/oyGU3wgLYxrR9UKo4jx/H0zE9vipGP047rpdDqstv8qqknbiw1WU0mHl8Wdo8m1
-         7z5vBDKm9XpV1qd1v8X164jmIDryawBBagpVcOwekUvdQAsW0HBAddy9PINpEf8eWWnK
-         EQLnP1gfDgj974ji2ITP/UGMBuFDeqhTMve0zeeScumiK9uKWELhY7/4kefjdWhoxJaj
-         58pRCCnkcuOG73sn0z9uMilTl6voMceI3aygcbwmLgnvHAY0EVWHh/UtxZAsS1hQ4BRV
-         IZeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWYOkptTrVhtTY+4OJrTk2JBlHhonSxTsKgmDAmGXbNj1H52y+ejf1esMtOqH1bPKN8MjAxpox/XEDSs6NFVMqSMG8HZBplusdINYm1FTpePlOpqvzXmFWVXpqCnL3MMu6cSpr1zg==
-X-Gm-Message-State: AOJu0YyjZI5Zjz3J2GJ5KKnifWuwpoHvYmWeCb8lFlkpBaQE27P9Dto3
-	toTgKY9FCe4MiVLwfsNGgjVIQLEHtR8mPp7bNahCyHMiP0a0gyzP
-X-Google-Smtp-Source: AGHT+IGTkEJLjAQsBDyPVepbzS96rgjLZUNQCfs/a/TVEyMYrXfJ/EQuJc6ranGmaMtM25H5ZoBEcw==
-X-Received: by 2002:a05:6871:5c9:b0:24f:ee90:4556 with SMTP id 586e51a60fabf-25842552a80mr12620848fac.0.1718661960812;
-        Mon, 17 Jun 2024 15:06:00 -0700 (PDT)
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=72c1oCxCl3E9fFtbjzZp2Yxwgd19L9zndmRoUlwxJeE=;
+        b=WazS3zqUnDSl0E5KIPlPlzv01NIqurKY1RdBf0Rx3izUVKvZ5MWhwFF/yd3zHJQarl
+         nO0VGe3Cnakh9YPRZoVk0KXk/tUyBXiPBRCDjjKB9GVgDaJ0IB/Xwue27+olqEjoKWNW
+         LPJtDpirhnIbiSAgWeFg977Hj5xXtYH02yYwR8iKmhVKfVoYtBAlA3ngyTa66qTjv2Sx
+         UCA5EJE6e0baI/kQwTrrJTq2M8E2wmd/8CCkOihEvmq7/n+zMpZ7Rlk2ygyrWGiejDQ8
+         NCkGD5TMb5r6woVkTtTwjToJ2amn3DOC3ZcYD87uljdOVI5AXqAAcRGB1Ojli2sL9sDG
+         kqew==
+X-Forwarded-Encrypted: i=1; AJvYcCXijt8I5ZZ+WDR7SHn5CsdosfHal5gLAhj0gmeZ37OHkZ96KLIoYO5Gq/kXwnPx7M7Mdrid9iQmkluV9bD6Xb70iqbwP7MpD0zQinn8gsxCnbpMgSd6s2gW3rvIx47M61l12ha+lQ==
+X-Gm-Message-State: AOJu0YxOnDCYSpwmiFf21qSHDg33o7SEIpDUQbyc3Ydp7DQAE9NXSubU
+	SiCo2FegQ6BswK/2s0ls/dfbDtp/MyKV/k4Wp5doWU9Ma72qhj7O
+X-Google-Smtp-Source: AGHT+IE9x7T2l+/foUb1Q9R5OJWa5Z1pPLXeYGeinTqk3kSXkdgHG61T0IPf6oTedgA4/lrD6wlwRA==
+X-Received: by 2002:a05:6830:349f:b0:6f9:9d6a:2c84 with SMTP id 46e09a7af769-6ff15cd3226mr625445a34.4.1718661961372;
+        Mon, 17 Jun 2024 15:06:01 -0700 (PDT)
 Received: from localhost.localdomain ([75.28.21.198])
         by smtp.gmail.com with ESMTPSA id 46e09a7af769-6fb5b1b0fa8sm1664232a34.28.2024.06.17.15.06.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 15:06:00 -0700 (PDT)
+        Mon, 17 Jun 2024 15:06:01 -0700 (PDT)
 From: Chris Morgan <macroalpha82@gmail.com>
 To: linux-sunxi@lists.linux.dev
 Cc: linux-pm@vger.kernel.org,
@@ -81,10 +83,12 @@ Cc: linux-pm@vger.kernel.org,
 	robh@kernel.org,
 	lars@metafoo.de,
 	Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH 0/8] Add Battery and USB Supply for AXP717
-Date: Mon, 17 Jun 2024 17:05:27 -0500
-Message-Id: <20240617220535.359021-1-macroalpha82@gmail.com>
+Subject: [PATCH 1/8] dt-bindings: iio: adc: Add AXP717 compatible
+Date: Mon, 17 Jun 2024 17:05:28 -0500
+Message-Id: <20240617220535.359021-2-macroalpha82@gmail.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240617220535.359021-1-macroalpha82@gmail.com>
+References: <20240617220535.359021-1-macroalpha82@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -95,42 +99,41 @@ Content-Transfer-Encoding: 8bit
 
 From: Chris Morgan <macromorgan@hotmail.com>
 
-Add support for monitoring the USB charger and battery charger on the
-AXP717 PMIC. This required some driver refactoring of the axp20x USB
-and battery charger as the AXP717 is somewhat different but can still
-benefit from some common elements.
+Add compatible binding for the axp717.
 
-Note that as of now the charging current now value may be incorrect as
-the scale and offsets were not documented in the datasheet. I suspect
-the scale is 1 and the offset is somewhere around 450mA though.
+Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
+---
+ .../bindings/iio/adc/x-powers,axp209-adc.yaml          | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-Please note that this patch series relies on the following series being
-applied first [1].
-
-[1]: https://lore.kernel.org/linux-sunxi/20240418000736.24338-1-andre.przywara@arm.com/
-
-Chris Morgan (8):
-  dt-bindings: iio: adc: Add AXP717 compatible
-  power: supply: axp20x_usb_power: Add support for AXP717
-  power: supply: axp20x_battery: add support for AXP717
-  mfd: axp20x: Add ADC, BAT, and USB cells for AXP717
-  iio: adc: axp20x_adc: add support for AXP717 ADC
-  power: supply: axp20x_usb_power: Add support for AXP717
-  power: supply: axp20x_battery: add support for AXP717
-  arm64: dts: allwinner: h700: Add charger for Anbernic RG35XX
-
- .../bindings/iio/adc/x-powers,axp209-adc.yaml |  10 +
- .../x-powers,axp20x-battery-power-supply.yaml |   7 +
- .../x-powers,axp20x-usb-power-supply.yaml     |   6 +
- .../sun50i-h700-anbernic-rg35xx-2024.dts      |  21 +
- drivers/iio/adc/axp20x_adc.c                  | 167 ++++-
- drivers/mfd/axp20x.c                          |  30 +-
- drivers/power/supply/axp20x_battery.c         | 580 ++++++++++++++++--
- drivers/power/supply/axp20x_usb_power.c       | 350 +++++++++--
- drivers/regulator/axp20x-regulator.c          |   2 +-
- include/linux/mfd/axp20x.h                    |  26 +-
- 10 files changed, 1102 insertions(+), 97 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml b/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml
+index d40689f233f2..267c74fa2d0c 100644
+--- a/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/x-powers,axp209-adc.yaml
+@@ -37,6 +37,15 @@ description: |
+    3 | batt_dischrg_i
+    4 | ts_v
+ 
++  AXP717
++  ------
++   0 | batt_v
++   1 | ts_v
++   2 | vbus_v
++   3 | vsys_v
++   4 | pmic_temp
++   5 | batt_chrg_i
++
+   AXP813
+   ------
+    0 | pmic_temp
+@@ -52,6 +61,7 @@ properties:
+     oneOf:
+       - const: x-powers,axp209-adc
+       - const: x-powers,axp221-adc
++      - const: x-powers,axp717-adc
+       - const: x-powers,axp813-adc
+ 
+       - items:
 -- 
 2.34.1
 

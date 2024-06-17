@@ -1,74 +1,75 @@
-Return-Path: <linux-iio+bounces-6332-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6333-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00A2690A4FD
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 08:15:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D4690A512
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 08:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9209A2898DD
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 06:15:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A682328AAFC
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 06:16:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABB419642D;
-	Mon, 17 Jun 2024 06:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CD4C187327;
+	Mon, 17 Jun 2024 06:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ldz+Km8V"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iropJvpB"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B19195FED;
-	Mon, 17 Jun 2024 06:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0432186E25
+	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 06:11:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718604450; cv=none; b=FFTzN8vUBPpwjiHM2ShsmrvJ18kstKU7zpEOAQjFUZfEVGkpj7DTk069uBlUbD/LDyZarH3lHN9A4c9Z/7nIGhX42mSSs6qZM6V5U/T5gLZ0SRbV40QMNHJJENZiBTetr+fhQqcZHZUGAep8ZcvLDkLy2E7i2WJDg+3j64lYCeo=
+	t=1718604702; cv=none; b=Sq4GxSDMMNk+BqmLYAaRsbS1tWQZOv2qiGQSQX5BSfWCsgz9BZz/66PeQeXCKjcO0goKo19uKDcjTtqA1kA0vLEP2fr2mgcPdpQmuXO5iXz1YI2MaaemHjdXzt6OSP2CJ8LOw0+iBf3257cD67VKVMUAq/i+pmLRtTetvjV0siQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718604450; c=relaxed/simple;
-	bh=1qHT3ndHCQslu0fWxXaSamlwmG6qZY213KP8J4wc6mk=;
+	s=arc-20240116; t=1718604702; c=relaxed/simple;
+	bh=vpGyn37HoKQU9ZCMZp6hhzA0NMH1CjBNZyXDjfo6eko=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XggaUux1SF859yT1Prgi4TdLbKarH6Gs7I2qDJjA4c2hdOkFSmAZk8C412eMbWBbmEgtyHKeraJ1tWkykC8Xd7/SGKGCeXOvbQe6UfRHFrK+D82dQi+/c+6Z3xc+tqHRfwtPdCjWb412/vgHThvC2Vx8m7b5JMJqL9qO/WQXwgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ldz+Km8V; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5295e488248so4483564e87.2;
-        Sun, 16 Jun 2024 23:07:27 -0700 (PDT)
+	 In-Reply-To:Content-Type; b=D44K6i9Hk76Pe27LPsasAOE79/tXsOEe5rWEUxtVVSUlVAz8N4EGF8WN09ChpmrHMZ2G5LCyrInEozsNOSLaq0Eic4oBBhKGZ8SdK7sT0Whpyxd3ydhbxeM9oVcyx0ttyh9GlE1qap3K1+Jg2uGjBavtelYURfD/geaN0haprOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iropJvpB; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-57c6011d75dso4787296a12.3
+        for <linux-iio@vger.kernel.org>; Sun, 16 Jun 2024 23:11:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718604446; x=1719209246; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=i12zWNu8KlTv7/MNDqzK9U/bdW2I5k7ofAlbTITEnb0=;
-        b=ldz+Km8VUda6LpFv41zY1+XgaacKyb8R3YlLP9+7T0y93d9+wBAHpvOE5DaI2te/FL
-         zu7m239b3fw6bJOde5QZSNGmAzu33phKWYjVSW21HMuUdTvxjyMcR1IEo3LUjzbyua63
-         uGwYqolvEho/oC9SJjiIy9JKrZ9n+KVZmFSVPiucWhPiOWogmssZWEIXzCHwy7CYaziH
-         AzUP6RbdDaAOkkXQ9Nj8GwD5Iwp4ZCEpTec+cFmFtOAqYlg9yyybPVMlZc45+VXHgXgi
-         XoF9q7tlKiAy0+G0+xGqUq8HCuPG6BJtpsxNuqaRIuUHGp3nZAn08aZWQv7GHvP5+nzz
-         Drzg==
+        d=linaro.org; s=google; t=1718604698; x=1719209498; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=9kdEToaRtEtLTBxGmIJLoLouOnpDnXZ/+scsxAQ6PL4=;
+        b=iropJvpB80NHSkPQ+AK1Vck1hKZY+2H1OvP6BngXOAGFHZjzKjKL5FHs9LyReeCnGx
+         fAd5v++dzQkw6tqifub5aMpjA+TYKW3dhc8m4zFi4BCF+B8p288hzmXhlaYLjMv5D+tC
+         Jhb3P3tkzMOwR2rzyODk2gPJkGXd+a3+GS4IuXSTdpamJD93G8n6Fd8C/+DuaXdrg8fV
+         h3H88wbrl3b4CN/7/NO5TtH9fdDaS0FhbUHDM8/fVt1Xi/zn0g3lUXleiwvPcglyDiaE
+         YedlA0x6Pt//N/9jE7hDK4JRcv2s4CR48lfLJl/VwSfR7CaDZJnJqic1CAb/6NK7BrnB
+         A7Yw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718604446; x=1719209246;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=i12zWNu8KlTv7/MNDqzK9U/bdW2I5k7ofAlbTITEnb0=;
-        b=vTpsULKvszpd2lwdT3j3Msh3ZpRqfp4Mr/6KL4pXS+oqBkJW5/h4o77ze+KRlH95wS
-         qUZp3jz2dLc9PWZfRW6ovK7iZ45Gp/CsxA6/P9LgbjovDROM1RLSb3uiUZTkku64W45V
-         1gltiiyhZe1gSpNhcW/hgznQVCc50WOEXHAlcvvNaOzWM37a4CUnRq/zuAqfZzCX6ss2
-         TH+b+bXf6tw8ucgRgrxUft84UG7SxMwEnLiC1bKa3GxRckKL9gMCuaCVK+/qPDKGl4Ww
-         wXlXWJFuHd4sH+JdxeOpC9JRyMn2nPhb3nTyHuAbRpHJR8/6AVE79bDPa5KKRp4PR2+e
-         Ti6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVFnbfIgm9sjPlX14PZpdQekdaiK78Clf2hHPLW/dI9bneMEH04oROBrL4NaemQMa77v39EW5dXtoSo+eQWpdBB8wWnnSIjo+o6a3lZijN5XXqCHPNEGDvtujfFERLMJ8UvzjkCdIGB
-X-Gm-Message-State: AOJu0YxO2JKy9Uj5KJH7i+am4/JVLS4siuqFWCk8jmOQO5IYNCVv0gl8
-	kAuBXPtSVXvMPakKSk02wP/u49jZ/g7vXlXSzPH0lQhZV7uBaydN
-X-Google-Smtp-Source: AGHT+IFOs8sWJOZ1Qx42nJmWJ/bSgd388ge+CDgPhz1DhWOXNvINt96KcZ4XUPBXgcEW8rI8sBWsCQ==
-X-Received: by 2002:a2e:9b54:0:b0:2eb:dc13:2d6b with SMTP id 38308e7fff4ca-2ec0e5c57a5mr55168201fa.13.1718604445880;
-        Sun, 16 Jun 2024 23:07:25 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd? ([2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec05c17b0csm12351541fa.65.2024.06.16.23.07.24
+        d=1e100.net; s=20230601; t=1718604698; x=1719209498;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9kdEToaRtEtLTBxGmIJLoLouOnpDnXZ/+scsxAQ6PL4=;
+        b=fceYZ7aSRP5Jfhzw/erzjvcAjFoPO6hNaVwUnos0j6UvNW7vP5vJa71mgH+jP+A6Gm
+         7DBmUqAKkt7Ym/meI5lsaO7LeimhWsSCHuXd7KS6zRby/v8h3x234OwBbnqWPeHJYZa/
+         ee9+mDMIM4ErZ9LwgjOL/8xkH5zWDFWsiWI/ZsyyXfqYfm1oS0JpmZTpIkmd+sdvnQK2
+         aU+rPWus16wgaT+O5h3e3BpQhAApaXlPecAXe4E+N8PlpIRh6GItCs9AzA1JllDWswWl
+         U4lqvl5gyGMJ1cdQ87y2whkLeWl0hS4t//Y64Gr7wvbhsW9ZUJyB2QBKLmwb+EpYYUP+
+         jkNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjylNCoiNcydlL9ULrktp/Guun6fUYOh12qC606m7TVYko77GUen7Qst8zpxFXgabY6+b6FHmAvIn+ACS5gx9CMQQlcFxwSIW2
+X-Gm-Message-State: AOJu0YxVuM0b7/bnvDGB/0sLxN+C4MAk65Ng+AT9/hVhaZBrdg2Na059
+	Bu90qkdlLDIUWbodep2zKJ1a+F5x2oG7iUm6Nq5PTD8j8n19nBp3nlC9c65GznA=
+X-Google-Smtp-Source: AGHT+IFRvJX2rYvRV7Pzan0qIx7xvzoBrqprat8773thSOqIPo4ExMRRUq3jvVxaxcAt7mqtQO0Mkg==
+X-Received: by 2002:a17:906:c29a:b0:a6f:5957:7b8f with SMTP id a640c23a62f3a-a6f60cefc2bmr570704666b.11.1718604698066;
+        Sun, 16 Jun 2024 23:11:38 -0700 (PDT)
+Received: from [192.168.0.18] ([78.10.207.147])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56db67e5sm480498766b.66.2024.06.16.23.11.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Jun 2024 23:07:25 -0700 (PDT)
-Message-ID: <b462fbc5-0ee0-4bd4-b889-01c09853c407@gmail.com>
-Date: Mon, 17 Jun 2024 09:07:24 +0300
+        Sun, 16 Jun 2024 23:11:37 -0700 (PDT)
+Message-ID: <0fa211df-5786-4447-9c8e-1c57528e8582@linaro.org>
+Date: Mon, 17 Jun 2024 08:11:35 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,132 +77,87 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] bu27034: ROHM BU27034NUC to BU27034ANUC
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
- Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <cover.1718013518.git.mazziesaccount@gmail.com>
- <d43500621a2ad0811f58c8c7c87cbdc7b2abb8c1.1718013518.git.mazziesaccount@gmail.com>
- <20240615184757.2148f7d7@jic23-huawei>
-Content-Language: en-US, en-GB
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240615184757.2148f7d7@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] dt-bindings: drop stale Anson Huang from maintainers
+To: Abel Vesa <abel.vesa@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+ Sascha Hauer <s.hauer@pengutronix.de>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
+ Peng Fan <peng.fan@nxp.com>, Frank Li <Frank.Li@nxp.com>,
+ devicetree@vger.kernel.org, imx@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
+ linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
+ linux-pm@vger.kernel.org, linux-watchdog@vger.kernel.org
+References: <20240614095927.88762-1-krzysztof.kozlowski@linaro.org>
+ <Zm9ZUWpievH+P8Yc@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <Zm9ZUWpievH+P8Yc@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 6/15/24 20:47, Jonathan Cameron wrote:
-> On Mon, 10 Jun 2024 13:01:23 +0300
-> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+On 16/06/2024 23:29, Abel Vesa wrote:
+>>  
+>>  maintainers:
+>> -  - Anson Huang <Anson.Huang@nxp.com>
+>> +  - Shawn Guo <shawnguo@kernel.org>
+>> +  - Sascha Hauer <s.hauer@pengutronix.de>
+>> +  - Fabio Estevam <festevam@gmail.com>
+>>  
 > 
->> The ROHM BU27034NUC was cancelled and BU27034ANUC is replacing this
->> sensor. Use the BU27034NUC driver to support the new BU27034ANUC.
->>
->> According to ROHM, the BU27034NUC was never mass-produced. Hence dropping
->> the BU27034NUC support and using this driver to support BU27034ANUC
->> should not be a problem to users.
->>
->> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
->> Fixes: e52afbd61039 ("iio: light: ROHM BU27034 Ambient Light Sensor")
-> 
-> This is an odd case.  I don't think a fixes tag is appropriate
+> For the clocks, please add me as well. Don't mind having more help from
+> the others :-) . But i.MX clock bindings usually go through my tree.
 
-Last week I was thinking this purely from a new BU27034ANUC user's point 
-of view. For user of the new sensor it appears the current driver is 
-broken. Hence this felt like a fix. That was last week though...
+Sure, makes sense.
 
-  and I
-> don't think we can use the original compatible.
-
-I didn't think so either back in March. However, I forgot what so ever 
-plans I had while I was waiting for some internal decision regarding 
-upstreaming of this... I just went back to the mail I sent about this in 
-March, and I see we discussed adding new compatible back then, and I 
-also promised to send this patch as a series of smaller changes... Sorry!
-
->  I don't mind breaking
-> support for the non existent port going forwards and indeed dropping
-> all indication it ever existed, but the old kernel's are out there and
-> even getting this into stable is far from a guarantee there won't be
-> a kernel run on a board that has this compatible but has the old
-> driver.
-
-I agree it's not a guarantee, but it would be the best we can do. At 
-least some stable users would upgrade - have upgraded - could pick 
-stable with fixed driver.
-
->  It's also too big really to be stable material.
-
-I am not really going to argue on that. Asking for the stable 
-maintainers to look at this and port it is indeed a bit too much. I 
-guess we just need to live with having the b0rked version out there.
-
-> So I think the path forwards is a new compatible and drop the old
-> one from the dt bindings and driver.  Thus any new dts for a board
-> that actually has this device will use the new compatible and avoid
-> any risk of encountering the old driver.
-
-Yes. This should be the way forward.
-
-> Maybe we can be more relaxed - what actually happens if you use the
-> existing driver with the new part?
-
-I am pretty sure the world does not explode. I've not tried this so I am 
-not sure if reading the register area where the removed data channel 
-used to be is succeeding. My assumption is it does, but just returns 
-garbage. Furthermore, I am not sure what happens if those removed gains 
-are tried to be set.
-
-So, not tried but I would guess that the read data would just be insane.
-
-> I'm trusting you copied the maths right for the computed
-> channels (that take too long to review!)
-
-I understand the reviewing problem. I feel it is time consuming and 
-sometimes very much energy draining. :) And I _really_ appreciate the 
-work you do with reviewing and maintaining! But trusting me? I suppose 
-we all make mistakes XD
-
->  So everything inline is
-> formatting type stuff.
-
-Thanks! I will fix the compatible and formatting. I agree with all of 
-the comments - but it may take a while until I send the next version. 
-I'm having a vacation and trying to spend my time AFK for next couple of 
-weeks. My old motorbike and tiny boat are calling for me - so amount of 
-code I write is (probably) inversely proportional to the amount of 
-sunshine in Finland ;)
-
->>   	/*
->>   	 * The BU27034 DATA0 and DATA1 channels are both on the visible light
->>   	 * area (mostly). The data0 sensitivity peaks at 500nm, DATA1 at 600nm.
->> -	 * These wave lengths are pretty much on the border of colours making
->> -	 * these a poor candidates for R/G/B standardization. Hence they're both
->> -	 * marked as clear channels
->> +	 * These wave lengths are cyan(ish) and orange(ish), making these
->> +	 * sub-optiomal candidates for R/G/B standardization. Hence they're
->> +	 * both marked as clear channels.
-> 
-> I think just indexing them and not giving a modifier is probably better than
-> claiming they are clear.  Leave it more vague basically.
-
-Agree. I just didn't see leaving out the modifier as an option.
-
->>   	 */
->> -	BU27034_CHAN_DATA(DATA0, IIO_MOD_LIGHT_CLEAR),
->> -	BU27034_CHAN_DATA(DATA1, IIO_MOD_LIGHT_CLEAR),
->> -	BU27034_CHAN_DATA(DATA2, IIO_MOD_LIGHT_IR),
->> +	BU27034_CHAN_DATA(DATA0),
->> +	BU27034_CHAN_DATA(DATA1),
->>   	IIO_CHAN_SOFT_TIMESTAMP(4),
->>   };
-> 
-
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
-
-~~ When things go utterly wrong vim users can always type :help! ~~
+Best regards,
+Krzysztof
 
 

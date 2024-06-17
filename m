@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-6427-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6428-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2140790BC56
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 22:49:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A23590BC5D
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 22:51:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 696EEB20FE7
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 20:49:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CDA352845CD
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 20:51:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E9A18FC8A;
-	Mon, 17 Jun 2024 20:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C526198E96;
+	Mon, 17 Jun 2024 20:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bOvOFdJ9"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZrAKGKWy"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59067492
-	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 20:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CEA8480
+	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 20:51:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718657335; cv=none; b=ADT1/Ma0J6V9ZRJYJQm59W4R8iLPwaoZgYFSnPwY6/nRfESLIoFKfHo3dhBgjv9HjwoRwFxieo25k6nSrrFQu5il8dXvoAECO2hc70OSoMP0VbdN7dXc8MXNzVkIQ8ATYnMoFkDEBCOmXwF1JS/0c2llprW/bLIGzsILSrmjIqc=
+	t=1718657496; cv=none; b=hhZOFCWk+Bi+g7iBfdY73iaTaEOksaBJXXFpFtt2KhGu09TtsDWAF6Mqr2sAoo+b8L3DwSjs8vrTXAsnqhB4NXT27ABgdtZZA1SQQKT7r/s9dEM3c7/KDIJWUCDqOqVIaT3yIXQKZcnB9MsrePuhSJ+xPzSybYgHotiZFJTJNxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718657335; c=relaxed/simple;
-	bh=+wg5rGWnub6d6ueoxs/8H2knoEi7JkxL+8IPuLbzhZo=;
+	s=arc-20240116; t=1718657496; c=relaxed/simple;
+	bh=LyKnD3LAy3V/v8ppmgZZJpAYDGHShWxpLZ5v6b5EdtQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MgBJX3+77GxHyRRAiEOR2Up1tK9/TF1RAwUtLkL5sGymAB4Ob6y60xN1YaPOvp9Z4Du035IIS2YtKpAVxp88rzI0BLAY6AmUrzNsWEqNxgwa9kNW6KxfmlVLlXSb/thIez+OzQlpupuq49WWcvDJpoAjfD1n+Zdf0VUkcjjbl4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bOvOFdJ9; arc=none smtp.client-ip=209.85.221.49
+	 In-Reply-To:Content-Type; b=MaRHo54FJb5E1VA+PpIOizcCF2uffyTOKUe6z+NyZqmnaoYNTY/f15FtvCnSUwbEJoEV8HNxtSlSWXs911zwBREE4iznQH+8CARaNkUle81yr2doTsS1egUmSFHzOWxkdMqmVZXIk9dcvECRgBtqmvWe/G8ir11IDvQWHoWQD5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZrAKGKWy; arc=none smtp.client-ip=209.85.219.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-35e1fcd0c0fso3857811f8f.0
-        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 13:48:53 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dfdff9771f8so4865114276.1
+        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 13:51:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1718657332; x=1719262132; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1718657492; x=1719262292; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=4Prxca8WsXgeUFt4L2M3lgOG9HB9DoX/SrgkfE/LHB8=;
-        b=bOvOFdJ9xjH1W5FdxmBv9AcBUc+GA2jyPU/nXMv50RZdB6L3AfRbk/LQEcZPtFYomm
-         gdGLW2sL5Mp9aUHDRclc6VspKgx8b8yGvgXwTQZSY8doC/QTADg5g5zUApAJ67NBWWgp
-         ei3kv54Jgndh/qaRQ5DDXPbq61I//rQNNum5o=
+        bh=6uZGstIzMbek/hZ0Jyl0Zw33pXjjTwL+ORiKeFMqa6U=;
+        b=ZrAKGKWygcFZEWTOebcc8NxHbcbQjzjCRmUQeTiNV73+56rv1uhUvRlW/jDgbAD/Xg
+         +XkjiBk/Qa2O/uOSFfXsDQhE7v0a7zy7rwNr2NE/87xCDT3W35KnyDKq0bYZj5geS+g8
+         j0dR2TTlzehQkR96AZ19OPOIJQrjTiJ/0s+PM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718657332; x=1719262132;
+        d=1e100.net; s=20230601; t=1718657492; x=1719262292;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4Prxca8WsXgeUFt4L2M3lgOG9HB9DoX/SrgkfE/LHB8=;
-        b=b4WOpJlIfV2ZsFMcVwqya4ZlhDPIaxjJrMzkJOppc0GMgCYkLmfgu4XdaTP7BBRyRi
-         mT388S9XMnTWLBXkEQhQ1Q74NmtrQfCqBCV/P4sYywTXZpx0FhvDyJ5lYjWs0QuWZ1LJ
-         RSdbvqMMPSxDVUdeqqV+2f9eHjZyqjZT+C9fFZ0gTfVgQB1UCG0HLtmWcE2N09et+P1J
-         VcSuJJ9YdwlwlxR1soGgxlkEwLLaZ97PmzFNqt7ctmW1t8AVNNcZqMlHYSeA5HU/7/u5
-         DIt0zvc7P00vsc0JdP/XgsuDZqLYVvEkktNG/KYEChcQv1CdquGFpK1KtCpTiaDjVPz7
-         wbpA==
-X-Forwarded-Encrypted: i=1; AJvYcCWnUj9+72sCDd5jpDdQI5YLMJYg1Cy3zyHqxSTsYD74eR7dLn/RApk5nvlPkcIAR6CMNhQ3xkQW1lNczi/zM2FG9REtjTCCnPbI
-X-Gm-Message-State: AOJu0YymjiyCYDC3K9YhkeYzv4oCgtscdyP9H6oM02F30u0OOU+XdykX
-	H/htStUuXc/bANBv0NWml9tyLzXkQ6nN7l00flMv6hqzm8yADq24+xdjzW/ZLg==
-X-Google-Smtp-Source: AGHT+IHEU62suYWnRXwKdzpdAXSz5KBYd2epiiTyciPo+/4BqNzGad5ovJJPFBopMPwoL4rztkfXKQ==
-X-Received: by 2002:a5d:4b83:0:b0:360:7557:3239 with SMTP id ffacd0b85a97d-3607a763270mr7051286f8f.20.1718657332016;
-        Mon, 17 Jun 2024 13:48:52 -0700 (PDT)
+        bh=6uZGstIzMbek/hZ0Jyl0Zw33pXjjTwL+ORiKeFMqa6U=;
+        b=uxstqC1VQPD+JjNCizOkLAWwxs9YS989Js870xkNiAeF6ZlKwfx3v/VPUa83pYXjsV
+         NIM1+1Zw5LNKu7STsGJMBvq3YTZrHKf2n5beGWgWuFe5LXr7dNb5Gbk2jWed47pSeQCN
+         VQkK2QTvWLUWM8JU8yqolOONPmFu7sHtRKhk+Bi0AuPoe266upESE4rvD5MsU8Q0AB4E
+         SmTdCGHbGxPxz7KLbAxjH5ClesRCi/xVedVxWhnDQ3MlFFH5ixYAnVOL9rXvfHFc7OM9
+         mdkuthUKRs/k5+2k2Tt0FboiriI2QTY8DHSd1+J/xsGwcnrxT0zcQhvge771HzWk6eGl
+         /Iyg==
+X-Forwarded-Encrypted: i=1; AJvYcCWBcKqF2W1+ghb5Oi9SH+0dFX7kMhLCIL4bBFt8KFKVrrera9eLod6zGA0ZcY8msLMz/ocRHNr0oldVzoxCK+ZvcWW6WAZ3LOAq
+X-Gm-Message-State: AOJu0Yyr4p59Ozq/g7910nz8W2dPiUDo0ICATmGjLESu06IV6UgCsXTg
+	MZc7UN3zxm0Gcfv3nK+yz3kQMrz9rVtLPdaZwutCVtYdgYo7nHx22JYiME6KZA==
+X-Google-Smtp-Source: AGHT+IEB2XRahobNADcCOiZuh1yBLWd0NjcJ81ZAhERrZb2HRCuh0TdKtXd6UmzEyeamsjryHFf8YA==
+X-Received: by 2002:a25:905:0:b0:dfb:c16:9e95 with SMTP id 3f1490d57ef6-dff1524c362mr10194308276.7.1718657492230;
+        Mon, 17 Jun 2024 13:51:32 -0700 (PDT)
 Received: from [10.66.192.68] ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56db62e5sm547701466b.84.2024.06.17.13.48.43
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b2a5ee04f2sm59327046d6.114.2024.06.17.13.51.25
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Jun 2024 13:48:51 -0700 (PDT)
-Message-ID: <19e8a6dd-b0d4-4e88-9ad2-e38787a5aee8@broadcom.com>
-Date: Mon, 17 Jun 2024 13:48:38 -0700
+        Mon, 17 Jun 2024 13:51:31 -0700 (PDT)
+Message-ID: <0a29389e-8ba2-48c5-bb26-381de58a62fb@broadcom.com>
+Date: Mon, 17 Jun 2024 13:51:23 -0700
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -74,7 +74,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: dac: Fix dependencies of AD9739A
+Subject: Re: [PATCH 1/2] drm/vmwgfx: Fix missing HYPERVISOR_GUEST dependency
 To: Borislav Petkov <bp@alien8.de>
 Cc: linux-kernel@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
  lkp@intel.com, zack.rusin@broadcom.com, dri-devel@lists.freedesktop.org,
@@ -85,8 +85,7 @@ Cc: linux-kernel@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
  oe-kbuild-all@lists.linux.dev, x86@kernel.org
 References: <202406152104.FxakP1MB-lkp@intel.com>
  <20240616012511.198243-1-alexey.makhalov@broadcom.com>
- <20240616012511.198243-2-alexey.makhalov@broadcom.com>
- <20240617090428.GBZm_8HMQ9XJe_VQga@fat_crate.local>
+ <20240617090709.GCZm_8vdnLzt048UH_@fat_crate.local>
 Content-Language: en-US
 From: Alexey Makhalov <alexey.makhalov@broadcom.com>
 Autocrypt: addr=alexey.makhalov@broadcom.com; keydata=
@@ -132,75 +131,47 @@ Autocrypt: addr=alexey.makhalov@broadcom.com; keydata=
  fqqZgi3rxgu4sc5lmR846emZ/Tx85/nizqWCv7xUBxQwmhRPZRW+37vS2OLpyrTtBj3/tEM9
  m9GMmTZqaJFeK7WCpprJV4jNHpWZuNAsQrdK1MrceIxb0/6wYe0xK79lScxms+zs9pGTrO4U
  5RoS4gXK65ECcBH8/mumV6oBmLrNxKUrzTczdo9PnkmRyZcAa6AndbjmQDznwxvTZu2LjMPC EuY0
-In-Reply-To: <20240617090428.GBZm_8HMQ9XJe_VQga@fat_crate.local>
+In-Reply-To: <20240617090709.GCZm_8vdnLzt048UH_@fat_crate.local>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
 
 
-On 6/17/24 2:04 AM, Borislav Petkov wrote:
-> On Sat, Jun 15, 2024 at 06:25:11PM -0700, Alexey Makhalov wrote:
->> 0-DAY CI Kernel Test automation reported an issue:
+On 6/17/24 2:07 AM, Borislav Petkov wrote:
+> On Sat, Jun 15, 2024 at 06:25:10PM -0700, Alexey Makhalov wrote:
+>> VMWARE_HYPERCALL alternative will not work as intended without
+>> VMware guest code initialization.
 >>
->>     ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_read':
->>     regmap-spi.c:(.text+0xf): undefined reference to `spi_write_then_read'
->>     ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_gather_write':
->>     regmap-spi.c:(.text+0x2b4): undefined reference to `spi_sync'
->>     ld: drivers/base/regmap/regmap-spi.o: in function `spi_sync_transfer.constprop.0':
->>     regmap-spi.c:(.text+0x337): undefined reference to `spi_sync'
->>     ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_async_write':
->>     regmap-spi.c:(.text+0x445): undefined reference to `spi_async'
->>     ld: drivers/iio/dac/ad9739a.o: in function `ad9739a_driver_init':
->>     ad9739a.c:(.init.text+0x10): undefined reference to `__spi_register_driver'
->>
->> Kconfig warnings: (for reference only)
->>     WARNING: unmet direct dependencies detected for REGMAP_SPI
->>     Depends on [n]: SPI [=n]
->>     Selected by [y]:
->>     - AD9739A [=y] && IIO [=y] && (SPI [=n] || COMPILE_TEST [=y])
->>
->> The issue is caused by CONFIG_AD9739A=y when CONFIG_SPI is not set.
->>
->> Add explicit dependency on SPI and conditional selection of REGMAP_SPI.
->>
->> Fixes: e77603d5468b ("iio: dac: support the ad9739a RF DAC")
 >> Reported-by: kernel test robot <lkp@intel.com>
 >> Closes: https://lore.kernel.org/oe-kbuild-all/202406152104.FxakP1MB-lkp@intel.com/
 >> Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
 >> ---
->>   drivers/iio/dac/Kconfig | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>   drivers/gpu/drm/vmwgfx/Kconfig | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
 >>
->> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
->> index 3c2bf620f00f..d095f4d26e49 100644
->> --- a/drivers/iio/dac/Kconfig
->> +++ b/drivers/iio/dac/Kconfig
->> @@ -133,8 +133,8 @@ config AD5624R_SPI
->>   
->>   config AD9739A
->>   	tristate "Analog Devices AD9739A RF DAC spi driver"
->> -	depends on SPI || COMPILE_TEST
->> -	select REGMAP_SPI
->> +	depends on SPI
->> +	select REGMAP_SPI if SPI_MASTER
->>   	select IIO_BACKEND
->>   	help
->>   	  Say yes here to build support for Analog Devices AD9739A Digital-to
+>> diff --git a/drivers/gpu/drm/vmwgfx/Kconfig b/drivers/gpu/drm/vmwgfx/Kconfig
+>> index faddae3d6ac2..6f1ac940cbae 100644
+>> --- a/drivers/gpu/drm/vmwgfx/Kconfig
+>> +++ b/drivers/gpu/drm/vmwgfx/Kconfig
+>> @@ -2,7 +2,7 @@
+>>   config DRM_VMWGFX
+>>   	tristate "DRM driver for VMware Virtual GPU"
+>>   	depends on DRM && PCI && MMU
+>> -	depends on X86 || ARM64
+>> +	depends on (X86 && HYPERVISOR_GUEST) || ARM64
+>>   	select DRM_TTM
+>>   	select DRM_TTM_HELPER
+>>   	select MAPPING_DIRTY_HELPERS
 >> -- 
 > 
-> FWIW, I appreciate it you fixing other breakages. However, there's a patch for
-> that already, on its way:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=fixes-togreg&id=75183e461ce033605c3e85518a9f3d4e4ef848a3
-> 
-> Don't get discouraged, though, when fixing something that is not in our
-> immediate area of interest!
-> 
-> :-)
-> 
-> Thx.
+> Right, I'll queue this soon but it doesn't reproduce here with gcc-11 or gcc-13.
+> This must be something gcc-9 specific or so...
 > 
 
-Lesson learned and noted for next time to address only related/new 
-warnings and errors. Thanks!
+Not really a gcc related, but the matter of a config file. It is 
+reproducible if CONFIG_HYPERVISOR_GUEST not set, but 
+CONFIG_DRM_VMWGFX=y. And this combination was allowed before the fix.
+
+Regards,
+--Alexey
 

@@ -1,126 +1,211 @@
-Return-Path: <linux-iio+bounces-6447-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6448-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E88B90BFC1
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 01:22:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B74190BFC3
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 01:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6EEE282CA2
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 23:22:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF2A628219B
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 23:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D91C1993BF;
-	Mon, 17 Jun 2024 23:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82D11993B6;
+	Mon, 17 Jun 2024 23:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fTOzgPKU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bh8rbGJq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609A7163A97;
-	Mon, 17 Jun 2024 23:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14FE163A97
+	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 23:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718666542; cv=none; b=OnirRMvP9tX1BZR5KKw3M8yn/5l85ksGerSRu8QqciSpdDNZ+2wNFwLS7nfDTkypZI2ayvFPIkvAao8HT8q29uP2DP9aR/1DubC4XeU0ib3W1s+NsD14wlZs1kksEM8XjpjptaKOPb10rEZCvaFT1+zQ+sQ57jPhPmgZZna0uQk=
+	t=1718666606; cv=none; b=bzp4LXcxcsVYuAbxkdDERPjrLRAOz125mEV4ddsH3KC3DwvB8IxAeofv5YcmX77n/IaOe6MVSF3utctmiSPApotdim7KrxphVerfqqfwm40w8pOgUUPta1aaf8TuBmAgBdCeI+3ip9Ucse3v22ON1iPAvGF42fIHuHIi0DEPXQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718666542; c=relaxed/simple;
-	bh=wKRTlIR7nnOjM0KXV8XEYm+3gbeEEjKGhoRIr/a9C1M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p41shoPigVrxhK30gRxb112uN7KqtjgzXLvWBmROnnzyMk51+ZJxWiWJrSdTw36QY3QQVaOu5qHintunlVkRovyaro4OIa8nN0kXudzNmTkIgFtfdDBBHNDAgM0n2eLPWy8a44fbuH4fsUlyEDXQilfNLqROTuy2Xijlms/kPt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fTOzgPKU; arc=none smtp.client-ip=209.85.218.45
+	s=arc-20240116; t=1718666606; c=relaxed/simple;
+	bh=/V/BUMEyoQPf1V44YETuDPE16ocFxGl95G9eCQnmBMQ=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mfn1cHdzjWCTWwMNgDl95ncxOAt0gESi3GcYJS89WFrdaPcjrxcEVTxY785oCiKol9/V1cYM1LL3bftMN32MPXSdJy2ph8gFTrH5zwYMoK4q0PZynM+gsNL033U4uCOxob2xl99Hd7/RtSnjKrfBtPw2mXMnw6VN/XIKo7rQOsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bh8rbGJq; arc=none smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a6efe62f583so477045566b.3;
-        Mon, 17 Jun 2024 16:22:19 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a6f13dddf7eso585527466b.0
+        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 16:23:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718666538; x=1719271338; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wKRTlIR7nnOjM0KXV8XEYm+3gbeEEjKGhoRIr/a9C1M=;
-        b=fTOzgPKUDbw0o7teLfte5KGTTjNT7rPmNYZalz8FeT6YTWVriPMx1CNalZfE+s+D7r
-         WQrSOJEz87+kbNyI0RWIJ4Zm+1qQZeftTXT9H7qwNQjYDJVVLI3iDJFqcfYL3ndxQp/c
-         gynN1P3EAhP16LoPILgXSTZAzuj1zlVxbeUR+kxBSCrCk+SrKnnzQCUlFq8GwqJv8N57
-         FkHzaad9BO8xK4KoMo5sspQOIAW4G03S10/x/DmsiwGHnEiBuo6bDU8+iqiixcu/NafC
-         r+d7AhCcZWzNd+0OxQvvCAI6phUiTPfmypP5bXLVonN5/5s8iDh4Hq/6EuFuOl7yXpbu
-         6CrA==
+        d=gmail.com; s=20230601; t=1718666603; x=1719271403; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=44hRMNyeG0NGD9gyetIkDqYK18pbhPd1hh/6hrRe514=;
+        b=Bh8rbGJqfEyKQLano4hLG7sDARNb8tqvltZ3QlfKPkN+IhDXj4+wIJ6Q2Bhqg8LZND
+         Jgjg9/HUoUiDgm1OuBTg81/tey2mPieLGyjtdipIPF4ioaUb5MbbjRSfmHh4gm6/ql/R
+         3p9rsYwNXZzYsLH8b4m+oFuXcZdk2ZhUAlF+r+ZhJrFLjCjFzEvlXiW4ofMthTESicYh
+         l1eT5aPBdWtNhwayM/iAHQSQ3BVU4u1WCPwjrPGtPmIH6EuZIc/FmzWQRzFzfDom/O0j
+         ABVrNdGAsH54uNexC6XO4A6qvjxA4pZwKsr01FJVgtkMe7cVKT6ntqKxvMmMXU6epAav
+         cKxQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718666538; x=1719271338;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wKRTlIR7nnOjM0KXV8XEYm+3gbeEEjKGhoRIr/a9C1M=;
-        b=wGx7XRBcJJ/fjISmVzkjG/8H2O3hV3NVf7YF3DJbZ7x4hnoX2XntEHGDlXIM1n57cW
-         dD7kHzUFDfSF2lCvKF3JUpZJ+bXIACGFR9JNGLhKx/NcbvttNmyhHsOxie+oXSmL7eYz
-         YpeGxth2GZGRr+UhTk/1vSllTwhEf03/l9XiU1ZMnw2DEsxHyMzoKAeVxx1W1STFKO5r
-         bUskyudGosRmnJyXCVjVbE3k8ba/Tnnne0ir1XPugz6WXAN+A8NukNwB+zUFKRfLoG1L
-         FEpOIgfA2ndmdblvUTNbUJx/Yy1W0Xq9qxazlko9wS7YKzWp0FLoWqoshLEKN8EBJ1b0
-         ei7g==
-X-Forwarded-Encrypted: i=1; AJvYcCX/q1HAUzqQSldaEIb4BRbNU8jLgl2N8P20pBTB+YxyeaVX4ZHAtnJ2U4tGqi7bFPXI1AxrqiqqFgNcWawhnwIojWm2NtoZVLoKlyFpjn26gJf0lXyXjtA69PtJhXjt9gHEaj14sHjO7xcYTm3l42irynii0gxAJnWDhGkPt0LBV3txicJYdQ==
-X-Gm-Message-State: AOJu0YzryXLh1p/N8yZUihItuGD+6+EKeydQMEH3Wx8Z16c9BLN2DP/4
-	AIdwbjZzaBdH0mo4+ilXTPrxmr3EjZh/fjgGRnL9JqN25UWMeFev
-X-Google-Smtp-Source: AGHT+IGjp3Ii1wNb0dBKA712QfgjfMKbqZ/mXIwxAYEF4EPT50uybie8uvCZMH9EY/OD9lYqsMYbEw==
-X-Received: by 2002:a17:906:d18f:b0:a6f:256c:8163 with SMTP id a640c23a62f3a-a6f60bca7a3mr697845766b.0.1718666537578;
-        Mon, 17 Jun 2024 16:22:17 -0700 (PDT)
-Received: from localhost.localdomain ([2a04:ee41:82:7577:b152:a6ad:d6c8:f0e8])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f6b2b04f5sm411879666b.192.2024.06.17.16.22.16
+        d=1e100.net; s=20230601; t=1718666603; x=1719271403;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=44hRMNyeG0NGD9gyetIkDqYK18pbhPd1hh/6hrRe514=;
+        b=MZgfWQrT2z41XRmLw3LUS7ygYojlfm/nRLYTGmj/wmrG9ggvJdyxd0sGuLbhE02n1j
+         kk/6wD3ZZZFdjBE1or0ZzadNHAse21C155pI09qyIf2X3EpUwISG87mQ+B5ingGQIuoI
+         KmtVga9MoJf0jSgwbE5fhmrTbT0EpG/2ZsveHaxTB5TN5UIZqbd80MnlvchPntFWtFqw
+         eHJL7Ut+rtkAY3srSbcrLCcyWkf8RRHVsRlqujmTl0BWxfwPInDtX1hAQG9Oj6xFhHmG
+         AGD5pfQy7Sq1b8Vt41MF9XHfvrheqmP1f3Vq6Ur7lB7ajP7a+Q6VFpMrVmiZ2xgmXUFH
+         F+CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWZmYOo3l5vtVWibmC5Twm4Y4vUiJiikRDTXE84Gxp8LONdif/axStHyVZhwUF8Qhtcyu/jouzxocYQP0ZeVF5ddWt093/zAA/Z
+X-Gm-Message-State: AOJu0YxDIBPuXDch9TfPV7HihAzRuBgQ0LPoS7o3iz/lCYGWAsYHXqiu
+	B9D6+hbWOKQNK+QIMnLF9rTjfrBjoGn/GZHAOqNLndum5dPu9OH0cFS5K68w+fw=
+X-Google-Smtp-Source: AGHT+IE1F5w+c+kBB0JV4uKfRZc6zTSOQWiHO0NlIym1XDi48ldl2dP+rP9lEuGraQopVMMRg5iDZg==
+X-Received: by 2002:a17:906:3e13:b0:a6f:da1:d077 with SMTP id a640c23a62f3a-a6f60d296f3mr663696866b.25.1718666603012;
+        Mon, 17 Jun 2024 16:23:23 -0700 (PDT)
+Received: from vamoiridPC ([2a04:ee41:82:7577:b152:a6ad:d6c8:f0e8])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f88f5debasm152879766b.167.2024.06.17.16.23.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 16:22:17 -0700 (PDT)
+        Mon, 17 Jun 2024 16:23:22 -0700 (PDT)
 From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: tgamblin@baylibre.com
-Cc: Michael.Hennerich@analog.com,
-	alexandre.torgue@foss.st.com,
-	baolin.wang@linux.alibaba.com,
-	bcm-kernel-feedback-list@broadcom.com,
-	cmo@melexis.com,
-	cosmin.tanislav@analog.com,
-	ddrokosov@sberdevices.ru,
-	festevam@gmail.com,
-	hdegoede@redhat.com,
-	imx@lists.linux.dev,
-	jbrunet@baylibre.com,
-	jic23@kernel.org,
-	jmaneyrol@invensense.com,
-	kernel@pengutronix.de,
-	khilman@baylibre.com,
-	lars@metafoo.de,
-	linus.walleij@linaro.org,
-	linux-amlogic@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	martin.blumenstingl@googlemail.com,
-	mcoquelin.stm32@gmail.com,
-	neil.armstrong@linaro.org,
-	nuno.sa@analog.com,
-	orsonzhai@gmail.com,
-	rjui@broadcom.com,
-	s.hauer@pengutronix.de,
-	sbranden@broadcom.com,
-	shawnguo@kernel.org,
-	sravanhome@gmail.com,
-	u.kleine-koenig@baylibre.com,
-	wens@csie.org,
-	zhang.lyra@gmail.com,
-	Vasileios Amoiridis <vassilisamir@gmail.com>
-Subject: Re: [PATCH v3 35/41] iio: pressure: bmp280-core: make use of
-Date: Tue, 18 Jun 2024 01:22:12 +0200
-Message-Id: <20240617232212.34280-1-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240617-review-v3-35-88d1338c4cca@baylibre.com>
-References: <20240617-review-v3-35-88d1338c4cca@baylibre.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Tue, 18 Jun 2024 01:23:20 +0200
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Adam Rizkalla <ajarizzo@gmail.com>,
+	linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: pressure: bmp280: fix bmp580 temp read
+Message-ID: <20240617232320.GA34371@vamoiridPC>
+References: <20240602201200.30418-1-ajarizzo@gmail.com>
+ <20240604200107.7f68dbf4@jic23-huawei>
+ <20240604191904.GA19711@vamoiridPC>
+ <20240617205726.7ddcd6eb@jic23-huawei>
+ <20240617203034.GA11985@vamoiridPC>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240617203034.GA11985@vamoiridPC>
 
-For the bmp280-core.c part, in Patch 35/41:
+On Mon, Jun 17, 2024 at 10:30:34PM +0200, Vasileios Amoiridis wrote:
+> On Mon, Jun 17, 2024 at 08:57:26PM +0100, Jonathan Cameron wrote:
+> > On Tue, 4 Jun 2024 21:19:04 +0200
+> > Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> > 
+> > > On Tue, Jun 04, 2024 at 08:01:07PM +0100, Jonathan Cameron wrote:
+> > > > On Sun,  2 Jun 2024 15:12:01 -0500
+> > > > Adam Rizkalla <ajarizzo@gmail.com> wrote:
+> > > >   
+> > > > > Fix overflow when storing bmp580 temperature reading and preserve sign.
+> > > > > 
+> > > > > This patch re-applies the fix in [1] after the merge conflict resolution
+> > > > > mentioned in [2].
+> > > > > 
+> > > > > [1] https://lore.kernel.org/all/Zin2udkXRD0+GrML@adam-asahi.lan/
+> > > > > [2] https://lore.kernel.org/linux-kernel/20240531140621.264f0848@canb.auug.org.au/
+> > > > > 
+> > > > > Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>  
+> > > > 
+> > > > Thanks! I was just about to email about this fix currently being lost in
+> > > > linux-next.
+> > > > 
+> > > > Rather than dance around this, I'm going to pull the later part of Vasielios'
+> > > > series off the togreg tree for now then reapply later once I have the fix
+> > > > in my upstream.
+> > > > 
+> > > > It's a shame that we need to do the maths in driver to keep within range.
+> > > > Maybe we can be cheeky and avoid doing the division?
+> > > > I believe the IIO core formatting code should be fine with that as it
+> > > > already casts up to 64 bits to do the maths.
+> > > > 
+> > > > (s64)*raw_temp * 250);
+> > > > 
+> > > > bmp580_temp_coeffs = {1, 18}
+> > > > 
+> > > > Anyhow, I've dropped (for now) the following patches from my togreg tree
+> > > >   iio: pressure: bmp280: Generalize read_{temp,press,humid}() functions
+> > > >   iio: pressure: bmp280: Add SCALE, RAW values in channels and refactorize them
+> > > >   iio: pressure: bmp280: Add triggered buffer support
+> > > > 
+> > > > Jonathan
+> > > >   
+> > > 
+> > > Hi Jonathan, Adam,
+> > > 
+> > > I had mentioned it here [1], when I applied v7 of the patches that this would 
+> > > happen. No worries though,  I already have the new version of these 3 patches
+> > > that include Adam's fix, so when we have it upstream I can resubmit them
+> > > (no need to keep a note Jonathan, I have it) and I think we will be fine!
+> > 
+> > Excellent.  The fix is no in the upstream of my togreg branch.
+> > 
+> > I've only pushed it out as testing for now, but if you send a version based
+> > on my testing branch or 20460472952 (currently char-misc-next head) that would be great.
+> > 
+> > Thanks,
+> > 
+> > Jonathan
+> > 
+> 
+> Hi Jonathan,
+> 
+> Thank for letting me know, I can send it by tomorrow.
+> 
+> Cheers,
+> Vasilis
+> 
 
-Tested-By: Vasileios Amoiridis <vassilisamir@gmail.com>
+Hi Jonathan,
+
+Applied already, you can take the patch whenever you want,
+thanks for the help and the heads up!
+
+Cheers,
+Vasilis
+
+> > > 
+> > > Cheers,
+> > > Vasilis
+> > > 
+> > > [1]: https://lore.kernel.org/linux-iio/20240512230524.53990-1-vassilisamir@gmail.com/T/#t
+> > > 
+> > > > > ---
+> > > > >  drivers/iio/pressure/bmp280-core.c | 6 ++++--
+> > > > >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > > > > 
+> > > > > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> > > > > index 95c88b0e1c49..3a003843c79c 100644
+> > > > > --- a/drivers/iio/pressure/bmp280-core.c
+> > > > > +++ b/drivers/iio/pressure/bmp280-core.c
+> > > > > @@ -1752,6 +1752,8 @@ static int bmp580_read_temp(struct bmp280_data *data, s32 *raw_temp)
+> > > > >  		dev_err(data->dev, "reading temperature skipped\n");
+> > > > >  		return -EIO;
+> > > > >  	}
+> > > > > +	*raw_temp = sign_extend32(*raw_temp, 23);
+> > > > > +	*raw_temp = ((s64)*raw_temp * 1000) / (1 << 16);
+> > > > >  
+> > > > >  	return 0;
+> > > > >  }
+> > > > > @@ -2154,7 +2156,7 @@ static irqreturn_t bmp580_buffer_handler(int irq, void *p)
+> > > > >  
+> > > > >  static const int bmp580_oversampling_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
+> > > > >  static const u8 bmp580_chip_ids[] = { BMP580_CHIP_ID, BMP580_CHIP_ID_ALT };
+> > > > > -static const int bmp580_temp_coeffs[] = { 1000, 16 };
+> > > > > +static const int bmp580_temp_coeffs[] = { 1, 0 };
+> > > > >  static const int bmp580_press_coeffs[] = { 1, 64000};
+> > > > >  
+> > > > >  const struct bmp280_chip_info bmp580_chip_info = {
+> > > > > @@ -2184,7 +2186,7 @@ const struct bmp280_chip_info bmp580_chip_info = {
+> > > > >  	.iir_filter_coeff_default = 2,
+> > > > >  
+> > > > >  	.temp_coeffs = bmp580_temp_coeffs,
+> > > > > -	.temp_coeffs_type = IIO_VAL_FRACTIONAL_LOG2,
+> > > > > +	.temp_coeffs_type = IIO_VAL_INT,
+> > > > >  	.press_coeffs = bmp580_press_coeffs,
+> > > > >  	.press_coeffs_type = IIO_VAL_FRACTIONAL,
+> > > > >    
+> > > >   
+> > 
 

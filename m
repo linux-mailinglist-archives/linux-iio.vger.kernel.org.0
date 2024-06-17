@@ -1,122 +1,108 @@
-Return-Path: <linux-iio+bounces-6346-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6347-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FFC590AD54
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 13:50:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37FA790AE6E
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 14:59:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7774F1C22D55
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 11:50:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DF5F1C240C8
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 12:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C51B194C6F;
-	Mon, 17 Jun 2024 11:50:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC8E198E77;
+	Mon, 17 Jun 2024 12:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpA8sHn4"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="kTgSVStw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f47.google.com (mail-ot1-f47.google.com [209.85.210.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846B4186E56;
-	Mon, 17 Jun 2024 11:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D63197A67
+	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 12:57:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718625004; cv=none; b=Ig7/of5LBSQErcoSBAbSfFxKZYH1Ly1EmLI5JkgodDZx28VezLKmOhfnE49ak5H9Xt8ZqYtWfpGUX4/GpzOKBGbUJTkjCP559JNOrFycFyMJGYDQ7i3zy3tKib+tHdH80NDLLGUP1G1Ijqejfjzvc3+aOlX/kntmbIqg15h1HL8=
+	t=1718629038; cv=none; b=gO2+P9OT0etn3tWK0V4MAd9/sJmCZBChiIJO4U4N6LnkingdNI2c0L03UeIv+Ob3fNhlyWRk29n9qCyvoHGDxFC58YPgKBuRaXyigzwTsVPJ1l1gzqlWLeidrxH+UpS2k9Af7IjVBh/1trrEtESimXWM6NrgEy5Rdkk9fxwmYcQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718625004; c=relaxed/simple;
-	bh=OqoQ6ZxH5cHIMs3+jLFrcIOTsDPqWQXiXFgsGcvQtmc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q+vmeHhTWobZGRqrmhNT6BADkBav8/Ug/KLosFKyINYMveYCmZ++9H5R5Qbw9ZyYD5CPf6Me3GLv0+NeXuMeHApPm4ZEI6V/Fs/34aXVpzY3rmePJVQkqHjWkwcU+gEQsnjw3Po/LCeTeeCuSX8blPvwxSbPhlHgkxBmuWtSDsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpA8sHn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710F0C2BD10;
-	Mon, 17 Jun 2024 11:49:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718625004;
-	bh=OqoQ6ZxH5cHIMs3+jLFrcIOTsDPqWQXiXFgsGcvQtmc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HpA8sHn4I/uwMAoESG+goOFTmifzrpBQCu9dGkOqZXt8LYQqIz5QC28pY7Sf0V0im
-	 Rg3jeH3eikunEuigeTgUzbTZ+0Imva19O0s2muNxA4UevqUFDN3pgh2gkZqiPaumdk
-	 vcSLpVPa9akY/UIDqIsvq5tskgFgDB2P4D3sgld14Q56O303qkj5x6nQhfEvRRQi4M
-	 Gk0JUzOUemjLwycr4PfdBBZYJkpP7j747BOm1btJ2rnG35Qrq2fQkzKmtodhX7c5Fi
-	 Hx77E015tcScm9SmYjLY9TNQ7XuuFlhEtg/818x62PvlE5UBoaSBkrYLy4pAeurPpG
-	 nK8oyrEht/AUQ==
-Date: Mon, 17 Jun 2024 12:49:46 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Frank Li <Frank.Li@nxp.com>,
-	devicetree@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
-	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
-	linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-watchdog@vger.kernel.org,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: Re: [PATCH v2] dt-bindings: drop stale Anson Huang from maintainers
-Message-ID: <440bb6fa-2e26-4a64-8c53-bebf706a1079@sirena.org.uk>
-References: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
+	s=arc-20240116; t=1718629038; c=relaxed/simple;
+	bh=R/WKolCm6aTpT0rLQ/5czZbGgTM5R1wePhXh/jKstbs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=m5Gi4qhVVDJGVK3yJWFcQoMHZxowjayJGV1LHcGabP704PgVdC6NEUeMif2uNpL1+mc1BkhFC9t9fYRUJjzOUgtcOH6TfDrfa8DCTkwUnK2os0L021AbU2SbEU9ZVhy7HhsmK3l2ObuGq4GBRQIV3TAS+FKmlf08dPqNoMM5vv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=kTgSVStw; arc=none smtp.client-ip=209.85.210.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f47.google.com with SMTP id 46e09a7af769-6f8d0a00a35so3588125a34.2
+        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 05:57:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718629035; x=1719233835; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6WRkrTaLy9bYrj4t5fzFeuqxrm3gUqPzfb+KoMhhmoQ=;
+        b=kTgSVStwfUH2jmmzSTMDoi0AK0SFXKqPt8Ox97MiX2xGxMyt9hBki8zNulYYcBwfvj
+         osOqHN3COkVFa9uLtZGMTBLJcQXhBrbO6ezgMmGQ7wpOVirsfzhqbtISHUCRaNIteqWk
+         nrF8wxfuoHGUVpGXPxSipiVF0z8Ui450Ke3lO9uQQtLD6pWPsv9I9mwU/Q0xWCH1w33a
+         BnKUNXuKPkhXN4fRhglwbh+Hgkm4LnTcXd+HToZ4RAzAWe7lDjbYAGRWilmX1BEYQhVr
+         NW28FnMsi0FWvUp5YCdPcnghPQc1Mkp9o4WcCoLLFdYK0Q3QXpkyxa0CEb4FCtpQgtMt
+         ZWgQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718629035; x=1719233835;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6WRkrTaLy9bYrj4t5fzFeuqxrm3gUqPzfb+KoMhhmoQ=;
+        b=dDInNldgsZmnhOP1MlMEbuaIpeCABUia1oR4QKo4vZkhyTpWGBZveQ96SmS4GrvC3e
+         Ypz1xlh928Gfao62VzwYOVXjvX43vbUpvemwL5YYbdivo3yYqo+CnBVLL3dznLhtBpoV
+         nlMIbeicFizBUAzK5qsfKXaTuE0lq+eYV/lElRMQkyQD6ZzVpcrNWmsVD7aAbN0U8ESi
+         c0lsrEkFzXiuEHrZ4tI/K3KM8its6ueyNVTCxiQCpf7FMumPIl/QCd029lQIzP/Ru74N
+         o8P1wrv3jaD52ujWjimUUJNBkCryrfFnfmVnoEjk3ysUGzjUVxrAFjCifLYNa2j9ggj8
+         CB+w==
+X-Forwarded-Encrypted: i=1; AJvYcCU67aLiD6FlJUIZnhIqxfU4X3CniZnbZ5skEm4tzvR6Utptthj8x1PGZgCm+keO+NiAxifmeAR7OWhCmGDcOXFuV+dHNZtS/d2Q
+X-Gm-Message-State: AOJu0YxIMf0s5rbnoYA8lyJM8kR5rmtTvCB316Svz9tp3yKvBBA2z/Lw
+	YItjz4fKf2J9lAXBeR05nU6l+UHpi8WlbkRwOwdF3vSBWp66H0uu9aFpYi9O6wg=
+X-Google-Smtp-Source: AGHT+IF6+UFGbJjkOb90pXY1tk27LLx4ShlfrN0M6h5QSv1w6bpMcf2oa86xTiR0j714bhRmykF/WQ==
+X-Received: by 2002:a9d:784a:0:b0:6f9:d204:1948 with SMTP id 46e09a7af769-6fb9364b043mr9974351a34.6.1718629035488;
+        Mon, 17 Jun 2024 05:57:15 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6fb5afa9f57sm1508633a34.13.2024.06.17.05.57.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jun 2024 05:57:15 -0700 (PDT)
+Message-ID: <c7ac7634-9661-45b7-b3a8-ff2ecfcbb1ed@baylibre.com>
+Date: Mon, 17 Jun 2024 07:57:14 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="jfSjzlj0zX5Rl/R2"
-Content-Disposition: inline
-In-Reply-To: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
-X-Cookie: Life is the urge to ecstasy.
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] counter: ti-eqep: enable clock at probe
+To: William Breathitt Gray <wbg@kernel.org>
+Cc: Judith Mendez <jm@ti.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240609-ti-eqep-enable-clock-v1-1-1e9e7626467e@baylibre.com>
+ <Zm6tKQ8KvIh9nnPW@ishi>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <Zm6tKQ8KvIh9nnPW@ishi>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
+On 6/16/24 4:15 AM, William Breathitt Gray wrote:
+> On Sun, Jun 09, 2024 at 03:27:11PM -0500, David Lechner wrote:
+>> The TI eQEP clock is both a functional and interface clock. Since it is
+>> required for the device to function, we should be enabling it at probe.
+>>
+>> Up to now, we've just been lucky that the clock was enabled by something
+>> else on the system already.
+>>
+>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> 
+> It sounds like a potential bug is being fixed here. Should this have a
+> Fixes tag so we can get this merged in the stable trees too?
+> 
+> William Breathitt Gray
 
---jfSjzlj0zX5Rl/R2
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I suppose. Will respin.
 
-On Mon, Jun 17, 2024 at 08:58:28AM +0200, Krzysztof Kozlowski wrote:
-> Emails to Anson Huang bounce:
->=20
->   Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access den=
-ied.
->=20
-> Add IMX platform maintainers for bindings which would become orphaned.
-
-Acked-by: Mark Brown <broonie@kernel.org>
-
---jfSjzlj0zX5Rl/R2
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZwItoACgkQJNaLcl1U
-h9D5Wwf/Q7ZtAKp5HRIsqeh8PBxnOEEF8ljY8bCew6Q7rvMXTsxiI2WXFX0ykufr
-bDY0Ho5rMIUGwQf/F1v+q6ZS6TEUbnawVgxkKBRJTDeK8Uxs9bXPSfCu8oZY888f
-YzPOYmhnDVtIWvoHZFUO6klplmBwPYQn3WqXYi4M2eap2IHsTxAUrrcyiL4uLVAG
-yqNRTuUyg4+YAkj/te942l7M/obYkf3Nxb/1HM3vZypXDeUhg+ubgr3TKF8LRpg3
-LBmfcA+m586XLOoQUPbLcilqogjAJuokkNwNMia0ny9IINWjZ6izZ/1Oe/fCnHSn
-vX0livBtYHzSS6lauBj/V6L4gSTz+w==
-=b38n
------END PGP SIGNATURE-----
-
---jfSjzlj0zX5Rl/R2--
 

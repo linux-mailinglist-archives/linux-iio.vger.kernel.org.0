@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-6395-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6396-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4653690B3FD
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 17:22:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E84890B400
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 17:23:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFF3028D3CA
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 15:22:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A74F28D7BE
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 15:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3AB815EFDC;
-	Mon, 17 Jun 2024 14:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA2415F335;
+	Mon, 17 Jun 2024 14:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fTkKl7Go"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="igN2bocS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15ECB15EFB4;
-	Mon, 17 Jun 2024 14:42:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7B1015EFB4;
+	Mon, 17 Jun 2024 14:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718635349; cv=none; b=je8qgWvhTJMoCkbByTX+faTvnbfK3jK+4j542i6zcGh6BWe+gih6nPuGt7Ep0fcl6QeXjceQ3J4NU3fQNUbeMFm8FavfdhVS9NKm43YsGBTrUyvv8L+ig5qclohKtVfinx5URB3LQVvXnXgObRsNq0YQdhyDmW+02bhQBH4YTqQ=
+	t=1718635394; cv=none; b=OC2GX0bFrac3Vk2YkPFL94u/9WXub5/VrBGZfxek9WK6W+jDWFEHkGx0Qe0ACext3rCJdkfdNyb9Yi/UdBCsI1G648XFNHw7YcvY9UB9n87sbXS1ylZWzNummGxNdmEE2YljloZuCBn7C6yv6LbLXmjS7K2tgabe+KeqfWvH29E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718635349; c=relaxed/simple;
-	bh=E2YQNX6Tuz8HfUHpOihGxh9fyCb+mnp+I4qgACuBpKE=;
+	s=arc-20240116; t=1718635394; c=relaxed/simple;
+	bh=ZBRYz0XGpXpv2eraO3GUW2itTwP+yglswHfa4pbL/RI=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=fup+BB14RM6fq+v1Xn+ASJp346Nh9D5m8G8cYlqALdoxjf0OYm5B6H6BkRhe1TCxh/nqvkbL15kOQMvUJV9KlQpTHR4piqEoXPJ5rmvjRDAgsDitULVSVlBmzRHAKT+HZSSZpUCASZRhFqXtXvde/vM4TeXGes7WWnltSpB+gcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fTkKl7Go; arc=none smtp.client-ip=209.85.208.45
+	 Content-Type:MIME-Version; b=PF6zHVMKo2PJ75To+BsXFhVBQ/rWup9CahFyO8nMQmCAHW+efLbKPPKKXNrmgrKCoHjvAeOIw7eC2h7YNGfgHWO76+1qAU9QNYHdUwwgxqLK5EKk+z7wyOSK15FswZtH5KII/2DFAnFfQDBc7xu6k+mZHvgwTU+IXfACAvfpb+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=igN2bocS; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-57cce3bc8c6so2410138a12.3;
-        Mon, 17 Jun 2024 07:42:27 -0700 (PDT)
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-57c7ec8f1fcso5195571a12.0;
+        Mon, 17 Jun 2024 07:43:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718635346; x=1719240146; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1718635391; x=1719240191; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=E2YQNX6Tuz8HfUHpOihGxh9fyCb+mnp+I4qgACuBpKE=;
-        b=fTkKl7Go+98ESLVA+cWR/43Utnpy63+1wqWUZTjs8nQuY/6RO/2dhf78J+R0YLj24Q
-         0u2mDZLuBBOjPJvOCwy7WaseAaHrxqR+DIkfqbAFuu5ue9yQwznuo/9/T2RI3VR7gBD7
-         /tR9/d/yua4JC76k521xKY1GJp9XqMcWHwiMlwmMzrFEeEuW59xX/lsdKNqNU6yUeWLr
-         /dKk+uFdB3VMhbc7B23TuauMw4Z4FJi+VzdYMQ1gpU0/m7C8KVpc2O8vqCgfR6Gj4+6e
-         ypaWb/jdEF6JkugGrYH58haLkyr5KUxOJq/gKNWXA8z6HMAiIoscMlhjt6tTk6Tt1lLi
-         BAww==
+        bh=ZBRYz0XGpXpv2eraO3GUW2itTwP+yglswHfa4pbL/RI=;
+        b=igN2bocSBRRfIr7hIapYMqD3Irl0IAfgBU2AiDMcwTkmRUrpSfKKF0lWcV7KaQ/cFG
+         wybYpCrAqxGW8FBXAlPjMNEPLRhSG+SvaPTBBCesbctTenomeUU55dQXJW8x5rBcdsxp
+         jbvs/xfGr/xU0YWQGlS0I3yYXthe576c/dVKWQQ5ASX6iVCJ++8sLG7E6olqGeUIztqu
+         mzRyI8RwT515z59UCDiGoLNFx6KGX2iI9eIDDSRK6N2wtQOR/Ca0nkyPqFGS/YaM64UC
+         VxWEiUjtGHNsbU4lXUv0hjlpEBmLarVDlrgKxIiGX0dN/5w3jkmdMf9YUtrr0ZnKO0AT
+         fvUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718635346; x=1719240146;
+        d=1e100.net; s=20230601; t=1718635391; x=1719240191;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=E2YQNX6Tuz8HfUHpOihGxh9fyCb+mnp+I4qgACuBpKE=;
-        b=SreACyD+L0cFlxcaB81kY2+NjcyayBs6gHNh9jyDeAS/40oJRpSdSmPtjeUk5DaUav
-         gkATSOFAQZm2Hg5dImcZ+XBpk6p7WVbYz9Xpf/zPAic5wFABtO2+3a1CAArOdCZS7r8t
-         dHCBeAZtbBcOLHvtaWVNjLUvstUS8h/4a09M/W5/KB+igTQeH6jERVTUVLe+jrO/yxSI
-         C5dAb7MzVx664NdJG5h8KBuZxOkr3xg2Dax/FqUM/G8zdnQ/D8NRkF0vI8Ds+tP63iL1
-         tGkqXNIzZJWHRmBHCOtDSyXYCmAUgtQViTbqEDBGo7yTMHQKV7pFwOUexb69BK7TtN0T
-         p8uw==
-X-Forwarded-Encrypted: i=1; AJvYcCXSSfzEpSfy4BRJfhiC/SKDa7RnI8FhDwdnJbGRzGGpeJz5hbTQt+l2SdxG/na3vKmK33SxrMOdAHJ3x0vLjNBd58JdmuY136Tp4c+psdskdbJruz5LviGdJXkgmdCnupxBvHCCi4e3/JiMtQ==
-X-Gm-Message-State: AOJu0YyCP4MfHnEPorB6DzKZni3VvEEom/os0ORJRAhzKGKZooGbDbQK
-	6RDhELVMY+PBD9wF5v9l3iPwWt203xVlykp4OJMAdPR5RlKWGe4W
-X-Google-Smtp-Source: AGHT+IGkzpQ7qdmk73JHhNvar3yzbeO/0JuLTETghlv9ovmWg6RAvgWc3MKokHO04h0aGO4cAJzoZA==
-X-Received: by 2002:a50:8753:0:b0:578:6378:bc4 with SMTP id 4fb4d7f45d1cf-57cbd69d997mr5941494a12.10.1718635346075;
-        Mon, 17 Jun 2024 07:42:26 -0700 (PDT)
+        bh=ZBRYz0XGpXpv2eraO3GUW2itTwP+yglswHfa4pbL/RI=;
+        b=AHcH5V5cRNuCm8zGYeO4OCMoVjvuMHFqsSChDXRqc8gJo91O9/Hiv0hl2bg4V73v0s
+         tndakByKwjd2CoO6nglXyqZQtJf6qFsfL6ADjC+W4iUEhLmoWsqkXaDMaPaswj5/l4G7
+         OFNUCjATV48hFi5Pz9WVpdI5j1fObKBzYM4TyydPkKRkJQO84jrhEXGH+ofww1z0NLcP
+         uKINMNMj9kQAjNTxF/tl5BjS3R/mRUh2hZHHNFncjREYa35DzEUnYlaqbvIns03HjeM8
+         e1YOEJbFMOO/4NhJuOweYSF1RGeryyaHaohPfDT3s1JmfBaQzMGwRFrMNUbg6Z27sB83
+         LNnA==
+X-Forwarded-Encrypted: i=1; AJvYcCUPKmIcGnWrFG5xCkf0kx6GtFwo+2a3WY346uj2MKWUxkIiuHJQ+xGXZ8zuE8x9/ryIyMa3gGzBDANO0cv4Do3EnxFLIWQ+sSOhwWBsv8vN7e6QmTm1VHWo1cfeRoYDd3A1A1Pmgj5R//UbPw==
+X-Gm-Message-State: AOJu0Yw+WxQcsgEYfoxEXGymxxTcOndwfLdhFhQ+FSKFzVkHy36fBZP3
+	rA/yLMN55p7Xkm7U5TfhX6XyRsXRDZPjZWHMhT2kx6cNbIvBIaiD
+X-Google-Smtp-Source: AGHT+IFZCLJUyzlf8fNXs1wSr7SW5vQG+3gjx8K9mMt6pzU9bVkMHLl1SBxe9dWS51TWvl5kQfUcKQ==
+X-Received: by 2002:a17:907:970b:b0:a59:b590:5d71 with SMTP id a640c23a62f3a-a6f60bc9ac8mr839107966b.0.1718635391235;
+        Mon, 17 Jun 2024 07:43:11 -0700 (PDT)
 Received: from ?IPv6:2001:a61:35f9:9001:40df:88bb:5090:7ab6? ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb743890dsm6514525a12.83.2024.06.17.07.42.24
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56f427a5sm514062766b.180.2024.06.17.07.43.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 07:42:25 -0700 (PDT)
-Message-ID: <a818344871a1dd2bf139732a7de9016ece456288.camel@gmail.com>
-Subject: Re: [PATCH v3 04/41] iio: adc: ad4130: make use of
- regmap_clear_bits()
+        Mon, 17 Jun 2024 07:43:11 -0700 (PDT)
+Message-ID: <63cd8d0e250a77c1201945ebe13e19ab0fb59ce9.camel@gmail.com>
+Subject: Re: [PATCH v3 19/41] iio: dac: ltc2688: make use of
+ regmap_set_bits()
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Trevor Gamblin <tgamblin@baylibre.com>, Jonathan Cameron
  <jic23@kernel.org>,  Lars-Peter Clausen <lars@metafoo.de>, Dmitry Rokosov
@@ -96,10 +96,10 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
  linux-stm32@st-md-mailman.stormreply.com, Uwe
  =?ISO-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
-Date: Mon, 17 Jun 2024 16:42:24 +0200
-In-Reply-To: <20240617-review-v3-4-88d1338c4cca@baylibre.com>
+Date: Mon, 17 Jun 2024 16:43:09 +0200
+In-Reply-To: <20240617-review-v3-19-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
-	 <20240617-review-v3-4-88d1338c4cca@baylibre.com>
+	 <20240617-review-v3-19-88d1338c4cca@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
@@ -111,14 +111,13 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Mon, 2024-06-17 at 09:49 -0400, Trevor Gamblin wrote:
-> Instead of using regmap_update_bits() and passing val =3D 0, use
-> regmap_clear_bits().
+> Instead of using regmap_update_bits() and passing the mask twice, use
+> regmap_set_bits().
 >=20
 > Suggested-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
 > Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 > ---
 
 Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-
 
 

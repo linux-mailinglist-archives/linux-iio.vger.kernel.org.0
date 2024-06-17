@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-6368-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6369-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6F3290B257
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 16:37:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2480290B25C
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 16:38:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A3311F21F8C
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 14:37:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77784288F94
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 14:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 269BD1C231B;
-	Mon, 17 Jun 2024 13:50:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E29C1C68B4;
+	Mon, 17 Jun 2024 13:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VPFZGOSI"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yVl15yCM"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+Received: from mail-oa1-f50.google.com (mail-oa1-f50.google.com [209.85.160.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B7B1C2316
-	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 13:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66AF71C6885
+	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 13:50:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632221; cv=none; b=Uy3UhE/eY1GAKt6t048ymhKiOO054QVZjl98Dpy3U9voMyF1N/juk904NqpFxlh1IrVnthDP87pgEMx1pQIjtBBe+2hYt+UC0Zc62KjTKBnwwsvhyDyLCwPw6bfB1rcsz9ehoXnOIWXtTZ+6JDPycxGoop4qhAusMK51IMUJnXc=
+	t=1718632224; cv=none; b=JKmGHOcjQMNzvPNqRa6zYk7KqshC+Vc8fU/WDvahF94ycWK7Aq2v6RowRPDCwUl46TjoSrOes/8vjVucyEFadcgd1TyGe44gLxTNba5VRE7RDYRBFXgagEQng7e/RDMoCC9YJvmwBsIDW23zjoODxTIUr5J4LFPgc4frwRIYj5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632221; c=relaxed/simple;
-	bh=guuqVXSs2s7BD/iWi4IU8Nf6aEgnRuSwwDipuP5iGhw=;
+	s=arc-20240116; t=1718632224; c=relaxed/simple;
+	bh=iX/O4thw4u8jxmjQXCGvy7+RStVKhiFFxFMRaqR3WK0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OrUKQLxpHJ5vbvZEf2FUAvp0Q8oAXPLin5Nj4C2RW5JJIeHEVJmR+mZBrYDD/SLNOAjj/UBhSz3+SBpk1lb+2DLuHJOvt2mu6XkSHLVT17y3b5C/E5o187ZNbyO26jqAxsqhFpGPQxbx4kestwbcP/+OqjfEUhSYNdsbhScAHv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VPFZGOSI; arc=none smtp.client-ip=209.85.222.176
+	 In-Reply-To:To:Cc; b=bXYSMcwNBQv6iUqGP22r7M4kopHYYs7Ah18IuDIVAuuhBj3hXqlNCJ7VunR1hX8VSXMOlTOccgLIwHXx+2yLsnBzYpsEiEM0NbSBKCFngVuqpco6lqOqknh6WFJIZe6iFBas9nYhJq0nqcjTILBOZ+YKzIa4REp+AF3SBsv9DEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=yVl15yCM; arc=none smtp.client-ip=209.85.160.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-7955af79812so246246485a.1
-        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 06:50:20 -0700 (PDT)
+Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-24c9f91242dso1808485fac.2
+        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 06:50:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632219; x=1719237019; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632221; x=1719237021; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KVb/0PilAc52B9kaVfDX+4rlv8WRgZtRLdvIf/r6J1Y=;
-        b=VPFZGOSIU+ATWrnG0MtWNcbxIzHeGg69BwxPm1ffYq2Ee/txS5/Z9QXS6C97HPG3Id
-         SMmItMonq6y/ctKYYHTbUFV/ydlkTMdMdPHMZDlTM+iEu2JGFE/+uMcXdIp++/8OtQJn
-         NBP0M2gVxNEU00dS4VNwF5dvRl9S7KlECw043qfoGfoaadIYNHE7KDoVrRpmpI+dpgRC
-         VjufO1/T7O28DkAvbkysSJ1HQLBwI/0L53Qeh5HKn9rJ7sgKrWBY8wI2BTH+ljbWut2k
-         dFxCMWuW80gpTTjB6jgV4DPDrnrpwD9bBA86Gy+rM9iFqhCs84xMGlv0N+Jd32lvk8pb
-         Kdng==
+        bh=pghOqqoUrgqxulm8czqYmTg2ejQ+jCMFTS9OcdLe8gI=;
+        b=yVl15yCMx8Rq/yn6JRv0Mo+5clGun24H2X3e8y0JsohuP7YFeLbjUgh9HBDNbFDlj5
+         4gDa36qo8A9rV0LK6MXn4bT4zitpJcoA3L5KD3A5ea5uHcaiiaOM52Yz3+GUKe4YPGoN
+         y26OSFMb/+ZFJDSX8cvcy10F6Mm8S4AE7u8X46xtjsfgN1PU6ICW9BqanAZbmrWZI3vS
+         0AGwqBkdrjzF9pchQ4ar3F9+QM/M3FkigDqdQuM2xmRNWX7vMvgoWFMtemzlbpGfGGJY
+         XGwFcfqW/zvgbajkMK4ioRFBQ4DWDK29gKr9RMZd4jKTJDPwme9dGXMU4R7HIDqWFHK6
+         EhMQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632219; x=1719237019;
+        d=1e100.net; s=20230601; t=1718632221; x=1719237021;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KVb/0PilAc52B9kaVfDX+4rlv8WRgZtRLdvIf/r6J1Y=;
-        b=U4hj+uO99yDdqpOpE1TDcltA1DnjSmU3FWI9XXXbFNHDpbkLBDowqvjNIDWFqXRFDI
-         Hks5o5oX6ADrXPGJTHfDQpu+qau+H7LsVN+20ybMF63TTUvpLfeeETbYgjLGB7u+U3Ox
-         liprgEUl+4bhTh+0CliQevOC3kzwLdtt0pI1SrTZQI+2SAzggHI8+4xOpSA+MtpVXQCv
-         EcvMaY6hc4f7wJSgGnnbac3yP44rJGQPo+bV6+/Z4ccrx4SOxSt5kwYS3RYOJR5l+8tl
-         qWbGKMNniGM0xFZb5l1omGIQU0Tfx2dHaGe3TW2N+cepLZukcnqfI4ePT/o3jTBrn5fD
-         UYjA==
-X-Gm-Message-State: AOJu0YyfXcX27G7Je0lHRPDZtTLeFutzuBpc3z5NV5D2L/EN3dT4skxo
-	WQyMQOcJJtGFAhxUwfnMQwZXqFSeyX92vz9HuBV6VWKH7El+TaV3Z+RemJDaXtg=
-X-Google-Smtp-Source: AGHT+IEhAnjjomgk19gOfh4FY6+tmL+ftVg/dpR5n10Qt2NpVGAkWAorRIXV5RllBFaajmvErpGqLg==
-X-Received: by 2002:a05:620a:370d:b0:796:842c:77f1 with SMTP id af79cd13be357-798d243aaa6mr1278103785a.36.1718632219186;
-        Mon, 17 Jun 2024 06:50:19 -0700 (PDT)
+        bh=pghOqqoUrgqxulm8czqYmTg2ejQ+jCMFTS9OcdLe8gI=;
+        b=KZaUDdqgHF2WGHpoJk/c9bjcXOaokfG0iHkTXka4s+8A2qN/JGf3QQOKO631v3Zj6s
+         hIh6YZDLufPr4KZkh8Fwlj8TubYtE2uxatw20ZvCDLhOVGhknUDVyectNkEKPoJl0x2e
+         w9iRrmmac1vbN/wJzMPCfaU+wvWG3MgkFrF4voLhxzrFE/c6w36Gn3RrzxZmZgpgZ97c
+         DrSZJjyaKfMCzXw8sYq3aCPRQS/2Nf986juPcG9FvpfEjgyTMJ6LfcmPdBJygY2FDawQ
+         SFbadugBJLyKZcLik1KgplXgTufQQoF3sAihLk9QTR6X/ptsIWt9QPKm5u2JFHEoIam1
+         nZcQ==
+X-Gm-Message-State: AOJu0YwDbFTOnqt379xsPsM7kcybQ9j/rC5wjzlTwVT7IgI1YlT5N37P
+	3jxTJ1ezT05/prwFuTljHs71OG/zqi2zeTVrJzaLfOtuZrWwI63roH7XTyHKdt0=
+X-Google-Smtp-Source: AGHT+IHPRFjhQJMl5A95ZWgXFtrQQKsMmXYW6RVDp9V1gMjS9xuHYY98wxPGrZXsyYueeiP6Xe3wcg==
+X-Received: by 2002:a05:6871:5c9:b0:254:94a4:35d2 with SMTP id 586e51a60fabf-25842b7af81mr10339918fac.45.1718632221358;
+        Mon, 17 Jun 2024 06:50:21 -0700 (PDT)
 Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.17
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aaecc004sm432892285a.31.2024.06.17.06.50.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 06:50:18 -0700 (PDT)
+        Mon, 17 Jun 2024 06:50:21 -0700 (PDT)
 From: Trevor Gamblin <tgamblin@baylibre.com>
-Date: Mon, 17 Jun 2024 09:49:56 -0400
-Subject: [PATCH v3 16/41] iio: adc: rn5t618-adc: make use of
- regmap_set_bits()
+Date: Mon, 17 Jun 2024 09:49:57 -0400
+Subject: [PATCH v3 17/41] iio: adc: sc27xx_adc: make use of
+ regmap_clear_bits(), regmap_set_bits()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20240617-review-v3-16-88d1338c4cca@baylibre.com>
+Message-Id: <20240617-review-v3-17-88d1338c4cca@baylibre.com>
 References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
@@ -115,28 +115,112 @@ X-Mailer: b4 0.13.0
 Instead of using regmap_update_bits() and passing the mask twice, use
 regmap_set_bits().
 
+Instead of using regmap_update_bits() and passing val = 0, use
+regmap_clear_bits().
+
 Suggested-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
 ---
- drivers/iio/adc/rn5t618-adc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/iio/adc/sc27xx_adc.c | 41 ++++++++++++++++++++---------------------
+ 1 file changed, 20 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/iio/adc/rn5t618-adc.c b/drivers/iio/adc/rn5t618-adc.c
-index 6bf32907f01d..ce5f3011fe00 100644
---- a/drivers/iio/adc/rn5t618-adc.c
-+++ b/drivers/iio/adc/rn5t618-adc.c
-@@ -137,9 +137,8 @@ static int rn5t618_adc_read(struct iio_dev *iio_dev,
+diff --git a/drivers/iio/adc/sc27xx_adc.c b/drivers/iio/adc/sc27xx_adc.c
+index b4a2e057d80f..2535c2c3e60b 100644
+--- a/drivers/iio/adc/sc27xx_adc.c
++++ b/drivers/iio/adc/sc27xx_adc.c
+@@ -508,13 +508,13 @@ static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
+ 		}
+ 	}
  
- 	init_completion(&adc->conv_completion);
- 	/* single conversion */
--	ret = regmap_update_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
--				 RN5T618_ADCCNT3_GODONE,
--				 RN5T618_ADCCNT3_GODONE);
-+	ret = regmap_set_bits(adc->rn5t618->regmap, RN5T618_ADCCNT3,
-+			      RN5T618_ADCCNT3_GODONE);
- 	if (ret < 0)
+-	ret = regmap_update_bits(data->regmap, data->base + SC27XX_ADC_CTL,
+-				 SC27XX_ADC_EN, SC27XX_ADC_EN);
++	ret = regmap_set_bits(data->regmap, data->base + SC27XX_ADC_CTL,
++			      SC27XX_ADC_EN);
+ 	if (ret)
+ 		goto regulator_restore;
+ 
+-	ret = regmap_update_bits(data->regmap, data->base + SC27XX_ADC_INT_CLR,
+-				 SC27XX_ADC_IRQ_CLR, SC27XX_ADC_IRQ_CLR);
++	ret = regmap_set_bits(data->regmap, data->base + SC27XX_ADC_INT_CLR,
++			      SC27XX_ADC_IRQ_CLR);
+ 	if (ret)
+ 		goto disable_adc;
+ 
+@@ -537,8 +537,8 @@ static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
+ 	if (ret)
+ 		goto disable_adc;
+ 
+-	ret = regmap_update_bits(data->regmap, data->base + SC27XX_ADC_CTL,
+-				 SC27XX_ADC_CHN_RUN, SC27XX_ADC_CHN_RUN);
++	ret = regmap_set_bits(data->regmap, data->base + SC27XX_ADC_CTL,
++			      SC27XX_ADC_CHN_RUN);
+ 	if (ret)
+ 		goto disable_adc;
+ 
+@@ -559,8 +559,8 @@ static int sc27xx_adc_read(struct sc27xx_adc_data *data, int channel,
+ 	value &= SC27XX_ADC_DATA_MASK;
+ 
+ disable_adc:
+-	regmap_update_bits(data->regmap, data->base + SC27XX_ADC_CTL,
+-			   SC27XX_ADC_EN, 0);
++	regmap_clear_bits(data->regmap, data->base + SC27XX_ADC_CTL,
++			  SC27XX_ADC_EN);
+ regulator_restore:
+ 	if ((data->var_data->set_volref) && (channel == 30 || channel == 31)) {
+ 		ret_volref = regulator_set_voltage(data->volref,
+@@ -765,15 +765,14 @@ static int sc27xx_adc_enable(struct sc27xx_adc_data *data)
+ {
+ 	int ret;
+ 
+-	ret = regmap_update_bits(data->regmap, data->var_data->module_en,
+-				 SC27XX_MODULE_ADC_EN, SC27XX_MODULE_ADC_EN);
++	ret = regmap_set_bits(data->regmap, data->var_data->module_en,
++			      SC27XX_MODULE_ADC_EN);
+ 	if (ret)
  		return ret;
  
+ 	/* Enable ADC work clock and controller clock */
+-	ret = regmap_update_bits(data->regmap, data->var_data->clk_en,
+-				 SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN,
+-				 SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN);
++	ret = regmap_set_bits(data->regmap, data->var_data->clk_en,
++			      SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN);
+ 	if (ret)
+ 		goto disable_adc;
+ 
+@@ -789,11 +788,11 @@ static int sc27xx_adc_enable(struct sc27xx_adc_data *data)
+ 	return 0;
+ 
+ disable_clk:
+-	regmap_update_bits(data->regmap, data->var_data->clk_en,
+-			   SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN, 0);
++	regmap_clear_bits(data->regmap, data->var_data->clk_en,
++			  SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN);
+ disable_adc:
+-	regmap_update_bits(data->regmap, data->var_data->module_en,
+-			   SC27XX_MODULE_ADC_EN, 0);
++	regmap_clear_bits(data->regmap, data->var_data->module_en,
++			  SC27XX_MODULE_ADC_EN);
+ 
+ 	return ret;
+ }
+@@ -803,11 +802,11 @@ static void sc27xx_adc_disable(void *_data)
+ 	struct sc27xx_adc_data *data = _data;
+ 
+ 	/* Disable ADC work clock and controller clock */
+-	regmap_update_bits(data->regmap, data->var_data->clk_en,
+-			   SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN, 0);
++	regmap_clear_bits(data->regmap, data->var_data->clk_en,
++			  SC27XX_CLK_ADC_EN | SC27XX_CLK_ADC_CLK_EN);
+ 
+-	regmap_update_bits(data->regmap, data->var_data->module_en,
+-			   SC27XX_MODULE_ADC_EN, 0);
++	regmap_clear_bits(data->regmap, data->var_data->module_en,
++			  SC27XX_MODULE_ADC_EN);
+ }
+ 
+ static const struct sc27xx_adc_variant_data sc2731_data = {
 
 -- 
 2.45.2

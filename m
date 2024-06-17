@@ -1,157 +1,122 @@
-Return-Path: <linux-iio+bounces-6345-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6346-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8321990AD0D
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 13:34:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FFC590AD54
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 13:50:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9DD1C22326
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 11:34:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7774F1C22D55
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 11:50:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39077194AD4;
-	Mon, 17 Jun 2024 11:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C51B194C6F;
+	Mon, 17 Jun 2024 11:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bELuhYh7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HpA8sHn4"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186C9191461;
-	Mon, 17 Jun 2024 11:34:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846B4186E56;
+	Mon, 17 Jun 2024 11:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718624090; cv=none; b=VIUxJ54R9CntAMouKc+I+MEumJJq0t5CKmsWglIG/AVAaQyVGGsZFvnaS5Gz6yF8I2wn/Dk4U8D0ImSLYnbHZtYdq8mt5C8GCvhnAPYnj5DkBZ78eeyGgJFeefBo7C1t6GYu2hf5mwrYNEwjl2cynjlkUQ4DlZekDrPLhHYjFfA=
+	t=1718625004; cv=none; b=Ig7/of5LBSQErcoSBAbSfFxKZYH1Ly1EmLI5JkgodDZx28VezLKmOhfnE49ak5H9Xt8ZqYtWfpGUX4/GpzOKBGbUJTkjCP559JNOrFycFyMJGYDQ7i3zy3tKib+tHdH80NDLLGUP1G1Ijqejfjzvc3+aOlX/kntmbIqg15h1HL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718624090; c=relaxed/simple;
-	bh=0jId0a55uaWiJleIvuFAp7uQffIjPdI/Ww2Wmybckx8=;
+	s=arc-20240116; t=1718625004; c=relaxed/simple;
+	bh=OqoQ6ZxH5cHIMs3+jLFrcIOTsDPqWQXiXFgsGcvQtmc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oL9tPIfe7GuLK0ebsQCprg3PcTF9GlKcKONjkwmt62OkE5ocFRUY0MDgCPr0/3lGoF9vS4rmFw8h/oRw7dCWcvyEY14E8rRWdK9zGz4Ba24mBDktV2IStlabbUCZ1s7HiWlTVDsra6F1zaoypbGTif5hw5477xcoHtJZ1x0LG+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bELuhYh7; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718624088; x=1750160088;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0jId0a55uaWiJleIvuFAp7uQffIjPdI/Ww2Wmybckx8=;
-  b=bELuhYh7XykUM0BiQF9UDGrfnbCZ6Lzs559ctU42KfI1u1R/k9ktGImi
-   E5Z8hmXyUMiIrtEOtbl75VROgOoKnPH+ihhyHtYy3b2W8WDLhnk3xx1UZ
-   ZvZJW7NaB0ushr6ilq7fESgacTX+YyRqtAw/9sV0rm4fyagsoLxFYMcqA
-   iZzcjj93kJxXc4kWhNLMBfBklcfQWA7F18ILb3Em+hQ/Nmb3HhP8WtoNa
-   645KHz1N6HF5UmO1sUl65XoeDFvJkKBfqxoGFaf7ugbRGgSuA5rYgSuRn
-   h7FisD4Jpb8fY7rVm6QkPekFeUFMxklF3JQC5qO93bBIF0TkVwdoZ/mpJ
-   A==;
-X-CSE-ConnectionGUID: AHV2rNPcQaixJuof2THFqg==
-X-CSE-MsgGUID: Jif929qLSimskTX1+cSEmQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11105"; a="15411182"
-X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; 
-   d="scan'208";a="15411182"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2024 04:34:47 -0700
-X-CSE-ConnectionGUID: E2+bi//pTLy/iZHHsXQ5NA==
-X-CSE-MsgGUID: 5FEHokIsRdCLQF89Jyr7oQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; 
-   d="scan'208";a="45698928"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 17 Jun 2024 04:34:46 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sJAdG-0004ET-29;
-	Mon, 17 Jun 2024 11:34:42 +0000
-Date: Mon, 17 Jun 2024 19:34:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Yasin Lee <yasin.lee.x@outlook.com>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q+vmeHhTWobZGRqrmhNT6BADkBav8/Ug/KLosFKyINYMveYCmZ++9H5R5Qbw9ZyYD5CPf6Me3GLv0+NeXuMeHApPm4ZEI6V/Fs/34aXVpzY3rmePJVQkqHjWkwcU+gEQsnjw3Po/LCeTeeCuSX8blPvwxSbPhlHgkxBmuWtSDsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HpA8sHn4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 710F0C2BD10;
+	Mon, 17 Jun 2024 11:49:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718625004;
+	bh=OqoQ6ZxH5cHIMs3+jLFrcIOTsDPqWQXiXFgsGcvQtmc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HpA8sHn4I/uwMAoESG+goOFTmifzrpBQCu9dGkOqZXt8LYQqIz5QC28pY7Sf0V0im
+	 Rg3jeH3eikunEuigeTgUzbTZ+0Imva19O0s2muNxA4UevqUFDN3pgh2gkZqiPaumdk
+	 vcSLpVPa9akY/UIDqIsvq5tskgFgDB2P4D3sgld14Q56O303qkj5x6nQhfEvRRQi4M
+	 Gk0JUzOUemjLwycr4PfdBBZYJkpP7j747BOm1btJ2rnG35Qrq2fQkzKmtodhX7c5Fi
+	 Hx77E015tcScm9SmYjLY9TNQ7XuuFlhEtg/818x62PvlE5UBoaSBkrYLy4pAeurPpG
+	 nK8oyrEht/AUQ==
+Date: Mon, 17 Jun 2024 12:49:46 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>, Abel Vesa <abelvesa@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>,
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>
-Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
-	Yasin Lee <yasin.lee.x@gmail.com>
-Subject: Re: [PATCH v5 3/3] iio:proximity:hx9023s: Add TYHX HX9023S sensor
- driver
-Message-ID: <202406171946.qe83Tde0-lkp@intel.com>
-References: <SN7PR12MB8101D4BC788B5954608D677DA4CC2@SN7PR12MB8101.namprd12.prod.outlook.com>
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Frank Li <Frank.Li@nxp.com>,
+	devicetree@vger.kernel.org, imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-i2c@vger.kernel.org, linux-iio@vger.kernel.org,
+	linux-pwm@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-watchdog@vger.kernel.org,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: Re: [PATCH v2] dt-bindings: drop stale Anson Huang from maintainers
+Message-ID: <440bb6fa-2e26-4a64-8c53-bebf706a1079@sirena.org.uk>
+References: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="jfSjzlj0zX5Rl/R2"
+Content-Disposition: inline
+In-Reply-To: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
+X-Cookie: Life is the urge to ecstasy.
+
+
+--jfSjzlj0zX5Rl/R2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <SN7PR12MB8101D4BC788B5954608D677DA4CC2@SN7PR12MB8101.namprd12.prod.outlook.com>
+Content-Transfer-Encoding: quoted-printable
 
-Hi Yasin,
+On Mon, Jun 17, 2024 at 08:58:28AM +0200, Krzysztof Kozlowski wrote:
+> Emails to Anson Huang bounce:
+>=20
+>   Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access den=
+ied.
+>=20
+> Add IMX platform maintainers for bindings which would become orphaned.
 
-kernel test robot noticed the following build warnings:
+Acked-by: Mark Brown <broonie@kernel.org>
 
-[auto build test WARNING on jic23-iio/togreg]
-[also build test WARNING on robh/for-next linus/master v6.10-rc4 next-20240613]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+--jfSjzlj0zX5Rl/R2
+Content-Type: application/pgp-signature; name="signature.asc"
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Yasin-Lee/dt-bindings-iio-proximity-Add-hx9023s-binding/20240616-154122
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
-patch link:    https://lore.kernel.org/r/SN7PR12MB8101D4BC788B5954608D677DA4CC2%40SN7PR12MB8101.namprd12.prod.outlook.com
-patch subject: [PATCH v5 3/3] iio:proximity:hx9023s: Add TYHX HX9023S sensor driver
-config: arm64-randconfig-r132-20240617 (https://download.01.org/0day-ci/archive/20240617/202406171946.qe83Tde0-lkp@intel.com/config)
-compiler: aarch64-linux-gcc (GCC) 13.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20240617/202406171946.qe83Tde0-lkp@intel.com/reproduce)
+-----BEGIN PGP SIGNATURE-----
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406171946.qe83Tde0-lkp@intel.com/
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZwItoACgkQJNaLcl1U
+h9D5Wwf/Q7ZtAKp5HRIsqeh8PBxnOEEF8ljY8bCew6Q7rvMXTsxiI2WXFX0ykufr
+bDY0Ho5rMIUGwQf/F1v+q6ZS6TEUbnawVgxkKBRJTDeK8Uxs9bXPSfCu8oZY888f
+YzPOYmhnDVtIWvoHZFUO6klplmBwPYQn3WqXYi4M2eap2IHsTxAUrrcyiL4uLVAG
+yqNRTuUyg4+YAkj/te942l7M/obYkf3Nxb/1HM3vZypXDeUhg+ubgr3TKF8LRpg3
+LBmfcA+m586XLOoQUPbLcilqogjAJuokkNwNMia0ny9IINWjZ6izZ/1Oe/fCnHSn
+vX0livBtYHzSS6lauBj/V6L4gSTz+w==
+=b38n
+-----END PGP SIGNATURE-----
 
-sparse warnings: (new ones prefixed by >>)
->> drivers/iio/proximity/hx9023s.c:955:44: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be16 @@     got int diff @@
-   drivers/iio/proximity/hx9023s.c:955:44: sparse:     expected restricted __be16
-   drivers/iio/proximity/hx9023s.c:955:44: sparse:     got int diff
-
-vim +955 drivers/iio/proximity/hx9023s.c
-
-   931	
-   932	static irqreturn_t hx9023s_trigger_handler(int irq, void *private)
-   933	{
-   934		struct iio_poll_func *pf = private;
-   935		struct iio_dev *indio_dev = pf->indio_dev;
-   936		struct hx9023s_data *data = iio_priv(indio_dev);
-   937		struct device *dev = regmap_get_device(data->regmap);
-   938		int ret;
-   939		unsigned int bit, i = 0;
-   940	
-   941		guard(mutex)(&data->mutex);
-   942		ret = hx9023s_sample(data);
-   943		if (ret) {
-   944			dev_warn(dev, "sampling failed\n");
-   945			goto out;
-   946		}
-   947	
-   948		ret = hx9023s_get_prox_state(data);
-   949		if (ret) {
-   950			dev_warn(dev, "get prox failed\n");
-   951			goto out;
-   952		}
-   953	
-   954		for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->masklength)
- > 955			data->buffer.channels[i++] = data->ch_data[indio_dev->channels[bit].channel].diff;
-   956	
-   957		iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer, pf->timestamp);
-   958	
-   959	out:
-   960		iio_trigger_notify_done(indio_dev->trig);
-   961	
-   962		return IRQ_HANDLED;
-   963	}
-   964	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+--jfSjzlj0zX5Rl/R2--
 

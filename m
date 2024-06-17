@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-6434-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6435-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0459890BD43
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 00:06:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 012A390BD49
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 00:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CF141C20E00
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 22:06:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FEBEB21CBE
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 22:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CFA11993B4;
-	Mon, 17 Jun 2024 22:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BB4199E87;
+	Mon, 17 Jun 2024 22:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YeBS1noT"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c0/1wTe0"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEF0F192B98;
-	Mon, 17 Jun 2024 22:06:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20A2199254;
+	Mon, 17 Jun 2024 22:06:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718661964; cv=none; b=PgK4SYBbdvDh/0Lt+f9ctc1j4aHRSFIEkX0zSkW13G1rYLTUvJYSurRLo4lncE1441o24K6dqtHbyNHRbrXnzME3RwSOeOwe3qPnVSmTDyubLES9TBX75XpNp2DCGYgJqeZ/zSMbkGZSw821ymwsPsxrHrMygClVCmyFXQ8gBvk=
+	t=1718661965; cv=none; b=SbEm1nHNcP4F9aEHavXEu9lQyndR8cf37BX78/eWvtZcGpMjhoez8IfK/Q8LJ68AskkJUO/MHfJriQmTyzBWtZX9bAtB3MvKhbgcWkBRdo9K1uRFWHIcZ/x33WRtyB9cz81pdDpaXh+YUDw3EvUgHIyupIMdZFR7gE6U+jSxpgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718661964; c=relaxed/simple;
-	bh=g7SK16z3EUsEncjRhzlqTX6KiMzpqs0fmUG3VteIg2A=;
+	s=arc-20240116; t=1718661965; c=relaxed/simple;
+	bh=u4D8owzU03JtVL+E5P2c1MwoyOjbnAxavHybzY1+PB8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=klymEcZ5vjGej0uBIC3YT3BRJF5faaJxW2JANOcGk9bIKV6Vgtdikr0864dp+9mDlMBnkIyyqvwmDx+erUON25fhQz1sdzODUTuFKnSHaXSr8xW9KuAcNAfnb96JGSvaVAjaMu98jeiSlZG5zNQi58hp+6ljdL5bh/Yf1TKxNWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YeBS1noT; arc=none smtp.client-ip=209.85.210.54
+	 MIME-Version; b=WkppP8MUOxzEwmFEMjI4zAEsS5eblGbxNAGA30l9ssDbdjJTmzWLSSbf7XFH+mOVwHEg7QQm9TYd9YCvAqTd4swKVvuK0E9mNwd7xURwDXF7kgNy51HMWcefatKlUnTaq2CbPvOFA1Ie1kejw6wVF17E2xMeGMR/zHjiDLF5nso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c0/1wTe0; arc=none smtp.client-ip=209.85.210.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-6fd622e5d2dso558468a34.3;
-        Mon, 17 Jun 2024 15:06:02 -0700 (PDT)
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6fb840d8ffdso2304972a34.1;
+        Mon, 17 Jun 2024 15:06:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718661962; x=1719266762; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1718661963; x=1719266763; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iJEcEGbw3swKdFCLUtr2n8Y6Tlc0pU3Bhk1KNMQfJkk=;
-        b=YeBS1noThFHKG1ouoROxNXmY94MaCGSYdvQ/fV2bYb4sZVTtKs5uk0k+NQmc1iS8TB
-         lTLU49VQfKqEsRSdCjJNeLIVLDUEyVrIl1bll1TFc4W2gTSj/6iD0jlO9rxYvpdx60vU
-         XlWzCr9zDBzVMqu0aZ2aU/icNPF/oj/rKjXVO3W9HejDUrZcZZG/S0KXSCXrXwQPsmwI
-         LyO2Zvt+eSiSVBaOpB2LFK2leF0FkDBxbrBHsvux+uHFy3M0NYTIIU+7gn35LO/FmaKT
-         7+FmLCfHvQYbrNyA8/LdGMeVL7B7ubf9KL/ONdtj/zHqkzRRaH8OrE/p48jBtBVulipF
-         1uAQ==
+        bh=72y+9tHAatc4SLssayPtvrq36iX+xSvhsa+KDzNLInw=;
+        b=c0/1wTe0LbC04a6jTMXhtJQpH74uh3wUIWWz2pQJ9IHix99XVpR7GPZJaWPQbCkrCu
+         TCPX1rjKjTQuqw/Dc3X1KrP4uKxqQiro4HJXgE0JHdB24tbvoF2XELu9cK+Ho8j8H6FA
+         ryIA3D9MPgScexf/ECC8kHO1b1RKuqih8gCo3/nCOFEwCMavID/xGJG2WgBhZbMACCuA
+         barJADmiI2PG0LywFh+/MZj9W3shq6pASNQkU2U1MnIXqByTrjEZiqQ2xgxip7zPt1cI
+         3Prj0rfYvlPa+HNHPTDNQTUdVftxXBuGSL3P1GWxBrlxx8u5oonKZc6WBeux8lwTqKLQ
+         B48A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718661962; x=1719266762;
+        d=1e100.net; s=20230601; t=1718661963; x=1719266763;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iJEcEGbw3swKdFCLUtr2n8Y6Tlc0pU3Bhk1KNMQfJkk=;
-        b=PpoGC+9PX4YEO/azujKs76A9oEs154FckXudYJwyBSOFDmEORfXSXlhDScKIjG75T4
-         13hxUsniH6mi7oKR1gcPvppHXwpFWmXNdYKiBqqSEs8mJ470n5wxBIngjOyv6mAsRKbk
-         2wQbwVye7ICM/6Kwh7SzaR3BPTmCMW9lqE6grJGMvVrtrXzd9F0VqasPYE0Ge7cgiqq8
-         z0UKVDrSoRsQBbW9s/c5VrWH8f7xbycSOWDYTLHMPsM4MAZBxe255Sx43L+7c9lirwJU
-         pp1PNHN2RI/S30OvmJ9xVvPiQv+CtPEqsMPo4dWya3x/oFSF3KntSsqNno+DaVd99opD
-         InAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXnB0+HT4pv6W3DXQpyYGLqSTWzI9lPtCzzcemVddKhNUsu5eFN/t160MHLXPjs6CabZVF0lrRGp/w7oPE1Y7f0RW4l5ITBOsZCW1Mj8zBnhS4mJu76TYwakEUuSTnzDlxJ7Wo8wg==
-X-Gm-Message-State: AOJu0YyrT79IY0YhCqPtbB2LRfEuI/PbrmkW+/jr+0hITD7Jf7Z9pGsS
-	1R1zAZMgIK2+o6L4NNrn4Cjvg+wmhDMLdI47NQfEODAC139Vwr4P
-X-Google-Smtp-Source: AGHT+IF3ufe30O8vIgO/leV+i/sjcoIYX8wYXPEpQkLumyd/BX/GT/GpBoDit9t8oWl6BJ+tvkaNBw==
-X-Received: by 2002:a05:6870:b618:b0:254:c617:a9a0 with SMTP id 586e51a60fabf-25842c137e7mr13481515fac.50.1718661962037;
+        bh=72y+9tHAatc4SLssayPtvrq36iX+xSvhsa+KDzNLInw=;
+        b=e1C0OPceCDoXOTOSDJYQmFd35JhEweOeNpRJxIlKje4/wOUpBK3vkARygGINtsCqOE
+         t86h4UkEUmEnYCNlxPcggvEsujAqdfvZ3pB4CCCQSWtaQ8h/6oUrc2YPrwDyuFcuX5mC
+         wY0R1h8g7+nWA0omtoa7GyO+sixUc4vKUOK0fG/Zg9W35lj3XI7sWAUY818zFohEEMMJ
+         voe20hZrRz1faawNzSfH3GBoTLzxWSQPxSZXazMufEVgeH581s1LZbTYmClRy909tSya
+         mcaGqot9VzXpVrSxC6I8guXhsQaf1lcugu1TNNcuPlIu0lUH6/BqVN18XIz5enFE8CS+
+         E3Ig==
+X-Forwarded-Encrypted: i=1; AJvYcCXz8jxVMEhG/6OY9NeDsJnEllkSZQZIyf5C0TdkmE0APigJP4tx1c1ngsOw9X5M4di0hsdJNWW4XVXDlichYa85GmWfQBWhWfet6X+z/E3vyrspPhlqkL3j5TnjlroqwN6zxIPcGg==
+X-Gm-Message-State: AOJu0Yyb/7XY0sDqGsAK7Wmw+sBdoslhaVAR6+i95kNWa0EbPf7XIgEv
+	AMsxWtLaxAPHbgKvaqb9rJcrI/dFIX67u0be9tbUGqx6v7C/wSVf
+X-Google-Smtp-Source: AGHT+IEkIdSVBPwRxmz/C+oaPXire0Q9K/OttIwtYadST9Y56jqSPQuftFjwT3ICPganY+BWI4wfiw==
+X-Received: by 2002:a05:6870:14cd:b0:255:1bb8:8603 with SMTP id 586e51a60fabf-25842882a51mr12202205fac.3.1718661962789;
         Mon, 17 Jun 2024 15:06:02 -0700 (PDT)
 Received: from localhost.localdomain ([75.28.21.198])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6fb5b1b0fa8sm1664232a34.28.2024.06.17.15.06.01
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6fb5b1b0fa8sm1664232a34.28.2024.06.17.15.06.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 15:06:01 -0700 (PDT)
+        Mon, 17 Jun 2024 15:06:02 -0700 (PDT)
 From: Chris Morgan <macroalpha82@gmail.com>
 To: linux-sunxi@lists.linux.dev
 Cc: linux-pm@vger.kernel.org,
@@ -83,9 +83,9 @@ Cc: linux-pm@vger.kernel.org,
 	robh@kernel.org,
 	lars@metafoo.de,
 	Chris Morgan <macromorgan@hotmail.com>
-Subject: [PATCH 2/8] power: supply: axp20x_usb_power: Add support for AXP717
-Date: Mon, 17 Jun 2024 17:05:29 -0500
-Message-Id: <20240617220535.359021-3-macroalpha82@gmail.com>
+Subject: [PATCH 3/8] power: supply: axp20x_battery: add support for AXP717
+Date: Mon, 17 Jun 2024 17:05:30 -0500
+Message-Id: <20240617220535.359021-4-macroalpha82@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240617220535.359021-1-macroalpha82@gmail.com>
 References: <20240617220535.359021-1-macroalpha82@gmail.com>
@@ -99,37 +99,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Chris Morgan <macromorgan@hotmail.com>
 
-Add support for the AXP717. It has BC 1.2 detection like the AXP813
-and uses ADC channels like all other AXP devices, but otherwise is
-very different requiring new registers for most functions.
+Add binding information for AXP717. Also, as the driver can read
+simple-battery parameters for the AXP717 and other batteries, define
+the simple-battery parameter.
 
 Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
 ---
- .../power/supply/x-powers,axp20x-usb-power-supply.yaml      | 6 ++++++
- 1 file changed, 6 insertions(+)
+ .../power/supply/x-powers,axp20x-battery-power-supply.yaml | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-index 34b7959d6772..e5879c85c9a3 100644
---- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-+++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-usb-power-supply.yaml
-@@ -26,11 +26,17 @@ properties:
-           - x-powers,axp202-usb-power-supply
-           - x-powers,axp221-usb-power-supply
-           - x-powers,axp223-usb-power-supply
-+          - x-powers,axp717-usb-power-supply
-           - x-powers,axp813-usb-power-supply
+diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
+index e0b95ecbbebd..8d6b06117f6d 100644
+--- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
++++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
+@@ -23,11 +23,18 @@ properties:
+       - const: x-powers,axp202-battery-power-supply
+       - const: x-powers,axp209-battery-power-supply
+       - const: x-powers,axp221-battery-power-supply
++      - const: x-powers,axp717-battery-power-supply
        - items:
-           - const: x-powers,axp803-usb-power-supply
-           - const: x-powers,axp813-usb-power-supply
+           - const: x-powers,axp803-battery-power-supply
+           - const: x-powers,axp813-battery-power-supply
+       - const: x-powers,axp813-battery-power-supply
  
-+  input-current-limit-microamp:
-+    description:
-+      Optional value to clamp the maximum input current limit to for
-+      the device. The supported min and max values will vary based on
-+      the PMIC revision, consult the datasheet for supported values.
- 
++  monitored-battery:
++    description: |
++      Specifies the phandle of an optional simple-battery connected to
++      this gauge.
++    $ref: /schemas/types.yaml#/definitions/phandle
++
  required:
    - compatible
+ 
 -- 
 2.34.1
 

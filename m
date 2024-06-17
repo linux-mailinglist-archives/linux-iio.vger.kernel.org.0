@@ -1,90 +1,82 @@
-Return-Path: <linux-iio+bounces-6335-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6336-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77E6C90A583
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 08:24:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9651B90A5EC
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 08:34:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFEF9B26D00
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 06:24:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1488B1F2381F
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 06:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3DE185087;
-	Mon, 17 Jun 2024 06:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89B181802AC;
+	Mon, 17 Jun 2024 06:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nhx7Z4yO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kFd/7egt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7AD1822C2;
-	Mon, 17 Jun 2024 06:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A1B79D3
+	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 06:34:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718605464; cv=none; b=g0rk7R+T4jhvjGJgSEehSkowznQJH+A5Nz8kW4CZPSWB8YjS8pa8sb1tVZCMi+5mCTM+vi0ZGLvmeh1Yn/x+MK6B27ZRY54w/VWEJMIdDiQK+IAgEjL/vIV+I3pL3kA2gmZurqkzt/+bbl/ponpk9BYW7Z0xIa/XnN75A7CKiLM=
+	t=1718606048; cv=none; b=jhCN1ALC6ev1UEAyQVLXneb/tiIgg6WqcoR4rDXyWXQTSXQ161SViHyDPDDUH9s3NfQmxEhP3uOD69UM1+zGcyuxDAf0aX5J2fbb50yvAQlC/k0SUOrwiMo4nCuRWljqB/7LxZsxXeM1VXWuxOWm67Y9Z1lN0fzs4WNir9bcAx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718605464; c=relaxed/simple;
-	bh=5BA/TosT1CrxQE3NyCIfG5vCxzPOaTI0joE23Fx2Gqc=;
+	s=arc-20240116; t=1718606048; c=relaxed/simple;
+	bh=US33UbpaJOkf6FXLZ8ZqwfZ+RaV4AjdH5q8ltCeM4nE=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=tms/TgXBIw1OSJx5lvQorZGvQrM/Wx9RUy7+vc2jDR+eatZojMstDT+ZwnkIZw+K6zD1sr1DGWWT+VcZ4rfClTeBncwDwpiAnABZCsJMxn2gFpIiUdlf3IppYvH0HXna4O1kowACmfezJAs6ozecPjm5/kwsfggnkl8+Fz0tgbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nhx7Z4yO; arc=none smtp.client-ip=209.85.218.49
+	 Content-Type:MIME-Version; b=KgmXWh9m7oeknuiHhnoS7qEb3744EnmQy1M57dyqoafqkwBWF64tdB9JD8t4LptJXfLbA5sGgbNF7faBIuyeOEtr6Y/tAY5cU70SKX1jBKqb5AQPzDrMpX8M1LvyUgWXviCy09qFJVSh58YxEgzwOeJUC+t0rJAC1HqmDusEsvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kFd/7egt; arc=none smtp.client-ip=209.85.208.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a6f85f82ffeso80716866b.0;
-        Sun, 16 Jun 2024 23:24:22 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-579fa270e53so5967459a12.3
+        for <linux-iio@vger.kernel.org>; Sun, 16 Jun 2024 23:34:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718605461; x=1719210261; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1718606045; x=1719210845; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=5BA/TosT1CrxQE3NyCIfG5vCxzPOaTI0joE23Fx2Gqc=;
-        b=Nhx7Z4yOw3F3MGDZn5mu0NdH0OPM80B1d1mWj+xqI2VyRyNdGA1j0pwsmm4x/c/Yd7
-         BPZlzsht1k4P0pezqeRp3a16eErUJ4jg9QNAftMtE4iUe6wI51T4ME4OJV1MlOJOCvlF
-         bB160rUY3wwHs0iPDfI5Mi/NT93vDAfYmkh8CgdJDvsveNYEsqHrVSmpjOFird8XLYRC
-         OKBmXW2TJfP+jZZc4J/sfsmRs9cMNbKc3egsv35m0zOoP3uRRXSgp1KUKCHyzeUHxg04
-         +hz8mbHAnqZqR052L/0K1DxR6rau9bq23bcNp41a2ws3vs5kgua5YcsIfQhsyhsHoz2+
-         qMbQ==
+        bh=US33UbpaJOkf6FXLZ8ZqwfZ+RaV4AjdH5q8ltCeM4nE=;
+        b=kFd/7egtKq6bOIjDGta3yDkCD+K7aSUUCNXLUkeu2lqsKQZ2PXfjkXZ+VUEctRIui/
+         dkoqVMmMvBhjMVZ0P41wQY269AUqeQXAMBUzqISVyfoWzaIrrOorlhtNmSz1nDljd3Sc
+         J5M8F8h6QKLoVO14rWbp1KHECRb2/hLJWd8e1aP9UARNpRX3MGTpNji9lJZiXPr7zO5x
+         Ac/vDUkfD2K+xbmb7tvNR58oVqCzE4G9eiIm6ykXP1Z/ZbnrHGIKXfKylWLctfM7IOZL
+         foCuWNMdxmevR4Wy8JIEr+JGMbS8EUlwuK4sh0JfLA7r/0xeCNidTryp21qRz0D8D2Bw
+         MLaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718605461; x=1719210261;
+        d=1e100.net; s=20230601; t=1718606045; x=1719210845;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=5BA/TosT1CrxQE3NyCIfG5vCxzPOaTI0joE23Fx2Gqc=;
-        b=VwcxIpgydbh4zeiqWzpt57lMK9OVy3ubvu8nS5gg34QPavW3ZeWPUhWYumQihSx7Zm
-         sDF52LZk2IOTReiBd4vkEqpoJGMgGrV0Vy8iwin8DYytIoeFXE2teKny/nBjtpLreu0V
-         LEN2gHXGykVVNEx4b3hZtICka+h2zCECUsRZiYKLQdcVr5Phfy/z9AQj7VTLPCvLtbUV
-         +VpdotM7mGEg1x01PEFjGpxCUtzATzfRbpJy1/vDWHItEo9e1Oe/BJH003hT4otfYR4Y
-         2yu9su+EDBb0PyUrcesMXJwIAz8gHuiKBr0LFjnLzBCv+4XMJZqe7wT5tFa0wIdmtBsM
-         z11w==
-X-Forwarded-Encrypted: i=1; AJvYcCVbcqmFb8dv74WH6IhdgGWPpUSGDc7h3j9t1jqtvvC206LRdc0peyarFtJyzr+27K4SCkbKV8S/eCGvOn3q+66Na9wyYg/spIXoXBEMC4QbIT1ZhakrsuShH460yGas0yr4SZGziTAz+ZJ33Z1SGurwusktd/ReMtwTcquThv+mWnKE0FBG0OTPy7A2Y51T0kYg+7A8Is81nEaH3rAlNSN8MkN6/PgEddHXTE1a0lJ36m3Ifzf2v9XcFuU=
-X-Gm-Message-State: AOJu0Ywx1RO0jnCu/JjVqEyzWSrFkglHgO4lEQBHrIPyfzcQE6+kJwFG
-	R3PDn6yyMIRCA7uXQ7JTGhNpv73+HalKHrwv5uvHUBpZF62pDtzy
-X-Google-Smtp-Source: AGHT+IGwPJh8PW95cQ3TUh8Rt+F4WZpn4rbG8t7MJQz99Y0NFynHP5+QpRL00FDtWKBhhin6up50sQ==
-X-Received: by 2002:a17:907:c003:b0:a6f:6b6a:e8d2 with SMTP id a640c23a62f3a-a6f6b6aec48mr560764166b.11.1718605460884;
-        Sun, 16 Jun 2024 23:24:20 -0700 (PDT)
+        bh=US33UbpaJOkf6FXLZ8ZqwfZ+RaV4AjdH5q8ltCeM4nE=;
+        b=TxRNvK+Y7cuCuc31znVwzWuA6/qWdY2995xcR5SUF8qwSjQ5hwFfDClABadZScGWaK
+         Zip99X+TJLBDzU7Bn6CaLtddZ3Amf10oqsUaJLef7BUKyLbbmGyyU1EEjI740jqP+xGC
+         AULtHz7ggr5i2U7eVLPzeQ4rXyw3mbv7MvSQeJhlTY84OkbGRLYCsRERcxD2wb6/zqvP
+         KyiqYfbK3zOru5gTai/Y8c6iGyFmqVo2tLz8H5vU9I3zT9XE91oF8InBIaB7q0CJndRe
+         nXyIGnn/jd/0KJZWnISJ7Lh4hwoO3RidpbUr0lkcsjOZWYzdljCTPrvhoCEZAqgAg+Aj
+         Q5Nw==
+X-Gm-Message-State: AOJu0YyE8oBJY3n8VPAniyTUy3MQXt3pp7P2T6I7ZGfT7eemKg6orPOq
+	695zneOYKE3NCdGQwlUm5C4LBor9Z1Mu9fXj3fmy65Tddn7Jfsx4
+X-Google-Smtp-Source: AGHT+IEluLVs1QT23RDiheH51A2rHKYu3C3Ls4BKEBPAJGPcj6QE5Dw/BXIaGhOtQCNp29hegk/2sg==
+X-Received: by 2002:a50:bb26:0:b0:57c:6461:9981 with SMTP id 4fb4d7f45d1cf-57cbd66ca1cmr7304710a12.17.1718606045080;
+        Sun, 16 Jun 2024 23:34:05 -0700 (PDT)
 Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f7c12f7c0sm191184366b.198.2024.06.16.23.24.20
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb743b026sm5915140a12.97.2024.06.16.23.34.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 16 Jun 2024 23:24:20 -0700 (PDT)
-Message-ID: <f0c709e3bf3f1ebfac29274b8f7182df9022376e.camel@gmail.com>
-Subject: Re: [PATCH v10 3/6] iio: core: Add new DMABUF interface
- infrastructure
+        Sun, 16 Jun 2024 23:34:04 -0700 (PDT)
+Message-ID: <0990501bd9195e4d97febaefa5636696bd204db5.camel@gmail.com>
+Subject: Re: [PATCH RFC 0/3] iio: add helpers and accessors for active
+ channels and masklength
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Paul Cercueil <paul@crapouillou.net>, Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Vinod Koul <vkoul@kernel.org>, 
- Sumit Semwal <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>,  Jonathan Corbet <corbet@lwn.net>, Nuno Sa
- <nuno.sa@analog.com>, linux-iio@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- dmaengine@vger.kernel.org, linux-media@vger.kernel.org, 
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org
-Date: Mon, 17 Jun 2024 08:24:19 +0200
-In-Reply-To: <0cdcf83a1ab7c199244d4a00157f6fa8979ef819.camel@crapouillou.net>
-References: <20240605110845.86740-1-paul@crapouillou.net>
-	 <20240605110845.86740-4-paul@crapouillou.net>
-	 <20240609105302.07de907a@jic23-huawei>
-	 <0cdcf83a1ab7c199244d4a00157f6fa8979ef819.camel@crapouillou.net>
+To: Jonathan Cameron <jic23@kernel.org>, Nuno Sa <nuno.sa@analog.com>
+Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>
+Date: Mon, 17 Jun 2024 08:34:04 +0200
+In-Reply-To: <20240615141847.70429abd@jic23-huawei>
+References: <20240612-dev-iio-scan-private-v1-0-7c75c8e3d30b@analog.com>
+	 <20240615141847.70429abd@jic23-huawei>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
@@ -95,82 +87,65 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-On Sat, 2024-06-15 at 13:07 +0200, Paul Cercueil wrote:
-> Le dimanche 09 juin 2024 =C3=A0 10:53 +0100, Jonathan Cameron a =C3=A9cri=
-t=C2=A0:
-> > On Wed,=C2=A0 5 Jun 2024 13:08:42 +0200
-> > Paul Cercueil <paul@crapouillou.net> wrote:
+On Sat, 2024-06-15 at 14:18 +0100, Jonathan Cameron wrote:
+> On Wed, 12 Jun 2024 16:20:47 +0200
+> Nuno Sa <nuno.sa@analog.com> wrote:
+>=20
+> > Hi Jonathan,
 > >=20
-> > > Add the necessary infrastructure to the IIO core to support a new
-> > > optional DMABUF based interface.
-> > >=20
-> > > With this new interface, DMABUF objects (externally created) can be
-> > > attached to a IIO buffer, and subsequently used for data transfer.
-> > >=20
-> > > A userspace application can then use this interface to share DMABUF
-> > > objects between several interfaces, allowing it to transfer data in
-> > > a
-> > > zero-copy fashion, for instance between IIO and the USB stack.
-> > >=20
-> > > The userspace application can also memory-map the DMABUF objects,
-> > > and
-> > > access the sample data directly. The advantage of doing this vs.
-> > > the
-> > > read() interface is that it avoids an extra copy of the data
-> > > between the
-> > > kernel and userspace. This is particularly userful for high-speed
-> > > devices which produce several megabytes or even gigabytes of data
-> > > per
-> > > second.
-> > >=20
-> > > As part of the interface, 3 new IOCTLs have been added:
-> > >=20
-> > > IIO_BUFFER_DMABUF_ATTACH_IOCTL(int fd):
-> > > =C2=A0Attach the DMABUF object identified by the given file descripto=
+> > In [1], you suggested for an iterator for the active channels (so drive=
 r
-> > > to the
-> > > =C2=A0buffer.
-> > >=20
-> > > IIO_BUFFER_DMABUF_DETACH_IOCTL(int fd):
-> > > =C2=A0Detach the DMABUF object identified by the given file descripto=
-r
-> > > from
-> > > =C2=A0the buffer. Note that closing the IIO buffer's file descriptor
-> > > will
-> > > =C2=A0automatically detach all previously attached DMABUF objects.
-> > >=20
-> > > IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *):
-> > > =C2=A0Request a data transfer to/from the given DMABUF object. Its fi=
-le
-> > > =C2=A0descriptor, as well as the transfer size and flags are provided=
- in
-> > > the
-> > > =C2=A0"iio_dmabuf" structure.
-> > >=20
-> > > These three IOCTLs have to be performed on the IIO buffer's file
-> > > descriptor, obtained using the IIO_BUFFER_GET_FD_IOCTL() ioctl.
-> > >=20
-> > > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
-> > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> > don't directly access masklength). This RFC showcases that iterator and
+> > goes one step further by giving an accessors for masklength so that
+> > drivers can read that variable (we have drivers doing that). The
+> > accessors uses ACCESS_PRIVATE() so it will warn us if some driver
+> > directly access the variable making it more difficult to mess with it
+> > (like changing it's value) without being noticed during review (or the
+> > auto builders).
 > >=20
-> > Need a brief note on the sign off chain.
-> > What is Nuno's role in this series as he's not sending the emails and
-> > not
-> > marked with Co-developed-by=20
+> > Anyways, before jumping in changing all the drivers using this, I guess
+> > the questions are:
+> >=20
+> > 1) Is the iterator useful enough to add one (kind of like it and save a
+> > line of code :))?
+> > 2) Do we care about going with the work of marking masklength private?=
+=20
+> >=20
+> > If we go ahead the plan would be:
+> >=20
+> > 1) Add the helpers macros;
+> > 2) Convert all drivers that directly access 'masklength';
+> > 3) Annotate it as private.
+> >=20
+> > [1]: https://lore.kernel.org/linux-iio/20240428142343.5067c898@jic23-hu=
+awei/
 >=20
-> That's a good question. I think he sent one revision of the patchset
-> (v7 or something like that) so he added his SoB.
+> Cute. I'd not seen the __private bit before.
+
+Yeah, I first noticed it in <linux/irq.h>
 >=20
-> (Nuno: you confirm?)
-
-exactly...
-
+> Looks good to me.=C2=A0 I think we should spin it a little differently.
+> 1. Add macro and a dummy=20
 >=20
-> I'll add his Co-developed-by then.
+> #define iio_dev_mask_length(indio_dev) (indio_dev)->mask_length
+>=20
+> 2. Convert drivers
+>=20
+> 3. What you have + the ACCESS_PRIVATE change.
+>=20
 
-Not sure if that is really deserved :)... Maybe just remove my tag.
+Agreed. Looks better
+
+> that accessor still lets people change it rather than making
+> it strictly private.=C2=A0=C2=A0 I wonder if we need a little more compli=
+cated
+>=20
+
+I do prefer your inline function as it's a stronger guarantee... Though cha=
+nging it
+through the macro is also odd enough that should clearly pick the reviewers
+attention.
 
 - Nuno S=C3=A1
-
 
 

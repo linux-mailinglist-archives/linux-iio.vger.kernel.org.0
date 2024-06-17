@@ -1,303 +1,164 @@
-Return-Path: <linux-iio+bounces-6421-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6422-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D9AD90BB8C
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 21:58:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF21A90BB95
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 21:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DAB81F22D17
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 19:58:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90D0B1C2361D
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 19:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A10619922F;
-	Mon, 17 Jun 2024 19:57:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603CB18F2F5;
+	Mon, 17 Jun 2024 19:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="CZMsFzBs"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kCK1JBT2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f177.google.com (mail-oi1-f177.google.com [209.85.167.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64D44198E74
-	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 19:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 209C617C7B3
+	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 19:57:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718654231; cv=none; b=j3wxE+LY2AeMSCK2wwea+iX47YA8tf02LL6j+vEh6h+BDkWhiiOeaN7AiW0mB4Zv+Q11HAuLoTouhR82RQXJyjd82IWrQ7Eb0ZvYDS8PtJRhfc6sypDY/vu9dvgQjkUdoilxutBry0d5LX2osoTUIDxnYU6krrrPYUdV4FMlEqs=
+	t=1718654253; cv=none; b=f2ukSsAbctKrwSFPB+/x1L2vXWe9V9JU5WOz3bnJYr1jNxfo2cDGyvhejhTMa5WCADCBBm65EYZAJpnuk7aOVEyJ0HhwSOOmx64vzjhgKbzPTd5svNZj3ZG0xf2eAx+l32bDjGD0GLBaU/uEKL0I+OkxpkQDTe9sDU1CK+FDtbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718654231; c=relaxed/simple;
-	bh=Kj1jj1jkWY4iweELsF47z0WctpUxRHz3YErTiEr0zfY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VNy+GWeM5BmQkrxRX3KaYYpYfWgPnMjGrXIZNAUiHwwnNJsTxi2q7hJtQtOwmSg5Q+WNmW7Am1YU8mZfGTUIhE4g6cw7BAs8efe3JYwhO8inv8KolKnx5/vxNaP7aVQNVb6P4DN0eqGTHq+3b/2IkPYxG4e3T3QUe181/m0ddXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=CZMsFzBs; arc=none smtp.client-ip=209.85.167.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f177.google.com with SMTP id 5614622812f47-3c9cc681ee0so2273959b6e.0
-        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 12:57:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718654228; x=1719259028; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vsdfiRmM6h+KvTeYNcXr8NgMjVAHZPZfcMTD3irWkFo=;
-        b=CZMsFzBsfyjDQbWElqvvXMMekAAlnphEbzT95hZdSqgx082tgY13zMfIaTKj/BQnHI
-         SlPCxQ4v1lxUbwb4blmn9Kx3sAfJxpig1qxqcZYkVFUzH1z4Uz6kVuRb6PXc2TXCydyJ
-         YaGqpvSonuCFHha8ISy5iCnc1B0y7KV+M6rDEN9gSM/PrMO3iruSu3SJUaAl8jplIRG7
-         4fV4a3fpf9zI5oOO6nwDxpJfq/4v33poVaUctAbqTEEIv21xiMLlItT2uh5CarZaFKUm
-         hGSrhtXVZA8Cj42hKFN0o5GjCNb3L9LLrbPO48fQmXIoH50SFr+sgjsD6tW5HbOmvXT2
-         ShAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718654228; x=1719259028;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vsdfiRmM6h+KvTeYNcXr8NgMjVAHZPZfcMTD3irWkFo=;
-        b=L7fxp146aNornMGE69D3KQurTWr59QlbW6pweNV55PV4R3PAMJpZd7W14DDm+JN8jF
-         VVBkjlFdlAf1Owi5L0QdRZe/DsdQI7SIQxUze2grBbGrJZsSOyHNnDgx8YigI6OBJvL2
-         hS0nWXEy7QkC5IeHSFx1yDcT1zuhjEA2/MPoY7upPawXcK1b7uG1KG21e0Gbfhe+PMmp
-         Ak7uJBGVCvRc3t9weqKIcXN6eFNcnXelTsfK9E28Rw2Q5uhVpJI6KvY1YmpMA1/Psy6n
-         IU7zKmRCozeUMIetJwAPaa0N3HoRDg/mpQC7N06HM0YJ5pt9DFquGI5sRh4BliH9uDok
-         vaOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXlSeSwwH3cl82QNGwmGLKquRm1x+PYhmX6lBh0caGjwrH6dxgK48TkiaU/yyhR4gc0IUeV7XAFqU/kCxmBiH2qqnO7aKyGP6E
-X-Gm-Message-State: AOJu0YzKPSioO2G0LP3+31IuO9gzkUO8WJawAs1Irg9ONMazlRY9aEmU
-	QbRQZEUD7Ca0yO1H7u/X+pmdJZ4xdBph3BjNpqd6A+kSLTGxauspyVWV5vWQ3wg=
-X-Google-Smtp-Source: AGHT+IG+Mt+zjMH088t6lK+Exi2DE0g2sDRkozh5QQOxNL7x7Vy8ugOJjYJT9utaROtkRzRvX++niw==
-X-Received: by 2002:a05:6808:159b:b0:3d2:16c8:64f4 with SMTP id 5614622812f47-3d24e8fa5afmr11992918b6e.24.1718654226849;
-        Mon, 17 Jun 2024 12:57:06 -0700 (PDT)
-Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3d2476e2fa4sm1579492b6e.52.2024.06.17.12.57.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 12:57:06 -0700 (PDT)
-From: David Lechner <dlechner@baylibre.com>
-To: Jonathan Cameron <jic23@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH v2 4/4] Documentation: iio: Document ad4695 driver
-Date: Mon, 17 Jun 2024 14:53:15 -0500
-Message-ID: <20240617-iio-adc-ad4695-v2-4-63ef6583f25d@baylibre.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240617-iio-adc-ad4695-v2-0-63ef6583f25d@baylibre.com>
-References: <20240617-iio-adc-ad4695-v2-0-63ef6583f25d@baylibre.com>
+	s=arc-20240116; t=1718654253; c=relaxed/simple;
+	bh=Y10WcRQ+W39lGTLUsQBxeqcuERKY1bXIUsvwJamJ9fU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=OwL/3M0HePOWIJq+VNjFWUFXyITCPoNvP2Jkq/4l4TZwHSMmAPh9A70EPxZ3MFqyuHFBDPwhhfSZ6EXBU9kF5/+Jn+K/qACPRguhdu3TgaiFf4HItm7j64IG8fbTxdGusPfABpjzX/gkNxRp5XWvFj8q7XWYFifLQOn6Jf3PvRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kCK1JBT2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F293C2BD10;
+	Mon, 17 Jun 2024 19:57:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718654252;
+	bh=Y10WcRQ+W39lGTLUsQBxeqcuERKY1bXIUsvwJamJ9fU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kCK1JBT24Mj1xDJnqaPBEdU3Vq/iC9xyaIjXtZtZyt+o5l7ki1W/GvFr8nWg4eFl2
+	 VSoqrttm9kMh8Z9IVcoWVOE/YGTHjOxJtpiQh1rOhbrJe85WNI8BfaIrMiDWYfo/jQ
+	 NFUKUUVZ6B9MhEPeYcxCVmzpiyhoPyJJ81P+bMu/iyGt7Qn2l/QGZElbrwvpr5R7zw
+	 gDCyGOmgrHy0jM9auo2bOXEB3o4ULMkBsyUKBggelue9EnAxNi/HiWLYfrmT7ydgXy
+	 ZCWSAtxjYEfj/jEAkcGN1zTo3J9jdps5WTG3Z9RMyM/f2E7eEhX85xFmTSC/8vS6x5
+	 ZSjbZqwKaQKXA==
+Date: Mon, 17 Jun 2024 20:57:26 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Vasileios Amoiridis <vassilisamir@gmail.com>
+Cc: Adam Rizkalla <ajarizzo@gmail.com>, linux-iio@vger.kernel.org
+Subject: Re: [PATCH] iio: pressure: bmp280: fix bmp580 temp read
+Message-ID: <20240617205726.7ddcd6eb@jic23-huawei>
+In-Reply-To: <20240604191904.GA19711@vamoiridPC>
+References: <20240602201200.30418-1-ajarizzo@gmail.com>
+	<20240604200107.7f68dbf4@jic23-huawei>
+	<20240604191904.GA19711@vamoiridPC>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Mailer: b4 0.12.4
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-The Analog Devices Inc. AD4695 (and similar chips) are complex ADCs that
-will benefit from a detailed driver documentation.
+On Tue, 4 Jun 2024 21:19:04 +0200
+Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
 
-This documents the current features supported by the driver.
+> On Tue, Jun 04, 2024 at 08:01:07PM +0100, Jonathan Cameron wrote:
+> > On Sun,  2 Jun 2024 15:12:01 -0500
+> > Adam Rizkalla <ajarizzo@gmail.com> wrote:
+> >   
+> > > Fix overflow when storing bmp580 temperature reading and preserve sign.
+> > > 
+> > > This patch re-applies the fix in [1] after the merge conflict resolution
+> > > mentioned in [2].
+> > > 
+> > > [1] https://lore.kernel.org/all/Zin2udkXRD0+GrML@adam-asahi.lan/
+> > > [2] https://lore.kernel.org/linux-kernel/20240531140621.264f0848@canb.auug.org.au/
+> > > 
+> > > Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>  
+> > 
+> > Thanks! I was just about to email about this fix currently being lost in
+> > linux-next.
+> > 
+> > Rather than dance around this, I'm going to pull the later part of Vasielios'
+> > series off the togreg tree for now then reapply later once I have the fix
+> > in my upstream.
+> > 
+> > It's a shame that we need to do the maths in driver to keep within range.
+> > Maybe we can be cheeky and avoid doing the division?
+> > I believe the IIO core formatting code should be fine with that as it
+> > already casts up to 64 bits to do the maths.
+> > 
+> > (s64)*raw_temp * 250);
+> > 
+> > bmp580_temp_coeffs = {1, 18}
+> > 
+> > Anyhow, I've dropped (for now) the following patches from my togreg tree
+> >   iio: pressure: bmp280: Generalize read_{temp,press,humid}() functions
+> >   iio: pressure: bmp280: Add SCALE, RAW values in channels and refactorize them
+> >   iio: pressure: bmp280: Add triggered buffer support
+> > 
+> > Jonathan
+> >   
+> 
+> Hi Jonathan, Adam,
+> 
+> I had mentioned it here [1], when I applied v7 of the patches that this would 
+> happen. No worries though,  I already have the new version of these 3 patches
+> that include Adam's fix, so when we have it upstream I can resubmit them
+> (no need to keep a note Jonathan, I have it) and I think we will be fine!
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
----
+Excellent.  The fix is no in the upstream of my togreg branch.
 
-v2 changes:
-* Rework DT examples for DT bindings changes
-* Add file to MAINTAINERS
----
- Documentation/iio/ad4695.rst | 153 +++++++++++++++++++++++++++++++++++++++++++
- Documentation/iio/index.rst  |   1 +
- MAINTAINERS                  |   1 +
- 3 files changed, 155 insertions(+)
+I've only pushed it out as testing for now, but if you send a version based
+on my testing branch or 20460472952 (currently char-misc-next head) that would be great.
 
-diff --git a/Documentation/iio/ad4695.rst b/Documentation/iio/ad4695.rst
-new file mode 100644
-index 000000000000..d5cde1b84d50
---- /dev/null
-+++ b/Documentation/iio/ad4695.rst
-@@ -0,0 +1,153 @@
-+.. SPDX-License-Identifier: GPL-2.0-only
-+
-+=============
-+AD4695 driver
-+=============
-+
-+ADC driver for Analog Devices Inc. AD4695 and similar devices. The module name
-+is ``ad4695``.
-+
-+
-+Supported devices
-+=================
-+
-+The following chips are supported by this driver:
-+
-+* `AD4695 <https://www.analog.com/AD4695>`_
-+* `AD4696 <https://www.analog.com/AD4696>`_
-+* `AD4697 <https://www.analog.com/AD4697>`_
-+* `AD4698 <https://www.analog.com/AD4698>`_
-+
-+
-+Supported features
-+==================
-+
-+SPI wiring modes
-+----------------
-+
-+The driver currently supports the following SPI wiring configuration:
-+
-+4-wire mode
-+^^^^^^^^^^^
-+
-+In this mode, CNV and CS are tied together and there is a single SDO line.
-+
-+.. code-block::
-+
-+    +-------------+         +-------------+
-+    |          CS |<-+------| CS          |
-+    |         CNV |<-+      |             |
-+    |     ADC     |         |     HOST    |
-+    |             |         |             |
-+    |         SDI |<--------| SDO         |
-+    |         SDO |-------->| SDI         |
-+    |        SCLK |<--------| SCLK        |
-+    +-------------+         +-------------+
-+
-+To use this mode, in the device tree, omit the ``cnv-gpios`` and
-+``spi-rx-bus-width`` properties.
-+
-+Channel configuration
-+---------------------
-+
-+Since the chip supports multiple ways to configure each channel, this must be
-+described in the device tree based on what is actually wired up to the inputs.
-+
-+There are three typical configurations:
-+
-+Single-ended where a pin is used with the ``REFGND`` pin, pseudo-differential
-+where a pin is used with the ``COM`` pin and differential where two ``INx``
-+pins are used as a pair
-+
-+Single-ended input
-+^^^^^^^^^^^^^^^^^^
-+
-+Each ``INx`` pin can be used as a single-ended input in conjunction with the
-+``REFGND`` pin. The device tree will look like this:
-+
-+.. code-block::
-+
-+    channel@0 {
-+        reg = <0>; /* not related to the pin number */
-+        single-channel = <0>; /* IN0 */
-+    };
-+
-+This will appear on the IIO bus as the ``voltage0`` channel. The processed value
-+(*raw × scale*) will be the voltage present on the ``IN0`` pin relative to
-+``REFGND``. (Offset is always 0 when pairing with ``REFGND``.)
-+
-+Pseudo-differential input
-+^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Each ``INx`` pin can be used as a pseudo-differential input in conjunction with
-+the ``COM`` pin. The device tree will look like this:
-+
-+.. code-block::
-+
-+    com-supply = <&vref_div_2>;
-+
-+    channel@1 {
-+        reg = <1>;
-+        single-channel = <1>; /* IN1 */
-+        common-mode-channel = <AD4695_COMMON_MODE_COM>;
-+        bipolar;
-+    };
-+
-+This will appear on the IIO bus as the ``voltage1`` channel. The processed value
-+(*(raw + offset) × scale*) will be the voltage measured on the ``IN1`` pin
-+relative to ``REFGND``. (The offset is determined by the ``com-supply`` voltage.)
-+
-+The macro comes from:
-+
-+.. code-block::
-+
-+    #include <dt-bindings/iio/adi,ad4695.h>
-+
-+Differential input
-+^^^^^^^^^^^^^^^^^^
-+
-+An even-numbered ``INx`` pin and the following odd-numbered ``INx`` pin can be
-+used as a differential pair. The device tree for using ``IN2`` as the positive
-+input and ``IN3`` as the negative input will look like this:
-+
-+.. code-block::
-+
-+    channel@2 {
-+        reg = <2>;
-+        diff-channels = <2>, <3>; /* IN2, IN3 */
-+        bipolar;
-+    };
-+
-+This will appear on the IIO bus as the ``voltage2-voltage3`` channel. The
-+processed value (*raw × scale*) will be the voltage difference between the two
-+pins. (Offset is always 0 for differential channels.)
-+
-+VCC supply
-+----------
-+
-+The chip supports being powered by an external LDO via the ``VCC`` input or an
-+internal LDO via the ``LDO_IN`` input. The driver looks at the device tree to
-+determine which is being used. If ``ldo-supply`` is present, then the internal
-+LDO is used. If ``vcc-supply`` is present, then the external LDO is used and
-+the internal LDO is disabled.
-+
-+Reference voltage
-+-----------------
-+
-+The chip supports an external reference voltage via the ``REF`` input or an
-+internal buffered reference voltage via the ``REFIN`` input. The driver looks
-+at the device tree to determine which is being used. If ``ref-supply`` is
-+present, then the external reference voltage is used and the internal buffer is
-+disabled. If ``refin-supply`` is present, then the internal buffered reference
-+voltage is used.
-+
-+Unimplemented features
-+----------------------
-+
-+- Additional wiring modes
-+- Buffered reads
-+- Threshold events
-+- Oversampling
-+- Gain/offset calibration
-+- GPIO support
-+- CRC support
-diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-index 4c13bfa2865c..df69a76bf583 100644
---- a/Documentation/iio/index.rst
-+++ b/Documentation/iio/index.rst
-@@ -17,6 +17,7 @@ Industrial I/O Kernel Drivers
- .. toctree::
-    :maxdepth: 1
- 
-+   ad4695
-    ad7944
-    adis16475
-    adis16480
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e7a338a3eaaa..15f15b6013ce 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1217,6 +1217,7 @@ L:	linux-iio@vger.kernel.org
- S:	Supported
- W:	https://ez.analog.com/linux-software-drivers
- F:	Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml
-+F:	Documentation/iio/ad4695.rst
- F:	drivers/iio/adc/ad4695.c
- F:	include/dt-bindings/iio/adi,ad4695.h
- 
+Thanks,
 
--- 
-2.45.2
+Jonathan
+
+> 
+> Cheers,
+> Vasilis
+> 
+> [1]: https://lore.kernel.org/linux-iio/20240512230524.53990-1-vassilisamir@gmail.com/T/#t
+> 
+> > > ---
+> > >  drivers/iio/pressure/bmp280-core.c | 6 ++++--
+> > >  1 file changed, 4 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> > > index 95c88b0e1c49..3a003843c79c 100644
+> > > --- a/drivers/iio/pressure/bmp280-core.c
+> > > +++ b/drivers/iio/pressure/bmp280-core.c
+> > > @@ -1752,6 +1752,8 @@ static int bmp580_read_temp(struct bmp280_data *data, s32 *raw_temp)
+> > >  		dev_err(data->dev, "reading temperature skipped\n");
+> > >  		return -EIO;
+> > >  	}
+> > > +	*raw_temp = sign_extend32(*raw_temp, 23);
+> > > +	*raw_temp = ((s64)*raw_temp * 1000) / (1 << 16);
+> > >  
+> > >  	return 0;
+> > >  }
+> > > @@ -2154,7 +2156,7 @@ static irqreturn_t bmp580_buffer_handler(int irq, void *p)
+> > >  
+> > >  static const int bmp580_oversampling_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
+> > >  static const u8 bmp580_chip_ids[] = { BMP580_CHIP_ID, BMP580_CHIP_ID_ALT };
+> > > -static const int bmp580_temp_coeffs[] = { 1000, 16 };
+> > > +static const int bmp580_temp_coeffs[] = { 1, 0 };
+> > >  static const int bmp580_press_coeffs[] = { 1, 64000};
+> > >  
+> > >  const struct bmp280_chip_info bmp580_chip_info = {
+> > > @@ -2184,7 +2186,7 @@ const struct bmp280_chip_info bmp580_chip_info = {
+> > >  	.iir_filter_coeff_default = 2,
+> > >  
+> > >  	.temp_coeffs = bmp580_temp_coeffs,
+> > > -	.temp_coeffs_type = IIO_VAL_FRACTIONAL_LOG2,
+> > > +	.temp_coeffs_type = IIO_VAL_INT,
+> > >  	.press_coeffs = bmp580_press_coeffs,
+> > >  	.press_coeffs_type = IIO_VAL_FRACTIONAL,
+> > >    
+> >   
 
 

@@ -1,133 +1,158 @@
-Return-Path: <linux-iio+bounces-6350-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6351-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20C490B208
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 16:31:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FCCA90B214
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 16:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA8771C21380
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 14:31:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4174F288FD2
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 14:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 965F81B3753;
-	Mon, 17 Jun 2024 13:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62B0F19B5A4;
+	Mon, 17 Jun 2024 13:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="W9xz3IF4"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dTcXDrEx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com [209.85.219.177])
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FE619B3FD
-	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 13:47:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A928A198A2F
+	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 13:48:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718632045; cv=none; b=qMOlhJyi4kdqtMUgvOpKR/BADD0tmsjDk8+X37S83P0tJVk1jtFvJbJuIQkfxQjfZdhV43/MVyxgcqAt3dmbcQR2mDIYNanjmIXHNKjOdYafle5R91VDNoYqN2P7LSqZkk2SnMVylRClrWqBvbwKfst98h9dE7wqJI8OT9ig0jY=
+	t=1718632100; cv=none; b=DdDZPMc1+lp6Pf+F1yhDDp2Ppc3uhOGmfIBNrUTXCvYQ28esz5c7sxl27mM66nj9i6niYejl+Aw61Qn3WHQudub0yutf5oUOBDUggl4vbYfYo3S1KFOXB8nH6YBraDeADUGxufqJF8bMnujLqKNCMRk8Xb+7RDjorFbNnBkh4Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718632045; c=relaxed/simple;
-	bh=3SUojPKHMWFnVEtUmzCvJ0XJVYHWg9uufwDXcUrW4n0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l0YfYHu0rFWVDf9widP3QPRZ8PIjMnG5rHsScJDszpvoiZvhcVT1Tnhoh48ELae2CaLLvxWlI2oYgjzLUYAH0irOyyWbmn3rUFIwLzscv3JL541Ug1qNavQSya4QDViEoFBdALtcU1MbjP5u7/7PNv6M4TH5v2lBFl/7vqjxm+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=W9xz3IF4; arc=none smtp.client-ip=209.85.219.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-dfdff9771f8so4455108276.1
-        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 06:47:23 -0700 (PDT)
+	s=arc-20240116; t=1718632100; c=relaxed/simple;
+	bh=XlBC8XmxY4t1dy9Te3CUtaaCes8aSp154MhAUu+Mo4Q=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XMqUCl4e1YLOojviTf+SBY8BU0Xzi7znvOObjlRTQV0iiCo8qP7WDek4RExqg06GP2SEZhYJH7xsOMw3uIqPF8Td9u4em3PD/Q2w4T/A51GYSM8Rsrtbz6OpEYwiNsvn6g883lUK18ZPWsI0qxRS+EJSizx+DX+LfjU3j1oI+g0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dTcXDrEx; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-6f9923df5dbso2521257a34.2
+        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 06:48:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1718632043; x=1719236843; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4HcMYFgMjLj9bfVN/vNd/auegls9+ix6qtJM9yIB3tE=;
-        b=W9xz3IF4q30Y9JGoyzWMVfSyeJQDF1fEcKZQ7iDP7StZe/MxTyAu8blo380UCRG+B7
-         xhUAVS7A/cf0N91guFIRNQNveTVJfYyHq9VQYs0EMSa6NYruFWr+DiUdSAVJpG3a46sf
-         L5xyzERHe1pgihny+UUvxtEoCEUcSFjGsBUgs=
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718632096; x=1719236896; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aWLganjcvsKmuzSLhK4Gg+9DQYYQdBiUVwwZvrufBCA=;
+        b=dTcXDrExjyvqmV2QI/TydR2WXHUxqi7UabJWWXWNCXRSqqB88GF0/tP36OJme23hNF
+         kYfdegZs3fTmPO55u/gullSvpeha19K0DizXA27oaz8BVg1Svheyua/ePjIvtslIKa4u
+         QWpIvLXGG/rflgFAj7fl5wKPvRRes052Con0p//m+of02FcdhxMt05Ao/b27OoXK6cQk
+         mxCF/QSmrY+/b3Xmv4vPFKcShRW+Fm/V4+6Ib1dpxw1UIxyXVGcDfObyE5MONOp2DbmM
+         iFL4rWeOQQfZCd7yzNCPUXV1NT6OZq74UZQl+mPzZ/JVef9aHO4+GmdP0JjgBEUisrx3
+         qZLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718632043; x=1719236843;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4HcMYFgMjLj9bfVN/vNd/auegls9+ix6qtJM9yIB3tE=;
-        b=DKQfQlr7bLamplzPw/TAjSrwrueozcRBO2oCeBOi5TMoUVISH918Cgqz4YXhCseh/P
-         I4mjNy5WoEv0xpE0KpApSkEREkFG7etlGXxZoVWFR4t+lYUMO2MtZgm0tABcKwHvOpVR
-         HH0+w+/oBzwhnc9qNtS6pqFIghYhe34Dwe3eB1/3ldM9P3JyepCkXmcg9ePBt6RbgmCz
-         6fcij1Llv2eWzc7Jf+JJjmWF5K9Aom8yONLUYYi8dC42uoAq3FO1hejlMoHVVo44nxyP
-         ehDgs0rsonL5RYu9aBHChnhrwS7rz7wXiR/HcDTA5Jm8EuZJlRUcaL9qaFYgJhlnck7m
-         x0fw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrxUO+OWG3GDfiSD0eUo8rqzv69ysd/kfwO15Vq7UqXb5jZCoL7ySSzGGLiRUbPIScc0EP6S1W00rLxXJk2uY+5Q2MaObdTF1y
-X-Gm-Message-State: AOJu0YzMjWN2btu63oOftPITAbzX06mjd2WGoeXdc5d18nbled5nIPET
-	GSz6GD7hB4VVdzAKdfdUp/NYbpxTWuCtytH8OrcQYlMn3s8eb4G8v5MPuiCaZflFGSTHg7XuafE
-	tbwymrAyK7elpdP0ghYYG3mW3v3WyH9XiZicZ
-X-Google-Smtp-Source: AGHT+IEn0uy3dwK2KhLXw7MEv8zGGNIiTaQBsPR2kW9tDB4MUQUymoB6SG2mXCXggR/NMBj1eOnEsZO0JKSQmlhOkf0=
-X-Received: by 2002:a25:df48:0:b0:df7:7a90:26c5 with SMTP id
- 3f1490d57ef6-dff153b3999mr8205865276.32.1718632042819; Mon, 17 Jun 2024
- 06:47:22 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718632096; x=1719236896;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=aWLganjcvsKmuzSLhK4Gg+9DQYYQdBiUVwwZvrufBCA=;
+        b=jF6mfkd3n7vG3ia8jAIYDJXs7vUZtGslS/ik4a7r2NLHsmQIMfMtRsAFz1tXndJca8
+         wmz/qYlhzN8u3QtEOqQ19cEp0VqHaVZjeiU/YUDve6VUpj1C2Af5Quy9TfzNcuBmaUF2
+         EPCfIG6sm52xktQMgYVS9cLFkmlzxwAYC3qugvPuxbyUe0qdS0quv+u/c7RecVAISBE1
+         FDcbPWtiOxSo5dnJaEpNHJoDSQOsvmShWaOBWCEtV0gYsWu5JVa3Od2MwaD5uI7+Yml7
+         naNaIevxbJIVHn3VzXVyqFoJvHNfKaru2/x117pqKls3PPgHy0D9zGLKaRguJMipp2+D
+         qIeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXqVmq8FvlMuVrrIzxxbYCOKcW0y7MWqgryyYUzpg6wGPLTht3zNFKmcsZw85Y06Il+UYt5MpwifvOsW9XLt/oawfMoproXQ2n1
+X-Gm-Message-State: AOJu0YynERYGPbiqeYacgt/hxDZCQJTWwEcdloTV8kNp9IF7BP8uzPxx
+	/CkoK3u8MKV8pUpOhEjd5EgUuEdN6hfes9X36yobJmOWXbb3OEHL3scKQJGATXc=
+X-Google-Smtp-Source: AGHT+IHkRtJd/vDpa8HnxwEUUUh80/TzTJPmRFYKwvof3Nxq9J0ov+M7AjFrMMTnUlOZiatmClt/nQ==
+X-Received: by 2002:a05:6830:1202:b0:6f9:90de:c67f with SMTP id 46e09a7af769-6fb937665b7mr11817267a34.10.1718632096492;
+        Mon, 17 Jun 2024 06:48:16 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6fb5b1b0bd9sm1528611a34.27.2024.06.17.06.48.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jun 2024 06:48:15 -0700 (PDT)
+Message-ID: <8dd5f4b9-809f-43d8-ba5c-5f7be23107a4@baylibre.com>
+Date: Mon, 17 Jun 2024 08:48:15 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <202406152104.FxakP1MB-lkp@intel.com> <20240616012511.198243-1-alexey.makhalov@broadcom.com>
- <20240617090709.GCZm_8vdnLzt048UH_@fat_crate.local> <20240617100150.GDZnAJjoH5wZKu2OAV@fat_crate.local>
-In-Reply-To: <20240617100150.GDZnAJjoH5wZKu2OAV@fat_crate.local>
-From: Zack Rusin <zack.rusin@broadcom.com>
-Date: Mon, 17 Jun 2024 09:47:12 -0400
-Message-ID: <CABQX2QNT+rDC3M7UPWwT_XRb8iXiihk4iczfcO9iokUFhn0DJw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] drm/vmwgfx: Fix missing HYPERVISOR_GUEST dependency
-To: Borislav Petkov <bp@alien8.de>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Alexey Makhalov <alexey.makhalov@broadcom.com>, linux-kernel@vger.kernel.org, 
-	bcm-kernel-feedback-list@broadcom.com, lkp@intel.com, 
-	dri-devel@lists.freedesktop.org, linux-iio@vger.kernel.org, jic23@kernel.org, 
-	lars@metafoo.de, nuno.sa@analog.com, dragos.bogdan@analog.com, 
-	anshulusr@gmail.com, andrea.collamati@gmail.com, 
-	oe-kbuild-all@lists.linux.dev, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] iio: adc: ad7192: use
+ devm_regulator_get_enable_read_voltage
+To: Alisa-Dariana Roman <alisadariana@gmail.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+ Marcelo Schmitt <marcelo.schmitt1@gmail.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240612-iio-adc-ref-supply-refactor-v2-0-fa622e7354e9@baylibre.com>
+ <20240612-iio-adc-ref-supply-refactor-v2-1-fa622e7354e9@baylibre.com>
+ <20240615130858.22043725@jic23-huawei>
+ <dbf947a3-3d3b-4686-a707-a813b6a4ce5a@gmail.com>
+ <CAMknhBFJ01Xu69Arvd3S=dbADGFmzaYKm2XBtw_CtnjtYwnnew@mail.gmail.com>
+ <2d47aeef-5ee0-4e6f-a408-ba5d737d2c5a@gmail.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <2d47aeef-5ee0-4e6f-a408-ba5d737d2c5a@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 17, 2024 at 6:02=E2=80=AFAM Borislav Petkov <bp@alien8.de> wrot=
-e:
->
-> On Mon, Jun 17, 2024 at 11:07:09AM +0200, Borislav Petkov wrote:
-> > On Sat, Jun 15, 2024 at 06:25:10PM -0700, Alexey Makhalov wrote:
-> > > VMWARE_HYPERCALL alternative will not work as intended without
-> > > VMware guest code initialization.
-> > >
-> > > Reported-by: kernel test robot <lkp@intel.com>
-> > > Closes: https://lore.kernel.org/oe-kbuild-all/202406152104.FxakP1MB-l=
-kp@intel.com/
-> > > Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
-> > > ---
-> > >  drivers/gpu/drm/vmwgfx/Kconfig | 2 +-
-> > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/gpu/drm/vmwgfx/Kconfig b/drivers/gpu/drm/vmwgfx/=
-Kconfig
-> > > index faddae3d6ac2..6f1ac940cbae 100644
-> > > --- a/drivers/gpu/drm/vmwgfx/Kconfig
-> > > +++ b/drivers/gpu/drm/vmwgfx/Kconfig
-> > > @@ -2,7 +2,7 @@
-> > >  config DRM_VMWGFX
-> > >     tristate "DRM driver for VMware Virtual GPU"
-> > >     depends on DRM && PCI && MMU
-> > > -   depends on X86 || ARM64
-> > > +   depends on (X86 && HYPERVISOR_GUEST) || ARM64
-> > >     select DRM_TTM
-> > >     select DRM_TTM_HELPER
-> > >     select MAPPING_DIRTY_HELPERS
-> > > --
-> >
-> > Right, I'll queue this soon but it doesn't reproduce here with gcc-11 o=
-r gcc-13.
-> > This must be something gcc-9 specific or so...
->
-> Actually, that's a DRM patch.
->
-> Folks in To: ok to carry this though the tip tree?
+On 6/17/24 8:38 AM, Alisa-Dariana Roman wrote:
+> On 17.06.2024 16:22, David Lechner wrote:
+>> On Mon, Jun 17, 2024 at 4:35 AM Alisa-Dariana Roman
+>> <alisadariana@gmail.com> wrote:
+>>>
+>>> On 15.06.2024 15:08, Jonathan Cameron wrote:
+>>>> On Wed, 12 Jun 2024 16:03:05 -0500
+>>>> David Lechner <dlechner@baylibre.com> wrote:
+>>>>
+>>>>> This makes use of the new devm_regulator_get_enable_read_voltage()
+>>>>> function to reduce boilerplate code.
+>>>>>
+>>>>> Error messages have changed slightly since there are now fewer places
+>>>>> where we print an error. The rest of the logic of selecting which
+>>>>> supply to use as the reference voltage remains the same.
+>>>>>
+>>>>> Also 1000 is replaced by MILLI in a few places for consistency.
+>>>>>
+>>>>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+>>>>
+>>>> Complicated bit of code, but seems correct.
+>>>> However, it crossed with Alisa-Dariana switching adding a
+>>>> struct device *dev = &spi->dev to probe() that I picked up earlier
+>>>> today.
+>>>>
+>>>> I could unwind that but given Alisa-Dariana has a number of
+>>>> other patches on this driver in flight, I'd like the two of you
+>>>> to work out the best resolution between you.  Maybe easiest option
+>>>> is that Alisa-Dariana sends this a first patch of the next
+>>>> series I should pick up.
+>>>>
+>>>> Thanks,
+>>>>
+>>>> Jonathan
+>>> I will add this patch to my series and send it shortly.
+>>>
+>>> Kind regards,
+>>> Alisa-Dariana Roman.
+>>
+>> Great, thanks!
+> 
+> Just one quick question:
+> 
+> I am getting two such warnings when running the checkpatch script:
+> 
+> WARNING: else is not generally useful after a break or return
+> #1335: FILE: ./drivers/iio/adc/ad7192.c:1335:
+> +        return dev_err_probe(dev, ret, "Failed to get AVDD voltage\n");
+> +    } else {
+> 
+> Should I switch the last two branches to get rid of the warnings or just ignore them?
+> 
 
-That's fine with me. Thanks.
+In the other patches, I was able to reorder things to avoid this
+warning, but since this one was more complicated, I just ignored
+this warning.
 
-z
+We can't just remove the else in this case because the return
+is inside of an `else if`.
 

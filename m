@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-6331-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6332-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D1A90A35A
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 07:34:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A2690A4FD
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 08:15:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D81531C21343
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 05:34:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9209A2898DD
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 06:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4015F17E903;
-	Mon, 17 Jun 2024 05:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ABB419642D;
+	Mon, 17 Jun 2024 06:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MYFBRyNw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ldz+Km8V"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F8A17F5;
-	Mon, 17 Jun 2024 05:34:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B19195FED;
+	Mon, 17 Jun 2024 06:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718602467; cv=none; b=E0Y3PBmueTUPFCMbC9E7FSi6EMkoXlVbhT1KDsF4OPzcasRpanNc5NvbSjBu2G4pFNHHIl/lQf2y0TrmkIVzR9Bt1f2Ix3Jzw84+TZ+KRezVky/D7u+rCuRjttUo2Ib9WdFEafLHMr2bITzkRwg2cWjlqjI6DB7LE48pFSLV+Yc=
+	t=1718604450; cv=none; b=FFTzN8vUBPpwjiHM2ShsmrvJ18kstKU7zpEOAQjFUZfEVGkpj7DTk069uBlUbD/LDyZarH3lHN9A4c9Z/7nIGhX42mSSs6qZM6V5U/T5gLZ0SRbV40QMNHJJENZiBTetr+fhQqcZHZUGAep8ZcvLDkLy2E7i2WJDg+3j64lYCeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718602467; c=relaxed/simple;
-	bh=icaSQIDrys6BH1yXczYwSFZuCZg6/iaQQNbRtTPdyLM=;
+	s=arc-20240116; t=1718604450; c=relaxed/simple;
+	bh=1qHT3ndHCQslu0fWxXaSamlwmG6qZY213KP8J4wc6mk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UwDNH4h57gtmuAK5nyxXaVC8Lm3O1GddXU9CY1tETJ+6N7Xc10mdyrt3/k9/op5Pvw3WC1GSP1uTizN1TjaWlpT95UySpx3WI2MnZ025RxDgeTJhtlPPts5o7zV07nVapaOuOQvELo0kmJDGcJ6iXbqhKetJgo87kf9BxbgZJrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MYFBRyNw; arc=none smtp.client-ip=209.85.167.49
+	 In-Reply-To:Content-Type; b=XggaUux1SF859yT1Prgi4TdLbKarH6Gs7I2qDJjA4c2hdOkFSmAZk8C412eMbWBbmEgtyHKeraJ1tWkykC8Xd7/SGKGCeXOvbQe6UfRHFrK+D82dQi+/c+6Z3xc+tqHRfwtPdCjWb412/vgHThvC2Vx8m7b5JMJqL9qO/WQXwgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ldz+Km8V; arc=none smtp.client-ip=209.85.167.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52c7f7fdd24so5104081e87.1;
-        Sun, 16 Jun 2024 22:34:25 -0700 (PDT)
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5295e488248so4483564e87.2;
+        Sun, 16 Jun 2024 23:07:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718602463; x=1719207263; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1718604446; x=1719209246; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=kSpZmf1K082PIUbwqLvXPKnERoeKQ/2WmW8jA1K0LCw=;
-        b=MYFBRyNw+vKVN1rbr+vi3i/ESMhsi1KYjPZkfzbTT9jbgTU5cKjEQE5rD7g8waDewY
-         WaSq/6EgAPRZvA1BVl7ijMgp/clW3tInOqoMQgjTabL6wZGdvWR/h8NSH7UVGVidWfm2
-         cSWhNN2SexqEhUmjJnrK0v4i+8rjeUrPmuOuZKQItKKxp4a9fq2LOZfjtziGROQmoYiH
-         nyQABufn9NAqw2T83f+QPxo1v/r/y8YwDWYpddBcjOrC5XkOkQhZbKqDksxlWMT+8GSe
-         +OecaxCeExsaxC/ojKSoNp8xW5pvTmdQVQktCXlo9hfAFszZHimYcAt0Hw/LUcZBX3QS
-         mNlQ==
+        bh=i12zWNu8KlTv7/MNDqzK9U/bdW2I5k7ofAlbTITEnb0=;
+        b=ldz+Km8VUda6LpFv41zY1+XgaacKyb8R3YlLP9+7T0y93d9+wBAHpvOE5DaI2te/FL
+         zu7m239b3fw6bJOde5QZSNGmAzu33phKWYjVSW21HMuUdTvxjyMcR1IEo3LUjzbyua63
+         uGwYqolvEho/oC9SJjiIy9JKrZ9n+KVZmFSVPiucWhPiOWogmssZWEIXzCHwy7CYaziH
+         AzUP6RbdDaAOkkXQ9Nj8GwD5Iwp4ZCEpTec+cFmFtOAqYlg9yyybPVMlZc45+VXHgXgi
+         XoF9q7tlKiAy0+G0+xGqUq8HCuPG6BJtpsxNuqaRIuUHGp3nZAn08aZWQv7GHvP5+nzz
+         Drzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718602463; x=1719207263;
+        d=1e100.net; s=20230601; t=1718604446; x=1719209246;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kSpZmf1K082PIUbwqLvXPKnERoeKQ/2WmW8jA1K0LCw=;
-        b=qxbQlRXLC0kczXZDAn3T9CISBEbaWrZSBb/0gcA5UoIkJZdo83VfrVTpssEnsYHrDq
-         ujzkznPfqGBFxTjeamI2DObiVfEKV8dD3rTkCmrxkhdrfRodUEaMVu3sxBCxHkBrCUGs
-         fhVgROwLhqJqATLfcmgwog1s6NWNt8MzKWrZ5RWv1G493qCsA5swg4gh3iiH5KF6ZoaC
-         yxZOxyT/sM3CoVgiq8SpluxTLePJEwunOsi6k9T56M3oyjyog2kZby47Iat/OnmTTgMM
-         12CCBrsvYqCMkAI3wD75V2FVnyiKKqFqhvqNLKEEjxlN8P1cmZ/O14gvK39y0tCNaBCR
-         SsFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXG8k0vwQgZomTcOK+IopFUe79QPvNZ8VTCfqMFJcnhoQB+DBjFHFik9cDcLTp/ekFukBsH5ogBtgvYs8uBAbja1Z4mc6CgJ7IbMtpxFH6E/p8bOFyUdNC+njPz1ET5WbC6obKcgsHR
-X-Gm-Message-State: AOJu0YzI5WbuSPj1B8SDJtlG2LEqqSwEJlNRazolHFEJJHiK8nWKARIw
-	tHA5++RdujyAJzdxBadOX4TmeS5AIftJQEBjJ0ZVaYq3rV1bIPL2+9OWqg==
-X-Google-Smtp-Source: AGHT+IE+oP5gd6y4Ilih3B8Y873F2t0Zlq/eZmOaCtQcy94VN0cVrL+gLRetes43IBmHFwr34RUS3Q==
-X-Received: by 2002:a05:6512:749:b0:52b:bee0:54b0 with SMTP id 2adb3069b0e04-52ca6e90523mr5188931e87.54.1718602462976;
-        Sun, 16 Jun 2024 22:34:22 -0700 (PDT)
+        bh=i12zWNu8KlTv7/MNDqzK9U/bdW2I5k7ofAlbTITEnb0=;
+        b=vTpsULKvszpd2lwdT3j3Msh3ZpRqfp4Mr/6KL4pXS+oqBkJW5/h4o77ze+KRlH95wS
+         qUZp3jz2dLc9PWZfRW6ovK7iZ45Gp/CsxA6/P9LgbjovDROM1RLSb3uiUZTkku64W45V
+         1gltiiyhZe1gSpNhcW/hgznQVCc50WOEXHAlcvvNaOzWM37a4CUnRq/zuAqfZzCX6ss2
+         TH+b+bXf6tw8ucgRgrxUft84UG7SxMwEnLiC1bKa3GxRckKL9gMCuaCVK+/qPDKGl4Ww
+         wXlXWJFuHd4sH+JdxeOpC9JRyMn2nPhb3nTyHuAbRpHJR8/6AVE79bDPa5KKRp4PR2+e
+         Ti6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVFnbfIgm9sjPlX14PZpdQekdaiK78Clf2hHPLW/dI9bneMEH04oROBrL4NaemQMa77v39EW5dXtoSo+eQWpdBB8wWnnSIjo+o6a3lZijN5XXqCHPNEGDvtujfFERLMJ8UvzjkCdIGB
+X-Gm-Message-State: AOJu0YxO2JKy9Uj5KJH7i+am4/JVLS4siuqFWCk8jmOQO5IYNCVv0gl8
+	kAuBXPtSVXvMPakKSk02wP/u49jZ/g7vXlXSzPH0lQhZV7uBaydN
+X-Google-Smtp-Source: AGHT+IFOs8sWJOZ1Qx42nJmWJ/bSgd388ge+CDgPhz1DhWOXNvINt96KcZ4XUPBXgcEW8rI8sBWsCQ==
+X-Received: by 2002:a2e:9b54:0:b0:2eb:dc13:2d6b with SMTP id 38308e7fff4ca-2ec0e5c57a5mr55168201fa.13.1718604445880;
+        Sun, 16 Jun 2024 23:07:25 -0700 (PDT)
 Received: from ?IPV6:2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd? ([2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca4035856sm1085735e87.178.2024.06.16.22.34.21
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec05c17b0csm12351541fa.65.2024.06.16.23.07.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Jun 2024 22:34:22 -0700 (PDT)
-Message-ID: <59111915-f77b-42e2-af5e-ca479d1a037f@gmail.com>
-Date: Mon, 17 Jun 2024 08:34:20 +0300
+        Sun, 16 Jun 2024 23:07:25 -0700 (PDT)
+Message-ID: <b462fbc5-0ee0-4bd4-b889-01c09853c407@gmail.com>
+Date: Mon, 17 Jun 2024 09:07:24 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,102 +76,125 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: bu27034: Add a read only HWARDWAREGAIN
+Subject: Re: [PATCH 1/2] bu27034: ROHM BU27034NUC to BU27034ANUC
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
  Lars-Peter Clausen <lars@metafoo.de>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org
 References: <cover.1718013518.git.mazziesaccount@gmail.com>
- <5e88c7b7b0389c6c011f15e05e065791f7561cf5.1718013518.git.mazziesaccount@gmail.com>
- <20240615185036.7d1934c2@jic23-huawei>
+ <d43500621a2ad0811f58c8c7c87cbdc7b2abb8c1.1718013518.git.mazziesaccount@gmail.com>
+ <20240615184757.2148f7d7@jic23-huawei>
 Content-Language: en-US, en-GB
 From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240615185036.7d1934c2@jic23-huawei>
+In-Reply-To: <20240615184757.2148f7d7@jic23-huawei>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 6/15/24 20:50, Jonathan Cameron wrote:
-> On Mon, 10 Jun 2024 13:01:40 +0300
+On 6/15/24 20:47, Jonathan Cameron wrote:
+> On Mon, 10 Jun 2024 13:01:23 +0300
 > Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 > 
->> The ROHM BU27034 light sensor has two data channels for measuring
->> different frequencies of light. The result from these channels is
->> combined into Lux value while the raw channel values are reported via
->> intensity channels.
+>> The ROHM BU27034NUC was cancelled and BU27034ANUC is replacing this
+>> sensor. Use the BU27034NUC driver to support the new BU27034ANUC.
 >>
->> Both of the intensity channels have adjustable gain setting which
->> impacts the scale of the raw channels. Eg, doubling the gain will double
->> the values read from the raw channels, which halves the scale value. The
->> integration time can also be set for the sensor. This does also have an
->> impact to the scale of the intensity channels because increasing the
->> integration time will also increase the values reported via the raw
->> channels.
->>
->> Impact of integration time to the scale and the fact that the scale value
->> does not start from '1', can make it hard for a human reader to compute the
->> gain values based on the scale.
->>
->> Add read-only HARDWAREGAIN to help debugging.
+>> According to ROHM, the BU27034NUC was never mass-produced. Hence dropping
+>> the BU27034NUC support and using this driver to support BU27034ANUC
+>> should not be a problem to users.
 >>
 >> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-> Other than the thing the bot found with fallthrough on the switch statement
-> not being marked LGTM.
->> ---
->>   drivers/iio/light/rohm-bu27034.c | 14 +++++++++++++-
->>   1 file changed, 13 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/iio/light/rohm-bu27034.c b/drivers/iio/light/rohm-bu27034.c
->> index 51acad2cafbd..b299ff2aacce 100644
->> --- a/drivers/iio/light/rohm-bu27034.c
->> +++ b/drivers/iio/light/rohm-bu27034.c
->> @@ -149,7 +149,8 @@ static const struct iio_itime_sel_mul bu27034_itimes[] = {
->>   	.channel = BU27034_CHAN_##_name,				\
->>   	.channel2 = IIO_MOD_LIGHT_CLEAR,				\
->>   	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
->> -			      BIT(IIO_CHAN_INFO_SCALE),			\
->> +			      BIT(IIO_CHAN_INFO_SCALE) |		\
->> +			      BIT(IIO_CHAN_INFO_HARDWAREGAIN),		\
->>   	.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),	\
->>   	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),		\
->>   	.info_mask_shared_by_all_available =				\
->> @@ -992,6 +993,13 @@ static int bu27034_read_raw(struct iio_dev *idev,
->>   
->>   		return IIO_VAL_INT_PLUS_MICRO;
->>   
->> +	case IIO_CHAN_INFO_HARDWAREGAIN:
->> +		ret = bu27034_get_gain(data, chan->channel, val);
->> +		if (ret)
->> +			return ret;
->> +
->> +		return IIO_VAL_INT;
->> +
->>   	case IIO_CHAN_INFO_SCALE:
->>   		return bu27034_get_scale(data, chan->channel, val, val2);
->>   
->> @@ -1036,12 +1044,16 @@ static int bu27034_write_raw_get_fmt(struct iio_dev *indio_dev,
->>   				     struct iio_chan_spec const *chan,
->>   				     long mask)
->>   {
->> +	struct bu27034_data *data = iio_priv(indio_dev);
->>   
->>   	switch (mask) {
->>   	case IIO_CHAN_INFO_SCALE:
->>   		return IIO_VAL_INT_PLUS_NANO;
->>   	case IIO_CHAN_INFO_INT_TIME:
->>   		return IIO_VAL_INT_PLUS_MICRO;
->> +	case IIO_CHAN_INFO_HARDWAREGAIN:
->> +		dev_dbg(data->dev,
->> +			"HARDWAREGAIN is read-only, use scale to set\n");
+>> Fixes: e52afbd61039 ("iio: light: ROHM BU27034 Ambient Light Sensor")
 > 
-> return -EINVAL here.  You could use a fall through marking but it gains
-> little so I wouldn't bother.
+> This is an odd case.  I don't think a fixes tag is appropriate
 
-Right, thanks.
+Last week I was thinking this purely from a new BU27034ANUC user's point 
+of view. For user of the new sensor it appears the current driver is 
+broken. Hence this felt like a fix. That was last week though...
 
+  and I
+> don't think we can use the original compatible.
+
+I didn't think so either back in March. However, I forgot what so ever 
+plans I had while I was waiting for some internal decision regarding 
+upstreaming of this... I just went back to the mail I sent about this in 
+March, and I see we discussed adding new compatible back then, and I 
+also promised to send this patch as a series of smaller changes... Sorry!
+
+>  I don't mind breaking
+> support for the non existent port going forwards and indeed dropping
+> all indication it ever existed, but the old kernel's are out there and
+> even getting this into stable is far from a guarantee there won't be
+> a kernel run on a board that has this compatible but has the old
+> driver.
+
+I agree it's not a guarantee, but it would be the best we can do. At 
+least some stable users would upgrade - have upgraded - could pick 
+stable with fixed driver.
+
+>  It's also too big really to be stable material.
+
+I am not really going to argue on that. Asking for the stable 
+maintainers to look at this and port it is indeed a bit too much. I 
+guess we just need to live with having the b0rked version out there.
+
+> So I think the path forwards is a new compatible and drop the old
+> one from the dt bindings and driver.  Thus any new dts for a board
+> that actually has this device will use the new compatible and avoid
+> any risk of encountering the old driver.
+
+Yes. This should be the way forward.
+
+> Maybe we can be more relaxed - what actually happens if you use the
+> existing driver with the new part?
+
+I am pretty sure the world does not explode. I've not tried this so I am 
+not sure if reading the register area where the removed data channel 
+used to be is succeeding. My assumption is it does, but just returns 
+garbage. Furthermore, I am not sure what happens if those removed gains 
+are tried to be set.
+
+So, not tried but I would guess that the read data would just be insane.
+
+> I'm trusting you copied the maths right for the computed
+> channels (that take too long to review!)
+
+I understand the reviewing problem. I feel it is time consuming and 
+sometimes very much energy draining. :) And I _really_ appreciate the 
+work you do with reviewing and maintaining! But trusting me? I suppose 
+we all make mistakes XD
+
+>  So everything inline is
+> formatting type stuff.
+
+Thanks! I will fix the compatible and formatting. I agree with all of 
+the comments - but it may take a while until I send the next version. 
+I'm having a vacation and trying to spend my time AFK for next couple of 
+weeks. My old motorbike and tiny boat are calling for me - so amount of 
+code I write is (probably) inversely proportional to the amount of 
+sunshine in Finland ;)
+
+>>   	/*
+>>   	 * The BU27034 DATA0 and DATA1 channels are both on the visible light
+>>   	 * area (mostly). The data0 sensitivity peaks at 500nm, DATA1 at 600nm.
+>> -	 * These wave lengths are pretty much on the border of colours making
+>> -	 * these a poor candidates for R/G/B standardization. Hence they're both
+>> -	 * marked as clear channels
+>> +	 * These wave lengths are cyan(ish) and orange(ish), making these
+>> +	 * sub-optiomal candidates for R/G/B standardization. Hence they're
+>> +	 * both marked as clear channels.
 > 
->>   	default:
->>   		return -EINVAL;
->>   	}
+> I think just indexing them and not giving a modifier is probably better than
+> claiming they are clear.  Leave it more vague basically.
+
+Agree. I just didn't see leaving out the modifier as an option.
+
+>>   	 */
+>> -	BU27034_CHAN_DATA(DATA0, IIO_MOD_LIGHT_CLEAR),
+>> -	BU27034_CHAN_DATA(DATA1, IIO_MOD_LIGHT_CLEAR),
+>> -	BU27034_CHAN_DATA(DATA2, IIO_MOD_LIGHT_IR),
+>> +	BU27034_CHAN_DATA(DATA0),
+>> +	BU27034_CHAN_DATA(DATA1),
+>>   	IIO_CHAN_SOFT_TIMESTAMP(4),
+>>   };
 > 
 
 -- 

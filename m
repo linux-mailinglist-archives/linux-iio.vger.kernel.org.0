@@ -1,102 +1,157 @@
-Return-Path: <linux-iio+bounces-6344-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6345-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EEAF90AC0E
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 12:49:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8321990AD0D
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 13:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4595C2844AA
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 10:49:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9DD1C22326
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 11:34:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A991196C67;
-	Mon, 17 Jun 2024 10:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39077194AD4;
+	Mon, 17 Jun 2024 11:34:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bELuhYh7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABBC19598E;
-	Mon, 17 Jun 2024 10:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186C9191461;
+	Mon, 17 Jun 2024 11:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718621144; cv=none; b=qQXKdhZBNs1u08a/EspmuqlzmnyteyDQv0QQHj82JclMMX/sk3NNnlyOT9Q4RCJ6evR6ETFbEpIxcajdG06A7/YN9cwGzEYyFI07uBb2/F+NltJ5WZRyTP+jl87+EwAc3KwxJ9e3YsaSMrOWz9Cc2uHW4M9UUW5wFdxXVzZ5Jnc=
+	t=1718624090; cv=none; b=VIUxJ54R9CntAMouKc+I+MEumJJq0t5CKmsWglIG/AVAaQyVGGsZFvnaS5Gz6yF8I2wn/Dk4U8D0ImSLYnbHZtYdq8mt5C8GCvhnAPYnj5DkBZ78eeyGgJFeefBo7C1t6GYu2hf5mwrYNEwjl2cynjlkUQ4DlZekDrPLhHYjFfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718621144; c=relaxed/simple;
-	bh=OTuJ3HqmabYe5/7Op+lhMLRJmk9rH/AS810A5fih7Lc=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DCCM23dTn6iml5d0rJSx0vFkpidmedfJo2N8z1eHCLnJFiNjFarRRmGEG+ARDZ9qJJ9TQoOmUvpG3d3VXGwrqVSGDgrnGpph5XZbQDBqXWVTZ82ivy1Am2/LoD+0OWn6tGhx65Ca5Y3wd1TJGt+Ug7MGfxglPc7GsKuwqPZpDlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=Huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4W2mcp0jbRz6JBCM;
-	Mon, 17 Jun 2024 18:40:42 +0800 (CST)
-Received: from lhrpeml500005.china.huawei.com (unknown [7.191.163.240])
-	by mail.maildlp.com (Postfix) with ESMTPS id 866B7140A1B;
-	Mon, 17 Jun 2024 18:45:34 +0800 (CST)
-Received: from localhost (10.203.174.77) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 17 Jun
- 2024 11:45:33 +0100
-Date: Mon, 17 Jun 2024 11:45:32 +0100
-From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-CC: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, "Sascha
- Hauer" <s.hauer@pengutronix.de>, Pengutronix Kernel Team
-	<kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Abel Vesa
-	<abelvesa@kernel.org>, Peng Fan <peng.fan@nxp.com>, Michael Turquette
-	<mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Linus Walleij
-	<linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, "Dong
- Aisheng" <aisheng.dong@nxp.com>, Andi Shyti <andi.shyti@kernel.org>, Jonathan
- Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Srinivas
- Kandagatla <srinivas.kandagatla@linaro.org>, Uwe
- =?ISO-8859-1?Q?Kleine-K=F6nig?= <ukleinek@kernel.org>, Mark Brown
-	<broonie@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, "Daniel
- Lezcano" <daniel.lezcano@linaro.org>, Zhang Rui <rui.zhang@intel.com>, Lukasz
- Luba <lukasz.luba@arm.com>, Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Frank Li <Frank.Li@nxp.com>,
-	<devicetree@vger.kernel.org>, <imx@lists.linux.dev>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-clk@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
-	<linux-i2c@vger.kernel.org>, <linux-iio@vger.kernel.org>,
-	<linux-pwm@vger.kernel.org>, <linux-spi@vger.kernel.org>,
-	<linux-pm@vger.kernel.org>, <linux-watchdog@vger.kernel.org>, Wolfram Sang
-	<wsa+renesas@sang-engineering.com>
-Subject: Re: [PATCH v2] dt-bindings: drop stale Anson Huang from maintainers
-Message-ID: <20240617114532.00001b5f@Huawei.com>
-In-Reply-To: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
-References: <20240617065828.9531-1-krzysztof.kozlowski@linaro.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+	s=arc-20240116; t=1718624090; c=relaxed/simple;
+	bh=0jId0a55uaWiJleIvuFAp7uQffIjPdI/Ww2Wmybckx8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oL9tPIfe7GuLK0ebsQCprg3PcTF9GlKcKONjkwmt62OkE5ocFRUY0MDgCPr0/3lGoF9vS4rmFw8h/oRw7dCWcvyEY14E8rRWdK9zGz4Ba24mBDktV2IStlabbUCZ1s7HiWlTVDsra6F1zaoypbGTif5hw5477xcoHtJZ1x0LG+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bELuhYh7; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1718624088; x=1750160088;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=0jId0a55uaWiJleIvuFAp7uQffIjPdI/Ww2Wmybckx8=;
+  b=bELuhYh7XykUM0BiQF9UDGrfnbCZ6Lzs559ctU42KfI1u1R/k9ktGImi
+   E5Z8hmXyUMiIrtEOtbl75VROgOoKnPH+ihhyHtYy3b2W8WDLhnk3xx1UZ
+   ZvZJW7NaB0ushr6ilq7fESgacTX+YyRqtAw/9sV0rm4fyagsoLxFYMcqA
+   iZzcjj93kJxXc4kWhNLMBfBklcfQWA7F18ILb3Em+hQ/Nmb3HhP8WtoNa
+   645KHz1N6HF5UmO1sUl65XoeDFvJkKBfqxoGFaf7ugbRGgSuA5rYgSuRn
+   h7FisD4Jpb8fY7rVm6QkPekFeUFMxklF3JQC5qO93bBIF0TkVwdoZ/mpJ
+   A==;
+X-CSE-ConnectionGUID: AHV2rNPcQaixJuof2THFqg==
+X-CSE-MsgGUID: Jif929qLSimskTX1+cSEmQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11105"; a="15411182"
+X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; 
+   d="scan'208";a="15411182"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Jun 2024 04:34:47 -0700
+X-CSE-ConnectionGUID: E2+bi//pTLy/iZHHsXQ5NA==
+X-CSE-MsgGUID: 5FEHokIsRdCLQF89Jyr7oQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.08,244,1712646000"; 
+   d="scan'208";a="45698928"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 17 Jun 2024 04:34:46 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sJAdG-0004ET-29;
+	Mon, 17 Jun 2024 11:34:42 +0000
+Date: Mon, 17 Jun 2024 19:34:30 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yasin Lee <yasin.lee.x@outlook.com>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>
+Cc: oe-kbuild-all@lists.linux.dev, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	Yasin Lee <yasin.lee.x@gmail.com>
+Subject: Re: [PATCH v5 3/3] iio:proximity:hx9023s: Add TYHX HX9023S sensor
+ driver
+Message-ID: <202406171946.qe83Tde0-lkp@intel.com>
+References: <SN7PR12MB8101D4BC788B5954608D677DA4CC2@SN7PR12MB8101.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="ISO-8859-1"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: lhrpeml100006.china.huawei.com (7.191.160.224) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN7PR12MB8101D4BC788B5954608D677DA4CC2@SN7PR12MB8101.namprd12.prod.outlook.com>
 
-On Mon, 17 Jun 2024 08:58:28 +0200
-Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
+Hi Yasin,
 
-> Emails to Anson Huang bounce:
->=20
->   Diagnostic-Code: smtp; 550 5.4.1 Recipient address rejected: Access den=
-ied.
->=20
-> Add IMX platform maintainers for bindings which would become orphaned.
->=20
-> Acked-by: Uwe Kleine-K=F6nig <ukleinek@kernel.org>
-> Reviewed-by: Fabio Estevam <festevam@gmail.com>
-> Acked-by: Peng Fan <peng.fan@nxp.com>
-> Acked-by: Wolfram Sang <wsa+renesas@sang-engineering.com> # for I2C
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->=20
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com> # for IIO
+kernel test robot noticed the following build warnings:
 
+[auto build test WARNING on jic23-iio/togreg]
+[also build test WARNING on robh/for-next linus/master v6.10-rc4 next-20240613]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Yasin-Lee/dt-bindings-iio-proximity-Add-hx9023s-binding/20240616-154122
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git togreg
+patch link:    https://lore.kernel.org/r/SN7PR12MB8101D4BC788B5954608D677DA4CC2%40SN7PR12MB8101.namprd12.prod.outlook.com
+patch subject: [PATCH v5 3/3] iio:proximity:hx9023s: Add TYHX HX9023S sensor driver
+config: arm64-randconfig-r132-20240617 (https://download.01.org/0day-ci/archive/20240617/202406171946.qe83Tde0-lkp@intel.com/config)
+compiler: aarch64-linux-gcc (GCC) 13.2.0
+reproduce: (https://download.01.org/0day-ci/archive/20240617/202406171946.qe83Tde0-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202406171946.qe83Tde0-lkp@intel.com/
+
+sparse warnings: (new ones prefixed by >>)
+>> drivers/iio/proximity/hx9023s.c:955:44: sparse: sparse: incorrect type in assignment (different base types) @@     expected restricted __be16 @@     got int diff @@
+   drivers/iio/proximity/hx9023s.c:955:44: sparse:     expected restricted __be16
+   drivers/iio/proximity/hx9023s.c:955:44: sparse:     got int diff
+
+vim +955 drivers/iio/proximity/hx9023s.c
+
+   931	
+   932	static irqreturn_t hx9023s_trigger_handler(int irq, void *private)
+   933	{
+   934		struct iio_poll_func *pf = private;
+   935		struct iio_dev *indio_dev = pf->indio_dev;
+   936		struct hx9023s_data *data = iio_priv(indio_dev);
+   937		struct device *dev = regmap_get_device(data->regmap);
+   938		int ret;
+   939		unsigned int bit, i = 0;
+   940	
+   941		guard(mutex)(&data->mutex);
+   942		ret = hx9023s_sample(data);
+   943		if (ret) {
+   944			dev_warn(dev, "sampling failed\n");
+   945			goto out;
+   946		}
+   947	
+   948		ret = hx9023s_get_prox_state(data);
+   949		if (ret) {
+   950			dev_warn(dev, "get prox failed\n");
+   951			goto out;
+   952		}
+   953	
+   954		for_each_set_bit(bit, indio_dev->active_scan_mask, indio_dev->masklength)
+ > 955			data->buffer.channels[i++] = data->ch_data[indio_dev->channels[bit].channel].diff;
+   956	
+   957		iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer, pf->timestamp);
+   958	
+   959	out:
+   960		iio_trigger_notify_done(indio_dev->trig);
+   961	
+   962		return IRQ_HANDLED;
+   963	}
+   964	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

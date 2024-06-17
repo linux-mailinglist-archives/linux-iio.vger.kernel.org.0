@@ -1,63 +1,61 @@
-Return-Path: <linux-iio+bounces-6424-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6425-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0460B90BBA5
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 22:03:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45C790BBBE
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 22:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 025B41C22BFD
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 20:03:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82F79281DA9
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 20:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502F918F2F5;
-	Mon, 17 Jun 2024 20:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DE9818FC90;
+	Mon, 17 Jun 2024 20:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S5V9a9K5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ortWfGPH"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 070A3E542;
-	Mon, 17 Jun 2024 20:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227461684BB;
+	Mon, 17 Jun 2024 20:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718654585; cv=none; b=isMdLij3RC0flk2c6rrjP9Z/7Gs2OXbz8vw0ouVj+Hs7269eT/heRi8Xcy75JzZ8iRGO9wOi/Cbun7O2PqedJS/ENT7hQQ8fFNBjKV2AWQAUEohi63egtVGfwazegI2wna3vj5f64oizfk8lgjQDE29GWTdr1MAYwnrJff3raIg=
+	t=1718654952; cv=none; b=eMHasDFGibbKLn8Sv2A49P5UD9BcUntSHphfNWgA0/bSJ3tiGLJeG1Eevx8GzGHRuUcNTn8cSjcVrZR+YGA4gfQlE1woCqeg3imjVPjYJaD4aTjgMapcVGR75A5uE8NQVRAuWeNCPA5JDKtROCpYc7/9Lrn/XFRWnRfHHkbx3hQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718654585; c=relaxed/simple;
-	bh=C+5qpcinwg9TQTMO8Y5KHbFdJoCAd4QTmSUU4KKt8l0=;
+	s=arc-20240116; t=1718654952; c=relaxed/simple;
+	bh=PaIwXTtMekaj3Gv+ZkdLhymam1BV2Xw0/GRJanlgKQU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HnEnRVr/+6+1IHOPSBFEbDC5Gg8Liz/emZOkAO21oMsC0K6N68SoPnx+WaCVbUU5nj6Qwh4ttgdr6uGSGdjUUY+qybRJhC1JhvYSB+fSiOTW9ytdI4tFXMcus3GgnHMeCCqXtRhYDfkXNMr/hFvkssJJrAmnCzNaywqrOSgAuV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S5V9a9K5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 761FDC2BD10;
-	Mon, 17 Jun 2024 20:03:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sqEIZBWdv+7cYrBX2/grVs3Od+63urzisxIW3PmrVBC4LXEUju/+hmEdwXwh/TViPArUhJWLWungv3YyGM6SGDO/GMjc3e1npCXqiun6OHYkIkXoaO5pXRHsOErvwhRdNFNeQjKKmDQsT7U1hAKbJKg/U/hzuakOXBarW5ydUxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ortWfGPH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EC7EC2BD10;
+	Mon, 17 Jun 2024 20:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718654584;
-	bh=C+5qpcinwg9TQTMO8Y5KHbFdJoCAd4QTmSUU4KKt8l0=;
+	s=k20201202; t=1718654951;
+	bh=PaIwXTtMekaj3Gv+ZkdLhymam1BV2Xw0/GRJanlgKQU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S5V9a9K5DlZrebgzXB3/ufUjZw2++9r1da8nmDODk6/N5BejdvH8bIoWzeZ9hkWL+
-	 7eWfqOyVQKOuNYJy31yJKC649e+6+wIjJtPKKS9JAxTEvyR6aobLh0dw6PJzK997+Z
-	 6DfsAomXV5Rf94J/M2DTeSlaJWqYoYpSQGVBlhdQ5Roo5yHR7MOh40v7eGmvyvkECA
-	 d1zkZDvgVFBRUWGbfFKwqKGRFj9xFH8c9Js7i42a6P8m+osjH9/G4BdDeWx3FanffA
-	 gW9lNynWPUPyFb9T3dcLzbjBTlhlTRjysZgxeytc0/ZFJVa5x2QxtUIEG33P9khZW0
-	 LlL80zX9FIzvQ==
-Date: Mon, 17 Jun 2024 21:02:55 +0100
+	b=ortWfGPHbxUnGF2mNIPw2IEH/7vZZRHLMG9rqSdAET4FvWmlzqE28Jr5CSeTmVzvi
+	 iuZVxQEjfbZmMxhJvnno2a2SOr89l7i5GYgH7OWxqDpuUrgiOejO1ZpYOSFwLu469y
+	 C3U1eoZAbtsuf7jRLVCFMsIbIdu/Mc03Q1pY7Di28qVJQpGHPe8oY9xm9POPkdKojy
+	 1aLlURVTAVt+hbH//S1LvTLHUb5xR4o6hl2cq63HXy1FE6PbYYT7EZ8eKNFedJBKrv
+	 V85fT5FYZe4vbF+Rs7qYSwxAnRbdcpcgArXVE21rjyRcIaLk2r7Gkkch2g+09n9G1o
+	 rOvgcZl8gt8Rg==
+Date: Mon, 17 Jun 2024 21:09:04 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Francesco Dolcini <francesco@dolcini.it>, linux-iio@vger.kernel.org,
- Lars-Peter Clausen <lars@metafoo.de>, =?UTF-8?B?Sm/Do28=?= Paulo
- =?UTF-8?B?R29uw6dhbHZlcw==?= <joao.goncalves@toradex.com>, =?UTF-8?B?Sm8=?=
- =?UTF-8?B?w6Nv?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
- <jpaulo.silvagoncalves@gmail.com>, Conor Dooley <conor+dt@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, Conor
- Dooley <conor.dooley@microchip.com>, linux-kernel@vger.kernel.org,
- Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: add ti,ads1119
-Message-ID: <20240617210255.560f6188@jic23-huawei>
-In-Reply-To: <171865260138.3045376.15728867066959921704.robh@kernel.org>
-References: <20240617183215.4080-1-francesco@dolcini.it>
-	<20240617183215.4080-2-francesco@dolcini.it>
-	<171865260138.3045376.15728867066959921704.robh@kernel.org>
+To: Francesco Dolcini <francesco@dolcini.it>
+Cc: =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
+ <jpaulo.silvagoncalves@gmail.com>, Lars-Peter Clausen <lars@metafoo.de>,
+ =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
+ <joao.goncalves@toradex.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Matti Vaittinen <mazziesaccount@gmail.com>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] iio: trigger: Fix condition for own trigger
+Message-ID: <20240617210904.73774b39@jic23-huawei>
+In-Reply-To: <Zm6yrnDwSye85Hl1@livingston.pivistrello.it>
+References: <20240614143658.3531097-1-jpaulo.silvagoncalves@gmail.com>
+	<20240615115018.2b73d6b3@jic23-huawei>
+	<Zm6yrnDwSye85Hl1@livingston.pivistrello.it>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,77 +66,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 17 Jun 2024 13:30:01 -0600
-"Rob Herring (Arm)" <robh@kernel.org> wrote:
+On Sun, 16 Jun 2024 11:38:54 +0200
+Francesco Dolcini <francesco@dolcini.it> wrote:
 
-> On Mon, 17 Jun 2024 20:32:14 +0200, Francesco Dolcini wrote:
-> > From: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
-> >=20
-> > Add devicetree bindings for Texas Instruments ADS1119 16-bit ADC
-> > with I2C interface.
-> >=20
-> > Datasheet: https://www.ti.com/lit/gpn/ads1119
-> > Signed-off-by: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.c=
-om>
-> > Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> > Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> > ---
-> > v3:
-> >  - add avdd and dvdd supplies
-> >  - add Reviewed-by: Conor Dooley <conor.dooley@microchip.com
-> >=20
-> > v2:
-> >  - add diff-channels and single-channel
-> >  - add XOR check to make diff/single channel property required
-> >  - add interrupts, reset-gpios and vref-supply to the example
-> >  - fix missing additionalProperties/unevaluatedProperties warning in ch=
-annels
-> >  - remove ti,gain and ti,datarate as they aren't fixed hw properties
-> >  - remove unnecessary |
-> > ---
-> >  .../bindings/iio/adc/ti,ads1119.yaml          | 155 ++++++++++++++++++
-> >  MAINTAINERS                                   |   7 +
-> >  2 files changed, 162 insertions(+)
-> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads111=
-9.yaml
+> On Sat, Jun 15, 2024 at 11:50:18AM +0100, Jonathan Cameron wrote:
+> > On Fri, 14 Jun 2024 11:36:58 -0300
+> > Jo=C3=A3o Paulo Gon=C3=A7alves <jpaulo.silvagoncalves@gmail.com> wrote:
 > >  =20
+> > > From: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
+> > >=20
+> > > The condition for checking if triggers belong to the same IIO device =
+to
+> > > set attached_own_device is currently inverted, causing
+> > > iio_trigger_using_own() to return an incorrect value. Fix it by testi=
+ng
+> > > for the correct return value of iio_validate_own_trigger().
+> > >=20
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: 517985ebc531 ("iio: trigger: Add simple trigger_validation hel=
+per")
+> > > Signed-off-by: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex=
+.com> =20
 >=20
-> My bot found errors running 'make dt_binding_check' on your patch:
+> Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 >=20
-> yamllint warnings/errors:
+> >=20
+> > Ouch.  Can you give an example of resulting user visible result? That
+> > will help people decide whether to pick this up for their distro kernels
+> > etc.  In some cases, looks like we'll get garbage timestamps and in oth=
+ers
+> > may get stale data (or garbage). =20
 >=20
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/i=
-io/adc/ti,ads1119.yaml: single-channel: missing type definition
+> This was noticed while me and Joao were working on the ads1119 driver you
+> have been recently reviewing. We wanted to use iio_trigger_using_own()
+> and it was not behaving the right way. We looked into it and found the bu=
+g.
 >=20
-> doc reference errors (make refcheckdocs):
+> Given that I do not know the exact impact on the drivers that are using t=
+his
+> function.
 >=20
-> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/202406=
-17183215.4080-2-francesco@dolcini.it
+> > Odd no one has noticed this in the past whilst testing those dependent
+> > features in particular drivers and I worry a little that we may have bu=
+gs
+> > in the users as a result of iio_trigger_using_own() reporting the inver=
+se
+> > of the intended. I've take a quick look at the users and 'think' they a=
+re
+> > ok, but would definitely like a few others to confirm. =20
 >=20
-> The base for the series is generally the latest rc1. A different dependen=
-cy
-> should be noted in *this* patch.
+> All the users of iio_trigger_using_own() are older than the commit that
+> introduced the bug, it is safe to assume that they need the fix and
+> are expecting the function to behave the same way is documented and it was
+> before the bug was introduced.
+>=20
+> The broken commit is not that old and less than 10 IIO drivers are using =
+this
+> function. Given that I think that is not that odd that it took 1 year to =
+find
+> the bug.
 
-Just for the record (and so I remember when I get to reviewing the driver
-patch).
+Yes. Long tail of IIO devices that are used on the sort of board that only
+gets a kernel update once in a while and well behind mainline.  So indeed
+not that surprising :(=20
 
-This should note dependency on
-dd471a2b7759 ("dt-bindings: iio: adc: Add single-channel property")
-but seeing as that is only char-misc.git/char-misc-next
-I suspect that won't help the bot much!
+Applied to the fixes-togreg branch of iio.git
+
+Thanks,
+
+Jonathan
 
 >=20
-> If you already ran 'make dt_binding_check' and didn't see the above
-> error(s), then make sure 'yamllint' is installed and dt-schema is up to
-> date:
->=20
-> pip3 install dtschema --upgrade
->=20
-> Please check and re-submit after running the above command yourself. Note
-> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-> your schema. However, it must be unset to test all examples with your sch=
-ema.
+> Francesco
 >=20
 
 

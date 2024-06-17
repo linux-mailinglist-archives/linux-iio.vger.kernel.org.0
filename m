@@ -1,200 +1,206 @@
-Return-Path: <linux-iio+bounces-6426-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6427-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B8890BC31
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 22:31:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2140790BC56
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 22:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 10707B239E8
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 20:31:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 696EEB20FE7
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 20:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4259A198A38;
-	Mon, 17 Jun 2024 20:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7E9A18FC8A;
+	Mon, 17 Jun 2024 20:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTtYLqXY"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bOvOFdJ9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E29198A3E
-	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 20:30:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B59067492
+	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 20:48:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718656241; cv=none; b=IvWM7jaKL/N6MdAYylDacGverPq248YWZZnsqEAHXb4AK5STnzOB7r/oVWNiSX4D6CsIf6CK/LAMtzyfs9GgdTgqz2KCaGn8blvFzo3nTfhDUkGkl1GQ4E8n3DwvvyZRCCayuoLhM+NI32uhH46NsqJrZsi9xxi7F06qs/nqxRA=
+	t=1718657335; cv=none; b=ADT1/Ma0J6V9ZRJYJQm59W4R8iLPwaoZgYFSnPwY6/nRfESLIoFKfHo3dhBgjv9HjwoRwFxieo25k6nSrrFQu5il8dXvoAECO2hc70OSoMP0VbdN7dXc8MXNzVkIQ8ATYnMoFkDEBCOmXwF1JS/0c2llprW/bLIGzsILSrmjIqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718656241; c=relaxed/simple;
-	bh=KiFjhI9yXpzsfMw5rdnJmO9lBAbpypjYlQi4CIn3FFY=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V7W5+MoA7zR7QUWkZWjBtHKEzVDTMIDRY6k3sZeL5bfF5ZXKdgAqZcX5RL6KeupgNFLKmqjV92ns1e2WRjgI5QJolS4+0GrFTTHnOshkpPd+1PsyEsWOtsBxio7lwHF1RvrPJCltf1vTT1nL1mKSs5Fi5w+BrGqC1JnzBGTGjzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTtYLqXY; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-57ccd1111b0so1466325a12.3
-        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 13:30:38 -0700 (PDT)
+	s=arc-20240116; t=1718657335; c=relaxed/simple;
+	bh=+wg5rGWnub6d6ueoxs/8H2knoEi7JkxL+8IPuLbzhZo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MgBJX3+77GxHyRRAiEOR2Up1tK9/TF1RAwUtLkL5sGymAB4Ob6y60xN1YaPOvp9Z4Du035IIS2YtKpAVxp88rzI0BLAY6AmUrzNsWEqNxgwa9kNW6KxfmlVLlXSb/thIez+OzQlpupuq49WWcvDJpoAjfD1n+Zdf0VUkcjjbl4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bOvOFdJ9; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-35e1fcd0c0fso3857811f8f.0
+        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 13:48:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718656237; x=1719261037; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=92Pp25wxEMbOSvfsk3ayfLtn3nMWsq/PboWgAnWP8fU=;
-        b=JTtYLqXYIxFGComADfTitP5p/54ZOqYjgMq+hxW0XIvRc1PeTtDodDEQVBLoByD8Dw
-         zf4zMKecEC+s++fcN289pkrtHDe3i81NsjViN8YD18yzOI/5rF0Olh2JhYDxml6RpzG7
-         BrcACrH1HJAFdh/jWfAFU1/Klxk3Tb0hCCuw9pe/7k8IAO2LiIMTRejpLQHiL0jucm13
-         MURuuw4xenBNRHCmGk0q2/X6t3yd8IE15gM0d9rHsQvA2Yl5WnCavUNQYWWi/x1rGBXR
-         UPUoHjOnl2pDyljRBnQH2bwjOO7naElkj8ADQ5GDn8gyHX/1sqmIUDUC0u2f7nfgpqdG
-         06Tw==
+        d=broadcom.com; s=google; t=1718657332; x=1719262132; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=4Prxca8WsXgeUFt4L2M3lgOG9HB9DoX/SrgkfE/LHB8=;
+        b=bOvOFdJ9xjH1W5FdxmBv9AcBUc+GA2jyPU/nXMv50RZdB6L3AfRbk/LQEcZPtFYomm
+         gdGLW2sL5Mp9aUHDRclc6VspKgx8b8yGvgXwTQZSY8doC/QTADg5g5zUApAJ67NBWWgp
+         ei3kv54Jgndh/qaRQ5DDXPbq61I//rQNNum5o=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718656237; x=1719261037;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1718657332; x=1719262132;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=92Pp25wxEMbOSvfsk3ayfLtn3nMWsq/PboWgAnWP8fU=;
-        b=uC+lM8PJZa74kAo68NVxIERIURXxuTJXsc2iVxmhWI6omer1rmSqLu8yssI7j/QL9R
-         nEWQjj5cSoAvAZhkOy4NLUuWR0AkxBc/yjlpRezhbxcOA3VKWwnOni/tTUuyFhsGNeXS
-         djlGaUh6eTWpHWqLZWzK0O5arrEogwSbYunHzB96aGFmSyC+NJ13SXHFXZJd9hM9N3Xj
-         rnRovo0DlsV9GhEiQSx6FsuckuCH3vGQ7RuZvirGFuLq/REq3347J6O1CLEP3Lpgt5EA
-         vD1kIiDg/NLJiQA93Xc/wC/+hdKtT0s9pchABbRR9BrtMuEyyHsVuJPo2xH0tYpE5Hyx
-         rdMg==
-X-Forwarded-Encrypted: i=1; AJvYcCVM2EYPpcw3HIuEJQtwo97QNeY4zpTkZXifAuHefFf7JKlwitjZRzZwfLVj0/tQKJ+j1rWtbMYb+o1fY9rFTU+Lvhdy0kG4MwMC
-X-Gm-Message-State: AOJu0YwNQ6g/UkVXQcYP8VsLCg0KsUVQJnDF89qIcW9tvr6c5fjUWe5M
-	XfmTaVwmj3SJGNH00wkrenYZdih5W6Ezi470uvR147f8udZq/u6F
-X-Google-Smtp-Source: AGHT+IGCI2T+QgYFah8v9Tnayn4UwwUggNSfg4VrvgEVLaQrXtwL8b/aooK2jLjf1n+WZ2C8VKJLyQ==
-X-Received: by 2002:a50:d514:0:b0:57c:5f88:7c69 with SMTP id 4fb4d7f45d1cf-57cbd8b9c4amr8839890a12.38.1718656237223;
-        Mon, 17 Jun 2024 13:30:37 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:b152:a6ad:d6c8:f0e8])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb9b7c1d8sm6620704a12.53.2024.06.17.13.30.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 13:30:36 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Mon, 17 Jun 2024 22:30:34 +0200
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>,
-	Adam Rizkalla <ajarizzo@gmail.com>, linux-iio@vger.kernel.org
-Subject: Re: [PATCH] iio: pressure: bmp280: fix bmp580 temp read
-Message-ID: <20240617203034.GA11985@vamoiridPC>
-References: <20240602201200.30418-1-ajarizzo@gmail.com>
- <20240604200107.7f68dbf4@jic23-huawei>
- <20240604191904.GA19711@vamoiridPC>
- <20240617205726.7ddcd6eb@jic23-huawei>
+        bh=4Prxca8WsXgeUFt4L2M3lgOG9HB9DoX/SrgkfE/LHB8=;
+        b=b4WOpJlIfV2ZsFMcVwqya4ZlhDPIaxjJrMzkJOppc0GMgCYkLmfgu4XdaTP7BBRyRi
+         mT388S9XMnTWLBXkEQhQ1Q74NmtrQfCqBCV/P4sYywTXZpx0FhvDyJ5lYjWs0QuWZ1LJ
+         RSdbvqMMPSxDVUdeqqV+2f9eHjZyqjZT+C9fFZ0gTfVgQB1UCG0HLtmWcE2N09et+P1J
+         VcSuJJ9YdwlwlxR1soGgxlkEwLLaZ97PmzFNqt7ctmW1t8AVNNcZqMlHYSeA5HU/7/u5
+         DIt0zvc7P00vsc0JdP/XgsuDZqLYVvEkktNG/KYEChcQv1CdquGFpK1KtCpTiaDjVPz7
+         wbpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWnUj9+72sCDd5jpDdQI5YLMJYg1Cy3zyHqxSTsYD74eR7dLn/RApk5nvlPkcIAR6CMNhQ3xkQW1lNczi/zM2FG9REtjTCCnPbI
+X-Gm-Message-State: AOJu0YymjiyCYDC3K9YhkeYzv4oCgtscdyP9H6oM02F30u0OOU+XdykX
+	H/htStUuXc/bANBv0NWml9tyLzXkQ6nN7l00flMv6hqzm8yADq24+xdjzW/ZLg==
+X-Google-Smtp-Source: AGHT+IHEU62suYWnRXwKdzpdAXSz5KBYd2epiiTyciPo+/4BqNzGad5ovJJPFBopMPwoL4rztkfXKQ==
+X-Received: by 2002:a5d:4b83:0:b0:360:7557:3239 with SMTP id ffacd0b85a97d-3607a763270mr7051286f8f.20.1718657332016;
+        Mon, 17 Jun 2024 13:48:52 -0700 (PDT)
+Received: from [10.66.192.68] ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56db62e5sm547701466b.84.2024.06.17.13.48.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jun 2024 13:48:51 -0700 (PDT)
+Message-ID: <19e8a6dd-b0d4-4e88-9ad2-e38787a5aee8@broadcom.com>
+Date: Mon, 17 Jun 2024 13:48:38 -0700
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240617205726.7ddcd6eb@jic23-huawei>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] iio: dac: Fix dependencies of AD9739A
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
+ lkp@intel.com, zack.rusin@broadcom.com, dri-devel@lists.freedesktop.org,
+ daniel@ffwll.ch, airlied@gmail.com, tzimmermann@suse.de, mripard@kernel.org,
+ maarten.lankhorst@linux.intel.com, linux-iio@vger.kernel.org,
+ jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
+ dragos.bogdan@analog.com, anshulusr@gmail.com, andrea.collamati@gmail.com,
+ oe-kbuild-all@lists.linux.dev, x86@kernel.org
+References: <202406152104.FxakP1MB-lkp@intel.com>
+ <20240616012511.198243-1-alexey.makhalov@broadcom.com>
+ <20240616012511.198243-2-alexey.makhalov@broadcom.com>
+ <20240617090428.GBZm_8HMQ9XJe_VQga@fat_crate.local>
+Content-Language: en-US
+From: Alexey Makhalov <alexey.makhalov@broadcom.com>
+Autocrypt: addr=alexey.makhalov@broadcom.com; keydata=
+ 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 EuY0
+In-Reply-To: <20240617090428.GBZm_8HMQ9XJe_VQga@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 17, 2024 at 08:57:26PM +0100, Jonathan Cameron wrote:
-> On Tue, 4 Jun 2024 21:19:04 +0200
-> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+
+
+On 6/17/24 2:04 AM, Borislav Petkov wrote:
+> On Sat, Jun 15, 2024 at 06:25:11PM -0700, Alexey Makhalov wrote:
+>> 0-DAY CI Kernel Test automation reported an issue:
+>>
+>>     ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_read':
+>>     regmap-spi.c:(.text+0xf): undefined reference to `spi_write_then_read'
+>>     ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_gather_write':
+>>     regmap-spi.c:(.text+0x2b4): undefined reference to `spi_sync'
+>>     ld: drivers/base/regmap/regmap-spi.o: in function `spi_sync_transfer.constprop.0':
+>>     regmap-spi.c:(.text+0x337): undefined reference to `spi_sync'
+>>     ld: drivers/base/regmap/regmap-spi.o: in function `regmap_spi_async_write':
+>>     regmap-spi.c:(.text+0x445): undefined reference to `spi_async'
+>>     ld: drivers/iio/dac/ad9739a.o: in function `ad9739a_driver_init':
+>>     ad9739a.c:(.init.text+0x10): undefined reference to `__spi_register_driver'
+>>
+>> Kconfig warnings: (for reference only)
+>>     WARNING: unmet direct dependencies detected for REGMAP_SPI
+>>     Depends on [n]: SPI [=n]
+>>     Selected by [y]:
+>>     - AD9739A [=y] && IIO [=y] && (SPI [=n] || COMPILE_TEST [=y])
+>>
+>> The issue is caused by CONFIG_AD9739A=y when CONFIG_SPI is not set.
+>>
+>> Add explicit dependency on SPI and conditional selection of REGMAP_SPI.
+>>
+>> Fixes: e77603d5468b ("iio: dac: support the ad9739a RF DAC")
+>> Reported-by: kernel test robot <lkp@intel.com>
+>> Closes: https://lore.kernel.org/oe-kbuild-all/202406152104.FxakP1MB-lkp@intel.com/
+>> Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
+>> ---
+>>   drivers/iio/dac/Kconfig | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/iio/dac/Kconfig b/drivers/iio/dac/Kconfig
+>> index 3c2bf620f00f..d095f4d26e49 100644
+>> --- a/drivers/iio/dac/Kconfig
+>> +++ b/drivers/iio/dac/Kconfig
+>> @@ -133,8 +133,8 @@ config AD5624R_SPI
+>>   
+>>   config AD9739A
+>>   	tristate "Analog Devices AD9739A RF DAC spi driver"
+>> -	depends on SPI || COMPILE_TEST
+>> -	select REGMAP_SPI
+>> +	depends on SPI
+>> +	select REGMAP_SPI if SPI_MASTER
+>>   	select IIO_BACKEND
+>>   	help
+>>   	  Say yes here to build support for Analog Devices AD9739A Digital-to
+>> -- 
 > 
-> > On Tue, Jun 04, 2024 at 08:01:07PM +0100, Jonathan Cameron wrote:
-> > > On Sun,  2 Jun 2024 15:12:01 -0500
-> > > Adam Rizkalla <ajarizzo@gmail.com> wrote:
-> > >   
-> > > > Fix overflow when storing bmp580 temperature reading and preserve sign.
-> > > > 
-> > > > This patch re-applies the fix in [1] after the merge conflict resolution
-> > > > mentioned in [2].
-> > > > 
-> > > > [1] https://lore.kernel.org/all/Zin2udkXRD0+GrML@adam-asahi.lan/
-> > > > [2] https://lore.kernel.org/linux-kernel/20240531140621.264f0848@canb.auug.org.au/
-> > > > 
-> > > > Signed-off-by: Adam Rizkalla <ajarizzo@gmail.com>  
-> > > 
-> > > Thanks! I was just about to email about this fix currently being lost in
-> > > linux-next.
-> > > 
-> > > Rather than dance around this, I'm going to pull the later part of Vasielios'
-> > > series off the togreg tree for now then reapply later once I have the fix
-> > > in my upstream.
-> > > 
-> > > It's a shame that we need to do the maths in driver to keep within range.
-> > > Maybe we can be cheeky and avoid doing the division?
-> > > I believe the IIO core formatting code should be fine with that as it
-> > > already casts up to 64 bits to do the maths.
-> > > 
-> > > (s64)*raw_temp * 250);
-> > > 
-> > > bmp580_temp_coeffs = {1, 18}
-> > > 
-> > > Anyhow, I've dropped (for now) the following patches from my togreg tree
-> > >   iio: pressure: bmp280: Generalize read_{temp,press,humid}() functions
-> > >   iio: pressure: bmp280: Add SCALE, RAW values in channels and refactorize them
-> > >   iio: pressure: bmp280: Add triggered buffer support
-> > > 
-> > > Jonathan
-> > >   
-> > 
-> > Hi Jonathan, Adam,
-> > 
-> > I had mentioned it here [1], when I applied v7 of the patches that this would 
-> > happen. No worries though,  I already have the new version of these 3 patches
-> > that include Adam's fix, so when we have it upstream I can resubmit them
-> > (no need to keep a note Jonathan, I have it) and I think we will be fine!
+> FWIW, I appreciate it you fixing other breakages. However, there's a patch for
+> that already, on its way:
 > 
-> Excellent.  The fix is no in the upstream of my togreg branch.
+> https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=fixes-togreg&id=75183e461ce033605c3e85518a9f3d4e4ef848a3
 > 
-> I've only pushed it out as testing for now, but if you send a version based
-> on my testing branch or 20460472952 (currently char-misc-next head) that would be great.
+> Don't get discouraged, though, when fixing something that is not in our
+> immediate area of interest!
 > 
-> Thanks,
+> :-)
 > 
-> Jonathan
+> Thx.
 > 
 
-Hi Jonathan,
-
-Thank for letting me know, I can send it by tomorrow.
-
-Cheers,
-Vasilis
-
-> > 
-> > Cheers,
-> > Vasilis
-> > 
-> > [1]: https://lore.kernel.org/linux-iio/20240512230524.53990-1-vassilisamir@gmail.com/T/#t
-> > 
-> > > > ---
-> > > >  drivers/iio/pressure/bmp280-core.c | 6 ++++--
-> > > >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > > > 
-> > > > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
-> > > > index 95c88b0e1c49..3a003843c79c 100644
-> > > > --- a/drivers/iio/pressure/bmp280-core.c
-> > > > +++ b/drivers/iio/pressure/bmp280-core.c
-> > > > @@ -1752,6 +1752,8 @@ static int bmp580_read_temp(struct bmp280_data *data, s32 *raw_temp)
-> > > >  		dev_err(data->dev, "reading temperature skipped\n");
-> > > >  		return -EIO;
-> > > >  	}
-> > > > +	*raw_temp = sign_extend32(*raw_temp, 23);
-> > > > +	*raw_temp = ((s64)*raw_temp * 1000) / (1 << 16);
-> > > >  
-> > > >  	return 0;
-> > > >  }
-> > > > @@ -2154,7 +2156,7 @@ static irqreturn_t bmp580_buffer_handler(int irq, void *p)
-> > > >  
-> > > >  static const int bmp580_oversampling_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
-> > > >  static const u8 bmp580_chip_ids[] = { BMP580_CHIP_ID, BMP580_CHIP_ID_ALT };
-> > > > -static const int bmp580_temp_coeffs[] = { 1000, 16 };
-> > > > +static const int bmp580_temp_coeffs[] = { 1, 0 };
-> > > >  static const int bmp580_press_coeffs[] = { 1, 64000};
-> > > >  
-> > > >  const struct bmp280_chip_info bmp580_chip_info = {
-> > > > @@ -2184,7 +2186,7 @@ const struct bmp280_chip_info bmp580_chip_info = {
-> > > >  	.iir_filter_coeff_default = 2,
-> > > >  
-> > > >  	.temp_coeffs = bmp580_temp_coeffs,
-> > > > -	.temp_coeffs_type = IIO_VAL_FRACTIONAL_LOG2,
-> > > > +	.temp_coeffs_type = IIO_VAL_INT,
-> > > >  	.press_coeffs = bmp580_press_coeffs,
-> > > >  	.press_coeffs_type = IIO_VAL_FRACTIONAL,
-> > > >    
-> > >   
-> 
+Lesson learned and noted for next time to address only related/new 
+warnings and errors. Thanks!
 

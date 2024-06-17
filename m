@@ -1,136 +1,128 @@
-Return-Path: <linux-iio+bounces-6343-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6342-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC8890AA99
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 12:02:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1388390AAD3
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 12:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 635631F2121F
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 10:02:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E7FEB2FB93
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 09:36:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 784751940AB;
-	Mon, 17 Jun 2024 10:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710511946D7;
+	Mon, 17 Jun 2024 09:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="TXfbg8gC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Oi/pzgcx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CA8194092;
-	Mon, 17 Jun 2024 10:02:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A312F1946C2;
+	Mon, 17 Jun 2024 09:35:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718618556; cv=none; b=s/UJ3ZNfMP9GqUj7TMFE/GtfaB3R67XZ1A0NPwoVCb2DYILAOGNBy3EdcDofOgYvicgv3ZmaenJ1d/0e02ioO8ACvu55aNchYP1FzZGpOOmZlohnlPk7qA60EJ5RHNxzvTJOik5zt7T6VDd204ENG6m4Cqf2KndZBwTnPimMsXk=
+	t=1718616947; cv=none; b=uXPFzTtizB8yjc/QCzVk0fi+Z336EZQBEDqOPBG9lnnLRafwFY0sgaydBiNihq/6FePPIZX5NbEO/QKiKZmmWAGwZYdp8etAXZX/x58CdH6CUOKEMKu+so+AWrUdVwB6qzcy8u3k1RYBFwB1uvSJRaFVqd2p7+7eJCAmNFjMJNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718618556; c=relaxed/simple;
-	bh=5ucFmytPGWUITdYIUNvYuJbY8zzIT+lAWia57YkFvQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ajq7kUaxZWEaQ2FpFfNYU9FdPATHRSB/u/RZcXrTTXkCHByrE80MBkmRRWpBe5YWi+1WrkSCPzCTK8gxNEWlczdRY9lbqSciBD94lcD/W3DnSPPsvAyl1X3jJePbQpO5v6LCvo43bbZ/rb1yY8AskxrSPiTwBTgWGi/A/eRvWs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=TXfbg8gC; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id ABDC240E021A;
-	Mon, 17 Jun 2024 10:02:26 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id p-SwtidTbXwT; Mon, 17 Jun 2024 10:02:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1718618542; bh=hk8qAv1xkelStwfpGcnWoiVIdVGUKqufug9abuox7ko=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TXfbg8gChJROKcS7Y/Q95/XP3hPTOGtUQG9RULQxSAPp/U31ELpExyR7R2eP6JvPv
-	 GBo/JMTUPKJkzBmwfvqv3Aa/OHmtphGUF5ObrfG0KD6KN/uxUNCGaFKX/toaaPmocK
-	 dUruAb5F/VIBChTG3m2nmJRfiI+pJLYYTnNAVP86hIqUJQbLnIjXor7z6r8JsOWymw
-	 +zP7yAp+bxNprgPOZYlLabLJOC+mA1IKIsZ15Ws2UtxL0uWgf/dYDonpJ+c9zA3MnI
-	 KtB0BfSYZgSXDdgBumPTd69RR6BEC07BGeujoaoetOGsO6aXSDtqfUqgJ8IZdx3VXK
-	 bE/EAEhvtfRiy1hhkwI5VkZhHfhA88mlCAjWL3OWlao+ZQceZvRnrDiOpvPskzytIl
-	 dR/2Ttih6SHsZR7ZY6qU2rBTgc2cFyl1BJTz53XnjswrTPrIMv6d7MnlWZ/IWHN5rZ
-	 JfviQAn9l4hwngIfPd6YcRZVzp6Y93p0TAmsxRtBobXqiWP0emeMZV6i1St+lKRzsO
-	 FCl39wI/2EuMIbvWDVPxd49vkTXwgTLK5WYfUjDQPQN5bxDD5rYjIRdG0iFTXst0Y/
-	 3/3ywFM9g6Vor4KD6CyKgeLMCuqNBLfro21rP6XXFx+k7Z4itqZLgT5WJ7Xm3KbrWM
-	 jGWNxY3vqsz4yn0YbfBQH0I4=
-Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 156CB40E01F9;
-	Mon, 17 Jun 2024 10:01:56 +0000 (UTC)
-Date: Mon, 17 Jun 2024 12:01:50 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Zack Rusin <zack.rusin@broadcom.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>
-Cc: Alexey Makhalov <alexey.makhalov@broadcom.com>,
-	linux-kernel@vger.kernel.org, bcm-kernel-feedback-list@broadcom.com,
-	lkp@intel.com, zack.rusin@broadcom.com,
-	dri-devel@lists.freedesktop.org, daniel@ffwll.ch, airlied@gmail.com,
-	tzimmermann@suse.de, mripard@kernel.org,
-	maarten.lankhorst@linux.intel.com, linux-iio@vger.kernel.org,
-	jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
-	dragos.bogdan@analog.com, anshulusr@gmail.com,
-	andrea.collamati@gmail.com, oe-kbuild-all@lists.linux.dev,
-	x86@kernel.org
-Subject: Re: [PATCH 1/2] drm/vmwgfx: Fix missing HYPERVISOR_GUEST dependency
-Message-ID: <20240617100150.GDZnAJjoH5wZKu2OAV@fat_crate.local>
-References: <202406152104.FxakP1MB-lkp@intel.com>
- <20240616012511.198243-1-alexey.makhalov@broadcom.com>
- <20240617090709.GCZm_8vdnLzt048UH_@fat_crate.local>
+	s=arc-20240116; t=1718616947; c=relaxed/simple;
+	bh=ISTGOrNx+qky+Jf5GkYALSgWEhhMC0r4cnJ4/R8olvw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ibCCZdIfBmR2Zy+D/6i1QIFY+63YgvcPBu1AdA1PB4tPwsQZeUsjQfNIALyj470NZLBSgeK2lfqVlArebrC2V2+tWRMK1yceazQuVmjAKTZ50VlXlVyP7zWq/dEh7LmpCMqigfQSZHydU9CrpOaBC97AnvqzQ14eOO5LV8ZLz8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Oi/pzgcx; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4218314a6c7so34768705e9.0;
+        Mon, 17 Jun 2024 02:35:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718616944; x=1719221744; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NItPfN2Qb0jONFGc3TV9yNBIU5BBovoAluD8hqM7ItQ=;
+        b=Oi/pzgcxhbH+1ZLhhaWr6YN40AuJ5sFQJwk79rQSW+OsFoI77NmYUswqcZwDHIGTxd
+         nrKW6hpc/cjfBc+YgouNVefyDvhXaG5NdHxewRFgJkyk/X46V21PibgjV7u69VLMKXTa
+         6Qf+9D+GC4pKIs8V4xbQu58y8aP9dMAv4ELGgNPRtEk2If6ASgc0niZnRNCLmL7ILhrs
+         KSPxIh9V43tPRnqP9G8BqQ7+G3vaB23Xh3sD3mv1heaT+DxgyjHBIq1ZGQUxRjk308Zt
+         T3laH7btUhIpu3mSk+gvmht/5Wy2E5pvvhe/H8sqvDbDL5ooLP2/lzGjA35/CuKsxVXf
+         yfJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718616944; x=1719221744;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NItPfN2Qb0jONFGc3TV9yNBIU5BBovoAluD8hqM7ItQ=;
+        b=U5sIuKaXvq0VNnlgX2Ftha+e27oTGwsUoT3JDY88hg21xgid0Wqu2VRQ2UcSGA4TuQ
+         nLev9VqhMAGYIeoEdIRGMISpdffu/imhj+E0QijBfNah/fjZCQq93jpDMVlFB61UJHvl
+         yP63FvwqGsgf+npFmLgbgI5rTx4IUZC2FXspS1MzbpZyJDECNgePcn9ZYjAPKDVNnVRp
+         Nxqir5uHraTVE2b3Dc0oR2e0rvfdO50ZFvnL2j1OP1L/CrA1nI23BrTADx03YABZ5vgS
+         wMR8+P8U40Vu+d3ZE8mHi7AN0KdWWATo+QAv0IBFT5UaKebkBQmcy8sm870rCCH4d5Tr
+         s3gg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDzzklHP1YZn5SjNGQZRgYfY3LxMhGrlpGqT7OCzmwHAqpd3C6p2z2vKJFOvZ6114RZRuB3/N6sc6WMZ5xZlDEyVw4ByYSF40izEDDDO8lku+YuwKQJ6wGDAYYoX8Uw5jw7khWZFGN
+X-Gm-Message-State: AOJu0YxaRnPrUKFGsTZh5BLof4KwdCkalhwmhv1OztsvtiZAUH5rfg/Z
+	BywWElPU8JRM3O++/uRMoNTMqFow9wo5b/yrPCSI6YJ/q2eIT84k
+X-Google-Smtp-Source: AGHT+IHkhFqJsu0zmOOch7REDu686xAm493O5ju1z/aAIv+qBa/8GbjT4Fi1o5mdTMUXXVy7avigzA==
+X-Received: by 2002:adf:f7d1:0:b0:360:9625:c571 with SMTP id ffacd0b85a97d-3609625c5f8mr1581491f8f.48.1718616943752;
+        Mon, 17 Jun 2024 02:35:43 -0700 (PDT)
+Received: from [10.76.84.188] ([5.2.194.157])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36075104b8bsm11521810f8f.105.2024.06.17.02.35.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jun 2024 02:35:43 -0700 (PDT)
+Message-ID: <dbf947a3-3d3b-4686-a707-a813b6a4ce5a@gmail.com>
+Date: Mon, 17 Jun 2024 12:35:42 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240617090709.GCZm_8vdnLzt048UH_@fat_crate.local>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/5] iio: adc: ad7192: use
+ devm_regulator_get_enable_read_voltage
+To: Jonathan Cameron <jic23@kernel.org>, David Lechner <dlechner@baylibre.com>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Mark Brown <broonie@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240612-iio-adc-ref-supply-refactor-v2-0-fa622e7354e9@baylibre.com>
+ <20240612-iio-adc-ref-supply-refactor-v2-1-fa622e7354e9@baylibre.com>
+ <20240615130858.22043725@jic23-huawei>
+Content-Language: en-US
+From: Alisa-Dariana Roman <alisadariana@gmail.com>
+In-Reply-To: <20240615130858.22043725@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 17, 2024 at 11:07:09AM +0200, Borislav Petkov wrote:
-> On Sat, Jun 15, 2024 at 06:25:10PM -0700, Alexey Makhalov wrote:
-> > VMWARE_HYPERCALL alternative will not work as intended without
-> > VMware guest code initialization.
-> > 
-> > Reported-by: kernel test robot <lkp@intel.com>
-> > Closes: https://lore.kernel.org/oe-kbuild-all/202406152104.FxakP1MB-lkp@intel.com/
-> > Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
-> > ---
-> >  drivers/gpu/drm/vmwgfx/Kconfig | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/gpu/drm/vmwgfx/Kconfig b/drivers/gpu/drm/vmwgfx/Kconfig
-> > index faddae3d6ac2..6f1ac940cbae 100644
-> > --- a/drivers/gpu/drm/vmwgfx/Kconfig
-> > +++ b/drivers/gpu/drm/vmwgfx/Kconfig
-> > @@ -2,7 +2,7 @@
-> >  config DRM_VMWGFX
-> >  	tristate "DRM driver for VMware Virtual GPU"
-> >  	depends on DRM && PCI && MMU
-> > -	depends on X86 || ARM64
-> > +	depends on (X86 && HYPERVISOR_GUEST) || ARM64
-> >  	select DRM_TTM
-> >  	select DRM_TTM_HELPER
-> >  	select MAPPING_DIRTY_HELPERS
-> > -- 
+On 15.06.2024 15:08, Jonathan Cameron wrote:
+> On Wed, 12 Jun 2024 16:03:05 -0500
+> David Lechner <dlechner@baylibre.com> wrote:
 > 
-> Right, I'll queue this soon but it doesn't reproduce here with gcc-11 or gcc-13.
-> This must be something gcc-9 specific or so...
+>> This makes use of the new devm_regulator_get_enable_read_voltage()
+>> function to reduce boilerplate code.
+>>
+>> Error messages have changed slightly since there are now fewer places
+>> where we print an error. The rest of the logic of selecting which
+>> supply to use as the reference voltage remains the same.
+>>
+>> Also 1000 is replaced by MILLI in a few places for consistency.
+>>
+>> Signed-off-by: David Lechner <dlechner@baylibre.com>
+> 
+> Complicated bit of code, but seems correct.
+> However, it crossed with Alisa-Dariana switching adding a
+> struct device *dev = &spi->dev to probe() that I picked up earlier
+> today.
+> 
+> I could unwind that but given Alisa-Dariana has a number of
+> other patches on this driver in flight, I'd like the two of you
+> to work out the best resolution between you.  Maybe easiest option
+> is that Alisa-Dariana sends this a first patch of the next
+> series I should pick up.
+> 
+> Thanks,
+> 
+> Jonathan
+I will add this patch to my series and send it shortly.
 
-Actually, that's a DRM patch.
-
-Folks in To: ok to carry this though the tip tree?
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Kind regards,
+Alisa-Dariana Roman.
 

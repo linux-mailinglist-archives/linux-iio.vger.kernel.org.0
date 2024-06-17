@@ -1,156 +1,153 @@
-Return-Path: <linux-iio+bounces-6398-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6399-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D8390B4F7
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 17:46:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C1590B4FB
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 17:46:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27D3B1C21607
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 15:46:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A2AB1C21817
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 15:46:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CDF15884E;
-	Mon, 17 Jun 2024 15:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05DC115887D;
+	Mon, 17 Jun 2024 15:18:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="dcK0I0CZ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="a+70oPMU"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 170141586D2
-	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 15:17:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281B813BC02
+	for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 15:18:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718637454; cv=none; b=EXbFQg7PWOKrNeneKk0rZAfYhkeZ9TpuK6plv2XjdVIihxOaQAarmxlpVgDLmqQpvTeQWtB0KP345hGuc8YyZOlbZd9EEcz8k386/rcDVetpKGhhBZlSuw4SWp+7uBih9ZO0xMmhtyPwnT3A8Viv/6QbqsySUlBorQMUeRxtayY=
+	t=1718637505; cv=none; b=PxqFAFwV3jTi23xg42qmr2w05OexLTq9I6n1LH7hsruz6uWLHk5HxZBTpG8GdrnkbLbIskvrdSdrfFRhmmTPOoEXSxQR7wR+xSnVSmx83PrILfByCBMg6VyNIiSnL17rFP2qdGmFjx9EpUMlSxOiqyHME4HWQN1scTeJOO6g0mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718637454; c=relaxed/simple;
-	bh=UCKYxTY+hYqCS9ZAIJQjiDX370B780I/Z6F9FjI6Lso=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kiVPQ0u4HAwxcRhRP5yM4voH4Sh/0iDmsZIo0I0PVdW8dVGIFnLNoIEfymwq/V3jq27iHf2h2jqE1amnGSfj6ME85KzuMTEUY06NoWq1udoAUxxGGzdd8m0TtFI2N0OXSBkywpN+FuGJbPY6mEk1L/Gopvl29FmyHQBD5AZnyD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=dcK0I0CZ; arc=none smtp.client-ip=209.85.218.41
+	s=arc-20240116; t=1718637505; c=relaxed/simple;
+	bh=Dtfjmiibyv70CczBYWesrAFMidjZ7VsVwcrW/v6aMN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bv06M5sehlymgNVh2GPG16egw0SgziPuyBAwPtCd+nUrhyb+8xI2ZYjHv4W4lvRUrBr88P1F1eouIPl49DXnuinqkvo94+MMP0rtqcnOYrBhxBOsri+XULdsLt5jVKU8JqNO2MRmUr0vkL/+Ew2Sae1J4ImUJ/YGr1CqqyOTl8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=a+70oPMU; arc=none smtp.client-ip=209.85.167.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a6f176c5c10so531591366b.2
-        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 08:17:30 -0700 (PDT)
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3d229826727so2552817b6e.1
+        for <linux-iio@vger.kernel.org>; Mon, 17 Jun 2024 08:18:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718637449; x=1719242249; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UCKYxTY+hYqCS9ZAIJQjiDX370B780I/Z6F9FjI6Lso=;
-        b=dcK0I0CZtfdmCZXI0cw6/mRKXvpM/B1GfIVhNlqCvQnfS60mpVgg78ic+vZJ2b5DXA
-         SDtmmlNBoaiztBElbX457nLLy629I8VaUO2oPw7oGEJCFucO34W2UePCybkn5v+EUmoz
-         KVn3YJ85xddTB7sfwGDAJ4CwSsYHorAnjXK+mQ4LBgZ+Ww5Fjfc/fwi8PPf/L1/aPu9P
-         hoR5voeXNMCYqnLPiiJwjbc6rJ1M9wfRRgOmVmQCGuy2TU9d8vJ7xcwQo7hO+K5SQCcc
-         Bl7aSGMM4r+Io/HTlCYPlTA0jWl54nX9b2eIFGd9yzqKpr8XM7Ruxy2my7YsD1HSD1G/
-         SU/A==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718637503; x=1719242303; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DqFHaVaNbt8gAYcmaLaicI4T3xsUr/WCZWRgASuEC/s=;
+        b=a+70oPMUlgo2jv+0KQrK8hKQ1EjOIFGVdDqguJOdMFVuTUqsv00EryKZKYmRrsP11j
+         ueLp2SLBIPXf1odCmfADWqTvY+rDpBPqlzmQB6uXgcM7RG+tNoaJBNrx2H39iIHOkWnR
+         CZBDgd46BWeJyK2WL7CjUCJx+LUufQ7v+8RVj/SR8vyeM0IqwHQBQx3qNImK0OUvRr4K
+         NTtqDuTdXsgI248CB9c/FCxLJxVJkmojbBiJmvr+sGrDKBLW1g8SY5ptbjEXYyn89oFN
+         OMbLCnw+3Yy9RHKyx6mgnyTpeve4yr6kbUOcD2u5HOxuJDns2QO+/x7FX86wTBZA56n1
+         MubA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718637449; x=1719242249;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UCKYxTY+hYqCS9ZAIJQjiDX370B780I/Z6F9FjI6Lso=;
-        b=oB7U1bd3CYbcC9t6w75H4eVE21u88mOMKXrK3jD7UH47vvSaorZuueDC8rarbIZ1CI
-         RXwbQc/8+uqX37pIdRz31NzGRbLhaYkw7g0OgUmolgI/NVz2qO+GJl+zXeV+3BjZa2lg
-         UG4UPaD31iJd1XS88BAo/ClKNHST18HoL87X0k7j1dm9K0rQ31h5pYxS3oEyI7+QaAzT
-         ukIw40/S+lsfat1LTQY8dhaYEew/96cu/AazcKNdUJszJrTiGnirf1l3fkel3zmWf9O+
-         wmysAVLTLkloUkpdgGp/s09vOdEDcdxpBAqSw8zv+ooBws5y1wv2/qRoONKZEv2dxJ1I
-         ilOg==
-X-Forwarded-Encrypted: i=1; AJvYcCXMciN8xxZVIHAUzY4StRHFaPNW/skOodi05F0hpTc60CiVF79qsKVfpUH8bCgfnxJl+Ksc8B0hWNPy06UInNKsF4W/oCOGNk5a
-X-Gm-Message-State: AOJu0Yza3eN33alkrg9JLJRlGMtyriLR+dVpSTkgjvqiSUbf/krjLQDr
-	9SqjaHvWECCyQow8Pnuv8o8u/Go/6lOr/YmYK8dWtfaFq/VIcJr3pT3+i9kNdbg=
-X-Google-Smtp-Source: AGHT+IEfTN+X5wOiZi0KL9fkXm0O9x/sBCnZG/iMDNlNOfN7WVeTQ5Ne7iOJRddWGtoR5MmcoXn6Lw==
-X-Received: by 2002:a17:907:c713:b0:a6f:61c7:dead with SMTP id a640c23a62f3a-a6f61c7df96mr914573566b.17.1718637449366;
-        Mon, 17 Jun 2024 08:17:29 -0700 (PDT)
-Received: from localhost (p200300f65f283b00ca876ee5dd3d1e3b.dip0.t-ipconnect.de. [2003:f6:5f28:3b00:ca87:6ee5:dd3d:1e3b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f5b5ce0c2sm495737066b.78.2024.06.17.08.17.28
+        d=1e100.net; s=20230601; t=1718637503; x=1719242303;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DqFHaVaNbt8gAYcmaLaicI4T3xsUr/WCZWRgASuEC/s=;
+        b=q4Wl9ENaaqWPgNw/Ne1Shoh5KmREG1Dl2ibanD8smllmt/4d0yGyaIbyYN5VV904tL
+         yNuKy0FK6D1GcGpJFzWgTwgdNBGvxA60Ie1yeK6r8ua+4QdCZfzeJJlo+jHd4hbcRtyE
+         QKjSDykMVFSpMjB31ZMEqoDmuiZFZl4js4MbZeplzxL8qeCtEb8yvEu+e6zk16DRKQ5l
+         Pzg9z8CO3ZuopMcR/81soRxhWOw6l2lBhOu0F6wukLnKDQTct0PbIke0G0npxq+2IqLf
+         mEy3Z+LORXO0alTJ24YgjcXdtonUW2OtY/jET2pmNP3jtGqRPXWvZ8XiEDdryzRjE7qT
+         fNug==
+X-Forwarded-Encrypted: i=1; AJvYcCUro5CjL9gGdK0CJtr1Fa2Vk6EsqZTX5cv97Tf8yP8a8mXRnSwVS0YpkMgRpPwVjEbLlH0/0bS7cmw5qWjFUcKAF2MzMKta/Jpt
+X-Gm-Message-State: AOJu0Ywg3ap7/OragkrkFkSLqm5nlMxfMHEzErhkGufTptNi13Ie/CnE
+	+sP11bmVLfCL5CPaR/uMVQTvEpRozOd71W8hmtKVqFWM36+1BYG0lzOZ/81y0Yc=
+X-Google-Smtp-Source: AGHT+IGyElQstV3t6uBctyLHT4j9HpM72d7y0GvafAH57GHeiarMjs51iEj2uexrKxq3xWSCFSWR5w==
+X-Received: by 2002:a05:6808:1927:b0:3d2:2efd:123a with SMTP id 5614622812f47-3d24e8b9abfmr12625613b6e.2.1718637503175;
+        Mon, 17 Jun 2024 08:18:23 -0700 (PDT)
+Received: from megalith.oryx-coho.ts.net (d24-150-219-207.home.cgocable.net. [24.150.219.207])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798abe47f2csm438381085a.116.2024.06.17.08.18.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 08:17:28 -0700 (PDT)
-Date: Mon, 17 Jun 2024 17:17:27 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>
-To: Trevor Gamblin <tgamblin@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Dmitry Rokosov <ddrokosov@sberdevices.ru>, 
-	Michael Hennerich <Michael.Hennerich@analog.com>, Cosmin Tanislav <cosmin.tanislav@analog.com>, 
-	Chen-Yu Tsai <wens@csie.org>, Hans de Goede <hdegoede@redhat.com>, Ray Jui <rjui@broadcom.com>, 
-	Scott Branden <sbranden@broadcom.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, Shawn Guo <shawnguo@kernel.org>, 
-	Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
-	Fabio Estevam <festevam@gmail.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Saravanan Sekar <sravanhome@gmail.com>, 
-	Orson Zhai <orsonzhai@gmail.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Chunyan Zhang <zhang.lyra@gmail.com>, Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
-	Alexandre Torgue <alexandre.torgue@foss.st.com>, Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, 
-	Linus Walleij <linus.walleij@linaro.org>, Jean-Baptiste Maneyrol <jmaneyrol@invensense.com>, 
-	Crt Mori <cmo@melexis.com>, linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev, linux-amlogic@lists.infradead.org, 
-	linux-arm-msm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v3 00/41] iio: simplify with regmap_set_bits(),
- regmap_clear_bits()
-Message-ID: <mv3deevgf3pp6ojy3pa4zgc5z74ajroe26sayhzvrbua2dqrdu@enqs7sobbew5>
-References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
+        Mon, 17 Jun 2024 08:18:22 -0700 (PDT)
+From: Trevor Gamblin <tgamblin@baylibre.com>
+To: Nuno Sa <nuno.sa@analog.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Jonathan Cameron <jic23@kernel.org>
+Cc: Trevor Gamblin <tgamblin@baylibre.com>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] iio: dac: adi-axi-dac: improve probe() error messaging
+Date: Mon, 17 Jun 2024 11:18:19 -0400
+Message-ID: <20240617151820.3337034-1-tgamblin@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="maebxxheapnwdayn"
-Content-Disposition: inline
-In-Reply-To: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
+Content-Transfer-Encoding: 8bit
 
+The current error handling for calls such as devm_clk_get_enabled() in
+the adi-axi-dac probe() function means that, if a property such as
+'clocks' (for example) is not present in the devicetree when booting a
+kernel with the driver enabled, the resulting error message will be
+vague, e.g.:
 
---maebxxheapnwdayn
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+|adi_axi_dac 44a00000.dac: probe with driver adi_axi_dac failed with error -2
 
-Hello Trevor,
+Change the devm_clk_get_enabled(), devm_regmap_init_mmio(), and
+devm_iio_backend_register() checks to use dev_err_probe() with some
+context for easier debugging.
 
-On Mon, Jun 17, 2024 at 09:49:40AM -0400, Trevor Gamblin wrote:
-> Simplify the way regmap is accessed in iio drivers.
->=20
-> Instead of using regmap_update_bits() and passing the mask twice, use
-> regmap_set_bits().
->=20
-> Instead of using regmap_update_bits() and passing val =3D 0, use
-> regmap_clear_bits().
->=20
-> The series is marked as v3, but the previous two revisions were single
-> patches. There was also a resend of v1 due to not properly CCing the
-> mailing lists on the first attempt. Trailers were pulled in from those
-> where relevant.
->=20
-> Link to v2: https://lore.kernel.org/linux-iio/20240613133927.3851344-1-tg=
-amblin@baylibre.com/
-> Link to v1: https://lore.kernel.org/linux-iio/20240611165214.4091591-1-tg=
-amblin@baylibre.com/
->=20
-> Suggested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
-> Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+After the change:
 
-Acked-by: Uwe Kleine-K=F6nig <u.kleine-koenig@baylibre.com>
+|adi_axi_dac 44a00000.dac: error -ENOENT: failed to get clock
+|adi_axi_dac 44a00000.dac: probe with driver adi_axi_dac failed with error -2
 
-Thanks
-Uwe
+Suggested-by: Nuno Sa <nuno.sa@analog.com>
+Tested-by: Angelo Dureghello <adureghello@baylibre.com>
+Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+---
+Added Angelo as Tested-by since he tested the patch on an internal
+setup.
+---
+ drivers/iio/dac/adi-axi-dac.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---maebxxheapnwdayn
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/iio/dac/adi-axi-dac.c b/drivers/iio/dac/adi-axi-dac.c
+index 880d83a014a1..6d56428e623d 100644
+--- a/drivers/iio/dac/adi-axi-dac.c
++++ b/drivers/iio/dac/adi-axi-dac.c
+@@ -545,7 +545,8 @@ static int axi_dac_probe(struct platform_device *pdev)
+ 
+ 	clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(clk))
+-		return PTR_ERR(clk);
++		return dev_err_probe(&pdev->dev, PTR_ERR(clk),
++				     "failed to get clock\n");
+ 
+ 	base = devm_platform_ioremap_resource(pdev, 0);
+ 	if (IS_ERR(base))
+@@ -555,7 +556,8 @@ static int axi_dac_probe(struct platform_device *pdev)
+ 	st->regmap = devm_regmap_init_mmio(&pdev->dev, base,
+ 					   &axi_dac_regmap_config);
+ 	if (IS_ERR(st->regmap))
+-		return PTR_ERR(st->regmap);
++		return dev_err_probe(&pdev->dev, PTR_ERR(st->regmap),
++				     "failed to init register map\n");
+ 
+ 	/*
+ 	 * Force disable the core. Up to the frontend to enable us. And we can
+@@ -601,7 +603,8 @@ static int axi_dac_probe(struct platform_device *pdev)
+ 	mutex_init(&st->lock);
+ 	ret = devm_iio_backend_register(&pdev->dev, &axi_dac_generic, st);
+ 	if (ret)
+-		return ret;
++		return dev_err_probe(&pdev->dev, ret,
++				     "failed to register iio backend\n");
+ 
+ 	dev_info(&pdev->dev, "AXI DAC IP core (%d.%.2d.%c) probed\n",
+ 		 ADI_AXI_PCORE_VER_MAJOR(ver),
+-- 
+2.45.2
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmZwU4QACgkQj4D7WH0S
-/k4UIQf+Ka6492ojVYOyOplTmwplQhYA0abavRbL4tWlzPswAQ/4yjahD+9XRbA2
-m9DionXY1IXXlR3kZm2ZtPy3dXdG4QKH1gi7xcnMOjtmgb2jDay7mvbN0DNuIjV2
-vciMh7NpnYac3uUovbis7d++of8lbibdzWQbtV1IIy551MJApXs2uHORUt2JMYmx
-hEzyLG/q47FnN9Anbw1rS+5UsSm8zYjmMgkJ+w6jrtgCJHyMgTXZ3JnqR3G5gVjI
-qOKcvDY9KrrMRn+cptE5IcGMviWhQofAJeJtKOuGmW0PlFPOd/3/zdTh0z5EzhbM
-/nLUad8Wwavl+W4yf56zOmRZNUqc+w==
-=pdCb
------END PGP SIGNATURE-----
-
---maebxxheapnwdayn--
 

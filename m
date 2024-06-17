@@ -1,123 +1,167 @@
-Return-Path: <linux-iio+bounces-6413-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6414-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0EE590BB05
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 21:30:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2294090BB22
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 21:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B764B225F8
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 19:30:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDAE72841A7
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 19:33:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4B51991A8;
-	Mon, 17 Jun 2024 19:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895E517F397;
+	Mon, 17 Jun 2024 19:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OhqFL1bc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r+IuhJ1u"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8DAB1991A9;
-	Mon, 17 Jun 2024 19:30:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335D91BDEF;
+	Mon, 17 Jun 2024 19:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718652603; cv=none; b=EurMS34kJvuveyIDNeTtmKrtdVBu+hU80Eh3vkfyi39UFWJpONiJGrWCBd2127yfSmmPBkWCHCEJ2+5K8ULD7G4MjVauM5iM89ytIqD8eYwS3LnttcIM4h7VeF2rhO8sKNkGtY2ru+jFUFjbpENf3mzw9koNLNaPajAuyZ+5p/E=
+	t=1718652806; cv=none; b=mpxJ3NJizMoMSZNRcuJlnqySGwP6LDKO1bsj/+habRAZsAAcOSumbW3pYO1Rn8Rcj7UqE90iAxe3E68OlVTM4VqxrYCsNaAc/orsYUm93b4CkQaIvmjuXRJr5/8sU1iE74Yg+qb661UHr09SKakG841Rd3ZsHQwKCRqcOEz4vSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718652603; c=relaxed/simple;
-	bh=BHpVM5S0GjsiRz2Mu5h5JP2x/wqrDe6o0UiG+yaosU0=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=Qizb5HPj06IN4lSwNxMM1P3AE2mYEi6ya2tX/CjgWNlioJ5t/Xt8W4LWxz1l+sBuOmNfPkE/qICsNwgULnf695JkxZVqt7HIpUeDT7W3HJ1nf/z4dSU9WwZMfMlkqI2ZNigmQhVjyK6o3u9JjhiekpOxpqVi1+nojCqG8MpFxZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OhqFL1bc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 902D6C2BD10;
-	Mon, 17 Jun 2024 19:30:02 +0000 (UTC)
+	s=arc-20240116; t=1718652806; c=relaxed/simple;
+	bh=3XAO2VM0TXU6x8XweVvJD4YnI+f4rCAeGuLNKtf5XE0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PJ00o7RSxDkH7vYoymSgRP1aN1/KhFkvFx11619NvOyAfxC+nO+iMkfwz7aNfTbmjR+XNZ8ct+MPaSl8TOYcroH4g/oRwCV4cHZG5x/G3+GMZzSN4hKsYc88ql+MzzHq1ArB03ALO7q3z9Pv1Lxp/GBZ5ah4k4Txvv2h+cQR0DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r+IuhJ1u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58DB2C2BD10;
+	Mon, 17 Jun 2024 19:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718652602;
-	bh=BHpVM5S0GjsiRz2Mu5h5JP2x/wqrDe6o0UiG+yaosU0=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=OhqFL1bcDnPvchUBx5UcIMfvG8avkpbb+yRu1UBobKU9w5uo7A5nDQa5afVvwkZF0
-	 IERyl79LStBUfhgD86XJziuQWLPhytHZLyGE9AApfDt8xxYwSqyZI71CT+mHay+uMq
-	 4JUHtf3ERg5ZUDkJfyua+I+tq7tb/Jp8yl1ggEC9RBEC5wc5dxYK1MYo7h7DS4xZh+
-	 V8cccPW+YuVvrOGHennTvIfBatoMgS1W4LOOA+4bQREYsPsw7bzZpeHTuQ/9MNhtVi
-	 yOLRN6CswBMZ7i/NBI33fYgG9JQ4n10QmH2/Pmd28JqXXYlpYAPDe6CXUPSncTdB3q
-	 v4qX+J5KDNxew==
-Date: Mon, 17 Jun 2024 13:30:01 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=k20201202; t=1718652805;
+	bh=3XAO2VM0TXU6x8XweVvJD4YnI+f4rCAeGuLNKtf5XE0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=r+IuhJ1uBSHjfadYASAvVJHfyMRxZTTpm+snaD2bLSHMAi6vmpcthDw/cDHndzhVU
+	 THVJsbfhoghlvFkOcqesR+EsZRZwd55HNJU4A+HR9P1cfAxkrocwVBxJqdPK5ugo+E
+	 i89KSDV57oDvnv6z+rvIhHPNSC+uCs92sKaAW2wFAnnyLsKTM0UciMIasQkrhKLnrW
+	 rsixpHiljYTjYOqJTHf3NGITJQF7maTBqiH0pRaYOTRJ7g7PgDceuAY1feWocVVHpY
+	 VZKRiGsfV9Ai40Zy3F1UbX7zLjsNkcdPcek4+hSp+m2dBP1UPN71qtjV/8I+Tvo7g6
+	 y1z1f8pgITJ3Q==
+Date: Mon, 17 Jun 2024 20:33:14 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Rob Herring <robh@kernel.org>, lars@metafoo.de, krzk+dt@kernel.org,
+ conor+dt@kernel.org, matthias.bgg@gmail.com, lee@kernel.org,
+ andy@kernel.org, nuno.sa@analog.com, bigunclemax@gmail.com,
+ dlechner@baylibre.com, marius.cristea@microchip.com,
+ marcelo.schmitt@analog.com, fr0st61te@gmail.com, mitrutzceclan@gmail.com,
+ mike.looijmans@topic.nl, marcus.folkesson@gmail.com,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, andy.shevchenko@gmail.com,
+ kernel@collabora.com
+Subject: Re: [PATCH v2 1/5] dt-bindings: iio: adc: Add MediaTek MT6359 PMIC
+ AUXADC
+Message-ID: <20240617203314.641e84a9@jic23-huawei>
+In-Reply-To: <e71a38a9-7a92-4156-a7f0-52f71d461d61@collabora.com>
+References: <20240604123008.327424-1-angelogioacchino.delregno@collabora.com>
+	<20240604123008.327424-2-angelogioacchino.delregno@collabora.com>
+	<20240605235239.GA3455504-robh@kernel.org>
+	<e71a38a9-7a92-4156-a7f0-52f71d461d61@collabora.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, 
- =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>, 
- =?utf-8?q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
- Conor Dooley <conor.dooley@microchip.com>, linux-kernel@vger.kernel.org, 
- Francesco Dolcini <francesco.dolcini@toradex.com>, 
- Jonathan Cameron <jic23@kernel.org>
-In-Reply-To: <20240617183215.4080-2-francesco@dolcini.it>
-References: <20240617183215.4080-1-francesco@dolcini.it>
- <20240617183215.4080-2-francesco@dolcini.it>
-Message-Id: <171865260138.3045376.15728867066959921704.robh@kernel.org>
-Subject: Re: [PATCH v3 1/2] dt-bindings: iio: adc: add ti,ads1119
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Mon, 10 Jun 2024 10:00:55 +0200
+AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> wrote:
 
-On Mon, 17 Jun 2024 20:32:14 +0200, Francesco Dolcini wrote:
-> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
+> Il 06/06/24 01:52, Rob Herring ha scritto:
+> > On Tue, Jun 04, 2024 at 02:30:04PM +0200, AngeloGioacchino Del Regno wrote:  
+> >> Add a new binding for the MT6350 Series (MT6357/8/9) PMIC AUXADC,
+> >> providing various ADC channels for both internal temperatures and
+> >> voltages, audio accessory detection (hp/mic/hp+mic and buttons,
+> >> usually on a 3.5mm jack) other than some basic battery statistics
+> >> on boards where the battery is managed by this PMIC.
+> >>
+> >> Also add the necessary dt-binding headers for devicetree consumers.
+> >>
+> >> Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> >> ---
+> >>   .../iio/adc/mediatek,mt6359-auxadc.yaml       | 33 +++++++++++++++++++
+> >>   .../iio/adc/mediatek,mt6357-auxadc.h          | 21 ++++++++++++
+> >>   .../iio/adc/mediatek,mt6358-auxadc.h          | 22 +++++++++++++
+> >>   .../iio/adc/mediatek,mt6359-auxadc.h          | 22 +++++++++++++
+> >>   4 files changed, 98 insertions(+)
+> >>   create mode 100644 Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml
+> >>   create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6357-auxadc.h
+> >>   create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6358-auxadc.h
+> >>   create mode 100644 include/dt-bindings/iio/adc/mediatek,mt6359-auxadc.h
+> >>
+> >> diff --git a/Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml b/Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml
+> >> new file mode 100644
+> >> index 000000000000..6497c416094d
+> >> --- /dev/null
+> >> +++ b/Documentation/devicetree/bindings/iio/adc/mediatek,mt6359-auxadc.yaml
+> >> @@ -0,0 +1,33 @@
+> >> +# SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+> >> +%YAML 1.2
+> >> +---
+> >> +$id: http://devicetree.org/schemas/iio/adc/mediatek,mt6359-auxadc.yaml#
+> >> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> >> +
+> >> +title: MediaTek MT6350 series PMIC AUXADC
+> >> +
+> >> +maintainers:
+> >> +  - AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> >> +
+> >> +description:
+> >> +  The Auxiliary Analog/Digital Converter (AUXADC) is an ADC found
+> >> +  in some MediaTek PMICs, performing various PMIC related measurements
+> >> +  such as battery and PMIC internal voltage regulators temperatures,
+> >> +  accessory detection resistance (usually, for a 3.5mm audio jack)
+> >> +  other than voltages for various PMIC internal components.
+> >> +
+> >> +properties:
+> >> +  compatible:
+> >> +    enum:
+> >> +      - mediatek,mt6357-auxadc
+> >> +      - mediatek,mt6358-auxadc
+> >> +      - mediatek,mt6359-auxadc
+> >> +
+> >> +  "#io-channel-cells":
+> >> +    const: 1  
+> > 
+> > Why do you need a node here? Just add #io-channel-cells to the parent
+> > node.
+> >   
 > 
-> Add devicetree bindings for Texas Instruments ADS1119 16-bit ADC
-> with I2C interface.
+> Because some boards will want to avoid probing the related driver, as that will
+> trigger a reset and this may not play well with ECs (namely, some Chromebooks),
+> which are reading the same AUXADC block.
 > 
-> Datasheet: https://www.ti.com/lit/gpn/ads1119
-> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-> ---
-> v3:
->  - add avdd and dvdd supplies
->  - add Reviewed-by: Conor Dooley <conor.dooley@microchip.com
+> If I avoid using a new node, instead of just using `status`, I'll have to add a
+> "mediatek,disable-auxadc" property to the parent node, which isn't pretty...
+
+Rob, does this answer the question to your satisfaction?
+
+If you are fine with this I'd like to queue it up (with the typo in one of the
+patch descriptions that Andy caught fixed up).
+
+Thanks,
+
+Jonathan
+
 > 
-> v2:
->  - add diff-channels and single-channel
->  - add XOR check to make diff/single channel property required
->  - add interrupts, reset-gpios and vref-supply to the example
->  - fix missing additionalProperties/unevaluatedProperties warning in channels
->  - remove ti,gain and ti,datarate as they aren't fixed hw properties
->  - remove unnecessary |
-> ---
->  .../bindings/iio/adc/ti,ads1119.yaml          | 155 ++++++++++++++++++
->  MAINTAINERS                                   |   7 +
->  2 files changed, 162 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml
+> Cheers,
+> Angelo
 > 
-
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/ti,ads1119.yaml: single-channel: missing type definition
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240617183215.4080-2-francesco@dolcini.it
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+> >> +
+> >> +required:
+> >> +  - compatible
+> >> +  - "#io-channel-cells"
+> >> +
+> >> +additionalProperties: false  
+> 
+> 
 
 

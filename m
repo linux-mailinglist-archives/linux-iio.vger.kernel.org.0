@@ -1,136 +1,176 @@
-Return-Path: <linux-iio+bounces-6334-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6335-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91FB90A52F
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 08:17:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77E6C90A583
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 08:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 866A828E116
-	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 06:17:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFEF9B26D00
+	for <lists+linux-iio@lfdr.de>; Mon, 17 Jun 2024 06:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E248C190042;
-	Mon, 17 Jun 2024 06:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3DE185087;
+	Mon, 17 Jun 2024 06:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ncza7NtE"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nhx7Z4yO"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBC3187358;
-	Mon, 17 Jun 2024 06:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7AD1822C2;
+	Mon, 17 Jun 2024 06:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718604838; cv=none; b=tuVx1YRsJP6kxs3dS7piVQlrlbglg5FT188URK0AG+yM+PeD/d+kl0saON10J5Lri9a9ZJ/jkSJPPKOJhnL8q/fFjP/lwwwuYUSaHXpEB21AndWCY7BBUodtL+7kLuVhecXtoQ81f3ZtRFV91+EYnEKcw7dYgHUAIGkSUqSaRpM=
+	t=1718605464; cv=none; b=g0rk7R+T4jhvjGJgSEehSkowznQJH+A5Nz8kW4CZPSWB8YjS8pa8sb1tVZCMi+5mCTM+vi0ZGLvmeh1Yn/x+MK6B27ZRY54w/VWEJMIdDiQK+IAgEjL/vIV+I3pL3kA2gmZurqkzt/+bbl/ponpk9BYW7Z0xIa/XnN75A7CKiLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718604838; c=relaxed/simple;
-	bh=pWljAqkTfkrt+3zYt1Ce5GoIspvAKUkLfQj2oQVNffA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VFSW4kdYvtFjKDaVFhE0hkjX0QLZXUDp+XZqqpYrIMUgQw93oV/hTT+Ie3sTnNNOHO8NaFc9OUBJ21HUi1mWRGMxABJ7SFVoZq1mJqmklEc1PMC/vHMKXrYSFG8Y+aUdw0/srtsJ+odDt9s+yR0RnzXXeJ9amn4tE3OrY6ownuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ncza7NtE; arc=none smtp.client-ip=209.85.208.179
+	s=arc-20240116; t=1718605464; c=relaxed/simple;
+	bh=5BA/TosT1CrxQE3NyCIfG5vCxzPOaTI0joE23Fx2Gqc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tms/TgXBIw1OSJx5lvQorZGvQrM/Wx9RUy7+vc2jDR+eatZojMstDT+ZwnkIZw+K6zD1sr1DGWWT+VcZ4rfClTeBncwDwpiAnABZCsJMxn2gFpIiUdlf3IppYvH0HXna4O1kowACmfezJAs6ozecPjm5/kwsfggnkl8+Fz0tgbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nhx7Z4yO; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ebe0a81dc8so44299921fa.2;
-        Sun, 16 Jun 2024 23:13:56 -0700 (PDT)
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a6f85f82ffeso80716866b.0;
+        Sun, 16 Jun 2024 23:24:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718604835; x=1719209635; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TZntQxnrQUChH66lPydEN459mEVnoXqBtAC5FdClnOM=;
-        b=ncza7NtE9VClZPNXzksPBmWHYmsQZYswjzq+Jye9VAkEytQFQxL6lzO4qRQezINHrK
-         9NYvrKBMIOXISNjrGdGSzkxlgXQYDUWkSRVYuqKLasAafHK64H5YGmgICtiyOpM5EQYY
-         ZzMxRjKRa1ztulIw+QVy6Dy9S9i4S1JFqpZLzU/AoC5zTnMgQ3TPTicXNa/S4NGatgPC
-         gW/4qTNvvckNk7Bzzml5vzMeMxzqu14KHmAwHzIpr6QJIYNHQF+OyEa+z/q2GH25L5vM
-         FL4QCQ9Cur21Pwx3iAZuL9RyOrPvARrAAtAiqEcHVK0WmbeJE6RMr4xXAtis2LSqmShx
-         C/CQ==
+        d=gmail.com; s=20230601; t=1718605461; x=1719210261; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5BA/TosT1CrxQE3NyCIfG5vCxzPOaTI0joE23Fx2Gqc=;
+        b=Nhx7Z4yOw3F3MGDZn5mu0NdH0OPM80B1d1mWj+xqI2VyRyNdGA1j0pwsmm4x/c/Yd7
+         BPZlzsht1k4P0pezqeRp3a16eErUJ4jg9QNAftMtE4iUe6wI51T4ME4OJV1MlOJOCvlF
+         bB160rUY3wwHs0iPDfI5Mi/NT93vDAfYmkh8CgdJDvsveNYEsqHrVSmpjOFird8XLYRC
+         OKBmXW2TJfP+jZZc4J/sfsmRs9cMNbKc3egsv35m0zOoP3uRRXSgp1KUKCHyzeUHxg04
+         +hz8mbHAnqZqR052L/0K1DxR6rau9bq23bcNp41a2ws3vs5kgua5YcsIfQhsyhsHoz2+
+         qMbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718604835; x=1719209635;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TZntQxnrQUChH66lPydEN459mEVnoXqBtAC5FdClnOM=;
-        b=i3ZGJUiJr2C7wGbhRB/bBMpeEMJ8fjX7fY+CPCfFwTgiUTKlXARJFbdiaq+W+1JsDS
-         uGW1QaNmMa4roeUB92T9yk3rasxXsX2hBIBE9/mhCTGGrgzfVkkBJBj5Jf7bE+C8tNTx
-         drrrWXsyw9kMv+WiJ9D5iftKOZWBeeTuOriuhAgYpY2mjjZ4RtHwlsrHhFTwOlv6pmOP
-         6ii9MoTlgGl3Ex6f8xRHJat5ubx+SzMAqLR0WS+C0ITZ9e1nGoxIDU1JWtzFR4GYTUVj
-         KnUYLzCmCa6NEStlg/rT4LkhsheXtRwxSMMQ+aNO0soCVs5EGSmUycLJMvl5fQ8uaMOG
-         XKvw==
-X-Forwarded-Encrypted: i=1; AJvYcCUjghY8tFy23dOX9inhiCS27S8pNbyYdzDmaw51Jjbw6I3smf0IOt4g+z1zoQ4uNmyQse9wUc6+l8U0WpTuySJC6eJO9zHdCxzwS4YIt9WWW6Wv6nb8PjPohDOriTvZ68OFuOxMY27wJZwAZhsk086YLW3bg7rPpVKCDXxSvcGG
-X-Gm-Message-State: AOJu0YxWJ+mG2wymDaIbbocj5jRjSE32HF0BeW7Z2KkbHPVY3pabXm/0
-	hWYy4Zwb0UQ4OGfsJLymbuXtOlmYZjpSYpEKtjhrLQ1njx5qmUlX
-X-Google-Smtp-Source: AGHT+IHk5DcOwhCSZUVJBsZjTN1uHmzBc7hffy1mCYO/f7qQ+ieH3Tq4m1d1riCwGa/LPv5a9YSrdw==
-X-Received: by 2002:a05:651c:1425:b0:2ec:17e6:f9e0 with SMTP id 38308e7fff4ca-2ec17e6fa7dmr61467741fa.8.1718604834996;
-        Sun, 16 Jun 2024 23:13:54 -0700 (PDT)
-Received: from ?IPV6:2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd? ([2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ec07b7cb80sm12250991fa.1.2024.06.16.23.13.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 16 Jun 2024 23:13:54 -0700 (PDT)
-Message-ID: <4cb8af25-078c-45be-a544-653e2e2c6947@gmail.com>
-Date: Mon, 17 Jun 2024 09:13:53 +0300
+        d=1e100.net; s=20230601; t=1718605461; x=1719210261;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5BA/TosT1CrxQE3NyCIfG5vCxzPOaTI0joE23Fx2Gqc=;
+        b=VwcxIpgydbh4zeiqWzpt57lMK9OVy3ubvu8nS5gg34QPavW3ZeWPUhWYumQihSx7Zm
+         sDF52LZk2IOTReiBd4vkEqpoJGMgGrV0Vy8iwin8DYytIoeFXE2teKny/nBjtpLreu0V
+         LEN2gHXGykVVNEx4b3hZtICka+h2zCECUsRZiYKLQdcVr5Phfy/z9AQj7VTLPCvLtbUV
+         +VpdotM7mGEg1x01PEFjGpxCUtzATzfRbpJy1/vDWHItEo9e1Oe/BJH003hT4otfYR4Y
+         2yu9su+EDBb0PyUrcesMXJwIAz8gHuiKBr0LFjnLzBCv+4XMJZqe7wT5tFa0wIdmtBsM
+         z11w==
+X-Forwarded-Encrypted: i=1; AJvYcCVbcqmFb8dv74WH6IhdgGWPpUSGDc7h3j9t1jqtvvC206LRdc0peyarFtJyzr+27K4SCkbKV8S/eCGvOn3q+66Na9wyYg/spIXoXBEMC4QbIT1ZhakrsuShH460yGas0yr4SZGziTAz+ZJ33Z1SGurwusktd/ReMtwTcquThv+mWnKE0FBG0OTPy7A2Y51T0kYg+7A8Is81nEaH3rAlNSN8MkN6/PgEddHXTE1a0lJ36m3Ifzf2v9XcFuU=
+X-Gm-Message-State: AOJu0Ywx1RO0jnCu/JjVqEyzWSrFkglHgO4lEQBHrIPyfzcQE6+kJwFG
+	R3PDn6yyMIRCA7uXQ7JTGhNpv73+HalKHrwv5uvHUBpZF62pDtzy
+X-Google-Smtp-Source: AGHT+IGwPJh8PW95cQ3TUh8Rt+F4WZpn4rbG8t7MJQz99Y0NFynHP5+QpRL00FDtWKBhhin6up50sQ==
+X-Received: by 2002:a17:907:c003:b0:a6f:6b6a:e8d2 with SMTP id a640c23a62f3a-a6f6b6aec48mr560764166b.11.1718605460884;
+        Sun, 16 Jun 2024 23:24:20 -0700 (PDT)
+Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f7c12f7c0sm191184366b.198.2024.06.16.23.24.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Jun 2024 23:24:20 -0700 (PDT)
+Message-ID: <f0c709e3bf3f1ebfac29274b8f7182df9022376e.camel@gmail.com>
+Subject: Re: [PATCH v10 3/6] iio: core: Add new DMABUF interface
+ infrastructure
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Paul Cercueil <paul@crapouillou.net>, Jonathan Cameron <jic23@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Vinod Koul <vkoul@kernel.org>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, Christian =?ISO-8859-1?Q?K=F6nig?=
+ <christian.koenig@amd.com>,  Jonathan Corbet <corbet@lwn.net>, Nuno Sa
+ <nuno.sa@analog.com>, linux-iio@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ dmaengine@vger.kernel.org, linux-media@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org
+Date: Mon, 17 Jun 2024 08:24:19 +0200
+In-Reply-To: <0cdcf83a1ab7c199244d4a00157f6fa8979ef819.camel@crapouillou.net>
+References: <20240605110845.86740-1-paul@crapouillou.net>
+	 <20240605110845.86740-4-paul@crapouillou.net>
+	 <20240609105302.07de907a@jic23-huawei>
+	 <0cdcf83a1ab7c199244d4a00157f6fa8979ef819.camel@crapouillou.net>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] iio: trigger: Fix condition for own trigger
-To: =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?=
- <jpaulo.silvagoncalves@gmail.com>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>
-Cc: =?UTF-8?Q?Jo=C3=A3o_Paulo_Gon=C3=A7alves?= <joao.goncalves@toradex.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240614143658.3531097-1-jpaulo.silvagoncalves@gmail.com>
-Content-Language: en-US, en-GB
-From: Matti Vaittinen <mazziesaccount@gmail.com>
-In-Reply-To: <20240614143658.3531097-1-jpaulo.silvagoncalves@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
 
-On 6/14/24 17:36, João Paulo Gonçalves wrote:
-> From: João Paulo Gonçalves <joao.goncalves@toradex.com>
-> 
-> The condition for checking if triggers belong to the same IIO device to
-> set attached_own_device is currently inverted, causing
-> iio_trigger_using_own() to return an incorrect value. Fix it by testing
-> for the correct return value of iio_validate_own_trigger().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 517985ebc531 ("iio: trigger: Add simple trigger_validation helper")
-> Signed-off-by: João Paulo Gonçalves <joao.goncalves@toradex.com>
+On Sat, 2024-06-15 at 13:07 +0200, Paul Cercueil wrote:
+> Le dimanche 09 juin 2024 =C3=A0 10:53 +0100, Jonathan Cameron a =C3=A9cri=
+t=C2=A0:
+> > On Wed,=C2=A0 5 Jun 2024 13:08:42 +0200
+> > Paul Cercueil <paul@crapouillou.net> wrote:
+> >=20
+> > > Add the necessary infrastructure to the IIO core to support a new
+> > > optional DMABUF based interface.
+> > >=20
+> > > With this new interface, DMABUF objects (externally created) can be
+> > > attached to a IIO buffer, and subsequently used for data transfer.
+> > >=20
+> > > A userspace application can then use this interface to share DMABUF
+> > > objects between several interfaces, allowing it to transfer data in
+> > > a
+> > > zero-copy fashion, for instance between IIO and the USB stack.
+> > >=20
+> > > The userspace application can also memory-map the DMABUF objects,
+> > > and
+> > > access the sample data directly. The advantage of doing this vs.
+> > > the
+> > > read() interface is that it avoids an extra copy of the data
+> > > between the
+> > > kernel and userspace. This is particularly userful for high-speed
+> > > devices which produce several megabytes or even gigabytes of data
+> > > per
+> > > second.
+> > >=20
+> > > As part of the interface, 3 new IOCTLs have been added:
+> > >=20
+> > > IIO_BUFFER_DMABUF_ATTACH_IOCTL(int fd):
+> > > =C2=A0Attach the DMABUF object identified by the given file descripto=
+r
+> > > to the
+> > > =C2=A0buffer.
+> > >=20
+> > > IIO_BUFFER_DMABUF_DETACH_IOCTL(int fd):
+> > > =C2=A0Detach the DMABUF object identified by the given file descripto=
+r
+> > > from
+> > > =C2=A0the buffer. Note that closing the IIO buffer's file descriptor
+> > > will
+> > > =C2=A0automatically detach all previously attached DMABUF objects.
+> > >=20
+> > > IIO_BUFFER_DMABUF_ENQUEUE_IOCTL(struct iio_dmabuf *):
+> > > =C2=A0Request a data transfer to/from the given DMABUF object. Its fi=
+le
+> > > =C2=A0descriptor, as well as the transfer size and flags are provided=
+ in
+> > > the
+> > > =C2=A0"iio_dmabuf" structure.
+> > >=20
+> > > These three IOCTLs have to be performed on the IIO buffer's file
+> > > descriptor, obtained using the IIO_BUFFER_GET_FD_IOCTL() ioctl.
+> > >=20
+> > > Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+> > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+> >=20
+> > Need a brief note on the sign off chain.
+> > What is Nuno's role in this series as he's not sending the emails and
+> > not
+> > marked with Co-developed-by=20
+>=20
+> That's a good question. I think he sent one revision of the patchset
+> (v7 or something like that) so he added his SoB.
+>=20
+> (Nuno: you confirm?)
 
-Reviewed-by: Matti Vaittinen <mazziesaccount@gmail.com>
+exactly...
 
-Thanks for fixing this!
+>=20
+> I'll add his Co-developed-by then.
 
-> ---
->   drivers/iio/industrialio-trigger.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/industrialio-trigger.c b/drivers/iio/industrialio-trigger.c
-> index 16de57846bd9..2e84776f4fbd 100644
-> --- a/drivers/iio/industrialio-trigger.c
-> +++ b/drivers/iio/industrialio-trigger.c
-> @@ -315,7 +315,7 @@ int iio_trigger_attach_poll_func(struct iio_trigger *trig,
->   	 * this is the case if the IIO device and the trigger device share the
->   	 * same parent device.
->   	 */
-> -	if (iio_validate_own_trigger(pf->indio_dev, trig))
-> +	if (!iio_validate_own_trigger(pf->indio_dev, trig))
->   		trig->attached_own_device = true;
-> 
->   	return ret;
-> --
-> 2.34.1
+Not sure if that is really deserved :)... Maybe just remove my tag.
 
--- 
-Matti Vaittinen
-Linux kernel developer at ROHM Semiconductors
-Oulu Finland
+- Nuno S=C3=A1
 
-~~ When things go utterly wrong vim users can always type :help! ~~
 
 

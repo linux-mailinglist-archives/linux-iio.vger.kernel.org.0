@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-6510-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6511-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFB890D6AB
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 17:10:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E060190D6DA
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 17:15:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85E7D1F22632
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 15:10:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3ACC9287383
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 15:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB121E895;
-	Tue, 18 Jun 2024 15:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94CFF48788;
+	Tue, 18 Jun 2024 15:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYUzmmSz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C9Gor6RB"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA574689;
-	Tue, 18 Jun 2024 15:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498D81D69E;
+	Tue, 18 Jun 2024 15:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718723421; cv=none; b=V6XdawWXPJ62x8SFdV2zcrB9armutBj+caQfDNoVRMquXj4B+923lltILiOqznu1jPACSMaSetQW2nc4X/RxMysAopgZgmNyaKXJ5uOwcHEc1YdBgjB5BzoPAdT3mfWIkIoxlHRztESngR2zngablC7rQDC1gR0DTurxaDSOhTA=
+	t=1718723530; cv=none; b=JPX2beOQP/uRRw83WuVgTdmDcqwkTA/RzVdFRK+FDGlpYxZVJ8O3D1oX7U/fBJdhYXTobCYAXGywJscXh50tBKR8FBUHQqtnYpe4fH2MauVKUs41JNk3kxhWOXP6rivEeKsN3xGeYLIcHKz4yeo1Uc1z0UuSg5mGyD7R0C+MuQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718723421; c=relaxed/simple;
-	bh=lQqNRhwMATkQdkE2YrgiY4aa+9P+Rk0Zwz4NXkvk11g=;
+	s=arc-20240116; t=1718723530; c=relaxed/simple;
+	bh=bMfJOZvYtAPMyEwZepUNDHBwH3iCBZZUTjaVItVAg7I=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M9HVvhDS4aOqleGJ8PS/RYszofTpxL5F7TVKR/ZOIVDW0zEMgfkAunK+/6PJm7HxXNEYNwy80rKTnk44IfwsVLOwFR4TvXKp+HCbIvK08nkCF12B2duNWRcAyKCmjbx503dIoz79gvYqKTRZ6OUKn9Yf+kboYknz1e2v5eKrQPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYUzmmSz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF71C4AF1C;
-	Tue, 18 Jun 2024 15:10:17 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=b7MLKa+8iYS5S6yh6Vm91Ya1/KnIcJXIzVsPIX2z6+fqiKhpmiUY3tSZfjidgAQtv86wzx1jBA+8DbejC3nwVcgYMoIHvmdrN53K2QWRBOUeuLQBQmwR0DfDDLDiLVD3hL2Ap0doSCN1Q/qvfEIsxr5Rb8GoHHDmaWmdZDdt2P4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C9Gor6RB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0626C3277B;
+	Tue, 18 Jun 2024 15:12:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718723421;
-	bh=lQqNRhwMATkQdkE2YrgiY4aa+9P+Rk0Zwz4NXkvk11g=;
+	s=k20201202; t=1718723529;
+	bh=bMfJOZvYtAPMyEwZepUNDHBwH3iCBZZUTjaVItVAg7I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gYUzmmSz0KYwkcZx4qdmojw/HqN0D93dfSe5hro10tgcKlOjmHXNWKFk3eohjB2IY
-	 s3Ws/FiClAjdDSAWVzr/SSpZ5aO3TCbleDTTncXns6gn7WkNxbQO9fEThGy4IkTjK+
-	 D4nzHPW4nn7GSzK2vedVhLQlpr+rHQoLudtUDAyIxmijmGoG8lE6kueoh3eykKHt0W
-	 sLzq5jDR68VoplDH59Ifwj04dedMA8ptblZD8SAzDLNJdOSV33XpVZoKvfwmYhz/Af
-	 FQQPEM/Cx4jQ9+xpEHqFuTeF5IWWrQVCA0p9395LtMOB9aQrxnoZPeJJggJoqBH3i8
-	 VEihOtE0XdBwg==
-Date: Tue, 18 Jun 2024 16:10:15 +0100
+	b=C9Gor6RBbqpPDQKTkJ0/s1IJIT2xMDmGcy90a65TX9mZnYBmf/UEX1KwADOac+2so
+	 M7oJmcGtUw4et+lq5+e6iVjQMSu2hZ2p2G/5sw0MNoKkN2zzcgeaer1Xs+2xVibjll
+	 u1a0Rsy2ceOWv7tx0WHKVJrECQTWNE47sFqdHg5QZk6mF+08JujRAzNS4MoQEpC2dh
+	 V/u/WcZ2E2CdWN4ToU0ILCMWOmXsIkOCavGh9i4dLGeo8tFJKBure44RY/WWkxR6pV
+	 p0e4dcyICY3IcLLzYVbmboJm0nKH2dwkFYeblTX+yzGcdG1Z/9iMhESMqjqNAXGyEx
+	 zI2SVIaWi6Jeg==
+Date: Tue, 18 Jun 2024 16:12:04 +0100
 From: Conor Dooley <conor@kernel.org>
 To: Guillaume Stols <gstols@baylibre.com>
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
@@ -55,10 +55,11 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	devicetree@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	jstephan@baylibre.com, dlechner@baylibre.com
-Subject: Re: [PATCH 6/9] dt-bindings: iio: adc: adi,ad7606: fix example
-Message-ID: <20240618-rack-synthetic-1d1747b34a6a@spud>
+Subject: Re: [PATCH 4/9] dt-bindings: iio: adc: adi,ad7606: add supply
+ properties
+Message-ID: <20240618-eggnog-cusp-8b5a17313367@spud>
 References: <20240618-cleanup-ad7606-v1-0-f1854d5c779d@baylibre.com>
- <20240618-cleanup-ad7606-v1-6-f1854d5c779d@baylibre.com>
+ <20240618-cleanup-ad7606-v1-4-f1854d5c779d@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -66,34 +67,64 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="KqEybsG53Fsmklth"
+	protocol="application/pgp-signature"; boundary="dwSxzLPU/JD5GHB2"
 Content-Disposition: inline
-In-Reply-To: <20240618-cleanup-ad7606-v1-6-f1854d5c779d@baylibre.com>
+In-Reply-To: <20240618-cleanup-ad7606-v1-4-f1854d5c779d@baylibre.com>
 
 
---KqEybsG53Fsmklth
+--dwSxzLPU/JD5GHB2
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jun 18, 2024 at 02:02:38PM +0000, Guillaume Stols wrote:
-> Example uses adi,ad7606-8 as compatible, but adi,sw-mode is not
-> available for it. So remove this property from example.
+On Tue, Jun 18, 2024 at 02:02:36PM +0000, Guillaume Stols wrote:
+> Add voltage supplies
+
+Are these available on all devices?
+
 >=20
 > Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+> ---
+>  Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+>=20
+> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/=
+Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> index 80866940123c..e480c9a7c7ca 100644
+> --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+> @@ -35,6 +35,15 @@ properties:
+> =20
+>    avcc-supply: true
+> =20
+> +  vdrive-supply:
+> +    description:
+> +      Determines the voltage level at which the interface logic pins will
+> +      operate.
+> +
+> +  refin-supply:
+> +    description:
+> +      The voltage supply for optional external reference voltage.
+> +
+>    interrupts:
+>      description:
+>        The BUSY pin falling edge indicates that the conversion is over, a=
+nd thus
+>=20
+> --=20
+> 2.34.1
+>=20
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-
---KqEybsG53Fsmklth
+--dwSxzLPU/JD5GHB2
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZnGjVwAKCRB4tDGHoIJi
-0lqFAQCX4SX21H8XY7GASSWedZdYZZ5vWePW1cJzZc0jzxUzFgD6A2Tr1cr6CAmF
-rhhfcZNmk3CFCIh0iGPJkw/3eSYyFAU=
-=mtpE
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZnGjxAAKCRB4tDGHoIJi
+0jfNAQD/IO92nu0o5BVlJoeT8eKFMJuXZdNa82oSRiAaZ94tqAEAsrrW1Y2fjM9G
+36teI0yB8XX9R9RohxAMR5+Ln9E71QE=
+=Jamf
 -----END PGP SIGNATURE-----
 
---KqEybsG53Fsmklth--
+--dwSxzLPU/JD5GHB2--
 

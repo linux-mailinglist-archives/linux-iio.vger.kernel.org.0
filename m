@@ -1,71 +1,67 @@
-Return-Path: <linux-iio+bounces-6537-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6538-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6426B90DF9C
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 01:11:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE7A90DFA2
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 01:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C0E91C2234A
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 23:11:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FA4E1F24075
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 23:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7318617F36E;
-	Tue, 18 Jun 2024 23:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E1F7185E4F;
+	Tue, 18 Jun 2024 23:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="n5kNIkcP"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="YIL7wLjX"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7657314D44D;
-	Tue, 18 Jun 2024 23:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB201849F5;
+	Tue, 18 Jun 2024 23:11:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718752283; cv=none; b=ZxN6YkzsqaS7sEK1QFYaAhtRYntuq+SrpBZuxU8k3iYULovU3uAsFcRSdNFoZCfNzKVNKg8W7aGiGJxSDl5ZIPt+ecN22KQ5taiTeoFoOBb6vtJc3/uzu7njsYwrYLJNyzlbjEdmxFRmESksQswJn0aOGgQ8aVi4UhPS5aKGeIc=
+	t=1718752307; cv=none; b=QkvLsTDno0DkQMAQatCgiYuDxLaoO5Y74QM/yXSl6tYjxGAksVUR9JsQ4F1eOSn4uJT5tv7Dj1WhYE0Yy+tw7C4wXIp/ZBVQyPTOXA3jnJIUZRIU9vqCX6ROfYl1IBf4rs4W4KDCoAGQ+y2MtBviiZ7wwJE0BJJMuFjLf+vq/mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718752283; c=relaxed/simple;
-	bh=v3bDKyu2JvMLzQsfZw0lVDO4lWuwkVumBz+xnU3/pv0=;
+	s=arc-20240116; t=1718752307; c=relaxed/simple;
+	bh=E0sPRQPXNtzkxzbOXNlwqNxDuZqt39oR9j6pBw9J1VM=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JWH6cgCHbGA6yILTAae1DO6FbSgRUdFElNSMuO90yrHfoZOZpXREnerxrUD1ts0hIjrM0tqMSUnO2tR/JIsXrZo+z+yIenh5oZhIAGs5lNJ1+39dCjMCGMQ0mJGs/C/TXyRlAUqNFBix2/AyBBUm38UISB1Zp/ixcYGEjjB+aXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=n5kNIkcP; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=ORQGM/2NMbkoXhvE7KtUrcY0L6l+0DGrFnDxYOJTp3qzy8yVLiNMzL4gwU2mcRJPlds3nTpGidqCPGkhmS57mluEIMmq3RNcLX1z7VNYj+ipSOPaMQYtsYoICofcoNfNYaAJjY64I+d1693WzFwRrNeBe+Alu4c4+Ri9Dt/Cl/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=YIL7wLjX; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45ILXTq3025633;
-	Tue, 18 Jun 2024 19:11:03 -0400
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45ILXeSv028439;
+	Tue, 18 Jun 2024 19:11:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=Cy3t8
-	SVqSfLqKVUF0fbpOwnglCrSBaalVG9qNeIpBg8=; b=n5kNIkcPy5VXFuHTjW5Tr
-	BtUmckQKczGE4RbOrMUafPW6bcy2vYF460FM2RL/ZBr1n/BW/O+6CFZRqbTezXNR
-	9M7EW0wHf9wk8II8JqwccHoyveceDn4cOtBwHDnngCFMbf540+xGTExQ5uNVbqJz
-	ylD464/L3lGVGJ21hl+Zvl3RJY84+f+xjSQGOBJZeG8lRaljf9AcbfE/F3c+cvJE
-	+uuYEsXIYpIWnRwlbdOJkG8tQLTrCyCr/keSNX3/+JQhoYUyXt2aPI0uqT3h59/M
-	LdCNfCNup4iVzEfC4F+5cwSOEFijkvqgKceG0CDqz27VNPigFTg2NsdMjQt56RX7
-	w==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3yuj8qr83j-1
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=j3giX
+	IuN1pEHqX/58arefb4dOJNQT5mHyXJpGx+yV70=; b=YIL7wLjXXMnj72DGDXKSb
+	f6wQqOFwZL+R/awbGlAux2R+ZQsWYVt8XbqfTZARs25LH2wsyWBh/2kLDWYaUia+
+	p8Kc+s5WIFdcZ9428EoTaamTGWG3ougHWMmuexkj5eOodMSlNj0hdw4dC/V18cgo
+	skiXZqJqh5AgKUPOsOQg6t6+W830wsglOk+3hReBA9bWTUDST1oLZ/1VwKl5jcqU
+	3to04W2ggmNU1o4fjfQONvY0HxmovgpOcRflm2OHPMZ2hmMAD92KFPmlszSYmE7S
+	1QkpISDDt86FU6RTiCBmavGSbAc4XKFn++otbqbZS6XvBzb818VvoJVP5/LR9T8W
+	A==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3yuj8s87vb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 19:11:02 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 45INB1xC017535
+	Tue, 18 Jun 2024 19:11:29 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 45INBSEg005870
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 18 Jun 2024 19:11:01 -0400
-Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 18 Jun 2024 19:11:00 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
- ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 18 Jun 2024 19:11:00 -0400
+	Tue, 18 Jun 2024 19:11:28 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Tue, 18 Jun
+ 2024 19:11:27 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
  (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 18 Jun 2024 19:11:00 -0400
+ Transport; Tue, 18 Jun 2024 19:11:27 -0400
 Received: from work.ad.analog.com (HYB-hERzalRezfV.ad.analog.com [10.65.205.129])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 45INAkQ6021738;
-	Tue, 18 Jun 2024 19:10:48 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 45INBAXK021747;
+	Tue, 18 Jun 2024 19:11:12 -0400
 From: Marcelo Schmitt <marcelo.schmitt@analog.com>
 To: <broonie@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <jic23@kernel.org>, <robh+dt@kernel.org>,
@@ -74,9 +70,9 @@ To: <broonie@kernel.org>, <lars@metafoo.de>, <Michael.Hennerich@analog.com>,
         <marcelo.schmitt1@gmail.com>
 CC: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
         <linux-spi@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH v4 1/6] spi: Enable controllers to extend the SPI protocol with MOSI idle configuration
-Date: Tue, 18 Jun 2024 20:10:44 -0300
-Message-ID: <36eefb860f660e2cadb13b00aca04b5a65498993.1718749981.git.marcelo.schmitt@analog.com>
+Subject: [PATCH v4 2/6] spi: bitbang: Implement support for MOSI idle state configuration
+Date: Tue, 18 Jun 2024 20:11:08 -0300
+Message-ID: <c768f76f1d590b2c3c11fe6addcc0f68be850daf.1718749981.git.marcelo.schmitt@analog.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <cover.1718749981.git.marcelo.schmitt@analog.com>
 References: <cover.1718749981.git.marcelo.schmitt@analog.com>
@@ -86,216 +82,148 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: TUFtgksPaksYg7dNjxfmjIeC7u6Cc8PK
-X-Proofpoint-ORIG-GUID: TUFtgksPaksYg7dNjxfmjIeC7u6Cc8PK
+X-Proofpoint-GUID: Qd1fkdthYYpqKBWdKGvns3ofJN1Yjiuf
+X-Proofpoint-ORIG-GUID: Qd1fkdthYYpqKBWdKGvns3ofJN1Yjiuf
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-06-18_06,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- lowpriorityscore=0 mlxscore=0 adultscore=0 spamscore=0 mlxlogscore=999
- impostorscore=0 priorityscore=1501 malwarescore=0 clxscore=1015
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 mlxscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
+ bulkscore=0 priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2405170001 definitions=main-2406180169
 
-The behavior of an SPI controller data output line (SDO or MOSI or COPI
-(Controller Output Peripheral Input) for disambiguation) is usually not
-specified when the controller is not clocking out data on SCLK edges.
-However, there do exist SPI peripherals that require specific MOSI line
-state when data is not being clocked out of the controller.
+Some SPI peripherals may require strict MOSI line state when the controller
+is not clocking out data.
+Implement support for MOSI idle state configuration (low or high) by
+setting the data output line level on controller setup and after transfers.
+Bitbang operations now call controller specific set_mosi_idle() call back
+to set MOSI to its idle state.
+The MOSI line is kept at its idle state if no tx buffer is provided.
 
-A SPI controller may set the MOSI line on SCLK edges then bring it low when
-no data is going out or leave the line the state of the last transfer bit.
-More elaborated controllers are capable to set the MOSI idle state
-according to different configurable levels and thus are more suitable for
-interfacing with restrictive peripherals.
-
-Add SPI mode bits to allow peripherals to request explicit MOSI idle state
-when needed.
-
-When supporting a particular MOSI idle configuration, the data output line
-state is expected to remain at the configured level when the controller is
-not clocking out data. When a device that needs a specific MOSI idle state
-is identified, its driver should request the MOSI idle configuration by
-setting the proper SPI mode bit.
-
+Acked-by: Nuno Sa <nuno.sa@analog.com>
 Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
 ---
-Hi, so, this is an improved version of MOSI idle configuration support based on
-comments to the previous set.
-I'm actually not sure I did everything requested for the SPI subsystem.
-First replies to v3 brought the idea of having a feature detection mechanism.
-I didn't really get how to do that. If feature detection is required, can
-somebody please provide some pointers on how to implement that?
+ drivers/spi/spi-bitbang.c       | 24 ++++++++++++++++++++++++
+ include/linux/spi/spi_bitbang.h |  1 +
+ 2 files changed, 25 insertions(+)
 
- Documentation/spi/spi-summary.rst | 83 +++++++++++++++++++++++++++++++
- drivers/spi/spi.c                 |  9 +++-
- include/linux/spi/spi.h           |  6 +++
- include/uapi/linux/spi/spi.h      |  5 +-
- 4 files changed, 100 insertions(+), 3 deletions(-)
-
-diff --git a/Documentation/spi/spi-summary.rst b/Documentation/spi/spi-summary.rst
-index 7f8accfae6f9..49346708b522 100644
---- a/Documentation/spi/spi-summary.rst
-+++ b/Documentation/spi/spi-summary.rst
-@@ -614,6 +614,89 @@ queue, and then start some asynchronous transfer engine (unless it's
- already running).
+diff --git a/drivers/spi/spi-bitbang.c b/drivers/spi/spi-bitbang.c
+index ca5cc67555c5..8cc522bf444c 100644
+--- a/drivers/spi/spi-bitbang.c
++++ b/drivers/spi/spi-bitbang.c
+@@ -63,21 +63,28 @@ static unsigned bitbang_txrx_8(
+ 	unsigned flags
+ )
+ {
++	struct spi_bitbang	*bitbang;
+ 	unsigned		bits = t->bits_per_word;
+ 	unsigned		count = t->len;
+ 	const u8		*tx = t->tx_buf;
+ 	u8			*rx = t->rx_buf;
  
++	bitbang = spi_controller_get_devdata(spi->controller);
+ 	while (likely(count > 0)) {
+ 		u8		word = 0;
  
-+Extensions to the SPI protocol
-+------------------------------
-+The fact that SPI doesn't have a formal specification or standard permits chip
-+manufacturers to implement the SPI protocol in slightly different ways. In most
-+cases, SPI protocol implementations from different vendors are compatible among
-+each other. For example, in SPI mode 0 (CPOL=0, CPHA=0) the bus lines may behave
-+like the following:
+ 		if (tx)
+ 			word = *tx++;
++		else
++			word = spi->mode & SPI_MOSI_IDLE_HIGH ? 0xFF : 0;
+ 		word = txrx_word(spi, ns, word, bits, flags);
+ 		if (rx)
+ 			*rx++ = word;
+ 		count -= 1;
+ 	}
++	if (bitbang->set_mosi_idle)
++		bitbang->set_mosi_idle(spi);
 +
-+::
+ 	return t->len - count;
+ }
+ 
+@@ -92,21 +99,28 @@ static unsigned bitbang_txrx_16(
+ 	unsigned flags
+ )
+ {
++	struct spi_bitbang	*bitbang;
+ 	unsigned		bits = t->bits_per_word;
+ 	unsigned		count = t->len;
+ 	const u16		*tx = t->tx_buf;
+ 	u16			*rx = t->rx_buf;
+ 
++	bitbang = spi_controller_get_devdata(spi->controller);
+ 	while (likely(count > 1)) {
+ 		u16		word = 0;
+ 
+ 		if (tx)
+ 			word = *tx++;
++		else
++			word = spi->mode & SPI_MOSI_IDLE_HIGH ? 0xFFFF : 0;
+ 		word = txrx_word(spi, ns, word, bits, flags);
+ 		if (rx)
+ 			*rx++ = word;
+ 		count -= 2;
+ 	}
++	if (bitbang->set_mosi_idle)
++		bitbang->set_mosi_idle(spi);
 +
-+  nCSx ___                                                                   ___
-+          \_________________________________________________________________/
-+          •                                                                 •
-+          •                                                                 •
-+  SCLK         ___     ___     ___     ___     ___     ___     ___     ___
-+       _______/   \___/   \___/   \___/   \___/   \___/   \___/   \___/   \_____
-+          •   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ; •
-+          •   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ; •
-+  MOSI XXX__________         _______                 _______         ________XXX
-+  0xA5 XXX__/ 1     \_0_____/ 1     \_0_______0_____/ 1     \_0_____/ 1    \_XXX
-+          •       ;       ;       ;       ;       ;       ;       ;       ; •
-+          •       ;       ;       ;       ;       ;       ;       ;       ; •
-+  MISO XXX__________         _______________________          _______        XXX
-+  0xBA XXX__/     1 \_____0_/     1       1       1 \_____0__/    1  \____0__XXX
+ 	return t->len - count;
+ }
+ 
+@@ -121,21 +135,28 @@ static unsigned bitbang_txrx_32(
+ 	unsigned flags
+ )
+ {
++	struct spi_bitbang	*bitbang;
+ 	unsigned		bits = t->bits_per_word;
+ 	unsigned		count = t->len;
+ 	const u32		*tx = t->tx_buf;
+ 	u32			*rx = t->rx_buf;
+ 
++	bitbang = spi_controller_get_devdata(spi->controller);
+ 	while (likely(count > 3)) {
+ 		u32		word = 0;
+ 
+ 		if (tx)
+ 			word = *tx++;
++		else
++			word = spi->mode & SPI_MOSI_IDLE_HIGH ? 0xFFFFFFFF : 0;
+ 		word = txrx_word(spi, ns, word, bits, flags);
+ 		if (rx)
+ 			*rx++ = word;
+ 		count -= 4;
+ 	}
++	if (bitbang->set_mosi_idle)
++		bitbang->set_mosi_idle(spi);
 +
-+Legend::
+ 	return t->len - count;
+ }
+ 
+@@ -211,6 +232,9 @@ int spi_bitbang_setup(struct spi_device *spi)
+ 			goto err_free;
+ 	}
+ 
++	if (bitbang->set_mosi_idle)
++		bitbang->set_mosi_idle(spi);
 +
-+  • marks the start/end of transmission;
-+  : marks when data is clocked into the peripheral;
-+  ; marks when data is clocked into the controller;
-+  X marks when line states are not specified.
-+
-+In some few cases, chips extend the SPI protocol by specifying line behaviors
-+that other SPI protocols don't (e.g. data line state for when CS is inactive).
-+Those distinct SPI protocols, modes, and configurations are supported by
-+different SPI mode flags.
-+
-+MOSI idle state configuration
-+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Common SPI protocol implementations don't specify any state or behavior for the
-+MOSI line when the controller is not clocking out data. However, there do exist
-+peripherals that require specific MOSI line state when data is not being clocked
-+out. For example, if the peripheral expects the MOSI line to be high when the
-+controller is not clocking out data (SPI_MOSI_IDLE_HIGH), then a transfer in SPI
-+mode 0 would look like the following:
-+
-+::
-+
-+  nCSx ___                                                                   ___
-+          \_________________________________________________________________/
-+          •                                                                 •
-+          •                                                                 •
-+  SCLK         ___     ___     ___     ___     ___     ___     ___     ___
-+       _______/   \___/   \___/   \___/   \___/   \___/   \___/   \___/   \_____
-+          •   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ; •
-+          •   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ; •
-+  MOSI _____         _______         _______         _______________         ___
-+  0x56      \_0_____/ 1     \_0_____/ 1     \_0_____/ 1       1     \_0_____/
-+          •       ;       ;       ;       ;       ;       ;       ;       ; •
-+          •       ;       ;       ;       ;       ;       ;       ;       ; •
-+  MISO XXX__________         _______________________          _______        XXX
-+  0xBA XXX__/     1 \_____0_/     1       1       1 \_____0__/    1  \____0__XXX
-+
-+Legend::
-+
-+  • marks the start/end of transmission;
-+  : marks when data is clocked into the peripheral;
-+  ; marks when data is clocked into the controller;
-+  X marks when line states are not specified.
-+
-+In this extension to the usual SPI protocol, the MOSI line state is specified to
-+be kept high when CS is active but the controller is not clocking out data to
-+the peripheral and also when CS is inactive.
-+
-+Peripherals that require this extension must request it by setting the
-+SPI_MOSI_IDLE_HIGH bit into the mode attribute of their struct spi_device and
-+call spi_setup(). Controllers that support this extension should indicate it by
-+setting SPI_MOSI_IDLE_HIGH in the mode_bits attribute of their struct
-+spi_controller. The configuration to idle MOSI low is analogous but uses the
-+SPI_MOSI_IDLE_LOW mode bit.
-+
-+
- THANKS TO
- ---------
- Contributors to Linux-SPI discussions include (in alphabetical order,
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 289feccca376..8e567d5b1945 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -3921,6 +3921,12 @@ int spi_setup(struct spi_device *spi)
- 		(SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
- 		 SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL)))
- 		return -EINVAL;
-+	/* Check against conflicting MOSI idle configuration */
-+	if ((spi->mode & SPI_MOSI_IDLE_LOW) && (spi->mode & SPI_MOSI_IDLE_HIGH)) {
-+		dev_err(&spi->dev,
-+			"setup: MOSI configured to simultaneously idle low and high.\n");
-+		return -EINVAL;
-+	}
- 	/*
- 	 * Help drivers fail *cleanly* when they need options
- 	 * that aren't supported with their current controller.
-@@ -3928,7 +3934,8 @@ int spi_setup(struct spi_device *spi)
- 	 * so it is ignored here.
+ 	dev_dbg(&spi->dev, "%s, %u nsec/bit\n", __func__, 2 * cs->nsecs);
+ 
+ 	return 0;
+diff --git a/include/linux/spi/spi_bitbang.h b/include/linux/spi/spi_bitbang.h
+index b930eca2ef7b..1a54b593c691 100644
+--- a/include/linux/spi/spi_bitbang.h
++++ b/include/linux/spi/spi_bitbang.h
+@@ -22,6 +22,7 @@ struct spi_bitbang {
+ #define	BITBANG_CS_ACTIVE	1	/* normally nCS, active low */
+ #define	BITBANG_CS_INACTIVE	0
+ 
++	void	(*set_mosi_idle)(struct spi_device *spi);
+ 	/* txrx_bufs() may handle dma mapping for transfers that don't
+ 	 * already have one (transfer.{tx,rx}_dma is zero), or use PIO
  	 */
- 	bad_bits = spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD |
--				 SPI_NO_TX | SPI_NO_RX);
-+				 SPI_NO_TX | SPI_NO_RX | SPI_MOSI_IDLE_LOW |
-+				 SPI_MOSI_IDLE_HIGH);
- 	ugly_bits = bad_bits &
- 		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
- 		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL);
-diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-index e8e1e798924f..8e50a8559225 100644
---- a/include/linux/spi/spi.h
-+++ b/include/linux/spi/spi.h
-@@ -599,6 +599,12 @@ struct spi_controller {
- 	 * assert/de-assert more than one chip select at once.
- 	 */
- #define SPI_CONTROLLER_MULTI_CS		BIT(7)
-+	/*
-+	 * The spi-controller is capable of keeping the MOSI line low or high
-+	 * when not clocking out data.
-+	 */
-+#define SPI_CONTROLLER_MOSI_IDLE_LOW    BIT(8)  /* Can idle MOSI low */
-+#define SPI_CONTROLLER_MOSI_IDLE_HIGH   BIT(9)  /* Can idle MOSI high */
- 
- 	/* Flag indicating if the allocation of this struct is devres-managed */
- 	bool			devm_allocated;
-diff --git a/include/uapi/linux/spi/spi.h b/include/uapi/linux/spi/spi.h
-index ca56e477d161..ee4ac812b8f8 100644
---- a/include/uapi/linux/spi/spi.h
-+++ b/include/uapi/linux/spi/spi.h
-@@ -28,7 +28,8 @@
- #define	SPI_RX_OCTAL		_BITUL(14)	/* receive with 8 wires */
- #define	SPI_3WIRE_HIZ		_BITUL(15)	/* high impedance turnaround */
- #define	SPI_RX_CPHA_FLIP	_BITUL(16)	/* flip CPHA on Rx only xfer */
--#define SPI_MOSI_IDLE_LOW	_BITUL(17)	/* leave mosi line low when idle */
-+#define SPI_MOSI_IDLE_LOW	_BITUL(17)	/* leave MOSI line low when idle */
-+#define SPI_MOSI_IDLE_HIGH	_BITUL(18)	/* leave MOSI line high when idle */
- 
- /*
-  * All the bits defined above should be covered by SPI_MODE_USER_MASK.
-@@ -38,6 +39,6 @@
-  * These bits must not overlap. A static assert check should make sure of that.
-  * If adding extra bits, make sure to increase the bit index below as well.
-  */
--#define SPI_MODE_USER_MASK	(_BITUL(18) - 1)
-+#define SPI_MODE_USER_MASK	(_BITUL(19) - 1)
- 
- #endif /* _UAPI_SPI_H */
 -- 
 2.43.0
 

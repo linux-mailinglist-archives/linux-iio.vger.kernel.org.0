@@ -1,303 +1,124 @@
-Return-Path: <linux-iio+bounces-6452-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6453-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7092990C70B
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 12:33:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E26F90C722
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 12:36:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 651161C20ADF
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 10:33:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16C411F26309
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 10:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2BC01A8C24;
-	Tue, 18 Jun 2024 08:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539E8152197;
+	Tue, 18 Jun 2024 08:30:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="FXrbh14D"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MajyHx8l"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2897FF;
-	Tue, 18 Jun 2024 08:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACEE149C44;
+	Tue, 18 Jun 2024 08:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718698919; cv=none; b=HcL/2nBqXvOnQ98hzSS6cW1Tfe84iVaqseQ+CuI/DA3CLRJLS+eDCCCWWCC+opv0+Pt7KAR4k/Z53IsXtohJLlllAejtIZEVP/s9pnhlBwkBcBlLbSk+FZQF57ifcsAEXSiShOP9xn8EW9IeaKhNxmuUCW06qrqZQNoVph8wOOk=
+	t=1718699449; cv=none; b=l8tIKgTYWVZGSOxA5yp+POZMIqMgR4Line59kjp3xph5cMaFMTVlOSBbOGcxzL6/ozvcQeWdaKG56/HGygp7L74OijXwsrcWhbkq71sf0d4fZY7Ku788VQblOniB54U/FmXtiJJvfRkHZMSf/KkBv+Ccj9lsXlu6neequOgVUFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718698919; c=relaxed/simple;
-	bh=WTcjz+kLmqdGjNTrc+wuOeHFHrMBaccRRn/Bx9/5lGY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l2+Hbgg2jOCVl9yq3E+ie4MxwkXhP66i3isRoNM3XjIVx2KcWeFqTMRY/7HFqjQgbDPOjHW74SxeMHcwsWm5OIow2kL9pgjTQACq1qX1xoGhsIUQdjYRgsL5vG5Knklr+JAr8uzjIOJFT4VwxWzKaxmUjzUM47Cna1F1y4Djun8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=FXrbh14D; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45I62swv007835;
-	Tue, 18 Jun 2024 04:20:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=uVKdw
-	jb9hVSWzd7+J6ihvLGOJF39wp19/Q1b+7sUI1k=; b=FXrbh14DGjPHdTo/jh/zz
-	f84IzIgcOXiR+xtU+WWumvl6I/9zh2VSpzh6ARSiuARFoO0qYfhHsm4hZzHPmhDM
-	VhuT/tI2WcN5yIcQs/ysJhVcWmEH5h2IQBBQxyyMnE4AD6Sqg2MbOufFXFWP+7xb
-	QQP1m/1i0TH/WdgPFGUcmAwbm2FKAR11K77gpgDvw897dL3Gcde1T8lfwJdUoSLy
-	KyMOxOSzJbgkAJDToagtJHV6CF6XU3QCU31VrWZrMiD9460lNqYrYNWM+a5vAGEt
-	EN97Go7K3nfPeXXcp7astZz4An1ihO3IH2IHfsGrlxF1vb/VFJjruC//1fKZmB7Y
-	A==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ys7v31tmv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Jun 2024 04:20:46 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 45I8KeJq062808
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 18 Jun 2024 04:20:40 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX8.ad.analog.com (10.64.17.5) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 18 Jun 2024 04:20:39 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Tue, 18 Jun 2024 04:20:39 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Tue, 18 Jun 2024 04:20:39 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.163])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 45I8KJEW004234;
-	Tue, 18 Jun 2024 04:20:30 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
-	<sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Lars-Peter Clausen
-	<lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        "Jonathan Cameron" <jic23@kernel.org>, <linux-clk@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Subject: [PATCH v5 2/2] iio: frequency: adf4350: add clk provider
-Date: Tue, 18 Jun 2024 11:20:07 +0300
-Message-ID: <20240618082012.4496-2-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240618082012.4496-1-antoniu.miclaus@analog.com>
-References: <20240618082012.4496-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1718699449; c=relaxed/simple;
+	bh=6FT1Od5d7MtnOn4kQe90In3Q4FHEYuebZEe5Hl7XNcE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jKXqDiMAw9N5E7VX4LGCn3mW1I6SiYhjg6P+K3ggHFqSpCn3ZOlM7FcUSXGWDs2LiXtPv+deQEur5p57ijW4IdpNAZtyoqh4SLB0fJuSsyyjm77uDqOmPImErcrnoJLpeNw2ccVyMCeJA0e6Xa2fnCa8LVTTpdSGHLvcV6lO7BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MajyHx8l; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-57cd26347d3so2755490a12.1;
+        Tue, 18 Jun 2024 01:30:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718699446; x=1719304246; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6FT1Od5d7MtnOn4kQe90In3Q4FHEYuebZEe5Hl7XNcE=;
+        b=MajyHx8lWDyjWqB1xHFecdJJAobLb/kLF33nL5CBVRNBsU8I91v2GIc56govwItLb4
+         hjaE3zdViqrGwt+AxvibiNPznQiwHWgvEAZXVMaB2IiwDy/xJakRQw2BmRqH3BIzUte3
+         l4leTqTnq+eXs8px6w+Hs+mZ9kVlx+1ivl1sxa5/gEMi8M7SPaVWowD1OH3O2u3WkorK
+         tQItV+HQ0IxspYWkoJW+juFCpmBwVwvgwIIH/RhbguqyuXu3WVMwA4bBcs2nYEV5JsGC
+         pVRr3NX0x422jUJCysekW11HVeynG106EyPgmkAuPZXADBlpBsM5PBWwsoKAWEBPc50W
+         qvQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718699446; x=1719304246;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6FT1Od5d7MtnOn4kQe90In3Q4FHEYuebZEe5Hl7XNcE=;
+        b=A6fO4YiUdiYklc9gWOhNfjmi9aDuBKFP7/In8JLN7Vy25yMSZqtPdKCp6OwcW1SrWa
+         gGUePvhPlIgWg76ynnHnLHBJJ1UAd6xB+mY2GVaX18ZiG0ASi9SF+1YWtGumcytjco02
+         +CFMRmbrl5xkvgcGyvw3jg3e6gI5nx9CcgnDmKbUNL+JoNNOERk8ItneCvcgY+MCCv2n
+         0ILU76O4d0FTY09bHKsoiaF3PgM6DgfftNJ1aaIbwTLplNex95HWXi9lsYmm4Y4g7Set
+         RwvEvT2UQNLFg2jjYaXtQ5SXM1UCee94SXOMzT7uytTXrAx5W4AfXYt67rGcoAJJq/JO
+         aK+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVX6AbvIdAGpHN8spcWg2tzKlSRgX3EsEYi3sFTlKoOAMv0LMz1tlS1BP72vK2D7CKr6l8wyyGbLeQlmJXH58eem8gWFF/17S6t9pgTG6IQw2FSGBjC56tAviOyrLiPsJD7Hx96PUyu
+X-Gm-Message-State: AOJu0YwbalI3glXfO6cu+IbW9uXc9zLOYW1OY67chq9xWzomwlehcF3d
+	RYhi8XqFdGr6/9VM6GExyTVtMZcjGZLFBhhXL+0+8t/lrQAljR4NMU9ODf6dwspzcQ==
+X-Google-Smtp-Source: AGHT+IHQbE7jFMXH3wO0Z8MsAhLV7cYwJYfZ6QOolSOHUg4GJ8a3hI83WNeUtzk11P+APsDR13KWyA==
+X-Received: by 2002:a50:8711:0:b0:57a:339f:1b2d with SMTP id 4fb4d7f45d1cf-57cbd673ee7mr7279502a12.5.1718699445403;
+        Tue, 18 Jun 2024 01:30:45 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cb72da6d0sm7385973a12.26.2024.06.18.01.30.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jun 2024 01:30:45 -0700 (PDT)
+Message-ID: <8ba6d78d2cd7f58d1d24e3c32211a8ef0d6864fc.camel@gmail.com>
+Subject: Re: [PATCH] iio: dac: adi-axi-dac: improve probe() error messaging
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Trevor Gamblin <tgamblin@baylibre.com>, Nuno Sa <nuno.sa@analog.com>, 
+ Lars-Peter Clausen
+	 <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron
+	 <jic23@kernel.org>
+Cc: Angelo Dureghello <adureghello@baylibre.com>, linux-iio@vger.kernel.org,
+  linux-kernel@vger.kernel.org
+Date: Tue, 18 Jun 2024 10:34:34 +0200
+In-Reply-To: <20240617151820.3337034-1-tgamblin@baylibre.com>
+References: <20240617151820.3337034-1-tgamblin@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: Hswh6EdkeCOn9o41uh8zX96e_NxOs_7g
-X-Proofpoint-GUID: Hswh6EdkeCOn9o41uh8zX96e_NxOs_7g
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-18_02,2024-06-17_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- phishscore=0 priorityscore=1501 mlxscore=0 lowpriorityscore=0 spamscore=0
- bulkscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2405170001
- definitions=main-2406180061
 
-Add clk provider feature for the adf4350.
+On Mon, 2024-06-17 at 11:18 -0400, Trevor Gamblin wrote:
+> The current error handling for calls such as devm_clk_get_enabled() in
+> the adi-axi-dac probe() function means that, if a property such as
+> 'clocks' (for example) is not present in the devicetree when booting a
+> kernel with the driver enabled, the resulting error message will be
+> vague, e.g.:
+>=20
+> > adi_axi_dac 44a00000.dac: probe with driver adi_axi_dac failed with err=
+or -2
+>=20
+> Change the devm_clk_get_enabled(), devm_regmap_init_mmio(), and
+> devm_iio_backend_register() checks to use dev_err_probe() with some
+> context for easier debugging.
+>=20
+> After the change:
+>=20
+> > adi_axi_dac 44a00000.dac: error -ENOENT: failed to get clock
+> > adi_axi_dac 44a00000.dac: probe with driver adi_axi_dac failed with err=
+or -2
+>=20
+> Suggested-by: Nuno Sa <nuno.sa@analog.com>
+> Tested-by: Angelo Dureghello <adureghello@baylibre.com>
+> Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+> ---
+> Added Angelo as Tested-by since he tested the patch on an internal
+> setup.
+> ---
 
-Even though the driver was sent as an IIO driver in most cases the
-device is actually seen as a clock provider.
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-This patch aims to cover actual usecases requested by users in order to
-completely control the output frequencies from userspace.
-
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-changes in v5:
- - add error handling for dt properties parse.
- - drop all IIO channels if driver acts as clock provider.
- drivers/iio/frequency/adf4350.c | 129 +++++++++++++++++++++++++++++++-
- 1 file changed, 127 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
-index 4abf80f75ef5..d0791a21e65c 100644
---- a/drivers/iio/frequency/adf4350.c
-+++ b/drivers/iio/frequency/adf4350.c
-@@ -19,6 +19,7 @@
- #include <linux/gpio/consumer.h>
- #include <asm/div64.h>
- #include <linux/clk.h>
-+#include <linux/clk-provider.h>
- 
- #include <linux/iio/iio.h>
- #include <linux/iio/sysfs.h>
-@@ -36,6 +37,9 @@ struct adf4350_state {
- 	struct gpio_desc		*lock_detect_gpiod;
- 	struct adf4350_platform_data	*pdata;
- 	struct clk			*clk;
-+	struct clk			*clkout;
-+	const char			*clk_out_name;
-+	struct clk_hw			hw;
- 	unsigned long			clkin;
- 	unsigned long			chspc; /* Channel Spacing */
- 	unsigned long			fpfd; /* Phase Frequency Detector */
-@@ -61,6 +65,8 @@ struct adf4350_state {
- 	__be32				val __aligned(IIO_DMA_MINALIGN);
- };
- 
-+#define to_adf4350_state(_hw) container_of(_hw, struct adf4350_state, hw)
-+
- static struct adf4350_platform_data default_pdata = {
- 	.channel_spacing = 10000,
- 	.r2_user_settings = ADF4350_REG2_PD_POLARITY_POS |
-@@ -381,6 +387,115 @@ static const struct iio_info adf4350_info = {
- 	.debugfs_reg_access = &adf4350_reg_access,
- };
- 
-+static void adf4350_clk_del_provider(void *data)
-+{
-+	struct adf4350_state *st = data;
-+
-+	of_clk_del_provider(st->spi->dev.of_node);
-+}
-+
-+static unsigned long adf4350_clk_recalc_rate(struct clk_hw *hw,
-+					     unsigned long parent_rate)
-+{
-+	struct adf4350_state *st = to_adf4350_state(hw);
-+	unsigned long long tmp;
-+
-+	tmp = (u64)(st->r0_int * st->r1_mod + st->r0_fract) * st->fpfd;
-+	do_div(tmp, st->r1_mod * (1 << st->r4_rf_div_sel));
-+
-+	return tmp;
-+}
-+
-+static int adf4350_clk_set_rate(struct clk_hw *hw,
-+				unsigned long rate,
-+				unsigned long parent_rate)
-+{
-+	struct adf4350_state *st = to_adf4350_state(hw);
-+
-+	if (parent_rate == 0 || parent_rate > ADF4350_MAX_FREQ_REFIN)
-+		return -EINVAL;
-+
-+	st->clkin = parent_rate;
-+
-+	return adf4350_set_freq(st, rate);
-+}
-+
-+static int adf4350_clk_prepare(struct clk_hw *hw)
-+{
-+	struct adf4350_state *st = to_adf4350_state(hw);
-+
-+	st->regs[ADF4350_REG2] &= ~ADF4350_REG2_POWER_DOWN_EN;
-+
-+	return adf4350_sync_config(st);
-+}
-+
-+static void adf4350_clk_unprepare(struct clk_hw *hw)
-+{
-+	struct adf4350_state *st = to_adf4350_state(hw);
-+
-+	st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
-+
-+	adf4350_sync_config(st);
-+}
-+
-+static int adf4350_clk_is_enabled(struct clk_hw *hw)
-+{
-+	struct adf4350_state *st = to_adf4350_state(hw);
-+
-+	return (st->regs[ADF4350_REG2] & ADF4350_REG2_POWER_DOWN_EN);
-+}
-+
-+static const struct clk_ops adf4350_clk_ops = {
-+	.recalc_rate = adf4350_clk_recalc_rate,
-+	.set_rate = adf4350_clk_set_rate,
-+	.prepare = adf4350_clk_prepare,
-+	.unprepare = adf4350_clk_unprepare,
-+	.is_enabled = adf4350_clk_is_enabled,
-+};
-+
-+static int adf4350_clk_register(struct adf4350_state *st)
-+{
-+	struct spi_device *spi = st->spi;
-+	struct clk_init_data init;
-+	struct clk *clk;
-+	const char *parent_name;
-+	int ret;
-+
-+	if (!device_property_present(&spi->dev, "#clock-cells"))
-+		return 0;
-+
-+	init.name = devm_kasprintf(&spi->dev, GFP_KERNEL, "%s-clk",
-+				   fwnode_get_name(dev_fwnode(&spi->dev)));
-+	if (!init.name)
-+		return -ENOMEM;
-+
-+	if (device_property_read_string(&spi->dev, "clock-output-names",
-+					&init.name))
-+		init.name = spi->dev.of_node->name;
-+
-+	parent_name = of_clk_get_parent_name(spi->dev.of_node, 0);
-+	if (!parent_name)
-+		return -EINVAL;
-+
-+	init.ops = &adf4350_clk_ops;
-+	init.parent_names = &parent_name;
-+	init.num_parents = 1;
-+	init.flags = CLK_SET_RATE_PARENT;
-+
-+	st->hw.init = &init;
-+	clk = devm_clk_register(&spi->dev, &st->hw);
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
-+
-+	ret = of_clk_add_provider(spi->dev.of_node, of_clk_src_simple_get, clk);
-+	if (ret)
-+		return ret;
-+
-+	st->clkout = clk;
-+
-+	return devm_add_action_or_reset(&spi->dev, adf4350_clk_del_provider, st);
-+}
-+
- static struct adf4350_platform_data *adf4350_parse_dt(struct device *dev)
- {
- 	struct adf4350_platform_data *pdata;
-@@ -522,8 +637,6 @@ static int adf4350_probe(struct spi_device *spi)
- 
- 	indio_dev->info = &adf4350_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
--	indio_dev->channels = &adf4350_chan;
--	indio_dev->num_channels = 1;
- 
- 	mutex_init(&st->lock);
- 
-@@ -551,6 +664,18 @@ static int adf4350_probe(struct spi_device *spi)
- 			return ret;
- 	}
- 
-+	ret = adf4350_clk_register(st);
-+	if (ret)
-+		return ret;
-+
-+	if (st->clkout) {
-+		indio_dev->channels = NULL;
-+		indio_dev->num_channels = 0;
-+	} else {
-+		indio_dev->channels = &adf4350_chan;
-+		indio_dev->num_channels = 1;
-+	}
-+
- 	ret = devm_add_action_or_reset(&spi->dev, adf4350_power_down, indio_dev);
- 	if (ret)
- 		return dev_err_probe(&spi->dev, ret,
--- 
-2.45.2
 
 

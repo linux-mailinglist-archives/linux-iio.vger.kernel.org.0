@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-6450-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6451-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5EC090C3CE
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 08:41:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3053C90C3D2
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 08:42:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32AB6B21627
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 06:41:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE1122828BE
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 06:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE4261FC9;
-	Tue, 18 Jun 2024 06:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B23EC5FEE6;
+	Tue, 18 Jun 2024 06:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GTfglAK2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iahL1CXW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A2C4F20C;
-	Tue, 18 Jun 2024 06:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B68219F6;
+	Tue, 18 Jun 2024 06:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718692903; cv=none; b=ifN4+GeUPGyaWsJcuFwGB5LCGBQBCNOViLzGZTuNK50jIyaThWAKi7XFnnp4H/KETCq9GoBZy8NhMsMbR07i35EKJoCvmYfUVoYq/NhrpnQyf02DHAZLwX9Z+INXv6v13u3pxtff8JTmuShprC02UvavYR5APCC3b6qzbIi9BgQ=
+	t=1718692916; cv=none; b=TKW/soyLaTQb+YZ08zHgHuSUTbCdY3BLFdrQA3PGDQJanWTyehNRwVCB7RO2UI32fyUm4FSiLQY54dhzlh4zjb1duFR+4i2JniaNOJ2rlPI8Rf+sr2JRjpcjIVnVOSnnUK02vLgNTH9bH8SH8mT1sh2q+cvB8oUNV4A8N5Alpbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718692903; c=relaxed/simple;
-	bh=/T0IKNMK+6Fw/i9b443ig2U61E4/Qe+UfIq4bxksW0o=;
+	s=arc-20240116; t=1718692916; c=relaxed/simple;
+	bh=fORBXY4rt20nRkmJvDmkj9LeAp2C5Z9Pt75NRddyEWY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nc1qn9aRU06wFXVz9H6sfH8OreizEmxdvYQM9C7Sk5UQVebzc0U0pkEESh1mBClwKWSJM4HBPBtX0teSl3csPytlryGyO89hFRay6zyrKt4kc9v6UeackeVoOJElDu+GoFhmQOCOiVky7g7FxH7+TByzeCaj8RoMCQ4k9QfF7mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GTfglAK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3707C3277B;
-	Tue, 18 Jun 2024 06:41:37 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=kNQzBmx/zEccRqcmmkDHpvV7oSbSY/1cJasnQ9k+OZf8QOYOCodTUwotI89b2t3RyYw6HW2ETQjy+lb0SZVWkqzZSAOidI5OmCmqAxhC1GyKFBVOT9mHHSnj3hUsk8si5AyMtEjyjnqWsTwY630dvavoyGnb23IaIkDmGLflFf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iahL1CXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 789DAC4AF1D;
+	Tue, 18 Jun 2024 06:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718692902;
-	bh=/T0IKNMK+6Fw/i9b443ig2U61E4/Qe+UfIq4bxksW0o=;
+	s=k20201202; t=1718692916;
+	bh=fORBXY4rt20nRkmJvDmkj9LeAp2C5Z9Pt75NRddyEWY=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GTfglAK2EyCvMrU6W3XIdqdJWrFIGyxQLricvNLrPS8jKsbIvXdJ4RuTeNrQd6Ow0
-	 S+ZJyHxzfaWQMBmrtXuBEAEaZte1SKX6BtfO+oWOClgxKV4DyMibCFNMxF0B7oqtbJ
-	 H3l9xD8GUXodoMVjoHh2mP+v4JeqdhPahDKRWT71eDUaqf25fyB2Te/vcat4oCGpDS
-	 HUMzDdkwQB2dKH/l+ZFeNizcskmeCDgNnOXU7OsNvTqcNP/wCPtlAgRhugY1oEDJvz
-	 fTZJsOAgoXTX6aNS4g9jfUALwlJfd0J6q6mIT6OfzxdE6yRCNL5P25bCzd7NxuLBid
-	 1VnHOO8+l8GHQ==
-Message-ID: <2bae2093-867e-496c-aff0-6850c79f9a5b@kernel.org>
-Date: Tue, 18 Jun 2024 08:41:34 +0200
+	b=iahL1CXWqr8Q79CvCrx80RxqywRXcTwLi4tnzUmKCx1GBK30ioqniw5+c9ZB0Jrt6
+	 hZy3zXxZ8zio7gRjxFuHu817C7Mdpy2RIH9U5wsj5zzM8BdFCpLh52Vfsi9Ydx+W8d
+	 D2ncLiGl18Zai4IjZ3hLMFTIF1UdBWtbb/LTK8jUZ0IIP6ktdNHhkdukOz7syMeM1Z
+	 WwCS4JHlJvZE4r4RyQYqVJufP3znGHJbPbl3YZMzwJv9YtRIIpjX0iqwdGf5pM6R4o
+	 5raEyYAnZyN62BGa1XQvzF+iDwmLr8EgnW0PdGAG5cSKQ+3dE45RKxX2Ql9Cf2iaZe
+	 Cxpo3eI6T05uQ==
+Message-ID: <66630521-1d9d-440e-b3ec-bae8fe48920d@kernel.org>
+Date: Tue, 18 Jun 2024 08:41:49 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,7 +50,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/8] power: supply: axp20x_battery: add support for AXP717
+Subject: Re: [PATCH 1/8] dt-bindings: iio: adc: Add AXP717 compatible
 To: Chris Morgan <macroalpha82@gmail.com>, linux-sunxi@lists.linux.dev
 Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
  linux-iio@vger.kernel.org, broonie@kernel.org, lee@kernel.org,
@@ -58,7 +58,7 @@ Cc: linux-pm@vger.kernel.org, devicetree@vger.kernel.org,
  wens@csie.org, conor+dt@kernel.org, krzk+dt@kernel.org, robh@kernel.org,
  lars@metafoo.de, Chris Morgan <macromorgan@hotmail.com>
 References: <20240617220535.359021-1-macroalpha82@gmail.com>
- <20240617220535.359021-4-macroalpha82@gmail.com>
+ <20240617220535.359021-2-macroalpha82@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -104,52 +104,18 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240617220535.359021-4-macroalpha82@gmail.com>
+In-Reply-To: <20240617220535.359021-2-macroalpha82@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 18/06/2024 00:05, Chris Morgan wrote:
 > From: Chris Morgan <macromorgan@hotmail.com>
 > 
-> Add binding information for AXP717. Also, as the driver can read
-> simple-battery parameters for the AXP717 and other batteries, define
-> the simple-battery parameter.
+> Add compatible binding for the axp717.
 > 
-> Signed-off-by: Chris Morgan <m
+> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
 
-Please use subject prefixes matching the subsystem. You can get them for
-example with `git log --oneline -- DIRECTORY_OR_FILE` on the directory
-your patch is touching. For bindings, the preferred subjects are
-explained here:
-https://www.kernel.org/doc/html/latest/devicetree/bindings/submitting-patches.html#i-for-patch-submitters
-
-acromorgan@hotmail.com>
-> ---
->  .../power/supply/x-powers,axp20x-battery-power-supply.yaml | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
-> index e0b95ecbbebd..8d6b06117f6d 100644
-> --- a/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
-> +++ b/Documentation/devicetree/bindings/power/supply/x-powers,axp20x-battery-power-supply.yaml
-> @@ -23,11 +23,18 @@ properties:
->        - const: x-powers,axp202-battery-power-supply
->        - const: x-powers,axp209-battery-power-supply
->        - const: x-powers,axp221-battery-power-supply
-> +      - const: x-powers,axp717-battery-power-supply
->        - items:
->            - const: x-powers,axp803-battery-power-supply
->            - const: x-powers,axp813-battery-power-supply
->        - const: x-powers,axp813-battery-power-supply
->  
-> +  monitored-battery:
-> +    description: |
-
-Do not need '|' unless you need to preserve formatting.
-
-> +      Specifies the phandle of an optional simple-battery connected to
-> +      this gauge.
-> +    $ref: /schemas/types.yaml#/definitions/phandle
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 Best regards,
 Krzysztof

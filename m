@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-6497-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6498-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD2CC90D4E3
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 16:28:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7127C90D4EA
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 16:28:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55DC528E29B
-	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 14:28:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9EE028E7F9
+	for <lists+linux-iio@lfdr.de>; Tue, 18 Jun 2024 14:28:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2C8B1AC233;
-	Tue, 18 Jun 2024 14:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8623F1AC421;
+	Tue, 18 Jun 2024 14:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="ohKtDfAW"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="yKpwXGxa"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AA81AB906
-	for <linux-iio@vger.kernel.org>; Tue, 18 Jun 2024 14:02:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EAA81AB8FC
+	for <linux-iio@vger.kernel.org>; Tue, 18 Jun 2024 14:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718719363; cv=none; b=fsR8oC84bMVZ3MJ5pMTy9OoqBY4GDCPgnAglxZ47GjZ2OYkpHpxUhb2+eUs1uQFL+hhji/iHo0GI/p2hz8kqfhNbVTRlAHxbZCXSteayb/sPvcfLE+Zjsh6B1rbZXYq2E6ycieWivzy9y+r/40VHsNzdsbUPUdLw7CIB1FtydCQ=
+	t=1718719364; cv=none; b=QdZ+DF87GsdxngrMuLXXDckU1cEb6l4Pa4GfP03lqiR1IG/TEDJzwTFKuGbbNgVEYJIScrKoDQR2h10CJVoRE0OR5qBej6gbFmQu8M6x/z46jUQaJttqq88T2wT6t91q3nz1dzx0Vw9hQ83siQMAoyLuqgKMYsTCR+j9k6qcbzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718719363; c=relaxed/simple;
-	bh=QmIv781VGnh+ryUYXx1F6xEK9035NP0/VEuO/oa1M9c=;
+	s=arc-20240116; t=1718719364; c=relaxed/simple;
+	bh=G0IEsc0YuwIVNtNFERXBYcEqbj6ugCGmrYZUFWavEKw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hhAM9DQLl4BrAXI7AKEzp1mHnNkZIXcMNmGUE5qCkB4nAXz1HrUzwkjsjFTw8+7kQ57NlbxxTNTAon6aa4htFmLnzUjA/v5yTfNLUmZXdYdMxnQfoIg1ltkvtLVbLzdf12/W21rwEgoBmQ0bk/YXIxr1fcIP1yxGqC9CAaJ7iyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=ohKtDfAW; arc=none smtp.client-ip=209.85.167.44
+	 In-Reply-To:To:Cc; b=ufF1k7Zu4aFRqrZu8EbpyNtAFsv7M80U/nu5bYS/ytrKaKS/GZ0EEFu7Am1O7cU5hA1OvU3IXylPMoa4GDzVwci7ZUXUh1xjuV7ETGcBYLRV1HVGwkPBGUbSB7x+doKibOgdImJDejBjzTYX8eX/8THr7HpdjHG4hRx4GsIVbRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=yKpwXGxa; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52c525257feso7085182e87.1
-        for <linux-iio@vger.kernel.org>; Tue, 18 Jun 2024 07:02:39 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4218008c613so41593295e9.2
+        for <linux-iio@vger.kernel.org>; Tue, 18 Jun 2024 07:02:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718719358; x=1719324158; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718719359; x=1719324159; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=iI4ADRyyzg0pZX/pPb/PmIK3doCtooaUT1uP9pqm4FQ=;
-        b=ohKtDfAWXiBKfE+4MAHaz94DbyynxLd/BJICDyyhmBA8gD0M4xYqBXpVmUNHUGeKWw
-         DwT+gqU4bqqakAFMpG1vXkgMA3YJP/luCFOrYwC1nzQjSS/UUuXdSf2f6risr73DPEvz
-         zOA+0KdRPZ8ubD+fgzRlhuRmB2kSRLeT1W+4xG57WnUkRaFomzQjALT2CNw5o0a5nz5x
-         EX5ov+NKAykBjBlq9tD0Ff+xBHuFOxdv3L2QKrydl8003kJyoZUF9SND0hGk/7siknwJ
-         tZx+0d97LU9niYpjuMexauD347ecvnZRpSYx3T1GtFuUi/qHuq6G9cBJSrqMgczbrZWM
-         82Gw==
+        bh=U4plLXWkBuN6eMxbghss2+pJl9NpmXZN9/hM9oRoKCA=;
+        b=yKpwXGxavEO16aGtNkPyaQeDdXMa8Mao3TIaEK/2WeAXLnmbkT/F9Excncq8FhncnG
+         7bz5He/bOYnAgw/Fyx5/ZRY73Nk2BbhLk0hjTtwOo7SS0J3qPsvn1ASOnV3XwfFAsRvv
+         iWIRUaD8a77HuQyhz1irKVMU6z1adgkS15FdF3JcFU3VqIHucPaebrZYIkbUYY43CSsQ
+         +tuqn5z8NkKxH2Pu/AXampd2EE1xIwJNoMKKGOWGQW1XwHgFNEBga3q0lRdUWHSabhHi
+         gFJxwGyEH6CS/3j3lhzmwdOHlbIVJzQQiEysGmFIYYI5DqW87FH/wqRA+ardR3D6eOQj
+         mh3A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718719358; x=1719324158;
+        d=1e100.net; s=20230601; t=1718719359; x=1719324159;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iI4ADRyyzg0pZX/pPb/PmIK3doCtooaUT1uP9pqm4FQ=;
-        b=UXE22VBs6fNNO1T6OQJ0DYgMWliDqDlHfx46YVvcJT0LWPKH9Sm81h9S3KgYGhL/MH
-         BvcBNmF0d0O9t/V+0QGr5up04O4pC2F8ZKdVvmilnv9sbkrCieZ11rBkkHmMLbQgwLnY
-         vpTq1rUM+7kV5lViw22wfeD2RQH4mypxAaKfeOrM/7asAimP/tViLZSwnHZSr55YJxuq
-         3o1e7fGkjQdk1mW/OACAjgHRnKiog4MFA3SvU86KY4sPy3lzBq0ZJRPQqf6MsQIgQ50s
-         I7T8BLq1HFiSCBY/xtPzCfcb6iJqVK3Fyk5ExjWL6L8GOgEs5kmfSgFyloSQZuAKea6W
-         gB9w==
-X-Gm-Message-State: AOJu0YznymKltMOAOZl4qIPYQ8PJkhoDMJfqt5RqNt0AyqnNcLzPloLd
-	8cp9V2xvqGT6TNxGsXDABhsj8QmtNtzh7zcuNMJPixrsOTBwP7qI1TE11zc65Fk=
-X-Google-Smtp-Source: AGHT+IHBu4z952wNs7NhOwlF6llGWnDm5ZPTxh7b2obRWVw6BiFyuLwn+c+TGhzkzw2h3HLjRG9iow==
-X-Received: by 2002:ac2:58c8:0:b0:52c:9e25:978d with SMTP id 2adb3069b0e04-52ca6e8fe35mr7316607e87.45.1718719358335;
+        bh=U4plLXWkBuN6eMxbghss2+pJl9NpmXZN9/hM9oRoKCA=;
+        b=mTFJUvixGYpNLtX/G6DsPytH50fJQtSuMlccBcOxn56pcUAa03cxNapN2Tg1q1VVgR
+         cnd/kzDXos7vMRv0NkbfzkXIMgXF0uwy+gKtoz/IfRw4WFR9oKpzh9UkQacHvk/V+S9C
+         bZHJHRlWRkXUPA6HWhXx4NK/PqS0M/cCXuwzs6m4+RmtifgMT/q8yt0xLpuYvxJsRzOE
+         SVUwGgu797wywj2d3TCIYGLJKMigSmql2uD7pN6h4cecdeCxVR9bmfdo7CC5wWvbCs+F
+         6P4bBcHvvNjlKsyVuACf8Ja+3zETazqv12Id0JciRjuydoVyJevODY9kpeIP9Xrgxr+e
+         3Dow==
+X-Gm-Message-State: AOJu0YwqKvo6zFkgs3HmkjWetaLKvDfFwF+NZOhKdnJ0Cigttt3vnhT5
+	D68fS7oQ0iqImduPGFDBsdowfHPibFiFpcRj+BkJsBdLWSfhyor32JQmcvibLIg=
+X-Google-Smtp-Source: AGHT+IHk8eAM+xd2EgGrv4q4Al8sZ5/FlQ4l+KMnzE7MbVO9g2hq92wev9EA4GAAkpJE4kMFyryK/A==
+X-Received: by 2002:adf:ea48:0:b0:35f:1128:250d with SMTP id ffacd0b85a97d-3607a7842e7mr8900419f8f.68.1718719358881;
         Tue, 18 Jun 2024 07:02:38 -0700 (PDT)
 Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-360750f22absm14412546f8f.79.2024.06.18.07.02.37
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-360750f22absm14412546f8f.79.2024.06.18.07.02.38
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 18 Jun 2024 07:02:38 -0700 (PDT)
 From: Guillaume Stols <gstols@baylibre.com>
-Date: Tue, 18 Jun 2024 14:02:39 +0000
-Subject: [PATCH 7/9] iio: adc: ad7606: switch mutexes to scoped_guard
+Date: Tue, 18 Jun 2024 14:02:40 +0000
+Subject: [PATCH 8/9] iio: adc: ad7606: fix oversampling gpio array
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,7 +77,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240618-cleanup-ad7606-v1-7-f1854d5c779d@baylibre.com>
+Message-Id: <20240618-cleanup-ad7606-v1-8-f1854d5c779d@baylibre.com>
 References: <20240618-cleanup-ad7606-v1-0-f1854d5c779d@baylibre.com>
 In-Reply-To: <20240618-cleanup-ad7606-v1-0-f1854d5c779d@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -94,123 +94,58 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  dlechner@baylibre.com
 X-Mailer: b4 0.14.0
 
-Switching to scoped_guard simplifies the code and avoids to take care to
-unlock the mutex in case of premature return.
+gpiod_set_array_value was misused here: the implementation relied on the
+assumption that an unsigned long was required for each gpio, while the
+function expects a bit array stored in "as much unsigned long as needed
+for storing one bit per GPIO", i.e it is using a bit field.
 
+Fixes: d2a415c86c6b ("iio: adc: ad7606: Add support for AD7606B ADC")
 Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 ---
- drivers/iio/adc/ad7606.c | 71 ++++++++++++++++++++++--------------------------
- 1 file changed, 33 insertions(+), 38 deletions(-)
+ drivers/iio/adc/ad7606.c     | 4 ++--
+ drivers/iio/adc/ad7606_spi.c | 5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 3a417595294f..e3426287edf6 100644
+index e3426287edf6..502344e019e0 100644
 --- a/drivers/iio/adc/ad7606.c
 +++ b/drivers/iio/adc/ad7606.c
-@@ -69,19 +69,18 @@ static int ad7606_reg_access(struct iio_dev *indio_dev,
+@@ -235,9 +235,9 @@ static int ad7606_write_os_hw(struct iio_dev *indio_dev, int val)
  	struct ad7606_state *st = iio_priv(indio_dev);
- 	int ret;
+ 	DECLARE_BITMAP(values, 3);
  
--	mutex_lock(&st->lock);
--	if (readval) {
--		ret = st->bops->reg_read(st, reg);
--		if (ret < 0)
--			goto err_unlock;
--		*readval = ret;
--		ret = 0;
--	} else {
--		ret = st->bops->reg_write(st, reg, writeval);
-+	scoped_guard(mutex, &st->lock) {
-+		if (readval) {
-+			ret = st->bops->reg_read(st, reg);
-+			if (ret < 0)
-+				return ret;
-+			*readval = ret;
-+			return 0;
-+		} else {
-+			return st->bops->reg_write(st, reg, writeval);
-+		}
+-	values[0] = val;
++	values[0] = val & GENMASK(2, 0);
+ 
+-	gpiod_set_array_value(ARRAY_SIZE(values), st->gpio_os->desc,
++	gpiod_set_array_value(st->gpio_os->ndescs, st->gpio_os->desc,
+ 			      st->gpio_os->info, values);
+ 
+ 	/* AD7616 requires a reset to update value */
+diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+index 263a778bcf25..287a0591533b 100644
+--- a/drivers/iio/adc/ad7606_spi.c
++++ b/drivers/iio/adc/ad7606_spi.c
+@@ -249,8 +249,9 @@ static int ad7616_sw_mode_config(struct iio_dev *indio_dev)
+ static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
+ {
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+-	unsigned long os[3] = {1};
++	DECLARE_BITMAP(os, 3);
+ 
++	bitmap_fill(os, 3);
+ 	/*
+ 	 * Software mode is enabled when all three oversampling
+ 	 * pins are set to high. If oversampling gpios are defined
+@@ -258,7 +259,7 @@ static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
+ 	 * otherwise, they must be hardwired to VDD
+ 	 */
+ 	if (st->gpio_os) {
+-		gpiod_set_array_value(ARRAY_SIZE(os),
++		gpiod_set_array_value(st->gpio_os->ndescs,
+ 				      st->gpio_os->desc, st->gpio_os->info, os);
  	}
--err_unlock:
--	mutex_unlock(&st->lock);
--	return ret;
-+	unreachable();
- }
- 
- static int ad7606_read_samples(struct ad7606_state *st)
-@@ -124,18 +123,18 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	scoped_guard(mutex, &st->lock) {
-+		ret = ad7606_read_samples(st);
-+		if (ret)
-+			goto error_ret;
- 
--	ret = ad7606_read_samples(st);
--	if (ret == 0)
- 		iio_push_to_buffers_with_timestamp(indio_dev, st->data,
- 						   iio_get_time_ns(indio_dev));
--
--	iio_trigger_notify_done(indio_dev->trig);
--	/* The rising edge of the CONVST signal starts a new conversion. */
--	gpiod_set_value(st->gpio_convst, 1);
--
--	mutex_unlock(&st->lock);
-+error_ret:
-+		iio_trigger_notify_done(indio_dev->trig);
-+		/* The rising edge of the CONVST signal starts a new conversion. */
-+		gpiod_set_value(st->gpio_convst, 1);
-+	}
- 
- 	return IRQ_HANDLED;
- }
-@@ -259,17 +258,15 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
- 
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
--		mutex_lock(&st->lock);
--		i = find_closest(val2, st->scale_avail, st->num_scales);
--		if (st->sw_mode_en)
--			ch = chan->address;
--		ret = st->write_scale(indio_dev, ch, i);
--		if (ret < 0) {
--			mutex_unlock(&st->lock);
--			return ret;
-+		scoped_guard(mutex, &st->lock) {
-+			i = find_closest(val2, st->scale_avail, st->num_scales);
-+			if (st->sw_mode_en)
-+				ch = chan->address;
-+			ret = st->write_scale(indio_dev, ch, i);
-+			if (ret < 0)
-+				return ret;
-+			st->range[ch] = i;
- 		}
--		st->range[ch] = i;
--		mutex_unlock(&st->lock);
- 
- 		return 0;
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-@@ -277,14 +274,12 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
- 			return -EINVAL;
- 		i = find_closest(val, st->oversampling_avail,
- 				 st->num_os_ratios);
--		mutex_lock(&st->lock);
--		ret = st->write_os(indio_dev, i);
--		if (ret < 0) {
--			mutex_unlock(&st->lock);
--			return ret;
-+		scoped_guard(mutex, &st->lock) {
-+			ret = st->write_os(indio_dev, i);
-+			if (ret < 0)
-+				return ret;
-+			st->oversampling = st->oversampling_avail[i];
- 		}
--		st->oversampling = st->oversampling_avail[i];
--		mutex_unlock(&st->lock);
- 
- 		return 0;
- 	default:
+ 	/* OS of 128 and 256 are available only in software mode */
 
 -- 
 2.34.1

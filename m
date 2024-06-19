@@ -1,71 +1,64 @@
-Return-Path: <linux-iio+bounces-6598-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6599-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3D390F560
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 19:42:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CBAC190F58E
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 19:56:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 73EACB22AAD
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 17:42:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39972B22010
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 17:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B833C155C8B;
-	Wed, 19 Jun 2024 17:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E1F15698D;
+	Wed, 19 Jun 2024 17:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pH4U57RK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G0xpagqW"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD2477107;
-	Wed, 19 Jun 2024 17:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701FE55884;
+	Wed, 19 Jun 2024 17:56:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718818958; cv=none; b=rKDeFmzx7f4XpykUYlFyiwmJV0KG3Z3Ivdd+XMW3iFqkPWkCAwHUYT8oxHe/ITwIUztm3W6245MdmPobz5zb44J+wyvXObFFEQtAUwEYGMPn0cXcAOIuf7iUg0N3zOs5eQgn7v0Rxw1nGoRNL7R71XUcpvAlsHT8fuyNOvDMyEc=
+	t=1718819802; cv=none; b=mWaOLIoQ285Zt4cQakacT/7MkqgOIJPQZ3j9ItAJbcAavvWl/mSvAVkKpvhcJa6dyxBauv0gD+KLNHgb3YocnM/KsRyyaf3j3v0Pf4AgCXkcBs2tBZhXDtwYFftVrWJIIeyNxEsqTBFhm/iysnlRbEYXzttxTTrawCYVbNdvmBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718818958; c=relaxed/simple;
-	bh=IMD+o+HtoEpgZPwdGoQZpT4+nJLbdqGSdMmmb9m9c+A=;
+	s=arc-20240116; t=1718819802; c=relaxed/simple;
+	bh=DCOrH0OZSQJd5pXhQNmxRLV8v4tj9PjaFm7KtBv65fw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YPHJJdx4TfSL/ev0t7oiDtLF6mRdV1KlUVMv5ofepWH8jCZF5xh9pbZZ0rWqTSFxMThAxdnJj/Vmbw7deSkNEMiqZIgejVqQ+ZsVub3SUIhzLfmCRerCBfDD1xk1vmXbrAGq+cWRvgsxb48B5wMbSkvkg5KMae589aZkwjVytmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pH4U57RK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F0D8C2BBFC;
-	Wed, 19 Jun 2024 17:42:33 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=GV/hyv4TjGAjIvIv0P4BOaFns1odWFK+JXAgE6JS68Z9+NojW6bv9T/+1RxynxmoA3+n426yuF0575ywUbzN2WheYH3HEy6HLO/CxKGxNxIbbc/eQfWmBsIJpMUmXX7+zOY8aCxNaLvo6E+kPiiE0aNaqZe/w1VpHnaYukQOMIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G0xpagqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0036BC2BBFC;
+	Wed, 19 Jun 2024 17:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718818958;
-	bh=IMD+o+HtoEpgZPwdGoQZpT4+nJLbdqGSdMmmb9m9c+A=;
+	s=k20201202; t=1718819801;
+	bh=DCOrH0OZSQJd5pXhQNmxRLV8v4tj9PjaFm7KtBv65fw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pH4U57RKTHye7kcgscE74d6x6iWpjFvzye6Yl1G6LisVHUGm18xcXhWHTH+gSLowX
-	 MDn+x2broIqM4BGXnRAugyMCGTX4rBkfvLDQuZu3llasVnthWFeyviLdJjHDRpLoHv
-	 i3KpXnCnmlgOcS/I/K7/4RZnhlcnONjv0RGlJlTetK+OSZQcxz84D2gDywgfHcNChv
-	 pD85mheLgSa6gK9a5T3FFu5UbGBgJ5tPrz+AZnvVybnjUVdMDeaM5XqIgzzmXv9vBM
-	 hslTx3hWKpuMfILAdb1ZV4Tq1syONoMHfzKGQxuF413ezJ68sX/BQM6E88v7kPGWtB
-	 fC8z8k6RGKUJw==
-Date: Wed, 19 Jun 2024 18:42:31 +0100
+	b=G0xpagqWXN01HKeXoD9/oBeeyEaCbhjSETFc7wR9y83EgL5z8dUHQimHhknOEjEKv
+	 7k60YkVQ6S7Wb/EBhYN1wUDB7KDmwbzME/wwwm4qO5Y2adxpT8d7ZzihXNkGGuNan7
+	 e6+zJFswQe3+YJJmeIw9fYJNZXdhWDMRmuybinbD7aQYTrvY3cDVm/E52uVwuQRfrg
+	 TKO9iGK8nY8dmNuQT7uWLh/3yaqddTn65owE0tCuxIQwxDQuykVdjAsHoxXLEz6xEb
+	 MJCCkdF911ul+eztryYaF26kbIO7tqU4H9xYUwOCFlsDRTNiaz9E1YzI2Z97yXmPWe
+	 F/I9CpqH0btQA==
+Date: Wed, 19 Jun 2024 18:56:36 +0100
 From: Conor Dooley <conor@kernel.org>
-To: Ramona Alexandra Nechita <ramona.nechita@analog.com>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+To: Kim Seer Paller <kimseer.paller@analog.com>
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
 	Lars-Peter Clausen <lars@metafoo.de>,
-	Cosmin Tanislav <cosmin.tanislav@analog.com>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Rob Herring <robh@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Dimitri Fedrau <dima.fedrau@gmail.com>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Maksim Kiselev <bigunclemax@gmail.com>,
-	Marius Cristea <marius.cristea@microchip.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Okan Sahin <okan.sahin@analog.com>,
-	Ivan Mikhaylov <fr0st61te@gmail.com>,
-	Liam Beguin <liambeguin@gmail.com>,
-	Mike Looijmans <mike.looijmans@topic.nl>,
-	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: add a7779 doc
-Message-ID: <20240619-pouring-evaluator-470155652a40@spud>
-References: <20240619122105.22642-1-ramona.nechita@analog.com>
- <20240619122105.22642-2-ramona.nechita@analog.com>
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Subject: Re: [PATCH v4 3/5] dt-bindings: iio: dac: Add adi,ltc2664.yaml
+Message-ID: <20240619-left-usable-316cbe62468a@spud>
+References: <20240619064904.73832-1-kimseer.paller@analog.com>
+ <20240619064904.73832-4-kimseer.paller@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -73,72 +66,127 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="zWzIdbr3LJguoypS"
+	protocol="application/pgp-signature"; boundary="XW3JZQj+36UYFiPt"
 Content-Disposition: inline
-In-Reply-To: <20240619122105.22642-2-ramona.nechita@analog.com>
+In-Reply-To: <20240619064904.73832-4-kimseer.paller@analog.com>
 
 
---zWzIdbr3LJguoypS
-Content-Type: text/plain; charset=utf-8
+--XW3JZQj+36UYFiPt
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 19, 2024 at 03:20:44PM +0300, Ramona Alexandra Nechita wrote:
-> Add dt bindings for adc ad7779.
+On Wed, Jun 19, 2024 at 02:49:02PM +0800, Kim Seer Paller wrote:
+> Add documentation for ltc2664.
 >=20
-> Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
+> Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
+> Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
+> Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 > ---
->  .../bindings/iio/adc/adi,ad7779.yaml          | 84 +++++++++++++++++++
->  1 file changed, 84 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7779.=
-yaml
+>  .../bindings/iio/dac/adi,ltc2664.yaml         | 167 ++++++++++++++++++
+>  MAINTAINERS                                   |   8 +
+>  2 files changed, 175 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2664=
+=2Eyaml
 >=20
-> diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml b/=
-Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+> diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml b=
+/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
 > new file mode 100644
-> index 000000000000..f1eec656acec
+> index 000000000000..be37700e3b1f
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
-> @@ -0,0 +1,84 @@
+> +++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
+> @@ -0,0 +1,167 @@
 > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/iio/adc/adi,ad7779.yaml#
+> +$id: http://devicetree.org/schemas/iio/dac/adi,ltc2664.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Analog Devices AD777X family 8-Channel, 24-Bit, Simultaneous Samp=
-ling ADCs
+> +title: Analog Devices LTC2664 DAC
 > +
 > +maintainers:
-> +  - Ramona Nechita <ramona.nechita@analog.com>
+> +  - Michael Hennerich <michael.hennerich@analog.com>
+> +  - Kim Seer Paller <kimseer.paller@analog.com>
 > +
 > +description: |
-> +  The AD777X family consist of 8-channel, simultaneous sampling analog-t=
-o-
-> +  digital converter (ADC). Eight full =CE=A3-=CE=94 ADCs are on-chip. The
-> +  AD7771 provides an ultralow input current to allow direct sensor
-> +  connection. Each input channel has a programmable gain stage
-> +  allowing gains of 1, 2, 4, and 8 to map lower amplitude sensor
-> +  outputs into the full-scale ADC input range, maximizing the
-> +  dynamic range of the signal chain.
-> +
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
-7770.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
-7771.pdf
-> +  https://www.analog.com/media/en/technical-documentation/data-sheets/ad=
-7779.pdf
-> +
-> +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> +  Analog Devices LTC2664 4 channel, 12-/16-Bit, +-10V DAC
+> +  https://www.analog.com/media/en/technical-documentation/data-sheets/26=
+64fa.pdf
 > +
 > +properties:
 > +  compatible:
 > +    enum:
-> +      - adi,ad7770
-> +      - adi,ad7771
-> +      - adi,ad7779
+> +      - adi,ltc2664
 > +
 > +  reg:
+> +    maxItems: 1
+> +
+> +  spi-max-frequency:
+> +    maximum: 50000000
+> +
+> +  vcc-supply:
+> +    description: Analog Supply Voltage Input.
+> +
+> +  v-pos-supply:
+> +    description: Positive Supply Voltage Input.
+> +
+> +  v-neg-supply:
+> +    description: Negative Supply Voltage Input.
+> +
+> +  iovcc-supply:
+> +    description: Digital Input/Output Supply Voltage.
+> +
+> +  ref-supply:
+> +    description:
+> +      Reference Input/Output. The voltage at the REF pin sets the full-s=
+cale
+> +      range of all channels. If not provided the internal reference is u=
+sed and
+> +      also provided on the VREF pin.
+> +
+> +  reset-gpios:
+> +    description:
+> +      Active-low Asynchronous Clear Input. A logic low at this level-tri=
+ggered
+> +      input clears the part to the reset code and range determined by the
+> +      hardwired option chosen using the MSPAN pins. The control register=
+s are
+> +      cleared to zero.
+> +    maxItems: 1
+> +
+> +  adi,manual-span-operation-config:
+> +    description:
+> +      This property must mimic the MSPAN pin configurations. By tying th=
+e MSPAN
+> +      pins (MSP2, MSP1 and MSP0) to GND and/or VCC, any output range can=
+ be
+> +      hardware-configured with different mid-scale or zero-scale reset o=
+ptions.
+> +      The hardware configuration is latched during power on reset for pr=
+oper
+> +      operation.
+> +        0 - MPS2=3DGND, MPS1=3DGND, MSP0=3DGND (+-10V, reset to 0V)
+> +        1 - MPS2=3DGND, MPS1=3DGND, MSP0=3DVCC (+-5V, reset to 0V)
+> +        2 - MPS2=3DGND, MPS1=3DVCC, MSP0=3DGND (+-2.5V, reset to 0V)
+> +        3 - MPS2=3DGND, MPS1=3DVCC, MSP0=3DVCC (0V to 10, reset to 0V)
+> +        4 - MPS2=3DVCC, MPS1=3DGND, MSP0=3DGND (0V to 10V, reset to 5V)
+> +        5 - MPS2=3DVCC, MPS1=3DGND, MSP0=3DVCC (0V to 5V, reset to 0V)
+> +        6 - MPS2=3DVCC, MPS1=3DVCC, MSP0=3DGND (0V to 5V, reset to 2.5V)
+> +        7 - MPS2=3DVCC, MPS1=3DVCC, MSP0=3DVCC (0V to 5V, reset to 0V, e=
+nables SoftSpan)
+> +    $ref: /schemas/types.yaml#/definitions/uint32
+> +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
+
+Can you explain why this property is required, when below there's one
+that sets the ranges in microvolts? Isn't the only new information that
+this provides the reset values (in a few cases that it is not 0).
+What am I missing?
+
+> +    default: 7
+> +
+> +  io-channels:
+> +    description:
+> +      ADC channel to monitor voltages and temperature at the MUXOUT pin.
 > +    maxItems: 1
 > +
 > +  '#address-cells':
@@ -146,74 +194,128 @@ o-
 > +
 > +  '#size-cells':
 > +    const: 0
-
-Why does this device have address/size cells, but not have any child
-nodes? Are you missing some channel child nodes? If you don't have
-children, you don't need these properties.
-
-Also, your patch is still not threaded with the other 2 patches in the
-series (I see 1/3 in the subject). Where are those patches?
-
-Thanks,
-Conor.
-
 > +
-> +  clocks:
-> +    maxItems: 1
+> +patternProperties:
+> +  "^channel@[0-3]$":
+> +    type: object
+> +    additionalProperties: false
 > +
-> +  interrupts:
-> +    maxItems: 1
+> +    properties:
+> +      reg:
+> +        description: The channel number representing the DAC output chan=
+nel.
+> +        maximum: 3
 > +
-> +  vref-supply:
-> +    description:
-> +      ADC reference voltage supply
+> +      adi,toggle-mode:
+> +        description:
+> +          Set the channel as a toggle enabled channel. Toggle operation =
+enables
+> +          fast switching of a DAC output between two different DAC codes=
+ without
+> +          any SPI transaction.
+> +        type: boolean
 > +
-> +  start-gpios:
-> +    description:
-> +      Pin that controls start synchronization pulse.
-> +    maxItems: 1
+> +      adi,output-range-microvolt:
+> +        description: Specify the channel output full scale range.
+> +        oneOf:
+> +          - items:
+> +              - const: 0
+> +              - enum: [5000000, 10000000]
+> +          - items:
+> +              - const: -5000000
+> +              - const: 5000000
+> +          - items:
+> +              - const: -10000000
+> +              - const: 10000000
+> +          - items:
+> +              - const: -2500000
+> +              - const: 2500000
 > +
-> +  reset-gpios:
-> +    maxItems: 1
+> +    required:
+> +      - reg
+> +      - adi,output-range-microvolt
 > +
 > +required:
 > +  - compatible
 > +  - reg
-> +  - clocks
+> +  - spi-max-frequency
+> +  - vcc-supply
+> +  - iovcc-supply
+> +  - v-pos-supply
+> +  - v-neg-supply
 > +
-> +unevaluatedProperties: false
+> +allOf:
+> +  - $ref: /schemas/spi/spi-peripheral-props.yaml#
+> +
+> +additionalProperties: false
 > +
 > +examples:
-> +- |
-> +  #include <dt-bindings/gpio/gpio.h>
-> +  spi {
-> +      #address-cells =3D <1>;
-> +      #size-cells =3D <0>;
+> +  - |
+> +    spi {
+> +        #address-cells =3D <1>;
+> +        #size-cells =3D <0>;
+> +        dac@0 {
+> +            compatible =3D "adi,ltc2664";
+> +            reg =3D <0>;
+> +            spi-max-frequency =3D <10000000>;
 > +
-> +      adc@0 {
-> +        compatible =3D "adi,ad7779";
-> +        reg =3D <0>;
-> +        vref-supply =3D <&vref>;
-> +        start-gpios =3D <&gpio0 87 GPIO_ACTIVE_LOW>;
-> +        reset-gpios =3D <&gpio0 93 GPIO_ACTIVE_LOW>;
-> +        clocks =3D <&adc_clk>;
-> +      };
-> +  };
+> +            vcc-supply =3D <&vcc>;
+> +            iovcc-supply =3D <&vcc>;
+> +            ref-supply =3D <&vref>;
+> +            v-pos-supply =3D <&vpos>;
+> +            v-neg-supply =3D <&vneg>;
+> +
+> +            io-channels =3D <&adc 0>;
+> +
+> +            #address-cells =3D <1>;
+> +            #size-cells =3D <0>;
+> +            channel@0 {
+> +                    reg =3D <0>;
+> +                    adi,toggle-mode;
+> +                    adi,output-range-microvolt =3D <(-10000000) 10000000=
+>;
+> +            };
+> +
+> +            channel@1 {
+> +                    reg =3D <1>;
+> +                    adi,output-range-microvolt =3D <0 10000000>;
+> +            };
+> +        };
+> +    };
 > +...
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index be590c462d91..849800d9cbf7 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -13074,6 +13074,14 @@ S:	Maintained
+>  F:	Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
+>  F:	drivers/iio/dac/ltc1660.c
+> =20
+> +LTC2664 IIO DAC DRIVER
+> +M:	Michael Hennerich <michael.hennerich@analog.com>
+> +M:	Kim Seer Paller <kimseer.paller@analog.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Supported
+> +W:	https://ez.analog.com/linux-software-drivers
+> +F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
+> +
+>  LTC2688 IIO DAC DRIVER
+>  M:	Nuno S=E1 <nuno.sa@analog.com>
+>  L:	linux-iio@vger.kernel.org
 > --=20
-> 2.43.0
+> 2.34.1
 >=20
 
---zWzIdbr3LJguoypS
+--XW3JZQj+36UYFiPt
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZnMYhwAKCRB4tDGHoIJi
-0ljnAQCua8lOT/HSJP8NZDAHBxmVeFj8Oa6o1ZcxDly4qE9TvwEA8+FFAZoo7WOx
-+je7T8yijGxZsIl3Hap9aqSs4HeHlQI=
-=2IPT
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZnMb1AAKCRB4tDGHoIJi
+0mZsAP9GNCu3FZFO1OetheXbTc08RY3vcp3bln0Pju6dJ3cGBAD5AcRIAm+Pgz1w
+nLR10IFUS+x7zo1wvVKMyMXZhZG/6QI=
+=YAw6
 -----END PGP SIGNATURE-----
 
---zWzIdbr3LJguoypS--
+--XW3JZQj+36UYFiPt--
 

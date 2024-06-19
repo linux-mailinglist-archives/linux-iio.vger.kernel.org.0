@@ -1,220 +1,133 @@
-Return-Path: <linux-iio+bounces-6578-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6575-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B87290EB04
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 14:24:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1546990EAF7
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 14:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87C4B280D09
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 12:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76084281EE7
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 12:24:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83893142E78;
-	Wed, 19 Jun 2024 12:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BC51422D9;
+	Wed, 19 Jun 2024 12:22:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="KbJlBMIT"
+	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="H5QlHj5b"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from aposti.net (aposti.net [89.234.176.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F511411D5;
-	Wed, 19 Jun 2024 12:22:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03B7D1411D5;
+	Wed, 19 Jun 2024 12:21:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.234.176.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718799770; cv=none; b=LF4MUS55XS6mS5s5kKXRyJc1cAeoxoZ/AU2f3yjxZBpn1HURmTJt+ReMhDJ7qTfh149DiW0E1Q915D/pNzjEJSHfelU+9Na93amXPCJVsNmjXoss1Mmi1SjJRgB/nj30FQOSVsnvsUgisJdZEN/rvjJwQuTHAY9+4sl66oWIp/g=
+	t=1718799720; cv=none; b=bMKqoGXaWc2xujqXMozBxN7r0zHWqezhnClYFU3lbtq4oFroiuTsw3bP/uz0RnAv2RmcwApDp/17eYFC1bGduZa7o2qG09JnyuNNGsBTN7vUaj7Snh9bSDsFH349UlV8eqcRZudfdHtAiXIEJ38qtPHofy3Ke/Dd6Mf2ZTNpLtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718799770; c=relaxed/simple;
-	bh=p/TXh0Cc0A8idBflT14MkDr+diErp80p0XLgANjOJkI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qKzlkPinz41jxaK5DiHIYldHIO5YB3KqwGQD9dX+OhtlP8Ofkw2h1AfCNbL7GW/X4wHNjIu6PpkLKzN0VgEa2EV3zI5l3jiL1vylULq+NtjN+qXpSCudYpc2ZwdQ0gUxKN/+4W3OfXzonzw8lX0eV+CDvS3QdH6XgBtt2Iw+v2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=KbJlBMIT; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45J9PBg4028427;
-	Wed, 19 Jun 2024 08:22:29 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=MdzwG
-	0VEmRocAsqibCKJjSDOfApOYxQOfvUxRnuDpCU=; b=KbJlBMITXHuLzvT/3F4nS
-	euLHkOxyXxClnjFFDdL4ub7ZG+7o0RalGyrYKO3Ird8drsJqzO24fvphHpBNWNXd
-	hAtFxd/PK9+20//wfTMEjPc1kOVpwG2QkFnmC/x/ZzN6yrb9KrOTRuAdDEmw/wSX
-	MgM6vVmWdWiLpl/iTwlAD7gsU8PxHDhlDUiVPERiYG9mbwEMru/wwFo5cvRdv0wP
-	NX45AUmX0EwTmi+C/QEbIKZsTBirs2LXaUM4+DSwoXfw79MI9HUaKkMKC+CuXkuS
-	Z6qt499Crz2aSgK4l+P/7gCxGBDzLV6G2qajYLAYXkEEZprZn1NFPlu/ZbLgkbJJ
-	w==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3yuj8satjx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Jun 2024 08:22:28 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 45JCMRPj057252
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Wed, 19 Jun 2024 08:22:27 -0400
-Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 19 Jun
- 2024 08:22:26 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Wed, 19 Jun 2024 08:22:26 -0400
-Received: from HYB-hYN1yfF7zRm.ad.analog.com (HYB-hYN1yfF7zRm.ad.analog.com [10.48.65.166])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 45JCLWwA017121;
-	Wed, 19 Jun 2024 08:22:18 -0400
-From: Ramona Alexandra Nechita <ramona.nechita@analog.com>
-To: <linux-iio@vger.kernel.org>
-CC: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
-        Jonathan Cameron
-	<jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Cosmin Tanislav
-	<cosmin.tanislav@analog.com>,
-        Michael Hennerich
-	<Michael.Hennerich@analog.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof
- Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Andy
- Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Nuno Sa <nuno.sa@analog.com>, Maksim Kiselev <bigunclemax@gmail.com>,
-        Marius Cristea
-	<marius.cristea@microchip.com>,
-        Marcelo Schmitt <marcelo.schmitt@analog.com>,
-        Marcus Folkesson <marcus.folkesson@gmail.com>,
-        Okan Sahin
-	<okan.sahin@analog.com>,
-        Ivan Mikhaylov <fr0st61te@gmail.com>,
-        Liam Beguin
-	<liambeguin@gmail.com>,
-        Mike Looijmans <mike.looijmans@topic.nl>,
-        <linux-kernel@vger.kernel.org>, <devicetree@vger.kernel.org>
-Subject: [PATCH v3 1/3] dt-bindings: iio: adc: add a7779 doc
-Date: Wed, 19 Jun 2024 15:20:44 +0300
-Message-ID: <20240619122105.22642-2-ramona.nechita@analog.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240619122105.22642-1-ramona.nechita@analog.com>
-References: <20240619122105.22642-1-ramona.nechita@analog.com>
+	s=arc-20240116; t=1718799720; c=relaxed/simple;
+	bh=FVGqOE3wiRlvOnwpW+plbu90wTtSXAmdw/o00wdPQQk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=OWeMMse9bid7nOt8X+XXbBwho5ejsFvmw5BrUU3afbrZdqyuVWhfc1rkYw1q7/RKwcJIIjCNIN8mu4679KUpIVugkXoN0NcNp3qSyJYb63mijWA3SLmvoSAcvTwuDKrVLGaHJF1xvDMhfG6KNhF+AgnCB9sUfZxydIB+Q3CfeYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net; spf=pass smtp.mailfrom=crapouillou.net; dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b=H5QlHj5b; arc=none smtp.client-ip=89.234.176.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
+	s=mail; t=1718799717;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=FVGqOE3wiRlvOnwpW+plbu90wTtSXAmdw/o00wdPQQk=;
+	b=H5QlHj5b47jmWWPmYrEyBk2CLjfodSkuNO3iFqDQL3q9TAKryupn+V75JTiH8WmGI/eIFy
+	0Zjifr0r4dCWg3FWwIzaMp3bxyNBFP/hFECEP7HFZpj/jn85MK8NLAlzARSlcjHxvvWIqv
+	zj3xrSSMAXdnhmkQLs0rsmnmfWLPh7o=
+Message-ID: <15edbedcac80961ec9b7834041e54143657cd48b.camel@crapouillou.net>
+Subject: Re: [v11 3/7] iio: core: Add new DMABUF interface infrastructure
+From: Paul Cercueil <paul@crapouillou.net>
+To: Markus Elfring <Markus.Elfring@web.de>, lkp@intel.com, Nuno
+ =?ISO-8859-1?Q?S=E1?= <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+ dmaengine@vger.kernel.org,  linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,  linaro-mm-sig@lists.linaro.org, Christian
+ =?ISO-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Jonathan Cameron
+ <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Sumit Semwal
+ <sumit.semwal@linaro.org>, Vinod Koul <vkoul@kernel.org>
+Cc: oe-kbuild-all@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>, 
+	linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, Randy Dunlap
+	 <rdunlap@infradead.org>
+Date: Wed, 19 Jun 2024 14:21:55 +0200
+In-Reply-To: <41fa9904-28a8-46fa-bf2a-014875409b83@web.de>
+References: <202406191014.9JAzwRV6-lkp@intel.com>
+	 <a4dd1d73-5af3-4d3d-8c0f-92dc439fa119@web.de>
+	 <d452ecc4fc703a1f98aa4f243c6ded7fbfe54b0e.camel@crapouillou.net>
+	 <cbcfb64a-e5c2-41a7-8847-227d4f6872de@web.de>
+	 <e948cd137da8e4f97bfbf7ef68a5450476aeee0c.camel@crapouillou.net>
+	 <41fa9904-28a8-46fa-bf2a-014875409b83@web.de>
+Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
+ keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZM
+ LQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5Uz
+ FZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtN
+ z8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe
+ +rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY
+ 3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr
+ 1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f
+ 33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIP
+ dlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET
+ 4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7U
+ rf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KF
+ lBwgAhlGy6nqP7O3u7q23hRW5AQ0EXQqFwQEIAMo+MgvYHsyjX3Ja4Oolg1Txzm8woj30ch2nACFC
+ qaO0R/1kLj2VVeLrDyQUOlXx9PD6IQI4M8wy8m0sR4wV2p/g/paw7k65cjzYYLh+FdLNyO7IWYXnd
+ JO+wDPi3aK/YKUYepqlP+QsmaHNYNdXEQDRKqNfJg8t0f5rfzp9ryxd1tCnbV+tG8VHQWiZXNqN70
+ 62DygSNXFUfQ0vZ3J2D4oAcIAEXTymRQ2+hr3Hf7I61KMHWeSkCvCG2decTYsHlw5Erix/jYWqVOt
+ X0roOOLqWkqpQQJWtU+biWrAksmFmCp5fXIg1Nlg39v21xCXBGxJkxyTYuhdWyu1yDQ+LSIUAEQEA
+ AYkBNgQYAQoAIBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsMAAoJEHPua9InSr1B4wsH/
+ Az767YCT0FSsMNt1jkkdLCBi7nY0GTW+PLP1a4zvVqFMo/vD6uz1ZflVTUAEvcTi3VHYZrlgjcxmc
+ Gu239oruqUS8Qy/xgZBp9KF0NTWQSl1iBfVbIU5VV1vHS6r77W5x0qXgfvAUWOH4gmN3MnF01SH2z
+ McLiaUGF+mcwl15rHbjnT3Nu2399aSE6cep86igfCAyFUOXjYEGlJy+c6UyT+DUylpjQg0nl8MlZ/
+ 7Whg2fAU9+FALIbQYQzGlT4c71SibR9T741jnegHhlmV4WXXUD6roFt54t0MSAFSVxzG8mLcSjR2c
+ LUJ3NIPXixYUSEn3tQhfZj07xIIjWxAYZo=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: AomYQTzuoR_BJrjENTjqShqK-Yh_kBDZ
-X-Proofpoint-ORIG-GUID: AomYQTzuoR_BJrjENTjqShqK-Yh_kBDZ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-19_02,2024-06-19_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 mlxscore=0 clxscore=1015 lowpriorityscore=0 phishscore=0
- bulkscore=0 priorityscore=1501 malwarescore=0 spamscore=0 adultscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2405170001 definitions=main-2406190092
 
-Add dt bindings for adc ad7779.
+Le mercredi 19 juin 2024 =C3=A0 13:56 +0200, Markus Elfring a =C3=A9crit=C2=
+=A0:
+> =E2=80=A6
+> > https://lore.kernel.org/linux-iio/219abc43b4fdd4a13b307ed2efaa0e6869e68=
+e3f.camel@gmail.com/T/#eefd360069c4261aec9621fafde30924706571c94
+> >=20
+> > (and responses below)
+> >=20
+> > It's more nuanced than I remembered.
+> =E2=80=A6
+>=20
+>=20
+> > > * Will the desire grow for further collateral evolution according
+> > > to
+> > > =C2=A0 affected software components?
+> >=20
+> > Not sure what you mean by that.
+>=20
+> Advanced programming interfaces were added a while ago.
+>=20
+> Example:
+> https://elixir.bootlin.com/linux/v6.10-rc4/source/include/linux/cleanup.h=
+#L8
+>=20
+> Corresponding attempts for increasing API usage need to adapt to
+> remaining change reluctance,
+> don't they?
 
-Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
----
- .../bindings/iio/adc/adi,ad7779.yaml          | 84 +++++++++++++++++++
- 1 file changed, 84 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+Sure, I guess.
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
-new file mode 100644
-index 000000000000..f1eec656acec
---- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
-@@ -0,0 +1,84 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/iio/adc/adi,ad7779.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Analog Devices AD777X family 8-Channel, 24-Bit, Simultaneous Sampling ADCs
-+
-+maintainers:
-+  - Ramona Nechita <ramona.nechita@analog.com>
-+
-+description: |
-+  The AD777X family consist of 8-channel, simultaneous sampling analog-to-
-+  digital converter (ADC). Eight full Σ-Δ ADCs are on-chip. The
-+  AD7771 provides an ultralow input current to allow direct sensor
-+  connection. Each input channel has a programmable gain stage
-+  allowing gains of 1, 2, 4, and 8 to map lower amplitude sensor
-+  outputs into the full-scale ADC input range, maximizing the
-+  dynamic range of the signal chain.
-+
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7770.pdf
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7771.pdf
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/ad7779.pdf
-+
-+$ref: /schemas/spi/spi-peripheral-props.yaml#
-+
-+properties:
-+  compatible:
-+    enum:
-+      - adi,ad7770
-+      - adi,ad7771
-+      - adi,ad7779
-+
-+  reg:
-+    maxItems: 1
-+
-+  '#address-cells':
-+    const: 1
-+
-+  '#size-cells':
-+    const: 0
-+
-+  clocks:
-+    maxItems: 1
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  vref-supply:
-+    description:
-+      ADC reference voltage supply
-+
-+  start-gpios:
-+    description:
-+      Pin that controls start synchronization pulse.
-+    maxItems: 1
-+
-+  reset-gpios:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+
-+unevaluatedProperties: false
-+
-+examples:
-+- |
-+  #include <dt-bindings/gpio/gpio.h>
-+  spi {
-+      #address-cells = <1>;
-+      #size-cells = <0>;
-+
-+      adc@0 {
-+        compatible = "adi,ad7779";
-+        reg = <0>;
-+        vref-supply = <&vref>;
-+        start-gpios = <&gpio0 87 GPIO_ACTIVE_LOW>;
-+        reset-gpios = <&gpio0 93 GPIO_ACTIVE_LOW>;
-+        clocks = <&adc_clk>;
-+      };
-+  };
-+...
--- 
-2.43.0
+But that does not change the fact that I cannot use cleanup.h magic in
+this patchset, yet, as the required changes would have to be done in a
+separate one.
 
+Cheers,
+-Paul
 

@@ -1,110 +1,120 @@
-Return-Path: <linux-iio+bounces-6588-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6589-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2293490EDA3
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 15:20:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E5CD90EE87
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 15:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E875B250D9
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 13:20:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 482CD1F21523
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 13:29:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD477146D49;
-	Wed, 19 Jun 2024 13:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8D014EC43;
+	Wed, 19 Jun 2024 13:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oB0wr9yo"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="ZcRSyda3"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.web.de (mout.web.de [217.72.192.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8435F82495;
-	Wed, 19 Jun 2024 13:20:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5214114601E;
+	Wed, 19 Jun 2024 13:29:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803228; cv=none; b=tTIpjlr324Ib/oWiIIlQkIw2MLCyYdecLuzLcSyfq0o3IyVJ5HzXZPTbdlRXZLHkovT9bEhOBggz6KieoY/NUr59hLWQe6t3kWpP48bcHFVwNsPe5WEvkPzzemPcD7rrDysvDgjHEMasxg50TJA/U19dPt21hks/Ue8YgynKz+k=
+	t=1718803759; cv=none; b=WhmEN4ljzDxhbLOltjNwGCAr+BUkIwi4Z7tQVwx5Azzj3li57BIzDWJK/HZtlKm86u96uH/IQ2J/cPJlPRxqd8LDbRvEpXUWxw/ivAg6BSonIQKPct7m5lZxEgn7eUS40SdjCjg6MyRm32F3o8iLsPK1nurdPBQrUqrm2g/tvpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803228; c=relaxed/simple;
-	bh=uMhnAVTicYrXQjCEWUijVc+qFtdFSA0ClmNfrzE2VdI=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=SKrfsJQz89mjdS1IZdmZamrVql7GvMqHDGCFrvI39PCPVKqnAOD7Qv9mtBZRpf9KwIfb9Ljpq8gdCP8d+gsp7FbfIrJSM7ECtUXVKolLI3JjNCpOetUYs0OamXsfDCx2nvYuJR0sYYo4iCe5Srg4y1ZrO7LaP389eLVSubx1Al4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oB0wr9yo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C324C4AF1D;
-	Wed, 19 Jun 2024 13:20:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718803228;
-	bh=uMhnAVTicYrXQjCEWUijVc+qFtdFSA0ClmNfrzE2VdI=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=oB0wr9yolvr+hIGh1FVoPJtNwlv6KuKu4ed7TsX+xT+yvr38Hu7tX3TbaffVeawY8
-	 yozmeYx4UKeuhRd3bxmsVg8hOwkWRuULJeFkHc36p3qICOfnk9hh66qG+OJK5dQZw8
-	 xijRLgGbHMd7zjtgishl9bClSfco48mQyhfh//mRfZrkOf2/zYGj0ArdVqzS8yO78v
-	 ISa0gchQOsd/erlzzw6LcazEP/SBli8cKCTv2Q+y0fzSjM1jtQ2d4BsagppMmla1A7
-	 kcdwYP5OimkvgMfCjPIbVlnMmzfcMysi/peVjYIxczFcFrXgPwRsiJyYWlzRTPp2LW
-	 HsQEVutG+ubjQ==
-Date: Wed, 19 Jun 2024 07:20:27 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1718803759; c=relaxed/simple;
+	bh=dmUopKpgxEYeprNgTnMdC5f05WlDYqe8aQuoCu7zLfk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NLIQrx3Thd6MAqLCFMkxU4QJy1rwxcO4rT2R8o3AGByeYa4TKNjU3Msk8+oncb1GF7aOxOd/kV6xQDHi+TCQpEsGF6vlMefaBLFc5L+PWaWi36M0DpHLvAvTsnZnzjVrrQZ5k8JglELpG2/vBBc/SlKOES0WB1J1g90O7ySPPJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=ZcRSyda3; arc=none smtp.client-ip=217.72.192.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1718803725; x=1719408525; i=markus.elfring@web.de;
+	bh=Cqv24v/8lPgdG+NBHkh3HOkG7c3WtsIJpUILM4XYcKM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=ZcRSyda3HljeeSrPJsg9pt/SRxpkFHlcTRi7289KIbREzjXnwYJjEL1b4ikYNyW0
+	 cwW2t0z/i+PgBzGJZiJi0DglhseueROUNz0HG4pwc3qldtuJ5jRI7MgUspvcwEA3Q
+	 MEaj14Balwr38BcHKbT0+yUpLht6u+kQ+r4IDeFaZXNtOO0AQXYYbfNxM1qdX061D
+	 1CZw7uJVV1rqnUvKEzkbkzyPiVj9foILjLYAyrYxm1dD0qgfhIop+nwagQxHXKbps
+	 T51aMnsKpdNl7/gt5I2+nGV4TaZbgsg3SrNmjqkGylvMem0EgtWxIruVS6lNFpi8U
+	 4NS5T70OYGbFOvl1NQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.83.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MUl9H-1rtlXw0E0f-00K0rd; Wed, 19
+ Jun 2024 15:28:45 +0200
+Message-ID: <d8d4cca1-031f-4ea7-89da-573e0863c3ec@web.de>
+Date: Wed, 19 Jun 2024 15:28:43 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Ramona Alexandra Nechita <ramona.nechita@analog.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, devicetree@vger.kernel.org, 
- Nuno Sa <nuno.sa@analog.com>, Ivan Mikhaylov <fr0st61te@gmail.com>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Mike Looijmans <mike.looijmans@topic.nl>, 
- Lars-Peter Clausen <lars@metafoo.de>, Okan Sahin <okan.sahin@analog.com>, 
- Liam Beguin <liambeguin@gmail.com>, 
- Marcelo Schmitt <marcelo.schmitt@analog.com>, 
- Cosmin Tanislav <cosmin.tanislav@analog.com>, 
- Marius Cristea <marius.cristea@microchip.com>, linux-kernel@vger.kernel.org, 
- Jonathan Cameron <jic23@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
- Marcus Folkesson <marcus.folkesson@gmail.com>, 
- Maksim Kiselev <bigunclemax@gmail.com>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- linux-iio@vger.kernel.org
-In-Reply-To: <20240619122105.22642-2-ramona.nechita@analog.com>
-References: <20240619122105.22642-1-ramona.nechita@analog.com>
- <20240619122105.22642-2-ramona.nechita@analog.com>
-Message-Id: <171880322718.1907032.4194065731980949546.robh@kernel.org>
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: add a7779 doc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 3/7] iio: core: Add new DMABUF interface
+ infrastructure
+To: Paul Cercueil <paul@crapouillou.net>, =?UTF-8?Q?Nuno_S=C3=A1?=
+ <nuno.sa@analog.com>, linux-iio@vger.kernel.org, dmaengine@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Sumit Semwal
+ <sumit.semwal@linaro.org>, Vinod Koul <vkoul@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org,
+ Jonathan Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>
+References: <20240618100302.72886-4-paul@crapouillou.net>
+ <fc3045c5-d542-4a6c-906d-84f72e776e9c@web.de>
+ <8d536bb864c145340a15f496ad3b89e08a847718.camel@crapouillou.net>
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <8d536bb864c145340a15f496ad3b89e08a847718.camel@crapouillou.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:MrJKaxOVCei/mZBzi2PVNabKJ6tVMvGyFZ5xYhMj5+zLLOoWPW9
+ RP1yEleiWkMbS2BUGrEkH6qWN74vGTCeozUL9FB2tABigS/1SKC/gRb6PjhqDjkxi8TvibN
+ DirViL6WNMQC8mFjztRZzggJYPP4XdQPTe30mSzWbulcYWwh8hlHd6aXs+ESjHDzKU9+Y0k
+ FHer/BM6ZfIttjr8bzCaQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:l/XCafQtm8M=;bwyV0boUcJejmr0awi4VkGYb3GT
+ 8KvUhYW4dlBpvKPcQb+UN/Q6hCIjR0DKLLpUkvsRqwzuV/on4SZSWw+QLa+duVi1FfiJlqb4C
+ 4Baj1bsgCB6QeLRkJHaYQPVlgPWz+mC9yWM3C1TR10W3ERu+mGsut1HSrqDA+zVsmR+nMgaWB
+ 4nmIhoyOe1U2LhuNyCgfpx0Q5q6DF9SPHNghAdilUKEQXIE7kfG3QlBNcBOZNuGo5hxDArrBq
+ wRPnl2z2PbR47TkcBmRlcdomU92Z2m26JLjSPGFyUniY2OhmqMwvCbI1e+9GtlIal/IP/HbHV
+ LasZf5HRKoj7imJCZzUoiUsVIsA9RE6g2LZE3ouH8fPLRKUYFbW2raRX+HXia/M0HfNJxbyk8
+ +wgDRNi1Fx6i2L97JYOtjcRybz8qDuCv7X+im9g5L635DLibimhTJlvF9dfFVF/PTmkPbptkO
+ yAwbbKSw9Z/IfYCZ6d7+lh2vLZt5VLbngU1JZJ/Pz+qj6o8xaCthpCzf6FilfNut0xIxKNYY6
+ 9IqKEL5scAjXRhIDv5ieh2WZNLMFvT5iIi37u3lXrnp1N995MVRm5rBraB4wQU/CqLh7HeOQL
+ mQ+HezzE1Qcv6bfS44m7WB7ZkXiefpwrcEpcieQI54mwmNl4+wUlhCWa7+WVnM9AbGUTad4c8
+ 4Uymo0kUl6sV4dIsl4YxsR1+5XDMEFvyOk4fxvHjKUarsn1dkXHKmqy90J/ujrKCnfI/6DsVk
+ WgZBx38VO5Exv1Urg8H4ZBlAYDVCJA1aWy4kKNi2t1+wRAxKNCU3EE//+oEbjR4qmFP3MLGtN
+ SoQmH7zNnqvoZRGShO1xA+cixFbbN9Nst1Yo9Qg2EQWSbULpnDszsWJ1lusLMDb2Dz
 
+>> =E2=80=A6
+>>> +++ b/drivers/iio/industrialio-buffer.c
+>> =E2=80=A6
+>>> +static void iio_buffer_dmabuf_release(struct kref *ref)
+>>> +{
+>> =E2=80=A6
+>>> +	dma_resv_lock(dmabuf->resv, NULL);
+>>> +	dma_buf_unmap_attachment(attach, priv->sgt, priv->dir);
+>>> +	dma_resv_unlock(dmabuf->resv);
+>> =E2=80=A6
+>>
+>> Under which circumstances will another lock guard become applicable?
+>> https://elixir.bootlin.com/linux/v6.10-rc4/source/include/linux/cleanup=
+.h#L179
+>
+> As soon as "struct dma_resv" gets a DEFINE_GUARD().
 
-On Wed, 19 Jun 2024 15:20:44 +0300, Ramona Alexandra Nechita wrote:
-> Add dt bindings for adc ad7779.
-> 
-> Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
-> ---
->  .../bindings/iio/adc/adi,ad7779.yaml          | 84 +++++++++++++++++++
->  1 file changed, 84 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
-> 
+Would any contributor like to add a macro call accordingly?
 
-My bot found errors running 'make dt_binding_check' on your patch:
-
-yamllint warnings/errors:
-./Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml:69:1: [warning] wrong indentation: expected 2 but found 0 (indentation)
-
-dtschema/dtc warnings/errors:
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240619122105.22642-2-ramona.nechita@analog.com
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+Regards,
+Markus
 

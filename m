@@ -1,73 +1,73 @@
-Return-Path: <linux-iio+bounces-6590-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6591-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE8DB90EF70
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 15:53:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6254690EF86
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 15:57:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C91BB24CA0
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 13:53:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66A8A1C21C23
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 13:57:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75EA14F9C4;
-	Wed, 19 Jun 2024 13:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDBE150984;
+	Wed, 19 Jun 2024 13:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="r/vg1dgr"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NOxU9WS7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28474144D3E
-	for <linux-iio@vger.kernel.org>; Wed, 19 Jun 2024 13:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7360514F9C4
+	for <linux-iio@vger.kernel.org>; Wed, 19 Jun 2024 13:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718805188; cv=none; b=QwNboOO8v6XWEETs7Ry4Ri8UcT2jxYdrLQeUBh6N5kzAUhti5NvkvwyIrbRzLKJQgG3g7Aow3UI0NAqmueAr++HLi+ktiTrfTgJSiuygnOBSmD16sXGTHzyhR5dn0Lhkt44kVnY7a+vWRw3GEjyB8rmSPv5xmYHTk9F4GXmtNgE=
+	t=1718805419; cv=none; b=aXTYWpx7aBHuJV+qcrgq0D22KxTt/SOIIRsSr/eLPxvV3EjP+Ey0zYzTNAF7GsYs6OGlCniNhx4NsLj1UGVmHmyDMeNbLP/im51UOvxhE/yZ5WnvQMApCpKJlm52lWDElDR6EbCRrLfDpOyBHsR9jMtyQzfWNzHDwzVPpqVvzuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718805188; c=relaxed/simple;
-	bh=hXZM0ZRAqWw64hED68y432f7teoD9ysU+xVFowFrBys=;
+	s=arc-20240116; t=1718805419; c=relaxed/simple;
+	bh=4YpmGHY2TB039BP2VfN05LGC3OdymGgIoGdy6v3hIW8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oQ9FUMaGmYfBNpkY78/FHe3yAZWqgqTy9V0SOk6hRedhJsu/AgGt5oBpKZRe2VapeGunwfUGm3clNouv/E02L0aXIJzWlaSQjMkLhT2zkV9T1zhADSLkv+YarFzcradmKOunK11AbQvnorrrRI2a7k7kgcxGPs+99GPBMC/bwvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=r/vg1dgr; arc=none smtp.client-ip=209.85.161.45
+	 In-Reply-To:Content-Type; b=MgY29+oBkeB9pz615NZyFOu357mTLrO8bEMNwtIM2KTHk8gOitU7h1IHoRE3TZex9Zh9zayKG92awvy/sy0MDENZq8wUaWWyH13fJ/lnSVVEHQLzOD2vc2u3WLm6d8m1bsUeUzp4vjxmNhhH0ptcqJhqRoui4QqmhoGX4QC0hv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NOxU9WS7; arc=none smtp.client-ip=209.85.160.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5baeab9fd60so3273733eaf.2
-        for <linux-iio@vger.kernel.org>; Wed, 19 Jun 2024 06:53:04 -0700 (PDT)
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-250ca14422aso3607521fac.0
+        for <linux-iio@vger.kernel.org>; Wed, 19 Jun 2024 06:56:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718805184; x=1719409984; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718805415; x=1719410215; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=8/DxaRrf1DfxK2TMVGchQMx4rAQwHFrz6/0aYbhqkBw=;
-        b=r/vg1dgrHMvcEDaVUf0WYrBibLQFu9VsIVggPdc0iREpCJ1bTjk7WmOZhJEBCl/MVj
-         SaEZ5q7EXld1BJ2dZPmOh6NsvHFVpsKKmMCwztehWokkFyjxWwB4T0JsPkah7LGrOcZs
-         3AJvERNjAYmUCb/0+jdhxYG61KIhXvUm9d80l6m9eutIQeLmyNppQEWezodC6glyHzXb
-         A3/n9APDsRfme/LUYqb9lUqKSWUYguTxFEoqIzaf78wrWAQiDUEKqsQcfT+dkpdZd/vq
-         tmCQ3OqHRW2rmOXJSWWp8JH3SxkFsIqhNbxPyh+3jrxpCvYuMpY11+ovRCsRJuC/3WxM
-         7O3w==
+        bh=kSPgTLrYAIER1520IHBWtifoNKXPibq2elTdXzAWxws=;
+        b=NOxU9WS7I1ixeQ7jNAPSnvkNNAq7vq1V7Hh2mvjvOMLxUIrk461Xx5bIKBQNUFTGLy
+         cfkndtJCSRUbYolCZG9rJqjnMQllZjJAU25YAWyBCuDH439nma3IOp8AX550/Lv7Msml
+         Si9itxDSRpabOUkdfmzxBopjNb/1YgfCnKBDUCMXTyhljhmu6v4XOg1hjQMDbVusi1m4
+         P+1Q6f7SrvvF7QII1cgUQzqNiP7OfHgHg6Besn+PHikhADSdgVld2I8Y76sajfPiWKCA
+         qK9c6C1MRn37l8NTlI95tnTYUa7scS6XJ5oG5DSIALcqW400Z0ULAeRKdrCNW3n8tvlm
+         rjWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718805184; x=1719409984;
+        d=1e100.net; s=20230601; t=1718805415; x=1719410215;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8/DxaRrf1DfxK2TMVGchQMx4rAQwHFrz6/0aYbhqkBw=;
-        b=JOQbMb/wsg192hl88ETtB69wVoLFn2KvbVMIzCm7lQ7T9lZx/syqhk6g0PdTyRBGvU
-         J14JfCHM9kaRfoz/3vVHMIHt1wBClN9oySERD1JvTfD9CUnK972pdeSDNxcS1mV+BjpX
-         0GGpmLw9V7NaiNrB/ToSayf0FLtEXbRa2NVYJPyBU9F0Nbc0WqIEEiik/YiX8OjL8Rhd
-         6DGn53NqVgyNq9AmV6EMsPAcR7Bs6iUSJG1AhdM1XVHUq3FD2qGaBDUT/jbVJQC2Ewt3
-         1HsRWduAFRENkcJNFtkfyjR9dz8LEU38Fo/NIxQDL1SH0D0AS1HOyrkCCBMlJZ0+Z8OP
-         oW7g==
-X-Gm-Message-State: AOJu0Yy6D7LosWtcx3sP6i/IPvFSyrnNhJ+jrXzXLwW8jEmBeH68yyVU
-	wTpJI1lOu9GXR8heiJq0/UPQIhJuLcjpAmmutBRRmI7c9RkiI6Mitr60oyu+Pc8=
-X-Google-Smtp-Source: AGHT+IE6aa6F+4fqR2UHEN9ZwoJVg6KP3q4hH063265F+qTx8Gds/RAgDY8KqMLZZvdKYJvEXz5kdA==
-X-Received: by 2002:a4a:9211:0:b0:5b9:f2f4:6a95 with SMTP id 006d021491bc7-5c1adbeab72mr3002704eaf.5.1718805184158;
-        Wed, 19 Jun 2024 06:53:04 -0700 (PDT)
+        bh=kSPgTLrYAIER1520IHBWtifoNKXPibq2elTdXzAWxws=;
+        b=G5LFInzJ96DXOZer4/+UWGNtOsvL/biEMtn/pYYlF1CqyfIuVAveCuuML24HfYMhkr
+         0kRtkDBUCZORtO+Yij7VxA10KIDWc6lGS3EwjYaHVhXcaQ7/S9voSoTjD73pucP0e9Ke
+         wvsDTOTvjw8Thzw37L6mSUkhnh1tgo7ZC3rPdUnTETGUGnueIx5YFwBvtLA3g8b1t5Gz
+         V4i0RLCs2jiSPD+vTxZ4DR2/qMPNRfZometBoAml939KiGX/n+1S8DRKwbYxgR6j+qY9
+         hOd2bnfVmM4Wi4187tjELwJb+ftC+KuAFz8gumlDbpDYW/oNJ9DOx5CftKM6tv65iy6X
+         s9cA==
+X-Gm-Message-State: AOJu0Yx7bgeRzFfv0+uBEyGjhsWLcfhIBu4aKXIDL3OtDc35HNrsfzKn
+	FW1k1bw7f+U7j/AWEP6X/F8nBuauH1ougOnh4UhWuumiTRyvMi1NitWhH729BlI=
+X-Google-Smtp-Source: AGHT+IHQhtwtn3q99qx1DtHTwYTM65SjEm6yem4vTsRk9lAiFBEHwPqq1Ktxa7Qbe5eZABSkRNp2ag==
+X-Received: by 2002:a05:6870:63ab:b0:24c:a547:7b5a with SMTP id 586e51a60fabf-25c94991652mr3393011fac.14.1718805415510;
+        Wed, 19 Jun 2024 06:56:55 -0700 (PDT)
 Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5bd5de6a238sm1619968eaf.5.2024.06.19.06.53.03
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2569930f7f5sm3695527fac.44.2024.06.19.06.56.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jun 2024 06:53:03 -0700 (PDT)
-Message-ID: <63db9349-f453-4a5b-aa09-d1857ddd8b03@baylibre.com>
-Date: Wed, 19 Jun 2024 08:53:02 -0500
+        Wed, 19 Jun 2024 06:56:55 -0700 (PDT)
+Message-ID: <6f945701-cac0-4a56-9ca7-1daceccc5efd@baylibre.com>
+Date: Wed, 19 Jun 2024 08:56:54 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,8 +75,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/6] spi: Enable controllers to extend the SPI protocol
- with MOSI idle configuration
+Subject: Re: [PATCH v4 4/6] spi: spi-axi-spi-engine: Add support for MOSI idle
+ configuration
 To: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org,
  lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
  robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
@@ -84,122 +84,65 @@ To: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org,
 Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <cover.1718749981.git.marcelo.schmitt@analog.com>
- <36eefb860f660e2cadb13b00aca04b5a65498993.1718749981.git.marcelo.schmitt@analog.com>
+ <ead669c15db7cfad4034df1d743fd4088f1c2253.1718749981.git.marcelo.schmitt@analog.com>
 Content-Language: en-US
 From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <36eefb860f660e2cadb13b00aca04b5a65498993.1718749981.git.marcelo.schmitt@analog.com>
+In-Reply-To: <ead669c15db7cfad4034df1d743fd4088f1c2253.1718749981.git.marcelo.schmitt@analog.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 6/18/24 6:10 PM, Marcelo Schmitt wrote:
+On 6/18/24 6:11 PM, Marcelo Schmitt wrote:
+> Implement MOSI idle low and MOSI idle high to better support peripherals
+> that request specific MOSI behavior.
+> 
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
+>  drivers/spi/spi-axi-spi-engine.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
+> index 0aa31d745734..787e22ae80c0 100644
+> --- a/drivers/spi/spi-axi-spi-engine.c
+> +++ b/drivers/spi/spi-axi-spi-engine.c
+> @@ -41,6 +41,7 @@
+>  #define SPI_ENGINE_CONFIG_CPHA			BIT(0)
+>  #define SPI_ENGINE_CONFIG_CPOL			BIT(1)
+>  #define SPI_ENGINE_CONFIG_3WIRE			BIT(2)
+> +#define SPI_ENGINE_CONFIG_SDO_IDLE		BIT(3)
 
-
-> +
-> +MOSI idle state configuration
-> +^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-> +
-> +Common SPI protocol implementations don't specify any state or behavior for the
-> +MOSI line when the controller is not clocking out data. However, there do exist
-> +peripherals that require specific MOSI line state when data is not being clocked
-> +out. For example, if the peripheral expects the MOSI line to be high when the
-> +controller is not clocking out data (SPI_MOSI_IDLE_HIGH), then a transfer in SPI
-> +mode 0 would look like the following:
-> +
-> +::
-> +
-> +  nCSx ___                                                                   ___
-> +          \_________________________________________________________________/
-> +          •                                                                 •
-> +          •                                                                 •
-> +  SCLK         ___     ___     ___     ___     ___     ___     ___     ___
-> +       _______/   \___/   \___/   \___/   \___/   \___/   \___/   \___/   \_____
-> +          •   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ; •
-> +          •   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ;   :   ; •
-> +  MOSI _____         _______         _______         _______________         ___
-> +  0x56      \_0_____/ 1     \_0_____/ 1     \_0_____/ 1       1     \_0_____/
-> +          •       ;       ;       ;       ;       ;       ;       ;       ; •
-> +          •       ;       ;       ;       ;       ;       ;       ;       ; •
-> +  MISO XXX__________         _______________________          _______        XXX
-> +  0xBA XXX__/     1 \_____0_/     1       1       1 \_____0__/    1  \____0__XXX
-> +
-> +Legend::
-> +
-> +  • marks the start/end of transmission;
-> +  : marks when data is clocked into the peripheral;
-> +  ; marks when data is clocked into the controller;
-> +  X marks when line states are not specified.
-> +
-> +In this extension to the usual SPI protocol, the MOSI line state is specified to
-> +be kept high when CS is active but the controller is not clocking out data to
-
-I think it would be less ambiguous to say "asserted" instead of "active".
-
-> +the peripheral and also when CS is inactive.
-
-As I mentioned in a previous review, I think the key detail here is that the
-MOSI line has to be in the required state during the CS line assertion
-(falling edge). I didn't really get that from the current wording. The current
-wording makes it sound like MOSI needs to be high indefinitely longer.
-
-> +
-> +Peripherals that require this extension must request it by setting the
-> +SPI_MOSI_IDLE_HIGH bit into the mode attribute of their struct spi_device and
-
-Could use inline code formatting for C code bits, e.g. ``struct spi_device``
-``SPI_MOSI_IDLE_HIGH``, etc.
-
-> +call spi_setup(). Controllers that support this extension should indicate it by> +setting SPI_MOSI_IDLE_HIGH in the mode_bits attribute of their struct
-> +spi_controller. The configuration to idle MOSI low is analogous but uses the
-> +SPI_MOSI_IDLE_LOW mode bit.
-> +
-> +
->  THANKS TO
->  ---------
->  Contributors to Linux-SPI discussions include (in alphabetical order,
-
-...
-
-> index e8e1e798924f..8e50a8559225 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -599,6 +599,12 @@ struct spi_controller {
->  	 * assert/de-assert more than one chip select at once.
->  	 */
->  #define SPI_CONTROLLER_MULTI_CS		BIT(7)
-> +	/*
-> +	 * The spi-controller is capable of keeping the MOSI line low or high
-> +	 * when not clocking out data.
-> +	 */
-> +#define SPI_CONTROLLER_MOSI_IDLE_LOW    BIT(8)  /* Can idle MOSI low */
-> +#define SPI_CONTROLLER_MOSI_IDLE_HIGH   BIT(9)  /* Can idle MOSI high */
-
-I don't see where these are used anywhere else in the series. They
-seem redundant with SPI_MOSI_IDLE_LOW and SPI_MOSI_IDLE_HIGH.
+Calling this SPI_ENGINE_CONFIG_SDO_IDLE_HIGH would make it more
+clear what happens when the bit is enabled.
 
 >  
->  	/* Flag indicating if the allocation of this struct is devres-managed */
->  	bool			devm_allocated;
-> diff --git a/include/uapi/linux/spi/spi.h b/include/uapi/linux/spi/spi.h
-> index ca56e477d161..ee4ac812b8f8 100644
-> --- a/include/uapi/linux/spi/spi.h
-> +++ b/include/uapi/linux/spi/spi.h
-> @@ -28,7 +28,8 @@
->  #define	SPI_RX_OCTAL		_BITUL(14)	/* receive with 8 wires */
->  #define	SPI_3WIRE_HIZ		_BITUL(15)	/* high impedance turnaround */
->  #define	SPI_RX_CPHA_FLIP	_BITUL(16)	/* flip CPHA on Rx only xfer */
-> -#define SPI_MOSI_IDLE_LOW	_BITUL(17)	/* leave mosi line low when idle */
-> +#define SPI_MOSI_IDLE_LOW	_BITUL(17)	/* leave MOSI line low when idle */
-> +#define SPI_MOSI_IDLE_HIGH	_BITUL(18)	/* leave MOSI line high when idle */
+>  #define SPI_ENGINE_INST_TRANSFER		0x0
+>  #define SPI_ENGINE_INST_ASSERT			0x1
+> @@ -132,6 +133,10 @@ static unsigned int spi_engine_get_config(struct spi_device *spi)
+>  		config |= SPI_ENGINE_CONFIG_CPHA;
+>  	if (spi->mode & SPI_3WIRE)
+>  		config |= SPI_ENGINE_CONFIG_3WIRE;
+> +	if (spi->mode & SPI_MOSI_IDLE_HIGH)
+> +		config |= SPI_ENGINE_CONFIG_SDO_IDLE;
+> +	if (spi->mode & SPI_MOSI_IDLE_LOW)
+> +		config &= ~SPI_ENGINE_CONFIG_SDO_IDLE;
 >  
->  /*
->   * All the bits defined above should be covered by SPI_MODE_USER_MASK.
-> @@ -38,6 +39,6 @@
->   * These bits must not overlap. A static assert check should make sure of that.
->   * If adding extra bits, make sure to increase the bit index below as well.
->   */
-> -#define SPI_MODE_USER_MASK	(_BITUL(18) - 1)
-> +#define SPI_MODE_USER_MASK	(_BITUL(19) - 1)
+>  	return config;
+>  }
+> @@ -646,6 +651,9 @@ static int spi_engine_probe(struct platform_device *pdev)
 >  
->  #endif /* _UAPI_SPI_H */
+>  	host->dev.of_node = pdev->dev.of_node;
+>  	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
+> +	if (ADI_AXI_PCORE_VER_MAJOR(version) >= 1 &&
+
+Currently, the major version is required to be 1, so this check is not
+strictly needed.
+
+> +	    ADI_AXI_PCORE_VER_MINOR(version) >= 3)
+> +		host->mode_bits |=  SPI_MOSI_IDLE_LOW | SPI_MOSI_IDLE_HIGH;
+
+
+
+>  	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
+>  	host->max_speed_hz = clk_get_rate(spi_engine->ref_clk) / 2;
+>  	host->transfer_one_message = spi_engine_transfer_one_message;
 
 

@@ -1,201 +1,124 @@
-Return-Path: <linux-iio+bounces-6595-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6596-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF0990F4AA
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 19:03:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4FCC90F4F6
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 19:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08F982817F7
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 17:03:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61D61B22526
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 17:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91B3B155386;
-	Wed, 19 Jun 2024 17:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1374914EC56;
+	Wed, 19 Jun 2024 17:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z1FmR4Im"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Dor1pG4Q"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED4BE339A8;
-	Wed, 19 Jun 2024 17:02:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FE8152166
+	for <linux-iio@vger.kernel.org>; Wed, 19 Jun 2024 17:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718816574; cv=none; b=SKDauQ0aJbSvnkJR4J6gKXPd1zEIE6fF/b+VtKHBcA0lhOO7jT0agelnRrOO2Nv82mfI9bLgWdRFXyIBaUtsafDNKy3NFC84UEJsrAQNtRUOa9U/o0TQ+m7yEnzGUCuuE2Pi0V5Ezu3MhPyM9XFKozwi2nP27v+OkzKKAxWHX0E=
+	t=1718817873; cv=none; b=k52FJla0wmL1QCA/edzmVErAvrTh7zeda04dGebZCSfgyocHyWc3GUoFBbCULQ43R+ZIkieFGAC+PiAMQHrVxRsgr4B2SIR9O8AdwgOLEOpEbXrfDJSTWPg82XtcVlTpA0nGMWMntP+w+5xhy7k5TaCkA7ZEWXOq2q2pjE56wyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718816574; c=relaxed/simple;
-	bh=PDVe6x1W7Sg6im99IZlElznaygjLXCfxFfHhjxUX5NI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rBsSSaBBq1jWWiF6NhJngv+oh0IyeKwGgmnnIzqgLedG4i5pazDy+0TvJAqNM+ReZ2svMiZ9FmIjWyVvyw0/zAIZB6csUEzMRSGfd85o9n0MFhNU+9sp+GQKaa6lxb3yYsOxdjthm9ESPvTWMPneaKS0YCSVm4/caOvRJWwGs70=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z1FmR4Im; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1f44b45d6abso50950995ad.0;
-        Wed, 19 Jun 2024 10:02:52 -0700 (PDT)
+	s=arc-20240116; t=1718817873; c=relaxed/simple;
+	bh=pHGHrMlLeKjI1/up7Rrmj+CZx30fzhzHLvJvS34Vm1M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZoDbXnD+Fj4uKpiwyim1zU/3gusve84Dz08jtQ3HpEdpV0mYFIwaUQFwOQuzMRVGFZXZUExdJX8+a7TjkyEELfsfUdZvUiBFJY/ZdDzByEWXk984RGLmUgup/uqJTag8CWOa6kGlsSsoLc+c5Zv3JzetsxhbhWWGtxw0I4SCG9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Dor1pG4Q; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5b9706c84e5so1181eaf.1
+        for <linux-iio@vger.kernel.org>; Wed, 19 Jun 2024 10:24:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718816572; x=1719421372; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=nCyy/iTu+Rgj32SD9M0e0oNUqf2SCUNkQAcuASyXy2Y=;
-        b=Z1FmR4ImULJ8sI4zxYjERU0cXSE6y3aSwpT3tlxP3gw+N+i6PjLmoF9iwcLPhXU08B
-         MAjIIweuAeAt8W9mjAYdRTJG7TBCRT1Q+5yPFpEqcoK9GpJo6NQpGoq7qjUfDR6UDx0n
-         V5Hlt8aLLV2YLbKyjSosK7aJBSo/WfhMrtMYMPgX6vmeKzOV0uz+XhYHncftsllnhnq1
-         UKMdsrtMsHXoXda+SwjR7ej668OisJgghCjJm1KqEykN2bC3fBjrpPzKqrVBrenoCO+R
-         NKwy9cUFsGnBp+AbKpzIzo28G78qMvJCdVbkOhFxDFAzQpr5mUqhzZ5jMvTOUj75yDgY
-         EmRw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718817870; x=1719422670; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WW/sGpONNf0gL3cR4b4skPpNC8NQNbXJ/sZFcTqP6DY=;
+        b=Dor1pG4Qu+/1feuIJb5xH9E1dRiL/pF4P/tuzZCw02844zQYFW4t6pejHri09PnSsg
+         ZYh6A4QbVIO9g16Dt4sVW3/owtrYOfO8G9q0gaKu3Q0hcuFATbB+mL/k/bhbU+0xhKWk
+         gYpkAhSQ5dJfyhQgHPtmFafJkfXDOVqXGS1GOnY/n/5EQjW7PYxnGZ9AqZJs1R7XRcx2
+         PM+1Ja2iZ5eE0HrUe+8K3T6/qCMggorIBLkI6wrsbuBfpzKjq0MxLd65PULuFYa2UDVm
+         vrpqYZKVg21F38RWVaJjqqmU7xWJxbahWaFamP6Q6XtJoScqsoV2i8dnwZ75SgrYupD/
+         gdsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718816572; x=1719421372;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nCyy/iTu+Rgj32SD9M0e0oNUqf2SCUNkQAcuASyXy2Y=;
-        b=hvoXFscCLdCULEsfj8qGZWTUKl6QUjrbSx/7TgPGGVI+9WRjXwFvWJoe6Fqu527OPM
-         gO5cwrgEv0BbM8blfDoafAfBiVkYjs9jkK9Tmo1SGeV6EgGsxgKSq4ytacsIoZEWuUvk
-         N02jD9vcgtB0tgF5GNI1aqlSQmFscw/2nXkwgHGjwaUj3TPpcne9OXsTtOOWRbg/3VEH
-         MIEkzC7H7KSpzKozG9YFS0T5Wqq8BjRNL199JdKOtj8TO58bnxL+EDXS56ln9JIcrHCQ
-         mtT7J1sE6HnQiH7WFQcGKEM+OcQxQA1YYXSYQ1VTTPC719IGdueyE66rDulrqN5bHfd3
-         fOoA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSVtrjG7MywLV1Vadn2MxEhod+GH3xG3rbbiaHBc+ojeXfSJenY6fvNkpKs9qMYeQq+PkVAXKYd3kD+dwTJoCH+GFRquclTSOI0KyiFS7CbmB5HRwBHmdBGmOBZ21/y2KC/7/5m1vpygUUwQmYf8rLkdJjnPUQL0hSxzUD/imE4n9+6xUcOVwG461HN6ehphKtw18uJBFJ5mMAOD9p2w==
-X-Gm-Message-State: AOJu0YywUscR6XrmQzTue58YJZkczvxD8BRsKRwXseC+l98WcoRIJJw+
-	a1dWpHr1QHQiG8atrBw2cCyJpdOUu+YulI9NsyzXbsAWqst0Wnqx
-X-Google-Smtp-Source: AGHT+IFN6ZzW+EYZcLINoXOjKKuRVNBPYCeqYeRfUtLufjNP5tnpECbgvisRvGRDtPqhH3MaSsFOmQ==
-X-Received: by 2002:a17:902:ec83:b0:1f7:414:d687 with SMTP id d9443c01a7336-1f9aa468225mr36186415ad.67.1718816570993;
-        Wed, 19 Jun 2024 10:02:50 -0700 (PDT)
-Received: from localhost ([2804:30c:96b:f700:cc1d:c0ae:96c9:c934])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855f15149sm119839705ad.218.2024.06.19.10.02.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jun 2024 10:02:50 -0700 (PDT)
-Date: Wed, 19 Jun 2024 14:04:14 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
-	robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
-	conor+dt@kernel.org, nuno.sa@analog.com, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 5/6] dt-bindings: iio: adc: Add AD4000
-Message-ID: <ZnMPjtj1ZhOzKeps@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1718749981.git.marcelo.schmitt@analog.com>
- <34a16c6e513b32bc6111b695e1c8b467bd6993d9.1718749981.git.marcelo.schmitt@analog.com>
- <38f99355-0186-4c2f-912a-cb03d6e4823c@baylibre.com>
+        d=1e100.net; s=20230601; t=1718817870; x=1719422670;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WW/sGpONNf0gL3cR4b4skPpNC8NQNbXJ/sZFcTqP6DY=;
+        b=YROTRqJ+0w0AtylIat6oIpn5vwdpqD0Yc5z2l4ylW0CZyYfyqY1U6eKLZXduq6DoHm
+         A9SHtXzYV+lobSFg8bnjbZGfHvx7Ghi3esRPdUI77bOItnZ1dwoUoAHl7MMSz4qSrNEG
+         9TkpsfKosiDncprBlhuKM2g0SKDMtIiGfXYO+jqvjZ+xHaAd1so/0xBKH92mUvqcCXVs
+         XTb/A2Too5cwFLvDMEBJxnqTZ1TB4biSdj8nRXMYrFsXXeHq1IPnMLbblg6ZaSWVLQmB
+         BZ1tMUHXXyQPjzr4ucTpDzFNe7wkw0WqsWlx0rPbdKdMe7FhT6D3EK+P8umSna1ybMqb
+         C/Vg==
+X-Gm-Message-State: AOJu0YzSIDDgKD6PIdS9zRvW+f5MnWHM49t+8lRbroDporF4ty8Cp0Ks
+	m2QZS4+q8wvvQn9CrRZ/ar9yIELGcYy+se+56IcfzPxwnA04jS0XPHMHNdCSb5g=
+X-Google-Smtp-Source: AGHT+IHR54HXcr7/yjcrsiJmtUghksi74ROiI+fCbYFFhArdAwoof+CXH2w8urjUZ7OSSXvEzQS16w==
+X-Received: by 2002:a05:6870:1716:b0:258:44b7:b842 with SMTP id 586e51a60fabf-25c94991633mr3524648fac.13.1718817870065;
+        Wed, 19 Jun 2024 10:24:30 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2567a94e375sm3804185fac.4.2024.06.19.10.24.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 19 Jun 2024 10:24:29 -0700 (PDT)
+Message-ID: <e3c12062-9bb3-40fd-8b55-5cecbd2fda4b@baylibre.com>
+Date: Wed, 19 Jun 2024 12:24:28 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <38f99355-0186-4c2f-912a-cb03d6e4823c@baylibre.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 1/6] spi: Enable controllers to extend the SPI protocol
+ with MOSI idle configuration
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org,
+ lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ nuno.sa@analog.com, marcelo.schmitt1@gmail.com
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1718749981.git.marcelo.schmitt@analog.com>
+ <36eefb860f660e2cadb13b00aca04b5a65498993.1718749981.git.marcelo.schmitt@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <36eefb860f660e2cadb13b00aca04b5a65498993.1718749981.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 06/19, David Lechner wrote:
-> On 6/18/24 6:12 PM, Marcelo Schmitt wrote:
-> > Add device tree documentation for AD4000 series of ADC devices.
-> > 
-> > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4000-4004-4008.pdf
-> > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4001-4005.pdf
-> > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4002-4006-4010.pdf
-> > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4003-4007-4011.pdf
-> > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/ad4020-4021-4022.pdf
-> > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4001.pdf
-> > Datasheet: https://www.analog.com/media/en/technical-documentation/data-sheets/adaq4003.pdf
-> 
-> Datasheets URLs are listed in the patch, so probably don't need them
-> in the commit message too.
-
-okay, removed them for v5.
-
-> 
-...
-> 
-> There are data sheets listed for adaq400x but no compatibles.
-
-Ah, that's correct. I missed
-      - const: adi,adaq4001
-      - const: adi,adaq4003
-
-thanks
-> 
-...
-> > +
-> > +  adi,gain-milli:
-> > +    description: |
-> > +      The hardware gain applied to the ADC input (in milli units).
-> > +      The gain provided by the ADC input scaler is defined by the hardware
-> > +      connections between chip pins OUT+, R1K-, R1K1-, R1K+, R1K1+, and OUT-.
-> > +      If not present, default to 1000 (no actual gain applied).
-> > +    $ref: /schemas/types.yaml#/definitions/uint16
-> 
-> Any particular reason why this needs to be uint16 instead of the more
-> common uint32?
-
-The values fit into 16 bits and Nuno asked to make it a 16-bit property.
-
-> 
-> > +    enum: [454, 909, 1000, 1900]
-> > +    default: 1000
-> > +
-...
-> > +  # The configuration register can only be accessed in '3-wire' mode
-> > +  - if:
-> > +      not:
-> > +        properties:
-> > +          adi,spi-mode:
-> > +            contains:
-> > +              enum:
-> > +                - single
-> 
-> adi,spi-mode is not an array and we are only checking for one value,
-> so this could be simplified to:
-> 
->   properties:
->     adi,spi-mode:
->       const: single
-> 
-ok, changed to do the check that way.
+On 6/18/24 6:10 PM, Marcelo Schmitt wrote:
 
 ...
-> > +examples:
-> > +  - |
-> > +    #include <dt-bindings/gpio/gpio.h>
-> > +    spi {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +        /* Example for a AD devices */
-> 
-> Comments are a bit redundant since it says "examples:" above and
-> the type of the chip in the compatible string.
-> 
-I like the comments. I think it makes clear we have AD and ADAQ devices but ok,
-removing them for v5.
 
-> > +        adc@0 {
-> > +            compatible = "adi,ad4020";
-> > +            reg = <0>;
-> > +            spi-max-frequency = <71000000>;
-> > +            vdd-supply = <&supply_1_8V>;
-> > +            vio-supply = <&supply_1_8V>;
-> > +            ref-supply = <&supply_5V>;
-> > +            cnv-gpios = <&gpio0 88 GPIO_ACTIVE_HIGH>;
-> > +        };
-> > +    };
-> > +  - |
-> > +    spi {
-> > +        #address-cells = <1>;
-> > +        #size-cells = <0>;
-> > +        /* Example for a ADAQ devices */
-> > +        adc@0 {
-> > +            compatible = "adi,adaq4003";
-> > +            reg = <0>;
-> > +            spi-max-frequency = <80000000>;
-> > +            vdd-supply = <&supply_1_8V>;
-> > +            vio-supply = <&supply_1_8V>;
-> > +            ref-supply = <&supply_5V>;
-> > +            adi,high-z-input;
-> > +            adi,gain-milli = /bits/ 16 <454>;
-> > +            adi,spi-mode = "single";
-> > +        };
-> > +    };
+> @@ -3928,7 +3934,8 @@ int spi_setup(struct spi_device *spi)
+>  	 * so it is ignored here.
+>  	 */
+>  	bad_bits = spi->mode & ~(spi->controller->mode_bits | SPI_CS_WORD |
+> -				 SPI_NO_TX | SPI_NO_RX);
+> +				 SPI_NO_TX | SPI_NO_RX | SPI_MOSI_IDLE_LOW |
+> +				 SPI_MOSI_IDLE_HIGH);
+
+This looks wrong to me. Adding flags here causes them to be ignored
+rather than to be checked.
+
+I also did a runtime check with a random driver and a SPI controller
+that does not have the flag.
+
+	spi->mode |= SPI_MOSI_IDLE_LOW;
+	ret = spi_setup(spi);
+	if (ret)
+		return ret;
+
+It incorrectly passes when used with this change but correctly fails
+without this change.
+
+>  	ugly_bits = bad_bits &
+>  		    (SPI_TX_DUAL | SPI_TX_QUAD | SPI_TX_OCTAL |
+>  		     SPI_RX_DUAL | SPI_RX_QUAD | SPI_RX_OCTAL);
+
 

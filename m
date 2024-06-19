@@ -1,73 +1,65 @@
-Return-Path: <linux-iio+bounces-6591-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6592-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6254690EF86
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 15:57:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 415E390F39A
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 18:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66A8A1C21C23
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 13:57:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47E201C20DE3
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 16:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDBE150984;
-	Wed, 19 Jun 2024 13:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E5445009;
+	Wed, 19 Jun 2024 16:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NOxU9WS7"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="M/8ixEAf"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7360514F9C4
-	for <linux-iio@vger.kernel.org>; Wed, 19 Jun 2024 13:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEEB81E4A1;
+	Wed, 19 Jun 2024 16:00:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718805419; cv=none; b=aXTYWpx7aBHuJV+qcrgq0D22KxTt/SOIIRsSr/eLPxvV3EjP+Ey0zYzTNAF7GsYs6OGlCniNhx4NsLj1UGVmHmyDMeNbLP/im51UOvxhE/yZ5WnvQMApCpKJlm52lWDElDR6EbCRrLfDpOyBHsR9jMtyQzfWNzHDwzVPpqVvzuQ=
+	t=1718812822; cv=none; b=laCTTSPyyLQJDPcii2TBTI3rSS8DzSB0WAeGX4VNWq8XCk0INVu7+a5fzZzAApGzz9pjBCUdpAQW22dwGQ1sAmFBIUDpn6KeHFC/34PIsJJ4pLiz6WOvTS25CqIq+JKUlnfYo5IvG5nQknoZ5BVC6x4E+Un4pmLKzbKrFkRDkeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718805419; c=relaxed/simple;
-	bh=4YpmGHY2TB039BP2VfN05LGC3OdymGgIoGdy6v3hIW8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MgY29+oBkeB9pz615NZyFOu357mTLrO8bEMNwtIM2KTHk8gOitU7h1IHoRE3TZex9Zh9zayKG92awvy/sy0MDENZq8wUaWWyH13fJ/lnSVVEHQLzOD2vc2u3WLm6d8m1bsUeUzp4vjxmNhhH0ptcqJhqRoui4QqmhoGX4QC0hv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NOxU9WS7; arc=none smtp.client-ip=209.85.160.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-250ca14422aso3607521fac.0
-        for <linux-iio@vger.kernel.org>; Wed, 19 Jun 2024 06:56:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718805415; x=1719410215; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=kSPgTLrYAIER1520IHBWtifoNKXPibq2elTdXzAWxws=;
-        b=NOxU9WS7I1ixeQ7jNAPSnvkNNAq7vq1V7Hh2mvjvOMLxUIrk461Xx5bIKBQNUFTGLy
-         cfkndtJCSRUbYolCZG9rJqjnMQllZjJAU25YAWyBCuDH439nma3IOp8AX550/Lv7Msml
-         Si9itxDSRpabOUkdfmzxBopjNb/1YgfCnKBDUCMXTyhljhmu6v4XOg1hjQMDbVusi1m4
-         P+1Q6f7SrvvF7QII1cgUQzqNiP7OfHgHg6Besn+PHikhADSdgVld2I8Y76sajfPiWKCA
-         qK9c6C1MRn37l8NTlI95tnTYUa7scS6XJ5oG5DSIALcqW400Z0ULAeRKdrCNW3n8tvlm
-         rjWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718805415; x=1719410215;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kSPgTLrYAIER1520IHBWtifoNKXPibq2elTdXzAWxws=;
-        b=G5LFInzJ96DXOZer4/+UWGNtOsvL/biEMtn/pYYlF1CqyfIuVAveCuuML24HfYMhkr
-         0kRtkDBUCZORtO+Yij7VxA10KIDWc6lGS3EwjYaHVhXcaQ7/S9voSoTjD73pucP0e9Ke
-         wvsDTOTvjw8Thzw37L6mSUkhnh1tgo7ZC3rPdUnTETGUGnueIx5YFwBvtLA3g8b1t5Gz
-         V4i0RLCs2jiSPD+vTxZ4DR2/qMPNRfZometBoAml939KiGX/n+1S8DRKwbYxgR6j+qY9
-         hOd2bnfVmM4Wi4187tjELwJb+ftC+KuAFz8gumlDbpDYW/oNJ9DOx5CftKM6tv65iy6X
-         s9cA==
-X-Gm-Message-State: AOJu0Yx7bgeRzFfv0+uBEyGjhsWLcfhIBu4aKXIDL3OtDc35HNrsfzKn
-	FW1k1bw7f+U7j/AWEP6X/F8nBuauH1ougOnh4UhWuumiTRyvMi1NitWhH729BlI=
-X-Google-Smtp-Source: AGHT+IHQhtwtn3q99qx1DtHTwYTM65SjEm6yem4vTsRk9lAiFBEHwPqq1Ktxa7Qbe5eZABSkRNp2ag==
-X-Received: by 2002:a05:6870:63ab:b0:24c:a547:7b5a with SMTP id 586e51a60fabf-25c94991652mr3393011fac.14.1718805415510;
-        Wed, 19 Jun 2024 06:56:55 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-2569930f7f5sm3695527fac.44.2024.06.19.06.56.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Jun 2024 06:56:55 -0700 (PDT)
-Message-ID: <6f945701-cac0-4a56-9ca7-1daceccc5efd@baylibre.com>
-Date: Wed, 19 Jun 2024 08:56:54 -0500
+	s=arc-20240116; t=1718812822; c=relaxed/simple;
+	bh=lsQELVPlsQAcUQYMeUHH/b3zV6m6tBZUonHzjKQKzk4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=RDzknp25+twwHzsbTwca4jAzQFLQ6F+u1v+HoAxh6THa09u/cwxUPG56phpCx02Arh0aCa6LuoD1e/Uf4xv4FffMkOjueNMFZwHD1OCRmrGEvM/BkXuTjDtZpHV7/PVrUJZpysjyK8gsHa0jgRNu8HEwxbIN+AhPKdoqzW4of/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=M/8ixEAf; arc=none smtp.client-ip=185.132.182.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0241204.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45JCejEg024133;
+	Wed, 19 Jun 2024 18:00:03 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	b5I09re8UijZNQJy+2SehYcQsyJFUcqURWXJ6ZBkaI8=; b=M/8ixEAfgdzHtMR+
+	N8TAh1MnQt+6Q1wSgaIk0MsWHHff+eg/0Q3bDzDX4/WUX3QwZXwfqU5btGRjsrXQ
+	MlzIfkPsD+3zvkcHUvmfTAsXImBAsJVvL9IHs+C/4OmpHmc4XSAhVgN8kYAMMnHQ
+	rY8+O27uMpxhgCAb7Z3C03tB+BXYQmCm0yYhvBpD9FghVeQm6ux2wfyhl8X08/B+
+	Nho/lgWmpdVAouKiCTGFimgg4ynUDLriaK9rtPadjtMSuoFFTsgel7qThiqCpvHj
+	DBttaPtVA47oHb1wqE6ZvgiWkHNEkPp5foG/J3AJRq3PCeRwvdym5xSNMYgc9XkR
+	xPQsvQ==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3yuj9n46ut-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Jun 2024 18:00:03 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 1FAAA4002D;
+	Wed, 19 Jun 2024 17:59:53 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 3B777221940;
+	Wed, 19 Jun 2024 17:59:27 +0200 (CEST)
+Received: from [10.252.1.130] (10.252.1.130) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 19 Jun
+ 2024 17:59:26 +0200
+Message-ID: <8c3de47c-bd72-4560-a43b-5275f2f7a059@foss.st.com>
+Date: Wed, 19 Jun 2024 17:59:26 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,74 +67,113 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/6] spi: spi-axi-spi-engine: Add support for MOSI idle
- configuration
-To: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org,
- lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
- robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
- nuno.sa@analog.com, marcelo.schmitt1@gmail.com
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1718749981.git.marcelo.schmitt@analog.com>
- <ead669c15db7cfad4034df1d743fd4088f1c2253.1718749981.git.marcelo.schmitt@analog.com>
+Subject: Re: [PATCH 2/8] iio: add enable and disable services to iio backend
+ framework
+To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
+        Nuno Sa
+	<nuno.sa@analog.com>, Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen
+	<lars@metafoo.de>
+CC: <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20240618160836.945242-1-olivier.moysan@foss.st.com>
+ <20240618160836.945242-3-olivier.moysan@foss.st.com>
+ <5b7b8a7132934b77b43ffde0650c68c1dd9a5b7e.camel@gmail.com>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <ead669c15db7cfad4034df1d743fd4088f1c2253.1718749981.git.marcelo.schmitt@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Olivier MOYSAN <olivier.moysan@foss.st.com>
+In-Reply-To: <5b7b8a7132934b77b43ffde0650c68c1dd9a5b7e.camel@gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-19_02,2024-06-19_01,2024-05-17_01
 
-On 6/18/24 6:11 PM, Marcelo Schmitt wrote:
-> Implement MOSI idle low and MOSI idle high to better support peripherals
-> that request specific MOSI behavior.
+Hi Nuno,
+
+On 6/19/24 07:21, Nuno Sá wrote:
+> On Tue, 2024-06-18 at 18:08 +0200, Olivier Moysan wrote:
+>> Add iio_backend_disable() and iio_backend_enable() APIs to allow
+>> IIO backend consumer to request backend disabling and enabling.
+>>
+>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+>> ---
 > 
-> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> ---
->  drivers/spi/spi-axi-spi-engine.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+> Hi Olivier,
 > 
-> diff --git a/drivers/spi/spi-axi-spi-engine.c b/drivers/spi/spi-axi-spi-engine.c
-> index 0aa31d745734..787e22ae80c0 100644
-> --- a/drivers/spi/spi-axi-spi-engine.c
-> +++ b/drivers/spi/spi-axi-spi-engine.c
-> @@ -41,6 +41,7 @@
->  #define SPI_ENGINE_CONFIG_CPHA			BIT(0)
->  #define SPI_ENGINE_CONFIG_CPOL			BIT(1)
->  #define SPI_ENGINE_CONFIG_3WIRE			BIT(2)
-> +#define SPI_ENGINE_CONFIG_SDO_IDLE		BIT(3)
+> small notes from me...
+> 
+>>   drivers/iio/industrialio-backend.c | 26 ++++++++++++++++++++++++++
+>>   include/linux/iio/backend.h        |  2 ++
+>>   2 files changed, 28 insertions(+)
+>>
+>> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-
+>> backend.c
+>> index b950e30018ca..d3db048c086b 100644
+>> --- a/drivers/iio/industrialio-backend.c
+>> +++ b/drivers/iio/industrialio-backend.c
+>> @@ -166,6 +166,32 @@ int devm_iio_backend_enable(struct device *dev, struct
+>> iio_backend *back)
+>>   }
+>>   EXPORT_SYMBOL_NS_GPL(devm_iio_backend_enable, IIO_BACKEND);
+>>   
+>> +/**
+>> + * iio_backend_enable - Backend enable
+>> + * @dev: Consumer device for the backend
+>> + * @back: Backend device
+>> + *
+>> + * RETURNS:
+>> + * 0 on success, negative error number on failure.
+>> + */
+>> +int iio_backend_enable(struct device *dev, struct iio_backend *back)
+>> +{
+>> +	return iio_backend_op_call(back, enable);
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(iio_backend_enable, IIO_BACKEND);
+> 
+> We do already have devm_iio_backend_enable(). From a correctness stand point and even
+> scalability, that API should now call your new iio_backend_enable() instead of
+> directly call iio_backend_op_call(). I guess that change could be in this patch.
+>
 
-Calling this SPI_ENGINE_CONFIG_SDO_IDLE_HIGH would make it more
-clear what happens when the bit is enabled.
+Sure. I have updated the patch.
 
->  
->  #define SPI_ENGINE_INST_TRANSFER		0x0
->  #define SPI_ENGINE_INST_ASSERT			0x1
-> @@ -132,6 +133,10 @@ static unsigned int spi_engine_get_config(struct spi_device *spi)
->  		config |= SPI_ENGINE_CONFIG_CPHA;
->  	if (spi->mode & SPI_3WIRE)
->  		config |= SPI_ENGINE_CONFIG_3WIRE;
-> +	if (spi->mode & SPI_MOSI_IDLE_HIGH)
-> +		config |= SPI_ENGINE_CONFIG_SDO_IDLE;
-> +	if (spi->mode & SPI_MOSI_IDLE_LOW)
-> +		config &= ~SPI_ENGINE_CONFIG_SDO_IDLE;
->  
->  	return config;
->  }
-> @@ -646,6 +651,9 @@ static int spi_engine_probe(struct platform_device *pdev)
->  
->  	host->dev.of_node = pdev->dev.of_node;
->  	host->mode_bits = SPI_CPOL | SPI_CPHA | SPI_3WIRE;
-> +	if (ADI_AXI_PCORE_VER_MAJOR(version) >= 1 &&
+>> +
+>> +/**
+>> + * iio_backend_disable - Backend disable
+>> + * @dev: Consumer device for the backend
+>> + * @back: Backend device
+>> + *
+>> + */
+>> +void iio_backend_disable(struct device *dev, struct iio_backend *back)
+>> +{
+>> +	iio_backend_void_op_call(back, disable);
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(iio_backend_disable, IIO_BACKEND);
+>> +
+> 
+> We also have __iio_backend_disable() which is static since all users were using
+> devm_iio_backend_enable(). I understand that's not suitable for you but I would
+> instead rename the existing function to iio_backend_disable() and export it.
+> 
 
-Currently, the major version is required to be 1, so this check is not
-strictly needed.
+Just renaming is not sufficient. The reason is that 
+devm_add_action_or_reset() require an action with action(void *) 
+prototype. So the prototype of iio_backend_disable() has to be changed 
+to void iio_backend_disable(void *back).
+I placed the same arguments in enable and disable for symmetry, but *dev 
+is not required for time being in disable API. So it can make sense to 
+change iio_backend_disable() prototype.
+alternatively, we can call __iio_backend_disable() through this API.
+Please, let me know is you have a preference.
 
-> +	    ADI_AXI_PCORE_VER_MINOR(version) >= 3)
-> +		host->mode_bits |=  SPI_MOSI_IDLE_LOW | SPI_MOSI_IDLE_HIGH;
+Thanks
+Olivier
 
-
-
->  	host->bits_per_word_mask = SPI_BPW_RANGE_MASK(1, 32);
->  	host->max_speed_hz = clk_get_rate(spi_engine->ref_clk) / 2;
->  	host->transfer_one_message = spi_engine_transfer_one_message;
-
+> With the above changes:
+> 
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+> 
+> - Nuno Sá
+> 
 

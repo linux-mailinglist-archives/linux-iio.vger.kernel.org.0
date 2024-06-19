@@ -1,118 +1,168 @@
-Return-Path: <linux-iio+bounces-6543-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6545-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72F3590E1E6
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 05:16:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABE490E29C
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 07:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5098282F62
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 03:16:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F80D1C21646
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 05:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BF955885;
-	Wed, 19 Jun 2024 03:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36DA548E1;
+	Wed, 19 Jun 2024 05:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dzJBSkQs"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SWggAkHD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC85B1DFCB;
-	Wed, 19 Jun 2024 03:16:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C09D228EC;
+	Wed, 19 Jun 2024 05:21:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718767004; cv=none; b=FPcmmEhK6m+e1tGMEk/lix6u1IUCsSM9tP8d/8+6l15drpx+ZjKio0CT/JaiHVqHDCqRqoFa13UXc0HtNFx99y8SWUr/HxT1odfLj5y0iBNVzG2Oy6xgbE7ybdstz14AQmHuM2gxNwK5cq1Z5lU/t7sRftHdjyRRwQ7PKSG53YE=
+	t=1718774470; cv=none; b=bZAvl6DUwCkNZCURnT47jOeEeWUUchmrbrEl3e7ToivuC1zaj6i8ayo5sfu2nPOv5yRndsIRTIdA/AhzudLZXoxpzFgzdWP2T0rnLMwWMiu05/4GrZmuVI54/hMdhmBn7582UEkfZJkCt5TAS78VHaPWDlriYGEqpzQIO41YQLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718767004; c=relaxed/simple;
-	bh=7tNztevkaavreFJV4rcNE+ypDdZDtO+Kfjq+mux+/GI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J/C+ZCz24pgNuD477MAF7n5DuXF73V4tcggflEi5NThofKPBKp4e/bW6XLwlDEmQRLls4WQea7O/UAin9QkxrLe67rz7BlnwbW1g/MTYCRvv74/xwZX9nIv0P1whg2Ovk6E2s7dgtgKe3j/0QEodAVmQ6R7d1l0a9Iow4Su8d+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dzJBSkQs; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718767003; x=1750303003;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=7tNztevkaavreFJV4rcNE+ypDdZDtO+Kfjq+mux+/GI=;
-  b=dzJBSkQsVOiMXFP4MAeL84xMiQWCKbjGeTjYaF6U7aqWX5muNV878vIg
-   F6A0FPC3Wwg4gGyp8jqGhiqFkDhvR6F347DHs3+yW21ImwufEWIvexfa/
-   v+LIjlzxpCPBn2SXGt6gdHrvLlW1qEJjXbVgcarstaArMc2RK+FoZAV6v
-   mitNLcye1Mib2cHqCP13Xmmo7EG1zpHb7IGX3wPM0qmPM+H7uDJ5KPqYx
-   1zYZEDducn6p6L3NTUYXWkhkSTFO0gcen6k9IQNNHbhGrWGcfp9TApJhm
-   IC0Gwhy+pfWGkhpWFxEOiXpAKJap8QYwmXKTv6RYpbn6phZGyB7uPU+8+
-   A==;
-X-CSE-ConnectionGUID: nVR4zDwHTaiRlkdCLCWQfg==
-X-CSE-MsgGUID: geD0UplfTiSQKeGVzrJv2A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11107"; a="26363845"
-X-IronPort-AV: E=Sophos;i="6.08,249,1712646000"; 
-   d="scan'208";a="26363845"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Jun 2024 20:16:42 -0700
-X-CSE-ConnectionGUID: VNwv6KUmRV291ct3PKIUNA==
-X-CSE-MsgGUID: pjj5/MnPTyikLcMM9WZraQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.08,249,1712646000"; 
-   d="scan'208";a="46893908"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 18 Jun 2024 20:16:39 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sJloK-0006Da-1B;
-	Wed, 19 Jun 2024 03:16:36 +0000
-Date: Wed, 19 Jun 2024 11:15:55 +0800
-From: kernel test robot <lkp@intel.com>
-To: Guillaume Stols <gstols@baylibre.com>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Beniamin Bia <beniamin.bia@analog.com>,
-	Stefan Popa <stefan.popa@analog.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
-	devicetree@vger.kernel.org, Guillaume Stols <gstols@baylibre.com>,
-	jstephan@baylibre.com, dlechner@baylibre.com
-Subject: Re: [PATCH 7/9] iio: adc: ad7606: switch mutexes to scoped_guard
-Message-ID: <202406191142.rs8moLqC-lkp@intel.com>
-References: <20240618-cleanup-ad7606-v1-7-f1854d5c779d@baylibre.com>
+	s=arc-20240116; t=1718774470; c=relaxed/simple;
+	bh=3fhxlCy9Vz8ZybVo7OOz3mT1ven3q+ULsCnER4N4Jms=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PmZl8cxow1A2teoBhQS7JEUzxea+OsbyelptPQaA4eruyKT2OdcNRn1bTickt04e32PeRZdayo6VwvoIJs5+tDHTOJYxjcawWH4kAukISEkifDUSsOgLlPTgitVJEvw6xk6trDM+HecnmHQYtTQJopcnJyx27RBXFUDKAjk1K1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SWggAkHD; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-35f1bc2ab37so5553576f8f.1;
+        Tue, 18 Jun 2024 22:21:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718774467; x=1719379267; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Qwp3G2wkgfWztC1WiEcAvtKbcMmGeeZKMaO+Raf4cOc=;
+        b=SWggAkHDcEwiWYhEeY9I8XjHp3/FhgMT3R4TRCVxa8Y9ZosRqpEEKXaPZDXm/8C+f7
+         bbILypTMAcHzVN4tDsCxTWuLYqtnfaWagooKvybK2ksJvKCdST3SpyzdzgpnerX9jy2c
+         BTFSeUmeDYOqRCiCc78CIUq8aqRqpfUMBv8lLBORfiTmkMl0cC5Jx6uODdcGB8dGIIqu
+         SLiDhUWq4s3Wv4la9GdCq6aV9hd80Li34ItSSmGhppqBshL4fLh1t6fzlnrp3Hz2CCZa
+         RQVL9nMe8MH0io9qlFyKuo3DokMcYUQkVoOME1zhE3iqIFfoRXAqcl2mUfTU/SFTuFDd
+         fP3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718774467; x=1719379267;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Qwp3G2wkgfWztC1WiEcAvtKbcMmGeeZKMaO+Raf4cOc=;
+        b=nBoyfT6ZNCOSf6r80FuGUHZTrSnu3PByUaxQGP1TER1F1rRp1rRH39XGvEST6VfHAk
+         xU6NPY4TsL14NxO//DnpRoXuer5XkSE6q6fNhI6DgsZd5aXUaXEHj1nDSeWXC98E+IRm
+         CKXCCHmNx6pqdylQ5fwXe3B4XEGSMxVHtLJgAVIeG+f/8aSMkezTtIG1F3dwLfsxU1rW
+         yq9jIYX4pDbjS4uAue7IL8KN44LO9XNjvyRriKPs6lxc99bMcSbJKcf+UgtyHQ8C30/O
+         iGlWXsgmQLI0F10CZL2NU3VwEh3riW/hi5jrJ9LLc1DA0lnR+prRiGjiAWqjYpqckRAr
+         dzZw==
+X-Forwarded-Encrypted: i=1; AJvYcCU3kZKMA3yf7RbJ9gvu15zR1pAC+H6nvj6xFVbiOROfqEqBefiUb0j3b9OTNuqS3VZ1B28pweDeQVXgDwJYT/sQ+oGo4uMahlFBMzca
+X-Gm-Message-State: AOJu0YxbNXVO0SCvQkYFXvJWeUu8m2w0t/YorpXybRAPOV4X9BBfMl15
+	JjbKUDbGyjkSoC/9cKb6ZRzdokciyzYcDoaHP4J326Fi0LQhc30+
+X-Google-Smtp-Source: AGHT+IFj8N/tYTeh5HIsrNsSRhmMsWBORvW0ufQGbGhkqZvMrK95BBDNOYgO7F76PX0O5jwKLu2TpQ==
+X-Received: by 2002:a05:6000:12c1:b0:362:bbd8:229d with SMTP id ffacd0b85a97d-363176ad606mr915492f8f.27.1718774466762;
+        Tue, 18 Jun 2024 22:21:06 -0700 (PDT)
+Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36289a4faeasm2607189f8f.95.2024.06.18.22.21.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jun 2024 22:21:06 -0700 (PDT)
+Message-ID: <5b7b8a7132934b77b43ffde0650c68c1dd9a5b7e.camel@gmail.com>
+Subject: Re: [PATCH 2/8] iio: add enable and disable services to iio backend
+ framework
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Olivier Moysan <olivier.moysan@foss.st.com>, Nuno Sa
+ <nuno.sa@analog.com>,  Jonathan Cameron <jic23@kernel.org>, Lars-Peter
+ Clausen <lars@metafoo.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Wed, 19 Jun 2024 07:21:06 +0200
+In-Reply-To: <20240618160836.945242-3-olivier.moysan@foss.st.com>
+References: <20240618160836.945242-1-olivier.moysan@foss.st.com>
+	 <20240618160836.945242-3-olivier.moysan@foss.st.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240618-cleanup-ad7606-v1-7-f1854d5c779d@baylibre.com>
 
-Hi Guillaume,
+On Tue, 2024-06-18 at 18:08 +0200, Olivier Moysan wrote:
+> Add iio_backend_disable() and iio_backend_enable() APIs to allow
+> IIO backend consumer to request backend disabling and enabling.
+>=20
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+> ---
 
-kernel test robot noticed the following build warnings:
+Hi Olivier,
 
-[auto build test WARNING on 07d4d0bb4a8ddcc463ed599b22f510d5926c2495]
+small notes from me...
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Guillaume-Stols/dt-bindings-iio-adc-adi-ad7606-add-missing-datasheet-link/20240618-223010
-base:   07d4d0bb4a8ddcc463ed599b22f510d5926c2495
-patch link:    https://lore.kernel.org/r/20240618-cleanup-ad7606-v1-7-f1854d5c779d%40baylibre.com
-patch subject: [PATCH 7/9] iio: adc: ad7606: switch mutexes to scoped_guard
-config: x86_64-randconfig-101-20240619 (https://download.01.org/0day-ci/archive/20240619/202406191142.rs8moLqC-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240619/202406191142.rs8moLqC-lkp@intel.com/reproduce)
+> =C2=A0drivers/iio/industrialio-backend.c | 26 ++++++++++++++++++++++++++
+> =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 2 ++
+> =C2=A02 files changed, 28 insertions(+)
+>=20
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industriali=
+o-
+> backend.c
+> index b950e30018ca..d3db048c086b 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -166,6 +166,32 @@ int devm_iio_backend_enable(struct device *dev, stru=
+ct
+> iio_backend *back)
+> =C2=A0}
+> =C2=A0EXPORT_SYMBOL_NS_GPL(devm_iio_backend_enable, IIO_BACKEND);
+> =C2=A0
+> +/**
+> + * iio_backend_enable - Backend enable
+> + * @dev: Consumer device for the backend
+> + * @back: Backend device
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_enable(struct device *dev, struct iio_backend *back)
+> +{
+> +	return iio_backend_op_call(back, enable);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_enable, IIO_BACKEND);
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406191142.rs8moLqC-lkp@intel.com/
+We do already have devm_iio_backend_enable(). From a correctness stand poin=
+t and even
+scalability, that API should now call your new iio_backend_enable() instead=
+ of
+directly call iio_backend_op_call(). I guess that change could be in this p=
+atch.
 
-All warnings (new ones prefixed by >>):
+> +
+> +/**
+> + * iio_backend_disable - Backend disable
+> + * @dev: Consumer device for the backend
+> + * @back: Backend device
+> + *
+> + */
+> +void iio_backend_disable(struct device *dev, struct iio_backend *back)
+> +{
+> +	iio_backend_void_op_call(back, disable);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_disable, IIO_BACKEND);
+> +
 
->> drivers/iio/adc/ad7606.o: warning: objtool: ad7606_reg_access+0x5a: sibling call from callable instruction with modified stack frame
+We also have __iio_backend_disable() which is static since all users were u=
+sing
+devm_iio_backend_enable(). I understand that's not suitable for you but I w=
+ould
+instead rename the existing function to iio_backend_disable() and export it=
+.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+With the above changes:
+
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+
+- Nuno S=C3=A1
+
 

@@ -1,84 +1,85 @@
-Return-Path: <linux-iio+bounces-6547-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6548-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3B290E2B3
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 07:31:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64D2490E2DB
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 07:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EEA9B22E53
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 05:31:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED574284FF9
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 05:48:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4305155893;
-	Wed, 19 Jun 2024 05:31:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F216F30D;
+	Wed, 19 Jun 2024 05:47:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kQb++Fqa"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iMenBJlg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF54208B0;
-	Wed, 19 Jun 2024 05:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7435661FF6;
+	Wed, 19 Jun 2024 05:47:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718775075; cv=none; b=omu4hnmr47eqnA5jQs0oWtJWkBfUDz54TkigFeGV6IPxJwpGNyDXsdS/PZxaswUQ5AneHBJBA8FUucbllRG99CJcONVJgcwDhZrWK1sym8Uq1OP07eOZrnl/6LtmNAO8PaxsrO7CQEeLeQNQiWJQlWAc4h2CEeE8gZYZiIreOUI=
+	t=1718776058; cv=none; b=lfZ3iSXpUkdmiZgS2v90utNCUFWMmXRIY+5Hc7iMsK1p8DwzJZXZSiUvQjlO4ghOlfBIuTmMNErBVWt1iucwvhr2ndjpjyoIdm8tInEj00lucwEkTll0+d2zDTRtk+kzGpxsKSZVVTgEF9yT5brCoBxS3V6vVf0bMCKpEA99sR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718775075; c=relaxed/simple;
-	bh=S3sIQqQ3//Is06NvUQ4of0J1odDwxVc1O1l6BRUxaQI=;
+	s=arc-20240116; t=1718776058; c=relaxed/simple;
+	bh=o8B7zYrVupvFv7U9g54zJDbExop09tf08epvyMrj3Qo=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=q9CDKygfwoMEEgh3ZFe9AnmnoJLWoHNyURd+UKpXxeZxfP44/FohD9YLqCSCHaZe0j+OhsdvdMzfu6jm6NF/4qdHm9X8HKVJbxXqtcvluSIP74VffLsd1sp/4eWt7Ai/aZkDMHQl3VFJQDHWHi2ZpzpMLFoulWl1cpJPAphHmBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kQb++Fqa; arc=none smtp.client-ip=209.85.208.173
+	 Content-Type:MIME-Version; b=jIygCfRRkjcng4rwt1oB4/HZ/e1KoYBsDVpE70MBSYc7/Jyvkj/fuVOv6OS7XKli3GRAFRt5j1vRRGNZCO06VeX5Kh+RkEKPw16H7DF38rgmKBkmxYLkOE89ZeM9ZNEepfrGA8ZhAFnbTgt5sE2P7Ws1je+BXolYBviGls3vCfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iMenBJlg; arc=none smtp.client-ip=209.85.208.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2ec1ac1aed2so49803011fa.3;
-        Tue, 18 Jun 2024 22:31:13 -0700 (PDT)
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2eaa89464a3so69890921fa.3;
+        Tue, 18 Jun 2024 22:47:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718775072; x=1719379872; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1718776054; x=1719380854; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=r9vPtlZ4BEfdVrcH0b0OXPRdbJTCb7JH0uFuSNUJCaI=;
-        b=kQb++FqaRWmtG20OtwDVF57JMHWYzzBTix0oiUyRfkhRVp9I775hyIjZCTesWHUwoK
-         NBKa1qWgZwlEFitDpci0sdNZZxDW2+54NINlRPpTUREFcHJsSXFsff32bFcyc3MU6Uos
-         4ScQ6ke81a6x9d/JZgEd30qxL8w+cQLvn3TFXS+JY5gpetgUV6nEB3bA7BrpAphz8cSb
-         yT6TGQU/fYOcC3rWhDoQmfhMFLBta7l6al5Jlv2JoJYe9290/dgVRBZezkDfk01dr3qE
-         6l/j1Wb8i/Xdj6HQ1C18cGe0NQEl7IDIHZy9qk6EB96YD7lmTQSp0tLwsqZxkRZWvBeS
-         sv8Q==
+        bh=b+kcrBGBf3/GydIe+LcjfY0IvCfWEER0PGXVlE1muRc=;
+        b=iMenBJlgxbBbh50GxwXRWqCpQMhZo2l2Iyy2XqZ/X8O9nhSXhktKEVF5Va2TLC6Esy
+         NClTZJwHjA3XUOZxqiuEIz6xtjv+1C/RkTEKY/fjnJR7m7FOWsrED2ZM9XRNJPf0eB1s
+         eX94WUrGSGMASLmqYldNI8ux+pTECYtchjQROpUU362TSwjXeaJQPFK7sGyoAlbpxE/1
+         ZaA+ZxJ0jPMIMy7hyBCI6pk90oruEYpwrXozAnwi8/vMNmuo/FItX4xffJVpFHFHyHJN
+         fdPSy7Qr46gFJ++h2vrCPE4B72Od4LV8jrI+Rof01zptdmpD+D96sp+KTBvLPDh2OlhV
+         LHWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718775072; x=1719379872;
+        d=1e100.net; s=20230601; t=1718776054; x=1719380854;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=r9vPtlZ4BEfdVrcH0b0OXPRdbJTCb7JH0uFuSNUJCaI=;
-        b=Dj+rf8ZVpLdJXabZlIKLUqDjXDh+v2//hgHCcO4r5p/pleAN0KnYhUlJJlTPcp+EHB
-         BY6FwqE9bzyuWktF+4tiY5aGZP4wxj5mingItul1GMRhGmDlFq44ak7N0tY3vPGHTAsE
-         cM0M76Ye5z6LzeeSvILF/Gq/wGjbux5b45vteg+MX9j/QQHEJ5vFXfnbEvZcUjCz5q57
-         azgkoyoQAuB/HtaQDMHm0zZoO5EU7OV5uThwiTfNMZD6Kz6nV6KaYFec2O2IpjSX0zMJ
-         JjlWCbQS3P5A/Sg4gsb+ohQrh05apDBa1dIlJcFgqNRRuCGuYyPFYilfcqYwlrlOg8bP
-         4IUA==
-X-Forwarded-Encrypted: i=1; AJvYcCXT/ZEyph0d8S6H3m3CPwiw661e/njhM6sosFOsPPwaAO6fTXkKxCGdqA/9wI1/3O979MHUD/73gF+K5/prxie9jjl9lRwM6lSX/Baj
-X-Gm-Message-State: AOJu0Yz1R0iIEOO0dxWxMfOKRZehoxfP52GG1+LyjRtKLdqbT6uR2Ccz
-	jSuekjVvWZeKKro66n1jEZePicQNodOKBcjOT5+5CUHvIYJzy2lc
-X-Google-Smtp-Source: AGHT+IHuSmL/ymrKFv3dE1AjkfE2DbcrkpwnD4enL7EQqezvrPVir4e1owWjmqTMnPn8ZF+LuoTYOA==
-X-Received: by 2002:a2e:a286:0:b0:2eb:552a:f6d0 with SMTP id 38308e7fff4ca-2ec3cfffa27mr8508261fa.52.1718775071217;
-        Tue, 18 Jun 2024 22:31:11 -0700 (PDT)
+        bh=b+kcrBGBf3/GydIe+LcjfY0IvCfWEER0PGXVlE1muRc=;
+        b=sTxauuyh4lhbtAcdK9XBUfbJUb55lyQi732geaIS5Y8HrupO5Mu/zB4Ze1Fn1Nq+3l
+         Do8IkOF4VPNIRxt71bVXA6PECwZBoxKng3xDhk2ID7nti28iZFQrIIsQjo8W//3ARGZd
+         20MAGawc9cioL2Qpoy0RXpZ28n5QGTR8AHBToNFmKjSzwOQK53jotMws9eNAZtc0EgXi
+         qjgFtUgzhm2+fowx6mBPSh2LEYoM9WcruBvKqOfRea3CEPfv5p1VfXjsAq1lxG3w38ox
+         z9HQPjcG2T/OhKa3nCGyL8rO9hmTvCPexQPNztMHOCXnS2AqVbJfGVk3YwkGmcMYCmG0
+         OXOw==
+X-Forwarded-Encrypted: i=1; AJvYcCVsbDGjJmEHe33pWPaLjPvCD75SSUYd2EqBvkkaWRaEJ1bdW/NGaJVGfnRpVoesVi4c2z7CmCJqXTkMYM7iGzEpB19mr9yTkwxeR7TR
+X-Gm-Message-State: AOJu0YyNHmhWVxoSC/dWCRQYiK6jbQ2HwE4EgXukwwGDRA403Fe3ORwY
+	ptUWlUz77dIvGOjWDGQrqoI7ZMdCYhhfKL5ZhwYAlO87C7ig1ijr
+X-Google-Smtp-Source: AGHT+IFf9QjDMZRxdXpeiL5O2FJdHK57x+se5bfjdMDBd3Pt/O+4ZdRb6IFP3txtqXmhYbvcKBOTpw==
+X-Received: by 2002:a2e:2a01:0:b0:2ec:3f6c:ac37 with SMTP id 38308e7fff4ca-2ec3f6cac9cmr3948431fa.48.1718776054200;
+        Tue, 18 Jun 2024 22:47:34 -0700 (PDT)
 Received: from nsa.fritz.box ([2001:a61:35f9:9001:40df:88bb:5090:7ab6])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422870e96f9sm253628215e9.26.2024.06.18.22.31.10
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42286eef9c1sm252656375e9.7.2024.06.18.22.47.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 22:31:11 -0700 (PDT)
-Message-ID: <4ee7d979736bb9e1518ce78ccb4a5b1a3766289c.camel@gmail.com>
-Subject: Re: [PATCH 3/8] iio: add child nodes support in iio backend
- framework
+        Tue, 18 Jun 2024 22:47:33 -0700 (PDT)
+Message-ID: <a0bd26a9e159e54f1b6effcdd45756ecfddf973f.camel@gmail.com>
+Subject: Re: [PATCH 8/8] iio: adc: stm32-dfsdm: add scaling support to dfsdm
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Olivier Moysan <olivier.moysan@foss.st.com>, Nuno Sa
- <nuno.sa@analog.com>,  Jonathan Cameron <jic23@kernel.org>, Lars-Peter
- Clausen <lars@metafoo.de>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Wed, 19 Jun 2024 07:31:10 +0200
-In-Reply-To: <20240618160836.945242-4-olivier.moysan@foss.st.com>
+To: Olivier Moysan <olivier.moysan@foss.st.com>, Jonathan Cameron
+ <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org
+Date: Wed, 19 Jun 2024 07:47:33 +0200
+In-Reply-To: <20240618160836.945242-9-olivier.moysan@foss.st.com>
 References: <20240618160836.945242-1-olivier.moysan@foss.st.com>
-	 <20240618160836.945242-4-olivier.moysan@foss.st.com>
+	 <20240618160836.945242-9-olivier.moysan@foss.st.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.2 (3.52.2-1.fc40) 
@@ -90,118 +91,125 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Tue, 2024-06-18 at 18:08 +0200, Olivier Moysan wrote:
-> Add an API to support IIO generic channels binding:
-> http://devicetree.org/schemas/iio/adc/adc.yaml#
-> This new API is needed, as generic channel DT node
-> isn't populated as a device.
-> Add devm_iio_backend_subnode_get() to allow an IIO device
-> backend consumer to configure backend phandles in its
-> child nodes.
+> Add scaling support to STM32 DFSDM.
 >=20
 > Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
 > ---
 
-Again small notes nits. With it:
+Just some general comments...=20
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Acked-by: Nuno Sa <nuno.sa@analog.com>
 
-> =C2=A0drivers/iio/industrialio-backend.c | 48 ++++++++++++++++++++++-----=
----
-> =C2=A0include/linux/iio/backend.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 |=C2=A0 2 ++
-> =C2=A02 files changed, 38 insertions(+), 12 deletions(-)
+> =C2=A0drivers/iio/adc/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
+> =C2=A0drivers/iio/adc/stm32-dfsdm-adc.c | 94 ++++++++++++++++++++++++++++=
+++-
+> =C2=A02 files changed, 92 insertions(+), 3 deletions(-)
 >=20
-> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industriali=
-o-
-> backend.c
-> index d3db048c086b..e9d29131634d 100644
-> --- a/drivers/iio/industrialio-backend.c
-> +++ b/drivers/iio/industrialio-backend.c
-> @@ -575,17 +575,8 @@ static int __devm_iio_backend_get(struct device *dev=
-, struct
-> iio_backend *back)
-> =C2=A0	return 0;
-> =C2=A0}
+> diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+> index f3dfdaa80678..858ae8161fa4 100644
+>=20
+
+...
+
+> @@ -1301,6 +1339,8 @@ static int stm32_dfsdm_read_raw(struct iio_dev *ind=
+io_dev,
+> =C2=A0		ret =3D stm32_dfsdm_single_conv(indio_dev, chan, val);
+> =C2=A0		if (adc->hwc)
+> =C2=A0			iio_hw_consumer_disable(adc->hwc);
+> +		if (adc->backend[idx])
+> +			iio_backend_disable(&indio_dev->dev, adc->backend[idx]);
+> =C2=A0		if (ret < 0) {
+> =C2=A0			dev_err(&indio_dev->dev,
+> =C2=A0				"%s: Conversion failed (channel %d)\n",
+> @@ -1320,6 +1360,45 @@ static int stm32_dfsdm_read_raw(struct iio_dev *in=
+dio_dev,
+> =C2=A0		*val =3D adc->sample_freq;
 > =C2=A0
-> -/**
-> - * devm_iio_backend_get - Device managed backend device get
-> - * @dev: Consumer device for the backend
-> - * @name: Backend name
-> - *
-> - * Get's the backend associated with @dev.
-> - *
-> - * RETURNS:
-> - * A backend pointer, negative error pointer otherwise.
-> - */
-> -struct iio_backend *devm_iio_backend_get(struct device *dev, const char =
-*name)
-> +static struct iio_backend *__devm_iio_backend_node_get(struct device *de=
-v, const
-> char *name,
-> +						=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct fwnode_handle *node)
+> =C2=A0		return IIO_VAL_INT;
+> +
+> +	case IIO_CHAN_INFO_SCALE:
+> +		/*
+> +		 * Scale is expressed in mV.
+> +		 * When fast mode is disabled, actual resolution may be lower
+> +		 * than 2^n, where n=3Drealbits-1.
+> +		 * This leads to underestimating input voltage. To
+> +		 * compensate this deviation, the voltage reference can be
+> +		 * corrected with a factor =3D realbits resolution / actual max
+> +		 */
+> +		if (adc->backend[idx]) {
+> +			iio_backend_read_raw(adc->backend[idx], val, val2, mask);
+> +
 
-I would call it __devm_iio_backend_fwnode_get(). Also the parameter node ->=
- fwnode.
+This is something that I've been thinking about since the beginning of back=
+ends
+support. Basically having the "catch all" read_raw()/write_raw() or more de=
+dicated
+interfaces. For example, in your usecase I think it would make more sense t=
+o have
+dedicated API's like iio_backend_read_scale() and iio_backend_read_offset()=
+ as you're
+extending that functionality. Calling iio_backend_read_raw() seems a bit we=
+ird to me.
 
-> =C2=A0{
-> =C2=A0	struct fwnode_handle *fwnode;
-> =C2=A0	struct iio_backend *back;
-> @@ -602,7 +593,7 @@ struct iio_backend *devm_iio_backend_get(struct devic=
-e *dev,
-> const char *name)
-> =C2=A0		index =3D 0;
+OTOH, iio_backend_read_raw() could be useful in cases where frontends call
+iio_backend_extend_chan_spec() and may get some functionality they are not =
+aware of.
+And so, in the default: statement this "catch all" API could be used.
+
+Anyways, this are really minor (likely pedantic) details and you kind of ca=
+me first
+and made the decision for me. As I don't really have strong feelings about =
+it, I'm
+fine with it as-is.
+
+> +			*val =3D div_u64((u64)*val * (u64)BIT(DFSDM_DATA_RES - 1),
+> max);
+> +			*val2 =3D chan->scan_type.realbits;
+> +			if (chan->differential)
+> +				*val *=3D 2;
+> +		}
+> +		return IIO_VAL_FRACTIONAL_LOG2;
+> +
+> +	case IIO_CHAN_INFO_OFFSET:
+> +		/*
+> +		 * DFSDM output data are in the range [-2^n,2^n],
+> +		 * with n=3Drealbits-1.
+> +		 * - Differential modulator:
+> +		 * Offset correspond to SD modulator offset.
+> +		 * - Single ended modulator:
+> +		 * Input is in [0V,Vref] range, where 0V corresponds to -2^n, and
+> Vref to 2^n.
+> +		 * Add 2^n to offset. (i.e. middle of input range)
+> +		 * offset =3D offset(sd) * vref / res(sd) * max / vref.
+> +		 */
+> +		if (adc->backend[idx]) {
+> +			iio_backend_read_raw(adc->backend[idx], val, val2, mask);
+> +
+> +			*val =3D div_u64((u64)max * *val, BIT(*val2 - 1));
+> +			if (!chan->differential)
+> +				*val +=3D max;
+> +		}
+> +		return IIO_VAL_INT;
 > =C2=A0	}
 > =C2=A0
-> -	fwnode =3D fwnode_find_reference(dev_fwnode(dev), "io-backends", index)=
-;
-> +	fwnode =3D fwnode_find_reference(node, "io-backends", index);
-> =C2=A0	if (IS_ERR(fwnode)) {
-> =C2=A0		dev_err_probe(dev, PTR_ERR(fwnode),
-> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Cannot get Firmware reference\n"=
-);
-> @@ -625,8 +616,41 @@ struct iio_backend *devm_iio_backend_get(struct devi=
-ce *dev,
-> const char *name)
-> =C2=A0	fwnode_handle_put(fwnode);
-> =C2=A0	return ERR_PTR(-EPROBE_DEFER);
-> =C2=A0}
-> +
-> +/**
-> + * devm_iio_backend_get - Device managed backend device get
-> + * @dev: Consumer device for the backend
-> + * @name: Backend name
-> + *
-> + * Get's the backend associated with @dev.
-> + *
-> + * RETURNS:
-> + * A backend pointer, negative error pointer otherwise.
-> + */
-> +struct iio_backend *devm_iio_backend_get(struct device *dev, const char =
-*name)
-> +{
-> +	return __devm_iio_backend_node_get(dev, name, dev_fwnode(dev));
-> +}
-> =C2=A0EXPORT_SYMBOL_NS_GPL(devm_iio_backend_get, IIO_BACKEND);
-> =C2=A0
-> +/**
-> + * devm_iio_backend_subnode_get - Device managed backend device get
-> + * @dev: Consumer device for the backend
-> + * @name: Backend name
-> + * @node: Firmware node of the backend consumer
-> + *
-> + * Get's the backend associated with @dev.
-> + *
-> + * RETURNS:
-> + * A backend pointer, negative error pointer otherwise.
-> + */
-> +struct iio_backend *devm_iio_backend_subnode_get(struct device *dev, con=
-st char
-> *name,
-> +						 struct fwnode_handle *node)
+> =C2=A0	return -EINVAL;
+> @@ -1449,7 +1528,15 @@ static int stm32_dfsdm_adc_chan_init_one(struct ii=
+o_dev
+> *indio_dev, struct iio_c
+> =C2=A0	 * IIO_CHAN_INFO_RAW: used to compute regular conversion
+> =C2=A0	 * IIO_CHAN_INFO_OVERSAMPLING_RATIO: used to set oversampling
+> =C2=A0	 */
+> -	ch->info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW);
+> +	if (child) {
+> +		ch->info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW) |
+> +					BIT(IIO_CHAN_INFO_SCALE) |
+> +					BIT(IIO_CHAN_INFO_OFFSET);
 
-Again, for consistency devm_iio_backend_fwnode_get(). And node -> fwnode
+Not sure if the above SCALE and OFFSET are solely properties if the backend=
+. If so,
+you could maybe use iio_backend_extend_chan_spec().
 
 - Nuno S=C3=A1
-
 
 

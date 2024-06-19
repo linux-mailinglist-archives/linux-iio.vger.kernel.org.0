@@ -1,113 +1,170 @@
-Return-Path: <linux-iio+bounces-6574-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6576-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D47190EAA7
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 14:16:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F3F90EAFB
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 14:24:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC1C9B24E0A
-	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 12:16:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A252F1C23F0C
+	for <lists+linux-iio@lfdr.de>; Wed, 19 Jun 2024 12:24:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B671422C5;
-	Wed, 19 Jun 2024 12:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60ED11422D6;
+	Wed, 19 Jun 2024 12:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b="hM0Ql3ON"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="HZxyltUm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from aposti.net (aposti.net [89.234.176.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D084140364;
-	Wed, 19 Jun 2024 12:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.234.176.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75ADC1422C1;
+	Wed, 19 Jun 2024 12:22:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718799376; cv=none; b=GWWQ2CJmCNLtOu/oP0SMEk4sD3bYZ/oSOQG/GOOUXg6SVlNnulTGdDhh2Ztwxp7UFEc8/LvbGsdICTe8azUPfCB5C/I17bruG8SJx2XBpItVdq8GvuirHJ98XngCFa5DeVa8BRkMz+YyetIl7xbYqEV0edGGNPgtk6B7YMs8bVM=
+	t=1718799743; cv=none; b=CAnFz9yiY0M88q08/VeheCLVT0Zps7oElmulvo3LbaqUQU6OZvnCCxGcJX1zJZx1rL9L2DXPCzfIvV4tApDd4RgjhWhajttSJYZyHETNfGuvBhEkxvdF9EMfzLKBq6zQY8RfFQNX4CWNlOXrMAjoI0EIwYImy6GPeTsfrCqykf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718799376; c=relaxed/simple;
-	bh=C65RJNOJy4IpSk4nyi92NXOHTBXSxjQAth7IcDOtmrU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B7HU7bLOzy3MNLkbFtKDt8J9+p3yGcMaDbUKxyFb2wyIyzzYTave4Is5JVt6uyarrPVbmX6j+2+ikqtePrpD6RqddzRsJt0qfBLgnqoTGaF32xYdd7yCTMYFcaR9ih5QmCqxtxOzy0986dNfkoPUtEKyCR4BpgWo+4Wtq/wfa3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net; spf=pass smtp.mailfrom=crapouillou.net; dkim=pass (1024-bit key) header.d=crapouillou.net header.i=@crapouillou.net header.b=hM0Ql3ON; arc=none smtp.client-ip=89.234.176.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=crapouillou.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crapouillou.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crapouillou.net;
-	s=mail; t=1718799368;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=tTFt4SyFkUl5kwC5+SYzC9ZviZKxrb5Ez1o1J2dq9wo=;
-	b=hM0Ql3ONtfmO/COEkbO+8st7xAbaQK46Hai4ZerRynzZOlo/sQmHozGF9x8b8zdn2mpUa/
-	vCzfhQDqZFyIh/ozwqLf0LiFtWj9pU8PTLAl80+GTIoq5TkOrg5gjXWNXKyymgpFDUNg0D
-	mHDUssO8qePsFHYSj668VVppKoGbeIU=
-Message-ID: <8d536bb864c145340a15f496ad3b89e08a847718.camel@crapouillou.net>
-Subject: Re: [PATCH v11 3/7] iio: core: Add new DMABUF interface
- infrastructure
-From: Paul Cercueil <paul@crapouillou.net>
-To: Markus Elfring <Markus.Elfring@web.de>, Nuno =?ISO-8859-1?Q?S=E1?=
- <nuno.sa@analog.com>, linux-iio@vger.kernel.org, dmaengine@vger.kernel.org,
-  linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linaro-mm-sig@lists.linaro.org, Christian =?ISO-8859-1?Q?K=F6nig?=
- <christian.koenig@amd.com>, Jonathan Cameron <jic23@kernel.org>, Lars-Peter
- Clausen <lars@metafoo.de>, Sumit Semwal <sumit.semwal@linaro.org>, Vinod
- Koul <vkoul@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, linux-doc@vger.kernel.org, Jonathan
- Corbet <corbet@lwn.net>, Randy Dunlap <rdunlap@infradead.org>
-Date: Wed, 19 Jun 2024 14:16:05 +0200
-In-Reply-To: <fc3045c5-d542-4a6c-906d-84f72e776e9c@web.de>
-References: <20240618100302.72886-4-paul@crapouillou.net>
-	 <fc3045c5-d542-4a6c-906d-84f72e776e9c@web.de>
-Autocrypt: addr=paul@crapouillou.net; prefer-encrypt=mutual;
- keydata=mQENBF0KhcEBCADkfmrzdTOp/gFOMQX0QwKE2WgeCJiHPWkpEuPH81/HB2dpjPZNW03ZM
- LQfECbbaEkdbN4YnPfXgcc1uBe5mwOAPV1MBlaZcEt4M67iYQwSNrP7maPS3IaQJ18ES8JJ5Uf5Uz
- FZaUawgH+oipYGW+v31cX6L3k+dGsPRM0Pyo0sQt52fsopNPZ9iag0iY7dGNuKenaEqkYNjwEgTtN
- z8dt6s3hMpHIKZFL3OhAGi88wF/21isv0zkF4J0wlf9gYUTEEY3Eulx80PTVqGIcHZzfavlWIdzhe
- +rxHTDGVwseR2Y1WjgFGQ2F+vXetAB8NEeygXee+i9nY5qt9c07m8mzjABEBAAG0JFBhdWwgQ2VyY
- 3VlaWwgPHBhdWxAY3JhcG91aWxsb3UubmV0PokBTgQTAQoAOBYhBNdHYd8OeCBwpMuVxnPua9InSr
- 1BBQJdCoXBAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4BAheAAAoJEHPua9InSr1BgvIH/0kLyrI3V0f
- 33a6D3BJwc1grbygPVYGuC5l5eMnAI+rDmLR19E2yvibRpgUc87NmPEQPpbbtAZt8On/2WZoE5OIP
- dlId/AHNpdgAtGXo0ZX4LGeVPjxjdkbrKVHxbcdcnY+zzaFglpbVSvp76pxqgVg8PgxkAAeeJV+ET
- 4t0823Gz2HzCL/6JZhvKAEtHVulOWoBh368SYdolp1TSfORWmHzvQiCCCA+j0cMkYVGzIQzEQhX7U
- rf9N/nhU5/SGLFEi9DcBfXoGzhyQyLXflhJtKm3XGB1K/pPulbKaPcKAl6rIDWPuFpHkSbmZ9r4KF
- lBwgAhlGy6nqP7O3u7q23hRW5AQ0EXQqFwQEIAMo+MgvYHsyjX3Ja4Oolg1Txzm8woj30ch2nACFC
- qaO0R/1kLj2VVeLrDyQUOlXx9PD6IQI4M8wy8m0sR4wV2p/g/paw7k65cjzYYLh+FdLNyO7IWYXnd
- JO+wDPi3aK/YKUYepqlP+QsmaHNYNdXEQDRKqNfJg8t0f5rfzp9ryxd1tCnbV+tG8VHQWiZXNqN70
- 62DygSNXFUfQ0vZ3J2D4oAcIAEXTymRQ2+hr3Hf7I61KMHWeSkCvCG2decTYsHlw5Erix/jYWqVOt
- X0roOOLqWkqpQQJWtU+biWrAksmFmCp5fXIg1Nlg39v21xCXBGxJkxyTYuhdWyu1yDQ+LSIUAEQEA
- AYkBNgQYAQoAIBYhBNdHYd8OeCBwpMuVxnPua9InSr1BBQJdCoXBAhsMAAoJEHPua9InSr1B4wsH/
- Az767YCT0FSsMNt1jkkdLCBi7nY0GTW+PLP1a4zvVqFMo/vD6uz1ZflVTUAEvcTi3VHYZrlgjcxmc
- Gu239oruqUS8Qy/xgZBp9KF0NTWQSl1iBfVbIU5VV1vHS6r77W5x0qXgfvAUWOH4gmN3MnF01SH2z
- McLiaUGF+mcwl15rHbjnT3Nu2399aSE6cep86igfCAyFUOXjYEGlJy+c6UyT+DUylpjQg0nl8MlZ/
- 7Whg2fAU9+FALIbQYQzGlT4c71SibR9T741jnegHhlmV4WXXUD6roFt54t0MSAFSVxzG8mLcSjR2c
- LUJ3NIPXixYUSEn3tQhfZj07xIIjWxAYZo=
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	s=arc-20240116; t=1718799743; c=relaxed/simple;
+	bh=Olzzvp24AOC4T+V7DJiEH5HUqYnKd+8BcbBEFc09ZE0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VSiTrzUJ+szfKe52l0tCQk0imbWRvjsooOsTv2sAh3pYSWJ8Wv+nPXybTVXwwWk2g+NAzGMksjJx4DuppPq4PxPhOLPGc20hsRE/qDffSE88B0zTRjwOMM074QJQ79j068SUwSw08mgERRBETUTO26i2VYeNndfnTzwqRyHnsXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=HZxyltUm; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45JBHNEP001428;
+	Wed, 19 Jun 2024 08:21:54 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=vNRa5Oiplrn2Xgjadf1n6RmThiC
+	4FkAUT3lbnFrTe1s=; b=HZxyltUmGX8KKUc5FK1K2p5e+IZHgBoi2b1CTFHOe9f
+	6MT3ai9cZbplj/3RUFxaLPZKPrHd1PcFRLBiGNFnLTkbjhPCMen7zszstTyvwrbm
+	fHE6SnmkQ5peMQDqPSh4yYnlCtV0TJ9tnaP1HftcYrDi5Rac9DMQuA1afEiKd9Iv
+	dH5Dw3AGQjaVzJkJqa+VYLg6NVuLW64ub4tZMm5K7EV9fVE1pOzm2GPAN5D249/J
+	YR08RqP3AbPLhbsKyKU1C7/1QloJgG238pBDUNx0rZSRw6YgHA/QhaHZO2s4iNb7
+	ZBdIfvpQXrjFN1yKFyXrg9Q/BaI2RRQR3DJ9GHYqqUQ==
+Received: from nwd2mta4.analog.com ([137.71.173.58])
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3yut929709-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Jun 2024 08:21:53 -0400 (EDT)
+Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 45JCLqV7057202
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Wed, 19 Jun 2024 08:21:52 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by ASHBMBX8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Wed, 19 Jun
+ 2024 08:21:51 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Wed, 19 Jun 2024 08:21:51 -0400
+Received: from HYB-hYN1yfF7zRm.ad.analog.com (HYB-hYN1yfF7zRm.ad.analog.com [10.48.65.166])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 45JCLWw9017121;
+	Wed, 19 Jun 2024 08:21:34 -0400
+From: Ramona Alexandra Nechita <ramona.nechita@analog.com>
+To: <linux-iio@vger.kernel.org>
+CC: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+        Jonathan Cameron
+	<jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Cosmin Tanislav
+	<cosmin.tanislav@analog.com>,
+        Michael Hennerich
+	<Michael.Hennerich@analog.com>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof
+ Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Nuno Sa <nuno.sa@analog.com>,
+        Marius Cristea <marius.cristea@microchip.com>,
+        Marcelo Schmitt
+	<marcelo.schmitt@analog.com>,
+        Maksim Kiselev <bigunclemax@gmail.com>,
+        Liam
+ Beguin <liambeguin@gmail.com>,
+        Ivan Mikhaylov <fr0st61te@gmail.com>,
+        Marcus
+ Folkesson <marcus.folkesson@gmail.com>,
+        Lee Jones <lee@kernel.org>, Mike
+ Looijmans <mike.looijmans@topic.nl>,
+        Okan Sahin <okan.sahin@analog.com>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>
+Subject: [PATCH v3 0/3] ad777x driver addressing patch comments
+Date: Wed, 19 Jun 2024 15:20:43 +0300
+Message-ID: <20240619122105.22642-1-ramona.nechita@analog.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: n3K_sUnCP5GZdzH7d5N7gYGkpEXGehFx
+X-Proofpoint-ORIG-GUID: n3K_sUnCP5GZdzH7d5N7gYGkpEXGehFx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-19_02,2024-06-19_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 mlxlogscore=999
+ adultscore=0 clxscore=1011 suspectscore=0 impostorscore=0 malwarescore=0
+ mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2405170001 definitions=main-2406190092
 
-Le mercredi 19 juin 2024 =C3=A0 13:43 +0200, Markus Elfring a =C3=A9crit=C2=
-=A0:
-> =E2=80=A6
-> > +++ b/drivers/iio/industrialio-buffer.c
-> =E2=80=A6
-> > +static void iio_buffer_dmabuf_release(struct kref *ref)
-> > +{
-> =E2=80=A6
-> > +	dma_resv_lock(dmabuf->resv, NULL);
-> > +	dma_buf_unmap_attachment(attach, priv->sgt, priv->dir);
-> > +	dma_resv_unlock(dmabuf->resv);
-> =E2=80=A6
->=20
-> Under which circumstances will another lock guard become applicable?
-> https://elixir.bootlin.com/linux/v6.10-rc4/source/include/linux/cleanup.h=
-#L179
+This patch series is sent to address the comments received
+with regards to the ad7779 driver patch:
+v2-0001-drivers-iio-adc-add-support-for-ad777x-family.patch,
+as well as the dt-bindings patch:
+v3-0001-dt-bindings-iio-adc-add-a7779-doc.patch.
+The patches were initially sent separated, this has now
+been corrected with this patch series, along with soeme
+other issues such as the cover letter and author.
+The changes in the series:
+v3:
+	* drop spi-max-frequency from yaml and fix indent
+	* separate ABI doc into different patch, drop ad4130
+	 ABI doc file and combine the filter_mode/type properties
+	 in the sysfs-bus-iio file
+	* update Kconfig help section for the driver
+	* update driver commit message
+	* drop crc_enabled and check crc by default on all regs
+	  except GEN_ERR_REG_1_EN
+	* rename from "ad777x_*" to "ad7779_*"
+	* switch from kfifo to triggered buffer and send w/timestamp
+	* switched spidata_rx/tx buffer data type to u8 and declared
+	  channels as IIO_BE
+	* switched to fsleep and added comments for each of them
+	* changed "____cacheline_aligned" to "__aligned(IIO_DMA_MINALIGN)"
+	* fixed allignments and removed redundant variables
+	* removed local update_scan_mode in favor of iio active_scan_mask
+	* requested trigger as NO_AUTOEN and it is enabled/disabled only
+	  in preenable/postdisable functions
+	* removed separate ad777x_register function and moved the code
+	  in probe
+	* switched to get_clk_enabled
+	* check for irq earlier in probe
+	* misc code style / format changes, as suggested
 
-As soon as "struct dma_resv" gets a DEFINE_GUARD().
+Ramona Alexandra Nechita (3):
+  dt-bindings: iio: adc: add a7779 doc
+  Documentation: ABI: added filter mode doc in sysfs-bus-iio
+  drivers: iio: adc: add support for ad777x family
 
--Paul
+ Documentation/ABI/testing/sysfs-bus-iio       |   7 +
+ .../ABI/testing/sysfs-bus-iio-adc-ad4130      |  46 -
+ .../bindings/iio/adc/adi,ad7779.yaml          |  84 ++
+ drivers/iio/adc/Kconfig                       |  11 +
+ drivers/iio/adc/Makefile                      |   1 +
+ drivers/iio/adc/ad7779.c                      | 936 ++++++++++++++++++
+ 6 files changed, 1039 insertions(+), 46 deletions(-)
+ delete mode 100644 Documentation/ABI/testing/sysfs-bus-iio-adc-ad4130
+ create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+ create mode 100644 drivers/iio/adc/ad7779.c
+
+-- 
+2.43.0
+
 

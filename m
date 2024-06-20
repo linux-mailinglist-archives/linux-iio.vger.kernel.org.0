@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-6649-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6650-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E35F5911424
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 23:13:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3410F911428
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 23:14:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C7C51F22F74
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 21:13:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63FE51C20DE8
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 21:14:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1C180055;
-	Thu, 20 Jun 2024 21:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A73923A1CD;
+	Thu, 20 Jun 2024 21:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="EwH9ZkNq"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qXF2LTuG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C9427D08D;
-	Thu, 20 Jun 2024 21:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACECF80C03
+	for <linux-iio@vger.kernel.org>; Thu, 20 Jun 2024 21:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718918002; cv=none; b=Zid7EDJPo0lcHX+2KNdF96063oq02aKeaQXOM3kpQRC4ENA5Et4dAXjKpIkQPluC8OrlGG7Vy/vYfJgjKlgOvxg1EhsnAfBoQFyV2JsVJRAF/RF8cF6YkYbmaNuUU8bexUEm3xsOeFQojEtnzTUOREf/sdvpyXa4G3cOirpd2Q0=
+	t=1718918004; cv=none; b=ZgF9qbv/elztqgL7Ec922Afu5MAKmEBjCcGqDVcp7R7rVZrpGHh3PmapDKKAiDmkv6D8TFo7vDBrRnojgnEiEmWHfgBrqXk2EQ2HbUm8h5FDh16pN9u3gVuKmhOL7Ngt+MFZSbLuv2/tJMZL5V6UEFUgAt8Qr7mlp1RxE47m6kI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718918002; c=relaxed/simple;
-	bh=5U0JMS1qKtEI0jgQfGnO0+3LZoZwFo98W1uh4S/PyXQ=;
+	s=arc-20240116; t=1718918004; c=relaxed/simple;
+	bh=QyX6hFu5aH/3FUAeokgMlgJR6loneZVeGcpYw3d3hjQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=VJd5zQURLT3DskQ5orgA6P4h3rZevAma8mPfrtZEl23kvlEBzhZlJ7dnA9TYfLTuYLsDd7AkZLRrDkmLXdjq3/wJZkzwUscdkqxNrbmn4uF3FwrrjNV6US5vzrY6SxSe4jvoyewMeEow4o/OGaXmGkZUQKNEvn9OvDEJy0uO/1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=EwH9ZkNq; arc=none smtp.client-ip=91.218.175.174
+	 MIME-Version; b=MjCutLphG8zQghxzz5el1PNMZycopNpZPbi/xrP8QKSoGI916HhKCJ8tIDIAHPT2CTsmPs/f1USc62Vv1LHFbgvgdrCmy5Oc0QrbY2Kgyx9RM/R0vo5i9thU++M1CEV8VBCYGgFDfKGS9ovTX7PxYgEtHeYEajZaGj/GgpeW4qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qXF2LTuG; arc=none smtp.client-ip=91.218.175.186
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 X-Envelope-To: jic23@kernel.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1718917998;
+	t=1718917999;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=diqZ1ViR0KFVR0ivUHMVSAgU7kmt1CdyucMuc2uIrwE=;
-	b=EwH9ZkNqLCtHYtsL0MzHzaqu9otKIR/2y9zx6DlXeruZZ/ZkZMDfeoQmX0GvD3dsbTEmEa
-	2hqvcLFqHNTElhoNx94U5JBD1x3q9BAPablY1rPKPvPQtN7K5YKsbNYnBuM8NxbmdybTvE
-	GaFsoMmegoFN4qCc7Kck0U/RKnM9v5U=
+	bh=uJIcJeul+qmKBv5T/OXvSe+kfJGIu3x5ZFUMxqYCCzU=;
+	b=qXF2LTuGLu/At/rZdw/vJeZTGYTcaWqOxnclGreYhJvC23ZRu4yGMb17xFnRgKx3mXMUEn
+	jlAAaVFZZ4bbURagj8JEuICJIQy04qJ/9aqPW82PCkBTcBGC+JZyCMajcMlm94+kAk1Uo1
+	X/Yp5vs2QqkcRLQu/wvu7oED388MT5k=
 X-Envelope-To: jdelvare@suse.com
 X-Envelope-To: linux@roeck-us.net
 X-Envelope-To: linux-iio@vger.kernel.org
@@ -59,9 +59,9 @@ To: Jonathan Cameron <jic23@kernel.org>,
 Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	linux-kernel@vger.kernel.org,
 	Sean Anderson <sean.anderson@linux.dev>
-Subject: [PATCH 1/2] iio: Add iio_read_channel_label to inkern API
-Date: Thu, 20 Jun 2024 17:13:08 -0400
-Message-Id: <20240620211310.820579-2-sean.anderson@linux.dev>
+Subject: [PATCH 2/2] hwmon: iio: Add labels from IIO channels
+Date: Thu, 20 Jun 2024 17:13:09 -0400
+Message-Id: <20240620211310.820579-3-sean.anderson@linux.dev>
 In-Reply-To: <20240620211310.820579-1-sean.anderson@linux.dev>
 References: <20240620211310.820579-1-sean.anderson@linux.dev>
 Precedence: bulk
@@ -73,109 +73,77 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-It can be convenient for other in-kernel drivers to reuse IIO channel
-labels. Export the iio_read_channel_label function to allow this. The
-signature is different depending on where we are calling it from, so
-the meat is moved to do_iio_read_channel_label.
+Add labels from IIO channels to our channels. This allows userspace to
+display more meaningful names instead of "in0" or "temp5".
 
 Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
 ---
 
- drivers/iio/iio_core.h          |  4 ++++
- drivers/iio/industrialio-core.c | 23 ++++++++++++++---------
- drivers/iio/inkern.c            |  6 ++++++
- include/linux/iio/consumer.h    | 10 ++++++++++
- 4 files changed, 34 insertions(+), 9 deletions(-)
+ drivers/hwmon/iio_hwmon.c | 33 ++++++++++++++++++++++++++++++---
+ 1 file changed, 30 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-index 1a38b1915e7a..b7d5f4f0fada 100644
---- a/drivers/iio/iio_core.h
-+++ b/drivers/iio/iio_core.h
-@@ -34,6 +34,10 @@ void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
- 				       struct iio_ioctl_handler *h);
- void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h);
+diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
+index 4c8a80847891..588b64c18e63 100644
+--- a/drivers/hwmon/iio_hwmon.c
++++ b/drivers/hwmon/iio_hwmon.c
+@@ -33,6 +33,17 @@ struct iio_hwmon_state {
+ 	struct attribute **attrs;
+ };
  
-+ssize_t do_iio_read_channel_label(struct iio_dev *indio_dev,
-+				  const struct iio_chan_spec *c,
-+				  char *buf);
-+
- int __iio_add_chan_devattr(const char *postfix,
- 			   struct iio_chan_spec const *chan,
- 			   ssize_t (*func)(struct device *dev,
-diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-index 2f185b386949..0f6cda7ffe45 100644
---- a/drivers/iio/industrialio-core.c
-+++ b/drivers/iio/industrialio-core.c
-@@ -727,22 +727,27 @@ ssize_t iio_format_value(char *buf, unsigned int type, int size, int *vals)
- }
- EXPORT_SYMBOL_GPL(iio_format_value);
- 
--static ssize_t iio_read_channel_label(struct device *dev,
--				      struct device_attribute *attr,
--				      char *buf)
-+ssize_t do_iio_read_channel_label(struct iio_dev *indio_dev,
-+				  const struct iio_chan_spec *c,
++static ssize_t iio_hwmon_read_label(struct device *dev,
++				  struct device_attribute *attr,
 +				  char *buf)
- {
--	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
--	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
--
- 	if (indio_dev->info->read_label)
--		return indio_dev->info->read_label(indio_dev, this_attr->c, buf);
-+		return indio_dev->info->read_label(indio_dev, c, buf);
- 
--	if (this_attr->c->extend_name)
--		return sysfs_emit(buf, "%s\n", this_attr->c->extend_name);
-+	if (c->extend_name)
-+		return sysfs_emit(buf, "%s\n", c->extend_name);
- 
- 	return -EINVAL;
- }
- 
-+static ssize_t iio_read_channel_label(struct device *dev,
-+				      struct device_attribute *attr,
-+				      char *buf)
 +{
-+	return do_iio_read_channel_label(dev_to_iio_dev(dev),
-+					 to_iio_dev_attr(attr)->c, buf);
++	struct sensor_device_attribute *sattr = to_sensor_dev_attr(attr);
++	struct iio_hwmon_state *state = dev_get_drvdata(dev);
++	struct iio_channel *chan = &state->channels[sattr->index];
++
++	return iio_read_channel_label(chan, buf);
 +}
 +
- static ssize_t iio_read_channel_info(struct device *dev,
- 				     struct device_attribute *attr,
- 				     char *buf)
-diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-index 39cf26d69d17..9f484c94bc6e 100644
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -1010,3 +1010,9 @@ ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
- 			       chan->channel, buf, len);
- }
- EXPORT_SYMBOL_GPL(iio_write_channel_ext_info);
-+
-+ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf)
-+{
-+	return do_iio_read_channel_label(chan->indio_dev, chan->channel, buf);
-+}
-+EXPORT_SYMBOL_GPL(iio_read_channel_label);
-diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
-index e9910b41d48e..333d1d8ccb37 100644
---- a/include/linux/iio/consumer.h
-+++ b/include/linux/iio/consumer.h
-@@ -441,4 +441,14 @@ ssize_t iio_read_channel_ext_info(struct iio_channel *chan,
- ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
- 				   const char *buf, size_t len);
+ /*
+  * Assumes that IIO and hwmon operate in the same base units.
+  * This is supposed to be true, but needs verification for
+@@ -90,12 +101,12 @@ static int iio_hwmon_probe(struct platform_device *pdev)
  
-+/**
-+ * iio_read_channel_label() - read label for a given channel
-+ * @chan:		The channel being queried.
-+ * @buf:		Where to store the attribute value. Assumed to hold
-+ *			at least PAGE_SIZE bytes.
-+ *
-+ * Returns the number of bytes written to buf, or an error code.
-+ */
-+ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf);
+ 	st->channels = channels;
+ 
+-	/* count how many attributes we have */
++	/* count how many channels we have */
+ 	while (st->channels[st->num_channels].indio_dev)
+ 		st->num_channels++;
+ 
+ 	st->attrs = devm_kcalloc(dev,
+-				 st->num_channels + 1, sizeof(*st->attrs),
++				 2 * st->num_channels + 1, sizeof(*st->attrs),
+ 				 GFP_KERNEL);
+ 	if (st->attrs == NULL)
+ 		return -ENOMEM;
+@@ -147,7 +158,23 @@ static int iio_hwmon_probe(struct platform_device *pdev)
+ 		a->dev_attr.show = iio_hwmon_read_val;
+ 		a->dev_attr.attr.mode = 0444;
+ 		a->index = i;
+-		st->attrs[i] = &a->dev_attr.attr;
++		st->attrs[2 * i] = &a->dev_attr.attr;
 +
- #endif
++		a = devm_kzalloc(dev, sizeof(*a), GFP_KERNEL);
++		if (a == NULL)
++			return -ENOMEM;
++
++		sysfs_attr_init(&a->dev_attr.attr);
++		a->dev_attr.attr.name = devm_kasprintf(dev, GFP_KERNEL,
++						       "%s%d_label",
++						       prefix, n);
++		if (!a->dev_attr.attr.name)
++			return -ENOMEM;
++
++		a->dev_attr.show = iio_hwmon_read_label;
++		a->dev_attr.attr.mode = 0444;
++		a->index = i;
++		st->attrs[2 * i + 1] = &a->dev_attr.attr;
+ 	}
+ 
+ 	st->attr_group.attrs = st->attrs;
 -- 
 2.35.1.1320.gc452695387.dirty
 

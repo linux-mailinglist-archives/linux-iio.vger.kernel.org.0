@@ -1,154 +1,128 @@
-Return-Path: <linux-iio+bounces-6610-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6611-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 968B090FF97
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 10:55:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A35890FFBB
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 10:59:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1871AB2757C
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 08:54:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B215DB21BA1
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 08:59:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 610DE1A4F2F;
-	Thu, 20 Jun 2024 08:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E5354720;
+	Thu, 20 Jun 2024 08:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="FbPcbL/Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LLxHfoOx"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C94D40858;
-	Thu, 20 Jun 2024 08:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3998B628;
+	Thu, 20 Jun 2024 08:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718873512; cv=none; b=p/By9Y4Qp3rC8oTtiqUDSt6Ilab7HGtD2j+aBqVlsE3wQolMCdqssMiWEsY9ChKkufx3mcHlnWJgF8z6ZsXRpqaTR/lwFFZFKoNFCEwnUYCEXYZl3TRCvmxEkUwzECjNoaZ6+o1X82/80NKDJJWYaIp3oI0CtyR+rh6MW38k6Sw=
+	t=1718873953; cv=none; b=myD+ITOaZLXVVT12KQ13pwW6FD046x56WvcCV6n9YMv2JE7cTz8hexeCX8p9E4VOOjOGVRFFBY1ZP4j1xArn8xAUPUaugOM6EJEqtvpjxODxzJ5EsnT6ljF2qz/0sXu0FijsC/25rxfUAGiK0YzvJDar7JGVxOwMzNvOFBmEXh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718873512; c=relaxed/simple;
-	bh=2TvpXXhOk9nqvvpL7r4WYpLMcH8C6BL3/fs1sCKRmQI=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PZdh6Abph4Oatu4st4Dp3c6SoLZW2xmpfHpQ19jpjGalyL8BncVCO2VP+lCsT4KPLnO5O54SW0MKdOW3R52RQLHr4PkEVgpPRGISf+HaSN54aYqhjIAG9MI10lcyGIRR8IyiIpHlkLrVWtc7FvC6uORAvfTBMhgnl5iP/lxx5dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=FbPcbL/Z; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1718873510; x=1750409510;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2TvpXXhOk9nqvvpL7r4WYpLMcH8C6BL3/fs1sCKRmQI=;
-  b=FbPcbL/ZCijGAftAWywDTHH/0YYZXHnJAPzwNG9UmDjrPn2Z13rGuFH3
-   NTrjh/qIlDFihgar8uSpKdVmdmJ6RgW30977qEWEoVsOX2QY0yHNNNE2f
-   ZD249eUohEXOIfz8bcc9TCo5QoO56NSUMyRzad7oeV9f3q9Hn3XaAdS4h
-   oTGyhFpnaH4cp3+L1ReMqqUJsmCMm2J5IJQzpERogNFdCyWoCJtbpAemx
-   4JFwzbo96FbDKKBvPDZtZEmIkEYHPVaMP9iZEEBvUjHnS/nh+ABAzfK8N
-   IaaNn/4QefW0LKeUAQWbiJbSeAb5OTBALjAFRwjWoyYoJdIrIO+d7OnER
-   Q==;
-X-CSE-ConnectionGUID: 56ZSahdTSAWG5kTlegWLxQ==
-X-CSE-MsgGUID: n5KP9bTySkmIbaRvewCWMg==
-X-IronPort-AV: E=Sophos;i="6.08,251,1712646000"; 
-   d="asc'?scan'208";a="28910098"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 20 Jun 2024 01:51:49 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.35; Thu, 20 Jun 2024 01:51:25 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex02.mchp-main.com (10.10.85.144)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35 via Frontend
- Transport; Thu, 20 Jun 2024 01:51:22 -0700
-Date: Thu, 20 Jun 2024 09:51:03 +0100
-From: Conor Dooley <conor.dooley@microchip.com>
-To: Olivier MOYSAN <olivier.moysan@foss.st.com>
-CC: Conor Dooley <conor@kernel.org>, Arnaud Pouliquen
-	<arnaud.pouliquen@foss.st.com>, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
-	<alexandre.torgue@foss.st.com>, Fabrice Gasnier
-	<fabrice.gasnier@foss.st.com>, <alsa-devel@alsa-project.org>,
-	<linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-stm32@st-md-mailman.stormreply.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 4/8] dt-bindings: iio: dfsdm: move to backend framework
-Message-ID: <20240620-custody-jailbreak-6540620d6570@wendy>
-References: <20240618160836.945242-1-olivier.moysan@foss.st.com>
- <20240618160836.945242-5-olivier.moysan@foss.st.com>
- <20240618-footwear-impotence-5284985a609d@spud>
- <4734e915-9ea7-4e65-a9ef-bc1e88c40e76@foss.st.com>
+	s=arc-20240116; t=1718873953; c=relaxed/simple;
+	bh=cxO0O9LpvQgPUIclFb5zIAe3EVexH+Kz4teCj8aZZ3A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Eo5Vl1sjAfR2nrvqD780+D+hzM+w5z1UGxANQ7ey3pTBz22YWCdnX6NjZaxSC0wj7dNHD4kw+O+se61OFw8gAS1EEaQGByOmnlcimijGCl1651CbJr2vZarF2CeFMo+JJZGPARiS57Adp5KKu0UZ0lYNfIga9uKUf6rrhjb89ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LLxHfoOx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8D2C2BD10;
+	Thu, 20 Jun 2024 08:59:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1718873952;
+	bh=cxO0O9LpvQgPUIclFb5zIAe3EVexH+Kz4teCj8aZZ3A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LLxHfoOx65muZqCx7fXYQA+BVobfWUYljU/T3kndPOGXaItcWwNz4sYjMRVbL3rfo
+	 2Wl9Y3l0tXzCpA1JqnJH8IbC1gIGadbM9RlKUjZnN+iERxeohoKaqA2b+0I/P+GKUQ
+	 E7r0CKv9OjU85F7M3QTLjy4MXkx02x5FYj0KhbNSGQDO2pL9Nkc5CKRgEY0pQkloFg
+	 eAwbHg/kEjhUpo1fZ9PJ4waOyWUO4UwYVqHTHFfuOcTYHL7ggnBLIjxx3KJSq7YXBV
+	 DccgAGUgDnKd7IEv63oQfrqeXQWUx1siv0oeFbw+i9tCmvdWuuSfyccn1MLT+Vnmaj
+	 isDWOie3aU/qg==
+Date: Thu, 20 Jun 2024 17:59:07 +0900
+From: William Breathitt Gray <wbg@kernel.org>
+To: Lee Jones <lee@kernel.org>
+Cc: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Thorsten Scherer <T.Scherer@eckelmann.de>
+Subject: Re: [PATCH v2 3/5] counter: stm32-timer-cnt: Use TIM_DIER_CCxIE(x)
+ instead of TIM_DIER_CCxIE(x)
+Message-ID: <ZnPvW6Zx69wVjNRS@ishi>
+References: <cover.1718791090.git.u.kleine-koenig@baylibre.com>
+ <126bd153a03f39e42645573eecf44ffab5354fc7.1718791090.git.u.kleine-koenig@baylibre.com>
+ <20240620084451.GC3029315@google.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="NJFxl4lrwoiFDjYE"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qUxpVBYe6s7jx2cy"
 Content-Disposition: inline
-In-Reply-To: <4734e915-9ea7-4e65-a9ef-bc1e88c40e76@foss.st.com>
+In-Reply-To: <20240620084451.GC3029315@google.com>
 
---NJFxl4lrwoiFDjYE
-Content-Type: text/plain; charset=us-ascii
+
+--qUxpVBYe6s7jx2cy
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 20, 2024 at 10:03:44AM +0200, Olivier MOYSAN wrote:
-> On 6/18/24 20:10, Conor Dooley wrote:
-> > On Tue, Jun 18, 2024 at 06:08:30PM +0200, Olivier Moysan wrote:
-> > >       allOf:
-> > >         - if:
-> > >             properties:
-> > > @@ -199,9 +264,19 @@ patternProperties:
-> > >                 description:
-> > >                   From common IIO binding. Used to pipe external sigm=
-a delta
-> > >                   modulator or internal ADC output to DFSDM channel.
-> > > +              deprecated: true
-> > > -          required:
-> > > -            - io-channels
-> > > +          if:
-> > > +            required:
-> > > +              - st,adc-channels
-> > > +          then:
-> > > +            required:
-> > > +              - io-channels
-> > > +
-> > > +          patternProperties:
-> > > +            "^channel@([0-9]|1[0-9])$":
-> > > +              required:
-> > > +                - io-backends
-> >=20
-> > Why is this here, rather than with reg above? Only some channels require
-> > a backend?
+On Thu, Jun 20, 2024 at 09:44:51AM +0100, Lee Jones wrote:
+> On Wed, 19 Jun 2024, Uwe Kleine-K=C3=B6nig wrote:
 >=20
-> The io-backends property is required only when we use st,stm32-dfsdm-adc
-> compatible. In other words, when we are in an analog use case. In this ca=
-se
-> the channel is a consumer of a backend (typically a sd modulator)
-> In an audio use case (compatible st,stm32-dfsdm-dmic) the backend is not
-> required.
+> > These two defines have the same purpose and this change doesn't
+> > introduce any differences in drivers/counter/stm32-timer-cnt.o.
+> >=20
+> > The only difference between the two is that
+> >=20
+> > 	TIM_DIER_CC_IE(1) =3D=3D TIM_DIER_CC2IE
+> >=20
+> > while
+> >=20
+> > 	TIM_DIER_CCxIE(1) =3D=3D TIM_DIER_CC1IE
+> >=20
+> > . That makes it necessary to have an explicit "+ 1" in the user code,
+> > but IMHO this is a good thing as this is the code locatation that
+> > "knows" that for software channel 1 you have to use TIM_DIER_CC2IE
+> > (because software guys start counting at 0, while the relevant hardware
+> > designer started at 1).
+> >=20
+> > Signed-off-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
+> > ---
+> >  drivers/counter/stm32-timer-cnt.c | 4 ++--
+> >  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> Did you drop William's Ack on purpose?
+>=20
+> --=20
+> Lee Jones [=E6=9D=8E=E7=90=BC=E6=96=AF]
 
-Ahh, I think the hunks and indent confused me here. What you're doing is
-making io-backends required based on the compatible, but what I thought
-you were doing was trying to make io-backends required in channels if
-st,adc-channels was set.
+No problem, here it is again for the sake of the LKML scraper tools:
 
-Thanks for the explanation,
-Conor.
+Acked-by: William Breathitt Gray <wbg@kernel.org>
 
---NJFxl4lrwoiFDjYE
+Lee, do you prefer taking this patchset through your tree?
+
+William Breathitt Gray
+
+--qUxpVBYe6s7jx2cy
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZnPtdwAKCRB4tDGHoIJi
-0j93AP44jgZe6b+HBEZ4omA3y0tvrLry/EB6akIV7NR8Vap5igEAg+cGLKESOy+o
-Zt9PvSP8qWdePXuj43/CfT/7C1OO8go=
-=JkF+
+iHUEARYKAB0WIQSNN83d4NIlKPjon7a1SFbKvhIjKwUCZnPvWwAKCRC1SFbKvhIj
+K1GgAP9odcqC0bo8rEeP0eJTrSUFEqcSuJZBP7eDgnXlVa0onwD+PKCxPPIJMLff
+Zg4Fw4SPOHzpnOcfqWbkCDNjqMhH6AY=
+=XwMH
 -----END PGP SIGNATURE-----
 
---NJFxl4lrwoiFDjYE--
+--qUxpVBYe6s7jx2cy--
 

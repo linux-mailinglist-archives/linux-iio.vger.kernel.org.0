@@ -1,89 +1,79 @@
-Return-Path: <linux-iio+bounces-6631-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6632-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44EFD910B69
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 18:09:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9835E910C12
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 18:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 760711C247D4
-	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 16:09:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5464C287989
+	for <lists+linux-iio@lfdr.de>; Thu, 20 Jun 2024 16:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30E51B14E8;
-	Thu, 20 Jun 2024 16:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E90E1B29BF;
+	Thu, 20 Jun 2024 16:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/vqKjnk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nu2Yr48S"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B021AF68A;
-	Thu, 20 Jun 2024 16:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C02E1AD486;
+	Thu, 20 Jun 2024 16:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718899790; cv=none; b=L0N3qWiHoNgnqv5l51xpjQJrPwcWDmUrZun7Kzp5xKWb0hQyy8ZoJ723xuvMwxooWktfAkKPSdENsl3+V/MORE6/Mf3Ub1gvjgPXhgR6Qx5x08KLtq9AY/4/QndZqPmfAudXoRxIAMiYqNtOwoflWBMzE0oXD43Zr1trstC3yO4=
+	t=1718900445; cv=none; b=I0roc0AsvK4Gcb98YAkimsxEPPRhDTM7xWmFiFxp5zNzAVpAm0UJCZ54QCXj0sRRzl0VXZgdYxvORAR1HJX5vyqIMcgKy98sZydjzuEFkQwYL6X2ACCljr/r/qoXcy7x9vwH4C/mcXSE1fAEN9Mt76wYd1rVFbFm1mgFAlLKW/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718899790; c=relaxed/simple;
-	bh=XQWFgbT1rILISA7GfD948pyMzLIvF0B1LSVD5WWIYrA=;
+	s=arc-20240116; t=1718900445; c=relaxed/simple;
+	bh=Ei2mXhkMdIXa7FVDgJeUlvKaLLb4XZD4GhWPWTEbGqs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MoVPHZcNzYwHxFbhOTBA9kVK25ncNuO5rwrTP41gtJ/104eX9orIW/6T3HR86XYeTxx/5x8XasGrHgnYNc7W8IX1dANgpmoKmiaYtu3jM5EAxb7dWJ3vHI34qGoPBzT6REZQl+Uzl3R9JLGGVhUIb9mIqmsIcOYj4VmB+02v9CI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/vqKjnk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A5A4C2BD10;
-	Thu, 20 Jun 2024 16:09:48 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TPvWNeIBBlcTJZlnS5kqmpTP/fmBml74q+SQQE1V+yn07o0nr621BZsxw2PefO471L8kV371hadAFZQDWqBFjX9iRkkge06IcPp1hgSDbLddr6w5VTpLZd9GJcMuWSlC7bVVFG7l4XEy5mMtd5JetnTNqaWCBtRckbI8W7LG07A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nu2Yr48S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 412CEC2BD10;
+	Thu, 20 Jun 2024 16:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718899789;
-	bh=XQWFgbT1rILISA7GfD948pyMzLIvF0B1LSVD5WWIYrA=;
+	s=k20201202; t=1718900445;
+	bh=Ei2mXhkMdIXa7FVDgJeUlvKaLLb4XZD4GhWPWTEbGqs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b/vqKjnkHu+L1R4UdBumQWvGZcFgNTl2F9cMHXjtfeby5EBZ06pxIECyEeoI7HNlf
-	 IOK34i3IorowljsYyoXsX/yB83rvD9RXoU0LOZ4C4TacZ1YdhNkCzOPP+v2Na6ON8n
-	 RNJ7UDIgveeS1ta1aGV3qlfjC6MKsO3VptQGp0Nt1os6xti5YTw94JpNH4Ml57ESh1
-	 Adi1p0o/PKimgZcHce23WfypOPqnkwnrFX/RNgBJ5oK0AIKTaIHUfWPrYSG1aly0RT
-	 DhriWD6p6OnZn5VmGYVINgUg48uAgRIqk2cibDkEmQxTsySp+zAk3EUYu8e6/BtpN+
-	 N08P0hApcNYtA==
-Date: Thu, 20 Jun 2024 21:39:45 +0530
+	b=Nu2Yr48SMT1dEChkQZ4vicJt/c6nYv2Fw6IWSIcipsJAWbcMdGVKjF05YMka0KIq3
+	 cQDU4SVfXPJx7LUIewT3F/xj9S9fMLKu7L18ycjslIuHn+0wmfiYmmo5jnusXD5h1O
+	 dYgcJwPXw+fYdUIEhzuXZNoYOlj7XCgUMlRRfNxn3ZprHWDKCC5DuZX+SN5yRTWK4J
+	 fjedakvvr6In6GUx7mW6m2s/kaWMeGf6SkNUA5lAafrSIuPws0f8+cidLkm18FWTBY
+	 cvlElmnH/l6zdndlkAzl/4WZNPK4Lit46hXHzM9/IgkfrCm4sZJVdKw6GgKdjlgQYQ
+	 rSLyTWdke1/Vw==
+Date: Thu, 20 Jun 2024 21:50:41 +0530
 From: Vinod Koul <vkoul@kernel.org>
-To: Markus Elfring <Markus.Elfring@web.de>
-Cc: lkp@intel.com, Paul Cercueil <paul@crapouillou.net>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	linux-iio@vger.kernel.org, dmaengine@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Jonathan Cameron <jic23@kernel.org>,
+To: Paul Cercueil <paul@crapouillou.net>
+Cc: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
 	Sumit Semwal <sumit.semwal@linaro.org>,
-	oe-kbuild-all@lists.linux.dev, LKML <linux-kernel@vger.kernel.org>,
-	linux-doc@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-	Julia Lawall <julia.lawall@inria.fr>, Lee Jones <lee@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: Re: [v11 3/7] iio: core: Add new DMABUF interface infrastructure
-Message-ID: <ZnRUSaHJhz7XLcKa@matsya>
-References: <202406191014.9JAzwRV6-lkp@intel.com>
- <c25aab0d-48f6-4754-b514-d6caf8d51fd1@web.de>
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Jonathan Corbet <corbet@lwn.net>, Nuno Sa <nuno.sa@analog.com>,
+	linux-iio@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: Re: [PATCH v12 0/7] iio: new DMABUF based API v12
+Message-ID: <ZnRW2axOg7gtKzz0@matsya>
+References: <20240620122726.41232-1-paul@crapouillou.net>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c25aab0d-48f6-4754-b514-d6caf8d51fd1@web.de>
+In-Reply-To: <20240620122726.41232-1-paul@crapouillou.net>
 
-On 20-06-24, 12:45, Markus Elfring wrote:
-> …
-> > All errors (new ones prefixed by >>):
-> >
-> >>> drivers/iio/industrialio-buffer.c:1715:3: error: cannot jump from this goto statement to its label
-> >     1715 |                 goto err_dmabuf_unmap_attachment;
-> …
-> 
-> Which software design options would you like to try out next
-> so that such a questionable compilation error message will be avoided finally?
+On 20-06-24, 14:27, Paul Cercueil wrote:
+> Hi Jonathan,
 
-The one where all emails from Markus go to dev/null
+Hey Jonathan,
+
+Assuming we are fine with this series, how would you like to proceed.
+Would you be fine with me picking the dmaengine bits and providing a
+signed tag for you to pull?
 
 -- 
 ~Vinod

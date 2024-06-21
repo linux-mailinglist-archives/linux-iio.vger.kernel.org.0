@@ -1,219 +1,231 @@
-Return-Path: <linux-iio+bounces-6670-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6671-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BEE09121F4
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 12:16:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A818991222F
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 12:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D7291C23809
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 10:16:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CA992832E7
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 10:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9C7A171088;
-	Fri, 21 Jun 2024 10:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796E8173352;
+	Fri, 21 Jun 2024 10:18:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UakSvlxe"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="tpa86Fyd"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A428117107F;
-	Fri, 21 Jun 2024 10:12:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1897171075;
+	Fri, 21 Jun 2024 10:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718964761; cv=none; b=o6SMFJlVnIoXZlk4DGU+RpUf6bvO05pq6fY6VCOEhnmIhAzRpQ19fbBHj04HGDqkslpmras39KuSNfjmSb5z0XzyOnWFzdu/zAGrfoZll0BU6VsoXZeLRSlK0r/Om7NXU8axFsYRzMTM+kXDzZiNurPgfg169Aqm9ePPahL8mbE=
+	t=1718965134; cv=none; b=QjbX3POt/XXgw1CJ5FnF1EerPbVs/c4Bn/wgxE7iGefowImAWAbaZy9Ye0ufoklxdPd0U3M7NPiPfLqUMnPEqESmkZKKwi2YPXE1oLGYHJzLTy12jKchEvlZ5lqVjrbGdw4ETtqr1+a5VYL8cXVfbuiLGu3nV9AZc51SaepCGCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718964761; c=relaxed/simple;
-	bh=xd8BuJAJVt4hYO7CaDhACUTYs0P5FBRx8/Suf66ku6U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NurlXLCRTwlsqSb52z1bno26/Zxk5iuBqoT7Tg0neYTOSeL50PJuxKqmQUFRvKdzxQZkJArGctgxi7nnJ+NUm0/kShoCRRAWPZqtrc/ZFKnn5bd02I4PwcRdTS8H2ReuagN4I5kG7gQwzkf1K34u2os4f/HDGhwvEIGihc7hlT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UakSvlxe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D19B0C2BBFC;
-	Fri, 21 Jun 2024 10:12:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718964761;
-	bh=xd8BuJAJVt4hYO7CaDhACUTYs0P5FBRx8/Suf66ku6U=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UakSvlxeoCtbOygNKL7Id0HTMLMC6aqtXHqwA9Pd3/LjK+a8D/gI+kkyKHBXJhZV7
-	 DEVMIt/2NemkglX2N2TosNEUARJuPezRY1ryFooKFvhA8fLALL+ri5bMyPgxl+2MVw
-	 a60UCZfLn387P7NHDlxNPuOxjImHKW9JDhy6SGJOQEbTLfzcUYu8Lg5/T1uMsfo3OI
-	 N2jDZyFmr8P33WW3CXFzwaOe2O0t1E8Nsp4PgpN5Kl9TnYTVXndJNBUUTf58HD5PMA
-	 MeMp/leBqngAOvbtbc8XP0LMm4DGHFjnseB192B6WAr7BrKaQmzNZ2/eltSwBdsdBz
-	 yq61iWtq+rdQg==
-Message-ID: <d35f5eba-abb4-4924-89d6-0beb878a0bf7@kernel.org>
-Date: Fri, 21 Jun 2024 12:12:35 +0200
+	s=arc-20240116; t=1718965134; c=relaxed/simple;
+	bh=N86tT7eNz1UOvLaFQAnMCJPe6jey5vSK8Wint1BvwqM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dYAFtfaOCCpnFWAXspKGHtCaS8a8wSwaGyfGYvd3SNb9BsxyfKETANE5Ux0xRrte3km5DuTuS5bquW4nkf+fYTziHVHWBd5IrN3B93W0HWu7ruTJWDodVZMNWFmCa8mIR/ysGnK0ZQ+PxWonwk1I2KL1YcHgcZgc+Xbv9d1UGGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=tpa86Fyd; arc=none smtp.client-ip=148.163.135.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
+Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
+	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45L7ENRv018472;
+	Fri, 21 Jun 2024 06:18:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=DKIM; bh=YOkcwxEkHfTflVwa9YPcysUXmuW
+	PUcRPHhhFsL/4ZmU=; b=tpa86FydcHtZEdIHtJ9UgSAewrWT07h11c0ekg8dWNC
+	Q+MCq3MlB65I/ajWdvWcxgpeNQknvlF55y5p1BKsZMTly1dONlNEeCezjHHNPWmz
+	yHiDD0J4j/O9SSx2RQGg5yNCLRDng/74XjW0azlHJ1Bz69UF4uiXEgCEHJthk0Xr
+	vyR5qBztiBCf6OR8VybiXh5AFJpXipXnILXDQ5qPAumKwvaGk+d+ud24xMu2Wnzn
+	8iNgiCpOmpg75P59hyl3FQeagms9gknVO8wmJQmCwRiGGtX78jKgmEhSZafdveVM
+	/dUyiypeh1fwoccXRaN6G0OUCZ3+xV6ZlPdGaRGs4kQ==
+Received: from nwd2mta3.analog.com ([137.71.173.56])
+	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3yvrkb3b27-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 21 Jun 2024 06:18:24 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 45LAINqW046141
+	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 21 Jun 2024 06:18:23 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 21 Jun
+ 2024 06:18:22 -0400
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
+ (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+ Transport; Fri, 21 Jun 2024 06:18:22 -0400
+Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.120])
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 45LAI4Wu019392;
+	Fri, 21 Jun 2024 06:18:07 -0400
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
+To: Ramona Gradinariu <ramona.gradinariu@analog.com>,
+        Antoniu Miclaus
+	<antoniu.miclaus@analog.com>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael
+ Hennerich <Michael.Hennerich@analog.com>,
+        Jonathan Cameron
+	<jic23@kernel.org>, Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet
+	<corbet@lwn.net>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Jun Yan
+	<jerrysteve1101@gmail.com>,
+        Mehdi Djait <mehdi.djait.k@gmail.com>,
+        Mario
+ Limonciello <mario.limonciello@amd.com>,
+        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
+Subject: [PATCH v2 1/3] dt-bindings: iio: accel: add ADXL380
+Date: Fri, 21 Jun 2024 13:17:03 +0300
+Message-ID: <20240621101756.27218-1-antoniu.miclaus@analog.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/3] dt-bindings: iio: proximity: Add TYHX HX9023S
-To: Yasin Lee <yasin.lee.x@gmail.com>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20240621-add-tyhx-hx9023s-sensor-driver-v6-0-65196a9020f1@gmail.com>
- <20240621-add-tyhx-hx9023s-sensor-driver-v6-2-65196a9020f1@gmail.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240621-add-tyhx-hx9023s-sensor-driver-v6-2-65196a9020f1@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ADIRuleOP-NewSCL: Rule Triggered
+X-Proofpoint-GUID: GjLCEpzV0EwytikGq_hyWw5TYKWjZGh3
+X-Proofpoint-ORIG-GUID: GjLCEpzV0EwytikGq_hyWw5TYKWjZGh3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-21_04,2024-06-20_04,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ clxscore=1015 priorityscore=1501 lowpriorityscore=0 malwarescore=0
+ spamscore=0 phishscore=0 suspectscore=0 mlxlogscore=999 mlxscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2406140001 definitions=main-2406210076
 
-On 21/06/2024 09:40, Yasin Lee wrote:
-> A capacitive proximity sensor
-> 
-> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
-> ---
->  .../bindings/iio/proximity/tyhx,hx9023s.yaml       | 115 +++++++++++++++++++++
->  1 file changed, 115 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml b/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml
-> new file mode 100644
-> index 000000000000..beca70ce7609
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml
-> @@ -0,0 +1,115 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/proximity/tyhx,hx9023s.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: TYHX HX9023S capacitive proximity sensor
-> +
-> +maintainers:
-> +  - Yasin Lee <yasin.lee.x@gmail.com>
-> +
-> +description: |
-> +  TYHX HX9023S proximity sensor. Datasheet can be found here:
-> +    http://www.tianyihexin.com/ueditor/php/upload/file/20240614/1718336303992081.pdf
-> +
-> +allOf:
-> +  - $ref: /schemas/iio/iio.yaml#
+From: Ramona Gradinariu <ramona.gradinariu@analog.com>
 
-Which part of iio.yaml binding do you use here? I cannot find anything,
-so this looks wrong.	
+Add dt-bindings for ADXL380/ADLX382 low noise density, low
+power, 3-axis accelerometer with selectable measurement ranges.
 
-> +
-> +properties:
-> +  compatible:
-> +    const: tyhx,hx9023s
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    description:
-> +      Generated by device to announce preceding read request has finished
-> +      and data is available or that a close/far proximity event has happened.
-> +    maxItems: 1
-> +
-> +  vdd-supply: true
-> +
-> +  "#address-cells":
-> +    const: 1
-> +
-> +  "#size-cells":
-> +    const: 0
-> +
-> +patternProperties:
-> +  "^channel@[0-4]$":
-> +    $ref: /schemas/iio/adc/adc.yaml
-> +    type: object
-> +
-> +    properties:
-> +      reg:
-> +        minimum: 0
-> +        maximum: 4
-> +        description: The channel number.
-> +
-> +      input-channel:
+Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+---
+ .../bindings/iio/accel/adi,adxl380.yaml       | 83 +++++++++++++++++++
+ MAINTAINERS                                   |  7 ++
+ 2 files changed, 90 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
 
-Isn't this duplicating single-channel property?
-
-Where is this property defined (which common schema)?
-
-> +        $ref: /schemas/types.yaml#/definitions/uint32
-> +        minimum: 0
-> +        maximum: 4
-> +        description:
-> +          Specify the input pin used in single-ended configuration.
-> +
-> +      diff-channels: true
-> +
-> +    oneOf:
-> +      - required:
-> +          - input-channel
-> +      - required:
-> +          - diff-channels
-> +
-> +    required:
-> +      - reg
-> +
-> +    additionalProperties: false
-> +
-> +required:
-> +  - compatible
-> +  - vdd-supply
-> +  - reg
-
-Keep the same order as in properties.
-
-> +
-> +unevaluatedProperties: false
-> +
-
-
-Best regards,
-Krzysztof
+diff --git a/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml b/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
+new file mode 100644
+index 000000000000..992e2ab841e2
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
+@@ -0,0 +1,83 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/accel/adi,adxl380.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices ADXL380/382 3-Axis Digital Accelerometer
++
++maintainers:
++  - Ramona Gradinariu <ramona.gradinariu@analog.com>
++  - Antoniu Miclaus <antoniu.miclaus@analog.com>
++
++description: |
++  The ADXL380/ADXL382 is a low noise density, low power, 3-axis
++  accelerometer with selectable measurement ranges. The ADXL380
++  supports the ±4 g, ±8 g, and ±16 g ranges, and the ADXL382 supports
++  ±15 g, ±30 g, and ±60 g ranges.
++  The ADXL380/ADXL382 offers industry leading noise, enabling precision
++  applications with minimal calibration. The low noise, and low power
++  ADXL380/ADXL382 enables accurate measurement in an environment with
++  high vibration, heart sounds and audio.
++
++  In addition to its low power consumption, the ADXL380/ADXL382 has
++  many features to enable true system level performance. These
++  include a built-in micropower temperature sensor, single / double /
++  triple tap detection and a state machine to prevent a false
++  triggering. In addition, the ADXL380/ADXL382 has provisions for
++  external control of the sampling time and/or an external clock.
++
++    https://www.analog.com/en/products/adxl380.html
++
++properties:
++  compatible:
++    enum:
++      - adi,adxl380
++      - adi,adxl382
++
++  reg:
++    maxItems: 1
++
++  interrupts:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - interrupts
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    i2c {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      accelerometer@54 {
++        compatible = "adi,adxl380";
++        reg = <0x54>;
++        interrupt-parent = <&gpio>;
++        interrupts = <25 IRQ_TYPE_LEVEL_HIGH>;
++      };
++    };
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++
++    spi {
++      #address-cells = <1>;
++      #size-cells = <0>;
++
++      accelerometer@0 {
++        compatible = "adi,adxl380";
++        reg = <0>;
++        spi-max-frequency = <8000000>;
++        interrupt-parent = <&gpio>;
++        interrupts = <25 IRQ_TYPE_LEVEL_HIGH>;
++      };
++    };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index be590c462d91..1425182c85e2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -618,6 +618,13 @@ F:	drivers/iio/accel/adxl372.c
+ F:	drivers/iio/accel/adxl372_i2c.c
+ F:	drivers/iio/accel/adxl372_spi.c
+ 
++ADXL380 THREE-AXIS DIGITAL ACCELEROMETER DRIVER
++M:	Ramona Gradinariu <ramona.gradinariu@analog.com>
++M:	Antoniu Miclaus <antoniu.miclaus@analog.com>
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/accel/adi,adxl380.yaml
++
+ AF8133J THREE-AXIS MAGNETOMETER DRIVER
+ M:	Ondřej Jirman <megi@xff.cz>
+ S:	Maintained
+-- 
+2.45.2
 
 

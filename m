@@ -1,134 +1,113 @@
-Return-Path: <linux-iio+bounces-6687-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6688-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBA54912C66
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 19:24:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B27A1912EDC
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 22:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75DCA287F98
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 17:24:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CD2EB25622
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 20:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326E01607A4;
-	Fri, 21 Jun 2024 17:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2461617BB2F;
+	Fri, 21 Jun 2024 20:51:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="vshZ12n4"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="O5GPFEHW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AAC15D1;
-	Fri, 21 Jun 2024 17:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D39017B4E8
+	for <linux-iio@vger.kernel.org>; Fri, 21 Jun 2024 20:51:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718990680; cv=none; b=B+V2wuoifhNIA/gAVrLqTQXMvW+hQWrZvjVHhM/9yQhI7AJTwesErzr2woD6wI96RN3mYFVLPfhAFZeM7epnrwfWtyRBdPljae49uLV7SCTF3gD5iEbhyxPUp0ADONmu4K1kdrLX55wHiDmwP1fFFALwIYPg77rMlLspdH6bUvo=
+	t=1719003100; cv=none; b=atnKnVmHVoIujdodPRddDtvojDZyNmjLkfY5tzZAIwv8FP+w+kCZOqOO/dCjXDf9vEA9bvwicu2GBFCnuGJ+zuiASlkWBiPrQTvsvsp40SqpV2JHm/QgrhJknUcduyGCVO+hD0A8d4k12J2e35QEyf07WfiymHg5fGIBqAEN6Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718990680; c=relaxed/simple;
-	bh=BM3bDxKDGPmpPEKXjkEVhF9bTkX6yqKKTMfom9A1jjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RJ3uHFzzp9KQYru3eT1WBhmBcGjBCZTXThF2ClQIywPJguo613EZ5p3QYlY/MUWw/T70gW5c5+J1GhkyvslbsDgIwmnV8q/tOzoJDQKWmGF8tbJ1IMIpz+ObmjLzgUEeYM57RISIX7A2TbNchgrk+d5Z8SIB/lKiRQR34JA18HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=vshZ12n4; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 21E5B207FD;
-	Fri, 21 Jun 2024 19:24:26 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1718990667;
-	bh=Fl+iPeAvxTiHF6A13dl6jLHuoX82uG52hv+zvo4/1eA=; h=From:To:Subject;
-	b=vshZ12n4/Ge4zRe7wHkrs8ulu3+HCMZnhuejxfioEELy3kOaKYhVd1E3OO1cuKVy/
-	 +7EULopnvXbzKf7DLJT6ZHjxGYZlnXhYrZDNtJNsuC6z/G8mXoyUe4IcVSjIIuKEBl
-	 Y3BgQtqc9VKaOjPxTLUq14HBlTkIT62iadTgxJ5cQE2j5VGmAxnXifsWbF4fFjbk4a
-	 NLDuvaeVbNLHO2Pvjui8xu/2Uu4XzX6ovmVlXo3Usep0YdOGSc+yJfdT4iCLsvzZO7
-	 M5MAHdZKK5yHyrN1hj0xgWrzGH+L+ixSAXWxY8go1SEJ7D3qXcZ4cSOWl23V+PSEiC
-	 pQj+sI2coAChg==
-Date: Fri, 21 Jun 2024 19:24:21 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Stefan Eichenberger <eichest@gmail.com>
-Cc: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
-	andriy.shevchenko@linux.intel.com, marcelo.schmitt@analog.com,
-	gnstark@salutedevices.com, francesco.dolcini@toradex.com,
-	wsa+renesas@sang-engineering.com, andrew@lunn.ch,
-	linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [RFC PATCH] i2c: imx: avoid rescheduling when waiting for bus
- not busy
-Message-ID: <20240621172421.GA11258@francesco-nb>
-References: <20240531142437.74831-1-eichest@gmail.com>
- <ZnWaxtfgmLk3SplP@eichest-laptop>
+	s=arc-20240116; t=1719003100; c=relaxed/simple;
+	bh=3hdGVUorPp9c3chARv02ErSOyGivV5Bdav1bowW+7Do=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=m67k9LzCZuFEdaZtdea2HmQOzi5zAsFomkrx+kz5Zvbwujy9RkHy+zTC3Az/Ug5WVxAcPm2+VCkAVAqf8l8zjlFh0b3IbhskpPy96pMFxIWpY0iyvN5HF6MVvtVzyUjz0RZ6fRm+JhVf2MPNpZHo+NTLCF9Vh7Ni+p5nuCZiSPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=O5GPFEHW; arc=none smtp.client-ip=209.85.167.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3d361cf5755so1363713b6e.2
+        for <linux-iio@vger.kernel.org>; Fri, 21 Jun 2024 13:51:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719003097; x=1719607897; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PoA9hZ9WnRsqQql+yaAmrG9puGVAmGMo+xjRJ7s2mms=;
+        b=O5GPFEHWhsU8kp+qt4EqDMRx0jr13fg65+28kdOFYTnFi0t2mDgDGGgB+O97YzOcKh
+         8/k7xrWaKvkVKm75MU+fEBYH84C0njb3QIa1z6oCLWalem9mAyQVo9c3DcliG/XxcJY9
+         uMSP8aa0Ij9gOqebKxdYt2X+WcSxptWGAwcFi1fkKIZHc1P++shNC9krSM/Gfbxrwdy8
+         5IgYD2S7qyb4qHO36DII/IsiQt9e1qJHQc47tWz5Vllw6jEyOiO8r/TsH8Y+sZLqeijK
+         WCTxc0gIAu3YKHsjWr4rg4jykGLp2culo8hniNvQA/44gzNb8RS958LgHI13BJudtRy2
+         Fq2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719003097; x=1719607897;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PoA9hZ9WnRsqQql+yaAmrG9puGVAmGMo+xjRJ7s2mms=;
+        b=Q3dkrtFoFKORiYWeXotnhAumvyls+PkKhqejFDjP0/9xRyAdgJvYMg5MWDI8ARWRNn
+         DnXlRZLXkZ7lRJ6l9gg94XViWR8wVziAJeMevcK3DyEnxWwYMn1XzQUOWLbOeRYzTSAO
+         z7pRq/uk3RNdSmVMrge3wZ3dQT0KlyuL+r+MWIpYPchwsiesfzC+vcehEruSQGw5TuNI
+         8Ozs1NW9mZSUiJBLwhJ+UkCfOcIytpZGI2I4kvBTKnVE015x+OX4trULfRQjKB99IEwA
+         Zcq1fqEpCSsb4vq7ml4IC70jvVhLEVGlJCJjhmq2XO8eZ65SZCBTqYxseoR6T1yg7Ge0
+         sddw==
+X-Forwarded-Encrypted: i=1; AJvYcCXqeDp//nqVcOmriV6t443A10zFDxL0gDckoKtKrVERyZZEMry+GHn6bbFrwpHFP/gtfJyIVM7eXibXkx4vWHjwGmCpsnM585vK
+X-Gm-Message-State: AOJu0YwLAvNBbC0rmc+7K5E9m6KbdHX4hJjp+7GJqFOc90V0GySr51KR
+	JwHdNx/I7chO1KFBiS59Gf8QnIyeLTflg4MKa7qzv9vePpve6yA0b4ceYCVt/oI=
+X-Google-Smtp-Source: AGHT+IG4xUoDcwuELvZwr6LG9uss5vNKlYqqi2OOZdEWOEtWwrPLCmPvrHot1em53eidvgyCgrkzcw==
+X-Received: by 2002:a05:6808:238f:b0:3d2:2a43:1c03 with SMTP id 5614622812f47-3d51b96c6e0mr9705037b6e.9.1719003097507;
+        Fri, 21 Jun 2024 13:51:37 -0700 (PDT)
+Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3d5345e584dsm428089b6e.55.2024.06.21.13.51.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jun 2024 13:51:37 -0700 (PDT)
+From: David Lechner <dlechner@baylibre.com>
+To: Mark Brown <broonie@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	=?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-spi@vger.kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH 0/3] spi: add devm_spi_optimize_message() helper
+Date: Fri, 21 Jun 2024 15:51:29 -0500
+Message-ID: <20240621-devm_spi_optimize_message-v1-0-3f9dcba6e95e@baylibre.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZnWaxtfgmLk3SplP@eichest-laptop>
+Content-Type: text/plain; charset="utf-8"
+X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 
-Hello Stefan,
+In the IIO subsystem, we are finding that it is common to call
+spi_optimize_message() during driver probe since the SPI message
+doesn't change for the lifetime of the driver. This patch adds a
+devm_spi_optimize_message() helper to simplify this common pattern.
 
-On Fri, Jun 21, 2024 at 05:22:46PM +0200, Stefan Eichenberger wrote:
-> Hi Andi, Andrew, Wolfram, Oleksij,
-> 
-> After some internal discussion we still have some questions which are
-> blocking us from solving the issue.
-> 
-> On Fri, May 31, 2024 at 04:24:37PM +0200, Stefan Eichenberger wrote:
-> > From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > 
-> > On our i.MX8M Mini based module we have an ADS1015 I2C ADC connected to
-> > the I2C bus. The ADS1015 I2C ADC will timeout after 25ms when the I2C
-> > bus is idle. The imx i2c driver will call schedule when waiting for the
-> > bus to become idle after switching to master mode. When the i2c
-> > controller switches to master mode it pulls SCL and SDA low, if the
-> > ADS1015 I2C ADC sees this for more than 25 ms without seeing SCL
-> > clocking, it will timeout and ignore all signals until the next start
-> > condition occurs (SCL and SDA low). This can occur when the system load
-> > is high and schedule returns after more than 25 ms.
-> > 
-> > This rfc tries to solve the problem by using a udelay for the first 10
-> > ms before calling schedule. This reduces the chance that we will
-> > reschedule. However, it is still theoretically possible for the problem
-> > to occur. To properly solve the problem, we would also need to disable
-> > interrupts during the transfer.
-> > 
-> > After some internal discussion, we see three possible solutions:
-> > 1. Use udelay as shown in this rfc and also disable the interrupts
-> >    during the transfer. This would solve the problem but disable the
-> >    interrupts. Also, we would have to re-enable the interrupts if the
-> >    timeout is longer than 1ms (TBD).
-> > 2. We use a retry mechanism in the ti-ads1015 driver. When we see a
-> >    timeout, we try again.
-> > 3. We use the suggested solution and accept that there is an edge case
-> >    where the timeout can happen.
-> > 
-> > There may be a better way to do this, which is why this is an RFC.
-> > 
-> > Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> > ---
+---
+David Lechner (3):
+      Documentation: devres: add missing SPI helpers
+      spi: add devm_spi_optimize_message() helper
+      iio: adc: ad7944: use devm_spi_optimize_message()
 
-...
-
-> > On a multimaster bus system, the busy bus (I2C_I2SR[IBB]) must be
-> > tested to determine whether the serial bus is free.
-> We assume this means it is not necessary to test for IBB if we know we
-> are in a single-master configuration.
-
-To me this is a very interesting option. If we can confirm that this
-busy-wait-loop is not required when we have a single master
-configuration we can just solve the issue in a clean way.
-
-And once the driver knows if it is multi-master mode or not we can also
-get rid of the EAGAIN that does not make any sense with single-master.
-There was an old discussion with some great contribution from Oleksij on
-this topic.
-
-Francesco
-
+ Documentation/driver-api/driver-model/devres.rst |  3 +++
+ drivers/iio/adc/ad7944.c                         | 26 +++--------------------
+ drivers/spi/spi.c                                | 27 ++++++++++++++++++++++++
+ include/linux/spi/spi.h                          |  2 ++
+ 4 files changed, 35 insertions(+), 23 deletions(-)
+---
+base-commit: 0ca645ab5b1528666f6662a0e620140355b5aea3
+change-id: 20240621-devm_spi_optimize_message-ebbde029dd7a
 

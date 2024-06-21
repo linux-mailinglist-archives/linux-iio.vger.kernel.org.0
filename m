@@ -1,133 +1,164 @@
-Return-Path: <linux-iio+bounces-6678-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6677-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4AF19126EF
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 15:45:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E409126A4
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 15:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01FF41C25E5A
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 13:45:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9CBF287E6D
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 13:26:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9901FB5;
-	Fri, 21 Jun 2024 13:45:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A83B155758;
+	Fri, 21 Jun 2024 13:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="L8B9Gp1r"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="joVfdosG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10A9120335;
-	Fri, 21 Jun 2024 13:45:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96684153BD2
+	for <linux-iio@vger.kernel.org>; Fri, 21 Jun 2024 13:26:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718977504; cv=none; b=qdLL7FRTIQX8CXZYp0QeT1mrvpvjb346fBGWAO7rR/EoWqEZB2CyWvuQ6la3DN2BSCfgm4mBdDohjx5WWAwGS8tHqFMI042opd3Yax2iyZrAZNjaKSHR62sRI1iukNQthNeFQKYYNJKSBg96WRji2PMXJwW2pHIv1o7WDsyqQLs=
+	t=1718976404; cv=none; b=ahv0QDZrvyMlWt8n3UEPUxMp6NGlTbXb7E6SnGd94fdWXPj+k9Oq7TbD0rfFkz1mxkzhxMEscPE6h7KJcnY54zPU2soocit2yXtamn6sKh3pImUOsW0LV+sY0dRdVGhVyy7y+vPc6QPPbaY+jwkopG9jrYl640VlPNH1hOf8NWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718977504; c=relaxed/simple;
-	bh=WoquWunYmCSL+/95Rrnl6iED+A+KdzoiIUpUW0JykN4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jWogVBkYvtsUW2F7gYb4UMRPZACjHguz53bIlkBIIx2MRBnO+UaZ6jDyD2C5J8KtJn21+kFmaXkA6xxjuMWxDtyzwqeaVgU0to6PhtGN4ZnpYHbf5/VWunO1Mi4ykTyYyCkZ9XCBrlFa91VMmcE6G8MR4dlW5Mw72TojIH1Jw4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=L8B9Gp1r; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45LBel53014651;
-	Fri, 21 Jun 2024 08:14:24 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=DKIM; bh=FRa3aI0ad3u7nydsNc44sEFGNZQ
-	hulyTRHX1Q7HOfYY=; b=L8B9Gp1rQuEvKJ70pgMgEIohqQzyUnXFuEishOXEnsx
-	G5dKGv97qbZc/OuF7Ty636rO6Ma19DNRsldTlSI4lG4CfgyQYXihTPG5kqzxnHao
-	U04a+dlR1YD2aXLO9cZg6rR0QFvW9BsGRHu0OwgPxmQganQds8Bi3g8k5PnYKcGs
-	K1DNzFMDD3DEGVqpT7uMtW8tITpdHLVxOFaEV2QDQKtUlMvgXiGYZSGdGCi23jF6
-	I2Ge70brJvm47F0OZY/r9Zz5uSpjnR46Am0Ay6LeHmfv7MvkMd2YZONso5L9qk6p
-	0xdhB+pBHnkRPbAKLZ103YAwCQVHPXXzJJD/YH146Iw==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 3yw4yxs5v7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Jun 2024 08:14:23 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 45LCEMf0021835
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 21 Jun 2024 08:14:22 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Fri, 21 Jun
- 2024 08:14:21 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Fri, 21 Jun 2024 08:14:21 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.120])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 45LCE6Su032255;
-	Fri, 21 Jun 2024 08:14:08 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: Michael Turquette <mturquette@baylibre.com>,
-        Stephen Boyd
-	<sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Lars-Peter Clausen
-	<lars@metafoo.de>,
-        Michael Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan
- Cameron <jic23@kernel.org>, <linux-clk@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>
-CC: Antoniu Miclaus <antoniu.miclaus@analog.com>,
-        Conor Dooley
-	<conor.dooley@microchip.com>
-Subject: [PATCH v6 1/2] dt-bindings: iio: adf4350: add clk provider prop
-Date: Fri, 21 Jun 2024 15:13:58 +0300
-Message-ID: <20240621121403.47912-1-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1718976404; c=relaxed/simple;
+	bh=M8ICS2gUnqSAKdwVYa3WwNL+rTtc7oafu3hZ4D7sEm0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EgEiRXkx43hd6Xr+XCU+2DjiaIo5nQYGQMwvxSraamQgxU5u6r6ciGDU2rbRrfcJS2s/wk/Rjm8hEQ1WExIEs4ufwAfF/pRDUeGyhvkmeSyA64BBm57EpT3shV93Ay9dVCLmraAq3Qpq/bGvpcqjGX0KObqXH6ZSYWRHkCNRVhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=joVfdosG; arc=none smtp.client-ip=209.85.217.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-48f375e7554so23325137.1
+        for <linux-iio@vger.kernel.org>; Fri, 21 Jun 2024 06:26:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1718976400; x=1719581200; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cxkGI4IDUNtwkih25Bt66Jpt1EbuMgTL6TuQaswoa08=;
+        b=joVfdosGXl0ihqrtc4WgzxFrW9QIEhqYAtH9OU+7zwyi/jX2bG+1pPZHVlSNWQq3dn
+         0e8V/Hy1WJy3Pn+AjxMdOc3Q5pm33s99AXkmGUixAaFxRy94wEASz4uoyaUdcaZSVQlK
+         6g/9LUxH2hdNCuZ2bH7jYkUjLy1wyWszjOA7ydJyDiyy04B/9hhpl2MZz6xCE+f/9kHm
+         gqbH25VPQqrFg4mlN4ur9GBUqp1FIeJ51iaZJip1+rJjpqNY/4niTiYMisVHhok+uNzy
+         a6XLl/og8WfbZtkMPQX8wAS6rHcSOw9lFPifFgu748VlyWuTVpCNmIv4HOpdC9Cyt8a/
+         TTRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718976400; x=1719581200;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cxkGI4IDUNtwkih25Bt66Jpt1EbuMgTL6TuQaswoa08=;
+        b=bbaPakbuuNZDnx8Y2eQICDkDz494/9I29UkfsiHbvev1M0ZuCCGGUJdNxC3PuV8QQy
+         iQiA5FJXmSkhkzLOPlFn+D7DHMx2aqIanfREHP+ytWe+J+8mZBdQYzWMRktFGfmvUtDI
+         bj/njy3FcUy20k52nsDICAyEKhsoZLRnvO47hpRVh7iBj7/H5HV1n8znz8Xitcc4Ck25
+         ECRgd+bnN62BIFIKuQYV/cPPo0aTKzUn+/PiU2bbq0MizF+HVbXKzleP5AzNfmxAyKG1
+         UL9AYgTdtc2DlZUuZitSY40h21nwnwSQMIS5CZSinzNiJeIziui8fZih9rRRJe2NBuh+
+         P5PA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3dcsHQq7pYfXg+NcUZOIbYNULi+ZojHAlsorRhOtvpASTwA96JGhuFEGNF/B5yQmyK3fThDPGl3pEDlHDD5lF/U3Qo4aCuWxQ
+X-Gm-Message-State: AOJu0Yw3TQAHDUk2+BbJlmASWHa5vbFIA66g6aBQ5f1Ybj7tlYM8xevC
+	NSuCPPNeEhSmtrmIaCzq3imAAGWId7jVNfgpOrJNIBv6C9fq/15uJ3TnK1pnPk5MsS3TaIV54JB
+	VtvcOWe8SX6UjwSirC+IGdo8//HXSeOZeCpTsdg==
+X-Google-Smtp-Source: AGHT+IFJFLnbZtfruK6baf9YWIg4LeyaPPP4GvccEFGIJqLdkPRkvc9ZCu4GwSE7nESYwJfha+my+CzBCme0z4pjarg=
+X-Received: by 2002:a05:6102:54a0:b0:48d:b0a3:fe34 with SMTP id
+ ada2fe7eead31-48f131a9f6cmr8780548137.2.1718976400058; Fri, 21 Jun 2024
+ 06:26:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: q5lCPQa3DyGBp6-UeJoXADohoYHrnZur
-X-Proofpoint-ORIG-GUID: q5lCPQa3DyGBp6-UeJoXADohoYHrnZur
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-21_04,2024-06-21_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- bulkscore=0 malwarescore=0 spamscore=0 mlxscore=0 phishscore=0
- impostorscore=0 clxscore=1015 mlxlogscore=999 priorityscore=1501
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406210091
+References: <20240621120539.31351-1-dumitru.ceclan@analog.com>
+In-Reply-To: <20240621120539.31351-1-dumitru.ceclan@analog.com>
+From: Alexandru Ardelean <aardelean@baylibre.com>
+Date: Fri, 21 Jun 2024 16:26:29 +0300
+Message-ID: <CA+GgBR_7OXJLytDeF-MSJSAAgFRJm39wBbEXxSR6HUV_zcWg_A@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: ad_sigma_delta: fix disable_one callback
+To: Dumitru Ceclan <mitrutzceclan@gmail.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, dumitru.ceclan@analog.com0, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dumitru Ceclan <dumitru.ceclan@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add properties required for providing clock to other consumers.
+On Fri, Jun 21, 2024 at 3:05=E2=80=AFPM Dumitru Ceclan <mitrutzceclan@gmail=
+.com> wrote:
+>
+> The ADC ad7192 is a sigma delta ADC with a sequencer that does not
+> require a disable_one callback as all enable channel bits are within
+> the same register.
+>
+> Remove the requirement of the disable_one callback for sigma delta ADCs
+> with a sequencer.
+>
+> This patch could be squashed with the commit that it fixes from patch
+> series: Add support for AD411x
+>
 
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
----
-no changes in v6.
- .../devicetree/bindings/iio/frequency/adi,adf4350.yaml      | 6 ++++++
- 1 file changed, 6 insertions(+)
+This fix looks fine.
+But, then this raises a question if this needs be to extended to the
+`disable_all` and maybe `indio_dev->info->update_scan_mode` check.
+And if so, how should this be handled?
 
-diff --git a/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml b/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml
-index 43cbf27114c7..d1d1311332f8 100644
---- a/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml
-+++ b/Documentation/devicetree/bindings/iio/frequency/adi,adf4350.yaml
-@@ -28,6 +28,12 @@ properties:
-   clock-names:
-     const: clkin
- 
-+  '#clock-cells':
-+    const: 0
-+
-+  clock-output-names:
-+    maxItems: 1
-+
-   gpios:
-     maxItems: 1
-     description: Lock detect GPIO.
--- 
-2.45.2
+For example:
+drivers/iio/adc/ad7124.c:    .disable_all =3D ad7124_disable_all,
+drivers/iio/adc/ad7173.c:    .disable_all =3D ad7173_disable_all,
+drivers/iio/adc/ad7192.c:    .disable_all =3D ad7192_disable_all,
+drivers/iio/adc/ad7192.c:    .disable_all =3D ad7192_disable_all,
 
+And:
+drivers/iio/adc/ad7124.c:    ret =3D ad_sd_init(&st->sd, indio_dev, spi,
+&ad7124_sigma_delta_info);
+drivers/iio/adc/ad7173.c:    ret =3D ad_sd_init(&st->sd, indio_dev, spi,
+&ad7173_sigma_delta_info);
+drivers/iio/adc/ad7192.c:    ret =3D ad_sd_init(&st->sd, indio_dev, spi,
+st->chip_info->sigma_delta_info);
+drivers/iio/adc/ad7780.c:    ad_sd_init(&st->sd, indio_dev, spi,
+&ad7780_sigma_delta_info);
+drivers/iio/adc/ad7791.c:    ad_sd_init(&st->sd, indio_dev, spi,
+&ad7791_sigma_delta_info);
+drivers/iio/adc/ad7793.c:    ad_sd_init(&st->sd, indio_dev, spi,
+&ad7793_sigma_delta_info);
+
+At least the ad7791.c & ad7793.c drivers support parts with more than
+1 channel, and there does not seem to be any `disable_all` hook
+defined (at least in iio/testing).
+I have not gone too deep with `indio_dev->info->update_scan_mode`, but
+it would be worth to do a check there as well
+
+
+> Fixes: a25a0aab2187 ("iio: adc: ad_sigma_delta: add disable_one callback"=
+)
+> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+> ---
+>  drivers/iio/adc/ad_sigma_delta.c | 5 -----
+>  1 file changed, 5 deletions(-)
+>
+> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_=
+delta.c
+> index d6b5fca034a0..8c062b0d26e3 100644
+> --- a/drivers/iio/adc/ad_sigma_delta.c
+> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> @@ -672,11 +672,6 @@ int ad_sd_init(struct ad_sigma_delta *sigma_delta, s=
+truct iio_dev *indio_dev,
+>                         dev_err(&spi->dev, "ad_sigma_delta_info lacks dis=
+able_all().\n");
+>                         return -EINVAL;
+>                 }
+> -
+> -               if (!info->disable_one) {
+> -                       dev_err(&spi->dev, "ad_sigma_delta_info lacks dis=
+able_one().\n");
+> -                       return -EINVAL;
+> -               }
+>         }
+>
+>         if (info->irq_line)
+> --
+> 2.43.0
+>
+>
 

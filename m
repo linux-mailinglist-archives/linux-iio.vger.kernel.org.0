@@ -1,68 +1,68 @@
-Return-Path: <linux-iio+bounces-6652-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6653-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8300911853
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 04:12:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91ED09118D1
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 04:43:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 147B4B21BAA
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 02:12:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3D061C2216C
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 02:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7EA7839F7;
-	Fri, 21 Jun 2024 02:12:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAABA85260;
+	Fri, 21 Jun 2024 02:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oFxux7T6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jgH8WeJs"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F100482891;
-	Fri, 21 Jun 2024 02:12:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197DF84A32;
+	Fri, 21 Jun 2024 02:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718935939; cv=none; b=PRKbB0gQcM0JTW2YMz5zy3kbk/JU79PAw62zCQ7+P3xA3+WDGG5IAuyIWDIuUX1sDzdoMeRPA1dX6yC/9TXHoyE26w9u7W0/HFOY6D6OiriYu5Hg81TQ973U6Oqlsv72vwN9GJg07cv6uv5zz1WZ07uaVT2/5edceHqMs6jxUaE=
+	t=1718937803; cv=none; b=RVVhk3ZwnbyyxgZaYM/gr0fsQ6JFKiQzxRH0x+K+lBSuL5fH1+gJHwH4axmzWliGtJwI3BtVYD/I5nwaATOu0TSAZodQL6QaAEvgMKiNEBTWqyv5C7ctF/rsPJRvUZg3WkiITXOSCRxNHm5kS7/1lngcz2RjMsThyx/qk2x2Gyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718935939; c=relaxed/simple;
-	bh=VtbuAL0k2R3PK0ZQnn4MK2s9swzhNafL3alpu/2FQ6A=;
+	s=arc-20240116; t=1718937803; c=relaxed/simple;
+	bh=R89nx9GPsZw3sS3/Gf6Reyi/X9jJl5d4U1rPtlvh8yY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gw25vUV4mYJ6V42e1uOzoft0QJgTt1gAPMX2hDkspY3OmplEPuqFQzF2+NbtbK8zP8RrJQRUrU/TyGmR6Q2E/FCBTYZlBcLMgMMLLTjuxSVcqXJGcK1CE0wppzpqDgVDKvCcv2aeWPTGscGXvQCcrcch+Ys4XPOpL4P3fzE+QRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oFxux7T6; arc=none smtp.client-ip=192.198.163.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=iJH3qhVH6rNP2XAiTObTMlk7eJpKeVOJ5I6VOihJ66ONrucZfyb52zpOTCbtbVYMWlFeym+hJFP2aoTyR9eSoLKvt3dqUMdF8qx+xHKjAg4sDxS+jPpw99BWcy7FJbmEqEwVnaG6QmL8aN9dxY9epdXs6FvxCN8LUkEn4Sdhe20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jgH8WeJs; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1718935938; x=1750471938;
+  t=1718937801; x=1750473801;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=VtbuAL0k2R3PK0ZQnn4MK2s9swzhNafL3alpu/2FQ6A=;
-  b=oFxux7T6RNdHjzsDfJFeOksZqq7uv/H7Ho+jenkNycQ5KZCxRB6wVeDu
-   tQJIuaOF8wV9spKvz1ebc/OHI+0qMkmmv9v2gWwY4pmKC6VA3GsjNy5vj
-   mU5NhbSbvYwHcKm8ESlvFFyEH3+9PV4gX5yiVvX+9Z4EuahSCFO0aMcwZ
-   tJ2hPtlhqC6bc2X4e3bM6iELxmP1rW60SN2ke4ksSdSq1jkUbSpQKlDr6
-   3NVQfahmOBEmavcIfZAQzLMkd80tvZpzgyBYHpp0HEx8cFjLECyA3Dfpf
-   A9XL7WF/R6DYzBwNQkzJZYWz/pdyzhabAzwfX4GPYTxKz6fqsRjsIBFDa
+  bh=R89nx9GPsZw3sS3/Gf6Reyi/X9jJl5d4U1rPtlvh8yY=;
+  b=jgH8WeJsxg/M1N8yJEZJG7cSxOH9zxFXxrVFLzhO5qsOfU+kdaTC7sUY
+   vcUOVi54ZyxVJq6ZxPFajGxtcvdjrA10Nko4SFL//RzzRXXDBsyY6eLhy
+   dK5XmKziegOwNHnp9hSnslzvsTAg/Vlt2VF/IhNBznDb52dmal+S6mcuI
+   Ffbglj0gEWfMNPGCqozt/QGkLp8eefT4mpJXvUDJh7s5X22RQ2dKaQmkb
+   Lxl0t7gDSCt4rBkGHGdcsOMrpkm5HlBZE5skPslbcDx/j95U54dMG0c4+
+   G/YziZYznKaDahFKxsEi5yhIhsK3QFg7kmOk/zx93e5yBFhQLsIKf5Sp+
    Q==;
-X-CSE-ConnectionGUID: 5yl1BUOTSOKfunqNHETiNQ==
-X-CSE-MsgGUID: 8xxUHfpLS8Wz3uhLOjHdMA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="16096316"
+X-CSE-ConnectionGUID: TO6mZGDvTyezWMdLOavgtQ==
+X-CSE-MsgGUID: KhFHBPrRSQ+ERbC/jy+Cyw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11109"; a="33413349"
 X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; 
-   d="scan'208";a="16096316"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2024 19:12:17 -0700
-X-CSE-ConnectionGUID: FXAbsbInRCmjE3eRj6Lhvw==
-X-CSE-MsgGUID: /11Rj0coTMuQ4KELGq1LKA==
+   d="scan'208";a="33413349"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Jun 2024 19:43:20 -0700
+X-CSE-ConnectionGUID: eFhGsVG3RZOaHxSCwbdPzA==
+X-CSE-MsgGUID: AWVMIsbCSqy0MWaoPHI4ow==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.08,253,1712646000"; 
-   d="scan'208";a="65690570"
+   d="scan'208";a="42308319"
 Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 20 Jun 2024 19:12:13 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 20 Jun 2024 19:43:16 -0700
 Received: from kbuild by 68891e0c336b with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1sKTl5-00087B-0W;
-	Fri, 21 Jun 2024 02:12:11 +0000
-Date: Fri, 21 Jun 2024 10:11:41 +0800
+	id 1sKUF7-00088I-2M;
+	Fri, 21 Jun 2024 02:43:13 +0000
+Date: Fri, 21 Jun 2024 10:43:09 +0800
 From: kernel test robot <lkp@intel.com>
 To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
 	Ramona Gradinariu <ramona.gradinariu@analog.com>,
@@ -79,9 +79,9 @@ To: Antoniu Miclaus <antoniu.miclaus@analog.com>,
 	Mario Limonciello <mario.limonciello@amd.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev
 Subject: Re: [PATCH 2/3] iio: accel: add ADXL380 driver
-Message-ID: <202406210959.gSwDq0Ql-lkp@intel.com>
+Message-ID: <202406210921.VoM5ac1P-lkp@intel.com>
 References: <20240618105150.38141-2-antoniu.miclaus@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -108,39 +108,40 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Antoniu-Miclaus/iio-accel
 base:   linus/master
 patch link:    https://lore.kernel.org/r/20240618105150.38141-2-antoniu.miclaus%40analog.com
 patch subject: [PATCH 2/3] iio: accel: add ADXL380 driver
-config: s390-allyesconfig (https://download.01.org/0day-ci/archive/20240621/202406210959.gSwDq0Ql-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 13.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240621/202406210959.gSwDq0Ql-lkp@intel.com/reproduce)
+config: x86_64-allyesconfig (https://download.01.org/0day-ci/archive/20240621/202406210921.VoM5ac1P-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240621/202406210921.VoM5ac1P-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202406210959.gSwDq0Ql-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202406210921.VoM5ac1P-lkp@intel.com/
 
-All error/warnings (new ones prefixed by >>):
+All errors (new ones prefixed by >>):
 
-   drivers/iio/accel/adxl380.c: In function '_adxl380_config_irq':
->> drivers/iio/accel/adxl380.c:1764:16: error: implicit declaration of function 'irq_get_irq_data'; did you mean 'irq_set_irq_wake'? [-Werror=implicit-function-declaration]
+>> drivers/iio/accel/adxl380.c:1764:9: error: call to undeclared function 'irq_get_irq_data'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
     1764 |         desc = irq_get_irq_data(st->irq);
-         |                ^~~~~~~~~~~~~~~~
-         |                irq_set_irq_wake
->> drivers/iio/accel/adxl380.c:1764:14: warning: assignment to 'struct irq_data *' from 'int' makes pointer from integer without a cast [-Wint-conversion]
+         |                ^
+   drivers/iio/accel/adxl380.c:1764:9: note: did you mean 'irq_set_irq_wake'?
+   include/linux/interrupt.h:485:12: note: 'irq_set_irq_wake' declared here
+     485 | extern int irq_set_irq_wake(unsigned int irq, unsigned int on);
+         |            ^
+>> drivers/iio/accel/adxl380.c:1764:7: error: incompatible integer to pointer conversion assigning to 'struct irq_data *' from 'int' [-Wint-conversion]
     1764 |         desc = irq_get_irq_data(st->irq);
-         |              ^
->> drivers/iio/accel/adxl380.c:1768:20: error: implicit declaration of function 'irqd_get_trigger_type' [-Werror=implicit-function-declaration]
+         |              ^ ~~~~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/iio/accel/adxl380.c:1768:13: error: call to undeclared function 'irqd_get_trigger_type'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
     1768 |         irq_type = irqd_get_trigger_type(desc);
-         |                    ^~~~~~~~~~~~~~~~~~~~~
->> drivers/iio/accel/adxl380.c:1769:25: error: 'IRQ_TYPE_LEVEL_HIGH' undeclared (first use in this function)
+         |                    ^
+>> drivers/iio/accel/adxl380.c:1769:18: error: use of undeclared identifier 'IRQ_TYPE_LEVEL_HIGH'
     1769 |         if (irq_type == IRQ_TYPE_LEVEL_HIGH) {
-         |                         ^~~~~~~~~~~~~~~~~~~
-   drivers/iio/accel/adxl380.c:1769:25: note: each undeclared identifier is reported only once for each function it appears in
->> drivers/iio/accel/adxl380.c:1772:32: error: 'IRQ_TYPE_LEVEL_LOW' undeclared (first use in this function)
+         |                         ^
+>> drivers/iio/accel/adxl380.c:1772:25: error: use of undeclared identifier 'IRQ_TYPE_LEVEL_LOW'
     1772 |         } else if (irq_type == IRQ_TYPE_LEVEL_LOW) {
-         |                                ^~~~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
+         |                                ^
+   5 errors generated.
 
 
-vim +1764 drivers/iio/accel/adxl380.c
+vim +/irq_get_irq_data +1764 drivers/iio/accel/adxl380.c
 
   1754	
   1755	static int _adxl380_config_irq(struct iio_dev *indio_dev)

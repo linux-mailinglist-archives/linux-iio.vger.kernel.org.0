@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-6697-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6698-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E4D913027
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 00:12:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F97F913028
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 00:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B74A1C235AA
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 22:12:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D02821C20F84
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 22:13:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0B317D353;
-	Fri, 21 Jun 2024 22:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB1817D370;
+	Fri, 21 Jun 2024 22:12:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2VAm9Ea1"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QIRpXW8x"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E866917C7DB
-	for <linux-iio@vger.kernel.org>; Fri, 21 Jun 2024 22:12:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924F917C9FC
+	for <linux-iio@vger.kernel.org>; Fri, 21 Jun 2024 22:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719007929; cv=none; b=HplDo+sX8iCtaSmaFQgssBdiSkxhhVNri+2sKInbPHa2K9KhI1Huq1gZ9KjvUVmWvFrnlsXN/qEllvh0rxxKmf+uqOB418O1kzSmtZTRFtYuxip6CehzL2U5X6wtB5MzCrZBzD3WVNmW75T6n1HuPkhDNQTdvYOi35nYeWOirBo=
+	t=1719007930; cv=none; b=uEahABHS35sMzPmd37DxsH1m2RdMrqTsFBOtGZYpLY9XA1s5VQL1RfBGKlK+qKmDaqBCgD7ry4+IkxAbFxJHRXZ9rYNN1D/QgN4fnIhoX9KuxRPcZm/vhVEoL/OEEqdTB6RQhG8HiIE7/iCdrD1aJTHT/UXrPLjd8ZA4qz3tdm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719007929; c=relaxed/simple;
-	bh=NuI4TGky1zgci5Akrsl+6+XqKEbrSq45EGYRP7kU4fU=;
+	s=arc-20240116; t=1719007930; c=relaxed/simple;
+	bh=D4fRF5Zhpc9HezkdYsinrECFHeuHQj1dIH5KeSf9cf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cIzH2/A/qQ36ub/lM7/d5VYRaLRvYtK+RJ+p5PMQZgsPoUGMJqk/7/uGYHM5qsn6kpegtxwY/5BaBycKIDJYhjJ0bQXgkfTP9m3xCtXbLHsaCEHCAPojnx+2YatHadPBOczJDugk1DzQ4hCNX9x63g6uaA3ZOKMwDyDyYkJvS1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2VAm9Ea1; arc=none smtp.client-ip=209.85.210.53
+	 MIME-Version:Content-Type; b=fuOCM42CPZLbUAIZHJDJKncHyqOoGXmSfawva7n7+kEbBqO/GpDKp+LuoOIaNwDY4QWRYiva5WIPBp6Z1oY1gVP5wC7n5dlfNwvAQgtAjz+lqb6lHpcXzGdypahXVoPrwsgx8Q1qu3CvwUfCDlT/XQh2CRbVn5FIsX03IV20tbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QIRpXW8x; arc=none smtp.client-ip=209.85.161.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-6f971cb3c9cso1300751a34.1
-        for <linux-iio@vger.kernel.org>; Fri, 21 Jun 2024 15:12:07 -0700 (PDT)
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-5baf982f56dso1258846eaf.3
+        for <linux-iio@vger.kernel.org>; Fri, 21 Jun 2024 15:12:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719007927; x=1719612727; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719007928; x=1719612728; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9VHcpSCSl+z9MULQ1sxanESbfc3kKx/Z7jY5Xhv+4kU=;
-        b=2VAm9Ea1l7hSFY7ODtzNk8ShTzKdkLXwupxxudbVyjkSkN6TbhDpi0kRa0IT/rZO99
-         FD/pNqhMHnWIA+f+T5cIM/jtEqztJ2qBTrwJSMLSrt/bO21Cpuxco6FPDY93Pt3dQ2Tm
-         DleK9ccnQlA3Z7OQ++M7NJux9wECOJOjMMkfQHj9cp65bfCRKMd3yLQmet86AIZcF+dx
-         SpKqZAOkEtw6bwirS69SXFRhWLNjtGEaL8uRp9SsHBj8GJPkPtETekg+muE0Ox8+ocCA
-         HWgcw5GOXz8cXmYWOcoJM/B9LzTNBrbt7N4IhMNsD1q9YNtGJtN86D9lrByC7UMjbf9M
-         EVHg==
+        bh=x480k30HvbgguxGycHu5EFcSQYfeSDwQqt26z/bkWhw=;
+        b=QIRpXW8xQvgnyRciqGyHHpnJukDcNIrJhYxcy/eNXRvn0gAbvz/dttFM5aY6ipig3l
+         7qHvr3/c9CznOX3n2FIjGqgJ7TDWzFaOMXdgFJzy+Ks1sbOy3zMMHNq1jzvo2z/k0hrW
+         Szk6ZqgpxC+iWPXJmy6w17KZ9mYArMQJaXWnB/t10X3pVz6lckrBUCzhLuc30wXm3Pre
+         gvhMfCSAXRZUO5ZUbjTrW/LPe0b54i7T27DRFAOlemeGI4tU4FMk+A5G6F0NOfl/TkSv
+         OaSq9baMfGaFUCKpQFs6uBihRdo/a4Ikl5NIZtZM+bVZMIX2Fry0vqaMJ22ZgZFDNs0u
+         3CIg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719007927; x=1719612727;
+        d=1e100.net; s=20230601; t=1719007928; x=1719612728;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9VHcpSCSl+z9MULQ1sxanESbfc3kKx/Z7jY5Xhv+4kU=;
-        b=gBc3IcjhAAe8WrvIiFb7Jh6zzobjNH37UGFcX00IU/UZFkKqMco2oq54HKNJfo58+w
-         kMIjTkwWWCoIV/qQcIJvOcrZPViawl0g0JjCvoe2EWwWbZdGu9Y9M6ozOoeRXnEXiLyj
-         c362fA52UUz9kw6TlmmQxqsWYF9JsKkGY5GcgKfImbwKPNWRhikHTReUkFrdukEpPtoC
-         oMsQsPWKx/FD53ehwNaMsDqMnmAb7v6FLyaVfj7PxSMbs8XRUD0A99voPLoPy+gTw3bi
-         A2Z+XA3uod2FUm5ghSdiSrdMN7zxdvyg3QQlsodk+8ydJ0kNgF7+dOCoW9MskKE/EgYR
-         l8vw==
-X-Forwarded-Encrypted: i=1; AJvYcCWK2CNxLReqx44Lc8FozsDWgkYZX9lfHNy9fOAmj2yBGNmS5+mQzDWocornu9d9V1rjqW+6ccyqHQmHpredx4UhujFlwm0jffEn
-X-Gm-Message-State: AOJu0YwVIW0MBvLPFJG4zidB3f8d5lYoBYj31XV5povvFhmMKs3Y7LpW
-	WpdZWJLSO7IOlynSLJSKYq2RWOhPNaO5BuJ8OyvVIQ2SjPEeEkXlIbfavKbGlAo=
-X-Google-Smtp-Source: AGHT+IH97rOzv+89TB95LIhCbolye0EdHa9Rc661ctJrvuPP++dIiPj9NzWl+Xc/RagwgCrSd0GJLg==
-X-Received: by 2002:a9d:7404:0:b0:6f9:7919:a33a with SMTP id 46e09a7af769-7007401b178mr10452707a34.19.1719007926913;
-        Fri, 21 Jun 2024 15:12:06 -0700 (PDT)
+        bh=x480k30HvbgguxGycHu5EFcSQYfeSDwQqt26z/bkWhw=;
+        b=rrF8y4/erSYNg5/RpQbz4bGG0qbevwqsJUDqXbJ/T/Z7mijnf7BJK591Uif8xdcMgR
+         Ls5VDLMBxE1eWdhlg3wSRFFdrSP5X7pykfBfbPC/NUoycYAkdJFr+9WDzttcCL+3AYUp
+         +PnbF9RxQ5x8dgC6Ur+I5XaoUWfPN5GQphkVT0S4CLIH8INaP65XO+Nt0k5n0ctUpmlN
+         NOypbAzJ++o/Ph9nR/L4TMSR3udSrgRYiG9W4gD0NlnPTRLiOwjTPxxO0f3356hNE7RC
+         6UOclS+FVZup525duE2g6IKcm18TRKb5yngGWxQE30LJJcdcdGDva2x8EIFkrNuQqrzC
+         yG5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVW9NCtSyMerGMmW84o4op3NiuWB1xMXJSjy7ztaOr7xh0zZWG2REe6ClQcDuzdq5fDDQHhqEnA1TqX00ACZYMgZg+QfJ2wULlm
+X-Gm-Message-State: AOJu0Yw7DRc2No31I5QBRRqIx78ebX47D9XII1qggb/yPlF5Pc/uZL/+
+	fcEW4BwHDUTLSD97OJfJn+nzRhr8mbupRkzF2PGAj0RPkzevM6zNAEGB/JQml7w=
+X-Google-Smtp-Source: AGHT+IG+VM3BqlCHEFeC4J9E/NMCgNrxfHHKT6M7Y8Cy0YuF/8Q782d8FLdKsjcTjtElrN8SZRNxMQ==
+X-Received: by 2002:a4a:3c1e:0:b0:5bd:b100:8ab1 with SMTP id 006d021491bc7-5c1adbeb0e3mr9929583eaf.7.1719007927729;
+        Fri, 21 Jun 2024 15:12:07 -0700 (PDT)
 Received: from freyr.lechnology.com (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5c1d94fb2a4sm329837eaf.10.2024.06.21.15.12.06
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5c1d94fb2a4sm329837eaf.10.2024.06.21.15.12.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jun 2024 15:12:06 -0700 (PDT)
+        Fri, 21 Jun 2024 15:12:07 -0700 (PDT)
 From: David Lechner <dlechner@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>
 Cc: David Lechner <dlechner@baylibre.com>,
@@ -81,9 +81,9 @@ Cc: David Lechner <dlechner@baylibre.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-aspeed@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 05/10] iio: adc: ltc2309: use devm_regulator_get_enable_read_voltage()
-Date: Fri, 21 Jun 2024 17:11:52 -0500
-Message-ID: <20240621-iio-regulator-refactor-round-2-v1-5-49e50cd0b99a@baylibre.com>
+Subject: [PATCH 06/10] iio: adc: max1363: use devm_regulator_get_enable_read_voltage()
+Date: Fri, 21 Jun 2024 17:11:53 -0500
+Message-ID: <20240621-iio-regulator-refactor-round-2-v1-6-49e50cd0b99a@baylibre.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240621-iio-regulator-refactor-round-2-v1-0-49e50cd0b99a@baylibre.com>
 References: <20240621-iio-regulator-refactor-round-2-v1-0-49e50cd0b99a@baylibre.com>
@@ -98,104 +98,66 @@ X-Mailer: b4 0.12.4
 Content-Transfer-Encoding: 8bit
 
 Use devm_regulator_get_enable_read_voltage() to simplify the code.
-Error message is changed since there is only one error return now.
-LTC2309_INTERNAL_REF_MV macro is added to make the internal reference
-voltage value self-documenting.
 
 Signed-off-by: David Lechner <dlechner@baylibre.com>
 ---
- drivers/iio/adc/ltc2309.c | 43 ++++++-------------------------------------
- 1 file changed, 6 insertions(+), 37 deletions(-)
+ drivers/iio/adc/max1363.c | 28 ++++------------------------
+ 1 file changed, 4 insertions(+), 24 deletions(-)
 
-diff --git a/drivers/iio/adc/ltc2309.c b/drivers/iio/adc/ltc2309.c
-index 8b3a89c1b840..888a71454070 100644
---- a/drivers/iio/adc/ltc2309.c
-+++ b/drivers/iio/adc/ltc2309.c
-@@ -16,6 +16,7 @@
- #include <linux/regulator/consumer.h>
- 
- #define LTC2309_ADC_RESOLUTION	12
-+#define LTC2309_INTERNAL_REF_MV 4096
- 
- #define LTC2309_DIN_CH_MASK	GENMASK(7, 4)
- #define LTC2309_DIN_SDN		BIT(7)
-@@ -29,14 +30,12 @@
-  * struct ltc2309 - internal device data structure
-  * @dev:	Device reference
-  * @client:	I2C reference
-- * @vref:	External reference source
-  * @lock:	Lock to serialize data access
-  * @vref_mv:	Internal voltage reference
-  */
- struct ltc2309 {
- 	struct device		*dev;
- 	struct i2c_client	*client;
--	struct regulator	*vref;
- 	struct mutex		lock; /* serialize data access */
- 	int			vref_mv;
+diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+index 8b5bc96cb9fb..bf4b6dc53fd2 100644
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -1561,18 +1561,12 @@ static const struct of_device_id max1363_of_match[] = {
  };
-@@ -157,11 +156,6 @@ static const struct iio_info ltc2309_info = {
- 	.read_raw = ltc2309_read_raw,
- };
+ MODULE_DEVICE_TABLE(of, max1363_of_match);
  
--static void ltc2309_regulator_disable(void *regulator)
+-static void max1363_reg_disable(void *reg)
 -{
--	regulator_disable(regulator);
+-	regulator_disable(reg);
 -}
 -
- static int ltc2309_probe(struct i2c_client *client)
+ static int max1363_probe(struct i2c_client *client)
  {
+ 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+ 	int ret;
+ 	struct max1363_state *st;
  	struct iio_dev *indio_dev;
-@@ -175,7 +169,6 @@ static int ltc2309_probe(struct i2c_client *client)
- 	ltc2309 = iio_priv(indio_dev);
- 	ltc2309->dev = &indio_dev->dev;
- 	ltc2309->client = client;
--	ltc2309->vref_mv = 4096; /* Default to the internal ref */
+-	struct regulator *vref;
  
- 	indio_dev->name = "ltc2309";
- 	indio_dev->modes = INDIO_DIRECT_MODE;
-@@ -183,36 +176,12 @@ static int ltc2309_probe(struct i2c_client *client)
- 	indio_dev->num_channels = ARRAY_SIZE(ltc2309_channels);
- 	indio_dev->info = &ltc2309_info;
+ 	indio_dev = devm_iio_device_alloc(&client->dev,
+ 					  sizeof(struct max1363_state));
+@@ -1589,26 +1583,12 @@ static int max1363_probe(struct i2c_client *client)
+ 	st->chip_info = i2c_get_match_data(client);
+ 	st->client = client;
  
--	ltc2309->vref = devm_regulator_get_optional(&client->dev, "vref");
--	if (IS_ERR(ltc2309->vref)) {
--		ret = PTR_ERR(ltc2309->vref);
--		if (ret == -ENODEV)
--			ltc2309->vref = NULL;
--		else
+-	st->vref_uv = st->chip_info->int_vref_mv * 1000;
+-	vref = devm_regulator_get_optional(&client->dev, "vref");
+-	if (!IS_ERR(vref)) {
+-		int vref_uv;
+-
+-		ret = regulator_enable(vref);
+-		if (ret)
 -			return ret;
--	}
+-
+-		ret = devm_add_action_or_reset(&client->dev, max1363_reg_disable, vref);
+-		if (ret)
+-			return ret;
 +	ret = devm_regulator_get_enable_read_voltage(&client->dev, "vref");
 +	if (ret < 0 && ret != -ENODEV)
-+		return dev_err_probe(ltc2309->dev, ret,
-+				     "failed to get vref voltage\n");
++		return ret;
  
--	if (ltc2309->vref) {
--		ret = regulator_enable(ltc2309->vref);
--		if (ret)
--			return dev_err_probe(ltc2309->dev, ret,
--					     "failed to enable vref\n");
--
--		ret = devm_add_action_or_reset(ltc2309->dev,
--					       ltc2309_regulator_disable,
--					       ltc2309->vref);
--		if (ret) {
--			return dev_err_probe(ltc2309->dev, ret,
--					     "failed to add regulator_disable action: %d\n",
--					     ret);
--		}
--
--		ret = regulator_get_voltage(ltc2309->vref);
--		if (ret < 0)
--			return ret;
--
--		ltc2309->vref_mv = ret / 1000;
+-		st->vref = vref;
+-		vref_uv = regulator_get_voltage(vref);
+-		if (vref_uv <= 0)
+-			return -EINVAL;
+ 
+-		st->vref_uv = vref_uv;
 -	}
-+	ltc2309->vref_mv = ret == -ENODEV ? LTC2309_INTERNAL_REF_MV : ret / 1000;
++	st->vref_uv = ret == -ENODEV ? st->chip_info->int_vref_mv * 1000 : ret;
  
- 	mutex_init(&ltc2309->lock);
- 
+ 	if (i2c_check_functionality(client->adapter, I2C_FUNC_I2C)) {
+ 		st->send = i2c_master_send;
 
 -- 
 2.45.2

@@ -1,100 +1,141 @@
-Return-Path: <linux-iio+bounces-6666-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6667-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA52291219C
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 12:08:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E2719121C4
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 12:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 716B11F25906
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 10:08:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DE881C215EC
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 10:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B70173355;
-	Fri, 21 Jun 2024 10:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39B92172BB6;
+	Fri, 21 Jun 2024 10:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JhW7pzto"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oNEcpknz"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C581A172BD9;
-	Fri, 21 Jun 2024 10:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C90171086;
+	Fri, 21 Jun 2024 10:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718964389; cv=none; b=pC5mONmRDeJsqqapm8o6i0C3qQt86pghiv2Vz9UUbyrphVjoi4KvrXVIVQY3NJ0hEsFY81H6QgfHmVgK+5NokH0891+DtNiV72QlGkHVJVkzzFZwF8jvz5O2FOIYPPt0H012DUAM9YOHD4Uet8mBB4b0HL4Lc8SKuNl/VJUwiZs=
+	t=1718964474; cv=none; b=W8Y+zAmA2W4ibQsoae3WRZ0bqRgEMYx7yOBdQP+rRerf6woVBhDVJ1o5VKFkuTwNFyWcFbnTVUFgh0w16rvtTUABNYgdYjfuplwxCWaDjkUlvUuyshg8qNo+9CYv8mg9aEfgKLZlpl4adibaBSt+dkzk9PRc37QsSIyUyc25dUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718964389; c=relaxed/simple;
-	bh=1GKLKGeRzQY51YWSHCRfEazQ3RSI3b+fO3L2sCeLnXA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=GEI6eV3U4x8ogwEcueEUhtbhjzr1gpJd1R8pckcgGD8gwSx9+bk5pbkTz8UC/sgf8A1poYIg7KOhw9dgwev2PiKLCQ+VPtCUtHy5Sm+vVe5/4ycGp71V1RjTMbBMcN+KePRMW/2R1E8kLJJ16L1V7luahSioepH9aJ+gk9BkO6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JhW7pzto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C0BC32781;
-	Fri, 21 Jun 2024 10:06:24 +0000 (UTC)
+	s=arc-20240116; t=1718964474; c=relaxed/simple;
+	bh=NMpG+5+E/sFIVDVWR8omDJnr3xkyW9hPqQT94DmStRI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FUpu14OaiROMynmm4T3eVyQiC5TMhaBv2box+yAYIoBsgcN/1iK8GgzyM/VQiB6UzC3AYsg69wrNHPEui9bofaIblV6MeDrx/N3Eh4Wwgy/0c+hLv2p4BL+nh/gt18ws+9JJOmyaWeO6mLA6BOG9kmn5m5N72BClqj/dp0w0wRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oNEcpknz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026BBC2BBFC;
+	Fri, 21 Jun 2024 10:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718964389;
-	bh=1GKLKGeRzQY51YWSHCRfEazQ3RSI3b+fO3L2sCeLnXA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=JhW7pztoxJCkRjT1yLv7ThPWJWQqRkYgeFtNV8D6Vdr6R+6/OsZQDo4FBdUype8Sh
-	 d318Thsws/swtFoXoebuAHdHMkwwdtZSYGGuZG+ihlFwVWLMbg/l8UsIL/rKKjrNpt
-	 cLzKuxr9b6bPx1Z8lvJhPdGXgA3aACBsG82RZ+hIe1YR0TuVxRFELRYv+7QWnNzBag
-	 RgVdmEQ7cOA4bzMw7jw9eFjm210ABRKiCqEayJ+0zjHURsdUbTsYSIQzWa0YaWdr5w
-	 f2P9Av5rlyYQxEdk8NM/NN3GBJUI1PLV3X+sGnN4acoHbJQvpAoQHk10kHGtmO6Adr
-	 qlkHePqiX3OZg==
-From: Vinod Koul <vkoul@kernel.org>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Sumit Semwal <sumit.semwal@linaro.org>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- Paul Cercueil <paul@crapouillou.net>
-Cc: Jonathan Corbet <corbet@lwn.net>, Nuno Sa <nuno.sa@analog.com>, 
- linux-iio@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, dmaengine@vger.kernel.org, 
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, 
- linaro-mm-sig@lists.linaro.org
-In-Reply-To: <20240620122726.41232-1-paul@crapouillou.net>
-References: <20240620122726.41232-1-paul@crapouillou.net>
-Subject: Re: (subset) [PATCH v12 0/7] iio: new DMABUF based API v12
-Message-Id: <171896438479.273533.11227587889239181030.b4-ty@kernel.org>
-Date: Fri, 21 Jun 2024 15:36:24 +0530
+	s=k20201202; t=1718964473;
+	bh=NMpG+5+E/sFIVDVWR8omDJnr3xkyW9hPqQT94DmStRI=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=oNEcpknzjmXOsng4klMmnE/Dsfz6w4pFp+R+n9GbNmvhVByDRK+SlU9i7Uvh4aYXx
+	 vjFrUd7uKzt1IxpTip68tt0xE/0/SibBFALzQhzmbZXUrjTcRkawLEeyfsKUo0oUDH
+	 t4zRfVY/MpCqYEgRSAnmW9jP+MzlEcJmE25TZxZY6ApaRy//HDqy9AtJVHHZj3x3vS
+	 U5k0vogslgbvk5256l1K4TM49LEBFdvm58y1iTyXg+5swryaNIjzHWRmTkXFmTMhws
+	 WXttbC2nbPooqDRHJ+0rcYE9s5l3Kcy9j8GmP213il+rmnAByH8tMdKTlUoNz9KkJa
+	 vv/lCM6F1a6MA==
+Message-ID: <2ea0cb20-62f9-49c8-9ec7-04c8d472e964@kernel.org>
+Date: Fri, 21 Jun 2024 12:07:48 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/3] dt-bindings: vendor-prefixes: add tyhx
+To: Yasin Lee <yasin.lee.x@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org
+References: <20240621-add-tyhx-hx9023s-sensor-driver-v6-0-65196a9020f1@gmail.com>
+ <20240621-add-tyhx-hx9023s-sensor-driver-v6-1-65196a9020f1@gmail.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240621-add-tyhx-hx9023s-sensor-driver-v6-1-65196a9020f1@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.13.0
 
-
-On Thu, 20 Jun 2024 14:27:19 +0200, Paul Cercueil wrote:
-> Here's the v12 of my patchset that introduces DMABUF support to IIO.
+On 21/06/2024 09:40, Yasin Lee wrote:
+> Add vendor prefix for NanjingTianyihexin Electronics Ltd.
+> http://www.tianyihexin.com
 > 
-> Apart from a small documentation fix, it reverts to using
-> mutex_lock/mutex_unlock in one particular place, which used cleanup
-> GOTOs (which don't play well with scope-managed cleanups).
-> 
-> Changelog:
-> - [3/7]:
->     - Revert to mutex_lock/mutex_unlock in iio_buffer_attach_dmabuf(),
->       as it uses cleanup GOTOs
-> - [6/7]:
->     - "obtained using..." -> "which can be obtained using..."
-> 
-> [...]
+> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
 
-Applied, thanks!
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[1/7] dmaengine: Add API function dmaengine_prep_peripheral_dma_vec()
-      commit: 5878853fc9389e7d0988d4b465a415cf96fd14fa
-[2/7] dmaengine: dma-axi-dmac: Implement device_prep_peripheral_dma_vec
-      commit: 74609e5686701ed8e8adc3082d15f009e327286d
-[7/7] Documentation: dmaengine: Document new dma_vec API
-      commit: 380afccc2a55e8015adae4266e8beff96ab620be
+
+---
+
+<form letter>
+This is an automated instruction, just in case, because many review tags
+are being ignored. If you know the process, you can skip it (please do
+not feel offended by me posting it here - no bad intentions intended).
+If you do not know the process, here is a short explanation:
+
+Please add Acked-by/Reviewed-by/Tested-by tags when posting new
+versions, under or above your Signed-off-by tag. Tag is "received", when
+provided in a message replied to you on the mailing list. Tools like b4
+can help here. However, there's no need to repost patches *only* to add
+the tags. The upstream maintainer will do that for tags received on the
+version they apply.
+
+https://elixir.bootlin.com/linux/v6.5-rc3/source/Documentation/process/submitting-patches.rst#L577
+</form letter>
 
 Best regards,
--- 
-Vinod Koul <vkoul@kernel.org>
+Krzysztof
 
 

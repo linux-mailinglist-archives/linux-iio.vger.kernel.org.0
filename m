@@ -1,223 +1,154 @@
-Return-Path: <linux-iio+bounces-6684-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6685-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 478A29129A1
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 17:28:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8659129AB
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 17:31:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3CB6B2887E
-	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 15:23:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E23DD1F2221B
+	for <lists+linux-iio@lfdr.de>; Fri, 21 Jun 2024 15:31:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583FC7C09E;
-	Fri, 21 Jun 2024 15:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A745974402;
+	Fri, 21 Jun 2024 15:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hHvMoV45"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="lpTs2kTj"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF7257CA7;
-	Fri, 21 Jun 2024 15:22:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D47A5DDC4
+	for <linux-iio@vger.kernel.org>; Fri, 21 Jun 2024 15:31:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.189
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718983373; cv=none; b=PL+CK/DGPhDh+5ys1bcSCbSs2QlL1lc4SJGyvMn0yhl76ak9oiIMpngOOhIrNJxbPaqibhRh/0mV2uO7/y3frDrfw8SjQkLxzfz6TBBFDvjqp741onZrdMVgK3OFQXBdYATqrwt0LO8mZoz/VZyn/OvfAvgUX/fK0CHELyWdERg=
+	t=1718983874; cv=none; b=ngqOGuyc7JVtQU27AJJq6DkdimQRM0eoPMq2EB27HjACtkQR7W4VvpGS9rG94JxvyGws2cLVDRKwzUJ4i3aKB5a5PeRNzYE0PbohSwbsitVm7sz8Z+oUHr1ES/+sTp01q0wfIytrNOQ/mFPyBMG8+L89Vl7onC4jYCOQRAN9hxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718983373; c=relaxed/simple;
-	bh=mibplKt7yrg2ylNU1KRpiE4uThsNa8fXKWWgYJuVF9c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pQuF0fgLCi49Cta6NfLbqZKr+a3OhxRqqz5Sf+HGMaI+7kO2sAYlYBnVjuH6RJJBwhJtx7w/vjFme3haIko9kmAaRRp++xnLaua0MhZNn4qAu0CmS5S0X8sIW10oK9hVJPo3Clfy0r3V7G7dmWz/fjgSQqU+svjbeCQuKbk/oAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hHvMoV45; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-36532d177a0so1210683f8f.2;
-        Fri, 21 Jun 2024 08:22:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718983369; x=1719588169; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rkGR5EJentvUL1VShfMi+kg50D4pwOAkzJOrsMjz8qk=;
-        b=hHvMoV45XoKgA12jeEUPqgJX7yzaL5RXpJkR8awHJYncvjLXQFtFxDDEqEG7wQA6SG
-         iiNOsC1Z8H8mgmOtmNLQcI9cdSPe80Npx3pCybzZ4Bdvjrce3ENDEyEkco0ytV05bKbw
-         vCmDev7SCFMmc2PDMfq/jivTLd9V8zq2dEBknDk6JYHIHcbZ6PTetATD3OysstyqddZp
-         tCkgkp07eJwwash0bvDe2hqdP3OR7uK0MKHOn2GhAkQTnCUi+PZ2ntzgNEpCmFILD1bA
-         y4dsNVSADZHOxGvkPRFOYBlltZXp9IsEHvMnG6NadHwPSdORnJYQLZ6cd+4xV3/Dwz1M
-         miRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718983369; x=1719588169;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rkGR5EJentvUL1VShfMi+kg50D4pwOAkzJOrsMjz8qk=;
-        b=XisVhFoHZnxqasOuVk0hC+8NUDjrL5a/L9jgF4jc8GDelU+pSCcq7JB1eGv2MAlvd+
-         uTIHIfrfvWE5crJ7YCjsRe42zMZ296PyUqO3Wkv87qBnbbvjz1c607N7i8xnI6IOtywB
-         e/STDK5B6UceWLfOE++2tXWKGLd+zLRqY1y/SNlv8G9c8Iga+gM1o6fjJ+G88xKU2o0l
-         E+pCyb6fk/b7dT+kloHv0nfznPPoF9c8AQaETUsq5xp/2a5SgfHizN0PgXJKY7St9bPm
-         Nhp/5NW/GmXRAiY7DtoMR1PYJJCZfzRBCkYcC4l+C0i3WsmUWLgd0jAA9VesHTdrE22a
-         agXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUE7BgqfzuCPMGfbju41yPHk0g8uFcpYAa5T223essjebJfsuNLzDobjWbjfOmBEJdNLt+i1hYYMwAXIvxKqPpL6Ul8G8k4tdyIb9p16/zKHSJuOCTlABXqFjo5kEB9Pef9NzmxHggM
-X-Gm-Message-State: AOJu0YxTrt7O3/4T80DbEDH6lvW9I6zan+roQwdf2ONEuGNibpdSE5kL
-	lQpAmUEYWW8/Y0+dE/foIMXZDqnawdaW+qIzZUf9lCRoLtfmnRs0
-X-Google-Smtp-Source: AGHT+IF9NG8saDwxeiICFI/hTyWoeWVUie5mWBddjO6sIoRMdxV0gFAvfVhnV74lANeVsONmdrpDxg==
-X-Received: by 2002:adf:eac1:0:b0:362:3526:4ebb with SMTP id ffacd0b85a97d-36317d737cbmr6808799f8f.37.1718983368601;
-        Fri, 21 Jun 2024 08:22:48 -0700 (PDT)
-Received: from eichest-laptop ([2a02:168:af72:0:b162:502a:9bd1:4c8b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36638d9c1aasm2020326f8f.55.2024.06.21.08.22.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jun 2024 08:22:48 -0700 (PDT)
-Date: Fri, 21 Jun 2024 17:22:46 +0200
-From: Stefan Eichenberger <eichest@gmail.com>
-To: o.rempel@pengutronix.de, kernel@pengutronix.de, andi.shyti@kernel.org,
-	shawnguo@kernel.org, s.hauer@pengutronix.de, festevam@gmail.com,
-	jic23@kernel.org, lars@metafoo.de, nuno.sa@analog.com,
-	andriy.shevchenko@linux.intel.com, marcelo.schmitt@analog.com,
-	gnstark@salutedevices.com, francesco.dolcini@toradex.com,
-	wsa+renesas@sang-engineering.com, andrew@lunn.ch
-Cc: linux-i2c@vger.kernel.org, imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-iio@vger.kernel.org,
-	Stefan Eichenberger <stefan.eichenberger@toradex.com>
-Subject: Re: [RFC PATCH] i2c: imx: avoid rescheduling when waiting for bus
- not busy
-Message-ID: <ZnWaxtfgmLk3SplP@eichest-laptop>
-References: <20240531142437.74831-1-eichest@gmail.com>
+	s=arc-20240116; t=1718983874; c=relaxed/simple;
+	bh=6Sxj7NyGK3NnaTBQtDuoPz7xSdV7SeSV4ZOOalbUogk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=eQk5FXqnQrMSO4HHpJ5YlvBZ1+SZWqp2BRjeYF/B33q0kV+sgck9bslarjGRgcAA1ZfG4j1EVN/6QDbRdpV0/tqzYwoC4D5GRRYk/E45iZ0cTVECVXCG8aolT5D27lvcd5a0Y189m+GeDU40oeo6DAg90++vpb0/2Zn4K7QRcnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=lpTs2kTj; arc=none smtp.client-ip=91.218.175.189
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: linux@roeck-us.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1718983870;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=84714MseuJ5eYmHrBF1FkNC7jf6Ok3uWsdaXqPdl7zU=;
+	b=lpTs2kTjM0gFPDUpXxvFlPnH3hc0GMHF7MQxeJ/gCwUETTINTn4hsa8ytX7UszhAQVYsFK
+	Cuufi4+rIPUMJZlMqm826Vbx5XeXr0vCftNKIlYfCm9rq+yrjc8+Whs2kdnD4Ftw8jbksk
+	ySwchPAzQAYCouDK2VXqoxRSrSSH6HQ=
+X-Envelope-To: jic23@kernel.org
+X-Envelope-To: jdelvare@suse.com
+X-Envelope-To: linux-iio@vger.kernel.org
+X-Envelope-To: linux-hwmon@vger.kernel.org
+X-Envelope-To: lars@metafoo.de
+X-Envelope-To: linux-kernel@vger.kernel.org
+Message-ID: <1439bdda-0e01-42da-a8ec-7a51ee3a5a08@linux.dev>
+Date: Fri, 21 Jun 2024 11:31:06 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240531142437.74831-1-eichest@gmail.com>
+Subject: Re: [PATCH 2/2] hwmon: iio: Add labels from IIO channels
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+To: Guenter Roeck <linux@roeck-us.net>, Jonathan Cameron <jic23@kernel.org>,
+ Jean Delvare <jdelvare@suse.com>, linux-iio@vger.kernel.org,
+ linux-hwmon@vger.kernel.org
+Cc: Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org
+References: <20240620211310.820579-1-sean.anderson@linux.dev>
+ <20240620211310.820579-3-sean.anderson@linux.dev>
+ <0c74406c-291d-4b0f-935e-989fb2f870ce@roeck-us.net>
+ <55dbe61b-c2df-4eeb-80ac-cc2c83e9cdd3@linux.dev>
+Content-Language: en-US
+In-Reply-To: <55dbe61b-c2df-4eeb-80ac-cc2c83e9cdd3@linux.dev>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-Hi Andi, Andrew, Wolfram, Oleksij,
-
-After some internal discussion we still have some questions which are
-blocking us from solving the issue.
-
-On Fri, May 31, 2024 at 04:24:37PM +0200, Stefan Eichenberger wrote:
-> From: Stefan Eichenberger <stefan.eichenberger@toradex.com>
+On 6/21/24 11:22, Sean Anderson wrote:
+> On 6/21/24 11:08, Guenter Roeck wrote:
+>> On 6/20/24 14:13, Sean Anderson wrote:
+>>> Add labels from IIO channels to our channels. This allows userspace to
+>>> display more meaningful names instead of "in0" or "temp5".
+>>>
+>>> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+>>> ---
+>>>
+>>>   drivers/hwmon/iio_hwmon.c | 33 ++++++++++++++++++++++++++++++---
+>>>   1 file changed, 30 insertions(+), 3 deletions(-)
+>>>
+>>> diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
+>>> index 4c8a80847891..588b64c18e63 100644
+>>> --- a/drivers/hwmon/iio_hwmon.c
+>>> +++ b/drivers/hwmon/iio_hwmon.c
+>>> @@ -33,6 +33,17 @@ struct iio_hwmon_state {
+>>>       struct attribute **attrs;
+>>>   };
+>>>   +static ssize_t iio_hwmon_read_label(struct device *dev,
+>>> +                  struct device_attribute *attr,
+>>> +                  char *buf)
+>>> +{
+>>> +    struct sensor_device_attribute *sattr = to_sensor_dev_attr(attr);
+>>> +    struct iio_hwmon_state *state = dev_get_drvdata(dev);
+>>> +    struct iio_channel *chan = &state->channels[sattr->index];
+>>> +
+>>> +    return iio_read_channel_label(chan, buf);
+>> 
+>> This can return -EINVAL if there is no label. Since the label attribute
+>> is created unconditionally, every affected system would end up with
+>> lots of error messages when running the "sensors" command.
+>> This is not acceptable.
 > 
-> On our i.MX8M Mini based module we have an ADS1015 I2C ADC connected to
-> the I2C bus. The ADS1015 I2C ADC will timeout after 25ms when the I2C
-> bus is idle. The imx i2c driver will call schedule when waiting for the
-> bus to become idle after switching to master mode. When the i2c
-> controller switches to master mode it pulls SCL and SDA low, if the
-> ADS1015 I2C ADC sees this for more than 25 ms without seeing SCL
-> clocking, it will timeout and ignore all signals until the next start
-> condition occurs (SCL and SDA low). This can occur when the system load
-> is high and schedule returns after more than 25 ms.
-> 
-> This rfc tries to solve the problem by using a udelay for the first 10
-> ms before calling schedule. This reduces the chance that we will
-> reschedule. However, it is still theoretically possible for the problem
-> to occur. To properly solve the problem, we would also need to disable
-> interrupts during the transfer.
-> 
-> After some internal discussion, we see three possible solutions:
-> 1. Use udelay as shown in this rfc and also disable the interrupts
->    during the transfer. This would solve the problem but disable the
->    interrupts. Also, we would have to re-enable the interrupts if the
->    timeout is longer than 1ms (TBD).
-> 2. We use a retry mechanism in the ti-ads1015 driver. When we see a
->    timeout, we try again.
-> 3. We use the suggested solution and accept that there is an edge case
->    where the timeout can happen.
-> 
-> There may be a better way to do this, which is why this is an RFC.
-> 
-> Signed-off-by: Stefan Eichenberger <stefan.eichenberger@toradex.com>
-> ---
->  drivers/i2c/busses/i2c-imx.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-> index 3842e527116b7..179f8367490a5 100644
-> --- a/drivers/i2c/busses/i2c-imx.c
-> +++ b/drivers/i2c/busses/i2c-imx.c
-> @@ -503,10 +503,18 @@ static int i2c_imx_bus_busy(struct imx_i2c_struct *i2c_imx, int for_busy, bool a
->  				"<%s> I2C bus is busy\n", __func__);
->  			return -ETIMEDOUT;
->  		}
-> -		if (atomic)
-> +		if (atomic) {
->  			udelay(100);
-> -		else
-> -			schedule();
-> +		} else {
-> +			/*
-> +			 * Avoid rescheduling in the first 10 ms to avoid
-> +			 * timeouts for SMBus like devices
-> +			 */
-> +			if (time_before(jiffies, orig_jiffies + msecs_to_jiffies(10)))
-> +				udelay(10);
-> +			else
-> +				schedule();
-> +		}
->  	}
->  
->  	return 0;
-> -- 
-> 2.40.1
+> The sensors command gracefully handles this. There are no errors, and the label is unused.
 
-If we want to be sure that the ADS1015 I2C ADC will never timeout, we
-would have to add a patch to disable preemption during transmission.
-This would look like this:
+For example, without IIO labels I get:
 
-@@ -1244,6 +1248,12 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 	bool is_lastmsg = false;
- 	struct imx_i2c_struct *i2c_imx = i2c_get_adapdata(adapter);
- 
-+	/* If we are in SMBus mode we need to do the transfer atomically */
-+	if (i2c_imx->smbus_mode) {
-+		preempt_disable();
-+		atomic = true;
-+	}
-+
- 	/* Start I2C transfer */
- 	result = i2c_imx_start(i2c_imx, atomic);
- 	if (result) {
-@@ -1320,6 +1330,9 @@ static int i2c_imx_xfer_common(struct i2c_adapter *adapter,
- 	if (i2c_imx->slave)
- 		i2c_imx_slave_init(i2c_imx);
- 
-+	if (i2c_imx->smbus_mode)
-+		preempt_enable();
-+
- 	return (result < 0) ? result : num;
- }
+$ sensors hwmon_ams_ps-isa-0000
+hwmon_ams_ps-isa-0000
+Adapter: ISA adapter
+in1:         825.00 mV 
+in2:         826.00 mV 
+in3:           1.81 V  
+in4:           1.18 V  
+in5:           1.80 V  
+in6:           1.80 V  
+in7:           3.27 V  
+in8:           1.81 V  
+in9:         825.00 mV 
+in10:          1.81 V  
+in11:          1.80 V  
+temp1:        +79.8 C  
+temp2:        +80.9 C  
 
-However, we are aware that disabling preemption is not a good idea. So
-we were discussing how this is normally handled with SMBus devices? Is
-it just expected that SMBus devices will timeout in rare cases?
+and with labels I get
 
-For our use case, the problem would be solved if we could get rid of the
-schedule call and replace it with a udelay. It seems that the i.MX8M
-Mini I2C controller needs a few ms to clear the IBB flag. In the
-reference manual, they write:
-> I2C bus busy bit. Indicates the status of the bus. NOTE: When I2C is
-> enabled (I2C_I2CR[IEN] = 1), it continuously polls the bus data (SDA)
-> and clock (SCL) signals to determine a Start or Stop condition. Bus is
-> idle. If a Stop signal is detected, IBB is cleared. Bus is busy. When
-> Start is detected, IBB is set.
-Unfortunately, it is not clear how often they poll. In our tests the
-issue disappeard when we used udelay instead of usleep or schedule for
-the first 10 ms.
+$ sensors hwmon_ams_ps-isa-0000
+hwmon_ams_ps-isa-0000
+Adapter: ISA adapter
+VCC_PSINTLP: 824.00 mV 
+VCC_PSINTFP: 822.00 mV 
+VCC_PSAUX:     1.81 V  
+VCC_PSDDR:     1.18 V  
+VCC_PSIO3:     1.80 V  
+VCC_PSIO0:     1.80 V  
+VCC_PSIO1:     3.27 V  
+VCC_PSIO2:     1.80 V  
+PS_MGTRAVCC: 822.00 mV 
+PS_MGTRAVTT:   1.81 V  
+VCC_PSADC:     1.80 V  
+Temp_LPD:     +79.5 C  
+Temp_FPD:     +80.2 C  
 
-Since we know we don't have a multi-master configuration, another way
-would be to not test for IBB and just start the transfer. We saw that
-other drivers use the multi-master device tree property to determine if
-multi-master is supported. Here another quote from the reference manual:
-> On a multimaster bus system, the busy bus (I2C_I2SR[IBB]) must be
-> tested to determine whether the serial bus is free.
-We assume this means it is not necessary to test for IBB if we know we
-are in a single-master configuration.
+I also was concerned about the same thing, but lm-sensors handles things
+gracefully, allowing us to simplify the implementation.
 
-Would either of these workarounds be acceptable, and which would be
-preferred?
-
-Thanks,
-Stefan
+--Sean
 

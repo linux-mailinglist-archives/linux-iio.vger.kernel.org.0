@@ -1,77 +1,59 @@
-Return-Path: <linux-iio+bounces-6722-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6723-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BEB891358A
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 20:07:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6317391358E
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 20:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F5E91C20D13
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 18:07:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 149261F2368C
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 18:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B42A2C697;
-	Sat, 22 Jun 2024 18:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B924F22F03;
+	Sat, 22 Jun 2024 18:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="slBSHExp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cs/Arlq9"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F21B225CF;
-	Sat, 22 Jun 2024 18:07:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EB717C69;
+	Sat, 22 Jun 2024 18:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719079641; cv=none; b=BdFt/9huKG3P2h7yxCj6umrXNTTpErTbT1L2zQSCBdMM3EnM+FZrZd3IlTSOTBqd4mVss5k9qwikPumDV4fjjzN15wiffXJFf84YZoGh9Lp6eTsxA0nqcFKrtTyTD7HaKIYxsU97EPOMbgKXERANFi3JYo4LkIYnXaVnPNhny+0=
+	t=1719079787; cv=none; b=rEeTUHzY3Z/BrxnjLKt2FHe22kp4SSfW8dQynzwcT0+/2tnsYSlsQkIG649/8WpXT8FQL0Y6DhfQ9/v87KC1+h9B6khx5J8uaqxM+p1r5Rm6NUpnMVabwaDbLctYq2epgTwAOOrp5ycx351nxpjQGsSdKLTAbaZZc+h4aVJjbo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719079641; c=relaxed/simple;
-	bh=OtT1Bdv6RV8ExcvkSroMHalr66r6ej9Rmqb6rUMOMI4=;
+	s=arc-20240116; t=1719079787; c=relaxed/simple;
+	bh=082FeeJIT8NcL1A4NEunFEyHbInRFrlQoDCLXe/8G6o=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h+niIOEBsmQyM0xIXmZEpKbtK6DUXmYpORNpS+3/LErvZvHdvlyIs3/IoIyZ2JTg5G5bO2L6ij76xVQlFGLOQssDmXGjoaHBvEqeDPCLZvNISB9rxKUD5xigpJRudgmCxLZxB3o3NYbtoZimE3faITmVxsM/H0wT7K14sCSbRHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=slBSHExp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F603C3277B;
-	Sat, 22 Jun 2024 18:07:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RM1lVZ73GnuT8RHOVLdeJL6jpd/0eO6g5KAXEFE/0GGDbp1wUv+XIzrfIUn6Aubcg/lIQKFOZbaawVW/c/rsq/bslcfHVWZhrVy7F3SFFxZlWxakT9+B8OR7YTd30ZhvCl/tXYfR0QQu9dW7UNqX1j1L6pc2oSaDQeRzTIsR8+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cs/Arlq9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4117C3277B;
+	Sat, 22 Jun 2024 18:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719079640;
-	bh=OtT1Bdv6RV8ExcvkSroMHalr66r6ej9Rmqb6rUMOMI4=;
+	s=k20201202; t=1719079786;
+	bh=082FeeJIT8NcL1A4NEunFEyHbInRFrlQoDCLXe/8G6o=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=slBSHExp0Uwe7g9gxR6wtZtx9GvEjsaR/9tW7T7D7ThM65vtbu5NwRtXOWZLb/A6Z
-	 x4vzB//x6l8e4m/dKCQqux2wTtNYCkhB0sPnsVA49iVVQpmQ8/6HKwHmZEjeGxQQ66
-	 +En2No/IKyo4TyARnNnRLLs9Nlw+Wx1OIGZR/8G+Zs7XxL5ECp2Dn79Bh9vAwRcAGW
-	 Q8Y8kd5QjhT3h2nHvtxpe7LJn/2WOfoj1p1f/BnDGUBk5Elm13U0NGXZWsbU0pwaet
-	 y4XEQJhRSJfiNLyG4NPQ9Gvmck4nLZjpuik3GoyfpXf0YXq3k6IOE95ZnJLrkxyDjj
-	 eGKmdj2tsObmA==
-Date: Sat, 22 Jun 2024 19:07:06 +0100
+	b=Cs/Arlq9rIqWlmGUoGV8h4KjQpRxfteZ517I2bSJ66vYcjskBWqCz8+L3i1ZT+DJf
+	 029K0l7ZyAfTXyzfSI0IvJCiya9RSVh4zJ7VssdHWJAjbEK7gAFydMRQxwqWDZPV+O
+	 d2wm2wMeYV0fyhpzPy272QmgCNYcozjIDzammHV2vTLXpodamUf0zw+tdy1PNbDmJ5
+	 RYVOsjoGrZIs6Yu31EPdvBWknJz+ilskQl6zr/f+qDP+jcNEYLYAWNNFSwAIy4W3SA
+	 JSZRTq+h+1/k5LQdvqEcID8tx3Cd8q4FOhrzWhYpBfXjLqniZpJmuZlcbkhtHeCkOT
+	 +PZezrHQuzQIw==
+Date: Sat, 22 Jun 2024 19:09:39 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Uwe =?UTF-8?B?S2xlaW5lLUvDtm5pZw==?= <u.kleine-koenig@baylibre.com>
-Cc: Trevor Gamblin <tgamblin@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Dmitry Rokosov <ddrokosov@sberdevices.ru>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Cosmin Tanislav
- <cosmin.tanislav@analog.com>, Chen-Yu Tsai <wens@csie.org>, Hans de Goede
- <hdegoede@redhat.com>, Ray Jui <rjui@broadcom.com>, Scott Branden
- <sbranden@broadcom.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Shawn Guo <shawnguo@kernel.org>,
- Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix Kernel Team
- <kernel@pengutronix.de>, Fabio Estevam <festevam@gmail.com>, Neil Armstrong
- <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, Jerome
- Brunet <jbrunet@baylibre.com>, Martin Blumenstingl
- <martin.blumenstingl@googlemail.com>, Saravanan Sekar
- <sravanhome@gmail.com>, Orson Zhai <orsonzhai@gmail.com>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Chunyan Zhang <zhang.lyra@gmail.com>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Linus Walleij <linus.walleij@linaro.org>, Jean-Baptiste Maneyrol
- <jmaneyrol@invensense.com>, Crt Mori <cmo@melexis.com>,
- linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-amlogic@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com
-Subject: Re: [PATCH v3 00/41] iio: simplify with regmap_set_bits(),
- regmap_clear_bits()
-Message-ID: <20240622190706.670224da@jic23-huawei>
-In-Reply-To: <mv3deevgf3pp6ojy3pa4zgc5z74ajroe26sayhzvrbua2dqrdu@enqs7sobbew5>
-References: <20240617-review-v3-0-88d1338c4cca@baylibre.com>
-	<mv3deevgf3pp6ojy3pa4zgc5z74ajroe26sayhzvrbua2dqrdu@enqs7sobbew5>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Trevor Gamblin <tgamblin@baylibre.com>, Nuno Sa <nuno.sa@analog.com>,
+ Lars-Peter Clausen  <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Angelo Dureghello
+ <adureghello@baylibre.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: dac: adi-axi-dac: improve probe() error messaging
+Message-ID: <20240622190939.7ff46d62@jic23-huawei>
+In-Reply-To: <8ba6d78d2cd7f58d1d24e3c32211a8ef0d6864fc.camel@gmail.com>
+References: <20240617151820.3337034-1-tgamblin@baylibre.com>
+	<8ba6d78d2cd7f58d1d24e3c32211a8ef0d6864fc.camel@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -82,48 +64,40 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 17 Jun 2024 17:17:27 +0200
-Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com> wrote:
+On Tue, 18 Jun 2024 10:34:34 +0200
+Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
 
-> Hello Trevor,
+> On Mon, 2024-06-17 at 11:18 -0400, Trevor Gamblin wrote:
+> > The current error handling for calls such as devm_clk_get_enabled() in
+> > the adi-axi-dac probe() function means that, if a property such as
+> > 'clocks' (for example) is not present in the devicetree when booting a
+> > kernel with the driver enabled, the resulting error message will be
+> > vague, e.g.:
+> >  =20
+> > > adi_axi_dac 44a00000.dac: probe with driver adi_axi_dac failed with e=
+rror -2 =20
+> >=20
+> > Change the devm_clk_get_enabled(), devm_regmap_init_mmio(), and
+> > devm_iio_backend_register() checks to use dev_err_probe() with some
+> > context for easier debugging.
+> >=20
+> > After the change:
+> >  =20
+> > > adi_axi_dac 44a00000.dac: error -ENOENT: failed to get clock
+> > > adi_axi_dac 44a00000.dac: probe with driver adi_axi_dac failed with e=
+rror -2 =20
+> >=20
+> > Suggested-by: Nuno Sa <nuno.sa@analog.com>
+> > Tested-by: Angelo Dureghello <adureghello@baylibre.com>
+> > Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com>
+> > ---
+> > Added Angelo as Tested-by since he tested the patch on an internal
+> > setup.
+> > --- =20
 >=20
-> On Mon, Jun 17, 2024 at 09:49:40AM -0400, Trevor Gamblin wrote:
-> > Simplify the way regmap is accessed in iio drivers.
-> >=20
-> > Instead of using regmap_update_bits() and passing the mask twice, use
-> > regmap_set_bits().
-> >=20
-> > Instead of using regmap_update_bits() and passing val =3D 0, use
-> > regmap_clear_bits().
-> >=20
-> > The series is marked as v3, but the previous two revisions were single
-> > patches. There was also a resend of v1 due to not properly CCing the
-> > mailing lists on the first attempt. Trailers were pulled in from those
-> > where relevant.
-> >=20
-> > Link to v2: https://lore.kernel.org/linux-iio/20240613133927.3851344-1-=
-tgamblin@baylibre.com/
-> > Link to v1: https://lore.kernel.org/linux-iio/20240611165214.4091591-1-=
-tgamblin@baylibre.com/
-> >=20
-> > Suggested-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
-> > Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-> > Signed-off-by: Trevor Gamblin <tgamblin@baylibre.com> =20
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 >=20
-> Acked-by: Uwe Kleine-K=C3=B6nig <u.kleine-koenig@baylibre.com>
->=20
-Series applied with a few wrapping tweaks.
-
-Applied to the togreg branch of iio.git and pushed out as testing for 0-day
-to take a look + because I might rebase that tree after some fixes
-make it upstream on which I have other dependencies and I don't like doing
-that once it is in the public version of the togreg branch.
-
-Thanks
-
-Jonathan
-
-> Thanks
-> Uwe
+Applied,
+Thanks,
 
 

@@ -1,37 +1,37 @@
-Return-Path: <linux-iio+bounces-6714-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6715-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164CB9133EA
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 14:21:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E5059133ED
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 14:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C96A228403A
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 12:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E03E828387F
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 12:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE4E16C44C;
-	Sat, 22 Jun 2024 12:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3208116D303;
+	Sat, 22 Jun 2024 12:22:16 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AB015532C;
-	Sat, 22 Jun 2024 12:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE13A15217E;
+	Sat, 22 Jun 2024 12:22:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719058858; cv=none; b=BT+pDBd1vcIVArnTOCZ8kaOrtkGRf7saB3J4dIYQGIlc6xQ4/uF+weZpHMzPTayW/Dy8ZbFE5M1E3Oq67cv8IOVIAEbrEIndzzfkubYAUBUgc4xeW4trjAErfy8qfLfWkibQNize/1iiEU9ceBw3fRK99KqN4c2/x0urnr028Dc=
+	t=1719058936; cv=none; b=He8Wp+wfeJrFcXVgSVbFOsuhX6/oP59qqFIKEoR/Di+HAJbt8y+1onPa0ZDbG2mLSXP0Kt7s8uCiJImEOx+jIueM5/RsujdhjkEejOvVL17/JJZywYaQtlL9QqYGvzsrLYRTYm02CfD1tw2kKjgiqnuX+sMkKlo5zGYbsGs741g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719058858; c=relaxed/simple;
-	bh=3+oqs3moHJGcDoND9mM06S45wcCn1N3gUfvuCPIiZ1s=;
+	s=arc-20240116; t=1719058936; c=relaxed/simple;
+	bh=6lB30XLXSm3uB+E7ckHddxbxdFU97VQ0hG54flT0mjw=;
 	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=kszrwLBP0rFP1ut3ThuPc8mG7qYtJ9GrhABcOYT/+Kc1JRTOFjsMT7CqnGu3cl9uu0qJ4nKHR8ja4TJD7rI0mxMiw2gcigadY1R7OmSkySIuQohOXt1PBgpimb6+AA/r7yf0prx1ZljYTxkeK6spXWY6ZjCgrwuD1t1eb4eeJao=
+	 MIME-Version:Content-Type; b=NLlo34dgY0gpeh+ukAbVjl4mtCCJSGtUFuNaTAqThCU2SaSR9k/MzEVgKGoiXcQ20QlGJAVq55nBW9kizjhtmzPFTO5sOw3zn+FhFtdOInSUmEbwGYMHXL4voViDBjy4FjMpq/5jadLLOo+gYEHC4xppQcEyREUAoiBO2jGSa9o=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08102C3277B;
-	Sat, 22 Jun 2024 12:20:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FF5BC3277B;
+	Sat, 22 Jun 2024 12:22:15 +0000 (UTC)
 Received: from wens.tw (localhost [127.0.0.1])
-	by wens.tw (Postfix) with ESMTP id 1C31F5F852;
-	Sat, 22 Jun 2024 20:20:56 +0800 (CST)
+	by wens.tw (Postfix) with ESMTP id BDACB5F852;
+	Sat, 22 Jun 2024 20:22:12 +0800 (CST)
 From: Chen-Yu Tsai <wens@csie.org>
 To: linux-sunxi@lists.linux.dev, Chris Morgan <macroalpha82@gmail.com>
 Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
@@ -42,8 +42,8 @@ Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
 In-Reply-To: <20240605172049.231108-1-macroalpha82@gmail.com>
 References: <20240605172049.231108-1-macroalpha82@gmail.com>
 Subject: Re: (subset) [PATCH V2 0/4] Add GPADC for Allwinner H616
-Message-Id: <171905885610.1097671.12434151674069529655.b4-ty@csie.org>
-Date: Sat, 22 Jun 2024 20:20:56 +0800
+Message-Id: <171905893277.1097963.9993549431272283905.b4-ty@csie.org>
+Date: Sat, 22 Jun 2024 20:22:12 +0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -66,10 +66,12 @@ On Wed, 05 Jun 2024 12:20:45 -0500, Chris Morgan wrote:
 > 
 > [...]
 
-Applied to sunxi/clk-for-6.11 in sunxi/linux.git, thanks!
+Applied to sunxi/dt-for-6.11 in sunxi/linux.git, thanks!
 
-[2/4] clk: sunxi-ng: h616: Add clock/reset for GPADC
-      https://git.kernel.org/sunxi/linux/c/002cf0dfa201
+[3/4] arm64: dts: allwinner: h616: Add GPADC device node
+      https://git.kernel.org/sunxi/linux/c/59678cc9cc54
+[4/4] arm64: dts: allwinner: anbernic-rg35xx-h: Add ADC joysticks
+      https://git.kernel.org/sunxi/linux/c/e41e5973bf45
 
 Best regards,
 -- 

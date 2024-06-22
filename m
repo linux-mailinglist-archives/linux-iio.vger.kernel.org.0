@@ -1,582 +1,549 @@
-Return-Path: <linux-iio+bounces-6711-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6712-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4CD9133D6
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 14:16:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD0A9133DF
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 14:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0079B1C20DC1
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 12:16:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 525242840D1
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 12:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEA0016B398;
-	Sat, 22 Jun 2024 12:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983E116A953;
+	Sat, 22 Jun 2024 12:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OW3p9yKu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NcxK78OC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B07D16A936;
-	Sat, 22 Jun 2024 12:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FEE14A098;
+	Sat, 22 Jun 2024 12:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719058571; cv=none; b=HjNjfE8xB60ERmD44y5KmdxPg1DUZYOqEDbKiNzauLnoqwYJkx9OYh8AAxrPpmSMjn21IssmSjPSnW7MlRiVorA/msHXZvSAz/Tc/NTtc0L5Tg9OQtH5gfa+cyy3/Tmy5tzunhXf6GDFuggRvlZVqSYUxbX3ev8Ia87KBFAIuM4=
+	t=1719058765; cv=none; b=CPzsutOulzGJ9lor52ARwoAGdqfBc+qZ0DEKf3QJ20KNpmneILYhXAEioBdVAJJz+FF/hzAuhxt/LNgIS+xTKphWzJyiZhKW+aQyqAlM1c93bWXuea6aSxGgisn70/dH4Qr6uMXk1lsTv/BNluOXpa6BfV2lJARrCNsO4TQXrrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719058571; c=relaxed/simple;
-	bh=z598XMD842ztuCUg+IpoAI72MGdv5YAoUX9Qhbrr3xo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ciwpzoCR+HgTRjcOt79QkBEO7tRgqwesaTOddDALKqTeJldRHIZztPSPKEVR9TIeyxKpYQv2KsqRcI36RMAUr03/lIIJNkP9Y9WURnUh6kgafkedzLzv6K+dTe/H5rXyopfz2DIbRvru8NfBIFagh4IPpCCMfxEiEWbqQ484EPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OW3p9yKu; arc=none smtp.client-ip=209.85.210.177
+	s=arc-20240116; t=1719058765; c=relaxed/simple;
+	bh=YClVhme1vlJux/pS918FYlt99I/G7ZpCT4SPeq9Haio=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MvLPOpif+hyRhsnpR4VLft1cCsLRe03/Nnr2t/AQFWebFSebgZSU+fq9QMj+ZYmL0rDkWwu9+tn9pBmwsnptwBWLdO2CZT7weDfQWPLqe683FjL/aGVulkV7vJTtA9jBFWTgqGP/QBzsBoPZ1V2lCtDxBkP2G8qBq7ZDUhHj2Uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NcxK78OC; arc=none smtp.client-ip=209.85.208.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-70666ab6434so420245b3a.1;
-        Sat, 22 Jun 2024 05:15:53 -0700 (PDT)
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ec002caf3eso40685201fa.1;
+        Sat, 22 Jun 2024 05:19:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719058546; x=1719663346; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3W3G2Rb6vvlDZn2Jk41CpbVovEcLzAmKsgPYCjhgKNE=;
-        b=OW3p9yKuumGBjQZNr+Aoo8NxrC94lTvlaTl3mLlQA5CauKadnsTVCgfnuxObab2Cay
-         bwYoDozWFjoMg+us9QdhamX4Y1D9eqCuzPV20sjy0bwjd8C1ahQ+tVHreSRurFb4Uf5e
-         18R4Xx8Jjun1sPVBd3wpStLkrUNTGWrgG/CC1gvZUpgvPZGm1icq36Cmqqz0kmJnQCXp
-         wIbo/vzAEHryCzJT1JfwMb60C9+K/j1/UpbthpgXPwfyoljqenv+2Fvx9IFatxlqLybY
-         ZHsT0IgWe23pjfqjaE1PooToOK+pjCxDMuRoyRt6QgzTb3PQiXhV1w38my3TCwnRoARp
-         djhw==
+        d=gmail.com; s=20230601; t=1719058761; x=1719663561; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5sb1JRkrIDzKbSle7mCH9l+OyfeIVMXUk2nixQStEIk=;
+        b=NcxK78OCO5cnj5bxp+T4RRlN9YSdLT75P6Ek1/KZCa4Hvl1QYkf4k1dFLHOAJUfDKG
+         S9YMjQKdqD5aRJj2ZypQwnZxN+6aB+98B3AF9uXm/jZxlu7nkLmpPZbVHSrSfaowRcle
+         ysoMEG/imNW1zBhzLSuZoJK2sPnz+aCeFb3qZvMRMLrvd5dvuKeLVqpQFLd5neVFBQSR
+         afz3sEllSEPJ0t5oBKXSR8na0AxUQzSKr9do2ptNxk8IlRzV4/uT4KOVyI1+lLqBFofR
+         zkXjspgYUowmQ2y31G4vNakPgDtyIMESPvCdQ0eri92lgAcKwiFiphY8bXZm+plwL8cQ
+         KQDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719058546; x=1719663346;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3W3G2Rb6vvlDZn2Jk41CpbVovEcLzAmKsgPYCjhgKNE=;
-        b=URKrK4Ace/13USFa+QMwHV7O6iAas++gSqyo1Oe793qRPPqjtPrM/u99uzRnteIdlK
-         FSz+h8rh9FT9sKJswq5weBj+ofnAtqN6sHZBBFpMBcStL3HcuScr4GHKehYozAFShnDZ
-         v4PZJanSkEH/njYJU3VaohudSQnKQy5bZTYudUvsCAObagoeYnP+Qchm3AQQKcAO2oDj
-         nT+7Y8gDNIA3MlXBXprrq9jUZpX6BmWWz8hXSUOEO9n49SDMdaDVoFdscfKtqiOF9+Lj
-         63/L/hQYLZhWTBK9CBYxhTwRgdrnTucP9hoJv83Y51e/wCWl5l96zC9OL+uQn3JeR7kK
-         wx7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVyCoHpm2BVuwfn6xH0EwXXKef5kVUyq2V6MFLD4jxX2hKhH+MrlGTX7v1DH/qrx20nnYvZvDqkTyDn3CrOl2PfTw8HaR4xdNUTV7LgQZD/+3KOLb/1L7zNzL7WsVu0230nNNSyhtGpySeQvdgTH3luuT5U2rVWNiMioX/9X7y6/bCkSg==
-X-Gm-Message-State: AOJu0YyjUcCwNCtHImeIfCgIOuBr8Y2yjBv6+9JxI4stX0BScrTYEDdT
-	5HIagd7h4PU605AWbfoHAP8JTGqOhaK8k/tpyhas0lNe4xiFtNo4
-X-Google-Smtp-Source: AGHT+IFbQVzrY+9rZahYg59axODYHfzUIo+WWxv90us6DXUX/bS4UneupF6Rio7WO2iFFMsRf9vzOA==
-X-Received: by 2002:a05:6a00:138f:b0:705:d8b8:682d with SMTP id d2e1a72fcca58-70670fd21e5mr359060b3a.22.1719058546128;
-        Sat, 22 Jun 2024 05:15:46 -0700 (PDT)
-Received: from [100.90.230.39] ([45.32.86.188])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70651269a92sm2962817b3a.105.2024.06.22.05.15.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 22 Jun 2024 05:15:45 -0700 (PDT)
-Message-ID: <e57153bb-3bf2-46da-bb1f-7cccea105ce2@gmail.com>
-Date: Sat, 22 Jun 2024 20:15:33 +0800
+        d=1e100.net; s=20230601; t=1719058761; x=1719663561;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5sb1JRkrIDzKbSle7mCH9l+OyfeIVMXUk2nixQStEIk=;
+        b=eqBJVlm+FJMkQArWGj1u23vK22122QuduQR1IXAH1cjfReP0Tq+PG+Ez5Rmvdwkyg+
+         9hsq1EM9tn6vihNh+5uaL97CqfFDky3bvMKcVLehr2SUQiHMto8xtQ8TVkqs/vY6ekZe
+         8QdmxVilEFTWq+ftBKTqUK4c2znLaE/AerCv3Jl9HvK+LYj6jrd6F34XHyXzL9bdhHih
+         Sr9Jyj8Ox/yGmbx8EBwdhYpfYHxswqzx0ygm2Zq0BOKB9m7XcejSyH+epX9HgvHxZCPA
+         jE1KHXQM3GOIRz45yTrN/bZZ4f8Or3vnIPFJ48nvlKRBED6X5V8m8LQb+nC5zFyaO7fi
+         uLLA==
+X-Forwarded-Encrypted: i=1; AJvYcCU8wMTDx1XGF6nstsHq+eCBeC/FD++BOKiCLfIHOEAG2zMTQKBWOATczi6jSIFNIGxBbMmdo4EHRjg2rccoNo75w9EQXu4W2YM523eFAgWl6JgP4gPb2dQDM26vUlbynOCQBBGjjtkW
+X-Gm-Message-State: AOJu0YzkYoPOZ9bdmw8ZDJ3RFFWxNwNe7EGvwfTis3FveiGX2hdDyvSq
+	8wv/oPJdkMQNHd5lDEOM4a1XAPAY8dSE0HpU52ZH/j1uS7j0e808
+X-Google-Smtp-Source: AGHT+IH8lNEXfmOT1fUAx+bwNJgMeImquEakhswPeoLVXcJUtIFKQLQ8qz+slkx2Ee7zu2FMc387vQ==
+X-Received: by 2002:a05:6512:3da3:b0:52b:c33a:aa7c with SMTP id 2adb3069b0e04-52ccaa599d0mr10081326e87.65.1719058760880;
+        Sat, 22 Jun 2024 05:19:20 -0700 (PDT)
+Received: from vamoiridPC ([2a04:ee41:82:7577:57bf:cecc:afec:b13d])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72440f2782sm2184966b.25.2024.06.22.05.19.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Jun 2024 05:19:20 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
+Date: Sat, 22 Jun 2024 14:19:18 +0200
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
+	andriy.shevchenko@linux.intel.com, ang.iglesiasg@gmail.com,
+	mazziesaccount@gmail.com, ak@it-klinger.de,
+	petre.rodan@subdimension.ro, phil@raspberrypi.com, 579lpy@gmail.com,
+	linus.walleij@linaro.org, semen.protsenko@linaro.org,
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Adam Rizkalla <ajarizzo@gmail.com>
+Subject: Re: [PATCH v8 1/3] iio: pressure: bmp280: Generalize read_*()
+ functions
+Message-ID: <20240622121918.GA123707@vamoiridPC>
+References: <20240617230540.32325-1-vassilisamir@gmail.com>
+ <20240617230540.32325-2-vassilisamir@gmail.com>
+ <20240622102826.2ba446d9@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 3/3] iio: proximity: Add driver support for TYHX's
- HX9023S capacitive proximity sensor
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20240621-add-tyhx-hx9023s-sensor-driver-v6-0-65196a9020f1@gmail.com>
- <20240621-add-tyhx-hx9023s-sensor-driver-v6-3-65196a9020f1@gmail.com>
- <CA+GgBR8ojL-TT89y_=SvaidfFawW-A3JsvHYmYzZe9uKQA7QrA@mail.gmail.com>
-Content-Language: en-US
-From: Yasin Lee <yasin.lee.x@gmail.com>
-In-Reply-To: <CA+GgBR8ojL-TT89y_=SvaidfFawW-A3JsvHYmYzZe9uKQA7QrA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240622102826.2ba446d9@jic23-huawei>
 
+On Sat, Jun 22, 2024 at 10:28:26AM +0100, Jonathan Cameron wrote:
+> On Tue, 18 Jun 2024 01:05:38 +0200
+> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
+> 
+> > Add the coefficients for the IIO standard units and the IIO value
+> > inside the chip_info structure.
+> > 
+> > Move the calculations for the IIO unit compatibility from inside the
+> > read_{temp,press,humid}() functions and move them to the general
+> > read_raw() function.
+> > 
+> > In this way, all the data for the calculation of the value are
+> > located in the chip_info structure of the respective sensor.
+> > 
+> > Signed-off-by: Vasileios Amoiridis <vassilisamir@gmail.com>
+> Does this incorporate the fix?  I'm a little confused looking at
+> what is visible here, so I'd like Adam to take a look.
+> 
+> Btw, you missed cc'ing Adam.
+> 
 
-On 2024/6/21 22:09, Alexandru Ardelean wrote:
-> On Fri, Jun 21, 2024 at 10:44 AM Yasin Lee <yasin.lee.x@gmail.com> wrote:
+Ah, I only used the output of get_maintainer...
 
-
-Hi Alexandru,
-
-Thank you for your reply. I have provided some explanations regarding 
-the use of HX9023S_CH_NUM in the inline comments. Please review them.
-
-Best regards,
-
-Yasin
-
-
->> A SAR sensor from NanjingTianyihexin Electronics Ltd.
->>
->> The device has the following entry points:
->>
->> Usual frequency:
->> - sampling_frequency
->>
->> Instant reading of current values for different sensors:
->> - in_proximity0_raw
->> - in_proximity1_raw
->> - in_proximity2_raw
->> - in_proximity3_raw
->> - in_proximity4_raw
->> and associated events in events/
->>
-> Hello :)
-
-Hello  ^_^
-
-
->> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
->> ---
->>   drivers/iio/proximity/Kconfig   |   14 +
->>   drivers/iio/proximity/Makefile  |    1 +
->>   drivers/iio/proximity/hx9023s.c | 1150 +++++++++++++++++++++++++++++++++++++++
->>   3 files changed, 1165 insertions(+)
->>
-...
->> +
->> +#include <linux/array_size.h>
->> +#include <linux/bitfield.h>
->> +#include <linux/bitops.h>
->> +#include <linux/delay.h>
->> +#include <linux/device.h>
->> +#include <linux/errno.h>
->> +#include <linux/i2c.h>
->> +#include <linux/interrupt.h>
->> +#include <linux/irqreturn.h>
->> +#include <linux/math.h>
->> +#include <linux/mod_devicetable.h>
->> +#include <linux/module.h>
->> +#include <linux/mutex.h>
->> +#include <linux/pm.h>
->> +#include <linux/property.h>
->> +#include <linux/regmap.h>
->> +#include <linux/regulator/consumer.h>
->> +#include <linux/types.h>
->> +#include <linux/units.h>
->> +
->> +#include <asm/byteorder.h>
->> +#include <asm/unaligned.h>
->> +
->> +#include <linux/iio/buffer.h>
->> +#include <linux/iio/events.h>
->> +#include <linux/iio/iio.h>
->> +#include <linux/iio/trigger.h>
->> +#include <linux/iio/triggered_buffer.h>
->> +#include <linux/iio/trigger_consumer.h>
->> +#include <linux/iio/types.h>
-> A first question is: are all these headers required?
-> Looks like some of them could be removed.
-
-
-I checked all the header files again, following the IWYU principle 
-("include what you use").
-
-I confirm that they are all necessary. Below I listed the usage for each 
-file:
-
-
-#include <linux/array_size.h>  //ARRAY_SIZE
-#include <linux/bitfield.h>    //FIELD_*
-#include <linux/bitops.h>      //assign_bit
-#include <linux/device.h>      //dev_get_drvdata
-#include <linux/errno.h>       //ENOMEM @ #include <uapi/linux/errno.h>
-#include <linux/i2c.h>         //i2c_client
-#include <linux/interrupt.h>   //IRQF_ONESHOT
-#include <linux/irqreturn.h>   //irqreturn_t
-#include <linux/math64.h>      //div_u64
-#include <linux/mod_devicetable.h> //MODULE_DEVICE_TABLE
-#include <linux/module.h>      //MODULE_AUTHOR
-#include <linux/mutex.h>       //mutex_init
-#include <linux/pm.h>          //DEFINE_SIMPLE_DEV_PM_OPS
-#include <linux/property.h>    //fwnode_*
-#include <linux/regmap.h>      //regmap*
-#include <linux/regulator/consumer.h> //devm_regulator_get_enable
-#include <linux/types.h>       //u8 u32
-#include <linux/units.h>       //NANO MEGA
-
-#include <asm/byteorder.h>     //__be*  __le*
-#include <asm/unaligned.h>     //get_unaligned_le16     why not 
-<asm-generic/unaligned.h>
-
-#include <linux/iio/buffer.h> //iio_push_to_buffers_with_timestamp
-#include <linux/iio/events.h> //IIO_UNMOD_EVENT_CODE
-#include <linux/iio/iio.h>               //iio_*
-#include <linux/iio/trigger.h>           //iio_trigger*
-#include <linux/iio/triggered_buffer.h> //iio_triggered_buffer*
-#include <linux/iio/trigger_consumer.h> //iio_trigger_notify_done
-#include <linux/iio/types.h>             //IIO_*
-
-
->> +
->> +#define HX9023S_CHIP_ID 0x1D
->> +#define HX9023S_CH_NUM 5
->> +#define HX9023S_2BYTES 2
+> > ---
+> >  drivers/iio/pressure/bmp280-core.c | 167 +++++++++++++++++------------
+> >  drivers/iio/pressure/bmp280.h      |  13 ++-
+> >  2 files changed, 107 insertions(+), 73 deletions(-)
+> > 
+> > diff --git a/drivers/iio/pressure/bmp280-core.c b/drivers/iio/pressure/bmp280-core.c
+> > index 50d71ad83f37..27c00af060fa 100644
+> > --- a/drivers/iio/pressure/bmp280-core.c
+> > +++ b/drivers/iio/pressure/bmp280-core.c
+> > @@ -445,10 +445,8 @@ static u32 bmp280_compensate_press(struct bmp280_data *data,
+> >  	return (u32)p;
+> >  }
+> >  
+> > -static int bmp280_read_temp(struct bmp280_data *data,
+> > -			    int *val, int *val2)
+> > +static int bmp280_read_temp(struct bmp280_data *data, s32 *comp_temp)
+> >  {
+> > -	s32 comp_temp;
+> >  	u32 adc_temp;
+> >  	int ret;
+> >  
+> > @@ -456,16 +454,15 @@ static int bmp280_read_temp(struct bmp280_data *data,
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	comp_temp = bmp280_compensate_temp(data, adc_temp);
+> > +	*comp_temp = bmp280_compensate_temp(data, adc_temp);
+> >  
+> > -	*val = comp_temp * 10;
+> > -	return IIO_VAL_INT;
+> > +	return 0;
+> >  }
+> >  
+> > -static int bmp280_read_press(struct bmp280_data *data,
+> > -			     int *val, int *val2)
+> > +static int bmp280_read_press(struct bmp280_data *data, u32 *comp_press)
+> >  {
+> > -	u32 comp_press, adc_press, t_fine;
+> > +	u32 adc_press;
+> > +	s32 t_fine;
+> >  	int ret;
+> >  
+> >  	ret = bmp280_get_t_fine(data, &t_fine);
+> > @@ -476,17 +473,13 @@ static int bmp280_read_press(struct bmp280_data *data,
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	comp_press = bmp280_compensate_press(data, adc_press, t_fine);
+> > -
+> > -	*val = comp_press;
+> > -	*val2 = 256000;
+> > +	*comp_press = bmp280_compensate_press(data, adc_press, t_fine);
+> >  
+> > -	return IIO_VAL_FRACTIONAL;
+> > +	return 0;
+> >  }
+> >  
+> > -static int bme280_read_humid(struct bmp280_data *data, int *val, int *val2)
+> > +static int bme280_read_humid(struct bmp280_data *data, u32 *comp_humidity)
+> >  {
+> > -	u32 comp_humidity;
+> >  	u16 adc_humidity;
+> >  	s32 t_fine;
+> >  	int ret;
+> > @@ -499,11 +492,9 @@ static int bme280_read_humid(struct bmp280_data *data, int *val, int *val2)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	comp_humidity = bme280_compensate_humidity(data, adc_humidity, t_fine);
+> > -
+> > -	*val = comp_humidity * 1000 / 1024;
+> > +	*comp_humidity = bme280_compensate_humidity(data, adc_humidity, t_fine);
+> >  
+> > -	return IIO_VAL_INT;
+> > +	return 0;
+> >  }
+> >  
+> >  static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
+> > @@ -511,6 +502,8 @@ static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
+> >  				int *val, int *val2, long mask)
+> >  {
+> >  	struct bmp280_data *data = iio_priv(indio_dev);
+> > +	int chan_value;
+> > +	int ret;
+> >  
+> >  	guard(mutex)(&data->lock);
+> >
 
 ...
+  
+> > @@ -518,11 +511,29 @@ static int bmp280_read_raw_impl(struct iio_dev *indio_dev,
+> >  	case IIO_CHAN_INFO_PROCESSED:
+> >  		switch (chan->type) {
+> >  		case IIO_HUMIDITYRELATIVE:
+> > -			return data->chip_info->read_humid(data, val, val2);
+> > +			ret = data->chip_info->read_humid(data, &chan_value);
+> > +			if (ret)
+> > +				return ret;
+> > +
+> > +			*val = data->chip_info->humid_coeffs[0] * chan_value;
+> > +			*val2 = data->chip_info->humid_coeffs[1];
+> > +			return data->chip_info->humid_coeffs_type;
+> >  		case IIO_PRESSURE:
+> > -			return data->chip_info->read_press(data, val, val2);
+> > +			ret = data->chip_info->read_press(data, &chan_value);
+> > +			if (ret)
+> > +				return ret;
+> > +
+> > +			*val = data->chip_info->press_coeffs[0] * chan_value;
+> > +			*val2 = data->chip_info->press_coeffs[1];
+> > +			return data->chip_info->press_coeffs_type;
+> >  		case IIO_TEMP:
+> > -			return data->chip_info->read_temp(data, val, val2);
+> > +			ret = data->chip_info->read_temp(data, &chan_value);
+> > +			if (ret)
+> > +				return ret;
+> > +
+> > +			*val = data->chip_info->temp_coeffs[0] * (s64)chan_value;
 
->> +
->> +struct hx9023s_addr_val_pair {
->> +       u8 addr;
->> +       u8 val;
->> +};
-> This looks like:
->
-> struct reg_sequence {
->          unsigned int reg;
->          unsigned int def;
->          unsigned int delay_us;
-> };
->
-> This is defined in   include/linux/regmap.h
+This is the first difference with the previous version where I incorporated
+the typecasting to (s64).
 
-
-I will remove |hx9023s_addr_val_pair|.
-
-
-...
->> +
->> +static struct hx9023s_addr_val_pair hx9023s_reg_init_list[] = {
-> Globals like this should be `static const`
-> Also, it would be a good idea to define this as `static const struct
-> reg_sequence `
->
-> Then the `regmap_multi_reg_write()` function could be used.
-
-
-I will add the |const| qualifier and define the array type as 
-|reg_sequence|.
-
-I will replace the for loop with |regmap_multi_reg_write()|. This is a 
-good idea.
-
-...
-
->> +
->> +static int hx9023s_ch_cfg(struct hx9023s_data *data)
->> +{
->> +       unsigned int i;
->> +       u16 reg;
->> +       u8 reg_list[HX9023S_CH_NUM * 2];
->> +       u8 ch_pos[HX9023S_CH_NUM];
->> +       u8 ch_neg[HX9023S_CH_NUM];
->> +       /* Bit positions corresponding to input pin connections */
->> +       u8 conn_cs[HX9023S_CH_NUM] = {0, 2, 4, 6, 8};
->> +
->> +       for (i = 0; i < HX9023S_CH_NUM; i++) {
-> See comment [1]
->
->> +               ch_pos[i] = data->ch_data[i].channel_positive == HX9023S_NOT_CONNECTED ?
->> +                       HX9023S_NOT_CONNECTED : conn_cs[data->ch_data[i].channel_positive];
->> +               ch_neg[i] = data->ch_data[i].channel_negative == HX9023S_NOT_CONNECTED ?
->> +                       HX9023S_NOT_CONNECTED : conn_cs[data->ch_data[i].channel_negative];
->> +
->> +               reg = (HX9023S_POS << ch_pos[i]) | (HX9023S_NEG << ch_neg[i]);
->> +               put_unaligned_le16(reg, &reg_list[i * 2]);
->> +       }
->> +
->> +       return regmap_bulk_write(data->regmap, HX9023S_CH0_CFG_7_0, reg_list, HX9023S_CH_NUM * 2);
->> +}
->> +
-...
->> +
->> +static int hx9023s_sample(struct hx9023s_data *data)
->> +{
->> +       int ret, value;
->> +       unsigned int i;
->> +       u8 data_size, offset_data_size, *p, size, rx_buf[HX9023S_CH_NUM * HX9023S_BYTES_MAX];
->> +
->> +       ret = hx9023s_data_lock(data, true);
->> +       if (ret)
->> +               return ret;
->> +
->> +       ret = hx9023s_data_select(data);
->> +       if (ret)
->> +               return ret;
->  From here onwards, it looks like if there is an error, then
-> `hx9023s_data_lock(data, false)` does not get called.
-> Is that expected?
-> Maybe some `goto err` statements would be needed?
->
-
-This is a bug, I will fix it.
-
-
->> +
->> +       data_size = HX9023S_3BYTES;
->> +
->> +       /* ch0~ch3 */
->> +       p = rx_buf;
->> +       size = (HX9023S_CH_NUM - 1) * data_size;
->> +       ret = regmap_bulk_read(data->regmap, HX9023S_RAW_BL_CH0_0, p, size);
->> +       if (ret)
->> +               return ret;
->> +
->> +       /* ch4 */
->> +       p = rx_buf + size;
->> +       size = data_size;
->> +       ret = regmap_bulk_read(data->regmap, HX9023S_RAW_BL_CH4_0, p, size);
->> +       if (ret)
->> +               return ret;
->> +
->> +       for (i = 0; i < HX9023S_CH_NUM; i++) {
-> [1]
-> Maybe use some per-device (example: indio_dev->num_channels) here
-> (instead of HX9023S_CH_NUM)?
-> If adding support for a part with fewer channels, this would crash.
-> This comment is for all places where for (i = 0; i < HX9023S_CH_NUM;
-> i++)  is used
->
-HX9023S_CH_NUM represents the number of configuration registers related to the channels
-for this series of chips. This is the maximum value.
-Regardless of the actual number of channels used, all these registers need to be configured.
-Even if a certain model in this series has fewer actual channels,
-Therefore, this value does not decrease due to the use of fewer channels.
-Hence, I believe it should remain as it is.
-
->> +               value = get_unaligned_le16(&rx_buf[i * data_size + 1]);
->> +               value = sign_extend32(value, 15);
->> +               data->ch_data[i].raw = 0;
->> +               data->ch_data[i].bl = 0;
->> +               if (data->ch_data[i].sel_raw == true)
->> +                       data->ch_data[i].raw = value;
->> +               if (data->ch_data[i].sel_bl == true)
->> +                       data->ch_data[i].bl = value;
->> +       }
->> +
->> +       /* ch0~ch3 */
->> +       p = rx_buf;
->> +       size = (HX9023S_CH_NUM - 1) * data_size;
->> +       ret = regmap_bulk_read(data->regmap, HX9023S_LP_DIFF_CH0_0, p, size);
->> +       if (ret)
->> +               return ret;
->> +
->> +       /* ch4 */
->> +       p = rx_buf + size;
->> +       size = data_size;
->> +       ret = regmap_bulk_read(data->regmap, HX9023S_LP_DIFF_CH4_0, p, size);
->> +       if (ret)
->> +               return ret;
->> +
->> +       for (i = 0; i < HX9023S_CH_NUM; i++) {
-> See comment [1]
->
->> +               value = get_unaligned_le16(&rx_buf[i * data_size + 1]);
->> +               value = sign_extend32(value, 15);
->> +               data->ch_data[i].lp = 0;
->> +               data->ch_data[i].diff = 0;
->> +               if (data->ch_data[i].sel_lp == true)
->> +                       data->ch_data[i].lp = value;
->> +               if (data->ch_data[i].sel_diff == true)
->> +                       data->ch_data[i].diff = value;
->> +       }
->> +
->> +       for (i = 0; i < HX9023S_CH_NUM; i++) {
-> See comment [1]
->
->> +               if (data->ch_data[i].sel_lp == true && data->ch_data[i].sel_bl == true)
->> +                       data->ch_data[i].diff = data->ch_data[i].lp - data->ch_data[i].bl;
->> +       }
->> +
->> +       /* offset DAC */
->> +       offset_data_size = HX9023S_2BYTES;
->> +       p = rx_buf;
->> +       size = HX9023S_CH_NUM * offset_data_size;
->> +       ret = regmap_bulk_read(data->regmap, HX9023S_OFFSET_DAC0_7_0, p, size);
->> +       if (ret)
->> +               return ret;
->> +
->> +       for (i = 0; i < HX9023S_CH_NUM; i++) {
-> See comment [1]
->
->> +               value = get_unaligned_le16(&rx_buf[i * offset_data_size]);
->> +               value = FIELD_GET(GENMASK(11, 0), value);
->> +               data->ch_data[i].dac = value;
->> +       }
->> +
->> +       ret = hx9023s_data_lock(data, false);
->> +       if (ret)
->> +               return ret;
->> +
->> +       return 0;
->> +}
->> +
-...
->> +
->> +static int hx9023s_property_get(struct hx9023s_data *data)
->> +{
->> +       struct fwnode_handle *child;
->> +       struct device *dev = regmap_get_device(data->regmap);
->> +       int ret;
->> +       u32 i, reg, temp, array[2];
->> +
->> +       data->chan_in_use = 0;
->> +       for (i = 0; i < HX9023S_CH_NUM; i++) {
-> See comment [1]
->
->> +               data->ch_data[i].channel_positive = HX9023S_NOT_CONNECTED;
->> +               data->ch_data[i].channel_negative = HX9023S_NOT_CONNECTED;
->> +       }
->> +
->> +       device_for_each_child_node(dev, child) {
->> +               ret = fwnode_property_read_u32(child, "reg", &reg);
-> Maybe add a protection for when reg >= num_channels (HX9023S_CH_NUM)?
-
-
-This protection is necessary. I will add it in the next version.
-
-
->> +               if (ret) {
->> +                       fwnode_handle_put(child);
->> +                       return dev_err_probe(dev, ret, "Failed to read reg\n");
->> +               }
->> +               __set_bit(reg, &data->chan_in_use);
->> +
->> +               if (fwnode_property_read_u32(child, "input-channel", &temp) == 0) {
->> +                       data->ch_data[reg].channel_positive = temp;
->> +                       data->ch_data[reg].channel_negative = HX9023S_NOT_CONNECTED;
->> +               } else if (fwnode_property_read_u32_array(child, "diff-channels",
->> +                                                       array, sizeof(array)) == 0) {
->> +                       data->ch_data[reg].channel_positive = array[0];
->> +                       data->ch_data[reg].channel_negative = array[1];
->> +               } else {
->> +                       fwnode_handle_put(child);
->> +                       return dev_err_probe(dev, ret,
->> +                               "Failed to read channel input for channel %d\n", reg);
->> +               }
->> +       }
->> +
->> +       return 0;
->> +}
->> +
-...
->> +
->> +static int hx9023s_id_check(struct iio_dev *indio_dev)
->> +{
->> +       struct hx9023s_data *data = iio_priv(indio_dev);
->> +       int ret;
->> +       unsigned int id;
->> +
->> +       ret = regmap_read(data->regmap, HX9023S_DEVICE_ID, &id);
->> +       if (ret)
->> +               return ret;
->> +
->> +       if (id == HX9023S_CHIP_ID) {
->> +               indio_dev->name = "hx9023s";
-> This assignment is quirky here.
-> Maybe move this into the probe function?
-> The rest of the function looks fine.
-
-
-Okay, I will fix this as suggested.
-
-
->> +               return 0;
->> +       }
->> +
->> +       return -ENODEV;
->> +}
->> +
->> +static int hx9023s_probe(struct i2c_client *client)
->> +{
->> +       struct device *dev = &client->dev;
->> +       struct iio_dev *indio_dev;
->> +       struct hx9023s_data *data;
->> +       int ret;
->> +
->> +       indio_dev = devm_iio_device_alloc(dev, sizeof(struct hx9023s_data));
->> +       if (!indio_dev)
->> +               return -ENOMEM;
->> +
->> +       data = iio_priv(indio_dev);
->> +       mutex_init(&data->mutex);
->> +
->> +       data->regmap = devm_regmap_init_i2c(client, &hx9023s_regmap_config);
->> +       if (IS_ERR(data->regmap))
->> +               return dev_err_probe(dev, PTR_ERR(data->regmap), "regmap init failed\n");
->> +
->> +       ret = hx9023s_property_get(data);
->> +       if (ret)
->> +               return dev_err_probe(dev, ret, "dts phase failed\n");
->> +
->> +       ret = devm_regulator_get_enable(dev, "vdd");
->> +       if (ret)
->> +               return dev_err_probe(dev, ret, "regulator get failed\n");
->> +
->> +       ret = hx9023s_id_check(indio_dev);
->> +       if (ret)
->> +               return dev_err_probe(dev, ret, "id check failed\n");
->> +
->> +       indio_dev->channels = hx9023s_channels;
->> +       indio_dev->num_channels = ARRAY_SIZE(hx9023s_channels);
->> +       indio_dev->info = &hx9023s_info;
->> +       indio_dev->modes = INDIO_DIRECT_MODE;
->> +       i2c_set_clientdata(client, indio_dev);
->> +
->> +       ret = hx9023s_reg_init(data);
->> +       if (ret)
->> +               return dev_err_probe(dev, ret, "device init failed\n");
->> +
->> +       ret = hx9023s_ch_cfg(data);
->> +       if (ret)
->> +               return dev_err_probe(dev, ret, "channel config failed\n");
->> +
->> +       ret = regcache_sync(data->regmap);
->> +       if (ret)
->> +               return dev_err_probe(dev, ret, "regcache sync failed\n");
->> +
->> +       if (client->irq) {
->> +               ret = devm_request_threaded_irq(dev, client->irq, hx9023s_irq_handler,
->> +                                               hx9023s_irq_thread_handler, IRQF_ONESHOT,
->> +                                               "hx9023s_event", indio_dev);
->> +               if (ret)
->> +                       return dev_err_probe(dev, ret, "irq request failed\n");
->> +
->> +               data->trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
->> +                                               iio_device_id(indio_dev));
->> +               if (!data->trig)
->> +                       return dev_err_probe(dev, -ENOMEM,
->> +                                       "iio trigger alloc failed\n");
->> +
->> +               data->trig->ops = &hx9023s_trigger_ops;
->> +               iio_trigger_set_drvdata(data->trig, indio_dev);
->> +
->> +               ret = devm_iio_trigger_register(dev, data->trig);
->> +               if (ret)
->> +                       return dev_err_probe(dev, ret,
->> +                                       "iio trigger register failed\n");
->> +       }
->> +
->> +       ret = devm_iio_triggered_buffer_setup(dev, indio_dev, iio_pollfunc_store_time,
->> +                                       hx9023s_trigger_handler, &hx9023s_buffer_setup_ops);
->> +       if (ret)
->> +               return dev_err_probe(dev, ret,
->> +                               "iio triggered buffer setup failed\n");
->> +
->> +       ret = devm_iio_device_register(dev, indio_dev);
-> A direct return would also work:
-> return devm_iio_device_register(dev, indio_dev);
->
-> And it would get logged if it happens.
-
-
-I will fix it in V7
-
-
->> +       if (ret)
->> +               return dev_err_probe(dev, ret, "iio device register failed\n");
->> +
->> +       return 0;
->> +}
->> +
+> > +			*val2 = data->chip_info->temp_coeffs[1];
+> > +			return data->chip_info->temp_coeffs_type;
+> >  		default:
+> >  			return -EINVAL;
+> >  		}
+> > @@ -822,6 +833,8 @@ static int bmp280_chip_config(struct bmp280_data *data)
+> >  
+> >  static const int bmp280_oversampling_avail[] = { 1, 2, 4, 8, 16 };
+> >  static const u8 bmp280_chip_ids[] = { BMP280_CHIP_ID };
+> > +static const int bmp280_temp_coeffs[] = { 10, 1 };
+> > +static const int bmp280_press_coeffs[] = { 1, 256000 };
+> >  
+> >  const struct bmp280_chip_info bmp280_chip_info = {
+> >  	.id_reg = BMP280_REG_ID,
+> > @@ -850,6 +863,11 @@ const struct bmp280_chip_info bmp280_chip_info = {
+> >  	.num_oversampling_press_avail = ARRAY_SIZE(bmp280_oversampling_avail),
+> >  	.oversampling_press_default = BMP280_OSRS_PRESS_16X - 1,
+> >  
+> > +	.temp_coeffs = bmp280_temp_coeffs,
+> > +	.temp_coeffs_type = IIO_VAL_FRACTIONAL,
+> > +	.press_coeffs = bmp280_press_coeffs,
+> > +	.press_coeffs_type = IIO_VAL_FRACTIONAL,
+> > +
+> >  	.chip_config = bmp280_chip_config,
+> >  	.read_temp = bmp280_read_temp,
+> >  	.read_press = bmp280_read_press,
+> > @@ -877,6 +895,7 @@ static int bme280_chip_config(struct bmp280_data *data)
+> >  }
+> >  
+> >  static const u8 bme280_chip_ids[] = { BME280_CHIP_ID };
+> > +static const int bme280_humid_coeffs[] = { 1000, 1024 };
+> >  
+> >  const struct bmp280_chip_info bme280_chip_info = {
+> >  	.id_reg = BMP280_REG_ID,
+> > @@ -899,6 +918,13 @@ const struct bmp280_chip_info bme280_chip_info = {
+> >  	.num_oversampling_humid_avail = ARRAY_SIZE(bmp280_oversampling_avail),
+> >  	.oversampling_humid_default = BME280_OSRS_HUMIDITY_16X - 1,
+> >  
+> > +	.temp_coeffs = bmp280_temp_coeffs,
+> > +	.temp_coeffs_type = IIO_VAL_FRACTIONAL,
+> > +	.press_coeffs = bmp280_press_coeffs,
+> > +	.press_coeffs_type = IIO_VAL_FRACTIONAL,
+> > +	.humid_coeffs = bme280_humid_coeffs,
+> > +	.humid_coeffs_type = IIO_VAL_FRACTIONAL,
+> > +
+> >  	.chip_config = bme280_chip_config,
+> >  	.read_temp = bmp280_read_temp,
+> >  	.read_press = bmp280_read_press,
+> > @@ -1091,9 +1117,8 @@ static u32 bmp380_compensate_press(struct bmp280_data *data,
+> >  	return comp_press;
+> >  }
+> >  
+> > -static int bmp380_read_temp(struct bmp280_data *data, int *val, int *val2)
+> > +static int bmp380_read_temp(struct bmp280_data *data, s32 *comp_temp)
+> >  {
+> > -	s32 comp_temp;
+> >  	u32 adc_temp;
+> >  	int ret;
+> >  
+> > @@ -1101,15 +1126,14 @@ static int bmp380_read_temp(struct bmp280_data *data, int *val, int *val2)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	comp_temp = bmp380_compensate_temp(data, adc_temp);
+> > +	*comp_temp = bmp380_compensate_temp(data, adc_temp);
+> >  
+> > -	*val = comp_temp * 10;
+> > -	return IIO_VAL_INT;
+> > +	return 0;
+> >  }
+> >  
+> > -static int bmp380_read_press(struct bmp280_data *data, int *val, int *val2)
+> > +static int bmp380_read_press(struct bmp280_data *data, u32 *comp_press)
+> >  {
+> > -	u32 adc_press, comp_press, t_fine;
+> > +	u32 adc_press, t_fine;
+> >  	int ret;
+> >  
+> >  	ret = bmp380_get_t_fine(data, &t_fine);
+> > @@ -1120,12 +1144,9 @@ static int bmp380_read_press(struct bmp280_data *data, int *val, int *val2)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	comp_press = bmp380_compensate_press(data, adc_press, t_fine);
+> > -
+> > -	*val = comp_press;
+> > -	*val2 = 100000;
+> > +	*comp_press = bmp380_compensate_press(data, adc_press, t_fine);
+> >  
+> > -	return IIO_VAL_FRACTIONAL;
+> > +	return 0;
+> >  }
+> >  
+> >  static int bmp380_read_calib(struct bmp280_data *data)
+> > @@ -1296,6 +1317,8 @@ static int bmp380_chip_config(struct bmp280_data *data)
+> >  static const int bmp380_oversampling_avail[] = { 1, 2, 4, 8, 16, 32 };
+> >  static const int bmp380_iir_filter_coeffs_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128};
+> >  static const u8 bmp380_chip_ids[] = { BMP380_CHIP_ID, BMP390_CHIP_ID };
+> > +static const int bmp380_temp_coeffs[] = { 10, 1 };
+> > +static const int bmp380_press_coeffs[] = { 1, 100000 };
+> >  
+> >  const struct bmp280_chip_info bmp380_chip_info = {
+> >  	.id_reg = BMP380_REG_ID,
+> > @@ -1323,6 +1346,11 @@ const struct bmp280_chip_info bmp380_chip_info = {
+> >  	.num_iir_filter_coeffs_avail = ARRAY_SIZE(bmp380_iir_filter_coeffs_avail),
+> >  	.iir_filter_coeff_default = 2,
+> >  
+> > +	.temp_coeffs = bmp380_temp_coeffs,
+> > +	.temp_coeffs_type = IIO_VAL_FRACTIONAL,
+> > +	.press_coeffs = bmp380_press_coeffs,
+> > +	.press_coeffs_type = IIO_VAL_FRACTIONAL,
+> > +
+> >  	.chip_config = bmp380_chip_config,
+> >  	.read_temp = bmp380_read_temp,
+> >  	.read_press = bmp380_read_press,
+> > @@ -1443,9 +1471,9 @@ static int bmp580_nvm_operation(struct bmp280_data *data, bool is_write)
+> >   * for what is expected on IIO ABI.
+> >   */
+> >  
 
 ...
 
->>
->> --
->> 2.25.1
->>
->>
+> > -static int bmp580_read_temp(struct bmp280_data *data, int *val, int *val2)
+> > +static int bmp580_read_temp(struct bmp280_data *data, s32 *raw_temp)
+> >  {
+> > -	s32 raw_temp;
+> > +	s32 value_temp;
+> >  	int ret;
+> >  
+> >  	ret = regmap_bulk_read(data->regmap, BMP580_REG_TEMP_XLSB, data->buf,
+> > @@ -1455,25 +1483,19 @@ static int bmp580_read_temp(struct bmp280_data *data, int *val, int *val2)
+> >  		return ret;
+> >  	}
+> >  
+> > -	raw_temp = get_unaligned_le24(data->buf);
+> > -	if (raw_temp == BMP580_TEMP_SKIPPED) {
+> > +	value_temp = get_unaligned_le24(data->buf);
+> > +	if (value_temp == BMP580_TEMP_SKIPPED) {
+> >  		dev_err(data->dev, "reading temperature skipped\n");
+> >  		return -EIO;
+> >  	}
+> > +	*raw_temp = sign_extend32(value_temp, 23);
+> >  
+
+Here I use Adam's correction with sign_extend32()
+
+> > -	/*
+> > -	 * Temperature is returned in Celsius degrees in fractional
+> > -	 * form down 2^16. We rescale by x1000 to return millidegrees
+> > -	 * Celsius to respect IIO ABI.
+> > -	 */
+> > -	raw_temp = sign_extend32(raw_temp, 23);
+> > -	*val = ((s64)raw_temp * 1000) / (1 << 16);
+> > -	return IIO_VAL_INT;
+> > +	return 0;
+> >  }
+> >  
+> > -static int bmp580_read_press(struct bmp280_data *data, int *val, int *val2)
+> > +static int bmp580_read_press(struct bmp280_data *data, u32 *raw_press)
+> >  {
+> > -	u32 raw_press;
+> > +	u32 value_press;
+> >  	int ret;
+> >  
+> >  	ret = regmap_bulk_read(data->regmap, BMP580_REG_PRESS_XLSB, data->buf,
+> > @@ -1483,18 +1505,14 @@ static int bmp580_read_press(struct bmp280_data *data, int *val, int *val2)
+> >  		return ret;
+> >  	}
+> >  
+> > -	raw_press = get_unaligned_le24(data->buf);
+> > -	if (raw_press == BMP580_PRESS_SKIPPED) {
+> > +	value_press = get_unaligned_le24(data->buf);
+> > +	if (value_press == BMP580_PRESS_SKIPPED) {
+> >  		dev_err(data->dev, "reading pressure skipped\n");
+> >  		return -EIO;
+> >  	}
+> > -	/*
+> > -	 * Pressure is returned in Pascals in fractional form down 2^16.
+> > -	 * We rescale /1000 to convert to kilopascal to respect IIO ABI.
+> > -	 */
+> > -	*val = raw_press;
+> > -	*val2 = 64000; /* 2^6 * 1000 */
+> > -	return IIO_VAL_FRACTIONAL;
+> > +	*raw_press = value_press;
+> > +
+> > +	return 0;
+> >  }
+> >  
+> >  static const int bmp580_odr_table[][2] = {
+> > @@ -1830,6 +1848,8 @@ static int bmp580_chip_config(struct bmp280_data *data)
+> >  
+> >  static const int bmp580_oversampling_avail[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
+> >  static const u8 bmp580_chip_ids[] = { BMP580_CHIP_ID, BMP580_CHIP_ID_ALT };
+> > +static const int bmp580_temp_coeffs[] = { 1000, 16 };
+> > +static const int bmp580_press_coeffs[] = { 1, 64000};
+> >  
+> >  const struct bmp280_chip_info bmp580_chip_info = {
+> >  	.id_reg = BMP580_REG_CHIP_ID,
+> > @@ -1856,6 +1876,11 @@ const struct bmp280_chip_info bmp580_chip_info = {
+> >  	.num_iir_filter_coeffs_avail = ARRAY_SIZE(bmp380_iir_filter_coeffs_avail),
+> >  	.iir_filter_coeff_default = 2,
+> >  
+> > +	.temp_coeffs = bmp580_temp_coeffs,
+> > +	.temp_coeffs_type = IIO_VAL_FRACTIONAL_LOG2,
+> > +	.press_coeffs = bmp580_press_coeffs,
+> > +	.press_coeffs_type = IIO_VAL_FRACTIONAL,
+> > +
+> >  	.chip_config = bmp580_chip_config,
+> >  	.read_temp = bmp580_read_temp,
+> >  	.read_press = bmp580_read_press,
+> > @@ -2011,9 +2036,8 @@ static s32 bmp180_compensate_temp(struct bmp280_data *data, u32 adc_temp)
+> >  	return (bmp180_calc_t_fine(data, adc_temp) + 8) / 16;
+> >  }
+> >  
+> > -static int bmp180_read_temp(struct bmp280_data *data, int *val, int *val2)
+> > +static int bmp180_read_temp(struct bmp280_data *data, s32 *comp_temp)
+> >  {
+> > -	s32 comp_temp;
+> >  	u32 adc_temp;
+> >  	int ret;
+> >  
+> > @@ -2021,10 +2045,9 @@ static int bmp180_read_temp(struct bmp280_data *data, int *val, int *val2)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	comp_temp = bmp180_compensate_temp(data, adc_temp);
+> > +	*comp_temp = bmp180_compensate_temp(data, adc_temp);
+> >  
+> > -	*val = comp_temp * 100;
+> > -	return IIO_VAL_INT;
+> > +	return 0;
+> >  }
+> >  
+> >  static int bmp180_read_press_adc(struct bmp280_data *data, u32 *adc_press)
+> > @@ -2087,9 +2110,9 @@ static u32 bmp180_compensate_press(struct bmp280_data *data, u32 adc_press,
+> >  	return p + ((x1 + x2 + 3791) >> 4);
+> >  }
+> >  
+> > -static int bmp180_read_press(struct bmp280_data *data, int *val, int *val2)
+> > +static int bmp180_read_press(struct bmp280_data *data, u32 *comp_press)
+> >  {
+> > -	u32 comp_press, adc_press;
+> > +	u32 adc_press;
+> >  	s32 t_fine;
+> >  	int ret;
+> >  
+> > @@ -2101,12 +2124,9 @@ static int bmp180_read_press(struct bmp280_data *data, int *val, int *val2)
+> >  	if (ret)
+> >  		return ret;
+> >  
+> > -	comp_press = bmp180_compensate_press(data, adc_press, t_fine);
+> > -
+> > -	*val = comp_press;
+> > -	*val2 = 1000;
+> > +	*comp_press = bmp180_compensate_press(data, adc_press, t_fine);
+> >  
+> > -	return IIO_VAL_FRACTIONAL;
+> > +	return 0;
+> >  }
+> >  
+> >  static int bmp180_chip_config(struct bmp280_data *data)
+> > @@ -2117,6 +2137,8 @@ static int bmp180_chip_config(struct bmp280_data *data)
+> >  static const int bmp180_oversampling_temp_avail[] = { 1 };
+> >  static const int bmp180_oversampling_press_avail[] = { 1, 2, 4, 8 };
+> >  static const u8 bmp180_chip_ids[] = { BMP180_CHIP_ID };
+> > +static const int bmp180_temp_coeffs[] = { 100, 1 };
+> > +static const int bmp180_press_coeffs[] = { 1, 1000 };
+> >  
+> >  const struct bmp280_chip_info bmp180_chip_info = {
+> >  	.id_reg = BMP280_REG_ID,
+> > @@ -2137,6 +2159,11 @@ const struct bmp280_chip_info bmp180_chip_info = {
+> >  		ARRAY_SIZE(bmp180_oversampling_press_avail),
+> >  	.oversampling_press_default = BMP180_MEAS_PRESS_8X,
+> >  
+> > +	.temp_coeffs = bmp180_temp_coeffs,
+> > +	.temp_coeffs_type = IIO_VAL_FRACTIONAL,
+> > +	.press_coeffs = bmp180_press_coeffs,
+> > +	.press_coeffs_type = IIO_VAL_FRACTIONAL,
+> > +
+> >  	.chip_config = bmp180_chip_config,
+> >  	.read_temp = bmp180_read_temp,
+> >  	.read_press = bmp180_read_press,
+> > diff --git a/drivers/iio/pressure/bmp280.h b/drivers/iio/pressure/bmp280.h
+> > index 7c30e4d523be..a3d2cd722760 100644
+> > --- a/drivers/iio/pressure/bmp280.h
+> > +++ b/drivers/iio/pressure/bmp280.h
+> > @@ -446,10 +446,17 @@ struct bmp280_chip_info {
+> >  	int num_sampling_freq_avail;
+> >  	int sampling_freq_default;
+> >  
+> > +	const int *temp_coeffs;
+> > +	const int temp_coeffs_type;
+> > +	const int *press_coeffs;
+> > +	const int press_coeffs_type;
+> > +	const int *humid_coeffs;
+> > +	const int humid_coeffs_type;
+> > +
+> >  	int (*chip_config)(struct bmp280_data *data);
+> > -	int (*read_temp)(struct bmp280_data *data, int *val, int *val2);
+> > -	int (*read_press)(struct bmp280_data *data, int *val, int *val2);
+> > -	int (*read_humid)(struct bmp280_data *data, int *val, int *val2);
+> > +	int (*read_temp)(struct bmp280_data *data, s32 *adc_temp);
+> > +	int (*read_press)(struct bmp280_data *data, u32 *adc_press);
+> > +	int (*read_humid)(struct bmp280_data *data, u32 *adc_humidity);
+> >  	int (*read_calib)(struct bmp280_data *data);
+> >  	int (*preinit)(struct bmp280_data *data);
+> >  };
+> 
 

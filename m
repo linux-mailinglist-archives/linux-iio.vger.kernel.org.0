@@ -1,61 +1,61 @@
-Return-Path: <linux-iio+bounces-6724-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6725-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82F19135B6
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 20:44:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F7599135BB
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 20:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5528C1F22E48
-	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 18:44:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A79E1F21F59
+	for <lists+linux-iio@lfdr.de>; Sat, 22 Jun 2024 18:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4533651C3E;
-	Sat, 22 Jun 2024 18:44:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A017D39851;
+	Sat, 22 Jun 2024 18:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnPvq4F4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gxb+vuVf"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0394E5103F;
-	Sat, 22 Jun 2024 18:44:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1B81C294;
+	Sat, 22 Jun 2024 18:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719081857; cv=none; b=uwEkAVD8nndSy/Hiy9A7s86spC+weAx+4o60eDkfFEjEdVMCs5a9xQFc8EOWFtvBhvhXFCw+Kq63cTOr7ky6592ToHtL85QpMNMcxQdj8zSaslRb05nTj05qE7pYf/Acyt8CwEhBJaQONv0sCRQT0fNPX5Du174oIAnuYD44Idw=
+	t=1719082227; cv=none; b=OLQOb7CIAQkePi65L0MEEKNRvt0p3/SjJxZtOkGL0gkN/3mANB03zeOrO3UU/GDL6AvM0fxbgoN5AWcWgedCYMauCOfD+4rdEHughr0Ldh2SSVWUZ5RKKPYENVynP5Gz1rWhNu6Dxg51q45X6zUseatgMT33PXEfADbwl3Fr4Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719081857; c=relaxed/simple;
-	bh=4m4catJM9yC+Ooh4BvXUL2litsSYs5Z0g3MiscvRwPs=;
+	s=arc-20240116; t=1719082227; c=relaxed/simple;
+	bh=hjpL8sBLRmDXwQAkwY/Az+tIeeHDtbnbJXHCvXbMkMY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=edMCs8V820p7tuFnWdnTXNgQ7fO2Xx3sDFwy0/E4mb/qwcXfpsspzrZ2vIG0RR/fBzzP+3ayBFPRoh2pyGlxL/FUNoSjTIT45Mpk0lTlR8sOWUZm/rKBjuJ1NntjwXIV5k+DHTlNx7c2E/uqksChTBYfYy/eK9sKA235VxU2CNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnPvq4F4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828C7C32781;
-	Sat, 22 Jun 2024 18:44:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OY8mIp1WDRhAOfAMCJBktf3fPVT1sO4FO5f5kEOd9AIQBZeWz81rQanb5RGHRQf3nVW/gp8LOiU2dnwtmwZ33HwH7/bJWsCasle2zffMKg3FuzuoTtSuqsceSatS06nXYYyIvEiaPvz/4K+kRyLXkmiSnqDJVHW441rDUn8Ta5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gxb+vuVf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE5DC3277B;
+	Sat, 22 Jun 2024 18:50:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719081856;
-	bh=4m4catJM9yC+Ooh4BvXUL2litsSYs5Z0g3MiscvRwPs=;
+	s=k20201202; t=1719082226;
+	bh=hjpL8sBLRmDXwQAkwY/Az+tIeeHDtbnbJXHCvXbMkMY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KnPvq4F450anA9CYzJWhS7iA8AyrpCvDnOk2qlEDBpBzBXNITggnZqXFn9WBAKZ2g
-	 0dXvxzXR73k0t/AO2nspfeIeb7BVqmLT/uZvo8YYBg6f7lnV2KRxf/a8twghA6w/0j
-	 9Ht6PP6U/F1d6fKq0MXRlouiV7HdL/lyIfS3mUDY8KOOqLHrIWYjSXukxDVbU5Y/Xw
-	 Ps7XLYSUpwv1qLPB3dRnLWtsl1PsdGL8AHJgaCjd0LmNXgdrY9e4eIgWg1o7K3eQDk
-	 xYd1YJIdhul+LjtRl3XBer/dIj1iz3o9amJwSBs7hMfijSlvvFnJpkndau70WfvjZh
-	 PKcPbRhM57i/Q==
-Date: Sat, 22 Jun 2024 19:44:07 +0100
+	b=gxb+vuVfi1dbrSqTeE1jSoDW2CVkMqhNgCvMoayI/UmTdAgMQyl/6bf7fVWfWqjsc
+	 +v1tSEwhPdBCQRLdVOcQVOuwS8q9UGZAhEyj/xR20eUrybNqvcQ/eIY1GFkFVkVmto
+	 6T0rSKhqwudppSgVS13Bap9DA+uiP37tBmwd1muQ5qxyPf5+avobrJvhxtnuhKviC+
+	 HtuVdzsz1tUwHbRcOT9xNoMugSy5u411k1chgvcSlUJj0TW84dHFLt1dYfNIfQtAid
+	 dYmwDBDRWp2R8zEW6t4761Y1hSyfALQZm9rXbjzVV2oALUVClrUxzABxQFXzdAmVGr
+	 2K7gZ+MYcbl+w==
+Date: Sat, 22 Jun 2024 19:50:18 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, =?UTF-8?B?Sm/Do28=?= Paulo
- =?UTF-8?B?R29uw6dhbHZlcw==?= <jpaulo.silvagoncalves@gmail.com>, Liam
- Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- =?UTF-8?B?Sm/Do28=?= Paulo =?UTF-8?B?R29uw6dhbHZlcw==?=
- <joao.goncalves@toradex.com>, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Francesco Dolcini
- <francesco.dolcini@toradex.com>
-Subject: Re: [PATCH v3 2/2] iio: adc: ti-ads1119: Add driver
-Message-ID: <20240622194407.4ee2a342@jic23-huawei>
-In-Reply-To: <20240617183905.4685-1-francesco@dolcini.it>
-References: <20240617183215.4080-1-francesco@dolcini.it>
-	<20240617183905.4685-1-francesco@dolcini.it>
+To: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Cc: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Lars-Peter
+ Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, <linux-clk@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-iio@vger.kernel.org>
+Subject: Re: [PATCH v6 2/2] iio: frequency: adf4350: add clk provider
+Message-ID: <20240622195018.587997ae@jic23-huawei>
+In-Reply-To: <20240621121403.47912-2-antoniu.miclaus@analog.com>
+References: <20240621121403.47912-1-antoniu.miclaus@analog.com>
+	<20240621121403.47912-2-antoniu.miclaus@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,335 +63,207 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Jun 2024 20:39:05 +0200
-Francesco Dolcini <francesco@dolcini.it> wrote:
+On Fri, 21 Jun 2024 15:13:59 +0300
+Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
 
-> From: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
->=20
-> The ADS1119 is a precision, 16-bit, analog-to-digital converter (ADC)
-> that features two differential or four single-ended inputs through a
-> flexible input multiplexer (MUX), rail-to-rail input
-> buffers, a programmable gain stage, a voltage reference, and an
-> oscillator.
->=20
-> Apart from normal single conversion, the driver also supports
-> continuous conversion mode using a triggered buffer. However, in this
-> mode only one channel can be scanned at a time.
->=20
-> Datasheet: https://www.ti.com/lit/gpn/ads1119
-> Signed-off-by: Jo=C3=A3o Paulo Gon=C3=A7alves <joao.goncalves@toradex.com>
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+> Add clk provider feature for the adf4350.
+> 
+> Even though the driver was sent as an IIO driver in most cases the
+> device is actually seen as a clock provider.
+> 
+> This patch aims to cover actual usecases requested by users in order to
+> completely control the output frequencies from userspace.
+> 
+> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+You addressed both of Nuno's comments and I didn't have anything to add,
+ so I'll pick this up (can still add a tag though if Nuno wants to give one).
 
-Hi. My suggested changes are minor, so I just made them whilst applying.
-Please check the result!
-
-Applied with these tweaks a few more whitespace things checkpatch --strict
-pointed out to the togreg branch of iio.git and pushed out as testing for
-0-day to see what we missed.
+Series applied to the togreg branch of iio.git and pushed out as testing
+for 0-day to have fun.
 
 Thanks,
 
 Jonathan
 
-> diff --git a/drivers/iio/adc/ti-ads1119.c b/drivers/iio/adc/ti-ads1119.c
-> new file mode 100644
-> index 000000000000..ccf259ebae08
-> --- /dev/null
-> +++ b/drivers/iio/adc/ti-ads1119.c
-> @@ -0,0 +1,839 @@
-
+> ---
+> changes in v6:
+>  - rework `init.name` handling.
+>  - simplify iio channels initialization.
+>  drivers/iio/frequency/adf4350.c | 124 +++++++++++++++++++++++++++++++-
+>  1 file changed, 122 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/frequency/adf4350.c b/drivers/iio/frequency/adf4350.c
+> index 4abf80f75ef5..e13e64a5164c 100644
+> --- a/drivers/iio/frequency/adf4350.c
+> +++ b/drivers/iio/frequency/adf4350.c
+> @@ -19,6 +19,7 @@
+>  #include <linux/gpio/consumer.h>
+>  #include <asm/div64.h>
+>  #include <linux/clk.h>
+> +#include <linux/clk-provider.h>
+>  
+>  #include <linux/iio/iio.h>
+>  #include <linux/iio/sysfs.h>
+> @@ -36,6 +37,9 @@ struct adf4350_state {
+>  	struct gpio_desc		*lock_detect_gpiod;
+>  	struct adf4350_platform_data	*pdata;
+>  	struct clk			*clk;
+> +	struct clk			*clkout;
+> +	const char			*clk_out_name;
+> +	struct clk_hw			hw;
+>  	unsigned long			clkin;
+>  	unsigned long			chspc; /* Channel Spacing */
+>  	unsigned long			fpfd; /* Phase Frequency Detector */
+> @@ -61,6 +65,8 @@ struct adf4350_state {
+>  	__be32				val __aligned(IIO_DMA_MINALIGN);
+>  };
+>  
+> +#define to_adf4350_state(_hw) container_of(_hw, struct adf4350_state, hw)
 > +
-> +#define ADS1119_V_CHAN(_chan, _chan2, _addr) {			\
-Why pass in the parameters as you use this in one place and they
-are all 0?
-
-Just put this definition inline where you use it as
-
-	const struct iio_chan_spec ads1119_channel =3D
-		(const struct iio_chan_spec) {
-			.type =3D IIO_VOLTAGE,=20
-	etc.
-(or something along these lines.
-
-		};
-> +	.type =3D IIO_VOLTAGE,					\
-> +	.indexed =3D 1,						\
-> +	.address =3D _addr,					\
-> +	.channel =3D _chan,					\
-> +	.channel2 =3D _chan2,					\
-> +	.info_mask_separate =3D					\
-> +		BIT(IIO_CHAN_INFO_RAW) |			\
-> +		BIT(IIO_CHAN_INFO_SCALE) |			\
-> +		BIT(IIO_CHAN_INFO_OFFSET) |			\
-> +		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
-> +	.info_mask_shared_by_all_available =3D			\
-> +		BIT(IIO_CHAN_INFO_SCALE) |			\
-> +		BIT(IIO_CHAN_INFO_SAMP_FREQ),			\
-> +	.scan_index =3D _addr,					\
-> +	.scan_type =3D {						\
-> +		.sign =3D 's',					\
-> +		.realbits =3D 16,					\
-> +		.storagebits =3D 16,				\
-> +		.endianness =3D IIO_CPU,				\
-> +	},							\
+>  static struct adf4350_platform_data default_pdata = {
+>  	.channel_spacing = 10000,
+>  	.r2_user_settings = ADF4350_REG2_PD_POLARITY_POS |
+> @@ -381,6 +387,113 @@ static const struct iio_info adf4350_info = {
+>  	.debugfs_reg_access = &adf4350_reg_access,
+>  };
+>  
+> +static void adf4350_clk_del_provider(void *data)
+> +{
+> +	struct adf4350_state *st = data;
+> +
+> +	of_clk_del_provider(st->spi->dev.of_node);
 > +}
 > +
-> +struct ads1119_channel_config {
-> +	int gain;
-> +	int datarate;
-> +	int mux;
-> +};
-> +
-> +struct ads1119_state {
-> +	struct completion completion;
-> +	struct i2c_client *client;
-> +	struct gpio_desc *reset_gpio;
-> +	struct iio_trigger *trig;
-> +	struct ads1119_channel_config *channels_cfg;
-> +	unsigned int num_channels_cfg;
-> +	unsigned int cached_config;
-> +	int vref_uV;
-> +};
-> +
-> +static const char * const ads1119_power_supplies[] =3D {
-> +	"avdd", "dvdd"
-> +};
-> +
-> +static const int ads1119_available_datarates[] =3D {
-> +	20, 90, 330, 1000,
-> +};
-> +
-> +static const int ads1119_available_gains[] =3D {
-> +	1, 1,
-> +	1, 4,
-> +};
-> +
-> +static int ads1119_upd_cfg_reg(struct ads1119_state *st, unsigned int fi=
-elds,
-> +			       unsigned int val)
+> +static unsigned long adf4350_clk_recalc_rate(struct clk_hw *hw,
+> +					     unsigned long parent_rate)
 > +{
-> +	unsigned int config =3D st->cached_config;
+> +	struct adf4350_state *st = to_adf4350_state(hw);
+> +	unsigned long long tmp;
+> +
+> +	tmp = (u64)(st->r0_int * st->r1_mod + st->r0_fract) * st->fpfd;
+> +	do_div(tmp, st->r1_mod * (1 << st->r4_rf_div_sel));
+> +
+> +	return tmp;
+> +}
+> +
+> +static int adf4350_clk_set_rate(struct clk_hw *hw,
+> +				unsigned long rate,
+> +				unsigned long parent_rate)
+> +{
+> +	struct adf4350_state *st = to_adf4350_state(hw);
+> +
+> +	if (parent_rate == 0 || parent_rate > ADF4350_MAX_FREQ_REFIN)
+> +		return -EINVAL;
+> +
+> +	st->clkin = parent_rate;
+> +
+> +	return adf4350_set_freq(st, rate);
+> +}
+> +
+> +static int adf4350_clk_prepare(struct clk_hw *hw)
+> +{
+> +	struct adf4350_state *st = to_adf4350_state(hw);
+> +
+> +	st->regs[ADF4350_REG2] &= ~ADF4350_REG2_POWER_DOWN_EN;
+> +
+> +	return adf4350_sync_config(st);
+> +}
+> +
+> +static void adf4350_clk_unprepare(struct clk_hw *hw)
+> +{
+> +	struct adf4350_state *st = to_adf4350_state(hw);
+> +
+> +	st->regs[ADF4350_REG2] |= ADF4350_REG2_POWER_DOWN_EN;
+> +
+> +	adf4350_sync_config(st);
+> +}
+> +
+> +static int adf4350_clk_is_enabled(struct clk_hw *hw)
+> +{
+> +	struct adf4350_state *st = to_adf4350_state(hw);
+> +
+> +	return (st->regs[ADF4350_REG2] & ADF4350_REG2_POWER_DOWN_EN);
+> +}
+> +
+> +static const struct clk_ops adf4350_clk_ops = {
+> +	.recalc_rate = adf4350_clk_recalc_rate,
+> +	.set_rate = adf4350_clk_set_rate,
+> +	.prepare = adf4350_clk_prepare,
+> +	.unprepare = adf4350_clk_unprepare,
+> +	.is_enabled = adf4350_clk_is_enabled,
+> +};
+> +
+> +static int adf4350_clk_register(struct adf4350_state *st)
+> +{
+> +	struct spi_device *spi = st->spi;
+> +	struct clk_init_data init;
+> +	struct clk *clk;
+> +	const char *parent_name;
 > +	int ret;
 > +
-> +	config &=3D ~fields;
-> +	config |=3D val;
+> +	if (!device_property_present(&spi->dev, "#clock-cells"))
+> +		return 0;
 > +
-> +	ret =3D i2c_smbus_write_byte_data(st->client, ADS1119_CMD_WREG, config);
+> +	if (device_property_read_string(&spi->dev, "clock-output-names", &init.name)) {
+> +		init.name = devm_kasprintf(&spi->dev, GFP_KERNEL, "%s-clk",
+> +					   fwnode_get_name(dev_fwnode(&spi->dev)));
+> +		if (!init.name)
+> +			return -ENOMEM;
+> +	}
+> +
+> +	parent_name = of_clk_get_parent_name(spi->dev.of_node, 0);
+> +	if (!parent_name)
+> +		return -EINVAL;
+> +
+> +	init.ops = &adf4350_clk_ops;
+> +	init.parent_names = &parent_name;
+> +	init.num_parents = 1;
+> +	init.flags = CLK_SET_RATE_PARENT;
+> +
+> +	st->hw.init = &init;
+> +	clk = devm_clk_register(&spi->dev, &st->hw);
+> +	if (IS_ERR(clk))
+> +		return PTR_ERR(clk);
+> +
+> +	ret = of_clk_add_provider(spi->dev.of_node, of_clk_src_simple_get, clk);
 > +	if (ret)
 > +		return ret;
 > +
-> +	st->cached_config =3D config;
+> +	st->clkout = clk;
 > +
-> +	return 0;
+> +	return devm_add_action_or_reset(&spi->dev, adf4350_clk_del_provider, st);
 > +}
 > +
-> +static bool ads1119_data_ready(struct ads1119_state *st)
-> +{
-> +	int status;
-> +
-> +	status =3D i2c_smbus_read_byte_data(st->client, ADS1119_CMD_RREG_STATUS=
-);
-> +	if (status < 0)
-> +		return false;
-> +
-> +	return !!FIELD_GET(ADS1119_STATUS_DRDY_FIELD, status);
-
-The !! doesn't add anything as the cast to bool effectively does the same t=
-hing
-
-
-> +}
-
-> +
-> +static int ads1119_single_conversion(struct ads1119_state *st,
-> +				     struct iio_chan_spec const *chan,
-> +				     int *val,
-> +				     bool calib_offset)
-> +{
-> +	struct device *dev =3D &st->client->dev;
-> +	int mux, gain, datarate;
-> +	unsigned int sample;
-> +	int ret;
-> +
-> +	mux =3D st->channels_cfg[chan->address].mux;
-> +	gain =3D st->channels_cfg[chan->address].gain;
-> +	datarate =3D st->channels_cfg[chan->address].datarate;
-Slightly neater to do this at declaration fo variables.
-
-	int mux =3D st->...
-etc.
-
-> +
-> +	if (calib_offset)
-> +		mux =3D ADS1119_MUX_SHORTED;
-> +
-> +	ret =3D pm_runtime_resume_and_get(dev);
+>  static struct adf4350_platform_data *adf4350_parse_dt(struct device *dev)
+>  {
+>  	struct adf4350_platform_data *pdata;
+> @@ -522,8 +635,6 @@ static int adf4350_probe(struct spi_device *spi)
+>  
+>  	indio_dev->info = &adf4350_info;
+>  	indio_dev->modes = INDIO_DIRECT_MODE;
+> -	indio_dev->channels = &adf4350_chan;
+> -	indio_dev->num_channels = 1;
+>  
+>  	mutex_init(&st->lock);
+>  
+> @@ -551,6 +662,15 @@ static int adf4350_probe(struct spi_device *spi)
+>  			return ret;
+>  	}
+>  
+> +	ret = adf4350_clk_register(st);
 > +	if (ret)
-> +		goto pdown;
+> +		return ret;
 > +
-> +	ret =3D ads1119_configure_channel(st, mux, gain, datarate);
-> +	if (ret)
-> +		goto pdown;
-> +
-> +	ret =3D i2c_smbus_write_byte(st->client, ADS1119_CMD_START_SYNC);
-> +	if (ret)
-> +		goto pdown;
-> +
-> +	ret =3D ads1119_read_data(st, chan, &sample);
-> +	if (ret)
-> +		goto pdown;
-> +
-> +	*val =3D sign_extend32(sample, chan->scan_type.realbits - 1);
-> +	ret =3D IIO_VAL_INT;
-> +pdown:
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_put_autosuspend(dev);
-> +	return ret;
-> +}
-
-> +static int ads1119_poll_data_ready(struct ads1119_state *st,
-> +				   struct iio_chan_spec const *chan)
-> +{
-> +	unsigned int datarate =3D st->channels_cfg[chan->address].datarate;
-> +	unsigned long wait_time;
-> +	bool data_ready;
-> +
-> +	/* Poll 5 times more than the data rate */
-> +	wait_time =3D DIV_ROUND_CLOSEST(MICRO, 5 * datarate);
-> +
-> +	return read_poll_timeout(ads1119_data_ready, data_ready,
-> +				 data_ready =3D=3D true, wait_time,
-
-checkpatch --strict pointed out that you might as well just use dataready
-as the conditional, rather than dataready =3D=3D true.
-
-> +				 ADS1119_MAX_DRDY_TIMEOUT, false, st);
-> +}
-
-> +
-> +static int ads1119_alloc_and_config_channels(struct iio_dev *indio_dev)
-> +{
-> +	const struct iio_chan_spec ads1119_channel =3D ADS1119_V_CHAN(0, 0, 0);
-> +	const struct iio_chan_spec ads1119_ts =3D IIO_CHAN_SOFT_TIMESTAMP(0);
-> +	struct ads1119_state *st =3D iio_priv(indio_dev);
-> +	struct iio_chan_spec *iio_channels, *chan;
-> +	struct device *dev =3D &st->client->dev;
-> +	unsigned int num_channels, i;
-> +	bool differential;
-> +	u32 ain[2];
-> +	int ret;
-> +
-> +	st->num_channels_cfg =3D device_get_child_node_count(dev);
-> +	if (st->num_channels_cfg > ADS1119_MAX_CHANNELS)
-> +		return dev_err_probe(dev, -EINVAL,
-> +				     "Too many channels %d, max is %d\n",
-> +				     st->num_channels_cfg,
-> +				     ADS1119_MAX_CHANNELS);
-> +
-> +	st->channels_cfg =3D devm_kcalloc(dev, st->num_channels_cfg,
-> +					sizeof(*st->channels_cfg), GFP_KERNEL);
-> +	if (!st->channels_cfg)
-> +		return -ENOMEM;
-> +
-> +	/* Allocate one more iio channel for the timestamp */
-> +	num_channels =3D st->num_channels_cfg + 1;
-> +	iio_channels =3D devm_kcalloc(dev, num_channels,
-> +				    sizeof(*iio_channels),
-> +				    GFP_KERNEL);
-Can wrap that on one fewer line.
-> +	if (!iio_channels)
-> +		return -ENOMEM;
-> +
-> +	i =3D 0;
-> +
->
->
-> +static int ads1119_probe(struct i2c_client *client)
-> +{
-...
-
-> +	if (client->irq > 0) {
-> +		ret =3D devm_request_threaded_irq(dev,
-> +						client->irq,
-Can combine some of these lines under 80 chars.
-> +						ads1119_irq_handler,
-> +						NULL,
-> +						IRQF_TRIGGER_FALLING,
-> +						"ads1119",
-> +						indio_dev);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "Failed to allocate irq\n");
-> +
-> +		st->trig =3D devm_iio_trigger_alloc(dev, "%s-dev%d",
-> +						  indio_dev->name,
-> +						  iio_device_id(indio_dev));
-> +		if (!st->trig)
-> +			return dev_err_probe(dev, -ENOMEM,
-> +					     "Failed to allocate IIO trigger\n");
-> +
-> +		st->trig->ops =3D &ads1119_trigger_ops;
-> +		iio_trigger_set_drvdata(st->trig, indio_dev);
-> +
-> +		ret =3D devm_iio_trigger_register(dev, st->trig);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					     "Failed to register IIO trigger\n");
+> +	if (!st->clkout) {
+> +		indio_dev->channels = &adf4350_chan;
+> +		indio_dev->num_channels = 1;
 > +	}
 > +
-> +	ret =3D ads1119_init(st, vref_external);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to initialize device\n");
-> +
-> +	pm_runtime_set_autosuspend_delay(dev, ADS1119_SUSPEND_DELAY);
-> +	pm_runtime_use_autosuspend(dev);
-> +	pm_runtime_mark_last_busy(dev);
-> +	pm_runtime_set_active(dev);
-> +
-> +	ret =3D devm_pm_runtime_enable(dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "Failed to enable pm runtime\n");
-> +
-> +	ret =3D devm_add_action_or_reset(dev, ads1119_powerdown, st);
-Hmm. This naturally (I think anyway) pairs with the reset in ads1119_init()
-so it's a little odd to find it down here.=20
-
-I assume the reasoning was that the runtime PM might result in it being on?
-However I think the worst that can happen is that runtime pm powers down
-the powered down device just before it is stopped by the devm_pm_runtime
-enable cleanup. So this ordering doesn't matter.
-
-Hence I'll leave it alone, but it did make me think for a few minutes.
-
-
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				     "Failed to add powerdown action\n");
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
-
-> +/*
-> + * The ADS1119 does not require a resume function because it automatical=
-ly
-> + * powers on after a reset.
-> + * After a power down command, the ADS1119 can still communicate but tur=
-ns off
-> + * its analog parts. To resume from power down, the device will power up=
- again
-> + * upon receiving a start/sync command.
-> + */
-> +static DEFINE_RUNTIME_DEV_PM_OPS(ads1119_pm_ops,
-> +				 ads1119_runtime_suspend,
-> +				 NULL,
-> +				 NULL);
-
-Trivial but can rewrap those lines to save 2 lines without significant loss
-of readability.
-
+>  	ret = devm_add_action_or_reset(&spi->dev, adf4350_power_down, indio_dev);
+>  	if (ret)
+>  		return dev_err_probe(&spi->dev, ret,
 
 

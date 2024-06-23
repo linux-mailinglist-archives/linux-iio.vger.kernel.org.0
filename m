@@ -1,59 +1,62 @@
-Return-Path: <linux-iio+bounces-6778-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6779-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 212AC913CC5
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 18:30:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A82913CCB
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 18:39:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ABEEDB21B0D
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 16:30:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE73CB21BA2
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 16:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90D58183063;
-	Sun, 23 Jun 2024 16:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33AC2183070;
+	Sun, 23 Jun 2024 16:39:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JL2TyUEo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FAyy/KiI"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D6F8F5B;
-	Sun, 23 Jun 2024 16:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D1527453;
+	Sun, 23 Jun 2024 16:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719160226; cv=none; b=pKefvf2Ias5lf+3fPed3bdkGVFUA8DuzLRmx0jolMwewo1fvaIMoypKdTz92z/nFrM91PyJQ3BOxc6OMv/IT8ptcEQgaQCuFY+NdSBXF/IflyvzKsIumSOU1CFCCwGtC2kAjyHM6xIOEQ75N1SdZ+Vtzw+Lva0L8qNwYEqsbAGk=
+	t=1719160759; cv=none; b=HNnYgE5dvt0VORbDYZ3CXbsojFQOeu49OjlT60y1fhK5/AtJHZvgLIDVoWGpJEJZbbkMhH+KakO4BX7MJgxxVfyIodEpkQS3G2FIpHqIOFGpQ5eJ/sEB8wIt1dZSx3o6KmCYfYdDQUlzUK4hW6Ce26u5oDUZQrfj2SzRN41IfJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719160226; c=relaxed/simple;
-	bh=GpYFGPdZts7O9qMXftegdL5qHYUq/82DkYhv80PMtCE=;
+	s=arc-20240116; t=1719160759; c=relaxed/simple;
+	bh=iyXtYUzy5O3X9DAJs0asKfGjTbzvj1GK9MGlEZocrOM=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u+x7SlCMFOdUbqW0k6M/1KEHmYlKQ7cv9b8QDBdT8xT1uUIBgl9+waqEfezKQtzEEnfesfdyMdDvP5fvbE2uDktLX0xeTNCbHFhIxsuNvCBuksmEUtHMjigCGU8Nza8xuaxHklzNamPBpVSQ0PnZO1ADqvDQp4VtZS4bf+E/H/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JL2TyUEo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A465CC2BD10;
-	Sun, 23 Jun 2024 16:30:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=C4JRMzsSUBO+yCkr0DB6Soo1XvizCJIC2u6KR2jDJNFwj9zpfLlXUkNJ9nOjCGDG0OJPzw/mBukoo22DF2M66EH4ARUAQBNxN9wA/nVzsXeQYL/2veKWikNs1Lfzu2s43tdficPs72pT+S8ZB5sDNM5MmfbP0+2bYHbid0V0HSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FAyy/KiI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E95A0C2BD10;
+	Sun, 23 Jun 2024 16:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719160225;
-	bh=GpYFGPdZts7O9qMXftegdL5qHYUq/82DkYhv80PMtCE=;
+	s=k20201202; t=1719160758;
+	bh=iyXtYUzy5O3X9DAJs0asKfGjTbzvj1GK9MGlEZocrOM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JL2TyUEoe125u3uwLbWL8FlcI+B/7LRJvn7jAWrFzQmlMFUzQ9ns8nlvV+pX7o5SF
-	 SBAVpblUx7oAOxOQAm+qUloArQCUjIkzANmInr6L0zSrqrWPkP/Pku3rmAVz3mij89
-	 g97ENTSdYZB6+KOcc9Q8x6nKq60ASR2IQGKR2nsaiMCPDDApyOJBeyugnd9shCC/yr
-	 MRy6l41ZrLKEYV0LPYprmZ6QljJMbafgT/ZP/JKvSCuQ2HKJs1nfQ/h2CAIwuyQj4P
-	 4EXSLEnnJZqR4mNgAXu/EeE5Mw+gJjfrjSt2PrErsCwzlECgO3F476eGpbn7N7r5Yo
-	 AFtfZXHC3IB3w==
-Date: Sun, 23 Jun 2024 17:30:15 +0100
+	b=FAyy/KiI6VFRjdkCXlYt2DuzZWHdj4UDTxSJ9KLZW5fqntZne7nR/pUMXbyaIhAhs
+	 O/J5JV3/CQFAZOQLLQGiL7nmF5bTYk6sFbf5Lgni3L+ZOEEMWfzXKippdylTc+eC1x
+	 GwzcWSsTvrJ3Io0RLhzCUeaGdNCsLTl5fk7yQ9yq2Prn3sXl7jz7aKx/Ev9BLqD/U1
+	 XqGj4nWZEPp2yd8E3XmEPWG+xM+IT6GPTaIfFzr10kx9gOYWmyY+bH2fXRuUS75vlH
+	 NWNWschOP+YOcrZUC29uuPLTAIjzkcRB3sf/ATCqlXJusbF7xFw5r7FDyrWJX5odB+
+	 bEJoolbh8q9bg==
+Date: Sun, 23 Jun 2024 17:39:11 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Chris Morgan <macroalpha82@gmail.com>
-Cc: linux-sunxi@lists.linux.dev, linux-pm@vger.kernel.org,
- devicetree@vger.kernel.org, linux-iio@vger.kernel.org, broonie@kernel.org,
- lee@kernel.org, samuel@sholland.org, jernej.skrabec@gmail.com,
- sre@kernel.org, wens@csie.org, conor+dt@kernel.org, krzk+dt@kernel.org,
- robh@kernel.org, lars@metafoo.de, Chris Morgan <macromorgan@hotmail.com>
-Subject: Re: [PATCH 5/8] iio: adc: axp20x_adc: add support for AXP717 ADC
-Message-ID: <20240623173015.555584b6@jic23-huawei>
-In-Reply-To: <20240617220535.359021-6-macroalpha82@gmail.com>
-References: <20240617220535.359021-1-macroalpha82@gmail.com>
-	<20240617220535.359021-6-macroalpha82@gmail.com>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Michael Hennerich
+ <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 2/4] dt-bindings: iio: adc: add AD4695 and similar
+ ADCs
+Message-ID: <20240623173911.7ea5d518@jic23-huawei>
+In-Reply-To: <187da75c-9af3-42a9-b31e-be731aaf63d2@baylibre.com>
+References: <20240617-iio-adc-ad4695-v2-0-63ef6583f25d@baylibre.com>
+	<20240617-iio-adc-ad4695-v2-2-63ef6583f25d@baylibre.com>
+	<187da75c-9af3-42a9-b31e-be731aaf63d2@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,107 +67,138 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 17 Jun 2024 17:05:32 -0500
-Chris Morgan <macroalpha82@gmail.com> wrote:
+On Tue, 18 Jun 2024 14:29:10 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> From: Chris Morgan <macromorgan@hotmail.com>
+> On 6/17/24 2:53 PM, David Lechner wrote:
+> > Add device tree bindings for AD4695 and similar ADCs.
+> > 
+> > Signed-off-by: David Lechner <dlechner@baylibre.com>
+> > ---
+> >   
+> ...
 > 
-> Add support for the AXP717 ADC. The AXP717 differs from other ADCs
-> in this series by utilizing a 14 bit ADC for all channels (a full 16
-> bits with the first 2 digits reserved). It also differs by lacking a
-> battery discharge current channel.
+> > +
+> > +  interrupts:
+> > +    minItems: 1
+> > +    items:
+> > +      - description:
+> > +          Signal coming from the BSY_ALT_GP0 or GP3 pin that indicates a busy
+> > +          condition.
+> > +      - description:
+> > +          Signal coming from the BSY_ALT_GP0 or GP2 pin that indicates an alert
+> > +          condition.
+> > +
+> > +  interrupt-names:
+> > +    minItems: 1
+> > +    items:
+> > +      - const: busy
+> > +      - const: alert
+> > +  
 > 
-> Note that while the current charge channel itself is included in this
-> driver for the AXP717 and listed in the datasheet, no scale or offset
-> was given for this channel. For now no scale or offset is provided in
-> this driver.
+> Since the interrupt can come from two different pins, it seems like we would
+> need an extra property to specify this. Is there a standard way to do this?
 > 
-> Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Hi Chris
+> Otherwise I will add something like:
+> 
+> adi,busy-on-gp3:
+>   $ref: /schemas/types.yaml#/definitions/flag
+>   description:
+>     When present, the busy interrupt is coming from the GP3 pin, otherwise
+>     the interrupt is coming from the BSY_ALT_GP0 pin.
+>    
+> adi,alert-on-gp2:
+>   $ref: /schemas/types.yaml#/definitions/flag
+>   description:
+>     When present, the alert interrupt is coming from the GP2 pin, otherwise
+>     the interrupt is coming from the BSY_ALT_GP0 pin.
+Cut and paste?  Or it ends up on the same pin as the bsy? In which case that's
+a single interrupt and it's up to software to decide how to use. I'll guess
+it comes on GP1?
+> 
 
-A few minor comments inline,
+More interrupt names.  We shouldn't restrict someone wiring all 4 if they want
+to - we'll just use 2 that we choose in the driver.
 
-Thanks,
+interrupt-names
+  minItems: 1
+  items:
+    - const: busy-gp0
+    - const: busy-gp1
+    - const: alert-gp2
+    - cosnt: alert-gp1
+
+T   
+> 
+> > +
+> > +patternProperties:
+> > +  "^channel@[0-9a-f]$":
+> > +    type: object
+> > +    $ref: adc.yaml
+> > +    unevaluatedProperties: false
+> > +    description:
+> > +      Describes each individual channel. In addition the properties defined
+> > +      below, bipolar from adc.yaml is also supported.
+> > +
+> > +    properties:
+> > +      reg:
+> > +        maximum: 15
+> > +
+> > +      diff-channels:
+> > +        description:
+> > +          Describes inputs used for differential channels. The first value must
+> > +          be an even numbered input and the second value must be the next
+> > +          consecutive odd numbered input.
+> > +        items:
+> > +          - minimum: 0
+> > +            maximum: 14
+> > +            multipleOf: 2
+> > +          - minimum: 1
+> > +            maximum: 15
+> > +            not:
+> > +              multipleOf: 2  
+> 
+> After some more testing, it turns out that I misunderstood the datasheet and
+> this isn't actually fully differential, but rather pseudo-differential.
+> 
+> So when pairing with the next pin, it is similar to pairing with the COM pin
+> where the negative input pin is connected to a constant voltage source.
+
+Ok. I'm curious, how does it actually differ from a differential channel?
+What was that test?  It doesn't cope with an actual differential pair and needs
+a stable value on the negative?
+
+> 
+> > +
+> > +      single-channel:
+> > +        minimum: 0
+> > +        maximum: 15
+> > +
+> > +      common-mode-channel:
+> > +        description:
+> > +          Describes the common mode channel for single channels. 0 is REFGND
+> > +          and 1 is COM. Macros are available for these values in
+> > +          dt-bindings/iio/adi,ad4695.h.
+> > +        minimum: 0
+> > +        maximum: 1
+> > +        default: 0  
+> 
+> So I'm thinking the right thing to do here go back to using reg and the INx
+> number and only have common-mode-channel (no diff-channels or single-channel).
+> 
+> common-mode-channel will need to be changed to allow INx numbers in addition
+> to COM and REFGND.
+> 
+> This means that [PATCH v2 1/4] "dt-bindings: iio: adc: add common-mode-channel
+> dependency" would be wrong since we would be using common-mode-channel without
+> single-channel.
+> 
+> It also means we will need an optional in1-supply: true for all odd numbered
+> inputs.
+Ok. I'm not totally sure I see how this comes together but will wait for v3 rather
+than trying to figure it out now.
 
 Jonathan
 
-> ---
->  drivers/iio/adc/axp20x_adc.c | 167 +++++++++++++++++++++++++++++++++--
->  1 file changed, 160 insertions(+), 7 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/axp20x_adc.c b/drivers/iio/adc/axp20x_adc.c
-> index d6c51b0f48e3..f35ba2c11e1b 100644
-> --- a/drivers/iio/adc/axp20x_adc.c
-> +++ b/drivers/iio/adc/axp20x_adc.c
-> @@ -5,6 +5,7 @@
->   *	Quentin Schulz <quentin.schulz@free-electrons.com>
->   */
->  
-> +#include <asm/unaligned.h>
->  #include <linux/bitfield.h>
->  #include <linux/completion.h>
->  #include <linux/interrupt.h>
-> @@ -27,6 +28,8 @@
->  
->  #define AXP22X_ADC_EN1_MASK			(GENMASK(7, 5) | BIT(0))
->  
-> +#define AXP717_ADC_EN1_MASK			GENMASK(5, 0)
-> +
->  #define AXP20X_GPIO10_IN_RANGE_GPIO0		BIT(0)
->  #define AXP20X_GPIO10_IN_RANGE_GPIO1		BIT(1)
->  
-> @@ -35,6 +38,11 @@
->  
->  #define AXP22X_ADC_RATE_HZ(x)			((ilog2((x) / 100) << 6) & AXP20X_ADC_RATE_MASK)
->  
-> +#define AXP717_ADC_DATA_TS			0x00
-> +#define AXP717_ADC_DATA_TEMP			0x01
-> +
-> +#define AXP717_ADC_DATA_MASK			0x3fff
-
-GENMASK()
-
-> +static int axp717_adc_raw(struct iio_dev *indio_dev,
-> +			  struct iio_chan_spec const *chan, int *val)
-> +{
-> +	struct axp20x_adc_iio *info = iio_priv(indio_dev);
-> +	u8 bulk_reg[2];
-> +	int ret;
-> +
-> +	/*
-> +	 * A generic "ADC data" channel is used for TS, tdie, vmid,
-> +	 * and vbackup. This channel must both first be enabled and
-> +	 * also selected before it can be read.
-> +	 */
-> +	switch (chan->channel) {
-> +	case AXP717_TS_IN:
-> +		regmap_write(info->regmap, AXP717_ADC_DATA_SEL,
-> +			     AXP717_ADC_DATA_TS);
-> +		break;
-> +	case AXP717_DIE_TEMP_V:
-> +		regmap_write(info->regmap, AXP717_ADC_DATA_SEL,
-> +			     AXP717_ADC_DATA_TEMP);
-> +		break;
-> +
-> +	default:
-> +		break;
-> +	}
-> +
-> +	/*
-> +	 * All channels are 14 bits, with the first 2 bits on the high
-> +	 * register reserved and the remaining bits as the ADC value.
-> +	 */
-> +	ret = regmap_bulk_read(info->regmap, chan->address, bulk_reg, 2);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	*val = get_unaligned_be16(bulk_reg) & AXP717_ADC_DATA_MASK;
-
-FIELD_GET() preferred as then I don't have to check if DATA_MASK includes
-the 0th bit.
-
-> +	return IIO_VAL_INT;
-> +}
-> +
 
 

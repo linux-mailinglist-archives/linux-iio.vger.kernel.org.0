@@ -1,57 +1,68 @@
-Return-Path: <linux-iio+bounces-6747-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6748-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F88A913A54
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 14:03:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEDB2913AA2
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 14:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B85071F219CF
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 12:03:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64A7F281742
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 12:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A124E181309;
-	Sun, 23 Jun 2024 12:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D96B180A9E;
+	Sun, 23 Jun 2024 12:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SFjOE7tY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apLx6mTM"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 580D9180A9B;
-	Sun, 23 Jun 2024 12:03:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E372512C559;
+	Sun, 23 Jun 2024 12:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719144227; cv=none; b=NeLj+Ji8wPU89yX9lGhhNB9py792V22maSHyBPZ5l2FVfrZ97cKEUIdixC2vpBA6nCmgPUIzcCcUos4vjf5XiDnwrUi2O3okT5hjQIXf64i074nBki4VOx3pN5/KVpNoJ+4g/kTO17wAnmxBOZ0+z1keShMKY4J9ti3MPeAuuos=
+	t=1719146529; cv=none; b=KyE/UQjW49UEb6F/nWBuVhYbBPj0zhE5jJqc8FNVCO3FumKSYbtuW4+kFQhcor/gclKCbcKDSy+8e8DJ5X7k/JYqEoxS9hJiJ8eVFmGP15b6ZGvZCBnkGd/u4ACPE+PX9QhJNaMLzX9aTgbJgJ3oCl0o8jmj3jAMpwTuEiAe1yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719144227; c=relaxed/simple;
-	bh=Ldz1GN6+3Z7G8+L6Q7Yh9h7HRyzDV64bj3F+rO77G7A=;
+	s=arc-20240116; t=1719146529; c=relaxed/simple;
+	bh=A9hKnJ+8MudWJouvEnLEWB6hLGadfAdpcqd6kAZ8eCU=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GmsV7V28PzW42zuJDg+V1gvOXw9FkTT1Rt7Qy4okN6P6QiVPlXbsbUCSOH0Jandi8nuDjqnpeSo7pl1Z1JwgnLkx5rsWkR12JdWRgjzF0pfby2DYxh9Z5/mdMUMEVJOFbb32kdkaY215A5gF3MGSxf12xVX+MukogVaSJi4w4IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SFjOE7tY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D09DC2BD10;
-	Sun, 23 Jun 2024 12:03:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FZ+vAvkxVBlqqi2Mv5A+BujM3Uf/QCl8r51+B//nQgc31q253Oua0wnnHHXqirA7MRq2cwuEYIK76BFfQDt+Pa/kX75uP28g9+5I3LvAGYory9lMyb5FjfnNg+VgF+OOpLONPxzwFZUQrwtadGNV2KqJFbqkW4MgBh1KI1HNg1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apLx6mTM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED80C2BD10;
+	Sun, 23 Jun 2024 12:42:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719144226;
-	bh=Ldz1GN6+3Z7G8+L6Q7Yh9h7HRyzDV64bj3F+rO77G7A=;
+	s=k20201202; t=1719146528;
+	bh=A9hKnJ+8MudWJouvEnLEWB6hLGadfAdpcqd6kAZ8eCU=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SFjOE7tYSboRbmzbWgyT48Ah1/vEWsZ61y7RgQdabaMP/sUFH8lcpcfV6Ty1kg6G5
-	 LuaNtJrdpZTVgmao2HDLK0zGz5fRoJjySoVbzQtoiUcutHfEyxLdz4Yb0GoE2B379Q
-	 dN9GaKC+pcd/B6tRbe6VtlI89fXkmoGFYIUa6VgDN4xrSACazrSZ3Z34pn32VupmhD
-	 InImK/T0qbo6C8QGNtNWVlTxgIGp91v80XrZxq/cpfuw0pYI+OPAmawMe4Zkqdkm+Q
-	 s54W7zCF5mn15d1iovDv9t8JoIEbp7hhDcDT8Zaj/cw8OBViYm6AY7KSKQkPDle5Bj
-	 cPOy5Rj9HO+YQ==
-Date: Sun, 23 Jun 2024 13:03:39 +0100
+	b=apLx6mTMh9GDgJtY9uIvaPK2XBA5uIeG9SLJiBIhbeITseeZP5LhHvUVf6wl1shQV
+	 fRfPOxh0XgwfSvoVjnMOiix3vPJWZBovCM+0CD1l2RMq+sVyqOUFFCHHhN/evNn5gW
+	 A/d9Z+XylUcTcLM6oMZd2TEvizIAFEo6pHKhno5SXHJY34gFNOlZM9OUC5kxsIIvIO
+	 aTVRhvaoqMG7DQi+9NPHL+rNPMI779iqDEVvZrZoo6TaJtZsENKNsr+gm1dUTooZ46
+	 GVoKW3I99SJumwuvSR8GnVfmV9LjlwJhFZX9MOTCWCbqbtvVoYEQDr9+xKoaY9mzPt
+	 JXypUnqKKKvbA==
+Date: Sun, 23 Jun 2024 13:41:58 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Sean Anderson <sean.anderson@linux.dev>
-Cc: Jean Delvare <jdelvare@suse.com>, Guenter Roeck <linux@roeck-us.net>,
- linux-iio@vger.kernel.org, linux-hwmon@vger.kernel.org, Lars-Peter Clausen
- <lars@metafoo.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/2] iio: Add iio_read_channel_label to inkern API
-Message-ID: <20240623130339.535b96ba@jic23-huawei>
-In-Reply-To: <20240620211310.820579-2-sean.anderson@linux.dev>
-References: <20240620211310.820579-1-sean.anderson@linux.dev>
-	<20240620211310.820579-2-sean.anderson@linux.dev>
+To: Conor Dooley <conor@kernel.org>
+Cc: Ramona Alexandra Nechita <ramona.nechita@analog.com>,
+ linux-iio@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Cosmin
+ Tanislav <cosmin.tanislav@analog.com>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Andy
+ Shevchenko <andriy.shevchenko@linux.intel.com>, Nuno Sa
+ <nuno.sa@analog.com>, Maksim Kiselev <bigunclemax@gmail.com>, Marius
+ Cristea <marius.cristea@microchip.com>, Marcelo Schmitt
+ <marcelo.schmitt@analog.com>, Marcus Folkesson
+ <marcus.folkesson@gmail.com>, Okan Sahin <okan.sahin@analog.com>, Ivan
+ Mikhaylov <fr0st61te@gmail.com>, Liam Beguin <liambeguin@gmail.com>, Mike
+ Looijmans <mike.looijmans@topic.nl>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: add a7779 doc
+Message-ID: <20240623134158.6dc26a15@jic23-huawei>
+In-Reply-To: <20240619-pouring-evaluator-470155652a40@spud>
+References: <20240619122105.22642-1-ramona.nechita@analog.com>
+	<20240619122105.22642-2-ramona.nechita@analog.com>
+	<20240619-pouring-evaluator-470155652a40@spud>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -59,124 +70,153 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 20 Jun 2024 17:13:08 -0400
-Sean Anderson <sean.anderson@linux.dev> wrote:
+On Wed, 19 Jun 2024 18:42:31 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-> It can be convenient for other in-kernel drivers to reuse IIO channel
-> labels. Export the iio_read_channel_label function to allow this. The
-> signature is different depending on where we are calling it from, so
-> the meat is moved to do_iio_read_channel_label.
-> 
-> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+> On Wed, Jun 19, 2024 at 03:20:44PM +0300, Ramona Alexandra Nechita wrote:
+> > Add dt bindings for adc ad7779.
+> >=20
+> > Signed-off-by: Ramona Alexandra Nechita <ramona.nechita@analog.com>
+> > ---
+> >  .../bindings/iio/adc/adi,ad7779.yaml          | 84 +++++++++++++++++++
+> >  1 file changed, 84 insertions(+)
+> >  create mode 100644 Documentation/devicetree/bindings/iio/adc/adi,ad777=
+9.yaml
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml =
+b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+> > new file mode 100644
+> > index 000000000000..f1eec656acec
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7779.yaml
+> > @@ -0,0 +1,84 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/iio/adc/adi,ad7779.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Analog Devices AD777X family 8-Channel, 24-Bit, Simultaneous Sa=
+mpling ADCs
+> > +
+> > +maintainers:
+> > +  - Ramona Nechita <ramona.nechita@analog.com>
+> > +
+> > +description: |
+> > +  The AD777X family consist of 8-channel, simultaneous sampling analog=
+-to-
+> > +  digital converter (ADC). Eight full =CE=A3-=CE=94 ADCs are on-chip. =
+The
+> > +  AD7771 provides an ultralow input current to allow direct sensor
+> > +  connection. Each input channel has a programmable gain stage
+> > +  allowing gains of 1, 2, 4, and 8 to map lower amplitude sensor
+> > +  outputs into the full-scale ADC input range, maximizing the
+> > +  dynamic range of the signal chain.
+> > +
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad7770.pdf
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad7771.pdf
+> > +  https://www.analog.com/media/en/technical-documentation/data-sheets/=
+ad7779.pdf
+> > +
+> > +$ref: /schemas/spi/spi-peripheral-props.yaml#
+> > +
+> > +properties:
+> > +  compatible:
+> > +    enum:
+> > +      - adi,ad7770
+> > +      - adi,ad7771
+> > +      - adi,ad7779
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  '#address-cells':
+> > +    const: 1
+> > +
+> > +  '#size-cells':
+> > +    const: 0 =20
+>=20
+> Why does this device have address/size cells, but not have any child
+> nodes? Are you missing some channel child nodes? If you don't have
+> children, you don't need these properties.
+>=20
+> Also, your patch is still not threaded with the other 2 patches in the
+> series (I see 1/3 in the subject). Where are those patches?
 
-Seems like a useful addition to me. I'm not 100% what path this will
-take so if it goes via HWMON.
+Yeah, I have 3 copies of the cover letter, one with patch 1, one with patch=
+ 2,
+one on it's own and a stray patch 3 and patchwork has failed to figure
+it out...  Can one of the other Analog devices folk help Ramona get a
+working confirmation for sending patches please.
 
-Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The b4 gateway is a good option if no one has the magic config incantation
+to get emails out of a particular corporate network.
 
-It may be messy and need an immutable branch however. I haven't
-checked for churn in this code yet.
+>=20
+> Thanks,
+> Conor.
+>=20
+> > +
+> > +  clocks:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +
+> > +  vref-supply:
+> > +    description:
+> > +      ADC reference voltage supply
 
+I assume there is at least one more supply?  They should all
+be listed in here and those that 'must' be turned on for the
+device to function should be in required.  If it's optional, then
+add to the description what happens if it isn't supplied. Typically that's
+for reference supplies where the device has another option such as an inter=
+nal
+reference.
 
-> ---
-> 
->  drivers/iio/iio_core.h          |  4 ++++
->  drivers/iio/industrialio-core.c | 23 ++++++++++++++---------
->  drivers/iio/inkern.c            |  6 ++++++
->  include/linux/iio/consumer.h    | 10 ++++++++++
->  4 files changed, 34 insertions(+), 9 deletions(-)
-> 
-> diff --git a/drivers/iio/iio_core.h b/drivers/iio/iio_core.h
-> index 1a38b1915e7a..b7d5f4f0fada 100644
-> --- a/drivers/iio/iio_core.h
-> +++ b/drivers/iio/iio_core.h
-> @@ -34,6 +34,10 @@ void iio_device_ioctl_handler_register(struct iio_dev *indio_dev,
->  				       struct iio_ioctl_handler *h);
->  void iio_device_ioctl_handler_unregister(struct iio_ioctl_handler *h);
->  
-> +ssize_t do_iio_read_channel_label(struct iio_dev *indio_dev,
-> +				  const struct iio_chan_spec *c,
-> +				  char *buf);
-> +
->  int __iio_add_chan_devattr(const char *postfix,
->  			   struct iio_chan_spec const *chan,
->  			   ssize_t (*func)(struct device *dev,
-> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-core.c
-> index 2f185b386949..0f6cda7ffe45 100644
-> --- a/drivers/iio/industrialio-core.c
-> +++ b/drivers/iio/industrialio-core.c
-> @@ -727,22 +727,27 @@ ssize_t iio_format_value(char *buf, unsigned int type, int size, int *vals)
->  }
->  EXPORT_SYMBOL_GPL(iio_format_value);
->  
-> -static ssize_t iio_read_channel_label(struct device *dev,
-> -				      struct device_attribute *attr,
-> -				      char *buf)
-> +ssize_t do_iio_read_channel_label(struct iio_dev *indio_dev,
-> +				  const struct iio_chan_spec *c,
-> +				  char *buf)
->  {
-> -	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
-> -	struct iio_dev_attr *this_attr = to_iio_dev_attr(attr);
-> -
->  	if (indio_dev->info->read_label)
-> -		return indio_dev->info->read_label(indio_dev, this_attr->c, buf);
-> +		return indio_dev->info->read_label(indio_dev, c, buf);
->  
-> -	if (this_attr->c->extend_name)
-> -		return sysfs_emit(buf, "%s\n", this_attr->c->extend_name);
-> +	if (c->extend_name)
-> +		return sysfs_emit(buf, "%s\n", c->extend_name);
->  
->  	return -EINVAL;
->  }
->  
-> +static ssize_t iio_read_channel_label(struct device *dev,
-> +				      struct device_attribute *attr,
-> +				      char *buf)
-> +{
-> +	return do_iio_read_channel_label(dev_to_iio_dev(dev),
-> +					 to_iio_dev_attr(attr)->c, buf);
-> +}
-> +
->  static ssize_t iio_read_channel_info(struct device *dev,
->  				     struct device_attribute *attr,
->  				     char *buf)
-> diff --git a/drivers/iio/inkern.c b/drivers/iio/inkern.c
-> index 39cf26d69d17..9f484c94bc6e 100644
-> --- a/drivers/iio/inkern.c
-> +++ b/drivers/iio/inkern.c
-> @@ -1010,3 +1010,9 @@ ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
->  			       chan->channel, buf, len);
->  }
->  EXPORT_SYMBOL_GPL(iio_write_channel_ext_info);
-> +
-> +ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf)
-> +{
-> +	return do_iio_read_channel_label(chan->indio_dev, chan->channel, buf);
-> +}
-> +EXPORT_SYMBOL_GPL(iio_read_channel_label);
-> diff --git a/include/linux/iio/consumer.h b/include/linux/iio/consumer.h
-> index e9910b41d48e..333d1d8ccb37 100644
-> --- a/include/linux/iio/consumer.h
-> +++ b/include/linux/iio/consumer.h
-> @@ -441,4 +441,14 @@ ssize_t iio_read_channel_ext_info(struct iio_channel *chan,
->  ssize_t iio_write_channel_ext_info(struct iio_channel *chan, const char *attr,
->  				   const char *buf, size_t len);
->  
-> +/**
-> + * iio_read_channel_label() - read label for a given channel
-> + * @chan:		The channel being queried.
-> + * @buf:		Where to store the attribute value. Assumed to hold
-> + *			at least PAGE_SIZE bytes.
-> + *
-> + * Returns the number of bytes written to buf, or an error code.
-> + */
-> +ssize_t iio_read_channel_label(struct iio_channel *chan, char *buf);
-> +
->  #endif
+Jonathan
+
+> > +
+> > +  start-gpios:
+> > +    description:
+> > +      Pin that controls start synchronization pulse.
+> > +    maxItems: 1
+> > +
+> > +  reset-gpios:
+> > +    maxItems: 1
+> > +
+> > +required:
+> > +  - compatible
+> > +  - reg
+> > +  - clocks
+> > +
+> > +unevaluatedProperties: false
+> > +
+> > +examples:
+> > +- |
+> > +  #include <dt-bindings/gpio/gpio.h>
+> > +  spi {
+> > +      #address-cells =3D <1>;
+> > +      #size-cells =3D <0>;
+> > +
+> > +      adc@0 {
+> > +        compatible =3D "adi,ad7779";
+> > +        reg =3D <0>;
+> > +        vref-supply =3D <&vref>;
+> > +        start-gpios =3D <&gpio0 87 GPIO_ACTIVE_LOW>;
+> > +        reset-gpios =3D <&gpio0 93 GPIO_ACTIVE_LOW>;
+> > +        clocks =3D <&adc_clk>;
+> > +      };
+> > +  };
+> > +...
+> > --=20
+> > 2.43.0
+> >  =20
 
 

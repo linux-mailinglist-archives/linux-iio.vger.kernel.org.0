@@ -1,57 +1,59 @@
-Return-Path: <linux-iio+bounces-6760-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6761-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CCC7913BF2
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 17:12:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3A25913C3A
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 17:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23B721F227FE
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 15:12:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6C3D1C20D94
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 15:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FED4181CE2;
-	Sun, 23 Jun 2024 15:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06E6181D07;
+	Sun, 23 Jun 2024 15:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SM8RZV7L"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NH88dh1l"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD190146D43;
-	Sun, 23 Jun 2024 15:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B5B1DFD8;
+	Sun, 23 Jun 2024 15:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719155517; cv=none; b=lWtu5JKBJSCqEqvYyuhTs7vV2VXRK1f/t8I7uN6XOQ6riXM9AWUwSKChf5vvy7YZmbL/kvRgwBlvkHg+DB05xZdOHOA4D35icawNPt1VR2+V48lH3p5uwHFmCf4sYVVNFKJd9h5BIFz/PiXLQJoY4xVPfiXwLESBR3SFzkj4D/I=
+	t=1719156079; cv=none; b=sDVTaFw62cE8Ureh6RR+RksO0qNk+bJ02OITZsD6w6t3lJes194T5ODjC/JX6Mx/xYG3/I5h0ov1t7QyCCIjUBpBfDWSxPDqPatsXSyix4lvru45m1LS+GJGmaBGwMENMvOW0WunbCxa59GxN0brUAPGJ9AcJYeLTVsPjXeCypw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719155517; c=relaxed/simple;
-	bh=vxBw92hdsdjcJ6MIC4h3wkF8DlA3K4aQX5p8h7JW5wg=;
+	s=arc-20240116; t=1719156079; c=relaxed/simple;
+	bh=8R5yRhx5HD3Qdpebye/X5fiOJqmtxqaT2hxCrl24IRg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YWOkxIwpEZo3IYuhzKVAdOcCzqjhh05K48xjjw0dmgu362rWm0Kq89q4YlKKHqIHFnsYlMKO73r22wohuwzDJtlDT0zZr2W8src6sVe4zg8Ub/9Uu2Hyhd8DnpE5M08BoTTwxOysyU5yyYBh0EOu/pu/w3mvzcue8ZwrS7p5KgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SM8RZV7L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4035C2BD10;
-	Sun, 23 Jun 2024 15:11:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=THcjsGYu4OtYbBn9DAHdTQ3AW6rinYBjx7WumaZdMwsKJmzEkmbkYTBsZMoTzTRu+uf7HWefGkp6gAehOGYG8NRxwQftKxCQsrAo6zq7WP2XXodxQQ6ZW7aes1OCVzUp51yeWL5MQdiHv6eyUzNYzl1/H+UKnKpB4tCVUku5hbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NH88dh1l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15F4C2BD10;
+	Sun, 23 Jun 2024 15:21:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719155517;
-	bh=vxBw92hdsdjcJ6MIC4h3wkF8DlA3K4aQX5p8h7JW5wg=;
+	s=k20201202; t=1719156079;
+	bh=8R5yRhx5HD3Qdpebye/X5fiOJqmtxqaT2hxCrl24IRg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SM8RZV7LC4myoJWnqgrixRsjAZg+EemdVy/Oe2CCjtVEYim61SbwTKwILfuGEmboR
-	 Y0R6D4mOpJKQzQ/zR7bP1Ncab4dslJjYRIOnJmfdWKaXaCf2Ws2cPnOBPo23UHQAcK
-	 RVanFuFZ/iwRdul9Uy3WQqmuyUYxkfx98glpMHvDM2wMrTWOOGi2jt6RPikLMz5wi5
-	 gw8Q5iJp1fDnJEcBoe75J78kmP5hvtvUpSubpSnZobMAtdIW0iWegHfsGrLeFRnJDP
-	 J85/b80OQ79q2cKCnx6POQl/sYdT4G0h1oV+jTwMiV3XAGgMKFHuKUFXcortltbREK
-	 2YiLsu0m1v3Kw==
-Date: Sun, 23 Jun 2024 16:11:50 +0100
+	b=NH88dh1lxv1ZgGw2LykIVmIsCvg40jS4wnMhugJsHZjFjYJ9pLcnnASVl1lXt1MhS
+	 hgEeTDb//LFMRbykDgY6L3T6i63jABIAQ/2HZXNTSczhTc7aVZiFoDe3MpVi39w1gM
+	 mL5aTQH/Yw6CKQ8HVfp01PplV2PHALH1t1hJpXemfI2KCljBZRgbiZVGXbT5k3GrL9
+	 NjSs0AFwUWyvCOXHfdDrLpdCKYlloNwGac43KJK0z/wQzJEIPYhKUZ71PMA62LYYGa
+	 AhEBjcI5pIupwS9CiIWij5LO+U5H9lgFcDnACuPqKoC0yvFqt86kKnqBREGu3So07G
+	 R7TWKcvmm6pyQ==
+Date: Sun, 23 Jun 2024 16:21:10 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Olivier Moysan <olivier.moysan@foss.st.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Liam Girdwood
- <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>
-Subject: Re: [PATCH 7/8] iio: add sd modulator generic iio backend
-Message-ID: <20240623161150.358f95bf@jic23-huawei>
-In-Reply-To: <20240618160836.945242-8-olivier.moysan@foss.st.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Maxime Coquelin
+ <mcoquelin.stm32@gmail.com>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>, <linux-stm32@st-md-mailman.stormreply.com>,
+ <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH 8/8] iio: adc: stm32-dfsdm: add scaling support to dfsdm
+Message-ID: <20240623162110.708032af@jic23-huawei>
+In-Reply-To: <20240618160836.945242-9-olivier.moysan@foss.st.com>
 References: <20240618160836.945242-1-olivier.moysan@foss.st.com>
-	<20240618160836.945242-8-olivier.moysan@foss.st.com>
+	<20240618160836.945242-9-olivier.moysan@foss.st.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,153 +64,166 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 18 Jun 2024 18:08:33 +0200
+On Tue, 18 Jun 2024 18:08:34 +0200
 Olivier Moysan <olivier.moysan@foss.st.com> wrote:
 
-> Add a generic driver to support sigma delta modulators.
-> Typically, this device is a hardware connected to an IIO device
-> in charge of the conversion. The device is exposed as an IIO backend
-> device. This backend device and the associated conversion device
-> can be seen as an aggregate device from IIO framework.
+> Add scaling support to STM32 DFSDM.
+Perhaps a short description here of how this works?  Where does the scale come
+from, what assumptions are made etc.
 > 
 > Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
 
-Trivial comments inline.
+Some minor stuff.
 
-> diff --git a/drivers/iio/adc/sd_adc_backend.c b/drivers/iio/adc/sd_adc_backend.c
-> new file mode 100644
-> index 000000000000..556a49dc537b
-> --- /dev/null
-> +++ b/drivers/iio/adc/sd_adc_backend.c
-> @@ -0,0 +1,110 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +/*
-> + * Generic sigma delta modulator IIO backend
-> + *
-> + * Copyright (C) 2024, STMicroelectronics - All Rights Reserved
-> + */
-> +
-> +#include <linux/iio/backend.h>
-> +#include <linux/iio/iio.h>
-> +#include <linux/module.h>
-> +#include <linux/mod_devicetable.h>
-> +#include <linux/platform_device.h>
-> +#include <linux/regulator/consumer.h>
-> +
-> +struct iio_sd_backend_priv {
-> +	struct regulator *vref;
-> +	int vref_mv;
-> +};
-> +
-> +static int sd_backend_enable(struct iio_backend *backend)
-> +{
-> +	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
-> +
-> +	return regulator_enable(priv->vref);
-> +};
-> +
-> +static void sd_backend_disable(struct iio_backend *backend)
-> +{
-> +	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
-> +
-> +	regulator_disable(priv->vref);
-> +};
-> +
-> +static int sd_backend_read(struct iio_backend *backend, int *val, int *val2, long mask)
-Nothing to do with this patch as such:
+> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+> index 69b4764d7cba..93bf6035bd6d 100644
+> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
+> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+urn 0;
+>  }
+>  
+> @@ -1060,7 +1072,7 @@ static int stm32_dfsdm_update_scan_mode(struct iio_dev *indio_dev,
+>  static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+>  {
+>  	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+> -	int ret;
+> +	int i = 0, ret;
 
-One day I'm going to bit the bullet and fix that naming.
-Long long ago when the Earth was young it actually was a bitmap which
-I miscalled a mask - it only had one bit ever set, which was a dumb
-bit of API.  It's not been true for a long time.
-Anyhow, one more instances isn't too much of a problem I guess.
+Don't mix assigned and unassigned variable declarations. Just use a separate line
+as this can mean subtle assignment or lack of assignment issues sneak in.
 
-> +{
-> +	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
+>  
+>  	/* Reset adc buffer index */
+>  	adc->bufi = 0;
+> @@ -1071,6 +1083,15 @@ static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+>  			return ret;
+>  	}
+>  
+> +	if (adc->backend) {
+> +		while (adc->backend[i]) {
+
+Could do similar to the suggestion below.
+Mostly I don't like the index variable manipulation.
+
+> +			ret = iio_backend_enable(&indio_dev->dev, adc->backend[i]);
+> +			if (ret < 0)
+> +				return ret;
+> +			i++;
+> +		}
+> +	}
 > +
-> +	switch (mask) {
+>  	ret = stm32_dfsdm_start_dfsdm(adc->dfsdm);
+>  	if (ret < 0)
+>  		goto err_stop_hwc;
+> @@ -1103,6 +1124,7 @@ static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+>  static int stm32_dfsdm_predisable(struct iio_dev *indio_dev)
+>  {
+>  	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+> +	int i = 0;
+>  
+>  	stm32_dfsdm_stop_conv(indio_dev);
+>  
+> @@ -1110,6 +1132,13 @@ static int stm32_dfsdm_predisable(struct iio_dev *indio_dev)
+>  
+>  	stm32_dfsdm_stop_dfsdm(adc->dfsdm);
+>  
+> +	if (adc->backend) {
+> +		while (adc->backend[i]) {
+> +			iio_backend_disable(&indio_dev->dev, adc->backend[i]);
+> +			i++;
+> +		}
+Something like
+		struct iio_backend **be = &adc->backend[0];
+		do {
+			iio_backend_disable(&indio-dev->dev, be);
+		} while (be++);
+
+maybe. Up to you.
+		
+
+> +	}
+
+> @@ -1320,6 +1360,45 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
+>  		*val = adc->sample_freq;
+>  
+>  		return IIO_VAL_INT;
+> +
 > +	case IIO_CHAN_INFO_SCALE:
-> +		*val = priv->vref_mv;
+> +		/*
+> +		 * Scale is expressed in mV.
+> +		 * When fast mode is disabled, actual resolution may be lower
+> +		 * than 2^n, where n=realbits-1.
 
-This doesn't really feel right as what are we calling to?  Using it to pass the
-reference voltage doesn't make sense under normal handling of these.  So at very
-least needs a comment.
+As below, use a few more spaces.
 
-
-> +		*val2 = 0;
-No need to set val2.
-> +		return IIO_VAL_INT;
+> +		 * This leads to underestimating input voltage. To
+> +		 * compensate this deviation, the voltage reference can be
+> +		 * corrected with a factor = realbits resolution / actual max
+> +		 */
+> +		if (adc->backend[idx]) {
+> +			iio_backend_read_raw(adc->backend[idx], val, val2, mask);
+> +
+> +			*val = div_u64((u64)*val * (u64)BIT(DFSDM_DATA_RES - 1), max);
+> +			*val2 = chan->scan_type.realbits;
+> +			if (chan->differential)
+> +				*val *= 2;
+> +		}
+> +		return IIO_VAL_FRACTIONAL_LOG2;
 > +
 > +	case IIO_CHAN_INFO_OFFSET:
-> +		*val = 0;
-> +		*val2 = 0;
+> +		/*
+> +		 * DFSDM output data are in the range [-2^n,2^n],
+Use a few more spaces. [-2^2, 2^n]
+> +		 * with n=realbits-1.
+n = realbits - 1
+
+Just to keep it closer to the C coding style.
+
+> +		 * - Differential modulator:
+> +		 * Offset correspond to SD modulator offset.
+> +		 * - Single ended modulator:
+> +		 * Input is in [0V,Vref] range, where 0V corresponds to -2^n, and Vref to 2^n.
+
+Avoid that long line with a suitable line break.
+
+> +		 * Add 2^n to offset. (i.e. middle of input range)
+> +		 * offset = offset(sd) * vref / res(sd) * max / vref.
+> +		 */
+> +		if (adc->backend[idx]) {
+> +			iio_backend_read_raw(adc->backend[idx], val, val2, mask);
+> +
+> +			*val = div_u64((u64)max * *val, BIT(*val2 - 1));
+> +			if (!chan->differential)
+> +				*val += max;
+> +		}
 > +		return IIO_VAL_INT;
-Normally we just don't provide this but I guess you are requiring all of these?
-Long term that won't scale, so you need your caller to handle a suitable
-error return, -EINVAL will work to say not supported.
+>  	}
+>  
+>  	return -EINVAL;
+> @@ -1449,7 +1528,15 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev, struct iio_c
+>  	 * IIO_CHAN_INFO_RAW: used to compute regular conversion
+>  	 * IIO_CHAN_INFO_OVERSAMPLING_RATIO: used to set oversampling
+>  	 */
+> -	ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+> +	if (child) {
+> +		ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+> +					BIT(IIO_CHAN_INFO_SCALE) |
+> +					BIT(IIO_CHAN_INFO_OFFSET);
 
-> +	}
-> +
-> +	return -EINVAL;
-> +};
-> +
-> +static const struct iio_backend_ops sd_backend_ops = {
-> +	.enable = sd_backend_enable,
-> +	.disable = sd_backend_disable,
-> +	.read_raw = sd_backend_read,
-> +};
-> +
-> +static int iio_sd_backend_probe(struct platform_device *pdev)
-> +{
-> +	struct device *dev = &pdev->dev;
-> +	struct regulator *vref;
-> +	struct iio_sd_backend_priv *priv;
-> +	int ret;
-> +
-> +	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-> +	if (!priv)
-> +		return -ENOMEM;
-> +
-> +	vref = devm_regulator_get_optional(dev, "vref");
+Indent looks a little odd. Maybe one more space neede?
 
-New devm_regulator_get_enable_read_voltage() slightly simplifies this
-and means you don't need to keep vref around.
-
-> +	if (IS_ERR(vref)) {
-> +		if (PTR_ERR(vref) != -ENODEV)
-> +			return dev_err_probe(dev, PTR_ERR(vref), "Failed to get vref\n");
 > +	} else {
-> +		ret = regulator_get_voltage(vref);
-You haven't turned it on so it's not guaranteed to give you a useful
-answer.
-
-Use the enable_read_voltage variant and that will handle this for you.
-
-> +		if (ret < 0)
-> +			return ret;
-> +
-> +		priv->vref = vref;
-> +		priv->vref_mv = ret / 1000;
+> +		/* Legacy. Scaling not supported */
+> +		ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
 > +	}
 > +
-> +	ret = devm_iio_backend_register(&pdev->dev, &sd_backend_ops, priv);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return 0;
-
-return devm_iio_....
-
-> +};
-> +
-> +static const struct of_device_id sd_backend_of_match[] = {
-> +	{ .compatible = "sd-backend" },
-> +	{ .compatible = "ads1201" },
-
-Conor pointed out ti,ads1201
-At least I assume ti?
-
-> +	{ }
-> +};
+>  	ch->info_mask_shared_by_all = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
+>  					BIT(IIO_CHAN_INFO_SAMP_FREQ);
+>  
+> @@ -1816,3 +1903,4 @@ module_platform_driver(stm32_dfsdm_adc_driver);
+>  MODULE_DESCRIPTION("STM32 sigma delta ADC");
+>  MODULE_AUTHOR("Arnaud Pouliquen <arnaud.pouliquen@st.com>");
+>  MODULE_LICENSE("GPL v2");
+> +MODULE_IMPORT_NS(IIO_BACKEND);
 
 

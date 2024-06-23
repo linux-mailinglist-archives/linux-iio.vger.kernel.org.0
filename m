@@ -1,57 +1,61 @@
-Return-Path: <linux-iio+bounces-6738-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6739-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9236791395F
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 12:03:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD6D913970
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 12:13:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51AC4281B0E
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 10:03:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70067B2290F
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 10:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59CEB762FF;
-	Sun, 23 Jun 2024 10:03:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B138614D;
+	Sun, 23 Jun 2024 10:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mz9aPk6i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYC3YrP1"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B812F2D;
-	Sun, 23 Jun 2024 10:03:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FB32F2D;
+	Sun, 23 Jun 2024 10:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719136994; cv=none; b=WChSa4UrnFQeDSDW3/4YBMqjxWeeOmHu2Q4RAi8Vgk/PiQbo1qRsI+872NeEIJzddnUAMbq7P8nUBP9YbsCnXqqMNYg2rNV4B61iQZzowjrBzd5qkUmZYXVkGMFu+EWlvs4OyoU1qF3OFtuFCViL2GuvmG7BW+HoHCpBwPWD6GE=
+	t=1719137578; cv=none; b=tvbXam9EqCAHZ2WcfoAG0UzYV9vspKvrgBZmIwReW3E74u9JltYRIFzhE6/ogyOdRz2nCKZezJPMIDtZZrG+jzi5VAAlohvlidKiK6vrhkcfSyqbAEC+2s/dQYjBJ1V7F5C7ZCDBqjFe5rnvN9rs0sUdXJqCfM/ATMQH0GW+xDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719136994; c=relaxed/simple;
-	bh=q+7srLl/eTREfrAbzwHp5A/J+Kb0zwgTKHO6Qr08PfA=;
+	s=arc-20240116; t=1719137578; c=relaxed/simple;
+	bh=s3jp8zh5u3y1JESPzwVac2JNeSuI2Llrbi+/y+WuucY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qYwLpseJXwvKxHjJMAhNDiet0ZF3ndKehZfyJy5RLt+wMukiaPPAhSbPVQugFVEoH8y1q7b50aCsxcn4+jw+rT7L4DyxcLrDnm8z5dOdzNQpHaHHk9hSPd1O4QFZVtypScN2hPF/6HPn/AWm1G+KihDmWU8A0Oo8S4o/N8X3nb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mz9aPk6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB73C2BD10;
-	Sun, 23 Jun 2024 10:03:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DYXz+3A1xym/8pP09kJz6nwDr/u22Yxxt95DWx0j3AFcvBcCqF2/UnRge1Z2KDas8FrnzAuzANA2OhbtspM9PEnkDvaU/Xse7ahbxdeSVhbyrC9JemMhnRKHoIbnVSR8n+Jf22qQnEpky/znUc2u3JdxAODq8Vxvl8Qzs+JBG4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYC3YrP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42DDBC2BD10;
+	Sun, 23 Jun 2024 10:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719136993;
-	bh=q+7srLl/eTREfrAbzwHp5A/J+Kb0zwgTKHO6Qr08PfA=;
+	s=k20201202; t=1719137577;
+	bh=s3jp8zh5u3y1JESPzwVac2JNeSuI2Llrbi+/y+WuucY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mz9aPk6ipn6nM1DitEolvYsQmwUZf2qwAOZh6GMGUMaXtFYWvmO+ahsoqiiEZypqz
-	 sWPP2cGUuYWQnSMTJXaqyZIUhSG+sJHXTeLlGLjWIHmdfG704H+O/CViDoutAacWV0
-	 ZJJ8u19kuM89ymMQO2ofDA3NTBERJNI1n9lDNeOFfVEDYEwoZW3KAu+0fHltYoRqju
-	 FgWXmo4v7wJlZCiPVVkr3wbsjVgq4+pecZGcg+H7ill4k1KtszCBNatrqfAZE0e8/C
-	 GZ+OfNeG1Qt8W2pVdumfUShnJyDlKgFDcYTsROHGaDHoB6SYA6SmZpPLFh4612pIMW
-	 jgkeKbaBWLVWg==
-Date: Sun, 23 Jun 2024 11:03:05 +0100
+	b=NYC3YrP1gZnq036U9jv9mfQXcGC30x2y36w2BJnv8VWxiKrtcBthVuELstjgNHGBf
+	 g0eO4KPs/mvekXEA4q5E0JEa5XQNgu4tAggzruSwDGVVS7JdMlUU3eUh4DZL0Dp96l
+	 8l6IMRpnrq5z+Kd7qUfLxisyvDLus9GRQV0bh4/fnD8AhRdxY+rLEUwiPHsKZ+RE6j
+	 AfwBs3ovHpvYDMNCp/em5cDWZtg57c16bSP0Zf0akAh/K4roGWos4TcwGaqo5D+Hk6
+	 eVu4gaUH0ue6cjWs8su1J6m4S2LP/8qh04jTrqz3gqn2rDUYhjjzUH78ciN9pNImtv
+	 k0bIKGudVb52Q==
+Date: Sun, 23 Jun 2024 11:12:47 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Kaustabh Chakraborty <kauschluss@disroot.org>
-Cc: linux-iio@vger.kernel.org, denis.ciocca@st.com,
- devicetree@vger.kernel.org, linus.walleij@linaro.org, robh+dt@kernel.org
-Subject: Re: [PATCH v5 2/2] dt-bindings: iio: st-sensors: add LIS2DS12
- accelerometer
-Message-ID: <20240623110305.5d961052@jic23-huawei>
-In-Reply-To: <20240622123520.39253-2-kauschluss@disroot.org>
-References: <20240622123520.39253-1-kauschluss@disroot.org>
-	<20240622123520.39253-2-kauschluss@disroot.org>
+To: David Lechner <dlechner@baylibre.com>
+Cc: Joel Stanley <joel@jms.id.au>, Andrew Jeffery
+ <andrew@codeconstruct.com.au>, Liam Girdwood <lgirdwood@gmail.com>, Mark
+ Brown <broonie@kernel.org>, Andreas Klinger <ak@it-klinger.de>, Michael
+ Hennerich <Michael.Hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?=
+ <nuno.sa@analog.com>, linux-iio@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-aspeed@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 00/10] iio: use devm_regulator_get_enable_read_voltage
+ round 2
+Message-ID: <20240623111247.1c4a5e2a@jic23-huawei>
+In-Reply-To: <20240621-iio-regulator-refactor-round-2-v1-0-49e50cd0b99a@baylibre.com>
+References: <20240621-iio-regulator-refactor-round-2-v1-0-49e50cd0b99a@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -62,54 +66,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 22 Jun 2024 18:03:46 +0530
-Kaustabh Chakraborty <kauschluss@disroot.org> wrote:
+On Fri, 21 Jun 2024 17:11:47 -0500
+David Lechner <dlechner@baylibre.com> wrote:
 
-> LIS2DS12 is an accelerometer by STMicroelectronics. It is identifiable by
-> its WhoAmI value 0x43.
+> This is the second round of patches making use of the new helper
+> devm_regulator_get_enable_read_voltage() to simplify drivers.
 > 
-> Its register interface is not compatible with existing parts. For example:
-> 
-> - The full-scale values are present in register 0x20, in bits 2 and 3
->   (mask 0x0c). Most other supported sensors have the register address set
->   to 0x21, 0x23, 0x24, or 0x25. There is one sensor setting though
->   (bearing WhoAmI 0x3b) which has it's address set to 0x20, but the mask is
->   set to 0x20, not 0x0c.
-> 
-> - The full-scale values 2G, 4G, 8G, and 16G correspond to the register
->   values 0x00, 0x02, 0x03, 0x01 respectively. None of the sensor settings
->   have the value 0x01 associated with 16G.
-> 
-> Add the compatible string without any fallback.
-> 
-> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Given the only requested change was this description and everyone seemed
-happy with it in previous thread, I'll pick this series up now.
-Note that I can still add any tags that come in as it'll only be
-pushed out as testing for the next few days.
+> All of the changes in this round should be fairly straight forward.
+> And as a bonus, there are a few patches to get rid of driver .remove
+> callbacks.
 
-Applied to the togreg branch of iio.git and pushed out as testing to
-let 0-day have a first go at seeing what we missed.
+LGTM.  Obviously only been on list for a short time though and
+some of these have active maintainers so I won't pick them up just yet.
 
-I made one tweak in patch 1 description.  Datasheet is a tag
-so no blank line between that and the main tags block as it
-will break some automation.
+Jonathan
 
+> 
 > ---
->  Documentation/devicetree/bindings/iio/st,st-sensors.yaml | 1 +
->  1 file changed, 1 insertion(+)
+> David Lechner (10):
+>       iio: adc: aspeed_adc: use devm_regulator_get_enable_read_voltage()
+>       iio: adc: hx711: use devm_regulator_get_enable_read_voltage()
+>       iio: adc: hx711: remove hx711_remove()
+>       iio: adc: hx711: use dev_err_probe()
+>       iio: adc: ltc2309: use devm_regulator_get_enable_read_voltage()
+>       iio: adc: max1363: use devm_regulator_get_enable_read_voltage()
+>       iio: adc: ti-adc108s102: use devm_regulator_get_enable_read_voltage()
+>       iio: adc: ti-ads8688: use devm_regulator_get_enable_read_voltage()
+>       iio: adc: ti-ads8688: drop ads8688_remove()
+>       iio: dac: ad3552r: use devm_regulator_get_enable_read_voltage()
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
-> index fff7e3d83a02..71c1ee33a393 100644
-> --- a/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
-> +++ b/Documentation/devicetree/bindings/iio/st,st-sensors.yaml
-> @@ -26,6 +26,7 @@ properties:
->            - st,lis2dw12
->            - st,lis2hh12
->            - st,lis2dh12-accel
-> +          - st,lis2ds12
->            - st,lis302dl
->            - st,lis331dl-accel
->            - st,lis331dlh-accel
+>  drivers/iio/adc/aspeed_adc.c    | 30 +++++-----------
+>  drivers/iio/adc/hx711.c         | 78 ++++++++++-------------------------------
+>  drivers/iio/adc/ltc2309.c       | 43 ++++-------------------
+>  drivers/iio/adc/max1363.c       | 28 +++------------
+>  drivers/iio/adc/ti-adc108s102.c | 28 ++-------------
+>  drivers/iio/adc/ti-ads8688.c    | 59 ++++++-------------------------
+>  drivers/iio/dac/ad3552r.c       | 28 +++------------
+>  7 files changed, 53 insertions(+), 241 deletions(-)
+> ---
+> base-commit: 7db8a847f98caae68c70bdab9ba92d1af38e5656
+> change-id: 20240621-iio-regulator-refactor-round-2-28a1e129a42d
 
 

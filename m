@@ -1,89 +1,106 @@
-Return-Path: <linux-iio+bounces-6780-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6781-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38069913CD2
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 18:43:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B6A913CDE
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 18:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68D791C21BD6
-	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 16:43:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 130AC281708
+	for <lists+linux-iio@lfdr.de>; Sun, 23 Jun 2024 16:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE7D183092;
-	Sun, 23 Jun 2024 16:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F2CB183063;
+	Sun, 23 Jun 2024 16:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NPDmB/95"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rhlA7o2J"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B1D27453;
-	Sun, 23 Jun 2024 16:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B6B8BFA;
+	Sun, 23 Jun 2024 16:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719161020; cv=none; b=InM9/qY6oCophqv7BcmcyAbz/jdv8vHLXDevy6CnpUQczzWqwhl/vQY/USMKyPzgBoLpVH1PnbOE8MgAIUFDkGGIx59u/DCySDZM0b3oOwWT0xW4KtyB9hyG71p/UeSXGuaLeUasYT4icx3cQt0taFu73jx7S9C7g0LuqDNrG8w=
+	t=1719161232; cv=none; b=bXmMMoZu6PS8kuP+6pC4po0MW/QuQWYHCi8VjHjgMGfAVWCOo63KR0dyLW29mO5TygxyLtwz4Zz+98H7V+IWe3mQXcuiJoD2AD0kmaNTS+27RGW/XpLn9+XmBjSUWqCnUszAEz+p3IC2s5H2sZ8GgXb95/+O7xU8SyfqVCwz1eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719161020; c=relaxed/simple;
-	bh=1nMqqxlbzqnOaLTzG3lu0kMusS7M47wv0fXB6SIvc0U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gcyb5GHE4b90/WHf7lUHOkK0miw6sFs44X0AzRENON9pmf4wmsvKYDqeuvI9+kYuge+bc5Omj8zDp0afv5OJ9TVHIxCPOf0t52eKwXkyxVu+epn8u5Sw6jd4hrNZHJcGRnsgxCMxGTuoaP55fmj14U+raAhqBW6CnOJcorE+4pc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NPDmB/95; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C7CC4AF09;
-	Sun, 23 Jun 2024 16:43:35 +0000 (UTC)
+	s=arc-20240116; t=1719161232; c=relaxed/simple;
+	bh=gxVeHfttQ/VVtXbUzo3h3MEUhLXLyzq7Q5DqtpU2HK4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=nKYUXtI0fH7ermdJ5foNGsz+cCiYKLxiCx0B8zi/3uPO/gAolmej8pqre4b0sQJhYLAH2ejSbNc8oHCu6UB1e48fZKE+8uNC+45R2eyoa6FWB06eS1E7ieBwiv3K8JxYsNHGNtPfviQkwLTIettdkbehhNOve88BWWgmeNrmf/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rhlA7o2J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F5E2C2BD10;
+	Sun, 23 Jun 2024 16:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719161020;
-	bh=1nMqqxlbzqnOaLTzG3lu0kMusS7M47wv0fXB6SIvc0U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NPDmB/95FhIXETQ4nb2L5wVxntqtY4sQ5d2FZlw72flAX1/vxt7XGYHG9eait9MZj
-	 +SMPg6JSrOCFIXzyDHgCvclWGVNn1tq7Z1K0LsfP7pNqujcD7pXUjI+nVV4s1WYjxM
-	 a46VqGVoWz9xkWVM93hEMDbCN4Y7rQhvB5SfaHcwBHTjpmryus1wFzLa1cVGflRsMJ
-	 K48FZ+WPI9oxAQJ1UvPYabwVMsITEgaLYi0MYJiWuuDS8zX7ecl0a2rAhaublErLSq
-	 1DBMLOAPL69VEjh9IoNCoaKYz3Dx0tJWbciDpxW9EIt5qcZsb/YFgPwTQmTSp/MjDc
-	 TyYoJFSrjcqmQ==
-Date: Sun, 23 Jun 2024 17:43:31 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Michael Hennerich
- <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, Ramona Gradinariu <ramona.gradinariu@analog.com>
-Subject: Re: [PATCH v2 3/4] iio: adc: ad4695: Add driver for AD4695 and
- similar ADCs
-Message-ID: <20240623174331.07ad2446@jic23-huawei>
-In-Reply-To: <20240617-iio-adc-ad4695-v2-3-63ef6583f25d@baylibre.com>
-References: <20240617-iio-adc-ad4695-v2-0-63ef6583f25d@baylibre.com>
-	<20240617-iio-adc-ad4695-v2-3-63ef6583f25d@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=k20201202; t=1719161231;
+	bh=gxVeHfttQ/VVtXbUzo3h3MEUhLXLyzq7Q5DqtpU2HK4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=rhlA7o2JDMbLLcPTQGUR+uZE8AyYlLANcbJw96lKVxe2IQ+yyVKIdW3SoJ9OSj7fR
+	 +lMKRGh1YVe5VWfeGUbHnP0Lp5gkCnPXfGp5EPz0lbXrZ5w/k5H6Xj3kwtfE7yk0Qz
+	 Hm2vmy+ttNWrjtbJQqUtYurMF7wB/tw8bmodXejDVgoAeOJ5HO+MEpw+bkmCxEOZmI
+	 HQHN3B01byHayNltAQ3f/I7NCp5YW+FbmJia4+9a4w+Nlr6eViqoxCwPg46b7gmlKq
+	 anNuhaT+0T5mPYPtNAlglek3SZWB2PF25WezR9cKacXn0/ZKWULzWis5wBE8nVqSp0
+	 TSKYm32WDX51A==
+From: Mark Brown <broonie@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>, 
+ David Lechner <dlechner@baylibre.com>
+Cc: Michael Hennerich <michael.hennerich@analog.com>, 
+ =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
+ Marcelo Schmitt <marcelo.schmitt@analog.com>, 
+ Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org, 
+ linux-iio@vger.kernel.org
+In-Reply-To: <20240621-devm_spi_optimize_message-v1-0-3f9dcba6e95e@baylibre.com>
+References: <20240621-devm_spi_optimize_message-v1-0-3f9dcba6e95e@baylibre.com>
+Subject: Re: (subset) [PATCH 0/3] spi: add devm_spi_optimize_message()
+ helper
+Message-Id: <171916122916.345728.2892160992008688839.b4-ty@kernel.org>
+Date: Sun, 23 Jun 2024 17:47:09 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14-dev-d4707
 
-On Mon, 17 Jun 2024 14:53:14 -0500
-David Lechner <dlechner@baylibre.com> wrote:
-
-> This is a new driver for Analog Devices Inc. AD4695 and similar ADCs.
-> The initial driver supports initializing the chip including configuring
-> all possible LDO and reference voltage sources as well as any possible
-> voltage input channel wiring configuration.
+On Fri, 21 Jun 2024 15:51:29 -0500, David Lechner wrote:
+> In the IIO subsystem, we are finding that it is common to call
+> spi_optimize_message() during driver probe since the SPI message
+> doesn't change for the lifetime of the driver. This patch adds a
+> devm_spi_optimize_message() helper to simplify this common pattern.
 > 
-> Only the 4-wire SPI wiring mode where the CNV pin is tied to the CS pin
-> is supported at this time. And reading sample data from the ADC can only
-> be done in direct mode for now.
-> 
-> Co-developed-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
 
-I only took a quick look as it sounds like some of this will change.
-FWIW Looks good to me.
+Applied to
 
-Jonathan
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
+
+Thanks!
+
+[1/3] Documentation: devres: add missing SPI helpers
+      commit: 9b894d65e9788ece0d51e76d2c184524900f5ec9
+[2/3] spi: add devm_spi_optimize_message() helper
+      commit: 17436001a6bc42c7f55dc547ca5b1a873208d91d
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 

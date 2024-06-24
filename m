@@ -1,74 +1,75 @@
-Return-Path: <linux-iio+bounces-6813-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6814-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2CA291500D
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 16:36:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02F54915167
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 17:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D3E11F20F93
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 14:36:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D4FD1F2205D
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 15:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20F9119AD5D;
-	Mon, 24 Jun 2024 14:36:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D46419B3FD;
+	Mon, 24 Jun 2024 15:08:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="D4Qg4kWO"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vk8yt2ea"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1037319AA7F
-	for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 14:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D9D1E869
+	for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 15:08:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719239808; cv=none; b=KRli1xaNyNYWICe6iF0X5p32KVEdC9nIGDu1fphqZABX7WX8s/zuah46srdA0P8rlb9tGQhmD48JwzcLjyu3CSTtAKLY4kwp0oo9pQESkSB4h5oyrhOsyHKefyINpC6LE8H+88sl85bfXzahg9AzvD5i1/W0feiLO16QKF9Omjw=
+	t=1719241700; cv=none; b=orFNMCL299zPnwLytL4tlZeL5ohHH7T6nJ/qsY6NtU/KLJ7Md5W6ZF3+BbkwxpzuPo1tU9rbIt2rCc02kLdhwI0660X2YsJfb9MQe+lDiYkPtxlRSTHN1BP+zixApDr5nKtDJS2T2ZL2yFi3mHCJCZNa8mHC7HgPGpH43mpxDpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719239808; c=relaxed/simple;
-	bh=wggDE/bgRHa1L4mODGwspiGnIRUUi8LE6HqPBbnBW1w=;
+	s=arc-20240116; t=1719241700; c=relaxed/simple;
+	bh=ft4tT0UQ22Hu2W+Pyk0ebx25WCKyu/3L2mVuUHGIFQ4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TwetPA111SK3RahFnVZOOSd7XcfQ40nouq/VG2KZFl7smK9Bf+881z/W7lmVElmq719krUm6PQ2iuIvqZHP91M3ve/8a1wgBx5g/rA8D+faWI7LxKDcCkACGRtQhFi9mMh/8+XyofApIge/1EiJO3okCMYi6VJtX/rsry+l61H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=D4Qg4kWO; arc=none smtp.client-ip=209.85.160.47
+	 In-Reply-To:Content-Type; b=rna8XfWkIC4OgITtraZXTMIbsyuqf3KBoIn7mQVzR3w9MRyq7ayhWHuSbPoWypC02PYKGdnY+y77N43pcQCAwxxskg7Xv2VijQsF7+FVILbYIk6nT3SJFfKGYYVAZqXTECAN8BsOermDEgOxDYPhmXBpk2+FMcGy5KNgO/UenFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vk8yt2ea; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-25c9ef2701fso2522785fac.1
-        for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 07:36:45 -0700 (PDT)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4217c7eb6b4so36840855e9.2
+        for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 08:08:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719239805; x=1719844605; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719241696; x=1719846496; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bv7pX3A7e0aATefTLSH8Hc9sIVLTEzJJ10hAyVPLd4s=;
-        b=D4Qg4kWOMTyXlMutlJzC7nJPcQ8Xchp+bLyQAo7/b4CoIgTwRh6xctArKTEpTMpFAd
-         So3i7k/sLXj7KMHdwCdkxmFZlEtL6gwpqsmh2dEVYX37Pr1H+TJcmLD/mfBDVpLzZ4qC
-         cRNZSkfnXrlKesXqYyuslEBwByN/gQFYxkty6aU1C0FBjdv06Re4kLda4tI6RWhgP7fT
-         3VqmzvZqBH4Wqrci+HYSNXA/a7dkxemWZKpUCwVnp9MFbnSmVkA2ORTj5MuwGLjMoINz
-         AAE1G1COvnoe25qhhMpMyO5nSTGUr7stPU6ip7DbHFAMaeM3HWtxvdmp8PNlJ8nXy7vT
-         ItOw==
+        bh=wafc/q0nXR3Ye8LsHgCDkHwmKjVfo3c4oHVHMDrj/Aw=;
+        b=vk8yt2eaYwhW7f72SDOl5261xikcP+xruoLxe5Waa65T4fHod2eYL07PLwJkHZtFbj
+         iEmxo391Ym00xAFQ0Hny9vlN0ugeZbWxselJdlxPAYAfbLXKnoUSZ53i5d5OJfytpFOW
+         +A78H60YWZlKw5fwmLjOW16OawSag/ECkZ7QJuiOVSDfSMb9j4G75fiHeIPezy0MvuVQ
+         CJxw8DfieKdKqTqyZnm9mYsrg+XNxd8iGgHLXjD6VNkS5n1SGvM1WLT0BbjXUN0uIfPv
+         CxeZ3QX4usQi4M/KMqU+YkL0f2cyFKyVMSir5EkSDUCjrr7+JsVM9Z8/eGeQDSgl3zjV
+         LsGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719239805; x=1719844605;
+        d=1e100.net; s=20230601; t=1719241696; x=1719846496;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bv7pX3A7e0aATefTLSH8Hc9sIVLTEzJJ10hAyVPLd4s=;
-        b=vddK7hBzTywysmKkSiAAEQ2i2MpKlCyUw5bPzZZRbp/RHOOhAED3ezWbq3/FbhFORw
-         sKFK8EC0N+TEGziNPpRQiPy+7RIedF/N1d72W6nM3dA+EPYbZEjQWS3IkpbsVJ/OGdR5
-         KsUdCbC+YiuKCtTxuNQ4BwAy1Or8vVvzAUniwU04cK1sKZZSoKKGyN7SJbE9nP2RrNZM
-         BqCQPwfWq2Ugb1Z+sJ83L6xA+fhsN9bbPC1DBX6Z5SjbuQhXMjdos7R9JEVXIg9yK/Ap
-         UvB2mRx4RMmsgyeIhAoqzNhGYii9mYTdXEKR/nnC1fpdyAKFxoxILSXSICJ8+M064pTq
-         fQ3w==
-X-Forwarded-Encrypted: i=1; AJvYcCX8IZl7y6DG8JPF+wyeeK0xRnmFdiBoE+KVVUCTLre2QA0cKUdms55kTgTDY4ze2oH0SkHES4d22LSLTkoYTJsHknJ5YtumXYAN
-X-Gm-Message-State: AOJu0Ywuk05QamtDHc5ppjhV+I+ZYsNbFPI3xZc8q6M4nHWxv23E5jbY
-	rPUQOCs64L4vYOZZF8icucaNPpN+SDEwfpikirTGq2nUnkWJDKfuzqMmgLqvIaE=
-X-Google-Smtp-Source: AGHT+IHwuPQplsBX8FrXFbl4eyzFRD7RhUchQKz0/ngb6Hz3DMqC+czTWLIPmE8rnu0aE5J8JeEIEw==
-X-Received: by 2002:a05:6870:b4a4:b0:254:b6f0:21b6 with SMTP id 586e51a60fabf-25d06bb45d2mr4708448fac.10.1719239804925;
-        Mon, 24 Jun 2024 07:36:44 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-25cd4941a11sm1895787fac.9.2024.06.24.07.36.44
+        bh=wafc/q0nXR3Ye8LsHgCDkHwmKjVfo3c4oHVHMDrj/Aw=;
+        b=eqUtBjuvFbWjTR75bifwG48aUv/SYM+PgAO83uV6+GYG++9aXEZtnlbQYpF5gWUgQm
+         pyhFlaYMR6HwJUKQn8xsYzmhRMVtZ5vhWaM6MX4qMjTIRmB+tHvPaLV8Y/pjl/FxeP2V
+         Lq+Q7x/nubRJK4ef20BNbpXPWPJK9IQkEtX4W1il3mbKcaOPAYRIT1NcQm6JueJFvxgY
+         Czs9nRH6AwVIIOVs6J6MdUkmkRhgpiAfUdbgaPT+roc2z6wpQGcBd/R8MdfneFwvJs84
+         Yq2zDG9UQSARP6yxs0FI64WscgU2a49pHaawjYLEZ+Gd8N6hgf925MDRjP/YGGReFH2y
+         EieQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ+R1S2vLtTdLctPRHVj7Ql/rE4LL4yXU9/c1ZANtiwknrjnAEEkOBEHw8zS3VbJya99GQ6qwZ+Qq9KI9oz7NvRCvJuzRCdGzx
+X-Gm-Message-State: AOJu0Ywh9GoQWn8uFWXzxAn360AkUunCQd166BGX3upJ27cuQCxpKCKk
+	QVZbOm2Xow54wwvJdFvYpnsH4/R/R8N8KrJdE32OsqAPLDsSeEh5P4iuizBpwaZ2a0CA9Me1kQn
+	q
+X-Google-Smtp-Source: AGHT+IE5Azx1tp6IG+TkRkPA4t2eMISvGoO8x7MCXtH6yPnmaWLIdsqd5JLP1NfTp42KWcMq7VY1ag==
+X-Received: by 2002:a05:600c:68c:b0:421:de31:81 with SMTP id 5b1f17b1804b1-4248cc35d9cmr32718155e9.24.1719241695473;
+        Mon, 24 Jun 2024 08:08:15 -0700 (PDT)
+Received: from [10.2.5.170] (amontpellier-556-1-151-252.w109-210.abo.wanadoo.fr. [109.210.7.252])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4248191116fsm142780645e9.37.2024.06.24.08.08.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jun 2024 07:36:44 -0700 (PDT)
-Message-ID: <204e6729-d5b0-4d44-85d5-e8de7541b689@baylibre.com>
-Date: Mon, 24 Jun 2024 09:36:43 -0500
+        Mon, 24 Jun 2024 08:08:15 -0700 (PDT)
+Message-ID: <62dadd31-5fd1-45b4-99e8-44ffb367bad5@baylibre.com>
+Date: Mon, 24 Jun 2024 17:08:14 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,211 +77,113 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] dt-bindings: iio: adc: add AD4695 and similar ADCs
+Subject: Re: [PATCH 8/9] iio: adc: ad7606: fix oversampling gpio array
 To: Jonathan Cameron <jic23@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <nuno.sa@analog.com>,
- Jonathan Corbet <corbet@lwn.net>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-References: <20240617-iio-adc-ad4695-v2-0-63ef6583f25d@baylibre.com>
- <20240617-iio-adc-ad4695-v2-2-63ef6583f25d@baylibre.com>
- <187da75c-9af3-42a9-b31e-be731aaf63d2@baylibre.com>
- <20240623173911.7ea5d518@jic23-huawei>
+Cc: Lars-Peter Clausen <lars@metafoo.de>,
+ Michael Hennerich <Michael.Hennerich@analog.com>,
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Beniamin Bia <beniamin.bia@analog.com>,
+ Stefan Popa <stefan.popa@analog.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
+ devicetree@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ jstephan@baylibre.com, dlechner@baylibre.com
+References: <20240618-cleanup-ad7606-v1-0-f1854d5c779d@baylibre.com>
+ <20240618-cleanup-ad7606-v1-8-f1854d5c779d@baylibre.com>
+ <20240623164542.53a9f2b1@jic23-huawei>
 Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20240623173911.7ea5d518@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Guillaume Stols <gstols@baylibre.com>
+In-Reply-To: <20240623164542.53a9f2b1@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 6/23/24 11:39 AM, Jonathan Cameron wrote:
-> On Tue, 18 Jun 2024 14:29:10 -0500
-> David Lechner <dlechner@baylibre.com> wrote:
-> 
->> On 6/17/24 2:53 PM, David Lechner wrote:
->>> Add device tree bindings for AD4695 and similar ADCs.
->>>
->>> Signed-off-by: David Lechner <dlechner@baylibre.com>
->>> ---
->>>   
->> ...
->>
->>> +
->>> +  interrupts:
->>> +    minItems: 1
->>> +    items:
->>> +      - description:
->>> +          Signal coming from the BSY_ALT_GP0 or GP3 pin that indicates a busy
->>> +          condition.
->>> +      - description:
->>> +          Signal coming from the BSY_ALT_GP0 or GP2 pin that indicates an alert
->>> +          condition.
->>> +
->>> +  interrupt-names:
->>> +    minItems: 1
->>> +    items:
->>> +      - const: busy
->>> +      - const: alert
->>> +  
->>
->> Since the interrupt can come from two different pins, it seems like we would
->> need an extra property to specify this. Is there a standard way to do this?
->>
->> Otherwise I will add something like:
->>
->> adi,busy-on-gp3:
->>   $ref: /schemas/types.yaml#/definitions/flag
->>   description:
->>     When present, the busy interrupt is coming from the GP3 pin, otherwise
->>     the interrupt is coming from the BSY_ALT_GP0 pin.
->>    
->> adi,alert-on-gp2:
->>   $ref: /schemas/types.yaml#/definitions/flag
->>   description:
->>     When present, the alert interrupt is coming from the GP2 pin, otherwise
->>     the interrupt is coming from the BSY_ALT_GP0 pin.
-> Cut and paste?  Or it ends up on the same pin as the bsy? In which case that's
-> a single interrupt and it's up to software to decide how to use. I'll guess
-> it comes on GP1?
+Resend, previous mail was erroneously sent in HTML. I apologize for the 
+spamming.
 
-This is not a typo. The BSY_ALT_GP0 is a multi-purpose pin. The actual function
-of the pin isn't selected explicitly, but rather there is an order of priority
-(Table 25 in the datasheet).
+On 6/23/24 17:45, Jonathan Cameron wrote:
 
-Also, there are two packages the chip can come in, LFCSP and WLCSP. The former
-only has GP0 and not GP1/2/3.
+ > On Tue, 18 Jun 2024 14:02:40 +0000
+ > Guillaume Stols <gstols@baylibre.com> wrote:
+ >> gpiod_set_array_value was misused here: the implementation relied on the
+ >> assumption that an unsigned long was required for each gpio, while the
+ >> function expects a bit array stored in "as much unsigned long as needed
+ >> for storing one bit per GPIO", i.e it is using a bit field.
+ >>
+ >> Fixes: d2a415c86c6b ("iio: adc: ad7606: Add support for AD7606B ADC")
+ >> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+ > Always drag fixes to the start of a series.  Probably doesn't matter
+ > in this case but we want it to be obvious there are no necessary 
+precursors
+ > in this series for anyone backporting.
 
-My thinking was that if both interrupts are provided in the DT and neither
-adi,busy-on-gp3 or adi,alert-on-gp2 is given, then the driver would use
-a shared interrupt and only allow enabling one function alert or busy
-at a time.
+OK will do this change in the next version.
 
->>
-> 
-> More interrupt names.  We shouldn't restrict someone wiring all 4 if they want
-> to - we'll just use 2 that we choose in the driver.
-> 
-> interrupt-names
->   minItems: 1
->   items:
->     - const: busy-gp0
->     - const: busy-gp1
->     - const: alert-gp2
->     - cosnt: alert-gp1
+ >
+ > What is the user visible outcome of this bug?  Superficially the numbers
+ > all end up the same I think even though the code is clearly working
+ > mostly by luck.  So might not warrant a fixes tag?
 
-This would actually need to be:
+This is leading into some issues I should maybe have better documented 
+in the commit message.
 
-interrupt-names
-  minItems: 1
-  items:
-    - const: busy-gp0
-    - const: busy-gp3
-    - const: alert-gp0
-    - cosnt: alert-gp2
+See below
 
-Or would it need to be this since there are two possible signals on the
-same pin rather than trying to mess with a shared interrupt?
-(Note: if both alert and busy are enabled at the same time on GP0, we
-will only get the alert signal and busy signal is masked).
+ >
+ >> ---
+ >>   drivers/iio/adc/ad7606.c     | 4 ++--
+ >>   drivers/iio/adc/ad7606_spi.c | 5 +++--
+ >>   2 files changed, 5 insertions(+), 4 deletions(-)
+ >>
+ >> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+ >> index e3426287edf6..502344e019e0 100644
+ >> --- a/drivers/iio/adc/ad7606.c
+ >> +++ b/drivers/iio/adc/ad7606.c
+ >> @@ -235,9 +235,9 @@ static int ad7606_write_os_hw(struct iio_dev 
+*indio_dev, int val)
+ >>       struct ad7606_state *st = iio_priv(indio_dev);
+ >>       DECLARE_BITMAP(values, 3);
+ >>   -    values[0] = val;
+ >> +    values[0] = val & GENMASK(2, 0);
+ >>   -    gpiod_set_array_value(ARRAY_SIZE(values), st->gpio_os->desc,
+ >> +    gpiod_set_array_value(st->gpio_os->ndescs, st->gpio_os->desc,
+ >>                     st->gpio_os->info, values);
 
-interrupt-names
-  minItems: 1
-  items:
-    - const: alert-busy-gp0
-    - const: busy-gp3
-    - cosnt: alert-gp2
+ARRAY_SIZE(values) is 1 because DECLARE_BITMAP will declare a dimension 
+1 unsigned long array (more than enough for 3 bits !).
+We want to set 3 bits in gpiod_set_array_value, thus the first parameter 
+should be 3, not 1.
 
-> 
-> T   
->>
->>> +
->>> +patternProperties:
->>> +  "^channel@[0-9a-f]$":
->>> +    type: object
->>> +    $ref: adc.yaml
->>> +    unevaluatedProperties: false
->>> +    description:
->>> +      Describes each individual channel. In addition the properties defined
->>> +      below, bipolar from adc.yaml is also supported.
->>> +
->>> +    properties:
->>> +      reg:
->>> +        maximum: 15
->>> +
->>> +      diff-channels:
->>> +        description:
->>> +          Describes inputs used for differential channels. The first value must
->>> +          be an even numbered input and the second value must be the next
->>> +          consecutive odd numbered input.
->>> +        items:
->>> +          - minimum: 0
->>> +            maximum: 14
->>> +            multipleOf: 2
->>> +          - minimum: 1
->>> +            maximum: 15
->>> +            not:
->>> +              multipleOf: 2  
->>
->> After some more testing, it turns out that I misunderstood the datasheet and
->> this isn't actually fully differential, but rather pseudo-differential.
->>
->> So when pairing with the next pin, it is similar to pairing with the COM pin
->> where the negative input pin is connected to a constant voltage source.
-> 
-> Ok. I'm curious, how does it actually differ from a differential channel?
-> What was that test?  It doesn't cope with an actual differential pair and needs
-> a stable value on the negative?
+ >>         /* AD7616 requires a reset to update value */
+ >> diff --git a/drivers/iio/adc/ad7606_spi.c b/drivers/iio/adc/ad7606_spi.c
+ >> index 263a778bcf25..287a0591533b 100644
+ >> --- a/drivers/iio/adc/ad7606_spi.c
+ >> +++ b/drivers/iio/adc/ad7606_spi.c
+ >> @@ -249,8 +249,9 @@ static int ad7616_sw_mode_config(struct iio_dev 
+*indio_dev)
+ >>   static int ad7606B_sw_mode_config(struct iio_dev *indio_dev)
+ >>   {
+ >>       struct ad7606_state *st = iio_priv(indio_dev);
+ >> -    unsigned long os[3] = {1};
+ >> +    DECLARE_BITMAP(os, 3);
+ >>   +    bitmap_fill(os, 3);
 
-In my initial testing, since I was only doing a direct read, I was using
-constant voltages. But when I started working on buffered reads, then I
-saw noisy data when using a fully differential (antiphase) signal.
+Here we need 3 bits set HIGH in one unsigned long (i.e 0x07) and we get 
+3 times 0x01 instead.
 
-This chip uses a multiplexer for channel so when an odd number pin is used
-as the positive input (paired with REFGND or COM), it goes through one
-multiplexer, but when an odd number pin is used as the negative input
-it goes through the other multiplexer - the same one as REFGND and COM.
+Thus, it will not switch to software mode if OS pins are not hardwired 
+(which is I must admit, rather unlikely).
 
-And burred in the middle of a paragraph on page 34 of 110 of the datasheet
-is the only place in the entire datasheet where it actually says this is
-a pseudo differential chip.
-
-> 
->>
->>> +
->>> +      single-channel:
->>> +        minimum: 0
->>> +        maximum: 15
->>> +
->>> +      common-mode-channel:
->>> +        description:
->>> +          Describes the common mode channel for single channels. 0 is REFGND
->>> +          and 1 is COM. Macros are available for these values in
->>> +          dt-bindings/iio/adi,ad4695.h.
->>> +        minimum: 0
->>> +        maximum: 1
->>> +        default: 0  
->>
->> So I'm thinking the right thing to do here go back to using reg and the INx
->> number and only have common-mode-channel (no diff-channels or single-channel).
->>
->> common-mode-channel will need to be changed to allow INx numbers in addition
->> to COM and REFGND.
->>
->> This means that [PATCH v2 1/4] "dt-bindings: iio: adc: add common-mode-channel
->> dependency" would be wrong since we would be using common-mode-channel without
->> single-channel.
->>
->> It also means we will need an optional in1-supply: true for all odd numbered
->> inputs.
-> Ok. I'm not totally sure I see how this comes together but will wait for v3 rather
-> than trying to figure it out now.
-> 
-> Jonathan
-> 
-> 
-
-It should end up like other pseudo differential chips we have done recently.
-I've got it worked out, so you'll be seeing it soon enough anyway.
+ >>       /*
+ >>        * Software mode is enabled when all three oversampling
+ >>        * pins are set to high. If oversampling gpios are defined
+ >> @@ -258,7 +259,7 @@ static int ad7606B_sw_mode_config(struct iio_dev 
+*indio_dev)
+ >>        * otherwise, they must be hardwired to VDD
+ >>        */
+ >>       if (st->gpio_os) {
+ >> -        gpiod_set_array_value(ARRAY_SIZE(os),
+ >> +        gpiod_set_array_value(st->gpio_os->ndescs,
+ >>                         st->gpio_os->desc, st->gpio_os->info, os);
+ >>       }
+ >>       /* OS of 128 and 256 are available only in software mode */
+ >>
 

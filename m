@@ -1,153 +1,85 @@
-Return-Path: <linux-iio+bounces-6837-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6838-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73365915719
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 21:24:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CA44915733
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 21:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 212681F2575B
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 19:24:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9E6C281A5F
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 19:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDDE1A00EF;
-	Mon, 24 Jun 2024 19:24:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3E81A01A1;
+	Mon, 24 Jun 2024 19:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cp4l7Pav"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H30Y5ogk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1373C3A1A8;
-	Mon, 24 Jun 2024 19:24:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A68D19FA9B
+	for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 19:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719257081; cv=none; b=Bftdi/MqQWosOO5a3BCEq+dtQmeLhVpvhh40xcs+giwPzCmGmXMrzAjyIlizF+Z7W3RtPc2d7Pxd3G61+FuQg2ynbh09HMagM3oYEP6xWKB/j5AMhGfNthjy++Fp117ik3zLoeaKBZpM6TrZwGbb7XKETCojUaaKgLXtwV/l86s=
+	t=1719257536; cv=none; b=fhSgOkDDIjzB9Qw4yODORL598XCRzA6GZkqv7sDSopYeqZNNyP7jDmuC1GCHGRsfztru1VcdKnNkPHgj5jsTIlWKQL1mKWv8GcUGC5CnTO0UNc2hrtgQbAJL39ToiQcxfEue1+cmPk4Zla/dh0pjQ4bLw97e6HP9YwqOmfshPPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719257081; c=relaxed/simple;
-	bh=THHerX9VKK9eiYYoRM4Rium1mANrF3Sydv039s+f3XA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=chFgIV88ellmIeQEsiCbtV/fM7XvXoiZgjaQy5s49xClhD/gb1kBJ70hl0Yn/AUXpkyzGK3hKMp+R0PS8aNUZKSFzxr5wURuQ+Lu8mQJDusLnSCimkONN2KhtOYlfeX/KSmrjjvC8UQygHS9L7d2hfuuoPVXQ0PwMhhr5dBj5FI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cp4l7Pav; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E32C2BBFC;
-	Mon, 24 Jun 2024 19:24:37 +0000 (UTC)
+	s=arc-20240116; t=1719257536; c=relaxed/simple;
+	bh=twLl8YaVGWcGIHaMeuKQEqe2hFrKOAL7nxs/JcmP3wM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h2ZwxYlOfnK18HMnbM9Zph/zzkt8YjTeT8gUOvrPZfRWVRwqoZuZ5Zm1f3ICk9ZHr0fQx0/fulOHkSpZgDGqK6jTtCYqMZjv6nv//YmWHoBmVyP2PSf056RcFd0M9HSI7cDQQ/UfpsOBt5Yp0LnFFsrKoxjqKARBGntrYsDQ/us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H30Y5ogk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F47BC4AF09;
+	Mon, 24 Jun 2024 19:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719257080;
-	bh=THHerX9VKK9eiYYoRM4Rium1mANrF3Sydv039s+f3XA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cp4l7PaviaEy6YJPLRoWd+76FRUoGC1HAlupSulljKPu14wZxdTYrJ+CLydYeftHg
-	 Oqnc/uKpENqHgGeLwOypGoM/m+/9zIWvAITTgGp2uQMeZkg2mWWaE+ayc6GUsevy/W
-	 sAhb41HSRaB2Pibt7aH4EA3KP1nwV1pkkIbz7/DKNaLxDv2S7BT1HBOcntqXsS+Mro
-	 Q0f+guqPApf7spEONbHsOd++m3Znsdu/YOQVi+bNKYgdQaCfH7Xow4m+PHLHM9R3Ff
-	 bm0j7chYYY/U07skWCIw43VrWEJliK//SB5Lzawwx0uVJfML3pzVtKlRkhgIMlix/G
-	 /ILrWfZrh2/Qw==
-Date: Mon, 24 Jun 2024 20:24:33 +0100
+	s=k20201202; t=1719257535;
+	bh=twLl8YaVGWcGIHaMeuKQEqe2hFrKOAL7nxs/JcmP3wM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=H30Y5ogkun5/eTOtIlfZP9/ce5QzVSNIzYERBnbIp5fFKhc31yBSb9fAMePO4QmU9
+	 8te7BXUNe3HsHrbxKXfndC9FhYs+25AkNErt46Q8QBHAv5P0/o/SV8ffA4hcuABsCk
+	 +wxsBjs9RscsD1/EF/9T+rmzkaOXYYHfiSb20Bf2kWp1l/kaHo3PpVEYsopOQJVKoS
+	 dYhoeLg9d0eSOq3t7TWB3alFhAhg4iVXAW5zLrJi5Pjyb8EWkfovInl5FCeUD1Zcmh
+	 h/dmim189X6Om5VATCq6JoX+MaFYgcqGOVKB/+9Zme81/arbjyJHuL49MgcApceFrF
+	 l8J2B1GGCis9w==
 From: Jonathan Cameron <jic23@kernel.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: Sean Anderson <sean.anderson@linux.dev>, Jean Delvare
- <jdelvare@suse.com>, linux-iio@vger.kernel.org,
- linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
- Clausen <lars@metafoo.de>
-Subject: Re: [PATCH v2 2/2] hwmon: iio: Add labels from IIO channels
-Message-ID: <20240624202433.29564802@jic23-huawei>
-In-Reply-To: <ff43e01e-5a26-4b75-bfaa-ed3ad4395e7c@roeck-us.net>
-References: <20240624174601.1527244-1-sean.anderson@linux.dev>
-	<20240624174601.1527244-3-sean.anderson@linux.dev>
-	<ff43e01e-5a26-4b75-bfaa-ed3ad4395e7c@roeck-us.net>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+To: linux-iio@vger.kernel.org
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Liam Beguin <liambeguin@gmail.com>
+Subject: [PATCH] iio: adc: ltc2309: Fix endian type passed to be16_to_cpu()
+Date: Mon, 24 Jun 2024 20:32:10 +0100
+Message-ID: <20240624193210.347434-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 24 Jun 2024 11:47:39 -0700
-Guenter Roeck <linux@roeck-us.net> wrote:
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-> On 6/24/24 10:46, Sean Anderson wrote:
-> > Add labels from IIO channels to our channels. This allows userspace to
-> > display more meaningful names instead of "in0" or "temp5".
-> > 
-> > Although lm-sensors gracefully handles errors when reading channel
-> > labels, the ABI says the label attribute
-> >   
-> >> Should only be created if the driver has hints about what this voltage
-> >> channel is being used for, and user-space doesn't.  
-> > 
-> > Therefore, we test to see if the channel has a label before
-> > creating the attribute.
-> >   
-> 
-> FWIW, complaining about an ABI really does not belong into a commit
-> message. Maybe you and lm-sensors don't care about error returns when
-> reading a label, but there are other userspace applications which may
-> expect drivers to follow the ABI. Last time I checked, the basic rule
-> was still "Don't break userspace", and that doesn't mean "it's ok to
-> violate / break an ABI as long as no one notices".
-> 
-> > Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> > ---
-> > 
-> > Changes in v2:
-> > - Check if the label exists before creating the attribute
-> > 
-> >   drivers/hwmon/iio_hwmon.c | 45 ++++++++++++++++++++++++++++++++++-----
-> >   1 file changed, 40 insertions(+), 5 deletions(-)
-> > 
-> > diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
-> > index 4c8a80847891..5722cb9d81f9 100644
-> > --- a/drivers/hwmon/iio_hwmon.c
-> > +++ b/drivers/hwmon/iio_hwmon.c
-> > @@ -33,6 +33,17 @@ struct iio_hwmon_state {
-> >   	struct attribute **attrs;
-> >   };
-> >   
-> > +static ssize_t iio_hwmon_read_label(struct device *dev,
-> > +				  struct device_attribute *attr,
-> > +				  char *buf)
-> > +{
-> > +	struct sensor_device_attribute *sattr = to_sensor_dev_attr(attr);
-> > +	struct iio_hwmon_state *state = dev_get_drvdata(dev);
-> > +	struct iio_channel *chan = &state->channels[sattr->index];
-> > +
-> > +	return iio_read_channel_label(chan, buf);
-> > +}
-> > +  
-> 
-> I personally find it a bit kludgy that an in-kernel API would do a
-> sysfs write like this and expect a page-aligned buffer as parameter,
-> but since Jonathan is fine with it:
+Picked up by sparse.
 
-That's a good point that I'd not picked up on and it probably makes sense
-to address that before it bites us on some other subsystem.
+Cc: Liam Beguin <liambeguin@gmail.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+ drivers/iio/adc/ltc2309.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It was more reasonable when the only path was to a light wrapper that went
-directly around the sysfs callback. Now we are wrapping these up for more
-general use we should avoid that restriction.
-
-Two approaches to that occur to me.
-1) Fix up read_label() everywhere to not use sysfs_emit and take a size
-   of the buffer to print into. There are only 11 implementations so
-   far so this should be straight forward.
-
-2) Add a bounce buffer so we emit into a suitable size for sysfs_emit()
-  then reprint from there into a buffer provided via this interface with
-  the appropriate size provided.  This one is clunky and given the relatively
-  few call sits I think fixing it via option 1 is the better route forwards.
+diff --git a/drivers/iio/adc/ltc2309.c b/drivers/iio/adc/ltc2309.c
+index 888a71454070..5f0d947d0615 100644
+--- a/drivers/iio/adc/ltc2309.c
++++ b/drivers/iio/adc/ltc2309.c
+@@ -103,7 +103,7 @@ static int ltc2309_read_raw_channel(struct ltc2309 *ltc2309,
+ 				    unsigned long address, int *val)
+ {
+ 	int ret;
+-	u16 buf;
++	__be16 buf;
+ 	u8 din;
  
-Jonathan
-
-
-> 
-> Acked-by: Guenter Roeck <linux@roeck-us.net>
-> 
-> Jonathan, please apply through your tree.
-> 
-> Thanks,
-> Guenter
-> 
+ 	din = FIELD_PREP(LTC2309_DIN_CH_MASK, address & 0x0f) |
+-- 
+2.45.2
 
 

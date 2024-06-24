@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-6807-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6808-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8E1F914B0E
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 14:51:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD8A914B14
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 14:51:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 545A71F23D79
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 12:51:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4B82B2486F
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 12:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B274A13D8A4;
-	Mon, 24 Jun 2024 12:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDA113DDBA;
+	Mon, 24 Jun 2024 12:50:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M1jlUWsn"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CCnDgBuH"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF49713D88C;
-	Mon, 24 Jun 2024 12:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6168B13DBA0;
+	Mon, 24 Jun 2024 12:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719233425; cv=none; b=kZwkTvhJTKEx4S18slvCcNfGu3MFE8rdCZg0nWsUXotlquygzVeh5UITYWOlbGujK8n7UPbrrbbXAr4Cl6VIZxxaS17i6fD1mv9zNeV84C/DTrV+mNzCOcVLzz63xBs6VfWuplaQd2tft2ws1XHoTwHM/rbpKniUwa5OcFgbWCw=
+	t=1719233429; cv=none; b=hLy3qI48kPxZcBHUYEI1j0JNPN2Fw2d9NqGPnYUkIRg+SBN3zMPAjWQo39kmyQIZgvb4U4mJY3OZG7IFWuQK55kBLy0bDKA0GudYXRcD1+jJttBUhWwPcZ1SnEXmUP3vYK7OJdA/5ege0jc25B0jvrdMecc8CsJ2dg/MZBwLlSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719233425; c=relaxed/simple;
-	bh=0H9fyfW9NOCYnrL8QSS2BFAftR0fN7bCqcOnQZZ2AXM=;
+	s=arc-20240116; t=1719233429; c=relaxed/simple;
+	bh=pWCyGoSwbSVi51UcYwjzYptyAKhEQbLVCZhUW0i1vc8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cZ3/cp0TMRIVzC/AMfB5M6RENs4/Aoppu9U14wU8apj9Ypz1nz8MliPlLYCfchDruE3ToM7UD5KUz1jMLtUloU8l57VnEuTwBwvNuPnoL0wOT2o/j6bUBZZsPaiqEkEXWarZ9FXt+QWltxYeYvBepYP0VTevkwfgjWcuKVlYk3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M1jlUWsn; arc=none smtp.client-ip=209.85.128.47
+	 MIME-Version; b=QX44KwCmlJ+uU96oBqRUIAUKnhWEDufR2rrK1Zq/feP9LTjrcer8s4vsU2B4KmbAj+pxKPfJeRh1A6bek5i5JkJqnwgrz+z6MZS/wmr+tQpFEwuW8MfPwE4JL4k8pI+23jbjgKjtZ48ZuIB0gqmm3ip/LV/vsWoIp1EVXAIgifo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CCnDgBuH; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-421bb51d81aso35694675e9.3;
-        Mon, 24 Jun 2024 05:50:23 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-421bb51d81aso35695255e9.3;
+        Mon, 24 Jun 2024 05:50:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719233422; x=1719838222; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719233426; x=1719838226; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xIiqlAHnqSz+73tZxmSi5Ak+gujcl19c0xQyAh4BQmQ=;
-        b=M1jlUWsnVV9qQhEOlpz7+2yzw9ZwD/YVGVh1iXjSCeiWe4rUovHy+lxE+8RLw18E1i
-         3IUTn2w9q3XyWNBOQbfoZZaFXC3PmJf7FAc9lg8nxN4ISOaUSs5Ob6i/66eM3i6M42Do
-         CQXIOJ2i7l08SGhS3pS+k56vQcrnNz8kNqAR4XZG0hP6y/lXXeyGSXzh7LKmEQtjadbh
-         aCpJkGb9loL8MBVQ+fBvoDvbuyn+Iazk5/MWRvG6903jpCbxrgvfaOcnwwwL469G3Lhw
-         gmhC4SEzwoMnyfw8rr8w+6rfOCezujwu4USyuSEFdFy7QL65x7Co8AF10/9S5OI5LEaE
-         vBkQ==
+        bh=qIFPwPUe239jQzWzpuE4uB77KNgGi1q0uRESeNjXXyI=;
+        b=CCnDgBuHbmriKslf8YSCRqeP1Ur9Xvsaph1pbH+KgS8ZgmEjt5x7kBPB/N+YkTkjCG
+         K3l2VJyxfB0u2bBxIIsgR+HwGw3EwGWFvihpSLI1vGlgDXcYPAQTaqIkOr9o77y59SNR
+         bvjLqPiEwZBOU1tPaRgtOKlwE3o5Ix8LaJM8vXRhvU1YZfTOToTK751Y+K1/wXFdRlfH
+         waxznc3YUqjr2UoZJMzFWd7lm0466VFs0hOwRQ1tG9QCrALKiZajL8CEBfwVts3loF5x
+         fN2QGjpJ9aShAlZSijvcXhOF6NvGBwlUs2PNw6GWb8Cj/r7ir2e37uBPK5w4DI+BnZ/+
+         Ntjg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719233422; x=1719838222;
+        d=1e100.net; s=20230601; t=1719233426; x=1719838226;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xIiqlAHnqSz+73tZxmSi5Ak+gujcl19c0xQyAh4BQmQ=;
-        b=IUY4X/Tq01kFDgcaJ8uV/LwqsdzP72xrBoLErdWYjieet2UHwsZQTM7B3FIjVmYvKm
-         D3EnwDJfv3Q4SMTueA4NtKncaZ4ie6ucev2ATYJ1pNY82Nm1D+5jyOTK5gbP5YmBJVwX
-         oTblb1bicvnI5juo2uNqZ4fJdiSf5oIXFwTWha+2/I8pnoSCE2ptZAlXQ8Ie+AorPdmt
-         drdEhibyv2lEuyRH57gG45Pvx2h2SQLuAHUtMEVX3anPpBMbG5v8gnSwQ8m6n7rVisLP
-         w00bYnknzhpDGtmPH216mK7Az2qjs8yzYrKycMcBAgd82C75ota5eQhO8iJi9HAK172M
-         AAfw==
-X-Forwarded-Encrypted: i=1; AJvYcCWQzkcjqD9k2IFNW5YLz0wG+pTOg1zFxic5eP01ym4poESUAvZt728RkTN6gbseuotX2DLry8iURn8AQlKNGUoJwsDvpYpgRfrclPyRaQeAel+Q4l1WFO/EhZbAtem61SDoGP8lK6Qg6qBdH97gbQXbWRBusohpD6KR+prIlRpaKA2lfg==
-X-Gm-Message-State: AOJu0Yz6mmEq5+uoybckMD/QuqhXVHX80yxYRlxfavBBCmFXKNK3ZpCB
-	0ab8B5soCEXUyBheRfSVqK2yueLMYnbkP+YTAazCJJPiRKSIzwXp
-X-Google-Smtp-Source: AGHT+IESqI+fn/Rq+2bR38zM2M2Bc+q1onyg0hmJVt2lop2cE279Qzj3WDUnjIfoZqqJIRqxL2nQPA==
-X-Received: by 2002:a05:600c:4656:b0:422:4c42:f804 with SMTP id 5b1f17b1804b1-4248cc2b6c1mr32636015e9.10.1719233422115;
-        Mon, 24 Jun 2024 05:50:22 -0700 (PDT)
+        bh=qIFPwPUe239jQzWzpuE4uB77KNgGi1q0uRESeNjXXyI=;
+        b=ocFrAp2cAwAndFYzAIq6xBfDtJLKhVBaU73bliGmrncSBA7QDinN4Y3xzESSIZ9fDh
+         v/Vlc/ymmKnUOC2GmLyanqKNjU2IqqERUipHtm4+uqdy+mVJ2RLYa6rGn0nrok8X0Egv
+         MunU/MlrMBqvkio5aeOB/VrjwvFxbA0Z/w7/pjJYeXcI8TgW4zrCaQw3pnPM65pxC921
+         j0pph5um5HwgI8vPbMN6sb3Jedi0ucAQHXlKCKyB3p4OqVUNrtJx2lHRd/PJUf5IOA5m
+         yGL6xU/woNjlqLFYB8lfA87GVd0w4qK5NnQr5P6A+5RaHgQ5ioG/f0WnkD0Ghpms/CyO
+         E9RQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUvpr29yXyD55q9zui+y/Rk65WNm9ebgIDmNdsEG3DeVNz3lcGBw+48U4J8QG9vDVNZCSU0aybJHQluM4SpMCXAeLhZun27D8dyWiyIGiQHBXK9ZkJv69wPt5LTnDcZWqqPkxOpSeUIuHQwtO8gd+LWMiPLKalpXGRHopnbmn9FZfpOzA==
+X-Gm-Message-State: AOJu0YyUS8tvsY7UybTyDFhfJ93cm7y69yD2KuQnQCaA76LziIAzW7tl
+	gy7Tbd9BsK6CXbLjML4x9/SrRMoFYXVxMCl/YEtmQwzWDXUbhuBV
+X-Google-Smtp-Source: AGHT+IHmyjK36pKqyTQWC5GhQhakJszDnv0awVLvhIavnLVLWesTt9RnwQUJraKItpMARSmboP0XLg==
+X-Received: by 2002:a05:600c:3209:b0:424:7d42:fd7a with SMTP id 5b1f17b1804b1-4248cc2b71cmr29101425e9.15.1719233425580;
+        Mon, 24 Jun 2024 05:50:25 -0700 (PDT)
 Received: from spiri.. ([5.14.146.128])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d208b60sm174127905e9.37.2024.06.24.05.50.20
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d208b60sm174127905e9.37.2024.06.24.05.50.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 05:50:21 -0700 (PDT)
+        Mon, 24 Jun 2024 05:50:25 -0700 (PDT)
 From: Alisa-Dariana Roman <alisadariana@gmail.com>
 X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
 To: Alisa-Dariana Roman <alisa.roman@analog.com>,
@@ -83,9 +83,9 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v6 4/6] dt-bindings: iio: adc: ad7192: Add clock provider
-Date: Mon, 24 Jun 2024 15:49:39 +0300
-Message-Id: <20240624124941.113010-5-alisa.roman@analog.com>
+Subject: [PATCH v6 5/6] iio: adc: ad7192: Add clock provider
+Date: Mon, 24 Jun 2024 15:49:40 +0300
+Message-Id: <20240624124941.113010-6-alisa.roman@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240624124941.113010-1-alisa.roman@analog.com>
 References: <20240624124941.113010-1-alisa.roman@analog.com>
@@ -100,63 +100,132 @@ Content-Transfer-Encoding: 8bit
 Internal clock of AD719X devices can be made available on MCLK2 pin. Add
 clock provider to support this functionality.
 
-The clock source can be either provided externally or the internal clock
-is used. Pair of clocks and clock-names property is mutally exclusive
-with #clock-cells property.
-
-Modify second example to showcase the mode where internal clock is used.
-
 Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 ---
- .../devicetree/bindings/iio/adc/adi,ad7192.yaml   | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad7192.c | 89 ++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 89 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-index c3adc32684cf..384bff7e9bb7 100644
---- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-+++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
-@@ -42,13 +42,17 @@ properties:
-     description:
-       Optionally, either a crystal can be attached externally between MCLK1 and
-       MCLK2 pins, or an external CMOS-compatible clock can drive the MCLK2
--      pin. If absent, internal 4.92MHz clock is used.
-+      pin. If absent, internal 4.92MHz clock is used, which can be made
-+      available on MCLK2 pin.
+diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
+index 940517df5429..90763c14679d 100644
+--- a/drivers/iio/adc/ad7192.c
++++ b/drivers/iio/adc/ad7192.c
+@@ -8,6 +8,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/bitfield.h>
+ #include <linux/clk.h>
++#include <linux/clk-provider.h>
+ #include <linux/device.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+@@ -201,6 +202,7 @@ struct ad7192_chip_info {
+ struct ad7192_state {
+ 	const struct ad7192_chip_info	*chip_info;
+ 	struct clk			*mclk;
++	struct clk_hw			int_clk_hw;
+ 	u16				int_vref_mv;
+ 	u32				aincom_mv;
+ 	u32				fclk;
+@@ -401,6 +403,88 @@ static const char *const ad7192_clock_names[] = {
+ 	"mclk"
+ };
  
-   clock-names:
-     enum:
-       - xtal
-       - mclk
- 
-+  "#clock-cells":
-+    const: 0
++static struct ad7192_state *clk_hw_to_ad7192(struct clk_hw *hw)
++{
++	return container_of(hw, struct ad7192_state, int_clk_hw);
++}
 +
-   interrupts:
-     maxItems: 1
++static unsigned long ad7192_clk_recalc_rate(struct clk_hw *hw,
++					    unsigned long parent_rate)
++{
++	return AD7192_INT_FREQ_MHZ;
++}
++
++static int ad7192_clk_output_is_enabled(struct clk_hw *hw)
++{
++	struct ad7192_state *st = clk_hw_to_ad7192(hw);
++
++	return st->clock_sel == AD7192_CLK_INT_CO;
++}
++
++static int ad7192_clk_prepare(struct clk_hw *hw)
++{
++	struct ad7192_state *st = clk_hw_to_ad7192(hw);
++	int ret;
++
++	st->mode &= ~AD7192_MODE_CLKSRC_MASK;
++	st->mode |= AD7192_CLK_INT_CO;
++
++	ret = ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
++	if (ret)
++		return ret;
++
++	st->clock_sel = AD7192_CLK_INT_CO;
++
++	return 0;
++}
++
++static void ad7192_clk_unprepare(struct clk_hw *hw)
++{
++	struct ad7192_state *st = clk_hw_to_ad7192(hw);
++	int ret;
++
++	st->mode &= ~AD7192_MODE_CLKSRC_MASK;
++	st->mode |= AD7192_CLK_INT;
++
++	ret = ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
++	if (ret)
++		return;
++
++	st->clock_sel = AD7192_CLK_INT;
++}
++
++static const struct clk_ops ad7192_int_clk_ops = {
++	.recalc_rate = ad7192_clk_recalc_rate,
++	.is_enabled = ad7192_clk_output_is_enabled,
++	.prepare = ad7192_clk_prepare,
++	.unprepare = ad7192_clk_unprepare,
++};
++
++static int ad7192_register_clk_provider(struct ad7192_state *st)
++{
++	struct device *dev = &st->sd.spi->dev;
++	struct clk_init_data init = {};
++	int ret;
++
++	if (!IS_ENABLED(CONFIG_COMMON_CLK))
++		return 0;
++
++	init.name = devm_kasprintf(dev, GFP_KERNEL, "%s-clk",
++				   fwnode_get_name(dev_fwnode(dev)));
++	if (!init.name)
++		return -ENOMEM;
++
++	init.ops = &ad7192_int_clk_ops;
++
++	st->int_clk_hw.init = &init;
++	ret = devm_clk_hw_register(dev, &st->int_clk_hw);
++	if (ret)
++		return ret;
++
++	return devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
++					   &st->int_clk_hw);
++}
++
+ static int ad7192_clock_setup(struct ad7192_state *st)
+ {
+ 	struct device *dev = &st->sd.spi->dev;
+@@ -412,6 +496,11 @@ static int ad7192_clock_setup(struct ad7192_state *st)
+ 	if (ret < 0) {
+ 		st->clock_sel = AD7192_CLK_INT;
+ 		st->fclk = AD7192_INT_FREQ_MHZ;
++
++		ret = ad7192_register_clk_provider(st);
++		if (ret)
++			return dev_err_probe(dev, ret,
++					     "Failed to register clock provider\n");
+ 	} else {
+ 		st->clock_sel = AD7192_CLK_EXT_MCLK1_2 + ret;
  
-@@ -169,6 +173,12 @@ allOf:
-       required:
-         - clocks
-         - clock-names
-+  - oneOf:
-+      - required:
-+          - clocks
-+          - clock-names
-+      - required:
-+          - "#clock-cells"
- 
- unevaluatedProperties: false
- 
-@@ -214,8 +224,7 @@ examples:
-             spi-max-frequency = <1000000>;
-             spi-cpol;
-             spi-cpha;
--            clocks = <&ad7192_mclk>;
--            clock-names = "mclk";
-+            #clock-cells = <0>;
-             interrupts = <25 0x2>;
-             interrupt-parent = <&gpio>;
-             aincom-supply = <&aincom>;
 -- 
 2.34.1
 

@@ -1,146 +1,115 @@
-Return-Path: <linux-iio+bounces-6840-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6841-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92AD991573E
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 21:35:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28E0E915749
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 21:39:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AB34280A67
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 19:35:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE7211F21DE7
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 19:39:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF38F1A01D0;
-	Mon, 24 Jun 2024 19:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F9331A01CA;
+	Mon, 24 Jun 2024 19:39:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="xgH3D7Fr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X0GDQZHi"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019A11A01B7
-	for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 19:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E714F1A00D6;
+	Mon, 24 Jun 2024 19:39:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719257694; cv=none; b=D7W1g+DBO2l7MfLx5j/e09bRwWlrivlQVrmlMFZDB5sBpXWSLgltl25pMGV3Gtg8PXTN2gcwE4ncMcH265MTnJKVp8OwPrNH3h2scUi/jRpNuTdkvfEbjBE1g9ylXO+RbfQPiRrSn9SN4SoDfDqEiYoOKQsxWhp+mU1TLYy2acs=
+	t=1719257964; cv=none; b=b5bNj6I9kWKRtXEp689x7HktxohJXEDoSs1AdJFa/iGDDszex2QqZU60E+EZ4lH2bWHFr3RmW79fYS6yhm/piqG2qPP3vh/lHKSpXw4pAaZq5jFkLTEKR2jzgN2UU+p0FwI1ToCNpNCaMnrzWMPnFrWthkqjJnOpzPHY608sqE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719257694; c=relaxed/simple;
-	bh=QTn1WRuA4hsCw/k8adDN6Jh64KjHr3yyO5fpW6vGjHU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=htgYewvVWbSyk1n/Won8Xp+LgZYl4o6VUdgc3EmT1noI/7jIam/jhUHvBnPfiTxVy3KPMOc1bxADvqqNrmzpW9G2CJJ8Z+5kcbyA/v6yDe98FkwVTjInvjkQdBbwQJ/fWKr5sxKa5iO8GaAnZ+T6AWUZwTPm5MyUV4t2z9i5uxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=xgH3D7Fr; arc=none smtp.client-ip=95.215.58.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Envelope-To: linux@roeck-us.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1719257691;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+Gm2PDGMMowWzUmm56U0hh5D/fJqNhmzLuHu2GZApjI=;
-	b=xgH3D7FrktYrIkdGVYTAYPboDDd8QmQu52MF5MVVEc7wPvjFMAsusnlG26IB6k9NmqGUgq
-	D2K8edbAy8hKIczFb1hPujNTQaaBenZuoE3drW9gaweZyP0nsWo7cIn8hFYFc+3kHgirnm
-	/77XfMiFjxeIUOykPJK6lFBo1MoIjDQ=
-X-Envelope-To: jic23@kernel.org
-X-Envelope-To: jdelvare@suse.com
-X-Envelope-To: linux-iio@vger.kernel.org
-X-Envelope-To: linux-hwmon@vger.kernel.org
-X-Envelope-To: linux-kernel@vger.kernel.org
-X-Envelope-To: lars@metafoo.de
-Message-ID: <63046df2-e1fb-442b-a55f-2a9847c6c59e@linux.dev>
-Date: Mon, 24 Jun 2024 15:34:46 -0400
+	s=arc-20240116; t=1719257964; c=relaxed/simple;
+	bh=lX9RcMi8n6pONUGOHPEejszWQdpVZ8J4CmfNy0OyFA4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Z4BC3xAYdHWjn4JPzQE5WAJTxYyck84VKKcHdPN7EJpXymDdHKp5ZGe2FelwELQQ9C4X2EVyVvfZ97Q/nvhBJiW1fj3qZTX8AOjXL6jhLY9vM/xI2bfsam5CIbG3pqjLuHFQRlCsZpFimZdD23Din/fHoJoIdQeyy80yOJ6oeZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X0GDQZHi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 756C9C2BBFC;
+	Mon, 24 Jun 2024 19:39:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719257963;
+	bh=lX9RcMi8n6pONUGOHPEejszWQdpVZ8J4CmfNy0OyFA4=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=X0GDQZHi8SDsimNDysl2wSOnmT7ZtQRLEBvHPHttkpjeBlCk+7l12N3rks6FuZShl
+	 k+IBdr8YWvjS0m9BK5A2jBAsWEK0fJ9tPBohxforHWs490RpPqGR/KE4OqivTfbb2x
+	 Ydp0JtQaDSr8uSElm495X5SaQh8zcxfVREBhY2cFxmElYsWe4lKXiaLuKfWxklexSG
+	 YeyxmtVEvLzl/HWAZLMfEwD68UiblXf3xPHylF5miRVU14KFKnym2NB7hM4Y6ki+50
+	 19qgRYusufSn0ir5pffezTtM8EzhdX26RMlUCfkeikSN5FvKpS9/SWzX+s0XYok5ig
+	 PVt/sNS6+iMFg==
+Date: Mon, 24 Jun 2024 20:39:18 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Mark Brown <broonie@kernel.org>
+Cc: David Lechner <dlechner@baylibre.com>, Michael Hennerich
+ <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
+ Marcelo Schmitt <marcelo.schmitt@analog.com>, Jonathan Corbet
+ <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH 0/3] spi: add devm_spi_optimize_message() helper
+Message-ID: <20240624203918.3ee643db@jic23-huawei>
+In-Reply-To: <95eeae71-5270-4df2-acf4-a5308c2a8690@sirena.org.uk>
+References: <20240621-devm_spi_optimize_message-v1-0-3f9dcba6e95e@baylibre.com>
+	<95eeae71-5270-4df2-acf4-a5308c2a8690@sirena.org.uk>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v2 2/2] hwmon: iio: Add labels from IIO channels
-To: Guenter Roeck <linux@roeck-us.net>, Jonathan Cameron <jic23@kernel.org>,
- Jean Delvare <jdelvare@suse.com>, linux-iio@vger.kernel.org,
- linux-hwmon@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
-References: <20240624174601.1527244-1-sean.anderson@linux.dev>
- <20240624174601.1527244-3-sean.anderson@linux.dev>
- <ff43e01e-5a26-4b75-bfaa-ed3ad4395e7c@roeck-us.net>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <ff43e01e-5a26-4b75-bfaa-ed3ad4395e7c@roeck-us.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 6/24/24 14:47, Guenter Roeck wrote:
-> On 6/24/24 10:46, Sean Anderson wrote:
->> Add labels from IIO channels to our channels. This allows userspace to
->> display more meaningful names instead of "in0" or "temp5".
->>
->> Although lm-sensors gracefully handles errors when reading channel
->> labels, the ABI says the label attribute
->>
->>> Should only be created if the driver has hints about what this voltage
->>> channel is being used for, and user-space doesn't.
->>
->> Therefore, we test to see if the channel has a label before
->> creating the attribute.
->>
+On Sun, 23 Jun 2024 18:20:39 +0100
+Mark Brown <broonie@kernel.org> wrote:
+
+> On Fri, Jun 21, 2024 at 03:51:29PM -0500, David Lechner wrote:
+> > In the IIO subsystem, we are finding that it is common to call
+> > spi_optimize_message() during driver probe since the SPI message
+> > doesn't change for the lifetime of the driver. This patch adds a
+> > devm_spi_optimize_message() helper to simplify this common pattern.  
 > 
-> FWIW, complaining about an ABI really does not belong into a commit
-> message. Maybe you and lm-sensors don't care about error returns when
-> reading a label, but there are other userspace applications which may
-> expect drivers to follow the ABI. Last time I checked, the basic rule
-> was still "Don't break userspace", and that doesn't mean "it's ok to
-> violate / break an ABI as long as no one notices".
-
-This isn't complaining about the ABI, just documenting the reason it was
-done this way...
-
->> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
->> ---
->>
->> Changes in v2:
->> - Check if the label exists before creating the attribute
->>
->>   drivers/hwmon/iio_hwmon.c | 45 ++++++++++++++++++++++++++++++++++-----
->>   1 file changed, 40 insertions(+), 5 deletions(-)
->>
->> diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
->> index 4c8a80847891..5722cb9d81f9 100644
->> --- a/drivers/hwmon/iio_hwmon.c
->> +++ b/drivers/hwmon/iio_hwmon.c
->> @@ -33,6 +33,17 @@ struct iio_hwmon_state {
->>       struct attribute **attrs;
->>   };
->>   +static ssize_t iio_hwmon_read_label(struct device *dev,
->> +                  struct device_attribute *attr,
->> +                  char *buf)
->> +{
->> +    struct sensor_device_attribute *sattr = to_sensor_dev_attr(attr);
->> +    struct iio_hwmon_state *state = dev_get_drvdata(dev);
->> +    struct iio_channel *chan = &state->channels[sattr->index];
->> +
->> +    return iio_read_channel_label(chan, buf);
->> +}
->> +
+> The following changes since commit 6ba59ff4227927d3a8530fc2973b80e94b54d58f:
 > 
-> I personally find it a bit kludgy that an in-kernel API would do a
-> sysfs write like this and expect a page-aligned buffer as parameter,
-> but since Jonathan is fine with it:
-
-This is also how the in-kernel iio_read_channel_ext_info API works.
-I agree that it is a strange API, but I do not want to rewrite all
-the implementing drivers.
-
---Sean
-
-> Acked-by: Guenter Roeck <linux@roeck-us.net>
+>   Linux 6.10-rc4 (2024-06-16 13:40:16 -0700)
 > 
-> Jonathan, please apply through your tree.
+> are available in the Git repository at:
 > 
-> Thanks,
-> Guenter
+>   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-devm-optimize
+
+Thanks.  Applied patch 3 on a merge of that tag into the togreg branch
+of iio.git which I've pushed out as testing to see if anything went
+horribly wrong ;)
+
+Jonathan
+
 > 
+> for you to fetch changes up to d4a0055fdc22381fa256e345095e88d134e354c5:
+> 
+>   spi: add devm_spi_optimize_message() helper (2024-06-22 12:14:33 +0100)
+> 
+> ----------------------------------------------------------------
+> spi: add devm_spi_optimize_message() helper
+> 
+> Helper from David Lechner <dlechner@baylibre.com>:
+> 
+>     In the IIO subsystem, we are finding that it is common to call
+>     spi_optimize_message() during driver probe since the SPI message
+>     doesn't change for the lifetime of the driver. This patch adds a
+>     devm_spi_optimize_message() helper to simplify this common pattern.
+> 
+> ----------------------------------------------------------------
+> David Lechner (2):
+>       Documentation: devres: add missing SPI helpers
+>       spi: add devm_spi_optimize_message() helper
+> 
+>  Documentation/driver-api/driver-model/devres.rst |  3 +++
+>  drivers/spi/spi.c                                | 27 ++++++++++++++++++++++++
+>  include/linux/spi/spi.h                          |  2 ++
+>  3 files changed, 32 insertions(+)
 
 

@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-6808-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6809-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD8A914B14
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 14:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DA41C914B17
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 14:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4B82B2486F
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 12:51:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A465B24A63
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 12:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDA113DDBA;
-	Mon, 24 Jun 2024 12:50:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D42713D53B;
+	Mon, 24 Jun 2024 12:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CCnDgBuH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dgHm6VM8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6168B13DBA0;
-	Mon, 24 Jun 2024 12:50:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E29213DDDC;
+	Mon, 24 Jun 2024 12:50:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719233429; cv=none; b=hLy3qI48kPxZcBHUYEI1j0JNPN2Fw2d9NqGPnYUkIRg+SBN3zMPAjWQo39kmyQIZgvb4U4mJY3OZG7IFWuQK55kBLy0bDKA0GudYXRcD1+jJttBUhWwPcZ1SnEXmUP3vYK7OJdA/5ege0jc25B0jvrdMecc8CsJ2dg/MZBwLlSo=
+	t=1719233436; cv=none; b=Ps5q2AuRqHSf1D513OSNwDXkFDqaGgWnrVPBo2+X37mkZtcXoJKtHYBncYVWDCls/6CGDgOfg5l+mhZdDXr/eDV4WxjPCYLRdZbBwCuJzWWC6NKFyiwCUImIsp40KfVjRNjDyirNpxZvRWnFllg9jKFadLJ8TsnCJ6BT328sPQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719233429; c=relaxed/simple;
-	bh=pWCyGoSwbSVi51UcYwjzYptyAKhEQbLVCZhUW0i1vc8=;
+	s=arc-20240116; t=1719233436; c=relaxed/simple;
+	bh=dkfThZ3Lat7Zlzx7ILWb7giKix7eyHU8+9Uctg/rPjU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QX44KwCmlJ+uU96oBqRUIAUKnhWEDufR2rrK1Zq/feP9LTjrcer8s4vsU2B4KmbAj+pxKPfJeRh1A6bek5i5JkJqnwgrz+z6MZS/wmr+tQpFEwuW8MfPwE4JL4k8pI+23jbjgKjtZ48ZuIB0gqmm3ip/LV/vsWoIp1EVXAIgifo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CCnDgBuH; arc=none smtp.client-ip=209.85.128.48
+	 MIME-Version; b=ag2QwcSfvLt6gLFf2rskOkxDTRmzpCZzBx9jQbSAPafcLqM5P8F+fBFyNG6qemM2XAb+Ln5aULplV96hC02onFFx40A7pZnzw8jXG4SqDNWtX6WjP6fekdXNYfLKzrkCY1QcYV+XzU4zF2IDywa98m7aH/WLzuP4aHJDMS6DLKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dgHm6VM8; arc=none smtp.client-ip=209.85.128.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-421bb51d81aso35695255e9.3;
-        Mon, 24 Jun 2024 05:50:27 -0700 (PDT)
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4249196a361so6467655e9.0;
+        Mon, 24 Jun 2024 05:50:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719233426; x=1719838226; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719233429; x=1719838229; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qIFPwPUe239jQzWzpuE4uB77KNgGi1q0uRESeNjXXyI=;
-        b=CCnDgBuHbmriKslf8YSCRqeP1Ur9Xvsaph1pbH+KgS8ZgmEjt5x7kBPB/N+YkTkjCG
-         K3l2VJyxfB0u2bBxIIsgR+HwGw3EwGWFvihpSLI1vGlgDXcYPAQTaqIkOr9o77y59SNR
-         bvjLqPiEwZBOU1tPaRgtOKlwE3o5Ix8LaJM8vXRhvU1YZfTOToTK751Y+K1/wXFdRlfH
-         waxznc3YUqjr2UoZJMzFWd7lm0466VFs0hOwRQ1tG9QCrALKiZajL8CEBfwVts3loF5x
-         fN2QGjpJ9aShAlZSijvcXhOF6NvGBwlUs2PNw6GWb8Cj/r7ir2e37uBPK5w4DI+BnZ/+
-         Ntjg==
+        bh=080FC0tj2AACaK1A9ue1dZ0QKYAZKNF8MOr4W+vc9WU=;
+        b=dgHm6VM8zddUAbQ8o8CVUetBi2jsMVe6zNSA5hxHfHMkMJ5dM7d7AkLccvZgxz4UEG
+         vKbvsDcsbl6mNtMZ3t7ZxTHxUBhnHeXSSFWyxZIhIlXLxUBIUfLAAupfQ7dBq8pN0dLy
+         5Kcl3CSPXmIVTlfaGcOyskTG0YiR+McMJSsKGolqe5+BI29jRCrpsfCNr/h2SN1z7ZRm
+         2XUJ4H8Rmq/WeYBx/qf8Al5ROYgvBqUtYtITz8MzBaw9Z3F4grJ52ntq2DAZdqW3Ncvn
+         RzFdfOwGUwoH74pHzOLgOnzrpxZWV5Jgu8xnswdgQrw+XdvkUO7DHJc9oDjTLIKL9w7S
+         RlbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719233426; x=1719838226;
+        d=1e100.net; s=20230601; t=1719233429; x=1719838229;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=qIFPwPUe239jQzWzpuE4uB77KNgGi1q0uRESeNjXXyI=;
-        b=ocFrAp2cAwAndFYzAIq6xBfDtJLKhVBaU73bliGmrncSBA7QDinN4Y3xzESSIZ9fDh
-         v/Vlc/ymmKnUOC2GmLyanqKNjU2IqqERUipHtm4+uqdy+mVJ2RLYa6rGn0nrok8X0Egv
-         MunU/MlrMBqvkio5aeOB/VrjwvFxbA0Z/w7/pjJYeXcI8TgW4zrCaQw3pnPM65pxC921
-         j0pph5um5HwgI8vPbMN6sb3Jedi0ucAQHXlKCKyB3p4OqVUNrtJx2lHRd/PJUf5IOA5m
-         yGL6xU/woNjlqLFYB8lfA87GVd0w4qK5NnQr5P6A+5RaHgQ5ioG/f0WnkD0Ghpms/CyO
-         E9RQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvpr29yXyD55q9zui+y/Rk65WNm9ebgIDmNdsEG3DeVNz3lcGBw+48U4J8QG9vDVNZCSU0aybJHQluM4SpMCXAeLhZun27D8dyWiyIGiQHBXK9ZkJv69wPt5LTnDcZWqqPkxOpSeUIuHQwtO8gd+LWMiPLKalpXGRHopnbmn9FZfpOzA==
-X-Gm-Message-State: AOJu0YyUS8tvsY7UybTyDFhfJ93cm7y69yD2KuQnQCaA76LziIAzW7tl
-	gy7Tbd9BsK6CXbLjML4x9/SrRMoFYXVxMCl/YEtmQwzWDXUbhuBV
-X-Google-Smtp-Source: AGHT+IHmyjK36pKqyTQWC5GhQhakJszDnv0awVLvhIavnLVLWesTt9RnwQUJraKItpMARSmboP0XLg==
-X-Received: by 2002:a05:600c:3209:b0:424:7d42:fd7a with SMTP id 5b1f17b1804b1-4248cc2b71cmr29101425e9.15.1719233425580;
-        Mon, 24 Jun 2024 05:50:25 -0700 (PDT)
+        bh=080FC0tj2AACaK1A9ue1dZ0QKYAZKNF8MOr4W+vc9WU=;
+        b=DzuQJMQK2i8d9K/lRg9EX5gSFKEZGzIGjs/9EDwvMCzENvJoaeIYBNuNY4JNwnlBF5
+         YGFXgF+3ycpvuNs4D5s9DOnFgflnliSByt9DG8Vyqlno/8mf20m/h9G1OcSkguasUx6G
+         Lt4QGGJY04oyxaLX0R5yw2V9jHNozHYKPsjiGOgyIA3gvyRJVcMexcMvavkzBaWNfHqk
+         gaVrRO0u5cX9Udh94MVrjiIJytL05LkUabMOaw7fxCohkJyYXKEdmfw5fLtn9fa5Rona
+         TmV0yX04ajQL0r+TKJiU6aOq1pTIciT9mwBc1SEB/TxZRKiNM0RlX6csl8bk6JwYMz7K
+         Yt1w==
+X-Forwarded-Encrypted: i=1; AJvYcCW9UPqETU0Eb6t5aMsVEvm8sY3zn91ZuAiBUjMNePTj3IzuUUw0c7c02svchqd8P9r7RhfCfnngknj9YEl7kxuAhFpIQezy7qyEtEN7tHPTm79hYHowfS9eOlz1O93GgpmQFvhtlUq7mlHpPd5A2InY0EdNTCRgh4dfUhTOD70dCo3sXA==
+X-Gm-Message-State: AOJu0Yw14Ga+ZyPBOblIt42dlStEozfAyjzWUFl3vKztREMVcTWxe+fi
+	+iYV8S0eDIMWpX1+WuXCuCjNizhYu2i8DTN8cDufGvUvi8gf0EyS
+X-Google-Smtp-Source: AGHT+IFNayaymQlQmZojnTCCDLXGrg5/l14jjrzAY1zBEWVOpqJg9XbCe0K1JgrpBblOOJ5yODoC6g==
+X-Received: by 2002:adf:e850:0:b0:362:afd2:a4c0 with SMTP id ffacd0b85a97d-366e96c338fmr2609697f8f.70.1719233429424;
+        Mon, 24 Jun 2024 05:50:29 -0700 (PDT)
 Received: from spiri.. ([5.14.146.128])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d208b60sm174127905e9.37.2024.06.24.05.50.23
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d208b60sm174127905e9.37.2024.06.24.05.50.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 05:50:25 -0700 (PDT)
+        Mon, 24 Jun 2024 05:50:29 -0700 (PDT)
 From: Alisa-Dariana Roman <alisadariana@gmail.com>
 X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
 To: Alisa-Dariana Roman <alisa.roman@analog.com>,
@@ -83,9 +83,9 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Liam Girdwood <lgirdwood@gmail.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH v6 5/6] iio: adc: ad7192: Add clock provider
-Date: Mon, 24 Jun 2024 15:49:40 +0300
-Message-Id: <20240624124941.113010-6-alisa.roman@analog.com>
+Subject: [PATCH v6 6/6] MAINTAINERS: Update AD7192 driver maintainer
+Date: Mon, 24 Jun 2024 15:49:41 +0300
+Message-Id: <20240624124941.113010-7-alisa.roman@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240624124941.113010-1-alisa.roman@analog.com>
 References: <20240624124941.113010-1-alisa.roman@analog.com>
@@ -97,135 +97,29 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Internal clock of AD719X devices can be made available on MCLK2 pin. Add
-clock provider to support this functionality.
+Alexandru Tachici has not been active. Also the email address included
+is not reachable anymore. I was assigned to work on the driver instead.
+
+Remove Alexandru Tachici and add myself as maintainer of AD7192 driver.
 
 Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 ---
- drivers/iio/adc/ad7192.c | 89 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 89 insertions(+)
+ MAINTAINERS | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index 940517df5429..90763c14679d 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -8,6 +8,7 @@
- #include <linux/interrupt.h>
- #include <linux/bitfield.h>
- #include <linux/clk.h>
-+#include <linux/clk-provider.h>
- #include <linux/device.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -201,6 +202,7 @@ struct ad7192_chip_info {
- struct ad7192_state {
- 	const struct ad7192_chip_info	*chip_info;
- 	struct clk			*mclk;
-+	struct clk_hw			int_clk_hw;
- 	u16				int_vref_mv;
- 	u32				aincom_mv;
- 	u32				fclk;
-@@ -401,6 +403,88 @@ static const char *const ad7192_clock_names[] = {
- 	"mclk"
- };
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 9517093d889d..ab1e82fd3b76 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1217,7 +1217,7 @@ F:	Documentation/devicetree/bindings/iio/adc/adi,ad7091r*
+ F:	drivers/iio/adc/ad7091r*
  
-+static struct ad7192_state *clk_hw_to_ad7192(struct clk_hw *hw)
-+{
-+	return container_of(hw, struct ad7192_state, int_clk_hw);
-+}
-+
-+static unsigned long ad7192_clk_recalc_rate(struct clk_hw *hw,
-+					    unsigned long parent_rate)
-+{
-+	return AD7192_INT_FREQ_MHZ;
-+}
-+
-+static int ad7192_clk_output_is_enabled(struct clk_hw *hw)
-+{
-+	struct ad7192_state *st = clk_hw_to_ad7192(hw);
-+
-+	return st->clock_sel == AD7192_CLK_INT_CO;
-+}
-+
-+static int ad7192_clk_prepare(struct clk_hw *hw)
-+{
-+	struct ad7192_state *st = clk_hw_to_ad7192(hw);
-+	int ret;
-+
-+	st->mode &= ~AD7192_MODE_CLKSRC_MASK;
-+	st->mode |= AD7192_CLK_INT_CO;
-+
-+	ret = ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-+	if (ret)
-+		return ret;
-+
-+	st->clock_sel = AD7192_CLK_INT_CO;
-+
-+	return 0;
-+}
-+
-+static void ad7192_clk_unprepare(struct clk_hw *hw)
-+{
-+	struct ad7192_state *st = clk_hw_to_ad7192(hw);
-+	int ret;
-+
-+	st->mode &= ~AD7192_MODE_CLKSRC_MASK;
-+	st->mode |= AD7192_CLK_INT;
-+
-+	ret = ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-+	if (ret)
-+		return;
-+
-+	st->clock_sel = AD7192_CLK_INT;
-+}
-+
-+static const struct clk_ops ad7192_int_clk_ops = {
-+	.recalc_rate = ad7192_clk_recalc_rate,
-+	.is_enabled = ad7192_clk_output_is_enabled,
-+	.prepare = ad7192_clk_prepare,
-+	.unprepare = ad7192_clk_unprepare,
-+};
-+
-+static int ad7192_register_clk_provider(struct ad7192_state *st)
-+{
-+	struct device *dev = &st->sd.spi->dev;
-+	struct clk_init_data init = {};
-+	int ret;
-+
-+	if (!IS_ENABLED(CONFIG_COMMON_CLK))
-+		return 0;
-+
-+	init.name = devm_kasprintf(dev, GFP_KERNEL, "%s-clk",
-+				   fwnode_get_name(dev_fwnode(dev)));
-+	if (!init.name)
-+		return -ENOMEM;
-+
-+	init.ops = &ad7192_int_clk_ops;
-+
-+	st->int_clk_hw.init = &init;
-+	ret = devm_clk_hw_register(dev, &st->int_clk_hw);
-+	if (ret)
-+		return ret;
-+
-+	return devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
-+					   &st->int_clk_hw);
-+}
-+
- static int ad7192_clock_setup(struct ad7192_state *st)
- {
- 	struct device *dev = &st->sd.spi->dev;
-@@ -412,6 +496,11 @@ static int ad7192_clock_setup(struct ad7192_state *st)
- 	if (ret < 0) {
- 		st->clock_sel = AD7192_CLK_INT;
- 		st->fclk = AD7192_INT_FREQ_MHZ;
-+
-+		ret = ad7192_register_clk_provider(st);
-+		if (ret)
-+			return dev_err_probe(dev, ret,
-+					     "Failed to register clock provider\n");
- 	} else {
- 		st->clock_sel = AD7192_CLK_EXT_MCLK1_2 + ret;
- 
+ ANALOG DEVICES INC AD7192 DRIVER
+-M:	Alexandru Tachici <alexandru.tachici@analog.com>
++M:	Alisa-Dariana Roman <alisa.roman@analog.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Supported
+ W:	https://ez.analog.com/linux-software-drivers
 -- 
 2.34.1
 

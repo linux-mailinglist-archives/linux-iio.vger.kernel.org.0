@@ -1,243 +1,175 @@
-Return-Path: <linux-iio+bounces-6823-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6824-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07C5C9154BB
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 18:49:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F34E29154E8
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 19:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23CD4B27BA1
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 16:49:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 317C61C22664
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 17:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A79C19DFAC;
-	Mon, 24 Jun 2024 16:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC7019E7FD;
+	Mon, 24 Jun 2024 17:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2lxT5SVR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YQASADSP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E5D1428F1
-	for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 16:48:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C7619AD75;
+	Mon, 24 Jun 2024 17:00:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719247738; cv=none; b=FI8IYfJO/rn9uSTsyGxf7IJo8NUNSTSnO8l2AJfGJkRduJcYJox9Wm9VjdppX46HjSto6yPW7bv4YkX63SzP9UinuUh0Dsq7y32up1wF+hb0NRxHiXzrhVoygLChKwg9n6Q426O907RhISQOemP5GQ+6ZUpRTrytskim353vJ7Y=
+	t=1719248430; cv=none; b=CumESBYPhCwJ3GV12IRJrkCTy/BRgINIeG20Z44wcgt4oFr5/D7BCQzzMmXsDny4ZgAeyxEeIT3VWduM/vhgid0vqQ2yMEl1gNwi0B3BUXtD1VJI0OvrYbS+SjzGLVt/o4SQ6NrcPJ1Ptd4Zy8Yxn/PduSShxirPro408w8WaRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719247738; c=relaxed/simple;
-	bh=bWVnoflNYa8G5Kxrq0nWQrfqsc684kD+NGBZ6hdM2IY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tVG785BBbhIc0dQ3B+nOjFM7xHtd6XXobyfTpl4yYvuyim7v+jp/nH8XPzrT0X0FTTqg9PNZaJlFP32gCzguXGvb7MJLWmlbqbZtMdgDlqpzd01vQk79V2lPPr7Xhh27e5KxrqVjncpyTq6WM11CsooQsvfO/xckkAkQh0MuGj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2lxT5SVR; arc=none smtp.client-ip=209.85.167.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3d513eb6e56so2532972b6e.0
-        for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 09:48:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719247736; x=1719852536; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mxxkGiRjkerPamYFY/qxNBX6etGC2eZqvZGM5OE8a/o=;
-        b=2lxT5SVRXmqpVUVMDGWxP+ZTxX9GRIFysixr7FDp2KDiaE1jfW9nLqELFQkbfkwH+r
-         NsBVo11tBb8vX3RectVHjxzhR2D32pV0R6qO6CYER+1HT4TWRp/MEDn62Y3bJVTGJ9vc
-         Dq2gbpKx3RPvnviQk1dldj4Di/U00v2hvDhwettIDtI9pSLk8/ZT5g0AsTEqsIpIOQNH
-         ors/J5lvJMV2IhrSInOUcEVIWLZXzAp6AkanIw5qjBFBUs/TqPH5p5YPCi2hghAYGCDx
-         DEaRX8niM6oW5HFbIA9uCY1RlRMtil5jdvouxV6zU9NTQFhSj9QJdmkIREk4VjN1FzjM
-         nipg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719247736; x=1719852536;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mxxkGiRjkerPamYFY/qxNBX6etGC2eZqvZGM5OE8a/o=;
-        b=MVD20B7jTnX1clKZDM9LNsRll6N+/pLDKtRmnET2AeYfX6rlaYPhqsR/mF/lXnQx4W
-         mCcxBmhJ5Q33Fvkre/k1mdA5pkxRLL4kXADYuP1uDIHgZpOtO5uhvlgQS0g0lnEVVKG+
-         rnVHa1VnkZ58ZiKOzaxhvHZgMqfl+PrQvfJx6hVN4mwobaW5uPQubv0D4HIJC7QkXLLq
-         n7Wrh5oS/Ts6f35w5RIFFhw0cJLTihi22k5tMYRv0x/8SZzzhGjGLiaZwITLMAE2BjK2
-         37DV/shq6uqyhFenLHMLV+ueBgxcTH8eysZTQDvUD/6JT9PGton2P+nYFJfk9RLJgmcj
-         dwKg==
-X-Forwarded-Encrypted: i=1; AJvYcCXTxVIOFoFf8QD7XguCFwcDqerQLWDePb+lkEntgetOmwzo0QHvu0QejrRk8B5UVW0dlz/oMNTm3bcyU6ggH8Z9O84yHBfehRzJ
-X-Gm-Message-State: AOJu0Yx883G4fxZN+HNA9T7exBjfuKXXxfXS1NVM72CvJh88CPQN7NEk
-	pQ2OSwBiYM9DNNKMKdwkDUndwya0k4Kue91EMdtNzMLxIIOtNjScJWS0Fmkkp+U=
-X-Google-Smtp-Source: AGHT+IHJTWIGqMNnLlw3Aibsovc33vkuDbNsrVUj73Yo3Le40YAQ1flHUPNAWQibOZNFS3MGry2obA==
-X-Received: by 2002:a05:6808:190f:b0:3d2:17cd:5601 with SMTP id 5614622812f47-3d543b129aamr7028160b6e.33.1719247735839;
-        Mon, 24 Jun 2024 09:48:55 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-3d54067c8c2sm999719b6e.27.2024.06.24.09.48.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Jun 2024 09:48:55 -0700 (PDT)
-Message-ID: <1cbb4395-cc9e-4e49-9188-c09aeefff956@baylibre.com>
-Date: Mon, 24 Jun 2024 11:48:54 -0500
+	s=arc-20240116; t=1719248430; c=relaxed/simple;
+	bh=EB2Vu1uZ3PbGJZtLzuNrFlJTZIHyzcLAaz9VPoAVtYI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kkW36fPNFI4trL0sSKg4RS/dmgiD5qvpwtLW6GoGs5XUK8kY/Fk7Eh1wzGDFZOerFQqKnwyOPCquLO8bVnbY4V+PcwLH87GPfUnfLP/RUXNxfgRr1OnxNT9e0O6zOjS6kD4/9qWEgrvQ8oG99iJFYneEh9ljcDJlLmowa970yO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YQASADSP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E84C2BBFC;
+	Mon, 24 Jun 2024 17:00:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719248430;
+	bh=EB2Vu1uZ3PbGJZtLzuNrFlJTZIHyzcLAaz9VPoAVtYI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YQASADSPlVYuf64HpQV4/aJlbDXT+VGeIu1zEjfmkLhcG+oDJODI4mf/RMcFqK98y
+	 71XgOd8KlGtZLNUXa0+OhkCe2bFoB4xOYLuZvXGRFsMoufHGN4qpt4yeOT3rDQHapv
+	 ZhYNX4/DlJxIAmShCio2BzNm7NHd0ZwsyL7BGKnvDO3h2pgA6tKxN+8kbjvHddExqp
+	 Lp2p98eU5b4zS7eCx969eGBdFgY4Rg9ZpwT+lzCpLH02LWDe6/PcF2ecQlRBz1o8nP
+	 DyYBc3h5B6KdVOII9h6ebF7PgQtIVrEwM0CBtWlUitzpQN0SakD02iiup+MShrcVPq
+	 bFHPzvxp9jvLQ==
+Date: Mon, 24 Jun 2024 18:00:24 +0100
+From: Conor Dooley <conor@kernel.org>
+To: "Paller, Kim Seer" <KimSeer.Paller@analog.com>
+Cc: Jonathan Cameron <jic23@kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Dimitri Fedrau <dima.fedrau@gmail.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+	"Hennerich, Michael" <Michael.Hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+Subject: Re: [PATCH v4 4/5] dt-bindings: iio: dac: Add adi,ltc2672.yaml
+Message-ID: <20240624-untracked-molasses-31e8769dddd3@spud>
+References: <20240619064904.73832-1-kimseer.paller@analog.com>
+ <20240619064904.73832-5-kimseer.paller@analog.com>
+ <20240619-vanity-crowd-24d93dda47b8@spud>
+ <20240623144339.6a5087cf@jic23-huawei>
+ <PH0PR03MB71419D55571B07479B4F4FB8F9D42@PH0PR03MB7141.namprd03.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/5] dt-bindings: iio: dac: Add adi,ltc2664.yaml
-To: "Paller, Kim Seer" <KimSeer.Paller@analog.com>,
- Conor Dooley <conor@kernel.org>
-Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
- "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
- Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Dimitri Fedrau <dima.fedrau@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- "Hennerich, Michael" <Michael.Hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
-References: <20240619064904.73832-1-kimseer.paller@analog.com>
- <20240619064904.73832-4-kimseer.paller@analog.com>
- <20240619-left-usable-316cbe62468a@spud>
- <PH0PR03MB7141FB5DFBCA46C727FA9605F9D42@PH0PR03MB7141.namprd03.prod.outlook.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <PH0PR03MB7141FB5DFBCA46C727FA9605F9D42@PH0PR03MB7141.namprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="BsG0Zvx10wXMJvsJ"
+Content-Disposition: inline
+In-Reply-To: <PH0PR03MB71419D55571B07479B4F4FB8F9D42@PH0PR03MB7141.namprd03.prod.outlook.com>
 
 
->>> +  adi,manual-span-operation-config:
->>> +    description:
->>> +      This property must mimic the MSPAN pin configurations. By tying the
->> MSPAN
->>> +      pins (MSP2, MSP1 and MSP0) to GND and/or VCC, any output range can
->> be
->>> +      hardware-configured with different mid-scale or zero-scale reset options.
->>> +      The hardware configuration is latched during power on reset for proper
->>> +      operation.
->>> +        0 - MPS2=GND, MPS1=GND, MSP0=GND (+-10V, reset to 0V)
->>> +        1 - MPS2=GND, MPS1=GND, MSP0=VCC (+-5V, reset to 0V)
->>> +        2 - MPS2=GND, MPS1=VCC, MSP0=GND (+-2.5V, reset to 0V)
->>> +        3 - MPS2=GND, MPS1=VCC, MSP0=VCC (0V to 10, reset to 0V)
->>> +        4 - MPS2=VCC, MPS1=GND, MSP0=GND (0V to 10V, reset to 5V)
->>> +        5 - MPS2=VCC, MPS1=GND, MSP0=VCC (0V to 5V, reset to 0V)
->>> +        6 - MPS2=VCC, MPS1=VCC, MSP0=GND (0V to 5V, reset to 2.5V)
->>> +        7 - MPS2=VCC, MPS1=VCC, MSP0=VCC (0V to 5V, reset to 0V, enables
->> SoftSpan)
->>> +    $ref: /schemas/types.yaml#/definitions/uint32
->>> +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
->>
->> Can you explain why this property is required, when below there's one that sets
->> the ranges in microvolts? Isn't the only new information that this provides the
->> reset values (in a few cases that it is not 0).
->> What am I missing?
-> 
-> For specifying output range and reset options without relying on software initialization
-> routines, and also for enabling the softspan feature, I think this property seems essential.
+--BsG0Zvx10wXMJvsJ
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-So in other words, this describes how the MSP pins are hardwired and
-the per-channel adi,output-range-microvolt is only permissible if
+On Mon, Jun 24, 2024 at 03:26:26PM +0000, Paller, Kim Seer wrote:
+>=20
+>=20
+> > -----Original Message-----
+> > From: Jonathan Cameron <jic23@kernel.org>
+> > Sent: Sunday, June 23, 2024 9:44 PM
+> > To: Conor Dooley <conor@kernel.org>
+> > Cc: Paller, Kim Seer <KimSeer.Paller@analog.com>; linux-
+> > kernel@vger.kernel.org; linux-iio@vger.kernel.org; devicetree@vger.kern=
+el.org;
+> > David Lechner <dlechner@baylibre.com>; Lars-Peter Clausen
+> > <lars@metafoo.de>; Liam Girdwood <lgirdwood@gmail.com>; Mark Brown
+> > <broonie@kernel.org>; Dimitri Fedrau <dima.fedrau@gmail.com>; Krzysztof
+> > Kozlowski <krzk+dt@kernel.org>; Rob Herring <robh@kernel.org>; Conor
+> > Dooley <conor+dt@kernel.org>; Hennerich, Michael
+> > <Michael.Hennerich@analog.com>; Nuno S=E1 <noname.nuno@gmail.com>
+> > Subject: Re: [PATCH v4 4/5] dt-bindings: iio: dac: Add adi,ltc2672.yaml
+> >=20
+> > [External]
+> >=20
+> > On Wed, 19 Jun 2024 18:57:59 +0100
+> > Conor Dooley <conor@kernel.org> wrote:
+> >=20
+> > > On Wed, Jun 19, 2024 at 02:49:03PM +0800, Kim Seer Paller wrote:
+> > > > +patternProperties:
+> > > > +  "^channel@[0-4]$":
+> > > > +    type: object
+> > > > +    additionalProperties: false
+> > > > +
+> > > > +    properties:
+> > > > +      reg:
+> > > > +        description: The channel number representing the DAC output
+> > channel.
+> > > > +        maximum: 4
+> > > > +
+> > > > +      adi,toggle-mode:
+> > > > +        description:
+> > > > +          Set the channel as a toggle enabled channel. Toggle oper=
+ation
+> > enables
+> > > > +          fast switching of a DAC output between two different DAC=
+ codes
+> > without
+> > > > +          any SPI transaction.
+> > > > +        type: boolean
+> > > > +
+> > > > +      adi,output-range-microamp:
+> > > > +        description: Specify the channel output full scale range.
+> > > > +        enum: [3125000, 6250000, 12500000, 25000000, 50000000,
+> > 100000000,
+> > > > +               200000000, 300000000]
+> > >
+> > > IIO folks, is this sort of thing common/likely to exist on other DACs?
+> >=20
+> > Fair point. It is probably time to conclude this is at least moderately=
+ common
+> > and generalize it - which will need a dac.yaml similar to the one we ha=
+ve for
+> > ADCs in adc/adc.yaml.  That will need to make this a per channel node p=
+roperty
+> > (same as the adc ones).
+>=20
+> Should I proceed with generalizing common DAC properties in this series a=
+nd does
 
-	 adi,manual-span-operation-config = <7>;
+I think so, yes.
 
-(or omitted since 7 is the default)
+> this mean somehow removing these common properties from existing DAC bind=
+ings?
 
-because in that case each individual pin could have a different
-required range based on what is wire up to it?
+I think that that one is up to Jonathan.
 
-But if adi,manual-span-operation-config is anything other than 7,
-then adi,output-range-microvolt should be not allowed since all
-channels will have the same range because of the hard-wired pins.
+> > I'd also expect it to always take 2 values. In many cases the first wil=
+l be 0 but
+> > that is fine.
+> >=20
+> > Jonathan
+>=20
 
-correct?
+--BsG0Zvx10wXMJvsJ
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The description could probably just be simplified to say that
-this describes how the 3 pins are hardwired and to see Table 4
-in the datasheet to understand the actual implications rather
-than reproducing that table here.
+-----BEGIN PGP SIGNATURE-----
 
-But I do agree that we need both properties. I think we are
-just missing:
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZnmmKAAKCRB4tDGHoIJi
+0rTAAQDRMrnRi4oNL/zjW/21PNfWpzyX3vPvb4XBtLhQ6CB3MAD9HwLwK7stijFd
+XKOBCouTp5hoYMUd6fTkOxiInssLlAI=
+=WSk1
+-----END PGP SIGNATURE-----
 
-- if:
-    properties:
-      adi,manual-span-operation-config:
-        const: 7
-  then:
-    patternProperties:
-      "^channel@[0-3]$":
-       adi,output-range-microvolt: false
-
-(not tested - may need two ifs, one with
-
-- if:
-    required:
-      - adi,manual-span-operation-config
-    properties:
-      adi,manual-span-operation-config:
-        const: 7
-
-and one with
-
-- if:
-    not:
-      required:
-        - adi,manual-span-operation-config
-
-to make it work properly)
-
-> 
->>> +    default: 7
->>> +
->>> +  io-channels:
->>> +    description:
->>> +      ADC channel to monitor voltages and temperature at the MUXOUT pin.
->>> +    maxItems: 1
->>> +
->>> +  '#address-cells':
->>> +    const: 1
->>> +
->>> +  '#size-cells':
->>> +    const: 0
->>> +
->>> +patternProperties:
->>> +  "^channel@[0-3]$":
->>> +    type: object
->>> +    additionalProperties: false
->>> +
->>> +    properties:
->>> +      reg:
->>> +        description: The channel number representing the DAC output channel.
->>> +        maximum: 3
->>> +
->>> +      adi,toggle-mode:
->>> +        description:
->>> +          Set the channel as a toggle enabled channel. Toggle operation enables
->>> +          fast switching of a DAC output between two different DAC codes
->> without
->>> +          any SPI transaction.
->>> +        type: boolean
->>> +
->>> +      adi,output-range-microvolt:
->>> +        description: Specify the channel output full scale range.
->>> +        oneOf:
->>> +          - items:
->>> +              - const: 0
->>> +              - enum: [5000000, 10000000]
->>> +          - items:
->>> +              - const: -5000000
->>> +              - const: 5000000
->>> +          - items:
->>> +              - const: -10000000
->>> +              - const: 10000000
->>> +          - items:
->>> +              - const: -2500000
->>> +              - const: 2500000
->>> +
->>> +    required:
->>> +      - reg
->>> +      - adi,output-range-microvolt
-
-And adi,output-range-microvolt should not be required. When SoftSpan
-is not available (because MSP != 0x7), then the range is determined
-by adi,manual-span-operation-config.
-
-And even when adi,manual-span-operation-config = <7>, there is still
-a default range, so adi,output-range-microvolt should still not be
-required in that case.
-
+--BsG0Zvx10wXMJvsJ--
 

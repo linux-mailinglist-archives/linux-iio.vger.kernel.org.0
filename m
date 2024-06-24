@@ -1,70 +1,72 @@
-Return-Path: <linux-iio+bounces-6826-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6825-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91665915561
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E0AC915560
 	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 19:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C49E281214
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEE371F24524
 	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 17:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C419819EEC6;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86F919EEC4;
 	Mon, 24 Jun 2024 17:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="VHGrcv9C"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="1lRQq6U1"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBFE2FC08
-	for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 17:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8579D13A894
+	for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 17:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719250276; cv=none; b=TV7v+LrvCXLR3WgrJmzozxDFOXv2aQG4n5O6RFAerclu6f4zSUkoa3533JJYfPBFJLLAcl28zcjCEGvvGYwx3A6uoRIr4ruMnZTTP1THXvawChbcEalugxsKJKaidrSsRIAH7xoDga7WyAuPmLj0ZV+ZMXVwnpwpkYaTpOGrVjM=
+	t=1719250276; cv=none; b=SeqaIKSoUiKYQTSRMPRM6tqwzSZfIqflB5H7EpgxsVmrsF/rnCJkWU85dYZ9aRDSZ5lRt/T5EICnrSOCGKNG1YaWRxO49iXUCCcF3Aqqg3FBj56lJK20ZvuR1Ulvz39mmrNVGBF/3dUgO4Q53rLtqmOutnMaVowv1iTbTAW6CPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1719250276; c=relaxed/simple;
-	bh=mI5kS1HCJJ7WW1Oy+YtN1Y3anfqpSihlvEVZxueVrhI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KYkIeRmk/Qsv+Tc835B6/HTQq3OfGhNf2hAVrcP9RlAwNVTx9EfIfURMhMhmSk7g7Pxe1bYk2kpGuEYt4tyBLWb4u7RrJudcALyDGQxydK9WGrYaOZvsxns+fPZhGvwccF9/fmBiIRZ4bFbLQDKevJGk9AyEHjcac59CP6gi38M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=VHGrcv9C; arc=none smtp.client-ip=209.85.167.46
+	bh=ESiT0v4XPWgKX6yOvx0PCA1YyOo6pgK/BKcUz++fGgw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MVqfZvouXiVWU+5T2UN2URkDkk0hl/o5k/bHxRk6aYxNHFT3NufTlSTyRdORp/msEemuhqqGfUjJQD0OAiDWrH4pW2jMTOI72oAiPv82afwsMWW9G3Y+pEgIQiYkx7PyEjZLmw2pPY6DR6VLteqQIm2tBP3Yi60YU9YHISZiiok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=1lRQq6U1; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-5295eb47b48so5398092e87.1
-        for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 10:31:13 -0700 (PDT)
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-424798859dfso38561305e9.0
+        for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 10:31:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719250272; x=1719855072; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TPcbUebpH9a97qWXq4TA9VXjoMaci8v0q9yhJMVEHEc=;
-        b=VHGrcv9CT0cp+StcHUnLhVrPiqAwLhYifZ9sX/NnwIUEYIMWPCHaxmmX0e9TgvOwjj
-         66u6CdY8q5/mNLKubvSNHh1kur9LOLw5cVByXgh4AfiptScyGKXDZS/tgZj1Lk/+Z/lO
-         /RD5V9ZY/cmelqaQxuJubN4j80uCVVXGyu1OeZ4WIfIDZuScHX7u95RHh+vv9HszeDjL
-         BkxgeYm4TqVxgfnfgWcW76gF6X14rlTv10qqK7fRwEPUFY5mSL8iTFgkMNNEEEFkkZsD
-         8LksNVC+dM/8HZ7wqDD8IyZDJ5BGmPSYNSiV35pV+kIPIodC50/Wl6kUZSGqY0cvZ4Z/
-         u8Iw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719250273; x=1719855073; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Nk8NTSSg2UNwZSS0z8KuJvpBdS4vH/E8VAcTr6zFpw4=;
+        b=1lRQq6U1U24WcnKBgOK5f2rJ1tkLyw7mdHQFlmTpnhdUIydS8HNstxbl4lOlev5Z4o
+         OypNBziNEIRM3juIbo3uYmhLgdjc91zW/AXTSvdXFuuVYMcPFjIBh/VnxoUvH2dheWcn
+         3K3r6ngCjxtpAxHL7ZJJgPHzsoII0QOfUwCv87JRoMNQL5y3LMuPPDGmCox+YkinLrWt
+         a8wRqm7eVTqOrw67ESH5sxWK+zCFrbnBErR26ajqHUCntVMQSSo6WIOuil5eLOMtPxsZ
+         lyZSCfSjv9hdNpo3aDGF7Q9fHHrC2rdMnIpOkVlrTBIhKgWFAEAloLEDe0rv2KNJCFLN
+         X24w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719250272; x=1719855072;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TPcbUebpH9a97qWXq4TA9VXjoMaci8v0q9yhJMVEHEc=;
-        b=clwVCFQ3ShByA6tU8qXXralrDCkTSUJ+UpuUgsOG6/+PQlZ3I2GzxRjVAupODTKDlE
-         N4a8OkOjwR/ZzyH8KzvYaRtGYVnaPFWK1bZWDcd3ybjFXp4SfWxf1HZKbyJE00jhvfMw
-         /CaYVAIeYzDr7Mo7s34jkbkMs/a+MbHKcKyYdiIfzMmewujxnUajW1nhKT7HN19mqeE7
-         ZceOkLZjyx0PTKpud9io98mp5c+UmRABBN7oG+aSitdR5ZQyFAImrEA03iK2kX44WhaP
-         XTOuucoWFErLIMPhdM4pG3c0XeJ1RcChrAsqXQxUK02/7l9osYzkOHq1H9jAdYzqQasE
-         abYg==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ9qka/TJnou0v09JBY2vpRE/fEoPK0FzyO1yaCAu+0obl4GtDeQh5wCgyFyQnPw8/LLI+jqoHu6UHhNRS5/CicM4r5WTHboY5
-X-Gm-Message-State: AOJu0YwNccuOCeH5nMzu2vfDgJ2rc0VB0zS2q5SXDWF/TM+1OSupKNU2
-	lbB4aVkQ0c6EdC01pX2Bx6xpeX8nSVhz5KLTqa0X/7yoP1cdOo8V8yFw/HLeWY4=
-X-Google-Smtp-Source: AGHT+IEE048c9lMdvxS1C2GH7HGqg2NC8yP2EE4vRfM+rV8ty+EL0J/9Kf/sLSBChaan4EUIwSKmjw==
-X-Received: by 2002:a05:6512:6c3:b0:52c:83c2:9670 with SMTP id 2adb3069b0e04-52ce0646e8bmr4645039e87.69.1719250271980;
-        Mon, 24 Jun 2024 10:31:11 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1719250273; x=1719855073;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Nk8NTSSg2UNwZSS0z8KuJvpBdS4vH/E8VAcTr6zFpw4=;
+        b=XeHXR76JExqlfCZHcFJYwDMGJydzIS9RrliTlrcQLl8SbWS06DZl/f3RMi30LygPa7
+         3x70GwAYE5NoQadOAmOK2djQBFgZXREz+1FNxXDGENJIlg0kZWKcDJcZiPfLO8hb7w/m
+         AIK8lAzlkCObECcL7eWsBFx/Pu1W0mPDdLb3snfLtIr8RwUxPVT/4DxJyYOteyoS+sEe
+         1qKmmsZ39945SfYT3MGcmmodG1iYSGVjPJvxwfLxpXLw/xwQ45EBkaOpl/AUJqVcYe5T
+         oc+WbC1CX6c8kfAEwZWpW4yeC+0S4qID6xofZaKY6buwgEjJYtsNpb6H/TbtXa4NIOCY
+         SMUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW0FPRl938U7YoLhwYEgY39nWiWQqZDWt7ikSFB8y7671H6wn9PqVbha9z21+eMrYi8KUgcl6yLYPvcdj3H/N9cOXljoui1Co1a
+X-Gm-Message-State: AOJu0YwLD44lDtKEd4XbhJ7vsA3BrZcnxcYEoG/2RTb6GhqQH6zRqqGB
+	dlSHmdGA/h9RpQV9/JvFj/Swu7/lHf8Ed/70j0FYrPzllFUN6kO8irmx9gSXpW4=
+X-Google-Smtp-Source: AGHT+IEzdlJ7HFwRpLJJZgautx8tzjBGUtxs5fy5hAahIcqiziqFJibaNlYJW9Zd5bqWuU4GuS++yg==
+X-Received: by 2002:a05:600c:1ca2:b0:424:8e12:9ef3 with SMTP id 5b1f17b1804b1-4248e129f6fmr34103285e9.0.1719250272804;
+        Mon, 24 Jun 2024 10:31:12 -0700 (PDT)
 Received: from toaster.lan ([2a01:e0a:3c5:5fb1:e4ee:e6f8:8fcc:a63b])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4247d210ff9sm183742385e9.39.2024.06.24.10.31.11
+        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-4247d210ff9sm183742385e9.39.2024.06.24.10.31.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 10:31:11 -0700 (PDT)
+        Mon, 24 Jun 2024 10:31:12 -0700 (PDT)
 From: Jerome Brunet <jbrunet@baylibre.com>
 To: Jonathan Cameron <jic23@kernel.org>,
 	Lars-Peter Clausen <lars@metafoo.de>,
@@ -77,10 +79,12 @@ Cc: Jerome Brunet <jbrunet@baylibre.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>
-Subject: [PATCH 0/2] iio: frequency: add iio support for Amlogic clock measure
-Date: Mon, 24 Jun 2024 19:31:01 +0200
-Message-ID: <20240624173105.909554-1-jbrunet@baylibre.com>
+Subject: [PATCH 1/2] dt-bindings: iio: frequency: add clock measure support
+Date: Mon, 24 Jun 2024 19:31:02 +0200
+Message-ID: <20240624173105.909554-2-jbrunet@baylibre.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240624173105.909554-1-jbrunet@baylibre.com>
+References: <20240624173105.909554-1-jbrunet@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -90,29 +94,81 @@ MIME-Version: 1.0
 X-Patchwork-Bot: notify
 Content-Transfer-Encoding: 8bit
 
-Add support for the HW found in most Amlogic SoC dedicated to measure
-system clocks.
+Introduce new bindings for the clock measure IP found Amlogic SoCs.
+These new bindings help bring IIO support to AML clock measure.
 
-This drivers aims to replace the one found in
-drivers/soc/amlogic/meson-clk-measure.c with following improvements:
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+---
 
-* Access to the measurements through the IIO API:
-  Easier re-use of the results in userspace and other drivers
-* Controllable scale with raw measurements
-* Higher precision with processed measurements
+ NOTE:
+  #1: Splitting the register space looks odd. This is done to help support
+      future SoCs. From meson8 to sm1, duty register comes first, then the
+      reg space. On s4 and c3, duty comes after the reg space.
+  #2: 'reg' may look like a poor choice of name. This comes from the
+       documentation.
+       - MSR_CLK_REGx for the 'reg' space (x being a number)
+       - MSR_CLK_DUTY for the 'duty' space
 
-Jerome Brunet (2):
-  dt-bindings: iio: frequency: add clock measure support
-  iio: frequency: add amlogic clock measure support
-
- .../iio/frequency/amlogic,clk-msr-io.yaml     |  50 ++
- drivers/iio/frequency/Kconfig                 |  15 +
- drivers/iio/frequency/Makefile                |   1 +
- drivers/iio/frequency/amlogic-clk-msr-io.c    | 802 ++++++++++++++++++
- 4 files changed, 868 insertions(+)
+ .../iio/frequency/amlogic,clk-msr-io.yaml     | 50 +++++++++++++++++++
+ 1 file changed, 50 insertions(+)
  create mode 100644 Documentation/devicetree/bindings/iio/frequency/amlogic,clk-msr-io.yaml
- create mode 100644 drivers/iio/frequency/amlogic-clk-msr-io.c
 
+diff --git a/Documentation/devicetree/bindings/iio/frequency/amlogic,clk-msr-io.yaml b/Documentation/devicetree/bindings/iio/frequency/amlogic,clk-msr-io.yaml
+new file mode 100644
+index 000000000000..eeb268b4a607
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/frequency/amlogic,clk-msr-io.yaml
+@@ -0,0 +1,50 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/frequency/amlogic,clk-msr-io.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Amlogic System Clock Measurer
++
++description:
++  Internal clock rate sensor within Amlogic SoCs
++
++maintainers:
++  - Neil Armstrong <neil.armstrong@linaro.org>
++
++properties:
++  compatible:
++    enum:
++      - amlogic,meson8-clk-msr-io
++      - amlogic,gx-clk-msr-io
++      - amlogic,axg-clk-msr-io
++      - amlogic,g12a-clk-msr-io
++      - amlogic,sm1-clk-msr-io
++
++  reg:
++    maxItems: 2
++
++  reg-names:
++    items:
++      - const: reg
++      - const: duty
++
++  "#io-channel-cells":
++    const: 1
++
++required:
++  - compatible
++  - reg
++  - reg-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    clk_msr: rate-sensor@18000 {
++      compatible = "amlogic,axg-clk-msr-io";
++      reg = <0x18004 0xc>,
++            <0x18000 0x4>;
++      reg-names = "reg", "duty";
++      #io-channel-cells = <1>;
++    };
 -- 
 2.43.0
 

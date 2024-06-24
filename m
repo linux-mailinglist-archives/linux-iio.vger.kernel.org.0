@@ -1,65 +1,74 @@
-Return-Path: <linux-iio+bounces-6822-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6823-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 722BB9153AB
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 18:27:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C5C9154BB
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 18:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DDDB285F5D
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 16:27:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 23CD4B27BA1
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 16:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF8319DF57;
-	Mon, 24 Jun 2024 16:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A79C19DFAC;
+	Mon, 24 Jun 2024 16:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="un0jjADL"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="2lxT5SVR"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6ED17BCC;
-	Mon, 24 Jun 2024 16:27:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E5D1428F1
+	for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 16:48:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719246423; cv=none; b=iifuDiQMsWGTM2W/a3KC31pjPCgfC1HVKCXdj9OAzWkgbUm4fGnNhZgVH6lGO9t25urC99q6PDkHBu8dW+IzX+OcepV0jDo4HDHz0ZSTjsPOQQQMWB2OcqoFeIN9lmDRkGevNW4o4W88fzxVz6yM628FMlzFudAgAUyR+u4YFRI=
+	t=1719247738; cv=none; b=FI8IYfJO/rn9uSTsyGxf7IJo8NUNSTSnO8l2AJfGJkRduJcYJox9Wm9VjdppX46HjSto6yPW7bv4YkX63SzP9UinuUh0Dsq7y32up1wF+hb0NRxHiXzrhVoygLChKwg9n6Q426O907RhISQOemP5GQ+6ZUpRTrytskim353vJ7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719246423; c=relaxed/simple;
-	bh=GtBXMM2l9qltUcRpEfiyfnmn0l5n+kJwq5wpvy24ioA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=EwMCU5V/RwG426kYXYZBoJpLC2EC4KLrXM7cUPTOvxnGrfKVvOg1qmUVH5RZnOdmPLG0apK1eeNJz2jhR+93Kw0VIICiETAcWkPwopyvunG2AATB4ZRVuJ5Pkp+s9ES50kcAs0ERLx7tFIDXesOmG0MEHqsSizQyioecQLkOJZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=un0jjADL; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45OD8opO012232;
-	Mon, 24 Jun 2024 18:26:44 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	4QBZ38ztMruEJ9solYAFSw8IkaHBHzsJsK1yBZ6dTB0=; b=un0jjADLge9jtcZk
-	46XPAmMtQaoPUNlZ5BX5wxFSSdehfPZhp4EHZDezWH64C0J3EBh1WqjLJgfoobY8
-	3Dguqbryw+2KTnmm2pT82xK+n4ORj+mPFEX7tPAtQhQLr68XTeHYvgfjn0NfTKMG
-	nbpT+UHor04eeul3tGdL0O0lBQNqjULYjKUh8bA04Vbgp6fXFO/JZ7izudfLOxSG
-	6yT6jPUZk/LR2P/lLH/xoHnj9tWEiaPultdanS7UYKzIDb2hOKvixUalbwdDvWGW
-	z9FAmOprjWg+7owgMNgE8KKXvgRT4uIyMmVs0JCmbrUBlPUzBQniL1tLCtn+btjz
-	FRZ+4g==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ywngd7qt1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Jun 2024 18:26:43 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 7EB084002D;
-	Mon, 24 Jun 2024 18:26:39 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id D078721A911;
-	Mon, 24 Jun 2024 18:26:11 +0200 (CEST)
-Received: from [10.48.86.132] (10.48.86.132) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Mon, 24 Jun
- 2024 18:26:11 +0200
-Message-ID: <06edd10d-eab4-41db-83d4-232fc43e1759@foss.st.com>
-Date: Mon, 24 Jun 2024 18:26:10 +0200
+	s=arc-20240116; t=1719247738; c=relaxed/simple;
+	bh=bWVnoflNYa8G5Kxrq0nWQrfqsc684kD+NGBZ6hdM2IY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tVG785BBbhIc0dQ3B+nOjFM7xHtd6XXobyfTpl4yYvuyim7v+jp/nH8XPzrT0X0FTTqg9PNZaJlFP32gCzguXGvb7MJLWmlbqbZtMdgDlqpzd01vQk79V2lPPr7Xhh27e5KxrqVjncpyTq6WM11CsooQsvfO/xckkAkQh0MuGj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=2lxT5SVR; arc=none smtp.client-ip=209.85.167.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3d513eb6e56so2532972b6e.0
+        for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 09:48:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719247736; x=1719852536; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mxxkGiRjkerPamYFY/qxNBX6etGC2eZqvZGM5OE8a/o=;
+        b=2lxT5SVRXmqpVUVMDGWxP+ZTxX9GRIFysixr7FDp2KDiaE1jfW9nLqELFQkbfkwH+r
+         NsBVo11tBb8vX3RectVHjxzhR2D32pV0R6qO6CYER+1HT4TWRp/MEDn62Y3bJVTGJ9vc
+         Dq2gbpKx3RPvnviQk1dldj4Di/U00v2hvDhwettIDtI9pSLk8/ZT5g0AsTEqsIpIOQNH
+         ors/J5lvJMV2IhrSInOUcEVIWLZXzAp6AkanIw5qjBFBUs/TqPH5p5YPCi2hghAYGCDx
+         DEaRX8niM6oW5HFbIA9uCY1RlRMtil5jdvouxV6zU9NTQFhSj9QJdmkIREk4VjN1FzjM
+         nipg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719247736; x=1719852536;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mxxkGiRjkerPamYFY/qxNBX6etGC2eZqvZGM5OE8a/o=;
+        b=MVD20B7jTnX1clKZDM9LNsRll6N+/pLDKtRmnET2AeYfX6rlaYPhqsR/mF/lXnQx4W
+         mCcxBmhJ5Q33Fvkre/k1mdA5pkxRLL4kXADYuP1uDIHgZpOtO5uhvlgQS0g0lnEVVKG+
+         rnVHa1VnkZ58ZiKOzaxhvHZgMqfl+PrQvfJx6hVN4mwobaW5uPQubv0D4HIJC7QkXLLq
+         n7Wrh5oS/Ts6f35w5RIFFhw0cJLTihi22k5tMYRv0x/8SZzzhGjGLiaZwITLMAE2BjK2
+         37DV/shq6uqyhFenLHMLV+ueBgxcTH8eysZTQDvUD/6JT9PGton2P+nYFJfk9RLJgmcj
+         dwKg==
+X-Forwarded-Encrypted: i=1; AJvYcCXTxVIOFoFf8QD7XguCFwcDqerQLWDePb+lkEntgetOmwzo0QHvu0QejrRk8B5UVW0dlz/oMNTm3bcyU6ggH8Z9O84yHBfehRzJ
+X-Gm-Message-State: AOJu0Yx883G4fxZN+HNA9T7exBjfuKXXxfXS1NVM72CvJh88CPQN7NEk
+	pQ2OSwBiYM9DNNKMKdwkDUndwya0k4Kue91EMdtNzMLxIIOtNjScJWS0Fmkkp+U=
+X-Google-Smtp-Source: AGHT+IHJTWIGqMNnLlw3Aibsovc33vkuDbNsrVUj73Yo3Le40YAQ1flHUPNAWQibOZNFS3MGry2obA==
+X-Received: by 2002:a05:6808:190f:b0:3d2:17cd:5601 with SMTP id 5614622812f47-3d543b129aamr7028160b6e.33.1719247735839;
+        Mon, 24 Jun 2024 09:48:55 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3d54067c8c2sm999719b6e.27.2024.06.24.09.48.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jun 2024 09:48:55 -0700 (PDT)
+Message-ID: <1cbb4395-cc9e-4e49-9188-c09aeefff956@baylibre.com>
+Date: Mon, 24 Jun 2024 11:48:54 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,172 +76,168 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/8] iio: add sd modulator generic iio backend
-To: =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>,
-        Jonathan Cameron
-	<jic23@kernel.org>
-CC: Lars-Peter Clausen <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-iio@vger.kernel.org>
-References: <20240618160836.945242-1-olivier.moysan@foss.st.com>
- <20240618160836.945242-8-olivier.moysan@foss.st.com>
- <20240623161150.358f95bf@jic23-huawei>
- <2dbd160b-135e-4882-9fd3-9d921742f49d@foss.st.com>
- <1ef85cdcffefee6b6a68927816f3d26c074a5331.camel@gmail.com>
+Subject: Re: [PATCH v4 3/5] dt-bindings: iio: dac: Add adi,ltc2664.yaml
+To: "Paller, Kim Seer" <KimSeer.Paller@analog.com>,
+ Conor Dooley <conor@kernel.org>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ Dimitri Fedrau <dima.fedrau@gmail.com>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ "Hennerich, Michael" <Michael.Hennerich@analog.com>,
+ =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
+References: <20240619064904.73832-1-kimseer.paller@analog.com>
+ <20240619064904.73832-4-kimseer.paller@analog.com>
+ <20240619-left-usable-316cbe62468a@spud>
+ <PH0PR03MB7141FB5DFBCA46C727FA9605F9D42@PH0PR03MB7141.namprd03.prod.outlook.com>
 Content-Language: en-US
-From: Olivier MOYSAN <olivier.moysan@foss.st.com>
-In-Reply-To: <1ef85cdcffefee6b6a68927816f3d26c074a5331.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: EQNCAS1NODE4.st.com (10.75.129.82) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-24_13,2024-06-24_01,2024-05-17_01
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <PH0PR03MB7141FB5DFBCA46C727FA9605F9D42@PH0PR03MB7141.namprd03.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Nuno,
 
-On 6/24/24 17:22, Nuno Sá wrote:
-> Hi Olivier,
-> 
-> On Mon, 2024-06-24 at 14:43 +0200, Olivier MOYSAN wrote:
->> Hi Jonathan,
+>>> +  adi,manual-span-operation-config:
+>>> +    description:
+>>> +      This property must mimic the MSPAN pin configurations. By tying the
+>> MSPAN
+>>> +      pins (MSP2, MSP1 and MSP0) to GND and/or VCC, any output range can
+>> be
+>>> +      hardware-configured with different mid-scale or zero-scale reset options.
+>>> +      The hardware configuration is latched during power on reset for proper
+>>> +      operation.
+>>> +        0 - MPS2=GND, MPS1=GND, MSP0=GND (+-10V, reset to 0V)
+>>> +        1 - MPS2=GND, MPS1=GND, MSP0=VCC (+-5V, reset to 0V)
+>>> +        2 - MPS2=GND, MPS1=VCC, MSP0=GND (+-2.5V, reset to 0V)
+>>> +        3 - MPS2=GND, MPS1=VCC, MSP0=VCC (0V to 10, reset to 0V)
+>>> +        4 - MPS2=VCC, MPS1=GND, MSP0=GND (0V to 10V, reset to 5V)
+>>> +        5 - MPS2=VCC, MPS1=GND, MSP0=VCC (0V to 5V, reset to 0V)
+>>> +        6 - MPS2=VCC, MPS1=VCC, MSP0=GND (0V to 5V, reset to 2.5V)
+>>> +        7 - MPS2=VCC, MPS1=VCC, MSP0=VCC (0V to 5V, reset to 0V, enables
+>> SoftSpan)
+>>> +    $ref: /schemas/types.yaml#/definitions/uint32
+>>> +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
 >>
->> On 6/23/24 17:11, Jonathan Cameron wrote:
->>> On Tue, 18 Jun 2024 18:08:33 +0200
->>> Olivier Moysan <olivier.moysan@foss.st.com> wrote:
->>>
->>>> Add a generic driver to support sigma delta modulators.
->>>> Typically, this device is a hardware connected to an IIO device
->>>> in charge of the conversion. The device is exposed as an IIO backend
->>>> device. This backend device and the associated conversion device
->>>> can be seen as an aggregate device from IIO framework.
->>>>
->>>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
->>>
->>> Trivial comments inline.
->>>
->>>> diff --git a/drivers/iio/adc/sd_adc_backend.c
->>>> b/drivers/iio/adc/sd_adc_backend.c
->>>> new file mode 100644
->>>> index 000000000000..556a49dc537b
->>>> --- /dev/null
->>>> +++ b/drivers/iio/adc/sd_adc_backend.c
->>>> @@ -0,0 +1,110 @@
->>>> +// SPDX-License-Identifier: GPL-2.0-only
->>>> +/*
->>>> + * Generic sigma delta modulator IIO backend
->>>> + *
->>>> + * Copyright (C) 2024, STMicroelectronics - All Rights Reserved
->>>> + */
->>>> +
->>>> +#include <linux/iio/backend.h>
->>>> +#include <linux/iio/iio.h>
->>>> +#include <linux/module.h>
->>>> +#include <linux/mod_devicetable.h>
->>>> +#include <linux/platform_device.h>
->>>> +#include <linux/regulator/consumer.h>
->>>> +
->>>> +struct iio_sd_backend_priv {
->>>> +	struct regulator *vref;
->>>> +	int vref_mv;
->>>> +};
->>>> +
->>>> +static int sd_backend_enable(struct iio_backend *backend)
->>>> +{
->>>> +	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
->>>> +
->>>> +	return regulator_enable(priv->vref);
->>>> +};
->>>> +
->>>> +static void sd_backend_disable(struct iio_backend *backend)
->>>> +{
->>>> +	struct iio_sd_backend_priv *priv = iio_backend_get_priv(backend);
->>>> +
->>>> +	regulator_disable(priv->vref);
->>>> +};
->>>> +
->>>> +static int sd_backend_read(struct iio_backend *backend, int *val, int *val2,
->>>> long mask)
->>> Nothing to do with this patch as such:
->>>
->>> One day I'm going to bit the bullet and fix that naming.
->>> Long long ago when the Earth was young it actually was a bitmap which
->>> I miscalled a mask - it only had one bit ever set, which was a dumb
->>> bit of API.  It's not been true for a long time.
->>> Anyhow, one more instances isn't too much of a problem I guess.
->>>
->>
->> I changed the callback .read_raw to .ext_info_get to take Nuno's comment
->> about iio_backend_read_raw() API, into account.
->> So, I changed this function to
->> static int sd_backend_ext_info_get(struct iio_backend *back, uintptr_t
->> private, const struct iio_chan_spec *chan, char *buf)
->> for v2 version.
->>
+>> Can you explain why this property is required, when below there's one that sets
+>> the ranges in microvolts? Isn't the only new information that this provides the
+>> reset values (in a few cases that it is not 0).
+>> What am I missing?
 > 
-> Maybe I'm missing something but I think I did not explained myself very well. What I
-> had in mind was that since you're calling .read_raw() from IIO_CHAN_INFO_SCALE and
-> IIO_CHAN_INFO_OFFSET, it could make sense to have more dedicated API's. Meaning:
-> 
-> iio_backend_read_scale(...)
-> iio_backend_read_offset(...)
-> 
-> The iio_backend_read_raw() may make sense when frontends call
-> iio_backend_extend_chan_spec() and have no idea what the backend may have added to
-> the channel. So, in those cases something like this could make sense:
-> 
-> switch (mask)
-> IIO_CHAN_INFO_RAW:
-> 
-> ...
-> 
-> default:
-> 	return iio_backend_read_raw();
-> 
-> but like I said maybe this is me over-complicating and a simple
-> iio_backend_read_raw() is sufficient. But I think I never mentioned something like
-> .read_raw -> .ext_info_get.
-> 
+> For specifying output range and reset options without relying on software initialization
+> routines, and also for enabling the softspan feature, I think this property seems essential.
 
-Thanks for clarification. Your previous message was actually clear 
-enough regarding iio_backend_read_raw() API.
+So in other words, this describes how the MSP pins are hardwired and
+the per-channel adi,output-range-microvolt is only permissible if
 
-However, your comment about extend_chan_spec(), let me think that I 
-could maybe spare a new API, and just re-use iio_backend_ext_info_get() 
-callback.
-Nevertheless, this API cannot be used directly, as it can be used only 
-for a frontend associated to a single backend. There is a comment in 
-iio_backend_ext_info_get() about the need of another API for such case.
+	 adi,manual-span-operation-config = <7>;
 
-So I considered introducing this new API (instead of read_raw):
-ssize_t iio_backend_ext_info_get_from_backend(struct iio_backend *back, 
-uintptr_t private, const struct iio_chan_spec *chan, char *buf)
-(I'm not sure this name is the most relevant).
+(or omitted since 7 is the default)
 
-But if you don't like this alternative too much, I will keep the initial 
-"catch all" iio_backend_read_raw() API.
+because in that case each individual pin could have a different
+required range based on what is wire up to it?
 
-BRs
-Olivier
+But if adi,manual-span-operation-config is anything other than 7,
+then adi,output-range-microvolt should be not allowed since all
+channels will have the same range because of the hard-wired pins.
 
-> The other thing I mentioned was to instead of having:
+correct?
+
+The description could probably just be simplified to say that
+this describes how the 3 pins are hardwired and to see Table 4
+in the datasheet to understand the actual implications rather
+than reproducing that table here.
+
+But I do agree that we need both properties. I think we are
+just missing:
+
+- if:
+    properties:
+      adi,manual-span-operation-config:
+        const: 7
+  then:
+    patternProperties:
+      "^channel@[0-3]$":
+       adi,output-range-microvolt: false
+
+(not tested - may need two ifs, one with
+
+- if:
+    required:
+      - adi,manual-span-operation-config
+    properties:
+      adi,manual-span-operation-config:
+        const: 7
+
+and one with
+
+- if:
+    not:
+      required:
+        - adi,manual-span-operation-config
+
+to make it work properly)
+
 > 
-> 
-> if (child) {
-> 	ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> 				 BIT(IIO_CHAN_INFO_SCALE) |
-> 				 BIT(IIO_CHAN_INFO_OFFSET);
-> }
-> 
-> You could use iio_backend_extend_chan_spec() and have the backend set the SCALE and
-> OFFSET bits for you as it seems these functionality depends on the backend.
-> 
-> But none of the above were critical or things that I feel to strong about.
-> 
-> Anyways, just wanted to give some clarification as it seems there were some
-> misunderstandings (I think).
-> > - Nuno Sá
-> 
->>>
+>>> +    default: 7
+>>> +
+>>> +  io-channels:
+>>> +    description:
+>>> +      ADC channel to monitor voltages and temperature at the MUXOUT pin.
+>>> +    maxItems: 1
+>>> +
+>>> +  '#address-cells':
+>>> +    const: 1
+>>> +
+>>> +  '#size-cells':
+>>> +    const: 0
+>>> +
+>>> +patternProperties:
+>>> +  "^channel@[0-3]$":
+>>> +    type: object
+>>> +    additionalProperties: false
+>>> +
+>>> +    properties:
+>>> +      reg:
+>>> +        description: The channel number representing the DAC output channel.
+>>> +        maximum: 3
+>>> +
+>>> +      adi,toggle-mode:
+>>> +        description:
+>>> +          Set the channel as a toggle enabled channel. Toggle operation enables
+>>> +          fast switching of a DAC output between two different DAC codes
+>> without
+>>> +          any SPI transaction.
+>>> +        type: boolean
+>>> +
+>>> +      adi,output-range-microvolt:
+>>> +        description: Specify the channel output full scale range.
+>>> +        oneOf:
+>>> +          - items:
+>>> +              - const: 0
+>>> +              - enum: [5000000, 10000000]
+>>> +          - items:
+>>> +              - const: -5000000
+>>> +              - const: 5000000
+>>> +          - items:
+>>> +              - const: -10000000
+>>> +              - const: 10000000
+>>> +          - items:
+>>> +              - const: -2500000
+>>> +              - const: 2500000
+>>> +
+>>> +    required:
+>>> +      - reg
+>>> +      - adi,output-range-microvolt
+
+And adi,output-range-microvolt should not be required. When SoftSpan
+is not available (because MSP != 0x7), then the range is determined
+by adi,manual-span-operation-config.
+
+And even when adi,manual-span-operation-config = <7>, there is still
+a default range, so adi,output-range-microvolt should still not be
+required in that case.
+
 

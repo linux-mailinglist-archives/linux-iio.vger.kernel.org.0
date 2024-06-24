@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-6804-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6805-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 752C8914B05
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 14:50:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E21914B09
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 14:50:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0309B1F23C0A
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 12:50:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C71891C22C74
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 12:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D7B13D298;
-	Mon, 24 Jun 2024 12:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66BD13C9D5;
+	Mon, 24 Jun 2024 12:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T4neDO81"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T9lK34yC"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C896F13CFB6;
-	Mon, 24 Jun 2024 12:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178BD13CFB6;
+	Mon, 24 Jun 2024 12:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719233411; cv=none; b=o/4m2vM4Q65r79ZHm0Bh9YAL469aqKdCMH49m1ENrd5+fni1De1KRM3qsrNv+mlqEAxoNt0IjNtcEOROzn1HKculn4w66oM/RHUYV9tB+QPjZI7GE+M31lt/1+TBSpxiJ86rBfNPTLgh6lmazR0Kjpf0zmJG6aM0XuYPovba3IQ=
+	t=1719233417; cv=none; b=QDdM553EaqNDavmV/9pUeBFGJWGz7LXSNwjK1hZieMStfodL4nbMymENUveDoVIDWUCyrSXsoPZU18ALXJUc8RFBsMTKzj2jwYAPm3tjRgcxvn3Kkhijt09cijzxyJbz1vsTEEyohqKMX1ZIkUJompy8u1FYqXSUO8dRseK13Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719233411; c=relaxed/simple;
-	bh=kazmdC/cLGmIsaW+TEKeeGpN3GwONcFkU1ULaXVaWeg=;
+	s=arc-20240116; t=1719233417; c=relaxed/simple;
+	bh=Bu8F+l13HHuz2d/P/HSpMq3O34R6YheN5LcYoDmAWDo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Og9cG24p0+patwb8iYYl2xB5cotAjHKzvGyot2zUoEkgCrMXOsXs7SkMwHev4rlhx5IK0dckAKI7522JPXjYD5D8r3E9E0J7esur9YrXh4Y+1aTTnEDn/i2jhUB3Eq/NyJ3AH9qE4EZ0iLNWmtiBCY4xfa2g4Ta655z1zrUya78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T4neDO81; arc=none smtp.client-ip=209.85.128.43
+	 MIME-Version; b=U7JEn2ZfUStAUFkNd7j2EUvj7bBysUdEJf0Vrw9Ww4/iRtHMnSp8poxp+pt+nhgNilOUSUKATgXQTKvvJHKMCaI9bfsXx6GW7zLz1F92BWZqrelxesq/1tmfxJqZ6ysIalMVWLh16x/4caukALKxXCHUQ4KDXGA44Xs2ZfagGaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T9lK34yC; arc=none smtp.client-ip=209.85.221.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-4248e28de9eso9996375e9.2;
-        Mon, 24 Jun 2024 05:50:09 -0700 (PDT)
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-35f2c9e23d3so3283328f8f.0;
+        Mon, 24 Jun 2024 05:50:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719233408; x=1719838208; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719233414; x=1719838214; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=p0m6UNyRnajMw6xAJ7LWWvSa2adAG/lm7tOiNtbOtpw=;
-        b=T4neDO81gXzv6Kye1vW61WMWoI6q2iwRiWcS4W9EE/brPFz4LtMqnfgGG4jSIRbUBh
-         mdvYxHitUSjqNjURUkyEbxquqUj+nfNldvUBoJjapvcmyRqV5wy8tsgaE+YpRZ3DJsv7
-         0u6KxyUUrPdtN5PVawNHv2ivg/AQeDbIJeJD068OQNNVDhCIYWh6H6q/VfReEXe89I9b
-         D/lrcMme3Eb1SksBAkJbI053MEkrrqeGX7Nk2JQywC/Zwsq8pEMKcBGbiqRSHA27lfau
-         pTuSECIOdwLZcGYsIHn/kZq02fPUbvsCgi6pPr4cAPwPhyHPFvST500JNet03xtaalPu
-         BNxA==
+        bh=LOfPkYxWy6ZUkypcBlYLtOXF3/JTIBRyQPldNQhVo1E=;
+        b=T9lK34yC0l0GIYxSHmIyH9J9UY1MfVD7GDwa664rK1iKiEYYPSmlDu5PYI2jatQX+F
+         2Tm0HfcZeyPjC05w2dEVUMWemETZvxIVCDPTI6l/neAHKSkTglfrrtluiVsJAMO6H375
+         svKZ+1kiwYLwJHobHLG3MXCf/UQSbvCLv3WIXxqOhdXMGd9aXW3FugtAAsGN4d4IVBCg
+         3VuDXT0PTxowaRVeoEUUnSpWIDY8PuSvcrwxEdXxJZLHMG0as0CB2E/J5PZHdbaqGQUx
+         oGBU7poJ7hqO3+JGrNjMAy5XnSPTgFMTL9o7aHLRCo+SucsAvRaXFq8SFC17yYK1vqYt
+         TS7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719233408; x=1719838208;
+        d=1e100.net; s=20230601; t=1719233414; x=1719838214;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=p0m6UNyRnajMw6xAJ7LWWvSa2adAG/lm7tOiNtbOtpw=;
-        b=XOUszS9bJiDlPyiRBqdNipllrFBTjhLToE+EJ00EayTWJtIzoxBFJESOD7Wk2JvAyu
-         rRrvyQKmNInmcHWhXDRbBzsyB61FwA6lbvXvs2lxop1i2DLuHgdEwEPh1MAq8jOk+nvA
-         rC/Xe+7Y/9H1Rq2s+pbiZEKeWV9LMW98XHwPHmLi0qvO5R+h5sHZ8EEAuPAntryYK8zi
-         ZdukwjT90ZEPEjXefozJLhO2yw+nrvQ9f4hj42HkKhcCZxEAy6ehSVpq5waENxDHGQfT
-         VCJlif18J6qZYh6OsKlc34uiTqnd1bMSMZ/gQatMkrR5eJI63SlIJmMcp53yUKWfgeQO
-         EqXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVobgvEwewsITYCyDwC0IAlKc5OdnIMLGZ3FLlVtbizqlfVEBoJkKdMEBWXBZm8MhvR+4ld2hFTO55GIBsFfLZZZ1a+yf8OgjLHJjBJmjbPPIgst+tzZAuydI3wIui8evkBCt5t+TJgO9rYlTYjxPOVMAhbDoVkBkMi3P6SmqL/hZEdkQ==
-X-Gm-Message-State: AOJu0YxTlDunzN0mJc0Ps6MOEwjhC4xNyZHYyNkfeMdxP5AG6hjBlzPN
-	+Zl5g9J04eRcYSgoR7EoXJNJfZ6f8W5sMxH6poPfbYVD160249/a
-X-Google-Smtp-Source: AGHT+IGy5cmaBr5ntYugOtnY+Liivf8C7QSQCOSQ75qzG8qIRq2obmka5A5zHOX3y+wIec0VYl0TAg==
-X-Received: by 2002:a05:600c:4451:b0:422:62db:5a02 with SMTP id 5b1f17b1804b1-4248cc586ddmr37382835e9.32.1719233407669;
-        Mon, 24 Jun 2024 05:50:07 -0700 (PDT)
+        bh=LOfPkYxWy6ZUkypcBlYLtOXF3/JTIBRyQPldNQhVo1E=;
+        b=l2QlDWe22o9eCDw1jq3DSXT2r0YKuw0V1Oh2l/gLME75sKTA6LLbvWNYh3Wh548H7c
+         BltSbp2EcQm9SpMpFZcJv9pIO4wb4hgno1OinGnsI7UFbwvcUPhW4VlhHhCUeHFCcrFi
+         nT7+TrgB2Hs9QQ7RW11+Dj9ifxVAYqE1g+uU6o5psvDf4dAsCXw+QwV8LO+hRwk5pGzy
+         xbR6UIGrfbFwZIio6ZRc0uGGgg0ztEcXXEygfE20LqfzRGkqD3Pr2fUbX1PXUpeeyMHK
+         /h07u6OmdrzBUR8/5+JqpEFl0HqdwSJIQjIehOY4qu3nK2SG4iWVnRlRO94bDxnrYPA6
+         /DYg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMimQIsdsVnXzQC/Ll0wMTubJswBmynWFE02ixSsPBNpCjZCaUWdP0vx0FNlknyUZw+wokPvjEFKNF3yssfWPxV+socIL2d2RghKg62pIou4Im900c8uR67XGfbZuy6Fpw+YdHO4QU7z9FdvUcpipLZqipf7vcm3pk8A0fosKQCL4uOA==
+X-Gm-Message-State: AOJu0YwiD0NmFUqBRL8ZoN350Jof0MUiJWOsKQHJSzVjjipkeWVxzk4P
+	Im/RHNb2XyahjFrihLYL4bd64miZtUptMvRD80t73vULrt7KTJ9jpJ8zew==
+X-Google-Smtp-Source: AGHT+IHvUlvMMpqCEaRYN3JwnyLslaAEjgabuVMm5es0bzJddB74tXWAgN4rN/dnc8cC0vnt6mNN+Q==
+X-Received: by 2002:adf:f68c:0:b0:362:23d5:3928 with SMTP id ffacd0b85a97d-366e3293282mr4456753f8f.17.1719233414097;
+        Mon, 24 Jun 2024 05:50:14 -0700 (PDT)
 Received: from spiri.. ([5.14.146.128])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d208b60sm174127905e9.37.2024.06.24.05.50.05
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d208b60sm174127905e9.37.2024.06.24.05.50.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jun 2024 05:50:07 -0700 (PDT)
+        Mon, 24 Jun 2024 05:50:13 -0700 (PDT)
 From: Alisa-Dariana Roman <alisadariana@gmail.com>
 X-Google-Original-From: Alisa-Dariana Roman <alisa.roman@analog.com>
 To: Alisa-Dariana Roman <alisa.roman@analog.com>,
@@ -82,11 +82,10 @@ Cc: Lars-Peter Clausen <lars@metafoo.de>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	David Lechner <dlechner@baylibre.com>
-Subject: [PATCH v6 1/6] iio: adc: ad7192: use devm_regulator_get_enable_read_voltage
-Date: Mon, 24 Jun 2024 15:49:36 +0300
-Message-Id: <20240624124941.113010-2-alisa.roman@analog.com>
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH v6 2/6] dt-bindings: iio: adc: ad7192: Update clock config
+Date: Mon, 24 Jun 2024 15:49:37 +0300
+Message-Id: <20240624124941.113010-3-alisa.roman@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240624124941.113010-1-alisa.roman@analog.com>
 References: <20240624124941.113010-1-alisa.roman@analog.com>
@@ -98,164 +97,75 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: David Lechner <dlechner@baylibre.com>
+There are actually 4 configuration modes of clock source for AD719X
+devices. Either a crystal can be attached externally between MCLK1 and
+MCLK2 pins, or an external CMOS-compatible clock can drive the MCLK2
+pin. The other 2 modes make use of the 4.92MHz internal clock.
 
-This makes use of the new devm_regulator_get_enable_read_voltage()
-function to reduce boilerplate code.
+To configure external clock as either a crystal or a CMOS-compatible
+clock, changing the register settings is necessary. Therefore, add clock
+name xtal alongside mclk. By selecting one or the other, the register is
+configured.
 
-Error messages have changed slightly since there are now fewer places
-where we print an error. The rest of the logic of selecting which
-supply to use as the reference voltage remains the same.
+The presence of an external clock source is optional, not required. When
+both clocks and clock-names properties are present, an external clock
+source is used. If the intention is to use the internal clock, both
+properties should be absent. Modify required properties accordingly.
 
-Also 1000 is replaced by MILLI in a few places for consistency.
-
-Signed-off-by: David Lechner <dlechner@baylibre.com>
 Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
 ---
- drivers/iio/adc/ad7192.c | 103 ++++++++++++++-------------------------
- 1 file changed, 36 insertions(+), 67 deletions(-)
+ .../bindings/iio/adc/adi,ad7192.yaml          | 22 ++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-index c7fb51a90e87..334ab90991d4 100644
---- a/drivers/iio/adc/ad7192.c
-+++ b/drivers/iio/adc/ad7192.c
-@@ -200,8 +200,6 @@ struct ad7192_chip_info {
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+index a03da9489ed9..c3adc32684cf 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7192.yaml
+@@ -39,11 +39,15 @@ properties:
  
- struct ad7192_state {
- 	const struct ad7192_chip_info	*chip_info;
--	struct regulator		*avdd;
--	struct regulator		*vref;
- 	struct clk			*mclk;
- 	u16				int_vref_mv;
- 	u32				aincom_mv;
-@@ -1189,18 +1187,12 @@ static const struct ad7192_chip_info ad7192_chip_info_tbl[] = {
- 	},
- };
+   clocks:
+     maxItems: 1
+-    description: phandle to the master clock (mclk)
++    description:
++      Optionally, either a crystal can be attached externally between MCLK1 and
++      MCLK2 pins, or an external CMOS-compatible clock can drive the MCLK2
++      pin. If absent, internal 4.92MHz clock is used.
  
--static void ad7192_reg_disable(void *reg)
--{
--	regulator_disable(reg);
--}
--
- static int ad7192_probe(struct spi_device *spi)
- {
- 	struct device *dev = &spi->dev;
- 	struct ad7192_state *st;
- 	struct iio_dev *indio_dev;
--	struct regulator *aincom;
--	int ret;
-+	int ret, avdd_mv;
+   clock-names:
+-    items:
+-      - const: mclk
++    enum:
++      - xtal
++      - mclk
  
- 	if (!spi->irq)
- 		return dev_err_probe(dev, -ENODEV, "Failed to get IRQ\n");
-@@ -1218,72 +1210,49 @@ static int ad7192_probe(struct spi_device *spi)
- 	 * Newer firmware should provide a zero volt fixed supply if wired to
- 	 * ground.
- 	 */
--	aincom = devm_regulator_get_optional(dev, "aincom");
--	if (IS_ERR(aincom)) {
--		if (PTR_ERR(aincom) != -ENODEV)
--			return dev_err_probe(dev, PTR_ERR(aincom),
--					     "Failed to get AINCOM supply\n");
--
--		st->aincom_mv = 0;
--	} else {
--		ret = regulator_enable(aincom);
--		if (ret)
--			return dev_err_probe(dev, ret,
--					     "Failed to enable specified AINCOM supply\n");
--
--		ret = devm_add_action_or_reset(dev, ad7192_reg_disable, aincom);
--		if (ret)
--			return ret;
--
--		ret = regulator_get_voltage(aincom);
--		if (ret < 0)
--			return dev_err_probe(dev, ret,
--					     "Device tree error, AINCOM voltage undefined\n");
--		st->aincom_mv = ret / MILLI;
-+	ret = devm_regulator_get_enable_read_voltage(dev, "aincom");
-+	if (ret < 0 && ret != -ENODEV)
-+		return dev_err_probe(dev, ret, "Failed to get AINCOM voltage\n");
-+
-+	st->aincom_mv = ret == -ENODEV ? 0 : ret / MILLI;
-+
-+	/* AVDD can optionally be used as reference voltage */
-+	ret = devm_regulator_get_enable_read_voltage(dev, "avdd");
-+	if (ret == -ENODEV || ret == -EINVAL) {
-+		int ret2;
-+
-+		/*
-+		 * We get -EINVAL if avdd is a supply with unknown voltage. We
-+		 * still need to enable it since it is also a power supply.
-+		 */
-+		ret2 = devm_regulator_get_enable(dev, "avdd");
-+		if (ret2)
-+			return dev_err_probe(dev, ret2,
-+					     "Failed to enable AVDD supply\n");
-+	} else if (ret < 0) {
-+		return dev_err_probe(dev, ret, "Failed to get AVDD voltage\n");
- 	}
+   interrupts:
+     maxItems: 1
+@@ -135,8 +139,6 @@ patternProperties:
+ required:
+   - compatible
+   - reg
+-  - clocks
+-  - clock-names
+   - interrupts
+   - dvdd-supply
+   - avdd-supply
+@@ -157,6 +159,16 @@ allOf:
+     then:
+       patternProperties:
+         "^channel@[0-9a-f]+$": false
++  - if:
++      anyOf:
++        - required:
++            - clocks
++        - required:
++            - clock-names
++    then:
++      required:
++        - clocks
++        - clock-names
  
--	st->avdd = devm_regulator_get(dev, "avdd");
--	if (IS_ERR(st->avdd))
--		return PTR_ERR(st->avdd);
--
--	ret = regulator_enable(st->avdd);
--	if (ret)
--		return dev_err_probe(dev, ret,
--				     "Failed to enable specified AVdd supply\n");
--
--	ret = devm_add_action_or_reset(dev, ad7192_reg_disable, st->avdd);
--	if (ret)
--		return ret;
-+	avdd_mv = ret == -ENODEV || ret == -EINVAL ? 0 : ret / MILLI;
+ unevaluatedProperties: false
  
- 	ret = devm_regulator_get_enable(dev, "dvdd");
- 	if (ret)
- 		return dev_err_probe(dev, ret, "Failed to enable specified DVdd supply\n");
- 
--	st->vref = devm_regulator_get_optional(dev, "vref");
--	if (IS_ERR(st->vref)) {
--		if (PTR_ERR(st->vref) != -ENODEV)
--			return PTR_ERR(st->vref);
--
--		ret = regulator_get_voltage(st->avdd);
--		if (ret < 0)
--			return dev_err_probe(dev, ret,
--					     "Device tree error, AVdd voltage undefined\n");
--	} else {
--		ret = regulator_enable(st->vref);
--		if (ret)
--			return dev_err_probe(dev, ret,
--					     "Failed to enable specified Vref supply\n");
--
--		ret = devm_add_action_or_reset(dev, ad7192_reg_disable, st->vref);
--		if (ret)
--			return ret;
--
--		ret = regulator_get_voltage(st->vref);
--		if (ret < 0)
--			return dev_err_probe(dev, ret,
--					     "Device tree error, Vref voltage undefined\n");
-+	/*
-+	 * This is either REFIN1 or REFIN2 depending on adi,refin2-pins-enable.
-+	 * If this supply is not present, fall back to AVDD as reference.
-+	 */
-+	ret = devm_regulator_get_enable_read_voltage(dev, "vref");
-+	if (ret == -ENODEV) {
-+		if (avdd_mv == 0)
-+			return dev_err_probe(dev, -ENODEV,
-+					     "No reference voltage available\n");
-+	} else if (ret < 0) {
-+		return ret;
- 	}
--	st->int_vref_mv = ret / 1000;
-+
-+	st->int_vref_mv = ret == -ENODEV ? avdd_mv : ret / MILLI;
- 
- 	st->chip_info = spi_get_device_match_data(spi);
- 	indio_dev->name = st->chip_info->name;
 -- 
 2.34.1
 

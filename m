@@ -1,155 +1,177 @@
-Return-Path: <linux-iio+bounces-6843-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6844-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C07C191575C
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 21:44:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4886191578B
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 22:05:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C7521F22D15
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 19:44:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 695CD1C20EB8
+	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 20:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741BA1A01D5;
-	Mon, 24 Jun 2024 19:44:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFA21A00F7;
+	Mon, 24 Jun 2024 20:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dhq4pMun"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D2NqJVsV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259A61A01C8;
-	Mon, 24 Jun 2024 19:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 366FA19E7F8;
+	Mon, 24 Jun 2024 20:05:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719258272; cv=none; b=iz5zf5oZSd30c6xH7KKt5PspmAuKXckeBqjTWWoux6t0qS3sirmpLZOleDPeKkcAyK7pPIkNcOJ1yp8qeklGomBAIquyjgi15l1jRhkEeQ7W3PKrWVvS5/Ax9VhfIKfrIXSUf28PcA1I+FAhMFbKa7nXh9tX5FeX47cZQkBvdZ4=
+	t=1719259540; cv=none; b=rzahD2RZ7hlSnNmtlJQhdoPaLtxkDNEeWUsoVCwrqhxCTvbDrlkZTaUGgk4PBHgAB3ibrtJ5K4Zk9WzY9PH6nmOxgw1kM24fm+nWKSUDNaja8/dLIpXMUdFFAoruu/0IchZF+MvZZagVheN9J099Mxramsf3jPfufI2lFrRskwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719258272; c=relaxed/simple;
-	bh=ozzJdGQZHB4A7ItrRhmGCRi2pZDVDoEwFIhTP08/eiI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r6EI58KfnNpBaF3U72poANkwkRnMfX9YIMYMzBke1U/Z9d41pLs0nTqUR52YQ3Thf8jbXGDNGsTY0L2TZOVBb4JUTeMxmWuoi+J12URBQgA0a5K+xqlxCgBxjoKKrpWI9iyNP2PpPr4KlNZAwpV2/zzBtncr2aOmHyR+EGeCCzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dhq4pMun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE719C2BBFC;
-	Mon, 24 Jun 2024 19:44:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719258271;
-	bh=ozzJdGQZHB4A7ItrRhmGCRi2pZDVDoEwFIhTP08/eiI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dhq4pMunpONhJ4X+mjkZwybn49k8f6R9eY3l6z0ar/Dg+svA1fTV8vb9Qwzy1QsbL
-	 rdmW5nRMvrFjPo2Zod/6M1WzHb0fcsUjqvZaU7qo8iur+WqM9K19Teyg+jHxpsbXa4
-	 y7D6qxVxtLdsCWkMXRwA0GHvZiupBQwU4RBWp2imjYf9DC8qC64UO2nIOtWO3CRkwP
-	 Mm2qjY73W0lEyfSE84wKW8kdoBgS343dKTz7FZSYno3MaciTn+E5+AMRXRViVj3UYv
-	 JFBPBdJxRpKXZD/AWAsK4WhR1X+PiZz2xA6YMkgEmyOtV9ueEjHx/9VgaiHMnpsGXX
-	 Qu31Y9zt9MHOA==
-Date: Mon, 24 Jun 2024 20:44:24 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Mark Brown <broonie@kernel.org>, Michael Hennerich
- <michael.hennerich@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Marcelo Schmitt <marcelo.schmitt@analog.com>, Jonathan Corbet
- <corbet@lwn.net>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH 2/3] spi: add devm_spi_optimize_message() helper
-Message-ID: <20240624204424.6a91a5e4@jic23-huawei>
-In-Reply-To: <20240621-devm_spi_optimize_message-v1-2-3f9dcba6e95e@baylibre.com>
-References: <20240621-devm_spi_optimize_message-v1-0-3f9dcba6e95e@baylibre.com>
-	<20240621-devm_spi_optimize_message-v1-2-3f9dcba6e95e@baylibre.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1719259540; c=relaxed/simple;
+	bh=N1Vlrk3mnh1mJEtCrRuvn/jo5HxD3wKwkfdpi3Ma9pQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jG+pLgoEl+yY/iC71XtLpoFwrNHDXr/r9yzPlkAjcJ4wtyIBFpAtsRa7Vby+NflRK8yw48e2b7HR0c1kQXQ7R156E+ithQD51lfZnTElez4o2cAgQOP3zYhM/TviMTvqWmPsqM0GFmhwL6bgAULoPxmznz2LLwjq4Su10GCPMuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D2NqJVsV; arc=none smtp.client-ip=209.85.215.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-70b2421471aso3330637a12.0;
+        Mon, 24 Jun 2024 13:05:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719259538; x=1719864338; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=nwgTn6bXgujACIEx1Xs09av+Z52LVqFmWoBJ01Ymr7k=;
+        b=D2NqJVsVv50W7qI+UAsplE+pkmCPqCyJ9u98FbLqCTpECYoOSynpWlqNGn9/PJCf6e
+         7tGbephvpnnaCRPtuislvVL06CFyw0O9otcM2kxJB+TRUUjUjALKoHBVMlEV0BIteMCC
+         ULwlNYhJb/ZDJNMT+npd6gvrqVG+ebXY0hoG2v3BTuPXQ/4+I1T6km9G2E8720XfZ75b
+         RSsEacQFL0GVNTLCOij2/Yfxxn/4lr2PO45kNJ11fpT94p72DB5cDxgGXm1UR8l+83MC
+         KetiEbE7yupO5yx31Jwl2WUtCLCdODWpRnZ2VLvo7LyaUEXABLLgw2qrIMDIXVUjfzRY
+         4Qqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719259538; x=1719864338;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nwgTn6bXgujACIEx1Xs09av+Z52LVqFmWoBJ01Ymr7k=;
+        b=l5+pUUPCnJYpjCYyw+ESJJhKjiqDKgfraBBNHXVVOk+E2Hn7yvjFg93yfFYHLOcH5M
+         vCtcCMIqU+Qv39+SXZYSfME1mZ2wd0J+f64zR7obviytbLONxsX/zhMz8JTTMXnpPcmB
+         ZLau9FxA2eGKb6Dbg7QnMWEkPri3ydosisoaQNJ7JW0L8ru7LQXobsYIl+V35ozMV/ys
+         UoTAJKFnwg0iZ9ABOSLb8FVGHGhasMMJDJ5jQggutO/o08SUJH4YNxH9vM2xxX5lZUJd
+         CXXEU0CVUI48yVh3WV7CVxwDb8mORqvoJushRXDum9xoAFuB4N93VE65WABm8GS/mNKE
+         mAAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUCKat8GeH+3f2jNJvaV8vUaOByN5fx0WnlDC1YpWxDdryI3LGNa5pYf7BDwSmDFhTDYR2ZE67tJ2yoDR1OvUQ1egNM+Oadjn5+PMIBaJCsOxJ0gmV9wORSWMhJPv1c9v3088WWfps=
+X-Gm-Message-State: AOJu0YzE9R1h+XC5EdctsoqGXCdj94un8s5+Z9LauBoLsbtaWGKJehA6
+	ymh7I6RQASP0iG/1IVhOFLz1ogAmN9nYKwZksbaUKEEaXnXdjpka
+X-Google-Smtp-Source: AGHT+IG52lMviWOfBi/8g86U82c+TCR1BOMXXE2Kh4QFdVG20V50dp/PEbET3hpdDIwaxmTzCqOk7g==
+X-Received: by 2002:a17:90b:1b0a:b0:2c8:85c:750b with SMTP id 98e67ed59e1d1-2c86146c84fmr4726058a91.34.1719259538050;
+        Mon, 24 Jun 2024 13:05:38 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c7e649f5b7sm9114446a91.47.2024.06.24.13.05.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jun 2024 13:05:37 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <11e054b6-a116-417b-9112-f32a8bc6b121@roeck-us.net>
+Date: Mon, 24 Jun 2024 13:05:35 -0700
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] hwmon: iio: Add labels from IIO channels
+To: Sean Anderson <sean.anderson@linux.dev>,
+ Jonathan Cameron <jic23@kernel.org>, Jean Delvare <jdelvare@suse.com>,
+ linux-iio@vger.kernel.org, linux-hwmon@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>
+References: <20240624174601.1527244-1-sean.anderson@linux.dev>
+ <20240624174601.1527244-3-sean.anderson@linux.dev>
+ <ff43e01e-5a26-4b75-bfaa-ed3ad4395e7c@roeck-us.net>
+ <63046df2-e1fb-442b-a55f-2a9847c6c59e@linux.dev>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <63046df2-e1fb-442b-a55f-2a9847c6c59e@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Fri, 21 Jun 2024 15:51:31 -0500
-David Lechner <dlechner@baylibre.com> wrote:
-
-> This adds a new helper function devm_spi_optimize_message() that
-> automatically registers spi_unoptimize_message() to be called
-> when the device is removed.
+On 6/24/24 12:34, Sean Anderson wrote:
+> On 6/24/24 14:47, Guenter Roeck wrote:
+>> On 6/24/24 10:46, Sean Anderson wrote:
+>>> Add labels from IIO channels to our channels. This allows userspace to
+>>> display more meaningful names instead of "in0" or "temp5".
+>>>
+>>> Although lm-sensors gracefully handles errors when reading channel
+>>> labels, the ABI says the label attribute
+>>>
+>>>> Should only be created if the driver has hints about what this voltage
+>>>> channel is being used for, and user-space doesn't.
+>>>
+>>> Therefore, we test to see if the channel has a label before
+>>> creating the attribute.
+>>>
+>>
+>> FWIW, complaining about an ABI really does not belong into a commit
+>> message. Maybe you and lm-sensors don't care about error returns when
+>> reading a label, but there are other userspace applications which may
+>> expect drivers to follow the ABI. Last time I checked, the basic rule
+>> was still "Don't break userspace", and that doesn't mean "it's ok to
+>> violate / break an ABI as long as no one notices".
 > 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-The new function can be called from modules and doesn't have an
-EXPORT_SYMBOL_GPL()
-
-I failed to spot this but a build test immediately noticed!
-
-Jonathan
-
-> ---
->  Documentation/driver-api/driver-model/devres.rst |  1 +
->  drivers/spi/spi.c                                | 27 ++++++++++++++++++++++++
->  include/linux/spi/spi.h                          |  2 ++
->  3 files changed, 30 insertions(+)
+> This isn't complaining about the ABI, just documenting the reason it was
+> done this way...
 > 
-> diff --git a/Documentation/driver-api/driver-model/devres.rst b/Documentation/driver-api/driver-model/devres.rst
-> index a1c17bcae68d..ac9ee7441887 100644
-> --- a/Documentation/driver-api/driver-model/devres.rst
-> +++ b/Documentation/driver-api/driver-model/devres.rst
-> @@ -464,6 +464,7 @@ SLAVE DMA ENGINE
->  SPI
->    devm_spi_alloc_master()
->    devm_spi_alloc_slave()
-> +  devm_spi_optimize_message()
->    devm_spi_register_controller()
->    devm_spi_register_host()
->    devm_spi_register_target()
-> diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-> index 54cbe652a4df..3f953504244b 100644
-> --- a/drivers/spi/spi.c
-> +++ b/drivers/spi/spi.c
-> @@ -4358,6 +4358,33 @@ static int __spi_async(struct spi_device *spi, struct spi_message *message)
->  	return ctlr->transfer(spi, message);
->  }
->  
-> +static void devm_spi_unoptimize_message(void *msg)
-> +{
-> +	spi_unoptimize_message(msg);
-> +}
-> +
-> +/**
-> + * devm_spi_optimize_message - managed version of spi_optimize_message()
-> + * @dev: the device that manages @msg (usually @spi->dev)
-> + * @spi: the device that will be used for the message
-> + * @msg: the message to optimize
-> + * Return: zero on success, else a negative error code
-> + *
-> + * spi_unoptimize_message() will automatically be called when the device is
-> + * removed.
-> + */
-> +int devm_spi_optimize_message(struct device *dev, struct spi_device *spi,
-> +			      struct spi_message *msg)
-> +{
-> +	int ret;
-> +
-> +	ret = spi_optimize_message(spi, msg);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return devm_add_action_or_reset(dev, devm_spi_unoptimize_message, msg);
-> +}
-Missing an export.
 
-> +
->  /**
->   * spi_async - asynchronous SPI transfer
->   * @spi: device with which data will be exchanged
-> diff --git a/include/linux/spi/spi.h b/include/linux/spi/spi.h
-> index 85785bcd20c1..a9388714e7e7 100644
-> --- a/include/linux/spi/spi.h
-> +++ b/include/linux/spi/spi.h
-> @@ -1272,6 +1272,8 @@ static inline void spi_message_free(struct spi_message *m)
->  
->  extern int spi_optimize_message(struct spi_device *spi, struct spi_message *msg);
->  extern void spi_unoptimize_message(struct spi_message *msg);
-> +extern int devm_spi_optimize_message(struct device *dev, struct spi_device *spi,
-> +				     struct spi_message *msg);
->  
->  extern int spi_setup(struct spi_device *spi);
->  extern int spi_async(struct spi_device *spi, struct spi_message *message);
-> 
+That a patch is implemented to follow its ABI is not worth mentioning
+in the commit message. You _do_ mention it, and added "Although lm-sensors
+gracefully ... ". So, from my perspective it is complaining about the ABI,
+unless you think that pretty much all patches should include "this is done
+to comply with the ABI, even though <some userspace application> is fine
+with violating it".
+
+Never mind though, I gave it my Acked-by:, and consider the issue closed.
+
+Guenter
 
 

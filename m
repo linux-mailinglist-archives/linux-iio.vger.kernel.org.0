@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-6880-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6881-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5CD9161DE
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 11:06:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2271F916216
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 11:13:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B721FB2314C
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 09:06:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55A9D1C20A55
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 09:13:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D0F148FFB;
-	Tue, 25 Jun 2024 09:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7A7149015;
+	Tue, 25 Jun 2024 09:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iKzXMMww"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z/eJZurw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A632146587;
-	Tue, 25 Jun 2024 09:06:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9435E6E614;
+	Tue, 25 Jun 2024 09:13:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719306371; cv=none; b=pJgqRkBvalf1JBrPHzLX75MDUzc7qy4mk8xVXKjoB9iSLWYr0hTWHHmfO5Sm7arcUpFB/reQfh9HDjv/MwO29FwKQ0536zlFhLtTRttjGiCF9VR//fm/pnK4t6z4A5xrq2GuVqkb1zG+X2fg5g/eIOnx5U2zjgGbUa4Q1NeiCUI=
+	t=1719306811; cv=none; b=XZ16nVWEIcWpO+I5dXOAu5a1Eflz0U5bJAOiBojDrIUyxxI/nPPWNff11hFf0RVMyqvnMWVY1VWeRAdVZ+Ky5KpBMswZgACPKEYOE+Rhs2wGVjt3/ZV11BTTGKr21HIfxB0lig75OxpYow6THUcXCCkHqq+Vdm39hPVBC07N7vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719306371; c=relaxed/simple;
-	bh=Knfy7pk5oCoyG732I22F7r6g+Du9zIivLnWi+ONxeQg=;
+	s=arc-20240116; t=1719306811; c=relaxed/simple;
+	bh=sSCx3bNKipo0mbi+oLydQMGkdIjUEPEFksKnqSclEts=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uCPIBZsHUR259vPA2WpCYfSE+2FjqyEYKWXHyaEffa454hoRwl+fNtr5i8R3zA9oDeUqEX+ZQFt6tEcN1NCRDzKwWzcItvdRCc+b97FTWizJYUz4Uy4qC4pK7gYgaAY5K19H4QsnFQ3YUD4tEKxLfQVMRsQa/1sA9vDBZo6T+9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iKzXMMww; arc=none smtp.client-ip=209.85.216.42
+	 In-Reply-To:Content-Type; b=QXgclSbKWyo5XMN0HhPXRtRUc/6eCgHtCDtzmUG3ma3TA7fowIUht3xVRojQqDuemAAznHoYqQw/h9y69YySOzq9QnDNAJUD66VyYUsbU041IxznJXC3mIFPnCx+H3XPwTQZcxhtiKMwCtpqiF/aqKkfmdosgg//81DelBfNr54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z/eJZurw; arc=none smtp.client-ip=209.85.210.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2c825f0b381so2766269a91.1;
-        Tue, 25 Jun 2024 02:06:10 -0700 (PDT)
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-70673c32118so1756463b3a.3;
+        Tue, 25 Jun 2024 02:13:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719306369; x=1719911169; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719306809; x=1719911609; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=8iJpu43SeKgD/NY+VN2xJJpKQ81U6RpzTSBbiliY1DE=;
-        b=iKzXMMww3N61C40BqBWh8JQnzpRu8i0iXu2XOfqIdYdvo/osjjr3PI55trfo0z8bn9
-         Lcj0UkbKlhPCFE8iR/Ygo9DjKJwDehzAFzIQwmsFS+D8Q9BBMhPGsbAcwxS2vJSXpeXU
-         8x0QlcjAD0NKkcPujgO3FnG1AtVuZxy9kWj7BWjxs/4HmWkJBf9JUxMvEI+lNY+s701l
-         XMSRqb3AAlifBSyqmuK13rd1Nj2PmwhKUDCo0XhCl6uzwk0iu77KHcY7083fAXvgM+0b
-         qeN3Aq9zTFjQk3ZcjpOxUlp+tbmfaYrQ8QZiHmwsPHMvyktixZBCNtHX5ZowhuUGXfL2
-         1wng==
+        bh=HFUXIztaKwSfVhHDSApIXy3uEVPrRp1fUvtZ/DNoNy8=;
+        b=Z/eJZurwydFakVyGGH8aiEFmV3RyLHnoopoCECXqvHSqxMLso865oJI+4Bg7ZUl0tV
+         6HeP4eL+SAYG/KqaQUx4Li1v4YjJUO6ImTUL1+U0TUHEbWSSAX+T2WxyX8hOsOkofJSo
+         ghrJR6/oQ5hV52DBnZdOujN1Rdh9PV0FYbk7oP7hnjxAlnoGOeHa1liLcrCOMGxviaJv
+         Mm6FRXfMkvwVTl5gmW2UbGKmdpPv7+15LjT7t8AZVdgs+dUSZWhTIca4D6A2SiLdwQSR
+         Nxvyn8xIZUzm3sprBpciLyL/l3tuXh/DyoNxEOhH8OcVsgM274EYW7aG1eFA5I1NmwT/
+         +wbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719306369; x=1719911169;
+        d=1e100.net; s=20230601; t=1719306809; x=1719911609;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8iJpu43SeKgD/NY+VN2xJJpKQ81U6RpzTSBbiliY1DE=;
-        b=hqMQMgshFcOWfo0ZRVRmqfog9eMM5gKWHNs1BowUNBjtCLYr6YHTCJj8NWztVjLZdo
-         KlF8/pg4ftGP+8um10c+EoDkVW8bBmeM5xLk7qUfB7c+lBtEUmnh57WG5bENN41RF1Aj
-         42y5Et39ScpARdM/HbUZWrluHAx9OPqp/UKzu08r3rvmaLCu834xcrVqT0ge9XcYb6uX
-         OQ6eqzTf1u5G6uNCjBxYs3i5waxq2fzS/H0FHWiny6qALcEpH/6Qr+ADPFYb+iTDgImX
-         fz+rjdvxgizCkx9P089B8Sa6esM2dw6pgPvZwXsfFxBU/AqQorkoxEAtB+ar+oz+OqLT
-         +GSg==
-X-Forwarded-Encrypted: i=1; AJvYcCUqtgo87dhXdh2El+84h1JDMwRZeXMp4offYREZImTRl9jzlUs+XLcjShRMHMQJkjAkC/phLHIPndJ7uC5P03fMSdaOrCNMPwGtzqFyMyaZK3D0YS5YQfwNNnh/kv/8k637xGJbmmTj
-X-Gm-Message-State: AOJu0YxfBxcuyG/iPW9Q40tbXnXW2JYZXvR4tpdFUz6zCQq0ElfsZdZ1
-	GodpZOUnTBoKHT4KNTgZvsoayizbllCNknnYCLwO9lpC9PNb+o7NHxUqUefRe4gQ5ptMNP8=
-X-Google-Smtp-Source: AGHT+IG+BfpVKq98hBn15FXBDPyS9ohXVtM3GJzdP15+BiWM1MXbjiQzR08Usoj/c860KnLf3bDtQA==
-X-Received: by 2002:a17:90b:2345:b0:2c2:d6cf:f4d2 with SMTP id 98e67ed59e1d1-2c85051a295mr6338859a91.26.1719306369475;
-        Tue, 25 Jun 2024 02:06:09 -0700 (PDT)
+        bh=HFUXIztaKwSfVhHDSApIXy3uEVPrRp1fUvtZ/DNoNy8=;
+        b=KU7Jy6t3ejjjA9HeIgIDYbfRn78UF5tfU9iHDFEPgyyMrpgovQJ52mA9EnZyMipYIP
+         7fPhHO4VLD48D+I/dV7UlnZkojEQjbiCoAYyBiXsBAb5amDN5grMpZIFgSl1027VT2he
+         gCzPEFOv8KhLor+N33P1jAAZLjw6+tornGKstqd+b8ADuJECJfSDmkTll26ZGuQUi7gv
+         Yb2ENxdQI1J1CL6JR6xX55Ers1Ko4fDcEflh2l+d3iVPR7agJ1DWcgCG+e/ya4N4VmpZ
+         HUUQShUGp8e5QT+QZscc0FCREXpBvV5lHKsLT0RrQbllz6sVx3lPx8WdG2lUOYutRzmW
+         20Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCVkz/MfvRWiMwYB2P6Dh9gOrvqXiQZY9rlJQbeJKiEti5zZHazXc3kpzctgVPOwdqaYA/d5bVpnmDWka8h2xLEDyofTQ9oHN3Io9l3K1hQtQMdUKmH8il+pRyvsZBIWLDxznGoP2VDXBC+aCSEtMtEbWk6aeIZ2is/2V5dPZaGZcRss1w==
+X-Gm-Message-State: AOJu0YwF2y99OHKgdb+BcgjtxhI1FFLIr9aDpNTOWpp0LNwpI+U0oy9c
+	6S3L45eHErgRpWdWsRGy1EKjQIch/+gCu9plMDDkb3c4kj9/sfHO
+X-Google-Smtp-Source: AGHT+IEW2CMNNaxZzpBQxPistTmZF+GN357r3PKCXrGvTrg3JJQAx/VN6wXy8UXEnBLZTTKmGAspOw==
+X-Received: by 2002:a05:6a21:191:b0:1af:f8bd:1e4e with SMTP id adf61e73a8af0-1bcf7ff95e0mr6700645637.62.1719306808726;
+        Tue, 25 Jun 2024 02:13:28 -0700 (PDT)
 Received: from [100.90.230.39] ([45.32.86.188])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c819a7a557sm8289100a91.15.2024.06.25.02.06.02
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7065698b90bsm7187139b3a.111.2024.06.25.02.13.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jun 2024 02:06:08 -0700 (PDT)
-Message-ID: <b704f7a4-7eca-4b49-b96e-8414b52190b1@gmail.com>
-Date: Tue, 25 Jun 2024 17:05:58 +0800
+        Tue, 25 Jun 2024 02:13:22 -0700 (PDT)
+Message-ID: <b9412b5e-069e-49cc-8a4e-b33babceb5e3@gmail.com>
+Date: Tue, 25 Jun 2024 17:13:13 +0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,125 +77,70 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v7 2/3] dt-bindings: iio: proximity: Add TYHX HX9023S
-To: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Conor Dooley <conor@kernel.org>,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Conor Dooley <conor@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, yasin.lee.x@outlook.com,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
+ Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org,
+ linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>
 References: <20240625-add-tyhx-hx9023s-sensor-driver-v7-0-b1d65b221811@gmail.com>
  <20240625-add-tyhx-hx9023s-sensor-driver-v7-2-b1d65b221811@gmail.com>
- <d77a4777-d282-4004-895a-7809abf68130@kernel.org>
+ <171928733216.1434276.10145662447261263501.robh@kernel.org>
 Content-Language: en-US
 From: Yasin Lee <yasin.lee.x@gmail.com>
-In-Reply-To: <d77a4777-d282-4004-895a-7809abf68130@kernel.org>
+In-Reply-To: <171928733216.1434276.10145662447261263501.robh@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
-On 2024/6/25 13:48, Krzysztof Kozlowski wrote:
-> On 25/06/2024 04:15, Yasin Lee wrote:
+On 2024/6/25 11:48, Rob Herring (Arm) wrote:
+> On Tue, 25 Jun 2024 10:15:11 +0800, Yasin Lee wrote:
 >> A capacitive proximity sensor
 >>
 >> Acked-by: Conor Dooley <conor@kernel.org>
 >> Acked-by: Jonathan Cameron <jic23@kernel.org>
 >> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> What? How did this happen? Where - provide lore links to prove it?
->
-> NAK
->
-
-My mistake.  I will remove all of them.
-
-
 >> Reported-by： "Rob Herring (Arm)" <robh@kernel.org>
-> No, drop.
-
-
-Got it.
-
-
->
 >> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
+>> ---
+>>   .../bindings/iio/proximity/tyhx,hx9023s.yaml       | 107 +++++++++++++++++++++
+>>   1 file changed, 107 insertions(+)
+>>
+> My bot found errors running 'make dt_binding_check' on your patch:
 >
->> +
->> +patternProperties:
->> +  "^channel@[0-4]$":
->> +    $ref: /schemas/iio/adc/adc.yaml
->> +    type: object
->> +
->> +    properties:
->> +      reg:
->> +        minimum: 0
->> +        maximum: 4
->> +        description: The channel number.
->> +
->> +      single-channel: true
->> +
->> +      diff-channels: true
->> +
->> +    oneOf:
->> +      - required:
->> +          - single-channel
->> +      - required:
->> +          - diff-channels
->> +
->> +    required:
->> +      - reg
-> ... and now you should see that you duplicated adc.yaml. This should be
-> just:
+> yamllint warnings/errors:
 >
-> +patternProperties:
-> +  "^channel@[0-4]$":
-> +    $ref: /schemas/iio/adc/adc.yaml
-> +    type: object
-> +    unevaluatedProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        minimum: 0
-> +        maximum: 4
-> +        description: The channel number.
+> dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/proximity/tyhx,hx9023s.yaml: single-channel: missing type definition
 >
+> doc reference errors (make refcheckdocs):
 >
+> See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240625-add-tyhx-hx9023s-sensor-driver-v7-2-b1d65b221811@gmail.com
 >
-> Best regards,
-> Krzysztof
+> The base for the series is generally the latest rc1. A different dependency
+> should be noted in *this* patch.
+>
+> If you already ran 'make dt_binding_check' and didn't see the above
+> error(s), then make sure 'yamllint' is installed and dt-schema is up to
+> date:
+>
+> pip3 install dtschema --upgrade
+>
+> Please check and re-submit after running the above command yourself. Note
+> that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+> your schema. However, it must be unset to test all examples with your schema.
 
-
-Hi Krzysztof,
+Hi Conor,
 
 Thanks for your reply.
 
-I have done the verification. "single-channel: true"and "diff-channels: 
-true" are necessary. Removing them will cause dt_binding_check to report 
-an error. Only oneOf can be removed. The de-duplicated code is as follows:
-
-patternProperties:
-   "^channel@[0-4]$":
-     $ref: /schemas/iio/adc/adc.yaml
-     type: object
-     unevaluatedProperties: false
-
-     properties:
-       reg:
-         minimum: 0
-         maximum: 4
-         description: The channel number.
-
-       single-channel: true
-
-       diff-channels: true
-
-     required:
-       - reg
-
-     additionalProperties: false
-
+The testing for this version needs to be based on the linux-next branch 
+because the referenced `single-channel` only exists in linux-next.
 
 Best regards,
 
 Yasin
+
 
 

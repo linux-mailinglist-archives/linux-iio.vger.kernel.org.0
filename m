@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-6879-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6880-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A86A4916175
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 10:38:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5CD9161DE
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 11:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03353B24450
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 08:37:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B721FB2314C
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 09:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3591487F7;
-	Tue, 25 Jun 2024 08:37:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D0F148FFB;
+	Tue, 25 Jun 2024 09:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nEjjU/Ft"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iKzXMMww"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 194D218E1F;
-	Tue, 25 Jun 2024 08:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A632146587;
+	Tue, 25 Jun 2024 09:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719304674; cv=none; b=ib6KLIPgO16a2Id5uAa8UIf/ypiyBVwG1ZVZHpiX3BMuYZ1TKUDF/RGIVFRjuxTW+eaCUliLiNLC6QCCjgq0fChHHZJj2//5L2EUTOLcdGXExto/6NFiaaspu14gKLg7lKZRx0lHuqKkawy/Lvpv3OVtwckgpwqvgQtq96ueCkc=
+	t=1719306371; cv=none; b=pJgqRkBvalf1JBrPHzLX75MDUzc7qy4mk8xVXKjoB9iSLWYr0hTWHHmfO5Sm7arcUpFB/reQfh9HDjv/MwO29FwKQ0536zlFhLtTRttjGiCF9VR//fm/pnK4t6z4A5xrq2GuVqkb1zG+X2fg5g/eIOnx5U2zjgGbUa4Q1NeiCUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719304674; c=relaxed/simple;
-	bh=aqe5UuDktWE8cVCx+ZXLizURsrkeHlz4k8KCFjKPz8A=;
+	s=arc-20240116; t=1719306371; c=relaxed/simple;
+	bh=Knfy7pk5oCoyG732I22F7r6g+Du9zIivLnWi+ONxeQg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DdpuXzE4nGG7FHcEGeFKPH9cAXlP8rVJX47vW6K1R8snuEDmoChELgK4A+1kxkv8wmQ/igSVL9ZRzXCjAkrSwrOVU5VxlRDp8prJ9KlU3EkDFad00Y+X+VG0PPSWOsJuvwcVmPTC2UIkxguLAlmbmtnTCg546gtf19RlT49z2yA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nEjjU/Ft; arc=none smtp.client-ip=209.85.210.181
+	 In-Reply-To:Content-Type; b=uCPIBZsHUR259vPA2WpCYfSE+2FjqyEYKWXHyaEffa454hoRwl+fNtr5i8R3zA9oDeUqEX+ZQFt6tEcN1NCRDzKwWzcItvdRCc+b97FTWizJYUz4Uy4qC4pK7gYgaAY5K19H4QsnFQ3YUD4tEKxLfQVMRsQa/1sA9vDBZo6T+9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iKzXMMww; arc=none smtp.client-ip=209.85.216.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-70685ab8fb1so1489325b3a.2;
-        Tue, 25 Jun 2024 01:37:52 -0700 (PDT)
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2c825f0b381so2766269a91.1;
+        Tue, 25 Jun 2024 02:06:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719304672; x=1719909472; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719306369; x=1719911169; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=aqe5UuDktWE8cVCx+ZXLizURsrkeHlz4k8KCFjKPz8A=;
-        b=nEjjU/FttUqMt6fB9CBAPqHQAUsMbsDPhcB//COadLr7fY2hpagaZcN/feDIcyw2yy
-         s/0WAAMYUBO5qcZcb18n/Zaf54G96qJXiqVQoy5go/wM1kmrqwQehBCMMMstSRJFO/VS
-         3zgyIgW88TXLijoQZywoBBd0Cmu98jUkjCavQ9pqAZ5aLY46tAmvAUd3ZQ0TYozWrFAW
-         s5Mgz+6wiE4iclQVOniWiykaMqBTEVBT5yCnos1sRCdrRNMYnBV2+K13CeKsAkIyM1nz
-         l8xx6PwDdyRb0p48DF9inykfZY33tkiYYWkdzzHKYJT4Ho1fYFuKOCZG1irz6A2Ei/1e
-         NZkg==
+        bh=8iJpu43SeKgD/NY+VN2xJJpKQ81U6RpzTSBbiliY1DE=;
+        b=iKzXMMww3N61C40BqBWh8JQnzpRu8i0iXu2XOfqIdYdvo/osjjr3PI55trfo0z8bn9
+         Lcj0UkbKlhPCFE8iR/Ygo9DjKJwDehzAFzIQwmsFS+D8Q9BBMhPGsbAcwxS2vJSXpeXU
+         8x0QlcjAD0NKkcPujgO3FnG1AtVuZxy9kWj7BWjxs/4HmWkJBf9JUxMvEI+lNY+s701l
+         XMSRqb3AAlifBSyqmuK13rd1Nj2PmwhKUDCo0XhCl6uzwk0iu77KHcY7083fAXvgM+0b
+         qeN3Aq9zTFjQk3ZcjpOxUlp+tbmfaYrQ8QZiHmwsPHMvyktixZBCNtHX5ZowhuUGXfL2
+         1wng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719304672; x=1719909472;
+        d=1e100.net; s=20230601; t=1719306369; x=1719911169;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=aqe5UuDktWE8cVCx+ZXLizURsrkeHlz4k8KCFjKPz8A=;
-        b=fEcD1Wvf7kU5wkz4zj3aQys8s8w+55z0jnWUoXieTXEnOTDL2/0YmFyqTZrrOGLwAm
-         URSVPn9fg4NxpT3KeJKB6eaFS64FP/2kkYB85vfot21AG/6E63q7BXYG5pvwNKcsQTRq
-         RqXVVRHdYClslGIvRzTtrZWr+sAiLoy+27B/CdvKzpLxm62tvRaBSFNd7lPHUI/IW579
-         1NKZ7JOL3PulFivTaXWneeg3TYEd1rre2OftEiczBvj5eTVjNdgpYgkxWnhsC7gIxAt6
-         oNUJEPYmJUi5O8k4UyxQyim90bt2cX85XMCYoZkBdpdeZo/S3qn3JwnTS0pwYND9VUqP
-         X5Dw==
-X-Forwarded-Encrypted: i=1; AJvYcCVGkJsIWyoLzEaBiRHAJ1FmADOFcdfhxPUWPDXRClTJmzQ/YSdxiuCQShkaOIhqb7BKqKsKd82xepeNITyQiR5iAvvd2fngzDSXoD9Gyr6FEF7SMJot2xiNY0YPfRHZW2elGX1P1O4c
-X-Gm-Message-State: AOJu0YwGyWMVwutBvEU9D1NIWc7LEI1G+R8g/zatGhilfxsr0G/INGCD
-	17CdlYNzJv0gurxzKRJBD5H6VrBOooqXAG+q3lM8R3tniFebLC1S
-X-Google-Smtp-Source: AGHT+IHxK34+4RmFCf0yNPduRafMt1Gs10g9dDrYbCiVjpbNUZTalur5wjXKnJdnV2n+p+pu+B+Axg==
-X-Received: by 2002:a05:6a00:2f0a:b0:706:5b64:f1fb with SMTP id d2e1a72fcca58-706745d43b4mr6433396b3a.17.1719304672349;
-        Tue, 25 Jun 2024 01:37:52 -0700 (PDT)
+        bh=8iJpu43SeKgD/NY+VN2xJJpKQ81U6RpzTSBbiliY1DE=;
+        b=hqMQMgshFcOWfo0ZRVRmqfog9eMM5gKWHNs1BowUNBjtCLYr6YHTCJj8NWztVjLZdo
+         KlF8/pg4ftGP+8um10c+EoDkVW8bBmeM5xLk7qUfB7c+lBtEUmnh57WG5bENN41RF1Aj
+         42y5Et39ScpARdM/HbUZWrluHAx9OPqp/UKzu08r3rvmaLCu834xcrVqT0ge9XcYb6uX
+         OQ6eqzTf1u5G6uNCjBxYs3i5waxq2fzS/H0FHWiny6qALcEpH/6Qr+ADPFYb+iTDgImX
+         fz+rjdvxgizCkx9P089B8Sa6esM2dw6pgPvZwXsfFxBU/AqQorkoxEAtB+ar+oz+OqLT
+         +GSg==
+X-Forwarded-Encrypted: i=1; AJvYcCUqtgo87dhXdh2El+84h1JDMwRZeXMp4offYREZImTRl9jzlUs+XLcjShRMHMQJkjAkC/phLHIPndJ7uC5P03fMSdaOrCNMPwGtzqFyMyaZK3D0YS5YQfwNNnh/kv/8k637xGJbmmTj
+X-Gm-Message-State: AOJu0YxfBxcuyG/iPW9Q40tbXnXW2JYZXvR4tpdFUz6zCQq0ElfsZdZ1
+	GodpZOUnTBoKHT4KNTgZvsoayizbllCNknnYCLwO9lpC9PNb+o7NHxUqUefRe4gQ5ptMNP8=
+X-Google-Smtp-Source: AGHT+IG+BfpVKq98hBn15FXBDPyS9ohXVtM3GJzdP15+BiWM1MXbjiQzR08Usoj/c860KnLf3bDtQA==
+X-Received: by 2002:a17:90b:2345:b0:2c2:d6cf:f4d2 with SMTP id 98e67ed59e1d1-2c85051a295mr6338859a91.26.1719306369475;
+        Tue, 25 Jun 2024 02:06:09 -0700 (PDT)
 Received: from [100.90.230.39] ([45.32.86.188])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70651299ca9sm7551624b3a.155.2024.06.25.01.37.44
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c819a7a557sm8289100a91.15.2024.06.25.02.06.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jun 2024 01:37:51 -0700 (PDT)
-Message-ID: <d0e006c2-4c27-4bf0-aa88-720e42baa66e@gmail.com>
-Date: Tue, 25 Jun 2024 16:37:40 +0800
+        Tue, 25 Jun 2024 02:06:08 -0700 (PDT)
+Message-ID: <b704f7a4-7eca-4b49-b96e-8414b52190b1@gmail.com>
+Date: Tue, 25 Jun 2024 17:05:58 +0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,61 +76,87 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/3] iio: proximity: Add driver support for TYHX's
- HX9023S capacitive proximity sensor
+Subject: Re: [PATCH v7 2/3] dt-bindings: iio: proximity: Add TYHX HX9023S
 To: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
  Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Alexandru Ardelean <aardelean@baylibre.com>,
- Andy Shevchenko <andy.shevchenko@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+ linux-iio@vger.kernel.org, Conor Dooley <conor@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 References: <20240625-add-tyhx-hx9023s-sensor-driver-v7-0-b1d65b221811@gmail.com>
- <20240625-add-tyhx-hx9023s-sensor-driver-v7-3-b1d65b221811@gmail.com>
- <12457a9b-dd84-4033-bd9a-bd69e2e6cbf2@kernel.org>
+ <20240625-add-tyhx-hx9023s-sensor-driver-v7-2-b1d65b221811@gmail.com>
+ <d77a4777-d282-4004-895a-7809abf68130@kernel.org>
 Content-Language: en-US
 From: Yasin Lee <yasin.lee.x@gmail.com>
-In-Reply-To: <12457a9b-dd84-4033-bd9a-bd69e2e6cbf2@kernel.org>
+In-Reply-To: <d77a4777-d282-4004-895a-7809abf68130@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
-On 2024/6/25 13:49, Krzysztof Kozlowski wrote:
+On 2024/6/25 13:48, Krzysztof Kozlowski wrote:
 > On 25/06/2024 04:15, Yasin Lee wrote:
->> A SAR sensor from NanjingTianyihexin Electronics Ltd.
+>> A capacitive proximity sensor
 >>
->> The device has the following entry points:
->>
->> Usual frequency:
->> - sampling_frequency
->>
->> Instant reading of current values for different sensors:
->> - in_proximity0_raw
->> - in_proximity1_raw
->> - in_proximity2_raw
->> - in_proximity3_raw
->> - in_proximity4_raw
->> and associated events in events/
->>
->> Acked-by: Alexandru Ardelean <aardelean@baylibre.com>
->> Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+>> Acked-by: Conor Dooley <conor@kernel.org>
 >> Acked-by: Jonathan Cameron <jic23@kernel.org>
->> Acked-by: "Uwe Kleine-König" <u.kleine-koenig@pengutronix.de>
-> Drop fake tags.
+>> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> What? How did this happen? Where - provide lore links to prove it?
 >
->> Reported-by： Dan Carpenter <dan.carpenter@linaro.org>
->> Closes: https://lore.kernel.org/r/202405170824.uhEslLI0-lkp@intel.com/
->> Closes: https://lore.kernel.org/r/202406142001.swm6CU40-lkp@intel.com/
->> Reported-by： kernel test robot <lkp@intel.com>
-> Drop fake tags.
+> NAK
 >
->> Closes: https://lore.kernel.org/oe-kbuild-all/202406171946.qe83Tde0-lkp@intel.com/
->> Closes: https://lore.kernel.org/oe-kbuild-all/202406081148.j9y5W5Ru-lkp@intel.com/
->> Closes: https://lore.kernel.org/oe-kbuild-all/202405310327.5dCrF4gX-lkp@intel.com/
->> Closes: https://lore.kernel.org/oe-kbuild-all/202405310010.dSPEpCuu-lkp@intel.com/
->> Closes: https://lore.kernel.org/oe-kbuild-all/202405300812.jv99FywV-lkp@intel.com/
-> Drop fake bug reports.
+
+My mistake.  I will remove all of them.
+
+
+>> Reported-by： "Rob Herring (Arm)" <robh@kernel.org>
+> No, drop.
+
+
+Got it.
+
+
+>
+>> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
+>
+>> +
+>> +patternProperties:
+>> +  "^channel@[0-4]$":
+>> +    $ref: /schemas/iio/adc/adc.yaml
+>> +    type: object
+>> +
+>> +    properties:
+>> +      reg:
+>> +        minimum: 0
+>> +        maximum: 4
+>> +        description: The channel number.
+>> +
+>> +      single-channel: true
+>> +
+>> +      diff-channels: true
+>> +
+>> +    oneOf:
+>> +      - required:
+>> +          - single-channel
+>> +      - required:
+>> +          - diff-channels
+>> +
+>> +    required:
+>> +      - reg
+> ... and now you should see that you duplicated adc.yaml. This should be
+> just:
+>
+> +patternProperties:
+> +  "^channel@[0-4]$":
+> +    $ref: /schemas/iio/adc/adc.yaml
+> +    type: object
+> +    unevaluatedProperties: false
+> +
+> +    properties:
+> +      reg:
+> +        minimum: 0
+> +        maximum: 4
+> +        description: The channel number.
 >
 >
 >
@@ -138,7 +164,38 @@ On 2024/6/25 13:49, Krzysztof Kozlowski wrote:
 > Krzysztof
 
 
-Got it. I will drop them all
+Hi Krzysztof,
 
+Thanks for your reply.
+
+I have done the verification. "single-channel: true"and "diff-channels: 
+true" are necessary. Removing them will cause dt_binding_check to report 
+an error. Only oneOf can be removed. The de-duplicated code is as follows:
+
+patternProperties:
+   "^channel@[0-4]$":
+     $ref: /schemas/iio/adc/adc.yaml
+     type: object
+     unevaluatedProperties: false
+
+     properties:
+       reg:
+         minimum: 0
+         maximum: 4
+         description: The channel number.
+
+       single-channel: true
+
+       diff-channels: true
+
+     required:
+       - reg
+
+     additionalProperties: false
+
+
+Best regards,
+
+Yasin
 
 

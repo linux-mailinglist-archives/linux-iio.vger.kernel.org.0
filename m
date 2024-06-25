@@ -1,241 +1,175 @@
-Return-Path: <linux-iio+bounces-6870-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6871-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB63915E5B
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 07:48:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF39A915E5F
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 07:49:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C692E283FF4
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 05:48:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 763201F221FA
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 05:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0E9145B2B;
-	Tue, 25 Jun 2024 05:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9059B145FE5;
+	Tue, 25 Jun 2024 05:48:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EWe1fDYS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="stAkGWPw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8D41DA58
-	for <linux-iio@vger.kernel.org>; Tue, 25 Jun 2024 05:48:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4314A145B29;
+	Tue, 25 Jun 2024 05:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719294523; cv=none; b=Wz9IcS7rNxVoEwJ/JVDpATBl0KY2BYUH8jpLqNnolknbm/2cF1vaA7d3qyCaPTF+bt+Wm8GBjlQK89s8egb1P+rTo6/14L142ttKvV1VTrXjkmnPmz8bBDGxfospDhs9dFE3R1HkKOUWoI4M4/BTAu3BFAzXZRcSAH8hGFSPwo8=
+	t=1719294538; cv=none; b=sT5zaN985AhBeLDFXGVu6sUYqKa4AACY5/1nhtiZLVyhdQ0+/8ObYd9NHV/dtaG8IlEU4UQtzjxgGliRjYMz5BvEA8LUiE1Tlaq/kmdJ1dYFdlRh9XEp7Bwsp001CRWnJBLbMTXJrAPQcxYEEqLnaMgJ8kCG6duyXzIFL9ihfvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719294523; c=relaxed/simple;
-	bh=xppm1IlJiR0IQb3avLdxzMXwKw8ZgE4wqgotWbJ92BY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=He01PyRhRiKQyTnw5qjC/EAls7qh1lR5BRshASKxdmRl0Ctw0xwHJ2rqpfm8TgP1E1/DgwOuX7ckpg6uybGyO8YICbSxjgpK/LXz7kINNFLSE9AfiuB3xPiAOIHulRMLKhxx2DX6XJmuxZxNNc6bEn1PbKJQz+R3xbuTRlckm3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EWe1fDYS; arc=none smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-4ef4f5d147cso147257e0c.3
-        for <linux-iio@vger.kernel.org>; Mon, 24 Jun 2024 22:48:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719294518; x=1719899318; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DNdi7aqLPaDq7mcCmj8ltEqqTcHmeKwm+6qNaCHj4kw=;
-        b=EWe1fDYSo5w1cxqR5ykkopRifQgwC2n6RyvunvGZ1C06EfCn8SVzkdiEACNvfDoNFd
-         LjuC4u6bMSInoQ1apdOmrs9Hqhocawa5YgAkya4xrbWqe2Xxr5lribhUW3kLAD/oXMvT
-         uVoU/IkduMkho9Z+0tOePD1SLkfaYnb/p83fMImgbyoxKcZEoQOvt7s/hFssdVaUqtU7
-         F/r0sozYF+dUc89GWRy5n78z9vBrkjFe/Yorfg5Z3ys7y9boghxdjR3EZxzhDA80uKHu
-         bBj1SC1Y7mHPyZcyOFcY+pTwL1jz8/keiXEZYuEV2QQ0D5dNnmFgMkWw38R7zcqQFZ9T
-         t0JQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719294518; x=1719899318;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DNdi7aqLPaDq7mcCmj8ltEqqTcHmeKwm+6qNaCHj4kw=;
-        b=hL8kUO5F5uIbUp3AEiHNT4etDRe64ek7oB5byNw+JIftxKEr3tS7zbduSVgG0QOZJ8
-         2umqwB18IQYEjna/GbGp6kJpnXX8Bmssnw48GAFn67ljtyVfLK8bqUpJESv38IWM9o7v
-         vfc1EBKAXcsgRAdfRcjUKgC466kweWencdd1EUj6mBLUeGoZ7z/OYhfFkcF4TqMHJW3e
-         62dzMr2wwhfTqqTV9QsZ/YSU3t2b2OykXj2zPKTX4yKEADAj6J3r33+AOLwT2oNuLE70
-         Gv7CiAeDNoxQ/iuF/4535VHnR/JQCDVDh+ji8XxcaAvx1J0jyXLHZuwjmmGNRsVWxqv2
-         0QsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXmQusTVOavGHwFEoAO5hifDDQ9naiYg0Iyab2P/FCNJu3uGtDV9GhINrAYi825SBFeRjhJfXEDvcPyIDC5FcHmVhDZ2vflnm7w
-X-Gm-Message-State: AOJu0Yw5sjy0lv+RWUgN7sdUj1zSJ5dic0thnTxuonlJjD7F5hjJsA+A
-	8shEf0j5zOGkEr+4qBFXpwJoYGp+ZFsv+/AOQJVmbdfHWI5vTpRrez/1CvWcrsrQK5s0o+DEXRR
-	+aBrZMLxFMqxHUtBE3OP3mYx0h9/OEMOdt7joJQ==
-X-Google-Smtp-Source: AGHT+IFKwEk98CWPI13i8+UFNMNJSNvpOC7aR/wyV/ooeLBJqqZgrEl0oorrEdQDYcopzfyLeyNKh0H0AicGfqcpk8w=
-X-Received: by 2002:a05:6102:50a2:b0:48d:aced:abff with SMTP id
- ada2fe7eead31-48f46c146c1mr7490671137.1.1719294518060; Mon, 24 Jun 2024
- 22:48:38 -0700 (PDT)
+	s=arc-20240116; t=1719294538; c=relaxed/simple;
+	bh=MCSXlutuDH2IYzq0/w2CItGAVaAY3Q3H3ZrAZACR6X8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RHBhCcsFURqI9abxxGypBZLzjCv3KBwzoLg4uLU1bmPni9Ogtqc849LfHX1gzf1lO3urWvxdxAw6NDt4/6AvxdUtT3olIy8HZAGZLkPjIKTtNtpxJTFioVMb/eR1Gtp4HEbFrGdVj6iTVTffmuAsD5frM/rJUFprRKLi/qZh/sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=stAkGWPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D7CC32781;
+	Tue, 25 Jun 2024 05:48:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719294538;
+	bh=MCSXlutuDH2IYzq0/w2CItGAVaAY3Q3H3ZrAZACR6X8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=stAkGWPwZrV858mawpf6jMGYdTBEdrRD0zXXH/EnATCUsW/TgKsFQ5y53z9tloFyK
+	 DzP3Lb6+SufNf1KrzaKcEBXWdpyk+QnlAOkDMFaBIl95OA+jUjBgSUWJZH7RG+Q9/J
+	 J1gdfpYh5/GfWLyRtVUhiNvrhTL+F07YN1lJHgoOjXmtYdqIteWhX2j9f0FjkiBbtb
+	 T/eD4Rx9S8/PqEcb3D5gEp0cyCYjk7Tt1cQwzdEW4+M7F3gDeyWhVMxoWY49ZXRDqX
+	 lytNXyg/DiuVzgbbaCu4YX96kL97Y5bsIpObO2gNCMDcohT0/Z4l6CxW4wE/kN7jI+
+	 5lPg0CDqnyIxw==
+Message-ID: <d77a4777-d282-4004-895a-7809abf68130@kernel.org>
+Date: Tue, 25 Jun 2024 07:48:52 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240624124941.113010-1-alisa.roman@analog.com> <20240624124941.113010-6-alisa.roman@analog.com>
-In-Reply-To: <20240624124941.113010-6-alisa.roman@analog.com>
-From: Alexandru Ardelean <aardelean@baylibre.com>
-Date: Tue, 25 Jun 2024 08:48:26 +0300
-Message-ID: <CA+GgBR8r_W9X0hROUEw-xePyKAhOTBjJtf=cHbfWfvUUfk5j_g@mail.gmail.com>
-Subject: Re: [PATCH v6 5/6] iio: adc: ad7192: Add clock provider
-To: Alisa-Dariana Roman <alisadariana@gmail.com>
-Cc: Alisa-Dariana Roman <alisa.roman@analog.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	Michael Hennerich <michael.hennerich@analog.com>, linux-iio@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Lars-Peter Clausen <lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7 2/3] dt-bindings: iio: proximity: Add TYHX HX9023S
+To: Yasin Lee <yasin.lee.x@gmail.com>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-iio@vger.kernel.org, Conor Dooley <conor@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+References: <20240625-add-tyhx-hx9023s-sensor-driver-v7-0-b1d65b221811@gmail.com>
+ <20240625-add-tyhx-hx9023s-sensor-driver-v7-2-b1d65b221811@gmail.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ xsFNBFVDQq4BEAC6KeLOfFsAvFMBsrCrJ2bCalhPv5+KQF2PS2+iwZI8BpRZoV+Bd5kWvN79
+ cFgcqTTuNHjAvxtUG8pQgGTHAObYs6xeYJtjUH0ZX6ndJ33FJYf5V3yXqqjcZ30FgHzJCFUu
+ JMp7PSyMPzpUXfU12yfcRYVEMQrmplNZssmYhiTeVicuOOypWugZKVLGNm0IweVCaZ/DJDIH
+ gNbpvVwjcKYrx85m9cBVEBUGaQP6AT7qlVCkrf50v8bofSIyVa2xmubbAwwFA1oxoOusjPIE
+ J3iadrwpFvsZjF5uHAKS+7wHLoW9hVzOnLbX6ajk5Hf8Pb1m+VH/E8bPBNNYKkfTtypTDUCj
+ NYcd27tjnXfG+SDs/EXNUAIRefCyvaRG7oRYF3Ec+2RgQDRnmmjCjoQNbFrJvJkFHlPeHaeS
+ BosGY+XWKydnmsfY7SSnjAzLUGAFhLd/XDVpb1Een2XucPpKvt9ORF+48gy12FA5GduRLhQU
+ vK4tU7ojoem/G23PcowM1CwPurC8sAVsQb9KmwTGh7rVz3ks3w/zfGBy3+WmLg++C2Wct6nM
+ Pd8/6CBVjEWqD06/RjI2AnjIq5fSEH/BIfXXfC68nMp9BZoy3So4ZsbOlBmtAPvMYX6U8VwD
+ TNeBxJu5Ex0Izf1NV9CzC3nNaFUYOY8KfN01X5SExAoVTr09ewARAQABzSVLcnp5c3p0b2Yg
+ S296bG93c2tpIDxrcnprQGtlcm5lbC5vcmc+wsGVBBMBCgA/AhsDBgsJCAcDAgYVCAIJCgsE
+ FgIDAQIeAQIXgBYhBJvQfg4MUfjVlne3VBuTQ307QWKbBQJgPO8PBQkUX63hAAoJEBuTQ307
+ QWKbBn8P+QFxwl7pDsAKR1InemMAmuykCHl+XgC0LDqrsWhAH5TYeTVXGSyDsuZjHvj+FRP+
+ gZaEIYSw2Yf0e91U9HXo3RYhEwSmxUQ4Fjhc9qAwGKVPQf6YuQ5yy6pzI8brcKmHHOGrB3tP
+ /MODPt81M1zpograAC2WTDzkICfHKj8LpXp45PylD99J9q0Y+gb04CG5/wXs+1hJy/dz0tYy
+ iua4nCuSRbxnSHKBS5vvjosWWjWQXsRKd+zzXp6kfRHHpzJkhRwF6ArXi4XnQ+REnoTfM5Fk
+ VmVmSQ3yFKKePEzoIriT1b2sXO0g5QXOAvFqB65LZjXG9jGJoVG6ZJrUV1MVK8vamKoVbUEe
+ 0NlLl/tX96HLowHHoKhxEsbFzGzKiFLh7hyboTpy2whdonkDxpnv/H8wE9M3VW/fPgnL2nPe
+ xaBLqyHxy9hA9JrZvxg3IQ61x7rtBWBUQPmEaK0azW+l3ysiNpBhISkZrsW3ZUdknWu87nh6
+ eTB7mR7xBcVxnomxWwJI4B0wuMwCPdgbV6YDUKCuSgRMUEiVry10xd9KLypR9Vfyn1AhROrq
+ AubRPVeJBf9zR5UW1trJNfwVt3XmbHX50HCcHdEdCKiT9O+FiEcahIaWh9lihvO0ci0TtVGZ
+ MCEtaCE80Q3Ma9RdHYB3uVF930jwquplFLNF+IBCn5JRzsFNBFVDXDQBEADNkrQYSREUL4D3
+ Gws46JEoZ9HEQOKtkrwjrzlw/tCmqVzERRPvz2Xg8n7+HRCrgqnodIYoUh5WsU84N03KlLue
+ MNsWLJBvBaubYN4JuJIdRr4dS4oyF1/fQAQPHh8Thpiz0SAZFx6iWKB7Qrz3OrGCjTPcW6ei
+ OMheesVS5hxietSmlin+SilmIAPZHx7n242u6kdHOh+/SyLImKn/dh9RzatVpUKbv34eP1wA
+ GldWsRxbf3WP9pFNObSzI/Bo3kA89Xx2rO2roC+Gq4LeHvo7ptzcLcrqaHUAcZ3CgFG88CnA
+ 6z6lBZn0WyewEcPOPdcUB2Q7D/NiUY+HDiV99rAYPJztjeTrBSTnHeSBPb+qn5ZZGQwIdUW9
+ YegxWKvXXHTwB5eMzo/RB6vffwqcnHDoe0q7VgzRRZJwpi6aMIXLfeWZ5Wrwaw2zldFuO4Dt
+ 91pFzBSOIpeMtfgb/Pfe/a1WJ/GgaIRIBE+NUqckM+3zJHGmVPqJP/h2Iwv6nw8U+7Yyl6gU
+ BLHFTg2hYnLFJI4Xjg+AX1hHFVKmvl3VBHIsBv0oDcsQWXqY+NaFahT0lRPjYtrTa1v3tem/
+ JoFzZ4B0p27K+qQCF2R96hVvuEyjzBmdq2esyE6zIqftdo4MOJho8uctOiWbwNNq2U9pPWmu
+ 4vXVFBYIGmpyNPYzRm0QPwARAQABwsF8BBgBCgAmAhsMFiEEm9B+DgxR+NWWd7dUG5NDfTtB
+ YpsFAmA872oFCRRflLYACgkQG5NDfTtBYpvScw/9GrqBrVLuJoJ52qBBKUBDo4E+5fU1bjt0
+ Gv0nh/hNJuecuRY6aemU6HOPNc2t8QHMSvwbSF+Vp9ZkOvrM36yUOufctoqON+wXrliEY0J4
+ ksR89ZILRRAold9Mh0YDqEJc1HmuxYLJ7lnbLYH1oui8bLbMBM8S2Uo9RKqV2GROLi44enVt
+ vdrDvo+CxKj2K+d4cleCNiz5qbTxPUW/cgkwG0lJc4I4sso7l4XMDKn95c7JtNsuzqKvhEVS
+ oic5by3fbUnuI0cemeizF4QdtX2uQxrP7RwHFBd+YUia7zCcz0//rv6FZmAxWZGy5arNl6Vm
+ lQqNo7/Poh8WWfRS+xegBxc6hBXahpyUKphAKYkah+m+I0QToCfnGKnPqyYIMDEHCS/RfqA5
+ t8F+O56+oyLBAeWX7XcmyM6TGeVfb+OZVMJnZzK0s2VYAuI0Rl87FBFYgULdgqKV7R7WHzwD
+ uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
+ 7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
+ 5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
+In-Reply-To: <20240625-add-tyhx-hx9023s-sensor-driver-v7-2-b1d65b221811@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 24, 2024 at 3:51=E2=80=AFPM Alisa-Dariana Roman
-<alisadariana@gmail.com> wrote:
->
-> Internal clock of AD719X devices can be made available on MCLK2 pin. Add
-> clock provider to support this functionality.
->
+On 25/06/2024 04:15, Yasin Lee wrote:
+> A capacitive proximity sensor
+> 
+> Acked-by: Conor Dooley <conor@kernel.org>
+> Acked-by: Jonathan Cameron <jic23@kernel.org>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Just a question that should be addressed by the failing of the
-clock-provider registration.
-With that addressed:
+What? How did this happen? Where - provide lore links to prove it?
 
-Reviewed-by: Alexandru Ardelean <aardelean@baylibre.com>
+NAK
 
-> Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> ---
->  drivers/iio/adc/ad7192.c | 89 ++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 89 insertions(+)
->
-> diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> index 940517df5429..90763c14679d 100644
-> --- a/drivers/iio/adc/ad7192.c
-> +++ b/drivers/iio/adc/ad7192.c
-> @@ -8,6 +8,7 @@
->  #include <linux/interrupt.h>
->  #include <linux/bitfield.h>
->  #include <linux/clk.h>
-> +#include <linux/clk-provider.h>
->  #include <linux/device.h>
->  #include <linux/kernel.h>
->  #include <linux/slab.h>
-> @@ -201,6 +202,7 @@ struct ad7192_chip_info {
->  struct ad7192_state {
->         const struct ad7192_chip_info   *chip_info;
->         struct clk                      *mclk;
-> +       struct clk_hw                   int_clk_hw;
->         u16                             int_vref_mv;
->         u32                             aincom_mv;
->         u32                             fclk;
-> @@ -401,6 +403,88 @@ static const char *const ad7192_clock_names[] =3D {
->         "mclk"
->  };
->
-> +static struct ad7192_state *clk_hw_to_ad7192(struct clk_hw *hw)
-> +{
-> +       return container_of(hw, struct ad7192_state, int_clk_hw);
-> +}
-> +
-> +static unsigned long ad7192_clk_recalc_rate(struct clk_hw *hw,
-> +                                           unsigned long parent_rate)
-> +{
-> +       return AD7192_INT_FREQ_MHZ;
-> +}
-> +
-> +static int ad7192_clk_output_is_enabled(struct clk_hw *hw)
-> +{
-> +       struct ad7192_state *st =3D clk_hw_to_ad7192(hw);
-> +
-> +       return st->clock_sel =3D=3D AD7192_CLK_INT_CO;
-> +}
-> +
-> +static int ad7192_clk_prepare(struct clk_hw *hw)
-> +{
-> +       struct ad7192_state *st =3D clk_hw_to_ad7192(hw);
-> +       int ret;
-> +
-> +       st->mode &=3D ~AD7192_MODE_CLKSRC_MASK;
-> +       st->mode |=3D AD7192_CLK_INT_CO;
-> +
-> +       ret =3D ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-> +       if (ret)
-> +               return ret;
-> +
-> +       st->clock_sel =3D AD7192_CLK_INT_CO;
-> +
-> +       return 0;
-> +}
-> +
-> +static void ad7192_clk_unprepare(struct clk_hw *hw)
-> +{
-> +       struct ad7192_state *st =3D clk_hw_to_ad7192(hw);
-> +       int ret;
-> +
-> +       st->mode &=3D ~AD7192_MODE_CLKSRC_MASK;
-> +       st->mode |=3D AD7192_CLK_INT;
-> +
-> +       ret =3D ad_sd_write_reg(&st->sd, AD7192_REG_MODE, 3, st->mode);
-> +       if (ret)
-> +               return;
-> +
-> +       st->clock_sel =3D AD7192_CLK_INT;
-> +}
-> +
-> +static const struct clk_ops ad7192_int_clk_ops =3D {
-> +       .recalc_rate =3D ad7192_clk_recalc_rate,
-> +       .is_enabled =3D ad7192_clk_output_is_enabled,
-> +       .prepare =3D ad7192_clk_prepare,
-> +       .unprepare =3D ad7192_clk_unprepare,
-> +};
-> +
-> +static int ad7192_register_clk_provider(struct ad7192_state *st)
-> +{
-> +       struct device *dev =3D &st->sd.spi->dev;
-> +       struct clk_init_data init =3D {};
-> +       int ret;
-> +
-> +       if (!IS_ENABLED(CONFIG_COMMON_CLK))
-> +               return 0;
-> +
-> +       init.name =3D devm_kasprintf(dev, GFP_KERNEL, "%s-clk",
-> +                                  fwnode_get_name(dev_fwnode(dev)));
-> +       if (!init.name)
-> +               return -ENOMEM;
-> +
-> +       init.ops =3D &ad7192_int_clk_ops;
-> +
-> +       st->int_clk_hw.init =3D &init;
-> +       ret =3D devm_clk_hw_register(dev, &st->int_clk_hw);
-> +       if (ret)
-> +               return ret;
-> +
-> +       return devm_of_clk_add_hw_provider(dev, of_clk_hw_simple_get,
-> +                                          &st->int_clk_hw);
-> +}
-> +
->  static int ad7192_clock_setup(struct ad7192_state *st)
->  {
->         struct device *dev =3D &st->sd.spi->dev;
-> @@ -412,6 +496,11 @@ static int ad7192_clock_setup(struct ad7192_state *s=
-t)
->         if (ret < 0) {
->                 st->clock_sel =3D AD7192_CLK_INT;
->                 st->fclk =3D AD7192_INT_FREQ_MHZ;
-> +
-> +               ret =3D ad7192_register_clk_provider(st);
-> +               if (ret)
-> +                       return dev_err_probe(dev, ret,
-> +                                            "Failed to register clock pr=
-ovider\n");
+> Reported-by： "Rob Herring (Arm)" <robh@kernel.org>
 
-A question here: do we want to fail the probe of this driver when it
-cannot register a clock provider?
-Or should we ignore it?
-No preference from my side.
+No, drop.
 
->         } else {
->                 st->clock_sel =3D AD7192_CLK_EXT_MCLK1_2 + ret;
->
-> --
-> 2.34.1
->
->
+> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
+
+
+> +
+> +patternProperties:
+> +  "^channel@[0-4]$":
+> +    $ref: /schemas/iio/adc/adc.yaml
+> +    type: object
+> +
+> +    properties:
+> +      reg:
+> +        minimum: 0
+> +        maximum: 4
+> +        description: The channel number.
+> +
+> +      single-channel: true
+> +
+> +      diff-channels: true
+> +
+> +    oneOf:
+> +      - required:
+> +          - single-channel
+> +      - required:
+> +          - diff-channels
+> +
+> +    required:
+> +      - reg
+
+... and now you should see that you duplicated adc.yaml. This should be
+just:
+
++patternProperties:
++  "^channel@[0-4]$":
++    $ref: /schemas/iio/adc/adc.yaml
++    type: object
++    unevaluatedProperties: false
++
++    properties:
++      reg:
++        minimum: 0
++        maximum: 4
++        description: The channel number.
+
+
+
+Best regards,
+Krzysztof
+
 

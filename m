@@ -1,117 +1,108 @@
-Return-Path: <linux-iio+bounces-6903-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6904-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8290916CEF
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 17:26:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084DE916D31
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 17:35:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8FFE1C21D03
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 15:26:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB79128C6B9
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 15:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BBF317106D;
-	Tue, 25 Jun 2024 15:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68402170824;
+	Tue, 25 Jun 2024 15:34:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fYt2Tlqf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VfxKrQVm"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12818170857
-	for <linux-iio@vger.kernel.org>; Tue, 25 Jun 2024 15:21:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C28816D4D7;
+	Tue, 25 Jun 2024 15:34:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719328891; cv=none; b=qnxdcc12kjIK5RHJ0cQnCgAbW00gltERblh9Per4Gt0bZZmmCLD1jAXj4uCMGq7NwNDs3NxT1ajJkzaqU8ii7YWty0KYa/eRGwhApulOpJvU6tKCcQnLRgcZcYn7dHQyEHCkkSgA8YXMnBdSMVChdPYPYg3PdhZsyKBVdk/DsOQ=
+	t=1719329693; cv=none; b=iEgj5mfva85FQ48dOwhmd1L/mpJ36/iSRDbfCR+wgnghBJl2YjxRCqGNeBLFUOZGuYfG00CpVOwiwSBxwV3wJAwmaL4GgX2KAmcTgDauzfrAilbZloGmxCYgS5EPmWeKtMLJyNriGy+mQZr3y6eO+aDCFrOXa3zlqg/vXvszV0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719328891; c=relaxed/simple;
-	bh=s/QdVyNARVL88VvkXnYNT0ddG7dSt/krP8GiBnv8RnM=;
+	s=arc-20240116; t=1719329693; c=relaxed/simple;
+	bh=gTk+23CWObg9MzmcWZm2zgAuR93E18j1kHQXDncw/IQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ssYO67fWN1FGKpebjMJSk1JPIfdn+1SSn+MbsA+RjGE8plff8rvHnQFpqSvgbkFEMQfP6TXilYbH9SvO2cOKreiSp23gQZST/cWC35FiRv6CcJ9ZFQgqXzIFN1DwnBVmCi/LCr7kX/zeZVN7c7Bku8XFIGVzpWj3xg1RNPeQX+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fYt2Tlqf; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6fa11ac8695so3310589a34.3
-        for <linux-iio@vger.kernel.org>; Tue, 25 Jun 2024 08:21:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719328889; x=1719933689; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HahF/w32ffXismXCPXAilNQQxCuvIXYry39cFma1exQ=;
-        b=fYt2TlqfjHgkmB3E1iSr+IdmIPLx/MFX6iMTOMQ/HG/WbVfVBbxVuk4TeoqZI6wiUg
-         DbYXTzBZYpCg58lbLqZd0WgDrvq528no3mRYJ+oD9tkZKV+cp+ngQAH7SviH+6Sue7Vd
-         P54ibtGHjgYm4rotPSbAM2wAsO4yMSsSm4c+BzM4mIeqLWYrEqBLFC9dxLn7MMl6+gos
-         YkdUPSw6SBeutIAGvvf/dBHQuSyCtmAb5RdegCCUfP5vgvwlp6YYsn0X1eAQln8eKnZE
-         b2zRoG9Y9mjh3vnGcm699QwtPCv2MX3YfpgoBk3sEf00Ql6XerJ7Mkx7VafGotwHGQiV
-         r/4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719328889; x=1719933689;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HahF/w32ffXismXCPXAilNQQxCuvIXYry39cFma1exQ=;
-        b=iR419/278Ttplh+7Xlr7xs1txxvZCbvj6LBh84owN8KslLfM3/xPnmNclKRrMZrDrh
-         K/Q4EJPZLjgukpGwpW6+q3R6W9RmcADVT6Jsfn8Ek1G2kN/55vNdx8l0Ry/Y4WZzL+fV
-         SdF41n+KiU2/ZW+ETOXL8XQrDE8jpr397o4FqggCWmtrX+UM6FMsSx9j58hTz+i819rJ
-         5aCb6qwm+oGwRlcvA+dHPHc/BaPkSgx5/nuCyLLZcTYrRfxfx6vg0DER4eyohfqAFamv
-         7YUnI/KYM95um1XYRQ+xMhXGzag7lwr0ZWBu1hRw9QDHCgz2+E0oQe6Ztyi7xs7qsVSj
-         nhpA==
-X-Gm-Message-State: AOJu0YyUErjmXmwLIO+xmv/VJDkEMHBbF1sq5Vos+gWtLJcBfmvBOWhp
-	0tjiEP8a//86f7KpaQOeWmx+QiM/8bT3ABu9x1FdynmH8jN2eOKQ
-X-Google-Smtp-Source: AGHT+IHecqNdQz01XFT4D2crUoYTSiLbrvp6BQYwDr3sp8Ba2+tAdJOg0SfLpb/JwGIkvMSvzilJew==
-X-Received: by 2002:a9d:6a54:0:b0:700:cdca:a2d9 with SMTP id 46e09a7af769-700cdcaa509mr424912a34.2.1719328888926;
-        Tue, 25 Jun 2024 08:21:28 -0700 (PDT)
-Received: from shaak (modemcable063.135-226-192.mc.videotron.ca. [192.226.135.63])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b5223fa509sm42953276d6.51.2024.06.25.08.21.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jun 2024 08:21:28 -0700 (PDT)
-Date: Tue, 25 Jun 2024 11:21:26 -0400
-From: Liam Beguin <liambeguin@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: Re: [PATCH] iio: adc: ltc2309: Fix endian type passed to
- be16_to_cpu()
-Message-ID: <20240625152126.GA1271121@shaak>
-References: <20240624193210.347434-1-jic23@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LKH80D59xxPnfJsZJAJa4a8Knn8yIveOMUr4HEcpPnEkWkwPTfCWhPbVT3HOuunu6s17IunIaLyM0eI6kQnwhUUMiSh4BTwSAyP81NhmoA+NGyn/beHH5oPZdFCFqUqc1k8n7R45eD4HKNoEWaYdT6eYChOBX9hAFyJ5BPCHyOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VfxKrQVm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C156C32781;
+	Tue, 25 Jun 2024 15:34:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719329692;
+	bh=gTk+23CWObg9MzmcWZm2zgAuR93E18j1kHQXDncw/IQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VfxKrQVmEXHydhg2JMRrdJksEl6mtPFVm1kZLokSsoYnP1rNV8IlH9tx2fSogMisE
+	 sMhyI1skUjSjWMRGDKZOZUU3pmObIITZ3DV08N2h52FUWpdbmXwCI41ac5XGRepXCJ
+	 FOKhc+aDyTX//lJwTg1QTqpCY8G952KcXyhiLJ6V8Kbxb6zVPT2ZNjDNd6dHSyE3d7
+	 lBtROSdEWVmX5N2XvRvbMaapRSw60+4yn2KmbeNJEwKEJjpvE1Ujrb01qr4yGvPaip
+	 PAX/e/YH22qMIFhmpVFmYXuqG2pcEJrKBopcQ5UaRRksqi0xDDHwr5WBvg4GPmugr8
+	 v9jmL1plGrtxA==
+Date: Tue, 25 Jun 2024 16:34:48 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: fabrice.gasnier@foss.st.com, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 5/8] dt-bindings: iio: add sigma delta modulator
+ backend
+Message-ID: <20240625-babied-skies-0722dbdfc524@spud>
+References: <20240625150717.1038212-1-olivier.moysan@foss.st.com>
+ <20240625150717.1038212-6-olivier.moysan@foss.st.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="koaKMre3ntrtIL26"
+Content-Disposition: inline
+In-Reply-To: <20240625150717.1038212-6-olivier.moysan@foss.st.com>
+
+
+--koaKMre3ntrtIL26
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240624193210.347434-1-jic23@kernel.org>
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 24, 2024 at 08:32:10PM +0100, Jonathan Cameron wrote:
-> From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
-> Picked up by sparse.
-> 
-> Cc: Liam Beguin <liambeguin@gmail.com>
-> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+On Tue, Jun 25, 2024 at 05:07:13PM +0200, Olivier Moysan wrote:
+> Add documentation of device tree bindings to support
+> sigma delta modulator backend in IIO framework.
+>=20
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
 
-Reviewed-by: Liam Beguin <liambeguin@gmail.com>
+I don't review bindings for a job, I can only reliably get to look at
+my mail queue in the evenings, please give me a chance to reply to you
+before you submit a new version.
 
-> ---
->  drivers/iio/adc/ltc2309.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/iio/adc/ltc2309.c b/drivers/iio/adc/ltc2309.c
-> index 888a71454070..5f0d947d0615 100644
-> --- a/drivers/iio/adc/ltc2309.c
-> +++ b/drivers/iio/adc/ltc2309.c
-> @@ -103,7 +103,7 @@ static int ltc2309_read_raw_channel(struct ltc2309 *ltc2309,
->  				    unsigned long address, int *val)
->  {
->  	int ret;
-> -	u16 buf;
-> +	__be16 buf;
->  	u8 din;
->  
->  	din = FIELD_PREP(LTC2309_DIN_CH_MASK, address & 0x0f) |
-> -- 
-> 2.45.2
-> 
+> +$id: http://devicetree.org/schemas/iio/adc/sd-modulator-backend.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: Sigma delta modulator backend
+
+Same comments about filename and title apply here as the previous
+version. "TI $foo Sigma Delta Modulator" and drop the reference to back
+ends or the pretence of being generic.
+
+Thanks,
+Conor.
+
+--koaKMre3ntrtIL26
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZnrjmAAKCRB4tDGHoIJi
+0sNBAQCP50UL3FxvbZG06MZSx6eP+Y3JyhmEoK0Mk9xWXPPCzgD+OeI3SdHYwF20
+IctMHlmMqzaZ5Wbb1FsV3kP+AprUiww=
+=bzse
+-----END PGP SIGNATURE-----
+
+--koaKMre3ntrtIL26--
 

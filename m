@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-6872-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6873-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 014E5915E61
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 07:49:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE206915E65
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 07:50:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E2081C2087B
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 05:49:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 932211F22A41
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 05:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E018C145A1D;
-	Tue, 25 Jun 2024 05:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4630145B1B;
+	Tue, 25 Jun 2024 05:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i1Zyk+cm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qqQzltvY"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D311DFF8;
-	Tue, 25 Jun 2024 05:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CAC0101D5;
+	Tue, 25 Jun 2024 05:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719294565; cv=none; b=R035ROOSxZeFtAGRNQLn9ZNBamOA7Zd8uSE7Ex+OTlFtjA6xNoBGUYF2N9KRIMFW8Y+tTmPBV/8NSWHbp2P2JXJLOM5Z1sMLqzgU7alcPlI4s7wTmpVyP2MsijtligyylrRy5ZTEyjBraUZr5cyEiGe3923jmJUMLa+9BblBg4Y=
+	t=1719294635; cv=none; b=gfN87A8GMqbcbwQBJIWBh3Y/RVt3olqUsekf0poEnEOYpjF8Y6UpCuzqGSLM2F8o1meaKKifeubjvSW3xX0Ia6w11lKorMFdr2uVIrnFpMFngg+KlyS5pdS51cQ5B3ZS6ZMS5TIVCWDEPJJSWI/ziUPI4y487JY+JGFMmBir1Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719294565; c=relaxed/simple;
-	bh=OBqs0xpwM4NpW7JRkX6rjR7wZKGicPSTkLWarNWdkoQ=;
+	s=arc-20240116; t=1719294635; c=relaxed/simple;
+	bh=yULzzZasjiXBH5cRE4veVk+ckF7fJL5ud67GsaltSu0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Qqt2e41C16Fk7kXFXaHHiWMHxzKb2+4KSCkBFzFtN+qGT8R2tTZ1HLZB/RW5xk2ny32yc9soOd2txGJGFLbX/XOe0QnjTsP6M4s5jjiB5iI+JVi9XoL/oxl+ArQWglAYKFi4fYBDizL5arf1jI+bFNVxOkjB0hAh4g/E8VtdWM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i1Zyk+cm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF67BC32781;
-	Tue, 25 Jun 2024 05:49:20 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=YuYEjTpb+CV+QSD/fAxcsKSLZfRnpFO20WfF0rx3qs6FSLoJZkN6qnxFW/ZskBi80C4sZrrJniR+89Od+WAFjBeeElWdCHP6xoWdmi6WTTjZgVTkk2hC7T2sCbImjuy7eqnif02icfM526vgAlMJckSmYYYj4TTsZyt4AhjvBu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qqQzltvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E81CC32781;
+	Tue, 25 Jun 2024 05:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719294565;
-	bh=OBqs0xpwM4NpW7JRkX6rjR7wZKGicPSTkLWarNWdkoQ=;
+	s=k20201202; t=1719294635;
+	bh=yULzzZasjiXBH5cRE4veVk+ckF7fJL5ud67GsaltSu0=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i1Zyk+cm5jmy/ZNPaLdOTssF9viUT+S0At0DlFSehAGasu1eCC9Egnq8Hr5WRG/RC
-	 6/W8WkMQqRIdRoFjio1WsDVlTMbAUIKExf3LY5Dtqu6IIjd6pNug/8TKkoE2gLLd46
-	 /vQ1wL/z1ocrwG5/aMvAbOQFSvcHNvIWJBbOE7YHN6fMiwUzz6cw/u1RDK4FVWJafM
-	 T4/5dohO31OB5479JYKn2Kza1IKqhzvv1XljV0hH7VI2rU/V9RF48yyVFzxv+ExjRx
-	 ar+Cgbetct6Ve9B43sQLKQqeIhNmXhhnHnuZAoGsE9cFgl3+YJHjTH1UgAkGixzCHL
-	 rBOszy067l/uw==
-Message-ID: <12457a9b-dd84-4033-bd9a-bd69e2e6cbf2@kernel.org>
-Date: Tue, 25 Jun 2024 07:49:18 +0200
+	b=qqQzltvYtCnlk4iX4Z/vb8UWWHrNUDcXshpMComWJCeZ2CNoN7GkHmTiPQGCJrSI7
+	 QOSEbTlhA2RZ+H1A1ohN9f5Z0Zn5W15WVhu4HHZY7GaYZ6MUSilFvZOv1t8aqxc2Wk
+	 XJsWNnZ2U9LLFjvFDesV6LPkc3t528nb5lJxZ9s0CybDWKqQoTIbw0pyRr7qUZMbr0
+	 nNQKGXO5U3IBuEPjJZ47Ru5lq24U1iqa+1a8cuV8QcwyWflZ9L547naFlmiuhDL5hx
+	 hIY70zI4ewPbVZX204jcJPTjLQT8SRgEfdRQPKIXkUn+2RpsnQu7c/d0bnxmkoousd
+	 hesAJsZ7WR5EA==
+Message-ID: <8ce23bc6-e742-4851-9a26-ca2ab947005d@kernel.org>
+Date: Tue, 25 Jun 2024 07:50:29 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,18 +50,16 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/3] iio: proximity: Add driver support for TYHX's
- HX9023S capacitive proximity sensor
+Subject: Re: [PATCH v7 1/3] dt-bindings: vendor-prefixes: add tyhx
 To: Yasin Lee <yasin.lee.x@gmail.com>, Rob Herring <robh@kernel.org>,
  Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
  <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
  Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com
 Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org, Alexandru Ardelean <aardelean@baylibre.com>,
- Andy Shevchenko <andy.shevchenko@gmail.com>,
- =?UTF-8?Q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+ linux-iio@vger.kernel.org,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 References: <20240625-add-tyhx-hx9023s-sensor-driver-v7-0-b1d65b221811@gmail.com>
- <20240625-add-tyhx-hx9023s-sensor-driver-v7-3-b1d65b221811@gmail.com>
+ <20240625-add-tyhx-hx9023s-sensor-driver-v7-1-b1d65b221811@gmail.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -107,49 +105,18 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240625-add-tyhx-hx9023s-sensor-driver-v7-3-b1d65b221811@gmail.com>
+In-Reply-To: <20240625-add-tyhx-hx9023s-sensor-driver-v7-1-b1d65b221811@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
 On 25/06/2024 04:15, Yasin Lee wrote:
-> A SAR sensor from NanjingTianyihexin Electronics Ltd.
+> Add vendor prefix for NanjingTianyihexin Electronics Ltd.
+> http://www.tianyihexin.com
 > 
-> The device has the following entry points:
-> 
-> Usual frequency:
-> - sampling_frequency
-> 
-> Instant reading of current values for different sensors:
-> - in_proximity0_raw
-> - in_proximity1_raw
-> - in_proximity2_raw
-> - in_proximity3_raw
-> - in_proximity4_raw
-> and associated events in events/
-> 
-> Acked-by: Alexandru Ardelean <aardelean@baylibre.com>
-> Acked-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-> Acked-by: Jonathan Cameron <jic23@kernel.org>
-> Acked-by: "Uwe Kleine-König" <u.kleine-koenig@pengutronix.de>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Drop fake tags.
-
-> Reported-by： Dan Carpenter <dan.carpenter@linaro.org>
-> Closes: https://lore.kernel.org/r/202405170824.uhEslLI0-lkp@intel.com/
-> Closes: https://lore.kernel.org/r/202406142001.swm6CU40-lkp@intel.com/
-> Reported-by： kernel test robot <lkp@intel.com>
-
-Drop fake tags.
-
-> Closes: https://lore.kernel.org/oe-kbuild-all/202406171946.qe83Tde0-lkp@intel.com/
-> Closes: https://lore.kernel.org/oe-kbuild-all/202406081148.j9y5W5Ru-lkp@intel.com/
-> Closes: https://lore.kernel.org/oe-kbuild-all/202405310327.5dCrF4gX-lkp@intel.com/
-> Closes: https://lore.kernel.org/oe-kbuild-all/202405310010.dSPEpCuu-lkp@intel.com/
-> Closes: https://lore.kernel.org/oe-kbuild-all/202405300812.jv99FywV-lkp@intel.com/
-
-Drop fake bug reports.
-
-
+This is the only one which could actually happen, but still after 15
+fake tags I don't trust you. Where was it given?
 
 Best regards,
 Krzysztof

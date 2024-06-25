@@ -1,370 +1,273 @@
-Return-Path: <linux-iio+bounces-6907-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6908-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4D82916D82
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 17:52:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BDE916DA2
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 18:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2EAF4B21C76
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 15:52:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06B4BB21203
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 16:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041DC16FF55;
-	Tue, 25 Jun 2024 15:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E9BF16D30D;
+	Tue, 25 Jun 2024 16:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="nwvs7Q2q"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RBiZLdzF"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F23016FF33;
-	Tue, 25 Jun 2024 15:52:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=148.163.135.77
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719330748; cv=fail; b=uQFlGdy1qS/+V0YWEfUM7+hLYxFOOttmgIpJXOx3lzB7KYfzOpADI+m4qBsbbLzTiogEbo9qTnT/isRfMIFhYnB2WTu3wNNW98eGYNDgoKDe7GkxYTTGBJnfqW1EfWjVly3o34NloEDUsfTIZOwi5hJ8bHA8e7+HSO1Mj69AemM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719330748; c=relaxed/simple;
-	bh=GkxSmz9WrdgLeBPcxGvZp5C9tKVHOwA5IX2guhWBvrg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tTaK0vm3F9rNf50J7VYujk37c9qMM0DPGHmwxBDD0Gy19e7QyKUkG7UPHILIcB7t/AFNMYQb0e4YqLFfXTFT7IncFedmvWaUlW32PnF2K2UuONvqcLl3qXWmOPC89uItHKBtnKRMHIvmJMJKFaxhDxMQ0znYZu/rjT4awDdVIwU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=nwvs7Q2q; arc=fail smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45PFnB4Y000313;
-	Tue, 25 Jun 2024 11:52:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=GxfcG
-	hAdrkv5AGxr3WAiLouq14u5ZNBgeUmFWOzUzHw=; b=nwvs7Q2qAe5ralyCulW5r
-	nX0zTLH345OIP9LO1XaPnUN+YZ2c9BJkTDwniwa5pokKQauowkvGxexJk+Fc05Oh
-	y+GAdfuoyUQVM8EwpDLCgFMqYlrHs1IYii45rH+zhT7Pe49JxXL85L3bNVTM29NG
-	se/p7xPBuo3F0KEYskXbM7C62bMOsgcZ8YfX2Im7N6Br34T+eBTnXHxUfzaevQUN
-	AFR6Lju2vPHp5Sg9+O2Y2oHUia6xmfrADWYnJJGS2OP2k92zjeWnW2eAGPri5BoA
-	O5K4S5c6cYGyPiP/acerEXWeBUs8577M4jHfPLCSWQwV4+HOiQzC8pdD+6tF6AiO
-	Q==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ywuh2k5xw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 11:52:04 -0400 (EDT)
-Received: from m0167089.ppops.net (m0167089.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 45PFpxvt023116;
-	Tue, 25 Jun 2024 11:51:59 -0400
-Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2043.outbound.protection.outlook.com [104.47.66.43])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 3ywuh2k5ws-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Jun 2024 11:51:59 -0400 (EDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PQtifTL/oiEBeSeDcGzJQPC2ibb6h36tE3QBIDmJlkcx01DVy2uDN55OCQBU5tv+b5G25Amb+AXLMKSNOX/05RjHcxshZLD+8bFdN44IH23oIhekpQXmWslAwImneHWWCjU/rFWaATekuCV5JLcY9bzSTI0eftBqEWOV7GbtkihO24u5FmqGngQouWIfGyMHP5rUOJF9NtCPBwkpBVstiJTcrpn08Oaq88oMvSUTkBkTPAcY8dSuUfIk8e+GmwAmMIdaXVhdjfVpgOjvL54YTNGNNvYRKwFtlDECXpa+Wr3+AJPrQgjPjwwNgxz0ojVabzQSuqQF1TGNj9nRWyZ8bA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GxfcGhAdrkv5AGxr3WAiLouq14u5ZNBgeUmFWOzUzHw=;
- b=hqnTHltwAWFRIQt4nkLUcop5KvNouKiWKmliae+47SKvgVud8491is+a6DByitocuPZG2WZ6jfMuMDyTCQxHcHx1lkC1JTql8xnc7TvvAu652b7qDBa/TDUz2IRLH6yA8jVe0452++4ah6elrNsx9DJcNdCPFeaQFBVk4GIjiPxB7ltXi9IMfJhZgoEpHwsNzZM99LvAYJiInzgXFWQ12Fp8izBQv9b1/44iACo8gKsFq66jNogQQRhCYWo6DBfVfTqaBWE8dMwadYFK1emizMObG69RIHHvmSbHM+AWlvzzpg5S4pV6xFon9MHn49vDZ9HZvlSf/VNILmKMlPWz4Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=analog.com; dmarc=pass action=none header.from=analog.com;
- dkim=pass header.d=analog.com; arc=none
-Received: from PH0PR03MB7141.namprd03.prod.outlook.com (2603:10b6:510:296::20)
- by SA1PR03MB7031.namprd03.prod.outlook.com (2603:10b6:806:337::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.30; Tue, 25 Jun
- 2024 15:51:27 +0000
-Received: from PH0PR03MB7141.namprd03.prod.outlook.com
- ([fe80::c559:3d31:1af3:b01]) by PH0PR03MB7141.namprd03.prod.outlook.com
- ([fe80::c559:3d31:1af3:b01%5]) with mapi id 15.20.7698.025; Tue, 25 Jun 2024
- 15:51:27 +0000
-From: "Paller, Kim Seer" <KimSeer.Paller@analog.com>
-To: Jonathan Cameron <Jonathan.Cameron@Huawei.com>,
-        Conor Dooley
-	<conor@kernel.org>
-CC: Jonathan Cameron <jic23@kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linux-iio@vger.kernel.org"
-	<linux-iio@vger.kernel.org>,
-        "devicetree@vger.kernel.org"
-	<devicetree@vger.kernel.org>,
-        David Lechner <dlechner@baylibre.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
-        Dimitri Fedrau <dima.fedrau@gmail.com>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Rob Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-        "Hennerich, Michael"
-	<Michael.Hennerich@analog.com>,
-        =?iso-8859-1?Q?Nuno_S=E1?=
-	<noname.nuno@gmail.com>
-Subject: RE: [PATCH v4 4/5] dt-bindings: iio: dac: Add adi,ltc2672.yaml
-Thread-Topic: [PATCH v4 4/5] dt-bindings: iio: dac: Add adi,ltc2672.yaml
-Thread-Index: 
- AQHawhTpX5siFTyTZ0ST+He5gHIvWbHPYEeAgAYCRICAAa6KMIAAGsMAgAAKeYCAAXQBYA==
-Date: Tue, 25 Jun 2024 15:51:27 +0000
-Message-ID: 
- <PH0PR03MB7141EE1309B35372201A6A80F9D52@PH0PR03MB7141.namprd03.prod.outlook.com>
-References: <20240619064904.73832-1-kimseer.paller@analog.com>
-	<20240619064904.73832-5-kimseer.paller@analog.com>
-	<20240619-vanity-crowd-24d93dda47b8@spud>
-	<20240623144339.6a5087cf@jic23-huawei>
-	<PH0PR03MB71419D55571B07479B4F4FB8F9D42@PH0PR03MB7141.namprd03.prod.outlook.com>
-	<20240624-untracked-molasses-31e8769dddd3@spud>
- <20240624183753.0000218c@Huawei.com>
-In-Reply-To: <20240624183753.0000218c@Huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-dg-ref: 
- =?iso-8859-1?Q?PG1ldGE+PGF0IG5tPSJib2R5LnR4dCIgcD0iYzpcdXNlcnNca3BhbGxlcj?=
- =?iso-8859-1?Q?JcYXBwZGF0YVxyb2FtaW5nXDA5ZDg0OWI2LTMyZDMtNGE0MC04NWVlLTZi?=
- =?iso-8859-1?Q?ODRiYTI5ZTM1Ylxtc2dzXG1zZy1jNTJiN2M4NS0zMzBhLTExZWYtYWFmNS?=
- =?iso-8859-1?Q?1mOGU0M2IzM2Q2NmVcYW1lLXRlc3RcYzUyYjdjODctMzMwYS0xMWVmLWFh?=
- =?iso-8859-1?Q?ZjUtZjhlNDNiMzNkNjZlYm9keS50eHQiIHN6PSI4Njk0IiB0PSIxMzM2Mz?=
- =?iso-8859-1?Q?gwNDI4NDAyMjU0MzEiIGg9IjcwR3VqNzEyaUhMM3F6SE1TRXE3YjZlTzBi?=
- =?iso-8859-1?Q?VT0iIGlkPSIiIGJsPSIwIiBibz0iMSIgY2k9ImNBQUFBRVJIVTFSU1JVRk?=
- =?iso-8859-1?Q?5DZ1VBQUVvQ0FBQ1hWdmlIRjhmYUFSMldnQktBNEFuckhaYUFFb0RnQ2Vz?=
- =?iso-8859-1?Q?REFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFIQUFBQURhQVFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFFQUFRQUJBQUFBM0xoU2ZnQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBSjRBQUFCaEFHUUFhUUJmQUhNQVpRQmpBSFVBY2dCbEFGOEFjQUJ5QU?=
- =?iso-8859-1?Q?c4QWFnQmxBR01BZEFCekFGOEFaZ0JoQUd3QWN3QmxBRjhBWmdCdkFITUFh?=
- =?iso-8859-1?Q?UUIwQUdrQWRnQmxBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUVBQUFBQUFBQUFBZ0FBQUFBQW5nQU?=
- =?iso-8859-1?Q?FBR0VBWkFCcEFGOEFjd0JsQUdNQWRRQnlBR1VBWHdCd0FISUFid0JxQUdV?=
- =?iso-8859-1?Q?QVl3QjBBSE1BWHdCMEFHa0FaUUJ5QURFQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFRQUFBQUFBQUFBQ0FBQUFBQUNlQUFBQVlRQmtB?=
- =?iso-8859-1?Q?R2tBWHdCekFHVUFZd0IxQUhJQVpRQmZBSEFBY2dCdkFHb0FaUUJqQUhRQW?=
- =?iso-8859-1?Q?N3QmZBSFFBYVFCbEFISUFNZ0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQU?=
- =?iso-8859-1?Q?FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB?=
- =?iso-8859-1?Q?QUFBQUFBQUFCQUFBQUFBQUFBQUlBQUFBQUFBPT0iLz48L21ldGE+?=
-x-dg-rorf: true
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH0PR03MB7141:EE_|SA1PR03MB7031:EE_
-x-ms-office365-filtering-correlation-id: d2dda2ee-9fd1-4a88-c8f8-08dc952eacb2
-x-ld-processed: eaa689b4-8f87-40e0-9c6f-7228de4d754a,ExtAddr
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: 
- BCL:0;ARA:13230038|1800799022|366014|7416012|376012|38070700016;
-x-microsoft-antispam-message-info: 
- =?iso-8859-1?Q?gzX4ipvkS2Gfcn/59fJa0VI17EjffqUyhr6f/go7pn3vtA74UHXZDDid2B?=
- =?iso-8859-1?Q?S5yXlzFCvIYl6ZXnJfu322uEiX9KOrBrwgTa19ChcY2TCxeIGbdXOEgDDQ?=
- =?iso-8859-1?Q?NKNqcW56fA1PoovCX34/OGq4RbYku9UU/AYubnzNZno39mJSGYPNGEAObH?=
- =?iso-8859-1?Q?YlXbQ8MvHv4u6eRab40zeyz/aV1/xTu4YMhMzZK6w59CbITbNeTq/ic/ji?=
- =?iso-8859-1?Q?1daJtt2qFDnh6lJJvAyePdX910H1b2rSR2LrHcxA9aTpaR1KQNhateYJBd?=
- =?iso-8859-1?Q?N1KxSVoL7eHFE9yju4WOf0jUHDfD+kg9XvAe5Z7N8G3pu3yIH2uzHKjDxl?=
- =?iso-8859-1?Q?31POtt6GdFmzw9pcSFpHjrGTeIVftXRnWNDTKG6L3EmSRsE3JeJjnbzok3?=
- =?iso-8859-1?Q?Xg8FVRnChuMwlrA3FvL6l2zPs4kjNJR9yN9c8MorYCeG0dKR4ds/zC6LLm?=
- =?iso-8859-1?Q?8JPvWkA2+0tnu/Y2D5zOSZjLlBfal0Lkq7blbwpB4eeCrP9IYlYbKd1siq?=
- =?iso-8859-1?Q?zSqDBixzpRAF9JC3cxFxMCEmyBgkFyx/DvqnvJR1Pa+W1xHnmz2ZgQaR8W?=
- =?iso-8859-1?Q?QsfELcI0jKwtvjVaPH7boXJylIgGunNqJMK/Uqj8lX0lge+gkGAgEDNUEw?=
- =?iso-8859-1?Q?qQiaLj4NGMefFrqZ6NyTzKmclzW7LvHMZiB8+8v+suTuXWCyw6sqn5YYeD?=
- =?iso-8859-1?Q?4+5tDgJyo2xkfZJvLhUGxnVTKFlBcvFVILu92nIMMsJifJ7gDHidP/50G9?=
- =?iso-8859-1?Q?1Cskh6ZUvW8Zm1qLHpVPHZzYFHq6cMtY0g5gPlycroAE1V+WlQ9esiDram?=
- =?iso-8859-1?Q?vVQzH+Dz9ZdVIvagUvHrj7gtLubKJtpv27bIi2WMnHgM/FbNND09skwqNY?=
- =?iso-8859-1?Q?iSzrW1N/wtvO8bsw4s8QGlbSexVaY8VsGNGucTm35SYtEhStoNfr/3olI5?=
- =?iso-8859-1?Q?6ovH9YKvGSCv+b8cEX+kxBzHZZDkPqnap4H+u5M0SK6+ldUbqeSrjmbcAB?=
- =?iso-8859-1?Q?35oSqwZBfKzwxkmnl9apCSNm5oQX9pl1V1nzhn36P7fm1c7zzU1pttz70I?=
- =?iso-8859-1?Q?+T8ai4eITG1MFl0JIhRW/fHMOXEUCiSCGAta8ygxr556RiFSC0KhZdXpC8?=
- =?iso-8859-1?Q?mmsLY8Rxi3+w4MUQ3jPgE+0ls8pYLR7LsthDe0zp0nJkigUyvBepCiaG89?=
- =?iso-8859-1?Q?nB8azz+X7apUG+m5NQ658yx96SKXzniiBGjmtLimd1PLRD3KVm9Iof5wMC?=
- =?iso-8859-1?Q?Kl1JfQGJ5p8vwJC3hbXhyvt6gqwbIPIPE8rkrbXBc1IJzkLrB7/SK2EeGU?=
- =?iso-8859-1?Q?u8yCNDen03Nk0qsyxqvkPlCASG5vxW4gTAtv1UFApZVjfxMcDESv9Mks88?=
- =?iso-8859-1?Q?6+VuukB34PEDpbcBEfvy1Qw7iyYM1J5ukwH9+WmKxmdAYhB1XAxSev6+an?=
- =?iso-8859-1?Q?8SVSMTJBs58X7YKJw3q7S82SvYDpQs+zz0oOVw=3D=3D?=
-x-forefront-antispam-report: 
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR03MB7141.namprd03.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230038)(1800799022)(366014)(7416012)(376012)(38070700016);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: 
- =?iso-8859-1?Q?xmkoB/tdvjuiCqKoi2vGQbTF0cpfu2O9bvJRktKGDmCaiyVabLkiEHnbtP?=
- =?iso-8859-1?Q?MLtlb22LT94/gC+/cbEl4s+Sfyx4QWAqaDzDN6CFUDj4WvPPRSi11sz9lU?=
- =?iso-8859-1?Q?AV3jsSjk6N79/qjQKbyGdZsNZwk6VhwpidmFrNoNf5aRP+fFAvyPmHg0wh?=
- =?iso-8859-1?Q?NjIUznWSomt1ZFWAd6ssSpBW5LREAuoU0MSr85rfoqSraBduhiv4GNYl2H?=
- =?iso-8859-1?Q?h/J3fMau6G+AR7qlBr6wqvc4TnmbVVLxASxD3FuM1kxH3ZHvU6eLEG77Qp?=
- =?iso-8859-1?Q?cRzLXtyg/4vYah4qvu5n/AVX1aOql53U0+NtldF2hooGVzyz1ejv/QeirC?=
- =?iso-8859-1?Q?/HH9i8/JqWNH3k2owOClSThCyb0k1hPEfoLGweQSh2aa+EkIPowdDgdcHG?=
- =?iso-8859-1?Q?ejBXDHfm/MYREbjhi5P8ejXacuyNUvrOMUkBp03TmMrTKbD1MRBB6VcBIh?=
- =?iso-8859-1?Q?cgw9+TgnFC6Dsikocmm9xU40jdWuw09Sse7nbGuHdf4hOfxo82bX1ngfie?=
- =?iso-8859-1?Q?Mpkp7Osh6XsJ3EH4aE5Xbz93QxptGeAB7vqbnSZ+AVKBKb1khx4MjyXtqp?=
- =?iso-8859-1?Q?hXq7KeXPX1FmiBuG+YXQTJ6fUhruOSfUzIkV43fei7rG5+0x0AaaHa3eRq?=
- =?iso-8859-1?Q?CfR5cwyxlrTW3GPaOMWcGGHsvbEJ44hB8yStl9xHEa3WPlhA48qInPcJqG?=
- =?iso-8859-1?Q?YIq/lT5hziYLtQmEtOH4mlNyEoAz0W3YKXwCYybogrFtUlyiKl7Zh/RKt6?=
- =?iso-8859-1?Q?Ei6413YdZmLC/+7qI9yxt/QJVHHbiTpmuZRk96MnY3F4apOFmekRu9XNz1?=
- =?iso-8859-1?Q?CcMoEuc/I34MjtZ4v35aYX5fiROJmOtqJPpiQeh6haHRm4ymase65gBz6E?=
- =?iso-8859-1?Q?osqW454mDCKFs1XIYA7GldrAof1R0/1xkGf6elp/r2SaBO3eAu1y2HonPu?=
- =?iso-8859-1?Q?OLsh1XFaQO35IO9QwfLTdLLIVl16u+RwPl7JUxNIZ611wLjmQCFJgxyUAp?=
- =?iso-8859-1?Q?GaUzItOi0V3cm8/llZnIjL5dCx9QJigygOz2IFb2/xiH2IvB5+n4bnwzi7?=
- =?iso-8859-1?Q?05/HXpC962fiuUZB6jzXrVlLIPhMo35odvxVQ70YBdhdaIOOMWhRuFhDIx?=
- =?iso-8859-1?Q?tqoDok7/YhdaMyxza67ntMA10Ot/NS2meYUT5qj2P1sZyNHELofzjV/5T6?=
- =?iso-8859-1?Q?lmHwb/26rZdJ0X+30jZLkK463A3TTVv6QDEE3ywpSpZX4cWnf9Ot6q1ZJ0?=
- =?iso-8859-1?Q?QodmxtIVta2NOauk162lfznq1PRwPE2F/GzRq03HUt1GImdoft/+DoX7fA?=
- =?iso-8859-1?Q?dA/yZ1DRGqROSvVujOQB5BZjLKa1SdxS8D+GM1yuVIPXkLGI0pXVX4pGzQ?=
- =?iso-8859-1?Q?yfG71PLPtTFXy4ZPH8ncQH5+IvvTfL15RDP5vWT6JfIZRxXbOKmdNRat1t?=
- =?iso-8859-1?Q?1APoGmMdhyvcF1Oli3HaQ25PYOmCNjO2FC2kd+KDLkmm5JDB7xG0LnAK8d?=
- =?iso-8859-1?Q?84TE0FB6chj+Rkw3U0CjD1nhUFxkbC9p9hn3xWvCHWDNXK88ZBZniZpuDB?=
- =?iso-8859-1?Q?jtzv96pXIbBEtFMk/2NJ3p9RioahqmcHGorbG9XQAo6mC9ZitVi5Lua0vf?=
- =?iso-8859-1?Q?cBIoA7UGCxBSOnAVnW7afcLiTbuBtJJAos34SUvmUxIWxYxCWqOi1YfA?=
- =?iso-8859-1?Q?=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3241E880;
+	Tue, 25 Jun 2024 16:02:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719331351; cv=none; b=ZI14ZW1KXvnrao5DUG5cxw/ORY1QgxdKI0QrSfvzXN63x7skL5zZtljuxw9W2Q9zf702yZsYDLZrqRFJy+mLSuE2EXytT3enuIjddeOtWKvaceW4oEqA+9URnh22qjmR89RybiIQ8bx6jeiCT92Mk0f65EXvUhtwj/n1Wg0spNQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719331351; c=relaxed/simple;
+	bh=w3MjqKvXOCvfTZZTK3seK4G6ECGT2Vpba6LHoB4jzT0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KAEyxnxxGGVoxbvCOm7BeS51A5V6tAQyZ353anBZCVYRq4CvczwQgZxOqXZ6w0x/MIF6oxGo7BSy2i5LQm7jc3vAwrUsO808HzWYtvBQYqKmpgPUX859QQ6FSdmgI9UBKNx9tM11bs19tRG70K6vyYL/GQJ6vuYuE+pEoaioObo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RBiZLdzF; arc=none smtp.client-ip=209.85.215.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7182a634815so2801883a12.3;
+        Tue, 25 Jun 2024 09:02:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719331349; x=1719936149; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7/Ah6KTr4qN3qklceLjaouWh+axRQgCE/MoqHAZqywg=;
+        b=RBiZLdzFJivWBHwfCCRiXYccdu1W+uXJHW+bwbpSjrvrCqIaCv3RzfeOScxZuBpUuq
+         DJxFCncoCJyWWLwmiIMbi8Rl+9XItfvjnl1i0SgVXTnf+lueDbDfkEkfUvi14hlo9Wk9
+         RgaRtjq9yyYDhal8Qo73Jxt0rgSsxCUD8IM+I+oK3XoPiHtMJIqrHsQOZVUWHt/0rz8w
+         jVNRC7/9UVL/7G5dR0oWsKThdv8ToNOHxpeiMF3x+cjlqLCdOK/OK9Akr8Vw9dV0hHkG
+         6wLEBhdfFil68LTH/L2GoiWHnvOvCo1Kjg38ciKeF1OZWJuzYrNshyzjCswkEr4DT1Kk
+         rtDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719331349; x=1719936149;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7/Ah6KTr4qN3qklceLjaouWh+axRQgCE/MoqHAZqywg=;
+        b=upi3b2AeroVeuUv/f4ME0DedmruvoV3ksdrYzEI/QY3+OtkOyRp6mH2NYhLKX1NKxC
+         9GDlFwZSLNeJsY2kxaz4vD7i5RbcAlai4d/Ubp3+A9K8iPjEqi0XO77fd18uEpQATKOr
+         bFsS3/IxB5H1YVy/7qdcQbHR57viRQhGOQsQ9f1fQMsWMnt47H9qXedPhzOZXFwUwCxY
+         q5daQDpmlHpYJ7gqOcfQrFBiYqYPKyuV1h2fxd8328LYtUxj+2fRUUh7gHbcpvlARBfN
+         P1rY0LQRrMhxp0y6ETlpZJ8LZ3GFkzFXphTC4v4WJaeF8cZWVMUHcab0XZHE49NnaopP
+         Zl5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXWcfYS7XbhTTiIPbrL37FuaVbkwDjj/2Wtw94NlX4aTNMmu1DR7OCxoejz5ECM4bdvDBwYG1m8XlGgr5w8UtFobJ9xz3XuqMaQ2sgguuYf7wJdXrjvvbpYJCs553l1lCT99d8PafMt
+X-Gm-Message-State: AOJu0Yxqj0FoxNC7n8XVgbSNdRv2ymp2Ixxy+2IPB2ONAy/iKQA3th5T
+	F7fYjOfGDwWpTcJUhAqk0yl5SQXYY9EhQEBzMObzycYQnu89z/vN
+X-Google-Smtp-Source: AGHT+IGPTkSzRYvBzIr+SMsEB/iIU++4/A74QqzdXyJKZuSG3QMsFFZKdvVJlpS/UwCRCg8LA6flyA==
+X-Received: by 2002:a17:90b:3bce:b0:2c4:dc4d:83da with SMTP id 98e67ed59e1d1-2c86127e1a0mr6482780a91.10.1719331348755;
+        Tue, 25 Jun 2024 09:02:28 -0700 (PDT)
+Received: from [127.0.1.1] ([45.32.86.188])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c7e5af9de9sm10904009a91.37.2024.06.25.09.02.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Jun 2024 09:02:28 -0700 (PDT)
+From: Yasin Lee <yasin.lee.x@gmail.com>
+Subject: [PATCH v8 0/3] iio: proximity: Add TYHX HX9023S sensor driver
+Date: Tue, 25 Jun 2024 23:58:51 +0800
+Message-Id: <20240625-add-tyhx-hx9023s-sensor-driver-v8-0-0c224e3bddbc@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: analog.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH0PR03MB7141.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d2dda2ee-9fd1-4a88-c8f8-08dc952eacb2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Jun 2024 15:51:27.8185
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: eaa689b4-8f87-40e0-9c6f-7228de4d754a
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: oMou3M0JXB27HHEYHLEnM2HvbL73qc6vn1JiuY8FJfEF7tUPJTYzCHWqpn1qt7IWfYWkh3PaHM4L3x36NNH6KFo79vy0JutQn5I8K5QHt3U=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR03MB7031
-X-Proofpoint-GUID: tJxeM1pEtWh8mVH9j3olPT6abd4Wr1R3
-X-Proofpoint-ORIG-GUID: 7_aXOyyOwx2I3uOwGEaV2ZRixWPWRnRc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-06-25_11,2024-06-25_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 spamscore=0 malwarescore=0 phishscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 mlxscore=0 bulkscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2406250118
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADvpemYC/5XQPW+DMBAG4L8Sea6Rz+CvTgFCt1ZVO1YdIDbBa
+ sDIpogo4r+X0KGNOkQd37vT80p3RsF4awK635yRN6MN1nVLkHcbtG/K7mCw1UtGlNCEcOC41Bo
+ Pp2bCzaQIjQMOpgvOY+3taDw2QlcmrmrDFEcL0ntT22kteHtfcmPD4Pxp7RuTyxS9PonnF6CPm
+ QQCVO0kSJJBrpiKU1kQIdPkIaPbq7OoK9vea6BR752O3OdwdO4j2rsWXVpG9lfO+I6kGdCECyV
+ yLgrKsjTJi3/KfJW/30Hh1jtGjgnmDBQvlzWpYXtoS3v84cRvjt3kxMJVoDmrKAUJV9w8z1+ej
+ ThjzwEAAA==
+To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com
+Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org, Yasin Lee <yasin.lee.x@gmail.com>, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719331341; l=7866;
+ i=yasin.lee.x@gmail.com; s=20240616; h=from:subject:message-id;
+ bh=w3MjqKvXOCvfTZZTK3seK4G6ECGT2Vpba6LHoB4jzT0=;
+ b=zBgWgigGUBMPkeSMgmVf3SMy8YYzewWJMECKwREQ2GuxLbyIijb0xgUwGPgTqzeJO/4kfu9+t
+ OLyOoAZOOksD5yUc1G/sR3E4iMHscAz7Y2AAsprNcC6fl1QjjlSw1yY
+X-Developer-Key: i=yasin.lee.x@gmail.com; a=ed25519;
+ pk=BU85jOyDTb45hxm+MZA26zg/m26xjGZhLgKrPSRtySI=
 
+Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
+---
+Changes in v8:
+- Removed incorrect tags from the commit messages 
+- Removed duplicate properties in the dt-binding.
+- Link to v7: https://lore.kernel.org/r/20240625-add-tyhx-hx9023s-sensor-driver-v7-0-b1d65b221811@gmail.com
 
+Changes in v7:
 
-> -----Original Message-----
-> From: Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-> Sent: Tuesday, June 25, 2024 1:38 AM
-> To: Conor Dooley <conor@kernel.org>
-> Cc: Paller, Kim Seer <KimSeer.Paller@analog.com>; Jonathan Cameron
-> <jic23@kernel.org>; linux-kernel@vger.kernel.org; linux-iio@vger.kernel.o=
-rg;
-> devicetree@vger.kernel.org; David Lechner <dlechner@baylibre.com>; Lars-
-> Peter Clausen <lars@metafoo.de>; Liam Girdwood <lgirdwood@gmail.com>;
-> Mark Brown <broonie@kernel.org>; Dimitri Fedrau <dima.fedrau@gmail.com>;
-> Krzysztof Kozlowski <krzk+dt@kernel.org>; Rob Herring <robh@kernel.org>;
-> Conor Dooley <conor+dt@kernel.org>; Hennerich, Michael
-> <Michael.Hennerich@analog.com>; Nuno S=E1 <noname.nuno@gmail.com>
-> Subject: Re: [PATCH v4 4/5] dt-bindings: iio: dac: Add adi,ltc2672.yaml
->=20
-> [External]
->=20
-> On Mon, 24 Jun 2024 18:00:24 +0100
-> Conor Dooley <conor@kernel.org> wrote:
->=20
-> > On Mon, Jun 24, 2024 at 03:26:26PM +0000, Paller, Kim Seer wrote:
-> > >
-> > >
-> > > > -----Original Message-----
-> > > > From: Jonathan Cameron <jic23@kernel.org>
-> > > > Sent: Sunday, June 23, 2024 9:44 PM
-> > > > To: Conor Dooley <conor@kernel.org>
-> > > > Cc: Paller, Kim Seer <KimSeer.Paller@analog.com>; linux-
-> > > > kernel@vger.kernel.org; linux-iio@vger.kernel.org;
-> devicetree@vger.kernel.org;
-> > > > David Lechner <dlechner@baylibre.com>; Lars-Peter Clausen
-> > > > <lars@metafoo.de>; Liam Girdwood <lgirdwood@gmail.com>; Mark
-> Brown
-> > > > <broonie@kernel.org>; Dimitri Fedrau <dima.fedrau@gmail.com>;
-> Krzysztof
-> > > > Kozlowski <krzk+dt@kernel.org>; Rob Herring <robh@kernel.org>; Cono=
-r
-> > > > Dooley <conor+dt@kernel.org>; Hennerich, Michael
-> > > > <Michael.Hennerich@analog.com>; Nuno S=E1 <noname.nuno@gmail.com>
-> > > > Subject: Re: [PATCH v4 4/5] dt-bindings: iio: dac: Add adi,ltc2672.=
-yaml
-> > > >
-> > > > [External]
-> > > >
-> > > > On Wed, 19 Jun 2024 18:57:59 +0100
-> > > > Conor Dooley <conor@kernel.org> wrote:
-> > > >
-> > > > > On Wed, Jun 19, 2024 at 02:49:03PM +0800, Kim Seer Paller wrote:
-> > > > > > +patternProperties:
-> > > > > > +  "^channel@[0-4]$":
-> > > > > > +    type: object
-> > > > > > +    additionalProperties: false
-> > > > > > +
-> > > > > > +    properties:
-> > > > > > +      reg:
-> > > > > > +        description: The channel number representing the DAC o=
-utput
-> > > > channel.
-> > > > > > +        maximum: 4
-> > > > > > +
-> > > > > > +      adi,toggle-mode:
-> > > > > > +        description:
-> > > > > > +          Set the channel as a toggle enabled channel. Toggle =
-operation
-> > > > enables
-> > > > > > +          fast switching of a DAC output between two different=
- DAC
-> codes
-> > > > without
-> > > > > > +          any SPI transaction.
-> > > > > > +        type: boolean
-> > > > > > +
-> > > > > > +      adi,output-range-microamp:
-> > > > > > +        description: Specify the channel output full scale ran=
-ge.
-> > > > > > +        enum: [3125000, 6250000, 12500000, 25000000, 50000000,
-> > > > 100000000,
-> > > > > > +               200000000, 300000000]
-> > > > >
-> > > > > IIO folks, is this sort of thing common/likely to exist on other =
-DACs?
-> > > >
-> > > > Fair point. It is probably time to conclude this is at least modera=
-tely
-> common
-> > > > and generalize it - which will need a dac.yaml similar to the one w=
-e have
-> for
-> > > > ADCs in adc/adc.yaml.  That will need to make this a per channel no=
-de
-> property
-> > > > (same as the adc ones).
-> > >
-> > > Should I proceed with generalizing common DAC properties in this seri=
-es
-> and does
-> >
-> > I think so, yes.
->=20
-> Yes, that would great.
+**tyhx,hx9023s.yaml:**
 
-I was wondering who would be the designated maintainer for new dac.yaml?
+- Removed the unused reference to iio.yaml
+- Removed the `input-channel` property and switched to inheriting the `single-channel` property from adc.yaml
+- Sorted the items in the `required` list
 
-> >
-> > > this mean somehow removing these common properties from existing DAC
-> bindings?
-> >
-> > I think that that one is up to Jonathan.
->=20
-> We can deprecate them.  At somepoint we can remove them form the
-> documented bindings
-> but we will need to keep them in drivers forever (which won't be costly i=
-n this
-> case).
->=20
-> Jonathan
->=20
-> >
-> > > > I'd also expect it to always take 2 values. In many cases the first=
- will be 0
-> but
-> > > > that is fine.
-> > > >
-> > > > Jonathan
-> > >
-> >
+**hx9023s.c:**
+
+- Header Files Section:
+  - Added `<linux/cleanup.h>`
+  - Removed `<linux/delay.h>`
+  - Replaced `<linux/math.h>` with `<linux/math64.h>`
+- Register Initialization:
+  - Deleted the `struct hx9023s_addr_val_pair`
+  - Changed the type of `hx9023s_reg_init_list` to `struct reg_sequence`
+  - Deleted the `hx9023s_reg_init` function and used `regmap_multi_reg_write` for register initialization in `probe`
+- struct hx9023s_ch_data:
+  - Added a comment to the member `mutex` explaining the data it protects
+- Function hx9023s_sample:
+  - Fixed the error related to `hx9023s_data_lock` calls
+- Function hx9023s_property_get:
+  - Added boundary protection for `reg`
+- Function hx9023s_id_check:
+  - Optimized the function
+- Function hx9023s_probe:
+  - Changed the call to `devm_iio_device_register` to `return devm_iio_device_register()`
+- Functions hx9023s_suspend and hx9023s_resume:
+  - Added `guard(mutex)(&data->mutex)`
+- Code Check:
+  - Ran `checkpatch.pl --strict` and fixed the identified issues
+- Link to v6: https://lore.kernel.org/r/20240621-add-tyhx-hx9023s-sensor-driver-v6-0-65196a9020f1@gmail.com
+
+Changes in v6:
+
+**vendor-prefixes.yaml:**
+
+- Formatted the description in the commit
+
+**tyhx,hx9023s.yaml:**
+
+- Added a link to the DataSheet
+- Added `#address-cells` and `#size-cells`
+- Removed the following properties:
+  - `channel-in-use`
+  - `channel-positive`
+  - `channel-negative`
+- Corrected the reference path to `adc.yaml`
+- Inherited `diff-channels` from `adc.yaml` as differential channels
+- Added `input-channel` property as a single-ended configuration channel
+- Made `vdd-supply` a required option
+- Used the generic name `proximity` instead of the chip name in the DTS example
+
+**hx9023s.c:**
+
+- Removed the following headers:
+  - `#include <linux/acpi.h>`
+  - `#include <linux/byteorder/generic.h>`
+  - `#include <linux/kernel.h>`
+- Added `#include <asm/byteorder.h>`
+- Updated some macro names:
+  - `HX9023S_DATA_2BYTES` ---> `HX9023S_2BYTES`
+  - `HX9023S_DATA_3BYTES` ---> `HX9023S_3BYTES`
+  - `HX9023S_DATA_BYTES_MAX` ---> `HX9023S_BYTES_MAX`
+- Added the following macro definitions:
+  - `#define HX9023S_POS 0x03`
+  - `#define HX9023S_NEG 0x02`
+  - `#define HX9023S_NOT_CONNECTED 16`
+  - `#define HX9023S_GLOBAL_CTRL0 0x00`
+- `struct hx9023s_ch_data`:
+  - Added comments explaining the members `raw`, `lp`, `bl`, `diff`
+  - Changed the type of struct member `thre` from `int` to `unsigned int`
+  - Removed member `cs_position`
+  - Changed the type of `struct buffer` member `channels[HX9023S_CH_NUM]` from `__be16` to `__le16`
+  - Moved `struct hx9023s_ch_data ch_data` to the bottom
+- Updated comments in the array `hx9023s_reg_init_list`:
+  - Changed `adc` to `ADC`, `avg` to `average`, and `osr` to `OSR`
+  - Provided a more detailed comment for the register `HX9023S_RAW_BL_RD_CFG`
+- `struct regmap_config hx9023s_regmap_config`:
+  - Added `.rd_type` member
+  - Changed `.cache_type` from `REGCACHE_RBTREE` to `REGCACHE_MAPLE`
+- Bugfix: The function `hx9023s_data_lock` now only operates on one bit instead of two
+- `hx9023s_ch_cfg` function:
+  - Replaced magic characters with meaningful macro definitions
+  - Changed byte concatenation operations to use `put_unaligned_le16`
+- Reviewed each function and made the following changes:
+  - Some returns now directly return `regmap_read/write()`
+  - For single-byte write operations, changed from `regmap_bulk_write(,,,1)` to `regmap_write(,,)`
+  - Changed the type of loop variable `i` to `unsigned`
+- `hx9023s_write_far_debounce` and `hx9023s_write_near_debounce` functions:
+  - Removed magic numbers and optimized the code
+- `hx9023s_get_thres_near` and `hx9023s_get_thres_far` functions:
+  - Used intermediate variables for readability and simplified the code logic
+- `hx9023s_set_thres_near` and `hx9023s_set_thres_far` functions:
+  - Optimized the logic and simplified the code
+- `hx9023s_get_prox_state` function:
+  - Changed the return value type to `int`
+- `hx9023s_data_select` function:
+  - Changed the return value type to `int`
+- `hx9023s_sample` function:
+  - Added intermediate variables for better readability
+- `hx9023s_ch_en` function:
+  - Optimized the code logic to reduce line count
+- `hx9023s_property_get` function:
+  - Rewritten due to DTS changes, and calls `fwnode_handle_put` on error to prevent memory leaks
+- `hx9023s_get_proximity` function:
+  - Added error handling logic for data
+- `hx9023s_get_samp_freq` function:
+  - Used macro definitions from `units.h` instead of specific numbers for frequency calculation
+- `hx9023s_set_samp_freq` function:
+  - Used macro definitions from `units.h` instead of specific numbers for frequency calculation
+- `hx9023s_write_raw` function:
+  - Changed the type of local variable `dir` to `unsigned`
+- `hx9023s_write_event_config` function:
+  - Replaced `set_bit` and `clear_bit` with `__assign_bit`
+- `hx9023s_trigger_handler` function:
+  - Added error handling logic for data; fixed uninitialized variable `i` bug
+- `hx9023s_buffer_preenable` function:
+  - Fixed uninitialized variable `channel` bug
+- Added `hx9023s_id_check` function
+- `hx9023s_probe` function:
+  - Returns directly on `devm_iio_device_alloc` error, without logging; removed `fsleep`
+- `hx9023s_resume` function:
+  - Calls `hx9023s_interrupt_enable` only when `data->trigger_enabled` is true
+- Removed `hx9023s_acpi_match`
+- Link to v5: https://lore.kernel.org/linux-iio/SN7PR12MB8101B6D0AB1246797C67E25BA4CE2@SN7PR12MB8101.namprd12.prod.outlook.com/
+
+Changes in v5:
+- I have addressed all the issues mentioned in the email responses.
+  Additionally, regarding the IIO-related header files, I have checked and found no unused headers.
+- Link to v4: https://lore.kernel.org/linux-iio/SN7PR12MB810129D8180B1C9593A8E078A4FB2@SN7PR12MB8101.namprd12.prod.outlook.com/
+
+Changes in v4:
+- Removed hardware-irrelevant properties from dt-bindings, retaining only channel configuration
+  related `channel-positive` and `channel-negative`. Grouped by channel.
+  Retained `channel-in-use` as it is hardware-related.
+- Removed redundant register definitions.
+- Reorganized `struct hx9023s_data`, extracting channel-related attributes
+  into a new `struct hx9023s_ch_data`.
+- Optimized bit operation related code.
+- Replaced `of_` versions with generic firmware parsing functions.
+- Fixed other issues mentioned in the email feedback.
+- Link to v3: https://lore.kernel.org/linux-iio/20240602152638.2c674930@jic23-huawei/
+
+---
+Yasin Lee (3):
+      dt-bindings: vendor-prefixes: add tyhx
+      dt-bindings: iio: proximity: Add TYHX HX9023S
+      iio: proximity: Add driver support for TYHX's HX9023S capacitive proximity sensor
+
+ .../bindings/iio/proximity/tyhx,hx9023s.yaml       |   93 ++
+ .../devicetree/bindings/vendor-prefixes.yaml       |    2 +
+ drivers/iio/proximity/Kconfig                      |   14 +
+ drivers/iio/proximity/Makefile                     |    1 +
+ drivers/iio/proximity/hx9023s.c                    | 1131 ++++++++++++++++++++
+ 5 files changed, 1241 insertions(+)
+---
+base-commit: 1231e065edd236295c31904fe760117551608efa
+change-id: 20240616-add-tyhx-hx9023s-sensor-driver-e7dbe3bfe596
+
+Best regards,
+-- 
+Yasin Lee <yasin.lee.x@gmail.com>
 
 

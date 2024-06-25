@@ -1,74 +1,65 @@
-Return-Path: <linux-iio+bounces-6885-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6886-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F489162C7
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 11:39:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8C99162E7
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 11:40:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24FEF1F21634
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 09:39:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D8A71C225AC
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 09:40:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D8A149E0B;
-	Tue, 25 Jun 2024 09:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF247149C4F;
+	Tue, 25 Jun 2024 09:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VktyD21u"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="AkL9TH5G"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx07-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CCA149DF7;
-	Tue, 25 Jun 2024 09:39:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8FD12EBEA;
+	Tue, 25 Jun 2024 09:40:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719308362; cv=none; b=oQOqgH37q3kQw+fW8iH9NsZxTpV0NtlC1AkyVev9dtNgtuZs7iaQQLubnGOctAXshXFzLrQ4mflFzBRKZhy1xost25Iwe2s5ST95GaPEJoat+YSNpWobMvVgn5aiQGooa87U0y5DnURQOUsoL9Q8q52qq3Z+O/ZlAmZniigNWIs=
+	t=1719308439; cv=none; b=dWaDIhPYzw40riEWhFhH6JlrsxmcDdGHe4UcpyDEn2Tl7SK11o0onfbqMz/HVYh50fH84Mhx+1G+x2wrkn3EDZluswxHuF8nPGJDPPfMufTETDFqFO+nBHsMUCCetE8CjyqqvNVTjDKIevoMIbdqHUselxKpMo1OUh3ZkhhTIw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719308362; c=relaxed/simple;
-	bh=qSt8uxSH0xIE8XfLl8qKGnMneG5V2yXlT9AiL+782YE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ndaugy0jVt3Ka7KO8IFzI/jW8PErAG7Vqf0VndwUdy+KsKhk1NDyux6XReIFAo7eeYDJN4qm//IGq7oLoYFL/eINQV2FKsPPs464Bvy9C8QI3Ub7p3E5cJfzSmXgQSDnvKfnEPsO5rFo4dKhOf65xB4p2PVDqlYQoh0OgyqLoQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VktyD21u; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-706680d3a25so2019977b3a.0;
-        Tue, 25 Jun 2024 02:39:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719308360; x=1719913160; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OBEHgMYq3/MriOx4WCBxMBdBffUVzqTsY+wD/cCZLes=;
-        b=VktyD21ujomd27px4bFNjSoyszyXUwpJtL6d08fe8PPrPH0hvtiQaK6BvMUbv1XaFn
-         UAytSaSj9wS1B85PjGTiIXjBBGB19MOBZ8Q4XYtMGAnpJutqn+n9RuSjPzd1HfuUv1bm
-         6Q28cll5Ku/lb8beg6viSBWNmISXWy4BdV6VFNMoWpHe7x3SNXMPcROrcYpXUPu6b5G3
-         ABKPaozKOW+Xr62km6dBaA4RKozVv7yGwa8/j74uSkk8Sie+X+0gHn2605RDoUQoeFun
-         DwdmjN2gcyvFemABF/z0pawRP1OFatcyIXcvrpJ8J0nE/99EpgdBOe0SEOQf2ltwTVeb
-         H8hQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719308360; x=1719913160;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OBEHgMYq3/MriOx4WCBxMBdBffUVzqTsY+wD/cCZLes=;
-        b=ENwgGw6wzKYm/81jWaOxuWb7HobhmZis/InkMNT7MbImClDhp5177ixg7MS5dt+tjR
-         SU8ELZssOTt7MfiOPFhUv6M9/6X4i1nh5KQy6Fazt+gftwm6afgBtRGE+av+XVvTLTJ+
-         UkMPQGO//sF1lGOCNfhVwsZ1r5yRBGc94HQIYBpb3O0ku0AbzxbCcPW/rK+nyaD/Lcis
-         HL5Cdag2idOGKdxf6iR4KUY1q3NPdhsgpXz5sNxTZXcEpA1yxeYAD3VFZr52vT9zmVJO
-         lJ67CEU52QxQR29U2Sax/motqp2lXOyFtbkhezA131ojJsoK1VvytEsYBT8eJxEMYmfW
-         c/mg==
-X-Forwarded-Encrypted: i=1; AJvYcCUsrlgnAo9vhZGygB2fPidzTzABQxAWt03NJDmWFTs9Ny6ZkuummZQpjN2LkZVN7g46s3nix7+WdR5tASdnGr6CUngAMgMgH2QN3xW3kPdIQ0NGfikOEyG4y308m7ZXfFA4HRhx5oEv
-X-Gm-Message-State: AOJu0YyTsrl2UsavfkTx0i0fBx6N54M1cwbZir8FetVRG0MuN+vaGzJU
-	NCd1C1Z1MUCNCbMVKxVOYK1+ffvWXuEWkPFQoyBKsIauMmqVZDTp
-X-Google-Smtp-Source: AGHT+IHBIQ/jNCFsutzz2Km9gbzxtDowez1M80OZk71j438LwHlAL4TN5vGsgDhCvKPPmGh/MLiG8w==
-X-Received: by 2002:a05:6a21:6282:b0:1bd:260e:be97 with SMTP id adf61e73a8af0-1bd260ec538mr141746637.53.1719308360214;
-        Tue, 25 Jun 2024 02:39:20 -0700 (PDT)
-Received: from [100.90.230.39] ([45.32.86.188])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c819a7ec09sm8234396a91.16.2024.06.25.02.39.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 25 Jun 2024 02:39:18 -0700 (PDT)
-Message-ID: <f6368aee-98fc-4159-b87e-bc42f0f660d1@gmail.com>
-Date: Tue, 25 Jun 2024 17:39:09 +0800
+	s=arc-20240116; t=1719308439; c=relaxed/simple;
+	bh=H5HnNnY/XNOaVy9+Rj6kiq+AbxtEiockptJHnQSdJbs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Ux53Irqe4WJQHR50l8KD2aJc3HCEOWv9Gxhc/pPjGKcVv8JtOHs1jdfuiVB7b0ltyIc7S9fp5kPBcDDUH/IEogLDFGXzfuUwdr9OjaTlEmwtFIcpmtRVLxuZLqx6BCCxY3XZMH4ViRaOiW+Izc/1iLUpSlkvyFG5wPGEP5875II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=AkL9TH5G; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0046661.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 45P8PQOr019884;
+	Tue, 25 Jun 2024 11:39:57 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=selector1; bh=
+	GeKF0B4KkybIwEjranP7dZxhWP3U+JO4Jnkqjly78Wc=; b=AkL9TH5GukEU7FRz
+	5iqHat65Hxllr/1pNBwW47r47c39k4aJb6PirnSvSPM+xMqTsg2G6HBPcMuNNX+E
+	llW5Skv5/0uOuAsUGaeOBxtgmI4ybBxE32obnuifYHMopCcbyKlNOUd2AeEhenF+
+	remIbvdwOe/QhLP7/qRp5DOmfAGriu0OKZJj7w9TMO6FWYHBE9iSpuTrntS/Y5PU
+	p5kpa+iRyGFXCncxVaswLEC/ZwgUmQFHMHi3Nwb79CUTNzCrgDabd4hKh0ltRYf3
+	O6+aiX7CGXHoDpbZw/B5nvs/ouVfeZXywmG1igyghFmElA8TmgRc7TQalawCfE8t
+	DsKjhg==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 3ywngdarkf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Jun 2024 11:39:56 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 21B0840045;
+	Tue, 25 Jun 2024 11:39:51 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 8D17B214525;
+	Tue, 25 Jun 2024 11:39:21 +0200 (CEST)
+Received: from [10.252.26.63] (10.252.26.63) by SHFDAG1NODE1.st.com
+ (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Tue, 25 Jun
+ 2024 11:39:20 +0200
+Message-ID: <0f34cbad-ae0e-40ce-a3e7-df33edc56256@foss.st.com>
+Date: Tue, 25 Jun 2024 11:39:20 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,57 +67,215 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 1/3] dt-bindings: vendor-prefixes: add tyhx
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, yasin.lee.x@outlook.com
-Cc: devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-iio@vger.kernel.org
-References: <20240625-add-tyhx-hx9023s-sensor-driver-v7-0-b1d65b221811@gmail.com>
- <20240625-add-tyhx-hx9023s-sensor-driver-v7-1-b1d65b221811@gmail.com>
- <8ce23bc6-e742-4851-9a26-ca2ab947005d@kernel.org>
- <30600f33-71bf-4abd-9de6-1c7c07e94d77@gmail.com>
- <1a3e5503-8087-41de-84b4-8db533d0ad5f@linaro.org>
+Subject: Re: [PATCH 8/8] iio: adc: stm32-dfsdm: add scaling support to dfsdm
+To: Jonathan Cameron <jic23@kernel.org>
+CC: Lars-Peter Clausen <lars@metafoo.de>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        <linux-iio@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>
+References: <20240618160836.945242-1-olivier.moysan@foss.st.com>
+ <20240618160836.945242-9-olivier.moysan@foss.st.com>
+ <20240623162110.708032af@jic23-huawei>
 Content-Language: en-US
-From: Yasin Lee <yasin.lee.x@gmail.com>
-In-Reply-To: <1a3e5503-8087-41de-84b4-8db533d0ad5f@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Olivier MOYSAN <olivier.moysan@foss.st.com>
+In-Reply-To: <20240623162110.708032af@jic23-huawei>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: EQNCAS1NODE3.st.com (10.75.129.80) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-06-25_06,2024-06-24_01,2024-05-17_01
 
+Hi Jonathan,
 
-On 2024/6/25 17:15, Krzysztof Kozlowski wrote:
-> On 25/06/2024 10:31, Yasin Lee wrote:
->> On 2024/6/25 13:50, Krzysztof Kozlowski wrote:
->>> On 25/06/2024 04:15, Yasin Lee wrote:
->>>> Add vendor prefix for NanjingTianyihexin Electronics Ltd.
->>>> http://www.tianyihexin.com
->>>>
->>>> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->>> This is the only one which could actually happen, but still after 15
->>> fake tags I don't trust you. Where was it given?
->>>
->>> Best regards,
->>> Krzysztof
+On 6/23/24 17:21, Jonathan Cameron wrote:
+> On Tue, 18 Jun 2024 18:08:34 +0200
+> Olivier Moysan <olivier.moysan@foss.st.com> wrote:
+> 
+>> Add scaling support to STM32 DFSDM.
+> Perhaps a short description here of how this works?  Where does the scale come
+> from, what assumptions are made etc.
 >>
->> Sorry, I think I misunderstood the meaning of these tags. I will remove
->> all of them.
-> Hm, this one could actually happen, so did you receive it or not?
->
-> Best regards,
-> Krzysztof
 
+Sure. Requires more explanations. Done
 
-No, I didn't receive tags from others. I think I only received the one 
-explicit response from you.
+>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+> 
+> Some minor stuff.
+> 
+>> diff --git a/drivers/iio/adc/stm32-dfsdm-adc.c b/drivers/iio/adc/stm32-dfsdm-adc.c
+>> index 69b4764d7cba..93bf6035bd6d 100644
+>> --- a/drivers/iio/adc/stm32-dfsdm-adc.c
+>> +++ b/drivers/iio/adc/stm32-dfsdm-adc.c
+> urn 0;
+>>   }
+>>   
+>> @@ -1060,7 +1072,7 @@ static int stm32_dfsdm_update_scan_mode(struct iio_dev *indio_dev,
+>>   static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+>>   {
+>>   	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+>> -	int ret;
+>> +	int i = 0, ret;
+> 
+> Don't mix assigned and unassigned variable declarations. Just use a separate line
+> as this can mean subtle assignment or lack of assignment issues sneak in.
+> 
 
-Thank you!
+Ack
 
+>>   
+>>   	/* Reset adc buffer index */
+>>   	adc->bufi = 0;
+>> @@ -1071,6 +1083,15 @@ static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+>>   			return ret;
+>>   	}
+>>   
+>> +	if (adc->backend) {
+>> +		while (adc->backend[i]) {
+> 
+> Could do similar to the suggestion below.
+> Mostly I don't like the index variable manipulation.
+> 
+>> +			ret = iio_backend_enable(&indio_dev->dev, adc->backend[i]);
+>> +			if (ret < 0)
+>> +				return ret;
+>> +			i++;
+>> +		}
+>> +	}
+>> +
+>>   	ret = stm32_dfsdm_start_dfsdm(adc->dfsdm);
+>>   	if (ret < 0)
+>>   		goto err_stop_hwc;
+>> @@ -1103,6 +1124,7 @@ static int stm32_dfsdm_postenable(struct iio_dev *indio_dev)
+>>   static int stm32_dfsdm_predisable(struct iio_dev *indio_dev)
+>>   {
+>>   	struct stm32_dfsdm_adc *adc = iio_priv(indio_dev);
+>> +	int i = 0;
+>>   
+>>   	stm32_dfsdm_stop_conv(indio_dev);
+>>   
+>> @@ -1110,6 +1132,13 @@ static int stm32_dfsdm_predisable(struct iio_dev *indio_dev)
+>>   
+>>   	stm32_dfsdm_stop_dfsdm(adc->dfsdm);
+>>   
+>> +	if (adc->backend) {
+>> +		while (adc->backend[i]) {
+>> +			iio_backend_disable(&indio_dev->dev, adc->backend[i]);
+>> +			i++;
+>> +		}
+> Something like
+> 		struct iio_backend **be = &adc->backend[0];
+> 		do {
+> 			iio_backend_disable(&indio-dev->dev, be);
+> 		} while (be++);
+> 
+> maybe. Up to you.
+> 
 
-Best regards,
+If you don't mind, I will keep indexes. Pointers here looks more 
+difficult to read, and pre/post incrementation in the loop condition can 
+easily introduce bugs, imho.
+		
+> 
+>> +	}
+> 
+>> @@ -1320,6 +1360,45 @@ static int stm32_dfsdm_read_raw(struct iio_dev *indio_dev,
+>>   		*val = adc->sample_freq;
+>>   
+>>   		return IIO_VAL_INT;
+>> +
+>> +	case IIO_CHAN_INFO_SCALE:
+>> +		/*
+>> +		 * Scale is expressed in mV.
+>> +		 * When fast mode is disabled, actual resolution may be lower
+>> +		 * than 2^n, where n=realbits-1.
+> 
+> As below, use a few more spaces.
+> 
+>> +		 * This leads to underestimating input voltage. To
+>> +		 * compensate this deviation, the voltage reference can be
+>> +		 * corrected with a factor = realbits resolution / actual max
+>> +		 */
+>> +		if (adc->backend[idx]) {
+>> +			iio_backend_read_raw(adc->backend[idx], val, val2, mask);
+>> +
+>> +			*val = div_u64((u64)*val * (u64)BIT(DFSDM_DATA_RES - 1), max);
+>> +			*val2 = chan->scan_type.realbits;
+>> +			if (chan->differential)
+>> +				*val *= 2;
+>> +		}
+>> +		return IIO_VAL_FRACTIONAL_LOG2;
+>> +
+>> +	case IIO_CHAN_INFO_OFFSET:
+>> +		/*
+>> +		 * DFSDM output data are in the range [-2^n,2^n],
+> Use a few more spaces. [-2^2, 2^n]
+>> +		 * with n=realbits-1.
+> n = realbits - 1
+> 
+> Just to keep it closer to the C coding style.
+> 
 
-Yasin
+Done
 
->
+>> +		 * - Differential modulator:
+>> +		 * Offset correspond to SD modulator offset.
+>> +		 * - Single ended modulator:
+>> +		 * Input is in [0V,Vref] range, where 0V corresponds to -2^n, and Vref to 2^n.
+> 
+> Avoid that long line with a suitable line break.
+> 
+
+Ack
+
+>> +		 * Add 2^n to offset. (i.e. middle of input range)
+>> +		 * offset = offset(sd) * vref / res(sd) * max / vref.
+>> +		 */
+>> +		if (adc->backend[idx]) {
+>> +			iio_backend_read_raw(adc->backend[idx], val, val2, mask);
+>> +
+>> +			*val = div_u64((u64)max * *val, BIT(*val2 - 1));
+>> +			if (!chan->differential)
+>> +				*val += max;
+>> +		}
+>> +		return IIO_VAL_INT;
+>>   	}
+>>   
+>>   	return -EINVAL;
+>> @@ -1449,7 +1528,15 @@ static int stm32_dfsdm_adc_chan_init_one(struct iio_dev *indio_dev, struct iio_c
+>>   	 * IIO_CHAN_INFO_RAW: used to compute regular conversion
+>>   	 * IIO_CHAN_INFO_OVERSAMPLING_RATIO: used to set oversampling
+>>   	 */
+>> -	ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+>> +	if (child) {
+>> +		ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
+>> +					BIT(IIO_CHAN_INFO_SCALE) |
+>> +					BIT(IIO_CHAN_INFO_OFFSET);
+> 
+> Indent looks a little odd. Maybe one more space neede?
+> 
+
+Ack
+
+>> +	} else {
+>> +		/* Legacy. Scaling not supported */
+>> +		ch->info_mask_separate = BIT(IIO_CHAN_INFO_RAW);
+>> +	}
+>> +
+>>   	ch->info_mask_shared_by_all = BIT(IIO_CHAN_INFO_OVERSAMPLING_RATIO) |
+>>   					BIT(IIO_CHAN_INFO_SAMP_FREQ);
+>>   
+>> @@ -1816,3 +1903,4 @@ module_platform_driver(stm32_dfsdm_adc_driver);
+>>   MODULE_DESCRIPTION("STM32 sigma delta ADC");
+>>   MODULE_AUTHOR("Arnaud Pouliquen <arnaud.pouliquen@st.com>");
+>>   MODULE_LICENSE("GPL v2");
+>> +MODULE_IMPORT_NS(IIO_BACKEND);
+> 
+
+BRs
+Olivier
 

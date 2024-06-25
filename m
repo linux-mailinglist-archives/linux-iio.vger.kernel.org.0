@@ -1,151 +1,198 @@
-Return-Path: <linux-iio+bounces-6888-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6889-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8AAB91640D
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 11:53:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC35E9165EA
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 13:13:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FA8C28598C
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 09:53:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A33C1F22E20
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 11:13:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA76714A0B7;
-	Tue, 25 Jun 2024 09:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3512A14B07C;
+	Tue, 25 Jun 2024 11:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="i07AcjVU"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="zra+vPBh"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C790146A67
-	for <linux-iio@vger.kernel.org>; Tue, 25 Jun 2024 09:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6218414AD0C
+	for <linux-iio@vger.kernel.org>; Tue, 25 Jun 2024 11:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719309197; cv=none; b=fbhwCcKy3I1comggyBsHgpWDkgJNtJdtVpebYh/yFI3N5j5DzD3e1TFaXH3JZf7crnlUaTBkz21kCk/H+At3q6bx/2o65Y6VlLcFPaEPeH0bOO7mT6HWxU5+WOYNN+m5A0Zlgbjp9RowfGHmX73jD4YgYBgbdYEXHQ54a7BVkT0=
+	t=1719313985; cv=none; b=PpdBFsmKCcf1YD+XwSkThUJrCOXpdtI/dIv0nGPsGL/lZirL3m4xe6hf+X8bLj5S7U9536Qo5KvBos82ZCpWg/AyoX+WZ2+5xJSQQI39H++IrpAldrobIl5W5LJA9yPkoICehKVFRe3sIXSYPIiklx9OsP+Ta5BCmBCG+4vI+N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719309197; c=relaxed/simple;
-	bh=5fOsMfA//a10gbMrFTNNN7q0nF/8Yis07sAIUeCpLTw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ke94Wyu2EuhC/YLnSvLKGARqeqTpmwm7QDzHkx2wDnmW6/yhrrRrtcKsHp0AJ9OnEn9P5EmRj56Ero8yFnkFpyeO2F4oGPj90J2mFQlqLUkK9aD23JZ6yUUGXGl3GeJbKS8SmjudS9akE51e9WTgb5YiKd7gOlWz/SsOEWGZm4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=i07AcjVU; arc=none smtp.client-ip=209.85.167.42
+	s=arc-20240116; t=1719313985; c=relaxed/simple;
+	bh=ZPOD4YjlpbiEJX/ltS7DkVMVnGceP4CuYQ83WTgqyEY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iW7JYRBdQ+hWkYgBPS4KNydF2KXU+iM7DXqLKLn+AbaijEJHrApqurPjHzKw19cdeCoh/htuuiTUiuXCfIhTih5IltoRO9LVzV7Sq+gHt32Es6B4q4BpQg3ENSKGyuQmHejviGh3njrlk1dVbUmgsR/8BvfgIv2Sm5tt4jAc2ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=zra+vPBh; arc=none smtp.client-ip=209.85.222.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52cd9f9505cso4234387e87.0
-        for <linux-iio@vger.kernel.org>; Tue, 25 Jun 2024 02:53:13 -0700 (PDT)
+Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-80f94e4c183so59615241.3
+        for <linux-iio@vger.kernel.org>; Tue, 25 Jun 2024 04:13:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719309192; x=1719913992; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9RqUVVAOM1tDnUN3dY9Htp5pIdnqRxsviToP8WQQNb8=;
-        b=i07AcjVUs1neguNqZa0t2Uk+lRdQUR12OZIMEny1LnLpwJNQSVAQKDtmpOG53FOZAb
-         5vVOyxDAFEqR8icqhSjV6nQBJdZBN8XULJEDO2QkOL0YFhB9AEGMOKr20FHxrNkYGgYE
-         390iWRbr5Z8iqutVqaMPutTZQTuZQr7fV6GVLpQzkA3MdHiax9X8PXF9QP1nw2i6nTLG
-         q0qnilEDcE3v0O7DBgg4DM34KAIoe7WyK35iolAD/v7D1IpgKplxTM4IElxtfSJ1PP26
-         cLYo3ZSAkYnOjYdHgSa17uX75+I6JEXRT9uzi5mMSMncFDMOqENf4S8NRXbZwaDsYHuT
-         1hnw==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719313980; x=1719918780; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OUdVCzPrKxaha8DCYOqNe6BhofBEMrLm8EHJxR09Qzk=;
+        b=zra+vPBhjcV5lDNyDqPbYB94gSDfl0Ki3iz1Q74HF2xrKTLyJqYr/OtQJopB7tbIQX
+         lAV3AL/pN43G9tYV2e6+L2ah2ecS3jHzsNMS5DgWop788ZAfZ/RS1dMPyMLM0ZUUIuz4
+         jGErah7FFaVquvjv5ju8zgk/nLrDZLMacZWINRk+G+NV9/JKpW9WzR7qDxiamWjdZYDb
+         edVi7Xsc3hcOvhzoGjIbGozkJWcOxAoluuoKzjeV1wtiIondHvrlpx6+GjjO2DB+Ba0U
+         Ev5b95zoyQNx4QrL7qDWq1QdBKM73FgKjVsghXI6L16m0tScOkWWypkfw1cgaFvleYdz
+         jh0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719309192; x=1719913992;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9RqUVVAOM1tDnUN3dY9Htp5pIdnqRxsviToP8WQQNb8=;
-        b=M/K2yKz6Z+OyLTk+NPKuAI3iXksWDlDcFm65rFPvTNfx89qw9re4x7zRl18UWgdPwR
-         JEAUwwLoU9DPVJoKHsCs502e3KJa5BtejPJZyEeH6KlgifJ/mmM2DXz1bkfLMBPoDRMY
-         3+C5k5j/C4iD+IgKSuKlgtyAVaQHIcZ2RoPbkbERqN7CbE9VyK/dOXjr4m89i+Ro9lfP
-         J36RvUXPkymVnzvkz304Q3uJkdAtf3TzumM8VMuQiTLLYO4RC1nCH2IMND6F+xiKzAAX
-         SlG+U5yD1BZFpaOSr60Z7yCfazkq+OgieQp4W+7MKCk+S+pmvVXiy8WSVXPUaniTkfVu
-         0umw==
-X-Forwarded-Encrypted: i=1; AJvYcCX111p+advMHR+1tfwHhOyTtus76I9gkiGtdaSwQ5Ix9YReWDNtsZKM9rlN24eJKLpyitV+LQYrPg0Wu8zQtPtT1A+ZiyBd8yS/
-X-Gm-Message-State: AOJu0YxSQrUvpGJlbGeT7ipU42gMAoC7xFbmZU7E7mcl+ErNijBHpoO8
-	dhP6w53VbWDPjnEDbP9OBkt+D2CEUX6inBSUs2vBA1CJs/m8wWPkb+v+D3VSH4E=
-X-Google-Smtp-Source: AGHT+IHpM8BunwwPdvPiWNmjKmtzMLfC9/Piq1T7ZczlkFsx69QObhWgnzrhF+eLaMHFOp00zaHOrA==
-X-Received: by 2002:a05:6512:2399:b0:52c:e36f:369b with SMTP id 2adb3069b0e04-52ce36f3750mr4669582e87.17.1719309192280;
-        Tue, 25 Jun 2024 02:53:12 -0700 (PDT)
-Received: from localhost ([2a01:e0a:3c5:5fb1:1b57:b4a1:3d50:32a2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4248179d8e0sm174183925e9.3.2024.06.25.02.53.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jun 2024 02:53:11 -0700 (PDT)
-From: Jerome Brunet <jbrunet@baylibre.com>
-To: Neil Armstrong <neil.armstrong@linaro.org>
-Cc: Jonathan Cameron <jic23@kernel.org>,  Lars-Peter Clausen
- <lars@metafoo.de>,  Kevin Hilman <khilman@baylibre.com>,
-  linux-kernel@vger.kernel.org,  linux-amlogic@lists.infradead.org,
-  linux-iio@vger.kernel.org,  Rob Herring <robh@kernel.org>,  Krzysztof
- Kozlowski <krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,
-  linux-arm-msm <linux-arm-msm@vger.kernel.org>
-Subject: Re: [PATCH 0/2] iio: frequency: add iio support for Amlogic clock
- measure
-In-Reply-To: <52fab9b5-2b44-49c0-8b90-cb2a74eb6633@linaro.org> (Neil
-	Armstrong's message of "Tue, 25 Jun 2024 11:38:44 +0200")
-References: <20240624173105.909554-1-jbrunet@baylibre.com>
-	<52fab9b5-2b44-49c0-8b90-cb2a74eb6633@linaro.org>
-Date: Tue, 25 Jun 2024 11:53:11 +0200
-Message-ID: <1jzfr9gxh4.fsf@starbuckisacylon.baylibre.com>
+        d=1e100.net; s=20230601; t=1719313980; x=1719918780;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OUdVCzPrKxaha8DCYOqNe6BhofBEMrLm8EHJxR09Qzk=;
+        b=Po/RMFOG5l7AGJYdEPLffEZsr2TlzCcf2+s2SsOwwdnJG8+7a8mrHdnpWKP+kYM11E
+         Ly31pl1ybpoaG+aWsfHjigjEtuLqBQxI9B17nYz774hvh8ewO6nHSHT/Z2KJ+Tfv6Jv+
+         fNe8OANlrM25jAQKkVdivBUw/G+p4YGYGYiYtUJY2E3XCWUzEyCpuPk8cCfjR5u6L5W2
+         wQ39EyL0gPOivZfz/SqPy+YKOUOTHdcNJcMbEywv8eu7SLbtgqx2CF1WKJeowbJk0Uio
+         eFUMLPGUF0MP9V1KJ1QKGeuRGQa5SvKgp3aQYGadVA/PAgRdVit9vIxeWlJTanWc9CV9
+         NwzA==
+X-Forwarded-Encrypted: i=1; AJvYcCWdFTqOZizGQIxmTVJy3EC4qoAmwHzZg0SWiqbDhxs9DLMRJbGcdRtp3GdO0HggRLEwz1qUVNuJoJqRWZX13ElNKLGX+6RmSd8P
+X-Gm-Message-State: AOJu0Yx7sV48BJcLP6aGR7V9To2p9LlsUWGsT7ZkGuXfmQ9vlrY+OJYU
+	e3cAi7m9bscc62J9FZSfl+rua+LOYrepCSb79a+bAUBI/3+YwZMQW/r6jCwH8IMSy3X2oc4BzdD
+	bMjTIHICzGhjpnV/P7Uf9AnT4uHfPsaOum1BjewLKj8+zJ26wLdXQcA==
+X-Google-Smtp-Source: AGHT+IHpe8LdBovfaRlXpDtzomRv1Bjvca6P5F6RiEUH4J/fnXdzVhMiVhAsyolKVTaZ0xuC+GqLv55SLpkJWswGfz0=
+X-Received: by 2002:a05:6122:6025:b0:4eb:106:217e with SMTP id
+ 71dfb90a1353d-4ef612ca047mr7207047e0c.1.1719313980334; Tue, 25 Jun 2024
+ 04:13:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240621120539.31351-1-dumitru.ceclan@analog.com>
+ <CA+GgBR_7OXJLytDeF-MSJSAAgFRJm39wBbEXxSR6HUV_zcWg_A@mail.gmail.com> <7f61333b-1d43-4321-aa51-79273255454c@gmail.com>
+In-Reply-To: <7f61333b-1d43-4321-aa51-79273255454c@gmail.com>
+From: Alexandru Ardelean <aardelean@baylibre.com>
+Date: Tue, 25 Jun 2024 14:12:48 +0300
+Message-ID: <CA+GgBR8JoeUPKVs6h3-ucJk_AuzKyn6TWb0ZozsXYqcxSsmFuw@mail.gmail.com>
+Subject: Re: [PATCH] iio: adc: ad_sigma_delta: fix disable_one callback
+To: "Ceclan, Dumitru" <mitrutzceclan@gmail.com>
+Cc: jic23@kernel.org, dlechner@baylibre.com, dumitru.ceclan@analog.com0, 
+	linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Dumitru Ceclan <dumitru.ceclan@analog.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue 25 Jun 2024 at 11:38, Neil Armstrong <neil.armstrong@linaro.org> wrote:
-
-> Hi,
+On Tue, Jun 25, 2024 at 12:45=E2=80=AFPM Ceclan, Dumitru
+<mitrutzceclan@gmail.com> wrote:
 >
-> [+cc people from linux-msm]
+> On 21/06/2024 16:26, Alexandru Ardelean wrote:
+> > On Fri, Jun 21, 2024 at 3:05=E2=80=AFPM Dumitru Ceclan <mitrutzceclan@g=
+mail.com> wrote:
+> >>
+> >> The ADC ad7192 is a sigma delta ADC with a sequencer that does not
+> >> require a disable_one callback as all enable channel bits are within
+> >> the same register.
+> >>
+> >> Remove the requirement of the disable_one callback for sigma delta ADC=
+s
+> >> with a sequencer.
+> >>
+> >> This patch could be squashed with the commit that it fixes from patch
+> >> series: Add support for AD411x
+> >>
+> >
+> > This fix looks fine.
+> > But, then this raises a question if this needs be to extended to the
+> > `disable_all` and maybe `indio_dev->info->update_scan_mode` check.
+> > And if so, how should this be handled?
+> >
+> > For example:
+> > drivers/iio/adc/ad7124.c:    .disable_all =3D ad7124_disable_all,
+> > drivers/iio/adc/ad7173.c:    .disable_all =3D ad7173_disable_all,
+> > drivers/iio/adc/ad7192.c:    .disable_all =3D ad7192_disable_all,
+> > drivers/iio/adc/ad7192.c:    .disable_all =3D ad7192_disable_all,
+> >
+> > And:
+> > drivers/iio/adc/ad7124.c:    ret =3D ad_sd_init(&st->sd, indio_dev, spi=
+,
+> > &ad7124_sigma_delta_info);
+> > drivers/iio/adc/ad7173.c:    ret =3D ad_sd_init(&st->sd, indio_dev, spi=
+,
+> > &ad7173_sigma_delta_info);
+> > drivers/iio/adc/ad7192.c:    ret =3D ad_sd_init(&st->sd, indio_dev, spi=
+,
+> > st->chip_info->sigma_delta_info);
+> > drivers/iio/adc/ad7780.c:    ad_sd_init(&st->sd, indio_dev, spi,
+> > &ad7780_sigma_delta_info);
+> > drivers/iio/adc/ad7791.c:    ad_sd_init(&st->sd, indio_dev, spi,
+> > &ad7791_sigma_delta_info);
+> > drivers/iio/adc/ad7793.c:    ad_sd_init(&st->sd, indio_dev, spi,
+> > &ad7793_sigma_delta_info);
+> >
+> > At least the ad7791.c & ad7793.c drivers support parts with more than
+> > 1 channel, and there does not seem to be any `disable_all` hook
+> > defined (at least in iio/testing).
+> > I have not gone too deep with `indio_dev->info->update_scan_mode`, but
+> > it would be worth to do a check there as well
+> >
+> >
 >
-> On 24/06/2024 19:31, Jerome Brunet wrote:
->> Add support for the HW found in most Amlogic SoC dedicated to measure
->> system clocks.
->> This drivers aims to replace the one found in
->> drivers/soc/amlogic/meson-clk-measure.c with following improvements:
->> * Access to the measurements through the IIO API:
->>    Easier re-use of the results in userspace and other drivers
->> * Controllable scale with raw measurements
->> * Higher precision with processed measurements
->> Jerome Brunet (2):
->>    dt-bindings: iio: frequency: add clock measure support
->>    iio: frequency: add amlogic clock measure support
->>   .../iio/frequency/amlogic,clk-msr-io.yaml     |  50 ++
->>   drivers/iio/frequency/Kconfig                 |  15 +
->>   drivers/iio/frequency/Makefile                |   1 +
->>   drivers/iio/frequency/amlogic-clk-msr-io.c    | 802 ++++++++++++++++++
->>   4 files changed, 868 insertions(+)
->>   create mode 100644 Documentation/devicetree/bindings/iio/frequency/amlogic,clk-msr-io.yaml
->>   create mode 100644 drivers/iio/frequency/amlogic-clk-msr-io.c
->> 
+> disable_all and update_scan_mode callbacks are required only when the ADC
+> features a sequencer, as in you can enable more than one channel at a tim=
+e
+> and the ADC will automatically cycle conversions through all enabled chan=
+nels.
 >
-> While I really appreciate the effort, and the code looks cool, the clkmsr is really
-> a debug tool, and I'm not sure IIO is the right place for such debug tool ?
+> This feature is signaled by setting the ad_sigma_delta_info.num_slots att=
+ribute
+> to a value >1. The only drivers that set .num_slot from what I see are:
+> ad7173, ad7192, ad7124. So only these 3 are relevant in this discussion.
+>
+> For ad7192, disable_all() is useless as both ad7192_set_channel() and
+> ad7192_update_scan_mode() actually set to 0 other channel enable bits.
+>
+> I do not see any reason at this moment to extend this to disable_all and
+> update_scan_mode.
 
-The reason why I went through the trouble of doing an IIO port is
-because I need that for other purposes than debug. I need to to be able
-to check a frequency from another driver. I don't see a reason to invent
-another API when IIO provide a perfectly good one.
-
-The HW does measurements. IIO seems like the best place for it.
-
-For the record, I need this for a eARC support.
-eARC has a PLL that locks on incoming stream. eARC registers show wether
-the PLL is locked or not, but not at which rate. That information is
-needed in ASoC. Fortunately the eARC PLL is one of measured clock, which
-is a life saver in that case.
-
-Everything that was available through the old driver still is, with more
-precision and more control.
+Ack.
+Thanks for the explanation :)
+I think I also misread the code there; I was thinking num_slots is
+related to the number of channels.
 
 >
-> There's almost the same interface on qcom SoCs (https://github.com/linux-msm/debugcc) but
-> they chose to keep it in userspace until we find an appropriate way to expose
-> this from the kernel the right way.
+> >> Fixes: a25a0aab2187 ("iio: adc: ad_sigma_delta: add disable_one callba=
+ck")
+> >> Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+> >> ---
+> >>  drivers/iio/adc/ad_sigma_delta.c | 5 -----
+> >>  1 file changed, 5 deletions(-)
+> >>
+> >> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sig=
+ma_delta.c
+> >> index d6b5fca034a0..8c062b0d26e3 100644
+> >> --- a/drivers/iio/adc/ad_sigma_delta.c
+> >> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> >> @@ -672,11 +672,6 @@ int ad_sd_init(struct ad_sigma_delta *sigma_delta=
+, struct iio_dev *indio_dev,
+> >>                         dev_err(&spi->dev, "ad_sigma_delta_info lacks =
+disable_all().\n");
+> >>                         return -EINVAL;
+> >>                 }
+> >> -
+> >> -               if (!info->disable_one) {
+> >> -                       dev_err(&spi->dev, "ad_sigma_delta_info lacks =
+disable_one().\n");
+> >> -                       return -EINVAL;
+> >> -               }
+> >>         }
+> >>
+> >>         if (info->irq_line)
+> >> --
+> >> 2.43.0
+> >>
+> >>
 >
-> If it enabled us to monitor a frequency input for a product use-case, IIO would be
-> the appropriate interface, but AFAIK it's only internal clocks and thus I'm worried
-> it's not the best way to expose those clocks.
->
-> Neil
-
--- 
-Jerome
 

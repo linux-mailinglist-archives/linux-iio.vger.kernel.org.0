@@ -1,129 +1,124 @@
-Return-Path: <linux-iio+bounces-6913-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6916-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA9A0916DFC
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 18:24:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA532916EB2
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 19:00:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96A7C283D1F
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 16:24:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5B4E28B90A
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 17:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7167173325;
-	Tue, 25 Jun 2024 16:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30756172786;
+	Tue, 25 Jun 2024 17:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QibZCrOJ"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="lKZFGi00"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E62449629;
-	Tue, 25 Jun 2024 16:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71E41494D9;
+	Tue, 25 Jun 2024 17:00:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719332664; cv=none; b=DMNsON4fGDqaeytyVpxwNecJf1M65dQJXPFzjX0dd/RfDnNeX/8rRSNBoJ4yFnL/fjgW19zyDwStdcGg6x7u6sc1cM5PPp/44PNOiWXLjvqyC5+4JMIlR2ASknMs7Shh2+F05XJkSR7M73qCAE9O41H+PYj079bDeWBJhbZOCe4=
+	t=1719334825; cv=none; b=k7FLxLp4Y/RGoK9hRxJiIQHauoaZwm00xbjSBJWwW6lgwK39S0Fp8dTC+oJLlfsFAw4OmQvzoPbG3it6IJsfttGI4OKFon9m55+lyfJlVXyyw7ifM44GrXvmCtcSt3uLE41oDPVoYBAAA1Qyw3Ixd6H7U9r635dQfuLzdr3pq8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719332664; c=relaxed/simple;
-	bh=7YZlz23yUHTKCjEJ0DtkNCpW8MKikV7v5efaQ6NoijI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AoctrbQ6TNO6Y+0kTE8mFFMUmdqcJcul1HyiwV5n4BCxHBQSdWodLA2p9lonkV/7EDRgYYs8z13jJQOSCvsyA9FWZLDzYB817AIQDQj277bPXUzGUPiTNGLdAgbjnB367G7nk/cQNnBBVoqWqAo6oG3j/vi4aljqqVIoqzk1tIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QibZCrOJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C237DC32781;
-	Tue, 25 Jun 2024 16:24:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719332664;
-	bh=7YZlz23yUHTKCjEJ0DtkNCpW8MKikV7v5efaQ6NoijI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QibZCrOJE3TdSC/l6jubXU5aQ6D6tBlszjzyGCmfHCrWr8u7S16hKoB+8UhJWUfUU
-	 50AX+3jqnm/RPWUcMAg70zsj9HanIUY6o2ws4vYQNHYSouCjdZk/l4we7TyaTVQHo1
-	 2OWuHTxFXU4ySpoth1awIcoY8clXvBWP09YMU2wDSfIlmBkM8pZDEwYiLC4RRLFe+y
-	 COx3WQLjoPVPZ9FdS4CK/hkhup7ppglV2YzHb+3LB/XlmJAro1WIKIdqgtFiijQKJq
-	 +CXEX43uXCnT231WwnkoF6SC8WeRGAfKPFFaUkgNOFb8ir0WedmZM7BqzZGCVmWogS
-	 F7QPoBObm0DQg==
-Date: Tue, 25 Jun 2024 17:24:18 +0100
-From: Mark Brown <broonie@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Corbet <corbet@lwn.net>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-iio@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] spi: add
- EXPORT_SYMBOL_GPL(devm_spi_optimize_message)
-Message-ID: <0bf8f28d-e8df-458e-aa23-f597ba009466@sirena.org.uk>
-References: <20240624-devm_spi_optimize_message-v2-0-58155c0180c2@baylibre.com>
- <20240624-devm_spi_optimize_message-v2-1-58155c0180c2@baylibre.com>
+	s=arc-20240116; t=1719334825; c=relaxed/simple;
+	bh=7zGkmCGwedhVhDlUUqPb+kRA9524NAzODRiWSHPQgVc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qKqUEyEnj//j/qfi0U+RTj1fjcjDo+KXA/yazqR5HfEgtmdz7wZEvtRXR+ZJEInUDcySL7ff8fLc2/z1OXh3D9qLHfX2HPjZGPIc20ooayuBeKqhqMXLBQ7SRF+paZh60C1fKmM6yJh5t6NRPbw3PL8xiPVat9W7r8V9UTeWgRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=lKZFGi00; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+X-Virus-Scanned: SPAM Filter at disroot.org
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1719334357; bh=7zGkmCGwedhVhDlUUqPb+kRA9524NAzODRiWSHPQgVc=;
+	h=From:To:Cc:Subject:Date;
+	b=lKZFGi00vOR3gge+h8j+BPt5adPxE55XO0ejK31HCF8KVMgYyHPN3gq6cqXGgS9s1
+	 kK+yMrqDXc+S73KKLziI6P/nmIY/GtFsNPIABdpPTwdQeRogl0+nzuq2DRJuWe8Ckb
+	 sR03DlR/ylMIf+0vB7iGNTTYj00zPAP4ZZnvNcVlVs3fb5McfBHxZ08ayJDZ7mFDhR
+	 YVHeOK9ttegmAVKnGAIDMQAzS93YfyK9FdTX8w2P9QLdt5PKk3Ix9UyM5v96YN8/v6
+	 o5pOCgS2vzAhtl3/AVsjc9oR1axLaNFtOvDBiXBcFpZgSgz/+YBX1I1VwgYWEB7Om3
+	 WwSKfSOnbRW7w==
+To: linux-iio@vger.kernel.org,
+	jic23@kernel.org
+Cc: devicetree@vger.kernel.org,
+	conor+dt@kernel.org,
+	Kaustabh Chakraborty <kauschluss@disroot.org>
+Subject: [PATCH 1/2] iio: light: stk3310: add support for stk3013
+Date: Tue, 25 Jun 2024 22:21:05 +0530
+Message-ID: <20240625165122.231182-1-kauschluss@disroot.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="Ko8OmLQlxLrDF+hM"
-Content-Disposition: inline
-In-Reply-To: <20240624-devm_spi_optimize_message-v2-1-58155c0180c2@baylibre.com>
-X-Cookie: Results vary by individual.
+Content-Transfer-Encoding: 8bit
 
+Add support for Sensortek's STK3013 in the driver. The part bears the
+product ID 0x31.
 
---Ko8OmLQlxLrDF+hM
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+As seen in [1], Sensortek lists STK3013 as a proximity sensor. But it
+has been experimentally observed that they do have ambient light sensing
+capabilities. Furthermore, [2] implements a proximity and ambient light
+sensor driver for STK3x1x devices, which is also indicative of the fact
+that these parts are also ambient light sensors.
 
-On Mon, Jun 24, 2024 at 03:10:30PM -0500, David Lechner wrote:
-> devm_spi_optimize_message() is a public function and needs
-> EXPORT_SYMBOL_GPL.
+[1] https://www.sensortek.com.tw/index.php/en/products/optical-sensor/
+[2] https://android.googlesource.com/kernel/msm.git/+/e6dfa4641d88201e8019be19ff557e5d2cf4572f
 
-The following changes since commit 6ba59ff4227927d3a8530fc2973b80e94b54d58f:
+Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+---
+ drivers/iio/light/stk3310.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-  Linux 6.10-rc4 (2024-06-16 13:40:16 -0700)
+diff --git a/drivers/iio/light/stk3310.c b/drivers/iio/light/stk3310.c
+index e3470d6743ef..003e7c1473d7 100644
+--- a/drivers/iio/light/stk3310.c
++++ b/drivers/iio/light/stk3310.c
+@@ -35,6 +35,7 @@
+ #define STK3310_STATE_EN_ALS			BIT(1)
+ #define STK3310_STATE_STANDBY			0x00
+ 
++#define STK3013_CHIP_ID_VAL			0x31
+ #define STK3310_CHIP_ID_VAL			0x13
+ #define STK3311_CHIP_ID_VAL			0x1D
+ #define STK3311A_CHIP_ID_VAL			0x15
+@@ -84,6 +85,7 @@ static const struct reg_field stk3310_reg_field_flag_nf =
+ 				REG_FIELD(STK3310_REG_FLAG, 0, 0);
+ 
+ static const u8 stk3310_chip_ids[] = {
++	STK3013_CHIP_ID_VAL,
+ 	STK3310_CHIP_ID_VAL,
+ 	STK3311A_CHIP_ID_VAL,
+ 	STK3311S34_CHIP_ID_VAL,
+@@ -700,6 +702,7 @@ static DEFINE_SIMPLE_DEV_PM_OPS(stk3310_pm_ops, stk3310_suspend,
+ 				stk3310_resume);
+ 
+ static const struct i2c_device_id stk3310_i2c_id[] = {
++	{ "STK3013" },
+ 	{ "STK3310" },
+ 	{ "STK3311" },
+ 	{ "STK3335" },
+@@ -708,6 +711,7 @@ static const struct i2c_device_id stk3310_i2c_id[] = {
+ MODULE_DEVICE_TABLE(i2c, stk3310_i2c_id);
+ 
+ static const struct acpi_device_id stk3310_acpi_id[] = {
++	{"STK3013", 0},
+ 	{"STK3310", 0},
+ 	{"STK3311", 0},
+ 	{}
+@@ -716,6 +720,7 @@ static const struct acpi_device_id stk3310_acpi_id[] = {
+ MODULE_DEVICE_TABLE(acpi, stk3310_acpi_id);
+ 
+ static const struct of_device_id stk3310_of_match[] = {
++	{ .compatible = "sensortek,stk3013", },
+ 	{ .compatible = "sensortek,stk3310", },
+ 	{ .compatible = "sensortek,stk3311", },
+ 	{ .compatible = "sensortek,stk3335", },
+-- 
+2.45.2
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git tags/spi-devm-optimize
-
-for you to fetch changes up to 7e74a45c7afdd8a9f82d14fd79ae0383bbaaed1e:
-
-  spi: add EXPORT_SYMBOL_GPL(devm_spi_optimize_message) (2024-06-24 21:25:57 +0100)
-
-----------------------------------------------------------------
-spi: add devm_spi_optimize_message() helper
-
-Helper from David Lechner <dlechner@baylibre.com>:
-
-    In the IIO subsystem, we are finding that it is common to call
-    spi_optimize_message() during driver probe since the SPI message
-    doesn't change for the lifetime of the driver. This patch adds a
-    devm_spi_optimize_message() helper to simplify this common pattern.
-
-----------------------------------------------------------------
-David Lechner (3):
-      Documentation: devres: add missing SPI helpers
-      spi: add devm_spi_optimize_message() helper
-      spi: add EXPORT_SYMBOL_GPL(devm_spi_optimize_message)
-
- Documentation/driver-api/driver-model/devres.rst |  3 +++
- drivers/spi/spi.c                                | 28 ++++++++++++++++++++++++
- include/linux/spi/spi.h                          |  2 ++
- 3 files changed, 33 insertions(+)
-
---Ko8OmLQlxLrDF+hM
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZ67zEACgkQJNaLcl1U
-h9AtDgf9G4HuXLXJ2ShPnYWdK55ZIitx+2RbwKOwcYn0s6zT4jUrMp8C2ggDu6Bk
-tEBWoHQq8LEjne7rvdJPe3bQgn1P/oX/uTyYrinnUCzACuv1D0HVmLOWescGu58K
-DFULjCinMjTDxTbTqIfmCyA00KzWbGdqPxyGuNAFUId+bRXVxR+DSJR4/4A9/A06
-39NlPhx41PePcsDgueEQActE2eZGWk3G/0wYybsgYIJx/sma5+oS+3+2fBr13xfq
-1Xaibgp2Vwf9qcANlaFVY3IVC4VyBBiQfAeSbzU7viDKAfcVGwYYajqg8XOIdnuR
-MjQFfz+1nXMQqqDPLK6Frx6hiwLUiQ==
-=YZv0
------END PGP SIGNATURE-----
-
---Ko8OmLQlxLrDF+hM--
 

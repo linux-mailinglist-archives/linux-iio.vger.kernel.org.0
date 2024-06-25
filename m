@@ -1,129 +1,186 @@
-Return-Path: <linux-iio+bounces-6861-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6862-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79CFC915A62
-	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 01:28:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A83915C03
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 04:07:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 370AD284CD4
-	for <lists+linux-iio@lfdr.de>; Mon, 24 Jun 2024 23:28:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13F33B21E99
+	for <lists+linux-iio@lfdr.de>; Tue, 25 Jun 2024 02:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2521A2C17;
-	Mon, 24 Jun 2024 23:28:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE822940D;
+	Tue, 25 Jun 2024 02:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nLHODb/E"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TvcKo7Gu"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B880D1A0731;
-	Mon, 24 Jun 2024 23:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681BC3D97A;
+	Tue, 25 Jun 2024 02:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719271684; cv=none; b=T2uNWopw/VFrtyVIU2HLdwOvNq/UoSwCo1S41Vy5vM3neyyOAwo0Ff5p2sSHUF+vD4Ja+fjKa5ZA2ccgUckXSXUCBEpZJJ5vFSu8fE0sZAWvUni1tvE2P6DYmXCikmGN1UDgDU07qzP04dLjOo3Si6+cG0G5XGmJ4V/p6dEWQlQ=
+	t=1719281212; cv=none; b=bYIjpLsajrmEnLMbF0X1haEGiOLeeVbhy2qaXwwGxXC2E6g7zU8a3d9WV/yBa6NJMy9ijWBorR6Uw329cCt7vvPODWKfnhoLRtuE/RBqUAh+9zBKm1EnzDZFsmkKg6sX0RJbsEmbPs2bLeF0FI6PYw1CkO1TUz8EdWSFCMM3kWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719271684; c=relaxed/simple;
-	bh=xNxO4J+rVkZVl73erQQXo/4Ljf1gi+GV0ARmHcEM6s8=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=Cm4X+V+E7TMcaGsA3pRdg4vCHY3k5ucXy5ZU6US+QgHlW3BZ3ILAmc2HiZCsLpGUjrVGnV7OyPncPh+9/vr8GFIxCWIiDx8bot/rC7Z1UqPYS7HruehbrbMelGB9b7WbmcVLPptO5JtI0dsjqz0wJ8Y42nlHG6j555bR2ETlZ20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nLHODb/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250C6C2BBFC;
-	Mon, 24 Jun 2024 23:28:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719271684;
-	bh=xNxO4J+rVkZVl73erQQXo/4Ljf1gi+GV0ARmHcEM6s8=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=nLHODb/Ei5wCYkdsZB+9cur3yZh/KxbyIXgAoDeLIqKI2IJvf/Rzol1EkHhLrqEDs
-	 d6uJim/FvGXXKxM0yyln0uE0eIT6ArypZxb3XQ4UyS5MIJPYvUvSf2/P4F+POHjJ19
-	 l2slEA+nyjzcaa0Fk9AZJ/I7R2O0TR1E7oTYllDXd00r1yY68459Nf8MHXSnO2qt2r
-	 Hv0Keeyg0s8SHzmzyD3xnt2ly2vtI7kmq33spv4/PA61eet/WiJ5sYSmpOocvzV0aD
-	 OP2cKh/7liPl/FD6cforqYlOU1KvBR+xv1XGlxzMYpgmOC0otyKanvEl161l92TbU8
-	 yGbb0w7DwbA0w==
-Date: Mon, 24 Jun 2024 17:28:02 -0600
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	s=arc-20240116; t=1719281212; c=relaxed/simple;
+	bh=5KL98og9uMF31NjXCcCAQLZoRkddM022JoSLrUUNr5g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ak/rH4n76jJbOk21B3vNlytp+3m8kV9Meb9nKKQJGlbGqlE5zOAASHbqahdznTiGmljVhAlF9TxipVF/A/VhfBA+kD0aZzPSG06ZHSE3lVXE8IXWj9hV6aHh/1XtUE2bi9u4FAcSLtb5kD4i4UIOj03l6Xq+DbPOMz1wgfO+Bpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TvcKo7Gu; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1f9b364faddso40555805ad.3;
+        Mon, 24 Jun 2024 19:06:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719281211; x=1719886011; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Q5+jYxkflkx9FU3L/r+kaaNsX5V61zLxkmSOfktg4Ew=;
+        b=TvcKo7GuL8vSQ4QoF6tYX/aXBQmJcrW9y72QS65iaBjdKllkPLRXtgiTXbQg/AABjt
+         7Wj8CSyi2Zckxu4c2wrykJ4rVyx/yiokJ9/MhaAjzaeRa6bgirmXL396ctCg112TKAmg
+         AxjbjyqsECY/vdWHgUKmx2yjTf8rcen2oeBF8RFWDHI1suM9dcQnDXKRY7l6idR2xvrJ
+         0EN1sbNhaiy//l9dpo0EiU1/HpVBf698xT7O1SWe+jlx6/txEsBLbHdYhNsgLZL+C6Lt
+         Uo2imA7Af+tDl1xcEUaXFvHP+26t3bhu1HfuVDRReoDOaOv39c6BVRO+MDchrjz6CWRu
+         a1QQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719281211; x=1719886011;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q5+jYxkflkx9FU3L/r+kaaNsX5V61zLxkmSOfktg4Ew=;
+        b=vhCw3POvWInoc8ssV/+zjGGwWM1hB10eBjNg8YT3lzdsO7KOgxcy9tpjYvtMUC5zF0
+         iXypeB63IjbZUVNEhEWAjwXsZy+CBxw1Dh1hHH1nbSvQyCVXyyt7MAHWMd+Y1knFNLH4
+         xv5kbLhkQVWtjN3gYG6KTXiLUzuWe5t4xb15AkoeO5rNsljUbcOmgNZ2YTQ5TsSkGJfb
+         g/vi3anbuhz+pIKPYVKcJ73cBxuDEFvdstjbvkqMTZoIwdPonFcqdfXlBlmvCsNENhZW
+         H5T3ziDY+jkfbGyHDFb1eJZxMXWtBJuLbfucjMHLyuOLJeqEszsxEqa5Q+QkRibiUimn
+         2dtg==
+X-Forwarded-Encrypted: i=1; AJvYcCUeHJVh6rOhiHWt82ZZr0TBS4J6oNlPgJsjhw42mD0gqoZoV5o7vl4X7Ub6HdSYw7B+SH8VPu3uqQ+nATdzqI/jCzMZKJN5Y5Ap3xASy2iQ2Ju5DPD2OoeQeTbPoHYpKWtQtlltj2NpAzQFjaO6+mZvUMxfSMj5puUvQD0bFA8Fus9xbg==
+X-Gm-Message-State: AOJu0YyTzmvlwvlwazEPBvna51GQ11s1U3jw/yiCWhNrAHhelUSTeGcs
+	wNd3VCA1xnUuMvIrBSk0SsB4fuwDfoy3nw8+N0tVA6QtnNZ8pjgB
+X-Google-Smtp-Source: AGHT+IHtF20TnRzBfjPcf6+0ZlMGemQNkKCLH9aHjbdkzrSUQ1w9cLMXsYmnsa124FSuNlKZm5URQA==
+X-Received: by 2002:a17:902:e542:b0:1f9:b35f:65f4 with SMTP id d9443c01a7336-1fa23f07246mr71955405ad.13.1719281210634;
+        Mon, 24 Jun 2024 19:06:50 -0700 (PDT)
+Received: from [100.90.230.39] ([45.32.86.188])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f9ebbc7ccasm68892795ad.299.2024.06.24.19.06.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 24 Jun 2024 19:06:49 -0700 (PDT)
+Message-ID: <4eae8b55-d1de-4a03-a75f-4d85f200f1c3@gmail.com>
+Date: Tue, 25 Jun 2024 10:06:41 +0800
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- =?utf-8?q?Nuno_S=C3=A1?= <nuno.sa@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Michael Hennerich <michael.hennerich@analog.com>, 
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-iio@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>, 
- linux-doc@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>
-In-Reply-To: <20240624-iio-adc-ad4695-v3-1-a22c302f06bf@baylibre.com>
-References: <20240624-iio-adc-ad4695-v3-0-a22c302f06bf@baylibre.com>
- <20240624-iio-adc-ad4695-v3-1-a22c302f06bf@baylibre.com>
-Message-Id: <171927168292.812030.284414420636530087.robh@kernel.org>
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: adc: add AD4695 and similar
- ADCs
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 3/3] iio: proximity: Add driver support for TYHX's
+ HX9023S capacitive proximity sensor
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ yasin.lee.x@outlook.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+References: <20240621-add-tyhx-hx9023s-sensor-driver-v6-0-65196a9020f1@gmail.com>
+ <20240621-add-tyhx-hx9023s-sensor-driver-v6-3-65196a9020f1@gmail.com>
+ <20240623125621.07d1617c@jic23-huawei>
+Content-Language: en-US
+From: Yasin Lee <yasin.lee.x@gmail.com>
+In-Reply-To: <20240623125621.07d1617c@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-On Mon, 24 Jun 2024 17:01:53 -0500, David Lechner wrote:
-> Add device tree bindings for AD4695 and similar ADCs.
-> 
-> Signed-off-by: David Lechner <dlechner@baylibre.com>
-> ---
-> 
-> Note, this may trigger a DT build warning "common-mode-channel: missing
-> type definition" if the builder doesn't include the recently added
-> common-mode-channel property [1]. This should be safe to ignore (passes
-> make dt_binding_check locally).
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/jic23/iio.git/commit/?h=testing&id=d86deaec1c5b0fb60c3619e8d2ae7a1d722fd2ad
-> 
-> v3 changes:
-> * Change interrupts to be per pin instead of per signal.
-> * Drop diff-channels and single-channel properties.
-> * Odd numbered pins added to common-mode-channel property enum.
-> * REFGND and COM values changes to avoid confusion with pin numbers.
-> * Add inX-supply properties for odd numbed input pins.
-> 
-> v2 changes:
-> * Drop *-wlcsp compatible strings
-> * Don't use fallback compatible strings
-> * Reword supply descriptions
-> * Use standard channel properties instead of adi,pin-pairing
-> * Fix unnecessary | character
-> * Fix missing blank line
-> * Add header file with common mode channel macros
-> ---
->  .../devicetree/bindings/iio/adc/adi,ad4695.yaml    | 256 +++++++++++++++++++++
->  MAINTAINERS                                        |  10 +
->  include/dt-bindings/iio/adi,ad4695.h               |   9 +
->  3 files changed, 275 insertions(+)
-> 
+On 2024/6/23 19:56, Jonathan Cameron wrote:
+> On Fri, 21 Jun 2024 15:40:51 +0800
+> Yasin Lee <yasin.lee.x@gmail.com> wrote:
+>
+>> A SAR sensor from NanjingTianyihexin Electronics Ltd.
+>>
+>> The device has the following entry points:
+>>
+>> Usual frequency:
+>> - sampling_frequency
+>>
+>> Instant reading of current values for different sensors:
+>> - in_proximity0_raw
+>> - in_proximity1_raw
+>> - in_proximity2_raw
+>> - in_proximity3_raw
+>> - in_proximity4_raw
+>> and associated events in events/
+>>
+>> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
+> Hi Yasin,
+>
+> Some good reviews in already for this version, so I only took a quick look
+> this time. It seems to be in a reasonable state now.
+>
+> Jonathan
 
-My bot found errors running 'make dt_binding_check' on your patch:
 
-yamllint warnings/errors:
+Hi Jonathan,
 
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/iio/adc/adi,ad4695.yaml: common-mode-channel: missing type definition
+Thank you for your very patient guidance. I have updated according to 
+each reviewer's suggestions.
 
-doc reference errors (make refcheckdocs):
+Best regards,
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240624-iio-adc-ad4695-v3-1-a22c302f06bf@baylibre.com
+Yasin
+>> diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
+>> new file mode 100644
+>> index 000000000000..1d8cb9a05d8a
+>> --- /dev/null
+>> +++ b/drivers/iio/proximity/hx9023s.c
+>>
+>> +struct hx9023s_data {
+>> +	struct iio_trigger *trig;
+>> +	struct regmap *regmap;
+>> +	unsigned long chan_prox_stat;
+>> +	unsigned long chan_read;
+>> +	unsigned long chan_event;
+>> +	unsigned long ch_en_stat;
+>> +	unsigned long chan_in_use;
+>> +	unsigned int prox_state_reg;
+>> +	bool trigger_enabled;
+>> +
+>> +	struct {
+>> +		__le16 channels[HX9023S_CH_NUM];
+>> +		s64 ts __aligned(8);
+>> +	} buffer;
+>> +
+>> +	struct mutex mutex;
+> Add a comment explaining the data this mutex is protecting
+> (that may be in this structure, or for example on the device)
 
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
 
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
+Done, you will see this comment in V7.
 
-pip3 install dtschema --upgrade
 
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
+>> +	struct hx9023s_ch_data ch_data[HX9023S_CH_NUM];
+>> +};
+>
+>> +
+>> +static int hx9023s_sample(struct hx9023s_data *data)
+>> +{
+> ...
+>> +
+>> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
+>> +		value = get_unaligned_le16(&rx_buf[i * data_size + 1]);
+>> +		value = sign_extend32(value, 15);
+>> +		data->ch_data[i].lp = 0;
+>> +		data->ch_data[i].diff = 0;
+>> +		if (data->ch_data[i].sel_lp == true)
+>> +			data->ch_data[i].lp = value;
+>> +		if (data->ch_data[i].sel_diff == true)
+>>
+> Run checkpatch.pl --strict and it will probably moan about these.
+> if (data->ch_data[i].sel_diff) is the same thing so just use that.
+
+
+Done, and I have fixed the issues identified by the script.
+
 
 

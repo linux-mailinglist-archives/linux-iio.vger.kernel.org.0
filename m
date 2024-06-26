@@ -1,89 +1,90 @@
-Return-Path: <linux-iio+bounces-6941-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6942-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A904917B74
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2024 10:55:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10C4B917C92
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2024 11:33:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A06A3B20EF7
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2024 08:55:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAB8D28586F
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2024 09:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB73F16848F;
-	Wed, 26 Jun 2024 08:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28C9216CD0D;
+	Wed, 26 Jun 2024 09:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RPhyzL18"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WQKCWQlt"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02012160796;
-	Wed, 26 Jun 2024 08:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32C4416A92B;
+	Wed, 26 Jun 2024 09:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719392117; cv=none; b=V7jUaJiIV4FMFXaBS6bD9+NtJf+7ejKItRyurFwTNWHgqC7CGSfRX7zfMglkaIBTip2HVdLfHMmWtFpTvm6DbSSAuX/gabYfBk2vCfuX9KbwFlAUEQwztn976G6vSfrnKJGVAamQ2Du3ezIK+DHKb46khqrtf1hmKbQeA02FRX4=
+	t=1719394419; cv=none; b=YJbcfpRguZRML58+XqIaPsiXjhl5tpWoVv/pw4KWKlXHrL9fhIFWZxzTrzgVT7NmuI5vapKE8EY59bJolQdGpPNRWiaCpnJOZtVubjT8oJeT218mV9CUtZp7JmX4YQ4cG1shnG/ndpImHT51YRsCt1t1WOr1/mAqkhbW+ZVQ9Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719392117; c=relaxed/simple;
-	bh=jIFzSiVAUoXi/TMYX37soPn2mdyqaNsD1HUMPCO2mIc=;
+	s=arc-20240116; t=1719394419; c=relaxed/simple;
+	bh=RGUBpy2/O35yyXL2s/b6/hoNJdIxjQo9IHKY4w7ut/M=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=uJJ90XSYuTqGCznzLEI+ZwcALqwrazuoopaYXiSa1yKjMfPajukZ6j2pdouO79zMJmu5jZLDCg2KTsn4fib2bs3It6kQ5HhCQlJB7eXiwJTrM+IG4wKzCaoWRP9Gk7aKgn30LUnwt84fAnKHvwfhtlPsO9pBc3TL5ptRzrGVwuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RPhyzL18; arc=none smtp.client-ip=209.85.167.43
+	 Content-Type:MIME-Version; b=Jf3Y5JSivv8kradFHqHtreoq0hURM6QyiFD9G8fLrnkPr0DQe0dhU3NTRapvk2BB0gxwyr/5V9HHTWV06a8HKQbhgV4KLkkFV3l/QTWvTLKC6ifv6bjr5rzVS1aQHv+mtb1eI0jMN6HIRAv6dvXxMI7AQDUsKOOFLqKxP5u/Duw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WQKCWQlt; arc=none smtp.client-ip=209.85.218.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-52cdc4d221eso4858974e87.3;
-        Wed, 26 Jun 2024 01:55:15 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a724b4f1218so475143466b.2;
+        Wed, 26 Jun 2024 02:33:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719392114; x=1719996914; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719394416; x=1719999216; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=UuJKZ5dvfnd3VwIG1aD3aPBKZXM0rYW+LOmM/rqRb7g=;
-        b=RPhyzL18iFaum8xnyRjflns6qAVyf55uPdOYxgTvI0pR6JGfgFlnUX6RGiImQjjftV
-         E1qcFyPRufQQeCTz8usS1u1VkZ+vBne77KBPaOT9Ns45gFa7zQuMH7fAe0Th073wb0vv
-         PLmm2VLdTd/RPaLJGDM8rILLmqupkcoUJt+aMuE2XrfDDXydDntYo0VLm74kBnrnxaG8
-         Aw6NU/TC1erM2CcCix7jgKPW6vK5pZ/pNZ8o8jGp0XqZp31YgW5v9FR3XryFiS188CCC
-         R25pe1gWwGGE7kFEhCbEynCOruznwFJ1NmkQ5LnkWg1SqwKOFk7LgH6oOkJHU2m3Uh9L
-         Txtw==
+        bh=RGUBpy2/O35yyXL2s/b6/hoNJdIxjQo9IHKY4w7ut/M=;
+        b=WQKCWQlthTvgLPiCKoKDNL/kswqflE+/f2u3CcAabVsm95C6oD6zOFGA4RuXEJVyfs
+         7dHIiVLG92/DP5eq2+44c28tDJ50s14HZ+C6y0ylgy6u8ADoBvYWyqSlvmHY9ZC/QOzm
+         apYlTICu61HuEmGCpT3jWDstenH4XdrYf45uf6em43tCoNafziNfJLLuaiBdmuzv8ghz
+         zvr0cyT7SBZJRylY+YpZGVK7m+ZXEPgGIQO0GaSzdZCUNrjUx8adpM16SYJ1zf06ODZK
+         wRSDnlz6Zs2ip2mBs5UPERaBnoLpH7J+/dbfwfVXIL5yfKoVkeZBir21fV3GSBI8Mdv/
+         YvFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719392114; x=1719996914;
+        d=1e100.net; s=20230601; t=1719394416; x=1719999216;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=UuJKZ5dvfnd3VwIG1aD3aPBKZXM0rYW+LOmM/rqRb7g=;
-        b=aIHrrTiCH7n7+/hkXGvuVRLGzsqVX5jzLQ+/AQq80CS9lVu+9kUoU6pAyEcx4qPuHi
-         TV9dTUd/7AwEsXmbbwxI5IDOJ0RYTKGYo1dr6B62Ct3YN4wM7zopM68GOwaOF2kdDOnn
-         HncByHvGj4SOspwgJceKcxkK5AcuQI4KfafUYLPlmFUBrBxDnjOgIE6isE2C3ajmWkhA
-         tpM0W2KCP6Gz2vSKfGXpZl2RfrPNtx8e+e05zcnfg7YzXiC6O1XpXsW8iw9reJm/EsQX
-         4syJfwcQN8um/PZNY20TpnGuy3bddxWTMQGjO3/LqJCP6bqygciopyQz2QvxGNQGE4lf
-         R9ZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW49NeBv6rNcaemteKbEM22bFLY7zkYZYBrxuGDeQRWwoVweu5arvsS5w9I1BjjtEY9Eb1jFBhq+46ep4eZ9/Z1tToaMxpkXr3wFLVWTVd7XHHX3GXXf9arWWdomRGsqP9SkSG6jWGt
-X-Gm-Message-State: AOJu0Yy/uRUpZgyBEpsAkbtJBzNe0gvzz3XQA83yP0djLFcK2cT7YA+w
-	KF8oW5ElCW/lsgxXq7sAOktcKX8eBeK/4jByTtgLhRq+zrOuqkWQ
-X-Google-Smtp-Source: AGHT+IFuNqURBw9MrG0Gl9cJcVUawr+D9J6cKvNgIaK256nGX0K2iZmbGttOuH5LhAzrPbtCRpZWxA==
-X-Received: by 2002:a05:6512:138e:b0:52c:e08c:a0dc with SMTP id 2adb3069b0e04-52ce185f753mr7582925e87.51.1719392113740;
-        Wed, 26 Jun 2024 01:55:13 -0700 (PDT)
+        bh=RGUBpy2/O35yyXL2s/b6/hoNJdIxjQo9IHKY4w7ut/M=;
+        b=NFTSHa5E8643t3JEy4U22cbEI5CrhLFBz/aBXAVlPqY0abIJ+9rNQykDHeP/kFOV1P
+         bl8p+Q910h9KRQw8Z+Jfjy74ofkhK3fukXDvli4tLZq6TmvdIp8H4oYhwIQ8QyYa6lHe
+         GTpFOpX1XJQ1GHOogjzXtqI4KPpXILY7BGChJVZb/AmfbxdsSVa4KSxh4ZWJdPn9QL9q
+         uDIWmlCVSCY7icYkDKs2K6xyzBXtIt0cnKaULikx0JY0g83FRLat7H5t2mVw1gGmYPiK
+         HwmZ0wIHaUzZqKdAacswr6BMfCyx3ELtLlzV2/nHFp/eLn8zMSVq5mFDOjRmroXzaDrb
+         +Lhg==
+X-Forwarded-Encrypted: i=1; AJvYcCWBXOzy9dbgZjzz6HOykbOPFGvJSy5mCoQ9DznUu3oVvflnrAfx3Ysy7Lq2mM1AdvZTHze+thzYzCnmN4bPGl12XYPHoM/XBioD+RL4ZAd0xY5gFZcLO3KQvrjj+bC9gAhq/MZyU0OucA2//VT1wPcHqVQEjuyzGPwp5jwYYMidKx7NaLGzNYBUU5T1YmqnvnxGTX8nfnrvwNBdO/lIRw==
+X-Gm-Message-State: AOJu0YwbLW7nIsQll4+yuAlXEI6YWt3ZgObC9RKneO7uz+bzvlQCxUay
+	/IaOPq3A+8JBBaM6S4yQRAe6IGc06nq3QUtcCdAC0HQKc9SnNVslooVFkdStIMvzyA==
+X-Google-Smtp-Source: AGHT+IHPcdNxBeC2CgNzOB2usLX3JDpI9Yw2a9Lehbrg3aaDzCri0Guu2iEDzsDwzVnKYXiK0/fbkA==
+X-Received: by 2002:a17:906:d509:b0:a6f:5192:6f4d with SMTP id a640c23a62f3a-a7242c4dfd3mr486601866b.8.1719394416381;
+        Wed, 26 Jun 2024 02:33:36 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-424c8468613sm17302035e9.39.2024.06.26.01.55.13
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7250712ca5sm327076566b.100.2024.06.26.02.33.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 26 Jun 2024 01:55:13 -0700 (PDT)
-Message-ID: <c2d746c73f7450dd10c0a0b229b3672e44fe583a.camel@gmail.com>
-Subject: Re: [PATCH v2 8/8] iio: adc: stm32-dfsdm: add scaling support to
- dfsdm
+        Wed, 26 Jun 2024 02:33:35 -0700 (PDT)
+Message-ID: <8df8f780c83a98480a3d19b0751cb96735c4adaf.camel@gmail.com>
+Subject: Re: [PATCH v5 1/7] spi: Enable controllers to extend the SPI
+ protocol with MOSI idle configuration
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Olivier Moysan <olivier.moysan@foss.st.com>,
- fabrice.gasnier@foss.st.com,  Jonathan Cameron <jic23@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Maxime Coquelin
- <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>
-Cc: Nuno Sa <nuno.sa@analog.com>, linux-iio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org
-Date: Wed, 26 Jun 2024 10:59:05 +0200
-In-Reply-To: <20240625150717.1038212-9-olivier.moysan@foss.st.com>
-References: <20240625150717.1038212-1-olivier.moysan@foss.st.com>
-	 <20240625150717.1038212-9-olivier.moysan@foss.st.com>
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org, 
+ lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org, 
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+  nuno.sa@analog.com, dlechner@baylibre.com, corbet@lwn.net, 
+ marcelo.schmitt1@gmail.com
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-spi@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Date: Wed, 26 Jun 2024 11:37:27 +0200
+In-Reply-To: <add14694c64b574af742a5dcd5c9461e0ef5210a.1719351923.git.marcelo.schmitt@analog.com>
+References: <cover.1719351923.git.marcelo.schmitt@analog.com>
+	 <add14694c64b574af742a5dcd5c9461e0ef5210a.1719351923.git.marcelo.schmitt@analog.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
 User-Agent: Evolution 3.52.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -92,75 +93,88 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
-Hi Olivier,
+CgpPbiBUdWUsIDIwMjQtMDYtMjUgYXQgMTg6NTMgLTAzMDAsIE1hcmNlbG8gU2NobWl0dCB3cm90
+ZToKPiBUaGUgYmVoYXZpb3Igb2YgYW4gU1BJIGNvbnRyb2xsZXIgZGF0YSBvdXRwdXQgbGluZSAo
+U0RPIG9yIE1PU0kgb3IgQ09QSQo+IChDb250cm9sbGVyIE91dHB1dCBQZXJpcGhlcmFsIElucHV0
+KSBmb3IgZGlzYW1iaWd1YXRpb24pIGlzIHVzdWFsbHkgbm90Cj4gc3BlY2lmaWVkIHdoZW4gdGhl
+IGNvbnRyb2xsZXIgaXMgbm90IGNsb2NraW5nIG91dCBkYXRhIG9uIFNDTEsgZWRnZXMuCj4gSG93
+ZXZlciwgdGhlcmUgZG8gZXhpc3QgU1BJIHBlcmlwaGVyYWxzIHRoYXQgcmVxdWlyZSBzcGVjaWZp
+YyBNT1NJIGxpbmUKPiBzdGF0ZSB3aGVuIGRhdGEgaXMgbm90IGJlaW5nIGNsb2NrZWQgb3V0IG9m
+IHRoZSBjb250cm9sbGVyLgo+IAo+IENvbnZlbnRpb25hbCBTUEkgY29udHJvbGxlcnMgbWF5IHNl
+dCB0aGUgTU9TSSBsaW5lIG9uIFNDTEsgZWRnZXMgdGhlbiBicmluZwo+IGl0IGxvdyB3aGVuIG5v
+IGRhdGEgaXMgZ29pbmcgb3V0IG9yIGxlYXZlIHRoZSBsaW5lIHRoZSBzdGF0ZSBvZiB0aGUgbGFz
+dAo+IHRyYW5zZmVyIGJpdC4gTW9yZSBlbGFib3JhdGVkIGNvbnRyb2xsZXJzIGFyZSBjYXBhYmxl
+IHRvIHNldCB0aGUgTU9TSSBpZGxlCj4gc3RhdGUgYWNjb3JkaW5nIHRvIGRpZmZlcmVudCBjb25m
+aWd1cmFibGUgbGV2ZWxzIGFuZCB0aHVzIGFyZSBtb3JlIHN1aXRhYmxlCj4gZm9yIGludGVyZmFj
+aW5nIHdpdGggZGVtYW5kaW5nIHBlcmlwaGVyYWxzLgo+IAo+IEFkZCBTUEkgbW9kZSBiaXRzIHRv
+IGFsbG93IHBlcmlwaGVyYWxzIHRvIHJlcXVlc3QgZXhwbGljaXQgTU9TSSBpZGxlIHN0YXRlCj4g
+d2hlbiBuZWVkZWQuCj4gCj4gV2hlbiBzdXBwb3J0aW5nIGEgcGFydGljdWxhciBNT1NJIGlkbGUg
+Y29uZmlndXJhdGlvbiwgdGhlIGRhdGEgb3V0cHV0IGxpbmUKPiBzdGF0ZSBpcyBleHBlY3RlZCB0
+byByZW1haW4gYXQgdGhlIGNvbmZpZ3VyZWQgbGV2ZWwgd2hlbiB0aGUgY29udHJvbGxlciBpcwo+
+IG5vdCBjbG9ja2luZyBvdXQgZGF0YS4gV2hlbiBhIGRldmljZSB0aGF0IG5lZWRzIGEgc3BlY2lm
+aWMgTU9TSSBpZGxlIHN0YXRlCj4gaXMgaWRlbnRpZmllZCwgaXRzIGRyaXZlciBzaG91bGQgcmVx
+dWVzdCB0aGUgTU9TSSBpZGxlIGNvbmZpZ3VyYXRpb24gYnkKPiBzZXR0aW5nIHRoZSBwcm9wZXIg
+U1BJIG1vZGUgYml0Lgo+IAo+IFNpZ25lZC1vZmYtYnk6IE1hcmNlbG8gU2NobWl0dCA8bWFyY2Vs
+by5zY2htaXR0QGFuYWxvZy5jb20+Cj4gLS0tCgpPbmUgbWlub3Igbml0Li4uIFdpdGggdGhhdDoK
+CkFja2VkLWJ5OiBOdW5vIFNhIDxudW5vLnNhQGFuYWxvZy5jb20+Cgo+IMKgRG9jdW1lbnRhdGlv
+bi9zcGkvc3BpLXN1bW1hcnkucnN0IHwgODMgKysrKysrKysrKysrKysrKysrKysrKysrKysrKysr
+Kwo+IMKgZHJpdmVycy9zcGkvc3BpLmPCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB8
+wqAgNyArKysKPiDCoGluY2x1ZGUvbGludXgvc3BpL3NwaS5owqDCoMKgwqDCoMKgwqDCoMKgwqAg
+fMKgIDYgKysrCj4gwqBpbmNsdWRlL3VhcGkvbGludXgvc3BpL3NwaS5owqDCoMKgwqDCoCB8wqAg
+NSArLQo+IMKgNCBmaWxlcyBjaGFuZ2VkLCA5OSBpbnNlcnRpb25zKCspLCAyIGRlbGV0aW9ucygt
+KQo+IAo+IGRpZmYgLS1naXQgYS9Eb2N1bWVudGF0aW9uL3NwaS9zcGktc3VtbWFyeS5yc3QgYi9E
+b2N1bWVudGF0aW9uL3NwaS9zcGktCj4gc3VtbWFyeS5yc3QKPiBpbmRleCA3ZjhhY2NmYWU2Zjku
+LjUxZGQ4YTEwNWI3ZSAxMDA2NDQKPiAtLS0gYS9Eb2N1bWVudGF0aW9uL3NwaS9zcGktc3VtbWFy
+eS5yc3QKPiArKysgYi9Eb2N1bWVudGF0aW9uL3NwaS9zcGktc3VtbWFyeS5yc3QKPiBAQCAtNjE0
+LDYgKzYxNCw4OSBAQCBxdWV1ZSwgYW5kIHRoZW4gc3RhcnQgc29tZSBhc3luY2hyb25vdXMgdHJh
+bnNmZXIgZW5naW5lCj4gKHVubGVzcyBpdCdzCj4gwqBhbHJlYWR5IHJ1bm5pbmcpLgo+IMKgCj4g
+wqAKPiArRXh0ZW5zaW9ucyB0byB0aGUgU1BJIHByb3RvY29sCj4gKy0tLS0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tLQo+ICtUaGUgZmFjdCB0aGF0IFNQSSBkb2Vzbid0IGhhdmUgYSBmb3JtYWwg
+c3BlY2lmaWNhdGlvbiBvciBzdGFuZGFyZCBwZXJtaXRzCj4gY2hpcAo+ICttYW51ZmFjdHVyZXJz
+IHRvIGltcGxlbWVudCB0aGUgU1BJIHByb3RvY29sIGluIHNsaWdodGx5IGRpZmZlcmVudCB3YXlz
+LiBJbgo+IG1vc3QKPiArY2FzZXMsIFNQSSBwcm90b2NvbCBpbXBsZW1lbnRhdGlvbnMgZnJvbSBk
+aWZmZXJlbnQgdmVuZG9ycyBhcmUgY29tcGF0aWJsZQo+IGFtb25nCj4gK2VhY2ggb3RoZXIuIEZv
+ciBleGFtcGxlLCBpbiBTUEkgbW9kZSAwIChDUE9MPTAsIENQSEE9MCkgdGhlIGJ1cyBsaW5lcyBt
+YXkKPiBiZWhhdmUKPiArbGlrZSB0aGUgZm9sbG93aW5nOgo+ICsKPiArOjoKPiArCj4gK8KgIG5D
+U3ggX19fwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgCj4gX19fCj4gK8KgwqDCoMKgwqDCoMKgwqDCoCBcX19f
+X19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19f
+X19fX18vCj4gK8KgwqDCoMKgwqDCoMKgwqDCoCDigKLCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCDigKIKPiArwqDC
+oMKgwqDCoMKgwqDCoMKgIOKAosKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIOKAogo+ICvCoCBTQ0xLwqDCoMKgwqDC
+oMKgwqDCoCBfX1/CoMKgwqDCoCBfX1/CoMKgwqDCoCBfX1/CoMKgwqDCoCBfX1/CoMKgwqDCoCBf
+X1/CoMKgwqDCoCBfX1/CoMKgwqDCoCBfX1/CoMKgwqDCoCBfX18KPiArwqDCoMKgwqDCoMKgIF9f
+X19fX18vwqDCoCBcX19fL8KgwqAgXF9fXy/CoMKgIFxfX18vwqDCoCBcX19fL8KgwqAgXF9fXy/C
+oMKgIFxfX18vwqDCoCBcX19fL8KgwqAKPiBcX19fX18KPiArwqDCoMKgwqDCoMKgwqDCoMKgIOKA
+osKgwqAgOsKgwqAgO8KgwqAgOsKgwqAgO8KgwqAgOsKgwqAgO8KgwqAgOsKgwqAgO8KgwqAgOsKg
+wqAgO8KgwqAgOsKgwqAgO8KgwqAgOsKgwqAgO8KgwqAgOsKgwqAgOyDigKIKPiArwqDCoMKgwqDC
+oMKgwqDCoMKgIOKAosKgwqAgOsKgwqAgO8KgwqAgOsKgwqAgO8KgwqAgOsKgwqAgO8KgwqAgOsKg
+wqAgO8KgwqAgOsKgwqAgO8KgwqAgOsKgwqAgO8KgwqAgOsKgwqAgO8KgwqAgOsKgwqAgOyDigKIK
+PiArwqAgTU9TSSBYWFhfX19fX19fX19fwqDCoMKgwqDCoMKgwqDCoCBfX19fX19fwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgX19fX19fX8KgwqDCoMKgwqDCoMKgwqAKPiBfX19fX19f
+X1hYWAo+ICvCoCAweEE1IFhYWF9fLyAxwqDCoMKgwqAgXF8wX19fX18vIDHCoMKgwqDCoCBcXzBf
+X19fX19fMF9fX19fLyAxwqDCoMKgwqAgXF8wX19fX18vIDHCoMKgwqAKPiBcX1hYWAo+ICvCoMKg
+wqDCoMKgwqDCoMKgwqAg4oCiwqDCoMKgwqDCoMKgIDvCoMKgwqDCoMKgwqAgO8KgwqDCoMKgwqDC
+oCA7wqDCoMKgwqDCoMKgIDvCoMKgwqDCoMKgwqAgO8KgwqDCoMKgwqDCoCA7wqDCoMKgwqDCoMKg
+IDvCoMKgwqDCoMKgwqAgOyDigKIKPiArwqDCoMKgwqDCoMKgwqDCoMKgIOKAosKgwqDCoMKgwqDC
+oCA7wqDCoMKgwqDCoMKgIDvCoMKgwqDCoMKgwqAgO8KgwqDCoMKgwqDCoCA7wqDCoMKgwqDCoMKg
+IDvCoMKgwqDCoMKgwqAgO8KgwqDCoMKgwqDCoCA7wqDCoMKgwqDCoMKgIDsg4oCiCj4gK8KgIE1J
+U08gWFhYX19fX19fX19fX8KgwqDCoMKgwqDCoMKgwqAgX19fX19fX19fX19fX19fX19fX19fX1/C
+oMKgwqDCoMKgwqDCoMKgwqAgX19fX19fX8KgwqDCoMKgwqDCoMKgCj4gWFhYCj4gK8KgIDB4QkEg
+WFhYX18vwqDCoMKgwqAgMSBcX19fX18wXy/CoMKgwqDCoCAxwqDCoMKgwqDCoMKgIDHCoMKgwqDC
+oMKgwqAgMSBcX19fX18wX18vwqDCoMKgIDHCoAo+IFxfX19fMF9fWFhYCj4gKwo+ICtMZWdlbmQ6
+Ogo+ICsKPiArwqAg4oCiIG1hcmtzIHRoZSBzdGFydC9lbmQgb2YgdHJhbnNtaXNzaW9uOwo+ICvC
+oCA6IG1hcmtzIHdoZW4gZGF0YSBpcyBjbG9ja2VkIGludG8gdGhlIHBlcmlwaGVyYWw7Cj4gK8Kg
+IDsgbWFya3Mgd2hlbiBkYXRhIGlzIGNsb2NrZWQgaW50byB0aGUgY29udHJvbGxlcjsKPiArwqAg
+WCBtYXJrcyB3aGVuIGxpbmUgc3RhdGVzIGFyZSBub3Qgc3BlY2lmaWVkLgo+ICsKPiArSW4gc29t
+ZSBmZXcgY2FzZXMsIGNoaXBzIGV4dGVuZCB0aGUgU1BJIHByb3RvY29sIGJ5IHNwZWNpZnlpbmcg
+bGluZSBiZWhhdmlvcnMKPiArdGhhdCBvdGhlciBTUEkgcHJvdG9jb2xzIGRvbid0IChlLmcuIGRh
+dGEgbGluZSBzdGF0ZSBmb3Igd2hlbiBDUyBpcwo+IGluYWN0aXZlKS4KCkZvcmdvdCB0aGlzIG9u
+ZS4uLiBpbmFjdGl2ZSAtPiBkZWFzc2VydGVkIChvciBub3QgYXNzZXJ0ZWQpCgotIE51bm8gU8Oh
+CgoK
 
-One thing that I just noticed...
-
-On Tue, 2024-06-25 at 17:07 +0200, Olivier Moysan wrote:
-> Add scaling support to STM32 DFSDM.
->=20
-> When used in an analog context, a DFSDM filter typically converts the dat=
-a
-> from a sigma delta modulator. The IIO device associated to the DFSDM
-> filter provides these data as raw data.
-> The IIO device can provide scaling information (voltage and offset) to
-> allow conversion of raw data into physical values.
->=20
-> With the new binding based on IIO backend framework, the sigma delta
-> modulators are defined as backends providing scaling information.
->=20
-> The scaling is not supported with legacy binding.
->=20
-> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-> Acked-by: Nuno Sa <nuno.sa@analog.com>
-> ---
->=20
-
-...
-
-> +
-> +	case IIO_CHAN_INFO_SCALE:
-> +		/*
-> +		 * Scale is expressed in mV.
-> +		 * When fast mode is disabled, actual resolution may be lower
-> +		 * than 2^n, where n =3D realbits - 1.
-> +		 * This leads to underestimating the input voltage.
-> +		 * To compensate this deviation, the voltage reference can be
-> +		 * corrected with a factor =3D realbits resolution / actual max
-> +		 */
-> +		if (adc->backend[idx]) {
-> +			iio_backend_read_raw(adc->backend[idx], chan, val,
-> val2, mask);
-
-Eve if it does not matter for your usecase, you should still do error handl=
-ing
-as iio_backend_read_raw() can return an error.
-
-> +			*val =3D div_u64((u64)*val * (u64)BIT(DFSDM_DATA_RES -
-> 1), max);
-> +			*val2 =3D chan->scan_type.realbits;
-> +			if (chan->differential)
-> +				*val *=3D 2;
-> +		}
-> +		return IIO_VAL_FRACTIONAL_LOG2;
-> +
-> +	case IIO_CHAN_INFO_OFFSET:
-> +		/*
-> +		 * DFSDM output data are in the range [-2^n, 2^n],
-> +		 * with n =3D realbits - 1.
-> +		 * - Differential modulator:
-> +		 * Offset correspond to SD modulator offset.
-> +		 * - Single ended modulator:
-> +		 * Input is in [0V, Vref] range,
-> +		 * where 0V corresponds to -2^n, and Vref to 2^n.
-> +		 * Add 2^n to offset. (i.e. middle of input range)
-> +		 * offset =3D offset(sd) * vref / res(sd) * max / vref.
-> +		 */
-> +		if (adc->backend[idx]) {
-> +			iio_backend_read_raw(adc->backend[idx], chan, val,
-> val2, mask);
-
-Same...
-
-- Nuno S=C3=A1
 

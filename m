@@ -1,119 +1,124 @@
-Return-Path: <linux-iio+bounces-6966-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6967-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DED2918557
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2024 17:09:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA62918577
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2024 17:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FCA51C22E5E
-	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2024 15:09:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEF7D286E1D
+	for <lists+linux-iio@lfdr.de>; Wed, 26 Jun 2024 15:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B247318A922;
-	Wed, 26 Jun 2024 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A7318A929;
+	Wed, 26 Jun 2024 15:13:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZ6olwVm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E5BGYU+I"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62269155C91;
-	Wed, 26 Jun 2024 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19AF1836F9;
+	Wed, 26 Jun 2024 15:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719414545; cv=none; b=hmUDPkw0cRQypTngcu37xiYa6vLQrygSQEWR40jP2gOeZEaWStbrA2tZ6Zr6aGo/jonZn2DoOdBgR8i0DdLBylFP+4+QSiGnAm3ESTWs0dbGmZgE7lZxBs+uFx9qpsuocMwYi+3ZYNiBl4n8fUkAXvOE3SHoA/FSoD1nu8PhPH4=
+	t=1719414829; cv=none; b=tv2FIDzdch5adIIIO5qvN+Z11tg2+zkSNJ+AXIIyoq3YRT8PLupQNtoNN904KAGwh0M/VvkAYw9LqUjUgCwoPRnZuYzYM1EgXMcclXJKX2xH6uAxIt4LQdO5VNa30KtdT0yVt0w9u0befl6p2jfGx2D1cLLZL0R3pRBD5hckUVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719414545; c=relaxed/simple;
-	bh=7+HyK8B/fQPVJIpKq7co7b0HBUUXOxNXHxcBIgwRlFU=;
+	s=arc-20240116; t=1719414829; c=relaxed/simple;
+	bh=nyFfYXcb8BHeCVoCZIVl/CHDqWGfVZeZvhuIHlrHsVA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r5M1Dv2RPeSZhNmD6B257VeFURO3wZcyycU3nKwocbZ9s43mTPy60w6J74vB/mQBLbybK09NYfwQJ5AbSExRY2a6BTnRXRennF6pPeEUBWg1QM56V0J7ro4heZSWSZrDnjx09mmC196Z8Hog38PnWRH5XkNHJSILjR4a019GLFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZ6olwVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845B6C116B1;
-	Wed, 26 Jun 2024 15:09:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=KtDrFWCC/h1GAdu94zsVYVyaUIMUCZ3Wmw7BxNS4qlpQRl6OiEtKyeERjsjy12FkcGqAipJQsictijDVcmpH+B2rcfKEGEUei6+IShP8gRt33zLWilxMlom6qrtQtMCK219S1l1n+nXogS//nvdTmiqxvjxbRRr4pgPZ8iJhDdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E5BGYU+I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B2DC116B1;
+	Wed, 26 Jun 2024 15:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719414544;
-	bh=7+HyK8B/fQPVJIpKq7co7b0HBUUXOxNXHxcBIgwRlFU=;
+	s=k20201202; t=1719414828;
+	bh=nyFfYXcb8BHeCVoCZIVl/CHDqWGfVZeZvhuIHlrHsVA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GZ6olwVmvbc8/IucRok615TR/W5kaeJx4oeQTQwW47UTb3gprgoMUUQcqdy/StpJY
-	 tLSTdPNZ4/555lhGTIhoDrcIUBfZq/D/Fue9r9EHYm99Cegfdh/0uslDonUjktPMgC
-	 qRgJj9b7DZlr85vlpTTNBs/ikf7q+kmLTbLC21SATpzB7fp9xPkL5Ogfz9tIC+C/td
-	 ASBl1dI79UH2Lonx47/pSSEUfZ7Gu3c2AsQd0zXtGH29ITFmLGiWpfBZBs4XkYJ4er
-	 iTMVKYhcb8DSlWoPwbJDmHO37pyFUN7YoaGzYhMvIq85ZR7ymbzu4Yz86O2b+lp61h
-	 Ikw+WyBhs1i5g==
-Date: Wed, 26 Jun 2024 16:08:58 +0100
-From: Mark Brown <broonie@kernel.org>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de,
-	Michael.Hennerich@analog.com, jic23@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	nuno.sa@analog.com, corbet@lwn.net, marcelo.schmitt1@gmail.com,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/7] spi: Enable controllers to extend the SPI
- protocol with MOSI idle configuration
-Message-ID: <7ed7f957-3e07-42ce-894a-f3f9dcf512ea@sirena.org.uk>
-References: <cover.1719351923.git.marcelo.schmitt@analog.com>
- <add14694c64b574af742a5dcd5c9461e0ef5210a.1719351923.git.marcelo.schmitt@analog.com>
- <1d2cde40-ad55-4136-bc72-3d71515f7023@baylibre.com>
+	b=E5BGYU+IwcgJQ6wzQoc8q3zuJLZ9s2znsJkN2Qr3X9/Cb0eNV3SpZM/USpdlJTQGu
+	 8EqcZZWEuuEJc2FsvqCE1RgDsYSM+cwsgs/uZfnEI1gW/KGo8jFhnrE7uvEi1anaWN
+	 DOgC9lo1TVq9C0LFW9qDF7ojk8D976NnIwkvCIkNRae6M+r2L9tsbjJAVbfOaw1fzf
+	 +BWWGHS4tBiAfL1AZHAXAfcMBVYNtK5d/XPhdUhU4geWcsA77NyEYIDdIFzGbl9wLH
+	 AM55/hnVqLmm5rODA8gHNA5zBwsQMwEgzEnkCxG7rWyJMj9oTkJi229m1e50GwOahp
+	 qvo9Bl3kHrBOw==
+Date: Wed, 26 Jun 2024 16:13:43 +0100
+From: Lee Jones <lee@kernel.org>
+To: Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@baylibre.com>
+Cc: Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	William Breathitt Gray <wbg@kernel.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-pwm@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-iio@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Thorsten Scherer <T.Scherer@eckelmann.de>
+Subject: Re: [PATCH v2 0/5] mfd: stm32-timers: Make register definition more
+ flexible
+Message-ID: <20240626151343.GA2504017@google.com>
+References: <cover.1718791090.git.u.kleine-koenig@baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="N7WFjWy5qfMLq50w"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <1d2cde40-ad55-4136-bc72-3d71515f7023@baylibre.com>
-X-Cookie: Results vary by individual.
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cover.1718791090.git.u.kleine-koenig@baylibre.com>
 
+On Wed, 19 Jun 2024, Uwe Kleine-König wrote:
 
---N7WFjWy5qfMLq50w
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> Hello,
+> 
+> (implicit) v1 is available at
+> https://lore.kernel.org/lkml/cover.1718352022.git.u.kleine-koenig@baylibre.com
+> .
+> 
+> Changes introduced here:
+> 
+>  - Split the patch removing TIM_DIER_CC_IE() and use appropriate subject
+>    prefixes. Lee and William didn't like the patch touching both
+>    include/linux/mfd/stm32-timers.h and
+>    drivers/counter/stm32-timer-cnt.c not having a hint to the counter
+>    subsystem (at least that's my interpretation of their feedback).
+>    Not mentioning mfd didn't seem to be considerably better in my eyes,
+>    so I split this patch.
+>  - Fix typo noticed by Thorsten.
+>  - Update subject prefix of the last patch to match what is usually done
+>    for pwm.
+> 
+> I have some further updates to the pwm-stm32 driver that will probably
+> go in before v6.10-rc1. They shouldn't conflict, still I'd prefer to let
+> the pwm patch go in via my tree as I might have some further changes for
+> that driver. So if this is merged using the mfd or counter tree, please
+> skip the pwm patch. A stable branch would be welcome in this case.
+> 
+> Best regards
+> Uwe
+> 
+> 
+> Uwe Kleine-König (5):
+>   mfd: stm32-timers: Unify alignment of register definition
+>   mfd: stm32-timers: Add some register definitions with a parameter
+>   counter: stm32-timer-cnt: Use TIM_DIER_CCxIE(x) instead of
+>     TIM_DIER_CCxIE(x)
+>   mfd: stm32-timers: Drop unused TIM_DIER_CC_IE
+>   pwm: stm32: Make use of parametrised register definitions
+> 
+>  drivers/counter/stm32-timer-cnt.c |   4 +-
+>  drivers/pwm/pwm-stm32.c           |  22 ++--
+>  include/linux/mfd/stm32-timers.h  | 179 ++++++++++++++++--------------
+>  3 files changed, 107 insertions(+), 98 deletions(-)
+> 
+> base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
 
-On Wed, Jun 26, 2024 at 09:57:32AM -0500, David Lechner wrote:
-> On 6/25/24 4:53 PM, Marcelo Schmitt wrote:
+Applied patches 1-4 and submitted for build testing.
 
-> > +#define SPI_CONTROLLER_MOSI_IDLE_LOW    BIT(8)  /* Can idle MOSI low */
-> > +#define SPI_CONTROLLER_MOSI_IDLE_HIGH   BIT(9)  /* Can idle MOSI high =
-*/
+If all is good, I'll sent out a PR for William.
 
-> These two flags above are still not used anywhere and are redundant with
-> the SPI_MOSI_IDLE_LOW/HIGH flags below so I don't think we should be addi=
-ng
-> these.
+Note to self: ib-mfd-counter-5.11
 
-Yes.
-
-> Also, what is the plan for adding these flags to other SPI controllers. F=
-or
-> example, the IMX controller in [1] sounds like it should also support=20
-> SPI_MOSI_IDLE_HIGH. And your comments on an earlier version of this series
-> made it sound like Raspberry Pi is always SPI_MOSI_IDLE_LOW, so should
-> have that flag.
-
-I don't think we need a specific plan there, obviously it'd be nice for
-people to go through and enable but it's also fine to just leave this
-for someone who needs the support to implement.
-
---N7WFjWy5qfMLq50w
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZ8LwkACgkQJNaLcl1U
-h9CNhgf/SSOf2uT6QPqgmc8UK28/2kDxpc+L0ItGJSbkMvq4Qzd/jESlpcCMl8D3
-y5GdaWkZXfaXoyqVyGcBi077uDS/pw0IcQlPXL/yI5deRxKibzt2H6mM8Sn8gznn
-BP4zQZc5fp9CrYQ256g/pMOxD3Q0Qam6xuG9TispYcNAcnLKuOAVEpuI/zC+V+lo
-yZUdLIsMQbTPDVRsIrs6UPs8Au+QWkkSyb6uC0yU8CAtZpoIR2hVNz1h8ixLsANz
-fneBARRJ1h/6iNI405so1ujN5D0Bw8B157RJY5TOR+PeN7+bqjwC1lfvmPA5k2R6
-cF7e8HmRtu6iC8EBhzUSnCxI7/NDkw==
-=SYzG
------END PGP SIGNATURE-----
-
---N7WFjWy5qfMLq50w--
+-- 
+Lee Jones [李琼斯]
 

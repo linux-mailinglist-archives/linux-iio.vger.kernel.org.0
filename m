@@ -1,121 +1,160 @@
-Return-Path: <linux-iio+bounces-6991-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6992-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF40191AE54
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2024 19:41:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89C3291AF28
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2024 20:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB7FAB248CB
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2024 17:40:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BCB028771F
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2024 18:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 310B2199EAA;
-	Thu, 27 Jun 2024 17:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4192019AA7D;
+	Thu, 27 Jun 2024 18:37:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bSC/eHVs"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="W1534gzr"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oo1-f53.google.com (mail-oo1-f53.google.com [209.85.161.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F031865A;
-	Thu, 27 Jun 2024 17:39:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18ED5195B18
+	for <linux-iio@vger.kernel.org>; Thu, 27 Jun 2024 18:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719509981; cv=none; b=WjzaAoJk1pFoTblZsCCP0liEDEJX8AmyPAqY8H3fYXt2tWNdyffpXgsV7fasH7Ig0YiEYENJ0YdcugyvKdbAJNsDWGE+YQM5xT09G4jpnVh7ELQKq9TYLYrthKpUPePjvFssLlHJQCJyOXNOHHQrey+NHjvl2D0Yegdb0IFPCWg=
+	t=1719513435; cv=none; b=XTF/cu61XBNr9rldRsayIYvVbjhJyauzkvAe1GVEBPYMjBhOSWuOzN9Y4k+jlzsYNKwuAwwl8UIxZXb2Rnv5HQSGZC/jJlPEgx7j5Sj6Nk3+skRy/PtyMvnTgywhA6zs20aAq+9i6h0+OoJsRwF+AtLIB4mMIKuClPEACPgkf6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719509981; c=relaxed/simple;
-	bh=aH1Umnhky55B8t61wZo0gg5wGOk7NzGGWbnnWx0lSoY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LOJZUmisMZCRyGCrVwMA+ZNqdzpkxuknMM4/L68I+dyNs4aVN0Hzrz3qtmKihmdcCrOGsjTO3pSgqI74qXo8Amx7fqGaJneBLBBKFW7R8dU/Nok3CoKe3WWigIc041BM7gLTZIxO7k32aXBQnrXF6CDE5PshVIMbvN5sOsRc4jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bSC/eHVs; arc=none smtp.client-ip=209.85.161.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f53.google.com with SMTP id 006d021491bc7-5c2253cb606so975234eaf.2;
-        Thu, 27 Jun 2024 10:39:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719509978; x=1720114778; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=s7WOcecaaOZ3rsj+Ub16kvTDYOxYiGT65TR4mfDnqck=;
-        b=bSC/eHVsFdJB11sbmUzd3AZ1I1yU5Hy5Ir7ausBQv8sPgdq0lT9dcMQwaXC1dJs6Gt
-         vkXxWmGj2Uz9XS7WKo0ojY4+LmYILTB6FBuRFfh6JVkGmkyY9yPZYaW5D/y4HU1yPSgq
-         r2wOo+EjhNH6gyDJZQJleXdD1QL1zxQM9T3pF4qSxMC7hzPPWuVwxvNQeqGlSF7Fxkoz
-         8GkDculgxYEd8sKb+cRC0zoL1gy+Ps69zKlyy90YjI1fo/hb5wGOIGGIxM6h2q6qC+JV
-         dczG+aJEsaSZ0X//TkUBnYlzX/EbgRdE1q40DIaWAKsTvxxTB2x7qa2/PIyOswOFA8GH
-         22/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719509978; x=1720114778;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s7WOcecaaOZ3rsj+Ub16kvTDYOxYiGT65TR4mfDnqck=;
-        b=nKw9E/dn1OWoxY6k1qennFLzr9lpR7bFQf85yr6FdTRI5P6b54XYuljyp86hhzqQVE
-         XlKc7aMSLPfuJb34mZy8F4MhtnI0EEdYYTI0MVqaRVpN3impg03EERscwWUElPcOTP7x
-         NDAcTtr0wEDT3csFaaXLQy6VlPwM+qZkZbTu2k1QJHqfuoPSh2D01qebHR8DtCr7CiaN
-         EmJOU20Yf82q0oDvi5wCZ/ryzQGwTTzw+74GVqtm4VR4nqujFXdMv8FBldHlRVf3TmRk
-         gZoop6b0pmFSKdADf6PnPohR0Bvr132X6r2C8+CMCJ864CfACUFAzYBu8A5H1tM5Cin5
-         eDlA==
-X-Forwarded-Encrypted: i=1; AJvYcCWtX8PqXxEICJlX62BLHaB460//ZEEttXjImMIE4ZSI1AHhbXTHZXdcCHuHPnRWAxS3QShjtjRkM+rJq6hL1UNaKBFJkGcc8+7IgsGMBZ0KecUfvNsWLe4S+a8i0Qa8wEpHIcPCS/yTT332YTui7Y1CJGL+gO8Ph467WhYnOkn/X4GCUq8WMgcnr+2PDz9BFZm7+6t9AIfAqawMN5kcPn+CH9UydTlFP2CW5YL7VLgC2ug4BwWgiulRXQ==
-X-Gm-Message-State: AOJu0YzrkQaYur3hAaF271Dm6HFgdTyYvtctYS0NWJ+mGQQYoNwTX0dl
-	jUL34SjItvQpSK5+zUhl1W3+YE6oBUSYENLyG2eIqTHElZzAsnhP
-X-Google-Smtp-Source: AGHT+IEGlLzYhJ39db3MWWvG5uOUIm3HV5EiLIKlEss/+fCmWIiT934iZZ4Ky2YFWCnOMl3U2dQAzw==
-X-Received: by 2002:a05:6358:9211:b0:1a6:7c93:963c with SMTP id e5c5f4694b2df-1a67c93ac03mr215407955d.14.1719509978504;
-        Thu, 27 Jun 2024 10:39:38 -0700 (PDT)
-Received: from localhost ([2804:30c:96b:f700:cc1d:c0ae:96c9:c934])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-72749854a9fsm1314642a12.92.2024.06.27.10.39.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jun 2024 10:39:37 -0700 (PDT)
-Date: Thu, 27 Jun 2024 14:41:05 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: David Lechner <dlechner@baylibre.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>, lars@metafoo.de,
-	Michael.Hennerich@analog.com, jic23@kernel.org, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	nuno.sa@analog.com, corbet@lwn.net, linux-iio@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 1/7] spi: Enable controllers to extend the SPI
- protocol with MOSI idle configuration
-Message-ID: <Zn2kMVDn5k1OFogA@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1719351923.git.marcelo.schmitt@analog.com>
- <add14694c64b574af742a5dcd5c9461e0ef5210a.1719351923.git.marcelo.schmitt@analog.com>
- <1d2cde40-ad55-4136-bc72-3d71515f7023@baylibre.com>
- <7ed7f957-3e07-42ce-894a-f3f9dcf512ea@sirena.org.uk>
+	s=arc-20240116; t=1719513435; c=relaxed/simple;
+	bh=kMf/jTaHv8Pibllz765oLhr56R7Vnv74xKa/hCJTaII=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TVlnVEDIsX/1frlcMFjixmsvEyccvSxq2l+8k4YdcHksgj1ULhKDGL3FmfpFXyzIpXxlPHSwsOi4wISH+B5pY++X6KKAH0cjIGBGkX/AVvfY7XpRRsSpY1LMkWRgeLaDoZWqg493KaZPKvCu9yJ8eWLNd3vWlbmAh57jTT6pgH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=W1534gzr; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Envelope-To: jic23@kernel.org
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1719513429;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LcX+DNUAOkuuXE8/JmszLDMKosfH1JHvU1xDYWp+oWM=;
+	b=W1534gzrjEl4P8g5y/J0X5tfxFPrE1J+gIoykAKtFAUDacat2D3PUXImDN83E0bM/P+BpT
+	K7ISNAsIhoBPqPifciJwK9EXKDrrvbGq+eKB6x1s5dPhSqU39VJu3aKZ/qnhjExFyVhT6C
+	SSZPLqZK48b82/3359XmIQkrvpwND4Y=
+X-Envelope-To: linux@roeck-us.net
+X-Envelope-To: jdelvare@suse.com
+X-Envelope-To: linux-iio@vger.kernel.org
+X-Envelope-To: linux-hwmon@vger.kernel.org
+X-Envelope-To: linux-kernel@vger.kernel.org
+X-Envelope-To: lars@metafoo.de
+Message-ID: <f6ee3049-47a0-4c84-ab90-2321bf6970d0@linux.dev>
+Date: Thu, 27 Jun 2024 14:37:01 -0400
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <7ed7f957-3e07-42ce-894a-f3f9dcf512ea@sirena.org.uk>
+Subject: Re: [PATCH v2 2/2] hwmon: iio: Add labels from IIO channels
+To: Jonathan Cameron <jic23@kernel.org>, Guenter Roeck <linux@roeck-us.net>
+Cc: Jean Delvare <jdelvare@suse.com>, linux-iio@vger.kernel.org,
+ linux-hwmon@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Lars-Peter Clausen <lars@metafoo.de>
+References: <20240624174601.1527244-1-sean.anderson@linux.dev>
+ <20240624174601.1527244-3-sean.anderson@linux.dev>
+ <ff43e01e-5a26-4b75-bfaa-ed3ad4395e7c@roeck-us.net>
+ <20240624202433.29564802@jic23-huawei>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Sean Anderson <sean.anderson@linux.dev>
+In-Reply-To: <20240624202433.29564802@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On 06/26, Mark Brown wrote:
-> On Wed, Jun 26, 2024 at 09:57:32AM -0500, David Lechner wrote:
-> > On 6/25/24 4:53 PM, Marcelo Schmitt wrote:
+On 6/24/24 15:24, Jonathan Cameron wrote:
+> On Mon, 24 Jun 2024 11:47:39 -0700
+> Guenter Roeck <linux@roeck-us.net> wrote:
 > 
-> > > +#define SPI_CONTROLLER_MOSI_IDLE_LOW    BIT(8)  /* Can idle MOSI low */
-> > > +#define SPI_CONTROLLER_MOSI_IDLE_HIGH   BIT(9)  /* Can idle MOSI high */
+>> On 6/24/24 10:46, Sean Anderson wrote:
+>> > Add labels from IIO channels to our channels. This allows userspace to
+>> > display more meaningful names instead of "in0" or "temp5".
+>> > 
+>> > Although lm-sensors gracefully handles errors when reading channel
+>> > labels, the ABI says the label attribute
+>> >   
+>> >> Should only be created if the driver has hints about what this voltage
+>> >> channel is being used for, and user-space doesn't.  
+>> > 
+>> > Therefore, we test to see if the channel has a label before
+>> > creating the attribute.
+>> >   
+>> 
+>> FWIW, complaining about an ABI really does not belong into a commit
+>> message. Maybe you and lm-sensors don't care about error returns when
+>> reading a label, but there are other userspace applications which may
+>> expect drivers to follow the ABI. Last time I checked, the basic rule
+>> was still "Don't break userspace", and that doesn't mean "it's ok to
+>> violate / break an ABI as long as no one notices".
+>> 
+>> > Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+>> > ---
+>> > 
+>> > Changes in v2:
+>> > - Check if the label exists before creating the attribute
+>> > 
+>> >   drivers/hwmon/iio_hwmon.c | 45 ++++++++++++++++++++++++++++++++++-----
+>> >   1 file changed, 40 insertions(+), 5 deletions(-)
+>> > 
+>> > diff --git a/drivers/hwmon/iio_hwmon.c b/drivers/hwmon/iio_hwmon.c
+>> > index 4c8a80847891..5722cb9d81f9 100644
+>> > --- a/drivers/hwmon/iio_hwmon.c
+>> > +++ b/drivers/hwmon/iio_hwmon.c
+>> > @@ -33,6 +33,17 @@ struct iio_hwmon_state {
+>> >   	struct attribute **attrs;
+>> >   };
+>> >   
+>> > +static ssize_t iio_hwmon_read_label(struct device *dev,
+>> > +				  struct device_attribute *attr,
+>> > +				  char *buf)
+>> > +{
+>> > +	struct sensor_device_attribute *sattr = to_sensor_dev_attr(attr);
+>> > +	struct iio_hwmon_state *state = dev_get_drvdata(dev);
+>> > +	struct iio_channel *chan = &state->channels[sattr->index];
+>> > +
+>> > +	return iio_read_channel_label(chan, buf);
+>> > +}
+>> > +  
+>> 
+>> I personally find it a bit kludgy that an in-kernel API would do a
+>> sysfs write like this and expect a page-aligned buffer as parameter,
+>> but since Jonathan is fine with it:
 > 
-> > These two flags above are still not used anywhere and are redundant with
-> > the SPI_MOSI_IDLE_LOW/HIGH flags below so I don't think we should be adding
-> > these.
+> That's a good point that I'd not picked up on and it probably makes sense
+> to address that before it bites us on some other subsystem.
 > 
-> Yes.
+> It was more reasonable when the only path was to a light wrapper that went
+> directly around the sysfs callback. Now we are wrapping these up for more
+> general use we should avoid that restriction.
+> 
+> Two approaches to that occur to me.
+> 1) Fix up read_label() everywhere to not use sysfs_emit and take a size
+>    of the buffer to print into. There are only 11 implementations so
+>    far so this should be straight forward.
 
-Oops, my bad. Removed them now for v6.
+This API is the same as the existing iio_read_channel_ext_info. It is
+used for the same purpose: forwarding sysfs reads/writes from one
+device to another (see e.g. iio-mux and iio-rescale). ext_info is used
+by around 85 drivers, so it is not so trivial to change the API. While I
+agree that the current API is unusual, it's not too bad given that we
+get the same guarantees from device_attribute.show.
 
-> 
-> > Also, what is the plan for adding these flags to other SPI controllers. For
-> > example, the IMX controller in [1] sounds like it should also support 
-> > SPI_MOSI_IDLE_HIGH. And your comments on an earlier version of this series
-> > made it sound like Raspberry Pi is always SPI_MOSI_IDLE_LOW, so should
-> > have that flag.
-> 
-> I don't think we need a specific plan there, obviously it'd be nice for
-> people to go through and enable but it's also fine to just leave this
-> for someone who needs the support to implement.
+--Sean
+
+> 2) Add a bounce buffer so we emit into a suitable size for sysfs_emit()
+>   then reprint from there into a buffer provided via this interface with
+>   the appropriate size provided.  This one is clunky and given the relatively
+>   few call sits I think fixing it via option 1 is the better route forwards.
+
 

@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-6982-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-6983-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E99C91A5F1
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25EF391A5F0
 	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2024 13:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF74DB27C84
-	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2024 11:59:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BDCE1F23220
+	for <lists+linux-iio@lfdr.de>; Thu, 27 Jun 2024 11:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A112D14F12F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C3514F9CF;
 	Thu, 27 Jun 2024 11:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Pb43eTgN"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Mj2vNRRZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E6D14EC61
-	for <linux-iio@vger.kernel.org>; Thu, 27 Jun 2024 11:59:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE4B14EC7D
+	for <linux-iio@vger.kernel.org>; Thu, 27 Jun 2024 11:59:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719489580; cv=none; b=jlI9abHbXjiFuqnoleLAhVDkzBx8UhR1cmiUUCOCq+dkqwPjUOuqm4dyrkaCAiTBpJqR6c7JD5YeNBgPsDPkHUHPwi4JzbbCkCveEzc0Irt5gfk7MYXyjaGbluVMEIcH0fYZFoPJZ3XNEkKomrJ6bAqFijYxlNmlO23qadOLeJo=
+	t=1719489580; cv=none; b=Yvj1RRJ/7PuVZbV9b5rfmQ7HbJQwvDH+YlXsuUSuqAuTFWz7veIZCCZMtD7P1X1Qv9Eg7u9vBAJpMCKiavtM/rKDlusHCK6INzXyHqP1oTW2erpaMsyi3e3flc+P7/pLRnJDCO5YPQLPmQL4wat3p/ZQZ+l4lB/GQDIKznm8FGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1719489580; c=relaxed/simple;
-	bh=anA5oYFGJ2+2TTOR+4xzpiZiQv1Xq5rAKQT0E0obUDY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=I51FzHMDD45ibALjtDNYBOaE8Aikr3MNv7odAwy740qzljmqFB9CJVqL+E02G17P1Arsf8xYYYm8JLaJE2E9xIYEvwNTI8H46VvvvoUEMh3rSmRJS1rsZSEEonsdEeTTPiJzJfYC5Q8MODpDyHIf9s7PCrV+VJ7NT9Rsr+1aMiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Pb43eTgN; arc=none smtp.client-ip=209.85.128.53
+	bh=zDhD9bMPssS6E/uk1KXM8mBkXmjOeauwiaHRs4sJQbc=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dTjzCPqVBKypm3in7dE+HFKQJMf81ODk1EUZY8vkdRW1uH/8h/hpywiPWNWOlH6h16QHfnuUvmI3YyhicT4Fk0P6Tgt7WtIOia6XnZt1m5UfqdDXhFqnuLI7pdDe+6df6M7F1QNKjdW8Fy66qYOmalTLNYtgM/ZcbY+XFJkMf0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Mj2vNRRZ; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-424acf3226fso16435615e9.1
-        for <linux-iio@vger.kernel.org>; Thu, 27 Jun 2024 04:59:37 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42565697036so3253035e9.1
+        for <linux-iio@vger.kernel.org>; Thu, 27 Jun 2024 04:59:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719489576; x=1720094376; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+OAKif13lnyPw2LmYH2U9f5LMUBn4yIkrRKzqcGvy0c=;
-        b=Pb43eTgN/Jrff9QQI7XbB93igKa0iTcDCh7qV15sSIAqXEDUUZb1GOYp+p+2LVupoS
-         IJi5lE01fll4YIUC7Gkopb0uBIzOZUs2cLRnC2yX1Qen3KGOK1GmDehoNVyNI+kdNG0H
-         Q7oCowsqbmkGLB3gwfXqdKWj2sWmMgnoT9g4kLaU9u8kIUetWHTQ3rtHPIDFHRGqDKCQ
-         qF1NCFwRJE3EqotVmVJUwE2EMZ1Lh+Iaj3kDACJC20RBTj02oxop9aOku74GqHcZLRzj
-         VaNGt8f0pCUTsL3EV2UUPDi39HWjHsiiKUnEg5jQc2SMU2VhyEMo+MDVonKkr+VjRu5U
-         vO/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719489576; x=1720094376;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719489577; x=1720094377; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+OAKif13lnyPw2LmYH2U9f5LMUBn4yIkrRKzqcGvy0c=;
-        b=uR81lFWWtr+WIdvF/2/HSk2r0GmwG8rj/jT7Boeqs1YMSe8QulrICLzRUUjMTKnqIe
-         KnAh62/CQA/HaV8bAA35Ex58wy6+nGxWbaGDR7Z2pOXY5hB79TuIaadsLz6cGbwnfiqQ
-         X5xlgPy5/N8rYxuIAdHIg9YFrX3yurtOC4ok9KUO3G7uMK4UVpHrHMa4FcdTpY5eYlA0
-         pU9nXftVe8E/DMzfqBVRdqBYY/4aZP07kkqEoNyBRsBuXkKe0M1HgrtKC0cahQ4WtorS
-         4cp0FTz45Dk6sUCKWl5hY0W0N2GCiFXTStbPdM/ru80PlS5r8dgd4TZ8D3PlIKEn8Zli
-         1paQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWv23ZQ2559IqL5LJOx2vqcqh3gX6e8oy3JyHvsl/JYu+P3dNIbWE0ZQG07tlo6EPeB7ln78yKB9zANH9LGDPcoIPAzojoOTCwe
-X-Gm-Message-State: AOJu0Yz6qAMvS7IGgcUcOLN/0c935YQG0269oWy4FnJqpt4sSWnsSeRC
-	Lt0yOYwfIcMTWidpMeAsllWImgOvsIXXNwZFS8mqaYV11LHTKP75gf6DJ0M+M7k=
-X-Google-Smtp-Source: AGHT+IGCSfOzVvWKWUPKel38jhHjOSvBykHlWgd/kqEry+wOrXMEP1r8dG8bEHq+9TLVoHrK4Bs+LA==
-X-Received: by 2002:a05:600c:3b16:b0:425:52c7:1f14 with SMTP id 5b1f17b1804b1-42552c71f73mr28673795e9.24.1719489576191;
-        Thu, 27 Jun 2024 04:59:36 -0700 (PDT)
+        bh=RKhxvQFyxUbiQ3O/bZb97hQPbbd79z6UzvDpDY1X4gI=;
+        b=Mj2vNRRZWa+ItNVb9LTHiLaxHZHOcp8NJv5DHfRmnuwoQbOoMX8Fy4mWZb5LPA/rtD
+         tSQ7wp9+02/iUgczz9HME5/f3vwTW3ps32/BaXvu8ekeGkRvb5wBPPXXbFcqclrpgMA1
+         2Y9b+hEyQnbKGr2PIHhY2fhOGSKqphSM8Q8YCMXlGvyRYzZCYvnV6La5irb4mzfES1oE
+         B7dBQpWOs30r64I6BBA7LdBkWBvo9o7Klx0f7gijOUmYid6JAfeKDyfpuVMRA74RtA7v
+         8sDPOnDRUGi0uCdjcrInTpEHM6YrjLfqkCCIt5oVnEM6OH4OyA9zHwxgnMQUfJfFQFKH
+         qJFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719489577; x=1720094377;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RKhxvQFyxUbiQ3O/bZb97hQPbbd79z6UzvDpDY1X4gI=;
+        b=Jba3PYZR0aYLX89bWtQ7W06a5vS5OXaxlmY1/vwp8KgrmlwtyABIxLHC8yHFAjYT+h
+         7uutww2fsoedE5tjmRgZT7HWzdhyeAWav0KdssU48rLDo8Eceikyc/mgcUfmWalfnNc7
+         zabOrwpZcNMGJUyMq7PPV2pVmrY5oEeUOZ29gYTkAVi+kvtxSC4Q1IJPVDEzrLhljr4R
+         LWr6DdB/PXWgyWQMiGji+GQRBOOZDwO4ecgk7bT7UGfwY0+EH+N0EMsy5idn3mvOu5bF
+         60G+1zvJ/axVUNk4Tr3oFiLkClcJtgrgf/COUGWSV0pbXTj79GpdJxeyzlSP2BUii0Pn
+         CHKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUqxhQ+/Vv474mj7usDMdqaVsg5FCxVdG1tgZMR8CBr0QZJGmQ75lnO54shdAkYZAiDqKxxU13Il+YiLIbR3Dg1axIMgB4Gal+j
+X-Gm-Message-State: AOJu0Yye2vRkK8/ob87bwtf4uXGO0vDHTJtlzggU+E+PvkeBUMK9ZAY8
+	6Nd/d9muCHt6zu4uTi/keNhPWCIHXExWqKKVNavQr9qOhrDfsLQfZ5myGqUoEqE=
+X-Google-Smtp-Source: AGHT+IFvoQO2FFU7vOq7UvighAzf6vFsBI8EBDZpoaGx6tWGnI6YdHfxuwSKF4zrlVUXj/CYk9029A==
+X-Received: by 2002:a05:600c:2e0b:b0:424:895c:b84b with SMTP id 5b1f17b1804b1-425630daf0fmr22792665e9.4.1719489577043;
+        Thu, 27 Jun 2024 04:59:37 -0700 (PDT)
 Received: from [127.0.0.1] ([2a01:e0a:448:76e0:4435:7af:3956:8dba])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-424c82462a2sm63473585e9.2.2024.06.27.04.59.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-424c82462a2sm63473585e9.2.2024.06.27.04.59.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 27 Jun 2024 04:59:35 -0700 (PDT)
+        Thu, 27 Jun 2024 04:59:36 -0700 (PDT)
 From: Esteban Blanc <eblanc@baylibre.com>
-Subject: [PATCH RFC 0/5] iio: adc: ad4030: new driver for AD4030 and
- similar ADCs
-Date: Thu, 27 Jun 2024 13:59:11 +0200
-Message-Id: <20240627-eblanc-ad4630_v1-v1-0-fdc0610c23b0@baylibre.com>
+Date: Thu, 27 Jun 2024 13:59:12 +0200
+Subject: [PATCH RFC 1/5] dt-bindings: iio: adc: add ADI ad4030 and ad4630
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,11 +77,10 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAA9UfWYC/3WNzQrCMBCEX6Xs2UjSLgn1JAg+gFcpkp/VLrSpJ
- FIspe9u6F2YyzfDzKyQKTFlOFUrJJo58xQLqEMFvrfxRYJDYahljVLXKMgNNnphA+pGPmYllJU
- GZWvItQpK7Z3oyd998g636wW6YvacP1Na9ptZ7dH/xSIpdLDaoFeNQzo7uwzsEh39NEK3bdsPF
- JjFi7gAAAA=
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240627-eblanc-ad4630_v1-v1-1-fdc0610c23b0@baylibre.com>
+References: <20240627-eblanc-ad4630_v1-v1-0-fdc0610c23b0@baylibre.com>
+In-Reply-To: <20240627-eblanc-ad4630_v1-v1-0-fdc0610c23b0@baylibre.com>
 To: baylibre-upstreaming@groups.io, Lars-Peter Clausen <lars@metafoo.de>, 
  Michael Hennerich <Michael.Hennerich@analog.com>, 
  Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -92,9 +91,9 @@ Cc: Michael Hennerich <michael.hennerich@analog.com>,
  linux-kernel@vger.kernel.org, David Lechner <dlechner@baylibre.com>, 
  Esteban Blanc <eblanc@baylibre.com>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openssh-sha256; t=1719489554; l=1754;
+X-Developer-Signature: v=1; a=openssh-sha256; t=1719489564; l=4239;
  i=eblanc@baylibre.com; s=yubikey; h=from:subject:message-id;
- bh=anA5oYFGJ2+2TTOR+4xzpiZiQv1Xq5rAKQT0E0obUDY=;
+ bh=zDhD9bMPssS6E/uk1KXM8mBkXmjOeauwiaHRs4sJQbc=;
  b=U1NIU0lHAAAAAQAAAhcAAAAHc3NoLXJzYQAAAAMBAAEAAAIBALJZcW6pLD4ksSdWnXd5r65Ze
  5Qc5pH7+DmmbKJasOXeVYRPFEmnORS7pwhURG11AMVFmnCVYWj+wPYrbCEeM7XKfO4oQzc66kYB
  7y0RrFwjoWKofytjI026zV5b2pn1JAItgu0Ijth+TSa6KVOTSXqqiVzOTDM1WL0hAIIzpkhE3Vt
@@ -105,58 +104,168 @@ X-Developer-Signature: v=1; a=openssh-sha256; t=1719489554; l=1754;
  85L2Br7MPqe3q3J/PHIe0nHO56j7tTY6cFFs/ckqcQSTJigh2rA7InN1d7GqZFLzlewRTGaCY+M
  93d7DCIuxTxJWRpVm7NW1FBeX6d00+dAcQ/dS+jmA3kcdRoWtH160jmmYYvOgrsQTcMIQrPtK+B
  rULRmmIvEIJMF5UfNmxruWmWn6MM/xeejTNszoKqrORpbr7q3BnkKt2y/KdAAAABnBhdGF0dAAA
- AAAAAAAGc2hhNTEyAAACFAAAAAxyc2Etc2hhMi01MTIAAAIAIHga1lplWJQgF9MHgXvlNtQg/xk
- rlzN1fxEY0ZBZOpyIV4qE8C4I4KWtk2qFo3GMxxIKhLA9h7J1tTENd4+ez6qfZUn2UJgmxnE2EZ
- rsrKgy9dSDl29fSB63JYuqV8+w0CfXZqW8uCZ9NXjHuOgbYO3gvMtSy6O9HRYDDVR6IeQVAWj89
- 2Uex0zgZThdmjL8ZWmvuYCQNNSstH2zCIdrBKdM2hMROY895jc1IQxtYSweCR567rp5S9wKYMkP
- yvZi26amjqZ5Vt+fJmOXKnFLjPE5Re39eGTxtQHiopFrbXe6wQZN4AWMsALUWMj5tnT08pUwqTx
- UUuJvscg/jvMs5ICSk0e67czelDZPg+ehDiRz5oEOgkFuIiI4KO+h2h+Apus9iEqcxi1SjYB8cQ
- n9TNBbXrYEofEppE/wxrs3N42kNt6dBIo9qbY2R+e4XdMDEBbEJqWU4PkRaYTG0OSWQrhm27Klr
- +S3QAHrZEfyT+k+a6KdawW311P2U/R5iu1NBdWj44IqrMOyGTWhz2lBu7DbgIvaQYBfPOOBa3bS
- f2DQriTgOZoqD18TaM52xwokhPVzC9WjWdMtUaXoFJRMNRUovhAMzYlhOaF2/ExXh6EywZOr+mV
- nBW/vl4hWVaLsrElHneYzAt9LwQGpxplKTWnywC/0SUNvuA5N9i+9wJw=
+ AAAAAAAGc2hhNTEyAAACFAAAAAxyc2Etc2hhMi01MTIAAAIAqPNxWWUrycEJ16KriHB+hh8ak3Z
+ azUGK3SNkFl+EBSCY/5UqmwcgWnP9a0DbXJNSOiFpGf8CaW+sLez+H1DSQNH861/x3Gnufw+hfZ
+ 5I7NLEUnxpnA9W0OWhJG4oAlvLO7VHfUC2+aKc2ySqofVTlIYq/bXFUcW2GHDwRezgbgWJuBcWv
+ D3Iy+uiIyjXrZmmIzkyWOkI4vQKkvqGKVN5PfIHB/shx/Kj/9LYgHx5J12SGET4gqCNixSKcV/I
+ aLy+OYa763NxRpjhJyMoL5Kn7yzfRktByocApqAOFIa8u1er0ImnkwSBMuPkTwJbepGu0GXpkG9
+ lINlVbZGtUlq/8ReVKq7W46Pws/uL8V82yuUxERm8BDxCZTyVqgImSTql4iYgG2zxBSZIVsrGWK
+ I75Wln/wxfwyxl9kPMrc6kHNdv/UslNRZ58ctFNisayyOYefzgEkglyUlK+giaAQOV8xzSdO2FM
+ 8BAv3S4wW65zt4NYbTTWpEfL27Qqoz71wHZ+ftu2nsyPQywcgZLOVI5sPswXZX6OgJL+UzndrIP
+ SQ+XkesIaZGoimlbNjWhGxjj51GgWYlBhLRRGCbR2KVlIqPkPyy1rF4rxIoak+/a/GnWx2JXjow
+ 7vd2lBcAtCuAYRvjgFqvKQfHvmSNmzep/QNmyklZ2dDL7BYO1ucQDimY=
 X-Developer-Key: i=eblanc@baylibre.com; a=openssh;
  fpr=SHA256:LOxhPHcL6HLuSaOVHuI2Yq7hvD2blbngN1ohWi2rJOw
 
-This is adding DT bindings and a new driver for AD4030, AD4630 and
-AD4632 ADCs.
-
-This work is being done in collaboration with Analog Devices Inc.,
-hence they are listed as maintainers rather than me.
-
-The code has been tested on a Zedboard with an EVAL-AD4030-24FMCZ,
-an EVAL-AD4630-24FMCZ and an EVAL-AD4630-16FMCZ. As there is no eval
-board for AD4632 the support can't be tested at the moment. The main
-difference is the reduced throughput.
-
-This series is taged as RFC because I think I'm misusing
-IIO_CHAN_INFO_CALIB*. For CALIBBIAS the doc in sysfs-bus-iio says
-"Hardware applied calibration offset (assumed to fix production
-inaccuracies)" but AD4030 offset in on 24bits and I would argue that at
-this point it's not just here to fix production inaccuracies. Same this
-for CALIBSCALE. What IIO attributes should I use instead?
+This adds a binding specification for the Analog Devices Inc. AD4030 and
+AD4630 families of ADCs.
 
 Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
 ---
-Esteban Blanc (5):
-      dt-bindings: iio: adc: add ADI ad4030 and ad4630
-      iio: adc: ad4030: add driver for ad4030-24
-      iio: adc: ad4030: add averaging support
-      iio: adc: ad4030: add support for ad4630-24 and ad4630-16
-      iio: adc: ad4030: add support for ad4632-16 and ad4632-24
+ .../devicetree/bindings/iio/adc/adi,ad4030.yaml    | 113 +++++++++++++++++++++
+ MAINTAINERS                                        |   8 ++
+ 2 files changed, 121 insertions(+)
 
- .../devicetree/bindings/iio/adc/adi,ad4030.yaml    |  113 ++
- MAINTAINERS                                        |    9 +
- drivers/iio/adc/Kconfig                            |   13 +
- drivers/iio/adc/Makefile                           |    1 +
- drivers/iio/adc/ad4030.c                           | 1081 ++++++++++++++++++++
- 5 files changed, 1217 insertions(+)
----
-base-commit: 07d4d0bb4a8ddcc463ed599b22f510d5926c2495
-change-id: 20240624-eblanc-ad4630_v1-1a074097eb91
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+new file mode 100644
+index 000000000000..7957c0c0ac7a
+--- /dev/null
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad4030.yaml
+@@ -0,0 +1,113 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++# Copyright 2024 Analog Devices Inc.
++# Copyright 2024 BayLibre, SAS.
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/iio/adc/adi,ad4030.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Analog Devices AD4030 and AD4630 ADC family device driver
++
++maintainers:
++  - Nuno Sa <nuno.sa@analog.com>
++  - Michael Hennerich <michael.hennerich@analog.com>
++
++description: |
++  Analog Devices AD4030 single channel and AD4630 dual channel precision SAR ADC
++  family
++
++  * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4030-24-4032-24.pdf
++  * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4630-24_ad4632-24.pdf
++  * https://www.analog.com/media/en/technical-documentation/data-sheets/ad4630-16-4632-16.pdf
++
++properties:
++
++  compatible:
++    enum:
++      - adi,ad4030-24
++      - adi,ad4630-16
++      - adi,ad4630-24
++      - adi,ad4632-16
++      - adi,ad4632-24
++
++  reg:
++    maxItems: 1
++
++  spi-max-frequency:
++    maximum: 100000000
++
++  spi-rx-bus-width:
++    enum: [1, 2, 4]
++
++  vdd-5v-supply: true
++  vdd-1v8-supply: true
++  vio-supply: true
++
++  ref-supply:
++    description:
++      Optional External unbuffered reference. Used when refin-supply is not
++      connected.
++
++  refin-supply:
++    description:
++      Internal buffered Reference. Used when ref-supply is not connected.
++
++  cnv-gpio:
++    description:
++      The Convert Input (CNV). It initiates the sampling conversions.
++    maxItems: 1
++
++  reset-gpio:
++    description:
++      Reset Input (Active Low). Used for asynchronous device reset.
++    maxItems: 1
++
++  interrupts:
++    description:
++      The BUSY pin is used to signal that the conversions results are available
++      to be transferred when in SPI Clocking Mode. This nodes should be connected
++      to an interrupt that is triggered when the BUSY line goes low.
++    maxItems: 1
++
++  interrupt-names:
++    const: busy
++
++required:
++  - compatible
++  - reg
++  - vdd-5v-supply
++  - vdd-1v8-supply
++  - vio-supply
++  - cnv-gpio
++
++oneOf:
++  - required:
++      - ref-supply
++  - required:
++      - refin-supply
++
++allOf:
++  - $ref: /schemas/spi/spi-peripheral-props.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/gpio/gpio.h>
++
++    spi {
++        #address-cells = <1>;
++        #size-cells = <0>;
++
++        adc@0 {
++            compatible = "adi,ad4030-24";
++            reg = <0>;
++            spi-max-frequency = <80000000>;
++            vdd-5v-supply = <&supply_5V>;
++            vdd-1v8-supply = <&supply_1_8V>;
++            vio-supply = <&supply_1_8V>;
++            ref-supply = <&supply_5V>;
++            cnv-gpio = <&gpio0 0 GPIO_ACTIVE_HIGH>;
++        };
++    };
++
+diff --git a/MAINTAINERS b/MAINTAINERS
+index be590c462d91..8ca5b2e09b69 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -412,6 +412,14 @@ S:	Maintained
+ W:	https://parisc.wiki.kernel.org/index.php/AD1889
+ F:	sound/pci/ad1889.*
+ 
++AD4030 ADC DRIVER (AD4030-24/AD4630-16/AD4630-24/AD4632-16/AD4632-24)
++M:	Michael Hennerich <michael.hennerich@analog.com>
++M:	Nuno Sá <nuno.sa@analog.com>
++R:	Esteban Blanc <eblanc@baylibre.com>
++S:	Supported
++W:	https://ez.analog.com/linux-software-drivers
++F:	Documentation/devicetree/bindings/iio/adc/adi,ad4630.yaml
++
+ AD5110 ANALOG DEVICES DIGITAL POTENTIOMETERS DRIVER
+ M:	Mugilraj Dhavachelvan <dmugil2000@gmail.com>
+ L:	linux-iio@vger.kernel.org
 
-Best regards,
 -- 
-Esteban Blanc <eblanc@baylibre.com>
+2.44.1
 
 

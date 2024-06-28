@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-7007-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7009-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E6F991C184
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 16:49:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54A5C91C18E
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 16:49:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1F151F26591
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 14:49:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C427CB23FA9
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 14:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C71B1C2339;
-	Fri, 28 Jun 2024 14:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C66911C8FA4;
+	Fri, 28 Jun 2024 14:48:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="BLG46gih"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="QqHyZxc8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDED71C0DDB
-	for <linux-iio@vger.kernel.org>; Fri, 28 Jun 2024 14:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E2E1C230B
+	for <linux-iio@vger.kernel.org>; Fri, 28 Jun 2024 14:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719586123; cv=none; b=RMZWs6AfcHCCtgQ86i6q9GHPKOGPA/KiuAFGtAJJ2ky+fuXiDe1cF+etdOFrOryxvwk/dXZXM98SgfIW9sayAkBGmvpWjT5RfXfHPRS0UPfYDrtUh3UPTs/UbbeOK58FBzaa7RZxpd0dgEV7GRboEGqh3aTcabaFDJ6bwHkA0OU=
+	t=1719586125; cv=none; b=NUUYwZjhhlt8Ptrf2S9/PVIb+cUhpxy+jISGFddd5BDM6j59Je5C42bNMsWw8GHwIwe3TixH13vpwXmmFgN4SqQG0QmlHkuuiA7AWcQCAy76Sq4dOoJ7BocLbIEGH/cf1uUtlXYkLLcSqbNyxfMMDROof6XI5FN06P00S1lhSqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719586123; c=relaxed/simple;
-	bh=pbVttNwmh0wXwB2M+J1lmKxK6g4AGHnPIqH7k9p554I=;
+	s=arc-20240116; t=1719586125; c=relaxed/simple;
+	bh=Me4ZAZeXpUEgoNz5XwlIttAMsS1eKUVKhBdpA0oqJm0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=gXlCXf3+ATL9TJJqOg7pqmk5JfpeJx5W4RZpxCbrbRs93VaOdNa+3p2V673tHFuxKfLzVNf2feQXbQ1637DNS05IibQeTd3ypFhx6418QDJMmKY7VMyEopSjgtMn85OFABvPyiAmtK5dAdiXjR8To5YHn1zpGWm0og9CFmCCMAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=BLG46gih; arc=none smtp.client-ip=209.85.128.51
+	 In-Reply-To:To:Cc; b=OM12D8jcnQn42f89v4KOIpc+scQLyM9wQCb+oj5UqxFKs3OnN2b/u1B6xU00NAip2tuZ3C5IbvPOMqN/RPWC6BaCQIFuKP2R80ZwJoQDNAhtD9/EBknwYi0ORR8WwSTJL1LVXaY0S24WDh1ihqgcrnTKesQruDoziMIwvNx4kzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=QqHyZxc8; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42562a984d3so5456925e9.3
-        for <linux-iio@vger.kernel.org>; Fri, 28 Jun 2024 07:48:41 -0700 (PDT)
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-52ce674da85so778804e87.2
+        for <linux-iio@vger.kernel.org>; Fri, 28 Jun 2024 07:48:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719586120; x=1720190920; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719586121; x=1720190921; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=twxKpEjx0LE+O9asNVqI6nlOWrql2lHpjBPHpnXyihY=;
-        b=BLG46gihePOXsJ3H7nGHUOJ0B604VwZfR2b5mwP+toKSM5XCTpfZJqU2ALfSv6Vds2
-         OL/d6rkU0GWcQwcDKHlv8/InkUIY8fmLc9gCuv6vgfRgMzrZUX1bBOu8lVYnfBLHufBt
-         A5MsqMQM/zA6xUem8O9xLE2qcXBVI1cVS7x0e4z1K6maA7swthZbtcsTaJyXV1XgOF34
-         9IjOxw4qEz+cu0f7d80z3lsbzPz26rkPhwM56WyULxAlNWw1P2DR616hyxbMs+X8g40E
-         Y/1YGTOwhQossZ4u2FQb1kNAzPCVL9OMIQaPnG503xBlDStVDW1Qp1Zgz6qn+MkC/ZgN
-         VyiA==
+        bh=bXjkAZmosXV+EptKqWsfwFwF90aKrgxPO7Zqi4uv4Ng=;
+        b=QqHyZxc8wpMmzLDhsjgX+4llEEm2rKzls2vcfl9Xlv6DxVA5XZqXB3s4PVUTYLbfGL
+         xPWz5NYwEFSgijSnJBnEDEIwRsOfc79621g8T+034Y7pZskERdqxKuJknIuBrnFfzZR4
+         qpxxTmIevj8CJW348DgwUD2POJ8Se46WgOmyD8R+km3+faxmM8dm2uaSSTEMlxAV3K41
+         NyOzHKj0+Iy43yEO1BVcv9mV8t7mBCK9ar3QIqxpEwEALPgOUfla/XS9PTFc0Q55JsDS
+         FtLVg/aKlNVK1c+1mMI/ASJLLRwUSXzFsgBBv/hfjNF1AAO2FwE4KzBNA5q8Mg5FzbUz
+         msqw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719586120; x=1720190920;
+        d=1e100.net; s=20230601; t=1719586121; x=1720190921;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=twxKpEjx0LE+O9asNVqI6nlOWrql2lHpjBPHpnXyihY=;
-        b=kttlfXyUKlYqzHRARi9luR39U5YRr6ElZYZYZzUn65JKSFoMxSCLiLlJnZtztuaChp
-         7w8teBZOfq/j9vTbT+eLvF+vSyUwSmTUK90CqegGAIVWMYGs8Q6U0KA3U2xE5XYRuleY
-         h2Dx7OCkf6XYO5mCuF1Xy6t9vYGBhrb1uJuNnWTh129jvezDDZ4KflY1UqIyJSKWwg7w
-         zoTRbnvNrudWgjC1+8+Tvr3y0Nma0jJlvRqi2xxzKqZUbb/ZGrwWSfvgp4P2bECvt5Wk
-         4qgF+jux8HdbbkJ4v6E+wp87KXYauOvo05jROntGoscNWTPk0lsH046pwDVuhMPR3aSe
-         /ngQ==
-X-Gm-Message-State: AOJu0YwCV2aB2vSI2G1CjtfbednPD1JHVxwOqwOsHDOtb11pqwBTMZIp
-	fT3xe8kjtugTlJrJk/Doorq6CAu2WurDkleGBCerGF7zrrllHaAEQ8cFtgJgxUo=
-X-Google-Smtp-Source: AGHT+IGDEJSqJJFi40+Iyz/doQiUT5xclEpI4r6XNNik0aXkd7H1+HKugVHcbyzlEMT+fDZMYSh51w==
-X-Received: by 2002:a05:600c:929:b0:425:65c5:79b4 with SMTP id 5b1f17b1804b1-42565c57b9amr38442305e9.26.1719586120001;
+        bh=bXjkAZmosXV+EptKqWsfwFwF90aKrgxPO7Zqi4uv4Ng=;
+        b=J1yFt61sxqQ4gGttk0yQx+cH5LJFlzOq3IPC8cHCQm70MIpDzVDRUm97k7Me/3RGSR
+         G3C/mdbAFihM48FiKBZA8jHIbHPsUbbpCt08Pr7F9n56U0punXN/6ZSB3ORKMv1/ya8q
+         Hgk5/eGxLKOP71NeWGxPwBdcw7YNFPVjz90ojG9auKeUI7+1n9TLOq041eTbZrHNcLnB
+         3PaFpkaG2GG7LZocdWYDiiBECytBBMZzUn4SYkxHqW1raPzNCFKS+Z5Pcka1sQeECF+n
+         uqByQv3ACQSG3jQuCiWQ38NvyjPx4D+H97UymtwcvAmpFaweoQCVK/J3rBxEvHNphkNW
+         g6pw==
+X-Gm-Message-State: AOJu0YzlLfmWHXIA2Y42le7kGBa021D7qTcCjM+QzgG1tNu2gkfQ3sO5
+	3+JI3kW5iXqq7gfnaoUhHwOntjfOexeG8XUY6FEinmWn+JlcMci0cKcoozw3VNM=
+X-Google-Smtp-Source: AGHT+IErmCGJZr2n4zpPLQZf3axGy/KUUX5Ydi0z351aU/tY57diUN1hIBUy4+GUORXAl8m4HkV7Ow==
+X-Received: by 2002:a19:5f56:0:b0:52c:dd2f:2f2b with SMTP id 2adb3069b0e04-52ce1862743mr12666981e87.66.1719586120617;
         Fri, 28 Jun 2024 07:48:40 -0700 (PDT)
 Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256af55c0asm37972575e9.15.2024.06.28.07.48.39
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256af55c0asm37972575e9.15.2024.06.28.07.48.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 28 Jun 2024 07:48:39 -0700 (PDT)
+        Fri, 28 Jun 2024 07:48:40 -0700 (PDT)
 From: Guillaume Stols <gstols@baylibre.com>
-Date: Fri, 28 Jun 2024 14:48:22 +0000
-Subject: [PATCH v2 04/10] dt-bindings: iio: adc: adi,ad7606: improve
- descriptions
+Date: Fri, 28 Jun 2024 14:48:23 +0000
+Subject: [PATCH v2 05/10] dt-bindings: iio: adc: adi,ad7606: add supply
+ properties
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,8 +77,8 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240628-cleanup-ad7606-v2-4-96e02f90256d@baylibre.com>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240628-cleanup-ad7606-v2-5-96e02f90256d@baylibre.com>
 References: <20240628-cleanup-ad7606-v2-0-96e02f90256d@baylibre.com>
 In-Reply-To: <20240628-cleanup-ad7606-v2-0-96e02f90256d@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
@@ -95,90 +95,53 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  dlechner@baylibre.com
 X-Mailer: b4 0.14.0
 
-Reword a few descriptions, and normalize the text width to 80 characters.
+Add voltage supplies
 
 Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 ---
- .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 33 +++++++++++++---------
- 1 file changed, 20 insertions(+), 13 deletions(-)
+ Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
 diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-index 32caa9fc00e4..509970922cda 100644
+index 509970922cda..a1c38a5812f7 100644
 --- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
 +++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
-@@ -36,6 +36,9 @@ properties:
+@@ -35,6 +35,15 @@ properties:
+ 
    avcc-supply: true
  
-   interrupts:
++  vdrive-supply:
 +    description:
-+      The BUSY pin falling edge indicates that the conversion is over, and thus
-+      new data is available.
-     maxItems: 1
- 
-   adi,conversion-start-gpios:
-@@ -48,8 +51,9 @@ properties:
-   reset-gpios:
++      Determines the voltage level at which the interface logic pins will
++      operate.
++
++  refin-supply:
++    description:
++      The voltage supply for optional external reference voltage.
++
+   interrupts:
      description:
-       Must be the device tree identifier of the RESET pin. If specified, it will
--      be asserted during driver probe. As the line is active high, it should be
--      marked GPIO_ACTIVE_HIGH.
-+      be asserted during driver probe. On the AD7606x, as the line is active
-+      high, it should be marked GPIO_ACTIVE_HIGH. On the AD7616, as the line is
-+      active low, it should be marked GPIO_ACTIVE_LOW.
-     maxItems: 1
+       The BUSY pin falling edge indicates that the conversion is over, and thus
+@@ -106,9 +115,11 @@ required:
+   - reg
+   - spi-cpha
+   - avcc-supply
++  - vdrive-supply
+   - interrupts
+   - adi,conversion-start-gpios
  
-   standby-gpios:
-@@ -62,36 +66,39 @@ properties:
++
+ allOf:
+   - $ref: /schemas/spi/spi-peripheral-props.yaml#
  
-   adi,first-data-gpios:
-     description:
--      Must be the device tree identifier of the FRSTDATA pin.  The FRSTDATA
-+      Must be the device tree identifier of the FRSTDATA pin. The FRSTDATA
-       output indicates when the first channel, V1, is being read back on either
--      the parallel, byte or serial interface.  As the line is active high, it
-+      the parallel, byte or serial interface. As the line is active high, it
-       should be marked GPIO_ACTIVE_HIGH.
-     maxItems: 1
+@@ -130,6 +141,7 @@ examples:
+             spi-cpha;
  
-   adi,range-gpios:
-     description:
--      Must be the device tree identifier of the RANGE pin. The polarity on this
-+      Must be the device tree identifier of the RANGE pin. The state on this
-       pin determines the input range of the analog input channels. If this pin
-       is tied to a logic high, the analog input range is ±10V for all channels.
--      If this pin is tied to a logic low, the analog input range is ±5V for all
--      channels. As the line is active high, it should be marked
-+      On the AD760X, if this pin is tied to a logic low, the analog input range
-+      is ±5V for all channels. As the line is active high, it should be marked
-       GPIO_ACTIVE_HIGH.
-     maxItems: 1
+             avcc-supply = <&adc_vref>;
++            vdrive-supply = <&vdd_supply>;
  
-   adi,oversampling-ratio-gpios:
-     description:
-       Must be the device tree identifier of the over-sampling mode pins. As the
--      line is active high, it should be marked GPIO_ACTIVE_HIGH.
-+      line is active high, it should be marked GPIO_ACTIVE_HIGH. On the AD7606X
-+      parts that support it, if all 3 pins are tied to a logic high, software
-+      mode is enabled.
-     maxItems: 3
- 
-   adi,sw-mode:
-     description:
--      Software mode of operation, so far available only for ad7616 and ad7606b.
-+      Software mode of operation, so far available only for AD7616 and AD7606b.
-       It is enabled when all three oversampling mode pins are connected to high
--      level. The device is configured by the corresponding registers. If the
--      adi,oversampling-ratio-gpios property is defined, then the driver will set
--      the oversampling gpios to high. Otherwise, it is assumed that the pins are
--      hardwired to VDD.
-+      level for the AD7606B, or all two range selection pins are connected to
-+      high level for the AD7616. The device is configured by the corresponding
-+      registers. If the adi,oversampling-ratio-gpios property is defined, then
-+      the driver will set the oversampling gpios to high. Otherwise, it is
-+      assumed that the pins are hardwired to VDD.
-     type: boolean
- 
- required:
+             interrupts = <25 IRQ_TYPE_EDGE_FALLING>;
+             interrupt-parent = <&gpio>;
 
 -- 
 2.34.1

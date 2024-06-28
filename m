@@ -1,65 +1,65 @@
-Return-Path: <linux-iio+bounces-6999-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7000-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA7C91BC80
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 12:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7310291BE59
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 14:17:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A357D1F21CAB
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 10:16:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1CF0D1F23C6A
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 12:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBE014F9F2;
-	Fri, 28 Jun 2024 10:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F276315572B;
+	Fri, 28 Jun 2024 12:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2GYbI1n"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7691103
-	for <linux-iio@vger.kernel.org>; Fri, 28 Jun 2024 10:16:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2B71E898;
+	Fri, 28 Jun 2024 12:17:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719569797; cv=none; b=sjj3hHAZaQdILXhgYINV5TLUQaa0ozcxyTJYUQKmfadSmblXRzPzBdizYHxdIToNHhLWhX3PGrzCr4533VeQSXOEgZfg/WhezeXFotjBihfG9Sf3nn2o1y2cyI/ZNfzAafydhBCpPtJM0nQA3VR3N+i1Ljk9BftrnRkpnob3wGo=
+	t=1719577064; cv=none; b=gKXsK60ib6PFcWaK4N7+NTY4nUgYfes5o1tVcO+21MiWbR/ZZ4lw3vY5SD1B2Q4Pr65cnfx5XF2zuN5h7BeYqcRbe7dtinIv5WrglvktpWB/jPuf+Gm5qfG175n0ZoN2R+vLUAGxUY905dY63DFMse1OA0SiNnSVLOwd6vwx25A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719569797; c=relaxed/simple;
-	bh=vy2xf2tOixhTJbhpkca+o0WXYhKl9tglB6SdJSICdmo=;
+	s=arc-20240116; t=1719577064; c=relaxed/simple;
+	bh=lPJqidH6rh/hlQuWyzH6JWqpzeGhRdafVAMs4oSHz4E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ttO5sG+Z/sRtCIxEnRq7QOeoYxrpQ+Ip3Y/9Qsm9yCbNqHnmF55IUtue5WrNXFBeeI9JGMOyiDBrVTuI7hLF/kd1nZlc459/epDx5qB5gTDM9VsrOtfZdq2snp7K0Ovl2QiHJ2LgV72rjFwDpyB3JaRmf2/RC4Olf+8YeY00YTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sN8eH-0000jO-2V; Fri, 28 Jun 2024 12:16:09 +0200
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1sN8eF-005a41-1j; Fri, 28 Jun 2024 12:16:07 +0200
-Received: from pengutronix.de (p200300cb5f450e00b3b76ff7b19af51f.dip0.t-ipconnect.de [IPv6:2003:cb:5f45:e00:b3b7:6ff7:b19a:f51f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 37BED2F5B46;
-	Fri, 28 Jun 2024 10:16:06 +0000 (UTC)
-Date: Fri, 28 Jun 2024 12:16:05 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FoPiKMQn730OVP6ZnhzKtoJbLj5CF7X1+DGfU5g+8fN1lnzM2ZNbuBoA3c4jtATqNynDIEoiLf0HOJgpxZDo9QWnf4ly7PjXq3M7xD4iUvgrB8qpr75Qtw6KOPxFoGKHfgNHhzhhfXatx+zof7uoL0KxlJIHfysXWHsu/pFqpZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2GYbI1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0990C116B1;
+	Fri, 28 Jun 2024 12:17:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719577064;
+	bh=lPJqidH6rh/hlQuWyzH6JWqpzeGhRdafVAMs4oSHz4E=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=F2GYbI1nQ/yRuFUoE73M98TleeFTikguAos6EIvQhQHMmeptwXiBxBZu97ptu8dRC
+	 ZGFHqwpYzKjKOYqx7iszA/QHESDYTXOqKJeVKfmrgIr/bmf992ebpNrUEKX5Ob/QKK
+	 8qIl6Hfov8OaIqS5yN08WC7bUgnrg1xW1KIaH8gLNO1JY+mnqWq1ybNWDvL/jvklWK
+	 qfPM1sfex6KWU4vttFtXTlUje4z6efY3Uo3A82rVXk6W8VGtJg38sJIoA0SFRwOHfH
+	 A7ghmVbjUc/wNQguxLYcQgDWcOidHQNUI/MeP3XEZ+8IBVd2z33vhrCuwUYL+OCb4Y
+	 mSG1TTbQP9vbw==
+Date: Fri, 28 Jun 2024 13:17:38 +0100
+From: Mark Brown <broonie@kernel.org>
 To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: David Lechner <dlechner@baylibre.com>, Mark Brown <broonie@kernel.org>, 
-	Martin Sperl <kernel@martin.sperl.org>, David Jander <david@protonic.nl>, 
-	Jonathan Cameron <jic23@kernel.org>, Michael Hennerich <michael.hennerich@analog.com>, 
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>, Alain Volmat <alain.volmat@foss.st.com>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org, 
-	Julien Stephan <jstephan@baylibre.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-	kernel@pengutronix.de, T.Scherer@eckelmann.de
+Cc: David Lechner <dlechner@baylibre.com>,
+	Martin Sperl <kernel@martin.sperl.org>,
+	David Jander <david@protonic.nl>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Nuno =?iso-8859-1?Q?S=E1?= <nuno.sa@analog.com>,
+	Alain Volmat <alain.volmat@foss.st.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
+	Julien Stephan <jstephan@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Subject: Re: [PATCH v2 0/5] spi: add support for pre-cooking messages
-Message-ID: <20240628-awesome-discerning-bear-1621f9-mkl@pengutronix.de>
+Message-ID: <15effa16-696a-4cc5-941b-375d1bbc31df@sirena.org.uk>
 References: <20240219-mainline-spi-precook-message-v2-0-4a762c6701b9@baylibre.com>
  <Zn6HMrYG2b7epUxT@pengutronix.de>
 Precedence: bulk
@@ -69,100 +69,45 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="w5ugtvmixttbihsx"
+	protocol="application/pgp-signature"; boundary="HJ5q/Xqa/ExsXZ/6"
 Content-Disposition: inline
 In-Reply-To: <Zn6HMrYG2b7epUxT@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+X-Cookie: divorce, n:
 
 
---w5ugtvmixttbihsx
-Content-Type: text/plain; charset=utf-8
+--HJ5q/Xqa/ExsXZ/6
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
-On 28.06.2024 11:49:38, Oleksij Rempel wrote:
-> It seems to be spi_mux specific. We have seen similar trace on other syst=
-em
-> with spi_mux.
+On Fri, Jun 28, 2024 at 11:49:38AM +0200, Oleksij Rempel wrote:
+> On Mon, Feb 19, 2024 at 04:33:17PM -0600, David Lechner wrote:
 
-Here is the other backtrace from another imx8mp system with a completely
-different workload. Both have in common that they use a spi_mux on the
-spi-imx driver.
+> I have a regression after this patch set. My system explodes with
+> following trace:
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000=
-000000dd0
-Mem abort info:
-  ESR =3D 0x0000000096000004
-  EC =3D 0x25: DABT (current EL), IL =3D 32 bits
-  SET =3D 0, FnV =3D 0
-  EA =3D 0, S1PTW =3D 0
-  FSC =3D 0x04: level 0 translation fault
-Data abort info:
-  ISV =3D 0, ISS =3D 0x00000004, ISS2 =3D 0x00000000
-  CM =3D 0, WnR =3D 0, TnD =3D 0, TagAccess =3D 0
-  GCS =3D 0, Overlay =3D 0, DirtyBit =3D 0, Xs =3D 0
-user pgtable: 4k pages, 48-bit VAs, pgdp=3D0000000046760000
-[0000000000000dd0] pgd=3D0000000000000000, p4d=3D0000000000000000
-Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-Modules linked in: can_raw can ti_ads7950 industrialio_triggered_buffer kfi=
-fo_buf spi_mux fsl_imx8_ddr_perf at24 flexcan caam can_dev error rtc_snvs i=
-mx8mm_thermal spi_imx capture_events_irq cfg80211 iio_trig_hrtimer industri=
-alio_sw_trigger ind>
-CPU: 3 PID: 177 Comm: spi5 Not tainted 6.9.0 #1
-Hardware name: xxxxxxxxxxxxxxxx (xxxxxxxxx) (DT)
-pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=3D--)
-pc : spi_res_release+0x24/0xb8
-lr : spi_async+0xac/0x118
-sp : ffff8000823fbcc0
-x29: ffff8000823fbcc0 x28: 0000000000000000 x27: 0000000000000000
-x26: ffff8000807bef88 x25: ffff80008115c008 x24: 0000000000000000
-x23: ffff8000826c3938 x22: 0000000000000000 x21: ffff0000076a9800
-x20: 0000000000000000 x19: 0000000000000dc8 x18: 0000000000000000
-x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffff88c0e760
-x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-x11: ffff8000815a1f98 x10: ffff8000823fbb40 x9 : ffff8000807b8420
-x8 : ffff800081508000 x7 : 0000000000000004 x6 : 0000000003ce4c66
-x5 : 0000000001000000 x4 : 0000000000000000 x3 : 0000000001000000
-x2 : 0000000000000000 x1 : ffff8000826c38e0 x0 : ffff0000076a9800
-Call trace:
- spi_res_release+0x24/0xb8
- spi_async+0xac/0x118
- spi_mux_transfer_one_message+0xb8/0xf0 [spi_mux]
- __spi_pump_transfer_message+0x260/0x5d8
- __spi_pump_messages+0xdc/0x320
- spi_pump_messages+0x20/0x38
- kthread_worker_fn+0xdc/0x220
- kthread+0x118/0x128
- ret_from_fork+0x10/0x20
-Code: a90153f3 a90363f7 91016037 f9403033 (f9400674)=20
----[ end trace 0000000000000000 ]---
+Not looked at this at all but were you able to try a bisect?
 
-regards,
-Marc
+>  Call trace:
+>   0x64f69bfd319200
+>   spi_async+0xac/0x110
+> 9H0[]6 spi_mux_transfer_one_message+0xb8/0xf0
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+Could you run this through addr2line please?
 
---w5ugtvmixttbihsx
+--HJ5q/Xqa/ExsXZ/6
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmZ+jWMACgkQKDiiPnot
-vG9eTAf9Ex8vUqqElTcG0woxjhCZvA7UgAAlCJye+UQRedbmMLm9YgmvSXG8PwnT
-aBJZdof3Wg8wcU4w7fpYKdyYHly22kN0MixT5zEkQSSfLH2FDB7r0kwA3pLjPo0k
-j9L7II3idEFC3PURB99Lm+F5IqAyR1EKXxlBw7ETsg6IZ4wREMPmqSphtqa0Jcth
-X+yub9Gkzc7Tr9tSwNorky4C9wBjEwev/Ux6Cp4wB2eartdebOrcI0yOsPZ9rnqh
-7WZLpJgCOya15LDdX0Ql69179iItbmNYp8feHrmYbAHnXrwHTJ2XFgzUlQnhTA0T
-O5QKJX5UYStEzNavkGkXH34aE7BLAQ==
-=EDL7
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmZ+qeEACgkQJNaLcl1U
+h9DIsQf+LObiaHYQilaxnoCMNm6d/Ie3c221fUY6BfaRAVRU7kBHxpM1/DtRXMzN
+B+OJxgTKmT726SMZoT+JX+fRfF4GWYQhPpM47Ic6leC/uwk8EjhNGT5rHXCUutIN
+58EmKsfMBn2KI/L4avav/nigQE0hsB7EJK8QnjsYEi29TdZVWXEGiRTJRK3VoDTI
+Xd1vroVy2Y2NCVjkW6QvxeSmdYtcoYtH/SUH5omPJTDea3+5kyLnHO2Ufftsluo5
+C0hJrSchIpWOPBU704f0MQ8ZscKPsVEa8Cjuqf2w3qyBcs0ORGWlD7HJdtfP8BGB
+vCyX+tJs4JccE01WgzZGfEQoreK5Jg==
+=vIz6
 -----END PGP SIGNATURE-----
 
---w5ugtvmixttbihsx--
+--HJ5q/Xqa/ExsXZ/6--
 

@@ -1,66 +1,65 @@
-Return-Path: <linux-iio+bounces-7025-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7026-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F61491C5F1
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 20:40:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E283C91C602
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 20:46:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3BACB247C4
-	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 18:40:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2248E1C221E7
+	for <lists+linux-iio@lfdr.de>; Fri, 28 Jun 2024 18:46:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940C81CE081;
-	Fri, 28 Jun 2024 18:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F333C08A;
+	Fri, 28 Jun 2024 18:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjpwMZmg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qELlGLO6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48BEB1C8FAB;
-	Fri, 28 Jun 2024 18:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C6B3FD4;
+	Fri, 28 Jun 2024 18:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719600004; cv=none; b=aoIaxmhKRL7C8OQkRd/oo/C8toRedM1tw3ZaOjKnjuuDsCqaZh5q7YfDg2BwOkDdA0KalaVCODoni1Pgw/WV9Df475kdvyVrJpHUipzTffv7gIfJnznsJv/6+z4G/TctdWovpsQ5R8DQog/5CV/n8nUYXSr9orqJk4EshpBc7E4=
+	t=1719600358; cv=none; b=sEttK9/LW1d4O5plJmYZR/NmrTej9IalOwLRqvbh7/ZtzoN/Arx/A4c6F4Suwa7YX1nCX79VnggsaVEfdfz9aQiMT5wnNIc8zmQT3BHUFpoihVm5BZStbWOIp5pPEnusX9raZXBk+xEjvGc5Arn+FpwuWaQTkyNoFPpuMsHyM7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719600004; c=relaxed/simple;
-	bh=lhiXVKbviQVZDcIxC0i6nBahft0To6SW9QRHyVQkt6E=;
+	s=arc-20240116; t=1719600358; c=relaxed/simple;
+	bh=/mwc2Nc8rtpwxZIhFIwLRHd1dQzbsiCmJJdqjFgkEg8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YgbiekM2fV/xq2tyGg+M8qNWoZQsBpZszal5HKAdpx0DVB8mghpLEEP8u6AOtRPYw1s0ZMMLrmtaFta9HLXVU0TfsYgcxXK03eQfi6gH2KpY1hSRpeETHIxsj1z6WfubnZtQIUX+Xxbpsf3E5CXOjetp4FfHkZX6G5f15haqSVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjpwMZmg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42F0C2BD10;
-	Fri, 28 Jun 2024 18:39:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kj+VBNqTL95YlcefA4FeSZp/gp3N7jj+3pINvsBU4RJNP2aZAIsjwzl79zH8/LcSS1v16jyf6selA4PJgoh2zTSjtjChizNC4hJvnatKyAhdlAwfp35T1B2+qlzJdbnhnv6mxsr6ZNwVYCYyZhjCuAMvsOzn1Q+5n+gfOpRrE4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qELlGLO6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37EC5C116B1;
+	Fri, 28 Jun 2024 18:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719600004;
-	bh=lhiXVKbviQVZDcIxC0i6nBahft0To6SW9QRHyVQkt6E=;
+	s=k20201202; t=1719600357;
+	bh=/mwc2Nc8rtpwxZIhFIwLRHd1dQzbsiCmJJdqjFgkEg8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CjpwMZmgklwfr1/22p3YPqxaOdvRtEMKw5x7Ogw0I3JWU0gpPq04VqQ52t9veAExu
-	 ijmdCcNhb3mWg4uXu6E14qGBx53X074OfBvBKWqu02b9P62wyYjPViOW5g/jK73ZpL
-	 o52LoMKKlBrNijB3o5hDdJY8WbYWZTuHRiXIgwqqWP1YfrvQOLZcZ8/IO+NROCb772
-	 uJWtz25dSWUxBs+t4qoWcSwH8+TNgnZLQTxNyOSo0zmCXtG26/R+/6DryiuV2M/Z1q
-	 h+uQAbjNzWyQCwPdQnQZwcsMWClFKdzQb2HvYrQWrIqhGGktOx3jNb4/Rv+1ucHdRd
-	 y1NgB91bttdAA==
-Date: Fri, 28 Jun 2024 19:39:54 +0100
+	b=qELlGLO6AiYwfACawIgVdT4RtXGZ0bUMCq0yJ6wUpJVau7UpUduunUqFnbpWbQqJw
+	 /SkGEpt8mz7Qf/BmU/qRWJoACWAOzncg+H157H6sNR8523nmh+toMpluCDL3tUqNFq
+	 cFsX5ChjxQ+QJy4pqzgjLoUFrNZd3T9kMQkZt+XOQ7Wocz5bZB/UUr2WCG0oqlJ1KE
+	 3TVB40NnSOGiDicIGlg2guVsQRs+VT+mLCxtz4hXZI5t85jHOaLFRjXF5UJ3kjMryW
+	 j4aYUE0QWL40OEeCGvbZYup1BcPisK+0Cxjp822abLv73FAODZQ3HJqGk8Ufis5rxC
+	 kF7ky+OFIdI/A==
+Date: Fri, 28 Jun 2024 19:45:46 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: "Tinaco, Mariel" <Mariel.Tinaco@analog.com>
-Cc: David Lechner <dlechner@baylibre.com>, "linux-iio@vger.kernel.org"
- <linux-iio@vger.kernel.org>, "devicetree@vger.kernel.org"
- <devicetree@vger.kernel.org>, "linux-kernel@vger.kernel.org"
- <linux-kernel@vger.kernel.org>, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark
- Brown <broonie@kernel.org>, "Hennerich, Michael"
- <Michael.Hennerich@analog.com>, Marcelo Schmitt
+Cc: "linux-iio@vger.kernel.org" <linux-iio@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
+ "Hennerich, Michael" <Michael.Hennerich@analog.com>, Marcelo Schmitt
  <marcelo.schmitt1@gmail.com>, Dimitri Fedrau <dima.fedrau@gmail.com>,
  Guenter Roeck <linux@roeck-us.net>
-Subject: Re: [PATCH 0/2] add AD8460 DAC driver
-Message-ID: <20240628193954.2f3dfc55@jic23-huawei>
-In-Reply-To: <SJ0PR03MB62242BD5117C5B2026CCC5D191D42@SJ0PR03MB6224.namprd03.prod.outlook.com>
+Subject: Re: [PATCH 2/2] iio: dac: support the ad8460 Waveform DAC
+Message-ID: <20240628194546.2f608365@jic23-huawei>
+In-Reply-To: <SJ0PR03MB62241801F72B21EEC9CDCCBD91D42@SJ0PR03MB6224.namprd03.prod.outlook.com>
 References: <20240510064053.278257-1-Mariel.Tinaco@analog.com>
-	<CAMknhBHd2XCJH4rgYDq=vbCL5E_tM3FxFPWbNy9PvxLCJL4tcA@mail.gmail.com>
-	<20240511172155.08bc0987@jic23-huawei>
-	<SJ0PR03MB62242BD5117C5B2026CCC5D191D42@SJ0PR03MB6224.namprd03.prod.outlook.com>
+	<20240510064053.278257-3-Mariel.Tinaco@analog.com>
+	<20240511174405.10d7fce8@jic23-huawei>
+	<SJ0PR03MB62241801F72B21EEC9CDCCBD91D42@SJ0PR03MB6224.namprd03.prod.outlook.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,68 +67,75 @@ List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+
+> > > +};
+> > > +
+> > > +static int ad8460_get_powerdown_mode(struct iio_dev *indio_dev,
+> > > +				     const struct iio_chan_spec *chan) {
+> > > +	return 0;  
+> > 
+> > Why have the stubs in here?  
+> 
+> Should I move the stubs to a different place in the code or remove them
+> altogether since there is only a single powerdown mode available
+Ah. I'd not really understood what was going on here.  This is fine as
+is.
+
+> > AD8460_HVDAC_DATA_WORD_HIGH(index),  
+> > > +			    ((val >> 8) & 0xFF));  
+> > 
+> > bulk write? or do these need to be ordered?  
+> 
+> For this I used bulk read/write this way.
+> 
+> static int ad8460_set_hvdac_word(struct ad8460_state *state,
+> 				 int index,
+> 				 int val)
+> {
+> 	u8 regvals[AD8460_DATA_BYTE_WORD_LENGTH];
+regmap bulk accesses (when spi anyway) should be provided with DMA safe buffers.
+Easiest way to do that is add one with __aligned(IIO_DMA_MINALIGN) to the end
+of the ad8460_state structure.  Possibly you'll need a lock to protect it - I haven't
+checked.
+> 
+> 	regvals[0] = val & 0xFF;
+> 	regvals[1] = (val >> 8) & 0xFF;
+
+That is an endian conversion so use appropriate endian function to fill it efficiently
+and document clearly what is going on.
 
 
-> >  =20
-> > > >   * Programmable quiescent current (optional) =20
-> > Could probably figure out a suitable control for this, but I'm not enti=
-rely sure
-> > what it is :) =20
->=20
-> Thinking about it, wouldn't the raw attribute be a suitable control for t=
-his? This=20
-> Value is relative to nominal supply current and acts as a "monotonic but =
-nonlinear"
-> multiplier.=20
-> A register value maps to a current level from 0 to 2 times the nominal
-> current supplied. I also thought that it could be hardware gain but the g=
-ain
-> computation wasn't explicitly indicated in the datasheet and there is not=
- yet
-> "current_hardwaregain" attribute available in the ABI. So I settled with =
-raw.=20
+	put_unaligned_le16()
 
-I don't entirely understand what is actually for, but a raw current output
-might be appropriate.
+> 
+> 	return regmap_bulk_write(state->regmap, AD8460_HVDAC_DATA_WORD_LOW(index),
+> 				 regvals, AD8460_DATA_BYTE_WORD_LENGTH);
+> }
+> 
+> 
+> > > +}
 
->I
-> Think there would only be an issue of we expose the "processed" attribute
-> Because it has a particular computation. But I'm not planning to expose t=
-he=20
-> Processed attribute
+> > > +	state->regmap = devm_regmap_init_spi(spi, &ad8460_regmap_config);
+> > > +	if (IS_ERR(state->regmap))
+> > > +		return dev_err_probe(&spi->dev, PTR_ERR(state->regmap),
+> > > +				     "Failed to initialize regmap");
+> > > +
+> > > +	ret = devm_iio_dmaengine_buffer_setup_ext(&spi->dev, indio_dev, "tx",
+> > > +  
+> > IIO_BUFFER_DIRECTION_OUT);
+> > 
+> > Ah. I take back my binding comment. I assume this is mapping some non
+> > standard interface for the parallel data flow?  
+> 
+> Yes, the HDL side doesn't follow yet the standard IIO backend from which this
+> driver was tested
 
-Is there any reason someone might in future though?
-
->=20
-> > > >   * Thermal monitoring is done by measuring voltage on TMP pin
-> > > > (unlikely to be included) =20
-> >
-> > If you did want to, the usual trick for these is to include an optional=
- use as a
-> > consumer of an IIO provider which would be a separate ADC. =20
->=20
-> I included this in my current revision, thanks for the idea. Although the=
- optional use
-> Isn=E2=80=99t yet available in the consumer API. My question is, in case =
-the ADC channel to read
-> The TMP pin is not available, should I still make the temp raw value avai=
-lable and
-> Set to 0? Or should the temp raw attribute be unavailable or unlisted com=
-pletely from
-> IIO Info.
-If no ADC channel then remove it from the chan_spec.  That probably means y=
-ou
-need separate arrays of struct iio_chan_spec for the two case.
+Hmm. I'd like to see this brought inline with the other iio backend
+drivers if possible.
 
 Jonathan
 
-> > > > =20
-> > >
-> > > Adding myself to the cc: here since I'm interested to see what
-> > > Jonathan (or anyone else) has to say about the fault monitoring. =20
-> >=20
-> > Jonathan =20
 
 

@@ -1,56 +1,58 @@
-Return-Path: <linux-iio+bounces-7055-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7056-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B37B91CE9A
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 20:44:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F118B91CE9C
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 20:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 297CB1C20825
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 18:44:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98ABB1F21C1C
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 18:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1507813213C;
-	Sat, 29 Jun 2024 18:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1237132118;
+	Sat, 29 Jun 2024 18:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qe4S1yqT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M77/zfRF"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD855660
-	for <linux-iio@vger.kernel.org>; Sat, 29 Jun 2024 18:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6B24B5A6;
+	Sat, 29 Jun 2024 18:48:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719686662; cv=none; b=udzbbr8D77EgopVRSiikcYk+/J5oqSXp1p9mQ20ofQZijB12JOFR5KIbnok7bbiCVIZ/tWh7EE3zxKDbkpIaJBXXK8WyveW2d/88Qjpu28MG/mEcUjvRjA4xmXWdAupr2agyEQwBjjRfKFLpWJw2fO96wSBnLsx38Ziwk/cDWSA=
+	t=1719686915; cv=none; b=Hv27YCD1DBbOCw69f6Iij0M189HNIChfsi27abjq5D2ubJ+IOCwRvgS8w/j8RhWFr+WgkWzHcRodttNG3xIjUjcl7yWBPVV8yZRDOnFhdZoMzKc1dLSOQF2j/rrf4n9JfXdbzvEUKv5e3hAKvuoifMSt7U4I9vV7G/zkJFiiOIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719686662; c=relaxed/simple;
-	bh=sy2L1O9DsdS/vQPtVILarD8O6DY1O03ipM0/Wq1g9ko=;
+	s=arc-20240116; t=1719686915; c=relaxed/simple;
+	bh=SyeHIANG/tstZIPdGumaX+hV7y+ZmqVNm9hjqofAdGc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fzgRqJcvVYtfJyzy1hGmcD6k0C8G/Sa4wFwvGzswXBqo2e5cMp5BUSiJ1Gr+daA2W1bndFdG6dc0xVU1TsGjXWH/XIG81XLFxCF0t/2Uj8Hu+MXjqffSOQYG3Z4SHhq4eLNyh2g0NH/YZOHFxpLp4azWAZu9HUDKDrop76lEE80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qe4S1yqT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDCEC2BBFC;
-	Sat, 29 Jun 2024 18:44:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=i66Ryee5yO6yPrLfZOQi369lX6mCaNfB7YG7h0q/4Og4gfwicMI+tiEFFiTnYfdEysg0kJWryxIGjUJjcmcRuu+rPt4fXjwd1KQH0S+kHd3fGU4a9ThkIjQTGRjohR1AbCzM31TdJW5IWu2zyC6ei8NgdxtmLpwk3myk+GeQBT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M77/zfRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73288C2BBFC;
+	Sat, 29 Jun 2024 18:48:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719686662;
-	bh=sy2L1O9DsdS/vQPtVILarD8O6DY1O03ipM0/Wq1g9ko=;
+	s=k20201202; t=1719686915;
+	bh=SyeHIANG/tstZIPdGumaX+hV7y+ZmqVNm9hjqofAdGc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qe4S1yqTlmbVBzs0rF30vYsi5Guw7uBCWdMBcl/JM7KgISnFLf9+q4Yijk8MvH8ey
-	 2Pkl4SKzDBZ9YjdgjDP8LD1JciIRf1fIn/EnRVqIc2b8YO9aZnIECC8SmKAMQesRIp
-	 a3dim5zQXO0xJDNBvFodB4bR/YjxbGoxjq/9+FwHZXhmv4vrE30g+LWXJx69T5uwSE
-	 cHoGW0UA5TbqpccKjSIBcK9zud2nhK9Th5M3RZokEh+G3RrCcQtVIUMUgFRcsh6a7c
-	 b73xODCUxs5W1g4D/1+kJDmn2ATS9ev0CyTzYx9cB5UVmA++B/gDs+zWIcGX32rr0D
-	 ftCyeU2IJUwQQ==
-Date: Sat, 29 Jun 2024 19:44:16 +0100
+	b=M77/zfRF/uPQnpxoh81sG2jEZG9mRWWxSdvU17jiDrAZAxdbMIEskC5m/algdrg4R
+	 HI+07VQmpunNM0cx1dfnGpZFaIEDSvvbtbz1yIf2RCrB4MnglmVA2oYAiOuDdZ42OY
+	 6e6jy4eOTA/JeBEgjJNyLvn2StgzRWuoPnyS6qY4b3bt8U6mxASNxM/Ryln+UTZFVC
+	 K0Rl9lnocQsYkklsCKgCTPsxiEMeKR5BEA4tehkQ+WF48K6GoyJzQ7lkPr2Jv4h2N7
+	 nvHJ7SQhYXLgYicts4cU6Zg3Xdh/NaktrUXF0CTR8xzY5zoH+yqp502Uhlh2IoZiO9
+	 gTzuNHKPxBVEA==
+Date: Sat, 29 Jun 2024 19:48:26 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Kaustabh Chakraborty <kauschluss@disroot.org>
-Cc: linux-iio@vger.kernel.org, Linus Walleij <linus.walleij@linaro.org>,
- Denis Ciocca <denis.ciocca@st.com>
-Subject: Re: [PATCH] iio: st_sensors: relax WhoAmI check in
- st_sensors_verify_id()
-Message-ID: <20240629194416.535953ff@jic23-huawei>
-In-Reply-To: <20240625082800.62305-1-kauschluss@disroot.org>
-References: <20240625082800.62305-1-kauschluss@disroot.org>
+To: Olivier Moysan <olivier.moysan@foss.st.com>
+Cc: <fabrice.gasnier@foss.st.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
+ Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 1/8] iio: add read raw service to iio backend
+ framework
+Message-ID: <20240629194826.39339c5a@jic23-huawei>
+In-Reply-To: <20240625150717.1038212-2-olivier.moysan@foss.st.com>
+References: <20240625150717.1038212-1-olivier.moysan@foss.st.com>
+	<20240625150717.1038212-2-olivier.moysan@foss.st.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -61,45 +63,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 25 Jun 2024 13:57:55 +0530
-Kaustabh Chakraborty <kauschluss@disroot.org> wrote:
+On Tue, 25 Jun 2024 17:07:09 +0200
+Olivier Moysan <olivier.moysan@foss.st.com> wrote:
 
-> Hard matching against the WhoAmI values isn't ideal for using devices
-> which are compatible with existing ones. Instead of raising an error,
-> issue a warning instead, thus allowing the driver to continue probing.
+> Add iio_backend_read_raw() service to support attributes read
+> from an IIO backend.
 > 
-> Suggested-by: Jonathan Cameron <jic23@kernel.org>
-> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-LGTM.  I've +CC'd a few more people who might take a look.
+> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+> Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Other than line wrapping moans this looks good to me.
 
-In meantime I'll queue it up.
-
-Applied to the togreg branch of iio.git and pushed out as testing for
-0-day to take a look and see what we missed.
-
-Thanks,
-
-Jonathan
-
+J
 > ---
->  drivers/iio/common/st_sensors/st_sensors_core.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
+>  drivers/iio/industrialio-backend.c | 21 +++++++++++++++++++++
+>  include/linux/iio/backend.h        |  6 +++++-
+>  2 files changed, 26 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/iio/common/st_sensors/st_sensors_core.c b/drivers/iio/common/st_sensors/st_sensors_core.c
-> index c77d7bdcc121..c69399ac6657 100644
-> --- a/drivers/iio/common/st_sensors/st_sensors_core.c
-> +++ b/drivers/iio/common/st_sensors/st_sensors_core.c
-> @@ -606,10 +606,9 @@ int st_sensors_verify_id(struct iio_dev *indio_dev)
->  		}
+> diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
+> index 929aff4040ed..0e2653de1956 100644
+> --- a/drivers/iio/industrialio-backend.c
+> +++ b/drivers/iio/industrialio-backend.c
+> @@ -357,6 +357,27 @@ int devm_iio_backend_request_buffer(struct device *dev,
+>  }
+>  EXPORT_SYMBOL_NS_GPL(devm_iio_backend_request_buffer, IIO_BACKEND);
 >  
->  		if (sdata->sensor_settings->wai != wai) {
-> -			dev_err(&indio_dev->dev,
-> +			dev_warn(&indio_dev->dev,
->  				"%s: WhoAmI mismatch (0x%x).\n",
->  				indio_dev->name, wai);
-> -			return -EINVAL;
->  		}
->  	}
+> +/**
+> + * iio_backend_read_raw - Request a channel attribute from the IIO backend.
+> + * @back:	Backend device
+> + * @chan:	IIO channel reference
+> + * @val:	First element of the returned value
+> + * @val2:	Second element of the returned value
+> + * @mask:	Specify value to retrieve
+> + *
+> + * This callback replicates the read_raw callback of the IIO framework, and is intended to
+> + * request miscellaneous channel attributes from the backend device.
+
+For IIO code, please still wrap at 80 chars unless there is a good reason to
+got longer.
+
+> + *
+> + * RETURNS:
+> + * 0 on success, negative error number on failure.
+> + */
+> +int iio_backend_read_raw(struct iio_backend *back, struct iio_chan_spec const *chan, int *val,
+Likewise. Wrap this shorter.
+
+> +			 int *val2, long mask)
+> +{
+> +	return iio_backend_op_call(back, read_raw, chan, val, val2, mask);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(iio_backend_read_raw, IIO_BACKEND);
+> +
+>  static struct iio_backend *iio_backend_from_indio_dev_parent(const struct device *dev)
+>  {
+>  	struct iio_backend *back = ERR_PTR(-ENODEV), *iter;
+> diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
+> index 8099759d7242..24185718b20d 100644
+> --- a/include/linux/iio/backend.h
+> +++ b/include/linux/iio/backend.h
+> @@ -81,6 +81,7 @@ enum iio_backend_sample_trigger {
+>   * @extend_chan_spec: Extend an IIO channel.
+>   * @ext_info_set: Extended info setter.
+>   * @ext_info_get: Extended info getter.
+> + * @read_raw: Read value from a backend device
+>   **/
+>  struct iio_backend_ops {
+>  	int (*enable)(struct iio_backend *back);
+> @@ -113,6 +114,8 @@ struct iio_backend_ops {
+>  			    const char *buf, size_t len);
+>  	int (*ext_info_get)(struct iio_backend *back, uintptr_t private,
+>  			    const struct iio_chan_spec *chan, char *buf);
+> +	int (*read_raw)(struct iio_backend *back, struct iio_chan_spec const *chan, int *val,
+And here.
+> +			int *val2, long mask);
+>  };
 >  
+>  int iio_backend_chan_enable(struct iio_backend *back, unsigned int chan);
+> @@ -141,7 +144,8 @@ ssize_t iio_backend_ext_info_set(struct iio_dev *indio_dev, uintptr_t private,
+>  				 const char *buf, size_t len);
+>  ssize_t iio_backend_ext_info_get(struct iio_dev *indio_dev, uintptr_t private,
+>  				 const struct iio_chan_spec *chan, char *buf);
+> -
+> +int iio_backend_read_raw(struct iio_backend *back, struct iio_chan_spec const *chan, int *val,
+and here.
+
+> +			 int *val2, long mask);
+>  int iio_backend_extend_chan_spec(struct iio_dev *indio_dev,
+>  				 struct iio_backend *back,
+>  				 struct iio_chan_spec *chan);
 
 

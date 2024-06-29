@@ -1,64 +1,59 @@
-Return-Path: <linux-iio+bounces-7068-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7069-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49C191CED6
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 21:27:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 298C891CEDC
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 21:40:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10F5C1C20E83
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 19:27:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15577B2184F
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 19:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15887139D0C;
-	Sat, 29 Jun 2024 19:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DBA5132118;
+	Sat, 29 Jun 2024 19:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dnfyZREM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f9SUy0kk"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C353C2032B;
-	Sat, 29 Jun 2024 19:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381E3101F7;
+	Sat, 29 Jun 2024 19:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719689222; cv=none; b=SrrJ0oXln9Jm/MlvNwpUxHmAtHet+s2eNbPUA6UpgXvvdbhNmMGQvG4+MZ5wXf2e8/ICsZS0u2kF+Pu8xpJdOzNkkQn1acvxz1SZX2GfeL3PoMsNFnnJko769Fti/tjhEareOjpMkNk+Gbtv4GYd1xBxenNtBMQuKzcrumvMuIM=
+	t=1719690034; cv=none; b=ENB9alTvDN2VqtLAHG0hiUvbkydg8lSsAmqQADJzOjknjxFMV+6IzN/ywaT1fe92Lf53hLYaFZBxy8nfSJVkgVOaOdR6AzeajYHXbKToopVvEWl1DtC+B593BSDCzkVJNVLzbOXG1oytEloZSh5z4QUnm0Ce4otg/hB/8HOktvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719689222; c=relaxed/simple;
-	bh=5KGeK61hekuM2DL4N6jka1C8+Duo42iFnEkFlYpnIpY=;
+	s=arc-20240116; t=1719690034; c=relaxed/simple;
+	bh=CLqV4T7POX7Nto6uLWv8qFe9eUAumC1+HgHxGpgT82g=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g+ZziPYxRboseh9NlVp3lideO5za7xzugH7REDTXR+VVrujwT96Ragrr+kVDHV8TYI09vVFF0YddAfERcX5qkG2lVA0Fyk211WlnLBFXx84B1hmxdU4SqLnb1k+MBEaAaNW39EqtwUXhxt/iTminathGguGvkRp0vzUquXalNkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dnfyZREM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 398E0C2BBFC;
-	Sat, 29 Jun 2024 19:26:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PpvpNH0m7OOZwFd/7FT3KqyEI4N+d5CjMZCKt9WHU9Ug+kTwFOGUbax0fiTboebTGKd92qSe1j5hvwxI22YEysTxBRN0xPd73yIB8ejbXe47ucwpdc3URq089ypQsPgyOzspf4gV2BnsyuiUlyjQhYszBAJ2KmTitc8e+jgw56Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f9SUy0kk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87023C2BBFC;
+	Sat, 29 Jun 2024 19:40:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719689222;
-	bh=5KGeK61hekuM2DL4N6jka1C8+Duo42iFnEkFlYpnIpY=;
+	s=k20201202; t=1719690033;
+	bh=CLqV4T7POX7Nto6uLWv8qFe9eUAumC1+HgHxGpgT82g=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dnfyZREM0d9EjHczaxm7+jr4aTjM+8EeWwXp9f1+sV2WCzKWJ8TVXOCD5cMjlczJw
-	 xChe8Rfq/zaLEI4S4uG68PKMyR7gjxFu/jcZFboP8C3Vyn+3xBOUp5AYo0GvrgEM8P
-	 /H8+5ghHehX4bes9RVBT61bsVWO75+bQK9Ai6AN9W3UOrmFCGh9CoSSOkuhcVtjFhF
-	 6Q16GDmAPNYjJIZyn36YZamA349hlCns3Dj+IQh6xEiiQdM7fAGhJ4AOdV2prNEzKB
-	 oL+Y7SUwsjKyQFN/v99++8omYK+a4KRJAS2kAvPh8j9e53+iIygHUljN86EhgHTVFa
-	 rgCGk1F0mqOPg==
-Date: Sat, 29 Jun 2024 20:26:53 +0100
+	b=f9SUy0kkMsqEqHSodFumADPi9zKq82xLTNMbjGp9otlqPx/Kdwb2rGGiujUwtGHa3
+	 Y0XkNSbfgfMmGt3WtAygWMMGcXVt6+7F28Kl2TWGtz+urvn4BAMdbrbB+fOSVmRAcq
+	 dJKkNYWXFIlsONj9iLuMMJTsz7y3LZCrpAI86z1cVL6/qdTTM7YhYup1VACrTqiC0E
+	 sST4ETm8wpQCruUm+DPEjrm3w/KtkGznaOgQVWfUbjf14UKZYSdKxBBwSH5bejENGk
+	 f01jsaCwRA1Bp8wCNSkPBMUF8Qh2MSbyZvYOX7sui34n/zluR2fimv/4aTphdaZCOg
+	 R11dqUqocCvSw==
+Date: Sat, 29 Jun 2024 20:40:25 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Jerome Brunet <jbrunet@baylibre.com>
-Cc: David Lechner <dlechner@baylibre.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman
- <khilman@baylibre.com>, linux-kernel@vger.kernel.org,
- linux-amlogic@lists.infradead.org, linux-iio@vger.kernel.org, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Neil Armstrong
+ <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>,
+ linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
 Subject: Re: [PATCH 2/2] iio: frequency: add amlogic clock measure support
-Message-ID: <20240629202653.7285acb5@jic23-huawei>
-In-Reply-To: <1jr0clgdpt.fsf@starbuckisacylon.baylibre.com>
+Message-ID: <20240629204025.683b1b69@jic23-huawei>
+In-Reply-To: <20240624173105.909554-3-jbrunet@baylibre.com>
 References: <20240624173105.909554-1-jbrunet@baylibre.com>
 	<20240624173105.909554-3-jbrunet@baylibre.com>
-	<04254d15-2f6e-435d-ba4c-8e2e87766b9b@baylibre.com>
-	<1j4j9hift4.fsf@starbuckisacylon.baylibre.com>
-	<190ccd62-0803-46fa-87ee-0f9cef5a784e@baylibre.com>
-	<1jr0clgdpt.fsf@starbuckisacylon.baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -69,114 +64,223 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 25 Jun 2024 18:59:58 +0200
+On Mon, 24 Jun 2024 19:31:03 +0200
 Jerome Brunet <jbrunet@baylibre.com> wrote:
 
-> On Tue 25 Jun 2024 at 09:52, David Lechner <dlechner@baylibre.com> wrote:
+> Add support for the HW found in most Amlogic SoC dedicated to measure
+> system clocks.
 > 
-> > On 6/25/24 3:31 AM, Jerome Brunet wrote:  
-> >> On Mon 24 Jun 2024 at 17:51, David Lechner <dlechner@baylibre.com> wrote:
-> >>   
-> >>> On 6/24/24 12:31 PM, Jerome Brunet wrote:  
-> >>>> Add support for the HW found in most Amlogic SoC dedicated to measure
-> >>>> system clocks.
-> >>>>  
-> >>>
-> >>>
-> >>>  
-> >>>> +static int cmsr_read_raw(struct iio_dev *indio_dev,
-> >>>> +			 struct iio_chan_spec const *chan,
-> >>>> +			 int *val, int *val2, long mask)
-> >>>> +{
-> >>>> +	struct amlogic_cmsr *cm = iio_priv(indio_dev);
-> >>>> +
-> >>>> +	guard(mutex)(&cm->lock);
-> >>>> +
-> >>>> +	switch (mask) {
-> >>>> +	case IIO_CHAN_INFO_RAW:
-> >>>> +		*val = cmsr_measure_unlocked(cm, chan->channel);  
-> >>>
-> >>> Is this actually returning an alternating voltage magnitutde?
-> >>> Most frequency drivers don't have a raw value, only frequency.  
-> >> 
-> >> No it is not the magnitude, it is the clock rate (frequency) indeed.
-> >> Maybe altvoltage was not the right pick for that but nothing obvious
-> >> stands out for Hz measurements  
-> >
-> > I'm certainly not an expert on the subject, but looking at the other
-> > frequency drivers, using altvoltage looks correct.
-> >
-> > But, we in those drivers, nearly all only have a "frequency" attribute
-> > but don't have a "raw" attribute. The ones that do have a "raw" attribute
-> > are frequency generators that use the raw attribute determine the output
-> > voltage.
-> >  
-> >>   
-> >>>  
-> >>>> +		if (*val < 0)
-> >>>> +			return *val;
-> >>>> +		return IIO_VAL_INT;
-> >>>> +
-> >>>> +	case IIO_CHAN_INFO_PROCESSED: /* Result in Hz */  
-> >>>
-> >>> Shouldn't this be IIO_CHAN_INFO_FREQUENCY?  
-> >> 
-> >> How would I get raw / processed / scale with IIO_CHAN_INFO_FREQUENCY ?
-> >>   
-> >>>
-> >>> Processed is just (raw + offset) * scale which would be a voltage
-> >>> in this case since the channel type is IIO_ALTVOLTAGE.  
-> >> 
-> >> This is was Processed does here, along with selecting the most
-> >> appropriate scale to perform the measurement.
-> >>   
-> >>>  
-> >>>> +		*val = cmsr_measure_processed_unlocked(cm, chan->channel, val2);
-> >>>> +		if (*val < 0)
-> >>>> +			return *val;
-> >>>> +		return IIO_VAL_INT_64;
-> >>>> +
-> >>>> +	case IIO_CHAN_INFO_SCALE:  
-> >>>
-> >>> What is this attribute being used for?  
-> >> 
-> >> Hz
-> >>   
-> >>>
-> >>> (clearly not used to convert the raw value to millivolts :-) )
-> >>>
-> >>> Maybe IIO_CHAN_INFO_INT_TIME is the right one for this? Although
-> >>> so far, that has only been used with light sensors.  
-> >> 
-> >> I think you are mixing up channel info and type here.
-> >> I do want the info
-> >>  * IIO_CHAN_INFO_RAW
-> >>  * IIO_CHAN_INFO_PROCESSED
-> >>  * IIO_CHAN_INFO_SCALE
-> >> 
-> >> I want those info to represent an alternate voltage frequency in Hz.
-> >> I thought type 'IIO_ALTVOLTAGE' was the right pick for that. Apparently
-> >> it is not. What is the appropriate type then ? Should I add a new one ?  
-> >
-> >
-> > The documentation at Documentation/ABI/testing/sysfs-bus-iio explains
-> > what the combination of a channel type and info means.  
+> This drivers aims to replace the one found in
+> drivers/soc/amlogic/meson-clk-measure.c with following improvements:
 > 
-> Oh missed that, Thx
+> * Access to the measurements through the IIO API:
+>   Easier re-use of the results in userspace and other drivers
+> * Controllable scale with raw measurements
+> * Higher precision with processed measurements
 > 
-> >
-> > For example, out_altvoltageY_raw is defined as it used for the frequency
-> > generator case that I mentioned above. in_altvoltageY_raw is not defined
-> > which means probably no one has needed it yet. But it would still be the
-> > voltage value, not the frequency.  
-> 
-> Got it. So the type I picked is wrong for sure.
-> So, maybe I need something new to measure a frequency ?
+> Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Interesting device and the driver is pretty clean.
 
-Yes. Seems likely we need a new channel type to me.
-In theory we could abuse an angular rate channel but that's nasty so
-lets not do that. :)
+Needs a new channel type though as altvoltage is in volts not hz.
+
+Various minor comments inline.
+
+Thanks,
 
 Jonathan
 
+> +
+> +struct amlogic_cmsr {
+> +	struct regmap *reg;
+> +	struct regmap *duty;
+> +	struct mutex lock;
+Add a comment on the data protected by this lock.  Scope isn't always obvious.
+> +};
+
+> +static struct iio_chan_spec *cmsr_populate_channels(struct device *dev,
+> +						    const char * const *conf)
+> +{
+> +	struct iio_chan_spec *chan;
+> +	int i;
+> +
+> +	chan = devm_kzalloc(dev, sizeof(*chan) * CLK_MSR_MAX, GFP_KERNEL);
+> +	if (!chan)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	for (i = 0; i < CLK_MSR_MAX; i++) {
+> +		chan[i].type = IIO_ALTVOLTAGE;
+
+As per other branch of the thread.  I think this needs to be a new
+IIO_FREQUENCY channel as the input we care about here is simply frequency,
+not the voltage.
+
+> +		chan[i].indexed = 1;
+> +		chan[i].channel = i;
+> +		chan[i].info_mask_separate = (BIT(IIO_CHAN_INFO_RAW) |
+> +					    BIT(IIO_CHAN_INFO_PROCESSED));
+
+Drop outer ()
+
+> +		chan[i].info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE);
+> +		chan[i].datasheet_name = conf[i];
+> +	}
+> +
+> +	return chan;
+> +}
+
+
+> +static int cmsr_measure_processed_unlocked(struct amlogic_cmsr *cm,
+> +					   unsigned int idx,
+> +					   int *val2)
+> +{
+> +	unsigned int time = CLK_MIN_TIME;
+> +	u64 rate;
+> +	int ret;
+> +
+> +	/*
+> +	 * The challenge here is to provide the best accuracy
+> +	 * while not spending to much time doing it.
+> +	 * - Starting with a short duration risk not detecting
+> +	 *   slow clocks, but it is fast. All 128 can be done in ~8ms
+> +	 * - Starting with a long duration risk overflowing the
+> +	 *   measurement counter and would be way to long, especially
+> +	 *   considering the number of disabled clocks. ~4s for all
+> +	 *   128 worst case.
+> +	 *
+> +	 * This IP measures system clocks so all clock are expected
+> +	 * to be 1kHz < f < 8GHz. We can compromise based on this,
+> +	 * doing it in 3 pass:
+> +	 * #1 Starting if 64us window: detects 30kHz < f < 8GHz
+> +	 *    - Go to #2 if no detection, Go to #3 otherwise
+> +	 * #2 Extend duration to 1024us (f > 1kHz)
+> +	      - Assume f = 0Hz if no detection, Go to #3 otherwise
+> +	 * #3 Clock has been detected, adjust window for best accuracy
+> +	 *
+> +	 * Doing the range detection takes ~1ms per clock, including disabled
+> +	   clocks.
+> +	 * Actual measurement takes at most ~65ms in step #3 for slow clocks,
+> +	 * when the full range the HW is used.
+> +	 */
+> +
+> +	/* Step #1 - quick measurement */
+> +	cmsr_set_time_unlocked(cm, time);
+> +	ret = cmsr_measure_unlocked(cm, idx);
+> +	if (ret < 0)
+> +		return ret;
+> +
+
+if (ret == 0)
+
+> +	else if (ret == 0) {
+> +		/* Step #2 - extend the window if necessary */
+> +		time *= 16;
+> +		cmsr_set_time_unlocked(cm, time);
+> +		ret = cmsr_measure_unlocked(cm, idx);
+> +		if (ret < 0)
+> +			return ret;
+> +
+		if (ret == 0)
+
+> +		else if (ret == 0) {
+> +			/* Still nothing - assume no clock */
+> +			*val2 = 0;
+> +			return 0;
+> +		}
+> +	}
+> +
+> +	/* Step #3: Adapt scale for better precision */
+> +	time = time * MSR_MEASURED * 3 / (ret * 4); /* 25% margin */
+> +	time = min_t(unsigned int, MSR_TIME_MAX, time);
+> +
+> +	/* Actually measure rate with an optimized scale */
+> +	cmsr_set_time_unlocked(cm, time);
+> +	ret = cmsr_measure_unlocked(cm, idx);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	rate = DIV_ROUND_CLOSEST_ULL(ret * 1000000ULL, time);
+> +	*val2 = rate >> 32ULL;
+> +	return (int)rate;
+> +}
+
+
+
+> +static int cmsr_probe(struct platform_device *pdev)
+> +{
+> +	struct device *dev = &pdev->dev;
+> +	struct iio_dev *indio_dev;
+> +	struct amlogic_cmsr *cm;
+> +	const char * const *conf;
+> +	void __iomem *regs;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(*cm));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +	platform_set_drvdata(pdev, indio_dev);
+> +	cm = iio_priv(indio_dev);
+> +
+> +	conf = of_device_get_match_data(dev);
+
+We try to avoid of specific calls in IIO drivers.
+device_get_match_data() should work here.
+
+Reason for this is not that it matters in one driver, but that people tend
+to cut and paste device tree stuff and it ends up in drivers where ACPI
+and other firmware types are relevant.
+
+Also I only have remember how one type of firmware property read call works ;)
+
+> +	if (!conf) {
+> +		dev_err(dev, "failed to match device\n");
+> +		return -ENODEV;
+> +	}
+> +
+> +	regs = devm_platform_ioremap_resource_byname(pdev, "reg");
+> +	if (IS_ERR(regs))
+> +		return PTR_ERR(regs);
+> +
+> +	cm->reg = devm_regmap_init_mmio(dev, regs, &cmsr_regmap_cfg);
+> +	if (IS_ERR(cm->reg)) {
+> +		dev_err(dev, "failed to init main regmap: %ld\n",
+> +			PTR_ERR(cm->reg));
+> +		return PTR_ERR(cm->reg);
+> +	}
+> +
+> +	regs = devm_platform_ioremap_resource_byname(pdev, "duty");
+> +	if (IS_ERR(regs))
+> +		return PTR_ERR(regs);
+> +
+> +	cm->duty = devm_regmap_init_mmio(dev, regs, &cmsr_regmap_cfg);
+> +	if (IS_ERR(cm->duty)) {
+> +		dev_err(dev, "failed to init duty regmap: %ld\n",
+> +			PTR_ERR(cm->duty));
+> +		return PTR_ERR(cm->duty);
+Preference for dev_err_probe() for all errors in probe() and functions
+that will only be called form probe. There is a nice version that handled PTR_ERR
+under review though so maybe we can come around later and use that once it's available
+
+> +	}
+> +
+> +	mutex_init(&cm->lock);
+> +
+> +	/* Init scale with a sane default */
+> +	cmsr_set_time_unlocked(cm, CLK_MIN_TIME);
+> +
+> +	indio_dev->name = "amlogic-clk-msr";
+> +	indio_dev->info = &cmsr_info;
+> +	indio_dev->modes = INDIO_DIRECT_MODE;
+> +	indio_dev->num_channels = CLK_MSR_MAX;
+
+Superficially looks like the number of channels depends on the compatible.
+Ideally we shouldn't provide channels to userspace that aren't useful.
+
+You could search the name arrays to see how far they go, but that is bit ugly.
+Probably wrap those in a structure with a num_channels parameter as well.
+
+> +	indio_dev->channels = cmsr_populate_channels(dev, conf);
+> +	if (IS_ERR(indio_dev->channels))
+> +		return PTR_ERR(indio_dev->channels);
+> +
+> +	return devm_iio_device_register(dev, indio_dev);
+> +}
 

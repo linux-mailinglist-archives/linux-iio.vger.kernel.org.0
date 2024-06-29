@@ -1,63 +1,63 @@
-Return-Path: <linux-iio+bounces-7040-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7041-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 438E791CDF0
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 17:37:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B960791CDF4
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 17:39:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1F5328211C
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 15:37:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72C09282CD5
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 15:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 384A284FAD;
-	Sat, 29 Jun 2024 15:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D60A84FAD;
+	Sat, 29 Jun 2024 15:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T0qqI8mU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jkT1Ce5i"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB78C1DFE8;
-	Sat, 29 Jun 2024 15:37:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F04812FB0A;
+	Sat, 29 Jun 2024 15:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719675430; cv=none; b=VY3QM6SSDDCGq+2zG1NLZ6NGNc3Ymzse/KJU6XwC57ckmDAkASAJrnG1IbFugxaIelG+eCy1q6P/ctz61xR6ovPdS9/E+iwOABEbETbm9mLjYVIzhtLL4bewZg2mbuTTxybN5XYAjkLYTcf02OGWq8PveHpHrvAEyc0PAysYn4w=
+	t=1719675536; cv=none; b=UuuNORPQQvrJkBy48/DRK06g9ZtHUQXVNFKjwfMEXFoit/Pq3jNH/FS2w8KasFM/Ab6P9trBv0Do4Z8UIMgyKgokKGfoa+yep6h0E+18F+wogtsvDjz6zAtN0UgN2cUJLQEOSiBHIqk8mQt/M84Lc5rKPEaoNqSC1v8KAu/kbMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719675430; c=relaxed/simple;
-	bh=uBhS/HMC3Y7Zk7BpvYR/7CveBA8jwnAijIUS2nLxHw0=;
+	s=arc-20240116; t=1719675536; c=relaxed/simple;
+	bh=w5KItqDIKE1p3uvX9oUdr2VMhdVrSQkIWAiPqx16K64=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ToEOlhbCS74zsdXrSX0/JemfnlvuZwab7lx3+NryA419Wxs0Mz42XzKHbNVIuBvM/LTHjTYSHzJNxF0K2F/Tzhe853Yssnc0pz+jqI5puU3Ejx4IfdPBLICKQwp7uRzYfGaZ9NzlXT/BBK/+KiFlk+tMyfBgj/+7PHSx1w0kOrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T0qqI8mU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9177C2BBFC;
-	Sat, 29 Jun 2024 15:37:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tbVjvHhMWhzFUz/oWxseeNbtx6nCrRren5CUTl5VT9P7FlnqGDNUkQ6ojEeE4L+X8yjENp+7d3tPHBDSnTg2f0CPkupIgdIwC/Kbfo9IeaNLoXnureK3EMWVOhjgeWh04ogUoxGuWnsMzdnQva54SAh5h1rrDlThzp8q3y5bINc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jkT1Ce5i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBB1C2BBFC;
+	Sat, 29 Jun 2024 15:38:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719675429;
-	bh=uBhS/HMC3Y7Zk7BpvYR/7CveBA8jwnAijIUS2nLxHw0=;
+	s=k20201202; t=1719675535;
+	bh=w5KItqDIKE1p3uvX9oUdr2VMhdVrSQkIWAiPqx16K64=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=T0qqI8mUBEg9tqTq4BDhabNpItbf4zsvj0adP8N39ALQaSHdILtlyDXfyIJAIRMRs
-	 FeudjVkSZd28cUeV0+Z5gnCyVoXxj7anpZgRImZhcAK6pVgVuz91syGKqXz+ccW5Z2
-	 g5b73rxsdITFDKPuB5Y3kbraLG5fO4iKYA53cao2fdcHxYBtnrNZRs2hfycGHG9cpu
-	 qmIh+Nhct5nMwa4pI90xnKNR+ofCVmk9lVv/q+H6bEJouLcmNyYJiyGj+xu38laEDj
-	 07mJbk0XOorWERUng23ga/A03V3w97Rp2liNM0nrYilGlevwY+PLz+JpbV3myGlelE
-	 LgQ9rxD2E4DVw==
-Date: Sat, 29 Jun 2024 16:36:59 +0100
+	b=jkT1Ce5iaYIBwSnNqY19yNOtHJ9/Mf+X9G1daByOqFqZHaVnHZ7yzDp0az55yytNQ
+	 c58T0Rf6oUqxz1Dcvb3MC17dpTFstkguPhNXH4+X0v48Kxo+0N44DAYyIGD9mVPynt
+	 koaySiaeRvjgU7CttiB4fWSWsXgnUuQrpMwo9X8eT+7P3QfTnysO2ZNd9IUp8WAmWJ
+	 7lfKwmwZs9l1ZW0wbGFO1WlOCsWSchvDpXLvYgnuXzGIflN4sIyZ7h4SldAMcR7enP
+	 eAhE4mIQdaeDoMCazHyK02i0p7jhjd9qSMzEDdElWH5FK4BDfCOOdyPnutn4Ng2FGg
+	 D8inQcZqiM75A==
+Date: Sat, 29 Jun 2024 16:38:45 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Guillaume Stols <gstols@baylibre.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
- <Michael.Hennerich@analog.com>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
- Beniamin Bia <beniamin.bia@analog.com>, Stefan Popa
- <stefan.popa@analog.com>, linux-iio@vger.kernel.org,
+To: Conor Dooley <conor@kernel.org>
+Cc: Guillaume Stols <gstols@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Rob
+ Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
+ Dooley <conor+dt@kernel.org>, Beniamin Bia <beniamin.bia@analog.com>,
+ Stefan Popa <stefan.popa@analog.com>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-fbdev@vger.kernel.org,
  devicetree@vger.kernel.org, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
  jstephan@baylibre.com, dlechner@baylibre.com
-Subject: Re: [PATCH v2 10/10] iio: adc: ad7606: switch mutexes to
- scoped_guard
-Message-ID: <20240629163659.322954c3@jic23-huawei>
-In-Reply-To: <20240628-cleanup-ad7606-v2-10-96e02f90256d@baylibre.com>
+Subject: Re: [PATCH v2 00/10] iio: adc: ad7606: Improvements
+Message-ID: <20240629163845.0a8ed683@jic23-huawei>
+In-Reply-To: <20240628-postwar-scaling-cb7d7b1f4f3c@spud>
 References: <20240628-cleanup-ad7606-v2-0-96e02f90256d@baylibre.com>
-	<20240628-cleanup-ad7606-v2-10-96e02f90256d@baylibre.com>
+	<20240628-trustful-urchin-741943d2e98d@spud>
+	<20240628-postwar-scaling-cb7d7b1f4f3c@spud>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,134 +68,33 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 28 Jun 2024 14:48:28 +0000
-Guillaume Stols <gstols@baylibre.com> wrote:
+On Fri, 28 Jun 2024 16:55:37 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-> Switching to scoped_guard simplifies the code and avoids to take care to
-> unlock the mutex in case of premature return.
+> On Fri, Jun 28, 2024 at 04:53:50PM +0100, Conor Dooley wrote:
+> > On Fri, Jun 28, 2024 at 02:48:18PM +0000, Guillaume Stols wrote:  
+> > > This series adds the following improvements over the current AD7606's
+> > > driver implementation:
+> > > 
+> > > - Fix wrong usage of gpio array
+> > > - Fix standby that was documented as ACTIVE_LOW but handled in the
+> > >   driver as if it was ACTIVE_HIGH
+> > > - Improve dt-bindings documentation
+> > > - Switch mutex lock to scoped guard
+> > > 
+> > > Signed-off-by: Guillaume Stols <gstols@baylibre.com>  
+> > 
+> > You missed Acks from Rob on several patches that he gave yesterday:
+> > https://lore.kernel.org/all/171952025424.477297.14698127361119381011.robh@kernel.org/  
 > 
-> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-> ---
->  drivers/iio/adc/ad7606.c | 60 ++++++++++++++++++++++--------------------------
->  1 file changed, 27 insertions(+), 33 deletions(-)
-> 
-> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-> index 50ccc245e314..3c439787d130 100644
-> --- a/drivers/iio/adc/ad7606.c
-> +++ b/drivers/iio/adc/ad7606.c
-> @@ -69,19 +69,17 @@ static int ad7606_reg_access(struct iio_dev *indio_dev,
->  	struct ad7606_state *st = iio_priv(indio_dev);
->  	int ret;
->  
-> -	mutex_lock(&st->lock);
-> +	guard(mutex)(&st->lock);
-> +
->  	if (readval) {
->  		ret = st->bops->reg_read(st, reg);
->  		if (ret < 0)
-> -			goto err_unlock;
-> +			return ret;
->  		*readval = ret;
-> -		ret = 0;
-> +		return 0;
->  	} else {
-> -		ret = st->bops->reg_write(st, reg, writeval);
-> +		return st->bops->reg_write(st, reg, writeval);
->  	}
-> -err_unlock:
-> -	mutex_unlock(&st->lock);
-> -	return ret;
->  }
->  
->  static int ad7606_read_samples(struct ad7606_state *st)
-> @@ -124,18 +122,18 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
->  	struct ad7606_state *st = iio_priv(indio_dev);
->  	int ret;
->  
-> -	mutex_lock(&st->lock);
-
-Why not simply a guard(mutex)(&st->lock) ?
-
-Then we avoid the somewhat nasty label in an nested block of code.
-
-> +	scoped_guard(mutex, &st->lock) {
-> +		ret = ad7606_read_samples(st);
-> +		if (ret)
-> +			goto error_ret;
->  
-> -	ret = ad7606_read_samples(st);
-> -	if (ret == 0)
->  		iio_push_to_buffers_with_timestamp(indio_dev, st->data,
->  						   iio_get_time_ns(indio_dev));
-> -
-> -	iio_trigger_notify_done(indio_dev->trig);
-> -	/* The rising edge of the CONVST signal starts a new conversion. */
-> -	gpiod_set_value(st->gpio_convst, 1);
-> -
-> -	mutex_unlock(&st->lock);
-> +error_ret:
-> +		iio_trigger_notify_done(indio_dev->trig);
-> +		/* The rising edge of the CONVST signal starts a new conversion. */
-> +		gpiod_set_value(st->gpio_convst, 1);
-> +	}
->  
->  	return IRQ_HANDLED;
->  }
-> @@ -259,17 +257,15 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
->  
->  	switch (mask) {
->  	case IIO_CHAN_INFO_SCALE:
-> -		mutex_lock(&st->lock);
-> -		i = find_closest(val2, st->scale_avail, st->num_scales);
-> -		if (st->sw_mode_en)
-> -			ch = chan->address;
-> -		ret = st->write_scale(indio_dev, ch, i);
-> -		if (ret < 0) {
-> -			mutex_unlock(&st->lock);
-> -			return ret;
-> +		scoped_guard(mutex, &st->lock) {
-
-The mutex is grabbed in all paths that actually do anything.
-Pull it out of the switch and use
-guard(mutex)(&st->lock);
-
-That will reduce the changes needed and give the same cleanups.
-I doubt we care about potentially slowing down the path that returns an error
-as we are writing something unwriteable.
-
-> +			i = find_closest(val2, st->scale_avail, st->num_scales);
-> +			if (st->sw_mode_en)
-> +				ch = chan->address;
-> +			ret = st->write_scale(indio_dev, ch, i);
-> +			if (ret < 0)
-> +				return ret;
-> +			st->range[ch] = i;
->  		}
-> -		st->range[ch] = i;
-> -		mutex_unlock(&st->lock);
->  
->  		return 0;
->  	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-> @@ -277,14 +273,12 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
->  			return -EINVAL;
->  		i = find_closest(val, st->oversampling_avail,
->  				 st->num_os_ratios);
-> -		mutex_lock(&st->lock);
-> -		ret = st->write_os(indio_dev, i);
-> -		if (ret < 0) {
-> -			mutex_unlock(&st->lock);
-> -			return ret;
-> +		scoped_guard(mutex, &st->lock) {
-> +			ret = st->write_os(indio_dev, i);
-> +			if (ret < 0)
-> +				return ret;
-> +			st->oversampling = st->oversampling_avail[i];
->  		}
-> -		st->oversampling = st->oversampling_avail[i];
-> -		mutex_unlock(&st->lock);
->  
->  		return 0;
->  	default:
+> You also seem to be missing acks from me..
 > 
 
+I picked up the first 2 with the acks scraped from v1.
+There are enough minor changes that I've requested in the other patches
+that I'd like a v3 fixing those.  Obviously make sure to gather up appropriate
+acks.  You may want to wait a few days first though as there are a couple
+of DT patches in here that need tags.
+
+Jonathan
 

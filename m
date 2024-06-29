@@ -1,58 +1,58 @@
-Return-Path: <linux-iio+bounces-7056-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7057-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F118B91CE9C
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 20:48:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F15A91CE9E
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 20:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98ABB1F21C1C
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 18:48:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BE811F21C5C
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 18:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1237132118;
-	Sat, 29 Jun 2024 18:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0E5132118;
+	Sat, 29 Jun 2024 18:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M77/zfRF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nIkJfIxm"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6B24B5A6;
-	Sat, 29 Jun 2024 18:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D4B4B5A6;
+	Sat, 29 Jun 2024 18:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719686915; cv=none; b=Hv27YCD1DBbOCw69f6Iij0M189HNIChfsi27abjq5D2ubJ+IOCwRvgS8w/j8RhWFr+WgkWzHcRodttNG3xIjUjcl7yWBPVV8yZRDOnFhdZoMzKc1dLSOQF2j/rrf4n9JfXdbzvEUKv5e3hAKvuoifMSt7U4I9vV7G/zkJFiiOIw=
+	t=1719687258; cv=none; b=ZhCU/7sgJxOSYR9JjtnAyFZtdKxt/X5cegG9EViZ/vI7Zk/q0m1ZecevQHcxXPS/r0IlP+XNAYlLG9XNa00+vMo9j3aBQ7EJevw7tSIsaEzkFRMxhG2+igotXxIvSD2cWERUpvW9Elm7tFPuyJtgNCprH+zNqeUBMVIwDs+vajg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719686915; c=relaxed/simple;
-	bh=SyeHIANG/tstZIPdGumaX+hV7y+ZmqVNm9hjqofAdGc=;
+	s=arc-20240116; t=1719687258; c=relaxed/simple;
+	bh=h3pcQDAvvq6HFxa7uRxPPUPp9rBdRJXWaZhpH2XU/S4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i66Ryee5yO6yPrLfZOQi369lX6mCaNfB7YG7h0q/4Og4gfwicMI+tiEFFiTnYfdEysg0kJWryxIGjUJjcmcRuu+rPt4fXjwd1KQH0S+kHd3fGU4a9ThkIjQTGRjohR1AbCzM31TdJW5IWu2zyC6ei8NgdxtmLpwk3myk+GeQBT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M77/zfRF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73288C2BBFC;
-	Sat, 29 Jun 2024 18:48:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ukLu91h9NAe/N5N4dS+mIUzQ7GqdSR8m+sfvF9YwFTbCBCMtGPSQwqTDFkjz5edgX+yocndVhKy+Rwd4h6t8RTKD7bUBKyIPb/nlUZN7l6b8bIbL0lTFoMi/qxdvonpviaaV0ui5szBQrW2zxk4ob0Jn5+fdLUrIdkwQAF3LKJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nIkJfIxm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60E5C2BBFC;
+	Sat, 29 Jun 2024 18:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719686915;
-	bh=SyeHIANG/tstZIPdGumaX+hV7y+ZmqVNm9hjqofAdGc=;
+	s=k20201202; t=1719687258;
+	bh=h3pcQDAvvq6HFxa7uRxPPUPp9rBdRJXWaZhpH2XU/S4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=M77/zfRF/uPQnpxoh81sG2jEZG9mRWWxSdvU17jiDrAZAxdbMIEskC5m/algdrg4R
-	 HI+07VQmpunNM0cx1dfnGpZFaIEDSvvbtbz1yIf2RCrB4MnglmVA2oYAiOuDdZ42OY
-	 6e6jy4eOTA/JeBEgjJNyLvn2StgzRWuoPnyS6qY4b3bt8U6mxASNxM/Ryln+UTZFVC
-	 K0Rl9lnocQsYkklsCKgCTPsxiEMeKR5BEA4tehkQ+WF48K6GoyJzQ7lkPr2Jv4h2N7
-	 nvHJ7SQhYXLgYicts4cU6Zg3Xdh/NaktrUXF0CTR8xzY5zoH+yqp502Uhlh2IoZiO9
-	 gTzuNHKPxBVEA==
-Date: Sat, 29 Jun 2024 19:48:26 +0100
+	b=nIkJfIxmOWNpv1CnluAL4r8Y2paaFuymucgaKYLWhCMkwng1cQrNOorvRQJS8YYc4
+	 OF6uy/qrHPgN4CsiMCNTY9PDNtuJUpEVd8ROOCiSC0RkvVb4s1vbgRnLBbL4/7uwx1
+	 2ygegtT+PvgCvFTybRifH8bKQ7St2Qsr1aeia5Zeg3Qmo8RXdgQBZzgVUO7seHf7Sl
+	 aonOLXeUbx4/D8cq2QKVKESSmvULh8Qm2FvKizIm2B+gn4JhxXKqNfId+jgwlCRC5J
+	 r3lNeTrol74cfOH6byQ9gHF9bUjy8mdOFEGd98MiiOdT4yOGdZhEyl/+CslcEv6c1X
+	 Y3TVXxdjXl+9Q==
+Date: Sat, 29 Jun 2024 19:54:11 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Olivier Moysan <olivier.moysan@foss.st.com>
 Cc: <fabrice.gasnier@foss.st.com>, Nuno Sa <nuno.sa@analog.com>, Lars-Peter
  Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 1/8] iio: add read raw service to iio backend
+Subject: Re: [PATCH v2 3/8] iio: add child nodes support in iio backend
  framework
-Message-ID: <20240629194826.39339c5a@jic23-huawei>
-In-Reply-To: <20240625150717.1038212-2-olivier.moysan@foss.st.com>
+Message-ID: <20240629195411.63a72497@jic23-huawei>
+In-Reply-To: <20240625150717.1038212-4-olivier.moysan@foss.st.com>
 References: <20240625150717.1038212-1-olivier.moysan@foss.st.com>
-	<20240625150717.1038212-2-olivier.moysan@foss.st.com>
+	<20240625150717.1038212-4-olivier.moysan@foss.st.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -63,93 +63,89 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 25 Jun 2024 17:07:09 +0200
+On Tue, 25 Jun 2024 17:07:11 +0200
 Olivier Moysan <olivier.moysan@foss.st.com> wrote:
 
-> Add iio_backend_read_raw() service to support attributes read
-> from an IIO backend.
+> Add an API to support IIO generic channels binding:
+> http://devicetree.org/schemas/iio/adc/adc.yaml#
+> This new API is needed, as generic channel DT node isn't populated as a
+> device.
+> Add devm_iio_backend_fwnode_get() to allow an IIO device backend
+> consumer to reference backend phandles in its child nodes.
 > 
 > Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
 > Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Other than line wrapping moans this looks good to me.
 
-J
+A passing comment inline. I'm not asking for any changes in this
+series (unless you want to make it more complex ;)
+
 > ---
->  drivers/iio/industrialio-backend.c | 21 +++++++++++++++++++++
->  include/linux/iio/backend.h        |  6 +++++-
->  2 files changed, 26 insertions(+), 1 deletion(-)
+>  drivers/iio/industrialio-backend.c | 62 +++++++++++++++++++++---------
+>  include/linux/iio/backend.h        |  2 +
+>  2 files changed, 45 insertions(+), 19 deletions(-)
 > 
 > diff --git a/drivers/iio/industrialio-backend.c b/drivers/iio/industrialio-backend.c
-> index 929aff4040ed..0e2653de1956 100644
+> index 6be1fa9a960b..8cc959ac278a 100644
 > --- a/drivers/iio/industrialio-backend.c
 > +++ b/drivers/iio/industrialio-backend.c
-> @@ -357,6 +357,27 @@ int devm_iio_backend_request_buffer(struct device *dev,
+> @@ -577,19 +577,10 @@ static int __devm_iio_backend_get(struct device *dev, struct iio_backend *back)
+>  	return 0;
 >  }
->  EXPORT_SYMBOL_NS_GPL(devm_iio_backend_request_buffer, IIO_BACKEND);
 >  
-> +/**
-> + * iio_backend_read_raw - Request a channel attribute from the IIO backend.
-> + * @back:	Backend device
-> + * @chan:	IIO channel reference
-> + * @val:	First element of the returned value
-> + * @val2:	Second element of the returned value
-> + * @mask:	Specify value to retrieve
-> + *
-> + * This callback replicates the read_raw callback of the IIO framework, and is intended to
-> + * request miscellaneous channel attributes from the backend device.
-
-For IIO code, please still wrap at 80 chars unless there is a good reason to
-got longer.
-
-> + *
-> + * RETURNS:
-> + * 0 on success, negative error number on failure.
-> + */
-> +int iio_backend_read_raw(struct iio_backend *back, struct iio_chan_spec const *chan, int *val,
-Likewise. Wrap this shorter.
-
-> +			 int *val2, long mask)
-> +{
-> +	return iio_backend_op_call(back, read_raw, chan, val, val2, mask);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(iio_backend_read_raw, IIO_BACKEND);
-> +
->  static struct iio_backend *iio_backend_from_indio_dev_parent(const struct device *dev)
+> -/**
+> - * devm_iio_backend_get - Device managed backend device get
+> - * @dev: Consumer device for the backend
+> - * @name: Backend name
+> - *
+> - * Get's the backend associated with @dev.
+> - *
+> - * RETURNS:
+> - * A backend pointer, negative error pointer otherwise.
+> - */
+> -struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
+> +static struct iio_backend *__devm_iio_backend_fwnode_get(struct device *dev, const char *name,
+> +							 struct fwnode_handle *fwnode)
 >  {
->  	struct iio_backend *back = ERR_PTR(-ENODEV), *iter;
-> diff --git a/include/linux/iio/backend.h b/include/linux/iio/backend.h
-> index 8099759d7242..24185718b20d 100644
-> --- a/include/linux/iio/backend.h
-> +++ b/include/linux/iio/backend.h
-> @@ -81,6 +81,7 @@ enum iio_backend_sample_trigger {
->   * @extend_chan_spec: Extend an IIO channel.
->   * @ext_info_set: Extended info setter.
->   * @ext_info_get: Extended info getter.
-> + * @read_raw: Read value from a backend device
->   **/
->  struct iio_backend_ops {
->  	int (*enable)(struct iio_backend *back);
-> @@ -113,6 +114,8 @@ struct iio_backend_ops {
->  			    const char *buf, size_t len);
->  	int (*ext_info_get)(struct iio_backend *back, uintptr_t private,
->  			    const struct iio_chan_spec *chan, char *buf);
-> +	int (*read_raw)(struct iio_backend *back, struct iio_chan_spec const *chan, int *val,
-And here.
-> +			int *val2, long mask);
->  };
+> -	struct fwnode_handle *fwnode;
+> +	struct fwnode_handle *fwnode_back;
+>  	struct iio_backend *back;
+>  	unsigned int index;
+>  	int ret;
+> @@ -604,19 +595,19 @@ struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
+>  		index = 0;
+>  	}
 >  
->  int iio_backend_chan_enable(struct iio_backend *back, unsigned int chan);
-> @@ -141,7 +144,8 @@ ssize_t iio_backend_ext_info_set(struct iio_dev *indio_dev, uintptr_t private,
->  				 const char *buf, size_t len);
->  ssize_t iio_backend_ext_info_get(struct iio_dev *indio_dev, uintptr_t private,
->  				 const struct iio_chan_spec *chan, char *buf);
-> -
-> +int iio_backend_read_raw(struct iio_backend *back, struct iio_chan_spec const *chan, int *val,
-and here.
+> -	fwnode = fwnode_find_reference(dev_fwnode(dev), "io-backends", index);
+> -	if (IS_ERR(fwnode)) {
+> -		dev_err_probe(dev, PTR_ERR(fwnode),
+> +	fwnode_back = fwnode_find_reference(fwnode, "io-backends", index);
 
-> +			 int *val2, long mask);
->  int iio_backend_extend_chan_spec(struct iio_dev *indio_dev,
->  				 struct iio_backend *back,
->  				 struct iio_chan_spec *chan);
+Not really related, but this looks 'ripe' for some cleanup.h magic.
 
+> +	if (IS_ERR(fwnode_back)) {
+> +		dev_err_probe(dev, PTR_ERR(fwnode_back),
+>  			      "Cannot get Firmware reference\n");
+> -		return ERR_CAST(fwnode);
+> +		return ERR_CAST(fwnode_back);
+>  	}
+>  
+>  	guard(mutex)(&iio_back_lock);
+>  	list_for_each_entry(back, &iio_back_list, entry) {
+> -		if (!device_match_fwnode(back->dev, fwnode))
+> +		if (!device_match_fwnode(back->dev, fwnode_back))
+>  			continue;
+>  
+> -		fwnode_handle_put(fwnode);
+> +		fwnode_handle_put(fwnode_back);
+>  		ret = __devm_iio_backend_get(dev, back);
+>  		if (ret)
+>  			return ERR_PTR(ret);
+> @@ -624,11 +615,44 @@ struct iio_backend *devm_iio_backend_get(struct device *dev, const char *name)
+>  		return back;
+>  	}
+>  
+> -	fwnode_handle_put(fwnode);
+> +	fwnode_handle_put(fwnode_back);
+>  	return ERR_PTR(-EPROBE_DEFER);
+>  }
 

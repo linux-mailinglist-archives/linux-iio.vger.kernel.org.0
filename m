@@ -1,165 +1,426 @@
-Return-Path: <linux-iio+bounces-7053-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7054-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE21691CE85
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 20:11:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F18091CE98
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 20:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 002061C20E70
-	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 18:11:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0B2D282A9E
+	for <lists+linux-iio@lfdr.de>; Sat, 29 Jun 2024 18:41:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EBF13213D;
-	Sat, 29 Jun 2024 18:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5970B1353FE;
+	Sat, 29 Jun 2024 18:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ELGz/RRi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kuFBWLuS"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBD827456;
-	Sat, 29 Jun 2024 18:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A22C5660;
+	Sat, 29 Jun 2024 18:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719684706; cv=none; b=jfB63HTXkYCXyuxDpSolns1909GP6Ux0QCEL2uPGWpsZNKpM8IjvyiBT19xe83tsIqXwqsmIKOLLky4SAlBXAdtq3lY9UiA2u2MNJxB4cHqiqBRHljpaW9NGgb2o9IiAPYI8Vu5/OaeK6fxgsm8mBAa2rGTQQwDNuEP1Rcqa0kY=
+	t=1719686491; cv=none; b=axxExUFfnfHFPDElEsHt4lyVO6RNaEGrGQ67j2JQb0KigEGagLJZwk+dSFLuhoqoavHvpbhKd0ZvRWfjze3qccNUwgqE+lWvq25dkaSfqkPai46GupJgeM4fA7Fzv3vYXmSJ5SMP1mpYwPRfha61+DTHxW/+j5UI/Ph/gOIik2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719684706; c=relaxed/simple;
-	bh=tz3SKuYexgtUihcjaPEZeu7MBxvWXn5SdFKAiRy3CVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CBtwkQR+56smoZiaAgstei5gCGtFYVCQBmZ5gi51Gn0qoT0DqLK4PtrUIKiLfNq/zQg2rQNWKjqhXwOnMLZP+nvGwhP7QGMoV6s16iJcZIU4B31Vgk8SykfxsqJQpfLrK7OpDEC36l3A6gCFhB6jgAVt+RGgAfNelY8bdKtmAfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ELGz/RRi; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2c7a6da20f2so1033125a91.0;
-        Sat, 29 Jun 2024 11:11:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719684704; x=1720289504; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JRsddKz7fNayJoW8Hb8xICvDepxKNe9Z9WcgTCfnYFM=;
-        b=ELGz/RRijsn4pno97pqwG9hXipe8nJG61x9uFZKPQ1ahgkwrWYDjXq7DGMzbLzBayQ
-         nptmSmHqjbBgWah2HGLV0q9vAKl2xbI1mjamH3swkZf1dWsBI2xu94rLa1BLF2L/RKPL
-         j7v53itc3TZ2D65X/euI9KLt3IQ7LIF9R1t/FWi0aEklU6acPYrKGgwzywBjO4GoKmwA
-         h43KrW7Df+emAml7ekFjdlQk1/TK1IJj9yt43tz+b8WmqOmhDZrduQqOoHdlOYnuyYc9
-         0BwnliwwXuhtYC0GmKHq56yUYSAhWfpZj1jqWU4RyrMf8k57KIL8GnFjUQzH3m4x4j38
-         KWCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719684704; x=1720289504;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JRsddKz7fNayJoW8Hb8xICvDepxKNe9Z9WcgTCfnYFM=;
-        b=tScgpSutAeL7nO/7shcDGbELRYCo15slquxgJ7mi7zCn7AgTsj35KzSqjYtsR0OfiL
-         3lXY9G2+E0kSPX7/V7XEVZnbf2UG5FY1GNF9crZuiJvllIVAS9VtXLF2o1p6IgyFZYNy
-         DIG7WLWbnH+TW6w4yedNdTksvTuO6/jyoAwjvKKvcBmn6n36dkzHSCKpsFaa3xhqYdFo
-         DRTanp6KM4X5dE4PXTnwlccEXoYTsPmjeK7SltxlW8pwPlzFdWwMNRHrns3JqLT17c18
-         geruVK4ftUeuHAFBSTmBAiccf6mh1Wx2LETxF/pAdf7oA5Owss1xfg0te0wPJcz7eHKn
-         p5kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVTYQk4sCSCn382XDJpMfswRwNA8EW7M3eyDkFAzYeJ8BYLhblf9BPOPzJmA2AXJ0UQEoqslqtVhIav/19UUyU5g9dfYMyXBAfGEr7DT2f/dydyamUCLewYzw+JDxy4I1IFrv4T4n/WmKAtGXMUD9uHmRD1GBpnUjFrECckgTUwiMH2FKIRg+LONU+eDespgcuPt9UHCdbdcy/VQ3W5rPrdQMaKc4fVZu1nnT0d7DJRbj280il93kHDmw==
-X-Gm-Message-State: AOJu0Yw9OtaWTzxpa/oHUU4EgLqYvM2uzD4S0j4bII6KjF1tKkR4nbl4
-	kQSsAeEIvlhOrAirAbCbRZxAgl8YbMWWT3+OKS5FVc+Z27aMjYaN
-X-Google-Smtp-Source: AGHT+IH0TBPlhcstNpRUy2EGgt6s+ZqfbFk+FYi6/fv8UZr8Xe9rKGN/T2QJIKmEezVX4EygiVYU5g==
-X-Received: by 2002:a17:90a:fa03:b0:2c8:ec4c:436 with SMTP id 98e67ed59e1d1-2c93d767652mr823050a91.33.1719684703772;
-        Sat, 29 Jun 2024 11:11:43 -0700 (PDT)
-Received: from localhost ([2804:30c:165e:de00:82ea:ff72:ead3:4367])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c91d3bcb25sm3631826a91.37.2024.06.29.11.11.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 29 Jun 2024 11:11:42 -0700 (PDT)
-Date: Sat, 29 Jun 2024 15:13:10 -0300
-From: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org,
-	lars@metafoo.de, Michael.Hennerich@analog.com, robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-	nuno.sa@analog.com, dlechner@baylibre.com, corbet@lwn.net,
-	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-spi@vger.kernel.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 6/7] iio: adc: Add support for AD4000
-Message-ID: <ZoBOtm_xwT1UrIfH@debian-BULLSEYE-live-builder-AMD64>
-References: <cover.1719351923.git.marcelo.schmitt@analog.com>
- <eb5f7b73bdf3ac89117e28f26ee3f54ba849163e.1719351923.git.marcelo.schmitt@analog.com>
- <20240629190538.46b5fc90@jic23-huawei>
+	s=arc-20240116; t=1719686491; c=relaxed/simple;
+	bh=QvapwvFyxd9QiVdG4fzZ/mb3LdJr5rEx0NRw7tsH71c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bDriwlEzXWu9alPuryeng96pGbXYRBMNDZ3KVLNQ9rWxQU4oLJHR49OYQfOSGZEIiDD8S/iJtaDB8iA9QUStMcDwfcBUE/WWiePkNQF1AXuGLPEqPa38oqnEbdJuoIqOPpfJrsNTNY9oAuST149DswOWoLpasg+DmlgjczaQkNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kuFBWLuS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0D7C2BBFC;
+	Sat, 29 Jun 2024 18:41:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719686490;
+	bh=QvapwvFyxd9QiVdG4fzZ/mb3LdJr5rEx0NRw7tsH71c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kuFBWLuS430W9X4VWy0EakCHmQOIllvLPYbCpAf3lJvcnI1gPTZKk8eI6smAWKOoj
+	 0wBfRTOdfh0WiZL7oaSYIsyJnHZDdf99nJPdVc2H+An/nOVm2sZ72zlfNZ6K7FQ3Z+
+	 KD2pt8eiYlnupUvaFjjyx5PgSbN0SauL+wxuhanKi8RSZjQzNAebdslQi7oLcTGO2Y
+	 Mh755ua2nTPCoYB4xD131sGjVENSy04pf8uycWZR9PPu5GKyR3a3/4J6Dhu6JXuipS
+	 OCdMorKiARZRJRMcTh8m4b77OI4EG7+afS8NVvvGVfc5OL5lVxHMb9l4uV2th/rxNU
+	 nYZIOj87KI8CA==
+Date: Sat, 29 Jun 2024 19:41:22 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Yasin Lee <yasin.lee.x@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ yasin.lee.x@outlook.com, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
+Subject: Re: [PATCH v8 3/3] iio: proximity: Add driver support for TYHX's
+ HX9023S capacitive proximity sensor
+Message-ID: <20240629194122.1f4b7b3b@jic23-huawei>
+In-Reply-To: <20240625-add-tyhx-hx9023s-sensor-driver-v8-3-0c224e3bddbc@gmail.com>
+References: <20240625-add-tyhx-hx9023s-sensor-driver-v8-0-0c224e3bddbc@gmail.com>
+	<20240625-add-tyhx-hx9023s-sensor-driver-v8-3-0c224e3bddbc@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240629190538.46b5fc90@jic23-huawei>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 06/29, Jonathan Cameron wrote:
-> On Tue, 25 Jun 2024 18:55:27 -0300
-> Marcelo Schmitt <marcelo.schmitt@analog.com> wrote:
-> 
-> > Add support for AD4000 series of low noise, low power, high speed,
-> > successive approximation register (SAR) ADCs.
-> > 
-> > Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-> Hi Marcelo,
-> 
-> You've clearly gotten some good review for this version so I only
-> had a quick scan through.  One thing did jump out at me though.
-> 
-> > +
-> > +static int ad4000_write_raw_get_fmt(struct iio_dev *indio_dev,
-> > +				    struct iio_chan_spec const *chan, long mask)
-> > +{
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_SCALE:
-> > +		return IIO_VAL_INT_PLUS_NANO;
-> > +	default:
-> > +		return IIO_VAL_INT_PLUS_MICRO;
-> > +	}
-> > +}
-> > +
-> > +static int ad4000_write_raw(struct iio_dev *indio_dev,
-> > +			    struct iio_chan_spec const *chan, int val, int val2,
-> > +			    long mask)
-> > +{
-> > +	struct ad4000_state *st = iio_priv(indio_dev);
-> > +	unsigned int reg_val;
-> > +	bool span_comp_en;
-> > +	int ret;
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_SCALE:
-> > +		ret = iio_device_claim_direct_mode(indio_dev);
-> > +		if (ret < 0)
-> > +			return ret;
-> > +
-> > +		mutex_lock(&st->lock);
-> > +		ret = ad4000_read_reg(st, &reg_val);
-> > +		if (ret < 0)
-> > +			goto err_unlock;
-> > +
-> > +		span_comp_en = val2 == st->scale_tbl[1][1];
-> > +		reg_val &= ~AD4000_CFG_SPAN_COMP;
-> > +		reg_val |= FIELD_PREP(AD4000_CFG_SPAN_COMP, span_comp_en);
-> > +
-> > +		ret = ad4000_write_reg(st, reg_val);
-> > +		if (ret < 0)
-> > +			goto err_unlock;
-> > +
-> > +		st->span_comp = span_comp_en;
-> > +err_unlock:
-> > +		iio_device_release_direct_mode(indio_dev);
-> > +		mutex_unlock(&st->lock);
-> 
-> Lock ordering needs another look. I'm not sure we an trigger
-> a deadlock but it definitely looks problematic. 
+On Tue, 25 Jun 2024 23:58:54 +0800
+Yasin Lee <yasin.lee.x@gmail.com> wrote:
 
-Oops. Oh, that's inddeed back lock release ordering.
-I've changed to scoped and guard for v6 and will send the updated version soon.
+> A SAR sensor from NanjingTianyihexin Electronics Ltd.
+> 
+> The device has the following entry points:
+> 
+> Usual frequency:
+> - sampling_frequency
+> 
+> Instant reading of current values for different sensors:
+> - in_proximity0_raw
+> - in_proximity1_raw
+> - in_proximity2_raw
+> - in_proximity3_raw
+> - in_proximity4_raw
+> and associated events in events/
+> 
+> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
+Hi Yasin
 
-Anyway, thanks for having a look at it.
-Marcelo
+Definitely getting close to ready to merge.
+A few bits of review feedback inline to resolve.
 
-> 
-> J
-> 
-> 
+Jonathan
+
+> diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
+> new file mode 100644
+> index 000000000000..c455f20d784f
+> --- /dev/null
+> +++ b/drivers/iio/proximity/hx9023s.c
+> @@ -0,0 +1,1131 @@
+
+> +
+> +#define HX9023S_CHIP_ID 0x1D
+> +#define HX9023S_CH_NUM 5
+> +#define HX9023S_2BYTES 2
+> +#define HX9023S_3BYTES 3
+
+Don't use defines where the number is actually more meaningful
+when seen in the code.
+
+> +#define HX9023S_BYTES_MAX HX9023S_3BYTES
+This define is useful but just make it 3.
+
+> +struct hx9023s_ch_data {
+> +	int raw; /* Raw Data*/
+> +	int lp; /* Low Pass Filter Data*/
+> +	int bl; /* Base Line Data */
+> +	int diff; /* difference of Low Pass Data and Base Line Data */
+Difference
+
+for consistency of capitalizaton.
+
+
+> +static int hx9023s_ch_cfg(struct hx9023s_data *data)
+> +{
+> +	unsigned int i;
+> +	u16 reg;
+> +	u8 reg_list[HX9023S_CH_NUM * 2];
+> +	u8 ch_pos[HX9023S_CH_NUM];
+> +	u8 ch_neg[HX9023S_CH_NUM];
+> +	/* Bit positions corresponding to input pin connections */
+> +	u8 conn_cs[HX9023S_CH_NUM] = {0, 2, 4, 6, 8};
+
+Space after { and before }
+
+> +
+> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
+> +		ch_pos[i] = data->ch_data[i].channel_positive == HX9023S_NOT_CONNECTED ?
+> +			HX9023S_NOT_CONNECTED : conn_cs[data->ch_data[i].channel_positive];
+> +		ch_neg[i] = data->ch_data[i].channel_negative == HX9023S_NOT_CONNECTED ?
+> +			HX9023S_NOT_CONNECTED : conn_cs[data->ch_data[i].channel_negative];
+> +
+> +		reg = (HX9023S_POS << ch_pos[i]) | (HX9023S_NEG << ch_neg[i]);
+> +		put_unaligned_le16(reg, &reg_list[i * 2]);
+> +	}
+> +
+> +	return regmap_bulk_write(data->regmap, HX9023S_CH0_CFG_7_0, reg_list, HX9023S_CH_NUM * 2);
+> +}
+
+> +
+> +static int hx9023s_sample(struct hx9023s_data *data)
+> +{
+> +	int ret, value;
+> +	unsigned int i;
+> +	u8 data_size, offset_data_size, *p, size, rx_buf[HX9023S_CH_NUM * HX9023S_BYTES_MAX];
+
+Long line combining different data types. Break them up to improve readability.
+
+	u8 rx_buf[HX9023S_CH_NUM * HX9023S_BYTES_MAX];
+	u8 data_size, offset_data_size, size;
+	u8 *p;
+
+> +
+> +	ret = hx9023s_data_lock(data, true);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = hx9023s_data_select(data);
+> +	if (ret)
+> +		goto err;
+> +
+> +	data_size = HX9023S_3BYTES;
+This local variable hurts readabilty.
+> +
+> +	/* ch0~ch3 */
+> +	p = rx_buf;
+Why local variable?
+> +	size = (HX9023S_CH_NUM - 1) * data_size;
+
+This is non obvious sizing.  Here a comment is appropriate.
+
+/* 3 bytes for each of channels 0 to 3 which have contiguous registers */
+
+> +	ret = regmap_bulk_read(data->regmap, HX9023S_RAW_BL_CH0_0, p, size);
+
+Combining above comments.
+
+	ret = regmap_bulk_read(data->regmap, HX9023S_RAW_BL_CH0_0, &rx_buf, size);
+
+> +	if (ret)
+> +		goto err;
+> +
+> +	/* ch4 */
+> +	p = rx_buf + size;
+> +	size = data_size;
+Here as well provide a comment on the fact the channel is 3 contiguous registers.
+
+
+> +	ret = regmap_bulk_read(data->regmap, HX9023S_RAW_BL_CH4_0, p, size);
+> +	if (ret)
+> +		goto err;
+> +
+> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
+> +		value = get_unaligned_le16(&rx_buf[i * data_size + 1]);
+This seems odd.  From the datasheet I found seems there are some bits in
+the ch0_0 register as well. Why just pull out 16 bits?
+
+I would use a get_unaligned_le24() call to get the rest and then rely on
+shift for userspace to drop bits 3:0
+
+It it makes sense to just provide the top 16 bits thats fine.
+> +		value = sign_extend32(value, 15);
+
+Why use int to store an s16?  If you just use an s16 for value then no
+need to sign extend and then store that into an s16 .raw in the channel
+data structure.
+
+> +		data->ch_data[i].raw = 0;
+> +		data->ch_data[i].bl = 0;
+> +		if (data->ch_data[i].sel_raw)
+> +			data->ch_data[i].raw = value;
+> +		if (data->ch_data[i].sel_bl)
+> +			data->ch_data[i].bl = value;
+> +	}
+> +
+> +	/* ch0~ch3 */
+> +	p = rx_buf;
+> +	size = (HX9023S_CH_NUM - 1) * data_size;
+As above - use a comment to explain why this is 12 then just use 12.
+Current form is far form obvious.
+
+> +	ret = regmap_bulk_read(data->regmap, HX9023S_LP_DIFF_CH0_0, p, size);
+> +	if (ret)
+> +		goto err;
+> +
+> +	/* ch4 */
+> +	p = rx_buf + size;
+> +	size = data_size;
+> +	ret = regmap_bulk_read(data->regmap, HX9023S_LP_DIFF_CH4_0, p, size);
+> +	if (ret)
+> +		goto err;
+> +
+> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
+> +		value = get_unaligned_le16(&rx_buf[i * data_size + 1]);
+> +		value = sign_extend32(value, 15);
+> +		data->ch_data[i].lp = 0;
+> +		data->ch_data[i].diff = 0;
+> +		if (data->ch_data[i].sel_lp)
+> +			data->ch_data[i].lp = value;
+> +		if (data->ch_data[i].sel_diff)
+> +			data->ch_data[i].diff = value;
+> +	}
+> +
+> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
+> +		if (data->ch_data[i].sel_lp && data->ch_data[i].sel_bl)
+> +			data->ch_data[i].diff = data->ch_data[i].lp - data->ch_data[i].bl;
+> +	}
+> +
+> +	/* offset DAC */
+> +	offset_data_size = HX9023S_2BYTES;
+> +	p = rx_buf;
+> +	size = HX9023S_CH_NUM * offset_data_size;
+> +	ret = regmap_bulk_read(data->regmap, HX9023S_OFFSET_DAC0_7_0, p, size);
+> +	if (ret)
+> +		goto err;
+> +
+> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
+> +		value = get_unaligned_le16(&rx_buf[i * offset_data_size]);
+> +		value = FIELD_GET(GENMASK(11, 0), value);
+> +		data->ch_data[i].dac = value;
+> +	}
+> +
+> +err:
+> +	return hx9023s_data_lock(data, false);
+> +}
+
+
+> +
+> +static int hx9023s_property_get(struct hx9023s_data *data)
+> +{
+> +	struct fwnode_handle *child;
+> +	struct device *dev = regmap_get_device(data->regmap);
+> +	int ret;
+> +	u32 i, reg, temp, array[2];
+> +
+> +	data->chan_in_use = 0;
+> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
+> +		data->ch_data[i].channel_positive = HX9023S_NOT_CONNECTED;
+> +		data->ch_data[i].channel_negative = HX9023S_NOT_CONNECTED;
+> +	}
+> +
+> +	device_for_each_child_node(dev, child) {
+
+Use
+	device_for_each_child_node_scoped(dev, child) {
+As then no need to call fwnode_handle_put() in error paths.
+
+> +		ret = fwnode_property_read_u32(child, "reg", &reg);
+> +		if (ret || reg >= HX9023S_CH_NUM) {
+> +			fwnode_handle_put(child);
+> +			return dev_err_probe(dev, ret, "Failed to read reg\n");
+> +		}
+> +		__set_bit(reg, &data->chan_in_use);
+> +
+> +		if (fwnode_property_read_u32(child, "input-channel", &temp) == 0) {
+> +			data->ch_data[reg].channel_positive = temp;
+> +			data->ch_data[reg].channel_negative = HX9023S_NOT_CONNECTED;
+> +		} else if (fwnode_property_read_u32_array(child, "diff-channels",
+> +							array, sizeof(array)) == 0) {
+> +			data->ch_data[reg].channel_positive = array[0];
+> +			data->ch_data[reg].channel_negative = array[1];
+> +		} else {
+> +			fwnode_handle_put(child);
+> +			return dev_err_probe(dev, ret,
+> +				"Failed to read channel input for channel %d\n", reg);
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+
+
+> +
+> +static void hx9023s_push_events(struct iio_dev *indio_dev)
+> +{
+> +	struct hx9023s_data *data = iio_priv(indio_dev);
+> +	s64 timestamp = iio_get_time_ns(indio_dev);
+> +	unsigned long prox_changed;
+> +	unsigned int chan;
+> +
+> +	hx9023s_sample(data);
+
+check the return codes for these calls that involve bus transactions.
+If they fail, just return form this function having not pushed an event.
+
+Otherwise we may push stale data.
+
+> +	hx9023s_get_prox_state(data);
+> +
+> +	prox_changed = (data->chan_prox_stat ^ data->prox_state_reg) & data->chan_event;
+> +	for_each_set_bit(chan, &prox_changed, HX9023S_CH_NUM) {
+> +		unsigned int dir;
+> +
+> +		dir = (data->prox_state_reg & BIT(chan)) ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
+> +
+> +		iio_push_event(indio_dev,
+> +			       IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, chan, IIO_EV_TYPE_THRESH, dir),
+> +			       timestamp);
+> +	}
+> +	data->chan_prox_stat = data->prox_state_reg;
+> +}
+
+
+
+
+
+
+> +static int hx9023s_id_check(struct iio_dev *indio_dev)
+> +{
+> +	struct hx9023s_data *data = iio_priv(indio_dev);
+> +	int ret;
+> +	unsigned int id;
+> +
+> +	ret = regmap_read(data->regmap, HX9023S_DEVICE_ID, &id);
+> +	if (ret || id != HX9023S_CHIP_ID)
+> +		return -ENODEV;
+This breaks the use of callback compatible IDs in future. It is only
+appropriate to print a warning on an unknown ID .
+Also don't eat the error value returned - it may provide a useful hint
+of a problem.
+
+	if (ret)
+		return ret;
+
+	if (id != HX9023S_CHIP_ID)
+		dev_warn(&indio_dev->dev.parent,
+			 "Unexpected chip ID, assuming compatible\n");
+
+	return 0;
+
+there are lots of older drivers where we did this wrong. We tend to
+repair this when otherwise working on a driver, so it will take a
+while before they are all fixed.
+
+
+> +
+> +	return 0;
+> +}
+> +
+> +static int hx9023s_probe(struct i2c_client *client)
+> +{
+> +	struct device *dev = &client->dev;
+> +	struct iio_dev *indio_dev;
+> +	struct hx9023s_data *data;
+> +	int ret;
+> +
+> +	indio_dev = devm_iio_device_alloc(dev, sizeof(struct hx9023s_data));
+> +	if (!indio_dev)
+> +		return -ENOMEM;
+> +
+> +	data = iio_priv(indio_dev);
+> +	mutex_init(&data->mutex);
+> +
+> +	data->regmap = devm_regmap_init_i2c(client, &hx9023s_regmap_config);
+> +	if (IS_ERR(data->regmap))
+> +		return dev_err_probe(dev, PTR_ERR(data->regmap), "regmap init failed\n");
+> +
+> +	ret = hx9023s_property_get(data);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "dts phase failed\n");
+> +
+> +	ret = devm_regulator_get_enable(dev, "vdd");
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "regulator get failed\n");
+> +
+> +	ret = hx9023s_id_check(indio_dev);
+> +	if (ret)
+> +		return dev_err_probe(dev, ret, "id check failed\n");
+
+As commented on above, this should not fail on a missmatch ont he ID, just
+on a failure to read it at all.  That enables future devices that haven't
+been made yet and happen to be compatible to be able to work with older
+linux kernels that predate them.
+
+
+> +}
+
 

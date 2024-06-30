@@ -1,63 +1,64 @@
-Return-Path: <linux-iio+bounces-7072-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7073-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A453B91D0E4
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jun 2024 11:45:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081C491D0F3
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jun 2024 11:55:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 477DF1F21544
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jun 2024 09:45:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ECDC281648
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jun 2024 09:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9AC12E1E9;
-	Sun, 30 Jun 2024 09:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4852112F5A1;
+	Sun, 30 Jun 2024 09:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jPdbSO91"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XOHGXY8o"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343852E419;
-	Sun, 30 Jun 2024 09:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE4517736;
+	Sun, 30 Jun 2024 09:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719740726; cv=none; b=cKTO4yXKMJXeEzbqBuXEUpGQ3nk/4ne94GpScGJP7tgwV+i8m1OdL36WZSfCUhPFpvDJQjdMpBgWR7YT08DYh8R8hF1otsmyQLaSwX1CBck+Ttd4rmet8MfA7vgWOtj221/9R+dHdGjzrARhTZgByq3lJU+iiXop+FHwEJA96vY=
+	t=1719741301; cv=none; b=R+RKZZTbHo87hbTBOqzlwdGDWEyPyHLU6IAkAqtGLcNFeCBTK/3CRarg545ruIEcPpafOXXx5khVCpRT/t4D7WGSxYE/bmkrpOcmjs+33JOCgp8GSKSjthVa1flnuCKgQNxjwb4IgeVqPOd3AJ1pqISpUQo87swifxM36IwQu1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719740726; c=relaxed/simple;
-	bh=g+PY0maDJocsoPGrq31JuY5v06MgC/XeszNsjUSePKk=;
+	s=arc-20240116; t=1719741301; c=relaxed/simple;
+	bh=8I0fB8HDKSv544jKjZ8E6RXOX3Jk5+XFowFSScyCYj4=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QgWbhsqDmGQteBBbPmxKV5uHy/nNxailSeevwYM19DnbI26R2e1ZowGKc+JvQ8Q3weGNyRbNpxHaEFeyjW0deb/qz25pJOTjMA7idOAZre+1qGsT8QetFA8XvvIM8lDTGGHjh/Fg/Lt54tmB8rt7HF4Xp7WKyufbZOLE1faof6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jPdbSO91; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DCBC2BD10;
-	Sun, 30 Jun 2024 09:45:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=QrLqj0af5/w+cMElU9MoomhXkJ1z0KMuNShJtx+pqfCUyQw+2/DpAGKk0zQ6u65zhhD7Oivbc+R/pB588NIdo0zN1NCyoAiVXyb92GcfXC16I/6rBDJUbcvjCJQGMKmK/6bjXl1qGvMGI71AJTdwG/eSBt6KMFVc1hAhUAyKQeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XOHGXY8o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD57CC2BD10;
+	Sun, 30 Jun 2024 09:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719740725;
-	bh=g+PY0maDJocsoPGrq31JuY5v06MgC/XeszNsjUSePKk=;
+	s=k20201202; t=1719741300;
+	bh=8I0fB8HDKSv544jKjZ8E6RXOX3Jk5+XFowFSScyCYj4=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jPdbSO91z7funRYpDY6X4e/ez7UtTStjCKtRta2i8kC9S+NloRtaXPyZZFe8Kb+Ee
-	 /MKw+DN4Ju7RyapaLCCYa8+xVnza9HXHMXBQ0FOs8SkpnYHZ/85kHbHLdwU23uDauo
-	 ueAfrWr4wcUgE73jHYnHya+FucnxG54UvFhesaFE3KRSX7KwannjQW9ehXnPokQ3Ku
-	 wGWy2cmQfIwZvEg4fU67/oHh6ZM/OMVXARR8z6YlVorSafQH6jsuPAejP8VJ3MDSWh
-	 On6obrGMgQE3yx15sC02GuTkTJPLybcIez+2RGu0GrFM1SCfG7F3vJg9VLhL5rmzx6
-	 6a1vhKw2rh/Dw==
-Date: Sun, 30 Jun 2024 10:45:16 +0100
+	b=XOHGXY8owx6Ta+5g37ueSQHUVvvFV8zFmcKSJUqv49ZW/t0iK/dpbo0Ovc87lHR2D
+	 IJxvU842JpmvIRn2acmZC4pigSCkYDmFy3OoMM5XnY0Ebrem44qx5gBywyM5lUuEPF
+	 H7qR3h9GruJ9o+GnFaaDGCIqLek/bjKdTAjevxWD4JUUSWpu9ocR+bah+OVlvPkaO3
+	 mojCjUZJnKw8hXnADWKNKjIPlJYTp0Es/BaM25QOsLAdzOk8PmmsyiLtUoCcYgPJWp
+	 kaq1yWXtkVPBhO7EmsmL+tY5IVdXD1G9+mXFkj9bxgzwkCbP2Ls/hFOfi85UpcQrqF
+	 v8KBR3VOVxing==
+Date: Sun, 30 Jun 2024 10:54:48 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Alexandru Ardelean <aardelean@baylibre.com>
-Cc: Alisa-Dariana Roman <alisadariana@gmail.com>, Alisa-Dariana Roman
- <alisa.roman@analog.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Michael Hennerich <michael.hennerich@analog.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>, Rob
- Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor
- Dooley <conor+dt@kernel.org>, Liam Girdwood <lgirdwood@gmail.com>, Mark
- Brown <broonie@kernel.org>
-Subject: Re: [PATCH v6 3/6] iio: adc: ad7192: Update clock config
-Message-ID: <20240630104516.59505c39@jic23-huawei>
-In-Reply-To: <CA+GgBR9V=SqeA2fbeBDUO=Cr1s6GTbq6_779uQmiKCF2EjkHBg@mail.gmail.com>
+To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
+Cc: Alexandru Ardelean <aardelean@baylibre.com>, Alisa-Dariana Roman 
+ <alisadariana@gmail.com>, Alisa-Dariana Roman <alisa.roman@analog.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, Michael Hennerich
+ <michael.hennerich@analog.com>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, Lars-Peter
+ Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, Krzysztof
+ Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Liam
+ Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v6 5/6] iio: adc: ad7192: Add clock provider
+Message-ID: <20240630105448.758dd131@jic23-huawei>
+In-Reply-To: <a72569f7c1f5d9a7158fe774179ec8fc76016168.camel@gmail.com>
 References: <20240624124941.113010-1-alisa.roman@analog.com>
-	<20240624124941.113010-4-alisa.roman@analog.com>
-	<CA+GgBR9V=SqeA2fbeBDUO=Cr1s6GTbq6_779uQmiKCF2EjkHBg@mail.gmail.com>
+	<20240624124941.113010-6-alisa.roman@analog.com>
+	<CA+GgBR8r_W9X0hROUEw-xePyKAhOTBjJtf=cHbfWfvUUfk5j_g@mail.gmail.com>
+	<a72569f7c1f5d9a7158fe774179ec8fc76016168.camel@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -68,72 +69,78 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 25 Jun 2024 08:30:47 +0300
-Alexandru Ardelean <aardelean@baylibre.com> wrote:
 
-> On Mon, Jun 24, 2024 at 3:50=E2=80=AFPM Alisa-Dariana Roman
-> <alisadariana@gmail.com> wrote:
-> > =20
+> > > +
+> > > =C2=A0static int ad7192_clock_setup(struct ad7192_state *st)
+> > > =C2=A0{
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 struct device *dev =3D &st=
+->sd.spi->dev;
+> > > @@ -412,6 +496,11 @@ static int ad7192_clock_setup(struct ad7192_stat=
+e *st)
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 if (ret < 0) {
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 st->clock_sel =3D AD7192_CLK_INT;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0 st->fclk =3D AD7192_INT_FREQ_MHZ;
+> > > +
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 ret =3D ad7192_register_clk_provider(st);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0 if (ret)
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 return d=
+ev_err_probe(dev, ret,
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 "Failed to register clock
+> > > provider\n"); =20
+> >=20
+> > A question here: do we want to fail the probe of this driver when it
+> > cannot register a clock provider?
+> > Or should we ignore it?
+> > No preference from my side. =20
 >=20
-> Hello,
+> Sensible question... I would say it depends. On one side this is an optio=
+nal
+> feature so we should not (arguably) error out. OTOH, someone may really w=
+ant
+> (and relies on) this feature so failing makes sense.
 >=20
-> A few comments inline.
+> Maybe we should have
 >=20
-> > There are actually 4 configuration modes of clock source for AD719X
-> > devices. Either a crystal can be attached externally between MCLK1 and
-> > MCLK2 pins, or an external CMOS-compatible clock can drive the MCLK2
-> > pin. The other 2 modes make use of the 4.92MHz internal clock.
-> >
-> > Removed properties adi,int-clock-output-enable and adi,clock-xtal were
-> > undocumented. Use cleaner alternative of configuring external clock by
-> > using clock names mclk and xtal. =20
+> if (!device_property_present(&spi->dev, "#clock-cells"))
+> 	return 0;
+
+I'm not 100% sure from looking at the code, but if the absence of this prop=
+erty
+(because the DT writer doesn't care about this) is sufficient to make the
+calls in ad7192_register_clk_provider() fail then we should check this.
+I don't think we need the complexity of get_provider_clk_node() as there is
+no reason to look in a parent of this device (it's not an mfd or similar) so
+this check should be sufficient.
+
+Does this also mean the binding should not require this?  I suspect it shou=
+ldn't.
+=20
 >=20
-> Should we keep the old properties for backwards compatibility?
-> While I like the new approach, the downside is that someone upgrades
-> the kernel and may run into issues with their board, because one of
-> these properties went away.
+> in ad7192_register_clk_provider(). So that if we fail the function, then =
+yes, we
+> should fail probing as FW wants this to be a provider. Also, not providing
+> #clock-cells means we don't register the clock.
 >=20
-It's indeed a gamble that no one was actually using them.  Whilst
-the lack of documentation suggests that might be the case, who knows.
-
-If it isn't a bit maintenance issue to keep the old property support
-in the driver it is probably a good idea (with lots of comments to
-say it's deprecated).
-
-> >
-> > Removed functionality of AD7192_CLK_INT_CO restored in complementary
-> > patch.
-> >
-> > Signed-off-by: Alisa-Dariana Roman <alisa.roman@analog.com>
-> > ---
-> >  drivers/iio/adc/ad7192.c | 56 ++++++++++++++++++++--------------------
-> >  1 file changed, 28 insertions(+), 28 deletions(-)
-> >
-> > diff --git a/drivers/iio/adc/ad7192.c b/drivers/iio/adc/ad7192.c
-> > index 334ab90991d4..940517df5429 100644
-> > --- a/drivers/iio/adc/ad7192.c
-> > +++ b/drivers/iio/adc/ad7192.c
-> > @@ -396,25 +396,37 @@ static inline bool ad7192_valid_external_frequenc=
-y(u32 freq)
-> >                 freq <=3D AD7192_EXT_FREQ_MHZ_MAX);
-> >  }
-> >
-> > -static int ad7192_clock_select(struct ad7192_state *st)
-> > +static const char *const ad7192_clock_names[] =3D {
-> > +       "xtal",
-> > +       "mclk" =20
+> Having said the above I think that failing devm_clk_hw_register() means t=
+hat
+> something is already really wrong (or we have a bug in the driver) so lik=
+ely we
+> should keep it simple and just always provide the clock and return an err=
+or if
+> we fail to do so.
 >=20
-> Just a thought; no strong opinion.
-> Maybe add a short comment about these being "clock_sel" values
-> AD7192_CLK_EXT_MCLK1_2 & AD7192_CLK_EXT_MCLK2 ?
-> This is mostly due to the "st->clock_sel =3D AD7192_CLK_EXT_MCLK1_2 +
-> ret;" logic (which is fine)
-> Before, this change, it would
-
-Did we lose rest of sentence here?
-
-J
-
-
+> my 2 cents...
+>=20
+> - Nuno S=C3=A1
+>=20
+>=20
 
 

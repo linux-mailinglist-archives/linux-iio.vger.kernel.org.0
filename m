@@ -1,131 +1,185 @@
-Return-Path: <linux-iio+bounces-7085-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7086-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D0791D171
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jun 2024 13:30:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7194B91D179
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jun 2024 13:43:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4773B20DF1
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jun 2024 11:30:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05B0DB2169D
+	for <lists+linux-iio@lfdr.de>; Sun, 30 Jun 2024 11:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E663C13AD20;
-	Sun, 30 Jun 2024 11:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD9D13C3CC;
+	Sun, 30 Jun 2024 11:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DIJq9jA2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvcdcw4y"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A099A13C3D5;
-	Sun, 30 Jun 2024 11:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6A7F2E419;
+	Sun, 30 Jun 2024 11:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719746994; cv=none; b=SCtYZl1tEnMjjM7kw+aRbKFbLl+tUR7gUt5X30maMroH0phN5APiSU7lKnN+i38oAfOjfHFAOT4yKG4MUMcyIJ6O56NPA/VO0ErR4mxm1FTj02Fuw7gb2jPpWw0dnoH32zQYgZ7Ux8dprITb6sNPAIDcA5LPY+JYaDai+PQsprY=
+	t=1719747816; cv=none; b=JPe/nYE5i8123L1pS8EhuDx32ciRqhWM/KQuHf3x28SnFbAiuDk2ALX6XlXB4My3Uu93ewlgZf7JKLED4GF9+jzzxZpux/xm4EE6F+raD0hdP0DUc3nbaaLsBVC6GmHlpfXHeXyNPxKUN7GaXeVlcNTJz2eZhOwgLNAqDa2iWcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719746994; c=relaxed/simple;
-	bh=X9PIonGbJhQLIpEQEmnTtYCiDN8DjBnLQv/yyICT2Hw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OOyeV/a15LKikJjV0ATjwObpnODAT16S+skzOWQUkScriK6xIoCHyGxZYv0Pbc1UWPhdlW/5h58e9zlI7gFtyOs0pNqWo1U6EWd8McCM2P2zispxDSQu+m7FFvlwjhW4q2K7pZP3LVQ01Cma2e6bvI8xJPFtZA8WKWQnwonpYbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DIJq9jA2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7882C2BD10;
-	Sun, 30 Jun 2024 11:29:50 +0000 (UTC)
+	s=arc-20240116; t=1719747816; c=relaxed/simple;
+	bh=lnHlEnqgGp94dnnzJe32XBDVLkt7LiVbT6eZ5HzhyaE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n8IPpRiV9uI0KKAr8XZts96A7G6spliqnh3doqRuM3xStN7bNJTFWtXoA2mp+2lXStCv7VzUditZIEBZw+HrhTR2LNOZxCVr6dWZvi4aP+9DEe4iWHrScJKFuhSZzY8maH16IrE1hlpRc/N3PgpWcAyhBqyP03OaBFSKXn6mLbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvcdcw4y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BAE2C2BD10;
+	Sun, 30 Jun 2024 11:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719746994;
-	bh=X9PIonGbJhQLIpEQEmnTtYCiDN8DjBnLQv/yyICT2Hw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DIJq9jA26nzGGruYHXNNJ593+iID8EB1V9CJRBQ4FYDDBLwC0QC6YoPj35R2Pagx9
-	 WKtGJcXa0nRUs1RfDWbT4TAbq5fBaQHHyOjNCacGP4DsXPsCPfxM5Q5l9lSWh0CsQm
-	 aGJrX9F2zTEZNlcUpJYJfzNKCVoJLg4Z8O1Kwnblchjs4S2Zz+AllZCDnx4uW/UWzY
-	 HCTOioZmWNjxY/p57uaauyOvOqNI8jqcBYIONcqOtxCR7AHcryjcPKRtZdCYSzhzel
-	 vj5U9CxkOJnG60Kf6OMEWBSzIN2cXvyOuj6GkB8s+yu0Ht5BIvr5D0LDb3LujHm05W
-	 GTReFmPbrrrJg==
-Date: Sun, 30 Jun 2024 12:29:46 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Nuno =?UTF-8?B?U8Oh?= <noname.nuno@gmail.com>
-Cc: Nuno Sa <nuno.sa@analog.com>, Petr Mladek <pmladek@suse.com>, Lars-Peter
- Clausen <lars@metafoo.de>, Olivier Moysan <olivier.moysan@foss.st.com>,
- Jyoti Bhayana <jbhayana@google.com>, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Chris Down <chris@chrisdown.name>,
- John Ogness <john.ogness@linutronix.de>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Andi Shyti <andi.shyti@kernel.org>,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org, "Rafael J.
- Wysocki" <rafael@kernel.org>, Andrzej Hajda <a.hajda@samsung.com>, Mark
- Brown <broonie@kernel.org>
-Subject: Re: [PATCH v3 1/4] dev_printk: add new dev_err_probe() helpers
-Message-ID: <20240630122946.308e3a54@jic23-huawei>
-In-Reply-To: <0bebcdd4f1eb94c6fc34b18846ee12cc3c23be0d.camel@gmail.com>
-References: <20240606-dev-add_dev_errp_probe-v3-0-51bb229edd79@analog.com>
-	<20240606-dev-add_dev_errp_probe-v3-1-51bb229edd79@analog.com>
-	<20240608190748.2577b8a5@jic23-huawei>
-	<20240617204153.7e36b157@jic23-huawei>
-	<0bebcdd4f1eb94c6fc34b18846ee12cc3c23be0d.camel@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=k20201202; t=1719747815;
+	bh=lnHlEnqgGp94dnnzJe32XBDVLkt7LiVbT6eZ5HzhyaE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=hvcdcw4yVOUU1ieo0faYj60C5UBjmdn/ebFgAaK1mx5zKdmWim94BRayPTJqbc6w7
+	 FqvUKRw7ncSiVZCIBkYauiEvvLSJIlcYnZiVGangan3QIwcuvutgNtEkHLlhRCGPJ8
+	 T2lZiaAWb6s80RiDnemIL43OFKHt12RX2I3yh5PbBbD9g3JwG9s4lHA5P7/kU1Vd8D
+	 /S6KIQbLc0W1Bh2+phA9C1FMwZaiV/xJ3nKKHH9PfpIYEanGPpB1Qsh+cywMe4wevc
+	 +VI+JR4O5A/pU/J/5w4mI1t3eIJlP9lW74FZlWTAecaQqbTgce04TGkQDBjUO0HUY/
+	 muarSpI8i9LFQ==
+Date: Sun, 30 Jun 2024 12:43:30 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Nuno =?iso-8859-1?Q?S=E1?= <noname.nuno@gmail.com>,
+	Alexandru Ardelean <aardelean@baylibre.com>,
+	Alisa-Dariana Roman <alisadariana@gmail.com>,
+	Alisa-Dariana Roman <alisa.roman@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: [PATCH v6 5/6] iio: adc: ad7192: Add clock provider
+Message-ID: <20240630-jubilant-pyromania-d6b004a793a9@spud>
+References: <20240624124941.113010-1-alisa.roman@analog.com>
+ <20240624124941.113010-6-alisa.roman@analog.com>
+ <CA+GgBR8r_W9X0hROUEw-xePyKAhOTBjJtf=cHbfWfvUUfk5j_g@mail.gmail.com>
+ <a72569f7c1f5d9a7158fe774179ec8fc76016168.camel@gmail.com>
+ <20240630105448.758dd131@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="Mi5L2Q7GuWi83TYj"
+Content-Disposition: inline
+In-Reply-To: <20240630105448.758dd131@jic23-huawei>
+
+
+--Mi5L2Q7GuWi83TYj
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 26 Jun 2024 17:01:03 +0200
-Nuno S=C3=A1 <noname.nuno@gmail.com> wrote:
-
-> On Mon, 2024-06-17 at 20:41 +0100, Jonathan Cameron wrote:
-> > On Sat, 8 Jun 2024 19:07:48 +0100
-> > Jonathan Cameron <jic23@kernel.org> wrote:
-> >  =20
-> > > On Thu, 6 Jun 2024 09:22:37 +0200
-> > > Nuno Sa <nuno.sa@analog.com> wrote:
-> > >  =20
-> > > > This is similar to dev_err_probe() but for cases where an ERR_PTR()=
- or
-> > > > ERR_CAST() is to be returned simplifying patterns like:
-> > > >=20
-> > > > 	dev_err_probe(dev, ret, ...);
-> > > > 	return ERR_PTR(ret)
-> > > > or
-> > > > 	dev_err_probe(dev, PTR_ERR(ptr), ...);
-> > > > 	return ERR_CAST(ptr)
-> > > >=20
-> > > > Signed-off-by: Nuno Sa <nuno.sa@analog.com>=C2=A0  =20
+On Sun, Jun 30, 2024 at 10:54:48AM +0100, Jonathan Cameron wrote:
+>=20
+> > > > +
+> > > > =A0static int ad7192_clock_setup(struct ad7192_state *st)
+> > > > =A0{
+> > > > =A0=A0=A0=A0=A0=A0=A0 struct device *dev =3D &st->sd.spi->dev;
+> > > > @@ -412,6 +496,11 @@ static int ad7192_clock_setup(struct ad7192_st=
+ate *st)
+> > > > =A0=A0=A0=A0=A0=A0=A0 if (ret < 0) {
+> > > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->clock_sel =3D AD7=
+192_CLK_INT;
+> > > > =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 st->fclk =3D AD7192_I=
+NT_FREQ_MHZ;
+> > > > +
+> > > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 ret =3D ad7192_register=
+_clk_provider(st);
+> > > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 if (ret)
+> > > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+ return dev_err_probe(dev, ret,
+> > > > +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 "Failed to =
+register clock
+> > > > provider\n"); =20
 > > >=20
-> > > I'm convinced this is worth doing but would like inputs from others
-> > > before I pick this series up. =20
+> > > A question here: do we want to fail the probe of this driver when it
+> > > cannot register a clock provider?
+> > > Or should we ignore it?
+> > > No preference from my side. =20
 > >=20
-> > Andi and Andy,
+> > Sensible question... I would say it depends. On one side this is an opt=
+ional
+> > feature so we should not (arguably) error out. OTOH, someone may really=
+ want
+> > (and relies on) this feature so failing makes sense.
 > >=20
-> > You both commented on earlier versions.=C2=A0 Do you think this is a go=
-od
-> > change set?
+> > Maybe we should have
 > >=20
-> > I've +CC a few more based on a quick look at the original
-> > dev_err_probe() series. Whilst this isn't adding a bunch of new stuff
-> > around deferred probing (like that series did), maybe some of those
-> > reviewers will give opinions here?
-> >  =20
+> > if (!device_property_present(&spi->dev, "#clock-cells"))
+> > 	return 0;
 >=20
-> Hi,
+> I'm not 100% sure from looking at the code, but if the absence of this pr=
+operty
+> (because the DT writer doesn't care about this) is sufficient to make the
+> calls in ad7192_register_clk_provider() fail then we should check this.
+> I don't think we need the complexity of get_provider_clk_node() as there =
+is
+> no reason to look in a parent of this device (it's not an mfd or similar)=
+ so
+> this check should be sufficient.
 >=20
-> I there something else needed from my side? Would be nice to have some
-> feedback...
-I guess no one has strong opinions they haven't expressed already.
+> Does this also mean the binding should not require this?  I suspect it sh=
+ouldn't.
 
-Applied to the togreg branch of iio.git and pushed out as testing for
-all the normal reasons.  Still time for last minute feedback of course.
+Per the binding (proposed and current) I think the code here is fine
+w.r.t. probe failures. Before the series, it looks like clocks/clock-names
+were required by the binding and the driver would fail to probe if they were
+not provided. The current code only fails to probe if neither clocks
+or clock-names and #clock-cells are not provided, so it is a weaker
+restriction than before. The binding doesn't require #clock-cells at all
+times, only if the clock consumer properties are not present, so it is
+both fine backwards compatibility wise and seems to match how the driver
+is behaving. I'm biased, but I don't buy "the DT writer doesn't care" as
+an argument cos if they didn't care about adding the required clock
+consumer properties now then they'd not have probed before either...
 
-Basically I decided that even if people decide later they don't like this
-for now it has few users and we can rip it out again if needed.
-Hopefully that won't happen.
+Cheers,
+Conor.
 
-Jonathan
-
+> > in ad7192_register_clk_provider(). So that if we fail the function, the=
+n yes, we
+> > should fail probing as FW wants this to be a provider. Also, not provid=
+ing
+> > #clock-cells means we don't register the clock.
+> >=20
+> > Having said the above I think that failing devm_clk_hw_register() means=
+ that
+> > something is already really wrong (or we have a bug in the driver) so l=
+ikely we
+> > should keep it simple and just always provide the clock and return an e=
+rror if
+> > we fail to do so.
+> >=20
+> > my 2 cents...
+> >=20
+> > - Nuno S=E1
+> >=20
+> >=20
 >=20
-> - Nuno S=C3=A1
->=20
->=20
 
+--Mi5L2Q7GuWi83TYj
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZoFE4gAKCRB4tDGHoIJi
+0rd8APwLmRCAOSGfaSnmDqSvcuqh7evVo0woKBO/UgxUyVuLsgD/TZkzpeKNRZEm
+fQTButiI6kY4xg9gTIlu1fpoHUJUFAc=
+=BG+3
+-----END PGP SIGNATURE-----
+
+--Mi5L2Q7GuWi83TYj--
 

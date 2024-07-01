@@ -1,195 +1,233 @@
-Return-Path: <linux-iio+bounces-7091-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7092-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7ED91D85E
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 08:56:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 928CC91D936
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 09:41:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A9F61C21C9A
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 06:56:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 184531F22319
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 07:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405E26EB4A;
-	Mon,  1 Jul 2024 06:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B668002A;
+	Mon,  1 Jul 2024 07:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="iS49lQEP"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E835EE8D
-	for <linux-iio@vger.kernel.org>; Mon,  1 Jul 2024 06:56:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70F36482D8
+	for <linux-iio@vger.kernel.org>; Mon,  1 Jul 2024 07:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719816988; cv=none; b=ABqXieXFmcX81pLdTYxAb2lYQHgQh5Fagd+o3mbnKs4WQMNnUXLAdJ4Phk5M2mP6K+I8zgX+ctypYZplScn3iohAVT/FBuWCbHAle9utvpyF1/kDNhZninU52kPJ52+v0ARKssNogZI08+UW8Srspj4jiPnRM1Jsxyphr8f8e0s=
+	t=1719819669; cv=none; b=jvORGn3I53muZhI2WZLrTxDAZ3h4By4VHac7gLBHanLb4WbdCBs5Wjl5BL/w5FeXLWEiIudbUc29PccYN5BMLdUAaJ6j0qN0XSqYpwVpzrCW+a7WtFeKLOk3svq0M7RNekqeO64rHFAagOBzsMYSjtXcEHTsh7Zp+JAgPSKvn3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719816988; c=relaxed/simple;
-	bh=HOIaIlSj7r2hqWcDrBSX8JQqRZf1t595YMIepq2kMyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IfQkSXNQVSX6m1A5+bwGu8G8d4yCvZA/NaNO3l2lKaQ76JE/gHS0n8QUT+HeSt0dXiIzGAjrjPyBF1gS635qHMbkWLuKSr4mej6f9WSxSmyJwoqTRSYCv0Y2WalB4MeACfNtqGeL/z/ReqfTtucn1CZfsV9Qblgjn3dvNN8dDMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sOAx0-0003Yo-FR; Mon, 01 Jul 2024 08:55:46 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sOAww-006JJB-6n; Mon, 01 Jul 2024 08:55:42 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1sOAww-008Jk4-0K;
-	Mon, 01 Jul 2024 08:55:42 +0200
-Date: Mon, 1 Jul 2024 08:55:42 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: David Lechner <dlechner@baylibre.com>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>, Mark Brown <broonie@kernel.org>,
-	Martin Sperl <kernel@martin.sperl.org>,
-	David Jander <david@protonic.nl>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Nuno =?utf-8?B?U8Oh?= <nuno.sa@analog.com>,
-	Alain Volmat <alain.volmat@foss.st.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	linux-spi@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-iio@vger.kernel.org,
-	Julien Stephan <jstephan@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	kernel@pengutronix.de, T.Scherer@eckelmann.de
-Subject: Re: [PATCH v2 0/5] spi: add support for pre-cooking messages
-Message-ID: <ZoJS7hAdf36ezyUn@pengutronix.de>
-References: <20240219-mainline-spi-precook-message-v2-0-4a762c6701b9@baylibre.com>
- <Zn6HMrYG2b7epUxT@pengutronix.de>
- <20240628-awesome-discerning-bear-1621f9-mkl@pengutronix.de>
- <9e6b5cff-8692-484e-9e1c-b89a1f49d6c7@baylibre.com>
+	s=arc-20240116; t=1719819669; c=relaxed/simple;
+	bh=oTiwMhaaeoH5tbCv6JkQxiWBwEjlIzERTEn46lx2DBM=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=SrPME/Mb4Io2m3iQUArxoPXlzEH+Si5GSsTX/qQkGSpUH6JWZPMrVUhesv7csGwXDvDxRNoAVgXOoX5XolE3lipi6NbxcRvKrOQ1lZj80uCEgjtPISgTCs5x6HC3xemU1vQk6KbLbXZyZtb5hc0iNBzssECgcXUTDysUxwSWIY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=iS49lQEP; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2ec52fbb50cso26041141fa.2
+        for <linux-iio@vger.kernel.org>; Mon, 01 Jul 2024 00:41:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719819665; x=1720424465; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=luwhpQx8+Zob3V/T6YJ1851XBEZCKognBMDo82oxZaA=;
+        b=iS49lQEPiNTUdiblK35IKLEZIqAhv8lkJnJXxTsBn4YcSAp6LPUOJTcpiJ7zcbgpSU
+         smfoaSusQraig9INV4BO5oAZdPu6nK6wfQCpzK2PPiSqwdhviH/Lv6B6AwZBEk3ieRFF
+         VKPiBXvwipYfRjMOEvs7uAMifBiuMM08i3vNpubeH+43pBgm+qhwGrQLiSm7ZRToQVZ/
+         e50oCl9UxizuCkGOFMfvqUmaKPVXOvbAg3HqPousjAKjlS9nQAVShB6+UQXbQnimR1uY
+         31PC7/IBQ9dax1+bUCZooFAzO3Pve5TEsf5JRGfwAVUT9a8HetCx9UsdqVYNIvTN7ISj
+         AuHw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719819665; x=1720424465;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=luwhpQx8+Zob3V/T6YJ1851XBEZCKognBMDo82oxZaA=;
+        b=hprdrgBUMrUmfzM8yDo5e7mWPG90B6k7fJMcgF3bbmTkxOBrzhY9HxTnR1OZ4+LG/U
+         xeckV3Nv95/b0ZJbbM2qRkIzXE5Vska+cMkarlbWSYqdcUtS1iYEYYzDr5R8qCoOchF1
+         4H7VMzOjvf+Gv0bq+rlz6E2VFqY74HCYCSIobIl9MVXuMqssQKNARtiQLbgcWUHwqjrw
+         8+ry2IWHIxILtMOttA8WkBbciTvNzZLVsnFs+VIO2G/IdiV7oW8OH5571lcT++sm0NI1
+         hcCF7fOqtWHkZFJ1cCZH87KX4KIAHcvGfKJB4Xkq429j2k4kghl8Kw4QScSi8pW2MLB2
+         4KoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWhHSiVcra+68Zzu3a4L5gS3WKhCfMZS9rVYLxbQOVf+2ImKyvRf/DwWNe2Bj1API96ZDbHHFR2agpSVYX0FIUzDV73LByrbMUY
+X-Gm-Message-State: AOJu0YyQc7pXkTZdvdgloWNbY1smYWxtYSzJagHib6nbUjTBvJySUvN9
+	3TYYKAJrG4RAPBpi0eqSCF461QvpaR3EqvCDFUmzkJf/XNIRvBeTkyDb6phF17k=
+X-Google-Smtp-Source: AGHT+IEzuhMJAz/Pv97Qfz0wibA0VR4rH3uoXhjLiD7kH/3hRTfrPLFrntMsa8P9YcyF+7GW5WzXcQ==
+X-Received: by 2002:a2e:96c6:0:b0:2ec:5644:8f85 with SMTP id 38308e7fff4ca-2ee5e3b37bdmr32247581fa.27.1719819664229;
+        Mon, 01 Jul 2024 00:41:04 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:982:cbb0:4719:99ea:652b:10d0? ([2a01:e0a:982:cbb0:4719:99ea:652b:10d0])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256af3cf90sm140024045e9.5.2024.07.01.00.41.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 01 Jul 2024 00:41:03 -0700 (PDT)
+Message-ID: <5da26c0e-75a7-4d5a-9eca-f88ecf369996@linaro.org>
+Date: Mon, 1 Jul 2024 09:41:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <9e6b5cff-8692-484e-9e1c-b89a1f49d6c7@baylibre.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: ore@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linux-iio@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: neil.armstrong@linaro.org
+Subject: Re: [PATCH 0/2] iio: frequency: add iio support for Amlogic clock
+ measure
+To: Jerome Brunet <jbrunet@baylibre.com>
+Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
+ <lars@metafoo.de>, Kevin Hilman <khilman@baylibre.com>,
+ linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
+ linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-arm-msm <linux-arm-msm@vger.kernel.org>
+References: <20240624173105.909554-1-jbrunet@baylibre.com>
+ <52fab9b5-2b44-49c0-8b90-cb2a74eb6633@linaro.org>
+ <1jzfr9gxh4.fsf@starbuckisacylon.baylibre.com>
+ <c092ec67-e384-411d-8885-665597547523@linaro.org>
+ <1jv81xgmfc.fsf@starbuckisacylon.baylibre.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <1jv81xgmfc.fsf@starbuckisacylon.baylibre.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Jun 28, 2024 at 10:27:28AM -0500, David Lechner wrote:
-> On 6/28/24 5:16 AM, Marc Kleine-Budde wrote:
-> > On 28.06.2024 11:49:38, Oleksij Rempel wrote:
-> >> It seems to be spi_mux specific. We have seen similar trace on other system
-> >> with spi_mux.
-> > 
-> > Here is the other backtrace from another imx8mp system with a completely
-> > different workload. Both have in common that they use a spi_mux on the
-> > spi-imx driver.
-> > 
-> > Unable to handle kernel NULL pointer dereference at virtual address 0000000000000dd0
-> > Mem abort info:
-> >   ESR = 0x0000000096000004
-> >   EC = 0x25: DABT (current EL), IL = 32 bits
-> >   SET = 0, FnV = 0
-> >   EA = 0, S1PTW = 0
-> >   FSC = 0x04: level 0 translation fault
-> > Data abort info:
-> >   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-> >   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-> >   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-> > user pgtable: 4k pages, 48-bit VAs, pgdp=0000000046760000
-> > [0000000000000dd0] pgd=0000000000000000, p4d=0000000000000000
-> > Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-> > Modules linked in: can_raw can ti_ads7950 industrialio_triggered_buffer kfifo_buf spi_mux fsl_imx8_ddr_perf at24 flexcan caam can_dev error rtc_snvs imx8mm_thermal spi_imx capture_events_irq cfg80211 iio_trig_hrtimer industrialio_sw_trigger ind>
-> > CPU: 3 PID: 177 Comm: spi5 Not tainted 6.9.0 #1
-> > Hardware name: xxxxxxxxxxxxxxxx (xxxxxxxxx) (DT)
-> > pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-> > pc : spi_res_release+0x24/0xb8
-> > lr : spi_async+0xac/0x118
-> > sp : ffff8000823fbcc0
-> > x29: ffff8000823fbcc0 x28: 0000000000000000 x27: 0000000000000000
-> > x26: ffff8000807bef88 x25: ffff80008115c008 x24: 0000000000000000
-> > x23: ffff8000826c3938 x22: 0000000000000000 x21: ffff0000076a9800
-> > x20: 0000000000000000 x19: 0000000000000dc8 x18: 0000000000000000
-> > x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffff88c0e760
-> > x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
-> > x11: ffff8000815a1f98 x10: ffff8000823fbb40 x9 : ffff8000807b8420
-> > x8 : ffff800081508000 x7 : 0000000000000004 x6 : 0000000003ce4c66
-> > x5 : 0000000001000000 x4 : 0000000000000000 x3 : 0000000001000000
-> > x2 : 0000000000000000 x1 : ffff8000826c38e0 x0 : ffff0000076a9800
-> > Call trace:
-> >  spi_res_release+0x24/0xb8
-> >  spi_async+0xac/0x118
-> >  spi_mux_transfer_one_message+0xb8/0xf0 [spi_mux]
-> >  __spi_pump_transfer_message+0x260/0x5d8
-> >  __spi_pump_messages+0xdc/0x320
-> >  spi_pump_messages+0x20/0x38
-> >  kthread_worker_fn+0xdc/0x220
-> >  kthread+0x118/0x128
-> >  ret_from_fork+0x10/0x20
-> > Code: a90153f3 a90363f7 91016037 f9403033 (f9400674) 
-> > ---[ end trace 0000000000000000 ]---
-> > 
-> > regards,
-> > Marc
-> > 
+On 25/06/2024 15:51, Jerome Brunet wrote:
+> On Tue 25 Jun 2024 at 15:18, Neil Armstrong <neil.armstrong@linaro.org> wrote:
 > 
+>> On 25/06/2024 11:53, Jerome Brunet wrote:
+>>> On Tue 25 Jun 2024 at 11:38, Neil Armstrong <neil.armstrong@linaro.org> wrote:
+>>>
+>>>> Hi,
+>>>>
+>>>> [+cc people from linux-msm]
+>>>>
+>>>> On 24/06/2024 19:31, Jerome Brunet wrote:
+>>>>> Add support for the HW found in most Amlogic SoC dedicated to measure
+>>>>> system clocks.
+>>>>> This drivers aims to replace the one found in
+>>>>> drivers/soc/amlogic/meson-clk-measure.c with following improvements:
+>>>>> * Access to the measurements through the IIO API:
+>>>>>      Easier re-use of the results in userspace and other drivers
+>>>>> * Controllable scale with raw measurements
+>>>>> * Higher precision with processed measurements
+>>>>> Jerome Brunet (2):
+>>>>>      dt-bindings: iio: frequency: add clock measure support
+>>>>>      iio: frequency: add amlogic clock measure support
+>>>>>     .../iio/frequency/amlogic,clk-msr-io.yaml     |  50 ++
+>>>>>     drivers/iio/frequency/Kconfig                 |  15 +
+>>>>>     drivers/iio/frequency/Makefile                |   1 +
+>>>>>     drivers/iio/frequency/amlogic-clk-msr-io.c    | 802 ++++++++++++++++++
+>>>>>     4 files changed, 868 insertions(+)
+>>>>>     create mode 100644 Documentation/devicetree/bindings/iio/frequency/amlogic,clk-msr-io.yaml
+>>>>>     create mode 100644 drivers/iio/frequency/amlogic-clk-msr-io.c
+>>>>>
+>>>>
+>>>> While I really appreciate the effort, and the code looks cool, the clkmsr is really
+>>>> a debug tool, and I'm not sure IIO is the right place for such debug tool ?
+>>> The reason why I went through the trouble of doing an IIO port is
+>>> because I need that for other purposes than debug. I need to to be able
+>>> to check a frequency from another driver. I don't see a reason to invent
+>>> another API when IIO provide a perfectly good one.
+>>> The HW does measurements. IIO seems like the best place for it.
+>>> For the record, I need this for a eARC support.
+>>> eARC has a PLL that locks on incoming stream. eARC registers show wether
+>>> the PLL is locked or not, but not at which rate. That information is
+>>> needed in ASoC. Fortunately the eARC PLL is one of measured clock, which
+>>> is a life saver in that case.
+>>
+>> This is a very interesting use-case, and quite weird nothing is provided
+>> on the eARC side.
 > 
-> Hi Oleksij and Marc,
+> Indeed.
 > 
-> I'm supposed to be on vacation so I didn't look into this deeply yet
-> but I can see what is happening here.
+>>
+>> So yes it's definitely a valid use-case, but:
+>> - we should keep the debugfs interface, perhaps move it in the iio driver ?
 > 
-> spi_mux_transfer_one_message() is calling spi_async() which is calling
-> __spi_optimize_message() on an already optimized message.
-> 
-> Then it also calls __spi_unoptimize_message() which tries to release
-> resources. But this fails because the spi-mux driver has swapped
-> out the pointer to the device in the SPI message. This causes the
-> wrong ctlr to be passed to spi_res_release(), causing the crash.
-> 
-> I don't know if a proper fix could be quite so simple, but here is
-> something you could try (untested):
+> I considered this initially but it would add a lot of boiler plate
+> code to provide over debugfs exactly what iio already provides over
+> sysfs. As you pointed out, the previous driver only provided debug
+> information, the debugfs interface it provided is hardly a
+> critical/stable one.
 
-This issue is still reproducible with following trace:
-[   19.566433] Call trace:
-[   19.568882]  spi_async+0x90/0x118
-[   19.572204]  spi_mux_transfer_one_message+0xd4/0x110
-[   19.577175]  __spi_pump_transfer_message+0x2bc/0x6e8
-[   19.582149]  __spi_pump_messages+0xe0/0x228
-[   19.586339]  spi_pump_messages+0x20/0x38
-[   19.590271]  kthread_worker_fn+0xe0/0x2e8
-[   19.594286]  kthread+0x10c/0x120
-[   19.597518]  ret_from_fork+0x10/0x20
+I still don't see why it could add so much boilerplate, all the tables and
+calculation fonction would be shared, only the debugfs clk_msr_show() and
+clk_msr_summary_show() would be kept, all the rest would be common.
 
-addr2line for spi_async+0x90/0x118 -> drivers/spi/spi.c:2136
-  2132 static void __spi_unoptimize_message(struct spi_message *msg)         
-  2133 {                                                                     
-  2134         struct spi_controller *ctlr = msg->spi->controller;
-  2135
-  2136         if (ctlr->unoptimize_message)
-  2137                ctlr->unoptimize_message(msg);
-  2138
-  2139         spi_res_release(ctlr, msg);                                   
-  2140
-  2141         msg->optimized = false;
-  2142         msg->opt_state = NULL;
-  2143 }
+I insist, please keep the debugfs interface for debug purposes. You don't
+want to mess with IIO when you bring up new platforms with bare minimum
+kernels.
 
-Regards,
-Oleksij
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+>> - we should keep a single compatible, so simply update the current bindings with iio cells
+> 
+> Using a new compatible allows to split the memory region, making the
+> interface between DT and driver a lot easier to implement seemlessly
+> between old and new SoCs. Eventually it may allow to implement the duty
+> part too.
+
+It's a problem for new platforms, you can introduce the split only for the
+new ones, the impact on code won't high enough to justify new bindings.
+
+Neil
+
+> 
+>> - for s4 & c3, it's ok to either add a second reg entry in the bindings
+> 
+> Doing that for s4 and c3 only would still make a mess of offset handling
+> the region because duty prepend the region on old SoC. The goal is to
+> have an interface that seemlessly support both old and new SoCs.
+> 
+>>
+>> Neil
+>>
+>>> Everything that was available through the old driver still is, with more
+>>> precision and more control.
+>>>
+>>>>
+>>>> There's almost the same interface on qcom SoCs (https://github.com/linux-msm/debugcc) but
+>>>> they chose to keep it in userspace until we find an appropriate way to expose
+>>>> this from the kernel the right way.
+>>>>
+>>>> If it enabled us to monitor a frequency input for a product use-case, IIO would be
+>>>> the appropriate interface, but AFAIK it's only internal clocks and thus I'm worried
+>>>> it's not the best way to expose those clocks.
+>>>>
+>>>> Neil
+>>>
+> 
+
 

@@ -1,76 +1,74 @@
-Return-Path: <linux-iio+bounces-7097-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7098-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21A6391DB23
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 11:10:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46AD691DE1B
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 13:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2577285DDA
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 09:10:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A7D21C226F8
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 11:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D90E684E15;
-	Mon,  1 Jul 2024 09:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3EA147C60;
+	Mon,  1 Jul 2024 11:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zWJt2t0w"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IzaC3ius"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3C5839FE
-	for <linux-iio@vger.kernel.org>; Mon,  1 Jul 2024 09:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A05E13F439;
+	Mon,  1 Jul 2024 11:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719825043; cv=none; b=vEsZvhHkv3cue6tXPCm0POHkyNs6Ls4PErleRYmHglLSmmmWqiPdrbI6MumJDMfBcQg0RrxqcbIHFHJNaKGqmTEKJEGQ6LswozHYuWllkHpTGAOIvXX2RjA0eZUA7PP+Mawkw9C095qkrTgjTF7QplJ0iN7xnt/2yyBI+sCSeRg=
+	t=1719833581; cv=none; b=W+GAu12gTk7qgheeWSFx2xsf7ujKerDdfou9FNG73Luv+v88SdN/sngKLj4zYWuouvfVu7/IkwZJ8Q0Swb7UdnzjizazXJQzmLcLky9RRQN06ySvWwMw9V7Wb4DLDlBCA40Ci9j7g2tgUHQ1vRqTdd+5msdtnrpTyHt3MXNT7ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719825043; c=relaxed/simple;
-	bh=MihLrulO9FQtyvs5PM4koGS4EJy3DSirwHr1Ngd6tAM=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=eHYUDbWDRVOkWToPlhUPXCmNB5s6XB8ljUpQIEK+Ii9VOzjN40zDk1hZT2gb4g1fRxUiYD9aHFqVQRw9rxWTGWgrRTbp7YRUFGm3swNN6RvZ1wWkwnGrkGLVs/UXgy+SCsuZFYzDC9BjzN4HjzryPt5vKQew3InV6mruKZ6nA18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zWJt2t0w; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52cdebf9f53so2753709e87.2
-        for <linux-iio@vger.kernel.org>; Mon, 01 Jul 2024 02:10:40 -0700 (PDT)
+	s=arc-20240116; t=1719833581; c=relaxed/simple;
+	bh=+Q1FOXO3hTsfJ/g99tUcpIIOX54l8r0ijKj8Lj15uFA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=CCCNlyJl2cT24CkTnvTF0DqW4TPsMvpGZHkyqaUUiG3asTy8pmZC8ULpf8RAP6oIsk9+R7nKBscGqZ2EM4Lu5pMB8SNeXge61qok3r++DZlJqZPzjURkavdvj+P2+mlrFWCIvDCGrt3Rpd3GKPUaaoZrtbcsSzFwrvKm3CtpQVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IzaC3ius; arc=none smtp.client-ip=209.85.167.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52e7145c63cso3376080e87.0;
+        Mon, 01 Jul 2024 04:32:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719825039; x=1720429839; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WmxwoN5WifjaiLHb4RF2OzomH1ffmSkrRHOoZR2aCx8=;
-        b=zWJt2t0weDnDDofh6PgypnbImIWrnv0r7qKGN3eSk/lxnT/SD3W982ABf9QS2jlkmW
-         fHN88i+Juke8j4c8GrPBraf3nR+FRzyuhdY3t4Hjg8W/O84Om1l21b2BZY089xrHtsFo
-         kt+PbA0/9nHOymKecQ914wyIwZmwJnmoWNuV24IVVl99pCFgJaufQTkL68r947lp6xBt
-         pJMeC8QKjt5VbkNzYWzICaBRZGrieg/lsG4doIXBGZVA1ClX5lKigLNSDLghD0dXECtR
-         iJcIVcSS0LFJLApU7+jtxMe01k3VTkr+60oZTk441Aa29d1lSKQa312RvWcTgLaDVx/I
-         5BGg==
+        d=gmail.com; s=20230601; t=1719833577; x=1720438377; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=P1q7o4QZFWbpnE6v0v0RClVEwphM17CeKnmBdm0hvAY=;
+        b=IzaC3iusGLj7+1oSQ9d2LyOFbhghtxmJw1wfO9JjYYnnUEWUox7B9IOEidOXTVU2k6
+         KyNQBx20HfEl4pcpaBqd2FkhFOwvRMpulrYGLa3Las7UHhKRDcLHnjBjvL9SH7lrWiA1
+         2H2z4OM0oIhynF7LaddCAm839qMep4/yhO7ytRoO91dI6Fxq7w5tu80B3NKOzWHwIqs7
+         PpTwg/O4aiBo9Z5NSlxsYVa/Xplzwz9IKvMwWKPvZhMwlRp1JjSbr8mG1KpIZlAsojDg
+         mOGNQ8JSI4neG9GQqoR9ILoT6drAGQnHjTTOMiwtil7R6RmH7aGHX1MX9K81xptWJx+t
+         n1ag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719825039; x=1720429839;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=WmxwoN5WifjaiLHb4RF2OzomH1ffmSkrRHOoZR2aCx8=;
-        b=IMEAMBN4gAQKcihiLuckWqFyqbSCiQ7wXm/7IIAMwVIetX1lNq5HYYyPP82u6a62Cu
-         5DkcnQlQqK7/nnhbQOlZO4uxsufo1UHgZhH6ja7/jbK5LkPgbzyTqxdJtUb+reHAaMev
-         BEt7rRIMRIBCXPCLtYo1H4MiJFeXVv49VXbHfSRgREJK2yNI4whjfzQgEw6AvEQFmmEo
-         4owsAevf2cOt/S/n+wj6a373zzghICPqtkrcMhczbTrVG55II8PSzpelIg7q3+Om+dte
-         7JTPaw3ZuMgKDoIbVAzeUXXvmI+ABhBKfi78Wv9MFpYOJpXGyly5+JqGJitg9JAtMiJy
-         eCoA==
-X-Forwarded-Encrypted: i=1; AJvYcCVlunF04Mn07onEZGE9+QFYzAC3C9kqIdg3/G4z/aFTBydAZbE3zg+5FtfwReJ/YLhnHIpn7kB5izv/OADb11vugMdJg0RDi9zQ
-X-Gm-Message-State: AOJu0YzMEAH6in+LEIvIF2cJa2Ny6rGf/6Tq86lV08hwaFiBCZNqj57N
-	5MUXMFJ3bgtcZPKWIvRqoMTIhhWLMdMJ3Wlk/PPU7JTMyuD3HZ9w2VYdsVL9bsI=
-X-Google-Smtp-Source: AGHT+IEU8xp3goGxhTEutzBiuLEdZgqoKoixVNFadzR5iUuvIJM+GQ80X/3pH/R60oEG9o4bMBlLAw==
-X-Received: by 2002:a05:6512:39ca:b0:52c:e312:2082 with SMTP id 2adb3069b0e04-52e826febbamr3646811e87.54.1719825038326;
-        Mon, 01 Jul 2024 02:10:38 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:4719:99ea:652b:10d0? ([2a01:e0a:982:cbb0:4719:99ea:652b:10d0])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3675a0cd687sm9494431f8f.14.2024.07.01.02.10.37
+        d=1e100.net; s=20230601; t=1719833577; x=1720438377;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=P1q7o4QZFWbpnE6v0v0RClVEwphM17CeKnmBdm0hvAY=;
+        b=hZde3iA5KG23ecrWKiq+HfIlwFdDAPOj6ybPfoTXyxRkXWg2touQPWjFbvnicBdsds
+         ablSvej6MZh5Hw05TQj7dDnf+5E/9K2DlPpyKEyKv50MJdsIa7D4s2stP8YcbvzzG+ub
+         qotS2qV0U7oPb1tBsFWZ/oW1BsQSTOKYk9RWoLIbTaiIUqYwcZSIEsBhf5839ZjkQt3h
+         auG71AEJbniwQbjzxEiyp8lWK2avJi2vGecuK958QqkmziYLeHZnAn1NKCBu+5hrvf0K
+         eqtPiHSTxm5P1vmHI4V9x5l8flZkyejaAETzbsKNBfiM79dbvkU3LZ7Vo6QyYIYJMBLz
+         bc3w==
+X-Forwarded-Encrypted: i=1; AJvYcCWjL9Qum0auQ3C0v6bnWsSq4+nAcGAvO8Iack1KZKqcBZdf59179PcU6YgWnKA8AK91KgfFkiqWudJun01E4u8pXpwKIdwr8Yd4e/noydJlBtFhF7c5ZZc6AloM1WeJshhN1orocg==
+X-Gm-Message-State: AOJu0Yw9fOTVk71cW7dquBdxaU2J14JDPUdQMP07PDOsWBjNsBsnhtwY
+	OHWdykT62dP1vyVwzy0CwQK7BUHGq18SVZ8LA8tbHjokY2AWiJOm
+X-Google-Smtp-Source: AGHT+IGEfuYeKgtv0UI0nNTTXGx7f22daVjv42uCNCKLYHqPiUoPEeZtHWACm5Uo0Daxlu85nUgVYQ==
+X-Received: by 2002:a19:9153:0:b0:52c:e1dd:fc22 with SMTP id 2adb3069b0e04-52e7b92f852mr2072164e87.32.1719833574342;
+        Mon, 01 Jul 2024 04:32:54 -0700 (PDT)
+Received: from [172.16.183.82] ([213.255.186.46])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52e7ab1025esm1361410e87.88.2024.07.01.04.32.53
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Jul 2024 02:10:37 -0700 (PDT)
-Message-ID: <bd1c0c99-e394-4ad2-bc86-a277018b3ec0@linaro.org>
-Date: Mon, 1 Jul 2024 11:10:36 +0200
+        Mon, 01 Jul 2024 04:32:53 -0700 (PDT)
+Message-ID: <98c87420-e88a-43ca-a8af-2fa751b85d4f@gmail.com>
+Date: Mon, 1 Jul 2024 14:32:52 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,191 +76,426 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH 0/2] iio: frequency: add iio support for Amlogic clock
- measure
-To: Jerome Brunet <jbrunet@baylibre.com>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Kevin Hilman <khilman@baylibre.com>,
- linux-kernel@vger.kernel.org, linux-amlogic@lists.infradead.org,
- linux-iio@vger.kernel.org, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, linux-arm-msm <linux-arm-msm@vger.kernel.org>
-References: <20240624173105.909554-1-jbrunet@baylibre.com>
- <52fab9b5-2b44-49c0-8b90-cb2a74eb6633@linaro.org>
- <1jzfr9gxh4.fsf@starbuckisacylon.baylibre.com>
- <c092ec67-e384-411d-8885-665597547523@linaro.org>
- <1jv81xgmfc.fsf@starbuckisacylon.baylibre.com>
- <5da26c0e-75a7-4d5a-9eca-f88ecf369996@linaro.org>
- <1jjzi5a3ka.fsf@starbuckisacylon.baylibre.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <1jjzi5a3ka.fsf@starbuckisacylon.baylibre.com>
+Subject: Re: [PATCH v6 2/2] iio: light: ROHM BH1745 colour sensor
+To: Mudit Sharma <muditsharma.info@gmail.com>, jic23@kernel.org,
+ lars@metafoo.de, krzk+dt@kernel.org, conor+dt@kernel.org, robh@kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, Ivan Orlov <ivan.orlov0322@gmail.com>,
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>
+References: <20240625220328.558809-1-muditsharma.info@gmail.com>
+ <20240625220328.558809-2-muditsharma.info@gmail.com>
+Content-Language: en-US, en-GB
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20240625220328.558809-2-muditsharma.info@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 01/07/2024 11:01, Jerome Brunet wrote:
-> On Mon 01 Jul 2024 at 09:41, Neil Armstrong <neil.armstrong@linaro.org> wrote:
+On 6/26/24 01:03, Mudit Sharma wrote:
+> Add support for BH1745, which is an I2C colour sensor with red, green,
+> blue and clear channels. It has a programmable active low interrupt
+> pin. Interrupt occurs when the signal from the selected interrupt
+> source channel crosses set interrupt threshold high or low level.
 > 
->> On 25/06/2024 15:51, Jerome Brunet wrote:
->>> On Tue 25 Jun 2024 at 15:18, Neil Armstrong <neil.armstrong@linaro.org> wrote:
->>>
->>>> On 25/06/2024 11:53, Jerome Brunet wrote:
->>>>> On Tue 25 Jun 2024 at 11:38, Neil Armstrong <neil.armstrong@linaro.org> wrote:
->>>>>
->>>>>> Hi,
->>>>>>
->>>>>> [+cc people from linux-msm]
->>>>>>
->>>>>> On 24/06/2024 19:31, Jerome Brunet wrote:
->>>>>>> Add support for the HW found in most Amlogic SoC dedicated to measure
->>>>>>> system clocks.
->>>>>>> This drivers aims to replace the one found in
->>>>>>> drivers/soc/amlogic/meson-clk-measure.c with following improvements:
->>>>>>> * Access to the measurements through the IIO API:
->>>>>>>       Easier re-use of the results in userspace and other drivers
->>>>>>> * Controllable scale with raw measurements
->>>>>>> * Higher precision with processed measurements
->>>>>>> Jerome Brunet (2):
->>>>>>>       dt-bindings: iio: frequency: add clock measure support
->>>>>>>       iio: frequency: add amlogic clock measure support
->>>>>>>      .../iio/frequency/amlogic,clk-msr-io.yaml     |  50 ++
->>>>>>>      drivers/iio/frequency/Kconfig                 |  15 +
->>>>>>>      drivers/iio/frequency/Makefile                |   1 +
->>>>>>>      drivers/iio/frequency/amlogic-clk-msr-io.c    | 802 ++++++++++++++++++
->>>>>>>      4 files changed, 868 insertions(+)
->>>>>>>      create mode 100644 Documentation/devicetree/bindings/iio/frequency/amlogic,clk-msr-io.yaml
->>>>>>>      create mode 100644 drivers/iio/frequency/amlogic-clk-msr-io.c
->>>>>>>
->>>>>>
->>>>>> While I really appreciate the effort, and the code looks cool, the clkmsr is really
->>>>>> a debug tool, and I'm not sure IIO is the right place for such debug tool ?
->>>>> The reason why I went through the trouble of doing an IIO port is
->>>>> because I need that for other purposes than debug. I need to to be able
->>>>> to check a frequency from another driver. I don't see a reason to invent
->>>>> another API when IIO provide a perfectly good one.
->>>>> The HW does measurements. IIO seems like the best place for it.
->>>>> For the record, I need this for a eARC support.
->>>>> eARC has a PLL that locks on incoming stream. eARC registers show wether
->>>>> the PLL is locked or not, but not at which rate. That information is
->>>>> needed in ASoC. Fortunately the eARC PLL is one of measured clock, which
->>>>> is a life saver in that case.
->>>>
->>>> This is a very interesting use-case, and quite weird nothing is provided
->>>> on the eARC side.
->>> Indeed.
->>>
->>>>
->>>> So yes it's definitely a valid use-case, but:
->>>> - we should keep the debugfs interface, perhaps move it in the iio driver ?
->>> I considered this initially but it would add a lot of boiler plate
->>> code to provide over debugfs exactly what iio already provides over
->>> sysfs. As you pointed out, the previous driver only provided debug
->>> information, the debugfs interface it provided is hardly a
->>> critical/stable one.
->>
->> I still don't see why it could add so much boilerplate, all the tables and
->> calculation fonction would be shared, only the debugfs clk_msr_show() and
->> clk_msr_summary_show() would be kept, all the rest would be common.
->>
->> I insist, please keep the debugfs interface for debug purposes. You don't
->> want to mess with IIO when you bring up new platforms with bare minimum
->> kernels.
+> Interrupt source for the device can be configured by enabling the
+> corresponding event. Interrupt latch is always enabled when setting
+> up interrupt.
 > 
-> I don't think that is going to change anything. It's not like IIO brings
-> any complexity or will be compiled out.
+> Add myself as the maintainer for this driver in MAINTAINERS.
 > 
-> But since you insist, I'll add it in the next version as a separate patch.
+> Signed-off-by: Mudit Sharma <muditsharma.info@gmail.com>
+> Reviewed-by: Ivan Orlov <ivan.orlov0322@gmail.com>
+> Reviewed-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+> ---
+> v5->v6:
+> - Fix typo
+> - Fix Indentation
+> - Drop read in bh1745_set_trigger_state() as configuring all the value
+> v4->v5:
+> - Provide scale instead of HW gain
+>    - Use GTS helpers
+> - Code style fixes
+> - Add check for part ID during probe
+> - Always enable latch when enabling interrupt
+> - Use devm_add_action_or_reset() and drop bh1745_remove() function
+> - Drop custom DEVICE_ATTR and provide related read_avail and setup
+>    interrupt source with event_config
+> - Make buffer support independent of IRQ
+> - Add power regulator handing with devm_regulator_get_enable()
+> - Drop read and write wrappers and use regmap functions directly
+> - Add MODULE_DEVICE_TABLE for of_device_id
+> v3->v4:
+> - Fix formatting:
+>    - Remove redundant new line
+>    - Use '0x' rather than '0X'
+> v2->v3:
+> - Squash commit for addition to MAINTAINERS
+> - Fix code style for consistency:
+>    - New line before last 'return'
+>    - Use variable name 'value' instead of 'val' in
+>      'bh1745_set_trigger_state()'
+>    - Align function parameters to match parenthesis
+>    - Avoid use of magic number
+> - Use named enum instead of anonymous enum
+> - Use 'guard(mutex)(&data->lock)' instead of 'mutex_lock()'
+>    'mutex_unlock()'
+> - Only initialize 'ret' and 'value' when necessary
+> - Fix and optimize logic for `in_interrupt_latch_store()`
+> - Fix error handling in irq , trigger handlers and dev attribute for
+>    latch
+> v1->v2:
+> - No changes
 > 
->>
->>>
->>>> - we should keep a single compatible, so simply update the current bindings with iio cells
->>> Using a new compatible allows to split the memory region, making the
->>> interface between DT and driver a lot easier to implement seemlessly
->>> between old and new SoCs. Eventually it may allow to implement the duty
->>> part too.
->>
->> It's a problem for new platforms, you can introduce the split only for the
->> new ones, the impact on code won't high enough to justify new bindings.
->>
+>   MAINTAINERS                |   6 +
+>   drivers/iio/light/Kconfig  |  13 +
+>   drivers/iio/light/Makefile |   1 +
+>   drivers/iio/light/bh1745.c | 931 +++++++++++++++++++++++++++++++++++++
+>   4 files changed, 951 insertions(+)
+>   create mode 100644 drivers/iio/light/bh1745.c
 > 
-> What you are requesting will introduce two drivers providing the same
-> compatible, unless you plan on removing the old one in a coordinated
-> way.
-> 
-> That's an unncessary churn. The old driver could stay there for a
-> while and platform slowly migrate. What you are requesting forcefully
-> migrates every consumer, assuming the old driver is compiled out.
-> 
-> This is an opportunity to more correctly describe the interface.
-> It does not break any DT rules, that is enough of a justification IMO.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 2ca8f35dfe03..e9ff6f465e7f 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -19404,6 +19404,12 @@ S:	Supported
+>   F:	drivers/power/supply/bd99954-charger.c
+>   F:	drivers/power/supply/bd99954-charger.h
+>   
+> +ROHM BH1745 COLOUR SENSOR
+> +M:	Mudit Sharma <muditsharma.info@gmail.com>
+> +L:	linux-iio@vger.kernel.org
+> +S:	Maintained
+> +F:	drivers/iio/light/bh1745.c
+> +
+>   ROHM BH1750 AMBIENT LIGHT SENSOR DRIVER
+>   M:	Tomasz Duszynski <tduszyns@gmail.com>
+>   S:	Maintained
+> diff --git a/drivers/iio/light/Kconfig b/drivers/iio/light/Kconfig
+> index 9a587d403118..6cde702fa78d 100644
+> --- a/drivers/iio/light/Kconfig
+> +++ b/drivers/iio/light/Kconfig
+> @@ -114,6 +114,19 @@ config AS73211
+>   	 This driver can also be built as a module.  If so, the module
+>   	 will be called as73211.
+>   
+> +config BH1745
+> +	tristate "ROHM BH1745 colour sensor"
+> +	depends on I2C
+> +	select REGMAP_I2C
+> +	select IIO_BUFFER
+> +	select IIO_TRIGGERED_BUFFER
+> +	select IIO_GTS_HELPER
+> +	help
+> +	  Say Y here to build support for the ROHM bh1745 colour sensor.
+> +
+> +	  To compile this driver as a module, choose M here: the module will
+> +	  be called bh1745.
+> +
+>   config BH1750
+>   	tristate "ROHM BH1750 ambient light sensor"
+>   	depends on I2C
+> diff --git a/drivers/iio/light/Makefile b/drivers/iio/light/Makefile
+> index a30f906e91ba..939a701a06ac 100644
+> --- a/drivers/iio/light/Makefile
+> +++ b/drivers/iio/light/Makefile
+> @@ -13,6 +13,7 @@ obj-$(CONFIG_APDS9300)		+= apds9300.o
+>   obj-$(CONFIG_APDS9306)		+= apds9306.o
+>   obj-$(CONFIG_APDS9960)		+= apds9960.o
+>   obj-$(CONFIG_AS73211)		+= as73211.o
+> +obj-$(CONFIG_BH1745)		+= bh1745.o
+>   obj-$(CONFIG_BH1750)		+= bh1750.o
+>   obj-$(CONFIG_BH1780)		+= bh1780.o
+>   obj-$(CONFIG_CM32181)		+= cm32181.o
+> diff --git a/drivers/iio/light/bh1745.c b/drivers/iio/light/bh1745.c
+> new file mode 100644
+> index 000000000000..8412d5da3019
+> --- /dev/null
+> +++ b/drivers/iio/light/bh1745.c
+> @@ -0,0 +1,931 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * ROHM BH1745 digital colour sensor driver
+> + *
+> + * Copyright (C) Mudit Sharma <muditsharma.info@gmail.com>
+> + *
+> + * 7-bit I2C slave addresses:
+> + *  0x38 (ADDR pin low)
+> + *  0x39 (ADDR pin high)
+> + */
+> +
+> +#include <linux/i2c.h>
+> +#include <linux/mutex.h>
+> +#include <linux/util_macros.h>
+> +#include <linux/iio/events.h>
+> +#include <linux/regmap.h>
+> +#include <linux/bits.h>
+> +#include <linux/bitfield.h>
+> +
+> +#include <linux/iio/iio.h>
+> +#include <linux/iio/sysfs.h>
+> +#include <linux/iio/trigger.h>
+> +#include <linux/iio/trigger_consumer.h>
+> +#include <linux/iio/triggered_buffer.h>
+> +#include <linux/iio/iio-gts-helper.h>
+> +
+> +/* BH1745 config regs */
+> +#define BH1745_SYS_CTRL 0x40
+> +
+> +#define BH1745_MODE_CTRL_1 0x41
+> +#define BH1745_MODE_CTRL_2 0x42
+> +#define BH1745_MODE_CTRL_3 0x44
+> +
+> +#define BH1745_INTR 0x60
+> +#define BH1745_INTR_STATUS BIT(7)
+> +
+> +#define BH1745_PERSISTENCE 0x61
+> +
+> +#define BH1745_TH_LSB 0x62
+> +#define BH1745_TH_MSB 0x63
+> +
+> +#define BH1745_TL_LSB 0x64
+> +#define BH1745_TL_MSB 0x65
+> +
+> +#define BH1745_MANU_ID 0x92
+> +
+> +/* BH1745 output regs */
+> +#define BH1745_RED_LSB 0x50
+> +#define BH1745_RED_MSB 0x51
+> +#define BH1745_GREEN_LSB 0x52
+> +#define BH1745_GREEN_MSB 0x53
+> +#define BH1745_BLUE_LSB 0x54
+> +#define BH1745_BLUE_MSB 0x55
+> +#define BH1745_CLEAR_LSB 0x56
+> +#define BH1745_CLEAR_MSB 0x57
+> +
+> +#define BH1745_SW_RESET BIT(7)
+> +#define BH1745_INT_RESET BIT(6)
+> +
+> +#define BH1745_MEASUREMENT_TIME_MASK GENMASK(2, 0)
+> +
+> +#define BH1745_RGBC_EN BIT(4)
+> +
+> +#define BH1745_ADC_GAIN_MASK GENMASK(1, 0)
+> +
+> +#define BH1745_INT_ENABLE BIT(0)
+> +#define BH1745_INT_SIGNAL_ACTIVE BIT(7)
+> +
+> +#define BH1745_INT_SIGNAL_LATCHED BIT(4)
+> +
+> +#define BH1745_INT_SOURCE_MASK GENMASK(3, 2)
+> +
+> +#define BH1745_PART_ID 0x0B
+> +#define BH1745_PART_ID_MASK GENMASK(5, 0)
+> +
+> +// From 16x max HW gain and 32x max integration time
+> +#define BH1745_MAX_GAIN 512
+> +
+> +static const int bh1745_int_time[][2] = {
+> +	{ 0, 160000 }, /* 160 ms */
+> +	{ 0, 320000 }, /* 320 ms */
+> +	{ 0, 640000 }, /* 640 ms */
+> +	{ 1, 280000 }, /* 1280 ms */
+> +	{ 2, 560000 }, /* 2560 ms */
+> +	{ 5, 120000 }, /* 5120 ms */
+> +};
+> +
+> +static const u8 bh1745_gain_factor[] = { 1, 2, 16 };
+> +
+> +static const int bh1745_int_time_us[] = { 160000,  320000,  640000,
+> +					  1280000, 2560000, 5120000 };
 
-DT describes the Hardware, I don't see how the new bindings describes better
-the current hardware... tying the new bindings to a new driver is actually
-against the DT rules, the bindings thing is actually to avoid that.
-For PWM, bindings architecture was clearly wrong, but here, not really.
+I am not sure why you need these tables above? Can't the iio_gts do all 
+the conversions from register-value to int time/gain and int-time/gain 
+to register value, as well as the checks for supported values? Ideally, 
+you would not need anything else but the bh1745_itimes and the 
+bh1745_gain tables below - they should contain all the same information.
 
-I still don't see the problem of migrating current users to the new driver
-using the current compatible, really, please explain what would be the problem ?
+> +
+> +enum bh1745_int_source {
+> +	BH1745_INT_SOURCE_RED,
+> +	BH1745_INT_SOURCE_GREEN,
+> +	BH1745_INT_SOURCE_BLUE,
+> +	BH1745_INT_SOURCE_CLEAR,
+> +};
+> +
+> +enum bh1745_gain {
+> +	BH1745_ADC_GAIN_1X,
+> +	BH1745_ADC_GAIN_2X,
+> +	BH1745_ADC_GAIN_16X,
+> +};
+> +
+> +enum bh1745_measurement_time {
+> +	BH1745_MEASUREMENT_TIME_160MS,
+> +	BH1745_MEASUREMENT_TIME_320MS,
+> +	BH1745_MEASUREMENT_TIME_640MS,
+> +	BH1745_MEASUREMENT_TIME_1280MS,
+> +	BH1745_MEASUREMENT_TIME_2560MS,
+> +	BH1745_MEASUREMENT_TIME_5120MS,
+> +};
+> +
+> +enum bh1745_presistence_value {
+> +	BH1745_PRESISTENCE_UPDATE_TOGGLE,
+> +	BH1745_PRESISTENCE_UPDATE_EACH_MEASUREMENT,
+> +	BH1745_PRESISTENCE_UPDATE_FOUR_MEASUREMENT,
+> +	BH1745_PRESISTENCE_UPDATE_EIGHT_MEASUREMENT,
+> +};
+> +
+> +static const struct iio_gain_sel_pair bh1745_gain[] = {
+> +	GAIN_SCALE_GAIN(1, BH1745_ADC_GAIN_1X),
+> +	GAIN_SCALE_GAIN(2, BH1745_ADC_GAIN_2X),
+> +	GAIN_SCALE_GAIN(16, BH1745_ADC_GAIN_16X),
+> +};
+> +
+> +static const struct iio_itime_sel_mul bh1745_itimes[] = {
+> +	GAIN_SCALE_ITIME_US(5120000, BH1745_MEASUREMENT_TIME_5120MS, 32),
+> +	GAIN_SCALE_ITIME_US(2560000, BH1745_MEASUREMENT_TIME_2560MS, 16),
+> +	GAIN_SCALE_ITIME_US(1280000, BH1745_MEASUREMENT_TIME_1280MS, 8),
+> +	GAIN_SCALE_ITIME_US(640000, BH1745_MEASUREMENT_TIME_640MS, 4),
+> +	GAIN_SCALE_ITIME_US(320000, BH1745_MEASUREMENT_TIME_320MS, 2),
+> +	GAIN_SCALE_ITIME_US(160000, BH1745_MEASUREMENT_TIME_160MS, 1),
+> +};
+> +
+> +struct bh1745_data {
+> +	/*
+> +	 * Lock to prevent device setting update or read before related
+> +	 * calculations or event push are completed
+> +	 */
+> +	struct mutex lock;
+> +	struct regmap *regmap;
+> +	struct i2c_client *client;
+> +	struct iio_trigger *trig;
+> +	struct iio_gts gts;
+> +	u8 int_src;
+> +};
+> +
+> +static const struct regmap_range bh1745_volatile_ranges[] = {
+> +	regmap_reg_range(BH1745_MODE_CTRL_2, BH1745_MODE_CTRL_2), /* VALID */
+> +	regmap_reg_range(BH1745_RED_LSB, BH1745_CLEAR_MSB), /* Data */
+> +	regmap_reg_range(BH1745_INTR, BH1745_INTR), /* Interrupt */
+> +};
+> +
+> +static const struct regmap_access_table bh1745_volatile_regs = {
+> +	.yes_ranges = bh1745_volatile_ranges,
+> +	.n_yes_ranges = ARRAY_SIZE(bh1745_volatile_ranges),
+> +};
+> +
+> +static const struct regmap_range bh1745_read_ranges[] = {
+> +	regmap_reg_range(BH1745_SYS_CTRL, BH1745_MODE_CTRL_2),
+> +	regmap_reg_range(BH1745_RED_LSB, BH1745_CLEAR_MSB),
+> +	regmap_reg_range(BH1745_INTR, BH1745_INTR),
+> +	regmap_reg_range(BH1745_PERSISTENCE, BH1745_TL_MSB),
+> +	regmap_reg_range(BH1745_MANU_ID, BH1745_MANU_ID),
+> +};
+> +
+> +static const struct regmap_access_table bh1745_ro_regs = {
+> +	.yes_ranges = bh1745_read_ranges,
+> +	.n_yes_ranges = ARRAY_SIZE(bh1745_read_ranges),
+> +};
+> +
+> +static const struct regmap_range bh1745_writable_ranges[] = {
+> +	regmap_reg_range(BH1745_SYS_CTRL, BH1745_MODE_CTRL_2),
+> +	regmap_reg_range(BH1745_INTR, BH1745_INTR),
+> +	regmap_reg_range(BH1745_PERSISTENCE, BH1745_TL_MSB),
+> +};
+> +
+> +static const struct regmap_access_table bh1745_wr_regs = {
+> +	.yes_ranges = bh1745_writable_ranges,
+> +	.n_yes_ranges = ARRAY_SIZE(bh1745_writable_ranges),
+> +};
+> +
+> +static const struct regmap_config bh1745_regmap = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.max_register = BH1745_MANU_ID,
+> +	.cache_type = REGCACHE_RBTREE,
+> +	.volatile_table = &bh1745_volatile_regs,
+> +	.wr_table = &bh1745_wr_regs,
+> +	.rd_table = &bh1745_ro_regs,
 
-In any case you'll only need to add the #io-channel-cells to boards that would
-require frequency monitoring for eARC, for all the other boards you'll won't need it.
-So this property can safely be added as optional to the current bindings.
+I am not 100% sure what this does. (Let's say it is just my ignorance 
+:)). Does the 'ro' in 'bh1745_ro_regs' stand for read-only?
 
-Neil
+If so, shouldn't the read-inly registers be marked as "not writable", 
+which would be adding them in .wr_table in 'no_ranges'? Also, what is 
+the idea of the 'wr_regs'?
 
-> 
->> Neil
->>
->>>
->>>> - for s4 & c3, it's ok to either add a second reg entry in the bindings
->>> Doing that for s4 and c3 only would still make a mess of offset handling
->>> the region because duty prepend the region on old SoC. The goal is to
->>> have an interface that seemlessly support both old and new SoCs.
->>>
->>>>
->>>> Neil
->>>>
->>>>> Everything that was available through the old driver still is, with more
->>>>> precision and more control.
->>>>>
->>>>>>
->>>>>> There's almost the same interface on qcom SoCs (https://github.com/linux-msm/debugcc) but
->>>>>> they chose to keep it in userspace until we find an appropriate way to expose
->>>>>> this from the kernel the right way.
->>>>>>
->>>>>> If it enabled us to monitor a frequency input for a product use-case, IIO would be
->>>>>> the appropriate interface, but AFAIK it's only internal clocks and thus I'm worried
->>>>>> it's not the best way to expose those clocks.
->>>>>>
->>>>>> Neil
->>>>>
->>>
-> 
+> +};
+> +
+> +static const struct iio_event_spec bh1745_event_spec[] = {
+> +	{
+> +		.type = IIO_EV_TYPE_THRESH,
+> +		.dir = IIO_EV_DIR_RISING,
+> +		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE),
+> +	},
+> +	{
+> +		.type = IIO_EV_TYPE_THRESH,
+> +		.dir = IIO_EV_DIR_FALLING,
+> +		.mask_shared_by_type = BIT(IIO_EV_INFO_VALUE),
+> +	},
+> +	{
+> +		.type = IIO_EV_TYPE_THRESH,
+> +		.dir = IIO_EV_DIR_EITHER,
+> +		.mask_shared_by_type = BIT(IIO_EV_INFO_PERIOD),
+> +		.mask_separate = BIT(IIO_EV_INFO_ENABLE),
+> +	},
+> +};
+> +
+> +#define BH1745_CHANNEL(_colour, _si, _addr)                             \
+> +	{                                                               \
+> +		.type = IIO_INTENSITY, .modified = 1,                   \
+> +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW),           \
+> +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SCALE) |   \
+> +					   BIT(IIO_CHAN_INFO_INT_TIME), \
+> +		.info_mask_shared_by_all_available =                    \
+> +			BIT(IIO_CHAN_INFO_SCALE) |                      \
+> +			BIT(IIO_CHAN_INFO_INT_TIME),                    \
+> +		.event_spec = bh1745_event_spec,                        \
+> +		.num_event_specs = ARRAY_SIZE(bh1745_event_spec),       \
+> +		.channel2 = IIO_MOD_LIGHT_##_colour, .address = _addr,  \
+> +		.scan_index = _si,                                      \
+> +		.scan_type = {                                          \
+> +			.sign = 'u',                                    \
+> +			.realbits = 16,                                 \
+> +			.storagebits = 16,                              \
+> +			.endianness = IIO_CPU,                          \
+> +		},                                                      \
+> +	}
+> +
+> +static const struct iio_chan_spec bh1745_channels[] = {
+> +	BH1745_CHANNEL(RED, 0, BH1745_RED_LSB),
+> +	BH1745_CHANNEL(GREEN, 1, BH1745_GREEN_LSB),
+> +	BH1745_CHANNEL(BLUE, 2, BH1745_BLUE_LSB),
+> +	BH1745_CHANNEL(CLEAR, 3, BH1745_CLEAR_LSB),
+> +	IIO_CHAN_SOFT_TIMESTAMP(4),
+> +};
+> +
+> +static int bh1745_reset(struct bh1745_data *data)
+> +{
+> +	int ret;
+> +	int value;
+> +
+> +	ret = regmap_read(data->regmap, BH1745_SYS_CTRL, &value);
+> +	if (ret)
+> +		return ret;
+> +
+> +	value |= (BH1745_SW_RESET | BH1745_INT_RESET);
+> +
+> +	return regmap_write(data->regmap, BH1745_SYS_CTRL, value);
+
+Would it work if you used regmap_write_bits() instead?
+
+... Sorry, my reviewing time is out :/ I may continue later but no need 
+to wait for my comments if I am not responding. I've too much stuff 
+piling on :(
+
+
+Yours,
+	-- Matti
+
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
+
+~~ When things go utterly wrong vim users can always type :help! ~~
 
 

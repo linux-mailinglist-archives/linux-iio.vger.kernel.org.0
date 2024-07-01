@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-7109-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7110-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62DA91E8AF
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 21:34:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF88191EA68
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 23:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 908D2B21CB7
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 19:34:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32910B212F4
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 21:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EAE916F848;
-	Mon,  1 Jul 2024 19:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F9316F0DB;
+	Mon,  1 Jul 2024 21:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UPVSdg3K"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VJ1EAWN/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759F1282ED;
-	Mon,  1 Jul 2024 19:34:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40C6383A2;
+	Mon,  1 Jul 2024 21:32:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719862470; cv=none; b=osWxp+gWFjuzNLkKduVLCO34oT4hPb17zMINEP2zj7rTXPGQfFpMJbZiLV9tUO7A660bVG656hGGppCLsmIfaUUFjePwBubUsB9KtRxeUeDVKsrmSTVMnuf0d4e1etj1PGzX8gqxz+wKGfiu9UGCFYI+onmEsX9cp4rzmrsSR5E=
+	t=1719869580; cv=none; b=RI5z7bvWSAV0RFUb1Ifki71aOvkJxhnjcU3AqV0gSV7yOQuj5OslTysZzZQuZSvoFQfOXPV/6v8tarYswLeAoNTIEU4J9nsHJHuEMLcs6ohQ4W6eoiliJBuWXBxKJsxpbRM5MU4eNSkd8ZA7amG2LKoMq5EgQl7QJFVNTZS7qck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719862470; c=relaxed/simple;
-	bh=3Ky8mgu2j3WUOyh1bAAt87sh0bmuke9AaeQ1b1ZO8+k=;
+	s=arc-20240116; t=1719869580; c=relaxed/simple;
+	bh=30ll7tqXtKC8oZ4rgbOLXRJeaa/WCz+0NNsWVRq5X0U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fAYDO7sZKYtejrN8NMNE5lRwXbcnxb+IeNpJyFhlJ15ubtbGoG02h9jM8gTtuuCvYVbgbOz74UWnDSsDyEwpIoUL6f4nqqwsjP4Qfi1bSb4sHULCJPh5m5srBEbj8hVJ6Q1Y3m3nfy7u0kw1UG/3TMFL5FOonngWFLEy89UMajA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UPVSdg3K; arc=none smtp.client-ip=209.85.128.53
+	 In-Reply-To:Content-Type; b=Wv3HBo1k5dsLpXcZpC+kM70DID+gskEXUuI9YePM61Lw+M8/rZYa0/a1XeKJKMtf0dcAFvC91ksAmUM0VwFYP6JEQdZ0h90O5mp5VOcOiogut/iNWhMwQQJw+H9gFyq5J4dDmjfsgWe2NDAabx4uEZLvif/bL90Y9el8nMAry8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VJ1EAWN/; arc=none smtp.client-ip=209.85.128.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-42565cdf99cso30337385e9.3;
-        Mon, 01 Jul 2024 12:34:28 -0700 (PDT)
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4256f102e89so23631135e9.0;
+        Mon, 01 Jul 2024 14:32:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719862467; x=1720467267; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719869577; x=1720474377; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=SPYaq5FewjWom3DFGFtD3B7b78iOp1/6FVum1jHZ6nA=;
-        b=UPVSdg3KW8x7tAak0EwkSYRQhsps+axC025id23thqqiCw2O+mxldNEYCwQI27kO1B
-         uZhIhhuUMH/nMjRaWOf1Yitdj291zlJ24WjiodaAfukDf7VRqh8cHWfbgdBWztsFNpDw
-         8lvkGlO2eiJM0f2k2ugB1NvZ0jW4EgYBlw+aLavfXWDxBE6VqBby0ny0id9VnI/Y+0X3
-         1lgWBSGHdvKNS3qOnR9RLtjD7trrIGFE1+mK3Xq70OqfrvXODw5qya0NISf47rwdiJMH
-         r23DyBwG69bjd+byugLhFowa4MVHiXjS90swcyrBQVe8Wy2akjS0DcLo3nXTPT7QuACj
-         inMQ==
+        bh=WaE7T2xExijUWC/YXmEs75U7t9rARciDYbj+FKSksYs=;
+        b=VJ1EAWN/ARhJfnJZKvXuJQ+V279EzHnzsZZpMfQKL4qxAbRNhszknc1XL1LhwjxauU
+         WpqcTbJgivWyOo06D4bjc/SLgLaYYCqpVNHLeA++9xJ2kpOTsGGZycCgVtQe9H9TvFT9
+         9zZECm7o/7V1sSHAYU7hXjSxHoDmBcfQxET6/vKGybTDLUvJMHqzWgof15GsTZVtBpVd
+         ErZtf5ZHAiIIpQl4mTiv4+U/NTG0/rK1vPYr1ZLUPgJa7l48D+uhJ6+Hy8c1amZ4bIG7
+         9XCDGUynuBgW/1aZBg38TpoJvx+/PUFIZCT/Q4zAvtmcmj7G4TvPO4De2oBk5lE3Rugf
+         1aJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719862467; x=1720467267;
+        d=1e100.net; s=20230601; t=1719869577; x=1720474377;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SPYaq5FewjWom3DFGFtD3B7b78iOp1/6FVum1jHZ6nA=;
-        b=Bd1AzD7IQE9FqfllJcc/+AHdtUAVSjXZj2voFGtsxfGzU6ZfA7aFmLh1ZRsBeSMba8
-         DetyT9xhOAyepCMdCSygaLB6gT0QOV1xNnM20gsujZCsO14d6CKpENo/rSxBPLJPWUFL
-         qJw43LyOGh0u+Odp9INLK3nw/2n9cnMhgcjXNfyASpQHjGngH6zy7g0hkFAdYmQOgZRm
-         Vh0CjZhTMQrghh0+Xph49P7KGtLn/s2MhIpecpxOGB0OYChllZYQE69XMr9p4hGsNUA9
-         ae4RbMdXjuPe2S/uQx1ESzRG4THZQeAW13aIj2BW5VKkUQ5gmFsAXKZVkiw4IUlwVmms
-         D0nw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGfbxGqKSRADEu0Ve+mcORpC4lprfVizR5mlkI6B3saVJ5UfB6G9jLa97ef6iXxfO5NAE0Xqqp//6R5JIg9hKu+3VQ6JOwGhkNM1stn7W+4KeBeFwKqIhZ0jdYiYGhJSP07p0/WKpytn7OeTtWKR2eyhaIQs/umfIsNFyIRBrFb+uOSA==
-X-Gm-Message-State: AOJu0YzdgGozfB2Ybo0Q0i8/RMno0t/AcCcCXI2/engyYZwxhlQzRp8G
-	0qOiUIT2vGGklbwieTZsvwE8Wgvwu0YlG2eP3Dwft45dQQidm87V
-X-Google-Smtp-Source: AGHT+IE/x49jwq+1EKk7g8eziIbuhKqSy2R+oVNFp48VWsPHMIhUzf1vy/rgzhopW15bBAcDuUYiDg==
-X-Received: by 2002:a05:600c:33a8:b0:425:6976:f5d6 with SMTP id 5b1f17b1804b1-4257a026ed4mr53409025e9.33.1719862466233;
-        Mon, 01 Jul 2024 12:34:26 -0700 (PDT)
+        bh=WaE7T2xExijUWC/YXmEs75U7t9rARciDYbj+FKSksYs=;
+        b=EiUG4AcnbOd1KPNnuNVVDyBMGgzbUQbP8wKVO5XDkiD3QHf5E/Vi+ybtE3Fd2hO3gB
+         l/wZYkbqgyD8L6FHuZXcTL6nAG73dOO9tzqQLIiaTeLZLOF/DZXKnANunXna9CUvWR/J
+         xdKzZSUeVGDvBxQzNLlDbG+dLcM5A9576xT6wVzXZ5fejjOXT4bI9zdH9Ut4pm1MSHDW
+         z2yJ7ZGYzk6uN5ElihQHZclt2PkHPKWeu+m8h2n/eQsvp2knUyRY8lFMOHzo2fZglY43
+         CPcn+Vp7pQ5LSiKV4j/pyU3v4uY4512fR+EWvud+v7djifXb9hszrW5kSvU/ogSF7Fj2
+         yNtw==
+X-Forwarded-Encrypted: i=1; AJvYcCWr0zQT894HMFSbWn4E5PtDJd3mC3f/IKmuJYxatGMfXvy43VCsYRC55+q3l5J6d4ZqVmy8woU3FNER/+bgpOZDrxpNfaZjStiJKKVLN7vSCx9JTgFX+3w0K+n5rGr/dN3BIGPjYg==
+X-Gm-Message-State: AOJu0Yw+toWV+4I7LZDku6Q076s+3sGpyPccnnBNPBYaAUbzV1DXVgm4
+	OyXnl+jJmWjmz7S4tYho2uV/kd/2gE4+IoEp37C2pICKokKPnZSA
+X-Google-Smtp-Source: AGHT+IEpsLzXFPEzmy4zrWIrvVUEqXohjQGdn+FCw8LyBsBeen4Oob7AQE+wX/+QDbambzv94QxKiw==
+X-Received: by 2002:a5d:55ce:0:b0:360:9223:b07 with SMTP id ffacd0b85a97d-367757299a0mr3602904f8f.66.1719869576706;
+        Mon, 01 Jul 2024 14:32:56 -0700 (PDT)
 Received: from ?IPV6:2a10:d582:37c5:0:a6cf:581a:1e41:3fd0? ([2a10:d582:37c5:0:a6cf:581a:1e41:3fd0])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256b061095sm157925425e9.23.2024.07.01.12.34.25
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4257d9c7f18sm82678655e9.40.2024.07.01.14.32.55
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 01 Jul 2024 12:34:25 -0700 (PDT)
-Message-ID: <f9211cc1-7392-4b5e-83fe-e971b274f348@gmail.com>
-Date: Mon, 1 Jul 2024 20:34:24 +0100
+        Mon, 01 Jul 2024 14:32:56 -0700 (PDT)
+Message-ID: <3ececd1c-8331-4007-8e75-a000425ccd3c@gmail.com>
+Date: Mon, 1 Jul 2024 22:32:55 +0100
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -77,101 +77,192 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v6 2/2] iio: light: ROHM BH1745 colour sensor
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: lars@metafoo.de, krzk+dt@kernel.org, conor+dt@kernel.org,
- robh@kernel.org, linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
+To: Matti Vaittinen <mazziesaccount@gmail.com>, jic23@kernel.org,
+ lars@metafoo.de, krzk+dt@kernel.org, conor+dt@kernel.org, robh@kernel.org
+Cc: linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
  devicetree@vger.kernel.org, Ivan Orlov <ivan.orlov0322@gmail.com>,
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 References: <20240625220328.558809-1-muditsharma.info@gmail.com>
  <20240625220328.558809-2-muditsharma.info@gmail.com>
- <20240628203701.507c477c@jic23-huawei>
- <66122c40-9c69-471c-8f59-cfb1c9b0b6ec@gmail.com>
- <20240629185046.290c7d81@jic23-huawei>
+ <98c87420-e88a-43ca-a8af-2fa751b85d4f@gmail.com>
 Content-Language: en-US
 From: Mudit Sharma <muditsharma.info@gmail.com>
-In-Reply-To: <20240629185046.290c7d81@jic23-huawei>
+In-Reply-To: <98c87420-e88a-43ca-a8af-2fa751b85d4f@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 29/06/2024 18:50, Jonathan Cameron wrote:
-> On Sat, 29 Jun 2024 10:10:19 +0100
-> Mudit Sharma <muditsharma.info@gmail.com> wrote:
+On 01/07/2024 12:32, Matti Vaittinen wrote:
+>> +
+>> +// From 16x max HW gain and 32x max integration time
+>> +#define BH1745_MAX_GAIN 512
+>> +
+>> +static const int bh1745_int_time[][2] = {
+>> +    { 0, 160000 }, /* 160 ms */
+>> +    { 0, 320000 }, /* 320 ms */
+>> +    { 0, 640000 }, /* 640 ms */
+>> +    { 1, 280000 }, /* 1280 ms */
+>> +    { 2, 560000 }, /* 2560 ms */
+>> +    { 5, 120000 }, /* 5120 ms */
+>> +};
+>> +
+>> +static const u8 bh1745_gain_factor[] = { 1, 2, 16 };
+>> +
+>> +static const int bh1745_int_time_us[] = { 160000,  320000,  640000,
+>> +                      1280000, 2560000, 5120000 };
 > 
->> On 28/06/2024 20:37, Jonathan Cameron wrote:
->>> Hi Mudit,
->>>
->>> I'd failed on previous reviews to notice the odd trigger in here.
->>> What is it, because it doesn't seem to be a dataready trigger as the device
->>> doesn't seem to provide such an interrupt?
->>
->> Hi Jonathan,
->>
->> Thank you for your review on this.
->>
->> I've incorrect called it as a dataready trigger, I missed this as part
->> of my initial cleanup - apologies for the confusion caused by this. I
->> should potentially call it 'threshold' or 'dev'. Please suggest what you
->> think would be appropriate here.
->>
->> The sensor has an active low interrupt pin which is connected to a GPIO
->> (input, pullup). When the sensor reading crosses value set in threshold
->> high or threshold low resisters, interrupt signal is generated and the
->> interrupt gets handled in 'bh1745_interrupt_handler()' (interrupt also
->> depends on number of consecutive judgements set in BH1745_PERSISTENCE
->> register)
-> 
-> This isn't really a trigger. Just report the event and don't register a trigger at
-> all.
-> 
-> In theory we could have a trigger with these properties (and we did discuss
-> many years ago how to do this in a generic fashion) but today it isn't
-> something any standard userspace will understand how to use.
-> 
->>
->>>
->>> Various other comments inline.
->>
->> Will address all for v7
->>>   
->> ...
->>>> +static irqreturn_t bh1745_interrupt_handler(int interrupt, void *p)
->>>> +{
->>>> +	struct iio_dev *indio_dev = p;
->>>> +	struct bh1745_data *data = iio_priv(indio_dev);
->>>> +	int ret;
->>>> +	int value;
->>>> +
->>>> +	ret = regmap_read(data->regmap, BH1745_INTR, &value);
->>>> +	if (ret)
->>>> +		return IRQ_NONE;
->>>> +
->>>> +	if (value & BH1745_INTR_STATUS) {
->>>> +		guard(mutex)(&data->lock);
->>>> +		iio_push_event(indio_dev,
->>>> +			       IIO_UNMOD_EVENT_CODE(IIO_INTENSITY, data->int_src,
->>>> +						    IIO_EV_TYPE_THRESH,
->>>> +						    IIO_EV_DIR_EITHER),
->>>> +			       iio_get_time_ns(indio_dev));
->>>
->>> What is happening here.  You always push out the event and use that as
->>> a trigger?  This is an unusual trigger if it's appropriate to use it for
->>> one at all.  You've called it a dataready trigger but it is not obvious
->>> that this device provides any such signal.
->>
->> When an interrupt occurs, BH1745_INTR_STATUS bit is set in the
->> BH1745_INTR register. Event is only pushed out when the
->> BH1745_INTR_STATUS bit is set.
-> That bit is fine. My confusion is more about the trigger.  I think
-> the short answer is drop the next line and indeed all the code registering
-> a trigger as this device doesn't provide appropriate hardware.
+> I am not sure why you need these tables above? Can't the iio_gts do all 
+> the conversions from register-value to int time/gain and int-time/gain 
+> to register value, as well as the checks for supported values? Ideally, 
+> you would not need anything else but the bh1745_itimes and the 
+> bh1745_gain tables below - they should contain all the same information.
 > 
 
-Noted - thank you for your guidance.
+Hi Matti,
 
-Will include the changes for v7.
+Thank you for reviewing this.
+
+Just had a look again at GTS helpers and found the appropriate 
+functions. Will drop these for v7.
+
+>> +};
+>> +
+>> +static const struct regmap_range bh1745_volatile_ranges[] = {
+>> +    regmap_reg_range(BH1745_MODE_CTRL_2, BH1745_MODE_CTRL_2), /* 
+>> VALID */
+>> +    regmap_reg_range(BH1745_RED_LSB, BH1745_CLEAR_MSB), /* Data */
+>> +    regmap_reg_range(BH1745_INTR, BH1745_INTR), /* Interrupt */
+>> +};
+>> +
+>> +static const struct regmap_access_table bh1745_volatile_regs = {
+>> +    .yes_ranges = bh1745_volatile_ranges,
+>> +    .n_yes_ranges = ARRAY_SIZE(bh1745_volatile_ranges),
+>> +};
+>> +
+>> +static const struct regmap_range bh1745_read_ranges[] = {
+>> +    regmap_reg_range(BH1745_SYS_CTRL, BH1745_MODE_CTRL_2),
+>> +    regmap_reg_range(BH1745_RED_LSB, BH1745_CLEAR_MSB),
+>> +    regmap_reg_range(BH1745_INTR, BH1745_INTR),
+>> +    regmap_reg_range(BH1745_PERSISTENCE, BH1745_TL_MSB),
+>> +    regmap_reg_range(BH1745_MANU_ID, BH1745_MANU_ID),
+>> +};
+>> +
+>> +static const struct regmap_access_table bh1745_ro_regs = {
+>> +    .yes_ranges = bh1745_read_ranges,
+>> +    .n_yes_ranges = ARRAY_SIZE(bh1745_read_ranges),
+>> +};
+>> +
+>> +static const struct regmap_range bh1745_writable_ranges[] = {
+>> +    regmap_reg_range(BH1745_SYS_CTRL, BH1745_MODE_CTRL_2),
+>> +    regmap_reg_range(BH1745_INTR, BH1745_INTR),
+>> +    regmap_reg_range(BH1745_PERSISTENCE, BH1745_TL_MSB),
+>> +};
+>> +
+>> +static const struct regmap_access_table bh1745_wr_regs = {
+>> +    .yes_ranges = bh1745_writable_ranges,
+>> +    .n_yes_ranges = ARRAY_SIZE(bh1745_writable_ranges),
+>> +};
+>> +
+>> +static const struct regmap_config bh1745_regmap = {
+>> +    .reg_bits = 8,
+>> +    .val_bits = 8,
+>> +    .max_register = BH1745_MANU_ID,
+>> +    .cache_type = REGCACHE_RBTREE,
+>> +    .volatile_table = &bh1745_volatile_regs,
+>> +    .wr_table = &bh1745_wr_regs,
+>> +    .rd_table = &bh1745_ro_regs,
+> 
+> I am not 100% sure what this does. (Let's say it is just my ignorance 
+> :)). Does the 'ro' in 'bh1745_ro_regs' stand for read-only?
+> 
+> If so, shouldn't the read-inly registers be marked as "not writable", 
+> which would be adding them in .wr_table in 'no_ranges'? Also, what is 
+> the idea of the 'wr_regs'?
+> 
+There are some read-only (Manufacturer ID and Data registers) and some 
+readable and writable registers. I will rename these to 
+'bh1745_readable_regs' and 'bh1745_writable_regs' in v7 to avoid confusion.
+
+>> +};
+>> +
+>> +static const struct iio_event_spec bh1745_event_spec[] = {
+>> +    {
+>> +        .type = IIO_EV_TYPE_THRESH,
+>> +        .dir = IIO_EV_DIR_RISING,
+>> +        .mask_shared_by_type = BIT(IIO_EV_INFO_VALUE),
+>> +    },
+>> +    {
+>> +        .type = IIO_EV_TYPE_THRESH,
+>> +        .dir = IIO_EV_DIR_FALLING,
+>> +        .mask_shared_by_type = BIT(IIO_EV_INFO_VALUE),
+>> +    },
+>> +    {
+>> +        .type = IIO_EV_TYPE_THRESH,
+>> +        .dir = IIO_EV_DIR_EITHER,
+>> +        .mask_shared_by_type = BIT(IIO_EV_INFO_PERIOD),
+>> +        .mask_separate = BIT(IIO_EV_INFO_ENABLE),
+>> +    },
+>> +};
+>> +
+>> +#define BH1745_CHANNEL(_colour, _si, 
+>> _addr)                             \
+>> +    {                                                               \
+>> +        .type = IIO_INTENSITY, .modified = 1,                   \
+>> +        .info_mask_separate = BIT(IIO_CHAN_INFO_RAW),           \
+>> +        .info_mask_shared_by_all = BIT(IIO_CHAN_INFO_SCALE) |   \
+>> +                       BIT(IIO_CHAN_INFO_INT_TIME), \
+>> +        .info_mask_shared_by_all_available =                    \
+>> +            BIT(IIO_CHAN_INFO_SCALE) |                      \
+>> +            BIT(IIO_CHAN_INFO_INT_TIME),                    \
+>> +        .event_spec = bh1745_event_spec,                        \
+>> +        .num_event_specs = ARRAY_SIZE(bh1745_event_spec),       \
+>> +        .channel2 = IIO_MOD_LIGHT_##_colour, .address = _addr,  \
+>> +        .scan_index = _si,                                      \
+>> +        .scan_type = {                                          \
+>> +            .sign = 'u',                                    \
+>> +            .realbits = 16,                                 \
+>> +            .storagebits = 16,                              \
+>> +            .endianness = IIO_CPU,                          \
+>> +        },                                                      \
+>> +    }
+>> +
+>> +static const struct iio_chan_spec bh1745_channels[] = {
+>> +    BH1745_CHANNEL(RED, 0, BH1745_RED_LSB),
+>> +    BH1745_CHANNEL(GREEN, 1, BH1745_GREEN_LSB),
+>> +    BH1745_CHANNEL(BLUE, 2, BH1745_BLUE_LSB),
+>> +    BH1745_CHANNEL(CLEAR, 3, BH1745_CLEAR_LSB),
+>> +    IIO_CHAN_SOFT_TIMESTAMP(4),
+>> +};
+>> +
+>> +static int bh1745_reset(struct bh1745_data *data)
+>> +{
+>> +    int ret;
+>> +    int value;
+>> +
+>> +    ret = regmap_read(data->regmap, BH1745_SYS_CTRL, &value);
+>> +    if (ret)
+>> +        return ret;
+>> +
+>> +    value |= (BH1745_SW_RESET | BH1745_INT_RESET);
+>> +
+>> +    return regmap_write(data->regmap, BH1745_SYS_CTRL, value);
+> 
+> Would it work if you used regmap_write_bits() instead?
+
+Yes, it should work. Jonathan suggested 'regmap_set_bits()' for this and 
+it looks like a good fit for this as well.
+
+I will look through the regmap API once again and update similar cases.
+
+> 
+> ... Sorry, my reviewing time is out :/ I may continue later but no need 
+> to wait for my comments if I am not responding. I've too much stuff 
+> piling on :(
+> 
+> 
+> Yours,
+>      -- Matti
+> 
 
 Best regards,
 Mudit Sharma
-
-
 

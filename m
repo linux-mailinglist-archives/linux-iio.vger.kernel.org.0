@@ -1,145 +1,111 @@
-Return-Path: <linux-iio+bounces-7089-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7090-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D6C591D3E9
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jun 2024 22:28:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4608B91D63B
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 04:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 344342810D4
-	for <lists+linux-iio@lfdr.de>; Sun, 30 Jun 2024 20:28:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB1741F218B4
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 02:39:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3109F38F83;
-	Sun, 30 Jun 2024 20:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD646F9F8;
+	Mon,  1 Jul 2024 02:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MLfQOfW8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sKOkjOtV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59503200C1;
-	Sun, 30 Jun 2024 20:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74574DF71;
+	Mon,  1 Jul 2024 02:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719779281; cv=none; b=mXK2+Gz/nzgfZw0BTxD0gRCe0twV2d16zRXxbbs9fjajaApdaL5pmt9PE+0sCx/W9+kKLt8NkSNjTw/1B8upMd1pVmUgnUe+skDKLF/ELxnWeXeVG4WxYjcQC7Z5/IIFcq/u+DBpFxHA72AREs/3CARyeVgmcLN2hikkFrXbFLU=
+	t=1719801551; cv=none; b=l4LJuinidFmrQs56jLvm21zCf+ExVDVaDwLNXbPEn4DnVk7SDyxTkmuWWIt2JPTNdGJyx9SSTnF5YDh6X9nYJfbIZis23YQjAnQuR7njrfBaehogs+3DWfUoxH46xH7G5FagUUzo50ojZPx8ETg6tAvgZWtf46IwmzWywBhbh/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719779281; c=relaxed/simple;
-	bh=eh24Fn0OQLDATZ/WrcHHiBOxwxaQ5w+YGHQI8glKSLk=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QaXlizGgQCn4+yR4kiHQ5dEgouCG3VjWhVgZzniDaaFSDXmV9VsVu5xf7g1QKOgGeULhms88BrIf0ynQ4u3F8uOYYd60BOv8nSWg1dZfyMbU3tWPjSz2r25/CY+M3w+pAR+yLycfs5f4wpHs5pH7KAc1wnE02kseu4LzIYS9g1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MLfQOfW8; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-57d106e69a2so2352944a12.0;
-        Sun, 30 Jun 2024 13:27:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719779278; x=1720384078; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xxYfoRNH8+gZbvCeiU6K9uk+NT3SVOKJIheDqF1Y3ME=;
-        b=MLfQOfW8JRfqOvm70PjIeJMpQzgn7As9yqCGxnAUNXeO27BRVIsWiNbjBk24fLF0Fa
-         UyWREO6JG9SQuU/leFaD00T0/WYvmoh8YANkJEvkmIO1oDMNVYuKrCiBfaYfkfdrHUZu
-         cq3/vZsDxNNnPwPY6Zly8U9Gbjk6yqSazqKLQlv1QluhFUrP47wum132pBEDMcyfLLvd
-         M9M7PnX546QWSdTSGIbixRYslqh6l3JyxPufHXzg/rjdnXwiunKO2QfXFgjEvEyouSlp
-         10kExPz7ID6ORDktoCfYUVWSVLaHz1UbBsPhjZWuAGdyEuYw7LAbKVdZj3q8BumX+rNI
-         QhzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719779278; x=1720384078;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xxYfoRNH8+gZbvCeiU6K9uk+NT3SVOKJIheDqF1Y3ME=;
-        b=aFT8bXSfC780xZ71YCRaxGINr5mdVh3IJCayJb5nT5KXkK/8Gkj+5QppKbAcP6cPqs
-         h9I4VCFaDkvBQRhgsoJuRRUZZ9Bj/UeENMOZ0J/lV/wz/fWDFjA0xyZxuI9XByduqPae
-         IRR3MNWEjyipqG5bQILfHLkdQL908XGq3pmtUrAJzVcGIi+qbXtKZOqDfjtTO+vMpuJg
-         SqRj+bWD/I172o/hip1Sss6qXRijRPQkOI/tCMDecGgd825hiSKRV/cU3JzYAT9N7Yc3
-         4v0PYmy39087Gz82Wh25wiaCIggamD5rSxfgtDKC2PzfxMaLig/wRX0q3yQRBEdi9ZG7
-         LhvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUj4LEgY2Z4SJDbAv6yrQZrzVkZ7gHHwrz501f7sHWOvLvdfgBh3/NkMooMAJ7Ga7EbTaV3N4BbJfnWr1cxICN+BKDliQS7FWcgTkD/ubiJShpGpehmzy70G/how+s27ZN4hZIlYtzv
-X-Gm-Message-State: AOJu0Yz4NOXA6ijGlQmEt9AouNZRpCjvR/fhrtrVLFbaLWb9L8yxSe4a
-	THA5okNMFPKs5kL0qZdVnZKmTS7Wb1ZaxCtEGDU9tbXrZFtDRqpr
-X-Google-Smtp-Source: AGHT+IE2GJm7hnKIbz1C/jl+MRzbLWte+mcaYJw1LPVn0Yysx+dXwUYGkK1nZNGEyE9n9D7Fj6lBRQ==
-X-Received: by 2002:a50:cdd8:0:b0:582:7394:a83d with SMTP id 4fb4d7f45d1cf-5865c1f976amr5627778a12.12.1719779277523;
-        Sun, 30 Jun 2024 13:27:57 -0700 (PDT)
-Received: from vamoiridPC ([2a04:ee41:82:7577:427:8e07:6fdd:d397])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-586150377d5sm3561970a12.84.2024.06.30.13.27.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Jun 2024 13:27:56 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-X-Google-Original-From: Vasileios Amoiridis <vamoirid@vamoiridPC>
-Date: Sun, 30 Jun 2024 22:27:54 +0200
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Vasileios Amoiridis <vassilisamir@gmail.com>, lars@metafoo.de,
-	petre.rodan@subdimension.ro, mazziesaccount@gmail.com,
-	ak@it-klinger.de, ang.iglesiasg@gmail.com, linus.walleij@linaro.org,
-	tgamblin@baylibre.com, ajarizzo@gmail.com, phil@raspberrypi.com,
-	579lpy@gmail.com, andriy.shevchenko@linux.intel.com,
-	semen.protsenko@linaro.org, linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v9 0/3] iio: pressure: bmp280: Minor cleanup and triggered
-Message-ID: <20240630202754.GB185141@vamoiridPC>
-References: <20240628171726.124852-1-vassilisamir@gmail.com>
- <20240630112342.4ab1f021@jic23-huawei>
+	s=arc-20240116; t=1719801551; c=relaxed/simple;
+	bh=tlgKBfaW0WVREdlHv1BoSTz4zEu/M+a8UwiX2tziU/A=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=e5z6AnqDgjc19reGQXoozeMBA48jMVMrDxedXiNStOwX67nBpJ0wvqzVLdXnRcxJKbPBwx6IKkva3z/MPOdRhV5MX60aY/jLz8ojzc98Cz3llgv+Aap7okc5zFJP/zBtmkWBPuyxOxXQi5QePH4yGDaxqnfYkaYq7umEtKeuSoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sKOkjOtV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E38EC2BD10;
+	Mon,  1 Jul 2024 02:39:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719801551;
+	bh=tlgKBfaW0WVREdlHv1BoSTz4zEu/M+a8UwiX2tziU/A=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=sKOkjOtVheiUf92NWqiywYZDo/JbHwjccCIoMXuBdjdf3Ro85lQzwtnqq9uSypdLr
+	 /SLjJoxZ4wSkXzXjBirg4MTSH28GAZaJPx3uCjlz8SxYCsiWcGSTzkXC9chEmNgLlO
+	 9Gl/NzD+Yug2wD8Dz3K6IIEMsU9rKvvyd77iObxEYFekng2QE3uSBkkkK49muwKMvf
+	 Zz/ci2NCzcJ0aSK+mc32Oj5hbgGW5C2LNFeal6Y6NczNUBxK9GsqdFFsyqhVpTUEYR
+	 3u5XnroJGoa38s6X3956wOwz+fXjebnQIRdSqnsPdaS5ZLZ6jXNcfooihp9QNHBvIK
+	 3vExEQ0c5y+Tw==
+From: William Breathitt Gray <wbg@kernel.org>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Judith Mendez <jm@ti.com>
+Cc: William Breathitt Gray <wbg@kernel.org>,
+	linux-iio@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	David Lechner <david@lechnology.com>
+Subject: Re: [PATCH v5 0/8] Enable eQEP DT support for Sitara K3 platforms
+Date: Mon,  1 Jul 2024 11:38:54 +0900
+Message-ID: <171980147646.3245330.16378344874755104998.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.45.1
+In-Reply-To: <20240612135538.2447938-1-jm@ti.com>
+References: <20240612135538.2447938-1-jm@ti.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240630112342.4ab1f021@jic23-huawei>
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1240; i=wbg@kernel.org; h=from:subject:message-id; bh=r0Xdr2Jl+T4FPxaViclE8LBuTxOkELxFVAFU6X1B2oU=; b=owGbwMvMwCW21SPs1D4hZW3G02pJDGlNYtM42MsflTcwRzsF7SyWval1/TXHugARW8YVvaKep X+PnxHoKGVhEONikBVTZOk1P3v3wSVVjR8v5m+DmcPKBDKEgYtTACZyJ4uRYdkxCVXBc2szmZ0e /J8b9UTpbu+OpU+0mh+w3jWZeH3pdwNGhk6erfmPNnJPflkb06weaZfzYeGT4kSmWxZGCYX962b y8gIA
+X-Developer-Key: i=wbg@kernel.org; a=openpgp; fpr=8D37CDDDE0D22528F8E89FB6B54856CABE12232B
+Content-Transfer-Encoding: 8bit
 
-On Sun, Jun 30, 2024 at 11:23:42AM +0100, Jonathan Cameron wrote:
-> On Fri, 28 Jun 2024 19:17:23 +0200
-> Vasileios Amoiridis <vassilisamir@gmail.com> wrote:
-> 
-> > Changes in v9:
-> > 
-> > Patch 1/3:
-> > 	- In bmp580_temp_coeffs, instead of *1000/2^16, now we have *125/2^13
-> > 	  to avoid overflows, as it was proposed.
-> > 	- Type casting to (s64) to temperature read in the read_raw_impl
-> > 	  function was removed as well as it is no longer needed.
-> > 
-> > Patch 3/3:
-> > 	- Renamed "buffer_handler" to "trigger_handler" to keep consistency
-> > 	  with the rest of the drivers.
-> > 	- Added new iio_channel_spec for bmp580 in order to use IIO_LE and
-> > 	  real_bits = 24.
-> > 
-> > v8: https://lore.kernel.org/linux-iio/20240617230540.32325-1-vassilisamir@gmail.com/
-> 
-> This seems fine to me now, but I'd like a final 'we didn't break anything' from
-> Adam before i pick it up.  Once bitten, twice shy and all that ;)
-> 
-> J
-> 
 
-Hi Jonathan,
-
-Perfect! Let's see what Adam has to say as well.
-Thanks for the very helpful reviews :)
-
-Cheers,
-Vasilis
-
+On Wed, 12 Jun 2024 08:55:30 -0500, Judith Mendez wrote:
+> This patch series adds eQEP DT nodes for K3 Sitara devices:
+> - AM62x
+> - AM62ax
+> - AM62px
+> - AM64x
 > 
-> > 
-> > Vasileios Amoiridis (3):
-> >   iio: pressure: bmp280: Generalize read_*() functions
-> >   iio: pressure: bmp280: Add SCALE, RAW values in channels and
-> >     refactorize them
-> >   iio: pressure: bmp280: Add triggered buffer support
-> > 
-> >  drivers/iio/pressure/Kconfig       |   2 +
-> >  drivers/iio/pressure/bmp280-core.c | 643 +++++++++++++++++++++++++----
-> >  drivers/iio/pressure/bmp280-spi.c  |   8 +-
-> >  drivers/iio/pressure/bmp280.h      |  34 +-
-> >  4 files changed, 589 insertions(+), 98 deletions(-)
-> > 
-> > 
-> > base-commit: 3341d69268accb5294b569ec37e55212a8a28ac5
+> The series also allows the eQEP driver to be built for K3
+> architecture.
 > 
+> [...]
+
+Applied, thanks!
+
+[1/8] dt-bindings: counter: Add new ti,am62-eqep compatible
+      commit: 151ebcf0797b1a3ba53c8843dc21748c80e098c7
+[2/8] counter/ti-eqep: Add new ti-am62-eqep compatible
+      commit: 210457b651acd61fced405cf7fef12a482932ca1
+[3/8] arm64: dts: ti: k3-am62-main: Add eQEP nodes
+      commit: e2e1fce199b0db4fd4eba99ff6ef779826a55731
+[4/8] arm64: dts: ti: k3-am62a-main: Add eQEP nodes
+      commit: ba5a251b1d539a82970823dd510ee25be06d6ca7
+[5/8] arm64: dts: ti: k3-am62p-main: Add eQEP nodes
+      commit: 131eaf47c4c5ad444e3a0547960daacd3a40f82d
+[6/8] arm64: dts: ti: k3-am64-main: Add eQEP nodes
+      commit: afdfe6439a6d28a3062d576705b203da0857699f
+[7/8] arm64: dts: ti: k3-am64x-sk: Enable eQEP
+      commit: 7fb9d8854fcf23b7882a34a4cf247a7f60d02fef
+[8/8] counter: ti-eqep: Allow eQEP driver to be built for K3 devices
+      commit: 474bbfc637c719daebffb5cabcf914dd749cf393
+
+Best regards,
+-- 
+William Breathitt Gray <wbg@kernel.org>
 

@@ -1,380 +1,220 @@
-Return-Path: <linux-iio+bounces-7095-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7096-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C36FF91DA68
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 10:48:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80E8491DAFE
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 11:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 535C91F20CDB
-	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 08:48:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E83781F22DE7
+	for <lists+linux-iio@lfdr.de>; Mon,  1 Jul 2024 09:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12FB84A4D;
-	Mon,  1 Jul 2024 08:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E38EE13B59F;
+	Mon,  1 Jul 2024 09:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="xYarrNHl"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="sNQDlCDE"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E1784A35;
-	Mon,  1 Jul 2024 08:47:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB6D13C689
+	for <linux-iio@vger.kernel.org>; Mon,  1 Jul 2024 09:01:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719823638; cv=none; b=C0z8kolXY4nbAPJqQJVixdx5ZRcbgmV+gVYwYv+XJh+pDaHno4cQeXp0DUMIK3xCoGmjcBXS1vYhrOVxe/6B1BY4GKZKnhg388vviZ+SjL8WpODWesNOsIiy+VqJkfHYc5eJHeA/wHi4cwK39GqHLG2McHNGHCpPMayIgPIjfso=
+	t=1719824507; cv=none; b=trwJecQ9nfxAOImQGPyWTktyBI0/hCx0DdbPUGWKuii85IlmM99swURIho6PWpc4t6Z3MYEnIWWyoxIvKgQg/6fYEdD7VmcCqtlEXpjRZt4bFSNIMv5QltU6dF4AiEvrMX8A1SSIZA8rHXVqkhQB9lXNt5KwS5v8JVvL6BV4nPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719823638; c=relaxed/simple;
-	bh=R4cC6D6gJjIIjiiIyqNIOYQ/ggPlCuWGQTFAtL7UPJA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nRXvBbN79H3rP41+MljyLH5CqwtPPZBfAj4JfNEFMtS+lJ89jnIrrsGb+1Ta3RoVi2BGexW80QfCsUpq3wMbwWHwkm6lamFfXI7LtqbR9N7JaCP5W1DBja6Vr0jYsMrfJ5WR6I7bDGTjVmCLL/8cutRXUB5SMZ8ZDsvpoEiyXP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=xYarrNHl; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
-	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46186JRS005324;
-	Mon, 1 Jul 2024 04:46:59 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=8EGak
-	9Sb3hUw1x7TOM6eobyfu+QTbee4xTN4X/gkEoI=; b=xYarrNHl/agz1vq85WgtP
-	EWS3C1hTIOtHZMbadXRWdoBwJoWBMMZW6EtAKLFUlEWmcMUr3xNGNr0Ovrd5ZecF
-	Lfeh50HLDwei5H3YFXLj+TVsGHhQ/r7vuzzQc7v4bzk/RlbGVkW0io9ICer/ltTU
-	PeJp0LIWIAhi2FLNZ/3Fxv73IPAVdnY6Zx4aqVc7kFc9noS/axwAMhfHrI6/kI8Z
-	pjPYGJoCu4tGmrgUxw3/LOM4sxgrXWDUs1SZVMi7XB4+ni5P2fxHNe34AMK5MPWG
-	uOe3SSODzFq2NN/t8enxjpY1EfxBWxa/Gqm9h6EPIw+3vy1xdntT7H3t5k498/o7
-	Q==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 403m2ch2qq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 04:46:58 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4618kvqV037415
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 1 Jul 2024 04:46:57 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 1 Jul 2024
- 04:46:56 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 1 Jul 2024 04:46:56 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.159])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4618k0LB004394;
-	Mon, 1 Jul 2024 04:46:43 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: Ramona Gradinariu <ramona.gradinariu@analog.com>,
-        Antoniu Miclaus
-	<antoniu.miclaus@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael
- Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron
-	<jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Jun Yan
-	<jerrysteve1101@gmail.com>,
-        Andy Shevchenko
-	<andriy.shevchenko@linux.intel.com>,
-        Mehdi Djait <mehdi.djait.k@gmail.com>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>
-Subject: [PATCH v4 3/3] docs: iio: add documentation for adxl380 driver
-Date: Mon, 1 Jul 2024 11:30:44 +0300
-Message-ID: <20240701083138.15891-3-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240701083138.15891-1-antoniu.miclaus@analog.com>
-References: <20240701083138.15891-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1719824507; c=relaxed/simple;
+	bh=Uju6MWEqhf0iYZssUD7lpaROMvQMo3bzLgw89T4t81Y=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=S4WbcROlb4KbBNvsqN205YyctdE8AFgfz9oBS34wDn53PrPV/Od/xY390o4YNCclRvU5oemr5VPqCKJ1a4QkZ9FFVyWrUU0N4/FIliEtsbCbbes730YIXyy0ShyWkRkO/Aujixe8CPsa5BzwBx3AzCoaVgk729O5oCGBjidqdwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=sNQDlCDE; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-52e764bb3fbso3435581e87.3
+        for <linux-iio@vger.kernel.org>; Mon, 01 Jul 2024 02:01:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719824502; x=1720429302; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=E4V4a67sH+Sj9j9mjJSBdp3EdWT5AmAZ/sIsVO2U5Gw=;
+        b=sNQDlCDEvrQzVUSTRVnfwpw+TzAnFHZ2iE9gTgvk/P4gAK660DiPoSsd7nAJch8oq8
+         cQqnkWk0groQHwx+QdDkSLlm/qmA9nov0eVUPPhGDuFfYpgR3RMAlSOhNe+LynEWAGYL
+         UMp6fW/LtFvh9URISmXMBHavJTRzn8GUF+2xS8Qe/UWgHLZu1is9KaSrp0pYlql1YKf2
+         U/Sq7cnHRpEJhGgEfBW9uXyBdiR1oJXwkwRixwF/Ed7lP4Irc/x6auvHT+5/rKf4nQgI
+         Jab68ogsHmyLHbxB8SAGG52gbumVELqmKRGklUn67RhrwKmUZULyFHnVK0B5FXTdiTzd
+         Gg2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719824502; x=1720429302;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=E4V4a67sH+Sj9j9mjJSBdp3EdWT5AmAZ/sIsVO2U5Gw=;
+        b=TJ+5ro6C334Ub+zDB1YREeNI8j7bFPv0yOHn+JUJDED9J+RpeuwA15UiG9bLGstzdU
+         P93qGhyPSSYH3wY2sv+SAry5HjQ3HI/JxDJCZ1T7MrIG51APJAohgKHXcoyPo/LxdvkI
+         bYBRsBGt4220biq0wzkYGOlt8gjbo2jhHiRK39Yj7khOVpJD7NiEKES+uI4ykIF/C/UA
+         703fLtJEXJQZZmTgVD832diz2yrJrfJqgx059WCUvH46ddVzTMGUGiRR3hcljI8TcvB6
+         uqYnTs84TCf0EkrQ1h2s1kMZuIK8AUKyT9l/bMRzc1aoLblMvDEo+qotnhxB4/1LBF1+
+         ii5w==
+X-Forwarded-Encrypted: i=1; AJvYcCV8RfSfYuOzZ6HJ6wJhLWtllyoFCA5FC/czfqTyLcAeqobMaYBpOMTEQpQxCbzo28QpHh5n0QxCD+StxRgIhULHdIifrl3rCd3I
+X-Gm-Message-State: AOJu0Yz+9mdEmxMvy4k0No9LLYmaFnLOpBIl4Wet8wbtSAS5KvLx6k6H
+	j367e4AuUkCUgOpK19c475sfb197+0o48Pl8faB4xAi1wabDXfS/L5TsXd2R3HQ=
+X-Google-Smtp-Source: AGHT+IGQbQF+l6JIu2qBU2qs5wcIrc1fNbnpDVITtS7Qre3SZ8PBndtUb5N/ZdI9xkP9Dwj5YuGUlw==
+X-Received: by 2002:a05:6512:3c99:b0:52c:cccf:85e1 with SMTP id 2adb3069b0e04-52e8273cfc0mr3906453e87.65.1719824502302;
+        Mon, 01 Jul 2024 02:01:42 -0700 (PDT)
+Received: from localhost ([2a01:e0a:3c5:5fb1:2d2:df21:c0a8:45a2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256af55cccsm144287685e9.16.2024.07.01.02.01.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jul 2024 02:01:41 -0700 (PDT)
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: Jonathan Cameron <jic23@kernel.org>,  Lars-Peter Clausen
+ <lars@metafoo.de>,  Kevin Hilman <khilman@baylibre.com>,
+  linux-kernel@vger.kernel.org,  linux-amlogic@lists.infradead.org,
+  linux-iio@vger.kernel.org,  Rob Herring <robh@kernel.org>,  Krzysztof
+ Kozlowski <krzk+dt@kernel.org>,  Conor Dooley <conor+dt@kernel.org>,
+  linux-arm-msm <linux-arm-msm@vger.kernel.org>
+Subject: Re: [PATCH 0/2] iio: frequency: add iio support for Amlogic clock
+ measure
+In-Reply-To: <5da26c0e-75a7-4d5a-9eca-f88ecf369996@linaro.org> (Neil
+	Armstrong's message of "Mon, 1 Jul 2024 09:41:01 +0200")
+References: <20240624173105.909554-1-jbrunet@baylibre.com>
+	<52fab9b5-2b44-49c0-8b90-cb2a74eb6633@linaro.org>
+	<1jzfr9gxh4.fsf@starbuckisacylon.baylibre.com>
+	<c092ec67-e384-411d-8885-665597547523@linaro.org>
+	<1jv81xgmfc.fsf@starbuckisacylon.baylibre.com>
+	<5da26c0e-75a7-4d5a-9eca-f88ecf369996@linaro.org>
+Date: Mon, 01 Jul 2024 11:01:41 +0200
+Message-ID: <1jjzi5a3ka.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: A5atxJNWU2CMRD3fNtkso-yhHiRK6YKB
-X-Proofpoint-GUID: A5atxJNWU2CMRD3fNtkso-yhHiRK6YKB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-01_07,2024-06-28_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- spamscore=0 impostorscore=0 adultscore=0 bulkscore=0 lowpriorityscore=0
- malwarescore=0 clxscore=1011 mlxscore=0 suspectscore=0 mlxlogscore=999
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407010067
+Content-Type: text/plain
 
-Add documentation for adxl380 driver which describes the driver
-device files and shows how the user may use the ABI for various
-scenarios (configuration, measurement, etc.).
+On Mon 01 Jul 2024 at 09:41, Neil Armstrong <neil.armstrong@linaro.org> wrote:
 
-Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-changes in v4:
- - drop marketing from description.
- Documentation/iio/adxl380.rst | 233 ++++++++++++++++++++++++++++++++++
- Documentation/iio/index.rst   |   1 +
- 2 files changed, 234 insertions(+)
- create mode 100644 Documentation/iio/adxl380.rst
+> On 25/06/2024 15:51, Jerome Brunet wrote:
+>> On Tue 25 Jun 2024 at 15:18, Neil Armstrong <neil.armstrong@linaro.org> wrote:
+>> 
+>>> On 25/06/2024 11:53, Jerome Brunet wrote:
+>>>> On Tue 25 Jun 2024 at 11:38, Neil Armstrong <neil.armstrong@linaro.org> wrote:
+>>>>
+>>>>> Hi,
+>>>>>
+>>>>> [+cc people from linux-msm]
+>>>>>
+>>>>> On 24/06/2024 19:31, Jerome Brunet wrote:
+>>>>>> Add support for the HW found in most Amlogic SoC dedicated to measure
+>>>>>> system clocks.
+>>>>>> This drivers aims to replace the one found in
+>>>>>> drivers/soc/amlogic/meson-clk-measure.c with following improvements:
+>>>>>> * Access to the measurements through the IIO API:
+>>>>>>      Easier re-use of the results in userspace and other drivers
+>>>>>> * Controllable scale with raw measurements
+>>>>>> * Higher precision with processed measurements
+>>>>>> Jerome Brunet (2):
+>>>>>>      dt-bindings: iio: frequency: add clock measure support
+>>>>>>      iio: frequency: add amlogic clock measure support
+>>>>>>     .../iio/frequency/amlogic,clk-msr-io.yaml     |  50 ++
+>>>>>>     drivers/iio/frequency/Kconfig                 |  15 +
+>>>>>>     drivers/iio/frequency/Makefile                |   1 +
+>>>>>>     drivers/iio/frequency/amlogic-clk-msr-io.c    | 802 ++++++++++++++++++
+>>>>>>     4 files changed, 868 insertions(+)
+>>>>>>     create mode 100644 Documentation/devicetree/bindings/iio/frequency/amlogic,clk-msr-io.yaml
+>>>>>>     create mode 100644 drivers/iio/frequency/amlogic-clk-msr-io.c
+>>>>>>
+>>>>>
+>>>>> While I really appreciate the effort, and the code looks cool, the clkmsr is really
+>>>>> a debug tool, and I'm not sure IIO is the right place for such debug tool ?
+>>>> The reason why I went through the trouble of doing an IIO port is
+>>>> because I need that for other purposes than debug. I need to to be able
+>>>> to check a frequency from another driver. I don't see a reason to invent
+>>>> another API when IIO provide a perfectly good one.
+>>>> The HW does measurements. IIO seems like the best place for it.
+>>>> For the record, I need this for a eARC support.
+>>>> eARC has a PLL that locks on incoming stream. eARC registers show wether
+>>>> the PLL is locked or not, but not at which rate. That information is
+>>>> needed in ASoC. Fortunately the eARC PLL is one of measured clock, which
+>>>> is a life saver in that case.
+>>>
+>>> This is a very interesting use-case, and quite weird nothing is provided
+>>> on the eARC side.
+>> Indeed.
+>> 
+>>>
+>>> So yes it's definitely a valid use-case, but:
+>>> - we should keep the debugfs interface, perhaps move it in the iio driver ?
+>> I considered this initially but it would add a lot of boiler plate
+>> code to provide over debugfs exactly what iio already provides over
+>> sysfs. As you pointed out, the previous driver only provided debug
+>> information, the debugfs interface it provided is hardly a
+>> critical/stable one.
+>
+> I still don't see why it could add so much boilerplate, all the tables and
+> calculation fonction would be shared, only the debugfs clk_msr_show() and
+> clk_msr_summary_show() would be kept, all the rest would be common.
+>
+> I insist, please keep the debugfs interface for debug purposes. You don't
+> want to mess with IIO when you bring up new platforms with bare minimum
+> kernels.
 
-diff --git a/Documentation/iio/adxl380.rst b/Documentation/iio/adxl380.rst
-new file mode 100644
-index 000000000000..376dee5fe1dd
---- /dev/null
-+++ b/Documentation/iio/adxl380.rst
-@@ -0,0 +1,233 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+===============
-+ADXL380 driver
-+===============
-+
-+This driver supports Analog Device's ADXL380/382 on SPI/I2C bus.
-+
-+1. Supported devices
-+====================
-+
-+* `ADXL380 <https://www.analog.com/ADXL380>`_
-+* `ADXL382 <https://www.analog.com/ADXL382>`_
-+
-+The ADXL380/ADXL382 is a low noise density, low power, 3-axis accelerometer with
-+selectable measurement ranges. The ADXL380 supports the ±4 g, ±8 g, and ±16 g
-+ranges, and the ADXL382 supports ±15 g, ±30 g, and ±60 g ranges.
-+
-+2. Device attributes
-+====================
-+
-+Accelerometer measurements are always provided.
-+
-+Temperature data are also provided. This data can be used to monitor the
-+internal system temperature or to improve the temperature stability of the
-+device via calibration.
-+
-+Each IIO device, has a device folder under ``/sys/bus/iio/devices/iio:deviceX``,
-+where X is the IIO index of the device. Under these folders reside a set of
-+device files, depending on the characteristics and features of the hardware
-+device in questions. These files are consistently generalized and documented in
-+the IIO ABI documentation.
-+
-+The following tables show the adxl380 related device files, found in the
-+specific device folder path ``/sys/bus/iio/devices/iio:deviceX``.
-+
-++---------------------------------------------------+----------------------------------------------------------+
-+| 3-Axis Accelerometer related device files         | Description                                              |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_scale                                    | Scale for the accelerometer channels.                    |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_filter_high_pass_3db_frequency           | Low pass filter bandwidth.                               |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_filter_high_pass_3db_frequency_available | Available low pass filter bandwidth configurations.      |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_filter_low_pass_3db_frequency            | High pass filter bandwidth.                              |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_filter_low_pass_3db_frequency_available  | Available high pass filter bandwidth configurations.     |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_x_calibbias                              | Calibration offset for the X-axis accelerometer channel. |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_x_raw                                    | Raw X-axis accelerometer channel value.                  |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_y_calibbias                              | y-axis acceleration offset correction                    |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_y_raw                                    | Raw Y-axis accelerometer channel value.                  |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_z_calibbias                              | Calibration offset for the Z-axis accelerometer channel. |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_z_raw                                    | Raw Z-axis accelerometer channel value.                  |
-++---------------------------------------------------+----------------------------------------------------------+
-+
-++----------------------------------+--------------------------------------------+
-+| Temperature sensor related files | Description                                |
-++----------------------------------+--------------------------------------------+
-+| in_temp_raw                      | Raw temperature channel value.             |
-++----------------------------------+--------------------------------------------+
-+| in_temp_offset                   | Offset for the temperature sensor channel. |
-++----------------------------------+--------------------------------------------+
-+| in_temp_scale                    | Scale for the temperature sensor channel.  |
-++----------------------------------+--------------------------------------------+
-+
-++------------------------------+----------------------------------------------+
-+| Miscellaneous device files   | Description                                  |
-++------------------------------+----------------------------------------------+
-+| name                         | Name of the IIO device.                      |
-++------------------------------+----------------------------------------------+
-+| sampling_frequency           | Currently selected sample rate.              |
-++------------------------------+----------------------------------------------+
-+| sampling_frequency_available | Available sampling frequency configurations. |
-++------------------------------+----------------------------------------------+
-+
-+Channels processed values
-+-------------------------
-+
-+A channel value can be read from its _raw attribute. The value returned is the
-+raw value as reported by the devices. To get the processed value of the channel,
-+apply the following formula:
-+
-+.. code-block:: bash
-+
-+        processed value = (_raw + _offset) * _scale
-+
-+Where _offset and _scale are device attributes. If no _offset attribute is
-+present, simply assume its value is 0.
-+
-+The adis16475 driver offers data for 2 types of channels, the table below shows
-+the measurement units for the processed value, which are defined by the IIO
-+framework:
-+
-++-------------------------------------+---------------------------+
-+| Channel type                        | Measurement unit          |
-++-------------------------------------+---------------------------+
-+| Acceleration on X, Y, and Z axis    | Meters per Second squared |
-++-------------------------------------+---------------------------+
-+| Temperature                         | Millidegrees Celsius      |
-++-------------------------------------+---------------------------+
-+
-+Usage examples
-+--------------
-+
-+Show device name:
-+
-+.. code-block:: bash
-+
-+	root:/sys/bus/iio/devices/iio:device0> cat name
-+        adxl382
-+
-+Show accelerometer channels value:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_raw
-+        -1771
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_y_raw
-+        282
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_z_raw
-+        -1523
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_scale
-+        0.004903325
-+
-+- X-axis acceleration = in_accel_x_raw * in_accel_scale = −8.683788575 m/s^2
-+- Y-axis acceleration = in_accel_y_raw * in_accel_scale = 1.38273765 m/s^2
-+- Z-axis acceleration = in_accel_z_raw * in_accel_scale = -7.467763975 m/s^2
-+
-+Set calibration offset for accelerometer channels:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_calibbias
-+        0
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 50 > in_accel_x_calibbias
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_calibbias
-+        50
-+
-+Set sampling frequency:
-+
-+.. code-block:: bash
-+
-+	root:/sys/bus/iio/devices/iio:device0> cat sampling_frequency
-+        16000
-+        root:/sys/bus/iio/devices/iio:device0> cat sampling_frequency_available
-+        16000 32000 64000
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 32000 > sampling_frequency
-+        root:/sys/bus/iio/devices/iio:device0> cat sampling_frequency
-+        32000
-+
-+Set low pass filter bandwidth for accelerometer channels:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_filter_low_pass_3db_frequency
-+        32000
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_filter_low_pass_3db_frequency_available
-+        32000 8000 4000 2000
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 2000 > in_accel_filter_low_pass_3db_frequency
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_filter_low_pass_3db_frequency
-+        2000
-+
-+3. Device buffers
-+=================
-+
-+This driver supports IIO buffers.
-+
-+All devices support retrieving the raw acceleration and temperature measurements
-+using buffers.
-+
-+Usage examples
-+--------------
-+
-+Select channels for buffer read:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_x_en
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_y_en
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_z_en
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_temp_en
-+
-+Set the number of samples to be stored in the buffer:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 10 > buffer/length
-+
-+Enable buffer readings:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > buffer/enable
-+
-+Obtain buffered data:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> hexdump -C /dev/iio\:device0
-+        ...
-+        002bc300  f7 e7 00 a8 fb c5 24 80  f7 e7 01 04 fb d6 24 80  |......$.......$.|
-+        002bc310  f7 f9 00 ab fb dc 24 80  f7 c3 00 b8 fb e2 24 80  |......$.......$.|
-+        002bc320  f7 fb 00 bb fb d1 24 80  f7 b1 00 5f fb d1 24 80  |......$...._..$.|
-+        002bc330  f7 c4 00 c6 fb a6 24 80  f7 a6 00 68 fb f1 24 80  |......$....h..$.|
-+        002bc340  f7 b8 00 a3 fb e7 24 80  f7 9a 00 b1 fb af 24 80  |......$.......$.|
-+        002bc350  f7 b1 00 67 fb ee 24 80  f7 96 00 be fb 92 24 80  |...g..$.......$.|
-+        002bc360  f7 ab 00 7a fc 1b 24 80  f7 b6 00 ae fb 76 24 80  |...z..$......v$.|
-+        002bc370  f7 ce 00 a3 fc 02 24 80  f7 c0 00 be fb 8b 24 80  |......$.......$.|
-+        002bc380  f7 c3 00 93 fb d0 24 80  f7 ce 00 d8 fb c8 24 80  |......$.......$.|
-+        002bc390  f7 bd 00 c0 fb 82 24 80  f8 00 00 e8 fb db 24 80  |......$.......$.|
-+        002bc3a0  f7 d8 00 d3 fb b4 24 80  f8 0b 00 e5 fb c3 24 80  |......$.......$.|
-+        002bc3b0  f7 eb 00 c8 fb 92 24 80  f7 e7 00 ea fb cb 24 80  |......$.......$.|
-+        002bc3c0  f7 fd 00 cb fb 94 24 80  f7 e3 00 f2 fb b8 24 80  |......$.......$.|
-+        ...
-+
-+See ``Documentation/iio/iio_devbuf.rst`` for more information about how buffered
-+data is structured.
-+
-+4. IIO Interfacing Tools
-+========================
-+
-+See ``Documentation/iio/iio_tools.rst`` for the description of the available IIO
-+interfacing tools.
-diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-index 4c13bfa2865c..1ce5b24d40aa 100644
---- a/Documentation/iio/index.rst
-+++ b/Documentation/iio/index.rst
-@@ -20,5 +20,6 @@ Industrial I/O Kernel Drivers
-    ad7944
-    adis16475
-    adis16480
-+   adxl380
-    bno055
-    ep93xx_adc
+I don't think that is going to change anything. It's not like IIO brings
+any complexity or will be compiled out.
+
+But since you insist, I'll add it in the next version as a separate patch.
+
+>
+>> 
+>>> - we should keep a single compatible, so simply update the current bindings with iio cells
+>> Using a new compatible allows to split the memory region, making the
+>> interface between DT and driver a lot easier to implement seemlessly
+>> between old and new SoCs. Eventually it may allow to implement the duty
+>> part too.
+>
+> It's a problem for new platforms, you can introduce the split only for the
+> new ones, the impact on code won't high enough to justify new bindings.
+>
+
+What you are requesting will introduce two drivers providing the same
+compatible, unless you plan on removing the old one in a coordinated
+way.
+
+That's an unncessary churn. The old driver could stay there for a
+while and platform slowly migrate. What you are requesting forcefully
+migrates every consumer, assuming the old driver is compiled out.
+
+This is an opportunity to more correctly describe the interface.
+It does not break any DT rules, that is enough of a justification IMO.
+
+> Neil
+>
+>> 
+>>> - for s4 & c3, it's ok to either add a second reg entry in the bindings
+>> Doing that for s4 and c3 only would still make a mess of offset handling
+>> the region because duty prepend the region on old SoC. The goal is to
+>> have an interface that seemlessly support both old and new SoCs.
+>> 
+>>>
+>>> Neil
+>>>
+>>>> Everything that was available through the old driver still is, with more
+>>>> precision and more control.
+>>>>
+>>>>>
+>>>>> There's almost the same interface on qcom SoCs (https://github.com/linux-msm/debugcc) but
+>>>>> they chose to keep it in userspace until we find an appropriate way to expose
+>>>>> this from the kernel the right way.
+>>>>>
+>>>>> If it enabled us to monitor a frequency input for a product use-case, IIO would be
+>>>>> the appropriate interface, but AFAIK it's only internal clocks and thus I'm worried
+>>>>> it's not the best way to expose those clocks.
+>>>>>
+>>>>> Neil
+>>>>
+>> 
+
 -- 
-2.45.2
-
+Jerome
 

@@ -1,202 +1,119 @@
-Return-Path: <linux-iio+bounces-7179-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7180-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED8C92467C
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 19:35:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C214E9246BD
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 19:56:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 937C81C20C83
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 17:35:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C9832849AD
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 17:56:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3F621CE085;
-	Tue,  2 Jul 2024 17:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1421C0067;
+	Tue,  2 Jul 2024 17:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="wjgEClSK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="neuX7k4j"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EC31C8FB7
-	for <linux-iio@vger.kernel.org>; Tue,  2 Jul 2024 17:34:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566301BE873;
+	Tue,  2 Jul 2024 17:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941655; cv=none; b=d7GUkq/tnDQ+ndvmBbRixP99Kn+EelziQqX6eXOVrb1Vr38KZrpVmvLczBehHocWout/e6f93ApTov6LAIePyfvp3YNwPlNn8nFkWoWMQ2PpsJqKq7xKecILbVFHdK6Mp9TQ0E2ZcviFFjMXKM9xw368bzyExSCAlMIDsvNnuhE=
+	t=1719942990; cv=none; b=ikL3XVUDWoSjiA3X9u6bhBQcu99Iu+uRo1akjjEcfWQo6b3EtPxVvdo0j9Q9mwxIRTdqRkcbmwy0P0yu8vMbbEPvLf1Og4do+H/LXUtg+GHTE1u4U/nbaUV0O7MkTeEFq78K0AIhf10wjuejdZsutmvOz5GRoYXbf7MJqQTA02k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719941655; c=relaxed/simple;
-	bh=jsNkkIXGs4/h3lv8BZLIzqEnp8c8kmrQBKCwKtjidUg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Vamd4u8qx1CxBR93yASbR/p5Nqfrn6f8TPu0UZbd4k6qO5G1bjF9KjxYnH59x7ln4iSKhjbjY8Vp0ps3NYUc3kqbB2slAlx2bnB/uZrB5F366L1S9IqNB1rOklFVWqgsNbyx9ghg+hHn1YleiEW/t75sjjC8AwEC9Nyc00gNMbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=wjgEClSK; arc=none smtp.client-ip=209.85.167.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52ccc40e72eso3646116e87.3
-        for <linux-iio@vger.kernel.org>; Tue, 02 Jul 2024 10:34:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719941651; x=1720546451; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E8NfF8jZGHkcRRoEHwh26DQAMmLR92lEfTyFLVBd7mk=;
-        b=wjgEClSKZUgLm+5X2uffIcPZ8XKSVrPa9StW/UaOK5HuR6isRw6VJz5Abx/rf50QAK
-         kXoyWi3gZXDLrOqoXcGEVlQADzT5gdleupF0ljteP8kq3rDZuTH8zQphgZd1z3BvunqE
-         amG4Najj73fS73XTLLMMnVCA0nDi+RXZ82kYZDtzRelT5ljnj9cVx3pC2d5/EhEm5N4n
-         saRx1qzD+F0MB2TwYFKRfia3C618gHwpIsLwWzJW41EjofybfJNFG1TYpFzI8yr9LsC2
-         oPGOhUyASfS+bYAyBzQ1P38qh+ni12suKkDrOHDSdrZ+kJ/0UNmx2bBUMiQ16vnxJ97j
-         FiPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719941651; x=1720546451;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E8NfF8jZGHkcRRoEHwh26DQAMmLR92lEfTyFLVBd7mk=;
-        b=wrpCxWdpMLuzLdp900I1PIqw/bLKN/qnuI6qcNVWYm8DPFwt3U3xQQEYNqsDfL+/c3
-         LyhXam1OfS8FUGMN19rp7psFEbfweKZovlloN2u+kgdo4Sc6VoIfYlPuW7RaqCa6+RjH
-         3bgwbM9pF6aRkhdp8HODNAu4jAWq0ebolY7+3aVD9F+JIalmHiRYQ0mV66yvkqqWmjLj
-         QG8RH7/H4ZZEpMSachm03HmH8oxETFKaBQu+v+9tJIyI/El6dmmKUSu1g4p0ugZt7bBU
-         DnuttUeMyoWhKwnLfBHHnJGVYClCYVADksSaXSx/NqrujbUd5A2MmHiHBrT2TC3YSTio
-         RRuw==
-X-Gm-Message-State: AOJu0Yxj5NXT3FYm2u8+pER+QUw1rK49y9GLB56F8BvOfSPbjrkqdwK4
-	sDJmADtmUGjHTEiIVX94dGj8hEVD0e/kDoExck0agAH8bjXhklL+4IS8HH17fqY=
-X-Google-Smtp-Source: AGHT+IGCaZQAPHw7/TMvFuKvssrA/aWcSDKW1tDQD+mxtwBkbk6h746EqKnqbXVQs/kfXAIlS+JTcQ==
-X-Received: by 2002:a05:6512:2355:b0:52c:b09e:136d with SMTP id 2adb3069b0e04-52e8268b415mr7979931e87.32.1719941650887;
-        Tue, 02 Jul 2024 10:34:10 -0700 (PDT)
-Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256af59732sm207594485e9.11.2024.07.02.10.34.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Jul 2024 10:34:10 -0700 (PDT)
-From: Guillaume Stols <gstols@baylibre.com>
-Date: Tue, 02 Jul 2024 17:34:12 +0000
-Subject: [PATCH v3 8/8] iio: adc: ad7606: switch mutexes to scoped_guard
+	s=arc-20240116; t=1719942990; c=relaxed/simple;
+	bh=Apev7mV1TmbmNliNcO9E2giuYRzMGlA8lEdXvzWk5K8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hr9mFwg0yiYisWI7rtJKkEsMVckDrZDxX36YPvqz3u+hjb44ayPIvwgM22AGZJTjXTgs5fbjNFP+/N0W3Y2DxH4amFNVnUFmDgyQBNcdiUv/NNr7J9YzPN7MuUOa5TJhXH75bKbpnxyaRYUKooy7A2ZLJsEhM8c7VleqGp73eNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=neuX7k4j; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1719942989; x=1751478989;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Apev7mV1TmbmNliNcO9E2giuYRzMGlA8lEdXvzWk5K8=;
+  b=neuX7k4jwwnJRenC9sc1wHBwyYOwfqdhO1HwLVGux5nQsSpgnH/DjYC7
+   /yXtap0RVqI43zysyT7svqZej0Gwc3Z57TssF85d1hzTyMGtqonfCFpXF
+   RZEe7Fzo8feFhZMkMaWer7gUlLi9pZs3KUhgw0emeGxGmSKjgDyCvMOnH
+   bZaKShb9ZwtGlrpKxdn+Xnf2iFozowbHOlrihxnC8kxj9E+lrzfH1CWIJ
+   X0S5wQVvnmrEWut4I93L5pM1gGegzhyrqOBzZoendyF4liHR7EYMdqRnn
+   VxyUjRBoxQWX14yBB+UxPqadi+n03pstZ6/28lNF39R919/VjElHwqpKS
+   Q==;
+X-CSE-ConnectionGUID: tPjIfqw8Riig4GoSv+2nWA==
+X-CSE-MsgGUID: RaZthrMPR8WQ8toWlulLvw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="16976994"
+X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; 
+   d="scan'208";a="16976994"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2024 10:56:28 -0700
+X-CSE-ConnectionGUID: 0w0GjoV9TYS9IszbimlegA==
+X-CSE-MsgGUID: qJ2dLYKeReqovNOnMY+mjw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; 
+   d="scan'208";a="83533564"
+Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 02 Jul 2024 10:56:25 -0700
+Received: from kbuild by 68891e0c336b with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sOhjq-000OUS-1p;
+	Tue, 02 Jul 2024 17:56:22 +0000
+Date: Wed, 3 Jul 2024 01:55:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Petar Stoykov via B4 Relay <devnull+pd.pstoykov.gmail.com@kernel.org>,
+	linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh+dt@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: oe-kbuild-all@lists.linux.dev, Petar Stoykov <pd.pstoykov@gmail.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] MAINTAINERS: Add Sensirion SDP500
+Message-ID: <202407030117.3F6Sm9vA-lkp@intel.com>
+References: <20240702-mainline_sdp500-v3-3-0902047b3eee@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240702-cleanup-ad7606-v3-8-57fd02a4e2aa@baylibre.com>
-References: <20240702-cleanup-ad7606-v3-0-57fd02a4e2aa@baylibre.com>
-In-Reply-To: <20240702-cleanup-ad7606-v3-0-57fd02a4e2aa@baylibre.com>
-To: Lars-Peter Clausen <lars@metafoo.de>, 
- Michael Hennerich <Michael.Hennerich@analog.com>, 
- Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Michael Hennerich <michael.hennerich@analog.com>, 
- linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Guillaume Stols <gstols@baylibre.com>, jstephan@baylibre.com, 
- dlechner@baylibre.com
-X-Mailer: b4 0.14.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240702-mainline_sdp500-v3-3-0902047b3eee@gmail.com>
 
-Switching to scoped_guard simplifies the code and avoids to take care to
-unlock the mutex in case of premature return.
+Hi Petar,
 
-Signed-off-by: Guillaume Stols <gstols@baylibre.com>
----
- drivers/iio/adc/ad7606.c | 39 +++++++++++++++------------------------
- 1 file changed, 15 insertions(+), 24 deletions(-)
+kernel test robot noticed the following build warnings:
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 50ccc245e314..539e4a8621fe 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -69,19 +69,17 @@ static int ad7606_reg_access(struct iio_dev *indio_dev,
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
-+
- 	if (readval) {
- 		ret = st->bops->reg_read(st, reg);
- 		if (ret < 0)
--			goto err_unlock;
-+			return ret;
- 		*readval = ret;
--		ret = 0;
-+		return 0;
- 	} else {
--		ret = st->bops->reg_write(st, reg, writeval);
-+		return st->bops->reg_write(st, reg, writeval);
- 	}
--err_unlock:
--	mutex_unlock(&st->lock);
--	return ret;
- }
- 
- static int ad7606_read_samples(struct ad7606_state *st)
-@@ -124,19 +122,19 @@ static irqreturn_t ad7606_trigger_handler(int irq, void *p)
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 	int ret;
- 
--	mutex_lock(&st->lock);
-+	guard(mutex)(&st->lock);
- 
- 	ret = ad7606_read_samples(st);
--	if (ret == 0)
--		iio_push_to_buffers_with_timestamp(indio_dev, st->data,
--						   iio_get_time_ns(indio_dev));
-+	if (ret)
-+		goto error_ret;
- 
-+	iio_push_to_buffers_with_timestamp(indio_dev, st->data,
-+					   iio_get_time_ns(indio_dev));
-+error_ret:
- 	iio_trigger_notify_done(indio_dev->trig);
- 	/* The rising edge of the CONVST signal starts a new conversion. */
- 	gpiod_set_value(st->gpio_convst, 1);
- 
--	mutex_unlock(&st->lock);
--
- 	return IRQ_HANDLED;
- }
- 
-@@ -257,19 +255,17 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 	int i, ret, ch = 0;
- 
-+	guard(mutex)(&st->lock);
-+
- 	switch (mask) {
- 	case IIO_CHAN_INFO_SCALE:
--		mutex_lock(&st->lock);
- 		i = find_closest(val2, st->scale_avail, st->num_scales);
- 		if (st->sw_mode_en)
- 			ch = chan->address;
- 		ret = st->write_scale(indio_dev, ch, i);
--		if (ret < 0) {
--			mutex_unlock(&st->lock);
-+		if (ret < 0)
- 			return ret;
--		}
- 		st->range[ch] = i;
--		mutex_unlock(&st->lock);
- 
- 		return 0;
- 	case IIO_CHAN_INFO_OVERSAMPLING_RATIO:
-@@ -277,14 +273,9 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
- 			return -EINVAL;
- 		i = find_closest(val, st->oversampling_avail,
- 				 st->num_os_ratios);
--		mutex_lock(&st->lock);
- 		ret = st->write_os(indio_dev, i);
--		if (ret < 0) {
--			mutex_unlock(&st->lock);
-+		if (ret < 0)
- 			return ret;
--		}
--		st->oversampling = st->oversampling_avail[i];
--		mutex_unlock(&st->lock);
- 
- 		return 0;
- 	default:
+[auto build test WARNING on ab27740f76654ed58dd32ac0ba0031c18a6dea3b]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Petar-Stoykov-via-B4-Relay/dt-bindings-iio-pressure-Add-Sensirion-SDP500/20240702-235054
+base:   ab27740f76654ed58dd32ac0ba0031c18a6dea3b
+patch link:    https://lore.kernel.org/r/20240702-mainline_sdp500-v3-3-0902047b3eee%40gmail.com
+patch subject: [PATCH v3 3/3] MAINTAINERS: Add Sensirion SDP500
+reproduce: (https://download.01.org/0day-ci/archive/20240703/202407030117.3F6Sm9vA-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202407030117.3F6Sm9vA-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   Warning: Documentation/devicetree/bindings/power/wakeup-source.txt references a file that doesn't exist: Documentation/devicetree/bindings/input/qcom,pm8xxx-keypad.txt
+   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
+   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/watchdog/da90??-wdt.txt
+>> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
+   Warning: file ./Documentation/ABI/testing/sysfs-platform-silicom#20:
+   What '/sys/devices/platform/silicom-platform/power_cycle' doesn't have a description
+   Using alabaster theme
 
 -- 
-2.34.1
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 

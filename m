@@ -1,215 +1,155 @@
-Return-Path: <linux-iio+bounces-7147-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7149-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0302924280
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 17:36:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8751A92430D
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 18:02:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88285281FB4
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 15:36:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9FD31C221FA
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 16:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFA911BC06C;
-	Tue,  2 Jul 2024 15:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3BC81BD01D;
+	Tue,  2 Jul 2024 16:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="NXXE2flL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYrDe9UN"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9715516C69A
-	for <linux-iio@vger.kernel.org>; Tue,  2 Jul 2024 15:36:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 711FD1BB6AF;
+	Tue,  2 Jul 2024 16:02:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719934594; cv=none; b=b7LT2b8DNN2V5SmDsYBS05b9M67ewAdmuHbZSYWosIXqtDl+Gbm/3FWAqntusCtOfUySO6FG5ggn6AlXq+GQ/iaYqbEKYP0sZ46XVTfn1OLEmkqBXyOb/fT7tP2vGbk02aGciIdE4H9RXJoQY4yrm7DYjcwLqxG4rXbB6oB7Dl4=
+	t=1719936159; cv=none; b=JbkiK1NdeVaDJpMK/5SPWuHiyMm0sAZy7JquaMFb+Gz+TFsFNMY2SBnnDxt1W1vfIXNexdlxWFVm9l0mpRGjYnaq0e/kWfUxp/1owAASQ2ftlScODXohNNyXoIzlismWfkiwO5o9NOXNLyQlebv3XLIEHzFgTkVd8+V9JRt7yIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719934594; c=relaxed/simple;
-	bh=Fp3x+Gzf/0uHBv6XR8uh15iec1h9n1SDOYsklJ3emuA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X7Qs26rP1+P17tht/G6lJAj2ghO7fpmMz9TJiWarYlpnzlCynS8xWzAbpb2gaW5lBfhiQFnwVwne85DOuUbCS6TiVgUzi9iT4ENofk5u02asz/+k+4y6GCsrJ0JnVXbNjilA3n0ZeN7+muLg/i0GPHu2bTf/tZogyzIUUMECQHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=NXXE2flL; arc=none smtp.client-ip=209.85.160.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-25d634c5907so2726518fac.2
-        for <linux-iio@vger.kernel.org>; Tue, 02 Jul 2024 08:36:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719934592; x=1720539392; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CbTCjOUMkDZIPmsuH+iEeMyNeIVhzfAOvL5XjW90R68=;
-        b=NXXE2flLjyXXQkAq4Rr7DNTlkYZsK5VCWJlLzPePYPuIngbukXBJQqSzIlS+NM0lzM
-         UuHkn+4hjv0lF453qevgTUqgX4esVwwKDLMLdXc4kQBgMBNDQav2AL1jNcP8iRkoi2CL
-         kNZMTHk/wRzhY/G5jDUZbRGU/7hZwMk/OHufhZXHP5xhVcqR8DysoURcRvbbksA1dP+b
-         71jvGNGXLmQYC1ap1lz63AkWEYMKblDk/ziZLYbYcYPvWp8Qf+P8xMhEN5loHwJdFvb1
-         iiP7D+PkNgQkdmrQR044Qi269DTiTKskD+KGqCkxmAWPQtVMQojNYUkG/DQrlVkTkDpM
-         uoLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719934592; x=1720539392;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CbTCjOUMkDZIPmsuH+iEeMyNeIVhzfAOvL5XjW90R68=;
-        b=Ck+oe650/W2+rttWqvue9VvOVOmTL9sGoM2NcPJXETgJz5/xf7PMxTQkhNL5q+kACo
-         v1+dOFrkCEUd9o8ZKsmxHEbtDhwD18tD39V8h4eZCmX0G+mIu2AOoiZ3Uxc6i424P5rg
-         Id0kQwK6yGJXh+mnXJ0ayeu0WjtGIvcTkqQIiSTOo5Axi46D5jendlGbH1ONzG62qoaF
-         nk2IfkMI11DBN5FT6YzPyLLP57n8KuWQtcqrOypch0jORkkUx/0myRu8Ss5BkXrw1gUw
-         AiL28KCLUXdAN4CUtVuHsdpCEUB8ArLLIY1kub3k8GafThlXVWxqIbWDFmIfqD6vZIqz
-         qKpw==
-X-Forwarded-Encrypted: i=1; AJvYcCXiIjcMe2PtPBBX+mladuSYQvFZFArH5vsp/Fr/yxCSkN+lBroDmjMye559ObW1z/AX2a5sM2kb262uLERuaPgSLihieRCv+GbE
-X-Gm-Message-State: AOJu0YyyW64JSbV+gZaOwC0/i7J2eBiR3zRMnMgc7BmH3z3RsP0omkj2
-	05UTp4blZ3f0iHF4ubg8m+5kqot3lq8DpMCqKbBjOJIZ//0AIcqeVyzRONLw8xs=
-X-Google-Smtp-Source: AGHT+IFP+4Qsz+EqJ6flGJt/Sal9Z9g3tdmP0nSmapG6Dq5fs42rjFxxPjALA3t+5y4sIsynpQJ4HA==
-X-Received: by 2002:a05:6870:164c:b0:254:85c0:c70c with SMTP id 586e51a60fabf-25db35936bbmr7665818fac.40.1719934591605;
-        Tue, 02 Jul 2024 08:36:31 -0700 (PDT)
-Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-25d8e388597sm2231963fac.56.2024.07.02.08.36.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jul 2024 08:36:31 -0700 (PDT)
-Message-ID: <bba8a12a-9d1e-467b-a7c1-8a027d5c2f89@baylibre.com>
-Date: Tue, 2 Jul 2024 10:36:29 -0500
+	s=arc-20240116; t=1719936159; c=relaxed/simple;
+	bh=dYNF6iO2wfFDcJE7eHk31m6ISxbwFVT9boKTTNa+uX8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=KzBv+k5U2X6R+6pZmZ2+ozKTGCBUpxmevOmq4NrPkrshpidMXNcfVGGf31N/47gXVHXLR76lldf9eIdDkxPiyqJqoKa7DY2d7qQyKwBI//SURR0G1gTUlgOMPkAegLIH8V2xhSkEuXapd9OG6gVpWKE43/XSUZn5jsiCoYC0yek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYrDe9UN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 00F4BC116B1;
+	Tue,  2 Jul 2024 16:02:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719936159;
+	bh=dYNF6iO2wfFDcJE7eHk31m6ISxbwFVT9boKTTNa+uX8=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=DYrDe9UN8GXF4R7V+2IiyMjOK2AIDleqAEjzHHEe192U90WmoqDZlbGeMbJPy+RG+
+	 3ixghLFszYs+U6DA9vctptEj6mS84LRcl4D+ZD3Cc97zJlYdfFfupAlucndYXksChp
+	 v85x1061KfhxBrUIGaXGHCO6pvi6q6GkYAZ0KOActlodmmFgOemCw5wIxuAv4L1W0D
+	 AdMb4TcWuxIHnigYeK97/Acsvp81caZajOQKnFNqlU5pT3vp1EmfUcpv/iZaMMdAxW
+	 H1lnTJ2TAkvDTgWZ4zojESnxjxLpzrqOr442tfwTpkDWG3cmFXjECPfa+lydwXJKzG
+	 z98uYjngXIqRg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DFD40C3064D;
+	Tue,  2 Jul 2024 16:02:38 +0000 (UTC)
+From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
+Subject: [PATCH 00/20] iio: make masklength __private (round 1)
+Date: Tue, 02 Jul 2024 18:02:32 +0200
+Message-Id: <20240702-dev-iio-masklength-private-v1-0-98193bf536a6@analog.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 4/6] dt-bindings: iio: dac: Add adi,ltc2664.yaml
-To: Kim Seer Paller <kimseer.paller@analog.com>,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Liam Girdwood <lgirdwood@gmail.com>,
- Mark Brown <broonie@kernel.org>, Dimitri Fedrau <dima.fedrau@gmail.com>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Rob Herring <robh@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Michael Hennerich <michael.hennerich@analog.com>,
- =?UTF-8?Q?Nuno_S=C3=A1?= <noname.nuno@gmail.com>
-References: <20240702030025.57078-1-kimseer.paller@analog.com>
- <20240702030025.57078-5-kimseer.paller@analog.com>
-Content-Language: en-US
-From: David Lechner <dlechner@baylibre.com>
-In-Reply-To: <20240702030025.57078-5-kimseer.paller@analog.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAJgkhGYC/x3MSw5AMBAA0KvIrE1SRX2uIhbFYIKSVhpJ4+4ay
+ 7d5ARxZJgdtEsCSZ8enicjSBMZVm4WQp2iQQhZCZRVO5JH5xEO7bSez3Ctelr2+CYXMx0E2pa5
+ qBTG4LM38/HnXv+8H5PZxCGwAAAA=
+To: linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org
+Cc: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, 
+ Cosmin Tanislav <cosmin.tanislav@analog.com>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Benson Leung <bleung@chromium.org>, Guenter Roeck <groeck@chromium.org>, 
+ Dmitry Rokosov <ddrokosov@sberdevices.ru>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719936156; l=3395;
+ i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
+ bh=dYNF6iO2wfFDcJE7eHk31m6ISxbwFVT9boKTTNa+uX8=;
+ b=dYayS/sYzYBMk3LDN5MD+QUI9w92ZbUDruyAqtEdvLcUf2ukXZglMWK/T9YrXjvcpEoybuZez
+ o4HfrGK/hPaBZK9VUZnwEcX3u3uaHqvVLIvaotmLg8apkuK8x2WJA0s
+X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
+ pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
+X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
+ auth_id=100
+X-Original-From: Nuno Sa <nuno.sa@analog.com>
+Reply-To: nuno.sa@analog.com
 
-On 7/1/24 10:00 PM, Kim Seer Paller wrote:
-> Add documentation for ltc2664.
-> 
+Hi Jonathan,
 
-...
+Here it goes the first round of what we discussed in [1] about
+annotating .masklength as __private. Patches should be fairly simple so
+hopefully I did not messed up much...
 
-> +  adi,manual-span-operation-config:
-> +    description:
-> +      This property must mimic the MSPAN pin configurations. By tying the MSPAN
-> +      pins (MSP2, MSP1 and MSP0) to GND and/or VCC, any output range can be
-> +      hardware-configured with different mid-scale or zero-scale reset options.
-> +      The hardware configuration is latched during power on reset for proper
-> +      operation.
-> +        0 - MPS2=GND, MPS1=GND, MSP0=GND (+-10V, reset to 0V)
-> +        1 - MPS2=GND, MPS1=GND, MSP0=VCC (+-5V, reset to 0V)
-> +        2 - MPS2=GND, MPS1=VCC, MSP0=GND (+-2.5V, reset to 0V)
-> +        3 - MPS2=GND, MPS1=VCC, MSP0=VCC (0V to 10, reset to 0V)
-> +        4 - MPS2=VCC, MPS1=GND, MSP0=GND (0V to 10V, reset to 5V)
-> +        5 - MPS2=VCC, MPS1=GND, MSP0=VCC (0V to 5V, reset to 0V)
-> +        6 - MPS2=VCC, MPS1=VCC, MSP0=GND (0V to 5V, reset to 2.5V)
-> +        7 - MPS2=VCC, MPS1=VCC, MSP0=VCC (0V to 5V, reset to 0V, enables SoftSpan)
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [0, 1, 2, 3, 4, 5, 6, 7]
-> +    default: 7
-> +
-> +  io-channels:
-> +    description:
-> +      ADC channel to monitor voltages and temperature at the MUXOUT pin.
-> +    maxItems: 1
-> +
-> +  '#address-cells':
-> +    const: 1
-> +
-> +  '#size-cells':
-> +    const: 0
-> +
-> +patternProperties:
-> +  "^channel@[0-3]$":
-> +    $ref: dac.yaml
-> +    type: object
-> +    additionalProperties: false
-> +
-> +    properties:
-> +      reg:
-> +        description: The channel number representing the DAC output channel.
-> +        maximum: 3
-> +
-> +      adi,toggle-mode:
-> +        description:
-> +          Set the channel as a toggle enabled channel. Toggle operation enables
-> +          fast switching of a DAC output between two different DAC codes without
-> +          any SPI transaction.
-> +        type: boolean
-> +
-> +      output-range-microvolt:
+Note that in core, there's one place where we're still directly writing
+into .masklength (when it's effectively set). The plan is then to
+directly use ACCESS_PRIVATE() in there in the same patch where we mark
+.masklength as __private.
 
-Could be helpful to add a description that says this property is only allowed when
-SoftSpan is enabled rather than requiring people to reason through the logic.
+Note this was only compile tested for arm with allyesconfig.
 
-> +        oneOf:
-> +          - items:
-> +              - const: 0
-> +              - enum: [5000000, 10000000]
-> +          - items:
-> +              - const: -5000000
-> +              - const: 5000000
-> +          - items:
-> +              - const: -10000000
-> +              - const: 10000000
-> +          - items:
-> +              - const: -2500000
-> +              - const: 2500000
+[1]: https://lore.kernel.org/linux-iio/20240612-dev-iio-scan-private-v1-0-7c75c8e3d30b@analog.com/
 
-           default: [0, 5000000]
+---
+Nuno Sa (20):
+      iio: core: add accessors  'masklength'
+      iio: core: make use of iio_get_masklength()
+      iio: buffer: make use of iio_get_masklength()
+      iio: accel: adxl367: make use of iio_get_masklength()
+      iio: accel: adx1372: make use of iio_get_masklength()
+      iio: accel: bma180: make use of iio_for_each_active_channel()
+      iio: accel: bmc150-accel-core: make use of iio_for_each_active_channel()
+      iio: accel: cros_ec_accel_legacy: make use of iio_get_masklength()
+      iio: accel: fxls8962af-core: make use of iio_for_each_active_channel()
+      iio: accel: msa311: make use of iio_for_each_active_channel()
+      iio: accel: sca3300: make use of iio_for_each_active_channel()
+      iio: accel: stk8312: make use of iio_for_each_active_channel()
+      iio: accel: stk8ba50: make use of iio_for_each_active_channel()
+      iio: adc: ad7266: make use of iio_get_masklength()
+      iio: adc: ad7298: make use of iio_get_masklength()
+      iio: adc: ad799x: make use of iio_get_masklength()
+      iio: adc: ad_sigma_delta: use new '.masklength' accessors
+      iio: adc: at91_adc: make use of iio_for_each_active_channel()
+      iio: imu: adis16475: make use of iio_for_each_active_channel()
+      iio: imu: adis16480: make use of iio_for_each_active_channel()
 
-> +
-> +    required:
-> +      - reg
-> +
-> +    allOf:
-> +      - if:
-> +          properties:
-> +            adi,manual-span-operation-config:
-> +              const: 7
-> +        then:
-> +          patternProperties:
-> +            "^channel@[0-3]$":
-> +              required: [output-range-microvolt]
+ drivers/iio/accel/adxl367.c                   |  2 +-
+ drivers/iio/accel/adxl372.c                   |  2 +-
+ drivers/iio/accel/bma180.c                    |  3 +-
+ drivers/iio/accel/bmc150-accel-core.c         |  3 +-
+ drivers/iio/accel/cros_ec_accel_legacy.c      |  2 +-
+ drivers/iio/accel/fxls8962af-core.c           |  3 +-
+ drivers/iio/accel/msa311.c                    |  3 +-
+ drivers/iio/accel/sca3300.c                   |  3 +-
+ drivers/iio/accel/stk8312.c                   |  3 +-
+ drivers/iio/accel/stk8ba50.c                  |  3 +-
+ drivers/iio/adc/ad7266.c                      |  3 +-
+ drivers/iio/adc/ad7298.c                      |  3 +-
+ drivers/iio/adc/ad799x.c                      |  3 +-
+ drivers/iio/adc/ad_sigma_delta.c              |  6 ++--
+ drivers/iio/adc/at91_adc.c                    |  4 +--
+ drivers/iio/buffer/industrialio-buffer-cb.c   |  2 +-
+ drivers/iio/buffer/industrialio-hw-consumer.c |  4 +--
+ drivers/iio/imu/adis16475.c                   |  3 +-
+ drivers/iio/imu/adis16480.c                   |  2 +-
+ drivers/iio/industrialio-buffer.c             | 50 ++++++++++++---------------
+ drivers/iio/industrialio-core.c               |  2 +-
+ include/linux/iio/iio.h                       | 18 ++++++++++
+ 22 files changed, 67 insertions(+), 60 deletions(-)
+---
+base-commit: 21ab030b8f8b4704c299435e167824ec90c8bab5
+change-id: 20240617-dev-iio-masklength-private-023cb295a786
+--
 
+Thanks!
+- Nuno Sá
 
-This logic doesn't look right to me. If adi,manual-span-operation-config
-is not 7, then SoftSpan is disabled, so we should have:
-
-    output-range-microvolt: false
-
-In that case since individual channels can't have a per-channel
-configuration because SoftSpan is not enabled (unless I am misunderstanding
-the datasheet?).
-
-Also, output-range-microvolt should never be required, even when
-adi,manual-span-operation-config is 7 because there is already a default
-value range (0V to 5V) specified by the adi,manual-span-operation-config
-property.
-
-I think the correct logic would be:
-
-    - if:
-        not:
-          properties:
-            adi,manual-span-operation-config:
-              const: 7
-        then:
-          patternProperties:
-            "^channel@[0-3]$":
-              properties:
-                output-range-microvolt: false
 
 

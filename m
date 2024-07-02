@@ -1,67 +1,71 @@
-Return-Path: <linux-iio+bounces-7117-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7118-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E397491ED3B
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 05:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D883391ED3E
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 05:02:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1413E1C2122F
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 03:02:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 072281C21461
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 03:02:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A02495821A;
-	Tue,  2 Jul 2024 03:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BEEC74297;
+	Tue,  2 Jul 2024 03:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="z9MgWZpX"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="pSUx3S98"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CEC2030B;
-	Tue,  2 Jul 2024 03:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E8F29CF0;
+	Tue,  2 Jul 2024 03:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719889289; cv=none; b=O93FRRX7oWQuhplQIKcA59XBQhWfZinoXzMC/T7+Ha2gxT+x70bM2/uII5anSHhI2lBB8oxn0nVL7sN9zkH7zOAI1Bd4GIft7fUlr7e4HgXwf2N2xWyi3PtdFJ1lMURfCFZOT8nav8k/6ZiJ6WEnDIC8ev067RuTctgl1k5YmVI=
+	t=1719889296; cv=none; b=nb08QIrxD5tyC/tg2lWmJHkCAAauyn4q9whUcIBxQeLw2x+cNq108lBoGlQhOaGHJBfpzCMiaHgvVzoTnEc3Ei+yuecS++UGxTB55yoIJLrrUW7TRtxX6aC+Ut5NoJ25CeG2TMFbnGeWvi8sRXWlI/OukZK84BQ7lsUToaLbFx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719889289; c=relaxed/simple;
-	bh=lplyi8mT03vC3ksYVx4N7Q0AkiyexrUep7aLa2L4RWQ=;
+	s=arc-20240116; t=1719889296; c=relaxed/simple;
+	bh=TBsBuaGMkb56ehMGUudAsXo4M6l6fZvJiCJi3eVC79k=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MeCKe1zeQTfFFTZZ7kQ/PF8g3f0hX7mOlEZ1BtJMrHNLlxwRPJ8+/tr8jSpqrzL3jYw4EO+tN/X3NptRF+MVraQd+KGO1HMS5cYrHuq3X3IDSICyv64plpIxSh6Bz3Q3vVDUfME+L9X6sKTIMBxf5gQx93nO90ZxF9fJs6iGMhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=z9MgWZpX; arc=none smtp.client-ip=148.163.135.77
+	 MIME-Version:Content-Type; b=jcJhvkwCN6Ip34dngZPGmbWDkftBInLt6g/Vopc+S9uSWSEUsPwJT4/svj19TXBXfYg1LOdmkEJ6s+pud62pK+2rjmn7DgUbrEInoF6YRWYzxbnBMhd311ntLbW1tYEMydVhBIZ/bGGySgYFKfhE7NTPh08qNdmo+KIrHKRCiPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=pSUx3S98; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167088.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 46228Hmk002097;
-	Mon, 1 Jul 2024 23:01:13 -0400
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 461NoXJH002311;
+	Mon, 1 Jul 2024 23:01:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=P4rPz
-	bng6IdDtG1rgZ7rXgDJKUT2vhcKXsp7XF166Ys=; b=z9MgWZpXbHBWKmbbTfd95
-	/JvQFpppf27LTCeGvbA/fZTj+D1lw0Y+9dtpWdwvvLcoSQpfTgJ0XpHSddmZtdOT
-	74qdlg//AmbbjIdOlJbl9sfjJOKUi0dYJFekoZmKA9Ah0HrlEPohudR3BwSsGc98
-	qYV+t1QMdeuTXZUlmXnJ1busRhYTBFIXVt/GiF7sUYU78vmbSra4ZSukw27/FSzp
-	fY1jPki48F3xiAWmIwD9wMgIhLlEUba3vs05uwLuG1RSE9NyU3R7XNLn0Vxrb822
-	u5Q3H8Zzu3sH2630zgy/1dhzFSeX9NujaQd/nTN2k/HbnzoEKggrtq8o9b7THmQW
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=jksTz
+	6XDfABA0SSJnt+neunC6sbO5Is3A5qCATXIJm0=; b=pSUx3S98FMYEmnfHx7XLV
+	s8oD25SLUNArJMI9YJ+zhPw36iY1QgaQ8AUfL58b+2hVZaHH6wDCbWkvbKU4KUej
+	h84ubhNDmOKRFicCUO458eEwNkihrT02e/ZTaH2dy/dTu4uJUVGRlpmqFyJEYq5o
+	DiWKZFKXFGbDzu7cM51bKX1aU0jFHIAANX1lESXl6TpZhXC3wYdBaJR2J0aimmCW
+	IDGHCzKiWP6rlzxGAw77vBdoBoG62Er7ntnMHY82jBD3FosXipFdJ6BaEm1yr0dX
+	p0c71YNmXwmUcWANhtUzCzuWFsLFYXyEuRCOfe4kRVooGtAAy9Nsh6xJEEzNkKZ2
 	g==
 Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 402c43ry7k-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 4046g1gkj7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 01 Jul 2024 23:01:13 -0400 (EDT)
-Received: from ASHBMBX8.ad.analog.com (ASHBMBX8.ad.analog.com [10.64.17.5])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 46231BGW041271
+	Mon, 01 Jul 2024 23:01:20 -0400 (EDT)
+Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
+	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 46231Jq0041358
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 1 Jul 2024 23:01:11 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX8.ad.analog.com
- (10.64.17.5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 1 Jul 2024
- 23:01:10 -0400
+	Mon, 1 Jul 2024 23:01:19 -0400
+Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
+ ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 1 Jul 2024 23:01:18 -0400
+Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.14; Mon, 1 Jul 2024 23:01:16 -0400
 Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
  (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 1 Jul 2024 23:01:10 -0400
+ Transport; Mon, 1 Jul 2024 23:01:16 -0400
 Received: from kim-VirtualBox.ad.analog.com (KPALLER2-L03.ad.analog.com [10.117.220.28])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 46230WbP032046;
-	Mon, 1 Jul 2024 23:00:59 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 46230WbQ032046;
+	Mon, 1 Jul 2024 23:01:04 -0400
 From: Kim Seer Paller <kimseer.paller@analog.com>
 To: <linux-kernel@vger.kernel.org>, <linux-iio@vger.kernel.org>,
         <devicetree@vger.kernel.org>
@@ -74,16 +78,16 @@ CC: Jonathan Cameron <jic23@kernel.org>,
         Dimitri Fedrau
 	<dima.fedrau@gmail.com>,
         Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Rob
- Herring <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-        Michael
- Hennerich <michael.hennerich@analog.com>,
+        "Rob
+ Herring" <robh@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
+        "Michael
+ Hennerich" <michael.hennerich@analog.com>,
         =?UTF-8?q?Nuno=20S=C3=A1?=
 	<noname.nuno@gmail.com>,
         Kim Seer Paller <kimseer.paller@analog.com>
-Subject: [PATCH v5 4/6] dt-bindings: iio: dac: Add adi,ltc2664.yaml
-Date: Tue, 2 Jul 2024 11:00:23 +0800
-Message-ID: <20240702030025.57078-5-kimseer.paller@analog.com>
+Subject: [PATCH v5 5/6] dt-bindings: iio: dac: Add adi,ltc2672.yaml
+Date: Tue, 2 Jul 2024 11:00:24 +0800
+Message-ID: <20240702030025.57078-6-kimseer.paller@analog.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240702030025.57078-1-kimseer.paller@analog.com>
 References: <20240702030025.57078-1-kimseer.paller@analog.com>
@@ -96,54 +100,54 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: liRKFl4UNSp7H-VvTDnZ1zR1VRdaf0jA
-X-Proofpoint-GUID: liRKFl4UNSp7H-VvTDnZ1zR1VRdaf0jA
+X-Proofpoint-ORIG-GUID: chWelC81BlCochIMPCUlfEm5kIDH1ZM_
+X-Proofpoint-GUID: chWelC81BlCochIMPCUlfEm5kIDH1ZM_
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-01_23,2024-07-01_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 suspectscore=0 adultscore=0 bulkscore=0 malwarescore=0
- spamscore=0 impostorscore=0 mlxscore=0 clxscore=1015 phishscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 adultscore=0
+ priorityscore=1501 bulkscore=0 mlxscore=0 mlxlogscore=999
+ lowpriorityscore=0 impostorscore=0 phishscore=0 suspectscore=0
+ clxscore=1015 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2406140001 definitions=main-2407020020
 
-Add documentation for ltc2664.
+Add documentation for ltc2672.
 
 Co-developed-by: Michael Hennerich <michael.hennerich@analog.com>
 Signed-off-by: Michael Hennerich <michael.hennerich@analog.com>
 Signed-off-by: Kim Seer Paller <kimseer.paller@analog.com>
 ---
- .../bindings/iio/dac/adi,ltc2664.yaml         | 176 ++++++++++++++++++
- MAINTAINERS                                   |   8 +
- 2 files changed, 184 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
+ .../bindings/iio/dac/adi,ltc2672.yaml         | 160 ++++++++++++++++++
+ MAINTAINERS                                   |   1 +
+ 2 files changed, 161 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
 
-diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
+diff --git a/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
 new file mode 100644
-index 000000000000..51c2e8502b9c
+index 000000000000..4c78e46c58d8
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
-@@ -0,0 +1,176 @@
++++ b/Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
+@@ -0,0 +1,160 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/iio/dac/adi,ltc2664.yaml#
++$id: http://devicetree.org/schemas/iio/dac/adi,ltc2672.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Analog Devices LTC2664 DAC
++title: Analog Devices LTC2672 DAC
 +
 +maintainers:
 +  - Michael Hennerich <michael.hennerich@analog.com>
 +  - Kim Seer Paller <kimseer.paller@analog.com>
 +
 +description: |
-+  Analog Devices LTC2664 4 channel, 12-/16-Bit, +-10V DAC
-+  https://www.analog.com/media/en/technical-documentation/data-sheets/2664fa.pdf
++  Analog Devices LTC2672 5 channel, 12-/16-Bit, 300mA DAC
++  https://www.analog.com/media/en/technical-documentation/data-sheets/ltc2672.pdf
 +
 +properties:
 +  compatible:
 +    enum:
-+      - adi,ltc2664
++      - adi,ltc2672
 +
 +  reg:
 +    maxItems: 1
@@ -154,11 +158,23 @@ index 000000000000..51c2e8502b9c
 +  vcc-supply:
 +    description: Analog Supply Voltage Input.
 +
-+  v-pos-supply:
-+    description: Positive Supply Voltage Input.
-+
 +  v-neg-supply:
 +    description: Negative Supply Voltage Input.
++
++  vdd0-supply:
++    description: Positive Supply Voltage Input for DAC OUT0.
++
++  vdd1-supply:
++    description: Positive Supply Voltage Input for DAC OUT1.
++
++  vdd2-supply:
++    description: Positive Supply Voltage Input for DAC OUT2.
++
++  vdd3-supply:
++    description: Positive Supply Voltage Input for DAC OUT3.
++
++  vdd4-supply:
++    description: Positive Supply Voltage Input for DAC OUT4.
 +
 +  iovcc-supply:
 +    description: Digital Input/Output Supply Voltage.
@@ -171,34 +187,26 @@ index 000000000000..51c2e8502b9c
 +
 +  reset-gpios:
 +    description:
-+      Active-low Asynchronous Clear Input. A logic low at this level-triggered
-+      input clears the part to the reset code and range determined by the
-+      hardwired option chosen using the MSPAN pins. The control registers are
-+      cleared to zero.
++      Active Low Asynchronous Clear Input. A logic low at this level triggered
++      input clears the device to the default reset code and output range, which
++      is zero-scale with the outputs off. The control registers are cleared to
++      zero.
 +    maxItems: 1
 +
-+  adi,manual-span-operation-config:
++  adi,rfsadj-ohms:
 +    description:
-+      This property must mimic the MSPAN pin configurations. By tying the MSPAN
-+      pins (MSP2, MSP1 and MSP0) to GND and/or VCC, any output range can be
-+      hardware-configured with different mid-scale or zero-scale reset options.
-+      The hardware configuration is latched during power on reset for proper
-+      operation.
-+        0 - MPS2=GND, MPS1=GND, MSP0=GND (+-10V, reset to 0V)
-+        1 - MPS2=GND, MPS1=GND, MSP0=VCC (+-5V, reset to 0V)
-+        2 - MPS2=GND, MPS1=VCC, MSP0=GND (+-2.5V, reset to 0V)
-+        3 - MPS2=GND, MPS1=VCC, MSP0=VCC (0V to 10, reset to 0V)
-+        4 - MPS2=VCC, MPS1=GND, MSP0=GND (0V to 10V, reset to 5V)
-+        5 - MPS2=VCC, MPS1=GND, MSP0=VCC (0V to 5V, reset to 0V)
-+        6 - MPS2=VCC, MPS1=VCC, MSP0=GND (0V to 5V, reset to 2.5V)
-+        7 - MPS2=VCC, MPS1=VCC, MSP0=VCC (0V to 5V, reset to 0V, enables SoftSpan)
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [0, 1, 2, 3, 4, 5, 6, 7]
-+    default: 7
++      If FSADJ is tied to VCC, an internal RFSADJ (20 kΩ) is selected, which
++      results in nominal output ranges. When an external resistor of 19 kΩ to
++      41 kΩ can be used instead by connecting the resistor between FSADJ and GND
++      it controls the scaling of the ranges, and the internal resistor is
++      automatically disconnected.
++    minimum: 19000
++    maximum: 41000
++    default: 20000
 +
 +  io-channels:
 +    description:
-+      ADC channel to monitor voltages and temperature at the MUXOUT pin.
++      ADC channel to monitor voltages and currents at the MUX pin.
 +    maxItems: 1
 +
 +  '#address-cells':
@@ -208,7 +216,7 @@ index 000000000000..51c2e8502b9c
 +    const: 0
 +
 +patternProperties:
-+  "^channel@[0-3]$":
++  "^channel@[0-4]$":
 +    $ref: dac.yaml
 +    type: object
 +    additionalProperties: false
@@ -216,7 +224,7 @@ index 000000000000..51c2e8502b9c
 +    properties:
 +      reg:
 +        description: The channel number representing the DAC output channel.
-+        maximum: 3
++        maximum: 4
 +
 +      adi,toggle-mode:
 +        description:
@@ -225,33 +233,15 @@ index 000000000000..51c2e8502b9c
 +          any SPI transaction.
 +        type: boolean
 +
-+      output-range-microvolt:
-+        oneOf:
-+          - items:
-+              - const: 0
-+              - enum: [5000000, 10000000]
-+          - items:
-+              - const: -5000000
-+              - const: 5000000
-+          - items:
-+              - const: -10000000
-+              - const: 10000000
-+          - items:
-+              - const: -2500000
-+              - const: 2500000
++      output-range-microamp:
++        items:
++          - const: 0
++          - enum: [3125000, 6250000, 12500000, 25000000, 50000000, 100000000,
++                   200000000, 300000000]
 +
 +    required:
 +      - reg
-+
-+    allOf:
-+      - if:
-+          properties:
-+            adi,manual-span-operation-config:
-+              const: 7
-+        then:
-+          patternProperties:
-+            "^channel@[0-3]$":
-+              required: [output-range-microvolt]
++      - output-range-microamp
 +
 +required:
 +  - compatible
@@ -259,7 +249,6 @@ index 000000000000..51c2e8502b9c
 +  - spi-max-frequency
 +  - vcc-supply
 +  - iovcc-supply
-+  - v-pos-supply
 +  - v-neg-supply
 +
 +allOf:
@@ -273,14 +262,13 @@ index 000000000000..51c2e8502b9c
 +        #address-cells = <1>;
 +        #size-cells = <0>;
 +        dac@0 {
-+            compatible = "adi,ltc2664";
++            compatible = "adi,ltc2672";
 +            reg = <0>;
 +            spi-max-frequency = <10000000>;
 +
 +            vcc-supply = <&vcc>;
 +            iovcc-supply = <&vcc>;
 +            ref-supply = <&vref>;
-+            v-pos-supply = <&vpos>;
 +            v-neg-supply = <&vneg>;
 +
 +            io-channels = <&adc 0>;
@@ -290,35 +278,28 @@ index 000000000000..51c2e8502b9c
 +            channel@0 {
 +                    reg = <0>;
 +                    adi,toggle-mode;
-+                    output-range-microvolt = <(-10000000) 10000000>;
++                    output-range-microamp = <0 3125000>;
 +            };
 +
 +            channel@1 {
 +                    reg = <1>;
-+                    output-range-microvolt= <0 10000000>;
++                    output-range-microamp = <0 6250000>;
 +            };
 +        };
 +    };
 +...
 diff --git a/MAINTAINERS b/MAINTAINERS
-index 0cbeb03847f5..2629e818ffdc 100644
+index 2629e818ffdc..68685b2a3e77 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -13080,6 +13080,14 @@ S:	Maintained
- F:	Documentation/devicetree/bindings/iio/dac/lltc,ltc1660.yaml
- F:	drivers/iio/dac/ltc1660.c
+@@ -13087,6 +13087,7 @@ L:	linux-iio@vger.kernel.org
+ S:	Supported
+ W:	https://ez.analog.com/linux-software-drivers
+ F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
++F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2672.yaml
  
-+LTC2664 IIO DAC DRIVER
-+M:	Michael Hennerich <michael.hennerich@analog.com>
-+M:	Kim Seer Paller <kimseer.paller@analog.com>
-+L:	linux-iio@vger.kernel.org
-+S:	Supported
-+W:	https://ez.analog.com/linux-software-drivers
-+F:	Documentation/devicetree/bindings/iio/dac/adi,ltc2664.yaml
-+
  LTC2688 IIO DAC DRIVER
  M:	Nuno Sá <nuno.sa@analog.com>
- L:	linux-iio@vger.kernel.org
 -- 
 2.34.1
 

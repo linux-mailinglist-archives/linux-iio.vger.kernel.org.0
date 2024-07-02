@@ -1,512 +1,282 @@
-Return-Path: <linux-iio+bounces-7129-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7130-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7001C923DE4
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 14:32:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69D24923E28
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 14:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93BA21C24A4F
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 12:32:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1B89B210EB
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 12:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76FC61448E1;
-	Tue,  2 Jul 2024 12:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CFC16C6A2;
+	Tue,  2 Jul 2024 12:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SVKLj4VQ"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="U99sVV+o"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E01D823DE;
-	Tue,  2 Jul 2024 12:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD041158DC8
+	for <linux-iio@vger.kernel.org>; Tue,  2 Jul 2024 12:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719923452; cv=none; b=m4uf6C7QIRW35J+IO/FQ0sjcCCIVCw3fWVVXpKGVnkTStRYsULcnzowE6bYM+PUO5QRx4E7DgGO7WCPBX2kZwEiUHBfQPYSfr4E9sR1kM0gfuZCVgA2uy1d6zXG/Mcnb9PK0GXQ6rckF/r0cPiMml17env7QgCnb1KPHdOahgd0=
+	t=1719924787; cv=none; b=ujtjG2rKsahyAEV50H3xZGNzJJWESIXKUOtAxEkkvazwm6btyAK/uDq06RNGbKQT4RBiV0tqq7Ul8J+s9lkyl5z2WteGB8l2z2STrp4V2lTftHw0g5hqmihRVKEJoS1j8IChEI7SV1Wd1zncsnnMujOQeh+vFoj0+a/Kq03ae4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719923452; c=relaxed/simple;
-	bh=tZZmdPtZa7o8s+dgyjbj+fo+ry5pkzlsXO2DbaNWqAk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qwjl1CY4OVQGH1WqMuavoI01fgwZzMIjBlou4JpgCjJWbRUiUP7ovFFNLfy9DqVJ22WdABhUO2s3hB+P+OijBYGHsZAA+ElvhAhRGCi09UXAApiTUTsRbHLBp9X+Mqxp08/tPTRpPNAQwDrspJA54mbL+e5q5KXWMO7bf50qT50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SVKLj4VQ; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-1fb0d88fd25so121095ad.0;
-        Tue, 02 Jul 2024 05:30:50 -0700 (PDT)
+	s=arc-20240116; t=1719924787; c=relaxed/simple;
+	bh=EE9VMssCnR5r1SJkLPOTxAxdyk/ynSBn2ejlAazK20g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=PbBCPF50j9DozoC8Rky7ttkUvwcx2fMpZlkNK5YNSoUq4WP4cfygPyP2fTb5Vfpq3EDPwm8xj8EJFm/azd76a/M2K4+eAzTrKjwqSi4dqPJ5FdNusGC7USPhkLUTsfyy0wAN6UbTiTx1qaipk4EXpAUcmngm4y9244mSKTtsMRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=U99sVV+o; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-367601ca463so2383622f8f.0
+        for <linux-iio@vger.kernel.org>; Tue, 02 Jul 2024 05:53:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719923450; x=1720528250; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=6JTFR+8sSGfzBmAKFiUqZIl2Gfl8BPeTwXrzS0eek04=;
-        b=SVKLj4VQ4loq6cl5qIyFTBTr7iTNsJ2BSbbdPDNadM1gMXXzwWOkp4B730Y7nZbhmU
-         l86Jp7YROvH+D+vNs60Q9Q+vDBIuLLiLr7wkBPgoGPDxsXj0waS6i4sbeurvhTtneGL8
-         rEcMpYLymFFIQVfSqUk1tLbRhWltqur9pwlcJ8FtNMBT94TLT9nGLrOFL96rIHXO7+Ah
-         QKrSu/US7RJ4s13ScNUgK3yzmXUVGOAiKGPgMqBAoyFlUq62gP2VA9Vurs2NF9Gb/nUK
-         XlMZKtPGMHWfJ5OJ0FXJurdO2XwGWDPEBoS0VmYw2VzptYKbqbjKQhT3wA5jjS29K4Na
-         Jffg==
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719924782; x=1720529582; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TzqRvuDLH0pBN0onOuhawPxbUBxlc5j7kY4fNlDza2k=;
+        b=U99sVV+oJCvjoxmDVLZ9ODC/kHDOFl5H3zUn0cK/yceDnZH2yKyVcfOTaquEsaF1cx
+         NZda/rrPWRlUsLW5ewOqvbQPSFdu6h2QI1Iir/HuHbTuT6zk5qAjnKFLkqv6PP4aXQaf
+         Pg/7YdmXZtscZ5J0DVrqn/wLSJS9iubTXrKtMtdVH/hAxP57LVqNDt06XhIgZicr7zUL
+         Pxqa2XcEJ1xz1efxGa4mK86h75l1Luvx9BPZkO2lBLyaM8XcMR+t1Ee7yM4u7R/X4ehE
+         Hf5f2WWsOUcEB282Oe2lQ7B2UI59NVJKB/vBNl+fgAoFA5QAv5usvpuCyqje/5IpEMKg
+         HjUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719923450; x=1720528250;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6JTFR+8sSGfzBmAKFiUqZIl2Gfl8BPeTwXrzS0eek04=;
-        b=D1uaKuiVJ4Akh5peVlOzdNaFmwKQJWJ1owzb35bwXcOTTl+uo2tL695BiY3a4z2yEo
-         4SE2ZGQU7HlUnACCrtjkYBkr6PBUZl/7Y1n0cmCW7bdteLzd9ixYsiPiDOkOTPXFgr7J
-         Cs8CyRu6YXPEFvtAinAVIyvuV2BfXh0B1Lhkev2WLs5Vij/og0WZL8fi6LUJji//Vky1
-         yIoI9BTC4QCs3LFSCw+c2D6fs9jViHry/u6rv0AjR6IZ324PtARHTOd4zWdHfmCy/CsR
-         ZC1XqPDrmFGw4G0ZjAYLy84JmHL6y8qJZR6mDWG4qE8yD5h4pYWeSUxO0rCBocUnr+p3
-         h08w==
-X-Forwarded-Encrypted: i=1; AJvYcCURoEBA2EO5Uc51zEiobRnhB0ZB3/dggP0c+cVM2BwkXowatpMTizTMt8sMsJpnoOQQRMpeB7ItcTc7ll2LMRwPZIV3p0TD7qnzp75jeuTkmbGlOA4sJLD8aabvXKQIbJ9ZAHVZs1MJ+NpruaXSy+jtIxUVfjcze/yBOA2re/OiXwVU5w==
-X-Gm-Message-State: AOJu0YybX0PoJ0JrEgpgeGN6uLRlENBXO1ldyck6FN/tUPSDy1Ycp9l1
-	vSkvpfDgzFSRU7FqjEnamCMehf90gLpu8EszPlDeQ+uFM9T79ZMwtEOrCwPSWr/Pdfrm
-X-Google-Smtp-Source: AGHT+IGWzbKBKvyWYvOUE+ZR+SxhDi5+un4Oel8Tex8bd3y9uIHjAMegfEc6WGFF30FDc5O6HxR7Tg==
-X-Received: by 2002:a17:902:e744:b0:1f9:ad91:f8d0 with SMTP id d9443c01a7336-1fac7e4b700mr180240345ad.8.1719923449356;
-        Tue, 02 Jul 2024 05:30:49 -0700 (PDT)
-Received: from [100.90.230.39] ([45.32.86.188])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac1596915sm82833945ad.245.2024.07.02.05.30.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 02 Jul 2024 05:30:48 -0700 (PDT)
-Message-ID: <202d3ded-df65-4b91-bd53-045136ea4346@gmail.com>
-Date: Tue, 2 Jul 2024 20:30:40 +0800
+        d=1e100.net; s=20230601; t=1719924782; x=1720529582;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TzqRvuDLH0pBN0onOuhawPxbUBxlc5j7kY4fNlDza2k=;
+        b=ELzngvRRaCl5yi+fVh+/gSoTjEJqHVclrQYYnTeJG55BObASq/W+2LLmdCQkJ+SVCI
+         J23n7vu8/07JZoNXg3kvfL8G7WHdpXoO826XEJqyqbz+EC31Dg5Rpa4rpAUMTv52vZXK
+         4KKtUltkbUHEbUJTdFRyy8ilN0wcszPTQQXtPCRSZiltk9AxGv8rJ+heDwuMPUaD25e2
+         oImYl5yRL/KdbeEoT2SG8b0CzvGDybZOZMPUwCbgiCA72ZrlT7Y87A0G6GCLWlPe077D
+         l/6jiaLAzIfI6JZwanl7/LNcSPIDq+lEGL3XD1hfcMzR12rrquTIkuy/nZj7y1plvFCH
+         CTcA==
+X-Gm-Message-State: AOJu0YzOLDsJ4GNQGRpvFXBZYvefRXYFLAgESB1iPhywtMxlOD2aXtNd
+	3RaFGjv3g9MH+klfJUuAwzqS0zr/DRYn9VgjbBsC4C0in0EdmUcqDAxwg7CFock=
+X-Google-Smtp-Source: AGHT+IFdY57KtbrSnjYiE9ePTLLZUjyexs3HjSholeijR4GbHb11DetPRQQxPAzH4tDgaabHTWXYrg==
+X-Received: by 2002:adf:f550:0:b0:35f:2c43:8861 with SMTP id ffacd0b85a97d-367757282e8mr4654577f8f.66.1719924782036;
+        Tue, 02 Jul 2024 05:53:02 -0700 (PDT)
+Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3675a103e44sm13142858f8f.107.2024.07.02.05.53.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 02 Jul 2024 05:53:01 -0700 (PDT)
+From: Guillaume Stols <gstols@baylibre.com>
+Date: Tue, 02 Jul 2024 12:52:51 +0000
+Subject: [PATCH v3] iio: adc: ad7606: remove frstdata check for serial mode
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 3/3] iio: proximity: Add driver support for TYHX's
- HX9023S capacitive proximity sensor
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- yasin.lee.x@outlook.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-References: <20240625-add-tyhx-hx9023s-sensor-driver-v8-0-0c224e3bddbc@gmail.com>
- <20240625-add-tyhx-hx9023s-sensor-driver-v8-3-0c224e3bddbc@gmail.com>
- <20240629194122.1f4b7b3b@jic23-huawei>
-Content-Language: en-US
-From: Yasin Lee <yasin.lee.x@gmail.com>
-In-Reply-To: <20240629194122.1f4b7b3b@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20240702-cleanup-ad7606-v3-1-18d5ea18770e@baylibre.com>
+X-B4-Tracking: v=1; b=H4sIACP4g2YC/2XM3QqCMBjG8VuRHbfY+6ZTO+o+ooN9vObAVLYai
+ XjvTSECO/w/8PxmFsg7CuyczcxTdMENfYrTIWOmVf2duLOpGQrMRQ6Sm45U/xq5sqUUkoMEQrJ
+ 1BZVm6TR6atx7A6+31K0Lz8FPmx9hXb9UuacicOCFQYW1lGiEumg1dU57OprhwVYt4k+QUP0Jm
+ AQtGiugKCqp9sKyLB/jU42v8QAAAA==
+To: Lars-Peter Clausen <lars@metafoo.de>, 
+ Michael Hennerich <Michael.Hennerich@analog.com>, 
+ Jonathan Cameron <jic23@kernel.org>, Greg Kroah-Hartman <gregkh@suse.de>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <jic23@cam.ac.uk>, 
+ Michael Hennerich <michael.hennerich@analog.com>, jstephan@baylibre.com, 
+ dlechner@baylibre.com, Guillaume Stols <gstols@baylibre.com>
+X-Mailer: b4 0.14.0
 
+The current implementation attempts to recover from an eventual glitch
+in the clock by checking frstdata state after reading the first
+channel's sample: If frstdata is low, it will reset the chip and
+return -EIO.
 
-On 2024/6/30 02:41, Jonathan Cameron wrote:
-> On Tue, 25 Jun 2024 23:58:54 +0800
-> Yasin Lee <yasin.lee.x@gmail.com> wrote:
->
->> A SAR sensor from NanjingTianyihexin Electronics Ltd.
->>
->> The device has the following entry points:
->>
->> Usual frequency:
->> - sampling_frequency
->>
->> Instant reading of current values for different sensors:
->> - in_proximity0_raw
->> - in_proximity1_raw
->> - in_proximity2_raw
->> - in_proximity3_raw
->> - in_proximity4_raw
->> and associated events in events/
->>
->> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
-> Hi Yasin
->
-> Definitely getting close to ready to merge.
-> A few bits of review feedback inline to resolve.
->
-> Jonathan
->
+This will only work in parallel mode, where frstdata pin is set low
+after the 2nd sample read starts.
 
-Hi Jonathan,
+For the serial mode, according to the datasheet, "The FRSTDATA output
+returns to a logic low following the 16th SCLK falling edge.", thus
+after the Xth pulse, X being the number of bits in a sample, the check
+will always be true, and the driver will not work at all in serial
+mode if frstdata(optional) is defined in the devicetree as it will
+reset the chip, and return -EIO every time read_sample is called.
 
+Hence, this check must be removed for serial mode.
 
-Thank you very much for your patient guidance and encouragement. I have 
-made modifications and responses to each comment. Please review version V9.
+Fixes: b9618c0cacd7 ("staging: IIO: ADC: New driver for AD7606/AD7606-6/AD7606-4")
+
+Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+---
+Changes in v3:
+- Improve commit message.
+- Add Fixes tag: the fixes tag is the initial commit since the issue
+  have been there from then on, probably overlooked because removing
+  frstdata from DT solved the issue.
+- Remove extra linebreak.
+- Link to v2: https://lore.kernel.org/r/20240618-cleanup-ad7606-v2-1-b0fd015586aa@baylibre.com
+
+iio: adc: ad7606: remove frstdata check for serial modei
+
+Changes in v2:
+ - Remove frstdata check only for the serial interface as suggested by
+   Michael Hennerich.
+ - Link to v1: https://lore.kernel.org/r/20240417-cleanup-ad7606-v1-1-5c2a29662c0a@baylibre.com
+---
+ drivers/iio/adc/ad7606.c     | 28 ++------------------------
+ drivers/iio/adc/ad7606.h     |  2 ++
+ drivers/iio/adc/ad7606_par.c | 48 +++++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 49 insertions(+), 29 deletions(-)
+
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index 3a417595294f..c321c6ef48df 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -49,7 +49,7 @@ static const unsigned int ad7616_oversampling_avail[8] = {
+ 	1, 2, 4, 8, 16, 32, 64, 128,
+ };
+ 
+-static int ad7606_reset(struct ad7606_state *st)
++int ad7606_reset(struct ad7606_state *st)
+ {
+ 	if (st->gpio_reset) {
+ 		gpiod_set_value(st->gpio_reset, 1);
+@@ -60,6 +60,7 @@ static int ad7606_reset(struct ad7606_state *st)
+ 
+ 	return -ENODEV;
+ }
++EXPORT_SYMBOL_NS_GPL(ad7606_reset, IIO_AD7606);
+ 
+ static int ad7606_reg_access(struct iio_dev *indio_dev,
+ 			     unsigned int reg,
+@@ -88,31 +89,6 @@ static int ad7606_read_samples(struct ad7606_state *st)
+ {
+ 	unsigned int num = st->chip_info->num_channels - 1;
+ 	u16 *data = st->data;
+-	int ret;
+-
+-	/*
+-	 * The frstdata signal is set to high while and after reading the sample
+-	 * of the first channel and low for all other channels. This can be used
+-	 * to check that the incoming data is correctly aligned. During normal
+-	 * operation the data should never become unaligned, but some glitch or
+-	 * electrostatic discharge might cause an extra read or clock cycle.
+-	 * Monitoring the frstdata signal allows to recover from such failure
+-	 * situations.
+-	 */
+-
+-	if (st->gpio_frstdata) {
+-		ret = st->bops->read_block(st->dev, 1, data);
+-		if (ret)
+-			return ret;
+-
+-		if (!gpiod_get_value(st->gpio_frstdata)) {
+-			ad7606_reset(st);
+-			return -EIO;
+-		}
+-
+-		data++;
+-		num--;
+-	}
+ 
+ 	return st->bops->read_block(st->dev, num, data);
+ }
+diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+index 0c6a88cc4695..6649e84d25de 100644
+--- a/drivers/iio/adc/ad7606.h
++++ b/drivers/iio/adc/ad7606.h
+@@ -151,6 +151,8 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+ 		 const char *name, unsigned int id,
+ 		 const struct ad7606_bus_ops *bops);
+ 
++int ad7606_reset(struct ad7606_state *st);
++
+ enum ad7606_supported_device_ids {
+ 	ID_AD7605_4,
+ 	ID_AD7606_8,
+diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
+index d8408052262e..6bc587b20f05 100644
+--- a/drivers/iio/adc/ad7606_par.c
++++ b/drivers/iio/adc/ad7606_par.c
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/platform_device.h>
+ #include <linux/types.h>
+ #include <linux/err.h>
+@@ -21,8 +22,29 @@ static int ad7606_par16_read_block(struct device *dev,
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+ 
+-	insw((unsigned long)st->base_address, buf, count);
+ 
++	/*
++	 * On the parallel interface, the frstdata signal is set to high while
++	 * and after reading the sample of the first channel and low for all
++	 * other channels.  This can be used to check that the incoming data is
++	 * correctly aligned.  During normal operation the data should never
++	 * become unaligned, but some glitch or electrostatic discharge might
++	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
++	 * allows to recover from such failure situations.
++	 */
++	int num = count;
++	u16 *_buf = buf;
++
++	if (st->gpio_frstdata) {
++		insw((unsigned long)st->base_address, _buf, 1);
++		if (!gpiod_get_value(st->gpio_frstdata)) {
++			ad7606_reset(st);
++			return -EIO;
++		}
++		_buf++;
++		num--;
++	}
++	insw((unsigned long)st->base_address, _buf, num);
+ 	return 0;
+ }
+ 
+@@ -35,8 +57,28 @@ static int ad7606_par8_read_block(struct device *dev,
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+-
+-	insb((unsigned long)st->base_address, buf, count * 2);
++	/*
++	 * On the parallel interface, the frstdata signal is set to high while
++	 * and after reading the sample of the first channel and low for all
++	 * other channels.  This can be used to check that the incoming data is
++	 * correctly aligned.  During normal operation the data should never
++	 * become unaligned, but some glitch or electrostatic discharge might
++	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
++	 * allows to recover from such failure situations.
++	 */
++	int num = count;
++	u16 *_buf = buf;
++
++	if (st->gpio_frstdata) {
++		insb((unsigned long)st->base_address, _buf, 2);
++		if (!gpiod_get_value(st->gpio_frstdata)) {
++			ad7606_reset(st);
++			return -EIO;
++		}
++		_buf++;
++		num--;
++	}
++	insb((unsigned long)st->base_address, _buf, num * 2);
+ 
+ 	return 0;
+ }
+
+---
+base-commit: 07d4d0bb4a8ddcc463ed599b22f510d5926c2495
+change-id: 20240416-cleanup-ad7606-161e2ed9818b
 
 Best regards,
+-- 
+Guillaume Stols <gstols@baylibre.com>
 
-Yasin
-
-
->> diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
->> new file mode 100644
->> index 000000000000..c455f20d784f
->> --- /dev/null
->> +++ b/drivers/iio/proximity/hx9023s.c
->> @@ -0,0 +1,1131 @@
->> +
->> +#define HX9023S_CHIP_ID 0x1D
->> +#define HX9023S_CH_NUM 5
->> +#define HX9023S_2BYTES 2
->> +#define HX9023S_3BYTES 3
-> Don't use defines where the number is actually more meaningful
-> when seen in the code.
->
->> +#define HX9023S_BYTES_MAX HX9023S_3BYTES
-> This define is useful but just make it 3.
->
-
-These three macro definitions will be deleted in version V9.
-
-
->> +struct hx9023s_ch_data {
->> +	int raw; /* Raw Data*/
->> +	int lp; /* Low Pass Filter Data*/
->> +	int bl; /* Base Line Data */
->> +	int diff; /* difference of Low Pass Data and Base Line Data */
-> Difference
->
-> for consistency of capitalizaton.
->
-
-Fixed in v9.
-
-
->> +static int hx9023s_ch_cfg(struct hx9023s_data *data)
->> +{
->> +	unsigned int i;
->> +	u16 reg;
->> +	u8 reg_list[HX9023S_CH_NUM * 2];
->> +	u8 ch_pos[HX9023S_CH_NUM];
->> +	u8 ch_neg[HX9023S_CH_NUM];
->> +	/* Bit positions corresponding to input pin connections */
->> +	u8 conn_cs[HX9023S_CH_NUM] = {0, 2, 4, 6, 8};
-> Space after { and before }
-
-
-Fixed in v9.
-
-
->> +
->> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
->> +		ch_pos[i] = data->ch_data[i].channel_positive == HX9023S_NOT_CONNECTED ?
->> +			HX9023S_NOT_CONNECTED : conn_cs[data->ch_data[i].channel_positive];
->> +		ch_neg[i] = data->ch_data[i].channel_negative == HX9023S_NOT_CONNECTED ?
->> +			HX9023S_NOT_CONNECTED : conn_cs[data->ch_data[i].channel_negative];
->> +
->> +		reg = (HX9023S_POS << ch_pos[i]) | (HX9023S_NEG << ch_neg[i]);
->> +		put_unaligned_le16(reg, &reg_list[i * 2]);
->> +	}
->> +
->> +	return regmap_bulk_write(data->regmap, HX9023S_CH0_CFG_7_0, reg_list, HX9023S_CH_NUM * 2);
->> +}
->> +
->> +static int hx9023s_sample(struct hx9023s_data *data)
->> +{
->> +	int ret, value;
->> +	unsigned int i;
->> +	u8 data_size, offset_data_size, *p, size, rx_buf[HX9023S_CH_NUM * HX9023S_BYTES_MAX];
-> Long line combining different data types. Break them up to improve readability.
->
-> 	u8 rx_buf[HX9023S_CH_NUM * HX9023S_BYTES_MAX];
-> 	u8 data_size, offset_data_size, size;
-> 	u8 *p;
-
-
-Delete: data_size, offset_data_size, *p, size.
-
-
->> +
->> +	ret = hx9023s_data_lock(data, true);
->> +	if (ret)
->> +		return ret;
->> +
->> +	ret = hx9023s_data_select(data);
->> +	if (ret)
->> +		goto err;
->> +
->> +	data_size = HX9023S_3BYTES;
-> This local variable hurts readabilty.
-
-
-Deleted.
-
-
->> +
->> +	/* ch0~ch3 */
->> +	p = rx_buf;
-> Why local variable?
-
-
-Deleted.
-
-
->> +	size = (HX9023S_CH_NUM - 1) * data_size;
-> This is non obvious sizing.  Here a comment is appropriate.
->
-> /* 3 bytes for each of channels 0 to 3 which have contiguous registers */
->
->> +	ret = regmap_bulk_read(data->regmap, HX9023S_RAW_BL_CH0_0, p, size);
-> Combining above comments.
->
-> 	ret = regmap_bulk_read(data->regmap, HX9023S_RAW_BL_CH0_0, &rx_buf, size);
->
->> +	if (ret)
->> +		goto err;
->> +
->> +	/* ch4 */
->> +	p = rx_buf + size;
->> +	size = data_size;
-> Here as well provide a comment on the fact the channel is 3 contiguous registers.
->
-
-Added concise comments as suggested, deleted excessive macro 
-definitions, and used direct numbers for clarity.
-
-
->> +	ret = regmap_bulk_read(data->regmap, HX9023S_RAW_BL_CH4_0, p, size);
->> +	if (ret)
->> +		goto err;
->> +
->> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
->> +		value = get_unaligned_le16(&rx_buf[i * data_size + 1]);
-> This seems odd.  From the datasheet I found seems there are some bits in
-> the ch0_0 register as well. Why just pull out 16 bits?
->
-> I would use a get_unaligned_le24() call to get the rest and then rely on
-> shift for userspace to drop bits 3:0
->
-> It it makes sense to just provide the top 16 bits thats fine.
-
-
-Based on the chip designer's explanation, the lower 8-bit data is almost 
-meaningless, and users are advised to use only the upper 16-bit data. 
-Therefore, I kept get_unaligned_le16().
-
-
->> +		value = sign_extend32(value, 15);
-> Why use int to store an s16?  If you just use an s16 for value then no
-> need to sign extend and then store that into an s16 .raw in the channel
-> data structure.
->
-
-Using int is incorrect. I will take your advice, delete sign_extend32, 
-and directly store the data in s16.
-
-
->> +		data->ch_data[i].raw = 0;
->> +		data->ch_data[i].bl = 0;
->> +		if (data->ch_data[i].sel_raw)
->> +			data->ch_data[i].raw = value;
->> +		if (data->ch_data[i].sel_bl)
->> +			data->ch_data[i].bl = value;
->> +	}
->> +
->> +	/* ch0~ch3 */
->> +	p = rx_buf;
->> +	size = (HX9023S_CH_NUM - 1) * data_size;
-> As above - use a comment to explain why this is 12 then just use 12.
-> Current form is far form obvious.
-
-
-I will take this suggestion and update it in V9.
-
-
->> +	ret = regmap_bulk_read(data->regmap, HX9023S_LP_DIFF_CH0_0, p, size);
->> +	if (ret)
->> +		goto err;
->> +
->> +	/* ch4 */
->> +	p = rx_buf + size;
->> +	size = data_size;
->> +	ret = regmap_bulk_read(data->regmap, HX9023S_LP_DIFF_CH4_0, p, size);
->> +	if (ret)
->> +		goto err;
->> +
->> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
->> +		value = get_unaligned_le16(&rx_buf[i * data_size + 1]);
->> +		value = sign_extend32(value, 15);
->> +		data->ch_data[i].lp = 0;
->> +		data->ch_data[i].diff = 0;
->> +		if (data->ch_data[i].sel_lp)
->> +			data->ch_data[i].lp = value;
->> +		if (data->ch_data[i].sel_diff)
->> +			data->ch_data[i].diff = value;
->> +	}
->> +
->> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
->> +		if (data->ch_data[i].sel_lp && data->ch_data[i].sel_bl)
->> +			data->ch_data[i].diff = data->ch_data[i].lp - data->ch_data[i].bl;
->> +	}
->> +
->> +	/* offset DAC */
->> +	offset_data_size = HX9023S_2BYTES;
->> +	p = rx_buf;
->> +	size = HX9023S_CH_NUM * offset_data_size;
->> +	ret = regmap_bulk_read(data->regmap, HX9023S_OFFSET_DAC0_7_0, p, size);
->> +	if (ret)
->> +		goto err;
->> +
->> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
->> +		value = get_unaligned_le16(&rx_buf[i * offset_data_size]);
->> +		value = FIELD_GET(GENMASK(11, 0), value);
->> +		data->ch_data[i].dac = value;
->> +	}
->> +
->> +err:
->> +	return hx9023s_data_lock(data, false);
->> +}
->
->> +
->> +static int hx9023s_property_get(struct hx9023s_data *data)
->> +{
->> +	struct fwnode_handle *child;
->> +	struct device *dev = regmap_get_device(data->regmap);
->> +	int ret;
->> +	u32 i, reg, temp, array[2];
->> +
->> +	data->chan_in_use = 0;
->> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
->> +		data->ch_data[i].channel_positive = HX9023S_NOT_CONNECTED;
->> +		data->ch_data[i].channel_negative = HX9023S_NOT_CONNECTED;
->> +	}
->> +
->> +	device_for_each_child_node(dev, child) {
-> Use
-> 	device_for_each_child_node_scoped(dev, child) {
-> As then no need to call fwnode_handle_put() in error paths.
-
-
-I will take this suggestion and update it in V9.
-
-
->> +		ret = fwnode_property_read_u32(child, "reg", &reg);
->> +		if (ret || reg >= HX9023S_CH_NUM) {
->> +			fwnode_handle_put(child);
->> +			return dev_err_probe(dev, ret, "Failed to read reg\n");
->> +		}
->> +		__set_bit(reg, &data->chan_in_use);
->> +
->> +		if (fwnode_property_read_u32(child, "input-channel", &temp) == 0) {
->> +			data->ch_data[reg].channel_positive = temp;
->> +			data->ch_data[reg].channel_negative = HX9023S_NOT_CONNECTED;
->> +		} else if (fwnode_property_read_u32_array(child, "diff-channels",
->> +							array, sizeof(array)) == 0) {
->> +			data->ch_data[reg].channel_positive = array[0];
->> +			data->ch_data[reg].channel_negative = array[1];
->> +		} else {
->> +			fwnode_handle_put(child);
->> +			return dev_err_probe(dev, ret,
->> +				"Failed to read channel input for channel %d\n", reg);
->> +		}
->> +	}
->> +
->> +	return 0;
->> +}
->
->> +
->> +static void hx9023s_push_events(struct iio_dev *indio_dev)
->> +{
->> +	struct hx9023s_data *data = iio_priv(indio_dev);
->> +	s64 timestamp = iio_get_time_ns(indio_dev);
->> +	unsigned long prox_changed;
->> +	unsigned int chan;
->> +
->> +	hx9023s_sample(data);
-> check the return codes for these calls that involve bus transactions.
-> If they fail, just return form this function having not pushed an event.
->
-> Otherwise we may push stale data.
-
-
-Fixed in v9
-
-
->> +	hx9023s_get_prox_state(data);
->> +
->> +	prox_changed = (data->chan_prox_stat ^ data->prox_state_reg) & data->chan_event;
->> +	for_each_set_bit(chan, &prox_changed, HX9023S_CH_NUM) {
->> +		unsigned int dir;
->> +
->> +		dir = (data->prox_state_reg & BIT(chan)) ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
->> +
->> +		iio_push_event(indio_dev,
->> +			       IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, chan, IIO_EV_TYPE_THRESH, dir),
->> +			       timestamp);
->> +	}
->> +	data->chan_prox_stat = data->prox_state_reg;
->> +}
->
->
->
->
->
->> +static int hx9023s_id_check(struct iio_dev *indio_dev)
->> +{
->> +	struct hx9023s_data *data = iio_priv(indio_dev);
->> +	int ret;
->> +	unsigned int id;
->> +
->> +	ret = regmap_read(data->regmap, HX9023S_DEVICE_ID, &id);
->> +	if (ret || id != HX9023S_CHIP_ID)
->> +		return -ENODEV;
-> This breaks the use of callback compatible IDs in future. It is only
-> appropriate to print a warning on an unknown ID .
-> Also don't eat the error value returned - it may provide a useful hint
-> of a problem.
->
-> 	if (ret)
-> 		return ret;
->
-> 	if (id != HX9023S_CHIP_ID)
-> 		dev_warn(&indio_dev->dev.parent,
-> 			 "Unexpected chip ID, assuming compatible\n");
->
-> 	return 0;
->
-> there are lots of older drivers where we did this wrong. We tend to
-> repair this when otherwise working on a driver, so it will take a
-> while before they are all fixed.
->
-
-I will take this suggestion and update it in V9.
-
-
->> +
->> +	return 0;
->> +}
->> +
->> +static int hx9023s_probe(struct i2c_client *client)
->> +{
->> +	struct device *dev = &client->dev;
->> +	struct iio_dev *indio_dev;
->> +	struct hx9023s_data *data;
->> +	int ret;
->> +
->> +	indio_dev = devm_iio_device_alloc(dev, sizeof(struct hx9023s_data));
->> +	if (!indio_dev)
->> +		return -ENOMEM;
->> +
->> +	data = iio_priv(indio_dev);
->> +	mutex_init(&data->mutex);
->> +
->> +	data->regmap = devm_regmap_init_i2c(client, &hx9023s_regmap_config);
->> +	if (IS_ERR(data->regmap))
->> +		return dev_err_probe(dev, PTR_ERR(data->regmap), "regmap init failed\n");
->> +
->> +	ret = hx9023s_property_get(data);
->> +	if (ret)
->> +		return dev_err_probe(dev, ret, "dts phase failed\n");
->> +
->> +	ret = devm_regulator_get_enable(dev, "vdd");
->> +	if (ret)
->> +		return dev_err_probe(dev, ret, "regulator get failed\n");
->> +
->> +	ret = hx9023s_id_check(indio_dev);
->> +	if (ret)
->> +		return dev_err_probe(dev, ret, "id check failed\n");
-> As commented on above, this should not fail on a missmatch ont he ID, just
-> on a failure to read it at all.  That enables future devices that haven't
-> been made yet and happen to be compatible to be able to work with older
-> linux kernels that predate them.
->
-
-Understood, thank you very much for your detailed explanation.
-
-
->> +}
 

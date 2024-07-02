@@ -1,73 +1,75 @@
-Return-Path: <linux-iio+bounces-7171-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7172-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9F192465C
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 19:34:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59A0C92465D
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 19:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 890B8286102
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 17:34:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DF131C225F7
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 17:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCE11C0DD9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C13E1C0DCF;
 	Tue,  2 Jul 2024 17:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nZ4MPJY4"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="bskrnKu8"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2EF91BE86D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 081F21BE873
 	for <linux-iio@vger.kernel.org>; Tue,  2 Jul 2024 17:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719941651; cv=none; b=ZdZcmlInSR/Cja1Ug8ojKJc+GtRNCUi9Qm0bzu7E2hVuviLMgXHc5Nh2jnJJrl4KkrUW2Pxm3XgeJRbehMJ4ht/6N+Nwg/fIyZ3SiKW0T9yUDw4wXm9kQ4xesUiCVl340phQPqCUxHyTCbJGQCUZAONhi4l8jgpUWtdFKL+U8MU=
+	t=1719941651; cv=none; b=G53grxed/reICeXpbW7OwdVi8BZ+7O6tneWnNrDoVgm5XMBAurZvdvQ+WnZ/mQuna48EZRn8Kbk3JRapT0917hOlI/gnEdCV5pQj7NKiMqKY6ofJptkPpxsZ1zI56qyU6TkLUWlehjRrgNUrEGQl9oRPYHIUpSL1nr/hdKVwcDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1719941651; c=relaxed/simple;
-	bh=/o5c+700JcEHhe5XAJMAq8Yr8uQLfpczFgZy6jDoudY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=GrCG5hYLlyXuGtcmcbkmy/qLHgGaoT+kLiJdDgmOXEXFwcRnln3FwyB9XxG76ZIW3ix20EDYUtzAtmR6dhV8OiKZvm0odjAF6NSAZggwg22yYSNd0tlPyGASLZColTSY0jOtuyOWSnAf/xW/bcIFxXi5twa5tL0X9HH4RY71kko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nZ4MPJY4; arc=none smtp.client-ip=209.85.208.169
+	bh=u/r2uW73OwBD2xLuXA811RokrBDEf+axTdQOVDLJPIM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=lbi52qUMCKSkvRcDF7ccpKUmmW+YwrSXdfQENfWhdoM7HzImv9sVQLqyhtGVzKsCLazTqUMNjpufJXX8W+AMzP3iKEDr7Gophcx+KmW104ITEPmjMPdN7kAuNlXDsfDf+WApazlh1nUvhOA8b1hgniopWwK8cnjTdxNHPkKo0rM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=bskrnKu8; arc=none smtp.client-ip=209.85.128.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2ee7885aa5fso9587131fa.1
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-425809eef0eso18133315e9.3
         for <linux-iio@vger.kernel.org>; Tue, 02 Jul 2024 10:34:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719941647; x=1720546447; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cZz0RwSCh0QMB9gJx+0gDDvp+8YLO/0RV5ftBIqGid8=;
-        b=nZ4MPJY4m1M7jtTDt4a6RZkxi0vTQfF6iWvItALB1D8Znh33p5wysQYorc0o9t6FMX
-         HNWV3Bq4KK7GY0bDqEF+eAq9FpfyenFe4xRUR+UHq6AdMhiq5K1sDDfqUKNmC0hqMyPi
-         arejn1NxL0TgRMrCwQUIhjnzILXqcV5DMhJypHE55JMK8ia+4YIlshKtBaxcbNoQq473
-         Uz+x7FGqWvHZmatPkrZcYbPHXaqlx/wz1Xa/1GH4+x2oTBeXdOu6/WZjFxxCf/cRZkUW
-         MEgnVHxotWjy55/p2X8vSxWeSccLmWnPa0hDP7nDyUWpojOc6IFK0SL7nt9HtY3d4DKo
-         f6pw==
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XoOP6xDFVO+piNQMxKh2JgMUAWvA+ZCbwk4Ckp0ym3U=;
+        b=bskrnKu86JUiCpGnSMMH0jp0oIo7CNOU5GucJkH1i8FNuWfuWtgReLxPKvsgakZwwe
+         zeCBNMxG4Ev5grxV0bx9i2Dj/w9ZHSLvHRN4Sx6nKXjNT1vKIHb0cSCBedtTb7KneORE
+         F6VzDlGwGBBYugqJT1xtmsuSbUR5ujVM8dIlADMkhlqoJY+77P59vry8d5kiW/SNtMID
+         Ejgdd2Gt2ocgc9+W/bypD9KGWg10oIlrxxuS4PB30iEIi2fUsm8tiwnhnBm8RToMKs7r
+         ZBKEyyxjJLJgzsbDytQli+8g7Uxdk029u1WEmmfi18xEZD8PQ7xXGgf4umta217DkiV0
+         WL1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20230601; t=1719941647; x=1720546447;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cZz0RwSCh0QMB9gJx+0gDDvp+8YLO/0RV5ftBIqGid8=;
-        b=k8b6FLChoF11b7iTMiNE19OXtGYDVsm0FMc40j6K9XF6+KYRxRWsNVU4/nLT9XMIKI
-         SrxhNg8ZCqpR6RNUTcAfzVgm8UnAyA0vUdiQO085UVMjedZc3x90wcODwek4S16kAT8Y
-         7UrmsITdUphzmRfeyfj/SwAf0js52i0oif0YwcyroDR+Ru+1MP1IAyVdOe4buyzbQ+RM
-         JKrCO1f5DLUt4aVcZMsrZqjncpez8vzJxx/TzK/vVZSsbCpeqKPyv/xstI4oVwjsmF0Q
-         zH7SeYJlXTqUIxv7GvJLmDXTXk3tH4Lumg41CzTkZvEVHApVyUYAmk/QXKIY1pW0ZoPO
-         tZNA==
-X-Gm-Message-State: AOJu0Yyebw4IF6GGsTQ7BP3O+L3jUi+M+TmeT92W6WVs8Y8Tc3yy2tmo
-	NIWdNMWUGe7cPeHU1FB/vS+OvsdjiTdDmF44eb4MgKPHw+I2ahokBAe7Nap/zuY=
-X-Google-Smtp-Source: AGHT+IFjYnN8Qw8rIORJHAmRqYrCZytTFvoTnvxnbl/X+PyzxSN0cPeaw+HT/4KTY7wnV29vzGq+Pg==
-X-Received: by 2002:a05:6512:2245:b0:52c:8aa6:4e9c with SMTP id 2adb3069b0e04-52e82752786mr7398520e87.65.1719941646613;
-        Tue, 02 Jul 2024 10:34:06 -0700 (PDT)
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XoOP6xDFVO+piNQMxKh2JgMUAWvA+ZCbwk4Ckp0ym3U=;
+        b=Dp0mMkT9+eMNEH6siUvddcz9zKu96AEEiyXsm8DNpP6oXzqn4CVGPqzPd6rJJcG530
+         Gluc5IFABnL94Svnbgn7P7vkwHl4yRzpmCHBAx6yV0W2cRf6RlMX2rPfgriACBzjY2hq
+         sv1Itics+btwEGiPowrzWJ+zlf3Cig2DEJy4iqwTp87nH0/2g8VvMcbtQUXH9j+Pq0ln
+         BgvnJOpYkXuBg5WiQ8RA7yoZ7kvBw580OEIPrX7o/liQxy5w9AFdmpFtbWq0yP6zNFVG
+         kZrLBDpNCNoJjh0J11z/BfKgqmI5e/XzK/8SWmEhOdU6i6OMC9TaN0TRRSa6xzsKf8+Q
+         urZg==
+X-Gm-Message-State: AOJu0YxFsvbUh58TcgZ+C/u7DgX1rNSukhiltfa5Z3WACMB2+6I7+UMV
+	2BdKc7xk7dWJewj3eFMRje17CHNkP6o+9pjw7eHZWwNGKWSvLYJsYqMQPX+rMGc=
+X-Google-Smtp-Source: AGHT+IGNbBFaMXt00tk7jgstqKf4YHnk4QO27CDWCR548WxyUqMoX0zzovPsmWQ3+2snfKSDrSFNhA==
+X-Received: by 2002:a05:600c:c88:b0:425:6498:3b6c with SMTP id 5b1f17b1804b1-4257a06427bmr72751655e9.26.1719941647149;
+        Tue, 02 Jul 2024 10:34:07 -0700 (PDT)
 Received: from [127.0.1.1] (frhb82016ds.ikexpress.com. [185.246.87.17])
         by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256af59732sm207594485e9.11.2024.07.02.10.34.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 02 Jul 2024 10:34:06 -0700 (PDT)
 From: Guillaume Stols <gstols@baylibre.com>
-Subject: [PATCH v3 0/8] iio: adc: ad7606: Improvements
-Date: Tue, 02 Jul 2024 17:34:04 +0000
-Message-Id: <20240702-cleanup-ad7606-v3-0-57fd02a4e2aa@baylibre.com>
+Date: Tue, 02 Jul 2024 17:34:05 +0000
+Subject: [PATCH v3 1/8] dt-bindings: iio: adc: adi,ad7606: normalize
+ textwidth
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -75,11 +77,10 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAw6hGYC/2XMQQ6CMBCF4auQrq3pjFCKK+9hXJR2kCYIpNVGQ
- ri7BTcGl/9L3jezQN5RYOdsZp6iC27oU5wOGTOt7u/EnU3NUGAucpDcdKT718i1LaWQHCQQkq0
- UqJql0+ipce8NvN5Sty48Bz9tfoR1/VIS1J6KwAVvQBW5LUxZVvZS66lztaejGR5s1SL+CPgvY
- BIqSQKbSmAh98KyLB/cjApe8QAAAA==
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240702-cleanup-ad7606-v3-1-57fd02a4e2aa@baylibre.com>
+References: <20240702-cleanup-ad7606-v3-0-57fd02a4e2aa@baylibre.com>
+In-Reply-To: <20240702-cleanup-ad7606-v3-0-57fd02a4e2aa@baylibre.com>
 To: Lars-Peter Clausen <lars@metafoo.de>, 
  Michael Hennerich <Michael.Hennerich@analog.com>, 
  Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
@@ -90,60 +91,108 @@ Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org, 
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
  Guillaume Stols <gstols@baylibre.com>, jstephan@baylibre.com, 
- dlechner@baylibre.com, Conor Dooley <conor.dooley@microchip.com>
+ dlechner@baylibre.com
 X-Mailer: b4 0.14.0
 
-This series adds the following improvements over the current AD7606's
-driver implementation:
+Normalize textwidth to 80 columns on the descriptions.
 
-- Fix wrong usage of gpio array
-- Fix standby that was documented as ACTIVE_LOW but handled in the
-  driver as if it was ACTIVE_HIGH
-- Improve dt-bindings documentation
-- Switch mutex lock to scoped guard
-
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 ---
-Changes in v3:
-- Remove the two first patches that were already picked up.
-- Add styling corrections.
-- [Patch 6/8] Improve commit message.
-- [Patch 8/8] Replace every scoped_guard by simple guard.
-- Link to v2: https://lore.kernel.org/r/20240628-cleanup-ad7606-v2-0-96e02f90256d@baylibre.com
+ .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 50 +++++++++++-----------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
-Changes in v2:
-- Change scoped guard to guard(mutex)(&st->lock). This was tested with
-  Rob's bot condition, and seems not to generate warning anymore.
-- Reorder the commits for avoiding bisection issues and respect commit
-  priority rules.
-- Add vdrive-supply to required properties.
-- Separate cosmetic changes from content ones in dt-binding
-  descriptions.
-- Move maxItems changes (and plural in descriptions) to the commit that
-  adds conditions.
-- Link to v1: https://lore.kernel.org/r/20240618-cleanup-ad7606-v1-0-f1854d5c779d@baylibre.com
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+index 00fdaed11cbd..32caa9fc00e4 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad7606.yaml
+@@ -40,60 +40,58 @@ properties:
+ 
+   adi,conversion-start-gpios:
+     description:
+-      Must be the device tree identifier of the CONVST pin.
+-      This logic input is used to initiate conversions on the analog
+-      input channels. As the line is active high, it should be marked
+-      GPIO_ACTIVE_HIGH.
++      Must be the device tree identifier of the CONVST pin. This logic input is
++      used to initiate conversions on the analog input channels. As the line is
++      active high, it should be marked GPIO_ACTIVE_HIGH.
+     maxItems: 1
+ 
+   reset-gpios:
+     description:
+-      Must be the device tree identifier of the RESET pin. If specified,
+-      it will be asserted during driver probe. As the line is active high,
+-      it should be marked GPIO_ACTIVE_HIGH.
++      Must be the device tree identifier of the RESET pin. If specified, it will
++      be asserted during driver probe. As the line is active high, it should be
++      marked GPIO_ACTIVE_HIGH.
+     maxItems: 1
+ 
+   standby-gpios:
+     description:
+-      Must be the device tree identifier of the STBY pin. This pin is used
+-      to place the AD7606 into one of two power-down modes, Standby mode or
++      Must be the device tree identifier of the STBY pin. This pin is used to
++      place the AD7606 into one of two power-down modes, Standby mode or
+       Shutdown mode. As the line is active low, it should be marked
+       GPIO_ACTIVE_LOW.
+     maxItems: 1
+ 
+   adi,first-data-gpios:
+     description:
+-      Must be the device tree identifier of the FRSTDATA pin.
+-      The FRSTDATA output indicates when the first channel, V1, is
+-      being read back on either the parallel, byte or serial interface.
+-      As the line is active high, it should be marked GPIO_ACTIVE_HIGH.
++      Must be the device tree identifier of the FRSTDATA pin.  The FRSTDATA
++      output indicates when the first channel, V1, is being read back on either
++      the parallel, byte or serial interface.  As the line is active high, it
++      should be marked GPIO_ACTIVE_HIGH.
+     maxItems: 1
+ 
+   adi,range-gpios:
+     description:
+-      Must be the device tree identifier of the RANGE pin. The polarity on
+-      this pin determines the input range of the analog input channels. If
+-      this pin is tied to a logic high, the analog input range is ±10V for
+-      all channels. If this pin is tied to a logic low, the analog input range
+-      is ±5V for all channels. As the line is active high, it should be marked
++      Must be the device tree identifier of the RANGE pin. The polarity on this
++      pin determines the input range of the analog input channels. If this pin
++      is tied to a logic high, the analog input range is ±10V for all channels.
++      If this pin is tied to a logic low, the analog input range is ±5V for all
++      channels. As the line is active high, it should be marked
+       GPIO_ACTIVE_HIGH.
+     maxItems: 1
+ 
+   adi,oversampling-ratio-gpios:
+     description:
+-      Must be the device tree identifier of the over-sampling
+-      mode pins. As the line is active high, it should be marked
+-      GPIO_ACTIVE_HIGH.
++      Must be the device tree identifier of the over-sampling mode pins. As the
++      line is active high, it should be marked GPIO_ACTIVE_HIGH.
+     maxItems: 3
+ 
+   adi,sw-mode:
+     description:
+       Software mode of operation, so far available only for ad7616 and ad7606b.
+-      It is enabled when all three oversampling mode pins are connected to
+-      high level. The device is configured by the corresponding registers. If the
+-      adi,oversampling-ratio-gpios property is defined, then the driver will set the
+-      oversampling gpios to high. Otherwise, it is assumed that the pins are hardwired
+-      to VDD.
++      It is enabled when all three oversampling mode pins are connected to high
++      level. The device is configured by the corresponding registers. If the
++      adi,oversampling-ratio-gpios property is defined, then the driver will set
++      the oversampling gpios to high. Otherwise, it is assumed that the pins are
++      hardwired to VDD.
+     type: boolean
+ 
+ required:
 
----
-Guillaume Stols (8):
-      dt-bindings: iio: adc: adi,ad7606: normalize textwidth
-      dt-bindings: iio: adc: adi,ad7606: improve descriptions
-      dt-bindings: iio: adc: adi,ad7606: add supply properties
-      dt-bindings: iio: adc: adi,ad7606: fix example
-      dt-bindings: iio: adc: adi,ad7606: add conditions
-      iio: adc: ad7606: fix oversampling gpio array
-      iio: adc: ad7606: fix standby gpio state to match the documentation
-      iio: adc: ad7606: switch mutexes to scoped_guard
-
- .../devicetree/bindings/iio/adc/adi,ad7606.yaml    | 123 ++++++++++++++++-----
- drivers/iio/adc/ad7606.c                           |  47 ++++----
- drivers/iio/adc/ad7606_spi.c                       |   5 +-
- 3 files changed, 115 insertions(+), 60 deletions(-)
----
-base-commit: 340fa834ae229a952db04a57ed13fd5d35d75818
-change-id: 20240416-cleanup-ad7606-161e2ed9818b
-
-Best regards,
 -- 
-Guillaume Stols <gstols@baylibre.com>
+2.34.1
 
 

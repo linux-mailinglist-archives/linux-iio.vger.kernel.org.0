@@ -1,53 +1,53 @@
-Return-Path: <linux-iio+bounces-7157-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7158-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF696924316
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 18:03:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A701924314
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 18:02:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A2D5B24018
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 16:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D817028B62E
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 16:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFD51BD4F4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF7B1BD4F2;
 	Tue,  2 Jul 2024 16:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GTa+Vub0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SsV9sKsp"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF6791BD024;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02C51BD025;
 	Tue,  2 Jul 2024 16:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719936159; cv=none; b=EtdmPRjXYfnQOC2pa8DbmQEoUgOTSxWrCwmomgSVDRuscLrNwGuuEuWe5ySMrcM4alm5vAIdt049YccXe+OlqhUFEesY7JKPymMOecA7BEujOyMPXzWA4jRGxp6xcbZD7/sB6E17OVFujutXbL5wpe42HoDtkqHostENMhJrgiA=
+	t=1719936159; cv=none; b=ICX4ARqswth4V2SmLlyb/XaXYcUPa+5HFmDNeBHRzbDH9gWiBAjHPCtMXkCVf5i8t5XlwZsl8SSi1NlQ8LXWlDpBo+5dIyXqW7wRRAVlU2eXwCOvYTHQHXqpywNpi9oPN9Aq/jlvbd3KM82vc1Tlma3xRTPtpPB6lfIAKLqnnWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1719936159; c=relaxed/simple;
-	bh=ZCwedfbQM7Bvz4eB/mWdYfk3xL/2GllIWFfaCMXiRTc=;
+	bh=keSrboDdnEDk+BOxBBWN9hfl5VamPSjisDY1VWOq4Ew=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qfU8PxXvozKyLDDbN3uv7D2bP+YtKX8yjyPSw7XjdETYFML6hEQ24IWdFeU4qgxOqGnHgpAqtTNOJR1DWHG0BOvX9f5Vcw4J0J18LIZJXcrK+4rMNX1rh4YRBWuwb48fKNs4EZdnhHS1RJU01q7k5fcvb9YgIN9OnGs2e3EREAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GTa+Vub0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 70445C4AF17;
+	 In-Reply-To:To:Cc; b=rLFBx9bwaMvHmigA/CUibQ2CIvvBKKOHn3GWggWR2LB7qs1SSxFhZpKdSqjmOeAFeC8alyJ15zxWuiNsXUer1iBsrrHJuJvetpyD7Bjm+9eonhhaNeKTOaLd/nDn0YJykZ+u/PRCOIvh6lFSHbZOWW8mwr8ZoUVIWjFfVFMHJdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SsV9sKsp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8729FC4AF0E;
 	Tue,  2 Jul 2024 16:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1719936159;
-	bh=ZCwedfbQM7Bvz4eB/mWdYfk3xL/2GllIWFfaCMXiRTc=;
+	bh=keSrboDdnEDk+BOxBBWN9hfl5VamPSjisDY1VWOq4Ew=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=GTa+Vub03zR2Z0JlaAuGVCX8zdkoTQI1fTWcZdCMahH6ij6zkAILRy+47B8/Gb0Ei
-	 +b/W+lNoDN3QapbENksnfctH0DMKvBteZhop3lqhhVsI5aEvPSN8KW4KLPxPXoP5Ne
-	 /n4N/0Nrf5BiFx0/uet82tEJuef2tAfKSJevMbz2CtLzxXJYAgr7sfQYxdOTb95MgJ
-	 lgGX6a3+66yQXpDP8Su8JmajILcpIvgjGpfemIq4gZxiEY0Qhmiah1yz6/ZR3bxE7Q
-	 gP72YhD18aXHpI6BKFg1WdziZDsEG8kQuulAg2p59k0HU0ot/M0t6r5g1lPwuu+TEP
-	 v8+zYd9wJflMg==
+	b=SsV9sKspSexexI2F7IzaVFT8w//xU7W4Mv40yapmj4TvLS6iwz1xktAqRlhinQmF8
+	 Yr+CGSRkpzMqrGJwugTeiKCKvctiBPdGjsiFOp1a9opSjpbbh2qp8ERNUjpcNhzthK
+	 jrD7uxA2XDaCGcdZRoxQG90v36z1n3RuGsvgs63MybgxQ5Da44EwBvX9ixDBHjowTV
+	 rYO0yvI0WhBa7/GsDKB8FlyeuRAWfHi7IYlxJAPiCN4oAdRs3ql7h2s2dS35KHO8XL
+	 U3kw4rAxWW198KiPxkEBNOcHShJacSs5ZAEY0oz+tUgM1/rpdAPhCwCpkbZEmjXhEq
+	 VMj0OKE4Uhu4Q==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6A412C30658;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 7B0D7C3064D;
 	Tue,  2 Jul 2024 16:02:39 +0000 (UTC)
 From: Nuno Sa via B4 Relay <devnull+nuno.sa.analog.com@kernel.org>
-Date: Tue, 02 Jul 2024 18:02:40 +0200
-Subject: [PATCH 08/20] iio: accel: cros_ec_accel_legacy: make use of
- iio_get_masklength()
+Date: Tue, 02 Jul 2024 18:02:41 +0200
+Subject: [PATCH 09/20] iio: accel: fxls8962af-core: make use of
+ iio_for_each_active_channel()
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -56,7 +56,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240702-dev-iio-masklength-private-v1-8-98193bf536a6@analog.com>
+Message-Id: <20240702-dev-iio-masklength-private-v1-9-98193bf536a6@analog.com>
 References: <20240702-dev-iio-masklength-private-v1-0-98193bf536a6@analog.com>
 In-Reply-To: <20240702-dev-iio-masklength-private-v1-0-98193bf536a6@analog.com>
 To: linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev, 
@@ -71,11 +71,11 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
  Alexandre Belloni <alexandre.belloni@bootlin.com>, 
  Claudiu Beznea <claudiu.beznea@tuxon.dev>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1719936156; l=856;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1719936156; l=913;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=Yooi1Y6tJJguy67GjA7GqDAjdHAGHhdREsMY2f86Dxo=;
- b=RBZcE+cYo3blVA2VGyLaJwUXflDQ6pPjo9mW6HflNYlGIxZLsMd2KyTAefDtDCYuqFOtd5yT7
- dRU0tYawuD3DUTmtGjIR9BLFCxRsRdf/aghHELirnJcWyKom2CvKcEO
+ bh=4mWpFN+edUepEAApNSzBRyHgoD70Vxqq6Y9OZGqmjrU=;
+ b=Q5tLlYPDxHAbfMtvcRj971Vl0lxoxT3px4ZQXt19F8RlGGCkWemotJzujrMz5YE5MM54lGnKB
+ JgnHzH/TqZuBQ0hxTLS1Ohr7dDn4xnXlVSx928Bol5OMxW2lV0tR0Cf
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-Endpoint-Received: by B4 Relay for nuno.sa@analog.com/20231116 with
@@ -85,27 +85,29 @@ Reply-To: nuno.sa@analog.com
 
 From: Nuno Sa <nuno.sa@analog.com>
 
-Ue iio_get_masklength() to access '.masklength' so it can be annotated
-as __private when there are no more direct users of it.
+Use iio_for_each_active_channel() to iterate over active channels
+accessing '.masklength' so it can be annotated as __private when there
+are no more direct users of it.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/accel/cros_ec_accel_legacy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/fxls8962af-core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/iio/accel/cros_ec_accel_legacy.c b/drivers/iio/accel/cros_ec_accel_legacy.c
-index 0f403342b1fc..f7e4dc02b34d 100644
---- a/drivers/iio/accel/cros_ec_accel_legacy.c
-+++ b/drivers/iio/accel/cros_ec_accel_legacy.c
-@@ -62,7 +62,7 @@ static int cros_ec_accel_legacy_read_cmd(struct iio_dev *indio_dev,
- 		return ret;
- 	}
+diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls8962af-core.c
+index 4fbc01bda62e4..7adb8937cb4b6 100644
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -968,8 +968,7 @@ static int fxls8962af_fifo_flush(struct iio_dev *indio_dev)
+ 		int j, bit;
  
--	for_each_set_bit(i, &scan_mask, indio_dev->masklength) {
-+	for_each_set_bit(i, &scan_mask, iio_get_masklength(indio_dev)) {
- 		*data = st->resp->dump.sensor[sensor_num].data[i] *
- 			st->sign[i];
- 		data++;
+ 		j = 0;
+-		for_each_set_bit(bit, indio_dev->active_scan_mask,
+-				 indio_dev->masklength) {
++		iio_for_each_active_channel(indio_dev, bit) {
+ 			memcpy(&data->scan.channels[j++], &buffer[i * 3 + bit],
+ 			       sizeof(data->scan.channels[0]));
+ 		}
 
 -- 
 2.45.2

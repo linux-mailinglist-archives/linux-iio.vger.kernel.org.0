@@ -1,119 +1,104 @@
-Return-Path: <linux-iio+bounces-7180-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7181-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C214E9246BD
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 19:56:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC2C924787
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 20:48:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C9832849AD
-	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 17:56:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFDD41C21B21
+	for <lists+linux-iio@lfdr.de>; Tue,  2 Jul 2024 18:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1421C0067;
-	Tue,  2 Jul 2024 17:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8D81C0DD9;
+	Tue,  2 Jul 2024 18:48:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="neuX7k4j"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sQBsbbYL"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566301BE873;
-	Tue,  2 Jul 2024 17:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30317442F
+	for <linux-iio@vger.kernel.org>; Tue,  2 Jul 2024 18:48:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719942990; cv=none; b=ikL3XVUDWoSjiA3X9u6bhBQcu99Iu+uRo1akjjEcfWQo6b3EtPxVvdo0j9Q9mwxIRTdqRkcbmwy0P0yu8vMbbEPvLf1Og4do+H/LXUtg+GHTE1u4U/nbaUV0O7MkTeEFq78K0AIhf10wjuejdZsutmvOz5GRoYXbf7MJqQTA02k=
+	t=1719946097; cv=none; b=N37E9fwL57ldN9ghD/DTxF7hY2Hg37CtuqxBT7b44J+ZxjxRKfOIodsMjaEmg4WDnp8RsgQNaRU9Phptf291oTVu23wJu2UgT/zb85c9eYzLCgCs6lQD07ilS7rrTxusDmPLoIhW/Xjil8xwv8YZT3I5T/3XEne9sBSMhGegUko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719942990; c=relaxed/simple;
-	bh=Apev7mV1TmbmNliNcO9E2giuYRzMGlA8lEdXvzWk5K8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hr9mFwg0yiYisWI7rtJKkEsMVckDrZDxX36YPvqz3u+hjb44ayPIvwgM22AGZJTjXTgs5fbjNFP+/N0W3Y2DxH4amFNVnUFmDgyQBNcdiUv/NNr7J9YzPN7MuUOa5TJhXH75bKbpnxyaRYUKooy7A2ZLJsEhM8c7VleqGp73eNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=neuX7k4j; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1719942989; x=1751478989;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Apev7mV1TmbmNliNcO9E2giuYRzMGlA8lEdXvzWk5K8=;
-  b=neuX7k4jwwnJRenC9sc1wHBwyYOwfqdhO1HwLVGux5nQsSpgnH/DjYC7
-   /yXtap0RVqI43zysyT7svqZej0Gwc3Z57TssF85d1hzTyMGtqonfCFpXF
-   RZEe7Fzo8feFhZMkMaWer7gUlLi9pZs3KUhgw0emeGxGmSKjgDyCvMOnH
-   bZaKShb9ZwtGlrpKxdn+Xnf2iFozowbHOlrihxnC8kxj9E+lrzfH1CWIJ
-   X0S5wQVvnmrEWut4I93L5pM1gGegzhyrqOBzZoendyF4liHR7EYMdqRnn
-   VxyUjRBoxQWX14yBB+UxPqadi+n03pstZ6/28lNF39R919/VjElHwqpKS
-   Q==;
-X-CSE-ConnectionGUID: tPjIfqw8Riig4GoSv+2nWA==
-X-CSE-MsgGUID: RaZthrMPR8WQ8toWlulLvw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11121"; a="16976994"
-X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; 
-   d="scan'208";a="16976994"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jul 2024 10:56:28 -0700
-X-CSE-ConnectionGUID: 0w0GjoV9TYS9IszbimlegA==
-X-CSE-MsgGUID: qJ2dLYKeReqovNOnMY+mjw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,178,1716274800"; 
-   d="scan'208";a="83533564"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa001.jf.intel.com with ESMTP; 02 Jul 2024 10:56:25 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sOhjq-000OUS-1p;
-	Tue, 02 Jul 2024 17:56:22 +0000
-Date: Wed, 3 Jul 2024 01:55:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: Petar Stoykov via B4 Relay <devnull+pd.pstoykov.gmail.com@kernel.org>,
-	linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Rob Herring <robh+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, Petar Stoykov <pd.pstoykov@gmail.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] MAINTAINERS: Add Sensirion SDP500
-Message-ID: <202407030117.3F6Sm9vA-lkp@intel.com>
-References: <20240702-mainline_sdp500-v3-3-0902047b3eee@gmail.com>
+	s=arc-20240116; t=1719946097; c=relaxed/simple;
+	bh=nmkalRVdPTlmZrEy1vL3vGU7/b2GIkdQaVIXNODUqqI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LCei3Qe5xRPmtlLzQaBVAC95QDi72F8cjOa69NBJY+tkbmsxasGMh5dLmoyTOeqLUTNMeHxjLScYMiA8z8DDzpVkGeaJBjhP1brHMcAfgJd4MgKVrmCLkRBcDZ1wu9DL9AkrQdWZ9jjHqjhHgWTiNeY2DBJOOu4OIPHUrpC8jYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sQBsbbYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7226C116B1;
+	Tue,  2 Jul 2024 18:48:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719946096;
+	bh=nmkalRVdPTlmZrEy1vL3vGU7/b2GIkdQaVIXNODUqqI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sQBsbbYLCbVE12qhyn+6VLmTsFfK1gvvGAdboCyjz8pgTw3FUjApopskU27d1/BgU
+	 rzE9C/EX/BDTZx0F5FbJMFUiM0wi0L1fIJn6TGOo1Zn3F6EkCL7Hwog4Q4mo+jbnSg
+	 JAgy169YcM0Y6uhTy6pIlOd62jpIWGbERF/Uy2/0hcebXKJhRaX/TIShBZYEEwoy7K
+	 Zoy572J4cTnPPFB9v+Ll6ImafZJP2r5+q2CPRoSA10NRK0P0ahcmVlrIsDXaBeX0ja
+	 GkEBNti+jTKzLQ1d1kKm/0B3uECVAFJI6rOskQnTjW6Ridcpxsr4XZb/Yp1BteuxOZ
+	 hC3bITYwdBolA==
+From: Jonathan Cameron <jic23@kernel.org>
+To: linux-iio@vger.kernel.org
+Cc: Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>
+Subject: [PATCH] iio: adc: ad7173: Fix uninitialized symbol is_current_chan
+Date: Tue,  2 Jul 2024 19:48:04 +0100
+Message-ID: <20240702184804.579341-1-jic23@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240702-mainline_sdp500-v3-3-0902047b3eee@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Petar,
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-kernel test robot noticed the following build warnings:
+Move the definition down and make it a boolean that is initialized
+to false.
 
-[auto build test WARNING on ab27740f76654ed58dd32ac0ba0031c18a6dea3b]
+Fixes: 13d12e3ad12d ("iio: adc: ad7173: Add support for AD411x devices")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202406232046.DKfBJq6o-lkp@intel.com/
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+---
+I applied this directly to the togreg branch of iio.git.
+Normally I'd have squashed this with the patch, but it is a long way
+back in the history under a couple of merges.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Petar-Stoykov-via-B4-Relay/dt-bindings-iio-pressure-Add-Sensirion-SDP500/20240702-235054
-base:   ab27740f76654ed58dd32ac0ba0031c18a6dea3b
-patch link:    https://lore.kernel.org/r/20240702-mainline_sdp500-v3-3-0902047b3eee%40gmail.com
-patch subject: [PATCH v3 3/3] MAINTAINERS: Add Sensirion SDP500
-reproduce: (https://download.01.org/0day-ci/archive/20240703/202407030117.3F6Sm9vA-lkp@intel.com/reproduce)
+ drivers/iio/adc/ad7173.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407030117.3F6Sm9vA-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   Warning: Documentation/devicetree/bindings/power/wakeup-source.txt references a file that doesn't exist: Documentation/devicetree/bindings/input/qcom,pm8xxx-keypad.txt
-   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
-   Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/watchdog/da90??-wdt.txt
->> Warning: MAINTAINERS references a file that doesn't exist: Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
-   Warning: file ./Documentation/ABI/testing/sysfs-platform-silicom#20:
-   What '/sys/devices/platform/silicom-platform/power_cycle' doesn't have a description
-   Using alabaster theme
-
+diff --git a/drivers/iio/adc/ad7173.c b/drivers/iio/adc/ad7173.c
+index 7da70b7422bb..9544bf7142ad 100644
+--- a/drivers/iio/adc/ad7173.c
++++ b/drivers/iio/adc/ad7173.c
+@@ -1188,7 +1188,7 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 	struct device *dev = indio_dev->dev.parent;
+ 	struct iio_chan_spec *chan_arr, *chan;
+ 	unsigned int ain[AD7173_NO_AINS_PER_CHANNEL], chan_index = 0;
+-	int ref_sel, ret, is_current_chan, num_channels;
++	int ref_sel, ret, num_channels;
+ 
+ 	num_channels = device_get_child_node_count(dev);
+ 
+@@ -1234,6 +1234,8 @@ static int ad7173_fw_parse_channel_config(struct iio_dev *indio_dev)
+ 	}
+ 
+ 	device_for_each_child_node_scoped(dev, child) {
++		bool is_current_chan = false;
++
+ 		chan = &chan_arr[chan_index];
+ 		*chan = ad7173_channel_template;
+ 		chan_st_priv = &chans_st_arr[chan_index];
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.45.2
+
 

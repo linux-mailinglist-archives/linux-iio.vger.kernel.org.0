@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-7200-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7201-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D12192539C
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 08:26:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E54592539E
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 08:26:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95BE7B2175E
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 06:25:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40A9D1C223AE
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 06:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510D0130496;
-	Wed,  3 Jul 2024 06:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767F41304B0;
+	Wed,  3 Jul 2024 06:26:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="Iih4tMJd"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="3NIwztsn"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2CE761FFB
-	for <linux-iio@vger.kernel.org>; Wed,  3 Jul 2024 06:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E940861FFB
+	for <linux-iio@vger.kernel.org>; Wed,  3 Jul 2024 06:26:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719987952; cv=none; b=acihNXK+Hz0+8RhHm7H6oyz6c+FPiDaQhZUKpjsGHLp0Qe1neOR3pGFMAWj970rQWLS+88KAHZknJdkn33ybXqKlewZ+Fpo40wfYG/csB3fDW1saoN5a5HLO7U51U0Q/qj5/unogAm3qA2VCE8hhgNstwIfqlKrqqU3lgxF0BsE=
+	t=1719987976; cv=none; b=UgsHMAFOMwd7pmct38MxFrCOnKpasm8nQRp6ZqoLWDt0eliy2rc1FukE/BB3d+P/m241rNpjV1H4k6AvlFa0vjmThyVeH8iXaINejEI0ne7OIa/1hro3VOAi+uuTIdTO5M7JbHKR315JW5EHxw3AcriykPOlho0uASl2aFU6JUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719987952; c=relaxed/simple;
-	bh=V8ELZwvPStHN7XtCJGOkalWpd40eiTtMCjpah1Ju8hY=;
+	s=arc-20240116; t=1719987976; c=relaxed/simple;
+	bh=+JUZDJwt7GmXY/xHCkVHzO3t0qk1bmMRJ0xUj29PKY8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gqNcJQH/LjopCPMTFEvoJZWJrQo52hOWLxxkAm4asjf7uYln8+DR7sQNOZ1faj9pbHcDO545u3PrCNFq6Sg17YDtEKSyn42c7p0Cr9p+bv/cQl/sVgEFYpN9ITGnWtJdu1Xvwec6lj0vNhPiTsZ/f21FuiGcQTfaURi+exHlino=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=Iih4tMJd; arc=none smtp.client-ip=209.85.217.51
+	 To:Cc:Content-Type; b=sNQmvPwQK1CZcQv9eL1EFcmV3NYrxweAGxhAwLzbw0sxk9dEGpDGCMYQZCZldtgJscFukSvUfSHmKooVvppRezN8Z1PR8LmVhMyvkrIS8J1bkuvqYEewSM2CUI2vnpcBJZo9ODd6avG41DqUNrTjPVNpkRIE4T+vVzBDla+5qA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=3NIwztsn; arc=none smtp.client-ip=209.85.217.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-48f428e0740so175686137.3
-        for <linux-iio@vger.kernel.org>; Tue, 02 Jul 2024 23:25:49 -0700 (PDT)
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-48f428e0740so175691137.3
+        for <linux-iio@vger.kernel.org>; Tue, 02 Jul 2024 23:26:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719987949; x=1720592749; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719987973; x=1720592773; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AFaaWFettnsz/DdIfBTX7g1ECK6NJ71HmUEH6b4ppNs=;
-        b=Iih4tMJdV2aVhmpLlYw5ylpOliiuJDTYZkC7m8YiP7OHw6rSy3fzvKIvND6l3No7OR
-         +E0uQl4w+w2fzL9AWm22tGxKs9+dY/Pm4g7D8H6y0DWPaB+FymLSAlecq9eK5Cm6YSO5
-         rC33mitDmV2h+aW+l7fZtdQwtOkx+vcHN+8d8RRywzoyGbnhCbJdR/VgH8LIqb7kT4a/
-         I88PslAy/nfqge8PRJ8zg5oFLNZM0ceHncen/s6RREFyIPAB9RPqk+nitNNLXaCrFOQy
-         SD2lo9lJGs8/Hdw8LPTT1h0XGZx3bHBBNJJp+XGYvf5SRzZ42pZ3SG5/ogX3jwYeODyG
-         xYgg==
+        bh=pSEt4ErQh+yCUcOjOlUjrmraXPGAWlNM6sPGDlobEU8=;
+        b=3NIwztsnc/lP3yeIjfrvrbFQFUzgkJI564VegDMWh3GqZYbPFw/9Hw/2VxP2ezC2gU
+         GBsMgv2rYCa/0LIhzU4LKJrKVnNY4uh01ZpKq5HdC49+dQNduZ1S7iQTfff2xM44zKH2
+         e3l2jFETRZBnxa7XSbJ372WITzlI71kkhjC+eS9tPw2FeHhX2Qpg3ZIvMiSHiGGEcN8b
+         C/blDStMXrQhJnZYQTnarVigtdKGIRVrayCUf1rLGcIzfibalucQEMVjPHA4pX034mzd
+         9l0nd9kf1wDXRzFAl77KzyKI8yOZegAwIupmUH9xngA7KyYoNqsKLiqsOA+DwRAHkZRS
+         1Qtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719987949; x=1720592749;
+        d=1e100.net; s=20230601; t=1719987973; x=1720592773;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AFaaWFettnsz/DdIfBTX7g1ECK6NJ71HmUEH6b4ppNs=;
-        b=Enyi1DpaV+dcCKTwFyHyjeqy5ox2VUjHnRcpXJiG4qrWlUhhoZN+ngXLgjmNyf5/aj
-         qoQkiBmeRHUuV/GeNjI2mgpIMVO7+dKdK3A6vXSq0fycAGe9fGgygiaXGbOabxxgGg/h
-         FySzCJM4xZfe8cVDS5o738X7qYBhqcZUBRP4SOx3z9z3hIAkJqLFQq8owWwMRilGQFgJ
-         tDKnHEWb7nsxWXLo6wzTzxCi/rwLKKPWSBHizhwIv8k7NMKkvVyJeDdZGV6qK5VH/1BT
-         PwFe9jmWaeE/nX47hROocZsb3b9VfNzJqNdUubsqOsbI1ff9SYdQGlr4j4O1r6mI7xHj
-         afBg==
-X-Gm-Message-State: AOJu0YwPe8Cqm6acrdGS1KnVdI1MOaIZJndoA2qhRZCEO0wsKIIdWFH1
-	D8hhTZiHOEbSHLXvH5AmLqBZxnjnt25S2O4gi4deue2tn5HvlvPztgeXw94B5hfJjYhvf4NzoQ+
-	wqMSM8VytcF7+XvVjkOGDB+YihACQabYFfKBGjw==
-X-Google-Smtp-Source: AGHT+IGObAsAdZCKi1a7+byYQ8mnkYslfL1K9ff4GGvlkclRQwUCAOn/metQfKX8+qRDQYMW+idWufXuEbjUv1x5+rw=
+        bh=pSEt4ErQh+yCUcOjOlUjrmraXPGAWlNM6sPGDlobEU8=;
+        b=ZdbJhpxOgBrPjhTP18R0i4H40MfHt0kuzjoOjYXp0dZibiUjgDnrunh9JUHdc7LI/O
+         uOfE9aJCTQgrXvknH/W3sLGNNo+Hm/Ji1mNMzInfI6G7AywZiuvGjVnehoqNhrTf8Bvn
+         cUrLIPik7fByE8oTRPvNnX4R2M1dcyL2RPcSkmp38Y2Qna3FwPEOJVAMWe8AY5pLhyFk
+         DuyxO79/RRvZL3VjdVMejxCJMBHkNQQhM0ju1FXYZyKllt6d4aqElHQPGwRQ2r5JNycs
+         +Iu5rCkF/IW57Nu8agMhxkLXNw1xYZLXCQLS7BY49eE1AEst49rXWfRrhm+LjW8Uj/JR
+         03wA==
+X-Gm-Message-State: AOJu0YzFAQTmzC6bHUfHmJ2ijDhsUxWM3NCmvQ0Uh//jnEdFOgL1xvqc
+	OsnKbZDDcajC65bu1V5gz4yDBqQBK3xnZWhNMTBo4dCUu1TB5W1l/yXHdFxJr2HqYn/NkOtFXad
+	jScjXKpo1F2qLuOdiSev2K6d6AdQcDZ3mG5MU5Q==
+X-Google-Smtp-Source: AGHT+IFigxZLH8FjIQ1Jvmk16KcKFcIpIFcKLlY1yHGB5gQmsCe1MwzxYPP5Yq1ftaRafP/l+O8BTo7ykPwhe+0VBFQ=
 X-Received: by 2002:a05:6102:418e:b0:48f:df2c:6d5b with SMTP id
- ada2fe7eead31-48fdf2c7245mr723867137.2.1719987948849; Tue, 02 Jul 2024
- 23:25:48 -0700 (PDT)
+ ada2fe7eead31-48fdf2c7245mr724438137.2.1719987972800; Tue, 02 Jul 2024
+ 23:26:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240702-dev-iio-masklength-private-v1-0-98193bf536a6@analog.com> <20240702-dev-iio-masklength-private-v1-9-98193bf536a6@analog.com>
-In-Reply-To: <20240702-dev-iio-masklength-private-v1-9-98193bf536a6@analog.com>
+References: <20240702-dev-iio-masklength-private-v1-0-98193bf536a6@analog.com> <20240702-dev-iio-masklength-private-v1-10-98193bf536a6@analog.com>
+In-Reply-To: <20240702-dev-iio-masklength-private-v1-10-98193bf536a6@analog.com>
 From: Alexandru Ardelean <aardelean@baylibre.com>
-Date: Wed, 3 Jul 2024 09:25:36 +0300
-Message-ID: <CA+GgBR-x2RHT45Bp4D5VC66JAdZj_dcPRPVUbZMwALFXeA7m6g@mail.gmail.com>
-Subject: Re: [PATCH 09/20] iio: accel: fxls8962af-core: make use of iio_for_each_active_channel()
+Date: Wed, 3 Jul 2024 09:26:00 +0300
+Message-ID: <CA+GgBR8T7hYoetJNJBt=PtGiUYkTc1x1fnOuMGv_z7a9nL=LnQ@mail.gmail.com>
+Subject: Re: [PATCH 10/20] iio: accel: msa311: make use of iio_for_each_active_channel()
 To: nuno.sa@analog.com
 Cc: linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, Jonathan Cameron <jic23@kernel.org>, 
@@ -93,34 +93,33 @@ On Tue, Jul 2, 2024 at 7:02=E2=80=AFPM Nuno Sa via B4 Relay
 > From: Nuno Sa <nuno.sa@analog.com>
 >
 > Use iio_for_each_active_channel() to iterate over active channels
-> accessing '.masklength' so it can be annotated as __private when there
-> are no more direct users of it.
+> accessing '.masklength' so it can be annotated as __private when there ar=
+e
+> no more direct users of it.
 >
 
 Reviewed-by: Alexandru Ardelean <aardelean@baylibre.com>
 
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
->  drivers/iio/accel/fxls8962af-core.c | 3 +--
+>  drivers/iio/accel/msa311.c | 3 +--
 >  1 file changed, 1 insertion(+), 2 deletions(-)
 >
-> diff --git a/drivers/iio/accel/fxls8962af-core.c b/drivers/iio/accel/fxls=
-8962af-core.c
-> index 4fbc01bda62e4..7adb8937cb4b6 100644
-> --- a/drivers/iio/accel/fxls8962af-core.c
-> +++ b/drivers/iio/accel/fxls8962af-core.c
-> @@ -968,8 +968,7 @@ static int fxls8962af_fifo_flush(struct iio_dev *indi=
-o_dev)
->                 int j, bit;
+> diff --git a/drivers/iio/accel/msa311.c b/drivers/iio/accel/msa311.c
+> index b8ddbfd98f112..8861010256f2e 100644
+> --- a/drivers/iio/accel/msa311.c
+> +++ b/drivers/iio/accel/msa311.c
+> @@ -900,8 +900,7 @@ static irqreturn_t msa311_buffer_thread(int irq, void=
+ *p)
 >
->                 j =3D 0;
-> -               for_each_set_bit(bit, indio_dev->active_scan_mask,
-> -                                indio_dev->masklength) {
-> +               iio_for_each_active_channel(indio_dev, bit) {
->                         memcpy(&data->scan.channels[j++], &buffer[i * 3 +=
- bit],
->                                sizeof(data->scan.channels[0]));
->                 }
+>         mutex_lock(&msa311->lock);
+>
+> -       for_each_set_bit(bit, indio_dev->active_scan_mask,
+> -                        indio_dev->masklength) {
+> +       iio_for_each_active_channel(indio_dev, bit) {
+>                 chan =3D &msa311_channels[bit];
+>
+>                 err =3D msa311_get_axis(msa311, chan, &axis);
 >
 > --
 > 2.45.2

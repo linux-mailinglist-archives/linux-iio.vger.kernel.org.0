@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-7191-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7192-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37EE2925380
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 08:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3937925385
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 08:13:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68E891C2104C
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 06:10:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 141811C23D9F
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 06:13:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB7424DA04;
-	Wed,  3 Jul 2024 06:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C91B61FF9;
+	Wed,  3 Jul 2024 06:13:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="fCltS7g7"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="LbBNAW7R"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4BDF4CDF9
-	for <linux-iio@vger.kernel.org>; Wed,  3 Jul 2024 06:10:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71296C2F2
+	for <linux-iio@vger.kernel.org>; Wed,  3 Jul 2024 06:13:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719987032; cv=none; b=PwfHDfDM1Lm6PsFwWTW9l77GC7ski6iCV0Whz03YI+QOktJ5nGMMPXN8+h/6gy3C9KIH3phw4kj7Ws10pdWkneBjvBsG2YTMLdCHz5aduBqCVHZWVfulnaJtn18laE7CZkAHz2+N6jTQHAkWjaCSOaCdQwmSONj4/l/g3QQwNDI=
+	t=1719987211; cv=none; b=ZIWKpzg/Zc+oJAft2BKACUIXApbkgDnw8JTu4aXU/D0fBicecnMUiqBB406ujmR0dDfWFQYk+MjXR57oLY/JtUg72FfQxGq0ypbSyxAYoXJdQlDVzwsliCj3ogXxgbIUMrwe0/KQ7sjVp6zSnIw8IQIUukRR8I1hGMwE1hoHouo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719987032; c=relaxed/simple;
-	bh=pc8ANiJ80l8AyWFumFO0M/7xAzIYJdDQhrWSCZ3cT1U=;
+	s=arc-20240116; t=1719987211; c=relaxed/simple;
+	bh=TVhn/9aqzM8gK9S7x7lDaUKf5V6ug6GSOL7HoxXi2G8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Opu1ARXiY/Xc6VUChpXGlOmAVsNjrf7FUE/TxQ4wvEnED0ey21TlAx139ByZlAeho/HaVBxeVwUzUzsHcTP2v+D92a0EW1XZPPDCp10IKG5ikpfHtk3XnFgbuDR8R/xFDpULhoiWGjCsaExp9wyJZiKjNvFj0fv1Zibku1qIsJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=fCltS7g7; arc=none smtp.client-ip=209.85.217.47
+	 To:Cc:Content-Type; b=IlTXrmrs8bPb92zjKtxWy2/hMs8qq6faCHSDvLVz/7zfh+8bclU6P4WoVL3q6XxLv/7Lw6vnX20CnkFaCNQDg/oZMr7KACcxcpxJ3X6G7CiuX9XoXw/k9P00FZciKeVTKDII8329Tm4SRK+ik8FhzCl4C0auCMelXGa8zHfXzEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=LbBNAW7R; arc=none smtp.client-ip=209.85.222.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-48fdf832431so3491137.3
-        for <linux-iio@vger.kernel.org>; Tue, 02 Jul 2024 23:10:28 -0700 (PDT)
+Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-80fc4d1562cso200407241.2
+        for <linux-iio@vger.kernel.org>; Tue, 02 Jul 2024 23:13:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719987028; x=1720591828; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719987207; x=1720592007; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TuQlEn1bKXmTtw08wuy4xcpjyoCGwx/Gk1HDM4Uta84=;
-        b=fCltS7g7EAvL3Gb7TqwGHkF3ca2dKgpYEpso61jBrPyWQUQv9KoDP2ZH2yGEI+TPy0
-         QckkjafS566JsyuLVlrrQYgLxOB40D0QyqhuLKUt8cbCSZu4R2FCjUdVToYvEcRXbJDV
-         oTjKtqnczDe+Ig5lbnFo+6TAZJRpSLggsSflBxZ6scOqI5YqQxL2/NSynjPuoBMI+FeQ
-         U5w6Gu3GoaSw1IFMe+Ghk2KYoueEFqNbE8b3uajily+ZsCOHFCqKyaeQs36PhkKlRFNl
-         vxktEDSMVbXkkCp7c2Aw+sxNRxCVje5KeMDFHoX+QZBc67WMJLgwMl1jQL1av8ckCV82
-         StXQ==
+        bh=nrh4omEoCsgnk9OB2fwqZ/ZZhUeolysIiLRrWxFuJG8=;
+        b=LbBNAW7R+IUP1URLp9XHUnmfaYi3+scS7rr/VDepsRw/bPWyG1Bd5AV+nDMqcKoUGH
+         GCYQq3M9qkim7jMZej5lebeBED7C/6kLTVErBhSfYGHbzq7ayD/3CTCrx8A1YAXKMyOa
+         ew3VBKfdcSk7kgVXwFRRJcHc3m6SenAOkP03+1hgJtGt+K/M2k8T+kprzPaJmgOV4kQy
+         dJZFMzT6IC/gy0iHNjM9Sh/lpjU3zROYHQf+hsQqFM39vbb0E9Bj5+K7M4ru+i3IKmXP
+         i7wrZEfZUWgL8Sg5SC1sdEEO3crCcaSjg4VBH9tPoBXaxu3AmzhoYqHTY1iPnwY3RJS2
+         j5bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719987028; x=1720591828;
+        d=1e100.net; s=20230601; t=1719987207; x=1720592007;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TuQlEn1bKXmTtw08wuy4xcpjyoCGwx/Gk1HDM4Uta84=;
-        b=i1rjJky/+KP8x5JZI8YgUZs7sanjShwvjfRM/TvwVIx9yP9o2fVGWXWm0wQ2v6inrv
-         ymPKaOjTp/dFAZRTGsACAC5rXOTLsh/qsVAiQOhEEC7R1bUVFK/hxq63QWULi/g2iCwm
-         YdicErtLVpouzcKJQmVFZwimbXQGTJXiBCq2F9QBNoe74HwRfCDBqyonFG2bKD9RWHfy
-         cVzZgP/bNkKHPKDsfbKqYjizrbqBKcryCn50UvsX4zLmjyhDO0CEiUgn4EZr0CeU7RO9
-         eYGLHTUOS121UcrHkywzj93JJzUeE6X0t3X2fHsBivhq2Dn+F3nhkZn/rPkf78R74jIC
-         NEvQ==
-X-Gm-Message-State: AOJu0YzMrUrePo45XosorjzXAf3LP8oAuH1ffWUIlNZRDKCD7g2zoJgE
-	ib2DB/LrRV2ktqeeiOwx6T7WWYYd+CFDeLbM3h1epZbUTUnCt2D5pNICGWlxA1toFJhCpqzGJSl
-	M4ByJw1TkaObVRIUuZlGlECHCzth6xTSO3hi/jZ+nzLUNGYjD6b8=
-X-Google-Smtp-Source: AGHT+IGUm6vh2ZK/ADqj6mBXlm0rx9uk8jTZJpwdWSND65/86xD95RZbIo+NssVjVNwmhp3zcwo1NixrZZhNFtJGqd8=
-X-Received: by 2002:a05:6102:5090:b0:48f:19af:d2a4 with SMTP id
- ada2fe7eead31-48faf0db435mr11426822137.2.1719987027726; Tue, 02 Jul 2024
- 23:10:27 -0700 (PDT)
+        bh=nrh4omEoCsgnk9OB2fwqZ/ZZhUeolysIiLRrWxFuJG8=;
+        b=hH3Vs8jvlGWmPm2vm5g74Nfp5cRBB8pj6+oTqp/XHOJosIh/i6uauZ3c/mq6yiHWhs
+         OJaGqyP94gkJECvouX6VDpzJd+9uEOmzMbVjzbbgJ0mD+aWdP2aV8ohRxXoM4A5fd5Wm
+         zsimxy2MwJSBm+o7JQLiRCufeCo8fONO012wdXVv7VTiIPercO32WoVnnXyJxQsmz+hU
+         0jqBnOnFdMXkVyyQx0iAdj2nnoAORwTHJSNA8mVb2aWZS+3dx8EX9cJfMJbJmm7oMxEW
+         iepl4N6TfVTsSielL9UdCXQY5l/VhN6ncc2yA14s/A2JbXRqK1zlq9WN3wTvWSrSTRmj
+         3ehA==
+X-Gm-Message-State: AOJu0YwG6jAGGRRcSOnaetP6Z9Sl2OgjM4zczA/hhyhbTsBRJx5oZgKl
+	lxOadHMB95Rxe+eMT5Cxoh9IxT5kZVvWOjRq1RtSLqI5spLvk+qnfcoRGvOmC+l17/ZEudFSPlO
+	xi71MsRpE827Zw0eStvkybZhAbOrYnaz5L2ZYvw==
+X-Google-Smtp-Source: AGHT+IHA9tyTcp/bqG+kwwVde3E1Sqakwf3LRDVH/oAwKgHm7Oq/LYBV6T61+//W+6tik9hUgMSQECJ8b9CmdmFyxYk=
+X-Received: by 2002:a05:6102:c90:b0:48d:b0a3:fe25 with SMTP id
+ ada2fe7eead31-48faf03411cmr10952763137.1.1719987207363; Tue, 02 Jul 2024
+ 23:13:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240702-dev-iio-masklength-private-v1-0-98193bf536a6@analog.com> <20240702-dev-iio-masklength-private-v1-1-98193bf536a6@analog.com>
-In-Reply-To: <20240702-dev-iio-masklength-private-v1-1-98193bf536a6@analog.com>
+References: <20240702-dev-iio-masklength-private-v1-0-98193bf536a6@analog.com> <20240702-dev-iio-masklength-private-v1-2-98193bf536a6@analog.com>
+In-Reply-To: <20240702-dev-iio-masklength-private-v1-2-98193bf536a6@analog.com>
 From: Alexandru Ardelean <aardelean@baylibre.com>
-Date: Wed, 3 Jul 2024 09:10:15 +0300
-Message-ID: <CA+GgBR-anzo8VvTT2yc4dK35YBOCXV914QL1xcocgMfc71U1yQ@mail.gmail.com>
-Subject: Re: [PATCH 01/20] iio: core: add accessors 'masklength'
+Date: Wed, 3 Jul 2024 09:13:14 +0300
+Message-ID: <CA+GgBR9ZLNJps0KCKD4Z767_NaUeKO-eiZPD0rpjfxS20LdDCA@mail.gmail.com>
+Subject: Re: [PATCH 02/20] iio: core: make use of iio_get_masklength()
 To: nuno.sa@analog.com
 Cc: linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, Jonathan Cameron <jic23@kernel.org>, 
@@ -92,57 +92,35 @@ On Tue, Jul 2, 2024 at 7:02=E2=80=AFPM Nuno Sa via B4 Relay
 >
 > From: Nuno Sa <nuno.sa@analog.com>
 >
-> 'masklength' is supposed to be an IIO private member. However, drivers
-> (often in trigger handlers) need to access it to iterate over the
-> enabled channels for example (there are other reasons). Hence, a couple
-> of new accessors are being added:
+> Use iio_get_masklength() to access '.masklength' so it can be annotated
+> as __private when there are no more direct users of it.
 >
->  * iio_for_each_active_channel() - Iterates over the active channels;
->  * iio_get_masklength() - Get length of the channels mask.
->
-> The goal of these new accessors is to annotate 'masklength' as private
-> as soon as all drivers accessing it are converted to use the new
-> helpers.
->
+
+Well, in `industrialio-core.c` it mostly helps to use the accessor in
+order to make grepping easier.
 
 Reviewed-by: Alexandru Ardelean <aardelean@baylibre.com>
 
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
->  include/linux/iio/iio.h | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
+>  drivers/iio/industrialio-core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/include/linux/iio/iio.h b/include/linux/iio/iio.h
-> index 894309294182d..dd6bbc468283e 100644
-> --- a/include/linux/iio/iio.h
-> +++ b/include/linux/iio/iio.h
-> @@ -855,6 +855,24 @@ static inline const struct iio_scan_type
->         return &chan->scan_type;
->  }
+> diff --git a/drivers/iio/industrialio-core.c b/drivers/iio/industrialio-c=
+ore.c
+> index 2f185b3869495..e392a10aaf320 100644
+> --- a/drivers/iio/industrialio-core.c
+> +++ b/drivers/iio/industrialio-core.c
+> @@ -1907,7 +1907,7 @@ static void iio_sanity_check_avail_scan_masks(struc=
+t iio_dev *indio_dev)
+>         int i;
 >
-> +/**
-> + * iio_get_masklength - Get length of the channels mask
-> + * @indio_dev: the IIO device to get the masklength for
-> + */
-> +static inline unsigned int iio_get_masklength(const struct iio_dev *indi=
-o_dev)
-> +{
-> +       return indio_dev->masklength;
-> +}
-> +
-> +/**
-> + * iio_for_each_active_channel - Iterated over active channels
-> + * @indio_dev: the IIO device
-> + * @chan: Holds the index of the enabled channel
-> + */
-> +#define iio_for_each_active_channel(indio_dev, chan) \
-> +       for_each_set_bit((chan), (indio_dev)->active_scan_mask, \
-> +                        iio_get_masklength(indio_dev))
-> +
->  ssize_t iio_format_value(char *buf, unsigned int type, int size, int *va=
-ls);
+>         av_masks =3D indio_dev->available_scan_masks;
+> -       masklength =3D indio_dev->masklength;
+> +       masklength =3D iio_get_masklength(indio_dev);
+>         longs_per_mask =3D BITS_TO_LONGS(masklength);
 >
->  int iio_str_to_fixpoint(const char *str, int fract_mult, int *integer,
+>         /*
 >
 > --
 > 2.45.2

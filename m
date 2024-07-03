@@ -1,74 +1,75 @@
-Return-Path: <linux-iio+bounces-7240-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7241-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68233925E9C
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 13:38:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D6E2925C4E
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 13:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EE72B3814F
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 11:15:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F10E1C21007
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 11:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE9C17BB11;
-	Wed,  3 Jul 2024 11:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D6117E900;
+	Wed,  3 Jul 2024 11:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bW3vkDvw"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B2mrjgvq"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0DD13B280;
-	Wed,  3 Jul 2024 11:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D00017DE04;
+	Wed,  3 Jul 2024 11:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004665; cv=none; b=d5RVe1ZNU8NB7E0n2UbjdgnPZ/J2BH1GlBSCfPpP4eWUUpfD87x/WsFdf5ihY1QfzDmJwbB1eUy+VstzA/pwXfPIvaQ89Sk1qY6zpNb1J6jGZ9OtaqwxtK9Fvx9xx36oCGsrA7vyiheFnZ/2fqmV/E4whHvqZJLJ3NNAR/f4+eo=
+	t=1720004752; cv=none; b=G7MsgBd1hTEff0ba+2w6J5PNKF1OZ1T/3vKPurvT3MDfA5MHp/TFF7u7Bo+xc8l15pH9rScLbIAOTpPcn4GHW779QMDhk4V1SyBiebmNl2OEJfCFT8DEqOoTDmuKf2aqOBlnntp5EmRZK9k6hW2X3498X2Mv+VjGjy/jwavnVUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004665; c=relaxed/simple;
-	bh=dPv8j3AZknsIxl1gBk2gsmjRakfxu2z29E0D3n2D7+c=;
+	s=arc-20240116; t=1720004752; c=relaxed/simple;
+	bh=AtufuHakgiGeUK6iDXQt3b7GibQgjYgBp7xXGZAc0ZE=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=PDlAsRDkkAG8x04TbgXWb+Txv9bvKV0KGmU5OEUjV81/8eHnv1pCJbhafsPk/0c7GKfSog+aOVdNzs5XzD9chLraTTUoWSl2EUUl8kkh8GfYQ8NvWdoiMSdG00tsCQZ6HQOBTsHmEYjLRUl5zfwuiz6q603i2/ZByA17RTi8ge4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bW3vkDvw; arc=none smtp.client-ip=209.85.208.54
+	 Content-Type:MIME-Version; b=BbwXp/uDThe2GiWS3Ky9cDrlCHSVqKpXq/zD5NhIYlsXlWw3rw0U4ybA5i9wyyFfBM488ghhbDCYs8KHE71pLHmwdLeYfnps3vSCio24WibZbhLYDfvjHkNW0Uh35rZOftITYT5s/DtpdiioHEL0+fc6GaFEXuQyE8o+3wwRPrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B2mrjgvq; arc=none smtp.client-ip=209.85.218.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-58b966b4166so2222948a12.1;
-        Wed, 03 Jul 2024 04:04:23 -0700 (PDT)
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-a751ed17b1eso85456266b.1;
+        Wed, 03 Jul 2024 04:05:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720004662; x=1720609462; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720004749; x=1720609549; darn=vger.kernel.org;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=dPv8j3AZknsIxl1gBk2gsmjRakfxu2z29E0D3n2D7+c=;
-        b=bW3vkDvwt+mId4w1fXZW58Fk03YjcIrPGZvakKj5n3poKCBNccXPssrxg8jwbSRXbU
-         17rG8dSrtiHKhAZV6PSxAkRFhb598FM/Q7A1rhlzKkXMQDya5R0hvmcotn9uYeGzDaj/
-         NdXsP5jT4Co6BC7H4or2HYFYjUKU06c/opupBC1yKMyI+oLo+0cBaWx3u/Bif7v6YMOo
-         ce9nsvz4kmywuKltGC+7Zh0DRbnfTrn+u6pfqc5ifmrZd1epVhJYuECxO6dHNdaRuV3Y
-         J96h6h8kVYMq5GWQ83xppmQa2x9AWgZE1yM10ipVB/ryXWOaSoj5H4UwBmLk5D785WHD
-         6hoA==
+        bh=AtufuHakgiGeUK6iDXQt3b7GibQgjYgBp7xXGZAc0ZE=;
+        b=B2mrjgvqEnlbJIaisnNo32cM7E2GDMOv8q3nbbcdncW+QGATbDNzYobCG3QS5xQyJn
+         mf+HJxwrMkhzCV+DE8RdgNS5pvgC8AgmKKjL5XkOUjpedkiy1JPjQtTTE2KgYtyKVT4M
+         lU0TZY6M8o6ReaKmqbj7L9eP8Lr52ODhJugTgmpdsRv1w+t3XkRlAgNZYwmc7uQwF8ib
+         ZAyp1Qiz2nTSpvoHsGKciuEeRLi7bT2QQQrI2nVxy0+pk1zQ+Ds2DGLoYLtb2CkPfGz8
+         Uj8+yOh2/6niukHIv2PoxjccofAxP6rEmORNkBC6sHn9lS1vZTnrN4BD4xGc/8Gq7KKS
+         l1xw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720004662; x=1720609462;
+        d=1e100.net; s=20230601; t=1720004749; x=1720609549;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=dPv8j3AZknsIxl1gBk2gsmjRakfxu2z29E0D3n2D7+c=;
-        b=r2lvP0jCATOq8hoImaNlSm/TxrL7Eh5zBI9uk8kgvBANG5c6lEG3ysjMbJ9v+Q+GnK
-         QQsNxCnCaL9WgnjLBj2OYGvE/okNUdXUUW1BV3Vmkb8ZAYgox48N/nLEUSkeiybIcPWb
-         ufEfqexgjpqesWTublrIN/z9ftzE9HtIn2ziDVYctVgU/Q3IKDwDvGkflGGRz063i4kc
-         mPLE3zo8PUVPd+WLfYKf52MSizzbxBcm6WCodxQ8c5jyWMROcijvY4Z2Tqgk+VNpwM9S
-         bkzWLt2ClLr0OHLhSrohcPNl+n0ikgJFKBB0wHTgpiNRNq9HXcegtCsn/hUhMtXG8gfK
-         ENzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcDQFKVMdLJAF50e+4bSUzGWjHGEc2oo5nyhH2BMPzF5c3Lp+BHwxUmYEEktNxWlP2eNiHixRwaBx/auVTOMlebI1TRuictTb9LLYeNemQu3CnNcIPahYXMiSunrhUBNB8X65vju69p64cOc3h/WmwZp3u8O464e4iCWG9H9kzb9BjhLTz
-X-Gm-Message-State: AOJu0Yzgb/Suf2KAgvYxMouGCruZwjpyNQCmMMpvsUl6SIY3Tu/qFRZH
-	XgzLGE3Dsw6FatTZgAi+n0S8kSbsjt3ylciHKweGiHchmYzMgCN1
-X-Google-Smtp-Source: AGHT+IHU2KLPLGWXDB7x828X+uRMpbDtGnbMvtpnuP8OB+XLaqjCWlOJygChOdkQDtrN6m7qwBFSAg==
-X-Received: by 2002:a17:907:868e:b0:a72:7245:ec0a with SMTP id a640c23a62f3a-a751447b348mr881307466b.58.1720004661443;
-        Wed, 03 Jul 2024 04:04:21 -0700 (PDT)
+        bh=AtufuHakgiGeUK6iDXQt3b7GibQgjYgBp7xXGZAc0ZE=;
+        b=Dlb41/MPIblnvcrHpnA1Zdu/n9MR5RMDdewcFfrI8Tlyi6QkrVMJDKHT8gtZxO/JPN
+         bs/L3VpfUOvKSR+08heeO1F2Evgd+GSXIbuEKxItehmE5Rye9bbCKU+P/Ll/wPfO9oVy
+         E9B0aQCs1XuH8tufZ/QEhR+90VVnLWdhJVrR8fkMm54xccbFVdLX80gWaMoCvxMAEUrN
+         MIjTTNpcul27qg25Y1+SpfWGJlzUTzw0e6UvQ8jAj8PGOTpAfRnnvS2fC3IqgFng3HuD
+         JN5hAuiCU8s1O7/hDjbVLTfpLJF3rl7OykS7n1LzaDjbFLCRX+Y7AORtyLkFX1JMIPPt
+         pRBg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWy5E/Dt8c6VDRj0t4UJUHHdMpTyZVv9HUPdvHeTgQmHHBcpP68/h+In1J56xQYhIhjLw6F/y+koxWnPdpDHL9fLAJlbI/ap1Oi3CJ09xv22h9/XK/lRhvI+/4CRco9ygwgRyNBYiiSsB6O8Do/c/enVnDMZnEXWR7hPvjrdm3gvjBLq3g
+X-Gm-Message-State: AOJu0Yx8g0vNb4NkYa2qQJcrQgIuKXIJWCBiusNnkh2Iwnb+ejNL1iBl
+	PyU5MH18BWRT6wYSlJtXTt6QTyllLJamml6IPBqhV7WGYVBQJCam
+X-Google-Smtp-Source: AGHT+IHf7MFzp4LLom+o6D/8hyMvzEblmww27i1LILaQzgfwgc7RfSfx0fNDiElrClKQrROXBmLSyw==
+X-Received: by 2002:a17:906:a281:b0:a6f:dbd1:b493 with SMTP id a640c23a62f3a-a77a240439bmr105122266b.7.1720004748569;
+        Wed, 03 Jul 2024 04:05:48 -0700 (PDT)
 Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7478d33ee7sm404063666b.143.2024.07.03.04.04.20
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a72ab065735sm501843366b.135.2024.07.03.04.05.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 04:04:21 -0700 (PDT)
-Message-ID: <17e484a2c07c0a521120a6a3cab7dfcf5f3c2fee.camel@gmail.com>
-Subject: Re: [PATCH v3 6/8] iio: adc: ad7606: fix oversampling gpio array
+        Wed, 03 Jul 2024 04:05:48 -0700 (PDT)
+Message-ID: <429af3d1afe4297dde5c8795ca745d84d52e5033.camel@gmail.com>
+Subject: Re: [PATCH v3 7/8] iio: adc: ad7606: fix standby gpio state to
+ match the documentation
 From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
 To: Guillaume Stols <gstols@baylibre.com>, Lars-Peter Clausen
  <lars@metafoo.de>,  Michael Hennerich <Michael.Hennerich@analog.com>,
@@ -77,10 +78,10 @@ To: Guillaume Stols <gstols@baylibre.com>, Lars-Peter Clausen
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org, Jonathan Cameron
  <Jonathan.Cameron@huawei.com>, jstephan@baylibre.com, dlechner@baylibre.com
-Date: Wed, 03 Jul 2024 13:08:13 +0200
-In-Reply-To: <20240702-cleanup-ad7606-v3-6-57fd02a4e2aa@baylibre.com>
+Date: Wed, 03 Jul 2024 13:09:41 +0200
+In-Reply-To: <20240702-cleanup-ad7606-v3-7-57fd02a4e2aa@baylibre.com>
 References: <20240702-cleanup-ad7606-v3-0-57fd02a4e2aa@baylibre.com>
-	 <20240702-cleanup-ad7606-v3-6-57fd02a4e2aa@baylibre.com>
+	 <20240702-cleanup-ad7606-v3-7-57fd02a4e2aa@baylibre.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 User-Agent: Evolution 3.52.2 
@@ -92,18 +93,13 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 
 On Tue, 2024-07-02 at 17:34 +0000, Guillaume Stols wrote:
-> gpiod_set_array_value was misused here: the implementation relied on the
-> assumption that an unsigned long was required for each gpio, while the
-> function expects a bit array stored in "as much unsigned long as needed
-> for storing one bit per GPIO", i.e it is using a bit field.
+> The binding's documentation specifies that "As the line is active low, it
+> should be marked GPIO_ACTIVE_LOW". However, in the driver, it was handled
+> the opposite way. This commit sets the driver's behaviour in sync with th=
+e
+> documentation
 >=20
-> This leaded to incorrect parameter passed to gpiod_set_array_value, that
-> would set 1 value instead of 3.
-> It also prevents to select the software mode correctly for the AD7606B.
->=20
-> Fixes: d2a415c86c6b ("iio: adc: ad7606: Add support for AD7606B ADC")
-> Fixes: 41f71e5e7daf ("staging: iio: adc: ad7606: Use find_closest() macro=
-")
+> Fixes: 722407a4e8c0 ("staging:iio:ad7606: Use GPIO descriptor API")
 > Signed-off-by: Guillaume Stols <gstols@baylibre.com>
 > ---
 

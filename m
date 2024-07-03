@@ -1,48 +1,48 @@
-Return-Path: <linux-iio+bounces-7188-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7189-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 933EC9252C4
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 07:08:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D589252C8
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 07:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C51071C22D44
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 05:08:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BE101C23040
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 05:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BD03C684;
-	Wed,  3 Jul 2024 05:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D963C482CA;
+	Wed,  3 Jul 2024 05:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jNvXLzUR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qOxVeq6P"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D17282FA;
-	Wed,  3 Jul 2024 05:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E4E82A1BB;
+	Wed,  3 Jul 2024 05:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719983323; cv=none; b=tgIOSI8YQvAqgNMxpSVRBJv3iFUZpbtj6mjOr16mOSS2yryHgc0Kcv0cNCRSIE9SXonyGOUKFUqKjmUzfZuumT4fjxSPl0Z1gNP+cINSzP+SgEc/mESyT8kBvI8LhWJ16qc9uF5LoFB9XDcZEQxmWRvo52mWK7tOrQh6KgqgtQg=
+	t=1719983382; cv=none; b=fFOVeimFY+vvNlUS48POVOZrXLG1UlBCBbZrViMu+5FJSRTdYwWU3yN7Cg40jT/+AQak4bnz9Wrs5iOpdjeW/vPtj9LJKtgepRVLBuPZEWZd7guSHlZconBtJz2g9yMPiFLbabImIqF0w686IkoQ2nThvES1Fo3PpJZ668wshiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719983323; c=relaxed/simple;
-	bh=XefBknMFIJLDjQLfaJ73QCMCDn+sNuH9vbmvQVVNObc=;
+	s=arc-20240116; t=1719983382; c=relaxed/simple;
+	bh=odBiv7p0O/AJAHhx1d3JGm7CaJRThHpAErFBEGjOuAQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=V++11KLYfxsYT/IzIORs6TCMIIBXsCxopduTPO21yHwDFzOVc9zh3W0jrMtFo3WZlhFF4slHwzzzfrACUy7YLj9I8RB10I50neUAgd6/K/21omEyNlHMmCrkCkHBh3tiq2hw80v579ppkFw62tlyLVsxADZ62gZ+ykBKh4Rza24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jNvXLzUR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2EAC32781;
-	Wed,  3 Jul 2024 05:08:36 +0000 (UTC)
+	 In-Reply-To:Content-Type; b=tHf+FOcA8i/5RCXqt9ClNJCBjx7xYmcwaixtQtdjDwiuP5nimEIbWmuYsEDOJnWVmuD0P+kcaAV8fsxHydQsEX9IiaImwKB+KnYXCtAn7ymPIBnpPhXZPiV527GmnYZ4SP/xFTFM7cQO7kV1cA0vs2rAAfmhBOSINeJkA1xIUvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qOxVeq6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB859C32781;
+	Wed,  3 Jul 2024 05:09:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719983322;
-	bh=XefBknMFIJLDjQLfaJ73QCMCDn+sNuH9vbmvQVVNObc=;
+	s=k20201202; t=1719983382;
+	bh=odBiv7p0O/AJAHhx1d3JGm7CaJRThHpAErFBEGjOuAQ=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=jNvXLzURsY8IJZs32ZeiWKvAPjTT3d94QV4PTXMycjWWV0jbJWSC3FZP45iVc3ura
-	 oKp+BinWWYEMS5tRjiQHiPgZ8DlmS44mvtrbjRcW4bdjZIMv3yrOQoxGWdnkgldH3J
-	 FflqxlIgpruiS8RSkzjTPbml7O2wXy9BzqYewU3KNB1o8HXR2gSz+Dh2b5BaCKELmN
-	 JUP6ajJD3PfL/yFVO+g+oO1P3Z4y1yzVE6X1Pq6S/IGsqSFYySufdSXpMIVOFdHNkJ
-	 zPHPZU7dxIL+4RXRnGcEcTPuyP8pdMZfIfJ7SKjfvE+gN9ERiFnygoO6xGAyk8153+
-	 B9ajVuwAcWzjQ==
-Message-ID: <b7913f90-7405-4a77-9c57-97ef124de6e1@kernel.org>
-Date: Wed, 3 Jul 2024 07:08:34 +0200
+	b=qOxVeq6P7fWl1ZF5AWn0C1IPET9AoWHFv4m1IPadTVPBdzOGsvHGtYhkhyDxJpiR2
+	 4+e7LUeCdbUX7DJTlKrfV+SoKvMGL0m81Zfti41Xj9UpIYTMZter7AwZC8qLHsqrrh
+	 BSsdV4B1vqEg0FFK8wE2yOVKp4AEcuoGIg5FaWs1In2LYqYvehjQq97psI0IuesBYv
+	 itM3yLnDffwEuTf009xHYFll9i2cVKKL33NXzjpgA9ptoOOng4LnzGvJxi9eheeu+l
+	 7fMvFOgNNL6QhTbxGh0s1dYUNTUjxdhDtu6gdowCP3WtcK6r1naAGUqbldjXpzRq/v
+	 XLMjhSgMpRm6A==
+Message-ID: <daa482a5-ced2-48f1-b47b-fcefca127648@kernel.org>
+Date: Wed, 3 Jul 2024 07:09:34 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -50,8 +50,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml: Add
- Sophgo SARADC binding documentation
+Subject: Re: [PATCH 3/3] riscv: dts: sophgo: Add SARADC configuration
 To: Thomas Bonnefille <thomas.bonnefille@bootlin.com>,
  Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
@@ -64,7 +63,7 @@ Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
 References: <20240702-sg2002-adc-v1-0-ac66e076a756@bootlin.com>
- <20240702-sg2002-adc-v1-1-ac66e076a756@bootlin.com>
+ <20240702-sg2002-adc-v1-3-ac66e076a756@bootlin.com>
 From: Krzysztof Kozlowski <krzk@kernel.org>
 Content-Language: en-US
 Autocrypt: addr=krzk@kernel.org; keydata=
@@ -110,45 +109,36 @@ Autocrypt: addr=krzk@kernel.org; keydata=
  uZwJCLykjad45hsWcOGk3OcaAGQS6NDlfhM6O9aYNwGL6tGt/6BkRikNOs7VDEa4/HlbaSJo
  7FgndGw1kWmkeL6oQh7wBvYll2buKod4qYntmNKEicoHGU+x91Gcan8mCoqhJkbqrL7+nXG2
  5Q/GS5M9RFWS+nYyJh+c3OcfKqVcZQNANItt7+ULzdNJuhvTRRdC3g9hmCEuNSr+CLMdnRBY fv0=
-In-Reply-To: <20240702-sg2002-adc-v1-1-ac66e076a756@bootlin.com>
+In-Reply-To: <20240702-sg2002-adc-v1-3-ac66e076a756@bootlin.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 02/07/2024 13:52, Thomas Bonnefille wrote:
-> The Sophgo SARADC is a Successive Approximation ADC that can be found in
-> the Sophgo SoC.
+> Adds SARADC nodes for the common Successive Approximation Analog to
+> Digital Converter used in Sophgo SoC.
+> This patch adds nodes for the two SARADCs presents on the board, one in
+> the Active domain and the other in the No-Die domain.
+
+You are duplicating the first sentence or this does not make sense...
+
 > 
 > Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
 > ---
->  .../bindings/iio/adc/sophgo,cv18xx-saradc.yaml     | 51 ++++++++++++++++++++++
->  MAINTAINERS                                        |  5 +++
->  2 files changed, 56 insertions(+)
+>  arch/riscv/boot/dts/sophgo/cv18xx.dtsi | 14 ++++++++++++++
+>  1 file changed, 14 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
-> new file mode 100644
-> index 000000000000..21fd5dc8e24e
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
-> @@ -0,0 +1,51 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/iio/adc/sophgo,cv18xx-adc.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
+> index 7247c7c3013c..0b996aa7fa31 100644
+> --- a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
+> +++ b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
+> @@ -309,5 +309,19 @@ clint: timer@74000000 {
+>  			reg = <0x74000000 0x10000>;
+>  			interrupts-extended = <&cpu0_intc 3>, <&cpu0_intc 7>;
+>  		};
 > +
-> +title: Sophgo 3 channels Successive Approximation Analog to Digital Converters
-> +
-> +maintainers:
-> +  - Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-> +
-> +description:
-> +  Datasheet at https://github.com/sophgo/sophgo-doc/releases
-> +
-> +properties:
-> +  compatible:
-> +    const: sophgo,cv18xx-saradc
+> +		saradc_active: adc@30f0000 {
 
-Except that this was never tested... wild-cards are generally not allowed.
+Please look at DTS coding style about ordering of nodes.
 
 Best regards,
 Krzysztof

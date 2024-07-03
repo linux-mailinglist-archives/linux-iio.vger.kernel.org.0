@@ -1,114 +1,142 @@
-Return-Path: <linux-iio+bounces-7272-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7273-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D8A926836
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 20:31:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F7129268FE
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 21:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57BD71C24378
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 18:31:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3AA91F24F4B
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 19:31:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7887F1850B2;
-	Wed,  3 Jul 2024 18:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFF5E178374;
+	Wed,  3 Jul 2024 19:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="kd0sLLkP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JBodifq/"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ED35FEED;
-	Wed,  3 Jul 2024 18:31:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5741DA316;
+	Wed,  3 Jul 2024 19:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720031480; cv=none; b=h/78wfy9p38e7gD4BhNWW4HDH7l4j7LZMmR5SlUdhpB9QY0Lb6TfuRY7yCHXHg7J+SvF2LJ6x/1STFZAAvKT6J5byME2NQmfG6d72ZsaAkNWkX/6HJKMahKZS+SUMatSvc/kv5GN0XociKwF3qZQD/z5a21i/gJmCTmuyIdThDo=
+	t=1720035060; cv=none; b=LDNrhw8+8jpoCQtXdbc6cdXHmQF7JEF038biC70Pq2yCpHXmc+MohksY9BZCAW5rL7MO5llSKWL4OtyrbNtS+ySEx0zbVrEawC9jcu+5v6VCnyoT6nI5FlW4HMwPWw8dY4ygK1B8flQUkNHklPrmy84XuYzzHzb190QGyZRN4TY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720031480; c=relaxed/simple;
-	bh=DTFp4PcgqMFRoq1iL2ixQ9mdBrofyAtU8p6C7j2MNEA=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=dOIazkTm44hJXhFCk5jFc2JN8dEkB68srolrQBNWx3+dRYr6wQA99ZEdGvmX1XSbohZLvm3Bt2LSIYFACNKEjZ1O7sWBTIjfDj/nxPdFOd0Ftob+Phi+b0YZMhjpIj+X+Zsyb17EZ1O5MBHKT4cl50aq6iloJIARaGnSRXnfUh8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=kd0sLLkP; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-X-Virus-Scanned: SPAM Filter at disroot.org
+	s=arc-20240116; t=1720035060; c=relaxed/simple;
+	bh=rjSNY4RzMSTu2IXIMmyahTWYDKALhy9Ek5em1QaT9qE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=B7BNa52hMuuSkrSrl7/tohMfixq6mi87eKg0FWJ9fHkZeJzfZbDBFN+RgqNYWIZrBg6RJR+gUbXD98dCVNkJK8iUTViSkgMGj116fMdPUuqHAFdQwfp9WUmJlE1+b3o22H7Lmljpgnqug8jLf83NeX0G+025BHodSz/VNMszK0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JBodifq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA4CC2BD10;
+	Wed,  3 Jul 2024 19:30:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720035060;
+	bh=rjSNY4RzMSTu2IXIMmyahTWYDKALhy9Ek5em1QaT9qE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JBodifq/72I9fjll1WZ9sCereaY1jK1EC4FhyvG11yiufCD36FboXhBWhgBgQS+Sg
+	 O+dEFokelHN48jfsn3iEzdO5JC8DtnP6Eo77JFM1anC8JiBYKGZUeH2FS+WdRhHPgA
+	 YoaOtjIo5EakccA5QvUA6dj+e2rmN4rAfnFRxbJ1JBLG374L1ikfW7dbvFSXaVKeHX
+	 iyRDi7kJ3vk9ht0rNkBx3jhb93NSYRlackc4AV/OuHQ3VslRLgxZWZXD07amve8Od/
+	 RsxEeP7ATSfsrw0YLmPnOSorie7o2EJ1QtwjoY9WQDUdnGeUIQc0/n1JF29YBBbgxw
+	 q4Tt+KrdOd6/g==
+Date: Wed, 3 Jul 2024 20:30:56 +0100
+From: Conor Dooley <conor@kernel.org>
+To: Kaustabh Chakraborty <kauschluss@disroot.org>
+Cc: linux-iio@vger.kernel.org, jic23@kernel.org, devicetree@vger.kernel.org,
+	conor+dt@kernel.org
+Subject: Re: [PATCH 2/2] dt-bindings: iio: light: stk33xx: add compatible for
+ stk3013
+Message-ID: <20240703-velvet-badly-904e7afc7cf8@spud>
+References: <20240625165122.231182-1-kauschluss@disroot.org>
+ <20240625165122.231182-2-kauschluss@disroot.org>
+ <20240626-junior-tag-cd3e27c4b140@spud>
+ <7f99d77c65bc347bf8b7935220520fdb@disroot.org>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1720031473; bh=DTFp4PcgqMFRoq1iL2ixQ9mdBrofyAtU8p6C7j2MNEA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=kd0sLLkPeorQFJEvJ8+2Xds73EWrme6G0DMWkPXwjuc42BKXLMF9OsC0J4SgVPCGh
-	 plY/hoB4vwhgP2TOdohAssFw8xnhGMDh1PZ9uECbO6EDeAaPT5nHYT4MlthJeH9VVv
-	 ssX27iFgL+rGedjzY3ViEQ+PO+1K9a4otuGMavb5X3raF58jRmtWZsPc4VYP5MroC6
-	 +g+n90shykiXCqH1yIYvxdJTuQTy7VXJLRYijZxzAtfoJl9mP39jWISGJ7MJKZdZax
-	 v8IxExABnDPB7e5KRet8+LJ0LMfOPq3WKKf3hKCbjVbEwxMjju8OA2vglgAxDmuiIo
-	 rEheHrnXymlzg==
-Date: Wed, 03 Jul 2024 18:31:13 +0000
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: linux-iio@vger.kernel.org, jic23@kernel.org, devicetree@vger.kernel.org,
- conor+dt@kernel.org, kauschluss@disroot.org
-Subject: Re: [PATCH 2/2] dt-bindings: iio: light: stk33xx: add compatible for
- stk3013
-In-Reply-To: <20240626-junior-tag-cd3e27c4b140@spud>
-References: <20240625165122.231182-1-kauschluss@disroot.org>
- <20240625165122.231182-2-kauschluss@disroot.org>
- <20240626-junior-tag-cd3e27c4b140@spud>
-Message-ID: <7f99d77c65bc347bf8b7935220520fdb@disroot.org>
-X-Sender: kauschluss@disroot.org
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="F/qmWKmvLM9G6g+N"
+Content-Disposition: inline
+In-Reply-To: <7f99d77c65bc347bf8b7935220520fdb@disroot.org>
 
-On 2024-06-26 16:06, Conor Dooley wrote:
-> On Tue, Jun 25, 2024 at 10:21:06PM +0530, Kaustabh Chakraborty wrote:
->> Add the compatible string of stk3013 to the existing list.
->> 
->> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
->> ---
->>  Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 1 +
->>  1 file changed, 1 insertion(+)
->> 
->> diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
->> index f6e22dc9814a..6003da66a7e6 100644
->> --- a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
->> +++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
->> @@ -19,6 +19,7 @@ allOf:
->>  properties:
->>    compatible:
->>      enum:
->> +      - sensortek,stk3013
-> 
-> The driver change suggests that this device is compatible with the
-> existing sensors.
-> Jonathan, could we relax the warning during init
 
-What does 'relax' mean here? Earlier there used to be a probing error,
-and now it's just a warning. Is that not relaxed enough?
+--F/qmWKmvLM9G6g+N
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> 	ret = stk3310_check_chip_id(chipid);
-> 	if (ret < 0)
-> 		dev_warn(&client->dev, "unknown chip id: 0x%x\n", chipid);
-> and allow fallback compatibles here please?
+On Wed, Jul 03, 2024 at 06:31:13PM +0000, Kaustabh Chakraborty wrote:
+> On 2024-06-26 16:06, Conor Dooley wrote:
+> > On Tue, Jun 25, 2024 at 10:21:06PM +0530, Kaustabh Chakraborty wrote:
+> >> Add the compatible string of stk3013 to the existing list.
+> >>=20
+> >> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+> >> ---
+> >>  Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 1 +
+> >>  1 file changed, 1 insertion(+)
+> >>=20
+> >> diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml =
+b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+> >> index f6e22dc9814a..6003da66a7e6 100644
+> >> --- a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+> >> +++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+> >> @@ -19,6 +19,7 @@ allOf:
+> >>  properties:
+> >>    compatible:
+> >>      enum:
+> >> +      - sensortek,stk3013
+> >=20
+> > The driver change suggests that this device is compatible with the
+> > existing sensors.
+> > Jonathan, could we relax the warning during init
+>=20
+> What does 'relax' mean here? Earlier there used to be a probing error,
+> and now it's just a warning. Is that not relaxed enough?
 
-So, you mean something like this in devicetree?
+If it is something intentionally, I don't think a warning is suitable.
+It makes the user thing something is wrong.
 
-  compatible = "sensortek,stk3013", "sensortek,stk3310";
+>=20
+> > 	ret =3D stk3310_check_chip_id(chipid);
+> > 	if (ret < 0)
+> > 		dev_warn(&client->dev, "unknown chip id: 0x%x\n", chipid);
+> > and allow fallback compatibles here please?
+>=20
+> So, you mean something like this in devicetree?
+>=20
+>   compatible =3D "sensortek,stk3013", "sensortek,stk3310";
+>=20
+> I mean that's fine, but we also need to change devicetree sources for
+> other devices. If that's what we're doing, please let me know how do
+> I frame the commits.
 
-I mean that's fine, but we also need to change devicetree sources for
-other devices. If that's what we're doing, please let me know how do
-I frame the commits.
+Why would you need to change the dts for other devices to add a fallback
+for this new compatible that is being added?
 
-> 
->>        - sensortek,stk3310
->>        - sensortek,stk3311
->>        - sensortek,stk3335
->> -- 
->> 2.45.2
->>
+> >>        - sensortek,stk3310
+> >>        - sensortek,stk3311
+> >>        - sensortek,stk3335
+> >> --=20
+> >> 2.45.2
+> >>
+>=20
+> Thank you.
 
-Thank you.
+--F/qmWKmvLM9G6g+N
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZoWm8AAKCRB4tDGHoIJi
+0hgCAP44DZOsGakqPXYNYBKQh+pKzx3/pNO8U7HF4HNASYw3nAEAzrY9FfTakUaK
+tQY1E6ASe+UeCzFYNqI3eG/cTQzVmwo=
+=7SuH
+-----END PGP SIGNATURE-----
+
+--F/qmWKmvLM9G6g+N--
 

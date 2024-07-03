@@ -1,338 +1,200 @@
-Return-Path: <linux-iio+bounces-7216-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7217-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF2EE92555A
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 10:29:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8E69259AF
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 12:48:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D26091C225EE
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 08:29:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9582FB282C2
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 10:37:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C0E13A27E;
-	Wed,  3 Jul 2024 08:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7002916E899;
+	Wed,  3 Jul 2024 10:37:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="4CV489sG"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="foJzSM9R"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1EB13049E;
-	Wed,  3 Jul 2024 08:29:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10182142904;
+	Wed,  3 Jul 2024 10:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719995372; cv=none; b=erM/a9x+QdIdG9hrm/7gvfPkr6IwUqH9J/bP1oFZMYk5syfzxl9A0LNCprmYQ7hnVcrLvUONXdYjLpozE167B1XV9bA1en2keOqEHjooYxwpb2jvibmNaZJmNNePwnwPE38dPlnzeBWiVPaESpXSTDn079+EYz345eWSYdOHG38=
+	t=1720003051; cv=none; b=raZXsFvvD4ILQMylTRE6f8waMrU+FPHiYvKlL/HiXfZldruX4VeTZSLAVx+sSwpbLOQ327NmImlcaFxb6xibdMKYjolDgTWqLUSWLNGpz5SIdH+zw2hNRVkIxNr5kdUuENk1N5LjC/+yW6ksrdLzNbQOyN7MjLiNjwKHjLO2kAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719995372; c=relaxed/simple;
-	bh=Jm93qYQgbl0FMRbmqpJUQ22vd/e4flRf03TyEJU75ks=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=lZT9HH9nvNDGB48ZaU/YX7PCvAUZwBOxAFZST1P7+NnoifPVekz79pVvFvEOkzYm+TMbcKyrMN7FSdrUXYuEFAEnnhthanz6DbKu2UeKIKQde19piulzsVKbxgBAOUk7zbiYCTkrU1DAsivgpdZgh1pi0eCovJY0xcww8Fm7I5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=4CV489sG; arc=none smtp.client-ip=91.207.212.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4637YLfS001949;
-	Wed, 3 Jul 2024 10:28:58 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	6Rh2LslZMMANq25IkC1tGRBe0DiLGeoOd/wRbMxgBrk=; b=4CV489sGvTWQM9NP
-	ZGgolq1vdNLKVVshdskB5IXydpfRbKETXV88CbllItmX5f0ifEJR/zx19JQrq6Yi
-	s3rZdz49gs+Dof5XEN2fEu4L2i8kWcfzITe3HYviDq1Aiy2SFOHGfLV4uv1LstTK
-	4QuFw41HQJFQ2x9uN+K391Rwj5YiD7PcLJwVxG7cQtttCj3CfGyAdLTCy8IX3HZg
-	XVjO1P1epRuXMBU7zZSs0vbjq+fCTDoxHL0PIdwUeaAzdouj1McP5cLALgONdbR9
-	RI8Z6zRolov9PiKk/f65Zq6rGabaSeZbUbEuoiFLmCJMxK7L2Us9CUUXECcRwNME
-	R7x+KA==
-Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 402w7j524p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jul 2024 10:28:57 +0200 (MEST)
-Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 8FEF540048;
-	Wed,  3 Jul 2024 10:28:52 +0200 (CEST)
-Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id AC62A215BFA;
-	Wed,  3 Jul 2024 10:28:02 +0200 (CEST)
-Received: from [10.252.27.110] (10.252.27.110) by SHFDAG1NODE1.st.com
- (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 3 Jul
- 2024 10:28:01 +0200
-Message-ID: <da75ec86-a701-45cc-b573-fde79bcfc104@foss.st.com>
-Date: Wed, 3 Jul 2024 10:28:01 +0200
+	s=arc-20240116; t=1720003051; c=relaxed/simple;
+	bh=9D0oFgRed8MuxGxSMJGRs4O77WGIRnK3b9TAv6iBcRo=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=dZq1Hb7A7jL/XOKmywazgwWbZu6vQsAOXUz3RMFZZRUIAt7Yb93YqxU85xdTJIHuTKFXPe3jNvZILMU5luatsNcb9gY5zUfvTRA+LDCRcBxlJPI9GaSwiS/0nUflrHr+FPZmvK8uYVGsGLva25RhuvgpW/FQmRmLYWFyDhuaeJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=foJzSM9R; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3ECA340002;
+	Wed,  3 Jul 2024 10:37:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1720003045;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Y9dKIY8UF+nReYR3bpF9Pb7TJp7WLPLWK/B5oYjjbq8=;
+	b=foJzSM9RuZQOf/VPApRW0lmUGrQblXobu0gWcMfK3rdR7fFeSllw9HZtvDHamCZSnVeAQd
+	xl3StvV0X9RM6zrGGH8rKfTVgGj2rxAQ/FXj4AoPA7jwEAAykHOnYYQdsWoKj0Z5qT9EbI
+	NJSgM2y4fGFlocfqLTtmMbWZcFSesBLFVfvUvMOxSvZzRHYiHre2aVkplOJXZ8APv8zjRO
+	yRmCwXsRILqubrSOViPCck2qs6VXTOpPU1Zh2pkMz/CDpauRr4KYDvJCL2P3T9WnVnXRPw
+	Yp49tSFnocZKud9kw1tjEbXpKeoo3s6qbV/lMc9MWdp1PkDr10Ce8YagcplEvA==
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Subject: [PATCH 00/20] Simplify of_property_for_each_u32()
+Date: Wed, 03 Jul 2024 12:36:44 +0200
+Message-Id: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 4/8] dt-bindings: iio: dfsdm: move to backend framework
-To: Rob Herring <robh@kernel.org>
-CC: <fabrice.gasnier@foss.st.com>,
-        Arnaud Pouliquen
-	<arnaud.pouliquen@foss.st.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Maxime Coquelin
-	<mcoquelin.stm32@gmail.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        <alsa-devel@alsa-project.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>,
-        <linux-stm32@st-md-mailman.stormreply.com>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-References: <20240625150717.1038212-1-olivier.moysan@foss.st.com>
- <20240625150717.1038212-5-olivier.moysan@foss.st.com>
- <20240628213517.GA225013-robh@kernel.org>
-Content-Language: en-US
-From: Olivier MOYSAN <olivier.moysan@foss.st.com>
-In-Reply-To: <20240628213517.GA225013-robh@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
- (10.75.129.69)
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-03_04,2024-07-02_02,2024-05-17_01
+X-B4-Tracking: v=1; b=H4sIALwphWYC/x3MTQqEMAxA4atI1lOI9Q+8igyltKlmY0uqw4j07
+ haX3+K9GzIJU4a5uUHox5njXtF+GnCb3VdS7KtBo+5xwlbFYJLERHJcJkQxZN1mzk6rfsTgUdv
+ Bo4OaJ6HA/3e9fEt5ALUFP0BqAAAA
+To: Miguel Ojeda <ojeda@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Saravana Kannan <saravanak@google.com>, 
+ Nathan Chancellor <nathan@kernel.org>, 
+ Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Tony Lindgren <tony@atomide.com>, 
+ Bjorn Andersson <andersson@kernel.org>, 
+ =?utf-8?q?Emilio_L=C3=B3pez?= <emilio@elopez.com.ar>, 
+ Chen-Yu Tsai <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, Krzysztof Kozlowski <krzk@kernel.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Jonathan Cameron <jic23@kernel.org>, 
+ Lee Jones <lee@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Jiri Slaby <jirislaby@kernel.org>, 
+ Richard Leitner <richard.leitner@linux.dev>, 
+ Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>, 
+ Damien Le Moal <dlemoal@kernel.org>
+Cc: "Peng Fan (OSS)" <peng.fan@oss.nxp.com>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org, 
+ llvm@lists.linux.dev, linux-clk@vger.kernel.org, linux-omap@vger.kernel.org, 
+ linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-sunxi@lists.linux.dev, linux-samsung-soc@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org, 
+ linux-pwm@vger.kernel.org, linux-serial@vger.kernel.org, 
+ linux-usb@vger.kernel.org, patches@opensource.cirrus.com, 
+ linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-riscv@lists.infradead.org, Luca Ceresoli <luca.ceresoli@bootlin.com>
+X-Mailer: b4 0.14.0
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-Hi Rob,
+[Note: to reduce the noise I have trimmed the get_maintainers list
+manually. Should you want to be removed, or someone else added, to future
+versions, just tell me. Sorry for the noise.]
 
-On 6/28/24 23:35, Rob Herring wrote:
-> On Tue, Jun 25, 2024 at 05:07:12PM +0200, Olivier Moysan wrote:
->> Change the DFSDM binding to use the new IIO backend framework,
->> along with the adoption of IIO generic channels.
->> This binding change allows to add scaling support to the DFSDM.
->>
->> Keep the legacy binding as deprecated for backward compatibility.
->>
->> The io-backends property is supported only in generic IIO channel
->> binding.
->>
->> - Channel description with the generic binding (Audio and Analog):
->>
->>    Properties superseded by generic properties:
->>      st,adc-channels: becomes "reg" property in channel node
->>      st,adc-channel-names: becomes "label" property in channel node
->>    Properties moved to channel child node:
->>      st,adc-channel-types: becomes st,adc-channel-type
->>      st,adc-channel-clk-src, st,adc-alt-channel
->>
->> - Analog binding:
->>
->>    DFSDM filter channel is configured as an IIO backend consumer.
->>    Add io-backends property in channel child nodes.
->>
->>    DFSDM is no more configured as a channel consumer from SD modulator.
->>    Use of io-channels in DFSDM node is deprecated.
->>
->> - Audio binding:
->>
->>    DFSDM audio DAI is configured as a channel consumer from DFSDM filter.
->>    No change compare to legacy.
->>
->> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
->> ---
->>   .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml  | 157 +++++++++++++++++-
->>   1 file changed, 151 insertions(+), 6 deletions(-)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
->> index c1b1324fa132..1802120b16b0 100644
->> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
->> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
->> @@ -102,9 +102,11 @@ patternProperties:
->>           items:
->>             minimum: 0
->>             maximum: 7
->> +        deprecated: true
->>   
->>         st,adc-channel-names:
->>           description: List of single-ended channel names.
->> +        deprecated: true
->>   
->>         st,filter-order:
->>           description: |
->> @@ -118,6 +120,12 @@ patternProperties:
->>         "#io-channel-cells":
->>           const: 1
->>   
->> +      '#address-cells':
->> +        const: 1
->> +
->> +      '#size-cells':
->> +        const: 0
->> +
->>         st,adc-channel-types:
->>           description: |
->>             Single-ended channel input type.
->> @@ -128,6 +136,7 @@ patternProperties:
->>           items:
->>             enum: [ SPI_R, SPI_F, MANCH_R, MANCH_F ]
->>           $ref: /schemas/types.yaml#/definitions/non-unique-string-array
->> +        deprecated: true
->>   
->>         st,adc-channel-clk-src:
->>           description: |
->> @@ -139,6 +148,7 @@ patternProperties:
->>           items:
->>             enum: [ CLKIN, CLKOUT, CLKOUT_F, CLKOUT_R ]
->>           $ref: /schemas/types.yaml#/definitions/non-unique-string-array
->> +        deprecated: true
->>   
->>         st,adc-alt-channel:
->>           description:
->> @@ -147,6 +157,7 @@ patternProperties:
->>             If not set, channel n is connected to SPI input n.
->>             If set, channel n is connected to SPI input n + 1.
->>           type: boolean
->> +        deprecated: true
->>   
->>         st,filter0-sync:
->>           description:
->> @@ -165,11 +176,64 @@ patternProperties:
->>         - compatible
->>         - reg
->>         - interrupts
->> -      - st,adc-channels
->> -      - st,adc-channel-names
->>         - st,filter-order
->>         - "#io-channel-cells"
->>   
->> +    patternProperties:
->> +      "^channel@([0-9]|1[0-9])$":
-> 
-> Unit-addresses are normally hex. And according to reg below, the max
-> value is 8.
-> 
+This series aims at simplifying of_property_for_each_u32() as well as
+making it more difficult to misuse it in the future.
 
-Right. The maximum number of serial interfaces is 8.
-So, the pattern can be reduced to "^channel@([0-7])$":
+The long-term goal is changing this pattern:
 
->> +        type: object
->> +        $ref: adc.yaml
->> +        description: Represents the external channels which are connected to the DFSDM.
->> +
->> +        properties:
->> +          reg:
->> +            items:
->> +              minimum: 0
->> +              maximum: 8
-> 
-> More than 1 reg entry valid? Either way, you need maxItems. Or you can
-> just drop 'items'
-> 
+  struct property *prop;
+  const __be32 *p;
+  u32 val;
+ 
+  of_property_for_each_u32(np, "xyz", prop, p, val) { ... }
 
-Added "maxItems: 1" and dropped items.
+to this:
 
->> +
->> +          label:
->> +            description:
->> +              Unique name to identify which channel this is.
->> +
->> +          st,adc-channel-type:
->> +            description: |
->> +              Single-ended channel input type.
->> +              - "SPI_R": SPI with data on rising edge (default)
->> +              - "SPI_F": SPI with data on falling edge
->> +              - "MANCH_R": manchester codec, rising edge = logic 0, falling edge = logic 1
->> +              - "MANCH_F": manchester codec, rising edge = logic 1, falling edge = logic 0
->> +            items:
-> 
-> 'items' is for arrays, but...
-> 
+  u32 val;
 
-Removed items
+  of_property_for_each_u32(np, "xyz", val) { ... }
 
->> +              enum: [ SPI_R, SPI_F, MANCH_R, MANCH_F ]
->> +            $ref: /schemas/types.yaml#/definitions/string
-> 
-> not an array.
-> 
->> +
->> +          st,adc-channel-clk-src:
->> +            description: |
->> +              Conversion clock source.
->> +              - "CLKIN": external SPI clock (CLKIN x)
->> +              - "CLKOUT": internal SPI clock (CLKOUT) (default)
->> +              - "CLKOUT_F": internal SPI clock divided by 2 (falling edge).
->> +              - "CLKOUT_R": internal SPI clock divided by 2 (rising edge).
->> +            items:
-> 
-> ditto
-> 
+So, removing the 3rd and 4th arguments which are typically meant to be
+internal. Those two parameters used to be unavoidable until the kernel
+moved to building with the C11 standard unconditionally. Since then, it is
+now possible to get rid of them. However a few users of
+of_property_for_each_u32() do actually use those arguments, which
+complicates the transition. For this reason this series does the following:
 
-Done
+ * Add of_property_for_each_u32_new(), which does not have those two
+   arguments (patch 1)
+ * Convert _almost_ every usage to of_property_for_each_u32_new()
+ * Rename of_property_for_each_u32() to of_property_for_each_u32_old() and
+   deprecate it, as a incentive to code not (yet) in mainline to upgrade
+   to the *_new() version (last patch)
 
->> +              enum: [ CLKIN, CLKOUT, CLKOUT_F, CLKOUT_R ]
->> +            $ref: /schemas/types.yaml#/definitions/string
->> +
->> +          st,adc-alt-channel:
->> +            description:
->> +              Must be defined if two sigma delta modulators are
->> +              connected on same SPI input.
->> +              If not set, channel n is connected to SPI input n.
->> +              If set, channel n is connected to SPI input n + 1.
->> +            type: boolean
->> +
->> +          io-backends:
->> +            description:
->> +              Used to pipe external sigma delta modulator or internal ADC backend to DFSDM channel.
-> 
-> How many entries (maxItems)?
-> 
->> +
->> +        required:
->> +          - reg
->> +
->> +        additionalProperties: false
-> 
-> Put this next to the $ref for the node. And switch to
-> unevaluatedProperties and drop 'label' from here.
-> 
+The plan for the next series is to additionally:
 
-Done
+ * Convert the few remaining of_property_for_each_u32_old() instantes to
+   of_property_for_each_u32_new()
+ * Remove of_property_for_each_u32_old()
+ * Rename of_property_for_each_u32_new() to of_property_for_each_u32()
 
->> +
->>       allOf:
->>         - if:
->>             properties:
->> @@ -199,9 +263,19 @@ patternProperties:
->>                 description:
->>                   From common IIO binding. Used to pipe external sigma delta
->>                   modulator or internal ADC output to DFSDM channel.
->> +              deprecated: true
->>   
->> -          required:
->> -            - io-channels
->> +          if:
->> +            required:
->> +              - st,adc-channels
->> +          then:
->> +            required:
->> +              - io-channels
->> +
->> +          patternProperties:
->> +            "^channel@([0-9]|1[0-9])$":
->> +              required:
->> +                - io-backends
-> 
-> Don't think this is needed here. If channel node is present, the
-> io-backends should always be required, right? Then this can go under the
-> node schema.
-> 
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+---
+Luca Ceresoli (20):
+      of: add of_property_for_each_u32_new()
+      clk: convert to of_property_for_each_u32_new()
+      clk: qcom: convert to of_property_for_each_u32_new()
+      clk: sunxi: clk-simple-gates: convert to of_property_for_each_u32_new()
+      clk: sunxi:  clk-sun8i-bus-gates: convert to of_property_for_each_u32_new()
+      clocksource/drivers/samsung_pwm: convert to of_property_for_each_u32_new()
+      bus: ti-sysc: convert to of_property_for_each_u32_new()
+      lk: clk-conf: convert to of_property_for_each_u32_new()
+      gpio: brcmstb: convert to of_property_for_each_u32_new()
+      pinctrl: s32cc: convert to of_property_for_each_u32_new()
+      irqchip/atmel-aic: convert to of_property_for_each_u32_new()
+      iio: adc: ti_am335x_adc: convert to of_property_for_each_u32_new()
+      pwm: samsung: convert to of_property_for_each_u32_new()
+      tty: sysrq: convert to of_property_for_each_u32_new()
+      usb: usb251xb: convert to of_property_for_each_u32_new()
+      mfd: ti_am335x_tscadc: convert to of_property_for_each_u32_new()
+      ASoC: arizona: convert to of_property_for_each_u32_new()
+      powerpc/xive: convert to of_property_for_each_u32_new()
+      powerpc/xive: convert to of_property_for_each_u32_new()
+      of: deprecate and rename of_property_for_each_u32()
 
-The io-backends property is required only when we use st,stm32-dfsdm-adc 
-compatible. In other words, when we are in an analog use case. In this 
-case the channel is a consumer of a backend (typically a sd modulator)
-In an audio use case (compatible st,stm32-dfsdm-dmic) the backend is not 
-required.
+ .clang-format                           |  3 ++-
+ arch/powerpc/sysdev/xive/native.c       |  4 +---
+ arch/powerpc/sysdev/xive/spapr.c        |  3 +--
+ drivers/bus/ti-sysc.c                   |  4 +---
+ drivers/clk/clk-conf.c                  |  4 +---
+ drivers/clk/clk-si5351.c                |  4 ++--
+ drivers/clk/clk.c                       |  6 ++----
+ drivers/clk/qcom/common.c               |  4 +---
+ drivers/clk/sunxi/clk-simple-gates.c    |  4 +---
+ drivers/clk/sunxi/clk-sun8i-bus-gates.c |  4 +---
+ drivers/clocksource/samsung_pwm_timer.c |  4 +---
+ drivers/gpio/gpio-brcmstb.c             |  5 +----
+ drivers/iio/adc/ti_am335x_adc.c         |  4 +---
+ drivers/irqchip/irq-atmel-aic-common.c  |  4 +---
+ drivers/irqchip/irq-pic32-evic.c        |  2 +-
+ drivers/mfd/ti_am335x_tscadc.c          |  4 +---
+ drivers/pinctrl/nxp/pinctrl-s32cc.c     |  4 +---
+ drivers/pinctrl/pinctrl-k210.c          |  2 +-
+ drivers/pwm/pwm-samsung.c               |  4 +---
+ drivers/tty/sysrq.c                     |  4 +---
+ drivers/usb/misc/usb251xb.c             |  4 +---
+ include/linux/of.h                      | 14 ++++++++++----
+ sound/soc/codecs/arizona.c              | 12 +++++-------
+ 23 files changed, 39 insertions(+), 68 deletions(-)
+---
+base-commit: e937d48ed96381e9620d9c81fbc1ce666f5b7358
+change-id: 20240701-of_property_for_each_u32-460fd02a5d0c
 
-BRs
-Olivier
+Best regards,
+-- 
+Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-> Rob
-> 
-> 
 

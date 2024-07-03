@@ -1,75 +1,75 @@
-Return-Path: <linux-iio+bounces-7283-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7284-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B579269F0
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 23:06:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB4439269F2
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 23:07:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C574F28125D
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 21:06:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 779671F26C51
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 21:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C67D1957F5;
-	Wed,  3 Jul 2024 21:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C81F1940B9;
+	Wed,  3 Jul 2024 21:05:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iNB3tlI/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kU1UxxhV"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F71F1953A8;
-	Wed,  3 Jul 2024 21:05:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D58B195F3A;
+	Wed,  3 Jul 2024 21:05:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720040720; cv=none; b=mS5ldfZnDx1eRMPhkIuzDJKAv8cqG9vZ4sF9NwY+Nnnn962cEOm4fwH8+ET00aXx91xKRWsva6xLmmzwo7nw899zgCleMps9Gu7wyOiUU1ikaOGe4deyDQhfMEhE9Bni6nyXc/4TQn/hPXVg3jnebJFkJgBIdvUhbD9VzUQjqnk=
+	t=1720040724; cv=none; b=aKSNz25lm7XOaxudgM6C7Rd5Bc4rQ+IZrtlcGtaIhY8hrS7VFAQ4ERudivMIt/IuS8eU8NRJz7wPVzfs0n3/Ag52DW9rMBmOjLK1u3EaflKaLjEpvMZUIunoFBSTA6cvKOe1B0hdbGWDme0HTujpO0c9EreeHemAeuRfyt023Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720040720; c=relaxed/simple;
-	bh=NbcbWIvsQrzaCBFIWZHxkGEsF4CypNL/kk+IHCezcoM=;
+	s=arc-20240116; t=1720040724; c=relaxed/simple;
+	bh=0t8By2YYqQKqOLTidUf3/P6f28/CPTfyCx4winCDhm0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=S/TpPixv8U5J2REv8INcfYKwdF5MygK4COmA2ySyDeXffu+YvSGCAtVh3VsNam9bStvmQ1fNMrj7Wy6pq5p34sNA2fES+9hsqJ2DZ0n//R7n4nUKMsFkP9iB87xQC6G1HlOKuSIEegoJQE5BAP0LWeFRkZtF6U25AFWtLiXnKtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iNB3tlI/; arc=none smtp.client-ip=209.85.208.171
+	 In-Reply-To:To:Cc; b=BUQdmMaIeUVmpciVKp5SoOONhcW6NLJqZU50pOSdWsSR5Bm27/EDvCGQwrwH23dFP/V1yEzxBBdOOibJDt5M538li+pwkGb2Vc6t3bOB5Y2McRdc+JsDrKNSQYUaA9uMT4E2hdwW3Q/dWQaXx+JpGNigEtjhpKhouNeZHe5Hqk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kU1UxxhV; arc=none smtp.client-ip=209.85.208.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2ec58040f39so56824421fa.2;
-        Wed, 03 Jul 2024 14:05:19 -0700 (PDT)
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ee8911b451so9143411fa.2;
+        Wed, 03 Jul 2024 14:05:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720040717; x=1720645517; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720040720; x=1720645520; darn=vger.kernel.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RRgzlP2UcPIrCp97K6UhN9/fp3i9cpcun18o+fJ4UXE=;
-        b=iNB3tlI/8MZafoS3rAEaf9T/32CBl1NSZXJOIoIF5o2zp0nJma3DQ6+S8OrLxowZao
-         uDLeDbiZRMFKPjNyCNUJB54F7AspD5oweZUb2LKprJt2BPJntGmhLQ0zIAiqEvC7Ke7H
-         tlSnfC+e4rrSJ7QLtu0vXDgIP0hxAsyPytYtOIe5P+TizGqfbyRtOY9m/5C1Lm4PFKOY
-         moI4Lsc7sqyI8kiawO4/1z6VpPjbMxh6JGtyJ/l9lLsxZJi2gaitElqXRaJVQZBqi7Lf
-         DXebRjhg4AH1QNVsFAK4v03JR7yJcOqPC3EWX9jvO6iGMxQzbfI67mRNC5eCc4GFVDDE
-         z7eg==
+        bh=IyX9TcRdVHyapOF9DOsH/OFvhz6zliZWtMsX1SPbtnA=;
+        b=kU1UxxhV27ISmphZQh7Qm72EbrHF42bsR7gBZPomMzTASJeT9obgPoQU/I0vN701me
+         89rTvKE2FlFGaNvUAj3wz1y/ljpR4KwyUvNv/Gr6VtVlNnTb0bGOQ6iBrAdiDXy1TlPw
+         z0idm4zJV18VlVB6t6uInygsWlumMI9FAiAxQsK+oXjA6ef/Bgz8Ge76tZdNQjxeSgpM
+         JzUHSfDSfGmjPUeeb/gsJRk/pf0gUtZQJEx9HpgkDSrWJDBdj9VcQfGVSmrI6Lxiz1Vt
+         lzG9Tj7tYtzInm8YWHrnFgmrjJT6jW7J9Zrkq169LeAF1J/6A8IWYpLBJ11b3xhGMUVg
+         niZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720040717; x=1720645517;
+        d=1e100.net; s=20230601; t=1720040721; x=1720645521;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RRgzlP2UcPIrCp97K6UhN9/fp3i9cpcun18o+fJ4UXE=;
-        b=b8M2XLYUD9KDwADG73bhV2rbuLIzmlq1HIDW2uPHaI1bvPp7EiMk1iG7Bc0/5N1mNy
-         zPIBgxZMSGzgHLiM8tgYRv8szYdPv4FsnvL2DBrwNWl6vOhSHXCSfxalhwCEeripzXfb
-         E0/8UmhY3smhiG3/X1Tyf+C900TDE7WsrYjN/aZecebO37O3o6s40aAeRAtSy+U+rbd5
-         UIq5098jxLsZf9267/glEQc9iRXyebUH+2Xb7nuVpzqh/lo8kGNNPSMm1qnsfFaUu9ZW
-         aFLfrSeVvYhzUbOjhnyju1NQXivJKfGYZY3qya+qH4CfsArVKcqQda1lYgWNQzCpRdqP
-         BFFg==
-X-Forwarded-Encrypted: i=1; AJvYcCWJRvYIgxGqZqdaPBeIu/UxR5wJC3gPQmd+5ykBfAgI0hlib1Dx7r+643kXY8FrIYbLiwhSyWKdOy52mDZEMLJrCS85SLfvaPYz45Jj
-X-Gm-Message-State: AOJu0YyrSVXSnG2k/c7PE/ia2yRr81OcJ0uq5xYLntxtICKB2c8SSipg
-	uQ/wKx2rwkdgDC4WqsqEdj75hVChnppFRQ0LkasE6kJuwWWi1qDasEw4mYXi
-X-Google-Smtp-Source: AGHT+IFETK18+5iYyOF90xOIofOYcMVWB4wdE080wQa1e7W50VchGF+OBxVK2c95gtRi1YqnrE2DMQ==
-X-Received: by 2002:a2e:be9b:0:b0:2ee:8b92:952f with SMTP id 38308e7fff4ca-2ee8b92964emr4294351fa.0.1720040717423;
-        Wed, 03 Jul 2024 14:05:17 -0700 (PDT)
+        bh=IyX9TcRdVHyapOF9DOsH/OFvhz6zliZWtMsX1SPbtnA=;
+        b=UDx7pwFqQQKCQxGmO2+dYSRfL9FU/OiONSshDMgD4Qak83tgJUiSrz+5LdKVvG6tao
+         g+hcj+VIt4+zW9p9J0oELlKHGppxmEn1axIRewIITrwmck9OU4kC6yoyFtSWwtbTqKQe
+         onCsn8SfMnIHXqQQ80HV8FPm5kI8Pcn2bE5pkePF1631GbYUvhV+R6kgWUfhF717rnkP
+         tc9++jVP/qvp51KK6ztRT+FsvNs1lXivbgoKWrf7eNKGLUtVVLUoA6i1pUUqlCY9Um1d
+         82DUhuijiO4ubwKawfXTJjVgsD2lwx8wMjH0D53RJ5BgHDWnYfWcOY1PmayfGOyZ/oSs
+         tSFw==
+X-Forwarded-Encrypted: i=1; AJvYcCVSxBZigNZiUG7/dlZQWk9EZYYQhoAyGBInCUiuSPNwwuxNVMnZ1pp2m+yaOGGKAxvIQc6nPHWoSrxwom/T2PpfVgc6U4eph+4nJqs6
+X-Gm-Message-State: AOJu0Yynm+J6PwtvPf1hOwPSw+G6D0SWuqXoqivtfuV05cHIca+7I92H
+	zMFmZXram0p8p90QwKK/JANZ+Uqr15gw78CRb7tojufi4M3d/YlQHjJ7ol2n
+X-Google-Smtp-Source: AGHT+IEoqk30lfxe6QliWd1IfNiWy6Tu4s0Z9+hC/l+jtWQ+O7+zNSbtoDM9OiziDlBB3tH6rF6XwA==
+X-Received: by 2002:a2e:a995:0:b0:2ee:4514:aa9a with SMTP id 38308e7fff4ca-2ee5e6cda08mr106951591fa.48.1720040720597;
+        Wed, 03 Jul 2024 14:05:20 -0700 (PDT)
 Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256b0971d2sm249676355e9.31.2024.07.03.14.05.14
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256b0971d2sm249676355e9.31.2024.07.03.14.05.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 14:05:15 -0700 (PDT)
+        Wed, 03 Jul 2024 14:05:18 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Wed, 03 Jul 2024 23:04:52 +0200
-Subject: [PATCH 09/10] iio: light: gp2ap002: Constify struct regmap_bus
+Date: Wed, 03 Jul 2024 23:04:53 +0200
+Subject: [PATCH 10/10] iio: pressure: bmp280: Constify struct regmap_bus
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,7 +78,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-iio-cont-regmap_bus-v1-9-34754f355b65@gmail.com>
+Message-Id: <20240703-iio-cont-regmap_bus-v1-10-34754f355b65@gmail.com>
 References: <20240703-iio-cont-regmap_bus-v1-0-34754f355b65@gmail.com>
 In-Reply-To: <20240703-iio-cont-regmap_bus-v1-0-34754f355b65@gmail.com>
 To: Cosmin Tanislav <cosmin.tanislav@analog.com>, 
@@ -92,35 +92,56 @@ To: Cosmin Tanislav <cosmin.tanislav@analog.com>,
 Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720040691; l=819;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720040691; l=1549;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=NbcbWIvsQrzaCBFIWZHxkGEsF4CypNL/kk+IHCezcoM=;
- b=KyYBQmFLM4bMQcpPgZPrNxNu0ZrsDOcpEf20pj/WZA9aw/3NKSF9/8TtHVHZbDK16awEhraMS
- BZWT30Swj0pCOznZO0bDMF60fGnZiyBgZoeXk+K8juWkGcXiwxqDIzW
+ bh=0t8By2YYqQKqOLTidUf3/P6f28/CPTfyCx4winCDhm0=;
+ b=L2tcuONK3hdbTjhGZNf1YTSvT3IaZs7IDIygCSmdfMYeVCbwO5CM+ANFzFoBb7Pus6wBVeakL
+ 9CXm/bbEqpFDrFAKRU+nZl+u/wsxpJZ92qlVHv2fHbEB/Wdw9Skz6gx
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-`gp2ap002_regmap_bus` is not modified and can be declared as const to
-move its data to a read-only section.
+`bmp280_regmap_bus` and `bmp380_regmap_bus` are conditionally assigned
+to `bmp_regmap_bus`, which is only used to pass the struct as a
+read-only member.
+
+Add the const modifier to the structs and the pointer to move the data
+to a read-only section.
 
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
- drivers/iio/light/gp2ap002.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/pressure/bmp280-spi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/light/gp2ap002.c b/drivers/iio/light/gp2ap002.c
-index 7125e011a38a..f8b1d7dd6f5f 100644
---- a/drivers/iio/light/gp2ap002.c
-+++ b/drivers/iio/light/gp2ap002.c
-@@ -420,7 +420,7 @@ static int gp2ap002_regmap_i2c_write(void *context, unsigned int reg,
- 	return i2c_smbus_write_byte_data(i2c, reg, val);
+diff --git a/drivers/iio/pressure/bmp280-spi.c b/drivers/iio/pressure/bmp280-spi.c
+index 62b4e58104cf..fee266d4e055 100644
+--- a/drivers/iio/pressure/bmp280-spi.c
++++ b/drivers/iio/pressure/bmp280-spi.c
+@@ -64,14 +64,14 @@ static int bmp380_regmap_spi_read(void *context, const void *reg,
+ 	return 0;
  }
  
--static struct regmap_bus gp2ap002_regmap_bus = {
-+static const struct regmap_bus gp2ap002_regmap_bus = {
- 	.reg_read = gp2ap002_regmap_i2c_read,
- 	.reg_write = gp2ap002_regmap_i2c_write,
+-static struct regmap_bus bmp280_regmap_bus = {
++static const struct regmap_bus bmp280_regmap_bus = {
+ 	.write = bmp280_regmap_spi_write,
+ 	.read = bmp280_regmap_spi_read,
+ 	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
+ 	.val_format_endian_default = REGMAP_ENDIAN_BIG,
  };
+ 
+-static struct regmap_bus bmp380_regmap_bus = {
++static const struct regmap_bus bmp380_regmap_bus = {
+ 	.write = bmp280_regmap_spi_write,
+ 	.read = bmp380_regmap_spi_read,
+ 	.read_flag_mask = BIT(7),
+@@ -83,7 +83,7 @@ static int bmp280_spi_probe(struct spi_device *spi)
+ {
+ 	const struct spi_device_id *id = spi_get_device_id(spi);
+ 	const struct bmp280_chip_info *chip_info;
+-	struct regmap_bus *bmp_regmap_bus;
++	struct regmap_bus const *bmp_regmap_bus;
+ 	struct regmap *regmap;
+ 	int ret;
+ 
 
 -- 
 2.40.1

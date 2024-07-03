@@ -1,121 +1,113 @@
-Return-Path: <linux-iio+bounces-7239-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7240-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C85B5925A93
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 13:01:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68233925E9C
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 13:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E3671F216EE
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 11:01:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EE72B3814F
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 11:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13EA17995E;
-	Wed,  3 Jul 2024 10:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE9C17BB11;
+	Wed,  3 Jul 2024 11:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b="VLDgNOSK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bW3vkDvw"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx1.t-argos.ru (mx1.t-argos.ru [109.73.34.58])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91AE17967A;
-	Wed,  3 Jul 2024 10:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.73.34.58
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0DD13B280;
+	Wed,  3 Jul 2024 11:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720003788; cv=none; b=HqXCed4pQrZMcLxJGFJygGzOssk8PsbTf1bcOCihxw+xnLYvZfHuqJ2cLQDbaYsyZAWbJt/LVxouZ2EGJNLVtrU0o5K3QxgMxFyDpKVgX3gpmF9gO4rP45DkAJVOYvbhK5qZOCNAtj7udE+ZSa4XXHnLlqK5/zn24884X/0QsFI=
+	t=1720004665; cv=none; b=d5RVe1ZNU8NB7E0n2UbjdgnPZ/J2BH1GlBSCfPpP4eWUUpfD87x/WsFdf5ihY1QfzDmJwbB1eUy+VstzA/pwXfPIvaQ89Sk1qY6zpNb1J6jGZ9OtaqwxtK9Fvx9xx36oCGsrA7vyiheFnZ/2fqmV/E4whHvqZJLJ3NNAR/f4+eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720003788; c=relaxed/simple;
-	bh=3qXmo/5pNDaZWNpYAjzoXZ2kcJMP7hkArNksNzOixz8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=p/smUUL13JPk5wJ4XGhGIhETzi2Zgw0KSyhtQWliFN88onIeqW1WvkR0k/FvF5/QstxxBzphZI2QermCHm76+bH4OWhp0qTwJFhBJ+Z/pLJXoXJB+xHujLl5k9t8nABh6GvE8Wdz9SINbkm55QNSwd5tTx13mLLPnZ0qmrUB1UI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru; spf=pass smtp.mailfrom=t-argos.ru; dkim=pass (2048-bit key) header.d=t-argos.ru header.i=@t-argos.ru header.b=VLDgNOSK; arc=none smtp.client-ip=109.73.34.58
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=t-argos.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=t-argos.ru
-Received: from mx1.t-argos.ru (localhost [127.0.0.1])
-	by mx1.t-argos.ru (Postfix) with ESMTP id B4F3D100004;
-	Wed,  3 Jul 2024 13:49:21 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=t-argos.ru; s=mail;
-	t=1720003761; bh=qBTrMRweeYn17EcgCxBKWTPEOQW17rObU/UXX5H3hws=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=VLDgNOSKdpC3Zroyoh26tyyRk7D5usQSaCSbQ0vIocD11Ugj/zXbhoJIqgoKxoDyT
-	 XON1rzewXW90zK43ttAXAHOueRErWIOhqtD8yVfz6jWROgolAiJPiB+oXpl81JIPps
-	 RBwxgtzWH51j0i5+Ep7YX2d+F6/+N4KWOOrsKcyU2Krxcmm3w13+cnBVkTQ/ot5joy
-	 F2D6G8OA7DIDV0dlMnbYZcPv/cVEH7MZosaa2lwEdqdYYwsDYBRyV2O/eDGdCJRE8o
-	 BC/BcRAvzjdg4MNUTP8ODpRW/0RTc0/v2pjL16UM3s6KkqgyPeckjnTtaY/H+FjVOz
-	 2lNLCKWm0CMNg==
-Received: from mx1.t-argos.ru.ru (ta-mail-02.ta.t-argos.ru [172.17.13.212])
-	by mx1.t-argos.ru (Postfix) with ESMTP;
-	Wed,  3 Jul 2024 13:48:06 +0300 (MSK)
-Received: from localhost.localdomain (172.17.215.5) by ta-mail-02
- (172.17.13.212) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Wed, 3 Jul 2024
- 13:47:45 +0300
-From: Aleksandr Mishin <amishin@t-argos.ru>
-To: Michael Hennerich <Michael.Hennerich@analog.com>
-CC: Aleksandr Mishin <amishin@t-argos.ru>, Lars-Peter Clausen
-	<lars@metafoo.de>, Jonathan Cameron <jic23@kernel.org>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Datta Shubhrajyoti <shubhrajyoti@ti.com>,
-	<linux-iio@vger.kernel.org>, <linux-staging@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>
-Subject: [PATCH] staging: iio: frequency: ad9834: Validate frequency parameter value
-Date: Wed, 3 Jul 2024 13:47:34 +0300
-Message-ID: <20240703104734.12034-1-amishin@t-argos.ru>
-X-Mailer: git-send-email 2.30.2
+	s=arc-20240116; t=1720004665; c=relaxed/simple;
+	bh=dPv8j3AZknsIxl1gBk2gsmjRakfxu2z29E0D3n2D7+c=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PDlAsRDkkAG8x04TbgXWb+Txv9bvKV0KGmU5OEUjV81/8eHnv1pCJbhafsPk/0c7GKfSog+aOVdNzs5XzD9chLraTTUoWSl2EUUl8kkh8GfYQ8NvWdoiMSdG00tsCQZ6HQOBTsHmEYjLRUl5zfwuiz6q603i2/ZByA17RTi8ge4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bW3vkDvw; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-58b966b4166so2222948a12.1;
+        Wed, 03 Jul 2024 04:04:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720004662; x=1720609462; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dPv8j3AZknsIxl1gBk2gsmjRakfxu2z29E0D3n2D7+c=;
+        b=bW3vkDvwt+mId4w1fXZW58Fk03YjcIrPGZvakKj5n3poKCBNccXPssrxg8jwbSRXbU
+         17rG8dSrtiHKhAZV6PSxAkRFhb598FM/Q7A1rhlzKkXMQDya5R0hvmcotn9uYeGzDaj/
+         NdXsP5jT4Co6BC7H4or2HYFYjUKU06c/opupBC1yKMyI+oLo+0cBaWx3u/Bif7v6YMOo
+         ce9nsvz4kmywuKltGC+7Zh0DRbnfTrn+u6pfqc5ifmrZd1epVhJYuECxO6dHNdaRuV3Y
+         J96h6h8kVYMq5GWQ83xppmQa2x9AWgZE1yM10ipVB/ryXWOaSoj5H4UwBmLk5D785WHD
+         6hoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720004662; x=1720609462;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dPv8j3AZknsIxl1gBk2gsmjRakfxu2z29E0D3n2D7+c=;
+        b=r2lvP0jCATOq8hoImaNlSm/TxrL7Eh5zBI9uk8kgvBANG5c6lEG3ysjMbJ9v+Q+GnK
+         QQsNxCnCaL9WgnjLBj2OYGvE/okNUdXUUW1BV3Vmkb8ZAYgox48N/nLEUSkeiybIcPWb
+         ufEfqexgjpqesWTublrIN/z9ftzE9HtIn2ziDVYctVgU/Q3IKDwDvGkflGGRz063i4kc
+         mPLE3zo8PUVPd+WLfYKf52MSizzbxBcm6WCodxQ8c5jyWMROcijvY4Z2Tqgk+VNpwM9S
+         bkzWLt2ClLr0OHLhSrohcPNl+n0ikgJFKBB0wHTgpiNRNq9HXcegtCsn/hUhMtXG8gfK
+         ENzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcDQFKVMdLJAF50e+4bSUzGWjHGEc2oo5nyhH2BMPzF5c3Lp+BHwxUmYEEktNxWlP2eNiHixRwaBx/auVTOMlebI1TRuictTb9LLYeNemQu3CnNcIPahYXMiSunrhUBNB8X65vju69p64cOc3h/WmwZp3u8O464e4iCWG9H9kzb9BjhLTz
+X-Gm-Message-State: AOJu0Yzgb/Suf2KAgvYxMouGCruZwjpyNQCmMMpvsUl6SIY3Tu/qFRZH
+	XgzLGE3Dsw6FatTZgAi+n0S8kSbsjt3ylciHKweGiHchmYzMgCN1
+X-Google-Smtp-Source: AGHT+IHU2KLPLGWXDB7x828X+uRMpbDtGnbMvtpnuP8OB+XLaqjCWlOJygChOdkQDtrN6m7qwBFSAg==
+X-Received: by 2002:a17:907:868e:b0:a72:7245:ec0a with SMTP id a640c23a62f3a-a751447b348mr881307466b.58.1720004661443;
+        Wed, 03 Jul 2024 04:04:21 -0700 (PDT)
+Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7478d33ee7sm404063666b.143.2024.07.03.04.04.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jul 2024 04:04:21 -0700 (PDT)
+Message-ID: <17e484a2c07c0a521120a6a3cab7dfcf5f3c2fee.camel@gmail.com>
+Subject: Re: [PATCH v3 6/8] iio: adc: ad7606: fix oversampling gpio array
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Guillaume Stols <gstols@baylibre.com>, Lars-Peter Clausen
+ <lars@metafoo.de>,  Michael Hennerich <Michael.Hennerich@analog.com>,
+ Jonathan Cameron <jic23@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-fbdev@vger.kernel.org, devicetree@vger.kernel.org, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, jstephan@baylibre.com, dlechner@baylibre.com
+Date: Wed, 03 Jul 2024 13:08:13 +0200
+In-Reply-To: <20240702-cleanup-ad7606-v3-6-57fd02a4e2aa@baylibre.com>
+References: <20240702-cleanup-ad7606-v3-0-57fd02a4e2aa@baylibre.com>
+	 <20240702-cleanup-ad7606-v3-6-57fd02a4e2aa@baylibre.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.2 
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: ta-mail-02.ta.t-argos.ru (172.17.13.212) To ta-mail-02
- (172.17.13.212)
-X-KSMG-Rule-ID: 1
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 186302 [Jul 03 2024]
-X-KSMG-AntiSpam-Version: 6.1.0.4
-X-KSMG-AntiSpam-Envelope-From: amishin@t-argos.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 21 0.3.21 ebee5449fc125b2da45f1a6a6bc2c5c0c3ad0e05, {Tracking_from_domain_doesnt_match_to}, 127.0.0.199:7.1.2;mx1.t-argos.ru.ru:7.1.1;t-argos.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean, bases: 2024/07/03 07:47:00
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 1.1.2.30, bases: 2024/07/03 06:16:00 #25818842
-X-KSMG-AntiVirus-Status: Clean, skipped
 
-In ad9834_write_frequency() clk_get_rate() can return 0. In such case
-ad9834_calc_freqreg() call will lead to division by zero. Checking
-'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
-ad9834_write_frequency() is called from ad9834_write(), where fout is
-taken from text buffer, which can contain any value.
+On Tue, 2024-07-02 at 17:34 +0000, Guillaume Stols wrote:
+> gpiod_set_array_value was misused here: the implementation relied on the
+> assumption that an unsigned long was required for each gpio, while the
+> function expects a bit array stored in "as much unsigned long as needed
+> for storing one bit per GPIO", i.e it is using a bit field.
+>=20
+> This leaded to incorrect parameter passed to gpiod_set_array_value, that
+> would set 1 value instead of 3.
+> It also prevents to select the software mode correctly for the AD7606B.
+>=20
+> Fixes: d2a415c86c6b ("iio: adc: ad7606: Add support for AD7606B ADC")
+> Fixes: 41f71e5e7daf ("staging: iio: adc: ad7606: Use find_closest() macro=
+")
+> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+> ---
 
-Modify parameters checking.
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
----
- drivers/staging/iio/frequency/ad9834.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/staging/iio/frequency/ad9834.c b/drivers/staging/iio/frequency/ad9834.c
-index a7a5cdcc6590..9e42129f44f7 100644
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -114,7 +114,7 @@ static int ad9834_write_frequency(struct ad9834_state *st,
- 
- 	clk_freq = clk_get_rate(st->mclk);
- 
--	if (fout > (clk_freq / 2))
-+	if (!fout || fout > (clk_freq / 2))
- 		return -EINVAL;
- 
- 	regval = ad9834_calc_freqreg(clk_freq, fout);
--- 
-2.30.2
 
 

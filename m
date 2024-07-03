@@ -1,81 +1,81 @@
-Return-Path: <linux-iio+bounces-7207-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7208-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D4999253CF
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 08:41:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D614D9253D0
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 08:41:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC587284A2D
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 06:41:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 790741F25142
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 06:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F9C13210B;
-	Wed,  3 Jul 2024 06:41:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCD2130A4D;
+	Wed,  3 Jul 2024 06:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="EmdcwCim"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="nnbPmD+9"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ua1-f50.google.com (mail-ua1-f50.google.com [209.85.222.50])
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6380130A4D
-	for <linux-iio@vger.kernel.org>; Wed,  3 Jul 2024 06:41:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1704D130A68
+	for <linux-iio@vger.kernel.org>; Wed,  3 Jul 2024 06:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719988876; cv=none; b=ZTyYQswBG6cvYZihbuwqZCnMHpoArwkjgaMFpXVVFf8tkX6+7uORhxpQ2psYvorTtf0P8UgNOd7hVoB1vpzoV9/IjSJNntgMlh9AEZYlYZpzhupx60gyzHeXGLqQOwsdKzK5nAozxf5IdzFzFPC7Q69d1j4ToLUFBFIJVVza/XY=
+	t=1719988904; cv=none; b=cJztWSfAZi8Hm9gKRt1AQ0U0ue3JzeVUbbTs2kAUjs6JxvYeCMDOed4DQPvq1kPX3kcjhn0Q3OPcC9ZksSOqGBOnzXUjrH3O8JlgvbwbDznlY9OYauxlyHzrAuOVyvIRGoeXP1NRidASeoKS2RoBxwQLr9LYm53BYG0OifJrTck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719988876; c=relaxed/simple;
-	bh=kBvPam+wtayiSsEsdaSLKUSxp572N6R2tEegVuUGmvk=;
+	s=arc-20240116; t=1719988904; c=relaxed/simple;
+	bh=bMJccecekkBOVLBKBVwDQI6O/15WUEit6u9QoGrRMKA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gsJVHwyC8Vb8c7uIsB/a/SLLJZcvQMGIAcBsc63GOAXzisELhtSuUvGyeO8O7q5FZst9WAEmvE+JaOG2rqIEEDsVvIGwOMTqErMfw7apBbe9jR1gJQJEQcb8ww/vjgbGA2eI3vZCF8uEI0gWzpvrFZruqjeUbvgI0h10R5T/4CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=EmdcwCim; arc=none smtp.client-ip=209.85.222.50
+	 To:Cc:Content-Type; b=N+Z3HkZy4FqbJJ7FkdfXN4m7T3pEEk0ZLytr0In4ETFj5/lGceHD3T51dKc6+8o2iE4I2rdGMsxnLEuUKXCkmRuXhNquvv8374fQO6FNdohTXxfmsQ0l+mWckushmD0A9SYGsch/Wf5XP2F1sunROXD+KK4/EH/gyGgMRegT2KU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=nnbPmD+9; arc=none smtp.client-ip=209.85.217.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-ua1-f50.google.com with SMTP id a1e0cc1a2514c-80f5d511679so108410241.1
-        for <linux-iio@vger.kernel.org>; Tue, 02 Jul 2024 23:41:14 -0700 (PDT)
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-48fa96f5a7dso235651137.3
+        for <linux-iio@vger.kernel.org>; Tue, 02 Jul 2024 23:41:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719988874; x=1720593674; darn=vger.kernel.org;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1719988902; x=1720593702; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5+qfVxRO7lMpS4F3CssNI8YSPE1wk4OZAzwHLiNC6kY=;
-        b=EmdcwCim1YOXEJdbayjVVT0+V8dWo6EOFKe9nz4UqBzqCx2n3WSJNx67oxYGosSoL3
-         8tyxh34QPOuWU678IsCPjaNgYJBlCDVPs94ICazPsAYy9rEbFHbjwmdL5UICzu7KlBP4
-         sJuvCaVSXnVYWs5dDB2zsHxxuj4uqR6NXkrsgGWKgM0Ha5wuguIFC3T+Vv7SH5hyLVWo
-         d57TYhWASCfF6GLC1PIgezP7H81t9R9wsPZ8st0jYpk5enBk8lU86oa2hbeGWfM3Ciyg
-         LYL8P5NF8hcq75m+rpywlSehzEu6uxD3cnVG/b61vkh98TafZwLN8t5/QBkLLI21h/0n
-         /3uA==
+        bh=+vLgF0+RXMLNkLXXNsHGCbj/O0dwlYR16fZtiGDJBZ4=;
+        b=nnbPmD+91fZ7kI7lPtbUrRBdRat+mJ1Hj0yL01a9e1VHLtQoHW8CcsIPzpXaG6I9EF
+         QcGxZqNZN8SkboY9pz9ohSY47ky9p1PYHl6eRH39DFWn3/g1ekjuhbdSB4asMKShdgFo
+         GIL5iv9mPP2L2FipKH+QFL3kJbKdBJXHY4n19yq/rLzvvx+X1amHCOx3kj8AqBtI5io5
+         3mrMZNx2etuTMo+2/koWMYduazPhSRgAftF0jUuqAHkLb/tsR5VKsWo7tM5RzaEUscK9
+         crtgESsPInNkWqeuDeKy8ElgfufagmVjqEkBTkCdt0Ic3xQI0lg8Qm15bBsXFK49Oh42
+         OBxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719988874; x=1720593674;
+        d=1e100.net; s=20230601; t=1719988902; x=1720593702;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5+qfVxRO7lMpS4F3CssNI8YSPE1wk4OZAzwHLiNC6kY=;
-        b=LJ0IYrSBHsyBBjMY8IAkSXiYQvUGtaYIVuwqKhBUKeFYhU6NaUgqhWaGVe6sTjr0hM
-         TwMYy9T/GwARULboSZ/UT+oDKLungeLvJhxkhABz647dtd/asdivwAG0qlhjjR/A0Ikn
-         YjOUs1Z3Un/Nzi1kjc1wx3MSRQOM43SPPuzAgatMBRCoY/lm14wGK7Vv8pb/zgIjSoKP
-         f64Wimrpwkwo5ERTaPTOk/rT60UgetIRcoyXNraObcc0715ODiQ2ECA3ywwLPr2uDFkR
-         bZIVGwiEW9LiCUunhhqiBPC40R6S52ihKkbt6uTsCcgvVr1StlY8ofvaqEyUlcNH3/hR
-         CPbw==
-X-Gm-Message-State: AOJu0YwVOnX+WCQVU2RQkn6TMDYBn9EYF7trJE1pAU/FwSg1zV8MtIhQ
-	ueZwKg3uezOr3uucf9yTdSKB8br8xlhrVx5IIY1sMhJFwh/S48mhuvB31OsXZWSyjE7sOEhHvmI
-	wDjCK+4p1JpnrXck+VDjisv8LKN+0zoMbvN7kHg==
-X-Google-Smtp-Source: AGHT+IH6Q0YmNOMEoKTlGeEUWjrK7NdshvcMztrcr/4H1N2bIOLPyNtsDH89Im/x3UHKPSOSeRr8A5vLzJZSUUt3OaY=
-X-Received: by 2002:ac5:c806:0:b0:4ea:fea2:4b78 with SMTP id
- 71dfb90a1353d-4f2a5318e04mr9726610e0c.0.1719988873784; Tue, 02 Jul 2024
- 23:41:13 -0700 (PDT)
+        bh=+vLgF0+RXMLNkLXXNsHGCbj/O0dwlYR16fZtiGDJBZ4=;
+        b=H3WzVZs9SNlTMQSybXKelC1bBlXdNGM6p3uJGXzoAfp82tFreDPIMAjSPjLTsqdC2s
+         tMwW0awI17aEkR7vALOzF8IUX0D+16jfTiy96xou01ig+xs8Z5F8HwSWIBhhAjjOyy6B
+         gSGc3GrJzgO7Gg+cKpaeNFwv/b6XCL1gjPiWD2ufNTNlGfoVYgTx4x4fColzI+AMJqht
+         ggOfZ/dl1Um7XuR0GUK0LtqYI5dXkIjG29rbzm8yUU7DEf3XklV/p2Z96hrLBGtRBeZW
+         YIx+UqyG1uLrPbLdI/0r0ys1q6lqTRyMF2dUWzN/B01TGfymze379armC1ZtT19FOGNz
+         S2cA==
+X-Gm-Message-State: AOJu0YzeLR3LPGr6E9DYWrqgS8xXyW/qi3o8loFpNACL+c7hgyt+bxyg
+	w34i5VfDvep7XlZ7V32T63iAz8MyyZG828DxWk3U/ppajBuDFYpsebAANJhJK4TPBWC4HKEdbR0
+	sY+JGVGfI3TOWLkvruNHK7df88BiHBb4ieK1FNw==
+X-Google-Smtp-Source: AGHT+IHGMiHK00ERdKXHAtg/IXadbm+bfVQrAHKqajcWok4pbyn+FZp8dsrbD42BALRcZB0eIZA2QvAekMrooHu+E+0=
+X-Received: by 2002:a05:6102:a4b:b0:48f:8cd0:831c with SMTP id
+ ada2fe7eead31-48faf03f703mr10165225137.1.1719988901931; Tue, 02 Jul 2024
+ 23:41:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240702-dev-iio-masklength-private-v1-0-98193bf536a6@analog.com> <20240702-dev-iio-masklength-private-v1-15-98193bf536a6@analog.com>
-In-Reply-To: <20240702-dev-iio-masklength-private-v1-15-98193bf536a6@analog.com>
+References: <20240702-dev-iio-masklength-private-v1-0-98193bf536a6@analog.com> <20240702-dev-iio-masklength-private-v1-17-98193bf536a6@analog.com>
+In-Reply-To: <20240702-dev-iio-masklength-private-v1-17-98193bf536a6@analog.com>
 From: Alexandru Ardelean <aardelean@baylibre.com>
-Date: Wed, 3 Jul 2024 09:41:01 +0300
-Message-ID: <CA+GgBR9U=qz6D2Q-shbauEEaRAF9db7qb-Vy7GiQQAGJw9LxoQ@mail.gmail.com>
-Subject: Re: [PATCH 15/20] iio: adc: ad7298: make use of iio_get_masklength()
+Date: Wed, 3 Jul 2024 09:41:31 +0300
+Message-ID: <CA+GgBR_8s++E59xFBpatkB7KzHNQKC88MtJCy98xbv9n-0KzFQ@mail.gmail.com>
+Subject: Re: [PATCH 17/20] iio: adc: ad_sigma_delta: use new '.masklength' accessors
 To: nuno.sa@analog.com
 Cc: linux-iio@vger.kernel.org, chrome-platform@lists.linux.dev, 
 	linux-arm-kernel@lists.infradead.org, Jonathan Cameron <jic23@kernel.org>, 
@@ -92,33 +92,59 @@ On Tue, Jul 2, 2024 at 7:03=E2=80=AFPM Nuno Sa via B4 Relay
 >
 > From: Nuno Sa <nuno.sa@analog.com>
 >
-> Use iio_get_masklength() to access '.masklength' so it can be annotated
-> as __private when there are no more direct users of it.
+> Make use of iio_get_masklength) and iio_for_each_active_channel() to
+> access '.masklength' so it can be annotated as __private when there
+> are no more direct users of it.
 >
 
 Reviewed-by: Alexandru Ardelean <aardelean@baylibre.com>
 
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 > ---
->  drivers/iio/adc/ad7298.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>  drivers/iio/adc/ad_sigma_delta.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/drivers/iio/adc/ad7298.c b/drivers/iio/adc/ad7298.c
-> index c0430f71f592..0128436367db 100644
-> --- a/drivers/iio/adc/ad7298.c
-> +++ b/drivers/iio/adc/ad7298.c
-> @@ -109,7 +109,8 @@ static int ad7298_update_scan_mode(struct iio_dev *in=
-dio_dev,
->         int scan_count;
+> diff --git a/drivers/iio/adc/ad_sigma_delta.c b/drivers/iio/adc/ad_sigma_=
+delta.c
+> index a2b87f6b7a07..62653d7fe39b 100644
+> --- a/drivers/iio/adc/ad_sigma_delta.c
+> +++ b/drivers/iio/adc/ad_sigma_delta.c
+> @@ -350,7 +350,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *in=
+dio_dev)
 >
->         /* Now compute overall size */
-> -       scan_count =3D bitmap_weight(active_scan_mask, indio_dev->masklen=
-gth);
-> +       scan_count =3D bitmap_weight(active_scan_mask,
-> +                                  iio_get_masklength(indio_dev));
+>         if (sigma_delta->num_slots =3D=3D 1) {
+>                 channel =3D find_first_bit(indio_dev->active_scan_mask,
+> -                                        indio_dev->masklength);
+> +                                        iio_get_masklength(indio_dev));
+>                 ret =3D ad_sigma_delta_set_channel(sigma_delta,
+>                                                  indio_dev->channels[chan=
+nel].address);
+>                 if (ret)
+> @@ -363,7 +363,7 @@ static int ad_sd_buffer_postenable(struct iio_dev *in=
+dio_dev)
+>                  * implementation is mandatory.
+>                  */
+>                 slot =3D 0;
+> -               for_each_set_bit(i, indio_dev->active_scan_mask, indio_de=
+v->masklength) {
+> +               iio_for_each_active_channel(indio_dev, i) {
+>                         sigma_delta->slots[slot] =3D indio_dev->channels[=
+i].address;
+>                         slot++;
+>                 }
+> @@ -525,7 +525,7 @@ static bool ad_sd_validate_scan_mask(struct iio_dev *=
+indio_dev, const unsigned l
+>  {
+>         struct ad_sigma_delta *sigma_delta =3D iio_device_get_drvdata(ind=
+io_dev);
 >
->         command =3D AD7298_WRITE | st->ext_ref;
+> -       return bitmap_weight(mask, indio_dev->masklength) <=3D sigma_delt=
+a->num_slots;
+> +       return bitmap_weight(mask, iio_get_masklength(indio_dev)) <=3D si=
+gma_delta->num_slots;
+>  }
 >
+>  static const struct iio_buffer_setup_ops ad_sd_buffer_setup_ops =3D {
 >
 > --
 > 2.45.2

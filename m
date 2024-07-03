@@ -1,65 +1,65 @@
-Return-Path: <linux-iio+bounces-7215-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7216-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEF6092548B
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 09:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF2EE92555A
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 10:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE29C1C24C30
-	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 07:23:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D26091C225EE
+	for <lists+linux-iio@lfdr.de>; Wed,  3 Jul 2024 08:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C3B136678;
-	Wed,  3 Jul 2024 07:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C0E13A27E;
+	Wed,  3 Jul 2024 08:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="6BKzlxMG"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="4CV489sG"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx07-00178001.pphosted.com (mx07-00178001.pphosted.com [185.132.182.106])
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C721131BDD;
-	Wed,  3 Jul 2024 07:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.132.182.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F1EB13049E;
+	Wed,  3 Jul 2024 08:29:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719991394; cv=none; b=mPMRnClop3my7RcDS04C6sSSCvgorPW/6Czcsr1dZ8t8NU/L+lDMZMLcnmkf8KZMQlSyhGglrNXXs1maSrNgUp0o0ei4b5+AlRxMMWTXj0C0CAlldkV7bezIDG+EzOzncAQiXq27XoE7Rz8xcskyCkqyHQOP8uqul3vjcm9Nye4=
+	t=1719995372; cv=none; b=erM/a9x+QdIdG9hrm/7gvfPkr6IwUqH9J/bP1oFZMYk5syfzxl9A0LNCprmYQ7hnVcrLvUONXdYjLpozE167B1XV9bA1en2keOqEHjooYxwpb2jvibmNaZJmNNePwnwPE38dPlnzeBWiVPaESpXSTDn079+EYz345eWSYdOHG38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719991394; c=relaxed/simple;
-	bh=LMG0Hk9HWoesEQBaKPnUAzUolPD1IIQjdRRRL3Ahrz8=;
+	s=arc-20240116; t=1719995372; c=relaxed/simple;
+	bh=Jm93qYQgbl0FMRbmqpJUQ22vd/e4flRf03TyEJU75ks=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=rIVyMCkzn7EVCo+Gvz3/NjzfJPhkoIktLuTHmbVqRZOGEIBXpZXwIXpnlyID8cJpkg//OZ1iqFHa6TyViEZkmbogIoVL5agLLpPGbx+WIq9Xkbs8/6e04f5Am6dwBcoQBnc15uOGYkMw7SmLw/VRNIULwl4J3jZ9J4zOPSYde5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=6BKzlxMG; arc=none smtp.client-ip=185.132.182.106
+	 In-Reply-To:Content-Type; b=lZT9HH9nvNDGB48ZaU/YX7PCvAUZwBOxAFZST1P7+NnoifPVekz79pVvFvEOkzYm+TMbcKyrMN7FSdrUXYuEFAEnnhthanz6DbKu2UeKIKQde19piulzsVKbxgBAOUk7zbiYCTkrU1DAsivgpdZgh1pi0eCovJY0xcww8Fm7I5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=4CV489sG; arc=none smtp.client-ip=91.207.212.93
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
-Received: from pps.filterd (m0369458.ppops.net [127.0.0.1])
-	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4630KYv2022258;
-	Wed, 3 Jul 2024 09:22:57 +0200
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4637YLfS001949;
+	Wed, 3 Jul 2024 10:28:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=selector1; bh=
-	lP6a1UtKqsjM5BY6HprJY0SpXdmd34uScXaSFUlCRhY=; b=6BKzlxMG7Fploan6
-	Q7z0BOpwXEuvAGiU2TVP5rXpARzGmn0Dle39WcqH8QzD8+/GI5HR1TA0Emcod90H
-	oH0G35YmCvszC48t8KcMUIbFtdkdeJMhsrKkYncaw5paxDnOr5nxd15pY7LdOsUT
-	X59lLZYT8PbNsuoeG+CARYpi7/zrXMYdiWh3hJ0EObPW/YJ9lpQPGhRmkt/4YqxD
-	HBKIO/FmatfpN+VOJ6AV3GcEK72iS3nO7xZI8BOFzuS71+5lwV4Nr68sLc+QetQ5
-	nQUCUwK+Et6SovgNcHdKOI0HM4XmR9kaba4EVp4rdKYDUBWhlJ0pXd8O0VkaQmTc
-	xBbrAw==
+	6Rh2LslZMMANq25IkC1tGRBe0DiLGeoOd/wRbMxgBrk=; b=4CV489sGvTWQM9NP
+	ZGgolq1vdNLKVVshdskB5IXydpfRbKETXV88CbllItmX5f0ifEJR/zx19JQrq6Yi
+	s3rZdz49gs+Dof5XEN2fEu4L2i8kWcfzITe3HYviDq1Aiy2SFOHGfLV4uv1LstTK
+	4QuFw41HQJFQ2x9uN+K391Rwj5YiD7PcLJwVxG7cQtttCj3CfGyAdLTCy8IX3HZg
+	XVjO1P1epRuXMBU7zZSs0vbjq+fCTDoxHL0PIdwUeaAzdouj1McP5cLALgONdbR9
+	RI8Z6zRolov9PiKk/f65Zq6rGabaSeZbUbEuoiFLmCJMxK7L2Us9CUUXECcRwNME
+	R7x+KA==
 Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
-	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 402uu0vp0e-1
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 402w7j524p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 03 Jul 2024 09:22:56 +0200 (MEST)
+	Wed, 03 Jul 2024 10:28:57 +0200 (MEST)
 Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
-	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id BEAC94004F;
-	Wed,  3 Jul 2024 09:22:52 +0200 (CEST)
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 8FEF540048;
+	Wed,  3 Jul 2024 10:28:52 +0200 (CEST)
 Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
-	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 0BEA9214526;
-	Wed,  3 Jul 2024 09:22:17 +0200 (CEST)
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id AC62A215BFA;
+	Wed,  3 Jul 2024 10:28:02 +0200 (CEST)
 Received: from [10.252.27.110] (10.252.27.110) by SHFDAG1NODE1.st.com
  (10.75.129.69) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.35; Wed, 3 Jul
- 2024 09:22:16 +0200
-Message-ID: <7e7c0e37-cb5d-4c2e-93a5-708cf0f82f44@foss.st.com>
-Date: Wed, 3 Jul 2024 09:22:15 +0200
+ 2024 10:28:01 +0200
+Message-ID: <da75ec86-a701-45cc-b573-fde79bcfc104@foss.st.com>
+Date: Wed, 3 Jul 2024 10:28:01 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -67,93 +67,272 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/8] dt-bindings: iio: add sigma delta modulator
- backend
-To: Conor Dooley <conor@kernel.org>
-CC: <fabrice.gasnier@foss.st.com>, Jonathan Cameron <jic23@kernel.org>,
-        Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 4/8] dt-bindings: iio: dfsdm: move to backend framework
+To: Rob Herring <robh@kernel.org>
+CC: <fabrice.gasnier@foss.st.com>,
+        Arnaud Pouliquen
+	<arnaud.pouliquen@foss.st.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        <alsa-devel@alsa-project.org>, <linux-iio@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>
 References: <20240625150717.1038212-1-olivier.moysan@foss.st.com>
- <20240625150717.1038212-6-olivier.moysan@foss.st.com>
- <20240625-babied-skies-0722dbdfc524@spud>
- <eefc746a-2181-41da-b777-b077a4c19b77@foss.st.com>
- <20240627-identity-enviable-4fda0b3a09c0@spud>
+ <20240625150717.1038212-5-olivier.moysan@foss.st.com>
+ <20240628213517.GA225013-robh@kernel.org>
 Content-Language: en-US
 From: Olivier MOYSAN <olivier.moysan@foss.st.com>
-In-Reply-To: <20240627-identity-enviable-4fda0b3a09c0@spud>
+In-Reply-To: <20240628213517.GA225013-robh@kernel.org>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 X-ClientProxiedBy: SHFCAS1NODE2.st.com (10.75.129.73) To SHFDAG1NODE1.st.com
  (10.75.129.69)
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-03_03,2024-07-02_02,2024-05-17_01
+ definitions=2024-07-03_04,2024-07-02_02,2024-05-17_01
 
-Hi Conor,
+Hi Rob,
 
-On 6/27/24 18:13, Conor Dooley wrote:
-> On Wed, Jun 26, 2024 at 06:40:58PM +0200, Olivier MOYSAN wrote:
->> Hi Conor,
+On 6/28/24 23:35, Rob Herring wrote:
+> On Tue, Jun 25, 2024 at 05:07:12PM +0200, Olivier Moysan wrote:
+>> Change the DFSDM binding to use the new IIO backend framework,
+>> along with the adoption of IIO generic channels.
+>> This binding change allows to add scaling support to the DFSDM.
 >>
->> On 6/25/24 17:34, Conor Dooley wrote:
->>> On Tue, Jun 25, 2024 at 05:07:13PM +0200, Olivier Moysan wrote:
->>>> Add documentation of device tree bindings to support
->>>> sigma delta modulator backend in IIO framework.
->>>>
->>>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
->>>
->>> I don't review bindings for a job, I can only reliably get to look at
->>> my mail queue in the evenings, please give me a chance to reply to you
->>> before you submit a new version.
->>>
+>> Keep the legacy binding as deprecated for backward compatibility.
 >>
->> Sorry, the short review delay.
+>> The io-backends property is supported only in generic IIO channel
+>> binding.
 >>
->>>> +$id: http://devicetree.org/schemas/iio/adc/sd-modulator-backend.yaml#
->>>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->>>> +
->>>> +title: Sigma delta modulator backend
->>>
->>> Same comments about filename and title apply here as the previous
->>> version. "TI $foo Sigma Delta Modulator" and drop the reference to back
->>> ends or the pretence of being generic.
->>>
+>> - Channel description with the generic binding (Audio and Analog):
 >>
->> The logic here is the same as for the former sigma delta modulator driver.
->> (see discussion [1])
->> I mean introducing a generic and minimalist driver to support sd modulators,
->> but not dedicated to a specific modulator. The ads1201 is chosen as a basic
->> modulator here. But it is rather an arbitrary choice.
+>>    Properties superseded by generic properties:
+>>      st,adc-channels: becomes "reg" property in channel node
+>>      st,adc-channel-names: becomes "label" property in channel node
+>>    Properties moved to channel child node:
+>>      st,adc-channel-types: becomes st,adc-channel-type
+>>      st,adc-channel-clk-src, st,adc-alt-channel
 >>
->> I agree "backend" reference is not really relevant here. I have to think
->> about a way to manage the coexistence of this sigma delta modulator driver
->> with its former version.
+>> - Analog binding:
+>>
+>>    DFSDM filter channel is configured as an IIO backend consumer.
+>>    Add io-backends property in channel child nodes.
+>>
+>>    DFSDM is no more configured as a channel consumer from SD modulator.
+>>    Use of io-channels in DFSDM node is deprecated.
+>>
+>> - Audio binding:
+>>
+>>    DFSDM audio DAI is configured as a channel consumer from DFSDM filter.
+>>    No change compare to legacy.
+>>
+>> Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+>> ---
+>>   .../bindings/iio/adc/st,stm32-dfsdm-adc.yaml  | 157 +++++++++++++++++-
+>>   1 file changed, 151 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+>> index c1b1324fa132..1802120b16b0 100644
+>> --- a/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/adc/st,stm32-dfsdm-adc.yaml
+>> @@ -102,9 +102,11 @@ patternProperties:
+>>           items:
+>>             minimum: 0
+>>             maximum: 7
+>> +        deprecated: true
+>>   
+>>         st,adc-channel-names:
+>>           description: List of single-ended channel names.
+>> +        deprecated: true
+>>   
+>>         st,filter-order:
+>>           description: |
+>> @@ -118,6 +120,12 @@ patternProperties:
+>>         "#io-channel-cells":
+>>           const: 1
+>>   
+>> +      '#address-cells':
+>> +        const: 1
+>> +
+>> +      '#size-cells':
+>> +        const: 0
+>> +
+>>         st,adc-channel-types:
+>>           description: |
+>>             Single-ended channel input type.
+>> @@ -128,6 +136,7 @@ patternProperties:
+>>           items:
+>>             enum: [ SPI_R, SPI_F, MANCH_R, MANCH_F ]
+>>           $ref: /schemas/types.yaml#/definitions/non-unique-string-array
+>> +        deprecated: true
+>>   
+>>         st,adc-channel-clk-src:
+>>           description: |
+>> @@ -139,6 +148,7 @@ patternProperties:
+>>           items:
+>>             enum: [ CLKIN, CLKOUT, CLKOUT_F, CLKOUT_R ]
+>>           $ref: /schemas/types.yaml#/definitions/non-unique-string-array
+>> +        deprecated: true
+>>   
+>>         st,adc-alt-channel:
+>>           description:
+>> @@ -147,6 +157,7 @@ patternProperties:
+>>             If not set, channel n is connected to SPI input n.
+>>             If set, channel n is connected to SPI input n + 1.
+>>           type: boolean
+>> +        deprecated: true
+>>   
+>>         st,filter0-sync:
+>>           description:
+>> @@ -165,11 +176,64 @@ patternProperties:
+>>         - compatible
+>>         - reg
+>>         - interrupts
+>> -      - st,adc-channels
+>> -      - st,adc-channel-names
+>>         - st,filter-order
+>>         - "#io-channel-cells"
+>>   
+>> +    patternProperties:
+>> +      "^channel@([0-9]|1[0-9])$":
 > 
-> To be blunt, I don't care about drivers! Well I do, but not in this
-> particular context. You can absolutely have a driver that supports
-> multiple backends or sigma delta modulators, but right now we are
-> talking about a binding and this binding supports exactly one sigma
-> delta modulator - and with an explicit compatible. In that context,
-> presenting the binding as generic makes little sense.
-> 
->> [1] https://lore.kernel.org/all/6943aaf5-b580-0fd1-7a2e-b99f7a266388@st.com/
-> 
-> Looking at this though, I question the binding more... The programming
-> model of the device is identical as a backend or otherwise, so it
-> shouldn't be getting a new compatible. Isn't this actually as simple as
-> adding #io-backend-cells to the existing binding and using that to
-> determine whether the device is being used as a backend or in isolation?
+> Unit-addresses are normally hex. And according to reg below, the max
+> value is 8.
 > 
 
-For sure. I came to the same conclusion. My first idea was to isolate 
-the deprecated binding. However, I agree that the best approach is to 
-adapt the existing binding. I prepared a v3 like this.
+Right. The maximum number of serial interfaces is 8.
+So, the pattern can be reduced to "^channel@([0-7])$":
+
+>> +        type: object
+>> +        $ref: adc.yaml
+>> +        description: Represents the external channels which are connected to the DFSDM.
+>> +
+>> +        properties:
+>> +          reg:
+>> +            items:
+>> +              minimum: 0
+>> +              maximum: 8
+> 
+> More than 1 reg entry valid? Either way, you need maxItems. Or you can
+> just drop 'items'
+> 
+
+Added "maxItems: 1" and dropped items.
+
+>> +
+>> +          label:
+>> +            description:
+>> +              Unique name to identify which channel this is.
+>> +
+>> +          st,adc-channel-type:
+>> +            description: |
+>> +              Single-ended channel input type.
+>> +              - "SPI_R": SPI with data on rising edge (default)
+>> +              - "SPI_F": SPI with data on falling edge
+>> +              - "MANCH_R": manchester codec, rising edge = logic 0, falling edge = logic 1
+>> +              - "MANCH_F": manchester codec, rising edge = logic 1, falling edge = logic 0
+>> +            items:
+> 
+> 'items' is for arrays, but...
+> 
+
+Removed items
+
+>> +              enum: [ SPI_R, SPI_F, MANCH_R, MANCH_F ]
+>> +            $ref: /schemas/types.yaml#/definitions/string
+> 
+> not an array.
+> 
+>> +
+>> +          st,adc-channel-clk-src:
+>> +            description: |
+>> +              Conversion clock source.
+>> +              - "CLKIN": external SPI clock (CLKIN x)
+>> +              - "CLKOUT": internal SPI clock (CLKOUT) (default)
+>> +              - "CLKOUT_F": internal SPI clock divided by 2 (falling edge).
+>> +              - "CLKOUT_R": internal SPI clock divided by 2 (rising edge).
+>> +            items:
+> 
+> ditto
+> 
+
+Done
+
+>> +              enum: [ CLKIN, CLKOUT, CLKOUT_F, CLKOUT_R ]
+>> +            $ref: /schemas/types.yaml#/definitions/string
+>> +
+>> +          st,adc-alt-channel:
+>> +            description:
+>> +              Must be defined if two sigma delta modulators are
+>> +              connected on same SPI input.
+>> +              If not set, channel n is connected to SPI input n.
+>> +              If set, channel n is connected to SPI input n + 1.
+>> +            type: boolean
+>> +
+>> +          io-backends:
+>> +            description:
+>> +              Used to pipe external sigma delta modulator or internal ADC backend to DFSDM channel.
+> 
+> How many entries (maxItems)?
+> 
+>> +
+>> +        required:
+>> +          - reg
+>> +
+>> +        additionalProperties: false
+> 
+> Put this next to the $ref for the node. And switch to
+> unevaluatedProperties and drop 'label' from here.
+> 
+
+Done
+
+>> +
+>>       allOf:
+>>         - if:
+>>             properties:
+>> @@ -199,9 +263,19 @@ patternProperties:
+>>                 description:
+>>                   From common IIO binding. Used to pipe external sigma delta
+>>                   modulator or internal ADC output to DFSDM channel.
+>> +              deprecated: true
+>>   
+>> -          required:
+>> -            - io-channels
+>> +          if:
+>> +            required:
+>> +              - st,adc-channels
+>> +          then:
+>> +            required:
+>> +              - io-channels
+>> +
+>> +          patternProperties:
+>> +            "^channel@([0-9]|1[0-9])$":
+>> +              required:
+>> +                - io-backends
+> 
+> Don't think this is needed here. If channel node is present, the
+> io-backends should always be required, right? Then this can go under the
+> node schema.
+> 
+
+The io-backends property is required only when we use st,stm32-dfsdm-adc 
+compatible. In other words, when we are in an analog use case. In this 
+case the channel is a consumer of a backend (typically a sd modulator)
+In an audio use case (compatible st,stm32-dfsdm-dmic) the backend is not 
+required.
 
 BRs
 Olivier
 
-> Thanks,
-> Conor.
+> Rob
+> 
+> 
 

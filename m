@@ -1,70 +1,70 @@
-Return-Path: <linux-iio+bounces-7290-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7291-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7275F9270C2
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 09:39:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 395439270EB
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 09:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A60D1F24BEB
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 07:39:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 649A11C220E3
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 07:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E1C1A2546;
-	Thu,  4 Jul 2024 07:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A10E1A38DD;
+	Thu,  4 Jul 2024 07:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DvjEPDNt"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JBBi16IT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
+Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0931195395;
-	Thu,  4 Jul 2024 07:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6F9E10A35;
+	Thu,  4 Jul 2024 07:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720078778; cv=none; b=e84LIHSmdVWLgGi9nZX0SFpC/fvBpwptGSrksPNWPhUQ/vZ/XKFyR/zPADgrGIGu76Mxx6CEihBKhyoR6r6RcDj1/16cU831r2fOWT8+YbYIl35ITdGqmrTZgabr+XPEVsR7vBlBbixoXWTegXtXtBRe4DNG69gEQ75aynuK6To=
+	t=1720079399; cv=none; b=P3rs9Nznc3vuY6anZ4O89LW8rQSrtR1cGrWvVd4bmL0VCYvlwDiZwPLkcKGYz37F+uh0yzNQjdSLlFDWRBJJYMnU4aUvBO47uan2DGbB9WrY1I5kw2hw6UPhDPl5WKk2TbAG3Xrl6ksXg4ug9Ww251xTO7+IImbfBVu2LfrzjMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720078778; c=relaxed/simple;
-	bh=sH1ULTf0dpBYABTaExBv0LmCvOgNVkAEiLcvBN/Xt4Y=;
+	s=arc-20240116; t=1720079399; c=relaxed/simple;
+	bh=eXoEfEDUhPIsdPFhEHPGkSbI+CpdLSHqxgirIgquARQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pDtCantyyEHmReJL/k8YS9UqwSW07PiNLrP3uYep1dy0mjoAvmdMaCRGxt4UuekVDtPtQd8J5M3G96X4IFe0q0oKrrqRHOJfQ2uAvCBxxGCFvAw1C9FAzi3UmgrLP2n4QfdTlTfEygf+qRYtkXiOtJOBEMJiyvItRMfnylI9XhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DvjEPDNt; arc=none smtp.client-ip=209.85.221.66
+	 To:Cc:Content-Type; b=NWsS0Ooww3e0Dbu8bSHeqDHnJpchKDigUBOOoLW5SHpTcxOnWZnIoVttNfRLzVEpPrbjzpYSNm2C5tqXtFkgGvPYmDsM3gBVeajYhTgQjaTUmUEC5YJ5HVNlzr2J3kiFmjiK1HHtKey+img+LJTJhG0aLPaFzQ0swFrhJ6xAizU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JBBi16IT; arc=none smtp.client-ip=209.85.221.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-36798e62aeeso219299f8f.1;
-        Thu, 04 Jul 2024 00:39:36 -0700 (PDT)
+Received: by mail-wr1-f67.google.com with SMTP id ffacd0b85a97d-36740e64749so208464f8f.0;
+        Thu, 04 Jul 2024 00:49:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720078775; x=1720683575; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720079396; x=1720684196; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ud8q8tEe5YtJOR70f54uhrUy07klpZD5lmdiCHaTMLo=;
-        b=DvjEPDNt66h6BleLJzIthlkgSBbkWtoY1PqngU2kVidXJA+cBfV2/noUatWivVZb7x
-         JHUXLULMphsgWf+2FTPWJn2BfzGxXqPokFruf5kjvIlOFtyAv/pT81mvPhkJvN+LsCHo
-         nV17Rep6SYqsdM4IAGPxesjDYv4tgtlF4xlKCy+uBmTNwoSTn2Z9fWRC6NzSURwidDSp
-         vC2AcggB4//OMLHLuaI5kfqs3SuqL3JKIcfJxVvWU6I9KdWVwjVz3UEg4HsGbCyjV4jR
-         hn2O0CCADiKQqoLXTfvNQ/xMLbhK5+GZ0C7SQ2muu3wxDj4TBCoAZXlwP59kA83gfzBV
-         6Mrw==
+        bh=PXF5fvNSVNnijHpAqaWCUXg0GRUfuvvx2Ri9liUQ3RQ=;
+        b=JBBi16IT/mL0L35ylNlZ8CsLjo/GnBRV89Y0pbpsEQdWplOVQ1kXhW0vTHPbOHMIPT
+         b+3bwe/iP2941m6vc22rJD5g5MRZgFI4R29RXOgRHbvr3C7fOuFJJzUeYpY6Q7dPRY6C
+         ZIL9zhdpILpMZ9NgUNmsAVzvbml9bbX/RvJ4KUt8Lrz1I05L/aPQDt15SRy/0F6Li3F0
+         yDJ5yV0putu7/BGKk9+1v4GtaexuB4VwdH8S4+Xa7EOuSGg4L5aGXwddT72KM7lcaXZ7
+         Iyj9DUd9Q/DARFUdMfTDtn3dZbqAWmPoS2mvCcDye50FNidxPY6WLwEbqr6tblO7Vwuu
+         drKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720078775; x=1720683575;
+        d=1e100.net; s=20230601; t=1720079396; x=1720684196;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ud8q8tEe5YtJOR70f54uhrUy07klpZD5lmdiCHaTMLo=;
-        b=YE6yGOD4iMzz6tu1z7zjvKgy9jLEfw8R5RKj75i95Dk0oFjhtM1E6mRVVsgnU2kMNN
-         ePWgn4v9+QMgstq+OM7y/u6yfs1jqPK8XrnlXBzGxgjarN9w6HU0oeVASvijtsnGmYky
-         7kP/jlNWqNp2HPrmLoAlf+vvnnC7KgXiY+wy5YdV3CVdgS4Za10zgFd0TANyuFBPcRzJ
-         XTubUOOxyon+mc2ojot8wzwhRFcZEvj5TZAbdwb+7a9JJIm2gM2feGtPgXRiteVSBRbg
-         b8NSTL6mjnUl9ofQiiUDf1iqnFY1R6uYz2bt3cmk4Y/FXCM2rEDUX4eKYCDTQYhFvhBY
-         L2kw==
-X-Forwarded-Encrypted: i=1; AJvYcCURbDZ8DJI2Bmo0TmDxv7v+CU4B5N/+IyWASXzSy97p/Sny8Y10w0eg+gXNnmKlYGmQqkcpnrc0jB/bLecqGXupfwry1MBV39uQUqxcA6HX7w5m9p6m74RxqvMPdXsxGUq9+QB/A++meg==
-X-Gm-Message-State: AOJu0Yxe2ACuNwJiUblmr4Cxshrp7thQvOdgcjbbkI8w1KXPQyfVPrrB
-	9xnDTewvQ3FX1NCLxNUiz0sx44Nvp9iGHFPlbI/vulTZU0+H1oonn8uJ579wK6ppLoS29D4rggb
-	tRJljsLaUGtX9MO5Jzn/XhOcWTXA=
-X-Google-Smtp-Source: AGHT+IHPyreorZod622o7grhoTIcWg9YvTN6bsC8lmqvqqPxkVLCIbpIHjCaLNrwMsg0Znq04jF9qE46pLJuWilgu9E=
-X-Received: by 2002:a5d:5915:0:b0:367:9b8b:5365 with SMTP id
- ffacd0b85a97d-3679dd5460bmr619359f8f.35.1720078774768; Thu, 04 Jul 2024
- 00:39:34 -0700 (PDT)
+        bh=PXF5fvNSVNnijHpAqaWCUXg0GRUfuvvx2Ri9liUQ3RQ=;
+        b=HDJH1U9GG48P8iziEZwJpYEHxOEm0XyNZMPc6Jv67fkRmhQuIEY1IniS/MeVexTlgF
+         3LZy8QovU/tG0Q3Y9vQVN/nwHDH7LJgfF8EMvO377XB15nsDjQTYktSnsQ2oAefjUu/O
+         p18xBYRPwTOFEZ90lpU2E/6Yj0upg0kaZX0ZWlzygUrDl7mYxN0at+N45H3nqHDzBjRK
+         tyN2JE5U6d1KeK022oo3nd3WqG8PD8HhFfNp7P78XdLaKK/c3t+kBJho2l1ikE1gPt67
+         L2r9lb5dBEZmqtDEwHypvry6Hg+xcqGVN6HKiciNGtogf8HM5yessHIQYR/VK0GMZe/u
+         2J8w==
+X-Forwarded-Encrypted: i=1; AJvYcCWQJ0l9J727KB65HTKbBAwTdvb789A9Ekxy5B8C51l9WNMlzFZHr1TqiwsJtFZKV704x9OgEIsvW9yaR2Ps4uQkONJhpbDZgtq+EWbSd3s6rqtG1oLevvgoGSh6sVfFk2H7Hhf+7GGh/Q==
+X-Gm-Message-State: AOJu0YwWbhBYqtjF+pRBLxOX0j2XI/ph460FD6ROrA6yX62Oo0602i6f
+	CKXQhrxiyJ30jsDHN+k4YgWFySykHcpni3+T7HoeU3S7mYeTk/m+EuFpP+/NphtG1CqVf9CxUdL
+	bHuEBISAgFlLaM9hDQD/0nh9iiCY=
+X-Google-Smtp-Source: AGHT+IHqVULQoitx2c/DCLHKRuLlCEm/ZrRUleMD4LP1Y7vilrJmmjPSOZ5NfKZjflTllwID5//Xka+DuYnV0VxOLUw=
+X-Received: by 2002:a5d:65c6:0:b0:367:43ce:9c91 with SMTP id
+ ffacd0b85a97d-3679dd29679mr455950f8f.27.1720079396197; Thu, 04 Jul 2024
+ 00:49:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -72,12 +72,12 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240702-mainline_sdp500-v3-0-0902047b3eee@gmail.com>
- <20240702-mainline_sdp500-v3-3-0902047b3eee@gmail.com> <5cfb4e36-545f-4d17-9b06-c18cdae9f0c0@linaro.org>
-In-Reply-To: <5cfb4e36-545f-4d17-9b06-c18cdae9f0c0@linaro.org>
+ <20240702-mainline_sdp500-v3-2-0902047b3eee@gmail.com> <64fd897b-f87d-4a17-af92-5c6ffb481061@linaro.org>
+In-Reply-To: <64fd897b-f87d-4a17-af92-5c6ffb481061@linaro.org>
 From: Petar Stoykov <pd.pstoykov@gmail.com>
-Date: Thu, 4 Jul 2024 09:39:24 +0200
-Message-ID: <CADFWO8HCbzRY++tjBxE1SudEJi7UO0aOmpsJRub-3ogieuu1XQ@mail.gmail.com>
-Subject: Re: [PATCH v3 3/3] MAINTAINERS: Add Sensirion SDP500
+Date: Thu, 4 Jul 2024 09:49:45 +0200
+Message-ID: <CADFWO8FF24UyoD9cfF5NL1OzcHErx8+=bJYLrajrJNHFseK2HQ@mail.gmail.com>
+Subject: Re: [PATCH v3 2/3] iio: pressure: Add driver for Sensirion SDP500
 To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
 	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
@@ -87,37 +87,58 @@ Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 2, 2024 at 5:15=E2=80=AFPM Krzysztof Kozlowski
+On Tue, Jul 2, 2024 at 5:17=E2=80=AFPM Krzysztof Kozlowski
 <krzysztof.kozlowski@linaro.org> wrote:
 >
 > On 02/07/2024 16:59, Petar Stoykov via B4 Relay wrote:
 > > From: Petar Stoykov <pd.pstoykov@gmail.com>
 > >
-> > Add myself as a maintainer for Sensirion SDP500 pressure sensor driver
+> > Sensirion SDP500 is a digital differential pressure sensor. The sensor =
+is
+> > accessed over I2C.
 > >
-> > Signed-off-by: Petar Stoykov <pd.pstoykov@gmail.com>
-> > ---
-> >  MAINTAINERS | 6 ++++++
-> >  1 file changed, 6 insertions(+)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index 40c754b4c39c..65f9479ac343 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -19533,6 +19533,12 @@ S:   Maintained
-> >  F:   Documentation/devicetree/bindings/iio/chemical/sensirion,scd4x.ya=
-ml
-> >  F:   drivers/iio/chemical/scd4x.c
-> >
-> > +SENSIRION SDP500 DIFFERENTIAL PRESSURE SENSOR DRIVER
-> > +M:   Petar Stoykov <petar.stoykov@prodrive-technologies.com>
-> > +S:   Maintained
-> > +F:   Documentation/devicetree/bindings/iio/pressure/sdp500.yaml
 >
-> There is no such file.
+> ...
+>
+> > +
+> > +static const struct of_device_id sdp500_of_match[] =3D {
+> > +     { .compatible =3D "sensirion,sdp500" },
+> > +     { .compatible =3D "sensirion,sdp510" },
+>
+> Devices look compatible, so express it in the bindings with fallback to
+> sdp500 (oneOf, see example-schema).
 
-Ops, I forgot to update both references to the file after it got renamed.
-Here and in the bindings file.
+Hi Krzysztof,
+I tried to understand the explanation in the example-schema. I must say it =
+is
+a bit confusing, but I can't offer improvement because I'm not sure I
+understand it fully yet.
+Can you verify if this is what you expect the bindings file to read?
+properties:
+  compatible:
+    oneOf:
+      - items:
+        - const: sensirion,sdp510
+        - const: sensirion,sdp500
+      - items:
+        - const: sensirion,sdp500
+
+So the device tree should have either this
+  compatible =3D "sensirion,sdp510", "sensirion,sdp500"
+Or
+  compatible =3D "sensirion,sdp500"
+The first would mean that 510 falls back to 500, right?
+
+From what I've seen it is rare to have two strings in "compatible" so I did=
+n't
+know of this mechanism of "fallback" in the dts. I expected to just write t=
+he
+name of my device (let's say "sensirion,sdp510") and the driver would handl=
+e it.
+But I'm learning. Expectations change.
+
+Regards,
+Petar
 
 >
 > Best regards,

@@ -1,273 +1,180 @@
-Return-Path: <linux-iio+bounces-7307-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7308-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D9D9272E9
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 11:22:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2BE492734D
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 11:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFF221F24A03
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 09:22:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21A631C2189D
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 09:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570ED1AB51D;
-	Thu,  4 Jul 2024 09:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBD21AB8EF;
+	Thu,  4 Jul 2024 09:47:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="aSgPkzfb"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eQj7lbb7"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC271AB50E;
-	Thu,  4 Jul 2024 09:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64BF1A38CC
+	for <linux-iio@vger.kernel.org>; Thu,  4 Jul 2024 09:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720084955; cv=none; b=P6wqkWAbqdZOLevtRogLsFI95rqkZnT7vOsns1QEU871jtWlV/sFLb0omzDHSeSrU73GAsRqPm2RiXGIqRYPdfrdDVuEgQduYVLv+Om6qXqe82xuzE+nV7FX8uQfkkaM4fnOtDRal4P5thfHrZ33IVqLfoDkZ7SM4EKJd7Zly6E=
+	t=1720086454; cv=none; b=d4jP4jcOe9oAbIQWniIA8E1dbLTKBEty64wrMacZt61WJpR+GZ4FuQMs3cms7wYA21uKa5YxDWWxTFdet9Pcoi0EY86KTA5OyxJvotIqUtHkWTjGfBkUGaTR98j64+Kz0GhPtUHuXkkhC5kgtlcBwqTgusPKolup5gqD9uFWiuk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720084955; c=relaxed/simple;
-	bh=F3dDK0/pvu/BBK44Zu08RnmwdorZmIdJNH/uAHvs/EU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=p/40ZjPWfixxBDV3MyhOpNNQK6Uqq3LoNGdM95gcErcqFoEQIj8Dl+vil8KlxT8RvPBSz2x5DLtFk062jMeIag6PU5I+GY2M7oEwPIaD0v3dmmyhkDMMhepb1PKUqW3JlMjyL63LewRZlFq5taBwni8onfXcX6Zyu6wRojIO/eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=aSgPkzfb; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4646rAEC003641;
-	Thu, 4 Jul 2024 05:22:20 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=mPXqv
-	OjDq6RUGvHm7w96GSr1GrUkw1/VwO9JThkRowU=; b=aSgPkzfbAtkRTj2IpTHBb
-	KQepKvtrhZLrVAASQLAcpHk4iPYZiugFimcSqpspIcWcQXf/cri147ON5jTE/SQl
-	ZYqODePcDHFgChsA5ngKLRF3uACLxX6nHbJIEicAglMOzk25dEuA5ZKeFV8IQmbd
-	Apw3FaR0BzWVQNhnZLGkpnZJ2T5yGGsssk6Lvn0BJva04zgeLliFBSwLTbkEmZuN
-	MkDqxbFb/N7oKojHr1jHyW+N3WoF5AWEey+gdOPaSNJ3IBTKa87l2a5zROLnwl7+
-	2VuZNHrheO916GiE4npPz6aYDKun0mX7DgsWOiJNDoIvDF7Unxq23lPtxE23MEca
-	Q==
-Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 405a7natfq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Jul 2024 05:22:20 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4649MJXh058900
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 4 Jul 2024 05:22:19 -0400
-Received: from ASHBCASHYB4.ad.analog.com (10.64.17.132) by
- ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 4 Jul 2024 05:22:18 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
- ASHBCASHYB4.ad.analog.com (10.64.17.132) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 4 Jul 2024 05:22:18 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Thu, 4 Jul 2024 05:22:18 -0400
-Received: from [127.0.0.1] ([10.44.3.56])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4649M1dn012858;
-	Thu, 4 Jul 2024 05:22:11 -0400
-From: Nuno Sa <nuno.sa@analog.com>
-Date: Thu, 4 Jul 2024 11:25:25 +0200
-Subject: [PATCH 5/5] iio: adc: ad9467: support new parts
+	s=arc-20240116; t=1720086454; c=relaxed/simple;
+	bh=sVucWpRVBLp1clOrRh/7/Lt/dpYnbx9sKyCTapn87hY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q8JBrO7rdcfW4h2/6jT24AzMXhZj5e60dFewRbPMK1Ymebix9699Qnqc8rGJGmAtTNyGlVCbpgPpBGBzgwWw1FO4tDCBqDVB2xeaFeMShoqyUFJc9Q/yHKJwkX4ZTz51a6laAVbrUWoKRns5BnvCoO/UUu/3f1oUBAUgUcQbRbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eQj7lbb7; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42565cdf99cso3598005e9.3
+        for <linux-iio@vger.kernel.org>; Thu, 04 Jul 2024 02:47:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720086451; x=1720691251; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=yR6kRQQKjewLkDjLijbJzzsuJ3lxVXMiYewMcAXio90=;
+        b=eQj7lbb7vXzMC43rbyb3lY0PCEpgVCuZ0TVN45SLkV2XextwyBOsKQOkQ220XY8LAC
+         ZqNxwxfozMqUjorl+ttBWFm9DQs3nxN9WV5Od/jO3AKk7qD+V1AL2ZTQb/zrMPvFp2tW
+         2zqMz/KKMYb3pS7LnD9WjNaVCeP/gYqq5WgwS6KPo1uzmJ0GTi4cHF9CtalTNUF7FcCf
+         hdaAS/rM8oSu4jlvXfpyXpaaxsx3L2XQsx9nFQpOCaFdEMyFofwZUCfwpCNKptnjMH0/
+         IrAovgHwt3lKsgb1mZg7NwclrQ0jLQhD6UKno1cW22XZQA+7JXdklboEA15iUe6rHBKA
+         t1lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720086451; x=1720691251;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yR6kRQQKjewLkDjLijbJzzsuJ3lxVXMiYewMcAXio90=;
+        b=EAThbGFHj12gH/ZrNA/U54alr2vjLs/3vRJTuNXay6zcNU70E0feAbgXXA0MZt8d4u
+         G/Ay1hJN5MZVbs0fmtuQMPYGQZPOEoC+S7fzOpnjB7Ce+NDZv67ry25mcaEkKCqJ2TwV
+         FycadYztg9pNlk4J4adzX5MldfHJeobBZn4172WkFOK8eTF8dq3u3X51T3cxmswvpGgc
+         NtympW71AwS4ddz++ez0xD7fp7tkUpxb/uwbfjwNrZ/joeonVdEkTB/YLNBGayKPvinv
+         agn9ait+KrFt2MLOYA/4j/+lA4TjmqgVKveWjmbxtmre4uC2MmEq86tCOXe8nI6JWN5I
+         JtWQ==
+X-Gm-Message-State: AOJu0YwQNESooTU8NW7++g8nbv/qqbivOZfDHqeNCZ3CIj4q1xWkfl6u
+	vE0PUVo02zEdUgb4D0pSPzsmlU7P7rFohsfjIoAsgUwIAszLG7A5d/5BMh82uqA=
+X-Google-Smtp-Source: AGHT+IFyfxLASOlrAPH3tgC6z/yeFU+pbhU3C0jOJo7QuZpSlz7bRnjuHQG33VjES/lVTu8owPI+wA==
+X-Received: by 2002:a05:600c:3b0f:b0:425:63b9:ae2c with SMTP id 5b1f17b1804b1-4264a3f3080mr10799465e9.27.1720086451090;
+        Thu, 04 Jul 2024 02:47:31 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.219.137])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d50c3sm16984105e9.2.2024.07.04.02.47.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 04 Jul 2024 02:47:30 -0700 (PDT)
+Message-ID: <38979dfa-ba9d-497b-b0c9-2ab7d79e1251@linaro.org>
+Date: Thu, 4 Jul 2024 11:47:28 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20240704-dev-iio-ad9467-new-devs-v1-5-f1adfee921f7@analog.com>
-References: <20240704-dev-iio-ad9467-new-devs-v1-0-f1adfee921f7@analog.com>
-In-Reply-To: <20240704-dev-iio-ad9467-new-devs-v1-0-f1adfee921f7@analog.com>
-To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
-CC: Lars-Peter Clausen <lars@metafoo.de>,
-        Michael Hennerich
-	<Michael.Hennerich@analog.com>,
-        Jonathan Cameron <jic23@kernel.org>, "Rob
- Herring" <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        "Conor
- Dooley" <conor+dt@kernel.org>
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720085156; l=5389;
- i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=F3dDK0/pvu/BBK44Zu08RnmwdorZmIdJNH/uAHvs/EU=;
- b=MdKQnk39Gj1I6inXvXzZ5ZhYr+F85IbPc5AEJ1hKmD8Qbukw9o84zExN1s1Yoc48AaQcZ5N4j
- qGaKf/r0QsKBA1dCZlf3S7XZ5CsFzuAFFEnY3KtVNMO7lD6qfXMyb6y
-X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
- pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: PI2y7wD6q0rTe8ftFZQ38T2Zj14ZxNZf
-X-Proofpoint-GUID: PI2y7wD6q0rTe8ftFZQ38T2Zj14ZxNZf
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-04_06,2024-07-03_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
- priorityscore=1501 phishscore=0 suspectscore=0 mlxscore=0 spamscore=0
- impostorscore=0 lowpriorityscore=0 mlxlogscore=659 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407040064
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
+To: Petar Stoykov <pd.pstoykov@gmail.com>
+Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
+ Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+ Conor Dooley <conor+dt@kernel.org>,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20240702-mainline_sdp500-v3-0-0902047b3eee@gmail.com>
+ <20240702-mainline_sdp500-v3-1-0902047b3eee@gmail.com>
+ <51563155-c53f-47ce-bf68-5a6da72f8655@linaro.org>
+ <CADFWO8GWZzwuV_CSue9_GcBre2OdY4uBs8CiCtUePy4PW9BCuw@mail.gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <CADFWO8GWZzwuV_CSue9_GcBre2OdY4uBs8CiCtUePy4PW9BCuw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Add support for new devices:
- * Analog Devices AD9652 16-bit 310 MSPS ADC;
- * Analog Devices AD9643 14-Bit, 170/210/250 MSPS ADC;
- * Analog Devices AD9649 14-bit 20/40/65/80 MSPS ADC.
+On 04/07/2024 10:18, Petar Stoykov wrote:
+> On Tue, Jul 2, 2024 at 5:15 PM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+>>
+>> On 02/07/2024 16:59, Petar Stoykov via B4 Relay wrote:
+>>> From: Petar Stoykov <pd.pstoykov@gmail.com>
+>>>
+>>> Sensirion SDP500 is a digital differential pressure sensor. It provides
+>>> a digital I2C output. Add devicetree bindings requiring the compatible
+>>> string and I2C slave address (reg).
+>>>
+>>
+>> You did not test your code before sending.
+> 
+> I tested the driver for sdp500 on our system and it worked well.
+> I must admit that I forgot to change the dts to sdp510 and retest.
+> 
+>>
+>> Please respond to existing feedback from v1 and v2, thus confirm that
+>> you understood it and you are or are not going to implement it.
+>>
+> 
+> I tried to reply to all previous comments. Sorry if I missed something.
+> 
+>> It does not look like you tested the bindings, at least after quick
+>> look. Please run `make dt_binding_check` (see
+>> Documentation/devicetree/bindings/writing-schema.rst for instructions).
+>> Maybe you need to update your dtschema and yamllint.
+> 
+> I didn't know about that dt_binding_check. Then I spent a few hours
+> yesterday fighting with dependencies to get it running.
 
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
----
- drivers/iio/adc/ad9467.c | 101 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 101 insertions(+)
+It's just one command:
+pipx install dtschema yamllint
+(or pip, depending on your system)
 
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index d06a5fcc4ee8..b07c83efc39a 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -104,6 +104,27 @@
- #define AD9467_DEF_OUTPUT_MODE		0x08
- #define AD9467_REG_VREF_MASK		0x0F
- 
-+/*
-+ * Analog Devices AD9643 14-Bit, 170/210/250 MSPS ADC
-+ */
-+
-+#define CHIPID_AD9643			0x82
-+#define AD9643_REG_VREF_MASK		0x1F
-+
-+/*
-+ * Analog Devices AD9652 16-bit 310 MSPS ADC
-+ */
-+
-+#define CHIPID_AD9652                   0xC1
-+#define AD9652_REG_VREF_MASK            0xC0
-+
-+/*
-+ * Analog Devices AD9649 14-bit 20/40/65/80 MSPS ADC
-+ */
-+
-+#define CHIPID_AD9649			0x6F
-+#define AD9649_TEST_POINTS		8
-+
- #define AD9647_MAX_TEST_POINTS		32
- #define AD9467_CAN_INVERT(st)	\
- 	(!(st)->info->has_dco || (st)->info->has_dco_invert)
-@@ -218,6 +239,24 @@ static const unsigned int ad9467_scale_table[][2] = {
- 	{2300, 8}, {2400, 9}, {2500, 10},
- };
- 
-+static const unsigned int ad9643_scale_table[][2] = {
-+	{2087, 0x0F}, {2065, 0x0E}, {2042, 0x0D}, {2020, 0x0C}, {1997, 0x0B},
-+	{1975, 0x0A}, {1952, 0x09}, {1930, 0x08}, {1907, 0x07}, {1885, 0x06},
-+	{1862, 0x05}, {1840, 0x04}, {1817, 0x03}, {1795, 0x02}, {1772, 0x01},
-+	{1750, 0x00}, {1727, 0x1F}, {1704, 0x1E}, {1681, 0x1D}, {1658, 0x1C},
-+	{1635, 0x1B}, {1612, 0x1A}, {1589, 0x19}, {1567, 0x18}, {1544, 0x17},
-+	{1521, 0x16}, {1498, 0x15}, {1475, 0x14}, {1452, 0x13}, {1429, 0x12},
-+	{1406, 0x11}, {1383, 0x10},
-+};
-+
-+static const unsigned int ad9649_scale_table[][2] = {
-+	 {2000, 0},
-+};
-+
-+static const unsigned int ad9652_scale_table[][2] = {
-+	 {1250, 0}, {1125, 1}, {1200, 2}, {1250, 3}, {1000, 5},
-+};
-+
- static void __ad9467_get_scale(struct ad9467_state *st, int index,
- 			       unsigned int *val, unsigned int *val2)
- {
-@@ -255,6 +294,20 @@ static const struct iio_chan_spec ad9467_channels[] = {
- 	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 16, 's'),
- };
- 
-+static const struct iio_chan_spec ad9643_channels[] = {
-+	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 14, 's'),
-+	AD9467_CHAN(1, BIT(IIO_CHAN_INFO_SCALE), 1, 14, 's'),
-+};
-+
-+static const struct iio_chan_spec ad9649_channels[] = {
-+	AD9467_CHAN(0, 0, 0, 14, 's'),
-+};
-+
-+static const struct iio_chan_spec ad9652_channels[] = {
-+	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 16, 's'),
-+	AD9467_CHAN(1, BIT(IIO_CHAN_INFO_SCALE), 1, 16, 's'),
-+};
-+
- static const struct ad9467_chip_info ad9467_chip_tbl = {
- 	.name = "ad9467",
- 	.id = CHIPID_AD9467,
-@@ -298,6 +351,48 @@ static const struct ad9467_chip_info ad9265_chip_tbl = {
- 	.has_dco_invert = true,
- };
- 
-+static const struct ad9467_chip_info ad9643_chip_tbl = {
-+	.name = "ad9643",
-+	.id = CHIPID_AD9643,
-+	.max_rate = 250000000UL,
-+	.scale_table = ad9643_scale_table,
-+	.num_scales = ARRAY_SIZE(ad9643_scale_table),
-+	.channels = ad9643_channels,
-+	.num_channels = ARRAY_SIZE(ad9643_channels),
-+	.test_points = AD9647_MAX_TEST_POINTS,
-+	.vref_mask = AD9643_REG_VREF_MASK,
-+	.has_dco = true,
-+	.has_dco_invert = true,
-+	.dco_en = AN877_ADC_DCO_DELAY_ENABLE,
-+};
-+
-+static const struct ad9467_chip_info ad9649_chip_tbl = {
-+	.name = "ad9649",
-+	.id = CHIPID_AD9649,
-+	.max_rate = 80000000UL,
-+	.scale_table = ad9649_scale_table,
-+	.num_scales = ARRAY_SIZE(ad9649_scale_table),
-+	.channels = ad9649_channels,
-+	.num_channels = ARRAY_SIZE(ad9649_channels),
-+	.test_points = AD9649_TEST_POINTS,
-+	.has_dco = true,
-+	.has_dco_invert = true,
-+	.dco_en = AN877_ADC_DCO_DELAY_ENABLE,
-+};
-+
-+static const struct ad9467_chip_info ad9652_chip_tbl = {
-+	.name = "ad9652",
-+	.id = CHIPID_AD9652,
-+	.max_rate = 310000000UL,
-+	.scale_table = ad9652_scale_table,
-+	.num_scales = ARRAY_SIZE(ad9652_scale_table),
-+	.channels = ad9652_channels,
-+	.num_channels = ARRAY_SIZE(ad9652_channels),
-+	.test_points = AD9647_MAX_TEST_POINTS,
-+	.vref_mask = AD9652_REG_VREF_MASK,
-+	.has_dco = true,
-+};
-+
- static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
- {
- 	const struct ad9467_chip_info *info = st->info;
-@@ -948,6 +1043,9 @@ static const struct of_device_id ad9467_of_match[] = {
- 	{ .compatible = "adi,ad9265", .data = &ad9265_chip_tbl, },
- 	{ .compatible = "adi,ad9434", .data = &ad9434_chip_tbl, },
- 	{ .compatible = "adi,ad9467", .data = &ad9467_chip_tbl, },
-+	{ .compatible = "adi,ad9643", .data = &ad9643_chip_tbl, },
-+	{ .compatible = "adi,ad9649", .data = &ad9649_chip_tbl, },
-+	{ .compatible = "adi,ad9652", .data = &ad9652_chip_tbl, },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, ad9467_of_match);
-@@ -956,6 +1054,9 @@ static const struct spi_device_id ad9467_ids[] = {
- 	{ "ad9265", (kernel_ulong_t)&ad9265_chip_tbl },
- 	{ "ad9434", (kernel_ulong_t)&ad9434_chip_tbl },
- 	{ "ad9467", (kernel_ulong_t)&ad9467_chip_tbl },
-+	{ "ad9643", (kernel_ulong_t)&ad9643_chip_tbl },
-+	{ "ad9649", (kernel_ulong_t)&ad9649_chip_tbl, },
-+	{ "ad9652", (kernel_ulong_t)&ad9652_chip_tbl, },
- 	{}
- };
- MODULE_DEVICE_TABLE(spi, ad9467_ids);
-
--- 
-2.45.2
+Best regards,
+Krzysztof
 
 

@@ -1,74 +1,74 @@
-Return-Path: <linux-iio+bounces-7308-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7309-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2BE492734D
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 11:47:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10346927354
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 11:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21A631C2189D
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 09:47:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91F612813B4
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 09:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBD21AB8EF;
-	Thu,  4 Jul 2024 09:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D111AB513;
+	Thu,  4 Jul 2024 09:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eQj7lbb7"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="payb6GNg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64BF1A38CC
-	for <linux-iio@vger.kernel.org>; Thu,  4 Jul 2024 09:47:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776561A01BB
+	for <linux-iio@vger.kernel.org>; Thu,  4 Jul 2024 09:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720086454; cv=none; b=d4jP4jcOe9oAbIQWniIA8E1dbLTKBEty64wrMacZt61WJpR+GZ4FuQMs3cms7wYA21uKa5YxDWWxTFdet9Pcoi0EY86KTA5OyxJvotIqUtHkWTjGfBkUGaTR98j64+Kz0GhPtUHuXkkhC5kgtlcBwqTgusPKolup5gqD9uFWiuk=
+	t=1720086569; cv=none; b=Thi0t7JtDFT+TOVyDqoJRqBCHME2IlQ/pmSle8KLrlgKur/4+ttJJNsyVOAB8i0YqiANLk9JILKjEsNm9B1UtlyHNxoiSosKqJkzJe+QF4oXgJIDx1rZ90IUsG+HX4cWy1AreeRM+0do/ewK73YRTm5pyLg6P+EDfL0mBXgVx/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720086454; c=relaxed/simple;
-	bh=sVucWpRVBLp1clOrRh/7/Lt/dpYnbx9sKyCTapn87hY=;
+	s=arc-20240116; t=1720086569; c=relaxed/simple;
+	bh=Jus/G1QYt5pW2GkfcctBOFu2WhTByPL9AV0yxHR2FHg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q8JBrO7rdcfW4h2/6jT24AzMXhZj5e60dFewRbPMK1Ymebix9699Qnqc8rGJGmAtTNyGlVCbpgPpBGBzgwWw1FO4tDCBqDVB2xeaFeMShoqyUFJc9Q/yHKJwkX4ZTz51a6laAVbrUWoKRns5BnvCoO/UUu/3f1oUBAUgUcQbRbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eQj7lbb7; arc=none smtp.client-ip=209.85.128.48
+	 In-Reply-To:Content-Type; b=HoXgqZVvsMFzCvXGPAzN3q8OrQCKGEah2c2e8gdYbQSe0GXud5cH2K/PsBEOpGoirgZhNMwz7159F+FqoD1f0F4OGBaCPfuyLbMW9y2Sa0/Bn4JBDGZy1WdfwL30F/NzHOTjK4qTqEyv0HzSgD4nZsOm2tJqYsk/eart7mBEF0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=payb6GNg; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42565cdf99cso3598005e9.3
-        for <linux-iio@vger.kernel.org>; Thu, 04 Jul 2024 02:47:32 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52ea0f18500so315872e87.3
+        for <linux-iio@vger.kernel.org>; Thu, 04 Jul 2024 02:49:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720086451; x=1720691251; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1720086566; x=1720691366; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=yR6kRQQKjewLkDjLijbJzzsuJ3lxVXMiYewMcAXio90=;
-        b=eQj7lbb7vXzMC43rbyb3lY0PCEpgVCuZ0TVN45SLkV2XextwyBOsKQOkQ220XY8LAC
-         ZqNxwxfozMqUjorl+ttBWFm9DQs3nxN9WV5Od/jO3AKk7qD+V1AL2ZTQb/zrMPvFp2tW
-         2zqMz/KKMYb3pS7LnD9WjNaVCeP/gYqq5WgwS6KPo1uzmJ0GTi4cHF9CtalTNUF7FcCf
-         hdaAS/rM8oSu4jlvXfpyXpaaxsx3L2XQsx9nFQpOCaFdEMyFofwZUCfwpCNKptnjMH0/
-         IrAovgHwt3lKsgb1mZg7NwclrQ0jLQhD6UKno1cW22XZQA+7JXdklboEA15iUe6rHBKA
-         t1lg==
+        bh=S8rvIrULCnR035Tkdqz8WyVCTyK2R7YGhGSnwvvSM2Y=;
+        b=payb6GNgMrjJCItZWq+Z8qtQ/MyZG6p3FpgvLiWvHm/Ym4tHyzIy3L5Id+GLAWBeNY
+         hJBC8lzXrBreocWvR2U1Q3GOBf9KVMgO62wbK/TMn+39aalvQsipzdcCwRIs5FMfagCi
+         B/OcdECcdcl0mp7fJUAwI+3yd1+O/qjhK/Pk6ua3sa+QvK1/grwaMLRItsHhM/xrSiBN
+         8e47yJ2XbY5p6wqmA1KdPpm4Y/+s8J8ZToJvmNgDKS3SrwxP4dx3JpX0NXfJRGGvff72
+         d31Dwp7sqEldj+/gJ7fn6HR7lo1RgUj9as2u0UZzmQX0FUy2RrOUz6mP1tuAOP4in41B
+         hLjQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720086451; x=1720691251;
+        d=1e100.net; s=20230601; t=1720086566; x=1720691366;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=yR6kRQQKjewLkDjLijbJzzsuJ3lxVXMiYewMcAXio90=;
-        b=EAThbGFHj12gH/ZrNA/U54alr2vjLs/3vRJTuNXay6zcNU70E0feAbgXXA0MZt8d4u
-         G/Ay1hJN5MZVbs0fmtuQMPYGQZPOEoC+S7fzOpnjB7Ce+NDZv67ry25mcaEkKCqJ2TwV
-         FycadYztg9pNlk4J4adzX5MldfHJeobBZn4172WkFOK8eTF8dq3u3X51T3cxmswvpGgc
-         NtympW71AwS4ddz++ez0xD7fp7tkUpxb/uwbfjwNrZ/joeonVdEkTB/YLNBGayKPvinv
-         agn9ait+KrFt2MLOYA/4j/+lA4TjmqgVKveWjmbxtmre4uC2MmEq86tCOXe8nI6JWN5I
-         JtWQ==
-X-Gm-Message-State: AOJu0YwQNESooTU8NW7++g8nbv/qqbivOZfDHqeNCZ3CIj4q1xWkfl6u
-	vE0PUVo02zEdUgb4D0pSPzsmlU7P7rFohsfjIoAsgUwIAszLG7A5d/5BMh82uqA=
-X-Google-Smtp-Source: AGHT+IFyfxLASOlrAPH3tgC6z/yeFU+pbhU3C0jOJo7QuZpSlz7bRnjuHQG33VjES/lVTu8owPI+wA==
-X-Received: by 2002:a05:600c:3b0f:b0:425:63b9:ae2c with SMTP id 5b1f17b1804b1-4264a3f3080mr10799465e9.27.1720086451090;
-        Thu, 04 Jul 2024 02:47:31 -0700 (PDT)
+        bh=S8rvIrULCnR035Tkdqz8WyVCTyK2R7YGhGSnwvvSM2Y=;
+        b=KmLDFZ3sl5Wq/+iOB/MlsyGiDlTf+5s+FSCfW5uATLh3Yz197JkJNMkzVBJBOvGSFB
+         9X6EeEhLz8c5+BDmzixfws3V3K0qCR/7HVyQAFV216962sddNBuTg+Vp7qY95zqkcUi8
+         4nQQUf8Og8DZ4KQxBpfzjSUs9Arm6uqWAaTsy1UUqRk5mUs7MyBzyJvFBjofgEndpfqr
+         OePDfmPBrTlY2dhWJujrlVPcKYnQoWeJw+R0dyQFGLRBT0wb9dZa5Et2free4MluuJhv
+         WjpA1fGNUS72GTYsg0FOg4KpQJUVPhsve/UvECTq8H29bZ4f8tMeb+ZCIfDs9arc1bog
+         CKoQ==
+X-Gm-Message-State: AOJu0Yw2UPSSPDMWw29AvP4ZxkxCemlyWXs0yHdtl/AzZLYrg4Rq17/X
+	CbpgwyQ3r7iV/qEC3MI2f/Vh0megu56UIP9icp6568mk3y9EEeuEX5JjWWP/WV8=
+X-Google-Smtp-Source: AGHT+IFDsgZIA5XCVA0hy0WJu20063Iw4EiHYumlyD4TmspDV/EGAzJwVtvHSU1EkA2BUbUHNOdVpA==
+X-Received: by 2002:a05:6512:716:b0:52c:dec1:4578 with SMTP id 2adb3069b0e04-52ea06ebef5mr672002e87.60.1720086565677;
+        Thu, 04 Jul 2024 02:49:25 -0700 (PDT)
 Received: from [192.168.1.20] ([178.197.219.137])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d50c3sm16984105e9.2.2024.07.04.02.47.29
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3675a1046f2sm17875224f8f.112.2024.07.04.02.49.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 02:47:30 -0700 (PDT)
-Message-ID: <38979dfa-ba9d-497b-b0c9-2ab7d79e1251@linaro.org>
-Date: Thu, 4 Jul 2024 11:47:28 +0200
+        Thu, 04 Jul 2024 02:49:25 -0700 (PDT)
+Message-ID: <8d8363b4-e817-40f1-9265-16018b14497c@linaro.org>
+Date: Thu, 4 Jul 2024 11:49:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -76,7 +76,7 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
+Subject: Re: [PATCH v3 2/3] iio: pressure: Add driver for Sensirion SDP500
 To: Petar Stoykov <pd.pstoykov@gmail.com>
 Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
  Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>,
@@ -85,9 +85,9 @@ Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>,
  Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
  devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
 References: <20240702-mainline_sdp500-v3-0-0902047b3eee@gmail.com>
- <20240702-mainline_sdp500-v3-1-0902047b3eee@gmail.com>
- <51563155-c53f-47ce-bf68-5a6da72f8655@linaro.org>
- <CADFWO8GWZzwuV_CSue9_GcBre2OdY4uBs8CiCtUePy4PW9BCuw@mail.gmail.com>
+ <20240702-mainline_sdp500-v3-2-0902047b3eee@gmail.com>
+ <64fd897b-f87d-4a17-af92-5c6ffb481061@linaro.org>
+ <CADFWO8FF24UyoD9cfF5NL1OzcHErx8+=bJYLrajrJNHFseK2HQ@mail.gmail.com>
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Content-Language: en-US
 Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
@@ -134,45 +134,73 @@ Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
  KQ06ztUMRrj8eVtpImjsWCd0bDWRaaR4vqhCHvAG9iWXZu4qh3ipie2Y0oSJygcZT7H3UZxq
  fyYKiqEmRuqsvv6dcbblD8ZLkz1EVZL6djImH5zc5x8qpVxlA0A0i23v5QvN00m6G9NFF0Le
  D2GYIS41Kv4Isx2dEFh+/Q==
-In-Reply-To: <CADFWO8GWZzwuV_CSue9_GcBre2OdY4uBs8CiCtUePy4PW9BCuw@mail.gmail.com>
+In-Reply-To: <CADFWO8FF24UyoD9cfF5NL1OzcHErx8+=bJYLrajrJNHFseK2HQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 04/07/2024 10:18, Petar Stoykov wrote:
-> On Tue, Jul 2, 2024 at 5:15 PM Krzysztof Kozlowski
+On 04/07/2024 09:49, Petar Stoykov wrote:
+> On Tue, Jul 2, 2024 at 5:17 PM Krzysztof Kozlowski
 > <krzysztof.kozlowski@linaro.org> wrote:
 >>
 >> On 02/07/2024 16:59, Petar Stoykov via B4 Relay wrote:
 >>> From: Petar Stoykov <pd.pstoykov@gmail.com>
 >>>
->>> Sensirion SDP500 is a digital differential pressure sensor. It provides
->>> a digital I2C output. Add devicetree bindings requiring the compatible
->>> string and I2C slave address (reg).
+>>> Sensirion SDP500 is a digital differential pressure sensor. The sensor is
+>>> accessed over I2C.
 >>>
 >>
->> You did not test your code before sending.
-> 
-> I tested the driver for sdp500 on our system and it worked well.
-> I must admit that I forgot to change the dts to sdp510 and retest.
-> 
+>> ...
 >>
->> Please respond to existing feedback from v1 and v2, thus confirm that
->> you understood it and you are or are not going to implement it.
+>>> +
+>>> +static const struct of_device_id sdp500_of_match[] = {
+>>> +     { .compatible = "sensirion,sdp500" },
+>>> +     { .compatible = "sensirion,sdp510" },
 >>
+>> Devices look compatible, so express it in the bindings with fallback to
+>> sdp500 (oneOf, see example-schema).
 > 
-> I tried to reply to all previous comments. Sorry if I missed something.
-> 
->> It does not look like you tested the bindings, at least after quick
->> look. Please run `make dt_binding_check` (see
->> Documentation/devicetree/bindings/writing-schema.rst for instructions).
->> Maybe you need to update your dtschema and yamllint.
-> 
-> I didn't know about that dt_binding_check. Then I spent a few hours
-> yesterday fighting with dependencies to get it running.
+> Hi Krzysztof,
+> I tried to understand the explanation in the example-schema. I must say it is
+> a bit confusing, but I can't offer improvement because I'm not sure I
+> understand it fully yet.
+> Can you verify if this is what you expect the bindings file to read?
+> properties:
+>   compatible:
+>     oneOf:
+>       - items:
+>         - const: sensirion,sdp510
+>         - const: sensirion,sdp500
+>       - items:
+>         - const: sensirion,sdp500
 
-It's just one command:
-pipx install dtschema yamllint
-(or pip, depending on your system)
+Almost.
+
+    oneOf:
+      - items:
+          - const: sensirion,sdp510
+          - const: sensirion,sdp500
+      - const: sensirion,sdp500
+
+> 
+> So the device tree should have either this
+>   compatible = "sensirion,sdp510", "sensirion,sdp500"
+> Or
+>   compatible = "sensirion,sdp500"
+> The first would mean that 510 falls back to 500, right?
+
+Yes
+
+> 
+> From what I've seen it is rare to have two strings in "compatible" so I didn't
+
+Rare? It's everywhere in SoC and in many places for standalone
+devices/hardware.
+
+> know of this mechanism of "fallback" in the dts. I expected to just write the
+> name of my device (let's say "sensirion,sdp510") and the driver would handle it.
+> But I'm learning. Expectations change.
+
+
 
 Best regards,
 Krzysztof

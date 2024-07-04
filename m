@@ -1,126 +1,130 @@
-Return-Path: <linux-iio+bounces-7294-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7295-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957ED92718E
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 10:18:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2ECD9271D6
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 10:35:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D5011F23F58
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 08:18:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DE25284DEA
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 08:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8611A3BA1;
-	Thu,  4 Jul 2024 08:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E96131A4F2E;
+	Thu,  4 Jul 2024 08:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M2z1qyOr"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WUyqWIIg"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay4-d.mail.gandi.net (relay4-d.mail.gandi.net [217.70.183.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4435240BF2;
-	Thu,  4 Jul 2024 08:18:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0931A4F1C;
+	Thu,  4 Jul 2024 08:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720081128; cv=none; b=E4iOHG3pnJABQC+bj0RUwdWQ2KgqwFcQCpnGl8jfY7U/ark+ZUz8gs+Yq5LCFkDbHEfW6PJ6YivfDUqI+4ou0xSBC0wonZkZJpPaTH+MFfWripItwZ/STwo2mOzMDfj6U244KNjucHfXCWxvNIfFxmH26/lgcyKRThip2DCc54s=
+	t=1720082132; cv=none; b=F6+p18tf2S02BVYISEEDyp7090ffbf9hgKl4VFDWMFupndTVESPLrwkvUPTMm+HAyv4dMDs9JoqqPRkBv6lqITISRWkXuHMmnNyo+amRMX5lrmWJL0ku324QOyZVgSrUTQ9dUbSjks3NgKjRVoEJS6zdCICWquJ9+OYx6hmgFcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720081128; c=relaxed/simple;
-	bh=6/zPblrqcHg0wS138MP652lBp+ZaoHvh+/0sq4DtdMw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YjlkExfWw/EsPYQ7/7ATIQdGSPWarQPjyPsGhUJlpxonhKLTLHdzwJWATvB881tp8SEfQZzmJQ3+BI7olgLRkhe2w+chbqNy/GAeI597UtAKHZxHSAb70BgxNFNRC2h/vQUJc9T3hBQPpOdB3eFarZXP8wil1bdS4n/uUPaXOyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M2z1qyOr; arc=none smtp.client-ip=209.85.221.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-367940c57ddso236468f8f.3;
-        Thu, 04 Jul 2024 01:18:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720081125; x=1720685925; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6/zPblrqcHg0wS138MP652lBp+ZaoHvh+/0sq4DtdMw=;
-        b=M2z1qyOreGt/fyIwpnOh7KE2qHDRM3i81IqQ4/Lnt6j7XkaD2QqVLhvte0M1mz/vPs
-         PUUmhpjg+nyG7ZFSG0cEHQGY9Dpk5guoAhbv7HdldDUWiagfv5X9dG+DOON0f/hPxCGj
-         kPEjaX/RMuLnC59tpSGszAQVCSsZfVwd2UYN/VQCyQsTDMJVPMG30aqczKwAlqeIK+N9
-         VPkxCzEMdppVot4762K+dSwFlR0nECP9DgOEXuhRYn5gRaDBoo2SODag9TTy+HjnMxgB
-         NJfxwq3ILOVUkXJo967IKu7M1lIjH/eCWtLOf8h9gI/aExHPaWNTAz2ZzTXA5gOP1K8D
-         boeg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720081125; x=1720685925;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6/zPblrqcHg0wS138MP652lBp+ZaoHvh+/0sq4DtdMw=;
-        b=iBdPb9RUeJyFp7q0xgTO6W68a2mKvxJQQyqc8ywCsytC/KF30mOzaU0d1H0g2UHXLO
-         W/QLBm0qoBXMfc15LQqT/AZPlNFBR5g/Ee2sH8pFPUV1mvIGt5v4VB2vQkxOZ1gw5Dr+
-         RN9ZViAjWkDWW30W8TNZhLMt+bBuyIjFqUq9fpaoejwEUeOU22aYS3Y/GwhbWK+LXTKC
-         7yi/gUeLQPbVg2woZNIX76YWUImthsUqbRJNWUP0+qPBnJrHAEgQXReev+zQj9nnEtk8
-         OX4Cn69ese9H4W82iewdjMiC3/ec8IQNJR0l+w36eIKJc9e4C9gCdmHoVIDUrnu3Jjhn
-         yMUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCWL5PONLCp6U6DJa2dRaMkvp7IeweXNzrwg+A5Mwt0HnS8YIP6cYKria8gqP1hwyX5e3BWiKAUgfmoNqE2S+RLemJmeWXgFT9Xbv4UJDgPFIYE1V1DDqLQSq5T3pLdY0741dPK8N8+w==
-X-Gm-Message-State: AOJu0Yw3dmJr8LR0pwwExYdWyLZw6F8C74mT+NxeV39z8ZO2WrnV6y3m
-	pumq1uaC1GFKEjPpoydHxelfVWAyrLq8gEk/E/NTwKozLzDw3DKFiXbRHA042fBRI+vMbWP4OiU
-	60nUT7oCYxiBa88UNPpgvQ9v74Y0=
-X-Google-Smtp-Source: AGHT+IE4xiUQw4dA1SxZD9H8hd0AhnHzluII0lZ3PaApoihwyyt3Sqaxa2JgTFbDWdLCz+VUsHZ+XDj1tTAoqJEElVM=
-X-Received: by 2002:adf:f744:0:b0:366:e9f9:99c1 with SMTP id
- ffacd0b85a97d-3679dd63cc6mr847228f8f.53.1720081125395; Thu, 04 Jul 2024
- 01:18:45 -0700 (PDT)
+	s=arc-20240116; t=1720082132; c=relaxed/simple;
+	bh=ha80nLRuPkxl6TD3WGhJxFUjmnwZGetl3R4YGxxUPRg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=K5cuqUwYjdJlQyaJ1KlYHAFcJ6QgLPD+x3q4nmRLz1Cv3nNMkCat11CCbG0GTPv5QJSepsydn4jqxwTae+v54jh5ikYuKN6LHlSrQKDeCXxU294hvsT7NVEEJ8eUoE8wZ+LWtNQ6n2V0xajTSaZLe88VRoyEOZS6imsJYYe6PQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WUyqWIIg; arc=none smtp.client-ip=217.70.183.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id A56C3E0006;
+	Thu,  4 Jul 2024 08:35:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1720082128;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VWar8m3O4fo/jZOi8A6VIxRWgKYWwe4SDSJKBXm4MU8=;
+	b=WUyqWIIgLtb7ykFLsUTyM+0/eHHcIhl5IRjvw2bfVzhIjxXfCwGVhH1pwDAF7crb5ffXu4
+	cORDlXxTlzHgnTdNGHo8uxhVGRZKgXBA9owVfPuSPdG3tcV8HN1G8CBnQopHwcG5SJeK8H
+	BvBfeOHHL9L9NoEuDbh24zce/yRjNMbY6HLX39ovWFAXjSe9Jr40Veeuu209ulSqFDaSFD
+	X1hUKGz6XVt34aElqd5YYkObjRogHKEAdZqAXHnDnLp2kP6g5wEHE6qv59gLVmY/SCSMkZ
+	SABmtWRB7y6xLa1EKLnaz0mID5g2lObdb/lF9i6JUanYXdQi+TFsY1yJaQlrlQ==
+Message-ID: <8d368347-7cee-41af-a033-c495eeb62e2a@bootlin.com>
+Date: Thu, 4 Jul 2024 10:35:25 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240702-mainline_sdp500-v3-0-0902047b3eee@gmail.com>
- <20240702-mainline_sdp500-v3-1-0902047b3eee@gmail.com> <51563155-c53f-47ce-bf68-5a6da72f8655@linaro.org>
-In-Reply-To: <51563155-c53f-47ce-bf68-5a6da72f8655@linaro.org>
-From: Petar Stoykov <pd.pstoykov@gmail.com>
-Date: Thu, 4 Jul 2024 10:18:34 +0200
-Message-ID: <CADFWO8GWZzwuV_CSue9_GcBre2OdY4uBs8CiCtUePy4PW9BCuw@mail.gmail.com>
-Subject: Re: [PATCH v3 1/3] dt-bindings: iio: pressure: Add Sensirion SDP500
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: linux-iio@vger.kernel.org, Jonathan Cameron <jic23@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh+dt@kernel.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml: Add
+ Sophgo SARADC binding documentation
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>,
+ Inochi Amaoto <inochiama@outlook.com>, Chen Wang <unicorn_wang@outlook.com>,
+ Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
+ Rob Herring <robh@kernel.org>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+ =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ Lars-Peter Clausen <lars@metafoo.de>, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+References: <20240702-sg2002-adc-v1-0-ac66e076a756@bootlin.com>
+ <20240702-sg2002-adc-v1-1-ac66e076a756@bootlin.com>
+ <b7913f90-7405-4a77-9c57-97ef124de6e1@kernel.org>
+Content-Language: en-US
+From: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+In-Reply-To: <b7913f90-7405-4a77-9c57-97ef124de6e1@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-Sasl: thomas.bonnefille@bootlin.com
 
-On Tue, Jul 2, 2024 at 5:15=E2=80=AFPM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> On 02/07/2024 16:59, Petar Stoykov via B4 Relay wrote:
-> > From: Petar Stoykov <pd.pstoykov@gmail.com>
-> >
-> > Sensirion SDP500 is a digital differential pressure sensor. It provides
-> > a digital I2C output. Add devicetree bindings requiring the compatible
-> > string and I2C slave address (reg).
-> >
->
-> You did not test your code before sending.
+Hello Krzysztof,
+Thank you for your feedback
 
-I tested the driver for sdp500 on our system and it worked well.
-I must admit that I forgot to change the dts to sdp510 and retest.
+On 7/3/24 7:08 AM, Krzysztof Kozlowski wrote:
+> On 02/07/2024 13:52, Thomas Bonnefille wrote:
+>> The Sophgo SARADC is a Successive Approximation ADC that can be found in
+>> the Sophgo SoC.
+>>
+>> Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+>> ---
+>>   .../bindings/iio/adc/sophgo,cv18xx-saradc.yaml     | 51 ++++++++++++++++++++++
+>>   MAINTAINERS                                        |  5 +++
+>>   2 files changed, 56 insertions(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+>> new file mode 100644
+>> index 000000000000..21fd5dc8e24e
+>> --- /dev/null
+>> +++ b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
+>> @@ -0,0 +1,51 @@
+>> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+>> +%YAML 1.2
+>> +---
+>> +$id: http://devicetree.org/schemas/iio/adc/sophgo,cv18xx-adc.yaml#
+>> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+>> +
+>> +title: Sophgo 3 channels Successive Approximation Analog to Digital Converters
+>> +
+>> +maintainers:
+>> +  - Thomas Bonnefille <thomas.bonnefille@bootlin.com>
+>> +
+>> +description:
+>> +  Datasheet at https://github.com/sophgo/sophgo-doc/releases
+>> +
+>> +properties:
+>> +  compatible:
+>> +    const: sophgo,cv18xx-saradc
+> 
+> Except that this was never tested... wild-cards are generally not allowed.
+> 
 
->
-> Please respond to existing feedback from v1 and v2, thus confirm that
-> you understood it and you are or are not going to implement it.
->
+I realized I made a mistake when using the "make dt_binding_check" 
+command, which led to some errors in this dt_binding. I have now 
+addressed all of them, but I'm not sure I understand your comment.
 
-I tried to reply to all previous comments. Sorry if I missed something.
+I don't see any wildcards in the YAML file. Could you please provide 
+more details on what you expect?
 
-> It does not look like you tested the bindings, at least after quick
-> look. Please run `make dt_binding_check` (see
-> Documentation/devicetree/bindings/writing-schema.rst for instructions).
-> Maybe you need to update your dtschema and yamllint.
-
-I didn't know about that dt_binding_check. Then I spent a few hours
-yesterday fighting with dependencies to get it running.
-Thanks!
-
->
-> Best regards,
-> Krzysztof
->
+Best regards,
+Thomas
 

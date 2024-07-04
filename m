@@ -1,75 +1,74 @@
-Return-Path: <linux-iio+bounces-7306-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7304-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E27EF9272E7
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 11:22:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBCAB9272E3
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 11:22:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99158287EDC
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 09:22:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 673C71F24E7F
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 09:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D78E41AB513;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E41D1AAE38;
 	Thu,  4 Jul 2024 09:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="McZnubDo"
+	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="I/QeSf/O"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from mx0b-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E93B1AAE15;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51AA1A4F38;
 	Thu,  4 Jul 2024 09:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720084953; cv=none; b=NW6LcBQjuHkMErEuY1IfShMbOuF76SgUY5SGtOfWhMPb7ADyqcWakKy1gwtAr2VmX7KMzc5gXEfdL6hIRiMfpVeNx49Nk6pDHXjBwPhznz4hw+o97Egqfvsw1VeZkKpOL/0PaWimxkTPpGMhpqi+6djNLv4I+4F06gBcXK6mue4=
+	t=1720084953; cv=none; b=u1PZFp3aURLdkVBTP48PVRMJRUBZgCg0yOTaGfmJd6TJ7sSLDsjoJIXAlBo+ftx1aBDs+zb73rl+YkVHTvhMApFlml6oX/ZcaPXmNn6hiaON7WAU68aU7L3K+tu6na72RRkYSJbyNtOsDahfu6xyPhOOIz+2kVdpuHBfWl0vRAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1720084953; c=relaxed/simple;
-	bh=fRhh1wi0phWAUPnn4AUVYgDau6R2WoroOFT7i9aJ4o8=;
+	bh=pHO626iZhwN4BCQ3m/P0amFN+UbMJa8G9SI+X3gIH8E=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=KQ7vICvowcokzLux3o5t5tE97Pya4NLYX2OgY7Pu1NEDcKDQ2j5SfZ6XH9myx4BNhYoDhG5SUp/JvO7WqZoMysyvStK05A+IG8+5+8yo4h5WHLfQ5d5AGgH2wohjRlP1A4i6l/tStAfSIq8sjfFvgKlYRliKM32Tw1dVO6909oU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=McZnubDo; arc=none smtp.client-ip=148.163.135.77
+	 In-Reply-To:To:CC; b=l7nyMkH88lluWL4V7FufnRlY1Cs8E0gMnS1XAI8F6/FaetL/kFFOco+jfCCDNgsJc8oZaQJNF+r+3522LfYHzb3sJ7R23ft+YiXvN6SIX6H/dp7YNRENG+0+hHQzJwqpo+oEM3aRtQ3aqc4t8nsZpLFfpRxzxcoQC1JS4mT/swg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=I/QeSf/O; arc=none smtp.client-ip=148.163.135.77
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4646Yp7E003583;
-	Thu, 4 Jul 2024 05:22:19 -0400
+Received: from pps.filterd (m0375855.ppops.net [127.0.0.1])
+	by mx0b-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4644oict006966;
+	Thu, 4 Jul 2024 05:22:18 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=oUJjy
-	r4iHuFNczKWpssEjsOfWgmV5Uf+YLWCk7fBono=; b=McZnubDou2cauxgwKZgFd
-	L6tyB3ZUmZgbU8EzZUOHhqDtA9Lmb+mgHjfR7ILrb1Tsk3i9MudHQauQP+GdF2Ez
-	0+ihFPfZe/P2xzfZci6sVPWyqhrHpJwjdNufixAiSRqlGzrUcqhzeqWY7WxUaeE0
-	wJ6Cdg/adxSkmxMcmHHkQB+y/NIAUK9UTxUdemACaApCZL7NCYaPAkq8/apLezC/
-	c3pBxr3Kp6TFCzBhgp3Hl/QH+uvbXg+7xOF0EGb5KZXICtulYi4sXKe5nxz8llIt
-	T2JoZkq9TdA5VAnsd8J8s10qadRfoYuq4Fxgs4H/1WMOyDEL/Ut1jHltrBDe6nQ8
+	:message-id:mime-version:references:subject:to; s=DKIM; bh=8mcOb
+	WTTmqXr9oQvcxL7j77WsLK5TTAf2NEDDvcZOxw=; b=I/QeSf/OMI8pA4yKit/BR
+	XCW2joXtDV4E9YI9vBCVW7eFs3wYtq7qnk3ktaYYmlf4bWEvj6hi+xX9VonzVlFd
+	EhY3Rz5+231a/WI/V9Cfv+zfC7n3/pntPAqVfKSi5e7ReJaFxUrbLh7M2fuqmmIr
+	RXAn8Rs+Mj49t7GP41v1my0Xo7mQgHBtdcLJm6yZV4URosAy4QnH4AVXy4twkj/D
+	9ptwh0H+tlFIoF5QKfcCbrrFjntavszesliuNnOPwWu6PkWps/3yPuWUEJeOPknc
+	trcotod1W1aic0V0DFxBXAVzN9bcZnoc3+Ciz9II8ZnDqXvWYGbFlxRMMV49TARE
 	Q==
 Received: from nwd2mta4.analog.com ([137.71.173.58])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 405a7natfk-1
+	by mx0b-00128a01.pphosted.com (PPS) with ESMTPS id 405n2p0u73-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 04 Jul 2024 05:22:19 -0400 (EDT)
+	Thu, 04 Jul 2024 05:22:18 -0400 (EDT)
 Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4649MI3n058897
+	by nwd2mta4.analog.com (8.14.7/8.14.7) with ESMTP id 4649MHJW058894
 	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Thu, 4 Jul 2024 05:22:18 -0400
+	Thu, 4 Jul 2024 05:22:17 -0400
 Received: from ASHBCASHYB5.ad.analog.com (10.64.17.133) by
  ASHBMBX9.ad.analog.com (10.64.17.10) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.986.14; Thu, 4 Jul 2024 05:22:17 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by
+ 15.2.986.14; Thu, 4 Jul 2024 05:22:16 -0400
+Received: from ASHBMBX8.ad.analog.com (10.64.17.5) by
  ASHBCASHYB5.ad.analog.com (10.64.17.133) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
  15.2.986.14; Thu, 4 Jul 2024 05:22:16 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
+Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx8.ad.analog.com
+ (10.64.17.5) with Microsoft SMTP Server id 15.2.986.14 via Frontend
  Transport; Thu, 4 Jul 2024 05:22:16 -0400
 Received: from [127.0.0.1] ([10.44.3.56])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4649M1dl012858;
-	Thu, 4 Jul 2024 05:22:09 -0400
+	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 4649M1dm012858;
+	Thu, 4 Jul 2024 05:22:10 -0400
 From: Nuno Sa <nuno.sa@analog.com>
-Date: Thu, 4 Jul 2024 11:25:23 +0200
-Subject: [PATCH 3/5] iio: adc: ad9467: don't allow reading vref if not
- available
+Date: Thu, 4 Jul 2024 11:25:24 +0200
+Subject: [PATCH 4/5] dt-bindings: adc: ad9467: support new parts
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -78,7 +77,7 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240704-dev-iio-ad9467-new-devs-v1-3-f1adfee921f7@analog.com>
+Message-ID: <20240704-dev-iio-ad9467-new-devs-v1-4-f1adfee921f7@analog.com>
 References: <20240704-dev-iio-ad9467-new-devs-v1-0-f1adfee921f7@analog.com>
 In-Reply-To: <20240704-dev-iio-ad9467-new-devs-v1-0-f1adfee921f7@analog.com>
 To: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>
@@ -91,123 +90,53 @@ CC: Lars-Peter Clausen <lars@metafoo.de>,
         "Conor
  Dooley" <conor+dt@kernel.org>
 X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1720085156; l=3454;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1720085156; l=1003;
  i=nuno.sa@analog.com; s=20231116; h=from:subject:message-id;
- bh=fRhh1wi0phWAUPnn4AUVYgDau6R2WoroOFT7i9aJ4o8=;
- b=ikxWg2k77EE8lxhexSD1ZdQuIAdclSksFp6LobiL8SeB2cVyl6M78OdHODooPGMwm0IK5gCyN
- vk0Gj1LhNzNBmEJkxZmB+sEvn8+oym+zLpJfouzpRsK3OUkJrODa1yP
+ bh=pHO626iZhwN4BCQ3m/P0amFN+UbMJa8G9SI+X3gIH8E=;
+ b=3C395z06siwUeCgE/Be3uigxhwUXqHQ1GzsiIL4L1EbBmOnHOQitvrhb1N+RWfyxjw2x7bk2z
+ Txs+kJ5lT1+AoObIlJNAXzGhbyGak1NLQNKNsJYNMzDU4kIaq/GonPG
 X-Developer-Key: i=nuno.sa@analog.com; a=ed25519;
  pk=3NQwYA013OUYZsmDFBf8rmyyr5iQlxV/9H4/Df83o1E=
 X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-ORIG-GUID: JRXSAUntWKDFgRhv20LoMy3KvgQMUmKV
-X-Proofpoint-GUID: JRXSAUntWKDFgRhv20LoMy3KvgQMUmKV
+X-Proofpoint-ORIG-GUID: ql3hfctkJwh1lZiYgPj5uvMmHm9UTnkx
+X-Proofpoint-GUID: ql3hfctkJwh1lZiYgPj5uvMmHm9UTnkx
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
  definitions=2024-07-04_06,2024-07-03_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
- priorityscore=1501 phishscore=0 suspectscore=0 mlxscore=0 spamscore=0
- impostorscore=0 lowpriorityscore=0 mlxlogscore=894 clxscore=1015
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
+ spamscore=0 adultscore=0 phishscore=0 malwarescore=0 impostorscore=0
+ suspectscore=0 clxscore=1015 mlxlogscore=553 priorityscore=1501
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2406140001 definitions=main-2407040064
 
-If there's only one possible scale, there's no way to change the Vref
-select in the device so avoid reading the register in ad9467_get_scale().
-In this case, it makes no sense to provide the .read_available()
-callback nor allowing for writing the scale attribute.
+Add support for new devices:
+ * Analog Devices AD9652 16-bit 310 MSPS ADC;
+ * Analog Devices AD9643 14-Bit, 170/210/250 MSPS ADC;
+ * Analog Devices AD9649 14-bit 20/40/65/80 MSPS ADC.
 
-Note this is in preparation for supporting a new device that only has
-one possible scale.
+Note all these parts have subtle differences in their programming model
+(different scales, number of channels, etc..) so fallbacks are not
+possible.
 
 Signed-off-by: Nuno Sa <nuno.sa@analog.com>
 ---
- drivers/iio/adc/ad9467.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iio/adc/ad9467.c b/drivers/iio/adc/ad9467.c
-index 077c3a594bfc..d06a5fcc4ee8 100644
---- a/drivers/iio/adc/ad9467.c
-+++ b/drivers/iio/adc/ad9467.c
-@@ -231,14 +231,14 @@ static void __ad9467_get_scale(struct ad9467_state *st, int index,
- 	*val2 = tmp % 1000000;
- }
+diff --git a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+index eecd5fbab695..2606c0c5dfc6 100644
+--- a/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
++++ b/Documentation/devicetree/bindings/iio/adc/adi,ad9467.yaml
+@@ -28,6 +28,9 @@ properties:
+       - adi,ad9265
+       - adi,ad9434
+       - adi,ad9467
++      - adi,ad9643
++      - adi,ad9649
++      - adi,ad9652
  
--#define AD9467_CHAN(_chan, _si, _bits, _sign)				\
-+#define AD9467_CHAN(_chan, avai_mask, _si, _bits, _sign)		\
- {									\
- 	.type = IIO_VOLTAGE,						\
- 	.indexed = 1,							\
- 	.channel = _chan,						\
- 	.info_mask_shared_by_type = BIT(IIO_CHAN_INFO_SCALE) |		\
- 		BIT(IIO_CHAN_INFO_SAMP_FREQ),				\
--	.info_mask_shared_by_type_available = BIT(IIO_CHAN_INFO_SCALE), \
-+	.info_mask_shared_by_type_available = avai_mask,		\
- 	.scan_index = _si,						\
- 	.scan_type = {							\
- 		.sign = _sign,						\
-@@ -248,11 +248,11 @@ static void __ad9467_get_scale(struct ad9467_state *st, int index,
- }
- 
- static const struct iio_chan_spec ad9434_channels[] = {
--	AD9467_CHAN(0, 0, 12, 's'),
-+	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 12, 's'),
- };
- 
- static const struct iio_chan_spec ad9467_channels[] = {
--	AD9467_CHAN(0, 0, 16, 's'),
-+	AD9467_CHAN(0, BIT(IIO_CHAN_INFO_SCALE), 0, 16, 's'),
- };
- 
- static const struct ad9467_chip_info ad9467_chip_tbl = {
-@@ -301,9 +301,13 @@ static const struct ad9467_chip_info ad9265_chip_tbl = {
- static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
- {
- 	const struct ad9467_chip_info *info = st->info;
--	unsigned int i, vref_val;
-+	unsigned int i = 0, vref_val;
- 	int ret;
- 
-+	/* nothing to read if we only have one possible scale */
-+	if (info->num_scales == 1)
-+		goto out_get_scale;
-+
- 	ret = ad9467_spi_read(st, AN877_ADC_REG_VREF);
- 	if (ret < 0)
- 		return ret;
-@@ -318,6 +322,7 @@ static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
- 	if (i == info->num_scales)
- 		return -ERANGE;
- 
-+out_get_scale:
- 	__ad9467_get_scale(st, i, val, val2);
- 
- 	return IIO_VAL_INT_PLUS_MICRO;
-@@ -332,6 +337,8 @@ static int ad9467_set_scale(struct ad9467_state *st, int val, int val2)
- 
- 	if (val != 0)
- 		return -EINVAL;
-+	if (info->num_scales == 1)
-+		return -EOPNOTSUPP;
- 
- 	for (i = 0; i < info->num_scales; i++) {
- 		__ad9467_get_scale(st, i, &scale_val[0], &scale_val[1]);
-@@ -730,7 +737,7 @@ static int ad9467_update_scan_mode(struct iio_dev *indio_dev,
- 	return 0;
- }
- 
--static const struct iio_info ad9467_info = {
-+static struct iio_info ad9467_info = {
- 	.read_raw = ad9467_read_raw,
- 	.write_raw = ad9467_write_raw,
- 	.update_scan_mode = ad9467_update_scan_mode,
-@@ -905,6 +912,8 @@ static int ad9467_probe(struct spi_device *spi)
- 		return -ENODEV;
- 	}
- 
-+	if (st->info->num_scales > 1)
-+		ad9467_info.read_avail = ad9467_read_avail;
- 	indio_dev->name = st->info->name;
- 	indio_dev->channels = st->info->channels;
- 	indio_dev->num_channels = st->info->num_channels;
+   reg:
+     maxItems: 1
 
 -- 
 2.45.2

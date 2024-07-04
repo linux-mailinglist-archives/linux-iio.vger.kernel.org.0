@@ -1,107 +1,137 @@
-Return-Path: <linux-iio+bounces-7288-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7289-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9B80927047
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 09:09:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DBB92705D
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 09:16:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A26F286046
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 07:09:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9A78B21E5F
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 07:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7071A08B5;
-	Thu,  4 Jul 2024 07:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB851A2C00;
+	Thu,  4 Jul 2024 07:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IZNa5rzy"
+	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="cVzJ21/2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E0613E024;
-	Thu,  4 Jul 2024 07:09:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63A51A0AF2;
+	Thu,  4 Jul 2024 07:16:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720076986; cv=none; b=PXK92DyiXMKnauzBTHStb9JQZJb0wW8pMhM1yqTt3gxWQn6MVtfwX9QrEbtvoV/wqpL8uaeRByJXifSQ5FG9VUg0Tw5E9olOgvrltdQDmtLEUk9n44o1bqnt0z6263gEEl3V3pIT+lb2Kz8lV0RnKmsHI6PGSL3dHDyLgvXPRFM=
+	t=1720077377; cv=none; b=UEqZOE060Rzkn3JCIb/YED5DR/imp1WrEKB+vzrXgBKRuShZNGWoAlJvkctUnaQQudZ/HVfb/cqttxR7iQR2/ZUIXyw20+ZRu8YmX0VwxNli5ISMu+PGNxQjzwS3jUHtTzjfhn9mI9z9/cLWPXGsnVNwuhJfGVOeQ0pfk7pc4gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720076986; c=relaxed/simple;
-	bh=TfN61d9Z+JvI5eZhDIZcAURW1cvs7TBQnj992M6M55k=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DAFxyT6YbfFwDAQX1vuLQC8odb+DdiLLK5vux8WUWzujGk/DcAmwhYIjpbUK/W2m/2Y3BedVz7kuFOG01KmKTqOGP6zerrA5gVqbJVJsv3yIIYAlDGr9gLyXIWbfNdCXvY4PHwpKJ7dxj3LA/j+bDz1DVxurdrLocoS7N1P3nxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IZNa5rzy; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-424acfff613so2442985e9.0;
-        Thu, 04 Jul 2024 00:09:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720076984; x=1720681784; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=TfN61d9Z+JvI5eZhDIZcAURW1cvs7TBQnj992M6M55k=;
-        b=IZNa5rzyraVENK+YzLa2vNnHboLMLlJIP7r1jTWTvP5oDeJM9guYy4xE0IirvoUDlh
-         QRNpLTF16DcKM44MIdd3mHCR25J7jCSLD9jgk6At9DRW2jzdiuN2mW/bHyNKgKUFhzE6
-         RJDm1BLN5EsMkXMgIttx9FANi+Y4RAb+z3UI47cE3uiIuuo4rdx90H/ZTNC/KYymjU+N
-         5Vv/D22FFuQjtxLd2W+AtdiZgFSoNcXhTp6VAolpX5xm8Gdv/Z1mPh2v0wVK+k8YFALz
-         fmTfuNjAsgwU9jkFVGqQa/C71gygnSu0dLOHbDInzNi6i8i2ic1sV/DY7sN2+/Bi3U2N
-         2Eyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720076984; x=1720681784;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=TfN61d9Z+JvI5eZhDIZcAURW1cvs7TBQnj992M6M55k=;
-        b=UwwUjBuVjgJkxiDPd47mjRMLTJY9aJaYJPxFUg80h8OqhVP/trYevwlJ2z4GUTIpHZ
-         CeT0dWhOHXmSBQFkW5I0MZuM5dAQs7QhIhCqhe3Nm+ITB/KbQ+W3UtiQLXf+QGV7aBM/
-         PqvyuohRFEwBKvogRX1NJ6MiCnf99bP/zGSAFm6ItZSDKM419EZiUUgJ6qXW3abUoqDY
-         u5rla2coqPEd5NOmZ22VeyM5qsDscArljZUXlbtvzZ8YeKLIs/lZ00o7/7K449ggw98Z
-         cBK9yRSd8H60uOENLcvcP7WuXV8KvQZ1iFC7nn5aCloRUPPMSVSU9IMbhtZdRl1SkHcH
-         dH3A==
-X-Forwarded-Encrypted: i=1; AJvYcCUhRXmo/pQm+3qKM2oEVFt4Sp3J9dvE1xOMvS7OhdGrh/ss0qtCQ9jSLYbIDe+Y0+ZC+sfUwFTjlFksMEgxPdI6ifeW7zF4tJsbZ6Ya
-X-Gm-Message-State: AOJu0YwPNM3H+5mJYzEeQk5UhEWYs3ElGVeCU/nhmqUtE2o9EvLr1m7L
-	C41Nt5OF7oPYISHfy9iQTAC+Qh5xiV/CfawLZf+hu60NOJseHRR2
-X-Google-Smtp-Source: AGHT+IG48DNSbm/5dnSKa3ug3j+xo4Xg4tVdoFXh3G2cp7yahaH7vRmyEhUac+pMJWeT/DVmSARGaA==
-X-Received: by 2002:a05:600c:4f4a:b0:424:a58f:cc9a with SMTP id 5b1f17b1804b1-4264a3d00f1mr7081995e9.12.1720076983256;
-        Thu, 04 Jul 2024 00:09:43 -0700 (PDT)
-Received: from ?IPv6:2003:f6:ef1c:c500:ee59:d953:f148:40ba? (p200300f6ef1cc500ee59d953f14840ba.dip0.t-ipconnect.de. [2003:f6:ef1c:c500:ee59:d953:f148:40ba])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a21cf55sm11782375e9.27.2024.07.04.00.09.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jul 2024 00:09:42 -0700 (PDT)
-Message-ID: <5625fde838cc85f9188748d9e038f41ded82414b.camel@gmail.com>
-Subject: Re: [PATCH 06/10] iio: dac: ltc2688: Constify struct regmap_bus
-From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>, Cosmin Tanislav
- <cosmin.tanislav@analog.com>, Lars-Peter Clausen <lars@metafoo.de>, Michael
- Hennerich <Michael.Hennerich@analog.com>, Jonathan Cameron
- <jic23@kernel.org>, Dan Robertson <dan@dlrobertson.com>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, Nuno =?ISO-8859-1?Q?S=E1?=
- <nuno.sa@analog.com>, Jagath Jog J <jagathjog1996@gmail.com>, Linus Walleij
- <linus.walleij@linaro.org>
-Cc: linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org
-Date: Thu, 04 Jul 2024 09:13:36 +0200
-In-Reply-To: <20240703-iio-cont-regmap_bus-v1-6-34754f355b65@gmail.com>
-References: <20240703-iio-cont-regmap_bus-v1-0-34754f355b65@gmail.com>
-	 <20240703-iio-cont-regmap_bus-v1-6-34754f355b65@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 
+	s=arc-20240116; t=1720077377; c=relaxed/simple;
+	bh=CWG2mqe6OjnzUwtzy0F2KyjhL1LkeMppbbiQNtys+cw=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=daMvZRWrB1R9pKF57qGlNCnsmBBUmfKDi8CI36r4fH6ObzUDRYJsohzh76rlRCK+lmyDMF30g+jRpYjaxEFeIra5CmyU2sCqlna9R9mATKyW5eI/72rVhaNQ/ssxlasp0iTO5jePBeyZLk4EWAzPQZgPrWzcogn9YDc0OZAPeYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=cVzJ21/2; arc=none smtp.client-ip=178.21.23.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
+X-Virus-Scanned: SPAM Filter at disroot.org
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
+	t=1720077370; bh=CWG2mqe6OjnzUwtzy0F2KyjhL1LkeMppbbiQNtys+cw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=cVzJ21/26GNT6JrUNH2QmSwLNZ5t5s8/kjSWYhCSwyx7ip7yc4/ABzOqTbGz7JQeV
+	 F6hi0Hu7OObNC3I7SPNa8C+NjO6mTWgYNGDwP9wVKuIVSWBitgKT36NuqcX91eqJ5a
+	 /0YBykW3zVCAXeJPoFtsmWE5SXMjXFOzwxSCQi6qr3vCSrqbVumHIItKL7FPEay211
+	 yn3JdgkxjuaOpmkYOBFnKGkq1o3kAfPcxv4yD+FeJD6VUAHlAinXO7W715Mf9V02fv
+	 HRZYIGUkYQcv1NF4Udz+AQoyGgf47miII6gsZutWWQKCLnj1ERPtvm94xWImCPxMax
+	 4OeOAEy5a4K6w==
+Date: Thu, 04 Jul 2024 07:16:10 +0000
+From: Kaustabh Chakraborty <kauschluss@disroot.org>
+To: Conor Dooley <conor@kernel.org>
+Cc: linux-iio@vger.kernel.org, jic23@kernel.org, devicetree@vger.kernel.org,
+ conor+dt@kernel.org, kauschluss@disroot.org
+Subject: Re: [PATCH 2/2] dt-bindings: iio: light: stk33xx: add compatible for
+ stk3013
+In-Reply-To: <20240703-velvet-badly-904e7afc7cf8@spud>
+References: <20240625165122.231182-1-kauschluss@disroot.org>
+ <20240625165122.231182-2-kauschluss@disroot.org>
+ <20240626-junior-tag-cd3e27c4b140@spud>
+ <7f99d77c65bc347bf8b7935220520fdb@disroot.org>
+ <20240703-velvet-badly-904e7afc7cf8@spud>
+Message-ID: <9a7f7eb2b5e8841b8c1f1064cccdd86f@disroot.org>
+X-Sender: kauschluss@disroot.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, 2024-07-03 at 23:04 +0200, Javier Carrasco wrote:
-> `ltc2688_regmap_bus` is not modified and can be declared as const to
-> move its data to a read-only section.
->=20
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-> ---
+On 2024-07-03 19:30, Conor Dooley wrote:
+> On Wed, Jul 03, 2024 at 06:31:13PM +0000, Kaustabh Chakraborty wrote:
+>> On 2024-06-26 16:06, Conor Dooley wrote:
+>> > On Tue, Jun 25, 2024 at 10:21:06PM +0530, Kaustabh Chakraborty wrote:
+>> >> Add the compatible string of stk3013 to the existing list.
+>> >> 
+>> >> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
+>> >> ---
+>> >>  Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 1 +
+>> >>  1 file changed, 1 insertion(+)
+>> >> 
+>> >> diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+>> >> index f6e22dc9814a..6003da66a7e6 100644
+>> >> --- a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+>> >> +++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
+>> >> @@ -19,6 +19,7 @@ allOf:
+>> >>  properties:
+>> >>    compatible:
+>> >>      enum:
+>> >> +      - sensortek,stk3013
+>> > 
+>> > The driver change suggests that this device is compatible with the
+>> > existing sensors.
+>> > Jonathan, could we relax the warning during init
+>> 
+>> What does 'relax' mean here? Earlier there used to be a probing error,
+>> and now it's just a warning. Is that not relaxed enough?
+> 
+> If it is something intentionally, I don't think a warning is suitable.
+> It makes the user thing something is wrong.
 
-Indeed,
+So, something like:
 
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+  dev_info(&client->dev, "chip id: 0x%x\n", chipid);
 
+is suitable in this context?
 
+And doesn't it make stk3310_check_chip_id() obsolete? In all cases chipid
+should be printed as it's not an error/warning message.
+
+> 
+>> 
+>> > 	ret = stk3310_check_chip_id(chipid);
+>> > 	if (ret < 0)
+>> > 		dev_warn(&client->dev, "unknown chip id: 0x%x\n", chipid);
+>> > and allow fallback compatibles here please?
+>> 
+>> So, you mean something like this in devicetree?
+>> 
+>>   compatible = "sensortek,stk3013", "sensortek,stk3310";
+>> 
+>> I mean that's fine, but we also need to change devicetree sources for
+>> other devices. If that's what we're doing, please let me know how do
+>> I frame the commits.
+> 
+> Why would you need to change the dts for other devices to add a fallback
+> for this new compatible that is being added?
+
+Okay gotcha, so it's just for stk3013.
+
+> 
+>> >>        - sensortek,stk3310
+>> >>        - sensortek,stk3311
+>> >>        - sensortek,stk3335
+>> >> -- 
+>> >> 2.45.2
+>> >>
+>> 
+>> Thank you.
 

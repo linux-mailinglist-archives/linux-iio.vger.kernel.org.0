@@ -1,182 +1,166 @@
-Return-Path: <linux-iio+bounces-7329-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7330-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7BBE927C86
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 19:50:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3121927E90
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 23:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2183CB22A9B
-	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 17:50:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B8422849F7
+	for <lists+linux-iio@lfdr.de>; Thu,  4 Jul 2024 21:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFE0130A7C;
-	Thu,  4 Jul 2024 17:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B4C143892;
+	Thu,  4 Jul 2024 21:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jeB7kLdg"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="S0JEVBhI"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D2C757E7;
-	Thu,  4 Jul 2024 17:50:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E7D7346E;
+	Thu,  4 Jul 2024 21:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720115416; cv=none; b=X5jMs4EDEeKg95rDKP/5wNy6d77LhZD64zUo2Sq1m1gcefxxHNeybRRtgZCmEXJ3sOjARF8gGaR5xmS86ntUr5mR2O4GWMYGfrRdfYIK5jXxw2KTUsbnAoa2dZ2mcxIvQBISP7A9FgN9RCol7JHRkW+m1kf8fIKkG8cO0LnHhxo=
+	t=1720128735; cv=none; b=DZGw/OcogMQof1U3M+hlIY6X5j6CVY1XLLiEmj75OJ4vNcH67GwiW1Q8fhQ15g8G+XXA0LR330OR5vyKarSVOeeg2a9p7t47Zdes1N8Kw5+CT0kprR4Kqnmi38L02p2yYojUV/pX6wjtUxiYvnbv5yLeeGt0ZrDb0+wz78d0MAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720115416; c=relaxed/simple;
-	bh=Lx/lp8JyHRt6YZGLK+fFnv0bd7CXeMHcoelSaMDZAxo=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=dGuAQbJddbfugsHab68zB0UEUXUfs4ZjNybAc67sPeBT5kxAjGuMJLIM/SbMZBU6QF35rEUZpx7JWd1tQrx5Ik4SfLyKhOUxx4bJ2B+fcsXof8OJwrx1ad9LNoh3dq8uFb2nX97aDmIizdA2epiPNBY8V9qTrxyR0Wpaw2FTeL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jeB7kLdg; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-36740e64749so513618f8f.0;
-        Thu, 04 Jul 2024 10:50:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720115413; x=1720720213; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HvtJUrSM2HBk734fijihCAzifwC4hKlOHe36I6FHlJI=;
-        b=jeB7kLdgaU8BPoAxw4T/qKKfCJrOu8LO9sId6pdb6mxuPf3/okuw2Y6+KHIWn2xAft
-         xyR6t49J9KLaAq9ZKwrF1ptT5NFVurHbpW3JvTs3gVemGP2KYQIUR3PEDY9WlHq5DwEt
-         Sfji8BIgB2+y4+y9KDI00wKt+fHWmj2x15Qew6QoteHQX1q/AuwDJdOBoBYI1onovt08
-         3CRfxkX957RaURMi8HVLzB9/n0Tl4wylihYufcmMLf7SIajIuimsi+8Kh1m0YmPk+w+0
-         8JdHnYiCHs3D4Y9vb2OOtFSEjD91ZVQnhiRSBdqyZwgr1QBmjmOoYmtH7dKOLC4aYTno
-         mvgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720115413; x=1720720213;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=HvtJUrSM2HBk734fijihCAzifwC4hKlOHe36I6FHlJI=;
-        b=WrVzma3CRQ1sMwaVV9QB0job9EkacnxzDIbzvLUBpAXs9sEHHnnWlYIH7Msk+Mc2wM
-         jgjbRQdP5uYRBdKrTE3RE49prgnjbBOD6Cm1uXz35rTbvGX+flONWkWXJKYQq1Urk81s
-         lehsVAPUyWlVnUVIn9ywqt2DpU2+wqcWdNMg5W/0dV91wXXnFZRciIU4X1QXgukeu2QF
-         VmNSgL9XSiUqsKVi1TFkuuB8qlHqZHAyqO9U7Tek8At83cUGZDdLn7LPsRcgkFo/UCaL
-         ncbV6PMfDAuH13Q2hFmNEUHAPbBHEfX2bQF58vXemrlnv/ue1fKEV5TTFpTb1at7eSxH
-         7tSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWquOyZbotNbU9uWcZPzlBifrdvQjUv7/ajXYMAYRon0Qd8zAM1I0NZv12h7Bhj0PaJ09Co0JSc95tSZG1HL8Y/4KDHEZgP7eOIeaNs6fdMb4YYClnGARspxi0jwJpsyUxQbH7BFc2c1G6/VlxnqnmXBb/8YouDow25mmezNq0o1BSrfg==
-X-Gm-Message-State: AOJu0Yyp7Ssj6igoFfR3B1C+H3eh/o4LHY/2bYwWsJGEkScpl21jbsBj
-	GrSqCJ853ZNPfK+GW3ecl0p7LSzyff5SgPPU1c6mx1byY9s9xBjf
-X-Google-Smtp-Source: AGHT+IEF+so6LAM109TmVNF+G2wrprUUjvAbkco4Iu0FbniEyMnEafoMl9PkJLA9t6uwii0heiPddA==
-X-Received: by 2002:a05:6000:aca:b0:362:def2:3949 with SMTP id ffacd0b85a97d-3679dd2958cmr1691831f8f.22.1720115413168;
-        Thu, 04 Jul 2024 10:50:13 -0700 (PDT)
-Received: from localhost (host-79-55-57-217.retail.telecomitalia.it. [79.55.57.217])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36795d1fc9csm4358107f8f.83.2024.07.04.10.50.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jul 2024 10:50:12 -0700 (PDT)
-Date: Thu, 04 Jul 2024 19:50:12 +0200
-From: Matteo Martelli <matteomartelli3@gmail.com>
-To: Conor Dooley <conor.dooley@microchip.com>, 
- Matteo Martelli <matteomartelli3@gmail.com>
-Cc: Conor Dooley <conor@kernel.org>, 
- Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- linux-iio@vger.kernel.org, 
- devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <6686e0d41dd61_397df3708e@njaxe.notmuch>
-In-Reply-To: <20240704-distinct-sulk-4fc97a9ddbab@wendy>
-References: <20240703-iio-pac1921-v1-0-54c47d9180b6@gmail.com>
- <20240703-iio-pac1921-v1-1-54c47d9180b6@gmail.com>
- <20240703-bovine-thumping-c3747fd7caa1@spud>
- <668674271f02d_92937078@njaxe.notmuch>
- <20240704-distinct-sulk-4fc97a9ddbab@wendy>
-Subject: Re: [PATCH 1/2] dt-bindings: iio: adc: add binding for pac1921
+	s=arc-20240116; t=1720128735; c=relaxed/simple;
+	bh=jEOP4tmTJgNwT4VJJ/H4/e/Pm5Ggkrq6iv0SA5dQ8ws=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aEdY1vZXnp4q1ZgWKD8Vx0Yl1lmjGa63OpOWxBKnb1JMPmzahNymJaKTYM9dMXW3sfI3/I92OfBmhKNRocf2tGVCwclQLhO8sRY17opnqDGp/7nA+2sF6W46EPjS0rfT1qULVpw7otozRNkiTDVerLmxMvlGOfheEWGOHH9tEiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=S0JEVBhI; arc=none smtp.client-ip=217.70.183.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BD86AFF802;
+	Thu,  4 Jul 2024 21:32:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1720128729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Rey18xTlnMgOgIPL25ImB7B15sMWYzxAsvnHNthV5S0=;
+	b=S0JEVBhI3tfc5ntPMObRrKKeyUXsGRrO+dmrSHHiA/CXiaTrDzUnuWN/8RLan/W8yEPBYy
+	WTaC4P67s78ijbrvczP1KnuPtKQbrRcwlYEqUPZPpZW0nhX/siqNP/GhziUB79nYOQPi8r
+	PhP0fpq9va52mSjevxSqg9gaf/S2Ukug9XtKh8mzSUYLpNZp80MAwL96mMkrYY7WNzzmay
+	5AT/X7DCWHP8tVhsE6o3C1PHb0Q9g3z2DXN4uHMidHU5Rwoaz4Y/LepANuZA6Uuvs21L3L
+	95mP/Ounvba0aITTStBPv4Esd+fhuzK/5YdBxhSIiG700JAP0NMtF9NGxcnshQ==
+Date: Thu, 4 Jul 2024 23:31:55 +0200
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+To: Rob Herring <robh@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Saravana Kannan <saravanak@google.com>,
+ Nathan Chancellor <nathan@kernel.org>, Michael Turquette
+ <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, Tony Lindgren
+ <tony@atomide.com>, Bjorn Andersson <andersson@kernel.org>, Emilio
+ =?UTF-8?Q?L=C3=B3pez?= <emilio@elopez.com.ar>, Chen-Yu Tsai
+ <wens@csie.org>, Jernej Skrabec <jernej.skrabec@gmail.com>, Samuel Holland
+ <samuel@sholland.org>, Krzysztof Kozlowski <krzk@kernel.org>, Daniel
+ Lezcano <daniel.lezcano@linaro.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Florian Fainelli <florian.fainelli@broadcom.com>, Broadcom internal kernel
+ review list <bcm-kernel-feedback-list@broadcom.com>, Linus Walleij
+ <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, Jonathan
+ Cameron <jic23@kernel.org>, Lee Jones <lee@kernel.org>, Shawn Guo
+ <shawnguo@kernel.org>, Pengutronix Kernel Team <kernel@pengutronix.de>, Uwe
+ =?UTF-8?Q?Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, Greg Kroah-Hartman
+ <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, Richard
+ Leitner <richard.leitner@linux.dev>, Liam Girdwood <lgirdwood@gmail.com>,
+ Mark Brown <broonie@kernel.org>, Nicolas Ferre
+ <nicolas.ferre@microchip.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, "Naveen N. Rao"
+ <naveen.n.rao@linux.ibm.com>, Damien Le Moal <dlemoal@kernel.org>, "Peng
+ Fan (OSS)" <peng.fan@oss.nxp.com>, Thomas Petazzoni
+ <thomas.petazzoni@bootlin.com>, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, llvm@lists.linux.dev,
+ linux-clk@vger.kernel.org, linux-omap@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-sunxi@lists.linux.dev, linux-samsung-soc@vger.kernel.org,
+ linux-gpio@vger.kernel.org, linux-iio@vger.kernel.org,
+ linux-pwm@vger.kernel.org, linux-serial@vger.kernel.org,
+ linux-usb@vger.kernel.org, patches@opensource.cirrus.com,
+ linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org
+Subject: Re: [PATCH 00/20] Simplify of_property_for_each_u32()
+Message-ID: <20240704233155.61b5323c@booty>
+In-Reply-To: <20240703180742.GB1245093-robh@kernel.org>
+References: <20240703-of_property_for_each_u32-v1-0-42c1fc0b82aa@bootlin.com>
+	<20240703180742.GB1245093-robh@kernel.org>
+Organization: Bootlin
+X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.33; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-GND-Sasl: luca.ceresoli@bootlin.com
 
-Conor Dooley wrote:
-> On Thu, Jul 04, 2024 at 12:06:31PM +0200, Matteo Martelli wrote:
-> > Conor Dooley wrote:
-> > > > +
-> > > > +  microchip,dv-gain:
-> > > > +    description:
-> > > > +      Digital multiplier to control the effective bus voltage gain. The gain
-> > > > +      value of 1 is the setting for the full-scale range and it can be increased
-> > > > +      when the system is designed for a lower VBUS range.
-> > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > > +    enum: [1, 2, 4, 8, 16, 32]
-> > > > +    default: 1
-> > > > +
-> > > > +  microchip,di-gain:
-> > > 
-> > > Why is this gain a fixed property in the devicetree, rather than
-> > > something the user can control? Feels like it should be user
-> > > controllable.
+Hello Rob,
+
+On Wed, 3 Jul 2024 12:07:42 -0600
+Rob Herring <robh@kernel.org> wrote:
+
+> On Wed, Jul 03, 2024 at 12:36:44PM +0200, Luca Ceresoli wrote:
+> > [Note: to reduce the noise I have trimmed the get_maintainers list
+> > manually. Should you want to be removed, or someone else added, to future
+> > versions, just tell me. Sorry for the noise.]
 > > 
-> > Gains are user controllable via the IIO_CHAN_INFO_HARDWAREGAIN. I also added
-> > them as DT properties thinking that they could be pre-set depending on hardware
-> > specifications: for instance by board design the monitored section is already
-> > known to be in a particular voltage/current range (datasheet specifies
-> > gains-ranges mapping at table 4-6 and table 4-7). Then, even if gains are
-> > pre-set, the user can change them at runtime for instance by scaling them down
-> > upon an overflow event. However, I can get rid of those gain properties if they
-> > are out of the DT scope.
-> 
-> Usually gain values are left out of DT entirely, unless the gain is
-> something set by the board, for example, whether or not some input pins
-> are tied high or low.
-> 
-> > > > +    description:
-> > > > +      Digital multiplier to control the effective current gain. The gain
-> > > > +      value of 1 is the setting for the full-scale range and it can be
-> > > > +      increased when the system is designed for a lower VSENSE range.
-> > > > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > > > +    enum: [1, 2, 4, 8, 16, 32, 64, 128]
-> > > > +    default: 1
-> > > > +
-> > > > +required:
-> > > > +  - compatible
-> > > > +  - reg
-> > > > +  - shunt-resistor-micro-ohms
-> > > 
-> > > You're missing a vdd-supply btw and the !read/int pin isn't described
-> > > here either. I think the latter needs a property to control it (probably
-> > > a GPIO since it is intended for host control) and a default value for if
-> > > the GPIO isn't provided?
+> > This series aims at simplifying of_property_for_each_u32() as well as
+> > making it more difficult to misuse it in the future.
 > > 
-> > The driver does not currently handle the vdd regulator nor the gpio for the
-> > !read/int pin. Should they be added to the DT schema anyway?
+> > The long-term goal is changing this pattern:
+> > 
+> >   struct property *prop;
+> >   const __be32 *p;
+> >   u32 val;
+> >  
+> >   of_property_for_each_u32(np, "xyz", prop, p, val) { ... }
+> > 
+> > to this:
+> > 
+> >   u32 val;
+> > 
+> >   of_property_for_each_u32(np, "xyz", val) { ... }
+> > 
+> > So, removing the 3rd and 4th arguments which are typically meant to be
+> > internal. Those two parameters used to be unavoidable until the kernel
+> > moved to building with the C11 standard unconditionally. Since then, it is
+> > now possible to get rid of them. However a few users of
+> > of_property_for_each_u32() do actually use those arguments, which
+> > complicates the transition. For this reason this series does the following:
+> > 
+> >  * Add of_property_for_each_u32_new(), which does not have those two
+> >    arguments (patch 1)
+> >  * Convert _almost_ every usage to of_property_for_each_u32_new()
+> >  * Rename of_property_for_each_u32() to of_property_for_each_u32_old() and
+> >    deprecate it, as a incentive to code not (yet) in mainline to upgrade
+> >    to the *_new() version (last patch)  
 > 
-> Yes.
+> I don't really see the point of introducing the _old variant. Let's get 
+> this done in one step.
 > 
-> > I think I can add the vdd regulator handling with little effort, my guess is
-> > that the "vdd-supply" property can be optional and defined as "vdd-supply: true"
-> > in the DT schema. Then the driver, if the vdd-supply property is present in the
-> > DT, would enable the regulator during device initialization and PM resume, and
-> > disable it on driver removal and PM suspend.
+> > 
+> > The plan for the next series is to additionally:
+> > 
+> >  * Convert the few remaining of_property_for_each_u32_old() instantes to
+> >    of_property_for_each_u32_new()
+> >  * Remove of_property_for_each_u32_old()
+> >  * Rename of_property_for_each_u32_new() to of_property_for_each_u32()  
 > 
-> Nah, the regulator should be marked required in the binding, since
-> without power the device cannot function, right? The regulator core will
-> create a dummy register if one is not provided in the device tree, so
-> you don't need to add any conditional logic around regulator actions.
-> 
-> > Reguarding the !read/int pin, the current driver overrides it with a register
-> > bit so it would not be considered at all by the device.
-> 
-> We should fully describe devices, where possible, even if the driver for
-> the device doesn't use it.
-> 
-> Cheers,
-> Conor.
-> 
+> Honestly, I think there's few enough users we could just convert the 
+> whole thing in one patch. It's all got to go thru 1 tree anyways. If 
+> there's new cases in -next, then I'd be happy to send it to Linus at the 
+> end of the merge window.
 
-Thanks Conor, I sent a patch v2 addressing these points.
+Sure, make sense. I'll need to convert the few remaining users, then
+I'm sending a squashed v2.
 
-Link to v2: https://lore.kernel.org/linux-iio/20240704-iio-pac1921-v2-0-0deb95a48409@gmail.com
+Luca
 
-Matteo
+-- 
+Luca Ceresoli, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 

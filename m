@@ -1,140 +1,122 @@
-Return-Path: <linux-iio+bounces-7363-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7365-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C592928A01
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 15:43:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C488E928B4D
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 17:09:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 534DD1F225F6
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 13:43:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BB251F2164B
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 15:09:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D6D156F48;
-	Fri,  5 Jul 2024 13:42:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020DE14B940;
+	Fri,  5 Jul 2024 15:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="muw90pSE"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="EREmVSRp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from relay1-d.mail.gandi.net (relay1-d.mail.gandi.net [217.70.183.193])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809EB154C04;
-	Fri,  5 Jul 2024 13:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97FF14AA0;
+	Fri,  5 Jul 2024 15:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720186957; cv=none; b=X6jM0K6DGdV9l0w3M7RD/VXmdA0ttGcrCWjzc+Uzzcfx6iXbWyLTk/mFdCKtIgvQ1HnpGosKgIWTS+uUPYYoFafwQeDYzkUzaJpqn5b80I3DbO+DEJrzLjf4Zx1c5nYlvbHsVIgsYbcvmJGzNeysFCHVUHM/E/Z+L/9yuKRkTH0=
+	t=1720192151; cv=none; b=keuatOkE87zqGwYBBuF0ElGK8LFAIG6kIvuzV7CsBXMy4Ub+55Uy8b+qq+ORQ8rW5ZD2e9+9qxYaamFVj+vP6BXoX21TcemjBmBIlS1mThW9t3lLRQmTZTbXC9uY1WeAWpgnq5DNqedw+9YUcdHIv5aHPtzkUx4DZo/WzkDH6SU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720186957; c=relaxed/simple;
-	bh=z9WsL0zU3oyUVTQFrcZ7jW08510FqQYoLiYtGQsJ/lw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eH7z9eDkdeaiyzD0o0qvU7x55XBJmI2xAhjH1nx9P0XrWnGrs7cvTPVVbSOCRs2tT465m+ZdCSSydTqj5YYB6vlFi42YPWiduEjT6nkpVAYNiZfGLxOK1M6o4SkSNYf1W4SeCcsabVql+fbZSFSR7YuedBwSZb36NyEBOrH30dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=muw90pSE; arc=none smtp.client-ip=217.70.183.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 3DCD6240007;
-	Fri,  5 Jul 2024 13:42:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720186953;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9hUs3AjldaPNd5g+4FRGeGWP8GUZ22OX94EKEBMYwyY=;
-	b=muw90pSEWZSWnblkVz/gg/x8PI/GcoRx6QeUa/OD5umHK0FNeEL0hZsq3qKV3oA0Rmzh8v
-	k8vNhdJbrymeh508A89nKxUbytN0E0nwibE+ualXZtedYSXStP0jfxciDF0c5bXIWzGshu
-	4QqjbN3Y9g4A26wAvlMtDmYR25ZcbMVlH+j4PnfacPT7PIbgcY6Nyym+CoiB5dPJ7MGGFT
-	z89HnEW6zDWT7//lyyMSwptODE0w/aUz1g6ZLunSaKux0z6cRpxx/EGIyRsXLBMn7ypzhr
-	4fkqUz0YDUClNzT5pry/435Ke4DYl6pXIbKNm81W/Ez/yDLqXY+iN8IOtcsYTA==
-From: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-Date: Fri, 05 Jul 2024 15:42:25 +0200
-Subject: [PATCH v2 3/3] riscv: dts: sophgo: Add SARADC configuration
+	s=arc-20240116; t=1720192151; c=relaxed/simple;
+	bh=/P6ByaOds/j7kmt2Bjwz6sfg1aVVychv6LXelwiD/M0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bxYwiva8IH0pHqzvbi2/kOaq45LRLnkUD5TaUHsc4Yjfu9xcK9BjeqXkbo+1qAxwuFt4Jpk0eb+5gO8Nfgk7l6MU3hYLVGTXNvKeFZJWtDSEOPqImAfr0Rmli30nAt/HxkhDOQkOsy6MNFv2jxzd39AFZXYlSLqmjffQCoIajiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=EREmVSRp; arc=none smtp.client-ip=85.214.62.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: marex@denx.de)
+	by phobos.denx.de (Postfix) with ESMTPSA id 64C98882D6;
+	Fri,  5 Jul 2024 17:09:07 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
+	s=phobos-20191101; t=1720192148;
+	bh=jALVO3F6XaL3jTmJOTYpD+uupjSNfNsIznHlOfTwMlk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EREmVSRpCyEgD9Oq2/7NM+8+uoL4XtnwKVF6afxXc4ctT3V/EWAHhLkqY4O6hUAqa
+	 eZ0nkwO7ivwB289/60cvRIEI4LTNbyJQ37vpBl/nvVudsPtnea09cCZwnoeBCO3A9G
+	 55oaV4oV4ZTHVgWopdOqYC0p04PWZOKRH7e4rKjrwb5G0PfnMQg7YtpoIMV2XSHfOW
+	 dgx+M69HBOiUj8t+wuDqOAEjLOMhlv9XvU6DPEKQGAp0pcItmiaROZjVBz6STi0yMy
+	 ylTSuE7ndK07BLZlxvv3qJ1/xKBcSi8R6Gfc44Qz/5BrttCLQL13e6FH+gYNUlfdYZ
+	 Psr9+smKvIXvQ==
+Message-ID: <13828cf9-4a93-45a5-b3a3-542ee9ec056b@denx.de>
+Date: Fri, 5 Jul 2024 16:52:23 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: light: ltrf216a: Drop undocumented ltr,ltrf216a
+ compatible string
+To: Shreeya Patel <shreeya.patel@collabora.com>
+Cc: linux-iio@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+ Jonathan Cameron <jic23@kernel.org>, Krzysztof Kozlowski
+ <krzk+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
+ Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org,
+ kernel@collabora.com
+References: <20240705095047.90558-1-marex@denx.de>
+ <3b2ca0-6687ce00-3-4dab7280@52083650>
+Content-Language: en-US
+From: Marek Vasut <marex@denx.de>
+In-Reply-To: <3b2ca0-6687ce00-3-4dab7280@52083650>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240705-sg2002-adc-v2-3-83428c20a9b2@bootlin.com>
-References: <20240705-sg2002-adc-v2-0-83428c20a9b2@bootlin.com>
-In-Reply-To: <20240705-sg2002-adc-v2-0-83428c20a9b2@bootlin.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>, 
- Inochi Amaoto <inochiama@outlook.com>, 
- Paul Walmsley <paul.walmsley@sifive.com>, 
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>
-Cc: Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
- Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-X-Mailer: b4 0.14.0
-X-GND-Sasl: thomas.bonnefille@bootlin.com
+X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
+X-Virus-Status: Clean
 
-Adds SARADC nodes for the common Successive Approximation Analog to
-Digital Converter used in Sophgo CV18xx series SoC.
-This patch adds two nodes for the two controllers the board, one in
-the Active domain and the other in the No-Die domain.
+On 7/5/24 12:42 PM, Shreeya Patel wrote:
+> On Friday, July 05, 2024 15:20 IST, Marek Vasut <marex@denx.de> wrote:
+> 
+>> The "ltr,ltrf216a" compatible string is not documented in DT binding
+>> document, remove it.
+>>
+>> Signed-off-by: Marek Vasut <marex@denx.de>
+>> ---
+>> Cc: Conor Dooley <conor+dt@kernel.org>
+>> Cc: Jonathan Cameron <jic23@kernel.org>
+>> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+>> Cc: Lars-Peter Clausen <lars@metafoo.de>
+>> Cc: Marek Vasut <marex@denx.de>
+>> Cc: Rob Herring <robh@kernel.org>
+>> Cc: Shreeya Patel <shreeya.patel@collabora.com>
+>> Cc: devicetree@vger.kernel.org
+>> Cc: linux-iio@vger.kernel.org
+>> ---
+>>   drivers/iio/light/ltrf216a.c | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
+>> index 68dc48420a886..78fc910fcb18c 100644
+>> --- a/drivers/iio/light/ltrf216a.c
+>> +++ b/drivers/iio/light/ltrf216a.c
+>> @@ -528,7 +528,6 @@ MODULE_DEVICE_TABLE(i2c, ltrf216a_id);
+>>   
+>>   static const struct of_device_id ltrf216a_of_match[] = {
+>>   	{ .compatible = "liteon,ltrf216a" },
+>> -	{ .compatible = "ltr,ltrf216a" },
+>>   	{}
+> 
+> This compatible string with a different vendor prefix was added for a specific reason.
+> Please see the commit message of the following patch :-
+> https://lore.kernel.org/all/20220511094024.175994-2-shreeya.patel@collabora.com/
+> 
+> We were very well aware that not documenting this was going to generate a warning so
+> we tried to fix that with a deprecated tag but it was NAKd by Rob. What we understood
+> from his last message was that it wasn't necessary to fix the DT warning.
 
-Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
----
- arch/riscv/boot/dts/sophgo/cv1800b.dtsi |  8 ++++++++
- arch/riscv/boot/dts/sophgo/cv18xx.dtsi  | 14 ++++++++++++++
- 2 files changed, 22 insertions(+)
+ From what I read in the aforementioned discussion thread, it seems Rob 
+was very much opposed to this compatible string, so this shouldn't have 
+gone in in the first place.
 
-diff --git a/arch/riscv/boot/dts/sophgo/cv1800b.dtsi b/arch/riscv/boot/dts/sophgo/cv1800b.dtsi
-index ec9530972ae2..73abbb6e5363 100644
---- a/arch/riscv/boot/dts/sophgo/cv1800b.dtsi
-+++ b/arch/riscv/boot/dts/sophgo/cv1800b.dtsi
-@@ -25,3 +25,11 @@ &clint {
- &clk {
- 	compatible = "sophgo,cv1800-clk";
- };
-+
-+&saradc_active {
-+	compatible = "sophgo,cv1800b-saradc", "sophgo,cv18xx-saradc";
-+};
-+
-+&saradc_nodie {
-+	compatible = "sophgo,cv1800b-saradc", "sophgo,cv18xx-saradc";
-+};
-diff --git a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
-index 891932ae470f..752e14fa3d0c 100644
---- a/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
-+++ b/arch/riscv/boot/dts/sophgo/cv18xx.dtsi
-@@ -133,6 +133,14 @@ portd: gpio-controller@0 {
- 			};
- 		};
- 
-+		saradc_active: adc@30f0000 {
-+			compatible = "sophgo,cv18xx-saradc";
-+			clocks = <&clk CLK_SARADC>;
-+			interrupts = <100 IRQ_TYPE_LEVEL_HIGH>;
-+			reg = <0x030F0000 0x1000>;
-+			status = "disabled";
-+		};
-+
- 		i2c0: i2c@4000000 {
- 			compatible = "snps,designware-i2c";
- 			reg = <0x04000000 0x10000>;
-@@ -297,6 +305,12 @@ sdhci0: mmc@4310000 {
- 			status = "disabled";
- 		};
- 
-+		saradc_nodie: adc@502c000 {
-+			compatible = "sophgo,cv18xx-saradc";
-+			reg = <0x0502C000 0x1000>;
-+			status = "disabled";
-+		};
-+
- 		plic: interrupt-controller@70000000 {
- 			reg = <0x70000000 0x4000000>;
- 			interrupts-extended = <&cpu0_intc 11>, <&cpu0_intc 9>;
-
--- 
-2.45.2
-
+But it did ... so the question is, what now ?
 

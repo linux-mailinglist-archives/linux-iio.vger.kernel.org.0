@@ -1,72 +1,72 @@
-Return-Path: <linux-iio+bounces-7350-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7351-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4001F928733
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 12:55:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ED81928736
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 12:56:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13CC0B267FF
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 10:55:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10BB228500C
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 10:56:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9540714A617;
-	Fri,  5 Jul 2024 10:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB83B149C61;
+	Fri,  5 Jul 2024 10:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bsDGKiFY"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OLqLq9je"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD671494D9;
-	Fri,  5 Jul 2024 10:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205EB149C42;
+	Fri,  5 Jul 2024 10:54:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720176861; cv=none; b=CmWzVHJfYhZ6VBIvs+GonYaAlOccIOE7b/1XjWUjWAlUr7u5pIruWSW1BKsRgHYlsyEWC+4dFPYUGrLKsGElmIL/Fy8zkQCdXA/ZCWNYxE+MoLF/2cncxHpF3WcBes8c9qa3y9+LiNNwb/IykbzD7RwhGSMxRbz85hjdG1DtDwg=
+	t=1720176875; cv=none; b=seEXsBd/MnPHYPNkCe/9+KONNjXlHiOCK/PU6C2Gh1e3nmZ3ufqe3QXjGEyOqiTl53SycRP8xXxP5HBErO95zotNKhvATc4NZEuTarp9jMXwwUY38t4QSdJfieV6DWmyc54FbUp4ppJ2u7rxoyf4eCUKFKAVtcFviEKTRHtzz6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720176861; c=relaxed/simple;
-	bh=RnVcsFlEYyDPqf3CWLYFuSkjMBEsRhVWOx/GCvQ+OjU=;
+	s=arc-20240116; t=1720176875; c=relaxed/simple;
+	bh=tUZZJwqoiFgry5Esh8LOVnwmGazsXJkRNcHTuOKUs2E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Lz/bWvhYGJR4s2AO0IlUeb9yTmtteHozfQorDt0B1c3yc/2scZ6VAWhUppv9AgK8B4u6X+jaZwj/FLEcWjEe0kFK3r74ZQIYt4shkabpHdNbP6Tbf74Y+ewa3+U5XTN2Kb+nKOTGrCO9S6ztIDXI+ZlsqQDg0LP/M7xdkBp0HMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bsDGKiFY; arc=none smtp.client-ip=209.85.167.41
+	 Content-Type:Content-Disposition:In-Reply-To; b=JfWKTw64VLl43nVC3FBDj5Z0rUESma+9dGYjou7puuyTLd8Wr2Uo+561lKlnPrBGUAIAClUP60V9XosO8B+UODVYhipRbD79PCikO2ODKALoRMVEb9+tYLlJJct4gSI6iPC3OVPKTMxK19Hr5NWFWjrOk0NwuQr1nAmZlp1nbTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OLqLq9je; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-52e97e5a84bso2183922e87.2;
-        Fri, 05 Jul 2024 03:54:19 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-52e9fe05354so2199351e87.1;
+        Fri, 05 Jul 2024 03:54:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720176858; x=1720781658; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720176872; x=1720781672; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SMaSOFsBwSxZehEg946gXs11Hd0r2J8Qex03xKjgN7M=;
-        b=bsDGKiFYctleQE5bRGBdUps7LpB+3OrNTGGm9tiSofEcTaEjgAgwRIKtqGjvqsfwr3
-         ib96xH40DXcyXPnDi+xnDcXVtt1BhhBjzMNS2B/FbExMQ3B4CHlffVOJB6dDHO70z4A7
-         Ux0ak07u0LQpHnMgSGjFtkSuEHdYggAXKOUyNRaNvG85aXf0Y/SWlvw1SfBdDHdtQdwF
-         aTKBnR8NFugHbiRtAifG6AMXzc2stItQJ8IcmMTHS0Ai5eIvk7OClDXcLn/SKiKLe+lO
-         oq2lIyBr8xx1S6HadqflLxwGRMggoSWm9ei7C4ZKbXC3XZN9v6yN3fLwYnGYS1MmHK3j
-         ZKIQ==
+        bh=YudsF8797mlyxY0rIdrjntR7Tkfynp2mWG0TkyJfInQ=;
+        b=OLqLq9jek55fAA+THV4sIFCp93vdXiUwRLWSOd0bGFsy7TAlGH0bs6NhhUE46sdGk2
+         v9ZIaG0zNjwihLzudVh6SXsfbClLfJ6O4BcefWHDQG1UwXQHISBul8YxJr3ukTtj/nxB
+         cikzhpYma1FZjqBEAlZUNEuzfjW9EyHQhWEPiLF0PkrvFDzR6qOKrjdTNhBA4Iun3FWe
+         h/EW0lmMc4ioZqrDvi0eyrLPbOiYbkMv/afJGC2S7cEqQXUjrzO7iABf7w/p99+J7Q/z
+         iujkBR6G4B6W1DJCaR0vEf6M79EIwR+SskXXDeEgkBEhRGnwAaW1Xq4BDTRVPP0HMG0p
+         WDFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720176858; x=1720781658;
+        d=1e100.net; s=20230601; t=1720176872; x=1720781672;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SMaSOFsBwSxZehEg946gXs11Hd0r2J8Qex03xKjgN7M=;
-        b=evnB7dZlhtHreTjjaWddx/7+jt3nG4tTPLIqPi/MthELKk201tKCVibLf2UibIUWlY
-         a3Garkc078+Knn2hJHMLZ8+lUqraAiB4HaiK4dIs2cqKePG2QO2Ufu1xiytdLS4ybiUO
-         OfwW/ivIrtRVr0b21xTLDVqdBV4cchxC5ibVZW0fLrMsTesPlgpRBzWqv/udkbSSFb+X
-         o5XUEDdd4nhM/C7CDwyALUkXZdizcS2qZNzr3coIU7aMgO03l2go1+uVg3DvhxxyI1Do
-         /mE2ZT6FO6yWei+rfrdYbgMk4dJWKkJw8CDVnWg4zICEJfzGNxN0v0jt1CdqFKLeMqMg
-         cqYg==
-X-Forwarded-Encrypted: i=1; AJvYcCU1TRym/9Kd4YKYPFz3O3RYn+sK6uzyYFfs3zFqBe4hEfJk8lpA/+dDXPb7yV6kPzbAhJ7U4YFuwVaVicC/o4UA1hYKWpmVPQIctYfJvmL8IuanfRZVFyLkpl1xieXUhPqF04aEQ+mpITYl2aEqs0AC7ykOIV2FpRoS3ZoyUgnDe6NEdA==
-X-Gm-Message-State: AOJu0YyxIifxd7J2Xv3wQCJ5acOiXsMYHllwqICelCCQbOQ7eZ5ETFwS
-	1gOiCgym+9a2OJYIaU4Rwwm1GlwzYM1uTBN9V4pqcSXGUrU50vdRNMCV3A==
-X-Google-Smtp-Source: AGHT+IEWQ40RNZhfV7Eks6cNnGUujSgPKANOXaSIEAXEp04d6CaSWKXWmQBNw88m1RchKCIyR2Fhuw==
-X-Received: by 2002:ac2:4568:0:b0:52e:710e:e4d2 with SMTP id 2adb3069b0e04-52ea06327b8mr3502163e87.33.1720176857253;
-        Fri, 05 Jul 2024 03:54:17 -0700 (PDT)
+        bh=YudsF8797mlyxY0rIdrjntR7Tkfynp2mWG0TkyJfInQ=;
+        b=Cxb/zYpsbYBmFR7rhJsYYP5txdt4URnbmogAjmQqAfEAubNcZtDfs4IGhYR3LI4sBc
+         T79PBGuyIxHXs7y1c7ujyJIIRYDUTHi8o1IiQ/R8V6yUieRdTl6yMwh7jRkFZ0EtqUiC
+         Hupoih2VAPB5sHv937+1duYx/rL0FGowPGZYNjpJ9tO8d9/Zii27JyMo64x2UyWkGWQ2
+         g0+wSlA8CT9oj6LhAD0ROe7O5SqplVyp7iyzmXv6+v6G6JZdehjQUZO+IWQSXi9M0ERA
+         eExFdaZJBFIo41cdthcYrl2Hwidv+dCJ0f7nzNoLF8WAlkaPpolADA6+9JE15AogGnA6
+         q+oQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVFsk4mxW5zVfO4tP+1nnyQZWaBipnNFcYbC7+rP+0kmDhruwoOEULWsLYnyuYWXoiIWXQZHk5S8msn/XDGfcp24MUVVSGkV/iVd5qx3p1dqK78qWxfOsVOKLbfjpZCs3KsylsRXmeIRkQu5M5hnw7WtmjsJSa6EidRIHTPkmQF7CYJiQ==
+X-Gm-Message-State: AOJu0YxKIOaD3b7u5kAi5Dz7Azqt77YxmRVReyv8fiMYlCjiMCOp6fIN
+	WItqgpDcmBAN8HTvSHtIHRAUDSuepWzymj9LvHJracwzAb4w9eS0
+X-Google-Smtp-Source: AGHT+IFlfAgJaF4n7y57yfhMcwdEk5STkTRSh6C1LpCiPYzBQfbV1MnrgINsP5aLjcI5rsAGqEghPA==
+X-Received: by 2002:a05:6512:52a:b0:52c:d6a1:5734 with SMTP id 2adb3069b0e04-52ea0619f2amr2945354e87.14.1720176871795;
+        Fri, 05 Jul 2024 03:54:31 -0700 (PDT)
 Received: from fedora ([213.255.186.46])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52e95588702sm909212e87.250.2024.07.05.03.54.16
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ea4bd571bsm249300e87.39.2024.07.05.03.54.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 05 Jul 2024 03:54:16 -0700 (PDT)
-Date: Fri, 5 Jul 2024 13:54:12 +0300
+        Fri, 05 Jul 2024 03:54:30 -0700 (PDT)
+Date: Fri, 5 Jul 2024 13:54:26 +0300
 From: Matti Vaittinen <mazziesaccount@gmail.com>
 To: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
 	Matti Vaittinen <mazziesaccount@gmail.com>
@@ -77,8 +77,8 @@ Cc: Jonathan Cameron <jic23@kernel.org>,
 	Matti Vaittinen <mazziesaccount@gmail.com>,
 	linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 1/7] dt-bindings: iio: BU27034 => BU27034ANUC
-Message-ID: <c39f9c67b3c07a27d7a13109c7b69cff9cfd2b9b.1720176341.git.mazziesaccount@gmail.com>
+Subject: [PATCH v2 2/7] dt-bindings: iio: rename bu27034 file
+Message-ID: <f83cf0d6f5b0ed391703ea3908ebd65b3f6e5c87.1720176341.git.mazziesaccount@gmail.com>
 References: <cover.1720176341.git.mazziesaccount@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -87,12 +87,12 @@ List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="ZAYJsJE4agjDBduS"
+	protocol="application/pgp-signature"; boundary="SjqWJoTgI/vdNz2Z"
 Content-Disposition: inline
 In-Reply-To: <cover.1720176341.git.mazziesaccount@gmail.com>
 
 
---ZAYJsJE4agjDBduS
+--SjqWJoTgI/vdNz2Z
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
@@ -106,73 +106,38 @@ on the data from the sensors needs to be done differently, and on the
 BU27034ANUC the channel 3 data is missing. Also, the gain setting
 differencies matter.
 
-Unfortunately, the identification register was not changed so there is no
-safe way for the software to distinguish the variants.
-
-According to the ROHM HQ engineers, the old BU27034NUC should not be
-encountered in the wild. Hence it makes sense to remove the support for
-the old BU27034NUC and add support for the new BU27034ANUC. Change the
-compatible in order to not load the incompatible old driver for new sensor
-(or, if someone had the old sensor, the new driver for it).
-
-Drop the compatible for old sensor which should not be in the wild and
-add a new compatible for the new model with accurate model suffix
-'anuc'.
+The old sensor should not be out there so the compatible was dropped and
+a new compatible was added for the bu27034anuc. Move the yaml file so
+the file name matches the binding and change the $id.
 
 Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-
 ---
-A patch renaming the file according to the new compatible will follow.
-If renaming is not needed or appropriate, that patch can be dropped.
-
 Revision history:
-v2: New patch
+v1 =3D> v2:
+- New patch
 ---
- .../devicetree/bindings/iio/light/rohm,bu27034.yaml      | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ .../iio/light/{rohm,bu27034.yaml =3D> rohm,bu27034anuc.yaml}      | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+ rename Documentation/devicetree/bindings/iio/light/{rohm,bu27034.yaml =3D>=
+ rohm,bu27034anuc.yaml} (92%)
 
 diff --git a/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml =
-b/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
-index 30a109a1bf3b..535bd18348ac 100644
+b/Documentation/devicetree/bindings/iio/light/rohm,bu27034anuc.yaml
+similarity index 92%
+rename from Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
+rename to Documentation/devicetree/bindings/iio/light/rohm,bu27034anuc.yaml
+index 535bd18348ac..fc3d826ed8ba 100644
 --- a/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
-+++ b/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
-@@ -4,20 +4,19 @@
- $id: http://devicetree.org/schemas/iio/light/rohm,bu27034.yaml#
++++ b/Documentation/devicetree/bindings/iio/light/rohm,bu27034anuc.yaml
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: (GPL-2.0 OR BSD-2-Clause)
+ %YAML 1.2
+ ---
+-$id: http://devicetree.org/schemas/iio/light/rohm,bu27034.yaml#
++$id: http://devicetree.org/schemas/iio/light/rohm,bu27034anuc.yaml#
  $schema: http://devicetree.org/meta-schemas/core.yaml#
 =20
--title: ROHM BU27034 ambient light sensor
-+title: ROHM BU27034ANUC ambient light sensor
-=20
- maintainers:
-   - Matti Vaittinen <mazziesaccount@gmail.com>
-=20
- description: |
--  ROHM BU27034 is an ambient light sesnor with 3 channels and 3 photo diod=
-es
-+  ROHM BU27034ANUC is an ambient light sesnor with 2 channels and 2 photo =
-diodes
-   capable of detecting a very wide range of illuminance. Typical applicati=
-on
-   is adjusting LCD and backlight power of TVs and mobile phones.
--  https://fscdn.rohm.com/en/products/databook/datasheet/ic/sensor/light/bu=
-27034nuc-e.pdf
-=20
- properties:
-   compatible:
--    const: rohm,bu27034
-+    const: rohm,bu27034anuc
-=20
-   reg:
-     maxItems: 1
-@@ -37,7 +36,7 @@ examples:
-       #size-cells =3D <0>;
-=20
-       light-sensor@38 {
--        compatible =3D "rohm,bu27034";
-+        compatible =3D "rohm,bu27034anuc";
-         reg =3D <0x38>;
-         vdd-supply =3D <&vdd>;
-       };
+ title: ROHM BU27034ANUC ambient light sensor
 --=20
 2.45.1
 
@@ -189,20 +154,20 @@ Simon says - in Latin please.
 ~~~ "non cogito me" dixit Rene Descarte, deinde evanescavit ~~~
 Thanks to Simon Glass for the translation =3D]=20
 
---ZAYJsJE4agjDBduS
+--SjqWJoTgI/vdNz2Z
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmaH0NQACgkQeFA3/03a
-ocU5mQf/UUsVd8oDQV8ihQ2doYkFMB8XIfmcxEDMSruXJCdZoTVqckqpY2G/ERfS
-hE+lg+kj3N5vRK3FkjIRKuslxb3+WYD0S43hQIkgaWoDWvzZ2AWFwSpET+/380C9
-oVdFVnVhSdLg7cJTa6SoKSMQj1bbs8w9DZIATEFMsQOdo8Mf2r1XiJOz8ZOj9suK
-XVa4f4Zm91A4cbX5apblieuChIX0X1k1zm6ssz+QRblJdTiiJcbxA7rZA8aJVSH8
-r3sry4x741k3IqY57ABiI+LDmQUrE6Okiod4JBe/8cxkJF2yc9L+EDAa5meHptbL
-qqlohLzivU5cEznkpPGQxFJR8S4Hqw==
-=l9Le
+iQEzBAEBCAAdFiEEIx+f8wZb28fLKEhTeFA3/03aocUFAmaH0OIACgkQeFA3/03a
+ocUf3wgAgZxuhOXcplU64iJcrNxsv9qdBeoFMeSnLrlwEGioN4d7hIC0SNsxUXR4
+a5ieRVtkO3fAE4Ny0o6TAMHWU1wFwnTP2IUUEuL4PSCNgIYDGqw3UieCEyHrJbCE
+AJMHoepr/ZIffp++woyc2j7ncEgIm0H2XvfZal5OV5YY8wadn91VLN9BeRR1PY0o
+biRn/6VOhuQeyXtebG6NuhpOsKmsTuwfKWptpm/FkAcxi2hmDIPN/HILhUP84PhQ
+W+7lJr97kf3ziLgfWuYuvYLvxyT76pPSP+1rezXAO8maseZSGNT6BlPRyEffTakD
+xy17NAGK57FtDxq6cb8AzP6ahmIbTQ==
+=vJIo
 -----END PGP SIGNATURE-----
 
---ZAYJsJE4agjDBduS--
+--SjqWJoTgI/vdNz2Z--
 

@@ -1,166 +1,131 @@
-Return-Path: <linux-iio+bounces-7366-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7367-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29E26928B9A
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 17:24:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E0A928D40
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 20:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 921D3B20F3A
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 15:24:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11DF7284C64
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 18:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E94E816B75F;
-	Fri,  5 Jul 2024 15:24:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OL7Nxx1z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BAF516D33B;
+	Fri,  5 Jul 2024 18:03:08 +0000 (UTC)
 X-Original-To: linux-iio@vger.kernel.org
-Received: from relay6-d.mail.gandi.net (relay6-d.mail.gandi.net [217.70.183.198])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D44C16C685;
-	Fri,  5 Jul 2024 15:24:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.198
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3C01F94C;
+	Fri,  5 Jul 2024 18:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720193065; cv=none; b=RqOBTlLnvP7JP8diuatmb9wmTNeh7/X4nw4Jdh29Qi6jAyiPEn6fbB2PvhiQxPKLG7kKV/wMaZHssojjoZZuK8LnoHExmMemZiHKDekGSRZ9yTb2cHfg///7XwyLZnBfTt651u7COQ90ESXRbF3+pBlgEO1k23pN+k9lUjg/OQM=
+	t=1720202588; cv=none; b=hmHKiZ+vVstyc27uZ6la2uTrtBwlC78DrBs4M1JRuFrxyPpiBwBd6HjwJDM0pTHtn3B96v2pLYy0wdtkL8SoljicTPnR5ZtJl+imypRfLeE1oYJLlOBnUtM10ixp8ul87qlL2tz1tccsro19V1Rf8TUCoCNDbezGUZLFpQtmLp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720193065; c=relaxed/simple;
-	bh=6msf+6zQ7jQp5WB6fG+2Y/R5/2ibEiQRwNrsG6fD0tM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YHKkLJATEXi/KyhkWp5VRZR/wR58TBGC/iYxcWs/Wy41iAIJuHQnCZ0NgzxLXcYztkceyYTeq2cclEjBfhprab0WEqzyDjy3g8fthyr3kYv6BGOx4jZJxogUUUg6sI3GpJKmqZxmQJxMWBdNCyA3v4XfMoTkEDD4d2cDyJLHfYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OL7Nxx1z; arc=none smtp.client-ip=217.70.183.198
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 8AFA7C0002;
-	Fri,  5 Jul 2024 15:24:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1720193061;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VMVflziC1aehBJf4VTjlbQPH2LpM9ezvmYf2pbzh65s=;
-	b=OL7Nxx1zP1SzNXRZ9t2/CTWdNHOcU2FY1TxN46d4gqsX3w73Cd6cmMb8QZ9kQruPrACgHW
-	s9gwRa5IuDYTAOrumyqOY3AcvyGVad0Dxsx3rYgNxEfCcFuoM3kwiGgZlfmMR5PKfzkWYc
-	M033MIo+s/dr582KlrKDvYVlivF+SAw65HQrwnMD7gjLXsBv9xfjTpm04G2UfuruASPNOI
-	3iUSH8jkQGlgWIuUrBgAPn8B46zsKeKQFt+Ca6EcIlaXJ8zA1MFNmesoO0579VO5dOyRFc
-	+disElGQ8OvsMMuepTrwgL1AVoRMj0hh8BRY8MtKORL6TrjS1pMYhoznZ3W5DA==
-Message-ID: <6b5459fd-2873-4c26-b986-882413b8d95b@bootlin.com>
-Date: Fri, 5 Jul 2024 17:24:19 +0200
+	s=arc-20240116; t=1720202588; c=relaxed/simple;
+	bh=BURoN9X2Ud9lPSuEZEgb2aTH1L2VxUlOK+mrgn+GDFg=;
+	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
+	 Message-ID:Subject; b=t+zS9NDaBq5g9JZh2ZadyrsFqzpiBO8Tc2dg62FOPJURXMZZ0VdnO+9ZH16iqMKjhlEwVuUIavPH01Ai62ez7t1JcHvIq3PCdAG1Ces8h4OGq41B3Ky11w1tl7uM32ocxQqkqLlhx7boebwq/uGQW2ilGVuA82i7jvNZefr3oQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Received: from harlem.collaboradmins.com (harlem.collaboradmins.com [IPv6:2a01:4f8:1c0c:5936::1])
+	by madrid.collaboradmins.com (Postfix) with ESMTP id 6A31537800DE;
+	Fri,  5 Jul 2024 18:03:04 +0000 (UTC)
+From: "Shreeya Patel" <shreeya.patel@collabora.com>
+In-Reply-To: <13828cf9-4a93-45a5-b3a3-542ee9ec056b@denx.de>
+Content-Type: text/plain; charset="utf-8"
+X-Forward: 127.0.0.1
+References: <20240705095047.90558-1-marex@denx.de>
+ <3b2ca0-6687ce00-3-4dab7280@52083650> <13828cf9-4a93-45a5-b3a3-542ee9ec056b@denx.de>
+Date: Fri, 05 Jul 2024 19:03:04 +0100
+Cc: linux-iio@vger.kernel.org, "Conor Dooley" <conor+dt@kernel.org>, "Jonathan Cameron" <jic23@kernel.org>, "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Lars-Peter Clausen" <lars@metafoo.de>, "Rob Herring" <robh@kernel.org>, devicetree@vger.kernel.org, kernel@collabora.com
+To: "Marek Vasut" <marex@denx.de>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] dt-bindings: iio: adc: sophgo,cv18xx-saradc.yaml:
- Add Sophgo SARADC binding documentation
-To: Conor Dooley <conor@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, Lars-Peter Clausen
- <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Chen Wang <unicorn_wang@outlook.com>,
- Inochi Amaoto <inochiama@outlook.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
- =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org
-References: <20240705-sg2002-adc-v2-0-83428c20a9b2@bootlin.com>
- <20240705-sg2002-adc-v2-1-83428c20a9b2@bootlin.com>
- <20240705-unaired-pesticide-4135eaa04212@spud>
-Content-Language: en-US
-From: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
-In-Reply-To: <20240705-unaired-pesticide-4135eaa04212@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: thomas.bonnefille@bootlin.com
+Message-ID: <3dd224-66883580-3-40d7c680@7066446>
+Subject: =?utf-8?q?Re=3A?= [PATCH] =?utf-8?q?iio=3A?==?utf-8?q?_light=3A?=
+ =?utf-8?q?_ltrf216a=3A?= Drop undocumented =?utf-8?q?ltr=2Cltrf216a?= 
+ compatible string
+User-Agent: SOGoMail 5.10.0
+Content-Transfer-Encoding: quoted-printable
 
+On Friday, July 05, 2024 20:22 IST, Marek Vasut <marex@denx.de> wrote:
 
+> On 7/5/24 12:42 PM, Shreeya Patel wrote:
+> > On Friday, July 05, 2024 15:20 IST, Marek Vasut <marex@denx.de> wro=
+te:
+> >=20
+> >> The "ltr,ltrf216a" compatible string is not documented in DT bindi=
+ng
+> >> document, remove it.
+> >>
+> >> Signed-off-by: Marek Vasut <marex@denx.de>
+> >> ---
+> >> Cc: Conor Dooley <conor+dt@kernel.org>
+> >> Cc: Jonathan Cameron <jic23@kernel.org>
+> >> Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+> >> Cc: Lars-Peter Clausen <lars@metafoo.de>
+> >> Cc: Marek Vasut <marex@denx.de>
+> >> Cc: Rob Herring <robh@kernel.org>
+> >> Cc: Shreeya Patel <shreeya.patel@collabora.com>
+> >> Cc: devicetree@vger.kernel.org
+> >> Cc: linux-iio@vger.kernel.org
+> >> ---
+> >>   drivers/iio/light/ltrf216a.c | 1 -
+> >>   1 file changed, 1 deletion(-)
+> >>
+> >> diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf=
+216a.c
+> >> index 68dc48420a886..78fc910fcb18c 100644
+> >> --- a/drivers/iio/light/ltrf216a.c
+> >> +++ b/drivers/iio/light/ltrf216a.c
+> >> @@ -528,7 +528,6 @@ MODULE=5FDEVICE=5FTABLE(i2c, ltrf216a=5Fid);
+> >>  =20
+> >>   static const struct of=5Fdevice=5Fid ltrf216a=5Fof=5Fmatch[] =3D=
+ {
+> >>   	{ .compatible =3D "liteon,ltrf216a" },
+> >> -	{ .compatible =3D "ltr,ltrf216a" },
+> >>   	{}
+> >=20
+> > This compatible string with a different vendor prefix was added for=
+ a specific reason.
+> > Please see the commit message of the following patch :-
+> > https://lore.kernel.org/all/20220511094024.175994-2-shreeya.patel@c=
+ollabora.com/
+> >=20
+> > We were very well aware that not documenting this was going to gene=
+rate a warning so
+> > we tried to fix that with a deprecated tag but it was NAKd by Rob. =
+What we understood
+> > from his last message was that it wasn't necessary to fix the DT wa=
+rning.
+>=20
+>  From what I read in the aforementioned discussion thread, it seems R=
+ob=20
+> was very much opposed to this compatible string, so this shouldn't ha=
+ve=20
+> gone in in the first place.
+>=20
+> But it did ... so the question is, what now ?
 
-On 7/5/24 5:01 PM, Conor Dooley wrote:
-> On Fri, Jul 05, 2024 at 03:42:23PM +0200, Thomas Bonnefille wrote:
->> The Sophgo SARADC is a Successive Approximation ADC that can be found in
->> the Sophgo SoC.
->>
->> Signed-off-by: Thomas Bonnefille <thomas.bonnefille@bootlin.com>
->> ---
->>   .../bindings/iio/adc/sophgo,cv18xx-saradc.yaml     | 63 ++++++++++++++++++++++
->>   1 file changed, 63 insertions(+)
->>
->> diff --git a/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
->> new file mode 100644
->> index 000000000000..31bd8ac6dfa5
->> --- /dev/null
->> +++ b/Documentation/devicetree/bindings/iio/adc/sophgo,cv18xx-saradc.yaml
->> @@ -0,0 +1,63 @@
->> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
->> +%YAML 1.2
->> +---
->> +$id: http://devicetree.org/schemas/iio/adc/sophgo,cv18xx-saradc.yaml#
->> +$schema: http://devicetree.org/meta-schemas/core.yaml#
->> +
->> +title:
->> +  Sophgo CV18XX SoC series 3 channels Successive Approximation Analog to
->> +  Digital Converters
->> +
->> +maintainers:
->> +  - Thomas Bonnefille <thomas.bonnefille@bootlin.com>
->> +
->> +description:
->> +  Datasheet at https://github.com/sophgo/sophgo-doc/releases
->> +
->> +properties:
->> +  compatible:
->> +    oneOf:
->> +      - items:
->> +          - enum:
->> +              - sophgo,cv1800b-saradc
->> +          - const: sophgo,cv18xx-saradc
-> 
-> I don't think the fallback here makes sense. If there's other devices
-> with a compatible programming model added later, we can fall back to the
-> cv1800b.
-> 
+There were multiple versions sent for adding LTRF216A light sensor driv=
+er
+and this compatible string wasn't something that was accepted by mistak=
+e.
+Most of the versions of the patch series made it very clear that it gen=
+erates a warning
+which you can check here :-
+https://lore.kernel.org/lkml/20220731173446.7400bfa8@jic23-huawei/T/#me=
+55be502302d70424a85368c2645c89f860b7b40
 
-Ok I'll do that, I wasn't sure if it was a good practice to fallback on 
-another SoC specific compatible.
+I would just go with whatever Jonathan decides to do here :)
 
->> +
->> +  reg:
->> +    maxItems: 1
->> +
->> +  interrupts:
->> +    maxItems: 1
->> +
->> +  clocks:
->> +    description:
->> +      SARADC will use the presence of this clock to determine if the controller
->> +      needs to be explicitly clocked by it (Active domain) or if it is part of
->> +      the No-Die Domain, along with the RTC, which does not require explicit
->> +      clocking.
-> 
-> What does "explicit clocking" mean? Is it clocked directly (or via
-> dividers) by a clock on the board or another source?
-> 
+Thanks,
+Shreeya Patel
 
-It means that, if a clock is provided, the driver will work in "Active 
-Domain" and will use the clock generator of the SoC to get the right 
-clock signal.
-
-However if no clock is provided, the controller will work in "No-Die" 
-domain (Always On) and use the RTCSYS subsystem to get its clock signal.
-
-Indeed "explicitly clocked" may not be the right word to describe that, 
-maybe some thing like that is better :
-
-"SARADC will use the presence of this clock to determine if the 
-controller needs to use the clock generator to get its clock signal 
-(Active domain) or if it is part of the No-Die Domain, along with the 
-RTC, and does not require the clock generator."
-
-Regards,
-Thomas
 

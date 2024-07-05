@@ -1,141 +1,106 @@
-Return-Path: <linux-iio+bounces-7338-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7337-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C32C92857A
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 11:51:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC47928578
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 11:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA11AB21317
-	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 09:51:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FB1E1F22B8E
+	for <lists+linux-iio@lfdr.de>; Fri,  5 Jul 2024 09:51:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CB16146A9B;
-	Fri,  5 Jul 2024 09:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8B3146A9B;
+	Fri,  5 Jul 2024 09:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="i9uMLzmi"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="eog9TsOq"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CB8D1442F0;
-	Fri,  5 Jul 2024 09:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2A8146015;
+	Fri,  5 Jul 2024 09:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720173101; cv=none; b=sF4CtJLQHEkBdlpbBZG+5jbOVkGVpi1CTwySxqnWQSh31W6nr10Rq5o0Mg6oWf5OdHy7ju/em9KQOVfOZGIvAlu1UmDYu/k0dne09VtlcmK/wq1ThBNXT8wl8PLqdjfsQROy1tF2YIJWewV/XnwauXjlScEJ13iWmp+LY+ONhNE=
+	t=1720173068; cv=none; b=kAdrvi5sBaRuZVW0ffGRIvg7ec07tnlsoQ3eOv9wxsUokS9GFbeSlUvPtkAYlYl/v8SqpezlQjTqUGYidxZaERBGb8OxWzYHFPeApzeBNv90o5bCZicsoOe3OkQK8m3TRMpwBE/UTqRxiiTSIGHHISqu99YvtJVKs82ZPpfv0AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720173101; c=relaxed/simple;
-	bh=MhSl17FdDfS22i6BDX5td6/4FkYAMudFAm0dQ4K3ku0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GQcyMVR4ioAACUJUbTsx5Crp7zrLULLfWlMdh1cKGh0xJtZ9joo85v61o0NYtRMoxFnpZicjyj6nSYMHL0BXz033kPIMtCWRTqEvwCFH9uBN4S9nIOoN8mxbawJzJYI4v+krvErRV4XFY+Gy/imSPLGwOAh//Y9kqX/XsHM7sc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=i9uMLzmi; arc=none smtp.client-ip=85.214.62.61
+	s=arc-20240116; t=1720173068; c=relaxed/simple;
+	bh=sXd368oAAwWq4VK0mGuPO3OdSq/Yp60ZT2fpecwd7qs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hxPlnlOJ0ApKxKhYgL6W88Lld17RlF9PDYAcueHKnhF1eW71MCClocMXh6CvRRI5U//+rp+7CJnhZDrZwW4s/SGhz8YEK0AZzkyaE7+KGdLRQFEVdPh3B/zHFIEmo0n/uGTJp/Haxsqp0jX1NBaOVqtnQNQ0f9v2/oQm1yr+8mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=eog9TsOq; arc=none smtp.client-ip=85.214.62.61
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+Received: from tr.lan (ip-86-49-120-218.bb.vodafone.cz [86.49.120.218])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	(No client certificate requested)
 	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id E75CC882F0;
-	Fri,  5 Jul 2024 11:51:36 +0200 (CEST)
+	by phobos.denx.de (Postfix) with ESMTPSA id B147D882F0;
+	Fri,  5 Jul 2024 11:51:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1720173097;
-	bh=Y0eTuYMQuFzr9aIwGO2uXrIWg1+otGLpDkYbEL3M0Ns=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i9uMLzmiKO5sPFWdy8LGZvwrCZ0Ti+CLWkQXPkCPg439hQ5575ZZ1MEtK+tgpNcTi
-	 +m1P5lFffXtXMWO5OllgBlK2BVejnvW7gnaz4Qa1SVy+TRKTeW6967ey4q9ow7O4v4
-	 OQKxKW42gUHyLQyI6FLMZv+SLAcmpJcD56/dfab+dr3ruTo4VXtLdqKRXyI9j/xEcO
-	 yUkAIQb4umSFq9BFoKdStlVumoLzGkfSaXWoYdi3QzsvJOJaxxFYYfaxnC/DNCJuRp
-	 ae5pSCQ5d5+w8tELskB8RbaZ4z7yzVrDo4UoJsmjXb0fG0SD29srm3e/aeUKO9OiBR
-	 McJMsaSCwWZaw==
-Message-ID: <5785cd09-aed7-4697-87bc-4bf97b75580c@denx.de>
-Date: Fri, 5 Jul 2024 11:47:22 +0200
+	s=phobos-20191101; t=1720173063;
+	bh=96I37y7l6BCzp899YSBCDVRbsoRH4E+fgJrQ/eLsQVg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eog9TsOq9oh+2k5GS+ci3AHhzM1vJ4PExhBE0FZQYxZe7nA26v1cNgdnX+PTJ2dmQ
+	 EuWVKeQ0CWWJGSY48aYQKloplGBmDjmZGtPSP/yPqwgvPZiDgg5bY7JrPtcg6x6a2q
+	 X52d1FM2tUbAoyQymu0QBaDxx20OM/VL8k+KlvdOyuNpBiZ6+Iric+XPdvRjxtSeXP
+	 5Gg5ijW5OQsykU5OW8ACq5UBZ9PXwxz5quvlX6oeiHe+QK9r+fOmqGd93nvkvrAQN+
+	 Ftw7KIc1QXfUVCWr2rC6eDoxpWKOP6xPtBZ/JZ32MovYRcYRnq+Fa+o24QY2E+9agL
+	 deanRyS7hiiAw==
+From: Marek Vasut <marex@denx.de>
+To: linux-iio@vger.kernel.org
+Cc: Marek Vasut <marex@denx.de>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Rob Herring <robh@kernel.org>,
+	Shreeya Patel <shreeya.patel@collabora.com>,
+	devicetree@vger.kernel.org
+Subject: [PATCH] iio: light: ltrf216a: Drop undocumented ltr,ltrf216a compatible string
+Date: Fri,  5 Jul 2024 11:50:28 +0200
+Message-ID: <20240705095047.90558-1-marex@denx.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: light: ltrf216a: Add LTR-308 support
-To: Krzysztof Kozlowski <krzk@kernel.org>, linux-iio@vger.kernel.org
-Cc: Conor Dooley <conor+dt@kernel.org>, Jonathan Cameron <jic23@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Shreeya Patel <shreeya.patel@collabora.com>, devicetree@vger.kernel.org
-References: <20240705091222.86916-1-marex@denx.de>
- <20240705091222.86916-2-marex@denx.de>
- <b794ed7c-d3b2-4fcd-94fb-de499de89804@kernel.org>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <b794ed7c-d3b2-4fcd-94fb-de499de89804@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
 X-Virus-Status: Clean
 
-On 7/5/24 11:40 AM, Krzysztof Kozlowski wrote:
-> On 05/07/2024 11:11, Marek Vasut wrote:
->> Add LiteOn LTR-308 support into LTR-F216A kernel driver.
->>
->> The two devices seem to have almost identical register map, except that
->> the LTR-308 does not have three CLEAR_DATA registers, which are unused
->> by this driver. Furthermore, LTR-308 and LTR-F216A use different lux
->> calculation constants, 0.6 and 0.45 respectively. Both differences are
->> handled using chip info data.
->>
->> https://optoelectronics.liteon.com/upload/download/DS86-2016-0027/LTR-308ALS_Final_%20DS_V1%201.pdf
->> https://optoelectronics.liteon.com/upload/download/DS86-2019-0016/LTR-F216A_Final_DS_V1.4.PDF
->>
->> Signed-off-by: Marek Vasut <marex@denx.de>
->> ---
-> 
-> ...
-> 
->>   	mutex_init(&data->lock);
->>   
->> @@ -520,15 +537,27 @@ static int ltrf216a_runtime_resume(struct device *dev)
->>   static DEFINE_RUNTIME_DEV_PM_OPS(ltrf216a_pm_ops, ltrf216a_runtime_suspend,
->>   				 ltrf216a_runtime_resume, NULL);
->>   
->> +struct ltr_chip_info ltr308_chip_info = {
-> 
-> static const
-> 
->> +	.has_clear_data		= false,
->> +	.lux_multiplier		= 60,
->> +};
->> +
->> +struct ltr_chip_info ltrf216a_chip_info = {
-> 
-> static const
+The "ltr,ltrf216a" compatible string is not documented in DT binding
+document, remove it.
 
-Both fixed, thanks.
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+Cc: Conor Dooley <conor+dt@kernel.org>
+Cc: Jonathan Cameron <jic23@kernel.org>
+Cc: Krzysztof Kozlowski <krzk+dt@kernel.org>
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Marek Vasut <marex@denx.de>
+Cc: Rob Herring <robh@kernel.org>
+Cc: Shreeya Patel <shreeya.patel@collabora.com>
+Cc: devicetree@vger.kernel.org
+Cc: linux-iio@vger.kernel.org
+---
+ drivers/iio/light/ltrf216a.c | 1 -
+ 1 file changed, 1 deletion(-)
 
->> +	.has_clear_data		= true,
->> +	.lux_multiplier		= 45,
->> +};
->> +
->>   static const struct i2c_device_id ltrf216a_id[] = {
->> -	{ "ltrf216a" },
->> +	{ "ltr308", .driver_data = (kernel_ulong_t)&ltr308_chip_info },
->> +	{ "ltrf216a", .driver_data = (kernel_ulong_t)&ltrf216a_chip_info },
->>   	{}
->>   };
->>   MODULE_DEVICE_TABLE(i2c, ltrf216a_id);
->>   
->>   static const struct of_device_id ltrf216a_of_match[] = {
->> -	{ .compatible = "liteon,ltrf216a" },
->> -	{ .compatible = "ltr,ltrf216a" },
->> +	{ .compatible = "liteon,ltr308", .data = &ltr308_chip_info },
->> +	{ .compatible = "liteon,ltrf216a", .data = &ltrf216a_chip_info },
->> +	{ .compatible = "ltr,ltrf216a", .data = &ltrf216a_chip_info },
-> 
-> Drop this one. You cannot have undocumented compatibles - and checkpatch
-> tells you this - and we do not want to accept stuff just because someone
-> made something somewhere (e.g. ACPI, out of tree junk etc). There was
-> similar effort in the past and we made it clear.
+diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
+index 68dc48420a886..78fc910fcb18c 100644
+--- a/drivers/iio/light/ltrf216a.c
++++ b/drivers/iio/light/ltrf216a.c
+@@ -528,7 +528,6 @@ MODULE_DEVICE_TABLE(i2c, ltrf216a_id);
+ 
+ static const struct of_device_id ltrf216a_of_match[] = {
+ 	{ .compatible = "liteon,ltrf216a" },
+-	{ .compatible = "ltr,ltrf216a" },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, ltrf216a_of_match);
+-- 
+2.43.0
 
-The "ltr,ltrf216a" was already part of the driver, wouldn't removing it 
-be an ABI break ? I will add a separate patch to remove it, so it can be 
-reverted if someone complains. Thanks .
 

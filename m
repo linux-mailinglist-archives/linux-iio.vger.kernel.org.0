@@ -1,101 +1,107 @@
-Return-Path: <linux-iio+bounces-7377-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7378-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BC39292A9
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 12:54:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74FD69292AB
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 12:55:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DE691F21FFB
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 10:54:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B4ED1C20F5C
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 10:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F6255896;
-	Sat,  6 Jul 2024 10:54:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F22216BFA6;
+	Sat,  6 Jul 2024 10:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nIYr+awF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8gldELT"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ABA73446;
-	Sat,  6 Jul 2024 10:54:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB77524D6;
+	Sat,  6 Jul 2024 10:55:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720263292; cv=none; b=g7ReCXy7bHWPvZ9Xiw5kD+PBFeQjjp4EkIFFUX0MbmZtop7QV+456P+Lm/V0RjHFAX39uXa51XQHwUGAQUudvgH52e2hyyAr1mIlUwGfJKmL/pyW94eo+XUGfaf52OffACOYVenhPRDtVsu66rRkPazxjub3OtRqUvZPb2A9hqY=
+	t=1720263348; cv=none; b=bR0xGSq7zZr4sywivRljmE/8js0NJ30C4yX40IJT7hLREd/dAtLjzKmiS1DdMT8vz9T+70k1H/WpVO/Nh7umSBmMlo1fMtJCQ+VuKvJKtSUwgzviB/GuLq1DLE0ZjHDyl28FD3JOR8EYA4iMtfymOR4IR/Y3rvFvURRCCf072/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720263292; c=relaxed/simple;
-	bh=jeFfXbobplyjA/n9CKA8qoN4MW4Mu4ixxQBXExxKQUw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=R2575mq+tPpbS99UTjoADTjoW/KzXv3/TmgsTYxDnsACm0D6TXtsUrJlwEKqqCAb9ezcpBV2M8zO2KQx1q+gLXHIM8+2OQGm3VEBBL2vdls22SlvwOWsJhun/WIp2sGsO1tAmnDtTnN7ad+h7QdrhqFOHksJOZoxXFj5zSGObBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nIYr+awF; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a77dc08db60so115590866b.1;
-        Sat, 06 Jul 2024 03:54:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720263289; x=1720868089; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jeFfXbobplyjA/n9CKA8qoN4MW4Mu4ixxQBXExxKQUw=;
-        b=nIYr+awFH083/NkmwsSMOvb5cHRQmn70tbuA3wUx8e6M2AS2qh9q9L96s9nbYJ5cDz
-         LAfbWWt3oxT5SnjeedH+phj6q1KHlZHeYcr/eHSMywAAmpi/HyPlRY6Nu0G488/1Zrjf
-         q+EMIBfH/EqftWBCMI+l0ZSwAzX2eKFJgqkLVpFZOb71smwRkrATL56L9OtcocYjq30k
-         nMVyJf9/MM/YWhnR2lX+cY19Y6I/NZWr9PcdAywIEvvXzF/TAxR5V4Vlg/qeyTqAfyj4
-         nxrlpgJlyC9hUzM/DrUu/x4vzMFoXbiwrxaFJz3yhHR3KfGAqaeQqKrpItujhDHFNgq2
-         LTVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720263289; x=1720868089;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jeFfXbobplyjA/n9CKA8qoN4MW4Mu4ixxQBXExxKQUw=;
-        b=vfB6QMCKqKidMPafRWVkJjvAD0ad7DFAzntdFfmqMlqkff4HZ/RU/tzUjX7nLw7EB7
-         /Y2/WiOs1qp+AN7Pjug9apJhassJIDgt1ooCiQhcfgBhFcYUHhwlMMJXe4FQcXAR2vhC
-         58diqLE6VgbH1dWPtziS1Wf2F7spd+1JuxK/t/3n8tUrl4r8QscNmgGA7kbROMZgx6PK
-         g7CqEraqovfv8BM+HBXB1DVaPt7XkEVoUyHTi6Y2KJzMsLWdjP7l7NZGoDoztkX+PyuQ
-         osHK/Kk0hXS+e9tyi/9Omi531GsmoST7aHOAinpPbfGtsbXWYA4e+FE0XavDqkbVxD+0
-         rdag==
-X-Forwarded-Encrypted: i=1; AJvYcCW6zaLfi4GhaDOvwe7hCfWk9ySbAYHPg48Xb3KUQvwt3kppCktNByGfpoqJwl7DfEvipCg0iD/P3Wp6qo0SS2S8HLymekoAL+kYxG7ISv7QjZJpYS/VdCZBMH8C3rnRBXZPQKLefLg9
-X-Gm-Message-State: AOJu0YypqK4oKrsIWZAUAtwRM1TVoFYlM3D4yCFNvzEMB8rPY1cxOCdH
-	4uz5fSMJtsnALzTYl7Actv80xRyUy2dc1fyjVEGZzmByafOtjB6r
-X-Google-Smtp-Source: AGHT+IGE2RgLXvPXlAq4cpJ+p9NVdhUpv8nSUzPfNhIjmIKEQCmENBqvIXnx9dxNjnFMxhzwPTTc7w==
-X-Received: by 2002:a17:906:3757:b0:a77:eb34:3b46 with SMTP id a640c23a62f3a-a77eb343d38mr7588066b.19.1720263289124;
-        Sat, 06 Jul 2024 03:54:49 -0700 (PDT)
-Received: from localhost.localdomain (mob-194-230-144-236.cgn.sunrise.net. [194.230.144.236])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a77ddc56700sm77093566b.67.2024.07.06.03.54.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Jul 2024 03:54:48 -0700 (PDT)
-From: Vasileios Amoiridis <vassilisamir@gmail.com>
-To: javier.carrasco.cruz@gmail.com
-Cc: Michael.Hennerich@analog.com,
-	cosmin.tanislav@analog.com,
-	dan@dlrobertson.com,
-	jagathjog1996@gmail.com,
-	jic23@kernel.org,
-	lars@metafoo.de,
-	linus.walleij@linaro.org,
-	linux-iio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	marcelo.schmitt@analog.com,
-	nuno.sa@analog.com,
-	vassilisamir@gmail.com
-Subject: Re: [PATCH 10/10]: iio: pressure: bmp280: Constify struct regmap_bus
-Date: Sat,  6 Jul 2024 12:54:44 +0200
-Message-Id: <20240706105444.98483-1-vassilisamir@gmail.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240703-iio-cont-regmap_bus-v1-10-34754f355b65@gmail.com>
-References: <20240703-iio-cont-regmap_bus-v1-10-34754f355b65@gmail.com>
+	s=arc-20240116; t=1720263348; c=relaxed/simple;
+	bh=idoUi8lkJwbaUT4zm5Y4BMqTc7tuX+nE2lNVnAuRfXI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rJXbi9CaQEzDr3qNTZjgOew3xj5BrN0RzPQLbC5sKUZEBd8F84d5u/CrU4Cpk5yNIhmnoJj6TVltJK7RRauy7Yk/8q0NzX7ELVhcdKHD92EXi6Dn9c+xjHVO1u2UWW2ZCbiYB6TSBtLgd5SlcITwhcekkbsJEN6ziNnoit+1npo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8gldELT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 320E7C2BD10;
+	Sat,  6 Jul 2024 10:55:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720263348;
+	bh=idoUi8lkJwbaUT4zm5Y4BMqTc7tuX+nE2lNVnAuRfXI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=G8gldELT4REe8o8c2hAY7hI2BzJPf7179H3ikYOPF+G+R4GCSbfSDHlgwK891dQ3E
+	 s3Q3C7nV60MTEVdjrcyiv2zggvR7Ku75hgC258Cy35KRrCb31roCGFtG+PI7DxX52U
+	 aDDapYx6asVtGY2S5oQrGR8NjHO/6DZteKl6JmcpD/Gg3wJ+/wBsrT8sprxi8F/IfY
+	 d8iX6g2+WlFyW4bk3nQ2YGT+hrbE1ry6EUrpqywzB8wk5H00IvPbU2p0aykysC2te3
+	 BAZiHUw3vSke4ja5RLFL8Ktj5LV3NBuLaJVaUGDn3g6WtgOyHbatcXmDvH+s7oOW5S
+	 11evVYePEY9gg==
+Date: Sat, 6 Jul 2024 11:55:38 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Dan Robertson <dan@dlrobertson.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, Alexandre Belloni
+ <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 0/6] iio: adc: simplify with cleanup.h
+Message-ID: <20240706115538.33341034@jic23-huawei>
+In-Reply-To: <20240705-cleanup-h-iio-v1-0-77114c7e84c5@linaro.org>
+References: <20240705-cleanup-h-iio-v1-0-77114c7e84c5@linaro.org>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-For the BMP280 part:
+On Fri, 05 Jul 2024 12:40:43 +0200
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org> wrote:
 
-Tested-By: Vasileios Amoiridis <vassilisamir@gmail.com>
+> Allocate the memory with scoped/cleanup.h to reduce error handling and
+> make the code a bit simpler.
+For now I've applied 1-5 as I think 6 needs a little more discussion.
+
+Note applied only to the testing branch of iio.git for now.
+That will become the togreg branch and get picked up by linux-next etc
+after I've rebased on 6.11-rc1.
+
+Jonathan
+
+> 
+> Best regards,
+> Krzysztof
+> 
+> ---
+> Krzysztof Kozlowski (6):
+>       iio: accel: bma400: simplify with cleanup.h
+>       iio: adc: ad7280a: simplify with cleanup.h
+>       iio: adc: at91: simplify with cleanup.h
+>       iio: adc: max1363: simplify with cleanup.h
+>       iio: adc: ti-tsc2046: simplify with cleanup.h
+>       iio: adc: ad5755: drop redundant devm_kfree()
+> 
+>  drivers/iio/accel/bma400_core.c | 11 +++++------
+>  drivers/iio/adc/ad7280a.c       | 10 ++++------
+>  drivers/iio/adc/at91_adc.c      | 13 +++++--------
+>  drivers/iio/adc/max1363.c       | 34 +++++++++++++---------------------
+>  drivers/iio/adc/ti-tsc2046.c    | 29 ++++++++++++-----------------
+>  drivers/iio/dac/ad5755.c        |  1 -
+>  6 files changed, 39 insertions(+), 59 deletions(-)
+> ---
+> base-commit: 0b58e108042b0ed28a71cd7edf5175999955b233
+> change-id: 20240705-cleanup-h-iio-c90ca38865a4
+> 
+> Best regards,
+
 

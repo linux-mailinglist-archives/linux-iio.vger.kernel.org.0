@@ -1,115 +1,101 @@
-Return-Path: <linux-iio+bounces-7374-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7375-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0686792929F
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 12:43:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E62169292A2
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 12:51:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 383001C20E4D
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 10:43:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2024D1C20F33
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 10:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE726F068;
-	Sat,  6 Jul 2024 10:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25F74EB37;
+	Sat,  6 Jul 2024 10:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IV8YUw1u"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YhaHVvW2"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC3D4778B;
-	Sat,  6 Jul 2024 10:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12C523FB96;
+	Sat,  6 Jul 2024 10:51:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720262600; cv=none; b=poR4cpDvczHr42zlCBqDWoSjYltIyeyYtrckBfImSXJPycQl3X+H6FkqGjtz2uZFgmIXvC6Rw1ijlQ0hCoxNKAwmoFF9p6/bbqbB8rl41WjhXo5dTdiSOXiVRW9xO++46024RkW7MObVBnZQ2+HVWjEbRQTPTZ45oG/nFt5VYn8=
+	t=1720263106; cv=none; b=pW00pUkgzwYDT5rqmiSxxDW9KDehrAvhyldx0OHfS6ohc25r79O0XppdGIvnvVgkzX62I6vEboI3fwLUhm01z8CFclBPw9ZYBFhNq6YlbeXX6sflMNqGIcJukTQFdUgycW9Luj8ZgZvrIFJDl1h138goamkO+PyYcmzPJdEceb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720262600; c=relaxed/simple;
-	bh=BMq3hRE63Nc6Gaod6A+IsrsDJIRMrXliC5k+8pxkqM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hFC2DYqtkrFR9neOaTIuMLmfAeFqZCrxFTirtxMGB4FmlCTJh1nHzfrhFXAIvrSu7XO6xLPWfd/nzbNdYVmPCmdyx1c8QWWBOBrWvJ0d1J/0e4qBLNi9IwSjaqVnmvtFuug2+D/EDMRIyJSW/PQM2DuF2mYd2rPGCEP1Ai2vf2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IV8YUw1u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF5F9C2BD10;
-	Sat,  6 Jul 2024 10:43:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720262600;
-	bh=BMq3hRE63Nc6Gaod6A+IsrsDJIRMrXliC5k+8pxkqM0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=IV8YUw1uy+k3XfD88zLEmgy58tSyHTdzK2k0GqxB+Kvq+sB6vgvSCoD9Y1sEWL0mA
-	 pcEtF1u3n/h1PzCUPzSAkYT6hRlef3ReMCbae8P+hpRZenU9ZUsgJQYKqt0SHj01CZ
-	 VuP/dQ4Nqtu7Bfxxu6yHFcREfG6IEAYS6w4iI376Gh69xtqshC9QSZV0OgYqshuI+f
-	 u1MomCLFIIbccZdXlrzxynB9x3xRD1i9XjEr6ZcmeHTPZGPMkHk9XM/02gGs9BWpaa
-	 0AYE5SQ+so77OOBMhSlDrBDdFSC+8G4btdprfZU+B9dGov3rnHXfSt7Nczax5TigDt
-	 PxVj5WPLhjG0Q==
-Date: Sat, 6 Jul 2024 11:43:12 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Cosmin Tanislav <cosmin.tanislav@analog.com>, Lars-Peter Clausen
- <lars@metafoo.de>, Michael Hennerich <Michael.Hennerich@analog.com>, Dan
- Robertson <dan@dlrobertson.com>, Marcelo Schmitt
- <marcelo.schmitt@analog.com>, Nuno =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>,
- Jagath Jog J <jagathjog1996@gmail.com>, Linus Walleij
- <linus.walleij@linaro.org>, linux-iio@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 00/10] iio: Constify struct regmap_bus
-Message-ID: <20240706114312.19e6f375@jic23-huawei>
-In-Reply-To: <20240703-iio-cont-regmap_bus-v1-0-34754f355b65@gmail.com>
-References: <20240703-iio-cont-regmap_bus-v1-0-34754f355b65@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1720263106; c=relaxed/simple;
+	bh=JW57UkYHZcMdBbPWGcNusgNrdeWvIoF2PV77+Uf1PA0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=bTR24Qzq9DtlXwYgdGT6oXFw7OiNTA0i17I9tbvWjWD2IE53BBcJNV74FXRPnBViYvPA8aBLFzb8w5Lw5K3Ehg1SKQPfXwjZf4e2FoRJDJ0T9xd/HiJztLo1gp9tZfaihHxtS2jhRNCdOMWDcKaxwoD2PJYM/oilQLh5S4mKMYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YhaHVvW2; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-58bac81f3f9so3134796a12.2;
+        Sat, 06 Jul 2024 03:51:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720263103; x=1720867903; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JW57UkYHZcMdBbPWGcNusgNrdeWvIoF2PV77+Uf1PA0=;
+        b=YhaHVvW2K9UWr1D6qLAQMqw4CzvHFygnEnPy2dieqglqeYtPhjk1PkP/plRSaJc6+i
+         jSXF9TW6BOxuhgbK5Hte99AjTevJijPYlaKAXHytEj/JlBEY1o66U6R32Z5sbzYDnwk6
+         PPUKOx97E5YZbhkBToK9wdZT7fO9XWAB8I+DG6V8vYOL2J82p0MjA0LgEgyzXcIthzGj
+         YX5FVJ4BKHAHWdk9tQUa/kQ2PlC3FSRZEFuAAdEHSRu8Yiw1FOISZ0HOraC9i5vL/Pmv
+         8WCnCZa4zyWb4a18F7mQ53/as9evMvbskpcmZOjQcwj9fLO5bosMoy1hngpEuhBN3u50
+         nZRQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720263103; x=1720867903;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JW57UkYHZcMdBbPWGcNusgNrdeWvIoF2PV77+Uf1PA0=;
+        b=Ahu/TKZptWnRvIqIWcdSrShXhYZdr41svnVfo3syEO6Rw+t2/YvYfxrGm5m5esVZYP
+         F/ThtysO4CI3zy4kG7C1EOjfTY8uYipx9iT/LRcAtN/xVcMS/rvmBLeyavBBYIWgixto
+         Tf3aWDo0H8LSGIU34knG7VnVgU1yBCRKy/grlDqg+Ra8XOnlxuOwpsHpDZLxYwqknymr
+         306PmEIauVr/Qh/u3csLEdiU3aILW78HxmzzYm5ZmgMCE+m8AyPjblfGUtZ1rKZuMai3
+         uYl+mrak02mT9Z9XABU6dIctK7D1Aimyisn4iiUCLTlufNLo/sN9hBAJGlzFCJ/U5cD8
+         bIXg==
+X-Forwarded-Encrypted: i=1; AJvYcCX4gY4lBJ91kY09sAMEXFJqnvbrmLhK2EQpgHaKn77HsS7BHSk14rTOdQkP3euULyIpfyKPBSW4Bl4AiR5m2Lm+9sMXKO7tZVlDoNEH/wMSJZE4pCelbyGwWIxmp4zCIg0T51dVbj+M
+X-Gm-Message-State: AOJu0Ywmsi2E66fAtrX26Q8XugSGTmHgwZS8cPrtfmVIEMK2GGQksjit
+	5K/XiXICJ7UM+rDR9dG67E5YZqOIJaayiFxrtaTuCLh+Yp3bBnYJ
+X-Google-Smtp-Source: AGHT+IFNpTayhhTm0HQLbFaEhu4dN9+PM1JK+On5SxcVboOvTl0hazqVwiXSdVxIlM1ISfSjoFxxFw==
+X-Received: by 2002:a05:6402:4409:b0:57d:24ce:cbc8 with SMTP id 4fb4d7f45d1cf-58e5c72ffe2mr4950722a12.31.1720263103058;
+        Sat, 06 Jul 2024 03:51:43 -0700 (PDT)
+Received: from localhost.localdomain (mob-194-230-144-236.cgn.sunrise.net. [194.230.144.236])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-58d75e20c30sm3959305a12.43.2024.07.06.03.51.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 06 Jul 2024 03:51:42 -0700 (PDT)
+From: Vasileios Amoiridis <vassilisamir@gmail.com>
+To: javier.carrasco.cruz@gmail.com
+Cc: Michael.Hennerich@analog.com,
+	cosmin.tanislav@analog.com,
+	dan@dlrobertson.com,
+	jagathjog1996@gmail.com,
+	jic23@kernel.org,
+	lars@metafoo.de,
+	linus.walleij@linaro.org,
+	linux-iio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	marcelo.schmitt@analog.com,
+	nuno.sa@analog.com,
+	vassilisamir@gmail.com
+Subject: Re: [PATCH 05/10]: iio: chemical: bme680: Constify struct regmap_bus
+Date: Sat,  6 Jul 2024 12:51:37 +0200
+Message-Id: <20240706105137.98124-1-vassilisamir@gmail.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240703-iio-cont-regmap_bus-v1-5-34754f355b65@gmail.com>
+References: <20240703-iio-cont-regmap_bus-v1-5-34754f355b65@gmail.com>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 03 Jul 2024 23:04:43 +0200
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+For the BME680 part:
 
-> This series adds the const modifier to the remaining regmap_bus
-> structs within the IIO subsystem that are effectively used as const
-> (i.e., only read after their declaration), but kept as writtable data.
-> 
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Applied, but for now only to the testing tree of iio.git as I'm unlikely to
-do another pull request this cycle and will want to rebase the tree on
-6.11-rc1 once availabled.
-
-Thanks,
-
-Jonathan
-
-> ---
-> Javier Carrasco (10):
->       iio: accel: adxl367: Constify struct regmap_bus
->       iio: accel: bma400: Constify struct regmap_bus
->       iio: accel: bmi088: Constify struct regmap_bus
->       iio: adc: ad7091r8: Constify struct regmap_bus
->       iio: chemical: bme680: Constify struct regmap_bus
->       iio: dac: ltc2688: Constify struct regmap_bus
->       iio: imu: bmi323: Constify struct regmap_bus
->       iio: imu: bno055: Constify struct regmap_bus
->       iio: light: gp2ap002: Constify struct regmap_bus
->       iio: pressure: bmp280: Constify struct regmap_bus
-> 
->  drivers/iio/accel/adxl367_spi.c          | 2 +-
->  drivers/iio/accel/bma400_spi.c           | 2 +-
->  drivers/iio/accel/bmi088-accel-spi.c     | 2 +-
->  drivers/iio/adc/ad7091r8.c               | 2 +-
->  drivers/iio/chemical/bme680_spi.c        | 2 +-
->  drivers/iio/dac/ltc2688.c                | 2 +-
->  drivers/iio/imu/bmi323/bmi323_i2c.c      | 2 +-
->  drivers/iio/imu/bmi323/bmi323_spi.c      | 2 +-
->  drivers/iio/imu/bno055/bno055_ser_core.c | 2 +-
->  drivers/iio/light/gp2ap002.c             | 2 +-
->  drivers/iio/pressure/bmp280-spi.c        | 6 +++---
->  11 files changed, 13 insertions(+), 13 deletions(-)
-> ---
-> base-commit: 0b58e108042b0ed28a71cd7edf5175999955b233
-> change-id: 20240703-iio-cont-regmap_bus-f7578bc89954
-> 
-> Best regards,
-
+Tested-By: Vasileios Amoiridis <vassilisamir@gmail.com>
 

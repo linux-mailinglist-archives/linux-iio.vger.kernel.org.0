@@ -1,59 +1,59 @@
-Return-Path: <linux-iio+bounces-7381-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7382-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 634CD9292C1
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 13:17:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 059579292C4
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 13:20:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83B2E1C20FBA
-	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 11:17:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADD9B1F21F74
+	for <lists+linux-iio@lfdr.de>; Sat,  6 Jul 2024 11:20:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8935589B;
-	Sat,  6 Jul 2024 11:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE966A33F;
+	Sat,  6 Jul 2024 11:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n9urF8Cg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mA5e931l"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAD13A955;
-	Sat,  6 Jul 2024 11:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 877C3482F6;
+	Sat,  6 Jul 2024 11:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720264623; cv=none; b=FeVhjfG3C4Ht/heRFqoss7kd23inkWl/uTMbHTPuucrUy0DStBFVdlv3sb0Uf5OURkpe2NjDs/WlzINl5b0/RrQFd0lofwYjDr1K/GKUkmfIGW5z4J+ez26tc7Xht8Gvmr1Gav+x0NN5bCS6detYgPOGot3yhMWXsxPGOIMbt/Q=
+	t=1720264851; cv=none; b=ZZe2P7rogfOW15CTd7MBN3uzgixmJfPQwjqx4+2Oz9e1tT545ISkQY4nblewJXAWsqDz7PVwk0Nnwpb7cQ9Q3hLx5r5jJfT6ZYk3HJ5x4roqA3TNtDNXsC+MUfJmZtXHm6umniq+LYr0HTSlUbUtGpCUBwV3RQqLjqPHpL7Us/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720264623; c=relaxed/simple;
-	bh=bhjeIJQZtydYNbK7HLzzFjRiskDwIygGEMJZZ7OIMHU=;
+	s=arc-20240116; t=1720264851; c=relaxed/simple;
+	bh=SDaxQ+DRRByo16W7YPXQBb8ituqmx4xzmP2nHHrpL38=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i7/6SJwtnfxU1YP4NVx8m6Q9cR5T6gBpUcLgx3+6nnb8VpGMGc4NzObm4zfzdhNWJ7x90UPLJPVf36P6L5Cverr/P2jNFev299ddeYnJyOL7msNTSsYqBlQ9yAAwJKDctC9umD3+WrbYFfgYZU1Ba+pdXi4UbBc/NSNk0/7ToEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n9urF8Cg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 198FEC2BD10;
-	Sat,  6 Jul 2024 11:16:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=M5iYZDpKv/ou4pDHwivvcMk1MHASjnrQfLBkNfGmzxOiCqChSDLKv7JBUc8OpWjOTLS/C2muqdz4TbQBY84DhuzRhFkmNVw7GoIcjY8q/CQ8khMLEMvwMsI+tdn6lC/Fm0Sa2kirgLLWNFARo2rqMgy0vczE4EUoCGiGfbxWvKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mA5e931l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E94C2BD10;
+	Sat,  6 Jul 2024 11:20:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720264622;
-	bh=bhjeIJQZtydYNbK7HLzzFjRiskDwIygGEMJZZ7OIMHU=;
+	s=k20201202; t=1720264851;
+	bh=SDaxQ+DRRByo16W7YPXQBb8ituqmx4xzmP2nHHrpL38=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=n9urF8CgOC8FmTUl38qCBtO/tNyigHKxWjxpWUa/seSYW1P5NY/SC42TL8sjruFJ0
-	 c3qzeZ8Xiy9DXMYcs65rONzu0K3beThffYDNPNoQW7Ve26JkACu8DreM6krNz8pKxg
-	 NW9yKNpo6v/1mdiUjtc+7hG/AU7jZ5moTPx+7crg71XcH8KPzFp0n/Sa7ERGJ8LRX1
-	 z81yGYP6Rssq2QPgbQMbXpvFs5j3ab5a3+BIFu6qCXj4anTC7kYhi+O4O841hVfVIZ
-	 wVcCgjaQoXz+qRbSHWcBIl0mvNGS5V1nvZ4rPzamyQ3fCVLVcQG27QEgLt9dGQ68WP
-	 Nni3H+sZfKeUg==
-Date: Sat, 6 Jul 2024 12:16:54 +0100
+	b=mA5e931lxiIXoULYKv3c7hJHcLJOgkrnrk3CXPNOPXBK3D7BKF/5FBouRXoc2/1sN
+	 2SbOUZli7ZpvXuOp4Yy4xeu6QM/JaAGznJdwK4PrXaVvuV5o+MezDthsbJ0NYTr3G5
+	 h/RtXTzB/2wTSf0t7K40viGwLZ1sazGimoQ/y72U5SuKl3K/zq2Aku1kxgctHbiGKj
+	 25EUs6Zwqkn9annWouEOGboBec35zO3nOsIOcIksOz9uFojqjjvxSJtxbKrtdf4VCG
+	 tZ2cWNKZ1/a1bh27Jd9IWuuh4WuzGnDlVQAsIRj8zU8EiApvSx1yut9R/HmYif9v9F
+	 wFmf7QVsJWWrg==
+Date: Sat, 6 Jul 2024 12:20:45 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Nuno Sa <nuno.sa@analog.com>
 Cc: <linux-iio@vger.kernel.org>, <devicetree@vger.kernel.org>, Lars-Peter
  Clausen <lars@metafoo.de>, Michael Hennerich
  <Michael.Hennerich@analog.com>, "Rob Herring" <robh@kernel.org>, Krzysztof
  Kozlowski <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>
-Subject: Re: [PATCH 1/5] iio: adc: ad9467: support multiple channels
- calibration
-Message-ID: <20240706121654.12d3bb38@jic23-huawei>
-In-Reply-To: <20240704-dev-iio-ad9467-new-devs-v1-1-f1adfee921f7@analog.com>
+Subject: Re: [PATCH 3/5] iio: adc: ad9467: don't allow reading vref if not
+ available
+Message-ID: <20240706122045.54344d21@jic23-huawei>
+In-Reply-To: <20240704-dev-iio-ad9467-new-devs-v1-3-f1adfee921f7@analog.com>
 References: <20240704-dev-iio-ad9467-new-devs-v1-0-f1adfee921f7@analog.com>
-	<20240704-dev-iio-ad9467-new-devs-v1-1-f1adfee921f7@analog.com>
+	<20240704-dev-iio-ad9467-new-devs-v1-3-f1adfee921f7@analog.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,67 +64,36 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 4 Jul 2024 11:25:21 +0200
+On Thu, 4 Jul 2024 11:25:23 +0200
 Nuno Sa <nuno.sa@analog.com> wrote:
 
-> The calibration process mixes the support for calibrating multiple
-> channels with only having one channel. Some paths do have 'num_channels'
-> into account while others don't.
+> If there's only one possible scale, there's no way to change the Vref
+> select in the device so avoid reading the register in ad9467_get_scale().
+> In this case, it makes no sense to provide the .read_available()
+> callback nor allowing for writing the scale attribute.
 > 
-> As of now, the driver only supports devices with one channel so the
-> above is not really a problem. That said, we'll add support for devices
-> with more than one channel, hence let's properly make the calibration
-> process to work with it.
+> Note this is in preparation for supporting a new device that only has
+> one possible scale.
 > 
 > Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Hi Nuno,
 
-Not suggesting you change it here, but one place where I think
-the existing code readability could be improved.
-
->  static int ad9467_calibrate(struct ad9467_state *st)
+Trivial comment inline. If nothing else comes up I might just tweak it
+whilst applying.
+>  
+>  static const struct ad9467_chip_info ad9467_chip_tbl = {
+> @@ -301,9 +301,13 @@ static const struct ad9467_chip_info ad9265_chip_tbl = {
+>  static int ad9467_get_scale(struct ad9467_state *st, int *val, int *val2)
 >  {
-> -	unsigned int point, val, inv_val, cnt, inv_cnt = 0;
-> +	unsigned int point, val, inv_val, cnt, inv_cnt = 0, c;
+>  	const struct ad9467_chip_info *info = st->info;
+> -	unsigned int i, vref_val;
+> +	unsigned int i = 0, vref_val;
+This time it's in new code.
+	unsigned int vref_val;
+	unsigned int i = 0;
 
-Comment on existing code. I'm not keen on mix of assignment and non
-assignment in a single line of local variable declarations.
-It can get hard to spot what is assigned!
+preferred so the assignment isn't burried.
 
->  	/*
->  	 * Half of the bitmap is for the inverted signal. The number of test
->  	 * points is the same though...
-> @@ -526,11 +546,26 @@ static int ad9467_calibrate(struct ad9467_state *st)
->  		if (ret)
->  			return ret;
+>  	int ret;
 >  
-> -		ret = iio_backend_chan_status(st->back, 0, &stat);
-> -		if (ret)
-> -			return ret;
-> +		for (c = 0; c < st->info->num_channels; c++) {
-> +			ret = iio_backend_chan_status(st->back, c, &stat);
-> +			if (ret)
-> +				return ret;
->  
-> -		__assign_bit(point + invert * test_points, st->calib_map, stat);
-> +			/*
-> +			 * A point is considered valid if all channels report no
-> +			 * error. If one reports an error, then we consider the
-> +			 * point as invalid and we can break the loop right away.
-> +			 */
-> +			if (stat) {
-> +				dev_dbg(dev, "Invalid point(%u, inv:%u) for CH:%u\n",
-> +					point, invert, c);
-> +				break;
-> +			}
-> +
-> +			if (c == st->info->num_channels - 1)
-> +				__clear_bit(point + invert * test_points,
-> +					    st->calib_map);
-> +		}
->  	}
->  
->  	if (!invert) {
-> 
 
 

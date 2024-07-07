@@ -1,47 +1,47 @@
-Return-Path: <linux-iio+bounces-7396-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7397-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2869929804
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 15:05:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F31929818
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 15:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F09E1C2082D
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 13:05:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B7EC282053
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 13:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 698201F947;
-	Sun,  7 Jul 2024 13:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D73620DCB;
+	Sun,  7 Jul 2024 13:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WcDbMQ2H"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UuHfne8S"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234631DFD0;
-	Sun,  7 Jul 2024 13:05:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CF5210E4;
+	Sun,  7 Jul 2024 13:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720357544; cv=none; b=q+hQiCGFHJsb72xW0fmXCMV2pVMStRhEE2JvElCIjcYpGZfXFq7HzwXJKBOXjOr6CoRggbz4aTx7LkgA9+CrqpqLm35JFGcW0Rej61jawDUMeVkPIe7VQHepgnwmdwiYxENuM7eDjmi6dRzXl1gJMs7+DEuhulf27bAbpO8jLFg=
+	t=1720358057; cv=none; b=pCTsJdjCAYmCbZCT1qIQGXe6n+EwIVPga060ESTihQFvebEAczdrM2pTubPRrGhYmIuO3SCLwilI3INTWRRm9KMONcPzlMuQgxUG/+VCWU/HcbKRauBdffctCPfOBmXZdIE0K6bztI06POZ24bCNMsgDMfqVbo0FencxCyClLnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720357544; c=relaxed/simple;
-	bh=M+lisCp633+M0Z1/hAPSKFqxu14ftfZ2Hy+tPvtAqzk=;
+	s=arc-20240116; t=1720358057; c=relaxed/simple;
+	bh=BBQT9o8bXWzBYLEg/2ibzEJ8MHtapLUOHuUVrNbntjY=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pHssgFBG7q+4aDpDDDCyN1/BNp+jVuCgzQSAVTUrZblciXt8EEjjVDoPApSd7DGJccRXX1mwxncP3fVs+hqIkt8I67JRiaCX7af4EWT8hBGhC7y4PNrq36TdxNmWZXm+I/6pA99B3dcyBTpRVfthLhF1z5Z5R/lzR9gixrziCko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WcDbMQ2H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB587C3277B;
-	Sun,  7 Jul 2024 13:05:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r3RjQlVs6hwP9r4dn2hCPLyMi5ej2CIpUxSEiE7IyYnd2uwsYbCct5hpA+BkObNB6a8/t3b64jTEV+iz335AjZLhuV1hhTXcoR2eAyeZLBjQUnOMAjvJDlZ69qdmLO7qMpJBoUqL5y8C5CLyhZerNWz7t6Pmbjj32m1MDoRkbew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UuHfne8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3408EC3277B;
+	Sun,  7 Jul 2024 13:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720357543;
-	bh=M+lisCp633+M0Z1/hAPSKFqxu14ftfZ2Hy+tPvtAqzk=;
+	s=k20201202; t=1720358056;
+	bh=BBQT9o8bXWzBYLEg/2ibzEJ8MHtapLUOHuUVrNbntjY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WcDbMQ2HNa67OHKexKGMJ0bAjIAni2o4mKq6NVQIt48oR3YZxbkAFbhunpl5JeA+D
-	 KM93mIlYPVLrat/0K2cfiUSmrmVgppxTyc/kcHWaLd/bLpCvU7LVqyk8Y8rZyAmv7G
-	 KwxPc/uu3NQBvvrErp598+40HK7MFlBh30/uSZLsZAK/3aailDV+MT513giKxo0ARU
-	 g8QiS8Gh+Uuz1tUKpDS/Cfe2mkdNI460M4Nm9lqHBbmSZ0CuasjD7E/OGGpl9Xxwa5
-	 ZfbjXlCA12vYD9xJpCdamnpsfk4x+GZUZKifwDa3lP/0NDlZJ7MWe4VTO2R/wjJizv
-	 7AGNWShD0y+zA==
-Date: Sun, 7 Jul 2024 14:05:36 +0100
+	b=UuHfne8SRi3T/moNEqYz6Wv/3dJWpoKHAzlBMZABwjIz/7VNxJfZbpg3Hnhx5SQan
+	 Il7XwP9f/1UWO0dwkiSlfMHTewTowrGOaPszcOQR4q4/nIqlqsQO6+t3IIpsjpYter
+	 fJ6s0Tv9NNMSJqGbLjTT1ctTXP9MqFgBjICMU306DJVoql8bhi54MhNLowDrDCSGZy
+	 KCCYUH46POVgYcFVEN6oLQRwetzFyqm/Ub+PGwQjUOAHQgYblkXCoZuUPzezdU4gs6
+	 wbvesqTN8IM27uD4gZoDJzVLK6t6l3QbLJvC0pZdA2lF07+8ZWjOOpZ/OVRJC59kPX
+	 fuSWO81nUk6sg==
+Date: Sun, 7 Jul 2024 14:14:10 +0100
 From: Jonathan Cameron <jic23@kernel.org>
 To: Matti Vaittinen <mazziesaccount@gmail.com>
 Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
@@ -49,11 +49,11 @@ Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>, Lars-Peter Clausen
  <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
  linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] dt-bindings: iio: BU27034 => BU27034ANUC
-Message-ID: <20240707140536.1dbb989b@jic23-huawei>
-In-Reply-To: <c39f9c67b3c07a27d7a13109c7b69cff9cfd2b9b.1720176341.git.mazziesaccount@gmail.com>
+Subject: Re: [PATCH v2 7/7] iio: bu27034: Add a read only HWARDWAREGAIN
+Message-ID: <20240707141410.16e6dbbe@jic23-huawei>
+In-Reply-To: <ec349847cc994f3bd632e99b408a31e7c70581d0.1720176341.git.mazziesaccount@gmail.com>
 References: <cover.1720176341.git.mazziesaccount@gmail.com>
-	<c39f9c67b3c07a27d7a13109c7b69cff9cfd2b9b.1720176341.git.mazziesaccount@gmail.com>
+	<ec349847cc994f3bd632e99b408a31e7c70581d0.1720176341.git.mazziesaccount@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,84 +64,95 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 5 Jul 2024 13:54:12 +0300
+On Fri, 5 Jul 2024 13:55:49 +0300
 Matti Vaittinen <mazziesaccount@gmail.com> wrote:
 
-> The BU27034NUC was cancelled before it entered mass production. It was
-> replaced by a new variant BU27034ANUC (note, added 'A'). The new
-> variant gained a few significant changes, like removal of the 3.rd data
-> channel and dropping some of the gain settings. This means that, from
-> software point of view these ICs are incompatible. Lux calculation based
-> on the data from the sensors needs to be done differently, and on the
-> BU27034ANUC the channel 3 data is missing. Also, the gain setting
-> differencies matter.
+Typo in patch title. If nothing much else comes up I can fix whilst applying.
+
+> The ROHM BU27034 light sensor has two data channels for measuring
+> different frequencies of light. The result from these channels is
+> combined into Lux value while the raw channel values are reported via
+> intensity channels.
 > 
-> Unfortunately, the identification register was not changed so there is no
-> safe way for the software to distinguish the variants.
+> Both of the intensity channels have adjustable gain setting which
+> impacts the scale of the raw channels. Eg, doubling the gain will double
+> the values read from the raw channels, which halves the scale value. The
+> integration time can also be set for the sensor. This does also have an
+> impact to the scale of the intensity channels because increasing the
+> integration time will also increase the values reported via the raw
+> channels.
 > 
-> According to the ROHM HQ engineers, the old BU27034NUC should not be
-> encountered in the wild. Hence it makes sense to remove the support for
-> the old BU27034NUC and add support for the new BU27034ANUC. Change the
-> compatible in order to not load the incompatible old driver for new sensor
-> (or, if someone had the old sensor, the new driver for it).
+> Impact of integration time to the scale and the fact that the scale value
+> does not start from '1', can make it hard for a human reader to compute the
+> gain values based on the scale.
 > 
-> Drop the compatible for old sensor which should not be in the wild and
-> add a new compatible for the new model with accurate model suffix
-> 'anuc'.
+> Add read-only HARDWAREGAIN to help debugging.
 > 
 > Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
-Rename indeed makes sense.  One minor, 'whilst you are here' comment inline.
+
+Rest of this series looks good to me and I'm fine making appropriate tweaks
+for stuff I identified whilst applying.
+
+Will give a bit of time for DT maintainers to look at the renames and check
+we haven't missed anything subtle there.
+
+Jonathan
+
 
 > 
 > ---
-> A patch renaming the file according to the new compatible will follow.
-> If renaming is not needed or appropriate, that patch can be dropped.
-> 
 > Revision history:
-> v2: New patch
+> v1 => v2:
+>  - fix switch case fallthrough warning by adding explicit return
 > ---
->  .../devicetree/bindings/iio/light/rohm,bu27034.yaml      | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
+>  drivers/iio/light/rohm-bu27034.c | 15 ++++++++++++++-
+>  1 file changed, 14 insertions(+), 1 deletion(-)
 > 
-> diff --git a/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml b/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
-> index 30a109a1bf3b..535bd18348ac 100644
-> --- a/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
-> +++ b/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
-> @@ -4,20 +4,19 @@
->  $id: http://devicetree.org/schemas/iio/light/rohm,bu27034.yaml#
->  $schema: http://devicetree.org/meta-schemas/core.yaml#
+> diff --git a/drivers/iio/light/rohm-bu27034.c b/drivers/iio/light/rohm-bu27034.c
+> index ec4f9bef83f8..76711c3cdf7c 100644
+> --- a/drivers/iio/light/rohm-bu27034.c
+> +++ b/drivers/iio/light/rohm-bu27034.c
+> @@ -148,7 +148,8 @@ static const struct iio_itime_sel_mul bu27034_itimes[] = {
+>  	.type = IIO_INTENSITY,						\
+>  	.channel = BU27034_CHAN_##_name,				\
+>  	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |			\
+> -			      BIT(IIO_CHAN_INFO_SCALE),			\
+> +			      BIT(IIO_CHAN_INFO_SCALE) |		\
+> +			      BIT(IIO_CHAN_INFO_HARDWAREGAIN),		\
+>  	.info_mask_separate_available = BIT(IIO_CHAN_INFO_SCALE),	\
+>  	.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),		\
+>  	.info_mask_shared_by_all_available =				\
+> @@ -989,6 +990,13 @@ static int bu27034_read_raw(struct iio_dev *idev,
 >  
-> -title: ROHM BU27034 ambient light sensor
-> +title: ROHM BU27034ANUC ambient light sensor
+>  		return IIO_VAL_INT_PLUS_MICRO;
 >  
->  maintainers:
->    - Matti Vaittinen <mazziesaccount@gmail.com>
+> +	case IIO_CHAN_INFO_HARDWAREGAIN:
+> +		ret = bu27034_get_gain(data, chan->channel, val);
+> +		if (ret)
+> +			return ret;
+> +
+> +		return IIO_VAL_INT;
+> +
+>  	case IIO_CHAN_INFO_SCALE:
+>  		return bu27034_get_scale(data, chan->channel, val, val2);
 >  
->  description: |
-> -  ROHM BU27034 is an ambient light sesnor with 3 channels and 3 photo diodes
-> +  ROHM BU27034ANUC is an ambient light sesnor with 2 channels and 2 photo diodes
-
- sensor
-
->    capable of detecting a very wide range of illuminance. Typical application
->    is adjusting LCD and backlight power of TVs and mobile phones.
-> -  https://fscdn.rohm.com/en/products/databook/datasheet/ic/sensor/light/bu27034nuc-e.pdf
+> @@ -1033,12 +1041,17 @@ static int bu27034_write_raw_get_fmt(struct iio_dev *indio_dev,
+>  				     struct iio_chan_spec const *chan,
+>  				     long mask)
+>  {
+> +	struct bu27034_data *data = iio_priv(indio_dev);
 >  
->  properties:
->    compatible:
-> -    const: rohm,bu27034
-> +    const: rohm,bu27034anuc
->  
->    reg:
->      maxItems: 1
-> @@ -37,7 +36,7 @@ examples:
->        #size-cells = <0>;
->  
->        light-sensor@38 {
-> -        compatible = "rohm,bu27034";
-> +        compatible = "rohm,bu27034anuc";
->          reg = <0x38>;
->          vdd-supply = <&vdd>;
->        };
+>  	switch (mask) {
+>  	case IIO_CHAN_INFO_SCALE:
+>  		return IIO_VAL_INT_PLUS_NANO;
+>  	case IIO_CHAN_INFO_INT_TIME:
+>  		return IIO_VAL_INT_PLUS_MICRO;
+> +	case IIO_CHAN_INFO_HARDWAREGAIN:
+> +		dev_dbg(data->dev,
+> +			"HARDWAREGAIN is read-only, use scale to set\n");
+> +		return -EINVAL;
+>  	default:
+>  		return -EINVAL;
+>  	}
 
 

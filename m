@@ -1,55 +1,55 @@
-Return-Path: <linux-iio+bounces-7412-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7413-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 455B99298BF
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 18:05:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B55D09298C4
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 18:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4292D1C208A8
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 16:05:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC47D1C20A9A
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 16:14:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C5137700;
-	Sun,  7 Jul 2024 16:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8596A3B182;
+	Sun,  7 Jul 2024 16:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f+BCGpPn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G45BwIe6"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2BCDEDC;
-	Sun,  7 Jul 2024 16:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4162FEDC;
+	Sun,  7 Jul 2024 16:14:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720368324; cv=none; b=chCG0tAyZ8a7voAwEF4g746SFduMe0Mu79TED/vDefZecmLSnVNsR4DA8nbJytzZSjnRcclGOLVm3+iLCI/nCVuFAfKhhhf9mua4RhRKlPEYYoR0td1fVaG1B80ur3dhrGc+/ywS62+wVHfdkoNBx/gALTLsO0H8PCNURkAo7Us=
+	t=1720368845; cv=none; b=NhKAQ+3MqVP2MvwYgmfb4PWbVr5AIc2vHwbXzoWVTCJuuC+HxjjKgIzQG5Q4ejW//lAJV+aZdsyowkJmNgSTfzDizvmKg8rau453M0cGna5lMUrA8fah6wW3OnAWjd/W4AXuwi4hvxFEZJu+F6y8bV6Sk9J7ogSvHUXy/U0Jev4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720368324; c=relaxed/simple;
-	bh=Lkcda6feLFehLcPTehFJduuyzJx0786EXxF12GUBEJQ=;
+	s=arc-20240116; t=1720368845; c=relaxed/simple;
+	bh=SGfAfotsObQDE0V5a4bD2FVMR3CwTpb3bLyNXcJBlb8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s4g2A3MlRR7Ndg0WMEmOrGjcsnpk8uDK1nelBluXBl7ExjgL2cCbE0M5hqYCLn+99+Df7Mv2qLtvcoOLpVJ/85xg1A773fLiikhj0YjazvbJBvuOkeWiqaunawIzrS8bdk8Qw5VFL1RsDPF/jmanYe+piD0V4O9PmLSzfHUvCLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f+BCGpPn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB3FFC3277B;
-	Sun,  7 Jul 2024 16:05:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=o/nHIS3YfHINM0cRJvndtZHNrNAQvHxgEm5EDwQa0ZoqNxzA8TW3hT6o8f4l/CXVGFb1gytNVr07xRanbW23IY0wyuV49ocQJbxH6m3jWauyYaTibGtaHJn8NMfyTjwadmV8X4+6h0PnqUgZxsxtMADZ9fJ8m1z8qSET746xnzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G45BwIe6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C0CC3277B;
+	Sun,  7 Jul 2024 16:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720368323;
-	bh=Lkcda6feLFehLcPTehFJduuyzJx0786EXxF12GUBEJQ=;
+	s=k20201202; t=1720368844;
+	bh=SGfAfotsObQDE0V5a4bD2FVMR3CwTpb3bLyNXcJBlb8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=f+BCGpPnIlEU++hllnoHTOVOVRqbIdrjH8AYrx62thtcVli+6PL72+HYLt22mltcL
-	 lhWuBlVuu1Ks/6GxLcqOunur9uPMHRiZTYdjFDqw8ILn4zronkLc8St7/GuPbDj4zj
-	 C2j8P7HLeHOvSSbLIlbGsjzlRb7/RZ5a6HcTR89xZi4hBfAJJuFwa4KHDW3z5tqtvf
-	 SmcbsfvVwCfzmdZx3abDw8fkg4JlEWhU+rZY9KLKN1rduueszar1E2FPaAZB52BEFi
-	 MArCQRt4n/MgVQ4d63r5DGTIf851vdCSlWC/XijwTmOLYNpK4NT2n3MKKi46fhUtJu
-	 4wndx4NYAY8pw==
-Date: Sun, 7 Jul 2024 17:05:16 +0100
+	b=G45BwIe6Ete3Uwt+tZw6Sh/F+n7FlHLrTP64/n3Wv0p1LK113RLpxT3saQxBygXRv
+	 sN8iPQiKrTMI1hRiDoNWVGvcB4s6mVDmmQhA58om1ZyTqlHOI38bg/SGu1KJBKlbHz
+	 M4U7gFNYWtwWET9GxFnEAE1lLb8WDl13p/9Z8xBWOi5xcMSQ1G261Ccvhr0m/W4PGf
+	 3QJVrDLKlWNWxgYwIOYpKDdGtQ2xpfBUPOPf7Mmj0bHfHXoDpSN06X9+6yP/rnD6Xt
+	 668LdqsnMfTZ7A5RrvvicPgubJsjtgGn3COl5eQ67OtkzkBxrApma+4JqQVsHetM9O
+	 A19KLTFP9EmHQ==
+Date: Sun, 7 Jul 2024 17:13:57 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, <linux-iio@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ABI: testing: fix admv8818 attr description
-Message-ID: <20240707170516.49e17d19@jic23-huawei>
-In-Reply-To: <20240702081851.4663-1-antoniu.miclaus@analog.com>
-References: <20240702081851.4663-1-antoniu.miclaus@analog.com>
+To: Abhash Jha <abhashkumarjha123@gmail.com>
+Cc: linux-iio@vger.kernel.org, lars@metafoo.de, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] iio: light: apds9960: Add proximity and gesture offset
+ calibration
+Message-ID: <20240707171357.709d9e35@jic23-huawei>
+In-Reply-To: <20240702115648.160511-1-abhashkumarjha123@gmail.com>
+References: <20240702115648.160511-1-abhashkumarjha123@gmail.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -60,31 +60,79 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 2 Jul 2024 11:18:50 +0300
-Antoniu Miclaus <antoniu.miclaus@analog.com> wrote:
+On Tue,  2 Jul 2024 17:26:48 +0530
+Abhash Jha <abhashkumarjha123@gmail.com> wrote:
 
-> Fix description of the filter_mode_available attribute by pointing to
-> the correct name of the attribute that can be written with valid values.
+> Proximity and gesture offset registers perform offset correction to improve
+> cross-talk performance. Add support for reading from and writing to
+> proximity and gesture offset registers. Create sysfs attributes for
+> them via iio to expose them to userspace.
 > 
-> Fixes: bf92d87 ("iio:filter:admv8818: Add sysfs ABI documentation")
-> Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
-Applied.
+> Signed-off-by: Abhash Jha <abhashkumarjha123@gmail.com>
+
+All custom ABI needs documentation in
+Documentation/ABI/testing/sysfs-bus-iio-* 
+where * is appropriate scoped - here probably device.
+
+Key thing is that custom documentation == custom userspace code ==
+never used by 99% of users.
+
+So we need to think very hard about whether we can map it to standard
+ABI, or if it deserves new standard ABI (which will eventually make it
+into userspace tools).
+
+That's a hard discussion to have without documentation
+
+Consider in particular if calibbias can work for these as it sounds
+superficially similar to what the datasheet is talking about.
+
+
+
 > ---
->  Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818 | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/iio/light/apds9960.c | 245 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 245 insertions(+)
 > 
-> diff --git a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818 b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
-> index 31dbb390573f..c431f0a13cf5 100644
-> --- a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
-> +++ b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
-> @@ -3,7 +3,7 @@ KernelVersion:
->  Contact:	linux-iio@vger.kernel.org
->  Description:
->  		Reading this returns the valid values that can be written to the
-> -		on_altvoltage0_mode attribute:
-> +		filter_mode attribute:
+> diff --git a/drivers/iio/light/apds9960.c b/drivers/iio/light/apds9960.c
+> index 1065a340b..bccf9a8c7 100644
+> --- a/drivers/iio/light/apds9960.c
+> +++ b/drivers/iio/light/apds9960.c
+> @@ -101,6 +101,10 @@
+>  #define APDS9960_MAX_ALS_THRES_VAL	0xffff
+>  #define APDS9960_MAX_INT_TIME_IN_US	1000000
 >  
->  		- auto -> Adjust bandpass filter to track changes in input clock rate.
->  		- manual -> disable/unregister the clock rate notifier / input clock tracking.
+> +/* MIN and MAX offset from pg: 26 of the datasheet */
+> +#define MIN_OFFSET -127
+> +#define MAX_OFFSET 127
+S8_MIN, S8_MAX
+probably appropriate here.
+
+
+
+> +static IIO_DEVICE_ATTR(proximity_offset_ur, S_IRUGO | S_IWUSR, apds9960_proximity_offset_ur_show, apds9960_proximity_offset_ur_store, 0);
+> +static IIO_DEVICE_ATTR(proximity_offset_dl, S_IRUGO | S_IWUSR, apds9960_proximity_offset_dl_show, apds9960_proximity_offset_dl_store, 0);
+> +static IIO_DEVICE_ATTR(gesture_offset_u, S_IRUGO | S_IWUSR, apds9960_gesture_offset_u_show, apds9960_gesture_offset_u_store, 0);
+> +static IIO_DEVICE_ATTR(gesture_offset_d, S_IRUGO | S_IWUSR, apds9960_gesture_offset_d_show, apds9960_gesture_offset_d_store, 0);
+> +static IIO_DEVICE_ATTR(gesture_offset_l, S_IRUGO | S_IWUSR, apds9960_gesture_offset_l_show, apds9960_gesture_offset_l_store, 0);
+> +static IIO_DEVICE_ATTR(gesture_offset_r, S_IRUGO | S_IWUSR, apds9960_gesture_offset_r_show, apds9960_gesture_offset_r_store, 0);
+Very long lines.  Try to keep under 80 chars unless there is a good reason
+(readability mainly).  here I'm not seeing one.
+
+Also, the kernel is moving away from symbols for permissions as
+checkpatch would I think have told you..
+
+> +
+>  static struct attribute *apds9960_attributes[] = {
+>  	&iio_const_attr_proximity_scale_available.dev_attr.attr,
+>  	&iio_const_attr_intensity_scale_available.dev_attr.attr,
+>  	&iio_const_attr_integration_time_available.dev_attr.attr,
+> +	&iio_dev_attr_proximity_offset_ur.dev_attr.attr,
+> +	&iio_dev_attr_proximity_offset_dl.dev_attr.attr,
+> +	&iio_dev_attr_gesture_offset_u.dev_attr.attr,
+> +	&iio_dev_attr_gesture_offset_d.dev_attr.attr,
+> +	&iio_dev_attr_gesture_offset_l.dev_attr.attr,
+> +	&iio_dev_attr_gesture_offset_r.dev_attr.attr,
+>  	NULL,
+>  };
+>  
 
 

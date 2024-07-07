@@ -1,59 +1,58 @@
-Return-Path: <linux-iio+bounces-7410-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7411-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DED9298B8
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 17:57:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B40E9298BB
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 18:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5849284E17
-	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 15:57:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C2071F2101B
+	for <lists+linux-iio@lfdr.de>; Sun,  7 Jul 2024 16:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804143B79C;
-	Sun,  7 Jul 2024 15:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC7C2E64B;
+	Sun,  7 Jul 2024 16:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIxA49Ji"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NpfkRWkV"
 X-Original-To: linux-iio@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E091865B;
-	Sun,  7 Jul 2024 15:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5928A28EA;
+	Sun,  7 Jul 2024 16:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720367829; cv=none; b=oAXJxxQqKNK6e7GwNd9Do35SfYNXacHYDA/o/bZk8vF5kbbtr3iKFER+SIU369aK2LBbwm8xVCVPU+mR4TpEHOh+rsWCRqQi7XiTtCNSHZvTcXHoKMsjlQYgQ+6PaDxakUKGkNA7dYNiufMHG/8TGt+o9KQeYc4U/dcRGYdC3pI=
+	t=1720368188; cv=none; b=Uyjhgfh1yQ+5vXbaNGvISfNKG7gfdgJsPG5MR1tlwsidmvXyc41wVTHoDZ6E3ctaqCJOYJ2TwQq0Xyskap+zJuZt4NtcJr+wa7XsKPoTUxSm83m1PzL+PHu0JuALompKOVXUxkzdr0bGESY6+9SOjhWqqXULmAA64fNjGr6j2QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720367829; c=relaxed/simple;
-	bh=DTdvOgwG23eVmAx9XhyNfEBKt3kTMhzJMd4iX1LvhOs=;
+	s=arc-20240116; t=1720368188; c=relaxed/simple;
+	bh=7Zh/BdC70mcdgFjK67+A5h+GYA7oU9qGfd1HQ+JVvb8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=llAf5JbkgDE6i4TMGeely4wpAuqDWSk70A7GCROrOO1Xo4g9tHXPBrHtrACIg3N7HV7NizI5MwmhT2UkOiz/yyyDyvzRb8UndTp4M97uOszQMVEkYP4/2Aeyl63/Wr5LCSG+I6NH256bUaHSQ5Z81OJSRYbciYnqM22Ay3KkONU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIxA49Ji; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 233B6C3277B;
-	Sun,  7 Jul 2024 15:57:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=twKTY+TYjG+U15fXSlGtY+kYeBS65Zmu+/F5HZqq+ypxQPWWzzqGv5HhPX+V4oJnyh7D+4GahUc0BvboX0cJbWSkTmmTBLUkzRxujOqag4z93DVHJoO3R8uMCviPZoI4/KTnrM1VRnkMzuUTMdn35zsFsRhLTXTJLE+hQloJWCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NpfkRWkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE1DC3277B;
+	Sun,  7 Jul 2024 16:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720367828;
-	bh=DTdvOgwG23eVmAx9XhyNfEBKt3kTMhzJMd4iX1LvhOs=;
+	s=k20201202; t=1720368187;
+	bh=7Zh/BdC70mcdgFjK67+A5h+GYA7oU9qGfd1HQ+JVvb8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=KIxA49JiolXzXE0VrpFZBE2qQTrsEOsj9ojKRRxMfSlmEWGjLt3oAcbH6498YH1/z
-	 Nl7xfhDkDDNEst54YRx5fbqTxdpD+QVAXKja/TQQp8IVXMyv+I/8QdDXWk7+EhQZA/
-	 G0dVdWsmi4E76dMjZoksIcYcryD0w10ukWzqp85HMDuTSyrru0yI2ZK1OUTEOL3mFT
-	 JyOlsM1gg5XVByJW4/B8aQ4B6W7ONX6vOvjV15LFJZybStsmFb8y5zXkDVMsr28XmY
-	 M1OyE9kd/o/blaUFJLmClzjm5yK9S+Y5Pylc8MDhImmcNRD4aZMeQD1f0fdyQBUF3b
-	 PnKK6bKITHjcw==
-Date: Sun, 7 Jul 2024 16:57:00 +0100
+	b=NpfkRWkVBkHdgXreGQ0CXV4pmoBgFiCmrA4ADKn2pKkV2srCefCJO/zOJyZUPTvBl
+	 TUc3m1wYBTQHc+lAm7hUdyMumhKmgwoYosQ4K36t7NohnVSc4EgbNRCV+p3hs+DVei
+	 /NZSW5mD2RvM4LbCb5eLn4siYjufwY79bbrZND0AH8Z+3ZRO53YF9QXaZAkEXVdd0X
+	 3pIWyKqD9VbX5ktCVXws8NglXUJQvc9zGCrfJG/KRtF/Nyk+vhrQacpfCe7GgV6Fvi
+	 CJ44vlO31ADWG4aq8/0IB9XwGJp+XNTAskswZAjGiT/UnGOHjXRyZ0jAuch6MOQOiQ
+	 y/NM3/f9ce3cw==
+Date: Sun, 7 Jul 2024 17:02:59 +0100
 From: Jonathan Cameron <jic23@kernel.org>
-To: Yasin Lee <yasin.lee.x@gmail.com>
-Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, Lars-Peter Clausen <lars@metafoo.de>,
- yasin.lee.x@outlook.com, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-iio@vger.kernel.org
-Subject: Re: [PATCH v9 3/3] iio: proximity: Add driver support for TYHX's
- HX9023S capacitive proximity sensor
-Message-ID: <20240707165700.76896f6b@jic23-huawei>
-In-Reply-To: <20240702-add-tyhx-hx9023s-sensor-driver-v9-3-c030f1801d9b@gmail.com>
-References: <20240702-add-tyhx-hx9023s-sensor-driver-v9-0-c030f1801d9b@gmail.com>
-	<20240702-add-tyhx-hx9023s-sensor-driver-v9-3-c030f1801d9b@gmail.com>
+To: Guillaume Stols <gstols@baylibre.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, Greg Kroah-Hartman <gregkh@suse.de>,
+ linux-iio@vger.kernel.org, linux-kernel@vger.kernel.org, Jonathan Cameron
+ <jic23@cam.ac.uk>, jstephan@baylibre.com, dlechner@baylibre.com
+Subject: Re: [PATCH v3] iio: adc: ad7606: remove frstdata check for serial
+ mode
+Message-ID: <20240707170259.5505e8c3@jic23-huawei>
+In-Reply-To: <20240702-cleanup-ad7606-v3-1-18d5ea18770e@baylibre.com>
+References: <20240702-cleanup-ad7606-v3-1-18d5ea18770e@baylibre.com>
 X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
@@ -64,470 +63,208 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Tue, 02 Jul 2024 22:12:34 +0800
-Yasin Lee <yasin.lee.x@gmail.com> wrote:
+On Tue, 02 Jul 2024 12:52:51 +0000
+Guillaume Stols <gstols@baylibre.com> wrote:
 
-> A SAR sensor from NanjingTianyihexin Electronics Ltd.
+> The current implementation attempts to recover from an eventual glitch
+> in the clock by checking frstdata state after reading the first
+> channel's sample: If frstdata is low, it will reset the chip and
+> return -EIO.
 > 
-> The device has the following entry points:
+> This will only work in parallel mode, where frstdata pin is set low
+> after the 2nd sample read starts.
 > 
-> Usual frequency:
-> - sampling_frequency
+> For the serial mode, according to the datasheet, "The FRSTDATA output
+> returns to a logic low following the 16th SCLK falling edge.", thus
+> after the Xth pulse, X being the number of bits in a sample, the check
+> will always be true, and the driver will not work at all in serial
+> mode if frstdata(optional) is defined in the devicetree as it will
+> reset the chip, and return -EIO every time read_sample is called.
 > 
-> Instant reading of current values for different sensors:
-> - in_proximity0_raw
-> - in_proximity1_raw
-> - in_proximity2_raw
-> - in_proximity3_raw
-> - in_proximity4_raw
-> and associated events in events/
+> Hence, this check must be removed for serial mode.
 > 
-> Signed-off-by: Yasin Lee <yasin.lee.x@gmail.com>
+> Fixes: b9618c0cacd7 ("staging: IIO: ADC: New driver for AD7606/AD7606-6/AD7606-4")
+> 
+No blank line here. Fixes is part of the tag block and some tooling
+falls over if it sees a blank line. 
 
-Hi Yasin, A few comments inline, but rather than waste time getting you to do
-a v10, I've made the following modes. Please check them (it wouldn't be the first
-time if I've messed something up with 'trivial' tidy up!)
+There are bots checking this on upstream trees btw.
 
-With this change set applied to the testing branch of iio.git.
-I'll be rebasing on 6.11-rc1 once available at which point this will be in the togreg
-branch and picked up by linux-next.
+With that blank line removed, applied to the fixes-togreg branch of iio.git and
+marked for stable.  Note I might not do a pull request until the merge window
+is over as I don't have anything particularly urgent and it can get messy!
 
 Thanks,
 
 Jonathan
 
-
-diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
-index e3f3fee2c94a..63e3b56d4f4c 100644
---- a/drivers/iio/proximity/hx9023s.c
-+++ b/drivers/iio/proximity/hx9023s.c
-@@ -312,16 +312,19 @@ static int hx9023s_interrupt_disable(struct hx9023s_data *data)
- static int hx9023s_data_lock(struct hx9023s_data *data, bool locked)
- {
- 	if (locked)
--		return regmap_update_bits(data->regmap, HX9023S_DSP_CONFIG_CTRL1,
--					HX9023S_DATA_LOCK_MASK, HX9023S_DATA_LOCK_MASK);
-+		return regmap_update_bits(data->regmap,
-+					  HX9023S_DSP_CONFIG_CTRL1,
-+					  HX9023S_DATA_LOCK_MASK,
-+					  HX9023S_DATA_LOCK_MASK);
- 	else
--		return regmap_update_bits(data->regmap, HX9023S_DSP_CONFIG_CTRL1,
--					HX9023S_DATA_LOCK_MASK, 0);
-+		return regmap_update_bits(data->regmap,
-+					  HX9023S_DSP_CONFIG_CTRL1,
-+					  HX9023S_DATA_LOCK_MASK, 0);
- }
- 
- static int hx9023s_ch_cfg(struct hx9023s_data *data)
- {
--	u8 reg_list[HX9023S_CH_NUM * 2];
-+	__le16 reg_list[HX9023S_CH_NUM];
- 	u8 ch_pos[HX9023S_CH_NUM];
- 	u8 ch_neg[HX9023S_CH_NUM];
- 	/* Bit positions corresponding to input pin connections */
-@@ -336,10 +339,11 @@ static int hx9023s_ch_cfg(struct hx9023s_data *data)
- 			HX9023S_NOT_CONNECTED : conn_cs[data->ch_data[i].channel_negative];
- 
- 		reg = (HX9023S_POS << ch_pos[i]) | (HX9023S_NEG << ch_neg[i]);
--		put_unaligned_le16(reg, &reg_list[i * 2]);
-+		reg_list[i] = cpu_to_le16(reg);
- 	}
- 
--	return regmap_bulk_write(data->regmap, HX9023S_CH0_CFG_7_0, reg_list, HX9023S_CH_NUM * 2);
-+	return regmap_bulk_write(data->regmap, HX9023S_CH0_CFG_7_0, reg_list,
-+				 sizeof(reg_list));
- }
- 
- static int hx9023s_write_far_debounce(struct hx9023s_data *data, int val)
-@@ -387,17 +391,17 @@ static int hx9023s_read_near_debounce(struct hx9023s_data *data, int *val)
- static int hx9023s_get_thres_near(struct hx9023s_data *data, u8 ch, int *val)
- {
- 	int ret;
--	u8 buf[2];
-+	__le16 buf;
- 	unsigned int reg, tmp;
- 
- 	reg = (ch == 4) ? HX9023S_PROX_HIGH_DIFF_CFG_CH4_0 :
- 		HX9023S_PROX_HIGH_DIFF_CFG_CH0_0 + (ch * 2);
- 
--	ret = regmap_bulk_read(data->regmap, reg, buf, sizeof(buf));
-+	ret = regmap_bulk_read(data->regmap, reg, &buf, sizeof(buf));
- 	if (ret)
- 		return ret;
- 
--	tmp = (get_unaligned_le16(buf) & GENMASK(9, 0)) * 32;
-+	tmp = (le16_to_cpu(buf) & GENMASK(9, 0)) * 32;
- 	data->ch_data[ch].thres.near = tmp;
- 	*val = tmp;
- 
-@@ -407,17 +411,17 @@ static int hx9023s_get_thres_near(struct hx9023s_data *data, u8 ch, int *val)
- static int hx9023s_get_thres_far(struct hx9023s_data *data, u8 ch, int *val)
- {
- 	int ret;
--	u8 buf[2];
-+	__le16 buf;
- 	unsigned int reg, tmp;
- 
- 	reg = (ch == 4) ? HX9023S_PROX_LOW_DIFF_CFG_CH4_0 :
- 		HX9023S_PROX_LOW_DIFF_CFG_CH0_0 + (ch * 2);
- 
--	ret = regmap_bulk_read(data->regmap, reg, buf, sizeof(buf));
-+	ret = regmap_bulk_read(data->regmap, reg, &buf, sizeof(buf));
- 	if (ret)
- 		return ret;
- 
--	tmp = (get_unaligned_le16(buf) & GENMASK(9, 0)) * 32;
-+	tmp = (le16_to_cpu(buf) & GENMASK(9, 0)) * 32;
- 	data->ch_data[ch].thres.far = tmp;
- 	*val = tmp;
- 
-@@ -608,7 +612,9 @@ static int hx9023s_property_get(struct hx9023s_data *data)
- 				data->ch_data[reg].channel_positive = array[0];
- 				data->ch_data[reg].channel_negative = array[1];
- 			} else {
--				return dev_err_probe(dev, ret, "Property read failed: %d\n", reg);
-+				return dev_err_probe(dev, ret,
-+						     "Property read failed: %d\n",
-+						     reg);
- 			}
- 		}
- 	}
-@@ -670,7 +676,8 @@ static int hx9023s_get_samp_freq(struct hx9023s_data *data, int *val, int *val2)
- 	return IIO_VAL_INT_PLUS_MICRO;
- }
- 
--static int hx9023s_read_raw(struct iio_dev *indio_dev, const struct iio_chan_spec *chan,
-+static int hx9023s_read_raw(struct iio_dev *indio_dev,
-+			    const struct iio_chan_spec *chan,
- 			    int *val, int *val2, long mask)
- {
- 	struct hx9023s_data *data = iio_priv(indio_dev);
-@@ -714,7 +721,8 @@ static int hx9023s_set_samp_freq(struct hx9023s_data *data, int val, int val2)
- 	return regmap_write(data->regmap, HX9023S_PRF_CFG, i);
- }
- 
--static int hx9023s_write_raw(struct iio_dev *indio_dev, const struct iio_chan_spec *chan,
-+static int hx9023s_write_raw(struct iio_dev *indio_dev,
-+			     const struct iio_chan_spec *chan,
- 			     int val, int val2, long mask)
- {
- 	struct hx9023s_data *data = iio_priv(indio_dev);
-@@ -759,10 +767,12 @@ static void hx9023s_push_events(struct iio_dev *indio_dev)
- 	for_each_set_bit(chan, &prox_changed, HX9023S_CH_NUM) {
- 		unsigned int dir;
- 
--		dir = (data->prox_state_reg & BIT(chan)) ? IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
-+		dir = (data->prox_state_reg & BIT(chan)) ?
-+			IIO_EV_DIR_FALLING : IIO_EV_DIR_RISING;
- 
- 		iio_push_event(indio_dev,
--			       IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, chan, IIO_EV_TYPE_THRESH, dir),
-+			       IIO_UNMOD_EVENT_CODE(IIO_PROXIMITY, chan,
-+						    IIO_EV_TYPE_THRESH, dir),
- 			       timestamp);
- 	}
- 	data->chan_prox_stat = data->prox_state_reg;
-@@ -869,7 +879,8 @@ static int hx9023s_write_event_config(struct iio_dev *indio_dev,
- 
- 	if (test_bit(chan->channel, &data->chan_in_use)) {
- 		hx9023s_ch_en(data, chan->channel, !!state);
--		__assign_bit(chan->channel, &data->chan_event, data->ch_data[chan->channel].enable);
-+		__assign_bit(chan->channel, &data->chan_event,
-+			     data->ch_data[chan->channel].enable);
- 	}
- 
- 	return 0;
-@@ -930,7 +941,8 @@ static irqreturn_t hx9023s_trigger_handler(int irq, void *private)
- 		data->buffer.channels[i++] = cpu_to_le16(data->ch_data[index].diff);
- 	}
- 
--	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer, pf->timestamp);
-+	iio_push_to_buffers_with_timestamp(indio_dev, &data->buffer,
-+					   pf->timestamp);
- 
- out:
- 	iio_trigger_notify_done(indio_dev->trig);
-@@ -992,7 +1004,7 @@ static int hx9023s_probe(struct i2c_client *client)
- 	struct hx9023s_data *data;
- 	int ret;
- 
--	indio_dev = devm_iio_device_alloc(dev, sizeof(struct hx9023s_data));
-+	indio_dev = devm_iio_device_alloc(dev, sizeof(*data));
- 	if (!indio_dev)
- 		return -ENOMEM;
- 
-@@ -1001,7 +1013,8 @@ static int hx9023s_probe(struct i2c_client *client)
- 
- 	data->regmap = devm_regmap_init_i2c(client, &hx9023s_regmap_config);
- 	if (IS_ERR(data->regmap))
--		return dev_err_probe(dev, PTR_ERR(data->regmap), "regmap init failed\n");
-+		return dev_err_probe(dev, PTR_ERR(data->regmap),
-+				     "regmap init failed\n");
- 
- 	ret = hx9023s_property_get(data);
- 	if (ret)
-@@ -1036,17 +1049,20 @@ static int hx9023s_probe(struct i2c_client *client)
- 		return dev_err_probe(dev, ret, "regcache sync failed\n");
- 
- 	if (client->irq) {
--		ret = devm_request_threaded_irq(dev, client->irq, hx9023s_irq_handler,
--						hx9023s_irq_thread_handler, IRQF_ONESHOT,
-+		ret = devm_request_threaded_irq(dev, client->irq,
-+						hx9023s_irq_handler,
-+						hx9023s_irq_thread_handler,
-+						IRQF_ONESHOT,
- 						"hx9023s_event", indio_dev);
- 		if (ret)
- 			return dev_err_probe(dev, ret, "irq request failed\n");
- 
--		data->trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
-+		data->trig = devm_iio_trigger_alloc(dev, "%s-dev%d",
-+						    indio_dev->name,
- 						    iio_device_id(indio_dev));
- 		if (!data->trig)
- 			return dev_err_probe(dev, -ENOMEM,
--					"iio trigger alloc failed\n");
-+					     "iio trigger alloc failed\n");
- 
- 		data->trig->ops = &hx9023s_trigger_ops;
- 		iio_trigger_set_drvdata(data->trig, indio_dev);
-@@ -1054,11 +1070,13 @@ static int hx9023s_probe(struct i2c_client *client)
- 		ret = devm_iio_trigger_register(dev, data->trig);
- 		if (ret)
- 			return dev_err_probe(dev, ret,
--					"iio trigger register failed\n");
-+					     "iio trigger register failed\n");
- 	}
- 
--	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, iio_pollfunc_store_time,
--					      hx9023s_trigger_handler, &hx9023s_buffer_setup_ops);
-+	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-+					      iio_pollfunc_store_time,
-+					      hx9023s_trigger_handler,
-+					      &hx9023s_buffer_setup_ops);
- 	if (ret)
- 		return dev_err_probe(dev, ret,
- 				"iio triggered buffer setup failed\n");
-@@ -1087,7 +1105,8 @@ static int hx9023s_resume(struct device *dev)
- 	return 0;
- }
- 
--static DEFINE_SIMPLE_DEV_PM_OPS(hx9023s_pm_ops, hx9023s_suspend, hx9023s_resume);
-+static DEFINE_SIMPLE_DEV_PM_OPS(hx9023s_pm_ops, hx9023s_suspend,
-+				hx9023s_resume);
- 
- static const struct of_device_id hx9023s_of_match[] = {
- 	{ .compatible = "tyhx,hx9023s" },
-
-
-> diff --git a/drivers/iio/proximity/hx9023s.c b/drivers/iio/proximity/hx9023s.c
-> new file mode 100644
-> index 000000000000..e3f3fee2c94a
-> --- /dev/null
-> +++ b/drivers/iio/proximity/hx9023s.c
-> @@ -0,0 +1,1124 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Copyright (C) 2024 NanjingTianyihexin Electronics Ltd.
-> + * http://www.tianyihexin.com
-> + *
-> + * Driver for NanjingTianyihexin HX9023S Cap Sensor.
-> + * Datasheet available at:
-> + * http://www.tianyihexin.com/ueditor/php/upload/file/20240614/1718336303992081.pdf
-> + */
-
-
+> Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+> ---
+> Changes in v3:
+> - Improve commit message.
+> - Add Fixes tag: the fixes tag is the initial commit since the issue
+>   have been there from then on, probably overlooked because removing
+>   frstdata from DT solved the issue.
+> - Remove extra linebreak.
+> - Link to v2: https://lore.kernel.org/r/20240618-cleanup-ad7606-v2-1-b0fd015586aa@baylibre.com
+> 
+> iio: adc: ad7606: remove frstdata check for serial modei
+> 
+> Changes in v2:
+>  - Remove frstdata check only for the serial interface as suggested by
+>    Michael Hennerich.
+>  - Link to v1: https://lore.kernel.org/r/20240417-cleanup-ad7606-v1-1-5c2a29662c0a@baylibre.com
+> ---
+>  drivers/iio/adc/ad7606.c     | 28 ++------------------------
+>  drivers/iio/adc/ad7606.h     |  2 ++
+>  drivers/iio/adc/ad7606_par.c | 48 +++++++++++++++++++++++++++++++++++++++++---
+>  3 files changed, 49 insertions(+), 29 deletions(-)
+> 
+> diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+> index 3a417595294f..c321c6ef48df 100644
+> --- a/drivers/iio/adc/ad7606.c
+> +++ b/drivers/iio/adc/ad7606.c
+> @@ -49,7 +49,7 @@ static const unsigned int ad7616_oversampling_avail[8] = {
+>  	1, 2, 4, 8, 16, 32, 64, 128,
+>  };
+>  
+> -static int ad7606_reset(struct ad7606_state *st)
+> +int ad7606_reset(struct ad7606_state *st)
+>  {
+>  	if (st->gpio_reset) {
+>  		gpiod_set_value(st->gpio_reset, 1);
+> @@ -60,6 +60,7 @@ static int ad7606_reset(struct ad7606_state *st)
+>  
+>  	return -ENODEV;
+>  }
+> +EXPORT_SYMBOL_NS_GPL(ad7606_reset, IIO_AD7606);
+>  
+>  static int ad7606_reg_access(struct iio_dev *indio_dev,
+>  			     unsigned int reg,
+> @@ -88,31 +89,6 @@ static int ad7606_read_samples(struct ad7606_state *st)
+>  {
+>  	unsigned int num = st->chip_info->num_channels - 1;
+>  	u16 *data = st->data;
+> -	int ret;
+> -
+> -	/*
+> -	 * The frstdata signal is set to high while and after reading the sample
+> -	 * of the first channel and low for all other channels. This can be used
+> -	 * to check that the incoming data is correctly aligned. During normal
+> -	 * operation the data should never become unaligned, but some glitch or
+> -	 * electrostatic discharge might cause an extra read or clock cycle.
+> -	 * Monitoring the frstdata signal allows to recover from such failure
+> -	 * situations.
+> -	 */
+> -
+> -	if (st->gpio_frstdata) {
+> -		ret = st->bops->read_block(st->dev, 1, data);
+> -		if (ret)
+> -			return ret;
+> -
+> -		if (!gpiod_get_value(st->gpio_frstdata)) {
+> -			ad7606_reset(st);
+> -			return -EIO;
+> -		}
+> -
+> -		data++;
+> -		num--;
+> -	}
+>  
+>  	return st->bops->read_block(st->dev, num, data);
+>  }
+> diff --git a/drivers/iio/adc/ad7606.h b/drivers/iio/adc/ad7606.h
+> index 0c6a88cc4695..6649e84d25de 100644
+> --- a/drivers/iio/adc/ad7606.h
+> +++ b/drivers/iio/adc/ad7606.h
+> @@ -151,6 +151,8 @@ int ad7606_probe(struct device *dev, int irq, void __iomem *base_address,
+>  		 const char *name, unsigned int id,
+>  		 const struct ad7606_bus_ops *bops);
+>  
+> +int ad7606_reset(struct ad7606_state *st);
 > +
-> +static int hx9023s_ch_cfg(struct hx9023s_data *data)
-> +{
-> +	u8 reg_list[HX9023S_CH_NUM * 2];
-
-Array of __le16 seems more appropriate.
-
-> +	u8 ch_pos[HX9023S_CH_NUM];
-> +	u8 ch_neg[HX9023S_CH_NUM];
-> +	/* Bit positions corresponding to input pin connections */
-> +	u8 conn_cs[HX9023S_CH_NUM] = { 0, 2, 4, 6, 8 };
-> +	unsigned int i;
-> +	u16 reg;
+>  enum ad7606_supported_device_ids {
+>  	ID_AD7605_4,
+>  	ID_AD7606_8,
+> diff --git a/drivers/iio/adc/ad7606_par.c b/drivers/iio/adc/ad7606_par.c
+> index d8408052262e..6bc587b20f05 100644
+> --- a/drivers/iio/adc/ad7606_par.c
+> +++ b/drivers/iio/adc/ad7606_par.c
+> @@ -7,6 +7,7 @@
+>  
+>  #include <linux/mod_devicetable.h>
+>  #include <linux/module.h>
+> +#include <linux/gpio/consumer.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/types.h>
+>  #include <linux/err.h>
+> @@ -21,8 +22,29 @@ static int ad7606_par16_read_block(struct device *dev,
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>  	struct ad7606_state *st = iio_priv(indio_dev);
+>  
+> -	insw((unsigned long)st->base_address, buf, count);
+>  
+> +	/*
+> +	 * On the parallel interface, the frstdata signal is set to high while
+> +	 * and after reading the sample of the first channel and low for all
+> +	 * other channels.  This can be used to check that the incoming data is
+> +	 * correctly aligned.  During normal operation the data should never
+> +	 * become unaligned, but some glitch or electrostatic discharge might
+> +	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
+> +	 * allows to recover from such failure situations.
+> +	 */
+> +	int num = count;
+> +	u16 *_buf = buf;
 > +
-> +	for (i = 0; i < HX9023S_CH_NUM; i++) {
-> +		ch_pos[i] = data->ch_data[i].channel_positive == HX9023S_NOT_CONNECTED ?
-> +			HX9023S_NOT_CONNECTED : conn_cs[data->ch_data[i].channel_positive];
-> +		ch_neg[i] = data->ch_data[i].channel_negative == HX9023S_NOT_CONNECTED ?
-> +			HX9023S_NOT_CONNECTED : conn_cs[data->ch_data[i].channel_negative];
-> +
-> +		reg = (HX9023S_POS << ch_pos[i]) | (HX9023S_NEG << ch_neg[i]);
-> +		put_unaligned_le16(reg, &reg_list[i * 2]);
+> +	if (st->gpio_frstdata) {
+> +		insw((unsigned long)st->base_address, _buf, 1);
+> +		if (!gpiod_get_value(st->gpio_frstdata)) {
+> +			ad7606_reset(st);
+> +			return -EIO;
+> +		}
+> +		_buf++;
+> +		num--;
 > +	}
+> +	insw((unsigned long)st->base_address, _buf, num);
+>  	return 0;
+>  }
+>  
+> @@ -35,8 +57,28 @@ static int ad7606_par8_read_block(struct device *dev,
+>  {
+>  	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+>  	struct ad7606_state *st = iio_priv(indio_dev);
+> -
+> -	insb((unsigned long)st->base_address, buf, count * 2);
+> +	/*
+> +	 * On the parallel interface, the frstdata signal is set to high while
+> +	 * and after reading the sample of the first channel and low for all
+> +	 * other channels.  This can be used to check that the incoming data is
+> +	 * correctly aligned.  During normal operation the data should never
+> +	 * become unaligned, but some glitch or electrostatic discharge might
+> +	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
+> +	 * allows to recover from such failure situations.
+> +	 */
+> +	int num = count;
+> +	u16 *_buf = buf;
 > +
-> +	return regmap_bulk_write(data->regmap, HX9023S_CH0_CFG_7_0, reg_list, HX9023S_CH_NUM * 2);
-> +}
-
-> +
-> +static int hx9023s_get_thres_near(struct hx9023s_data *data, u8 ch, int *val)
-> +{
-> +	int ret;
-> +	u8 buf[2];
-> +	unsigned int reg, tmp;
-> +
-> +	reg = (ch == 4) ? HX9023S_PROX_HIGH_DIFF_CFG_CH4_0 :
-> +		HX9023S_PROX_HIGH_DIFF_CFG_CH0_0 + (ch * 2);
-> +
-> +	ret = regmap_bulk_read(data->regmap, reg, buf, sizeof(buf));
-> +	if (ret)
-> +		return ret;
-> +
-> +	tmp = (get_unaligned_le16(buf) & GENMASK(9, 0)) * 32;
-Same as below.
-
-> +	data->ch_data[ch].thres.near = tmp;
-> +	*val = tmp;
-> +
-> +	return IIO_VAL_INT;
-> +}
-> +
-> +static int hx9023s_get_thres_far(struct hx9023s_data *data, u8 ch, int *val)
-> +{
-> +	int ret;
-> +	u8 buf[2];
-
-Why not use an __le16 here?
-
-> +	unsigned int reg, tmp;
-> +
-> +	reg = (ch == 4) ? HX9023S_PROX_LOW_DIFF_CFG_CH4_0 :
-> +		HX9023S_PROX_LOW_DIFF_CFG_CH0_0 + (ch * 2);
-> +
-> +	ret = regmap_bulk_read(data->regmap, reg, buf, sizeof(buf));
-> +	if (ret)
-> +		return ret;
-> +
-> +	tmp = (get_unaligned_le16(buf) & GENMASK(9, 0)) * 32;
-then le16_to_cpu() here
-
-> +	data->ch_data[ch].thres.far = tmp;
-> +	*val = tmp;
-> +
-> +	return IIO_VAL_INT;
-> +}
-
-
-
-> +static int hx9023s_write_event_config(struct iio_dev *indio_dev,
-> +				      const struct iio_chan_spec *chan,
-> +				      enum iio_event_type type,
-> +				      enum iio_event_direction dir,
-> +				      int state)
-> +{
-> +	struct hx9023s_data *data = iio_priv(indio_dev);
-> +
-> +	if (test_bit(chan->channel, &data->chan_in_use)) {
-> +		hx9023s_ch_en(data, chan->channel, !!state);
-> +		__assign_bit(chan->channel, &data->chan_event, data->ch_data[chan->channel].enable);
-
-very long line.
-
+> +	if (st->gpio_frstdata) {
+> +		insb((unsigned long)st->base_address, _buf, 2);
+> +		if (!gpiod_get_value(st->gpio_frstdata)) {
+> +			ad7606_reset(st);
+> +			return -EIO;
+> +		}
+> +		_buf++;
+> +		num--;
 > +	}
-> +
-> +	return 0;
-> +}
+> +	insb((unsigned long)st->base_address, _buf, num * 2);
+>  
+>  	return 0;
+>  }
+> 
+> ---
+> base-commit: 07d4d0bb4a8ddcc463ed599b22f510d5926c2495
+> change-id: 20240416-cleanup-ad7606-161e2ed9818b
+> 
+> Best regards,
 
-
-...
-
-> +static int hx9023s_probe(struct i2c_client *client)
-> +{
-> +	struct device *dev = &client->dev;
-> +	struct iio_dev *indio_dev;
-> +	struct hx9023s_data *data;
-> +	int ret;
-> +
-> +	indio_dev = devm_iio_device_alloc(dev, sizeof(struct hx9023s_data));
-
-sizeof(*data)
-
-preferred as then I don't need to figure out if there is a match with
-
-data = iio_priv(indio_dev)
-
-below.
-
-> +	if (!indio_dev)
-> +		return -ENOMEM;
-> +
-> +	data = iio_priv(indio_dev);
-> +	mutex_init(&data->mutex);
-> +
-> +	data->regmap = devm_regmap_init_i2c(client, &hx9023s_regmap_config);
-> +	if (IS_ERR(data->regmap))
-> +		return dev_err_probe(dev, PTR_ERR(data->regmap), "regmap init failed\n");
-> +
-> +	ret = hx9023s_property_get(data);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "dts phase failed\n");
-> +
-> +	ret = devm_regulator_get_enable(dev, "vdd");
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "regulator get failed\n");
-> +
-> +	ret = hx9023s_id_check(indio_dev);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "id check failed\n");
-> +
-> +	indio_dev->name = "hx9023s";
-> +	indio_dev->channels = hx9023s_channels;
-> +	indio_dev->num_channels = ARRAY_SIZE(hx9023s_channels);
-> +	indio_dev->info = &hx9023s_info;
-> +	indio_dev->modes = INDIO_DIRECT_MODE;
-> +	i2c_set_clientdata(client, indio_dev);
-> +
-> +	ret = regmap_multi_reg_write(data->regmap, hx9023s_reg_init_list,
-> +				     ARRAY_SIZE(hx9023s_reg_init_list));
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "device init failed\n");
-> +
-> +	ret = hx9023s_ch_cfg(data);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "channel config failed\n");
-> +
-> +	ret = regcache_sync(data->regmap);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "regcache sync failed\n");
-> +
-> +	if (client->irq) {
-> +		ret = devm_request_threaded_irq(dev, client->irq, hx9023s_irq_handler,
-> +						hx9023s_irq_thread_handler, IRQF_ONESHOT,
-> +						"hx9023s_event", indio_dev);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret, "irq request failed\n");
-> +
-> +		data->trig = devm_iio_trigger_alloc(dev, "%s-dev%d", indio_dev->name,
-> +						    iio_device_id(indio_dev));
-> +		if (!data->trig)
-> +			return dev_err_probe(dev, -ENOMEM,
-> +					"iio trigger alloc failed\n");
-> +
-> +		data->trig->ops = &hx9023s_trigger_ops;
-> +		iio_trigger_set_drvdata(data->trig, indio_dev);
-> +
-> +		ret = devm_iio_trigger_register(dev, data->trig);
-> +		if (ret)
-> +			return dev_err_probe(dev, ret,
-> +					"iio trigger register failed\n");
-> +	}
-> +
-> +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev, iio_pollfunc_store_time,
-> +					      hx9023s_trigger_handler, &hx9023s_buffer_setup_ops);
-
-Trivial but preferred wrap remains 80 chars unless there is a good reason
-to go longer.
-
-> +	if (ret)
-> +		return dev_err_probe(dev, ret,
-> +				"iio triggered buffer setup failed\n");
-> +
-> +	return devm_iio_device_register(dev, indio_dev);
-> +}
 

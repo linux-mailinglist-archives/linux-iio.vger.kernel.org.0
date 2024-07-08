@@ -1,380 +1,220 @@
-Return-Path: <linux-iio+bounces-7430-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7431-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B85292A06A
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 12:43:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5BC192A0FC
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 13:25:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D0631F21707
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 10:43:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9C791C21069
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 11:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E5E78C9D;
-	Mon,  8 Jul 2024 10:42:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBE97C6D4;
+	Mon,  8 Jul 2024 11:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b="yEiMQMwQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iVgYVGuZ"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mx0a-00128a01.pphosted.com (mx0a-00128a01.pphosted.com [148.163.135.77])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF26678C83;
-	Mon,  8 Jul 2024 10:42:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.135.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2D27A715;
+	Mon,  8 Jul 2024 11:25:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720435377; cv=none; b=JFsQIgn3Ir6PMdoI8zWH6hBf14kOpaBI9n2ROqHEaXfq3S9lz6h6BrsdceLyQEZ3dq74rd7n3UkWCu+1kxOYGnnU/MhqIYsT9unQoCKXAUUxCJ9qZzt0H1LLJL1OjaB8KghbyrwdyF2M92OHH/7TGs40WyRN4gBTedDS5AwS810=
+	t=1720437916; cv=none; b=dH5PX5S1lq5j7cJpthqb5CjTlWsVUu1T5EVNsSC1zXyHWN0qVRZH0GmGLhSps4c2Y6mDk7Ai49XMCV7+mvolviKhxSy8c6ljQIhL9KFv+Q1lDtoVUg2Bph5LRh+xGWcZqmyheY+8Cy5vdV9A/mkvWhC7FxIBNqMUrYBRCuItDlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720435377; c=relaxed/simple;
-	bh=vCeUQmPgqxtukThWhADI+8vHRpRJykLckYM30EHepIo=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KxXB9jPoOF31o+yJRwAajbpjDXO5WqYEUbW0fgsHk48Mz+LisQolHCV50EOf4MJTrLZBZkEkSrgQ7cXlOCXwlrWAasmU6WzMfETkIUJAJN6Pg6kfi3iUd8Jc179+kpVvnknxKyTSx7C1DJ1KTce8KHdzAdmL3jA30zjsacuy6Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com; spf=pass smtp.mailfrom=analog.com; dkim=pass (2048-bit key) header.d=analog.com header.i=@analog.com header.b=yEiMQMwQ; arc=none smtp.client-ip=148.163.135.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=analog.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=analog.com
-Received: from pps.filterd (m0167089.ppops.net [127.0.0.1])
-	by mx0a-00128a01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4686bAlr028878;
-	Mon, 8 Jul 2024 06:42:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=analog.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=DKIM; bh=3Owtc
-	XWWSQ+Z8Fs/suyn40ABnNTiUpkXm7sco3k4P78=; b=yEiMQMwQniYks0T2PH6Bx
-	RvKVFVOilr+zYBCvgzNIOcprFWA2DuO95nQNQZUcpHUH9ceER30Ny6vrYW7GFnqg
-	pH4zd63kU3RBZaQiZejjHD/5L2RfB0Ra510xNwNNkqE8x9wF7PsPNzU0A2Qxed46
-	2iK2e5qRxINBrhb6vlggD3PQ72GkqYlE5MYzsDOdTSm5+GxbG6aVn/OK+DPCKTnE
-	rAcPKhUOYF+wjhG4t9WdcfUnk7EufiATJlCOvBB1jMLUDuAh1vjt4cQUd0EEHxRD
-	86GWxsaeArCDgD45/AmQG1Xl19lcaXGvHjulx1zN0QRV0qy+hU9UcbD398LdsbdZ
-	A==
-Received: from nwd2mta3.analog.com ([137.71.173.56])
-	by mx0a-00128a01.pphosted.com (PPS) with ESMTPS id 4072u1ngt8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 08 Jul 2024 06:42:35 -0400 (EDT)
-Received: from ASHBMBX9.ad.analog.com (ASHBMBX9.ad.analog.com [10.64.17.10])
-	by nwd2mta3.analog.com (8.14.7/8.14.7) with ESMTP id 468AgYcZ001265
-	(version=TLSv1/SSLv3 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 8 Jul 2024 06:42:34 -0400
-Received: from ASHBMBX9.ad.analog.com (10.64.17.10) by ASHBMBX9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.14; Mon, 8 Jul 2024
- 06:42:33 -0400
-Received: from zeus.spd.analog.com (10.66.68.11) by ashbmbx9.ad.analog.com
- (10.64.17.10) with Microsoft SMTP Server id 15.2.986.14 via Frontend
- Transport; Mon, 8 Jul 2024 06:42:33 -0400
-Received: from amiclaus-VirtualBox.ad.analog.com (AMICLAUS-L02.ad.analog.com [10.48.65.159])
-	by zeus.spd.analog.com (8.15.1/8.15.1) with ESMTP id 468AfZLK008375;
-	Mon, 8 Jul 2024 06:42:28 -0400
-From: Antoniu Miclaus <antoniu.miclaus@analog.com>
-To: Ramona Gradinariu <ramona.gradinariu@analog.com>,
-        Antoniu Miclaus
-	<antoniu.miclaus@analog.com>,
-        Lars-Peter Clausen <lars@metafoo.de>,
-        Michael
- Hennerich <Michael.Hennerich@analog.com>,
-        Jonathan Cameron
-	<jic23@kernel.org>, Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski
-	<krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>, Jonathan Corbet
-	<corbet@lwn.net>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Jun Yan
-	<jerrysteve1101@gmail.com>,
-        Alexander Sverdlin
-	<alexander.sverdlin@siemens.com>,
-        Mario Limonciello
-	<mario.limonciello@amd.com>,
-        Mehdi Djait <mehdi.djait.k@gmail.com>, <linux-iio@vger.kernel.org>,
-        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-doc@vger.kernel.org>
-Subject: [PATCH v5 3/3] docs: iio: add documentation for adxl380 driver
-Date: Mon, 8 Jul 2024 13:40:13 +0300
-Message-ID: <20240708104114.29894-3-antoniu.miclaus@analog.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240708104114.29894-1-antoniu.miclaus@analog.com>
-References: <20240708104114.29894-1-antoniu.miclaus@analog.com>
+	s=arc-20240116; t=1720437916; c=relaxed/simple;
+	bh=QrRKS+3iDLmeUQXoJ08zl803lCFnPF6mGpqzE/kCciM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gO7OLzI4XPeXHVN/AXVPpGvCoCqSY9QetHbKKGGptsPVYH9ouffftafY2qODZnLJX0bcpCJp1Ofj8Dx/tVmPCDBq0WhLIQ965H/gwvrazjGCx1spB0+jh56e48pGb7h++JrnBcGwpJcOB/0lipNR2PH2d8xzosjBhzppM5CniLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iVgYVGuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14618C116B1;
+	Mon,  8 Jul 2024 11:25:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720437915;
+	bh=QrRKS+3iDLmeUQXoJ08zl803lCFnPF6mGpqzE/kCciM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=iVgYVGuZrT8xc/2wXlg8hJItfn6ClJ+teYVEIKdMnaBLPYy6a7tLXsUTZRxiBO0+Q
+	 r68K5aqcr98hIMiskn1icNuBVabKB5XrACs3kIUntnVCWC19vl8/GkGP8AchpDPljw
+	 utrZ+Cxtd0oD0Azd3wEpPufRihBIriwJGHQeSkJin6AtG5ylndqdyo6ZaMsAjtC2Xs
+	 WZsOzvoIeVSBCUxKvpzCegyuU7tDRhtz2tc0SqkgfFcFctn6vbFKE8cNLVfy4pAtJq
+	 wfqOjybf6SiEAai/ZroxnHAi87jqqtfzCMgPbGDMfU2bq00AZ8etLh/dobUxJMsJPo
+	 UN0AAGA8+c6FQ==
+Message-ID: <9db672d4-a305-45ed-95f1-402c70a15379@kernel.org>
+Date: Mon, 8 Jul 2024 13:25:10 +0200
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ADIRuleOP-NewSCL: Rule Triggered
-X-Proofpoint-GUID: SGxlw3je1rznkUdjcQxLkC75vPMJbGWW
-X-Proofpoint-ORIG-GUID: SGxlw3je1rznkUdjcQxLkC75vPMJbGWW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-07-08_05,2024-07-05_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 impostorscore=0 lowpriorityscore=0 malwarescore=0
- adultscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 clxscore=1015
- spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2406140001 definitions=main-2407080083
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] iio: light: ltrf216a: Drop undocumented ltr,ltrf216a
+ compatible string
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Shreeya Patel <shreeya.patel@collabora.com>, Marek Vasut <marex@denx.de>,
+ linux-iio@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ devicetree@vger.kernel.org, kernel@collabora.com,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+References: <20240705095047.90558-1-marex@denx.de>
+ <3b2ca0-6687ce00-3-4dab7280@52083650>
+ <98992b1d-c94a-4053-a755-32a25d7fdc46@kernel.org>
+ <20240707143759.7718e0f3@jic23-huawei>
+ <1effec8c-8228-482b-b476-06838128adfa@kernel.org>
+ <20240707150835.40db1897@jic23-huawei>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240707150835.40db1897@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Add documentation for adxl380 driver which describes the driver
-device files and shows how the user may use the ABI for various
-scenarios (configuration, measurement, etc.).
+On 07/07/2024 16:08, Jonathan Cameron wrote:
+>>
+>>>   
+>>>>>
+>>>>> We were very well aware that not documenting this was going to generate a warning so    
+>>>>
+>>>> You *CANNOT* have undocumented compatibles.  
+>>>
+>>> Why not? This corner case is a valid reason for that to be allowed.
+>>> You cannot use that compatible with DT bindings.  Absolutely.  The compatible
+>>> has other uses...  
+>>
+>> Okay. With that approach what stops anyone from submitting DTS using
+>> that compatible (claiming there is a driver for that compatible)?
+> 
+> That's a good point.  Perhaps we should just add a check for this?
+> Easy to add a check on the firmware type. This is a rare enough case that
+> just doing it in the driver seems fine to me (rather than more general
+> infrastructure).
 
-Signed-off-by: Ramona Gradinariu <ramona.gradinariu@analog.com>
-Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
----
-no changes in v5.
- Documentation/iio/adxl380.rst | 233 ++++++++++++++++++++++++++++++++++
- Documentation/iio/index.rst   |   1 +
- 2 files changed, 234 insertions(+)
- create mode 100644 Documentation/iio/adxl380.rst
+Another point of slippery slope:
+1. We accept such undocumented compatible in OF device id for ACPI
+(PRP0001).
+2. Out-of-tree DTS uses it.
+3. Whatever we decide to do now with that compatible, we have
+undocumented ABI exposed and used by users.
 
-diff --git a/Documentation/iio/adxl380.rst b/Documentation/iio/adxl380.rst
-new file mode 100644
-index 000000000000..376dee5fe1dd
---- /dev/null
-+++ b/Documentation/iio/adxl380.rst
-@@ -0,0 +1,233 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+===============
-+ADXL380 driver
-+===============
-+
-+This driver supports Analog Device's ADXL380/382 on SPI/I2C bus.
-+
-+1. Supported devices
-+====================
-+
-+* `ADXL380 <https://www.analog.com/ADXL380>`_
-+* `ADXL382 <https://www.analog.com/ADXL382>`_
-+
-+The ADXL380/ADXL382 is a low noise density, low power, 3-axis accelerometer with
-+selectable measurement ranges. The ADXL380 supports the ±4 g, ±8 g, and ±16 g
-+ranges, and the ADXL382 supports ±15 g, ±30 g, and ±60 g ranges.
-+
-+2. Device attributes
-+====================
-+
-+Accelerometer measurements are always provided.
-+
-+Temperature data are also provided. This data can be used to monitor the
-+internal system temperature or to improve the temperature stability of the
-+device via calibration.
-+
-+Each IIO device, has a device folder under ``/sys/bus/iio/devices/iio:deviceX``,
-+where X is the IIO index of the device. Under these folders reside a set of
-+device files, depending on the characteristics and features of the hardware
-+device in questions. These files are consistently generalized and documented in
-+the IIO ABI documentation.
-+
-+The following tables show the adxl380 related device files, found in the
-+specific device folder path ``/sys/bus/iio/devices/iio:deviceX``.
-+
-++---------------------------------------------------+----------------------------------------------------------+
-+| 3-Axis Accelerometer related device files         | Description                                              |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_scale                                    | Scale for the accelerometer channels.                    |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_filter_high_pass_3db_frequency           | Low pass filter bandwidth.                               |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_filter_high_pass_3db_frequency_available | Available low pass filter bandwidth configurations.      |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_filter_low_pass_3db_frequency            | High pass filter bandwidth.                              |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_filter_low_pass_3db_frequency_available  | Available high pass filter bandwidth configurations.     |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_x_calibbias                              | Calibration offset for the X-axis accelerometer channel. |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_x_raw                                    | Raw X-axis accelerometer channel value.                  |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_y_calibbias                              | y-axis acceleration offset correction                    |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_y_raw                                    | Raw Y-axis accelerometer channel value.                  |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_z_calibbias                              | Calibration offset for the Z-axis accelerometer channel. |
-++---------------------------------------------------+----------------------------------------------------------+
-+| in_accel_z_raw                                    | Raw Z-axis accelerometer channel value.                  |
-++---------------------------------------------------+----------------------------------------------------------+
-+
-++----------------------------------+--------------------------------------------+
-+| Temperature sensor related files | Description                                |
-++----------------------------------+--------------------------------------------+
-+| in_temp_raw                      | Raw temperature channel value.             |
-++----------------------------------+--------------------------------------------+
-+| in_temp_offset                   | Offset for the temperature sensor channel. |
-++----------------------------------+--------------------------------------------+
-+| in_temp_scale                    | Scale for the temperature sensor channel.  |
-++----------------------------------+--------------------------------------------+
-+
-++------------------------------+----------------------------------------------+
-+| Miscellaneous device files   | Description                                  |
-++------------------------------+----------------------------------------------+
-+| name                         | Name of the IIO device.                      |
-++------------------------------+----------------------------------------------+
-+| sampling_frequency           | Currently selected sample rate.              |
-++------------------------------+----------------------------------------------+
-+| sampling_frequency_available | Available sampling frequency configurations. |
-++------------------------------+----------------------------------------------+
-+
-+Channels processed values
-+-------------------------
-+
-+A channel value can be read from its _raw attribute. The value returned is the
-+raw value as reported by the devices. To get the processed value of the channel,
-+apply the following formula:
-+
-+.. code-block:: bash
-+
-+        processed value = (_raw + _offset) * _scale
-+
-+Where _offset and _scale are device attributes. If no _offset attribute is
-+present, simply assume its value is 0.
-+
-+The adis16475 driver offers data for 2 types of channels, the table below shows
-+the measurement units for the processed value, which are defined by the IIO
-+framework:
-+
-++-------------------------------------+---------------------------+
-+| Channel type                        | Measurement unit          |
-++-------------------------------------+---------------------------+
-+| Acceleration on X, Y, and Z axis    | Meters per Second squared |
-++-------------------------------------+---------------------------+
-+| Temperature                         | Millidegrees Celsius      |
-++-------------------------------------+---------------------------+
-+
-+Usage examples
-+--------------
-+
-+Show device name:
-+
-+.. code-block:: bash
-+
-+	root:/sys/bus/iio/devices/iio:device0> cat name
-+        adxl382
-+
-+Show accelerometer channels value:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_raw
-+        -1771
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_y_raw
-+        282
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_z_raw
-+        -1523
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_scale
-+        0.004903325
-+
-+- X-axis acceleration = in_accel_x_raw * in_accel_scale = −8.683788575 m/s^2
-+- Y-axis acceleration = in_accel_y_raw * in_accel_scale = 1.38273765 m/s^2
-+- Z-axis acceleration = in_accel_z_raw * in_accel_scale = -7.467763975 m/s^2
-+
-+Set calibration offset for accelerometer channels:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_calibbias
-+        0
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 50 > in_accel_x_calibbias
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_x_calibbias
-+        50
-+
-+Set sampling frequency:
-+
-+.. code-block:: bash
-+
-+	root:/sys/bus/iio/devices/iio:device0> cat sampling_frequency
-+        16000
-+        root:/sys/bus/iio/devices/iio:device0> cat sampling_frequency_available
-+        16000 32000 64000
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 32000 > sampling_frequency
-+        root:/sys/bus/iio/devices/iio:device0> cat sampling_frequency
-+        32000
-+
-+Set low pass filter bandwidth for accelerometer channels:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_filter_low_pass_3db_frequency
-+        32000
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_filter_low_pass_3db_frequency_available
-+        32000 8000 4000 2000
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 2000 > in_accel_filter_low_pass_3db_frequency
-+        root:/sys/bus/iio/devices/iio:device0> cat in_accel_filter_low_pass_3db_frequency
-+        2000
-+
-+3. Device buffers
-+=================
-+
-+This driver supports IIO buffers.
-+
-+All devices support retrieving the raw acceleration and temperature measurements
-+using buffers.
-+
-+Usage examples
-+--------------
-+
-+Select channels for buffer read:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_x_en
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_y_en
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_accel_z_en
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > scan_elements/in_temp_en
-+
-+Set the number of samples to be stored in the buffer:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 10 > buffer/length
-+
-+Enable buffer readings:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> echo 1 > buffer/enable
-+
-+Obtain buffered data:
-+
-+.. code-block:: bash
-+
-+        root:/sys/bus/iio/devices/iio:device0> hexdump -C /dev/iio\:device0
-+        ...
-+        002bc300  f7 e7 00 a8 fb c5 24 80  f7 e7 01 04 fb d6 24 80  |......$.......$.|
-+        002bc310  f7 f9 00 ab fb dc 24 80  f7 c3 00 b8 fb e2 24 80  |......$.......$.|
-+        002bc320  f7 fb 00 bb fb d1 24 80  f7 b1 00 5f fb d1 24 80  |......$...._..$.|
-+        002bc330  f7 c4 00 c6 fb a6 24 80  f7 a6 00 68 fb f1 24 80  |......$....h..$.|
-+        002bc340  f7 b8 00 a3 fb e7 24 80  f7 9a 00 b1 fb af 24 80  |......$.......$.|
-+        002bc350  f7 b1 00 67 fb ee 24 80  f7 96 00 be fb 92 24 80  |...g..$.......$.|
-+        002bc360  f7 ab 00 7a fc 1b 24 80  f7 b6 00 ae fb 76 24 80  |...z..$......v$.|
-+        002bc370  f7 ce 00 a3 fc 02 24 80  f7 c0 00 be fb 8b 24 80  |......$.......$.|
-+        002bc380  f7 c3 00 93 fb d0 24 80  f7 ce 00 d8 fb c8 24 80  |......$.......$.|
-+        002bc390  f7 bd 00 c0 fb 82 24 80  f8 00 00 e8 fb db 24 80  |......$.......$.|
-+        002bc3a0  f7 d8 00 d3 fb b4 24 80  f8 0b 00 e5 fb c3 24 80  |......$.......$.|
-+        002bc3b0  f7 eb 00 c8 fb 92 24 80  f7 e7 00 ea fb cb 24 80  |......$.......$.|
-+        002bc3c0  f7 fd 00 cb fb 94 24 80  f7 e3 00 f2 fb b8 24 80  |......$.......$.|
-+        ...
-+
-+See ``Documentation/iio/iio_devbuf.rst`` for more information about how buffered
-+data is structured.
-+
-+4. IIO Interfacing Tools
-+========================
-+
-+See ``Documentation/iio/iio_tools.rst`` for the description of the available IIO
-+interfacing tools.
-diff --git a/Documentation/iio/index.rst b/Documentation/iio/index.rst
-index 9cb4c50cb20d..e84957ccdb2e 100644
---- a/Documentation/iio/index.rst
-+++ b/Documentation/iio/index.rst
-@@ -21,5 +21,6 @@ Industrial I/O Kernel Drivers
-    ad7944
-    adis16475
-    adis16480
-+   adxl380
-    bno055
-    ep93xx_adc
--- 
-2.45.2
+That's the answer why we cannot have undocumented compatibles: because
+we do not want to have implicit ABI. We want explicit ABI, which is:
+1. Clearly documented,
+2. Reviewed/accepted explicitly.
+
+
+> 
+>>
+>>>
+>>>   
+>>>>  
+>>>>> we tried to fix that with a deprecated tag but it was NAKd by Rob. What we understood    
+>>>>
+>>>> Because the driver was NAKed obviously as well.
+>>>>  
+>>>>> from his last message was that it wasn't necessary to fix the DT warning.    
+>>>>
+>>>> I am quite angry that maintainer tells you something, but you push your
+>>>> patch through because apparently you need to fulfill your project
+>>>> requirements.  
+>>>
+>>> I think this is a fundamental misunderstanding of the situation and probably
+>>> at least partly my fault for not clarifying my reading of the situation more
+>>> fully at the time.
+>>>
+>>> As far as I am concerned. The situation is:
+>>> 1) Existing shipping consumer device.  We have 100s of cases of ACPI bindings
+>>>    that exist just to deal with garbage firmware's.  The folk involved in
+>>>    reviewing these have pushed back hard for a long time, but sadly there
+>>>    is still a lot of garbage shipping because Windows lets it through and
+>>>    Linux support comes second.  It's made even worse by Microsoft defining
+>>>    their own standards that aren't compliant with ACPI as they don't
+>>>    even bother with reserving the methods IDs.  ROTM for example.  
+>>
+>> Hm, and these devices do not provide normal ACPI IDs? They use Of-like
+>> ones? I don't know that much about ACPI, but aren't they coming without
+>> vendor prefix thus "ltr,ltrf216a" is just wrong and should be "lTRF216A"
+>> alone?
+> 
+> Yes, they come with the ID that is matched on by the ACPI core as PRP0001
+> which basically means use the DT compatible.
+> Then a device specific property that provides 'compatible' to look up against.
+> The intent being to allow use of existing drivers without needing to modify
+> them to add ACPI IDs to match against. 
+> 
+> LTRF216A is worse than using PRP0001 and DT vendor ID
+> ACPI has it's own equivalent of vendor IDs and you have to apply for one from
+> relevant committee in the UEFI forum (ASWG)
+> https://uefi.org/ACPI_ID_List
+> (there is a 3 letter form as well).
+> It's easy to get an ID (takes a few weeks though) but many sensor companies
+> etc don't bother.  Sometimes they say it's because the OEMs should do this
+> and sometimes those OEMs do, so the binding is under their vendor not the
+> device manufacturer.  That's when you see what looks like completely unrelated
+> IDs being used.
+> 
+> It would be good it liteon got a proper ID and started issuing device numbers
+> to go with it though.
+> 
+> There are a lot of old bindings that make IDs up. Some are based on cut and paste
+> and we've been trying to scrub those, others are based on what Windows drivers
+> bind against and so we are stuck with that set.
+> For extra fun we have examples of hardware with a common ID for incompatible
+> devices for which we have different drivers.  That's a real pain when it happens
+> but a few sensor manufacturers have 'one windows driver' for many years worth
+> of unrelated devices and use horrible matching routines to figure out what is
+> actually there...).
+
+BTW, I really miss the information what sort of users they have for that
+compatible. The explanation was vague. What are the "released devices"?
+What ACPI tables do they have?
+
+
+Best regards,
+Krzysztof
 
 

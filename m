@@ -1,161 +1,168 @@
-Return-Path: <linux-iio+bounces-7437-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7438-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0503B92A2C9
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 14:29:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12AF92A317
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 14:43:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A54571F2100D
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 12:29:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E48451C21072
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 12:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF1B7641D;
-	Mon,  8 Jul 2024 12:29:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96DE5823CD;
+	Mon,  8 Jul 2024 12:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="2a9Cpoc3"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PtwQDajp"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F223C08A;
-	Mon,  8 Jul 2024 12:29:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40F281211;
+	Mon,  8 Jul 2024 12:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720441779; cv=none; b=e9JcbIk2Njjp1td5+Hxfx120C2YUHGNhA9/di3hciF3199v4DxfBBYJ5kPBqlc0e+gk35KSknN6gvnElNB3dHKx5Uvc/5PuLLcSJOJl3+2RAwuaWSX6L5R9PctX2SeAWY+YmVZKN3UyNLMNF+BYBl5o9jYhO75nXL9tR+LPQ+ss=
+	t=1720442615; cv=none; b=JixMjr3dpF183ijIOnxVvA7uHC+867PJJF4pn3IkU/4VpBsP8xeot81aAAj4YeCUk94pdBu1pg43Qysy9Q4P514emJB+gtaLQBBzvGW1QOn0DzpTbhUzPhr6W12ube8TdMx0OMq3o8LTfuuUpg4ZqomD7edvIWn1Q/3LsQOW1Tc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720441779; c=relaxed/simple;
-	bh=6/tJEdm3LbGFbJ6Qpev52Qt/ug+c8GBgOWAXsyW9d+U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UhREGX2wI3szzm0LFg8s4AB0w9FGO2uopW18naJmLwxq6IKSVcVmS9XNrPhfxWjrKiq9gRAPzfaTomxTMnCuAByTlFshOVOLePtpBXQpLZQP7dj3hpXNobMivbndxUQp8RvVbYU+TC21d3W9lIzUcsIj+eMeeT1JOaVlxV7Zn6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=2a9Cpoc3; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1720441775;
-	bh=6/tJEdm3LbGFbJ6Qpev52Qt/ug+c8GBgOWAXsyW9d+U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2a9Cpoc3Wb9KFno/rWDVftI+DUJbqAOYN12InSZgg3P+4krPzzpk6j58M+BhjwYss
-	 B9uTGdSvdyR1CiYNqAHS2JsvEYuq41zgGYti04sIDmo1/q25dye3wTMo97iyJucoyl
-	 9AL+SiE5mrFiHNgevZX19dnrgCYxEc1xAH8uloL4L4emO2G1yoVQ8GxzRvqlTMP2DC
-	 ZWm2tU3gilnzJLGpBE3D1dCBf3h9xs55S9ssiMwTOY75gu8Q3woJv4V8KDD1PYgrqT
-	 1N0TEPhW3J8ZrMHfDS7b97Zk2J5j28ywezJtSx0FFsiD0qTdiZ537IHGgcnzbH5hLU
-	 rQXM1pvLMpngA==
-Received: from mercury (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: sre)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id B9766378042B;
-	Mon,  8 Jul 2024 12:29:35 +0000 (UTC)
-Received: by mercury (Postfix, from userid 1000)
-	id 5907D1060623; Mon, 08 Jul 2024 14:29:35 +0200 (CEST)
-Date: Mon, 8 Jul 2024 14:29:35 +0200
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: Jonathan Cameron <jic23@kernel.org>, 
-	Shreeya Patel <shreeya.patel@collabora.com>, Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org, 
-	Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
-	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, 
-	kernel@collabora.com, Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: Re: [PATCH] iio: light: ltrf216a: Drop undocumented ltr,ltrf216a
- compatible string
-Message-ID: <upabgip4nipc6jqb6ktei22prhhkteljrbd3jh6vzeihqp4wsp@zkbbpuaejrqx>
-References: <20240705095047.90558-1-marex@denx.de>
- <3b2ca0-6687ce00-3-4dab7280@52083650>
- <98992b1d-c94a-4053-a755-32a25d7fdc46@kernel.org>
- <20240707143759.7718e0f3@jic23-huawei>
- <1effec8c-8228-482b-b476-06838128adfa@kernel.org>
- <20240707150835.40db1897@jic23-huawei>
- <9db672d4-a305-45ed-95f1-402c70a15379@kernel.org>
+	s=arc-20240116; t=1720442615; c=relaxed/simple;
+	bh=BI28wz5XInTgMXnFdy8HZ6+ujkFpibqozOzg9QsIMI8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SeGE7/PWKuNzA8WxyqbV7pT47ig4ycvP6PxdgajqhqvD+7rMpDkSJEeeDC6fMLTICRDv0KDZfOoKyKcUcH+1tXAVX4i1qqZUzmzvKpVQtasEj7nMOWx0NwyiMhUiYPwAXrD2arK1nkE4Gvw/1c82+aYERmQxASVJ7AieGE7v4MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PtwQDajp; arc=none smtp.client-ip=209.85.167.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-52e9fe05354so5657360e87.1;
+        Mon, 08 Jul 2024 05:43:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720442612; x=1721047412; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tE4/Xw/cTAW7KhMX9aTxF+9g4e51k+vLuUCkv+6bpaI=;
+        b=PtwQDajpW9YriSdltVhsOZo8EtXVyXm1UF6m7I0EXWbTYl7lW57mkWALIp2VY0Taty
+         bgx5bg3DVQ9sZhQahU9jVo7hR7K27O402Hn9Tj+2fOu4uYWStlB03wg/LMBwhzvf2I1X
+         jsL7KsL8IAojdOI4GgYsjEyhLDltThrfZpJc/he2Kkzr01mv8lc3c2ecGUdhymN8xOM3
+         LMR2oU+irvGUJh7uX+iO1Va9y1dGxYfNHSL2t9FzK8Pv/Ovgn36obgHPhX+h09mEEx8p
+         jAduzkGfiTAyyIyOl0oAQWHCpJImYq140kTArOOCo7Jzcax6yPVfOkRKc/cgC1QDZ3qu
+         D8ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720442612; x=1721047412;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tE4/Xw/cTAW7KhMX9aTxF+9g4e51k+vLuUCkv+6bpaI=;
+        b=bPTUG37651Z1a3SL/D57ycSvu1iPgRWwTZV80StbFU7e9CmVWLqEOh0z5J1Xnb58uN
+         CtiEbFeiVefGpfs8jS6jPdPWIUwBHdzEAcl20EpbeMv9vR7da50I6hZ+oolWVUPq/D24
+         KkfFe3H22QlRHmvzM1KSXe8/Jxl+bjsyzOSUe7P3EDDBq7OGOFALLo2dqYgpNAJA2BBD
+         FA4YXA35IECBOnZhI4+FNrH0lkkc1UxprbRlogF9g8q18lSG5e5Mj0jeTnf2fwEwPYMJ
+         w8pOmLK8CpJKUgM/96OSdJN0waIEA1DuAJR2FixdUyPcclJs1xlK71kVUmwi1L+s65sB
+         bTaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUlG5Ls+4TqR+dJ1UU/+nDb/Go4gdXuYOp4diBflknEK84phh9JRLHTQlgl6GsrSJMLG7sBH/QAqLUxC2WFEybKBmV+wXuJkDHmIqC8T5N9oooQPKTDgs1L7AF3uu+H8Z3YTnJoYJ8dha9kIVxyKSrWjedN9WF6cIhGQhoieQV+KvRDSQ==
+X-Gm-Message-State: AOJu0Yy63JdclNuykdJ+Z6wYt1VX6EASJ7R6f1HrEBaqTarkF37WBkVj
+	chBoW4TcMjT43SQD+iupHj+9uSd2L8kgTU9SxfDrAsRi/gM/+k6b
+X-Google-Smtp-Source: AGHT+IFxhmAI/t2baGo+8FHPDAJctn5KhZOEAfWFa+hD/m+yvpkjzx7stU+T+XnzM4iZBgNF6eESyA==
+X-Received: by 2002:a19:7702:0:b0:52c:dba6:b4c8 with SMTP id 2adb3069b0e04-52ea0619e3cmr9176706e87.13.1720442611240;
+        Mon, 08 Jul 2024 05:43:31 -0700 (PDT)
+Received: from ?IPV6:2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd? ([2a10:a5c0:800d:dd00:8cfe:d6e7:6701:9dfd])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ea90ba285sm723630e87.127.2024.07.08.05.43.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jul 2024 05:43:30 -0700 (PDT)
+Message-ID: <622f5382-10c9-4bd5-84ab-544d7c16f1fe@gmail.com>
+Date: Mon, 8 Jul 2024 15:43:29 +0300
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="zr7qgdcztnxcpmso"
-Content-Disposition: inline
-In-Reply-To: <9db672d4-a305-45ed-95f1-402c70a15379@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/7] dt-bindings: iio: BU27034 => BU27034ANUC
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, linux-iio@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1720176341.git.mazziesaccount@gmail.com>
+ <c39f9c67b3c07a27d7a13109c7b69cff9cfd2b9b.1720176341.git.mazziesaccount@gmail.com>
+ <20240707140536.1dbb989b@jic23-huawei>
+Content-Language: en-US, en-GB
+From: Matti Vaittinen <mazziesaccount@gmail.com>
+In-Reply-To: <20240707140536.1dbb989b@jic23-huawei>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 7/7/24 16:05, Jonathan Cameron wrote:
+> On Fri, 5 Jul 2024 13:54:12 +0300
+> Matti Vaittinen <mazziesaccount@gmail.com> wrote:
+> 
+>> The BU27034NUC was cancelled before it entered mass production. It was
+>> replaced by a new variant BU27034ANUC (note, added 'A'). The new
+>> variant gained a few significant changes, like removal of the 3.rd data
+>> channel and dropping some of the gain settings. This means that, from
+>> software point of view these ICs are incompatible. Lux calculation based
+>> on the data from the sensors needs to be done differently, and on the
+>> BU27034ANUC the channel 3 data is missing. Also, the gain setting
+>> differencies matter.
+>>
+>> Unfortunately, the identification register was not changed so there is no
+>> safe way for the software to distinguish the variants.
+>>
+>> According to the ROHM HQ engineers, the old BU27034NUC should not be
+>> encountered in the wild. Hence it makes sense to remove the support for
+>> the old BU27034NUC and add support for the new BU27034ANUC. Change the
+>> compatible in order to not load the incompatible old driver for new sensor
+>> (or, if someone had the old sensor, the new driver for it).
+>>
+>> Drop the compatible for old sensor which should not be in the wild and
+>> add a new compatible for the new model with accurate model suffix
+>> 'anuc'.
+>>
+>> Signed-off-by: Matti Vaittinen <mazziesaccount@gmail.com>
+> Rename indeed makes sense.  One minor, 'whilst you are here' comment inline.
+> 
+>>
+>> ---
+>> A patch renaming the file according to the new compatible will follow.
+>> If renaming is not needed or appropriate, that patch can be dropped.
+>>
+>> Revision history:
+>> v2: New patch
+>> ---
+>>   .../devicetree/bindings/iio/light/rohm,bu27034.yaml      | 9 ++++-----
+>>   1 file changed, 4 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml b/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
+>> index 30a109a1bf3b..535bd18348ac 100644
+>> --- a/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
+>> +++ b/Documentation/devicetree/bindings/iio/light/rohm,bu27034.yaml
+>> @@ -4,20 +4,19 @@
+>>   $id: http://devicetree.org/schemas/iio/light/rohm,bu27034.yaml#
+>>   $schema: http://devicetree.org/meta-schemas/core.yaml#
+>>   
+>> -title: ROHM BU27034 ambient light sensor
+>> +title: ROHM BU27034ANUC ambient light sensor
+>>   
+>>   maintainers:
+>>     - Matti Vaittinen <mazziesaccount@gmail.com>
+>>   
+>>   description: |
+>> -  ROHM BU27034 is an ambient light sesnor with 3 channels and 3 photo diodes
+>> +  ROHM BU27034ANUC is an ambient light sesnor with 2 channels and 2 photo diodes
+> 
+>   sensor
 
---zr7qgdcztnxcpmso
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks Jonathan!
 
-Hi,
+I won't re-spin this unless you ask me to because you wrote you can fix 
+it whilist applying... Please, let me know if you wish me to fix and 
+re-spin :)
 
-On Mon, Jul 08, 2024 at 01:25:10PM GMT, Krzysztof Kozlowski wrote:
-> On 07/07/2024 16:08, Jonathan Cameron wrote:
-> >>>>> We were very well aware that not documenting this was going
-> >>>>> to generate a warning so   =20
-> >>>>
-> >>>> You *CANNOT* have undocumented compatibles.
-> >>>
-> >>> Why not? This corner case is a valid reason for that to be allowed.
-> >>> You cannot use that compatible with DT bindings. Absolutely. The
-> >>> compatible has other uses...
-> >>
-> >> Okay. With that approach what stops anyone from submitting DTS using
-> >> that compatible (claiming there is a driver for that compatible)?
-> >=20
-> > That's a good point.  Perhaps we should just add a check for this?
-> > Easy to add a check on the firmware type. This is a rare enough case th=
-at
-> > just doing it in the driver seems fine to me (rather than more general
-> > infrastructure).
->=20
-> Another point of slippery slope:
-> 1. We accept such undocumented compatible in OF device id for ACPI
-> (PRP0001).
-> 2. Out-of-tree DTS uses it.
-> 3. Whatever we decide to do now with that compatible, we have
-> undocumented ABI exposed and used by users.
->=20
-> That's the answer why we cannot have undocumented compatibles: because
-> we do not want to have implicit ABI. We want explicit ABI, which is:
-> 1. Clearly documented,
-> 2. Reviewed/accepted explicitly.
+-- 
+Matti Vaittinen
+Linux kernel developer at ROHM Semiconductors
+Oulu Finland
 
-Regarding implicit ABI, I would be much more worried about things
-like this commit: 7b458a4c5d7302947556e12c83cfe4da769665d0 ("usb:
-typec: Add typec_port_register_altmodes()"). It's not referenced
-in the commit message, but IIRC Rob Herring ACK'd the approach
-taken by Hans. I understand that it will become quite hard to get
-things upstream when having to synchronize ACPI and DT first. But
-it does mean vendors can (and actually did in this case) start
-(ab)using the properties with DT making use of the implcit ABI.
+~~ When things go utterly wrong vim users can always type :help! ~~
 
-Note that in case of Type-C there is now a proper upstream DT ABI. I
-just wanted to point out that I totally understand the line of
-thought Jonathan followed and demonstrate how one can have
-undocumented properties (admittedly not a compatible in this case).
-
-Greetings,
-
--- Sebastian
-
---zr7qgdcztnxcpmso
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmaL26cACgkQ2O7X88g7
-+ppHXBAAqHPpYZ5LYzwaLP8y+HWnBfR6hElHxLvGnenRLMUQuvic57mHnmW9hlFA
-9Xz7ncKO0ElceTHlQVkG8qp0G5IO2StnPIYLCdzrUA/8PUrZHtBkxZIUGbpsAoRz
-NaoVLJAUPpBb5Ft5O0g87iabSN17oeJP8PFuMi7TXBqhxwiTpsEqXWPMavAzc+XG
-foPfpfQiMCOMbcRqUvq0kczB31Asm+ecpOu7kMizXjhmtFHok0op3PgPdbMUUDBG
-TQLms7dfUCt3F6/0KHHG+G30VY7Ykl15l9A3RIlHx5QOvzn1vW/D0exD1lypb+Vp
-6oIzUaqnQlmpWgCFvGS129PuZzmsdmAlsSwGTDH0WiN+9SCELh/fbi7tL75dlvYo
-Ktpwq7+arfNT+2+PUL0xsErU2pe8QoxCNeretCSSVa3kII4JCnECA+8DlaeZNr/i
-7R2pK3JmjcfdW7pp3eSufMitdB5VNTEh9SMjRUifM1XolPCZrxv+pAjHvSH3MVrg
-yywjLirYqh+y4pCylDRIOyj2KywuNl2hJ4uJnqTmx9JBsqnlGC+4eJRjCjH4FDDK
-taDOQgZeY3U2LtnJU05CUMWJrau16CY23vuRuKu5WgQk1x3O4pHc4EYSTyTL9rNg
-BeHdVLvYzLP24lPjMPKtf5zXhhdsABL/t0IbEiTMoV6WJuwslKU=
-=e5g8
------END PGP SIGNATURE-----
-
---zr7qgdcztnxcpmso--
 

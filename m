@@ -1,178 +1,127 @@
-Return-Path: <linux-iio+bounces-7451-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7452-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3243E92A95B
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 20:56:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6CA992AAF4
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 23:15:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5E86B21A3B
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 18:56:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 728182832EF
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 21:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB9C14B95B;
-	Mon,  8 Jul 2024 18:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303FB14EC60;
+	Mon,  8 Jul 2024 21:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="TlpzN3EA"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="hrz3z6OW"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
+Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E0314B07B;
-	Mon,  8 Jul 2024 18:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEE53399B
+	for <linux-iio@vger.kernel.org>; Mon,  8 Jul 2024 21:15:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720464992; cv=none; b=WOEJ5K77y0HZ2WcIvbLQgCoDokzMuBg/9uWoXKbxf4j4isR30xFIsTYcULhpiMB+h4EYvX76eWmuM1ycLIv3J0X3ib0NY6dOkUZRJJtveTcLjw2W2m7j6Lj7Ylj43bixGDRt61nOChcPgjQzdytb3Mc+PerkfgIt/UWLALugk7o=
+	t=1720473351; cv=none; b=k/q8QTr069sIIyd4+/0P0SCW/SKf1XV0Y7dqpK0/t/RYdPxHG3ZoY8EnUhaOGlv7MFKb4/kWsNkZVEZDQSj+ndefa+YX8QGIWARWtn8JbaRNqQKuwY/xRF28hP5R5phAoAMD1TCk+3dXdcmfRnkUw6ky0x4ZRsq+8pWHxMmVDzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720464992; c=relaxed/simple;
-	bh=gM0Y/RgU44s/WF55oq92oWg/kZnsd1CfJuaY7BInVSY=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=uTqRmnQ9KtqSVmt8ry6IVSi4XMf59oTMrASdUga86CjXZZysB/fESM/QwCYgw9cgJeMdTVgMGbhjG5LXJS4HwVQRApiJdFOkSGtNK4crITRJ3drUoOD9OQKQDdrh//WLuImHNoY2Ip+4Pr4cRHeCK/bM1rOXUu4uGYtQTStbYNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=TlpzN3EA; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-Received: from localhost (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id 83F4840F00;
-	Mon,  8 Jul 2024 20:56:26 +0200 (CEST)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
-	by localhost (disroot.org [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 6plcH9AA_KY5; Mon,  8 Jul 2024 20:56:25 +0200 (CEST)
+	s=arc-20240116; t=1720473351; c=relaxed/simple;
+	bh=rhLMzhnBr1fmJn4hsQMzNNrDyhSsV9+nyDHGBNMD9LQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UEAT+8XrEZhEBexRYEHi6EN67nspxJ9y7yciiWUbKAOC+d1cgmf0/bmvI30/ABKB8u0RQiM1+Aa4CSnPKKVgdDvfH0mA3QOopPtH/4Y2ZSyjUz8HgJAG8PQz5fSyilLK8YhCYO6orIJZT5VOvxnl2Uch/eBH/U7sUOUPHMR4bHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=hrz3z6OW; arc=none smtp.client-ip=209.85.210.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-703647385b6so1347966a34.3
+        for <linux-iio@vger.kernel.org>; Mon, 08 Jul 2024 14:15:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1720473347; x=1721078147; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0uy9ikK6i2ce0Lmsca9PL3vsPP0xYz4tW9STZ+9c+oE=;
+        b=hrz3z6OW3ATt5CSB4mfO5xjFlxqwUs6Lo/q/HKft1Js9CilVhTs/Y4SGBf/dIqNMSq
+         nsCYuBpZRNHDb9jyyrez8V/6qZMgIHz2EZn3ORg2SB17NxPMPKmWYhd66/LrCbQfbS+E
+         /JVYjpIfQwnE3PxGZfvNddZSnCFoyOmFeiNfmcJVtvuV7tvADNdkJQraZfk3Xp/xBQyG
+         F4HnMoaVRTkL7VchWJNgQq7VHxxTaG+AzgsI/xdwSLcod/x2s4UMHngt7frp2WjwytBm
+         b0RcZTcQlbQ8eHGAHpLRaPEQeDkbh1UyP1KRIWQzf5hYlwyFA8RhR8e6gJcNd8KbmnMZ
+         lxuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720473347; x=1721078147;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=0uy9ikK6i2ce0Lmsca9PL3vsPP0xYz4tW9STZ+9c+oE=;
+        b=w9Ide19LnFWBvsCxeiY7itGW4MF7FQNEohFfeEt5RbAxi0VCct5d3k0Bkf498C7ITX
+         g4TDsctgDvEHF6B5e/tqoHj6MJ395ndQ+w/3F7rS7UWPpFRkoZKOsriU/77CKaYz+x5z
+         0vFjNDwYeL0I/ITR21WI5TYAEIUgusgN+o0oizNpEQ9TccIdnwYeNA/24Qw20xovT+1C
+         68okOFcLcoy6/RiomXV+JxAkL+bE2YnwpzJZJklnT++11UQFANLo3uxACiDkJimQslIW
+         74BIbVcOLBaPfQYjycA6qXFto2kyHNkVpQV/xswwoqNJpwsx3YzwC4PmwGA+zv82qGrg
+         ec8A==
+X-Gm-Message-State: AOJu0Yx+10xJ0RWSYJrByQpBVbz1Nf3Ey/1JBpC576rQZyLUbD//LRnW
+	Doj0ZYjZrZLVVt8GiqFQLT+qnN+piKCTM1aSxT3uTHQhz9KIx0diF+TAEew7D7U=
+X-Google-Smtp-Source: AGHT+IFCFAiZRzRwOpzCyq4dZt7m1IKHP5ZbEcsTgsYyiNk5cHylYqzh4ru8zGjJ0H54yTk3AdBIWw==
+X-Received: by 2002:a9d:6316:0:b0:703:64d4:8e12 with SMTP id 46e09a7af769-70375a06a12mr723275a34.2.1720473346891;
+        Mon, 08 Jul 2024 14:15:46 -0700 (PDT)
+Received: from [192.168.0.142] (ip98-183-112-25.ok.ok.cox.net. [98.183.112.25])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-70374fc0af5sm157297a34.62.2024.07.08.14.15.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jul 2024 14:15:46 -0700 (PDT)
+Message-ID: <bc88e0c7-516f-4eef-a9d9-ce0250d6a570@baylibre.com>
+Date: Mon, 8 Jul 2024 16:15:45 -0500
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1720464985; bh=gM0Y/RgU44s/WF55oq92oWg/kZnsd1CfJuaY7BInVSY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=TlpzN3EAM2KnAfqBw0xaGkjPRz/EGSBA8G16nvq1hgOLZRT8H6Tg+JEBHcWTzVxy5
-	 OQcx+YBs804nxdOkpQ8z9uRPn/4lhUG4Qg+/EZ5uAmfN85HwLc6Dhnvs1hrFESerKv
-	 S8JYTPqIPAD4Zgk3n2OqhVsehT8aU4coK+1GFnm0nGARkeXwExHjDNyh+8fUwngPR7
-	 e49PD52ZdrZogh8lnjMs7iRsQpKVOH8XGctTyxgAmxMGsg6rCfPNaoWfkHyUO+uVDW
-	 fNsk6pCP85I8tRChmr7wj5EN2y69fDWZ3veAEGAAMYJ9Y0isGGt4VJ5ExIi090t5B8
-	 gJnDzCL8wS3Mw==
-Date: Mon, 08 Jul 2024 18:56:25 +0000
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Conor Dooley <conor@kernel.org>, linux-iio@vger.kernel.org,
- devicetree@vger.kernel.org, conor+dt@kernel.org, kauschluss
- <kauschluss@disroot.org>
-Subject: Re: [PATCH 2/2] dt-bindings: iio: light: stk33xx: add compatible for
- stk3013
-In-Reply-To: <20240707174910.156b3e3c@jic23-huawei>
-References: <20240625165122.231182-1-kauschluss@disroot.org>
- <20240625165122.231182-2-kauschluss@disroot.org>
- <20240626-junior-tag-cd3e27c4b140@spud>
- <7f99d77c65bc347bf8b7935220520fdb@disroot.org>
- <20240703-velvet-badly-904e7afc7cf8@spud>
- <9a7f7eb2b5e8841b8c1f1064cccdd86f@disroot.org>
- <20240707174910.156b3e3c@jic23-huawei>
-Message-ID: <dd623c35ca67b1574b2f84074ca68b8a@disroot.org>
-X-Sender: kauschluss@disroot.org
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 1/7] spi: Enable controllers to extend the SPI protocol
+ with MOSI idle configuration
+To: Marcelo Schmitt <marcelo.schmitt@analog.com>, broonie@kernel.org,
+ lars@metafoo.de, Michael.Hennerich@analog.com, jic23@kernel.org,
+ robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ nuno.sa@analog.com, corbet@lwn.net, marcelo.schmitt1@gmail.com
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-spi@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1719686465.git.marcelo.schmitt@analog.com>
+ <7eb23146ad6bf6090183c6340e4d59cb269d83a7.1719686465.git.marcelo.schmitt@analog.com>
+Content-Language: en-US
+From: David Lechner <dlechner@baylibre.com>
+In-Reply-To: <7eb23146ad6bf6090183c6340e4d59cb269d83a7.1719686465.git.marcelo.schmitt@analog.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 2024-07-07 16:49, Jonathan Cameron wrote:
-> On Thu, 04 Jul 2024 07:16:10 +0000
-> Kaustabh Chakraborty <kauschluss@disroot.org> wrote:
+On 6/29/24 2:04 PM, Marcelo Schmitt wrote:
+> The behavior of an SPI controller data output line (SDO or MOSI or COPI
+> (Controller Output Peripheral Input) for disambiguation) is usually not
+> specified when the controller is not clocking out data on SCLK edges.
+> However, there do exist SPI peripherals that require specific MOSI line
+> state when data is not being clocked out of the controller.
 > 
->> On 2024-07-03 19:30, Conor Dooley wrote:
->> > On Wed, Jul 03, 2024 at 06:31:13PM +0000, Kaustabh Chakraborty wrote:  
->> >> On 2024-06-26 16:06, Conor Dooley wrote:  
->> >> > On Tue, Jun 25, 2024 at 10:21:06PM +0530, Kaustabh Chakraborty wrote:  
->> >> >> Add the compatible string of stk3013 to the existing list.
->> >> >> 
->> >> >> Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
->> >> >> ---
->> >> >>  Documentation/devicetree/bindings/iio/light/stk33xx.yaml | 1 +
->> >> >>  1 file changed, 1 insertion(+)
->> >> >> 
->> >> >> diff --git a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
->> >> >> index f6e22dc9814a..6003da66a7e6 100644
->> >> >> --- a/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
->> >> >> +++ b/Documentation/devicetree/bindings/iio/light/stk33xx.yaml
->> >> >> @@ -19,6 +19,7 @@ allOf:
->> >> >>  properties:
->> >> >>    compatible:
->> >> >>      enum:
->> >> >> +      - sensortek,stk3013  
->> >> > 
->> >> > The driver change suggests that this device is compatible with the
->> >> > existing sensors.
->> >> > Jonathan, could we relax the warning during init  
->> >> 
->> >> What does 'relax' mean here? Earlier there used to be a probing error,
->> >> and now it's just a warning. Is that not relaxed enough?  
->> > 
->> > If it is something intentionally, I don't think a warning is suitable.
->> > It makes the user thing something is wrong.  
->> 
->> So, something like:
->> 
->>   dev_info(&client->dev, "chip id: 0x%x\n", chipid);
->> 
->> is suitable in this context?
+> Conventional SPI controllers may set the MOSI line on SCLK edges then bring
+> it low when no data is going out or leave the line the state of the last
+> transfer bit. More elaborated controllers are capable to set the MOSI idle
+> state according to different configurable levels and thus are more suitable
+> for interfacing with demanding peripherals.
 > 
-> Key is to indicate in a 'friendly' fashion that we don't recognise the part
-> but we are treating it as what DT says.
+> Add SPI mode bits to allow peripherals to request explicit MOSI idle state
+> when needed.
 > 
-> dev_info(&client->dev, "New unknown chip id: 0x%x\n", chip_id);
-> only in the path where we don't have a match
+> When supporting a particular MOSI idle configuration, the data output line
+> state is expected to remain at the configured level when the controller is
+> not clocking out data. When a device that needs a specific MOSI idle state
+> is identified, its driver should request the MOSI idle configuration by
+> setting the proper SPI mode bit.
 > 
->> 
->> And doesn't it make stk3310_check_chip_id() obsolete? In all cases chipid
->> should be printed as it's not an error/warning message.
-> 
-> No. Printing it when we know what it is counts as annoying noise.
-> We want the print to indicate we don't know what it is.
-> 
-> There have been too many instances of manufacturers switching to
-> a part that is compatible with some non-mainline driver (because they
-> match on a whoami and handle it appropriately) that doesn't work
-> in Linux.  Hence we want to print a warning so that when we get such
-> a report we can ask for more info on what the device actually is.
-> 
-> If device manufacturers would actually update their DT when they changed
-> a sensor for an incompatible one we'd not need this.  Unfortunately
-> some of them don't :(
+> Acked-by: Nuno Sa <nuno.sa@analog.com>
+> Signed-off-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+> ---
 
-I see. Sure, I'll modify it accordingly and send a v2.
+Tested both valid and invalid combinations of flags and saw expected
+behavior/error messages in all cases.
 
-> 
-> Jonathan
-> 
-> 
-> 
->> 
->> >   
->> >>   
->> >> > 	ret = stk3310_check_chip_id(chipid);
->> >> > 	if (ret < 0)
->> >> > 		dev_warn(&client->dev, "unknown chip id: 0x%x\n", chipid);
->> >> > and allow fallback compatibles here please?  
->> >> 
->> >> So, you mean something like this in devicetree?
->> >> 
->> >>   compatible = "sensortek,stk3013", "sensortek,stk3310";
->> >> 
->> >> I mean that's fine, but we also need to change devicetree sources for
->> >> other devices. If that's what we're doing, please let me know how do
->> >> I frame the commits.  
->> > 
->> > Why would you need to change the dts for other devices to add a fallback
->> > for this new compatible that is being added?  
->> 
->> Okay gotcha, so it's just for stk3013.
->> 
->> >   
->> >> >>        - sensortek,stk3310
->> >> >>        - sensortek,stk3311
->> >> >>        - sensortek,stk3335
->> >> >> -- 
->> >> >> 2.45.2
->> >> >>  
->> >> 
->> >> Thank you.
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Tested-by: David Lechner <dlechner@baylibre.com>
+
 

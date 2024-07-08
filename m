@@ -1,129 +1,125 @@
-Return-Path: <linux-iio+bounces-7434-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7435-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A556992A176
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 13:47:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6904592A26C
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 14:16:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50C291F22014
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 11:47:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AAD71C213D2
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 12:16:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D02B7E0E9;
-	Mon,  8 Jul 2024 11:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00C580046;
+	Mon,  8 Jul 2024 12:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="sjTfCPP0"
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="SbSiXmim"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from phobos.denx.de (phobos.denx.de [85.214.62.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EAC41CD15;
-	Mon,  8 Jul 2024 11:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.62.61
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAF67C6CE;
+	Mon,  8 Jul 2024 12:13:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720439269; cv=none; b=U7nXgtH4kJ2soBEKM28mA4FAfVMsCIe+Q5nk8sWyGn9SwZnjVv7oMv1pmQPPt5SFj0Zuvquu2ki0BLkD2tNKxlMfkTtmkHUTOdXwZxu7AsiZUC4fWbHPf2moU/da2fy01PNcPbwwyMp1m4Gb3cDrT7fHUm8N5QiC30hQC0CQSXQ=
+	t=1720440806; cv=none; b=mluhFxobBvOkEB90oiQsw2pjeKK1WB7MQVBQI/mGCz2N8I4KWHsd1rfhUooK0p+n8pqmqm1rHpXS4euvvbE8y2vh9EwQmunkLUlZLut0NpJisItvWryQ1BIZf94Uh3eeqdhotVD3QDnmzrxcjzSvbJ1O+XQ0NWYFS+IRRYKNWSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720439269; c=relaxed/simple;
-	bh=4ZnzU1vEYHnOHqWiB+3/e+5l73HWxSTbv1ScgMEFivk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=soEuOZ2xJQZlxx9IbP/8MvpRZCRV1cMkmslkkS9mqBTi1CzaokLa0H7ROg9s/C8jAkMaFsP1PMr9TMAfsdtOJWDdYf/U8a4Ltv7yLqw0BWHk2tg7mqr+xNYn7S7nhljMKyn2sb/yFsCc+LaOjfSf62iXcXPuq4Zla+KFd3DIa0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=sjTfCPP0; arc=none smtp.client-ip=85.214.62.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (p578adb1c.dip0.t-ipconnect.de [87.138.219.28])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits))
+	s=arc-20240116; t=1720440806; c=relaxed/simple;
+	bh=+nJMkCqOAbHEuYD4KRDwUHDVHDHPJAlNGEhdDqx7/qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p4XAbHCGpQkn1lPoBcljtQM9CcKCW/BfgUN5Lw7nZbXN8un3mSWKwU4YyFCvNQVLm1YsOzokmeqPIv7oU/iMH6JW4zs2zJn7n8ctSashPxgXyiaFVcGENISL4G+4XoZksIvjVN32RIs15ByTVhjX6sovub9ApdtAwBW4NLwWraI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=SbSiXmim; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1720440803;
+	bh=+nJMkCqOAbHEuYD4KRDwUHDVHDHPJAlNGEhdDqx7/qg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SbSiXmimyFUuGSDC5A88jA6/Sp379Ck5IBDs3T+nX0OoOfERpaUYUhRhdgjlp72Eo
+	 goZOPifGZQLRL6Sqm9sO7IAsK2KCbRC4utsQKMzwfR5nfyjcG94Ttdu8EGwaLUL76J
+	 lCX3Ihy5oXZ5OrhShMRYSodKQE81ubS7Sa328slifEpPQdQKqK5U8M9ralzY7yD8iI
+	 ZR3GgBRYPhaHrG7rvXGF+Tr/2Ob7sDCOuM1yVII+yIF4uQMvCXFa6GdvSQmdwAV93p
+	 au3I3NgflrrioZ59V57ZUA+8vZSZ4E8XmH8BO8v2H4mib7fASLEHjnmCV4xPqfPCo8
+	 Qmh/wnkAMLNrQ==
+Received: from mercury (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: marex@denx.de)
-	by phobos.denx.de (Postfix) with ESMTPSA id 103F48862E;
-	Mon,  8 Jul 2024 13:47:45 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de;
-	s=phobos-20191101; t=1720439265;
-	bh=EFmGyz3lelBPdoSOrsqSXvVCTJmdQXWKj40ri3YNSmI=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=sjTfCPP0ub4B6h6FkQcJFmPUj3L6y43xWPnShIwEE9UMJ2BEfyJxps3XquZPVSGi1
-	 myNcT6lGdWYGHZas2GZ/LoHmAp1VhyOMqXH0tPYL/nO6JmtOhqlKS0gFEUclwrqkRK
-	 jclzXVurBRavR9fkPKb4QKWL+hOk6bxAIInhVWB8l4b8CQYM39xEl0FpMp9MYnZWSi
-	 eCrHhRFrw+ICavdmvFRZ9AlUk1LdWa0vRHcSKP6rE2jPo3k01KmBwyhzLqMUkOvIfL
-	 fFcayKZ/x0DDxjknmiaHC7/9sgk6ZPuvHIuTGpmtW5LMqreNo7alaEsKClNV9Jt36z
-	 ULt3D/Km+logg==
-Message-ID: <c6c53b0f-c65d-47c4-9ad0-672cbf4cabc1@denx.de>
-Date: Mon, 8 Jul 2024 13:41:49 +0200
+	(Authenticated sender: sre)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 1312C3780BFE;
+	Mon,  8 Jul 2024 12:13:23 +0000 (UTC)
+Received: by mercury (Postfix, from userid 1000)
+	id B64771060623; Mon, 08 Jul 2024 14:13:22 +0200 (CEST)
+Date: Mon, 8 Jul 2024 14:13:22 +0200
+From: Sebastian Reichel <sebastian.reichel@collabora.com>
+To: Jonathan Cameron <jic23@kernel.org>
+Cc: Krzysztof Kozlowski <krzk@kernel.org>, 
+	Shreeya Patel <shreeya.patel@collabora.com>, Marek Vasut <marex@denx.de>, linux-iio@vger.kernel.org, 
+	Conor Dooley <conor+dt@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, devicetree@vger.kernel.org, 
+	kernel@collabora.com, Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: Re: [PATCH] iio: light: ltrf216a: Drop undocumented ltr,ltrf216a
+ compatible string
+Message-ID: <u5gzxmapos2mo7rldarzdzp22wauuzcozywbynh2ryislqrtpw@cleln4mgilgy>
+References: <20240705095047.90558-1-marex@denx.de>
+ <3b2ca0-6687ce00-3-4dab7280@52083650>
+ <98992b1d-c94a-4053-a755-32a25d7fdc46@kernel.org>
+ <20240707143759.7718e0f3@jic23-huawei>
+ <1effec8c-8228-482b-b476-06838128adfa@kernel.org>
+ <20240707150835.40db1897@jic23-huawei>
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
 List-Subscribe: <mailto:linux-iio+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] iio: light: ltrf216a: Add LTR-308 support
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: linux-iio@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Shreeya Patel <shreeya.patel@collabora.com>, devicetree@vger.kernel.org
-References: <20240705091222.86916-1-marex@denx.de>
- <20240705091222.86916-2-marex@denx.de> <20240707144922.1a9140da@jic23-huawei>
-Content-Language: en-US
-From: Marek Vasut <marex@denx.de>
-In-Reply-To: <20240707144922.1a9140da@jic23-huawei>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: clamav-milter 0.103.8 at phobos.denx.de
-X-Virus-Status: Clean
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2n432feszofn6atr"
+Content-Disposition: inline
+In-Reply-To: <20240707150835.40db1897@jic23-huawei>
 
-On 7/7/24 3:49 PM, Jonathan Cameron wrote:
-> On Fri,  5 Jul 2024 11:11:45 +0200
-> Marek Vasut <marex@denx.de> wrote:
-> 
->> Add LiteOn LTR-308 support into LTR-F216A kernel driver.
->>
->> The two devices seem to have almost identical register map, except that
->> the LTR-308 does not have three CLEAR_DATA registers, which are unused
->> by this driver. Furthermore, LTR-308 and LTR-F216A use different lux
->> calculation constants, 0.6 and 0.45 respectively. Both differences are
->> handled using chip info data.
->>
->> https://optoelectronics.liteon.com/upload/download/DS86-2016-0027/LTR-308ALS_Final_%20DS_V1%201.pdf
->> https://optoelectronics.liteon.com/upload/download/DS86-2019-0016/LTR-F216A_Final_DS_V1.4.PDF
->>
->> Signed-off-by: Marek Vasut <marex@denx.de>
-> One additional question inline...
-> 
->> ---
->>   drivers/iio/light/ltrf216a.c | 49 ++++++++++++++++++++++++++++--------
->>   1 file changed, 39 insertions(+), 10 deletions(-)
->>
->> diff --git a/drivers/iio/light/ltrf216a.c b/drivers/iio/light/ltrf216a.c
->> index 68dc48420a886..375312db4ef58 100644
->> --- a/drivers/iio/light/ltrf216a.c
->> +++ b/drivers/iio/light/ltrf216a.c
->> @@ -68,6 +68,13 @@ static const int ltrf216a_int_time_reg[][2] = {
->>   	{  25, 0x40 },
->> @@ -382,15 +394,19 @@ static bool ltrf216a_writable_reg(struct device *dev, unsigned int reg)
->>   
->>   static bool ltrf216a_volatile_reg(struct device *dev, unsigned int reg)
->>   {
->> +	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
->> +	struct ltrf216a_data *data = iio_priv(indio_dev);
->> +
->>   	switch (reg) {
->>   	case LTRF216A_MAIN_STATUS:
->> -	case LTRF216A_ALS_CLEAR_DATA_0:
->> -	case LTRF216A_ALS_CLEAR_DATA_1:
->> -	case LTRF216A_ALS_CLEAR_DATA_2:
->>   	case LTRF216A_ALS_DATA_0:
->>   	case LTRF216A_ALS_DATA_1:
->>   	case LTRF216A_ALS_DATA_2:
->>   		return true;
->> +	case LTRF216A_ALS_CLEAR_DATA_0:
->> +	case LTRF216A_ALS_CLEAR_DATA_1:
->> +	case LTRF216A_ALS_CLEAR_DATA_2:
-> 
-> Is there any point in this covering registers we have already stated above are
-> not readable?  I guess we could argue that having this change is acting
-> as a form of documentation.  Maybe just adding a comment that they
-> don't exist would be clearer?
 
-I'll add a comment, thanks.
+--2n432feszofn6atr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi,
+
+On Sun, Jul 07, 2024 at 03:08:35PM GMT, Jonathan Cameron wrote:
+> > > 2) This is an ACPI binding, it just happens to use a DT compatible vi=
+a the
+> > >    PRP0001 mechanism. Yes, we strongly discourage people doing that in
+> > >    shipping products but there have been other cases of it.
+> >=20
+> > OK, is this the case here?
+>=20
+> [...] If we can get an example of such a device that would help. [...]
+
+The ALS is used by the Valve Steamdeck via ACPI + PRP0001 with the
+bad compatible string.
+
+-- Sebastian
+
+--2n432feszofn6atr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmaL194ACgkQ2O7X88g7
++ppYKg/+NFCpzVB6jazl4U6umaHiZINKxpLFPkdTfJDAYCUjvXEppNs/bkLqAO+a
+Hl2Fj73XbjLXDW0fdZkq7NJn61Ss8LOGOorUeVJ1YMrG3vL2hGr/+2FBYkkotCUT
+9Gp4LGhAGjDfxqNHK9l2Nt3c1gUMHEXgG6mW5kWRAAftcqjjB/qXoJb05WXWKztP
+Hh1NclviMQlmkl7dFmibaX5hfI17A9R8BrV1vHZgucG45wH5gnSC9vmDVTcJIk6Y
+pPy4g7/JdhXKcLpnYlOogfGDHL+BACEWkq6v23oM9mnnvPKwgs6g3BaMBgGqWSrO
+iuj/dYS3skHCzdfhzx/OXch6FYN94XNzmbhwfpSNx9yl0P81dO/S6J9P8tFr0ssV
+F+UgBSl7lR19WYH7Y7AczPPnDmJAbcYkWO0sB5bA714oLIv78Tt6++saRggSVEre
+coG7LpKJU8ajlZxu6zOcH6F/VHzjtdQrndc8O41HgYAk9WLq3iFBrEE6sLu4pDon
+/luZ79Ci/BT5vJOc/VZVteYhtbSEE7Px43CxcZmDu+3P3FAcMN1f6n0eu+c9DVbn
+nrveDEaGDlacvSPkR5ywEioB1ottRcNs7bMfyTdRGIoeiXRqCDJLZo8B5tCVRhG/
+zkB7ZHh7POv/wHAd2NCjKzyafyuGmUD6lBx2lJMELPpPfFWSNvU=
+=GHr2
+-----END PGP SIGNATURE-----
+
+--2n432feszofn6atr--
 

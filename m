@@ -1,90 +1,91 @@
-Return-Path: <linux-iio+bounces-7440-lists+linux-iio=lfdr.de@vger.kernel.org>
+Return-Path: <linux-iio+bounces-7441-lists+linux-iio=lfdr.de@vger.kernel.org>
 X-Original-To: lists+linux-iio@lfdr.de
 Delivered-To: lists+linux-iio@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FC9092A3CA
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 15:40:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B4F592A3F6
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 15:46:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B52E5B20E4D
-	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 13:40:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B5EEB2219F
+	for <lists+linux-iio@lfdr.de>; Mon,  8 Jul 2024 13:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8D04137C35;
-	Mon,  8 Jul 2024 13:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFB313A3FF;
+	Mon,  8 Jul 2024 13:45:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D6hRnEnS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S5qJqhJD"
 X-Original-To: linux-iio@vger.kernel.org
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F87D1171D;
-	Mon,  8 Jul 2024 13:39:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B6326ACF;
+	Mon,  8 Jul 2024 13:45:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720446002; cv=none; b=SEd72HocL2IF0yMrkWeZ7w4GtFuH68Io+5DT0AhbpMk3wcSVWysprCOl2h+WvIoDbJYG1BiAtCESaZP4Tg154H/j3YBpV/Ro/LRt3mHs/dHtHqkZvYsSooEeGy9F+6SZhMv5T/OpVsTp0ctGOKgFpiGcRSqZvP8fAETrPqd6zsM=
+	t=1720446355; cv=none; b=kyky6wyusl4rzJh22xlhzkziXjB25+IgHN/ywjPRCEZELXGrJAhA6gLZCbyd6fJvYcQyQgo4fVq/VU5XaP5EXt7ck6QeAslDRP7Z6cKDlIDWr4WfjsStIiBo8rGg4xk5SDa3lCGjrQvGZAa7Xzd3CcKe/cX5HPtuy5dEoYdM8eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720446002; c=relaxed/simple;
-	bh=GtQ3ES9dM6tnHOMKDsx+I9bktE5ptx3fCniyNfd35EM=;
+	s=arc-20240116; t=1720446355; c=relaxed/simple;
+	bh=Gjnmvp0zmB2bVGeO4qI021CDBPbU/U7XD8/uKAYLm5Q=;
 	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=cQewEY+ARdpF+H2t5xkGYU8Cw8FrJxSM6+0wH+/GB1hY8WhV+ktA6Ac9aRk8j8FpKKH/SMko9Q5IK5gFKdjj7XttRPZoYLuun57PIncv53OUuNNWdULqFIWQnlm04H8JnZtuiL/bSQHdkCB0zMdKZWaOgoaQQao2eC28If0Ch0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D6hRnEnS; arc=none smtp.client-ip=209.85.208.170
+	 Mime-Version:Content-Type; b=H0buNsdin2TjLv98FLOqIyLellYPPaX6+Qy/V1t53yYIXOf9PaJ2NIedKLWyVLtUQ8Niugeh1oqFg34Aj1y3HnTVjIf6iGYMrtpn+U9fxWe1Vbws2xYp1fftCJlhM8vDXOxgzuSjSIO7An7dLcRowNIV7WAn6Tdm00q9/rzkkhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S5qJqhJD; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2ee90dc1dc1so37924741fa.3;
-        Mon, 08 Jul 2024 06:39:59 -0700 (PDT)
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4257d5fc9b7so33973765e9.2;
+        Mon, 08 Jul 2024 06:45:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720445998; x=1721050798; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720446352; x=1721051152; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:subject:references
          :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Eesy2pn3itcP1WMJLgHgMe6OQpUXtPho+emPCzI/UAQ=;
-        b=D6hRnEnSa+TsycJiNvIFs2gUiXbjuoFfULLW7Hn4l9CQAe7PExX7ylKi+aaFWbzrd5
-         kEGpT8I0yKpoKpGeJxcMLUkG/NjkvFFVGhNC9al9wohE8i42lD020l2YWkdS43aon3jz
-         AYJlGg6GIxUplW5ZYm09qRV/SMqtz48LmrzWnH1wrr9rTy2ZOst2ntX3//Xa+76gUf2K
-         QBvQ+Sc3VtgS2vJxyyEO+Si9lOAglJtbxb+dTgghIEGCBOz146+P5JTGxe5lEgMVbp+h
-         2ZM2Kb9OnLpqg4Yv45LLiHYme2xtT40ccCqX9HZIbB0wS2r7BSlJvke5TxbXTjHp9HOn
-         4S5w==
+        bh=Gjnmvp0zmB2bVGeO4qI021CDBPbU/U7XD8/uKAYLm5Q=;
+        b=S5qJqhJDfJa4I/4bUVbNRBRd1GBbQwxXbzSWZxtdfSKZf0Odc7ODpRGb0gAsVAn2Al
+         OOxrjDSWtTa1ZUqz2Uxn5lEOhMUdIGMJdWULrSDsbGh7IOKWkvTFpdN/TmeOx/g49FYA
+         V+kaYVSOnVA6BRKNgiAJx344BsO/JcXW7gz/2xkAnsfEdP9/G8DzYplDcNNudx2WoXZ5
+         NzLDE4YuZLXXp0Ggxh73rY5PheTtkI/ukqPrpitCpvK+/QXCwJSDLI7HTLc3dpwEVpOj
+         0zR4y8tFR6GR3fQAfGeXOj8fY9nrTd/OaXM1oFIVN8F/9+Fu0Mxpb+OnwHpODJYjWZh+
+         kveg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720445998; x=1721050798;
+        d=1e100.net; s=20230601; t=1720446352; x=1721051152;
         h=content-transfer-encoding:mime-version:subject:references
          :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=Eesy2pn3itcP1WMJLgHgMe6OQpUXtPho+emPCzI/UAQ=;
-        b=ikAqNhXJOnSIpmklq61bMPcCaxDh4HzQqQzL+wJ3ZLCJQMqcH2wLQO19Clm/KJCLM7
-         tT2Rwr9BaN+NZAjTSEhqW96igAjD3oBd9CbBziY8lEoASIMlTlmxu7fXcC7vQsEPLEyA
-         VLmV3FzdP5Mu6EN8ukMg3UntmBfVMFk5bJGGsT7GcPC9mBXCxA6TRgXZ02vXWKkEg+so
-         MASZjBkwp19STLxzNZoRtYVc38i5g8Arbc9xdYQjHkAIuWwhlnVn7VePG54ZhFFDT7GW
-         SBQ0aW9tKkh/jXOmHzJ+W3UA8WI6yCYjHkvcuFtNfDvqtlAu+PNm2bsI1Q+Rcm7Ex9rY
-         O9EQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUIt9oqptMOyX54J7bNHV5w46z++h3AjO2BlLscnR8U9BzO+e5m/l3Ll+oPXP/kRDP4xHgeP4l9S2qDg2m7VeoUMLQydQLIcJZjW2ypgIN3moA29PAZVoj0k+9odBBCJTtL6Uq8GZilr/ojSqV0Jh4nZy4iJeVqw43HcyCAVXqCgZS1gg==
-X-Gm-Message-State: AOJu0YwCLZy88gA3UieB+hSCyrPeVMg5Hb+zBfz79kcQOxp5VnLYOaAG
-	FnJQw9X4rr+MPdmmlPLq36uvU6XPskM/sq1hWeEL66Rn1R9pKvfh
-X-Google-Smtp-Source: AGHT+IFleR+qG5VXdGG7tlCzE5DvpbBFSkgR0u6McYQ15nHs6qMOvBecwfkk6vaqC7NMQ5BNx1tBpg==
-X-Received: by 2002:a2e:be0f:0:b0:2ec:5699:5e6 with SMTP id 38308e7fff4ca-2ee8ed9fc91mr99444291fa.26.1720445997123;
-        Mon, 08 Jul 2024 06:39:57 -0700 (PDT)
+        bh=Gjnmvp0zmB2bVGeO4qI021CDBPbU/U7XD8/uKAYLm5Q=;
+        b=h5kJY9dLWYKHF94/CEqmIUgPiXmuDc/oDEdEIZ261S1d/sTLxkBCh7NEtrKiwsHSbU
+         hnMMcjdInDJTSb9p7iCm3cwChe49vEtgd/PcUbWuB0YiuMUyvVotztzWPnP/gAl+lX/h
+         xVdQntdGHXkKzu4rVEIMStzBpT0VbfnD7pUX3bXlUh53euTpYhF/uoUyMYztpYOk6jfk
+         Vdnpvo/K0JnBJsE9pUScJHRtQ2tpbDIG2PFS2k00aFffn3kqltsM/lsyR1wXcs50+YUg
+         0WOmqzxRPfbtrg0LKQxVz+vWmnhFOLaXKGeE4QLQaCFCqFC9IGRu1pu1Zdpf4izF2sMv
+         22/g==
+X-Forwarded-Encrypted: i=1; AJvYcCVExoB77yK44u9diaEaOMHT1tNl1SMpFa9PmUj2dhJsnfVmW0wf4BuLd655XtOzEdqerYxFCEpO2HbKrzL+tJtks3gf76urP7DhABIeISGpzOoQ5LrldCSzxKXOm7CCZlj3vJPqEYcVGN8tDM0BTBIlexRrGH1pQi6m5pVpIAs9MErkRQ==
+X-Gm-Message-State: AOJu0YzHD1DdOl4IZ7qEHWepRJw4Bd/qbbE0+tm0KTuRTQZka/9TnJE8
+	L6i0kfpIzb0mtl6feomQNHqdCYbikjH+yCsis6qJzsSItYHSn+gz
+X-Google-Smtp-Source: AGHT+IEkxWXJmcIxliVnqT8GzlmOzVnm6WBRXaSkG3gWnKwgaUDuBdQ6t65UdTCpkMIrYR9bmlm+Cw==
+X-Received: by 2002:a05:600c:45ca:b0:425:64c5:5780 with SMTP id 5b1f17b1804b1-4264a3bc39dmr114792985e9.1.1720446351692;
+        Mon, 08 Jul 2024 06:45:51 -0700 (PDT)
 Received: from localhost (host-79-55-57-217.retail.telecomitalia.it. [79.55.57.217])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42666680fa5sm59059845e9.22.2024.07.08.06.39.55
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-426527c0894sm89629675e9.0.2024.07.08.06.45.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jul 2024 06:39:56 -0700 (PDT)
-Date: Mon, 08 Jul 2024 15:39:54 +0200
+        Mon, 08 Jul 2024 06:45:51 -0700 (PDT)
+Date: Mon, 08 Jul 2024 15:45:50 +0200
 From: Matteo Martelli <matteomartelli3@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, 
- Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, 
- Marius Cristea <marius.cristea@microchip.com>, 
- Matteo Martelli <matteomartelli3@gmail.com>, 
- linux-iio@vger.kernel.org, 
+To: Marius.Cristea@microchip.com
+Cc: robh@kernel.org, 
+ krzk+dt@kernel.org, 
+ jic23@kernel.org, 
+ matteomartelli3@gmail.com, 
+ lars@metafoo.de, 
+ conor+dt@kernel.org, 
  devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Message-ID: <668bec2a8b23a_6e037017@njaxe.notmuch>
-In-Reply-To: <20240707160442.6bab64c9@jic23-huawei>
-References: <20240704-iio-pac1921-v2-0-0deb95a48409@gmail.com>
- <20240704-iio-pac1921-v2-2-0deb95a48409@gmail.com>
- <20240707160442.6bab64c9@jic23-huawei>
-Subject: Re: [PATCH v2 2/2] iio: adc: add support for pac1921
+ linux-kernel@vger.kernel.org, 
+ linux-iio@vger.kernel.org
+Message-ID: <668bed8e65d4f_6e037024@njaxe.notmuch>
+In-Reply-To: <a67e4c0bf2c3839694b60cb96bbc43170fbb2f36.camel@microchip.com>
+References: <20240703-iio-pac1921-v1-0-54c47d9180b6@gmail.com>
+ <20240703-iio-pac1921-v1-2-54c47d9180b6@gmail.com>
+ <SN6PR11MB3167C48F19120E35862316FA99DE2@SN6PR11MB3167.namprd11.prod.outlook.com>
+ <a67e4c0bf2c3839694b60cb96bbc43170fbb2f36.camel@microchip.com>
+Subject: Re: [PATCH 2/2] iio: adc: add support for pac1921
 Precedence: bulk
 X-Mailing-List: linux-iio@vger.kernel.org
 List-Id: <linux-iio.vger.kernel.org>
@@ -93,1078 +94,319 @@ List-Unsubscribe: <mailto:linux-iio+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Type: text/plain;
  charset=utf-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: base64
 
-Jonathan Cameron wrote:
-> On Thu, 04 Jul 2024 19:42:02 +0200
-> Matteo Martelli <matteomartelli3@gmail.com> wrote:
-> 
-> > Add support for Microchip PAC1921 Power/Current monitor.
-> > 
-> > Implemented features:
-> > * capture of bus voltage, sense voltage, current and power measurements
-> >   in free-run integration mode
-> > * support for both raw and triggered buffer reading
-> > * support for overflow events
-> > * userspace controls for voltage and current gains, measurement
-> >   resolution, integration samples and filters enabling/disabling
-> > * simple power management support
-> > 
-> > Limitations:
-> > * operation mode fixed to free-run integration
-> > * measurement resolution and filters controls are applied to both VSENSE
-> >   and VBUS measurements
-> > 
-> > Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
-> 
-> Hi Matteo,
-> 
-> A little too fast for sending a new version.  Result is Marius reviewed
-> v1. I may replicate some of Marius' comments but do make sure you
-> cover them all for v3.
-> 
-> One big question I have here, is do typical usecases for this device care
-> much about reducing integration time? I'd have thought they were all
-> relatively slow.  As such it may make sense to not support some
-> of the modes that need to lower integration time (this is a common thing
-> to decide to skip in the interests of maintainability and user interface
-> complexity reduction).
-> 
-> Looks reasonably speedy to me, unless very high numbers of samples
-> are used.  So that control makes sense to expose, perhaps not
-> the resolution one.
-> 
-> Note that custom ABI is almost always a bad idea.  We enable it for the
-> cases where there is no other choice, but reality is those cases then
-> all need custom userspace software, so the controls are much less likely
-> to actually used :(
-> 
-> 
-> Jonathan
->
-
-Hi Jonathan,
-
-Thanks for your feedback, this clarified a lot.
-
-I agree to keep the user interface simple, so I will remove the
-controls that don't look necessary, based on your comments below. Anyway note
-that some of the comments from Marius (from patch v1) are in contrasts with
-this, suggesting to actually extend the interface, by exposing the
-shunt-resistor and controls for the OUT analog pin.
-
-I could add the shunt-resistor controls to allow calibration as Marius
-suggested, but that's also a custom ABI, what are your thoughts on this?
-
-Instead I would not introduce controls for the OUT pin, at least not for the
-moment, since it would require some more considerations on the additional
-custom controls and an implementation extension to support the pin-controlled
-integration mode. Right now I defaulted the device operation mode to the
-free-run power integration mode, which to me it looks like the more versatile
-since in this way the device exposes all three measurements of voltage, current
-and power, but the OUT pin setting is fixed to output the power value in a
-fixed range.
-I think that the OUT pin might not be used at all in many use cases so I would
-leave the OUT pin setting as fixed for now and maybe extend it in the future
-when more use cases arise. I am open to reconsider this though.
-
-> 
-> > ---
-> >  .../ABI/testing/sysfs-bus-iio-adc-pac1921          |   45 +
-> >  MAINTAINERS                                        |    7 +
-> >  drivers/iio/adc/Kconfig                            |   10 +
-> >  drivers/iio/adc/Makefile                           |    1 +
-> >  drivers/iio/adc/pac1921.c                          | 1038 ++++++++++++++++++++
-> >  5 files changed, 1101 insertions(+)
-> > 
-> > diff --git a/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1921 b/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1921
-> > new file mode 100644
-> > index 000000000000..4a32e2d4207b
-> > --- /dev/null
-> > +++ b/Documentation/ABI/testing/sysfs-bus-iio-adc-pac1921
-> Quite a bit of custom ABI in here.
-> 
-> Rule of thumb is that custom ABI is more or less pointless ABI for 99% of users
-> because standard userspace won't use it.  So keep that in mind when defining it.
-> 
-> > @@ -0,0 +1,45 @@
-> > +What:		/sys/bus/iio/devices/iio:deviceX/resolution_bits
-> > +KernelVersion:	6.10
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		ADC measurement resolution. Can be either 11 bits or 14 bits
-> > +		(default). The driver sets the same resolution for both VBUS and
-> > +		VSENSE measurements even if the hardware could be configured to
-> > +		measure VBUS and VSENSE with different resolutions.
-> > +		This attribute affects the integration time: with 14 bits
-> > +		resolution the integration time is increased by a factor of
-> > +		1.9 (the driver considers a factor of 2). See Table 4-5 in
-> > +		device datasheet for details.
-> 
-> Is the integration time ever high enough that it matters?
-> People tend not to do power measurement 'quickly'. 
-> 
-> If we are doing it quickly then you'll probably want to be providing buffered
-> support and that does allow you to 'read' the resolution for a part where
-> it changes for some other reason.   I haven't yet understood this case.
-
-I will remove this control and fix the resolution bits to 14 (highest value),
-same as the HW default.
-
-> > +
-> > +What:		/sys/bus/iio/devices/iio:deviceX/resolution_bits_available
-> > +KernelVersion:	6.10
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		List all possible ADC measurement resolutions: "11 14"
-> > +
-> > +What:		/sys/bus/iio/devices/iio:deviceX/integration_samples
-> > +KernelVersion:	6.10
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		Number of samples taken during a full integration period. Can be
-> > +		set to any power of 2 value from 1 (default) to 2048.
-> > +		This attribute affects the integration time: higher the number
-> > +		of samples, longer the integration time. See Table 4-5 in device
-> > +		datasheet for details.
-> 
-> Sounds like oversampling_ratio which is standards ABI. So use that or explain
-> why you can't here.
-
-I am not sure that this is an oversampling ratio but correct me if I am wrong:
-generally by increasing the oversampling you would have additional samples in a
-fixed time period, while in this case by increasing the number of samples you
-would still have the same number of samples in a fixed time period, but you
-would have a longer integration period. So maybe the comment is not very
-clear since this parameter actually means "the number of samples required to
-complete the integration period".
-
-Initially I thought to let the user edit this by writing the integration_time
-control (which is currently read-only), but since the integration period
-depends also on the resolution and whether filters are enabled or not, it would
-have introduced some confusion: what parameter is being changed upon
-integretion_time write? Maybe after removing resolution and filter controls
-there would be no such confusion anymore.
-
-> > +
-> > +What:		/sys/bus/iio/devices/iio:deviceX/integration_samples_available
-> > +KernelVersion:	6.10
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		List all possible numbers of integration samples:
-> > +		"1 2 4 8 16 32 64 128 256 512 1024 2048"
-> > +
-> > +What:		/sys/bus/iio/devices/iio:devices/filters_en
-> > +KernelVersion:	6.10
-> > +Contact:	linux-iio@vger.kernel.org
-> > +Description:
-> > +		Attribute to enable/disable ADC post filters. Enabled by
-> > +		default.
-> > +		This attribute affects the integration time: with filters
-> > +		enabled the integration time is increased by 50%. See Table 4-5
-> > +		in device datasheet for details.
-> 
-> Do we have any idea what this filter is? Datasheet seems very vague indeed and from
-> a control point of view that makes this largely useless. How does userspace know
-> whether to turn it on?
-> 
-> We have an existing filter ABI but with so little information no way to fit this in.
-> Gut feeling, leave it on all the time and drop the control interface.
-
-I will remove this control and leave it on all the time as the HW default.
-
-> > diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-> > index f60fe85a30d5..b56e494da970 100644
-> > --- a/drivers/iio/adc/Kconfig
-> > +++ b/drivers/iio/adc/Kconfig
-> > @@ -991,6 +991,16 @@ config NPCM_ADC
-> >  	  This driver can also be built as a module. If so, the module
-> >  	  will be called npcm_adc.
-> >  
-> > +config PAC1921
-> > +	tristate "Microchip Technology PAC1921 driver"
-> > +	depends on I2C
-> 
-> Needs to ensure REGMAP_I2C as well I think.  Check similar cases.
-
-Yes, I missed it. I think I also need to ensure IIO_BUFFER and
-IIO_TRIGGERED_BUFFER.
-
-> > +	help
-> > +	  Say yes here to build support for Microchip Technology's PAC1921
-> > +	  High-Side Power/Current Monitor with Analog Output.
-> > +
-> > +	  This driver can also be built as a module. If so, the module
-> > +	  will be called pac1921.
-> > +
-> >  config PAC1934
-> 
-> > diff --git a/drivers/iio/adc/pac1921.c b/drivers/iio/adc/pac1921.c
-> > new file mode 100644
-> > index 000000000000..879753466093
-> > --- /dev/null
-> > +++ b/drivers/iio/adc/pac1921.c
-> > @@ -0,0 +1,1038 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +/*
-> > + * IIO driver for PAC1921 High-Side Power/Current Monitor
-> > + *
-> > + * Copyright (C) 2024 Matteo Martelli <matteomartelli3@gmail.com>
-> > + */
-> > +
-> > +#include <linux/i2c.h>
-> > +#include <linux/iio/events.h>
-> > +#include <linux/iio/iio.h>
-> > +#include <linux/iio/trigger_consumer.h>
-> > +#include <linux/iio/triggered_buffer.h>
-> > +#include <linux/regmap.h>
-> > +
-> > +/* pac1921 registers */
-> > +#define PAC1921_REG_GAIN_CFG		0x00
-> > +#define PAC1921_REG_INT_CFG		0x01
-> > +#define PAC1921_REG_CONTROL		0x02
-> > +#define PAC1921_REG_VBUS		0x10
-> > +#define PAC1921_REG_VSENSE		0x12
-> > +#define PAC1921_REG_OVERFLOW_STS	0x1C
-> > +#define PAC1921_REG_VPOWER		0x1D
-> > +
-> > +/* pac1921 gain configuration bits */
-> > +#define PAC1921_GAIN_I_RES		BIT(7)
-> > +#define PAC1921_GAIN_V_RES		BIT(6)
-> > +#define PAC1921_GAIN_DI_GAIN_SHIFT	3
-> > +#define PAC1921_GAIN_DI_GAIN_MASK	GENMASK(5, PAC1921_GAIN_DI_GAIN_SHIFT)
-> > +#define PAC1921_GAIN_DI_GAIN_MAX	7
-> > +#define PAC1921_GAIN_DV_GAIN_SHIFT	0
-> > +#define PAC1921_GAIN_DV_GAIN_MASK	GENMASK(2, PAC1921_GAIN_DV_GAIN_SHIFT)
-> 
-> Define only the MASKs not SHIFTs and use FIELD_GET(), FIELD_PREP() throughout.
-> Gives more readable code in general as well as halving the number of defines.
-> 
-I was not aware of FIELD_GET() and FIELD_PREP() macros, thanks for pointing
-them out. I will use them indeed.
-
-> > +#define PAC1921_GAIN_DV_GAIN_MAX	5
-> > +
-> > +/* pac1921 integration configuration bits */
-> > +#define PAC1921_INT_CFG_SMPL_SHIFT	4
-> > +#define PAC1921_INT_CFG_SMPL_MASK	GENMASK(7, PAC1921_INT_CFG_SMPL_SHIFT)
-> > +#define PAC1921_INT_CFG_SMPL_MAX	11
-> > +#define PAC1921_INT_CFG_VSFEN		BIT(3)
-> > +#define PAC1921_INT_CFG_VBFEN		BIT(2)
-> > +#define PAC1921_INT_CFG_RIOV		BIT(1)
-> > +#define PAC1921_INT_CFG_INTEN		BIT(0)
-> > +
-> > +/* pac1921 control bits */
-> > +#define PAC1921_CONTROL_MXSL_SHIFT	6
-> > +enum pac1921_mxsl {
-> > +	PAC1921_MXSL_VPOWER_PIN = 0,
-> > +	PAC1921_MXSL_VSENSE_FREE_RUN = 1,
-> > +	PAC1921_MXSL_VBUS_FREE_RUN = 2,
-> > +	PAC1921_MXSL_VPOWER_FREE_RUN = 3,
-> > +};
-> > +#define PAC1921_CONTROL_SLEEP		BIT(2)
-> > +
-> > +/* pac1921 overflow status bits */
-> > +#define PAC1921_OVERFLOW_VSOV		BIT(2)
-> > +#define PAC1921_OVERFLOW_VBOV		BIT(1)
-> > +#define PAC1921_OVERFLOW_VPOV		BIT(0)
-> > +
-> > +/* pac1921 constants */
-> > +#define PAC1921_MAX_VSENSE_MV		100
-> > +#define PAC1921_MAX_VBUS_V		32
-> > +#define PAC1921_RES_RESOLUTION		1023 /* Result registers resolution */
-> > +
-> > +/* pac1921 defaults */
-> > +#define PAC1921_DEFAULT_DV_GAIN		0 /* 2^(value): 1x gain */
-> > +#define PAC1921_DEFAULT_DI_GAIN		0 /* 2^(value): 1x gain */
-> > +#define PAC1921_DEFAULT_HIGH_RES	true /* 14-bit measurement resolution */
-> > +#define PAC1921_DEFAULT_NUM_SAMPLES	0 /* 2^(value): 1 sample */
-> > +#define PAC1921_DEFAULT_FILTERS_ENABLED true
-> > +
-> > +/* pac1921 tables to create iio available parameters */
-> > +static const unsigned int pac1921_di_gains[] = { 1, 2, 4, 8, 16, 32, 64, 128 };
-> > +static const unsigned int pac1921_dv_gains[] = { 1, 2, 4, 8, 16, 32 };
-> > +enum pac1921_meas_resolution_idx {
-> > +	PAC1921_MEAS_RESOLUTION_IDX_LOW = 0,
-> > +	PAC1921_MEAS_RESOLUTION_IDX_HIGH,
-> > +};
-> > +static const char *const pac1921_meas_resolutions[] = { "11", "14" };
-> > +static const char *const pac1921_integr_num_samples[] = {
-> > +	"1",  "2",   "4",   "8",   "16",   "32",
-> > +	"64", "128", "256", "512", "1024", "2048"
-> > +};
-> > +
-> > +/* pac1921 regmap configuration */
-> > +static const struct regmap_range pac1921_regmap_wr_ranges[] = {
-> > +	regmap_reg_range(PAC1921_REG_GAIN_CFG, PAC1921_REG_CONTROL),
-> > +};
-> 
-> Trivial but I'd like a blank line here.
-> 
-Ok.
-
-> > +static const struct regmap_access_table pac1921_regmap_wr_table = {
-> > +	.yes_ranges = pac1921_regmap_wr_ranges,
-> > +	.n_yes_ranges = ARRAY_SIZE(pac1921_regmap_wr_ranges),
-> > +};
-> 
-> here
-> 
-Ok.
-
-> > +static const struct regmap_range pac1921_regmap_rd_ranges[] = {
-> > +	regmap_reg_range(PAC1921_REG_GAIN_CFG, PAC1921_REG_CONTROL),
-> > +	regmap_reg_range(PAC1921_REG_VBUS, PAC1921_REG_VPOWER + 1),
-> > +};
-> 
-> here
->
-Ok.
-
-> > +static const struct regmap_access_table pac1921_regmap_rd_table = {
-> > +	.yes_ranges = pac1921_regmap_rd_ranges,
-> > +	.n_yes_ranges = ARRAY_SIZE(pac1921_regmap_rd_ranges),
-> > +};
-> 
-> and here as my eyes stuggle a bit with parsing this without the
-> separations. Similar applies above.
-> 
-Ok.
-
-> > +static const struct regmap_config pac1921_regmap_config = {
-> > +	.reg_bits = 8,
-> > +	.val_bits = 8,
-> > +	.rd_table = &pac1921_regmap_rd_table,
-> > +	.wr_table = &pac1921_regmap_wr_table,
-> > +};
-> 
-> > +
-> > +/* Check if overflow occurred and if so, push the corresponding events.
-> 
-> As mentioned below, without controls I don't think userspace has any way to know
-> these are coming.   It is useful even for overflow events to provide
-> a) A way to mask them off.
-> b) The threshold values.  So that userspace can see that they are overflow events.
->    These will be readonly of course.
-> 
-I see your point, I will add controls. About thresholds, should they be related
-to raw values or to scaled values? In the first case they would always be
-fixed to 1023 being the measurement resolution, regardless of the selected
-gains. In the latter case they would depend on the current gains and I guess
-that they would be in the same unit of the scale (mV/mA/mW).
-
-> > + *
-> > + * Must be called with lock held.
-> > + */
-> > +static int pac1921_check_push_overflow(struct iio_dev *indio_dev, s64 timestamp)
-> > +{
-> > +	struct pac1921_priv *priv = iio_priv(indio_dev);
-> > +	unsigned int flags;
-> > +
-> > +	int ret = regmap_read(priv->regmap, PAC1921_REG_OVERFLOW_STS, &flags);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	if (flags & PAC1921_OVERFLOW_VBOV &&
-> > +	    !(priv->prev_ovf_flags & PAC1921_OVERFLOW_VBOV)) {
-> > +		iio_push_event(indio_dev,
-> > +			       IIO_UNMOD_EVENT_CODE(
-> > +				       IIO_VOLTAGE, PAC1921_CHAN_VBUS,
-> > +				       IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING),
-> > +			       timestamp);
-> > +	}
-> > +	if (flags & PAC1921_OVERFLOW_VSOV &&
-> > +	    !(priv->prev_ovf_flags & PAC1921_OVERFLOW_VSOV)) {
-> > +		iio_push_event(indio_dev,
-> > +			       IIO_UNMOD_EVENT_CODE(
-> > +				       IIO_VOLTAGE, PAC1921_CHAN_VSENSE,
-> > +				       IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING),
-> > +			       timestamp);
-> > +		iio_push_event(indio_dev,
-> > +			       IIO_UNMOD_EVENT_CODE(
-> > +				       IIO_CURRENT, PAC1921_CHAN_CURRENT,
-> > +				       IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING),
-> > +			       timestamp);
-> > +	}
-> > +	if (flags & PAC1921_OVERFLOW_VPOV &&
-> > +	    !(priv->prev_ovf_flags & PAC1921_OVERFLOW_VPOV)) {
-> > +		iio_push_event(indio_dev,
-> > +			       IIO_UNMOD_EVENT_CODE(
-> > +				       IIO_POWER, PAC1921_CHAN_POWER,
-> > +				       IIO_EV_TYPE_THRESH, IIO_EV_DIR_RISING),
-> > +			       timestamp);
-> > +	}
-> > +
-> > +	priv->prev_ovf_flags = (u8)flags;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +/* Read the value from a result register
-> > + *
-> > + * Result registers contain the most recent averaged values of Vbus, Vsense and
-> > + * Vpower. Each value is 10 bits wide and spread across two consecutive 8 bit
-> > + * registers, with 6 bit LSB zero padding.
-> > + */
-> > +static int pac1921_read_res(struct pac1921_priv *priv, unsigned long reg,
-> > +			    int *val)
-> > +{
-> > +	u8 val_buf[2];
-> > +
-> > +	int ret = regmap_bulk_read(priv->regmap, (unsigned int)reg, &val_buf,
-> > +				   sizeof(val_buf));
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	*val = (val_buf[0] << 8 | val_buf[1]) >> 6;
-> 
-> Looks like it could be done with the self documenting combination of
-> 
-> get_unaligned_be16() + FIELD_GET()
-> 
-> or use a __b16 for the read and the be16_to_cpu() approach.
-
-Ok.
-
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +static int pac1921_read_raw(struct iio_dev *indio_dev,
-> > +			    struct iio_chan_spec const *chan, int *val,
-> > +			    int *val2, long mask)
-> > +{
-> > +	struct pac1921_priv *priv = iio_priv(indio_dev);
-> > +
-> > +	switch (mask) {
-> > +	case IIO_CHAN_INFO_RAW: {
-> > +		guard(mutex)(&priv->lock);
-> 
-> Given you grab this in all but error paths, I'd just grab it always
-> and avoid need for the guard() and careful scoping in all these case blocks.
-> 
-Ok. So just a guard(mutex)(&priv->lock) call at the beginning of the function.
-
-> > +
-> > +		if (!pac1921_data_ready(priv))
-> > +			return -EBUSY;
-> > +
-> > +		s64 ts = iio_get_time_ns(indio_dev);
-> > +
-> > +		int ret = pac1921_check_push_overflow(indio_dev, ts);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		ret = pac1921_read_res(priv, chan->address, val);
-> > +		if (ret)
-> > +			return ret;
-> > +
-> > +		return IIO_VAL_INT;
-> > +	}
-> > +	case IIO_CHAN_INFO_SCALE:
-> > +		switch (chan->channel) {
-> > +		case PAC1921_CHAN_VBUS: {
-> > +			/* Vbus scale factor in mV:
-> > +			 * max_vbus (mV) / vgain / resolution
-> > +			 */
-> > +			guard(mutex)(&priv->lock);
-> > +
-> > +			*val = PAC1921_MAX_VBUS_V * 1000;
-> > +			*val2 = PAC1921_RES_RESOLUTION << (int)priv->dv_gain;
-> > +
-> > +			return IIO_VAL_FRACTIONAL;
-> > +		}
-> > +		case PAC1921_CHAN_VSENSE: {
-> > +			/* Vsense voltage scale factor in mV:
-> > +			 * max_vsense (mV) / igain / resolution
-> > +			 */
-> > +			guard(mutex)(&priv->lock);
-> > +
-> > +			*val = PAC1921_MAX_VSENSE_MV;
-> > +			*val2 = PAC1921_RES_RESOLUTION << (int)priv->di_gain;
-> > +
-> > +			return IIO_VAL_FRACTIONAL;
-> > +		}
-> > +		case PAC1921_CHAN_CURRENT: {
-> > +			/* Current scale factor in mA:
-> > +			 * Vsense LSB (nV) / shunt (uOhm)
-> > +			 */
-> > +			guard(mutex)(&priv->lock);
-> > +
-> > +			*val = pac1921_vsense_lsb(priv->di_gain);
-> > +			*val2 = (int)priv->rshunt;
-> > +
-> > +			return IIO_VAL_FRACTIONAL;
-> > +		}
-> > +		case PAC1921_CHAN_POWER: {
-> > +			/* Power scale factor in mW:
-> > +			 * Vsense LSB (nV) * max_vbus (V) / vgain / shunt (uOhm)
-> > +			 */
-> > +			guard(mutex)(&priv->lock);
-> > +
-> > +			*val = pac1921_vsense_lsb(priv->di_gain) *
-> > +			       (PAC1921_MAX_VBUS_V >> (int)priv->dv_gain);
-> > +			*val2 = (int)priv->rshunt;
-> > +
-> > +			return IIO_VAL_FRACTIONAL;
-> > +		}
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> > +		break;
-> > +
-> > +	case IIO_CHAN_INFO_HARDWAREGAIN:
-> > +		switch (chan->channel) {
-> > +		case PAC1921_CHAN_VBUS: {
-> > +			guard(mutex)(&priv->lock);
-> > +			*val = 1 << (int)priv->dv_gain;
-> > +			return IIO_VAL_INT;
-> > +		}
-> > +		case PAC1921_CHAN_VSENSE:
-> > +		case PAC1921_CHAN_CURRENT: {
-> > +			guard(mutex)(&priv->lock);
-> > +			*val = 1 << (int)priv->di_gain;
-> > +			return IIO_VAL_INT;
-> > +		}
-> > +		default:
-> > +			return -EINVAL;
-> > +		}
-> > +
-> > +	case IIO_CHAN_INFO_INT_TIME: {
-> > +		/* Integration time is read only: it depends on the number of
-> > +		 * integration samples, measurement resolution and post filters
-> > +		 */
-> > +		*val2 = 1000000; /* From usecs to fractional secs */
-> > +		guard(mutex)(&priv->lock);
-> > +		*val = (int)priv->integr_period;
-> > +		return IIO_VAL_FRACTIONAL;
-> > +	}
-> > +	default:
-> > +		return -EINVAL;
-> > +	}
-> > +}
-> 
-> > +static int pac1921_update_cfg_reg(struct pac1921_priv *priv, unsigned int reg,
-> > +				  unsigned int mask, unsigned int val)
-> > +{
-> > +	/* Enter READ state before configuration */
-> > +	int ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
-> > +				     PAC1921_INT_CFG_INTEN, 0);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Update configuration value */
-> > +	ret = regmap_update_bits(priv->regmap, reg, mask, val);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Re-enable integration and reset start time */
-> > +	ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
-> > +				 PAC1921_INT_CFG_INTEN, PAC1921_INT_CFG_INTEN);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	priv->integr_start_time = jiffies;
-> 
-> Add a comment for why this value.
->
-Could you elaborate what's confusing here? The comment above states "reset
-start time", maybe I should move it above the assignment of
-priv->integr_start_time? Or it's the use of jiffies that it's confusing?
-
-> > +	priv->first_integr_done = false;
-> Will default to this anyway, so you could skip it unless you feel this is
-> useful from documentation point of view.
->
-That variable is being asserted after the first integration period is complete
-to avoid spurious data (see pac1921_data_ready()). Here it is being reset after
-a configuration change to invalidate previous data. So the assignment is
-necessary.
-
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >
-> 
-> > +static int pac1921_set_int_num_samples(struct iio_dev *indio_dev,
-> > +				       const struct iio_chan_spec *chan,
-> > +				       unsigned int val)
-> > +{
-> > +	struct pac1921_priv *priv = iio_priv(indio_dev);
-> > +
-> > +	if (WARN_ON_ONCE(val > PAC1921_INT_CFG_SMPL_MAX))
-> > +		return -EINVAL;
-> > +
-> > +	guard(mutex)(&priv->lock);
-> > +
-> > +	if (priv->n_samples == val)
-> > +		return 0;
-> > +
-> > +	int ret = pac1921_update_cfg_reg(priv, PAC1921_REG_INT_CFG,
-> > +					 PAC1921_INT_CFG_SMPL_MASK,
-> > +					 val << PAC1921_INT_CFG_SMPL_SHIFT);
-> 
-> FIELD_PREP() etc.
-> 
-Ok.
-
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	priv->n_samples = (u8)val;
-> > +
-> > +	return pac1921_update_integr_period(priv);
-> > +}
-> > +
-> > +static ssize_t pac1921_read_filters_enabled(struct iio_dev *indio_dev,
-> > +					    uintptr_t private,
-> > +					    const struct iio_chan_spec *chan,
-> > +					    char *buf)
-> > +{
-> > +	struct pac1921_priv *priv = iio_priv(indio_dev);
-> > +	bool enabled;
-> > +
-> > +	scoped_guard(mutex, &priv->lock) {
-> > +		enabled = priv->filters_en;
-> > +	}
-> > +	return sysfs_emit(buf, "%d\n", enabled);
-> 
-> It's not a fast path hence holding the lock a little longer than necessary doesn't
-> matter, so I'd do the simpler.
-> 
-> 	guard(mutex)(&priv->lock);
-> 
-> 	return sysfs_emit(buf, "%d\n", enabled);
->
-Ok, but I think you mean:
-
-	guard(mutex)(&priv->lock);
-	return sysfs_emit(buf, "%d\n", priv->filters_en);
-> > +}
-> 
-> 
-> > +};
-> > +static const struct iio_chan_spec_ext_info pac1921_ext_info[] = {
-> > +	IIO_ENUM("resolution_bits", IIO_SHARED_BY_ALL,
-> > +		 &pac1921_resolution_enum),
-> > +	IIO_ENUM_AVAILABLE("resolution_bits", IIO_SHARED_BY_ALL,
-> > +			   &pac1921_resolution_enum),
-> > +	IIO_ENUM("integration_samples", IIO_SHARED_BY_ALL,
-> > +		 &pac1921_int_num_samples_enum),
-> > +	IIO_ENUM_AVAILABLE("integration_samples", IIO_SHARED_BY_ALL,
-> > +			   &pac1921_int_num_samples_enum),
-> > +	{
-> > +		.name = "filters_en",
-> > +		.read = pac1921_read_filters_enabled,
-> > +		.write = pac1921_write_filters_enabled,
-> > +		.shared = IIO_SHARED_BY_ALL,
-> 
-> I address these above with the documentation.
->
-Answered above as well.
-
-> > +	},
-> > +	{},
-> No need for a comma after a terminator like this as we will never add anything
-> after it.
->
-Ok.
-
-> 
-> > +};
-> > +
-> > +static const struct iio_event_spec pac1921_overflow_event[] = {
-> > +	{
-> > +		.type = IIO_EV_TYPE_THRESH,
-> > +		.dir = IIO_EV_DIR_RISING,
-> 
-> No controls at all?  Without some form of enable userspace won't
-> be able to tell these even exist.  If the device doesn't support
-> disabling the interrupt, we can fallback to to irq_enable/disable()
-> on the host end of the wire.  Ideally disable / enable at the device
-> though.
-I will add controls, please see my question about thresholds above.
-
-> > +	},
-> > +};
-> > +
-> > +static const struct iio_chan_spec pac1921_channels[] = {
-> > +	{
-> > +		.type = IIO_VOLTAGE,
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> > +				      BIT(IIO_CHAN_INFO_SCALE) |
-> > +				      BIT(IIO_CHAN_INFO_HARDWAREGAIN),
-> Marius pointed out that hardware gain is rarely the way to go.
-> It is typically used when the gain is not directly affecting the
-> thing being read.  E.g. light sensitivity of a time of flight sensor.
-> 
-> In order to maintain a simple userspace inteface we squash gain related
-> stuff into the scale attributes.  There a user can easily see what
-> flexibility is available to them and understand what affect it has on
-> the values they will read back.
-> 
-I see, thanks for clarify this, I would do it via iio_info.read_avail() callback.
-
-> > +		.info_mask_separate_available = BIT(IIO_CHAN_INFO_HARDWAREGAIN),
-> > +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
-> > +		.channel = PAC1921_CHAN_VBUS,
-> > +		.address = PAC1921_REG_VBUS,
-> > +		.scan_index = PAC1921_CHAN_VBUS,
-> > +		.scan_type = {
-> > +			.sign = 'u',
-> > +			.realbits = 10,
-> > +			.storagebits = 16,
-> > +			.endianness = IIO_CPU
-> > +		},
-> > +		.indexed = 1,
-> > +		.event_spec = pac1921_overflow_event,
-> > +		.num_event_specs = ARRAY_SIZE(pac1921_overflow_event),
-> > +		.ext_info = pac1921_ext_info,
-> > +	},
-> > +	{
-> > +		.type = IIO_VOLTAGE,
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> > +				      BIT(IIO_CHAN_INFO_SCALE) |
-> > +				      BIT(IIO_CHAN_INFO_HARDWAREGAIN),
-> > +		.info_mask_separate_available = BIT(IIO_CHAN_INFO_HARDWAREGAIN),
-> > +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
-> > +		.channel = PAC1921_CHAN_VSENSE,
-> > +		.address = PAC1921_REG_VSENSE,
-> > +		.scan_index = PAC1921_CHAN_VSENSE,
-> > +		.scan_type = {
-> > +			.sign = 'u',
-> > +			.realbits = 10,
-> > +			.storagebits = 16,
-> > +			.endianness = IIO_CPU
-> > +		},
-> > +		.indexed = 1,
-> > +		.event_spec = pac1921_overflow_event,
-> > +		.num_event_specs = ARRAY_SIZE(pac1921_overflow_event),
-> > +		.ext_info = pac1921_ext_info,
-> > +	},
-> > +	{
-> > +		.type = IIO_CURRENT,
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> > +				      BIT(IIO_CHAN_INFO_SCALE) |
-> > +				      BIT(IIO_CHAN_INFO_HARDWAREGAIN),
-> > +		.info_mask_separate_available = BIT(IIO_CHAN_INFO_HARDWAREGAIN),
-> > +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
-> > +		.channel = PAC1921_CHAN_CURRENT,
-> > +		.address = PAC1921_REG_VSENSE,
-> > +		.scan_index = PAC1921_CHAN_CURRENT,
-> > +		.scan_type = {
-> > +			.sign = 'u',
-> > +			.realbits = 10,
-> > +			.storagebits = 16,
-> > +			.endianness = IIO_CPU
-> > +		},
-> > +		.event_spec = pac1921_overflow_event,
-> > +		.num_event_specs = ARRAY_SIZE(pac1921_overflow_event),
-> > +		.ext_info = pac1921_ext_info,
-> > +	},
-> > +	{
-> > +		.type = IIO_POWER,
-> > +		.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) |
-> > +				      BIT(IIO_CHAN_INFO_SCALE),
-> > +		.info_mask_shared_by_all = BIT(IIO_CHAN_INFO_INT_TIME),
-> > +		.channel = PAC1921_CHAN_POWER,
-> > +		.address = PAC1921_REG_VPOWER,
-> > +		.scan_index = PAC1921_CHAN_POWER,
-> > +		.scan_type = {
-> > +			.sign = 'u',
-> > +			.realbits = 10,
-> > +			.storagebits = 16,
-> > +			.endianness = IIO_CPU
-> > +		},
-> > +		.event_spec = pac1921_overflow_event,
-> > +		.num_event_specs = ARRAY_SIZE(pac1921_overflow_event),
-> > +		.ext_info = pac1921_ext_info,
-> > +	},
-> > +	IIO_CHAN_SOFT_TIMESTAMP(PAC1921_NUM_MEAS_CHANS),
-> > +};
-> > +
-> > +static irqreturn_t pac1921_trigger_handler(int irq, void *p)
-> > +{
-> > +	struct iio_poll_func *pf = p;
-> > +	struct iio_dev *idev = pf->indio_dev;
-> > +	struct pac1921_priv *priv = iio_priv(idev);
-> > +
-> > +	guard(mutex)(&priv->lock);
-> > +
-> > +	if (!pac1921_data_ready(priv))
-> > +		goto done;
-> > +
-> > +	int ret = pac1921_check_push_overflow(idev, pf->timestamp);
-> > +	if (ret)
-> > +		goto done;
-> > +
-> > +	memset(&priv->scan, 0, sizeof(priv->scan));
-> 
-> We normally don't bother.  The worse that can happen here is that
-> gaps can contain stale data.  We can't leak anything beyond that and
-> such stale data should be harmless.
-> 
-Ok.
-
-> > +
-> > +	int bit, ch = 0;
-> 
-> Move definitions to the top of the function.
-> Also, don't mix items that assign with ones that don't.  Just use separate
-> lines.  Obviously fine here as only two of them, but when we get 10+ on
-> a line and only some of them are set, it can be easy to miss bugs.
-> 
-Ok.
-
-> 
-> > +	for_each_set_bit(bit, idev->active_scan_mask, idev->masklength) {
-> > +		int val;
-> > +
-> > +		ret = pac1921_read_res(priv, idev->channels[ch].address, &val);
-> > +		if (ret)
-> > +			goto done;
-> > +
-> > +		priv->scan.chan[ch++] = (u16)val;
-> 
-> Why not make read_res take a u16 * and pass in the destination directly?
-> 
-pac1921_read_res() takes an int *val so that pac1921_read_raw() can pass its
-int *val argument directly and to avoid an additional u16 var. However I don't
-mind changing it if that looks more clear.
-
-> > +	}
-> > +
-> > +	iio_push_to_buffers_with_timestamp(idev, &priv->scan, pf->timestamp);
-> > +
-> > +done:
-> > +	iio_trigger_notify_done(idev->trig);
-> > +
-> > +	return IRQ_HANDLED;
-> > +}
-> > +
-> > +static int pac1921_init(struct pac1921_priv *priv)
-> > +{
-> > +	/* Time after power-up before ready to begin communications */
-> > +	msleep(20);
-> 
-> I'd move that to the caller where we can see the power up happening.
-> If this code gets reorganized in future, the delay may end up in the wrong
-> place.
-> 
-Ok.
-
-> > +
-> > +	/* Enter READ state before configuration */
-> > +	int ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
-> > +				 PAC1921_INT_CFG_INTEN, 0);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Configure gains and measurements resolution */
-> > +	unsigned int val = priv->di_gain << PAC1921_GAIN_DI_GAIN_SHIFT |
-> > +			   priv->dv_gain << PAC1921_GAIN_DV_GAIN_SHIFT;
-> FIELD_PREP() throughout.
-> 
-Ok.
-
-> > +	if (!priv->high_res)
-> > +		val |= PAC1921_GAIN_I_RES | PAC1921_GAIN_V_RES;
-> > +	ret = regmap_write(priv->regmap, PAC1921_REG_GAIN_CFG, val);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Configure integration:
-> Comment style for multiline comments in IIO is
-> 	/*
-> 	 * Configure...
->
-All right. I will change all multiline comments accordingly.
-
-> > +	 * - num of integration samples, filters enabled/disabled
-> > +	 * - set READ/INT pin override (RIOV) to control operation mode via
-> > +	 *   register instead of pin
-> > +	 */
-> > +	val = priv->n_samples << PAC1921_INT_CFG_SMPL_SHIFT |
-> > +	      PAC1921_INT_CFG_RIOV;
-> > +	if (priv->filters_en)
-> > +		val |= PAC1921_INT_CFG_VSFEN | PAC1921_INT_CFG_VBFEN;
-> > +	ret = regmap_write(priv->regmap, PAC1921_REG_INT_CFG, val);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Init control register:
-> > +	 * - VPower free run integration mode
-> > +	 * - OUT pin full scale range: 3V (HW detault)
-> > +	 * - no timeout, no sleep, no sleep override, no recalc (HW defaults)
-> > +	 */
-> > +	val = PAC1921_MXSL_VPOWER_FREE_RUN << PAC1921_CONTROL_MXSL_SHIFT;
-> > +	ret = regmap_write(priv->regmap, PAC1921_REG_CONTROL, val);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	/* Enable integration */
-> > +	ret = regmap_update_bits(priv->regmap, PAC1921_REG_INT_CFG,
-> > +				 PAC1921_INT_CFG_INTEN, PAC1921_INT_CFG_INTEN);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	priv->first_integr_started = true;
-> > +	priv->integr_start_time = jiffies;
-> > +
-> > +	return pac1921_update_integr_period(priv);
-> > +}
-> > +
-> 
-> > +
-> > +static int pac1921_resume(struct device *dev)
-> > +{
-> > +	struct iio_dev *indio_dev = dev_get_drvdata(dev);
-> > +	struct pac1921_priv *priv = iio_priv(indio_dev);
-> > +
-> > +	guard(mutex)(&priv->lock);
-> > +
-> > +	int ret = regulator_enable(priv->vdd);
->  
-> As below. Local variable definitions at the top (old school c style).
-> It obviously doesn't matter here, but it's what reviewers are used to for
-> kernel code.
-> 
-> Please fix all cases for v3.
-> 
-Ok.
-
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	return pac1921_init(priv);
-> > +}
-> > +
-> > +static DEFINE_SIMPLE_DEV_PM_OPS(pac1921_pm_ops, pac1921_suspend,
-> > +				pac1921_resume);
-> > +
-> > +static void pac1921_regulator_disable(void *data)
-> > +{
-> > +	struct pac1921_priv *priv = data;
-> > +
-> > +	regulator_disable(priv->vdd);
-> I'd pass in the regulator rather than the private structure.
-> Then this can just be
-> 
-> 	regulator_disable(data);
-> 
-Ok.
-
-> > +}
-> > +
-> > +static int pac1921_probe(struct i2c_client *client)
-> > +{
-> > +	struct device *dev = &client->dev;
-> > +	struct pac1921_priv *priv;
-> > +
-> > +	struct iio_dev *indio_dev = devm_iio_device_alloc(dev, sizeof(*priv));
-> 
-> checkpatch probably warns about this.  Blank line here.
-> 
-Ok.
-
-> > +	if (!indio_dev)
-> > +		return -ENOMEM;
-> > +
-> > +	priv = iio_priv(indio_dev);
-> > +	priv->client = client;
-> > +	i2c_set_clientdata(client, indio_dev);
-> > +
-> > +	priv->regmap = devm_regmap_init_i2c(client, &pac1921_regmap_config);
-> > +	if (IS_ERR(priv->regmap))
-> > +		dev_err_probe(dev, (int)PTR_ERR(priv->regmap),
-> > +			      "Cannot initialize register map\n");
-> > +
-> > +	mutex_init(&priv->lock);
-> 
-> Whilst mutex cleanup only matters in lock debugging cases and isn't really important
-> for this sort of mutex, we now have devm_mutex_init() so good to use
-> that just to avoid anyone having to think if we should cleanup the mutex or not.
-> 
-Ok.
-
-> > +
-> > +	priv->dv_gain = PAC1921_DEFAULT_DV_GAIN;
-> > +	priv->di_gain = PAC1921_DEFAULT_DI_GAIN;
-> > +	priv->high_res = PAC1921_DEFAULT_HIGH_RES;
-> > +	priv->n_samples = PAC1921_DEFAULT_NUM_SAMPLES;
-> > +	priv->filters_en = PAC1921_DEFAULT_FILTERS_ENABLED;
-> > +
-> > +	int ret = device_property_read_u32(dev, "shunt-resistor-micro-ohms",
-> local variable declarations still belong at the top unless there is a strong
-> readson to do otherwise.
-> 
-The reason in general is just to keep the variable scope as tight as possible
-to avoid unwanted use of such variable earlier than its wanted usage, and since
-this is allowed with recent C versions, I thought it would be good to start
-applying it. However, I understand this could make the code harder to read for
-many people so I will stick to declare variables at the top.
-
-> > +					   &priv->rshunt);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret,
-> > +				     "Cannot read shunt resistor property\n");
-> > +	if (priv->rshunt == 0 || priv->rshunt > INT_MAX)
-> > +		return dev_err_probe(dev, -EINVAL,
-> > +				     "Invalid shunt resistor: %u\n",
-> > +				     priv->rshunt);
-> > +
-> > +	priv->vdd = devm_regulator_get(dev, "vdd");
-> > +	if (IS_ERR(priv->vdd))
-> > +		return dev_err_probe(dev, (int)PTR_ERR(priv->vdd),
-> > +				     "Cannot get vdd regulator\n");
-> > +
-> > +	ret = regulator_enable(priv->vdd);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "Cannot enable vdd regulator\n");
-> > +
-> > +	ret = devm_add_action_or_reset(dev, pac1921_regulator_disable, priv);
-> 
-> Check ret.
-> 
-Indeed! Thanks for the catch.
-
-> > +
-> > +	ret = pac1921_init(priv);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "Cannot initialize device\n");
-> > +
-> > +	priv->iio_info = pac1921_iio;
-> > +
-> > +	const struct i2c_device_id *id = i2c_client_get_device_id(client);
-> We still mostly (exception is cleanup.h magic) stick to c style of
-> local variable declarations before code.  I'd just move this to the top
-> fo this fucntion.
-> 
-Ok.
-
-> > +
-> > +	indio_dev->name = id->name;
-> > +	indio_dev->info = &priv->iio_info;
-> > +	indio_dev->modes = INDIO_DIRECT_MODE;
-> > +	indio_dev->channels = pac1921_channels;
-> > +	indio_dev->num_channels = ARRAY_SIZE(pac1921_channels);
-> > +
-> > +	ret = devm_iio_triggered_buffer_setup(dev, indio_dev,
-> > +					      &iio_pollfunc_store_time,
-> > +					      &pac1921_trigger_handler, NULL);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret,
-> > +				     "Cannot setup IIO triggered buffer\n");
-> > +
-> > +	ret = devm_iio_device_register(dev, indio_dev);
-> > +	if (ret)
-> > +		return dev_err_probe(dev, ret, "Cannot register IIO device\n");
-> > +
-> > +	return 0;
-> > +}
-> 
-
-Thanks again,
-Matteo
+TWFyaXVzLkNyaXN0ZWFAIHdyb3RlOg0KPiANCj4gDQo+ICAgSGkgTWF0dGVv
+LA0KPiANCj4gICAgVGhhbmsgeW91IHZlcnkgbXVjaCBmb3IgaGVscGluZyB1
+cyBhZGRpbmcgUEFDMTkyMSBzdXBwb3J0LiBJJ20gYWxzbw0KPiBkZXZlbG9w
+aW5nIGEgc2ltaWxhciBkcml2ZXIgYW5kIEkgY291bGQgc2hhcmUgdGhlIGNv
+ZGUgd2l0aCB5b3UgdG8gbWFrZQ0KPiB0aGUgZHJpdmVyIGJldHRlci4NCj4g
+DQo+ICAgIEFsc28gSSBoYXZlIGEgZmV3IHJldmlldyBjb21tZW50cywgcGxl
+YXNlLCBzZWUgYmVsbG93Og0KPiANCj4gQmVzdCByZWdhcmRzLA0KPiBNYXJp
+dXMNCg0KSGkgTWFyaXVzLA0KDQpUaGFua3MgZm9yIHlvdXIgZmVlZGJhY2ss
+IHRoaXMgaXMgaW5kZWVkIHZlcnkgaGVscGZ1bCwgYXMgaXQgd291bGQgYmUg
+aWYgeW91DQpzaGFyZWQgeW91ciBjb2RlLg0KDQpJIGFkZHJlc3NlZCBzb21l
+IG9mIHlvdXIgY29tbWVudHMgYmVsb3cgaW4gcGF0Y2ggdjIgdGhyZWFkLCBy
+ZXBseWluZyB0bw0KSm9uYXRoYW4gWzFdLiBJZiB5b3UgaGF2ZSBtb3JlIGNv
+bW1lbnRzIGFib3V0IHRob3NlIHBvaW50cyBwbGVhc2UgcmVwbHkgb24gdGhh
+dA0KdGhyZWFkLg0KDQpbMV06IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2xp
+bnV4LWlpby82NjhiZWMyYThiMjNhXzZlMDM3MDE3QG5qYXhlLm5vdG11Y2gN
+Cg0KU2VlIGFsc28gbXkgY29tbWVudHMgYmVsb3cuDQoNCj4gT24gV2VkLCBK
+dWwgMDMsIDIwMjQgYXQgMDM6MzQ6MzRQTSArMDIwMCwgTWF0dGVvIE1hcnRl
+bGxpIHdyb3RlOg0KPiANCj4gDQo+ID4gKw0KPiA+ICsvKiBwYWMxOTIxIHJl
+Z21hcCBjb25maWd1cmF0aW9uICovDQo+ID4gK3N0YXRpYyBjb25zdCBzdHJ1
+Y3QgcmVnbWFwX3JhbmdlIHBhYzE5MjFfcmVnbWFwX3dyX3Jhbmdlc1tdID0g
+ew0KPiA+ICvCoMKgwqDCoMKgwqAgcmVnbWFwX3JlZ19yYW5nZShQQUMxOTIx
+X1JFR19HQUlOX0NGRywgUEFDMTkyMV9SRUdfQ09OVFJPTCksDQo+ID4gK307
+DQo+ID4gK3N0YXRpYyBjb25zdCBzdHJ1Y3QgcmVnbWFwX2FjY2Vzc190YWJs
+ZSBwYWMxOTIxX3JlZ21hcF93cl90YWJsZSA9IHsNCj4gPiArwqDCoMKgwqDC
+oMKgIC55ZXNfcmFuZ2VzID0gcGFjMTkyMV9yZWdtYXBfd3JfcmFuZ2VzLA0K
+PiA+ICvCoMKgwqDCoMKgwqAgLm5feWVzX3JhbmdlcyA9IEFSUkFZX1NJWkUo
+cGFjMTkyMV9yZWdtYXBfd3JfcmFuZ2VzKSwNCj4gPiArfTsNCj4gPiArc3Rh
+dGljIGNvbnN0IHN0cnVjdCByZWdtYXBfcmFuZ2UgcGFjMTkyMV9yZWdtYXBf
+cmRfcmFuZ2VzW10gPSB7DQo+ID4gK8KgwqDCoMKgwqDCoCByZWdtYXBfcmVn
+X3JhbmdlKFBBQzE5MjFfUkVHX0dBSU5fQ0ZHLCBQQUMxOTIxX1JFR19DT05U
+Uk9MKSwNCj4gPiArwqDCoMKgwqDCoMKgIHJlZ21hcF9yZWdfcmFuZ2UoUEFD
+MTkyMV9SRUdfVkJVUywgUEFDMTkyMV9SRUdfVlBPV0VSICsgMSksDQo+ID4g
+K307DQo+ID4gK3N0YXRpYyBjb25zdCBzdHJ1Y3QgcmVnbWFwX2FjY2Vzc190
+YWJsZSBwYWMxOTIxX3JlZ21hcF9yZF90YWJsZSA9IHsNCj4gPiArwqDCoMKg
+wqDCoMKgIC55ZXNfcmFuZ2VzID0gcGFjMTkyMV9yZWdtYXBfcmRfcmFuZ2Vz
+LA0KPiA+ICvCoMKgwqDCoMKgwqAgLm5feWVzX3JhbmdlcyA9IEFSUkFZX1NJ
+WkUocGFjMTkyMV9yZWdtYXBfcmRfcmFuZ2VzKSwNCj4gPiArfTsNCj4gSSBr
+bm93IHRoYXQgdGhlIHJlZ21hcCBpcyB0aGUgd2F5IGZvcndhcmQsIGJ1dCB0
+aGUgUEFDIGRldmljZXMgYXJlIG1vcmUNCj4gZWZmaWNpZW50IGlmIGJ1bGsg
+cmVhZCBpcyBkb25lLg0KPg0KSSB0aGluayBwZXJmb3JtYW5jZXMgZGVwZW5k
+cyBvbiB0aGUgdXNlIGNhc2UsIGZvciBleGFtcGxlIGlmIHRoZSB1c2VyIGlz
+DQppbnRlcmVzdGVkIGluIG9ubHkgb25lIHR5cGUgb2YgbWVhc3VyZW1lbnQg
+SSBkb24ndCB0aGluayByZWFkaW5nIGFsbCByZWdpc3RlcnMNCnJlc3VsdCBp
+biBhIHBlcmZvcm1hbmNlIGdhaW4uIEFsc28gY29uc2lkZXIgdGhhdCB0aGVy
+ZSBhcmUgOCByZWdpc3RlcnMgb2YNCmFjY3VtdWxhdG9ycyB0aGF0IGFyZSBu
+b3QgY3VycmVudGx5IGV4cG9zZWQgYnkgdGhlIGRyaXZlciBidXQgdGhhdCB3
+b3VsZCBiZSByZWFkDQphbnl3YXksIHNvIEkgYW0gbm90IHN1cmUgaXQgd291
+bGQgcmVzdWx0IGluIGEgcGVyZm9ybWFuY2UgZ2FpbiBlaXRoZXIuIEkgd291
+bGQNCmxlYXZlIGl0IGFzIGl0IGlzIHJpZ2h0IG5vdyB0byBrZWVwIHRoZSBp
+bXBsZW1lbnRhdGlvbiBzaW1wbGUgYW5kIG1heWJlIGV4dGVuZA0KaXQgaW4g
+dGhlIGZ1dHVyZSBpbiBjYXNlIHBlcmZvcm1hbmNlIGdhaW5zIGJlY29tZSBv
+YnZpb3VzIGFuZCBuZWNlc3NhcnkgZm9yIG1vc3QNCnVzZSBjYXNlcy4gQWxz
+byBjb25zaWRlciB0aGF0IHJlZ21hcCBzdXBwb3J0cyBidWxrIHJlYWRzLg0K
+Pg0KPiBBbHNvIHdoZW4geW91IGFyZSByZWFkaW5nIGFsbCB2YWx1ZXMgYXQN
+Cj4gdGhlIHNhbWUgdGltZSwgdGhlIFZvbHRhZ2UsIEN1cnJlbnQgYW5kIHRo
+ZSBQb3dlciBudW1iZXJzIHdpbGwgY2FtZQ0KPiBmcm9tIHRoZSBzYW1lIHNh
+bXBsaW5nIHRpbWUgYW5kIHRoZXkgd2lsbCBiZSBjb3JyZWxhdGVkIHRvIGVh
+Y2ggb3RoZXIuDQo+IA0KSSB0aGluayB0aGF0IHRoZXJlIGlzIG5vIGd1YXJh
+bnRlZSB0aGF0IHRoZSB1c2VyIHdvdWxkIGFsd2F5cyByZXF1ZXN0IHR3bw0K
+c3VjY2Vzc2l2ZSByYXcgcmVhZGluZ3MsIGxpa2UgVm9sdGFnZSBhbmQgQ3Vy
+cmVudCwgd2l0aGluIHRoZSBzYW1lIGludGVncmF0aW9uDQpwZXJpb2QuIFNv
+IGZvciB0aGUgc2Vjb25kIHJlYWRpbmcgYWxsIHJlZ2lzdGVycyBtYXkgYmUg
+cmVhZCBhZ2FpbiBhbmQgdGhlIHR3bw0KdmFsdWVzIG1pZ2h0IG5vdCBiZSBj
+b3JyZWxhdGVkIGFzIHdlbGwuIEFsc28gY29uc2lkZXIgdGhhdCB0aGUgbWVh
+c3VyZW1lbnRzIGFyZQ0Ka2VwdCBpbiB0aGUgZGV2aWNlIHJlZ2lzdGVycyB1
+bnRpbCBhIG5ldyBpbnRlZ3JhdGlvbiBpcyBjb21wbGV0ZSwgc28gaWYgdHdv
+DQpyZWdpc3RlcnMgYXJlIHJlYWQgY29uc2VjdXRpdmVseSB3aXRoaW4gdGhl
+IHNhbWUgaW50ZWdyYXRpb24gcGVyaW9kIHRoZXkgd291bGQNCmJlIGNvcnJl
+bGF0ZWQuDQoNCj4gPiArc3RhdGljIGNvbnN0IHN0cnVjdCByZWdtYXBfY29u
+ZmlnIHBhYzE5MjFfcmVnbWFwX2NvbmZpZyA9IHsNCj4gPiArwqDCoMKgwqDC
+oMKgIC5yZWdfYml0cyA9IDgsDQo+ID4gK8KgwqDCoMKgwqDCoCAudmFsX2Jp
+dHMgPSA4LA0KPiA+ICvCoMKgwqDCoMKgwqAgLnJkX3RhYmxlID0gJnBhYzE5
+MjFfcmVnbWFwX3JkX3RhYmxlLA0KPiA+ICvCoMKgwqDCoMKgwqAgLndyX3Rh
+YmxlID0gJnBhYzE5MjFfcmVnbWFwX3dyX3RhYmxlLA0KPiA+ICt9Ow0KPiA+
+ICsNCj4gPiArZW51bSBwYWMxOTIxX2NoYW5uZWxzIHsNCj4gPiArwqDCoMKg
+wqDCoMKgIFBBQzE5MjFfQ0hBTl9WQlVTID0gMCwNCj4gPiArwqDCoMKgwqDC
+oMKgIFBBQzE5MjFfQ0hBTl9WU0VOU0UgPSAxLA0KPiANCj4gTm90IHN1cmUg
+aWYgdGhpcyBjaGFubmVsIGlzIHVzZWZ1bC4gTm9uZSBvZiBvdXIgY2xpZW50
+cyBhc2sgdXMgdG8NCj4gcHJvdmlkZSB0aGlzIGluZm9ybWF0aW9uLiBUaGlz
+IG1lYXN1cmVtZW50IGNvdWxkIGJlIGNhbGN1bGF0ZWQgYmFzZWQgb24NCj4g
+dGhlIHNodW50IGFuZCB0aGUgY3VycmVudA0KPiANCkkgd291bGQgbm90IG1p
+bmQgcmVtb3ZpbmcgdGhlIFZTRU5TRSBjaGFubmVsLCBidXQgdGhlcmUgYXJl
+IG90aGVyIGRyaXZlcnMNCmV4cG9zaW5nIGl0IChzb21lIG9mIHRoZW0gY2Fs
+bHMgaXQgdnNodW50IG9yIHNodW50X3ZvbHRhZ2UsIGUuZy4gaW5hMnh4KS4g
+QXJlIHdlDQpzdXJlIG5vIG9uZSBpcyBpbnRlcmVzdGVkIGluIGl0Pw0KDQo+
+ID4gK8KgwqDCoMKgwqDCoCBQQUMxOTIxX0NIQU5fQ1VSUkVOVCA9IDIsDQo+
+ID4gK8KgwqDCoMKgwqDCoCBQQUMxOTIxX0NIQU5fUE9XRVIgPSAzLA0KPiA+
+ICt9Ow0KPiA+ICsjZGVmaW5lIFBBQzE5MjFfTlVNX01FQVNfQ0hBTlMgNA0K
+PiA+ICsNCj4gPiArc3RydWN0IHBhYzE5MjFfcHJpdiB7DQo+ID4gK8KgwqDC
+oMKgwqDCoCBzdHJ1Y3QgaTJjX2NsaWVudCAqY2xpZW50Ow0KPiA+ICvCoMKg
+wqDCoMKgwqAgc3RydWN0IHJlZ21hcCAqcmVnbWFwOw0KPiA+ICvCoMKgwqDC
+oMKgwqAgc3RydWN0IGlpb19pbmZvIGlpb19pbmZvOw0KPiA+ICsNCj4gPiAr
+wqDCoMKgwqDCoMKgIC8qIFN5bmNocm9uaXplIGFjY2VzcyB0byBwcml2YXRl
+IG1lbWJlcnMsIGFuZCBlbnN1cmUNCj4gPiBhdG9taWNpdHkgb2YNCj4gPiAr
+wqDCoMKgwqDCoMKgwqAgKiBjb25zZWN1dGl2ZSByZWdtYXAgb3BlcmF0aW9u
+cy4NCj4gPiArwqDCoMKgwqDCoMKgwqAgKi8NCj4gPiArwqDCoMKgwqDCoMKg
+IHN0cnVjdCBtdXRleCBsb2NrOw0KPiA+ICsNCj4gPiArwqDCoMKgwqDCoMKg
+IHUzMiByc2h1bnQ7IC8qIHVPaG0gKi8NCj4gDQo+IEFzIGluIHRoZSBjYXNl
+IG9mIFBBQzE5MzQgSSB3b3VsZCBsaWtlIHRvIGNoYW5nZSB0aGUgcnNodW50
+IHZhbHVlDQo+IGR1cmluZyB0aGUgcnVudGltZS4gVGhpcyBpcyB1c2VmdWwg
+ZHVyaW5nIGEgY2FsaWJyYXRpb24gcGhhc2UuDQo+IA0KQWxsIHJpZ2h0LCBJ
+IHdvdWxkIGFkZCB0aGlzIGFzIGFuIGlpb19jaGFuX3NwZWNfZXh0X2luZm8u
+IEkgbWVudGlvbmVkIHRoaXMgaW4NCnBhdGNoIHYyIHRocmVhZCBbMV0sIHBs
+ZWFzZSByZXBseSB0aGVyZSBpZiB5b3UgaGF2ZSBtb3JlIGNvbW1lbnRzLg0K
+DQo+ID4gK8KgwqDCoMKgwqDCoCBib29sIGhpZ2hfcmVzOw0KPiA+ICvCoMKg
+wqDCoMKgwqAgdTggZHZfZ2FpbjsNCj4gPiArwqDCoMKgwqDCoMKgIHU4IGRp
+X2dhaW47DQo+ID4gK8KgwqDCoMKgwqDCoCB1OCBuX3NhbXBsZXM7DQo+ID4g
+K8KgwqDCoMKgwqDCoCBib29sIGZpbHRlcnNfZW47DQo+ID4gK8KgwqDCoMKg
+wqDCoCB1OCBwcmV2X292Zl9mbGFnczsNCj4gPiArDQo+ID4gK8KgwqDCoMKg
+wqDCoCBib29sIGZpcnN0X2ludGVncl9zdGFydGVkOw0KPiA+ICvCoMKgwqDC
+oMKgwqAgYm9vbCBmaXJzdF9pbnRlZ3JfZG9uZTsNCj4gPiArwqDCoMKgwqDC
+oMKgIHVuc2lnbmVkIGxvbmcgaW50ZWdyX3N0YXJ0X3RpbWU7IC8qIGppZmZp
+ZXMgKi8NCj4gPiArwqDCoMKgwqDCoMKgIHVuc2lnbmVkIGludCBpbnRlZ3Jf
+cGVyaW9kOyAvKiB1c2VjcyAqLw0KPiA+ICsNCj4gPiArwqDCoMKgwqDCoMKg
+IHN0cnVjdCB7DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+dTE2IGNoYW5bUEFDMTkyMV9OVU1fTUVBU19DSEFOU107DQo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgczY0IHRpbWVzdGFtcCBfX2FsaWdu
+ZWQoOCk7DQo+ID4gK8KgwqDCoMKgwqDCoCB9IHNjYW47DQo+ID4gK307DQo+
+ID4gKw0KPiA+ICsvKiBUaGUgaW50ZWdyYXRpb24gcGVyaW9kIGRlcGVuZHMg
+b24gdGhlIGNvbmZpZ3VyYXRpb24gb2YgbnVtYmVyIG9mDQo+ID4gaW50ZWdy
+YXRpb24NCj4gDQo+IEkgdGhpbmsgaXQgc2hvdWxkIGJlIGEgbXVsdGkgbGlu
+ZSBjb21tZW50IGhlcmUuIFRoZSBzYW1lIGNvbW1lbnQgZm9yDQo+IG11bHRp
+cGxlIHBsYWNlcyBpbiB0aGUgZHJpdmVyLg0KPiANClRoYW5rcyBmb3IgY2F0
+Y2hpbmcgdGhpcywgSSB3aWxsIGZpeCBpdCBpbiBuZXh0IHBhdGNoIHZlcnNp
+b24uDQoNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjYXNl
+IFBBQzE5MjFfQ0hBTl9QT1dFUjogew0KPiA+IA0KPiA+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCAvKiBQb3dlciBz
+Y2FsZSBmYWN0b3IgaW4gbVc6DQo+IA0KPiBJIHRoaW5rIHRoZSBzY2FsZSBo
+ZXJlIHNob3VsZCBiZSBpbiBtaWNyb1dhdHRzLiBXZSBoYXZlIChtQSkqKG1W
+KQ0KPiANCkRvY3VtZW50YXRpb24vQUJJL3Rlc3Rpbmcvc3lzZnMtYnVzLWlp
+byBzdGF0ZXMgaXQgc2hvdWxkIGJlIGluIG1pbGxpd2F0dHM6DQoNCldoYXQ6
+CQkvc3lzL2J1cy9paW8vZGV2aWNlcy9paW86ZGV2aWNlWC9pbl9wb3dlcllf
+cmF3DQpLZXJuZWxWZXJzaW9uOgk0LjUNCkNvbnRhY3Q6CWxpbnV4LWlpb0B2
+Z2VyLmtlcm5lbC5vcmcNCkRlc2NyaXB0aW9uOg0KCQlSYXcgKHVuc2NhbGVk
+IG5vIGJpYXMgcmVtb3ZhbCBldGMuKSBwb3dlciBtZWFzdXJlbWVudCBmcm9t
+DQoJCWNoYW5uZWwgWS4gVGhlIG51bWJlciBtdXN0IGFsd2F5cyBiZSBzcGVj
+aWZpZWQgYW5kDQoJCXVuaXF1ZSB0byBhbGxvdyBhc3NvY2lhdGlvbiB3aXRo
+IGV2ZW50IGNvZGVzLiBVbml0cyBhZnRlcg0KCQlhcHBsaWNhdGlvbiBvZiBz
+Y2FsZSBhbmQgb2Zmc2V0IGFyZSBtaWxsaXdhdHRzLg0KDQo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgKiBW
+c2Vuc2UgTFNCIChuVikgKiBtYXhfdmJ1cyAoVikgLyB2Z2FpbiAvDQo+ID4g
+c2h1bnQgKHVPaG0pDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgKi8NCj4gPiArwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZ3VhcmQobXV0ZXgpKCZw
+cml2LT5sb2NrKTsNCj4gPiArDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgICp2YWwgPSBwYWMxOTIxX3ZzZW5z
+ZV9sc2IocHJpdi0+ZGlfZ2FpbikgKg0KPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIChQ
+QUMxOTIxX01BWF9WQlVTX1YgPj4gKGludClwcml2LQ0KPiA+ID5kdl9nYWlu
+KTsNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgKnZhbDIgPSAoaW50KXByaXYtPnJzaHVudDsNCj4gPiArDQo+
+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgIHJldHVybiBJSU9fVkFMX0ZSQUNUSU9OQUw7DQo+ID4gK8KgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqAgfQ0KPiA+ICvCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgIGRlZmF1bHQ6DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAtRUlOVkFMOw0K
+PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH0NCj4gPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBicmVhazsNCj4gPiArDQo+ID4g
+K8KgwqDCoMKgwqDCoCBjYXNlIElJT19DSEFOX0lORk9fSEFSRFdBUkVHQUlO
+Og0KPiANCj4gSEFSRFdBUkVHQUlOIHNob3VsZCBub3QgYmUgdXNlZCBoZXJl
+LiBUaGUgZ2FpbiAoZm9yIHZvbHRhZ2UgYW5kIGZvciB0aGUNCj4gY3VycmVu
+dCkgc2hvdWxkIGJlIGluY2x1ZGVkIGludG8gdGhlIGFwcHJvcHJpYXRlIHNj
+YWxlLiBBIHByb3BlcnR5DQo+IG5hbWVkIHNjYWxlX2F2YWlsYWJsZSBzaG91
+bGQgYmUgYWRkZWQgYW5kIHRoZSB1c2VkIGNvdWxkIGNoYW5nZSB0aGUNCj4g
+Z2FpbiBieSBzZXR0aW5nIHRoZSBzY2FsZS4gUGxlYXNlIHNlZSBQQUMxOTM0
+IGFuZCBmZXcgb3RoZXIgZHJpdmVycy4NCj4gDQpJIHdpbGwgaW5jbHVkZSBn
+YWlucyBpbnRvIHRoZSBzY2FsZXMgYXMgc3VnZ2VzdGVkLiBJIGFkZHJlc3Nl
+ZCB0aGlzIGluDQpwYXRjaCB2MiB0aHJlYWQgWzFdLiBQbGVhc2UgcmVwbHkg
+dGhlcmUgaWYgeW91IGhhdmUgYWRkaXRpb25hbCBjb21tZW50cy4NCj4gDQo+
+IA0KPiA+ICsNCj4gPiArc3RhdGljIGludCBwYWMxOTIxX3JlYWRfbGFiZWwo
+c3RydWN0IGlpb19kZXYgKmluZGlvX2RldiwNCj4gPiArwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAg
+c3RydWN0IGlpb19jaGFuX3NwZWMgY29uc3QgKmNoYW4sIGNoYXINCj4gPiAq
+bGFiZWwpDQo+ID4gK3sNCj4gDQo+IHRoZXJlIGlzIGEgImxhYmVsIiBpbnRv
+IHRoZSBkZXZpY2UgdHJlZSB0aGF0IHNob3VsZCBiZSB1c2VkIGhlcmUgaW4N
+Cj4gb3JkZXIgdG8gaWRlbnRpZnkgdGhlIGRldmljZSBhbmQgd2hhdCB0aGUg
+ZGV2aWNlIG1lYXN1cmVzLCBsaWtlDQo+IEdQVV92YnVzIG9yIElPX3ZidXMu
+DQo+IA0KVGhlIGRldmljZSBsYWJlbCBmcm9tIERUIGlzIGFscmVhZHkgZXhw
+b3NlZCBpbnRvIGl0cyBzcGVjaWZpYyBzeXNmcyBhdHRyaWJ1dGUNCmFuZCBz
+byBhdmFpbGFibGUgdG8gdGhlIHVzZXJzLiBJIHRoaW5rIHVzaW5nIGl0IGFz
+IGEgcHJlZml4IGZvciB0aGUgY2hhbm5lbA0Kd291bGQganVzdCBiZSBhIGR1
+cGxpY2F0aW9uLiBUaGUgcGFjMTkzNCBkcml2ZXIgaW4gZmFjdCBwcmVwZW5k
+cyB0aGUgY2hhbm5lbA0KbGFiZWwgaGVyZSBub3QgdGhlIGRldmljZSBsYWJl
+bC4gSSB0aGluayB0aGUgc2FtZSBkb2VzIG5vdCBhcHBseSBmb3IgdGhlIHBh
+YzE5MjENCmJlaW5nIGEgc2luZ2xlIGNoYW5uZWwgbW9uaXRvci4NCg0KPiA+
+ICvCoMKgwqDCoMKgwqAgc3dpdGNoIChjaGFuLT5jaGFubmVsKSB7DQo+ID4g
+K8KgwqDCoMKgwqDCoCBjYXNlIFBBQzE5MjFfQ0hBTl9WQlVTOg0KPiA+ICvC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiBzcHJpbnRmKGxh
+YmVsLCAidmJ1c1xuIik7DQo+ID4gK8KgwqDCoMKgwqDCoCBjYXNlIFBBQzE5
+MjFfQ0hBTl9WU0VOU0U6DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgcmV0dXJuIHNwcmludGYobGFiZWwsICJ2c2Vuc2VcbiIpOw0KPiA+
+ICvCoMKgwqDCoMKgwqAgY2FzZSBQQUMxOTIxX0NIQU5fQ1VSUkVOVDoNCj4g
+PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCByZXR1cm4gc3ByaW50
+ZihsYWJlbCwgImN1cnJlbnRcbiIpOw0KPiA+ICvCoMKgwqDCoMKgwqAgY2Fz
+ZSBQQUMxOTIxX0NIQU5fUE9XRVI6DQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqAgcmV0dXJuIHNwcmludGYobGFiZWwsICJwb3dlclxuIik7
+DQo+ID4gK8KgwqDCoMKgwqDCoCBkZWZhdWx0Og0KPiA+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiAtRUlOVkFMOw0KPiA+ICvCoMKg
+wqDCoMKgwqAgfQ0KPiA+ICt9DQo+DQo+DQo+ID4gK3N0YXRpYyBzc2l6ZV90
+IHBhYzE5MjFfcmVhZF9maWx0ZXJzX2VuYWJsZWQoc3RydWN0IGlpb19kZXYN
+Cj4gPiAqaW5kaW9fZGV2LA0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqAgdWludHB0cl90IHByaXZhdGUsDQo+ID4gK8Kg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjb25zdCBz
+dHJ1Y3QNCj4gPiBpaW9fY2hhbl9zcGVjICpjaGFuLA0KPiA+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgY2hhciAqYnVmKQ0K
+PiA+ICt7DQo+ID4gK8KgwqDCoMKgwqDCoCBzdHJ1Y3QgcGFjMTkyMV9wcml2
+ICpwcml2ID0gaWlvX3ByaXYoaW5kaW9fZGV2KTsNCj4gPiArwqDCoMKgwqDC
+oMKgIGJvb2wgZW5hYmxlZDsNCj4gPiArDQo+ID4gK8KgwqDCoMKgwqDCoCBz
+Y29wZWRfZ3VhcmQobXV0ZXgsICZwcml2LT5sb2NrKSB7DQo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZW5hYmxlZCA9IHByaXYtPmZpbHRl
+cnNfZW47DQo+ID4gK8KgwqDCoMKgwqDCoCB9DQo+ID4gK8KgwqDCoMKgwqDC
+oCByZXR1cm4gc3lzZnNfZW1pdChidWYsICIlZFxuIiwgZW5hYmxlZCk7DQo+
+ID4gK30NCj4gPiArDQo+ID4gK3N0YXRpYyBzc2l6ZV90IHBhYzE5MjFfd3Jp
+dGVfZmlsdGVyc19lbmFibGVkKHN0cnVjdCBpaW9fZGV2DQo+ID4gKmluZGlv
+X2RldiwNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqAgdWludHB0cl90IHByaXZhdGUsDQo+ID4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNvbnN0IHN0cnVjdA0K
+PiA+IGlpb19jaGFuX3NwZWMgKmNoYW4sDQo+ID4gK8KgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNvbnN0IGNoYXIgKmJ1Ziwg
+c2l6ZV90DQo+ID4gbGVuKQ0KPiANCj4gSSB3b3VsZCBsaWtlIHRvIHNldCBl
+YWNoIGZpbHRlciBzZXBhcmF0ZWx5IGFuZCBsZXQgdGhlIHVzZXIgdG8gZGVj
+aWRlDQo+IGhvdyB0byB1c2UgdGhpcyBmdW5jdGlvbmFsaXR5LiBOb3QgYWx3
+YXlzIGJvdGggZmlsdGVycyBhcmUgbmVlZGVkLg0KPiANCkkgd291bGQgcmVt
+b3ZlIGZpbHRlcnMgY29udHJvbCBlbnRpcmVseSBiYXNlZCBvbiBKb25hdGhh
+biBjb21tZW50cyBpbiBwYXRjaCB2Mg0KdGhyZWFkIFsxXS4gUGxlYXNlIHJl
+cGx5IGluIHRoYXQgdGhyZWFkIGlmIHlvdSBoYXZlIG1vcmUgY29tbWVudHMu
+DQo+IA0KPiANCj4gPiArc3RhdGljIGludCBwYWMxOTIxX2luaXQoc3RydWN0
+IHBhYzE5MjFfcHJpdiAqcHJpdikNCj4gPiArew0KPiA+ICvCoMKgwqDCoMKg
+wqAgLyogRW50ZXIgUkVBRCBzdGF0ZSBiZWZvcmUgY29uZmlndXJhdGlvbiAq
+Lw0KPiA+ICvCoMKgwqDCoMKgwqAgaW50IHJldCA9IHJlZ21hcF91cGRhdGVf
+Yml0cyhwcml2LT5yZWdtYXAsDQo+ID4gUEFDMTkyMV9SRUdfSU5UX0NGRywN
+Cj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgUEFDMTkyMV9JTlRfQ0ZHX0lOVEVO
+LCAwKTsNCj4gPiArwqDCoMKgwqDCoMKgIGlmIChyZXQpDQo+ID4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcmV0dXJuIHJldDsNCj4gPiArDQo+
+ID4gK8KgwqDCoMKgwqDCoCAvKiBDb25maWd1cmUgZ2FpbnMgYW5kIG1lYXN1
+cmVtZW50cyByZXNvbHV0aW9uICovDQo+ID4gK8KgwqDCoMKgwqDCoCB1bnNp
+Z25lZCBpbnQgdmFsID0gcHJpdi0+ZGlfZ2FpbiA8PA0KPiA+IFBBQzE5MjFf
+R0FJTl9ESV9HQUlOX1NISUZUIHwNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcHJpdi0+ZHZfZ2Fp
+biA8PA0KPiA+IFBBQzE5MjFfR0FJTl9EVl9HQUlOX1NISUZUOw0KPiA+ICvC
+oMKgwqDCoMKgwqAgaWYgKCFwcml2LT5oaWdoX3JlcykNCj4gPiArwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB2YWwgfD0gUEFDMTkyMV9HQUlOX0lf
+UkVTIHwgUEFDMTkyMV9HQUlOX1ZfUkVTOw0KPiA+ICvCoMKgwqDCoMKgwqAg
+cmV0ID0gcmVnbWFwX3dyaXRlKHByaXYtPnJlZ21hcCwgUEFDMTkyMV9SRUdf
+R0FJTl9DRkcsIHZhbCk7DQo+ID4gK8KgwqDCoMKgwqDCoCBpZiAocmV0KQ0K
+PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiByZXQ7
+DQo+ID4gKw0KPiA+ICvCoMKgwqDCoMKgwqAgLyogQ29uZmlndXJlIGludGVn
+cmF0aW9uOg0KPiA+ICvCoMKgwqDCoMKgwqDCoCAqIC0gbnVtIG9mIGludGVn
+cmF0aW9uIHNhbXBsZXMsIGZpbHRlcnMgZW5hYmxlZC9kaXNhYmxlZA0KPiA+
+ICvCoMKgwqDCoMKgwqDCoCAqIC0gc2V0IFJFQUQvSU5UIHBpbiBvdmVycmlk
+ZSAoUklPVikgdG8gY29udHJvbCBvcGVyYXRpb24NCj4gPiBtb2RlIHZpYQ0K
+PiA+ICvCoMKgwqDCoMKgwqDCoCAqwqDCoCByZWdpc3RlciBpbnN0ZWFkIG9m
+IHBpbg0KPiA+ICvCoMKgwqDCoMKgwqDCoCAqLw0KPiA+ICvCoMKgwqDCoMKg
+wqAgdmFsID0gcHJpdi0+bl9zYW1wbGVzIDw8IFBBQzE5MjFfSU5UX0NGR19T
+TVBMX1NISUZUIHwNCj4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIFBB
+QzE5MjFfSU5UX0NGR19SSU9WOw0KPiA+ICvCoMKgwqDCoMKgwqAgaWYgKHBy
+aXYtPmZpbHRlcnNfZW4pDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqAgdmFsIHw9IFBBQzE5MjFfSU5UX0NGR19WU0ZFTiB8IFBBQzE5MjFf
+SU5UX0NGR19WQkZFTjsNCj4gPiArwqDCoMKgwqDCoMKgIHJldCA9IHJlZ21h
+cF93cml0ZShwcml2LT5yZWdtYXAsIFBBQzE5MjFfUkVHX0lOVF9DRkcsIHZh
+bCk7DQo+ID4gK8KgwqDCoMKgwqDCoCBpZiAocmV0KQ0KPiA+ICvCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgIHJldHVybiByZXQ7DQo+ID4gKw0KPiA+
+ICvCoMKgwqDCoMKgwqAgLyogSW5pdCBjb250cm9sIHJlZ2lzdGVyOg0KPiA+
+ICvCoMKgwqDCoMKgwqDCoCAqIC0gVlBvd2VyIGZyZWUgcnVuIGludGVncmF0
+aW9uIG1vZGUNCj4gDQo+IFVzZXIgc2hvdWxkIGNvbnRyb2wgd2hhdCB0byBv
+dXRwdXQgb24gdGhlICJPVVQgREFDIiBwaW4uDQo+IA0KPiA+ICvCoMKgwqDC
+oMKgwqDCoCAqIC0gT1VUIHBpbiBmdWxsIHNjYWxlIHJhbmdlOiAzViAoSFcg
+ZGV0YXVsdCkNCj4gDQo+IEZ1bGwgcmFuZ2UgZm9yIE9VVCBzaG91bGQgYmUg
+Y29uZmlndXJhYmxlLg0KPiANCkkgd291bGQgbGVhdmUgdGhpcyBmb3IgZnV0
+dXJlIGV4dGVuc2lvbnMuIEkgYWRkcmVzc2VkIHRoaXMgaW4gcGF0Y2ggdjIg
+dGhyZWFkDQpbMV0uIFBsZWFzZSByZXBseSB0aGVyZSBpZiB5b3UgaGF2ZSBt
+b3JlIGNvbW1lbnRzLg0KDQo+DQo+DQo+ID4gKw0KPiA+ICtzdGF0aWMgaW50
+IHBhYzE5MjFfcHJvYmUoc3RydWN0IGkyY19jbGllbnQgKmNsaWVudCkNCj4g
+PiArew0KPiA+ICvCoMKgwqDCoMKgwqAgc3RydWN0IGRldmljZSAqZGV2ID0g
+JmNsaWVudC0+ZGV2Ow0KPiA+ICvCoMKgwqDCoMKgwqAgc3RydWN0IHBhYzE5
+MjFfcHJpdiAqcHJpdjsNCj4gPiArDQo+ID4gK8KgwqDCoMKgwqDCoCBzdHJ1
+Y3QgaWlvX2RldiAqaW5kaW9fZGV2ID0gZGV2bV9paW9fZGV2aWNlX2FsbG9j
+KGRldiwNCj4gPiBzaXplb2YoKnByaXYpKTsNCj4gPiArwqDCoMKgwqDCoMKg
+IGlmICghaW5kaW9fZGV2KQ0KPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgIHJldHVybiAtRU5PTUVNOw0KPiA+ICsNCj4gPiArwqDCoMKgwqDC
+oMKgIHByaXYgPSBpaW9fcHJpdihpbmRpb19kZXYpOw0KPiA+ICvCoMKgwqDC
+oMKgwqAgcHJpdi0+Y2xpZW50ID0gY2xpZW50Ow0KPiA+ICvCoMKgwqDCoMKg
+wqAgaTJjX3NldF9jbGllbnRkYXRhKGNsaWVudCwgaW5kaW9fZGV2KTsNCj4g
+PiArDQo+ID4gK8KgwqDCoMKgwqDCoCBwcml2LT5yZWdtYXAgPSBkZXZtX3Jl
+Z21hcF9pbml0X2kyYyhjbGllbnQsDQo+ID4gJnBhYzE5MjFfcmVnbWFwX2Nv
+bmZpZyk7DQo+ID4gK8KgwqDCoMKgwqDCoCBpZiAoSVNfRVJSKHByaXYtPnJl
+Z21hcCkpDQo+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZGV2
+X2Vycl9wcm9iZShkZXYsIChpbnQpUFRSX0VSUihwcml2LT5yZWdtYXApLA0K
+PiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoCAiQ2Fubm90IGluaXRpYWxpemUgcmVnaXN0ZXIg
+bWFwXG4iKTsNCj4gPiArDQo+ID4gK8KgwqDCoMKgwqDCoCBtdXRleF9pbml0
+KCZwcml2LT5sb2NrKTsNCj4gPiArDQo+ID4gK8KgwqDCoMKgwqDCoCBwcml2
+LT5kdl9nYWluID0gUEFDMTkyMV9ERUZBVUxUX0RWX0dBSU47DQo+ID4gK8Kg
+wqDCoMKgwqDCoCBwcml2LT5kaV9nYWluID0gUEFDMTkyMV9ERUZBVUxUX0RJ
+X0dBSU47DQo+ID4gK8KgwqDCoMKgwqDCoCBwcml2LT5oaWdoX3JlcyA9IFBB
+QzE5MjFfREVGQVVMVF9ISUdIX1JFUzsNCj4gPiArwqDCoMKgwqDCoMKgIHBy
+aXYtPm5fc2FtcGxlcyA9IFBBQzE5MjFfREVGQVVMVF9OVU1fU0FNUExFUzsN
+Cj4gPiArwqDCoMKgwqDCoMKgIHByaXYtPmZpbHRlcnNfZW4gPSBQQUMxOTIx
+X0RFRkFVTFRfRklMVEVSU19FTkFCTEVEOw0KPiA+ICsNCj4gPiArwqDCoMKg
+wqDCoMKgIGludCByZXQgPSBwYWMxOTIxX3BhcnNlX3Byb3BlcnRpZXMocHJp
+dik7DQo+IA0KPiBJIHdvdWxkIGxpa2UgdG8gaGFuZGxlIGFsc28gdGhlIEFD
+UEkgZm9yIHg4NiBib2FyZHMgYW5kIG5vdCBvbmx5IHRoZQ0KPiBkZXZpY2Ug
+dHJlZS4NCj4gDQpJIHdvdWxkIGxlYXZlIHRoaXMgZm9yIGZ1dHVyZSBleHRl
+bnNpb25zIHNpbmNlIEkgY2Fubm90IHRlc3QgaXQgYWdhaW5zdCBBQ1BJLg0K
+DQpUaGFua3MgYWdhaW4gZm9yIHlvdXIgZmVlZGJhY2suDQoNCkJlc3QgcmVn
+YXJkcywNCk1hdHRlbw==
 
